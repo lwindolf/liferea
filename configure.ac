@@ -89,15 +89,23 @@ else
 fi
 
 AC_MSG_CHECKING([for Mozilla support])
-mozilla=`pkg-config --cflags mozilla-gtkmozembed 2> /dev/null`
+gecko_provider=mozilla
+mozilla=`pkg-config --cflags $gecko_provider-gtkmozembed 2> /dev/null`
+# Check Firefox-mozilla
+if test x"$mozilla" = "x"; then
+    gecko_provider=firefox
+    mozilla=`pkg-config --cflags firefox-gtkmozembed 2> /dev/null`
+fi
 AM_CONDITIONAL(WITH_MOZILLA, test "x$mozilla" != "x")
 if test "x$mozilla" != "x" ; then
+
+   echo $gecko_provider found!
 
    dnl the Mozilla XPCOM access means C++
    AC_PROG_CXX
 
    AC_MSG_RESULT(yes)
-   PKG_CHECK_MODULES(MOZILLA, mozilla-gtkmozembed)
+   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed)
    
    dnl Note: with the infos from mozilla-gtkmozembed.pc
    dnl we got all includes and libraries for the C interface
@@ -106,7 +114,7 @@ if test "x$mozilla" != "x" ; then
    dnl of macros to come around this. Which I would like to
    dnl avoid. So this might be not very portable...
    
-   MOZILLA_INCLUDE_ROOT=`pkg-config --cflags-only-I mozilla-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
+   MOZILLA_INCLUDE_ROOT=`pkg-config --cflags-only-I $gecko_provider-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
    MOZILLA_INCLUDE_ROOT=`dirname $MOZILLA_INCLUDE_ROOT`
    
    dnl Maybe we don't need all of this...
@@ -217,7 +225,7 @@ AC_OUTPUT
 echo
 echo $PACKAGE $VERSION
 echo
-echo Build Mozilla Plugin............ : $enable_mozilla
+echo "Build Mozilla Plugin............ : $enable_mozilla ($gecko_provider)"
 echo Build GtkHTML Plugin............ : $enable_gtkhtml2
 echo 
 echo Use X Session Management........ : $enable_sm
