@@ -462,16 +462,25 @@ g_print("feed_load for %s\n", feed_get_source(fp));
 }
 
 /* Only some feed informations are kept in memory to lower memory
-   usage. This method unloads everything besides necessary infos. */
+   usage. This method unloads everything besides necessary infos. 
+   
+   If the feed parameter is NULL the function is called for all feeds. */
 void feed_unload(feedPtr fp) {
 
-g_print("feed_unload for %s\n", feed_get_source(fp));
+	if(NULL == fp) {
+		g_print("unloading everything...");
+		ui_feedlist_do_for_all(fp, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
+	} else {
+		if(TRUE == fp->loaded) {
+			g_print("feed_unload for %s\n", feed_get_source(fp));
 	
-	/* FIXME: free filter structures too when implemented */
+			/* FIXME: free filter structures too when implemented */
 	
-	/* free items */	
-	feed_clear_item_list(fp);
-	fp->loaded = FALSE;
+			/* free items */	
+			feed_clear_item_list(fp);
+			fp->loaded = FALSE;
+		}
+	}
 }
 
 /* Merges the feeds specified by old_fp and new_fp, so that
@@ -485,6 +494,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	gint		traycount = 0;
 
 	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
+	
 	
 	if(!old_fp->loaded)
 		feed_load(old_fp);	/* because we access old_fp->items directly */
@@ -656,6 +666,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	
 	ui_tray_add_new(traycount);		/* finally update the tray icon */
 	ui_notification_update(old_fp);
+	
+	// FIXME: unload feed if possible
 }
 
 /**
@@ -1056,8 +1068,7 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 /* returns feed's list of items, if necessary loads the feed from cache */
 GSList * feed_get_item_list(feedPtr fp) { 
 
-	if(!fp->loaded)
-		feed_load(fp);
+	g_assert(TRUE == fp->loaded);
 	return fp->items; 
 }
 

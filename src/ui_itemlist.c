@@ -455,6 +455,8 @@ static void ui_itemlist_load_feed(feedPtr fp, gchar *searchstring) {
 	   column to give a hint where the item comes from ... */
 	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (NULL != searchstring));
 
+	feed_unload(NULL);
+	feed_load(fp);
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
