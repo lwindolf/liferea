@@ -513,9 +513,8 @@ void on_newbtn_clicked(GtkButton *button, gpointer user_data) {
 void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	gchar		*key, *keyprefix, *title, *source;
 	GtkWidget 	*sourceentry;	
-	GtkWidget 	*titleentry, *feedradiobtn, *ocsradiobtn, 
-			*pieradiobtn, *updateIntervalBtn;
-	GtkWidget	*cdfradiobtn;		
+	GtkWidget 	*titleentry, *typeoptionmenu,
+			*updateIntervalBtn;
 	gint		type = FST_RSS;
 	gint		interval;
 	
@@ -524,28 +523,29 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
 	titleentry = lookup_widget(feednamedialog, "feednameentry");
-	feedradiobtn = lookup_widget(newdialog, "typeradiobtn");
-	cdfradiobtn = lookup_widget(newdialog, "typeradiobtn1");	
-	ocsradiobtn = lookup_widget(newdialog, "typeradiobtn2");
-	pieradiobtn = lookup_widget(newdialog, "typeradiobtn3");
-	
+	typeoptionmenu = lookup_widget(newdialog, "typeoptionmenu");
+		
 	source = (gchar *)gtk_entry_get_text(GTK_ENTRY(sourceentry));
 	keyprefix = getFeedListSelectionPrefix(mainwindow);
-		
-	/* FIXME: make this more generic! */
-	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(feedradiobtn))) {
-		type = FST_RSS;
-	}
-	else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(pieradiobtn))) {
-		type = FST_PIE;
-	}
-	else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(cdfradiobtn))) {
-		type = FST_CDF;
-	}
-	else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ocsradiobtn))) {
-		type = FST_OCS;
-		/* disable the update interval selector */
-		gtk_widget_set_sensitive(lookup_widget(feednamedialog, "feedrefreshcount"), FALSE);
+	
+	type = gtk_option_menu_get_history(GTK_OPTION_MENU(typeoptionmenu));
+	/* the retrieved number is not yet the real feed type! */
+	switch(type) {
+		case 0:
+			type = FST_RSS;
+			break;
+		case 1:
+			type = FST_CDF;
+			break;
+		case 2:
+			type = FST_PIE;
+			break;
+		case 3:
+			type = FST_OCS;
+			break;
+		default:
+			g_error(_("internal error! invalid type selected!\n"));
+			break;
 	}
 
 	if(NULL != (keyprefix = getFeedListSelectionPrefix(mainwindow))) {

@@ -5,7 +5,7 @@
 
 <widget class="GtkWindow" id="mainwindow">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Liferea 0.3.8</property>
+  <property name="title" translatable="yes">Liferea 0.3.9</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -696,7 +696,7 @@
 
 <widget class="GtkDialog" id="newdialog">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">New Entry</property>
+  <property name="title" translatable="yes">Subscribe To A New Feed</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_CENTER</property>
   <property name="modal">True</property>
@@ -759,16 +759,102 @@
 	  <property name="spacing">0</property>
 
 	  <child>
-	    <widget class="GtkHBox" id="hbox1">
+	    <widget class="GtkFrame" id="frame7">
 	      <property name="border_width">5</property>
 	      <property name="visible">True</property>
-	      <property name="homogeneous">False</property>
-	      <property name="spacing">5</property>
+	      <property name="label_xalign">0</property>
+	      <property name="label_yalign">0.5</property>
+	      <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
 
 	      <child>
-		<widget class="GtkLabel" id="label5">
+		<widget class="GtkVBox" id="vbox16">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">feed URL</property>
+		  <property name="homogeneous">False</property>
+		  <property name="spacing">0</property>
+
+		  <child>
+		    <widget class="GtkLabel" id="label27">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Please enter the URL (including the http:// prefix) you want 
+to subscribe. Enter a valid pathname if you want to load
+a local file.</property>
+		      <property name="use_underline">False</property>
+		      <property name="use_markup">False</property>
+		      <property name="justify">GTK_JUSTIFY_LEFT</property>
+		      <property name="wrap">True</property>
+		      <property name="selectable">False</property>
+		      <property name="xalign">0</property>
+		      <property name="yalign">0.5</property>
+		      <property name="xpad">10</property>
+		      <property name="ypad">5</property>
+		    </widget>
+		    <packing>
+		      <property name="padding">0</property>
+		      <property name="expand">False</property>
+		      <property name="fill">False</property>
+		    </packing>
+		  </child>
+
+		  <child>
+		    <widget class="GtkHBox" id="hbox1">
+		      <property name="border_width">5</property>
+		      <property name="visible">True</property>
+		      <property name="homogeneous">False</property>
+		      <property name="spacing">5</property>
+
+		      <child>
+			<widget class="GtkLabel" id="label5">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Feed URL</property>
+			  <property name="use_underline">False</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">5</property>
+			  <property name="ypad">0</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkEntry" id="newfeedentry">
+			  <property name="visible">True</property>
+			  <property name="can_focus">True</property>
+			  <property name="editable">True</property>
+			  <property name="visibility">True</property>
+			  <property name="max_length">0</property>
+			  <property name="text" translatable="yes"></property>
+			  <property name="has_frame">True</property>
+			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="activates_default">False</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">True</property>
+			  <property name="fill">True</property>
+			</packing>
+		      </child>
+		    </widget>
+		    <packing>
+		      <property name="padding">0</property>
+		      <property name="expand">True</property>
+		      <property name="fill">True</property>
+		    </packing>
+		  </child>
+		</widget>
+	      </child>
+
+	      <child>
+		<widget class="GtkLabel" id="label26">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">URL Input</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -780,28 +866,7 @@
 		  <property name="ypad">0</property>
 		</widget>
 		<packing>
-		  <property name="padding">0</property>
-		  <property name="expand">False</property>
-		  <property name="fill">False</property>
-		</packing>
-	      </child>
-
-	      <child>
-		<widget class="GtkEntry" id="newfeedentry">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="editable">True</property>
-		  <property name="visibility">True</property>
-		  <property name="max_length">0</property>
-		  <property name="text" translatable="yes"></property>
-		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
-		  <property name="activates_default">False</property>
-		</widget>
-		<packing>
-		  <property name="padding">0</property>
-		  <property name="expand">True</property>
-		  <property name="fill">True</property>
+		  <property name="type">label_item</property>
 		</packing>
 	      </child>
 	    </widget>
@@ -827,23 +892,25 @@
 		  <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
 
 		  <child>
-		    <widget class="GtkHBox" id="hbox11">
-		      <property name="border_width">5</property>
+		    <widget class="GtkVBox" id="vbox17">
 		      <property name="visible">True</property>
 		      <property name="homogeneous">False</property>
-		      <property name="spacing">5</property>
+		      <property name="spacing">0</property>
 
 		      <child>
-			<widget class="GtkRadioButton" id="typeradiobtn">
+			<widget class="GtkLabel" id="label28">
 			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">select this type to subscribe to a RDF/RSS feed</property>
-			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">RSS</property>
-			  <property name="use_underline">True</property>
-			  <property name="relief">GTK_RELIEF_NORMAL</property>
-			  <property name="active">True</property>
-			  <property name="inconsistent">False</property>
-			  <property name="draw_indicator">True</property>
+			  <property name="label" translatable="yes">You have to specify the type of the feed you want to
+subscribe to.</property>
+			  <property name="use_underline">False</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">10</property>
+			  <property name="ypad">5</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -853,62 +920,87 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkRadioButton" id="typeradiobtn1">
+			<widget class="GtkHBox" id="hbox18">
+			  <property name="border_width">5</property>
 			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">select this type to subscribe to a CDF feed (the feed type used by MSIE)</property>
-			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">CDF</property>
-			  <property name="use_underline">True</property>
-			  <property name="relief">GTK_RELIEF_NORMAL</property>
-			  <property name="active">False</property>
-			  <property name="inconsistent">False</property>
-			  <property name="draw_indicator">True</property>
-			  <property name="group">typeradiobtn</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
-		      </child>
+			  <property name="homogeneous">False</property>
+			  <property name="spacing">5</property>
 
-		      <child>
-			<widget class="GtkRadioButton" id="typeradiobtn3">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">select this type if you want to subscribe to a Atom/Echo/PIE 0.2 feed</property>
-			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">Atom/Echo/PIE</property>
-			  <property name="use_underline">True</property>
-			  <property name="relief">GTK_RELIEF_NORMAL</property>
-			  <property name="active">False</property>
-			  <property name="inconsistent">False</property>
-			  <property name="draw_indicator">True</property>
-			  <property name="group">typeradiobtn</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
-		      </child>
+			  <child>
+			    <widget class="GtkLabel" id="label29">
+			      <property name="visible">True</property>
+			      <property name="label" translatable="yes">Feed Type</property>
+			      <property name="use_underline">False</property>
+			      <property name="use_markup">False</property>
+			      <property name="justify">GTK_JUSTIFY_LEFT</property>
+			      <property name="wrap">False</property>
+			      <property name="selectable">False</property>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">5</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			    <packing>
+			      <property name="padding">0</property>
+			      <property name="expand">False</property>
+			      <property name="fill">False</property>
+			    </packing>
+			  </child>
 
-		      <child>
-			<widget class="GtkRadioButton" id="typeradiobtn2">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">select this type to subscribe to a OCS directory</property>
-			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">OCS Directory</property>
-			  <property name="use_underline">True</property>
-			  <property name="relief">GTK_RELIEF_NORMAL</property>
-			  <property name="active">False</property>
-			  <property name="inconsistent">False</property>
-			  <property name="draw_indicator">True</property>
-			  <property name="group">typeradiobtn</property>
+			  <child>
+			    <widget class="GtkOptionMenu" id="typeoptionmenu">
+			      <property name="visible">True</property>
+			      <property name="can_focus">True</property>
+			      <property name="history">2</property>
+
+			      <child>
+				<widget class="GtkMenu" id="menu1">
+
+				  <child>
+				    <widget class="GtkMenuItem" id="rss1">
+				      <property name="visible">True</property>
+				      <property name="label" translatable="yes">RSS</property>
+				      <property name="use_underline">True</property>
+				    </widget>
+				  </child>
+
+				  <child>
+				    <widget class="GtkMenuItem" id="cdf1">
+				      <property name="visible">True</property>
+				      <property name="label" translatable="yes">CDF</property>
+				      <property name="use_underline">True</property>
+				    </widget>
+				  </child>
+
+				  <child>
+				    <widget class="GtkMenuItem" id="atom1">
+				      <property name="visible">True</property>
+				      <property name="label" translatable="yes">Atom/Echo/PIE</property>
+				      <property name="use_underline">True</property>
+				    </widget>
+				  </child>
+
+				  <child>
+				    <widget class="GtkMenuItem" id="ocs1">
+				      <property name="visible">True</property>
+				      <property name="label" translatable="yes">OCS</property>
+				      <property name="use_underline">True</property>
+				    </widget>
+				  </child>
+				</widget>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="padding">0</property>
+			      <property name="expand">False</property>
+			      <property name="fill">False</property>
+			    </packing>
+			  </child>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
+			  <property name="expand">True</property>
+			  <property name="fill">True</property>
 			</packing>
 		      </child>
 		    </widget>
@@ -917,7 +1009,7 @@
 		  <child>
 		    <widget class="GtkLabel" id="label22">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">feed type</property>
+		      <property name="label" translatable="yes">Feed Type Selection</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>

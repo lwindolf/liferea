@@ -62,7 +62,7 @@ create_mainwindow (void)
   tooltips = gtk_tooltips_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.8"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.9"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -445,27 +445,32 @@ create_newdialog (void)
   GtkWidget *newdialog;
   GtkWidget *dialog_vbox2;
   GtkWidget *vbox9;
+  GtkWidget *frame7;
+  GtkWidget *vbox16;
+  GtkWidget *label27;
   GtkWidget *hbox1;
   GtkWidget *label5;
   GtkWidget *newfeedentry;
+  GtkWidget *label26;
   GtkWidget *vbox12;
   GtkWidget *frame5;
-  GtkWidget *hbox11;
-  GtkWidget *typeradiobtn;
-  GSList *typeradiobtn_group = NULL;
-  GtkWidget *typeradiobtn1;
-  GtkWidget *typeradiobtn3;
-  GtkWidget *typeradiobtn2;
+  GtkWidget *vbox17;
+  GtkWidget *label28;
+  GtkWidget *hbox18;
+  GtkWidget *label29;
+  GtkWidget *typeoptionmenu;
+  GtkWidget *menu1;
+  GtkWidget *rss1;
+  GtkWidget *cdf1;
+  GtkWidget *atom1;
+  GtkWidget *ocs1;
   GtkWidget *label22;
   GtkWidget *dialog_action_area2;
   GtkWidget *newfeedbtn;
   GtkWidget *cancelbtn;
-  GtkTooltips *tooltips;
-
-  tooltips = gtk_tooltips_new ();
 
   newdialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (newdialog), _("New Entry"));
+  gtk_window_set_title (GTK_WINDOW (newdialog), _("Subscribe To A New Feed"));
   gtk_window_set_position (GTK_WINDOW (newdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_modal (GTK_WINDOW (newdialog), TRUE);
   gtk_window_set_default_size (GTK_WINDOW (newdialog), 400, -1);
@@ -477,20 +482,44 @@ create_newdialog (void)
   gtk_widget_show (vbox9);
   gtk_box_pack_start (GTK_BOX (dialog_vbox2), vbox9, TRUE, TRUE, 0);
 
+  frame7 = gtk_frame_new (NULL);
+  gtk_widget_show (frame7);
+  gtk_box_pack_start (GTK_BOX (vbox9), frame7, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame7), 5);
+
+  vbox16 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox16);
+  gtk_container_add (GTK_CONTAINER (frame7), vbox16);
+
+  label27 = gtk_label_new (_("Please enter the URL (including the http:// prefix) you want \nto subscribe. Enter a valid pathname if you want to load\na local file."));
+  gtk_widget_show (label27);
+  gtk_box_pack_start (GTK_BOX (vbox16), label27, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (label27), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (label27), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label27), 0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label27), 10, 5);
+
   hbox1 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox1);
-  gtk_box_pack_start (GTK_BOX (vbox9), hbox1, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox16), hbox1, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbox1), 5);
 
-  label5 = gtk_label_new (_("feed URL"));
+  label5 = gtk_label_new (_("Feed URL"));
   gtk_widget_show (label5);
   gtk_box_pack_start (GTK_BOX (hbox1), label5, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (label5), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_alignment (GTK_MISC (label5), 0, 0.5);
   gtk_misc_set_padding (GTK_MISC (label5), 5, 0);
 
   newfeedentry = gtk_entry_new ();
   gtk_widget_show (newfeedentry);
   gtk_box_pack_start (GTK_BOX (hbox1), newfeedentry, TRUE, TRUE, 0);
+
+  label26 = gtk_label_new (_("URL Input"));
+  gtk_widget_show (label26);
+  gtk_frame_set_label_widget (GTK_FRAME (frame7), label26);
+  gtk_label_set_justify (GTK_LABEL (label26), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_padding (GTK_MISC (label26), 5, 0);
 
   vbox12 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox12);
@@ -501,41 +530,54 @@ create_newdialog (void)
   gtk_widget_show (frame5);
   gtk_box_pack_start (GTK_BOX (vbox12), frame5, TRUE, TRUE, 0);
 
-  hbox11 = gtk_hbox_new (FALSE, 5);
-  gtk_widget_show (hbox11);
-  gtk_container_add (GTK_CONTAINER (frame5), hbox11);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox11), 5);
+  vbox17 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox17);
+  gtk_container_add (GTK_CONTAINER (frame5), vbox17);
 
-  typeradiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("RSS"));
-  gtk_widget_show (typeradiobtn);
-  gtk_box_pack_start (GTK_BOX (hbox11), typeradiobtn, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, typeradiobtn, _("select this type to subscribe to a RDF/RSS feed"), NULL);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobtn), typeradiobtn_group);
-  typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobtn));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (typeradiobtn), TRUE);
+  label28 = gtk_label_new (_("You have to specify the type of the feed you want to\nsubscribe to."));
+  gtk_widget_show (label28);
+  gtk_box_pack_start (GTK_BOX (vbox17), label28, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (label28), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_alignment (GTK_MISC (label28), 0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label28), 10, 5);
 
-  typeradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("CDF"));
-  gtk_widget_show (typeradiobtn1);
-  gtk_box_pack_start (GTK_BOX (hbox11), typeradiobtn1, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, typeradiobtn1, _("select this type to subscribe to a CDF feed (the feed type used by MSIE)"), NULL);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobtn1), typeradiobtn_group);
-  typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobtn1));
+  hbox18 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox18);
+  gtk_box_pack_start (GTK_BOX (vbox17), hbox18, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox18), 5);
 
-  typeradiobtn3 = gtk_radio_button_new_with_mnemonic (NULL, _("Atom/Echo/PIE"));
-  gtk_widget_show (typeradiobtn3);
-  gtk_box_pack_start (GTK_BOX (hbox11), typeradiobtn3, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, typeradiobtn3, _("select this type if you want to subscribe to a Atom/Echo/PIE 0.2 feed"), NULL);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobtn3), typeradiobtn_group);
-  typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobtn3));
+  label29 = gtk_label_new (_("Feed Type"));
+  gtk_widget_show (label29);
+  gtk_box_pack_start (GTK_BOX (hbox18), label29, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (label29), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_padding (GTK_MISC (label29), 5, 0);
 
-  typeradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("OCS Directory"));
-  gtk_widget_show (typeradiobtn2);
-  gtk_box_pack_start (GTK_BOX (hbox11), typeradiobtn2, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, typeradiobtn2, _("select this type to subscribe to a OCS directory"), NULL);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobtn2), typeradiobtn_group);
-  typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobtn2));
+  typeoptionmenu = gtk_option_menu_new ();
+  gtk_widget_show (typeoptionmenu);
+  gtk_box_pack_start (GTK_BOX (hbox18), typeoptionmenu, FALSE, FALSE, 0);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (typeoptionmenu), 2);
 
-  label22 = gtk_label_new (_("feed type"));
+  menu1 = gtk_menu_new ();
+
+  rss1 = gtk_menu_item_new_with_mnemonic (_("RSS"));
+  gtk_widget_show (rss1);
+  gtk_container_add (GTK_CONTAINER (menu1), rss1);
+
+  cdf1 = gtk_menu_item_new_with_mnemonic (_("CDF"));
+  gtk_widget_show (cdf1);
+  gtk_container_add (GTK_CONTAINER (menu1), cdf1);
+
+  atom1 = gtk_menu_item_new_with_mnemonic (_("Atom/Echo/PIE"));
+  gtk_widget_show (atom1);
+  gtk_container_add (GTK_CONTAINER (menu1), atom1);
+
+  ocs1 = gtk_menu_item_new_with_mnemonic (_("OCS"));
+  gtk_widget_show (ocs1);
+  gtk_container_add (GTK_CONTAINER (menu1), ocs1);
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (typeoptionmenu), menu1);
+
+  label22 = gtk_label_new (_("Feed Type Selection"));
   gtk_widget_show (label22);
   gtk_frame_set_label_widget (GTK_FRAME (frame5), label22);
   gtk_label_set_justify (GTK_LABEL (label22), GTK_JUSTIFY_LEFT);
@@ -573,21 +615,29 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, newdialog, "newdialog");
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, dialog_vbox2, "dialog_vbox2");
   GLADE_HOOKUP_OBJECT (newdialog, vbox9, "vbox9");
+  GLADE_HOOKUP_OBJECT (newdialog, frame7, "frame7");
+  GLADE_HOOKUP_OBJECT (newdialog, vbox16, "vbox16");
+  GLADE_HOOKUP_OBJECT (newdialog, label27, "label27");
   GLADE_HOOKUP_OBJECT (newdialog, hbox1, "hbox1");
   GLADE_HOOKUP_OBJECT (newdialog, label5, "label5");
   GLADE_HOOKUP_OBJECT (newdialog, newfeedentry, "newfeedentry");
+  GLADE_HOOKUP_OBJECT (newdialog, label26, "label26");
   GLADE_HOOKUP_OBJECT (newdialog, vbox12, "vbox12");
   GLADE_HOOKUP_OBJECT (newdialog, frame5, "frame5");
-  GLADE_HOOKUP_OBJECT (newdialog, hbox11, "hbox11");
-  GLADE_HOOKUP_OBJECT (newdialog, typeradiobtn, "typeradiobtn");
-  GLADE_HOOKUP_OBJECT (newdialog, typeradiobtn1, "typeradiobtn1");
-  GLADE_HOOKUP_OBJECT (newdialog, typeradiobtn3, "typeradiobtn3");
-  GLADE_HOOKUP_OBJECT (newdialog, typeradiobtn2, "typeradiobtn2");
+  GLADE_HOOKUP_OBJECT (newdialog, vbox17, "vbox17");
+  GLADE_HOOKUP_OBJECT (newdialog, label28, "label28");
+  GLADE_HOOKUP_OBJECT (newdialog, hbox18, "hbox18");
+  GLADE_HOOKUP_OBJECT (newdialog, label29, "label29");
+  GLADE_HOOKUP_OBJECT (newdialog, typeoptionmenu, "typeoptionmenu");
+  GLADE_HOOKUP_OBJECT (newdialog, menu1, "menu1");
+  GLADE_HOOKUP_OBJECT (newdialog, rss1, "rss1");
+  GLADE_HOOKUP_OBJECT (newdialog, cdf1, "cdf1");
+  GLADE_HOOKUP_OBJECT (newdialog, atom1, "atom1");
+  GLADE_HOOKUP_OBJECT (newdialog, ocs1, "ocs1");
   GLADE_HOOKUP_OBJECT (newdialog, label22, "label22");
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, dialog_action_area2, "dialog_action_area2");
   GLADE_HOOKUP_OBJECT (newdialog, newfeedbtn, "newfeedbtn");
   GLADE_HOOKUP_OBJECT (newdialog, cancelbtn, "cancelbtn");
-  GLADE_HOOKUP_OBJECT_NO_REF (newdialog, tooltips, "tooltips");
 
   return newdialog;
 }

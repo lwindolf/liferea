@@ -34,7 +34,7 @@
 
 #define HELP1KEY	"help/1"
 #define HELP2KEY	"help/2"
-#define HELP1URL	"http://liferea.sf.net/help038.rdf"
+#define HELP1URL	"http://liferea.sf.net/help039.rdf"
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 #define HOMEPAGE	"http://liferea.sf.net/"
 
