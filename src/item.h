@@ -58,6 +58,7 @@ typedef struct item {
 	time_t		time;			/**< Item's modified date */
 	
 	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
+	struct feed	*sourceFeed;		/**< Pointer to the source feed this item was derived from (used for searches and vfolders) */
 	GSList		*vfolders;		/**< List of vfolders in which this item appears */
 	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
@@ -73,9 +74,10 @@ void ui_update_itemlist();
  */
 itemPtr 	item_new(void);
 
-void 		addVFolderToItem(itemPtr ip, gpointer fp);
-void		removeVFolderFromItem(itemPtr ip, gpointer fp);
-
+/**
+ * Method to copy the contents of an item to another 
+ */
+void 		item_copy(itemPtr from, itemPtr to);
 
 /**
  * Adds an item to the htmlview. This is used in 3-pane mode

@@ -282,7 +282,7 @@ static void pie_add_ns_handler(NsHandler *handler) {
 	}
 }
 
-feedHandlerPtr initPIEFeedHandler(void) {
+feedHandlerPtr pie_init_feed_handler(void) {
 	feedHandlerPtr	fhp;
 	
 	fhp = g_new0(struct feedHandler, 1);

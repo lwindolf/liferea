@@ -48,6 +48,10 @@ itemPtr item_new(void) {
 	return ip;
 }
 
+void item_copy(itemPtr from, itemPtr to) {
+	g_warning("item_copy(): implement me!");
+}
+
 void item_set_title(itemPtr ip, const gchar * title) {
 	g_free(ip->title);
 	ip->title = g_strdup(title);
@@ -84,10 +88,20 @@ const gboolean item_get_hidden(itemPtr ip) { g_assert(ip != NULL); return ip->hi
 const gboolean item_get_new_status(itemPtr ip) { g_assert(ip != NULL); return ip->newStatus; }
 
 void item_set_mark(itemPtr ip, gboolean flag) {
+	itemPtr		sourceItem;
+
 	ip->marked = flag;
 
-	if (ip->ui_data != NULL)
-	ui_update_item(ip);
+	/* this is a user changable state and must be propagated to the source feed */
+	if(ip->sourceFeed != NULL) {
+		feed_load(ip->sourceFeed);
+		sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
+		item_set_mark(sourceItem, flag);
+		feed_unload(ip->sourceFeed);
+	}
+	
+	if(ip->ui_data != NULL)
+		ui_update_item(ip);
 }
 
 void item_set_new_status(itemPtr ip, const gboolean newStatus) { 
@@ -103,7 +117,7 @@ void item_set_new_status(itemPtr ip, const gboolean newStatus) {
 }
 
 void item_set_unread(itemPtr ip) { 
-	GSList		*vfolders;
+	itemPtr		sourceItem;
 	
 	if(TRUE == ip->readStatus) {
 		/*vfolders = ip->vfolders;
@@ -111,6 +125,13 @@ void item_set_unread(itemPtr ip) {
 			feed_increase_unread_counter(vfolders->data);
 			vfolders = g_slist_next(vfolders);
 		}*/
+		/* this is a user changable state and must be propagated to the source feed */
+		if(ip->sourceFeed != NULL) {
+			feed_load(ip->sourceFeed);
+			sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
+			item_set_unread(sourceItem);
+			feed_unload(ip->sourceFeed);
+		}
 		
 		ip->readStatus = FALSE;
 		if (ip->ui_data != NULL)
@@ -120,7 +141,7 @@ void item_set_unread(itemPtr ip) {
 }
 
 void item_set_read(itemPtr ip) { 
-	GSList		*vfolders;
+	itemPtr		sourceItem;
 	feedPtr		fp;
 
 	if(FALSE == ip->readStatus) {
@@ -130,25 +151,19 @@ void item_set_read(itemPtr ip) {
 			feed_decrease_unread_counter(fp);
 			vfolders = g_slist_next(vfolders);
 		}*/
+		/* this is a user changable state and must be propagated to the source feed */
+		if(ip->sourceFeed != NULL) {
+			feed_load(ip->sourceFeed);
+			sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
+			item_set_unread(sourceItem);
+			feed_unload(ip->sourceFeed);
+		}
 		
 		ip->readStatus = TRUE; 
 		if (ip->ui_data)
 			ui_update_item(ip);
 	}
 	ui_tray_zero_new();
-}
-
-/* called when a item matches a vfolder... */
-void addVFolderToItem(itemPtr ip, gpointer fp) {
-
-	ip->vfolders = g_slist_append(ip->vfolders, fp);
-}
-
-/* called when a vfolder is removed, to remove it from the
-   items vfolder list */
-void removeVFolderFromItem(itemPtr ip, gpointer fp) {
-
-	ip->vfolders = g_slist_remove(ip->vfolders, fp);
 }
 
 void item_free(itemPtr ip) {

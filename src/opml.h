@@ -23,6 +23,6 @@
 
 #include "feed.h"
 
-feedHandlerPtr	initOPMLFeedHandler(void);
+feedHandlerPtr	opml_init_feed_handler(void);
 
 #endif

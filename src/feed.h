@@ -178,8 +178,8 @@ void feed_schedule_update(feedPtr fp, gint flags);
 void feed_save(feedPtr fp);
 
 void feed_add_item(feedPtr fp, itemPtr ip);
+itemPtr feed_lookup_item(feedPtr fp, gchar *id);
 
-void feed_copy(feedPtr fp, feedPtr new_fp);
 void feed_free(feedPtr fp);
 
 /**

@@ -185,7 +185,7 @@ gboolean cdf_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 #define CDF_CHANNEL_WEBMASTER		5
 #define CDF_CHANNEL_CATEGORY		6
 
-feedHandlerPtr initCDFFeedHandler(void) {
+feedHandlerPtr cdf_init_feed_handler(void) {
 	feedHandlerPtr	fhp;
 	
 	fhp = g_new0(struct feedHandler, 1);

@@ -32,6 +32,6 @@ typedef struct CDFChannel {
 	time_t		time;		/* last feed build/creation time */	
 } *CDFChannelPtr;
 
-feedHandlerPtr initCDFFeedHandler(void);
+feedHandlerPtr cdf_init_feed_handler(void);
 
 #endif

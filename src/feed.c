@@ -184,12 +184,12 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 /* initializing function, only called upon startup */
 void feed_init(void) {
 
-	feedhandlers = g_slist_append(feedhandlers, initOCSFeedHandler()); /* Must come before RSS/RDF */
-	feedhandlers = g_slist_append(feedhandlers, initRSSFeedHandler());
-	feedhandlers = g_slist_append(feedhandlers, initCDFFeedHandler());
-	feedhandlers = g_slist_append(feedhandlers, initPIEFeedHandler());
-	feedhandlers = g_slist_append(feedhandlers, initOPMLFeedHandler());
-	/*feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());*/
+	feedhandlers = g_slist_append(feedhandlers, ocs_init_feed_handler()); /* Must come before RSS/RDF */
+	feedhandlers = g_slist_append(feedhandlers, rss_init_feed_handler());
+	feedhandlers = g_slist_append(feedhandlers, cdf_init_feed_handler());
+	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
+	feedhandlers = g_slist_append(feedhandlers, opml_init_feed_handler());
+	feedhandlers = g_slist_append(feedhandlers, vfolder_init_feed_handler());
 	
 	initFolders();
 }
@@ -585,6 +585,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					item_set_description(old_ip, item_get_description(new_ip));
 					item_set_time(old_ip, item_get_time(new_ip));
 					item_set_unread(old_ip);
+					vfolder_update_item(old_fp, old_ip);
 					debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 					newcount++;
 					traycount++;
@@ -786,7 +787,7 @@ void feed_process_update_result(struct request *request) {
 				feed_merge(old_fp, new_fp);
 			else {
 				/* Otherwise we simply use the new feed info... */
-				feed_copy(old_fp, new_fp);
+				feed_replace(old_fp, new_fp);
 				ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(old_fp));
 			}
 
@@ -819,6 +820,25 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 	if(FALSE == ip->readStatus)
 		fp->unreadCount++;
 	fp->items = g_slist_append(fp->items, (gpointer)ip);
+}
+
+itemPtr feed_lookup_item(feedPtr fp, gchar *id) {
+	GSList		*items;
+	itemPtr		ip;
+	
+	g_assert(0 != fp->loaded);
+	g_assert(NULL != id);
+	
+	items = fp->items;
+	while(NULL != items) {
+		ip = (itemPtr)(items->data);
+		g_assert(NULL != ip->id);
+		if(0 == strcmp(ip->id, id))
+			return ip;
+		items = g_slist_next(items);
+	}
+	
+	return NULL;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -1211,7 +1231,7 @@ gchar *feed_render(feedPtr fp) {
    
    This method is primarily used for feeds which do not want
    to incrementally update items like directories. */
-void feed_copy(feedPtr fp, feedPtr new_fp) {
+void feed_replace(feedPtr fp, feedPtr new_fp) {
 	feedPtr		tmp_fp;
 	itemPtr		ip;
 	GSList		*item;

@@ -23,7 +23,7 @@
 
 #include "feed.h"
 
-feedHandlerPtr	initPIEFeedHandler(void);
+feedHandlerPtr	pie_init_feed_handler(void);
 /**
  * This parses an Atom content construct.
  *

@@ -339,7 +339,7 @@ static void rss_add_ns_handler(NsHandler *handler) {
 	}
 }
 
-feedHandlerPtr initRSSFeedHandler(void) {
+feedHandlerPtr rss_init_feed_handler(void) {
 	feedHandlerPtr	fhp;
 	
 	fhp = g_new0(struct feedHandler, 1);

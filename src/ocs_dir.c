@@ -535,7 +535,7 @@ gboolean ocs_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	return ocs;
 }
 
-feedHandlerPtr initOCSFeedHandler(void) {
+feedHandlerPtr ocs_init_feed_handler(void) {
 	feedHandlerPtr	fhp;
 	OCSNsHandler	*handler;
 	

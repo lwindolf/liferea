@@ -255,7 +255,7 @@ static gboolean opml_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 /* initialization								*/
 /* ---------------------------------------------------------------------------- */
 
-feedHandlerPtr initOPMLFeedHandler(void) {
+feedHandlerPtr opml_init_feed_handler(void) {
 	feedHandlerPtr	fhp;
 	
 	fhp = g_new0(struct feedHandler, 1);
