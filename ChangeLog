@@ -6,7 +6,16 @@
 	* Christophe Barbe implemented a filter that hides all
 	  feeds without unread items from the feed list. This
 	  feature is an option available from "Feeds" menu.
-
+	* Feed menu is re-organized.
+	* Feed type autodetection has been rewritten. It should be better
+	  than the old version. Thus, the manual feed type selection has
+	  been removed.
+	* The contents of a folder can now be updated by right-clicking a
+	  folder and selecting "Update".
+	* Support for using old versions of GConf2 has been re-added. This
+	  fixes compile problems on many RedHat versions.
+	
+	
 2004-05-06  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.8
