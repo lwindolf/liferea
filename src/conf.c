@@ -54,8 +54,8 @@ static guint feedlistLoading;
 /* configuration strings for the SnowNews HTTP code used from within netio.c */
 char 	*useragent = NULL;
 char	*proxyname = NULL;
-char *proxyusername = NULL;
-char *proxypassword = NULL;
+char	*proxyusername = NULL;
+char	*proxypassword = NULL;
 int	proxyport = 0;
 
 /* Function prototypes */
@@ -219,11 +219,21 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 /*----------------------------------------------------------------------*/
 
 gchar* conf_new_id() {
-	int i;
-	gchar *id = g_new0(gchar, 10);
-	for(i=0;i<7;i++)
-		id[i] = (char)g_random_int_range('a', 'z');
-	id[7] = '\0';
+	int		i;
+	gchar		*id, *filename;
+	gboolean	already_used;
+	
+	id = g_new0(gchar, 10);
+	do {
+		for(i=0;i<7;i++)
+			id[i] = (char)g_random_int_range('a', 'z');
+		id[7] = '\0';
+		
+		filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
+		already_used = g_file_test(filename, G_FILE_TEST_EXISTS);
+		g_free(filename);
+	} while(already_used);
+	
 	return id;
 }
 
