@@ -477,7 +477,7 @@ static void on_selectfileok_clicked(GtkButton *button, gpointer user_data) {
 		else
 			gtk_entry_set_text(GTK_ENTRY(ui_data->filter), utfname);
 	}
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio), TRUE);
+	
 	gtk_widget_destroy(filedialog);
 
 	g_free(utfname);
