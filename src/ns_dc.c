@@ -129,10 +129,10 @@ static gchar * mapToFeedMetadata[] = {
 
 static gchar * mapToItemMetadata[] = {
 			 	"itemTitle",		/* title */ 
-				NULL,			/* creator */
+				"creator",		/* creator */
 				"category",		/* subject */
 				"description",		/* description */
-				NULL,			/* publisher */
+				"publisher",			/* publisher */
 				"contributor",		/* contributor */				
 				NULL,			/* date (won't be processed...) */
 				NULL,			/* type */
