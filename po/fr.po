@@ -859,7 +859,7 @@ msgstr ""
 
 #: src/interface.c:1712
 msgid "At _startup:"
-msgstr ""
+msgstr "Au _lancement :"
 
 #: src/interface.c:1720
 msgid "Add the _help feeds to the feed list on startup."
@@ -1197,6 +1197,19 @@ msgid ""
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
 msgstr ""
+"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+"Vincent Lefèvre <vincent@vinc17.org>\n"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
+"Rex Tsai <chihchun@users.sourceforge.net>\n"
+"Alekseev Vladimir <compress@linux-online.ru>\n"
 
 #: src/interface.c:3052
 msgid "Translation"
@@ -1756,28 +1769,24 @@ msgid "/_Subscribe"
 msgstr "/S'_abonner"
 
 #: src/ui_popup.c:143
-#, fuzzy
 msgid "/_Work Offline"
-msgstr "Travailler déconnecté"
+msgstr "/_Travailler déconnecté"
 
 #: src/ui_popup.c:144
-#, fuzzy
 msgid "/_Update All"
-msgstr "Mettre à jour le tout"
+msgstr "/Mettre à _jour le tout"
 
 #: src/ui_popup.c:145
-#, fuzzy
 msgid "/_Preferences"
-msgstr "Préférences"
+msgstr "/_Préférences"
 
 #: src/ui_popup.c:147
-#, fuzzy
 msgid "/_Show Window"
-msgstr "Nouvelle fenêtre"
+msgstr "/_Montrer la fenêtre"
 
 #: src/ui_popup.c:148
 msgid "/_Quit"
-msgstr ""
+msgstr "/_Quitter"
 
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:183
@@ -1802,16 +1811,15 @@ msgstr "Nouvel onglet"
 
 #: src/ui_prefs.c:218
 msgid "Update only feeds scheduled for updates"
-msgstr ""
+msgstr "Mise à jour seulement des canaux arrivés à expiration"
 
 #: src/ui_prefs.c:223
-#, fuzzy
 msgid "Update all feeds"
-msgstr "Mettre à jour tous les canaux."
+msgstr "Mise à jour de tous les canaux"
 
 #: src/ui_prefs.c:228
 msgid "Reset feed update timers (Update no feeds)"
-msgstr ""
+msgstr "Mise à zéro des compteurs de rafraîchissement (pas de mise à jour)"
 
 #: src/ui_search.c:70
 #, c-format
