@@ -44,6 +44,7 @@ static GtkWidget *prefdialog = NULL;
 static void on_browsermodule_changed(GtkObject *object, gchar *libname);
 static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data);
+static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data);
 
 struct browser {
 	gchar *id; /**< Unique ID used in storing the prefs */
@@ -198,25 +199,46 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(1));
-
+		
 		entry = gtk_menu_item_new_with_label(_("New window"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(2));
-
+		
 		entry = gtk_menu_item_new_with_label(_("New tab"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(3));
-
+		
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), menu);
+		
+		/* Create the startup feed handling menu */
+		menu = gtk_menu_new();
+		
+		entry = gtk_menu_item_new_with_label(_("Update only feeds scheduled for updates"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(0));
+		
+		entry = gtk_menu_item_new_with_label(_("Update all feeds"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(1));
+		
+		entry = gtk_menu_item_new_with_label(_("Reset feed update timers (Update no feeds)"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(2));
+		
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), menu);
+		
 	}
 	g_assert(NULL != prefdialog);
 	
 	/* ================== panel 1 "feed handling" ==================== */
-
-	widget = lookup_widget(prefdialog, "updatealloptionbtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(UPDATE_ON_STARTUP));
+	
+	tmp = getNumericConfValue(STARTUP_FEED_ACTION);
+	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), tmp);
 	
 	widget = lookup_widget(prefdialog, "helpoptionbtn");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), !getBooleanConfValue(DISABLE_HELPFEEDS));
@@ -350,11 +372,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 /*------------------------------------------------------------------------------*/
 /* preference callbacks 							*/
 /*------------------------------------------------------------------------------*/
-void on_updatealloptionbtn_clicked(GtkButton *button, gpointer user_data) {
-	setBooleanConfValue(UPDATE_ON_STARTUP, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
-}
-
-
 void on_trayiconoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
 	setBooleanConfValue(SHOW_TRAY_ICON, enabled);
@@ -375,6 +392,9 @@ void on_browserselection_clicked(GtkButton *button, gpointer user_data) {
 	gtk_widget_set_sensitive(GTK_WIDGET(editbox), active_button == 2);
 }
 
+static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data) {
+	setNumericConfValue(STARTUP_FEED_ACTION, GPOINTER_TO_INT(user_data));
+}
 
 void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(BROWSER_COMMAND, gtk_editable_get_chars(editable,0,-1));

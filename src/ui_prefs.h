@@ -30,10 +30,6 @@ on_prefbtn_clicked                     (GtkButton       *button,
                                         gpointer user_data);
 
 void
-on_updatealloptionbtn_clicked          (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
 on_trayiconoptionbtn_clicked           (GtkButton       *button,
                                         gpointer         user_data);
 										

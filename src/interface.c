@@ -1558,7 +1558,9 @@ create_prefdialog (void)
   GtkWidget *label33;
   GtkObject *itemCountBtn_adj;
   GtkWidget *itemCountBtn;
-  GtkWidget *updatealloptionbtn;
+  GtkWidget *hbox57;
+  GtkWidget *label142;
+  GtkWidget *startupfeedhandler;
   GtkWidget *helpoptionbtn;
   GtkWidget *label38;
   GtkWidget *vbox222;
@@ -1690,7 +1692,6 @@ create_prefdialog (void)
   hbox19 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox19);
   gtk_box_pack_start (GTK_BOX (vbox20), hbox19, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox19), 5);
 
   label33 = gtk_label_new (_("Default number of items per feed to save when Liferea exits:"));
   gtk_widget_show (label33);
@@ -1704,9 +1705,17 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
 
-  updatealloptionbtn = gtk_check_button_new_with_mnemonic (_("_Update all feeds on program startup."));
-  gtk_widget_show (updatealloptionbtn);
-  gtk_box_pack_start (GTK_BOX (vbox20), updatealloptionbtn, FALSE, FALSE, 0);
+  hbox57 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox57);
+  gtk_box_pack_start (GTK_BOX (vbox20), hbox57, FALSE, FALSE, 0);
+
+  label142 = gtk_label_new_with_mnemonic (_("At _startup:"));
+  gtk_widget_show (label142);
+  gtk_box_pack_start (GTK_BOX (hbox57), label142, FALSE, FALSE, 0);
+
+  startupfeedhandler = gtk_option_menu_new ();
+  gtk_widget_show (startupfeedhandler);
+  gtk_box_pack_start (GTK_BOX (hbox57), startupfeedhandler, FALSE, FALSE, 0);
 
   helpoptionbtn = gtk_check_button_new_with_mnemonic (_("Add the _help feeds to the feed list on startup."));
   gtk_widget_show (helpoptionbtn);
@@ -2099,9 +2108,6 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) itemCountBtn, "value_changed",
                     G_CALLBACK (on_itemCountBtn_value_changed),
                     NULL);
-  g_signal_connect ((gpointer) updatealloptionbtn, "clicked",
-                    G_CALLBACK (on_updatealloptionbtn_clicked),
-                    NULL);
   g_signal_connect ((gpointer) helpoptionbtn, "clicked",
                     G_CALLBACK (on_helpoptionbtn_clicked),
                     NULL);
@@ -2151,6 +2157,7 @@ create_prefdialog (void)
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (prefdialog));
 
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label142), startupfeedhandler);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label137), browserpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (manuallabel), browsercmd);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label138), browserlocpopup);
@@ -2170,7 +2177,9 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox19, "hbox19");
   GLADE_HOOKUP_OBJECT (prefdialog, label33, "label33");
   GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, updatealloptionbtn, "updatealloptionbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox57, "hbox57");
+  GLADE_HOOKUP_OBJECT (prefdialog, label142, "label142");
+  GLADE_HOOKUP_OBJECT (prefdialog, startupfeedhandler, "startupfeedhandler");
   GLADE_HOOKUP_OBJECT (prefdialog, helpoptionbtn, "helpoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label38, "label38");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox222, "vbox222");

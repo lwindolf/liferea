@@ -142,9 +142,17 @@ int main(int argc, char *argv[]) {
 	if(start_iconified)
 		gtk_widget_hide(mainwindow);
 	
-	if(getBooleanConfValue(UPDATE_ON_STARTUP))
+	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
+	case 1: /* Update all feeds */
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
-
+		break;
+	case 2:
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_reset_update_counter);
+		break;
+	default:
+		/* default, which is to use the lastPoll times, does not need any actions here. */;
+	}
+	
 	gdk_threads_enter();
 	lifereaStarted = TRUE;
 	gtk_main();
