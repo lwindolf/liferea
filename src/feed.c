@@ -251,6 +251,9 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	feedPtr		fp;
 	int		error = 0;
 	
+	if(NULL == id)
+		return NULL;
+	
 	filename = getCacheFileName(id, NULL);
 	
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
@@ -338,11 +341,8 @@ feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, 
 	debug5(DEBUG_CACHE, "feed_add(type=%d,url=%s,parent=%x,name=%s,id=%s)",type,url,parent,feedName,id);
 
 	g_assert(url != NULL);
-
-	if (id != NULL && type != FST_HELPFEED)
-	;
 	
-	if (fp = loadFeed(type, id)) {
+	if(NULL == (fp = loadFeed(type, id))) {
 		fp = feed_new();
 		if (id == NULL) {
 			fp->id = conf_new_id();
