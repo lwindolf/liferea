@@ -793,7 +793,7 @@ void feed_process_update_result(struct request *request) {
 			}
 
 			if((feedPtr)ui_feedlist_get_selected() == old_fp) {
-				ui_itemlist_load((nodePtr)old_fp, NULL);
+				ui_itemlist_load((nodePtr)old_fp);
 			}
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),old_fp);

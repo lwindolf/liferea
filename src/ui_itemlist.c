@@ -439,21 +439,15 @@ void ui_itemlist_display(void) {
 	ui_feedlist_update();
 }
 
-static void ui_itemlist_load_feed(feedPtr fp, gchar *searchstring) {
+void ui_itemlist_load_feed(feedPtr fp) {
 	GtkTreeIter	iter;
 	GSList		*itemlist;
 	itemPtr		ip;
-	gboolean	add;
 
-	if(NULL == fp) {
-		g_warning("internal error! item list display for NULL pointer requested!\n");
-		return;
-	}
-	
 	/* we depend on the fact that the third column is the favicon column!!! 
 	   if we are in search mode (or have a vfolder) we show the favicon 
 	   column to give a hint where the item comes from ... */
-	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (NULL != searchstring));
+	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (FST_VFOLDER == feed_get_type(fp)));
 
 	feed_unload(NULL);
 	feed_load(fp);
@@ -461,8 +455,7 @@ static void ui_itemlist_load_feed(feedPtr fp, gchar *searchstring) {
 	while(NULL != itemlist) {
 		ip = itemlist->data;
 		
-		add = TRUE;
-		if(NULL != searchstring) {
+/*		if(NULL != searchstring) {
 			add = FALSE;
 				
 			if((NULL != item_get_title(ip)) && (NULL != strstr(item_get_title(ip), searchstring)))
@@ -470,32 +463,29 @@ static void ui_itemlist_load_feed(feedPtr fp, gchar *searchstring) {
 
 			if((NULL != item_get_description(ip)) && (NULL != strstr(item_get_description(ip), searchstring)))
 				add = TRUE;
-		}
+		}*/
 
-		if(add) {
-			gtk_tree_store_append(itemstore, &iter, NULL);
-			gtk_tree_store_set(itemstore, &iter,
-						    IS_TITLE, item_get_title(ip),
-						    IS_PTR, ip,
-						    IS_TIME, item_get_time(ip),
-						    -1);
-			g_assert(ip->ui_data == NULL);
-			ip->ui_data = g_new0(ui_item_data, 1);
-			((ui_item_data*)(ip->ui_data))->row = iter;
-
-			ui_update_item_from_iter(&iter);
-		}
-
+		gtk_tree_store_append(itemstore, &iter, NULL);
+		gtk_tree_store_set(itemstore, &iter,
+					    IS_TITLE, item_get_title(ip),
+					    IS_PTR, ip,
+					    IS_TIME, item_get_time(ip),
+					    -1);
+		g_assert(ip->ui_data == NULL);
+		ip->ui_data = g_new0(ui_item_data, 1);
+		((ui_item_data*)(ip->ui_data))->row = iter;
+		ui_update_item_from_iter(&iter);
+		
 		itemlist = g_slist_next(itemlist);
 	}
 }
 
-void ui_itemlist_load(nodePtr node, gchar *searchstring) {
-	GtkTreeView *itemlist;
-	GtkTreeModel *model;
-	gint sortColumn;
-	GtkSortType sortType;
-	gboolean sorted;
+void ui_itemlist_load(nodePtr node) {
+	GtkTreeView	*itemlist;
+	GtkTreeModel	*model;
+	gint		sortColumn;
+	GtkSortType	sortType;
+	gboolean	sorted;
 	  
 	itemlist = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
 	model = gtk_tree_view_get_model(itemlist);
@@ -513,9 +503,9 @@ void ui_itemlist_load(nodePtr node, gchar *searchstring) {
 	
 	/* Add the new items */
 	if(node == NULL || IS_FOLDER(node->type)) {
-		ui_feedlist_do_for_all_data(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed, searchstring);
+		ui_feedlist_do_for_all(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed);
 	} else if(IS_FEED(node->type) || (node->type == FST_VFOLDER)) {
-		ui_itemlist_load_feed((feedPtr)node, searchstring);
+		ui_itemlist_load_feed((feedPtr)node);
 	}
 	
 	/* Reset the sorting order of the itemstore and add it to the GtkTreeView */

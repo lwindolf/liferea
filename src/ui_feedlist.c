@@ -236,7 +236,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
 			
 			/* Set up the item list */
-			ui_itemlist_load((nodePtr)fp, NULL);
+			ui_itemlist_load((nodePtr)fp);
 		} else { /* Selecting a folder */
 			ui_itemlist_clear();
 		}
