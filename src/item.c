@@ -294,7 +294,7 @@ gchar *item_render(itemPtr ip) {
 		xmlFree(tmp3);
 		g_free(tmp2);
 		g_free(tmp);
-
+		
 		if(displayset.foottable != NULL) {
 			addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
 			addToHTMLBufferFast(&buffer, displayset.foottable);

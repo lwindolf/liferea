@@ -758,8 +758,11 @@ void feed_set_default_update_interval(feedPtr fp, gint interval) { fp->defaultIn
 gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 
 void feed_set_update_interval(feedPtr fp, gint interval) {
-	fp->updateInterval = interval; 
 
+	if(FST_VFOLDER == fp->type)
+		interval = -2;	/* never update */
+		
+	fp->updateInterval = interval;
 	conf_feedlist_schedule_save();
 }
 
