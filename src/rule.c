@@ -55,7 +55,6 @@ gboolean rule_check_item(rulePtr rp, itemPtr ip) {
 	ruleInfoPtr	ruleInfo;
 	gboolean	matches = FALSE;
 	
-	g_assert(rp != NULL);
 	g_assert(ip != NULL);
 	
 	return (*((ruleCheckFuncPtr)rp->ruleInfo->ruleFunc))(rp, ip);
@@ -104,7 +103,7 @@ static gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
 
 static gboolean rule_is_unread(rulePtr rp, itemPtr ip) {
 
-	return item_get_read_status(ip);
+	return !(item_get_read_status(ip));
 }
 
 static gboolean rule_is_flagged(rulePtr rp, itemPtr ip) {

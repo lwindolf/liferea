@@ -122,8 +122,8 @@ void item_set_mark(itemPtr ip, gboolean flag) {
 		item_set_mark(sourceItem, flag);
 		feed_unload(ip->sourceFeed);
 	} else {
-		/* there might be vfolders using this item */
-		vfolder_update_item(ip);
+		vfolder_update_item(ip);	/* there might be vfolders using this item */
+		vfolder_check_item(ip);		/* and check if now a rule matches */
 	}
 }
 
@@ -158,8 +158,8 @@ void item_set_unread(itemPtr ip) {
 			item_set_unread(sourceItem);
 			feed_unload(ip->sourceFeed);
 		} else {
-			/* there might be vfolders using this item */
-			vfolder_update_item(ip);
+			vfolder_update_item(ip);	/* there might be vfolders using this item */
+			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
 	} 
 }
@@ -183,8 +183,8 @@ void item_set_read(itemPtr ip) {
 			item_set_read(sourceItem);
 			feed_unload(ip->sourceFeed);
 		} else {
-			/* there might be vfolders using this item */
-			vfolder_update_item(ip);
+			vfolder_update_item(ip);	/* there might be vfolders using this item */
+			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
 	}
 	ui_tray_zero_new();

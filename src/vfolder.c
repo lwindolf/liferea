@@ -231,9 +231,21 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
    results or new vfolders. Not to be used when loading
    vfolders from cache. */
 void vfolder_refresh(feedPtr vp) {
-
+	GSList		*iter;
+	
 	debug_enter("vfolder_refresh");
+	
+	/* free vfolder items */
+	iter = vp->items;
+	while(NULL != iter) {
+		item_free(iter->data);
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(vp->items);
+	vp->items = NULL;
+	
 	ui_feedlist_do_for_all_data(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, vfolder_apply_rules, vp);
+	
 	debug_exit("vfolder_refresh");
 }
 
@@ -313,8 +325,6 @@ void vfolder_check_item(itemPtr ip) {
    to get rid of the vfolder items */
 void vfolder_free(feedPtr vp) {
 	GSList		*iter;
-	itemPtr		ip;
-	rulePtr		rp;
 
 	debug_enter("vfolder_free");
 
@@ -323,8 +333,7 @@ void vfolder_free(feedPtr vp) {
 	/* free vfolder items */
 	iter = vp->items;
 	while(NULL != iter) {
-		ip = iter->data;
-		item_free(ip);
+		item_free(iter->data);
 		iter = g_slist_next(iter);
 	}
 	g_slist_free(vp->items);
@@ -333,8 +342,7 @@ void vfolder_free(feedPtr vp) {
 	/* free vfolder rules */
 	iter = vp->rules;
 	while(NULL != iter) {
-		rp = iter->data;
-		rule_free(rp);
+		rule_free(iter->data);
 		iter = g_slist_next(iter);
 	}
 	g_slist_free(vp->rules);
