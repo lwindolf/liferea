@@ -285,7 +285,7 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
 	if(2 == getNumericConfValue(GNOME_BROWSER_ENABLED))
 		cmd = getStringConfValue(BROWSER_COMMAND);
 	else
-		cmd = getStringConfValue(GNOME_DEFAULT_BROWSER_COMMAND);
+		cmd = g_strdup(GNOME_DEFAULT_BROWSER_COMMAND);
 		
 	g_assert(NULL != cmd);
 	if(NULL == strstr(cmd, "%s")) {

@@ -29,8 +29,8 @@
 #define GNOME_BROWSER_ENABLED		"/apps/liferea/browsermode"
 #define BROWSER_COMMAND			"/apps/liferea/browser"
 #define BROWSER_MODULE			"/apps/liferea/browser-module"
-#define GNOME_DEFAULT_BROWSER_COMMAND	"/desktop/gnome/url-handlers/http/command"
-#define DEFAULT_BROWSER_COMMAND		"mozilla %s"
+#define GNOME_DEFAULT_BROWSER_COMMAND	"gnome-open '%s'"
+#define DEFAULT_BROWSER_COMMAND		"mozilla '%s'"
 #define DEFAULT_FONT			"/desktop/gnome/interface/font_name"
 #define USER_FONT			"/apps/liferea/browser-font"
 
