@@ -1,5 +1,5 @@
 /**
- * @file conf.c Liferea configuration (gconf access and feedlist import)
+ * @file conf.c Liferea configuration (gconf access)
  *
  * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -241,141 +241,6 @@ gchar* conf_new_id() {
 /* config loading on startup						*/
 /*----------------------------------------------------------------------*/
 
-static gboolean load_folder_contents(folderPtr folder, gchar* path);
-
-static gboolean load_key(folderPtr parent, gchar *id) {
-	int		type, interval;
-	gchar		*path2, *name, *url, *cacheid, *oldfilename, *newid, *newfilename;
-	folderPtr 	folder;
-	feedPtr		fp;
-	gboolean 	expanded;
-
-	/* Type */
-	path2 = build_path_str(id, "type");
-
-	type = getNumericConfValue(path2);
-	g_free(path2);
-	
-	if(type == 0)
-		return FALSE;
-
-	switch(type) {
-	case FST_FOLDER:
-		path2 = build_path_str(id, "feedlistname");
-		name = getStringConfValue(path2);
-		g_free(path2);
-		
-		path2 = build_path_str(id, "collapseState");
-		expanded = !getBooleanConfValue(path2);
-		g_free(path2);
-		
-		folder = restore_folder(parent, name, id, FST_FOLDER);
-		ui_feedlist_add(parent, (nodePtr)folder, -1);
-
-		load_folder_contents(folder, id);
-		if (expanded)
-			ui_folder_set_expansion(folder, TRUE);
-		g_free(name);
-		break;
-
-	default:
-		path2 = build_path_str(id, "name");
-		name = getStringConfValue(path2);
-		g_free(path2);
-
-		path2 = build_path_str(id, "updateInterval");
-		interval = getNumericConfValue(path2);
-		g_free(path2);	
-		
-		path2 = build_path_str(id, "url");
-		url = getStringConfValue(path2);	/* we use this function to get a "" on empty conf value */
-		g_free(path2);
-		
-		if(0 == type)
-			type = FST_FOLDER;
-			
-		if (strchr(id,'/')) {
-			cacheid = g_strdup(id);
-			*(strchr(cacheid,'/')) = '_';
-		} else {
-			cacheid = g_strdup_printf("_%s",id);
-		}
-
-		newid = conf_new_id();
-
-		/* Move feed cache file */
-		oldfilename = common_create_cache_filename(NULL, cacheid, (type == 4) ? "ocs" : NULL);
-		newfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", newid, NULL);
-		rename(oldfilename, newfilename);
-		g_free(oldfilename);
-		g_free(newfilename);
-
-		/* Move feed favicon file */
-		oldfilename = common_create_cache_filename(NULL, cacheid, "xpm");
-		newfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", newid, "xpm");
-		rename(oldfilename, newfilename);
-		g_free(oldfilename);
-		g_free(newfilename);
-
-		/* FIXME: Move XPM also! */
-		fp = feed_new();
-		feed_set_source(fp, url);
-		feed_set_title(fp, name);
-		feed_set_id(fp, newid);
-		feed_set_update_interval(fp, interval);
-		feed_load(fp);			/* to load feed information */
-		ui_feedlist_add(parent, (nodePtr)fp, -1);
-		feed_unload(fp);		/* to remove currently unnecessary items from cache */
-		
-		g_free(cacheid);
-		g_free(newid);
-		g_free(url);
-		g_free(name);
-	}
-	return TRUE;
-}
-
-static gboolean load_folder_contents(folderPtr folder, gchar* fid) {
-	GSList *list;
-	gchar *id;
-	GError		*err = NULL;
-	gchar *name;
-	gboolean changed = FALSE;
-	
-	/* First, try to look and (and migrate groups) */
-	
-	name = build_path_str(fid,"groups");
-	
-	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
-	if (!is_gconf_error(&err) && list) {
-		while (list != NULL) {
-			id = (gchar*)list->data;
-			g_assert(id);
-			g_assert(NULL != id);
-			load_key(folder, id);
-			changed = TRUE;
-			list = list->next;
-		}
-	}
-	g_free(name);
-	/* Then, look at the feedlist */
-	name = build_path_str(fid, "feedlist");
-	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
-
-	if (!is_gconf_error(&err) && list) {
-		while (list != NULL) {
-			id = (gchar*)list->data;
-			g_assert(id);
-			g_assert(NULL != id);
-			load_key(folder, id);
-			changed = TRUE;
-			list = list->next;
-		}
-	}
-	g_free(name);
-	return changed;
-}
-
 static gboolean is_number(gchar *s) {
 	while (*s != '\0') {
 		if(!g_ascii_isdigit(*s))
@@ -385,75 +250,10 @@ static gboolean is_number(gchar *s) {
 	return TRUE;
 }
 
-/* Older versions of GConf do not provide this function, thus we must
-   emulate it */
-
-static void conf_recursive_unset(gchar *path) {
-	GSList *list, *iter;
-	GError		*err = NULL;
-	
-	iter = list = gconf_client_all_dirs(client, path, &err);
-
-	if(is_gconf_error(&err))
-		return;
-
-	while(!is_gconf_error(&err) && iter != NULL) {
-		conf_recursive_unset(iter->data);
-		is_gconf_error(&err);
-		g_free(iter->data);
-		iter = iter->next;
-	}
-	g_slist_free(list);
-
-	iter = list = gconf_client_all_entries(client, path, &err);
-
-	if(is_gconf_error(&err))
-		return;
-	
-	while(!is_gconf_error(&err) && iter != NULL) {
-		gconf_client_unset(client, ((GConfEntry*)iter->data)->key, &err);
-		is_gconf_error(&err);
-		gconf_entry_free(iter->data);
-		iter = iter->next;
-	}
-	g_slist_free(list);
-	
-	gconf_client_unset(client, path, &err);
-	is_gconf_error(&err);
-}
-
-static void conf_feedlist_erase_gconf() {
-	GSList *list, *iter;
-	GError		*err = NULL;
-	
-	iter = list = gconf_client_all_dirs(client, PATH, &err);
-	
-	/* Remove all directories */
-	while(!is_gconf_error(&err) && iter != NULL) {
-		gchar *key = strrchr(iter->data, '/')+1;
-		
-		if (strncmp(key, "dir", 3) == 0 || is_number(key)) {
-			conf_recursive_unset(iter->data);
-		}
-		g_free(iter->data);
-		iter = iter->next;
-	}
-	g_slist_free(list);
-
-	gconf_client_unset(client, PATH "/groups", &err);
-	is_gconf_error(&err);
-
-	gconf_client_unset(client, PATH "/feedlist", &err);
-	is_gconf_error(&err);
-	gconf_client_suggest_sync(client, NULL);
-}
-
 void conf_load_subscriptions(void) {
 	gchar	*filename;
-	gboolean gconf_changed;
 	
 	feedlistLoading = TRUE;
-	gconf_changed = load_folder_contents(NULL, "");
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea" G_DIR_SEPARATOR_S "feedlist.opml", g_get_home_dir());
 	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
@@ -464,12 +264,6 @@ void conf_load_subscriptions(void) {
 	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
 	g_free(filename);
 	feedlistLoading = FALSE;
-	
-	if(gconf_changed) {
-		conf_feedlist_save();
-		debug0(DEBUG_CONF, "Erasing old gconf enteries.");
-		conf_feedlist_erase_gconf();
-	}
 }
 
 void conf_feedlist_save() {
@@ -492,47 +286,18 @@ void conf_feedlist_save() {
 }
 
 static gboolean conf_feedlist_schedule_save_cb(gpointer user_data) {
+
 	conf_feedlist_save();
 	feedlist_save_timer = 0;
 	return FALSE;
 }
 
 void conf_feedlist_schedule_save() {
-	if (!feedlistLoading && !feedlist_save_timer) {
+
+	if(!feedlistLoading && !feedlist_save_timer) {
 		debug0(DEBUG_CONF, "Scheduling feedlist save");
 		feedlist_save_timer = g_timeout_add(5000, conf_feedlist_schedule_save_cb, NULL);
 	}
-}
-/* returns true if namespace is enabled in configuration */
-gboolean getNameSpaceStatus(gchar *nsname) {
-	GConfValue	*value = NULL;
-	gchar		*gconfpath;
-	gboolean	status;
-	
-	g_assert(NULL != nsname);
-	gconfpath = g_strdup_printf("%s/ns_%s", PATH, nsname);
-	value = gconf_client_get_without_default(client, gconfpath, NULL);
-	if(NULL == value) {
-		g_print(_("RSS namespace %s not yet configured! Activating...\n"), nsname);
-		setNameSpaceStatus(nsname, TRUE);
-		status = TRUE;
-	} else {
-		status = gconf_value_get_bool(value);
-	}
-	g_free(gconfpath);
-	g_free(value);	
-	return status;
-}
-
-/* used to enable/disable a namespace in configuration */
-void setNameSpaceStatus(gchar *nsname, gboolean enable) {
-	gchar		*gconfpath;
-	
-	g_assert(NULL != nsname);
-		
-	gconfpath = g_strdup_printf("%s/ns_%s", PATH, nsname);
-	setBooleanConfValue(gconfpath, enable);
-	g_free(gconfpath);
 }
 
 /*----------------------------------------------------------------------*/

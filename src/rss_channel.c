@@ -322,11 +322,9 @@ static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 static void rss_add_ns_handler(NsHandler *handler) {
 
 	g_assert(NULL != rss_nstable);
-	if(getNameSpaceStatus(handler->prefix)) {
-		g_hash_table_insert(rss_nstable, handler->prefix, handler);
-		g_assert(handler->registerNs != NULL);
-		handler->registerNs(handler, rss_nstable, ns_rss_ns_uri_table);
-	}
+	g_hash_table_insert(rss_nstable, handler->prefix, handler);
+	g_assert(handler->registerNs != NULL);
+	handler->registerNs(handler, rss_nstable, ns_rss_ns_uri_table);
 }
 
 feedHandlerPtr rss_init_feed_handler(void) {

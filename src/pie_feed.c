@@ -276,11 +276,9 @@ static gboolean pie_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 static void pie_add_ns_handler(NsHandler *handler) {
 
 	g_assert(NULL != pie_nstable);
-	if(getNameSpaceStatus(handler->prefix)) {
-		g_hash_table_insert(pie_nstable, handler->prefix, handler);
-		g_assert(handler->registerNs != NULL);
-		handler->registerNs(handler, pie_nstable, ns_pie_ns_uri_table);
-	}
+	g_hash_table_insert(pie_nstable, handler->prefix, handler);
+	g_assert(handler->registerNs != NULL);
+	handler->registerNs(handler, pie_nstable, ns_pie_ns_uri_table);
 }
 
 feedHandlerPtr pie_init_feed_handler(void) {

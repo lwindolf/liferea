@@ -33,13 +33,9 @@
 #include "ui_feedlist.h"
 #include "debug.h"
 
-/* FIXME: remove this migration constants with 0.9.x */
 /* _() for HELP1URL to allow localised help feeds */
 #define HELP1URL_1 	_("http://liferea.sf.net/help/help")
 #define HELP1URL_2	_(".rdf")
-#define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
-#define HELP1HTMLURL	"http://liferea.sf.net"
-#define HELP2HTMLURL	"http://sourceforge.net/projects/liferea/"
 
 struct exportData {
 	gboolean internal; /**< Include all the extra Liferea-specific tags */
@@ -414,56 +410,12 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		xmlFree(typeStr);
 		
 	} else { /* It is a folder */
-		if(NULL != xmlHasProp(cur, BAD_CAST"helpFolder")) {
-			/* FIXME: this is migration code, to be removed with 0.9.x */
-			debug0(DEBUG_CONF, "migrating help folder");
-			/* we create a real folder with two real subscriptions to the help feeds inside */			
-			child = restore_folder(folder, _("Liferea Help"), NULL, FST_FOLDER);
-			g_assert(NULL != child);
-			ui_feedlist_add(folder, (nodePtr)child, -1);
-			folder = child;
-									
-			fp = feed_new();
-			fp->noIncremental = TRUE;
-			fp->fhp = feed_type_str_to_fhp("rss");
-			fp->cacheLimit = CACHE_UNLIMITED;
-			feed_set_html_url(fp, HELP1HTMLURL);
-			tmp = g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2);
-			feed_set_source(fp, tmp);
-			g_free(tmp);
-			feed_set_title(fp, _("Online Help Feed"));
-			id = conf_new_id();
-			feed_set_id(fp, id);
-			g_free(id);
-			feed_set_update_interval(fp, 1440);
-			if(!feed_load(fp))
-				feed_schedule_update(fp, 0);
-			feed_unload(fp);
-			ui_feedlist_add(child, (nodePtr)fp, -1);
-			
-			fp = feed_new();
-			fp->noIncremental = TRUE;
-			fp->fhp = feed_type_str_to_fhp("rss");
-			fp->cacheLimit = CACHE_UNLIMITED;
-			feed_set_html_url(fp, HELP2HTMLURL);			
-			feed_set_source(fp, HELP2URL);
-			feed_set_title(fp, _("Liferea SF News"));
-			id = conf_new_id();
-			feed_set_id(fp, id);
-			g_free(id);
-			feed_set_update_interval(fp, 1440);
-			if(!feed_load(fp))
-				feed_schedule_update(fp, 0);
-			feed_unload(fp);
-			ui_feedlist_add(child, (nodePtr)fp, -1);
-			
-		} else {
-			debug1(DEBUG_CONF, "adding folder \"%s\"", title);
-			child = restore_folder(folder, title, NULL, FST_FOLDER);
-			g_assert(NULL != child);
-			ui_feedlist_add(folder, (nodePtr)child, -1);
-			folder = child;
-		}
+		debug1(DEBUG_CONF, "adding folder \"%s\"", title);
+		child = restore_folder(folder, title, NULL, FST_FOLDER);
+		g_assert(NULL != child);
+		ui_feedlist_add(folder, (nodePtr)child, -1);
+		folder = child;
+
 		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
 			ui_folder_set_expansion(folder, TRUE);
 		if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))

@@ -1,5 +1,5 @@
 /**
- * @file conf.h Liferea configuration (gconf access and feedlist import)
+ * @file conf.h Liferea configuration (gconf access)
  *
  * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -88,12 +88,6 @@ void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
 folderPtr feedlist_insert_help_folder(folderPtr parent, GTimeVal *lastPoll, GTimeVal *lastFaviconPoll);
 
 gchar * getFreeFeedKey(gchar *keyprefix);
-
-/* returns true if namespace is enabled in configuration */
-gboolean	getNameSpaceStatus(gchar *nsname);
-
-/* used to enable/disable a namespace in configuration */
-void		setNameSpaceStatus(gchar *nsname, gboolean enable);
 
 /* preferences configuration methods */
 

@@ -43,52 +43,34 @@
 void favicon_load(feedPtr fp) {
 	struct stat	statinfo;
 	GTimeVal	now;
-	gchar		*pngfilename, *xpmfilename;
+	gchar		*filename;
 	GdkPixbuf	*pixbuf;
 	GError 		*error = NULL;
 	
 	/* try to load a saved favicon */
-	pngfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
-	xpmfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "xpm");
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
 	
-	if(0 == stat((const char*)pngfilename, &statinfo)) {
-		pixbuf = gdk_pixbuf_new_from_file (pngfilename, &error);
-		if (pixbuf != NULL) {
-			if (fp->icon != NULL)
+	if(0 == stat((const char*)filename, &statinfo)) {
+		pixbuf = gdk_pixbuf_new_from_file(filename, &error);
+		if(pixbuf != NULL) {
+			if(fp->icon != NULL)
 				g_object_unref(fp->icon);
 			fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
 			g_object_unref(pixbuf);
 		} else { /* Error */
-			fprintf (stderr, "Failed to load pixbuf file: %s: %s\n",
-				    pngfilename, error->message);
-			g_error_free (error);
+			fprintf(stderr, "Failed to load pixbuf file: %s: %s\n",
+			        filename, error->message);
+			g_error_free(error);
 		}
 		
 		/* check creation date and update favicon if older than one month */
 		g_get_current_time(&now);
 		if(now.tv_sec > statinfo.st_mtime + 60*60*24*31) {
-			debug1(DEBUG_UPDATE, "updating favicon %s\n", pngfilename);
+			debug1(DEBUG_UPDATE, "updating favicon %s\n", filename);
 			favicon_download(fp);
 		}
-	} else {
-		/* FIXME: remove this migration code when time comes */
-		if(g_file_test(xpmfilename, G_FILE_TEST_EXISTS)) {
-			pixbuf = gdk_pixbuf_new_from_file (xpmfilename, &error);
-			if (pixbuf) {
-				fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
-				gdk_pixbuf_save(pixbuf, pngfilename, "png", NULL, NULL);
-				g_object_unref(pixbuf);
-			} else { /* Error */
-				fprintf (stderr, "Failed to load pixbuf file: %s: %s\n",
-					    xpmfilename, error->message);
-				g_error_free (error);
-			}
-			unlink(xpmfilename);
-		}
 	}
-	g_free(pngfilename);
-	g_free(xpmfilename);
-	
+	g_free(filename);	
 }
 
 void favicon_remove(feedPtr fp) {
