@@ -1289,7 +1289,6 @@
 			      <child>
 				<widget class="GtkSpinButton" id="refreshIntervalSpinButton">
 				  <property name="visible">True</property>
-				  <property name="tooltip" translatable="yes">Please remember to set a reasonable refresh time, its not useful to poll daily updated feeds every 15 minutes! To disable auto-updating the feed set the interval to 0.</property>
 				  <property name="can_focus">True</property>
 				  <property name="climb_rate">1</property>
 				  <property name="digits">0</property>
@@ -1331,6 +1330,27 @@
 			      <property name="padding">0</property>
 			      <property name="expand">True</property>
 			      <property name="fill">True</property>
+			    </packing>
+			  </child>
+
+			  <child>
+			    <widget class="GtkLabel" id="label135">
+			      <property name="visible">True</property>
+			      <property name="label" translatable="yes">Note: &lt;i&gt;Please remember to set a reasonable refresh time. It is not desired to poll daily updated feeds every 15 minutes. To disable auto-updating the feed set the interval to 0 minutes.&lt;/i&gt;</property>
+			      <property name="use_underline">False</property>
+			      <property name="use_markup">True</property>
+			      <property name="justify">GTK_JUSTIFY_LEFT</property>
+			      <property name="wrap">True</property>
+			      <property name="selectable">False</property>
+			      <property name="xalign">0</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			    <packing>
+			      <property name="padding">0</property>
+			      <property name="expand">False</property>
+			      <property name="fill">False</property>
 			    </packing>
 			  </child>
 			</widget>
@@ -5585,7 +5605,7 @@ Takeshi Aihana &lt;aihana@gnome.gr.jp&gt;
 Park Ji-In &lt;mithrandir@electrang.net&gt;
 Carlos Fenollosa &lt;topopardo@humorfreak.com&gt;
 Jose Maria Mateos &lt;chema@chema.homelinux.org&gt;
-Enrico Gernauck &lt;enrico@fanglomerat.de&gt;
+Enrico Genauck &lt;enrico@fanglomerat.de&gt;
 Vladimir Petkov &lt;vpetkov@i-space.org&gt;
 Tomislav Markovski &lt;tome@set.com.mk&gt;
 Dario Conigliaro &lt;djdas@djdas.no-ip.org&gt;

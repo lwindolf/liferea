@@ -781,6 +781,7 @@ create_propdialog (void)
   GtkObject *refreshIntervalSpinButton_adj;
   GtkWidget *refreshIntervalSpinButton;
   GtkWidget *label77;
+  GtkWidget *label135;
   GtkWidget *label66;
   GtkWidget *vbox238;
   GtkWidget *label86;
@@ -836,9 +837,6 @@ create_propdialog (void)
   GtkWidget *dialog_action_area13;
   GtkWidget *prop_cancel;
   GtkWidget *prop_ok;
-  GtkTooltips *tooltips;
-
-  tooltips = gtk_tooltips_new ();
 
   propdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (propdialog), _("Subscription Properties"));
@@ -931,11 +929,17 @@ create_propdialog (void)
   refreshIntervalSpinButton = gtk_spin_button_new (GTK_ADJUSTMENT (refreshIntervalSpinButton_adj), 1, 0);
   gtk_widget_show (refreshIntervalSpinButton);
   gtk_box_pack_start (GTK_BOX (hbox32), refreshIntervalSpinButton, FALSE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, refreshIntervalSpinButton, _("Please remember to set a reasonable refresh time, its not useful to poll daily updated feeds every 15 minutes! To disable auto-updating the feed set the interval to 0."), NULL);
 
   label77 = gtk_label_new (_("minutes."));
   gtk_widget_show (label77);
   gtk_box_pack_start (GTK_BOX (hbox32), label77, FALSE, FALSE, 0);
+
+  label135 = gtk_label_new (_("Note: <i>Please remember to set a reasonable refresh time. It is not desired to poll daily updated feeds every 15 minutes. To disable auto-updating the feed set the interval to 0 minutes.</i>"));
+  gtk_widget_show (label135);
+  gtk_box_pack_start (GTK_BOX (vbox237), label135, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label135), TRUE);
+  gtk_label_set_line_wrap (GTK_LABEL (label135), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label135), 0, 0.5);
 
   label66 = gtk_label_new (_("General"));
   gtk_widget_show (label66);
@@ -1232,6 +1236,7 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, label76, "label76");
   GLADE_HOOKUP_OBJECT (propdialog, refreshIntervalSpinButton, "refreshIntervalSpinButton");
   GLADE_HOOKUP_OBJECT (propdialog, label77, "label77");
+  GLADE_HOOKUP_OBJECT (propdialog, label135, "label135");
   GLADE_HOOKUP_OBJECT (propdialog, label66, "label66");
   GLADE_HOOKUP_OBJECT (propdialog, vbox238, "vbox238");
   GLADE_HOOKUP_OBJECT (propdialog, label86, "label86");
@@ -1284,7 +1289,6 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT_NO_REF (propdialog, dialog_action_area13, "dialog_action_area13");
   GLADE_HOOKUP_OBJECT (propdialog, prop_cancel, "prop_cancel");
   GLADE_HOOKUP_OBJECT (propdialog, prop_ok, "prop_ok");
-  GLADE_HOOKUP_OBJECT_NO_REF (propdialog, tooltips, "tooltips");
 
   return propdialog;
 }
@@ -2920,7 +2924,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Gernauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>"));
+  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>"));
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
