@@ -21,6 +21,8 @@
    Boston, MA 02111-1307, USA.
 */
 
+#include <string.h>
+
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include "support.h"

@@ -20,6 +20,8 @@
 #  include <config.h>
 #endif
 
+#include <string.h>
+
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
@@ -484,7 +486,6 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkAdjustment	*updateInterval;
 	gint		interval;
 	gint		type;
-
 	
 	g_assert(NULL != propdialog);
 		

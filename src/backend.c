@@ -20,6 +20,7 @@
 #  include <config.h>
 #endif
 
+#include <string.h>
 #include <time.h>
 #include "support.h"
 #include "common.h"

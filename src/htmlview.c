@@ -27,6 +27,7 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include "htmlview.h"
 #include "conf.h"

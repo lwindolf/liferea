@@ -22,6 +22,7 @@
 */
 
 #include <sys/time.h>
+#include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include "conf.h"
