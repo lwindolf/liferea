@@ -21,7 +21,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <libxml/uri.h>
 #include "support.h"
 #include "callbacks.h"
 #include "debug.h"

@@ -562,12 +562,14 @@ gchar * encode_uri(gchar *uri_string) {
 /* to correctly escape and expand URLs, does not touch the
    passed strings */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
-	xmlChar	*escapedURL, *absURL;
+	xmlChar	*escapedURL, *absURL, *escapedBaseURL;
 	
 	escapedURL = xmlURIEscape(url);
 	if(NULL != baseURL) {
-		absURL = xmlBuildURI(escapedURL, baseURL);
+		escapedBaseURL = xmlURIEscape(baseURL);
+		absURL = xmlBuildURI(escapedURL, escapedBaseURL);
 		xmlFree(escapedURL);
+		xmlFree(escapedBaseURL);
 	} else {
 		absURL = escapedURL;
 	}
