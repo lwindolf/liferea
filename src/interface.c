@@ -476,7 +476,6 @@ create_mainwindow (void)
   toolbar = gtk_toolbar_new ();
   gtk_widget_show (toolbar);
   gtk_box_pack_start (GTK_BOX (vbox1), toolbar, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (toolbar), 1);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_BOTH);
 
   New_Feed = gtk_button_new ();
