@@ -22,6 +22,7 @@ AC_HEADER_STDC
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+AC_SYS_LARGEFILE
 
 AC_ARG_ENABLE(sm,      [  --disable-sm            compile without X session management support],,enable_sm=yes)
 				   
