@@ -221,6 +221,7 @@ static gchar* parseImage(xmlNodePtr cur) {
    the feed could not be read) */
 static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 	ip;
+	GList		*items = NULL;
 	gchar		*tmp;
 	short 		rdf = 0;
 	int 		error = 0;
@@ -267,13 +268,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 
 		/* parse channel contents */
 		while(cur != NULL) {
-			if(cur->type != XML_ELEMENT_NODE) {
-				cur = cur->next;
-				continue;
-			}
-
-			if(NULL == cur->name) {
-				g_warning("invalid feed: parser returns NULL cur->name. Offending tag ignored.");
+			if(cur->type != XML_ELEMENT_NODE || NULL == cur->name) {
 				cur = cur->next;
 				continue;
 			}
@@ -283,32 +278,30 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				tmp = parseImage(cur);
 				feed_set_image_url(fp, tmp);
 				g_free(tmp);
-			}
-
-			/* no matter if we parse Userland or Netscape, there should be
-			   only one text[iI]nput per channel and parsing the rdf:ressource
-			   one should not harm */
-			if((!xmlStrcmp(cur->name, BAD_CAST"textinput")) ||
-			   (!xmlStrcmp(cur->name, BAD_CAST"textInput"))) {
-				tmp = parseTextInput(cur);
-
-				if(tmp != NULL)
+				
+			} else if((!xmlStrcmp(cur->name, BAD_CAST"textinput")) ||
+			          (!xmlStrcmp(cur->name, BAD_CAST"textInput"))) {
+				/* no matter if we parse Userland or Netscape, there should be
+				   only one text[iI]nput per channel and parsing the rdf:ressource
+				   one should not harm */
+				if(NULL != (tmp = parseTextInput(cur)))
 					fp->metadata = metadata_list_append(fp->metadata, "textInput", tmp);
 				g_free(tmp);
-			}
-
-			/* collect channel items */
-			if((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
+				
+			} else if((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
+				/* collect channel items */
 				if(NULL != (ip = parseRSSItem(fp, cur))) {
 					if(0 == item_get_time(ip))
 						item_set_time(ip, feed_get_time(fp));
-					feed_add_item(fp, ip);
+					items = g_list_append(items, ip);
 				}
+				
 			}
 			cur = cur->next;
 		}
 	}
 	/* after parsing we fill in the infos into the feedPtr structure */		
+	feed_add_items(fp, items);
 	
 	if(0 == error) {
 		feed_set_available(fp, TRUE);

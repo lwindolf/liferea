@@ -178,7 +178,23 @@ void feed_remove(feedPtr fp);
 void feed_schedule_update(feedPtr fp, gint flags);
 void feed_save(feedPtr fp);
 
+/**
+ * Can be used to add a single item to a feed. But it's better to
+ * use feed_add_items() to keep the item order of parsed feeds.
+ * Should be used for vfolders only.
+ */
 void feed_add_item(feedPtr fp, itemPtr ip);
+
+/**
+ * To be used by parser implementation to merge a new orderd list of
+ * items to a feed. Ensures properly ordered joint item list. The
+ * passed GList is free'd afterwards!
+ */
+void feed_add_items(feedPtr fp, GList *items);
+
+/** 
+ * To lookup an item given by it's unique (FIXME) id 
+ */
 itemPtr feed_lookup_item(feedPtr fp, gchar *id);
 
 void feed_free(feedPtr fp);

@@ -131,6 +131,7 @@ gchar * parseAuthor(xmlNodePtr cur) {
    the feed could not be read) */
 static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
+	GList			*items = NULL;
 	gchar			*tmp2, *tmp = NULL, *tmp3;
 	int 			error = 0;
 	NsHandler		*nsh;
@@ -242,18 +243,18 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				fp->metadata = metadata_list_append(fp->metadata, "contributor", tmp);
 				g_free(tmp);
 				
-			} else if ((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
+			} else if((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = parseEntry(fp, cur))) {
 					if(0 == item_get_time(ip))
 						item_set_time(ip, feed_get_time(fp));
-					feed_add_item(fp, ip);
+					items = g_list_append(items, ip);
 				}
 			}
 			
 			/* collect PIE feed entries */
 			cur = cur->next;
 		}
-		
+		feed_add_items(fp, items);
 		
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		if(0 == error) {

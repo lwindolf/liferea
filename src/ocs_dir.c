@@ -386,7 +386,7 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 }
  
 /* ocsVersion is 4 for 0.4, 5 for 0.5 ... */
-static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocsVersion) {
+static void parseDirectory(GList **items, directoryPtr dp, xmlNodePtr cur, gint ocsVersion) {
 	parseOCSTagFunc		parseFunc;
 	dirEntryPtr		new_dep;
 	OCSNsHandler		*nsh;
@@ -415,7 +415,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 						new_dep->source = utf8_fix(xmlGetProp(cur, BAD_CAST"about"));
 						new_dep->dp = dp;
 						ip = parse04DirectoryEntry(new_dep, cur);
-						feed_add_item(fp, ip);
+						*items = g_list_append(*items, ip);
 					}
 		
 				} else {
@@ -445,6 +445,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
 	directoryPtr	dp = NULL;
 	dirEntryPtr	new_dep;
+	GList		*items = NULL;
 	int 		error = 0;
 
 	do {
@@ -472,25 +473,26 @@ static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
 			/* handling OCS 0.5 directory tag... */
 			if(!xmlStrcmp(cur->name, BAD_CAST"directory")) {
 				dp = g_new0(struct directory, 1);
-				parseDirectory(fp, dp, cur, 5);
+				parseDirectory(&items, dp, cur, 5);
 			}
 			/* handling OCS 0.5 channel tag... */
 			else if(!xmlStrcmp(cur->name, BAD_CAST"channel")) {
 				new_dep = g_new0(struct dirEntry, 1);
 				new_dep->source = utf8_fix(xmlGetProp(cur, "about"));
 				new_dep->dp = dp;					
-				feed_add_item(fp, parse05DirectoryEntry(new_dep, cur));
+				items = g_list_append(items, parse05DirectoryEntry(new_dep, cur));
 			}
 			/* handling OCS 0.4 top level description tag... */
 			else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 				dp = g_new0(struct directory, 1);
-				parseDirectory(fp, dp, cur, 4);
+				parseDirectory(&items, dp, cur, 4);
 				break;
 			}
 			cur = cur->next;
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
+		feed_add_items(fp, items);
 		feed_set_update_interval(fp, -1);
 		fp->title = dp->tags[OCS_TITLE];
 		
@@ -508,6 +510,7 @@ static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
 
 gboolean ocs_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	gboolean ocs = FALSE;
+	
 	if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
 	   !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 		xmlNs * ns = cur->nsDef;

@@ -378,6 +378,7 @@ void feed_save(feedPtr fp) {
 gboolean feed_load(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
+	GList		*items = NULL;
 	gchar		*filename, *tmp, *data = NULL;
 	int		error = 0;
 	gsize 		length;
@@ -471,14 +472,15 @@ gboolean feed_load(feedPtr fp) {
 				fp->lastModified.tv_usec = 0L;
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-				feed_add_item((feedPtr)fp, item_parse_cache(doc, cur));
+				items = g_list_append(items, item_parse_cache(doc, cur));
 
 			} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
 				fp->metadata = metadata_parse_xml_nodes(doc, cur);
 			}
 			g_free(tmp);	
 			cur = cur->next;
-		}		
+		}
+		feed_add_items(fp, items);
 		favicon_load(fp);
 	} while (FALSE);
 	
@@ -595,6 +597,7 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 void feed_process_update_result(struct request *request) {
 	feedPtr			fp = (feedPtr)request->user_data;
 	feedHandlerPtr		fhp;
+	GList			*items = NULL;
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
 	
@@ -655,12 +658,6 @@ void feed_process_update_result(struct request *request) {
 			g_free(old_source);
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
-/*			if(TRUE == fhp->merge)
-				feed_merge(old_fp, new_fp);
-			else {
-				feed_replace(old_fp, new_fp);
-
-			}*/
 
 			if((feedPtr)ui_feedlist_get_selected() == fp) {
 				ui_itemlist_load((nodePtr)fp);
@@ -689,6 +686,29 @@ void feed_process_update_result(struct request *request) {
 }
 
 /**
+ * To be used by parser implementation to merge a new orderd list of
+ * items to a feed. Ensures properly ordered joint item list. The
+ * passed GList is free'd afterwards!
+ */
+void feed_add_items(feedPtr fp, GList *items) {
+	GList	*iter;
+	
+	/* The parser implementations read the items from the
+	   feed from top to bottom. Adding them directly would
+	   mean to reverse there order. */
+	iter = g_list_last(items);
+	while(iter != NULL) {
+		feed_add_item(fp, ((itemPtr)iter->data));
+		iter = g_list_previous(iter);
+	}
+	g_list_free(items);
+}
+
+/**
+ * Can be used to add a single item to a feed. But it's better to
+ * use feed_add_items() to keep the item order of parsed feeds.
+ * Should be used for vfolders only.
+ *
  * Adds an item to the feed. Realizes the item merging logic based on
  * the item id's. 
  *
@@ -701,8 +721,8 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	
 	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
 	
-	/* determine if we should add it... */
 	if(FST_VFOLDER != feed_get_type(fp)) {
+		/* determine if we should add it... */
 		debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(new_ip));
 		
 		/* compare to every existing item in this feed */
@@ -751,7 +771,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		if(!found) {
 			if(FALSE == new_ip->readStatus)
 				fp->unreadCount++;
-			fp->items = g_slist_append(fp->items, (gpointer)new_ip);
+			fp->items = g_slist_prepend(fp->items, (gpointer)new_ip);
 			new_ip->fp = fp;
 		
 			/* Check if feed filters allow display of this item, we don't

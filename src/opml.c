@@ -1,23 +1,23 @@
-/*
-   generic OPML 1.0 support
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-   
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-   
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.
-*/
+/**
+ * @file opml.c generic OPML 1.0 support
+ * 
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
 #include <string.h>
 
@@ -131,8 +131,9 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 }
 
 static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
-	xmlNodePtr 	 child;
+	xmlNodePtr	child;
 	itemPtr		ip;
+	GList		*items = NULL;
 	gchar		*buffer, *line, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
 	int 		i, error = 0;
@@ -191,7 +192,7 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 						item_set_description(ip, buffer);
 						g_free(buffer);
 						item_set_read_status(ip, TRUE);
-						feed_add_item(fp, ip);
+						items = g_list_append(items, ip);
 					}
 					child = child->next;
 				}
@@ -201,6 +202,7 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
+		feed_add_items(fp, items);
 		feed_set_update_interval(fp, -1);
 		if(NULL == (fp->title = headTags[OPML_TITLE]))
 			fp->title = g_strdup(fp->source);
