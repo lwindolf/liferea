@@ -45,6 +45,10 @@ look_for_mozilla "/usr/local/mozilla*/chrome/comm.jar"
 look_for_mozilla "/opt/mozilla/chrome/comm.jar"
 look_for_mozilla "/opt/mozilla/lib/chrome/comm.jar"
 look_for_mozilla "/opt/gnome/lib/mozilla/chrome/comm.jar"
+look_for_mozilla "/usr/lib/firefox*/chrome/comm.jar"
+look_for_mozilla "/usr/local/firefox*/chrome/comm.jar"
+look_for_mozilla "/opt/firefox/chrome/comm.jar"
+look_for_mozilla "/opt/firefox/lib/chrome/comm.jar"
 
-echo 'Mozilla is not available...'
+echo 'Neither Mozilla nor Firefox is available...'
 exec "$dist_bin/liferea-bin" $params

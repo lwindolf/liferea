@@ -4,6 +4,11 @@
 	
 	* The search box was changed to a search dialog to avoid
 	  user confusion about the search scope.
+	* The texts in the preferences dialog were somewhat 
+	  reduced. Thanks for all the proposals on this topic!
+	* Added search paths for Firefox to the start script, so
+	  Liferea can run with Firefox instead of Mozilla. 
+	  (Marc Deslauriers)
 	
 
 2005-03-12  Lars Lindner <lars.lindner@gmx.net>
