@@ -126,9 +126,9 @@ gchar * unhtmlize(gchar * from_encoding, gchar *string) {
 	/* only do something if there are any entities */
 	if(NULL == (strchr(string, '&')))
 		return string;
-g_print("before:%s\n", string);
+
 	string = convertToUTF8(from_encoding, string);
-g_print("after:%s\n", string);		
+
 	length = strlen(string);
 	newstring = (gchar *)g_malloc(length + 1);
 	memset(newstring, 0, length + 1);
