@@ -639,7 +639,11 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		}
 		
 		if(!found) {
-			g_assert(0 != new_ip->nr);
+			/* new items have no number yet */
+			if(0 == new_ip->nr) {
+				new_ip->nr = ++(fp->lastItemNr);
+				fp->needsCacheSave = TRUE;
+			}
 			
 			/* ensure that the feed last item nr is at maximum */
 			if(new_ip->nr > fp->lastItemNr)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-01 01:31+0100\n"
+"POT-Creation-Date: 2004-11-01 02:08+0100\n"
 "PO-Revision-Date: 2004-10-28 14:32+0200\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -56,86 +56,67 @@ msgstr ""
 "byly zahozeny!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:462
+#: src/conf.c:262
 msgid "feedlist.opml"
 msgstr ""
 
-#: src/conf.c:487
+#: src/conf.c:281
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Chyba při přejmenovávání %s na %s\n"
 
-#: src/conf.c:516
-#, c-format
-msgid "RSS namespace %s not yet configured! Activating...\n"
-msgstr "RSS jmenný prostor %s není dosud zkonfigurován! Aktivuji...\n"
-
-#. FIXME: remove this migration constants with 0.9.x
 #. _() for HELP1URL to allow localised help feeds
-#: src/export.c:38
+#: src/export.c:37
 msgid "http://liferea.sf.net/help/help"
 msgstr ""
 
-#: src/export.c:39
+#: src/export.c:38
 msgid ".rdf"
 msgstr ""
 
-#. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:421
-msgid "Liferea Help"
-msgstr "Nápověda programu Liferea"
-
-#: src/export.c:434
-msgid "Online Help Feed"
-msgstr "On-line nápověda"
-
-#: src/export.c:450
-msgid "Liferea SF News"
-msgstr "Liferea SF zprávy"
-
-#: src/export.c:535 src/export.c:537
+#: src/export.c:487 src/export.c:489
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "XML chyba při čtení dočasného souboru! Nemohu importovat \"%s\"!"
 
-#: src/export.c:541 src/export.c:543
+#: src/export.c:493 src/export.c:495
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Prázdný dokument! OPML dokument \"%s\" by neměl být při importu prázdný."
 
-#: src/export.c:551 src/export.c:553
+#: src/export.c:503 src/export.c:505
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" není správný OPML dokument! Liferea nemůže importovat tento soubor!"
 
-#: src/export.c:575
+#: src/export.c:527
 msgid "Imported feed list"
 msgstr "Importovaný seznam zdrojů"
 
-#: src/export.c:586
+#: src/export.c:538
 msgid "Import Feed List"
 msgstr "Importovat seznam zdrojů"
 
-#: src/export.c:586
+#: src/export.c:538
 msgid "Import"
 msgstr "Import"
 
-#: src/export.c:596
+#: src/export.c:548
 msgid "Error while exporting feed list!"
 msgstr "Chyba při exportování seznamu zdrojů!"
 
-#: src/export.c:598
+#: src/export.c:550
 msgid "Feed List exported!"
 msgstr "Seznam zdrojů byl exportován!"
 
-#: src/export.c:605
+#: src/export.c:557
 msgid "Export Feed List"
 msgstr "Exportovat seznam zdrojů"
 
-#: src/export.c:605
+#: src/export.c:557
 msgid "Export"
 msgstr "Export"
 
@@ -209,20 +190,20 @@ msgid "Updating \"%s\""
 msgstr "Obnovuji \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1004 src/item.c:205 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:993 src/item.c:198 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "Zdroj:"
 
-#: src/feed.c:1004 src/interface.c:529
+#: src/feed.c:993 src/interface.c:529
 msgid "VFolder"
 msgstr "V-složka"
 
-#: src/feed.c:1016
+#: src/feed.c:1005
 msgid "user defined command"
 msgstr "uživatelem definovaný příkaz"
 
-#: src/feed.c:1019 src/interface.c:1110 src/interface.c:1520 src/item.c:254
+#: src/feed.c:1008 src/interface.c:1110 src/interface.c:1520 src/item.c:247
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Adresa:"
@@ -232,8 +213,9 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "Selhalo automatické určení zdroje! Zdroj nenalezen."
 
 #: src/interface.c:140
-msgid "Liferea 0.6.1"
-msgstr "Liferea 0.6.1"
+#, fuzzy
+msgid "Liferea"
+msgstr "Nápověda programu Liferea"
 
 #: src/interface.c:157
 msgid "_Program"
@@ -521,8 +503,8 @@ msgid " "
 msgstr ""
 
 #: src/interface.c:1019
-#, c-format
-msgid "This feed provider suggests an update interval of %d seconds."
+#, fuzzy, c-format
+msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Poskytovatel tohoto zdroje navrhuje aktualizovat každých %d minut."
 
 #: src/interface.c:1026
@@ -634,7 +616,8 @@ msgstr "Nový zdroj"
 
 # Chyba
 #: src/interface.c:1783
-msgid "Lifeera Preferences"
+#, fuzzy
+msgid "Liferea Preferences"
 msgstr "Nastavení programu Liferea"
 
 #: src/interface.c:1807
@@ -1022,11 +1005,11 @@ msgstr ""
 msgid "Rules"
 msgstr "Pravidla"
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
+#: src/item.c:225 src/item.c:229 src/item.c:241 src/ui_itemlist.c:196
 msgid "[No title]"
 msgstr "[Žádný název]"
 
-#: src/item.c:238 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:231 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "Článek:"
 
@@ -1198,28 +1181,24 @@ msgstr "zdroj"
 msgid "coverage"
 msgstr "pokrytí"
 
-#: src/net/conversions.c:80
-msgid "No description available."
-msgstr "Popis není dostupný."
-
-#: src/net/conversions.c:361
+#: src/net/conversions.c:86
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "CHYBA: zlib_uncompress: %d %s\n"
 
-#: src/net/conversions.c:377
+#: src/net/conversions.c:102
 msgid "ERROR: No output during decompression"
 msgstr "CHYBA: Žádný výstup během dekomprese"
 
-#: src/net/conversions.c:410
+#: src/net/conversions.c:135
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "CHYBA: Špatné magické bajty pro GZIP data"
 
-#: src/net/conversions.c:415
+#: src/net/conversions.c:140
 msgid "ERROR: Compression method is not deflate"
 msgstr "CHYBA: Kompresní metoda nesnížila velikost dat"
 
-#: src/net/conversions.c:420
+#: src/net/conversions.c:145
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "CHYBA: Nepodporované označení %d\n"
@@ -1710,24 +1689,12 @@ msgstr "Nastavení"
 msgid "Edit preferences."
 msgstr "Změnit nastavení."
 
-#: src/ui_mainwindow.c:187
-msgid ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">When Liferea starts for the first time it loads a localized default feed "
-"list. There are already default lists for English, French, German and "
-"Spanish. If you think you know a good set of default feeds for your language "
-"please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists."
-"sourceforge.net\">mailing list</a> and it will be included in the next "
-"release!</div>"
-msgstr ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px\n"
-"black\">Když je program Liferea spuštěn poprvé, nahraje lokalizovaný\n"
-"výchozí seznam zdrojů. Jsou zde již výchozí seznamy pro angličtinu,\n"
-"francouzštinu, němčinu a španělštinu. Pokud si myslíte, že znáte dobrý\n"
-"seznam výchozích zdrojů pro svůj jazyk, prosím pošlete ho (asi jako\n"
-"OPML) do <a href=\"mailto:liferea-devel@lists.sourceforge.net\">emailové\n"
-"konference</a> a bude zahrnut v příští verzi!</div>"
-
+#. addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
+#. "When Liferea starts for the first time it loads a localized default "
+#. "feed list. There are already default lists for English, French, German "
+#. "and Spanish. If you think you know a good set of default feeds for your "
+#. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
+#. "and it will be included in the next release!</div>"));
 #: src/ui_mainwindow.c:194
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
@@ -1980,6 +1947,38 @@ msgid ""
 msgstr ""
 "Vložená HTML <object> značka není podporována v GtkHTML2.\n"
 "Vložený modul pravděpodobně nebude zobrazen."
+
+#~ msgid "Liferea 0.6.1"
+#~ msgstr "Liferea 0.6.1"
+
+#~ msgid "No description available."
+#~ msgstr "Popis není dostupný."
+
+#~ msgid ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+#~ "\">When Liferea starts for the first time it loads a localized default "
+#~ "feed list. There are already default lists for English, French, German "
+#~ "and Spanish. If you think you know a good set of default feeds for your "
+#~ "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-"
+#~ "devel@lists.sourceforge.net\">mailing list</a> and it will be included in "
+#~ "the next release!</div>"
+#~ msgstr ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px\n"
+#~ "black\">Když je program Liferea spuštěn poprvé, nahraje lokalizovaný\n"
+#~ "výchozí seznam zdrojů. Jsou zde již výchozí seznamy pro angličtinu,\n"
+#~ "francouzštinu, němčinu a španělštinu. Pokud si myslíte, že znáte dobrý\n"
+#~ "seznam výchozích zdrojů pro svůj jazyk, prosím pošlete ho (asi jako\n"
+#~ "OPML) do <a href=\"mailto:liferea-devel@lists.sourceforge.net\">emailové\n"
+#~ "konference</a> a bude zahrnut v příští verzi!</div>"
+
+#~ msgid "RSS namespace %s not yet configured! Activating...\n"
+#~ msgstr "RSS jmenný prostor %s není dosud zkonfigurován! Aktivuji...\n"
+
+#~ msgid "Online Help Feed"
+#~ msgstr "On-line nápověda"
+
+#~ msgid "Liferea SF News"
+#~ msgstr "Liferea SF zprávy"
 
 #~ msgid "<b>Conversion Filter</b>"
 #~ msgstr "<b>Převodní filtr</b>"

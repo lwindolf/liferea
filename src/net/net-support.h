@@ -27,4 +27,7 @@
 #include "netio.h"
 int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, char * netbuf);
 char * ConstructBasicAuth (char * username, char * password);
+int checkValidHTTPHeader (const unsigned char * header, int size);
+int checkValidHTTPURL (const unsigned char * url);
+
 #endif

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-01 01:31+0100\n"
+"POT-Creation-Date: 2004-11-01 02:08+0100\n"
 "PO-Revision-Date: 2004-10-12 16:44+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian\n"
@@ -56,50 +56,31 @@ msgstr ""
 "кодировка UTF-8! Некоторые символы опущены!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:462
+#: src/conf.c:262
 msgid "feedlist.opml"
 msgstr "feedlist_ru.opml"
 
-#: src/conf.c:487
+#: src/conf.c:281
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Ошибка переименования %s в %s\n"
 
-#: src/conf.c:516
-#, c-format
-msgid "RSS namespace %s not yet configured! Activating...\n"
-msgstr "Пространство имён RSS %s ещё не сконфигурировано! Активация...\n"
-
-#. FIXME: remove this migration constants with 0.9.x
 #. _() for HELP1URL to allow localised help feeds
-#: src/export.c:38
+#: src/export.c:37
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/export.c:39
+#: src/export.c:38
 msgid ".rdf"
 msgstr ".rdf"
 
-#. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:421
-msgid "Liferea Help"
-msgstr "Помощь по Liferea"
-
-#: src/export.c:434
-msgid "Online Help Feed"
-msgstr "Лента Новостей Онлайновой помощи"
-
-#: src/export.c:450
-msgid "Liferea SF News"
-msgstr "Новости Liferea на SF.net"
-
-#: src/export.c:535 src/export.c:537
+#: src/export.c:487 src/export.c:489
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
-#: src/export.c:541 src/export.c:543
+#: src/export.c:493 src/export.c:495
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -107,38 +88,38 @@ msgstr ""
 "Пустой документ! Документ OPML \"%s\" не должен быть пустым во время "
 "импортирования."
 
-#: src/export.c:551 src/export.c:553
+#: src/export.c:503 src/export.c:505
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/export.c:575
+#: src/export.c:527
 msgid "Imported feed list"
 msgstr "Имппортированный лист лент новостей"
 
-#: src/export.c:586
+#: src/export.c:538
 msgid "Import Feed List"
 msgstr "Импортировать Список Лент Новостей"
 
-#: src/export.c:586
+#: src/export.c:538
 msgid "Import"
 msgstr "Импорт"
 
-#: src/export.c:596
+#: src/export.c:548
 msgid "Error while exporting feed list!"
 msgstr "Ошибка во время экспорта списка лент новостей!"
 
-#: src/export.c:598
+#: src/export.c:550
 msgid "Feed List exported!"
 msgstr "Список лент новостей экспортирован!"
 
-#: src/export.c:605
+#: src/export.c:557
 msgid "Export Feed List"
 msgstr "Экспортировать Список Лент Новостей"
 
-#: src/export.c:605
+#: src/export.c:557
 msgid "Export"
 msgstr "Экспорт"
 
@@ -216,20 +197,20 @@ msgid "Updating \"%s\""
 msgstr "Обновление: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1004 src/item.c:205 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:993 src/item.c:198 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "Лента новостей:"
 
-#: src/feed.c:1004 src/interface.c:529
+#: src/feed.c:993 src/interface.c:529
 msgid "VFolder"
 msgstr "VFolder"
 
-#: src/feed.c:1016
+#: src/feed.c:1005
 msgid "user defined command"
 msgstr "определённая пользователем команда"
 
-#: src/feed.c:1019 src/interface.c:1110 src/interface.c:1520 src/item.c:254
+#: src/feed.c:1008 src/interface.c:1110 src/interface.c:1520 src/item.c:247
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Источник:"
@@ -241,8 +222,9 @@ msgstr ""
 "новостей не найдены!"
 
 #: src/interface.c:140
-msgid "Liferea 0.6.1"
-msgstr "Liferea 0.6.1"
+#, fuzzy
+msgid "Liferea"
+msgstr "Помощь по Liferea"
 
 #: src/interface.c:157
 msgid "_Program"
@@ -535,8 +517,8 @@ msgid " "
 msgstr " "
 
 #: src/interface.c:1019
-#, c-format
-msgid "This feed provider suggests an update interval of %d seconds."
+#, fuzzy, c-format
+msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
 "Создатель этой ленты новостей рекомендует интервал обновления в %d секунд(у)"
 "(ы)."
@@ -649,7 +631,8 @@ msgid "New Subscription"
 msgstr "Новая Подписка"
 
 #: src/interface.c:1783
-msgid "Lifeera Preferences"
+#, fuzzy
+msgid "Liferea Preferences"
 msgstr "Настройки Liferea"
 
 #: src/interface.c:1807
@@ -1043,11 +1026,11 @@ msgstr ""
 msgid "Rules"
 msgstr "Правила"
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
+#: src/item.c:225 src/item.c:229 src/item.c:241 src/ui_itemlist.c:196
 msgid "[No title]"
 msgstr "[Без заголовка]"
 
-#: src/item.c:238 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:231 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "Новость:"
 
@@ -1220,28 +1203,24 @@ msgstr "источник"
 msgid "coverage"
 msgstr "охват"
 
-#: src/net/conversions.c:80
-msgid "No description available."
-msgstr "Описание не доступно."
-
-#: src/net/conversions.c:361
+#: src/net/conversions.c:86
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "ОШИБКА: zlib_compress: %d %s\n"
 
-#: src/net/conversions.c:377
+#: src/net/conversions.c:102
 msgid "ERROR: No output during decompression"
 msgstr "ОШИБКА: Не было вывода во время декомпрессии"
 
-#: src/net/conversions.c:410
+#: src/net/conversions.c:135
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "ОШИБКА: Недопустимые \"магические байты\" для GZIP информации"
 
-#: src/net/conversions.c:415
+#: src/net/conversions.c:140
 msgid "ERROR: Compression method is not deflate"
 msgstr "ОШИБКА: Метод компрессии не опровержен"
 
-#: src/net/conversions.c:420
+#: src/net/conversions.c:145
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "ОШИБКА: Неподдерживаемые флаги %d\n"
@@ -1740,26 +1719,12 @@ msgstr "Настройки"
 msgid "Edit preferences."
 msgstr "Редактировать настройки."
 
-#: src/ui_mainwindow.c:187
-msgid ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">When Liferea starts for the first time it loads a localized default feed "
-"list. There are already default lists for English, French, German and "
-"Spanish. If you think you know a good set of default feeds for your language "
-"please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists."
-"sourceforge.net\">mailing list</a> and it will be included in the next "
-"release!</div>"
-msgstr ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">При первом запуске Liferea предоставляет локализованный список лент "
-"новостей. В Liferea уже включены списки для английского, французского, "
-"немецкого, испанского и русского языков. Если вы считаете, что у вы сможете "
-"предоставить неплохой набор лент новостей для русскоязычных пользователей, "
-"то вы можете отослать его (лучше в формате OPML) <a href=\"mailto:liferea-"
-"devel@lists.sourceforge.net\">в основной список рассылки</a> или <a href="
-"\"mailto:compress@linux-online.ru\"> напрямую переводчику русской версии</a> "
-"и он войдёт в следующий релиз!</div>"
-
+#. addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
+#. "When Liferea starts for the first time it loads a localized default "
+#. "feed list. There are already default lists for English, French, German "
+#. "and Spanish. If you think you know a good set of default feeds for your "
+#. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
+#. "and it will be included in the next release!</div>"));
 #: src/ui_mainwindow.c:194
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
@@ -2010,6 +1975,40 @@ msgstr ""
 "Этот элемент, содержит HTML тэг <object>, который не поддерживается в "
 "GtkHTML2.\n"
 "Плагины, содержащиеся в элементе не будут отображены."
+
+#~ msgid "Liferea 0.6.1"
+#~ msgstr "Liferea 0.6.1"
+
+#~ msgid "No description available."
+#~ msgstr "Описание не доступно."
+
+#~ msgid ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+#~ "\">When Liferea starts for the first time it loads a localized default "
+#~ "feed list. There are already default lists for English, French, German "
+#~ "and Spanish. If you think you know a good set of default feeds for your "
+#~ "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-"
+#~ "devel@lists.sourceforge.net\">mailing list</a> and it will be included in "
+#~ "the next release!</div>"
+#~ msgstr ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+#~ "\">При первом запуске Liferea предоставляет локализованный список лент "
+#~ "новостей. В Liferea уже включены списки для английского, французского, "
+#~ "немецкого, испанского и русского языков. Если вы считаете, что у вы "
+#~ "сможете предоставить неплохой набор лент новостей для русскоязычных "
+#~ "пользователей, то вы можете отослать его (лучше в формате OPML) <a href="
+#~ "\"mailto:liferea-devel@lists.sourceforge.net\">в основной список "
+#~ "рассылки</a> или <a href=\"mailto:compress@linux-online.ru\"> напрямую "
+#~ "переводчику русской версии</a> и он войдёт в следующий релиз!</div>"
+
+#~ msgid "RSS namespace %s not yet configured! Activating...\n"
+#~ msgstr "Пространство имён RSS %s ещё не сконфигурировано! Активация...\n"
+
+#~ msgid "Online Help Feed"
+#~ msgstr "Лента Новостей Онлайновой помощи"
+
+#~ msgid "Liferea SF News"
+#~ msgstr "Новости Liferea на SF.net"
 
 #~ msgid "<b>Conversion Filter</b>"
 #~ msgstr "<b>Фильтр Конвертации</b>"

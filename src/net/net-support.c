@@ -241,3 +241,42 @@ int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, 
 	
 	return 0;
 }
+
+/* HTTP header may only contain ASCII characters.
+ *
+ * Ensure that we don't hit the terminating \0 in a string
+ * with the for loop.
+ * The function also ensures that there is no NULL byte in the string.
+ * If given binary data return at once if we read beyond
+ * the boundary of sizeof(header).
+ */
+int checkValidHTTPHeader (const unsigned char * header, int size) {
+	int i, len;
+	
+	len = strlen(header);
+	if (len > size)
+		return -1;
+	
+	for (i = 0; i < len; i++) {
+		if (((header[i] < 32) || (header[i] > 127)) &&
+			(header[i] != '\r') && (header[i] != '\n'))
+			return -1;
+	}
+	return 0;
+}
+
+int checkValidHTTPURL (const unsigned char * url) {
+	int i, len;
+	
+	if (strncasecmp(url, "http://", 7) != 0)
+		return -1;
+	
+	len = strlen(url);
+		
+	for (i = 0; i < len; i++) {
+		if ((url[i] < 32) || (url[i] > 126))
+			return -1;
+	}
+	
+	return 0;
+}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-01 01:31+0100\n"
+"POT-Creation-Date: 2004-11-01 02:08+0100\n"
 "PO-Revision-Date: 2004-10-30 00:55+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -54,50 +54,31 @@ msgstr ""
 "자가 버려집니다"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:462
+#: src/conf.c:262
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
-#: src/conf.c:487
+#: src/conf.c:281
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "%s을(를) %s(으)로 변환하는 중 에러발생\n"
 
-#: src/conf.c:516
-#, c-format
-msgid "RSS namespace %s not yet configured! Activating...\n"
-msgstr "RSS 네임스페이스 %s이(가) 아직 설정되지 않았습니다. 활성화중...\n"
-
-#. FIXME: remove this migration constants with 0.9.x
 #. _() for HELP1URL to allow localised help feeds
-#: src/export.c:38
+#: src/export.c:37
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/export.c:39
+#: src/export.c:38
 msgid ".rdf"
 msgstr ".rdf"
 
-#. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:421
-msgid "Liferea Help"
-msgstr "Liferea 도움말"
-
-#: src/export.c:434
-msgid "Online Help Feed"
-msgstr "온라인 도움말 피드"
-
-#: src/export.c:450
-msgid "Liferea SF News"
-msgstr "Liferea 소스포지 뉴스"
-
-#: src/export.c:535 src/export.c:537
+#: src/export.c:487 src/export.c:489
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "캐시파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 가져올 수 없습니다!"
 
-#: src/export.c:541 src/export.c:543
+#: src/export.c:493 src/export.c:495
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -105,38 +86,38 @@ msgstr ""
 "빈 도큐먼트 입니다! OPML 도큐먼트 \"%s\"은(는) 가져오기 할 때 비어있으면 안됩"
 "니다."
 
-#: src/export.c:551 src/export.c:553
+#: src/export.c:503 src/export.c:505
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\"은(는) 올바른 OPML 파일이 아닙니다. Liferea는 이 파일을 가져올 수 없습"
 "니다."
 
-#: src/export.c:575
+#: src/export.c:527
 msgid "Imported feed list"
 msgstr "가져온 피드 리스트"
 
-#: src/export.c:586
+#: src/export.c:538
 msgid "Import Feed List"
 msgstr "피드 목록 들여오기"
 
-#: src/export.c:586
+#: src/export.c:538
 msgid "Import"
 msgstr "가져오기"
 
-#: src/export.c:596
+#: src/export.c:548
 msgid "Error while exporting feed list!"
 msgstr "피드 리스트를 내보내던 중 에러가 발생했습니다."
 
-#: src/export.c:598
+#: src/export.c:550
 msgid "Feed List exported!"
 msgstr "피드 목록이 내보내졌습니다"
 
-#: src/export.c:605
+#: src/export.c:557
 msgid "Export Feed List"
 msgstr "피드 목록 내보내기"
 
-#: src/export.c:605
+#: src/export.c:557
 msgid "Export"
 msgstr "내보내기"
 
@@ -209,20 +190,20 @@ msgid "Updating \"%s\""
 msgstr "%s을(를) 새로고치는 중"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1004 src/item.c:205 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:993 src/item.c:198 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "피드:"
 
-#: src/feed.c:1004 src/interface.c:529
+#: src/feed.c:993 src/interface.c:529
 msgid "VFolder"
 msgstr "가상폴더"
 
-#: src/feed.c:1016
+#: src/feed.c:1005
 msgid "user defined command"
 msgstr "사용자가 정한 명령:"
 
-#: src/feed.c:1019 src/interface.c:1110 src/interface.c:1520 src/item.c:254
+#: src/feed.c:1008 src/interface.c:1110 src/interface.c:1520 src/item.c:247
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "소스:"
@@ -232,8 +213,9 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "피드 링크 자동 찾기가 실패하였습니다. 아무런 피드 링크도 없습니다!"
 
 #: src/interface.c:140
-msgid "Liferea 0.6.1"
-msgstr "Liferea 0.6.1"
+#, fuzzy
+msgid "Liferea"
+msgstr "Liferea 도움말"
 
 #: src/interface.c:157
 msgid "_Program"
@@ -521,8 +503,8 @@ msgid " "
 msgstr ""
 
 #: src/interface.c:1019
-#, c-format
-msgid "This feed provider suggests an update interval of %d seconds."
+#, fuzzy, c-format
+msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "이 피드의 제공자는 갱신 주기를 %d분 으로 제안했습니다."
 
 #: src/interface.c:1026
@@ -632,7 +614,8 @@ msgid "New Subscription"
 msgstr "새 서명"
 
 #: src/interface.c:1783
-msgid "Lifeera Preferences"
+#, fuzzy
+msgid "Liferea Preferences"
 msgstr "Liferea 기본 설정"
 
 #: src/interface.c:1807
@@ -1016,11 +999,11 @@ msgstr ""
 msgid "Rules"
 msgstr "규칙"
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
+#: src/item.c:225 src/item.c:229 src/item.c:241 src/ui_itemlist.c:196
 msgid "[No title]"
 msgstr "[제목 없음]"
 
-#: src/item.c:238 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:231 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "아이템:"
 
@@ -1190,28 +1173,24 @@ msgstr "소스"
 msgid "coverage"
 msgstr "범위"
 
-#: src/net/conversions.c:80
-msgid "No description available."
-msgstr "설명이 없습니다."
-
-#: src/net/conversions.c:361
+#: src/net/conversions.c:86
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "에러: zlib_uncompress: %d %s\n"
 
-#: src/net/conversions.c:377
+#: src/net/conversions.c:102
 msgid "ERROR: No output during decompression"
 msgstr "에러: 압축을 푸는동안 출력이 전혀 없음"
 
-#: src/net/conversions.c:410
+#: src/net/conversions.c:135
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "에러: GZIP데이터에 대한 잘못된 magic-bytes "
 
-#: src/net/conversions.c:415
+#: src/net/conversions.c:140
 msgid "ERROR: Compression method is not deflate"
 msgstr "에러: Compression method is not deflate"
 
-#: src/net/conversions.c:420
+#: src/net/conversions.c:145
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "에러: 지원하지 않는 플래그 %d\n"
@@ -1700,23 +1679,12 @@ msgstr "기본 설정"
 msgid "Edit preferences."
 msgstr "설정 고치기."
 
-#: src/ui_mainwindow.c:187
-msgid ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">When Liferea starts for the first time it loads a localized default feed "
-"list. There are already default lists for English, French, German and "
-"Spanish. If you think you know a good set of default feeds for your language "
-"please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists."
-"sourceforge.net\">mailing list</a> and it will be included in the next "
-"release!</div>"
-msgstr ""
-"<div·style=\"background-color:#f7f0a3;padding:5px;border:solid·1px·black"
-"\">Liferea가 처음 시작할 때 지역화된 기본 피드목록을 불러옵니다.영어, 불어, "
-"독어 그리고 스페인어의 기본목록이 이미 있습니다. 만약 당신이 사용하는 언어의 "
-"좋은 기본 피드 목록을 알고 있다고 생각한다면<a·href=\"mailto:liferea-"
-"devel@lists.sourceforge.net\">메일링 리스트</a>로 그것들을 (가능하면 OPML로) "
-"보내주세요그것들은 다음 릴리즈에 포함될 것입니다!</div>"
-
+#. addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
+#. "When Liferea starts for the first time it loads a localized default "
+#. "feed list. There are already default lists for English, French, German "
+#. "and Spanish. If you think you know a good set of default feeds for your "
+#. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
+#. "and it will be included in the next release!</div>"));
 #: src/ui_mainwindow.c:194
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
@@ -1958,6 +1926,37 @@ msgid ""
 msgstr ""
 "<object> 태그는 GtkHTML2에서 지원하지 않습니다.\n"
 "포함된 플러그인은 안 보일것입니다."
+
+#~ msgid "Liferea 0.6.1"
+#~ msgstr "Liferea 0.6.1"
+
+#~ msgid "No description available."
+#~ msgstr "설명이 없습니다."
+
+#~ msgid ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+#~ "\">When Liferea starts for the first time it loads a localized default "
+#~ "feed list. There are already default lists for English, French, German "
+#~ "and Spanish. If you think you know a good set of default feeds for your "
+#~ "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-"
+#~ "devel@lists.sourceforge.net\">mailing list</a> and it will be included in "
+#~ "the next release!</div>"
+#~ msgstr ""
+#~ "<div·style=\"background-color:#f7f0a3;padding:5px;border:solid·1px·black"
+#~ "\">Liferea가 처음 시작할 때 지역화된 기본 피드목록을 불러옵니다.영어, 불"
+#~ "어, 독어 그리고 스페인어의 기본목록이 이미 있습니다. 만약 당신이 사용하는 "
+#~ "언어의 좋은 기본 피드 목록을 알고 있다고 생각한다면<a·href=\"mailto:"
+#~ "liferea-devel@lists.sourceforge.net\">메일링 리스트</a>로 그것들을 (가능하"
+#~ "면 OPML로) 보내주세요그것들은 다음 릴리즈에 포함될 것입니다!</div>"
+
+#~ msgid "RSS namespace %s not yet configured! Activating...\n"
+#~ msgstr "RSS 네임스페이스 %s이(가) 아직 설정되지 않았습니다. 활성화중...\n"
+
+#~ msgid "Online Help Feed"
+#~ msgstr "온라인 도움말 피드"
+
+#~ msgid "Liferea SF News"
+#~ msgstr "Liferea 소스포지 뉴스"
 
 #~ msgid "_File"
 #~ msgstr "파일(_F)"

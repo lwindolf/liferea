@@ -35,6 +35,7 @@ struct feed_request {
 	char *etag;
 
 	/* Set by netio code */
+	char *content_type;
 	size_t contentlength;
 	int lasthttpstatus;
 	char *cookies;                                                  /* Login cookies for this feed. */

@@ -137,7 +137,7 @@ create_mainwindow (void)
   accel_group = gtk_accel_group_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.6.1"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
   mainwindow_icon_pixbuf = create_pixbuf ("liferea.png");
   if (mainwindow_icon_pixbuf)
@@ -1016,7 +1016,7 @@ create_propdialog (void)
   gtk_widget_show (label161);
   gtk_box_pack_start (GTK_BOX (vbox237), label161, FALSE, FALSE, 0);
 
-  feedUpdateInfo = gtk_label_new (_("This feed provider suggests an update interval of %d seconds."));
+  feedUpdateInfo = gtk_label_new (_("This feed provider suggests an update interval of %d minutes."));
   gtk_widget_show (feedUpdateInfo);
   gtk_box_pack_start (GTK_BOX (vbox237), feedUpdateInfo, FALSE, FALSE, 0);
   gtk_widget_set_size_request (feedUpdateInfo, 339, -1);
@@ -1677,7 +1677,7 @@ create_prefdialog (void)
   GtkWidget *hbox72;
   GtkWidget *label164;
   GtkWidget *vbox2588;
-  GtkWidget *button27;
+  GtkWidget *updateAllFavicons;
   GtkWidget *label38;
   GtkWidget *vbox222;
   GtkWidget *vbox253;
@@ -1780,7 +1780,7 @@ create_prefdialog (void)
   tooltips = gtk_tooltips_new ();
 
   prefdialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (prefdialog), _("Lifeera Preferences"));
+  gtk_window_set_title (GTK_WINDOW (prefdialog), _("Liferea Preferences"));
   gtk_window_set_position (GTK_WINDOW (prefdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (prefdialog), 300, -1);
   gtk_window_set_type_hint (GTK_WINDOW (prefdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
@@ -1958,9 +1958,9 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox72), vbox2588, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2588), 5);
 
-  button27 = gtk_button_new_with_mnemonic (_("Update all favicons now."));
-  gtk_widget_show (button27);
-  gtk_box_pack_start (GTK_BOX (vbox2588), button27, FALSE, FALSE, 0);
+  updateAllFavicons = gtk_button_new_with_mnemonic (_("Update all favicons now."));
+  gtk_widget_show (updateAllFavicons);
+  gtk_box_pack_start (GTK_BOX (vbox2588), updateAllFavicons, FALSE, FALSE, 0);
 
   label38 = gtk_label_new (_("Feed Handling"));
   gtk_widget_show (label38);
@@ -2553,7 +2553,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox72, "hbox72");
   GLADE_HOOKUP_OBJECT (prefdialog, label164, "label164");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2588, "vbox2588");
-  GLADE_HOOKUP_OBJECT (prefdialog, button27, "button27");
+  GLADE_HOOKUP_OBJECT (prefdialog, updateAllFavicons, "updateAllFavicons");
   GLADE_HOOKUP_OBJECT (prefdialog, label38, "label38");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox222, "vbox222");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox253, "vbox253");
@@ -2958,7 +2958,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new ("Liferea 0.6.1");
+  label57 = gtk_label_new ("Liferea 0.9.0");
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);

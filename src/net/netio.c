@@ -42,7 +42,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <fcntl.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -401,7 +400,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	
 	/* Reconstruct digest authinfo for every request so we don't reuse
 	   the same nonce value for more than one request.
-	   This happens on superflous time on 303 redirects. */
+	   This happens one superflous time on 303 redirects. */
 	if ((cur_ptr->authinfo != NULL) && (cur_ptr->servauth != NULL)) {
 		if (strstr (cur_ptr->authinfo, " Digest ") != NULL) {
 			NetSupportAuth(cur_ptr, authdata, url, cur_ptr->servauth);
@@ -468,6 +467,12 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		fclose (stream);
 		return NULL;
 	}
+	if (checkValidHTTPHeader(servreply, sizeof(servreply)) != 0) {
+		cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+		fclose (stream);
+		return NULL;
+	}
+	
 	tmpstatus = strdup(servreply);
 	savestart = tmpstatus;
 
@@ -531,6 +536,13 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 						fclose (stream);
 						return NULL;
 					}
+					
+					if (checkValidHTTPHeader(netbuf, sizeof(netbuf)) != 0) {
+						cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+						fclose (stream);
+						return NULL;
+					}
+					
 					/* Split netbuf into hostname and trailing url.
 					   Place hostname in *newhost and tail into *newurl.
 					   Close old connection and reconnect to server.
@@ -546,6 +558,14 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 						/* In theory pointer should now be after the space char
 						   after the word "Location:" */
 						strsep (&redirecttarget, " ");
+						
+						if (redirecttarget == NULL) {
+							cur_ptr->problem = 1;
+							cur_ptr->netio_error = NET_ERR_REDIRECT_ERR;
+							free (freeme);
+							fclose (stream);
+							return NULL;
+						}
 						
 						/* Location must start with "http", otherwise switch on quirksmode. */
 						if (strncmp(redirecttarget, "http", 4) != 0)
@@ -573,6 +593,13 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 						
 						/* Change cur_ptr->feedurl on 301. */
 						if (cur_ptr->lasthttpstatus == 301) {
+							/* Check for valid redirection URL */
+							if (checkValidHTTPURL(newlocation) != 0) {
+								cur_ptr->problem = 1;
+								cur_ptr->netio_error = NET_ERR_REDIRECT_ERR;
+								fclose (stream);
+								return NULL;
+							}
 							if (!suppressoutput)
 								UIStatus (_("URL points to permanent redirect, updating with new location..."), 2);
 							/*printlog (cur_ptr, _("URL points to permanent redirect, updating with new location..."));*/
@@ -693,29 +720,35 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL)
 			break;
 		
-		if (strstr (netbuf, "chunked") != NULL) {
-			/* Server sent junked encoding. Until I understand how
-			   it works and snownews uses HTTP/1.1 we must reject
-			   this answer.  Chunked encoding is not defined in
-			   HTTP/1.0. Some proxys are evil and send it anyway,
-			   so it is now supported in some sense. */
-			chunked = 1;
+		if (checkValidHTTPHeader(netbuf, sizeof(netbuf)) != 0) {
+			cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+			fclose (stream);
+			return NULL;
+		}
+		
+		if (strncasecmp (netbuf, "Transfer-Encoding", 17) == 0) {
+			/* Chunked transfer encoding. HTTP/1.1 extension.
+			   http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6.1 */
+			if (strstr (netbuf, "chunked") != NULL)
+				chunked = 1;
 		}
 		/* Get last modified date. This is only relevant on HTTP 200. */
 		if ((strncasecmp (netbuf, "Last-Modified", 13) == 0) &&
 			(cur_ptr->lasthttpstatus == 200)) {
 			tmpstring = strdup(netbuf);
 			freeme = tmpstring;
-			strsep (&tmpstring, ":");
-			tmpstring++;
-			free(cur_ptr->lastmodified);
-			cur_ptr->lastmodified = malloc (strlen(tmpstring)+1);
-			strncpy (cur_ptr->lastmodified, tmpstring, strlen(tmpstring)+1);
-			if (cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] == '\n')
-				cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] = '\0';
-			if (cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] == '\r')
-				cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] = '\0';
-			free(freeme);
+			strsep (&tmpstring, " ");
+			if (tmpstring == NULL)
+				free (freeme);
+			else {
+				free(cur_ptr->lastmodified);
+				cur_ptr->lastmodified = strdup(tmpstring);
+				if (cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] == '\n')
+					cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] = '\0';
+				if (cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] == '\r')
+					cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] = '\0';
+				free(freeme);
+			}
 		}
 		/* Get the E-Tag */
 		if ((strncasecmp (netbuf, "ETag:", 5) == 0) &&
@@ -739,7 +772,27 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 			/* Will also catch x-gzip. */
 			if (strstr (netbuf, "gzip") != NULL)
 				inflate = 1;
-		}		
+		}
+		if (strncasecmp (netbuf, "Content-Type", 12) == 0) {
+			tmpstring = strdup(netbuf);
+			freeme = tmpstring;
+			strsep(&tmpstring, " ");
+			if (tmpstring == NULL)
+				free (freeme);
+			else {
+				freeme2 = NULL;
+				freeme2 = strstr(tmpstring, ";");
+				if (freeme2 != NULL)
+					freeme2[0] = '\0';
+				free(cur_ptr->content_type);
+				cur_ptr->content_type = strdup(tmpstring);
+				if (cur_ptr->content_type[strlen(cur_ptr->content_type)-1] == '\n')
+					cur_ptr->content_type[strlen(cur_ptr->content_type)-1] = '\0';
+				if (cur_ptr->content_type[strlen(cur_ptr->content_type)-1] == '\r')
+					cur_ptr->content_type[strlen(cur_ptr->content_type)-1] = '\0';
+				free(freeme);
+			}
+		}
 		/* HTTP authentication
 		 *
 		 * RFC 2617 */
@@ -867,9 +920,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	/* If inflate==1 we need to decompress the content.. */
 	if (inflate == 1) {
 		/* gzipinflate */
-		inflatedbody = gzip_uncompress (body, length, &len);
-		
-		if (inflatedbody == NULL) {
+		if (jg_gzip_uncompress (body, length, (void **)&inflatedbody, &len) != 0) {
 			free (body);
 			cur_ptr->netio_error = NET_ERR_GZIP_ERR;
 			return NULL;
@@ -991,6 +1042,7 @@ void downloadlib_process_url(struct request *request) {
 	cur_ptr.etag = request->etag;
 		
 	cur_ptr.problem = 0;
+	cur_ptr.content_type = 0;
 	cur_ptr.contentlength = 0;
 	cur_ptr.cookies = NULL;
 	cur_ptr.authinfo = NULL;
