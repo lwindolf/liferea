@@ -15,7 +15,9 @@
 	  (Lars Lindner)
 	* GTK+ dependency raised to 2.4 to drop the included
 	  GtkTreeModelFilter source. (Lars Lindner)
-
+	* New Finnish translation. (Pauli Virtanen)
+	* New Romanian translation. (Spoiala Cristian)
+	
 	Bugfixes:
 
 	* Fix for crash when deleting feed while favicon

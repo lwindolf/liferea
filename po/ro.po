@@ -1,0 +1,1940 @@
+# translation of PACKAGE.
+# Copyright (C) 2004 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Spoială Cristian <s_cristian@ezrs.com>, 2004.
+# , fuzzy
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-11-01 02:08+0100\n"
+"PO-Revision-Date: 2004-12-01 22:10+0200\n"
+"Last-Translator: Spoială Cristian <s_cristian@ezrs.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: src/ui_htmlview.c:67
+msgid ""
+"\n"
+"Trying to load the Mozilla browser module... Note that this\n"
+"might not work with every Mozilla version. If you have problems\n"
+"and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
+"another Mozilla installation or delete the gconf configuration\n"
+"key /apps/liferea/browser-module!\n"
+"\n"
+msgstr ""
+"\n"
+"Se incearcă încărcarea modulului Mozilla... S-ar putea să nu\n"
+"meargă cu toate versiunile de Mozilla. Dacă aveţi probleme\n"
+"şi Liferea nu porneşte setaţi MOZILLA_FIVE_HOME pentru\n"
+"altă instalare de Mozilla sau şterge în configuraţia gconf\n"
+"cheia /apps/liferea/browser-module!\n"
+"\n"
+
+#: src/interface.c:1015
+msgid " "
+msgstr " "
+
+#: src/interface.c:939 src/interface.c:971 src/interface.c:1045
+#: src/interface.c:1090 src/interface.c:1124 src/interface.c:1135
+#: src/interface.c:1153 src/interface.c:1241 src/interface.c:1455
+#: src/interface.c:1500 src/interface.c:1534 src/interface.c:1545
+#: src/interface.c:1563 src/interface.c:1817 src/interface.c:1856
+#: src/interface.c:1916 src/interface.c:1952 src/interface.c:1990
+#: src/interface.c:2067 src/interface.c:2127 src/interface.c:2208
+#: src/interface.c:2225 src/interface.c:2252 src/interface.c:2306
+#: src/interface.c:2333 src/interface.c:2383
+msgid "    "
+msgstr "    "
+
+#: src/main.c:78
+msgid "  --debug-all      Print debugging messages of all types"
+msgstr "  --debug-all      Afişează toate mesajele de debug"
+
+#: src/main.c:72
+msgid "  --debug-cache    Print debugging messages for the cache handling"
+msgstr ""
+"  --debug-cache    Afişează mesaje de debug pentru manipularea cache-ului"
+
+#: src/main.c:73
+msgid ""
+"  --debug-conf     Print debugging messages of the configuration handling"
+msgstr ""
+"  --debug-conf     Afişează mesaje de debug pentru manipularea configurării"
+
+#: src/main.c:76
+msgid "  --debug-gui      Print debugging messages of all GUI functions"
+msgstr "  --debug-gui      Afişează debug pentru funcţiile GUI"
+
+#: src/main.c:75
+msgid "  --debug-parsing  Print debugging messages of all parsing functions"
+msgstr "  --debug-parsing  Afişează debug pentru funcţiile de parcurgere"
+
+#: src/main.c:77
+msgid ""
+"  --debug-trace    Print debugging messages when entering/leaving functions"
+msgstr ""
+"  --debug-trace    Afişează mesaje de debug când se intră şi se iasă din "
+"funcţii"
+
+#: src/main.c:74
+msgid ""
+"  --debug-update   Print debugging messages of the feed update processing"
+msgstr "  --debug-update   Afişează debug pentru updatarea feedurilor"
+
+#: src/main.c:79
+msgid "  --debug-verbose  Print verbose debugging messages"
+msgstr "  --debug-verbose  Afişează verbal toate mesajele de debug"
+
+#: src/main.c:69
+msgid "  --help           Prints this message and exits"
+msgstr "  --help           Afişează acest mesaj şi iasă"
+
+#: src/main.c:70
+msgid "  --iconify        Starts the program iconified"
+msgstr "  --iconify        Porneşte programul iconificat"
+
+#: src/main.c:68
+msgid "  --version        Prints Liferea's version number"
+msgstr "  --versiune        Afişează versiunea de la Liferea"
+
+#: src/ui_feed.c:163
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" nu s-a modificat de la ultimul update."
+
+#: src/ui_feed.c:161
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" este întrerupt. Liferea nu se va mai updata!"
+
+#: src/export.c:503 src/export.c:505
+#, c-format
+msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
+msgstr ""
+"\"%s\" nu este un fişier OPML valid! Liferea nu poate importa acest fişier!"
+
+#: src/ui_feed.c:211
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "\"%s\" nu este disponibil"
+
+#: src/ui_feed.c:202
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" update reuşit..."
+
+#: src/ui_tray.c:90
+#, c-format
+msgid "%d new item!"
+msgstr "%d element nou!"
+
+#: src/ui_feed.c:105
+msgid "(unknown networking error happened)"
+msgstr "(eroare necunoscută la reţea)"
+
+#: src/export.c:38
+msgid ".rdf"
+msgstr ".rdf"
+
+#: src/ui_popup.c:124
+msgid "/Launch Item In _Tab"
+msgstr "/_Lansează articolul în _Tab"
+
+#: src/ui_popup.c:136
+msgid "/Launch Link In _Tab"
+msgstr "/_Lansează link-ul în _Tab"
+
+#: src/ui_popup.c:120
+msgid "/R_emove Item"
+msgstr "/Ş_terge articolul"
+
+#: src/ui_popup.c:119
+msgid "/Toggle Item _Flag"
+msgstr "/Activează _flag-ul elementului"
+
+#: src/ui_popup.c:118
+msgid "/Toggle _Read Status"
+msgstr "/Activează statutul de _citire"
+
+#: src/ui_popup.c:135
+msgid "/_Copy Link Location"
+msgstr "/_Copiaţi locaţia linkului"
+
+#: src/ui_popup.c:131
+msgid "/_Decrease Text Size"
+msgstr "/_Micşoraţi mărimea textului"
+
+#: src/ui_popup.c:88 src/ui_popup.c:107
+msgid "/_Delete"
+msgstr "/_Ştergeţi"
+
+#: src/ui_popup.c:98
+msgid "/_Delete Folder"
+msgstr "/_Ştergeţi directorul"
+
+#: src/ui_popup.c:130
+msgid "/_Increase Text Size"
+msgstr "/_Măriţi mărimea textului"
+
+#: src/ui_popup.c:125
+msgid "/_Launch Item In Browser"
+msgstr "/_Lansează elementul în browser"
+
+#: src/ui_popup.c:137
+msgid "/_Launch Link In Browser"
+msgstr "/_Lansează legătura în navigator"
+
+#: src/ui_popup.c:83 src/ui_popup.c:93 src/ui_popup.c:102
+msgid "/_Mark All As Read"
+msgstr "/_Marchează toate ca citite"
+
+#: src/ui_popup.c:84 src/ui_popup.c:94 src/ui_popup.c:103 src/ui_popup.c:111
+msgid "/_New"
+msgstr "/_Nou"
+
+#: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
+msgid "/_New/New F_older..."
+msgstr "/_Nou/D_irector _Nou..."
+
+#: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
+msgid "/_New/New _Subscription..."
+msgstr "/_Nou/Înscriere _Nouă..."
+
+#: src/ui_popup.c:122
+msgid "/_Next Unread Item"
+msgstr "/_Următorul element necitit"
+
+#: src/ui_popup.c:145
+msgid "/_Preferences..."
+msgstr "/_Preferinţe..."
+
+#: src/ui_popup.c:87 src/ui_popup.c:106
+msgid "/_Properties..."
+msgstr "/_Proprietăţi..."
+
+#: src/ui_popup.c:148
+msgid "/_Quit"
+msgstr "/_Ieşire"
+
+#: src/ui_popup.c:97
+msgid "/_Rename Folder..."
+msgstr "/_Redenumiţi directorul..."
+
+#: src/ui_popup.c:147
+msgid "/_Show Window"
+msgstr "/_Arată fereastra"
+
+#: src/ui_popup.c:138
+msgid "/_Subscribe..."
+msgstr "/_Înscriere..."
+
+#: src/ui_popup.c:82
+msgid "/_Update"
+msgstr "/_Updatează"
+
+#: src/ui_popup.c:144
+msgid "/_Update All"
+msgstr "/_Updatează toate"
+
+#: src/ui_popup.c:92
+msgid "/_Update Folder"
+msgstr "/_Updatează directorul"
+
+#: src/ui_popup.c:143
+msgid "/_Work Offline"
+msgstr "/_Lucraţi offline"
+
+#: src/interface.c:2021
+msgid "<Alt> Space"
+msgstr "<Alt> Spaţiu"
+
+#: src/interface.c:2017
+msgid "<Ctrl> Space"
+msgstr "<Ctrl> Spaţiu"
+
+#: src/interface.c:1035 src/interface.c:1445
+msgid "<b>Feed Source</b>"
+msgstr "<b>Sursa feedului</b>"
+
+#. addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
+#. "When Liferea starts for the first time it loads a localized default "
+#. "feed list. There are already default lists for English, French, German "
+#. "and Spanish. If you think you know a good set of default feeds for your "
+#. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
+#. "and it will be included in the next release!</div>"));
+#: src/ui_mainwindow.c:194
+msgid ""
+"<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
+"can add new subscriptions and select subscriptions to read their headlines. "
+"The right side either displays a list of the headlines of the selected "
+"subscription and a pane to view the selected headline or all headlines at "
+"once if condensed mode is selected.</p><h3>Basic Actions</"
+"h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the "
+"selected folder. To create a new subscription enter the feed URL or if you "
+"don't know it the URL of the website which provides the feed.</p></"
+"li><li><p><b>Update Subscription</b> - This will update the subscription you "
+"selected. You may want to do this if you want to immediatly check a "
+"subscription for updates. Usually it is adequate to rely on the auto "
+"updating according to the update interval of the subscription.</p></"
+"li><li><p><b>Update All</b> - This will update all your subscriptions at "
+"once. Again usually it is adequate to rely on the auto updating.</"
+"li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
+"change the update interval, title, authentication or caching properties of a "
+"subscription.</p></li></ul><p>To learn more about Liferea you should read "
+"the documentation provided in the help feed or in the <a href=\"http://"
+"liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
+"liferea.sf.net\">project homepage</a>.</p>"
+msgstr ""
+"<h2>Bine aţi venit în Liferea</h2><p>Partea din stânga conţine lista de "
+"feeduri unde puteţi adaugă înscrieri ca să citiţi titlurile. Partea din dreapta ori "
+"afişează lista de titluri selectate ori toate titlurile o data dacă este selectat "
+"modul condensat.</p><h3>Acţiuni de bază</h3><ul><li><p><b>"
+"Adaugă Înscriere</b> - Crează o înregistrare nouă în directorul selectat. "
+"Ca să creaţi o nouă înregistrare introduceţi adresa la feed sau adresa "
+"website-ul care furnizează feedul.</p></li><li><p><b>Updatează "
+"Înscrierea</b> - Va updata înscrierea selectată. Acest lucru îl faceţi dacă "
+"doriţi să updataţi pe loc feedul. De obicei este indicat să aveţi încredere "
+"în updatarea automată care se face după un interval predefinit.</p></"
+"li><li><p><b>Updatează toatel</b> - Va updata toate înscrierele. "
+"De obicei ar trebui să aveţi încredere în updatarea automată.</"
+"li><li><p><b>Editează proprietăţile înscrierii</b> - Câteodată doriţi "
+"să setaţi intervalul de updatare, titlul, autentificarea sau setările la cache "
+"ale unei înscrieri.</p></li></ul><p>Pentru a afla mai mult despre "
+"Liferea ar trebui să consultaţi documentaţia oferită în feedul de ajutor "
+"sau <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</a> disponibil "
+"<a href=\"http://liferea.sf.net\">la pagina proiectului</a>.</p>"
+""
+""
+
+#: src/ui_folder.c:178
+msgid "<i>(empty)</i>"
+msgstr "<i>(gol)</i>"
+
+#: src/feed.c:397
+#, c-format
+msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
+msgstr "<p>\"%s\" nu este un fişier cache valid! Nu s-a putut citi fişierul cache!</p>"
+
+#: src/ui_feed.c:183
+#, c-format
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>%s"
+msgstr ""
+"<p>Nu s-a putut determina tipul feedului! Vă rugăm verificaţi dacă sursa face "
+"parte din lista formatelor de sindicate suportate!</p>%s"
+
+#: src/feed.c:226
+msgid ""
+"<p>Could not determine the feed type. Please check that it is <a href="
+"\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
+"sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
+msgstr ""
+"<p>Nu s-a putut determina tipul feedul. Verificaţi daca este un feed <a href="
+"\"http://feedvalidator.org\">valid</a> şi este <a href=\"http://liferea."
+"sourceforge.net/index.php#supported_formats\">printre formatele suportate</a>.</p>"
+
+#: src/pie_feed.c:141
+msgid "<p>Could not find Atom/Echo/PIE header!</p>"
+msgstr "<p>Nu s-a putut găsi capătul Atom/Echo/PIE -ului!</p>"
+
+#: src/opml.c:147
+msgid "<p>Could not find OPML header!</p>"
+msgstr "<p>Nu s-a putut găsi capătul OPML-ului !</p>"
+
+#: src/ocs_dir.c:455
+msgid "<p>Could not find RDF header!</p>"
+msgstr "<p>Nu s-a putut găsi capătul RDF-ului!</p>"
+
+#: src/rss_channel.c:236
+msgid "<p>Could not find RDF/RSS header!</p>"
+msgstr "<p>Nu s-a putut găsi capetele RDF/RSS-urilor !</p>"
+
+#: src/feed.c:151 src/feed.c:386
+msgid "<p>Empty document!</p>"
+msgstr "<p>Document gol!</p>"
+
+#: src/feed.c:158
+msgid "<p>Invalid XML!</p>"
+msgstr "<p>XML invalid!</p>"
+
+#: src/feed.c:378
+#, c-format
+msgid ""
+"<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
+"loaded!</p>"
+msgstr ""
+"<p>eroare XML în timp ce se parcurgea fişierul cache! Feed-ul \"%s\" nu s-a "
+"putut încărca!</p>"
+
+#: src/feed.c:145
+#, c-format
+msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
+msgstr "<p>eroare XML în timp ce se citea feedul! Feed-ul \"%s\" nu a putut fi "
+"încărcat!</p>"
+
+#: src/interface.c:2057
+msgid "<span weight=\"bold\">Date Column Settings</span>"
+msgstr "<span weight=\"bold\">Setările columnei cu data</span>"
+
+#: src/interface.c:2117
+msgid "<span weight=\"bold\">External Browser Settings</span>"
+msgstr "<span weight=\"bold\">Setările navigatorului extern</span>"
+
+#: src/interface.c:1807
+msgid "<span weight=\"bold\">Feed Cache Handling</span>"
+msgstr "<span weight=\"bold\">Setările pentru cacheul feedului</span>"
+
+#: src/interface.c:1942
+msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
+msgstr "<span weight=\"bold\">Iconurile pentru feed (Favicons)</span>"
+
+#: src/interface.c:1906
+msgid "<span weight=\"bold\">Feed Loading Settings</span>"
+msgstr "<span weight=\"bold\">Setările pentru încărcarea feedului</span>"
+
+#: src/interface.c:929
+msgid "<span weight=\"bold\">Feed Name</span>"
+msgstr "<span weight=\"bold\">Numele feedului</span>"
+
+#: src/interface.c:1846
+msgid "<span weight=\"bold\">Feed Update Settings</span>"
+msgstr "<span weight=\"bold\">Setările pentru updateurile la feed</span>"
+
+#: src/interface.c:2296
+msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
+msgstr "<span weight=\"bold\">Serverul HTTP Proxy</span>"
+
+#: src/interface.c:2242
+msgid "<span weight=\"bold\">Menu Settings</span>"
+msgstr "<span weight=\"bold\">Setările meniului</span>"
+
+#: src/interface.c:2198
+msgid "<span weight=\"bold\">Notification Settings</span>"
+msgstr "<span weight=\"bold\">Setările notificării</span>"
+
+#: src/interface.c:961
+msgid "<span weight=\"bold\">Update Interval</span>"
+msgstr "<span weight=\"bold\">Intervalul de update</span>"
+
+#: src/interface.c:1980
+msgid "<span weight=\"bold\">Viewing Headlines</span>"
+msgstr "<span weight=\"bold\">Vizualizaţi Titlurile</span>"
+
+#: src/ui_folder.c:78
+msgid "A folder must be selected."
+msgstr "Un director trebuie să fie selectat."
+
+#: src/interface.c:453 src/interface.c:2945 src/interface.c:2977
+msgid "About"
+msgstr "Despre"
+
+#: src/ui_feed.c:65
+msgid "Access Forbidden"
+msgstr "Acces Interzis"
+
+#: src/ui_mainwindow.c:161
+msgid "Add a new subscription."
+msgstr "Adaugă înscriere nouă."
+
+#: src/main.c:244
+msgid ""
+"Another copy of Liferea was found to be running. Please us it instead. If "
+"there is no other copy of Liferea running, please delete the \"~/.liferea/"
+"lock\" lock file."
+msgstr ""
+"Mai rulează o dată Liferea în sistem. Vă rog folosiţi această "
+"instanţă. Dacă nu rulează alt Liferea vă rog să ştergeţi fişierul "
+"\"~/.liferea/lock\"."
+
+#: src/ui_feedlist.c:505
+#, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "Sunteţi sigur că doriţi să ştergeţi %s şi conţinutul lui?"
+
+#: src/ui_feedlist.c:508
+#, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
+msgstr "Sunteţi sigur că doriţi să ştergeţi %s?"
+
+#: src/interface.c:1894
+msgid "At _startup:"
+msgstr "La _pornire:"
+
+#: src/interface.c:1278 src/interface.c:3076
+msgid "Authentication"
+msgstr "Autentificare"
+
+#: src/ui_feed.c:94
+msgid "Authentication failed"
+msgstr "Autentificare eşuată"
+
+#. now we determine a list of all available modules
+#. to present in the preferences dialog and to load
+#. one just in case there was no configured module
+#. or it did not load when trying...
+#: src/ui_htmlview.c:127
+#, c-format
+msgid "Available browser modules (%s):\n"
+msgstr "Modulele disponibile pentru randare (%s):\n"
+
+#: src/ui_htmlview.c:365 src/ui_htmlview.c:386
+#, c-format
+msgid "Browser command failed: %s"
+msgstr "Comanda de browser a eşuat: %s"
+
+#: src/ui_prefs.c:196
+msgid "Browser default"
+msgstr "Navigatorul predefinit"
+
+#: src/common.c:519 src/common.c:526 src/common.c:532 src/common.c:539
+#, c-format
+msgid "Cannot create cache directory %s!"
+msgstr "Nu s-a putut crea directorul cache %s!"
+
+#: src/ui_htmlview.c:121
+#, c-format
+msgid "Cannot load HTML widget module (%s)!"
+msgstr "Nu se poate încărca modulul HTML (%s)!"
+
+#: src/ui_feed.c:558
+msgid "Choose File"
+msgstr "Selectează fişier"
+
+#: src/ui_feed.c:103
+msgid "Client Error"
+msgstr "Eroare la client"
+
+#: src/interface.c:536
+msgid "Close search"
+msgstr "Închide căutarea"
+
+#: src/interface.c:2991
+msgid ""
+"Code, Patches, Debugging\n"
+"\n"
+"James Doherty <...>\n"
+"Jeremy Messenger <mezz7@cox.net>\n"
+"John McKnight <...>\n"
+"Tomasz Maka <pasp@ll.pl>\n"
+"Karl Soderstrom <ks@debian.org>\t\n"
+"Christophe Barbe <christophe.barbe@ufies.org>\n"
+"Juho Snellman <jsnell@users.sourceforge.net>\n"
+"Roshan Revankar <roshweb@users.sourceforge.net>\n"
+"Oliver Feiler <kiza@kcore.de>\n"
+"Niklas Morberg <morberg@users.sourceforge.net>\n"
+"Johannes Schlueter <joscherl@users.sourceforge.net>\n"
+"Pierre Phaneuf <pp@ludusdesign.com>\n"
+"ahmed el-helw <ahmedre@cc.gatech.edu>\n"
+"James Bowes <bowes@cs.dal.ca>\n"
+"Marc Deslauriers\n"
+"Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
+"Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"\n"
+"\n"
+"Code from other projects\n"
+"\n"
+"Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
+"Philippe Martin, Brion Vibber (favicon support)\n"
+"Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
+"Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
+msgstr ""
+"Code, Patches, Debugging\n"
+"\n"
+"James Doherty <...>\n"
+"Jeremy Messenger <mezz7@cox.net>\n"
+"John McKnight <...>\n"
+"Tomasz Maka <pasp@ll.pl>\n"
+"Karl Soderstrom <ks@debian.org>\t\n"
+"Christophe Barbe <christophe.barbe@ufies.org>\n"
+"Juho Snellman <jsnell@users.sourceforge.net>\n"
+"Roshan Revankar <roshweb@users.sourceforge.net>\n"
+"Oliver Feiler <kiza@kcore.de>\n"
+"Niklas Morberg <morberg@users.sourceforge.net>\n"
+"Johannes Schlueter <joscherl@users.sourceforge.net>\n"
+"Pierre Phaneuf <pp@ludusdesign.com>\n"
+"ahmed el-helw <ahmedre@cc.gatech.edu>\n"
+"James Bowes <bowes@cs.dal.ca>\n"
+"Marc Deslauriers\n"
+"Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
+"Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"\n"
+"\n"
+"Cod de la alte proiecte\n"
+"\n"
+"Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
+"Philippe Martin, Brion Vibber (favicon support)\n"
+"Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
+"Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
+
+#: src/interface.c:2997
+msgid "Contributors"
+msgstr "Contribuitori"
+
+#: src/interface.c:1157 src/interface.c:1567
+msgid "Convert using:"
+msgstr "Converteşte folosind:"
+
+#: src/interface.c:2971
+msgid ""
+"Copyright (c) 2003-2004 \n"
+"Lars Lindner <lars.lindner@gmx.net> and \n"
+"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
+msgstr ""
+"Copyright (c) 2003-2004 \n"
+"Lars Lindner <lars.lindner@gmx.net> and \n"
+"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
+
+#: src/support.c:90 src/support.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Nu s-a putut găsi fişierul imagine: %s"
+
+#: src/interface.c:440
+msgid "Creates a Feedster search feed."
+msgstr "Crează un feed de căutare Feedster."
+
+#: src/ui_itemlist.c:262
+msgid "Date"
+msgstr "Data"
+
+#: src/interface.c:402
+msgid "Decreases the text size of the item view."
+msgstr "Micşoareză mărimea textului al elementului vizualizat."
+
+#: src/interface.c:1869
+msgid "Default Feed Refresh _Interval:"
+msgstr "_Intervalul de predefinit de update al feedului:"
+
+#: src/interface.c:1830
+msgid "Default number of items per feed to save:"
+msgstr "Numărul predefinit de articole per feed să fie salvate:"
+""
+
+#: src/ui_feedlist.c:504 src/ui_feedlist.c:507
+msgid "Deleting entry"
+msgstr "Se şterge intrarea"
+
+#: src/ui_feedlist.c:516
+msgid "Deletion Confirmation"
+msgstr "Confirmarea ştergerii"
+
+#: src/ui_htmlview.c:99
+msgid "Detected module is not a valid htmlview module!"
+msgstr "Modulul detectat nu este un modul HTML valid!"
+
+#: src/interface.c:1191
+msgid "Di_sable cache"
+msgstr "De_zactivaţi cache-ul"
+
+#: src/interface.c:2082
+msgid "Display date and time"
+msgstr "Afişează data şi ora"
+
+#: src/interface.c:2076
+msgid "Display only time"
+msgstr "Afişează numai timpul"
+
+#: src/net/conversions.c:140
+msgid "ERROR: Compression method is not deflate"
+msgstr "Eroare: Metoda de compresie nu este suportată"
+
+#: src/net/conversions.c:135
+msgid "ERROR: Invalid magic bytes for GZIP data"
+msgstr "Eroare: Invalizi biţi pentru datele GZIP"
+
+#: src/net/conversions.c:102
+msgid "ERROR: No output during decompression"
+msgstr "Eroare: Nici o ieşire după compresie"
+
+#: src/net/conversions.c:145
+#, c-format
+msgid "ERROR: Unsupported flags %d\n"
+msgstr "Eroare: flag-uri nesuportate %d\n"
+
+#: src/net/conversions.c:86
+#, c-format
+msgid "ERROR: zlib_uncompress: %d %s\n"
+msgstr "Eroare: zlib_uncompress: %d %s\n"
+
+#: src/ui_mainwindow.c:166
+msgid "Edit preferences."
+msgstr "Editează preferinţele."
+
+#: src/export.c:493 src/export.c:495
+#, c-format
+msgid ""
+"Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr ""
+"Document gol! Documentul OPML \"%s\" nu trebuie să fie gol când se importă."
+
+#: src/interface.c:3087 src/ui_feed.c:616
+#, c-format
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "Introduceţi userul şi parola pentru \"%s\" (%s):"
+
+#: src/ui_feed.c:79
+msgid "Error connecting to remote host"
+msgstr "Eroare la conectarea la distanţă"
+
+#: src/conf.c:281
+#, c-format
+msgid "Error renaming %s to %s\n"
+msgstr "Eroare la redenumirea %s în %s\n"
+
+#: src/export.c:548
+msgid "Error while exporting feed list!"
+msgstr "Eroare la exportarea listei!"
+
+#: src/feed.c:365 src/feed.c:366
+#, c-format
+msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
+msgstr "Eroare în timp ce se încărca fişierul \"%s\" ! Fişierul nu a putut fi "
+"încărcat!"
+
+#: src/update.c:132
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "Eroare: Nu s-a putut deschide fişierul \"%s\"!"
+
+#: src/update.c:118
+#, c-format
+msgid "Error: Could not open pipe \"%s\""
+msgstr "Eroare: Nu s-a putut face legătura \"%s\""
+
+#: src/update.c:138
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "Eroare: Nu este nici un fişier \"%s\"!"
+
+#: src/ui_prefs.c:201
+msgid "Existing window"
+msgstr "Fereastra existentă"
+
+#: src/export.c:557
+msgid "Export"
+msgstr "Exportă"
+
+#: src/export.c:557
+msgid "Export Feed List"
+msgstr "Exportă lista de feed-uri"
+
+#: src/interface.c:302
+msgid "Exports the feed list as OPML."
+msgstr "Exportă lista de feeduri ca OPML."
+
+#: src/interface.c:2185
+msgid "External Browser"
+msgstr "Navigator extern"
+
+#: src/ui_htmlview.c:79
+#, c-format
+msgid ""
+"Failed to open HTML widget module (%s) specified in configuration!\n"
+"%s\n"
+msgstr ""
+"Nu s-a putut deschide modulul HTML (%s) specificat în configuraţia !\n"
+"%s\n"
+
+#: src/ocs_dir.c:96
+msgid "Feed"
+msgstr "Feed"
+
+#: src/interface.c:1224
+msgid "Feed Cache"
+msgstr "Cache-ul feedului"
+
+#: src/interface.c:1965
+msgid "Feed Handling"
+msgstr "Manevrarea feedurilor"
+
+#: src/export.c:550
+msgid "Feed List exported!"
+msgstr "Lista de feed-uri a fost exportată"
+
+#: src/interface.c:1169
+msgid "Feed Source"
+msgstr "Sursa Feedului"
+
+#: src/interface.c:948
+msgid "Feed _Name:"
+msgstr "Numele _Feedului:"
+
+#: src/html.c:159
+msgid "Feed link auto discovery failed! No feed links found!"
+msgstr "Descoperire automată la feed eşuată! Nu s-a putut găsi nici un feed!"
+
+#: src/ui_feed.c:102
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr ""
+"Feedul nu este disponibil:Redirecţionare cerută de server care nu este "
+"suportată!"
+
+#. attributes resulting from general feed parsing
+#: src/feed.c:993 src/item.c:198 src/metadata.c:321 src/ocs_dir.c:140
+#: src/opml.c:214
+msgid "Feed:"
+msgstr "Feed:"
+
+#: src/interface.c:2833
+msgid "Feedster Search"
+msgstr "Căutare cu Feedster"
+
+#: src/interface.c:268
+msgid "Filter Feeds Without Unread Headlines"
+msgstr "Filtrează feedurile fără titlurile necitite"
+
+#: src/rule.c:133
+msgid "Flag status"
+msgstr "Starea steagului"
+
+#: src/interface.c:2687 src/interface.c:2764
+msgid "Folder name:"
+msgstr "Numele directorului:"
+
+#: src/interface.c:2279
+msgid "GUI"
+msgstr "GUI"
+
+#: src/interface.c:1026
+msgid "General"
+msgstr "General"
+
+#: src/ui_feed.c:71
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "S-a închis, feedul nu mai există. Vă rugăm dezabonaţivă!"
+
+#: src/ui_itemlist.c:273
+msgid "Headline"
+msgstr "Titlul"
+
+#: src/interface.c:2104
+msgid "Headline Display"
+msgstr "Afişarea titlului"
+
+#: src/interface.c:582
+msgid "Headlines"
+msgstr "Titluri"
+
+#: src/ui_feed.c:80
+msgid "Hostname could not be found"
+msgstr "Nu s-a putut găsi numele gazdei"
+
+#: src/ui_htmlview.c:91
+msgid "Htmlview API mismatch!"
+msgstr "Htmlview API greşit!"
+
+#: src/interface.c:271
+msgid "If active all feeds without unread items are hidden."
+msgstr ""
+"dacă este activat, toate feedurile fără articole nicitite sunt ascunse."
+
+#: src/export.c:538
+msgid "Import"
+msgstr "Importă"
+
+#: src/export.c:538
+msgid "Import Feed List"
+msgstr "Importă lista de feeduri"
+
+#: src/export.c:527
+msgid "Imported feed list"
+msgstr "Lista de feeduri importată"
+
+#: src/interface.c:293
+msgid "Imports an OPML feed list."
+msgstr "Importă o lista OPML de feeduri."
+
+#: src/interface.c:390
+msgid "Increases the text size of the item view."
+msgstr "Măriţi mărimea textului a articolului vizualizat."
+
+#: src/common.c:394
+msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
+msgstr "Format ISO8601 invalid! Informaţiile <dc:date> se ignoră!\n"
+
+#: src/common.c:505
+msgid "Invalid RFC822 date format! Ignoring date information!\n"
+msgstr "Format RFC822 invalid! Datele informaţiei se ignoră!\n"
+
+#: src/rule.c:129
+msgid "Item"
+msgstr "Articol"
+
+#: src/rule.c:131
+msgid "Item body"
+msgstr "Corpul articolului"
+
+#: src/rule.c:130
+msgid "Item title"
+msgstr "Titlul articolului"
+
+#: src/item.c:231 src/metadata.c:322 src/ocs_dir.c:101
+msgid "Item:"
+msgstr "Articol:"
+
+#: src/interface.c:318 src/ui_mainwindow.c:162
+msgid ""
+"Jumps to the next unread item. If necessary selects the next feed with "
+"unread items."
+msgstr ""
+"Sari la următorul articol necitit. Dacă este necesar selectează feed-ul cu "
+"articole necitite."
+
+#: src/interface.c:378
+msgid "Launches the item's link in the configured browser."
+msgstr "Lansează legăturile la articole în navigatorul configurat."
+
+#: src/interface.c:140
+msgid "Liferea"
+msgstr "Liferea"
+
+#: src/interface.c:1783
+msgid "Liferea Preferences"
+msgstr "Preferinţe la Liferea"
+
+#: src/interface.c:1143 src/interface.c:1553
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and "
+"directories in non-supported formats.  See the documentation for more "
+"information."
+msgstr ""
+"Liferea poate folosi plugin-uri externe pentru a accesa feed-urile si "
+"directoarele pentru formate nesuportate. Uitaţi-vă la documentaţie pentru "
+"mai multe informaţii."
+
+#: src/interface.c:2027
+msgid ""
+"Liferea displays feeds' content using various HTML renderers. Depending on "
+"which renderers are installed on your computer, different options will be "
+"available. Restart Liferea for changes to take effect."
+msgstr ""
+"Liferea afişează conţinutul feedurilor folosind mai multe rendere html. "
+"Depinde de ce rendere sunt instalate în calculator, diferite opţiuni vor fi "
+"disponibile.Restartaţi Liferea ca schimbările să aibă efect."
+
+#: src/main.c:225
+#, c-format
+msgid "Liferea encountered an unknown argument: %s\n"
+msgstr "Liferea a întâlnit un argument necunoscut: %s\n"
+
+#: src/interface.c:2966
+msgid "Liferea is a news aggregator for GTK+"
+msgstr "Liferea este un cititor de ştiri pentru GTK+"
+
+#: src/ui_feedlist.c:422
+msgid "Liferea is in offline mode. No update possible."
+msgstr "Liferea este în modul offline. Nu se pot face update-uri."
+
+#: src/ui_mainwindow.c:275
+msgid "Liferea is now offline"
+msgstr "Liferea este offline"
+
+#: src/ui_mainwindow.c:272
+msgid "Liferea is now online"
+msgstr "Liferea este online"
+
+#: src/ui_notification.c:256
+msgid "Liferea notification"
+msgstr "Notificare pentru Liferea"
+
+#: src/interface.c:2315
+msgid ""
+"Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
+"these settings in the GNOME Control Center. Note: changing these settings "
+"will affect other applications! This dialog is primarily for users without "
+"GNOME to be able to use Liferea with a proxy."
+msgstr ""
+"Liferea refoloseşte setările GNOME pentru proxy. Dacă folosiţi GNOME puteţi "
+"schimba aceste setări din GNOME Control Center. Notă: schimbând aceste "
+"setări vor afecta şi alte aplicaţii! Acest dialog este pentru utilizatorii "
+"care nu folosesc GNOME şi care doresc să folosească Liferea cu un proxy."
+
+#: src/ui_htmlview.c:162
+#, c-format
+msgid "Loading configured browser module (%s)!\n"
+msgstr "Se încarcă modulul browser configurat (%s)!\n"
+
+#: src/interface.c:1084 src/interface.c:1494
+msgid "Local _File"
+msgstr "_Fişier Local"
+
+#. This allows the user to choose their own browser by typing in the command.
+#: src/ui_prefs.c:186
+msgid "Manual"
+msgstr "Manual"
+
+#: src/ui_mainwindow.c:163
+msgid "Mark As Read"
+msgstr "Marchează ca citit"
+
+#: src/ui_mainwindow.c:163
+msgid ""
+"Mark all items of the selected subscription or of all subscriptions of the "
+"selected folder as read."
+msgstr ""
+"Marchează toate articolele înscrierilor selectate precum şi toate "
+"înscrierele din directorul selectat ca citite."
+
+#: src/interface.c:276
+msgid ""
+"Marks all items of the current selected subscription or all of subscriptions "
+"of the selected folder as read."
+msgstr ""
+"Marchează toate articolele înscrierii curente sau toate înscrierele din "
+"directorul selectat ca citite."
+
+#: src/interface.c:2862
+msgid "Maximal Number Of Result Items:"
+msgstr "Numărul maxim de articole rezultate:"
+
+#: src/ui_feed.c:67
+msgid "Method Not Allowed"
+msgstr "Metoda nu este acceptată"
+
+#: src/interface.c:3210
+msgid "Name"
+msgstr "Nume"
+
+#: src/ui_feed.c:81
+msgid "Network connection was refused by the remote host"
+msgstr "Conexiunea a fost refuzată de gazda de la distanţă"
+
+#: src/ui_mainwindow.c:161
+msgid "New Feed"
+msgstr "Feed Nou"
+
+#: src/interface.c:2671
+msgid "New Folder"
+msgstr "Director nou"
+
+#: src/interface.c:1427
+msgid "New Subscription"
+msgstr "Înscriere nouă"
+
+#: src/interface.c:201
+msgid "New _Folder..."
+msgstr "Director _nou..."
+
+#: src/ui_feedlist.c:599
+msgid "New subscription"
+msgstr "Înscriere nouă"
+
+#: src/ui_prefs.c:211
+msgid "New tab"
+msgstr "Tab nou"
+
+#: src/ui_prefs.c:206
+msgid "New window"
+msgstr "Fereastră nouă"
+
+#: src/ui_mainwindow.c:162
+msgid "Next Unread"
+msgstr "Următorul necitit"
+
+#: src/ui_htmlview.c:165
+msgid "No browser module configured!\n"
+msgstr "Nu a fost configurat nici un modul de browser!\n"
+
+#: src/ui_itemlist.c:467 src/ui_itemlist.c:476 src/ui_itemlist.c:528
+msgid "No item has been selected"
+msgstr "Nu a fost selectat nici un articol"
+
+#: src/ui_tray.c:103
+msgid "No new items."
+msgstr "Nu sunt articole noi."
+
+#: src/ui_feed.c:68
+msgid "Not Acceptable"
+msgstr "Nu este acceptabil"
+
+#: src/interface.c:1883
+msgid ""
+"Note: <i>Please remember to set a reasonable refresh time. It is not desired "
+"to poll daily updated feeds every 15 minutes. To disable auto-updating per "
+"default set the interval to 0 minutes.</i>"
+msgstr ""
+"Notă: <i>Vă rugăm să selectaţi un interval normal, nu e recomandat să setaţi ca la  "
+"fiecare 15 minute să fie updatat feedul! Ca să dezactivaţi updatarea "
+"automată setaţi intervalul la 0.</i>"
+
+#: src/interface.c:3128
+msgid ""
+"Note: <i>The username and password will be saved to your Liferea feedlist "
+"file without using encryption.</i>"
+msgstr ""
+"Notă:<i>Userul şi parola vor fi salvate în lista de feeduri fără a se folosi "
+"vreo metodă de encriptare.</i>"
+
+#: src/interface.c:3239
+msgid ""
+"Note: Items are added to the vfolder if at least one additive rule\n"
+"matches. They are removed if at least one removing rule matches."
+msgstr ""
+"Notă: Articolele sunt adăugate în directorul virtual dacă cel puţin o regulă\n"
+"se potriveşte. Ele sunt şterse dacă nu se potriveşte nici o regulă."
+
+#: src/interface.c:2871
+msgid ""
+"Note: Liferea will generate a feed subscription which is used to query the "
+"Feedster results for the specified search string. You can keep this feed "
+"permanently and update it like any other subscription.  "
+msgstr ""
+"Notă: Liferea va genera un feed care va fi folosit pentru a fi salvată "
+"cererea de căutare cu Feedster. Puteţi păstra acest feed permanent şi să îl "
+"updataţi ca orice alt feed.  "
+
+#: src/ui_feedlist.c:459
+msgid "Note: Using the subscriptions filter disables drag & drop"
+msgstr "Notă: Dacă se foloseşte filtrarea se dezactivează drag&drop-ul"
+
+#: src/interface.c:2049
+msgid "Open links in Liferea's _window."
+msgstr "Deschide legăturile în _fereastra din Liferea"
+
+#: src/interface.c:217
+msgid "Opens the property dialog for the selected subscription."
+msgstr "Deschideţi dialogul de proprietăţi pentru înscrierea selectată."
+
+#: src/ui_feed.c:64
+msgid "Payment Required"
+msgstr "Plată necesară"
+
+#: src/ui_search.c:95
+msgid "Please do a search first!"
+msgstr "Efectuaţi o căutare prima dată!"
+
+#: src/ui_mainwindow.c:166
+msgid "Preferences"
+msgstr "Preferinţe"
+
+#: src/interface.c:2422
+msgid "Proxy"
+msgstr "Proxy"
+
+#: src/ui_feed.c:69
+msgid "Proxy Authentication Required"
+msgstr "Identificare prin proxy necesară"
+
+#: src/interface.c:2415
+msgid "Proxy Pass_word:"
+msgstr "_Parola pentru proxy:"
+
+#: src/interface.c:2347
+msgid "Proxy _Host:"
+msgstr "Gazda Proxy-ului:"
+
+#: src/interface.c:2368
+msgid "Proxy _Port:"
+msgstr "Portul Proxy-ului:"
+
+#: src/interface.c:2393
+msgid "Proxy _Username:"
+msgstr "_Userul pentru proxy:"
+
+#: src/rule.c:132
+msgid "Read status"
+msgstr "Starea de citit"
+
+#: src/ui_feed.c:82
+msgid "Remote host did not finish sending data"
+msgstr "Gazda de la distanţă nu a terminat de trimis date"
+
+#: src/ui_feed.c:87
+msgid "Remote host sent an invalid response"
+msgstr "Gazda de la distanţă a trimis un răspuns invalid"
+
+#: src/interface.c:361
+msgid "Remove All"
+msgstr "Ştergeţi toate"
+
+#: src/interface.c:352
+msgid "Remove Selected"
+msgstr "Şterge cel selectat"
+
+#: src/interface.c:364
+msgid "Removes all items of the currently selected feed."
+msgstr "Ştergeţi toate elementele din feedul curent selectat."
+
+#: src/interface.c:355
+msgid "Removes the selected item."
+msgstr "Şterge articolul selectat."
+
+#: src/interface.c:257
+msgid "Removes the selected subscription."
+msgstr "Ştergeţi înscrierea selectată."
+
+#: src/interface.c:2752
+msgid "Rename Folder"
+msgstr "Redenumiţi directorul"
+
+#: src/ui_feed.c:70
+msgid "Request Time-Out"
+msgstr "Cerere expirată"
+
+#: src/ui_prefs.c:231
+msgid "Reset feed update timers (Update no feeds)"
+msgstr "Resetează timpul updatării feedurilor (Nu se updatează nici un feed)"
+
+#: src/ui_feed.c:66
+msgid "Resource Not Found"
+msgstr "Nu au fost găsite resursele"
+
+#: src/interface.c:3252
+msgid "Rules"
+msgstr "Reguli"
+
+#: src/ui_mainwindow.c:165
+msgid "Search"
+msgstr "Caută"
+
+#: src/ui_mainwindow.c:165
+msgid "Search all feeds."
+msgstr "Caută în toate feed-urile."
+
+#: src/interface.c:494
+msgid "Search for"
+msgstr "Caută după"
+
+#: src/interface.c:2848
+msgid "Search for:"
+msgstr "Caută după:"
+
+#: src/interface.c:437
+msgid "Search with Feedster..."
+msgstr "Caută cu Feedster..."
+
+#: src/ui_search.c:69
+#, c-format
+msgid "Searching for \"%s\""
+msgstr "Căutând pentru \"%s\""
+
+#: src/interface.c:1165 src/interface.c:1575
+msgid "Select File..."
+msgstr "Selectaţi fişierul..."
+
+#: src/ui_feed.c:104
+msgid "Server Error"
+msgstr "Eroare la server"
+
+#: src/interface.c:2261
+msgid "Show Menu _And Toolbar"
+msgstr "Afişează meniul şi bara de unelte"
+
+#: src/interface.c:2267
+msgid "Show _Menu Only"
+msgstr "Afişează numai meniul"
+
+#: src/interface.c:2273
+msgid "Show _Toolbar Only"
+msgstr "Afişează numai bara de unelte"
+
+#: src/interface.c:2233
+msgid "Show a _popup window with new headlines."
+msgstr "Afişează o fereastră cu noile titluri."
+
+#: src/interface.c:2216
+msgid ""
+"Show a status _icon in the notification area \n"
+"(also called system tray)."
+msgstr ""
+"Afişează un _icon în zona de notificare \n"
+"în systray."
+
+#: src/interface.c:456
+msgid "Shows an about dialog."
+msgstr "Afişează dialogul despre."
+
+#: src/interface.c:431
+msgid "Shows or hides the search box."
+msgstr "Afişează sau ascunde bara de search."
+
+#: src/interface.c:2003
+msgid "Skim through articles with "
+msgstr "Navigheză printre articole cu "
+
+#: src/ui_htmlview.c:184
+msgid ""
+"Sorry, I was not able to load any installed browser modules! Try the --debug-"
+"all option to get debug information!"
+msgstr ""
+"Scuze, nu s-a putut încărca nici un modul de browser! Incercaţi opţiunea --"
+"debug-all pentru a vedea informaţii de debug!"
+
+#: src/interface.c:1104 src/interface.c:1514
+msgid "Source Type:"
+msgstr "Tipul sursei:"
+
+#: src/feed.c:1008 src/interface.c:1110 src/interface.c:1520 src/item.c:247
+#: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
+msgid "Source:"
+msgstr "Sursa:"
+
+#: src/interface.c:2013
+msgid "Space"
+msgstr "Spaţiu"
+
+#: src/ui_htmlview.c:368 src/ui_htmlview.c:389
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "Se porneşte: \"%s\""
+
+#: src/interface.c:505
+msgid ""
+"Starts a search for all items that do match the given search string either "
+"in title or content."
+msgstr ""
+"Porniţi o căutare pentru toate articolele la care se potrivesc atât din "
+"titlu cât şi din conţinutul articolului."
+
+#: src/interface.c:908
+msgid "Subscription Properties"
+msgstr "Proprietăţile înscrierii"
+
+#: src/main.c:222
+#, c-format
+msgid "The --session argument must be given a parameter.\n"
+msgstr "Argumentul sesiunii trebuie să aibă un paramentru.\n"
+
+#: src/ui_feed.c:171
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "URL-ul \"%s\" s-a modificat permanent şi a fost updatat"
+
+#: src/interface.c:1178
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea "
+"exits. Marked items are always saved to the cache."
+msgstr ""
+"Setările pentru controlul cache-ului dacă conţinutul feed-urilor sunt "
+"salvate când se închide Liferea. Elemtele marcate sunt întotdeauna salvate."
+
+#: src/feed.c:523
+msgid "The feed was discontinued. Liferea won't update it anymore!"
+msgstr "Feedul a fost întrerupt. Liferea nu îl va mai updata!"
+
+#: src/gtkhtml2/gtkhtml2.c:222
+msgid ""
+"The included HTML <object> tag is not supported with GtkHTML2.\n"
+"Included Plugins might not be displayed."
+msgstr ""
+"Tagul HTML <object> inclus nu este suportat de GtkHTML2.\n"
+"Pluginurile incluse nu pot fi afişate."
+
+#: src/ui_htmlview.h:99
+#, c-format
+msgid ""
+"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
+msgstr ""
+"Ultimul update al înscrierii a eşuat!<br><b>HTTP error code %d: %s</b>"
+
+#: src/ui_feed.c:719
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minutes."
+msgstr "Autorul acestui feed sugerează un interval de update de %d minute."
+
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:601
+msgid "There are no unread items "
+msgstr "Nu sunt articole necitite "
+
+#: src/ui_feed.c:127
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"A apărut o problemă în timp ce se citea înscrierea. Verificaţi URL-ul şi ceea "
+"ce afişează la consolă."
+
+#: src/feed.c:225
+msgid "There were errors while parsing a feed"
+msgstr "Au fost erori în timp ce se parcurgea feedul"
+
+#: src/feed.c:450
+#, c-format
+msgid "There were errors while parsing cache file \"%s\""
+msgstr "Au fost erori la parcurgerea fişierului cache \"%s\""
+
+#: src/ocs_dir.c:502 src/opml.c:241 src/pie_feed.c:262 src/rss_channel.c:308
+msgid "There were errors while parsing this feed!"
+msgstr "Au fost erori în timp ce se parcurgea feed-ul!"
+
+#: src/ui_htmlview.h:100
+#, c-format
+msgid ""
+"There were errors while parsing this feed. The following error occurred:"
+"<br><b>%s</b>"
+msgstr ""
+"Au fost erori în timp ce se parcurgea feedul. Au apărut erorile:"
+"<br><b>%s</b>"
+
+#: src/feed.c:518
+#, c-format
+msgid "This feed \"%s\" is already being updated!"
+msgstr "Feedul \"%s\" se updatează deja!"
+
+#: src/ui_htmlview.h:101
+msgid ""
+"This feed is discontinued. It's no longer available. Liferea won't update it "
+"anymore but you can still access the cached headlines."
+msgstr "Feedul a fost întrerupt. Nu mai este disponibil. Liferea nu îl va mai updata "
+"dar puteţi accesa titlurile din cache."
+
+#: src/interface.c:1019
+#, c-format
+msgid "This feed provider suggests an update interval of %d minutes."
+msgstr "Providerul acestui feed sugerează un interval de update de %d minute."
+
+#: src/ui_feed.c:721
+msgid "This feed specifies no default update interval."
+msgstr "Acest feed nu are nici un interval predefinit pentru updatare."
+
+#. FIXME: bad because this is not only used for item links!
+#: src/ui_htmlview.c:322
+msgid "This item does not have a link assigned!"
+msgstr "Acest articol nu are nici o legătură asociată!"
+
+#: src/interface.c:344
+msgid "Toggle Item _Flag"
+msgstr "Comută _Steagul Articolului"
+
+#: src/interface.c:428
+msgid "Toggle Search Box"
+msgstr "Comută bara de căutare"
+
+#: src/interface.c:416
+msgid "Toggle _Condensed View"
+msgstr "Comută vederea _condensată"
+
+#: src/interface.c:332
+msgid "Toggle _Read Status"
+msgstr "Comută statutul de _citire"
+
+#: src/interface.c:347
+msgid "Toggles the item flag."
+msgstr "Comută steagul articolului."
+
+#: src/interface.c:419
+msgid "Toggles the item list mode between condensed and normal mode."
+msgstr "Schimbă modurile dintre vedere condensată si vedere normală."
+
+#: src/interface.c:335
+msgid "Toggles the read status of the selected item."
+msgstr "Activează statutul de citire pentru elementele selectate."
+
+#. Transfer errors
+#: src/ui_feed.c:84
+msgid "Too many HTTP redirects were encountered"
+msgstr "Prea multe redirectări HTTP s-au întămpinat"
+
+#: src/interface.c:3017
+msgid "Translation"
+msgstr "Traducere"
+
+#: src/ui_tabs.c:86
+msgid "URL"
+msgstr "URL"
+
+#: src/ui_feed.c:76
+msgid "URL is invalid"
+msgstr "URL este invalid"
+
+#: src/net/netio.c:577
+msgid "URL points to permanent redirect, updating with new location..."
+msgstr "URL-ul face o redirectare la o nouă locaţie a feedului..."
+
+#: src/common.c:609
+msgid ""
+"Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
+"characters were dropped!"
+msgstr ""
+"Sfârşit de caracter greşit sau o encodare UTF-8 greşită! Anumite caractere "
+"nu au fost încărcate!"
+
+#: src/ui_feed.c:617
+msgid "Unknown source"
+msgstr "Sursă necunoscută"
+
+#: src/ui_notification.c:195
+msgid "Untitled"
+msgstr "Fără titlu"
+
+#: src/ui_mainwindow.c:164
+msgid "Update All"
+msgstr "Updatează toate"
+
+#: src/interface.c:237
+msgid "Update _All"
+msgstr "_Updatează toate"
+
+#: src/interface.c:228
+msgid "Update _Selected"
+msgstr "Updatează cele _selectate"
+
+#: src/interface.c:1961
+msgid "Update all favicons now."
+msgstr "Updatează iconurile la feeduri acum."
+
+#: src/ui_prefs.c:226
+msgid "Update all feeds"
+msgstr "Updatează toate feedurile"
+
+#: src/ui_prefs.c:221
+msgid "Update only feeds scheduled for updates"
+msgstr "Updatează numai feedurile programate pentru update"
+
+#: src/interface.c:240 src/ui_mainwindow.c:164
+msgid "Updates all subscriptions. This does not update OCS directories."
+msgstr "Updatează toate înscrierile. Nu va updata directoarele OCS."
+
+#: src/interface.c:231
+msgid ""
+"Updates the selected subscription or all subscriptions of the selected "
+"folder."
+msgstr ""
+"Updatează înscrierea selectată sau toate înscrierele din directorul selectat."
+
+#: src/feed.c:527
+#, c-format
+msgid "Updating \"%s\""
+msgstr "Se updatează \"%s\""
+
+#: src/interface.c:1233
+msgid "Use HTTP _authentication"
+msgstr "Folosiţi _autenficare HTTP"
+
+#: src/interface.c:2375
+msgid "Use Proxy _Authentication"
+msgstr "Folosiţi _autenficare prin Proxy"
+
+#: src/interface.c:1128 src/interface.c:1538
+msgid "Use conversion filter"
+msgstr "Folosiţi filtrul de conversie"
+
+#: src/interface.c:2092
+msgid "User defined format:"
+msgstr "Definiţi propriul format:"
+
+#: src/interface.c:1251 src/interface.c:3099
+msgid "User_name:"
+msgstr "Numele_userului:"
+
+#: src/feed.c:993 src/interface.c:529
+msgid "VFolder"
+msgstr "Director virtual"
+
+#: src/interface.c:3194
+msgid "VFolder Properties"
+msgstr "Proprietăţi la directoarele virtuale"
+
+#: src/interface.c:2037
+msgid "View Headlines With"
+msgstr "Vedeţi titlurile cu"
+
+#: src/ui_feed.c:96
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr "Identificarea cerută de serverul web incompatibilă cu Liferea"
+
+#: src/interface.c:173
+msgid "Work Offline"
+msgstr "Lucraţi offline"
+
+#: src/export.c:487 src/export.c:489
+#, c-format
+msgid "XML error while reading cache file! Could not import \"%s\"!"
+msgstr ""
+"eroare XML în timp ce se încărca fişierul cache! Fişierul %s nu a putut fi "
+"incărcat!"
+
+#: src/ui_feed.c:62
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr ""
+"Nu sunteţi autorizat să descărcaţi acest feed. Introduceţi userul şi parola "
+"în fereastra de proprietăţi a feedului."
+
+#: src/ui_feedlist.c:412
+msgid "You have to select a feed entry"
+msgstr "Selectaţi o intrare a feedului"
+
+#: src/ui_feedlist.c:552
+msgid "You must select a feed entry"
+msgstr "Trebuie să selectaţi o intrare a feedului"
+
+#: src/ui_feedlist.c:553
+msgid "You must select a feed entry."
+msgstr "Trebuie să selectaţi o intrare a feedului"
+
+#: src/ui_itemlist.c:510 src/ui_itemlist.c:531
+msgid "You must select a feed to delete its items!"
+msgstr "Trebuie să selectaţi un feed pentru ai şterge articolele!"
+
+#: src/item.c:225 src/item.c:229 src/item.c:241 src/ui_itemlist.c:196
+msgid "[No title]"
+msgstr "[Fără titlu]"
+
+#: src/common.c:278
+msgid "[Parser error output was truncated!]"
+msgstr "[Eroare la parcurgere, ieşirea a fost modificată!]"
+
+#: src/interface.c:2141
+msgid "_Browser:"
+msgstr "_Navigator:"
+
+#: src/interface.c:1074 src/interface.c:1484
+msgid "_Command"
+msgstr "_Comandă"
+
+#: src/interface.c:399
+msgid "_Decrease Text Size"
+msgstr "_Micşoraţi mărimea textului"
+
+#: src/interface.c:1185
+msgid "_Default cache settings"
+msgstr "Setările _default pentru cache"
+
+#: src/interface.c:254
+msgid "_Delete Selected"
+msgstr "_Şterge cel selectat"
+
+#: src/interface.c:1009
+msgid "_Don't update this feed automatically."
+msgstr "_Nu updata automat acest feed."
+
+#: src/interface.c:2325
+msgid "_Enable Proxy"
+msgstr "_Activaţi Proxy-ului"
+
+#: src/interface.c:299
+msgid "_Export Feed List..."
+msgstr "_Exportă lista de feeduri..."
+
+#: src/interface.c:990
+msgid "_Feed specific update interval of"
+msgstr "_Interval de update pentru un feed"
+
+#: src/interface.c:186
+msgid "_Feeds"
+msgstr "_Feeduri"
+
+#: src/interface.c:446
+msgid "_Help"
+msgstr "_Help"
+
+#: src/interface.c:290
+msgid "_Import Feed List..."
+msgstr "_Importă lista de feed-uri..."
+
+#: src/interface.c:387
+msgid "_Increase Text Size"
+msgstr "_Măriţi mărimea textului"
+
+#: src/interface.c:308
+msgid "_Items"
+msgstr "_Articole"
+
+#: src/interface.c:1932
+msgid ""
+"_Keep all feeds loaded. This may improve speed \n"
+"(especially when searching) but can cause a \n"
+"significant memory footprint if you have a lot \n"
+"of feeds!"
+msgstr ""
+"_Ţineţi încărcate toate feedurile. Va îmbunătăţi viteza \n"
+"(în special la căutare) dar va consuma foarte multă \n"
+"memorie dacă aveţi multe feeduri!"
+
+#: src/interface.c:375
+msgid "_Launch In Browser"
+msgstr "_Lansează în navigator"
+
+#: src/interface.c:1207
+msgid "_Limit cache to"
+msgstr "_Limitează cache-ul la"
+
+#: src/interface.c:1925
+msgid ""
+"_Load feeds from disk when needed. Searching can \n"
+"be slow if you have a lot of feeds,"
+msgstr ""
+"_Încărcaţi feedurile de pe disc la nevoie. Căutarea este \n"
+"lentă dacă aveţi multe feeduri."
+
+#: src/interface.c:2148
+#, c-format
+msgid ""
+"_Manual:\n"
+"(%s for URL)"
+msgstr ""
+"_Manual:\n"
+"(%s for URL)"
+
+#: src/interface.c:273
+msgid "_Mark As Read"
+msgstr "_Marchează ca citite"
+
+#: src/interface.c:193
+msgid "_New Subscription..."
+msgstr "Înscriere _Nouă..."
+
+#: src/interface.c:315
+msgid "_Next Unread Item"
+msgstr "_Următorul Articol necitit"
+
+#: src/interface.c:2162
+msgid "_Open link in:"
+msgstr "_Deschide legăturile în:"
+
+#: src/interface.c:1258 src/interface.c:3106
+msgid "_Password:"
+msgstr "_Parola:"
+
+#: src/interface.c:157
+msgid "_Program"
+msgstr "_Program"
+
+#: src/interface.c:214
+msgid "_Properties..."
+msgstr "_Proprietăţi..."
+
+#: src/interface.c:421
+msgid "_Search"
+msgstr "_Caută"
+
+#: src/interface.c:1094 src/interface.c:1504
+msgid "_Select File..."
+msgstr "_Selectaţi fişierul..."
+
+#: src/interface.c:1068 src/interface.c:1478
+msgid "_URL"
+msgstr "_URL"
+
+#: src/interface.c:1197
+msgid "_Umlimited cache"
+msgstr "Cache _nelimitat"
+
+#: src/interface.c:980
+msgid "_Use global default update interval."
+msgstr "_Foloseşte intervalul de update global."
+
+#: src/interface.c:380
+msgid "_View"
+msgstr "_Vizualizează"
+
+#: src/metadata.c:325
+msgid "author"
+msgstr "autor"
+
+#: src/metadata.c:333
+msgid "category"
+msgstr "categorie"
+
+#: src/metadata.c:286
+msgid "comments"
+msgstr "comentarii"
+
+#: src/metadata.c:330
+msgid "content last updated"
+msgstr "când a fost updatat ultima oară"
+
+#: src/metadata.c:326
+msgid "contributors"
+msgstr "contribuitori"
+
+#: src/metadata.c:327
+msgid "copyright"
+msgstr "copyright"
+
+#: src/metadata.c:361
+msgid "coverage"
+msgstr "acoperire"
+
+#. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
+#: src/metadata.c:355
+msgid "creator"
+msgstr "creator"
+
+#: src/rule.c:129
+msgid "does contain"
+msgstr "conţine"
+
+#: src/rule.c:130 src/rule.c:131
+msgid "does match"
+msgstr "se potriveşte"
+
+#: src/rule.c:129
+msgid "does not contain"
+msgstr "nu conţine"
+
+#: src/rule.c:130 src/rule.c:131
+msgid "does not match"
+msgstr "nu se potriveşte"
+
+#: src/metadata.c:296
+#, c-format
+msgid "enclosed file: <a href=\"%s\">%s</a>"
+msgstr "fişier inclus <a href=\"%s\">%s</a>"
+
+#: src/interface.c:2855
+msgid "enter any search string you want"
+msgstr "introduceţi orice şir doriţi"
+
+#: src/metadata.c:307 src/metadata.c:334
+msgid "feed generator"
+msgstr "generator de feeduri"
+
+#: src/metadata.c:329
+msgid "feed published on"
+msgstr "feed publicat în"
+
+#. "feedlist.opml" is translatable so that translators can provide a localized default feed list
+#: src/conf.c:262
+msgid "feedlist.opml"
+msgstr "feedlist.opml"
+
+#: src/interface.c:2101
+msgid ""
+"for expert users: specify a time format string, consult the strftime() "
+"manpage for the format codes"
+msgstr ""
+"pentru utilizatorii experimentaţi: specificaţi un format de timp, consultaţi "
+"strftime() manpage pentru codurile de format"
+
+#: src/metadata.c:358
+msgid "format"
+msgstr "format"
+
+#. _() for HELP1URL to allow localised help feeds
+#: src/export.c:37
+msgid "http://liferea.sf.net/help/help"
+msgstr "http://liferea.sf.net/help/help"
+
+#: src/metadata.c:359
+msgid "identifier"
+msgstr "identificator"
+
+#: src/ns_photo.c:35
+msgid "included photo"
+msgstr "fotografie inclusă"
+
+#: src/ns_dc.c:189 src/ns_ocs.c:89
+msgid "internal OCS namespace parsing error!"
+msgstr "eroare internă la parcurgerea OCS!"
+
+#: src/common.c:391 src/common.c:502
+msgid "internal error! time conversion error! mktime failed!\n"
+msgstr "eroare internă! eroare la conversia timpului! mktime a eşuat!\n"
+
+#: src/ui_folder.c:242
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr "eroare internă! tipul feedului necunoscut! nu se poate afişa nici un icon!\n"
+
+#: src/rule.c:133
+msgid "is flagged"
+msgstr "este marcat"
+
+#: src/rule.c:132
+msgid "is read"
+msgstr "este citit"
+
+#: src/rule.c:133
+msgid "is unflagged"
+msgstr "este nemarcat"
+
+#: src/rule.c:132
+msgid "is unread"
+msgstr "este necitit"
+
+#: src/interface.c:1220
+msgid "items."
+msgstr "articole."
+
+#: src/interface.c:578
+msgid "label133"
+msgstr "label133"
+
+#: src/metadata.c:328
+msgid "language"
+msgstr "limba"
+
+#. types for creative commons
+#: src/metadata.c:352
+msgid "license"
+msgstr "licenţă"
+
+#: src/metadata.c:331
+msgid "managing editor"
+msgstr "editorul"
+
+#: src/interface.c:1005 src/interface.c:1879
+msgid "minutes."
+msgstr "minute."
+
+#: src/ocs_dir.c:197 src/ocs_dir.c:242 src/ocs_dir.c:357 src/ocs_dir.c:427
+#, c-format
+msgid "no namespace handler for <%s:%s>!\n"
+msgstr "nici un namespace handler pentru <%s:%s>!\n"
+
+#. types for aggregation
+#: src/metadata.c:345
+msgid "original source"
+msgstr "sursa originală"
+
+#: src/metadata.c:346
+msgid "original time"
+msgstr "timpul original"
+
+#: src/metadata.c:356
+msgid "publisher"
+msgstr "publicat de "
+
+#. types for admin
+#: src/metadata.c:341
+msgid "report errors to"
+msgstr "raportează erorile la"
+
+#: src/interface.c:515
+msgid "saves this search as a VFolder, which will appear in the feed list"
+msgstr "salvează această căutare ca un VFolder, care va apărea în lista de feeduri"
+
+#: src/interface.c:570
+msgid "single item view"
+msgstr "vedere singulară a articolelor"
+
+#: src/metadata.c:360
+msgid "source"
+msgstr "sursa"
+
+#: src/ui_htmlview.c:173
+#, c-format
+msgid "trying to load browser module %s (%s)\n"
+msgstr "se incearcă încărcarea modulului de browser %s (%s)\n"
+
+#: src/metadata.c:357
+msgid "type"
+msgstr "tip"
+
+#: src/feed.c:1005
+msgid "user defined command"
+msgstr "comandă definită de user"
+
+#: src/metadata.c:332
+msgid "webmaster"
+msgstr "webmaster"
+
+#: src/common.c:318
+#, c-format
+msgid ""
+"xmlReadMemory(): Could not parse document:\n"
+"%s%s"
+msgstr ""
+"xmlReadMemory():Nu s-a putut parcurge documentul:\"
+"%s%s"
+
