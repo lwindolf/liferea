@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-01 21:01+0200\n"
+"POT-Creation-Date: 2005-01-06 02:38+0100\n"
 "PO-Revision-Date: 2004-11-26 23:31+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <lokalisointi-laatu@linux-aktivaattori.org>\n"
@@ -20,6 +20,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+
+#. launch the homepage when button in about dialog is pressed
+#: src/callbacks.c:227
+msgid "http://liferea.sf.net"
+msgstr ""
 
 #: src/common.c:279
 msgid "[Parser error output was truncated!]"
@@ -43,16 +48,12 @@ msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr ""
 "Virheellinen ISO8601-aikamuoto: <dc:date>-kentän tiedot jäävät huomiotta.\n"
 
-#: src/common.c:554
-msgid "Invalid RFC822 date format! Ignoring date information!\n"
-msgstr "Virheellinen RFC822-aikamuoto: aikatiedot jäävät huomiotta.\n"
-
-#: src/common.c:568 src/common.c:575 src/common.c:581 src/common.c:588
+#: src/common.c:565 src/common.c:572 src/common.c:578 src/common.c:585
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "Varastokansion \"%s\" luominen ei onnistunut."
 
-#: src/common.c:658
+#: src/common.c:655
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -71,59 +72,59 @@ msgid "Error renaming %s to %s\n"
 msgstr "Tiedoston \"%s\" nimen vaihtaminen tiedostoksi \"%s\" ei onnistunut.\n"
 
 #. _() for HELP1URL to allow localised help feeds
-#: src/export.c:37
+#: src/export.c:39
 msgid "http://liferea.sf.net/help/help"
 msgstr ""
 
-#: src/export.c:38
+#: src/export.c:40
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/export.c:496 src/export.c:498
+#: src/export.c:498 src/export.c:500
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "XML-virhe välivarastotiedoston lukemisessa. \"%s\":n tuonti ei onnistunut."
 
-#: src/export.c:502 src/export.c:504
+#: src/export.c:504 src/export.c:506
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Tyhjä asiakirja. OPML-asiakirjan \"%s\" ei tulisi olla tyhjä, kun se tuodaan."
 
-#: src/export.c:512 src/export.c:514
+#: src/export.c:514 src/export.c:516
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" ei ole kelvollinen OPML-asiakirja. Liferea ei voi käsitellä tätä "
 "tiedostoa."
 
-#: src/export.c:536
+#: src/export.c:538
 msgid "Imported feed list"
 msgstr "Tuotu syöteluettelo"
 
-#: src/export.c:547
+#: src/export.c:549
 msgid "Import Feed List"
 msgstr "Tuotu syöteluettelo"
 
-#: src/export.c:547
+#: src/export.c:549
 msgid "Import"
 msgstr "Tuo"
 
-#: src/export.c:557
+#: src/export.c:559
 msgid "Error while exporting feed list!"
 msgstr "Virhe syöteluettelon viemisessä."
 
-#: src/export.c:559
+#: src/export.c:561
 msgid "Feed List exported!"
 msgstr "Syöteluettelo viety."
 
-#: src/export.c:566
+#: src/export.c:568
 msgid "Export Feed List"
 msgstr "Vie syöteluettelo"
 
-#: src/export.c:566
+#: src/export.c:568
 msgid "Export"
 msgstr "Vie"
 
@@ -134,7 +135,7 @@ msgstr ""
 "<p>XML-virhe syötteen lukemisessa. Syötteen \"%s\" lataaminen ei onnistunut."
 "</p>"
 
-#: src/feed.c:153 src/feed.c:388
+#: src/feed.c:153 src/feed.c:387
 msgid "<p>Empty document!</p>"
 msgstr "<p>Tyhjä asiakirja.</p>"
 
@@ -156,14 +157,14 @@ msgstr ""
 "href=\"http://feedvalidator.org\">kelvollinen</a> ja <a href=\"http://"
 "liferea.sourceforge.net/index.php#supported_formats\">tuettua muotoa</a>.</p>"
 
-#: src/feed.c:367 src/feed.c:368
+#: src/feed.c:367
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Virhe välivarastotiedoston \"%s\" lukemisessa. Välivarastotiedoston "
 "lataaminen ei onnistunut."
 
-#: src/feed.c:380
+#: src/feed.c:379
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -172,47 +173,47 @@ msgstr ""
 "<p>XML-virhe välivarastotiedoston lukemisessa! Välivarastoitua "
 "syötetiedostoa \"%s\" ei voitu ladata.</p>"
 
-#: src/feed.c:399
+#: src/feed.c:398
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" ei ole kelvollinen välivarastotiedosto. Sen lukeminen ei onnistu.</"
 "p>"
 
-#: src/feed.c:452
+#: src/feed.c:451
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Välivarastotiedoston \"%s\" jäsentämisessä oli ongelmia"
 
-#: src/feed.c:520
+#: src/feed.c:519
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Syöte \"%s\" päivittyy jo."
 
-#: src/feed.c:525
+#: src/feed.c:524
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "Syöte on lakkautettu. Liferea ei päivitä sitä enää."
 
-#: src/feed.c:529
+#: src/feed.c:528
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" päivittyy"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1008 src/item.c:198 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:1011 src/item.c:196 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "Syöte:"
 
-#: src/feed.c:1008 src/interface.c:529
+#: src/feed.c:1011 src/interface.c:511
 msgid "VFolder"
 msgstr "V-Kansio"
 
-#: src/feed.c:1027
+#: src/feed.c:1019
 msgid "user defined command"
 msgstr "muu komento"
 
-#: src/feed.c:1030 src/interface.c:1113 src/interface.c:1523 src/item.c:247
+#: src/feed.c:1042 src/interface.c:1089 src/interface.c:1499 src/item.c:245
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Lähde:"
@@ -223,78 +224,46 @@ msgstr ""
 "Syötelinkin automaattinen tunnistaminen ei onnistunut. Syötelinkkejä ei "
 "löydy."
 
-#: src/interface.c:140
+#: src/interface.c:137
 msgid "Liferea"
 msgstr "Liferea"
 
-#: src/interface.c:157
+#: src/interface.c:154
 msgid "_Program"
 msgstr "_Ohjelma"
 
-#: src/interface.c:173
+#: src/interface.c:170
 msgid "Work Offline"
 msgstr "Toimi yhteydettä"
 
-#: src/interface.c:186
+#: src/interface.c:183
 msgid "_Feeds"
 msgstr "_Syötteet"
 
-#: src/interface.c:193
-msgid "_New Subscription..."
-msgstr "_Uusi syöte..."
-
-#: src/interface.c:201
-msgid "New _Folder..."
-msgstr "Uusi _kansio..."
-
-#: src/interface.c:214
-msgid "_Properties..."
-msgstr "_Ominaisuudet..."
-
-#: src/interface.c:217
-msgid "Opens the property dialog for the selected subscription."
-msgstr "Avaa valitun syötteen ominaisuusikkunan."
-
-#: src/interface.c:228
+#: src/interface.c:190
 msgid "Update _Selected"
 msgstr "Päivitä _valitut"
 
-#: src/interface.c:231
+#: src/interface.c:193
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
 "Päivittää kaikki valitut syötteet, tai valitun kansion kaikki syötteet."
 
-#: src/interface.c:237
+#: src/interface.c:199
 msgid "Update _All"
 msgstr "Päivitä _kaikki"
 
-#: src/interface.c:240 src/ui_mainwindow.c:163
+#: src/interface.c:202 src/ui_mainwindow.c:164
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Päivittää kaikki syötteet, lukuun ottamatta OCS-kansioita."
 
-#: src/interface.c:254
-msgid "_Delete Selected"
-msgstr "_Poista valitut"
-
-#: src/interface.c:257
-msgid "Removes the selected subscription."
-msgstr "Poista valitut syötteet."
-
-#: src/interface.c:268
-msgid "Filter Feeds Without Unread Headlines"
-msgstr "Suodata jo kokonaan luetut syötteet."
-
-#: src/interface.c:271
-msgid "If active all feeds without unread items are hidden."
-msgstr "Jos valittu, vain lukemattomia otsikoita sisältävät syötteet näkyvät."
-
-#: src/interface.c:273
+#: src/interface.c:211
 msgid "_Mark As Read"
 msgstr "_Merkitse luetuksi"
 
-#: src/interface.c:276
+#: src/interface.c:214
 msgid ""
 "Marks all items of the current selected subscription or all of subscriptions "
 "of the selected folder as read."
@@ -302,31 +271,55 @@ msgstr ""
 "Merkitse kaikki valitun syötteen tai kaikkien valitun kansion syötteiden "
 "otsikot luetuiksi."
 
-#: src/interface.c:290
+#: src/interface.c:228
+msgid "_New Subscription..."
+msgstr "_Uusi syöte..."
+
+#: src/interface.c:236
+msgid "New _Folder..."
+msgstr "Uusi _kansio..."
+
+#: src/interface.c:249
+msgid "_Properties..."
+msgstr "_Ominaisuudet..."
+
+#: src/interface.c:252
+msgid "Opens the property dialog for the selected subscription."
+msgstr "Avaa valitun syötteen ominaisuusikkunan."
+
+#: src/interface.c:258
+msgid "_Delete Selected"
+msgstr "_Poista valitut"
+
+#: src/interface.c:261
+msgid "Removes the selected subscription."
+msgstr "Poista valitut syötteet."
+
+#: src/interface.c:272
 msgid "_Import Feed List..."
 msgstr "_Tuo syöteluettelo..."
 
-#: src/interface.c:293
+#: src/interface.c:275
 msgid "Imports an OPML feed list."
 msgstr "Tuo OPML-muotoinen syöteluettelo."
 
-#: src/interface.c:299
+#: src/interface.c:281
 msgid "_Export Feed List..."
 msgstr "_Vie syöteluettelo..."
 
-#: src/interface.c:302
+#: src/interface.c:284
 msgid "Exports the feed list as OPML."
 msgstr "Tallentaa syöteluettelon OPML-muodossa."
 
-#: src/interface.c:308
+#: src/interface.c:290
 msgid "_Items"
 msgstr "_Otsikot"
 
-#: src/interface.c:315
+#: src/interface.c:297
 msgid "_Next Unread Item"
 msgstr "_Seuraava lukematon otsikko"
 
-#: src/interface.c:318 src/ui_mainwindow.c:161
+#: src/interface.c:300 src/ui_mainwindow.c:162
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -334,111 +327,111 @@ msgstr ""
 "Siirtyy seuraavaan lukemattomaan otsikkoon, mahdollisesti seuraavassa "
 "syötteessä."
 
-#: src/interface.c:332
+#: src/interface.c:314
 msgid "Toggle _Read Status"
 msgstr "Merkitse _luetuksi tai lukemattomaksi"
 
-#: src/interface.c:335
+#: src/interface.c:317
 msgid "Toggles the read status of the selected item."
 msgstr "Merkitse otsikko lukemattomaksi tai luetuksi."
 
-#: src/interface.c:344
+#: src/interface.c:326
 msgid "Toggle Item _Flag"
 msgstr "_Merkitse otsikko"
 
-#: src/interface.c:347
+#: src/interface.c:329
 msgid "Toggles the item flag."
 msgstr "Merkitsee otsikon tai poistaa merkinnän."
 
-#: src/interface.c:352
+#: src/interface.c:334
 msgid "Remove Selected"
 msgstr "Poista valitut"
 
-#: src/interface.c:355
+#: src/interface.c:337
 msgid "Removes the selected item."
 msgstr "Poistaa valitut otsikot"
 
-#: src/interface.c:361
+#: src/interface.c:343
 msgid "Remove All"
 msgstr "Poista kaikki"
 
-#: src/interface.c:364
+#: src/interface.c:346
 msgid "Removes all items of the currently selected feed."
 msgstr "Poistaa kaikki otsikot valitusta syötteestä."
 
-#: src/interface.c:375
+#: src/interface.c:357
 msgid "_Launch In Browser"
 msgstr "_Avaa selaimessa"
 
-#: src/interface.c:378
+#: src/interface.c:360
 msgid "Launches the item's link in the configured browser."
 msgstr "Avaa otsikon linkin asetusten mukaisessa selaimessa."
 
-#: src/interface.c:380
+#: src/interface.c:362
 msgid "_View"
 msgstr "_Näytä"
 
-#: src/interface.c:387
+#: src/interface.c:369
 msgid "_Increase Text Size"
 msgstr "_Kasvata tekstin kokoa"
 
-#: src/interface.c:390
+#: src/interface.c:372
 msgid "Increases the text size of the item view."
 msgstr "Kasvattaa tekstin kokoa näkymässä."
 
-#: src/interface.c:399
+#: src/interface.c:381
 msgid "_Decrease Text Size"
 msgstr "_Pienennä tekstin kokoa"
 
-#: src/interface.c:402
+#: src/interface.c:384
 msgid "Decreases the text size of the item view."
 msgstr "Pienentää tekstin kokoa näkymässä."
 
-#: src/interface.c:416
+#: src/interface.c:398
 msgid "Toggle _Condensed View"
 msgstr "Näytä _tiiviisti"
 
-#: src/interface.c:419
+#: src/interface.c:401
 msgid "Toggles the item list mode between condensed and normal mode."
 msgstr "Näyttää otsikkoluettelon joko tiiviisti tai tavallisesti."
 
-#: src/interface.c:421
+#: src/interface.c:403
 msgid "_Search"
 msgstr "_Etsi"
 
-#: src/interface.c:428
+#: src/interface.c:410
 msgid "Toggle Search Box"
 msgstr "Etsintälaatikko"
 
-#: src/interface.c:431
+#: src/interface.c:413
 msgid "Shows or hides the search box."
 msgstr "Näyttää tai piilottaa etsintälaatikon."
 
-#: src/interface.c:437
+#: src/interface.c:419
 msgid "Search with Feedster..."
 msgstr "Etsi Feedsteristä..."
 
-#: src/interface.c:440
+#: src/interface.c:422
 msgid "Creates a Feedster search feed."
 msgstr "Luo Feedster-etsintäsyötteen."
 
-#: src/interface.c:446
+#: src/interface.c:428
 msgid "_Help"
 msgstr "_Ohje"
 
-#: src/interface.c:453 src/interface.c:2948 src/interface.c:2980
+#: src/interface.c:435 src/interface.c:3037 src/interface.c:3079
 msgid "About"
 msgstr "Lifereasta"
 
-#: src/interface.c:456
+#: src/interface.c:438
 msgid "Shows an about dialog."
 msgstr "Näyttää tietoja Lifereasta."
 
-#: src/interface.c:494
+#: src/interface.c:476
 msgid "Search for"
 msgstr "Etsi"
 
-#: src/interface.c:505
+#: src/interface.c:487
 msgid ""
 "Starts a search for all items that do match the given search string either "
 "in title or content."
@@ -446,112 +439,113 @@ msgstr ""
 "Etsii kaikki otsikot, joiden nimi tai sisältö täsmää annettuihin "
 "hakusanoihin."
 
-#: src/interface.c:515
+#: src/interface.c:497
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr "Tallenna haku v-kansiona, joka näkyy syöteluettelossa"
 
-#: src/interface.c:536
+#: src/interface.c:518
 msgid "Close search"
 msgstr "Sulje etsintä"
 
-#: src/interface.c:570
+#: src/interface.c:552
 msgid "single item view"
 msgstr "yhden otsikon katselu"
 
-#: src/interface.c:578
+#: src/interface.c:560
 msgid "label133"
 msgstr "label133"
 
-#: src/interface.c:582
+#: src/interface.c:564 src/interface.c:2115
 msgid "Headlines"
 msgstr "Otsikot"
 
-#: src/interface.c:911
+#: src/interface.c:887
 msgid "Subscription Properties"
 msgstr "Syötteen ominaisuudet"
 
-#: src/interface.c:932
+#: src/interface.c:908
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">Syötteen nimi</span>"
 
-#: src/interface.c:942 src/interface.c:974 src/interface.c:1048
-#: src/interface.c:1093 src/interface.c:1127 src/interface.c:1138
-#: src/interface.c:1156 src/interface.c:1244 src/interface.c:1458
-#: src/interface.c:1503 src/interface.c:1537 src/interface.c:1548
-#: src/interface.c:1566 src/interface.c:1820 src/interface.c:1859
-#: src/interface.c:1919 src/interface.c:1955 src/interface.c:1993
-#: src/interface.c:2070 src/interface.c:2130 src/interface.c:2211
-#: src/interface.c:2228 src/interface.c:2255 src/interface.c:2309
-#: src/interface.c:2336 src/interface.c:2386
+#: src/interface.c:918 src/interface.c:950 src/interface.c:1024
+#: src/interface.c:1069 src/interface.c:1103 src/interface.c:1114
+#: src/interface.c:1132 src/interface.c:1220 src/interface.c:1434
+#: src/interface.c:1479 src/interface.c:1513 src/interface.c:1524
+#: src/interface.c:1542 src/interface.c:1812 src/interface.c:1851
+#: src/interface.c:1911 src/interface.c:1956 src/interface.c:1989
+#: src/interface.c:2027 src/interface.c:2078 src/interface.c:2142
+#: src/interface.c:2195 src/interface.c:2276 src/interface.c:2293
+#: src/interface.c:2320 src/interface.c:2374 src/interface.c:2401
+#: src/interface.c:2451
 msgid "    "
 msgstr "    "
 
-#: src/interface.c:951
+#: src/interface.c:927
 msgid "Feed _Name:"
 msgstr "Syötteen _nimi:"
 
-#: src/interface.c:964
+#: src/interface.c:940
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">Päivitystaajuus</span>"
 
-#: src/interface.c:983
+#: src/interface.c:959
 msgid "_Use global default update interval."
 msgstr "O_letusarvoinen päivitystaajuus."
 
-#: src/interface.c:993
+#: src/interface.c:969
 msgid "_Feed specific update interval of"
 msgstr "_Syötteelle ominainen päivitystaajuus:"
 
-#: src/interface.c:1008 src/interface.c:1882
+#: src/interface.c:984 src/interface.c:1874
 msgid "minutes."
 msgstr "minuuttia."
 
-#: src/interface.c:1012
+#: src/interface.c:988
 msgid "_Don't update this feed automatically."
 msgstr "_Älä päivitä syötettä automaattisesti."
 
-#: src/interface.c:1018
+#: src/interface.c:994
 msgid " "
 msgstr " "
 
-#: src/interface.c:1022
+#: src/interface.c:998
 #, c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Tämän syötteen tarjoaja suosittelee päivitystaajuudeksi %d minuuttia."
 
-#: src/interface.c:1029
+#: src/interface.c:1005
 msgid "General"
 msgstr "Yleistä"
 
-#: src/interface.c:1038 src/interface.c:1448
+#: src/interface.c:1014 src/interface.c:1424
 msgid "<b>Feed Source</b>"
 msgstr "<b>Syötteen lähde</b>"
 
-#: src/interface.c:1071 src/interface.c:1481
+#: src/interface.c:1047 src/interface.c:1457
 msgid "_URL"
 msgstr "_URL"
 
-#: src/interface.c:1077 src/interface.c:1487
+#: src/interface.c:1053 src/interface.c:1463
 msgid "_Command"
 msgstr "_Komento"
 
-#: src/interface.c:1087 src/interface.c:1497
+#: src/interface.c:1063 src/interface.c:1473
 msgid "Local _File"
 msgstr "Paikallinen _tiedosto"
 
-#: src/interface.c:1097 src/interface.c:1507
+#: src/interface.c:1073 src/interface.c:1483
 msgid "_Select File..."
 msgstr "_Valitse tiedosto..."
 
-#: src/interface.c:1107 src/interface.c:1517
+#: src/interface.c:1083 src/interface.c:1493
 msgid "Source Type:"
 msgstr "Lähteen tyyppi:"
 
-#: src/interface.c:1131 src/interface.c:1541
+#: src/interface.c:1107 src/interface.c:1517
 msgid "Use conversion filter"
 msgstr "Käytä suodatinta"
 
-#: src/interface.c:1146 src/interface.c:1556
+#: src/interface.c:1122 src/interface.c:1532
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -560,19 +554,19 @@ msgstr ""
 "Liferea voi lukea ei-tuettuja syötteitä käyttämällä ulkoisia "
 "suodatinliitännäisiä. Lisätietoja on Liferean käyttöohjeessa."
 
-#: src/interface.c:1160 src/interface.c:1570
+#: src/interface.c:1136 src/interface.c:1546
 msgid "Convert using:"
 msgstr "Suodatuskomento:"
 
-#: src/interface.c:1168 src/interface.c:1578
+#: src/interface.c:1144 src/interface.c:1554
 msgid "Select File..."
 msgstr "Valitse tiedosto..."
 
-#: src/interface.c:1172
+#: src/interface.c:1148
 msgid "Feed Source"
 msgstr "Syötteen lähde"
 
-#: src/interface.c:1181
+#: src/interface.c:1157
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -580,71 +574,71 @@ msgstr ""
 "Välivaraston asetukset vaikuttavat siihen miten syötteiden sisältö tallentuu "
 "kun Liferea suljetaan. Merkityt otsikot tallentuvat aina."
 
-#: src/interface.c:1188
+#: src/interface.c:1164
 msgid "_Default cache settings"
 msgstr "O_letusarvot"
 
-#: src/interface.c:1194
+#: src/interface.c:1170
 msgid "Di_sable cache"
 msgstr "_Poista välivarasto käytöstä"
 
-#: src/interface.c:1200
+#: src/interface.c:1176
 msgid "_Umlimited cache"
 msgstr "_Rajoittamaton välivarasto"
 
-#: src/interface.c:1210
+#: src/interface.c:1186
 msgid "_Limit cache to"
 msgstr "R_ajoitettu välivarasto: "
 
-#: src/interface.c:1223
+#: src/interface.c:1199
 msgid "items."
 msgstr "otsikkoa."
 
-#: src/interface.c:1227
+#: src/interface.c:1203
 msgid "Feed Cache"
 msgstr "Syötteiden välivarasto"
 
-#: src/interface.c:1236
+#: src/interface.c:1212
 msgid "Use HTTP _authentication"
 msgstr "Käytä _HTTP-todennusta"
 
-#: src/interface.c:1254 src/interface.c:3102
+#: src/interface.c:1230 src/interface.c:3206
 msgid "User_name:"
 msgstr "Käyttäjä_tunnus:"
 
-#: src/interface.c:1261 src/interface.c:3109
+#: src/interface.c:1237 src/interface.c:3213
 msgid "_Password:"
 msgstr "_Salasana:"
 
-#: src/interface.c:1281 src/interface.c:3079
+#: src/interface.c:1257 src/interface.c:3183
 msgid "Authentication"
 msgstr "Todennus"
 
-#: src/interface.c:1430
+#: src/interface.c:1406
 msgid "New Subscription"
 msgstr "Uusi syöte"
 
-#: src/interface.c:1786
+#: src/interface.c:1778
 msgid "Liferea Preferences"
 msgstr "Liferean asetukset"
 
-#: src/interface.c:1810
+#: src/interface.c:1802
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Syötevälimuistin toiminta</span>"
 
-#: src/interface.c:1833
+#: src/interface.c:1825
 msgid "Default number of items per feed to save:"
 msgstr "Oletusarvoisesti tallennettava otsikkojen määrä per syöte:"
 
-#: src/interface.c:1849
+#: src/interface.c:1841
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr "<span weight=\"bold\">Syötteiden päivitys</span>"
 
-#: src/interface.c:1872
+#: src/interface.c:1864
 msgid "Default Feed Refresh _Interval:"
 msgstr "Oletusarvoinen syötteen _päivitystaajuus:"
 
-#: src/interface.c:1886
+#: src/interface.c:1878
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -655,23 +649,24 @@ msgstr ""
 "päivityksen voi poistaa käytöstä oletusarvoisesti asettamalla taajuudeksi 0 "
 "minuuttia.</i>"
 
-#: src/interface.c:1897
+#: src/interface.c:1889
 msgid "At _startup:"
 msgstr "_Käynnistyessä:"
 
-#: src/interface.c:1909
+#: src/interface.c:1901
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">Syötteiden lataus</span>"
 
-#: src/interface.c:1928
+#: src/interface.c:1920
+#, fuzzy
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
-"be slow if you have a lot of feeds,"
+"be slow if you have a lot of feeds."
 msgstr ""
 "_Lataa syötteet levyltä tarvittaessa. Tämä hidastaa\n"
 "jos syötteitä on paljon."
 
-#: src/interface.c:1935
+#: src/interface.c:1927
 msgid ""
 "_Keep all feeds loaded. This may improve speed \n"
 "(especially when searching) but can cause a \n"
@@ -682,39 +677,91 @@ msgstr ""
 "(etenkin etsintää) mutta saattaa viedä paljon\n"
 " muistia jos syötteitä on paljon."
 
-#: src/interface.c:1945
+#: src/interface.c:1933
+#, fuzzy
+msgid "Feeds"
+msgstr "_Syötteet"
+
+#: src/interface.c:1946
+#, fuzzy
+msgid "<span weight=\"bold\">Folder Display Settings</span>"
+msgstr "<span weight=\"bold\">Syötteiden päivitys</span>"
+
+#: src/interface.c:1964
+msgid "Show the items of all child feeds when a folder is selected."
+msgstr ""
+
+#: src/interface.c:1968
+msgid ""
+"<i>This can cause signifant delays when loading folders with a lot of feeds "
+"inside!</i>"
+msgstr ""
+
+#: src/interface.c:1979
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">Syötekuvakkeet</span>"
 
-#: src/interface.c:1964
-msgid "Update all favicons now."
+#: src/interface.c:1998
+#, fuzzy
+msgid "_Update all favicons now."
 msgstr "Päivitä kuvakkeet nyt"
 
-#: src/interface.c:1968
-msgid "Feed Handling"
-msgstr "Syötteiden käsittely"
+#: src/interface.c:2002
+#, fuzzy
+msgid "Folders"
+msgstr "V-Kansio"
 
-#: src/interface.c:1983
-msgid "<span weight=\"bold\">Viewing Headlines</span>"
+#: src/interface.c:2017
+#, fuzzy
+msgid "<span weight=\"bold\">Reading Headlines</span>"
 msgstr "<span weight=\"bold\">Otsikoiden luku</span>"
 
-#: src/interface.c:2006
+#: src/interface.c:2040
 msgid "Skim through articles with "
 msgstr "Selaa otsikoita läpi näppäilemällä "
 
-#: src/interface.c:2016
+#: src/interface.c:2050
 msgid "Space"
 msgstr "Välilyönti"
 
-#: src/interface.c:2020
+#: src/interface.c:2054
 msgid "<Ctrl> Space"
 msgstr "ctrl-välilyönti"
 
-#: src/interface.c:2024
+#: src/interface.c:2058
 msgid "<Alt> Space"
 msgstr "Alt-välilyönti"
 
-#: src/interface.c:2030
+#: src/interface.c:2068
+msgid "<span weight=\"bold\">Date Column Settings</span>"
+msgstr "<span weight=\"bold\">Päiväyssarake</span>"
+
+#: src/interface.c:2087
+msgid "Display only time"
+msgstr "Näytä vain aika"
+
+#: src/interface.c:2093
+msgid "Display date and time"
+msgstr "Näytä päiväys ja aika"
+
+#: src/interface.c:2103
+msgid "User defined format:"
+msgstr "Muu muoto:"
+
+#: src/interface.c:2112
+msgid ""
+"for expert users: specify a time format string, consult the strftime() "
+"manpage for the format codes"
+msgstr ""
+"Osaavat käyttäjät: ajan muotoilumerkkijono voi sisältää strftime()-"
+"muotoilukoodeja, katso lisätietoja strftime:n manuaalisivuilta"
+
+#: src/interface.c:2132
+#, fuzzy
+msgid "<span weight=\"bold\">Internal Browser Settings</span>"
+msgstr "<span weight=\"bold\">Ulkoisen selaimen asetukset</span>"
+
+#: src/interface.c:2150
 msgid ""
 "Liferea displays feeds' content using various HTML renderers. Depending on "
 "which renderers are installed on your computer, different options will be "
@@ -724,51 +771,27 @@ msgstr ""
 "olevat piirtimet riippuvat siitä, mitä tietokoneelle on asennettu. Liferea "
 "täytyy käynnistää uudelleen jotta nämä asetukset tulevat voimaan."
 
-#: src/interface.c:2040
+#: src/interface.c:2160
 msgid "View Headlines With"
 msgstr "Näytä otsikot käyttäen"
 
-#: src/interface.c:2052
+#: src/interface.c:2172
 msgid "Open links in Liferea's _window."
 msgstr "Avaa linkit Liferean _ikkunassa."
 
-#: src/interface.c:2060
-msgid "<span weight=\"bold\">Date Column Settings</span>"
-msgstr "<span weight=\"bold\">Päiväyssarake</span>"
-
-#: src/interface.c:2079
-msgid "Display only time"
-msgstr "Näytä vain aika"
-
-#: src/interface.c:2085
-msgid "Display date and time"
-msgstr "Näytä päiväys ja aika"
-
-#: src/interface.c:2095
-msgid "User defined format:"
-msgstr "Muu muoto:"
-
-#: src/interface.c:2104
-msgid ""
-"for expert users: specify a time format string, consult the strftime() "
-"manpage for the format codes"
+#: src/interface.c:2176
+msgid "_Disable Javascript."
 msgstr ""
-"Osaavat käyttäjät: ajan muotoilumerkkijono voi sisältää strftime()-"
-"muotoilukoodeja, katso lisätietoja strftime:n manuaalisivuilta"
 
-#: src/interface.c:2107
-msgid "Headline Display"
-msgstr "Otsikoiden näyttö"
-
-#: src/interface.c:2120
+#: src/interface.c:2184
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">Ulkoisen selaimen asetukset</span>"
 
-#: src/interface.c:2144
+#: src/interface.c:2209
 msgid "_Browser:"
 msgstr "_Selain:"
 
-#: src/interface.c:2151
+#: src/interface.c:2216
 #, c-format
 msgid ""
 "_Manual:\n"
@@ -777,53 +800,54 @@ msgstr ""
 "_Muu:\n"
 "(%s vastaa URLia)"
 
-#: src/interface.c:2165
+#: src/interface.c:2230
 msgid "_Open link in:"
 msgstr "_Linkkien avaus:"
 
-#: src/interface.c:2188
-msgid "External Browser"
-msgstr "Ulkoinen selainohjelma"
+#: src/interface.c:2253
+#, fuzzy
+msgid "Browser"
+msgstr "_Selain:"
 
-#: src/interface.c:2201
+#: src/interface.c:2266
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Ilmoitusasetukset</span>"
 
-#: src/interface.c:2219
+#: src/interface.c:2284
 msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
 msgstr "Näytä _ilmaisin paneelin ilmoitusalueessa."
 
-#: src/interface.c:2236
+#: src/interface.c:2301
 msgid "Show a _popup window with new headlines."
 msgstr "Näytä uudet otsikot sisältävä _ponnahdusikkuna."
 
-#: src/interface.c:2245
+#: src/interface.c:2310
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">Valikko</span>"
 
-#: src/interface.c:2264
+#: src/interface.c:2329
 msgid "Show Menu _And Toolbar"
 msgstr "Näytä valikko _ja työkalupalkki"
 
-#: src/interface.c:2270
+#: src/interface.c:2335
 msgid "Show _Menu Only"
 msgstr "Näytä vain _valikko"
 
-#: src/interface.c:2276
+#: src/interface.c:2341
 msgid "Show _Toolbar Only"
 msgstr "Näytä vain _työkalupalkki"
 
-#: src/interface.c:2282
+#: src/interface.c:2347
 msgid "GUI"
 msgstr "Käyttöliittymä"
 
-#: src/interface.c:2299
+#: src/interface.c:2364
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">HTTP-välityspalvelin</span>"
 
-#: src/interface.c:2318
+#: src/interface.c:2383
 msgid ""
 "Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center. Note: changing these settings "
@@ -835,63 +859,63 @@ msgstr ""
 "muuttaminen vaikuttaa myös muihin ohjelmiin! Tämä asetusikkuna on Gnomea "
 "käyttämättömiä varten."
 
-#: src/interface.c:2328
+#: src/interface.c:2393
 msgid "_Enable Proxy"
 msgstr "Käytä _välityspalvelinta"
 
-#: src/interface.c:2350
+#: src/interface.c:2415
 msgid "Proxy _Host:"
 msgstr "_Konenimi:"
 
-#: src/interface.c:2371
+#: src/interface.c:2436
 msgid "Proxy _Port:"
 msgstr "_Portti:"
 
-#: src/interface.c:2378
+#: src/interface.c:2443
 msgid "Use Proxy _Authentication"
 msgstr "Välityspalvelin vaatii _todennuksen"
 
-#: src/interface.c:2396
+#: src/interface.c:2461
 msgid "Proxy _Username:"
 msgstr "K_äyttäjätunnus:"
 
-#: src/interface.c:2418
+#: src/interface.c:2483
 msgid "Proxy Pass_word:"
 msgstr "S_alasana:"
 
-#: src/interface.c:2425
+#: src/interface.c:2490
 msgid "Proxy"
 msgstr "Välityspalvelin"
 
-#: src/interface.c:2674
+#: src/interface.c:2761
 msgid "New Folder"
 msgstr "Uusi kansio"
 
-#: src/interface.c:2690 src/interface.c:2767
+#: src/interface.c:2777 src/interface.c:2854
 msgid "Folder name:"
 msgstr "Kansion nimi:"
 
-#: src/interface.c:2755
+#: src/interface.c:2842
 msgid "Rename Folder"
 msgstr "Vaihda kansion nimi"
 
-#: src/interface.c:2836
+#: src/interface.c:2923
 msgid "Feedster Search"
 msgstr "Feedster-haku"
 
-#: src/interface.c:2851
+#: src/interface.c:2938
 msgid "Search for:"
 msgstr "Etsi:"
 
-#: src/interface.c:2858
+#: src/interface.c:2945
 msgid "enter any search string you want"
 msgstr "Kirjoita sanat joita haluat etsiä"
 
-#: src/interface.c:2865
+#: src/interface.c:2952
 msgid "Maximal Number Of Result Items:"
 msgstr "Suurin tulosten määrä:"
 
-#: src/interface.c:2874
+#: src/interface.c:2961
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -901,11 +925,15 @@ msgstr ""
 "tuloksia. Tämän syötteen voi säilyttää ja sitä voi käyttää kuten muitakin "
 "syötteitä."
 
-#: src/interface.c:2969
+#: src/interface.c:3058
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea on GTK+-pohjainen uutissyötteiden lukuohjelma"
 
-#: src/interface.c:2974
+#: src/interface.c:3068
+msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
+msgstr ""
+
+#: src/interface.c:3073
 msgid ""
 "Copyright (c) 2003-2004 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
@@ -915,7 +943,7 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> ja\n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: src/interface.c:2994
+#: src/interface.c:3093
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -973,20 +1001,20 @@ msgstr ""
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
-#: src/interface.c:3000
+#: src/interface.c:3099
 msgid "Contributors"
 msgstr "Myötävaikuttajat"
 
-#: src/interface.c:3020
+#: src/interface.c:3119
 msgid "Translation"
 msgstr "Käännökset"
 
-#: src/interface.c:3090 src/ui_feed.c:614
+#: src/interface.c:3194 src/ui_feed.c:619
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Kirjoita syötteen \"%s\" (%s) käyttäjätunnus ja salasana:"
 
-#: src/interface.c:3131
+#: src/interface.c:3235
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -994,15 +1022,15 @@ msgstr ""
 "Huomaa: <i>Käyttäjätunnus ja salasana tallentuvat salaamattomina Liferean "
 "syöteluetteloon.</i>"
 
-#: src/interface.c:3197
+#: src/interface.c:3301
 msgid "VFolder Properties"
 msgstr "V-kansion ominaisuudet"
 
-#: src/interface.c:3213
+#: src/interface.c:3317
 msgid "Name"
 msgstr "Nimi"
 
-#: src/interface.c:3242
+#: src/interface.c:3346
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
@@ -1010,28 +1038,31 @@ msgstr ""
 "Huomaa: Otsikot sisältyvät v-kansioon, jos yksikin sisällyttävä sääntö\n"
 "täsmää. Samoin yksikin estävä sääntö poistaa otsikon v-kansiosta."
 
-#: src/interface.c:3255
+#: src/interface.c:3359
 msgid "Rules"
 msgstr "Säännöt"
 
-#: src/item.c:225 src/item.c:229 src/item.c:241 src/ui_itemlist.c:196
+#: src/item.c:223 src/item.c:227 src/item.c:239 src/ui_itemlist.c:199
 msgid "[No title]"
 msgstr "[Ei nimeä]"
 
-#: src/item.c:231 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:229 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "Otsikko:"
 
 #: src/main.c:68
-msgid "  --version        Prints Liferea's version number"
+#, fuzzy
+msgid "  --version        Print version information and exit"
 msgstr "  --version        Näytä Liferean versionumero"
 
 #: src/main.c:69
-msgid "  --help           Prints this message and exits"
+#, fuzzy
+msgid "  --help           Print this help and exit"
 msgstr "  --help           Näytä tämä viesti ja lopeta"
 
 #: src/main.c:70
-msgid "  --iconify        Starts the program iconified"
+#, fuzzy
+msgid "  --iconify        Start the program iconified"
 msgstr "  --iconify        Käynnistä ohjelma pienennettynä"
 
 #: src/main.c:72
@@ -1084,8 +1115,9 @@ msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferealle annettiin tuntematon parametri: %s\n"
 
 #: src/main.c:244
+#, fuzzy
 msgid ""
-"Another copy of Liferea was found to be running. Please us it instead. If "
+"Another copy of Liferea was found to be running. Please use it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
 msgstr ""
@@ -1195,11 +1227,6 @@ msgstr "selostus"
 #, c-format
 msgid "Cookie for %s has expired!"
 msgstr "Lähteen %s eväste on vanhentunut."
-
-#: src/net/netio.c:606
-msgid "URL points to permanent redirect, updating with new location..."
-msgstr ""
-"URL osoittaa pysyvään uudelleenohjaukseen, päivitetään uusi sijainti..."
 
 #: src/ns_dc.c:189 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
@@ -1389,7 +1416,17 @@ msgstr "Palvelimen virhe"
 msgid "(unknown networking error happened)"
 msgstr "(tuntematon verkkovirhe tapahtui)"
 
-#: src/ui_feed.c:127
+#: src/ui_feed.c:124
+msgid ""
+"<br>You may want to validate the feed using <a href=\"http://feedvalidator."
+"org/check.cgi?url="
+msgstr ""
+
+#: src/ui_feed.c:129
+msgid "\">FeedValidator</a>."
+msgstr ""
+
+#: src/ui_feed.c:136
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1397,22 +1434,22 @@ msgstr ""
 "Syötteen lukemisessa tapahtui virhe. Tarkista URL ja päätteessä näkyvä "
 "tuloste."
 
-#: src/ui_feed.c:161
+#: src/ui_feed.c:169
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" on lakkautettu. Liferea ei enää päivitä sitä."
 
-#: src/ui_feed.c:163
+#: src/ui_feed.c:171
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" ei ole muuttunut viime kerrasta"
 
-#: src/ui_feed.c:171
+#: src/ui_feed.c:179
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "Syötteen \"%s\" URL on muuttunut pysyvästi, ja päivitetty"
 
-#: src/ui_feed.c:183
+#: src/ui_feed.c:191
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -1422,74 +1459,74 @@ msgstr ""
 "<p>Syötteen tyyppiä ei tunnistettu. Tarkista että lähde määrittelee jonkin "
 "tunnetun muotoisen syötteen.</p>%s"
 
-#: src/ui_feed.c:202
+#: src/ui_feed.c:210
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" päivitetty."
 
-#: src/ui_feed.c:211
+#: src/ui_feed.c:218
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" ei saatavilla"
 
-#: src/ui_feed.c:556
+#: src/ui_feed.c:561
 msgid "Choose File"
 msgstr "Valitse tiedosto"
 
-#: src/ui_feed.c:615
+#: src/ui_feed.c:620
 msgid "Unknown source"
 msgstr "Tuntematon lähde"
 
-#: src/ui_feed.c:717
+#: src/ui_feed.c:722
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr "Tämän syötteen tarjoaja suosittelee päivitystaajuudeksi %d minuuttia."
 
-#: src/ui_feed.c:719
+#: src/ui_feed.c:724
 msgid "This feed specifies no default update interval."
 msgstr "Tällä syötteellä ei ole suositeltua päivitystaajuutta."
 
-#: src/ui_feedlist.c:436
+#: src/ui_feedlist.c:437
 msgid "You have to select a feed entry"
 msgstr "Syötteen otsikko on valittava"
 
-#: src/ui_feedlist.c:446
+#: src/ui_feedlist.c:447
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea ei ole yhteydessä verkkoon, joten päivittäminen ei ole mahdollista."
 
-#: src/ui_feedlist.c:483
+#: src/ui_feedlist.c:484
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Huomaa: syötteiden suodattaminen estää hiirellä vetämisen ja pudottamisen"
 
-#: src/ui_feedlist.c:529 src/ui_feedlist.c:532
+#: src/ui_feedlist.c:530 src/ui_feedlist.c:533
 msgid "Deleting entry"
 msgstr "Otsikko poistetaan"
 
-#: src/ui_feedlist.c:530
+#: src/ui_feedlist.c:531
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Haluatko poistaa kansion \"%s\" sisältöineen?"
 
-#: src/ui_feedlist.c:533
+#: src/ui_feedlist.c:534
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Haluatko poistaa syötteen \"%s\"?"
 
-#: src/ui_feedlist.c:541
+#: src/ui_feedlist.c:542
 msgid "Deletion Confirmation"
 msgstr "Poiston vahvistus"
 
-#: src/ui_feedlist.c:577
+#: src/ui_feedlist.c:578
 msgid "You must select a feed entry"
 msgstr "Jokin syöte täytyy valita"
 
-#: src/ui_feedlist.c:578
+#: src/ui_feedlist.c:579
 msgid "You must select a feed entry."
 msgstr "Jokin syöte täytyy valita."
 
-#: src/ui_feedlist.c:624
+#: src/ui_feedlist.c:625
 msgid "New subscription"
 msgstr "Uusi syöte"
 
@@ -1507,7 +1544,7 @@ msgstr ""
 "Sisäinen virhe: tuntematon otsikon tyyppi, sopivaa kuvaketta ei voi "
 "näyttää.\n"
 
-#: src/ui_htmlview.c:68
+#: src/ui_htmlview.c:69
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -1525,7 +1562,7 @@ msgstr ""
 "/apps/liferea/browser-module Gconf-asetuksista.\n"
 "\n"
 
-#: src/ui_htmlview.c:80
+#: src/ui_htmlview.c:81
 #, c-format
 msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
@@ -1535,15 +1572,15 @@ msgstr ""
 "onnistunut.\n"
 "%s\n"
 
-#: src/ui_htmlview.c:92
+#: src/ui_htmlview.c:93
 msgid "Htmlview API mismatch!"
 msgstr "Htmlview-API ei täsmää."
 
-#: src/ui_htmlview.c:100
+#: src/ui_htmlview.c:101
 msgid "Detected module is not a valid htmlview module!"
 msgstr "Valittu moduuli ei ole kelvollinen Htmlview-moduuli."
 
-#: src/ui_htmlview.c:122
+#: src/ui_htmlview.c:123
 #, c-format
 msgid "Cannot load HTML widget module (%s)!"
 msgstr "HTML-komponentin moduulia (%s) ei voi ladata."
@@ -1552,26 +1589,26 @@ msgstr "HTML-komponentin moduulia (%s) ei voi ladata."
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
-#: src/ui_htmlview.c:128
+#: src/ui_htmlview.c:129
 #, c-format
 msgid "Available browser modules (%s):\n"
 msgstr "Mahdolliset selainmoduulit (%s):\n"
 
-#: src/ui_htmlview.c:163
+#: src/ui_htmlview.c:164
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Määritelty selainmoduuli (%s) latautuu.\n"
 
-#: src/ui_htmlview.c:166
+#: src/ui_htmlview.c:167
 msgid "No browser module configured!\n"
 msgstr "Selainmoduulia ei ole määritelty.\n"
 
-#: src/ui_htmlview.c:174
+#: src/ui_htmlview.c:175
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "selainmoduuli %s (%s) latautuu\n"
 
-#: src/ui_htmlview.c:185
+#: src/ui_htmlview.c:186
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -1580,16 +1617,16 @@ msgstr ""
 "--debug-valitsimia."
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:323
+#: src/ui_htmlview.c:345
 msgid "This item does not have a link assigned!"
 msgstr "Tällä otsikolla ei ole linkkiä."
 
-#: src/ui_htmlview.c:367 src/ui_htmlview.c:397
+#: src/ui_htmlview.c:389 src/ui_htmlview.c:419
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Selainkomento epäonnistui: %s"
 
-#: src/ui_htmlview.c:369 src/ui_htmlview.c:399
+#: src/ui_htmlview.c:391 src/ui_htmlview.c:421
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "\"%s\" käynnistyy"
@@ -1617,44 +1654,44 @@ msgstr ""
 "Tämä syöte on lakkautettu, ja ei enää saatavilla. Liferea ei enää päivitä "
 "sitä, mutta voit lukea välivarastoituja otsikoita."
 
-#: src/ui_itemlist.c:262
+#: src/ui_itemlist.c:278
 msgid "Date"
 msgstr "Aika"
 
-#: src/ui_itemlist.c:273
+#: src/ui_itemlist.c:289
 msgid "Headline"
 msgstr "Otsikko"
 
-#: src/ui_itemlist.c:465 src/ui_itemlist.c:474 src/ui_itemlist.c:526
+#: src/ui_itemlist.c:478 src/ui_itemlist.c:487 src/ui_itemlist.c:538
 msgid "No item has been selected"
 msgstr "Otsikkoja ei ole valittu."
 
-#: src/ui_itemlist.c:508 src/ui_itemlist.c:529
+#: src/ui_itemlist.c:521 src/ui_itemlist.c:541
 msgid "You must select a feed to delete its items!"
 msgstr "Syöte, jonka otsikot poistetaan, täytyy valita."
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:608
 msgid "There are no unread items "
 msgstr "Lukemattomia otsikkoja ei ole"
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:161
 msgid "New Feed"
 msgstr "Uusi syöte"
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:161
 msgid "Add a new subscription."
 msgstr "Lisää uusi syöte."
 
-#: src/ui_mainwindow.c:161
+#: src/ui_mainwindow.c:162
 msgid "Next Unread"
 msgstr "Seuraava lukematon"
 
-#: src/ui_mainwindow.c:162
+#: src/ui_mainwindow.c:163
 msgid "Mark As Read"
 msgstr "Merkitse luetuksi"
 
-#: src/ui_mainwindow.c:162
+#: src/ui_mainwindow.c:163
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1662,23 +1699,23 @@ msgstr ""
 "Merkitse valittujen syötteiden tai valitun kansion sisältämien syötteiden "
 "otsikot luetuiksi."
 
-#: src/ui_mainwindow.c:163
+#: src/ui_mainwindow.c:164
 msgid "Update All"
 msgstr "Päivitä kaikki"
 
-#: src/ui_mainwindow.c:164
+#: src/ui_mainwindow.c:165
 msgid "Search"
 msgstr "Etsi"
 
-#: src/ui_mainwindow.c:164
+#: src/ui_mainwindow.c:165
 msgid "Search all feeds."
 msgstr "Etsi kaikista syötteistä."
 
-#: src/ui_mainwindow.c:165
+#: src/ui_mainwindow.c:166
 msgid "Preferences"
 msgstr "Asetukset"
 
-#: src/ui_mainwindow.c:165
+#: src/ui_mainwindow.c:166
 msgid "Edit preferences."
 msgstr "Muokkaa asetuksia."
 
@@ -1688,7 +1725,7 @@ msgstr "Muokkaa asetuksia."
 #. "and Spanish. If you think you know a good set of default feeds for your "
 #. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
 #. "and it will be included in the next release!</div>"));
-#: src/ui_mainwindow.c:193
+#: src/ui_mainwindow.c:194
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1730,11 +1767,11 @@ msgstr ""
 "faq.php\">usein kysytyissä kysymyksissä</a> joka sijaitsee <a href=\"http://"
 "liferea.sf.net\">projektin kotisivuilla</a>.</p>"
 
-#: src/ui_mainwindow.c:271
+#: src/ui_mainwindow.c:272
 msgid "Liferea is now online"
 msgstr "Liferea on nyt yhteydessä verkkoon."
 
-#: src/ui_mainwindow.c:274
+#: src/ui_mainwindow.c:275
 msgid "Liferea is now offline"
 msgstr "Liferea ei ole yhteydessä verkkoon."
 
@@ -1855,35 +1892,35 @@ msgid "/_Quit"
 msgstr "/_Lopeta"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:190
+#: src/ui_prefs.c:191
 msgid "Manual"
 msgstr "Käyttöohje"
 
-#: src/ui_prefs.c:200
+#: src/ui_prefs.c:201
 msgid "Browser default"
 msgstr "Selaimen oletus"
 
-#: src/ui_prefs.c:205
+#: src/ui_prefs.c:206
 msgid "Existing window"
 msgstr "Olemassa oleva ikkuna"
 
-#: src/ui_prefs.c:210
+#: src/ui_prefs.c:211
 msgid "New window"
 msgstr "Uusi ikkuna"
 
-#: src/ui_prefs.c:215
+#: src/ui_prefs.c:216
 msgid "New tab"
 msgstr "Uusi välilehti"
 
-#: src/ui_prefs.c:225
+#: src/ui_prefs.c:226
 msgid "Update only feeds scheduled for updates"
 msgstr "Päivitä vain ajastetut syötteet"
 
-#: src/ui_prefs.c:230
+#: src/ui_prefs.c:231
 msgid "Update all feeds"
 msgstr "Päivitä kaikki syötteet"
 
-#: src/ui_prefs.c:235
+#: src/ui_prefs.c:236
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Nollaa päivitysajastimet, älä päivitä"
 
@@ -1896,18 +1933,18 @@ msgstr "Etsi tekstiä \"%s\""
 msgid "Please do a search first!"
 msgstr "Etsi ensin tekstiä."
 
-#: src/ui_tabs.c:90
+#: src/ui_tabs.c:103
 msgid "URL"
 msgstr "URL"
 
-#: src/ui_tray.c:90
+#: src/ui_tray.c:93
 #, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
 msgstr[0] "%d uusi otsikko."
 msgstr[1] "%d uutta otsikkoa."
 
-#: src/ui_tray.c:103
+#: src/ui_tray.c:106
 msgid "No new items."
 msgstr "Ei uusia otsikkoja."
 
@@ -1926,10 +1963,33 @@ msgstr "Virhe: tiedoston \"%s\" avaaminen ei onnistunut"
 msgid "Error: There is no file \"%s\""
 msgstr "Virhe: Tiedosto \"%s\" ei ole olemassa"
 
-#: src/gtkhtml2/gtkhtml2.c:222
+#: src/gtkhtml2/gtkhtml2.c:231
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
 "Sisällytetty \"<object>\" HTML-tagi ei ole tuettu GtkHTML2:ssa.\n"
 "Sisällytetyt liitännäiset eivät välttämättä näy."
+
+#~ msgid "Invalid RFC822 date format! Ignoring date information!\n"
+#~ msgstr "Virheellinen RFC822-aikamuoto: aikatiedot jäävät huomiotta.\n"
+
+#~ msgid "Filter Feeds Without Unread Headlines"
+#~ msgstr "Suodata jo kokonaan luetut syötteet."
+
+#~ msgid "If active all feeds without unread items are hidden."
+#~ msgstr ""
+#~ "Jos valittu, vain lukemattomia otsikoita sisältävät syötteet näkyvät."
+
+#~ msgid "Feed Handling"
+#~ msgstr "Syötteiden käsittely"
+
+#~ msgid "Headline Display"
+#~ msgstr "Otsikoiden näyttö"
+
+#~ msgid "External Browser"
+#~ msgstr "Ulkoinen selainohjelma"
+
+#~ msgid "URL points to permanent redirect, updating with new location..."
+#~ msgstr ""
+#~ "URL osoittaa pysyvään uudelleenohjaukseen, päivitetään uusi sijainti..."
