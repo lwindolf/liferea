@@ -149,7 +149,4 @@ void
 on_menu_folder_rename                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
-void
-on_work_offline_activate               (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
 #endif
