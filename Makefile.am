@@ -13,7 +13,6 @@ schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = liferea.schemas
 
 EXTRA_DIST = \
-	autogen.sh \
 	liferea.glade \
 	liferea.gladep \
 	liferea.spec \
