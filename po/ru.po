@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-10-05 04:19+0200\n"
-"PO-Revision-Date: 2004-08-28 18:09+0400\n"
+"PO-Revision-Date: 2004-10-12 16:44+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: src/conf.c:462
 msgid "feedlist.opml"
-msgstr "feedlist.opml"
+msgstr "feedlist_ru.opml"
 
 #: src/conf.c:487
 #, c-format
@@ -96,8 +96,7 @@ msgstr "Новости Liferea на SF.net"
 #: src/export.c:535 src/export.c:537
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr ""
-"Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
+msgstr "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
 #: src/export.c:541 src/export.c:543
 #, c-format
@@ -110,8 +109,7 @@ msgstr ""
 #: src/export.c:551 src/export.c:553
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr ""
-"\"%s\" не является допустимым документом OPML! Liferea не сможет "
+msgstr "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
 #: src/export.c:575
@@ -145,8 +143,7 @@ msgstr "Экспорт"
 #: src/feed.c:143
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
-msgstr ""
-"<p>Ошибка XML во время чтения ленты новостей! Лента новостей \"%s\" не может "
+msgstr "<p>Ошибка XML во время чтения ленты новостей! Лента новостей \"%s\" не может "
 "быть загружена!</p>"
 
 #: src/feed.c:149 src/feed.c:380
@@ -175,8 +172,7 @@ msgstr ""
 #: src/feed.c:359 src/feed.c:360
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr ""
-"Ошибка во время чтения файла кэша \"%s\" ! Файл кэша не может быть загружен!"
+msgstr "Ошибка во время чтения файла кэша \"%s\" ! Файл кэша не может быть загружен!"
 
 #: src/feed.c:372
 #, c-format
@@ -190,8 +186,7 @@ msgstr ""
 #: src/feed.c:391
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-msgstr ""
-"<p>\"%s\" не является допустимым файлом кэша ! Невозможно прочитать файл "
+msgstr "<p>\"%s\" не является допустимым файлом кэша ! Невозможно прочитать файл "
 "кеша!</p>"
 
 #: src/feed.c:441
@@ -237,9 +232,8 @@ msgstr ""
 "новостей не найдены!"
 
 #: src/interface.c:137 src/interface.c:2800
-#, fuzzy
 msgid "Liferea 0.6.1"
-msgstr "Liferea 0.6.0"
+msgstr "Liferea 0.6.1"
 
 #: src/interface.c:154
 msgid "_Program"
@@ -254,19 +248,16 @@ msgid "_Feeds"
 msgstr "_Ленты новостей"
 
 #: src/interface.c:190
-#, fuzzy
 msgid "_New Subscription..."
-msgstr "_Новая Подписка"
+msgstr "_Новая Подписка..."
 
 #: src/interface.c:198
-#, fuzzy
 msgid "New _Folder..."
-msgstr "Новая _папка"
+msgstr "Новая _Папка..."
 
 #: src/interface.c:211
-#, fuzzy
 msgid "_Properties..."
-msgstr "_Свойства"
+msgstr "_Свойства..."
 
 #: src/interface.c:214
 msgid "Opens the property dialog for the selected subscription."
@@ -320,18 +311,16 @@ msgstr ""
 "как прочитанные."
 
 #: src/interface.c:287
-#, fuzzy
 msgid "_Import Feed List..."
-msgstr "_Импортировать Список Лент Новостей"
+msgstr "_Импортировать Список Лент Новостей..."
 
 #: src/interface.c:290
 msgid "Imports an OPML feed list."
 msgstr "Имортирует OPML список лент новостей."
 
 #: src/interface.c:296
-#, fuzzy
 msgid "_Export Feed List..."
-msgstr "_Экспортировать Список Лент Новостей"
+msgstr "_Экспортировать Список Лент Новостей..."
 
 #: src/interface.c:299
 msgid "Exports the feed list as OPML."
@@ -435,9 +424,8 @@ msgid "Shows or hides the search box."
 msgstr "Показывает или скрывает поле поиска"
 
 #: src/interface.c:433
-#, fuzzy
 msgid "Search with Feedster..."
-msgstr "Искать через Feedster"
+msgstr "Искать через Feedster..."
 
 #: src/interface.c:436
 msgid "Creates a Feedster search feed."
@@ -1653,13 +1641,13 @@ msgstr ""
 "b>"
 
 #: src/ui_htmlview.h:98
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occurred:"
 "<br><b>%s</b>"
 msgstr ""
-"Произошли ошибки во время парсинга ленты новостей. Произошли следующие "
-"ошибки:<br><b>%s</b>"
+"Произошли ошибки во время парсинга ленты новостей. Произошли следующие ошибки:"
+"<br><b>%s</b>"
 
 #: src/ui_htmlview.h:99
 msgid ""
@@ -1750,9 +1738,15 @@ msgid ""
 "sourceforge.net\">mailing list</a> and it will be included in the next "
 "release!</div>"
 msgstr ""
+"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+"\">При первом запуске Liferea предоставляет локализованный список лент "
+"новостей. В Liferea уже включены списки для английского, французского, немецкого, "
+"испанского и русского языков. Если вы считаете, что у вы сможете предоставить неплохой набор лент новостей для русскоязычных пользователей, "
+"то вы можете отослать его (лучше в формате OPML) <a href=\"mailto:liferea-devel@lists."
+"sourceforge.net\">в основной список рассылки</a> или <a href=\"mailto:compress@linux-online.ru\"> напрямую переводчику русской версии</a> и он войдёт в следующий "
+"релиз!</div>"
 
 #: src/ui_mainwindow.c:194
-#, fuzzy
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1775,12 +1769,7 @@ msgid ""
 "liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
 "liferea.sf.net\">project homepage</a>.</p>"
 msgstr ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">Начат сбор пожеланий для версии 1.1.<a href=\"http://liferea.sourceforge."
-"net/dokuwiki/doku.php?id=programrequirements1.1\">Просмотрите список</a> и "
-"<a href=\"mailto:liferea-devel@lists.sourceforge.net\">укажите нам</a>, "
-"каких функций вам не хватает.</div><h2>Добро пожаловать в Liferea</"
-"h2><p>Левая панель содержит список лент новостей, где вы можете добавить "
+"<h2>Добро пожаловать в Liferea</h2><p>Левая панель содержит список лент новостей, где вы можете добавить "
 "новые подписки и выбрать подписки для прочтения их заголовков. Справа "
 "отображается список заголовков выбранной подписки и окно для просмотра "
 "выбранного заголовка или всех заголовков сразу (при использовании "
@@ -1829,19 +1818,16 @@ msgid "/_New"
 msgstr "/_Новый элемент"
 
 #: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
-#, fuzzy
 msgid "/_New/New _Subscription..."
-msgstr "/_Новый элемент/_Новая Подписка"
+msgstr "/_Новый элемент/_Новая Подписка..."
 
 #: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
-#, fuzzy
 msgid "/_New/New F_older..."
-msgstr "/_Новый элемент/Новая _Папка"
+msgstr "/_Новый элемент/Новая _Папка..."
 
 #: src/ui_popup.c:87 src/ui_popup.c:106
-#, fuzzy
 msgid "/_Properties..."
-msgstr "/_Свойства"
+msgstr "/_Свойства..."
 
 #: src/ui_popup.c:88 src/ui_popup.c:107
 msgid "/_Delete"
@@ -1852,9 +1838,8 @@ msgid "/_Update Folder"
 msgstr "/_Обновить Папку"
 
 #: src/ui_popup.c:97
-#, fuzzy
 msgid "/_Rename Folder..."
-msgstr "/_Переименовать папку"
+msgstr "/_Переименовать Папку..."
 
 #: src/ui_popup.c:98
 msgid "/_Delete Folder"
@@ -1897,9 +1882,8 @@ msgid "/_Launch Link In Browser"
 msgstr "/_Показать В Браузере"
 
 #: src/ui_popup.c:136
-#, fuzzy
 msgid "/_Subscribe..."
-msgstr "/_Подписаться"
+msgstr "/_Подписаться..."
 
 #: src/ui_popup.c:141
 msgid "/_Work Offline"
@@ -1910,9 +1894,8 @@ msgid "/_Update All"
 msgstr "/_Обновить Всё"
 
 #: src/ui_popup.c:143
-#, fuzzy
 msgid "/_Preferences..."
-msgstr "/_Настройки"
+msgstr "/_Настройки..."
 
 #: src/ui_popup.c:145
 msgid "/_Show Window"
