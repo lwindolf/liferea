@@ -320,13 +320,13 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 
 	if (response_id == GTK_RESPONSE_OK) {
 		gchar *source = NULL;
-		gchar *filter = NULL;
+		const gchar *filter = NULL;
 
 		/* Source */
 		source = ui_feed_dialog_decode_source(ui_data);
 
 		/* Filter handling */
-		filter = gtk_editable_get_chars(GTK_EDITABLE(ui_data->filter), 0, -1);
+		filter = gtk_entry_get_text(GTK_ENTRY(ui_data->filter));
 		if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox)) ||
 		    !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
@@ -342,21 +342,21 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 
 static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
-
+	
 	if (response_id == GTK_RESPONSE_OK) {
 		gchar *newSource;
 		const gchar *newFilter;
 		gboolean needsUpdate = FALSE;
-
+		
 		/* General*/
-		feed_set_title(ui_data->fp, gtk_editable_get_chars(GTK_EDITABLE(ui_data->feedNameEntry), 0, -1));
+		feed_set_title(ui_data->fp, gtk_entry_get_text(GTK_ENTRY(ui_data->feedNameEntry)));
 		feed_set_update_interval(ui_data->fp, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(ui_data->refreshInterval)));
-
+		
 		/* Source */
 		newSource = ui_feed_dialog_decode_source(ui_data);
 		
 		/* Filter handling */
-		newFilter = gtk_editable_get_chars(GTK_EDITABLE(ui_data->filter), 0, -1);
+		newFilter = gtk_entry_get_text(GTK_ENTRY(ui_data->filter));
 		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox)) &&
 		    strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
 			if (feed_get_filter(ui_data->fp) == NULL ||

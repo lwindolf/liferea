@@ -402,6 +402,7 @@ void ui_itemlist_display(void) {
 	}
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(buffer);
+	g_free(buffer);
 	ui_feedlist_update();
 }
 

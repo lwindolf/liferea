@@ -171,7 +171,7 @@ void item_display(itemPtr ip) {
 	addToHTMLBuffer(&buffer, item_get_description(ip));
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(buffer);
-	//g_free(buffer);
+	g_free(buffer);
 }
 
 itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {

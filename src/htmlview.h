@@ -153,7 +153,7 @@ void	ui_htmlview_finish_output(gchar **buffer);
  *
  * @param string	HTML source
  */
-void	ui_htmlview_write(gchar *string);
+void	ui_htmlview_write(const gchar *string);
 
 /**
  * Launches the specified URL in the configured browser or

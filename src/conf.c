@@ -474,7 +474,9 @@ void conf_feedlist_save() {
 		filename_real = g_strdup_printf("%s/feedlist.opml", getCachePath());
 		if(rename(filename, filename_real) < 0)
 			g_warning(_("Error renaming %s to %s\n"), filename, filename_real);
+		g_free(filename_real);
 	}
+	g_free(filename);
 }
 
 static gboolean conf_feedlist_schedule_save_cb(gpointer user_data) {

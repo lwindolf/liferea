@@ -514,10 +514,10 @@ void on_popup_prop_selected(gpointer callback_data,
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void ui_feedlist_new_subscription(gchar *source, gchar *filter, gboolean showPropDialog) {
+void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboolean showPropDialog) {
 	struct feed_request 	*request;
 	feedPtr			fp;
-	gchar			*data;
+	gchar			*data, *tmp;
 	
 	debug_enter("ui_feedlist_new_subscription");	
 	
@@ -535,7 +535,9 @@ void ui_feedlist_new_subscription(gchar *source, gchar *filter, gboolean showPro
 	folderPtr parent;
 	
 	fp = feed_new();
-	feed_set_id(fp, conf_new_id());
+	tmp = conf_new_id();
+	feed_set_id(fp, tmp);
+	g_free(tmp);
 	feed_set_source(fp, request->feedurl);
 	feed_set_filter(fp, filter);
 	favicon_download(fp);		// FIXME: this blocks the program!!!

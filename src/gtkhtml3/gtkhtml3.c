@@ -329,7 +329,7 @@ gchar * getModuleName(void) {
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-void writeHTML(gchar *string) {
+void writeHTML(const gchar *string) {
 
 	html_stream_handle = gtk_html_begin_content(html, "text/html; charset=utf-8");
 	

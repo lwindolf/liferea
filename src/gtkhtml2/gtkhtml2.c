@@ -238,9 +238,9 @@ static void
 on_url (HtmlView *view, const char *url, gpointer user_data)
 {
 	if(NULL != url)
-		ui_mainwindow_set_status_bar(g_strdup(url));
+		ui_mainwindow_set_status_bar(url);
 	else
-		ui_mainwindow_set_status_bar(g_strdup(""));
+		ui_mainwindow_set_status_bar("");
 
 	if(selectedURL)
 		g_free(selectedURL);
@@ -321,7 +321,7 @@ gfloat getZoomLevel(void) { return zoomLevel; }
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-void writeHTML(gchar *string) {
+void writeHTML(const gchar *string) {
 
 	/* HTML widget can be used only from GTK thread */	
 	if(gnome_vfs_is_primary_thread()) {

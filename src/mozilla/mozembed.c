@@ -66,7 +66,7 @@ gchar * getModuleName(void) {
 }
 
 /* function to write HTML source into the widget */
-void writeHTML(gchar *string) {
+void writeHTML(const gchar *string) {
 
 	g_assert(NULL != htmlwidget);	
 	gtk_moz_embed_open_stream(GTK_MOZ_EMBED(htmlwidget), "file://localhost/", "text/html");

@@ -38,7 +38,7 @@
 typedef gchar *	(*getModuleNameFunc)	(void);
 typedef void	(*setupHTMLViewsFunc)	(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 typedef void	(*setHTMLViewModeFunc)	(gboolean threePane);
-typedef void	(*writeHTMLFunc)	(gchar *string);
+typedef void	(*writeHTMLFunc)	(const gchar *string);
 typedef void	(*launchURLFunc)	(const gchar *url);
 typedef gfloat	(*getZoomLevelFunc)	(void);
 typedef void	(*changeZoomLevelFunc)	(gfloat diff);
@@ -250,9 +250,11 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 
 	/* font configuration support */
 	font = getStringConfValue(USER_FONT);
-	if(0 == strlen(font))
+	if(0 == strlen(font)) {
+		g_free(font);
 		font = getStringConfValue(DEFAULT_FONT);
-		
+	}
+
 	if(NULL != font) {
 		addToHTMLBuffer(buffer, "<style type=\"text/css\">\n<!--\nbody {");
 		
@@ -289,17 +291,19 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 	addToHTMLBuffer(buffer, "\">");
 }
 
-void ui_htmlview_write(gchar *string) { 
-
+void ui_htmlview_write(const gchar *string) { 
 	if(!g_utf8_validate(string, -1, NULL)) {
+		gchar *buffer = g_strdup(string);
+		
 		/* Its really a bug if we get invalid encoded UTF-8 here!!! */
-		g_warning("Invalid encoded UTF8 string passed to HTML widget!");
+		g_warning("Invalid encoded UTF8 buffer passed to HTML widget!");
 		
 		/* to prevent crashes inside the browser */
-		string = utf8_fix(string);
-	}
-
-	((writeHTMLFunc)methods[WRITEHTML])(g_strdup(string));
+		buffer = utf8_fix(buffer);
+		((writeHTMLFunc)methods[WRITEHTML])(buffer);
+		g_free(buffer);
+	} else
+		((writeHTMLFunc)methods[WRITEHTML])(string);
 }
 
 void ui_htmlview_finish_output(gchar **buffer) {
@@ -313,12 +317,13 @@ void ui_htmlview_clear(void) {
 	ui_htmlview_start_output(&buffer, FALSE);
 	ui_htmlview_finish_output(&buffer); 
 	ui_htmlview_write(buffer);
+	g_free(buffer);
 }
 
 void ui_htmlview_launch_URL(const gchar *url) {
 
 	if(NULL != url) {		
-		((launchURLFunc)methods[LAUNCHURL])(url); 
+		((launchURLFunc)methods[LAUNCHURL])(url);
 	} else {
 		ui_show_error_box(_("This item does not have a link assigned!"));
 	}

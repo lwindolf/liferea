@@ -231,6 +231,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 			ui_feedlist_select(node);
 		else /* This happens when an "empty" node is clicked */
 			selected=FALSE;
+		gtk_tree_path_free(path);
 	}
 	if (selected && node)
 		menu = make_entry_menu(node->type, node);
