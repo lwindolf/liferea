@@ -24,8 +24,9 @@
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
-
+#include "favicon.h"
 #include "ui_folder.h"
+
 extern GtkWidget * filedialog;
 static GtkWidget * importdialog = NULL;
 static GtkWidget * exportdialog = NULL;
@@ -145,18 +146,28 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		/* set feed properties available from the OPML feed list 
 		   they may be overwritten by the values of the cache file
 		   but we need them in case the cache file loading fails */
-		feed_set_id(fp, id);
+
 		feed_set_type(fp, type);
 		feed_set_source(fp, source);
 		feed_set_title(fp, title);
 		feed_set_update_interval(fp, interval);
-		
-		feed_load_from_cache(fp);
-		
+
+		if (id != NULL) {
+			feed_set_id(fp, id);
+			xmlFree(id);
+			feed_load_from_cache(fp);
+		} else {
+			id = conf_new_id();
+			feed_set_id(fp, id);
+			g_free(id);
+			feed_update(fp);
+			favicon_download(fp);
+		}
+
 		ui_folder_add_feed(folder, fp, -1);
 
-		xmlFree(id);
-		xmlFree(source);
+		if (source != NULL)
+			xmlFree(source);
 	} else { /* It is a folder */
 		if (NULL != xmlHasProp(cur, BAD_CAST"helpFolder"))
 			g_assert(NULL != (folder = feedlist_insert_help_folder(folder)));

@@ -28,6 +28,7 @@
 #include "ui_feedlist.h"
 #include "ui_tray.h"
 #include "htmlview.h"
+#include "favicon.h"
 
 /* possible selected new dialog feed types */
 static gint selectableTypes[] = {	FST_AUTODETECT,
