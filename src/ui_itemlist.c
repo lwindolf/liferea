@@ -66,7 +66,7 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 	gtk_tree_model_get(model, a, IS_TIME, &timea, -1);
 	gtk_tree_model_get(model, b, IS_TIME, &timeb, -1);
 	
-	return timeb-timea;
+	return (-1)*(timeb-timea);
 }
 
 void ui_itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {
@@ -164,6 +164,7 @@ void ui_itemlist_reset_date_format(void) {
 	date_format = NULL;
 }
 
+/* don't forget to remove the iterhash entry after calling this method! */
 static void ui_itemlist_remove_item(itemPtr ip) {
 	GtkTreeStore *itemstore = ui_itemlist_get_tree_store();
 
@@ -465,11 +466,13 @@ void ui_itemlist_display(void) {
 
 static gboolean ui_itemlist_check_for_stale_item(gpointer key, gpointer value, gpointer user_data) {
 	itemPtr		ip = (itemPtr)key;
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
+	GtkTreeIter	*iter = (GtkTreeIter *)value;
 	GSList		*itemlist = (GSList *)user_data;
 	
 	if(NULL == g_slist_find(itemlist, ip)) {
-		g_print("removing stale item %d\n", ip);
-		ui_itemlist_remove_item(ip);
+		/* can't use ui_itemlist_remove_item(ip) because ip was already freed */
+		gtk_tree_store_remove(itemstore, iter);
 		return TRUE;
 	}
 	return FALSE;
@@ -711,6 +714,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	if((NULL != np) && (FST_FEED == np->type)) {
 		if(NULL != (ip = ui_itemlist_get_selected())) {
 			ui_itemlist_remove_item(ip);
+			g_hash_table_remove(iterhash, (gpointer)ip);
 			feed_remove_item((feedPtr)np, ip);
 			ui_feedlist_update();
 		} else {
