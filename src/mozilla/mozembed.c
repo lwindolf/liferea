@@ -248,7 +248,7 @@ static gboolean launch_inside_possible(void) { return TRUE; }
 
 static htmlviewPluginInfo mozillaInfo = {
 	HTMLVIEW_API_VERSION,
-	"Mozilla (experimental)",
+	"Mozilla",
 	mozilla_init,
 	mozilla_create,
 	mozilla_write,
