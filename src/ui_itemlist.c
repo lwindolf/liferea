@@ -549,7 +549,8 @@ gboolean findUnreadItem() {
 				if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
 					gtk_tree_selection_select_iter(selection, &iter);
 					path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
-					gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, FALSE, FALSE);
+ 					gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
+ 					gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
 					gtk_tree_path_free(path);
 					gtk_widget_grab_focus(treeview);
 				} else

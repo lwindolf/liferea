@@ -2,6 +2,10 @@
 
 	Version 0.4.7
 
+	* When you change a feed URL the feed is
+	  now updated automatically after closing
+	  the properties dialog.
+	* Added a patch (882761) from morberg.
 	* Update to the SnowNews 1.4.3 HTTP client
 	  which allows HTTP authentication. To use
 	  this feature simply add "user:passwd" in

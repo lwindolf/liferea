@@ -8,3 +8,4 @@ StartupNotify=false
 Terminal=false
 Type=Application
 Categories=Application;Network;
+Icon=liferea.png

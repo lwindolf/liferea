@@ -45,6 +45,8 @@ static void createFeedTag(gpointer key, gpointer value, gpointer userdata) {
 	xmlNewProp(feedNode, BAD_CAST"htmlUrl", BAD_CAST "");
 }
 
+
+// FIXME: make hierarchical exports as soon as there are folderPtr structures
 void exportOPMLFeedList(gchar *filename) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;

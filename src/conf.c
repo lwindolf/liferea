@@ -118,12 +118,13 @@ void loadConfig() {
 	gint	maxitemcount;
 	
 	/* GConf client */
-	if (client == NULL)
+	if (client == NULL) {
 		client = gconf_client_get_default();
 
-	gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);	
+		gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);	
+	}
 
-	/* check if several preferences exist */
+	/* check if important preferences exist... */
 	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
 		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
 
@@ -131,6 +132,7 @@ void loadConfig() {
         xmlNanoHTTPInit();
         
 	if(getBooleanConfValue(USE_PROXY)) {
+		g_free(proxyname);
 	        proxyname = getStringConfValue(PROXY_HOST);
         	proxyport = getNumericConfValue(PROXY_PORT);
 
@@ -140,10 +142,9 @@ void loadConfig() {
         	xmlNanoHTTPScanProxy(proxy_url);
 		g_free(proxy_url);
 	} else {
-		if(NULL != proxyname) {
-			g_free(proxyname);
-			proxyname = NULL;
-		}
+		g_free(proxyname);
+		proxyname = NULL;
+		proxyport = 0;
 		
 		/* this is neccessary to reset proxy after config change */
 		// FIXME: don't use NanoHTTP anymore!!!	

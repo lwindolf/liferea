@@ -412,7 +412,7 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 			if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
 				gtk_tree_selection_select_iter(selection, &iter);
 			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
-			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, FALSE, FALSE);	
+			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
 			gtk_tree_path_free(path);
 		} else {
 			print_status(_("internal error! could not select newly created treestore iter!"));
@@ -545,7 +545,12 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 		feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
 	
 		setFeedTitle(fp, g_strdup(feedname));  
-		setFeedSource(fp, g_strdup(feedurl));
+
+		/* if URL has changed... */
+		if(strcmp(feedurl, getFeedSource(fp))) {
+			setFeedSource(fp, g_strdup(feedurl));
+			updateFeed(fp);
+		}
 		
 		if(IS_FEED(getFeedType(fp))) {
 			updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");

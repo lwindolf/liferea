@@ -1201,6 +1201,19 @@ create_prefdialog (void)
   GtkWidget *menuradiobtn3;
   GtkWidget *label41;
   GtkWidget *label39;
+  GtkWidget *vbox227;
+  GtkWidget *frame12;
+  GtkWidget *vbox228;
+  GtkWidget *label52;
+  GtkWidget *vbox229;
+  GtkWidget *enableproxybtn;
+  GtkWidget *table2;
+  GtkWidget *label53;
+  GtkWidget *proxyhostentry;
+  GtkWidget *proxyportentry;
+  GtkWidget *label54;
+  GtkWidget *label51;
+  GtkWidget *label50;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefclosebtn;
   GtkTooltips *tooltips;
@@ -1346,6 +1359,8 @@ create_prefdialog (void)
   vbox222 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox222);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox222);
+  gtk_notebook_set_tab_label_packing (GTK_NOTEBOOK (notebook1), vbox222,
+                                      FALSE, FALSE, GTK_PACK_START);
 
   frame10 = gtk_frame_new (NULL);
   gtk_widget_show (frame10);
@@ -1402,6 +1417,76 @@ create_prefdialog (void)
   gtk_widget_show (label39);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label39);
 
+  vbox227 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox227);
+  gtk_container_add (GTK_CONTAINER (notebook1), vbox227);
+  gtk_notebook_set_tab_label_packing (GTK_NOTEBOOK (notebook1), vbox227,
+                                      FALSE, FALSE, GTK_PACK_START);
+
+  frame12 = gtk_frame_new (NULL);
+  gtk_widget_show (frame12);
+  gtk_box_pack_start (GTK_BOX (vbox227), frame12, FALSE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame12), 5);
+
+  vbox228 = gtk_vbox_new (FALSE, 5);
+  gtk_widget_show (vbox228);
+  gtk_container_add (GTK_CONTAINER (frame12), vbox228);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox228), 5);
+
+  label52 = gtk_label_new (_("Liferea reuses the GNOME proxy settings. If you use\nGNOME you can change these settings in the GNOME\nControl Center. Note: changing these settings will\naffect other applications! This dialog is primarily for\nusers without GNOME to be able to use Liferea with\na proxy."));
+  gtk_widget_show (label52);
+  gtk_box_pack_start (GTK_BOX (vbox228), label52, FALSE, FALSE, 0);
+  gtk_label_set_line_wrap (GTK_LABEL (label52), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label52), 0, 0.5);
+
+  vbox229 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox229);
+  gtk_box_pack_start (GTK_BOX (vbox228), vbox229, TRUE, TRUE, 0);
+
+  enableproxybtn = gtk_check_button_new_with_mnemonic (_("Enable Proxy"));
+  gtk_widget_show (enableproxybtn);
+  gtk_box_pack_start (GTK_BOX (vbox229), enableproxybtn, FALSE, FALSE, 0);
+
+  table2 = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (table2);
+  gtk_box_pack_start (GTK_BOX (vbox229), table2, TRUE, TRUE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (table2), 5);
+  gtk_table_set_col_spacings (GTK_TABLE (table2), 5);
+
+  label53 = gtk_label_new (_("Proxy Host"));
+  gtk_widget_show (label53);
+  gtk_table_attach (GTK_TABLE (table2), label53, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label53), 0, 0.5);
+
+  proxyhostentry = gtk_entry_new ();
+  gtk_widget_show (proxyhostentry);
+  gtk_table_attach (GTK_TABLE (table2), proxyhostentry, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  proxyportentry = gtk_entry_new ();
+  gtk_widget_show (proxyportentry);
+  gtk_table_attach (GTK_TABLE (table2), proxyportentry, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  label54 = gtk_label_new (_("Proxy Port"));
+  gtk_widget_show (label54);
+  gtk_table_attach (GTK_TABLE (table2), label54, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label54), 0, 0.5);
+
+  label51 = gtk_label_new (_("HTTP Proxy Server"));
+  gtk_widget_show (label51);
+  gtk_frame_set_label_widget (GTK_FRAME (frame12), label51);
+
+  label50 = gtk_label_new (_("Proxy Settings"));
+  gtk_widget_show (label50);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 2), label50);
+
   dialog_action_area5 = GTK_DIALOG (prefdialog)->action_area;
   gtk_widget_show (dialog_action_area5);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area5), GTK_BUTTONBOX_END);
@@ -1456,6 +1541,15 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) menuradiobtn3, "clicked",
                     G_CALLBACK (on_menuselection_clicked),
                     NULL);
+  g_signal_connect ((gpointer) enableproxybtn, "clicked",
+                    G_CALLBACK (on_enableproxybtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) proxyhostentry, "changed",
+                    G_CALLBACK (on_proxyhostentry_changed),
+                    NULL);
+  g_signal_connect ((gpointer) proxyportentry, "changed",
+                    G_CALLBACK (on_proxyportentry_changed),
+                    NULL);
   g_signal_connect_swapped ((gpointer) prefclosebtn, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (prefdialog));
@@ -1501,6 +1595,19 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn3, "menuradiobtn3");
   GLADE_HOOKUP_OBJECT (prefdialog, label41, "label41");
   GLADE_HOOKUP_OBJECT (prefdialog, label39, "label39");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox227, "vbox227");
+  GLADE_HOOKUP_OBJECT (prefdialog, frame12, "frame12");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox228, "vbox228");
+  GLADE_HOOKUP_OBJECT (prefdialog, label52, "label52");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox229, "vbox229");
+  GLADE_HOOKUP_OBJECT (prefdialog, enableproxybtn, "enableproxybtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, table2, "table2");
+  GLADE_HOOKUP_OBJECT (prefdialog, label53, "label53");
+  GLADE_HOOKUP_OBJECT (prefdialog, proxyhostentry, "proxyhostentry");
+  GLADE_HOOKUP_OBJECT (prefdialog, proxyportentry, "proxyportentry");
+  GLADE_HOOKUP_OBJECT (prefdialog, label54, "label54");
+  GLADE_HOOKUP_OBJECT (prefdialog, label51, "label51");
+  GLADE_HOOKUP_OBJECT (prefdialog, label50, "label50");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefclosebtn, "prefclosebtn");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, tooltips, "tooltips");

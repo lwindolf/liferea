@@ -39,7 +39,8 @@ static GtkWidget *prefdialog = NULL;
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*widget, *entry;
 	GtkAdjustment	*itemCount;
-	gchar		*widgetname;
+	gchar		*widgetname, *proxyport;
+	gboolean	enabled;
 	int		tmp, i;
 	
 	if(NULL == prefdialog || !G_IS_OBJECT(prefdialog))
@@ -47,7 +48,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	g_assert(NULL != prefdialog);
 
-	/* panel 1 "feed handling" */	
+	/* panel 1 "feed handling" */
 	tmp = getNumericConfValue(GNOME_BROWSER_ENABLED);
 	if((tmp > 2) || (tmp < 1)) 
 		tmp = 1;	/* correct configuration if necessary */
@@ -130,6 +131,21 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, widgetname);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	g_free(widgetname);
+	
+	/* panel 1 "proxy settings" */
+	enabled = getBooleanConfValue(USE_PROXY);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled);
+	
+	entry = lookup_widget(prefdialog, "proxyhostentry");
+	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(PROXY_HOST));
+	gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);
+	
+	entry = lookup_widget(prefdialog, "proxyportentry");
+	proxyport = g_strdup_printf("%d", getNumericConfValue(PROXY_PORT));
+	gtk_entry_set_text(GTK_ENTRY(entry), proxyport);
+	g_free(proxyport);
+	gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);	
+	
 	
 	gtk_widget_show(prefdialog);
 }
@@ -220,3 +236,35 @@ void on_helpoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 	setBooleanConfValue(DISABLE_HELPFEEDS, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
 
+
+void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
+	GtkWidget	*entry;
+	gboolean	enabled;
+
+	enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
+	setBooleanConfValue(USE_PROXY, enabled);
+	
+	if(NULL != (entry = lookup_widget(prefdialog, "proxyhostentry")))
+		gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);
+	if(NULL != (entry = lookup_widget(prefdialog, "proxyportentry")))
+		gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);
+
+	loadConfig();
+	redrawWidget("mainwindow");
+}
+
+
+void on_proxyhostentry_changed(GtkEditable *editable, gpointer user_data) {
+
+	setStringConfValue(PROXY_HOST, gtk_editable_get_chars(editable,0,-1));
+	loadConfig();
+	redrawWidget("mainwindow");
+}
+
+
+void on_proxyportentry_changed(GtkEditable *editable, gpointer user_data) {
+
+	setNumericConfValue(PROXY_PORT, atoi(gtk_editable_get_chars(editable,0,-1)));
+	loadConfig();
+	redrawWidget("mainwindow");
+}
