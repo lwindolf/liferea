@@ -19,6 +19,7 @@
  */
 
 #include <gtk/gtk.h>
+#include <libxml/tree.h>
 #include <libxml/uri.h>
 #include "callbacks.h"
 #include "interface.h"
@@ -32,23 +33,77 @@ static GSList *types = NULL;
 static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr);
 
 void ui_enclosure_init(void) {
+	xmlDocPtr	doc;
+	xmlNodePtr	cur;
 	encTypePtr	etp;
+	gchar		*filename;
 	
-	etp = g_new0(struct encType, 1);
-	etp->mime = g_strdup("text/plain");
-	etp->cmd = g_strdup("nedit");
-	types = g_slist_append(types, etp);
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "mime.xml", common_get_cache_path());
+	if(NULL == (doc = xmlParseFile(filename))) {
+		g_warning("could not load enclosure type config file!");
+	} else {
+		if(NULL == (cur = xmlDocGetRootElement(doc))) {
+			g_warning("could not read root element from enclosure type config file!");
+		} else {
+			while(cur != NULL) {
+				if(!xmlIsBlankNode(cur)) {
+					if(!xmlStrcmp(cur->name, BAD_CAST"types")) {
+						cur = cur->xmlChildrenNode;
+						while(cur != NULL) {
+							if((!xmlStrcmp(cur->name, BAD_CAST"type"))) {
+								etp = g_new0(struct encType, 1);
+								etp->mime = xmlGetProp(cur, BAD_CAST"mime");
+								etp->extension = xmlGetProp(cur, BAD_CAST"extension");
+								etp->cmd = xmlGetProp(cur, BAD_CAST"cmd");
+								types = g_slist_append(types, etp);
+							}
+							cur = cur->next;
+						}
+						break;
+					} else {
+						g_warning(_("\"%s\" is not a valid enclosure type config file!"), filename);
+					}
+				}
+				cur = cur->next;
+			}
+		}
+		xmlFreeDoc(doc);
+	}
+	g_free(filename);
+}
+
+/* saves the enclosure type configurations to disk */
+void ui_enclosure_save(void) {
+	xmlDocPtr	doc;
+	xmlNodePtr	root, cur;
+	encTypePtr	etp;
+	GSList		*iter;
+	gchar		*filename;
+
+	doc = xmlNewDoc("1.0");
 	
-	etp = g_new0(struct encType, 1);
-	etp->mime = g_strdup("audio/wav");
-	etp->cmd = g_strdup("xmms -e");
-	types = g_slist_append(types, etp);	
+	root = xmlNewDocNode(doc, NULL, BAD_CAST"types", NULL);
 	
-	etp = g_new0(struct encType, 1);
-	etp->extension = g_strdup("ogg");
-	etp->cmd = g_strdup("xmms -e");
-	types = g_slist_append(types, etp);
-	// FIXME
+	iter = types;
+	while(NULL != iter) {
+		etp = (encTypePtr)iter->data;
+		cur = xmlNewChild(root, NULL, BAD_CAST"type", NULL);
+		xmlNewProp(cur, BAD_CAST"cmd", etp->cmd);
+		if(NULL != etp->mime)
+			xmlNewProp(cur, BAD_CAST"mime", etp->mime);
+		if(NULL != etp->extension)
+			xmlNewProp(cur, BAD_CAST"extension", etp->extension);
+		iter = g_slist_next(iter);
+	}
+	
+	xmlDocSetRootElement(doc, root);
+	
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "mime.xml", common_get_cache_path());
+	if(-1 == xmlSaveFormatFileEnc(filename, doc, NULL, 1))
+		g_warning("Could not save to enclosure type config file!");
+	g_free(filename);
+	
+	xmlFreeDoc(doc);
 }
 
 /* returns all configured enclosure types */
@@ -64,6 +119,7 @@ void ui_enclosure_remove_type(gpointer type) {
 	g_free(((encTypePtr)type)->mime);
 	g_free(((encTypePtr)type)->extension);
 	g_free(type);
+	ui_enclosure_save();
 }
 
 void ui_enclosure_change_type(gpointer type) {
@@ -174,6 +230,8 @@ static void on_adddialog_response(GtkDialog *dialog, gint response_id, gpointer 
 			on_popup_open_enclosure(g_strdup_printf("%s%s%s", url, (NULL == etp->mime)?"":",", (NULL == etp->mime)?"":etp->mime), 0, NULL);
 	}
 	gtk_widget_destroy(GTK_WIDGET(dialog));
+	
+	ui_enclosure_save();
 }
 
 /* either type or url and typestr are optional */
@@ -186,6 +244,7 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
 	if(type != NULL) {
 		typestr = (NULL != type->mime)?type->mime:type->extension;
 		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_program_entry")), type->cmd);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enc_always_btn")), TRUE);
 	}
 	
 	if(NULL == strchr(typestr, '/')) 
