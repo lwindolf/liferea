@@ -112,7 +112,7 @@ free_stream_data (StreamData *sdata, gboolean remove)
 		g_object_set_data (G_OBJECT (sdata->html), "connection_list", connection_list);
 	}
 	g_object_ref (sdata->stream);
-	html_stream_close(sdata->stream);
+	//gtk_html_end(sdata->html, sdata->stream, GTK_HTML_STREAM_OK);
 	
 	g_free (sdata);
 }
@@ -144,7 +144,7 @@ vfs_read_callback (GnomeVFSAsyncHandle *handle, GnomeVFSResult result,
 		free_stream_data (sdata, TRUE);
 		g_free (buffer);
 	} else {
-		html_stream_write (sdata->stream, buffer, bytes_read);
+		gtk_html_write (sdata->html, sdata->stream, buffer, bytes_read);
 		
 		gnome_vfs_async_read (handle, buffer, bytes_requested, 
 				      vfs_read_callback, sdata);
@@ -220,7 +220,7 @@ url_requested (GtkHTML *html, const gchar *uri, GtkHTMLStream *stream, gpointer 
 
 	gnome_vfs_uri_unref (vfs_uri);
 
-	html_stream_set_cancel_func (stream, stream_cancel, sdata);
+	//html_stream_set_cancel_func (stream, stream_cancel, sdata);
 }
 
 static void on_url (GtkHTML *html, const char *url, gpointer user_data) {
@@ -325,7 +325,7 @@ void changeZoomLevel(gfloat diff) {
 gfloat getZoomLevel(void) { return zoomLevel; }
 
 gchar * getModuleName(void) {
-	return g_strdup(_("GtkHTML3"));
+	return g_strdup(_("GtkHTML3 (experimental)"));
 }
 
 /* function to write HTML source given as a UTF-8 string. Note: Originally
@@ -346,55 +346,51 @@ void writeHTML(gchar *string) {
 }
 
 static void setupHTMLView(GtkWidget *scrolledwindow) {
-/*g_warning("shV %d\n", scrolledwindow);
+
 	g_assert(NULL != scrolledwindow);
 
 	if(NULL != htmlwidget) 
-		gtk_widget_destroy(htmlwidget);*/
+		gtk_widget_destroy(htmlwidget);
 
 	/* create html widget and pack it into the scrolled window */
-/*	htmlwidget = gtk_html_new_from_string(EMPTY, -1);
-	html = GTK_HTML(htmlwidget);*/
-/*	gtk_html_set_allow_frameset(html, TRUE);
-	gtk_html_set_editable(GTK_HTML(htmlwidget), FALSE);*/
-g_warning("shV %d\n", scrolledwindow);
-/*	gtk_widget_realize(GTK_WIDGET(html));*/
-
+	htmlwidget = gtk_html_new_from_string(EMPTY, -1);
+	html = GTK_HTML(htmlwidget);
+	gtk_html_set_allow_frameset(html, TRUE);
+	gtk_html_set_editable(GTK_HTML(htmlwidget), FALSE);
+	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
 			
-/*	gtk_widget_set_events(htmlwidget, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);*/
+	gtk_widget_set_events(htmlwidget, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
-/*	g_signal_connect(html, "url_requested", G_CALLBACK(url_requested), NULL);
+	g_signal_connect(html, "url_requested", G_CALLBACK(url_requested), NULL);
 	g_signal_connect(html, "on_url", G_CALLBACK(on_url), NULL);
 	g_signal_connect(html, "set_base", G_CALLBACK(on_set_base), NULL);
 	g_signal_connect(html, "button_press_event", G_CALLBACK(on_button_press_event), NULL);
 	g_signal_connect(html, "link_clicked", G_CALLBACK(on_link_clicked), NULL);
 	g_signal_connect(html, "submit", G_CALLBACK(on_submit), NULL);
-	g_signal_connect(html, "object_requested", G_CALLBACK(object_requested_cmd), NULL);*/
+	g_signal_connect(html, "object_requested", G_CALLBACK(object_requested_cmd), NULL);
 
-	/*gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
-	
-	gtk_widget_show_all(scrolledwindow);*/
+	gtk_widget_show_all(scrolledwindow);
 }
 
 void setHTMLViewMode(gboolean threePane) {
 
-/*	if(FALSE == threePane)
+	if(FALSE == threePane)
 		setupHTMLView(itemListView);
 	else
-		setupHTMLView(itemView);*/
+		setupHTMLView(itemView);
 
 }
 
 void setupHTMLViews(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
 
-/*	g_assert(NULL != pane1);
-	g_assert(NULL != pane2);*/
+	g_assert(NULL != pane1);
+	g_assert(NULL != pane2);
 
-//	gnome_vfs_init();
-//g_print("sHVs %d %d\n", pane1, pane2);
-/*	itemView = pane1;
-	itemListView = pane2;*/
+	gnome_vfs_init();
+
+	itemView = pane1;
+	itemListView = pane2;
 	setHTMLViewMode(FALSE);
-/*	if(0 != initialZoomLevel)
-		changeZoomLevel(((gfloat)initialZoomLevel)/100 - zoomLevel);*/
+	if(0 != initialZoomLevel)
+		changeZoomLevel(((gfloat)initialZoomLevel)/100 - zoomLevel);
 }
