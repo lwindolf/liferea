@@ -1,0 +1,145 @@
+2003-09-03  Lars Lindner <lars.lindner@gmx.net>
+
+        Version 0.3.5
+
+	* implemented a simple searching feature
+	* added a popup menu for the itemlist with an "mark all as unread"
+	  option as proposed by Colin Michael Yates
+	* fixed comment parsing bug 797368 reported by Won Kyu Park
+	* from now the source package contain the Glade files
+	* added a mozilla URL launch script to the online 
+	  documentation as proposed by Jim Philips
+
+2003-08-29  Lars Lindner <lars.lindner@gmx.net>
+
+        Version 0.3.4
+
+	* fixed time.h inclusion
+	* from now the RPMs will contain patched versions
+	  of the Glade generated interface.c to suppress
+	  the height error message
+
+2003-08-28  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.3.3
+	
+	* included two pixmaps which were missing since the
+	  last releases
+	* corrected a segfault which appeared on Redhat with
+	  libxml version < 2.5.10, this behaviour was reported
+	  by Andre Cruz
+	* support for simple CDF channels (tested with the
+	  Moreover channels)
+	
+2003-08-27  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.3.2
+	
+	* preliminary support for OCS 0.4 directories 
+	  (like Moreover and Syndic8)
+	
+2003-08-22  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.3.1	
+	
+	* the program now supports folders to organize the
+	  subscribed feeds (all subscribed feeds from older
+	  version will appear in the group "my feeds")
+	* the main toolbar now contains a help buttons which
+      	  loads a help feed from the project page
+
+2003-08-16  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.3.0
+	
+	* Now the program runs two threads, one responsible for
+	  the GUI and the other for the updating functionality.
+	  (EXPECT FUNNY DEADLOCKS AND MANY NEW MULTITHREADING
+           RELATED PROBLEMS!!!)
+	* Auto updating is now supported, you can now set an update
+	  interval per feed (or disable updating for this feed).
+	* The feed list now display the number of unread items
+	  per feed entry.
+	* The refresh button in the main window toolbar now 
+	  refreshes all feeds, not only the selected one.
+	* The feed properties option in the popup menu of the
+	  main feed list is reenabled again (caused segfaults
+	  before).
+
+
+2003-08-11  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.2.9
+
+	* Some more pointer checking
+	* Added recognition of several RDF RSS 0.92/2.0 tags, for
+	  more information see the tag list on the project homepage!
+	* Mapping of Dublin Core tags to RDF RSS 0.92/2.0 tags like
+
+	  <dc:language> -> <language> 
+          <dc:subject> -> <category>
+          ...
+
+2003-08-11  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.2.8
+
+	* fixed heavy segfaulting due to stupid error in the 
+	  HTML parsing code for item/feed-title conversion
+	* fixed segfault on "<description />" tag
+	  reported by Joern Seemann
+
+2003-08-10  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.2.7
+
+	* fixed segfault when refreshing without a selection
+	  (reported by Joern Seemann)
+	* added simple namespace support for Dublin Core, Content
+	  and Slash (may be enabled/disable from the preferences)
+	  Note: these are not automatically enabled (use the
+ 	  preference dialog)!
+	* reinitialising after preference changes 
+
+2003-08-08  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.2.6
+
+	* added a popup menu to the main window feed list
+	  providing an update, add, remove and properties
+	  menu item
+	* corrected some encoding issues, which lead to
+	  bad characters in the HTML view
+	* some bugfixes
+
+2003-08-06  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.2.5
+
+	* program preferences dialog (fields for 
+	  browser setting, time column format string)
+        * feed list editing functions grouped into a separate 
+	  dialog (new functions: move up, move down), this
+	  was proposed and designed by James Doherty
+
+2003-08-03  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.2
+
+        * table headers and sorting activated
+	* time column added (note this column actually
+	  only shows the date of the feed loading, there
+	  is still no reading of Dublin Core time stamps)
+
+2003-07-31  Lars Lindner <lars.lindner@gmx.net>
+	
+	Version 0.1
+
+	* property button implemented
+	* save new button
+	* correct character encoding in HTML widget
+	  now cyrillic and japanese characters display properly
+
+2003-07-28  Lars Lindner <lars.lindner@gmx.net>
+
+	* initial release

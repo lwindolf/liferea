@@ -1,0 +1,11 @@
+--- src/interface.c.orig	Wed Aug 27 15:13:30 2003
++++ src/interface.c	Thu Aug 28 14:16:14 2003
+@@ -94,7 +94,7 @@
+   feedlist = gtk_tree_view_new ();
+   gtk_widget_show (feedlist);
+   gtk_container_add (GTK_CONTAINER (scrolledwindow3), feedlist);
+-  gtk_widget_set_size_request (feedlist, 150, -2);
++  gtk_widget_set_size_request (feedlist, 150, -1);
+   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (feedlist), FALSE);
+ 
+   rightpane = gtk_vpaned_new ();

@@ -1,0 +1,45 @@
+Note: This program is under heavy development :)
+
+Upgrading to newer versions
+===========================
+
+If you upgrade from 0.1 to 0.2 you will loose your feed list (but you may 
+correct this by creating a gconf string list named "feedlist" and adding all
+feed key names to it).
+
+Upgrading from 0.2 to 0.2.5 till 0.3.0 should not harm the feed list.
+
+Upgrading from the non-auto updating version (all versions below 0.3.0)
+should be no problem. The non existing upgrade interval will be interpreted
+as auto updating is disabled. To enable use the feed properties dialog.
+
+Upgrading from 0.3.0 or below to 0.3.1 which introduces folder should
+be possible without problems. All subscribed feeds will appear in the
+folder "my feeds".
+
+Dependencies
+============
+
+The library dependencies for gtk2, gconf2, gtkhtml2, libxml2 and 
+others are all set to 2.0.0. Maybe they could be more specific...
+
+Help
+====
+
+As you can see in the code I'm not that experienced
+programmer, so I would appreciate any help!
+
+Known Problems
+==============
+
+- pressing Shift-Tab in the main window item list twice crashes
+  immediatly
+- Item/Channel Titles with HTML-tags are not correctly parsed,
+  all text in enclosing tags is lost
+- feed property changing in main window feed list behaves
+  strange -> thus deactivated
+- no matter which item is clicked first, after a feed was reloaded
+  always the item AND the first item is marked as unread
+- the program specifies no user agent when accessing feed urls
+- heavy memory usage (e.g. 15 feeds -> 2MB program memory) and
+  theres still no cleanup of old data on updates!
