@@ -71,10 +71,13 @@ static void itemlist_check_if_child(feedPtr fp, gpointer data) {
 void itemlist_reload(nodePtr node) {
 	gboolean	isFeed;
 	gboolean	isFolder;
-
+	
+	if (displayed_node == NULL)
+		return; /* Nothing to do if nothing is displayed */
+	
 	/* determine what node type is actually selected */
-	isFeed = ((displayed_node != NULL) && ((FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type)));
-	isFolder = ((displayed_node != NULL) && (FST_FOLDER == displayed_node->type));
+	isFeed = (FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type);
+	isFolder = FST_FOLDER == displayed_node->type;
 	g_assert(isFeed || isFolder);
 
 	if((TRUE == isFolder) && (1 == getNumericConfValue(FOLDER_DISPLAY_MODE))) {

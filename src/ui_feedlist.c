@@ -516,7 +516,7 @@ static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, 
 	switch(response_id) {
 	case GTK_RESPONSE_YES:
 		ui_feedlist_select(NULL);
-		ui_itemlist_clear();
+		itemlist_load(NULL);
 		ui_feedlist_delete_(ptr);
 	}
 	gtk_widget_destroy(GTK_WIDGET(dialog));
