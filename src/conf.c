@@ -229,7 +229,7 @@ gchar* conf_new_id() {
 			id[i] = (char)g_random_int_range('a', 'z');
 		id[7] = '\0';
 		
-		filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
+		filename = g_strdup_printf("%s/.liferea/cache/feeds/%s", g_get_home_dir(), id);
 		already_used = g_file_test(filename, G_FILE_TEST_EXISTS);
 		g_free(filename);
 	} while(already_used);
