@@ -133,11 +133,11 @@ void ui_init(gboolean startIconified) {
  	g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
 	ui_feedlist_auto_update(NULL);
 	
+	if(startIconified)
+		gtk_window_iconify(mainwindow);
 	gtk_widget_show(mainwindow);
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
 		
-	if(startIconified)
-		gtk_widget_hide(mainwindow);
 }
 
 void ui_redraw_widget(gchar *name) {
