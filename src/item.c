@@ -163,9 +163,11 @@ void item_free(itemPtr ip) {
 	g_free(ip->real_source_title);
 	g_free(ip->description);
 	g_free(ip->id);
+	g_assert(NULL == ip->tmpdata);	/* should be free after rendering */
+	g_slist_free(ip->vfolders);
 	metadata_list_free(ip->metadata);
 	/* FIXME: remove item from all assigned VFolders! */
-	if (ip->ui_data != NULL)
+	if(ip->ui_data != NULL)
 		ui_free_item_ui_data(ip);
 	g_free(ip);
 }

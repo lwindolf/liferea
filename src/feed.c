@@ -327,6 +327,7 @@ void feed_save(feedPtr fp) {
 			g_warning("could not create XML feed node for feed cache document!");
 		}
 		xmlSaveFormatFileEnc(filename, doc, NULL, 1);
+		xmlFreeDoc(doc);
 		g_free(filename);
 	} else {
 		g_warning("could not create XML document!");
