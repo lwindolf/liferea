@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: liferea 0.4.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-03-28 17:13+0200\n"
-"PO-Revision-Date: 2004-04-02 16:47+0200\n"
+"PO-Revision-Date: 2004-04-24 01:18+0200\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -674,7 +674,7 @@ msgstr "A_yuda"
 
 #: src/interface.c:432 src/interface.c:2467 src/interface.c:2496
 msgid "About"
-msgstr "A_cerca de..."
+msgstr "Acerca de..."
 
 #: src/interface.c:444
 msgid "Update all feeds"
@@ -942,9 +942,9 @@ msgid ""
 "installation there may be different choices presented below. Note: Changes "
 "will take place after the next restart!"
 msgstr ""
-"Liferea carga las cabeceras usando un renderizador HTML. En función de tu sistema"
-"pueden haber diferentes opciones a elegir. Nota: Los cambios se aplicarán tras reiniciar"
-"el programa"
+"Liferea·carga·las·cabeceras·usando·un·renderizador·HTML.·En·función·de·tu·sistema·"
+"pueden·haber·diferentes·opciones·a·elegir.·Nota:·Los·cambios·se·aplicarán·tras·reiniciar·"
+"el·programa"
 
 #: src/interface.c:1543
 msgid "View Headlines With"
@@ -968,8 +968,8 @@ msgstr ""
 "Liferea aprovecha la configuración del proxy de GNOME."
 "Si usas GNOME puedes cambiar estas opciones en el"
 "centro de control. Nota: Esto también afectará al resto"
-"de aplicaciones. Éste cuadro es útil para usuarios que"
-"quieran usar Liferea con un proxy, pero no estén"
+"de aplicaciones. Éste cuadro es útil para usuarios que "
+"quieran usar Liferea con un proxy, pero no estén "
 "usando GNOME."
 
 #: src/interface.c:1590
