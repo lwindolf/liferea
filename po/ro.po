@@ -1935,6 +1935,6 @@ msgid ""
 "xmlReadMemory(): Could not parse document:\n"
 "%s%s"
 msgstr ""
-"xmlReadMemory():Nu s-a putut parcurge documentul:\"
+"xmlReadMemory():Nu s-a putut parcurge documentul:\n"
 "%s%s"
 
