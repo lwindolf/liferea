@@ -77,9 +77,8 @@ void itemlist_reload(nodePtr node) {
 	isFolder = ((displayed_node != NULL) && (FST_FOLDER == displayed_node->type));
 	g_assert(isFeed || isFolder);
 
-	if(TRUE == isFolder) {
-		if((FST_FOLDER != node->type) && (node != displayed_node) && 
-		   (TRUE == getBooleanConfValue(FOLDER_DISPLAY_MODE))) {
+	if((TRUE == isFolder) && (1 == getNumericConfValue(FOLDER_DISPLAY_MODE))) {
+		if((FST_FOLDER != node->type) && (node != displayed_node)) {
 			/* There are two cases: the updated feed is a child of
 			   the displayed folder or not. If it is we want to update the
 			   item list of this folder. */
