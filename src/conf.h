@@ -87,7 +87,7 @@ void conf_feedlist_save();
 GSList * getFeedKeyList(gchar *keyprefix);
 void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
 
-folderPtr feedlist_insert_help_folder(folderPtr parent);
+folderPtr feedlist_insert_help_folder(folderPtr parent, GTimeVal *lastPoll, GTimeVal *lastFaviconPoll);
 
 gchar * getFreeFeedKey(gchar *keyprefix);
 

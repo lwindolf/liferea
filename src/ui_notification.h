@@ -22,6 +22,10 @@
 #ifndef _UI_NOTIFICATION_H
 #define _UI_NOTIFICATION_H
 
+#include "item.h"
+
+void ui_notification_add_new_item(itemPtr ip);
+
 void ui_notification_update(const feedPtr feed_p);
 
 #endif

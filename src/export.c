@@ -65,13 +65,10 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		const gchar *type = feed_type_fhp_to_str(feed_get_fhp(fp));
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 		gchar *cacheLimit = NULL;
-		if (fp->cacheLimit >= 0)
-			cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
-		if (fp->cacheLimit == CACHE_UNLIMITED)
-			cacheLimit = g_strdup("unlimited");
 
 		if (feed_get_type(fp) != FST_HELPFEED) {
 			childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+
 			xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp)); /* The OPML spec requires "text" */
 			xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
 			xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
@@ -83,10 +80,17 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
 			xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
 			xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
+
+			if (fp->cacheLimit >= 0)
+				cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
+			if (fp->cacheLimit == CACHE_UNLIMITED)
+				cacheLimit = g_strdup("unlimited");
 			if (cacheLimit != NULL)
 				xmlNewProp(childNode, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
+
 			if (feed_get_filter(fp) != NULL)
 				xmlNewProp(childNode, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
+
 			if(internal) {
 				xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 				if (fp->lastPoll.tv_sec > 0) {
@@ -101,8 +105,22 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				}
 			}
 			debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval, cacheLimit);
-		} else
+		} else {
 			debug1(DEBUG_CONF, "not adding help feed %s to feedlist", feed_get_title(fp));
+			if (internal && !strcmp(feed_get_id(fp), "helpfeed1")) {
+				/* The favicon date has to be saved somewhere.... save it on the parent. */
+				if (fp->lastPoll.tv_sec > 0) {
+					gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
+					xmlNewProp(cur, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
+					g_free(lastPoll);
+				}
+				if (fp->lastFaviconPoll.tv_sec > 0) {
+					gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
+					xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
+					g_free(lastPoll);
+				}
+			}
+		}
 		g_free(cacheLimit);
 		g_free(interval);
 	}
@@ -294,9 +312,23 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		
 	} else { /* It is a folder */
 		if(NULL != xmlHasProp(cur, BAD_CAST"helpFolder")) {
+			GTimeVal tv, faviconTv;
+			gchar *lastPollStr;
 			debug0(DEBUG_CONF, "adding help folder");
-			folder = feedlist_insert_help_folder(folder);
-			g_assert(NULL != folder);
+
+			lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
+			tv.tv_sec = parse_long(lastPollStr, 0L);
+			tv.tv_usec = 0L;
+			if (lastPollStr != NULL)
+				xmlFree(lastPollStr);
+			
+			lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
+			faviconTv.tv_sec = parse_long(lastPollStr, 0L);
+			faviconTv.tv_usec = 0L;
+			if (lastPollStr != NULL)
+				xmlFree(lastPollStr);
+			
+			folder = feedlist_insert_help_folder(folder, &tv, &faviconTv);
 		} else {
 			debug1(DEBUG_CONF, "adding folder \"%s\"", title);
 			child = restore_folder(folder, title, NULL, FST_FOLDER);

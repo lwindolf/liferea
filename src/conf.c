@@ -237,7 +237,7 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		g_free(path2);
 		
 		if (type == FST_HELPFOLDER) {
-			folder = feedlist_insert_help_folder(parent);
+			folder = feedlist_insert_help_folder(parent, NULL, NULL);
 		} else {
 			folder = restore_folder(parent, name, id, FST_FOLDER);
 			ui_add_folder(parent, folder, -1);
@@ -346,7 +346,7 @@ static gboolean load_folder_contents(folderPtr folder, gchar* fid) {
 	return changed;
 }
 
-folderPtr feedlist_insert_help_folder(folderPtr parent) {
+folderPtr feedlist_insert_help_folder(folderPtr parent, GTimeVal *lastPoll, GTimeVal *lastFaviconPoll) {
 	static folderPtr 	helpFolder = NULL;
 	feedPtr			fp;
 
@@ -371,6 +371,10 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 			g_free(tmp);
 			feed_set_title(fp, _("Online Help Feed"));
 			feed_set_id(fp, "helpfeed1");
+			if (lastPoll != NULL)
+				fp->lastPoll = *lastPoll;
+			if (lastFaviconPoll != NULL)
+				fp->lastFaviconPoll = *lastFaviconPoll;
 			feed_set_update_interval(fp, 1440);
 			if (feed_load_from_cache(fp) == FALSE)
 				feed_schedule_update(fp, 0);
@@ -381,6 +385,10 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 			feed_set_source(fp, HELP2URL);
 			feed_set_title(fp, _("Liferea SF News"));
 			feed_set_id(fp, "helpfeed2");
+			if (lastPoll != NULL)
+				fp->lastPoll = *lastPoll;
+			if (lastFaviconPoll != NULL)
+				fp->lastFaviconPoll = *lastFaviconPoll;
 			feed_set_update_interval(fp, 1440);
 			if (feed_load_from_cache(fp) == FALSE)
 				feed_schedule_update(fp, 0);
@@ -480,7 +488,7 @@ void loadSubscriptions(void) {
 	
 	/* if help folder was not yet created... */
 	if(!getBooleanConfValue(DISABLE_HELPFEEDS))
-		feedlist_insert_help_folder(NULL);
+		feedlist_insert_help_folder(NULL, NULL, NULL);
 	feedlistLoading = FALSE;
 	
 	if (gconf_changed) {
