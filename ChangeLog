@@ -6,6 +6,11 @@
 	  read status or the headline flag depending on the
 	  column you click. (Lars Lindner)
 
+	Bugfixes:
+
+	* 0.5.1 did falsely encode HTTP URL hash marks as %23.
+	  This is fixed now. (Lars Lindner)
+
 2004-06-30 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.1

@@ -529,7 +529,7 @@ gchar * encode_uri(gchar *uri_string) {
 	new_uri_string = g_strdup("");
 	for(i = 0; i < strlen(uri_string); i++) {
 		if(g_ascii_isalnum(uri_string[i]) || 
-		   strchr(";/?:@&=+$,", (int)uri_string[i]) ||	/* reserved URI chars */
+		   strchr(";/?:@&=+$,#", (int)uri_string[i]) ||	/* reserved URI chars and hash*/
    		   strchr("-_.!~*'()", (int)uri_string[i]))	/* unreserved URI chars */
 			tmp = g_strdup_printf("%s%c", new_uri_string, (unsigned char)uri_string[i]);
 		else
