@@ -104,7 +104,7 @@ struct htmlviewPluginInfo_ {
 	
 	GtkWidget* (*create)	();
 	//void (*destroy)    (GtkWidget *widget);
-	void		(*write)		(GtkWidget *widget, const gchar *string);
+	void		(*write)		(GtkWidget *widget, const gchar *string, const gchar *base);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gboolean	(*launchInsidePossible)	(void);
 	gfloat	(*zoomLevelGet)		(GtkWidget *widget);
@@ -165,8 +165,9 @@ void	ui_htmlview_finish_output(gchar **buffer);
  *
  * @param htmlview  The htmlview widget to be set
  * @param string	HTML source
+ * @param base		base url for resolving relative links
  */
-void	ui_htmlview_write(GtkWidget *htmlview, const gchar *string);
+void	ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *base);
 
 /**
  * Launches the specified URL in the configured browser or

@@ -101,6 +101,7 @@ static void *update_thread_main(void *data) {
 	                g_mutex_unlock(cond_mutex);
 			debug0(DEBUG_UPDATE, "going online again!");
 		}
+
 		
 		/* do update processing */
 		debug0(DEBUG_UPDATE, "waiting for request...");

@@ -289,6 +289,10 @@ xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
 		xmlFreeParserCtxt(parser);		
 		*errormsg = errors->buffer;
 		g_free(errors);
+ /* This seems to reset the errorfunc to he default, so that the
+    GtkHTML2 module is not unhappy because it also tries to call the
+    errorfunc on occasion. */
+		xmlSetGenericErrorFunc(NULL, NULL);
 	} else {
 		g_warning("parseBuffer(): Could not create parsing context!\n");
 		*errormsg = g_strdup("parseBuffer(): Could not create parsing context!\n");

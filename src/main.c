@@ -35,6 +35,7 @@
 #include "feed.h"
 #include "conf.h"
 #include "common.h"
+#include "htmlview.h"
 #include "update.h"
 #include "debug.h"
 #include "ui_queue.h"
@@ -133,7 +134,7 @@ int main (int argc, char *argv[]) {
 
 	gtk_widget_show(mainwindow);
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
-
+	
 	if(getBooleanConfValue(UPDATE_ON_STARTUP))
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
 

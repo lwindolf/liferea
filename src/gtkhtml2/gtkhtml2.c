@@ -46,8 +46,6 @@ typedef struct {
 	GnomeVFSAsyncHandle *handle;
 } StreamData;
 
-static GnomeVFSURI 	*baseURI = NULL;
-
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
@@ -200,10 +198,7 @@ url_request (HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer d
 	StreamData *sdata;
 	GSList *connection_list;
 
-	if (baseURI)
-		vfs_uri = gnome_vfs_uri_resolve_relative (baseURI, uri);
-	else
-		vfs_uri = gnome_vfs_uri_new(uri);
+	vfs_uri = gnome_vfs_uri_resolve_relative (g_object_get_data(G_OBJECT(doc), "liferea-base-url"), uri);
 
 	g_assert (HTML_IS_DOCUMENT(doc));
 	g_assert (stream != NULL);
@@ -227,14 +222,18 @@ url_request (HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer d
 static void
 on_url (HtmlView *view, const char *url, gpointer user_data)
 {
-	if(NULL != url)
-		ui_mainwindow_set_status_bar(url);
-	else
+	GnomeVFSURI *vfs_uri;
+     gchar *location = NULL;
+	
+	if(NULL != url) {
+		vfs_uri = gnome_vfs_uri_resolve_relative (g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-url"), url);
+		location = gnome_vfs_uri_to_string (vfs_uri, GNOME_VFS_URI_HIDE_NONE);
+		gnome_vfs_uri_unref (vfs_uri);
+		if(selectedURL)
+			g_free(selectedURL);
+		selectedURL = g_strdup(location);
+	} else
 		ui_mainwindow_set_status_bar("");
-
-	if(selectedURL)
-		g_free(selectedURL);
-	selectedURL = g_strdup(url);
 }
 
 static gboolean
@@ -269,10 +268,17 @@ kill_old_connections (HtmlDocument *doc)
 }
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
-
-	if (ui_htmlview_launch_in_external_browser(url) == FALSE) {
-		launch_url(NULL, url);
+	GnomeVFSURI *vfs_uri;
+	gchar *location;
+	
+	vfs_uri = gnome_vfs_uri_resolve_relative (g_object_get_data(G_OBJECT(doc), "liferea-base-url"), url);
+	location = gnome_vfs_uri_to_string (vfs_uri, GNOME_VFS_URI_HIDE_NONE);
+	gnome_vfs_uri_unref (vfs_uri);
+	
+	if (ui_htmlview_launch_in_external_browser(location) == FALSE) {
+		launch_url(NULL, location);
 	}
+	g_free(location);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -295,7 +301,7 @@ gfloat get_zoom_level(GtkWidget *scrollpane) {
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-void write_html(GtkWidget *scrollpane, const gchar *string) {
+void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *base) {
 
 	/* HTML widget can be used only from GTK thread */	
 	if(gnome_vfs_is_primary_thread()) {
@@ -305,11 +311,14 @@ void write_html(GtkWidget *scrollpane, const gchar *string) {
 		if(NULL != doc) {
 			kill_old_connections(doc);
 			html_document_clear(doc);	/* heard rumors that this is necessary... */
+			if (g_object_get_data(G_OBJECT(doc), "liferea-base-url") != NULL)
+				gnome_vfs_uri_unref(g_object_get_data(G_OBJECT(doc), "liferea-base-url"));
 			g_object_unref(G_OBJECT(doc));
 		}
 	
 		doc = html_document_new();
 		html_view_set_document(HTML_VIEW(htmlwidget), doc);
+		g_object_set_data(G_OBJECT(doc), "liferea-base-url", gnome_vfs_uri_new(base));
 		html_document_clear(doc);
 		html_document_open_stream(doc, "text/html");
 		
@@ -345,7 +354,7 @@ static GtkWidget* gtkhtml2_new() {
 	/* create html widget and pack it into the scrolled window */
 	htmlwidget = html_view_new();
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET(htmlwidget));
-	write_html(scrollpane, NULL);
+	write_html(scrollpane, NULL, "file:///");
 		  				  				  
 	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
 	

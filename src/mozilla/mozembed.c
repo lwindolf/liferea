@@ -44,7 +44,7 @@ static gchar		*selectedURL = NULL;
 /* -------------------------------------------------------------------- */
 
 /* function to write HTML source into the widget */
-static void mozilla_write(GtkWidget *widget, const gchar *string) {
+static void mozilla_write(GtkWidget *widget, const gchar *string, const gchar *base) {
 
 	g_assert(NULL != widget);
 	
@@ -54,9 +54,9 @@ static void mozilla_write(GtkWidget *widget, const gchar *string) {
 	
 
 	if((NULL != string) && (strlen(string) > 0))
-		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), string, strlen(string), "file:///", "text/html");
+		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), string, strlen(string), base, "text/html");
 	else
-		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), EMPTY, strlen(EMPTY), "file:///", "text/html");
+		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), EMPTY, strlen(EMPTY), base, "text/html");
 }
 
 /* -------------------------------------------------------------------- */

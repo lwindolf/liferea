@@ -259,7 +259,10 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 	addToHTMLBuffer(buffer, ">");
 }
 
-void ui_htmlview_write(GtkWidget *htmlview, const gchar *string) { 
+void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *base) { 
+	if (base == NULL)
+		base = "file:///";
+
 	if(!g_utf8_validate(string, -1, NULL)) {
 		gchar *buffer = g_strdup(string);
 		
@@ -268,10 +271,10 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string) {
 		
 		/* to prevent crashes inside the browser */
 		buffer = utf8_fix(buffer);
-		(htmlviewInfo->write)(htmlview, buffer);
+		(htmlviewInfo->write)(htmlview, buffer, base);
 		g_free(buffer);
 	} else
-		(htmlviewInfo->write)(htmlview, string);
+		(htmlviewInfo->write)(htmlview, string, base);
 }
 
 void ui_htmlview_finish_output(gchar **buffer) {
@@ -284,7 +287,7 @@ void ui_htmlview_clear(GtkWidget *htmlview) {
 
 	ui_htmlview_start_output(&buffer, FALSE);
 	ui_htmlview_finish_output(&buffer); 
-	ui_htmlview_write(htmlview, buffer);
+	ui_htmlview_write(htmlview, buffer, NULL);
 	g_free(buffer);
 }
 

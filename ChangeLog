@@ -5,8 +5,18 @@
 	* New Russian translation from Alekseev Vladimir
 	* New Czech translation from Juraj Kubelka
 	* Mozilla browser module supports zooming now. (Lars Lindner)
-	* Improved HTML stylesheet.
+	* Mozilla browser module supports scrolling down using shift-space.
+	* Improved HTML stylesheet. This will cause current items to be
+	  duplicated the first time that 0.5.0 is run.
+	* Relative links in HTML plugins are now supported.
+	* HTML plugin interface has changed.
 
+	Bug Fixes:
+
+	* "Select file" works when adding a "command" source in the feed
+	  properties.
+	* Liferea should now build with gcc 2.95 again.
+	
 2004-05-22  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.9
