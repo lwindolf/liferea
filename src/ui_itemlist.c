@@ -403,7 +403,7 @@ void on_popup_allunread_selected(void) {
 	gboolean    valid;
 	GtkWidget		*treeview;
 	GtkTreeSelection	*select;
-   GtkTreeModel		*model;
+	GtkTreeModel		*model;
 	GtkTreeIter iter, child;
 	gchar			*ckey;
 	feedPtr     fp;

@@ -179,6 +179,11 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 		fp = getFeed(key);
 		count = getFeedUnreadCount(fp);
 
+		if(NULL != fp->parseErrors)
+			g_object_set(GTK_CELL_RENDERER(cell), "foreground", "red", NULL);
+		else
+			g_object_set(GTK_CELL_RENDERER(cell), "foreground", "black", NULL);
+		
 		if(count > 0) {
 			tmp = g_strdup_printf("%s (%d)", getFeedTitle(fp), count);
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
@@ -202,6 +207,8 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 			}
 			rc = gtk_tree_model_iter_next(model, &child);
 		}
+
+		g_object_set(GTK_CELL_RENDERER(cell), "foreground", "black", NULL);
 		if (count>0) {
 			tmp = g_strdup_printf("%s (%d)", title, count);
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
