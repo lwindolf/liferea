@@ -107,9 +107,9 @@ void ui_tray_zero_new(void) {
 /* a click on the systray icon should show the program window
    if invisible or hide it if visible */
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
-	ui_tray_zero_new();
 	
-	if ((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
+	if((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
+		ui_tray_zero_new();
 		ui_mainwindow_restore_position();
 		gtk_window_present(GTK_WINDOW(mainwindow));
 	} else {

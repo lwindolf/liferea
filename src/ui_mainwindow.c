@@ -312,13 +312,13 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
 void ui_mainwindow_save_position() {
 	gint x, y, w, h;
 
-	if (!GTK_WIDGET_VISIBLE(mainwindow))
+	if(!GTK_WIDGET_VISIBLE(mainwindow))
 		return;
 	
 	gtk_window_get_position(GTK_WINDOW(mainwindow), &x, &y);
 	gtk_window_get_size(GTK_WINDOW(mainwindow), &w, &h);
 
-	if (x+w<0 || y+h<0 ||
+	if(x+w<0 || y+h<0 ||
 	    x > gdk_screen_width() ||
 	    y > gdk_screen_height())
 		return;
@@ -343,17 +343,17 @@ void ui_mainwindow_restore_position() {
 	h = getNumericConfValue(LAST_WINDOW_HEIGHT);
 	
 	/* Give up if the width or height not saved */
-	if (w == 0 || h == 0)
+	if(w == 0 || h == 0)
 		return;
 	
-	if (x >= gdk_screen_width())
+	if(x >= gdk_screen_width())
 		x = gdk_screen_width() - 100;
-	else if (x + w < 0)
+	else if(x + w < 0)
 		x  = 100;
 
-	if (y >= gdk_screen_height())
+	if(y >= gdk_screen_height())
 		y = gdk_screen_height() - 100;
-	else if (y + w < 0)
+	else if(y + w < 0)
 		y  = 100;
 	
 	gtk_window_move(GTK_WINDOW(mainwindow), x, y);
@@ -379,6 +379,7 @@ void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
 
 
 void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data) {
+
 	on_popup_newfolder_selected();
 }
 
@@ -392,6 +393,7 @@ void on_menu_delete (GtkMenuItem     *menuitem, gpointer         user_data) {
 
 void on_menu_properties (GtkMenuItem *menuitem, gpointer user_data) {
 	nodePtr ptr = ui_feedlist_get_selected();
+	
 	if (ptr != NULL && IS_FOLDER(ptr->type)) {
 		on_popup_foldername_selected((gpointer)ptr, 0, NULL);
 	} else if (ptr != NULL && IS_FEED(ptr->type)) {
@@ -413,6 +415,7 @@ void on_menu_update (GtkMenuItem     *menuitem, gpointer         user_data) {
 }
 
 gboolean on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+
 	if(getBooleanConfValue(SHOW_TRAY_ICON) == FALSE)
 		return on_quit(widget, event, user_data);
 	ui_mainwindow_save_position();
