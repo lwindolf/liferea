@@ -50,12 +50,26 @@ static void mozilla_write(GtkWidget *widget, const gchar *string, const gchar *b
 	
 	if(!GTK_WIDGET_REALIZED(widget)) 
 		return;
-		
-	
 
-	if((NULL != string) && (strlen(string) > 0))
-		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), string, strlen(string), base, "text/html");
-	else
+	if((NULL != string) && (strlen(string) > 0)) {
+		/* Because of a bug in Mozilla, sending the entire string at
+		   once causes Mozilla to hang. This seems to avoid that
+		   end. So many wasted hours finding the problem.... The
+		   result is in in the Mozilla Bugzilla. See report
+		   245960. Now off to eat dinner hours late because I missed
+		   the bus that I needed to use to get home. -Nathan*/
+		int left = strlen(string);
+		gtk_moz_embed_open_stream(GTK_MOZ_EMBED(widget), base, "text/html");
+		while (left > 0) {
+			if (left > 4096) {
+				gtk_moz_embed_append_data(GTK_MOZ_EMBED(widget), string, 4096);
+				string += 4096;
+			} else
+				gtk_moz_embed_append_data(GTK_MOZ_EMBED(widget), string, left);
+			left -=4096;
+		}
+		gtk_moz_embed_close_stream(GTK_MOZ_EMBED(widget));
+	} else
 		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), EMPTY, strlen(EMPTY), base, "text/html");
 }
 
