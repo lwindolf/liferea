@@ -88,4 +88,7 @@ void
 on_openlinksinsidebtn_clicked          (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 
+void
+on_feedsinmemorybtn_clicked            (GtkButton       *button,
+                                        gpointer         user_data);
 #endif

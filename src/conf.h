@@ -46,6 +46,7 @@
 #define STARTUP_FEED_ACTION		"/apps/liferea/startup_feed_action"
 #define DISABLE_HELPFEEDS		"/apps/liferea/disable-helpfeeds"
 #define UPDATE_THREAD_CONCURRENCY	"/apps/liferea/update-thread-concurrency"
+#define KEEP_FEEDS_IN_MEMORY		"/apps/liferea/keep-feeds-in-memory"
 
 /* GUI settings and persistency values */
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"

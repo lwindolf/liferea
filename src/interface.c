@@ -1565,6 +1565,14 @@ create_prefdialog (void)
   GtkWidget *label142;
   GtkWidget *startupfeedhandler;
   GtkWidget *helpoptionbtn;
+  GtkWidget *vbox2579;
+  GtkWidget *label147;
+  GtkWidget *hbox60;
+  GtkWidget *label148;
+  GtkWidget *vbox2580;
+  GtkWidget *feedsinmemorybtn1;
+  GSList *feedsinmemorybtn1_group = NULL;
+  GtkWidget *feedsinmemorybtn2;
   GtkWidget *label38;
   GtkWidget *vbox222;
   GtkWidget *vbox253;
@@ -1734,6 +1742,42 @@ create_prefdialog (void)
   helpoptionbtn = gtk_check_button_new_with_mnemonic (_("Add the _help feeds to the feed list on startup."));
   gtk_widget_show (helpoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox20), helpoptionbtn, FALSE, FALSE, 0);
+
+  vbox2579 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox2579);
+  gtk_box_pack_start (GTK_BOX (vbox3), vbox2579, TRUE, TRUE, 0);
+
+  label147 = gtk_label_new (_("<span weight=\"bold\">Feed Loading Settings</span>"));
+  gtk_widget_show (label147);
+  gtk_box_pack_start (GTK_BOX (vbox2579), label147, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label147), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label147), 0, 0.5);
+
+  hbox60 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox60);
+  gtk_box_pack_start (GTK_BOX (vbox2579), hbox60, TRUE, TRUE, 0);
+
+  label148 = gtk_label_new (_("    "));
+  gtk_widget_show (label148);
+  gtk_box_pack_start (GTK_BOX (hbox60), label148, FALSE, FALSE, 0);
+
+  vbox2580 = gtk_vbox_new (FALSE, 5);
+  gtk_widget_show (vbox2580);
+  gtk_box_pack_start (GTK_BOX (hbox60), vbox2580, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2580), 5);
+
+  feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("_Load feeds from disk when needed. Searching can \nbe slow if you have a lot of feeds,"));
+  gtk_widget_show (feedsinmemorybtn1);
+  gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn1, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn1), feedsinmemorybtn1_group);
+  feedsinmemorybtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feedsinmemorybtn1));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (feedsinmemorybtn1), TRUE);
+
+  feedsinmemorybtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("_Keep all feeds loaded. This may improve speed \n(especially when searching) but can cause a \nsignificant memory footprint if you have a lot \nof feeds!"));
+  gtk_widget_show (feedsinmemorybtn2);
+  gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn2, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn2), feedsinmemorybtn1_group);
+  feedsinmemorybtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feedsinmemorybtn2));
 
   label38 = gtk_label_new (_("Feed Handling"));
   gtk_widget_show (label38);
@@ -2186,6 +2230,12 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) helpoptionbtn, "clicked",
                     G_CALLBACK (on_helpoptionbtn_clicked),
                     NULL);
+  g_signal_connect ((gpointer) feedsinmemorybtn1, "clicked",
+                    G_CALLBACK (on_feedsinmemorybtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) feedsinmemorybtn2, "clicked",
+                    G_CALLBACK (on_feedsinmemorybtn_clicked),
+                    NULL);
   g_signal_connect ((gpointer) browseinwindow, "toggled",
                     G_CALLBACK (on_openlinksinsidebtn_clicked),
                     NULL);
@@ -2261,6 +2311,13 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label142, "label142");
   GLADE_HOOKUP_OBJECT (prefdialog, startupfeedhandler, "startupfeedhandler");
   GLADE_HOOKUP_OBJECT (prefdialog, helpoptionbtn, "helpoptionbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2579, "vbox2579");
+  GLADE_HOOKUP_OBJECT (prefdialog, label147, "label147");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox60, "hbox60");
+  GLADE_HOOKUP_OBJECT (prefdialog, label148, "label148");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2580, "vbox2580");
+  GLADE_HOOKUP_OBJECT (prefdialog, feedsinmemorybtn1, "feedsinmemorybtn1");
+  GLADE_HOOKUP_OBJECT (prefdialog, feedsinmemorybtn2, "feedsinmemorybtn2");
   GLADE_HOOKUP_OBJECT (prefdialog, label38, "label38");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox222, "vbox222");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox253, "vbox253");

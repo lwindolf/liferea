@@ -247,6 +247,23 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, "itemCountBtn");
 	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
 	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
+	
+	/* Set fields in the radio widgets so that they know their option # and the pref dialog */
+	for(i = 1; i <= 2; i++) {
+		widgetname = g_strdup_printf("%s%d", "feedsinmemorybtn", i);
+		widget = lookup_widget(prefdialog, widgetname);
+		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
+		g_free(widgetname);
+	}
+	
+	/* select currently active menu option */
+	tmp = 1;
+	if(getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) tmp = 2;
+
+	widgetname = g_strdup_printf("%s%d", "feedsinmemorybtn", tmp);
+	widget = lookup_widget(prefdialog, widgetname);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+	g_free(widgetname);
 
 	/* ================== panel 2 "headline display" ==================== */
 
@@ -272,6 +289,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		g_free(widgetname);
 	}
 
+	/* select currently active menu option */
 	widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
 	widget = lookup_widget(prefdialog, widgetname);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
@@ -316,7 +334,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		widgetname = g_strdup_printf("%s%d", "menuradiobtn", i);
 		widget = lookup_widget(prefdialog, widgetname);
 		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-		gtk_object_set_data(GTK_OBJECT(widget), "entry", entry);
 		g_free(widgetname);
 	}
 
@@ -438,8 +455,6 @@ void on_openlinksinsidebtn_clicked(GtkToggleButton *button, gpointer user_data) 
 	setBooleanConfValue(BROWSE_INSIDE_APPLICATION, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
 
-
-
 void on_timeformatselection_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget *editbox = gtk_object_get_data(GTK_OBJECT(button), "entry");
 	int active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button),"option_number"));
@@ -463,12 +478,9 @@ void on_itemCountBtn_value_changed(GtkSpinButton *spinbutton, gpointer user_data
 }
 
 void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*editbox;
 	gint		active_button;
 	
-	editbox = gtk_object_get_data(GTK_OBJECT(button), "entry");
 	active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number"));
-
 	switch(active_button) {
 		case 1:
 			setBooleanConfValue(DISABLE_MENUBAR, FALSE);
@@ -495,7 +507,6 @@ void on_helpoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 	setBooleanConfValue(DISABLE_HELPFEEDS, !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
 
-
 static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean	enabled;
 	
@@ -507,7 +518,6 @@ static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxybox")), enabled);
 	setBooleanConfValue(USE_PROXY, enabled);
 }
-
 
 void on_proxyhostentry_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(PROXY_HOST, gtk_editable_get_chars(editable,0,-1));
@@ -522,8 +532,13 @@ void on_proxyusernameentry_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(PROXY_USER, gtk_editable_get_chars(editable,0,-1));
 }
 
-
 void on_proxypasswordentry_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(PROXY_PASSWD, gtk_editable_get_chars(editable,0,-1));
 }
 
+void on_feedsinmemorybtn_clicked(GtkButton *button, gpointer user_data) {
+	gint		active_button;
+	
+	active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number"));
+	setBooleanConfValue(KEEP_FEEDS_IN_MEMORY, (active_button == 2));
+}

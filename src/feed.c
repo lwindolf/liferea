@@ -473,30 +473,33 @@ void feed_unload(feedPtr fp) {
 	gint 	unreadCount;
 
 	if(NULL == fp) {
-		debug0(DEBUG_CACHE, "unloading everything...");
-		ui_feedlist_do_for_all((nodePtr)fp, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
-	} else {
-		debug_enter("feed_unload");
-		g_assert(0 <= fp->loaded);
-		if(0 != fp->loaded) {
-			if(1 == fp->loaded) {
-				if(IS_FEED(feed_get_type(fp))) {
-					debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
-					
-					/* save feed before unloading */
-					feed_save(fp);	
-
-					/* free items */
-					feed_clear_item_list(fp);
-				} else {
-					debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
-				}
-			} else {
-				debug2(DEBUG_CACHE, "not unloading (%s) because it's used (%d references)...", feed_get_source(fp), fp->loaded);
-			}
-			fp->loaded--;
+		if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
+			debug0(DEBUG_CACHE, "unloading everything...");
+			ui_feedlist_do_for_all((nodePtr)fp, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
 		}
-		debug_exit("feed_unload");
+	} else {
+		g_assert(0 <= fp->loaded);	/* could indicate bad loaded reference counting */
+		if(0 != fp->loaded) {
+			feed_save(fp);		/* save feed before unloading */
+
+			if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
+				debug_enter("feed_unload");
+				if(1 == fp->loaded) {
+					if(IS_FEED(feed_get_type(fp))) {
+						debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
+
+						/* free items */
+						feed_clear_item_list(fp);
+					} else {
+						debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
+					}
+				} else {
+					debug2(DEBUG_CACHE, "not unloading (%s) because it's used (%d references)...", feed_get_source(fp), fp->loaded);
+				}
+				fp->loaded--;
+				debug_exit("feed_unload");
+			}
+		}
 	}
 }
 
@@ -1322,7 +1325,8 @@ void feed_free(feedPtr fp) {
 	if(fp->ui_data)
 		ui_folder_remove_node((nodePtr)fp);
 
-	feed_unload(fp);
+	/* free items */
+	feed_clear_item_list(fp);
 
 	if(fp->id && fp->id[0] != '\0')
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
