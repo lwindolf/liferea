@@ -39,13 +39,6 @@ enum node_types {
 	FST_FEED	= 10,		/**< Any type of feed */
 };
 
-/** macro to test whether a type is a resource which is regularly updated */
-#define IS_FEED(type)		(FST_FEED == type)
-
-/** macro to test whether a type is a folder entry */
-#define IS_FOLDER(type)		(FST_FOLDER == type)
-
-
 /** Flags used in the request structure */
 enum feed_request_flags {
 	FEED_REQ_SHOW_PROPDIALOG = 1,

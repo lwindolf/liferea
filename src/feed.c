@@ -68,8 +68,6 @@ void feed_init(void) {
 	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, opml_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, vfolder_init_feed_handler());
-	
-	initFolders();
 }
 
 /* function to create a new feed structure */
@@ -472,7 +470,7 @@ void feed_unload(feedPtr fp) {
 		if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 			debug_enter("feed_unload");
 			if(1 == fp->loaded) {
-				if(IS_FEED(feed_get_type(fp))) {
+				if(FST_FEED == feed_get_type(fp)) {
 					debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
 
 					/* free items */
@@ -946,13 +944,13 @@ gchar *feed_render(feedPtr fp) {
 		else
 			tmp = g_strdup(feed_get_title(fp));
 
-		tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
+		tmp2 = g_strdup_printf(HEAD_LINE, (FST_FEED == feed_get_type(fp))?_("Feed:"):_("VFolder"), tmp);
 		g_free(tmp);
 		addToHTMLBufferFast(&buffer, tmp2);
 		g_free(tmp2);
 
 		/*  -- Source line */
-		if(feed_get_source(fp) != NULL) {
+		if((NULL != feed_get_source(fp)) && (FST_VFOLDER != feed_get_type(fp))) {
 			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 							  feed_get_source(fp),
 							  feed_get_source(fp));
@@ -1012,7 +1010,7 @@ void feed_free(feedPtr fp) {
 	if(FST_VFOLDER == fp->type) {
 		vfolder_free(fp);	/* some special preparations for vfolders */
 	} else {
-		g_assert(IS_FEED(fp->type));
+		g_assert(FST_FEED == fp->type);
 	}
 	
 	if(displayed_node == (nodePtr)fp) { /* This is not strictly necessary. It just speeds deletion of an entire itemlist. */

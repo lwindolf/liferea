@@ -38,11 +38,11 @@ feedPtr vfolder_new(void) {
 	debug_enter("vfolder_new");
 
 	fp = feed_new();;
-	fp->type = FST_VFOLDER;
-	fp->title = g_strdup("vfolder");
-	fp->source = g_strdup("vfolder");
-	fp->id = conf_new_id();
-	fp->available = TRUE;
+	feed_set_type(fp, FST_VFOLDER);
+	feed_set_title(fp, "vfolder");
+	feed_set_source(fp, "vfolder");
+	feed_set_id(fp, conf_new_id());
+	feed_set_available(fp, TRUE);
 	fp->fhp = feed_type_str_to_fhp("vfolder");
 	vfolders = g_slist_append(vfolders, fp);
 	
@@ -316,7 +316,7 @@ feedHandlerPtr vfolder_init_feed_handler(void) {
 	/* prepare feed handler structure, we need this for
 	   vfolders too to set item and OPML type identifier */
 	fhp->typeStr		= "vfolder";
-	fhp->icon		= ICON_AVAILABLE;
+	fhp->icon		= ICON_VFOLDER;
 	fhp->directory		= FALSE;
 	fhp->feedParser		= NULL;
 	fhp->checkFormat	= NULL;

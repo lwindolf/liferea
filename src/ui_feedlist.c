@@ -92,8 +92,8 @@ nodePtr ui_feedlist_get_selected() {
 }
 
 folderPtr ui_feedlist_get_target_folder(int *pos) {
-	nodePtr ptr = ui_feedlist_get_selected();
-	GtkTreeIter *iter;
+	nodePtr		ptr = ui_feedlist_get_selected();
+	GtkTreeIter	*iter;
 	
 	if (ptr == NULL) {
 		*pos = -1;
@@ -102,7 +102,7 @@ folderPtr ui_feedlist_get_target_folder(int *pos) {
 
 	iter = &((ui_data*)(ptr->ui_data))->row;
 
-	if(IS_FOLDER(ptr->type)) {
+	if(FST_FOLDER == ptr->type) {
 		*pos = -1;
 		return (folderPtr)ptr;
 	} else {
@@ -130,7 +130,7 @@ static void ui_feedlist_update_(GtkTreeIter *iter) {
 		valid = gtk_tree_model_get_iter_first(tree_model, &childiter);
 	}
 
-	if (ptr != NULL)
+	if(ptr != NULL)
 		((ui_data*)(ptr->ui_data))->row = *iter;
 
 	while(valid) {
@@ -138,8 +138,8 @@ static void ui_feedlist_update_(GtkTreeIter *iter) {
 		valid = gtk_tree_model_iter_next(tree_model, &childiter);
 	}
 
-	if (ptr != NULL) {
-		if (IS_FOLDER(ptr->type))
+	if(ptr != NULL) {
+		if(FST_FOLDER == ptr->type)
 			ui_folder_update((folderPtr)ptr);
 		else
 			ui_feed_update((feedPtr)ptr);
@@ -161,19 +161,17 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	GtkTreeModel		*model;
 	feedPtr			fp;
 	GdkGeometry		geometry;
-	gint				type = FST_INVALID;
+	gint			type = FST_INVALID;
 
 	ui_tray_zero_new();
 	
 	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		gtk_tree_model_get(model, &iter, 
-					    FS_PTR, &fp,
-					    -1);
-		if (fp != NULL) 
+		gtk_tree_model_get(model, &iter, FS_PTR, &fp, -1);
+		if(fp != NULL) 
 			type = fp->type;
 		
 		/* make sure thats no grouping iterator */
-		if(fp && (IS_FEED(fp->type) || FST_VFOLDER == fp->type)) {
+		if((FST_FEED == type) || (FST_VFOLDER == type)) {
 			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing */
@@ -203,10 +201,8 @@ static void ui_feedlist_row_activated_cb(GtkTreeView *tv, GtkTreePath *path, Gtk
 	nodePtr ptr;
 	
 	gtk_tree_model_get_iter(gtk_tree_view_get_model(tv), &iter, path);
-
-	gtk_tree_model_get(gtk_tree_view_get_model(tv), &iter,
-				    FS_PTR, &ptr, -1);
-	if (IS_FOLDER(ptr->type)) {
+	gtk_tree_model_get(gtk_tree_view_get_model(tv), &iter, FS_PTR, &ptr, -1);
+	if(FST_FOLDER == ptr->type) {
 		if (gtk_tree_view_row_expanded(tv, path))
 			gtk_tree_view_collapse_row(tv, path);
 		else
@@ -351,18 +347,16 @@ static void on_popup_refresh_selected_cb(nodePtr ptr) {
 	feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
 }
 
-void on_popup_refresh_selected(gpointer callback_data,
-						 guint callback_action,
-						 GtkWidget *widget) {
+void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	nodePtr ptr = (nodePtr)callback_data;
 
-	if (ptr == NULL) {
+	if(ptr == NULL) {
 		ui_show_error_box(_("You have to select a feed entry"));
 		return;
 	}
 	
 	if(download_is_online()) {
-		if (IS_FEED(ptr->type))
+		if(FST_FEED == ptr->type)
 			feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
 		else
 			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, on_popup_refresh_selected_cb);
@@ -370,9 +364,8 @@ void on_popup_refresh_selected(gpointer callback_data,
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
 
-void on_popup_mark_as_read(gpointer callback_data,
-					  guint callback_action,
-					  GtkWidget *widget) {
+void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+
 	on_popup_allunread_selected();
 }
 
@@ -400,14 +393,13 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 
 static void ui_feedlist_delete_(nodePtr ptr) {
 
-	if(IS_FEED(ptr->type)) {
+	if((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type)) {
 		ui_notification_remove_feed((feedPtr)ptr);	/* removes an existing notification for this feed */
 		ui_folder_remove_node(ptr);
 		feed_free((feedPtr)ptr);
 	} else {
 		ui_feedlist_do_for_all(ptr, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, ui_feedlist_delete_);
-		if(ui_folder_is_empty((folderPtr)ptr))
-			folder_free((folderPtr)ptr);
+		folder_free((folderPtr)ptr);
 	}
 }
 
@@ -430,19 +422,19 @@ void ui_feedlist_delete(nodePtr ptr) {
 	g_assert(ptr->ui_data != NULL);
 	g_assert(ptr == ui_feedlist_get_selected());
 
-	if (IS_FOLDER(ptr->type)) {
-		ui_mainwindow_set_status_bar(_("Deleting \"%s\""),"Deleting entry", folder_get_title((folderPtr)ptr));
-		text = g_strdup_printf(_("Are you sure that you want to delete %s and its contents?"), folder_get_title((folderPtr)ptr));
+	if(FST_FOLDER == ptr->type) {
+		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), folder_get_title((folderPtr)ptr));
+		text = g_strdup_printf(_("Are you sure that you want to delete \"%s\" and its contents?"), folder_get_title((folderPtr)ptr));
 	} else {
 		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), feed_get_title((feedPtr)ptr));
-		text = g_strdup_printf(_("Are you sure that you want to delete %s?"), feed_get_title((feedPtr)ptr));
+		text = g_strdup_printf(_("Are you sure that you want to delete \"%s\"?"), feed_get_title((feedPtr)ptr));
 	}
 
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
-							  GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
-							  GTK_MESSAGE_QUESTION,
-							  GTK_BUTTONS_YES_NO,
-							  "%s", text);
+	                                GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
+	                                GTK_MESSAGE_QUESTION,
+	                                GTK_BUTTONS_YES_NO,
+	                                "%s", text);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(mainwindow));
@@ -451,8 +443,8 @@ void ui_feedlist_delete(nodePtr ptr) {
 	
 	gtk_widget_show_all(dialog);
 
-	g_signal_connect (G_OBJECT (dialog), "response",
-				   G_CALLBACK (ui_feedlist_delete_response_cb), ptr);
+	g_signal_connect(G_OBJECT(dialog), "response",
+	                 G_CALLBACK(ui_feedlist_delete_response_cb), ptr);
 }
 
 void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -471,9 +463,8 @@ void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWi
 	
 	g_assert(NULL != fp);
 	if(NULL != fp) {
-		if(IS_FEED(feed_get_type(fp))) {
+		if(FST_FEED == feed_get_type(fp)) {
 			ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
-//ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow),fp); // for debugging
 			return;
 		} 
 		if(FST_VFOLDER == feed_get_type(fp)) {
@@ -546,11 +537,11 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 		/* If child == NULL, this is an empty node. */
 		if (child != NULL) {
-			gboolean directory = IS_FEED(child->type) && (((feedPtr)child)->fhp != NULL) && ((feedPtr)child)->fhp->directory;
+			gboolean directory = (FST_FEED == child->type) && (((feedPtr)child)->fhp != NULL) && ((feedPtr)child)->fhp->directory;
 			apply = (filter & ACTION_FILTER_CHILDREN) ||
-				((filter & ACTION_FILTER_FEED) && IS_FEED(child->type) && !directory) ||
-				((filter & ACTION_FILTER_DIRECTORY) && IS_FEED(child->type) && directory) ||
-				((filter & ACTION_FILTER_FOLDER) && IS_FOLDER(child->type));
+				((filter & ACTION_FILTER_FEED) && (FST_FEED == child->type) && !directory) ||
+				((filter & ACTION_FILTER_DIRECTORY) && (FST_FEED == child->type) && directory) ||
+				((filter & ACTION_FILTER_FOLDER) && (FST_FOLDER == child->type));
 			descend = !(filter & ACTION_FILTER_CHILDREN);
 			
 			if(TRUE == apply) {

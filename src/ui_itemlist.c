@@ -73,17 +73,17 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 }
 
 void ui_itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {
-     GtkTreeView    *itemlist;
-     GtkTreeModel   *model;
-     gint      sortColumn;
-     GtkSortType    sortType;
-     gboolean  sorted;
+	GtkTreeView	*itemlist;
+	GtkTreeModel	*model;
+	gint		sortColumn;
+	GtkSortType	sortType;
+	gboolean	sorted;
 	
 	if(displayed_node == NULL || disableSortingSaving != 0)
 		return;
 	
-     sorted = gtk_tree_sortable_get_sort_column_id(treesortable, &sortColumn, &sortType);
-	if (IS_FEED(displayed_node->type) || FST_VFOLDER == displayed_node->type)
+	sorted = gtk_tree_sortable_get_sort_column_id(treesortable, &sortColumn, &sortType);
+	if((FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type))
 		feed_set_sort_column((feedPtr)displayed_node, sortColumn, sortType == GTK_SORT_DESCENDING);
 }
 
@@ -100,14 +100,14 @@ GtkTreeStore * getItemStore(void) {
 			- feed icon
 		 */
 		itemstore = gtk_tree_store_new(IS_LEN,
-						 G_TYPE_INT,
-						 G_TYPE_STRING,
-						 G_TYPE_STRING, 
-						 G_TYPE_STRING,
-						 GDK_TYPE_PIXBUF,
-						 G_TYPE_POINTER, 
-						 G_TYPE_INT,
- 						 GDK_TYPE_PIXBUF);
+		                               G_TYPE_INT,
+		                               G_TYPE_STRING,
+		                               G_TYPE_STRING, 
+		                               G_TYPE_STRING,
+		                               GDK_TYPE_PIXBUF,
+		                               G_TYPE_POINTER, 
+		                               G_TYPE_INT,
+		                               GDK_TYPE_PIXBUF);
 		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
 		g_signal_connect(G_OBJECT(itemstore), "sort-column-changed", G_CALLBACK(ui_itemlist_sort_column_changed_cb), NULL);
 	}
@@ -418,7 +418,8 @@ void ui_itemlist_display(void) {
 			/* display feed info */
 			if(displayed_node) {
 				ui_htmlview_start_output(&buffer, itemlist_mode);
-				if (IS_FEED(displayed_node->type)) {
+				if((FST_FEED == displayed_node->type) || 
+				   (FST_VFOLDER == displayed_node->type)) {
 					tmp = feed_render((feedPtr)displayed_node);
 					addToHTMLBufferFast(&buffer, tmp);
 					g_free(tmp);
@@ -437,7 +438,7 @@ void ui_itemlist_display(void) {
 		
 	if(buffer) {
 		if(displayed_node != NULL &&
-		   IS_FEED(displayed_node->type) &&
+		   (FST_FEED == displayed_node->type) &&
 		   ((feedPtr)displayed_node)->source != NULL &&
 		   ((feedPtr)displayed_node)->source[0] != '|' &&
 		   strstr(((feedPtr)displayed_node)->source, "://") != NULL)
@@ -505,9 +506,9 @@ void ui_itemlist_load(nodePtr node) {
 	model = GTK_TREE_MODEL(getItemStore());
 	
 	/* Add the new items */
-	if(node == NULL || IS_FOLDER(node->type)) {
+	if((node == NULL) || (FST_FOLDER == node->type)) {
 		ui_feedlist_do_for_all(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed);
-	} else if(IS_FEED(node->type) || (node->type == FST_VFOLDER)) {
+	} else if((FST_FEED == node->type) || (FST_VFOLDER == node->type)) {
 		ui_itemlist_load_feed((feedPtr)node);
 	}
 	
@@ -515,7 +516,7 @@ void ui_itemlist_load(nodePtr node) {
 	gtk_tree_view_set_model(itemlist, model);
 	
 	disableSortingSaving++;
-	if(IS_FEED(node->type) || node->type == FST_VFOLDER)
+	if((FST_FEED == node->type) || (FST_VFOLDER == node->type))
 		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed);
 	disableSortingSaving--;
 	
@@ -629,7 +630,7 @@ void on_toggle_unread_status(GtkMenuItem *menuitem, gpointer user_data) {
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	feedPtr		fp;
 	
-	if(displayed_node && IS_FEED(displayed_node->type)) {
+	if((NULL != displayed_node) && (FST_FEED == displayed_node->type)) {
 		fp = (feedPtr)displayed_node;
 		ui_itemlist_clear();
 		feed_remove_items(fp);
@@ -643,7 +644,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	feedPtr		fp;
 	itemPtr		ip;
 	
-	if(displayed_node && IS_FEED(displayed_node->type)) {
+	if((NULL != displayed_node) && (FST_FEED == displayed_node->type)) {
 		if(NULL != (ip = ui_itemlist_get_selected())) {
 			fp = (feedPtr)displayed_node;
 			gtk_tree_store_remove(GTK_TREE_STORE(itemstore), &(((ui_item_data*)ip->ui_data)->row));

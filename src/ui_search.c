@@ -71,11 +71,11 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 		if(NULL != searchFeed)
 			feed_free(searchFeed);
 		searchFeed = vfolder_new();
+		feed_set_title(searchFeed, searchstring);
 		vfolder_add_rule(searchFeed, "exact", searchstring, TRUE);
 		vfolder_refresh(searchFeed);
 		ui_feedlist_select(NULL);
 		ui_itemlist_load((nodePtr)searchFeed);
-g_print("==============================================================\n");
 	}
 }
 

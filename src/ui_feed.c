@@ -227,19 +227,17 @@ void ui_feed_process_update_result(struct request *request) {
 /** determines the feeds favicon or default icon */
 static GdkPixbuf* ui_feed_get_icon(feedPtr fp) {
 	gpointer	favicon;
-	g_assert(!IS_FOLDER(fp->type));
 	
-	if(!feed_get_available(fp)) {
+	g_assert(FST_FOLDER != fp->type);
+		
+	if(!feed_get_available(fp))
 		return icons[ICON_UNAVAILABLE];
-	}
 
-	if(NULL != (favicon = feed_get_favicon(fp))) {
+	if(NULL != (favicon = feed_get_favicon(fp)))
 		return favicon;
-	}
 	
-	if (fp->fhp != NULL && fp->fhp->icon < MAX_ICONS) {
+	if(fp->fhp != NULL && fp->fhp->icon < MAX_ICONS)
 		return icons[fp->fhp->icon];
-	}
 
 	/* And default to the available icon.... */
 	return icons[ICON_AVAILABLE];
@@ -247,36 +245,34 @@ static GdkPixbuf* ui_feed_get_icon(feedPtr fp) {
 
 /** updating of a single feed list entry */
 void ui_feed_update(feedPtr fp) {
-	GtkTreeModel      *model;
-	GtkTreeIter       *iter;
-	gchar     *label, *tmp;
+	GtkTreeModel	*model;
+	GtkTreeIter	*iter;
+	gchar		*label, *tmp;
 	int		count;
 	
-	if (fp->ui_data == NULL)
+	if(fp->ui_data == NULL)
 		return;
 	
 	iter = &((ui_data*)fp->ui_data)->row;
 	model =  GTK_TREE_MODEL(feedstore);
 	
-	g_assert(!IS_FOLDER(fp->type));
+	g_assert(FST_FOLDER != fp->type);
 	
 	count = feed_get_unread_counter(fp);
 	label = unhtmlize(g_strdup(feed_get_title(fp)));
 	/* FIXME: Unescape text here! */
 	tmp = g_markup_escape_text(label,-1);
 	g_free(label);
-	if(count > 0) {
+	if(count > 0)
 		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, count);
-	} else {
+	else
 		label = g_strdup_printf("%s", tmp);
-	}
 	g_free(tmp);
 	
-	gtk_tree_store_set(feedstore, iter,
-				    FS_LABEL, label,
-				    FS_UNREAD, count,
-				    FS_ICON, ui_feed_get_icon(fp),
-				    -1);	
+	gtk_tree_store_set(feedstore, iter, FS_LABEL, label,
+	                                    FS_UNREAD, count,
+	                                    FS_ICON, ui_feed_get_icon(fp),
+	                                    -1);
 	g_free(label);
 }
 

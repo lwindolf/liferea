@@ -22,6 +22,7 @@
 #include <libxml/tree.h>
 #include "feed.h"
 #include "folder.h"
+#include "vfolder.h"
 #include "rule.h"
 #include "conf.h"
 #include "callbacks.h"
@@ -54,7 +55,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 	
 	debug_enter("append_node_tag");
 	
-	if(IS_FOLDER(ptr->type)) {
+	if(FST_FOLDER == ptr->type) {
 		folderPtr folder = (folderPtr)ptr;
 		struct exportData data;
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);

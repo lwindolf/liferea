@@ -45,10 +45,10 @@
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
  do { \
 	GtkToolItem *item = gtk_tool_button_new(gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), label); \
-     gtk_tool_item_set_tooltip(item, tooltips, tooltip, NULL); \
+	gtk_tool_item_set_tooltip(item, tooltips, tooltip, NULL); \
 	gtk_tool_item_set_homogeneous (item, FALSE); \
 	gtk_tool_item_set_is_important (item, TRUE); \
-     g_signal_connect((gpointer) item, "clicked", G_CALLBACK(function), NULL); \
+	g_signal_connect((gpointer) item, "clicked", G_CALLBACK(function), NULL); \
 	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), \
 				    item, \
 				    -1); \
@@ -56,7 +56,7 @@
 #else
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function)      \
  gtk_toolbar_append_item(GTK_TOOLBAR(toolbar), \
-				    label, \
+					label, \
 					tooltip, \
 					NULL, \
 					gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), \
@@ -254,7 +254,7 @@ void ui_mainwindow_update_toolbar(void) {
 }
 
 void ui_mainwindow_update_feed_menu(gint type) {
-	gboolean enabled = IS_FEED(type) || IS_FOLDER(type);
+	gboolean enabled = (FST_FEED == type) || (FST_FOLDER == type);
 	GtkWidget *item;
 	
 	item = lookup_widget(mainwindow, "properties");
@@ -435,26 +435,23 @@ void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
 	on_popup_refresh_selected((gpointer)fp, 0, NULL);
 }
 
-
-void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data) {
+void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
 
 	on_popup_newfolder_selected();
 }
 
-
-void on_menu_delete (GtkMenuItem     *menuitem, gpointer         user_data) {
+void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
 	nodePtr ptr = (nodePtr)ui_feedlist_get_selected();
 
 	ui_feedlist_delete(ptr);
 }
 
-
-void on_menu_properties (GtkMenuItem *menuitem, gpointer user_data) {
+void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data) {
 	nodePtr ptr = ui_feedlist_get_selected();
 	
-	if (ptr != NULL && IS_FOLDER(ptr->type)) {
+	if((ptr != NULL) && (FST_FOLDER == ptr->type)) {
 		on_popup_foldername_selected((gpointer)ptr, 0, NULL);
-	} else if (ptr != NULL && IS_FEED(ptr->type)) {
+	} else if((ptr != NULL) && (FST_FEED == ptr->type)) {
 		on_popup_prop_selected((gpointer)ptr, 0, NULL);
 	} else {
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
@@ -462,7 +459,7 @@ void on_menu_properties (GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 
-void on_menu_update (GtkMenuItem     *menuitem, gpointer         user_data) {
+void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
 	nodePtr ptr = ui_feedlist_get_selected();
 	
 	if (ptr != NULL) {
@@ -472,7 +469,7 @@ void on_menu_update (GtkMenuItem     *menuitem, gpointer         user_data) {
 	}
 }
 
-gboolean on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+gboolean on_close(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	if(getBooleanConfValue(SHOW_TRAY_ICON) == FALSE)
 		return on_quit(widget, event, user_data);
@@ -482,6 +479,7 @@ gboolean on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 }
 
 void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data) {
+
 	if((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
 		ui_mainwindow_restore_position(mainwindow);
 		gtk_window_present(GTK_WINDOW(mainwindow));
@@ -491,7 +489,7 @@ void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data) {
 	}
 }
 
-gboolean on_mainwindow_window_state_event (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+gboolean on_mainwindow_window_state_event(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	
 	if(!GTK_WIDGET_VISIBLE(mainwindow))
 		return FALSE;

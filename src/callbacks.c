@@ -188,13 +188,13 @@ void on_popup_allunread_selected(void) {
 	nodePtr		np;
 	
 	if(np = ui_feedlist_get_selected()) {
-		if(IS_FOLDER(np->type)) {
+		if(FST_FOLDER == np->type)
 			/* if we have selected a folder we mark all item of all feeds as read */
 			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
-		} else {
+		else
 			/* if not we mark all items of the item list as read */
 			ui_itemlist_mark_all_as_read();
-		}
+
 		ui_feedlist_update();
 	}
 }
