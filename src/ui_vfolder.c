@@ -1,5 +1,5 @@
 /**
- * @file ui_vfolder.h  vfolder dialogs handling
+ * @file ui_vfolder.c  vfolder dialogs handling
  * 
  * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
  *

@@ -15,15 +15,36 @@
 	  (Lars Lindner)
 	* GTK+ dependency raised to 2.4 to drop the included
 	  GtkTreeModelFilter source. (Lars Lindner)
+
+	Bugfixes:
+
+	* Fix for crash when deleting feed while favicon
+	  gets updated. (Jakub W. Jozwicki)
+	* Preventing password exposal in status line when	
+	  updating favicons. (reported by Ben Winslow)
+	* Fixes broken saving of sorting order.
+
+
+2004-11-29  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.6.4
+	
 	* Added Polish translation and default feed list. 
           (Jakub W. Jozwicki)
 	* Article skimming keybinding is now global. 
           (Lars Lindner)
+	  
+	Bugfixes
 
-	Bugfixes:
-
+	* Not matching types for proxy port variable fixed.
+	  This should solve proxy problems on Solaris.
+	  (Lars Lindner)
 	* Fixes a bug that caused the items of a deleted feed 
-	  not to be removed from all vfolders. (Jakub W. Jozwicki)
+	  not to be removed from all vfolders. 
+	  (Jakub W. Jozwicki)
+	* Workaround for unwanted GtkHTML2 default background
+	  color. Liferea now enforces a white background.
+	  (Juha-Mikko Ahonen)
 
 
 2004-11-25  Lars Lindner <lars.lindner@gmx.net>

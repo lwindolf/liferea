@@ -116,8 +116,8 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
 			else if(fp->sortColumn == IS_TIME)
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
-			if(fp->sortReversed)
-				xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"true");
+			if(FALSE == fp->sortReversed)
+				xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
 				
 			if(TRUE == feed_get_two_pane_mode(fp))
 				xmlNewProp(childNode, BAD_CAST"twoPane", BAD_CAST"true");
@@ -375,8 +375,8 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			xmlFree(sortStr);
 		}
 		sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
-		if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"true"))
-			fp->sortReversed = TRUE;
+		if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"false"))
+			fp->sortReversed = FALSE;
 		if(sortStr != NULL)
 			xmlFree(sortStr);
 			

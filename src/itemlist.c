@@ -67,7 +67,6 @@ static void itemlist_load_feed(feedPtr fp, gpointer data) {
 void itemlist_load(nodePtr node) {
 	GtkTreeModel	*model;
 	gint		sortColumn;
-	GtkSortType	sortType;
 	gboolean	isFeed;
 	gboolean	merge = (node == displayed_node);
 
@@ -89,7 +88,6 @@ void itemlist_load(nodePtr node) {
 	}
 
 	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
-	gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sortColumn, &sortType);
 
 	if(FALSE == merge) {
 		ui_itemlist_clear();
@@ -98,7 +96,7 @@ void itemlist_load(nodePtr node) {
 	
 		if(isFeed) {
 			disableSortingSaving++;
-			gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed);
+			gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
 			disableSortingSaving--;
 		}
 		

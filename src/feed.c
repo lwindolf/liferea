@@ -89,7 +89,7 @@ feedPtr feed_new(void) {
 	fp->cacheLimit = CACHE_DEFAULT;
 	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 	fp->sortColumn = IS_TIME;
-	fp->sortReversed = TRUE;
+	fp->sortReversed = TRUE;	/* default sorting is newest date at top */
 		
 	return fp;
 }
