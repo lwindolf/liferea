@@ -603,7 +603,7 @@ gint feed_process_update_results(gpointer data) {
 		debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
 		g_free(request->data);
 		update_request_free(request);
-		return;
+		return TRUE;
 	}
 
 	ui_lock();
