@@ -347,13 +347,18 @@ void ui_itemlist_display(void) {
 	gchar		*buffer = NULL;
 	gboolean	valid;
 	gchar		*tmp = NULL;
+	gchar		*base = NULL;
 	
 	np = ui_feedlist_get_selected();
 	
 	if(np != NULL) {
+		if(FST_FOLDER != np->type)
+			base = feed_get_html_url((feedPtr)np);
+			
 		if(TRUE == ui_itemlist_get_two_pane_mode()) {
 			/* two pane mode */
-			ui_htmlview_start_output(&buffer, feed_get_html_url((feedPtr)np), FALSE);
+			ui_htmlview_start_output(&buffer, base, FALSE);
+				
 			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 			while(valid) {	
 				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
@@ -375,12 +380,13 @@ void ui_itemlist_display(void) {
 			}
 			ui_htmlview_finish_output(&buffer);
 		} else {
+			/* three pane mode */
+			
 			/* we only update anything if the feedlist is focussed */
 			if(lookup_widget(mainwindow, "feedlist") == gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
-				/* three pane mode */
-
+			
 				/* display feed info */
-				ui_htmlview_start_output(&buffer, feed_get_html_url((feedPtr)np), TRUE);
+				ui_htmlview_start_output(&buffer, base, TRUE);
 				if((FST_FEED == np->type) || 
 				   (FST_VFOLDER == np->type)) {
 					tmp = feed_render((feedPtr)np);
