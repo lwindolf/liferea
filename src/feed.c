@@ -360,7 +360,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 		new_fp->updateCounter = new_fp->updateInterval = interval;
 	
 	if(FALSE == getFeedAvailable(new_fp))
-		setFeedUpdateCounter(new_fp, 0);
+		requestUpdate(new_fp);
 
 	g_mutex_lock(feeds_lock);
 	g_hash_table_insert(feeds, (gpointer)key, (gpointer)new_fp);
