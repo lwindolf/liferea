@@ -804,7 +804,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 	char *host;					/* Needs to freed. */
 	char *tmphost;
 	char *freeme;
-	char *returndata;
+	char *returndata = NULL;
 	char *tmpstr;
 	char tmp[1024];
 	int httpproto = 0;			/* 0: http; 1: https */
@@ -941,6 +941,7 @@ void downloadlib_process_url(struct request *request) {
 	cur_ptr.cookies = NULL;
 	cur_ptr.authinfo = NULL;
 	cur_ptr.servauth = NULL;
+	cur_ptr.lasthttpstatus = 450; /* made up code */
 	/* Fixme: assert that it is a http:// URL */
 
 	request->data = DownloadFeed (oldurl, &cur_ptr, 0);
