@@ -2,6 +2,7 @@
    tray icon handling
    
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -39,7 +40,6 @@ extern GtkWidget	*mainwindow;
 
 static GtkWidget	*eventbox = NULL;
 static gint		newItems = 0;
-static gboolean		iconified = FALSE;
 static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
@@ -91,34 +91,32 @@ void undoTrayIcon(void) {
 /* a click on the systray icon should show the program window
    if invisible or hide it if visible */
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
+	gint		x,y;
 	undoTrayIcon();
 
-	/* the first case: we are iconified... */
-	if(iconified) {
-		gtk_widget_show(GTK_WIDGET(mainwindow));
-		gtk_window_deiconify(GTK_WINDOW(mainwindow));
-		return;
+	if (GTK_WIDGET_VISIBLE(mainwindow)) {
+		if (gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) {
+			gtk_window_present(GTK_WINDOW(mainwindow));
+		} else {
+			/* save window position */
+			gtk_window_get_position(GTK_WINDOW(mainwindow), &x, &y);
+			setNumericConfValue(LAST_WINDOW_X, x);
+			setNumericConfValue(LAST_WINDOW_Y, y);
+			/* hide window */
+			gtk_widget_hide(mainwindow);
+		}
+	} else {
+		/* restore window position */
+		if((0 != getNumericConfValue(LAST_WINDOW_X)) &&
+			(0 != getNumericConfValue(LAST_WINDOW_Y)))
+				gtk_window_move(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_X),
+								getNumericConfValue(LAST_WINDOW_Y));
+		/* unhide window */
+		gtk_window_present(GTK_WINDOW(mainwindow));
 	}
-
-	/* if the window isn't iconified their are only two cases left:
-	   its either visible and should be hidden or vica versa */			
-	if(GTK_WIDGET_VISIBLE(GTK_WIDGET(mainwindow)))
-		gtk_widget_hide(GTK_WIDGET(mainwindow));
-	else
-		gtk_widget_show(GTK_WIDGET(mainwindow));
+	return;
 
 }
-
-static gboolean mainwindow_state_changed(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
-	GdkEventWindowState	*state;
-	
-	/* to track the window iconification state ... */
-	state = ((GdkEventWindowState *)event);
-	iconified = (GDK_WINDOW_STATE_ICONIFIED == state->new_window_state);
-	
-	return TRUE;
-}
-
 
 static void installTrayIcon(void) {
 	g_assert(!tray_icon);
@@ -126,7 +124,6 @@ static void installTrayIcon(void) {
 		tray_icon = egg_tray_icon_new(PACKAGE);
 		eventbox = gtk_event_box_new();
 		
-		g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);		
 		g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
 		gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
 		
