@@ -454,11 +454,12 @@ void conf_load_subscriptions(void) {
 	
 	feedlistLoading = TRUE;
 	gconf_changed = load_folder_contents(NULL, "");
-	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea" G_DIR_SEPARATOR_S "feedlist.opml", g_get_home_dir());
 	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
 		g_free(filename);
-		filename = g_strdup(PACKAGE_DATA_DIR "/" PACKAGE "/opml/feedlist.opml");
+		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
+		filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
 	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
 	g_free(filename);
@@ -478,7 +479,7 @@ void conf_feedlist_save() {
 		return;
 
 	debug_enter("conf_feedlist_save");
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S"feedlist.opml~", common_get_cache_path());
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml~", common_get_cache_path());
 
 	if(0 == export_OPML_feedlist(filename, TRUE)) {
 		filename_real = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml", common_get_cache_path());
