@@ -72,7 +72,6 @@ typedef struct feed {
 	gchar		*keyprefix;		/**< FIXME: remove this, bad design! */
 	gint		unreadCount;		/**< number of unread items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
-	gint		updateCounter;		/**< minutes till next auto-update */
 	gboolean	available;		/**< flag to signalize loading errors */
 	
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
@@ -83,13 +82,14 @@ typedef struct feed {
 	gchar		*title;			/**< feed/channel title */
 	gchar		*description;		/**< HTML string describing the feed */
 	gchar		*source;		/**< feed source, FIXME: needed??? */
-	gint		updateInterval;		/**< user defined update interval */
+	gint		updateInterval;		/**< user defined update interval in minutes */
 
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
 	GSList		*filter;		/**< list of filters applied to this feed */
 	
 	/* feed properties used for updating */
+	GTimeVal	scheduledUpdate;	/**< time at which the feed needs to be updated */
 	gboolean	updateRequested;	/**< flag set when update in progress */
 	gpointer	*request;		/**< update request structure */
 } *feedPtr;
@@ -148,8 +148,7 @@ gint getFeedUnreadCount(feedPtr fp);
 gint getFeedDefaultInterval(feedPtr fp);
 gint getFeedUpdateInterval(feedPtr fp);
 void setFeedUpdateInterval(feedPtr fp, gint interval);
-gint getFeedUpdateCounter(feedPtr fp);
-void setFeedUpdateCounter(feedPtr fp, gint count);
+void feed_reset_update_counter(feedPtr fp);
 gboolean getFeedAvailable(feedPtr fp);
 
 /**

@@ -1,7 +1,8 @@
 /*
-   update request handling
+   feed update request processing
      
    Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -24,27 +25,58 @@
 #include <glib.h>
 #include "feed.h"
 
-/* the feed request structure is used in two places, on the one
-   hand to put update requests into the request and result queue 
-   between GUI and update thread and on the other hand to 
-   persistently store HTTP status information written by
-   the SnowNews netio.c code which is displayed in the GUI. */
+/** 
+ * The feed request structure is used in two places, on the one
+ * hand to put update requests into the request and result queue 
+ * between GUI and update thread and on the other hand to 
+ * persistently store HTTP status information written by
+ * the SnowNews netio.c code which is displayed in the GUI. 
+ */
 struct feed_request {
 
-        char * 	feedurl;		/* Non hashified URL set from the requestion function */
-        char * 	lastmodified; 		/* Content of header as sent by the server. */
-	int 	lasthttpstatus;	
-	int 	problem;		/* Set if there was a problem downloading the feed. */
-	char *	data;			/* newly downloaded feed data to be parsed */
-
-	feedPtr	fp;			/* pointer to feed structure which is to be updated */
+        char * 	feedurl;		/**< Non hashified URL set from the requestion function */
+        char * 	lastmodified; 		/**< Content of header as sent by the server. */
+	int 	lasthttpstatus;		/**< last HTTP status :-)*/
+	int 	problem;		/**< Set if there was a problem downloading the feed. */
+	char *	data;			/**< newly downloaded feed data to be parsed */
+	gboolean updateRequested; 	/**< Lock used in order to insure that a feed is being updated only once */
+	feedPtr	fp;			/**< pointer to feed structure which is to be updated */
 };
 
+/** 
+ * Creates a new request structure and sets the feed the
+ * request belongs to with fp. If there is no assigned
+ * feed fp may be NULL.
+ *
+ * @param fp	feed pointer
+ * @return pointer to new request structure
+ */
 gpointer update_request_new(feedPtr fp);
+
+/**
+ * Used to free a request structure.
+ *
+ * @param request	pointer to a request structure
+ */
 void update_request_free(gpointer request);
 
+/**
+ * Initializes and starts the update request processing
+ * thread. Should be called only once! 
+ *
+ * @return thread handle
+ */
 GThread * update_thread_init(void);
-GThread * initAutoUpdateThread(void);
+
+/**
+ * Function to pass a request to the update request
+ * processing thread. This request will be queued if
+ * other requests are pending. If it was processed 
+ * successfully a result will be added to the result 
+ * queue.
+ *
+ * @param new_request	pointer to a request structure
+ */
 void update_thread_add_request(struct feed_request *new_request);
 
 #endif

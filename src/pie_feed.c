@@ -314,7 +314,8 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 		xmlFreeDoc(doc);			
 		
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->defaultInterval = fp->updateInterval = cp->updateInterval;
+		fp->defaultInterval = cp->updateInterval;
+		setFeedUpdateInterval(fp, cp->updateInterval);
 		fp->title = cp->tags[PIE_FEED_TITLE];
 
 		if(0 == error) {

@@ -214,7 +214,7 @@ static void readOPML(feedPtr fp, gchar *data) {
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		fp->type = FST_OPML;
-		fp->updateInterval = fp->updateCounter = -1;
+		setFeedUpdateInterval(fp, -1);
 		if(NULL == (fp->title = headTags[OPML_TITLE]))
 			fp->title = g_strdup(fp->source);
 		

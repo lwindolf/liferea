@@ -79,6 +79,9 @@ feedPtr		allItems = NULL;
 
 GMutex * feeds_lock = NULL;
 
+/* prototypes */
+static gboolean update_timer_main(gpointer data);
+
 void registerFeedType(gint type, feedHandlerPtr fhp) {
 	gint	*typeptr;
 		
@@ -134,9 +137,11 @@ void initBackend(void) {
 	registerFeedType(FST_OPML,	initOPMLFeedHandler());	
 	registerFeedType(FST_VFOLDER,	initVFolderFeedHandler());
 	
-	update_thread_init();	/* start thread for update processing */
-	initAutoUpdateThread();	/* start thread for automatic updating */	// FIXME: 0.4.8 remove me
+	update_thread_init();	/* start thread for update request processing */
 	
+	/* setup one minute timer for automatic updating */
+ 	g_timeout_add(60*1000, update_timer_main, NULL);	
+
 	initFolders();
 	loadSubscriptions();
 }
@@ -150,7 +155,6 @@ feedPtr getNewFeedStruct(void) {
 	/* we dont allocate a request structure this is done
 	   during cache loading or first update! */		
 	
-	fp->updateCounter = -1;
 	fp->updateInterval = -1;
 	fp->defaultInterval = -1;
 	fp->available = FALSE;
@@ -396,8 +400,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 		new_fp->source = g_strdup(_("error: URL missing!"));
 	}
 
-	if(IS_FEED(type))
-		new_fp->updateCounter = new_fp->updateInterval = interval;
+	setFeedUpdateInterval(new_fp, interval);
 	
 	if(FALSE == getFeedAvailable(new_fp))
 		updateFeed(new_fp);
@@ -678,7 +681,7 @@ void updateFeed(feedPtr fp) {
 	g_assert(NULL != fp);
 	
 	if(TRUE == fp->updateRequested) {
-		ui_mainwindow_set_status_bar("There is already an update in progress for \"%s\"", getFeedTitle(fp));
+		ui_mainwindow_set_status_bar("This feed \"%s\" is already being updated!", getFeedTitle(fp));
 		return;
 	}
 
@@ -689,8 +692,7 @@ void updateFeed(feedPtr fp) {
 		return;
 	}
 	
-	/* reset feed update counter */
-	fp->updateCounter = fp->updateInterval;
+	feed_reset_update_counter(fp);
 	fp->updateRequested = TRUE;
 
 	if(NULL == fp->request)
@@ -703,9 +705,31 @@ void updateFeed(feedPtr fp) {
 	update_thread_add_request((struct feed_request *)fp->request);
 }
 
+static void feed_check_update_counter(gpointer key, gpointer value, gpointer userdata) {
+	GTimeVal	now;
+	feedPtr		fp = (feedPtr)value;
+
+	g_get_current_time(&now);
+	g_print("update counter for %s is %ld\n", getFeedTitle(fp),  fp->scheduledUpdate.tv_sec - now.tv_sec);
+	if(getFeedUpdateInterval > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
+		update_thread_add_request((struct feed_request *)fp->request);
+}
+
+static gboolean update_timer_main(void *data) {
+
+	g_message("Checking to see if feeds need to be updated");
+	g_mutex_lock(feeds_lock);
+	g_hash_table_foreach(feeds, feed_check_update_counter, NULL);
+	g_mutex_unlock(feeds_lock);
+ 
+	return TRUE;
+}
+
 static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr		fp = (feedPtr)value;
 
+	g_message("update_feed_helper");
+	
 	g_assert(NULL != fp);
 	updateFeed(fp);
 }
@@ -761,10 +785,17 @@ void setFeedUpdateInterval(feedPtr fp, gint interval) {
 
 	fp->updateInterval = interval; 
 	setFeedUpdateIntervalInConfig(fp->key, interval);
+	if (interval > 0)
+		feed_reset_update_counter(fp);
 }
 
-gint getFeedUpdateCounter(feedPtr fp) { return fp->updateCounter; }
-void setFeedUpdateCounter(feedPtr fp, gint count) { fp->updateCounter = count; }
+void feed_reset_update_counter(feedPtr fp) {
+
+	g_get_current_time(&fp->scheduledUpdate);
+	printf("%ld: ", fp->scheduledUpdate.tv_sec);
+	fp->scheduledUpdate.tv_sec += fp->updateInterval*60;
+	printf("HHHHHHHHH  UPDATING %s at %ld\n", fp->title, fp->scheduledUpdate.tv_sec);
+}
 
 gboolean getFeedAvailable(feedPtr fp) { return fp->available; }
 

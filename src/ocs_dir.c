@@ -499,7 +499,7 @@ static void readOCS(feedPtr fp, gchar *data) {
 		xmlFreeDoc(doc);
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->updateInterval = fp->updateCounter = -1;
+		setFeedUpdateInterval(fp, -1);
 		fp->title = dp->tags[OCS_TITLE];
 		
 		if(0 == error) {

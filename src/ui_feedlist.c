@@ -561,7 +561,6 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 			if(0 == interval)
 				interval = -1;	/* this is due to ignore this feed while updating */
 			setFeedUpdateInterval(fp, interval);
-			setFeedUpdateCounter(fp, interval);
 		}
 		
 		redrawFeedList();

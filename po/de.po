@@ -1463,7 +1463,7 @@ msgstr "/Lesestatus ändern"
 
 #: src/ui_popup.c:122
 msgid "/Toggle Item _Flag"
-msgstr "/_Flagge setzen\/löschen"
+msgstr "/_Flagge setzen oder löschen"
 
 #: src/ui_popup.c:124
 msgid "/_Next Unread Item"
