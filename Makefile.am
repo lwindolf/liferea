@@ -12,6 +12,7 @@ EXTRA_DIST = \
 	liferea.glade \
 	liferea.gladep \
 	liferea.spec \
+	liferea-SuSE.spec \
 	src/liferea \
 	$(desktop_files)
 

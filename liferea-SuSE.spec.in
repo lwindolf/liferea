@@ -1,0 +1,103 @@
+Summary:       Linux Feed Reader
+Name: 		@PACKAGE@
+Version: 	@VERSION@
+Release:       1
+Copyright:     GPL
+Group:         Applications/Internet          
+Source: 	%{name}-%{version}.tar.gz
+Vendor:        http://liferea.sourceforge.net
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
+Requires:      /bin/sh
+
+%description
+An Aggregator For RSS/RDF Feeds For GTK/GNOME.                                                                          
+
+Liferea is a simple FeedReader clone for Unix distributions with GNOME2.
+It is a news aggregator for RSS/RDF feeds which also supports CDF channels,
+Atom/Echo/PIE feeds and OCS or OPML directories.
+
+%prep
+%setup
+./configure --prefix=/usr/local
+
+%build
+make
+
+%install
+make install-strip
+
+
+%files
+%dir "//usr/"
+%dir "//usr/share/"
+%dir "//usr/share/doc/"
+%dir "//usr/share/doc/packages/"
+%dir "//usr/share/doc/packages/%{name}-%{version}/"
+"//usr/share/doc/packages/%{name}-%{version}/AUTHORS"
+"//usr/share/doc/packages/%{name}-%{version}/COPYING"
+"//usr/share/doc/packages/%{name}-%{version}/ChangeLog"
+"//usr/share/doc/packages/%{name}-%{version}/INSTALL"
+"//usr/share/doc/packages/%{name}-%{version}/NEWS"
+"//usr/share/doc/packages/%{name}-%{version}/README"
+%dir "//usr/local/"
+%dir "//usr/local/bin/"
+"//usr/local/bin/liferea"
+"//usr/local/bin/liferea-bin"
+%dir "//usr/local/lib/"
+%dir "//usr/local/lib/liferea/"
+"//usr/local/lib/liferea/liblihtmlg.la"
+"//usr/local/lib/liferea/liblihtmlg.so"
+"//usr/local/lib/liferea/liblihtmlh.la"
+"//usr/local/lib/liferea/liblihtmlh.so"
+"//usr/local/lib/liferea/liblihtmlm.la"
+"//usr/local/lib/liferea/liblihtmlm.so"
+%dir "//usr/local/share/"
+%dir "//usr/local/share/applications/"
+"//usr/local/share/applications/liferea.desktop"
+%dir "//usr/local/share/liferea/"
+%dir "//usr/local/share/liferea/css/"
+"//usr/local/share/liferea/css/liferea.css"
+%dir "//usr/local/share/liferea/pixmaps/"
+"//usr/local/share/liferea/pixmaps/available.png"
+"//usr/local/share/liferea/pixmaps/directory.png"
+"//usr/local/share/liferea/pixmaps/empty.png"
+"//usr/local/share/liferea/pixmaps/flag.png"
+"//usr/local/share/liferea/pixmaps/help.png"
+"//usr/local/share/liferea/pixmaps/liferea.png"
+"//usr/local/share/liferea/pixmaps/ocs.png"
+"//usr/local/share/liferea/pixmaps/offline.png"
+"//usr/local/share/liferea/pixmaps/online.png"
+"//usr/local/share/liferea/pixmaps/read.xpm"
+"//usr/local/share/liferea/pixmaps/unavailable.png"
+"//usr/local/share/liferea/pixmaps/unread.png"
+"//usr/local/share/liferea/pixmaps/vfolder.png"
+%dir "//usr/local/share/locale/"
+%dir "//usr/local/share/locale/bg/"
+%dir "//usr/local/share/locale/bg/LC_MESSAGES/"
+"//usr/local/share/locale/bg/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/locale/de/"
+%dir "//usr/local/share/locale/de/LC_MESSAGES/"
+"//usr/local/share/locale/de/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/locale/es/"
+%dir "//usr/local/share/locale/es/LC_MESSAGES/"
+"//usr/local/share/locale/es/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/locale/fr/"
+%dir "//usr/local/share/locale/fr/LC_MESSAGES/"
+"//usr/local/share/locale/fr/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/locale/it/"
+%dir "//usr/local/share/locale/it/LC_MESSAGES/"
+"//usr/local/share/locale/it/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/locale/ja/"
+%dir "//usr/local/share/locale/ja/LC_MESSAGES/"
+"//usr/local/share/locale/ja/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/locale/ko/"
+%dir "//usr/local/share/locale/ko/LC_MESSAGES/"
+"//usr/local/share/locale/ko/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/locale/mk/"
+%dir "//usr/local/share/locale/mk/LC_MESSAGES/"
+"//usr/local/share/locale/mk/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/locale/zh_TW/"
+%dir "//usr/local/share/locale/zh_TW/LC_MESSAGES/"
+"//usr/local/share/locale/zh_TW/LC_MESSAGES/liferea.mo"
+%dir "//usr/local/share/pixmaps/"
+"//usr/local/share/pixmaps/liferea.png"
