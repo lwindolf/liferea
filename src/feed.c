@@ -46,11 +46,9 @@
 #include "debug.h"
 #include "metadata.h"
 
-#include "ui_queue.h"	/* FIXME: Remove ui_* include from core code */
-#include "ui_feed.h"
+#include "ui_feed.h"	/* FIXME: Remove ui_* include from core code */
 #include "ui_feedlist.h"
 #include "ui_tray.h"
-#include "ui_notification.h"
 #include "htmlview.h"
 
 /* auto detection lookup table */
@@ -131,7 +129,7 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
  * @param dataLength the length of the 'data' string
  * @param autodiscover	TRUE if auto discovery should be possible
  */
-static feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover) {
+feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover) {
 	gchar			*source;
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
@@ -507,35 +505,29 @@ gboolean feed_load(feedPtr fp) {
 void feed_unload(feedPtr fp) {
 	gint 	unreadCount;
 
-	if(NULL == fp) {
+	g_assert(NULL != fp);
+	g_assert(0 <= fp->loaded);	/* could indicate bad loaded reference counting */
+	if(0 != fp->loaded) {
+		feed_save(fp);		/* save feed before unloading */
+
 		if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-			debug0(DEBUG_CACHE, "unloading everything...");
-			ui_feedlist_do_for_all((nodePtr)fp, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
-		}
-	} else {
-		g_assert(0 <= fp->loaded);	/* could indicate bad loaded reference counting */
-		if(0 != fp->loaded) {
-			feed_save(fp);		/* save feed before unloading */
+			debug_enter("feed_unload");
+			if(1 == fp->loaded) {
+				if(IS_FEED(feed_get_type(fp))) {
+					debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
 
-			if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-				debug_enter("feed_unload");
-				if(1 == fp->loaded) {
-					if(IS_FEED(feed_get_type(fp))) {
-						debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
-
-						/* free items */
-						unreadCount = fp->unreadCount;
-						feed_clear_item_list(fp);						
-						fp->unreadCount = unreadCount;
-					} else {
-						debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
-					}
+					/* free items */
+					unreadCount = fp->unreadCount;
+					feed_clear_item_list(fp);						
+					fp->unreadCount = unreadCount;
 				} else {
-					debug2(DEBUG_CACHE, "not unloading (%s) because it's used (%d references)...", feed_get_source(fp), fp->loaded);
+					debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
 				}
-				fp->loaded--;
-				debug_exit("feed_unload");
+			} else {
+				debug2(DEBUG_CACHE, "not unloading (%s) because it's used (%d references)...", feed_get_source(fp), fp->loaded);
 			}
+			fp->loaded--;
+			debug_exit("feed_unload");
 		}
 	}
 }
@@ -571,115 +563,20 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 
 	request = download_request_new();
 	fp->request = request;
-	request->callback = feed_process_update_result;
+	request->callback = ui_feed_process_update_result;
 	
 	request->user_data = fp;
+	/* prepare request url (strdup because it might be
+	   changed on permanent HTTP redirection in netio.c) */
 	request->source = g_strdup(source);
 	request->lastmodified = fp->lastModified;
 	request->flags = flags;
 	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
-	if (feed_get_filter(fp) != NULL)
+	if(feed_get_filter(fp) != NULL)
 		request->filtercmd = g_strdup(feed_get_filter(fp));
-	/* prepare request url (strdup because it might be
-	   changed on permanent HTTP redirection in netio.c) */
-	ui_feed_update(fp); /* Change icon to arrows <- FIXME still needed? */
 	
 	download_queue(request);
 	
-}
-
-/*------------------------------------------------------------------------------*/
-/* timeout callback to check for update results					*/
-/*------------------------------------------------------------------------------*/
-
-void feed_process_update_result(struct request *request) {
-	feedPtr			fp = (feedPtr)request->user_data;
-	feedHandlerPtr		fhp;
-	gchar			*old_title, *old_source;
-	gint			old_update_interval;
-	
-	ui_lock();
-	g_assert(NULL != request);
-
-	feed_load(fp);
-
-	/* no matter what the result of the update is we need to save update
-	   status and the last update time to cache */
-	fp->needsCacheSave = TRUE;
-	
-	feed_set_available(fp, TRUE);
-
-	if(401 == request->httpstatus) { /* unauthorized */
-		feed_set_available(fp, FALSE);
-		if(request->flags & FEED_REQ_AUTH_DIALOG)
-			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), fp, request->flags);
-	} else if(410 == request->httpstatus) { /* gone */
-		feed_set_available(fp, FALSE);
-		feed_set_discontinued(fp, TRUE);
-		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(fp));
-	} else if(304 == request->httpstatus) {
-		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(fp));
-	} else if(NULL != request->data) {
-		fp->lastModified = request->lastmodified;
-		
-		/* note this is to update the feed URL on permanent redirects */
-		if(0 != strcmp(request->source, feed_get_source(fp))) {
-			feed_set_source(fp, request->source);
-			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(fp));
-		}
-		
-		/* we save all properties that should not be overwritten in all cases */
-		old_update_interval = feed_get_update_interval(fp);
-		old_title = g_strdup(feed_get_title(fp));
-		old_source = g_strdup(feed_get_source(fp));
-
-		/* parse the new downloaded feed into new_fp */
-		fhp = feed_parse(fp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
-		if(fhp == NULL) {
-			feed_set_available(fp, FALSE);
-			fp->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), fp->parseErrors);
-		} else {
-			fp->fhp = fhp;
-			
-			/* restore user defined properties if necessary */
-			if(!(request->flags & FEED_REQ_RESET_TITLE))
-				feed_set_title(fp, old_title);
-				
-			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
-				feed_set_source(fp, old_source);
-
-			if(!(request->flags & FEED_REQ_RESET_UPDATE_INT))
-				feed_set_update_interval(fp, old_update_interval);
-				
-			g_free(old_title);
-			g_free(old_source);
-
-			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
-
-			if((feedPtr)ui_feedlist_get_selected() == fp) {
-				ui_itemlist_load((nodePtr)fp);
-			}
-			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
-				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
-		}
-	} else {	
-		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(fp));
-		feed_set_available(fp, FALSE);
-	}
-	
-	feed_set_error_description(fp, request->httpstatus, request->returncode);
-
-	fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
-	ui_feed_update(fp);
-	ui_notification_update(fp);	
-	ui_feedlist_update();
-	
-	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		favicon_download(fp);
-		
-	feed_unload(fp);
-	
-	ui_unlock();
 }
 
 /**
@@ -769,6 +666,10 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		if(!found) {
 			if(FALSE == new_ip->readStatus)
 				fp->unreadCount++;
+			if(FALSE == new_ip->newStatus) {
+				fp->newCount++;
+				ui_tray_add_new(1);
+			}
 			fp->items = g_slist_prepend(fp->items, (gpointer)new_ip);
 			new_ip->fp = fp;
 		
@@ -780,9 +681,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 				item_set_hidden(new_ip, TRUE);
 				debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
 			} else {
-				item_set_new_status(new_ip, TRUE);
 				debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
-				ui_tray_add_new(1);
 			}
 		} else {
 			/* if the item was found but has other contents -> update contents */
@@ -815,7 +714,6 @@ void feed_remove_item(feedPtr fp, itemPtr ip) {
 	fp->items = g_slist_remove(fp->items, ip);
 	fp->needsCacheSave = TRUE;
 	item_free(ip);
-	ui_notification_update(fp);
 }
 
 itemPtr feed_lookup_item(feedPtr fp, gchar *id) {
@@ -923,107 +821,6 @@ gchar * feed_get_error_description(feedPtr fp) {
 	return tmp1; 
 }
 
-/**
- * Creates a new error description according to the passed
- * HTTP status and the feeds parser errors. If the HTTP
- * status is a success status and no parser errors occured
- * no error messages is created. The created error message 
- * can be queried with feed_get_error_description().
- *
- * @param fp		feed
- * @param httpstatus	HTTP status
- * @param resultcode the update code's return code (see update.h)
- */
-static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode) {
-	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
-	gboolean	errorFound = FALSE;
-
-	g_assert(NULL != fp);
-	g_free(fp->errorDescription);
-	fp->errorDescription = NULL;
-	
-	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	   (NULL == fp->parseErrors))
-		return;
-	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
-	
-	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {
-		/* first specific codes */
-		switch(httpstatus) {
-			case 401:tmp2 = g_strdup(_("You are unauthorized to download this feed. Please update your username and "
-								  "password in the feed properties dialog box."));break;
-			case 402:tmp2 = g_strdup(_("Payment Required"));break;
-			case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
-			case 404:tmp2 = g_strdup(_("Resource Not Found"));break;
-			case 405:tmp2 = g_strdup(_("Method Not Allowed"));break;
-			case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
-			case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
-			case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
-			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe!"));break;
-		}
-		/* Then, netio errors */
-		if(tmp2 == NULL) {
-			switch(resultcode) {
-			case NET_ERR_URL_INVALID:    tmp2 = g_strdup(_("URL is invalid")); break;
-			case NET_ERR_UNKNOWN:
-			case NET_ERR_CONN_FAILED:
-			case NET_ERR_SOCK_ERR:       tmp2 = g_strdup(_("Error connecting to remote host")); break;
-			case NET_ERR_HOST_NOT_FOUND: tmp2 = g_strdup(_("Hostname could not be found")); break;
-			case NET_ERR_CONN_REFUSED:   tmp2 = g_strdup(_("Network connection was refused by the remote host")); break;
-			case NET_ERR_TIMEOUT:        tmp2 = g_strdup(_("Remote host did not finish sending data")); break;
-				/* Transfer errors */
-			case NET_ERR_REDIRECT_COUNT_ERR: tmp2 = g_strdup(_("Too many HTTP redirects were encountered")); break;
-			case NET_ERR_REDIRECT_ERR:
-			case NET_ERR_HTTP_PROTO_ERR: 
-			case NET_ERR_GZIP_ERR:           tmp2 = g_strdup(_("Remote host sent an invalid response")); break;
-				/* These are handled above	
-				   case NET_ERR_HTTP_410:
-				   case NET_ERR_HTTP_404:
-				   case NET_ERR_HTTP_NON_200:
-				*/
-			case NET_ERR_AUTH_FAILED:
-			case NET_ERR_AUTH_NO_AUTHINFO: tmp2 = g_strdup(_("Authentication failed")); break;
-			case NET_ERR_AUTH_GEN_AUTH_ERR:
-			case NET_ERR_AUTH_UNSUPPORTED: tmp2 = g_strdup(_("Webserver's authentication method incompatible with Liferea")); break;
-			}
-		}
-		/* And generic messages in the unlikely event that the above didn't work */
-		if(NULL == tmp2) {
-			switch(httpstatus / 100) {
-			case 3:tmp2 = g_strdup(_("Feed not available: Server requested unsupported redirection!"));break;
-			case 4:tmp2 = g_strdup(_("Client Error"));break;
-			case 5:tmp2 = g_strdup(_("Server Error"));break;
-			default:tmp2 = g_strdup(_("(unknown networking error happened)"));break;
-			}
-		}
-		errorFound = TRUE;
-		tmp1 = g_strdup_printf(HTTP_ERROR_TEXT, httpstatus, tmp2);
-		addToHTMLBuffer(&buffer, tmp1);
-		g_free(tmp1);
-		g_free(tmp2);
-	}
-	
-	/* add parsing error messages */
-	if(NULL != fp->parseErrors) {
-		if(errorFound)
-			addToHTMLBuffer(&buffer, HTML_NEWLINE);			
-		errorFound = TRUE;
-		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT, fp->parseErrors);
-		addToHTMLBuffer(&buffer, tmp1);
-		g_free(tmp1);
-	}
-	
-	/* if none of the above error descriptions matched... */
-	if(!errorFound) {
-		tmp1 = g_strdup_printf(_("There was a problem while reading this subscription. Please check the URL and console output."));
-		addToHTMLBuffer(&buffer, tmp1);
-		g_free(tmp1);
-	}
-	
-	addToHTMLBuffer(&buffer, UPDATE_ERROR_END);
-	fp->errorDescription = buffer;
-}
-
 const time_t feed_get_time(feedPtr fp) { return (fp != NULL ? fp->time : 0); }
 void feed_set_time(feedPtr fp, const time_t t) { fp->time = t; }
 
@@ -1111,7 +908,6 @@ void feed_clear_item_list(feedPtr fp) {
 	}
 	g_slist_free(fp->items);
 	fp->items = NULL;
-	ui_notification_update(fp);
 }
 
 /* uses feed_clear_item_list and forces saving, thus effectivly removing items */
@@ -1130,7 +926,6 @@ void feed_mark_all_items_read(feedPtr fp) {
 		item_set_read((itemPtr)item->data);
 		item = g_slist_next(item);
 	}
-	ui_feedlist_update();
 	feed_unload(fp);
 }
 
@@ -1244,13 +1039,6 @@ void feed_free(feedPtr fp) {
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		ui_itemlist_clear();
 	}
-	
-	/* removes an existing notification for this feed */
-	ui_notification_remove_feed(fp);
-	
-	/* free UI info */
-	if(fp->ui_data)
-		ui_folder_remove_node((nodePtr)fp);
 
 	/* free items */
 	feed_clear_item_list(fp);

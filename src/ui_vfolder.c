@@ -137,14 +137,12 @@ static void on_ruletype_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 	}
 }
 
-static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
-	struct fp_vfolder_ui_data *ui_data = (struct fp_vfolder_ui_data*)user_data;
+/* this method is used to add another rule to a vfolder dialog */
+static void ui_vfolder_add_rule(struct fp_vfolder_ui_data *ui_data, rulePtr rule) {
 	GtkWidget		*hbox, *hbox2, *menu, *widget;
-	struct changeRequest	*first, *changeRequest;
+	struct changeRequest	*changeRequest, *selected;
 	ruleInfoPtr		ruleInfo;
 	gint			i;
-		
-	/* this callback is used to add another rule to a vfolder dialog */
 
 	hbox = gtk_hbox_new(FALSE, 2);	/* hbox to contain all rule widgets */
 	hbox2 = gtk_hbox_new(FALSE, 2);	/* another hbox where the rule specific widgets are added */
@@ -158,8 +156,15 @@ static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
 		changeRequest->paramHBox = hbox2;
 		changeRequest->rule = i;
 		changeRequest->ui_data = ui_data;
-		if(i == 0) 
-			first = changeRequest;
+		
+		if(0 == i) {
+			selected = changeRequest;
+		}
+		
+		if(NULL != rule) {
+			if(ruleInfo == rule->ruleInfo) 
+				selected = changeRequest;
+		}
 
 		/* build the menu option */
 		widget = gtk_menu_item_new_with_label(ruleInfo->title);
@@ -172,7 +177,7 @@ static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_box_pack_start(GTK_BOX(hbox), hbox2, FALSE, FALSE, 0);
 	
 	/* fake a rule type change to set up parameter widgets */
-	on_ruletype_changed(GTK_OPTION_MENU(widget), first);
+	on_ruletype_changed(GTK_OPTION_MENU(widget), selected);
 	
 	/* add remove button */
 	changeRequest = g_new0(struct changeRequest, 1);
@@ -185,20 +190,33 @@ static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
 	/* and insert everything in the dialog */
 	gtk_widget_show_all(hbox);
 	gtk_box_pack_start(GTK_BOX(ui_data->ruleVBox), hbox, FALSE, TRUE, 0);
-	
+}
+
+static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
+	struct fp_vfolder_ui_data *ui_data = (struct fp_vfolder_ui_data*)user_data;
+		
+	ui_vfolder_add_rule(ui_data, NULL);
 }
 
 GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, feedPtr fp) {
 	GtkWidget			*vfolderdialog;
+	GSList				*iter;
 	struct fp_vfolder_ui_data	*ui_data;
 
 	ui_data = g_new0(struct fp_vfolder_ui_data, 1);
 	ui_data->fp = fp;
-	// FIXME: load fp->rules into the dialog!!!
 	
 	/* Create the dialog */
 	ui_data->dialog = vfolderdialog = create_vfolderdialog();
 	gtk_window_set_transient_for(GTK_WINDOW(vfolderdialog), GTK_WINDOW(parent));
+
+	/* load rules into dialog */	
+	iter = fp->rules;
+	while(NULL != iter) {
+	g_print("adding opt\n");
+		ui_vfolder_add_rule(ui_data, (rulePtr)(iter->data));
+		iter = g_slist_next(iter);
+	}
 
 	/* Setup feed name */
 	ui_data->feedNameEntry = lookup_widget(vfolderdialog,"feedNameEntry");

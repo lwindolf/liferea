@@ -35,7 +35,6 @@
 #include "htmlview.h"
 #include "callbacks.h"
 #include "ui_tray.h"
-#include "ui_notification.h"
 #include "metadata.h"
 
 /* function to create a new feed structure */
@@ -43,8 +42,7 @@ itemPtr item_new(void) {
 	itemPtr		ip;
 	
 	ip = g_new0(struct item, 1);
-	ip->readStatus = FALSE;
-	ip->marked = FALSE;
+	ip->newStatus = TRUE;
 
 	return ip;
 }
@@ -57,6 +55,7 @@ void item_copy(itemPtr from, itemPtr to) {
 	item_set_real_source_title(to, from->real_source_title);
 	item_set_description(to, from->description);
 	item_set_id(to, from->id);
+	to->newStatus = FALSE;
 	to->readStatus = from->readStatus;
 	to->marked = from->marked;
 	to->time = from->time;
@@ -163,7 +162,6 @@ void item_set_unread(itemPtr ip) {
 			ui_update_item(ip);
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
-		ui_notification_update(ip->fp);
 	} 
 }
 
@@ -337,6 +335,7 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 	g_assert(NULL != cur);
 	
 	ip = item_new();
+	ip->newStatus = FALSE;
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {

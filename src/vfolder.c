@@ -61,6 +61,7 @@ void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gbool
 
 	if(NULL != (rp = rule_new(vp, ruleId, value, additive))) {
 		vfolder_rules = g_slist_append(vfolder_rules, rp);
+		vp->rules = g_slist_append(vp->rules, rp);
 	} else {
 		g_warning("unknown rule id: \"%s\"", ruleId);
 	}

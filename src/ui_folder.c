@@ -308,8 +308,8 @@ void ui_folder_remove_node(nodePtr ptr) {
 	gboolean 	parentExpanded = FALSE;
 	folderPtr 	parent;
 	
-	g_assert(ptr);
-	g_assert(ptr->ui_data);
+	g_assert(NULL != ptr);
+	g_return_if_fail(NULL != ptr->ui_data);
 
 	parent = ui_feedlist_get_parent(ptr);
 

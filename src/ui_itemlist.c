@@ -2,7 +2,7 @@
  * @file ui_itemlist.c Item list/view handling
  *  
  * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
- * 		      Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -25,6 +25,7 @@
 #include "support.h"
 #include "callbacks.h"
 #include "common.h"
+#include "debug.h"
 #include "feed.h"
 #include "item.h"
 #include "htmlview.h"
@@ -442,7 +443,10 @@ void ui_itemlist_load_feed(feedPtr fp) {
 	   column to give a hint where the item comes from ... */
 	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (FST_VFOLDER == feed_get_type(fp)));
 
-	feed_unload(NULL);
+	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
+		debug0(DEBUG_CACHE, "unloading everything...");
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
+	}
 	feed_load(fp);
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
@@ -541,21 +545,14 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 	}
 }
 
-void on_popup_toggle_read(gpointer callback_data,
-						 guint callback_action,
-						 GtkWidget *widget) {
-	itemPtr ip = (itemPtr)callback_data;
-	if(item_get_read_status(ip)) 
-		item_set_unread(ip);
-	else
-		item_set_read(ip);
-	ui_feedlist_update();
+void on_popup_toggle_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+
+	on_toggle_unread_status(NULL, NULL);
 }
 
-void on_popup_toggle_flag(gpointer callback_data,
-						 guint callback_action,
-						 GtkWidget *widget) {
+void on_popup_toggle_flag(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	itemPtr ip = (itemPtr)callback_data;
+	
 	item_set_mark(ip, !item_get_mark(ip));		
 }
 
@@ -582,13 +579,12 @@ void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTree
 }
 
 /* menu callbacks */					
-void on_toggle_item_flag(void) {
+void on_toggle_item_flag(GtkMenuItem *menuitem, gpointer user_data) {
 	itemPtr		ip;
 	
 	if(NULL != (ip = ui_itemlist_get_selected()))
 		item_set_mark(ip, !item_get_mark(ip));	
 }
-
 
 void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
@@ -599,7 +595,7 @@ void on_popup_launchitem_selected(void) {
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
 
-void on_toggle_unread_status(void) {
+void on_toggle_unread_status(GtkMenuItem *menuitem, gpointer user_data) {
 	itemPtr		ip;
 
 	if(NULL != (ip = ui_itemlist_get_selected())) {
@@ -618,6 +614,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		fp = (feedPtr)displayed_node;
 		ui_itemlist_clear();
 		feed_remove_items(fp);
+		ui_notification_update(fp);
 		ui_feedlist_update();
 	} else {
 		ui_show_error_box(_("You must select a feed to delete its items!"));
@@ -635,6 +632,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 			g_free(ip->ui_data);
 			ip->ui_data = NULL;
 			feed_remove_item(fp, ip);
+			ui_notification_update(fp);
 			ui_feedlist_update();
 		} else {
 			ui_mainwindow_set_status_bar(_("No item has been selected"));

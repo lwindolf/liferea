@@ -2,7 +2,8 @@
  * @file ui_feedlist.h GUI feed list handling
  * 
  * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
- * 
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -54,8 +55,6 @@ void ui_feedlist_update_iter(GtkTreeIter *iter);
  * their GtkTreeIter pointers.
  */
 #define ui_feedlist_update() (ui_feedlist_update_iter(NULL))
-
-void ui_feed_update(feedPtr fp); 
 
 /* Selections */
 nodePtr ui_feedlist_get_selected();

@@ -2,6 +2,7 @@
  * @file ui_feedlist.c GUI feed list handling
  *
  * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,27 +114,6 @@ folderPtr ui_feedlist_get_target_folder(int *pos) {
 	}
 }
 
-
-static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
-	gpointer	favicon;
-	g_assert(!IS_FOLDER(fp->type));
-	
-	if(!feed_get_available(fp)) {
-		return icons[ICON_UNAVAILABLE];
-	}
-
-	if(NULL != (favicon = feed_get_favicon(fp))) {
-		return favicon;
-	}
-	
-	if (fp->fhp != NULL && fp->fhp->icon < MAX_ICONS) {
-		return icons[fp->fhp->icon];
-	}
-
-	/* And default to the available icon.... */
-	return icons[ICON_AVAILABLE];
-}
-
 static void ui_feedlist_update_(GtkTreeIter *iter) {
 	GtkTreeModel *tree_model = GTK_TREE_MODEL(feedstore);
 	GtkTreeIter childiter;
@@ -174,40 +154,6 @@ void ui_feedlist_update_iter(GtkTreeIter *iter) {
 		gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
 		
 	ui_redraw_widget("feedlist");
-}
-
-void ui_feed_update(feedPtr fp) {
-	GtkTreeModel      *model;
-	GtkTreeIter       *iter;
-	gchar     *label, *tmp;
-	int		count;
-	
-	if (fp->ui_data == NULL)
-		return;
-	
-	iter = &((ui_data*)fp->ui_data)->row;
-	model =  GTK_TREE_MODEL(feedstore);
-	
-	g_assert(!IS_FOLDER(fp->type));
-	
-	count = feed_get_unread_counter(fp);
-	label = unhtmlize(g_strdup(feed_get_title(fp)));
-	/* FIXME: Unescape text here! */
-	tmp = g_markup_escape_text(label,-1);
-	g_free(label);
-	if(count > 0) {
-		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, count);
-	} else {
-		label = g_strdup_printf("%s", tmp);
-	}
-	g_free(tmp);
-	
-	gtk_tree_store_set(feedstore, iter,
-				    FS_LABEL, label,
-				    FS_UNREAD, count,
-				    FS_ICON, ui_feed_select_icon(fp),
-				    -1);	
-	g_free(label);
 }
 
 static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
@@ -454,7 +400,9 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 
 static void ui_feedlist_delete_(nodePtr ptr) {
 
-	if (IS_FEED(ptr->type)) {
+	if(IS_FEED(ptr->type)) {
+		ui_notification_remove_feed((feedPtr)ptr);	/* removes an existing notification for this feed */
+		ui_folder_remove_node(ptr);
 		feed_free((feedPtr)ptr);
 	} else {
 		ui_feedlist_do_for_all(ptr, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, ui_feedlist_delete_);

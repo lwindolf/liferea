@@ -284,7 +284,9 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	ui_itemlist_clear();	/* to free all item list related data */
 	conf_feedlist_save();	/* should save feedlist and folder states */
-	feed_unload(NULL);	/* should save all feeds still in memory */	
+
+	/* should save all feeds still in memory */	
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
 	
 	/* save pane proportions */
 	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {

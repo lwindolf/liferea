@@ -1,12 +1,13 @@
 /**
- * @file ui_feed.c UI-related feed processing
- * 
+ * @file ui_feed.h	UI actions concerning a single feed
+ *
+ * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,15 +18,266 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
+ 
 #include <gtk/gtk.h>
 #include <libxml/uri.h>
 #include "support.h"
 #include "feed.h"
 #include "conf.h"
 #include "callbacks.h"
+#include "update.h"
+#include "htmlview.h"
 #include "interface.h"
 #include "ui_feed.h"
+#include "ui_queue.h"
+
+/**
+ * Creates a new error description according to the passed
+ * HTTP status and the feeds parser errors. If the HTTP
+ * status is a success status and no parser errors occured
+ * no error messages is created. The created error message 
+ * can be queried with feed_get_error_description().
+ *
+ * @param fp		feed
+ * @param httpstatus	HTTP status
+ * @param resultcode the update code's return code (see update.h)
+ */
+static void ui_feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode) {
+	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
+	gboolean	errorFound = FALSE;
+
+	g_assert(NULL != fp);
+	g_free(fp->errorDescription);
+	fp->errorDescription = NULL;
+	
+	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
+	   (NULL == fp->parseErrors))
+		return;
+	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
+	
+	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {
+		/* first specific codes */
+		switch(httpstatus) {
+			case 401:tmp2 = g_strdup(_("You are unauthorized to download this feed. Please update your username and "
+								  "password in the feed properties dialog box."));break;
+			case 402:tmp2 = g_strdup(_("Payment Required"));break;
+			case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
+			case 404:tmp2 = g_strdup(_("Resource Not Found"));break;
+			case 405:tmp2 = g_strdup(_("Method Not Allowed"));break;
+			case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
+			case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
+			case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
+			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe!"));break;
+		}
+		/* Then, netio errors */
+		if(tmp2 == NULL) {
+			switch(resultcode) {
+			case NET_ERR_URL_INVALID:    tmp2 = g_strdup(_("URL is invalid")); break;
+			case NET_ERR_UNKNOWN:
+			case NET_ERR_CONN_FAILED:
+			case NET_ERR_SOCK_ERR:       tmp2 = g_strdup(_("Error connecting to remote host")); break;
+			case NET_ERR_HOST_NOT_FOUND: tmp2 = g_strdup(_("Hostname could not be found")); break;
+			case NET_ERR_CONN_REFUSED:   tmp2 = g_strdup(_("Network connection was refused by the remote host")); break;
+			case NET_ERR_TIMEOUT:        tmp2 = g_strdup(_("Remote host did not finish sending data")); break;
+				/* Transfer errors */
+			case NET_ERR_REDIRECT_COUNT_ERR: tmp2 = g_strdup(_("Too many HTTP redirects were encountered")); break;
+			case NET_ERR_REDIRECT_ERR:
+			case NET_ERR_HTTP_PROTO_ERR: 
+			case NET_ERR_GZIP_ERR:           tmp2 = g_strdup(_("Remote host sent an invalid response")); break;
+				/* These are handled above	
+				   case NET_ERR_HTTP_410:
+				   case NET_ERR_HTTP_404:
+				   case NET_ERR_HTTP_NON_200:
+				*/
+			case NET_ERR_AUTH_FAILED:
+			case NET_ERR_AUTH_NO_AUTHINFO: tmp2 = g_strdup(_("Authentication failed")); break;
+			case NET_ERR_AUTH_GEN_AUTH_ERR:
+			case NET_ERR_AUTH_UNSUPPORTED: tmp2 = g_strdup(_("Webserver's authentication method incompatible with Liferea")); break;
+			}
+		}
+		/* And generic messages in the unlikely event that the above didn't work */
+		if(NULL == tmp2) {
+			switch(httpstatus / 100) {
+			case 3:tmp2 = g_strdup(_("Feed not available: Server requested unsupported redirection!"));break;
+			case 4:tmp2 = g_strdup(_("Client Error"));break;
+			case 5:tmp2 = g_strdup(_("Server Error"));break;
+			default:tmp2 = g_strdup(_("(unknown networking error happened)"));break;
+			}
+		}
+		errorFound = TRUE;
+		tmp1 = g_strdup_printf(HTTP_ERROR_TEXT, httpstatus, tmp2);
+		addToHTMLBuffer(&buffer, tmp1);
+		g_free(tmp1);
+		g_free(tmp2);
+	}
+	
+	/* add parsing error messages */
+	if(NULL != fp->parseErrors) {
+		if(errorFound)
+			addToHTMLBuffer(&buffer, HTML_NEWLINE);			
+		errorFound = TRUE;
+		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT, fp->parseErrors);
+		addToHTMLBuffer(&buffer, tmp1);
+		g_free(tmp1);
+	}
+	
+	/* if none of the above error descriptions matched... */
+	if(!errorFound) {
+		tmp1 = g_strdup_printf(_("There was a problem while reading this subscription. Please check the URL and console output."));
+		addToHTMLBuffer(&buffer, tmp1);
+		g_free(tmp1);
+	}
+	
+	addToHTMLBuffer(&buffer, UPDATE_ERROR_END);
+	fp->errorDescription = buffer;
+}
+
+/** handles completed feed update requests */
+void ui_feed_process_update_result(struct request *request) {
+	feedPtr			fp = (feedPtr)request->user_data;
+	feedHandlerPtr		fhp;
+	gchar			*old_title, *old_source;
+	gint			old_update_interval;
+	
+	ui_lock();
+	g_assert(NULL != request);
+
+	feed_load(fp);
+
+	/* no matter what the result of the update is we need to save update
+	   status and the last update time to cache */
+	fp->needsCacheSave = TRUE;
+	
+	feed_set_available(fp, TRUE);
+
+	if(401 == request->httpstatus) { /* unauthorized */
+		feed_set_available(fp, FALSE);
+		if(request->flags & FEED_REQ_AUTH_DIALOG)
+			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), fp, request->flags);
+	} else if(410 == request->httpstatus) { /* gone */
+		feed_set_available(fp, FALSE);
+		feed_set_discontinued(fp, TRUE);
+		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(fp));
+	} else if(304 == request->httpstatus) {
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(fp));
+	} else if(NULL != request->data) {
+		fp->lastModified = request->lastmodified;
+		
+		/* note this is to update the feed URL on permanent redirects */
+		if(0 != strcmp(request->source, feed_get_source(fp))) {
+			feed_set_source(fp, request->source);
+			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(fp));
+		}
+		
+		/* we save all properties that should not be overwritten in all cases */
+		old_update_interval = feed_get_update_interval(fp);
+		old_title = g_strdup(feed_get_title(fp));
+		old_source = g_strdup(feed_get_source(fp));
+
+		/* parse the new downloaded feed into new_fp */
+		fhp = feed_parse(fp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
+		if(fhp == NULL) {
+			feed_set_available(fp, FALSE);
+			fp->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), fp->parseErrors);
+		} else {
+			fp->fhp = fhp;
+			
+			/* restore user defined properties if necessary */
+			if(!(request->flags & FEED_REQ_RESET_TITLE))
+				feed_set_title(fp, old_title);
+				
+			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
+				feed_set_source(fp, old_source);
+
+			if(!(request->flags & FEED_REQ_RESET_UPDATE_INT))
+				feed_set_update_interval(fp, old_update_interval);
+				
+			g_free(old_title);
+			g_free(old_source);
+
+			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
+
+			if((feedPtr)ui_feedlist_get_selected() == fp) {
+				ui_itemlist_load((nodePtr)fp);
+			}
+			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
+				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
+		}
+	} else {	
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(fp));
+		feed_set_available(fp, FALSE);
+	}
+	
+	ui_feed_set_error_description(fp, request->httpstatus, request->returncode);
+
+	// FIXME: do we need the following line? (Lars)
+	fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
+	ui_notification_update(fp);	
+	ui_feedlist_update();
+	
+	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
+		favicon_download(fp);
+		
+	feed_unload(fp);
+	
+	ui_unlock();
+}
+
+/** determines the feeds favicon or default icon */
+static GdkPixbuf* ui_feed_get_icon(feedPtr fp) {
+	gpointer	favicon;
+	g_assert(!IS_FOLDER(fp->type));
+	
+	if(!feed_get_available(fp)) {
+		return icons[ICON_UNAVAILABLE];
+	}
+
+	if(NULL != (favicon = feed_get_favicon(fp))) {
+		return favicon;
+	}
+	
+	if (fp->fhp != NULL && fp->fhp->icon < MAX_ICONS) {
+		return icons[fp->fhp->icon];
+	}
+
+	/* And default to the available icon.... */
+	return icons[ICON_AVAILABLE];
+}
+
+/** updating of a single feed list entry */
+void ui_feed_update(feedPtr fp) {
+	GtkTreeModel      *model;
+	GtkTreeIter       *iter;
+	gchar     *label, *tmp;
+	int		count;
+	
+	if (fp->ui_data == NULL)
+		return;
+	
+	iter = &((ui_data*)fp->ui_data)->row;
+	model =  GTK_TREE_MODEL(feedstore);
+	
+	g_assert(!IS_FOLDER(fp->type));
+	
+	count = feed_get_unread_counter(fp);
+	label = unhtmlize(g_strdup(feed_get_title(fp)));
+	/* FIXME: Unescape text here! */
+	tmp = g_markup_escape_text(label,-1);
+	g_free(label);
+	if(count > 0) {
+		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, count);
+	} else {
+		label = g_strdup_printf("%s", tmp);
+	}
+	g_free(tmp);
+	
+	gtk_tree_store_set(feedstore, iter,
+				    FS_LABEL, label,
+				    FS_UNREAD, count,
+				    FS_ICON, ui_feed_get_icon(fp),
+				    -1);	
+	g_free(label);
+}
 
 /********************************************************************
  * Propdialog                                                       *

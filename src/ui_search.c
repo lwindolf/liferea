@@ -119,20 +119,21 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	gint			pos;
 	feedPtr			fp;
 	folderPtr		folder = NULL;
-
-	if(NULL != (searchstring = gtk_entry_get_text(GTK_ENTRY(lookup_widget(mainwindow, "searchentry"))))) {
 	
-		folder = ui_feedlist_get_target_folder(&pos);
-				
-		fp = searchFeed;
-		searchFeed = NULL;
-		title = g_strdup_printf("search for \"%s\"", searchstring);
-		feed_set_title(fp, title);
-		g_free(title);
+	if(NULL != searchFeed) {
+		if(NULL != (searchstring = gtk_entry_get_text(GTK_ENTRY(lookup_widget(mainwindow, "searchentry"))))) {
+			folder = ui_feedlist_get_target_folder(&pos);
 			
-		ui_folder_add_feed(folder, fp, pos);
-		ui_feedlist_update();
-		ui_feedlist_select((nodePtr)fp);
+			fp = searchFeed;
+			searchFeed = NULL;
+			g_free(title);
+
+			ui_folder_add_feed(folder, fp, pos);
+			ui_feedlist_update();
+			ui_feedlist_select((nodePtr)fp);
+		}
+	} else {
+		ui_show_info_box(_("Please do a search first!"));
 	}
 }
 

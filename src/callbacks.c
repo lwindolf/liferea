@@ -185,18 +185,17 @@ void on_popup_zoomout_selected(void) {
 }
 
 void on_popup_allunread_selected(void) {
+	nodePtr		np;
 	
-	nodePtr np = ui_feedlist_get_selected();
-	if (np) {
+	if(np = ui_feedlist_get_selected()) {
 		if(IS_FOLDER(np->type)) {
 			/* if we have selected a folder we mark all item of all feeds as read */
 			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
-			ui_feedlist_update();
 		} else {
 			/* if not we mark all items of the item list as read */
 			ui_itemlist_mark_all_as_read();
-			ui_feedlist_update();
 		}
+		ui_feedlist_update();
 	}
 }
 
@@ -271,4 +270,3 @@ void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gtk_widget_show(dialog);
 
 }
-

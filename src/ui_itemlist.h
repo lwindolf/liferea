@@ -2,7 +2,7 @@
  * @file ui_itemlist.h item list/view handling
  *
  * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
- * 		      Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -117,12 +117,12 @@ on_Itemlist_row_activated              (GtkTreeView     *treeview,
  * Toggles the unread status of the selected item. This is called from
  * a menu.
  */
-void on_toggle_unread_status(void);
+void on_toggle_unread_status(GtkMenuItem *menuitem, gpointer user_data);
 
 /**
  * Toggles the flag of the selected item. This is called from a menu.
  */
-void on_toggle_item_flag(void);
+void on_toggle_item_flag(GtkMenuItem *menuitem, gpointer user_data);
 
 /**
  * Opens the selected item in a browser.

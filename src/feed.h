@@ -155,6 +155,19 @@ void feed_init(void);
 feedPtr feed_new(void);
 
 /**
+ * General feed source parsing function. Parses the passed feed source
+ * and tries to determine the source type. If the type is HTML and 
+ * autodiscover is TRUE the function tries to find a feed, tries to
+ * download it and parse the feed's source instead of the passed source.
+ *
+ * @param fp		the feed structure to be filled
+ * @param data		the feed source
+ * @param dataLength the length of the 'data' string
+ * @param autodiscover	TRUE if auto discovery should be possible
+ */
+feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover);
+
+/**
  * Loads a feed from a cache file.
  *
  * @param type the type of feed being loaded. This effects the
