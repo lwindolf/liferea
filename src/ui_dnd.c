@@ -32,10 +32,13 @@
 
 extern GtkTreeStore *feedstore;
 
+static gboolean (*old_drop_received)  (GtkTreeDragDest   *drag_dest,
+							    GtkTreePath       *dest,
+							    GtkSelectionData  *selection_data);
+
 static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
 							   GtkTreePath       *dest_path,
 							   GtkSelectionData  *selection_data);
-
 
 /* ---------------------------------------------------------------------------- */
 /* DnD callbacks								*/
@@ -111,6 +114,41 @@ ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, Gt
 	return TRUE;
 }
 
+static gboolean
+ui_dnd_feed_drop_data_received(GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSelectionData  *selection_data) {
+	GtkTreeModel *tree_model;
+	GtkTreeStore *tree_store;
+	GtkTreeModel *src_model = NULL;
+	GtkTreePath *src_path = NULL;
+	GtkTreeIter iter;
+	nodePtr ptr = NULL;
+	
+	tree_model = GTK_TREE_MODEL (drag_dest);
+	tree_store = GTK_TREE_STORE (drag_dest);
+	
+	if (gtk_tree_get_row_drag_data (selection_data, &src_model, &src_path)
+	    && src_model == tree_model)
+		if (gtk_tree_model_get_iter (src_model, &iter, src_path))
+			gtk_tree_model_get(tree_model, &iter,
+						    FS_PTR, &ptr,
+						    -1);
+	
+	if(((old_drop_received)(drag_dest, dest, selection_data)) == FALSE)
+		return FALSE;
+         
+	if(gtk_tree_model_get_iter(tree_model, &iter, dest)) {
+		if (ptr) {
+			((ui_data*)(ptr->ui_data))->row = iter;
+		}
+	}
+
+	if (src_path)
+		gtk_tree_path_free(src_path);
+ 
+	return TRUE;
+}
+
+
 void ui_dnd_init(void) {
 	GtkTreeDragSourceIface	*drag_source_iface = NULL;
 	GtkTreeDragDestIface	*drag_dest_iface = NULL;
@@ -123,6 +161,8 @@ void ui_dnd_init(void) {
 	if(NULL != (drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
 		old_drop_possible = drag_dest_iface->row_drop_possible;
 		drag_dest_iface->row_drop_possible = ui_dnd_feed_drop_possible;
+		old_drop_received = drag_dest_iface->drag_data_received;
+		drag_dest_iface->drag_data_received  = ui_dnd_feed_drop_data_received;
 	}
 }
 
