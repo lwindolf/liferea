@@ -32,11 +32,6 @@
 
 #define FST_INVALID	0	/**< invalid type */
 #define FST_FOLDER	1	/**< the folder type */
-#define FST_RSS		3	/**< generic RSS */
-#define FST_OCS		4	/**< OCS directories */
-#define FST_CDF		5	/**< Microsoft CDF */
-#define FST_PIE		6	/**< Atom/Echo/PIE */
-#define FST_OPML	7	/**< generic OPML */
 
 #define FST_VFOLDER	9	/**<special type for VFolders */
 #define FST_FEED 10      /**< Any type of feed */
@@ -46,12 +41,7 @@
 #define FST_AUTODETECT	200	/**< special type to enforce type auto detection */
 
 /** macro to test whether a type is a resource which is regularly updated */
-#define IS_FEED(type)		((FST_RSS == type) || \
-				 (FST_CDF == type) || \
-				 (FST_PIE == type) || \
-				 (FST_OPML == type) || \
-				 (FST_HELPFEED == type) || \
-				 (FST_AUTODETECT == type) || \
+#define IS_FEED(type)		((FST_HELPFEED == type) || \
 				 (FST_FEED == type))
 
 /** macro to test whether a type is a folder entry */

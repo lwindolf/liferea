@@ -197,7 +197,6 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->type = FST_OPML;
 		feed_set_update_interval(fp, -1);
 		if(NULL == (fp->title = headTags[OPML_TITLE]))
 			fp->title = g_strdup(fp->source);

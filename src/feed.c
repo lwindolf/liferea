@@ -635,7 +635,7 @@ gint feed_process_update_results(gpointer data) {
 			}
 			
 			request->fp->fhp = fhp;
-			printf("parsed and fhp = %x\n", fhp);
+			
 			if(firstDownload) {
 				if (feed_get_title(new_fp) != NULL)
 					feed_set_title(request->fp, feed_get_title(new_fp));
