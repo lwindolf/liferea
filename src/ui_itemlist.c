@@ -614,7 +614,6 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		fp = (feedPtr)displayed_node;
 		ui_itemlist_clear();
 		feed_remove_items(fp);
-		ui_notification_update(fp);
 		ui_feedlist_update();
 	} else {
 		ui_show_error_box(_("You must select a feed to delete its items!"));
@@ -632,7 +631,6 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 			g_free(ip->ui_data);
 			ip->ui_data = NULL;
 			feed_remove_item(fp, ip);
-			ui_notification_update(fp);
 			ui_feedlist_update();
 		} else {
 			ui_mainwindow_set_status_bar(_("No item has been selected"));
