@@ -206,22 +206,22 @@ static void attribs_render_image(gpointer data, struct displayset *displayset, g
 #define REGISTER_STR_ATTRIB(position, strid, promptStr) do { \
  struct str_attrib *props = g_new(struct str_attrib, 1); \
  props->pos = (position); \
- props->prompt = _(promptStr); \
+ props->prompt = (promptStr); \
  metadata_register(strid, attribs_render_str, props); \
 } while (0);
 
 static void attribs_init() {
-	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedTitle", "Feed:");
-	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedSource", "Source:");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "author", "author");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "contributor", "contributors");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "copyright", "copyright");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", "language");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", "language");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "lastBuildDate", "last build date");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "managingEditor", "managing editor");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "webmaster", "webmaster");
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "category", "category");
+	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedTitle", _("Feed:"));
+	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedSource", _("Source:"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "author", _("author"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "contributor", _("contributors"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "copyright", _("copyright"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", _("language"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", _("language"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "lastBuildDate", _("last build date"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "managingEditor", _("managing editor"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "webmaster", _("webmaster"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "category", _("category"));
 
 	metadata_register("feedLogoUri", attribs_render_image, NULL);
 }
