@@ -61,24 +61,30 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
-		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL)
-			;
+		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL) {
+			cur = cur->next;
+			continue;
+		}
+		
 		/* check namespace of this tag */
-		else if(NULL != cur->ns) {
+		if(NULL != cur->ns) {
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
 					nsh = (NsHandler *)hp->data;
 					pf = nsh->parseItemTag;
 					if(NULL != pf)
-						(*pf)(ip, cur);				
+						(*pf)(ip, cur);	
+					cur = cur->next;
+					continue;
 				} else {
 					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 				}
 			}
-		}
+		} /* explicitly no following else!!! */
+		
 		/* check for metadata tags */
-		else if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
+		if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
 			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if(tmp3 != NULL) {
 				ip->metadata = metadata_list_append(ip->metadata, tmp2, tmp3);
@@ -119,7 +125,6 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
  			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
 				item_set_title(ip, tmp);
-g_print("rss item title: %s\n", tmp);
 				g_free(tmp);
 			}
 		}
@@ -127,6 +132,7 @@ g_print("rss item title: %s\n", tmp);
  			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
 				item_set_source(ip, tmp);
+g_print("rss item link: %s\n", tmp);
 				g_free(tmp);
 			}
 		}

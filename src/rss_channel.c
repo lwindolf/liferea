@@ -72,10 +72,13 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 			
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL)
-			;
+		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL) {
+			cur = cur->next;
+			continue;
+		}
+		
 		/* check namespace of this tag */
-		else if(NULL != cur->ns) {
+		if(NULL != cur->ns) {
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
@@ -83,14 +86,16 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 					pf = nsh->parseChannelTag;
 					if(NULL != pf)
 						(*pf)(fp, cur);
+					cur = cur->next;
+					continue;
 				} else {
 					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 				}
 			}
-		}
+		} /* explicitly no following else !!! */
 			
 		/* Check for metadata tags */
-		else if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
+		if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
 			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if(tmp3 != NULL) {
 				fp->metadata = metadata_list_append(fp->metadata, tmp2, tmp3);
