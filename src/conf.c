@@ -136,13 +136,11 @@ void loadConfig() {
 /*----------------------------------------------------------------------*/
 
 gchar* conf_new_id() {
-	GRand *grand = g_rand_new();
 	int i;
 	gchar *id = g_malloc(10);
 	for(i=0;i<7;i++)
-		id[i] = (char)g_rand_int_range(grand, 'a', 'z');
+		id[i] = (char)g_random_int_range('a', 'z');
 	id[7] = '\0';
-	g_rand_free(grand);
 	return id;
 }
 
@@ -152,15 +150,14 @@ gchar* conf_new_id() {
 
 static void load_folder_contents(folderPtr folder, gchar* path);
 
-static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
+static gboolean load_key(folderPtr parent, gchar *id) {
 	int type, interval;
 	gchar *path2, *name, *url, *cacheid;
 	folderPtr folder;
 	gboolean expanded;
 
-	g_message("Loading key: prefix=%s, id=%s", prefix, id);
 	/* Type */
-	path2 = g_strdup_printf("%s/%s/type", prefix, id);
+	path2 = build_path_str(id, "type");
 
 	type = getNumericConfValue(path2);
 	g_free(path2);
@@ -170,49 +167,41 @@ static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
 
 	switch(type) {
 	case FST_FOLDER:
-		path2 = g_strdup_printf("%s/%s/feedlistname", prefix, id);
+		path2 = build_path_str(id, "feedlistname");
 		name = getStringConfValue(path2);
-		g_message("Loading feed with title %s at %s", name, path2);
 		g_free(path2);
 
-		path2 = g_strdup_printf("%s/%s/collapseState", prefix, id);
+		path2 = build_path_str(id, "collapseState");
 		expanded = !getBooleanConfValue(path2);
-		g_message("%s is expanded? %d", path2, expanded);
 		g_free(path2);
-		
-		path2 = g_strdup_printf("%s/%s", prefix, id);
 		
 		folder = restore_folder(parent, -1, name, id, FST_FOLDER);
 		
 		ui_add_folder(folder);
-		load_folder_contents(folder, path2);
+		load_folder_contents(folder, id);
 		if (expanded)
 			ui_folder_set_expansion(folder, TRUE);
-		g_free(path2);
 		g_free(name);
 		break;
 	case FST_HELPFOLDER:
 		folder = feedlist_insert_help_folder(parent);
 
-		path2 = g_strdup_printf("%s/%s/collapseState", prefix, id);
+		path2 = build_path_str(id, "collapseState");
 		expanded = !getBooleanConfValue(path2);
 		if (expanded)
 			ui_folder_set_expansion(folder, TRUE);
 		g_free(path2);
 		break;
 	default:
-		path2 = g_strdup_printf("%s/%s/name", prefix, id);
-		g_message("%s", path2);
+		path2 = build_path_str(id, "name");
 		name = getStringConfValue(path2);
 		g_free(path2);
 
-		path2 = g_strdup_printf("%s/%s/updateInterval", prefix, id);
-		g_message("%s", path2);
+		path2 = build_path_str(id, "updateInterval");
 		interval = getNumericConfValue(path2);
 		g_free(path2);	
 		
-		path2 = g_strdup_printf("%s/%s/url", prefix, id);
-		g_message("%s", path2);
+		path2 = build_path_str(id, "url");
 		url = getStringConfValue(path2);	/* we use this function to get a "" on empty conf value */
 		g_free(path2);
 		
@@ -229,24 +218,23 @@ static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
 		feed_add(type, url, parent, name, cacheid, interval, FALSE);
 
 		g_free(cacheid);
-		g_free(id);
 		g_free(url);
 		g_free(name);
 	}
 	return TRUE;
 }
 
-static void load_folder_contents(folderPtr folder, gchar* path) {
+static void load_folder_contents(folderPtr folder, gchar* fid) {
 	GSList *list;
 	gchar *id;
 	GError		*err = NULL;
 	gchar *name;
 	
-	g_message("Loading folder contents: %s, path: %s", folder->title, path);
+	g_message("Loading folder contents: %s, fid: %s", folder->title, fid);
 	
 	/* First, try to look and (and migrate groups) */
 	
-	name = g_strdup_printf("%s/groups", path);
+	name = build_path_str(fid,"groups");
 	
 	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
 	if (!is_gconf_error(&err) && list) {
@@ -255,22 +243,21 @@ static void load_folder_contents(folderPtr folder, gchar* path) {
 			id = (gchar*)list->data;
 			g_assert(id);
 			g_assert(NULL != id);
-			load_key(folder, PATH, id);
+			load_key(folder, id);
 			list = list->next;
 		}
 	}
 	g_free(name);
 	/* Then, look at the feedlist */
-	name = g_strdup_printf("%s/feedlist", path);
+	name = build_path_str(fid, "feedlist");
 	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
 
 	if (!is_gconf_error(&err) && list) {
-		g_message("looking at feedlist");
 		while (list != NULL) {
 			id = (gchar*)list->data;
 			g_assert(id);
 			g_assert(NULL != id);
-			load_key(folder, PATH, id);
+			load_key(folder, id);
 			list = list->next;
 		}
 	}
@@ -327,11 +314,11 @@ static void conf_feedlist_erase_gconf() {
 void loadSubscriptions(void) {
 	gchar *filename;
 	feedlistLoading = TRUE;
-	load_folder_contents(folder_get_root(), PATH);
+	load_folder_contents(folder_get_root(), "");
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
 	importOPMLFeedList(filename, folder_get_root());
 	g_free(filename);
-	conf_feedlist_erase_gconf();
+	//conf_feedlist_erase_gconf();
 	/* if help folder was not yet created... */
 	feedlist_insert_help_folder(folder_get_root());
 	feedlistLoading = FALSE;

@@ -249,9 +249,12 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	gchar		*filename, *tmp, *data = NULL;
 	feedPtr		fp;
 	int		error = 0;
-
+	
 	filename = getCacheFileName(id, NULL);
+	g_message("Loading feed config for %s from %s", id, filename);
+	
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
+		g_message("Error while reading cache file");
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		return NULL;
 	}
@@ -264,10 +267,9 @@ static feedPtr loadFeed(gint type, gchar *id) {
 			error = 1;
 			break;
 		} 
-
+		
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-			xmlFreeDoc(doc);
 			error = 1;
 			break;
 		}
@@ -277,7 +279,6 @@ static feedPtr loadFeed(gint type, gchar *id) {
 
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
-			xmlFreeDoc(doc);
 			error = 1;
 			break;		
 		}
@@ -335,7 +336,7 @@ feedPtr feed_add(gint type, gchar *url, folderPtr parent, gchar *feedName, gchar
 
 	g_assert(url != NULL);
 
-	if (id != NULL)
+	if (id != NULL && type != FST_HELPFEED)
 		fp = loadFeed(type, id);
 	
 	if (fp == NULL) {
@@ -352,7 +353,7 @@ feedPtr feed_add(gint type, gchar *url, folderPtr parent, gchar *feedName, gchar
 	fp->displayProps = showPropDialog;
 
 	if(NULL != feedName)
-		feed_set_title(fp, g_strdup(feedName));
+		feed_set_title(fp, feedName);
 	
 	if(NULL != url) {
 		fp->source = g_strdup(url);

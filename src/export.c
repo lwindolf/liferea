@@ -152,6 +152,28 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 	}
 }
 
+static void parseBODY(xmlNodePtr n, folderPtr parent) {
+	xmlNodePtr cur;
+	cur = n->xmlChildrenNode;
+	while(cur != NULL) {
+		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
+			parseOutline(cur, parent);
+		cur = cur->next;
+	}
+}
+
+static void parseOPML(xmlNodePtr n, folderPtr parent) {
+	xmlNodePtr cur;
+	cur = n->xmlChildrenNode;
+	while(cur != NULL) {
+		/* we ignore the head */
+		if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
+			parseBODY(cur, parent);
+		}
+		cur = cur->next;
+	}	
+}
+
 void importOPMLFeedList(gchar *filename, folderPtr parent) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
@@ -160,47 +182,25 @@ void importOPMLFeedList(gchar *filename, folderPtr parent) {
 	/* read the feed list */
 	doc = xmlParseFile(filename);
 
-	while(1) {	
-
-		if(NULL == doc) {
-			ui_mainwindow_set_status_bar(_("XML error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
-			break;
-		} 
-
+	if(NULL == doc) {
+		ui_mainwindow_set_status_bar(_("XML error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
+	} else {
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
 			ui_mainwindow_set_status_bar(_("Empty document! OPML document should not be empty..."));
-			break;
-		}
-
-		while(cur && xmlIsBlankNode(cur))
-			cur = cur->next;
-		
-		if(xmlStrcmp(cur->name, BAD_CAST"opml")) {
-			ui_mainwindow_set_status_bar(_("\"%s\" is no valid cache file! Cannot read OPML file!"), filename);
-			break;		
-		}
-
-		cur = cur->xmlChildrenNode;
-		while(cur != NULL) {
-			/* we ignore the head */
-			if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
-				cur = cur->xmlChildrenNode;
-				while(cur != NULL) {
-					if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-						parseOutline(cur, parent);
-					
-					cur = cur->next;
+		} else {
+			while (cur != NULL) {
+				if(!xmlIsBlankNode(cur)) {
+					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
+						parseOPML(cur, parent);
+					} else {
+						ui_mainwindow_set_status_bar(_("\"%s\" is no valid cache file! Liferea can only read OPML file!"), filename);
+					}
 				}
-				break;
+				cur = cur->next;
 			}
-			cur = cur->next;
 		}
-		
-		break;
-	}
-	
-	if(NULL != doc)
 		xmlFreeDoc(doc);
+	}
 }
 
 
