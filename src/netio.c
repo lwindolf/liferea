@@ -254,6 +254,8 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	char *redirecttarget;
 	fd_set rfds;
 	int retval;
+	int handled;
+	int tmplasthttpstatus;
 
 	lasthttpstatus = 0;
 	
@@ -329,7 +331,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	strncpy (httpstatus, tmpstatus, 3);
 	free (savestart);
 	
-	lasthttpstatus = atoi (httpstatus);
+	tmplasthttpstatus = lasthttpstatus = atoi (httpstatus);
 	
 	/* If the redirectloop was run newhost and newurl were located.
 	   We need to free them here. */
@@ -338,94 +340,120 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 		free (url);
 	}
 
+	handled = 1;
 	/* Check HTTP server response and handle redirects. */
-	switch (lasthttpstatus) {
-		case 301:
-			/* Permanent redirect. Change feed->feedurl to new location.
-			   Done some way down when we have extracted the new url.
-			   Like the description to NetIO() said... crufty. Argh! */
-		case 302:
-		case 303:
-			redirectcount++;
-			
-			/* Give up if we reach MAX_HTTP_REDIRECTS to avoid loops. */
-			if (redirectcount > MAX_HTTP_REDIRECTS) {
-				fclose (stream);
-				UIStatus (_("Too many HTTP redirects encountered! Giving up."));
-				sleep (2);
-				return NULL;
-			}
-				
-			while (!feof(stream)) {
-				if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL) {
-					/* Something bad happened. Server sent stupid stuff. */
-					MainQuit (_("Following HTTP redirects"), strerror(errno));
-				}
-				/* Split netbuf into hostname and trailing url.
-				   Place hostname in *newhost and tail into *newurl.
-				   Close old connection and reconnect to server.
-				   
-				   Do not touch any of the following code! :P */
-				if (strstr (netbuf, "Location") != NULL) {
-					tmpstring = malloc(strlen(netbuf)+1);
-					
-					redirecttarget = strdup (netbuf);
-					freeme = redirecttarget;
-					/* In theory pointer should now be after the space char
-					   after the word "Location:" */
-					strsep (&redirecttarget, " ");
-					
-					/* Change cur_ptr->feedurl on 301. */
-					if (lasthttpstatus == 301) {
-						UIStatus (_("URL points to permanent redirect, updating with new location..."));
-						sleep (2);
-						free (cur_ptr->feedurl);
-						/* netbuf contains \r\n */
-						/* Should review this stuff! */
-						cur_ptr->feedurl = malloc (strlen(redirecttarget)-1);
-						strncpy (cur_ptr->feedurl, redirecttarget, strlen(redirecttarget)-2);
-						cur_ptr->feedurl[strlen(redirecttarget)-2] = '\0';
-					}
-					free (freeme);
-					
-					freeme = tmpstring;
-					strcpy (tmpstring, netbuf);
-					strsep (&tmpstring, "/");
-					strsep (&tmpstring, "/");
-					tmphost = tmpstring;
-					strsep (&tmpstring, "/");
-					newhost = strdup (tmphost);
-					tmpstring--;
-					tmpstring[0] = '/';
-					newurl = strdup (tmpstring);
-					newurl[strlen(newurl)-2] = '\0';
-					free (freeme);
-					
-					/* Close connection. */	
+	do {
+		switch (lasthttpstatus) {
+			case 301:
+				/* Permanent redirect. Change feed->feedurl to new location.
+				   Done some way down when we have extracted the new url.
+				   Like the description to NetIO() said... crufty. Argh! */
+
+			case 302: /* temporary redirect */
+			case 303: /* redirect after POST */
+			case 307: /* temporary redirect */
+
+				redirectcount++;
+
+				/* Give up if we reach MAX_HTTP_REDIRECTS to avoid loops. */
+				if (redirectcount > MAX_HTTP_REDIRECTS) {
 					fclose (stream);
-					
-					/* Reconnect to server. */
-					if ((NetConnect (newhost)) != 0) {
-						MainQuit (_("Reconnecting for redirect"), strerror(errno));
-					}
-					
-					host = newhost;
-					url = newurl;
-					
-					goto tryagain;
+					UIStatus (_("Too many HTTP redirects encountered! Giving up."));
+					sleep (2);
+					return NULL;
 				}
-			}
-			break;
-		case 200:
-			break;
-		case 304:
-			/* Not modified received. We can close stream and return from here.
-			   Not very friendly though. :) */
-		default:
-			fclose (stream);
-			return NULL;
-	}
-			
+
+				while (!feof(stream)) {
+					if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL) {
+						/* Something bad happened. Server sent stupid stuff. */
+						MainQuit (_("Following HTTP redirects"), strerror(errno));
+					}
+					/* Split netbuf into hostname and trailing url.
+					   Place hostname in *newhost and tail into *newurl.
+					   Close old connection and reconnect to server.
+
+					   Do not touch any of the following code! :P */
+					if (strstr (netbuf, "Location") != NULL) {
+						tmpstring = malloc(strlen(netbuf)+1);
+
+						redirecttarget = strdup (netbuf);
+						freeme = redirecttarget;
+						/* In theory pointer should now be after the space char
+						   after the word "Location:" */
+						strsep (&redirecttarget, " ");
+
+						/* Change cur_ptr->feedurl on 301. */
+						if (lasthttpstatus == 301) {
+							UIStatus (_("URL points to permanent redirect, updating with new location..."));
+							sleep (2);
+							free (cur_ptr->feedurl);
+							/* netbuf contains \r\n */
+							/* Should review this stuff! */
+							cur_ptr->feedurl = malloc (strlen(redirecttarget)-1);
+							strncpy (cur_ptr->feedurl, redirecttarget, strlen(redirecttarget)-2);
+							cur_ptr->feedurl[strlen(redirecttarget)-2] = '\0';
+						}
+						free (freeme);
+
+						freeme = tmpstring;
+						strcpy (tmpstring, netbuf);
+						strsep (&tmpstring, "/");
+						strsep (&tmpstring, "/");
+						tmphost = tmpstring;
+						strsep (&tmpstring, "/");
+						newhost = strdup (tmphost);
+						tmpstring--;
+						tmpstring[0] = '/';
+						newurl = strdup (tmpstring);
+						newurl[strlen(newurl)-2] = '\0';
+						free (freeme);
+
+						/* Close connection. */	
+						fclose (stream);
+
+						/* Reconnect to server. */
+						if ((NetConnect (newhost)) != 0) {
+							MainQuit (_("Reconnecting for redirect"), strerror(errno));
+						}
+
+						host = newhost;
+						url = newurl;
+
+						goto tryagain;
+					}
+				}
+				break;
+			case 200:
+				break;
+						
+			case 304:
+				/* Not modified received. We can close stream and return from here.
+				   Not very friendly though. :) */
+				fclose (stream);
+				return NULL;
+								
+			case 403: /* forbidden */
+			case 410: /* gone */
+				UIStatus (_("This feed no longer exists. Please unsubscribe!."));
+			case 400:
+				fclose (stream);
+				return NULL;
+						
+			default:
+				/* unknown error codes have to be treated like the base class */
+				if(handled) {		
+					/* first pass, modify error code to base class */
+					handled = 0;
+					lasthttpstatus -= lasthttpstatus % 100;
+				} else {		
+					/* second pass, give up on unknown error base class */
+					fclose (stream);
+					return NULL;
+				}
+		}
+	} while (!handled);
+	lasthttpstatus = tmplasthttpstatus;
+	
 	/* Read rest of HTTP header and... throw it away. */
 	while (!feof(stream)) {
 	
@@ -609,19 +637,29 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 	return returndata;
 }
 
-char * downloadURL(char * url) {
+/* downloads a feed and returns the data or NULL as return value,
+   FIXME: don't ignore changed URLs! */
+char * downloadURL(char *url) {
 	FILE			*f;
 	char			*data = NULL;
 	struct feed_request	cur_ptr;
 	struct stat		statinfo;
 
-	if(NULL != strstr(url, "://")) {	
+	if(NULL != strstr(url, "://")) {
 		/* :// means it an URL */
 		cur_ptr.feedurl = strdup(url);
 		cur_ptr.lastmodified = NULL;
+		
 		data = DownloadFeed(strdup(url), &cur_ptr);
-		free(cur_ptr.feedurl);
 		free(cur_ptr.lastmodified);
+		
+		/* check if URL was modified */
+		if(0 != strcmp(url, cur_ptr.feedurl)) {
+			g_free(url);
+			url = g_strdup(cur_ptr.feedurl);
+		}
+		
+		free(cur_ptr.feedurl);
 	} else {
 		/* no :// so we assume its a local path */
 		if(0 == stat(url, &statinfo)) {

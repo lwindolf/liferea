@@ -34,6 +34,8 @@
 #include "common.h"
 #include "cdf_channel.h"
 #include "cdf_item.h"
+
+#include "netio.h"
 #include "htmlview.h"
 
 extern GMutex * entries_lock;	// FIXME

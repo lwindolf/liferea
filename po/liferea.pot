@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-09-24 02:14+0200\n"
+"POT-Creation-Date: 2003-09-26 23:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,316 +15,296 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/interface.c:69
+#: src/interface.c:65
 msgid "Liferea 0.3.8"
 msgstr ""
 
-#: src/interface.c:81
-msgid "_Update"
+#: src/interface.c:80
+msgid "Update feeds"
 msgstr ""
 
-#: src/interface.c:84
-msgid "Update all feeds"
+#: src/interface.c:96
+msgid "Update"
 msgstr ""
 
-#: src/interface.c:90
-msgid "_Search"
-msgstr ""
-
-#: src/interface.c:93
+#: src/interface.c:103
 msgid "Search in feeds"
 msgstr ""
 
-#: src/interface.c:99
-msgid "_New"
+#: src/interface.c:119
+msgid "Search"
 msgstr ""
 
-#: src/interface.c:102
-msgid "create a new feed or folder"
+#: src/interface.c:126
+msgid "Edit preferences"
 msgstr ""
 
-#: src/interface.c:111
-msgid "New _Feed"
-msgstr ""
-
-#: src/interface.c:114
-msgid "create new feed"
-msgstr ""
-
-#: src/interface.c:120
-msgid "New F_older"
-msgstr ""
-
-#: src/interface.c:123
-msgid "create a new folder"
-msgstr ""
-
-#: src/interface.c:162
+#: src/interface.c:159
 msgid "Search for"
 msgstr ""
 
-#: src/interface.c:171
+#: src/interface.c:168
 msgid "create VFolder"
 msgstr ""
 
-#: src/interface.c:174
+#: src/interface.c:170
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr ""
 
-#: src/interface.c:179
+#: src/interface.c:175
 msgid "Close search"
 msgstr ""
 
-#: src/interface.c:314
+#: src/interface.c:301
 msgid "Properties"
 msgstr ""
 
-#: src/interface.c:332 src/interface.c:645
+#: src/interface.c:319 src/interface.c:632
 msgid "feed name"
 msgstr ""
 
-#: src/interface.c:345 src/interface.c:653
+#: src/interface.c:332 src/interface.c:640
 msgid ""
 "either leave the name supplied by the feed or enter an alternative name "
 "which you like to be listed in the feed list"
 msgstr ""
 
-#: src/interface.c:346
+#: src/interface.c:333
 msgid ""
 "\t\tif(0 == interval)\n"
 "\t\t\tinterval = -1;\t/* this is due to ignore this feed while updating */"
 msgstr ""
 
-#: src/interface.c:353
+#: src/interface.c:340
 msgid "enter the URL the feed should be loaded from"
 msgstr ""
 
-#: src/interface.c:355 src/interface.c:498
+#: src/interface.c:342 src/interface.c:485
 msgid "feed URL"
 msgstr ""
 
-#: src/interface.c:378 src/interface.c:660
+#: src/interface.c:365 src/interface.c:647
 msgid "feed refresh interval (in minutes)"
 msgstr ""
 
-#: src/interface.c:387 src/interface.c:669
+#: src/interface.c:374 src/interface.c:656
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
 "the interval to 0."
 msgstr ""
 
-#: src/interface.c:397
+#: src/interface.c:384
 msgid "update interval"
 msgstr ""
 
-#: src/interface.c:481
+#: src/interface.c:468
 msgid "New Entry"
 msgstr ""
 
-#: src/interface.c:522
+#: src/interface.c:509
 msgid "RSS"
 msgstr ""
 
-#: src/interface.c:525
+#: src/interface.c:512
 msgid "select this type to subscribe to a RDF/RSS feed"
 msgstr ""
 
-#: src/interface.c:530
+#: src/interface.c:517
 msgid "CDF"
 msgstr ""
 
-#: src/interface.c:533
+#: src/interface.c:520
 msgid ""
 "select this type to subscribe to a CDF feed (the feed type used by MSIE)"
 msgstr ""
 
-#: src/interface.c:537
+#: src/interface.c:524
 msgid "Atom/Echo/PIE"
 msgstr ""
 
-#: src/interface.c:540
+#: src/interface.c:527
 msgid "select this type if you want to subscribe to a Atom/Echo/PIE 0.2 feed"
 msgstr ""
 
-#: src/interface.c:544
+#: src/interface.c:531
 msgid "OCS Directory"
 msgstr ""
 
-#: src/interface.c:547
+#: src/interface.c:534
 msgid "select this type to subscribe to a OCS directory"
 msgstr ""
 
-#: src/interface.c:551
+#: src/interface.c:538
 msgid "feed type"
 msgstr ""
 
-#: src/interface.c:628
+#: src/interface.c:615
 msgid "Entry Name"
 msgstr ""
 
-#: src/interface.c:740
+#: src/interface.c:727
 msgid "program preferences"
 msgstr ""
 
-#: src/interface.c:760
+#: src/interface.c:747
 msgid "use the GNOME default browser"
 msgstr ""
 
-#: src/interface.c:771
+#: src/interface.c:758
 msgid "use browser command"
 msgstr ""
 
-#: src/interface.c:781
+#: src/interface.c:768
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr ""
 
-#: src/interface.c:783
+#: src/interface.c:770
 msgid "browser settings"
 msgstr ""
 
-#: src/interface.c:798
+#: src/interface.c:785
 msgid "display only time"
 msgstr ""
 
-#: src/interface.c:804
+#: src/interface.c:791
 msgid "display date and time"
 msgstr ""
 
-#: src/interface.c:814
+#: src/interface.c:801
 msgid "user defined format"
 msgstr ""
 
-#: src/interface.c:823
+#: src/interface.c:810
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
 msgstr ""
 
-#: src/interface.c:825
+#: src/interface.c:812
 msgid "date column settings"
 msgstr ""
 
-#: src/interface.c:896
+#: src/interface.c:883
 msgid "add folder"
 msgstr ""
 
-#: src/interface.c:911 src/interface.c:986
+#: src/interface.c:898 src/interface.c:973
 msgid "folder name"
 msgstr ""
 
-#: src/interface.c:975
+#: src/interface.c:962
 msgid "edit folder name"
 msgstr ""
 
-#: src/callbacks.c:85
+#: src/callbacks.c:88
 msgid "could not retrieve selection of feed list!"
 msgstr ""
 
-#: src/callbacks.c:105 src/callbacks.c:235
+#: src/callbacks.c:108 src/callbacks.c:243
 msgid "feed list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:127 src/callbacks.c:174 src/callbacks.c:205
+#: src/callbacks.c:130 src/callbacks.c:182 src/callbacks.c:213
 msgid "entry list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:132 src/callbacks.c:179 src/callbacks.c:210
+#: src/callbacks.c:135 src/callbacks.c:187 src/callbacks.c:218
 msgid "could not retrieve selection of entry list!"
 msgstr ""
 
-#: src/callbacks.c:151
+#: src/callbacks.c:154
 msgid "internal error! could not find folder iterator of selected entry\n"
 msgstr ""
 
-#: src/callbacks.c:240
+#: src/callbacks.c:248
 msgid "could not retrieve selection of feed list!\n"
 msgstr ""
 
-#: src/callbacks.c:389
+#: src/callbacks.c:397
 msgid "Deleting entry"
 msgstr ""
 
-#: src/callbacks.c:398
+#: src/callbacks.c:405
 msgid "Error: Cannot delete this list entry!"
 msgstr ""
 
-#: src/callbacks.c:424
+#: src/callbacks.c:431
 msgid "Internal Error! Feed pointer NULL!\n"
 msgstr ""
 
-#: src/callbacks.c:461
+#: src/callbacks.c:468
 #, c-format
 msgid "The feed specifies an update interval of %d minutes"
 msgstr ""
 
-#: src/callbacks.c:463
+#: src/callbacks.c:470
 msgid "This feed specifies no default interval."
 msgstr ""
 
-#: src/callbacks.c:670
+#: src/callbacks.c:676
 msgid "internal error! could not get a new folder key!"
 msgstr ""
 
-#: src/callbacks.c:736 src/callbacks.c:739
+#: src/callbacks.c:742 src/callbacks.c:745
 msgid "A folder must be empty to delete it!"
 msgstr ""
 
-#: src/callbacks.c:742
+#: src/callbacks.c:748
 msgid "Error: Cannot determine folder key!"
 msgstr ""
 
-#: src/callbacks.c:802 src/callbacks.c:989
+#: src/callbacks.c:796 src/callbacks.c:983
 msgid "could not retrieve selection of item list!"
 msgstr ""
 
-#: src/callbacks.c:857
+#: src/callbacks.c:851
 #, c-format
 msgid "searching for \"%s\""
 msgstr ""
 
-#: src/callbacks.c:875
+#: src/callbacks.c:867
 #, c-format
 msgid "creating VFolder for search term \"%s\""
 msgstr ""
 
-#: src/callbacks.c:883
+#: src/callbacks.c:877
 msgid "could not allocate memory!"
 msgstr ""
 
 #. we set the searchstring as a default title
-#: src/callbacks.c:888
+#: src/callbacks.c:882
 #, c-format
 msgid "VFolder %s"
 msgstr ""
 
-#: src/callbacks.c:916
+#: src/callbacks.c:910
 msgid "item list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:926
+#: src/callbacks.c:920
 msgid "could not retrieve selection of item list!\n"
 msgstr ""
 
-#: src/callbacks.c:1099
+#: src/callbacks.c:1093
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 
-#: src/callbacks.c:1246
+#: src/callbacks.c:1240
 msgid "Date"
 msgstr ""
 
-#: src/callbacks.c:1254
+#: src/callbacks.c:1248
 msgid "Headline"
 msgstr ""
 
-#: src/callbacks.c:1488
+#: src/callbacks.c:1482
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr ""
 
-#: src/callbacks.c:1494
-msgid "you cannot modify the help folder contents!"
+#: src/callbacks.c:1493
+msgid "you cannot modify the special help folder contents!"
 msgstr ""
 
 #: src/support.c:90 src/support.c:114

@@ -670,7 +670,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
 	if(NULL != (folderkey = addFolderToConfig(foldertitle))) {
 		/* add the new folder to the model */
-		addFolder(folderkey, foldertitle, FST_NODE);
+		addFolder(folderkey, g_strdup(foldertitle), FST_NODE);
 		checkForEmptyFolders();
 	} else {
 		print_status(_("internal error! could not get a new folder key!"));
@@ -748,18 +748,6 @@ void on_popup_removefolder_selected(void) {
 		print_status(_("Error: Cannot determine folder key!"));
 	}
 	g_free(iter);
-}
-
-
-void on_toolbar_newfeed_clicked(GtkMenuItem *menuitem, gpointer user_data) {
-
-	on_newbtn_clicked(NULL, NULL);
-}
-
-
-void on_toolbar_newfolder_clicked(GtkMenuItem *menuitem, gpointer user_data) {
-
-	on_popup_newfolder_selected();	
 }
 
 /*------------------------------------------------------------------------------*/
@@ -888,7 +876,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule)))) 
 					g_error(_("could not allocate memory!"));
 
-				rp->value = (gchar *)searchstring;
+				rp->value = g_strdup((gchar *)searchstring);
 
 				/* we set the searchstring as a default title */
 				setFeedProp(key, FEED_PROP_USERTITLE, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
@@ -1502,7 +1490,7 @@ gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, 
 
 	/* don't allow help feed dragging */
 	if(0 == strncmp(drag_source_key, "help", 4)) {
-		showErrorBox(_("you cannot modify the help folder contents!"));
+		showErrorBox(_("you cannot modify the special help folder contents!"));
 		stop = TRUE;
 	}
 	

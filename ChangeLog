@@ -1,4 +1,4 @@
-2003-09-??  Lars Lindner <lars.lindner@gmx.net>
+2003-09-26  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.3.8
 
@@ -9,10 +9,15 @@
 	* cleaned up the debugging stuff in the preferences dialog
 	* removed user configurable time format, now using locale
 	  specific date and time format
-	* changed the toolbar to a menu bar (experimental)
-	* not configured namespaces 'll be enabled automatically
-	* experimental VFolder support (for now you can only
-	  create a VFolder with only one exactly string match rule)
+	* improved toolbar buttons (designed by 
+	* not configured namespaces 'll be enabled automatically, there
+	  are no more preferences to disable namespaces
+	* changed the feed download method from libxml2's nanoHTTP
+	  to the SnowNews HTTP client code written by Oliver Feiler,
+	  now the program specifies an user agent
+	* note the vfolder support was disabled due to unstable
+	  behaviour (if you tested the CVS version and created
+	  vfolders you 'll still be able to use them)
 
 2003-09-14  Lars Lindner <lars.lindner@gmx.net>
 

@@ -22,116 +22,70 @@
       <property name="spacing">0</property>
 
       <child>
-	<widget class="GtkMenuBar" id="menubar">
+	<widget class="GtkToolbar" id="toolbar1">
 	  <property name="border_width">1</property>
 	  <property name="visible">True</property>
+	  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
+	  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
+	  <property name="tooltips">True</property>
 
 	  <child>
-	    <widget class="GtkImageMenuItem" id="refreshbtn">
+	    <widget class="GtkButton" id="refreshbtn">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Update all feeds</property>
-	      <property name="label" translatable="yes">_Update</property>
-	      <property name="use_underline">True</property>
-	      <signal name="activate" handler="on_refreshbtn_clicked" last_modification_time="Tue, 16 Sep 2003 14:43:43 GMT"/>
-
-	      <child internal-child="image">
-		<widget class="GtkImage" id="image79">
-		  <property name="visible">True</property>
-		  <property name="stock">gtk-refresh</property>
-		  <property name="icon_size">1</property>
-		  <property name="xalign">0.5</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xpad">0</property>
-		  <property name="ypad">0</property>
-		</widget>
-	      </child>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkImageMenuItem" id="search1">
-	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Search in feeds</property>
-	      <property name="label" translatable="yes">_Search</property>
-	      <property name="use_underline">True</property>
-	      <signal name="activate" handler="on_searchbtn_clicked" last_modification_time="Tue, 16 Sep 2003 14:50:36 GMT"/>
-
-	      <child internal-child="image">
-		<widget class="GtkImage" id="image80">
-		  <property name="visible">True</property>
-		  <property name="stock">gtk-find</property>
-		  <property name="icon_size">1</property>
-		  <property name="xalign">0.5</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xpad">0</property>
-		  <property name="ypad">0</property>
-		</widget>
-	      </child>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkImageMenuItem" id="new1">
-	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">create a new feed or folder</property>
-	      <property name="label" translatable="yes">_New</property>
-	      <property name="use_underline">True</property>
-
-	      <child internal-child="image">
-		<widget class="GtkImage" id="image81">
-		  <property name="visible">True</property>
-		  <property name="stock">gtk-new</property>
-		  <property name="icon_size">1</property>
-		  <property name="xalign">0.5</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xpad">0</property>
-		  <property name="ypad">0</property>
-		</widget>
-	      </child>
+	      <property name="tooltip" translatable="yes">Update feeds</property>
+	      <property name="relief">GTK_RELIEF_NONE</property>
+	      <signal name="clicked" handler="on_refreshbtn_clicked" object="feedlist" last_modification_time="Fri, 25 Jul 2003 20:26:43 GMT"/>
 
 	      <child>
-		<widget class="GtkMenu" id="new1_menu">
+		<widget class="GtkAlignment" id="alignment1">
+		  <property name="visible">True</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xscale">0</property>
+		  <property name="yscale">0</property>
 
 		  <child>
-		    <widget class="GtkImageMenuItem" id="new_feed2">
+		    <widget class="GtkHBox" id="hbox16">
 		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">create new feed</property>
-		      <property name="label" translatable="yes">New _Feed</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_toolbar_newfeed_clicked" last_modification_time="Tue, 16 Sep 2003 14:24:15 GMT"/>
+		      <property name="homogeneous">False</property>
+		      <property name="spacing">2</property>
 
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image82">
+		      <child>
+			<widget class="GtkImage" id="image2">
 			  <property name="visible">True</property>
-			  <property name="stock">gtk-new</property>
-			  <property name="icon_size">1</property>
+			  <property name="stock">gtk-refresh</property>
+			  <property name="icon_size">4</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
 			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
 		      </child>
-		    </widget>
-		  </child>
 
-		  <child>
-		    <widget class="GtkImageMenuItem" id="new_folder2">
-		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">create a new folder</property>
-		      <property name="label" translatable="yes">New F_older</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_toolbar_newfolder_clicked" last_modification_time="Tue, 16 Sep 2003 14:24:15 GMT"/>
-
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image83">
+		      <child>
+			<widget class="GtkLabel" id="label24">
 			  <property name="visible">True</property>
-			  <property name="stock">gtk-new</property>
-			  <property name="icon_size">1</property>
+			  <property name="label" translatable="yes">Update</property>
+			  <property name="use_underline">True</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
 			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
 		      </child>
 		    </widget>
 		  </child>
@@ -141,11 +95,78 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkImageMenuItem" id="einstellungen1">
+	    <widget class="GtkButton" id="searchbtn">
 	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Search in feeds</property>
+	      <property name="relief">GTK_RELIEF_NONE</property>
+	      <signal name="clicked" handler="on_searchbtn_clicked" last_modification_time="Tue, 02 Sep 2003 21:27:39 GMT"/>
+
+	      <child>
+		<widget class="GtkAlignment" id="alignment2">
+		  <property name="visible">True</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xscale">0</property>
+		  <property name="yscale">0</property>
+
+		  <child>
+		    <widget class="GtkHBox" id="hbox17">
+		      <property name="visible">True</property>
+		      <property name="homogeneous">False</property>
+		      <property name="spacing">2</property>
+
+		      <child>
+			<widget class="GtkImage" id="image3">
+			  <property name="visible">True</property>
+			  <property name="stock">gtk-find</property>
+			  <property name="icon_size">4</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkLabel" id="label25">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Search</property>
+			  <property name="use_underline">True</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="prefbtn">
+	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Edit preferences</property>
 	      <property name="label">gtk-preferences</property>
 	      <property name="use_stock">True</property>
-	      <signal name="activate" handler="on_prefbtn_clicked" last_modification_time="Fri, 19 Sep 2003 00:07:12 GMT"/>
+	      <property name="relief">GTK_RELIEF_NONE</property>
+	      <signal name="clicked" handler="on_prefbtn_clicked" last_modification_time="Sun, 03 Aug 2003 21:13:23 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -254,7 +275,6 @@
 
 		      <child>
 			<widget class="GtkButton" id="newVFolder">
-			  <property name="visible">True</property>
 			  <property name="tooltip" translatable="yes">saves this search as a VFolder, which will appear in the feed list</property>
 			  <property name="can_focus">True</property>
 			  <property name="label" translatable="yes">create VFolder</property>
