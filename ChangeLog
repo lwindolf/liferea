@@ -34,7 +34,10 @@
 	* Fixed a problem with the session managment registering
 	  which prevented the usage of the Mozilla browser module.
 	  (Nathan Conrad)
-
+	* Iconification state is saved between sessions. (Nathan Conrad)
+	* URLs are now stripped of leading and trailing
+	  whitespace. (Nathan Conrad)
+	
 2004-08-31  Lars Lindner <lars.lindner@gmx.de>
 
 	Version 0.5.3c
