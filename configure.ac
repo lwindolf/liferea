@@ -186,10 +186,6 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
-GETTEXT_PACKAGE=liferea
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
-
 uname=`uname`
 AC_DEFINE_UNQUOTED(OS, $uname, [defines a OS version string, used for OS specific code])
 AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the user agent string])
@@ -198,6 +194,10 @@ AC_MSG_RESULT(user agent OS = $uname)
 dnl Add the languages which your application supports here.
 ALL_LINGUAS="bg cs de es fr it ja ko mk ru sk zh_TW"
 AM_GLIB_GNU_GETTEXT
+
+GETTEXT_PACKAGE=liferea
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["${GETTEXT_PACKAGE}"], [gettext domain])
 
 AC_CONFIG_FILES([
 Makefile

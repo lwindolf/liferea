@@ -136,7 +136,7 @@ do
       fi
       echo "Running aclocal $aclocalinclude ..."
       aclocal $aclocalinclude
-      if grep "^AM_CONFIG_HEADER" configure.ac >/dev/null; then
+      if grep "^AC_CONFIG_HEADERS" configure.ac >/dev/null; then
 	echo "Running autoheader..."
 	autoheader
       fi
