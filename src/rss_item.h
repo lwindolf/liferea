@@ -36,8 +36,6 @@
 #define RSS_ITEM_AUTHOR			3
 /* 2.0 and Annotate-Module */
 #define RSS_ITEM_COMMENTS		4
-/* 0.92, 2.0 */
-#define RSS_ITEM_ENCLOSURE		5
 /* 0.92, 2.0 and <dc:subject> */
 #define RSS_ITEM_CATEGORY		6
 /* 0.92+ */
@@ -47,6 +45,7 @@
 
 typedef struct RSSItem {
 	gchar		*tags[RSS_ITEM_MAX_TAG];	/* standard namespace infos */
+	gchar		*enclosure;
 	
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */	

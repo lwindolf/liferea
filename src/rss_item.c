@@ -31,6 +31,9 @@
 
 #define RDF_NS	BAD_CAST"http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
+#define	START_ENCLOSURE	"<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right:5px;border-color:black;border-style:solid;border-width:1px;background-color:#E0E0E0\"> enclosed file: "
+#define	END_ENCLOSURE	"</div>"
+
 /* structure for the hashtable callback which itself calls the 
    namespace output handler */
 #define OUTPUT_RSS_CHANNEL_NS_HEADER	0
@@ -52,7 +55,6 @@ static gchar *itemTagList[] = {		"title",
 					"link",
 					"author",
 					"comments",
-					"enclosure",
 					"category",
 					"guid",
 					NULL
@@ -63,8 +65,7 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip);
 
 /* method to parse standard tags for each item element */
 itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
-	gint			bw, br;
-	gchar			*tmp;
+	gchar			*tmp, *link;
 	parseItemTagFunc	parseFunc;
 	RSSNsHandler		*nsh;	
 	RSSItemPtr 		i;
@@ -115,7 +116,20 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 					g_free(tmp);
 				}
 			}		
-		}		
+		}
+		
+		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
+			/* RSS 0.93 allows multiple enclosures, so we build
+			   a simple string of HTML-links... */
+			link = xmlGetNoNsProp(cur, BAD_CAST"url");
+			
+			if(NULL == (tmp = i->enclosure))
+				tmp = g_strdup("");
+			else
+				tmp = g_strdup_printf("%s,", tmp);
+				
+			i->enclosure = g_strdup_printf("%s<a href=\"%s\">%s</a>", tmp, link, link);
+		}
 
 		cur = cur->next;
 	}
@@ -123,11 +137,11 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	/* after parsing we fill the infos into the itemPtr structure */
 	ip->type = FST_RSS;
 	ip->time = i->time;
-	ip->source = i->tags[RSS_ITEM_LINK];
+	ip->source = g_strdup(i->tags[RSS_ITEM_LINK]);
 	ip->readStatus = FALSE;
 	
 	if(NULL == ip->id)
-		ip->id = i->tags[RSS_ITEM_GUID];
+		ip->id = g_strdup(i->tags[RSS_ITEM_GUID]);
 
 	/* some postprocessing before generating HTML */
 	if(NULL != i->tags[RSS_ITEM_TITLE])
@@ -136,10 +150,13 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	if(NULL != i->tags[RSS_ITEM_DESCRIPTION])
 		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[RSS_ITEM_DESCRIPTION]);
 
-	ip->title = i->tags[RSS_ITEM_TITLE];		
+	ip->title = g_strdup(i->tags[RSS_ITEM_TITLE]);		
 	ip->description = showRSSItem(fp, cp, i);
 
-	// FIXME: free unused RSSItem strings
+	/* free RSSItem structure */
+	for(j = 0; j < RSS_ITEM_MAX_TAG; j++)
+		g_free(i->tags[j]);
+	g_free(i->enclosure);
 	g_free(i->nsinfos);
 	g_free(i);
 	return ip;
@@ -196,6 +213,19 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 
 	if(NULL != ip->tags[RSS_ITEM_DESCRIPTION])
 		addToHTMLBuffer(&buffer, ip->tags[RSS_ITEM_DESCRIPTION]);
+
+	if(NULL != ip->tags[RSS_ITEM_COMMENTS]) {
+		tmp = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
+				ip->tags[RSS_ITEM_COMMENTS],_("comments"));
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+	}
+		
+	if(NULL != ip->enclosure) {
+		addToHTMLBuffer(&buffer, START_ENCLOSURE);
+		addToHTMLBuffer(&buffer, ip->enclosure);
+		addToHTMLBuffer(&buffer, END_ENCLOSURE);
+	}
 
 	request.type = OUTPUT_ITEM_NS_FOOTER;
 	if(NULL != rss_nslist)
