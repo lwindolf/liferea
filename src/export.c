@@ -110,7 +110,7 @@ static int parse_integer(gchar *str, int def) {
 
 
 static void parseOutline(xmlNodePtr cur, folderPtr folder) {
-	gchar		*title, *source;
+	gchar		*title, *source, *typeStr, *intervalStr;
 	feedPtr		fp;
 	gint		type, interval;
 	gchar		*id;
@@ -123,14 +123,21 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 	
 	if(NULL != source) { /* Reading a feed */
 		/* type */
-		type = parse_integer(xmlGetProp(cur, BAD_CAST"type"), FST_AUTODETECT);
-		interval = parse_integer(xmlGetProp(cur, BAD_CAST"updateInterval"), -1);
+		typeStr = xmlGetProp(cur, BAD_CAST"type");
+		type = parse_integer(typeStr, FST_AUTODETECT);
+		xmlFree(typeStr);
+
+		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
+		interval = parse_integer(intervalStr, -1);
+		xmlFree(intervalStr);
+
 		id = xmlGetProp(cur, BAD_CAST"id");
 		if(NULL != (fp = feed_add(type, source, folder, title, id, interval, FALSE))) {
 			if(NULL != title)
 				feed_set_title(fp, title);
 		}
 		xmlFree(id);
+		xmlFree(source);
 	} else { /* It is a folder */
 		if (NULL != xmlHasProp(cur, BAD_CAST"helpFolder"))
 			g_assert(NULL != (folder = feedlist_insert_help_folder(folder)));

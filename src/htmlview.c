@@ -173,7 +173,7 @@ void ui_htmlview_init(void) {
 	} else {
 		g_print(_("No browser module configured!\n"));
 	}
-	
+	g_free(filename);
 	if(!success) {
 		/* try to load one of the available modules */
 		tmp = availableBrowserModules;

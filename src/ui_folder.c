@@ -84,7 +84,6 @@ void on_popup_foldername_selected(gpointer callback_data,
 	activeFolder = folder;
 
 	gtk_widget_show(foldernamedialog);
-	g_free(title);
 	g_free(iter);
 }
 
@@ -388,7 +387,6 @@ static void ui_update_folder_from_iter(GtkTreeIter *iter) {
 				    FS_ICON, ui_folder_select_icon(ptr),
 				    FS_UNREAD, count,
 				    -1);
-	g_free(title);
 	g_free(label);
 
 	if(gtk_tree_model_iter_parent(model,&parent, iter))

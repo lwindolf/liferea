@@ -125,6 +125,7 @@ void ui_update_feed(feedPtr fp) {
 	label = unhtmlize(g_strdup(feed_get_title(fp)));
 	/* FIXME: Unescape text here! */
 	tmp = g_markup_escape_text(label,-1);
+	g_free(label);
 	if(count > 0) {
 		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, count);
 	} else {
@@ -373,7 +374,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 		feedurl = (gchar *)gtk_entry_get_text(GTK_ENTRY(feedurlentry));
 		feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
 	
-		feed_set_title(fp, g_strdup(feedname));  
+		feed_set_title(fp, feedname);  
 
 		/* if URL has changed... */
 		if(strcmp(feedurl, feed_get_source(fp))) {

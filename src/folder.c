@@ -68,10 +68,7 @@ folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *i
 }
 
 gchar* folder_get_title(folderPtr folder) {
-	if (folder->title)
-		return g_strdup(folder->title);
-	else
-		return g_strdup("Unknown Folder Name");
+	return folder->title;
 }
 
 gchar* folder_get_conf_path(folderPtr folder) {
