@@ -31,11 +31,11 @@ static gchar *checkLinkRef(const gchar* str) {
 	gchar	*res;
 	gchar	*tmp, *tmp2;
 
-	//debug1(DEBUG_PARSING, "checking link %s", str);
+	/*debug1(DEBUG_PARSING, "checking link %s", str); */
 	tmp = strstr(str, "href=");
 	if(NULL == tmp) tmp = strstr(str, "HREF=");
 	if(NULL == tmp) return NULL;
-	// FIXME: single quotes support
+	/* FIXME: single quotes support */
 	tmp2 = strchr(tmp, '\"');
 	if(NULL == tmp2) return NULL;
 	tmp = strchr(tmp2+1, '\"');
@@ -60,7 +60,7 @@ static gchar *checkNormalLink(const gchar* str) {
 	tmp = strstr(str, "href=");
 	if(NULL == tmp) tmp = strstr(str, "HREF=");
 	if(NULL == tmp) return NULL;
-	// FIXME: single quotes support
+	/* FIXME: single quotes support */
 	tmp2 = strchr(tmp, '\"');
 	if(NULL == tmp2) return NULL;
 	tmp = strchr(tmp2+1, '\"');

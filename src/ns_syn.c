@@ -49,7 +49,7 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 			else if(!xmlStrcmp(tmp, BAD_CAST"weekly"))
 				period = 7*24*60;
 			else if(!xmlStrcmp(tmp, BAD_CAST"monthly"))
-				// FIXME: not really exact...
+				/* FIXME: not really exact...*/
 				period = 31*7*24*60;	
 			else if(!xmlStrcmp(tmp, BAD_CAST"yearly"))
 				period = 365*24*60;

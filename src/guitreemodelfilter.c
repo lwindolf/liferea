@@ -293,7 +293,7 @@ gui_tree_model_filter_get_type (void)
 static void
 gui_tree_model_filter_init (GuiTreeModelFilter *filter)
 {
-  filter->priv = g_new0(GuiTreeModelFilterPrivate,1);  // changed [TM]
+  filter->priv = g_new0(GuiTreeModelFilterPrivate,1);  /* changed [TM] */
 
   filter->priv->visible_column = -1;
   filter->priv->zero_ref_count = 0;
@@ -333,8 +333,8 @@ gui_tree_model_filter_class_init (GuiTreeModelFilterClass *filter_class)
                                                        GTK_TYPE_TREE_PATH,
                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 
-// commented out - GObject private data stuff only available in glib/gobject-2.3/2.4
-//  g_type_class_add_private (object_class, sizeof (GuiTreeModelFilterPrivate));
+  /* commented out - GObject private data stuff only available in glib/gobject-2.3/2.4
+	g_type_class_add_private (object_class, sizeof (GuiTreeModelFilterPrivate)); */
 }
 
 static void
@@ -373,7 +373,7 @@ gui_tree_model_filter_finalize (GObject *object)
   if (filter->priv->modify_types)
     g_free (filter->priv->modify_types);
 
-	g_free(filter->priv);  // added [TM]
+  g_free(filter->priv);  /* added [TM] */
 
   /* must chain up */
   parent_class->finalize (object);

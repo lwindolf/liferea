@@ -70,7 +70,7 @@ void favicon_load(feedPtr fp) {
 			favicon_download(fp);
 		}
 	} else {
-		// FIXME: remove this migration code when time comes
+		/* FIXME: remove this migration code when time comes */
 		if(g_file_test(xpmfilename, G_FILE_TEST_EXISTS)) {
 			pixbuf = gdk_pixbuf_new_from_file (xpmfilename, &error);
 			if (pixbuf) {

@@ -59,7 +59,7 @@ void addToHTMLBufferFast(gchar **buffer, const gchar *string) {
 	if(NULL != *buffer) {
 		int oldlength = strlen(*buffer);
 		int newlength = strlen(string);
-		int allocsize = (((oldlength+newlength+1)/512)+1)*512; // Round up to nearest 512 KB
+		int allocsize = (((oldlength+newlength+1)/512)+1)*512; /* Round up to nearest 512 KB */
 		*buffer = g_realloc(*buffer, allocsize);
 		g_memmove(&((*buffer)[oldlength]), string, newlength+1 );
 	} else {
@@ -75,7 +75,7 @@ void addToHTMLBuffer(gchar **buffer, const gchar *string) {
 	if(NULL != *buffer) {
 		int oldlength = strlen(*buffer);
 		int newlength = strlen(string);
-		int allocsize = (oldlength+newlength+1); // Round up to nearest 512 KB
+		int allocsize = (oldlength+newlength+1);
 		*buffer = g_realloc(*buffer, allocsize);
 		g_memmove(&((*buffer)[oldlength]), string, newlength+1 );
 	} else {
@@ -526,7 +526,7 @@ gchar * encode_uri_string(gchar *string) {
 				tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)string[i]));
 				g_free(hex);
 			} else {
-				// sh..!
+				/* sh..! */
 				g_error("Internal error while converting UTF-8 chars to HTTP URI!");
 			}
 		}

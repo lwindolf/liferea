@@ -105,7 +105,7 @@ static gchar * getOutlineList(gchar *url) {
 		if(!xmlStrcmp(cur->name, BAD_CAST"opml") ||
 		   !xmlStrcmp(cur->name, BAD_CAST"oml") ||
 		   !xmlStrcmp(cur->name, BAD_CAST"outlineDocument")) {
-		   	// nothing
+		   	/* nothing */
 		} else
 			break;
 	

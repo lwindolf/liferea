@@ -111,7 +111,7 @@ struct htmlviewPluginInfo_ {
 	void 		(*deinit) 		(void);
 
 	GtkWidget*	(*create)		();
-	//void		(*destroy)		(GtkWidget *widget);
+	/*void		(*destroy)		(GtkWidget *widget);*/
 	void		(*write)		(GtkWidget *widget, const gchar *string, const gchar *base);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gboolean	(*launchInsidePossible)	(void);

@@ -198,7 +198,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 		}
 
 		if(!xmlStrcmp(cur->name, BAD_CAST"issued")) {
-			// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
+			/* FIXME: is <modified> or <issued> or <created> the time tag we want to display? */
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  			if(NULL != tmp)
 				i->time = parseISO8601Date(tmp);

@@ -579,7 +579,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH);
 	favicon_download(fp);
 	
-	//ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));
+	/*ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));*/
 	
 	debug_exit("ui_feedlist_new_subscription");
 }

@@ -35,6 +35,7 @@
 #include "../conf.h"
 #include "../support.h"
 #include "../debug.h"
+#include "../ui_popup.h"
 #include "mozilla.h"
 
 /* from conf.c */

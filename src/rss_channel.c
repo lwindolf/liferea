@@ -224,7 +224,7 @@ static void parseChannel(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 						(*fp)(cp, cur);
 					goto next;
 				} else {
-					//g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
+					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 				}
 			}
 		}

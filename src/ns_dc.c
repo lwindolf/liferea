@@ -144,7 +144,7 @@ static gint mapToPIECP[] = { 	PIE_FEED_TITLE,		/* title */
 				-1,			/* subject */
 				PIE_FEED_DESCRIPTION,	/* description */
 				-1,			/* publisher */
-				-1,			/* contributor */	// FIXME: should be mapped, too!
+						-1,			/* contributor */	/* FIXME: should be mapped, too! */
 				PIE_FEED_LASTBUILDDATE,	/* date */
 				-1,			/* type */
 				-1,			/* format */
@@ -304,7 +304,7 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 				switch(tagtype) {
 					case DC_RSS_CHANNEL:
 					case DC_PIE_FEED:
-						date = ui_itemlist_format_date(i);	// FIXME
+						date = ui_itemlist_format_date(i);	/* FIXME */
 						mapping = getMapping(tagtype, 6);
 						mapTag(obj, tagtype, mapping, date);	/* !!! 6 is a hardcoded position in the taglist array */
 						break;

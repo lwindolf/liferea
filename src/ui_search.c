@@ -110,37 +110,37 @@ void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data)
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
-//	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
-//	feedPtr			fp;
+	/*	rulePtr			rp;	/* FIXME: this really does not belong here!!! -> vfolder.c */
+	/*	feedPtr			fp; */
 	folderPtr			folder = NULL;
 
 	g_assert(mainwindow != NULL);
 		
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		//ui_mainwindow_set_status_bar(_("Creating VFolder for search term \"%s\""), searchstring);
+		/*ui_mainwindow_set_status_bar(_("Creating VFolder for search term \"%s\""), searchstring); */
 
-		//ptr = (nodePtr)ui_feedlist_get_target_folder();
+		/*ptr = (nodePtr)ui_feedlist_get_target_folder(); */
 		
 		if(NULL != folder) {
 
-//			if(NULL != (fp = feed_add(FST_VFOLDER, "", folder, "untitled",NULL,0,FALSE))) {
+			/*			if(NULL != (fp = feed_add(FST_VFOLDER, "", folder, "untitled",NULL,0,FALSE))) {*/
 				
-				// FIXME: this really does not belong here!!! -> vfolder.c
+			/* FIXME: this really does not belong here!!! -> vfolder.c*/
 				/* setup a rule */
-//				rp = g_new0(struct rule,1);
+			/*			rp = g_new0(struct rule,1);
 
 				/* we set the searchstring as a default title */
-//				feed_set_title(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
+			/*				feed_set_title(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));*/
 				/* and set the rules... */
 /*				rp->value = g_strdup((gchar *)searchstring);
 				setVFolderRules(fp, rp);*/
 
 				/* FIXME: brute force: update of all vfolders redundant */
-//				loadVFolders();
+			/*				loadVFolders();*/
 				
-//				ui_folder_add_feed(fp, FALSE);
-//			}
+			/*				ui_folder_add_feed(fp, FALSE);
+							}*/
 		} else {
 			g_warning("internal error! could not get folder key prefix!");
 		}

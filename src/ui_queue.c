@@ -29,7 +29,7 @@
 extern GThread	*mainThread;	/* main.c */
 
 
-// FIXME: remove the ArgSet code...
+/* FIXME: remove the ArgSet code... */
 typedef struct
 {
 	GPtrArray * args;
@@ -338,7 +338,7 @@ ui_lock_from (const gchar * file, const gchar * func, int line)
 		last_func = func;
 		last_line = line;
 		has_lock_thr = thr;
-		//g_print ("thread %p entered gdk_threads from %s %d", thr, file, line);
+		/*g_print ("thread %p entered gdk_threads from %s %d", thr, file, line); */
 	}
 }
 
@@ -359,6 +359,6 @@ ui_unlock_from (const gchar* file, const gchar * func, int line)
 	{
 		has_lock_thr = NULL;
 		gdk_threads_leave();
-		//g_print ("thread %p left gdk_threads from %s:%d (%s)", g_thread_self(), file, line, func);
+		/*g_print ("thread %p left gdk_threads from %s:%d (%s)", g_thread_self(), file, line, func);*/
 	}
 }

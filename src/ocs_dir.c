@@ -308,7 +308,7 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 
 	item_set_title(ip, dep->tags[OCS_TITLE]);		
 	item_set_description(ip, showDirEntry(dep));
-	// FIXME: free formats!
+	/* FIXME: free formats! */
 	g_slist_free(dep->formats);
 	g_free(dep);
 		
@@ -378,7 +378,7 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 
 	item_set_title(ip, dep->tags[OCS_TITLE]);		
 	item_set_description(ip, showDirEntry(dep));
-	// FIXME: free formats!
+	/* FIXME: free formats! */
 	g_slist_free(dep->formats);
 	g_free(dep);
 		
@@ -450,7 +450,7 @@ static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
 	do {
 		if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
                    !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
-		    	// nothing
+		    	/* nothing */
 		} else {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find RDF header!</p>"));
 			error = 1;

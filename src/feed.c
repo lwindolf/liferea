@@ -45,7 +45,7 @@
 #include "debug.h"
 #include "metadata.h"
 
-#include "ui_queue.h"	// FIXME
+#include "ui_queue.h"	/* FIXME: Remove ui_* include from core code */
 #include "ui_feed.h"
 #include "ui_feedlist.h"
 #include "ui_tray.h"
@@ -1119,7 +1119,7 @@ void feed_free(feedPtr fp) {
 		   this is spam anyway. */;
 		g_free(filename);
 	
-	// FIXME: free filter structures too when implemented
+		/* FIXME: free filter structures too when implemented */
 	
 	/* Don't free active feed requests here, because they might still
 	   be processed in the update queues! Abandoned requests are

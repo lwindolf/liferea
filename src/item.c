@@ -175,7 +175,7 @@ void item_free(itemPtr ip) {
 	g_free(ip->source);
 	g_free(ip->id);
 	metadata_list_free(ip->metadataList);
-	// FIXME: remove item from all assigned VFolders!
+	/* FIXME: remove item from all assigned VFolders! */
 	if (ip->ui_data != NULL)
 		ui_free_item_ui_data(ip);
 	g_free(ip);

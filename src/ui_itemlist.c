@@ -207,9 +207,9 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 		   either escaped markup (which we should not escape again) or 
 		   non-markup text (which might contain ampersands, which must be
 		   escaped). We assume no mixed case! */
-		//if(is_escaped_markup(title))
-		//	esc_title = unescape_markup(title);	// FIXME: unescaped!!!
-		//else
+		/*if(is_escaped_markup(title))
+		  esc_title = unescape_markup(title);	/* FIXME: unescaped!!! * /
+			else */
 			esc_title = g_markup_escape_text(title, -1);
 			
 			esc_title = filter_title(esc_title);

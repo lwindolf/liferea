@@ -60,7 +60,7 @@ void changeZoomLevel(gfloat diff) {
 
 	ui_show_error_box("Sorry, not yet implemented for the Text Viewer!");
 	zoomLevel += diff;
-	// FIXME
+	/* FIXME */
 }
 
 /* returns the currently set zoom level */

@@ -118,7 +118,7 @@ feedHandlerPtr initVFolderFeedHandler(void) {
 	fhp = g_new0(struct feedHandler, 1);
 
 	/* prepare feed handler structure */
-	//fhp->readFeed		= readVFolder;
+	/*fhp->readFeed		= readVFolder;*/
 	fhp->merge		= FALSE;	/* if that happens its much to late... */
 	
 	return fhp;

@@ -140,7 +140,7 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		if(!xmlStrcmp(cur->name, BAD_CAST"opml") ||
 		   !xmlStrcmp(cur->name, BAD_CAST"oml") ||
 		   !xmlStrcmp(cur->name, BAD_CAST"outlineDocument")) {
-		   	// nothing
+		   	/* nothing */
 		} else {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find OPML header!</p>"));
 			xmlFreeDoc(doc);

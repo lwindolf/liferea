@@ -195,7 +195,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 					cur = cur->next;
 					continue;						
 				} else {
-					//g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
+					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 				}
 			}
 		}
