@@ -62,12 +62,19 @@ td.headright {
 	border-bottom-style:solid;
 	border-bottom-color:gray;
 	border-bottom-width:1px;
+/*	font-weight:bold;*/
+	font-size:1.3em;
 }
+
+img.favicon {
+	height:16px;
+	border:0;
+	margin-right:5px;
+}
+
 td.headright a {
 	text-decoration:none;
-	text-weight:bold;
 	color:black;
-	font-size:1.3em;
 }
 
 /* styles to display generic namespace augmentation in the 

@@ -70,6 +70,10 @@ td.headright {
 	padding:2px 5px;
 }
 
+img.favicon {
+	display:none;
+}
+
 /* styles to display generic namespace augmentation in the 
    item/feed description footer */
    
