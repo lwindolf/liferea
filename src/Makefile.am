@@ -1,9 +1,19 @@
 ## Process this file with automake to produce Makefile.in
 
+EXTRA_DIST = acinclude.m4
+
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	@PACKAGE_CFLAGS@
+
+lib_LTLIBRARIES = liblihtmlg.la liblihtmlm.la
+
+liblihtmlg_la_SOURCES = gtkhtml.c
+liblihtmlg_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
+
+liblihtmlm_la_SOURCES = mozilla.c
+liblihtmlm_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
 bin_PROGRAMS = liferea
 

@@ -9,13 +9,30 @@ AC_ISC_POSIX
 AC_PROG_CC
 AM_PROG_CC_STDC
 AC_HEADER_STDC
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AM_PROG_LIBTOOL
+
+temptest=`pkg-config --cflags libgtkhtml-2.0 2> /dev/null`
+if test "x$temptest" != "x" ; then
+   html_modules="$html_modules libgtkhtml-2.0 >= 2.0.0
+		 gnome-vfs-2.0 >= 2.0.0"
+   AC_DEFINE(USE_GTKHTML, 1, [use the GtkHTML widget])
+fi
+
+temptest=`pkg-config --cflags mozilla-gtkmozembed 2> /dev/null`
+if test "x$temptest" != "x" ; then
+   html_modules="$html_modules mozilla-gtkmozembed"
+   AC_DEFINE(USE_MOZILLA, 1, [use the mozilla gtk embedded widget])
+fi
 
 # hmm... I really have no clue which versions are neccessary!
 pkg_modules="	gtk+-2.0 >= 2.0.0 
 		gconf-2.0 >= 2.0.0 
 		libxml-2.0 >= 2.0.0 
-		libgtkhtml-2.0 >= 2.0.0
-		gnome-vfs-2.0 >= 2.0.0"
+		gmodule-2.0 >= 2.0.0
+		$html_modules"
 		
 # if you want to compile on RedHat you should change the
 # dependencies to something like this

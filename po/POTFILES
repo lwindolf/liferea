@@ -79,4 +79,4 @@
 	../src/update.c \
 	../src/update.h \
 	../src/vfolder.c \
-	../src/vfolder.h 
+	../src/vfolder.h

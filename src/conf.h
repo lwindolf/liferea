@@ -26,6 +26,7 @@
 
 #define GNOME_BROWSER_ENABLED		"/apps/liferea/browsermode"
 #define BROWSER_COMMAND			"/apps/liferea/browser"
+#define BROWSER_WIDGET			"/apps/liferea/browser-widget"
 #define GNOME_DEFAULT_BROWSER_COMMAND	"/desktop/gnome/url-handlers/http/command"
 #define DEFAULT_BROWSER_COMMAND		"mozilla %s"
 #define TIME_FORMAT			"/apps/liferea/timeformat"

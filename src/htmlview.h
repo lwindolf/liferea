@@ -1,4 +1,6 @@
 /*
+   common interface for all HTML view implementations
+   
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
@@ -97,11 +99,23 @@
 #define PARSE_ERROR_TEXT	"There were errors while parsing this feed. The following error occured:<br><b>%s</b>"
 #define UPDATE_ERROR_END	"</td></tr></table>"
 
+#define HTML_MODULE_GTKHTML	0
+#define HTML_MODULE_MOZILLA	1
+
+struct html_module_info {
+	gint	nr;
+	gchar	*libname;
+	gchar	*description;
+};
+
+/* function to load the module specified by module */
+void	loadHTMLViewModule(gint module);
+
 /* creates the HTML widget */
 void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 
 /* loads a emtpy HTML page */
-void clearHTMLView(void);
+void	clearHTMLView(void);
 
 /* function to select either the single item view (3 pane mode)
    or the item list view (2 pane mode) */
@@ -114,19 +128,17 @@ void	writeHTML(gchar *string);
 
 void	finishHTML(gchar **buffer);
 
-void	writeStyleSheetLink(gchar **buffer, gchar *styleSheetFile);
-void	writeStyleSheetLinks(gchar **buffer);
-
-/* to launch any URL */
-void 	launchURL(const gchar *url);
-
 /* launches the specified URL */
-void launchURL(const gchar *url);
+void launchURL(gchar *url);
 
 /* adds a differences diff to the actual zoom level */
 void changeZoomLevel(gfloat diff);
 
 /* returns the currently set zoom level */
 gfloat getZoomLevel(void);
+
+/* Returns the currently selected URL string. The string
+   must be freed by the caller. */
+gchar *	getSelectedURL(void);
 
 #endif

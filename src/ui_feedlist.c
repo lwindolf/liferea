@@ -182,13 +182,13 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 			g_object_set(GTK_CELL_RENDERER(cell), "foreground", "black", NULL);
 		
 		if(count > 0) {
-			tmp = g_strdup_printf("%s (%d)", getFeedTitle(fp), count);
+			tmp = g_strdup_printf("%s (%d)", g_markup_escape_text(getFeedTitle(fp), -1), count);
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
 			g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
 			g_free(tmp);
 		} else {
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "text", getFeedTitle(fp), NULL);
+			g_object_set(GTK_CELL_RENDERER(cell), "text", g_markup_escape_text(getFeedTitle(fp), -1), NULL);
 		}
 	} else if(IS_NODE(type)) {
 		/* its a folder so count unread items of all feeds inside */
@@ -207,13 +207,13 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 
 		g_object_set(GTK_CELL_RENDERER(cell), "foreground", "black", NULL);
 		if (count>0) {
-			tmp = g_strdup_printf("%s (%d)", title, count);
+			tmp = g_strdup_printf("%s (%d)", g_markup_escape_text(title, -1), count);
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
 			g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
 			g_free(tmp);
 		} else {
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "text", title, NULL);
+			g_object_set(GTK_CELL_RENDERER(cell), "text", g_markup_escape_text(title, -1), NULL);
 		}
 	}
 

@@ -85,7 +85,8 @@ void initGUI(void) {
 
 	selected_keyprefix = g_strdup(ROOT_FOLDER_PREFIX);
 
-	switchPaneMode(!getBooleanConfValue(LAST_ITEMLIST_MODE));		
+	switchPaneMode(!getBooleanConfValue(LAST_ITEMLIST_MODE));
+	loadHTMLViewModule(getNumericConfValue(BROWSER_WIDGET));
 	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
 			 	   lookup_widget(mainwindow, "itemlistview"),
 				   getNumericConfValue(LAST_ZOOMLEVEL));
