@@ -98,9 +98,10 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 	
 	request.feedurl = g_strdup(url);
 	request.lastmodified = NULL;
-	if(NULL != (*data = downloadURL(&request))) {
+	downloadURL(&request);
+	if(NULL != request.data) {
 		while(NULL != pattern->string) {	
-			if(NULL != strstr(*data, pattern->string)) {
+			if(NULL != strstr(request.data, pattern->string)) {
 				type = pattern->type;
 				break;
 			}
@@ -108,9 +109,9 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 			pattern++;
 		} 
 	}
-	g_free(request.feedurl);
-	g_free(request.lastmodified);
-
+	*data = request.data;
+	freeRequest(&request);
+		
 	return type;
 }
 
@@ -261,7 +262,7 @@ gint saveFeed(feedPtr fp) {
 static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr	fp = (feedPtr)value;
 	
-	if(IS_FEED(fp->type)) {	
+	if(IS_FEED(fp->type)) {
 		saveFeed(fp);
 	}
 }
@@ -429,7 +430,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		request = getNewRequestStruct(fp);
 		request->feedurl = g_strdup(url);
 		data = downloadURL(request);
-		/* dont't free request! */
+		/* don't free request! */
 	}
 
 	if(NULL != data) {

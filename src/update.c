@@ -171,9 +171,7 @@ static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata)
 static void doUpdateFeed(struct feed_request *request) {
 	
 	g_assert(NULL != request);
-
-	/* do the request */		
-	request->data = downloadURL(request);
+	downloadURL(request);
 
 	/* finally we return the request so the GUI can merge the feeds
 	   and display the results... */

@@ -378,10 +378,11 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
 		
 	g_assert(NULL != cmd);
 	if(NULL == strstr(cmd, "%s")) {
-		showErrorBox(_("There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
+		showErrorBox(_("Invalid browser command! There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
 	}
 	tmp = g_strdup_printf(cmd, url);
-	
+	g_free(cmd);
+		
 	g_spawn_command_line_async(tmp, &error);
 	if((NULL != error) && (0 != error->code)) {
 		statusline = g_strdup_printf("browser command failed: %s", error->message);
@@ -390,9 +391,7 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
 		statusline = g_strdup_printf("starting: \"%s\"", tmp);
 		
 	print_status(statusline);
-	g_free(cmd);
 	g_free(tmp);
-
 }
 
 /* launches the specified URL */

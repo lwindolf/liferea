@@ -24,6 +24,7 @@
 
 #include <string.h>
 #include <gmodule.h>
+#include "support.h"
 #include "htmlview.h"
 
 /* function types for the imported symbols */
@@ -161,7 +162,11 @@ void	clearHTMLView(void) {
 
 void 	launchURL(gchar *url) {
 
-	(*htmlStub.launchURL)(url); 
+	if(NULL != url) {
+		(*htmlStub.launchURL)(url); 
+	} else {
+		showErrorBox(_("This item does not have a link assigned!"));
+	}
 }
 
 void	changeZoomLevel(gfloat diff) {

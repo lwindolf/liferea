@@ -566,13 +566,13 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 	int my_socket = 0;
 	int result;
 	int len;
-	char *host;					/* Needs to freed. */
+	char *host;				/* Needs to freed. */
 	char *tmphost;
 	char *freeme;
 	char *returndata;
-	char *authinfo = NULL;		/* base64 encoded HTTP auth. Default to NULL! */
+	char *authinfo = NULL;			/* base64 encoded HTTP auth. Default to NULL! */
 	char *authstring;			/* "username:password" - to be base64 encoded */
-	char *username, *password;	/* plaintext username/password for HTTP auth */
+	char *username, *password;		/* plaintext username/password for HTTP auth */
 	char *tmpstr;
 	char tmp[1024];
 	int httpproto = 0;			/* 0: http; 1: https */
@@ -755,5 +755,6 @@ char * downloadURL(struct feed_request *request) {
 		request->lastmodified = NULL;
 	}
 
+	request->data = data;
 	return data;
 }
