@@ -187,6 +187,9 @@ void ui_feedlist_delete(nodePtr ptr);
  * @name menu and dialog callbacks 
  * @{
  */
+void on_popup_mark_as_read(gpointer callback_data,
+                           guint callback_action,
+                           GtkWidget *widget);
 void on_popup_refresh_selected(gpointer callback_data,
 						 guint callback_action,
 						 GtkWidget *widget);

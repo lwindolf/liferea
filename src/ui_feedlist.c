@@ -417,6 +417,14 @@ void on_popup_refresh_selected(gpointer callback_data,
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible!"));
 }
 
+void on_popup_mark_as_read(gpointer callback_data,
+					  guint callback_action,
+					  GtkWidget *widget) {
+     nodePtr ptr = (nodePtr)callback_data;
+	
+	on_popup_allunread_selected();
+}
+
 /*------------------------------------------------------------------------------*/
 /* feedlist filter [de]activation callback					*/
 /*------------------------------------------------------------------------------*/
