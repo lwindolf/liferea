@@ -403,14 +403,11 @@ gboolean feed_load_from_cache(feedPtr fp) {
 				continue;
 			}
 
-			if(!xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
+			if(fp->description == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
 				fp->description = g_strdup(tmp);
 				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
+			} else if(fp->title == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
 				feed_set_title(fp, tmp);
-				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
-				fp->defaultInterval = atoi(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
 				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
@@ -870,7 +867,10 @@ const gchar * feed_get_title(feedPtr fp) {
 
 void feed_set_title(feedPtr fp, const gchar *title) {
 	g_free(fp->title);
-	fp->title = g_strdup(title);
+	if (title != NULL)
+		fp->title = g_strdup(title);
+	else
+		fp->title = NULL;
 	conf_feedlist_schedule_save();
 }
 
