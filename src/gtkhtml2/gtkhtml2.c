@@ -89,7 +89,7 @@ on_submit_idle (gpointer data)
 {
 	SubmitContext *ctx = (SubmitContext *)data;
 
-	g_print ("action = '%s', method = '%s', encoding = '%s'\n", 
+	debug3(DEBUG_UPDATE, "action = '%s', method = '%s', encoding = '%s'\n", 
 		 ctx->action, ctx->method, ctx->encoding);
 
 	if (ctx->method == NULL || strcasecmp (ctx->method, "get") == 0) {
@@ -206,14 +206,12 @@ static void on_url (HtmlView *view, const char *url, gpointer user_data) {
 	}
 }
 
-static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data)
-{
-	GtkWidget *sel;
+static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data) {
+	GtkWidget *label;
 
-	sel = gtk_color_selection_new ();
-	gtk_widget_show (sel);
-
-	gtk_container_add (GTK_CONTAINER (widget), sel);
+	label = gtk_label_new(_("The included HTML <object> tag is not supported with GtkHTML2.\nIncluded Plugins might not be displayed."));
+	gtk_widget_show(label);
+	gtk_container_add(GTK_CONTAINER (widget), label);
 
 	return TRUE;
 }
