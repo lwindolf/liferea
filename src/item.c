@@ -65,7 +65,7 @@ void item_copy(itemPtr from, itemPtr to) {
 	/* this copies metadata */
 	metadata_list_free(to->metadata);
 	to->metadata = NULL;
-	metadata_list_copy(from->metadata, to->metadata);
+	to->metadata = metadata_list_copy(from->metadata, to->metadata);
 }
 
 void item_set_title(itemPtr ip, const gchar * title) {
@@ -205,7 +205,7 @@ void item_free(itemPtr ip) {
 	g_free(ip->id);
 	g_assert(NULL == ip->tmpdata);	/* should be free after rendering */
 	metadata_list_free(ip->metadata);
-	/* FIXME: remove item from all assigned VFolders! */
+
 	g_assert(ip->ui_data == NULL);
 	g_free(ip);
 }

@@ -74,8 +74,10 @@ void metadata_list_render(GSList *metadata, struct displayset *displayset);
 
 /** 
  * Adds all elements from one metadata list to the other.
+ *
+ * @returns the new list
  */
-void metadata_list_copy(GSList *from, GSList *to);
+GSList * metadata_list_copy(GSList *from, GSList *to);
 
 void metadata_list_free(GSList *metadata);
 

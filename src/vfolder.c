@@ -276,7 +276,7 @@ void vfolder_update_item(itemPtr ip) {
 			g_assert(NULL != tmp->fp);
 			if((ip->nr == tmp->nr) &&
 			   (ip->fp == tmp->sourceFeed)) {
-		   		debug0(DEBUG_UPDATE, "item used in vfolder, updating vfolder copy...");
+		   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", ip->title, vp->title);
 				item_copy(ip, tmp);
 				break;
 			}
