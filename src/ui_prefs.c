@@ -36,6 +36,7 @@
 #include "ui_mainwindow.h"
 #include "ui_tray.h"
 #include "callbacks.h"
+#include "favicon.h"
 
 extern GSList *availableBrowserModules;
 
@@ -82,7 +83,7 @@ struct browser browsers[] = {
 	 "opera -newwindow \"%s\"", NULL,
 	 "opera -newpage \"%s\"", NULL},
 	{"epiphany", "Epiphany","epiphany \"%s\"",
-	 "epiphany \"%s\"", "epiphany -n \"%s\"",
+	 NULL, NULL,
 	 "epiphany \"%s\"", NULL,
 	 "epiphany -n \"%s\"", NULL},
 	{"konqueror", "Konqueror", "kfmclient openURL \"%s\"",
