@@ -1071,10 +1071,12 @@ static feedPtr findUnreadFeed(GtkTreeIter *iter) {
 				/* select the feed entry... */
 				if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
 					if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-						gtk_tree_selection_select_iter(selection, &childiter);
+						/* expand tree to iter and select it ... */
 						path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &childiter);
+						gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
 						gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, FALSE, FALSE);
 						gtk_tree_path_free(path);
+						gtk_tree_selection_select_iter(selection, &childiter);
 					} else
 						g_warning(_("internal error! could not get feed tree view selection!\n"));
 				} else {
