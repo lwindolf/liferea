@@ -26,7 +26,6 @@
 #include "support.h"
 #include "common.h"
 #include "pie_entry.h"
-#include "pie_ns.h"
 #include "htmlview.h"
 #include "metadata.h"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-14 21:47-0400\n"
+"POT-Creation-Date: 2004-07-15 00:25-0400\n"
 "PO-Revision-Date: 2004-07-01 20:56+0200\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -1137,19 +1137,19 @@ msgstr "Přispěvatelé"
 
 #: src/interface.c:3046
 msgid ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+"Vincent Lefèvre <vincent@vinc17.org>\n"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Martin-Eric Racine <q-funk@pp.fishpool.fi>"
 msgstr ""
 
 #: src/interface.c:3052
@@ -1364,7 +1364,7 @@ msgid "URL points to permanent redirect, updating with new location..."
 msgstr ""
 "URL adresa ukazuje na stálé přesměrování, aktualizuji s novou lokalizací..."
 
-#: src/ns_dc.c:191 src/ns_ocs.c:89
+#: src/ns_dc.c:192 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
 msgstr ""
 
@@ -1381,7 +1381,7 @@ msgstr ""
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Nemohu najít RDF hlavičku!</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:211 src/rss_channel.c:309
+#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:212 src/rss_channel.c:309
 msgid "There were errors while parsing this feed!"
 msgstr "Při analýze zdroje nalezeny chyby!"
 
@@ -1389,7 +1389,7 @@ msgstr "Při analýze zdroje nalezeny chyby!"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>Nemohu najít OPML hlavičku!</p>"
 
-#: src/pie_feed.c:96
+#: src/pie_feed.c:97
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Nemohu najít Atom/Echo/PIE hlavičku!</p>"
 
@@ -1597,85 +1597,109 @@ msgstr "Program Liferea je nyní odpojen"
 msgid "Liferea notification"
 msgstr "Upozornění programu Liferea"
 
-#: src/ui_popup.c:78
+#: src/ui_popup.c:85
 msgid "/_Update"
 msgstr "/_Obnovit"
 
-#: src/ui_popup.c:79 src/ui_popup.c:89
+#: src/ui_popup.c:86 src/ui_popup.c:96
 msgid "/_Mark As Read"
 msgstr "/_Označit jako přečtené"
 
-#: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:105 src/ui_popup.c:112
 msgid "/_New"
 msgstr "/_Nový"
 
-#: src/ui_popup.c:81 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:106
+#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:106 src/ui_popup.c:113
 msgid "/_New/New _Feed"
 msgstr "/_Nový/Nový z_droj"
 
-#: src/ui_popup.c:82 src/ui_popup.c:92 src/ui_popup.c:100 src/ui_popup.c:107
+#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:107 src/ui_popup.c:114
 msgid "/_New/New F_older"
 msgstr "/_Nový/Nový _adresář"
 
-#: src/ui_popup.c:83
+#: src/ui_popup.c:90
 msgid "/_Properties"
 msgstr "/Na_stavení"
 
-#: src/ui_popup.c:84
+#: src/ui_popup.c:91
 msgid "/_Delete"
 msgstr "_Smazat"
 
-#: src/ui_popup.c:88
+#: src/ui_popup.c:95
 msgid "/_Update Folder"
 msgstr "/_Obnovit adresář"
 
-#: src/ui_popup.c:93
+#: src/ui_popup.c:100
 msgid "/_Rename Folder"
 msgstr "/_Přejmenovat adresář"
 
-#: src/ui_popup.c:94
+#: src/ui_popup.c:101
 msgid "/_Delete Folder"
 msgstr "/_Smazat adresář"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:108
 msgid "/_Delete VFolder"
 msgstr "/Smazat _V-adresář"
 
-#: src/ui_popup.c:112
+#: src/ui_popup.c:119
 msgid "/Toggle _Read Status"
 msgstr "/Přepnout status _přečtení"
 
-#: src/ui_popup.c:113
+#: src/ui_popup.c:120
 msgid "/Toggle Item _Flag"
 msgstr "/Přepnout status _označení"
 
-#: src/ui_popup.c:115
+#: src/ui_popup.c:122
 msgid "/_Next Unread Item"
 msgstr "/_Další nepřečtený článek"
 
-#: src/ui_popup.c:117
+#: src/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/_Spusť článek v prohlížeči"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:131
 msgid "/_Increase Text Size"
 msgstr "/_Zvětšit velikost textu"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:132
 msgid "/_Decrease Text Size"
 msgstr "/_Zmenšit velikost textu"
 
-#: src/ui_popup.c:129
+#: src/ui_popup.c:136
 msgid "/_Copy Link Location"
 msgstr "/_Kopírovat adresu odkazu"
 
-#: src/ui_popup.c:130
+#: src/ui_popup.c:137
 msgid "/_Launch Link In Browser"
 msgstr "/Spusť v _prohlížeči"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:138
 msgid "/_Subscribe"
 msgstr "/_Stáhni"
+
+#: src/ui_popup.c:143
+#, fuzzy
+msgid "/_Work Offline"
+msgstr "Pracovat při odpojení"
+
+#: src/ui_popup.c:144
+#, fuzzy
+msgid "/_Update All"
+msgstr "Obnovit vše"
+
+#: src/ui_popup.c:145
+#, fuzzy
+msgid "/_Preferences"
+msgstr "Nastavení"
+
+#: src/ui_popup.c:147
+#, fuzzy
+msgid "/_Show Window"
+msgstr "Nové okno"
+
+#: src/ui_popup.c:148
+msgid "/_Quit"
+msgstr ""
 
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:183
@@ -1716,7 +1740,7 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr "Hledat \"%s\""
 
-#: src/ui_tray.c:89
+#: src/ui_tray.c:90
 #, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
@@ -1724,7 +1748,7 @@ msgstr[0] "%d nový článek!"
 msgstr[1] "%d nové články!"
 msgstr[2] "%d nových článků!"
 
-#: src/ui_tray.c:102
+#: src/ui_tray.c:103
 msgid "No new items."
 msgstr "Žádné nové články."
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.5.1-test1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-14 21:47-0400\n"
+"POT-Creation-Date: 2004-07-15 00:25-0400\n"
 "PO-Revision-Date: 2004-06-26 22:59+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -1167,34 +1167,21 @@ msgid "Contributors"
 msgstr "その他の貢献者"
 
 #: src/interface.c:3046
-#, fuzzy
 msgid ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-"Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev Vladimir <compress@linux-online.ru>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Martin-Eric Racine <q-funk@pp.fishpool.fi>"
-msgstr ""
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"相花 毅 <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+"Vincent Lefèvre <vincent@vinc17.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>"
+msgstr ""
 
 #: src/interface.c:3052
 msgid "Translation"
@@ -1405,7 +1392,7 @@ msgstr "[エラー] フラグ %d はサポートしていません\n"
 msgid "URL points to permanent redirect, updating with new location..."
 msgstr "URL は永久リダイレクトを指しているので、新しい場所で更新します..."
 
-#: src/ns_dc.c:191 src/ns_ocs.c:89
+#: src/ns_dc.c:192 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
 msgstr "内部的な OCS 名前空間の解析エラーです！"
 
@@ -1422,7 +1409,7 @@ msgstr "<%s:%s> に対する名前空間ハンドラではありません！\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>RDF ヘッダが見つかりませんでした！</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:211 src/rss_channel.c:309
+#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:212 src/rss_channel.c:309
 msgid "There were errors while parsing this feed!"
 msgstr "この配信元を解析する際にエラーが発生しました！"
 
@@ -1430,7 +1417,7 @@ msgstr "この配信元を解析する際にエラーが発生しました！"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>OPML ヘッダが見つかりませんでした！！</p>"
 
-#: src/pie_feed.c:96
+#: src/pie_feed.c:97
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>OPML ヘッダが見つかりませんでした！！</p>"
 
@@ -1652,85 +1639,109 @@ msgstr "Liferea は現在オフラインです"
 msgid "Liferea notification"
 msgstr "Liferea からの通知"
 
-#: src/ui_popup.c:78
+#: src/ui_popup.c:85
 msgid "/_Update"
 msgstr "/更新(_U)"
 
-#: src/ui_popup.c:79 src/ui_popup.c:89
+#: src/ui_popup.c:86 src/ui_popup.c:96
 msgid "/_Mark As Read"
 msgstr "既読としてマーク(_M)"
 
-#: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:105 src/ui_popup.c:112
 msgid "/_New"
 msgstr "/新規(_N)"
 
-#: src/ui_popup.c:81 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:106
+#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:106 src/ui_popup.c:113
 msgid "/_New/New _Feed"
 msgstr "/新規(_N)/新しい配信元(_F)"
 
-#: src/ui_popup.c:82 src/ui_popup.c:92 src/ui_popup.c:100 src/ui_popup.c:107
+#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:107 src/ui_popup.c:114
 msgid "/_New/New F_older"
 msgstr "/新規(_N)/新しいフォルダ(_O)"
 
-#: src/ui_popup.c:83
+#: src/ui_popup.c:90
 msgid "/_Properties"
 msgstr "/プロパティ(_P)"
 
-#: src/ui_popup.c:84
+#: src/ui_popup.c:91
 msgid "/_Delete"
 msgstr "/削除(_D)"
 
-#: src/ui_popup.c:88
+#: src/ui_popup.c:95
 msgid "/_Update Folder"
 msgstr "/フォルダの更新(_U)"
 
-#: src/ui_popup.c:93
+#: src/ui_popup.c:100
 msgid "/_Rename Folder"
 msgstr "/フォルダ名の変更(_R)"
 
-#: src/ui_popup.c:94
+#: src/ui_popup.c:101
 msgid "/_Delete Folder"
 msgstr "/フォルダの削除(_D)"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:108
 msgid "/_Delete VFolder"
 msgstr "/仮想フォルダの削除(_D)"
 
-#: src/ui_popup.c:112
+#: src/ui_popup.c:119
 msgid "/Toggle _Read Status"
 msgstr "/既読ステータスの切替え(_R)"
 
-#: src/ui_popup.c:113
+#: src/ui_popup.c:120
 msgid "/Toggle Item _Flag"
 msgstr "/トピック・フラグの切り替え(_F)"
 
-#: src/ui_popup.c:115
+#: src/ui_popup.c:122
 msgid "/_Next Unread Item"
 msgstr "/次の未読のトピック(_N)"
 
-#: src/ui_popup.c:117
+#: src/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/ブラウザで開く(_L)"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:131
 msgid "/_Increase Text Size"
 msgstr "/文字を大きくする(_I)"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:132
 msgid "/_Decrease Text Size"
 msgstr "/文字を小さくする(_D)"
 
-#: src/ui_popup.c:129
+#: src/ui_popup.c:136
 msgid "/_Copy Link Location"
 msgstr "リンク先のアドレスのコピー(_C)"
 
-#: src/ui_popup.c:130
+#: src/ui_popup.c:137
 msgid "/_Launch Link In Browser"
 msgstr "/ブラウザで開く(_L)"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:138
 msgid "/_Subscribe"
 msgstr "/購読(_S)"
+
+#: src/ui_popup.c:143
+#, fuzzy
+msgid "/_Work Offline"
+msgstr "オフラインにする"
+
+#: src/ui_popup.c:144
+#, fuzzy
+msgid "/_Update All"
+msgstr "全て更新"
+
+#: src/ui_popup.c:145
+#, fuzzy
+msgid "/_Preferences"
+msgstr "設定"
+
+#: src/ui_popup.c:147
+#, fuzzy
+msgid "/_Show Window"
+msgstr "新しいウィンドウ"
+
+#: src/ui_popup.c:148
+msgid "/_Quit"
+msgstr ""
 
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:183
@@ -1771,14 +1782,14 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr "\"%s\" の検索中"
 
-#: src/ui_tray.c:89
+#: src/ui_tray.c:90
 #, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
 msgstr[0] "%d 個の新しいトピックがあります！"
 msgstr[1] "%d 個の新しいトピックがあります！"
 
-#: src/ui_tray.c:102
+#: src/ui_tray.c:103
 msgid "No new items."
 msgstr "新しいトピックはありません"
 
@@ -1796,6 +1807,35 @@ msgstr "エラー: ファイル \"%s\" を開けませんでした"
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "エラー: ファイル \"%s\" がありません"
+
+#, fuzzy
+#~ msgid ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Martin-Eric Racine <q-funk@pp.fishpool.fi>"
+#~ msgstr ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "相花 毅 <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>"
 
 #~ msgid "_Update all feeds on program startup."
 #~ msgstr "起動時に全ての配信元を更新する(_U)"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-14 21:47-0400\n"
+"POT-Creation-Date: 2004-07-15 00:25-0400\n"
 "PO-Revision-Date: 2004-05-21 02:32+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -1145,31 +1145,21 @@ msgid "Contributors"
 msgstr "貢獻者"
 
 #: src/interface.c:3046
-#, fuzzy
 msgid ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+"Vincent Lefèvre <vincent@vinc17.org>\n"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Martin-Eric Racine <q-funk@pp.fishpool.fi>"
 msgstr ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Gernauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>"
 
 #: src/interface.c:3052
 msgid "Translation"
@@ -1378,7 +1368,7 @@ msgstr "錯誤: 不支援的旗標 %s\n"
 msgid "URL points to permanent redirect, updating with new location..."
 msgstr "網址指出為永久的重導, 更新為新位置..."
 
-#: src/ns_dc.c:191 src/ns_ocs.c:89
+#: src/ns_dc.c:192 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
 msgstr "內部 OCS 命名空間分析錯誤!"
 
@@ -1396,7 +1386,7 @@ msgstr "無 <%s:%s> 之 namespace handler!\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>無法找到 RDF 標頭!</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:211 src/rss_channel.c:309
+#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:212 src/rss_channel.c:309
 msgid "There were errors while parsing this feed!"
 msgstr "分析饋流時出現錯誤"
 
@@ -1404,7 +1394,7 @@ msgstr "分析饋流時出現錯誤"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>無法找到 OPML 標頭!</p>"
 
-#: src/pie_feed.c:96
+#: src/pie_feed.c:97
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>無法找到 Atom/Echo/PIE 標頭!</p>"
 
@@ -1623,87 +1613,110 @@ msgstr "Lifeare 正在離線模式！"
 msgid "Liferea notification"
 msgstr "Lifeare 正在離線模式！"
 
-#: src/ui_popup.c:78
+#: src/ui_popup.c:85
 msgid "/_Update"
 msgstr "更新"
 
-#: src/ui_popup.c:79 src/ui_popup.c:89
+#: src/ui_popup.c:86 src/ui_popup.c:96
 #, fuzzy
 msgid "/_Mark As Read"
 msgstr "標示為已讀(_M)"
 
-#: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:105 src/ui_popup.c:112
 msgid "/_New"
 msgstr "/新增(_N)"
 
-#: src/ui_popup.c:81 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:106
+#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:106 src/ui_popup.c:113
 msgid "/_New/New _Feed"
 msgstr "/新增(_N)/新增饋流"
 
-#: src/ui_popup.c:82 src/ui_popup.c:92 src/ui_popup.c:100 src/ui_popup.c:107
+#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:107 src/ui_popup.c:114
 msgid "/_New/New F_older"
 msgstr "/新增(_N)/新增目錄"
 
-#: src/ui_popup.c:83
+#: src/ui_popup.c:90
 msgid "/_Properties"
 msgstr "/屬性(_P)"
 
-#: src/ui_popup.c:84
+#: src/ui_popup.c:91
 msgid "/_Delete"
 msgstr "/刪除饋流(_D)"
 
-#: src/ui_popup.c:88
+#: src/ui_popup.c:95
 msgid "/_Update Folder"
 msgstr "/更新目錄(_U)"
 
-#: src/ui_popup.c:93
+#: src/ui_popup.c:100
 msgid "/_Rename Folder"
 msgstr "/更名目錄(_R)"
 
-#: src/ui_popup.c:94
+#: src/ui_popup.c:101
 msgid "/_Delete Folder"
 msgstr "/刪除目錄(_D)"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:108
 msgid "/_Delete VFolder"
 msgstr "/刪除 VFolder(_D)"
 
-#: src/ui_popup.c:112
+#: src/ui_popup.c:119
 msgid "/Toggle _Read Status"
 msgstr "/切換閱讀狀態(_R)"
 
-#: src/ui_popup.c:113
+#: src/ui_popup.c:120
 msgid "/Toggle Item _Flag"
 msgstr "/切換項目旗幟(_F)"
 
-#: src/ui_popup.c:115
+#: src/ui_popup.c:122
 msgid "/_Next Unread Item"
 msgstr "/下筆未讀項目(_N)"
 
-#: src/ui_popup.c:117
+#: src/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/開啟瀏覽器項目(_L)"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:131
 msgid "/_Increase Text Size"
 msgstr "/縮小字型(_I)"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:132
 msgid "/_Decrease Text Size"
 msgstr "/放大字型(_D)"
 
-#: src/ui_popup.c:129
+#: src/ui_popup.c:136
 msgid "/_Copy Link Location"
 msgstr "/複製連結位址(_C)"
 
-#: src/ui_popup.c:130
+#: src/ui_popup.c:137
 #, fuzzy
 msgid "/_Launch Link In Browser"
 msgstr "載入瀏覽器(_L)"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:138
 msgid "/_Subscribe"
 msgstr "/訂閱(_S)"
+
+#: src/ui_popup.c:143
+#, fuzzy
+msgid "/_Work Offline"
+msgstr "離線瀏覽"
+
+#: src/ui_popup.c:144
+#, fuzzy
+msgid "/_Update All"
+msgstr "更新全部(_A)"
+
+#: src/ui_popup.c:145
+#, fuzzy
+msgid "/_Preferences"
+msgstr "編輯偏好"
+
+#: src/ui_popup.c:147
+msgid "/_Show Window"
+msgstr ""
+
+#: src/ui_popup.c:148
+msgid "/_Quit"
+msgstr ""
 
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:183
@@ -1745,14 +1758,14 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr "搜尋 \"%s\""
 
-#: src/ui_tray.c:89
+#: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
 msgstr[0] "%d 個新項目"
 msgstr[1] "%d 個新項目"
 
-#: src/ui_tray.c:102
+#: src/ui_tray.c:103
 msgid "No new items."
 msgstr "無新項目。"
 
@@ -1770,6 +1783,32 @@ msgstr "無法開啟檔案 \"%s\"!"
 #, fuzzy, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "無檔案 \"%s\"!"
+
+#, fuzzy
+#~ msgid ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Martin-Eric Racine <q-funk@pp.fishpool.fi>"
+#~ msgstr ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Gernauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>"
 
 #, fuzzy
 #~ msgid "_Update all feeds on program startup."

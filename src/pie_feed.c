@@ -27,10 +27,11 @@
 #include "common.h"
 #include "feed.h"
 #include "pie_feed.h"
-#include "pie_ns.h"
+#include "pie_entry.h"
 #include "ns_dc.h"
 #include "callbacks.h"
 #include "htmlview.h"
+#include "metadata.h"
 
 /* to store the PIENsHandler structs for all supported RDF namespace handlers */
 GHashTable	*pie_nstable = NULL;

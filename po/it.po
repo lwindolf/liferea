@@ -7,12 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-14 21:47-0400\n"
+"POT-Creation-Date: 2004-07-15 00:25-0400\n"
 "PO-Revision-Date: 2004-06-30 13:48+0100\n"
 "Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.no-ip.org>\n"
 "Language-Team: Italian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/common.c:270
@@ -75,12 +75,12 @@ msgstr "Liferea su SourceForge"
 #: src/conf.c:481
 #, c-format
 msgid "Error renaming %s to %s\n"
-msgstr "Si Ë verificato un errore rinominando %s in %s\n"
+msgstr "Si √® verificato un errore rinominando %s in %s\n"
 
 #: src/conf.c:509
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
-msgstr "Lo spazio dei nomi RSS %s non Ë ancora configurato! Attivazione...\n"
+msgstr "Lo spazio dei nomi RSS %s non √® ancora configurato! Attivazione...\n"
 
 #: src/export.c:353 src/export.c:355
 #, c-format
@@ -100,7 +100,7 @@ msgstr ""
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
-"\"%s\" non Ë un documento OPML valido! Liferea non puÚ importare questo file!"
+"\"%s\" non √® un documento OPML valido! Liferea non pu√≤ importare questo file!"
 
 #: src/export.c:479
 msgid "Error while exporting feed list!"
@@ -119,7 +119,7 @@ msgstr "Lista dei notiziari importata"
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>Errore XML durante la lettura del notiziario! Il notiziario \"%s\" non "
-"puÚ essere caricato!</p>"
+"pu√≤ essere caricato!</p>"
 
 #: src/feed.c:115 src/feed.c:393
 msgid "<p>Empty document!</p>"
@@ -145,7 +145,7 @@ msgstr ""
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
-"Errore durante la lettura del file cache \"%s\" ! Il file cache non puÚ "
+"Errore durante la lettura del file cache \"%s\" ! Il file cache non pu√≤ "
 "essere caricato!"
 
 #: src/feed.c:387
@@ -155,13 +155,13 @@ msgid ""
 "loaded!</p>"
 msgstr ""
 "<p>Errore XML durante l'interpretazione del file cache! Il file cache dei "
-"notiziari \"%s\" non puÚ essere caricato!</p>"
+"notiziari \"%s\" non pu√≤ essere caricato!</p>"
 
 #: src/feed.c:402
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
-"<p>\"%s\" non Ë un file di cache valido! Impossibile leggere il file di "
+"<p>\"%s\" non √® un file di cache valido! Impossibile leggere il file di "
 "cache!</p>"
 
 #: src/feed.c:451
@@ -203,12 +203,12 @@ msgstr ""
 #: src/feed.c:717
 #, c-format
 msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" non Ë cambiato dopo l'ultimo aggiornamento"
+msgstr "\"%s\" non √® cambiato dopo l'ultimo aggiornamento"
 
 #: src/feed.c:724
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "L'URL di \"%s\" Ë cambiato in modo permanente ed Ë stato aggiornato"
+msgstr "L'URL di \"%s\" √® cambiato in modo permanente ed √® stato aggiornato"
 
 #: src/feed.c:734
 msgid ""
@@ -227,13 +227,13 @@ msgstr "\"%s\" aggiornato..."
 #: src/feed.c:773
 #, c-format
 msgid "\"%s\" is not available"
-msgstr "\"%s\" non Ë disponibile"
+msgstr "\"%s\" non √® disponibile"
 
 #  The feed is gone. Politely remind the user to unsubscribe.
 #  The feed is gone. Politely remind the user to unsubscribe.
 #: src/feed.c:896
 msgid "The feed no longer exists. Please unsubscribe."
-msgstr "Il notiziario non esiste pi˘. Per favore cancellare la sottoscrizione."
+msgstr "Il notiziario non esiste pi√π. Per favore cancellare la sottoscrizione."
 
 #: src/feed.c:897
 msgid "Payment Required"
@@ -307,7 +307,7 @@ msgstr "Autenticazione fallita"
 #: src/feed.c:929
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
-"Il metodo di autenticazione del server web non Ë compatibile con Liferea"
+"Il metodo di autenticazione del server web non √® compatibile con Liferea"
 
 #: src/feed.c:935
 msgid "Feed not available: Server requested unsupported redirection!"
@@ -332,7 +332,7 @@ msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
-"C'Ë stato un problema durante la lettura di questa sottoscrizione. Per "
+"C'√® stato un problema durante la lettura di questa sottoscrizione. Per "
 "favore verificare l'URL e l'output in console."
 
 #. attributes resulting from general feed parsing
@@ -349,7 +349,7 @@ msgstr "Sorgente:"
 #: src/html.c:138
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr ""
-"La scoperta automatica dei notiziari ha fallito! Nessun link a notiziari Ë "
+"La scoperta automatica dei notiziari ha fallito! Nessun link a notiziari √® "
 "stato trovato!"
 
 #: src/htmlview.c:61
@@ -443,7 +443,7 @@ msgstr "Avvio: \"%s\""
 msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
 msgstr ""
-"L'ultimo aggiornamento di questa sottoscrizione Ë fallito!!<br><b>codice di "
+"L'ultimo aggiornamento di questa sottoscrizione √® fallito!!<br><b>codice di "
 "errore HTTP %d: %s</b>"
 
 #: src/htmlview.h:98
@@ -453,7 +453,7 @@ msgid ""
 "<br><b>%s</b>"
 msgstr ""
 "Si sono verificati degli errori durante l'interpretazione del notiziario. Si "
-"Ë presentato il seguente errore:<br><b>%s</b>"
+"√® presentato il seguente errore:<br><b>%s</b>"
 
 #: src/htmlview.h:99
 msgid ""
@@ -488,11 +488,11 @@ msgstr "Nuova _Cartella"
 
 #: src/interface.c:205
 msgid "_Properties"
-msgstr "_Propriet‡"
+msgstr "_Propriet√†"
 
 #: src/interface.c:208
 msgid "Opens the property dialog for the selected subscription."
-msgstr "Apre la pagina delle propriet‡ della sottoscrizione selezionata."
+msgstr "Apre la pagina delle propriet√† della sottoscrizione selezionata."
 
 #: src/interface.c:219
 msgid "Update _Selected"
@@ -633,7 +633,7 @@ msgstr "Commuta Vista _Condensata"
 
 #: src/interface.c:400
 msgid "Toggles the item list mode between condensed and normal mode."
-msgstr "Commuta la vista degli elementi tra modalit‡ normale e condensata."
+msgstr "Commuta la vista degli elementi tra modalit√† normale e condensata."
 
 #: src/interface.c:402
 msgid "_Search"
@@ -678,7 +678,7 @@ msgstr "crea cartella virtuale"
 #: src/interface.c:490
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr ""
-"salva questa ricerca come cartella virtuale, che apparir‡ nella lista dei "
+"salva questa ricerca come cartella virtuale, che apparir√† nella lista dei "
 "notiziari"
 
 #: src/interface.c:495
@@ -695,7 +695,7 @@ msgstr "label133"
 
 #: src/interface.c:842
 msgid "Subscription Properties"
-msgstr "Propriet‡ Sottoscrizione"
+msgstr "Propriet√† Sottoscrizione"
 
 #: src/interface.c:863
 msgid "<span weight=\"bold\">Feed Name</span>"
@@ -722,7 +722,7 @@ msgstr "<span weight=\"bold\">Intervallo Aggiornamento</span>"
 #, c-format
 msgid "This feed's refresh interval defaults to %d seconds."
 msgstr ""
-"L'intervallo di aggiornamento di default per questo notiziario Ë %d secondi."
+"L'intervallo di aggiornamento di default per questo notiziario √® %d secondi."
 
 #: src/interface.c:925
 msgid "Feed Refresh _Interval:"
@@ -739,7 +739,7 @@ msgid ""
 "feed set the interval to 0 minutes.</i>"
 msgstr ""
 "Nota: <i>Per favore ricordarsi di impostare un tempo di aggiornamento "
-"ragionevole. Non Ë desiderato controllare ogni 15 minuti notiziari "
+"ragionevole. Non √® desiderato controllare ogni 15 minuti notiziari "
 "aggiornati giornalmente! Per disabilitare l'auto aggiornamento del "
 "notiziario impostare l'intervallo a 0.</i>"
 
@@ -781,7 +781,7 @@ msgid ""
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
-"Liferea puÚ utilizzare dei plugin di filtri esterni per potere accedere a "
+"Liferea pu√≤ utilizzare dei plugin di filtri esterni per potere accedere a "
 "notiziari e directory in formati non supportati. Vedere la documentazione "
 "per maggiori informazioni."
 
@@ -1007,8 +1007,8 @@ msgid ""
 msgstr ""
 "Liferea utilizza la configurazione del proxy di GNOME. Se utilizzi GNOME, "
 "puoi modificare queste impostazioni dal centro di controllo GNOME. Nota: la "
-"modifica di tali impostazioni influir‡ su tutte le altre applicazioni! "
-"Questa pagina Ë pensata per tutti gli utenti che, non utilizzando GNOME, "
+"modifica di tali impostazioni influir√† su tutte le altre applicazioni! "
+"Questa pagina √® pensata per tutti gli utenti che, non utilizzando GNOME, "
 "vogliono usare Liferea con un proxy."
 
 #: src/interface.c:2056
@@ -1049,7 +1049,7 @@ msgstr "modifica regole del filtro"
 
 #: src/interface.c:2573
 msgid "edit rule properties"
-msgstr "modifica propriet‡ regole"
+msgstr "modifica propriet√† regole"
 
 #: src/interface.c:2588 src/ui_filter.c:54
 msgid "Rule Type"
@@ -1089,7 +1089,7 @@ msgid ""
 "Feedster results for the specified search string. You can keep this feed "
 "permanently and update it like any other subscription.  "
 msgstr ""
-"Nota: Liferea generer‡ una sottoscrizione ad un notiziario che verr‡ usata "
+"Nota: Liferea generer√† una sottoscrizione ad un notiziario che verr√† usata "
 "per cercare i risultati di Feedster in base alla stringa di ricerca. Puoi "
 "tenere questo notiziario permanentemente e aggiornarlo come ogni altra "
 "sottoscrizione.  "
@@ -1104,7 +1104,7 @@ msgid ""
 "either restore a backup feed list or import a feed list from another "
 "aggregator like that supports OPML export."
 msgstr ""
-"Liferea puÚ importare una lista di notiziari da un file OPML. Questa puÚ "
+"Liferea pu√≤ importare una lista di notiziari da un file OPML. Questa pu√≤ "
 "essere utilizzata sia per ripristinare un backup, che per importare una "
 "lista da un altro raccoglitore di notizie che supporti l'esportazione OMPL."
 
@@ -1122,13 +1122,13 @@ msgid ""
 "feature to backup your feed list or export your feed list to another "
 "aggregator."
 msgstr ""
-"Liferea puÚ esportare la lista dei notiziari come lista in formato OPML. "
+"Liferea pu√≤ esportare la lista dei notiziari come lista in formato OPML. "
 "Puoi utilizzare questa caratteristica per effettuare il backup della tua "
 "lista o per esportarla verso un altro raccoglitore di notizie."
 
 #: src/interface.c:3001
 msgid "Liferea is a news aggregator for GTK+"
-msgstr "Liferea Ë un raccoglitore di notizie per GTK+"
+msgstr "Liferea √® un raccoglitore di notizie per GTK+"
 
 #: src/interface.c:3006
 msgid ""
@@ -1193,34 +1193,21 @@ msgid "Contributors"
 msgstr "Contribuenti"
 
 #: src/interface.c:3046
-#, fuzzy
 msgid ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-"Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev Vladimir <compress@linux-online.ru>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Martin-Eric Racine <q-funk@pp.fishpool.fi>"
-msgstr ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
+"Vincent Lef√®vre <vincent@vinc17.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>"
+msgstr ""
 
 #: src/interface.c:3052
 msgid "Translation"
@@ -1310,7 +1297,7 @@ msgstr "  --debug-all      Stampa tutti i tipi di messaggi di debug"
 #: src/main.c:63
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr ""
-"  --debug-verbose  Stampa tutti i messaggi di debug in maniera pi˘ copiosa"
+"  --debug-verbose  Stampa tutti i messaggi di debug in maniera pi√π copiosa"
 
 #: src/metadata.c:253
 msgid "comments"
@@ -1430,7 +1417,7 @@ msgstr "ERRORE: Byte magici non validi per i dati GZIP"
 
 #: src/net/conversions.c:409
 msgid "ERROR: Compression method is not deflate"
-msgstr "ERRORE: Il metodo di compressione non Ë deflate"
+msgstr "ERRORE: Il metodo di compressione non √® deflate"
 
 #: src/net/conversions.c:414
 #, c-format
@@ -1442,7 +1429,7 @@ msgid "URL points to permanent redirect, updating with new location..."
 msgstr ""
 "L'URL punta ad una redirezione permanente, aggiorno con il nuovo indirizzo..."
 
-#: src/ns_dc.c:191 src/ns_ocs.c:89
+#: src/ns_dc.c:192 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
 msgstr "errore interno di interpretazione dello spazio dei nomi OCS!"
 
@@ -1459,7 +1446,7 @@ msgstr "nessun gestore di spazio dei nomi per <%s:%s>!\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Impossibile trovare l'intestazione RDF!</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:211 src/rss_channel.c:309
+#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:212 src/rss_channel.c:309
 msgid "There were errors while parsing this feed!"
 msgstr ""
 "Si sono verificati degli errori durante l'interpretazione del notiziario!"
@@ -1468,7 +1455,7 @@ msgstr ""
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>Impossibile trovare l'intestazione OPML!</p>"
 
-#: src/pie_feed.c:96
+#: src/pie_feed.c:97
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Impossibile trovare l'intestazione Atom/Echo/PIE!</p>"
 
@@ -1503,7 +1490,7 @@ msgstr "Bisogna selezionare un'elemento"
 #: src/ui_feedlist.c:415
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
-"Liferea Ë in modalit‡ disconnessa. Impossibile effettuare l'aggiornamento."
+"Liferea √® in modalit√† disconnessa. Impossibile effettuare l'aggiornamento."
 
 #: src/ui_feedlist.c:439
 msgid "Note: Using the subscriptions filter disables drag & drop"
@@ -1516,8 +1503,8 @@ msgid ""
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
-"Non si puÚ eliminare il notiziario di aiuto! Per disabilitare l'aiuto "
-"modificare le preferenze. Si potr‡ eliminare la cartella di aiuto dopo il "
+"Non si pu√≤ eliminare il notiziario di aiuto! Per disabilitare l'aiuto "
+"modificare le preferenze. Si potr√† eliminare la cartella di aiuto dopo il "
 "riavvio di Liferea."
 
 #: src/ui_feedlist.c:493
@@ -1674,114 +1661,138 @@ msgstr ""
 "per leggerne le intestazioni. La parte destra visualizza una lista di "
 "intestazioni per la sottoscrizione selezionata e un pannello per "
 "visualizzare l'elemento selezionato oppure tutte le intestazioni "
-"contemporaneamente se Ë selezionata la vista condensata.</p><h3>Azioni "
+"contemporaneamente se √® selezionata la vista condensata.</p><h3>Azioni "
 "Principali</h3><ul><li><p><b>Nuova Sottoscrizione</b> - Crea una nuova "
 "sottoscrizione nella cartella selezionata. Per creare una nuova "
 "sottoscrizione inserire l'URL del notiziario o, nel caso sia sconosciuto, "
 "l'URL del sito che fornisce il notiziario.</p></li><li><p><b>Aggiorna "
 "Sottoscrizione</b> - Aggiorna la sottoscrizione selezionata. E' utile nel "
 "caso in cui si desideri un aggiornamento immediato della sottoscrizione. "
-"Generalmente Ë meglio fare affidamento sull'auto aggiornamento, in accordo "
+"Generalmente √® meglio fare affidamento sull'auto aggiornamento, in accordo "
 "con l'intervallo di aggiornamento della sottoscrizione.</p></"
 "li><li><p><b>Aggiorna Tutti</b> - Aggiorna tutte le sottoscrizioni "
-"contemporaneamente. Anche in questo caso Ë meglio fare affidamento all'auto "
-"aggiornamento.</li><li><p><b>Modifica Propriet‡ Sottoscrizione</b> - A volte "
-"si puÚ volere modificare l'intervallo di aggiornamento, il titolo, "
-"l'autenticazione o le propriet‡ di cache di una sottoscrizione</p></li></"
-"ul><p>Per sapere di pi˘ su Liferea consultare la documentazione fornita col "
+"contemporaneamente. Anche in questo caso √® meglio fare affidamento all'auto "
+"aggiornamento.</li><li><p><b>Modifica Propriet√† Sottoscrizione</b> - A volte "
+"si pu√≤ volere modificare l'intervallo di aggiornamento, il titolo, "
+"l'autenticazione o le propriet√† di cache di una sottoscrizione</p></li></"
+"ul><p>Per sapere di pi√π su Liferea consultare la documentazione fornita col "
 "notiziario di aiuto o le FAQ disponibili sulla homepage del progetto.</p>"
 
 #: src/ui_mainwindow.c:256
 msgid "Liferea is now online"
-msgstr "Liferea adesso Ë online"
+msgstr "Liferea adesso √® online"
 
 #: src/ui_mainwindow.c:259
 msgid "Liferea is now offline"
-msgstr "Liferea adesso Ë offline"
+msgstr "Liferea adesso √® offline"
 
 #: src/ui_notification.c:242
 msgid "Liferea notification"
 msgstr "Notifica Liferea"
 
-#: src/ui_popup.c:78
+#: src/ui_popup.c:85
 msgid "/_Update"
 msgstr "/_Aggiorna"
 
-#: src/ui_popup.c:79 src/ui_popup.c:89
+#: src/ui_popup.c:86 src/ui_popup.c:96
 msgid "/_Mark As Read"
 msgstr "/Segna C_ome Letto"
 
-#: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:105 src/ui_popup.c:112
 msgid "/_New"
 msgstr "/_Nuovo"
 
-#: src/ui_popup.c:81 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:106
+#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:106 src/ui_popup.c:113
 msgid "/_New/New _Feed"
 msgstr "/_Nuovo/Nuovo _Notiziario"
 
-#: src/ui_popup.c:82 src/ui_popup.c:92 src/ui_popup.c:100 src/ui_popup.c:107
+#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:107 src/ui_popup.c:114
 msgid "/_New/New F_older"
 msgstr "/_Nuovo/Nuova _Cartella"
 
-#: src/ui_popup.c:83
+#: src/ui_popup.c:90
 msgid "/_Properties"
-msgstr "/_Propriet‡"
+msgstr "/_Propriet√†"
 
-#: src/ui_popup.c:84
+#: src/ui_popup.c:91
 msgid "/_Delete"
 msgstr "/_Elimina"
 
-#: src/ui_popup.c:88
+#: src/ui_popup.c:95
 msgid "/_Update Folder"
 msgstr "/_Aggiorna Cartella"
 
-#: src/ui_popup.c:93
+#: src/ui_popup.c:100
 msgid "/_Rename Folder"
 msgstr "/_Rinomina Cartella"
 
-#: src/ui_popup.c:94
+#: src/ui_popup.c:101
 msgid "/_Delete Folder"
 msgstr "/_Elimina Cartella"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:108
 msgid "/_Delete VFolder"
 msgstr "/Elimina Cartella _Virtuale"
 
-#: src/ui_popup.c:112
+#: src/ui_popup.c:119
 msgid "/Toggle _Read Status"
 msgstr "/Commuta _Stato Letto/Non Letto"
 
-#: src/ui_popup.c:113
+#: src/ui_popup.c:120
 msgid "/Toggle Item _Flag"
 msgstr "/Commuta _Flag Elemento"
 
-#: src/ui_popup.c:115
+#: src/ui_popup.c:122
 msgid "/_Next Unread Item"
 msgstr "/_Prossimo Elemento Da Leggere"
 
-#: src/ui_popup.c:117
+#: src/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/_Apri Elemento Nel Browser"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:131
 msgid "/_Increase Text Size"
 msgstr "/_Incrementa Dimensione Testo"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:132
 msgid "/_Decrease Text Size"
 msgstr "/_Decrementa Dimensione Testo"
 
-#: src/ui_popup.c:129
+#: src/ui_popup.c:136
 msgid "/_Copy Link Location"
 msgstr "/_Copia Collegamento"
 
-#: src/ui_popup.c:130
+#: src/ui_popup.c:137
 msgid "/_Launch Link In Browser"
 msgstr "/_Apri Nel Browser"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:138
 msgid "/_Subscribe"
 msgstr "/So_ttoscrivi"
+
+#: src/ui_popup.c:143
+#, fuzzy
+msgid "/_Work Offline"
+msgstr "Lavora Disconnesso"
+
+#: src/ui_popup.c:144
+#, fuzzy
+msgid "/_Update All"
+msgstr "Aggiorna Tutti"
+
+#: src/ui_popup.c:145
+#, fuzzy
+msgid "/_Preferences"
+msgstr "Preferenze"
+
+#: src/ui_popup.c:147
+#, fuzzy
+msgid "/_Show Window"
+msgstr "Nuova finestra"
+
+#: src/ui_popup.c:148
+msgid "/_Quit"
+msgstr ""
 
 #  This allows the user to choose their own browser by typing in the command.
 #. This allows the user to choose their own browser by typing in the command.
@@ -1823,14 +1834,14 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr "Cerco \"%s\""
 
-#: src/ui_tray.c:89
+#: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
 msgstr[0] "Nessun nuovo elemento."
 msgstr[1] "Nessun nuovo elemento."
 
-#: src/ui_tray.c:102
+#: src/ui_tray.c:103
 msgid "No new items."
 msgstr "Nessun nuovo elemento."
 
@@ -1848,6 +1859,35 @@ msgstr "Errore: Impossibile aprire il file \"%s\""
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Errore: Non esiste alcun file \"%s\""
+
+#, fuzzy
+#~ msgid ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Martin-Eric Racine <q-funk@pp.fishpool.fi>"
+#~ msgstr ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>"
 
 #~ msgid "_Update all feeds on program startup."
 #~ msgstr "_Aggiorna tutti i notiziari all'avvio del programma."

@@ -61,7 +61,6 @@ liferea_bin_SOURCES = \
 	ocs_ns.h \
 	pie_feed.c pie_feed.h \
 	pie_entry.c pie_entry.h \
-	pie_ns.h \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h \
 	support.c support.h \

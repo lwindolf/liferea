@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-14 21:47-0400\n"
+"POT-Creation-Date: 2004-07-15 00:25-0400\n"
 "PO-Revision-Date: 2004-05-25 23:42+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -1169,31 +1169,21 @@ msgid "Contributors"
 msgstr "도움을 주신 분들"
 
 #: src/interface.c:3046
-#, fuzzy
 msgid ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+"Vincent Lefèvre <vincent@vinc17.org>\n"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Martin-Eric Racine <q-funk@pp.fishpool.fi>"
 msgstr ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"박지인 <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Gernauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>"
 
 #: src/interface.c:3052
 msgid "Translation"
@@ -1406,7 +1396,7 @@ msgid "URL points to permanent redirect, updating with new location..."
 msgstr ""
 "이 URL은 영구 리다이렉션을 가리키고 있어서, 새로운 위치로 업데이트 합니다..."
 
-#: src/ns_dc.c:191 src/ns_ocs.c:89
+#: src/ns_dc.c:192 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
 msgstr "내부 OSC 네임스페이스 파싱 에러 "
 
@@ -1424,7 +1414,7 @@ msgstr "<%s:%s> 를 위한 네임스페이스 핸들러가 없습니다!\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>RDF 헤더를 찾을 수 없습니다!</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:211 src/rss_channel.c:309
+#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:212 src/rss_channel.c:309
 msgid "There were errors while parsing this feed!"
 msgstr "이 피드를 해석하던 중 에러가 발생했습니다."
 
@@ -1432,7 +1422,7 @@ msgstr "이 피드를 해석하던 중 에러가 발생했습니다."
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>OPML 헤더를 찾을 수 없습니다.!</p>"
 
-#: src/pie_feed.c:96
+#: src/pie_feed.c:97
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Atom/Echo/PIE 헤더를 찾을 수 없습니다.!</p>"
 
@@ -1653,87 +1643,110 @@ msgstr "Liferea는 현재 오프라인입니다."
 msgid "Liferea notification"
 msgstr "Liferea는 현재 오프라인입니다."
 
-#: src/ui_popup.c:78
+#: src/ui_popup.c:85
 msgid "/_Update"
 msgstr "/갱신(_U)"
 
-#: src/ui_popup.c:79 src/ui_popup.c:89
+#: src/ui_popup.c:86 src/ui_popup.c:96
 #, fuzzy
 msgid "/_Mark As Read"
 msgstr "읽은 것으로 표시(_M)"
 
-#: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:105 src/ui_popup.c:112
 msgid "/_New"
 msgstr "/새로 만들기(_N)"
 
-#: src/ui_popup.c:81 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:106
+#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:106 src/ui_popup.c:113
 msgid "/_New/New _Feed"
 msgstr "/새로 만들기(_N)/새 피드(_F)"
 
-#: src/ui_popup.c:82 src/ui_popup.c:92 src/ui_popup.c:100 src/ui_popup.c:107
+#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:107 src/ui_popup.c:114
 msgid "/_New/New F_older"
 msgstr "/폴더 만들기(_N)"
 
-#: src/ui_popup.c:83
+#: src/ui_popup.c:90
 msgid "/_Properties"
 msgstr "/등록정보(_P)"
 
-#: src/ui_popup.c:84
+#: src/ui_popup.c:91
 msgid "/_Delete"
 msgstr "/지우기(_D)"
 
-#: src/ui_popup.c:88
+#: src/ui_popup.c:95
 msgid "/_Update Folder"
 msgstr "/폴더 갱신(_U)"
 
-#: src/ui_popup.c:93
+#: src/ui_popup.c:100
 msgid "/_Rename Folder"
 msgstr "/폴더 이름 바꾸기(_R)"
 
-#: src/ui_popup.c:94
+#: src/ui_popup.c:101
 msgid "/_Delete Folder"
 msgstr "/폴더 지우기(_D)"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:108
 msgid "/_Delete VFolder"
 msgstr "/가상 폴더 지우기(_D)"
 
-#: src/ui_popup.c:112
+#: src/ui_popup.c:119
 msgid "/Toggle _Read Status"
 msgstr "/읽은 상태를 토글(_R)"
 
-#: src/ui_popup.c:113
+#: src/ui_popup.c:120
 msgid "/Toggle Item _Flag"
 msgstr "/아이템 플래그 토글(_F)"
 
-#: src/ui_popup.c:115
+#: src/ui_popup.c:122
 msgid "/_Next Unread Item"
 msgstr "/다음 안 읽은 아이템(_N)"
 
-#: src/ui_popup.c:117
+#: src/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/브라우져로 띄우기(_L)"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:131
 msgid "/_Increase Text Size"
 msgstr "/글자 크기 크게하기(_I)"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:132
 msgid "/_Decrease Text Size"
 msgstr "/글자 크기 작게하기(_D)"
 
-#: src/ui_popup.c:129
+#: src/ui_popup.c:136
 msgid "/_Copy Link Location"
 msgstr "/링크 위치 복사하기(_C)"
 
-#: src/ui_popup.c:130
+#: src/ui_popup.c:137
 #, fuzzy
 msgid "/_Launch Link In Browser"
 msgstr "브라우져로 띄우기(_L)"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:138
 msgid "/_Subscribe"
 msgstr "/등록(_S)"
+
+#: src/ui_popup.c:143
+#, fuzzy
+msgid "/_Work Offline"
+msgstr "오프라인에서 작업"
+
+#: src/ui_popup.c:144
+#, fuzzy
+msgid "/_Update All"
+msgstr "전부 갱신(_A)"
+
+#: src/ui_popup.c:145
+#, fuzzy
+msgid "/_Preferences"
+msgstr "기본 설정"
+
+#: src/ui_popup.c:147
+msgid "/_Show Window"
+msgstr ""
+
+#: src/ui_popup.c:148
+msgid "/_Quit"
+msgstr ""
 
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:183
@@ -1775,14 +1788,14 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr "%s을(를) 찾기"
 
-#: src/ui_tray.c:89
+#: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
 msgstr[0] "%d개의 새로운 아이템이 있습니다."
 msgstr[1] "%d개의 새로운 아이템이 있습니다."
 
-#: src/ui_tray.c:102
+#: src/ui_tray.c:103
 msgid "No new items."
 msgstr "새로운 아이템이 없습니다."
 
@@ -1800,6 +1813,32 @@ msgstr "파일 %s을(를) 열 수 없습니다"
 #, fuzzy, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "\"%s\" 파일이 없습니다!"
+
+#, fuzzy
+#~ msgid ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Martin-Eric Racine <q-funk@pp.fishpool.fi>"
+#~ msgstr ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "박지인 <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Gernauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>"
 
 #, fuzzy
 #~ msgid "_Update all feeds on program startup."

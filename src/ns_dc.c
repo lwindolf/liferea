@@ -29,6 +29,7 @@
 #include "support.h"
 #include "common.h"
 #include "ui_itemlist.h"
+#include "metadata.h"
 
 #define TABLE_START	"<div class=\"feedfoottitle\">additional Dublin Core information</div><table class=\"addfoot\">"
 #define FIRSTTD		"<tr class=\"feedfoot\"><td class=\"feedfootname\"><span class=\"feedfootname\">"

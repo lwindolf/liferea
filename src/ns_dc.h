@@ -22,11 +22,9 @@
 #define _NS_DC_H
 
 #include "metadata.h"
-#include "pie_ns.h"
 #include "ocs_ns.h"
 
-NsHandler *ns_dc_getRSSNsHandler(void);
-//PIENsHandler *ns_dc_getPIENsHandler(void);
+struct NsHandler *ns_dc_getRSSNsHandler(void);
 OCSNsHandler *ns_dc_getOCSNsHandler(void);
 
 #endif

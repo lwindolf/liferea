@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-14 21:47-0400\n"
+"POT-Creation-Date: 2004-07-15 00:25-0400\n"
 "PO-Revision-Date: 2004-05-25 15:00+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian <LL@li.org>\n"
@@ -1193,32 +1193,21 @@ msgid "Contributors"
 msgstr "Участники"
 
 #: src/interface.c:3046
-#, fuzzy
 msgid ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+"Vincent Lefèvre <vincent@vinc17.org>\n"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Martin-Eric Racine <q-funk@pp.fishpool.fi>"
 msgstr ""
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Gernauck <enrico@fanglomerat.de>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-"Alekseev Vladimir <compress@linux-online.ru>"
 
 #: src/interface.c:3052
 msgid "Translation"
@@ -1433,7 +1422,7 @@ msgstr ""
 "URL указывает на постоянное перенаправление, обновление с новым "
 "местонахождением..."
 
-#: src/ns_dc.c:191 src/ns_ocs.c:89
+#: src/ns_dc.c:192 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
 msgstr "внутрення ошибка парсинга пространства имён OCS!"
 
@@ -1451,7 +1440,7 @@ msgstr "нет оператора пространства имён для <%s:%
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Невозможно найти заголовок RDF!</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:211 src/rss_channel.c:309
+#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:212 src/rss_channel.c:309
 msgid "There were errors while parsing this feed!"
 msgstr "Произошли ошибки во время парсинга ленты новостей!"
 
@@ -1459,7 +1448,7 @@ msgstr "Произошли ошибки во время парсинга лен�
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>Невозможно найти заголовк OPML!</p>"
 
-#: src/pie_feed.c:96
+#: src/pie_feed.c:97
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Невозможно найти заголовк Atom/Echo/PIE!</p>"
 
@@ -1685,87 +1674,110 @@ msgstr "Liferea отключена!"
 msgid "Liferea notification"
 msgstr "Liferea отключена!"
 
-#: src/ui_popup.c:78
+#: src/ui_popup.c:85
 msgid "/_Update"
 msgstr "/_Обновить"
 
-#: src/ui_popup.c:79 src/ui_popup.c:89
+#: src/ui_popup.c:86 src/ui_popup.c:96
 #, fuzzy
 msgid "/_Mark As Read"
 msgstr "_Пометить Как Прочитанные"
 
-#: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:105 src/ui_popup.c:112
 msgid "/_New"
 msgstr "/_Новый элемент"
 
-#: src/ui_popup.c:81 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:106
+#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:106 src/ui_popup.c:113
 msgid "/_New/New _Feed"
 msgstr "/_Новый элемент/Новая _Лента Новостей"
 
-#: src/ui_popup.c:82 src/ui_popup.c:92 src/ui_popup.c:100 src/ui_popup.c:107
+#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:107 src/ui_popup.c:114
 msgid "/_New/New F_older"
 msgstr "/_Новый элемент/Новая _Папка"
 
-#: src/ui_popup.c:83
+#: src/ui_popup.c:90
 msgid "/_Properties"
 msgstr "/_Свойства"
 
-#: src/ui_popup.c:84
+#: src/ui_popup.c:91
 msgid "/_Delete"
 msgstr "/_Удалить"
 
-#: src/ui_popup.c:88
+#: src/ui_popup.c:95
 msgid "/_Update Folder"
 msgstr "/_Обновить Папку"
 
-#: src/ui_popup.c:93
+#: src/ui_popup.c:100
 msgid "/_Rename Folder"
 msgstr "/_Переименовать папку"
 
-#: src/ui_popup.c:94
+#: src/ui_popup.c:101
 msgid "/_Delete Folder"
 msgstr "/_Удалить Папку"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:108
 msgid "/_Delete VFolder"
 msgstr "/_Удалить VFolder"
 
-#: src/ui_popup.c:112
+#: src/ui_popup.c:119
 msgid "/Toggle _Read Status"
 msgstr "/Переключить Статус _Прочтения"
 
-#: src/ui_popup.c:113
+#: src/ui_popup.c:120
 msgid "/Toggle Item _Flag"
 msgstr "/Переключить _Флаг Новости"
 
-#: src/ui_popup.c:115
+#: src/ui_popup.c:122
 msgid "/_Next Unread Item"
 msgstr "/_Следующая Непрочитанная Новость"
 
-#: src/ui_popup.c:117
+#: src/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/_Показать Новость В Браузере "
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:131
 msgid "/_Increase Text Size"
 msgstr "/_Увеличить Размер Текста"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:132
 msgid "/_Decrease Text Size"
 msgstr "/_Уменьшить Размер Текста"
 
-#: src/ui_popup.c:129
+#: src/ui_popup.c:136
 msgid "/_Copy Link Location"
 msgstr "/_Скопировать Адрес Ссылки"
 
-#: src/ui_popup.c:130
+#: src/ui_popup.c:137
 #, fuzzy
 msgid "/_Launch Link In Browser"
 msgstr "_Показать В Браузере"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:138
 msgid "/_Subscribe"
 msgstr "/_Подписаться"
+
+#: src/ui_popup.c:143
+#, fuzzy
+msgid "/_Work Offline"
+msgstr "Работать в режиме \"Отключен\""
+
+#: src/ui_popup.c:144
+#, fuzzy
+msgid "/_Update All"
+msgstr "Обновить _Всё"
+
+#: src/ui_popup.c:145
+#, fuzzy
+msgid "/_Preferences"
+msgstr "Настройки"
+
+#: src/ui_popup.c:147
+msgid "/_Show Window"
+msgstr ""
+
+#: src/ui_popup.c:148
+msgid "/_Quit"
+msgstr ""
 
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:183
@@ -1806,14 +1818,14 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr "поиск \"%s\""
 
-#: src/ui_tray.c:89
+#: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
 msgstr[0] "%d новый(х) элемент(ов)(а)"
 msgstr[1] "%d новый(х) элемент(ов)(а)"
 
-#: src/ui_tray.c:102
+#: src/ui_tray.c:103
 msgid "No new items."
 msgstr "Нет новостей."
 
@@ -1831,6 +1843,33 @@ msgstr "Невозможно открыть файл \"%s\"!"
 #, fuzzy, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Не существует файла \"%s\"!"
+
+#, fuzzy
+#~ msgid ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Martin-Eric Racine <q-funk@pp.fishpool.fi>"
+#~ msgstr ""
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Enrico Gernauck <enrico@fanglomerat.de>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>"
 
 #, fuzzy
 #~ msgid "_Update all feeds on program startup."

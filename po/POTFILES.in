@@ -81,7 +81,6 @@ src/pie_entry.c
 src/pie_entry.h
 src/pie_feed.c
 src/pie_feed.h
-src/pie_ns.h
 src/rss_channel.c
 src/rss_channel.h
 src/rss_item.c
