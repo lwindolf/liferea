@@ -87,7 +87,7 @@ gchar * parseAuthor(xmlNodePtr cur) {
    the feed could not be read) */
 static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
-	gchar			*tmp2, *tmp = NULL;
+	gchar			*tmp2, *tmp = NULL, *tmp3;
 	int 			error = 0;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
@@ -161,13 +161,19 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 				if (tmp != NULL && tmp[0] != '\0') {
 					tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"version"));
-					if (tmp2 != NULL)
-						tmp = g_strdup_printf("%s %s", tmp, tmp2);
-					g_free(tmp2);
+					if (tmp2 != NULL) {
+						tmp3 = g_strdup_printf("%s %s", tmp, tmp2);
+						g_free(tmp);
+						g_free(tmp2);
+						tmp = tmp3;
+					}
 					tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"url"));
-					if (tmp2 != NULL)
-						tmp = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
-					g_free(tmp2);
+					if (tmp2 != NULL) {
+						tmp3 = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
+						g_free(tmp2);
+						g_free(tmp);
+						tmp = tmp3;
+					}
 					fp->metadata = metadata_list_append(fp->metadata, "feedgenerator", tmp);
 				}
 				g_free(tmp);

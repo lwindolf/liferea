@@ -31,10 +31,14 @@
 */
 
 static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
-
-  	if(!xmlStrcmp(cur->name, "encoded"))
+	gchar *tmp;
+  	if(!xmlStrcmp(cur->name, "encoded")) {
 		//metadata_list_set(&(ip->metadata), "description", utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
-		item_set_description(ip,  utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if (tmp != NULL)
+			item_set_description(ip,tmp);
+		g_free(tmp);
+	}
 }
 
 NsHandler *ns_content_getRSSNsHandler(void) {
