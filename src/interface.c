@@ -66,7 +66,7 @@ create_mainwindow (void)
   accel_group = gtk_accel_group_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.7"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.8"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -222,9 +222,6 @@ create_mainwindow (void)
                     NULL);
   g_signal_connect ((gpointer) feedlist, "drag_begin",
                     G_CALLBACK (on_feedlist_drag_begin),
-                    NULL);
-  g_signal_connect ((gpointer) feedlist, "drag_data_received",
-                    G_CALLBACK (on_feedlist_drag_data_received),
                     NULL);
   g_signal_connect ((gpointer) searchentry, "activate",
                     G_CALLBACK (on_searchentry_activate),

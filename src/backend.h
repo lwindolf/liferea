@@ -132,15 +132,10 @@ gchar * addEntry(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *fee
 void	addFolder(gchar *keyprefix, gchar *title, gint type);
 void 	removeEntry(gchar *keyprefix, gchar *key);
 
-void	moveUpEntryPosition(gchar *keyprefix, gchar *key);
-void	moveDownEntryPosition(gchar *keyprefix, gchar *key);
-
 gpointer	getFeedProp(gchar *key, gint proptype);
 void		setFeedProp(gchar *key, gint proptype, gpointer data);
 gchar *		getDefaultEntryTitle(gchar *key);	/* returns the title defined by the feed */
 gint		getEntryType(gchar *key);
-
-GtkTreeStore * 	getEntryStore(void);
 
 gchar *		getFolderTitle(gchar *keyprefix);
 void		setFolderTitle(gchar *keyprefix, gchar *title);
@@ -156,17 +151,18 @@ void	markItemAsRead(gint type, gpointer ip);
 void	searchItems(gchar *string);
 void	clearItemList();
 
+/* -------------------------------------------------------- */
+/* callback interface to access feeds and the feed list	    */
+/* -------------------------------------------------------- */
+
+void	moveInEntryList(gchar *oldkeyprefix, gchar *oldkey);
+void	resetAllUpdateCounters(void);
+
 /* vfolder interface for GUI */
 void	loadNewVFolder(gchar *key, gpointer rp);
+
 /* vfolder interface for updating */
 void	scanFeed(gpointer key, gpointer value, gpointer userdata);
 void	removeOldItemsFromVFolders(gpointer key, gpointer value, gpointer userdata);
-
-/* -------------------------------------------------------- */
-/* feed (not directories) specific methods            	    */
-/* -------------------------------------------------------- */
-
-void	resetAllUpdateCounters(void);
-gchar * getHelpFeedKey(void);
 
 #endif

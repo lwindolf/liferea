@@ -5,7 +5,7 @@
 
 <widget class="GtkWindow" id="mainwindow">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Liferea 0.3.7</property>
+  <property name="title" translatable="yes">Liferea 0.3.8</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -182,7 +182,6 @@
 		  <signal name="button_press_event" handler="on_mainfeedlist_button_press_event" last_modification_time="Wed, 06 Aug 2003 23:10:51 GMT"/>
 		  <signal name="drag_end" handler="on_feedlist_drag_end" last_modification_time="Sat, 13 Sep 2003 12:23:22 GMT"/>
 		  <signal name="drag_begin" handler="on_feedlist_drag_begin" last_modification_time="Sat, 13 Sep 2003 14:06:15 GMT"/>
-		  <signal name="drag_data_received" handler="on_feedlist_drag_data_received" last_modification_time="Sat, 13 Sep 2003 21:03:35 GMT"/>
 		</widget>
 	      </child>
 	    </widget>

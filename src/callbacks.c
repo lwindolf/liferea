@@ -63,7 +63,7 @@ static gchar	*drag_source_key = NULL;
 static gchar	*drag_source_keyprefix = NULL;
 
 /*------------------------------------------------------------------------------*/
-/* helper functions								*/
+/* helper functions	FIXME: need to be cleaned up (no window/feedlist parameter	*/
 /*------------------------------------------------------------------------------*/
 
 static gchar * getEntryViewSelection(GtkWidget *feedlist) {
@@ -241,7 +241,7 @@ static void selectFeedViewItem(GtkWidget *window, gchar *viewname, gchar *feedke
 		return;
 	}
 
-	feedstore = getEntryStore();
+	feedstore = getFeedStore();
 	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(feedstore), &iter);
 	while(valid) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, 
@@ -419,7 +419,7 @@ void on_deletebtn(GtkWidget *feedlist) {
 
 		print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getDefaultEntryTitle(key)));
 		removeEntry(keyprefix, key);
-		gtk_tree_store_remove(getEntryStore(), iter);
+		gtk_tree_store_remove(getFeedStore(), iter);
 		g_free(key);
 		g_free(iter);
 				
@@ -732,21 +732,21 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 void on_popup_removefolder_selected(void) {
-	GtkTreeStore	*entrystore;
+	GtkTreeStore	*feedstore;
 	GtkTreeIter	*iter;
 	gchar		*keyprefix;
 	
 	keyprefix = getEntryViewSelectionPrefix(mainwindow);
 	iter = getEntryViewSelectionIter(mainwindow);
-	entrystore = getEntryStore();
+	feedstore = getFeedStore();
 	
-	g_assert(entrystore != NULL);
+	g_assert(feedstore != NULL);
 	
 	/* make sure thats no grouping iterator */
 	if(NULL != keyprefix) {
 		/* check if folder is empty */
-		if(FALSE == gtk_tree_model_iter_has_child(GTK_TREE_MODEL(entrystore), iter)) {
-			gtk_tree_store_remove(entrystore, iter);
+		if(FALSE == gtk_tree_model_iter_has_child(GTK_TREE_MODEL(feedstore), iter)) {
+			gtk_tree_store_remove(feedstore, iter);
 			removeFolder(keyprefix);
 			g_free(keyprefix);
 		} else {
@@ -873,7 +873,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		}
 		
 	}
-g_print("VFolder created!\n");
+
 	/* don't free keyprefix and searchstring for its reused by newEntry! */
 }
 
@@ -935,6 +935,8 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 				return;
 			}
 			gtk_tree_selection_unselect_all(itemselection);
+			
+			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
 			itemlist_loading = 0;
 		}		
        	}
@@ -1081,13 +1083,13 @@ void setupEntryList(GtkWidget *mainview) {
 	GtkCellRenderer		*iconRenderer;	
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;	
-	GtkTreeStore		*entrystore;
+	GtkTreeStore		*feedstore;
 	
 	g_assert(mainwindow != NULL);
 		
-	entrystore = getEntryStore();
+	feedstore = getFeedStore();
 
-	gtk_tree_view_set_model(GTK_TREE_VIEW(mainview), GTK_TREE_MODEL(entrystore));
+	gtk_tree_view_set_model(GTK_TREE_VIEW(mainview), GTK_TREE_MODEL(feedstore));
 	
 	/* we only render the state and title */
 	iconRenderer = gtk_cell_renderer_pixbuf_new();
@@ -1421,35 +1423,19 @@ void showErrorBox(gchar *msg) {
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 	GtkTreeStore *feedstore;
 	
-	//feedstore = getEntryStore();
+	feedstore = getFeedStore();
 
-	//g_assert(NULL != drag_source_key);
-	//g_assert(NULL != drag_source_keyprefix);
+	g_assert(NULL != drag_source_key);
+	g_assert(NULL != drag_source_keyprefix);
 	
-	//moveInEntryList(drag_source_keyprefix, drag_source_key);
+	moveInEntryList(drag_source_keyprefix, drag_source_key);
 
-	//g_free(drag_source_key);
-	//g_free(drag_source_keyprefix);
+	g_free(drag_source_key);
+	g_free(drag_source_keyprefix);
 }
 
 void on_feedlist_drag_begin(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
-	//drag_source_key = getEntryViewSelection(lookup_widget(mainwindow, "feedlist"));
-	//drag_source_keyprefix = getEntryViewSelectionPrefix(mainwindow);
-	//g_print("key:%s\n", drag_source_key);
-	//g_print("keyprefix:%s\n", drag_source_keyprefix);
+	drag_source_key = getEntryViewSelection(lookup_widget(mainwindow, "feedlist"));
+	drag_source_keyprefix = getEntryViewSelectionPrefix(mainwindow);
 }
-
-void
-on_feedlist_drag_data_received         (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gint             x,
-                                        gint             y,
-                                        GtkSelectionData *data,
-                                        guint            info,
-                                        guint            time,
-                                        gpointer         user_data)
-{
-	//g_print("DND received %s %d %d\n", data->data, x, y);
-}
-
