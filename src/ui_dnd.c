@@ -32,6 +32,11 @@
 
 extern GtkTreeStore *feedstore;
 
+static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
+							   GtkTreePath       *dest_path,
+							   GtkSelectionData  *selection_data);
+
+
 /* ---------------------------------------------------------------------------- */
 /* DnD callbacks								*/
 /* ---------------------------------------------------------------------------- */
@@ -78,6 +83,8 @@ ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePath *path) {
 /** decides wether a feed cannot be dropped onto a user selection tree position or not */
 static gboolean 
 ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, GtkSelectionData *selection_data) {
+	GtkTreeModel	*tree_model;
+	GtkTreeStore	*tree_store;
 	GtkTreeIter	iter;
 	
 	debug1(DEBUG_GUI, "DnD check if dropping is possible (%d)", dest_path);
@@ -88,8 +95,13 @@ ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, Gt
 	   is not possible with GTK 2.0-2.2 because it disallows to
 	   drops as a children but its possible since GTK 2.4 */
 		   	
-	g_assert(NULL != feedstore);	
-	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, dest_path)) {
+	tree_model = GTK_TREE_MODEL (drag_dest);
+	tree_store = GTK_TREE_STORE (drag_dest);
+
+	if(((old_drop_possible)(drag_dest, dest_path, selection_data)) == FALSE)
+		return FALSE;
+	
+	if(gtk_tree_model_get_iter(tree_model, &iter, dest_path)) {
 		/* if we get an iterator its either a folder or the feed 
 		   iterator after the insertion point */
 	} else {
@@ -108,8 +120,10 @@ void ui_dnd_init(void) {
 	if(NULL != (drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE(GTK_TREE_MODEL(feedstore))))
 		drag_source_iface->row_draggable = ui_dnd_feed_draggable;
 
-	if(NULL != (drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore))))
+	if(NULL != (drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
+		old_drop_possible = drag_dest_iface->row_drop_possible;
 		drag_dest_iface->row_drop_possible = ui_dnd_feed_drop_possible;
+	}
 }
 
 /* ---------------------------------------------------------------------------- */
