@@ -170,9 +170,10 @@ void download_request_free(struct request *request) {
 	
 	debug_enter("update_request_free");
 	if(NULL != request) {
-		g_free(((struct request *)request)->source);
-		g_free(((struct request *)request)->filtercmd);
-		g_free(((struct request *)request)->data);
+		g_free(request->source);
+		g_free(request->filtercmd);
+		g_free(request->etag);
+		g_free(request->data);
 		g_free(request);
 	}
 	debug_exit("update_request_free");

@@ -339,58 +339,44 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	}
 	
 	/* Again is proxyport == 0, non proxy mode, otherwise make proxy requests. */
-	if (proxyport == 0) {
-		/* Request URL from HTTP server. */
-		if (cur_ptr->lastmodified != NULL) {
-			fprintf(stream,
-					"GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n",
-					url,
-					useragent,
-					host,
-					cur_ptr->lastmodified,
-					(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
-					(cur_ptr->cookies ? cur_ptr->cookies : ""));
-		} else {
-			fprintf(stream,
-					"GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n",
-					url,
-					useragent,
-					host,
-					(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
-					(cur_ptr->cookies ? cur_ptr->cookies : ""));
-		}
-		fflush(stream);		/* We love Solaris, don't we? */
-	} else {
-		/* Request URL from HTTP server. */
-		if (cur_ptr->lastmodified != NULL) {
-			fprintf(stream,
-					"GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s",
-					host,
-					url,
-					useragent,
-					host,
-					cur_ptr->lastmodified,
-					(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
-					(cur_ptr->cookies ? cur_ptr->cookies : ""));
-		} else {
-			fprintf(stream,
-					"GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s",
-					host,
-					url,
-					useragent,
-					host,
-					(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
-					(cur_ptr->cookies ? cur_ptr->cookies : ""));
-		}
-		if (proxyusername != NULL && proxypassword != NULL && ((proxyusername[0] != '\0') || (proxypassword[0] != '\0'))) {
-			/* construct auth function appends \r\n to string */
-			tmpstring = ConstructBasicAuth(proxyusername,proxypassword);
-			fprintf(stream, "Proxy-%s", tmpstring);
-			free(tmpstring);
-		}
-		fprintf(stream, "\r\n");
-		fflush(stream);		/* We love Solaris, don't we? */
-	}
+	/* Request URL from HTTP server. */
+	tmpstring = NULL;
+	if (proxyport != 0 && proxyusername != NULL && proxypassword != NULL && ((proxyusername[0] != '\0') || (proxypassword[0] != '\0')))
+		/* construct auth function appends \r\n to string */
+		tmpstring = ConstructBasicAuth(proxyusername,proxypassword);
+	fprintf(stream,
+		   "GET %s%s%s HTTP/1.0\r\n"
+		   "Accept-Encoding: gzip\r\n"
+		   "User-Agent: %s\r\n"
+		   "Connection: close\r\n"
+		   "Host: %s\r\n"
+		   "%s%s%s" /* Last modified */
+		   "%s" /* authinfo*/
+		   "%s" /* cookies */
+		   "%s%s" /* Proxy*/
+		   "%s%s%s" /* etag */
+		   "\r\n",
+		   proxyport != 0 ? "http://" : "",
+		   proxyport != 0 ? host : "",
+		   url,
+		   useragent,
+		   host,
+		   cur_ptr->lastmodified != NULL ? "If-Modified-Since: " : "",
+		   cur_ptr->lastmodified != NULL ?  cur_ptr->lastmodified : "",
+		   cur_ptr->lastmodified != NULL ? "\r\n" : "",
+		   (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+		   (cur_ptr->cookies ? cur_ptr->cookies : ""),
+		   tmpstring != NULL ? "Proxy-": "",
+		   tmpstring != NULL ? tmpstring : "",
+		   cur_ptr->etag != NULL ? "If-None-Match: " : "",
+		   cur_ptr->etag != NULL ? cur_ptr->etag : "",
+		   cur_ptr->etag != NULL ? "\r\n" : ""
+		   );
+	
+	if (tmpstring != NULL)
+		free(tmpstring);
+	
+	fflush(stream);		/* We love Solaris, don't we? */
 	
 	if ((NetPoll (cur_ptr, my_socket, NET_READ)) == -1) {
 		fclose (stream);
@@ -651,6 +637,22 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 				cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] = '\0';
 			free(freeme);
 		}
+		/* Get the E-Tag */
+		if ((strncasecmp (netbuf, "ETag:", 5) == 0) &&
+		    (cur_ptr->lasthttpstatus == 200)) {
+			tmpstring = strdup(netbuf);
+			freeme = tmpstring;
+			tmpstring += 5;
+			while(*tmpstring != '\0' && (*tmpstring == ' ' || *tmpstring == '\t'))
+				tmpstring++;
+			if (tmpstring[strlen(tmpstring)-1] == '\n')
+				tmpstring[strlen(tmpstring)-1] = '\0';
+			if (tmpstring[strlen(tmpstring)-1] == '\r')
+				tmpstring[strlen(tmpstring)-1] = '\0';
+			free(cur_ptr->etag);
+			cur_ptr->etag = strdup(tmpstring);
+			free(freeme);
+		}
 		/* Check and parse Content-Encoding header. */
 		if (strncasecmp (netbuf, "Content-Encoding", 16) == 0) {
 			/* Will also catch x-gzip. */
@@ -895,12 +897,14 @@ void downloadlib_process_url(struct request *request) {
 	debug1(DEBUG_UPDATE, "downloading %s", request->source);
 
 	cur_ptr.feedurl = request->source;
-	cur_ptr.problem = 0;
 	if (request->lastmodified.tv_sec > 0)
 		cur_ptr.lastmodified = createRFC822Date(&(request->lastmodified.tv_sec));
 	else
 		cur_ptr.lastmodified = NULL;
 	
+	cur_ptr.etag = request->etag;
+		
+	cur_ptr.problem = 0;
 	cur_ptr.contentlength = 0;
 	cur_ptr.cookies = NULL;
 	cur_ptr.authinfo = NULL;
@@ -908,7 +912,7 @@ void downloadlib_process_url(struct request *request) {
 	cur_ptr.lasthttpstatus = 0; /* This might, or might not mean something to someone */
 	
 	/* Fixme: assert that it is a http:// URL */
-
+	
 	request->data = DownloadFeed (oldurl, &cur_ptr, 0);
 
 	g_free(oldurl);
@@ -922,8 +926,8 @@ void downloadlib_process_url(struct request *request) {
 		request->lastmodified.tv_sec = parseRFC822Date(cur_ptr.lastmodified);
 	else
 		request->lastmodified.tv_sec = 0L;
-	
 	request->lastmodified.tv_usec = 0L;
+	request->etag = cur_ptr.etag;
 	g_free(cur_ptr.lastmodified);
 	g_free(cur_ptr.cookies);
 	g_free(cur_ptr.servauth);

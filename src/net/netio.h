@@ -32,6 +32,7 @@ struct feed_request {
 	/* Supplied and overwritten/freed */
 	char *feedurl;                                                  /* Non hashified URL */
 	char *lastmodified;                                             /* Content of header as sent by the server. */
+	char *etag;
 
 	/* Set by netio code */
 	size_t contentlength;

@@ -665,7 +665,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 		}		
 
 		/* copy description and default update interval */
-		feed_set_description(old_fp, feed_get_description(new_fp->description));
+		feed_set_description(old_fp, feed_get_description(new_fp));
 		old_fp->defaultInterval = new_fp->defaultInterval;
 	}
 
