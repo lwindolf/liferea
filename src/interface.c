@@ -195,7 +195,7 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (vbox1), statusbar, FALSE, FALSE, 0);
 
   g_signal_connect ((gpointer) mainwindow, "delete_event",
-                    G_CALLBACK (gtk_main_quit),
+                    G_CALLBACK (on_quit),
                     NULL);
   g_signal_connect_swapped ((gpointer) refreshbtn, "clicked",
                             G_CALLBACK (on_refreshbtn_clicked),

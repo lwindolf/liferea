@@ -21,7 +21,7 @@
 #ifndef _OCS_DIR_H
 #define _OCS_DIR_H
 
-#include "backend.h"
+#include "feed.h"
 
 /* this is a generic subtag list for directory, channel and format description tags */
 #define OCS_TITLE		0
@@ -54,23 +54,11 @@ typedef struct dirEntry {
 
 /* a structure to store OCS feed list information */
 typedef struct directory {
-	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
-	   this structure, order is important! */
-	gint		type;			/* FST_OCS for OCS feed lists */
-	gchar		*key;			/* configuration storage key */	
-	gchar		*keyprefix;	
-	
-	gchar		*usertitle;		/* feed title may be modified by user */	
 	gchar 		*source;		/* source url */
-	gboolean	available;		/* flag to signalize load/update errors */
-	gint		updateCounter;		/* only used as a flag to signalize updating to the update thread */	
-
 	gchar		*tags[OCS_MAX_TAG];	/* standard namespace infos */
-
 	GSList		*items;			/* list of dirEntry structures */
 } *directoryPtr;
 
 feedHandlerPtr	initOCSFeedHandler(void);
-itemHandlerPtr	initOCSItemHandler(void);
 
 #endif

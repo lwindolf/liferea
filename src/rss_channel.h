@@ -22,8 +22,7 @@
 #define _RSS_CHANNEL_H
 
 #include <time.h>
-#include "backend.h"
-#include "rss_item.h"
+#include "feed.h"
 
 /* all versions */
 #define RSS_CHANNEL_TITLE		0
@@ -46,36 +45,20 @@
 
 #define RSS_CHANNEL_MAX_TAG		11
 
-typedef struct RSSChannel {
-	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
-	   this structure, order is important! */
-	gint		type;		/* FST_RSS for RSS channels */
-	gchar		*key;		/* configuration storage key */	
-	gchar		*keyprefix;	
-			
+typedef struct RSSChannel {		
 	/* standard namespace infos */
 	gchar		*tags[RSS_CHANNEL_MAX_TAG];
 
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */
-					   
-	GSList		*items;		/* the item list */
 	
 	gchar		*tiTitle;	/* text input title */
 	gchar		*tiDescription;	/* text input description */
 	gchar		*tiName;	/* text input object name */
 	gchar		*tiLink;	/* text input HTTP GET destination URL */
 	
-	/* other information */
-	gchar		*usertitle;	/* feed title may be modified by user */	
-	gchar 		*source;	/* source url */
-	gboolean	available;	/* flag to signalize load/update errors */
 	time_t		time;		/* last feed build/creation time */	
-	gchar 		*encoding;	/* xml encoding */
-	gint		updateInterval;	/* user defined feed refresh interval */
-	gint		defaultUpdateInterval;	/* feed defined refresh interval */
-	gint		updateCounter;	/* counter of minutes till next feed refresh */	
-	gint		unreadCounter;	/* counter of unread items */
+	gint		updateInterval;	/* channel defined feed refresh interval */
 } *RSSChannelPtr;
 
 feedHandlerPtr	initRSSFeedHandler(void);

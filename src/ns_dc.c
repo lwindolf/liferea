@@ -451,45 +451,52 @@ static void ns_dc_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 static void ns_dc_output(gpointer key, gpointer value, gpointer userdata) {
-
-	writeHTML(FIRSTTD);
-	writeHTML((gchar *)key);
-	writeHTML(NEXTTD);
-	writeHTML((gchar *)value);
-	writeHTML(LASTTD);
+	gchar 	**buffer = (gchar **)userdata;
+	
+	addToHTMLBuffer(buffer, FIRSTTD);
+	addToHTMLBuffer(buffer, (gchar *)key);
+	addToHTMLBuffer(buffer, NEXTTD);
+	addToHTMLBuffer(buffer, (gchar *)value);
+	addToHTMLBuffer(buffer, LASTTD);
 }
 
-static void ns_dc_doFooterOutput(GHashTable *nsinfos) {
+static gchar * ns_dc_doFooterOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
+	gchar		*buffer = NULL;
 	
 	/* we print all channel infos as a (key,value) table */
 	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_dc_prefix))) {
-		writeHTML(TABLE_START);
-		g_hash_table_foreach(nsvalues, ns_dc_output, NULL);
-		writeHTML(TABLE_END);			
+		addToHTMLBuffer(&buffer, TABLE_START);
+		g_hash_table_foreach(nsvalues, ns_dc_output, (gpointer)&buffer);
+		addToHTMLBuffer(&buffer, TABLE_END);			
 	}
+	
+	return buffer;
 }
 
 static gchar * ns_dc_doRSSItemFooterOutput(gpointer obj) {
 
-	if(NULL != obj) {
-		ns_dc_doFooterOutput(((RSSItemPtr)obj)->nsinfos);
-	}
+	if(NULL != obj)
+		return ns_dc_doFooterOutput(((RSSItemPtr)obj)->nsinfos);
+		
+	return NULL;
 }
 
 
 static gchar *	ns_dc_doRSSChannelFooterOutput(gpointer obj) {
 	
-	if(NULL != obj) {
-		ns_dc_doFooterOutput(((RSSChannelPtr)obj)->nsinfos);
-	}
+	if(NULL != obj)
+		return ns_dc_doFooterOutput(((RSSChannelPtr)obj)->nsinfos);
+		
+	return NULL;
 }
 
 static gchar * ns_dc_doPIEEntryFooterOutput(gpointer obj) {
 
-	if(NULL != obj) {
-		ns_dc_doFooterOutput(((PIEEntryPtr)obj)->nsinfos);
-	}
+	if(NULL != obj)
+		return ns_dc_doFooterOutput(((PIEEntryPtr)obj)->nsinfos);
+
+	return NULL;
 }
 
 

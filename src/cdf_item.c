@@ -20,8 +20,6 @@
 
 #include <string.h>
 
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
 #include "support.h"
 #include "common.h"
 #include "cdf_channel.h"
@@ -40,34 +38,14 @@ static gchar *CDFItemTagList[] = {	"title",
 				  };
 
 /* prototypes */
-gchar * getCDFItemTag(CDFItemPtr ip, int tag);
-gpointer getCDFItemProp(gpointer fp, gint proptype);
-void setCDFItemProp(gpointer fp, gint proptype, gpointer data);
-void showCDFItem(gpointer ip);
-
-itemHandlerPtr initCDFItemHandler(void) {
-	itemHandlerPtr	ihp;
-	
-	if(NULL == (ihp = (itemHandlerPtr)g_malloc(sizeof(struct itemHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(ihp, 0, sizeof(struct itemHandler));
-	
-	/* CDF uses no namespaces */
-
-	/* prepare item handler structure */
-	ihp->getItemProp	= getCDFItemProp;	
-	ihp->setItemProp	= setCDFItemProp;
-	ihp->showItem		= showCDFItem;
-	
-	return ihp;
-}
+gchar * showCDFItem(feedPtr fp, CDFChannelPtr cp, CDFItemPtr ip);
 
 /* method to parse standard tags for each item element */
-CDFItemPtr parseCDFItem(xmlDocPtr doc, xmlNodePtr cur) {
+itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp = NULL;
 	gchar		*value;
-	CDFItemPtr 	i = NULL;
+	CDFItemPtr 	i;
+	itemPtr		ip;
 	int		j;
 
 	if((NULL == cur) || (NULL == doc)) {
@@ -81,11 +59,11 @@ CDFItemPtr parseCDFItem(xmlDocPtr doc, xmlNodePtr cur) {
 	}
 	memset(i, 0, sizeof(struct CDFItem));
 	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
-
+	ip = getNewItemStruct();
+	
 	/* save the item link */
 	value = xmlGetNoNsProp(cur, (const xmlChar *)"href");
 	i->tags[CDF_ITEM_LINK] = g_strdup(value);
-	i->read = FALSE;
 	g_free(value);
 
 	cur = cur->xmlChildrenNode;
@@ -118,6 +96,13 @@ CDFItemPtr parseCDFItem(xmlDocPtr doc, xmlNodePtr cur) {
 		cur = cur->next;
 	}
 
+	/* after parsing we fill the infos into the itemPtr structure */
+	ip->type = FST_CDF;
+	ip->time = i->time;
+	ip->source = i->tags[CDF_ITEM_LINK];
+	ip->readStatus = FALSE;
+	ip->id = NULL;
+
 	/* some postprocessing */
 	if(NULL != i->tags[CDF_ITEM_TITLE])
 		i->tags[CDF_ITEM_TITLE] = unhtmlize((gchar *)doc->encoding, i->tags[CDF_ITEM_TITLE]);
@@ -125,7 +110,12 @@ CDFItemPtr parseCDFItem(xmlDocPtr doc, xmlNodePtr cur) {
 	if(NULL != i->tags[CDF_ITEM_DESCRIPTION])
 		i->tags[CDF_ITEM_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[CDF_ITEM_DESCRIPTION]);	
 		
-	return(i);
+	ip->title = i->tags[CDF_ITEM_TITLE];		
+	ip->description = showCDFItem(fp, cp, i);
+
+	g_free(i->nsinfos);
+	g_free(i);
+	return ip;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -133,135 +123,50 @@ CDFItemPtr parseCDFItem(xmlDocPtr doc, xmlNodePtr cur) {
 /* ---------------------------------------------------------------------------- */
 
 /* writes CDF item description as HTML into the gtkhtml widget */
-void showCDFItem(gpointer ip) {
-	CDFChannelPtr	cp;
-	gchar		*itemlink;
-	gchar		*feedimage;
-	gchar		*tmp;	
+gchar * showCDFItem(feedPtr fp, CDFChannelPtr cp, CDFItemPtr ip) {
+	gchar		*buffer = NULL;
+	gchar		*tmp;
 	
 	g_assert(ip != NULL);
-	cp = ((CDFItemPtr)ip)->cp;
 	g_assert(cp != NULL);
+	g_assert(fp != NULL);
 		
-	startHTMLOutput();
-	writeHTML(HTML_START);
-	writeHTML(HTML_HEAD_START);
+	addToHTMLBuffer(&buffer, HTML_START);
+	addToHTMLBuffer(&buffer, HTML_HEAD_START);
+	addToHTMLBuffer(&buffer, META_ENCODING1);
+	addToHTMLBuffer(&buffer, "UTF-8");
+	addToHTMLBuffer(&buffer, META_ENCODING2);
+	addToHTMLBuffer(&buffer, HTML_HEAD_END);
 
-	writeHTML(META_ENCODING1);
-	writeHTML("UTF-8");
-	writeHTML(META_ENCODING2);
-
-	writeHTML(HTML_HEAD_END);
-
-	if(NULL != (itemlink = getCDFItemTag(ip, CDF_ITEM_LINK))) {
-		writeHTML(ITEM_HEAD_START);
-		
-		writeHTML(ITEM_HEAD_CHANNEL);
+	if(NULL != ip->tags[CDF_ITEM_LINK]) {
+		addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
+		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-			cp->source,
-			getDefaultEntryTitle(cp->key));
-		writeHTML(tmp);
+			fp->source,
+			cp->tags[CDF_CHANNEL_TITLE]);
+		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		
-		writeHTML(HTML_NEWLINE);
-		
-		writeHTML(ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", itemlink, 
-			getCDFItemTag(ip, CDF_ITEM_TITLE));
-		writeHTML(tmp);
+		addToHTMLBuffer(&buffer, HTML_NEWLINE);		
+		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->tags[CDF_ITEM_LINK], 
+			ip->tags[CDF_ITEM_TITLE]);
+		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		
-		writeHTML(ITEM_HEAD_END);	
+		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
 	}	
 
-	if(NULL != (feedimage = getCDFItemTag(ip, CDF_ITEM_IMAGE))) {
-		writeHTML(IMG_START);
-		writeHTML(feedimage);
-		writeHTML(IMG_END);	
+	if(NULL != ip->tags[CDF_ITEM_IMAGE]) {
+		addToHTMLBuffer(&buffer, IMG_START);
+		addToHTMLBuffer(&buffer, ip->tags[CDF_ITEM_IMAGE]);
+		addToHTMLBuffer(&buffer, IMG_END);	
 	}
 
-	if(NULL != getCDFItemTag(ip, CDF_ITEM_DESCRIPTION))
-		writeHTML(getCDFItemTag(ip, CDF_ITEM_DESCRIPTION));
+	if(NULL != ip->tags[CDF_ITEM_DESCRIPTION])
+		addToHTMLBuffer(&buffer, ip->tags[CDF_ITEM_DESCRIPTION]);
 
-	writeHTML(HTML_END);
-	finishHTMLOutput();
-}
-
-/* ---------------------------------------------------------------------------- */
-/* just some encapsulation 							*/
-/* ---------------------------------------------------------------------------- */
-
-gchar * getCDFItemTag(CDFItemPtr ip, int tag) {
-
-	if(NULL == ip)
-		return NULL;
+	addToHTMLBuffer(&buffer, HTML_END);
 	
-	g_assert(NULL != ip->cp);
-	g_assert(FST_CDF == ((CDFChannelPtr)(ip->cp))->type);
-	return ip->tags[tag];
-}
-
-void setCDFItemProp(gpointer ip, gint proptype, gpointer data) {
-	CDFItemPtr	i = (CDFItemPtr)ip;
-	
-	if(NULL != i) {
-		g_assert(NULL != i->cp);	
-		g_assert(FST_CDF == ((CDFChannelPtr)(i->cp))->type);
-		switch(proptype) {
-			case ITEM_PROP_TITLE:
-				g_free(i->tags[CDF_ITEM_TITLE]);
-				i->tags[CDF_ITEM_TITLE] = (gchar *)data;
-				break;
-			case ITEM_PROP_READSTATUS:
-				/* no matter what data was given... */
-				if(FALSE == i->read) {
-					((CDFChannelPtr)(i->cp))->unreadCounter--;
-					i->read = TRUE;
-				}
-				break;
-			case ITEM_PROP_DESCRIPTION:
-			case ITEM_PROP_TIME:
-			case ITEM_PROP_SOURCE:
-			case ITEM_PROP_TYPE:
-				g_error("please don't do this!");
-				break;
-			default:
-				g_error(_("intenal error! unknow item property type!\n"));
-				break;
-		}
-	}
-}
-
-gpointer getCDFItemProp(gpointer ip, gint proptype) {
-	CDFItemPtr	i = (CDFItemPtr)ip;
-	
-	if(NULL != i) {
-		g_assert(NULL != i->cp);	
-		g_assert(FST_CDF == ((CDFChannelPtr)(i->cp))->type);
-		switch(proptype) {
-			case ITEM_PROP_TITLE:
-				return (gpointer)getCDFItemTag(i, CDF_ITEM_TITLE);
-				break;
-			case ITEM_PROP_READSTATUS:
-				return (gpointer)i->read;
-				break;
-			case ITEM_PROP_DESCRIPTION:
-				return (gpointer)getCDFItemTag(i, CDF_ITEM_DESCRIPTION);
-				break;
-			case ITEM_PROP_TIME:
-				return (gpointer)i->time;
-				break;
-			case ITEM_PROP_SOURCE:
-				return (gpointer)getCDFItemTag(i, CDF_ITEM_LINK);
-				break;
-			case ITEM_PROP_TYPE:
-				return (gpointer)FST_CDF;
-				break;
-			default:
-				g_error(_("intenal error! unknow item property type!\n"));
-				break;
-		}
-	} else {
-		return NULL;
-	}
+	return buffer;
 }

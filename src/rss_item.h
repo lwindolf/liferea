@@ -23,6 +23,9 @@
 
 #include <time.h>
 #include <glib.h>
+
+#include "item.h"
+#include "feed.h"
 #include "rss_channel.h"
 
 /* all RSS versions */
@@ -41,18 +44,13 @@
 #define RSS_ITEM_MAX_TAG		7
 
 typedef struct RSSItem {
-	gpointer	cp;		/* the channel structure this item belongs to,
-					   must be the first element of the structure! */
-	
 	gchar		*tags[RSS_ITEM_MAX_TAG];	/* standard namespace infos */
 	
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */	
-	gboolean	read;
 	time_t		time;
-	struct RSSItem	*next;
 } *RSSItemPtr;
 
-itemHandlerPtr initRSSItemHandler(void);
+itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur);
 
 #endif

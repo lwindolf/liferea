@@ -36,9 +36,10 @@
 #define OUTPUT_ITEM_NS_HEADER		2
 #define OUTPUT_ITEM_NS_FOOTER		3
 typedef struct {
-	gint		type;	
-	gpointer	obj;	/* thats either a PIEFeedPtr or a PIEEntryPtr 
-				   depending on the type value */
+	gint		type;
+	gchar		**buffer;	/* pointer to output char buffer pointer */
+	gpointer	obj;		/* thats either a PIEFeedPtr or a PIEEntryPtr 
+					   depending on the type value */
 } outputRequest;
 
 /* uses the same namespace handler as PIE_channel */
@@ -53,40 +54,19 @@ static gchar *entryTagList[] = {	"title",
 				  };
 				  
 /* prototypes */
-static gchar * getPIEEntryTag(PIEEntryPtr ip, int tag);
-gpointer getPIEEntryProp(gpointer ip, gint proptype);
-void setPIEEntryProp(gpointer ip, gint proptype, gpointer data);
-void showPIEEntry(gpointer ip);
+static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip);
 
 extern gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur);
 extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 
-itemHandlerPtr initPIEItemHandler(void) {
-	itemHandlerPtr	ihp;
-	
-	if(NULL == (ihp = (itemHandlerPtr)g_malloc(sizeof(struct itemHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(ihp, 0, sizeof(struct itemHandler));
-	
-	/* the PIE/RDF item handling reuses the PIE/RDF channel
-	   namespace handler */
-
-	/* prepare item handler structure */
-	ihp->getItemProp	= getPIEEntryProp;	
-	ihp->setItemProp	= setPIEEntryProp;
-	ihp->showItem		= showPIEEntry;
-	
-	return ihp;
-}
-
 /* method to parse standard tags for each item element */
-PIEEntryPtr parseEntry(xmlDocPtr doc, xmlNodePtr cur) {
+itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gint			bw, br;
 	gchar			*tmp2, *tmp = NULL;
 	parseEntryTagFunc	fp;
 	PIENsHandler		*nsh;	
-	PIEEntryPtr 		i = NULL;
+	PIEEntryPtr 		i;
+	itemPtr			ip;
 	int			j;
 	gboolean		summary = FALSE;
 
@@ -101,7 +81,8 @@ PIEEntryPtr parseEntry(xmlDocPtr doc, xmlNodePtr cur) {
 	}
 	memset(i, 0, sizeof(struct PIEEntry));
 	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
-
+	ip = getNewItemStruct();
+	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		/* check namespace of this tag */
@@ -190,14 +171,26 @@ PIEEntryPtr parseEntry(xmlDocPtr doc, xmlNodePtr cur) {
 		cur = cur->next;
 	}
 
+	/* after parsing we fill the infos into the itemPtr structure */
+	ip->type = FST_PIE;
+	ip->time = i->time;
+	ip->source = i->tags[PIE_ENTRY_LINK];
+	ip->readStatus = FALSE;
+	ip->id = NULL;
+
 	/* some postprocessing */
 	if(NULL != i->tags[PIE_ENTRY_TITLE])
 		i->tags[PIE_ENTRY_TITLE] = unhtmlize((gchar *)doc->encoding, i->tags[PIE_ENTRY_TITLE]);
 		
 	if(NULL != i->tags[PIE_ENTRY_DESCRIPTION])
 		i->tags[PIE_ENTRY_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[PIE_ENTRY_DESCRIPTION]);	
-		
-	return(i);
+
+	ip->title = i->tags[PIE_ENTRY_TITLE];		
+	ip->description = showPIEEntry((PIEFeedPtr)cp, i);
+
+	g_free(i->nsinfos);
+	g_free(i);
+	return ip;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -207,145 +200,62 @@ PIEEntryPtr parseEntry(xmlDocPtr doc, xmlNodePtr cur) {
 extern void showFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 
 /* writes item description as HTML into the gtkhtml widget */
-void showPIEEntry(gpointer i) {
-	PIEEntryPtr	ip = (PIEEntryPtr)i;
-	PIEFeedPtr	cp;
-	gchar		*itemlink;
-	gchar		*tmp;	
+static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
+	gchar		*tmp, *buffer = NULL;	
 	outputRequest	request;
 
 	g_assert(NULL != ip);	
-	cp = ((PIEEntryPtr)ip)->cp;
 	g_assert(NULL != cp);
+	
+	addToHTMLBuffer(&buffer, HTML_START);
+	addToHTMLBuffer(&buffer, HTML_HEAD_START);
+	addToHTMLBuffer(&buffer, META_ENCODING1);
+	addToHTMLBuffer(&buffer, "UTF-8");
+	addToHTMLBuffer(&buffer, META_ENCODING2);
+	addToHTMLBuffer(&buffer, HTML_HEAD_END);
 
-	startHTMLOutput();
-	writeHTML(HTML_HEAD_START);
-
-	writeHTML(META_ENCODING1);
-	writeHTML("UTF-8");
-	writeHTML(META_ENCODING2);
-
-	writeHTML(HTML_HEAD_END);
-
-	if(NULL != (itemlink = getPIEEntryTag((PIEEntryPtr)ip, PIE_ENTRY_LINK))) {
-		writeHTML(ITEM_HEAD_START);
+	if(NULL != ip->tags[PIE_ENTRY_LINK]) {
+		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
 		
-		writeHTML(ITEM_HEAD_CHANNEL);
+		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
 			cp->tags[PIE_FEED_LINK],
-			getDefaultEntryTitle(cp->key));
-		writeHTML(tmp);
+			cp->tags[PIE_FEED_TITLE]);
+		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		
-		writeHTML(HTML_NEWLINE);
+		addToHTMLBuffer(&buffer, HTML_NEWLINE);
 		
-		writeHTML(ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", itemlink, ip->tags[PIE_ENTRY_TITLE]);
-		writeHTML(tmp);
+		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",ip->tags[PIE_ENTRY_LINK] , ip->tags[PIE_ENTRY_TITLE]);
+		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		
-		writeHTML(ITEM_HEAD_END);	
+		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
 	}	
 
 	/* process namespace infos */
 	request.obj = ip;
+	request.buffer = &buffer;
 	request.type = OUTPUT_ITEM_NS_HEADER;	
 	if(NULL != pie_nslist)
 		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
 
 	if(NULL != ip->tags[PIE_ENTRY_DESCRIPTION])
-		writeHTML(ip->tags[PIE_ENTRY_DESCRIPTION]);
+		addToHTMLBuffer(&buffer, ip->tags[PIE_ENTRY_DESCRIPTION]);
 
-	writeHTML(FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(doc, "author",			ip->author);
-	FEED_FOOT_WRITE(doc, "contributors",		ip->contributors);
-	FEED_FOOT_WRITE(doc, "copyright",		ip->tags[PIE_ENTRY_COPYRIGHT]);
-	FEED_FOOT_WRITE(doc, "last modified",		ip->tags[PIE_ENTRY_PUBDATE]);
-	writeHTML(FEED_FOOT_TABLE_END);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "author",			ip->author);
+	FEED_FOOT_WRITE(buffer, "contributors",		ip->contributors);
+	FEED_FOOT_WRITE(buffer, "copyright",		ip->tags[PIE_ENTRY_COPYRIGHT]);
+	FEED_FOOT_WRITE(buffer, "last modified",		ip->tags[PIE_ENTRY_PUBDATE]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
 
 	request.type = OUTPUT_ITEM_NS_FOOTER;
 	if(NULL != pie_nslist)
 		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
 
-
-	finishHTMLOutput();
-}
-
-/* ---------------------------------------------------------------------------- */
-/* just some encapsulation 							*/
-/* ---------------------------------------------------------------------------- */
-
-static gchar * getPIEEntryTag(PIEEntryPtr ip, int tag) {
-
-	if(NULL == ip)
-		return NULL;
+	addToHTMLBuffer(&buffer, HTML_END);
 	
-	g_assert(NULL != ip->cp);
-	g_assert(FST_PIE == ((PIEFeedPtr)(ip->cp))->type);
-	return ip->tags[tag];
-}
-
-void setPIEEntryProp(gpointer ip, gint proptype, gpointer data) {
-	PIEEntryPtr	i = (PIEEntryPtr)ip;
-	
-	if(NULL != i) {
-		g_assert(NULL != i->cp);	
-		g_assert(FST_PIE == ((PIEFeedPtr)(i->cp))->type);
-		switch(proptype) {
-			case ITEM_PROP_TITLE:
-				g_free(i->tags[PIE_ENTRY_TITLE]);
-				i->tags[PIE_ENTRY_TITLE] = (gchar *)data;
-				break;
-			case ITEM_PROP_READSTATUS:
-				/* no matter what data was given... */
-				if(FALSE == i->read) {
-					((PIEFeedPtr)(i->cp))->unreadCounter--;
-					i->read = TRUE;
-				}
-				break;
-			case ITEM_PROP_DESCRIPTION:
-			case ITEM_PROP_TIME:
-			case ITEM_PROP_SOURCE:
-			case ITEM_PROP_TYPE:
-				g_error("please don't do this!");
-				break;
-			default:
-				g_error(_("intenal error! unknow item property type!\n"));
-				break;
-		}
-	}
-}
-
-gpointer getPIEEntryProp(gpointer ip, gint proptype) {
-	PIEEntryPtr	i = (PIEEntryPtr)ip;
-	
-	if(NULL != i) {
-		g_assert(NULL != i->cp);	
-		g_assert(FST_PIE == ((PIEFeedPtr)(i->cp))->type);
-		switch(proptype) {
-			case ITEM_PROP_TITLE:
-				return (gpointer)getPIEEntryTag(i, PIE_ENTRY_TITLE);
-				break;
-			case ITEM_PROP_READSTATUS:
-				return (gpointer)i->read;
-				break;
-			case ITEM_PROP_DESCRIPTION:
-				return (gpointer)getPIEEntryTag(i, PIE_ENTRY_DESCRIPTION);
-				break;
-			case ITEM_PROP_TIME:
-				return (gpointer)i->time;
-				break;
-			case ITEM_PROP_SOURCE:
-				return (gpointer)getPIEEntryTag(i, PIE_ENTRY_LINK);
-				break;
-			case ITEM_PROP_TYPE:
-				return (gpointer)FST_PIE;
-				break;
-			default:
-				g_error(_("intenal error! unknow item property type!\n"));
-				break;
-		}
-	} else {
-		return NULL;
-	}
+	return buffer;
 }

@@ -28,6 +28,7 @@
 #include "conf.h"
 #include "support.h"
 #include "common.h"
+#include "feed.h"
 #include "pie_feed.h"
 
 #include "pie_ns.h"
@@ -43,36 +44,30 @@
 #define OUTPUT_ITEM_NS_HEADER		2
 #define OUTPUT_ITEM_NS_FOOTER		3
 typedef struct {
-	gint		type;	
-	gpointer	obj;	/* thats either a PIEFeedPtr or a PIEEntryPtr 
-				   depending on the type value */
+	gint		type;
+	gchar		**buffer;	/* pointer to output char buffer pointer */
+	gpointer	obj;		/* thats either a PIEFeedPtr or a PIEEntryPtr 
+					   depending on the type value */
 } outputRequest;
-
-extern GMutex * entries_lock;	// FIXME
-extern GHashTable *entries;	// FIXME
 
 /* to store the PIENsHandler structs for all supported RDF namespace handlers */
 GHashTable	*pie_nslist = NULL;
 
 /* note: the tag order has to correspond with the PIE_FEED_* defines in the header file */
 static gchar *feedTagList[] = {	"title",
-					"tagline",
-					"link",
-					"copyright",
-					"language",
-					"generator",
-					"lastBuildDate",
-					"modified",			
-					NULL
-				  };
+				"tagline",
+				"link",
+				"copyright",
+				"language",
+				"generator",
+				"lastBuildDate",
+				"modified",			
+				NULL
+			  };
 
 /* prototypes */
-void		setPIEFeedProp(gpointer fp, gint proptype, gpointer data);
-gpointer 	getPIEFeedProp(gpointer fp, gint proptype);
-gpointer	mergePIEFeed(gpointer old_cp, gpointer new_cp);
-gpointer 	loadPIEFeed(gchar *keyprefix, gchar *key);
-gpointer 	readPIEFeed(gchar *url);
-void		showPIEFeedInfo(gpointer cp);
+static feedPtr 	readPIEFeed(gchar *url);
+static gchar *	showPIEFeedInfo(PIEFeedPtr cp, gchar *url);
 
 feedHandlerPtr initPIEFeedHandler(void) {
 	feedHandlerPtr	fhp;
@@ -91,14 +86,8 @@ feedHandlerPtr initPIEFeedHandler(void) {
 					        (gpointer)ns_dc_getPIENsHandler());
 
 	/* prepare feed handler structure */
-	fhp->loadFeed		= loadPIEFeed;
 	fhp->readFeed		= readPIEFeed;
-	fhp->mergeFeed		= mergePIEFeed;
-	fhp->removeFeed		= NULL; // FIXME
-	fhp->getFeedProp	= getPIEFeedProp;	
-	fhp->setFeedProp	= setPIEFeedProp;
-	fhp->showFeedInfo	= showPIEFeedInfo;
-	
+
 	return fhp;
 }
 
@@ -136,27 +125,9 @@ gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur) {
 	return tmp;
 }
 
-/* loads a saved PIE feed from disk */
-gpointer loadPIEFeed(gchar *keyprefix, gchar *key) {
-	PIEFeedPtr	new_cp = NULL;
-
-	// workaround as long loading is not implemented
-	if(NULL == (new_cp = (PIEFeedPtr) malloc(sizeof(struct PIEFeed)))) {
-		g_error("not enough memory!\n");
-		return NULL;
-	}
-
-	memset(new_cp, 0, sizeof(struct PIEFeed));
-	new_cp->updateInterval = -1;
-	new_cp->updateCounter = 0;	/* to enforce immediate reload */
-	new_cp->type = FST_PIE;
-	
-	return (gpointer)new_cp;
-}
-
 /* reads a PIE feed URL and returns a new channel structure (even if
    the feed could not be read) */
-gpointer readPIEFeed(gchar *url) {
+static feedPtr readPIEFeed(gchar *url) {
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
 	PIEEntryPtr 		ip;
@@ -164,7 +135,8 @@ gpointer readPIEFeed(gchar *url) {
 	gchar			*tmp2, *tmp = NULL;
 	gchar			*encoding;
 	char			*data;
-	parseFeedTagFunc	fp;
+	parseFeedTagFunc	parseFunc;
+	feedPtr			fp;
 	PIENsHandler		*nsh;
 	int			i;
 	int 			error = 0;
@@ -178,12 +150,8 @@ gpointer readPIEFeed(gchar *url) {
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
 	
 	cp->updateInterval = -1;
-	cp->updateCounter = -1;
-	cp->key = NULL;	
-	cp->items = NULL;
-	cp->available = FALSE;
-	cp->source = g_strdup(url);
-	cp->type = FST_PIE;
+	fp = getNewFeedStruct();
+	g_assert(NULL != fp);
 	
 	while(1) {
 		if(NULL == (data = downloadURL(url))) {
@@ -202,21 +170,17 @@ gpointer readPIEFeed(gchar *url) {
 
 		if(NULL == cur) {
 			print_status(_("Empty document! Feed was not added!"));
-			xmlFreeDoc(doc);
 			error = 1;
 			break;			
 		}
 
 		if(xmlStrcmp(cur->name, (const xmlChar *)"feed")) {
 			print_status(_("Could not find PIE header! Feed was not added!"));
-			xmlFreeDoc(doc);
 			error = 1;
 			break;			
 		}
 
 		time(&(cp->time));
-		cp->encoding = g_strdup(doc->encoding);
-		cp->available = TRUE;
 
 		/* parse feed contents */
 		cur = cur->xmlChildrenNode;
@@ -248,9 +212,9 @@ gpointer readPIEFeed(gchar *url) {
 			if(NULL != cur->ns) {
 				if (NULL != cur->ns->prefix) {
 					if(NULL != (nsh = (PIENsHandler *)g_hash_table_lookup(pie_nslist, (gpointer)cur->ns->prefix))) {
-						fp = nsh->parseChannelTag;
-						if(NULL != fp)
-							(*fp)(cp, doc, cur);
+						parseFunc = nsh->parseChannelTag;
+						if(NULL != parseFunc)
+							(*parseFunc)(cp, doc, cur);
 						cur = cur->next;
 						continue;
 					} else {
@@ -275,17 +239,15 @@ gpointer readPIEFeed(gchar *url) {
 
 			/* collect PIE feed entries */
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "entry"))) {
-				if(NULL != (ip = (PIEEntryPtr)parseEntry(doc, cur))) {
-					cp->unreadCounter++;
-					ip->cp = cp;
+				if(NULL != (ip = parseEntry(cp, doc, cur))) {
 					if(0 == ip->time)
 						ip->time = cp->time;
-					ip->next = NULL;
-					cp->items = g_slist_append(cp->items, ip);
+					addItem(fp, ip);
 				}
 			}
 			cur = cur->next;
 		}
+
 		
 		/* some postprocessing */
 		if(NULL != cp->tags[PIE_FEED_TITLE]) 
@@ -293,36 +255,25 @@ gpointer readPIEFeed(gchar *url) {
 
 		if(NULL != cp->tags[PIE_FEED_DESCRIPTION])
 			cp->tags[PIE_FEED_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, cp->tags[PIE_FEED_DESCRIPTION]);		
+
+		xmlFreeDoc(doc);			
+		
+		/* after parsing we fill in the infos into the feedPtr structure */		
+		fp->type = FST_PIE;
+		fp->defaultInterval = fp->updateInterval = cp->updateInterval;
+		fp->title = cp->tags[PIE_FEED_TITLE];
+		fp->description = showPIEFeedInfo(cp, url);
+		if(0 == error)
+			fp->available = TRUE;
+		else
+			fp->title = g_strdup(url);
 			
-		xmlFreeDoc(doc);
+		g_free(cp->nsinfos);
+		g_free(cp);
 		break;
 	}
 
-	return cp;
-}
-
-
-/* used to merge two PIEFeedPtr structures after while
-   updating a feed, returns a PIEFeedPtr to the merged
-   structure and frees (FIXME) all unneeded memory */
-gpointer mergePIEFeed(gpointer old_fp, gpointer new_fp) {
-	PIEFeedPtr	new = (PIEFeedPtr) new_fp;
-	PIEFeedPtr	old = (PIEFeedPtr) old_fp;
-		
-	// FIXME: compare items, merge appropriate
-	// actually this function does almost nothing
-	
-	new->updateInterval = old->updateInterval;
-	new->updateCounter = old->updateInterval;	/* resetting the counter */
-	new->usertitle = old->usertitle;
-	new->key = old->key;
-	new->source = old->source;
-	new->type = old->type;
-	new->keyprefix = old->keyprefix;
-	
-	// FIXME: free old_cp memory
-		
-	return new_fp;
+	return fp;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -336,176 +287,89 @@ gpointer mergePIEFeed(gpointer old_fp, gpointer new_fp) {
 void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
 	outputRequest	*request = (outputRequest *)userdata;
 	PIENsHandler	*nsh = (PIENsHandler *)value;
+	gchar		*tmp;
 	PIEOutputFunc	fp;
 
 	switch(request->type) {
 		case OUTPUT_PIE_FEED_NS_HEADER:
 			fp = nsh->doChannelHeaderOutput;
-			if(NULL != fp)
-				(*fp)(request->obj);
 			break;
 		case OUTPUT_PIE_FEED_NS_FOOTER:
 			fp = nsh->doChannelFooterOutput;
-			if(NULL != fp)
-				(*fp)(request->obj);
 			break;
 		case OUTPUT_ITEM_NS_HEADER:
 			fp = nsh->doItemHeaderOutput;
-			if(NULL != fp)
-				(*fp)(request->obj);
 			break;		
 		case OUTPUT_ITEM_NS_FOOTER:
 			fp = nsh->doItemFooterOutput;
-			if(NULL != fp)
-				(*fp)(request->obj);
 			break;			
 		default:	
 			g_warning(_("Internal error! Invalid output request mode for namespace information!"));
+			return;
 			break;		
 	}
+	
+	if(NULL == fp)
+		return;
+		
+	if(NULL == (tmp = (*fp)(request->obj)))
+		return
+		
+	addToHTMLBuffer(request->buffer, tmp);
 }
 
 /* writes PIE channel description as HTML into the gtkhtml widget */
-void showPIEFeedInfo(gpointer fp) {
-	PIEFeedPtr	cp = (PIEFeedPtr)fp;
-	gchar		*feeddescription;
-	gchar		*tmp;	
+static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
+	gchar		*tmp, *buffer = NULL;	
 	outputRequest	request;
 
 	g_assert(cp != NULL);	
+
+	addToHTMLBuffer(&buffer, HTML_START);
+	addToHTMLBuffer(&buffer, HTML_HEAD_START);
+	addToHTMLBuffer(&buffer, META_ENCODING1);
+	addToHTMLBuffer(&buffer, "UTF-8");
+	addToHTMLBuffer(&buffer, META_ENCODING2);
+	addToHTMLBuffer(&buffer, HTML_HEAD_END);
+	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
+	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
 	
-	startHTMLOutput();
-	writeHTML(HTML_HEAD_START);
-
-	writeHTML(META_ENCODING1);
-	writeHTML("UTF-8");
-	writeHTML(META_ENCODING2);
-
-	writeHTML(HTML_HEAD_END);
-
-	writeHTML(FEED_HEAD_START);
-	
-	writeHTML(FEED_HEAD_CHANNEL);
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 		cp->tags[PIE_FEED_LINK],
-		getDefaultEntryTitle(cp->key));
-	writeHTML(tmp);
+		cp->tags[PIE_FEED_TITLE]);
+	addToHTMLBuffer(&buffer, tmp);
 	g_free(tmp);
 	
-	writeHTML(HTML_NEWLINE);	
-
-	writeHTML(FEED_HEAD_SOURCE);
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", cp->source, cp->source);
-	writeHTML(tmp);
+	addToHTMLBuffer(&buffer, HTML_NEWLINE);
+	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);
+	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
+	addToHTMLBuffer(&buffer, tmp);
 	g_free(tmp);
-
-	writeHTML(FEED_HEAD_END);	
+	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
 		
 	/* process namespace infos */
 	request.obj = (gpointer)cp;
+	request.buffer = &buffer;
 	request.type = OUTPUT_PIE_FEED_NS_HEADER;	
 	if(NULL != pie_nslist)
 		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
 
-	if(NULL != (feeddescription = cp->tags[PIE_FEED_DESCRIPTION]))
-		writeHTML(feeddescription);
+	if(NULL != cp->tags[PIE_FEED_DESCRIPTION])
+		addToHTMLBuffer(&buffer, cp->tags[PIE_FEED_DESCRIPTION]);
 
-	writeHTML(FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(doc, "author",			cp->author);
-	FEED_FOOT_WRITE(doc, "contributors",		cp->contributors);
-	FEED_FOOT_WRITE(doc, "copyright",		cp->tags[PIE_FEED_COPYRIGHT]);
-	FEED_FOOT_WRITE(doc, "last modified",		cp->tags[PIE_FEED_PUBDATE]);
-	writeHTML(FEED_FOOT_TABLE_END);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "author",		cp->author);
+	FEED_FOOT_WRITE(buffer, "contributors",		cp->contributors);
+	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[PIE_FEED_COPYRIGHT]);
+	FEED_FOOT_WRITE(buffer, "last modified",	cp->tags[PIE_FEED_PUBDATE]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
 	
 	/* process namespace infos */
 	request.type = OUTPUT_PIE_FEED_NS_FOOTER;
 	if(NULL != pie_nslist)
 		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-
-	finishHTMLOutput();
-}
-
-/* ---------------------------------------------------------------------------- */
-/* just some encapsulation 							*/
-/* ---------------------------------------------------------------------------- */
-
-void setPIEFeedProp(gpointer fp, gint proptype, gpointer data) {
-	PIEFeedPtr	c = (PIEFeedPtr)fp;
+		
+	addToHTMLBuffer(&buffer, HTML_END);
 	
-	if(NULL != c) {
-		g_assert(FST_PIE == c->type);
-		switch(proptype) {
-			case FEED_PROP_TITLE:
-				g_free(c->tags[PIE_FEED_TITLE]);
-				c->tags[PIE_FEED_TITLE] = (gchar *)data;
-				break;
-			case FEED_PROP_USERTITLE:
-				g_free(c->usertitle);
-				c->usertitle = (gchar *)data;
-				break;
-			case FEED_PROP_SOURCE:
-				g_free(c->source);
-				c->source = (gchar *)data;
-				break;
-			case FEED_PROP_DFLTUPDINTERVAL:
-			case FEED_PROP_UPDATEINTERVAL:
-				c->updateInterval = (gint)data;
-				break;
-			case FEED_PROP_UPDATECOUNTER:
-				c->updateCounter = (gint)data;
-				break;
-			case FEED_PROP_UNREADCOUNT:
-				c->unreadCounter = (gint)data;
-				break;
-			case FEED_PROP_AVAILABLE:
-				c->available = (gboolean)data;
-				break;
-			case FEED_PROP_ITEMLIST:
-				g_error("please don't do this!");
-				break;
-			default:
-				g_error(g_strdup_printf(_("intenal error! unknow feed property type %d!\n"), proptype));
-				break;
-		}
-	}
-}
-
-gpointer getPIEFeedProp(gpointer fp, gint proptype) {
-	PIEFeedPtr	c = (PIEFeedPtr)fp;
-
-	if(NULL != c) {
-		g_assert(FST_PIE == c->type);
-		switch(proptype) {
-			case FEED_PROP_TITLE:
-				return (gpointer)c->tags[PIE_FEED_TITLE];
-				break;
-			case FEED_PROP_USERTITLE:
-				return (gpointer)c->usertitle;
-				break;
-			case FEED_PROP_SOURCE:
-				return (gpointer)c->source;
-				break;
-			case FEED_PROP_DFLTUPDINTERVAL:
-			case FEED_PROP_UPDATEINTERVAL:
-				return (gpointer)c->updateInterval;
-				break;
-			case FEED_PROP_UPDATECOUNTER:
-				return (gpointer)c->updateCounter;
-				break;
-			case FEED_PROP_UNREADCOUNT:
-				return (gpointer)c->unreadCounter;
-				break;
-			case FEED_PROP_AVAILABLE:
-				return (gpointer)c->available;
-				break;
-			case FEED_PROP_ITEMLIST:
-				return (gpointer)c->items;
-				break;
-			default:
-				g_error(g_strdup_printf(_("intenal error! unknow feed property type %d!\n"), proptype));
-				break;
-		}
-	} else {
-		return NULL;
-	}
+	return buffer;
 }

@@ -36,20 +36,20 @@ void	loadConfig(void);
 
 /* feed/directory list entry manipulation methods */
 
-void	loadEntries();
+void	loadFeeds();
 
 /* methods to modify folder contents */
-GSList * getEntryKeyList(gchar *keyprefix);
-void 	setEntryKeyList(gchar *keyprefix, GSList *newlist);
+GSList * getFeedKeyList(gchar *keyprefix);
+void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
 
 gchar *	addFolderToConfig(gchar *title);
 void	removeFolderFromConfig(gchar *keyprefix);
-gchar *	addEntryToConfig(gchar *keyprefix, gchar *url, gint type);
-void	removeEntryFromConfig(gchar *keyprefix, gchar *feedkey);
-gchar * getFreeEntryKey(gchar *keyprefix);
+gchar *	addFeedToConfig(gchar *keyprefix, gchar *url, gint type);
+void	removeFeedFromConfig(gchar *keyprefix, gchar *feedkey);
+gchar * getFreeFeedKey(gchar *keyprefix);
 
-int	setEntryTitleInConfig(gchar *feedkey, gchar *feedname);
-int	setEntryURLInConfig(gchar *feedkey, gchar *feedurl);
+int	setFeedTitleInConfig(gchar *feedkey, gchar *feedname);
+int	setFeedURLInConfig(gchar *feedkey, gchar *feedurl);
 int	setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval);
 int	setFolderTitleInConfig(gchar *keyprefix, gchar *title);
 

@@ -36,9 +36,10 @@
 #define OUTPUT_ITEM_NS_HEADER		2
 #define OUTPUT_ITEM_NS_FOOTER		3
 typedef struct {
-	gint		type;	
-	gpointer	obj;	/* thats either a RSSChannelPtr or a RSSItemPtr 
-				   depending on the type value */
+	gint		type;
+	gchar		**buffer;	/* pointer to output char buffer pointer */
+	gpointer	obj;		/* thats either a RSSChannelPtr or a RSSItemPtr 
+				 	   depending on the type value */
 } outputRequest;
 
 /* uses the same namespace handler as rss_channel */
@@ -55,37 +56,16 @@ static gchar *itemTagList[] = {		"title",
 				  };
 				  
 /* prototypes */
-static gchar * getRSSItemTag(RSSItemPtr ip, int tag);
-gpointer getRSSItemProp(gpointer ip, gint proptype);
-void setRSSItemProp(gpointer ip, gint proptype, gpointer data);
-void showRSSItem(gpointer ip);
-
-itemHandlerPtr initRSSItemHandler(void) {
-	itemHandlerPtr	ihp;
-	
-	if(NULL == (ihp = (itemHandlerPtr)g_malloc(sizeof(struct itemHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(ihp, 0, sizeof(struct itemHandler));
-	
-	/* the RSS/RDF item handling reuses the RSS/RDF channel
-	   namespace handler */
-
-	/* prepare item handler structure */
-	ihp->getItemProp	= getRSSItemProp;	
-	ihp->setItemProp	= setRSSItemProp;
-	ihp->showItem		= showRSSItem;
-	
-	return ihp;
-}
+static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip);
 
 /* method to parse standard tags for each item element */
-RSSItemPtr parseItem(xmlDocPtr doc, xmlNodePtr cur) {
+itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gint			bw, br;
 	gchar			*tmp = NULL;
-	parseItemTagFunc	fp;
+	parseItemTagFunc	parseFunc;
 	RSSNsHandler		*nsh;	
-	RSSItemPtr 		i = NULL;
+	RSSItemPtr 		i;
+	itemPtr			ip;
 	int			j;
 
 	if((NULL == cur) || (NULL == doc)) {
@@ -99,6 +79,7 @@ RSSItemPtr parseItem(xmlDocPtr doc, xmlNodePtr cur) {
 	}
 	memset(i, 0, sizeof(struct RSSItem));
 	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
+	ip = getNewItemStruct();
 
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
@@ -106,9 +87,9 @@ RSSItemPtr parseItem(xmlDocPtr doc, xmlNodePtr cur) {
 		if(NULL != cur->ns) {		
 			if (NULL != cur->ns->prefix) {
 				if(NULL != (nsh = (RSSNsHandler *)g_hash_table_lookup(rss_nslist, (gpointer)cur->ns->prefix))) {	
-					fp = nsh->parseItemTag;
-					if(NULL != fp)
-						(*fp)(i, doc, cur);
+					parseFunc = nsh->parseItemTag;
+					if(NULL != parseFunc)
+						(*parseFunc)(i, doc, cur);
 					cur = cur->next;
 					continue;						
 				} else {
@@ -133,14 +114,26 @@ RSSItemPtr parseItem(xmlDocPtr doc, xmlNodePtr cur) {
 		cur = cur->next;
 	}
 
-	/* some postprocessing */
+	/* after parsing we fill the infos into the itemPtr structure */
+	ip->type = FST_RSS;
+	ip->time = i->time;
+	ip->source = i->tags[RSS_ITEM_LINK];
+	ip->readStatus = FALSE;
+	ip->id = NULL;
+
+	/* some postprocessing before generating HTML */
 	if(NULL != i->tags[RSS_ITEM_TITLE])
 		i->tags[RSS_ITEM_TITLE] = unhtmlize((gchar *)doc->encoding, i->tags[RSS_ITEM_TITLE]);
 		
 	if(NULL != i->tags[RSS_ITEM_DESCRIPTION])
-		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[RSS_ITEM_DESCRIPTION]);	
-		
-	return(i);
+		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[RSS_ITEM_DESCRIPTION]);
+
+	ip->title = i->tags[RSS_ITEM_TITLE];		
+	ip->description = showRSSItem(fp, cp, i);
+
+	g_free(i->nsinfos);
+	g_free(i);
+	return ip;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -149,147 +142,64 @@ RSSItemPtr parseItem(xmlDocPtr doc, xmlNodePtr cur) {
 
 extern void showRSSFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 
-/* writes item description as HTML into the gtkhtml widget */
-void showRSSItem(gpointer ip) {
-	RSSChannelPtr	cp;
-	gchar		*itemlink, *itemtitle;
-	gchar		*feedimage;
+/* writes item description as HTML into a buffer and returns
+  a pointer to it */
+static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
+	gchar		*buffer = NULL;
 	gchar		*tmp;	
 	outputRequest	request;
 
-	g_assert(NULL != ip);	
-	cp = ((RSSItemPtr)ip)->cp;
+	g_assert(NULL != ip);
 	g_assert(NULL != cp);
+	g_assert(NULL != fp);
+	
+	addToHTMLBuffer(&buffer, HTML_START);
+	addToHTMLBuffer(&buffer, HTML_HEAD_START);
+	addToHTMLBuffer(&buffer, META_ENCODING1);
+	addToHTMLBuffer(&buffer, "UTF-8");
+	addToHTMLBuffer(&buffer, META_ENCODING2);
+	addToHTMLBuffer(&buffer, HTML_HEAD_END);
 
-	startHTMLOutput();
-	writeHTML(HTML_HEAD_START);
-
-	writeHTML(META_ENCODING1);
-	writeHTML("UTF-8");
-	writeHTML(META_ENCODING2);
-
-	writeHTML(HTML_HEAD_END);
-
-	if(NULL != (itemlink = getRSSItemTag((RSSItemPtr)ip, RSS_ITEM_LINK))) {
-		writeHTML(ITEM_HEAD_START);
-		
-		writeHTML(ITEM_HEAD_CHANNEL);
+	if(NULL != ip->tags[RSS_ITEM_LINK]) {
+		addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
+		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
 			cp->tags[RSS_CHANNEL_LINK],
-			getDefaultEntryTitle(cp->key));
-		writeHTML(tmp);
+			cp->tags[RSS_CHANNEL_TITLE]);
+		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		
-		writeHTML(HTML_NEWLINE);
-		
-		writeHTML(ITEM_HEAD_ITEM);
-		itemtitle = getRSSItemTag(ip, RSS_ITEM_TITLE);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", itemlink, 
-					(NULL != itemtitle)?itemtitle:itemlink);
-		writeHTML(tmp);
+		addToHTMLBuffer(&buffer, HTML_NEWLINE);		
+		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->tags[RSS_ITEM_LINK], 
+					(NULL != ip->tags[RSS_ITEM_TITLE])?ip->tags[RSS_ITEM_TITLE]:ip->tags[RSS_ITEM_LINK]);
+		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		
-		writeHTML(ITEM_HEAD_END);	
+		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
 	}	
 
 	/* process namespace infos */
 	request.obj = ip;
+	request.buffer = &buffer;
 	request.type = OUTPUT_ITEM_NS_HEADER;	
 	if(NULL != rss_nslist)
 		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
 
-	if(NULL != (feedimage = cp->tags[RSS_CHANNEL_IMAGE])) {
-		writeHTML(IMG_START);
-		writeHTML(feedimage);
-		writeHTML(IMG_END);	
+	if(NULL != cp->tags[RSS_CHANNEL_IMAGE]) {
+		addToHTMLBuffer(&buffer, IMG_START);
+		addToHTMLBuffer(&buffer, cp->tags[RSS_CHANNEL_IMAGE]);
+		addToHTMLBuffer(&buffer, IMG_END);	
 	}
 
-	if(NULL != getRSSItemTag(ip, RSS_ITEM_DESCRIPTION))
-		writeHTML(getRSSItemTag(ip, RSS_ITEM_DESCRIPTION));
+	if(NULL != ip->tags[RSS_ITEM_DESCRIPTION])
+		addToHTMLBuffer(&buffer, ip->tags[RSS_ITEM_DESCRIPTION]);
 
 	request.type = OUTPUT_ITEM_NS_FOOTER;
 	if(NULL != rss_nslist)
 		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
+		
+	addToHTMLBuffer(&buffer, HTML_END);
 
-
-	finishHTMLOutput();
-}
-
-/* ---------------------------------------------------------------------------- */
-/* just some encapsulation 							*/
-/* ---------------------------------------------------------------------------- */
-
-static gchar * getRSSItemTag(RSSItemPtr ip, int tag) {
-
-	if(NULL == ip)
-		return NULL;
-	
-	g_assert(NULL != ip->cp);
-	g_assert(FST_RSS == ((RSSChannelPtr)(ip->cp))->type);
-	return ip->tags[tag];
-}
-
-void setRSSItemProp(gpointer ip, gint proptype, gpointer data) {
-	RSSItemPtr	i = (RSSItemPtr)ip;
-	
-	if(NULL != i) {
-		g_assert(NULL != i->cp);	
-		g_assert(FST_RSS == ((RSSChannelPtr)(i->cp))->type);
-		switch(proptype) {
-			case ITEM_PROP_TITLE:
-				g_free(i->tags[RSS_ITEM_TITLE]);
-				i->tags[RSS_ITEM_TITLE] = (gchar *)data;
-				break;
-			case ITEM_PROP_READSTATUS:
-				/* no matter what data was given... */
-				if(FALSE == i->read) {
-					((RSSChannelPtr)(i->cp))->unreadCounter--;
-					i->read = TRUE;
-				}
-				break;
-			case ITEM_PROP_DESCRIPTION:
-			case ITEM_PROP_TIME:
-			case ITEM_PROP_SOURCE:
-			case ITEM_PROP_TYPE:
-				g_error("please don't do this!");
-				break;
-			default:
-				g_error(_("intenal error! unknow item property type!\n"));
-				break;
-		}
-	}
-}
-
-gpointer getRSSItemProp(gpointer ip, gint proptype) {
-	RSSItemPtr	i = (RSSItemPtr)ip;
-	
-	if(NULL != i) {
-		g_assert(NULL != i->cp);	
-		g_assert(FST_RSS == ((RSSChannelPtr)(i->cp))->type);
-		switch(proptype) {
-			case ITEM_PROP_TITLE:
-				return (gpointer)getRSSItemTag(i, RSS_ITEM_TITLE);
-				break;
-			case ITEM_PROP_READSTATUS:
-				return (gpointer)i->read;
-				break;
-			case ITEM_PROP_DESCRIPTION:
-				return (gpointer)getRSSItemTag(i, RSS_ITEM_DESCRIPTION);
-				break;
-			case ITEM_PROP_TIME:
-				return (gpointer)i->time;
-				break;
-			case ITEM_PROP_SOURCE:
-				return (gpointer)getRSSItemTag(i, RSS_ITEM_LINK);
-				break;
-			case ITEM_PROP_TYPE:
-				return (gpointer)FST_RSS;
-				break;
-			default:
-				g_error(_("internal error! unknow item property type!\n"));
-				break;
-		}
-	} else {
-		return NULL;
-	}
+	return buffer;
 }

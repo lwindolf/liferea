@@ -23,7 +23,7 @@
 #include <gtk/gtk.h>
 #include "interface.h"
 #include "support.h"
-#include "backend.h"
+#include "feed.h"
 #include "callbacks.h"
 #include "htmlview.h"
 #include "conf.h"
@@ -80,28 +80,8 @@ int main (int argc, char *argv[]) {
 	mainwindow = create_mainwindow();
 	setupHTMLView(mainwindow);
 	gtk_widget_show(mainwindow);
-	
-	/* workaround to correct tooltips on stockbuttons
-	   which are not generated properly by Glade2 1.1.2/2.0.0 */
-/*	button_bar_tips = gtk_tooltips_new();	   
-	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
-			     lookup_widget(mainwindow, "refreshbtn"),
-			     _("refresh feeds"),
-			     _("refresh feeds"));
-	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
-			     lookup_widget(mainwindow, "prefbtn"),
-			     _("edit program preferences"),
-			     _("edit program preferences"));
-	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
-			     lookup_widget(mainwindow, "searchbtn"),
-			     _("search all feeds"),
-			     _("search all feeds"));
-	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
-			     lookup_widget(mainwindow, "refreshbtn"),
-			     _("refresh feeds"),
-			     _("refresh feeds"));*/
 	     			     			     	
-	setupEntryList(lookup_widget(mainwindow, "feedlist"));
+	setupFeedList(lookup_widget(mainwindow, "feedlist"));
 	setupItemList(lookup_widget(mainwindow, "Itemlist"));
 		
 	/* order is important! */

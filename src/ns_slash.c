@@ -31,11 +31,6 @@
 
 static gchar ns_slash_prefix[] = "slash";
 
-/* some prototypes */
-void ns_slash_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur);
-
-gchar * ns_slash_doItemOutput(gpointer obj);
-
 /* a tag list from http://f3.grp.yahoofs.com/v1/YP40P2oiXvP5CAx4TM6aQw8mDrCtNDwF9_BkMwcvulZHdlhYmCk5cS66_06t9OaIVsubWpwtMUTxYNG7/Modules/Proposed/mod_slash.html
 
    hmm... maybe you can find a somewhat short URL!
@@ -62,21 +57,6 @@ static gchar * taglist[] = {	"section",
 
 gchar * ns_slash_getRSSNsPrefix(void) { return ns_slash_prefix; }
 
-RSSNsHandler *ns_slash_getRSSNsHandler(void) {
-	RSSNsHandler 	*nsh;
-	
-	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= NULL;
-		nsh->parseItemTag		= ns_slash_parseItemTag;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= NULL;
-		nsh->doItemHeaderOutput		= ns_slash_doItemOutput;
-		nsh->doItemFooterOutput		= NULL;
-	}
-
-	return nsh;
-}
-
 static void ns_slash_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
 	GHashTable	*nsvalues;
 	
@@ -92,7 +72,7 @@ static void ns_slash_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *ta
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-void ns_slash_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_slash_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 	int 		i;
 	
 	while (cur != NULL) {
@@ -108,30 +88,51 @@ void ns_slash_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 /* maybe I should overthink method names :-) */
-void ns_slash_output(gpointer key, gpointer value, gpointer userdata) {
-
-	writeHTML(KEY_START);
-	writeHTML((gchar *)key);
-	writeHTML(KEY_END);
-	writeHTML(VALUE_START);	
-	writeHTML((gchar *)value);
-	writeHTML(VALUE_END);	
+static void ns_slash_output(gpointer key, gpointer value, gpointer userdata) {
+	gchar 	**buffer = (gchar **)userdata;
+	
+	addToHTMLBuffer(buffer, KEY_START);
+	addToHTMLBuffer(buffer, (gchar *)key);
+	addToHTMLBuffer(buffer, KEY_END);
+	addToHTMLBuffer(buffer, VALUE_START);	
+	addToHTMLBuffer(buffer, (gchar *)value);
+	addToHTMLBuffer(buffer, VALUE_END);
 }
 
-void ns_slash_doOutput(GHashTable *nsinfos) {
+static gchar * ns_slash_doOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
+	gchar		*buffer = NULL;
 	
 	/* we print all channel infos as a (key,value) table */
 	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_slash_prefix))) {
-		writeHTML(SLASH_START);
-		g_hash_table_foreach(nsvalues, ns_slash_output, (gpointer)NULL);
-		writeHTML(SLASH_END);			
+		addToHTMLBuffer(&buffer, SLASH_START);
+		g_hash_table_foreach(nsvalues, ns_slash_output, (gpointer)&buffer);
+		addToHTMLBuffer(&buffer, SLASH_END);			
 	}
+	
+	return buffer;
 }
 
-gchar * ns_slash_doItemOutput(gpointer obj) {
+static gchar * ns_slash_doItemOutput(gpointer obj) {
 	
-	if(NULL != obj) {
-		ns_slash_doOutput(((RSSItemPtr)obj)->nsinfos);
-	}
+	if(NULL != obj)
+		return ns_slash_doOutput(((RSSItemPtr)obj)->nsinfos);
+	
+	return NULL;
 }
+
+RSSNsHandler *ns_slash_getRSSNsHandler(void) {
+	RSSNsHandler 	*nsh;
+	
+	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
+		nsh->parseChannelTag		= NULL;
+		nsh->parseItemTag		= ns_slash_parseItemTag;
+		nsh->doChannelHeaderOutput	= NULL;
+		nsh->doChannelFooterOutput	= NULL;
+		nsh->doItemHeaderOutput		= ns_slash_doItemOutput;
+		nsh->doItemFooterOutput		= NULL;
+	}
+
+	return nsh;
+}
+

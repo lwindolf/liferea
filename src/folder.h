@@ -1,6 +1,6 @@
 /*
-   PIE 0.2 entry tag parsing 
-      
+   folder handling interface
+
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
@@ -18,31 +18,17 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#ifndef _PIE_ENTRY_H
-#define _PIE_ENTRY_H
+#ifndef _FOLDER_H
+#define _FOLDER_H
 
-#include <time.h>
-#include <glib.h>
-#include "pie_feed.h"
+#include <gtk/gtk.h>
+#include <string.h>
 
-#define PIE_ENTRY_TITLE			0
-#define PIE_ENTRY_DESCRIPTION		1
-#define PIE_ENTRY_LINK			2
-#define PIE_ENTRY_COPYRIGHT		3
-#define PIE_ENTRY_PUBDATE		4
-
-#define PIE_ENTRY_MAX_TAG		5
-
-typedef struct PIEEntry {
-	gchar		*tags[PIE_ENTRY_MAX_TAG];	/* standard namespace infos */
-	
-	GHashTable	*nsinfos;	/* list to store pointers to namespace
-					   specific informations */	
-	gchar		*author;
-	gchar		*contributors;
-	time_t		time;
-} *PIEEntryPtr;
-
-itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur);
+/* ------------------------------------------------------------ */
+/* functions to create/change/remove folder			*/
+/* ------------------------------------------------------------ */
+void	addFolder(gchar *keyprefix, gchar *title, gint type);
+gchar *	getFolderTitle(gchar *keyprefix);
+void	setFolderTitle(gchar *keyprefix, gchar *title);
 
 #endif

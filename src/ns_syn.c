@@ -95,5 +95,5 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp,xmlDocPtr doc, xmlNodePtr cur) {
 	if(0 != frequency)
 		period /= frequency;
 
-	cp->updateCounter = cp->updateInterval = cp->defaultUpdateInterval = period;
+	cp->updateInterval = period;
 }

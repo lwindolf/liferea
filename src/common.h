@@ -26,6 +26,8 @@
 #include <libxml/parser.h>
 #include <glib.h>
 
+#define htmlToCDATA(buffer) g_strdup_printf("<![CDATA[%s]]>", buffer)
+
 /* the encoding all item descriptions are converted to for display with libGtkHTML */
 static gchar	*standard_encoding = { "UTF-8" };
 
@@ -37,11 +39,14 @@ gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string);
 /* to extract not escaped XHTML from a node */
 gchar * extractHTMLNode(xmlNodePtr cur);
 
+void	addToHTMLBuffer(gchar **buffer, gchar *string);
+
 gchar * unhtmlize(gchar * from_encoding, gchar *string);
 gchar * getActualTime(void);
 time_t 	convertDate(char *date);
 gchar * formatDate(time_t t);
 
+gchar *	getExtension(gint type);
 gchar *	getCachePath(void);
 gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension);
 #endif

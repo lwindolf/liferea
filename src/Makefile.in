@@ -139,19 +139,19 @@ liferea_SOURCES = \
 	interface.c interface.h \
 	callbacks.c callbacks.h \
 	common.c common.h \
-	backend.c backend.h \
+	folder.c folder.h \
+	feed.c feed.h \
+	item.c item.h \
 	update.c update.h \
 	htmlview.c htmlview.h \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h \
 	rss_ns.h \
-	pie_feed.c pie_feed.h \
-	pie_entry.c pie_entry.h \
-	pie_ns.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
+	pie_feed.c pie_feed.h \
+	pie_entry.c pie_entry.h \
 	ocs_dir.c ocs_dir.h \
-	ocs_ns.h \
 	ns_ocs.c ns_ocs.h \
 	ns_dc.c ns_dc.h \
 	ns_fm.c ns_fm.h \
@@ -174,13 +174,13 @@ PROGRAMS = $(bin_PROGRAMS)
 
 am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	interface.$(OBJEXT) callbacks.$(OBJEXT) common.$(OBJEXT) \
-	backend.$(OBJEXT) update.$(OBJEXT) htmlview.$(OBJEXT) \
-	rss_channel.$(OBJEXT) rss_item.$(OBJEXT) pie_feed.$(OBJEXT) \
-	pie_entry.$(OBJEXT) cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) \
-	ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) \
-	ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) ns_content.$(OBJEXT) \
-	ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) conf.$(OBJEXT) \
-	vfolder.$(OBJEXT) netio.$(OBJEXT)
+	folder.$(OBJEXT) feed.$(OBJEXT) item.$(OBJEXT) update.$(OBJEXT) \
+	htmlview.$(OBJEXT) rss_channel.$(OBJEXT) rss_item.$(OBJEXT) \
+	cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) pie_feed.$(OBJEXT) \
+	pie_entry.$(OBJEXT) ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) \
+	ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) \
+	ns_content.$(OBJEXT) ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) \
+	conf.$(OBJEXT) vfolder.$(OBJEXT) netio.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -188,19 +188,20 @@ liferea_LDFLAGS =
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/backend.Po ./$(DEPDIR)/callbacks.Po \
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/callbacks.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/cdf_channel.Po ./$(DEPDIR)/cdf_item.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/common.Po ./$(DEPDIR)/conf.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/feed.Po ./$(DEPDIR)/folder.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/htmlview.Po ./$(DEPDIR)/interface.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/main.Po ./$(DEPDIR)/netio.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ns_admin.Po ./$(DEPDIR)/ns_content.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ns_dc.Po ./$(DEPDIR)/ns_fm.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ns_ocs.Po ./$(DEPDIR)/ns_slash.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ns_syn.Po ./$(DEPDIR)/ocs_dir.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/pie_entry.Po ./$(DEPDIR)/pie_feed.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/rss_channel.Po ./$(DEPDIR)/rss_item.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/support.Po ./$(DEPDIR)/update.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/vfolder.Po
+@AMDEP_TRUE@	./$(DEPDIR)/item.Po ./$(DEPDIR)/main.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/netio.Po ./$(DEPDIR)/ns_admin.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ns_content.Po ./$(DEPDIR)/ns_dc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ns_fm.Po ./$(DEPDIR)/ns_ocs.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ns_slash.Po ./$(DEPDIR)/ns_syn.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/pie_entry.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/pie_feed.Po ./$(DEPDIR)/rss_channel.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rss_item.Po ./$(DEPDIR)/support.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/update.Po ./$(DEPDIR)/vfolder.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -252,14 +253,16 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/backend.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/callbacks.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdf_channel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdf_item.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/conf.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/feed.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/folder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/htmlview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/interface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/item.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/netio.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_admin.Po@am__quote@

@@ -21,7 +21,12 @@
 #ifndef _CDF_CDF_ITEM_H
 #define _CDF_CDF_ITEM_H
 
+#include <time.h>
 #include <glib.h>
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+
+#include "cdf_channel.h"
 
 #define CDF_ITEM_TITLE		0
 #define CDF_ITEM_DESCRIPTION	1
@@ -33,18 +38,13 @@
 #define CDF_ITEM_MAX_TAG	6
 
 typedef struct CDFItem {
-	gpointer	cp;		/* the channel structure this CDF_ITEM belongs to,
-					   must be the first element of the structure! */
-	
 	gchar		*tags[CDF_ITEM_MAX_TAG];	/* standard namespace infos */
 	
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */	
-	gboolean	read;
 	time_t		time;
-	struct CDFItem	*next;
 } *CDFItemPtr;
 
-itemHandlerPtr initCDFItemHandler(void);
+itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur);
 
 #endif

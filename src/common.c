@@ -32,10 +32,29 @@
 #include "common.h"
 #include "conf.h"
 #include "support.h"
+#include "feed.h"
 
 #define	TIMESTRLEN	256
 
+#define VFOLDER_EXTENSION	"vfolder"
+#define OCS_EXTENSION		"ocs"
+
 static gchar *CACHEPATH = NULL;
+
+void addToHTMLBuffer(gchar **buffer, gchar *string) {
+	gchar	*newbuffer;
+	
+	if(NULL == string)
+		return;
+	
+	if(NULL != *buffer) {
+		newbuffer = g_strdup_printf("%s%s", *buffer, string);
+		g_free(*buffer);
+		*buffer = newbuffer;
+	} else {
+		*buffer = g_strdup(string);
+	}
+}
 
 /* converts the string string encoded in from_encoding (which
    can be NULL) to to_encoding, frees the original string and 
@@ -257,6 +276,25 @@ gchar * getCachePath(void) {
 	return CACHEPATH;
 }
 
+/* returns the extension for the type type */
+gchar *getExtension(gint type) {
+	gchar	*extension;
+	
+	switch(type) {
+		case FST_VFOLDER:
+			extension = VFOLDER_EXTENSION;
+			break;
+		case FST_OCS:
+			extension = OCS_EXTENSION;
+			break;
+		default:
+			extension = NULL;
+			break;
+	}
+	
+	return extension;
+}
+
 gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension) {
 	gchar	*keypos;
 	
@@ -266,6 +304,9 @@ gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension) {
 		keypos = key;
 	else
 		keypos++;
-		
-	return g_strdup_printf("%s/%s_%s.%s", getCachePath(), keyprefix, keypos, extension);
+	
+	if(NULL != extension)	
+		return g_strdup_printf("%s/%s_%s.%s", getCachePath(), keyprefix, keypos, extension);
+	else
+		return g_strdup_printf("%s/%s_%s", getCachePath(), keyprefix, keypos);
 }

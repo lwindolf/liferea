@@ -38,9 +38,6 @@
 #include "netio.h"
 #include "htmlview.h"
 
-extern GMutex * entries_lock;	// FIXME
-extern GHashTable *entries;	// FIXME
-
 /* note: the tag order has to correspond with the CHANNEL_* defines in the header file */
 static gchar *CDFChannelTagList[] = {	"title",
 					"abstract",
@@ -53,19 +50,8 @@ static gchar *CDFChannelTagList[] = {	"title",
 				  };
 
 /* prototypes */
-gpointer 	loadCDFFeed(gchar *keyprefix, gchar *key);
-gpointer	readCDFFeed(gchar *url);
-gpointer	mergeCDFFeed(gpointer old_fp, gpointer new_fp);
-gchar * 	getCDFFeedTag(gpointer cp, int tag);
-gpointer 	getCDFFeedProp(gpointer fp, gint proptype);
-void 		setCDFFeedProp(gpointer fp, gint proptype, gpointer data);
-void		showCDFFeedInfo(gpointer fp);
-
-/* display an items description in the HTML widget */
-void	showCDFItem(gpointer ip, gpointer cp);
-
-/* display a feed info in the HTML widget */
-void	showCDFFeedInfo(gpointer cp);
+feedPtr		readCDFFeed(gchar *url);
+gchar *		showCDFFeedInfo(CDFChannelPtr cp, gchar *url);
 
 feedHandlerPtr initCDFFeedHandler(void) {
 	feedHandlerPtr	fhp;
@@ -78,23 +64,17 @@ feedHandlerPtr initCDFFeedHandler(void) {
 	/* there are no name space handlers! */
 
 	/* prepare feed handler structure */
-	fhp->loadFeed		= loadCDFFeed;	
 	fhp->readFeed		= readCDFFeed;
-	fhp->mergeFeed		= mergeCDFFeed;
-	fhp->removeFeed		= NULL;	// FIXME
-	fhp->getFeedProp	= getCDFFeedProp;
-	fhp->setFeedProp	= setCDFFeedProp;	
-	fhp->showFeedInfo	= showCDFFeedInfo;
 	
 	return fhp;
 }
 
 /* method to parse standard tags for the channel element */
-static void parseCDFChannel(CDFChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
-	CDFItemPtr	ip, lastip = NULL;
+static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp = NULL;
 	gchar		*encoding;
 	gchar		*value;
+	itemPtr		ip;
 	int		i;
 	
 	if((NULL == cur) || (NULL == doc)) {
@@ -107,10 +87,10 @@ static void parseCDFChannel(CDFChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 
 		/* save first link to a channel image */
 		if((!xmlStrcmp(cur->name, (const xmlChar *) "logo"))) {
-			if(NULL != c->tags[CDF_CHANNEL_IMAGE]) {
+			if(NULL != cp->tags[CDF_CHANNEL_IMAGE]) {
 				value = xmlGetNoNsProp(cur, (const xmlChar *)"href");
 				if(NULL != value)
-					c->tags[CDF_CHANNEL_IMAGE] = g_strdup(value);
+					cp->tags[CDF_CHANNEL_IMAGE] = g_strdup(value);
 				g_free(value);
 			}
 			cur = cur->next;			
@@ -118,22 +98,19 @@ static void parseCDFChannel(CDFChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 		}
 		
 		if((!xmlStrcmp(cur->name, (const xmlChar *) "item"))) {
-			if(NULL != (ip = (CDFItemPtr) parseCDFItem(doc, cur))) {
-				c->unreadCounter++;
-				ip->cp = c;
+			if(NULL != (ip = parseCDFItem(fp, cp, doc, cur))) {
 				if(0 == ip->time)
-					ip->time = c->time;
-
-				c->items = g_slist_append(c->items, ip);
+					ip->time = cp->time;
+				addItem(fp, ip);
 			}	
 		}
 
 		for(i = 0; i < CDF_CHANNEL_MAX_TAG; i++) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)CDFChannelTagList[i])) {
-				tmp = c->tags[i];
-				if(NULL == (c->tags[i] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
-					c->tags[i] = tmp;
+				tmp = cp->tags[i];
+				if(NULL == (cp->tags[i] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+					cp->tags[i] = tmp;
 				} else {
 					g_free(tmp);
 				}
@@ -143,39 +120,21 @@ static void parseCDFChannel(CDFChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 
 	/* some postprocessing */
-	if(NULL != c->tags[CDF_CHANNEL_TITLE])
-		c->tags[CDF_CHANNEL_TITLE] = unhtmlize((gchar *)doc->encoding, c->tags[CDF_CHANNEL_TITLE]);
+	if(NULL != cp->tags[CDF_CHANNEL_TITLE])
+		cp->tags[CDF_CHANNEL_TITLE] = unhtmlize((gchar *)doc->encoding, cp->tags[CDF_CHANNEL_TITLE]);
 		
-	if(NULL != c->tags[CDF_CHANNEL_DESCRIPTION])
-		c->tags[CDF_CHANNEL_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, c->tags[CDF_CHANNEL_DESCRIPTION]);		
+	if(NULL != cp->tags[CDF_CHANNEL_DESCRIPTION])
+		cp->tags[CDF_CHANNEL_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, cp->tags[CDF_CHANNEL_DESCRIPTION]);		
 	
-}
-
-/* loads a saved CDF feed from disk */
-gpointer loadCDFFeed(gchar *keyprefix, gchar *key) {
-	CDFChannelPtr	new_cp = NULL;
-
-	// workaround as long loading is not implemented
-	if(NULL == (new_cp = (CDFChannelPtr) malloc(sizeof(struct CDFChannel)))) {
-		g_error("not enough memory!\n");
-		return NULL;
-	}
-
-	memset(new_cp, 0, sizeof(struct CDFChannel));
-	new_cp->updateInterval = -1;
-	new_cp->updateCounter = 0;	/* to enforce immediate reload */
-	new_cp->type = FST_RSS;
-	
-	return (gpointer)new_cp;
 }
 
 /* reads a CDF feed URL and returns a new channel structure (even if
    the feed could not be read) */
-gpointer readCDFFeed(gchar *url) {
+feedPtr readCDFFeed(gchar *url) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
-	CDFItemPtr 	ip, lastip = NULL;
 	CDFChannelPtr 	cp;
+	feedPtr		fp;
 	gchar		*encoding;
 	char		*data;
 	int 		error = 0;
@@ -187,14 +146,7 @@ gpointer readCDFFeed(gchar *url) {
 	}
 	memset(cp, 0, sizeof(struct CDFChannel));
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
-	
-	cp->updateInterval = -1;
-	cp->updateCounter = -1;
-	cp->key = NULL;	
-	cp->items = NULL;
-	cp->available = FALSE;
-	cp->source = g_strdup(url);
-	cp->type = FST_CDF;
+	fp = getNewFeedStruct();
 	
 	while(1) {
 		if(NULL == (data = downloadURL(url))) {
@@ -235,14 +187,12 @@ gpointer readCDFFeed(gchar *url) {
 		}
 
 		time(&(cp->time));
-		cp->encoding = g_strdup(doc->encoding);
-		cp->available = TRUE;		
 		
 		/* find first "real" channel tag */
 		while (cur != NULL) {
 		
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "channel"))) {
-				parseCDFChannel(cp, doc, cur);			
+				parseCDFChannel(fp, cp, doc, cur);			
 				g_assert(NULL != cur);
 				break;
 			}
@@ -251,34 +201,23 @@ gpointer readCDFFeed(gchar *url) {
 		}
 
 		xmlFreeDoc(doc);
+		
+		/* after parsing we fill in the infos into the feedPtr structure */		
+		fp->type = FST_RSS;
+		fp->defaultInterval = fp->updateInterval = -1;
+		fp->title = cp->tags[CDF_CHANNEL_TITLE];
+		fp->description = showCDFFeedInfo(cp, url);
+		if(0 == error)
+			fp->available = TRUE;
+		else
+			fp->title = g_strdup(url);
+		
+		g_free(cp->nsinfos);
+		g_free(cp);
 		break;
 	}
 
-	return (gpointer)cp;
-}
-
-
-/* used to merge two CDFChannelPtr structures after while
-   updating a feed, returns a CDFChannelPtr to the merged
-   structure and frees (FIXME) all unneeded memory */
-gpointer mergeCDFFeed(gpointer old_fp, gpointer new_fp) {
-	CDFChannelPtr	new = (CDFChannelPtr) new_fp;
-	CDFChannelPtr	old = (CDFChannelPtr) old_fp;
-		
-	// FIXME: compare items, merge appropriate
-	// actually this function does almost nothing
-	
-	new->updateInterval = old->updateInterval;
-	new->updateCounter = old->updateInterval;	/* resetting the counter */
-	new->usertitle = old->usertitle;
-	new->key = old->key;
-	new->source = old->source;
-	new->type = old->type;
-	new->keyprefix = old->keyprefix;
-	
-	// FIXME: free old_cp memory
-		
-	return new_fp;
+	return fp;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -286,150 +225,45 @@ gpointer mergeCDFFeed(gpointer old_fp, gpointer new_fp) {
 /* ---------------------------------------------------------------------------- */
 
 /* writes CDF channel description as HTML into the gtkhtml widget */
-void showCDFFeedInfo(gpointer fp) {
-	CDFChannelPtr	cp = (CDFChannelPtr)fp;
-	gchar		*feedimage;
-	gchar		*feeddescription;
-	gchar		*source;
+gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
+	gchar		*buffer = NULL;
 	gchar		*tmp;
 
 	g_assert(cp != NULL);
+	addToHTMLBuffer(&buffer, HTML_HEAD_START);
+
+	addToHTMLBuffer(&buffer, META_ENCODING1);
+	addToHTMLBuffer(&buffer, "UTF-8");
+	addToHTMLBuffer(&buffer, META_ENCODING2);
+
+	addToHTMLBuffer(&buffer, HTML_HEAD_END);
+
+	addToHTMLBuffer(&buffer, FEED_HEAD_START);
 	
-	startHTMLOutput();
-	writeHTML(HTML_HEAD_START);
-
-	writeHTML(META_ENCODING1);
-	writeHTML("UTF-8");
-	writeHTML(META_ENCODING2);
-
-	writeHTML(HTML_HEAD_END);
-
-	writeHTML(FEED_HEAD_START);
-	
-	writeHTML(FEED_HEAD_CHANNEL);
+	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-		cp->source, 
-		getDefaultEntryTitle(cp->key));
-	writeHTML(tmp);
+		url, 
+		cp->tags[CDF_CHANNEL_TITLE]);
+	addToHTMLBuffer(&buffer, tmp);
 	g_free(tmp);
 	
-	writeHTML(FEED_HEAD_END);	
+	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
 
-	if(NULL != (feedimage = getCDFFeedTag(cp, CDF_CHANNEL_IMAGE))) {
-		writeHTML(IMG_START);
-		writeHTML(feedimage);
-		writeHTML(IMG_END);	
+	if(NULL != cp->tags[CDF_CHANNEL_IMAGE]) {
+		addToHTMLBuffer(&buffer, IMG_START);
+		addToHTMLBuffer(&buffer, cp->tags[CDF_CHANNEL_IMAGE]);
+		addToHTMLBuffer(&buffer, IMG_END);	
 	}
 
-	if(NULL != (feeddescription = getCDFFeedTag(cp, CDF_CHANNEL_DESCRIPTION)))
-		writeHTML(feeddescription);
+	if(NULL != cp->tags[CDF_CHANNEL_DESCRIPTION])
+		addToHTMLBuffer(&buffer, cp->tags[CDF_CHANNEL_DESCRIPTION]);
 
-	writeHTML(FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(doc, "copyright",		getCDFFeedTag(cp, CDF_CHANNEL_COPYRIGHT));
-	FEED_FOOT_WRITE(doc, "publication date",	getCDFFeedTag(cp, CDF_CHANNEL_PUBDATE));
-	FEED_FOOT_WRITE(doc, "webmaster",		getCDFFeedTag(cp, CDF_CHANNEL_WEBMASTER));
-	FEED_FOOT_WRITE(doc, "category",		getCDFFeedTag(cp, CDF_CHANNEL_CATEGORY));
-	writeHTML(FEED_FOOT_TABLE_END);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[CDF_CHANNEL_COPYRIGHT]);
+	FEED_FOOT_WRITE(buffer, "publication date",	cp->tags[CDF_CHANNEL_PUBDATE]);
+	FEED_FOOT_WRITE(buffer, "webmaster",		cp->tags[CDF_CHANNEL_WEBMASTER]);
+	FEED_FOOT_WRITE(buffer, "category",		cp->tags[CDF_CHANNEL_CATEGORY]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
 
-	finishHTMLOutput();
-}
-
-/* ---------------------------------------------------------------------------- */
-/* just some encapsulation 							*/
-/* ---------------------------------------------------------------------------- */
-
-gchar * getCDFFeedTag(gpointer cp, int tag) { 
-	
-	if(NULL == cp)
-		return NULL;
-
-	g_assert(FST_CDF == ((CDFChannelPtr)cp)->type);
-	return ((CDFChannelPtr)cp)->tags[tag]; 
-}
-
-void setCDFFeedProp(gpointer fp, gint proptype, gpointer data) {
-	CDFChannelPtr	c = (CDFChannelPtr)fp;
-	
-	if(NULL != c) {
-		g_assert(FST_CDF == c->type);
-		switch(proptype) {
-			case FEED_PROP_TITLE:
-				g_free(c->tags[CDF_CHANNEL_TITLE]);
-				c->tags[CDF_CHANNEL_TITLE] = (gchar *)data;
-				break;
-			case FEED_PROP_USERTITLE:
-				g_free(c->usertitle);
-				c->usertitle = (gchar *)data;
-				break;
-			case FEED_PROP_SOURCE:
-				g_free(c->source);
-				c->source = (gchar *)data;
-				break;
-			case FEED_PROP_DFLTUPDINTERVAL:			
-				// FIXME: implement <schedule> support
-			case FEED_PROP_UPDATEINTERVAL:
-				c->updateInterval = (gint)data;
-				break;
-			case FEED_PROP_UPDATECOUNTER:
-				c->updateCounter = (gint)data;
-				break;
-			case FEED_PROP_UNREADCOUNT:
-				c->unreadCounter = (gint)data;
-				break;
-			case FEED_PROP_AVAILABLE:
-				c->available = (gboolean)data;
-				break;
-			case FEED_PROP_ITEMLIST:
-				g_error("please don't do this!");
-				break;
-			default:
-				g_error(_("internal error! unknown feed property type!\n"));
-				break;
-		}
-	} else {
-		return;
-	}
-}
-
-gpointer getCDFFeedProp(gpointer fp, gint proptype) {
-	CDFChannelPtr	c = (CDFChannelPtr)fp;
-	
-	if(NULL != c) {
-		g_assert(FST_CDF == c->type);
-		switch(proptype) {
-			case FEED_PROP_TITLE:
-				return (gpointer)getCDFFeedTag(c, CDF_CHANNEL_TITLE);
-				break;
-			case FEED_PROP_USERTITLE:
-				return (gpointer)c->usertitle;
-				break;
-			case FEED_PROP_SOURCE:
-				return (gpointer)c->source;
-				break;
-			case FEED_PROP_DFLTUPDINTERVAL:
-				// FIXME: implement <schedule> support
-				return (gpointer)-1;
-				break;
-			case FEED_PROP_UPDATEINTERVAL:
-				return (gpointer)c->updateInterval;
-				break;
-			case FEED_PROP_UPDATECOUNTER:
-				return (gpointer)c->updateCounter;
-				break;				
-			case FEED_PROP_UNREADCOUNT:
-				return (gpointer)c->unreadCounter;
-				break;
-			case FEED_PROP_AVAILABLE:
-				return (gpointer)c->available;
-				break;
-			case FEED_PROP_ITEMLIST:
-				return (gpointer)c->items;
-				break;
-			default:
-				g_error(_("internal error! unknow feed property type!\n"));
-				break;
-		}
-	} else {
-		return NULL;
-	}
+	return buffer;
 }

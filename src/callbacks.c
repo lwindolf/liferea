@@ -16,6 +16,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 */
 
+// FIXME: maybe split callbacks.c in several files...
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -28,15 +30,14 @@
 
 #include "interface.h"
 #include "support.h"
-#include "backend.h"
+#include "folder.h"
+#include "feed.h"
+#include "item.h"
 #include "conf.h"
 #include "common.h"
 #include "callbacks.h"
 
 #include "vfolder.h"	// FIXME
-
-/* list of all namespaces supported by preferences dialog (FIXME) */
-gchar	*nslist[] = { "dc", "content", "slash", "fm", "syn", "admin", NULL };
 
 GtkWidget	*mainwindow;
 GtkWidget	*newdialog = NULL;
@@ -45,6 +46,9 @@ GtkWidget	*propdialog = NULL;
 GtkWidget	*prefdialog = NULL;
 GtkWidget	*newfolderdialog = NULL;
 GtkWidget	*foldernamedialog = NULL;
+
+GtkTreeStore	*itemstore = NULL;
+GtkTreeStore	*feedstore = NULL;
 
 extern GdkPixbuf	*unreadIcon;
 extern GdkPixbuf	*readIcon;
@@ -56,10 +60,14 @@ extern GdkPixbuf	*unavailableIcon;
 extern GdkPixbuf	*vfolderIcon;
 extern GdkPixbuf	*emptyIcon;
 
-extern GThread	*updateThread;
+extern GThread		*updateThread;
 
-static gint	itemlist_loading = 0;	/* freaky workaround */
-static gchar	*new_key;		/* used by new feed dialog */
+extern GHashTable	*feeds; // FIXME!
+extern GHashTable	*folders; // FIXME!
+extern GMutex 		*feeds_lock; // FIXME!
+
+static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
+static feedPtr	new_feed;		/* used by new feed dialog */
 
 /* two globals to keep selected entry info while DND actions */
 static gboolean	drag_successful = FALSE;
@@ -67,7 +75,13 @@ static gint	drag_source_type = FST_INVALID;
 static gchar	*drag_source_key = NULL;
 static gchar	*drag_source_keyprefix = NULL;
 
+/* prototypes */
 void preFocusItemlist(void);
+GtkTreeStore * getFeedStore(void);
+GtkTreeStore * getItemStore(void);
+void searchItems(gchar *string);
+void loadItemList(feedPtr fp, gchar *searchstring);
+void clearItemList(void);
 
 /*------------------------------------------------------------------------------*/
 /* helper functions	FIXME: need to be cleaned up (no window/feedlist parameter	*/
@@ -112,7 +126,7 @@ gchar * getMainFeedListViewSelection(void) {
 	return getFeedListSelection(feedlistview);
 }
 
-// FIXME: use something like getEntryPrefix()
+// FIXME: use something like getFeedPrefix()
 gchar * getFeedListSelectionPrefix(GtkWidget *window) {
 	GtkWidget		*treeview;
 	GtkTreeSelection	*select;
@@ -262,7 +276,7 @@ void on_popup_refresh_selected(void) {
 		return;	
 	
 	if(NULL != (feedkey = getFeedListSelection(lookup_widget(mainwindow, "feedlist"))))
-		updateEntry(feedkey);
+		updateFeed(getFeed(feedkey));
 }
 
 /*------------------------------------------------------------------------------*/
@@ -334,7 +348,8 @@ void on_deletebtn(GtkWidget *feedlist) {
 	GtkTreeIter	*iter;
 	gchar		*keyprefix;
 	gchar		*key;
-
+	feedPtr		fp;
+	
 	/* user_data has to contain the feed list widget reference */
 	key = getFeedListSelection(feedlist);
 	keyprefix = getFeedListSelectionPrefix(mainwindow);
@@ -348,9 +363,10 @@ void on_deletebtn(GtkWidget *feedlist) {
 			return;
 		}
 
-		print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getDefaultEntryTitle(key)));
+		fp = getFeed(key);
+		print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(fp)));
 		gtk_tree_store_remove(getFeedStore(), iter);
-		removeEntry(keyprefix, key);
+		removeFeed(fp);
 		g_free(iter);
 				
 		clearItemList();
@@ -374,6 +390,7 @@ void on_popup_delete_selected(void) {
 
 void on_propbtn(GtkWidget *feedlist) {
 	gint		type;
+	feedPtr		fp;
 	gchar		*feedkey;
 	GtkWidget 	*feednameentry, *feedurlentry, *updateIntervalBtn;
 	GtkAdjustment	*updateInterval;
@@ -392,8 +409,6 @@ void on_propbtn(GtkWidget *feedlist) {
 		return;
 	}
 	
-	type = getFeedListSelectionType(mainwindow);
-	
 	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
 		propdialog = create_propdialog();
 	
@@ -404,9 +419,11 @@ void on_propbtn(GtkWidget *feedlist) {
 	feedurlentry = lookup_widget(propdialog, "feedurlentry");
 	updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
 	updateInterval = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(updateIntervalBtn));
-
-	gtk_entry_set_text(GTK_ENTRY(feednameentry), getDefaultEntryTitle(feedkey));
-	gtk_entry_set_text(GTK_ENTRY(feedurlentry), (gchar *)getFeedProp(feedkey, FEED_PROP_SOURCE));
+	
+	fp = getFeed(feedkey);
+	type = getFeedType(fp);
+	gtk_entry_set_text(GTK_ENTRY(feednameentry), getFeedTitle(fp));
+	gtk_entry_set_text(GTK_ENTRY(feedurlentry), getFeedSource(fp));
 
 	if(FST_OCS == type) {	
 		/* disable the update interval selector for OCS feeds */
@@ -415,9 +432,9 @@ void on_propbtn(GtkWidget *feedlist) {
 		/* enable and adjust values otherwise */
 		gtk_widget_set_sensitive(lookup_widget(propdialog, "feedrefreshcount"), TRUE);	
 		
-		gtk_adjustment_set_value(updateInterval, (gint)getFeedProp(feedkey, FEED_PROP_UPDATEINTERVAL));
+		gtk_adjustment_set_value(updateInterval, getFeedUpdateInterval(fp));
 
-		defaultInterval = (gint)getFeedProp(feedkey, FEED_PROP_DFLTUPDINTERVAL);
+		defaultInterval = getFeedDefaultInterval(fp);
 		if(-1 != defaultInterval)
 			defaultIntervalStr = g_strdup_printf(_("The feed specifies an update interval of %d minutes"), defaultInterval);
 		else
@@ -445,6 +462,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkAdjustment	*updateInterval;
 	gint		interval;
 	gint		type;
+	feedPtr		fp;
 	
 	g_assert(NULL != propdialog);
 		
@@ -456,8 +474,9 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 		feedurl = (gchar *)gtk_entry_get_text(GTK_ENTRY(feedurlentry));
 		feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
 	
-		setFeedProp(feedkey, FEED_PROP_USERTITLE, (gpointer)g_strdup(feedname));  
-		setFeedProp(feedkey, FEED_PROP_SOURCE, (gpointer)g_strdup(feedurl));
+		fp = getFeed(feedkey);
+		setFeedTitle(fp, g_strdup(feedname));  
+		setFeedSource(fp, g_strdup(feedurl));
 		
 		if(IS_FEED(type)) {
 			updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
@@ -467,7 +486,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 			
 			if(0 == interval)
 				interval = -1;	/* this is due to ignore this feed while updating */
-			setFeedProp(feedkey, FEED_PROP_UPDATEINTERVAL, (gpointer)interval);
+			setFeedUpdateInterval(fp, interval);
 		}
 	}
 }
@@ -482,6 +501,24 @@ void on_popup_prop_selected(void) {
 /*------------------------------------------------------------------------------*/
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
+
+void addToFeedList(feedPtr fp) {
+	GtkTreeIter	iter;
+	GtkTreeIter	*topiter;
+	
+	g_assert(NULL != getFeedKey(fp));
+	g_assert(NULL != getFeedKeyPrefix(fp));
+	g_assert(NULL != feedstore);
+	// FIXME: mmaybe this should not happen here?
+	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(getFeedKeyPrefix(fp)));
+
+	gtk_tree_store_append(feedstore, &iter, topiter);
+	gtk_tree_store_set(feedstore, &iter,
+			   FS_TITLE, getFeedTitle(fp),
+			   FS_KEY, getFeedKey(fp),
+			   FS_TYPE, getFeedType(fp),
+			   -1);		   
+}
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
 	GtkWidget	*feedurlentry;
@@ -515,6 +552,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget 	*sourceentry;	
 	GtkWidget 	*titleentry, *typeoptionmenu,
 			*updateIntervalBtn;
+	feedPtr		fp;
 	gint		type = FST_RSS;
 	gint		interval;
 	
@@ -549,28 +587,29 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	}
 
 	if(NULL != (keyprefix = getFeedListSelectionPrefix(mainwindow))) {
-		key = newEntry(type, source, keyprefix);
-		if(NULL != key) {
+		fp = newFeed(type, source, keyprefix);
+		if(NULL != fp) {
+			addToFeedList(fp);
 			checkForEmptyFolders();
 			
-			if(NULL != (title = getDefaultEntryTitle(key)))
+			if(NULL != (title = getFeedTitle(fp)))
 				gtk_entry_set_text(GTK_ENTRY(titleentry), title);
 			else		
 				gtk_entry_set_text(GTK_ENTRY(titleentry), "");
 			
-			new_key = key;
+			new_feed = fp;
 		
 			updateIntervalBtn = lookup_widget(feednamedialog, "feedrefreshcount");
-			if(-1 != (interval = (gint)getFeedProp(key, FEED_PROP_DFLTUPDINTERVAL)))
+			if(-1 != (interval = getFeedDefaultInterval(fp)))
 				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-
+			
 			gtk_widget_show(feednamedialog);
-		} // FIXME: else
+		}
 	} else {
 		print_status("could not get entry key prefix! maybe you did not select a group");
 	}
 	
-	/* don't free source/keyprefix for they are reused by newEntry! */
+	/* don't free source/keyprefix for they are reused by newFeed! */
 }
 
 void on_feednamebutton_clicked(GtkButton *button, gpointer user_data) {	
@@ -595,12 +634,12 @@ void on_feednamebutton_clicked(GtkButton *button, gpointer user_data) {
 	feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
 	interval = gtk_adjustment_get_value(updateInterval);
 	
-	setFeedProp(new_key, FEED_PROP_USERTITLE, (gpointer)g_strdup(feedname));
+	setFeedTitle(new_feed, g_strdup(feedname));
 	
-	if(IS_FEED(getEntryType(new_key)))
-		setFeedProp(new_key, FEED_PROP_UPDATEINTERVAL, (gpointer)interval);
+	if(IS_FEED(getFeedType(new_feed)))
+		setFeedUpdateInterval(new_feed, interval);
 		
-	new_key = NULL;
+	new_feed = NULL;
 }
 
 /*------------------------------------------------------------------------------*/
@@ -711,18 +750,16 @@ void on_popup_removefolder_selected(void) {
 void on_popup_allunread_selected(void) {
 	GtkTreeModel 	*model;
 	GtkTreeIter	iter;
-	gpointer	tmp_ip;
-	gint		type;
+	itemPtr		ip;
 	gboolean 	valid;
 
 	model = GTK_TREE_MODEL(getItemStore());
 	valid = gtk_tree_model_get_iter_first(model, &iter);
 
 	while(valid) {
-               	gtk_tree_model_get (model, &iter, IS_PTR, &tmp_ip,
-						  IS_TYPE, &type, -1);
-		g_assert(tmp_ip != NULL);
-		markItemAsRead(type, tmp_ip);
+               	gtk_tree_model_get (model, &iter, IS_PTR, &ip, -1);
+		g_assert(ip != NULL);
+		markItemAsRead(ip);
 
 		valid = gtk_tree_model_iter_next(model, &iter);
 	}
@@ -755,7 +792,7 @@ void on_popup_launchitem_selected(void) {
 	       	gtk_tree_model_get(model, &iter, IS_PTR, &tmp_ip,
 						 IS_TYPE, &tmp_type, -1);
 		g_assert(tmp_ip != NULL);
-		launchURL(getItemURL(tmp_type, tmp_ip));
+		launchURL(getItemSource(tmp_ip));
 	}
 }
 
@@ -812,6 +849,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
 	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
+	feedPtr			fp;
 	gchar			*key, *keyprefix;
 	
 	g_assert(mainwindow != NULL);
@@ -822,7 +860,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 
 		if(NULL != (keyprefix = getFeedListSelectionPrefix(mainwindow))) {
 
-			if(NULL != (key = newEntry(FST_VFOLDER, "", keyprefix))) {
+			if(NULL != (fp = newFeed(FST_VFOLDER, "", keyprefix))) {
 				checkForEmptyFolders();
 				
 				// FIXME: this really does not belong here!!! -> vfolder.c
@@ -830,20 +868,22 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule)))) 
 					g_error(_("could not allocate memory!"));
 
-				rp->value = g_strdup((gchar *)searchstring);
-
 				/* we set the searchstring as a default title */
-				setFeedProp(key, FEED_PROP_USERTITLE, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
+				setFeedTitle(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
+				/* and set the rules... */
+				rp->value = g_strdup((gchar *)searchstring);
+				setVFolderRules(fp, rp);
 
-				loadNewVFolder(key, rp);
-			} // FIXME: else
+				/* FIXME: brute force: update of all vfolders redundant */
+				loadVFolders();
+			}
 		} else {
 			print_status("could not get entry key prefix! maybe you did not select a group");
 		}
 		
 	}
 
-	/* don't free keyprefix and searchstring for its reused by newEntry! */
+	/* don't free keyprefix and searchstring for its reused by newFeed! */
 }
 
 /*------------------------------------------------------------------------------*/
@@ -901,7 +941,7 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 			g_assert(NULL != tmp_key);
 
 			clearItemList();
-			loadItemList(tmp_key, NULL);
+			loadItemList(getFeed(tmp_key), NULL);
 			g_free(tmp_key);
 			
 			/* FIXME: another workaround to prevent strange window
@@ -946,7 +986,7 @@ void itemlist_selection_changed(void) {
 			g_assert(tmp_ip != NULL);
 			if((0 == itemlist_loading)) {
 				if(NULL != (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
-					loadItem(type, tmp_ip);
+					displayItem(tmp_ip);
 
 					/* redraw feed list to update unread items numbers */
 					redrawFeedList();
@@ -971,52 +1011,58 @@ gboolean on_Itemlist_move_cursor(GtkTreeView *treeview, GtkMovementStep  step, g
 /* treeview creation and rendering						*/
 /*------------------------------------------------------------------------------*/
 
-static void renderEntryTitle(GtkTreeViewColumn *tree_column,
+static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 	             GtkCellRenderer   *cell,
 	             GtkTreeModel      *model,
         	     GtkTreeIter       *iter,
 	             gpointer           data)
 {
-	gint		tmp_type;
-	gchar		*tmp_key;
+	gint		type;
+	gchar		*key;
+	feedPtr		fp;
 	int		count;
 	gboolean	unspecific = TRUE;
 
-	gtk_tree_model_get(model, iter, FS_TYPE, &tmp_type, 
-	                                FS_KEY, &tmp_key, -1);
+	gtk_tree_model_get(model, iter, FS_TYPE, &type, 
+	                                FS_KEY, &key, -1);
 	
-	if(IS_FEED(tmp_type)) {
-		g_assert(NULL != tmp_key);	
-		count = (gint)getFeedProp(tmp_key, FEED_PROP_UNREADCOUNT);
+	if(IS_FEED(type)) {
+		g_assert(NULL != key);
+		fp = getFeed(key);
+		count = getFeedUnreadCount(fp);
 		   
 		if(count > 0) {
 			unspecific = FALSE;
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "text", g_strdup_printf("%s (%d)", getDefaultEntryTitle(tmp_key), count), NULL);
+			g_object_set(GTK_CELL_RENDERER(cell), "text", g_strdup_printf("%s (%d)", getFeedTitle(fp), count), NULL);
 		}
 	}
-	g_free(tmp_key);
+	g_free(key);
 	
 	if(unspecific)
 		g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
 }
 
 
-static void renderEntryStatus(GtkTreeViewColumn *tree_column,
+static void renderFeedStatus(GtkTreeViewColumn *tree_column,
 	             GtkCellRenderer   *cell,
 	             GtkTreeModel      *model,
         	     GtkTreeIter       *iter,
 	             gpointer           data)
 {
-	GdkPixbuf	*tmp_state;
 	gchar		*tmp_key;
-	gint		tmp_type;
+	gint		type;
+	feedPtr		fp;
 	
-	gtk_tree_model_get(model, iter, FS_TYPE, &tmp_type, 
-					FS_KEY, &tmp_key,
-	                                FS_STATE, &tmp_state, -1);
+	gtk_tree_model_get(model, iter,	FS_KEY, &tmp_key, 
+					FS_TYPE, &type, -1);
 
-	switch(tmp_type) {
+	if(IS_FEED(type)) {
+		g_assert(NULL != tmp_key);
+		fp = getFeed(tmp_key);
+	}
+	
+	switch(type) {
 		case FST_HELPNODE:
 			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", helpIcon, NULL);
 			break;
@@ -1030,7 +1076,7 @@ static void renderEntryStatus(GtkTreeViewColumn *tree_column,
 			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", vfolderIcon, NULL);
 			break;
 		case FST_OCS:
-			if((gboolean)getFeedProp(tmp_key, FEED_PROP_AVAILABLE))
+			if(getFeedAvailable(fp))
 				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", listIcon, NULL);
 			else
 				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unavailableIcon, NULL);
@@ -1038,7 +1084,7 @@ static void renderEntryStatus(GtkTreeViewColumn *tree_column,
 		case FST_PIE:
 		case FST_RSS:			
 		case FST_CDF:
-			if((gboolean)getFeedProp(tmp_key, FEED_PROP_AVAILABLE))
+			if(getFeedAvailable(fp))
 				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", availableIcon, NULL);
 			else
 				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unavailableIcon, NULL);
@@ -1054,7 +1100,7 @@ static void renderEntryStatus(GtkTreeViewColumn *tree_column,
 
 /* set up the entry list store and connects it to the entry list
    view in the main window */
-void setupEntryList(GtkWidget *mainview) {
+void setupFeedList(GtkWidget *mainview) {
 	GtkCellRenderer		*textRenderer;
 	GtkCellRenderer		*iconRenderer;	
 	GtkTreeViewColumn 	*column;
@@ -1083,10 +1129,10 @@ void setupEntryList(GtkWidget *mainview) {
 	gtk_tree_view_append_column(GTK_TREE_VIEW(mainview), column);
 
 	gtk_tree_view_column_set_cell_data_func (column, iconRenderer, 
-					   renderEntryStatus, NULL, NULL);
+					   renderFeedStatus, NULL, NULL);
 					   
 	gtk_tree_view_column_set_cell_data_func (column, textRenderer,
-                                           renderEntryTitle, NULL, NULL);			   
+                                           renderFeedTitle, NULL, NULL);			   
 		
 	/* Setup the selection handler for the main view */
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(mainview));
@@ -1103,15 +1149,11 @@ static void renderItemTitle(GtkTreeViewColumn *tree_column,
         	     GtkTreeIter       *iter,
 	             gpointer           data)
 {
-	gpointer	*tmp_ip;
-	gint		type;
-	gboolean 	result;
+	gpointer	ip;
 
-	gtk_tree_model_get(model, iter, IS_PTR, &tmp_ip,
-					IS_TYPE, &type, -1);
+	gtk_tree_model_get(model, iter, IS_PTR, &ip, -1);
 
-	result = getItemReadStatus(type, tmp_ip);
-	if(FALSE == result) {
+	if(FALSE == getItemReadStatus(ip)) {
 		g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
 	} else {
 		g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
@@ -1124,15 +1166,11 @@ static void renderItemStatus(GtkTreeViewColumn *tree_column,
         	     GtkTreeIter       *iter,
 	             gpointer           data)
 {
-	gpointer	tmp_ip;
-	gint		type;
-	gboolean	result = TRUE;
+	gpointer	ip;
 
-	gtk_tree_model_get(model, iter, IS_PTR, &tmp_ip,
-					IS_TYPE, &type, -1);
+	gtk_tree_model_get(model, iter, IS_PTR, &ip, -1);
 
-	result = getItemReadStatus(type, tmp_ip);		
-	if(FALSE == result) {
+	if(FALSE == getItemReadStatus(ip)) {
 		g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unreadIcon, NULL);
 	} else {
 		g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", readIcon, NULL);
@@ -1145,12 +1183,12 @@ static void renderItemDate(GtkTreeViewColumn *tree_column,
         	     GtkTreeIter       *iter,
 	             gpointer           data)
 {
-	gint		tmp_time;
+	gint		time;
 	gchar		*tmp;
 
-	gtk_tree_model_get(model, iter, IS_TIME, &tmp_time, -1);
-	if(0 != tmp_time) {
-		tmp = formatDate((time_t)tmp_time);	// FIXME: sloooowwwwww...
+	gtk_tree_model_get(model, iter, IS_TIME, &time, -1);
+	if(0 != time) {
+		tmp = formatDate((time_t)time);	// FIXME: sloooowwwwww...
 		g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
 		g_free(tmp);
 	} else {
@@ -1408,7 +1446,7 @@ void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpoi
 		g_assert(NULL != drag_source_key);
 		g_assert(NULL != drag_source_keyprefix);
 		
-		moveInEntryList(drag_source_keyprefix, drag_source_key);
+		moveInFeedList(drag_source_keyprefix, drag_source_key);
 		checkForEmptyFolders();	/* to add an "(empty)" entry */
 
 		g_free(drag_source_key);
@@ -1424,7 +1462,6 @@ void on_feedlist_drag_begin(GtkWidget *widget, GdkDragContext  *drag_context, gp
 	drag_source_type = getFeedListSelectionType(mainwindow);
 	drag_source_key = getFeedListSelection(lookup_widget(mainwindow, "feedlist"));
 	drag_source_keyprefix = getFeedListSelectionPrefix(mainwindow);
-	g_print("dragging %s from %s ...\n", drag_source_key, drag_source_keyprefix);
 }
 
 gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, gint x, gint y, guint time, gpointer user_data) {
@@ -1452,4 +1489,123 @@ gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, 
 	drag_successful = !stop;
 	
 	return stop;
+}
+
+GtkTreeStore * getItemStore(void) {
+
+	if(NULL == itemstore) {
+		/* set up a store of these attributes: 
+			- item title
+			- item state (read/unread)		
+			- pointer to item data
+			- date time_t value
+			- the type of the feed the item belongs to
+
+		 */
+		itemstore = gtk_tree_store_new(5, G_TYPE_STRING, 
+						  GDK_TYPE_PIXBUF, 
+						  G_TYPE_POINTER, 
+						  G_TYPE_INT,
+						  G_TYPE_INT);
+	}
+	
+	return itemstore;
+}
+
+GtkTreeStore * getFeedStore(void) {
+
+	if(NULL == feedstore) {
+		/* set up a store of these attributes: 
+			- feed title
+			- feed state icon (not available/available)
+			- feed key in gconf
+			- feed list view type (node/rss/cdf/pie/ocs...)
+		 */
+		feedstore = gtk_tree_store_new(4, G_TYPE_STRING, 
+						  GDK_TYPE_PIXBUF, 
+						  G_TYPE_STRING,
+						  G_TYPE_INT);
+	}
+	
+	return feedstore;
+}
+
+void clearItemList(void) {
+	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
+}
+
+void loadItemList(feedPtr fp, gchar *searchstring) {
+	GtkTreeIter	iter;
+	GSList		*itemlist;
+	itemPtr		ip;
+	gint		count = 0;
+	gchar		*title, *description;
+	gboolean	add;
+
+	if(NULL == fp) {
+		print_status(_("internal error! item display for NULL pointer requested!"));
+		return;
+	}
+	
+	itemlist = fp->items;
+	while(NULL != itemlist) {
+		ip = itemlist->data;
+		title = getItemTitle(ip);
+		description = getItemDescription(ip);
+		
+		if(0 == ((++count)%100)) 
+			print_status(g_strdup_printf(_("loading feed... (%d items)"), count));
+
+		add = TRUE;
+		if(NULL != searchstring) {
+			add = FALSE;
+				
+			if((NULL != title) && (NULL != strstr(title, searchstring)))
+				add = TRUE;
+
+			if((NULL != description) && (NULL != strstr(description, searchstring)))
+				add = TRUE;
+				
+			if(FST_VFOLDER == getFeedType(fp))
+				add = FALSE;
+		}
+
+		if(add) {
+			gtk_tree_store_append(itemstore, &iter, NULL);
+			gtk_tree_store_set(itemstore, &iter,
+	     		   		IS_TITLE, title,
+					IS_PTR, ip,
+					IS_TIME, getItemTime(ip),
+					IS_TYPE, getFeedType(fp),	/* not the item type, this would fail for VFolders! */
+					-1);
+		}
+
+		itemlist = g_slist_next(itemlist);
+	}
+	
+	if(gnome_vfs_is_primary_thread()) {
+		startHTMLOutput();
+		writeHTML(fp->description);
+		finishHTMLOutput();	
+	}
+}
+
+static void searchInFeed(gpointer key, gpointer value, gpointer userdata) {
+	
+	loadItemList((feedPtr)value, (gchar *)userdata);
+}
+
+void searchItems(gchar *string) {
+
+	clearItemList();
+	//g_mutex_lock(feeds_lock);
+	g_hash_table_foreach(feeds, searchInFeed, string);
+	//g_mutex_unlock(feeds_lock);	
+}
+
+gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+
+	saveAllFeeds();
+	gtk_main_quit();
+	return FALSE;
 }

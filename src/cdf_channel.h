@@ -21,7 +21,7 @@
 #ifndef _CDF_CHANNEL_H
 #define _CDF_CHANNEL_H
 
-#include "backend.h"
+#include "feed.h"
 
 #define CDF_CHANNEL_TITLE		0
 #define CDF_CHANNEL_DESCRIPTION		1
@@ -34,29 +34,14 @@
 #define CDF_CHANNEL_MAX_TAG		7
 
 typedef struct CDFChannel {
-	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
-	   this structure, order is important! */
-	gint		type;		/* FST_CDF for CDF channels */
-	gchar		*key;		/* configuration storage key */	
-	gchar		*keyprefix;	/* folder key the feed is stored in */
-
 	/* standard namespace infos */
 	gchar		*tags[CDF_CHANNEL_MAX_TAG];
 
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */
-					   
-	GSList		*items;		/* the item list */
 	
 	/* other information */
-	gchar		*usertitle;	/* feed title may be modified by user */	
-	gchar 		*source;	/* source url */	
-	gboolean	available;	/* flag to signalize load/update errors */
 	time_t		time;		/* last feed build/creation time */	
-	gchar 		*encoding;	/* xml encoding */
-	gint		updateInterval;	/* feed refresh interval */
-	gint		updateCounter;	/* counter of minutes till next feed refresh */	
-	gint		unreadCounter;	/* counter of unread items */
 } *CDFChannelPtr;
 
 feedHandlerPtr initCDFFeedHandler(void);

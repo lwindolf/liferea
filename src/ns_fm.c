@@ -26,11 +26,6 @@
 
 static gchar ns_fm_prefix[] = "fm";
 
-/* some prototypes */
-void ns_fm_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur);
-
-gchar * ns_fm_doItemOutput(gpointer obj);
-
 /* you can find the fm DTD under http://freshmeat.net/backend/fm-releases-0.1.dtd
 
   it defines a lot of entities and one tag "screenshot_url", which we
@@ -38,21 +33,6 @@ gchar * ns_fm_doItemOutput(gpointer obj);
 */
 
 gchar * ns_fm_getRSSNsPrefix(void) { return ns_fm_prefix; }
-
-RSSNsHandler *ns_fm_getRSSNsHandler(void) {
-	RSSNsHandler 	*nsh;
-	
-	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= NULL;
-		nsh->parseItemTag		= ns_fm_parseItemTag;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= NULL;
-		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= ns_fm_doItemOutput;
-	}
-
-	return nsh;
-}
 
 static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
 	GHashTable	*nsvalues;
@@ -69,7 +49,7 @@ static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-void ns_fm_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_fm_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 	int 		i;
 	
 	while (cur != NULL) {
@@ -83,25 +63,45 @@ void ns_fm_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 /* maybe I should overthink method names :-) */
-void ns_fm_output(gpointer key, gpointer value, gpointer userdata) {
-
-	writeHTML(FM_IMG_START);
-	writeHTML((gchar *)value);
-	writeHTML(FM_IMG_END);	
+static void ns_fm_output(gpointer key, gpointer value, gpointer userdata) {
+	gchar 	**buffer = (gchar **)userdata;
+	
+	addToHTMLBuffer(buffer, FM_IMG_START);
+	addToHTMLBuffer(buffer, (gchar *)value);
+	addToHTMLBuffer(buffer, FM_IMG_END);	
 }
 
-void ns_fm_doOutput(GHashTable *nsinfos) {
+static gchar * ns_fm_doOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
+	gchar		*buffer = NULL;
 	
 	/* we print all channel infos as a (key,value) table */
 	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_fm_prefix))) {
-		g_hash_table_foreach(nsvalues, ns_fm_output, (gpointer)NULL);
+		g_hash_table_foreach(nsvalues, ns_fm_output, (gpointer)&buffer);
 	}
+	
+	return buffer;
 }
 
-gchar * ns_fm_doItemOutput(gpointer obj) {
+static gchar * ns_fm_doItemOutput(gpointer obj) {
 
-	if(NULL != obj) {
-		ns_fm_doOutput(((RSSItemPtr)obj)->nsinfos);
+	if(NULL != obj)
+		return ns_fm_doOutput(((RSSItemPtr)obj)->nsinfos);
+		
+	return NULL;
+}
+
+RSSNsHandler *ns_fm_getRSSNsHandler(void) {
+	RSSNsHandler 	*nsh;
+	
+	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
+		nsh->parseChannelTag		= NULL;
+		nsh->parseItemTag		= ns_fm_parseItemTag;
+		nsh->doChannelHeaderOutput	= NULL;
+		nsh->doChannelFooterOutput	= NULL;
+		nsh->doItemHeaderOutput		= NULL;
+		nsh->doItemFooterOutput		= ns_fm_doItemOutput;
 	}
+
+	return nsh;
 }

@@ -92,38 +92,42 @@ void ns_admin_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 
 /* maybe I should overthink method names :-) */
 void ns_admin_output(gpointer key, gpointer value, gpointer userdata) {
-
-	writeHTML(FIRSTTD);
+	gchar 	**buffer = (gchar **)userdata;
+	
+	addToHTMLBuffer(buffer, FIRSTTD);
 	if(!strcmp(key, "errorReportsTo")) 
-		writeHTML((gchar *)_("report errors to"));
+		addToHTMLBuffer(buffer, (gchar *)_("report errors to"));
 	else if(!strcmp(key, "generatorAgent"))
-		writeHTML((gchar *)_("feed generator"));
+		addToHTMLBuffer(buffer, (gchar *)_("feed generator"));
 	else g_assert(1==2);
 	
-	writeHTML(NEXTTD);
-	writeHTML("<a href=\"");
-	writeHTML(value);
-	writeHTML("\">");
-	writeHTML(value);
-	writeHTML("</a>");	
-	writeHTML(LASTTD);
-		
+	addToHTMLBuffer(buffer, NEXTTD);
+	addToHTMLBuffer(buffer, "<a href=\"");
+	addToHTMLBuffer(buffer, value);
+	addToHTMLBuffer(buffer, "\">");
+	addToHTMLBuffer(buffer, value);
+	addToHTMLBuffer(buffer, "</a>");	
+	addToHTMLBuffer(buffer, LASTTD);		
 }
 
-void ns_admin_doOutput(GHashTable *nsinfos) {
+gchar * ns_admin_doOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
+	gchar		*buffer = NULL;
 	
 	/* we print all channel infos as a (key,value) table */
 	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_admin_prefix))) {
-		writeHTML(TABLE_START);
-		g_hash_table_foreach(nsvalues, ns_admin_output, (gpointer)NULL);
-		writeHTML(TABLE_END);
+		addToHTMLBuffer(&buffer, TABLE_START);
+		g_hash_table_foreach(nsvalues, ns_admin_output, (gpointer)&buffer);
+		addToHTMLBuffer(&buffer, TABLE_END);
 	}
+	
+	return buffer;
 }
 
 gchar * ns_admin_doChannelOutput(gpointer obj) {
 
-	if(NULL != obj) {
-		ns_admin_doOutput(((RSSChannelPtr)obj)->nsinfos);
-	}
+	if(NULL != obj)
+		return ns_admin_doOutput(((RSSChannelPtr)obj)->nsinfos);
+	
+	return NULL;
 }

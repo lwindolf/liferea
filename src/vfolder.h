@@ -21,7 +21,8 @@
 #ifndef _VFOLDER_H
 #define _VFOLDER_H
 
-#include "backend.h"
+#include "feed.h"
+#include "item.h"
 
 /* structure to store search rules of a VFolder */
 typedef struct rule {
@@ -30,31 +31,17 @@ typedef struct rule {
 	//rulePtr	next;	/* next rule */
 } *rulePtr;
 
-typedef struct VFolder {
-	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
-	   this structure, order is important! */
-	gint		type;		/* FST_VFOLDER for RSS channels */
-	gchar		*key;		/* configuration storage key */	
-	gchar		*keyprefix;
-
-	GSList		*items;		/* the item list */
-	GHashTable	*itemtypes;	/* hashtable to lookup itemtypes */
-	gchar		*usertitle;	/* vfolder title */
-	
-	rulePtr		rules;		/* the search rules of this VFolder */
-	// FIXME: still to complicated to support...
-	gint		unreadCounter;	/* counter of unread items */
-} *VFolderPtr;
-
 /* standard feed/item type interface */
 feedHandlerPtr	initVFolderFeedHandler(void);
-itemHandlerPtr	initVFolderItemHandler(void);
 
 /* VFolder interface */
-void		removeOldItemsFromVFolder(VFolderPtr vp, gpointer ep);
-void		addItemToVFolder(VFolderPtr vp, gpointer ep, gpointer ip, gint type);
-void		setVFolderRules(VFolderPtr vp, rulePtr rp);
-rulePtr		getVFolderRules(VFolderPtr vp);
-gboolean	matchVFolderRules(VFolderPtr vp, gchar *string);
+void		initVFolders(void);
+void		removeOldItemsFromVFolder(feedPtr vp, feedPtr fp);
+void 		removeOldItemsFromVFolders(gpointer key, gpointer value, gpointer userdata);	// FIXME!
+void 		scanFeed(gpointer key, gpointer value, gpointer userdata);		// FIXME!
+void		addItemToVFolder(feedPtr vp, feedPtr fp, itemPtr ip);
+void		setVFolderRules(feedPtr vp, rulePtr rp);
+rulePtr		getVFolderRules(feedPtr vp);
+gboolean	matchVFolderRules(feedPtr vp, gchar *string);
 
 #endif

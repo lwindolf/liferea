@@ -29,172 +29,53 @@
 /* HTML constants */
 #define FEED_HEAD_VFOLDER	"VFolder: "
 
-/* wrapper structure to store item information */
-typedef struct VFolderItem {
-	gint		type;	/* feed type this item belongs to */
-	gpointer	ip;	/* the item pointer itself */
-	gpointer	ep;	/* the feed this item belongs to */
-	gpointer	vp;	/* the vfolder this vfolder entry belongs to */
-} *VFolderItemPtr;
-
-/* we reuse the backend item handlers to redirect item handler calls
-   to the real item handlers */
-extern GHashTable	*itemHandler;
-
 /* FIXME: stat() ! */
 #define MAXBUFSIZE	1024
 
-/* loads a saved VFolder feed from disk */
-static gpointer loadVFolder(gchar *keyprefix, gchar *key) {
-	VFolderPtr	new_vp = NULL;
-	rulePtr		rule = NULL;
-	char		*buf, *filename;
-	FILE		*f;
+extern GMutex * feeds_lock;
+extern GHashTable	*feeds;
 
-	if(NULL == (new_vp = (VFolderPtr) malloc(sizeof(struct VFolder)))) {
-		g_error(_("could not allocate memory!\n"));
-		return NULL;
-	}
+static GHashTable	*vfolders = NULL;
 
-	memset(new_vp, 0, sizeof(struct VFolder));
-	new_vp->type = FST_VFOLDER;
-	new_vp->itemtypes = g_hash_table_new(g_int_hash, g_int_equal);
-
-	filename = getCacheFileName(keyprefix, key, "vfolder");	
-	if(NULL != (f = fopen(filename, "r"))) {
-		buf = (gchar *)g_malloc(MAXBUFSIZE + 1);
-		rule = (rulePtr)g_malloc(sizeof(struct rule));
-		
-		if((NULL != buf) && (NULL != rule)) {
-			memset(buf, 0, MAXBUFSIZE + 1);
-			fread(buf, MAXBUFSIZE, 1, f);
-			rule->value = buf;
-			new_vp->rules = rule;
-		} else {
-			g_error(_("could not allocate memory!\n"));
-		}
-		fclose(f);	
-	} else {
-		g_warning(_("could not read VFolder save file!!!\n"));
-	}
-	
-	g_free(filename);
-	return (gpointer)new_vp;
+void initVFolders(void) {
+	if(NULL == vfolders)
+		vfolders =  g_hash_table_new(g_int_hash, g_int_equal);
 }
 
 /* though VFolders are treated like feeds, there 'll be a read() call
    when creating a new VFolder, we just do nothing but initializing
    the vfolder structure */
-static gpointer readVFolder(gchar *url) {
-	VFolderPtr 	vp;
+static feedPtr readVFolder(gchar *url) {
+	feedPtr	vp;
 	
 	/* initialize channel structure */
-	if(NULL == (vp = (VFolderPtr) malloc(sizeof(struct VFolder)))) {
+	if(NULL == (vp = (feedPtr) malloc(sizeof(struct feed)))) {
 		g_error("not enough memory!\n");
 		return NULL;
 	}
-	memset(vp, 0, sizeof(struct VFolder));
+	memset(vp, 0, sizeof(struct feed));
 	vp->type = FST_VFOLDER;
-	vp->usertitle = url;
-	vp->itemtypes = g_hash_table_new(g_int_hash, g_int_equal);
+	vp->title = url;
 	
 	return vp;
-}
-
-/* merging does nothing for VFolders, should never be called */
-static gpointer mergeVFolder(gpointer old_fp, gpointer new_fp) {
-	VFolderPtr	old_vp = (VFolderPtr)old_fp;
-	
-	g_free(old_vp->key);
-	g_free(old_vp->keyprefix);
-	g_free(old_vp->usertitle);
-	// FIXME: free item list memory
-	g_slist_free(old_vp->items);
-	g_free(old_vp);
-	g_print(_("hmmm... maybe this should not happen!"));
-	return new_fp;
-}
-
-static void removeVFolder(gchar *keyprefix, gchar *key, gpointer fp) {
-	VFolderPtr	vp = (VFolderPtr)fp;
-	gchar		*filename;
-
-	/* never free key and keyprefix, this is done by backend! */	
-	g_free(vp->usertitle);
-	// FIXME: free item list memory
-	g_slist_free(vp->items);
-	g_free(vp);
-
-	filename = getCacheFileName(keyprefix, key, "vfolder");
-	g_print("deleting cache file %s\n", filename);
-	if(0 != unlink(filename)) {
-		showErrorBox(_("could not remove cache file of this entry!"));
-	}
-	g_free(filename);
-}
-
-/* ---------------------------------------------------------------------------- */
-/* VFolder item handler								*/
-/* ---------------------------------------------------------------------------- */
-
-static gpointer getVFolderItemProp(gpointer ip, gint proptype) {
-	VFolderItemPtr	vip = (VFolderItemPtr)ip;
-	itemHandlerPtr	ihp;
-	
-	g_assert(NULL != vip);
-	if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&vip->type)))
-		g_error(g_strdup_printf(_("internal error! no item handler for this type %d!"), vip->type));	
-
-	g_assert(NULL != ihp->getItemProp);
-	return (*(ihp->getItemProp))(vip->ip, proptype);
-}
-
-static void setVFolderItemProp(gpointer ip, gint proptype, gpointer data) {
-	VFolderItemPtr	vip = (VFolderItemPtr)ip;
-	itemHandlerPtr	ihp;
-	
-	g_assert(NULL != vip);
-	if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&vip->type)))
-		g_error(g_strdup_printf(_("internal error! no item handler for this type %d!"), vip->type));	
-		
-	g_assert(NULL != ihp->setItemProp);
-	g_assert(NULL != ihp->getItemProp);
-	switch(proptype) {
-		case ITEM_PROP_READSTATUS:
-			if(FALSE == (gboolean)(*(ihp->getItemProp))(vip->ip, proptype))
-				((VFolderPtr)(vip->vp))->unreadCounter--;
-			break;
-	}
-	(*(ihp->setItemProp))(vip->ip, proptype, data);
-}
-
-static void showVFolderItem(gpointer ip) {
-	VFolderItemPtr	vip = (VFolderItemPtr)ip;
-	itemHandlerPtr	ihp;
-
-	g_assert(NULL != vip);
-	if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&vip->type)))
-		g_error(g_strdup_printf(_("internal error! no item handler for this type %d!"), vip->type));	
-
-	(*(ihp->showItem))(vip->ip);
 }
 
 /* ---------------------------------------------------------------------------- */
 /* backend interface to search other feeds					*/
 /* ---------------------------------------------------------------------------- */
-void removeOldItemsFromVFolder(VFolderPtr vp, gpointer ep) {
+void removeOldItemsFromVFolder(feedPtr vp, feedPtr ep) {
 	GSList		*list, *newlist = NULL;
-	VFolderItemPtr	vip;
+	itemPtr		ip;
 	
 	g_assert(NULL != vp);
 	list = vp->items;
 	
 	while(NULL != list) {
-		vip = list->data;
-		if(vip->ep != ep)
-			newlist = g_slist_append(newlist, vip);
+		ip = list->data;
+		if(ip->fp != ep)
+			newlist = g_slist_append(newlist, ip);
 		else
-			g_free(vip);
+			g_free(ip);
 			
 		list = g_slist_next(list);
 	}
@@ -204,35 +85,25 @@ void removeOldItemsFromVFolder(VFolderPtr vp, gpointer ep) {
 
 /* adds an item to this VFolder, this method is called
    when a VFolder scan method of a feed found a matching item */
-void addItemToVFolder(VFolderPtr vp, gpointer ep, gpointer ip, gint type) {
-	VFolderItemPtr	vip = NULL;
-	itemHandlerPtr	ihp;
+void addItemToVFolder(feedPtr vp, feedPtr fp, itemPtr ip) {
+	gint	type = getFeedType(fp);
 
 	g_assert(NULL != vp);
 	g_assert(NULL != ip);
 
-	if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&type)))
-		g_error(g_strdup_printf(_("internal error! no item handler for this type %d!"), type));	
-
-	if(NULL != (vip = g_malloc(sizeof(struct VFolderItem)))) {
-		vip->type = type;
-		vip->ip = ip;
-		vip->ep = ep;
-		vip->vp = vp;
-		g_assert(NULL != (*(ihp->getItemProp)));
-		if(FALSE == (*(ihp->getItemProp))(ip, ITEM_PROP_READSTATUS))
-			vp->unreadCounter++;
-		vp->items = g_slist_append(vp->items, vip);
-	} else {
-		g_error(_("could not allocate memory!"));
-	}
+	if(FALSE == getItemReadStatus(ip))
+		increaseUnreadCount(vp);
+	vp->items = g_slist_append(vp->items, ip);
 }
 
-void setVFolderRules(VFolderPtr vp, rulePtr rp) {
+void setVFolderRules(feedPtr vp, rulePtr rp) {
 	FILE	*f;
 	gchar	*filename;
 	
-	vp->rules = rp; 
+	/* update rule entry in vfolder hash table */
+	// FIXME: free older one...
+	g_hash_table_insert(vfolders, (gpointer)vp, (gpointer)rp);
+	
 	/* save rule to VFolder save file */
 	filename = getCacheFileName(vp->keyprefix, vp->key, "vfolder");
 	if(NULL != (f = fopen(filename, "w"))) {	
@@ -245,12 +116,13 @@ void setVFolderRules(VFolderPtr vp, rulePtr rp) {
 	g_free(filename);
 }
 
-rulePtr getVFolderRules(VFolderPtr vp) { return vp->rules; }
+rulePtr getVFolderRules(feedPtr vp) { return (rulePtr)g_hash_table_lookup(vfolders, vp); }
 
 /* applies the rules of the VFolder vp to the parameter string,
    the function returns TRUE if the rules were matched, otherwise
    FALSE */
-gboolean matchVFolderRules(VFolderPtr vp, gchar *string) {
+gboolean matchVFolderRules(feedPtr vp, gchar *string) {
+	rulePtr		rp;
 	
 	/* do a simple strcmp() */
 	if(NULL == string) {
@@ -259,15 +131,15 @@ gboolean matchVFolderRules(VFolderPtr vp, gchar *string) {
 	}
 	
 	g_assert(NULL != vp);
-	
-	if(NULL == vp->rules) {
+	rp = (rulePtr)g_hash_table_lookup(vfolders, vp);
+	if(NULL == rp) {
 		g_warning(_("internal error! VFolder has no rules!"));
 		return FALSE;
 	}
 	
-	g_assert(NULL != vp->rules->value);
+	g_assert(NULL != rp->value);
 
-	if(NULL != strstr(string, vp->rules->value)) {
+	if(NULL != strstr(string, rp->value)) {
 		return TRUE;
 	}
 	return FALSE;
@@ -278,8 +150,7 @@ gboolean matchVFolderRules(VFolderPtr vp, gchar *string) {
 /* ---------------------------------------------------------------------------- */
 
 /* writes VFolder HTML description */
-static void showVFolderInfo(gpointer fp) {
-	VFolderPtr	vp = (VFolderPtr)fp;
+static void showVFolderInfo(feedPtr vp) {
 
 	g_assert(vp != NULL);	
 	
@@ -294,82 +165,10 @@ static void showVFolderInfo(gpointer fp) {
 
 	writeHTML(FEED_HEAD_START);
 	writeHTML(FEED_HEAD_VFOLDER);
-	writeHTML(vp->usertitle);
+	writeHTML(getFeedTitle(vp));
 	writeHTML(FEED_HEAD_END);	
 
 	finishHTMLOutput();
-}
-
-/* ---------------------------------------------------------------------------- */
-/* just some encapsulation 							*/
-/* ---------------------------------------------------------------------------- */
-
-static void setVFolderProp(gpointer fp, gint proptype, gpointer data) {
-	VFolderPtr	c = (VFolderPtr)fp;
-	
-	if(NULL != c) {
-		g_assert(FST_VFOLDER == c->type);
-		switch(proptype) {
-			case FEED_PROP_TITLE:
-			case FEED_PROP_USERTITLE:
-				g_free(c->usertitle);
-				c->usertitle = (gchar *)data;
-				break;
-			case FEED_PROP_SOURCE:
-				/* we don't need this, but cannot suppress the setting
-				   by conf.c */
-				g_free(data);
-				break;
-			case FEED_PROP_DFLTUPDINTERVAL:
-			case FEED_PROP_UPDATEINTERVAL:
-			case FEED_PROP_UPDATECOUNTER:
-				break;
-			case FEED_PROP_UNREADCOUNT:
-			case FEED_PROP_AVAILABLE:
-			case FEED_PROP_ITEMLIST:		
-				g_error("internal error! please don't do this!");
-				break;
-			default:
-				g_error(g_strdup_printf(_("internal error! unknow feed property type %d!\n"), proptype));
-				break;
-		}
-	}
-}
-
-static gpointer getVFolderProp(gpointer fp, gint proptype) {
-	VFolderPtr	c = (VFolderPtr)fp;
-
-	if(NULL != c) {
-		g_assert(FST_VFOLDER == c->type);
-		switch(proptype) {
-			case FEED_PROP_TITLE:
-			case FEED_PROP_USERTITLE:
-				return (gpointer)c->usertitle;
-				break;
-			case FEED_PROP_SOURCE:
-				return NULL;
-				break;
-			case FEED_PROP_DFLTUPDINTERVAL:
-			case FEED_PROP_UPDATEINTERVAL:
-			case FEED_PROP_UPDATECOUNTER:
-				return (gpointer)-1;
-				break;
-			case FEED_PROP_UNREADCOUNT:
-				return (gpointer)c->unreadCounter;
-				break;
-			case FEED_PROP_AVAILABLE:
-				return (gpointer)TRUE;
-				break;
-			case FEED_PROP_ITEMLIST:
-				return (gpointer)c->items;
-				break;
-			default:
-				g_error(g_strdup_printf(_("internal error! unknow feed property type %d!\n"), proptype));
-				break;
-		}
-	} else {
-		return NULL;
-	}
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -385,30 +184,84 @@ feedHandlerPtr initVFolderFeedHandler(void) {
 	memset(fhp, 0, sizeof(struct feedHandler));
 	
 	/* prepare feed handler structure */
-	fhp->loadFeed		= loadVFolder;
 	fhp->readFeed		= readVFolder;
-	fhp->mergeFeed		= mergeVFolder;
-	fhp->removeFeed		= removeVFolder;
-	fhp->getFeedProp	= getVFolderProp;	
-	fhp->setFeedProp	= setVFolderProp;
-	fhp->showFeedInfo	= showVFolderInfo;
-	fhp->doVFolderScan	= NULL;	/* we are a VFolder, *WE* scan! */
 	
 	return fhp;
 }
 
-itemHandlerPtr initVFolderItemHandler(void) {
-	itemHandlerPtr	ihp;
-	
-	if(NULL == (ihp = (itemHandlerPtr)g_malloc(sizeof(struct itemHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(ihp, 0, sizeof(struct itemHandler));
+/* ---------------------------------------------------------------------------- */
+/* vfolder handling functions							*/
+/* ---------------------------------------------------------------------------- */
 
-	/* prepare item handler structure */
-	ihp->getItemProp	= getVFolderItemProp;	
-	ihp->setItemProp	= setVFolderItemProp;
-	ihp->showItem		= showVFolderItem;
+/* does the scanning of a feed for loadVFolder(), method is also called 
+   by the merge() functions of the feed modules */
+void scanFeed(gpointer key, gpointer value, gpointer userdata) {
+	feedPtr		fp = (feedPtr)userdata;
+	feedPtr		vp = (feedPtr)value;
+	GSList		*itemlist = NULL;
+	gpointer	ip;
+	gchar		*title, *description;
+	gboolean	add;
+
+	/* check the type because we are called with a g_hash_table_foreach()
+	   but only want to process vfolders ...*/
+	if(getFeedType(vp) != FST_VFOLDER) 
+		return;
 	
-	return ihp;
+	if(getFeedType(fp) == FST_VFOLDER)
+		return;	/* don't scan vfolders! */
+
+	if(NULL != fp) {
+		itemlist = (GSList *)getFeedItemList(fp);
+	} else {
+		print_status(_("internal error! item scan for NULL pointer requested!"));
+		return;
+	}
+	
+	while(NULL != itemlist) {
+		ip = itemlist->data;
+		title = getItemTitle(ip);
+		description = getItemDescription(ip);
+		
+		add = FALSE;
+		if((NULL != title) && matchVFolderRules(vp, title))
+			add = TRUE;
+
+		if((NULL != description) && matchVFolderRules(vp, description))
+			add = TRUE;
+
+		if(add) {
+			addItemToVFolder(vp, fp, ip);
+		}
+
+		itemlist = g_slist_next(itemlist);
+	}
+}
+
+/* g_hash_table_foreach-function to be called from update.c to 
+   remove old items of a feed from all vfolders */
+void removeOldItemsFromVFolders(gpointer key, gpointer value, gpointer userdata) {
+	feedPtr	vp = (feedPtr)value;
+	
+	if(FST_VFOLDER == getFeedType(vp))
+		removeOldItemsFromVFolder(vp, userdata);
+}
+
+/* scan all feeds for matching any vfolder rules */
+void loadVFolder(gpointer key, gpointer value, gpointer userdata) {
+	feedPtr	fp = (feedPtr)value;
+
+	/* match the feed ep against all vfolders... */
+	if(FST_VFOLDER != getFeedType(fp))
+		g_hash_table_foreach(feeds, scanFeed, fp);
+}
+
+/* called upon initialization */
+void loadVFolders(void) {
+
+	g_mutex_lock(feeds_lock);
+	/* iterate all feeds ... */
+	g_hash_table_foreach(feeds, loadVFolder, NULL);
+	g_mutex_unlock(feeds_lock);
+
 }

@@ -18,7 +18,19 @@
 
 #include <gtk/gtk.h>
 #include <libgtkhtml/gtkhtml.h>
-#include "backend.h"
+
+/* constants for attributes in feedstore */
+#define FS_TITLE	0
+#define FS_STATE	1
+#define FS_KEY		2
+#define FS_TYPE		3
+
+/* constants for attributes in itemstore */
+#define IS_TITLE	0
+#define IS_STATE	1
+#define IS_PTR		2
+#define IS_TIME		3
+#define IS_TYPE		4
 
 void 
 print_status 			       (gchar 		*statustext);
@@ -194,4 +206,9 @@ void
 on_Itemlist_row_activated              (GtkTreeView     *treeview,
                                         GtkTreePath     *path,
                                         GtkTreeViewColumn *column,
+                                        gpointer         user_data);
+
+gboolean
+on_quit                                (GtkWidget       *widget,
+                                        GdkEvent        *event,
                                         gpointer         user_data);

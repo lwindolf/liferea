@@ -57,14 +57,14 @@
 #define FEED_FOOT_LASTTD	"</span></td></tr>"
 #define FEED_FOOT_TABLE_END	"</table>"
 
-#define FEED_FOOT_WRITE(doc, key, value)	if(NULL != value) { \
-							writeHTML(FEED_FOOT_FIRSTTD); \
-							writeHTML((gchar *)key); \
-							writeHTML(FEED_FOOT_NEXTTD); \
-							writeHTML((gchar *)value); \
-							writeHTML(FEED_FOOT_LASTTD); \
+#define FEED_FOOT_WRITE(buffer, key, value)	if(NULL != value) { \
+							addToHTMLBuffer(&(buffer), FEED_FOOT_FIRSTTD); \
+							addToHTMLBuffer(&(buffer), (gchar *)key); \
+							addToHTMLBuffer(&(buffer), FEED_FOOT_NEXTTD); \
+							addToHTMLBuffer(&(buffer), (gchar *)value); \
+							addToHTMLBuffer(&(buffer), FEED_FOOT_LASTTD); \
 						}
-						
+
 #define	IMG_START	"<img style=\"margin-bottom:5px;\" src=\""
 #define IMG_END		"\"><br>"
 
@@ -77,7 +77,6 @@
 #define FORMAT_UPDATEFREQUENCY	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Update Frequency: "
 #define FORMAT_CONTENTTYPE	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Content Type: "
 #define FORMAT_END	"</td></tr></table>"
-
 
 /* creates the HTML widget */
 void 	setupHTMLView(GtkWidget *mainwindow);

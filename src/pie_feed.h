@@ -22,7 +22,7 @@
 #define _PIE_FEED_H
 
 #include <time.h>
-#include "backend.h"
+#include "feed.h"
 #include "pie_entry.h"
 
 #define PIE_FEED_TITLE			0
@@ -35,12 +35,6 @@
 #define PIE_FEED_MAX_TAG		7
 
 typedef struct PIEFeed {
-	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
-	   this structure, order is important! */
-	gint		type;		/* FST_PIE for PIE channels */
-	gchar		*key;		/* configuration storage key */	
-	gchar		*keyprefix;	
-			
 	/* standard namespace infos */
 	gchar		*author;	/* author of the feed */
 	gchar		*contributors;	/* list of contributors */
@@ -49,17 +43,9 @@ typedef struct PIEFeed {
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */
 					   
-	GSList		*items;		/* the PIE entry list */
-	
 	/* other information */
-	gchar		*usertitle;	/* feed title may be modified by user */	
-	gchar 		*source;	/* source url */
-	gboolean	available;	/* flag to signalize load/update errors */
 	time_t		time;		/* last feed build/creation time */	
-	gchar 		*encoding;	/* xml encoding */
 	gint		updateInterval;	/* feed refresh interval */
-	gint		updateCounter;	/* counter of minutes till next feed refresh */	
-	gint		unreadCounter;	/* counter of unread items */
 } *PIEFeedPtr;
 
 feedHandlerPtr	initPIEFeedHandler(void);

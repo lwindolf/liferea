@@ -1,10 +1,14 @@
+%define dfi %(which desktop-file-install &>/dev/null; echo $?)
+
 Summary: Liferea (Linux Feed Reader)
 Name: liferea
-Version: 0.3.8
+Version: 0.3.9
 Release: 1
 Group: Productivity/Networking/Web/Browsers
 Copyright: GPL
 Source: liferea-%{version}.tar.gz
+URL: http://liferea.sourceforge.net
+Packager: Lars Lindner <lars.lindner@gmx.net>
 BuildRoot: %{_tmppath}/%{name}-root
 Requires: gtk2 libxml2 libgtkhtml
 
@@ -21,13 +25,18 @@ using GtkHTML.
 %build
 ./configure \
 	--with%{!?debug:out}-debug
-patch -p0 -N < /home/lars/tech/coding/c/liferea/wrong-size.patch || echo patch ignored
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install-strip prefix=$RPM_BUILD_ROOT/usr/local sysconfdir=$RPM_BUILD_ROOT/etc
+%if %{dfi}
+%else
+	desktop-file-install --vendor net                  \
+		--dir $RPM_BUILD_ROOT/usr/local/share/applications \
+		$RPM_BUILD_ROOT/usr/local/share/applications/net-liferea.desktop
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -45,3 +54,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/liferea/pixmaps/help.xpm
 /usr/local/share/liferea/pixmaps/vfolder.xpm
 /usr/local/share/liferea/pixmaps/empty.xpm
+/usr/local/share/pixmaps/liferea.xpm

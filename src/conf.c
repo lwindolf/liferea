@@ -25,6 +25,7 @@
 #include <libxml/nanohttp.h>
 #include "support.h"
 #include "callbacks.h"
+#include "feed.h"
 #include "conf.h"
 
 #define MAX_GCONF_PATHLEN	256
@@ -32,8 +33,8 @@
 #define PATH		"/apps/liferea"
 #define GROUPS		"/apps/liferea/groups"
 
-#define HELP1KEY	"help/1"
-#define HELP2KEY	"help/2"
+#define HELP1KEY	"help/help1"
+#define HELP2KEY	"help/help2"
 #define HELP1URL	"http://liferea.sf.net/help039.rdf"
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 #define HOMEPAGE	"http://liferea.sf.net/"
@@ -53,7 +54,7 @@ static gchar * build_path_str(gchar *str1, gchar *str2) {
 		gconfpath = g_strdup_printf("%s/%s", PATH, str2);
 	else
 		gconfpath = g_strdup_printf("%s/%s/%s", PATH, str1, str2);
-
+		
 	return gconfpath;
 }
 
@@ -146,7 +147,7 @@ void loadConfig() {
 }
 
 /* return the entry list of a given key prefix */
-GSList * getEntryKeyList(gchar *keyprefix) {
+GSList * getFeedKeyList(gchar *keyprefix) {
 	GSList		*list = NULL;
 	GError		*err = NULL;
 	GConfValue	*value;
@@ -163,7 +164,7 @@ GSList * getEntryKeyList(gchar *keyprefix) {
 	return list;
 }
 
-void setEntryKeyList(gchar *keyprefix, GSList *newlist) {
+void setFeedKeyList(gchar *keyprefix, GSList *newlist) {
 	GConfValue	*value;
 	GError		*err = NULL;
 	gchar		*gconfpath;	
@@ -179,7 +180,7 @@ void setEntryKeyList(gchar *keyprefix, GSList *newlist) {
 	g_free(gconfpath);
 }
 
-void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
+void removeFeedFromConfig(gchar *keyprefix, gchar *key) {
 	GError		*err = NULL;
 	GConfValue	*element;
 	GSList		*list, *newlist = NULL;
@@ -189,7 +190,7 @@ void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
 	int 		found = 0, error = 0;
 
 	/* remove key from key list */
-	iter = list = getEntryKeyList(keyprefix);
+	iter = list = getFeedKeyList(keyprefix);
 	while(iter != NULL) {
 		element = iter->data;
 		tmp = gconf_value_get_string(element);
@@ -205,7 +206,7 @@ void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
 		g_warning("internal error: could not find key in configuration!");
 	
 	/* write new list back to gconf */
-	setEntryKeyList(keyprefix, newlist);
+	setFeedKeyList(keyprefix, newlist);
 	
 	/* remove entry gconf keys */
 	free_gconf_key(key, "url");
@@ -217,7 +218,7 @@ void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
 	g_slist_free(newlist);
 }
 
-/* compare function for numerical GSList sorting in getFreeEntryKey() */
+/* compare function for numerical GSList sorting in getFreeFeedKey() */
 static gint compare_func(gconstpointer a, gconstpointer b) {
 	GError		*err = NULL;
 	GConfValue	*element;
@@ -252,9 +253,9 @@ static gint compare_func(gconstpointer a, gconstpointer b) {
 	return res;
 }
 
-/* this method is used to get a feed key which is not already
+/* this method is used to get a feedkey which is not already
    used for an existing feed */
-gchar * getFreeEntryKey(gchar *keyprefix) {
+gchar * getFreeFeedKey(gchar *keyprefix) {
 	GError		*err = NULL;
 	GSList		*iter = NULL;	
 	GConfValue	*element;
@@ -273,7 +274,7 @@ gchar * getFreeEntryKey(gchar *keyprefix) {
 	else
 		newkey = g_strdup_printf("%s/%d", keyprefix, nr);
 				
-	iter = getEntryKeyList(keyprefix);
+	iter = getFeedKeyList(keyprefix);
 	iter = g_slist_sort(iter, compare_func);	
 	while (iter != NULL) {
 		element = iter->data;
@@ -446,7 +447,7 @@ void removeFolderFromConfig(gchar *keyprefix) {
 /*----------------------------------------------------------------------*/
 
 /* adds the given URL to the list of feeds... */
-gchar * addEntryToConfig(gchar *keyprefix, gchar *url, gint type) {
+gchar * addFeedToConfig(gchar *keyprefix, gchar *url, gint type) {
 	GError		*err = NULL;
 	GConfValue	*newkey = NULL;
 	GSList		*list, *newlist;
@@ -454,20 +455,20 @@ gchar * addEntryToConfig(gchar *keyprefix, gchar *url, gint type) {
 	int 		error = 0;
 
 	/* get available key */
-	if(NULL == (key = getFreeEntryKey(keyprefix))) {
+	if(NULL == (key = getFreeFeedKey(keyprefix))) {
 		g_print(_("error! could not get a free entry key!\n"));
 		return NULL;
 	}
 
 	/* save feed url and type */	
-	if((NULL != url) && (0 != setEntryURLInConfig(key, url)))
+	if((NULL != url) && (0 != setFeedURLInConfig(key, url)))
 		g_print(_("error! could not set a URL for this key!\n"));	
 
-	if(0 != setEntryTypeInConfig(key, type)) 
+	if(0 != setFeedTypeInConfig(key, type)) 
 		g_print(_("error! could not set a type for this key!\n"));
 		
 	/* add feedkey to feedlist */
-	list = getEntryKeyList(keyprefix);
+	list = getFeedKeyList(keyprefix);
 		
 	newkey = gconf_value_new(GCONF_VALUE_STRING);
 	gconf_value_set_string(newkey, key);
@@ -476,7 +477,7 @@ gchar * addEntryToConfig(gchar *keyprefix, gchar *url, gint type) {
 	newlist = g_slist_append(list, newkey);
 	
 	/* write new list back to gconf */
-	setEntryKeyList(keyprefix, newlist);
+	setFeedKeyList(keyprefix, newlist);
 		
 	g_free(newkey);
 	g_slist_free(newlist);
@@ -484,7 +485,7 @@ gchar * addEntryToConfig(gchar *keyprefix, gchar *url, gint type) {
 	return key;
 }
 
-int setEntryTitleInConfig(gchar *key, gchar *title) {
+int setFeedTitleInConfig(gchar *key, gchar *title) {
 	GError		*err = NULL;
 	gchar		*gconfpath;
 					
@@ -498,7 +499,7 @@ int setEntryTitleInConfig(gchar *key, gchar *title) {
 	return 0;	
 }
 
-int setEntryTypeInConfig(gchar *key, gint type) {
+int setFeedTypeInConfig(gchar *key, gint type) {
 	GError		*err = NULL;
 	gchar		*gconfpath;
 					
@@ -512,7 +513,7 @@ int setEntryTypeInConfig(gchar *key, gint type) {
 	return 0;	
 }
 
-int setEntryURLInConfig(gchar *key, gchar *url) {
+int setFeedURLInConfig(gchar *key, gchar *url) {
 	GError		*err = NULL;
 	gchar		*gconfpath;
 					
@@ -655,7 +656,7 @@ void loadEntries() {
 				g_print(_("updating help feed URL..."));
 				g_free(url);
 				url = g_strdup(HELP1URL);
-				setEntryURLInConfig((gchar *)key, url);
+				setFeedURLInConfig((gchar *)key, url);
 			}
 
 			if(type == 0)
@@ -663,8 +664,7 @@ void loadEntries() {
 				
 			if(interval == 0)
 				interval = -1;
-
-			addEntry(type, url, (gchar *)key, keyprefix, name, interval);
+			addFeed(type, url, (gchar *)key, keyprefix, name, interval);
 
 			iter = g_slist_next(iter);
 		}
@@ -686,8 +686,8 @@ void loadEntries() {
 	}
 		
 	g_assert(NULL != helpFolderPrefix);
-	addEntry(FST_RSS, HELP1URL, HELP1KEY, helpFolderPrefix, _("Online Help Feed"), -1);
-	addEntry(FST_RSS, HELP2URL, HELP2KEY, helpFolderPrefix, _("Liferea SF News"), -1);
+	addFeed(FST_RSS, HELP1URL, HELP1KEY, helpFolderPrefix, _("Online Help Feed"), -1);
+	addFeed(FST_RSS, HELP2URL, HELP2KEY, helpFolderPrefix, _("Liferea SF News"), -1);
 	
 	checkForEmptyFolders();
 	
