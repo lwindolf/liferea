@@ -218,12 +218,12 @@ void ui_show_error_box(const char *format, ...) {
 	va_start(args, format);
 	msg = g_strdup_vprintf(format, args);
 	va_end(args);
-
+	
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
                   GTK_DIALOG_DESTROY_WITH_PARENT,
                   GTK_MESSAGE_ERROR,
                   GTK_BUTTONS_CLOSE,
-                  msg);
+                  "%s", msg);
 	gtk_dialog_run(GTK_DIALOG (dialog));
 	gtk_widget_destroy(dialog);
 	g_free(msg);
@@ -244,7 +244,7 @@ void ui_show_info_box(const char *format, ...) {
                   GTK_DIALOG_DESTROY_WITH_PARENT,
                   GTK_MESSAGE_INFO,
                   GTK_BUTTONS_CLOSE,
-                  msg);
+                  "%s", msg);
 	gtk_dialog_run(GTK_DIALOG (dialog));
 	gtk_widget_destroy(dialog);
 	g_free(msg);
