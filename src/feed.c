@@ -739,29 +739,30 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			   	continue;
 			} 
 
-			/* best case: they both have ids */
+			/* just for the case there are no ids: compare titles and HTML descriptions */
+			equal = TRUE;
+
+			if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
+			    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
+		    		equal = FALSE;
+
+			if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
+			    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
+		    		equal = FALSE;
+
+			/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
 			if(NULL != item_get_id(old_ip)) {			
 				if(0 == strcmp(item_get_id(old_ip), item_get_id(new_ip))){
 					found = TRUE;
 					break;
 				}
-			/* just for the case there are no ids: compare titles and HTML descriptions */
-			} else {
-				equal = TRUE;
+			}
+			
+			if(equal) {
+				found = TRUE;
+				break;
+			}
 
-				if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
-				    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
-		    			equal = FALSE;
-
-				if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
-				    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
-		    			equal = FALSE;
-					
-				if(equal) {
-					found = TRUE;
-					break;
-				}
-			}			
 			old_items = g_slist_next(old_items);
 		}
 		
