@@ -80,7 +80,7 @@ void on_popup_filter_selected(void) {
 			r = rule->data;
 			gtk_tree_store_append(ruleStore, &iter, NULL);
 			gtk_tree_store_set(ruleStore, &iter,
-					   RS_TITLE, getRuleTitle(r),
+					   RS_TITLE, rule_get_title(r),
 					   RS_PTR, (gpointer)r,
 					   -1);
 			rule = g_slist_next(rule);

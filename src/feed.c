@@ -65,6 +65,37 @@ struct feed_type {
 static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode);
 static void feed_replace(feedPtr fp, feedPtr new_fp);
 
+
+/* initializing function, only called upon startup */
+void feed_init(void) {
+
+	feedhandlers = g_slist_append(feedhandlers, ocs_init_feed_handler()); /* Must come before RSS/RDF */
+	feedhandlers = g_slist_append(feedhandlers, rss_init_feed_handler());
+	feedhandlers = g_slist_append(feedhandlers, cdf_init_feed_handler());
+	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
+	feedhandlers = g_slist_append(feedhandlers, opml_init_feed_handler());
+	feedhandlers = g_slist_append(feedhandlers, vfolder_init_feed_handler());
+	
+	initFolders();
+}
+
+/* function to create a new feed structure */
+feedPtr feed_new(void) {
+	feedPtr		fp;
+	
+	fp = g_new0(struct feed, 1);
+
+	/* we don't allocate a request structure this is done
+	   during cache loading or first update! */
+	
+	fp->updateInterval = -1;
+	fp->defaultInterval = -1;
+	fp->type = FST_FEED;
+	fp->cacheLimit = CACHE_DEFAULT;
+	
+	return fp;
+}
+
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
 /* ------------------------------------------------------------ */
@@ -180,36 +211,6 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 	debug_exit("feed_parse");
 
 	return handler;
-}
-
-/* initializing function, only called upon startup */
-void feed_init(void) {
-
-	feedhandlers = g_slist_append(feedhandlers, ocs_init_feed_handler()); /* Must come before RSS/RDF */
-	feedhandlers = g_slist_append(feedhandlers, rss_init_feed_handler());
-	feedhandlers = g_slist_append(feedhandlers, cdf_init_feed_handler());
-	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
-	feedhandlers = g_slist_append(feedhandlers, opml_init_feed_handler());
-	feedhandlers = g_slist_append(feedhandlers, vfolder_init_feed_handler());
-	
-	initFolders();
-}
-
-/* function to create a new feed structure */
-feedPtr feed_new(void) {
-	feedPtr		fp;
-	
-	fp = g_new0(struct feed, 1);
-
-	/* we don't allocate a request structure this is done
-	   during cache loading or first update! */
-	
-	fp->updateInterval = -1;
-	fp->defaultInterval = -1;
-	fp->type = FST_FEED;
-	fp->cacheLimit = CACHE_DEFAULT;
-	
-	return fp;
 }
 
 /*
@@ -347,13 +348,19 @@ gboolean feed_load(feedPtr fp) {
 	gsize 		length;
 	
 	debug_enter("feed_load");
+	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(fp));
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
 	if(0 != (fp->loaded)++) {
-		g_print("feed %s already loaded!\n", feed_get_source(fp));
+		debug0(DEBUG_CACHE, "feed already loaded!\n");
 		return;
 	}
-g_print("feed_load for %s\n", feed_get_source(fp));
+
+	if(FST_VFOLDER == feed_get_type(fp)) {
+		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
+		fp->loaded++;
+		return;
+	}
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
@@ -466,24 +473,26 @@ void feed_unload(feedPtr fp) {
 	gint 	unreadCount;
 
 	if(NULL == fp) {
-		g_print("unloading everything...\n");
+		debug0(DEBUG_CACHE, "unloading everything...");
 		ui_feedlist_do_for_all((nodePtr)fp, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
 	} else {
 		debug_enter("feed_unload");
 		g_assert(0 <= fp->loaded);
 		if(0 != fp->loaded) {
 			if(1 == fp->loaded) {
-				/* save feed before unloading */
-				feed_save(fp);	
+				if(IS_FEED(feed_get_type(fp))) {
+					debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
+					
+					/* save feed before unloading */
+					feed_save(fp);	
 
-				g_print("feed_unload for %s\n", feed_get_source(fp));
-
-				/* FIXME: free filter structures too when implemented */
-
-				/* free items */
-				feed_clear_item_list(fp);
+					/* free items */
+					feed_clear_item_list(fp);
+				} else {
+					debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
+				}
 			} else {
-				g_print("not unloading %s because it's used (%d references)...\n", feed_get_source(fp), fp->loaded);
+				debug2(DEBUG_CACHE, "not unloading (%s) because it's used (%d references)...", feed_get_source(fp), fp->loaded);
 			}
 			fp->loaded--;
 		}
@@ -568,7 +577,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				   delete the item because there can be vfolders which display
 				   it. To allow this the parent feed does store the item, but
 				   hides it. */
-				if(FALSE == checkNewItem(new_ip)) {
+				if(FALSE) { //== vfolder_check_new_item(new_ip)) {
 					item_set_hidden(new_ip, TRUE);
 					debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
 				} else {
@@ -816,7 +825,7 @@ void feed_process_update_result(struct request *request) {
 
 void feed_add_item(feedPtr fp, itemPtr ip) {
 
-	g_assert(0 != fp->loaded);
+	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
 	ip->fp = fp;
 	if(FALSE == ip->readStatus)
 		fp->unreadCount++;
@@ -827,13 +836,19 @@ itemPtr feed_lookup_item(feedPtr fp, gchar *id) {
 	GSList		*items;
 	itemPtr		ip;
 	
-	g_assert(0 != fp->loaded);
-	g_assert(NULL != id);
+	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
+	if(NULL == id) {
+		g_warning("lookup for NULL id!");
+		return (itemPtr)-1;
+	}
 	
 	items = fp->items;
 	while(NULL != items) {
 		ip = (itemPtr)(items->data);
-		g_assert(NULL != ip->id);
+		if(NULL == ip->id) {
+			g_warning("item (%s) with NULL id!", item_get_title(ip));
+			return (itemPtr)-1;
+		}
 		if(0 == strcmp(ip->id, id))
 			return ip;
 		items = g_slist_next(items);

@@ -23,11 +23,13 @@
 #include "feed.h"
 #include "folder.h"
 #include "filter.h"
+#include "vfolder.h"
 #include "support.h"
 #include "common.h"
 
 extern GtkWidget 	*mainwindow;
 static GtkWidget 	*feedsterdialog = NULL;
+static feedPtr		searchFeed = NULL;
 
 /*------------------------------------------------------------------------------*/
 /* search dialog callbacks								*/
@@ -57,7 +59,6 @@ void on_hidesearch_clicked(GtkButton *button, gpointer user_data) {
 	}
 }
 
-
 void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
@@ -66,7 +67,12 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
-//		ui_itemlist_load(NULL, (gchar *)searchstring);
+		if(NULL != searchFeed)
+			vfolder_free(searchFeed);
+		searchFeed = vfolder_new();
+		vfolder_add_rule(searchFeed, "add_exact", (gchar *)searchstring);
+		vfolder_refresh(searchFeed);
+		ui_itemlist_load((nodePtr)searchFeed);
 	}
 }
 

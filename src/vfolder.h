@@ -29,9 +29,10 @@ feedHandlerPtr	vfolder_init_feed_handler(void);
 
 feedPtr vfolder_new(void);
 
-/* Adds an item to this VFolder, this method is called
-   when a VFolder scan method of a feed found a matching item */
-void	vfolder_add_item(feedPtr vp, itemPtr ip);
+/* Method thats adds a rule to a vfolder. To be used
+   on loading time or when creating searching. Does 
+   not process items. Just sets up the vfolder */
+void vfolder_add_rule(feedPtr vp, gchar *ruleId, gchar *value);
 
 /* Method to be called when a item was updated. This maybe
    after user interaction or updated item contents */

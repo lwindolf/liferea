@@ -49,7 +49,7 @@ itemPtr item_new(void) {
 }
 
 void item_copy(itemPtr from, itemPtr to) {
-g_warning("item_copy() called...");
+
 	item_set_title(to, from->title);
 	item_set_source(to, from->source);
 	item_set_real_source_url(to, from->real_source_url);
@@ -152,7 +152,7 @@ void item_set_unread(itemPtr ip) {
 		}
 		
 		ip->readStatus = FALSE;
-		if (ip->ui_data != NULL)
+		if(ip->ui_data != NULL)
 			ui_update_item(ip);
 		ui_notification_update(ip->fp);
 	} 
@@ -175,7 +175,7 @@ void item_set_read(itemPtr ip) {
 		}
 		
 		ip->readStatus = TRUE; 
-		if (ip->ui_data)
+		if(ip->ui_data)
 			ui_update_item(ip);
 	}
 	ui_tray_zero_new();

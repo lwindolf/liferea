@@ -198,8 +198,10 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 	} else {
 		pixbuf = icons[ICON_FLAG];
 	}
-	g_assert(NULL != ((itemPtr)ip)->fp);
-	pixbuf2 = ((itemPtr)ip)->fp->icon;
+	if(NULL != ((itemPtr)ip)->sourceFeed)
+		pixbuf2 = ((itemPtr)ip)->sourceFeed->icon;
+	else
+		pixbuf2 = NULL;
 
 	/* Label */
 	if ( title != NULL) {
@@ -454,17 +456,7 @@ void ui_itemlist_load_feed(feedPtr fp) {
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
-		
-/*		if(NULL != searchstring) {
-			add = FALSE;
-				
-			if((NULL != item_get_title(ip)) && (NULL != strstr(item_get_title(ip), searchstring)))
-				add = TRUE;
-
-			if((NULL != item_get_description(ip)) && (NULL != strstr(item_get_description(ip), searchstring)))
-				add = TRUE;
-		}*/
-
+g_print("adding %d %s (%s)\n", ip, item_get_id(ip), item_get_title(ip));
 		gtk_tree_store_append(itemstore, &iter, NULL);
 		gtk_tree_store_set(itemstore, &iter,
 					    IS_TITLE, item_get_title(ip),
