@@ -227,16 +227,20 @@ gchar *item_render(itemPtr ip) {
 		g_free(tmp2);
 		
 		/*  -- real source line */
+		tmp = NULL;
 		if(item_get_real_source_url(ip) != NULL)
 			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 							  item_get_real_source_url(ip),
 							  (item_get_real_source_title(ip) != NULL)? item_get_real_source_title(ip) : _("[No title]"));
 		else if(item_get_real_source_title(ip) != NULL)
 			tmp = g_strdup(item_get_real_source_title(ip));
-		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
-		g_free(tmp);
-		addToHTMLBufferFast(&buffer, tmp2);
-		g_free(tmp2);		
+			
+		if(NULL != tmp) {
+			tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
+			g_free(tmp);
+			addToHTMLBufferFast(&buffer, tmp2);
+			g_free(tmp2);	
+		}
 
 		addToHTMLBufferFast(&buffer, displayset.headtable);
 		g_free(displayset.headtable);

@@ -119,7 +119,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
  			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
 				item_set_title(ip, tmp);
-g_print("title: %s\n", tmp);
+g_print("rss item title: %s\n", tmp);
 				g_free(tmp);
 			}
 		}
