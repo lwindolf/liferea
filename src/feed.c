@@ -278,7 +278,7 @@ void feed_save(feedPtr fp) {
 				xmlNewTextChild(feedNode, NULL, "feedLastModified", tmp);
 				g_free(tmp);
 			}
-			metadata_add_xml_nodes(fp->metadataList, feedNode);
+			metadata_add_xml_nodes(fp->metadata, feedNode);
 
 			itemlist = feed_get_item_list(fp);
 			for(itemlist = feed_get_item_list(fp); itemlist != NULL; itemlist = g_slist_next(itemlist)) {
@@ -319,7 +319,7 @@ void feed_save(feedPtr fp) {
 					xmlNewTextChild(itemNode, NULL, "time", tmp);
 					g_free(tmp);
 					
-					metadata_add_xml_nodes(ip->metadataList, itemNode);
+					metadata_add_xml_nodes(ip->metadata, itemNode);
 					
 				} else {
 					g_warning("could not write XML item node!\n");
@@ -425,7 +425,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				feed_add_item((feedPtr)fp, item_parse_cache(doc, cur));
 			} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
-				fp->metadataList = metadata_parse_xml_nodes(doc, cur);
+				fp->metadata = metadata_parse_xml_nodes(doc, cur);
 			}
 			g_free(tmp);	
 			cur = cur->next;
@@ -613,9 +613,9 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	old_fp->available = new_fp->available;
 	new_fp->items = NULL;
 
-	metadata_list_free(old_fp->metadataList);
-	old_fp->metadataList = new_fp->metadataList;
-	new_fp->metadataList = NULL;
+	metadata_list_free(old_fp->metadata);
+	old_fp->metadata = new_fp->metadata;
+	new_fp->metadata = NULL;
 
 	g_free(old_fp->htmlUri);
 	old_fp->htmlUri = new_fp->htmlUri;
@@ -1041,7 +1041,7 @@ gchar *feed_render(feedPtr fp) {
 	displayset.foot = NULL;
 	displayset.foottable = NULL;
 	
-	metadata_list_render(fp->metadataList, &displayset);
+	metadata_list_render(fp->metadata, &displayset);
 	
 	/* Head table */
 	addToHTMLBufferFast(&buffer, HEAD_START);
@@ -1216,7 +1216,7 @@ void feed_free(feedPtr fp) {
 	g_free(fp->parseErrors);
 	g_free(fp->filtercmd);
 	g_free(fp->htmlUri);
-	metadata_list_free(fp->metadataList);
+	metadata_list_free(fp->metadata);
 	g_free(fp);
 
 }

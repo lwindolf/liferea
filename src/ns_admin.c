@@ -18,17 +18,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <string.h> /* For strcmp() */
-#include "htmlview.h"
-#include "support.h"
+#include <string.h>
 #include "ns_admin.h"
 #include "common.h"
-
-#define TABLE_START	"<div class=\"feedfoottitle\">administrative information</div><table class=\"addfoot\">"
-#define FIRSTTD		"<tr class=\"feedfoot\"><td class=\"feedfootname\"><span class=\"feedfootname\">"
-#define NEXTTD		"</span></td><td class=\"feedfootvalue\"><span class=\"feedfootvalue\">"
-#define LASTTD		"</span></td></tr>"
-#define TABLE_END	"</table>"
+#include "metadata.h"
 
 /* you can find an admin namespace spec at:
    http://web.resource.org/rss/1.0/modules/admin/
@@ -43,79 +36,26 @@
   feed info view footer
 */
 
-static void parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
-	gchar		*buffer = NULL;
-	gchar		*name = NULL;
-	gchar		*key, *value;
+static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
+	gchar	*value;
 	
-	if(!xmlStrcmp("errorReportsTo", cur->name)) 
-		name = g_strdup(_("report errors to"));
-		
-	else if(!xmlStrcmp("generatorAgent", cur->name)) 
-		name = g_strdup(_("feed generator"));
+	if(!xmlStrcmp("errorReportsTo", cur->name) ||
+	   !xmlStrcmp("generatorAgent", cur->name)) 
+		return;
 	
-	if(NULL != name) {
-		value = utf8_fix(xmlGetProp(cur, "resource"));	
-		if(NULL != value) {
-			addToHTMLBuffer(&buffer, FIRSTTD);
-			addToHTMLBuffer(&buffer, name);
-			addToHTMLBuffer(&buffer, NEXTTD);
-			addToHTMLBuffer(&buffer, "<a href=\"");
-			addToHTMLBuffer(&buffer, value);
-			addToHTMLBuffer(&buffer, "\">");
-			addToHTMLBuffer(&buffer, value);
-			addToHTMLBuffer(&buffer, "</a>");	
-			addToHTMLBuffer(&buffer, LASTTD);
-			g_free(name);
-		}
-	}
-	
-	if(NULL != buffer) {
-		key = g_strdup_printf("admin:%s", cur->name);
-		g_hash_table_insert(cp->nsinfos, g_strdup(key), buffer);
+	value = utf8_fix(xmlGetProp(cur, "resource"));	
+	if(NULL != value) {
+		metadata_list_set(&(fp->metadata), cur->name, value);
+		g_free(value);
 	}
 }
 
-static void doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
-	gchar		*output;
-	gchar		*key;
+NsHandler *ns_admin_getRSSNsHandler(void) {
+	NsHandler 	*nsh;
 	
-	g_assert(NULL != nsinfos);
-	key = g_strdup_printf("admin:%s", tagname);
-	
-	if(NULL != (output = g_hash_table_lookup(nsinfos, key))) {
-		addToHTMLBuffer(buffer, output);
-		g_free(output);
-		g_hash_table_remove(nsinfos, key);
-	}
-	g_free(key);
-}
-
-static gchar * doChannelOutput(gpointer obj) {
-	gchar	*buffer = NULL;
-	gchar	*output = NULL;
-	
-	if(NULL != obj) {
-		doOutput(((RSSChannelPtr)obj)->nsinfos, &output, "errorReportsTo");
-		doOutput(((RSSChannelPtr)obj)->nsinfos, &output, "generatorAgent");
-		
-		if(NULL != output) {
-			addToHTMLBuffer(&buffer, TABLE_START);
-			addToHTMLBuffer(&buffer, output);
-			addToHTMLBuffer(&buffer, TABLE_END);
-			g_free(output);
-		}
-	}
-	return buffer;
-}
-
-RSSNsHandler *ns_admin_getRSSNsHandler(void) {
-	RSSNsHandler 	*nsh;
-	
-	nsh = g_new0(RSSNsHandler, 1);
+	nsh = g_new0(NsHandler, 1);
 	nsh->prefix			= "admin";
-	nsh->parseChannelTag		= parseChannelTag;;
-	nsh->doChannelFooterOutput	= doChannelOutput;
+	nsh->parseChannelTag		= parse_channel_tag;;
 
 	return nsh;
 }

@@ -34,14 +34,24 @@ void metadata_init();
 /** Register a new type of metadata */
 void metadata_register(const gchar *strid, renderHTMLFunc renderfunc, gpointer user_data);
 
-gpointer metadata_list_append(gpointer metadata_list, const gchar *strid, const gchar *data);
+/** 
+ * Appends a value to the value list of a specific metadata type 
+ * Don't mix this function with metadata_list_set() !
+ */
+GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar *data);
 
-void metadata_list_render(gpointer metadataList, struct displayset *displayset);
+/** 
+ * Sets (and overwrites if necessary) the value of a specific metadata type.
+ * Don't mix this function with metadata_list_append() !
+ */
+void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data);
 
-void metadata_list_free(gpointer metadataList);
+void metadata_list_render(GSList *metadata, struct displayset *displayset);
 
-void metadata_add_xml_nodes(gpointer metadataList, xmlNodePtr parentNode);
+void metadata_list_free(GSList *metadata);
 
-gpointer metadata_parse_xml_nodes(xmlDocPtr, xmlNodePtr cur);
+void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode);
+
+GSList * metadata_parse_xml_nodes(xmlDocPtr, xmlNodePtr cur);
 
 #endif

@@ -94,22 +94,23 @@ typedef struct feed {
 		
 	/* feed properties needed to be saved */
 	gchar		*title;			/**< feed/channel title */
-	gchar		*htmlUri;			/**< URI of HTML version of the feed */
+	gchar		*htmlUri;		/**< URI of HTML version of the feed */
 	gchar		*description;		/**< HTML string describing the feed */
 	gchar		*source;		/**< feed source */
 	gchar		*filtercmd;		/**< feed filter command */
 	gint		updateInterval;		/**< user defined update interval in minutes */
-	gpointer metadataList;
+	GSList		*metadata;		/**< metadata of this feed */
+	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 	
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
 	GSList		*filter;		/**< list of filters applied to this feed */
 	
 	/* feed properties used for updating */
-	GTimeVal	lastModified; /**< Date at which the feed last changed */
-	GTimeVal	lastPoll;	/**< time at which the feed was last updated */
+	GTimeVal	lastModified;		/**< Date at which the feed last changed */
+	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	struct request	*request;		/**< update request structure used when downloading xml content */
-	struct request *faviconRequest; /**< update request structure used for downloading the favicon */
+	struct request *faviconRequest;		/**< update request structure used for downloading the favicon */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
 } *feedPtr;

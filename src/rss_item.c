@@ -122,7 +122,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar			*tmp, *link;
 	parseItemTagFunc	parseFunc;
 	GSList			*hp;
-	RSSNsHandler		*nsh;
+	NsHandler		*nsh;
 	RSSItemPtr 		i;
 	itemPtr			ip;
 	int			j;
@@ -151,10 +151,10 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					nsh = (RSSNsHandler *)hp->data;
+					nsh = (NsHandler *)hp->data;
 					parseFunc = nsh->parseItemTag;
 					if(NULL != parseFunc)
-						(*parseFunc)(i, cur);
+						(*parseFunc)(ip, cur);
 					cur = cur->next;
 					continue;						
 				} else {
@@ -191,7 +191,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 				gchar *source_title = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 				gchar *tmp = g_strdup_printf("<a href=\"%s\">%s</a>", source_url, 
 									    (NULL != source_title)?source_title:source_url);
-				ip->metadataList = metadata_list_append(ip->metadataList, "itemSource", tmp);
+				ip->metadata = metadata_list_append(ip->metadata, "itemSource", tmp);
 				g_free(source_url);
 				g_free(source_title);
 				g_free(tmp);

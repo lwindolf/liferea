@@ -201,7 +201,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 			/* parse feed author */
 			gchar *author =  parseAuthor(cur);
-			ip->metadataList = metadata_list_append(ip->metadataList, "author", author);
+			ip->metadata = metadata_list_append(ip->metadata, "author", author);
 			g_free(author);
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
 			/* parse feed contributors */

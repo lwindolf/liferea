@@ -1,5 +1,5 @@
 /*
-   RSS namespace handler interface
+   generic namespace handler interface
     
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
@@ -18,11 +18,31 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#ifndef _RSS_NS_H
-#define _RSS_NS_H
+#ifndef _NS_H
+#define _NS_H
 
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include "feed.h"
+
+/* -------------------------------------------------------- */
+/* interface definitions for namespace parsing handler      */
+/* -------------------------------------------------------- */
+
+/** definition of various namespace tag handler */
+typedef void	(*parseChannelTagFunc)	(feedPtr fp, xmlNodePtr cur);
+typedef void	(*parseItemTagFunc)	(itemPtr ip, xmlNodePtr cur);
+
+/** struct used to register namespace handler */
+typedef struct NsHandler {
+	gchar			*prefix;		/**< namespace prefix */
+
+	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
+	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
+} NsHandler;
+
+
+// FIXME: remove the following
 
 #include "rss_channel.h"
 #include "rss_item.h"
@@ -32,8 +52,8 @@
 /* -------------------------------------------------------- */
 
 /* definition of various namespace tag handlers */
-typedef void	(*parseChannelTagFunc)	(RSSChannelPtr cp, xmlNodePtr cur);
-typedef void	(*parseItemTagFunc)	(RSSItemPtr ip, xmlNodePtr cur);
+typedef void	(*paarseChannelTagFunc)	(RSSChannelPtr cp, xmlNodePtr cur);
+typedef void	(*paarseItemTagFunc)	(RSSItemPtr ip, xmlNodePtr cur);
 
 /* handler called during HTML output generation to display
    namespace specific information (e.g. <dc:creator> the 
@@ -44,8 +64,8 @@ typedef gchar *	(*outputFunc)	(gpointer obj);
 typedef struct RSSNsHandler {
 	gchar		*prefix;			/**< namespace prefix */
 
-	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
-	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
+	paarseItemTagFunc	parseItemTag;		/**< item tag parsing method */
+	paarseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
 		
 	outputFunc	doItemHeaderOutput;		/**< item header output method */
 	outputFunc	doItemFooterOutput;		/**< item footer output method */

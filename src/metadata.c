@@ -48,7 +48,7 @@ void metadata_init() {
 	attribs_init();
 }
 
-void metadata_register(const gchar *strid, renderHTMLFunc renderfunc, gpointer user_data) {
+void metadata_register_renderer(const gchar *strid, renderHTMLFunc renderfunc, gpointer user_data) {
 	struct attribute *attrib = g_new(struct attribute, 1);
 	
 	attrib->strid = g_strdup(strid);
@@ -63,40 +63,70 @@ static void metadata_render(struct attribute *attrib, struct displayset *display
 	attrib->renderhtmlfunc(data, displayset, attrib->user_data);
 }
 
-gpointer metadata_list_append(gpointer metadata_list, const gchar *strid, const gchar *data) {
-	struct attribute *attrib = g_hash_table_lookup(strtoattrib, strid);
-	GSList *list = (GSList*)metadata_list;
-	GSList *iter = list;
+GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar *data) {
+	struct attribute *attrib;
+	GSList	*iter = metadata;
 	struct pair *p;
 	
-	if (attrib == NULL) {
+	if(NULL != (attrib = g_hash_table_lookup(strtoattrib, strid))) {
 		g_warning("Encountered unknown attribute type \"%s\". This is a program bug.", strid);
 		attribs_register_default_renderer(strid);
 		attrib = g_hash_table_lookup(strtoattrib, strid);
 	}
 	
-	while (iter != NULL) {
+	while(iter != NULL) {
 		p = (struct pair*)iter->data; 
-		if (p->attrib == attrib) {
+		if(p->attrib == attrib) {
 			p->data = g_slist_append(p->data, g_strdup(data));
-			return list;
+			return metadata;
 		}
 		iter = iter->next;
 	}
 	p = g_new(struct pair, 1);
 	p->attrib = attrib;
 	p->data = g_slist_append(NULL, g_strdup(data));
-	list = g_slist_append(list, p);
-	return list;
+	metadata = g_slist_append(metadata, p);
+	return metadata;
 }
 
-void metadata_list_render(gpointer metadataList, struct displayset *displayset) {
-	GSList *list = (GSList*)metadataList;
+void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data) {
+	struct attribute *attrib;
+	GSList	*iter = *metadata;
+	struct pair *p;
 	
-	while (list != NULL) {
+	if(NULL != (attrib = g_hash_table_lookup(strtoattrib, strid))) {
+		g_warning("Encountered unknown attribute type \"%s\". This is a program bug.", strid);
+		attribs_register_default_renderer(strid);
+		attrib = g_hash_table_lookup(strtoattrib, strid);
+	}
+	
+	while(iter != NULL) {
+		p = (struct pair*)iter->data; 
+		if(p->attrib == attrib) {
+			if(NULL != p->data) {
+				/* exchange old value */
+				g_free(((GSList *)p->data)->data);
+				((GSList *)p->data)->data = g_strdup(data);
+			} else {
+				p->data = g_slist_append(p->data, g_strdup(data));
+			}
+			return;
+		}
+		iter = iter->next;
+	}
+	p = g_new(struct pair, 1);
+	p->attrib = attrib;
+	p->data = g_slist_append(NULL, g_strdup(data));
+	*metadata = g_slist_append(*metadata, p);
+}
+
+void metadata_list_render(GSList* metadata, struct displayset *displayset) {
+	GSList *list = metadata;
+	
+	while(list != NULL) {
 		struct pair *p = (struct pair*)list->data; 
 		GSList *list2 = p->data;
-		while (list2 != NULL) {
+		while(list2 != NULL) {
 			metadata_render(p->attrib, displayset, (gchar*)list2->data);
 			list2 = list2->next;
 		}
@@ -104,14 +134,14 @@ void metadata_list_render(gpointer metadataList, struct displayset *displayset) 
 	}
 }
 
-void metadata_list_free(gpointer metadataList) {
-	GSList *list = (GSList*)metadataList;
-	GSList *iter = list;
-	while (iter != NULL) {
+void metadata_list_free(GSList *metadata) {
+	GSList *iter = metadata;
+	
+	while(iter != NULL) {
 		struct pair *p = (struct pair*)iter->data;
 		GSList *list2 = p->data;
 		GSList *iter2 = list2;
-		while (iter2 != NULL) {
+		while(iter2 != NULL) {
 			g_free(iter2->data);
 			iter2 = iter2->next;
 		}
@@ -119,15 +149,15 @@ void metadata_list_free(gpointer metadataList) {
 		g_free(p);
 		iter = iter->next;
 	}
-	g_slist_free(list);
+	g_slist_free(metadata);
 }
 
-void metadata_add_xml_nodes(gpointer metadataList, xmlNodePtr parentNode) {
-	GSList *list = (GSList*)metadataList;
+void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode) {
+	GSList *list = metadata;
 	xmlNodePtr attribute;
 	xmlNodePtr metadataNode = xmlNewChild(parentNode, NULL, "attributes", NULL);
 	
-	while (list != NULL) {
+	while(list != NULL) {
 		struct pair *p = (struct pair*)list->data; 
 		GSList *list2 = p->data;
 		while (list2 != NULL) {
@@ -139,9 +169,9 @@ void metadata_add_xml_nodes(gpointer metadataList, xmlNodePtr parentNode) {
 	}
 }
 
-gpointer metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur) {
-	xmlNodePtr attribute = cur->xmlChildrenNode;
-	gpointer metadataList = NULL;
+GSList * metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur) {
+	xmlNodePtr	attribute = cur->xmlChildrenNode;
+	GSList 		*metadata = NULL;
 	
 	while(attribute != NULL) {
 		if (attribute->type == XML_ELEMENT_NODE &&
@@ -149,8 +179,8 @@ gpointer metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur) {
 			xmlChar *name = xmlGetProp(attribute, "name");
 			if (name != NULL) {
 				gchar *value = xmlNodeListGetString(doc, attribute->xmlChildrenNode, TRUE);
-				if (value != NULL) {
-					metadataList = metadata_list_append(metadataList, name, value);
+				if(value != NULL) {
+					metadata_list_append(metadata, name, value);
 					xmlFree(value);
 				}
 				xmlFree(name);
@@ -158,7 +188,7 @@ gpointer metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur) {
 		}
 		attribute = attribute->next;
 	}
-	return metadataList;
+	return metadata;
 }
 
 /* Now comes the stuff to define particular attributes */
@@ -207,34 +237,47 @@ static void attribs_render_foot_text(gpointer data, struct displayset *displayse
 	addToHTMLBufferFast(&(displayset->foot), (gchar*)data);
 }
 
-#define REGISTER_STR_ATTRIB(position, strid, promptStr) do { \
+#define REGISTER_SIMPLE_ATTRIBUTE(position, strid, promptStr) do { \
  struct str_attrib *props = g_new(struct str_attrib, 1); \
  props->pos = (position); \
  props->prompt = (promptStr); \
- metadata_register(strid, attribs_render_str, props); \
+ metadata_register_renderer(strid, attribs_render_str, props); \
 } while (0);
 
 static void attribs_init() {
-	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedTitle", _("Feed:"));
-	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedSource", _("Source:"));
-	REGISTER_STR_ATTRIB(POS_HEADTABLE, "itemSource", _("Source:"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "author", _("author"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "contributor", _("contributors"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "copyright", _("copyright"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", _("language"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", _("language"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "feedUpdateDate", _("feed last updated"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "contentUpdateDate", _("content last updated"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "managingEditor", _("managing editor"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "webmaster", _("webmaster"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "category", _("category"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "feedgenerator", _("feed generated with"));
 
-	metadata_register("feedLogoUri", attribs_render_image, NULL);
-	metadata_register("textInput", attribs_render_foot_text, NULL);
+	/* attributes resulting from general feed parsing */
+	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "feedTitle", _("Feed:"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "feedSource", _("Source:"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "itemSource", _("Source:"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "author", _("author"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contributor", _("contributors"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "copyright", _("copyright"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "language", _("language"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedUpdateDate", _("feed last updated"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contentUpdateDate", _("content last updated"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "managingEditor", _("managing editor"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "webmaster", _("webmaster"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "category", _("category"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generated with"));
+
+	metadata_register_renderer("feedLogoUri", attribs_render_image, NULL);
+	metadata_register_renderer("textInput", attribs_render_foot_text, NULL);
+	
+	/* types for admin */
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "errorReportsTo", _("report errors to"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "generatorAgent", _("feed generator"));
+	
+	/* types for aggregation */
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agSource", _("original source"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agTimestamp", _("original time"));
+
+	/* types for blog channel */
+	//metadata_register_renderer("blogChannel", attribs_render_foot_text, NULL);
 }
 
 static void attribs_register_default_renderer(const gchar *strid) {
 	gchar *str = g_strdup(strid);
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, str, str);
+	
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, str, str);
 }

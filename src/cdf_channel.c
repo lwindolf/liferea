@@ -63,7 +63,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 			if (tmp == NULL)
 				tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"href"));
 			if (tmp != NULL) {
-				fp->metadataList = metadata_list_append(fp->metadataList, "feedLogoUri", tmp);
+				fp->metadata = metadata_list_append(fp->metadata, "feedLogoUri", tmp);
 				g_free(tmp);
 			}
 			goto next;
@@ -111,7 +111,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 		if ((tmp2 = g_hash_table_lookup(channelHash, tmp)) != NULL) {
 			tmp3 = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, TRUE));
 			if (tmp3 != NULL) {
-				fp->metadataList = metadata_list_append(fp->metadataList, tmp2, tmp3);
+				fp->metadata = metadata_list_append(fp->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
 		}

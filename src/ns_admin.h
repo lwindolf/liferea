@@ -23,6 +23,6 @@
 
 #include "rss_ns.h"
 
-RSSNsHandler *ns_admin_getRSSNsHandler(void);
+NsHandler *ns_admin_getRSSNsHandler(void);
 
 #endif

@@ -50,7 +50,8 @@ typedef struct item {
 	gchar		*description;	/**< HTML string containing the item's description */
 	gchar		*source;	/**< URL to the item */
 	gchar		*id;		/**< Unique item identifier, for example <guid> in RSS */
-	gpointer		metadataList;
+	GSList		*metadata;	/**< metadata of this item */
+	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
 	time_t		time;		/**< Item's modified date */
 	
 	struct feed	*fp;		/**< Pointer to the feed to which this item belongs */

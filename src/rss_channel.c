@@ -43,6 +43,7 @@
 #include "ns_slash.h"
 #include "ns_syn.h"
 #include "ns_admin.h"
+#include "ns_ag.h"
 #include "ns_blogChannel.h"
 #include "ns_cC.h"
 #include "htmlview.h"
@@ -166,10 +167,10 @@ static void parseChannel(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					RSSNsHandler		*nsh = (RSSNsHandler *)hp->data;
-					parseChannelTagFunc	fp = nsh->parseChannelTag;
-					if(NULL != fp)
-						(*fp)(cp, cur);
+					NsHandler		*nsh = (NsHandler *)hp->data;
+					parseChannelTagFunc	pf = nsh->parseChannelTag;
+					if(NULL != pf)
+						(*pf)(fp, cur);
 					goto next;
 				} else {
 					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
@@ -180,7 +181,7 @@ static void parseChannel(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 		if ((tmp2 = g_hash_table_lookup(channelHash, cur->name)) != NULL) {
 			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if (tmp3 != NULL) {
-				fp->metadataList = metadata_list_append(fp->metadataList, tmp2, tmp3);
+				fp->metadata = metadata_list_append(fp->metadata, tmp2, tmp3);
 				g_free(tmp3);
 				goto next;
 			}
@@ -367,7 +368,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		/* save link to channel image */
 		if((!xmlStrcmp(cur->name, BAD_CAST"image"))) {
 			gchar *tmp = parseImage(cp, cur);
-			fp->metadataList = metadata_list_append(fp->metadataList, "feedLogoUri", tmp);
+			fp->metadata = metadata_list_append(fp->metadata, "feedLogoUri", tmp);
 			g_free(tmp);
 		}
 		
@@ -378,8 +379,8 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		   (!xmlStrcmp(cur->name, BAD_CAST"textInput"))) {
 			gchar *tmp = parseTextInput(cur);
 			
-			if (tmp != NULL)
-                    fp->metadataList = metadata_list_append(fp->metadataList, "textInput", tmp);
+			if(tmp != NULL)
+				fp->metadata = metadata_list_append(fp->metadata, "textInput", tmp);
 			g_free(tmp);
 		}
 
@@ -425,7 +426,7 @@ static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	return FALSE;
 }
 
-static void addNameSpaceHandler(RSSNsHandler *handler) {
+static void rss_add_ns_handler(NsHandler *handler) {
 
 	g_assert(NULL != rss_nstable);
 	if(getNameSpaceStatus(handler->prefix)) {
@@ -458,15 +459,16 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
 	
 		/* register RSS name space handlers */
-		addNameSpaceHandler(ns_bC_getRSSNsHandler());
-		addNameSpaceHandler(ns_dc_getRSSNsHandler());
-		addNameSpaceHandler(ns_fm_getRSSNsHandler());	
-  		addNameSpaceHandler(ns_slash_getRSSNsHandler());
-		addNameSpaceHandler(ns_content_getRSSNsHandler());
-		addNameSpaceHandler(ns_syn_getRSSNsHandler());
-		addNameSpaceHandler(ns_admin_getRSSNsHandler());
-		addNameSpaceHandler(ns_cC1_getRSSNsHandler());
-		addNameSpaceHandler(ns_cC2_getRSSNsHandler());
+		//addNameSpaceHandler(ns_bC_getRSSNsHandler());
+		//addNameSpaceHandler(ns_dc_getRSSNsHandler());
+		//addNameSpaceHandler(ns_fm_getRSSNsHandler());	
+  		//addNameSpaceHandler(ns_slash_getRSSNsHandler());
+		//addNameSpaceHandler(ns_content_getRSSNsHandler());
+		//addNameSpaceHandler(ns_syn_getRSSNsHandler());
+		rss_add_ns_handler(ns_admin_getRSSNsHandler());
+		rss_add_ns_handler(ns_ag_getRSSNsHandler());
+		//addNameSpaceHandler(ns_cC1_getRSSNsHandler());
+		//addNameSpaceHandler(ns_cC2_getRSSNsHandler());
 	}
 							
 	/* prepare feed handler structure */
