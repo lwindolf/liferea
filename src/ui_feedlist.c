@@ -296,21 +296,20 @@ void ui_feedlist_init(GtkWidget *mainview) {
 }
 
 void ui_feedlist_select(nodePtr np) {
-	static gboolean firstCall = TRUE;
 	GtkTreeIter iter = ((ui_data*)(np->ui_data))->row;
 	GtkWidget		*treeview;
+	GtkWidget		*focused;
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
 
-	/* To work around a GTK+ bug. The first time this is called, it
-	   would always select the first feed in the list */
-	if (firstCall) {
-		firstCall = FALSE;
-		ui_feedlist_select(np);
-	}
-
 	/* some comfort: select the created iter */
 	if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
+		/* To work around a GTK+ bug. If the treeview is not
+		   focused, setting the selected item will always select the
+		   first item! */
+		focused = gtk_window_get_focus(GTK_WINDOW(mainwindow));
+		gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
+		
 		if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
 			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
 			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
@@ -319,6 +318,7 @@ void ui_feedlist_select(nodePtr np) {
 			gtk_tree_path_free(path);
 		} else
 			g_warning(_("internal error! could not get feed tree view selection!\n"));
+		gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
 	} else {
 			g_warning("internal error! could not select newly created treestore iter!");
 	}
