@@ -68,7 +68,6 @@ GThread * update_thread_init(void) {
 	requests = g_async_queue_new();
 	results = g_async_queue_new();
 		
-	g_thread_create(update_thread_main, NULL, FALSE, NULL);
 	return g_thread_create(update_thread_main, NULL, FALSE, NULL);
 }
 
