@@ -156,15 +156,12 @@ void ui_mainwindow_zoom_out() {
 	ui_htmlview_set_zoom(htmlview, zoom);
 }
 
-GtkWidget* ui_mainwindow_new() {
-
-	GtkWidget *window = create_mainwindow();
-	GtkWidget *toolbar = lookup_widget(window, "toolbar");
-	GtkTooltips *tooltips = gtk_tooltips_new();
-	gchar *toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style");
-
+void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_style) {
+	GtkWidget *toolbar = lookup_widget(GTK_WIDGET(window), "toolbar");
 	
-	if (!strcmp(toolbar_style, "text"))
+	if (toolbar_style == NULL) /* default to icons */
+		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
+	else if (!strcmp(toolbar_style, "text"))
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT);
 	else if (!strcmp(toolbar_style, "both"))
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH);
@@ -172,7 +169,17 @@ GtkWidget* ui_mainwindow_new() {
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH_HORIZ);
 	else /* default to icons */
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
+	
+}
 
+GtkWidget* ui_mainwindow_new() {
+
+	GtkWidget *window = create_mainwindow();
+	GtkWidget *toolbar = lookup_widget(window, "toolbar");
+	GtkTooltips *tooltips = gtk_tooltips_new();
+	gchar *toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style");
+
+	ui_mainwindow_set_toolbar_style(GTK_WINDOW(window), toolbar_style);
 	g_free(toolbar_style);
 
 	TOOLBAR_ADD(toolbar,  _("New Feed"), GTK_STOCK_ADD, tooltips,  _("Add a new subscription."), on_newbtn_clicked);

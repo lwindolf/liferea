@@ -43,6 +43,12 @@ void ui_mainwindow_zoom_out();
 
 GtkWidget *ui_mainwindow_get_active_htmlview();
 
+/** Sets the toolbar to a particular style
+ * @param window main window containing toolbar
+ * @param toolbar_style text string containing the type of style to use
+ */
+void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_style);
+
 /** According to the preferences this function enables/disables the toolbar */
 void ui_mainwindow_update_toolbar();
 
