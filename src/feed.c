@@ -272,11 +272,11 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "feedDescription"))) 
-				fp->description = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+				fp->description = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "feedTitle"))) 
-				fp->title = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+				fp->title = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "feedUpdateInterval"))) {
-				tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+				tmp = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 				fp->defaultInterval = atoi(tmp);
 				xmlFree(tmp);
 			}
@@ -400,99 +400,99 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 	itemPtr		new_ip, old_ip;
 	gboolean	found, equal;
 
-	/* adjust the new_fp's items parent feed pointer to old_fp, just
-	   in case they are reused... */
-	new_list = new_fp->items;
-	while(new_list) {
-		new_ip = new_list->data;
-		new_ip->fp = old_fp;	
-		new_list = g_slist_next(new_list);
-	}
-		
-	/* merge item lists ... */
-	new_list = new_fp->items;
-	while(new_list) {
-		new_ip = new_list->data;
+	if(TRUE == new_fp->available) {
+		/* adjust the new_fp's items parent feed pointer to old_fp, just
+		   in case they are reused... */
+		new_list = new_fp->items;
+		while(new_list) {
+			new_ip = new_list->data;
+			new_ip->fp = old_fp;	
+			new_list = g_slist_next(new_list);
+		}
 
-		found = FALSE;
-		/* scan the old list to see if the new list item did already exist */
-		old_list = old_fp->items;
-		while(old_list) {
-			old_ip = old_list->data;
-			
-			/* try to compare the two items */
-					
-			/* both items must have either ids or none */
-			if(((old_ip->id == NULL) && (new_ip->id != NULL)) ||
-			   ((old_ip->id != NULL) && (new_ip->id == NULL))) {	
-				/* cannot be equal (different ids) so compare to 
-				   next old item */
-				old_list = g_slist_next(old_list);
-			   	continue;
-			}
+		/* merge item lists ... */
+		new_list = new_fp->items;
+		while(new_list) {
+			new_ip = new_list->data;
 
-			/* compare titles and HTML descriptions */
-			equal = TRUE;
-			
-			if(((old_ip->title != NULL) && (new_ip->title != NULL)) && 
-			    (0 != strcmp(old_ip->title, new_ip->title)))		
-			    	equal = FALSE;
-				
-			if(((old_ip->description != NULL) && (new_ip->description != NULL)) && 
-			    (0 != strcmp(old_ip->description, new_ip->description)))
-			    	equal = FALSE;
+			found = FALSE;
+			/* scan the old list to see if the new list item did already exist */
+			old_list = old_fp->items;
+			while(old_list) {
+				old_ip = old_list->data;
 
-			if(NULL != old_ip->id) {			
-				/* if they have ids, compare them */
-				if(0 == strcmp(old_ip->id, new_ip->id)){
-					found = TRUE;
-					break;
+				/* try to compare the two items */
+
+				/* both items must have either ids or none */
+				if(((old_ip->id == NULL) && (new_ip->id != NULL)) ||
+				   ((old_ip->id != NULL) && (new_ip->id == NULL))) {	
+					/* cannot be equal (different ids) so compare to 
+					   next old item */
+					old_list = g_slist_next(old_list);
+			   		continue;
 				}
-			} 
-			    
-			if(equal) {
-				found = TRUE;
-				break;					
-			}
-			
-			old_list = g_slist_next(old_list);
-		}
-	
-		if(!found) {
-			diff_list = g_slist_append(diff_list, (gpointer)new_ip);
-			increaseUnreadCount(old_fp);
-		} else {
-			/* if the item was found but has other contents -> update */
-			if(!equal) {
-				g_free(old_ip->title);
-				g_free(old_ip->description);
-				old_ip->title = g_strdup(new_ip->title);
-				old_ip->description = g_strdup(new_ip->description);
-				markItemAsUnread(old_ip);
-			}
-		}
-		
-		new_list = g_slist_next(new_list);
-		
-		/* any found new item list items are not needed anymore */
-		if(found) { 
-			new_ip->fp = new_fp;	/* because freeItem() would decrease the unread counter of old_fp */
-			freeItem(new_ip);
-		}
-	}
-	g_slist_free(new_fp->items);	/* dispose new item list */
-	
-	old_list = g_slist_concat(diff_list, old_fp->items);
-	old_fp->items = old_list;
-	old_fp->available = new_fp->available;
-	
-	g_free(old_fp->title);
-	g_free(old_fp->description);
-	old_fp->title = new_fp->title;
-	old_fp->description = new_fp->description;
-	new_fp->title = new_fp->description = NULL;
 
-	g_free(new_fp);		/* dispose new feed structure */
+				/* compare titles and HTML descriptions */
+				equal = TRUE;
+
+				if(((old_ip->title != NULL) && (new_ip->title != NULL)) && 
+				    (0 != strcmp(old_ip->title, new_ip->title)))		
+			    		equal = FALSE;
+
+				if(((old_ip->description != NULL) && (new_ip->description != NULL)) && 
+				    (0 != strcmp(old_ip->description, new_ip->description)))
+			    		equal = FALSE;
+
+				if(NULL != old_ip->id) {			
+					/* if they have ids, compare them */
+					if(0 == strcmp(old_ip->id, new_ip->id)){
+						found = TRUE;
+						break;
+					}
+				} 
+
+				if(equal) {
+					found = TRUE;
+					break;					
+				}
+
+				old_list = g_slist_next(old_list);
+			}
+
+			if(!found) {
+				diff_list = g_slist_append(diff_list, (gpointer)new_ip);
+				increaseUnreadCount(old_fp);
+			} else {
+				/* if the item was found but has other contents -> update */
+				if(!equal) {
+					g_free(old_ip->title);
+					g_free(old_ip->description);
+					old_ip->title = g_strdup(new_ip->title);
+					old_ip->description = g_strdup(new_ip->description);
+					markItemAsUnread(old_ip);
+				}
+			}
+
+			new_list = g_slist_next(new_list);
+
+			/* any found new item list items are not needed anymore */
+			if(found) { 
+				new_ip->fp = new_fp;	/* because freeItem() would decrease the unread counter of old_fp */
+				freeItem(new_ip);
+			}
+		}
+		g_slist_free(new_fp->items);	/* dispose new item list */
+		
+		old_list = g_slist_concat(diff_list, old_fp->items);
+		old_fp->items = old_list;
+
+		g_free(old_fp->description);
+		old_fp->description = new_fp->description;
+		new_fp->description = NULL;
+	}
+	
+	old_fp->available = new_fp->available;
+	g_free(new_fp);			/* dispose new feed structure */
 }
 
 void removeFeed(feedPtr fp) {

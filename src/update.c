@@ -120,8 +120,9 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 
 		g_assert(NULL != fhp->readFeed);
 		new_fp = (feedPtr)(*(fhp->readFeed))(source);
+
 		if(NULL == new_fp)
-			return;		/* feed reading must have failed, FIXME: should never happen (but does with OCS and local files)! */
+			return;
 
 		if(TRUE == fhp->merge)
 			/* If the feed type supports merging... */

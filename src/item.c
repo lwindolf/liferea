@@ -138,13 +138,13 @@ itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"title"))
-			ip->title = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			ip->title = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"description"))
-			ip->description = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			ip->description = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"source"))
-			ip->source = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			ip->source = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"id"))
-			ip->id = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			ip->id = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"readStatus")) {
 			tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);

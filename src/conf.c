@@ -691,8 +691,8 @@ void loadEntries() {
 	}
 		
 	g_assert(NULL != helpFolderPrefix);
-	addFeed(FST_RSS, HELP1URL, HELP1KEY, helpFolderPrefix, _("Online Help Feed"), 1440);
-	addFeed(FST_RSS, HELP2URL, HELP2KEY, helpFolderPrefix, _("Liferea SF News"), 1440);
+	addFeed(FST_RSS, HELP1URL, HELP1KEY, helpFolderPrefix, g_strdup(_("Online Help Feed")), 1440);
+	addFeed(FST_RSS, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
 	
 	checkForEmptyFolders();
 	
