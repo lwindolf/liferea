@@ -2,17 +2,30 @@ Coding
 ======
 
 Lars Lindner <lars.lindner@gmx.net>		some of the coding...
+
 James Doherty 					dialog design
+
 Jeremy Messenger <mezz7@cox.net>		search dialog, icons...
+
 John McKnight 					Makefile help
+
 pasp						window position saving
+
 Karl Soderstrom					heavy debugging, patching
-						and memory leak fixing
+						memory leak fixing,
+						mini popup support
+						
 Christophe Barbe <christophe.barbe@ufies.org>	patch to count folder items
 						and Debian maintaining
+						
 Juho Snellman <jsnell@users.sourceforge.net>	CSS support
-Nathan J. Conrad <t98502@users.sourceforge.net>	patch for selection handling
+
 Roshan Revankar	<roshweb@users.sourceforge.net>	patch for selection handling
+
+Nathan J. Conrad <t98502@users.sourceforge.net>	patch for selection handling,
+						instant applying preferences,
+						much improved GUI code
+
 
 Documentation and Translations
 ==============================

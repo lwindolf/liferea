@@ -2,6 +2,17 @@
 
 	Version 0.4.7
 	
+	* Added a preferences checkbox to disable the 
+	  automatical adding of the help feeds.
+	* Added a patch from Nathan J. Conrad to make
+	  the preferences dialog instant applying
+	  each option. This way its more GNOME HIG 
+	  compliant.
+	* Added a patch from Christophe Barbe to change
+	  the tray icon behaviour to come up on the
+	  current desktop.
+	* Simplification of the namespace support code,
+	  which fixes some memory leaks.
 	* Patch from Nathan J. Conrad and Roshan Revankar
 	  to simplify the GTK selection handling and 
 	  fix some problems with Copy URL.

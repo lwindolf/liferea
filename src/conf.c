@@ -687,18 +687,19 @@ void loadEntries(void) {
 	g_slist_free(groupiter);
 	g_free(groups);
 	
-	/* if help folder was not yet created... */
-	if(NULL == helpFolderPrefix) {
-		/* add to config and UI feed list*/
-		helpFolderPrefix = addFolderToConfig(_("Liferea Help"));
-		setFolderTypeInConfig(helpFolderPrefix, FST_HELPNODE);
-		addFolder(helpFolderPrefix, _("Liferea Help"), FST_HELPNODE );
-	}
+	if(!getBooleanConfValue(DISABLE_HELPFEEDS)) {
+		/* if help folder was not yet created... */
+		if(NULL == helpFolderPrefix) {
+			/* add to config and UI feed list*/
+			helpFolderPrefix = addFolderToConfig(_("Liferea Help"));
+			setFolderTypeInConfig(helpFolderPrefix, FST_HELPNODE);
+			addFolder(helpFolderPrefix, _("Liferea Help"), FST_HELPNODE );
+		}
 		
-	g_assert(NULL != helpFolderPrefix);
-	addFeed(FST_HELPFEED, HELP1URL, HELP1KEY, helpFolderPrefix, g_strdup(_("Online Help Feed")), 1440);
-	addFeed(FST_HELPFEED, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
-	
+		g_assert(NULL != helpFolderPrefix);
+		addFeed(FST_HELPFEED, HELP1URL, HELP1KEY, helpFolderPrefix, g_strdup(_("Online Help Feed")), 1440);
+		addFeed(FST_HELPFEED, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
+	}
 	checkForEmptyFolders();
 }
 

@@ -1,7 +1,8 @@
 /*
    program preferences
 
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -55,4 +56,8 @@ on_itemCountBtn_value_changed          (GtkSpinButton   *spinbutton,
 
 void
 on_menuselection_clicked               (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_helpoptionbtn_clicked               (GtkButton       *button,
                                         gpointer         user_data);

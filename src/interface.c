@@ -1185,6 +1185,7 @@ create_prefdialog (void)
   GtkObject *itemCountBtn_adj;
   GtkWidget *itemCountBtn;
   GtkWidget *updatealloptionbtn;
+  GtkWidget *helpoptionbtn;
   GtkWidget *label32;
   GtkWidget *label38;
   GtkWidget *vbox222;
@@ -1194,8 +1195,8 @@ create_prefdialog (void)
   GtkWidget *label40;
   GtkWidget *frame11;
   GtkWidget *vbox223;
-  GtkWidget *menuradiobtn;
-  GSList *menuradiobtn_group = NULL;
+  GtkWidget *menuradiobtn1;
+  GSList *menuradiobtn1_group = NULL;
   GtkWidget *menuradiobtn2;
   GtkWidget *menuradiobtn3;
   GtkWidget *label41;
@@ -1329,6 +1330,10 @@ create_prefdialog (void)
   gtk_widget_show (updatealloptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox20), updatealloptionbtn, FALSE, FALSE, 0);
 
+  helpoptionbtn = gtk_check_button_new_with_mnemonic (_("Dont add the help feeds to the feed list on startup."));
+  gtk_widget_show (helpoptionbtn);
+  gtk_box_pack_start (GTK_BOX (vbox20), helpoptionbtn, FALSE, FALSE, 0);
+
   label32 = gtk_label_new (_("Feed Handling Settings"));
   gtk_widget_show (label32);
   gtk_frame_set_label_widget (GTK_FRAME (frame8), label32);
@@ -1371,23 +1376,23 @@ create_prefdialog (void)
   gtk_container_add (GTK_CONTAINER (frame11), vbox223);
   gtk_container_set_border_width (GTK_CONTAINER (vbox223), 5);
 
-  menuradiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Show Menu _And Toolbar"));
-  gtk_widget_show (menuradiobtn);
-  gtk_box_pack_start (GTK_BOX (vbox223), menuradiobtn, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn), menuradiobtn_group);
-  menuradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn));
+  menuradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Show Menu _And Toolbar"));
+  gtk_widget_show (menuradiobtn1);
+  gtk_box_pack_start (GTK_BOX (vbox223), menuradiobtn1, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn1), menuradiobtn1_group);
+  menuradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn1));
 
   menuradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("Show _Menu Only"));
   gtk_widget_show (menuradiobtn2);
   gtk_box_pack_start (GTK_BOX (vbox223), menuradiobtn2, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn2), menuradiobtn_group);
-  menuradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn2));
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn2), menuradiobtn1_group);
+  menuradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn2));
 
   menuradiobtn3 = gtk_radio_button_new_with_mnemonic (NULL, _("Show _Toolbar Only"));
   gtk_widget_show (menuradiobtn3);
   gtk_box_pack_start (GTK_BOX (vbox223), menuradiobtn3, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn3), menuradiobtn_group);
-  menuradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn3));
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn3), menuradiobtn1_group);
+  menuradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn3));
 
   label41 = gtk_label_new (_("Menu Settings"));
   gtk_widget_show (label41);
@@ -1436,10 +1441,13 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) updatealloptionbtn, "clicked",
                     G_CALLBACK (on_updatealloptionbtn_clicked),
                     NULL);
+  g_signal_connect ((gpointer) helpoptionbtn, "clicked",
+                    G_CALLBACK (on_helpoptionbtn_clicked),
+                    NULL);
   g_signal_connect ((gpointer) trayiconoptionbtn, "clicked",
                     G_CALLBACK (on_trayiconoptionbtn_clicked),
                     NULL);
-  g_signal_connect ((gpointer) menuradiobtn, "clicked",
+  g_signal_connect ((gpointer) menuradiobtn1, "clicked",
                     G_CALLBACK (on_menuselection_clicked),
                     NULL);
   g_signal_connect ((gpointer) menuradiobtn2, "clicked",
@@ -1478,6 +1486,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label33, "label33");
   GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
   GLADE_HOOKUP_OBJECT (prefdialog, updatealloptionbtn, "updatealloptionbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, helpoptionbtn, "helpoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label32, "label32");
   GLADE_HOOKUP_OBJECT (prefdialog, label38, "label38");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox222, "vbox222");
@@ -1487,7 +1496,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label40, "label40");
   GLADE_HOOKUP_OBJECT (prefdialog, frame11, "frame11");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox223, "vbox223");
-  GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn, "menuradiobtn1");
+  GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn1, "menuradiobtn1");
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn2, "menuradiobtn2");
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn3, "menuradiobtn3");
   GLADE_HOOKUP_OBJECT (prefdialog, label41, "label41");

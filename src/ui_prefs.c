@@ -1,7 +1,8 @@
 /*
    program preferences
 
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -96,6 +97,9 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	widget = lookup_widget(prefdialog, "updatealloptionbtn");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(UPDATE_ON_STARTUP));
+	
+	widget = lookup_widget(prefdialog, "helpoptionbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(DISABLE_HELPFEEDS));
 	
 	widget = lookup_widget(prefdialog, "itemCountBtn");
 	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
@@ -210,3 +214,9 @@ void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 	// FIXME there is a better way to do this.... 
 	redrawWidget("mainwindow");
 }
+
+
+void on_helpoptionbtn_clicked(GtkButton *button, gpointer user_data) {
+	setBooleanConfValue(DISABLE_HELPFEEDS, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
+}
+

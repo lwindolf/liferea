@@ -43,6 +43,7 @@
 #define LAST_HPANE_POS			"/apps/liferea/last-hpane-pos"
 #define LAST_ITEMLIST_MODE		"/apps/liferea/last-itemlist-mode"
 #define LAST_ZOOMLEVEL			"/apps/liferea/last-zoomlevel"
+#define DISABLE_HELPFEEDS		"/apps/liferea/disable-helpfeeds"
 
 #define PROXY_HOST			"/system/http_proxy/host"
 #define PROXY_PORT			"/system/http_proxy/port"
