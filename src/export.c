@@ -410,7 +410,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			/* we create a real folder with two real subscriptions to the help feeds inside */			
 			child = restore_folder(folder, _("Liferea Help"), NULL, FST_FOLDER);
 			g_assert(NULL != child);
-			ui_add_folder(folder, child, -1);
+			ui_feedlist_add(folder, (nodePtr)child, -1);
 			folder = child;
 									
 			fp = feed_new();
@@ -451,7 +451,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			debug1(DEBUG_CONF, "adding folder \"%s\"", title);
 			child = restore_folder(folder, title, NULL, FST_FOLDER);
 			g_assert(NULL != child);
-			ui_add_folder(folder, child, -1);
+			ui_feedlist_add(folder, (nodePtr)child, -1);
 			folder = child;
 		}
 		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
@@ -565,7 +565,7 @@ void on_import_activate_cb(const gchar *filename, gpointer user_data) {
 		folder = restore_folder(NULL, _("Imported feed list"), NULL, FST_FOLDER);
 		
 		/* add the new folder to the model */
-		ui_add_folder(NULL, folder, -1);
+		ui_feedlist_add(NULL, (nodePtr)folder, -1);
 		
 		import_OPML_feedlist(filename, folder, TRUE, FALSE);
 	}

@@ -270,7 +270,7 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		g_free(path2);
 		
 		folder = restore_folder(parent, name, id, FST_FOLDER);
-		ui_add_folder(parent, folder, -1);
+		ui_feedlist_add(parent, (nodePtr)folder, -1);
 
 		load_folder_contents(folder, id);
 		if (expanded)

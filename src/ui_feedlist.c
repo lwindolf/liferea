@@ -84,7 +84,7 @@ nodePtr ui_feedlist_get_selected(void) {
 
 folderPtr ui_feedlist_get_target_folder(int *pos) {
 	nodePtr		ptr;
-	GtkTreeIter	*iter;
+	GtkTreeIter	iter;
 	GtkTreePath 	*path;
 	gint		*indices;
 	
@@ -93,13 +93,17 @@ folderPtr ui_feedlist_get_target_folder(int *pos) {
 		return NULL;
 	}
 
-	iter = &((ui_data*)(ptr->ui_data))->row;
+	if(filter_feeds_without_unread_headlines) {
+		gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &iter, &((ui_data*)(ptr->ui_data))->row);
+	} else {
+		iter = ((ui_data*)(ptr->ui_data))->row;
+	}
 
 	if(FST_FOLDER == ptr->type) {
 		*pos = -1;
 		return (folderPtr)ptr;
 	} else {
-		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
+		path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist"))), &iter);
 		indices = gtk_tree_path_get_indices(path);
 		*pos = indices[gtk_tree_path_get_depth(path)-1] + 1;
 		gtk_tree_path_free(path);
@@ -232,22 +236,6 @@ static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, 
 		return FALSE;
 }
 
-/* workaround to adjust the row pointers in the node structures
-   after changing the tree model */
-static void ui_feedlist_update_model_iter(nodePtr np) {
-	ui_data 	*new;
-
-	new = g_new0(struct ui_data, 1);
-	if(filter_feeds_without_unread_headlines)
-		gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &(((ui_data *)np->ui_data)->row), &(new->row));
-	else
-		gui_tree_model_filter_convert_iter_to_child_iter(GUI_TREE_MODEL_FILTER(filter), &(((ui_data *)np->ui_data)->row), &(new->row));
-		
-	g_free(np->ui_data);
-	np->ui_data = (gpointer)new;
-	g_print("finished\n");
-}
-
 /* Sets either the unread feeds filter model or the standard
    GTK tree model. This is necessary because only the standard
    model supports drag and drop. */
@@ -326,11 +314,11 @@ void ui_feedlist_select(nodePtr np) {
 	GtkWidget		*focused;
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
-
+	gint			count;
 
 	/* some comfort: select the created iter */
 	treeview = lookup_widget(mainwindow, "feedlist");
-	g_assert(treeview != NULL);
+	
 	/* To work around a GTK+ bug. If the treeview is not
 	   focused, setting the selected item will always select the
 	   first item! */
@@ -340,6 +328,14 @@ void ui_feedlist_select(nodePtr np) {
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 	
 	if(NULL != np) {
+		if(filter_feeds_without_unread_headlines) {
+			/* check if the node has unread items, if not it is not in 
+			   the filtered model and cannot be selected */
+			gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &((ui_data*)(np->ui_data))->row, FS_UNREAD, &count, -1);
+			if(0 == count)
+				return;
+		}
+		
 		if(filter_feeds_without_unread_headlines) {
 			gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &iter, &((ui_data*)(np->ui_data))->row);
 			path = gtk_tree_model_get_path(GTK_TREE_MODEL(filter), &iter);
@@ -534,16 +530,41 @@ void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWi
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
+void ui_feedlist_add(folderPtr parent, nodePtr node, gint position) {
+	GtkTreeIter	*iter, iter2, *parentIter = NULL;
+	
+	/* check if a folder with this keyprefix already
+	   exists to check config consistency */
+
+	g_assert(node->ui_data == NULL);
+	g_assert(parent == NULL || parent->ui_data != NULL);
+	g_assert(feedstore != NULL);
+
+	/* if parent is NULL we have the root folder and don't create
+	   a new row! */
+	node->ui_data = (gpointer)g_new0(struct ui_data, 1);
+	iter = &(((ui_data*)(node->ui_data))->row);
+	
+	if(parent != NULL) {
+		parentIter = &(((ui_data*)(parent->ui_data))->row);
+	}
+
+	if(position < 0)
+		gtk_tree_store_append(feedstore, iter, parentIter);
+	else
+		gtk_tree_store_insert(feedstore, iter, parentIter, position);
+
+	gtk_tree_store_set(feedstore, iter, FS_PTR, node, -1);
+	
+	checkForEmptyFolders();
+	ui_feedlist_update();
+}
+
 void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags) {
 	feedPtr			fp;
 	gchar			*tmp;
 	int			pos;
 	folderPtr		parent;
-
-/*	if(filter_feeds_without_unread_headlines) {
-		ui_show_info_box(_("Please change back to unfiltered feed list mode to add subscriptions!"));
-		return;
-	}*/
 	
 	debug_enter("ui_feedlist_new_subscription");	
 	
