@@ -797,12 +797,6 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 
 	uri = xmlParseURI(url);
 	
-	/* strstr will match _any_ substring. Not good, use strncasecmp with length 5! */
-	if (strcasecmp (uri->scheme, "https") == 0)
-		httpproto = 1;
-	else
-		httpproto = 0;
-	
 	/* The following code will not handle the following URLs:
 	   http://foo.bar
 	   
@@ -819,6 +813,12 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 		cur_ptr->netio_error = NET_ERR_URL_INVALID;
 		return NULL;
 	}
+	
+	if (strcasecmp (uri->scheme, "https") == 0)
+		httpproto = 1;
+	else
+		httpproto = 0;
+	
 	
 	/* If tmphost contains an '@', extract username and pwd. */
 	if (strchr (tmphost, '@') != NULL) {
