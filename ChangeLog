@@ -5,6 +5,10 @@
 	* Several usability fixes.
 	* GNOME default browser preference works now. Bug 824955
 	* Fixed the help feed updating behaviour.
+	* Not yet cached feeds are automatically retrieved on
+	  startup. Until this version that was blocking the UI.
+	  Now it 'll update the feeds in background.
+	* The icons were PNG but had a .xpm extension...
 	* Added a flagging feature to mark important items like
 	  typical mail/news clients provide.
 	
