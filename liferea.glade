@@ -743,13 +743,14 @@
 		  <child>
 		    <widget class="GtkButton" id="button26">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Starts a search for all items that do match the given search string either in title or content.</property>
 		      <property name="can_focus">True</property>
 		      <property name="relief">GTK_RELIEF_NONE</property>
 		      <property name="focus_on_click">True</property>
 		      <signal name="clicked" handler="on_searchentry_activate" last_modification_time="Sun, 07 Dec 2003 19:00:54 GMT"/>
 
 		      <child>
-			<widget class="GtkImage" id="image390">
+			<widget class="GtkImage" id="image2295">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">4</property>

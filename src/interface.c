@@ -107,7 +107,7 @@ create_mainwindow (void)
   GtkWidget *label21;
   GtkWidget *searchentry;
   GtkWidget *button26;
-  GtkWidget *image390;
+  GtkWidget *image2295;
   GtkWidget *newVFolder;
   GtkWidget *alignment9;
   GtkWidget *hbox66;
@@ -498,11 +498,12 @@ create_mainwindow (void)
   button26 = gtk_button_new ();
   gtk_widget_show (button26);
   gtk_box_pack_start (GTK_BOX (searchbox), button26, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, button26, _("Starts a search for all items that do match the given search string either in title or content."), NULL);
   gtk_button_set_relief (GTK_BUTTON (button26), GTK_RELIEF_NONE);
 
-  image390 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_BUTTON);
-  gtk_widget_show (image390);
-  gtk_container_add (GTK_CONTAINER (button26), image390);
+  image2295 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show (image2295);
+  gtk_container_add (GTK_CONTAINER (button26), image2295);
 
   newVFolder = gtk_button_new ();
   gtk_widget_show (newVFolder);
@@ -777,7 +778,7 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, label21, "label21");
   GLADE_HOOKUP_OBJECT (mainwindow, searchentry, "searchentry");
   GLADE_HOOKUP_OBJECT (mainwindow, button26, "button26");
-  GLADE_HOOKUP_OBJECT (mainwindow, image390, "image390");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2295, "image2295");
   GLADE_HOOKUP_OBJECT (mainwindow, newVFolder, "newVFolder");
   GLADE_HOOKUP_OBJECT (mainwindow, alignment9, "alignment9");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox66, "hbox66");
