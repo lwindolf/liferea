@@ -616,55 +616,65 @@ gint feed_process_update_results(gpointer data) {
 		ui_unlock();
 		return TRUE;
 	} else if(NULL != request->data) {
-		/* determine feed type if necessary (e.g. when importing) */
-		if(FST_AUTODETECT == (type = feed_get_type(request->fp))) {
-			firstDownload = TRUE;
-			type = feed_detect_type(request->data);
-			feed_set_type(request->fp, type);
-		}
+		while(1) {
+			/* determine feed type if necessary (e.g. when importing) */
+			if(FST_AUTODETECT == (type = feed_get_type(request->fp))) {
+				/* maybe we cannot determine the feed type, but we have to keep trying... */
+				if(FST_INVALID == (type = feed_detect_type(request->data))) {
+					feed_set_type(request->fp, FST_AUTODETECT);
+					feed_set_available(request->fp, FALSE);
+					g_free(request->fp->parseErrors);
+					request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the URL really points to a ressource provided in one of the supported syndication formats!"));
+					break;
+				} else {
+					feed_set_type(request->fp, type);
+				}
+				firstDownload = TRUE;
+			}
 
-		/* determine feed type handler */
-		g_assert(NULL != feedHandler);
-		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			g_warning("internal error! %s has unknown feed type %d while updating feeds!", request->fp->title, type);
-			ui_unlock();
-			return TRUE;
-		}
-		
-		/* parse the new downloaded feed into new_fp, feed type must be 
-		   set here because the parsing implementations maybe used for
-		   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
-		new_fp = feed_new();
-		feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source */
-		feed_set_type(new_fp, feed_get_type(request->fp));
-		(*(fhp->readFeed))(new_fp, request->data);
+			/* determine feed type handler */
+			g_assert(NULL != feedHandler);
+			if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
+				g_warning("internal error! %s has unknown feed type %d while updating feeds!", request->fp->title, type);
+				break;
+			}
 
-		if(firstDownload) {
-			if (feed_get_title(new_fp) != NULL)
-				feed_set_title(request->fp, feed_get_title(new_fp));
-			feed_set_update_interval(request->fp, feed_get_default_update_interval(new_fp));
-		}
-	
-		if(TRUE == fhp->merge)
-			/* If the feed type supports merging... */
-			feed_merge(request->fp, new_fp);
-		else {
-			/* Otherwise we simply use the new feed info... */
-			feed_copy(request->fp, new_fp);
-			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(request->fp));
-		}
+			/* parse the new downloaded feed into new_fp, feed type must be 
+			   set here because the parsing implementations maybe used for
+			   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
+			new_fp = feed_new();
+			feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source */
+			feed_set_type(new_fp, feed_get_type(request->fp));
+			(*(fhp->readFeed))(new_fp, request->data);
 
-		/* note this is to update the feed URL on permanent redirects */
-		if(0 != strcmp(request->feedurl, feed_get_source(request->fp))) {
-			feed_set_source(request->fp, request->feedurl);
-			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), feed_get_title(request->fp));
-		}
+			if(firstDownload) {
+				if (feed_get_title(new_fp) != NULL)
+					feed_set_title(request->fp, feed_get_title(new_fp));
+				feed_set_update_interval(request->fp, feed_get_default_update_interval(new_fp));
+			}
 
-		/* now fp contains the actual feed infos */
-		request->fp->needsCacheSave = TRUE;
+			if(TRUE == fhp->merge)
+				/* If the feed type supports merging... */
+				feed_merge(request->fp, new_fp);
+			else {
+				/* Otherwise we simply use the new feed info... */
+				feed_copy(request->fp, new_fp);
+				ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(request->fp));
+			}
 
-		if((feedPtr)ui_feedlist_get_selected() == request->fp) {
-			ui_itemlist_load(request->fp, NULL);
+			/* note this is to update the feed URL on permanent redirects */
+			if(0 != strcmp(request->feedurl, feed_get_source(request->fp))) {
+				feed_set_source(request->fp, request->feedurl);
+				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), feed_get_title(request->fp));
+			}
+
+			/* now fp contains the actual feed infos */
+			request->fp->needsCacheSave = TRUE;
+
+			if((feedPtr)ui_feedlist_get_selected() == request->fp) {
+				ui_itemlist_load(request->fp, NULL);
+			}
+			break;
 		}
 	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(request->fp));
@@ -957,23 +967,4 @@ void feed_free(feedPtr fp) {
 	g_free(fp->parseErrors);
 	g_free(fp);
 
-}
-
-// FIXME: remove method
-void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
-	gboolean ui=FALSE;
-	g_assert(NULL != dest_folder);
-	g_assert(NULL != fp);
-	
-	if(fp->ui_data) {
-		ui=TRUE;
-		ui_folder_remove_node((nodePtr)fp);
-	}
-
-	/* move key in configuration */
-	
-	if(ui) {
-		ui_folder_add_feed(dest_folder, fp, position);
-	}
-	conf_feedlist_schedule_save();
 }

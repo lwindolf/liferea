@@ -220,6 +220,5 @@ GSList * feed_get_item_list(feedPtr fp);
 void feed_clear_item_list(feedPtr fp);
 
 void feed_mark_all_items_read(feedPtr fp);
-void feed_set_pos(feedPtr fp, struct folder *folder, gint position);
 
 #endif
