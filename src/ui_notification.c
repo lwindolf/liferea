@@ -1,5 +1,4 @@
-/**
- * @file ui_notification.c mini popup windows
+/* * @file ui_notification.c mini popup windows
  *
  * Copyright (c) 2004, Karl Soderstrom <ks@xanadunet.net>
  *	      
@@ -71,6 +70,7 @@ static GtkWidget *notifCreateWin (void);
 static gint feedNotifTimeoutCallback (gpointer data);
 static void notifRemoveWin();
 static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+static gboolean notifDeleteWinCb (GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
 void ui_notification_setup(void) {
 	notifMutex_p = g_mutex_new ();
@@ -111,7 +111,7 @@ static int notifCompare (gconstpointer a, gconstpointer b) {
 void ui_notification_update(const feedPtr feed_p) {
 	feedNotif_t *curNotif_p = NULL;
 	GSList *list_p = NULL;
-
+	
 	if(!getBooleanConfValue(SHOW_POPUP_WINDOWS))
 		return;
 
@@ -238,18 +238,17 @@ static GtkWidget *notifCreateWin (void) {
 	GtkWidget *window_p = NULL;
 	GtkWidget *vbox_p = NULL;
 
-	window_p = gtk_window_new (GTK_WIN_POS_NONE);
-	
+	window_p = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW(window_p), _("Liferea notification"));
+	
+	/* Don't make any special placement */
+	gtk_window_set_position(GTK_WINDOW(window_p), GTK_WIN_POS_NONE);
 
 	/* The user shouldn't be able to resize it */
 	gtk_window_set_resizable (GTK_WINDOW(window_p), FALSE);
 
 	/* Stick on all desktops */
 	gtk_window_stick (GTK_WINDOW(window_p));
-
-	/* No decoration please */
-	gtk_window_set_decorated (GTK_WINDOW(window_p), FALSE);
 
 	/* Not in taskbar */
 	gtk_window_set_skip_taskbar_hint (GTK_WINDOW(window_p), TRUE);
@@ -258,12 +257,29 @@ static GtkWidget *notifCreateWin (void) {
 	
 	vbox_p = gtk_vbox_new (FALSE, 4);
 	gtk_container_add (GTK_CONTAINER(window_p), vbox_p);
+
+	gtk_widget_realize(window_p);
+	gdk_window_set_decorations(window_p->window, GDK_DECOR_BORDER);
+	
+	g_signal_connect(window_p, "destroy", G_CALLBACK(notifDeleteWinCb), NULL);
 	
 	gtk_widget_show_all (window_p);
-
+	
 	gtk_window_move (GTK_WINDOW(window_p), NOTIF_WIN_POS_X, NOTIF_WIN_POS_Y);
-
+	
 	return window_p;
+}
+
+
+static gboolean notifDeleteWinCb (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+	GSList *iter;
+	notifWin_p = NULL;
+
+	for(iter = notifications_p; iter != NULL; iter = iter->next) {
+		((feedNotif_t*)(iter->data))->box_p = NULL;
+		((feedNotif_t*)(iter->data))->eventBox_p = NULL;
+	}
+	return FALSE;
 }
 
 void notifRemoveWin () {
