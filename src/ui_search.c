@@ -85,7 +85,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 	resultCountButton = lookup_widget(feedsterdialog, "feedsterresultcount");
 	if((NULL != keywords) && (NULL != resultCountButton)) {
 		resultCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(resultCountButton));
-		searchtext = (gchar *)gtk_entry_get_text(GTK_ENTRY(keywords));
+		searchtext = (gchar *)g_strdup(gtk_entry_get_text(GTK_ENTRY(keywords)));
 		searchtext = encodeURIString(searchtext);
 		searchtext = g_strdup_printf("http://www.feedster.com/rss.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
 					    searchtext, (int)gtk_adjustment_get_value(resultCount));
