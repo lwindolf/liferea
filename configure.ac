@@ -1,12 +1,13 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(configure.ac)
+AC_INIT
+AC_CONFIG_SRCDIR([configure.ac])
 
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
 
 AM_INIT_AUTOMAKE(liferea, 0.6.1)
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
 
 dnl Work around libtool bug (fixed in the version 1.5a?)
@@ -198,7 +199,7 @@ dnl Add the languages which your application supports here.
 ALL_LINGUAS="bg cs de es fr it ja ko mk ru sk zh_TW"
 AM_GLIB_GNU_GETTEXT
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 src/Makefile
 src/mozilla/Makefile
@@ -210,6 +211,7 @@ po/Makefile.in
 liferea.spec
 liferea-SuSE.spec
 ])
+AC_OUTPUT
 
 echo
 echo $PACKAGE $VERSION
