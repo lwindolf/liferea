@@ -41,6 +41,8 @@
 #include "callbacks.h"
 #include "filter.h"
 
+#include "htmlview.h"
+
 /* auto detection lookup table */
 typedef struct detectStr {
 	gint	type;
@@ -714,6 +716,52 @@ gint getFeedUpdateCounter(feedPtr fp) { return fp->updateCounter; }
 void setFeedUpdateCounter(feedPtr fp, gint count) { fp->updateCounter = count; }
 
 gboolean getFeedAvailable(feedPtr fp) { return fp->available; }
+
+/* Returns a HTML string describing the last retrieval error 
+   of this feed. Should only be called when getFeedAvailable
+   returns FALSE. Caller must free returned string! */
+gchar * getFeedErrorDescription(feedPtr fp) {
+	gchar	*tmp1, *tmp2 = NULL, *buffer = NULL;
+	gint 	httpstatus;
+	
+	g_assert(NULL != fp->request);
+	httpstatus = ((struct feed_request *)fp->request)->lasthttpstatus;
+	if((httpstatus < 300) || (httpstatus > 599))	/* should never happen! */
+		return g_strdup_printf("%s%s%s", HTTP_ERROR_START, _("The last update of this feed failed. Please see the console output for more information!"), HTTP_ERROR_END);
+	
+	/* first specific codes */
+	switch(httpstatus) {
+		case 401:tmp2 = g_strdup(_("The feed no longer exists. Please unsubscribe!"));break;
+		case 402:tmp2 = g_strdup(_("Payment Required"));break;
+		case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
+		case 404:tmp2 = g_strdup(_("Ressource Not Found"));break;
+		case 405:tmp2 = g_strdup(_("Method Not Allowed"));break;
+		case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
+		case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
+		case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
+		case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe!"));break;
+	}
+	
+	/* next classes */
+	if(NULL == tmp2) {
+		switch(httpstatus / 100) {
+			case 3:tmp2 = g_strdup(_("Feed not available: Server signalized unsupported redirection!"));break;
+			case 4:tmp2 = g_strdup(_("Client Error"));break;
+			case 5:tmp2 = g_strdup(_("Server Error"));break;
+			default:tmp2 = g_strdup(_("(unknown error class)"));break;
+		}
+	}
+	
+	/* add info box with HTTP status */
+	addToHTMLBuffer(&buffer, HTTP_ERROR_START);
+	tmp1 = g_strdup_printf(_(HTTP_ERROR_TEXT), httpstatus, tmp2);
+	addToHTMLBuffer(&buffer, tmp1);
+	g_free(tmp1);
+	g_free(tmp2);
+	addToHTMLBuffer(&buffer, HTTP_ERROR_END);
+	
+	return buffer;
+}
 
 gchar * getFeedTitle(feedPtr fp) { 
 
