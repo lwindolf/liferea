@@ -96,7 +96,7 @@
 		      <signal name="activate" handler="on_menu_feed_new" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1701">
+			<widget class="GtkImage" id="image1853">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -117,7 +117,7 @@
 		      <signal name="activate" handler="on_menu_folder_new" last_modification_time="Tue, 27 Apr 2004 22:52:15 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1702">
+			<widget class="GtkImage" id="image1854">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -139,12 +139,13 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="properties">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Opens the property dialog for the selected subscription.</property>
 		      <property name="label" translatable="yes">_Properties</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_menu_properties" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1703">
+			<widget class="GtkImage" id="image1855">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-properties</property>
 			  <property name="icon_size">1</property>
@@ -166,12 +167,13 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="feed_update">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Updates the selected subscription or all subscriptions of the selected folder,</property>
 		      <property name="label" translatable="yes">Update _Selected</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_menu_update" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1704">
+			<widget class="GtkImage" id="image1856">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -187,14 +189,14 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="update_all_feeds">
 		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Immediately updates all feeds (excluding directories).</property>
+		      <property name="tooltip" translatable="yes">Immediately updates all subscriptions (excluding directories).</property>
 		      <property name="label" translatable="yes">Update _All</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_refreshbtn_clicked" last_modification_time="Sat, 08 Nov 2003 17:55:36 GMT"/>
 		      <accelerator key="a" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1705">
+			<widget class="GtkImage" id="image1857">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -216,12 +218,13 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="delete_selected">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Removes the selected subscriptions.</property>
 		      <property name="label" translatable="yes">_Delete Selected</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_menu_delete" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1706">
+			<widget class="GtkImage" id="image1858">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -243,7 +246,7 @@
 		  <child>
 		    <widget class="GtkCheckMenuItem" id="filter_feeds_without_unread_headlines1">
 		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Filters all feeds that don't have unread items</property>
+		      <property name="tooltip" translatable="yes">Filters all subscriptions that don't have unread items.</property>
 		      <property name="label" translatable="yes">Show Only _Unread Feeds</property>
 		      <property name="use_underline">True</property>
 		      <property name="active">False</property>
@@ -252,13 +255,25 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="mark_all_as_read1">
+		    <widget class="GtkImageMenuItem" id="mark_all_as_read1">
 		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Marks all items of the current feed as read.</property>
+		      <property name="tooltip" translatable="yes">Marks all items of the current selected subscription or all of subscriptions of the selected folder as read.</property>
 		      <property name="label" translatable="yes">_Mark As Read</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_popup_allunread_selected" last_modification_time="Thu, 06 Nov 2003 00:16:50 GMT"/>
 		      <accelerator key="r" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+
+		      <child internal-child="image">
+			<widget class="GtkImage" id="image1859">
+			  <property name="visible">True</property>
+			  <property name="stock">gtk-apply</property>
+			  <property name="icon_size">1</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 
@@ -277,7 +292,7 @@
 		      <signal name="activate" handler="on_import_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1707">
+			<widget class="GtkImage" id="image1860">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-open</property>
 			  <property name="icon_size">1</property>
@@ -299,7 +314,7 @@
 		      <signal name="activate" handler="on_export_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1708">
+			<widget class="GtkImage" id="image1861">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-save-as</property>
 			  <property name="icon_size">1</property>
@@ -335,7 +350,7 @@
 		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1709">
+			<widget class="GtkImage" id="image1862">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-forward</property>
 			  <property name="icon_size">1</property>
@@ -351,13 +366,14 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="scroll_or_next_unread1">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Scrolls the item view down or jumps to the next unread item.</property>
 		      <property name="label" translatable="yes">_Scroll Or Next Unread</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_scrolldown_activate" last_modification_time="Sat, 24 Jan 2004 22:22:04 GMT"/>
 		      <accelerator key="space" modifiers="GDK_SHIFT_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1710">
+			<widget class="GtkImage" id="image1863">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-forward</property>
 			  <property name="icon_size">1</property>
@@ -401,7 +417,7 @@
 		      <signal name="activate" handler="on_remove_items_activate" last_modification_time="Sun, 21 Dec 2003 23:42:23 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1711">
+			<widget class="GtkImage" id="image1864">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -447,13 +463,14 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="zoom_in1">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Increases the text size of the item view.</property>
 		      <property name="label" translatable="yes">_Increase Text Size</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_popup_zoomin_selected" last_modification_time="Sun, 01 Feb 2004 14:49:35 GMT"/>
 		      <accelerator key="plus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1712">
+			<widget class="GtkImage" id="image1865">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-in</property>
 			  <property name="icon_size">1</property>
@@ -469,13 +486,14 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="zoom_out1">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Decreases the text size of the item view.</property>
 		      <property name="label" translatable="yes">_Decrease Text Size</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_popup_zoomout_selected" last_modification_time="Sun, 01 Feb 2004 14:49:18 GMT"/>
 		      <accelerator key="minus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1713">
+			<widget class="GtkImage" id="image1866">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-out</property>
 			  <property name="icon_size">1</property>
@@ -497,6 +515,7 @@
 		  <child>
 		    <widget class="GtkCheckMenuItem" id="toggle_condensed_view">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Toggles the item list mode.</property>
 		      <property name="label" translatable="yes">Toggle _Condensed View</property>
 		      <property name="use_underline">True</property>
 		      <property name="active">False</property>
@@ -526,7 +545,7 @@
 		      <signal name="activate" handler="on_searchbtn_clicked" last_modification_time="Sat, 22 Nov 2003 21:55:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1714">
+			<widget class="GtkImage" id="image1867">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -548,7 +567,7 @@
 		      <signal name="activate" handler="on_search_with_feedster_activate" last_modification_time="Sat, 22 Nov 2003 21:57:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1715">
+			<widget class="GtkImage" id="image1868">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -577,6 +596,7 @@
 		  <child>
 		    <widget class="GtkMenuItem" id="about">
 		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Shows an about dialog.</property>
 		      <property name="label" translatable="yes">About</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_about_activate" last_modification_time="Wed, 18 Feb 2004 20:51:20 GMT"/>
@@ -601,6 +621,71 @@
 	  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
 	  <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
 	  <property name="tooltips">True</property>
+
+	  <child>
+	    <widget class="GtkButton" id="New Feed">
+	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Edit preferences</property>
+	      <property name="relief">GTK_RELIEF_NONE</property>
+	      <signal name="clicked" handler="on_newbtn_clicked" last_modification_time="Sat, 15 May 2004 22:25:55 GMT"/>
+
+	      <child>
+		<widget class="GtkAlignment" id="alignment9">
+		  <property name="visible">True</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xscale">0</property>
+		  <property name="yscale">0</property>
+
+		  <child>
+		    <widget class="GtkHBox" id="hbox48">
+		      <property name="visible">True</property>
+		      <property name="homogeneous">False</property>
+		      <property name="spacing">2</property>
+
+		      <child>
+			<widget class="GtkImage" id="image1717">
+			  <property name="visible">True</property>
+			  <property name="stock">gtk-add</property>
+			  <property name="icon_size">4</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkLabel" id="label115">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">New Feed</property>
+			  <property name="use_underline">True</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+	    </widget>
+	  </child>
 
 	  <child>
 	    <widget class="GtkButton" id="nextbtn">
@@ -691,7 +776,7 @@
 		      <child>
 			<widget class="GtkImage" id="image1716">
 			  <property name="visible">True</property>
-			  <property name="stock">gtk-no</property>
+			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">4</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -839,71 +924,6 @@
 			<widget class="GtkLabel" id="label25">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">Search</property>
-			  <property name="use_underline">True</property>
-			  <property name="use_markup">False</property>
-			  <property name="justify">GTK_JUSTIFY_LEFT</property>
-			  <property name="wrap">False</property>
-			  <property name="selectable">False</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
-		      </child>
-		    </widget>
-		  </child>
-		</widget>
-	      </child>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkButton" id="New Feed">
-	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Edit preferences</property>
-	      <property name="relief">GTK_RELIEF_NONE</property>
-	      <signal name="clicked" handler="on_newbtn_clicked" last_modification_time="Sat, 15 May 2004 22:25:55 GMT"/>
-
-	      <child>
-		<widget class="GtkAlignment" id="alignment9">
-		  <property name="visible">True</property>
-		  <property name="xalign">0.5</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xscale">0</property>
-		  <property name="yscale">0</property>
-
-		  <child>
-		    <widget class="GtkHBox" id="hbox48">
-		      <property name="visible">True</property>
-		      <property name="homogeneous">False</property>
-		      <property name="spacing">2</property>
-
-		      <child>
-			<widget class="GtkImage" id="image1717">
-			  <property name="visible">True</property>
-			  <property name="stock">gtk-add</property>
-			  <property name="icon_size">4</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
-		      </child>
-
-		      <child>
-			<widget class="GtkLabel" id="label115">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">New Feed</property>
 			  <property name="use_underline">True</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
