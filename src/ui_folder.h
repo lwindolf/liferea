@@ -52,6 +52,13 @@ void checkForEmptyFolders(void);
 /* expansion/collapsing */
 void ui_folder_set_expansion(folderPtr folder, gboolean expanded);
 
+/** 
+ * Tries to find the first unread feed in the given folder.
+ * 
+ * @return feed pointer or NULL
+ */
+feedPtr	ui_folder_find_unread_feed(folderPtr folder);
+
 /* Callbacks */
 void on_popup_newfolder_selected(void);
 void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data);

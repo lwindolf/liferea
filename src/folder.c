@@ -63,9 +63,6 @@ void setFolderTitle(folderPtr folder, gchar *title) {
 	g_assert(title != NULL);
 	
 	folder->title = g_strdup(title);
-
-	/* topiter must not be NULL! because we cannot rename the root folder ! */
-	conf_feedlist_schedule_save();
 	conf_feedlist_schedule_save();
 }
 
@@ -88,82 +85,4 @@ void folder_state_save(nodePtr ptr) {
 	folderPtr folder = (folderPtr)ptr;
 	g_assert(folder);
 	g_assert(IS_FOLDER(folder->type));
-}
-
-void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
-	folderPtr newFolder;
-	gboolean expanded=FALSE;
-	nodePtr ptr;
-	GtkTreeIter iter;
-	
-	g_assert(NULL != folder);
-	g_assert(NULL != dest_folder);
-	g_assert(folder->ui_data);
-	g_assert(dest_folder->ui_data);
-
-	expanded = ui_is_folder_expanded(folder);
-
-	// Make new folder
-	newFolder = restore_folder(dest_folder, folder->title, folder->id, folder->type);
-
-	ui_add_folder(dest_folder, newFolder, position);
-
-	// Recursivly move children
-	while (gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, &((ui_data*)(folder->ui_data))->row)) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
-					    FS_PTR, &ptr,
-					    -1);
-		if (ptr) {
-			if (IS_FOLDER(ptr->type)) {
-				folder_set_pos((folderPtr)ptr, newFolder, -1);
-			} else if (FEED_MENU(ptr->type)) {
-				feed_set_pos((feedPtr)ptr, newFolder, -1);
-			} else {
-				g_warning("An unknown type=%d is trying to be moved with a folder! It is now deleted.", ptr->type);
-				gtk_tree_store_remove(feedstore, &iter); 
-			}
-		} else /* EMPTY */
-			gtk_tree_store_remove(feedstore, &iter); 
-	}
-	if (expanded)
-		ui_folder_set_expansion(newFolder, TRUE);
-
-	/* Delete (empty) old folder */
-	ui_folder_remove_node((nodePtr)folder);
-	g_assert(folder->ui_data == NULL);
-	folder_free(folder);
-	conf_feedlist_schedule_save();
-}
-
-/*------------------------------------------------------------------------------*/
-/* function for finding next unread item 					*/
-/*------------------------------------------------------------------------------*/
- 
-feedPtr folder_find_unread_feed(folderPtr folder) {
-	feedPtr			fp;
-	nodePtr			ptr;
-	GtkTreeIter		iter, *parent = NULL;
-	gboolean valid;
-	gint count;
-
-	if (folder != NULL)
-		parent = &((ui_data*)(folder->ui_data))->row;
-	
-	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, parent);
-	while(valid) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
-				   FS_PTR, &ptr,
-				   FS_UNREAD, &count,
-				   -1);
-		if (count > 0) {
-			if (IS_FEED(ptr->type)) {
-				return (feedPtr)ptr;
-			} else if (IS_FOLDER(ptr->type)) {
-				if ((fp = folder_find_unread_feed((folderPtr)ptr)))
-					return fp;
-			} /* Directories are never checked */
-		}
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
-	}
-	return NULL;	
 }

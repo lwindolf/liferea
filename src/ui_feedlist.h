@@ -188,4 +188,5 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data);
 /* UI folder stuff */
 void verify_iter(nodePtr node);
 GtkWidget *ui_feedlist_build_prop_dialog(void);
+
 #endif

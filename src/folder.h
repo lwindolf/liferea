@@ -29,16 +29,13 @@ typedef struct folder {
 	gint type;
 	gpointer *ui_data;
 	gchar *title;
-	gchar *id; /* The gconf key name of the directory, for example "dir5" */
+	gchar *id;
 } *folderPtr;
 
-struct feed;
-
-void folder_set_pos(folderPtr folder, folderPtr destFolder, int position);
 /* ------------------------------------------------------------ */
 /* functions to create/change/remove folder			*/
 /* ------------------------------------------------------------ */
-void 	initFolders(void);
+void initFolders(void);
 void folder_add_feed(folderPtr foldr, struct feed *feed, gint position);
 
 /**
@@ -59,6 +56,4 @@ void	setFolderCollapseState(struct folder *folder, gboolean collapsed);
 /* save functions */
 void folder_state_save(nodePtr ptr);
 
-/* Misc */
-struct feed* folder_find_unread_feed(folderPtr folder);
 #endif

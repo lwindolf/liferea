@@ -182,6 +182,36 @@ void ui_folder_set_expansion(folderPtr folder, gboolean expanded) {
 	}
 }
 
+/* function for finding next unread item */
+feedPtr ui_folder_find_unread_feed(folderPtr folder) {
+	feedPtr			fp;
+	nodePtr			ptr;
+	GtkTreeIter		iter, *parent = NULL;
+	gboolean valid;
+	gint count;
+
+	if (folder != NULL)
+		parent = &((ui_data*)(folder->ui_data))->row;
+	
+	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, parent);
+	while(valid) {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
+				   FS_PTR, &ptr,
+				   FS_UNREAD, &count,
+				   -1);
+		if (count > 0) {
+			if (IS_FEED(ptr->type)) {
+				return (feedPtr)ptr;
+			} else if (IS_FOLDER(ptr->type)) {
+				if ((fp = ui_folder_find_unread_feed((folderPtr)ptr)))
+					return fp;
+			} /* Directories are never checked */
+		}
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
+	}
+	return NULL;	
+}
+
 /* Subfolders */
 
 /* this function is a workaround to the cant-drop-rows-into-emtpy-

@@ -43,7 +43,7 @@ itemPtr item_new(void) {
 	ip->readStatus = FALSE;
 	ip->marked = FALSE;
 	ip->type = FST_INVALID;
-	ip->ui_data = NULL;
+
 	return ip;
 }
 
