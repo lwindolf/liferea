@@ -381,6 +381,8 @@ time_t parseISO8601Date(gchar *date) {
 	gboolean	success = FALSE;
 	gchar *pos;
 	
+	g_assert(date != NULL);
+	
 	memset(&tm, 0, sizeof(struct tm));
 	
 	/* we expect at least something like "2003-08-07T15:28:19" and
