@@ -6,7 +6,7 @@ for Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 0.5.2.
+This documentation was last updated for Liferea version 0.5.3.
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   NOTE THAT 0.5.2 BREAKS DOWNWARD COMPATIBILITY. PLEASE READ
@@ -117,7 +117,7 @@ or just upload the translation as a patch to SourceForge.
 Known Problems
 ==============
 
-Please read the help feed (http://liferea.sf.net/help052.rdf) for
+Please read the help feed (http://liferea.sf.net/help053.rdf) for
 known problems! If you don't find your problem please make a report
 (forum, bugs...) on the SourceForge project page
 (http://liferea.sf.net) or send emails to the project mailing list
