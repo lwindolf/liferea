@@ -27,15 +27,26 @@
 /* standard feed/item type interface */
 feedHandlerPtr	vfolder_init_feed_handler(void);
 
+/* sets up a vfolder feed structure */
 feedPtr vfolder_new(void);
 
 /* Method thats adds a rule to a vfolder. To be used
    on loading time or when creating searching. Does 
    not process items. Just sets up the vfolder */
-void vfolder_add_rule(feedPtr vp, gchar *ruleId, gchar *value);
+void	vfolder_add_rule(feedPtr vp, gchar *ruleId, gchar *value);
+
+/* Method that applies the rules of the given vfolder to 
+   all existing items. To be used for creating search
+   results or new vfolders. Not to be used when loading
+   vfolders from cache. */
+void vfolder_refresh(feedPtr vp);
 
 /* Method to be called when a item was updated. This maybe
    after user interaction or updated item contents */
 void	vfolder_update_item(itemPtr ip);
+
+/* called when a vfolder is processed by feed_free
+   to get rid of the vfolder items */
+void	vfolder_free(feedPtr vp);
 
 #endif

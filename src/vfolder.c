@@ -39,21 +39,7 @@ static GSList		*vfolder_rules = NULL;
  */
 static feedPtr		vfolder_item_pool = NULL;
 
-/* though VFolders are treated like feeds, there 'll be a read() call
-   when creating a new VFolder, we just do nothing but initializing
-   the vfolder structure */
-/*static feedPtr readVFolder(gchar *url) {
-	feedPtr	vp;
-	
-	initialize channel structure 
-	vp = g_new0(struct feed, 1);
-	vp->type = FST_VFOLDER;
-	vp->title = url;
-	
-	return vp;
-}
-*/
-
+/* sets up a vfolder feed structure */
 feedPtr vfolder_new(void) {
 	feedPtr		fp;
 
@@ -93,20 +79,28 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	if(-1 == (int)tmp) {
 		/* we need to avoid NULL id's somehow */
 	} else if(NULL == tmp) {
-		tmp = item_new();	
+		tmp = item_new();
 		item_copy(ip, tmp);
+		tmp->references = 1;
 		feed_add_item(vfolder_item_pool, tmp);
 		feed_add_item(vp, tmp);
 	} else {
 		/* do we need reference counting? */
 		if(tmp->sourceFeed != ip->fp) {
 // does not work as long id's are not unique
+//			tmp->references++;
 //			feed_add_item(vp, tmp);
 		} else 
 			g_warning("a search feed contains non-unique id's, one matching item was dropped...");
 	}
 }
 
+/* Checks a new item against all additive rules of all feeds
+   except the addition rules of the parent feed. In the second
+   step the function checks wether there are parent feed rules,
+   which do exclude this item. If there is such a rule the 
+   function returns FALSE, otherwise TRUE to signalize if 
+   this new item should be added. */
 static vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	feedPtr		vp = (feedPtr)userdata;
 	feedPtr		fp = (feedPtr)np;
@@ -166,7 +160,8 @@ static vfolder_apply_rules(nodePtr np, gpointer userdata) {
 
 /* Method that applies the rules of the given vfolder to 
    all existing items. To be used for creating search
-   results or new vfolders. Note: that */
+   results or new vfolders. Not to be used when loading
+   vfolders from cache. */
 void vfolder_refresh(feedPtr vp) {
 
 	debug_enter("vfolder_refresh");
@@ -174,58 +169,17 @@ void vfolder_refresh(feedPtr vp) {
 	debug_exit("vfolder_refresh");
 }
 
-/* Checks a new item against all additive rules of all feeds
-   except the addition rules of the parent feed. In the second
-   step the function checks wether there are parent feed rules,
-   which do exclude this item. If there is such a rule the 
-   function returns FALSE, otherwise TRUE to signalize if 
-   this new item should be added. */
-void old_code_to_be_move_to_vfolder_c(void) {
-	GSList		*rule;
-	/*	ruleCheckFunc	rf; */
-	/*	rulePtr		r; */
-	
-	/* important: we assume the parent pointer of the item is set! */
-	//g_assert(NULL != ip->fp);
-	
-
-//	rule = allRules;
-/*	while(NULL != rule) {
-		r = rule->data;
-		rf = ruleFunctions[r->type].ruleFunc;
-		g_assert(NULL == rf);
-		g_assert(RULE_TYPE_MAX > r->type);
-		
-		if(TRUE == ruleFunctions[r->type].additive)
-			if(TRUE == (*rf)(r, ip)) {
-				g_assert(FST_VFOLDER == r->fp->type);
-				addItemToVFolder(r->fp, ip);
-			}
-			
-		rule = g_slist_next(rule);
-	}*/
-	
-	/* check against non additive rules of parent feed */
-/*	rule = ((feedPtr)(ip->fp))->filter;
-	while(NULL != rule) {
-		r = rule->data;
-		rf = ruleFunctions[r->type].ruleFunc;
-		g_assert(NULL == rf);
-		g_assert(RULE_TYPE_MAX > r->type);
-
-		if(FALSE == ruleFunctions[r->type].additive)
-			if(FALSE == (*rf)(r, ip))
-				return FALSE;
-					
-		rule = g_slist_next(rule);
-	}*/
-}
-
-/* Method to be called when a item was updated. This maybe
+/* Method to be called when a feed item was updated. This maybe
    after user interaction or updated item contents */
 void vfolder_update_item(itemPtr ip) {
 	GSList		*items = vfolder_item_pool->items;
 	itemPtr		tmp;
+
+	debug_enter("vfolder_update_item");
+	
+	/* never process vfolder items! */
+	if(FST_VFOLDER == feed_get_type(ip->fp))
+		return;
 	
 	while(NULL != items) {
 		tmp = items->data;
@@ -239,10 +193,28 @@ void vfolder_update_item(itemPtr ip) {
 		}
 		items = g_slist_next(items);
 	}
+	
+	debug_exit("vfolder_update_item");
 }
 
+/* called when a vfolder is processed by feed_free
+   to get rid of the vfolder items */
 void vfolder_free(feedPtr vp) {
-	g_warning("vfolder_free(): FIXME, implement me!");
+	GSList		*items;
+	itemPtr		ip;
+
+	items = vp->items;
+	while(NULL != items) {
+		ip = items->data;
+		ip->references--;
+		if(0 == ip->references) {
+			vfolder_item_pool->items = g_slist_remove(vfolder_item_pool->items, ip);
+			item_free(ip);
+		}
+		items = g_slist_next(items);
+	}
+	g_slist_free(vp->items);
+	vp->items = NULL;
 }
 
 feedHandlerPtr vfolder_init_feed_handler(void) {

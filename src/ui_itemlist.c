@@ -611,12 +611,14 @@ void on_popup_launchitem_selected(void) {
 
 void on_toggle_unread_status(void) {
 	itemPtr		ip;
-	
+g_print("toggle read\n");
 	if(NULL != (ip = ui_itemlist_get_selected())) {
+g_print("toggle read2\n");
 		if(item_get_read_status(ip)) 
 			item_set_unread(ip);
 		else
 			item_set_read(ip);
+g_print("toggle read3\n");
 		ui_feedlist_update();
 	}
 }
@@ -742,7 +744,6 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 					    -1);
 	gtk_tree_path_free(path);
 	g_assert(NULL != ip);
-					    	
 	eb = (GdkEventButton*)event; 
 	switch(eb->button) {
 		case 2:
@@ -755,7 +756,10 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 				if(event->x <= column->width)
 					item_set_mark(ip, !item_get_mark(ip));				
 				else
-					(item_get_read_status(ip))?item_set_unread(ip):item_set_read(ip);
+					if(TRUE == item_get_read_status(ip))
+						item_set_unread(ip);
+					else
+						item_set_read(ip);
 				ui_feedlist_update();
 			}
 			return TRUE;

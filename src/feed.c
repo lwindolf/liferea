@@ -1304,7 +1304,11 @@ static void feed_replace(feedPtr fp, feedPtr new_fp) {
 void feed_free(feedPtr fp) {
 	gchar *filename = NULL;
 	
-	g_assert(IS_FEED(fp->type));
+	if(FST_VFOLDER == fp->type) {
+		vfolder_free(fp);	/* some special preparations for vfolders */
+	} else {
+		g_assert(IS_FEED(fp->type));
+	}
 	
 	if(displayed_node == (nodePtr)fp) { /* This is not strictly necessary. It just speeds deletion of an entire itemlist. */
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());

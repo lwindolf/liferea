@@ -42,7 +42,7 @@ struct feed;
 
 /** An item stores a particular entry in a feed or a search */
 typedef struct item {
-/* those fields should not be accessed directly. Accessors are provided. */
+	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/**< TRUE if the item has been read */
 	gboolean	newStatus;		/**< TRUE if the item was downloaded and not yet displayed by notification features */
 	gboolean 	marked;			/**< TRUE if the item has been marked */
@@ -53,10 +53,12 @@ typedef struct item {
 	gchar		*real_source_title;	/**< (optional) title of the real source */
 	gchar		*description;		/**< HTML string containing the item's description */
 	gchar		*id;			/**< Unique item identifier, for example <guid> in RSS */
+	
 	GSList		*metadata;		/**< metadata of this item */
 	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 	time_t		time;			/**< Item's modified date */
 	
+	gint		references;		/**< used only with vfolders to count references */
 	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
 	struct feed	*sourceFeed;		/**< Pointer to the source feed this item was derived from (used for searches and vfolders) */
 	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */
