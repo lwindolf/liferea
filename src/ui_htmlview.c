@@ -197,8 +197,8 @@ void ui_htmlview_deinit() {
 /* browser module interface functions					*/
 /* -------------------------------------------------------------------- */
 
-GtkWidget *ui_htmlview_new() {
-	GtkWidget *htmlview = htmlviewInfo->create();
+GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing) {
+	GtkWidget *htmlview = htmlviewInfo->create(forceInternalBrowsing);
 	
 	ui_htmlview_clear(htmlview);
 	
@@ -338,7 +338,7 @@ void ui_htmlview_clear(GtkWidget *htmlview) {
 	g_free(buffer);
 }
 
-void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gboolean force_external) {
+void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType) {
 	
 	if(NULL == url) {
 		/* FIXME: bad because this is not only used for item links! */
@@ -346,12 +346,12 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gboolean force_exte
 		return;
 	}
 	
-	debug3(DEBUG_GUI, "launch URL: %s  %s %s\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
+	debug3(DEBUG_GUI, "launch URL: %s  %s %d\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewInfo->launchInsidePossible)()?"true":"false",
-		  force_external?"true":"false");
-	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION) &&
+		  launchType);
+	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) &&
 	   (htmlviewInfo->launchInsidePossible)() &&
-	   !force_external) {
+	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {
 		(htmlviewInfo->launch)(htmlview, url);
 	} else {
 		ui_htmlview_launch_in_external_browser(url);
@@ -443,7 +443,7 @@ void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *pa
 
 void on_popup_launch_link_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), url, TRUE);
+	ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 }
 
 void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {

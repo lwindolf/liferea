@@ -29,7 +29,7 @@ static GHashTable	*tabHash = NULL;
 
 static gboolean on_tab_url_entry_activate(GtkWidget *widget, gpointer user_data) {
 
-	ui_htmlview_launch_URL(GTK_WIDGET(user_data), (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)), FALSE);
+	ui_htmlview_launch_URL(GTK_WIDGET(user_data), (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)), UI_HTMLVIEW_LAUNCH_INTERNAL);
 	return TRUE;
 }
 
@@ -98,7 +98,7 @@ void ui_tabs_new(const gchar *url, const gchar *title) {
 	
 	/* create widgets */
 	vbox = gtk_vbox_new(FALSE, 0);
-	htmlview = ui_htmlview_new();
+	htmlview = ui_htmlview_new(TRUE);
 	toolbar = gtk_hbox_new(FALSE, 6);
 
 	widget = gtk_label_new(_("URL"));
@@ -129,7 +129,7 @@ void ui_tabs_new(const gchar *url, const gchar *title) {
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), TRUE);
 
 	if(NULL != url)	
-		ui_htmlview_launch_URL(htmlview, (gchar *)url, FALSE);
+		ui_htmlview_launch_URL(htmlview, (gchar *)url, UI_HTMLVIEW_LAUNCH_INTERNAL);
 	
 	i = gtk_notebook_get_n_pages(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
 	g_hash_table_insert(tabHash, GINT_TO_POINTER(i-1), (gpointer)htmlview);

@@ -115,7 +115,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 void ui_mainwindow_set_three_pane_mode(gboolean threePane) {
 		
 	if(NULL == htmlview) {
-		htmlview = ui_htmlview_new();
+		htmlview = ui_htmlview_new(FALSE);
 		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "viewportThreePaneHtml")), GTK_WIDGET(htmlview));
 		gtk_widget_show(htmlview);
 	}

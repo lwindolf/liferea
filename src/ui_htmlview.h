@@ -103,7 +103,7 @@ struct displayset {
 
 /*@}*/
 
-#define HTMLVIEW_API_VERSION 3
+#define HTMLVIEW_API_VERSION 4
 
 typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
 
@@ -113,8 +113,8 @@ struct htmlviewPluginInfo_ {
 	
 	void 		(*init)			(void);
 	void 		(*deinit) 		(void);
-
-	GtkWidget*	(*create)		();
+	
+	GtkWidget*	(*create)		(gboolean forceInternalBrowsing);
 	/*void		(*destroy)		(GtkWidget *widget);*/
 	void		(*write)		(GtkWidget *widget, const gchar *string, const gchar *base);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
@@ -157,7 +157,7 @@ void ui_htmlview_deinit();
  * Function to set up the html view widget for the three
  * and two pane view. 
  */
-GtkWidget *ui_htmlview_new();
+GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing);
 
 /** loads a emtpy HTML page */
 void	ui_htmlview_clear(GtkWidget *htmlview);
@@ -187,15 +187,21 @@ void	ui_htmlview_finish_output(gchar **buffer);
  */
 void	ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *base);
 
+enum {
+	UI_HTMLVIEW_LAUNCH_DEFAULT,
+	UI_HTMLVIEW_LAUNCH_EXTERNAL,
+	UI_HTMLVIEW_LAUNCH_INTERNAL
+};
+
 /**
  * Launches the specified URL in the configured browser or
  * in case of Mozilla inside the HTML widget.
  *
  * @param htmlview		The htmlview widget to be set
  * @param url			URL to launch
- * @param force_external	to force loading in external browser
+ * @param launchType     Type of launch request: 0 = default, 1 = external, 2 = internal
  */
-void	ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gboolean force_external);
+void	ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType);
 
 /**
  * Function to change the zoom level of the HTML widget.

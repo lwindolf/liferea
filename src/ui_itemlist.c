@@ -473,7 +473,7 @@ void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
 
 	if(NULL != (ip = ui_itemlist_get_selected()))
-		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), (gchar *)item_get_source(ip), TRUE);
+		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), (gchar *)item_get_source(ip), UI_HTMLVIEW_LAUNCH_EXTERNAL);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }

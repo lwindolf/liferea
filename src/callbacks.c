@@ -134,7 +134,7 @@ void ui_init(gboolean startIconified) {
 	ui_feedlist_auto_update(NULL);
 	
 	if(startIconified)
-		gtk_window_iconify(mainwindow);
+		gtk_window_iconify(GTK_WINDOW(mainwindow));
 	gtk_widget_show(mainwindow);
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
 		

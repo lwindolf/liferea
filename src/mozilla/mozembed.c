@@ -37,6 +37,7 @@
 #include "../support.h"
 #include "../debug.h"
 #include "../ui_popup.h"
+#include "../ui_tabs.h"
 #include "mozilla.h"
 
 /* points to the URL actually under the mouse pointer or is NULL */
@@ -135,7 +136,7 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
 		g_warning("Cannot determine mouse button!\n");
 		return FALSE;
 	}
-
+	
 	/* do we have a right mouse button click? */
 	if(button == 2) {
 		if(NULL == selectedURL)
@@ -167,18 +168,18 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
  * uri that's going to be loaded.
  */
 static gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
-
-	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) {
+	
+	if(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(embed), "internal_browsing")) || getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) {
 		return FALSE;
 	} else {
-		ui_htmlview_launch_URL(GTK_WIDGET(data), (gchar *)uri, FALSE);
+		ui_htmlview_launch_URL(GTK_WIDGET(data), (gchar *)uri, UI_HTMLVIEW_LAUNCH_DEFAULT);
 		return TRUE;
 	}
 }
 
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
-static GtkWidget * mozilla_create() {
+static GtkWidget * mozilla_create(gboolean forceInternalBrowsing) {
 	GtkWidget	*widget;
 	int		i;
 	
@@ -223,6 +224,8 @@ static GtkWidget * mozilla_create() {
 						widget);
 						
 	}
+	
+	g_object_set_data(G_OBJECT(widget), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
 	
 	return widget;
 }

@@ -238,13 +238,14 @@ static void kill_old_connections (HtmlDocument *doc) {
 	}
 }
 
-static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
+static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer scrollpane) {
 	xmlChar		*absURL;
 	
 	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	if(absURL != NULL) {
 		kill_old_connections(doc);
-		ui_htmlview_launch_URL(GTK_WIDGET(data), absURL, FALSE);
+		ui_htmlview_launch_URL(GTK_WIDGET(scrollpane), absURL,
+						   GPOINTER_TO_INT(g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
 		xmlFree(absURL);
 	}
 }
@@ -311,7 +312,7 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 	gtkhtml2_scroll_to_top(scrollpane);
 }
 
-static GtkWidget* gtkhtml2_new() {
+static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
 	gulong	handler;
 	GtkWidget *htmlwidget;
 	GtkWidget *scrollpane;
@@ -326,7 +327,8 @@ static GtkWidget* gtkhtml2_new() {
 	htmlwidget = html_view_new();
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET(htmlwidget));
 	write_html(scrollpane, NULL, "file:///");
-		  				  				  
+	
+	g_object_set_data(G_OBJECT(scrollpane), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
 	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
 	
 	/* this is to debug the rare problem reported by some users
