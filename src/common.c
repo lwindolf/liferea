@@ -281,6 +281,50 @@ static void bufferParseError(void *ctxt, const gchar * msg, ...) {
 	}
 }
 
+static GHashTable *extra_entities = NULL;
+
+/* and I thought writing such functions is evil... */
+xmlEntityPtr common_process_entities(void *ctxt, const xmlChar *name) {
+	xmlEntityPtr	entity;
+	gchar		*text;
+	
+	entity = xmlGetPredefinedEntity(name);
+	if(NULL == entity) {
+		if(NULL == extra_entities) {
+			extra_entities = g_hash_table_new(g_str_hash, g_str_equal);
+			/* attention! ensure UTF-8 for the following definitions! */
+			g_hash_table_insert(extra_entities, "nbsp", " ");
+			g_hash_table_insert(extra_entities, "auml", "ä");
+			g_hash_table_insert(extra_entities, "Auml", "Ä");
+			g_hash_table_insert(extra_entities, "uuml", "ü");
+			g_hash_table_insert(extra_entities, "Uuml", "Ü");
+			g_hash_table_insert(extra_entities, "ouml", "ö");
+			g_hash_table_insert(extra_entities, "Ouml", "Ö");
+			g_hash_table_insert(extra_entities, "szlig", "ß");
+			g_hash_table_insert(extra_entities, "copy", "©");
+			g_hash_table_insert(extra_entities, "hellip", "…");
+			g_hash_table_insert(extra_entities, "laquo", "«");
+			g_hash_table_insert(extra_entities, "raquo", "»");
+			// FIXME: someone who want's to add all other HTML entity definitions?
+			// or better somehow load a DTD and serve entities when necessary...
+		}
+		if(NULL != (text = g_hash_table_lookup(extra_entities, name))) {
+			/* returning as faked predefined entity... */
+			entity = (xmlEntityPtr)g_new0(xmlEntity, 1);
+			entity->type = XML_ENTITY_DECL;
+			entity->name = name;
+			entity->orig = text;	/* ??? */
+			entity->content = text;
+			entity->length = g_utf8_strlen(text, -1);
+			entity->etype = XML_INTERNAL_PREDEFINED_ENTITY;
+		}
+	}
+	if(NULL == entity) {		
+		g_print("unsupported entity: %s\n", name);
+	}
+	return entity;
+}
+
 /**
  * Common function to create a XML DOM object from a given
  * XML buffer. This function sets up a parser context,
@@ -298,12 +342,13 @@ static void bufferParseError(void *ctxt, const gchar * msg, ...) {
  * @return XML document
  */
 xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
+	xmlParserCtxtPtr	ctxt;
 	errorCtxtPtr		errors;
 	xmlDocPtr               doc;
 	
 	g_assert(NULL != data);
 	
-	/* xmlCreateMemoryParserCtxt() doesn't like no data */
+	/* we don't like no data */
 	if(0 == dataLength) {
 		g_warning("parseBuffer(): Empty input!\n");
 		*errormsg = g_strdup("parseBuffer(): Empty input!\n");
@@ -312,11 +357,14 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	
 	errors = g_new0(struct errorCtxt, 1);
 	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)bufferParseError);
-	doc = xmlSAXParseMemory(/* Sax = */ NULL, data, dataLength, /* recovery = */ TRUE);
+	ctxt = xmlNewParserCtxt();
+	ctxt->sax->getEntity = common_process_entities;
+	doc = xmlSAXParseMemory(ctxt->sax, data, dataLength, /* recovery = */ TRUE);
 	if (doc == NULL) {
 		g_warning("xmlReadMemory: Could not parse document!\n");
-		*errormsg = g_strdup_printf(_("xmlReadMemory(): Could not parse document:\n%s%s"), errors->buffer != NULL ? errors->buffer : "",
-							   errors->buffer != NULL ? "\n" : "");
+		*errormsg = g_strdup_printf(_("xmlReadMemory(): Could not parse document:\n%s%s"), 
+		                            errors->buffer != NULL ? errors->buffer : "",
+		                            errors->buffer != NULL ? "\n" : "");
 		g_free(errors->buffer);
 		errors->buffer = *errormsg;
 	}

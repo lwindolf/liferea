@@ -247,16 +247,14 @@ static GdkPixbuf* ui_feed_get_icon(feedPtr fp) {
 
 /** updating of a single feed list entry */
 void ui_feed_update(feedPtr fp) {
-	GtkTreeModel	*model;
-	GtkTreeIter	*iter;
+	GtkTreeIter	iter;
 	gchar		*label, *tmp;
 	int		count;
 	
 	if(fp->ui_data == NULL)
 		return;
 	
-	iter = &((ui_data*)fp->ui_data)->row;
-	model =  GTK_TREE_MODEL(feedstore);
+	iter = ((ui_data*)fp->ui_data)->row;
 	
 	g_assert(FST_FOLDER != fp->type);
 	
@@ -271,7 +269,7 @@ void ui_feed_update(feedPtr fp) {
 		label = g_strdup_printf("%s", tmp);
 	g_free(tmp);
 	
-	gtk_tree_store_set(feedstore, iter, FS_LABEL, label,
+	gtk_tree_store_set(feedstore, &iter, FS_LABEL, label,
 	                                    FS_UNREAD, count,
 	                                    FS_ICON, ui_feed_get_icon(fp),
 	                                    -1);

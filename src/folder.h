@@ -26,10 +26,12 @@
 #include "feed.h"
 
 typedef struct folder {
-	gint type;
-	gpointer *ui_data;
-	gchar *title;
-	gchar *id;
+	gint		type;
+	gpointer	*ui_data;
+	
+	gchar		*title;
+	gchar		*id;
+	gint		unreadCount;
 } *folderPtr;
 
 /* ------------------------------------------------------------ */

@@ -247,7 +247,7 @@ static GdkPixbuf* ui_folder_select_icon(folderPtr np) {
 static void ui_folder_update_from_iter(GtkTreeIter *iter) {
 	gboolean		rc;
 	GtkTreeIter		child;
-	gint 			count, ccount;
+	gint 			ccount;
 	gchar			*title, *label;
 	GtkTreeModel		*model;
 	folderPtr		ptr;
@@ -262,17 +262,17 @@ static void ui_folder_update_from_iter(GtkTreeIter *iter) {
 
 	title = g_markup_escape_text(folder_get_title(ptr), -1);
 
-	count = 0;
+	ptr->unreadCount = 0;
 	rc = gtk_tree_model_iter_children(model, &child, iter);
 
 	while(rc) {
 		gtk_tree_model_get(model, &child, FS_UNREAD, &ccount, -1);
-		count += ccount;
+		ptr->unreadCount += ccount;
 		rc = gtk_tree_model_iter_next(model, &child);
 	}
 	
-	if(count>0) {
-		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", title, count);
+	if(ptr->unreadCount > 0) {
+		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", title, ptr->unreadCount);
 	} else {
 		label = g_strdup_printf("%s", title);
 	}
@@ -280,7 +280,7 @@ static void ui_folder_update_from_iter(GtkTreeIter *iter) {
 	gtk_tree_store_set(feedstore, iter,
 	                              FS_LABEL, label,
 	                              FS_ICON, ui_folder_select_icon(ptr),
-	                              FS_UNREAD, count,
+	                              FS_UNREAD, ptr->unreadCount,
 	                              -1);
 	g_free(title);
 	g_free(label);
@@ -291,7 +291,8 @@ void ui_folder_update(folderPtr folder) {
 	
 	if(NULL != node) {
 		g_assert(FST_FOLDER == node->type);
-		g_assert(NULL != node->ui_data);
+		if(NULL == node->ui_data)
+			return;	/* folder is hidden -> nothing to do */
 		ui_folder_update_from_iter(&((ui_data*)(node->ui_data))->row);
 	}
 }
