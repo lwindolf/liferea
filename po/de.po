@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2004-09-09 02:39+0200\n"
-"PO-Revision-Date: 2004-09-09 02:52+0100\n"
+"PO-Revision-Date: 2004-09-09 03:16+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -1079,7 +1079,9 @@ msgstr "Name"
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
-msgstr "Hinweis: Eine Schlagzeile wird dem VOrdner hinzugefügt wenn min. eine additive Regel zutrifft. Trifft eine negative Regel zu wird sie entfernt."
+msgstr ""
+"Hinweis: Eine Schlagzeile wird dem VOrdner hinzugefügt wenn min. \n"
+"eine additive Regel zutrifft. Trifft eine negative Regel zu wird sie entfernt."
 
 #: src/interface.c:3091
 msgid "Rules"
@@ -1343,7 +1345,7 @@ msgstr "enthält nicht"
 
 #: src/rule.c:133
 msgid "Item title"
-msgstr "Schlagzeilen Titel"
+msgstr "Title der Schlagzeile"
 
 #: src/rule.c:133
 #: src/rule.c:134
@@ -1357,7 +1359,7 @@ msgstr "enthält nicht"
 
 #: src/rule.c:134
 msgid "Item body"
-msgstr "Schlagzeilenrumpf"
+msgstr "Text der Schlagzeile"
 
 #: src/rule.c:135
 msgid "Read status"
