@@ -23,5 +23,17 @@
  *
  */
 
+/*-----------------------------------------------------------------------*/
+/* some Liferea specific adaptions					 */
+
+struct feed_request {
+        char * 	feedurl;		/* Non hashified URL */
+        char * 	lastmodified; 		/* Content of header as sent by the server. */
+	int 	lasthttpstatus;	
+	int 	problem;		/* Set if there was a problem downloading the feed. */
+};
+
+/*-----------------------------------------------------------------------*/
+
 /* returns the raw download data or NULL on error */
-char * downloadURL(char * url);
+char * downloadURL(struct feed_request *request);

@@ -40,7 +40,6 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <sys/stat.h>
-#include <zlib.h>
 #include <conversions.h>
 
 #include <libxml/xmlmemory.h>
@@ -50,13 +49,7 @@
 /* some Liferea specific adaptions					 */
 
 #include "support.h"
-
-struct feed_request {
-        char * 	feedurl;		/* Non hashified URL */
-        char * 	lastmodified; 		/* Content of header as sent by the server. */
-	int 	lasthttpstatus;	
-	int 	problem;		/* Set if there was a problem downloading the feed. */
-};
+#include "netio.h"
 
 /*-----------------------------------------------------------------------*/
 
@@ -661,36 +654,33 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 	return returndata;
 }
 
-/* downloads a feed and returns the data or NULL as return value,
-   FIXME: don't ignore changed URLs! */
-char * downloadURL(char *url) {
-	FILE			*f;
-	char			*data = NULL;
-	struct feed_request	cur_ptr;
-	struct stat		statinfo;
+/*-----------------------------------------------------------------------*/
+/* some Liferea specific code...					 */
 
-	if(NULL != strstr(url, "://")) {
+/* Downloads a feed and returns the data or NULL as return value.
+   The url of the has to be passed in the feed_request structure.
+   If the the webserver reports a permanent redirection, the
+   feed url will be modified and the old URL 'll be freed. The
+   request structure 'll also contain the HTTP status and the
+   last modified string.
+ */
+char * downloadURL(struct feed_request *request) {
+	FILE		*f;
+	gchar		*tmpurl = NULL;
+	char		*data = NULL;
+	struct stat	statinfo;
 
+	if(NULL != strstr(request->feedurl, "://")) {
 		/* :// means it an URL */
-		cur_ptr.feedurl = strdup(url);
-		cur_ptr.lastmodified = NULL;
+		request->lastmodified = NULL;	// FIXME
 
-		data = DownloadFeed(strdup(url), &cur_ptr);
-		if(NULL != cur_ptr.lastmodified)
-			free(cur_ptr.lastmodified);
-
-		/* check if URL was modified */
-//		if(0 != strcmp(url, cur_ptr.feedurl)) {
-//			g_free(url);
-//			url = g_strdup(cur_ptr.feedurl);
-//		}
-
-		free(cur_ptr.feedurl);
-
+		tmpurl = g_strdup(request->feedurl);	/* necessary because DownloadFeed() works on the URL string */
+		data = DownloadFeed(tmpurl, request);
+		g_free(tmpurl);
 	} else {
 		/* no :// so we assume its a local path */
-		if(0 == stat(url, &statinfo)) {
-			if(NULL != (f = fopen(url, "r"))) {
+		if(0 == stat(request->feedurl, &statinfo)) {
+			if(NULL != (f = fopen(request->feedurl, "r"))) {
 				if(NULL == (data = g_malloc(statinfo.st_size + 1))) {
 					g_error(_("Could not allocate memory to read file!"));
 					exit(1);
@@ -698,11 +688,15 @@ char * downloadURL(char *url) {
 				memset(data, 0, statinfo.st_size + 1);
 				fread(data, statinfo.st_size, 1, f);
 				fclose(f);
+				
+				/* fake a status */
+				request->lasthttpstatus = 200;
+				request->lastmodified = NULL;
 			} else {
-				print_status(g_strdup_printf(_("Could not open file \"%s\"!"), url));
+				print_status(g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl));
 			}
 		} else {
-			print_status(g_strdup_printf(_("There is no file \"%s\"!"), url));
+			print_status(g_strdup_printf(_("There is no file \"%s\"!"), request->feedurl));
 		}
 	}
 

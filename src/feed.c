@@ -82,13 +82,15 @@ void registerFeedType(gint type, feedHandlerPtr fhp) {
 }
 
 static gint autoDetectFeedType(gchar *url, gchar **data) {
-	detectStrPtr	pattern = detectPattern;
-	gint		type = FST_INVALID;
+	struct feed_request	request;
+	detectStrPtr		pattern = detectPattern;
+	gint			type = FST_INVALID;
 	
 	g_assert(NULL != pattern);
 	g_assert(NULL != url);
 	
-	if(NULL != (*data = downloadURL(url))) {
+	request.feedurl = g_strdup(url);
+	if(NULL != (*data = downloadURL(&request))) {
 		while(NULL != pattern->string) {	
 			if(NULL != strstr(*data, pattern->string)) {
 				type = pattern->type;
@@ -98,6 +100,8 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 			pattern++;
 		} 
 	}
+	g_free(request.feedurl);
+	g_free(request.lastmodified);
 
 	return type;
 }
@@ -382,12 +386,13 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 
 /* function for first time loading of a newly subscribed feed */
 feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
-	feedHandlerPtr	fhp;
-	unsigned char	*icodata;
-	gchar		*baseurl;
-	gchar		*key;
-	gchar		*tmp;
-	feedPtr		fp;
+	feedHandlerPtr		fhp;
+	struct feed_request	request;
+	unsigned char		*icodata;
+	gchar			*baseurl;
+	gchar			*key;
+	gchar			*tmp;
+	feedPtr			fp;
 
 	fp = getNewFeedStruct();
 	fp->source = url;
@@ -402,7 +407,10 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		}
 	} else {
 		/* else only download */
-		fp->data = downloadURL(url);	// FIXME: pass fp to adjust URL
+		request.feedurl = g_strdup(url);
+		fp->data = downloadURL(&request);
+		g_free(request.feedurl);
+		g_free(request.lastmodified);
 	}
 
 	if(NULL != fp->data) {
@@ -434,8 +442,11 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 			if(NULL != (tmp = strchr(tmp, '/'))) {
 				*tmp = 0;
 				tmp = g_strdup_printf("%s/favicon.ico", baseurl);
-				icodata = downloadURL(tmp);
-				g_free(tmp);
+				request.lastmodified = NULL;
+				request.feedurl = tmp;
+				icodata = downloadURL(&request);
+				g_free(request.feedurl);
+				g_free(request.lastmodified);
 
 				tmp = getCacheFileName(keyprefix, key, "xpm");
 				if(NULL != icodata) {

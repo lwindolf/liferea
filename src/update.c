@@ -95,11 +95,12 @@ static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata)
 }
 
 static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
-	feedHandlerPtr	fhp;
-	feedPtr		fp = (feedPtr)value;
-	feedPtr		tmp_fp, new_fp;
-	gint		type;
-	gchar		*tmp_key, *source;
+	struct feed_request	request;
+	feedHandlerPtr		fhp;
+	feedPtr			fp = (feedPtr)value;
+	feedPtr			tmp_fp, new_fp;
+	gint			type;
+	gchar			*tmp_key, *source;
 		
 	if(fp == NULL)
 		return;
@@ -121,8 +122,9 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		}
 
 		new_fp = getNewFeedStruct();
-		if(NULL != (new_fp->data = downloadURL(source))) {
-			new_fp->source = g_strdup(source);	// FIXME: is this correct?
+		request.feedurl = g_strdup(source);
+		if(NULL != (new_fp->data = downloadURL(&request))) {
+			new_fp->source = g_strdup(source);
 			g_assert(NULL != fhp->readFeed);
 			(*(fhp->readFeed))(new_fp);
 			
@@ -135,11 +137,18 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 				print_status(g_strdup_printf(_("\"%s\" updated..."), fp->title));
 			}
 
+			/* note this is to update the feed URL on permanent redirects */
+			if(0 != strcmp(request.feedurl, fp->source)) {
+				setFeedSource(fp, g_strdup(request.feedurl));			
+				print_status(g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), fp->title));				
+			}
 		} else {
 			print_status(g_strdup_printf(_("\"%s\" is not available!"), fp->title));
 			freeFeed(new_fp);
 			fp->available = FALSE;
 		}
+		g_free(request.feedurl);
+		g_free(request.lastmodified);
 
 		/* now fp contains the actual feed infos */
 		saveFeed(fp);

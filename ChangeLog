@@ -13,6 +13,10 @@
 	  this caused the window to hide each time the desktop
 	  was switched (reported by Dale K. Dicks, Christophe
 	  Barbe and others).
+	* Added a background shading of read items in the
+	  condensed item view.
+	* Fixed a bug with permanent URL redirection reported
+	  by Christophe Barbe.
 
 2003-11-10  Lars Lindner <lars.lindner@gmx.net>
 

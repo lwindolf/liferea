@@ -84,11 +84,16 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
    parse and output all depth 1 outline tags as
    HTML into a buffer */
 static gchar * getOutlineList(gchar *url) {
-	xmlDocPtr 	doc = NULL;
-	xmlNodePtr 	cur;
-	gchar		*data, *tmp, *buffer;
+	struct feed_request	request;
+	xmlDocPtr 		doc = NULL;
+	xmlNodePtr 		cur;
+	gchar			*data, *tmp, *buffer;
 	
-	if(NULL == (data = downloadURL(url)))
+	request.feedurl = g_strdup(url);
+	data = downloadURL(&request);
+	g_free(request.feedurl);
+	g_free(request.lastmodified);
+	if(NULL == data)
 		return NULL;
 
 	buffer = NULL;	/* the following code somewhat duplicates opml.c */
