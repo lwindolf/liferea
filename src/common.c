@@ -428,19 +428,21 @@ gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension) {
 		return g_strdup_printf("%s/%s_%s", getCachePath(), keyprefix, keypos);
 }
 
-static gchar * byte_to_hex(gint nr) {
+static gchar * byte_to_hex(unsigned char nr) {
 	gchar *result = NULL;
 	
-	result = g_strdup_printf("%%%d%d", nr - (nr % 0x10), nr % 0x10);
+	result = g_strdup_printf("%%%x%x", nr / 0x10, nr % 0x10);
 	return result;
 }
 
 /* Encodes any UTF-8 string in uriString and returns a 
-   valid UTF-8 encoded HTTP URI. Note that the uriString will be freed. */
+   valid UTF-8 encoded HTTP URI. Note that the uriString will 
+   be freed. This function is actually used to generate Feedster
+   search feed URLs. */
 gchar * encodeURIString(gchar *uriString) {
 	gchar		*newURIString;
 	gchar		*tmp, *hex;
-	int		i, j, len;
+	int		i, j, len, bytes;
 
 	newURIString = g_strdup("");
 	len = strlen(uriString);
@@ -463,49 +465,37 @@ gchar * encodeURIString(gchar *uriString) {
 			tmp = g_strdup_printf("%s%c", newURIString, '+');
 		else if((unsigned char)uriString[i] <= 127) {
 			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
-		} else if(((unsigned char)uriString[i] >= 192) && ((unsigned char)uriString[i] <= 223)) {	// two bytes
-			if((i + 1) > len) {
-				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
-				break;
+		} else {
+			bytes = 0;
+			if(((unsigned char)uriString[i] >= 192) && ((unsigned char)uriString[i] <= 223))
+				bytes = 2;
+			else if(((unsigned char)uriString[i] > 223) && ((unsigned char)uriString[i] <= 239))
+				bytes = 3;
+			else if(((unsigned char)uriString[i] > 239) && ((unsigned char)uriString[i] <= 247))
+				bytes = 4;
+			else if(((unsigned char)uriString[i] > 247) && ((unsigned char)uriString[i] <= 251))
+				bytes = 5;
+			else if(((unsigned char)uriString[i] > 247) && ((unsigned char)uriString[i] <= 251))
+				bytes = 6;
+				
+			if(0 != bytes) {
+				if((i + (bytes - 1)) > len) {
+					g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
+					break;
+				}
+
+				for(j=0; j < (bytes - 1); j++) {
+					tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)uriString[i++]));
+					g_free(hex);
+					g_free(newURIString);
+					newURIString = tmp;
+				}
+				tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)uriString[i]));
+				g_free(hex);
+			} else {
+				// sh..!
+				g_error(_("Internal error while converting UTF-8 chars to HTTP URI!"));
 			}
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
-		} else if(((unsigned char)uriString[i] > 223) && ((unsigned char)uriString[i] <= 239)) {	// three bytes
-			if((i + 2) > len) {
-				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
-				break;
-			}
-			for(j=0; j < 2; j++) {
-				tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
-			}
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
-		} else if(((unsigned char)uriString[i] > 239) && ((unsigned char)uriString[i] <= 247)) {	// four bytes
-			if((i + 3) > len) {
-				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
-				break;
-			}
-			for(j=0; j < 3; j++) {
-				tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
-			}
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
-		} else if(((unsigned char)uriString[i] > 247) && ((unsigned char)uriString[i] <= 251)) {	// five bytes
-			if((i + 4) > len) {
-				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
-				break;
-			}
-			for(j=0; j < 4; j++) {
-				tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
-			}			
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
-		} else if(((unsigned char)uriString[i] > 247) && ((unsigned char)uriString[i] <= 251)) {	// guess how many!
-			if((i + 5) > len) {
-				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
-				break;
-			}
-			for(j=0; j < 5; j++) {
-				tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
-			}
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
 		}
 		g_free(newURIString); 
 		newURIString = tmp;
