@@ -602,8 +602,8 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 								fclose (stream);
 								return NULL;
 							}
-							if (!suppressoutput)
-								UIStatus (_("URL points to permanent redirect, updating with new location..."), 2);
+							/*if (!suppressoutput)
+							  UIStatus (_("URL points to permanent redirect, updating with new location..."), 2);*/
 							/*printlog (cur_ptr, _("URL points to permanent redirect, updating with new location..."));*/
 							free (cur_ptr->feedurl);
 							if (authdata == NULL)
