@@ -98,17 +98,13 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 		searchtext = encodeURIString(searchtext);
 		searchtext = g_strdup_printf("http://www.feedster.com/rss.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
 					    searchtext, (int)gtk_adjustment_get_value(resultCount));
-		
-		if(NULL != (fp = newFeed(FST_RSS, searchtext, g_strdup(selected_keyprefix)))) {
-			addToFeedList(fp, FALSE);
-			checkForEmptyFolders();
 
-			if(FALSE == getFeedAvailable(fp)) {
-				tmp = g_strdup_printf(_("Feedster search request failed.\n"));
-				showErrorBox(tmp);
-				g_free(tmp);
-			}
-		}
+		/* It is possible, that there is no selected folder when we are
+		   called from the menu! In this case we default to the root folder */
+		if(NULL != selected_keyprefix) 
+			subscribeTo(FST_RSS, searchtext, g_strdup(selected_keyprefix), FALSE);
+		else
+			subscribeTo(FST_RSS, searchtext, g_strdup(""), FALSE);	
 	}
 }
 
