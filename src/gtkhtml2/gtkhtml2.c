@@ -163,7 +163,7 @@ static void gtkhtml2_url_request_received_cb(struct request *r) {
 static void url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *stream, gpointer data) {
 	xmlChar *uri;
 	
-	uri = xmlBuildURI(rel_uri, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+	uri = xmlBuildURI(xmlURIEscape(rel_uri), g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	if (uri != NULL) {
 		struct request *r;
 		GSList *connection_list;
@@ -195,7 +195,7 @@ static void on_url (HtmlView *view, const char *url, gpointer user_data) {
 	selectedURL = NULL;
 
 	if(NULL != url) {
-		uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));	
+		uri = xmlBuildURI(xmlURIEscape(url), g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));	
 		if(uri != NULL) {
 			selectedURL = g_strdup(uri);
 			ui_mainwindow_set_status_bar("%s", selectedURL);
@@ -231,7 +231,7 @@ static void kill_old_connections (HtmlDocument *doc) {
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 	xmlChar *uri;
 	
-	uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+	uri = xmlBuildURI(xmlURIEscape(url), g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	
 	if (uri != NULL) {
 		ui_htmlview_launch_URL(uri, FALSE);
