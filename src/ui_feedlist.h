@@ -47,7 +47,7 @@ void ui_update_feed(feedPtr fp);
 nodePtr ui_feedlist_get_selected();
 void ui_feedlist_select(nodePtr fp);
 
-typedef void 	(*nodeActionFunc)		(nodePtr fp);
+typedef void 	(*nodeActionFunc)	(nodePtr fp);
 typedef void 	(*nodeActionDataFunc)	(nodePtr fp, gpointer user_data);
 
 /**
@@ -83,7 +83,7 @@ void ui_feedlist_load_subscription(feedPtr fp, gboolean startup);
  *
  * @param type		feed type
  * @param source	feed source URL or local file name or piped command
- * @param folder	parent of the new feed
+ * @param folder	parent of the new feed (maybe NULL to use the current folder)
  * @param showPropDialog TRUE if the property dialog should popup
  */
 void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr folder, gboolean showPropDialog);
@@ -127,6 +127,7 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
  * @param user_data specifies the second argument that func should be passed
  */
 #define ui_feedlist_do_for_all_data(ptr, filter, func, user_data) ui_feedlist_do_for_all_full(ptr,filter,func,1,user_data)
+
 /**
  * helper function to find next unread item 
  *

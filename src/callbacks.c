@@ -116,9 +116,9 @@ void ui_init(void) {
 	for(i = 0; i < MAX_ICONS; i++)
 		icons[i] = create_pixbuf(iconNames[i]);
 	
-	updateTrayIcon();		/* init tray icon */
-	setupURLReceiver(mainwindow);	/* setup URL dropping support */
-	setupPopupMenues();		/* create popup menues */
+	updateTrayIcon();			/* init tray icon */
+	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
+	setupPopupMenues();			/* create popup menues */
 	
 	loadSubscriptions();
 }

@@ -103,7 +103,6 @@ static void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, gui
  * link message changes
  */
 static void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
-	GtkWidget *statusbar;
 	
 	g_free(selectedURL);
 	if(NULL != (selectedURL = gtk_moz_embed_get_link_message(dummy))) {

@@ -210,20 +210,12 @@ void ui_feedlist_init(GtkWidget *mainview) {
 	
 	g_assert(mainwindow != NULL);
 	
-	/* Set up dnd */
-	gtk_tree_view_enable_model_drag_source(GTK_TREE_VIEW(mainview),
-								    GDK_BUTTON1_MASK, lte, 1,
-								    GDK_ACTION_COPY);
-	gtk_tree_view_enable_model_drag_dest(GTK_TREE_VIEW(mainview),
-								  lte, 1,
-								  GDK_ACTION_COPY);
-	
 	/* Set up store */
 	feedstore = gtk_tree_store_new(FS_LEN,
-							 G_TYPE_STRING,
-							 GDK_TYPE_PIXBUF,
-							 G_TYPE_POINTER,
-							 G_TYPE_INT);
+	                               G_TYPE_STRING,
+	                               GDK_TYPE_PIXBUF,
+	                               G_TYPE_POINTER,
+	                               G_TYPE_INT);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(mainview), GTK_TREE_MODEL(feedstore));
 
 	/* we only render the state and title */
@@ -248,7 +240,8 @@ void ui_feedlist_init(GtkWidget *mainview) {
 	g_signal_connect(G_OBJECT(select), "changed",
                  	 G_CALLBACK(ui_feedlist_selection_changed_cb),
                 	 lookup_widget(mainwindow, "feedlist"));
-			
+			 
+	ui_dnd_init();			
 }
 
 void ui_feedlist_select(nodePtr np) {
@@ -433,10 +426,23 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr parent, gboolean showPropDialog) {
 	GtkWidget	*updateIntervalBtn;
 	feedPtr		fp;
+	nodePtr		ptr;
 	gint		interval;
 	gchar		*tmp;
 
-	g_assert(parent != NULL);
+	if(NULL == parent) {
+		ptr = ui_feedlist_get_selected();
+		if(ptr && IS_FOLDER(ptr->type)) {
+			parent = (folderPtr)ptr;
+		} else if (ptr && ptr->parent) {
+			parent =  ptr->parent;
+		} else {
+			/* It is possible, that there is no selected folder when we are
+			   called from the menu! In this case we default to the root folder */		
+			parent = folder_get_root();
+		}
+	}
+	
 	if(NULL == (fp = feed_add(type, source, parent, _("New feed...."), NULL, 0, showPropDialog))) {
 		tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 		ui_show_error_box(tmp);
@@ -465,20 +471,10 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	gchar		*source;
 	GtkWidget 	*sourceentry;	
 	GtkWidget 	*titleentry, *typeoptionmenu;
-	gint			type;
-	nodePtr		ptr;
-	folderPtr		parent = NULL;
+	gint		type;
+	
 	g_assert(newdialog != NULL);
 	g_assert(propdialog != NULL);
-
-	ptr = ui_feedlist_get_selected();
-	if(ptr && IS_FOLDER(ptr->type)) {
-		parent = (folderPtr)ptr;
-	} else if (ptr && ptr->parent) {
-		parent =  ptr->parent;
-	} else {
-		parent = folder_get_root();
-	}
 
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
 	titleentry = lookup_widget(propdialog, "feednameentry");
@@ -493,13 +489,8 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 		return;
 	} else
 		type = selectableTypes[type];
-	/* It is possible, that there is no selected folder when we are
-	   called from the menu! In this case we default to the root folder */
 
-	if(parent)
-		ui_feedlist_new_subscription(type, source, parent, TRUE);
-	else
-		ui_feedlist_new_subscription(type, source, folder_get_root(), TRUE);	
+	ui_feedlist_new_subscription(type, source, NULL, TRUE);
 	/* don't free source for it is reused by newFeed! */
 }
 
@@ -523,138 +514,6 @@ void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
 
 	g_signal_connect((gpointer) okbutton, "clicked", G_CALLBACK (on_localfileselect_clicked), NULL);
 	gtk_widget_show(filedialog);
-}
-
-void
-on_feedlist_drag_data_get              (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        GtkSelectionData *data,
-                                        guint            info,
-                                        guint            time,
-                                        gpointer         user_data)
-{
-	if (data->target == gdk_atom_intern("LIFEREA_FEED_ROW", FALSE)) {
-		GtkTreeRowReference *ref = g_object_get_data(G_OBJECT(drag_context), "gtk-tree-view-source-row");
-		GtkTreePath *sourcerow = gtk_tree_row_reference_get_path(ref);
-		GtkTreeIter iter;
-
-		if(!sourcerow)
-			return;
-		gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, sourcerow);
-		gtk_selection_data_set (data,
-						    gdk_atom_intern ("LIFEREA_FEED_ROW", FALSE),
-						    8, /* bits */
-						    (void*)&iter,
-						    sizeof (GtkTreeIter));
-                                                                                                                                               
-		gtk_tree_path_free(sourcerow);
-	}
-}
-
-
-void
-on_feedlist_drag_data_received         (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gint             x,
-                                        gint             y,
-                                        GtkSelectionData *data,
-                                        guint            info,
-                                        guint            time,
-                                        gpointer         user_data)
-{
-	printf("Receiving drag\n");
-	if (data->target == gdk_atom_intern("LIFEREA_FEED_ROW", FALSE) && data->data) {
-		printf("Received row\n");
-		GtkTreeIter iter;
-		GtkTreePath *dest_path = NULL;
-		GtkTreeViewDropPosition position;
-
-		memcpy(&iter, data->data, sizeof(iter));
-		if(gtk_tree_view_get_dest_row_at_pos(GTK_TREE_VIEW(widget), x, y, &dest_path, &position)) {
-			gint dest_index;
-			nodePtr ptr;
-			GtkTreeIter dest_iter;
-			GtkTreeModel *feedmodel = GTK_TREE_MODEL(feedstore);
-			nodePtr destNode;
-			GtkTreePath *path = gtk_tree_model_get_path(feedmodel, &iter);
-			if (0 == gtk_tree_path_compare(path, dest_path) || gtk_tree_path_is_ancestor(path, dest_path)) {
-				if (gtk_tree_path_is_ancestor(path, dest_path))
-					ui_show_error_box(_("You cannnot move an folder into itself!"));
-				gtk_tree_path_free(path);
-				gtk_tree_path_free(dest_path);
-				gtk_drag_finish(drag_context, TRUE /* = successful drag */, 
-							 0 /* = don't send delete data cb */, time);
-				return;
-			}
-				
-			gtk_tree_model_get(feedmodel, &iter,
-						    FS_PTR, &ptr, -1);			
-
-			gtk_tree_model_get_iter(feedmodel,
-							    &dest_iter, dest_path);
-
-			gtk_tree_model_get(feedmodel, &dest_iter,
-						    FS_PTR, &destNode, -1);	
-
-			dest_index = gtk_tree_path_get_indices(dest_path)[gtk_tree_path_get_depth(dest_path)-1];
-			
-			if (!destNode) { /* FST_EMPTY */
-				GtkTreeIter parentIter;
-				gtk_tree_model_iter_parent(feedmodel, &parentIter, &dest_iter);
-				gtk_tree_model_get(feedmodel, &parentIter,
-							    FS_PTR, &destNode);
-				if (IS_FOLDER(ptr->type))
-					folder_set_pos((folderPtr)ptr, (folderPtr)destNode, -1);
-				else
-					feed_set_pos((feedPtr)ptr, (folderPtr)destNode, -1);
-			} else if (IS_FOLDER(destNode->type)) {
-				switch(position) {
-					case GTK_TREE_VIEW_DROP_INTO_OR_AFTER:
-					case GTK_TREE_VIEW_DROP_INTO_OR_BEFORE:
-						if (IS_FOLDER(ptr->type))
-							folder_set_pos((folderPtr)ptr, (folderPtr)destNode, -1);
-						else
-							feed_set_pos((feedPtr)ptr, (folderPtr)destNode, -1);
-						break;
-                        		 case GTK_TREE_VIEW_DROP_AFTER:
-						g_message("Dragging to DROP_AFTER to pos %d", dest_index+1);
-						if (IS_FOLDER(ptr->type))
-							folder_set_pos((folderPtr)ptr, ((folderPtr)destNode)->parent, dest_index+1);
-						else
-							feed_set_pos((feedPtr)ptr, ((folderPtr)destNode)->parent, dest_index+1);
-						break;
-                         		case GTK_TREE_VIEW_DROP_BEFORE:
-						g_message("Dragging to DROP_BEFORE to pos %d", dest_index);
-						if (IS_FOLDER(ptr->type))
-							folder_set_pos((folderPtr)ptr, ((folderPtr)destNode)->parent, dest_index);
-						else
-							feed_set_pos((feedPtr)ptr, destNode->parent, dest_index);
-						break;
-				}
-			} else{ /* Dest node is a feed */
-				switch(position) {
-					case GTK_TREE_VIEW_DROP_AFTER:
-					case GTK_TREE_VIEW_DROP_INTO_OR_AFTER:
-						if (IS_FOLDER(ptr->type))
-							folder_set_pos((folderPtr)ptr, destNode->parent, dest_index+1);
-						else
-							feed_set_pos((feedPtr)ptr, destNode->parent, dest_index+1);
-						break;
-						case GTK_TREE_VIEW_DROP_BEFORE:
-					case GTK_TREE_VIEW_DROP_INTO_OR_BEFORE:
-						if (IS_FOLDER(ptr->type))
-							folder_set_pos((folderPtr)ptr, destNode->parent, dest_index);
-						else
-							feed_set_pos((feedPtr)ptr, destNode->parent, dest_index);
-						break;
-				}
-			}
-			
-			gtk_drag_finish(drag_context, TRUE /* = successful drag */, 
-						 0 /* = don't send delete data cb */, time);
-		}
-		gtk_tree_path_free(dest_path);
-	}
 }
 
 /* recursivly calls func for every feed in the feed list */

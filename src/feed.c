@@ -368,7 +368,7 @@ feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, 
 	ui_folder_add_feed(fp, -1);
 
 	if(needs_update) {
-		favicon_download(fp);	/* FIXME: I think thats evil, should be done online on first download!!! (09.04.04, Lars)*/
+		favicon_download(fp);	/* FIXME: I think thats evil, should be done only on first download!!! (09.04.04, Lars)*/
 		feed_update(fp);
 	}
 

@@ -552,6 +552,7 @@ create_mainwindow (void)
   gtk_widget_show (feedlist);
   gtk_container_add (GTK_CONTAINER (scrolledwindow3), feedlist);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (feedlist), FALSE);
+  gtk_tree_view_set_reorderable (GTK_TREE_VIEW (feedlist), TRUE);
 
   vbox18 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox18);
@@ -729,12 +730,6 @@ create_mainwindow (void)
                     NULL);
   g_signal_connect ((gpointer) feedlist, "button_press_event",
                     G_CALLBACK (on_mainfeedlist_button_press_event),
-                    NULL);
-  g_signal_connect ((gpointer) feedlist, "drag_data_get",
-                    G_CALLBACK (on_feedlist_drag_data_get),
-                    NULL);
-  g_signal_connect ((gpointer) feedlist, "drag_data_received",
-                    G_CALLBACK (on_feedlist_drag_data_received),
                     NULL);
   g_signal_connect ((gpointer) searchentry, "activate",
                     G_CALLBACK (on_searchentry_activate),
@@ -2535,7 +2530,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow5), viewport1);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport1), GTK_SHADOW_NONE);
 
-  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@users.sourceforge.net>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNathan J. Conrad <t98502@users.sourceforge.net>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)"));
+  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@ll.pl>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNathan J. Conrad <t98502@users.sourceforge.net>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)"));
   gtk_widget_show (label62);
   gtk_container_add (GTK_CONTAINER (viewport1), label62);
   gtk_misc_set_alignment (GTK_MISC (label62), 0, 0.1);

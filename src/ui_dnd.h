@@ -22,34 +22,10 @@
 #ifndef _UI_DND_H
 #define _UI_DND_H
 
-void setupURLReceiver(GtkWidget *mainwindow);
+/** sets up DnD for the feedlist model */
+void ui_dnd_init(void);
 
-void
-on_feedlist_drag_begin                 (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gpointer         user_data);
-
-void
-on_feedlist_drag_data_received         (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gint             x,
-                                        gint             y,
-                                        GtkSelectionData *data,
-                                        guint            info,
-                                        guint            time,
-                                        gpointer         user_data);
-
-void
-on_feedlist_drag_end                   (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gpointer         user_data);
-
-gboolean
-on_feedlist_drag_drop                  (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gint             x,
-                                        gint             y,
-                                        guint            time,
-                                        gpointer         user_data);
+/** sets up URL DnD support */
+void ui_dnd_setup_URL_receiver(GtkWidget *mainwindow);
 
 #endif

@@ -31,6 +31,7 @@
 #include "folder.h"
 #include "common.h"
 #include "conf.h"
+#include "debug.h"
 
 #define MAX_GCONF_PATHLEN	256
 
@@ -292,7 +293,7 @@ static void conf_feedlist_erase_gconf() {
 	/* Remove all directories */
 	while(!is_gconf_error(&err) && iter != NULL) {
 		if (strstr(iter->data,"dir") != NULL || is_number(iter->data)) {
-			g_message("Deleting %s", (gchar*)iter->data);
+			debug1(DEBUG_CONF, "Deleting %s", (gchar*)iter->data);
 			gconf_client_recursive_unset(client, (gchar*)iter->data, GCONF_UNSET_INCLUDING_SCHEMA_NAMES, &err);
 		}
 		g_free(iter->data);
@@ -315,7 +316,7 @@ void loadSubscriptions(void) {
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
 	importOPMLFeedList(filename, folder_get_root(), FALSE);
 	g_free(filename);
-	g_message("Erasing old gconf enteries.");
+	debug0(DEBUG_CONF, "Erasing old gconf enteries.");
 	conf_feedlist_erase_gconf();
 	/* if help folder was not yet created... */
 	feedlist_insert_help_folder(folder_get_root());
@@ -328,7 +329,7 @@ void conf_feedlist_save() {
 	if(feedlistLoading)
 		return;
 
-	g_message(_("Saving feedlist"));
+	debug0(DEBUG_CONF, "Saving feedlist");
 	filename = g_strdup_printf("%s/feedlist.opml~", getCachePath());
 
 	if (0 == exportOPMLFeedList(filename)) {
@@ -346,7 +347,7 @@ static gboolean conf_feedlist_schedule_save_cb(gpointer user_data) {
 
 void conf_feedlist_schedule_save() {
 	if (!feedlistLoading && !feedlist_save_timer) {
-		g_message(_("Scheduling feedlist save"));
+		debug0(DEBUG_CONF, "Scheduling feedlist save");
 		feedlist_save_timer = g_timeout_add(5000, conf_feedlist_schedule_save_cb, NULL);
 	}
 }
@@ -452,7 +453,7 @@ void setNumericConfValue(gchar *valuename, gint value) {
 	GConfValue	*gcv;
 	
 	g_assert(valuename != NULL);
-	g_message("Setting %s to %d", valuename, value);
+	debug2(DEBUG_CONF, "Setting %s to %d", valuename, value);
 	gcv = gconf_value_new(GCONF_VALUE_INT);
 	gconf_value_set_int(gcv, value);
 	gconf_client_set(client, valuename, gcv, &err);

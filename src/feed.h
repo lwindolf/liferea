@@ -57,8 +57,11 @@
 /** macro to test wether a type is a ressource which not regularily updated */				 
 #define IS_DIRECTORY(type)	(FST_OCS == type)
 				 
-/** macro to test wether a type is only a tree list structure entry */
+/** macro to test wether a type is a folder entry */
 #define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
+
+/** macro to test wether a type is only a tree list structure entry */
+#define IS_NODE(type)		(IS_FOLDER(type) ||  (FST_EMPTY == type))
 
 /** macro to test if feed menu action can be applied to this entry */
 #define FEED_MENU(type)		(IS_FEED(type) || IS_DIRECTORY(type))
@@ -66,10 +69,11 @@
 /** common structure to access feed info structures */
 typedef struct feed {
 	gint		type;			/**< feed type */
+	
 	/* per-feed UI data */
-	gpointer  *ui_data;
-	struct folder *parent;
-	gchar	*id;
+	gpointer	*ui_data;
+	struct folder *parent;			//FIXME: remove me!
+	gchar		*id;			/**< unique feed identifier string */
 	gint		unreadCount;		/**< number of unread items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gboolean	available;		/**< flag to signalize loading errors */
@@ -91,7 +95,10 @@ typedef struct feed {
 	/* feed properties used for updating */
 	GTimeVal	scheduledUpdate;	/**< time at which the feed needs to be updated */
 	gboolean	updateRequested;	/**< flag set when update in progress */
+	
+	//FIXME: I think this really does not belong here (Lars)
 	gboolean displayProps; /**< flag set when property dialog should be shown after updating */
+	
 	gpointer	*request;		/**< update request structure */
 } *feedPtr;
 

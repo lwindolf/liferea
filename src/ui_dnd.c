@@ -25,36 +25,96 @@
 #include "callbacks.h"
 #include "feed.h"
 #include "folder.h"
+#include "debug.h"
 #include "ui_dnd.h"
+
+extern GtkTreeStore *feedstore;
+
+/* ---------------------------------------------------------------------------- */
+/* GtkTreeDragSource/GtkTreeDragDest implementation				*/
+/* ---------------------------------------------------------------------------- */
+
+/** decides wether a feed cannot be dragged or not */
+static gboolean 
+ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePath *path) {
+	GtkTreeIter	iter;
+	feedPtr		fp;
+	
+	debug1(DEBUG_GUI, "DnD check if dragging is possible (%d)", path);
+
+	g_assert(NULL != feedstore);	
+	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, path)) {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, FS_PTR, &fp, -1);
+	
+		/* everything besides help feeds and "empty" entries may be dragged */		
+		if(IS_NODE(feed_get_type(fp))) {
+			if(FST_EMPTY != feed_get_type(fp)) 
+				return TRUE;
+			else 	
+				return FALSE;
+		}			
+		if(0 == strncmp(feed_get_id(fp), "help", 4)) 
+			return FALSE;			
+	} else {
+		g_warning("fatal error! could not resolve tree path!");
+		return FALSE;
+	}
+	return TRUE;
+}
+
+/** decides wether a feed cannot be dropped onto a user selection tree position or not */
+static gboolean 
+ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, GtkSelectionData *selection_data) {
+	GtkTreeIter	iter;
+	
+	debug1(DEBUG_GUI, "DnD check if dropping is possible (%d)", dest_path);
+
+	/* The only situation when we don't want to drop is when a
+	   feed was selected (note you can select drop targets between
+	   feeds/folders, a folder or a feed). Dropping onto a feed
+	   is not possible with GTK 2.0-2.2 because it disallows to
+	   drops as a children but its possible since GTK 2.4 */
+		   	
+	g_assert(NULL != feedstore);	
+	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, dest_path)) {
+		/* if we get an iterator its either a folder or the feed 
+		   iterator after the insertion point */
+	} else {
+		/* we come here if a drop on a feed happens */
+		return FALSE;
+	}
+	return TRUE;
+}
+
+void ui_dnd_init(void) {
+	GtkTreeDragSourceIface	*drag_source_iface = NULL;
+	GtkTreeDragDestIface	*drag_dest_iface = NULL;
+
+	g_assert(NULL != feedstore);
+	
+	if(NULL != (drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE(GTK_TREE_MODEL(feedstore))))
+		drag_source_iface->row_draggable = ui_dnd_feed_draggable;
+
+	if(NULL != (drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore))))
+		drag_dest_iface->row_drop_possible = ui_dnd_feed_drop_possible;
+}
 
 /* ---------------------------------------------------------------------------- */
 /* receiving URLs 								*/
 /* ---------------------------------------------------------------------------- */
 
 /* method to receive URLs which were dropped anywhere in the main window */
-static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
-	gchar	*tmp1, *tmp2, *freeme;
-	nodePtr ptr;
-	folderPtr parent;
-	g_return_if_fail (data->data != NULL);
+static void ui_dnd_URL_received(GtkWidget *mainwindow, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
+	gchar		*tmp1, *tmp2, *freeme;
 	
+	g_return_if_fail (data->data != NULL);
+		
 	if((data->length >= 0) && (data->format == 8)) {
 		/* extra handling to accept multiple drops */	
-		ptr = ui_feedlist_get_selected();
-		
-
-		if(ptr && IS_FOLDER(ptr->type)) {
-			parent = (folderPtr)ptr;
-		} else if (ptr && ptr->parent) {
-			parent = ptr->parent;
-		} else {
-			parent = folder_get_root();
-		}
-
 		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(0 != strlen(tmp2))
-				ui_feedlist_new_subscription(FST_AUTODETECT, g_strdup(tmp2), parent, TRUE);
+				ui_feedlist_new_subscription(FST_AUTODETECT, g_strdup(tmp2), NULL, TRUE);
 		}
 		g_free(freeme);
 		gtk_drag_finish(context, TRUE, FALSE, time);		
@@ -64,7 +124,7 @@ static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint
 }
 
 /* sets up URL receiving */
-void setupURLReceiver(GtkWidget *mainwindow) {
+void ui_dnd_setup_URL_receiver(GtkWidget *mainwindow) {
 
 	GtkTargetEntry target_table[] = {
 		{ "STRING",     		0, 0 },
@@ -80,5 +140,5 @@ void setupURLReceiver(GtkWidget *mainwindow) {
 			GDK_ACTION_COPY | GDK_ACTION_MOVE | GDK_ACTION_LINK);
 		       
 	gtk_signal_connect(GTK_OBJECT(mainwindow), "drag_data_received",
-			G_CALLBACK(feedURLReceived), NULL);
+			G_CALLBACK(ui_dnd_URL_received), NULL);
 }
