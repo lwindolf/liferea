@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+INCLUDES = @PACKAGE_CFLAGS@ @GTKHTML3_CFLAGS@
+
 pkglib_LTLIBRARIES = liblihtmlh.la
 
 liblihtmlh_la_SOURCES = gtkhtml3.c
