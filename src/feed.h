@@ -206,9 +206,9 @@ void feed_add_item(feedPtr fp, itemPtr ip);
 void feed_add_items(feedPtr fp, GList *items);
 
 /** 
- * To lookup an item given by it's unique (FIXME) id 
+ * To lookup an item given by it's unique item nr 
  */
-itemPtr feed_lookup_item(feedPtr fp, gchar *id);
+itemPtr feed_lookup_item(feedPtr fp, gulong nr);
 
 void feed_free(feedPtr fp);
 

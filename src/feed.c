@@ -717,24 +717,16 @@ void feed_remove_item(feedPtr fp, itemPtr ip) {
 	item_free(ip);
 }
 
-itemPtr feed_lookup_item(feedPtr fp, gchar *id) {
+itemPtr feed_lookup_item(feedPtr fp, gulong nr) {
 	GSList		*items;
 	itemPtr		ip;
 	
 	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
-	if(NULL == id) {
-		g_warning("lookup for NULL id!");
-		return (itemPtr)-1;
-	}
-	
+
 	items = fp->items;
 	while(NULL != items) {
 		ip = (itemPtr)(items->data);
-		if(NULL == ip->id) {
-			g_warning("item (%s) with NULL id!", item_get_title(ip));
-			return (itemPtr)-1;
-		}
-		if(0 == strcmp(ip->id, id))
+		if(ip->nr == nr)
 			return ip;
 		items = g_slist_next(items);
 	}

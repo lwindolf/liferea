@@ -52,13 +52,14 @@ typedef struct item {
 	gchar		*real_source_url;	/**< (optional) URL of the real source */
 	gchar		*real_source_title;	/**< (optional) title of the real source */
 	gchar		*description;		/**< HTML string containing the item's description */
-	gchar		*id;			/**< Unique item identifier, for example <guid> in RSS */
+	gchar		*id;			/**< "Unique" syndication item identifier, for example <guid> in RSS */
 	
 	GSList		*metadata;		/**< metadata of this item */
 	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 	time_t		time;			/**< Item's modified date */
 	
 	gint		references;		/**< used only with vfolders to count references */
+	gulong		nr;			/**< internal unique item number used for vfolder reference counting */
 	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
 	struct feed	*sourceFeed;		/**< Pointer to the source feed this item was derived from (used for searches and vfolders) */
 	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */

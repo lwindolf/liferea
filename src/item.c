@@ -34,12 +34,19 @@
 #include "metadata.h"
 #include "debug.h"
 
+/** 
+ * This is an internal counter used to uniqely assign item id's.
+ * Do not  
+ */
+static	gulong	lastItemNr = 0;
+
 /* function to create a new feed structure */
 itemPtr item_new(void) {
 	itemPtr		ip;
 	
 	ip = g_new0(struct item, 1);
 	ip->newStatus = TRUE;
+	ip->nr = ++lastItemNr;
 
 	return ip;
 }
@@ -56,6 +63,7 @@ void item_copy(itemPtr from, itemPtr to) {
 	to->readStatus = from->readStatus;
 	to->marked = from->marked;
 	to->time = from->time;
+	to->nr = from->nr;
 	
 	/* the following line enables state propagation in item.c */
 	to->sourceFeed = from->fp;	

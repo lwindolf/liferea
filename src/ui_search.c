@@ -75,6 +75,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 		vfolder_refresh(searchFeed);
 		ui_feedlist_select(NULL);
 		ui_itemlist_load((nodePtr)searchFeed);
+g_print("==============================================================\n");
 	}
 }
 
