@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-28 16:38+0400\n"
+"POT-Creation-Date: 2004-09-03 23:31+0400\n"
 "PO-Revision-Date: 2004-08-28 18:09+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian\n"
@@ -60,41 +60,40 @@ msgstr ""
 msgid "Error renaming %s to %s\n"
 msgstr "Ошибка переименования %s в %s\n"
 
-#: src/conf.c:514
+#: src/conf.c:515
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "Пространство имён RSS %s ещё не сконфигурировано! Активация...\n"
 
 #. FIXME: remove this migration constants with 0.9.x
 #. _() for HELP1URL to allow localised help feeds
-#: src/export.c:35
+#: src/export.c:36
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/export.c:36
+#: src/export.c:37
 msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:323
+#: src/export.c:370
 msgid "Liferea Help"
 msgstr "Помощь по Liferea"
 
-#: src/export.c:336
+#: src/export.c:383
 msgid "Online Help Feed"
 msgstr "Лента Новостей Онлайновой помощи"
 
-#: src/export.c:352
+#: src/export.c:399
 msgid "Liferea SF News"
 msgstr "Новости Liferea на SF.net"
 
-#: src/export.c:421 src/export.c:423
+#: src/export.c:470 src/export.c:472
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr ""
-"Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
+msgstr "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
-#: src/export.c:427 src/export.c:429
+#: src/export.c:476 src/export.c:478
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -102,76 +101,77 @@ msgstr ""
 "Пустой документ! Документ OPML \"%s\" не должен быть пустым во время "
 "импортирования."
 
-#: src/export.c:437 src/export.c:439
+#: src/export.c:486 src/export.c:488
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/export.c:457
+#: src/export.c:506
 msgid "Imported feed list"
 msgstr "Имппортированный лист лент новостей"
 
-#: src/export.c:468
+#: src/export.c:517
 msgid "Import Feed List"
 msgstr "Импортировать Список Лент Новостей"
 
-#: src/export.c:468
+#: src/export.c:517
 msgid "Import"
 msgstr "Импорт"
 
-#: src/export.c:478
+#: src/export.c:527
 msgid "Error while exporting feed list!"
 msgstr "Ошибка во время экспорта списка лент новостей!"
 
-#: src/export.c:480
+#: src/export.c:529
 msgid "Feed List exported!"
 msgstr "Список лент новостей экспортирован!"
 
-#: src/export.c:487
+#: src/export.c:536
 msgid "Export Feed List"
 msgstr "Экспортировать Список Лент Новостей"
 
-#: src/export.c:487
+#: src/export.c:536
 msgid "Export"
 msgstr "Экспорт"
 
-#: src/feed.c:147
+#: src/feed.c:143
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>Ошибка XML во время чтения ленты новостей! Лента новостей \"%s\" не может "
 "быть загружена!</p>"
 
-#: src/feed.c:153 src/feed.c:424
+#: src/feed.c:149 src/feed.c:381
 msgid "<p>Empty document!</p>"
 msgstr "<p>Пустой документ!</p>"
 
-#: src/feed.c:160
+#: src/feed.c:156
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Недопустимый XML!</p>"
 
-#: src/feed.c:227
+#: src/feed.c:223
 msgid "There were errors while parsing a feed"
 msgstr "Произошла ошибка во время парсинга ленты новостей"
 
-#: src/feed.c:228
+#: src/feed.c:224
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
 msgstr ""
 "<p>Невозможно определить тип ленты новостей. Проверьте ленту на <a href="
-"\"http://feedvalidator.org\">пригодность</a> и её формат<a href=\"http://liferea."
-"sourceforge.net/index.php#supported_formats\">является поддерживаемым</a>.</p>"
+"\"http://feedvalidator.org\">пригодность</a> и её формат<a href=\"http://"
+"liferea.sourceforge.net/index.php#supported_formats\">является "
+"поддерживаемым</a>.</p>"
 
-#: src/feed.c:403 src/feed.c:404
+#: src/feed.c:360 src/feed.c:361
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr "Ошибка во время чтения файла кэша \"%s\" ! Файл кэша не может быть загружен!"
 
-#: src/feed.c:416
+#: src/feed.c:373
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -180,175 +180,41 @@ msgstr ""
 "<p>Ошибка XML во время парсинга файла кэша! Файл кэша \"%s\" ленты новостей "
 "не может быть загружен!</p>"
 
-#: src/feed.c:435
+#: src/feed.c:392
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-msgstr "<p>\"%s\" не является допустимым файлом кэша ! Невозможно прочитать файл "
+msgstr ""
+"<p>\"%s\" не является допустимым файлом кэша ! Невозможно прочитать файл "
 "кеша!</p>"
 
-#: src/feed.c:486
+#: src/feed.c:443
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Произошла ошибка во время парсинга файла кэша \"%s\""
 
-#: src/feed.c:554
+#: src/feed.c:505
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Лента новостей \"%s\" уже обновляется!"
 
-#: src/feed.c:559
+#: src/feed.c:510
 msgid "The feed was discontinued. Liferea won't update it anymore!"
-msgstr "Лента новостей прекратила своё существование. Liferea не будет больше обновлять её!"
+msgstr ""
+"Лента новостей прекратила своё существование. Liferea не будет больше "
+"обновлять её!"
 
-#: src/feed.c:563
+#: src/feed.c:514
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Обновление: \"%s\""
 
-#: src/feed.c:619
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "Лента \"%s\" прекратила своё существование. Liferea не будет больше обновлять её!"
-
-#: src/feed.c:621
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" не изменился с момента последнего обновления"
-
-#: src/feed.c:628
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "URL для \"%s\" изменился на постоянный и был обновлён"
-
-#: src/feed.c:640
-#, c-format
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>%s"
-msgstr ""
-"<p>Невозможно определить тип этой ленты новостей! Пожалуйста, проверьте "
-"указывает ли URL на ресурс, доступный в одном из поддерживаемых форматов!</"
-"p>%s"
-
-#: src/feed.c:657
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" обновлён..."
-
-#: src/feed.c:666
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" не доступен"
-
-#: src/feed.c:953
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr ""
-"Вам запрещено скачивать эту ленту новостей. Пожалуйста, укажите новые имя пользователя и "
-"пароль в настройках ленты новостей."
-
-#: src/feed.c:955
-msgid "Payment Required"
-msgstr "Необходим Платёж"
-
-#: src/feed.c:956
-msgid "Access Forbidden"
-msgstr "Доступ Запрещён"
-
-#: src/feed.c:957
-msgid "Resource Not Found"
-msgstr "Ресурс Не Найден"
-
-#: src/feed.c:958
-msgid "Method Not Allowed"
-msgstr "Метод Не Разрешён"
-
-#: src/feed.c:959
-msgid "Not Acceptable"
-msgstr "Не Допустимо"
-
-#: src/feed.c:960
-msgid "Proxy Authentication Required"
-msgstr "Необходима Прокси-Аутентификация"
-
-#: src/feed.c:961
-msgid "Request Time-Out"
-msgstr "Запрос Превысил Время Ожидания Ответа"
-
-#: src/feed.c:962
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Не найдено. Ресурс не существует. Пожалуйста, отмените подписку!"
-
-#: src/feed.c:967
-msgid "URL is invalid"
-msgstr "URL неверен"
-
-#: src/feed.c:970
-msgid "Error connecting to remote host"
-msgstr "Ошибка соединения с удалённым сервером"
-
-#: src/feed.c:971
-msgid "Hostname could not be found"
-msgstr "Сервер не может быть найден"
-
-#: src/feed.c:972
-msgid "Network connection was refused by the remote host"
-msgstr "Соединения было прервано удалённым сервером"
-
-#: src/feed.c:973
-msgid "Remote host did not finish sending data"
-msgstr "Удалённый сервер не закончил передачу данных"
-
-#. Transfer errors
-#: src/feed.c:975
-msgid "Too many HTTP redirects were encountered"
-msgstr "Обнаружено слишком много перенаправлений HTTP"
-
-#: src/feed.c:978
-msgid "Remote host sent an invalid response"
-msgstr "Сервер послал неверный ответ"
-
-#: src/feed.c:985
-msgid "Authentication failed"
-msgstr "Аутентификация прошла неудачно"
-
-#: src/feed.c:987
-msgid "Webserver's authentication method incompatible with Liferea"
-msgstr "Метод аутентификации на сервере несовместим с Liferea"
-
-#: src/feed.c:993
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Лента новостей недоступна: Сервер запросил неподдерживаемое перенаправление!"
-
-#: src/feed.c:994
-msgid "Client Error"
-msgstr "Ошибка клиента"
-
-#: src/feed.c:995
-msgid "Server Error"
-msgstr "Ошибка Сервера"
-
-#: src/feed.c:996
-msgid "(unknown networking error happened)"
-msgstr "(произошла неизвестная сетевая ошибка)"
-
-#: src/feed.c:1018
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Произошла проблема во время чтения этой подписки. Пожалуйста, проверьте URL "
-"и вывод командной строки."
-
 #. attributes resulting from general feed parsing
-#: src/feed.c:1174 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:949 src/item.c:242 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:215
 msgid "Feed:"
 msgstr "Лента новостей:"
 
-#: src/feed.c:1185 src/interface.c:1071 src/interface.c:1473 src/item.c:270
+#: src/feed.c:960 src/interface.c:1071 src/interface.c:1473 src/item.c:269
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:221
 msgid "Source:"
 msgstr "Источник:"
@@ -524,8 +390,7 @@ msgstr "Обновить _Выбранные"
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
-msgstr "" 
-"Обновляет выбранную подписку или все подписки выбранной папки."
+msgstr "Обновляет выбранную подписку или все подписки выбранной папки."
 
 #: src/interface.c:234
 msgid "Update _All"
@@ -549,7 +414,8 @@ msgstr "Фильтровать Ленты Новостей Без Непрочи
 
 #: src/interface.c:268
 msgid "If active all feeds without unread items are hidden."
-msgstr "Если активно, то все ленты новостей без непрочитанных новостей скрываются."
+msgstr ""
+"Если активно, то все ленты новостей без непрочитанных новостей скрываются."
 
 #: src/interface.c:270
 msgid "_Mark As Read"
@@ -661,7 +527,8 @@ msgstr "Использовать _Сокращённый Вид"
 
 #: src/interface.c:415
 msgid "Toggles the item list mode between condensed and normal mode."
-msgstr "Переключает вид списка элементов между сокращённым и нормальным режимом."
+msgstr ""
+"Переключает вид списка элементов между сокращённым и нормальным режимом."
 
 #: src/interface.c:417
 msgid "_Search"
@@ -701,7 +568,8 @@ msgstr "Искать"
 
 #: src/interface.c:505
 msgid "saves this search as a VFolder, which will appear in the feed list"
-msgstr "сохранить этот поиск в виде VFolder, которая появится в списке лент новостей"
+msgstr ""
+"сохранить этот поиск в виде VFolder, которая появится в списке лент новостей"
 
 #: src/interface.c:519
 msgid "VFolder"
@@ -748,8 +616,7 @@ msgstr "<span weight=\"bold\">Интервал Обновления</span>"
 #: src/interface.c:957
 #, c-format
 msgid "This feed's refresh interval defaults to %d seconds."
-msgstr ""
-"Интервал обновления этой ленты новостей по умолчанию равен %d секундам(е)"
+msgstr "Интервал обновления этой ленты новостей по умолчанию равен %d секундам(е)"
 
 #: src/interface.c:968
 msgid "Feed Refresh _Interval:"
@@ -1242,7 +1109,7 @@ msgstr ""
 msgid "Translation"
 msgstr "Перевод"
 
-#: src/interface.c:2926 src/ui_feed.c:114
+#: src/interface.c:2926 src/ui_feed.c:367
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Введите имя пользователя и пароль для \"%s\" (%s):"
@@ -1269,17 +1136,18 @@ msgid ""
 "matches. They are removed if at least one removing rule matches."
 msgstr ""
 "Внимание: Новости добавляются в VFolder, если хотя бы одно\n"
-"правило добавления сопадает. Новости удаляются, если подходит хотя бы одно правило удаления."
+"правило добавления сопадает. Новости удаляются, если подходит хотя бы одно "
+"правило удаления."
 
 #: src/interface.c:3091
 msgid "Rules"
 msgstr "Правила"
 
-#: src/item.c:252 src/item.c:254 src/item.c:265
+#: src/item.c:251 src/item.c:253 src/item.c:264
 msgid "[No title]"
 msgstr "[Без заголовка]"
 
-#: src/item.c:255 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:254 src/metadata.c:320 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "Новость:"
 
@@ -1351,9 +1219,8 @@ msgid ""
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
 msgstr ""
-"Другая копия Liferea была запущена. Если "
-"Liferea не была запущена, а вы всё равно видите это сообщение, то удалите файл \"~/.liferea/"
-"lock\"."
+"Другая копия Liferea была запущена. Если Liferea не была запущена, а вы всё "
+"равно видите это сообщение, то удалите файл \"~/.liferea/lock\"."
 
 #: src/metadata.c:284
 msgid "comments"
@@ -1578,74 +1445,215 @@ msgstr "без флага"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Невозможно найти файл изображения: %s"
 
-#: src/ui_feed.c:115
+#: src/ui_feed.c:62
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr ""
+"Вам запрещено скачивать эту ленту новостей. Пожалуйста, укажите новые имя "
+"пользователя и пароль в настройках ленты новостей."
+
+#: src/ui_feed.c:64
+msgid "Payment Required"
+msgstr "Необходим Платёж"
+
+#: src/ui_feed.c:65
+msgid "Access Forbidden"
+msgstr "Доступ Запрещён"
+
+#: src/ui_feed.c:66
+msgid "Resource Not Found"
+msgstr "Ресурс Не Найден"
+
+#: src/ui_feed.c:67
+msgid "Method Not Allowed"
+msgstr "Метод Не Разрешён"
+
+#: src/ui_feed.c:68
+msgid "Not Acceptable"
+msgstr "Не Допустимо"
+
+#: src/ui_feed.c:69
+msgid "Proxy Authentication Required"
+msgstr "Необходима Прокси-Аутентификация"
+
+#: src/ui_feed.c:70
+msgid "Request Time-Out"
+msgstr "Запрос Превысил Время Ожидания Ответа"
+
+#: src/ui_feed.c:71
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "Не найдено. Ресурс не существует. Пожалуйста, отмените подписку!"
+
+#: src/ui_feed.c:76
+msgid "URL is invalid"
+msgstr "URL неверен"
+
+#: src/ui_feed.c:79
+msgid "Error connecting to remote host"
+msgstr "Ошибка соединения с удалённым сервером"
+
+#: src/ui_feed.c:80
+msgid "Hostname could not be found"
+msgstr "Сервер не может быть найден"
+
+#: src/ui_feed.c:81
+msgid "Network connection was refused by the remote host"
+msgstr "Соединения было прервано удалённым сервером"
+
+#: src/ui_feed.c:82
+msgid "Remote host did not finish sending data"
+msgstr "Удалённый сервер не закончил передачу данных"
+
+#. Transfer errors
+#: src/ui_feed.c:84
+msgid "Too many HTTP redirects were encountered"
+msgstr "Обнаружено слишком много перенаправлений HTTP"
+
+#: src/ui_feed.c:87
+msgid "Remote host sent an invalid response"
+msgstr "Сервер послал неверный ответ"
+
+#: src/ui_feed.c:94
+msgid "Authentication failed"
+msgstr "Аутентификация прошла неудачно"
+
+#: src/ui_feed.c:96
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr "Метод аутентификации на сервере несовместим с Liferea"
+
+#: src/ui_feed.c:102
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr ""
+"Лента новостей недоступна: Сервер запросил неподдерживаемое перенаправление!"
+
+#: src/ui_feed.c:103
+msgid "Client Error"
+msgstr "Ошибка клиента"
+
+#: src/ui_feed.c:104
+msgid "Server Error"
+msgstr "Ошибка Сервера"
+
+#: src/ui_feed.c:105
+msgid "(unknown networking error happened)"
+msgstr "(произошла неизвестная сетевая ошибка)"
+
+#: src/ui_feed.c:127
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"Произошла проблема во время чтения этой подписки. Пожалуйста, проверьте URL "
+"и вывод командной строки."
+
+#: src/ui_feed.c:161
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr ""
+"Лента \"%s\" прекратила своё существование. Liferea не будет больше "
+"обновлять её!"
+
+#: src/ui_feed.c:163
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" не изменился с момента последнего обновления"
+
+#: src/ui_feed.c:170
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "URL для \"%s\" изменился на постоянный и был обновлён"
+
+#: src/ui_feed.c:182
+#, c-format
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>%s"
+msgstr ""
+"<p>Невозможно определить тип этой ленты новостей! Пожалуйста, проверьте "
+"указывает ли URL на ресурс, доступный в одном из поддерживаемых форматов!</p>"
+"%s"
+
+#: src/ui_feed.c:199
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" обновлён..."
+
+#: src/ui_feed.c:208
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "\"%s\" не доступен"
+
+#: src/ui_feed.c:368
 msgid "Unknown source"
 msgstr "Неизвестный источник"
 
-#: src/ui_feed.c:207
+#: src/ui_feed.c:460
 msgid "Directories cannot be autoupdated."
 msgstr "Директории не могут быть автоматически обновлены."
 
-#: src/ui_feed.c:210
+#: src/ui_feed.c:463
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Создатель этой ленты новостей рекомендует интервал обновления в %d минут(у)"
 "(ы)."
 
-#: src/ui_feed.c:212
+#: src/ui_feed.c:465
 msgid "This feed specifies no default update interval."
 msgstr "Эта лента новостей не обозначает интервал обновления по умолчанию."
 
-#: src/ui_feed.c:554
+#: src/ui_feed.c:807
 msgid "Choose File"
 msgstr "Выберите файл"
 
-#: src/ui_feedlist.c:414
+#: src/ui_feedlist.c:360
 msgid "You have to select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/ui_feedlist.c:424
+#: src/ui_feedlist.c:370
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в режиме \"отключена\". Обновления невозможны."
 
-#: src/ui_feedlist.c:446
+#: src/ui_feedlist.c:392
 msgid "Note: Using the subscriptions filter disables drag & drop"
-msgstr "Заметка: Использования фильтров подписки отключает возможность использования "
+msgstr ""
+"Заметка: Использования фильтров подписки отключает возможность использования "
 "drag & drop"
 
-#: src/ui_feedlist.c:486
+#: src/ui_feedlist.c:434
 #, c-format
 msgid "Deleting \"%s\""
 msgstr "Удаление \"%s\""
 
-#: src/ui_feedlist.c:487
+#: src/ui_feedlist.c:435
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
 msgstr "Вы действительно хотите удалить каталог %s и его содержимое"
 
-#: src/ui_feedlist.c:489
+#: src/ui_feedlist.c:437
 msgid "Deleting entry"
 msgstr "Удаление записи"
 
-#: src/ui_feedlist.c:490
+#: src/ui_feedlist.c:438
 #, c-format
 msgid "Are you sure that you want to delete %s?"
 msgstr "Вы действительно хотите удалить %s?"
 
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:446
 msgid "Deletion Confirmation"
 msgstr "Потверждение об Удалении"
 
-#: src/ui_feedlist.c:536
+#: src/ui_feedlist.c:484
 msgid "You must select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/ui_feedlist.c:537
+#: src/ui_feedlist.c:485
 msgid "You must select a feed entry."
 msgstr "Вы должны выбрать строку с лентой новостей."
 
-#: src/ui_feedlist.c:558
+#: src/ui_feedlist.c:506
 msgid "New subscription"
 msgstr "Новая подписка"
 
@@ -1667,29 +1675,29 @@ msgstr ""
 "внутренняя ошибка! неизвестный тип записи! невозможно отобразить "
 "соответствующую иконку!\n"
 
-#: src/ui_itemlist.c:286
+#: src/ui_itemlist.c:304
 msgid "Date"
 msgstr "Дата"
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:315
 msgid "Headline"
 msgstr "Заголовок"
 
-#: src/ui_itemlist.c:599 src/ui_itemlist.c:640
+#: src/ui_itemlist.c:614 src/ui_itemlist.c:655
 msgid "No item has been selected"
 msgstr "Ни одна новость не выбрана"
 
-#: src/ui_itemlist.c:623 src/ui_itemlist.c:643
+#: src/ui_itemlist.c:638 src/ui_itemlist.c:658
 msgid "You must select a feed to delete its items!"
 msgstr "Вы должно выбрать ленту новостей для удаления её элементов!"
 
-#: src/ui_itemlist.c:675
+#: src/ui_itemlist.c:690
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "внутренняя ошибка! невозможно получить древовидный диалог выбора ленты "
 "новостей!\n"
 
-#: src/ui_itemlist.c:707
+#: src/ui_itemlist.c:722
 msgid "There are no unread items "
 msgstr "Нет непрочитанных новостей "
 
@@ -1766,28 +1774,28 @@ msgid ""
 "p>"
 msgstr ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">Начат сбор пожеланий для версии 1.1.<a href=\"http://"
-"liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">Просмотрите список</"
-"a> и <a href=\"mailto:liferea-devel@lists.sourceforge.net"
-"\">укажите нам</a>, каких функций вам не хватает.</div>"
-"<h2>Добро пожаловать в Liferea</h2><p>Левая панель содержит список лент "
-"новостей, где вы можете добавить новые подписки и выбрать подписки для "
-"прочтения их заголовков. Справа отображается список заголовков выбранной "
-"подписки и окно для просмотра выбранного заголовка или всех заголовков сразу "
-"(при использовании сокращённого вида).</p><h3>Основные Действия</"
-"h3><ul><li><p><b>Добавить Подписку</b> - Создаёт новую подписку в выбранной "
-"папке. Для создания новой подписки введите URL ленты новостей или, если вы "
-"не знаете его, URL сайта, который предоставляет ленту новостей.</p></"
-"li><li><p><b>Обновить Подписку</b> - Обновляет выбранную вами подписку. Вы "
-"можете использовать это, если вы хотите немедленно проверить на наличие "
-"обновлений. Обычно это адекватно автоматическому обновлению через "
-"определённый интервал.</p></li><li><p><b>Обновить Всё</b> - Обновляет все "
-"подписки сразу. Это также соответвует обновлению через определённый интервал."
-"</li><li><p><b>Редактировать Параметры Подписки</b> - Здесь можно "
-"изменить интервал обновления, заголовок, аутентификацию или настройки кэша "
-"подписки.</p></li></ul><p>Чтобы узнать больше о Liferea, прочтите "
-"документацию ленте помощи или в <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</"
-", доступном на <a href=\"http://liferea.sf.net\">домашней странице проекта</a>."
+"\">Начат сбор пожеланий для версии 1.1.<a href=\"http://liferea.sourceforge."
+"net/dokuwiki/doku.php?id=programrequirements1.1\">Просмотрите список</a> и "
+"<a href=\"mailto:liferea-devel@lists.sourceforge.net\">укажите нам</a>, "
+"каких функций вам не хватает.</div><h2>Добро пожаловать в Liferea</"
+"h2><p>Левая панель содержит список лент новостей, где вы можете добавить "
+"новые подписки и выбрать подписки для прочтения их заголовков. Справа "
+"отображается список заголовков выбранной подписки и окно для просмотра "
+"выбранного заголовка или всех заголовков сразу (при использовании "
+"сокращённого вида).</p><h3>Основные Действия</h3><ul><li><p><b>Добавить "
+"Подписку</b> - Создаёт новую подписку в выбранной папке. Для создания новой "
+"подписки введите URL ленты новостей или, если вы не знаете его, URL сайта, "
+"который предоставляет ленту новостей.</p></li><li><p><b>Обновить Подписку</"
+"b> - Обновляет выбранную вами подписку. Вы можете использовать это, если вы "
+"хотите немедленно проверить на наличие обновлений. Обычно это адекватно "
+"автоматическому обновлению через определённый интервал.</p></"
+"li><li><p><b>Обновить Всё</b> - Обновляет все подписки сразу. Это также "
+"соответвует обновлению через определённый интервал.</"
+"li><li><p><b>Редактировать Параметры Подписки</b> - Здесь можно изменить "
+"интервал обновления, заголовок, аутентификацию или настройки кэша подписки.</"
+"p></li></ul><p>Чтобы узнать больше о Liferea, прочтите документацию ленте "
+"помощи или в <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</, "
+"доступном на <a href=\"http://liferea.sf.net\">домашней странице проекта</a>."
 "</p>"
 
 #: src/ui_mainwindow.c:290
@@ -1944,6 +1952,10 @@ msgstr "Сбросить таймеры обновления лент (Не об
 msgid "Searching for \"%s\""
 msgstr "Поиск \"%s\""
 
+#: src/ui_search.c:96
+msgid "Please do a search first!"
+msgstr "Пожалуйста, выполните сначала поиск!"
+
 #: src/ui_tray.c:90
 #, c-format
 msgid "%d new item!"
@@ -1975,5 +1987,6 @@ msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
-"Этот элемент, содержит HTML тэг <object>, который не поддерживается в GtkHTML2.\n"
+"Этот элемент, содержит HTML тэг <object>, который не поддерживается в "
+"GtkHTML2.\n"
 "Плагины, содержащиеся в элементе не будут отображены."
