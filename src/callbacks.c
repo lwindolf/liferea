@@ -254,7 +254,7 @@ gint checkForUpdateResults(gpointer data) {
 		return TRUE;
 	} else if(NULL != request->data) {
 		/* determine feed type if necessary (e.g. when importing) */
-		if(feed_get_type(request->fp) == FST_AUTODETECT) {
+		if(FST_AUTODETECT == (type = feed_get_type(request->fp))) {
 			firstDownload = TRUE;
 			feed_set_type(request->fp, feed_detect_type(request->data));
 		}
