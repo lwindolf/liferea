@@ -1102,17 +1102,17 @@ gchar *feed_render(feedPtr fp) {
 		g_free(displayset.headtable);
 		addToHTMLBufferFast(&buffer, HEAD_END);
 
+		/* Head */
+		if(displayset.head != NULL) {
+			addToHTMLBufferFast(&buffer, displayset.head);
+			g_free(displayset.head);
+		}
+
 		/* feed/channel image */
 		if(NULL != feed_get_image_url(fp)) {
 			addToHTMLBufferFast(&buffer, "<img class=\"feed\" src=\"");
 			addToHTMLBufferFast(&buffer, feed_get_image_url(fp));
 			addToHTMLBufferFast(&buffer, "\"><br>");
-		}
-
-		/* Head */
-		if(displayset.head != NULL) {
-			addToHTMLBufferFast(&buffer, displayset.head);
-			g_free(displayset.head);
 		}
 	}
 
