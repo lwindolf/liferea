@@ -17,6 +17,7 @@
 	* Written some more and new text for the Liferea
 	  Online Help Feed.
 	* Many code improvements by Karl Soderstrom.
+	* Fixed the HTML filtering for item titles.
 	* Fixes the priority of <summary> vs. <content> tag
 	  handling for Atom/Echo/PIE feeds.
 	* Fixed the broken tray icon logic.

@@ -18,6 +18,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <string.h>
 #include "htmlview.h"
 #include "ns_fm.h"
 #include "common.h"
@@ -51,14 +52,17 @@ static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 }
 
 static void ns_fm_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+	gchar	*tmp;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
-		/* maybe for just one tag this is overkill, but copy&paste is so easy! */
-		ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url",  CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if(strlen(tmp) > 0) {
+			/* maybe for just one tag this is overkill, but copy&paste is so easy! */
+			ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url", tmp);
+		}
 	}
 }
 
-/* maybe I should overthink method names :-) */
 static void ns_fm_output(gpointer key, gpointer value, gpointer userdata) {
 	gchar 	**buffer = (gchar **)userdata;
 	

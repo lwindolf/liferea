@@ -351,7 +351,7 @@ on_url (HtmlView *view, const char *url, gpointer user_data)
 
 	gtk_label_set_text (GTK_LABEL (GTK_STATUSBAR (statusbar)->label), url);
 	
-	g_free(selectedURL);		/* performance ? */
+	g_free(selectedURL);
 	selectedURL = g_strdup(url);
 }
 
@@ -370,8 +370,8 @@ request_object (HtmlView *view, GtkWidget *widget, gpointer user_data)
 
 static void
 kill_old_connections (HtmlDocument *doc)
-{	/* if enabled images do not always load */
-	/*GSList *connection_list, *tmp;
+{
+	GSList *connection_list, *tmp;
 
 	tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
 	while(tmp) {
@@ -383,7 +383,7 @@ kill_old_connections (HtmlDocument *doc)
 		tmp = tmp->next;
 	}
 	g_object_set_data (G_OBJECT (doc), "connection_list", NULL);
-	g_slist_free (connection_list);*/
+	g_slist_free (connection_list);
 }
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
