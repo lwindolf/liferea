@@ -34,7 +34,7 @@
 #include "ns_dc.h"
 #include "callbacks.h"
 
-#include "netio.h"
+#include "net/netio.h"
 #include "htmlview.h"
 
 /* structure for the hashtable callback which itself calls the 

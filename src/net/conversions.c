@@ -34,9 +34,7 @@
 #include <zlib.h>
 
 #include "config.h"
-#include "callbacks.h"
 #include "conversions.h"
-#include "interface.h"
 
 #ifdef SUN
 #	include "os-support.h"

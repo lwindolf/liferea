@@ -12,7 +12,7 @@ if WITH_MOZILLA
 MOZILLA = mozilla
 endif
 
-SUBDIRS = $(GTKHTML2) $(GTKHTML3) $(MOZILLA)
+SUBDIRS = net $(GTKHTML2) $(GTKHTML3) $(MOZILLA)
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -27,14 +27,20 @@ liblihtmlt_la_SOURCES = textview.c
 liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
 bin_PROGRAMS = liferea-bin 
-dist_bin_SCRIPTS = liferea
+bin_SCRIPTS = liferea
+## dist_bin_SCRIPTS = liferea
+## doesn't work:
+##
+## src/Makefile.am:30: invalid variable `dist_bin_SCRIPTS'
+## src/Makefile.am:30: invalid variable `dist_bin_SCRIPTS'
+##
+
 
 liferea_bin_SOURCES = \
 	callbacks.c callbacks.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
 	common.c common.h \
-	conversions.c conversions.h \
 	conf.c conf.h \
 	eggtrayicon.h eggtrayicon.c \
 	export.c export.h \
@@ -46,7 +52,6 @@ liferea_bin_SOURCES = \
 	interface.c interface.h \
 	item.c item.h \
 	main.c \
-	netio.c netio.h \
 	ns_ocs.c ns_ocs.h \
 	ns_dc.c ns_dc.h \
 	ns_fm.c ns_fm.h \
@@ -60,7 +65,6 @@ liferea_bin_SOURCES = \
 	opml.c opml.h \
 	ocs_dir.c ocs_dir.h \
 	ocs_ns.h \
-	os-support.c os-support.h \
 	pie_feed.c pie_feed.h \
 	pie_entry.c pie_entry.h \
 	pie_ns.h \
@@ -82,6 +86,6 @@ liferea_bin_SOURCES = \
 	update.c update.h \
 	vfolder.c vfolder.h
 
-liferea_bin_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
+liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ $(INTLLIBS)
 
 liferea_bin_CFLAGS = -Wall

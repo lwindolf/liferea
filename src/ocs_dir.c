@@ -36,7 +36,7 @@
 #include "ns_dc.h"
 #include "ns_ocs.h"
 
-#include "netio.h"
+#include "net/netio.h"
 #include "htmlview.h"
 
 /* you can find the OCS specification at

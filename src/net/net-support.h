@@ -1,12 +1,9 @@
-/* HTTP feed download, Liferea reuses the only slightly
- * adapted Snownews code:
- *
- * Snownews - A lightweight console RSS newsreader
+/* Snownews - A lightweight console RSS newsreader
  * 
- * Copyright 2003 Oliver Feiler <kiza@kcore.de>
+ * Copyright 2003-2004 Oliver Feiler <kiza@kcore.de>
  * http://kiza.kcore.de/software/snownews/
  *
- * netio.h
+ * net-support.h
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -23,12 +20,9 @@
  *
  */
 
-#ifndef _NETIO_H
-#define _NETIO_H
+#ifndef NET_SUPPORT_H
+#define NET_SUPPORT_H
 
-#include "update.h"
-
-/* returns the raw download data or NULL on error */
-char * downloadURL(struct feed_request *request);
+int NetSupportAuth (struct feed * cur_ptr, char * authdata, char * url, char * netbuf);
 
 #endif

@@ -29,11 +29,17 @@
 #       define _BSD_SOCKLEN_T_
 #endif
 
+/* BeOS does not define socklen_t. Using uint as suggested by port creator. */
+#ifdef __BEOS__
+#       define socklen_t unsigned int
+#endif
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -41,15 +47,12 @@
 #include <sys/stat.h>
 
 #include "conversions.h"
+#include "net-support.h"
+#include "netio.h"
 
 #ifdef SUN
 #	include "os-support.h"
 #endif
-
-/* some Liferea specific includes */
-#include "callbacks.h"
-#include "support.h"
-#include "netio.h"
 
 #define MAX_HTTP_REDIRECTS 10		/* Maximum number of redirects we will follow. */
 
@@ -185,7 +188,7 @@ int NetConnect (int * my_socket, char * host, int httpproto, int suppressoutput)
  * Returns NULL pointer if no data was received. Check httpstatus == 304,
  * otherwise an error occured.
  */
-char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cur_ptr, int httpproto, char * authinfo, int suppressoutput) {
+char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cur_ptr, char * authdata, int httpproto, int suppressoutput) {
 	char netbuf[4096];			/* Network read buffer. */
 	char *body;					/* XML body. */
 	int length;
@@ -201,7 +204,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	char *newurl;				/* New document name ". */
 	char *newlocation;
 	char *tmpstring;			/* Temp pointers. */
-	char *freeme;
+	char *freeme, *freeme2;
 	char *redirecttarget;
 	int retval;
 	int handled;
@@ -210,16 +213,27 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	int contentlength = 0;		/* Content-Length of server reply. */
 	int len;
 	char * inflatedbody;
-	int quirksmode = 0;
+	int quirksmode = 0;			/* IIS operation mode. */
+	int authfailed = 0;			/* Avoid repeating failed auth requests endlessly. */
 	
-	snprintf (tmp, sizeof(tmp), _("Downloading http://%s%s..."), host, url);
+	snprintf (tmp, sizeof(tmp), _("Downloading \"http://%s%s\""), host, url);
+
 	if (!suppressoutput)
 		UIStatus (tmp, 0);
-
+	
 	redirectcount = 0;
 	
 	/* Goto label to redirect reconnect. */
 	tryagain:
+	
+	/* Reconstruct digest authinfo for every request so we don't reuse
+	   the same nonce value for more than one request.
+	   This happens on superflous time on 303 redirects. */
+	if ((cur_ptr->authinfo != NULL) && (cur_ptr->servauth != NULL)) {
+		if (strstr (cur_ptr->authinfo, " Digest ") != NULL) {
+			NetSupportAuth(cur_ptr, authdata, url, cur_ptr->servauth);
+		}
+	}
 	
 	/* Open socket. */	
 	stream = fdopen (*my_socket, "r+");
@@ -236,17 +250,17 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	if (proxyport == 0) {
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s\r\n", url, useragent, host, cur_ptr->lastmodified, (authinfo ? authinfo : ""));
+			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n", url, useragent, host, cur_ptr->lastmodified, (cur_ptr->authinfo ? cur_ptr->authinfo : ""), (cur_ptr->cookies ? cur_ptr->cookies : ""));
 		else
-			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s\r\n", url, useragent, host, (authinfo ? authinfo : ""));
+			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n", url, useragent, host, (cur_ptr->authinfo ? cur_ptr->authinfo : ""), (cur_ptr->cookies ? cur_ptr->cookies : ""));
 
 		fflush(stream);
 	} else {
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nIf-Modified-Since: %s\r\n\r\n", host, url, useragent, cur_ptr->lastmodified);
+			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nIf-Modified-Since: %s\r\n%s\r\n", host, url, useragent, cur_ptr->lastmodified, (cur_ptr->cookies ? cur_ptr->cookies : ""));
 		else
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\n\r\n", host, url, useragent);
+			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\n%s\r\n", host, url, useragent, (cur_ptr->cookies ? cur_ptr->cookies : ""));
 		
 		fflush(stream);
 	}
@@ -272,11 +286,11 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	
 	/* If the redirectloop was run newhost and newurl were allocated.
 	   We need to free them here. */
-	if (redirectcount > 0) {
+	if ((redirectcount > 0) && (authdata == NULL)) {
 		free (host);
 		free (url);
 	}
-
+	
 	tmphttpstatus = cur_ptr->lasthttpstatus;
 	handled = 1;
 	/* Check HTTP server response and handle redirects. */
@@ -358,7 +372,19 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 							if (!suppressoutput)
 								UIStatus (_("URL points to permanent redirect, updating with new location..."), 2);
 							free (cur_ptr->feedurl);
-							cur_ptr->feedurl = strdup (newlocation);
+							if (authdata == NULL)
+								cur_ptr->feedurl = strdup (newlocation);
+							else {
+								/* Include authdata in newly constructed URL. */
+								len = strlen(authdata) + strlen(newlocation) + 2;
+								cur_ptr->feedurl = malloc (len);
+								newurl = strdup(newlocation);
+								freeme2 = newurl;
+								strsep (&newurl, "/");
+								strsep (&newurl, "/");
+								snprintf (cur_ptr->feedurl, len, "http://%s@%s", authdata, newurl);
+								free (freeme2);
+							}
 						}
 						
 						freeme = newlocation;
@@ -387,10 +413,10 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 						newurl = strdup (newlocation);
 					
 						free (freeme);
-					
+						
 						/* Close connection. */	
 						fclose (stream);
-					
+						
 						/* Reconnect to server. */
 						if ((NetConnect (my_socket, newhost, httpproto, suppressoutput)) != 0) {
 							/* Add error handling/reporting. */
@@ -399,7 +425,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 					
 						host = newhost;
 						url = newurl;
-					
+						
 						goto tryagain;
 					}
 				}
@@ -410,7 +436,19 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 				fclose (stream);
 				/* Received good status from server, clear problem field. */
 				cur_ptr->problem = 0;
+				
+				/* This should be freed everywhere where we return
+				   and current feed uses auth. */
+				if ((redirectcount > 0) && (authdata != NULL)) {
+					free (host);
+					free (url);
+				}
 				return NULL;
+			case 401:
+				/* Authorization.
+				   Parse rest of header and rerequest URL from server using auth mechanism
+				   requested in WWW-Authenticate header field. (Basic or Digest) */
+				break;
 			case 410: /* The feed is gone. Politely remind the user to unsubscribe. */
 				snprintf (tmp, sizeof(tmp), _("The feed no longer exists. Please unsubscribe!"));
 				if (!suppressoutput)
@@ -441,6 +479,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		   If header has longer lines than 4096 bytes something may go wrong. :) */
 		if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL)
 			break;
+		
 		if (strstr (netbuf, "chunked") != NULL) {
 			/* Server sent junked encoding. Until I understand how it works
 			   and snownews uses HTTP/1.1 we must reject this answer.
@@ -460,8 +499,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 			freeme = tmpstring;
 			strsep (&tmpstring, ":");
 			tmpstring++;
-			if (cur_ptr->lastmodified != NULL)
-				free(cur_ptr->lastmodified);
+			free(cur_ptr->lastmodified);
 			cur_ptr->lastmodified = malloc (strlen(tmpstring)+1);
 			strncpy (cur_ptr->lastmodified, tmpstring, strlen(tmpstring)+1);
 			if (cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] == '\n')
@@ -472,8 +510,8 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		}
 		/* Check and parse Content-Encoding header. */
 		if (strncasecmp (netbuf, "Content-Encoding", 16) == 0) {
-			/*if (strstr (netbuf, "deflate") != NULL)
-				inflate = 1;*/
+			if (strstr (netbuf, "deflate") != NULL)
+				inflate = 1;
 			/* Will also catch x-gzip. */
 			if (strstr (netbuf, "gzip") != NULL)
 				inflate = 2;
@@ -490,10 +528,84 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 			free (freeme);
 	 	}
 		
+		/* HTTP authentication
+		 *
+		 * RFC 2617 */
+		if ((strncasecmp (netbuf, "WWW-Authenticate", 16) == 0) &&
+			(cur_ptr->lasthttpstatus == 401)) {
+			if (authfailed) {
+				/* Don't repeat authrequest if it already failed before! */
+				UIStatus (_("Authentication failed!"), 3);
+				fclose (stream);
+				return NULL;
+			}
+
+			/* Remove trailing \r\n from line. */
+			if (netbuf[strlen(netbuf)-1] == '\n')
+				netbuf[strlen(netbuf)-1] = '\0';
+			if (netbuf[strlen(netbuf)-1] == '\r')
+				netbuf[strlen(netbuf)-1] = '\0';
+			
+			authfailed++;
+			
+			/* Make a copy of the WWW-Authenticate header. We use it to
+			   reconstruct a new auth reply on every loop. */
+			free (cur_ptr->servauth);
+			
+			cur_ptr->servauth = strdup (netbuf);
+			
+			/* Load authinfo into cur_ptr->authinfo. */
+			retval = NetSupportAuth(cur_ptr, authdata, url, netbuf);
+			
+			switch (retval) {
+				case 1:
+					UIStatus (_("URL does not contain authentication information!"), 2);
+					fclose (stream);
+					return NULL;
+					break;
+				case 2:
+					UIStatus (_("Could not generate authentication information!"), 2);
+					fclose (stream);
+					return NULL;
+					break;
+				case -1:
+					UIStatus (_("Unsupported authentication method requested by server!"), 2);
+					fclose (stream);
+					return NULL;
+					break;
+				default:
+					break;
+			}
+			
+			/* Close current connection and reconnect to server. */
+			fclose (stream);
+			if ((NetConnect (my_socket, host, httpproto, suppressoutput)) != 0) {
+				/* Add error handling/reporting. */
+				return NULL;
+			}
+
+			/* Now that we have an authinfo, repeat the current request. */
+			goto tryagain;
+		}
+		/* This seems to be optional and probably not worth the effort since we
+		   don't issue a lot of consecutive requests. */
+		/*if ((strncasecmp (netbuf, "Authentication-Info", 19) == 0) ||
+			(cur_ptr->lasthttpstatus == 200)) {
+		
+		}*/
+		
 		/* HTTP RFC 2616, Section 19.3 Tolerant Applications.
 		   Accept CRLF and LF line ends in the header field. */
 		if ((strcmp(netbuf, "\r\n") == 0) || (strcmp(netbuf, "\n") == 0))
 			break;
+	}
+	
+	/* If the redirectloop was run newhost and newurl were allocated.
+	   We need to free them here.
+	   But _after_ the authentication code since it needs these values! */
+	if ((redirectcount > 0) && (authdata != NULL)) {
+		free (host);
+		free (url);
 	}
 	
 	/**********************
@@ -565,14 +677,11 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutput) {
 	int my_socket = 0;
 	int result;
-	int len;
-	char *host;				/* Needs to freed. */
+	char *host;					/* Needs to freed. */
 	char *tmphost;
 	char *freeme;
 	char *returndata;
-	char *authinfo = NULL;			/* base64 encoded HTTP auth. Default to NULL! */
-	char *authstring;			/* "username:password" - to be base64 encoded */
-	char *username, *password;		/* plaintext username/password for HTTP auth */
+	char *authdata = NULL;
 	char *tmpstr;
 	char tmp[1024];
 	int httpproto = 0;			/* 0: http; 1: https */
@@ -604,40 +713,11 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 		return NULL;
 	}
 		
-	/* If tmphost contains an '@' we have to do HTTP authentication. */
+	/* If tmphost contains an '@', extract username and pwd. */
 	if (strchr (tmphost, '@') != NULL) {
 		tmpstr = tmphost;
-		strsep (&tmphost, ":");
-		username = strdup (tmpstr);
-		tmpstr = tmphost;
 		strsep (&tmphost, "@");
-		password = strdup (tmpstr);
-		
-		/* Create base64 authinfo.
-		
-		   RFC 2617. Basic HTTP authentication.
-		   Authorization: Basic username:password[base64 encoded] */
-		
-		/* Construct the cleartext authstring. */
-		len = strlen(username) + 1 + strlen(password) + 1;
-		authstring = malloc (len);
-		strcpy (authstring, username);
-		strcat (authstring, ":");
-		strcat (authstring, password);
-		
-		tmpstr = base64encode (authstring, len);
-		
-		/* "Authorization: Basic " + base64str + \r\n\0 */
-		len = 21 + strlen(tmpstr) + 3;
-		authinfo = malloc (len);
-		strcpy (authinfo, "Authorization: Basic ");
-		strcat (authinfo, tmpstr);
-		strcat (authinfo, "\r\n");
-		
-		free (username);
-		free (password);
-		free (tmpstr);
-		free (authstring);
+		authdata = strdup (tmpstr);
 	}
 	
 	host = strdup (tmphost);
@@ -660,6 +740,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 				UIStatus (_("Couldn't create network socket!"), 2);
 			cur_ptr->problem = 1;
 			free (freeme);
+			free (authdata);
 			return NULL;
 		case 2:
 			snprintf (tmp, sizeof(tmp), _("Can't resolve host %s!"), host);
@@ -667,6 +748,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 				UIStatus (tmp, 2);
 			cur_ptr->problem = 1;
 			free (freeme);
+			free (authdata);
 			return NULL;
 		case 3:
 			snprintf (tmp, sizeof(tmp), _("Could not connect to server %s: %s"), host, strerror(connectresult));
@@ -674,23 +756,24 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 				UIStatus (tmp, 2);
 			cur_ptr->problem = 1;
 			free (freeme);
+			free (authdata);
 			return NULL;
 		case -1:
 			if (!suppressoutput)
 				UIStatus (_("Aborted."), 2);
 			free (freeme);
+			free (authdata);
 			return NULL;
 		default:
 			break;
 	}
 	
-	returndata = NetIO (&my_socket, host, url, cur_ptr, httpproto, authinfo, suppressoutput);
+	returndata = NetIO (&my_socket, host, url, cur_ptr, authdata, httpproto, suppressoutput);
 	
 	/* url will be freed in the calling function. */
 	free (freeme);		/* This is *host. */
 	
-	if (authinfo != NULL)
-		free (authinfo);
+	free (authdata);
 	
 	return returndata;
 }

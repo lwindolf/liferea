@@ -1,0 +1,6 @@
+This directory contains all network support code
+that is used in Liferea. This code was originally
+written for SnowNews (a console news aggregator)
+by Oliver Feiler. He kindly allowed me to reuse
+his code in Liferea and help a lot with every 
+problem in the past. Thanks! 

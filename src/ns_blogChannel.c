@@ -19,7 +19,7 @@
 */
 
 #include "htmlview.h"
-#include "netio.h"
+#include "net/netio.h"
 #include "ns_blogChannel.h"
 #include "common.h"
 #include <string.h>

@@ -15,7 +15,8 @@
 #ifndef _CONVERSIONS_H
 #define _CONVERSIONS_H
 
-#include "support.h"
+#include "../support.h"
+#include "../callbacks.h"
 
 /* we redefine some SnowNews functions */
 #define UIStatus(a, b)		ui_mainwindow_set_status_bar(a)

@@ -31,7 +31,7 @@
 #include "cdf_item.h"
 #include "callbacks.h"
 
-#include "netio.h"
+#include "net/netio.h"
 #include "htmlview.h"
 
 /* note: the tag order has to correspond with the CHANNEL_* defines in the header file */

@@ -5,7 +5,7 @@ AC_INIT(configure.in)
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
 
-AM_INIT_AUTOMAKE(liferea, 0.4.7)
+AM_INIT_AUTOMAKE(liferea, 0.4.8)
 AM_CONFIG_HEADER(config.h)
 AM_PROG_LIBTOOL
 AM_MAINTAINER_MODE
@@ -144,6 +144,7 @@ src/Makefile
 src/mozilla/Makefile
 src/gtkhtml2/Makefile
 src/gtkhtml3/Makefile
+src/net/Makefile
 pixmaps/Makefile
 po/Makefile.in
 ])

@@ -37,10 +37,14 @@ struct feed_request {
         char * 	feedurl;		/**< Non hashified URL set from the requestion function */
         char * 	lastmodified; 		/**< Content of header as sent by the server. */
 	int 	lasthttpstatus;		/**< last HTTP status :-)*/
+	char *	authinfo;		/**< HTTP authinfo string. */
+	char *	servauth;		/**< Server supplied authorization header. */
+	char *	cookies;		/**< Login cookies for this feed. */
 	int 	problem;		/**< Set if there was a problem downloading the feed. */
 	char *	data;			/**< newly downloaded feed data to be parsed */
 	gboolean updateRequested; 	/**< Lock used in order to insure that a feed is being updated only once */
 	feedPtr	fp;			/**< pointer to feed structure which is to be updated */
+
 };
 
 /** 

@@ -34,7 +34,7 @@
 #include "ocs_dir.h"
 #include "opml.h"
 #include "vfolder.h"
-#include "netio.h"
+#include "net/netio.h"
 #include "feed.h"
 #include "folder.h"
 #include "favicon.h"
