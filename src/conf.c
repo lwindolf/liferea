@@ -132,6 +132,9 @@ void conf_load() {
 	/* check if important preferences exist... */
 	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
 		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
+		
+	if(0 == strcmp("", getStringConfValue(ENCLOSURE_DOWNLOAD_PATH)))
+		setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, g_getenv("HOME"));
 }
 
 static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {

@@ -737,7 +737,7 @@ void on_enc_action_remove_btn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_save_download_entry_changed(GtkEditable *editable, gpointer user_data) {
 
-	setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, gtk_editable_get_chars(editable , 1, -1));
+	setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, gtk_editable_get_chars(editable , 0, -1));
 }
 
 static void on_save_download_finished(const gchar *filename, gpointer user_data) {

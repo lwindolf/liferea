@@ -28,6 +28,7 @@
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
+#include "conf.h"
 #include "ui_popup.h"
 #include "ui_enclosure.h"
 #include "debug.h"
@@ -336,7 +337,7 @@ void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkW
 	}
 	
 	if(TRUE == found)
-		ui_enclosure_download(etp, url, g_strdup(g_get_home_dir()));
+		ui_enclosure_download(etp, url, g_strdup(getStringConfValue(ENCLOSURE_DOWNLOAD_PATH)));
 	else
 		ui_enclosure_add(NULL, url, typestr);
 }
