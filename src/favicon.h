@@ -25,7 +25,9 @@
    icondata with length datalen, converts the image into XPM 
    format and saves the result in the file outputfile. If the 
    conversion is successful TRUE is returned. */
-gboolean
-convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen);
+gboolean convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen);
+
+void loadFavIcon(feedPtr fp);
+void removeFavIcon(feedPtr fp);
 
 #endif

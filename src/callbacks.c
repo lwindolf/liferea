@@ -162,6 +162,9 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
 	GtkWidget		*treeview;
 	GtkTreeSelection	*select;
         GtkTreeModel		*model;
+	gchar			*tmp_key;
+	gint			tmp_type;
+	feedPtr			fp;
 	
 	if(NULL == mainwindow)
 		return FALSE;
@@ -177,6 +180,23 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
 	}
 
         gtk_tree_selection_get_selected(select, &model, iter);
+	gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, 
+			   FS_KEY, &tmp_key, 
+ 			   FS_TYPE, &tmp_type,
+			   -1);
+
+	if(IS_NODE(tmp_type)) {
+		/* its a folder */
+		setSelectedFeed(NULL, tmp_key);
+	} else {
+		/* its a feed */
+		if(NULL == tmp_key) {
+			g_warning(_("fatal! selected feed entry has no key!!!"));
+			return FALSE;
+		}
+		setSelectedFeed(getFeed(tmp_key), NULL);
+	}
+		
 	return TRUE;
 }
 
@@ -502,7 +522,6 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 	
 	// FIXME: maybe this should not happen here?
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(getFeedKeyPrefix(fp)));
-	
 	if(!startup) {
 		/* used when creating feed entries manually */
 		if(getFeedListIter(&selected_iter) && IS_FEED(selected_type))
@@ -1368,7 +1387,7 @@ void setupItemList(GtkWidget *itemlist) {
 
 void updateUI(void) {
 	
-	while (gtk_events_pending())
+	while(gtk_events_pending())
 		gtk_main_iteration();
 }
 

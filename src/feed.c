@@ -22,9 +22,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 #include "conf.h"
 #include "common.h"
@@ -263,20 +260,6 @@ void saveAllFeeds(void) {
 	g_mutex_lock(feeds_lock);
 	g_hash_table_foreach(feeds, saveFeedFunc, NULL);
 	g_mutex_unlock(feeds_lock);
-}
-
-void loadFavIcon(feedPtr fp) {
-	gchar		*filename, *tmp;
-	struct stat	statinfo;
-	
-	/* try to load a saved favicon */
-	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
-	if(0 == stat(filename, &statinfo)) {
-		/* remove path, because create_pixbuf allows no absolute pathnames */
-		tmp = strrchr(filename, '/');
-		fp->icon = gdk_pixbuf_scale_simple(create_pixbuf(++tmp), 16, 16, GDK_INTERP_BILINEAR);
-	}
-	g_free(filename);
 }
 
 /* function which is called to load a feed's cache file */
@@ -626,6 +609,9 @@ void removeFeed(feedPtr fp) {
 	if(0 != unlink(filename)) {
 		g_warning(g_strdup_printf(_("Could not delete cache file %s! Please remove manually!"), filename));
 	}
+
+	removeFavIcon(fp);
+
 	g_hash_table_remove(feeds, (gpointer)fp);
 	removeFeedFromConfig(fp->keyprefix, fp->key);
 }
@@ -713,9 +699,7 @@ gchar * getFeedTitle(feedPtr fp) {
 
 void setFeedTitle(feedPtr fp, gchar *title) {
 
-	if(NULL != fp->title)
-		g_free(fp->title);
-
+	g_free(fp->title);
 	fp->title = title;
 	setFeedTitleInConfig(fp->key, title);
 }
@@ -725,9 +709,7 @@ gchar * getFeedSource(feedPtr fp) { return fp->source; }
 
 void setFeedSource(feedPtr fp, gchar *source) {
 
-	if(NULL != fp->source)
-		g_free(fp->source);
-
+	g_free(fp->source);
 	fp->source = source;
 	setFeedURLInConfig(fp->key, source);
 }

@@ -26,6 +26,14 @@
 
 #include <glib.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+#include "support.h"
+#include "feed.h"
+#include "common.h"
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
@@ -376,4 +384,34 @@ convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen)
     /* we intentionally return after the first retrieved pixmap */       
     return TRUE;
   }
+}
+
+/* Liferea specific wrapper functions */
+
+void loadFavIcon(feedPtr fp) {
+	gchar		*filename, *tmp;
+	struct stat	statinfo;
+	
+	/* try to load a saved favicon */
+	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
+	if(0 == stat(filename, &statinfo)) {
+		/* remove path, because create_pixbuf allows no absolute pathnames */
+		tmp = strrchr(filename, '/');
+		fp->icon = gdk_pixbuf_scale_simple(create_pixbuf(++tmp), 16, 16, GDK_INTERP_BILINEAR);
+	}
+	g_free(filename);
+}
+
+void removeFavIcon(feedPtr fp) {
+	gchar		*filename;
+	struct stat	statinfo;
+	
+	/* try to load a saved favicon */
+	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
+	if(0 == stat(filename, &statinfo)) {
+		if(0 != unlink(filename)) {
+			g_warning(g_strdup_printf(_("Could not delete icon file %s! Please remove manually!"), filename));
+		}	
+	}
+	g_free(filename);
 }

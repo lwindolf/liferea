@@ -91,7 +91,7 @@ static void parseOutline(xmlNodePtr cur, gchar *folderkey) {
 	source = xmlGetProp(cur, BAD_CAST"xmlUrl");
 	if(NULL != source) {
 		if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), g_strdup(folderkey)))) {
-			addToFeedList(fp, FALSE);
+			addToFeedList(fp, TRUE);
 
 			if(NULL != title)
 				setFeedTitle(fp, g_strdup(title)); 

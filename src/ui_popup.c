@@ -36,8 +36,8 @@ extern gboolean itemlist_mode;
 static GtkItemFactoryEntry feedentry_menu_items[] = {
       {"/_Update Feed", 	NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH },
       {"/_New",			NULL, 0, 				0, "<Branch>" },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0, "<StockItem>", GTK_STOCK_NEW },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0, "<StockItem>", GTK_STOCK_NEW },
+      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
+      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },
       {"/_Delete Feed",		NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE },
       {"/_Properties",		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES },
       { NULL }
@@ -46,8 +46,8 @@ static GtkItemFactoryEntry feedentry_menu_items[] = {
 static GtkItemFactoryEntry ocsentry_menu_items[] = {
       {"/_Update Directory",	NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH },
       {"/_New",			NULL, 0, 				0, "<Branch>",	  GTK_STOCK_NEW },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0, "<StockItem>", GTK_STOCK_NEW },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0, "<StockItem>", GTK_STOCK_NEW },      
+      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
+      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },      
       {"/_Delete Directory",	NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE },
       {"/_Properties",		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES },
       { NULL }
@@ -55,8 +55,8 @@ static GtkItemFactoryEntry ocsentry_menu_items[] = {
 
 static GtkItemFactoryEntry node_menu_items[] = {
       {"/_New",			NULL, 0, 				0, "<Branch>",	  GTK_STOCK_NEW },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0, "<StockItem>", GTK_STOCK_NEW },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0, "<StockItem>", GTK_STOCK_NEW },
+      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
+      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },
       {"/_Rename Folder",	NULL, on_popup_foldername_selected, 	0, "<StockItem>", GTK_STOCK_PROPERTIES },
       {"/_Delete Folder", 	NULL, on_popup_removefolder_selected, 	0, "<StockItem>", GTK_STOCK_DELETE },
       { NULL }
@@ -64,16 +64,16 @@ static GtkItemFactoryEntry node_menu_items[] = {
 
 static GtkItemFactoryEntry vfolder_menu_items[] = {
       {"/_New",			NULL, 0, 				0, "<Branch>",	  GTK_STOCK_NEW },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0, "<StockItem>", GTK_STOCK_NEW },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0, "<StockItem>", GTK_STOCK_NEW },      
+      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
+      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },      
       {"/_Delete VFolder",	NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE },
       { NULL }
 };
 
 static GtkItemFactoryEntry default_menu_items[] = {
       {"/_New",			NULL, 0, 				0, "<Branch>",	  GTK_STOCK_NEW },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0, "<StockItem>", GTK_STOCK_NEW },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0, "<StockItem>", GTK_STOCK_NEW },
+      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
+      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },
       { NULL }
 };
 
