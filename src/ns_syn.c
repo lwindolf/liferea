@@ -72,7 +72,6 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 		period /= frequency;
 
 	cp->updateInterval = period;
-g_print("update interval: %d\n", period);
 }
 
 RSSNsHandler *ns_syn_getRSSNsHandler(void) {
