@@ -112,7 +112,6 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 
 	for(iter = feedhandlers; iter != NULL; iter = iter->next) {
 		fhp = (feedHandlerPtr)iter->data;
-g_print("ftstf_: %s\n", fhp->typeStr);
 		if(!strcmp(str, fhp->typeStr))
 			return fhp;
 	}
