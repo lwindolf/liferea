@@ -43,6 +43,7 @@
 #include "filter.h"
 #include "update.h"
 
+#include "ui_feedlist.h"
 #include "ui_tray.h"
 #include "htmlview.h"
 
@@ -170,19 +171,15 @@ feedPtr feed_new(void) {
 	return fp;
 }
 
-void feed_save(gchar *key) {
+void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode, itemNode;
 	GSList		*itemlist;
 	gchar		*filename;
 	gchar		*tmp;
 	itemPtr		ip;
-	feedPtr		fp;
 	gint		saveCount = 0;
 	gint		saveMaxCount;
-	
-	fp = feed_get_from_key(key);
-	g_assert(NULL != key);
 			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
 	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
@@ -393,6 +390,9 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 
 	ui_feedlist_load_subscription(new_fp, TRUE);
 	
+	if(getBooleanConfValue(UPDATE_ON_STARTUP))
+		feed_update(new_fp);
+	
 	return new_fp;
 }
 
@@ -446,7 +446,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		fp->key = key;
 
 		if(TRUE == fp->available)		
-			feed_save(fp->key);
+			feed_save(fp);
 
 		/* try to download favicon */
 		baseurl = g_strdup(url);
@@ -685,9 +685,8 @@ void feed_update(feedPtr fp) {
 	update_thread_add_request((struct feed_request *)fp->request);
 }
 
-static void feed_check_update_counter(gpointer key, gpointer value, gpointer userdata) {
+static void feed_check_update_counter(feedPtr fp) {
 	GTimeVal	now;
-	feedPtr		fp = (feedPtr)value;
 
 	g_get_current_time(&now);
 	g_print("update counter for %s is %ld\n", feed_get_title(fp),  fp->scheduledUpdate.tv_sec - now.tv_sec);
@@ -695,12 +694,11 @@ static void feed_check_update_counter(gpointer key, gpointer value, gpointer use
 		update_thread_add_request((struct feed_request *)fp->request);
 }
 
+// FIXME: does this function belong here?
 static gboolean update_timer_main(void *data) {
 
 	g_message("Checking to see if feeds need to be updated");
-	g_mutex_lock(feeds_lock);
-	g_hash_table_foreach(feeds, feed_check_update_counter, NULL);
-	g_mutex_unlock(feeds_lock);
+	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (gpointer)feed_check_update_counter);
  
 	return TRUE;
 }
@@ -714,14 +712,6 @@ static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 	feed_update(fp);
 }
 
-/* this method is called upon the refresh all button... */
-void updateAllFeeds(void) {
-
-	ui_mainwindow_set_status_bar(_("updating all feeds..."));
-	g_mutex_lock(feeds_lock);
-	g_hash_table_foreach(feeds, updateFeedHelper, NULL);
-	g_mutex_unlock(feeds_lock);
-}
 
 void feed_add_item(feedPtr fp, itemPtr ip) {
 

@@ -111,10 +111,8 @@ void setFolderCollapseState(gchar *keyprefix, gboolean collapsed) {
 	}
 }
 
-static void saveFolderCollapseState(gpointer key, gpointer value, gpointer user_data) {
-	gchar			*keyprefix = (gchar *)key;
+void folder_state_save(gchar *keyprefix, GtkTreeIter *iter) {
 	GtkTreeStore		*feedstore;
-	GtkTreeIter		*iter = (GtkTreeIter *)value;
 	GtkTreePath		*path;
 	GtkWidget		*treeview;
 		
@@ -128,10 +126,6 @@ static void saveFolderCollapseState(gpointer key, gpointer value, gpointer user_
 			gtk_tree_path_free(path);
 		}
 	}
-}
-
-void saveAllFolderCollapseStates(void) {
-	g_hash_table_foreach(folders, saveFolderCollapseState, NULL);
 }
 
 void addFolder(gchar *keyprefix, gchar *title, gint type) {

@@ -44,7 +44,7 @@ void	checkForEmptyFolders(void);
 void	moveInFeedList(gchar *oldkeyprefix, gchar *oldkey);
 
 /* save functions */
+void	folder_state_save(gchar *keyprefix, GtkTreeIter *iter);
 void	saveFolderFeedList(gchar *keyprefix);
-void	saveAllFolderCollapseStates(void);
 
 #endif

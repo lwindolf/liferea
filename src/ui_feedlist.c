@@ -12,7 +12,7 @@
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-
+   
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
@@ -729,11 +729,12 @@ feedPtr ui_feedlist_find_unread(GtkTreeIter *iter) {
 }
 
 /* recursivly calls func for every feed in the feed list */
-void ui_feedlist_do_for_all(GtkTreeIter *iter, gint type, feedActionFunc *func) {
+void ui_feedlist_do_for_all(GtkTreeIter *iter, gint type, gpointer func) {
 	GtkTreeIter		childiter;
 	gboolean		valid, apply;
 	gchar			*tmp_key;
 	gint			tmp_type;
+	feedPtr			tmp_fp;
 	
 	if(NULL == iter)
 		valid = gtk_tree_model_get_iter_root(GTK_TREE_MODEL(feedstore), &childiter);
@@ -758,11 +759,18 @@ void ui_feedlist_do_for_all(GtkTreeIter *iter, gint type, feedActionFunc *func) 
 				g_error("internal error! wrong action type for feedlist processing\n");
 				break;
 		}
-		
+
+		g_assert(tmp_key != NULL);
 		if(TRUE == apply) {
-			g_assert(tmp_key != NULL);
-			(*func)(tmp_key);
-		} 
+			if(IS_FOLDER(tmp_type)) {
+				(*((folderActionFunc *)func))(tmp_key, iter);
+			} else {
+				tmp_fp = feed_get_from_key(tmp_key);
+				g_assert(NULL != tmp_fp);
+				(*((feedActionFunc *)func))(tmp_fp);
+			}
+		}
+
 		g_free(tmp_key);
 
 		/* if the iter is a folder recursivly go down... */		

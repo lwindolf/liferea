@@ -152,7 +152,7 @@ void ui_redraw_widget(gchar *name) {
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
-	updateAllFeeds(); 
+	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, feed_update);
 }
 
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
@@ -341,9 +341,9 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	gtk_widget_hide(mainwindow);
 
-	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, feed_save);
-	//ui_feedlist_do_for_all(NULL, FEEDLIST_FOLDER_ACTION, folder_save);
-	saveAllFolderCollapseStates();
+	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (gpointer)feed_save);
+	ui_feedlist_do_for_all(NULL, FEEDLIST_FOLDER_ACTION, (gpointer)folder_state_save);
+	//saveAllFolderCollapseStates();
 	
 	/* save pane proportions */
 	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {

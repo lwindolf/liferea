@@ -698,9 +698,6 @@ void loadSubscriptions(void) {
 		addFeed(FST_HELPFEED, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
 	}
 	checkForEmptyFolders();
-	
-	if(getBooleanConfValue(UPDATE_ON_STARTUP))
-		updateAllFeeds();
 }
 
 /* returns true if namespace is enabled in configuration */
