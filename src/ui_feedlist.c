@@ -510,6 +510,9 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDia
 				g_assert(NULL != fhp->readFeed);
 				(*(fhp->readFeed))(fp, data);			
 
+				ui_feedlist_update();
+				feed_save(fp);
+
 				if(showPropDialog) {
 					/* built, set default update interval and show properties dialog */
 					propdialog = ui_feedlist_build_prop_dialog();
