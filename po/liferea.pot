@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-25 01:05+0200\n"
+"POT-Creation-Date: 2004-05-03 01:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 
-#: src/cdf_channel.c:156 src/feed.c:310 src/ocs_dir.c:457 src/opml.c:147
+#: src/cdf_channel.c:156 src/feed.c:337 src/ocs_dir.c:457 src/opml.c:147
 #: src/pie_feed.c:218 src/rss_channel.c:333
 msgid "<p>Empty document!</p>"
 msgstr ""
@@ -66,19 +66,19 @@ msgstr ""
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
 msgstr ""
 
-#: src/common.c:415
+#: src/common.c:418 src/common.c:425 src/common.c:431 src/common.c:438
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr ""
 
-#: src/common.c:524
+#: src/common.c:543
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
 
 #. sh..!
-#: src/common.c:538
+#: src/common.c:557
 msgid "Internal error while converting UTF-8 chars to HTTP URI!"
 msgstr ""
 
@@ -87,24 +87,24 @@ msgstr ""
 msgid "http://liferea.sf.net/help048.rdf"
 msgstr ""
 
-#: src/conf.c:320
+#: src/conf.c:329
 msgid "Liferea Help"
 msgstr ""
 
-#: src/conf.c:326
+#: src/conf.c:335
 msgid "Online Help Feed"
 msgstr ""
 
-#: src/conf.c:336
+#: src/conf.c:345
 msgid "Liferea SF News"
 msgstr ""
 
-#: src/conf.c:417
+#: src/conf.c:426
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: src/conf.c:443
+#: src/conf.c:452
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr ""
@@ -145,141 +145,141 @@ msgstr ""
 msgid "internal error! could not get a new folder key!"
 msgstr ""
 
-#: src/favicon.c:421
+#: src/favicon.c:429
 #, c-format
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr ""
 
-#: src/feed.c:261
+#: src/feed.c:277
 msgid "could not write XML item node!\n"
 msgstr ""
 
-#: src/feed.c:270
+#: src/feed.c:286
 msgid "could not create XML feed node for feed cache document!"
 msgstr ""
 
-#: src/feed.c:275
+#: src/feed.c:291
 msgid "could not create XML document!"
 msgstr ""
 
-#: src/feed.c:294
+#: src/feed.c:321
 #, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/feed.c:295
+#: src/feed.c:322
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/feed.c:304
+#: src/feed.c:331
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
 
-#: src/feed.c:319
+#: src/feed.c:346
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 
-#: src/feed.c:357
+#: src/feed.c:389
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr ""
 
-#: src/feed.c:485
+#: src/feed.c:517
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr ""
 
-#: src/feed.c:487
+#: src/feed.c:519
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr ""
 
-#: src/feed.c:576
+#: src/feed.c:615
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr ""
 
-#: src/feed.c:615
+#: src/feed.c:654
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: src/feed.c:621
+#: src/feed.c:660
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 
-#: src/feed.c:631
+#: src/feed.c:670
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr ""
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:724 src/net/netio.c:478
+#: src/feed.c:763 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr ""
 
-#: src/feed.c:725
+#: src/feed.c:764
 msgid "Payment Required"
 msgstr ""
 
-#: src/feed.c:726
+#: src/feed.c:765
 msgid "Access Forbidden"
 msgstr ""
 
-#: src/feed.c:727
+#: src/feed.c:766
 msgid "Ressource Not Found"
 msgstr ""
 
-#: src/feed.c:728
+#: src/feed.c:767
 msgid "Method Not Allowed"
 msgstr ""
 
-#: src/feed.c:729
+#: src/feed.c:768
 msgid "Not Acceptable"
 msgstr ""
 
-#: src/feed.c:730
+#: src/feed.c:769
 msgid "Proxy Authentication Required"
 msgstr ""
 
-#: src/feed.c:731
+#: src/feed.c:770
 msgid "Request Time-Out"
 msgstr ""
 
-#: src/feed.c:732
+#: src/feed.c:771
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 
-#: src/feed.c:738
+#: src/feed.c:777
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr ""
 
-#: src/feed.c:739
+#: src/feed.c:778
 msgid "Client Error"
 msgstr ""
 
-#: src/feed.c:740
+#: src/feed.c:779
 msgid "Server Error"
 msgstr ""
 
-#: src/feed.c:741
+#: src/feed.c:780
 msgid "(unknown error class)"
 msgstr ""
 
-#: src/feed.c:763
+#: src/feed.c:802
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
 msgstr ""
 
-#: src/feed.c:891
+#: src/feed.c:930
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
@@ -313,7 +313,7 @@ msgstr ""
 msgid "Sorry, I was not able to load any installed browser modules!"
 msgstr ""
 
-#: src/htmlview.c:313
+#: src/htmlview.c:318
 msgid "This item does not have a link assigned!"
 msgstr ""
 
@@ -487,7 +487,7 @@ msgstr ""
 msgid "_Help"
 msgstr ""
 
-#: src/interface.c:443 src/interface.c:2493 src/interface.c:2522
+#: src/interface.c:443 src/interface.c:2493 src/interface.c:2523
 msgid "About"
 msgstr ""
 
@@ -882,10 +882,13 @@ msgid "Liferea is a news aggregator for GTK"
 msgstr ""
 
 #: src/interface.c:2517
-msgid "Copyright (c) 2003-2004 Lars Lindner"
+msgid ""
+"Copyright (c) 2003-2004 \n"
+"Lars Lindner <lars.lindner@gmx.net> and \n"
+"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
 
-#: src/interface.c:2536
+#: src/interface.c:2537
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -898,7 +901,6 @@ msgid ""
 "Juho Snellman <jsnell@users.sourceforge.net>\n"
 "Roshan Revankar <roshweb@users.sourceforge.net>\n"
 "Oliver Feiler <kiza@kcore.de>\n"
-"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 "Niklas Morberg <morberg@users.sourceforge.net>\n"
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
@@ -909,11 +911,11 @@ msgid ""
 "Philippe Martin, Brion Vibber (favicon support)"
 msgstr ""
 
-#: src/interface.c:2542
+#: src/interface.c:2543
 msgid "Contributors"
 msgstr ""
 
-#: src/interface.c:2556
+#: src/interface.c:2557
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -922,10 +924,11 @@ msgid ""
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Gernauck <enrico@fanglomerat.de>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Dario Conigliaro <djdas@djdas.no-ip.org>"
 msgstr ""
 
-#: src/interface.c:2562
+#: src/interface.c:2563
 msgid "Translation"
 msgstr ""
 
@@ -1177,48 +1180,48 @@ msgstr ""
 msgid "starting: \"%s\""
 msgstr ""
 
-#: src/ui_feedlist.c:137 src/ui_folder.c:341
+#: src/ui_feedlist.c:141 src/ui_folder.c:374
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 
-#: src/ui_feedlist.c:313 src/ui_itemlist.c:580
+#: src/ui_feedlist.c:318 src/ui_itemlist.c:607
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_feedlist.c:325 src/ui_feedlist.c:342 src/ui_feedlist.c:384
-#: src/ui_feedlist.c:385
+#: src/ui_feedlist.c:330 src/ui_feedlist.c:347 src/ui_feedlist.c:390
+#: src/ui_feedlist.c:391
 msgid "You have to select a feed entry!"
 msgstr ""
 
-#: src/ui_feedlist.c:350
+#: src/ui_feedlist.c:355
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
 
-#: src/ui_feedlist.c:354
+#: src/ui_feedlist.c:359
 msgid "Deleting entry"
 msgstr ""
 
-#: src/ui_feedlist.c:418
+#: src/ui_feedlist.c:424
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr ""
 
-#: src/ui_feedlist.c:420
+#: src/ui_feedlist.c:426
 msgid "This feed specifies no default update interval."
 msgstr ""
 
-#: src/ui_feedlist.c:466
+#: src/ui_feedlist.c:472
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:504
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
 
-#: src/ui_feedlist.c:512
+#: src/ui_feedlist.c:521
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1228,7 +1231,7 @@ msgid ""
 "the feed list.\n"
 msgstr ""
 
-#: src/ui_feedlist.c:577
+#: src/ui_feedlist.c:586
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 
@@ -1240,51 +1243,51 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: src/ui_folder.c:91 src/ui_folder.c:113 src/ui_folder.c:133
+#: src/ui_folder.c:94 src/ui_folder.c:116 src/ui_folder.c:136
 msgid "A folder must be selected."
 msgstr ""
 
-#: src/ui_folder.c:140
+#: src/ui_folder.c:143
 msgid "A folder must be empty to delete it!"
 msgstr ""
 
-#: src/ui_folder.c:210
+#: src/ui_folder.c:243
 msgid "<i>(empty)</i>"
 msgstr ""
 
-#: src/ui_itemlist.c:260
+#: src/ui_itemlist.c:285
 msgid "Date"
 msgstr ""
 
-#: src/ui_itemlist.c:267
+#: src/ui_itemlist.c:292
 msgid "Headline"
 msgstr ""
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:322
 msgid "item list widget lookup failed!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:307
+#: src/ui_itemlist.c:332
 msgid "could not retrieve selection of item list!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:389
+#: src/ui_itemlist.c:414
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:529
+#: src/ui_itemlist.c:555
 msgid "No item has been selected!"
 msgstr ""
 
-#: src/ui_itemlist.c:552
+#: src/ui_itemlist.c:579
 msgid "You have to select a feed to delete its items!"
 msgstr ""
 
-#: src/ui_itemlist.c:582
+#: src/ui_itemlist.c:609
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:615
+#: src/ui_itemlist.c:642
 msgid "There are no unread items!"
 msgstr ""
 

@@ -192,7 +192,7 @@ void ui_htmlview_init(void) {
 	}
 	
 	if(!success)
-		g_error(_("Sorry, I was not able to load any installed browser modules!"));
+		g_error(_("Sorry, I was not able to load any installed browser modules! Try the --debug-all option to get debug information!"));
 }
 
 /* -------------------------------------------------------------------- */

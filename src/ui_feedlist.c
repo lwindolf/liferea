@@ -138,7 +138,7 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 			} else
 				return icons[ICON_UNAVAILABLE];
 		default:
-			g_print(_("internal error! unknown entry type! cannot display appropriate icon!\n"));
+			debug0(DEBUG_GUI, "internal error! unknown entry type! cannot display appropriate icon!\n");
 			return icons[ICON_UNAVAILABLE];
 	}	
 }

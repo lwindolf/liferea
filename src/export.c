@@ -152,7 +152,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) { /* Reading a feed */
-		if (!trusted && source[0] == '|') {
+		if(!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
 			   is safe? */
 			tmp = g_strdup_printf("unsafe command: %s", source);
@@ -160,10 +160,12 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			source = tmp;
 		}
 		
-		/* type */
+		/* get type attribute and ensure it has a valid value or
+		   set type auto detect ... */
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
 		type = feed_type_str_to_num(typeStr);
-		if (type == -1)
+		if(!IS_FEED(type) && !IS_DIRECTORY(type) && 
+		   !(FST_HELPFEED == type) && !(FST_VFOLDER == type))
 			type = FST_AUTODETECT;
 		xmlFree(typeStr);
 
@@ -174,7 +176,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		/* The id should only be used from feedlist.opml. Otherwise,
 		   it could cause corruption if the same id was imported
 		   multiple times. */
-		if (trusted)
+		if(trusted)
 			id = xmlGetProp(cur, BAD_CAST"id");
 
 		fp = feed_new();
@@ -204,7 +206,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		}
 		ui_folder_add_feed(folder, fp, -1);
 
-		if (source != NULL)
+		if(source != NULL)
 			xmlFree(source);
 	} else { /* It is a folder */
 		if(NULL != xmlHasProp(cur, BAD_CAST"helpFolder")) {

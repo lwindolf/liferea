@@ -42,6 +42,18 @@
 	* Added Traditional Chinese translation by Rex Tsai.
 	* Updated RPM spec file from Brian Pepple.
 
+2004-04-28  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.4.7d
+	
+	* Fix from Nathan Conrad to prevent a cache loading
+	  crash reported by Brian Pepple.
+	* Fix from Nathan Conrad to prevent random crashes 
+	  when viewing items. This should fix a lot of 
+	  problems reported. Especially problems with
+	  non ASCII feeds!
+	* Added an Italian translation from Dario Conigliaro.
+	
 2004-04-21  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.7c

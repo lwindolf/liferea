@@ -185,18 +185,6 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 			}
 		}
 		
-		/* check for RDF tags */
-		for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
-			if(!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
- 				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				if(NULL != tmp) {
-					g_free(i->tags[j]);
-					i->tags[j] = tmp;
-					break;
-				}				
-			}		
-		}
-
 		if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
@@ -217,6 +205,18 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 					g_free(tmp);
 				}
 				g_free(link);
+			}
+		} else {
+			/* check for RDF tags */
+			for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
+				if(!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
+ 					tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+					if(NULL != tmp) {
+						g_free(i->tags[j]);
+						i->tags[j] = tmp;
+						break;
+					}				
+				}		
 			}
 		}
 		cur = cur->next;

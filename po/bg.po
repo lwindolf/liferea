@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISLD Localization Project VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-25 01:05+0200\n"
+"POT-Creation-Date: 2004-05-03 01:45+0200\n"
 "PO-Revision-Date: 2004-03-30 11:40+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 "<p>XML грешка по време на четенето на абонамента! Абонаментът \"%s\" не може "
 "да бъде зареден!</p>"
 
-#: src/cdf_channel.c:156 src/feed.c:310 src/ocs_dir.c:457 src/opml.c:147
+#: src/cdf_channel.c:156 src/feed.c:337 src/ocs_dir.c:457 src/opml.c:147
 #: src/pie_feed.c:218 src/rss_channel.c:333
 msgid "<p>Empty document!</p>"
 msgstr "<p>Празен документ!</p>"
@@ -69,12 +69,12 @@ msgstr "Невалиден ISO8601 формат на датата.! Игнори
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
 msgstr "Невалиден RFC822 формат на датата! Игнорира <pubDate> информация!\n"
 
-#: src/common.c:415
+#: src/common.c:418 src/common.c:425 src/common.c:431 src/common.c:438
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "Не може да създаде кеш директория \"%s\" !"
 
-#: src/common.c:524
+#: src/common.c:543
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -83,7 +83,7 @@ msgstr ""
 "кодиране! Някоизнаци са пропуснати!"
 
 #. sh..!
-#: src/common.c:538
+#: src/common.c:557
 msgid "Internal error while converting UTF-8 chars to HTTP URI!"
 msgstr ""
 "Вътрешна грешка по време на преобразуването на UTF-8 символите в HTTP·URI!"
@@ -94,24 +94,24 @@ msgstr ""
 msgid "http://liferea.sf.net/help048.rdf"
 msgstr "http://liferea.sf.net/help047.rdf"
 
-#: src/conf.c:320
+#: src/conf.c:329
 msgid "Liferea Help"
 msgstr "Помощ относно Liferea"
 
-#: src/conf.c:326
+#: src/conf.c:335
 msgid "Online Help Feed"
 msgstr "Помощ в Интернет"
 
-#: src/conf.c:336
+#: src/conf.c:345
 msgid "Liferea SF News"
 msgstr "Новини за Liferea в SF"
 
-#: src/conf.c:417
+#: src/conf.c:426
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: src/conf.c:443
+#: src/conf.c:452
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr ""
@@ -154,38 +154,38 @@ msgstr "Вмъкнат списък с абонаменти"
 msgid "internal error! could not get a new folder key!"
 msgstr ""
 
-#: src/favicon.c:421
+#: src/favicon.c:429
 #, c-format
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr "Не може да се изтрие иконата \"%s\"! Моля, премахнете я ръчно!"
 
-#: src/feed.c:261
+#: src/feed.c:277
 msgid "could not write XML item node!\n"
 msgstr "Не може да запише XML запис\n"
 
-#: src/feed.c:270
+#: src/feed.c:286
 msgid "could not create XML feed node for feed cache document!"
 msgstr ""
 
-#: src/feed.c:275
+#: src/feed.c:291
 msgid "could not create XML document!"
 msgstr "Не може да създаде XML документ!"
 
-#: src/feed.c:294
+#: src/feed.c:321
 #, fuzzy, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе да "
 "бъде зареден!"
 
-#: src/feed.c:295
+#: src/feed.c:322
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе да "
 "бъде зареден!"
 
-#: src/feed.c:304
+#: src/feed.c:331
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -194,104 +194,104 @@ msgstr ""
 "<p>XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе "
 "да бъде зареден!</p>"
 
-#: src/feed.c:319
+#: src/feed.c:346
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" не е валиден кеш файл. Кеш файлът не може да бъде прочетен!</p>"
 
-#: src/feed.c:357
+#: src/feed.c:389
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr ""
 
-#: src/feed.c:485
+#: src/feed.c:517
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" няма нови записи."
 
-#: src/feed.c:487
+#: src/feed.c:519
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" има %d нови записи."
 
-#: src/feed.c:576
+#: src/feed.c:615
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" не се промениха след последното осъвременяване."
 
-#: src/feed.c:615
+#: src/feed.c:654
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" осъвременени..."
 
-#: src/feed.c:621
+#: src/feed.c:660
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "Адресът на \"%s\" беше постоянно променен и осъвременен."
 
-#: src/feed.c:631
+#: src/feed.c:670
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" не е достъпен"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:724 src/net/netio.c:478
+#: src/feed.c:763 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "Този абонамент вече не съществува!"
 
-#: src/feed.c:725
+#: src/feed.c:764
 msgid "Payment Required"
 msgstr "Изисква се разплащане"
 
-#: src/feed.c:726
+#: src/feed.c:765
 msgid "Access Forbidden"
 msgstr "Забранен Достъп"
 
-#: src/feed.c:727
+#: src/feed.c:766
 msgid "Ressource Not Found"
 msgstr "Ресурсът не е намерен"
 
-#: src/feed.c:728
+#: src/feed.c:767
 msgid "Method Not Allowed"
 msgstr "Непозволен метод"
 
-#: src/feed.c:729
+#: src/feed.c:768
 msgid "Not Acceptable"
 msgstr "Неприемлив"
 
-#: src/feed.c:730
+#: src/feed.c:769
 msgid "Proxy Authentication Required"
 msgstr ""
 
-#: src/feed.c:731
+#: src/feed.c:770
 msgid "Request Time-Out"
 msgstr "Заявката изтече"
 
-#: src/feed.c:732
+#: src/feed.c:771
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Този ресурс вече не съществува. Моля да се отпишете!"
 
-#: src/feed.c:738
+#: src/feed.c:777
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr ""
 "Абонаментът не е на разположение:·Сървърът докладва занеподдържано "
 "пренасочване!"
 
-#: src/feed.c:739
+#: src/feed.c:778
 msgid "Client Error"
 msgstr "Грешка в клиента"
 
-#: src/feed.c:740
+#: src/feed.c:779
 msgid "Server Error"
 msgstr "Грешка в Сървъра"
 
-#: src/feed.c:741
+#: src/feed.c:780
 msgid "(unknown error class)"
 msgstr "(непознат клас за грешка)"
 
-#: src/feed.c:763
+#: src/feed.c:802
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
@@ -299,7 +299,7 @@ msgstr ""
 "Имаше проблем по време на четенето на абонамента. Моля проверете адресът и "
 "изходната информация в конзолата!"
 
-#: src/feed.c:891
+#: src/feed.c:930
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr "Кеш файлът \"%s\" неможе да бъде изтрит! Моля, премахнете го ръчно!"
@@ -340,7 +340,7 @@ msgstr ""
 msgid "Sorry, I was not able to load any installed browser modules!"
 msgstr ""
 
-#: src/htmlview.c:313
+#: src/htmlview.c:318
 msgid "This item does not have a link assigned!"
 msgstr ""
 
@@ -520,7 +520,7 @@ msgstr "Създава поле за търсене от типа Feedster"
 msgid "_Help"
 msgstr "Помощ"
 
-#: src/interface.c:443 src/interface.c:2493 src/interface.c:2522
+#: src/interface.c:443 src/interface.c:2493 src/interface.c:2523
 msgid "About"
 msgstr "Относно"
 
@@ -948,10 +948,13 @@ msgid "Liferea is a news aggregator for GTK"
 msgstr "Liferea·е·агрегатор на новини·за GTK"
 
 #: src/interface.c:2517
-msgid "Copyright (c) 2003-2004 Lars Lindner"
-msgstr "Copyright·(c)·2003-2004·Lars·Lindner"
+msgid ""
+"Copyright (c) 2003-2004 \n"
+"Lars Lindner <lars.lindner@gmx.net> and \n"
+"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
+msgstr ""
 
-#: src/interface.c:2536
+#: src/interface.c:2537
 #, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
@@ -965,7 +968,6 @@ msgid ""
 "Juho Snellman <jsnell@users.sourceforge.net>\n"
 "Roshan Revankar <roshweb@users.sourceforge.net>\n"
 "Oliver Feiler <kiza@kcore.de>\n"
-"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 "Niklas Morberg <morberg@users.sourceforge.net>\n"
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
@@ -996,11 +998,11 @@ msgstr ""
 "Anders·Carlsson·<andersca@gnu.org>·(tray·icon·support)\n"
 "Philippe·Martin,·Brion·Vibber·(favicon·support)"
 
-#: src/interface.c:2542
+#: src/interface.c:2543
 msgid "Contributors"
 msgstr "Сътрудници"
 
-#: src/interface.c:2556
+#: src/interface.c:2557
 #, fuzzy
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1010,7 +1012,8 @@ msgid ""
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Gernauck <enrico@fanglomerat.de>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Dario Conigliaro <djdas@djdas.no-ip.org>"
 msgstr ""
 "Stephane·Jourdan·<stephane.jourdan@itris.fr>\n"
 "Takeshi·Aihana·<aihana@gnome.gr.jp>\n"
@@ -1020,7 +1023,7 @@ msgstr ""
 "Lars·Lindner·<lars.lindner@gmx.net>\n"
 "Владимир \"Kaladan\" Петков·<vpetkov@i-space.org>"
 
-#: src/interface.c:2562
+#: src/interface.c:2563
 msgid "Translation"
 msgstr "Превод"
 
@@ -1276,50 +1279,50 @@ msgstr "Командата за стартиране на браузър е не
 msgid "starting: \"%s\""
 msgstr "стартира: \"%s\""
 
-#: src/ui_feedlist.c:137 src/ui_folder.c:341
+#: src/ui_feedlist.c:141 src/ui_folder.c:374
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 
-#: src/ui_feedlist.c:313 src/ui_itemlist.c:580
+#: src/ui_feedlist.c:318 src/ui_itemlist.c:607
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_feedlist.c:325 src/ui_feedlist.c:342 src/ui_feedlist.c:384
-#: src/ui_feedlist.c:385
+#: src/ui_feedlist.c:330 src/ui_feedlist.c:347 src/ui_feedlist.c:390
+#: src/ui_feedlist.c:391
 msgid "You have to select a feed entry!"
 msgstr "Трябва да изберете адрес на източник"
 
-#: src/ui_feedlist.c:350
+#: src/ui_feedlist.c:355
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
 
-#: src/ui_feedlist.c:354
+#: src/ui_feedlist.c:359
 msgid "Deleting entry"
 msgstr "Изтрива запис"
 
-#: src/ui_feedlist.c:418
+#: src/ui_feedlist.c:424
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr ""
 "Доставчикът на този източник предлага да поставите периот за осъвременяване "
 "от %d минути"
 
-#: src/ui_feedlist.c:420
+#: src/ui_feedlist.c:426
 msgid "This feed specifies no default update interval."
 msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
 
-#: src/ui_feedlist.c:466
+#: src/ui_feedlist.c:472
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:504
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
 
-#: src/ui_feedlist.c:512
+#: src/ui_feedlist.c:521
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1334,7 +1337,7 @@ msgstr ""
 "Можете да се опитате да изтеглите отново информацията или да премахнете "
 "абонамента, чрез контекстното меню от списъкът с абонаментите.\n"
 
-#: src/ui_feedlist.c:577
+#: src/ui_feedlist.c:586
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 
@@ -1346,53 +1349,53 @@ msgstr "Тип на Правилото"
 msgid "Value"
 msgstr "Стойност"
 
-#: src/ui_folder.c:91 src/ui_folder.c:113 src/ui_folder.c:133
+#: src/ui_folder.c:94 src/ui_folder.c:116 src/ui_folder.c:136
 #, fuzzy
 msgid "A folder must be selected."
 msgstr "Папката трябва да бъде празна за да я изтриете!"
 
-#: src/ui_folder.c:140
+#: src/ui_folder.c:143
 msgid "A folder must be empty to delete it!"
 msgstr "Папката трябва да бъде празна за да я изтриете!"
 
-#: src/ui_folder.c:210
+#: src/ui_folder.c:243
 #, fuzzy
 msgid "<i>(empty)</i>"
 msgstr "(празен)"
 
-#: src/ui_itemlist.c:260
+#: src/ui_itemlist.c:285
 msgid "Date"
 msgstr "Дата"
 
-#: src/ui_itemlist.c:267
+#: src/ui_itemlist.c:292
 msgid "Headline"
 msgstr "Заглавие"
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:322
 msgid "item list widget lookup failed!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:307
+#: src/ui_itemlist.c:332
 msgid "could not retrieve selection of item list!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:389
+#: src/ui_itemlist.c:414
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:529
+#: src/ui_itemlist.c:555
 msgid "No item has been selected!"
 msgstr "Няма избран запис!"
 
-#: src/ui_itemlist.c:552
+#: src/ui_itemlist.c:579
 msgid "You have to select a feed to delete its items!"
 msgstr "Трябва да изберете абонамент за да изтриете неговите записи!"
 
-#: src/ui_itemlist.c:582
+#: src/ui_itemlist.c:609
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:615
+#: src/ui_itemlist.c:642
 msgid "There are no unread items!"
 msgstr "Няма непрочетени записи"
 
@@ -1519,6 +1522,9 @@ msgstr "Mozilla·(експериментално)"
 #: src/mozilla/mozembed.c:65
 msgid "Mozilla (experimental)"
 msgstr "Mozilla·(експериментално)"
+
+#~ msgid "Copyright (c) 2003-2004 Lars Lindner"
+#~ msgstr "Copyright·(c)·2003-2004·Lars·Lindner"
 
 #~ msgid "internal error! unknown feed type %d while updating feeds!"
 #~ msgstr ""

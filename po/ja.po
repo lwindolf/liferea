@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.4.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-25 01:05+0200\n"
+"POT-Creation-Date: 2004-05-03 01:45+0200\n"
 "PO-Revision-Date: 2004-03-29 00:54+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -28,7 +28,7 @@ msgstr ""
 "<p>配信元を読み込む際に XML エラーが発生しました！ (配信元 \"%s\" を読み込め"
 "ませんでした)</p>"
 
-#: src/cdf_channel.c:156 src/feed.c:310 src/ocs_dir.c:457 src/opml.c:147
+#: src/cdf_channel.c:156 src/feed.c:337 src/ocs_dir.c:457 src/opml.c:147
 #: src/pie_feed.c:218 src/rss_channel.c:333
 msgid "<p>Empty document!</p>"
 msgstr "<p>ドキュメントが空です！</p>"
@@ -69,12 +69,12 @@ msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
 msgstr ""
 "おかしな RFC822 データ・フォーマットです！ (<dc:date> 情報を無視します)\n"
 
-#: src/common.c:415
+#: src/common.c:418 src/common.c:425 src/common.c:431 src/common.c:438
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "キャッシュ・フォルダ %s を生成できません！"
 
-#: src/common.c:524
+#: src/common.c:543
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -83,7 +83,7 @@ msgstr ""
 "いくつかの文字を除きます！"
 
 #. sh..!
-#: src/common.c:538
+#: src/common.c:557
 msgid "Internal error while converting UTF-8 chars to HTTP URI!"
 msgstr ""
 "[内部エラー] UTF-8 文字を HTTP URI に変換する際にエラーが発生しました！"
@@ -94,24 +94,24 @@ msgstr ""
 msgid "http://liferea.sf.net/help048.rdf"
 msgstr "http://liferea.sf.net/help047.rdf"
 
-#: src/conf.c:320
+#: src/conf.c:329
 msgid "Liferea Help"
 msgstr "Liferea のヘルプ"
 
-#: src/conf.c:326
+#: src/conf.c:335
 msgid "Online Help Feed"
 msgstr "オンライン・ヘルプの配信元"
 
-#: src/conf.c:336
+#: src/conf.c:345
 msgid "Liferea SF News"
 msgstr "Liferea の SF ニュース"
 
-#: src/conf.c:417
+#: src/conf.c:426
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: src/conf.c:443
+#: src/conf.c:452
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 名前空間 %s が未だ設定されいません！ 有効にします...\n"
@@ -156,39 +156,39 @@ msgstr "配信元一覧を取り込みました"
 msgid "internal error! could not get a new folder key!"
 msgstr "[内部エラー] 新しいフォルダ・キーを取得できませんでした！"
 
-#: src/favicon.c:421
+#: src/favicon.c:429
 #, c-format
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr "アイコン・ファイル %s を削除できません！ (手動で削除して下さい)"
 
-#: src/feed.c:261
+#: src/feed.c:277
 msgid "could not write XML item node!\n"
 msgstr "XML トピック・ノードを書き込めませんでした！\n"
 
-#: src/feed.c:270
+#: src/feed.c:286
 msgid "could not create XML feed node for feed cache document!"
 msgstr ""
 "配信元キャッシュ・ドキュメントの XML 配信元ノードを生成できませんでした！"
 
-#: src/feed.c:275
+#: src/feed.c:291
 msgid "could not create XML document!"
 msgstr "XML ドキュメントを生成できませんでした！"
 
-#: src/feed.c:294
+#: src/feed.c:321
 #, fuzzy, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイルを読み込めませんでした)"
 
-#: src/feed.c:295
+#: src/feed.c:322
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイルを読み込めませんでした)"
 
-#: src/feed.c:304
+#: src/feed.c:331
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -197,105 +197,105 @@ msgstr ""
 "<p>キャッシュ・ファイルを読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイル \"%s\" を読み込めませんでした)</p>"
 
-#: src/feed.c:319
+#: src/feed.c:346
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" は正しいキャッシュ・ファイルではありません！ キャッシュ・ファイルが"
 "読めません！</p>"
 
-#: src/feed.c:357
+#: src/feed.c:389
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr "キャッシュ・ファイル \"%s\" を解析する際にエラーが発生しました！"
 
-#: src/feed.c:485
+#: src/feed.c:517
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" に新しいトピックはありません"
 
-#: src/feed.c:487
+#: src/feed.c:519
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" に %d 個の新しいトピックがあります"
 
-#: src/feed.c:576
+#: src/feed.c:615
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" は最後の更新から変更されていません。"
 
-#: src/feed.c:615
+#: src/feed.c:654
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" の更新が完了しました..."
 
-#: src/feed.c:621
+#: src/feed.c:660
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "\"%s\" の URL が変更されていたので更新しました。"
 
-#: src/feed.c:631
+#: src/feed.c:670
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" は利用できません！"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:724 src/net/netio.c:478
+#: src/feed.c:763 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "この配信元はもう存在しません。購読を停止して下さい！"
 
-#: src/feed.c:725
+#: src/feed.c:764
 msgid "Payment Required"
 msgstr "有料コンテンツの認証に失敗しました (402)"
 
-#: src/feed.c:726
+#: src/feed.c:765
 msgid "Access Forbidden"
 msgstr "アクセス権限がありません (403)"
 
-#: src/feed.c:727
+#: src/feed.c:766
 msgid "Ressource Not Found"
 msgstr "リソースがありません (404)"
 
-#: src/feed.c:728
+#: src/feed.c:767
 msgid "Method Not Allowed"
 msgstr "許可されていないメソッドです (405)"
 
-#: src/feed.c:729
+#: src/feed.c:768
 msgid "Not Acceptable"
 msgstr "受け付けられないヘッダ内容です (406)"
 
-#: src/feed.c:730
+#: src/feed.c:769
 msgid "Proxy Authentication Required"
 msgstr "プロキシの認証に失敗しました (407)"
 
-#: src/feed.c:731
+#: src/feed.c:770
 msgid "Request Time-Out"
 msgstr "タイムアウトになりました (408)"
 
-#: src/feed.c:732
+#: src/feed.c:771
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "この配信元はもう存在しません。購読を停止して下さい！"
 
-#: src/feed.c:738
+#: src/feed.c:777
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr ""
 "配信元は利用できません: サーバはシグナルのリダイレクションをサポートしていま"
 "せん！"
 
-#: src/feed.c:739
+#: src/feed.c:778
 msgid "Client Error"
 msgstr "クライアントのエラー"
 
-#: src/feed.c:740
+#: src/feed.c:779
 msgid "Server Error"
 msgstr "サーバのエラー"
 
-#: src/feed.c:741
+#: src/feed.c:780
 msgid "(unknown error class)"
 msgstr "(クラスが不明なエラー)"
 
-#: src/feed.c:763
+#: src/feed.c:802
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
@@ -303,7 +303,7 @@ msgstr ""
 "この購読を読み込んでいる際に問題が発生しました。指定した URL と端末の出力を確"
 "認して下さい！"
 
-#: src/feed.c:891
+#: src/feed.c:930
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr "キャッシュ・ファイル %s を削除できません！ 手動で削除して下さい！"
@@ -345,7 +345,7 @@ msgstr ""
 "すみません、インストールされているブラウザ・モジュールのいずれも読み込むこと"
 "ができませんでした"
 
-#: src/htmlview.c:313
+#: src/htmlview.c:318
 msgid "This item does not have a link assigned!"
 msgstr "このトピックにはリンクが割り当てられていません！"
 
@@ -525,7 +525,7 @@ msgstr "Feedster 検索用配信元を生成します"
 msgid "_Help"
 msgstr "ヘルプ"
 
-#: src/interface.c:443 src/interface.c:2493 src/interface.c:2522
+#: src/interface.c:443 src/interface.c:2493 src/interface.c:2523
 msgid "About"
 msgstr "情報"
 
@@ -956,10 +956,13 @@ msgid "Liferea is a news aggregator for GTK"
 msgstr "Liferea は GTK+ 版のニュース・アグリゲータです。"
 
 #: src/interface.c:2517
-msgid "Copyright (c) 2003-2004 Lars Lindner"
-msgstr "Copyright (c) 2003-2004 Lars Lindner"
+msgid ""
+"Copyright (c) 2003-2004 \n"
+"Lars Lindner <lars.lindner@gmx.net> and \n"
+"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
+msgstr ""
 
-#: src/interface.c:2536
+#: src/interface.c:2537
 #, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
@@ -973,7 +976,6 @@ msgid ""
 "Juho Snellman <jsnell@users.sourceforge.net>\n"
 "Roshan Revankar <roshweb@users.sourceforge.net>\n"
 "Oliver Feiler <kiza@kcore.de>\n"
-"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 "Niklas Morberg <morberg@users.sourceforge.net>\n"
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
@@ -1004,11 +1006,11 @@ msgstr ""
 "Anders Carlsson <andersca@gnu.org> (トレイ・アイコンのサポート)\n"
 "Philippe Martin, Brion Vibber (favicon のサポート)"
 
-#: src/interface.c:2542
+#: src/interface.c:2543
 msgid "Contributors"
 msgstr "その他の貢献者"
 
-#: src/interface.c:2556
+#: src/interface.c:2557
 #, fuzzy
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1018,7 +1020,8 @@ msgid ""
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Gernauck <enrico@fanglomerat.de>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
-"Tomislav Markovski <tome@set.com.mk>"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Dario Conigliaro <djdas@djdas.no-ip.org>"
 msgstr ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "相花 毅 <aihana@gnome.gr.jp>\n"
@@ -1028,7 +1031,7 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net>\n"
 "Vladimir Petkov <vpetkov@i-space.org>"
 
-#: src/interface.c:2562
+#: src/interface.c:2563
 msgid "Translation"
 msgstr "翻訳者"
 
@@ -1286,51 +1289,51 @@ msgstr "起動に失敗したブラウザ・コマンド: %s"
 msgid "starting: \"%s\""
 msgstr "起動中: \"%s\""
 
-#: src/ui_feedlist.c:137 src/ui_folder.c:341
+#: src/ui_feedlist.c:141 src/ui_folder.c:374
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "[内部エラー] 不明なエントリの種類です！ 適切なアイコンを表示できません！\n"
 
-#: src/ui_feedlist.c:313 src/ui_itemlist.c:580
+#: src/ui_feedlist.c:318 src/ui_itemlist.c:607
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
 
-#: src/ui_feedlist.c:325 src/ui_feedlist.c:342 src/ui_feedlist.c:384
-#: src/ui_feedlist.c:385
+#: src/ui_feedlist.c:330 src/ui_feedlist.c:347 src/ui_feedlist.c:390
+#: src/ui_feedlist.c:391
 msgid "You have to select a feed entry!"
 msgstr "配信元エントリを一つ選択して下さい！"
 
-#: src/ui_feedlist.c:350
+#: src/ui_feedlist.c:355
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
 
-#: src/ui_feedlist.c:354
+#: src/ui_feedlist.c:359
 msgid "Deleting entry"
 msgstr "エントリの削除"
 
-#: src/ui_feedlist.c:418
+#: src/ui_feedlist.c:424
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr "この配信元での更新間隔は %d 分になっています"
 
-#: src/ui_feedlist.c:420
+#: src/ui_feedlist.c:426
 msgid "This feed specifies no default update interval."
 msgstr "この配信元はデフォルトの更新間隔を指定していません"
 
-#: src/ui_feedlist.c:466
+#: src/ui_feedlist.c:472
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 "[内部エラー] 配信元が選択されていないのに、プロパティの変更を指定しまし"
 "た...\n"
 
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:504
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
 
-#: src/ui_feedlist.c:512
+#: src/ui_feedlist.c:521
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1344,7 +1347,7 @@ msgstr ""
 "URL が不正か、あるいは配信元が一時的に利用できないかもしれません。配信元一覧"
 "のコンテキスト・メニューから購読のリトライまたは削除を行うことができます。\n"
 
-#: src/ui_feedlist.c:577
+#: src/ui_feedlist.c:586
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 "[内部エラー] 選択した種類が正しくありません！ (これは絶対に発生しえないことで"
@@ -1358,54 +1361,54 @@ msgstr "ルールの種類"
 msgid "Value"
 msgstr "値"
 
-#: src/ui_folder.c:91 src/ui_folder.c:113 src/ui_folder.c:133
+#: src/ui_folder.c:94 src/ui_folder.c:116 src/ui_folder.c:136
 #, fuzzy
 msgid "A folder must be selected."
 msgstr "削除する場合はフォルダを空にして下さい！"
 
-#: src/ui_folder.c:140
+#: src/ui_folder.c:143
 msgid "A folder must be empty to delete it!"
 msgstr "削除する場合はフォルダを空にして下さい！"
 
-#: src/ui_folder.c:210
+#: src/ui_folder.c:243
 #, fuzzy
 msgid "<i>(empty)</i>"
 msgstr "(空)"
 
-#: src/ui_itemlist.c:260
+#: src/ui_itemlist.c:285
 msgid "Date"
 msgstr "日付"
 
-#: src/ui_itemlist.c:267
+#: src/ui_itemlist.c:292
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:322
 msgid "item list widget lookup failed!\n"
 msgstr "トピック一覧ウィジットの検索に失敗しました！\n"
 
-#: src/ui_itemlist.c:307
+#: src/ui_itemlist.c:332
 msgid "could not retrieve selection of item list!\n"
 msgstr "トピック一覧の選択範囲を取得できませんでした！\n"
 
-#: src/ui_itemlist.c:389
+#: src/ui_itemlist.c:414
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr "[内部エラー] トピックの一覧表示で NULL ポインタを要求しました！\n"
 
-#: src/ui_itemlist.c:529
+#: src/ui_itemlist.c:555
 msgid "No item has been selected!"
 msgstr "トピックが選択されていません！"
 
-#: src/ui_itemlist.c:552
+#: src/ui_itemlist.c:579
 msgid "You have to select a feed to delete its items!"
 msgstr "トピックを削除する配信元を選択して下さい！"
 
-#: src/ui_itemlist.c:582
+#: src/ui_itemlist.c:609
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 "[内部エラー] 配信元ツリー・ビュー・ウィジットが見つかりませんでした！\n"
 
-#: src/ui_itemlist.c:615
+#: src/ui_itemlist.c:642
 msgid "There are no unread items!"
 msgstr "未読のトピックはありません！"
 
@@ -1531,6 +1534,9 @@ msgstr "GtkHTML3 (Experimental)"
 #: src/mozilla/mozembed.c:65
 msgid "Mozilla (experimental)"
 msgstr "Mozilla (Experimental)"
+
+#~ msgid "Copyright (c) 2003-2004 Lars Lindner"
+#~ msgstr "Copyright (c) 2003-2004 Lars Lindner"
 
 #~ msgid "internal error! unknown feed type %d while updating feeds!"
 #~ msgstr "[内部エラー] 配信元を更新する際に不明な配信元の種類 %d"
