@@ -22,6 +22,9 @@
 	  last poll of the feed, which is saved across restarts of
 	  Liferea. This means that feeds needing updates (based on the
 	  update interval) are automatically updated when Liferea starts.
+	* If the close box is used in the Liferea main window when the
+	  systray icon is active, Liferea will close its main window, but
+	  not quit. Click the systray icon to show the main window
 	
 	Bug Fixes:
 	
@@ -29,8 +32,8 @@
 	  properties.
 	* Liferea should now build with gcc 2.95 again.
 	* Toolbars now obey the GNOME toolbar setting with respect to if
-	  icons, text, or both are desired to be shown
-
+	  icons, text, or both are desired to be shown.
+	  
 2004-05-22  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.9

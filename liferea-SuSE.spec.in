@@ -12,9 +12,13 @@ Requires:      /bin/sh
 %description
 An Aggregator For RSS/RDF Feeds For GTK/GNOME.                                                                          
 
-Liferea is a simple FeedReader clone for Unix distributions with GNOME2.
-It is a news aggregator for RSS/RDF feeds which also supports CDF channels,
-Atom/Echo/PIE feeds and OCS or OPML directories.
+Liferea is an abbreviation for Linux Feed Reader. It is a news
+aggregator for online news feeds. It supports a number of different
+feed formats including RSS/RDF, CDF, Atom, OCS, and OPML. There are
+many other news readers available, but these others are not available
+for Linux or require many extra libraries to be installed. Liferea
+tries to fill this gap by creating a fast, easy to use, easy to
+install news aggregator for GTK/GNOME.
 
 %prep
 %setup
