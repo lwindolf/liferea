@@ -140,23 +140,14 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 
 		/* now fp contains the actual feed infos */
 		saveFeed(fp);
-				
-		g_mutex_lock(feeds_lock);
-		/* update all vfolders */
-		// g_hash_table_foreach(feeds, removeOldItemsFromVFolders, fp); // FIXME: mergeFeed has to do this!
-		g_assert(NULL != feeds);
-		g_hash_table_foreach(feeds, scanFeed, fp);		// FIXME: this causes double items, only scan new items -> move functionality to item.c
-		g_mutex_unlock(feeds_lock);
-				
+			
 		gdk_threads_enter();
-
-		if(selected_fp == fp) {
+		if((NULL != fp) && (selected_fp == fp)) {
 			clearItemList();
 			loadItemList(fp, NULL);
 			preFocusItemlist();
 		}
-		redrawFeedList();	// FIXME: maybe this is overkill ;=)
-		
+		redrawFeedList();	// FIXME: maybe this is overkill ;=)	
 		gdk_threads_leave();
 	}
 }

@@ -59,6 +59,10 @@ GHashTable	*feedHandler = NULL;
 /* used to lookup a feed pointer specified by a key */
 GHashTable	*feeds = NULL;
 
+/* a list containing all items of all feeds, used for VFolder
+   and searching functionality */
+feedPtr		allItems = NULL;
+
 extern GMutex * feeds_lock;
 
 void registerFeedType(gint type, feedHandlerPtr fhp) {
@@ -114,6 +118,11 @@ void initBackend() {
 		g_mutex_unlock(feeds_lock);
 	}
 
+	if(NULL == allItems) {
+		allItems = getNewFeedStruct();
+		allItems->type = FST_VFOLDER;
+	}
+	
 	initFeedTypes();
 	initFolders();
 	initVFolders();
@@ -573,6 +582,7 @@ void addItem(feedPtr fp, itemPtr ip) {
 	if(FALSE == ip->readStatus)
 		increaseUnreadCount(fp);
 	fp->items = g_slist_append(fp->items, (gpointer)ip);
+	allItems->items = g_slist_append(allItems->items, (gpointer)ip);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -686,6 +696,7 @@ void freeFeed(feedPtr fp) {
 	/* free items */
 	item = getFeedItemList(fp);
 	while(NULL != item) {
+		allItems->items = g_slist_remove(allItems->items, item->data);
 		freeItem(item->data);
 		item = g_slist_next(item);
 	}

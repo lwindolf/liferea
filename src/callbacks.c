@@ -67,6 +67,7 @@ extern GThread		*updateThread;
 extern GHashTable	*feeds; // FIXME!
 extern GHashTable	*folders; // FIXME!
 extern GMutex 		*feeds_lock; // FIXME!
+extern feedPtr		allItems;
 
 static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
 static gboolean	itemlist_mode = TRUE;	/* TRUE means three pane, FALSE means two panes */
@@ -93,7 +94,6 @@ static gchar	*selected_keyprefix = NULL;
 void preFocusItemlist(void);
 GtkTreeStore * getFeedStore(void);
 GtkTreeStore * getItemStore(void);
-void searchItems(gchar *string);
 void loadItemList(feedPtr fp, gchar *searchstring);
 void displayItemList(void);
 void clearItemList(void);
@@ -415,20 +415,22 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 			   FS_KEY, getFeedKey(fp),
 			   FS_TYPE, getFeedType(fp),
 			   -1);
-			   
-	if(NULL == (treeview = lookup_widget(mainwindow, "feedlist"))) {
-		g_warning(_("internal error! could not find feed tree view!\n"));
-		return;
+
+	if(!startup) {			   
+		if(NULL == (treeview = lookup_widget(mainwindow, "feedlist"))) {
+			g_warning(_("internal error! could not find feed tree view!\n"));
+			return;
+		}
+
+		/* this selection is necessary for the property dialog, which is
+		   opened after feed subscription and depends on the correctly
+		   selected feed (FIXME: maybe a static feedkey storage instead
+		   of the continuous selection retrieval) */
+		if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
+			gtk_tree_selection_select_iter(selection, &iter);
+		else
+			g_warning(_("internal error! could not get feed tree view selection!\n"));
 	}
-	
-	/* this selection is necessary for the property dialog, which is
-	   opened after feed subscription and depends on the correctly
-	   selected feed (FIXME: maybe a static feedkey storage instead
-	   of the continuous selection retrieval) */
-	if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
-		gtk_tree_selection_select_iter(selection, &iter);
-	else
-		g_warning(_("internal error! could not get feed tree view selection!\n"));
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
@@ -722,8 +724,10 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		print_status(g_strdup_printf(_("searching for \"%s\""), searchstring));
-		// FIXME: use a VFolder instead of searchItems()
-		searchItems((gchar *)searchstring);
+		selected_fp = NULL;
+		selected_ip = NULL;
+		selected_type = FST_VFOLDER;
+		loadItemList(allItems, (gchar *)searchstring);
 	}
 }
 
@@ -810,44 +814,32 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 	feedPtr			fp;
 	GdkGeometry		geometry;
 
-	g_assert(mainwindow != NULL);
-
-        if (gtk_tree_selection_get_selected (selection, &model, &iter))
-        {
+        if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
                 gtk_tree_model_get (model, &iter, 
 				FS_KEY, &tmp_key,
 				FS_TYPE, &tmp_type,
 				-1);
-				
+
+		selected_ip = NULL;				
+		g_assert(NULL != tmp_key);
 		/* make sure thats no grouping iterator */
 		if(!IS_NODE(tmp_type) && (FST_EMPTY != tmp_type)) {
-			g_assert(NULL != tmp_key);
-			
-			fp = getFeed(tmp_key);
-			
-			clearItemList();
-			loadItemList(fp, NULL);
-			g_free(tmp_key);
-			
-			if(itemlist_mode) {
-				startHTMLOutput();
-				writeHTML(fp->description);
-				finishHTMLOutput();
-			}
+			fp = getFeed(tmp_key);				
 			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing */
 			geometry.min_height=480;
 			geometry.min_width=640;
+			g_assert(mainwindow != NULL);
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
-
-			preFocusItemlist();
-			
+	
 			/* save new selection infos */
 			selected_fp = fp;
 			selected_type = tmp_type;
 			g_free(selected_keyprefix);
 			selected_keyprefix = g_strdup(getFeedKeyPrefix(fp));
+			
+			loadItemList(fp, NULL);
 		} else {
 			/* save new selection infos */
 			selected_fp = NULL;
@@ -855,6 +847,7 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 			g_free(selected_keyprefix);
 			selected_keyprefix = g_strdup(tmp_key);
 		}
+		g_free(tmp_key);
        	}
 }
 
@@ -870,8 +863,8 @@ void itemlist_selection_changed(void) {
 	/* do nothing upon initial focussing */
 	if(!itemlist_loading) {
 		g_assert(mainwindow != NULL);
-
 		if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
+			print_status(_("could not find item list widget!"));
 			return;
 		}
 
@@ -1485,17 +1478,29 @@ void displayItemList(void) {
 	GtkTreeIter	iter;
 	gboolean	valid;
 	itemPtr		ip;
-	
-	if(gnome_vfs_is_primary_thread() && !itemlist_mode) {
+
+	/* HTML widget can be used only from GTK thread */	
+	if(gnome_vfs_is_primary_thread()) {
 		startHTMLOutput();
-		
-		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-		while(valid) {	
-			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
-			writeHTML(getItemDescription(ip));
-			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+		if(!itemlist_mode) {
+			/* two pane mode */
+			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+			while(valid) {	
+				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+				writeHTML(getItemDescription(ip));
+				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+			}
+		} else {
+			/* three pane mode */
+			if(NULL == selected_ip) {
+				/* display feed info */
+				if(NULL != selected_fp)
+					writeHTML(getFeedDescription(selected_fp));
+			} else {
+				/* display item content */
+				writeHTML(getItemDescription(selected_ip));
+			}
 		}
-		
 		finishHTMLOutput();
 	}
 }
@@ -1509,19 +1514,17 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 	gboolean	add;
 
 	if(NULL == fp) {
-		print_status(_("internal error! item display for NULL pointer requested!"));
+		g_warning(_("internal error! item list display for NULL pointer requested!\n"));
 		return;
 	}
-			
-	itemlist = fp->items;
+
+	clearItemList();	
+	itemlist = getFeedItemList(fp);		
 	while(NULL != itemlist) {
 		ip = itemlist->data;
 		title = getItemTitle(ip);
 		description = getItemDescription(ip);
 		
-/*		if(0 == ((++count)%100)) 
-			print_status(g_strdup_printf(_("loading feed... (%d items)"), count));*/
-
 		add = TRUE;
 		if(NULL != searchstring) {
 			add = FALSE;
@@ -1531,9 +1534,6 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 
 			if((NULL != description) && (NULL != strstr(description, searchstring)))
 				add = TRUE;
-				
-			if(FST_VFOLDER == getFeedType(fp))
-				add = FALSE;
 		}
 
 		if(add) {
@@ -1544,29 +1544,12 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 					IS_TIME, getItemTime(ip),
 					IS_TYPE, getFeedType(fp),	/* not the item type, this would fail for VFolders! */
 					-1);
-					
-			if(gnome_vfs_is_primary_thread() && !itemlist_mode)
-				writeHTML(description);
 		}
 
 		itemlist = g_slist_next(itemlist);
 	}
-	
 	displayItemList();
-}
-
-static void searchInFeed(gpointer key, gpointer value, gpointer userdata) {
-	
-	loadItemList((feedPtr)value, (gchar *)userdata);
 	preFocusItemlist();
-}
-
-void searchItems(gchar *string) {
-
-	clearItemList();
-	//g_mutex_lock(feeds_lock);
-	g_hash_table_foreach(feeds, searchInFeed, string);
-	//g_mutex_unlock(feeds_lock);	
 }
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {

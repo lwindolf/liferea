@@ -197,7 +197,7 @@ void checkForEmptyFolders(void) {
 
 /* function to scan folder with keyprefix for the feed with key, if the
    feed entry is found the entries configuration 'll be removed, then a
-   new feed key for the actual folder 'll be generated and save to 
+   new feed key for the actual folder 'll be generated and saved to 
    tree store and configuration (this function is called after a DND
    operation to update the DND modifieds feed key and keyprefix and
    its old and new folders keylist) */
