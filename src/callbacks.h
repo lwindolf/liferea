@@ -18,6 +18,7 @@
 
 #include <gtk/gtk.h>
 #include <libgtkhtml/gtkhtml.h>
+#include "ui_mainwindow.h"
 #include "ui_feedlist.h"
 #include "ui_itemlist.h"
 #include "ui_folder.h"

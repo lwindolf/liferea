@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-29 18:53+0100\n"
+"POT-Creation-Date: 2004-02-01 15:04+0100\n"
 "PO-Revision-Date: 2004-01-04 01:29+0100\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
@@ -24,27 +24,27 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "No se ha podido encontrar la imagen: %s"
 
-#: src/callbacks.c:234
+#: src/callbacks.c:236
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "La URL de \"%s\" no ha cambiado desde la última actualización"
 
-#: src/callbacks.c:242
+#: src/callbacks.c:244
 #, fuzzy, c-format
 msgid "internal error! unknown feed type %d while updating feeds!"
 msgstr "Error interno: Tipo de fuente desconocido en 'newFeed()'."
 
-#: src/callbacks.c:260
+#: src/callbacks.c:266
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" actualizado..."
 
-#: src/callbacks.c:268
+#: src/callbacks.c:274
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada."
 
-#: src/callbacks.c:287
+#: src/callbacks.c:292
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "Lo siento, \"%s\" no está disponible"
@@ -416,15 +416,6 @@ msgstr "(vacío)"
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr "No se pudo mover el archivo de caché %s a su destino %s.\n"
-
-#: src/htmlview.c:424
-#, c-format
-msgid ""
-"There is no %%s URL place holder in the browser command string you specified "
-"in the preferences dialog!!!"
-msgstr ""
-"Por favor, escribe \"%%s\" detrás de tu navegador favorito, en el cuadro de "
-"preferencias."
 
 #: src/interface.c:132
 #, fuzzy
@@ -1193,40 +1184,36 @@ msgid "/_Delete VFolder"
 msgstr "/Eliminar carpeta _virtual"
 
 #: src/ui_popup.c:121
-msgid "/_Mark All As Read"
-msgstr "/Marcar _todos como leídos"
-
-#: src/ui_popup.c:122
-msgid "/_Next Unread Item"
-msgstr "/_Siguiente elemento nuevo"
-
-#: src/ui_popup.c:124
 #, fuzzy
 msgid "/Toggle _Read Status"
 msgstr "Marcar/Desmarcar _leído"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:122
 #, fuzzy
 msgid "/Toggle Item _Flag"
 msgstr "Establecer _flag"
 
-#: src/ui_popup.c:127
+#: src/ui_popup.c:124
+msgid "/_Next Unread Item"
+msgstr "/_Siguiente elemento nuevo"
+
+#: src/ui_popup.c:126
 msgid "/_Launch Item In Browser"
 msgstr "/Abrir en _navegador"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:135
 msgid "/Zoom In"
 msgstr "/A_cercar"
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:136
 msgid "/Zoom Out"
 msgstr "/A_lejar"
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:142
 msgid "/_Copy Link Location"
 msgstr "/_Copiar dirección del enlace"
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:143
 msgid "/_Subscribe"
 msgstr "/_Suscribirse"
 
@@ -1254,20 +1241,20 @@ msgstr "Carpeta virtual %s"
 msgid "internal error! could not get folder key prefix!"
 msgstr "Error interno: No se pudo obtener el prefijo de la ID de carpeta."
 
-#: src/ui_tray.c:79
+#: src/ui_tray.c:83
 #, c-format
 msgid "%d new items!"
 msgstr "¡%d elementos nuevos!"
 
-#: src/ui_tray.c:86
+#: src/ui_tray.c:94
 msgid "No new items."
 msgstr "No hay elementos nuevos"
 
-#: src/ui_dnd.c:79
+#: src/ui_dnd.c:83
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr "Lo siento, Liferea aún no soporta arrastrar y soltar con carpetas."
 
-#: src/ui_dnd.c:88
+#: src/ui_dnd.c:92
 msgid "you cannot modify the special help folder contents!"
 msgstr ""
 "Lo siento, no puedes modificar los contenidos de las carpetas especiales de "
@@ -1281,6 +1268,16 @@ msgstr "No se ha podido asignar memoria suficiente."
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr ""
 "La fuente es nula. Esto no debería de estar pasando. No se pudo actualizar."
+
+#~ msgid ""
+#~ "There is no %%s URL place holder in the browser command string you "
+#~ "specified in the preferences dialog!!!"
+#~ msgstr ""
+#~ "Por favor, escribe \"%%s\" detrás de tu navegador favorito, en el cuadro "
+#~ "de preferencias."
+
+#~ msgid "/_Mark All As Read"
+#~ msgstr "/Marcar _todos como leídos"
 
 #~ msgid ""
 #~ "You have disabled both the menubar and the toolbar. Without one of these "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-29 18:53+0100\n"
+"POT-Creation-Date: 2004-02-01 15:04+0100\n"
 "PO-Revision-Date: 2003-12-28 09:00+0100\n"
 "Last-Translator: Lars Lindner <lars.linder@gmx.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,28 +21,28 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Konnte pixmap Datei nicht finden: %"
 
-#: src/callbacks.c:234
+#: src/callbacks.c:236
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" hat sich seit dem letzten Update nicht verändert."
 
-#: src/callbacks.c:242
+#: src/callbacks.c:244
 #, c-format
 msgid "internal error! unknown feed type %d while updating feeds!"
 msgstr ""
 
-#: src/callbacks.c:260
+#: src/callbacks.c:266
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualisiert.."
 
-#: src/callbacks.c:268
+#: src/callbacks.c:274
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 "Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert."
 
-#: src/callbacks.c:287
+#: src/callbacks.c:292
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" ist nicht verfügbar!"
@@ -399,15 +399,6 @@ msgstr "(leer)"
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr "Fehler! Konnte Cache-Datei \"%s\" nicht nach \"%s\" verschieben!\n"
-
-#: src/htmlview.c:424
-#, c-format
-msgid ""
-"There is no %%s URL place holder in the browser command string you specified "
-"in the preferences dialog!!!"
-msgstr ""
-"Es gibt keinen %%s URL Platzhalter im String der Browserkommando Einstellung "
-"gefunden werden!!!"
 
 #: src/interface.c:132
 #, fuzzy
@@ -1168,40 +1159,36 @@ msgid "/_Delete VFolder"
 msgstr "/VFolder _löschen"
 
 #: src/ui_popup.c:121
-msgid "/_Mark All As Read"
-msgstr "/Alle als gelesen _markieren"
-
-#: src/ui_popup.c:122
-msgid "/_Next Unread Item"
-msgstr "/Nächstes ungelesenes Item"
-
-#: src/ui_popup.c:124
 #, fuzzy
 msgid "/Toggle _Read Status"
 msgstr "Lesestatus ändern"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:122
 #, fuzzy
 msgid "/Toggle Item _Flag"
 msgstr "_Flagge setzen"
 
-#: src/ui_popup.c:127
+#: src/ui_popup.c:124
+msgid "/_Next Unread Item"
+msgstr "/Nächstes ungelesenes Item"
+
+#: src/ui_popup.c:126
 msgid "/_Launch Item In Browser"
 msgstr "/Im _Browser öffnen"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:135
 msgid "/Zoom In"
 msgstr "/Hineinzoomen"
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:136
 msgid "/Zoom Out"
 msgstr "/Herauszoomen"
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:142
 msgid "/_Copy Link Location"
 msgstr "/Link kopieren"
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:143
 msgid "/_Subscribe"
 msgstr "/Abonnieren"
 
@@ -1229,21 +1216,21 @@ msgstr "VFolder %s"
 msgid "internal error! could not get folder key prefix!"
 msgstr ""
 
-#: src/ui_tray.c:79
+#: src/ui_tray.c:83
 #, c-format
 msgid "%d new items!"
 msgstr "%d neue Schlagzeilen!"
 
-#: src/ui_tray.c:86
+#: src/ui_tray.c:94
 msgid "No new items."
 msgstr "Keine neuen Schlagzeilen."
 
-#: src/ui_dnd.c:79
+#: src/ui_dnd.c:83
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr ""
 "Tut mir leid. Im Augenblick wird das Drag&Drop von Ordnern nicht unterstützt!"
 
-#: src/ui_dnd.c:88
+#: src/ui_dnd.c:92
 msgid "you cannot modify the special help folder contents!"
 msgstr "Die Eigenschaften des Hilfe-Ordners können nicht geändert werden!"
 
@@ -1254,6 +1241,16 @@ msgstr "Konnte Speicher nicht allokieren!"
 #: src/update.c:143
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr ""
+
+#~ msgid ""
+#~ "There is no %%s URL place holder in the browser command string you "
+#~ "specified in the preferences dialog!!!"
+#~ msgstr ""
+#~ "Es gibt keinen %%s URL Platzhalter im String der Browserkommando "
+#~ "Einstellung gefunden werden!!!"
+
+#~ msgid "/_Mark All As Read"
+#~ msgstr "/Alle als gelesen _markieren"
 
 #~ msgid ""
 #~ "You have disabled both the menubar and the toolbar. Without one of these "

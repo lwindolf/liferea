@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-29 18:53+0100\n"
+"POT-Creation-Date: 2004-02-01 15:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,27 +21,27 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr ""
 
-#: src/callbacks.c:234
+#: src/callbacks.c:236
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr ""
 
-#: src/callbacks.c:242
+#: src/callbacks.c:244
 #, c-format
 msgid "internal error! unknown feed type %d while updating feeds!"
 msgstr ""
 
-#: src/callbacks.c:260
+#: src/callbacks.c:266
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: src/callbacks.c:268
+#: src/callbacks.c:274
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 
-#: src/callbacks.c:287
+#: src/callbacks.c:292
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr ""
@@ -387,13 +387,6 @@ msgstr ""
 #: src/folder.c:347
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
-msgstr ""
-
-#: src/htmlview.c:424
-#, c-format
-msgid ""
-"There is no %%s URL place holder in the browser command string you specified "
-"in the preferences dialog!!!"
 msgstr ""
 
 #: src/interface.c:132
@@ -1109,38 +1102,34 @@ msgid "/_Delete VFolder"
 msgstr ""
 
 #: src/ui_popup.c:121
-msgid "/_Mark All As Read"
-msgstr ""
-
-#: src/ui_popup.c:122
-msgid "/_Next Unread Item"
-msgstr ""
-
-#: src/ui_popup.c:124
 msgid "/Toggle _Read Status"
 msgstr ""
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:122
 msgid "/Toggle Item _Flag"
 msgstr ""
 
-#: src/ui_popup.c:127
+#: src/ui_popup.c:124
+msgid "/_Next Unread Item"
+msgstr ""
+
+#: src/ui_popup.c:126
 msgid "/_Launch Item In Browser"
 msgstr ""
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:135
 msgid "/Zoom In"
 msgstr ""
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:136
 msgid "/Zoom Out"
 msgstr ""
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:142
 msgid "/_Copy Link Location"
 msgstr ""
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:143
 msgid "/_Subscribe"
 msgstr ""
 
@@ -1168,20 +1157,20 @@ msgstr ""
 msgid "internal error! could not get folder key prefix!"
 msgstr ""
 
-#: src/ui_tray.c:79
+#: src/ui_tray.c:83
 #, c-format
 msgid "%d new items!"
 msgstr ""
 
-#: src/ui_tray.c:86
+#: src/ui_tray.c:94
 msgid "No new items."
 msgstr ""
 
-#: src/ui_dnd.c:79
+#: src/ui_dnd.c:83
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr ""
 
-#: src/ui_dnd.c:88
+#: src/ui_dnd.c:92
 msgid "you cannot modify the special help folder contents!"
 msgstr ""
 

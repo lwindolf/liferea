@@ -124,8 +124,6 @@ void setupPopupMenues(void) {
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),	NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
 	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Launch Item In Browser"), NULL, on_popup_launchitem_selected, 		0, NULL, 0);
-	addPopupOption(&item_menu_items, &item_menu_len, "/"	,			NULL, NULL, 					0, "<Separator>", 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _(TOGGLE_CONDENSED_VIEW),	NULL, on_popup_toggle_condensed_view,		0, "<ToggleItem>", 0);
 /*      {"/sep2",			NULL, NULL, 					0, "<Separator>" },
     	{"/_Edit Filters",		NULL, on_popup_filter_selected, 		0, NULL },*/
 
@@ -134,9 +132,7 @@ void setupPopupMenues(void) {
 	html_menu_len = 0;
 	addPopupOption(&html_menu_items, &html_menu_len, _("/Zoom In"),			NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
 	addPopupOption(&html_menu_items, &html_menu_len, _("/Zoom Out"),		NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
-	addPopupOption(&html_menu_items, &html_menu_len, "/",				NULL, NULL, 				0, "<Separator>", 0);
-	addPopupOption(&html_menu_items, &html_menu_len, _(TOGGLE_CONDENSED_VIEW),	NULL, on_popup_toggle_condensed_view, 	0, "<ToggleItem>", 0);
-	
+
 	url_menu_items = NULL;
 	url_menu_len = 0;
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);

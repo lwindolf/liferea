@@ -1,7 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST = acinclude.m4
-
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \

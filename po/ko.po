@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-29 18:53+0100\n"
+"POT-Creation-Date: 2004-02-01 15:04+0100\n"
 "PO-Revision-Date: 2003-12-05 20:43+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -20,27 +20,27 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "pixmap 파일 %s을(를) 찾을 수 없습니다"
 
-#: src/callbacks.c:234
+#: src/callbacks.c:236
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\"은(는) 새로운 아이템이 없습니다."
 
-#: src/callbacks.c:242
+#: src/callbacks.c:244
 #, fuzzy, c-format
 msgid "internal error! unknown feed type %d while updating feeds!"
 msgstr "내부 에러! NewFeed()에서 알 수 없는 피드타입 !"
 
-#: src/callbacks.c:260
+#: src/callbacks.c:266
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: src/callbacks.c:268
+#: src/callbacks.c:274
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 
-#: src/callbacks.c:287
+#: src/callbacks.c:292
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr ""
@@ -396,15 +396,6 @@ msgstr "(비었음)"
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr "에러! 캐시파일 %s을(를) %s(으)로 옮길 수 없습니다.\n"
-
-#: src/htmlview.c:424
-#, c-format
-msgid ""
-"There is no %%s URL place holder in the browser command string you specified "
-"in the preferences dialog!!!"
-msgstr ""
-"당신이 설정한 설정 다이얼로그에 브라우져 명령 문자열인 %%s URL place holder"
-"가 없습니다."
 
 #: src/interface.c:132
 #, fuzzy
@@ -1175,42 +1166,37 @@ msgid "/_Delete VFolder"
 msgstr "폴더 지우기(_D)"
 
 #: src/ui_popup.c:121
-#, fuzzy
-msgid "/_Mark All As Read"
-msgstr "전부 읽은 것으로 표시(_M)"
-
-#: src/ui_popup.c:122
-#, fuzzy
-msgid "/_Next Unread Item"
-msgstr "다음 안 읽은 아이템"
-
-#: src/ui_popup.c:124
 msgid "/Toggle _Read Status"
 msgstr ""
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:122
 #, fuzzy
 msgid "/Toggle Item _Flag"
 msgstr "아이템 플래그 토글(_F)"
 
-#: src/ui_popup.c:127
+#: src/ui_popup.c:124
+#, fuzzy
+msgid "/_Next Unread Item"
+msgstr "다음 안 읽은 아이템"
+
+#: src/ui_popup.c:126
 #, fuzzy
 msgid "/_Launch Item In Browser"
 msgstr "브라우져로 띄우기(_L)"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:135
 msgid "/Zoom In"
 msgstr ""
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:136
 msgid "/Zoom Out"
 msgstr ""
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:142
 msgid "/_Copy Link Location"
 msgstr ""
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:143
 msgid "/_Subscribe"
 msgstr ""
 
@@ -1238,21 +1224,21 @@ msgstr "가상폴더 %s"
 msgid "internal error! could not get folder key prefix!"
 msgstr "내부 에러! 새 폴더키를 prefix를 얻을 수 없습니다!"
 
-#: src/ui_tray.c:79
+#: src/ui_tray.c:83
 #, fuzzy, c-format
 msgid "%d new items!"
 msgstr "\"%s\"은(는) %d개의 새로운 아이템이 있습니다."
 
-#: src/ui_tray.c:86
+#: src/ui_tray.c:94
 #, fuzzy
 msgid "No new items."
 msgstr "\"%s\"은(는) 새로운 아이템이 없습니다."
 
-#: src/ui_dnd.c:79
+#: src/ui_dnd.c:83
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr "죄송합니다, Liferea는 아직 드래그&드랍을 지원하지 않습니다"
 
-#: src/ui_dnd.c:88
+#: src/ui_dnd.c:92
 msgid "you cannot modify the special help folder contents!"
 msgstr "스페셜한 도움말 폴더의 내용을 고칠 수 없습니다"
 
@@ -1264,6 +1250,17 @@ msgstr "메모리를 할당 할 수 없습니다!"
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr ""
 "피드 목록이 NULL입니다! 이럴수럴수럴수러럴수..가 업데이트 할 수 없습니다."
+
+#~ msgid ""
+#~ "There is no %%s URL place holder in the browser command string you "
+#~ "specified in the preferences dialog!!!"
+#~ msgstr ""
+#~ "당신이 설정한 설정 다이얼로그에 브라우져 명령 문자열인 %%s URL place "
+#~ "holder가 없습니다."
+
+#, fuzzy
+#~ msgid "/_Mark All As Read"
+#~ msgstr "전부 읽은 것으로 표시(_M)"
 
 #~ msgid ""
 #~ "You have disabled both the menubar and the toolbar. Without one of these "

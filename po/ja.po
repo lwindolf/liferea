@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.4.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-29 18:53+0100\n"
+"POT-Creation-Date: 2004-02-01 15:04+0100\n"
 "PO-Revision-Date: 2003-12-29 18:35+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -20,27 +20,27 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Pixmap ファイルが見つかりませんでした: %s"
 
-#: src/callbacks.c:234
+#: src/callbacks.c:236
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" は最後の更新から変更はありません。"
 
-#: src/callbacks.c:242
+#: src/callbacks.c:244
 #, fuzzy, c-format
 msgid "internal error! unknown feed type %d while updating feeds!"
 msgstr "内部 ERROR: newFeed() に不明な配信元の種類があります！"
 
-#: src/callbacks.c:260
+#: src/callbacks.c:266
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" の更新が完了しました..."
 
-#: src/callbacks.c:268
+#: src/callbacks.c:274
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "\"%s\" の URL が変更されていたので更新しました。"
 
-#: src/callbacks.c:287
+#: src/callbacks.c:292
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" は利用できません！"
@@ -408,15 +408,6 @@ msgstr "(空)"
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr "ERROR: キャッシュ・ファイル %s をファイル %s へ移動できませんでした\n"
-
-#: src/htmlview.c:424
-#, c-format
-msgid ""
-"There is no %%s URL place holder in the browser command string you specified "
-"in the preferences dialog!!!"
-msgstr ""
-"設定ダイアログの中で指定したブラウザのコマンド列の中に URL プレイスフォルダ %"
-"%s がありません！！！"
 
 #: src/interface.c:132
 #, fuzzy
@@ -1178,40 +1169,36 @@ msgid "/_Delete VFolder"
 msgstr "/仮想フォルダの削除(_D)"
 
 #: src/ui_popup.c:121
-msgid "/_Mark All As Read"
-msgstr "/全て既読としてマーク(_M)"
-
-#: src/ui_popup.c:122
-msgid "/_Next Unread Item"
-msgstr "/次の未読のトピック(_N)"
-
-#: src/ui_popup.c:124
 #, fuzzy
 msgid "/Toggle _Read Status"
 msgstr "未読/既読の切り替え(_R)"
 
-#: src/ui_popup.c:125
+#: src/ui_popup.c:122
 #, fuzzy
 msgid "/Toggle Item _Flag"
 msgstr "トピック・フラグの切り替え(_F)"
 
-#: src/ui_popup.c:127
+#: src/ui_popup.c:124
+msgid "/_Next Unread Item"
+msgstr "/次の未読のトピック(_N)"
+
+#: src/ui_popup.c:126
 msgid "/_Launch Item In Browser"
 msgstr "/ブラウザで開く(_L)"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:135
 msgid "/Zoom In"
 msgstr "/拡大"
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:136
 msgid "/Zoom Out"
 msgstr "/縮小"
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:142
 msgid "/_Copy Link Location"
 msgstr "/リンク先のアドレスのコピー(_C)"
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:143
 msgid "/_Subscribe"
 msgstr "/トピックの投稿(_S)"
 
@@ -1239,20 +1226,20 @@ msgstr "仮想フォルダ %s"
 msgid "internal error! could not get folder key prefix!"
 msgstr "内部エラー: フォルダ・キーの接頭子 (prefix) を取得できませんでした！"
 
-#: src/ui_tray.c:79
+#: src/ui_tray.c:83
 #, c-format
 msgid "%d new items!"
 msgstr "%d 個の新しいトピックがあります！"
 
-#: src/ui_tray.c:86
+#: src/ui_tray.c:94
 msgid "No new items."
 msgstr "新しいトピックはありません。"
 
-#: src/ui_dnd.c:79
+#: src/ui_dnd.c:83
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr "Liferea はまだフォルダのドラッグ＆ドロップをサポートしていません！"
 
-#: src/ui_dnd.c:88
+#: src/ui_dnd.c:92
 msgid "you cannot modify the special help folder contents!"
 msgstr "特別なヘルプ・フォルダの内言おうを変更することはできません！"
 
@@ -1263,6 +1250,16 @@ msgstr "メモリを確保できませんでした！"
 #: src/update.c:143
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr "配信元のソースが NULL です！ これは致命的です - 更新できません！"
+
+#~ msgid ""
+#~ "There is no %%s URL place holder in the browser command string you "
+#~ "specified in the preferences dialog!!!"
+#~ msgstr ""
+#~ "設定ダイアログの中で指定したブラウザのコマンド列の中に URL プレイスフォル"
+#~ "ダ %%s がありません！！！"
+
+#~ msgid "/_Mark All As Read"
+#~ msgstr "/全て既読としてマーク(_M)"
 
 #~ msgid ""
 #~ "You have disabled both the menubar and the toolbar. Without one of these "
