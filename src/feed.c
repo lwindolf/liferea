@@ -74,7 +74,7 @@ const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp) {
 	return fhp->typeStr;
 }
 
-feedHandlerPtr feed_type_str_to_fhp(gchar *str) {
+feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 	GSList *iter;
 	feedHandlerPtr fhp = NULL;
 	if (str == NULL)
@@ -565,7 +565,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
  * method to be called to schedule a feed to be updated
  */
 void feed_schedule_update(feedPtr fp) {
-	gchar		*source;
+	const gchar		*source;
 	
 	g_assert(NULL != fp);
 
@@ -705,12 +705,12 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
 
-void feed_set_id(feedPtr fp, gchar *id) {
+void feed_set_id(feedPtr fp, const gchar *id) {
 
 	g_free(fp->id);
 	fp->id = g_strdup(id);
 }
-gchar *feed_get_id(feedPtr fp) { return fp->id; }
+const gchar *feed_get_id(feedPtr fp) { return fp->id; }
 
 void feed_set_type(feedPtr fp, gint type) {
 	fp->type = type;
@@ -820,7 +820,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 	return buffer;
 }
 
-gchar * feed_get_title(feedPtr fp) { 
+const gchar * feed_get_title(feedPtr fp) { 
 
 	if(NULL != fp->title)
 		return fp->title; 
@@ -828,17 +828,17 @@ gchar * feed_get_title(feedPtr fp) {
 		return fp->source;
 }
 
-void feed_set_title(feedPtr fp, gchar *title) {
+void feed_set_title(feedPtr fp, const gchar *title) {
 	g_free(fp->title);
 	fp->title = g_strdup(title);
 	conf_feedlist_schedule_save();
 }
 
-gchar * feed_get_description(feedPtr fp) { return fp->description; }
-gchar * feed_get_source(feedPtr fp) { return fp->source; }
-gchar * feed_get_filter(feedPtr fp) { return fp->filtercmd; }
+const gchar * feed_get_description(feedPtr fp) { return fp->description; }
+const gchar * feed_get_source(feedPtr fp) { return fp->source; }
+const gchar * feed_get_filter(feedPtr fp) { return fp->filtercmd; }
 
-void feed_set_source(feedPtr fp, gchar *source) {
+void feed_set_source(feedPtr fp, const gchar *source) {
 	g_free(fp->source);
 
 	fp->source = g_strdup(source);

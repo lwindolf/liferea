@@ -47,7 +47,7 @@ static gchar *lifereaUserPath = NULL;
 
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
 
-void addToHTMLBuffer(gchar **buffer, gchar *string) {
+void addToHTMLBuffer(gchar **buffer, const gchar *string) {
 	gchar	*newbuffer;
 	
 	if(NULL == string)

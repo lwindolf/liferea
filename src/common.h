@@ -52,7 +52,7 @@ gchar * unhtmlize(gchar *string);
 /* to extract not escaped XHTML from a node */
 gchar * extractHTMLNode(xmlNodePtr cur);
 
-void	addToHTMLBuffer(gchar **buffer, gchar *string);
+void	addToHTMLBuffer(gchar **buffer, const gchar *string);
 
 /* Common function to create a XML DOM object from a given
    XML buffer. This function sets up a parser context,

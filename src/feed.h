@@ -180,7 +180,7 @@ gint feed_get_type(feedPtr fp);
 /**
  * Lookup a feed type string from the feed type number
  */
-feedHandlerPtr feed_type_str_to_fhp(gchar *str);
+feedHandlerPtr feed_type_str_to_fhp(const gchar *str);
 const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
 
 void feed_increase_unread_counter(feedPtr fp);
@@ -205,17 +205,17 @@ void feed_set_available(feedPtr fp, gboolean available);
  */
 gchar * feed_get_error_description(feedPtr fp);
 
-gchar *feed_get_id(feedPtr fp);
-void feed_set_id(feedPtr fp, gchar *id);
+const gchar *feed_get_id(feedPtr fp);
+void feed_set_id(feedPtr fp, const gchar *id);
 
-gchar * feed_get_title(feedPtr fp);
-void feed_set_title(feedPtr fp, gchar * title);
+const gchar * feed_get_title(feedPtr fp);
+void feed_set_title(feedPtr fp, const gchar * title);
 
-gchar * feed_get_description(feedPtr fp);
+const gchar * feed_get_description(feedPtr fp);
 
-gchar * feed_get_source(feedPtr fp);
-void feed_set_source(feedPtr fp, gchar * source);
-gchar * feed_get_filter(feedPtr fp);
+const gchar * feed_get_source(feedPtr fp);
+void feed_set_source(feedPtr fp, const gchar * source);
+const gchar * feed_get_filter(feedPtr fp);
 void feed_set_filter(feedPtr fp, const gchar * filter);
 
 GSList * feed_get_item_list(feedPtr fp);
