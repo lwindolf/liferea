@@ -43,19 +43,22 @@ static gchar *CDFChannelTagList[] = {	"title",
 /* returns CDF channel description as HTML */
 gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
 	gchar		*buffer = NULL;
-	gchar		*tmp;
+	gchar		*tmp, *line;
 
-	g_assert(cp != NULL);
+	g_assert(NULL != cp);
+	g_assert(NULL != url);
 
-	addToHTMLBuffer(&buffer, FEED_HEAD_START);
-	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+	addToHTMLBuffer(&buffer, HEAD_START);
+
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
 		url, 
-		cp->tags[CDF_CHANNEL_TITLE]);
-	addToHTMLBuffer(&buffer, tmp);
+		cp->tags[CDF_CHANNEL_TITLE]);	
+	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
 	
-	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
+	addToHTMLBuffer(&buffer, HEAD_END);	
 
 	if(NULL != cp->tags[CDF_CHANNEL_IMAGE]) {
 		addToHTMLBuffer(&buffer, IMG_START);

@@ -87,22 +87,24 @@ static void showFormatEntry(gpointer data, gpointer userdata) {
 /* display a directory entry description and its formats in the HTML widget */
 static gchar * showDirEntry(dirEntryPtr dep) {
 	directoryPtr	dp = dep->dp;
-	gchar		*tmp, *buffer = NULL;
+	gchar		*tmp, *line, *buffer = NULL;
 	
 	g_assert(dep != NULL);
 	g_assert(dp != NULL);
 
 	if(NULL != dep->source) {
-		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
-		addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-		addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
-		addToHTMLBuffer(&buffer, HTML_NEWLINE);	
-		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", dep->source, dep->tags[OCS_TITLE]);
-		addToHTMLBuffer(&buffer, tmp);
-		g_free(tmp);
+		addToHTMLBuffer(&buffer, HEAD_START);
+		line = g_strdup_printf(HEAD_LINE, _("Feed"), dp->tags[OCS_TITLE]);
+		addToHTMLBuffer(&buffer, line);
+		g_free(line);
 		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", dep->source, dep->tags[OCS_TITLE]);
+		line = g_strdup_printf(HEAD_LINE, _("Item:"), tmp);
+		g_free(tmp);
+		addToHTMLBuffer(&buffer, line);
+		g_free(line);
+		
+		addToHTMLBuffer(&buffer, HEAD_END);	
 	}
 
 	if(NULL != dep->tags[OCS_IMAGE]) {
@@ -130,22 +132,25 @@ static gchar * showDirEntry(dirEntryPtr dep) {
 
 /* writes directory info as HTML */
 static gchar * showDirectoryInfo(directoryPtr dp, gchar *url) {
-	gchar		*tmp, *buffer = NULL;	
+	gchar		*tmp, *line, *buffer = NULL;	
 
 	g_assert(dp != NULL);	
 
-	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
-	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-	addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
-	addToHTMLBuffer(&buffer, HTML_NEWLINE);	
-	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);	
+	addToHTMLBuffer(&buffer, HEAD_START);	
+
+	line = g_strdup_printf(HEAD_LINE, _("Feed:"), dp->tags[OCS_TITLE]);
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
+
 	if(NULL != url) {
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-		addToHTMLBuffer(&buffer, tmp);
+		line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
 		g_free(tmp);
+		addToHTMLBuffer(&buffer, line);
+		g_free(line);
 	}
 
-	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
+	addToHTMLBuffer(&buffer, HEAD_END);	
 
 	if(NULL != dp->tags[OCS_DESCRIPTION])
 		addToHTMLBuffer(&buffer, dp->tags[OCS_DESCRIPTION]);

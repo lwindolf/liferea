@@ -44,12 +44,13 @@
 #define RSS_ITEM_MAX_TAG		7
 
 typedef struct RSSItem {
-	gchar		*tags[RSS_ITEM_MAX_TAG];	/* standard namespace infos */
-	gchar		*enclosure;
+	gchar		*tags[RSS_ITEM_MAX_TAG];	/** standard namespace infos */
+	gchar		*enclosure;			/** for collecting enclosure informations */
+	gchar		*real_source_url;		/** source URL if the item doesn't comes from it's parent feed */
+	gchar		*real_source_title;		/** source title if the item doesn't comes from it's parent feed */
 	
-	GHashTable	*nsinfos;	/* list to store pointers to namespace
-					   specific informations */	
-	time_t		time;
+	GHashTable	*nsinfos;			/** list to store pointers to namespace specific informations */	
+	time_t		time;				/** timestamp of the item */
 } *RSSItemPtr;
 
 itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur);

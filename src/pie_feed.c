@@ -102,26 +102,29 @@ void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
 
 /* writes PIE channel description as HTML into the gtkhtml widget */
 static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
-	gchar		*tmp, *buffer = NULL;	
+	gchar		*tmp, *line, *buffer = NULL;	
 	outputRequest	request;
 
-	g_assert(cp != NULL);	
+	g_assert(NULL != cp);
+	g_assert(NULL != url);
 
-	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
-	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+	addToHTMLBuffer(&buffer, HEAD_START);
 	
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 		cp->tags[PIE_FEED_LINK],
 		cp->tags[PIE_FEED_TITLE]);
-	addToHTMLBuffer(&buffer, tmp);
+	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
 	
-	addToHTMLBuffer(&buffer, HTML_NEWLINE);
-	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-	addToHTMLBuffer(&buffer, tmp);
+	line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
 	g_free(tmp);
-	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
+	
+	addToHTMLBuffer(&buffer, HEAD_END);
 		
 	/* process namespace infos */
 	request.obj = (gpointer)cp;

@@ -40,30 +40,35 @@ static gchar *CDFItemTagList[] = {	"title",
 /* returns CDF item description as HTML */
 gchar * showCDFItem(feedPtr fp, CDFChannelPtr cp, CDFItemPtr ip) {
 	gchar		*buffer = NULL;
-	gchar		*tmp;
+	gchar		*tmp, *line;
 	
 	g_assert(ip != NULL);
 	g_assert(cp != NULL);
 	g_assert(fp != NULL);
 
-	if(NULL != ip->tags[CDF_ITEM_LINK]) {
-		addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-			fp->source,
-			cp->tags[CDF_CHANNEL_TITLE]);
-		addToHTMLBuffer(&buffer, tmp);
+	addToHTMLBuffer(&buffer, HEAD_START);
+	
+	/* output feed title and website */
+	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
+		fp->source,
+		cp->tags[CDF_CHANNEL_TITLE]);
+	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
+	g_free(tmp);
+	addToHTMLBuffer(&buffer,line);
+	g_free(line);
+
+	/* output item title and link */
+	if(NULL != ip->tags[CDF_ITEM_LINK]) {		
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->tags[CDF_ITEM_LINK], ip->tags[CDF_ITEM_TITLE]);
+		line = g_strdup_printf(HEAD_LINE, _("Item:"), tmp);
 		g_free(tmp);
-		
-		addToHTMLBuffer(&buffer, HTML_NEWLINE);		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->tags[CDF_ITEM_LINK], 
-			ip->tags[CDF_ITEM_TITLE]);
-		addToHTMLBuffer(&buffer, tmp);
-		g_free(tmp);
-		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
-	}	
+	} else {
+		line = g_strdup_printf(HEAD_LINE, _("Item:"), (NULL != ip->tags[CDF_ITEM_TITLE])?ip->tags[CDF_ITEM_TITLE]:_("[No Title]"));
+	}
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
+
+	addToHTMLBuffer(&buffer, HEAD_END);
 
 	if(NULL != ip->tags[CDF_ITEM_IMAGE]) {
 		addToHTMLBuffer(&buffer, IMG_START);

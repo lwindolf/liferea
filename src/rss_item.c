@@ -67,37 +67,50 @@ extern void showRSSFeedNSInfo(gpointer value, gpointer userdata);
   a pointer to it */
 static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 	gchar		*buffer = NULL;
-	gchar		*tmp;	
+	gchar		*tmp, *line;	
 	outputRequest	request;
 
 	g_assert(NULL != ip);
 	g_assert(NULL != cp);
 	g_assert(NULL != fp);	
 
-	addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
-	addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
+	addToHTMLBuffer(&buffer, HEAD_START);		
+
+	/* output feed link and title */
 	if(NULL != cp->tags[RSS_CHANNEL_LINK]) {
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
 			cp->tags[RSS_CHANNEL_LINK],
 			cp->tags[RSS_CHANNEL_TITLE]);
-		addToHTMLBuffer(&buffer, tmp);
+		line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 		g_free(tmp);
 	} else {
-		addToHTMLBuffer(&buffer, cp->tags[RSS_CHANNEL_TITLE]);
-	
+		line = g_strdup_printf(HEAD_LINE, _("Feed:"), cp->tags[RSS_CHANNEL_TITLE]);
 	}
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
 
-	addToHTMLBuffer(&buffer, HTML_NEWLINE);		
-	addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
+	/* output item link and title */
 	if(NULL != ip->tags[RSS_ITEM_LINK]) {
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->tags[RSS_ITEM_LINK], 
 					(NULL != ip->tags[RSS_ITEM_TITLE])?ip->tags[RSS_ITEM_TITLE]:ip->tags[RSS_ITEM_LINK]);
-		addToHTMLBuffer(&buffer, tmp);
+		line = g_strdup_printf(HEAD_LINE, _("Item:"), tmp);
 		g_free(tmp);
 	} else {
-		addToHTMLBuffer(&buffer, (NULL != ip->tags[RSS_ITEM_TITLE])?ip->tags[RSS_ITEM_TITLE]:ip->tags[RSS_ITEM_LINK]);
+		line = g_strdup_printf(HEAD_LINE, _("Item:"), (NULL != ip->tags[RSS_ITEM_TITLE])?ip->tags[RSS_ITEM_TITLE]:_("[No Title]"));
 	}
-	addToHTMLBuffer(&buffer, ITEM_HEAD_END);
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
+
+	if(NULL != ip->real_source_url)	{
+		/* if available output item source and title */
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->real_source_url, 
+					(NULL != ip->real_source_title)?ip->real_source_title:ip->real_source_url);
+		line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
+		g_free(tmp);
+		addToHTMLBuffer(&buffer, line);
+		g_free(line);
+	}
+	addToHTMLBuffer(&buffer, HEAD_END);
 
 	/* process namespace infos */
 	request.obj = ip;
@@ -207,6 +220,15 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 					g_free(tmp);
 				}
 				g_free(link);
+			}
+		} else 
+		if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
+			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
+			if(NULL != tmp) {
+				g_free(i->real_source_url);
+				g_free(i->real_source_title);
+				i->real_source_url = tmp;
+				i->real_source_title = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			}
 		} else {
 			/* check for RDF tags */

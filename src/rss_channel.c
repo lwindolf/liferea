@@ -127,28 +127,32 @@ void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
 /* returns RSS channel description as HTML */
 static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 	gchar		*buffer = NULL;
-	gchar		*tmp;
+	gchar		*tmp, *line;
 	outputRequest	request;
 
-	g_assert(cp != NULL);	
+	g_assert(cp != NULL);
+	g_assert(url != NULL);
 
-	addToHTMLBuffer(&buffer, FEED_HEAD_START);
-	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+	addToHTMLBuffer(&buffer, HEAD_START);
+
+	/* output feed title with feed link */
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 		cp->tags[RSS_CHANNEL_LINK],
 		cp->tags[RSS_CHANNEL_TITLE]);
-	addToHTMLBuffer(&buffer, tmp);
+	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
 	
-	addToHTMLBuffer(&buffer, HTML_NEWLINE);	
-
-	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);
+	/* output feed source link */
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-	addToHTMLBuffer(&buffer, tmp);
+	line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
 	g_free(tmp);
+	addToHTMLBuffer(&buffer, line);
+	g_free(line);
 
-	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
-		
+	addToHTMLBuffer(&buffer, HEAD_END);
+				
 	/* process namespace infos */
 	request.obj = (gpointer)cp;
 	request.type = OUTPUT_RSS_CHANNEL_NS_HEADER;

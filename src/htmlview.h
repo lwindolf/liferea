@@ -44,15 +44,9 @@
 
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
-#define ITEM_HEAD_START		"<table cellspacing=\"0\" class=\"itemhead\"><tr><td class=\"itemhead\">"
-#define ITEM_HEAD_CHANNEL	"<b>Feed: </b>"
-#define ITEM_HEAD_ITEM		"<b>Item: </b>"
-#define ITEM_HEAD_END		"</td></tr></table>"
-
-#define FEED_HEAD_START		ITEM_HEAD_START
-#define FEED_HEAD_CHANNEL	ITEM_HEAD_CHANNEL
-#define FEED_HEAD_SOURCE	"<b>Source: </b>"
-#define FEED_HEAD_END		ITEM_HEAD_END
+#define HEAD_START		"<table cellspacing=\"0\" class=\"itemhead\">"
+#define HEAD_LINE		"<tr><td class=\"itemhead\"><b>%s</b></td><td width=\"100%%\">%s</td></tr>"
+#define HEAD_END		"</table>"
 
 #define FEED_FOOT_TABLE_START	"<table class=\"feedfoot\">"
 #define FEED_FOOT_FIRSTTD	"<tr class=\"feedfoot\"><td class=\"feedfootname\"><span class=\"feedfootname\">"

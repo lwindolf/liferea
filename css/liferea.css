@@ -42,7 +42,7 @@ dd {
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
-	margin-bottom:5px;
+	margin-bottom:15px;
 	width:100%;
 	background-color:#DDD;
 	border: 1px solid black;
@@ -50,6 +50,7 @@ table.itemhead {
 
 td.itemhead {
 	padding:2px 5px;
+	text-align:right;
 }
 
 /* styles to display generic namespace augmentation in the 

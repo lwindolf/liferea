@@ -131,7 +131,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	xmlNodePtr 	 child;
 	itemPtr		ip;
-	gchar		*buffer, *tmp;
+	gchar		*buffer, *line, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
 	int 		i, error = 0;
 
@@ -206,18 +206,21 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		if(0 == error) {
 			/* prepare HTML output */
 			buffer = NULL;
-			addToHTMLBuffer(&buffer, FEED_HEAD_START);	
-			addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-			addToHTMLBuffer(&buffer, fp->title);
-			addToHTMLBuffer(&buffer, HTML_NEWLINE);	
-			addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);	
+			addToHTMLBuffer(&buffer, HEAD_START);	
+			
+			line = g_strdup_printf(HEAD_LINE, _("Feed:"), fp->title);
+			addToHTMLBuffer(&buffer, line);
+			g_free(line);
+
 			if(NULL != fp->source) {
 				tmp = g_strdup_printf("<a href=\"%s\">%s</a>", fp->source, fp->source);
-				addToHTMLBuffer(&buffer, tmp);
+				line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
 				g_free(tmp);
+				addToHTMLBuffer(&buffer, line);
+				g_free(line);
 			}
 
-			addToHTMLBuffer(&buffer, FEED_HEAD_END);	
+			addToHTMLBuffer(&buffer, HEAD_END);	
 
 			addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
 			FEED_FOOT_WRITE(buffer, "title",		headTags[OPML_TITLE]);
