@@ -27,6 +27,7 @@
 #include "ui_feedlist.h"
 #include "ui_tray.h"
 #include "htmlview.h"
+
 /* possible selected new dialog feed types */
 static gint selectableTypes[] = {	FST_AUTODETECT,
 					FST_RSS,
@@ -85,7 +86,7 @@ GtkTreeStore * getFeedStore(void) {
    to set the selection info for a folder: fp has to be NULL and
                                            keyprefix has to be given				 
  */
-static void setSelectedFeed(feedPtr fp, gchar *keyprefix) {
+static void ui_feedlist_set_selected_feed(feedPtr fp, gchar *keyprefix) {
 
 	if(NULL != (selected_fp = fp)) {
 		/* we select a feed */
@@ -107,10 +108,10 @@ static void setSelectedFeed(feedPtr fp, gchar *keyprefix) {
 	}
 }
 
-/* Calls setSelectedFeed to fill the global select_* variables
-   with the selection information. The function returns TRUE
+/* Calls ui_feedlist_set_selected_feed() to fill the global select_* 
+   variables with the selection information. The function returns TRUE
    if the selected feed/folder could be determined. */
-gboolean getFeedListIter(GtkTreeIter *iter) {
+gboolean ui_feedlist_get_iter(GtkTreeIter *iter) {
 	GtkWidget		*treeview;
 	GtkTreeSelection	*select;
         GtkTreeModel		*model;
@@ -138,23 +139,21 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
 
 		if(IS_NODE(tmp_type)) {
 			/* its a folder */
-			setSelectedFeed(NULL, tmp_key);
+			ui_feedlist_set_selected_feed(NULL, tmp_key);
 		} else {
 			/* its a feed */
 			if(NULL == tmp_key) {
 				g_warning(_("fatal! selected feed entry has no key!!!"));
 				return FALSE;
 			}
-			setSelectedFeed(getFeed(tmp_key), NULL);
-		}
-	
+			ui_feedlist_set_selected_feed(getFeed(tmp_key), NULL);
+		}	
 		return TRUE;
-	}
-	
+	}	
 	return FALSE;	
 }
 
-static void renderFeedTitle(GtkTreeViewColumn *tree_column,
+static void ui_feedlist_render_title(GtkTreeViewColumn *tree_column,
 	             GtkCellRenderer   *cell,
 	             GtkTreeModel      *model,
         	     GtkTreeIter       *iter,
@@ -226,7 +225,7 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 	g_free(key);
 }
 
-static void renderFeedStatus(GtkTreeViewColumn *tree_column,
+static void ui_feedlist_render_status(GtkTreeViewColumn *tree_column,
 	             GtkCellRenderer   *cell,
 	             GtkTreeModel      *model,
         	     GtkTreeIter       *iter,
@@ -287,52 +286,7 @@ static void renderFeedStatus(GtkTreeViewColumn *tree_column,
 	g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", icons[icon], NULL);
 }
 
-/* set up the entry list store and connects it to the entry list
-   view in the main window */
-void setupFeedList(GtkWidget *mainview) {
-	GtkCellRenderer		*textRenderer;
-	GtkCellRenderer		*iconRenderer;	
-	GtkTreeViewColumn 	*column;
-	GtkTreeSelection	*select;	
-	GtkTreeStore		*feedstore;
-	
-	g_assert(mainwindow != NULL);
-		
-	feedstore = getFeedStore();
-
-	gtk_tree_view_set_model(GTK_TREE_VIEW(mainview), GTK_TREE_MODEL(feedstore));
-	
-	/* we only render the state and title */
-	iconRenderer = gtk_cell_renderer_pixbuf_new();
-	textRenderer = gtk_cell_renderer_text_new();
-
-	column = gtk_tree_view_column_new();
-	
-	gtk_tree_view_column_pack_start(column, iconRenderer, FALSE);
-	gtk_tree_view_column_pack_start(column, textRenderer, TRUE);
-	
-	gtk_tree_view_column_set_attributes(column, iconRenderer, "pixbuf", FS_STATE, NULL);
-	gtk_tree_view_column_set_attributes(column, textRenderer, "text", FS_TITLE, NULL);
-	
-	gtk_tree_view_column_set_resizable(column, TRUE);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(mainview), column);
-
-	gtk_tree_view_column_set_cell_data_func(column, iconRenderer, 
-					   renderFeedStatus, NULL, NULL);
-					   
-	gtk_tree_view_column_set_cell_data_func(column, textRenderer,
-                                           renderFeedTitle, NULL, NULL);			   
-		
-	/* Setup the selection handler for the main view */
-	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(mainview));
-	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-	g_signal_connect(G_OBJECT(select), "changed",
-                 	 G_CALLBACK(feedlist_selection_changed_cb),
-                	 lookup_widget(mainwindow, "feedlist"));
-			
-}
-
-void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
+static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeIter		iter;
         GtkTreeModel		*model;
 	gchar			*tmp_key;
@@ -361,17 +315,62 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 	
 			/* save new selection infos */
-			setSelectedFeed(fp, NULL);		
-			loadItemList(fp, NULL);
+			ui_feedlist_set_selected_feed(fp, NULL);		
+			ui_itemlist_load(fp, NULL);
 		} else {
 			/* save new selection infos */
-			setSelectedFeed(NULL, tmp_key);
+			ui_feedlist_set_selected_feed(NULL, tmp_key);
 		}
 		g_free(tmp_key);
 	}
 }
 
-void addToFeedList(feedPtr fp, gboolean startup) {
+/* sets up the entry list store and connects it to the entry list
+   view in the main window */
+void ui_feedlist_init(GtkWidget *mainview) {
+	GtkCellRenderer		*textRenderer;
+	GtkCellRenderer		*iconRenderer;	
+	GtkTreeViewColumn 	*column;
+	GtkTreeSelection	*select;	
+	GtkTreeStore		*feedstore;
+	
+	g_assert(mainwindow != NULL);
+		
+	feedstore = getFeedStore();
+
+	gtk_tree_view_set_model(GTK_TREE_VIEW(mainview), GTK_TREE_MODEL(feedstore));
+	
+	/* we only render the state and title */
+	iconRenderer = gtk_cell_renderer_pixbuf_new();
+	textRenderer = gtk_cell_renderer_text_new();
+
+	column = gtk_tree_view_column_new();
+	
+	gtk_tree_view_column_pack_start(column, iconRenderer, FALSE);
+	gtk_tree_view_column_pack_start(column, textRenderer, TRUE);
+	
+	gtk_tree_view_column_set_attributes(column, iconRenderer, "pixbuf", FS_STATE, NULL);
+	gtk_tree_view_column_set_attributes(column, textRenderer, "text", FS_TITLE, NULL);
+	
+	gtk_tree_view_column_set_resizable(column, TRUE);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(mainview), column);
+
+	gtk_tree_view_column_set_cell_data_func(column, iconRenderer, 
+				ui_feedlist_render_status, NULL, NULL);
+					   
+	gtk_tree_view_column_set_cell_data_func(column, textRenderer,
+				ui_feedlist_render_title, NULL, NULL);			   
+		
+	/* Setup the selection handler for the main view */
+	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(mainview));
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+	g_signal_connect(G_OBJECT(select), "changed",
+                 	 G_CALLBACK(ui_feedlist_selection_changed_cb),
+                	 lookup_widget(mainwindow, "feedlist"));
+			
+}
+
+void ui_feedlist_load_subscription(feedPtr fp, gboolean startup) {
 	GtkTreeSelection	*selection;
 	GtkWidget		*treeview;
 	GtkTreePath		*path;
@@ -389,7 +388,7 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(getFeedKeyPrefix(fp)));
 	if(!startup) {
 		/* used when creating feed entries manually */
-		if(getFeedListIter(&selected_iter) && IS_FEED(selected_type))
+		if(ui_feedlist_get_iter(&selected_iter) && IS_FEED(selected_type))
 			/* if a feed entry is marked after which we shall insert */
 			gtk_tree_store_insert_after(feedstore, &iter, topiter, &selected_iter);
 		else
@@ -451,13 +450,13 @@ void on_popup_delete_selected(void) {
 	}
 	
 	print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp)));
-	if(getFeedListIter(&iter)) {
+	if(ui_feedlist_get_iter(&iter)) {
 		gtk_tree_store_remove(feedstore, &iter);
 		removeFeed(selected_fp);
-		setSelectedFeed(NULL, "");
+		ui_feedlist_set_selected_feed(NULL, "");
 
-		clearItemList();
-		ui_html_view_clear();
+		ui_itemlist_clear();
+		ui_htmlview_clear();
 		checkForEmptyFolders();
 	} else {
 		showErrorBox(_("It seems like there is no selected feed entry!"));
@@ -468,7 +467,7 @@ void on_popup_delete_selected(void) {
 /* property dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-static void build_prop_dialog(void) {
+static void ui_feedlist_build_prop_dialog(void) {
 
 	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
 		propdialog = create_propdialog();
@@ -496,7 +495,7 @@ void on_popup_prop_selected(void) {
 	}
 
 	/* prop dialog may not yet exist */
-	build_prop_dialog();
+	ui_feedlist_build_prop_dialog();
 		
 	feednameentry = lookup_widget(propdialog, "feednameentry");
 	feedurlentry = lookup_widget(propdialog, "feedurlentry");
@@ -575,16 +574,16 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog) {
+void ui_feedlist_new_subscription(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog) {
 	GtkWidget	*updateIntervalBtn;
 	feedPtr		fp;
 	gint		interval;
 	gchar		*tmp;
 
 	if(NULL != (fp = newFeed(type, source, keyprefix))) {
-		addToFeedList(fp, FALSE);	/* add feed */
-		checkForEmptyFolders();		/* remove empty entry if necessary */
-		saveFolderFeedList(keyprefix);	/* save new folder contents order */
+		ui_feedlist_load_subscription(fp, FALSE);	/* add feed */
+		checkForEmptyFolders();				/* remove empty entry if necessary */
+		saveFolderFeedList(keyprefix);			/* save new folder contents order */
 		if(FALSE == getFeedAvailable(fp)) {
 			tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 			showErrorBox(tmp);
@@ -592,7 +591,7 @@ void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropD
 		} else {
 			if(TRUE == showPropDialog) {
 				/* prop dialog may not yet exist */
-				build_prop_dialog();
+				ui_feedlist_build_prop_dialog();
 				
 				if(-1 != (interval = getFeedDefaultInterval(fp))) {
 					updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
@@ -648,10 +647,9 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	/* It is possible, that there is no selected folder when we are
 	   called from the menu! In this case we default to the root folder */
-	if(NULL != selected_keyprefix) 
-		subscribeTo(type, source, g_strdup(selected_keyprefix), TRUE);	
-	else
-		subscribeTo(type, source, g_strdup(""), TRUE);	
+	ui_feedlist_new_subscription(type, source, 
+		(NULL != selected_keyprefix)?g_strdup(selected_keyprefix):g_strdup(""),	TRUE);
+		
 	/* don't free source for it is reused by newFeed! */
 }
 
@@ -681,7 +679,7 @@ void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
 /* function for finding next unread item 					*/
 /*------------------------------------------------------------------------------*/
 
-feedPtr ui_feed_find_unread(GtkTreeIter *iter) {
+feedPtr ui_feedlist_find_unread(GtkTreeIter *iter) {
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
 	GtkWidget		*treeview;
@@ -725,7 +723,7 @@ feedPtr ui_feed_find_unread(GtkTreeIter *iter) {
 			}		
 		} else {
 			/* must be a folder, so recursivly go down... */
-			if(NULL != (fp = ui_feed_find_unread(&childiter)))
+			if(NULL != (fp = ui_feedlist_find_unread(&childiter)))
 				return fp;
 		}
 		
@@ -735,7 +733,7 @@ feedPtr ui_feed_find_unread(GtkTreeIter *iter) {
 	return NULL;	
 }
 
-void ui_feed_mark_items_as_unread(GtkTreeIter *iter) {
+void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter) {
 	GtkTreeModel	*model;
 	gint		tmp_type;
 	gchar		*tmp_key;

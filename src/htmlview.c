@@ -65,6 +65,10 @@ GSList * availableBrowserModules = NULL;
 
 extern GtkWidget *mainwindow;
 
+/* -------------------------------------------------------------------- */
+/* module loading and initialisation					*/
+/* -------------------------------------------------------------------- */
+
 /* Method which tries to load the functions listed in the array
    symbols from the specified module name libname.  If testmode
    is true no error messages are issued. The function returns
@@ -108,7 +112,7 @@ key /apps/liferea/browser-module!\n\n"));
 }
 
 /* function to load the module specified by module */
-void ui_html_view_init(void) {
+void ui_htmlview_init(void) {
 	gboolean		success = FALSE;
 	gint			filenamelen;
 	gchar			*filename;
@@ -165,6 +169,9 @@ void ui_html_view_init(void) {
 		success = loadSymbols(filename, FALSE);
 	} else {
 		g_print(_("No browser module configured!\n"));
+	}
+	
+	if(!success) {
 		/* try to load one of the available modules */
 		tmp = availableBrowserModules;
 		while(NULL != tmp) {
@@ -181,12 +188,16 @@ void ui_html_view_init(void) {
 	}
 }
 
-void ui_html_view_setup(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
+/* -------------------------------------------------------------------- */
+/* browser module interface functions					*/
+/* -------------------------------------------------------------------- */
+
+void ui_htmlview_setup(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 
 	((setupHTMLViewsFunc)methods[SETUPHTMLVIEWS])(mainwindow, pane, pane2, initialZoomLevel); 
 }
 
-void ui_html_view_set_mode(gboolean threePane) {
+void ui_htmlview_set_mode(gboolean threePane) {
 	GtkWidget	*w1;
 
 	/* switch between list and condensed notebook tabs */
@@ -220,7 +231,7 @@ static void writeStyleSheetLinks(gchar **buffer) {
 	g_free(styleSheetFile);
 }
 
-void ui_html_view_start_output(gchar **buffer, gboolean padded) { 
+void ui_htmlview_start_output(gchar **buffer, gboolean padded) { 
 	gchar	*encoding;
 
 	addToHTMLBuffer(buffer, HTML_START);
@@ -237,7 +248,7 @@ void ui_html_view_start_output(gchar **buffer, gboolean padded) {
 		addToHTMLBuffer(buffer, HTML_HEAD_END2);	
 }
 
-void ui_html_view_write(gchar *string) { 
+void ui_htmlview_write(gchar *string) { 
 
 	if(!g_utf8_validate(string, -1, NULL))
 		g_warning("Invalid encoded UTF8 string passed to HTML widget!");
@@ -248,20 +259,20 @@ void ui_html_view_write(gchar *string) {
 	((writeHTMLFunc)methods[WRITEHTML])(g_strdup_printf("%s                ",string));
 }
 
-void ui_html_view_finish_output(gchar **buffer) {
+void ui_htmlview_finish_output(gchar **buffer) {
 
 	addToHTMLBuffer(buffer, HTML_END); 
 }
 
-void ui_html_view_clear(void) {
+void ui_htmlview_clear(void) {
 	gchar	*buffer = NULL;
 
-	ui_html_view_start_output(&buffer, FALSE);
-	ui_html_view_finish_output(&buffer); 
-	ui_html_view_write(buffer);
+	ui_htmlview_start_output(&buffer, FALSE);
+	ui_htmlview_finish_output(&buffer); 
+	ui_htmlview_write(buffer);
 }
 
-void ui_html_view_launch_URL(gchar *url) {
+void ui_htmlview_launch_URL(gchar *url) {
 
 	if(NULL != url) {		
 		((launchURLFunc)methods[LAUNCHURL])(url); 
@@ -270,12 +281,58 @@ void ui_html_view_launch_URL(gchar *url) {
 	}
 }
 
-void ui_html_view_change_zoom(gfloat diff) {
+void ui_htmlview_change_zoom(gfloat diff) {
 
 	((changeZoomLevelFunc)methods[CHANGEZOOMLEVEL])(diff); 
 }
 
-gfloat ui_html_view_get_zoom(void) {
+gfloat ui_htmlview_get_zoom(void) {
 
 	return ((getZoomLevelFunc)methods[GETZOOMLEVEL])(); 
+}
+
+/* -------------------------------------------------------------------- */
+/* other functions... 							*/
+/* -------------------------------------------------------------------- */
+
+/* Resets the horizontal and vertical scrolling of the items HTML view. */
+void ui_htmlview_reset_scrolling(void) {
+	GtkScrolledWindow	*itemview;
+	GtkAdjustment		*adj;
+
+	itemview = GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemview"));
+	g_assert(NULL != itemview);
+	adj = gtk_scrolled_window_get_vadjustment(itemview);
+	gtk_adjustment_set_value(adj, 0.0);
+	gtk_scrolled_window_set_vadjustment(itemview, adj);
+	gtk_adjustment_value_changed(adj);
+
+	adj = gtk_scrolled_window_get_hadjustment(itemview);
+	gtk_adjustment_set_value(adj, 0.0);
+	gtk_scrolled_window_set_hadjustment(itemview, adj);
+	gtk_adjustment_value_changed(adj);
+}
+
+/* Function scrolls down the item views scrolled window.
+   This function returns FALSE if the scrolled window
+   vertical scroll position is at the maximum and TRUE
+   if the vertical adjustment was increased. */
+gboolean ui_htmlview_scroll(void) {
+	GtkScrolledWindow	*itemview;
+	GtkAdjustment		*vertical_adjustment;
+	gdouble			old_value;
+	gdouble			new_value;
+	gdouble			limit;
+
+	itemview = GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemview"));
+	g_assert(NULL != itemview);
+	vertical_adjustment = gtk_scrolled_window_get_vadjustment(itemview);
+	old_value = gtk_adjustment_get_value(vertical_adjustment);
+	new_value = old_value + vertical_adjustment->page_increment;
+	limit = vertical_adjustment->upper - vertical_adjustment->page_size;
+	if(new_value > limit)
+		new_value = limit;
+	gtk_adjustment_set_value(vertical_adjustment, new_value);
+	gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(itemview), vertical_adjustment);
+	return (new_value > old_value);
 }

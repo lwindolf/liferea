@@ -70,7 +70,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 		print_status(g_strdup_printf(_("searching for \"%s\""), searchstring));
 		selected_fp = NULL;
 		selected_type = FST_VFOLDER;
-		loadItemList(allItems, (gchar *)searchstring);
+		ui_itemlist_load(allItems, (gchar *)searchstring);
 	}
 }
 
@@ -94,10 +94,8 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 
 		/* It is possible, that there is no selected folder when we are
 		   called from the menu! In this case we default to the root folder */
-		if(NULL != selected_keyprefix) 
-			subscribeTo(FST_RSS, searchtext, g_strdup(selected_keyprefix), FALSE);
-		else
-			subscribeTo(FST_RSS, searchtext, g_strdup(""), FALSE);	
+		ui_feedlist_new_subscription(FST_RSS, searchtext, 
+			(NULL != selected_keyprefix)?g_strdup(selected_keyprefix):g_strdup(""), FALSE);	
 	}
 }
 
@@ -143,7 +141,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				/* FIXME: brute force: update of all vfolders redundant */
 //				loadVFolders();
 				
-				addToFeedList(fp, FALSE);
+				ui_feedlist_load_subscription(fp, FALSE);
 			}
 		} else {
 			print_status(g_strdup(_("internal error! could not get folder key prefix!")));

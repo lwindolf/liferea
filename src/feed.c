@@ -411,7 +411,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 	g_hash_table_insert(feeds, (gpointer)key, (gpointer)new_fp);
 	g_mutex_unlock(feeds_lock);
 
-	addToFeedList(new_fp, TRUE);
+	ui_feedlist_load_subscription(new_fp, TRUE);
 	
 	return new_fp;
 }

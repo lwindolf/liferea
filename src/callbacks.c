@@ -106,18 +106,18 @@ void initGUI(void) {
 		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
 
 	/* order important !!! */
-	setupFeedList(lookup_widget(mainwindow, "feedlist"));
-	initItemList(lookup_widget(mainwindow, "Itemlist"));
+	ui_feedlist_init(lookup_widget(mainwindow, "feedlist"));
+	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
 
-	ui_html_view_init();
-	ui_html_view_setup(mainwindow, lookup_widget(mainwindow, "itemview"),
-			   lookup_widget(mainwindow, "itemlistview"),
-			   getNumericConfValue(LAST_ZOOMLEVEL));
+	ui_htmlview_init();
+	ui_htmlview_setup(mainwindow, lookup_widget(mainwindow, "itemview"),
+			  lookup_widget(mainwindow, "itemlistview"),
+			  getNumericConfValue(LAST_ZOOMLEVEL));
 
 	if(getBooleanConfValue(LAST_ITEMLIST_MODE))
 		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
 
-	ui_html_view_set_mode(itemlist_mode);
+	ui_htmlview_set_mode(itemlist_mode);
 
 	ui_mainwindow_update_toolbar();
 	ui_mainwindow_update_menubar();
@@ -158,15 +158,15 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	if (scrollItemView(lookup_widget(mainwindow, "itemview")) == FALSE)
+	if(ui_htmlview_scroll() == FALSE)
  		on_next_unread_item_activate(menuitem, user_data);
 }
 
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data) { on_next_unread_item_activate(NULL, NULL); }
 
-void on_popup_zoomin_selected(void) { ui_html_view_change_zoom(0.2); }
-void on_popup_zoomout_selected(void) { ui_html_view_change_zoom(-0.2); }
+void on_popup_zoomin_selected(void) { ui_htmlview_change_zoom(0.2); }
+void on_popup_zoomout_selected(void) { ui_htmlview_change_zoom(-0.2); }
 
 void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 	GtkClipboard *clipboard;
@@ -182,7 +182,7 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	subscribeTo(FST_AUTODETECT, g_strdup(url), g_strdup(selected_keyprefix), TRUE);
+	ui_feedlist_new_subscription(FST_AUTODETECT, g_strdup(url), g_strdup(selected_keyprefix), TRUE);
 	g_free(url);
 }
 
@@ -190,7 +190,7 @@ void on_popup_allunread_selected(void) {
 	GtkTreeIter	iter;
 	gint		tmp_type;
 
-	if(getFeedListIter(&iter)) {
+	if(ui_feedlist_get_iter(&iter)) {
 		gtk_tree_model_get(GTK_TREE_MODEL(getFeedStore()), &iter, FS_TYPE, &tmp_type, -1);
 		if(IS_NODE(tmp_type)) {
 			/* if we have selected a folder we mark all item of all feeds as read */
@@ -289,7 +289,7 @@ gint checkForUpdateResults(gpointer data) {
 		(*(fhp->readFeed))(new_fp, request->data);
 
 		if(selected_fp == request->fp) {
-			clearItemList();
+			ui_itemlist_clear();
 		}
 		
 		if(TRUE == fhp->merge)
@@ -312,8 +312,8 @@ gint checkForUpdateResults(gpointer data) {
 			saveFeed(request->fp);
 
 			if(selected_fp == request->fp) {
-				loadItemList(request->fp, NULL);
-				preFocusItemlist();
+				ui_itemlist_load(request->fp, NULL);
+				ui_itemlist_prefocus();
 			}
 			
 			redrawFeedList();
@@ -370,7 +370,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	
 	/* save itemlist properties */
 	setBooleanConfValue(LAST_ITEMLIST_MODE, !itemlist_mode);
-	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100*ui_html_view_get_zoom()));
+	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100*ui_htmlview_get_zoom()));
 		
 	gtk_main_quit();
 	return FALSE;

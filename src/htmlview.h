@@ -106,36 +106,47 @@ struct browserModule {
 };
 
 /* function to load the module specified by libname */
-void	ui_html_view_init(void);
+void	ui_htmlview_init(void);
 
 /* creates the HTML widget */
-void	ui_html_view_setup(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
+void	ui_htmlview_setup(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 
 /* loads a emtpy HTML page */
-void	ui_html_view_clear(void);
+void	ui_htmlview_clear(void);
 
 /* function to select either the single item view (3 pane mode)
    or the item list view (2 pane mode) */
-void	ui_html_view_set_mode(gboolean threePane);
+void	ui_htmlview_set_mode(gboolean threePane);
 
 /* functions to output HTML to the selected HTML widget */
-void	ui_html_view_start_output(gchar **buffer, gboolean padded);
+void	ui_htmlview_start_output(gchar **buffer, gboolean padded);
 
-void	ui_html_view_write(gchar *string);
+void	ui_htmlview_write(gchar *string);
 
-void	ui_html_view_finish_output(gchar **buffer);
+void	ui_htmlview_finish_output(gchar **buffer);
 
 /* launches the specified URL */
-void	ui_html_view_launch_URL(gchar *url);
+void	ui_htmlview_launch_URL(gchar *url);
 
 /* adds a differences diff to the actual zoom level */
-void	ui_html_view_change_zoom(gfloat diff);
+void	ui_htmlview_change_zoom(gfloat diff);
 
 /* returns the currently set zoom level */
-gfloat	ui_html_view_get_zoom(void);
+gfloat	ui_htmlview_get_zoom(void);
 
 /* Returns the currently selected URL string. The string
    must be freed by the caller. */
-gchar *	ui_html_view_get_selected_URL(void);
+gchar *	ui_htmlview_get_selected_URL(void);
+
+/* Resets the horizontal and vertical scrolling of the items HTML view. */
+void	ui_htmlview_reset_scrolling(void);
+
+/**
+ * Function scrolls down the item views scrolled window.
+ *
+ * @return FALSE if the scrolled window vertical scroll position is at
+ * the maximum and TRUE if the vertical adjustment was increased.
+ */
+gboolean ui_htmlview_scroll(void);
 
 #endif

@@ -110,7 +110,7 @@ void on_popup_removefolder_selected(void) {
 		return;
 	}
 
-	getFeedListIter(&selected_iter);
+	ui_feedlist_get_iter(&selected_iter);
 	feedstore = getFeedStore();
 	g_assert(feedstore != NULL);
 	
@@ -148,7 +148,7 @@ static gboolean ui_folder_mark_all_as_read_foreach(GtkTreeModel *model, GtkTreeP
 	GtkTreePath	*selected = (GtkTreePath *)user_data;
 	
 	if(gtk_tree_path_is_ancestor(selected, child_path)) {
-		ui_feed_mark_items_as_unread(child_iter);
+		ui_feedlist_mark_items_as_unread(child_iter);
 	}
 	
 	return FALSE;
@@ -167,7 +167,7 @@ void ui_folder_mark_all_as_read(void) {
 	model = GTK_TREE_MODEL(getFeedStore());
 	g_assert(NULL != model);
 
-	getFeedListIter(&selected_iter);
+	ui_feedlist_get_iter(&selected_iter);
 	selected_path = gtk_tree_model_get_path(model, &selected_iter);	
 	g_assert(NULL != selected_path);
 	gtk_tree_model_foreach(model, ui_folder_mark_all_as_read_foreach, selected_path);

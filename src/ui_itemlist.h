@@ -27,7 +27,6 @@
 #include "feed.h"
 
 /** Enumeration of the columns in the itemstore. */
-
 enum is_columns {
 	IS_TITLE,		/**< Name of the item */
 	IS_LABEL,		/**< Displayed name */
@@ -50,19 +49,19 @@ GtkTreeStore * getItemStore(void);
  * Initializes the itemlist. For example, it creates the various
  * columns and renderers needed to show the list.
  */
-void initItemList(GtkWidget *itemlist);
+void ui_itemlist_init(GtkWidget *itemlist);
 
 /**
  * Unselect all items in the list and scroll to top. This is typically
  * called when changing feed.
  */
-void preFocusItemlist(void);
+void ui_itemlist_prefocus(void);
 
 /**
  * Adds content to the htmlview after a new feed has been selected and
  * sets an item as read.
  */
-void displayItemList(void);
+void ui_itemlist_display(void);
 
 /**
  * Display a feed's items
@@ -70,20 +69,12 @@ void displayItemList(void);
  * @param fp The feed to display.
  * @param searchstring The string to search for, or NULL to include all of a feed's items.
  */
-void loadItemList(feedPtr fp, gchar *searchstring);
+void ui_itemlist_load(feedPtr fp, gchar *searchstring);
 
 /**
  * Remove the items from the itemlist.
  */
-void clearItemList(void);
-
-/**
- * Scrolls down the itemview.
- *
- * @return FALSE if the scrolled window vertical scroll position is at
- * the maximum and TRUE if the vertical adjustment was increased.
- */
-gboolean scrollItemView(GtkWidget *itemView);
+void ui_itemlist_clear(void);
 
 /**
  * @name Callbacks used from interface.c

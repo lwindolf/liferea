@@ -137,10 +137,10 @@ void freeItem(itemPtr ip) {
 void displayItem(itemPtr ip) {
 	gchar	*buffer = NULL;
 	
-	ui_html_view_start_output(&buffer, TRUE);
+	ui_htmlview_start_output(&buffer, TRUE);
 	addToHTMLBuffer(&buffer, ip->description);
-	ui_html_view_finish_output(&buffer);
-	ui_html_view_write(buffer);
+	ui_htmlview_finish_output(&buffer);
+	ui_htmlview_write(buffer);
 	//g_free(buffer);
 	
 	markItemAsRead(ip);

@@ -159,7 +159,7 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, g
 	if(0 != initialZoomLevel)
 		changeZoomLevel(((gfloat)initialZoomLevel)/100 - zoomLevel);
 
-	ui_html_view_clear();	
+	ui_htmlview_clear();	
 }
 
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {

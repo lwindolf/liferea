@@ -46,9 +46,6 @@ static gint		itemlist_loading;	/* freaky workaround for item list focussing prob
 /* displayed_fp should almost always be the same as selected_fp in ui_feedlist */
 feedPtr	displayed_fp = NULL;
 
-/* Resets the horizontal and vertical scrolling of the items HTML view. */
-static void resetItemViewScrolling(GtkScrolledWindow *itemview);
-
 /* mouse/keyboard interaction callbacks */
 static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
 static itemPtr ui_itemlist_get_selected();
@@ -65,13 +62,13 @@ GtkTreeStore * getItemStore(void) {
 			- the type of the feed the item belongs to
 		 */
 		itemstore = gtk_tree_store_new(IS_LEN,
-								 G_TYPE_STRING, 
-								 G_TYPE_STRING,
-								 GDK_TYPE_PIXBUF, 
-								 G_TYPE_POINTER, 
-								 G_TYPE_INT,
-								 G_TYPE_STRING,
-								 G_TYPE_INT);
+						 G_TYPE_STRING, 
+						 G_TYPE_STRING,
+						 GDK_TYPE_PIXBUF, 
+						 G_TYPE_POINTER, 
+						 G_TYPE_INT,
+						 G_TYPE_STRING,
+						 G_TYPE_INT);
 	}
 	
 	return itemstore;
@@ -95,12 +92,12 @@ static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
 	return FALSE;
 }
 
-void clearItemList(void) {
+void ui_itemlist_clear(void) {
 
 	displayed_fp = NULL;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
-	ui_html_view_clear();
+	ui_htmlview_clear();
 }
 
 /* sort function for the item list date column */
@@ -194,7 +191,7 @@ void ui_update_item(itemPtr ip) {
 		ui_update_item_from_iter(&((ui_item_data*)ip->ui_data)->row);
 }
 
-void initItemList(GtkWidget *itemlist) {
+void ui_itemlist_init(GtkWidget *itemlist) {
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;
@@ -236,7 +233,7 @@ void initItemList(GtkWidget *itemlist) {
 }
 
 /* typically called when filling the item tree view */
-void preFocusItemlist(void) {
+void ui_itemlist_prefocus(void) {
 	GtkWidget		*itemlist;
 	GtkTreeSelection	*itemselection;
 	GtkAdjustment		*adj;
@@ -273,7 +270,7 @@ void preFocusItemlist(void) {
 	gtk_tree_view_set_vadjustment(GTK_TREE_VIEW(itemlist), adj);
 }
 
-void displayItemList(void) {
+void ui_itemlist_display(void) {
 	GtkTreeIter		iter;
 	gchar			*buffer = NULL;
 	gboolean		valid;
@@ -281,7 +278,7 @@ void displayItemList(void) {
 	gchar               *tmp = NULL;
 
 	g_assert(NULL != mainwindow);
-	ui_html_view_start_output(&buffer, itemlist_mode);
+	ui_htmlview_start_output(&buffer, itemlist_mode);
 	if(!itemlist_mode) {
 		/* two pane mode */
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
@@ -304,9 +301,7 @@ void displayItemList(void) {
 
 			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 		}
-
-		/* reset HTML widget scrolling */
-		resetItemViewScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemlistview")));
+		ui_htmlview_reset_scrolling();
 	} else {	
 		/* three pane mode */
 		itemPtr ip = ui_itemlist_get_selected();
@@ -330,11 +325,11 @@ void displayItemList(void) {
 		/* no scrolling reset, because this code should only be
 		   triggered for redraw purposes! */
 	}
-	ui_html_view_finish_output(&buffer);
-	ui_html_view_write(buffer);
+	ui_htmlview_finish_output(&buffer);
+	ui_htmlview_write(buffer);
 }
 
-void loadItemList(feedPtr fp, gchar *searchstring) {
+void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 	GtkTreeIter	iter;
 	GSList		*itemlist;
 	itemPtr		ip;
@@ -346,7 +341,7 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 		return;
 	}
 
-	ui_html_view_clear();
+	ui_htmlview_clear();
 	displayed_fp = fp;
 	itemlist = getFeedItemList(fp);
 	while(NULL != itemlist) {
@@ -382,48 +377,8 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 
 		itemlist = g_slist_next(itemlist);
 	}
-	displayItemList();
-	preFocusItemlist();
-}
-
-/* Resets the horizontal and vertical scrolling of the items HTML view. */
-static void resetItemViewScrolling(GtkScrolledWindow *itemview) {
-	GtkAdjustment	*adj;
-
-	if(NULL != itemview) {
-		adj = gtk_scrolled_window_get_vadjustment(itemview);
-		gtk_adjustment_set_value(adj, 0.0);
-		gtk_scrolled_window_set_vadjustment(itemview, adj);
-		gtk_adjustment_value_changed(adj);
-
-		adj = gtk_scrolled_window_get_hadjustment(itemview);
-		gtk_adjustment_set_value(adj, 0.0);
-		gtk_scrolled_window_set_hadjustment(itemview, adj);
-		gtk_adjustment_value_changed(adj);
-	} else {
-		g_warning(_("internal error! could not reset HTML widget scrolling!"));
-	}
-}
-
-/* Function scrolls down the item views scrolled window.
-   This function returns FALSE if the scrolled window
-   vertical scroll position is at the maximum and TRUE
-   if the vertical adjustment was increased. */
-gboolean scrollItemView(GtkWidget *itemView) {
-	GtkAdjustment	*vertical_adjustment;
-	gdouble		old_value;
-	gdouble		new_value;
-	gdouble		limit;
-
-	vertical_adjustment = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(itemView));
-	old_value = gtk_adjustment_get_value(vertical_adjustment);
-	new_value = old_value + vertical_adjustment->page_increment;
-	limit = vertical_adjustment->upper - vertical_adjustment->page_size;
-	if(new_value > limit)
-		new_value = limit;
-	gtk_adjustment_set_value(vertical_adjustment, new_value);
-	gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(itemView), vertical_adjustment);
-	return (new_value > old_value);
+	ui_itemlist_display();
+	ui_itemlist_prefocus();
 }
 
 static itemPtr ui_itemlist_get_selected() {
@@ -460,11 +415,8 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 	if(!itemlist_loading) {
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			gtk_tree_model_get(model, &iter, IS_PTR, &ip, -1);
-
 			displayItem(ip);
-
-			/* reset HTML widget scrolling */
-			resetItemViewScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemview")));
+			ui_htmlview_reset_scrolling();
 		}
 	}
 }
@@ -519,7 +471,7 @@ void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
 
 	if(ip = ui_itemlist_get_selected())
-		ui_html_view_launch_URL(getItemSource(ip));
+		ui_htmlview_launch_URL(getItemSource(ip));
 	else
 		print_status(g_strdup(_("No item has been selected!")));
 }
@@ -539,7 +491,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	feedPtr fp = displayed_fp;
 	
 	if(fp) {
-		clearItemList();	/* clear tree view */
+		ui_itemlist_clear();
 		clearFeedItemList(fp);	/* delete items */
 	} else {
 		showErrorBox(_("You have to select a feed to delete its items!"));
@@ -591,7 +543,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		return;
 	
 	/* find first feed with unread items */
-	fp = ui_feed_find_unread(NULL);
+	fp = ui_feedlist_find_unread(NULL);
 	
 	if (fp) {
 		/* ui_select_feed(fp); FIXME: This would require an easy lookup from fp to a row, but would be a cleaner feedlist interface. */
@@ -601,7 +553,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		}
 		
 		/* load found feed */
-		loadItemList(fp, NULL);
+		ui_itemlist_load(fp, NULL);
 		
 		/* find first unread item */
 		findUnreadItem();
@@ -610,7 +562,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	}
 }
 
-static void ui_select_item(itemPtr ip) {
+static void ui_itemlist_select(itemPtr ip) {
 	GtkTreeIter		iter;
 	GtkWidget		*treeview;
 	GtkTreeSelection	*selection;
@@ -662,7 +614,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget,
 		gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter,
 					    IS_PTR, &ip,
 					    -1);
-		ui_select_item(ip);
+		ui_itemlist_select(ip);
 	}
 	
 	gtk_menu_popup(make_item_menu(ip), NULL, NULL, NULL, NULL, eb->button, eb->time);

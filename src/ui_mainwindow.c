@@ -64,15 +64,15 @@ void ui_mainwindow_update_menubar(void) {
 	}
 }
 
-static void toggle_condensed_view(void) {
+static void ui_mainwindow_toggle_condensed_view(void) {
 	
 	itemlist_mode = !itemlist_mode;
-	ui_html_view_set_mode(itemlist_mode);
-	displayItemList();
+	ui_htmlview_set_mode(itemlist_mode);
+	ui_itemlist_display();
 }
 
 void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) {
  
 	if(!itemlist_mode != GTK_CHECK_MENU_ITEM(menuitem)->active)
-		toggle_condensed_view();
+		ui_mainwindow_toggle_condensed_view();
 }

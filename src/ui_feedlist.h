@@ -1,4 +1,5 @@
-/* GUI feed list handling
+/**
+   @file ui_feedlist.h GUI feed list handling
    
    Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
    
@@ -23,20 +24,66 @@
 #include <gtk/gtk.h>
 #include "feed.h"
 
-extern gint selected_type;
-extern feedPtr		selected_fp;
-extern gchar 		*selected_keyprefix;
+extern gint 	selected_type;
+extern feedPtr	selected_fp;
+extern gchar 	*selected_keyprefix;
 
+/**
+ * Returns the feed store, creating it if needed.
+ *
+ * @return feed store pointer.
+ */
 GtkTreeStore * getFeedStore(void);
-void setupFeedList(GtkWidget *mainview);
-gboolean getFeedListIter(GtkTreeIter *iter);
 
-void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data);
+/**
+ * Initializes the feed list. For example, it creates the various
+ * columns and renderers needed to show the list.
+ */
+void ui_feedlist_init(GtkWidget *mainview);
 
-void addToFeedList(feedPtr fp, gboolean startup);
-void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog);
+/** 
+ * Determines the currently selected feed list iterator.
+ *
+ * @param iter	pointer to iter structure to return selected iter
+ */
+gboolean ui_feedlist_get_iter(GtkTreeIter *iter);
 
-/* menu and dialog callbacks */
+/**
+ * Adds a feed to the feed list.
+ *
+ * @param fp		the feed to add
+ * @param startup	should be TRUE on initial subscriptions loading
+ */
+void ui_feedlist_load_subscription(feedPtr fp, gboolean startup);
+
+/**
+ * Create a new subscription.
+ *
+ * @param type		feed type
+ * @param source	feed source URL or local file name or piped command
+ * @param keyprefix	folder key
+ * @param showPropDialog TRUE if the property dialog should popup
+ */
+void ui_feedlist_new_subscription(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog);
+
+/**
+ * helper function to find next unread item 
+ *
+ * @param iter	an iterator of the feed list to be processed
+ */
+feedPtr ui_feedlist_find_unread(GtkTreeIter *iter);
+
+/**
+ * marks all items of the feed of the given tree iter as read 
+ *
+ * @param iter	an iterator of the feed list to be processed
+ */
+void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
+
+/** 
+ * @name menu and dialog callbacks 
+ * @{
+ */
 void on_popup_refresh_selected(void);
 void on_popup_delete_selected(void);
 void on_popup_prop_selected(void);
@@ -46,11 +93,6 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data);
 
 void on_fileselect_clicked(GtkButton *button, gpointer user_data);
 void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);
-
-/* helper function to find next unread item */
-feedPtr ui_feed_find_unread(GtkTreeIter *iter);
-
-/* marks all items of the feed of the given tree iter as read */
-void ui_feed_mark_items_as_unread(GtkTreeIter *iter);
+/*@}*/
 
 #endif

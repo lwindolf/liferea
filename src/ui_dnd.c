@@ -57,7 +57,7 @@ void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpoi
 		checkForEmptyFolders();	/* to add an "(empty)" entry */
 	}
 	
-	preFocusItemlist();
+	ui_itemlist_prefocus();
 }
 
 void on_feedlist_drag_begin(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
@@ -113,7 +113,7 @@ static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint
 		freeme = tmp1 = strdup(data->data);
 		while(tmp2 = strsep(&tmp1, "\n\r")) {			
 			if(0 != strlen(tmp2))
-				subscribeTo(FST_AUTODETECT, g_strdup(tmp2), g_strdup(selected_keyprefix), TRUE);
+				ui_feedlist_new_subscription(FST_AUTODETECT, g_strdup(tmp2), g_strdup(selected_keyprefix), TRUE);
 		}
 		free(freeme);
 		gtk_drag_finish(context, TRUE, FALSE, time);		
