@@ -177,8 +177,10 @@ void unhtmlizeHandleCharacters (void *user_data, const xmlChar *string, int leng
 
 	old_length = buffer->length;	
 	buffer->length += length;
-	buffer->data = g_renew(gchar, buffer->data, buffer->length);
+	buffer->data = g_renew(gchar, buffer->data, buffer->length + 1);
         strncpy(buffer->data + old_length, (gchar *)string, length);
+	buffer->data[buffer->length] = 0;
+
 }
 
 /* Converts a UTF-8 strings containing any HTML stuff to 
@@ -188,6 +190,7 @@ void unhtmlizeHandleCharacters (void *user_data, const xmlChar *string, int leng
 gchar * unhtmlize(gchar *string) {
 	htmlDocPtr		doc_p = NULL;
 	htmlSAXHandlerPtr	sax_p = NULL;
+	htmlParserCtxtPtr	ctxt;
 	int			length;
 	gchar			*result;
 	result_buffer		*buffer;
@@ -198,27 +201,25 @@ gchar * unhtmlize(gchar *string) {
 	/* only do something if there are any entities or tags */
 	if(NULL == (strpbrk(string, "&<>")))
 		return string;
-	
-	if(!g_utf8_validate(string, -1, NULL))
-		g_warning("Invalid encoded UTF8 string passed to unhtmlize()!");
-	
+
 	buffer = g_new0(result_buffer, 1);
 	sax_p = g_new0(htmlSAXHandler, 1);
  	sax_p->characters = unhtmlizeHandleCharacters;
 
-	length = strlen(string);	/* the result should not get bigger than the original string... (is this correct?) */
-	doc_p = htmlSAXParseDoc(string, standard_encoding, sax_p, &buffer);
-	if (doc_p != NULL) {
-		xmlFreeDoc(doc_p);
-	}
+	/* in older versions htmlSAXParseDoc was used which caused
+	   strange crashes when freeing the parser context... */
+	   
+	ctxt = htmlCreatePushParserCtxt(sax_p, buffer, string, strlen(string), "", XML_CHAR_ENCODING_UTF8);
+	htmlParseChunk(ctxt, string, 0, 1);
+	htmlFreeParserCtxt(ctxt);
 	result = buffer->data;
 	g_free(buffer);
  	g_free(sax_p);
  
- 	if (result == NULL || !g_utf8_strlen(result, -1)) {
+ 	if(result == NULL || !g_utf8_strlen(result, -1)) {
  		/* Something went wrong in the parsing.
  		 * Use original string instead */
- 		g_free(result);
+		g_free(result);
  		return string;
  	} else {
  		g_free(string);
