@@ -199,6 +199,33 @@ void ui_enclosure_new_popup(gchar *url) {
 	}
 }
 
+static void on_selectcmdok_clicked(const gchar *filename, gpointer user_data) {
+	GtkWidget	*dialog = (GtkWidget *)user_data;
+	gchar		*utfname;
+	
+	if(filename == NULL)
+		return;
+	
+	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+
+	if(utfname != NULL)
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_cmd_entry")), utfname);
+
+	
+	g_free(utfname);
+}
+
+static void on_selectcmd_pressed(GtkButton *button, gpointer user_data) {
+	GtkWidget	*dialog = (GtkWidget *)user_data;
+	const gchar	*utfname;
+	gchar *name;
+	
+	utfname =  gtk_entry_get_text(GTK_ENTRY(lookup_widget(dialog,"enc_cmd_entry")));
+	name = g_filename_from_utf8(utfname, -1, NULL, NULL, NULL);
+	ui_choose_file(_("Choose File"), GTK_WINDOW(dialog), GTK_STOCK_OPEN, FALSE, on_selectcmdok_clicked, name, dialog);
+	g_free(name);
+}
+
 /* dialog used for both changing and adding new definitions */
 static void on_adddialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	gchar		*tmp, *url;
@@ -220,7 +247,7 @@ static void on_adddialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		} else {
 			g_free(etp->cmd);
 		}
-		etp->cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "enc_program_entry"))));
+		etp->cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "enc_cmd_entry"))));
 		etp->permanent = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enc_always_btn")));
 		if(TRUE == new)
 			types = g_slist_append(types, etp);
@@ -244,7 +271,7 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
 	
 	if(type != NULL) {
 		typestr = (NULL != type->mime)?type->mime:type->extension;
-		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_program_entry")), type->cmd);
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_cmd_entry")), type->cmd);
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enc_always_btn")), TRUE);
 	}
 	
@@ -259,6 +286,7 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
 	g_object_set_data(G_OBJECT(dialog), "url", url);
 	g_object_set_data(G_OBJECT(dialog), "type", type);
 	g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(on_adddialog_response), type);
+	g_signal_connect(G_OBJECT(lookup_widget(dialog, "enc_cmd_select_btn")), "clicked", G_CALLBACK(on_selectcmd_pressed), dialog);
 	gtk_widget_show(dialog);
 	
 }

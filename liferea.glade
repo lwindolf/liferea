@@ -7669,7 +7669,7 @@ matches. They are removed if at least one removing rule matches.</property>
 		  <property name="spacing">6</property>
 
 		  <child>
-		    <widget class="GtkEntry" id="enc_program_entry">
+		    <widget class="GtkEntry" id="enc_cmd_entry">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="editable">True</property>
@@ -7695,7 +7695,6 @@ matches. They are removed if at least one removing rule matches.</property>
 		      <property name="use_underline">True</property>
 		      <property name="relief">GTK_RELIEF_NORMAL</property>
 		      <property name="focus_on_click">True</property>
-		      <signal name="clicked" handler="on_enc_cmd_select_btn_clicked" last_modification_time="Mon, 17 Jan 2005 21:23:47 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>

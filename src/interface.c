@@ -3684,7 +3684,7 @@ create_enchandlerdialog (void)
   GtkWidget *enc_type_label;
   GtkWidget *label206;
   GtkWidget *hbox88;
-  GtkWidget *enc_program_entry;
+  GtkWidget *enc_cmd_entry;
   GtkWidget *enc_cmd_select_btn;
   GtkWidget *enc_always_btn;
   GtkWidget *dialog_action_area16;
@@ -3728,9 +3728,9 @@ create_enchandlerdialog (void)
   gtk_widget_show (hbox88);
   gtk_box_pack_start (GTK_BOX (vbox2606), hbox88, TRUE, TRUE, 0);
 
-  enc_program_entry = gtk_entry_new ();
-  gtk_widget_show (enc_program_entry);
-  gtk_box_pack_start (GTK_BOX (hbox88), enc_program_entry, TRUE, TRUE, 0);
+  enc_cmd_entry = gtk_entry_new ();
+  gtk_widget_show (enc_cmd_entry);
+  gtk_box_pack_start (GTK_BOX (hbox88), enc_cmd_entry, TRUE, TRUE, 0);
 
   enc_cmd_select_btn = gtk_button_new_with_mnemonic (_("_Browse"));
   gtk_widget_show (enc_cmd_select_btn);
@@ -3757,9 +3757,6 @@ create_enchandlerdialog (void)
   g_signal_connect ((gpointer) enchandlerdialog, "delete_event",
                     G_CALLBACK (gtk_widget_destroy),
                     NULL);
-  g_signal_connect ((gpointer) enc_cmd_select_btn, "clicked",
-                    G_CALLBACK (on_enc_cmd_select_btn_clicked),
-                    NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (enchandlerdialog, enchandlerdialog, "enchandlerdialog");
@@ -3770,7 +3767,7 @@ create_enchandlerdialog (void)
   GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_type_label, "enc_type_label");
   GLADE_HOOKUP_OBJECT (enchandlerdialog, label206, "label206");
   GLADE_HOOKUP_OBJECT (enchandlerdialog, hbox88, "hbox88");
-  GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_program_entry, "enc_program_entry");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_cmd_entry, "enc_cmd_entry");
   GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_cmd_select_btn, "enc_cmd_select_btn");
   GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_always_btn, "enc_always_btn");
   GLADE_HOOKUP_OBJECT_NO_REF (enchandlerdialog, dialog_action_area16, "dialog_action_area16");
