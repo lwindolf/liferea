@@ -154,7 +154,7 @@ feedPtr readCDFFeed(gchar *url) {
 			break;
 		}
 
-		doc = xmlParseMemory(data, strlen(data));
+		doc = xmlRecoverMemory(data, strlen(data));
 		if(NULL == doc) {
 			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), url));
 			error = 1;
@@ -206,10 +206,11 @@ feedPtr readCDFFeed(gchar *url) {
 		fp->type = FST_RSS;
 		fp->defaultInterval = fp->updateInterval = -1;
 		fp->title = cp->tags[CDF_CHANNEL_TITLE];
-		fp->description = showCDFFeedInfo(cp, url);
-		if(0 == error)
+
+		if(0 == error) {
 			fp->available = TRUE;
-		else
+			fp->description = showCDFFeedInfo(cp, url);
+		} else
 			fp->title = g_strdup(url);
 		
 		g_free(cp->nsinfos);

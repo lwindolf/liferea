@@ -1362,14 +1362,23 @@ static GtkItemFactoryEntry item_menu_items[] = {
       {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 0, NULL}
 };
 
+static GtkItemFactoryEntry itemlist_menu_items[] = {
+      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 0, NULL}
+};
+
 static GtkMenu *make_item_menu(void) {
 	GtkWidget 		*menubar;
 	GtkItemFactory 		*item_factory;
 	gint 			nmenu_items;
 	GtkItemFactoryEntry	*menu_items;
 	
-	menu_items = item_menu_items;
-	nmenu_items = sizeof(item_menu_items)/(sizeof(item_menu_items[0]));
+	if(TRUE == itemlist_mode) {
+		menu_items = item_menu_items;
+		nmenu_items = sizeof(item_menu_items)/(sizeof(item_menu_items[0]));
+	} else {
+		menu_items = itemlist_menu_items;
+		nmenu_items = sizeof(itemlist_menu_items)/(sizeof(itemlist_menu_items[0]));
+	}
 
 	item_factory = gtk_item_factory_new(GTK_TYPE_MENU, "<itempopup>", NULL);
 	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, NULL);

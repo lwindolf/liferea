@@ -3,6 +3,10 @@
         Version 0.4.0
 	
 	* heavy rewrite
+	* now using libxml's xmlRecover* functions to read even
+	  buggy feeds
+	* you can now switch between a two or three pane viewing mode
+	* fixed some output problems for OCS directories
 	* fixed bug 819959
 
 

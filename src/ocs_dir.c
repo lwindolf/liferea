@@ -66,7 +66,7 @@ feedPtr readOCS(gchar *url);
 static gchar *	showDirEntry(dirEntryPtr dep);
 
 /* display a directory info in the HTML widget */
-static gchar *	showDirectoryInfo(directoryPtr dp);
+static gchar *	showDirectoryInfo(directoryPtr dp, gchar *url);
 
 feedHandlerPtr initOCSFeedHandler(void) {
 	feedHandlerPtr	fhp;
@@ -256,7 +256,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlDocPtr doc, xmlNodePt
 					if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
 
 						parseFunc = nsh->parseDirectoryTag;
-						if(NULL != parseFunc) {			
+						if(NULL != parseFunc) {
 							(*parseFunc)(dp, doc, cur);
 						} else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
@@ -294,7 +294,7 @@ feedPtr readOCS(gchar *url) {
 	fp = getNewFeedStruct();
 
 	while(1) {
-		doc = xmlParseMemory(data, strlen(data));
+		doc = xmlRecoverMemory(data, strlen(data));
 		g_free(data);
 		
 		if(NULL == doc) {
@@ -342,9 +342,11 @@ feedPtr readOCS(gchar *url) {
 		fp->type = FST_OCS;
 		fp->updateInterval = fp->updateCounter = -1;
 		fp->title = dp->tags[OCS_TITLE];
-		if(0 == error)
+		
+		if(0 == error) {
+			fp->description = showDirectoryInfo(dp, url);
 			fp->available = TRUE;
-		else
+		} else
 			fp->title = g_strdup(url);
 			
 		g_free(dp);
@@ -406,7 +408,10 @@ static gchar * showDirEntry(dirEntryPtr dep) {
 	g_assert(dp != NULL);
 
 	if(NULL != dep->source) {
-		addToHTMLBuffer(&buffer, ITEM_HEAD_START);	
+		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
+		addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+		addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
+		addToHTMLBuffer(&buffer, HTML_NEWLINE);	
 		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", dep->source, dep->tags[OCS_TITLE]);
 		addToHTMLBuffer(&buffer, tmp);
@@ -439,7 +444,7 @@ static gchar * showDirEntry(dirEntryPtr dep) {
 }
 
 /* writes directory info as HTML */
-static gchar * showDirectoryInfo(directoryPtr dp) {
+static gchar * showDirectoryInfo(directoryPtr dp, gchar *url) {
 	gchar		*tmp, *buffer = NULL;	
 
 	g_assert(dp != NULL);	
@@ -449,8 +454,8 @@ static gchar * showDirectoryInfo(directoryPtr dp) {
 	addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
 	addToHTMLBuffer(&buffer, HTML_NEWLINE);	
 	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);	
-	if(NULL != dp->source) {
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", dp->source, dp->source);
+	if(NULL != url) {
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 	}

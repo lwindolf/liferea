@@ -128,9 +128,8 @@ static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
 
 void setHTMLViewMode(gboolean threePane) {
 
-	if(FALSE == threePane) {
-	g_print("selected list view\n");
-		setupHTMLView(mainwindow, itemListView); }
+	if(FALSE == threePane)
+		setupHTMLView(mainwindow, itemListView);
 	else
 		setupHTMLView(mainwindow, itemView);
 

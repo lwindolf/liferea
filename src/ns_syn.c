@@ -60,35 +60,31 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp,xmlDocPtr doc, xmlNodePtr cur) {
 	int	period = 60*24;	/* daily is default */
 	int	frequency = 1;
 	
-	while (cur != NULL) {
-		if(!xmlStrcmp("updatePeriod", cur->name)) {
-		
-			if(NULL != (tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
-			
-				if(0 == strcmp("hourly", tmp))
-					period = 60;
-				else if(0 == strcmp("daily", tmp))
-					period = 60*24;
-				else if(0 == strcmp("weekly", tmp))
-					period = 7*24*60;
-				else if(0 == strcmp("monthly", tmp))
-					// FIXME: not really exact...
-					period = 31*7*24*60;	
-				else if(0 == strcmp("yearly", tmp))
-					period = 365*24*60;
+	if(!xmlStrcmp("updatePeriod", cur->name)) {
 
-				g_free(tmp);
-			}
+		if(NULL != (tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
+
+			if(0 == strcmp("hourly", tmp))
+				period = 60;
+			else if(0 == strcmp("daily", tmp))
+				period = 60*24;
+			else if(0 == strcmp("weekly", tmp))
+				period = 7*24*60;
+			else if(0 == strcmp("monthly", tmp))
+				// FIXME: not really exact...
+				period = 31*7*24*60;	
+			else if(0 == strcmp("yearly", tmp))
+				period = 365*24*60;
+
+			g_free(tmp);
 		}
-		
-		if(!xmlStrcmp("updateFrequency", cur->name)) {
-		
-			if(NULL != (tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
-				frequency = atoi(tmp);
-			}
+	}
+
+	if(!xmlStrcmp("updateFrequency", cur->name)) {
+
+		if(NULL != (tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
+			frequency = atoi(tmp);
 		}
-		
-		cur = cur->next;
 	}
 	
 	/* postprocessing */

@@ -75,16 +75,12 @@ static void ns_slash_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *ta
 static void ns_slash_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 	int 		i;
 	
-	while (cur != NULL) {
-		/* compare with each possible tag name */
-		for(i = 0; taglist[i] != NULL; i++) {
-			if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
-				ns_slash_addInfoStruct(ip->nsinfos, taglist[i],  xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-			}
+	/* compare with each possible tag name */
+	for(i = 0; taglist[i] != NULL; i++) {
+		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
+			ns_slash_addInfoStruct(ip->nsinfos, taglist[i],  xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		}
-		
-		cur = cur->next;
-	}	
+	}
 }
 
 /* maybe I should overthink method names :-) */

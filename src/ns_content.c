@@ -54,13 +54,9 @@ RSSNsHandler *ns_content_getRSSNsHandler(void) {
 
 void ns_content_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
 	
-	while (cur != NULL) {
-		if(!xmlStrcmp(cur->name, "encoded")) {
-			g_free(ip->tags[RSS_ITEM_DESCRIPTION]);
-			ip->tags[RSS_ITEM_DESCRIPTION] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-			// FIXME: may we need some conversion functionality?
-		}
-		
-		cur = cur->next;
-	}	
+	if(!xmlStrcmp(cur->name, "encoded")) {
+		g_free(ip->tags[RSS_ITEM_DESCRIPTION]);
+		ip->tags[RSS_ITEM_DESCRIPTION] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+		// FIXME: may we need some conversion functionality?
+	}
 }

@@ -52,14 +52,10 @@ static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 static void ns_fm_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 	int 		i;
 	
-	while (cur != NULL) {
-		if(!xmlStrcmp("screenshot_url", cur->name)) {
-			/* maybe for just one tag this is overkill, but copy&paste is so easy! */
-			ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url",  xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		}
-		
-		cur = cur->next;
-	}	
+	if(!xmlStrcmp("screenshot_url", cur->name)) {
+		/* maybe for just one tag this is overkill, but copy&paste is so easy! */
+		ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url",  xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+	}
 }
 
 /* maybe I should overthink method names :-) */
