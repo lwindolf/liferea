@@ -88,18 +88,18 @@ typedef struct {
 } SubmitContext;
 
 static int
-on_submit_idle (gpointer data)
+on_submit_idle(gpointer data)
 {
 	SubmitContext *ctx = (SubmitContext *)data;
 
 	debug3(DEBUG_UPDATE, "action = '%s', method = '%s', encoding = '%s'\n", 
 		 ctx->action, ctx->method, ctx->encoding);
 
-	if (ctx->method == NULL || strcasecmp (ctx->method, "get") == 0) {
+	if(ctx->method == NULL || strcasecmp (ctx->method, "get") == 0) {
 		gchar *url;
 		
-		url = g_strdup_printf ("%s?%s", ctx->action, ctx->encoding);
-		link_clicked (NULL, url, ctx->window);
+		url = g_strdup_printf("%s?%s", ctx->action, ctx->encoding);
+		link_clicked(NULL, url, ctx->window);
 		g_free (url);
 	}
 	g_free (ctx);
@@ -107,16 +107,16 @@ on_submit_idle (gpointer data)
 }
 
 static void
-on_submit (HtmlDocument *document, const gchar *action, const gchar *method, 
+on_submit(HtmlDocument *document, const gchar *action, const gchar *method, 
 	   const gchar *encoding, gpointer data)
 {
 	SubmitContext *ctx = g_new0 (SubmitContext, 1);
 	
-	if (action)
+	if(action)
 		ctx->action = g_strdup (action);
-	if (method)
+	if(method)
 		ctx->method = g_strdup (method);
-	if (action)
+	if(action)
 		ctx->encoding = g_strdup (encoding);
 	ctx->window = data;
 	
@@ -124,7 +124,7 @@ on_submit (HtmlDocument *document, const gchar *action, const gchar *method,
 	 * start loading a new one, we can't call it directly, because
 	 * gtkhtml2 will crash if the document becomes deleted before
 	 * this signal handler finish */
-	gtk_idle_add (on_submit_idle, ctx);
+	gtk_idle_add(on_submit_idle, ctx);
 }
 
 
@@ -140,9 +140,9 @@ void request_data_kill(struct request *r) {
 	html_stream_close(((StreamData*)r->user_data)->stream);
 	r->callback = NULL;
 	
-	connection_list = g_object_get_data (G_OBJECT (sd->doc), "connection_list");
-	connection_list = g_slist_remove (connection_list, r);
-	g_object_set_data (G_OBJECT (sd->doc), "connection_list", connection_list);
+	connection_list = g_object_get_data(G_OBJECT(sd->doc), "connection_list");
+	connection_list = g_slist_remove(connection_list, r);
+	g_object_set_data(G_OBJECT(sd->doc), "connection_list", connection_list);
 	g_free(r->user_data);
 }
 
@@ -157,16 +157,21 @@ stream_cancel (HtmlStream *stream, gpointer user_data, gpointer cancel_data)
 }
 
 static void gtkhtml2_url_request_received_cb(struct request *r) {
-	if (r->size != 0 && r->data != NULL) {
-		html_stream_write (((StreamData*)r->user_data)->stream, r->data, r->size); 
+
+	if(r->size != 0 && r->data != NULL) {
+		html_stream_write(((StreamData*)r->user_data)->stream, r->data, r->size); 
 	}
 	request_data_kill(r);
 }
 
-static void url_request (HtmlDocument *doc, const gchar *url, HtmlStream *stream, gpointer data) {
+static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream, gpointer data) {
 	xmlChar		*absURL;
-	
-	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+
+	if(NULL != strstr(url, "file://"))
+		absURL = (xmlChar *)g_strdup(url + strlen("file://"));
+	else
+		absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+
 	if(absURL != NULL) {
 		struct request *r;
 		GSList *connection_list;
@@ -184,14 +189,14 @@ static void url_request (HtmlDocument *doc, const gchar *url, HtmlStream *stream
 		html_stream_set_cancel_func (stream, stream_cancel, r);
 		xmlFree(absURL);
 
-		connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
-		connection_list = g_slist_prepend (connection_list, r);
-		g_object_set_data (G_OBJECT (doc), "connection_list", connection_list);
+		connection_list = g_object_get_data(G_OBJECT (doc), "connection_list");
+		connection_list = g_slist_prepend(connection_list, r);
+		g_object_set_data(G_OBJECT (doc), "connection_list", connection_list);
 	} else
 		html_stream_cancel(stream);
 }
 
-static void on_url (HtmlView *view, const char *url, gpointer user_data) {
+static void on_url(HtmlView *view, const char *url, gpointer user_data) {
 	xmlChar		*absURL;
 
 	g_free(selectedURL);
@@ -298,7 +303,7 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 		html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
 	
 	html_document_close_stream(doc);
-	
+
 	change_zoom_level(scrollpane, get_zoom_level(scrollpane));	/* to enforce applying of changed zoom levels */
 	gtkhtml2_scroll_to_top(scrollpane);
 }
@@ -343,7 +348,7 @@ static void gtkhtml2_deinit() {
 }
 
 static void gtkhtml2_html_received(struct request *r) {
-	if (r->size == 0 || r->data == NULL)
+	if(r->size == 0 || r->data == NULL)
 		return; /* This should nicely exit.... */
 	
 	write_html(GTK_WIDGET(r->user_data), r->data, r->source);
@@ -354,7 +359,7 @@ static void launch_url(GtkWidget *widget, const gchar *url) {
 	
 	r = g_object_get_data(G_OBJECT(widget), "html_request");
 
-	if (r != NULL)
+	if(r != NULL)
 		r->callback = NULL;
 	
 	r = download_request_new();

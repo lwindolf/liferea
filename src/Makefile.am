@@ -18,12 +18,6 @@ INCLUDES = \
 	@PACKAGE_CFLAGS@ \
 	@X_CFLAGS@
 
-
-##lib_LTLIBRARIES = liblihtmlt.la
-
-##liblihtmlt_la_SOURCES = textview.c
-##liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
-
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea
 
