@@ -63,8 +63,6 @@ struct feed_type {
 
 /* prototypes */
 static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode);
-static void feed_replace(feedPtr fp, feedPtr new_fp);
-
 
 /* initializing function, only called upon startup */
 void feed_init(void) {
@@ -597,7 +595,6 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 void feed_process_update_result(struct request *request) {
 	feedPtr			fp = (feedPtr)request->user_data;
 	feedHandlerPtr		fhp;
-	GList			*items = NULL;
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
 	
@@ -817,6 +814,7 @@ void feed_remove_item(feedPtr fp, itemPtr ip) {
 	fp->items = g_slist_remove(fp->items, ip);
 	fp->needsCacheSave = TRUE;
 	item_free(ip);
+	ui_notification_update(fp);
 }
 
 itemPtr feed_lookup_item(feedPtr fp, gchar *id) {
@@ -1102,15 +1100,17 @@ GSList * feed_get_item_list(feedPtr fp) {
 
 /* method to free all items of a feed, does not remove items from cache! */
 void feed_clear_item_list(feedPtr fp) {
-	GSList	*item;
+	GSList	*items, *item;
 
-	item = fp->items;
+	item = items = fp->items;
+
 	while(NULL != item) {
 		item_free(item->data);
 		item = g_slist_next(item);
 	}
 	g_slist_free(fp->items);
 	fp->items = NULL;
+	ui_notification_update(fp);
 }
 
 /* uses feed_clear_item_list and forces saving, thus effectivly removing items */
