@@ -22,7 +22,7 @@
 #include "interface.h"
 #include "feed.h"
 #include "folder.h"
-#include "filter.h"
+#include "rule.h"
 #include "vfolder.h"
 #include "support.h"
 #include "common.h"

@@ -23,7 +23,7 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "filter.h"
+#include "rule.h"
 #include "vfolder.h"
 
 /** 

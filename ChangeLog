@@ -1,3 +1,20 @@
+2004-08-??  ??? <???>
+
+	Version 0.5.3c
+	
+	* Update of the Czech translation (Juraj Kubelka)
+	
+	Bugfixes:
+
+	* Fixed HTTP authentication problem with case sensitivy 
+	  in the HTTP headers. (Nathan Conrad)
+	* Fixed gaim strings in the configure output reported by 
+	  Russell Kaiser. (Nathan Conrad)
+	* Corrected dependency for libxml2 from 2.0 to 2.6 for
+	  the configure script. (Nathan Conrad)
+	* Fixed a mistake in the German translation. (Lars Lindner)
+	
+
 2004-08-16  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.3

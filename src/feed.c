@@ -42,7 +42,6 @@
 #include "folder.h"
 #include "favicon.h"
 #include "callbacks.h"
-#include "filter.h"
 #include "update.h"
 #include "debug.h"
 #include "metadata.h"

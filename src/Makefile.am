@@ -37,7 +37,6 @@ liferea_bin_SOURCES = \
 	export.c export.h \
 	favicon.c favicon.h \
 	feed.c feed.h \
-	filter.c filter.h \
 	folder.c folder.h \
 	guitreemodelfilter.c guitreemodelfilter.h \
 	html.c html.h \
@@ -64,10 +63,10 @@ liferea_bin_SOURCES = \
 	pie_entry.c pie_entry.h \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h \
+	rule.c rule.h \
 	support.c support.h \
 	ui_dnd.c ui_dnd.h \
 	ui_feed.c ui_feed.h \
-	ui_filter.c \
 	ui_feedlist.c ui_feedlist.h \
 	ui_folder.c ui_folder.h \
 	ui_itemlist.c ui_itemlist.h \
