@@ -115,20 +115,51 @@ void initConfig() {
 
 /* maybe called several times to reload configuration */
 void loadConfig() {
+	gchar	*freeme, *proxystring, *tmp;
 	gint	maxitemcount;
 
 	/* check if important preferences exist... */
 	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
 		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
 
+	g_free(proxyname);
+	proxyname = NULL;
+	proxyport = 0;	
+	
+	/* first check for a configured GNOME proxy */
 	if(getBooleanConfValue(USE_PROXY)) {
-		g_free(proxyname);
 	        proxyname = getStringConfValue(PROXY_HOST);
         	proxyport = getNumericConfValue(PROXY_PORT);
+		debug2(DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
 	} else {
-		g_free(proxyname);
-		proxyname = NULL;
-		proxyport = 0;
+		/* otherwise there could be a proxy specified in the environment 
+		   the following code was derived from SnowNews' setup.c */
+		if(g_getenv("http_proxy") != NULL) {
+			/* The pointer returned by getenv must not be altered.
+			   What about mentioning this in the manpage of getenv? */
+			while(1) {
+				proxystring = g_strdup(g_getenv("http_proxy"));
+				freeme = proxystring;
+				strsep(&proxystring, "/");
+				if(proxystring == NULL)
+					break;
+				strsep(&proxystring, "/");
+
+				if(proxystring == NULL)
+					break;
+				tmp = strsep(&proxystring, ":");
+				proxyname = g_strdup(tmp);
+
+				if(proxystring == NULL) 
+					break;
+				proxyport = atoi(strsep(&proxystring, "/"));
+				break;
+			}
+			g_free(freeme);
+			debug2(DEBUG_CONF, "using proxy from environment: \"%s\" port \"%d\"", proxyname, proxyport);
+		} else {
+			debug0(DEBUG_CONF, "using no proxy!");
+		}
 	}
 }
 

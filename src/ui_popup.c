@@ -184,6 +184,7 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 
 	switch(type) {
 		case FST_FOLDER:
+		case FST_HELPFOLDER:
 			menu = make_menu(node_menu_items, node_menu_len, item);
 			break;
 		case FST_VFOLDER:
@@ -192,6 +193,7 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 		case FST_PIE:
 		case FST_RSS:
 		case FST_CDF:
+		case FST_HELPFEED:
 		case FST_AUTODETECT:
 			menu = make_menu(feed_menu_items, feed_menu_len, item);
 			break;
@@ -199,10 +201,11 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 		case FST_OCS:
 			menu = make_menu(dir_menu_items, dir_menu_len, item);
 			break;
-		case FST_HELPFEED:
-		case FST_HELPFOLDER:
-		case FST_EMPTY:
 		case FST_INVALID:
+			g_warning("internal error! invalid feed list element type!");
+			menu = NULL;
+			break;
+		case FST_EMPTY:
 		default:
 			menu = make_menu(default_menu_items, default_menu_len, NULL);
 			break;
