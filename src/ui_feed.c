@@ -1,5 +1,5 @@
 /**
- * @file ui_feed.h	UI actions concerning a single feed
+ * @file ui_feed.c	UI actions concerning a single feed
  *
  * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -197,9 +197,9 @@ void ui_feed_process_update_result(struct request *request) {
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
 
-			if((feedPtr)ui_feedlist_get_selected() == fp) {
+			if((feedPtr)ui_feedlist_get_selected() == fp)
 				ui_itemlist_load((nodePtr)fp);
-			}
+			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
 		}

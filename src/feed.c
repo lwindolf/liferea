@@ -666,7 +666,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		if(!found) {
 			if(FALSE == new_ip->readStatus)
 				fp->unreadCount++;
-			if(FALSE == new_ip->newStatus) {
+			if(TRUE == new_ip->newStatus) {
 				fp->newCount++;
 				ui_tray_add_new(1);
 			}

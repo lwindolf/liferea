@@ -195,6 +195,8 @@ void item_free(itemPtr ip) {
 	
 	if(FALSE == ip->readStatus)
 		feed_decrease_unread_counter(ip->fp);
+	if(TRUE == ip->newStatus)
+		feed_decrease_new_counter(ip->fp);
 
 	g_free(ip->title);
 	g_free(ip->source);

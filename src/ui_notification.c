@@ -115,6 +115,7 @@ void ui_notification_update(const feedPtr feed_p) {
 	if (list_p != NULL) {
 		curNotif_p = (feedNotif_t *) list_p->data;
 	} else {
+g_print("newcount=%d (%s)\n", feed_get_new_counter(feed_p), feed_get_title(feed_p));
 		if(0 == feed_get_new_counter(feed_p))
 			return;
 
