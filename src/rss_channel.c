@@ -42,6 +42,7 @@
 #include "ns_syn.h"
 #include "ns_admin.h"
 #include "ns_blogChannel.h"
+#include "ns_cC.h"
 
 #include "netio.h"
 #include "htmlview.h"
@@ -118,6 +119,7 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		addNameSpaceHandler(ns_content_getRSSNsPrefix(), (gpointer)ns_content_getRSSNsHandler());
 		addNameSpaceHandler(ns_syn_getRSSNsPrefix(), (gpointer)ns_syn_getRSSNsHandler());
 		addNameSpaceHandler(ns_admin_getRSSNsPrefix(), (gpointer)ns_admin_getRSSNsHandler());
+		addNameSpaceHandler(ns_cC_getRSSNsPrefix(), (gpointer)ns_cC_getRSSNsHandler());
 	}
 							
 	/* prepare feed handler structure */
