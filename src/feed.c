@@ -139,7 +139,7 @@ feedPtr getNewFeedStruct(void) {
 	return fp;
 }
 
-static gint saveFeed(feedPtr fp) {
+gint saveFeed(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, feedNode, itemNode;
 	GSList		*itemlist;
@@ -150,9 +150,6 @@ static gint saveFeed(feedPtr fp) {
 	gint		saveCount = 0;
 	gint		saveMaxCount;
 	char		*buf;
-
-	if(FALSE == getFeedAvailable(fp))
-		return;
 			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
 	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
@@ -231,9 +228,12 @@ static gint saveFeed(feedPtr fp) {
 
 /* hash table foreach wrapper function */
 static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
-
-	if(IS_FEED(((feedPtr)value)->type))
-		saveFeed((feedPtr)value);
+	feedPtr	fp = (feedPtr)value;
+	
+	if(IS_FEED(fp->type)) {
+		print_status(g_strdup_printf(_("saving \"%s\"..."), fp->title));
+		saveFeed(fp);
+	}
 }
 
 /* function to be called on program shutdown to save read stati */
@@ -519,8 +519,6 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 		/* copy description */
 		g_free(old_fp->description);
 		old_fp->description = new_fp->description;
-		
-		saveFeed(old_fp);
 	}
 	
 	old_fp->available = new_fp->available;

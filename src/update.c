@@ -124,22 +124,23 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 			new_fp->source = g_strdup(source);	// FIXME: is this correct?
 			g_assert(NULL != fhp->readFeed);
 			(*(fhp->readFeed))(new_fp);
+			
+			if(TRUE == fhp->merge)
+				/* If the feed type supports merging... */
+				mergeFeed(fp, new_fp);
+			else
+				/* Otherwise we simply use the new feed info... */
+				copyFeed(fp, new_fp);
+
 		} else {
-			print_status(g_strdup_printf(_("\"%s\" is not available!"), source));
+			print_status(g_strdup_printf(_("\"%s\" is not available!"), fp->title));
 			freeFeed(new_fp);
 			fp->available = FALSE;
-			return;
 		}
 
-		if(TRUE == fhp->merge)
-			/* If the feed type supports merging... */
-			mergeFeed(fp, new_fp);
-		else
-			/* Otherwise we simply use the new feed info... */
-			copyFeed(fp, new_fp);
-		
 		/* now fp contains the actual feed infos */
-		
+		saveFeed(fp);
+				
 		g_mutex_lock(feeds_lock);
 		/* update all vfolders */
 		// g_hash_table_foreach(feeds, removeOldItemsFromVFolders, fp); // FIXME: mergeFeed has to do this!
