@@ -251,10 +251,11 @@ static void bufferParseError(void *ctxt, const gchar * msg, ...) {
 		va_end(params);
 
 		g_assert(NULL != newmsg);
+		newmsg = utf8_fix(newmsg);
 		tmp = g_markup_escape_text(newmsg, -1);
 		g_free(newmsg);
 		newmsg = tmp;
-		
+	
 		addToHTMLBufferFast(&errors->buffer, "<pre>");
 		addToHTMLBufferFast(&errors->buffer, newmsg);
 		addToHTMLBufferFast(&errors->buffer, "</pre>");
