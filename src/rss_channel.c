@@ -225,7 +225,6 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	short 		rdf = 0;
 	int 		error = 0;
 	
-	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 	feed_set_time(fp, time(NULL));
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
@@ -316,8 +315,6 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	} else {
 		ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 	}
-	
-	g_hash_table_destroy(fp->tmpdata);
 }
 
 static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {

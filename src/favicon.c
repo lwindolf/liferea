@@ -136,7 +136,7 @@ static void favicon_download_5(feedPtr fp) {
 			request->callback = &favicon_download_request_favicon_cb;
 			request->user_data = fp;
 			request->flags = 5;
-			fp->faviconRequest = request;
+			fp->otherRequests = g_slist_append(fp->otherRequests, request);
 			
 			debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
 			
@@ -161,7 +161,7 @@ static void favicon_download_4(feedPtr fp) {
 			request->callback = &favicon_download_request_favicon_cb;
 			request->user_data = fp;
 			request->flags = 4;
-			fp->faviconRequest = request;
+			fp->otherRequests = g_slist_append(fp->otherRequests, request);
 			
 			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
 			
@@ -177,7 +177,7 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 	gboolean success = FALSE;
 	
 	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
-	fp->faviconRequest = NULL;
+	fp->otherRequests = g_slist_remove(fp->otherRequests, request);
 	
 	if(NULL != request->data && request->size > 0) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
@@ -220,11 +220,11 @@ static void favicon_download_html_request_cb(struct request *request) {
 		iconUri = html_discover_favicon(request->data, request->source);
 		if (iconUri != NULL) {
 			request2 = download_request_new(NULL);
-			fp->faviconRequest = request2;
 			request2->source = iconUri;
 			request2->callback = &favicon_download_request_favicon_cb;
 			request2->user_data = fp;
 			request2->flags++;
+			fp->otherRequests = g_slist_append(fp->otherRequests, request2);
 			download_queue(request2);
 		}
 	}
@@ -262,8 +262,7 @@ static void favicon_download_html(feedPtr fp, int phase) {
 	request->callback = &favicon_download_html_request_cb;
 	request->user_data = fp;
 	request->flags = phase;
-	fp->faviconRequest = request;
-	
+	fp->otherRequests = g_slist_append(fp->otherRequests, request);	
 	download_queue(request);
 	
 	debug_exit("favicon_download");
@@ -273,9 +272,6 @@ void favicon_download(feedPtr fp) {
 	debug_enter("favicon_download");
 	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", feed_get_source(fp));
 	
-	if(fp->faviconRequest != NULL)
-		return; /* It is already being downloaded */
-
 	g_get_current_time(&fp->lastFaviconPoll);
 	
 	if(feed_get_html_url(fp) != NULL) {

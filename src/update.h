@@ -76,7 +76,7 @@ struct request {
 				     URL. Use file:// and exec:// */
 	gchar *filtercmd;	/**< Command will filter output of URL */
 	request_cb callback;	/**< Function to be called after retreival */
-	gpointer user_data;	/**< Accessed by the callback. Would contain a feedPtr for the feed_process_request_result callbacks. */
+	gpointer user_data;	/**< Accessed by the callback. Usually contains the feedPtr the download result is for (to be accessed by the callback). */
 	guint32 flags;		/**< Flags to be passed to the callback */
 	gint priority;		/**< priority of the request. Set to 1 for high priority */
 	
@@ -84,7 +84,7 @@ struct request {
 	int returncode;
 	int httpstatus;		/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
 	GTimeVal lastmodified;	/**< Time of last modification. Stored in UTC. */
-	gchar *etag;			/**< E-Tag value for download. Set by both requestor and download subsystem */
+	gchar *etag;		/**< E-Tag value for download. Set by both requestor and download subsystem */
 	gchar *data;
 	size_t size;
 };

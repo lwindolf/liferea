@@ -31,6 +31,14 @@
 #define BLINK_START		"<p><div class=\"blogchanneltitle\"><b>Promoted Weblog</b></div></p>"
 #define BLINK_END		""
 
+#define TAG_BLOGROLL		1
+#define TAG_MYSUBSCRIPTIONS	2
+
+struct requestData {
+	feedPtr		fp;	/* parent feed */
+	gint		tag;	/* metadata id we're downloading (see TAG_*) */
+};
+
 /* the spec at Userland http://backend.userland.com/blogChannelModule
 
    blogChannel contains of four channel tags
@@ -77,86 +85,124 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 /* simple function to retrieve an OPML document and 
    parse and output all depth 1 outline tags as
    HTML into a buffer */
-static gchar * getOutlineList(gchar *url) {
-	struct request	*request;
+static void ns_blogChannel_download_request_cb(struct request *request) {
+	struct requestData	*requestData = request->user_data;
 	xmlDocPtr 		doc = NULL;
 	xmlNodePtr 		cur;
-	gchar			*tmp, *buffer;
+	gchar			*tmp, *buffer =NULL ;
+
+	g_assert(NULL != requestData);
 	
+	/* the following code somewhat duplicates opml.c */	
+	if(request->data != NULL) {
+		while(1) {
+			doc = xmlRecoverMemory(request->data, request->size);
+
+			if(NULL == doc)
+				break;
+
+			if(NULL == (cur = xmlDocGetRootElement(doc)))
+				break;
+
+			if(!xmlStrcmp(cur->name, BAD_CAST"opml") ||
+			   !xmlStrcmp(cur->name, BAD_CAST"oml") ||
+			   !xmlStrcmp(cur->name, BAD_CAST"outlineDocument")) {
+		   		/* nothing */
+			} else
+				break;
+
+			cur = cur->xmlChildrenNode;
+			while(cur != NULL) {
+				if(!xmlStrcmp(cur->name, BAD_CAST"body")) {
+					/* process all <outline> tags */
+					cur = cur->xmlChildrenNode;
+					while(cur != NULL) {
+						if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
+							addToHTMLBuffer(&buffer, tmp = getOutlineContents(cur));
+							addToHTMLBuffer(&buffer, "<br>");
+							g_free(tmp);
+						}
+						cur = cur->next;
+					}
+					break;
+				}
+				cur = cur->next;
+			}
+			break;		
+		}
+
+		if(NULL != doc)
+			xmlFreeDoc(doc);
+	}
+g_print("parsing blogChannel references\n");
+	if(NULL != buffer) {
+		feed_load(requestData->fp);
+		
+		tmp = NULL;		
+g_print("generating blogChannel output\n");
+		switch(requestData->tag) {
+			case TAG_BLOGROLL:
+				addToHTMLBuffer(&tmp, BLOGROLL_START);
+				break;
+			case TAG_MYSUBSCRIPTIONS:
+				addToHTMLBuffer(&tmp, MYSUBSCR_START);
+				break;
+		}	
+		addToHTMLBuffer(&tmp, buffer);
+		g_free(buffer);
+		switch(requestData->tag) {
+			case TAG_BLOGROLL:
+				addToHTMLBuffer(&tmp, BLOGROLL_END);
+				g_hash_table_insert(requestData->fp->tmpdata, g_strdup("bC:blogRoll"), tmp);
+				break;
+			case TAG_MYSUBSCRIPTIONS:
+				addToHTMLBuffer(&tmp, MYSUBSCR_END);
+				g_hash_table_insert(requestData->fp->tmpdata, g_strdup("bC:mySubscriptions"), tmp);
+				break;
+		}
+
+		buffer = NULL;
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:blink"));
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:blogRoll"));
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:mySubscriptions"));
+		metadata_list_set(&(requestData->fp->metadata), "blogChannel", buffer);
+		g_free(buffer);
+		
+		feed_unload(requestData->fp);
+	}
+	download_request_free(request);
+	g_free(requestData);
+}
+
+static void getOutlineList(struct requestData *requestData, gchar *url) {
+	struct request		*request;
+g_print("new blogChannel download request\n");
 	request = download_request_new();
 	request->source = g_strdup(url);
-	download_process(request);
-
-	if (request->data == NULL) {
-		download_request_free(request);
-		return NULL;
-	}
-
-	buffer = NULL;	/* the following code somewhat duplicates opml.c */
-	while(1) {
-		doc = xmlRecoverMemory(request->data, request->size);
-		
-		if(NULL == doc)
-			break;
-			
-		if(NULL == (cur = xmlDocGetRootElement(doc)))
-			break;
-
-		if(!xmlStrcmp(cur->name, BAD_CAST"opml") ||
-		   !xmlStrcmp(cur->name, BAD_CAST"oml") ||
-		   !xmlStrcmp(cur->name, BAD_CAST"outlineDocument")) {
-		   	/* nothing */
-		} else
-			break;
-	
-		cur = cur->xmlChildrenNode;
-		while(cur != NULL) {
-			if(!xmlStrcmp(cur->name, BAD_CAST"body")) {
-				/* process all <outline> tags */
-				cur = cur->xmlChildrenNode;
-				while(cur != NULL) {
-					if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
-						addToHTMLBuffer(&buffer, tmp = getOutlineContents(cur));
-						addToHTMLBuffer(&buffer, "<br>");
-						g_free(tmp);
-					}
-					cur = cur->next;
-				}
-				break;
-			}
-			cur = cur->next;
-		}
-		break;		
-	}
-
-	if(NULL != doc)
-		xmlFreeDoc(doc);
-
-	download_request_free(request);		
-	return buffer;
+	request->callback = ns_blogChannel_download_request_cb;
+	request->user_data = requestData;
+	requestData->fp->otherRequests = g_slist_append(requestData->fp->otherRequests, request);
+	download_queue(request);
 }
 
 static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
-	xmlChar		*string;
-	gchar		*buffer = NULL;
-	gchar		*output, *tmp;
+	xmlChar			*string;
+	gchar			*buffer = NULL;
+	gchar			*output, *tmp;
+	struct requestData	*requestData;
 	
 	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
-	  
+g_print("parsing blogChannel\n");	  
 	if(!xmlStrcmp("blogRoll", cur->name)) {	
-		if(NULL != (output = getOutlineList(string))) {
-			addToHTMLBuffer(&buffer, BLOGROLL_START);
-			addToHTMLBuffer(&buffer, output);
-			addToHTMLBuffer(&buffer, BLOGROLL_END);
-			g_free(output);
-		}
+		requestData = g_new0(struct requestData, 1);
+		requestData->fp = fp;
+		requestData->tag = TAG_BLOGROLL;
+		getOutlineList(requestData, string);
 	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
-		if(NULL != (output = getOutlineList(string))) {
-			addToHTMLBuffer(&buffer, MYSUBSCR_START);
-			addToHTMLBuffer(&buffer, output);
-			addToHTMLBuffer(&buffer, MYSUBSCR_END);
-			g_free(output);
-		}
+		requestData = g_new0(struct requestData, 1);
+		requestData->fp = fp;
+		requestData->tag = TAG_MYSUBSCRIPTIONS;
+		getOutlineList(requestData, string);
 	} else if(!xmlStrcmp("blink", cur->name)) {
 		tmp = utf8_fix(string);
 		string = NULL;
@@ -170,16 +216,6 @@ static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
 
 	if(NULL != string)
 		xmlFree(string);
-		
-	if(NULL != buffer) {
-		g_hash_table_insert(fp->tmpdata, g_strdup_printf("bC:%s", cur->name), buffer);
-		buffer = NULL;
-		addToHTMLBuffer(&buffer, g_hash_table_lookup(fp->tmpdata, "bC:blink"));
-		addToHTMLBuffer(&buffer, g_hash_table_lookup(fp->tmpdata, "bC:blogRoll"));
-		addToHTMLBuffer(&buffer, g_hash_table_lookup(fp->tmpdata, "bC:mySubscriptions"));
-		metadata_list_set(&(fp->metadata), "blogChannel", buffer);
-		g_free(buffer);
-	}
 }
 
 static void ns_blogChannel_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {

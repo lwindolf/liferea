@@ -115,7 +115,7 @@ typedef struct feed {
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	GTimeVal	lastFaviconPoll;	/**< time at which the feed was last updated */
 	struct request	*request;		/**< update request structure used when downloading xml content */
-	struct request	*faviconRequest;	/**< update request structure used for downloading the favicon */
+	GSList		*otherRequests;		/**< list of other update request structures used for downloading anything (favicon, blogChannel stuff, ...) */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
 } *feedPtr;
@@ -182,19 +182,6 @@ void feed_add_item(feedPtr fp, itemPtr ip);
 itemPtr feed_lookup_item(feedPtr fp, gchar *id);
 
 void feed_free(feedPtr fp);
-
-/**
- * General feed source parsing function. Parses the passed feed source
- * and tries to determine the source type. If the type is HTML and 
- * autodiscover is TRUE the function tries to find a feed, tries to
- * download it and parse the feed's source instead of the passed source.
- *
- * @param fp		the feed structure to be filled
- * @param data		the feed source
- * @param dataLength the length of the 'data' string
- * @param autodiscover	TRUE if auto discovery should be possible
- */
-feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover);
 
 /**
  * This is a timeout callback to check for feed update results.

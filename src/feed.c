@@ -92,6 +92,7 @@ feedPtr feed_new(void) {
 	fp->defaultInterval = -1;
 	fp->type = FST_FEED;
 	fp->cacheLimit = CACHE_DEFAULT;
+	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 	
 	return fp;
 }
@@ -121,7 +122,18 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 	return NULL;
 }
 
-feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover) {
+/**
+ * General feed source parsing function. Parses the passed feed source
+ * and tries to determine the source type. If the type is HTML and 
+ * autodiscover is TRUE the function tries to find a feed, tries to
+ * download it and parse the feed's source instead of the passed source.
+ *
+ * @param fp		the feed structure to be filled
+ * @param data		the feed source
+ * @param dataLength the length of the 'data' string
+ * @param autodiscover	TRUE if auto discovery should be possible
+ */
+static feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover) {
 	gchar			*source;
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
@@ -156,8 +168,23 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 		while (handlerIter != NULL) {
 			handler = (feedHandlerPtr)(handlerIter->data);
 			if (handler != NULL && handler->checkFormat != NULL && (*(handler->checkFormat))(doc, cur)) {
-				(*(handler->feedParser))(fp, doc, cur);
-				handled = TRUE;
+			
+				/* free old temp. parsing data, don't free right after parsing because
+				   it can be used until the last feed request is finished, move me 
+				   to the place where the last request in list otherRequests is 
+				   finished :-) */
+				g_hash_table_destroy(fp->tmpdata);
+				fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
+				
+				/* we always drop old metadata */
+				metadata_list_free(fp->metadata);
+				fp->metadata = NULL;
+				
+				if(FALSE == handler->merge)
+					feed_clear_item_list(fp);	/* for directories */
+				
+				(*(handler->feedParser))(fp, doc, cur);		/* parse it */
+				handled = TRUE;				
 				break;
 			}
 			handlerIter = handlerIter->next;
@@ -513,185 +540,6 @@ void feed_unload(feedPtr fp) {
 	}
 }
 
-/* Merges the feeds specified by old_fp and new_fp, so that
-   the resulting feed is stored in the structure old_fp points to.
-   The feed structure of new_fp 'll be freed. */
-void feed_merge(feedPtr old_fp, feedPtr new_fp) {
-	GSList		*new_list, *old_list, *diff_list = NULL;
-	itemPtr		new_ip, old_ip;
-	gboolean	found, equal=FALSE;
-	gint		newcount = 0;
-	gint		traycount = 0;
-
-	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
-	if(TRUE == feed_get_available(new_fp)) {
-		/* adjust the new_fp's items parent feed pointer to old_fp, just
-		   in case they are reused... */
-		new_list = new_fp->items;
-		while(new_list) {
-			new_ip = new_list->data;
-			new_ip->fp = old_fp;	
-			new_list = g_slist_next(new_list);
-		}
-
-		/* merge item lists ... */
-		new_list = new_fp->items;
-		while(new_list) {
-			new_ip = new_list->data;			
-			debug1(DEBUG_VERBOSE, "processing new item: \"%s\"", item_get_title(new_ip));
-			
-			found = FALSE;
-			/* scan the old list to see if the new_fp item does already exist */
-			old_list = old_fp->items;
-			while(old_list) {
-				old_ip = old_list->data;
-				
-				/* try to compare the two items */
-				
-				/* both items must have either ids or none */
-				if(((item_get_id(old_ip) == NULL) && (item_get_id(new_ip) != NULL)) ||
-				   ((item_get_id(old_ip) != NULL) && (item_get_id(new_ip) == NULL))) {	
-					/* cannot be equal (different ids) so compare to 
-					   next old item */
-					old_list = g_slist_next(old_list);
-			   		continue;
-				} 
-						
-				/* compare titles and HTML descriptions */
-				equal = TRUE;
-
-				if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
-				    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
-			    		equal = FALSE;
-
-				if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
-				    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
-			    		equal = FALSE;
-
-				if(NULL != item_get_id(old_ip)) {			
-					/* if they have ids, compare them */
-					if(0 == strcmp(item_get_id(old_ip), item_get_id(new_ip))){
-						found = TRUE;
-						break;
-					}
-				} 
-				
-				if(equal) {
-					found = TRUE;
-					break;
-				}
-				
-				old_list = g_slist_next(old_list);
-			}
-			
-			if(!found) {
-				/* Check if feed filters allow display of this item, we don't
-				   delete the item because there can be vfolders which display
-				   it. To allow this the parent feed does store the item, but
-				   hides it. */
-				if(FALSE) { //== vfolder_check_new_item(new_ip)) {
-					item_set_hidden(new_ip, TRUE);
-					debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
-				} else {
-					old_fp->unreadCount++;
-					feed_increase_new_counter(old_fp);
-					debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
-					traycount++;
-				}
-				newcount++;
-				diff_list = g_slist_append(diff_list, (gpointer)new_ip);
-			} else {
-				/* if the item was found but has other contents -> update */
-				if(!equal) {
-					item_set_title(old_ip, item_get_title(new_ip));
-					item_set_description(old_ip, item_get_description(new_ip));
-					item_set_time(old_ip, item_get_time(new_ip));
-					item_set_unread(old_ip);
-					vfolder_update_item(old_ip);
-					debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
-					newcount++;
-					traycount++;
-				} else {
-					item_set_read_status(new_ip, TRUE);
-					/* no item_set_new_status() - we don't treat changed items as new items! */
-					debug0(DEBUG_VERBOSE, "-> item already exists");
-				}
-
-				/* any found new_fp items are not needed anymore */
-				if(FALSE == old_fp->noIncremental) { 
-					new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
-					item_free(new_ip);					
-				}
-			}
-			
-			new_list = g_slist_next(new_list);
-		}
-		
-		/* now we distinguish between incremental merging
-		   for all normal feeds, and skipping old item
-		   merging for help feeds... */
-		if(FALSE == old_fp->noIncremental) {
-			debug0(DEBUG_VERBOSE, "postprocessing normal feed...");
-			g_slist_free(new_fp->items);	/* dispose new item list */
-			
-			if(NULL == diff_list)
-				ui_mainwindow_set_status_bar(_("\"%s\" has no new items"), old_fp->title);
-			else 
-				ui_mainwindow_set_status_bar(_("\"%s\" has %d new items"), old_fp->title, newcount);
-			
-			/* mark all items in new_fp as new (needed for notification features) */
-			new_list = diff_list;
-			while(new_list) {
-				new_ip = new_list->data;
-				item_set_new_status(new_ip, TRUE);
-				new_list = g_slist_next(new_list);
-			}
-			
-			old_list = g_slist_concat(diff_list, old_fp->items);
-			old_fp->items = old_list;
-		} else {
-			debug0(DEBUG_VERBOSE, "postprocessing non incremental feed...");
-			/* free old list and items of old list */
-			old_list = old_fp->items;
-			while(NULL != old_list) {
-				item_free((itemPtr)old_list->data);
-				old_list = g_slist_next(old_list);
-			}
-			g_slist_free(old_fp->items);
-			
-			/* parent feed pointers are already correct, we can reuse simply the new list */
-			old_fp->items = new_fp->items;
-		}		
-
-		/* copy description and default update interval */
-		feed_set_description(old_fp, feed_get_description(new_fp));
-		old_fp->defaultInterval = new_fp->defaultInterval;
-	}
-
-	g_free(old_fp->parseErrors);
-	old_fp->parseErrors = new_fp->parseErrors;
-	new_fp->parseErrors = NULL;
-
-	feed_set_available(old_fp, feed_get_available(new_fp));
-	new_fp->items = NULL;
-
-	metadata_list_free(old_fp->metadata);
-	old_fp->metadata = new_fp->metadata;
-	new_fp->metadata = NULL;
-
-	g_free(old_fp->htmlUrl);
-	old_fp->htmlUrl = new_fp->htmlUrl;
-	new_fp->htmlUrl = NULL;
-	
-	g_free(old_fp->imageUrl);
-	old_fp->imageUrl = new_fp->imageUrl;
-	new_fp->imageUrl = NULL;
-
-	feed_free(new_fp);
-	
-	ui_tray_add_new(traycount);		/* finally update the tray icon */
-}
-
 /**
  * method to be called to schedule a feed to be updated
  */
@@ -745,110 +593,203 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 /*------------------------------------------------------------------------------*/
 
 void feed_process_update_result(struct request *request) {
-	feedPtr			old_fp = (feedPtr)request->user_data;
-	feedPtr			new_fp;
+	feedPtr			fp = (feedPtr)request->user_data;
 	feedHandlerPtr		fhp;
+	gchar			*old_title, *old_source;
+	gint			old_update_interval;
 	
 	ui_lock();
 	g_assert(NULL != request);
 
-	feed_load(old_fp);
+	feed_load(fp);
 
 	/* no matter what the result of the update is we need to save update
 	   status and the last update time to cache */
-	old_fp->needsCacheSave = TRUE;
+	fp->needsCacheSave = TRUE;
 	
-	feed_set_available(old_fp, TRUE);
+	feed_set_available(fp, TRUE);
 
 	if(401 == request->httpstatus) { /* unauthorized */
-		feed_set_available(old_fp, FALSE);
-		if (request->flags & FEED_REQ_AUTH_DIALOG)
-			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), old_fp, request->flags);
+		feed_set_available(fp, FALSE);
+		if(request->flags & FEED_REQ_AUTH_DIALOG)
+			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), fp, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
-		feed_set_available(old_fp, FALSE);
-		feed_set_discontinued(old_fp, TRUE);
-		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(old_fp));
+		feed_set_available(fp, FALSE);
+		feed_set_discontinued(fp, TRUE);
+		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(fp));
 	} else if(304 == request->httpstatus) {
-		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(old_fp));
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(fp));
 	} else if(NULL != request->data) {
-		do {
-			old_fp->lastModified = request->lastmodified;
-			/* note this is to update the feed URL on permanent redirects */
-			if(0 != strcmp(request->source, feed_get_source(old_fp))) {
-				feed_set_source(old_fp, request->source);
-				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(old_fp));
-			}
+		fp->lastModified = request->lastmodified;
+		
+		/* note this is to update the feed URL on permanent redirects */
+		if(0 != strcmp(request->source, feed_get_source(fp))) {
+			feed_set_source(fp, request->source);
+			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(fp));
+		}
+		
+		/* we save all properties that should not be overwritten in all cases */
+		old_update_interval = feed_get_update_interval(fp);
+		old_title = g_strdup(feed_get_title(fp));
+		old_source = g_strdup(feed_get_source(fp));
 
-			new_fp = feed_new();
-			new_fp->loaded = 1;
-			feed_set_source(new_fp, feed_get_source(old_fp)); /* Used by the parser functions to determine source */
-			/* parse the new downloaded feed into new_fp */
-			fhp = feed_parse(new_fp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
-			if(fhp == NULL) {
-				feed_set_available(old_fp, FALSE);
-				g_free(old_fp->parseErrors);
-				old_fp->parseErrors = g_strdup(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"));
-				addToHTMLBuffer(&(old_fp->parseErrors), new_fp->parseErrors);
-				feed_free(new_fp);
-				break;
-			} else {
-				if(request->flags & FEED_REQ_AUTO_DISCOVER)
-					feed_set_source(old_fp, feed_get_source(new_fp)); /* Reset autodiscovered source */
-			}
+		/* parse the new downloaded feed into new_fp */
+		fhp = feed_parse(fp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
+		if(fhp == NULL) {
+			feed_set_available(fp, FALSE);
+			fp->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), fp->parseErrors);
+		} else {
+			fp->fhp = fhp;
 			
-			old_fp->fhp = fhp;
-			
-			if(new_fp != NULL && feed_get_title(new_fp) != NULL && request->flags & FEED_REQ_RESET_TITLE) {
-				gchar *tmp = filter_title(g_strdup(feed_get_title(new_fp)));
-				feed_set_title(old_fp, tmp);
-				g_free(tmp);
-			}
+			/* restore user defined properties if necessary */
+			if(!(request->flags & FEED_REQ_RESET_TITLE))
+				feed_set_title(fp, old_title);
+				
+			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
+				feed_set_source(fp, old_source);
 
-			if(new_fp != NULL && request->flags & FEED_REQ_RESET_UPDATE_INT)
-				feed_set_update_interval(old_fp, feed_get_default_update_interval(new_fp));
+			if(!(request->flags & FEED_REQ_RESET_UPDATE_INT))
+				feed_set_update_interval(fp, old_update_interval);
+				
+			g_free(old_title);
+			g_free(old_source);
 
-			if(TRUE == fhp->merge)
-				/* If the feed type supports merging... */
+			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
+/*			if(TRUE == fhp->merge)
 				feed_merge(old_fp, new_fp);
 			else {
-				/* Otherwise we simply use the new feed info... */
 				feed_replace(old_fp, new_fp);
-				ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(old_fp));
-			}
 
-			if((feedPtr)ui_feedlist_get_selected() == old_fp) {
-				ui_itemlist_load((nodePtr)old_fp);
+			}*/
+
+			if((feedPtr)ui_feedlist_get_selected() == fp) {
+				ui_itemlist_load((nodePtr)fp);
 			}
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
-				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),old_fp);
-		} while(0);
+				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
+		}
 	} else {	
-		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(old_fp));
-		feed_set_available(old_fp, FALSE);
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(fp));
+		feed_set_available(fp, FALSE);
 	}
 	
-	feed_set_error_description(old_fp, request->httpstatus, request->returncode);
+	feed_set_error_description(fp, request->httpstatus, request->returncode);
 
-	old_fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
-	ui_feed_update(old_fp);
-	ui_notification_update(old_fp);	
+	fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
+	ui_feed_update(fp);
+	ui_notification_update(fp);	
 	ui_feedlist_update();
 	
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		favicon_download(old_fp);
+		favicon_download(fp);
 		
-	feed_unload(old_fp);
+	feed_unload(fp);
 	
 	ui_unlock();
 }
 
-void feed_add_item(feedPtr fp, itemPtr ip) {
-
+/**
+ * Adds an item to the feed. Realizes the item merging logic based on
+ * the item id's. 
+ *
+ * Note: Does not do merging for vfolders. Would be hazardous!
+ */
+void feed_add_item(feedPtr fp, itemPtr new_ip) {
+	GSList		*old_items;
+	itemPtr		old_ip;
+	gboolean	found, equal;
+	
 	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
-	ip->fp = fp;
-	if(FALSE == ip->readStatus)
-		fp->unreadCount++;
-	fp->items = g_slist_append(fp->items, (gpointer)ip);
+	
+	/* determine if we should add it... */
+	if(FST_VFOLDER != feed_get_type(fp)) {
+		debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(new_ip));
+		
+		/* compare to every existing item in this feed */
+		found = FALSE;
+		old_items = feed_get_item_list(fp);
+		while(NULL != old_items) {
+			old_ip = old_items->data;
+			
+			/* try to compare the two items */
+
+			/* trivial case: one item has item the other doesn't -> they can't be equal */
+			if(((item_get_id(old_ip) == NULL) && (item_get_id(new_ip) != NULL)) ||
+			   ((item_get_id(old_ip) != NULL) && (item_get_id(new_ip) == NULL))) {	
+				/* cannot be equal (different ids) so compare to 
+				   next old item */
+				old_items = g_slist_next(old_items);
+			   	continue;
+			} 
+
+			/* best case: they both have ids */
+			if(NULL != item_get_id(old_ip)) {			
+				if(0 == strcmp(item_get_id(old_ip), item_get_id(new_ip))){
+					found = TRUE;
+					break;
+				}
+			/* just for the case there are no ids: compare titles and HTML descriptions */
+			} else {
+				equal = TRUE;
+
+				if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
+				    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
+		    			equal = FALSE;
+
+				if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
+				    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
+		    			equal = FALSE;
+					
+				if(equal) {
+					found = TRUE;
+					break;
+				}
+			}			
+			old_items = g_slist_next(old_items);
+		}
+		
+		if(!found) {
+			if(FALSE == new_ip->readStatus)
+				fp->unreadCount++;
+			fp->items = g_slist_append(fp->items, (gpointer)new_ip);
+			new_ip->fp = fp;
+		
+			/* Check if feed filters allow display of this item, we don't
+			   delete the item because there can be vfolders which display
+			   it. To allow this the parent feed does store the item, but
+			   hides it. */
+			if(FALSE) { //== vfolder_check_new_item(new_ip)) {
+				item_set_hidden(new_ip, TRUE);
+				debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
+			} else {
+				item_set_new_status(new_ip, TRUE);
+				debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
+				ui_tray_add_new(1);
+			}
+		} else {
+			/* if the item was found but has other contents -> update contents */
+			if(!equal) {
+				/* no item_set_new_status() - we don't treat changed items as new items! */
+				item_set_title(old_ip, item_get_title(new_ip));
+				item_set_description(old_ip, item_get_description(new_ip));
+				item_set_time(old_ip, item_get_time(new_ip));
+				item_set_unread(old_ip);	// FIXME: needed?
+				metadata_list_free(old_ip->metadata);
+				old_ip->metadata = new_ip->metadata;
+				vfolder_update_item(old_ip);
+				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
+				ui_tray_add_new(1);
+			} else {
+				debug0(DEBUG_VERBOSE, "-> item already exists");
+			}
+		}
+	} else {
+		/* just add the item */
+		if(FALSE == new_ip->readStatus)
+			fp->unreadCount++;
+		fp->items = g_slist_append(fp->items, (gpointer)new_ip);
+		new_ip->fp = fp;
+	}
 }
 
 void feed_remove_item(feedPtr fp, itemPtr ip) {
@@ -1267,67 +1208,10 @@ gchar *feed_render(feedPtr fp) {
 	return buffer;
 }
 
-/* Method to copy the info payload of the structure given by
-   new_fp to the structure fp points to. Essential model
-   specific keys of fp are kept. The feed structure of new_fp 
-   is freed afterwards. 
-   
-   This method is primarily used for feeds which do not want
-   to incrementally update items like directories. */
-static void feed_replace(feedPtr fp, feedPtr new_fp) {
-	feedPtr		tmp_fp;
-	itemPtr		ip;
-	GSList		*item;
-
-	/* To prevent updating feed ptr in the tree store and
-	   feeds hashtable we reuse the old structure! */
-	
-	/* in the next step we will copy the new_fp structure
-	   to fp, but we need to keep some fp attributes */
-	g_free(new_fp->title);
-	new_fp->title = fp->title;
-
-	g_free(new_fp->source);
-	new_fp->source = fp->source;
-
-	if(new_fp->icon != NULL)
-		g_object_unref(new_fp->icon);
-	new_fp->icon = fp->icon;
-	new_fp->id = fp->id;
-	new_fp->filtercmd = fp->filtercmd;
-	new_fp->type = fp->type;
-	new_fp->request = fp->request;
-	new_fp->faviconRequest = fp->faviconRequest;
-	new_fp->ui_data = fp->ui_data;
-	new_fp->fhp = fp->fhp;	
-	tmp_fp = feed_new();
-	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
-	memcpy(fp, new_fp, sizeof(struct feed));
-	tmp_fp->id = NULL;				/* to prevent removal of reused attributes... */
-	tmp_fp->items = NULL;
-	tmp_fp->title = NULL;
-	tmp_fp->source = NULL;
-	tmp_fp->request = NULL;
-	tmp_fp->ui_data = NULL;
-	tmp_fp->filtercmd = NULL;
-	tmp_fp->faviconRequest = NULL;
-	tmp_fp->icon = NULL;
-	feed_free(tmp_fp);				/* we use tmp_fp to free almost all infos
-							   allocated by old feed structure */
-	g_free(new_fp);
-	
-	/* adjust item parent pointer of new items from new_fp to fp */
-	item = feed_get_item_list(fp);
-	while(NULL != item) {
-		ip = item->data;
-		ip->fp = fp;
-		item = g_slist_next(item);
-	}
-}
-
 /* method to totally erase a feed, remove it from the config, etc.... */
 void feed_free(feedPtr fp) {
-	gchar *filename = NULL;
+	gchar	*filename = NULL;
+	GSList	*iter;
 	
 	if(FST_VFOLDER == fp->type) {
 		vfolder_free(fp);	/* some special preparations for vfolders */
@@ -1367,8 +1251,14 @@ void feed_free(feedPtr fp) {
 	   for locking reasons. */
 	if(fp->request != NULL)
 		fp->request->callback = NULL;
-	if(fp->faviconRequest != NULL)
-		fp->faviconRequest->callback = NULL;
+	
+	/* same goes for other requests */
+	iter = fp->otherRequests;
+	while(NULL != iter) {
+		((struct request *)iter->data)->callback = NULL;
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(fp->otherRequests);
 
 	if(fp->icon != NULL)
 		g_object_unref(fp->icon);
@@ -1388,5 +1278,6 @@ void feed_free(feedPtr fp) {
 	g_free(fp->imageUrl);
 	g_free(fp->parseErrors);
 	metadata_list_free(fp->metadata);
+	g_hash_table_destroy(fp->tmpdata);
 	g_free(fp);
 }
