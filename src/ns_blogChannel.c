@@ -69,7 +69,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 		xmlFree(value);
 	}
 			
-	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"htmlUrl"))) {
+	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"xmlUrl"))) {
 		value = CONVERT(value);
 		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">XML</a>)", value, value);
 		addToHTMLBuffer(&buffer, tmp);

@@ -17,6 +17,8 @@
 	  condensed item view.
 	* Fixed a bug with permanent URL redirection reported
 	  by Christophe Barbe.
+	* Fixed a bug in the blogChannel module support, that
+	  the XML links were the same as the HTML links.
 
 2003-11-10  Lars Lindner <lars.lindner@gmx.net>
 

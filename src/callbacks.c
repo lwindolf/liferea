@@ -1596,9 +1596,21 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 }
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
-	gint	x,y;
+	GtkWidget	*pane;
+	gint		x,y;
 	
 	saveAllFeeds();
+	
+	/* save pane proportions */
+	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {
+		x = gtk_paned_get_position(GTK_PANED(pane));
+		setNumericConfValue(LAST_VPANE_POS, x);
+	}
+	
+	if(NULL != (pane = lookup_widget(mainwindow, "rightpane"))) {
+		y = gtk_paned_get_position(GTK_PANED(pane));
+		setNumericConfValue(LAST_HPANE_POS, y);
+	}
 	
 	/* save window size */
 	gtk_window_get_size(GTK_WINDOW(mainwindow), &x, &y);

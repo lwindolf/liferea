@@ -37,6 +37,8 @@
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
 #define LAST_WINDOW_WIDTH		"/apps/liferea/last-window-width"
 #define LAST_WINDOW_HEIGHT		"/apps/liferea/last-window-height"
+#define LAST_VPANE_POS			"/apps/liferea/last-vpane-pos"
+#define LAST_HPANE_POS			"/apps/liferea/last-hpane-pos"
 
 #define PROXY_HOST			"/system/http_proxy/host"
 #define PROXY_PORT			"/system/http_proxy/port"

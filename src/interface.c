@@ -86,7 +86,7 @@ create_mainwindow (void)
   GtkWidget *image3;
   GtkWidget *label25;
   GtkWidget *prefbtn;
-  GtkWidget *hpaned1;
+  GtkWidget *leftpane;
   GtkWidget *scrolledwindow3;
   GtkWidget *feedlist;
   GtkWidget *vbox18;
@@ -365,14 +365,14 @@ create_mainwindow (void)
   GTK_WIDGET_UNSET_FLAGS (prefbtn, GTK_CAN_FOCUS);
   gtk_button_set_relief (GTK_BUTTON (prefbtn), GTK_RELIEF_NONE);
 
-  hpaned1 = gtk_hpaned_new ();
-  gtk_widget_show (hpaned1);
-  gtk_box_pack_start (GTK_BOX (vbox1), hpaned1, TRUE, TRUE, 0);
-  gtk_paned_set_position (GTK_PANED (hpaned1), 170);
+  leftpane = gtk_hpaned_new ();
+  gtk_widget_show (leftpane);
+  gtk_box_pack_start (GTK_BOX (vbox1), leftpane, TRUE, TRUE, 0);
+  gtk_paned_set_position (GTK_PANED (leftpane), 170);
 
   scrolledwindow3 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow3);
-  gtk_paned_pack1 (GTK_PANED (hpaned1), scrolledwindow3, FALSE, TRUE);
+  gtk_paned_pack1 (GTK_PANED (leftpane), scrolledwindow3, FALSE, TRUE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow3), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   feedlist = gtk_tree_view_new ();
@@ -383,7 +383,7 @@ create_mainwindow (void)
 
   vbox18 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox18);
-  gtk_paned_pack2 (GTK_PANED (hpaned1), vbox18, TRUE, TRUE);
+  gtk_paned_pack2 (GTK_PANED (leftpane), vbox18, TRUE, TRUE);
 
   searchbox = gtk_hbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (vbox18), searchbox, FALSE, TRUE, 0);
@@ -611,7 +611,7 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, image3, "image3");
   GLADE_HOOKUP_OBJECT (mainwindow, label25, "label25");
   GLADE_HOOKUP_OBJECT (mainwindow, prefbtn, "prefbtn");
-  GLADE_HOOKUP_OBJECT (mainwindow, hpaned1, "hpaned1");
+  GLADE_HOOKUP_OBJECT (mainwindow, leftpane, "leftpane");
   GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow3, "scrolledwindow3");
   GLADE_HOOKUP_OBJECT (mainwindow, feedlist, "feedlist");
   GLADE_HOOKUP_OBJECT (mainwindow, vbox18, "vbox18");

@@ -78,11 +78,18 @@ int i;
 	gtk_widget_show(mainwindow);
 			
 	/* FIXME: move to somewhere else :) */
+	/* load window size */
 	gtk_tree_view_expand_all(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
 	if((0 != getNumericConfValue(LAST_WINDOW_WIDTH)) && 
 	   (0 != getNumericConfValue(LAST_WINDOW_HEIGHT)))
 	   	gtk_window_resize(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_WIDTH),
 					 		  getNumericConfValue(LAST_WINDOW_HEIGHT));
+	
+	/* load pane proportions */
+	if(0 != getNumericConfValue(LAST_VPANE_POS))
+		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "leftpane")), getNumericConfValue(LAST_VPANE_POS));
+	if(0 != getNumericConfValue(LAST_HPANE_POS))
+		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
 
 	gdk_threads_enter();
 	gtk_main();
