@@ -2537,7 +2537,7 @@ to be saved permanently</property>
 		      <property name="selectable">False</property>
 		      <property name="xalign">0.5</property>
 		      <property name="yalign">0.5</property>
-		      <property name="xpad">0</property>
+		      <property name="xpad">5</property>
 		      <property name="ypad">0</property>
 		    </widget>
 		    <packing>
@@ -2553,7 +2553,119 @@ to be saved permanently</property>
 	      </child>
 
 	      <child>
-		<placeholder/>
+		<widget class="GtkFrame" id="frame13">
+		  <property name="border_width">5</property>
+		  <property name="visible">True</property>
+		  <property name="label_xalign">0</property>
+		  <property name="label_yalign">0.5</property>
+		  <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
+
+		  <child>
+		    <widget class="GtkVBox" id="vbox232">
+		      <property name="border_width">5</property>
+		      <property name="visible">True</property>
+		      <property name="homogeneous">False</property>
+		      <property name="spacing">5</property>
+
+		      <child>
+			<widget class="GtkLabel" id="label64">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Liferea views headlines using a HTML renderer. Depending on your installation there may be different choices presented below. Note: Changes will take place after the next restart!</property>
+			  <property name="use_underline">False</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">True</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkHBox" id="hbox28">
+			  <property name="visible">True</property>
+			  <property name="homogeneous">False</property>
+			  <property name="spacing">5</property>
+
+			  <child>
+			    <widget class="GtkLabel" id="label65">
+			      <property name="visible">True</property>
+			      <property name="label" translatable="yes">View Headlines With</property>
+			      <property name="use_underline">False</property>
+			      <property name="use_markup">False</property>
+			      <property name="justify">GTK_JUSTIFY_LEFT</property>
+			      <property name="wrap">False</property>
+			      <property name="selectable">False</property>
+			      <property name="xalign">0.5</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
+			    </widget>
+			    <packing>
+			      <property name="padding">0</property>
+			      <property name="expand">False</property>
+			      <property name="fill">False</property>
+			    </packing>
+			  </child>
+
+			  <child>
+			    <widget class="GtkOptionMenu" id="htmlviewoptionmenu">
+			      <property name="visible">True</property>
+			      <property name="can_focus">True</property>
+			      <property name="history">-1</property>
+
+			      <child>
+				<widget class="GtkMenu" id="menu3">
+				</widget>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="padding">0</property>
+			      <property name="expand">True</property>
+			      <property name="fill">True</property>
+			    </packing>
+			  </child>
+			</widget>
+			<packing>
+			  <property name="padding">5</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkLabel" id="label63">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Viewing Headlines</property>
+		      <property name="use_underline">False</property>
+		      <property name="use_markup">False</property>
+		      <property name="justify">GTK_JUSTIFY_LEFT</property>
+		      <property name="wrap">False</property>
+		      <property name="selectable">False</property>
+		      <property name="xalign">0.5</property>
+		      <property name="yalign">0.5</property>
+		      <property name="xpad">5</property>
+		      <property name="ypad">0</property>
+		    </widget>
+		    <packing>
+		      <property name="type">label_item</property>
+		    </packing>
+		  </child>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
 	      </child>
 	    </widget>
 	    <packing>
@@ -2605,12 +2717,7 @@ to be saved permanently</property>
 		      <child>
 			<widget class="GtkLabel" id="label52">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Liferea reuses the GNOME proxy settings. If you use
-GNOME you can change these settings in the GNOME
-Control Center. Note: changing these settings will
-affect other applications! This dialog is primarily for
-users without GNOME to be able to use Liferea with
-a proxy.</property>
+			  <property name="label" translatable="yes">Liferea reuses the GNOME proxy settings. If you use GNOME you can change these settings in the GNOME Control Center. Note: changing these settings will affect other applications! This dialog is primarily for users without GNOME to be able to use Liferea with a proxy.</property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3997,90 +4104,72 @@ a proxy.</property>
 	  <property name="enable_popup">False</property>
 
 	  <child>
-	    <widget class="GtkScrolledWindow" id="scrolledwindow4">
+	    <widget class="GtkVBox" id="vbox231">
 	      <property name="visible">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-	      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-	      <property name="shadow_type">GTK_SHADOW_NONE</property>
-	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">0</property>
 
 	      <child>
-		<widget class="GtkViewport" id="viewport2">
+		<widget class="GtkLabel" id="label57">
 		  <property name="visible">True</property>
-		  <property name="shadow_type">GTK_SHADOW_IN</property>
-
-		  <child>
-		    <widget class="GtkVBox" id="vbox231">
-		      <property name="visible">True</property>
-		      <property name="homogeneous">False</property>
-		      <property name="spacing">0</property>
-
-		      <child>
-			<widget class="GtkLabel" id="label57">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Liferea 0.4.7</property>
-			  <property name="use_underline">False</property>
-			  <property name="use_markup">False</property>
-			  <property name="justify">GTK_JUSTIFY_LEFT</property>
-			  <property name="wrap">False</property>
-			  <property name="selectable">False</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">15</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
-		      </child>
-
-		      <child>
-			<widget class="GtkLabel" id="label58">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Liferea is a news aggregator for GTK</property>
-			  <property name="use_underline">False</property>
-			  <property name="use_markup">False</property>
-			  <property name="justify">GTK_JUSTIFY_LEFT</property>
-			  <property name="wrap">False</property>
-			  <property name="selectable">False</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">4</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
-		      </child>
-
-		      <child>
-			<widget class="GtkLabel" id="label59">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Copyright (c) 2003-2004 Lars Lindner</property>
-			  <property name="use_underline">False</property>
-			  <property name="use_markup">False</property>
-			  <property name="justify">GTK_JUSTIFY_LEFT</property>
-			  <property name="wrap">False</property>
-			  <property name="selectable">False</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">5</property>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
-		      </child>
-		    </widget>
-		  </child>
+		  <property name="label" translatable="yes">Liferea 0.4.7</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">15</property>
 		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkLabel" id="label58">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Liferea is a news aggregator for GTK</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">4</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkLabel" id="label59">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Copyright (c) 2003-2004 Lars Lindner</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">5</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
 	      </child>
 	    </widget>
 	    <packing>
@@ -4112,7 +4201,7 @@ a proxy.</property>
 	    <widget class="GtkScrolledWindow" id="scrolledwindow5">
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+	      <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
 	      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
 	      <property name="shadow_type">GTK_SHADOW_NONE</property>
 	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
@@ -4120,45 +4209,40 @@ a proxy.</property>
 	      <child>
 		<widget class="GtkViewport" id="viewport1">
 		  <property name="visible">True</property>
-		  <property name="shadow_type">GTK_SHADOW_IN</property>
+		  <property name="shadow_type">GTK_SHADOW_NONE</property>
 
 		  <child>
-		    <widget class="GtkScrolledWindow" id="scrolledwindow8">
+		    <widget class="GtkLabel" id="label62">
 		      <property name="visible">True</property>
-		      <property name="can_focus">True</property>
-		      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-		      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-		      <property name="shadow_type">GTK_SHADOW_NONE</property>
-		      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+		      <property name="label" translatable="yes">Code, Patches, Debugging
 
-		      <child>
-			<widget class="GtkTextView" id="textview4">
-			  <property name="visible">True</property>
-			  <property name="can_focus">True</property>
-			  <property name="editable">True</property>
-			  <property name="justification">GTK_JUSTIFY_LEFT</property>
-			  <property name="wrap_mode">GTK_WRAP_NONE</property>
-			  <property name="cursor_visible">True</property>
-			  <property name="pixels_above_lines">0</property>
-			  <property name="pixels_below_lines">0</property>
-			  <property name="pixels_inside_wrap">0</property>
-			  <property name="left_margin">0</property>
-			  <property name="right_margin">0</property>
-			  <property name="indent">0</property>
-			  <property name="text" translatable="yes">code contributors:
-
-James Doherty
+James Doherty &lt;...&gt;
 Jeremy Messenger &lt;mezz7@cox.net&gt;
-John McKnight
-pasp	
-Karl Soderstrom	
+John McKnight &lt;...&gt;
+Tomasz Maka &lt;pasp@users.sourceforge.net&gt;
+Karl Soderstrom &lt;ks@debian.org&gt;	
 Christophe Barbe &lt;christophe.barbe@ufies.org&gt;
 Juho Snellman &lt;jsnell@users.sourceforge.net&gt;
-Roshan Revankar	&lt;roshweb@users.sourceforge.net&gt;
+Roshan Revankar &lt;roshweb@users.sourceforge.net&gt;
+Oliver Feiler &lt;kiza@kcore.de&gt;
+Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
+Niklas Morberg &lt;morberg@users.sourceforge.net&gt;
+Johannes Schlueter &lt;joscherl@users.sourceforge.net&gt;
+Pierre Phaneuf &lt;pp@ludusdesign.com&gt;
 
-See the AUTHORS file for more details!</property>
-			</widget>
-		      </child>
+Code from other projects
+
+Anders Carlsson &lt;andersca@gnu.org&gt; (tray icon support)
+Philippe Martin, Brion Vibber (favicon support)</property>
+		      <property name="use_underline">False</property>
+		      <property name="use_markup">False</property>
+		      <property name="justify">GTK_JUSTIFY_LEFT</property>
+		      <property name="wrap">False</property>
+		      <property name="selectable">False</property>
+		      <property name="xalign">0</property>
+		      <property name="yalign">0.1</property>
+		      <property name="xpad">5</property>
+		      <property name="ypad">5</property>
 		    </widget>
 		  </child>
 		</widget>
@@ -4173,7 +4257,7 @@ See the AUTHORS file for more details!</property>
 	  <child>
 	    <widget class="GtkLabel" id="label56">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Credits</property>
+	      <property name="label" translatable="yes">Contributors</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -4199,26 +4283,31 @@ See the AUTHORS file for more details!</property>
 	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 	      <child>
-		<widget class="GtkTextView" id="textview3">
+		<widget class="GtkViewport" id="viewport2">
 		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="editable">True</property>
-		  <property name="justification">GTK_JUSTIFY_LEFT</property>
-		  <property name="wrap_mode">GTK_WRAP_NONE</property>
-		  <property name="cursor_visible">True</property>
-		  <property name="pixels_above_lines">0</property>
-		  <property name="pixels_below_lines">0</property>
-		  <property name="pixels_inside_wrap">0</property>
-		  <property name="left_margin">0</property>
-		  <property name="right_margin">0</property>
-		  <property name="indent">0</property>
-		  <property name="text" translatable="yes">Stephane Jourdan &lt;stephane.jourdan@itris.fr&gt;		french 
-Takeshi Aihana &lt;aihana@gnome.gr.jp&gt;				japanese 
-Park Ji-In &lt;mithrandir@electrang.net&gt;				korean 
-Carlos Fenollosa &lt;topopardo@humorfreak.com&gt;		spanish 
-Jose Maria Mateos &lt;chema@chema.homelinux.org&gt;	spanish  
-Lars Lindner &lt;lars.lindner@gmx.net&gt;				german 
-</property>
+		  <property name="shadow_type">GTK_SHADOW_NONE</property>
+
+		  <child>
+		    <widget class="GtkLabel" id="label61">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Stephane Jourdan &lt;stephane.jourdan@itris.fr&gt;
+Takeshi Aihana &lt;aihana@gnome.gr.jp&gt;
+Park Ji-In &lt;mithrandir@electrang.net&gt;
+Carlos Fenollosa &lt;topopardo@humorfreak.com&gt;
+Jose Maria Mateos &lt;chema@chema.homelinux.org&gt;
+Lars Lindner &lt;lars.lindner@gmx.net&gt;
+Vladimir Petkov &lt;vpetkov@i-space.org&gt;</property>
+		      <property name="use_underline">False</property>
+		      <property name="use_markup">False</property>
+		      <property name="justify">GTK_JUSTIFY_LEFT</property>
+		      <property name="wrap">False</property>
+		      <property name="selectable">False</property>
+		      <property name="xalign">0</property>
+		      <property name="yalign">0.1</property>
+		      <property name="xpad">5</property>
+		      <property name="ypad">5</property>
+		    </widget>
+		  </child>
 		</widget>
 	      </child>
 	    </widget>

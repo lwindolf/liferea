@@ -106,7 +106,7 @@ void initGUI(void) {
 		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
 
 	switchPaneMode(!getBooleanConfValue(LAST_ITEMLIST_MODE));
-	loadHTMLViewModule(getNumericConfValue(BROWSER_WIDGET));
+	initHTMLViewModule();
 	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
 			 	   lookup_widget(mainwindow, "itemlistview"),
 				   getNumericConfValue(LAST_ZOOMLEVEL));
@@ -218,12 +218,10 @@ static int print_status_idle(gpointer data) {
 
 	g_print("%s\n", statustext);
 	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), statustext);	
+	return 0;
 }
 
-void print_status(gchar *statustext) {
-
-	ui_queue_add(print_status_idle, (gpointer)statustext);
-}
+void print_status(gchar *statustext) { ui_queue_add(print_status_idle, (gpointer)statustext); }
 
 void showErrorBox(gchar *msg) {
 	GtkWidget	*dialog;
@@ -237,7 +235,7 @@ void showErrorBox(gchar *msg) {
 	gtk_widget_destroy (dialog);
 }
 
-void showInfoBox(gchar *msg) {
+void showInfoBox(gchar *msg) { 
 	GtkWidget	*dialog;
 			
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),

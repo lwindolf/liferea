@@ -67,6 +67,10 @@ static gchar		*selectedURL = NULL;
    getSelectedURL() */
 static gchar		*clickedURL = NULL;
 
+gchar * getModuleName(void) {
+	return g_strdup(_("Mozilla (experimental)"));
+}
+
 /* function to write HTML source into the widget */
 void writeHTML(gchar *string) {
 
@@ -221,6 +225,9 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gi
 
 void setHTMLViewMode(gboolean threePane) {
 
+	if(FALSE == threePane)
+		showErrorBox(g_strdup("Sorry, condensed view not yet implemented for Mozilla!"));
+		
 /*	if(FALSE == threePane)
 		setupHTMLView(mainwindow, itemListView);
 	else
@@ -237,6 +244,7 @@ void launchURL(gchar *url) {
 /* adds a differences diff to the actual zoom level */
 void changeZoomLevel(gfloat diff) {
 
+	showErrorBox(g_strdup("Sorry, not yet implemented for Mozilla!"));
 	zoomLevel += diff;
 }
 

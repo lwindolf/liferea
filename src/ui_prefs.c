@@ -34,7 +34,11 @@
 #include "htmlview.h"
 #include "callbacks.h"
 
+extern GSList *availableBrowserModules;
+
 static GtkWidget *prefdialog = NULL;
+
+void on_browsermodule_changed(GtkObject *object, gchar *libname);
 
 /*------------------------------------------------------------------------------*/
 /* preferences dialog callbacks 						*/
@@ -43,7 +47,8 @@ static GtkWidget *prefdialog = NULL;
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*widget, *entry;
 	GtkAdjustment	*itemCount;
-	gchar		*widgetname, *proxyport;
+	GSList		*list;
+	gchar		*widgetname, *proxyport, *libname;
 	gboolean	enabled;
 	int		tmp, i;
 	
@@ -52,7 +57,8 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	g_assert(NULL != prefdialog);
 
-	/* panel 1 "feed handling" */
+	/* ================= panel 1 "feed handling" ==================== */
+	
 	tmp = getNumericConfValue(GNOME_BROWSER_ENABLED);
 	if((tmp > 2) || (tmp < 1)) 
 		tmp = 1;	/* correct configuration if necessary */
@@ -73,7 +79,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widgetname = g_strdup_printf("%s%d", "browserradiobtn", tmp);
 	widget = lookup_widget(prefdialog, widgetname);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-
 	g_free(widgetname);		
 
 	/* Time format */
@@ -110,15 +115,14 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
 	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
 
-	/* panel 2 "notification settings" */	
+	/* ================== panel 2 "notification settings" ================ */
+	
 	widget = lookup_widget(prefdialog, "trayiconoptionbtn");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_TRAY_ICON));
 
-
-	/* menu / tool bar settings */
-	
-	/* Set fields in the radio widgets so that they know their option # and the pref dialog */
+	/* menu / tool bar settings */	
 	for(i = 1; i <= 3; i++) {
+		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
 		widgetname = g_strdup_printf("%s%d", "menuradiobtn", i);
 		widget = lookup_widget(prefdialog, widgetname);
 		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
@@ -136,7 +140,27 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	g_free(widgetname);
 	
-	/* panel 1 "proxy settings" */
+	/* set up the browser module option menu */
+	tmp = i = 0;
+	widget = gtk_menu_new();
+	list = availableBrowserModules;
+	libname = getStringConfValue(BROWSER_MODULE);
+	while(NULL != list) {
+		g_assert(NULL != list->data);
+		entry = gtk_menu_item_new_with_label(((struct browserModule *)list->data)->description);
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(widget), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browsermodule_changed), ((struct browserModule *)list->data)->libname);
+		if(0 == strcmp(libname, ((struct browserModule *)list->data)->libname))
+			tmp = i;
+		i++;
+		list = g_slist_next(list);
+	}
+	gtk_menu_set_active(GTK_MENU(widget), tmp);
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
+	
+	/* ================= panel 3 "proxy settings" ======================== */
+	
 	enabled = getBooleanConfValue(USE_PROXY);
 	widget = lookup_widget(prefdialog, "enableproxybtn");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enabled);
@@ -178,8 +202,13 @@ void on_browserselection_clicked(GtkButton *button, gpointer user_data) {
 }
 
 
-void on_browsercmd_changed(GtkEditable     *editable, gpointer user_data) {
+void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(BROWSER_COMMAND, gtk_editable_get_chars(editable,0,-1));
+}
+
+void on_browsermodule_changed(GtkObject *object, gchar *libname) {
+g_print("setting %s\n", libname);
+	setStringConfValue(BROWSER_MODULE, libname);
 }
 
 

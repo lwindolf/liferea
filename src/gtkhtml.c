@@ -72,6 +72,11 @@ static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 static void kill_old_connections (HtmlDocument *doc);
 
+
+gchar * getModuleName(void) {
+	return g_strdup(_("GtkHTML"));
+}
+
 /* function to write HTML source given as a UTF-8 string */
 void writeHTML(gchar *string) {
 

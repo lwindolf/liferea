@@ -9,9 +9,9 @@ Jeremy Messenger <mezz7@cox.net>		search dialog, icons...
 
 John McKnight 					Makefile help
 
-pasp						window position saving
+Tomasz Maka <pasp@users.sourceforge.net>	window position saving
 
-Karl Soderstrom					heavy debugging, patching
+Karl Soderstrom <ks@debian.org>			heavy debugging, patching
 						memory leak fixing,
 						mini popup support
 						
@@ -26,10 +26,12 @@ Nathan J. Conrad <t98502@users.sourceforge.net>	patch for selection handling,
 						instant applying preferences,
 						much improved GUI code
 						
+Johannes Schlueter <joscherl@users.sourceforge.net>	pipe as feed source
 
 Niklas Morberg <morberg@users.sourceforge.net>	debugging and patching
 
-Pierre Phaneuf					RPM spec update
+Pierre Phaneuf<pp@ludusdesign.com>		RPM spec update
+
 
 Documentation and Translations
 ==============================

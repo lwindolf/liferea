@@ -36,6 +36,10 @@ static GtkWidget	*htmlwidget = NULL;
 
 static gfloat		zoomLevel = 1.0;
 
+gchar * getModuleName(void) {
+	return g_strdup(_("Text Viewer (experimental)"));
+}
+
 /* function to write HTML source given as a UTF-8 string */
 void writeHTML(gchar *string) {
 
@@ -125,12 +129,10 @@ void launchURL(gchar *url) {
 /* adds a differences diff to the actual zoom level */
 void changeZoomLevel(gfloat diff) {
 
+	showErrorBox(g_strdup("Sorry, not yet implemented for the Text Viewer!"));
 	zoomLevel += diff;
 	// FIXME
 }
 
 /* returns the currently set zoom level */
-gfloat getZoomLevel(void) {
-
-	return zoomLevel;
-}
+gfloat getZoomLevel(void) { return zoomLevel; }

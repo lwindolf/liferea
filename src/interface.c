@@ -1292,6 +1292,14 @@ create_prefdialog (void)
   GtkWidget *menuradiobtn2;
   GtkWidget *menuradiobtn3;
   GtkWidget *label41;
+  GtkWidget *frame13;
+  GtkWidget *vbox232;
+  GtkWidget *label64;
+  GtkWidget *hbox28;
+  GtkWidget *label65;
+  GtkWidget *htmlviewoptionmenu;
+  GtkWidget *menu3;
+  GtkWidget *label63;
   GtkWidget *label39;
   GtkWidget *vbox227;
   GtkWidget *frame12;
@@ -1504,6 +1512,44 @@ create_prefdialog (void)
   label41 = gtk_label_new (_("Menu Settings"));
   gtk_widget_show (label41);
   gtk_frame_set_label_widget (GTK_FRAME (frame11), label41);
+  gtk_misc_set_padding (GTK_MISC (label41), 5, 0);
+
+  frame13 = gtk_frame_new (NULL);
+  gtk_widget_show (frame13);
+  gtk_box_pack_start (GTK_BOX (vbox222), frame13, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (frame13), 5);
+
+  vbox232 = gtk_vbox_new (FALSE, 5);
+  gtk_widget_show (vbox232);
+  gtk_container_add (GTK_CONTAINER (frame13), vbox232);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox232), 5);
+
+  label64 = gtk_label_new (_("Liferea views headlines using a HTML renderer. Depending on your installation there may be different choices presented below. Note: Changes will take place after the next restart!"));
+  gtk_widget_show (label64);
+  gtk_box_pack_start (GTK_BOX (vbox232), label64, FALSE, FALSE, 0);
+  gtk_label_set_line_wrap (GTK_LABEL (label64), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label64), 0, 0.5);
+
+  hbox28 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox28);
+  gtk_box_pack_start (GTK_BOX (vbox232), hbox28, FALSE, FALSE, 5);
+
+  label65 = gtk_label_new (_("View Headlines With"));
+  gtk_widget_show (label65);
+  gtk_box_pack_start (GTK_BOX (hbox28), label65, FALSE, FALSE, 0);
+
+  htmlviewoptionmenu = gtk_option_menu_new ();
+  gtk_widget_show (htmlviewoptionmenu);
+  gtk_box_pack_start (GTK_BOX (hbox28), htmlviewoptionmenu, TRUE, TRUE, 0);
+
+  menu3 = gtk_menu_new ();
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (htmlviewoptionmenu), menu3);
+
+  label63 = gtk_label_new (_("Viewing Headlines"));
+  gtk_widget_show (label63);
+  gtk_frame_set_label_widget (GTK_FRAME (frame13), label63);
+  gtk_misc_set_padding (GTK_MISC (label63), 5, 0);
 
   label39 = gtk_label_new (_("GUI Settings"));
   gtk_widget_show (label39);
@@ -1525,7 +1571,7 @@ create_prefdialog (void)
   gtk_container_add (GTK_CONTAINER (frame12), vbox228);
   gtk_container_set_border_width (GTK_CONTAINER (vbox228), 5);
 
-  label52 = gtk_label_new (_("Liferea reuses the GNOME proxy settings. If you use\nGNOME you can change these settings in the GNOME\nControl Center. Note: changing these settings will\naffect other applications! This dialog is primarily for\nusers without GNOME to be able to use Liferea with\na proxy."));
+  label52 = gtk_label_new (_("Liferea reuses the GNOME proxy settings. If you use GNOME you can change these settings in the GNOME Control Center. Note: changing these settings will affect other applications! This dialog is primarily for users without GNOME to be able to use Liferea with a proxy."));
   gtk_widget_show (label52);
   gtk_box_pack_start (GTK_BOX (vbox228), label52, FALSE, FALSE, 0);
   gtk_label_set_line_wrap (GTK_LABEL (label52), TRUE);
@@ -1686,6 +1732,14 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn2, "menuradiobtn2");
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn3, "menuradiobtn3");
   GLADE_HOOKUP_OBJECT (prefdialog, label41, "label41");
+  GLADE_HOOKUP_OBJECT (prefdialog, frame13, "frame13");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox232, "vbox232");
+  GLADE_HOOKUP_OBJECT (prefdialog, label64, "label64");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox28, "hbox28");
+  GLADE_HOOKUP_OBJECT (prefdialog, label65, "label65");
+  GLADE_HOOKUP_OBJECT (prefdialog, htmlviewoptionmenu, "htmlviewoptionmenu");
+  GLADE_HOOKUP_OBJECT (prefdialog, menu3, "menu3");
+  GLADE_HOOKUP_OBJECT (prefdialog, label63, "label63");
   GLADE_HOOKUP_OBJECT (prefdialog, label39, "label39");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox227, "vbox227");
   GLADE_HOOKUP_OBJECT (prefdialog, frame12, "frame12");
@@ -2387,8 +2441,6 @@ create_aboutdialog (void)
   GtkWidget *aboutdialog;
   GtkWidget *dialog_vbox12;
   GtkWidget *notebook2;
-  GtkWidget *scrolledwindow4;
-  GtkWidget *viewport2;
   GtkWidget *vbox231;
   GtkWidget *label57;
   GtkWidget *label58;
@@ -2396,11 +2448,11 @@ create_aboutdialog (void)
   GtkWidget *label55;
   GtkWidget *scrolledwindow5;
   GtkWidget *viewport1;
-  GtkWidget *scrolledwindow8;
-  GtkWidget *textview4;
+  GtkWidget *label62;
   GtkWidget *label56;
   GtkWidget *scrolledwindow6;
-  GtkWidget *textview3;
+  GtkWidget *viewport2;
+  GtkWidget *label61;
   GtkWidget *label60;
   GtkWidget *dialog_action_area12;
   GtkWidget *closebutton1;
@@ -2416,18 +2468,9 @@ create_aboutdialog (void)
   gtk_widget_show (notebook2);
   gtk_box_pack_start (GTK_BOX (dialog_vbox12), notebook2, TRUE, TRUE, 0);
 
-  scrolledwindow4 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow4);
-  gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow4);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-
-  viewport2 = gtk_viewport_new (NULL, NULL);
-  gtk_widget_show (viewport2);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow4), viewport2);
-
   vbox231 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox231);
-  gtk_container_add (GTK_CONTAINER (viewport2), vbox231);
+  gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
 
   label57 = gtk_label_new (_("Liferea 0.4.7"));
   gtk_widget_show (label57);
@@ -2451,24 +2494,20 @@ create_aboutdialog (void)
   scrolledwindow5 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow5);
   gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow5);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
   viewport1 = gtk_viewport_new (NULL, NULL);
   gtk_widget_show (viewport1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow5), viewport1);
+  gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport1), GTK_SHADOW_NONE);
 
-  scrolledwindow8 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow8);
-  gtk_container_add (GTK_CONTAINER (viewport1), scrolledwindow8);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow8), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@users.sourceforge.net>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNathan J. Conrad <t98502@users.sourceforge.net>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)"));
+  gtk_widget_show (label62);
+  gtk_container_add (GTK_CONTAINER (viewport1), label62);
+  gtk_misc_set_alignment (GTK_MISC (label62), 0, 0.1);
+  gtk_misc_set_padding (GTK_MISC (label62), 5, 5);
 
-  textview4 = gtk_text_view_new ();
-  gtk_widget_show (textview4);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow8), textview4);
-  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview4)),
-	_("code contributors:\n\nJames Doherty\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight\npasp\t\nKarl Soderstrom\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar\t<roshweb@users.sourceforge.net>\n\nSee the AUTHORS file for more details!"), -1);
-
-  label56 = gtk_label_new (_("Credits"));
+  label56 = gtk_label_new (_("Contributors"));
   gtk_widget_show (label56);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 1), label56);
 
@@ -2477,11 +2516,16 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow6);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow6), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-  textview3 = gtk_text_view_new ();
-  gtk_widget_show (textview3);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow6), textview3);
-  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview3)),
-	_("Stephane Jourdan <stephane.jourdan@itris.fr>\t\tfrench \nTakeshi Aihana <aihana@gnome.gr.jp>\t\t\t\tjapanese \nPark Ji-In <mithrandir@electrang.net>\t\t\t\tkorean \nCarlos Fenollosa <topopardo@humorfreak.com>\t\tspanish \nJose Maria Mateos <chema@chema.homelinux.org>\tspanish  \nLars Lindner <lars.lindner@gmx.net>\t\t\t\tgerman \n"), -1);
+  viewport2 = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (viewport2);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
+  gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
+
+  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nLars Lindner <lars.lindner@gmx.net>\nVladimir Petkov <vpetkov@i-space.org>"));
+  gtk_widget_show (label61);
+  gtk_container_add (GTK_CONTAINER (viewport2), label61);
+  gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
+  gtk_misc_set_padding (GTK_MISC (label61), 5, 5);
 
   label60 = gtk_label_new (_("Translation"));
   gtk_widget_show (label60);
@@ -2504,8 +2548,6 @@ create_aboutdialog (void)
   GLADE_HOOKUP_OBJECT_NO_REF (aboutdialog, aboutdialog, "aboutdialog");
   GLADE_HOOKUP_OBJECT_NO_REF (aboutdialog, dialog_vbox12, "dialog_vbox12");
   GLADE_HOOKUP_OBJECT (aboutdialog, notebook2, "notebook2");
-  GLADE_HOOKUP_OBJECT (aboutdialog, scrolledwindow4, "scrolledwindow4");
-  GLADE_HOOKUP_OBJECT (aboutdialog, viewport2, "viewport2");
   GLADE_HOOKUP_OBJECT (aboutdialog, vbox231, "vbox231");
   GLADE_HOOKUP_OBJECT (aboutdialog, label57, "label57");
   GLADE_HOOKUP_OBJECT (aboutdialog, label58, "label58");
@@ -2513,11 +2555,11 @@ create_aboutdialog (void)
   GLADE_HOOKUP_OBJECT (aboutdialog, label55, "label55");
   GLADE_HOOKUP_OBJECT (aboutdialog, scrolledwindow5, "scrolledwindow5");
   GLADE_HOOKUP_OBJECT (aboutdialog, viewport1, "viewport1");
-  GLADE_HOOKUP_OBJECT (aboutdialog, scrolledwindow8, "scrolledwindow8");
-  GLADE_HOOKUP_OBJECT (aboutdialog, textview4, "textview4");
+  GLADE_HOOKUP_OBJECT (aboutdialog, label62, "label62");
   GLADE_HOOKUP_OBJECT (aboutdialog, label56, "label56");
   GLADE_HOOKUP_OBJECT (aboutdialog, scrolledwindow6, "scrolledwindow6");
-  GLADE_HOOKUP_OBJECT (aboutdialog, textview3, "textview3");
+  GLADE_HOOKUP_OBJECT (aboutdialog, viewport2, "viewport2");
+  GLADE_HOOKUP_OBJECT (aboutdialog, label61, "label61");
   GLADE_HOOKUP_OBJECT (aboutdialog, label60, "label60");
   GLADE_HOOKUP_OBJECT_NO_REF (aboutdialog, dialog_action_area12, "dialog_action_area12");
   GLADE_HOOKUP_OBJECT (aboutdialog, closebutton1, "closebutton1");

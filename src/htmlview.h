@@ -98,18 +98,15 @@
 #define PARSE_ERROR_TEXT	"There were errors while parsing this feed. The following error occured:<br><b>%s</b>"
 #define UPDATE_ERROR_END	"</td></tr></table>"
 
-#define HTML_MODULE_TEXT	1
-#define HTML_MODULE_GTKHTML	0	/* 0 -> makes it default */
-#define HTML_MODULE_MOZILLA	2
 
-struct html_module_info {
-	gint	nr;
-	gchar	*libname;
+/* list type to provide a list of available modules for the preferences dialog */
+struct browserModule {
 	gchar	*description;
+	gchar	*libname;
 };
 
-/* function to load the module specified by module */
-void	loadHTMLViewModule(gint module);
+/* function to load the module specified by libname */
+void	initHTMLViewModule(void);
 
 /* creates the HTML widget */
 void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
