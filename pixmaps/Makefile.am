@@ -12,9 +12,9 @@ EXTRA_DIST = \
 	vfolder.png     
 
 
-lifereadistpixdir = $(datadir)/pixmaps/liferea
+lifereadistpixdir = $(datadir)/liferea/pixmaps
 lifereadistpix_DATA = available.png  directory.png  empty.png  flag.png  help.png  \
-	 ocs.png  unavailable.png  unread.png  vfolder.png
+	liferea.png ocs.png read.xpm unavailable.png  unread.png  vfolder.png
 
 distpixmapdir = $(datadir)/pixmaps
 distpixmap_DATA = liferea.png
