@@ -16,6 +16,13 @@
 	* Added a background shading of read items in the
 	  condensed item view as proposed by Mike Rhodes.
 	* Added to options to zoom in and out of the HTML view.
+	* Added a french (from Stephane Jourdan) and a japanase 
+	  (from Takeshi Aihana) translation. Note that while
+	  Liferea is still changing not all text literals
+	  may be covered.
+	* Added a dialog to create search feeds using
+	  the Feedster (http://www.feedster.com) search
+	  engine.
 	* Fixed a bug with permanent URL redirection reported
 	  by Christophe Barbe.
 	* Fixed a bug in the blogChannel module support, that
