@@ -34,7 +34,6 @@
 #include "nsIDocShellTreeOwner.h"
 #include "nsIWebBrowser.h"
 #include "nsIDeviceContext.h"
-#include "nsIPresContext.h"
 #include "nsIContentViewer.h"
 #include "nsIMarkupDocumentViewer.h"
 #include "nsIDOMNSEvent.h"
