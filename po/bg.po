@@ -7,15 +7,20 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: ISLD Localization Project VERSION\n"
+"Project-Id-Version: ISLD Localization Project 0.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-27 20:03+0200\n"
-"PO-Revision-Date: 2004-06-18 01:26-0400\n"
+"POT-Creation-Date: 2004-06-25 23:32+0200\n"
+"PO-Revision-Date: 2004-06-28 21:36+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: src/support.c:90 src/support.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Pixmap файлът %s не може да бъде зареден."
 
 #: src/cdf_channel.c:56 src/cdf_item.c:55 src/ocs_dir.c:141 src/opml.c:211
 #: src/pie_entry.c:73 src/pie_feed.c:116 src/rss_channel.c:142
@@ -112,10 +117,9 @@ msgstr ""
 "Празен документ! OPML·документа·\"%s\"·не трябва да е празне при импортиране."
 
 #: src/export.c:358 src/export.c:360
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr ""
-"\"%s\" не е валиден OPML документ! Liferea не може да импортира този файл!"
+msgstr "\"%s\" не е валиден OPML документ! Liferea не може да внесе този файл!"
 
 #: src/export.c:468
 msgid "Error while exporting feed list!"
@@ -126,9 +130,8 @@ msgid "Feed List exported!"
 msgstr "Списъкът с абонаменти е експортиран успешно!"
 
 #: src/export.c:486
-#, fuzzy
 msgid "Imported feed list"
-msgstr "Вмъкнат списък с абонаменти"
+msgstr "Списък с внесените абонаменти"
 
 #: src/feed.c:107
 #, c-format
@@ -146,17 +149,15 @@ msgid "<p>Invalid XML!</p>"
 msgstr "<p>Невалиден·XML!</p>"
 
 #: src/feed.c:171
-#, fuzzy
 msgid "There were errors while parsing a feed"
-msgstr "Имаше грешки докато се изтегляше този абонамент!"
+msgstr "Имаше грешки докато се изтегляше този абонамент"
 
 #: src/feed.c:172
-#, fuzzy
 msgid ""
 "<p>Could not determine the feed type. Please check that it is in a supported "
 "format.</p>"
 msgstr ""
-"<p>Видът на абонамента не може да бъде определен!·Моля, проверете дали това "
+"<p>Видът на абонамента не може да бъде определен.·Моля, проверете дали това "
 "е поддържан от програмата формат!</p>"
 
 #: src/feed.c:363 src/feed.c:364
@@ -182,158 +183,109 @@ msgstr ""
 "<p>\"%s\" не е валиден кеш файл. Кеш файлът не може да бъде прочетен!</p>"
 
 #: src/feed.c:429
-#, fuzzy, c-format
+#, c-format
 msgid "There were errors while parsing cache file \"%s\""
-msgstr "Получиха се грешки при прегледа на кеш файла \"%s\"!"
+msgstr "Получиха се грешки при прегледа на кеш файла \"%s\""
+
+#: src/feed.c:563
+#, c-format
+msgid "\"%s\" has no new items"
+msgstr "\"%s\" няма нови записи"
 
 #: src/feed.c:565
-#, fuzzy, c-format
-msgid "\"%s\" has no new items"
-msgstr "\"%s\" няма нови записи."
-
-#: src/feed.c:567
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" has %d new items"
-msgstr "\"%s\" има %d нови записи."
+msgstr "\"%s\" има %d нови записи"
 
-#: src/feed.c:672
-#, fuzzy, c-format
+#: src/feed.c:661
+#, c-format
 msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" не се промениха след последното осъвременяване."
+msgstr "\"%s\" не се промени след последното осъвременяване"
+
+#: src/feed.c:668
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "Адресът на \"%s\" беше променен за постоянно и затова беше осъвременен"
 
 #: src/feed.c:679
-#, fuzzy, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "Адресът на \"%s\" беше постоянно променен и осъвременен."
-
-#: src/feed.c:689
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
 
-#: src/feed.c:715
+#: src/feed.c:705
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" осъвременени..."
 
-#: src/feed.c:728
-#, fuzzy, c-format
+#: src/feed.c:719
+#, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не е достъпен"
 
-#: src/feed.c:834
-#, fuzzy
+#: src/feed.c:806
 msgid "The feed no longer exists. Please unsubscribe."
-msgstr "Този абонамент вече не съществува!"
+msgstr "Този абонамент вече не съществува. Моля, изтрийте го."
 
-#: src/feed.c:835
+#: src/feed.c:807
 msgid "Payment Required"
-msgstr "Изисква се разплащане"
+msgstr "Изисква се Заплащане"
 
-#: src/feed.c:836
+#: src/feed.c:808
 msgid "Access Forbidden"
 msgstr "Забранен Достъп"
 
-#: src/feed.c:837
+#: src/feed.c:809
 msgid "Resource Not Found"
 msgstr "Ресурсът Не е Намерен"
 
-#: src/feed.c:838
+#: src/feed.c:810
 msgid "Method Not Allowed"
 msgstr "Непозволен метод"
 
-#: src/feed.c:839
+#: src/feed.c:811
 msgid "Not Acceptable"
 msgstr "Неприемлив"
 
-#: src/feed.c:840
+#: src/feed.c:812
 msgid "Proxy Authentication Required"
 msgstr "Нужна е идентификация в Proxy сървъра"
 
-#: src/feed.c:841
+#: src/feed.c:813
 msgid "Request Time-Out"
 msgstr "Заявката изтече"
 
-#: src/feed.c:842
-#, fuzzy
+#: src/feed.c:814
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
-msgstr "Този ресурс вече не съществува. Моля да се отпишете!"
+msgstr "Този ресурс вече не съществува. Моля, да го изтриете."
 
-#: src/feed.c:847
-msgid "URL is invalid"
-msgstr ""
-
-#: src/feed.c:850
-msgid "Error connecting to remote host"
-msgstr ""
-
-#: src/feed.c:851
-msgid "Hostname could not be found"
-msgstr ""
-
-#: src/feed.c:852
-msgid "Network connection was refused by the remote host"
-msgstr ""
-
-#: src/feed.c:853
-msgid "Remote host did not finish sending data"
-msgstr ""
-
-#. Transfer errors
-#: src/feed.c:855
-#, fuzzy
-msgid "Too many HTTP redirects were encountered"
-msgstr "Твърде много  HTTP пренасочвание! Командата е отказана."
-
-#: src/feed.c:858
-#, fuzzy
-msgid "Remote host sent an invalid response"
-msgstr "Интернет сървърът изпрати невалидно пренасочване!"
-
-#: src/feed.c:865
-#, fuzzy
-msgid "Authentication failed"
-msgstr "Идентифицирането е неуспешно!"
-
-#: src/feed.c:867
-msgid "Webserver's authentication method incompatible with Liferea"
-msgstr ""
-
-#: src/feed.c:873
+#: src/feed.c:820
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Абонаментът не е на разположение:·Сървърът докладва за неподдържано "
 "пренасочване!"
 
-#: src/feed.c:874
+#: src/feed.c:821
 msgid "Client Error"
 msgstr "Грешка в клиента"
 
-#: src/feed.c:875
+#: src/feed.c:822
 msgid "Server Error"
 msgstr "Грешка в Сървъра"
 
-#: src/feed.c:876
-#, fuzzy
-msgid "(unknown networking error happened)"
+#: src/feed.c:823
+msgid "(unknown error class)"
 msgstr "(непознат клас за грешка)"
 
-#: src/feed.c:898
-#, fuzzy
+#: src/feed.c:845
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
-"Имаше проблем по време на четенето на абонамента. Моля проверете адресът и "
-"изходната информация в конзолата!"
-
-#: src/html.c:138
-msgid "Feed link auto discovery failed! No feed links found!"
-msgstr ""
+"Имаше проблем по време на четенето на абонамента. Моля, проверете адресът и "
+"изходната информация в конзолата."
 
 #: src/htmlview.c:61
-#, fuzzy
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -344,10 +296,10 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Опива да зареди модилът за браузърът Mozilla...·Зебележете,\n"
-"че това може да не работи с всяка версия на·Mozilla.·Ако имате проблеми\n"
-"и·Liferea·не стартира, опитайте да настроите·MOZILLA_FIVE_HOME·към\n"
-"друга инсталация на·Mozilla·или\tизтрийте·конфигурационния ключ в gconf\n"
+"Опива да зареди модулът за браузърът Mozilla...·Зебележете,\n"
+"че това може да не работи с всяка версия на·Mozilla. Ако имате проблеми\n"
+"и Liferea не стартира, опитайте да настроите MOZILLA_FIVE_HOME към\n"
+"друга инсталация на·Mozilla·или изтрийте конфигурационния ключ в gconf\n"
 "/apps/liferea/browser-module!\n"
 "\n"
 
@@ -376,15 +328,15 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "Този запис няма хипервързка в себе си!"
 
-#: src/htmlview.c:362 src/htmlview.c:383
-#, fuzzy, c-format
+#: src/htmlview.c:360
+#, c-format
 msgid "Browser command failed: %s"
-msgstr "Командата за стартиране на браузър е неуспешна: %s"
+msgstr "Командата за стартиране на браузъра е неуспешна: %s"
 
-#: src/htmlview.c:365 src/htmlview.c:386
-#, fuzzy, c-format
+#: src/htmlview.c:363
+#, c-format
 msgid "Starting: \"%s\""
-msgstr "стартира: \"%s\""
+msgstr "Стартира: \"%s\""
 
 #: src/htmlview.h:89
 #, c-format
@@ -393,16 +345,16 @@ msgid ""
 msgstr ""
 
 #: src/htmlview.h:90
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occured:"
 "<br><b>%s</b>"
 msgstr "Имаше грешки докато се изтегляше този абонамент!"
+"Получиха се следните грешки: <br><b>%s</b>"
 
 #: src/interface.c:131 src/interface.c:2987
-#, fuzzy
 msgid "Liferea 0.5.1"
-msgstr "Liferea 0.5.0 - RSS агрегатор"
+msgstr "Liferea 0.5.1 - RSS агрегатор"
 
 #: src/interface.c:148
 msgid "_Program"
@@ -437,26 +389,24 @@ msgid "Update _Selected"
 msgstr "Осъвременява _Маркирания"
 
 #: src/interface.c:222
-#, fuzzy
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
-"Осъвременяване на избраните абонаменти или на всички абонаменти отизбраната "
-"папка,"
+"Осъвременяване на избраните абонаменти или на всички абонаменти"
+" от избраната папка."
 
 #: src/interface.c:228
 msgid "Update _All"
 msgstr "Осъвременява _Всички"
 
-#: src/interface.c:231 src/ui_mainwindow.c:158
-#, fuzzy
+#: src/interface.c:231 src/ui_mainwindow.c:156
 msgid "Updates all subscriptions. This does not update OCS directories."
-msgstr "Моментално осъвременява всички абонаменти."
+msgstr "Осъвременяване на всички абонаменти. OCS директориите не се осъвременяват."
 
 #: src/interface.c:245
 msgid "_Delete Selected"
-msgstr "_Изтрива Маркирания"
+msgstr "_Изтриване на Маркирания"
 
 #: src/interface.c:248
 msgid "Removes the selected subscription."
@@ -472,7 +422,7 @@ msgstr "Ако е активно, то всички абонаменти с не
 
 #: src/interface.c:264
 msgid "_Mark As Read"
-msgstr "_Маркира Като Прочетени"
+msgstr "_Маркиране Като Прочетени"
 
 #: src/interface.c:267
 msgid ""
@@ -506,7 +456,7 @@ msgstr "_Записи"
 msgid "_Next Unread Item"
 msgstr "Следващия непрочетен запис"
 
-#: src/interface.c:309 src/ui_mainwindow.c:156
+#: src/interface.c:309 src/ui_mainwindow.c:154
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -540,7 +490,7 @@ msgstr "Премахва всички записи от текущия абон�
 
 #: src/interface.c:353
 msgid "_Launch In Browser"
-msgstr "_Зарежда в браузър"
+msgstr "_Зареждане в браузър"
 
 #: src/interface.c:356
 msgid "Launches the items link in the configured browser."
@@ -552,7 +502,7 @@ msgstr "_Преглед"
 
 #: src/interface.c:368
 msgid "_Increase Text Size"
-msgstr "_Увеличава Големината на Шрифта"
+msgstr "_Увеличаване Големината на Шрифта"
 
 #: src/interface.c:371
 msgid "Increases the text size of the item view."
@@ -560,7 +510,7 @@ msgstr "Увеличава размерът на текста за изглед 
 
 #: src/interface.c:380
 msgid "_Decrease Text Size"
-msgstr "_Намалява Големината на Шрифта"
+msgstr "_Намаляване Големината на Шрифта"
 
 #: src/interface.c:383
 msgid "Decreases the text size of the item view."
@@ -608,11 +558,11 @@ msgstr "Показва диалогов прозорец с информация
 
 #: src/interface.c:470
 msgid "Search for"
-msgstr "Търси за"
+msgstr "Търсене за"
 
 #: src/interface.c:487
 msgid "create VFolder"
-msgstr "създава VFolder (виртуална папка)"
+msgstr "създаване на VFolder (виртуална папка)"
 
 #: src/interface.c:490
 msgid "saves this search as a VFolder, which will appear in the feed list"
@@ -671,15 +621,14 @@ msgid "minutes."
 msgstr "минути."
 
 #: src/interface.c:938
-#, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating the "
 "feed set the interval to 0 minutes.</i>"
 msgstr ""
-"Моля, не пропускайте да настройте разумен период на осъвременяване, не е "
-"удобно да настроите абонаментите ви да бъдат проверявани през 15 минути! За "
-"да изключите авто-осъвременяването -поставете за период на осъвременяване 0"
+"Забележка: <i>Моля, не пропускайте да настройте разумен период на осъвременяване."
+"Не е удобно да настроите абонаментите ви да бъдат проверявани през 15 минути! За "
+"да изключите авто-осъвременяването - поставете за период на осъвременяване 0.</i>"
 
 #: src/interface.c:945
 msgid "General"
@@ -691,7 +640,7 @@ msgstr "<b>Източник на Данни</b>"
 
 #: src/interface.c:980 src/interface.c:1383
 msgid "_Select File..."
-msgstr "_Избира Файл..."
+msgstr "_Избиране на Файл..."
 
 #: src/interface.c:998 src/interface.c:1400
 msgid "_URL"
@@ -739,7 +688,7 @@ msgstr "Конвертира използвайки:"
 #: src/interface.c:1083 src/interface.c:1485 src/interface.c:2812
 #: src/interface.c:2903
 msgid "Select File..."
-msgstr "Избира Файл..."
+msgstr "Избиране на Файл..."
 
 #: src/interface.c:1087
 msgid "Feed Source"
@@ -765,7 +714,7 @@ msgstr "_Неограничен кеш"
 
 #: src/interface.c:1125
 msgid "_Limit cache to"
-msgstr "_Ограничава кеша до"
+msgstr "_Ограничаване на кеша до"
 
 #: src/interface.c:1138
 msgid "items."
@@ -796,9 +745,8 @@ msgid "New Subscription"
 msgstr "Нов Абонамент"
 
 #: src/interface.c:1647
-#, fuzzy
 msgid "Lifeera Preferences"
-msgstr "Настройки"
+msgstr "Настройки на Liferea"
 
 #: src/interface.c:1671
 msgid "<span weight=\"bold\">Feed Handling Settings</span>"
@@ -811,15 +759,12 @@ msgstr ""
 "на Liferea."
 
 #: src/interface.c:1707
-#, fuzzy
 msgid "_Update all feeds on program startup."
-msgstr "Осъвременява всички абонаменти при стартиране на програмата."
+msgstr "_Осъвременяване на всички абонаменти при стартиране на програмата."
 
 #: src/interface.c:1711
-#, fuzzy
 msgid "Add the _help feeds to the feed list on startup."
-msgstr ""
-"При стартиране не добавя абонаментите за помощ, към списъкът с абонаменти."
+msgstr "При стартиране да добавя абонаментите за помощ, към списъкът с абонаменти."
 
 #: src/interface.c:1715
 msgid "Feed Handling"
@@ -846,7 +791,7 @@ msgstr "Преглежда Заглавията С"
 
 #: src/interface.c:1771
 msgid "Open links in Liferea's _window (requires Mozilla)."
-msgstr ""
+msgstr "Отваря връзките в _Liferea (изисква Mozilla)."
 
 #: src/interface.c:1779
 msgid "<span weight=\"bold\">Date Column Settings</span>"
@@ -871,18 +816,16 @@ msgid ""
 msgstr ""
 
 #: src/interface.c:1826
-#, fuzzy
 msgid "Headline Display"
-msgstr "Заглавие"
+msgstr "Изобразяване на Заглавията"
 
 #: src/interface.c:1839
-#, fuzzy
 msgid "<span weight=\"bold\">External Browser Settings</span>"
-msgstr "<span weight=\"bold\">Настройки на Браузъра</span>"
+msgstr "<span weight=\"bold\">Настройки на Външния Браузър</span>"
 
 #: src/interface.c:1863
 msgid "_Browser:"
-msgstr ""
+msgstr "_Браузър:"
 
 #: src/interface.c:1870
 #, c-format
@@ -890,31 +833,32 @@ msgid ""
 "_Manual:\n"
 "(%s for URL)"
 msgstr ""
+"_Ръководство:\n"
+"(%s за URL)"
 
 #: src/interface.c:1884
 msgid "_Open link in:"
-msgstr ""
+msgstr "_Отваряне на връзката в:"
 
 #: src/interface.c:1907
 msgid "External Browser"
-msgstr ""
+msgstr "Външен Браузър"
 
 #: src/interface.c:1920
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Настройки за Уведомяване</span>"
 
 #: src/interface.c:1938
-#, fuzzy
 msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
 msgstr ""
-"Показва икона в зоната за уведомяване \n"
+"Показване на _икона в зоната за уведомяване \n"
 "(също наричана system tray)."
 
 #: src/interface.c:1955
 msgid "Show a _popup window with new headlines."
-msgstr ""
+msgstr "Показване на _изскачащ прозорец с новите заглавия."
 
 #: src/interface.c:1964
 msgid "<span weight=\"bold\">Menu Settings</span>"
@@ -934,7 +878,7 @@ msgstr "Показва Само _Лентата с Инструментите"
 
 #: src/interface.c:2001
 msgid "GUI"
-msgstr ""
+msgstr "GUI"
 
 #: src/interface.c:2018
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
@@ -953,24 +897,20 @@ msgstr ""
 "предназначен за потребители,·които не използват GNOME."
 
 #: src/interface.c:2047
-#, fuzzy
 msgid "_Enable Proxy"
-msgstr "Включва Прокси"
+msgstr "_Включва Прокси"
 
 #: src/interface.c:2057
-#, fuzzy
 msgid "Proxy _Host"
-msgstr "Адрес на Прокси"
+msgstr "_Адрес на Прокси"
 
 #: src/interface.c:2076
-#, fuzzy
 msgid "Proxy _Port"
-msgstr "Порт на Прокси"
+msgstr "_Порт на Прокси"
 
 #: src/interface.c:2083
-#, fuzzy
 msgid "Proxy"
-msgstr "Порт на Прокси"
+msgstr "Прокси"
 
 #: src/interface.c:2271
 msgid "New Folder"
@@ -1013,23 +953,20 @@ msgid "Rule Value"
 msgstr "Стойност на Правилото"
 
 #: src/interface.c:2677
-#, fuzzy
 msgid "Feedster Search"
-msgstr "Кеш на Абонамента"
+msgstr "Feedster Търсене"
 
 #: src/interface.c:2692
-#, fuzzy
 msgid "Search for:"
-msgstr "Търси за"
+msgstr "Търсене за:"
 
 #: src/interface.c:2699
 msgid "enter any search string you want"
-msgstr "въведи дума за търсене"
+msgstr "въведете дума за търсене"
 
 #: src/interface.c:2706
-#, fuzzy
 msgid "Maximal Number Of Result Items:"
-msgstr "Максимален брой резултати"
+msgstr "Максимален Брой Резултати:"
 
 #: src/interface.c:2715
 msgid ""
@@ -1043,7 +980,7 @@ msgstr ""
 
 #: src/interface.c:2782
 msgid "Import Feed List"
-msgstr "Вмъква списък с абонаменти"
+msgstr "Вмъкване на списък с абонаменти"
 
 #: src/interface.c:2793
 msgid ""
@@ -1061,7 +998,7 @@ msgstr "Име на файла"
 
 #: src/interface.c:2873
 msgid "Export Feed List"
-msgstr "Експортира списък на абонаментите"
+msgstr "Експортиране на списъкът на абонаментите"
 
 #: src/interface.c:2884
 msgid ""
@@ -1074,9 +1011,8 @@ msgstr ""
 "експортирате списъкът в абонаменти към друг четец. "
 
 #: src/interface.c:2992
-#, fuzzy
 msgid "Liferea is a news aggregator for GTK+"
-msgstr "Liferea·е·агрегатор на новини·за GTK"
+msgstr "Liferea·е·агрегатор на новини·за GTK+"
 
 #: src/interface.c:2997
 msgid ""
@@ -1089,7 +1025,6 @@ msgstr ""
 "Nathan·J.·Conrad·<t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3017
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1114,33 +1049,34 @@ msgid ""
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 msgstr ""
-"Код,·Поправки,·Дебъгване\n"
+"Код, Поправки, Дебъгване\n"
 "\n"
-"James·Doherty·<...>\n"
-"Jeremy·Messenger·<mezz7@cox.net>\n"
-"John·McKnight·<...>\n"
-"Tomasz·Maka·<pasp@users.sourceforge.net>\n"
-"Karl·Soderstrom·<ks@debian.org>\t\n"
-"Christophe·Barbe·<christophe.barbe@ufies.org>\n"
-"Juho·Snellman·<jsnell@users.sourceforge.net>\n"
-"Roshan·Revankar·<roshweb@users.sourceforge.net>\n"
-"Oliver·Feiler·<kiza@kcore.de>\n"
-"Nathan·J.·Conrad·<t98502@users.sourceforge.net>\n"
-"Niklas·Morberg·<morberg@users.sourceforge.net>\n"
-"Johannes·Schlueter·<joscherl@users.sourceforge.net>\n"
-"Pierre·Phaneuf·<pp@ludusdesign.com>\n"
+"James Doherty <...>\n"
+"Jeremy Messenger <mezz7@cox.net>\n"
+"John McKnight <...>\n"
+"Tomasz Maka <pasp@ll.pl>\n"
+"Karl Soderstrom <ks@debian.org>\t\n"
+"Christophe Barbe <christophe.barbe@ufies.org>\n"
+"Juho Snellman <jsnell@users.sourceforge.net>\n"
+"Roshan Revankar <roshweb@users.sourceforge.net>\n"
+"Oliver Feiler <kiza@kcore.de>\n"
+"Niklas Morberg <morberg@users.sourceforge.net>\n"
+"Johannes Schlueter <joscherl@users.sourceforge.net>\n"
+"Pierre Phaneuf <pp@ludusdesign.com>\n"
+"ahmed el-helw <ahmedre@cc.gatech.edu>\n"
 "\n"
 "Код от други проекти\n"
 "\n"
-"Anders·Carlsson·<andersca@gnu.org>·(tray·icon·support)\n"
-"Philippe·Martin,·Brion·Vibber·(favicon·support)"
+"Anders Carlsson <andersca@gnu.org> (tray·icon·support)\n"
+"Philippe Martin, Brion Vibber (favicon·support)\n"
+"Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
+"Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
 #: src/interface.c:3023
 msgid "Contributors"
 msgstr "Сътрудници"
 
 #: src/interface.c:3037
-#, fuzzy
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -1160,22 +1096,22 @@ msgstr ""
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Gernauck <enrico@fanglomerat.de>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev·Vladimir·<compress@linux-online.ru>"
+"Alekseev Vladimir <compress@linux-online.ru>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>"
 
 #: src/interface.c:3043
 msgid "Translation"
 msgstr "Превод"
 
-#. Auth check box
-#: src/interface.c:3113 src/ui_feed.c:90
+#: src/interface.c:3113
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
-msgstr ""
+msgstr "Въведете потребителското име и паролата за \"%s\" (%s):"
 
 #: src/interface.c:3154
 msgid ""
@@ -1185,7 +1121,7 @@ msgstr ""
 
 #: src/interface.c:3203
 msgid "window1"
-msgstr ""
+msgstr "window1"
 
 #: src/main.c:51
 msgid "  --version        Prints Liferea's version number"
@@ -1323,86 +1259,62 @@ msgstr "<p>Не може да бъде намерена RDF/RSS началото
 msgid "comments"
 msgstr "коментари"
 
-#: src/support.c:90 src/support.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Pixmap файлът·%s не може да бъде зареден."
-
-#: src/ui_feed.c:199
-msgid "Directories cannot be autoupdated."
-msgstr ""
-
-#: src/ui_feed.c:202
-#, fuzzy, c-format
-msgid "The provider of this feed suggests an update interval of %d minutes."
-msgstr ""
-"Доставчикът на този източник предлага да поставите периот за осъвременяване "
-"от %d минути"
-
-#: src/ui_feed.c:204
-msgid "This feed specifies no default update interval."
-msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
-
-#: src/ui_feedlist.c:402
-#, fuzzy
+#: src/ui_feedlist.c:405
 msgid "You have to select a feed entry"
 msgstr "Трябва да изберете адрес на източник"
 
-#: src/ui_feedlist.c:412
-#, fuzzy
+#: src/ui_feedlist.c:415
 msgid "Liferea is in offline mode. No update possible."
-msgstr ""
-"Liferea·е в изключен режим.·Осъвременявания на абонаментите не са възможни!"
+msgstr "Liferea·е в изключен режим.·Осъвременявания на абонаментите не са възможни."
 
-#: src/ui_feedlist.c:436
+#: src/ui_feedlist.c:439
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:448 src/ui_feedlist.c:483
+#: src/ui_feedlist.c:451 src/ui_feedlist.c:486
 msgid ""
 "You cannot delete the help! Disable loading the help by changing the "
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
+"Не можете да изтриете помощта! Спирането на помощта става чрез"
+"промяна на настройките. Ще можете да изтриете папката с помощта"
+"след рестартиране на Liferea."
 
-#: src/ui_feedlist.c:490
+#: src/ui_feedlist.c:493
 #, c-format
 msgid "Deleting \"%s\""
 msgstr "Изтрива \"%s\""
 
-#: src/ui_feedlist.c:491
+#: src/ui_feedlist.c:494
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
 msgstr "Сигурни ли сте, че искате да изтриете·%s·и всички записи в него?"
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:496
 msgid "Deleting entry"
 msgstr "Изтрива запис"
 
-#: src/ui_feedlist.c:494
+#: src/ui_feedlist.c:497
 #, c-format
 msgid "Are you sure that you want to delete %s?"
 msgstr "Сигурни ли сте, че искате да изтриете·%s?"
 
-#: src/ui_feedlist.c:502
-#, fuzzy
+#: src/ui_feedlist.c:505
 msgid "Deletion Confirmation"
-msgstr "Потвърждаване при изтриване"
+msgstr "Потвърждаване При Изтриване"
 
-#: src/ui_feedlist.c:533
-#, fuzzy
+#: src/ui_feedlist.c:536
 msgid "You must select a feed entry"
-msgstr "Трябва да изберете адрес на източник"
+msgstr "Трябва да изберете запис"
 
-#: src/ui_feedlist.c:534
-#, fuzzy
+#: src/ui_feedlist.c:537
 msgid "You must select a feed entry."
-msgstr "Трябва да изберете адрес на източник"
+msgstr "Трябва да изберете запис."
 
-#: src/ui_feedlist.c:568
-#, fuzzy
+#: src/ui_feedlist.c:571
 msgid "New subscription"
-msgstr "Нов Абонамент"
+msgstr "Нов абонамент"
 
 #: src/ui_filter.c:57
 msgid "Value"
@@ -1434,69 +1346,65 @@ msgstr "Дата"
 msgid "Headline"
 msgstr "Заглавие"
 
-#: src/ui_itemlist.c:573
-#, fuzzy
+#: src/ui_itemlist.c:577
 msgid "No item has been selected"
-msgstr "Няма избран запис!"
+msgstr "Няма избран запис"
 
-#: src/ui_itemlist.c:597
-#, fuzzy
+#: src/ui_itemlist.c:601
 msgid "You must select a feed to delete its items!"
-msgstr "Трябва да изберете абонамент за да изтриете неговите записи!"
+msgstr "Трябва да изберете абонамент, за да изтриете неговите записи!"
 
-#: src/ui_itemlist.c:627
+#: src/ui_itemlist.c:631
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:659
-#, fuzzy
+#: src/ui_itemlist.c:663
 msgid "There are no unread items "
-msgstr "Няма непрочетени записи"
+msgstr "Няма непрочетени записи "
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:153
 msgid "New Feed"
 msgstr "Нов Абонамент"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:153
 msgid "Add a new subscription."
 msgstr "Добавяне на нов абонамент."
 
-#: src/ui_mainwindow.c:156
+#: src/ui_mainwindow.c:154
 msgid "Next Unread"
 msgstr "Следващ непрочетен"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:155
 msgid "Mark As Read"
 msgstr "Маркира Като Прочетени"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:155
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
 
-#: src/ui_mainwindow.c:158
-#, fuzzy
+#: src/ui_mainwindow.c:156
 msgid "Update All"
-msgstr "Осъвременява _Всички"
+msgstr "Осъвременяване на Всички"
 
-#: src/ui_mainwindow.c:159
+#: src/ui_mainwindow.c:157
 msgid "Search"
 msgstr "Търсене"
 
-#: src/ui_mainwindow.c:159
+#: src/ui_mainwindow.c:157
 msgid "Search all feeds."
 msgstr "Търсене във всички абонаменти."
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:158
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:158
 msgid "Edit preferences."
 msgstr "Промяна на настройките."
 
-#: src/ui_mainwindow.c:174
+#: src/ui_mainwindow.c:172
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1518,30 +1426,44 @@ msgid ""
 "the documentation provided in the help feed or in the FAQ available at the "
 "project homepage.</p>"
 msgstr ""
+"<h2>Добре дошли в Liferea</h2><p>Левият панел съдържа списък на"
+"вашите абонаменти, където можете да добавяте нови такива и да"
+"четете техните заглавия. Дясната страна изобразява или списък на"
+"заглавия от избрания абонамент или всички заглавия ако е избран"
+"режим на съкратен преглед.</p><h3>Основни действия</"
+"h3><ul><li><p><b>Добавяне на Абонамент</b> - Създава нов запис"
+"в желаната папка. За да създадете нов абонамент, въведете адресът"
+"на абонамента или ако не го знаете адресът на страницата, който"
+"го осигурява.</p></li><li><p><b>Осувременява Абонамент</b> - "
+"Това ще осъвремени желаните от вас абонаменти. Можете да"
+"направите това, ако искате моментално да проврите даден"
+"абонамент за промени. Обикновено е нормално да настроите това"
+"чрез автоматичен интервал за осъвременяване.</p></"
+"li><li><p><b>Осъвременяване на Всички</b> - Това ще осъвремени"
+"всички абонаменти наведнъж. Отново, можете да настроите"
+"тази възможност за автоматично осъвременяване.</"
+"li><li><p><b>Редактиране на Настройките на Абонамента</b> - Понякога"
+"можете да желаете да промените интервалът на осъвременяване, името,"
+"идентифицирането или настройките за кеширане на абонамента."
+"</p></li></ul><p>За да научите повече за Liferea, можете да"
+"прочетете документацията предоставена от абонамента за помощ или в"
+"секцията с Често Задавани Въпроси на страницата на програмата.</p>"
 
-#: src/ui_mainwindow.c:256
-#, fuzzy
+#: src/ui_mainwindow.c:254
 msgid "Liferea is now online"
-msgstr "Liferea·е включен."
+msgstr "Liferea е включена"
 
-#: src/ui_mainwindow.c:259
-#, fuzzy
+#: src/ui_mainwindow.c:257
 msgid "Liferea is now offline"
-msgstr "Liferea·е в режим \"изключен\"!"
-
-#: src/ui_notification.c:242
-#, fuzzy
-msgid "Liferea notification"
-msgstr "Liferea·е в режим \"изключен\"!"
+msgstr "Liferea е в режим \"изключен\""
 
 #: src/ui_popup.c:78
 msgid "/_Update"
-msgstr "/_Осъвременява"
+msgstr "/_Осъвременяване"
 
 #: src/ui_popup.c:79 src/ui_popup.c:89
-#, fuzzy
 msgid "/_Mark As Read"
-msgstr "_Маркира Като Прочетени"
+msgstr "/_Маркира Като Прочетени"
 
 #: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
 msgid "/_New"
@@ -1561,7 +1483,7 @@ msgstr "/_Настройки"
 
 #: src/ui_popup.c:84
 msgid "/_Delete"
-msgstr "/_Изтрива"
+msgstr "/_Изтриване"
 
 #: src/ui_popup.c:88
 msgid "/_Update Folder"
@@ -1616,57 +1538,58 @@ msgid "/_Subscribe"
 msgstr "/Абониране"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:182
+#: src/ui_prefs.c:132
 msgid "Manual"
-msgstr ""
+msgstr "Ръководство"
 
-#: src/ui_prefs.c:192
-#, fuzzy
+#: src/ui_prefs.c:142
 msgid "Browser default"
-msgstr "Настройки на Браузъра"
+msgstr "Стандартен Браузър"
 
-#: src/ui_prefs.c:197
+#: src/ui_prefs.c:147
 msgid "Existing window"
-msgstr ""
+msgstr "Съществуващ прозорец"
 
-#: src/ui_prefs.c:202
+#: src/ui_prefs.c:152
 msgid "New window"
-msgstr ""
+msgstr "Нов прозорец"
 
-#: src/ui_prefs.c:207
+#: src/ui_prefs.c:157
 msgid "New tab"
-msgstr ""
+msgstr "Нов таб"
 
 #: src/ui_search.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Searching for \"%s\""
-msgstr "търси за \"%s\""
+msgstr "Търсене за \"%s\""
 
 #: src/ui_tray.c:89
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item!"
-msgid_plural "%d new items!"
-msgstr[0] "%d нови записа!"
-msgstr[1] "%d нови записа!"
+msgstr "%d нов запис!"
 
 #: src/ui_tray.c:102
 msgid "No new items."
 msgstr "Няма нови записи."
 
-#: src/update.c:110
-#, fuzzy, c-format
+#: src/ui_notification.c:241
+msgid "Liferea notification"
+msgstr "Liferea уведомяване"
+
+#: src/update.c:104
+#, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr "Тръбата \"%s\" не може да бъде отворена!"
+msgstr "Грешка: Тръбата \"%s\" не може да бъде отворена"
+
+#: src/update.c:118
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "Грешка: Файлът \"%s\" не може да бъде отворен"
 
 #: src/update.c:124
-#, fuzzy, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "Файлът \"%s\" не може да бъде отворен!"
-
-#: src/update.c:130
-#, fuzzy, c-format
+#, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "Файлът \"%s\" не съществува!"
+msgstr "Грешка: Файлът \"%s\" не съществува"
 
 #~ msgid ""
 #~ "Invalid browser command! There is no %%s URL place holder in the browser "
@@ -1708,8 +1631,14 @@ msgstr "Файлът \"%s\" не съществува!"
 #~ msgid "socket connect"
 #~ msgstr "socket·connect"
 
+#~ msgid "Too many HTTP redirects encountered! Giving up."
+#~ msgstr "Твърде много  HTTP пренасочвание! Командата е отказана."
+
 #~ msgid "Following HTTP redirects"
 #~ msgstr "Следи HTTP пренасочванията"
+
+#~ msgid "Webserver sent an invalid redirect!"
+#~ msgstr "Интернет сървърът изпрати невалидно пренасочване!"
 
 #~ msgid "The feed no longer exists. Please unsubscribe!"
 #~ msgstr "Този абонамент вече не съществува!"
@@ -1718,6 +1647,9 @@ msgstr "Файлът \"%s\" не съществува!"
 #~ msgstr ""
 #~ "Уебсървърът %s изпрати невалиден HTTP/1.0 отговор! Не мога да направя "
 #~ "разбор на информацията"
+
+#~ msgid "Authentication failed!"
+#~ msgstr "Идентифицирането е неуспешно!"
 
 #~ msgid "This URL doesn't look too valid to me, don't you think?"
 #~ msgstr "Този адрес не ми изглежда много достоверен. Какво мислиш?"
@@ -1896,6 +1828,14 @@ msgstr "Файлът \"%s\" не съществува!"
 
 #~ msgid "Feed Update Interval"
 #~ msgstr "Интервал за осъвременяване"
+
+#~ msgid "The provider of this feed suggests an update interval of %d minutes"
+#~ msgstr ""
+#~ "Доставчикът на този източник предлага да поставите периот за "
+#~ "осъвременяване от %d минути"
+
+#~ msgid "This feed specifies no default update interval."
+#~ msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
 
 #~ msgid "_Edit Properties"
 #~ msgstr "_Настройки на абонамента"
