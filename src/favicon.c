@@ -124,7 +124,8 @@ static void favicon_download_request_cb(struct request *request) {
 		if(gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
 			pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
 			debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
-			gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL);
+			if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL))) 
+				g_warning("icon processing error!");
 			favicon_load(fp);
 			gdk_pixbuf_loader_close(loader, NULL);
 			g_object_unref(loader);
@@ -144,6 +145,7 @@ static void favicon_download_request_cb(struct request *request) {
 					request->source = g_strdup_printf("%s/favicon.ico", baseurl);
 					request->callback = &favicon_download_request_cb;
 					request->user_data = fp;
+					fp->faviconRequest = request;
 			
 					debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
 	
