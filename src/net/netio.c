@@ -64,7 +64,7 @@ static int const NET_READ = 1;
 static int const NET_WRITE = 2;
 
 extern char *proxyname;						/* Hostname of proxyserver. */
-extern unsigned short proxyport;			/* Port on proxyserver to use. */
+extern int proxyport;			/* Port on proxyserver to use. */
 extern char *proxyusername;
 extern char *proxypassword;
 extern char *useragent;
