@@ -19,15 +19,11 @@ Debian:		Beginning with version 0.4.3 there are officially
 
 RedHat/		Please ensure you have a libxml2 version
 Fedora:		at least 2.5.10 or you will experience nasty
-		segfaults. You can download RPM packages
-		from the sourceforge project page. If you
-		have dependency problems try the "--nodeps"
-		option.
+		segfaults. 
 		
-		You can download Fedora packages maintained by
-		Phillip Compton from
-
-		http://download.fedora.us/fedora/fedora/1/i386/RPMS.testing/
+		Dag Wieers provides 0.4.8 packages for both 
+                Fedora Core 1 and 2 which can be found at 
+                http://dag.wieers.com/packages/liferea/.
 		
 SuSE:		Since 0.4.6 Harry Auschner builds packages for
 		SuSE i586 which are available from the SourceForge
