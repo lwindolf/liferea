@@ -43,6 +43,8 @@ extern GdkPixbuf	*icons[];
 static nodePtr		displayed_node = NULL;
 static itemPtr		displayed_item = NULL;
 
+static GHashTable 	*iterhash = NULL;	/* hash table used for fast item->tree iter lookup */
+
 static gint		itemlist_loading;	/* freaky workaround for item list focussing problem */
 static gint		disableSortingSaving;
 
@@ -162,33 +164,34 @@ void ui_itemlist_reset_date_format(void) {
 	date_format = NULL;
 }
 
-static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
-					  GtkTreePath *path,
-					  GtkTreeIter *iter,
-					  gpointer data) {
-	itemPtr ip;
-	gtk_tree_model_get(model, iter, IS_PTR, &ip, -1);
-	
-	/* The ui_free_item_ui_data method cannot be used because it
-	   modifies the tree store and messes up the
-	   gtk_tree_store_foreach function. */
+static void ui_itemlist_remove_item(itemPtr ip) {
+	GtkTreeStore *itemstore = ui_itemlist_get_tree_store();
+
+	gtk_tree_store_remove(itemstore, &(((ui_item_data *)ip->ui_data)->row));
 	g_free(ip->ui_data);
 	ip->ui_data = NULL;
-	
-	return FALSE;
 }
 
+static gboolean ui_itemlist_remove_foreach(gpointer key, gpointer value, gpointer user_data) {
+	
+	ui_itemlist_remove_item((itemPtr)key);
+	return TRUE;
+}
+
+/* cleans up the item list, sets up the iter hash when called for the first time */
 void ui_itemlist_clear(void) {
-	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeSelection	*itemselection;
 
-	/* unselecting all items is important for to remove items
-	   from vfolders whose removal is deferred until unselecting */
-	if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")))))
-		gtk_tree_selection_unselect_all(itemselection);
-		
-	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
-	gtk_tree_store_clear(itemstore);
+	if(NULL == iterhash) {
+		iterhash = g_hash_table_new(g_direct_hash, g_direct_equal);
+	} else {
+		/* unselecting all items is important for to remove items
+		   from vfolders whose removal is deferred until unselecting */
+		if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")))))
+			gtk_tree_selection_unselect_all(itemselection);
+			
+		g_hash_table_foreach_remove(iterhash, ui_itemlist_remove_foreach, NULL);
+	}		
 }
 
 static void ui_item_update_from_iter(GtkTreeIter *iter) {
@@ -460,70 +463,81 @@ void ui_itemlist_display(void) {
 	ui_feedlist_update();
 }
 
-GtkTreeIter * ui_itemlist_find_existing_item(itemPtr ip) {
-	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
-	GtkTreeIter	*iter;
-	itemPtr		tmp;
-	gboolean	valid;
-
-	iter = g_new0(GtkTreeIter, 1);
-	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), iter);
-	while(valid) {
-		gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter, IS_PTR, &tmp, -1);
-		/* g_print("-> %s %d\n", tmp->title, tmp->nr); */
-		if(tmp == ip)
-			return iter;
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), iter);
+static gboolean ui_itemlist_check_for_stale_item(gpointer key, gpointer value, gpointer user_data) {
+	itemPtr		ip = (itemPtr)key;
+	GSList		*itemlist = (GSList *)user_data;
+	
+	if(NULL == g_slist_find(itemlist, ip)) {
+		g_print("removing stale item %d\n", ip);
+		ui_itemlist_remove_item(ip);
+		return TRUE;
 	}
-	g_free(iter);
-	return NULL;	
+	return FALSE;
 }
 
-void ui_itemlist_load_feed(feedPtr fp, gpointer data) {
+static void ui_itemlist_load_feed(feedPtr fp, gpointer data) {
+	gboolean	merge = *(gboolean *)data;
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	*iter;
 	GSList		*item, *itemlist;
 	itemPtr		ip;
-
+	
 	/* we depend on the fact that the third column is the favicon column!!! 
 	   if we are in search mode (or have a vfolder) we show the favicon 
 	   column to give a hint where the item comes from ... */
 	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (FST_VFOLDER == feed_get_type(fp)));
 	
+	/* step 1, reverse item list so we can prepend any new items in the correct order */
 	feed_load(fp);
-	
 	itemlist = feed_get_item_list(fp);
 	itemlist = g_slist_copy(itemlist);
 	itemlist = g_slist_reverse(itemlist);
+		
+	/* step 2, remove all tree store entries that do not exist in the feed list anymore! */
+	if(TRUE == merge) 
+		g_hash_table_foreach_remove(iterhash, ui_itemlist_check_for_stale_item, (gpointer)itemlist);
+	
+	/* step 3, add all tree store entries that do not yet exist in the feed list */	
 	item = itemlist;
 	while(NULL != item) {
 		ip = item->data;
-		iter = NULL;
 		g_assert(NULL != ip);
-		
-		if(TRUE == *(gboolean *)data) {
-			/* g_print("merge mode: searching for %d\n", ip->nr); */
-			iter = ui_itemlist_find_existing_item(ip);
-		} 
-				
-		if(NULL == iter) {
-			iter = g_new0(GtkTreeIter, 1);
-			gtk_tree_store_prepend(itemstore, iter, NULL);
-			g_assert(ip->ui_data == NULL);
-			ip->ui_data = g_new0(ui_item_data, 1);
-			((ui_item_data*)(ip->ui_data))->row = *iter;
-		}	
+		iter = NULL;
 
-		gtk_tree_store_set(itemstore, iter,
-		                              IS_TITLE, item_get_title(ip),
-		                              IS_PTR, ip,
-		                              IS_TIME, item_get_time(ip),
-		                              -1);	    
-		ui_item_update_from_iter(iter);
-		g_free(iter);
+		if((TRUE == merge) && (NULL != (iter = (GtkTreeIter *)g_hash_table_lookup(iterhash, (gpointer)ip)))) {
+			/* g_print("found iter for item %d\n", ip); */
+		}
+
+		if((NULL != iter) && (FALSE == item_get_new_status(ip))) {
+			/* nothing to do */
+			/* g_print("nothing to do for iter %d\n", ip); */
+		} else {	
+			if(NULL == iter) {
+				if(ip->ui_data != NULL) {
+					//g_warning("fatal: item added twice.\n"); this triggers!!!!!! FIXME!!!!!!
+					g_free(iter);
+					item = g_slist_next(item);
+					continue;
+				}
+
+				iter = g_new0(GtkTreeIter, 1);
+				gtk_tree_store_prepend(itemstore, iter, NULL);
+				g_hash_table_insert(iterhash, (gpointer)ip, (gpointer)iter);
+				g_assert(ip->ui_data == NULL);
+				ip->ui_data = g_new0(ui_item_data, 1);
+				((ui_item_data*)(ip->ui_data))->row = *iter;
+			}	
+
+			gtk_tree_store_set(itemstore, iter,
+		                        	      IS_TITLE, item_get_title(ip),
+		                        	      IS_PTR, ip,
+		                        	      IS_TIME, item_get_time(ip),
+		                        	      -1);
+			ui_item_update_from_iter(iter);
+		}
 		item = g_slist_next(item);
 	}
-	g_slist_free(itemlist);
+	g_slist_free(itemlist);	
 }
 
 /* Loads or merges the passed feeds items into the itemlist. 
@@ -539,7 +553,7 @@ void ui_itemlist_load(nodePtr node) {
 	
 	merge = (node == displayed_node);
 	displayed_node = node;
-	
+
 	isFeed = ((node != NULL) && ((FST_FEED == node->type) || (FST_VFOLDER == node->type)));
 
 	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
@@ -602,7 +616,6 @@ static itemPtr ui_itemlist_get_selected() {
 /* mouse/keyboard interaction callbacks */
 static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeIter 	iter;
-	GtkTreeStore	*itemstore;
 	GtkTreeModel	*model;
 	itemPtr 	ip;
 	
@@ -611,11 +624,9 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 		   more matching the rules because they have changed state */
 		if((displayed_item != NULL) && (displayed_item->fp->type == FST_VFOLDER)) {
 			if(FALSE == vfolder_check_item(displayed_item)) {
-				itemstore = ui_itemlist_get_tree_store();
-				gtk_tree_store_remove(itemstore, &(((ui_item_data *)displayed_item->ui_data)->row));
-				g_free(displayed_item->ui_data);
-				displayed_item->ui_data = NULL;
+				ui_itemlist_remove_item(displayed_item);
 				vfolder_remove_item(displayed_item);
+				g_hash_table_remove(iterhash, (gpointer)displayed_item);
 			}
 		}
 	
@@ -699,9 +710,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	np = ui_feedlist_get_selected();
 	if((NULL != np) && (FST_FEED == np->type)) {
 		if(NULL != (ip = ui_itemlist_get_selected())) {
-			gtk_tree_store_remove(itemstore, &(((ui_item_data*)ip->ui_data)->row));
-			g_free(ip->ui_data);
-			ip->ui_data = NULL;
+			ui_itemlist_remove_item(ip);
 			feed_remove_item((feedPtr)np, ip);
 			ui_feedlist_update();
 		} else {
