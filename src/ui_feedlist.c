@@ -665,12 +665,18 @@ static void ui_feedlist_check_update_counter(feedPtr fp) {
 	g_get_current_time(&now);
 	interval = feed_get_update_interval(fp);
 	
-	if (interval > 0)
-		if (fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+	if(-2 >= interval)
+		return;		/* don't update this feed */
+		
+	if(-1 == interval)
+		interval = getNumericConfValue(DEFAULT_UPDATE_INTERVAL);
+	
+	if(interval > 0)
+		if(fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
 			feed_schedule_update(fp, 0);
 
 	/* And check for favicon updating */
-	if (fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
+	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
 		favicon_download(fp);
 }
 

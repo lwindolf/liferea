@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-10-09 15:11+0200\n"
-"PO-Revision-Date: 2004-10-23 13:52+0100\n"
+"PO-Revision-Date: 2004-10-23 18:39+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -1539,7 +1539,6 @@ msgid "Cannot load HTML widget module (%s)!"
 msgstr "Kann HTML-Widget Modul (%s) nicht laden!"
 
 #. now we determine a list of all available modules
-#. one just in case there was no configured module
 #: src/ui_htmlview.c:126
 #, c-format
 msgid "Available browser modules (%s):\n"
@@ -1823,7 +1822,7 @@ msgstr "Neues Tab"
 
 #: src/ui_prefs.c:219
 msgid "Update only feeds scheduled for updates"
-msgstr "Abonnements aktualisieren deren Update-Intervall fällig ist"
+msgstr "alle fälligen Abonnements aktualisieren"
 
 #: src/ui_prefs.c:224
 #, fuzzy
@@ -1832,7 +1831,7 @@ msgstr "Alle aktualisieren"
 
 #: src/ui_prefs.c:229
 msgid "Reset feed update timers (Update no feeds)"
-msgstr "Rücksetzen der Update-Timer (Kein Abonnement aktualisieren)"
+msgstr "Kein Update fälliger Abonnements"
 
 #: src/ui_search.c:69
 #, c-format

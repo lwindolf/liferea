@@ -55,6 +55,11 @@ on_timeformatentry_changed             (GtkEditable     *editable,
 void
 on_itemCountBtn_value_changed          (GtkSpinButton   *spinbutton,
                                         gpointer         user_data);
+									
+void
+on_default_update_interval_value_changed
+                                        (GtkSpinButton   *spinbutton,
+                                        gpointer         user_data);
 
 void
 on_menuselection_clicked               (GtkButton       *button,

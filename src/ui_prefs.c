@@ -253,6 +253,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		g_free(widgetname);
 	}
 	
+	/* set default update interval spin button */
+	widget = lookup_widget(prefdialog,"refreshIntervalSpinButton");
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), getNumericConfValue(DEFAULT_UPDATE_INTERVAL));
+	
 	/* select currently active menu option */
 	tmp = 1;
 	if(getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) tmp = 2;
@@ -470,9 +474,18 @@ void on_timeformatentry_changed(GtkEditable *editable, gpointer user_data) {
 
 void on_itemCountBtn_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {
 	GtkAdjustment	*itemCount;
+	
 	itemCount = gtk_spin_button_get_adjustment(spinbutton);
 	setNumericConfValue(DEFAULT_MAX_ITEMS, gtk_adjustment_get_value(itemCount));
 }
+
+void on_default_update_interval_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {
+	GtkAdjustment	*updateInterval;
+	
+	updateInterval = gtk_spin_button_get_adjustment(spinbutton);
+	setNumericConfValue(DEFAULT_UPDATE_INTERVAL, gtk_adjustment_get_value(updateInterval));
+}
+
 
 void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 	gint		active_button;

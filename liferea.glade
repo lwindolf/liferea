@@ -1332,7 +1332,7 @@
 			  <property name="spacing">6</property>
 
 			  <child>
-			    <widget class="GtkRadioButton" id="updateradiobtn">
+			    <widget class="GtkRadioButton" id="updateIntervalDefault">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
 			      <property name="label" translatable="yes">_Use global default update interval.</property>
@@ -1357,7 +1357,7 @@
 			      <property name="spacing">6</property>
 
 			      <child>
-				<widget class="GtkRadioButton" id="radiobutton2">
+				<widget class="GtkRadioButton" id="updateIntervalSpecific">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
 				  <property name="label" translatable="yes">_Feed specific update interval of</property>
@@ -1367,7 +1367,7 @@
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
-				  <property name="group">updateradiobtn</property>
+				  <property name="group">updateIntervalDefault</property>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>
@@ -1392,7 +1392,7 @@
 				      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
 				      <property name="snap_to_ticks">False</property>
 				      <property name="wrap">False</property>
-				      <property name="adjustment">1 0 10000 1 60 60</property>
+				      <property name="adjustment">0 0 10000 1 60 60</property>
 				    </widget>
 				    <packing>
 				      <property name="padding">0</property>
@@ -1437,7 +1437,7 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkRadioButton" id="radiobutton3">
+			    <widget class="GtkRadioButton" id="updateIntervalNever">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
 			      <property name="label" translatable="yes">_Don't update this feed automatically.</property>
@@ -1447,7 +1447,7 @@
 			      <property name="active">False</property>
 			      <property name="inconsistent">False</property>
 			      <property name="draw_indicator">True</property>
-			      <property name="group">updateradiobtn</property>
+			      <property name="group">updateIntervalDefault</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -3142,9 +3142,8 @@
 
 			      <child>
 				<widget class="GtkLabel" id="label33">
-				  <property name="width_request">300</property>
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">Default number of items per feed to save per feed:</property>
+				  <property name="label" translatable="yes">Default number of items per feed to save:</property>
 				  <property name="use_underline">False</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3164,6 +3163,7 @@
 
 			      <child>
 				<widget class="GtkSpinButton" id="itemCountBtn">
+				  <property name="width_request">60</property>
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
 				  <property name="climb_rate">1</property>
@@ -3177,8 +3177,8 @@
 				</widget>
 				<packing>
 				  <property name="padding">0</property>
-				  <property name="expand">True</property>
-				  <property name="fill">True</property>
+				  <property name="expand">False</property>
+				  <property name="fill">False</property>
 				</packing>
 			      </child>
 			    </widget>
@@ -3290,7 +3290,7 @@
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
-				  <property name="mnemonic_widget">spinbutton1</property>
+				  <property name="mnemonic_widget">refreshIntervalSpinButton</property>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>
@@ -3300,7 +3300,8 @@
 			      </child>
 
 			      <child>
-				<widget class="GtkSpinButton" id="spinbutton1">
+				<widget class="GtkSpinButton" id="refreshIntervalSpinButton">
+				  <property name="width_request">60</property>
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
 				  <property name="climb_rate">1</property>
@@ -3310,6 +3311,7 @@
 				  <property name="snap_to_ticks">False</property>
 				  <property name="wrap">False</property>
 				  <property name="adjustment">1 0 10000 1 60 60</property>
+				  <signal name="value_changed" handler="on_default_update_interval_value_changed" last_modification_time="Sat, 23 Oct 2004 16:32:03 GMT"/>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>

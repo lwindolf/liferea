@@ -23,6 +23,7 @@
 #include <time.h>
 #include <string.h> /* For memset() */
 #include <stdlib.h>
+#include <libxml/uri.h>
 
 #include "vfolder.h"
 #include "item.h"
@@ -173,7 +174,8 @@ void item_free(itemPtr ip) {
 gchar *item_render(itemPtr ip) {
 	struct displayset	displayset;
 	gchar			*buffer = NULL;
-	gchar			*tmp, *tmp2, *tmp3;
+	gchar			*tmp, *tmp2;
+	xmlChar			*tmp3;
 	gboolean		migration = FALSE;
 	
 	displayset.headtable = NULL;

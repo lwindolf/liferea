@@ -414,6 +414,9 @@ gboolean feed_load(feedPtr fp) {
 			} else if(fp->title == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
 				feed_set_title(fp, tmp);
 				
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
+				feed_set_default_update_interval(fp, atoi(tmp));
+								
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedImage")) {
 				feed_set_image_url(fp, tmp);
 				

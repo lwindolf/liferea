@@ -825,15 +825,15 @@ create_propdialog (void)
   GtkWidget *hbox31;
   GtkWidget *label74;
   GtkWidget *vbox237;
-  GtkWidget *updateradiobtn;
-  GSList *updateradiobtn_group = NULL;
+  GtkWidget *updateIntervalDefault;
+  GSList *updateIntervalDefault_group = NULL;
   GtkWidget *hbox70;
-  GtkWidget *radiobutton2;
+  GtkWidget *updateIntervalSpecific;
   GtkWidget *hbox71;
   GtkObject *refreshIntervalSpinButton_adj;
   GtkWidget *refreshIntervalSpinButton;
   GtkWidget *label77;
-  GtkWidget *radiobutton3;
+  GtkWidget *updateIntervalNever;
   GtkWidget *label161;
   GtkWidget *feedUpdateInfo;
   GtkWidget *label66;
@@ -965,27 +965,27 @@ create_propdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox31), vbox237, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox237), 6);
 
-  updateradiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("_Use global default update interval."));
-  gtk_widget_show (updateradiobtn);
-  gtk_box_pack_start (GTK_BOX (vbox237), updateradiobtn, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (updateradiobtn), updateradiobtn_group);
-  updateradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (updateradiobtn));
+  updateIntervalDefault = gtk_radio_button_new_with_mnemonic (NULL, _("_Use global default update interval."));
+  gtk_widget_show (updateIntervalDefault);
+  gtk_box_pack_start (GTK_BOX (vbox237), updateIntervalDefault, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (updateIntervalDefault), updateIntervalDefault_group);
+  updateIntervalDefault_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (updateIntervalDefault));
 
   hbox70 = gtk_hbox_new (FALSE, 6);
   gtk_widget_show (hbox70);
   gtk_box_pack_start (GTK_BOX (vbox237), hbox70, FALSE, FALSE, 0);
 
-  radiobutton2 = gtk_radio_button_new_with_mnemonic (NULL, _("_Feed specific update interval of"));
-  gtk_widget_show (radiobutton2);
-  gtk_box_pack_start (GTK_BOX (hbox70), radiobutton2, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton2), updateradiobtn_group);
-  updateradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton2));
+  updateIntervalSpecific = gtk_radio_button_new_with_mnemonic (NULL, _("_Feed specific update interval of"));
+  gtk_widget_show (updateIntervalSpecific);
+  gtk_box_pack_start (GTK_BOX (hbox70), updateIntervalSpecific, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (updateIntervalSpecific), updateIntervalDefault_group);
+  updateIntervalDefault_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (updateIntervalSpecific));
 
   hbox71 = gtk_hbox_new (FALSE, 6);
   gtk_widget_show (hbox71);
   gtk_box_pack_start (GTK_BOX (hbox70), hbox71, TRUE, TRUE, 0);
 
-  refreshIntervalSpinButton_adj = gtk_adjustment_new (1, 0, 10000, 1, 60, 60);
+  refreshIntervalSpinButton_adj = gtk_adjustment_new (0, 0, 10000, 1, 60, 60);
   refreshIntervalSpinButton = gtk_spin_button_new (GTK_ADJUSTMENT (refreshIntervalSpinButton_adj), 1, 0);
   gtk_widget_show (refreshIntervalSpinButton);
   gtk_box_pack_start (GTK_BOX (hbox71), refreshIntervalSpinButton, TRUE, TRUE, 0);
@@ -994,11 +994,11 @@ create_propdialog (void)
   gtk_widget_show (label77);
   gtk_box_pack_start (GTK_BOX (hbox71), label77, FALSE, FALSE, 0);
 
-  radiobutton3 = gtk_radio_button_new_with_mnemonic (NULL, _("_Don't update this feed automatically."));
-  gtk_widget_show (radiobutton3);
-  gtk_box_pack_start (GTK_BOX (vbox237), radiobutton3, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton3), updateradiobtn_group);
-  updateradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton3));
+  updateIntervalNever = gtk_radio_button_new_with_mnemonic (NULL, _("_Don't update this feed automatically."));
+  gtk_widget_show (updateIntervalNever);
+  gtk_box_pack_start (GTK_BOX (vbox237), updateIntervalNever, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (updateIntervalNever), updateIntervalDefault_group);
+  updateIntervalDefault_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (updateIntervalNever));
 
   label161 = gtk_label_new (_(" "));
   gtk_widget_show (label161);
@@ -1301,13 +1301,13 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, hbox31, "hbox31");
   GLADE_HOOKUP_OBJECT (propdialog, label74, "label74");
   GLADE_HOOKUP_OBJECT (propdialog, vbox237, "vbox237");
-  GLADE_HOOKUP_OBJECT (propdialog, updateradiobtn, "updateradiobtn");
+  GLADE_HOOKUP_OBJECT (propdialog, updateIntervalDefault, "updateIntervalDefault");
   GLADE_HOOKUP_OBJECT (propdialog, hbox70, "hbox70");
-  GLADE_HOOKUP_OBJECT (propdialog, radiobutton2, "radiobutton2");
+  GLADE_HOOKUP_OBJECT (propdialog, updateIntervalSpecific, "updateIntervalSpecific");
   GLADE_HOOKUP_OBJECT (propdialog, hbox71, "hbox71");
   GLADE_HOOKUP_OBJECT (propdialog, refreshIntervalSpinButton, "refreshIntervalSpinButton");
   GLADE_HOOKUP_OBJECT (propdialog, label77, "label77");
-  GLADE_HOOKUP_OBJECT (propdialog, radiobutton3, "radiobutton3");
+  GLADE_HOOKUP_OBJECT (propdialog, updateIntervalNever, "updateIntervalNever");
   GLADE_HOOKUP_OBJECT (propdialog, label161, "label161");
   GLADE_HOOKUP_OBJECT (propdialog, feedUpdateInfo, "feedUpdateInfo");
   GLADE_HOOKUP_OBJECT (propdialog, label66, "label66");
@@ -1636,8 +1636,8 @@ create_prefdialog (void)
   GtkWidget *vbox2586;
   GtkWidget *hbox68;
   GtkWidget *label159;
-  GtkObject *spinbutton1_adj;
-  GtkWidget *spinbutton1;
+  GtkObject *refreshIntervalSpinButton_adj;
+  GtkWidget *refreshIntervalSpinButton;
   GtkWidget *label160;
   GtkWidget *label135;
   GtkWidget *hbox57;
@@ -1800,16 +1800,16 @@ create_prefdialog (void)
   gtk_widget_show (hbox19);
   gtk_box_pack_start (GTK_BOX (vbox20), hbox19, TRUE, TRUE, 0);
 
-  label33 = gtk_label_new (_("Default number of items per feed to save per feed:"));
+  label33 = gtk_label_new (_("Default number of items per feed to save:"));
   gtk_widget_show (label33);
   gtk_box_pack_start (GTK_BOX (hbox19), label33, FALSE, FALSE, 0);
-  gtk_widget_set_size_request (label33, 300, -1);
   gtk_label_set_line_wrap (GTK_LABEL (label33), TRUE);
 
   itemCountBtn_adj = gtk_adjustment_new (1, 0, 1e+06, 1, 10, 10);
   itemCountBtn = gtk_spin_button_new (GTK_ADJUSTMENT (itemCountBtn_adj), 1, 0);
   gtk_widget_show (itemCountBtn);
-  gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, FALSE, FALSE, 0);
+  gtk_widget_set_size_request (itemCountBtn, 60, -1);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
 
   vbox2585 = gtk_vbox_new (FALSE, 0);
@@ -1843,10 +1843,11 @@ create_prefdialog (void)
   gtk_widget_show (label159);
   gtk_box_pack_start (GTK_BOX (hbox68), label159, FALSE, FALSE, 0);
 
-  spinbutton1_adj = gtk_adjustment_new (1, 0, 10000, 1, 60, 60);
-  spinbutton1 = gtk_spin_button_new (GTK_ADJUSTMENT (spinbutton1_adj), 1, 0);
-  gtk_widget_show (spinbutton1);
-  gtk_box_pack_start (GTK_BOX (hbox68), spinbutton1, FALSE, TRUE, 0);
+  refreshIntervalSpinButton_adj = gtk_adjustment_new (1, 0, 10000, 1, 60, 60);
+  refreshIntervalSpinButton = gtk_spin_button_new (GTK_ADJUSTMENT (refreshIntervalSpinButton_adj), 1, 0);
+  gtk_widget_show (refreshIntervalSpinButton);
+  gtk_box_pack_start (GTK_BOX (hbox68), refreshIntervalSpinButton, FALSE, TRUE, 0);
+  gtk_widget_set_size_request (refreshIntervalSpinButton, 60, -1);
 
   label160 = gtk_label_new (_("minutes."));
   gtk_widget_show (label160);
@@ -2383,6 +2384,9 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) itemCountBtn, "value_changed",
                     G_CALLBACK (on_itemCountBtn_value_changed),
                     NULL);
+  g_signal_connect ((gpointer) refreshIntervalSpinButton, "value_changed",
+                    G_CALLBACK (on_default_update_interval_value_changed),
+                    NULL);
   g_signal_connect ((gpointer) feedsinmemorybtn1, "clicked",
                     G_CALLBACK (on_feedsinmemorybtn_clicked),
                     NULL);
@@ -2447,7 +2451,7 @@ create_prefdialog (void)
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (prefdialog));
 
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label159), spinbutton1);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label159), refreshIntervalSpinButton);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label142), startupfeedhandler);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label137), browserpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (manuallabel), browsercmd);
@@ -2477,7 +2481,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2586, "vbox2586");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox68, "hbox68");
   GLADE_HOOKUP_OBJECT (prefdialog, label159, "label159");
-  GLADE_HOOKUP_OBJECT (prefdialog, spinbutton1, "spinbutton1");
+  GLADE_HOOKUP_OBJECT (prefdialog, refreshIntervalSpinButton, "refreshIntervalSpinButton");
   GLADE_HOOKUP_OBJECT (prefdialog, label160, "label160");
   GLADE_HOOKUP_OBJECT (prefdialog, label135, "label135");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox57, "hbox57");
