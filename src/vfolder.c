@@ -49,6 +49,7 @@ feedPtr vfolder_new(void) {
 	fp->source = g_strdup("vfolder");
 	fp->id = conf_new_id();
 	fp->available = TRUE;
+	fp->fhp = feed_type_str_to_fhp("vfolder");
 	
 	return fp;
 }

@@ -78,8 +78,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp)); /* The OPML spec requires "text" */
 		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
 		xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
-		if(type != NULL)
-			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
+		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
 		if(feed_get_html_url(fp) != NULL)
 			xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(fp));
 		else
@@ -250,6 +249,8 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		   fhp. fhp will default to NULL. */
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
 		fp->fhp = feed_type_str_to_fhp(typeStr);
+		if(0 == strcmp("vfolder", typeStr))
+			feed_set_type(fp, FST_VFOLDER);	/* should prevent feed_load to do anything */
 
 		/* Set the cache limit */
 		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
