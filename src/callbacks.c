@@ -24,6 +24,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
+#include <string.h>
 
 #include "interface.h"
 #include "support.h"
@@ -722,7 +723,7 @@ void on_popup_removefolder_selected(void) {
 		/* check if folder is empty */
 		count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), iter);
 		if(0 == count) 
-			g_error("this cannot happen! A folder must have an empty entry!!!\n");
+			g_error("this should not happen! A folder must have an empty entry!!!\n");
 
 		if(1 == count) {
 			/* check if the only entry is type FST_EMPTY */
@@ -1487,6 +1488,11 @@ gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, 
 	/* don't allow folder DND */
 	if(IS_NODE(drag_source_type)) {
 		showErrorBox(_("Sorry Liferea does not yet support drag&drop of folders!"));
+		stop = TRUE;
+	}
+	
+	/* don't allow "(empty)" entry moving */
+	if(FST_EMPTY == drag_source_type) {
 		stop = TRUE;
 	}
 

@@ -120,7 +120,7 @@ gpointer getFeedProp(gchar *key, gint proptype) {
 	g_mutex_unlock(feeds_lock);
 	if(NULL != ep) {
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type))))
-			g_error(g_strdup_printf(_("internal error! no feed handler for this type %d!"), ep->type));
+			g_error(g_strdup_printf(_("internal error! unknown feed type %d in getFeedProp!"), ep->type));
 
 		return (*(fhp->getFeedProp))(ep, proptype);
 	} else {
@@ -141,7 +141,7 @@ void setFeedProp(gchar *key, gint proptype, gpointer data) {
 
 	if(NULL != ep) {	
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type))))
-			g_error(_("internal error! no feed handler for this type!"));	
+			g_error(_("internal error! unknown feed type in setFeedProp!"));	
 
 		g_assert(NULL != fhp->setFeedProp);
 		(*(fhp->setFeedProp))(ep, proptype, data);
@@ -194,7 +194,7 @@ gchar * newEntry(gint type, gchar *url, gchar *keyprefix) {
 		g_assert(NULL != fhp->readFeed);
 		new_ep = (entryPtr)(*(fhp->readFeed))(url);
 	} else {
-		g_error(_("internal error! no feed handler for this type!"));
+		g_error(_("internal error! unknown feed type in newEntry()!"));
 	}
 		
 	if(NULL != new_ep) {	
@@ -271,6 +271,13 @@ void setFolderTitle(gchar *keyprefix, gchar *title) {
 void addFolder(gchar *keyprefix, gchar *title, gint type) {
 	GtkTreeStore		*feedstore;
 	GtkTreeIter		*iter;
+
+	/* check if a folder with this keyprefix already
+	   exists to check config consistency */
+	if(NULL != (iter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
+		g_warning("There is already a folder with this keyprefix!\nYou may have an inconsistent configuration!\n");
+		return;
+	}
 
 	if(NULL == (iter = (GtkTreeIter *)g_malloc(sizeof(GtkTreeIter)))) 
 		g_error("could not allocate memory!\n");
@@ -408,9 +415,9 @@ void removeEntry(gchar *keyprefix, gchar *key) {
 	entryPtr	ep;
 	feedHandlerPtr	fhp;
 
-	g_mutex_lock(feeds_lock);	
+	g_mutex_lock(feeds_lock);
 	ep = (entryPtr)g_hash_table_lookup(feeds, (gpointer)key);
-	g_mutex_unlock(feeds_lock);	
+	g_mutex_unlock(feeds_lock);
 
 	if(NULL == ep) {
 		print_status(_("internal error! could not find key in entry list! Cannot delete!\n"));
@@ -419,13 +426,21 @@ void removeEntry(gchar *keyprefix, gchar *key) {
 
 	fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type));
 	g_assert(NULL != fhp);
-	
+
 	if(NULL != fhp->removeFeed) {
+		/* ensure that update.c does not access the entry
+		   structure because it finds it in the feeds hashtable
+		   before its deleted */
+		g_mutex_lock(feeds_lock);
 		(*(fhp->removeFeed))(keyprefix, key, ep);
+		g_hash_table_remove(feeds, (gpointer)key);
+		g_mutex_unlock(feeds_lock);
+// FIXME: print feed list with types before and after removal...		
 	} else {
 		//g_warning(_("FIXME: no handler to remove this feed type (delete cached contents manually)!"));
 	}
-
+	
+	
 	removeEntryFromConfig(keyprefix, key);
 }
 
@@ -441,7 +456,7 @@ void saveToFeedList(entryPtr ep) {
 
 		setInEntryList(ep, title, source, ep->type);
 	} else {
-		g_error(_("internal error! no feed handler for this type!"));
+		g_error(_("internal error! unknown feed type while saveToFeedList()!"));
 	}
 }
 
@@ -604,6 +619,9 @@ void loadItemList(gchar *key, gchar *searchstring) {
 
 			if((NULL != description) && (NULL != strstr(description, searchstring)))
 				add = TRUE;
+				
+			if(FST_VFOLDER == ep->type)
+				add = FALSE;
 		}
 
 		if(add) {
@@ -624,13 +642,13 @@ void loadItemList(gchar *key, gchar *searchstring) {
 			g_assert(NULL != fhp->showFeedInfo);
 			(*(fhp->showFeedInfo))(ep);
 		} else {
-			g_error(_("internal error! no feed handler for this type!"));
+			g_error(_("internal error! unknown feed type while loading items!"));
 		}
 	}
 }
 
 static void searchInFeed(gpointer key, gpointer value, gpointer userdata) {
-
+	
 	loadItemList((gchar *)key, (gchar *)userdata);
 }
 
@@ -672,7 +690,7 @@ void scanFeed(gpointer key, gpointer value, gpointer userdata) {
 			g_assert(NULL != fhp->getFeedProp);
 			itemlist = (GSList *)(*(fhp->getFeedProp))(ep, FEED_PROP_ITEMLIST);
 		} else {
-			g_error(_("internal error! no feed handler for this type!"));
+			g_error(_("internal error! unknown feed type while scanning feeds!"));
 			return;			
 		}	
 
@@ -719,7 +737,8 @@ void loadVFolder(gpointer key, gpointer value, gpointer userdata) {
 	entryPtr	ep = (entryPtr)value;
 
 	/* match the feed ep against all vfolders... */
-	g_hash_table_foreach(feeds, scanFeed, ep);
+	if(FST_VFOLDER != ep->type)
+		g_hash_table_foreach(feeds, scanFeed, ep);
 }
 
 /* called upon initialization */
@@ -867,6 +886,8 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 				g_free(newfilename);
 			}
 		
+			g_mutex_lock(feeds_lock);	/* prevent any access during the feed structure modifications */
+			
 			/* move key in configuration */
 			removeEntryFromConfig(ep->keyprefix, key);	/* delete old one */
 			ep->key = newkey;				/* update feed structure key */
@@ -878,7 +899,9 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 			setEntryTitleInConfig(newkey, (gchar *)getFeedProp(newkey, FEED_PROP_USERTITLE));
 			if(IS_FEED(tmp_type))
 				setFeedUpdateIntervalInConfig(newkey, (gint)getFeedProp(newkey, FEED_PROP_UPDATEINTERVAL));
-
+				
+			g_mutex_unlock(feeds_lock);
+			
 			/* update changed row contents */
 			gtk_tree_store_set(feedstore, &iter, FS_KEY, (gpointer)newkey, -1);
 		}

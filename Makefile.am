@@ -8,8 +8,7 @@ EXTRA_DIST = \
 	.gladep \
 	liferea.glade \
 	liferea.gladep \
-	liferea.spec \
-	wrong-size.patch
+	liferea.spec
 
 install-data-local:
 	@$(NORMAL_INSTALL)

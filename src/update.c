@@ -98,7 +98,7 @@ static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata)
 
 	/* we can use set/getFeedProp() here, this would cause deadlocks */
 	if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type)))) 
-		g_error(_("internal error! no feed handler for this type!"));	
+		g_error(_("internal error! unknown feed type while updating feed counters!"));	
 	
 	g_assert(NULL != fhp->getFeedProp);
 	g_assert(NULL != fhp->setFeedProp);
@@ -118,7 +118,7 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		return;
 
 	if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type)))) 
-		g_error(_("internal error! no feed handler for this type!"));	
+		g_error(_("internal error! unknown feed type while updating feeds!"));	
 
 	g_assert(NULL != fhp->getFeedProp);
 	if(0 == (*(fhp->getFeedProp))(ep, FEED_PROP_UPDATECOUNTER)) {

@@ -133,8 +133,7 @@ EXTRA_DIST = \
 	.gladep \
 	liferea.glade \
 	liferea.gladep \
-	liferea.spec \
-	wrong-size.patch
+	liferea.spec
 
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4

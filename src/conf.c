@@ -116,8 +116,9 @@ GSList * getEntryKeyList(gchar *keyprefix) {
 	
 	value = gconf_client_get(client, gconfpath, &err);
 	is_gconf_error(err);
-	
+g_print("getEntryKeyList for %s\n", keyprefix);	
 	list = gconf_value_get_list(value);
+g_print("end of getEntryKeyList for %s\n", keyprefix);	
 	g_free(value);
 	g_free(gconfpath);
 	
@@ -296,8 +297,9 @@ gchar * addFolderToConfig(gchar *title) {
 	gconfpath = g_strdup_printf("%s/groups", PATH);
 	value = gconf_client_get(client, gconfpath, &err);
 	is_gconf_error(err);
-
+g_print("get dir list\n");
 	list = gconf_value_get_list(value);
+g_print("end of get dir list\n");
 	g_free(value);
 	g_free(gconfpath);
 	
@@ -357,10 +359,10 @@ void removeFolderFromConfig(gchar *keyprefix) {
 	gconfpath = g_strdup_printf("%s/groups", PATH);
 	value = gconf_client_get(client, gconfpath, &err);
 	is_gconf_error(err);
-
+g_print("removeFolder value_get_list\n");
 	iter = list = gconf_value_get_list(value);
 	g_free(value);
-
+g_print("end of removeFolder value_get_list\n");
 	while(iter != NULL) {
 		element = iter->data;
 		tmpkeyprefix = gconf_value_get_string(element);
@@ -406,30 +408,27 @@ gchar * addEntryToConfig(gchar *keyprefix, gchar *url, gint type) {
 		return NULL;
 	}
 
-	/* save feed url */	
-	if(0 == setEntryURLInConfig(key, url)) {
-
-		if(0 != setEntryTypeInConfig(key, type)) {
-			g_print(_("error! could not set a URL for this key!\n"));
-		}
-		
-		/* add feedkey to feedlist */
-		list = getEntryKeyList(keyprefix);
-		
-		newkey = gconf_value_new(GCONF_VALUE_STRING);
-		gconf_value_set_string(newkey, key);
-		is_gconf_error(err);
-		
-		newlist = g_slist_append(list, newkey);
-		
-		/* write new list back to gconf */
-		setEntryKeyList(keyprefix, newlist);
-		
-		g_free(newkey);
-		g_slist_free(newlist);
-	} else {
+	/* save feed url and type */	
+	if((NULL != url) && (0 != setEntryURLInConfig(key, url)))
 		g_print(_("error! could not set a URL for this key!\n"));	
-	}
+
+	if(0 != setEntryTypeInConfig(key, type)) 
+		g_print(_("error! could not set a type for this key!\n"));
+		
+	/* add feedkey to feedlist */
+	list = getEntryKeyList(keyprefix);
+		
+	newkey = gconf_value_new(GCONF_VALUE_STRING);
+	gconf_value_set_string(newkey, key);
+	is_gconf_error(err);
+	
+	newlist = g_slist_append(list, newkey);
+	
+	/* write new list back to gconf */
+	setEntryKeyList(keyprefix, newlist);
+		
+	g_free(newkey);
+	g_slist_free(newlist);
 	
 	return key;
 }

@@ -152,7 +152,7 @@ extern void showRSSFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 /* writes item description as HTML into the gtkhtml widget */
 void showRSSItem(gpointer ip) {
 	RSSChannelPtr	cp;
-	gchar		*itemlink;
+	gchar		*itemlink, *itemtitle;
 	gchar		*feedimage;
 	gchar		*tmp;	
 	outputRequest	request;
@@ -183,7 +183,9 @@ void showRSSItem(gpointer ip) {
 		writeHTML(HTML_NEWLINE);
 		
 		writeHTML(ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", itemlink, getRSSItemTag(ip, RSS_ITEM_TITLE));
+		itemtitle = getRSSItemTag(ip, RSS_ITEM_TITLE);
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", itemlink, 
+					(NULL != itemtitle)?itemtitle:itemlink);
 		writeHTML(tmp);
 		g_free(tmp);
 		
