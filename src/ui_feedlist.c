@@ -632,7 +632,7 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 			}
 			
 			/* if the iter has children and we are descending, iterate over the children. */
-			if(descend && (gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), &childiter) > 0))
+			if(descend)
 				ui_feedlist_do_for_all_data(child, filter, func, user_data);
 		}
 	}
