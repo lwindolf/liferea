@@ -261,6 +261,9 @@ void feed_save(feedPtr fp) {
 			if(NULL != fp->description)
 				xmlNewTextChild(feedNode, NULL, "feedDescription", fp->description);
 
+			if(NULL != feed_get_image_url(fp))
+				xmlNewTextChild(feedNode, NULL, "feedImage", feed_get_image_url(fp));
+	
 			tmp = g_strdup_printf("%d", fp->defaultInterval);
 			xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
 			g_free(tmp);
@@ -418,6 +421,9 @@ gboolean feed_load_from_cache(feedPtr fp) {
 			} else if(fp->title == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
 				feed_set_title(fp, tmp);
 				
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedImage")) {
+				feed_set_image_url(fp, tmp);
+				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
 				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
 				
@@ -430,6 +436,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				feed_add_item((feedPtr)fp, item_parse_cache(doc, cur));
+
 			} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
 				fp->metadata = metadata_parse_xml_nodes(doc, cur);
 			}
