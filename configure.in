@@ -32,8 +32,10 @@ if test "x$gtkhtml2" != "x" ; then
    PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
    AC_SUBST(GTKHTML2_CFLAGS)
    AC_SUBST(GTKHTML2_LIBS)
+   enable_gtkhtml2=yes
 else
    AC_MSG_RESULT(no)
+   enable_gtkhtml2=no
 fi
 
 AC_MSG_CHECKING([for Mozilla support])
@@ -101,8 +103,10 @@ if test "x$mozilla" != "x" ; then
 
    AC_SUBST(MOZILLA_CFLAGS)
    AC_SUBST(MOZILLA_LIBS)   
+   enable_mozilla=yes
 else
    AC_MSG_RESULT(no)
+   $enable_mozilla=no
 fi
 
 dnl For now, require GtkHTML2 or Mozilla. GtkHTML3 should not be used!
@@ -149,4 +153,9 @@ liferea.spec
 liferea-SuSE.spec
 ])
 
-
+echo
+echo $PACKAGE $VERSION
+echo
+echo Build Mozilla Plugin............ : $enable_mozilla
+echo Build GtkHTML Plugin............ : $enable_gtkhtml2
+echo 
