@@ -451,12 +451,11 @@ void on_popup_delete_selected(void) {
 	
 	print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp)));
 	if(ui_feedlist_get_iter(&iter)) {
-		gtk_tree_store_remove(feedstore, &iter);
+		ui_htmlview_clear();
+		ui_itemlist_clear();
 		removeFeed(selected_fp);
 		ui_feedlist_set_selected_feed(NULL, "");
-
-		ui_itemlist_clear();
-		ui_htmlview_clear();
+		gtk_tree_store_remove(feedstore, &iter);
 		checkForEmptyFolders();
 	} else {
 		showErrorBox(_("It seems like there is no selected feed entry!"));
