@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Liferea
+Comment=Feed Reader
+Exec=liferea
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Application;Network;

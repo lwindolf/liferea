@@ -8,7 +8,7 @@ EXTRA_DIST = \
 	.gladep \
 	liferea.glade \
 	liferea.gladep \
-	liferea.spec
+	liferea.desktop
 
 install-data-local:
 	@$(NORMAL_INSTALL)
