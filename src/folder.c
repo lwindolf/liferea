@@ -133,6 +133,7 @@ void removeFolder(gchar *keyprefix) {
 	g_assert(NULL != folders);
 	if(NULL != (iter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
 		removeFolderFromConfig(keyprefix);
+		g_hash_table_remove(folders, (gpointer)keyprefix);
 	} else {
 		g_print(_("internal error! could not determine folder key!"));
 	}

@@ -105,19 +105,21 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		g_error(_("not enough memory!"));
 	}
 	memset(fhp, 0, sizeof(struct feedHandler));
+
+	/* because initRSSFeedHandler() is called twice, once for FST_RSS and again for FST_HELPFEED */	
+	if(NULL == rss_nstable) {
+		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
 	
-	g_free(rss_nslist);
-	rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
-	
-	/* register RSS name space handlers */
-	addNameSpaceHandler(ns_bC_getRSSNsPrefix(), (gpointer)ns_bC_getRSSNsHandler());
-	addNameSpaceHandler(ns_dc_getRSSNsPrefix(), (gpointer)ns_dc_getRSSNsHandler());
-	addNameSpaceHandler(ns_fm_getRSSNsPrefix(), (gpointer)ns_fm_getRSSNsHandler());					    
-	addNameSpaceHandler(ns_slash_getRSSNsPrefix(), (gpointer)ns_slash_getRSSNsHandler());
-	addNameSpaceHandler(ns_content_getRSSNsPrefix(), (gpointer)ns_content_getRSSNsHandler());
-	addNameSpaceHandler(ns_syn_getRSSNsPrefix(), (gpointer)ns_syn_getRSSNsHandler());
-	addNameSpaceHandler(ns_admin_getRSSNsPrefix(), (gpointer)ns_admin_getRSSNsHandler());
-						
+		/* register RSS name space handlers */
+		addNameSpaceHandler(ns_bC_getRSSNsPrefix(), (gpointer)ns_bC_getRSSNsHandler());
+		addNameSpaceHandler(ns_dc_getRSSNsPrefix(), (gpointer)ns_dc_getRSSNsHandler());
+		addNameSpaceHandler(ns_fm_getRSSNsPrefix(), (gpointer)ns_fm_getRSSNsHandler());					    
+		addNameSpaceHandler(ns_slash_getRSSNsPrefix(), (gpointer)ns_slash_getRSSNsHandler());
+		addNameSpaceHandler(ns_content_getRSSNsPrefix(), (gpointer)ns_content_getRSSNsHandler());
+		addNameSpaceHandler(ns_syn_getRSSNsPrefix(), (gpointer)ns_syn_getRSSNsHandler());
+		addNameSpaceHandler(ns_admin_getRSSNsPrefix(), (gpointer)ns_admin_getRSSNsHandler());
+	}
+							
 	/* prepare feed handler structure */
 	fhp->readFeed		= readRSSFeed;
 	fhp->merge		= TRUE;
@@ -345,7 +347,6 @@ static feedPtr readRSSFeed(gchar *url) {
 	}
 
 	/* after parsing we fill in the infos into the feedPtr structure */		
-	fp->type = FST_RSS;
 	fp->defaultInterval = fp->updateInterval = cp->updateInterval;
 	fp->title = cp->tags[RSS_CHANNEL_TITLE];
 

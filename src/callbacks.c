@@ -1000,6 +1000,7 @@ static void renderFeedStatus(GtkTreeViewColumn *tree_column,
 			else
 				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unavailableIcon, NULL);
 			break;
+		case FST_HELPFEED:
 		case FST_PIE:
 		case FST_RSS:			
 		case FST_CDF:
@@ -1239,7 +1240,9 @@ static GtkMenu *make_entry_menu(gint type) {
 			menu_items = ocsentry_menu_items;
 			nmenu_items = sizeof(ocsentry_menu_items)/(sizeof(ocsentry_menu_items[0]));
 			break;
-		case FST_EMPTY:			
+		case FST_EMPTY:
+			return NULL;
+			break;
 		default:
 			menu_items = default_menu_items;
 			nmenu_items = sizeof(default_menu_items)/(sizeof(default_menu_items[0]));
@@ -1291,6 +1294,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
                                             gpointer user_data)
 {
 	GdkEventButton 	*eb;
+	GtkMenu		*menu;
 	gboolean 	retval;
 	gint		type;
   
@@ -1302,7 +1306,8 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 
 	// FIXME: don't use existing selection, but determine
 	// which selection would result from the right mouse click
-	gtk_menu_popup(make_entry_menu(selected_type), NULL, NULL, NULL, NULL, eb->button, eb->time);
+	if(NULL != (menu = make_entry_menu(selected_type)))
+		gtk_menu_popup(menu, NULL, NULL, NULL, NULL, eb->button, eb->time);
 		
 	return TRUE;
 }

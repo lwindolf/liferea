@@ -75,6 +75,7 @@ void initFeedTypes(void) {
 	feedHandler = g_hash_table_new(g_int_hash, g_int_equal);
 
 	registerFeedType(FST_RSS,	initRSSFeedHandler());
+	registerFeedType(FST_HELPFEED,	initRSSFeedHandler());
 	registerFeedType(FST_OCS,	initOCSFeedHandler());
 	registerFeedType(FST_CDF,	initCDFFeedHandler());
 	registerFeedType(FST_PIE,	initPIEFeedHandler());
@@ -158,7 +159,7 @@ static gint saveFeed(feedPtr fp) {
 
 	if(FALSE == getFeedAvailable(fp))
 		return;
-	
+			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
 	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
 	
@@ -303,10 +304,12 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 /* function to add a feed to the feed list */
 feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval) {
 	feedHandlerPtr	fhp;
-	feedPtr		new_fp;
+	feedPtr		new_fp = NULL;
 	gboolean	saveNeeded = FALSE;
 	
-	if(NULL == (new_fp = loadFeed(type, key, keyprefix))) {
+	g_assert(NULL != key);
+	new_fp = loadFeed(type, key, keyprefix);
+	if(NULL == new_fp) {
 		/* maybe cache file was deleted or entry has no cache (like help entries) 
 		   so we reload the entry from its URL */
 		g_assert(NULL != feedHandler);
@@ -470,25 +473,43 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 					old_ip->title = g_strdup(new_ip->title);
 					old_ip->description = g_strdup(new_ip->description);
 					markItemAsUnread(old_ip);
+				} else {
+					new_ip->readStatus = TRUE;
 				}
 			}
 
 			new_list = g_slist_next(new_list);
 
 			/* any found new item list items are not needed anymore */
-			if(found) { 
+			if(found && (old_fp->type != FST_HELPFEED)) { 
 				new_ip->fp = new_fp;	/* because freeItem() would decrease the unread counter of old_fp */
 				freeItem(new_ip);
 			}
 		}
-		g_slist_free(new_fp->items);	/* dispose new item list */
 		
-		old_list = g_slist_concat(diff_list, old_fp->items);
-		old_fp->items = old_list;
+		/* now we distinguish between incremental merging
+		   for all normal feeds, and skipping old item
+		   merging for help feeds... */
+		if(old_fp->type != FST_HELPFEED) {
+			g_slist_free(new_fp->items);	/* dispose new item list */		
+			old_list = g_slist_concat(diff_list, old_fp->items);
+			old_fp->items = old_list;
+		} else {
+			/* free old list and items of old list */
+			old_list = old_fp->items;
+			while(NULL != old_list) {
+				freeItem((itemPtr)old_list->data);
+				old_list = g_slist_next(old_list);
+			}
+			g_slist_free(old_fp->items);
+			
+			/* parent feed pointers are already correct, we can reuse simply the new list */
+			old_fp->items = new_fp->items;
+		}		
 
+		/* copy description */
 		g_free(old_fp->description);
 		old_fp->description = new_fp->description;
-		new_fp->description = NULL;
 		
 		saveFeed(old_fp);
 	}

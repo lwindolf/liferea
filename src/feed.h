@@ -34,7 +34,6 @@
 #define FST_CDF		5	/* Microsoft CDF */
 #define FST_PIE		6	/* Atom/Echo/PIE */
 #define FST_OPML	7	/* generic OPML */
-#define FST_SNEWS	8	/* Scripting News */
 
 #define FST_VFOLDER	9	/* sepcial type for VFolders */
 
@@ -48,7 +47,7 @@
 				 (FST_CDF == type) || \
 				 (FST_PIE == type) || \
 				 (FST_OPML == type) || \
-				 (FST_SNEWS == type))
+				 (FST_HELPFEED == type))
 				 
 /* macro to test wether a type is only a tree list structure entry */
 #define IS_NODE(type)		((FST_NODE == type) || (FST_HELPNODE == type))

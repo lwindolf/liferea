@@ -261,7 +261,6 @@ static feedPtr readPIEFeed(gchar *url) {
 		xmlFreeDoc(doc);			
 		
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->type = FST_PIE;
 		fp->defaultInterval = fp->updateInterval = cp->updateInterval;
 		fp->title = cp->tags[PIE_FEED_TITLE];
 

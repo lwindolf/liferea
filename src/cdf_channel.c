@@ -204,7 +204,6 @@ feedPtr readCDFFeed(gchar *url) {
 		xmlFreeDoc(doc);
 		
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->type = FST_RSS;
 		fp->defaultInterval = fp->updateInterval = -1;
 		fp->title = cp->tags[CDF_CHANNEL_TITLE];
 

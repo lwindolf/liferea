@@ -51,7 +51,7 @@
 #define FEED_HEAD_SOURCE	"<b>Source: </b>"
 #define FEED_HEAD_END		ITEM_HEAD_END
 
-#define FEED_FOOT_TABLE_START	"<table style=\"width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;margin-bottom:5px;\">"
+#define FEED_FOOT_TABLE_START	"<table style=\"margin-top:15px;width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;margin-bottom:5px;\">"
 #define FEED_FOOT_FIRSTTD	"<tr style=\"border-width:0;border-bottom-width:1px;border-style:dashed;border-color:#D0D0D0;\"><td width=\"30%\"><span style=\"font-size:8pt;color:#C0C0C0\">"
 #define FEED_FOOT_NEXTTD	"</span></td><td><span style=\"font-size:8pt;color:#C0C0C0\">"
 #define FEED_FOOT_LASTTD	"</span></td></tr>"

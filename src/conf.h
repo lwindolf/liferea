@@ -21,8 +21,8 @@
 
 #include <glib.h>
 
-#define HELP1KEY	"help/help1"
-#define HELP2KEY	"help/help2"
+#define HELP1KEY	"help/helpfeed1"
+#define HELP2KEY	"help/helpfeed2"
 
 #define BROWSER_COMMAND		"/apps/liferea/browser"
 #define GNOME_DEFAULT_BROWSER_COMMAND	"/desktop/gnome/url-handlers/unknown"

@@ -344,7 +344,6 @@ feedPtr readOCS(gchar *url) {
 		xmlFreeDoc(doc);
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->type = FST_OCS;
 		fp->updateInterval = fp->updateCounter = -1;
 		fp->title = dp->tags[OCS_TITLE];
 		

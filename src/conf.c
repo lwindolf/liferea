@@ -26,6 +26,7 @@
 #include "support.h"
 #include "callbacks.h"
 #include "feed.h"
+#include "common.h"
 #include "conf.h"
 
 #define MAX_GCONF_PATHLEN	256
@@ -225,7 +226,7 @@ static gint compare_func(gconstpointer a, gconstpointer b) {
 	GError		*err = NULL;
 	GConfValue	*element;
 	const char	*feedkey1, *feedkey2;
-	char		*tmp1, *tmp2;
+	char		*tmp, *tmp1, *tmp2;
 	gint		result, res;
 	
 	element = (GConfValue *)a;
@@ -241,13 +242,19 @@ static gint compare_func(gconstpointer a, gconstpointer b) {
 		tmp1 = (char *)feedkey1;
 	} else {
 		tmp1++;
-	}
-
+	}	
+	/* skip chars in front of directory keys */
+	if(NULL != (tmp = strpbrk(tmp1, "0123456789")))
+		tmp1 = tmp;
+	
 	if(NULL == (tmp2 = strrchr(feedkey2, '/'))) {
 		tmp2 = (char *)feedkey2;
 	} else {
 		tmp2++;
 	}
+	/* skip chars in front of directory keys */
+	if(NULL != (tmp = strpbrk(tmp2, "0123456789")))
+		tmp2 = tmp;
 
 	result = atoi(tmp1) - atoi(tmp2);
 	res = (result)?result/abs(result):0;
@@ -283,8 +290,7 @@ gchar * getFreeFeedKey(gchar *keyprefix) {
 		key = gconf_value_get_string(element);
 		is_gconf_error(err);	
 
-		g_assert(NULL != key);			
-
+		g_assert(NULL != key);
 		if(0 == strcmp(key, newkey)) {
 			nr++;
 			g_free(newkey);
@@ -362,7 +368,7 @@ gchar * addFolderToConfig(gchar *title) {
 		element = iter->data;
 		dirkey = gconf_value_get_string(element);
 		is_gconf_error(err);	
-
+g_print("checking against %s\n", dirkey);
 		g_assert(NULL != dirkey);
 		if(0 == strcmp(dirkey, newdirkey)) {
 			nr++;
@@ -552,7 +558,7 @@ void loadEntries() {
 	GSList		*groupiter = NULL, *iter = NULL;
 	GConfValue	*element, *keylist, *groups;
 	gchar		*gconfpath;
-	gchar		*name, *url, *keyprefix, *keylisttitle;
+	gchar		*filename, *name, *url, *keyprefix, *keylisttitle;
 	const char	*key;
 	gchar 		*helpFolderPrefix = NULL;
 	gint		interval;
@@ -652,14 +658,6 @@ void loadEntries() {
 			url = getStringConfValue(gconfpath);	/* use this function to get a "" on empty conf value */
 			g_free(gconfpath);
 
-			/* help feed extra handling */
-			if((type == FST_HELPFEED) && (0 != strcmp(url, HELP1URL))) {
-				g_print(_("updating help feed URL..."));
-				g_free(url);
-				url = g_strdup(HELP1URL);
-				setFeedURLInConfig((gchar *)key, url);
-			}
-
 			if(0 == type)
 				type = FST_RSS;
 				
@@ -694,8 +692,8 @@ void loadEntries() {
 	}
 		
 	g_assert(NULL != helpFolderPrefix);
-	addFeed(FST_RSS, HELP1URL, HELP1KEY, helpFolderPrefix, g_strdup(_("Online Help Feed")), 1440);
-	addFeed(FST_RSS, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
+	addFeed(FST_HELPFEED, HELP1URL, HELP1KEY, helpFolderPrefix, g_strdup(_("Online Help Feed")), 1440);
+	addFeed(FST_HELPFEED, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
 	
 	checkForEmptyFolders();
 	

@@ -15,6 +15,7 @@
 	  updated items may become unread due to these changes.
 	* When updating a feed, the changes are now immediatly
 	  written to the cache files.
+	* Fixed some folder creation problems.
 
 2003-10-12  Lars Lindner <lars.lindner@gmx.net>
 
