@@ -306,7 +306,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		fp->lastPoll.tv_usec = 0L;
 		if (lastPollStr != NULL)
 			xmlFree(lastPollStr);
-
+		
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
 		fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
 		fp->lastFaviconPoll.tv_usec = 0L;
@@ -320,10 +320,13 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 				fp->sortColumn = IS_TITLE;
 			else if (!xmlStrcmp(sortStr, "time"))
 				fp->sortColumn = IS_TIME;
+			xmlFree(sortStr);
 		}
 		sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
 		if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"true"))
 			fp->sortReversed = TRUE;
+		if (sortStr != NULL)
+			xmlFree(sortStr);
 		
 		/* set feed properties available from the OPML feed list 
 		   they may be overwritten by the values of the cache file
