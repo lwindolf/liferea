@@ -505,9 +505,7 @@ static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
 
 gboolean ocs_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	gboolean ocs = FALSE;
-
-	if(!xmlStrcmp(cur->name, BAD_CAST"rss") ||
-	   !xmlStrcmp(cur->name, BAD_CAST"rdf") || 
+	if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
 	   !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 		xmlNs * ns = cur->nsDef;
 
@@ -519,10 +517,21 @@ gboolean ocs_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 			}
 			ns = ns->next;
 		}
+		if (ocs == FALSE) {
+			xmlNodePtr child = cur->xmlChildrenNode;
+			while (child != NULL) {
+				if (child->type == XML_ELEMENT_NODE &&
+				    child->name != NULL &&
+				    !xmlStrCmp(child->name, "directory"))
+					ocs = TRUE;
+				child = child->next;
+			}
+		}
 	}
 
 	return ocs;
 }
+
 feedHandlerPtr initOCSFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
