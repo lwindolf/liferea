@@ -119,6 +119,8 @@ void ui_init(void) {
 	updateTrayIcon();		/* init tray icon */
 	setupURLReceiver(mainwindow);	/* setup URL dropping support */
 	setupPopupMenues();		/* create popup menues */
+	
+	loadSubscriptions();
 }
 
 /*------------------------------------------------------------------------------*/

@@ -497,12 +497,13 @@ void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
 }
 
 void verify_iter(nodePtr node) {
-	GtkTreeIter *iter = NULL;
-     GtkTreeModel        *model;
-	nodePtr ptr;
-	GSList *children;
+	GtkTreeIter	*iter = NULL;
+	GtkTreeModel	*model;
+	nodePtr		ptr;
+	GSList		*children;
 
-     model =  GTK_TREE_MODEL(feedstore);
+	model = GTK_TREE_MODEL(feedstore);
+	g_assert(NULL != model);
 
 	if (node != (nodePtr)folder_get_root()) {
 		iter = &((ui_data*)node->ui_data)->row;
@@ -630,14 +631,14 @@ on_feedlist_drag_data_received         (GtkWidget       *widget,
 						else
 							feed_set_pos((feedPtr)ptr, (folderPtr)destNode, -1);
 						break;
-                         case GTK_TREE_VIEW_DROP_AFTER:
+                        		 case GTK_TREE_VIEW_DROP_AFTER:
 						g_message("Dragging to DROP_AFTER to pos %d", dest_index+1);
 						if (IS_FOLDER(ptr->type))
 							folder_set_pos((folderPtr)ptr, ((folderPtr)destNode)->parent, dest_index+1);
 						else
 							feed_set_pos((feedPtr)ptr, ((folderPtr)destNode)->parent, dest_index+1);
 						break;
-                         case GTK_TREE_VIEW_DROP_BEFORE:
+                         		case GTK_TREE_VIEW_DROP_BEFORE:
 						g_message("Dragging to DROP_BEFORE to pos %d", dest_index);
 						if (IS_FOLDER(ptr->type))
 							folder_set_pos((folderPtr)ptr, ((folderPtr)destNode)->parent, dest_index);
@@ -647,20 +648,20 @@ on_feedlist_drag_data_received         (GtkWidget       *widget,
 				}
 			} else{ /* Dest node is a feed */
 				switch(position) {
-				case GTK_TREE_VIEW_DROP_AFTER:
-				case GTK_TREE_VIEW_DROP_INTO_OR_AFTER:
-					if (IS_FOLDER(ptr->type))
-						folder_set_pos((folderPtr)ptr, destNode->parent, dest_index+1);
-					else
-						feed_set_pos((feedPtr)ptr, destNode->parent, dest_index+1);
-					break;
-					case GTK_TREE_VIEW_DROP_BEFORE:
-				case GTK_TREE_VIEW_DROP_INTO_OR_BEFORE:
-					if (IS_FOLDER(ptr->type))
-						folder_set_pos((folderPtr)ptr, destNode->parent, dest_index);
-					else
-						feed_set_pos((feedPtr)ptr, destNode->parent, dest_index);
-					break;
+					case GTK_TREE_VIEW_DROP_AFTER:
+					case GTK_TREE_VIEW_DROP_INTO_OR_AFTER:
+						if (IS_FOLDER(ptr->type))
+							folder_set_pos((folderPtr)ptr, destNode->parent, dest_index+1);
+						else
+							feed_set_pos((feedPtr)ptr, destNode->parent, dest_index+1);
+						break;
+						case GTK_TREE_VIEW_DROP_BEFORE:
+					case GTK_TREE_VIEW_DROP_INTO_OR_BEFORE:
+						if (IS_FOLDER(ptr->type))
+							folder_set_pos((folderPtr)ptr, destNode->parent, dest_index);
+						else
+							feed_set_pos((feedPtr)ptr, destNode->parent, dest_index);
+						break;
 				}
 			}
 			

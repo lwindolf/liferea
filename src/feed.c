@@ -112,6 +112,7 @@ gint feed_detect_type(gchar *data) {
 
 /* initializing function, only called upon startup */
 void feed_init(void) {
+
 	allItems = feed_new();
 	allItems->type = FST_VFOLDER;
 	
@@ -131,7 +132,6 @@ void feed_init(void) {
  	g_timeout_add(60*1000, update_timer_main, NULL);
 
 	initFolders();
-	loadSubscriptions();
 }
 
 /* function to create a new feed structure */
@@ -262,12 +262,13 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	fp = feed_new();		
 	while(1) {	
 		g_assert(NULL != data);
+g_print("%s\n", id);
 		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
 			error = 1;
 			break;
 		} 
-		
+g_print("%s\n", id);
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			error = 1;
@@ -367,7 +368,7 @@ feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, 
 	ui_folder_add_feed(fp, -1);
 
 	if(needs_update) {
-		favicon_download(fp);
+		favicon_download(fp);	/* FIXME: I think thats evil, should be done online on first download!!! (09.04.04, Lars)*/
 		feed_update(fp);
 	}
 

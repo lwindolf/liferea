@@ -151,6 +151,7 @@ void feed_free(feedPtr fp);
  * @returns the type of string, or FST_INVALID if detection fails
  */
 gint feed_detect_type(gchar *data);
+
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */

@@ -312,7 +312,8 @@ static void conf_feedlist_erase_gconf() {
 }
 
 void loadSubscriptions(void) {
-	gchar *filename;
+	gchar	*filename;
+	
 	feedlistLoading = TRUE;
 	load_folder_contents(folder_get_root(), "");
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());

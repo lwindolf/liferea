@@ -60,16 +60,16 @@ int main (int argc, char *argv[]) {
 	/* order is important! */
 	initConfig();		/* initialize gconf */
 	loadConfig();		/* maybe this should be merged with initConfig() */
-	ui_init();		/* initialize gconf configured GUI behaviour */
 	feed_init();
+	ui_init();		/* initialize gconf configured GUI behaviour */
 
 	/* setup the processing of feed update results */
 	ui_timeout_add(100, checkForUpdateResults, NULL);
 
 	gtk_widget_show(mainwindow);
-	
-	if(getBooleanConfValue(UPDATE_ON_STARTUP))
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_update);
+
+//	if(getBooleanConfValue(UPDATE_ON_STARTUP))
+//		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_update);
 
 	gdk_threads_enter();
 	gtk_main();
