@@ -35,7 +35,9 @@
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
 #define DISABLE_MENUBAR			"/apps/liferea/disable-menubar"
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
-	
+#define LAST_WINDOW_WIDTH		"/apps/liferea/last-window-width"
+#define LAST_WINDOW_HEIGHT		"/apps/liferea/last-window-height"
+
 #define PROXY_HOST			"/system/http_proxy/host"
 #define PROXY_PORT			"/system/http_proxy/port"
 #define USE_PROXY			"/system/http_proxy/use_http_proxy"

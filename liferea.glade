@@ -88,7 +88,7 @@
 			      <signal name="activate" handler="on_popup_refresh_selected" last_modification_time="Wed, 05 Nov 2003 19:48:14 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image227">
+				<widget class="GtkImage" id="image259">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-refresh</property>
 				  <property name="icon_size">1</property>
@@ -109,7 +109,7 @@
 			      <signal name="activate" handler="on_newbtn_clicked" last_modification_time="Wed, 05 Nov 2003 19:48:14 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image228">
+				<widget class="GtkImage" id="image260">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-new</property>
 				  <property name="icon_size">1</property>
@@ -130,7 +130,7 @@
 			      <signal name="activate" handler="on_popup_delete_selected" last_modification_time="Wed, 05 Nov 2003 19:56:31 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image229">
+				<widget class="GtkImage" id="image261">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-delete</property>
 				  <property name="icon_size">1</property>
@@ -151,7 +151,7 @@
 			      <signal name="activate" handler="on_popup_prop_selected" last_modification_time="Wed, 05 Nov 2003 19:56:31 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image230">
+				<widget class="GtkImage" id="image262">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-properties</property>
 				  <property name="icon_size">1</property>
@@ -185,7 +185,7 @@
 			      <signal name="activate" handler="on_popup_newfolder_selected" last_modification_time="Wed, 05 Nov 2003 19:56:31 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image231">
+				<widget class="GtkImage" id="image263">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-new</property>
 				  <property name="icon_size">1</property>
@@ -206,7 +206,7 @@
 			      <signal name="activate" handler="on_popup_removefolder_selected" last_modification_time="Wed, 05 Nov 2003 19:56:31 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image232">
+				<widget class="GtkImage" id="image264">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-delete</property>
 				  <property name="icon_size">1</property>
@@ -227,7 +227,7 @@
 			      <signal name="activate" handler="on_foldername_activate" last_modification_time="Wed, 05 Nov 2003 20:27:40 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image233">
+				<widget class="GtkImage" id="image265">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-properties</property>
 				  <property name="icon_size">1</property>
@@ -259,7 +259,7 @@
 		      <accelerator key="a" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image234">
+			<widget class="GtkImage" id="image266">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -345,9 +345,31 @@
 		      <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image235">
+			<widget class="GtkImage" id="image267">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
+			  <property name="icon_size">1</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+		      </child>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkImageMenuItem" id="next_unread_item1">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Next Unread Item</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_next_unread_item_activate" last_modification_time="Sat, 08 Nov 2003 19:48:55 GMT"/>
+		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+
+		      <child internal-child="image">
+			<widget class="GtkImage" id="image268">
+			  <property name="visible">True</property>
+			  <property name="stock">gtk-go-forward</property>
 			  <property name="icon_size">1</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>

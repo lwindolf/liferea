@@ -223,3 +223,7 @@ on_toggle_condensed_view_activate      (GtkMenuItem     *menuitem,
 void on_toggle_item_flag(void);
 void on_popup_launchitem_selected(void);
 void on_popup_allunread_selected(void);
+
+void
+on_next_unread_item_activate           (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);

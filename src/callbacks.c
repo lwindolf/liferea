@@ -181,7 +181,15 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 
-void on_popup_refresh_selected(void) { updateFeed(selected_fp); }
+void on_popup_refresh_selected(void) { 
+
+	if(!IS_FEED(selected_type)) {
+		showErrorBox(_("You have to select a feed entry!"));
+		return;
+	}
+
+	updateFeed(selected_fp); 
+}
 
 /*------------------------------------------------------------------------------*/
 /* preferences dialog callbacks 						*/
@@ -320,13 +328,19 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_deletebtn(void) {
 	GtkTreeIter	iter;
-	
+
+	/* block deleting of empty entries */
+	if(!IS_FEED(selected_type)) {
+		showErrorBox(_("You have to select a feed entry!"));
+		return;
+	}
+
 	/* block deleting of help feeds */
 	if(0 == strncmp(getFeedKey(selected_fp), "help", 4)) {
 		showErrorBox(_("You can't delete help feeds!"));
 		return;
 	}
-
+	
 	print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp)));
 	if(getFeedListIter(&iter)) {
 		gtk_tree_store_remove(feedstore, &iter);
@@ -354,8 +368,8 @@ void on_propbtn(GtkWidget *widget) {
 	gint		defaultInterval;
 	gchar		*defaultIntervalStr;
 
-	if(NULL == fp) {
-		showErrorBox("You need to select a feed entry before trying to change properties!");
+	if(!IS_FEED(selected_type)) {
+		showErrorBox(_("You have to select a feed entry!"));
 		return;
 	}
 	
@@ -626,6 +640,11 @@ void on_popup_foldername_selected(void) {
 	GtkWidget	*foldernameentry;
 	gchar 		*title;
 
+	if(selected_type != FST_NODE) {
+		showErrorBox(_("You have to select a folder entry!"));
+		return;
+	}
+	
 	if(NULL == foldernamedialog || !G_IS_OBJECT(foldernamedialog))
 		foldernamedialog = create_foldernamedialog();
 		
@@ -661,9 +680,13 @@ void on_popup_removefolder_selected(void) {
 	GtkTreeIter	selected_iter;	
 	gint		tmp_type, count;
 	
+	if(selected_type != FST_NODE) {
+		showErrorBox(_("You have to select a folder entry!"));
+		return;
+	}
+
 	getFeedListIter(&selected_iter);
 	feedstore = getFeedStore();
-
 	g_assert(feedstore != NULL);
 	
 	/* make sure thats no grouping iterator */
@@ -882,8 +905,8 @@ void itemlist_selection_changed(void) {
 
        		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 
-               		gtk_tree_model_get (model, &iter, IS_PTR, &selected_ip,
-							  IS_TYPE, &type, -1);
+               		gtk_tree_model_get(model, &iter, IS_PTR, &selected_ip,
+							 IS_TYPE, &type, -1);
 
 			g_assert(selected_ip != NULL);
 			if((0 == itemlist_loading)) {
@@ -935,6 +958,102 @@ void on_toggle_condensed_view(void) {
 }
 
 void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { on_toggle_condensed_view(); }
+
+static feedPtr findUnreadFeed(GtkTreeIter *iter) {
+	GtkTreeSelection	*selection;
+	GtkWidget		*treeview;
+	GtkTreeIter		childiter;
+	gboolean		valid;
+	feedPtr			fp;
+	gchar			*tmp_key;
+	gint			tmp_type;
+	
+	if(NULL == iter)
+		valid = gtk_tree_model_get_iter_root(GTK_TREE_MODEL(feedstore), &childiter);
+	else
+		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, iter);
+		
+	while(valid) {
+               	gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_KEY, &tmp_key, FS_TYPE, &tmp_type, -1);
+
+		if(IS_FEED(tmp_type)) {
+			g_assert(tmp_key != NULL);
+
+			fp = getFeed(tmp_key);
+			g_assert(fp != NULL);
+
+			if(getFeedUnreadCount(fp) > 0) {
+				/* select the feed entry... */
+				if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
+					if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
+						gtk_tree_selection_select_iter(selection, &childiter);
+					else
+						g_warning(_("internal error! could not get feed tree view selection!\n"));
+				} else {
+					g_warning(_("internal error! could not find feed tree view widget!\n"));
+				}			
+
+				return fp;
+			}		
+		} else {
+			/* must be a folder, so recursivly go down... */
+			if(NULL != (fp = findUnreadFeed(&childiter)))
+				return fp;
+		}
+		
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
+	}
+
+	return NULL;	
+}
+
+void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	GtkTreeSelection	*selection;
+	GtkWidget		*treeview;
+	GtkTreeIter		iter;
+	gboolean		valid;
+	feedPtr			fp;
+	itemPtr			ip;	
+	
+	/* find first feed with unread items */
+	g_assert(NULL != feedstore);
+	fp = findUnreadFeed(NULL);
+	
+// FIXME: workaround to prevent segfaults...
+// something with the selection is buggy!
+selected_ip = NULL;
+
+	if(NULL == fp) {
+		print_status(_("There are no unread items!"));
+		return;	/* if we don't find a feed with unread items do nothing */
+	}
+
+	/* load found feed */
+	loadItemList(fp, NULL);
+	
+	/* find first unread item */
+	g_assert(NULL != itemstore);
+	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+	while(valid) {
+               	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+		g_assert(ip != NULL);
+		if(FALSE == getItemReadStatus(ip)) {
+			/* select found item... */
+			if(NULL != (treeview = lookup_widget(mainwindow, "Itemlist"))) {
+				if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
+					gtk_tree_selection_select_iter(selection, &iter);
+				else
+					g_warning(_("internal error! could not get feed tree view selection!\n"));
+			} else {
+				g_warning(_("internal error! could not find feed tree view widget!\n"));
+			}			
+			return;
+		}
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+	}
+}
+
+void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
 
 /*------------------------------------------------------------------------------*/
 /* treeview creation and rendering						*/
@@ -1279,13 +1398,14 @@ static GtkMenu *make_entry_menu(gint type) {
 
 
 static GtkItemFactoryEntry item_menu_items[] = {
-      {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 	0, NULL},
-      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 	0, NULL},
-      {"/Toggle Item _Flag",	 	NULL, on_toggle_item_flag, 		0, NULL},
-      {"/sep1",				NULL, NULL, 				0, "<Separator>"},
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 	0, NULL}
+      {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 		0, NULL},
+      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 		0, NULL},
+      {"/Toggle Item _Flag",	 	NULL, on_toggle_item_flag, 			0, NULL},
+      {"/sep1",				NULL, NULL, 					0, "<Separator>"},
+      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 		0, NULL},
+      {"/_Next Unread Item",		NULL, on_popup_next_unread_item_selected,	0, NULL}
 /*      {"/sep2",				NULL, NULL, 				0, "<Separator>"},
-      {"/_Edit Filters",		NULL, on_popup_filter_selected, 	0, NULL}*/
+      {"/_Edit Filters",		NULL, on_popup_filter_selected, 		0, NULL}*/
 };
 
 static GtkItemFactoryEntry itemlist_menu_items[] = {
@@ -1508,6 +1628,7 @@ void displayItemList(void) {
 			while(valid) {	
 				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 				writeHTML(getItemDescription(ip));
+				markItemAsRead(ip);
 				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 			}
 		} else {
@@ -1518,6 +1639,7 @@ void displayItemList(void) {
 					writeHTML(getFeedDescription(selected_fp));
 			} else {
 				/* display item content */
+				markItemAsRead(ip);
 				writeHTML(getItemDescription(selected_ip));
 			}
 		}
@@ -1573,8 +1695,15 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 }
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
-
+	gint	x,y;
+	
 	saveAllFeeds();
+	
+	/* save window size */
+	gtk_window_get_size(mainwindow, &x, &y);
+	setNumericConfValue(LAST_WINDOW_WIDTH, x);
+	setNumericConfValue(LAST_WINDOW_HEIGHT, y);	
+	
 	gtk_main_quit();
 	return FALSE;
 }

@@ -2,7 +2,8 @@
 
         Version 0.4.4
 	
-	* Source now build on Solaris (added a strsep() replacement).
+	* Source now should build on Solaris (added a strsep() 
+	  replacement).
 	* When adding feeds, the feed is now inserted after the
 	  selected treeview entry and not at the end of the folder.
 	* Using feed type auto detection now doesn't require
@@ -10,6 +11,13 @@
 	* Added support for a systray (notification area) icon.
 	* Added a menubar. You can now enable/disable menubar
 	  and toolbar.
+	* Added a "Next Unread Item" option to jump to the next
+	  feed with an unread item like in many mail/news clients.
+	* The program now remembers and restores its window size.
+	* After updating a feed the program now prints a status bar
+	  message "no new items..." or "xx new items...". Older
+	  versions showed and did not remove a "Downloading..."
+	  status bar message.
 	* Fixed a segfault when creating a folder and immediatly
 	  subscribing to a feed in this folder.
 
