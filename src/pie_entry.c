@@ -146,7 +146,7 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 	}
 	
 	/* after parsing we fill the infos into the itemPtr structure */
-	item_set_read_status(ip, FALSE);
+	ip->readStatus = FALSE;
 
 	g_hash_table_destroy(nsinfos);
 	

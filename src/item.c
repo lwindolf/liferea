@@ -53,6 +53,7 @@ void item_copy(itemPtr from, itemPtr to) {
 	item_set_description(to, from->description);
 	item_set_id(to, from->id);
 	
+	to->updateStatus = from->updateStatus;
 	to->readStatus = from->readStatus;
 	to->newStatus = FALSE;
 	to->marked = from->marked;
@@ -84,7 +85,6 @@ void item_set_source(itemPtr ip, const gchar * source) { g_free(ip->source);ip->
 void item_set_real_source_url(itemPtr ip, const gchar * source) { g_free(ip->real_source_url);ip->real_source_url = g_strdup(source); }
 void item_set_real_source_title(itemPtr ip, const gchar * source) { g_free(ip->real_source_title);ip->real_source_title = g_strdup(source); }
 void item_set_time(itemPtr ip, const time_t t) { ip->time = t; }
-void item_set_read_status(itemPtr ip, const gboolean readStatus) { ip->readStatus = readStatus; }
 
 void item_set_id(itemPtr ip, const gchar * id) {
 	g_free(ip->id);
@@ -104,6 +104,7 @@ const gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readS
 const gboolean item_get_mark(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
 const gboolean item_get_hidden(itemPtr ip) { g_assert(ip != NULL); return ip->hidden; }
 const gboolean item_get_new_status(itemPtr ip) { g_assert(ip != NULL); return ip->newStatus; }
+const gboolean item_get_update_status(itemPtr ip) { g_assert(ip != NULL); return ip->updateStatus; }
 
 void item_set_mark(itemPtr ip, gboolean flag) {
 	itemPtr		sourceItem;
@@ -136,6 +137,27 @@ void item_set_new_status(itemPtr ip, const gboolean newStatus) {
 			feed_increase_new_counter((feedPtr)(ip->fp));
 		else
 			feed_decrease_new_counter((feedPtr)(ip->fp));
+	}
+}
+
+void item_set_update_status(itemPtr ip, const gboolean newStatus) { 
+	itemPtr		sourceItem;
+	
+	ip->updateStatus = newStatus; 
+	if(ip->ui_data != NULL)
+		ui_update_item(ip);
+	if(ip->fp != NULL)
+		ip->fp->needsCacheSave = TRUE;
+
+	/* if this item belongs to a vfolder update the source feed */
+	if(ip->sourceFeed != NULL) {
+		feed_load(ip->sourceFeed);
+		sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr);
+		item_set_update_status(sourceItem, newStatus);
+		feed_unload(ip->sourceFeed);
+	} else {
+		vfolder_update_item(ip);	/* there might be vfolders using this item */
+		vfolder_check_item(ip);		/* and check if now a rule matches */
 	}
 }
 
@@ -369,7 +391,10 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 			ip->nr = atol(tmp);
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
-			item_set_read_status(ip, (0 == atoi(tmp))?FALSE:TRUE);		
+			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
+			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"updateStatus"))
+			ip->updateStatus = (0 == atoi(tmp))?FALSE:TRUE;
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"mark")) 
 			/* we don't call item_set_mark here because it would
@@ -421,6 +446,10 @@ void item_save(itemPtr ip, xmlNodePtr feedNode) {
 
 		tmp = g_strdup_printf("%d", (TRUE == item_get_read_status(ip))?1:0);
 		xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
+		g_free(tmp);
+		
+		tmp = g_strdup_printf("%d", (TRUE == item_get_update_status(ip))?1:0);
+		xmlNewTextChild(itemNode, NULL, "updateStatus", tmp);
 		g_free(tmp);
 
 		tmp = g_strdup_printf("%d", (TRUE == item_get_mark(ip))?1:0);

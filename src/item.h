@@ -45,6 +45,7 @@ typedef struct item {
 	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/**< TRUE if the item has been read */
 	gboolean	newStatus;		/**< TRUE if the item was downloaded and not yet displayed by notification features */
+	gboolean	updateStatus;		/**< TRUE if the item content was updated */
 	gboolean 	marked;			/**< TRUE if the item has been marked */
 	gboolean	hidden;			/**< TRUE if the item should not be displayed due to filtering */
 	gchar		*title;			/**< item title */
@@ -122,6 +123,8 @@ const gboolean	item_get_read_status(itemPtr ip);
 const gboolean	item_get_hidden(itemPtr ip);
 /** Returns the new flag of ip. */
 const gboolean	item_get_new_status(itemPtr ip);
+/** Returns the update flag of ip. */
+const gboolean	item_get_update_status(itemPtr ip);
 
 /** Marks ip as read and updates the UI to reflect this change */
 void 		item_set_read(itemPtr ip);
@@ -139,14 +142,14 @@ void		item_set_real_source_url(itemPtr ip, const gchar * source);
 void		item_set_real_source_title(itemPtr ip, const gchar * source);
 /** Sets the ip's modification time */
 void		item_set_time(itemPtr ip, const time_t time);
-/** Sets the ip's read status */
-void		item_set_read_status(itemPtr ip, const gboolean readStatus);
 /** Sets the ip's id */
 void		item_set_id(itemPtr ip, const gchar * id);
 /** Sets the ip's hidden flag */
 void 		item_set_hidden(itemPtr ip, const gboolean hidden);
 /** Sets the ip's new flag */
 void 		item_set_new_status(itemPtr ip, const gboolean newStatus);
+/** Sets the ip's update flag */
+void 		item_set_update_status(itemPtr ip, const gboolean newStatus);
 
 /**
  * Marks ip as marked or unmarked and updates the UI to reflect this

@@ -284,7 +284,6 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			   URL given by HELP1URL!!! */
 			xmlFree(source);
 			source = g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2);
-g_print("help feed source -> new: %s\n", source);
 		}
 	
 		filter = xmlGetProp(cur, BAD_CAST"filtercmd");

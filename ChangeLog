@@ -1,5 +1,21 @@
 2004-09-??  ??? <???>
 
+	Version 0.6.1
+	
+	* Changed the handling of updated items. Previously the
+	  read status of updated items was set to unread. This
+	  was very inconvenient because of a lot of buggy feeds
+	  with non-unique item ids which caused continuously
+	  unread but unchanged items. Now an update flag is set
+	  and the item is shown in bold dark gray color in the
+	  item list. An updated item does not count in the
+	  unread counter anymore. 
+	  I hope this improves usability with broken feeds.
+	  (Lars Lindner)
+
+
+2004-09-15  Lars Lindner <lars.lindner@gmx.net>
+
 	Version 0.6.0
 	
 	* Finally added a menu option to remove a single item.

@@ -296,7 +296,7 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 
 	/* after parsing we fill the infos into the itemPtr structure */
 	item_set_source(ip, dep->source);
-	item_set_read_status(ip, TRUE);
+	ip->readStatus = TRUE;
 	item_set_id(ip, NULL);
 
 	/* some postprocessing */
@@ -366,7 +366,7 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 
 	/* after parsing we fill the infos into the itemPtr structure */
 	item_set_source(ip, dep->source);
-	item_set_read_status(ip, TRUE);
+	ip->readStatus = TRUE;
 	item_set_id(ip, NULL);
 
 	/* some postprocessing */

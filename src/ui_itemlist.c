@@ -212,7 +212,7 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 		pixbuf2 = NULL;
 
 	/* Label */
-	if ( title != NULL) {
+	if(title != NULL) {
 		/* Here we have the following problem: a title string might contain 
 		   either escaped markup (which we should not escape again) or 
 		   non-markup text (which might contain ampersands, which must be
@@ -226,6 +226,8 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 			
 		if(FALSE == item_get_read_status(ip)) {
 			label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
+		} else if(TRUE == item_get_update_status(ip)) {
+			label = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_title);
 		} else {
 			label = g_strdup_printf("%s", esc_title);
 		}
@@ -557,7 +559,9 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			gtk_tree_model_get(model, &iter, IS_PTR, &ip, -1);
 			item_display(ip);
+			/* set read and unset update status */
 			item_set_read(ip);
+			item_set_update_status(ip, FALSE);
 			ui_feedlist_update();
 		}
 	}

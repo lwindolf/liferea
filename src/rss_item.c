@@ -156,7 +156,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 		cur = cur->next;
 	}
 
-	item_set_read_status(ip, FALSE);
+	ip->readStatus = FALSE;
 
 	g_hash_table_destroy(ip->tmpdata);
 	ip->tmpdata = NULL;

@@ -82,9 +82,10 @@ extern htmlviewPluginInfo *htmlviewInfo;
 
 static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
 	gboolean modifier_matches = FALSE;
-	
+
 	if((event->type == GDK_KEY_PRESS) &&
 	   (event->keyval == GDK_space)) {
+
 		switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
 			case 0:
 				modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);

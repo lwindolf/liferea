@@ -213,9 +213,6 @@ void ui_feed_process_update_result(struct request *request) {
 	
 	ui_feed_set_error_description(fp, request->httpstatus, request->returncode);
 
-	/* FIXME: do we need the following line? (Lars) */
-	/* At some place? Yes. This is the locking mechanism used to
-	   prevent multiple updates for one feed. */
 	fp->request = NULL; 
 	ui_notification_update(fp);	
 	ui_feedlist_update();

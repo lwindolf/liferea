@@ -54,9 +54,9 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	
 	/* save the item link */
 	tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
-	if (tmp == NULL)
+	if(tmp == NULL)
 		tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
-	if (tmp != NULL)
+	if(tmp != NULL)
 		item_set_source(ip, tmp);
 	g_free(tmp);
 	
@@ -115,7 +115,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	/* FIXME: Where is i->time set? */
 	/*item_set_time(ip, i->time);*/
 
-	item_set_read_status(ip, FALSE);
+	ip->readStatus = FALSE;
 	
 	return ip;
 }

@@ -163,7 +163,7 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				child = cur->xmlChildrenNode;
 				while(child != NULL) {
 					for(i = 0; i < OPML_MAX_TAG; i++) {
-						if (!xmlStrcmp(child->name, (const xmlChar *)opmlTagList[i])) {
+						if(!xmlStrcmp(child->name, (const xmlChar *)opmlTagList[i])) {
 							tmp = utf8_fix(xmlNodeListGetString(doc, child->xmlChildrenNode, 1));						
 							if(NULL != tmp) {
 								g_free(headTags[i]);
@@ -191,7 +191,7 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 						g_free(tmp);
 						item_set_description(ip, buffer);
 						g_free(buffer);
-						item_set_read_status(ip, TRUE);
+						ip->readStatus = TRUE;
 						items = g_list_append(items, ip);
 					}
 					child = child->next;
