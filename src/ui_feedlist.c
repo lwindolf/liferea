@@ -421,11 +421,6 @@ void ui_feedlist_delete(nodePtr ptr) {
 	g_assert(ptr != NULL);
 	g_assert(ptr->ui_data != NULL);
 	g_assert(ptr == ui_feedlist_get_selected());
-	
-	if(filter_feeds_without_unread_headlines) {
-		ui_show_info_box(_("Please change back to unfiltered feed list mode to add subscriptions!"));
-		return;
-	}
 
 	if(FST_FOLDER == ptr->type) {
 		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), folder_get_title((folderPtr)ptr));
