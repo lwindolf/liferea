@@ -1045,7 +1045,7 @@ void downloadlib_process_url(struct request *request) {
 	cur_ptr.problem = 0;
 	cur_ptr.content_type = 0;
 	cur_ptr.contentlength = 0;
-	cur_ptr.cookies = NULL;
+	cur_ptr.cookies = g_strdup(request->cookies);
 	cur_ptr.authinfo = NULL;
 	cur_ptr.servauth = NULL;
 	cur_ptr.lasthttpstatus = 0; /* This might, or might not mean something to someone */
@@ -1063,7 +1063,6 @@ void downloadlib_process_url(struct request *request) {
 	request->source = cur_ptr.feedurl;
 	request->lastmodified = cur_ptr.lastmodified;
 	request->etag = cur_ptr.etag;
-	g_free(cur_ptr.cookies);
 	g_free(cur_ptr.servauth);
 	g_free(cur_ptr.authinfo);
 	g_free(cur_ptr.cookies);

@@ -104,15 +104,20 @@ typedef struct feed {
 	
 	GSList		*rules;			/**< list of rules if this is a vfolder */
 	
-	/* feed properties used for updating */
+	/* feed updating state properties */
 	gchar		*lastModified;		/**< Last modified string as sent by the server */
 	gchar		*etag;			/**< E-Tag sent by the server */
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	GTimeVal	lastFaviconPoll;	/**< time at which the feed was last updated */
-	struct request	*request;		/**< update request structure used when downloading xml content */
+	gchar		*cookies;		/**< cookies to be used */	
+	struct request	*request;		/**< update request structure used when downloading content */
 	GSList		*otherRequests;		/**< list of other update request structures used for downloading anything (favicon, blogChannel stuff, ...) */
+	
+	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
+	
+	/* feed GUI state properties */
 	gboolean	twoPane;		/**< Flag if three pane or condensed mode is set for this feed */
 	gint		sortColumn;		/**< Sorting column. Set to either IS_TITLE, or IS_TIME */
 	gboolean	sortReversed;		/**< Sort in the reverse order? */

@@ -2,6 +2,7 @@
  * @file common.c common routines for Liferea
  * 
  * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004       Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
  * parts of the RFC822 timezone decoding were taken from the gmime 
@@ -712,8 +713,8 @@ char* strsep (char **stringp, const char *delim) {
 		return NULL;
 
 	/* A frequent case is when the delimiter string contains only one
-     character.  Here we don't need to call the expensive `strpbrk'
-     function and instead work using `strchr'.  */
+	   character.  Here we don't need to call the expensive `strpbrk'
+	   function and instead work using `strchr'.  */
 	if (delim[0] == '\0' || delim[1] == '\0')
 		{
 			char ch = delim[0];

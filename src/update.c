@@ -273,8 +273,9 @@ static gboolean download_dequeuer(gpointer user_data) {
 
 		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
-		} else
+		} else {
 			(request->callback)(request);
+		}
 		download_request_free(request);
 	}
 	return TRUE;

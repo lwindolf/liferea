@@ -18,6 +18,7 @@ liblinet_a_CFLAGS = @PACKAGE_CFLAGS@
 liblinet_a_SOURCES = \
 	compat.h \
 	conversions.c conversions.h \
+	cookies.c cookies.h \
 	digcalc.c digcalc.h \
 	md5.c md5.h \
 	netio.c netio.h \

@@ -75,6 +75,7 @@ struct request {
 				     filename. Eventually, everything should be a
 				     URL. Use file:// and exec:// */
 	gchar *filtercmd;	/**< Command will filter output of URL */
+	gchar *cookies;		/**< cookies to be used */	
 	request_cb callback;	/**< Function to be called after retreival */
 	gpointer user_data;	/**< Accessed by the callback. Usually contains the feedPtr the download result is for (to be accessed by the callback). */
 	guint32 flags;		/**< Flags to be passed to the callback */

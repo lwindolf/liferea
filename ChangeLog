@@ -1,3 +1,39 @@
+2004-11-??  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.9.0
+	
+	* Removal of a lot old migration code. Don't upgrade 
+	  directly from versions below 0.6.x or you might loose
+	  some of your preferences. If you upgrade from very old
+	  version like 0.4.x you might even loose your feed list.
+	  To properly upgrade install the latest 0.6.x release,
+	  run it at least once and then upgrade to 0.9.x.
+	  (Lars Lindner)
+	* Experimental support for HTML entities when parsing
+	  XML. This is to workaround the various broken feeds.
+	  Note: only very common HTML entities are supported.
+	  (Lars Lindner)
+
+2004-11-??  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.6.2
+	
+	* Liferea now supports cookies. Contrary to previous
+	  statements the SnowNews code to realize this was 
+	  included but not used. To use this feature place 
+	  a cookies.txt in ~/.liferea. The format of this 
+	  file is the format Netscape introduced for cookie
+	  files. (Lars Lindner)
+	* Liferea now enforces umask 0077 when saving the
+	  feed list to ensure your passwords are not group
+	  or world accessible. In this context please check
+	  the permissions of your ~/.liferea directory.
+	  Older program versions might have created the 
+	  directory with unnecessary priviledges. Current
+	  versions (0.6.x) create the directory only with
+	  user priviledges. Thanks to the reporters Nick Rout 
+	  and Eric Gregory! (Lars Lindner)
+
 2004-10-31  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.6.1

@@ -42,6 +42,7 @@
 #include "folder.h"
 #include "favicon.h"
 #include "callbacks.h"
+#include "net/cookies.h"
 #include "update.h"
 #include "debug.h"
 #include "metadata.h"
@@ -541,6 +542,7 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 	/* prepare request url (strdup because it might be
 	   changed on permanent HTTP redirection in netio.c) */
 	request->source = g_strdup(source);
+	request->cookies = fp->cookies;
 	if (feed_get_lastmodified(fp) != NULL)
 		request->lastmodified = g_strdup(feed_get_lastmodified(fp));
 	if (feed_get_etag(fp) != NULL)
@@ -849,6 +851,13 @@ void feed_set_source(feedPtr fp, const gchar *source) {
 
 	fp->source = g_strdup(source);
 	conf_feedlist_schedule_save();
+	
+	g_free(fp->cookies);
+	if((FST_FEED == fp->type) && ('|' != source[0]))
+		/* check if we've got matching cookies ... */
+		fp->cookies = cookies_find_matching(source);
+	else 
+		fp->cookies = NULL;
 }
 
 void feed_set_filter(feedPtr fp, const gchar *filter) {
@@ -1113,6 +1122,7 @@ void feed_free(feedPtr fp) {
 	g_free(fp->htmlUrl);
 	g_free(fp->imageUrl);
 	g_free(fp->parseErrors);
+	g_free(fp->cookies);
 	metadata_list_free(fp->metadata);
 	g_hash_table_destroy(fp->tmpdata);
 	g_free(fp);
