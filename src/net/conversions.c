@@ -58,6 +58,12 @@ char * UIDejunk (char * feed_description) {
 /*	struct entity *cur_entity;*/
 	int found = 0;				/* User defined entity matched? */
 	
+	/* Gracefully handle passed NULL ptr. */
+	if (feed_description == NULL) {
+		newtext = strdup("(null)");
+		return newtext;
+	}
+	
 	/* Make a copy and point *start to it so we can free the stuff again! */
 	text = strdup (feed_description);
 	start = text;
@@ -111,7 +117,7 @@ char * UIDejunk (char * feed_description) {
 	}
 	free (start);
 	
-	CleanupString (newtext);
+	CleanupString (newtext, 0);
 	
 	/* See if there are any entities in the string at all. */
 	if (strchr(newtext, '&') != NULL) {
@@ -302,7 +308,7 @@ char * WrapText (char * text, int width) {
 		}
 	}
 	
-	/*if (line != NULL)*/
+	//if (line != NULL)
 		free (line);
 	
 	free (start);	
@@ -490,9 +496,12 @@ char *base64encode(char const *inbuf, unsigned int inbuf_size) {
 }
 
 /* Remove leading whitspaces, newlines, tabs.
-   This function should be safe for working on UTF-8 strings. */
-void CleanupString (char * string) {
-	int len;
+ * This function should be safe for working on UTF-8 strings.
+ * tidyness: 0 = only suck chars from beginning of string
+ *           1 = extreme, vacuum everything along the string.
+ */
+void CleanupString (char * string, int tidyness) {
+	int len, i;
 	
 	/* If we are passed a NULL pointer, leave it alone and return. */
 	if (string == NULL)
@@ -505,7 +514,16 @@ void CleanupString (char * string) {
 		/* len=strlen(string) does not include \0 of string.
 		   But since we copy from *string+1 \0 gets included.
 		   Delicate code. Think twice before it ends in buffer overflows. */
-		memmove(string, string+1, len);
+		memmove (string, string+1, len);
 		len--;
+	}
+	
+	len = strlen(string);
+	/* Eat newlines and tabs along the whole string. */
+	if (tidyness == 1) {
+		for (i = 0; i < len; i++) {
+			if ((string[i] == '\t') || (string[i] == '\n'))
+				string[i] = ' ';
+		}
 	}
 }

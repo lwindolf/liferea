@@ -152,15 +152,16 @@ gchar * extractHTMLNode(xmlNodePtr cur, gboolean children) {
 	gchar		*result = NULL;
 
 	buf = xmlBufferCreate();
-	if (children) {
+	if(children) {
 		cur = cur->xmlChildrenNode;
 		while (cur != NULL) {
 			xmlNodeDump(buf, cur->doc, cur, 0, 0);
 			cur = cur->next;
 		}
-	} else
+	} else {
 		xmlNodeDump(buf, cur->doc, cur, 0, 0);
-	if (xmlBufferLength(buf) > 0)
+	}
+	if(xmlBufferLength(buf) > 0)
 		result = xmlCharStrdup(xmlBufferContent(buf));
 
 	xmlBufferFree(buf);

@@ -205,6 +205,7 @@ src/mozilla/Makefile
 src/gtkhtml2/Makefile
 src/net/Makefile
 pixmaps/Makefile
+opml/Makefile
 po/Makefile.in
 liferea.spec
 liferea-SuSE.spec
