@@ -70,7 +70,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	attr = cur->properties;
 	while(NULL != attr) {
 		/* get prop value */
-		value = xmlGetNoNsProp(cur, attr->name);
+		value = CONVERT(xmlGetNoNsProp(cur, attr->name));
 
 		if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
 			tmp = g_strdup_printf("<p>%s</p>", value);
@@ -167,7 +167,7 @@ static void readOPML(feedPtr fp) {
 					for(i = 0; i < OPML_MAX_TAG; i++) {
 						if (!xmlStrcmp(child->name, (const xmlChar *)opmlTagList[i])) {
 							tmp = headTags[i];
-							if(NULL == (headTags[i] = g_strdup(xmlNodeListGetString(doc, child->xmlChildrenNode, 1)))) {
+							if(NULL == (headTags[i] = CONVERT(xmlNodeListGetString(doc, child->xmlChildrenNode, 1)))) {
 								headTags[i] = tmp;
 							} else {
 								g_free(tmp);
@@ -188,7 +188,7 @@ static void readOPML(feedPtr fp) {
 						g_free(tmp);
 						
 						ip = getNewItemStruct();
-						ip->title = xmlGetNoNsProp(child, BAD_CAST"text");
+						ip->title = CONVERT(xmlGetNoNsProp(child, BAD_CAST"text"));
 						ip->description = buffer;
 						ip->readStatus = TRUE;
 						addItem(fp, ip);

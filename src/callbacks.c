@@ -178,7 +178,6 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 	updateNow();	
 }
 
-
 void on_popup_refresh_selected(void) { 
 
 	if(!FEED_MENU(selected_type)) {

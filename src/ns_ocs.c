@@ -78,20 +78,21 @@ void ns_ocs_parseTag(gint type, gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(-1 != mapTo[i]) {			
 			if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
-				value = (gchar *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+				value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				g_assert(mapTo[i] < OCS_MAX_TAG);
 				/* map the value to one of the RSS fields */
 				switch(type) {
 					case TYPE_DIRECTORY:
-						dp->tags[mapTo[i]] = g_strdup(value);
+						dp->tags[mapTo[i]] = value;
 						break;
 					case TYPE_CHANNEL:
-						dep->tags[mapTo[i]] = g_strdup(value);
+						dep->tags[mapTo[i]] = value;
 						break;
 					case TYPE_FORMAT:
-						fp->tags[mapTo[i]] = g_strdup(value);
+						fp->tags[mapTo[i]] = value;
 						break;
 					default:
+						g_free(value);
 						g_error(_("internal OCS namespace parsing error!"));
 						break;
 				}

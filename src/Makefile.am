@@ -43,6 +43,7 @@ liferea_SOURCES = \
 	ns_admin.c ns_admin.h \
 	ns_blogChannel.c ns_blogChannel.h \
 	ns_cC.c ns_cC.h \
+	ns_ag.c ns_ag.h \
 	conf.c conf.h \
 	vfolder.c vfolder.h \
 	os-support.c os-support.h \

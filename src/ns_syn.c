@@ -1,5 +1,5 @@
 /*
-   synndication namespace support
+   syndication namespace support
    
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
@@ -24,9 +24,6 @@
 
 static gchar ns_syn_prefix[] = "syn";
 
-/* some prototypes */
-void ns_syn_parseChannelTag(RSSChannelPtr cp,xmlDocPtr doc, xmlNodePtr cur);
-
 /* you can find the syn module documentation at
    http://web.resource.org/rss/1.0/modules/synndication/
 
@@ -39,6 +36,42 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp,xmlDocPtr doc, xmlNodePtr cur);
 */
 
 gchar * ns_syn_getRSSNsPrefix(void) { return ns_syn_prefix; }
+
+void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+	xmlChar	*tmp;
+	int	period = 60*24;	/* daily is default */
+	int	frequency = 1;
+
+	if(!xmlStrcmp(cur->name, BAD_CAST"updatePeriod")) {
+		if(NULL != (tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+
+			if(!xmlStrcmp(tmp, BAD_CAST"hourly"))
+				period = 60;
+			else if(!xmlStrcmp(tmp, BAD_CAST"daily"))
+				period = 60*24;
+			else if(!xmlStrcmp(tmp, BAD_CAST"weekly"))
+				period = 7*24*60;
+			else if(!xmlStrcmp(tmp, BAD_CAST"monthly"))
+				// FIXME: not really exact...
+				period = 31*7*24*60;	
+			else if(!xmlStrcmp(tmp, BAD_CAST"yearly"))
+				period = 365*24*60;
+
+			xmlFree(tmp);
+		}
+	} else if(!xmlStrcmp(cur->name, BAD_CAST"updateFrequency")) {
+		if(NULL != (tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
+			frequency = atoi(tmp);
+			xmlFree(tmp);
+		}
+	}
+	
+	/* postprocessing */
+	if(0 != frequency)
+		period /= frequency;
+
+	cp->updateInterval = period;
+}
 
 RSSNsHandler *ns_syn_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
@@ -53,43 +86,4 @@ RSSNsHandler *ns_syn_getRSSNsHandler(void) {
 	}
 
 	return nsh;
-}
-
-void ns_syn_parseChannelTag(RSSChannelPtr cp,xmlDocPtr doc, xmlNodePtr cur) {
-	gchar	*tmp;
-	int	period = 60*24;	/* daily is default */
-	int	frequency = 1;
-	
-	if(!xmlStrcmp("updatePeriod", cur->name)) {
-
-		if(NULL != (tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
-
-			if(0 == strcmp("hourly", tmp))
-				period = 60;
-			else if(0 == strcmp("daily", tmp))
-				period = 60*24;
-			else if(0 == strcmp("weekly", tmp))
-				period = 7*24*60;
-			else if(0 == strcmp("monthly", tmp))
-				// FIXME: not really exact...
-				period = 31*7*24*60;	
-			else if(0 == strcmp("yearly", tmp))
-				period = 365*24*60;
-
-			g_free(tmp);
-		}
-	}
-
-	if(!xmlStrcmp("updateFrequency", cur->name)) {
-
-		if(NULL != (tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
-			frequency = atoi(tmp);
-		}
-	}
-	
-	/* postprocessing */
-	if(0 != frequency)
-		period /= frequency;
-
-	cp->updateInterval = period;
 }

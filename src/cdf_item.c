@@ -62,20 +62,14 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	ip = getNewItemStruct();
 	
 	/* save the item link */
-	value = xmlGetNoNsProp(cur, (const xmlChar *)"href");
-	i->tags[CDF_ITEM_LINK] = g_strdup(value);
-	g_free(value);
+	i->tags[CDF_ITEM_LINK] = CONVERT(xmlGetNoNsProp(cur, (const xmlChar *)"href"));
 
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		/* save first link to a channel image */
 		if ((!xmlStrcmp(cur->name, (const xmlChar *) "logo"))) {
-			if(NULL != i->tags[CDF_ITEM_IMAGE]) {
-				value = xmlGetNoNsProp(cur, (const xmlChar *)"href");
-				if(NULL != value)
-					i->tags[CDF_ITEM_IMAGE] = g_strdup(value);
-				g_free(value);
-			}
+			if(NULL != i->tags[CDF_ITEM_IMAGE])
+				i->tags[CDF_ITEM_IMAGE] = CONVERT(xmlGetNoNsProp(cur, (const xmlChar *)"href"));
 			cur = cur->next;			
 			continue;
 		}
@@ -85,7 +79,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)CDFItemTagList[j])) {
 				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 					i->tags[j] = tmp;
 				} else {
 					g_free(tmp);
@@ -105,10 +99,10 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 
 	/* some postprocessing */
 	if(NULL != i->tags[CDF_ITEM_TITLE])
-		i->tags[CDF_ITEM_TITLE] = unhtmlize((gchar *)doc->encoding, i->tags[CDF_ITEM_TITLE]);
+		i->tags[CDF_ITEM_TITLE] = unhtmlize(i->tags[CDF_ITEM_TITLE]);
 		
 	if(NULL != i->tags[CDF_ITEM_DESCRIPTION])
-		i->tags[CDF_ITEM_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[CDF_ITEM_DESCRIPTION]);	
+		i->tags[CDF_ITEM_DESCRIPTION] = convertToHTML(i->tags[CDF_ITEM_DESCRIPTION]);	
 		
 	ip->title = i->tags[CDF_ITEM_TITLE];		
 	ip->description = showCDFItem(fp, cp, i);

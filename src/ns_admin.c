@@ -21,6 +21,7 @@
 #include "htmlview.h"
 #include "support.h"
 #include "ns_admin.h"
+#include "common.h"
 
 #define TABLE_START	"<div style=\"margin-top:15px;font-size:8pt;color:#C0C0C0\">administrative information</div><table style=\"width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;\">"
 #define FIRSTTD		"<tr style=\"border-width:0;border-bottom-width:1px;border-style:dashed;border-color:#D0D0D0;\"><td width=\"30%\"><span style=\"font-size:8pt;color:#C0C0C0\">"
@@ -84,10 +85,10 @@ void ns_admin_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	int 		i;
 	
 	if(!xmlStrcmp("errorReportsTo", cur->name)) 
-		ns_admin_addInfoStruct(cp->nsinfos, "errorReportsTo", xmlGetProp(cur, "resource"));
+		ns_admin_addInfoStruct(cp->nsinfos, "errorReportsTo", CONVERT(xmlGetProp(cur, "resource")));
 
 	if(!xmlStrcmp("generatorAgent", cur->name)) 
-		ns_admin_addInfoStruct(cp->nsinfos, "generatorAgent", xmlGetProp(cur, "resource"));
+		ns_admin_addInfoStruct(cp->nsinfos, "generatorAgent", CONVERT(xmlGetProp(cur, "resource")));
 }
 
 /* maybe I should overthink method names :-) */

@@ -1,5 +1,5 @@
 /*
-   some tolerant and generic RSS channel parsing
+   some tolerant and generic RSS/RDF channel parsing
       
    Note: portions of the original parser code were inspired by
    the feed reader software Rol which is copyrighted by
@@ -222,10 +222,9 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 		
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-	
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
-			if (NULL != cur->ns->prefix) {
+			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
 					nsh = (RSSNsHandler *)hp->data;
@@ -239,15 +238,15 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 				}
 			}
 		}
-
 		/* check for RDF tags */
 		for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {
-			if (!xmlStrcmp(cur->name, (const xmlChar *)channelTagList[i])) {
+			if(!xmlStrcmp(cur->name, BAD_CAST channelTagList[i])) {
 				tmp = c->tags[i];
 				if(NULL == (c->tags[i] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
 					c->tags[i] = tmp;
 				} else {
 					g_free(tmp);
+					break;
 				}
 			}		
 		}
@@ -256,11 +255,10 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 
 	/* some postprocessing */
 	if(NULL != c->tags[RSS_CHANNEL_TITLE])
-		c->tags[RSS_CHANNEL_TITLE] = unhtmlize("UTF-8", c->tags[RSS_CHANNEL_TITLE]);
-		
+		c->tags[RSS_CHANNEL_TITLE] = unhtmlize(c->tags[RSS_CHANNEL_TITLE]);
+
 	if(NULL != c->tags[RSS_CHANNEL_DESCRIPTION])
-		c->tags[RSS_CHANNEL_DESCRIPTION] = convertToHTML("UTF-8", c->tags[RSS_CHANNEL_DESCRIPTION]);		
-	
+		c->tags[RSS_CHANNEL_DESCRIPTION] = convertToHTML(c->tags[RSS_CHANNEL_DESCRIPTION]);
 }
 
 static void parseTextInput(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
@@ -291,10 +289,10 @@ static void parseTextInput(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
 	
 	/* some postprocessing */
 	if(NULL != cp->tiTitle)
-		cp->tiTitle = unhtmlize("UTF-8", cp->tiTitle);
+		cp->tiTitle = unhtmlize(cp->tiTitle);
 		
 	if(NULL != cp->tiDescription)
-		cp->tiDescription = unhtmlize("UTF-8", cp->tiDescription);
+		cp->tiDescription = unhtmlize(cp->tiDescription);
 }
 
 static void parseImage(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
@@ -458,8 +456,8 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		/* register RSS name space handlers */
 		addNameSpaceHandler(ns_bC_getRSSNsPrefix(), (gpointer)ns_bC_getRSSNsHandler());
 		addNameSpaceHandler(ns_dc_getRSSNsPrefix(), (gpointer)ns_dc_getRSSNsHandler());
-		addNameSpaceHandler(ns_fm_getRSSNsPrefix(), (gpointer)ns_fm_getRSSNsHandler());					    
-		addNameSpaceHandler(ns_slash_getRSSNsPrefix(), (gpointer)ns_slash_getRSSNsHandler());
+		addNameSpaceHandler(ns_fm_getRSSNsPrefix(), (gpointer)ns_fm_getRSSNsHandler());	
+  		addNameSpaceHandler(ns_slash_getRSSNsPrefix(), (gpointer)ns_slash_getRSSNsHandler());
 		addNameSpaceHandler(ns_content_getRSSNsPrefix(), (gpointer)ns_content_getRSSNsHandler());
 		addNameSpaceHandler(ns_syn_getRSSNsPrefix(), (gpointer)ns_syn_getRSSNsHandler());
 		addNameSpaceHandler(ns_admin_getRSSNsPrefix(), (gpointer)ns_admin_getRSSNsHandler());

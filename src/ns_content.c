@@ -19,6 +19,7 @@
 */
 
 #include "ns_content.h"
+#include "common.h"
 
 static gchar ns_content_prefix[] = "content";
 
@@ -56,6 +57,6 @@ void ns_content_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp(cur->name, "encoded")) {
 		g_free(ip->tags[RSS_ITEM_DESCRIPTION]);
-		ip->tags[RSS_ITEM_DESCRIPTION] = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+		ip->tags[RSS_ITEM_DESCRIPTION] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 	}
 }

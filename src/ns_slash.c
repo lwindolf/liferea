@@ -21,6 +21,7 @@
 
 #include "htmlview.h"
 #include "ns_slash.h"
+#include "common.h"
 
 #define SLASH_START	"<table style=\"width:100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"margin-bottom:5px;border-width:1px;border-style:solid;border-color:black;background:#408060;width:100%;font-size:x-small;color:black;padding-left:5px;padding-right:5px;\">"
 #define KEY_START	""
@@ -78,7 +79,7 @@ static void ns_slash_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
-			ns_slash_addInfoStruct(ip->nsinfos, taglist[i],  xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			ns_slash_addInfoStruct(ip->nsinfos, taglist[i], CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 		}
 	}
 }

@@ -21,6 +21,7 @@
 #include "htmlview.h"
 #include "netio.h"
 #include "ns_blogChannel.h"
+#include "common.h"
 
 #define BLOGROLL_START		"<div style=\"padding-left:10px;padding-right:10px;background-color:#505050;color:white;\"><b>BlogRoll</b></div<br>"
 #define BLOGROLL_END		"<br>" 
@@ -48,11 +49,12 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	gchar		*tmp, *value;
 
 	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"text"))) {
-		addToHTMLBuffer(&buffer, (gchar *)value);
+		addToHTMLBuffer(&buffer, CONVERT(value));
 		xmlFree(value);
 	}
 	
 	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"url"))) {
+		value = CONVERT(value);
 		tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value, value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
@@ -60,6 +62,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	}
 
 	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"htmlUrl"))) {
+		value = CONVERT(value);
 		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">HTML</a>)", value, value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
@@ -67,6 +70,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	}
 			
 	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"htmlUrl"))) {
+		value = CONVERT(value);
 		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">XML</a>)", value, value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
@@ -159,7 +163,7 @@ static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cu
 			ns_bC_addInfoStruct(cp->nsinfos, "mySubscriptions", output);
 
 	} else if(!xmlStrcmp("blink", cur->name)) {
-		ns_bC_addInfoStruct(cp->nsinfos, "blink",  xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+		ns_bC_addInfoStruct(cp->nsinfos, "blink", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 	}
 }
 

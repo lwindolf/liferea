@@ -172,17 +172,17 @@ gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur) {
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"name"))
-			tmp = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"email")) {
-			tmp2 = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			tmp2 = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			tmp2 = g_strdup_printf("%s <a href=\"mailto:%s\">%s</a>", tmp, tmp2, tmp2);
 			g_free(tmp);
 			tmp = tmp2;
 		}
 					
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"url")) {
-			tmp2 = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			tmp2 = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			tmp2 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
 			g_free(tmp);
 			tmp = tmp2;
@@ -288,7 +288,7 @@ static void readPIEFeed(feedPtr fp) {
 				g_assert(NULL != cur->name);
 				if (!xmlStrcmp(cur->name, (const xmlChar *)feedTagList[i])) {
 					tmp = cp->tags[i];
-					if(NULL == (cp->tags[i] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+					if(NULL == (cp->tags[i] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
 						cp->tags[i] = tmp;
 					} else {
 						g_free(tmp);
@@ -310,10 +310,10 @@ static void readPIEFeed(feedPtr fp) {
 		
 		/* some postprocessing */
 		if(NULL != cp->tags[PIE_FEED_TITLE]) 
-			cp->tags[PIE_FEED_TITLE] = unhtmlize((gchar *)doc->encoding, cp->tags[PIE_FEED_TITLE]);
+			cp->tags[PIE_FEED_TITLE] = unhtmlize(cp->tags[PIE_FEED_TITLE]);
 
 		if(NULL != cp->tags[PIE_FEED_DESCRIPTION])
-			cp->tags[PIE_FEED_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, cp->tags[PIE_FEED_DESCRIPTION]);		
+			cp->tags[PIE_FEED_DESCRIPTION] = convertToHTML(cp->tags[PIE_FEED_DESCRIPTION]);		
 
 		xmlFreeDoc(doc);			
 		

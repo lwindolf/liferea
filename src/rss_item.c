@@ -148,11 +148,11 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		ip->id = g_strdup(i->tags[RSS_ITEM_GUID]);
 
 	/* some postprocessing before generating HTML */
-/*	if(NULL != i->tags[RSS_ITEM_TITLE])
-		i->tags[RSS_ITEM_TITLE] = unhtmlize("UTF-8", i->tags[RSS_ITEM_TITLE]);*/
+	if(NULL != i->tags[RSS_ITEM_TITLE])
+		i->tags[RSS_ITEM_TITLE] = unhtmlize(i->tags[RSS_ITEM_TITLE]);
 		
 	if(NULL != i->tags[RSS_ITEM_DESCRIPTION])
-		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML("UTF-8", i->tags[RSS_ITEM_DESCRIPTION]);
+		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML(i->tags[RSS_ITEM_DESCRIPTION]);
 
 	ip->title = g_strdup(i->tags[RSS_ITEM_TITLE]);		
 	ip->description = showRSSItem(fp, cp, i);

@@ -20,6 +20,7 @@
 
 #include "htmlview.h"
 #include "ns_fm.h"
+#include "common.h"
 
 #define FM_IMG_START	"<br><img style=\"margin-top:10px;\" src=\""
 #define FM_IMG_END		" \">"
@@ -54,7 +55,7 @@ static void ns_fm_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
 		/* maybe for just one tag this is overkill, but copy&paste is so easy! */
-		ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url",  xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+		ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url",  CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 	}
 }
 

@@ -225,7 +225,7 @@ static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 	/* some postprocessing, all format-infos will be displayed in the HTML view */
 	for(i = 0; i < OCS_MAX_TAG; i++)
 		if(NULL != fep->tags[i])
-			fep->tags[i] = convertToHTML("UTF-8", fep->tags[i]);
+			fep->tags[i] = convertToHTML(fep->tags[i]);
 
 }
 
@@ -325,10 +325,10 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 
 	/* some postprocessing */
 	if(NULL != dep->tags[OCS_TITLE])
-		dep->tags[OCS_TITLE] = unhtmlize("UTF-8", dep->tags[OCS_TITLE]);
+		dep->tags[OCS_TITLE] = unhtmlize(dep->tags[OCS_TITLE]);
 		
 	if(NULL != dep->tags[OCS_DESCRIPTION])
-		dep->tags[OCS_DESCRIPTION] = convertToHTML("UTF-8", dep->tags[OCS_DESCRIPTION]);
+		dep->tags[OCS_DESCRIPTION] = convertToHTML(dep->tags[OCS_DESCRIPTION]);
 
 	ip->title = dep->tags[OCS_TITLE];		
 	ip->description = showDirEntry(dep);
@@ -401,10 +401,10 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 
 	/* some postprocessing */
 	if(NULL != dep->tags[OCS_TITLE])
-		dep->tags[OCS_TITLE] = unhtmlize("UTF-8", dep->tags[OCS_TITLE]);
+		dep->tags[OCS_TITLE] = unhtmlize(dep->tags[OCS_TITLE]);
 		
 	if(NULL != dep->tags[OCS_DESCRIPTION])
-		dep->tags[OCS_DESCRIPTION] = convertToHTML("UTF-8", dep->tags[OCS_DESCRIPTION]);
+		dep->tags[OCS_DESCRIPTION] = convertToHTML(dep->tags[OCS_DESCRIPTION]);
 
 	ip->title = dep->tags[OCS_TITLE];		
 	ip->description = showDirEntry(dep);
@@ -471,10 +471,10 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 
 	/* some postprocessing */
 	if(NULL != dp->tags[OCS_TITLE])
-		dp->tags[OCS_TITLE] = unhtmlize("UTF-8", dp->tags[OCS_TITLE]);
+		dp->tags[OCS_TITLE] = unhtmlize(dp->tags[OCS_TITLE]);
 		
 	if(NULL != dp->tags[OCS_DESCRIPTION])
-		dp->tags[OCS_DESCRIPTION] = convertToHTML("UTF-8", dp->tags[OCS_DESCRIPTION]);
+		dp->tags[OCS_DESCRIPTION] = convertToHTML(dp->tags[OCS_DESCRIPTION]);
 }
 
 static void readOCS(feedPtr fp) {

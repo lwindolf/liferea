@@ -68,10 +68,10 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 	g_assert(NULL != cur);
 	if((NULL == i->tags[PIE_ENTRY_DESCRIPTION]) || (TRUE == i->summary)) {
 		
-		if(NULL != (mode = xmlGetNoNsProp(cur, BAD_CAST"mode"))) {
+		if(NULL != (mode = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"mode")))) {
 			if(!strcmp(mode, BAD_CAST"escaped")) {
 				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
-				i->tags[PIE_ENTRY_DESCRIPTION] = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				i->summary = FALSE;
 
 			} else if(!strcmp(mode, BAD_CAST"xml")) {
@@ -136,7 +136,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 
 		// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
 		if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
-			tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			i->time = convertDate(tmp);
 			cur = cur->next;		
 			continue;
@@ -177,7 +177,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {
 			if(NULL == i->tags[PIE_ENTRY_DESCRIPTION]) {
 				summary = TRUE;
-				i->tags[PIE_ENTRY_DESCRIPTION] = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+				i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			}
 			cur = cur->next;		
 			continue;
@@ -188,7 +188,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)entryTagList[j])) {
 				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
 					i->tags[j] = tmp;
 				} else {
 					g_free(tmp);
@@ -208,10 +208,10 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 
 	/* some postprocessing */
 	if(NULL != i->tags[PIE_ENTRY_TITLE])
-		i->tags[PIE_ENTRY_TITLE] = unhtmlize((gchar *)doc->encoding, i->tags[PIE_ENTRY_TITLE]);
+		i->tags[PIE_ENTRY_TITLE] = unhtmlize(i->tags[PIE_ENTRY_TITLE]);
 		
 	if(NULL != i->tags[PIE_ENTRY_DESCRIPTION])
-		i->tags[PIE_ENTRY_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[PIE_ENTRY_DESCRIPTION]);	
+		i->tags[PIE_ENTRY_DESCRIPTION] = convertToHTML(i->tags[PIE_ENTRY_DESCRIPTION]);	
 
 	ip->title = i->tags[PIE_ENTRY_TITLE];		
 	ip->description = showPIEEntry((PIEFeedPtr)cp, i);

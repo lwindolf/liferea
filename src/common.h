@@ -37,10 +37,13 @@ static gchar	*standard_encoding = { "UTF-8" };
    string is returned, the original XML string is freed. */
 gchar * CONVERT(xmlChar * string);
 
-gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
-/* converts a UTF-8 string to HTML */
-gchar * convertToUTF8(gchar * from_encoding, gchar * string);
-gchar * convertToHTML(gchar * from_encoding, gchar * string);
+/* converts a UTF-8 string to HTML (resolves XML entities) */
+gchar * convertToHTML(gchar * string);
+
+/* converts a UTF-8 string containing HTML tags to plain text */
+gchar * unhtmlize(gchar *string);
+
+/* parses a XML node and returns its children tags as a HTML string */
 gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string);
 
 /* to extract not escaped XHTML from a node */
@@ -48,7 +51,7 @@ gchar * extractHTMLNode(xmlNodePtr cur);
 
 void	addToHTMLBuffer(gchar **buffer, gchar *string);
 
-gchar * unhtmlize(gchar * from_encoding, gchar *string);
+
 gchar * getActualTime(void);
 time_t 	convertDate(char *date);
 // FIXME: formatDate used by several functions not only

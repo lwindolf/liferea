@@ -21,6 +21,7 @@
 #include "htmlview.h"
 #include "support.h"
 #include "ns_cC.h"
+#include "common.h"
 
 #define TABLE_START	"<div style=\"margin-top:15px;font-size:8pt;color:#C0C0C0\">creativeCommon license information</div><table style=\"width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;\">"
 #define FIRSTTD		"<tr style=\"border-width:0;border-bottom-width:1px;border-style:dashed;border-color:#D0D0D0;\"><td width=\"30%\"><span style=\"font-size:8pt;color:#C0C0C0\">"
@@ -60,13 +61,13 @@ static void ns_cC_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 void ns_cC_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp("license", cur->name)) 
-		ns_cC_addInfoStruct(cp->nsinfos, "license", xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+		ns_cC_addInfoStruct(cp->nsinfos, "license", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 }
 
 void ns_cC_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp("license", cur->name)) 
-		ns_cC_addInfoStruct(ip->nsinfos, "license", xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+		ns_cC_addInfoStruct(ip->nsinfos, "license", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 }
 
 void ns_cC_output(gpointer key, gpointer value, gpointer userdata) {

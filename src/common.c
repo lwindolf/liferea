@@ -41,6 +41,8 @@
 
 static gchar *CACHEPATH = NULL;
 
+gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
+
 void addToHTMLBuffer(gchar **buffer, gchar *string) {
 	gchar	*newbuffer;
 	
@@ -81,10 +83,10 @@ gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * strin
 	return new;
 }
 
-gchar * convertToUTF8(gchar * from_encoding, gchar * string) { return convertCharSet(from_encoding, "UTF-8", string); }
-gchar * convertToHTML(gchar * from_encoding, gchar * string) { return convertCharSet(from_encoding, "HTML", string); }
+gchar * convertToHTML(gchar * string) { return convertCharSet("UTF-8", "HTML", string); }
 
-static gchar* convert(unsigned char *in, char *encoding)
+/* the code of this function was taken from a GTK tutorial */
+static gchar* convert(unsigned char *in, gchar *encoding)
 {
 	unsigned char *out;
         int ret,size,out_size,temp;
@@ -92,7 +94,7 @@ static gchar* convert(unsigned char *in, char *encoding)
 
 	if(NULL == in)
 		return g_strdup("");
-
+	
         size = (int)strlen(in)+1; 
         out_size = size*2-1; 
         out = g_malloc((size_t)out_size); 
@@ -128,7 +130,7 @@ static gchar* convert(unsigned char *in, char *encoding)
 	if(NULL == out)
 		out = g_strdup("");
 		
-        return(out);
+        return out;
 }
 
 /* Conversion function which should be applied to all read XML strings, 
@@ -184,18 +186,18 @@ gchar * extractHTMLNode(xmlNodePtr cur) {
 	return result;
 }
 
-/* converts strings containing any HTML stuff to proper HTML
+/* converts a UTF-8 strings containing any HTML stuff to proper HTML
 
    FIXME: still buggy, correctly converts entities and
    preserves encodings, but does loose text inside enclosing
    formatting tags like "<b>Hallo</b>" 
  */
-gchar * unhtmlize(gchar * from_encoding, gchar *string) {
+gchar * unhtmlize(gchar *string) {
 	htmlParserCtxtPtr	ctxt; 
 	xmlDocPtr		pDoc;
 	int			length;
 	gchar			*newstring = NULL;
-	
+
 	if(NULL == string)
 		return NULL;
 	
@@ -203,13 +205,11 @@ gchar * unhtmlize(gchar * from_encoding, gchar *string) {
 	if(NULL == (strchr(string, '&')))
 		return string;
 
-	string = convertToUTF8(from_encoding, string);
-
 	length = strlen(string);
 	newstring = (gchar *)g_malloc(length + 1);
 	memset(newstring, 0, length + 1);
 	
-	ctxt = htmlCreatePushParserCtxt(NULL, NULL, newstring, length, 0, (xmlCharEncoding)from_encoding);
+	ctxt = htmlCreatePushParserCtxt(NULL, NULL, newstring, length, 0, (xmlCharEncoding)"UTF-8");
 	ctxt->sax->warning = NULL;	/* disable XML errors and warnings */
 	ctxt->sax->error = NULL;
 	
@@ -237,14 +237,12 @@ time_t convertDate(char *date) {
 
 	   the most specific format:   YYYY-MM-DDThh:mm:ss.sTZD
 	 */
-	pos = (char *)strptime((const char *)date, "%Y-%m-%dT%H:%M", &tm);				
-	g_free(date);
-
+	pos = (char *)strptime((const char *)date, "%Y-%m-%dT%H:%M", &tm);
 	if(pos != NULL) {
 		if((time_t)(-1) != (t = mktime(&tm))) {
 			return t;
 		} else {
-			g_warning(_("time conversion error! mktime failed!\n"));
+			g_warning(_("internal error! time conversion error! mktime failed!\n"));
 		}
 	} else {
 		g_print(_("Invalid date format! Ignoring <dc:date> information!\n"));				
@@ -318,7 +316,7 @@ void initCachePath(void) {
 				g_error(g_strdup_printf(_("Cannot create cache directory %s!"), CACHEPATH));
 			}
 		}
-//		free(pwent);
+		//free(pwent);	crashes???
 	} else {
 		g_error(g_strerror(errno));
 	}
