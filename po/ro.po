@@ -10,18 +10,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-06 02:38+0100\n"
-"PO-Revision-Date: 2004-12-01 22:10+0200\n"
+"PO-Revision-Date: 2005-01-07 16:57+0200\n"
 "Last-Translator: Spoială Cristian <s_cristian@ezrs.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:227
-#, fuzzy
 msgid "http://liferea.sf.net"
-msgstr "http://liferea.sf.net/help/help"
+msgstr "http://liferea.sf.net"
 
 #: src/common.c:279
 msgid "[Parser error output was truncated!]"
@@ -79,8 +78,7 @@ msgstr ".rdf"
 #: src/export.c:498 src/export.c:500
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr ""
-"eroare XML în timp ce se încărca fişierul cache! Fişierul %s nu a putut fi "
+msgstr "eroare XML în timp ce se încărca fişierul cache! Fişierul %s nu a putut fi "
 "incărcat!"
 
 #: src/export.c:504 src/export.c:506
@@ -93,8 +91,7 @@ msgstr ""
 #: src/export.c:514 src/export.c:516
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr ""
-"\"%s\" nu este un fişier OPML valid! Liferea nu poate importa acest fişier!"
+msgstr "\"%s\" nu este un fişier OPML valid! Liferea nu poate importa acest fişier!"
 
 #: src/export.c:538
 msgid "Imported feed list"
@@ -114,7 +111,7 @@ msgstr "Eroare la exportarea listei!"
 
 #: src/export.c:561
 msgid "Feed List exported!"
-msgstr "Lista de feed-uri a fost exportată"
+msgstr "Lista de feed-uri a fost exportată!"
 
 #: src/export.c:568
 msgid "Export Feed List"
@@ -127,8 +124,7 @@ msgstr "Exportă"
 #: src/feed.c:147
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
-msgstr ""
-"<p>eroare XML în timp ce se citea feedul! Feed-ul \"%s\" nu a putut fi "
+msgstr "<p>eroare XML în timp ce se citea feedul! Feed-ul \"%s\" nu a putut fi "
 "încărcat!</p>"
 
 #: src/feed.c:153 src/feed.c:387
@@ -157,8 +153,7 @@ msgstr ""
 #: src/feed.c:367
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr ""
-"Eroare în timp ce se încărca fişierul \"%s\" ! Fişierul nu a putut fi "
+msgstr "Eroare în timp ce se încărca fişierul \"%s\" ! Fişierul nu a putut fi "
 "încărcat!"
 
 #: src/feed.c:379
@@ -173,8 +168,7 @@ msgstr ""
 #: src/feed.c:398
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-msgstr ""
-"<p>\"%s\" nu este un fişier cache valid! Nu s-a putut citi fişierul cache!</"
+msgstr "<p>\"%s\" nu este un fişier cache valid! Nu s-a putut citi fişierul cache!</"
 "p>"
 
 #: src/feed.c:451
@@ -208,7 +202,7 @@ msgstr "Director virtual"
 
 #: src/feed.c:1019
 msgid "user defined command"
-msgstr "comandă definită de user"
+msgstr "comandă definită de utilizator"
 
 #: src/feed.c:1042 src/interface.c:1089 src/interface.c:1499 src/item.c:245
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
@@ -654,7 +648,6 @@ msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">Setările pentru încărcarea feedului</span>"
 
 #: src/interface.c:1920
-#, fuzzy
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds."
@@ -674,43 +667,40 @@ msgstr ""
 "memorie dacă aveţi multe feeduri!"
 
 #: src/interface.c:1933
-#, fuzzy
 msgid "Feeds"
-msgstr "_Feeduri"
+msgstr "Feeduri"
 
 #: src/interface.c:1946
-#, fuzzy
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
-msgstr "<span weight=\"bold\">Setările pentru updateurile la feed</span>"
+msgstr "<span weight=\"bold\">Setările pentru afişarea directoarelor</span>"
 
 #: src/interface.c:1964
 msgid "Show the items of all child feeds when a folder is selected."
-msgstr ""
+msgstr "Arată elementele unui feed când este selectat un director."
 
 #: src/interface.c:1968
 msgid ""
 "<i>This can cause signifant delays when loading folders with a lot of feeds "
 "inside!</i>"
 msgstr ""
+"<i>Aceasta cauzează importante întârzieri când sunt încărcate directoare cu "
+"multe feed-uri!</i>"
 
 #: src/interface.c:1979
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">Iconurile pentru feed (Favicons)</span>"
 
 #: src/interface.c:1998
-#, fuzzy
 msgid "_Update all favicons now."
-msgstr "Updatează iconurile la feeduri acum."
+msgstr "_Updatează iconurile la feeduri acum."
 
 #: src/interface.c:2002
-#, fuzzy
 msgid "Folders"
-msgstr "Director virtual"
+msgstr "Directoare"
 
 #: src/interface.c:2017
-#, fuzzy
 msgid "<span weight=\"bold\">Reading Headlines</span>"
-msgstr "<span weight=\"bold\">Vizualizaţi Titlurile</span>"
+msgstr "<span weight=\"bold\">Citind Titlurile</span>"
 
 #: src/interface.c:2040
 msgid "Skim through articles with "
@@ -753,9 +743,8 @@ msgstr ""
 "strftime() manpage pentru codurile de format"
 
 #: src/interface.c:2132
-#, fuzzy
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
-msgstr "<span weight=\"bold\">Setările navigatorului extern</span>"
+msgstr "<span weight=\"bold\">Setările navigatorului intern</span>"
 
 #: src/interface.c:2150
 msgid ""
@@ -777,7 +766,7 @@ msgstr "Deschide legăturile în _fereastra din Liferea"
 
 #: src/interface.c:2176
 msgid "_Disable Javascript."
-msgstr ""
+msgstr "_Dezactivează Javascript."
 
 #: src/interface.c:2184
 msgid "<span weight=\"bold\">External Browser Settings</span>"
@@ -801,9 +790,8 @@ msgid "_Open link in:"
 msgstr "_Deschide legăturile în:"
 
 #: src/interface.c:2253
-#, fuzzy
 msgid "Browser"
-msgstr "_Navigator:"
+msgstr "Navigator:"
 
 #: src/interface.c:2266
 msgid "<span weight=\"bold\">Notification Settings</span>"
@@ -929,7 +917,7 @@ msgstr "Liferea este un cititor de ştiri pentru GTK+"
 
 #: src/interface.c:3068
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
-msgstr ""
+msgstr "<span color=\"blue\" underline=\"single\">Pagina Liferea</span>"
 
 #: src/interface.c:3073
 msgid ""
@@ -1050,17 +1038,14 @@ msgid "Item:"
 msgstr "Articol:"
 
 #: src/main.c:68
-#, fuzzy
 msgid "  --version        Print version information and exit"
-msgstr "  --versiune        Afişează versiunea de la Liferea"
+msgstr "  --versiune        Afişează versiunea şi ieşiţi"
 
 #: src/main.c:69
-#, fuzzy
 msgid "  --help           Print this help and exit"
 msgstr "  --help           Afişează acest mesaj şi iasă"
 
 #: src/main.c:70
-#, fuzzy
 msgid "  --iconify        Start the program iconified"
 msgstr "  --iconify        Porneşte programul iconificat"
 
@@ -1114,13 +1099,12 @@ msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea a întâlnit un argument necunoscut: %s\n"
 
 #: src/main.c:244
-#, fuzzy
 msgid ""
 "Another copy of Liferea was found to be running. Please use it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
 msgstr ""
-"Mai rulează o dată Liferea în sistem. Vă rog folosiţi această instanţă. Dacă "
+"O altă copie a Liferea rulează în sistem. Vă rog folosiţi această instanţă. Dacă "
 "nu rulează alt Liferea vă rog să ştergeţi fişierul \"~/.liferea/lock\"."
 
 #: src/metadata.c:286
@@ -1225,7 +1209,7 @@ msgstr "acoperire"
 #: src/net/cookies.c:186
 #, c-format
 msgid "Cookie for %s has expired!"
-msgstr ""
+msgstr "Cookie pentru %s a expirat!"
 
 #: src/ns_dc.c:189 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
@@ -1421,10 +1405,12 @@ msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 msgstr ""
+"<br>Poate doriţi să validaţi acest feed utilizând <a href=\"http://feedvalidator."
+"org/check.cgi?url="
 
 #: src/ui_feed.c:129
 msgid "\">FeedValidator</a>."
-msgstr ""
+msgstr "\">FeedValidator</a>."
 
 #: src/ui_feed.c:136
 msgid ""
@@ -1631,7 +1617,8 @@ msgstr "Se porneşte: \"%s\""
 #, c-format
 msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
-msgstr "Ultimul update al înscrierii a eşuat!<br><b>HTTP error code %d: %s</b>"
+msgstr ""
+"Ultimul update al înscrierii a eşuat!<br><b>HTTP error code %d: %s</b>"
 
 #: src/ui_htmlview.h:100
 #, c-format
@@ -1753,7 +1740,7 @@ msgstr ""
 "li><li><p><b>Updatează Înscrierea</b> - Va updata înscrierea selectată. "
 "Acest lucru îl faceţi dacă doriţi să updataţi pe loc feedul. De obicei este "
 "indicat să aveţi încredere în updatarea automată care se face după un "
-"interval predefinit.</p></li><li><p><b>Updatează toatel</b> - Va updata "
+"interval predefinit.</p></li><li><p><b>Updatează toate</b> - Va updata "
 "toate înscrierele. De obicei ar trebui să aveţi încredere în updatarea "
 "automată.</li><li><p><b>Editează proprietăţile înscrierii</b> - Câteodată "
 "doriţi să setaţi intervalul de updatare, titlul, autentificarea sau setările "
@@ -1933,11 +1920,9 @@ msgid "URL"
 msgstr "URL"
 
 #: src/ui_tray.c:93
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item!"
-msgid_plural "%d new items!"
-msgstr[0] "%d element nou!"
-msgstr[1] "%d element nou!"
+msgstr "%d element nou!"
 
 #: src/ui_tray.c:106
 msgid "No new items."
@@ -1966,39 +1951,3 @@ msgstr ""
 "Tagul HTML <object> inclus nu este suportat de GtkHTML2.\n"
 "Pluginurile incluse nu pot fi afişate."
 
-#~ msgid "ERROR: Compression method is not deflate"
-#~ msgstr "Eroare: Metoda de compresie nu este suportată"
-
-#~ msgid "ERROR: Invalid magic bytes for GZIP data"
-#~ msgstr "Eroare: Invalizi biţi pentru datele GZIP"
-
-#~ msgid "ERROR: No output during decompression"
-#~ msgstr "Eroare: Nici o ieşire după compresie"
-
-#~ msgid "ERROR: Unsupported flags %d\n"
-#~ msgstr "Eroare: flag-uri nesuportate %d\n"
-
-#~ msgid "ERROR: zlib_uncompress: %d %s\n"
-#~ msgstr "Eroare: zlib_uncompress: %d %s\n"
-
-#~ msgid "External Browser"
-#~ msgstr "Navigator extern"
-
-#~ msgid "Feed Handling"
-#~ msgstr "Manevrarea feedurilor"
-
-#~ msgid "Filter Feeds Without Unread Headlines"
-#~ msgstr "Filtrează feedurile fără titlurile necitite"
-
-#~ msgid "Headline Display"
-#~ msgstr "Afişarea titlului"
-
-#~ msgid "If active all feeds without unread items are hidden."
-#~ msgstr ""
-#~ "dacă este activat, toate feedurile fără articole nicitite sunt ascunse."
-
-#~ msgid "Invalid RFC822 date format! Ignoring date information!\n"
-#~ msgstr "Format RFC822 invalid! Datele informaţiei se ignoră!\n"
-
-#~ msgid "URL points to permanent redirect, updating with new location..."
-#~ msgstr "URL-ul face o redirectare la o nouă locaţie a feedului..."
