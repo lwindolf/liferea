@@ -38,7 +38,7 @@ void updateUI(void);
 void print_status(gchar *statustext);
 void showInfoBox(gchar *msg);
 void showErrorBox(gchar *msg);
-void doTrayIcon(void);
+void doTrayIcon(gint count);
 void undoTrayIcon(void);
 void setTrayToolTip(gchar *string);
 void setupTrayIcon(void);

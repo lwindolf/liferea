@@ -30,8 +30,6 @@
 #include "eggtrayicon.h"
 #include "support.h"
 
-#define NO_NEW_MESSAGES		"no new messages"
-
 #define NO_NEW_ITEMS	0
 #define NEW_ITEMS	1
 
@@ -41,17 +39,24 @@ extern GdkPixbuf	*availableIcon;
 extern GtkWidget	*mainwindow;
 
 static GtkWidget	*eventbox = NULL;
-static gboolean		newItems = FALSE;
+static gint		newItems = 0;
 static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
 
 void setTrayToolTip(gchar *string) {
-
+	GtkTooltipsData	*data = NULL;
+	
 	if(NULL != tray_icon_tips) {
+		data = gtk_tooltips_data_get(GTK_WIDGET(tray_icon));
+		if(NULL != data) {
+			g_free(data->tip_text);
+			g_free(data->tip_private);
+		}		
+		
 	   	gtk_tooltips_set_tip(GTK_TOOLTIPS(tray_icon_tips), 
 				     GTK_WIDGET(eventbox),
-				     string, string);
+				     string, g_strdup(string));
 	}
 }
 
@@ -67,19 +72,19 @@ static void setTrayIcon(GdkPixbuf *icon) {
 	}
 }
 
-void doTrayIcon(void) { 
+void doTrayIcon(gint count) { 
 
-	if(FALSE == newItems) {
-		setTrayIcon(availableIcon); 
-		newItems = TRUE;
-	}
+	setTrayIcon(availableIcon); 
+	newItems += count;
+	setTrayToolTip(g_strdup_printf(_("%d new items!"), newItems));
 }
 
 void undoTrayIcon(void) {
 
-	if(TRUE == newItems) {
-		setTrayIcon(emptyIcon); 
-		newItems = FALSE;
+	if(0 != newItems) {
+		setTrayIcon(emptyIcon);
+		setTrayToolTip(g_strdup(_("No new items.")));
+		newItems = 0;
 	}
 }
 
@@ -120,10 +125,9 @@ void setupTrayIcon(void) {
 			g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
 			gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
 
-			setTrayIcon(emptyIcon);
-
 			tray_icon_tips = gtk_tooltips_new();
-			setTrayToolTip(_(NO_NEW_MESSAGES));	
+			newItems = -1;
+			undoTrayIcon();
 		}
 	}
 }

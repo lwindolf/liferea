@@ -482,6 +482,7 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 	itemPtr		new_ip, old_ip;
 	gboolean	found, equal;
 	gint		newcount = 0;
+	gint		traycount = 0;
 
 	if(TRUE == new_fp->available) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
@@ -550,21 +551,21 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 				if(FALSE == checkNewItem(new_ip)) {
 					new_ip->hidden = TRUE;
 				} else {
-					doTrayIcon();
 					increaseUnreadCount(old_fp);
-				}
-				newcount ++;
+					traycount++;
+				}			
+				newcount++;
 				diff_list = g_slist_append(diff_list, (gpointer)new_ip);
 			} else {
 				/* if the item was found but has other contents -> update */
 				if(!equal) {
-					doTrayIcon();
 					g_free(old_ip->title);
 					g_free(old_ip->description);
 					old_ip->title = g_strdup(new_ip->title);
 					old_ip->description = g_strdup(new_ip->description);
 					markItemAsUnread(old_ip);
-					newcount ++;
+					newcount++;
+					traycount++;
 				} else {
 					new_ip->readStatus = TRUE;
 				}
@@ -587,8 +588,9 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 			
 			if(NULL == diff_list)
 				print_status(g_strdup_printf(_("\"%s\" has no new items."), old_fp->title));
-			else
+			else 
 				print_status(g_strdup_printf(_("\"%s\" has %d new items."), old_fp->title, newcount));
+			
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
 		} else {
@@ -613,6 +615,8 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 	g_free(new_fp->source);
 	g_free(new_fp->title);
 	g_free(new_fp);			/* dispose new feed structure */
+	
+	doTrayIcon(traycount);		/* finally update the tray icon */
 }
 
 void removeFeed(feedPtr fp) {
