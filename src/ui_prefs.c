@@ -67,7 +67,7 @@ struct enclosure_download_tool {
 
 /* tool commands need to take an absolute file path as first %s and an URL as second %s */
 struct enclosure_download_tool enclosure_download_tools[] = {
-	{ "wget",	"wget -q -o %s %s" },
+	{ "wget",	"wget -q -O %s %s" },
 	{ "curl",	"curl -s -o %s %s" },
 	{ NULL,		NULL}
 };
