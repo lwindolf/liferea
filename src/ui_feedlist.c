@@ -320,8 +320,11 @@ void on_popup_refresh_selected(gpointer callback_data,
 						 guint callback_action,
 						 GtkWidget *widget) {
 	feedPtr fp = (feedPtr)callback_data;
-	g_assert(fp);
-	g_assert(FEED_MENU(fp->type));
+
+	if (!fp || !FEED_MENU(fp->type)) {
+		ui_show_error_box(_("You have to select a feed entry!"));
+		return;
+	}
 
 	feed_update(fp);
 }
@@ -334,12 +337,14 @@ void on_popup_delete_selected(gpointer callback_data,
                                              guint callback_action,
                                              GtkWidget *widget) {
 	feedPtr fp = (feedPtr)callback_data;
-
-	g_assert(fp);
-	g_assert(FEED_MENU(fp->type));
+	
+	if (!fp || !FEED_MENU(fp->type)) {
+		ui_show_error_box(_("You have to select a feed entry!"));
+		return;
+	}
 	
 	/* block deleting of empty entries */
-
+	
 	/* block deleting of help feeds */
 	if(fp->type == FST_HELPFEED || fp->type == FST_HELPFOLDER) {
 		ui_show_error_box(_("You can't delete the help! Edit the preferences to disable loading the help."));
@@ -348,7 +353,7 @@ void on_popup_delete_selected(gpointer callback_data,
 	
 	ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), feed_get_title(fp));
 	g_assert((nodePtr)fp == ui_feedlist_get_selected());
-
+	
 	ui_itemlist_clear();
 	ui_htmlview_clear();
 	feed_free(fp);
