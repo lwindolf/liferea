@@ -6,3 +6,9 @@ aclocal.m4
 config.log
 config.guess
 config.sub
+autom4te.cache
+libtool
+liferea-SuSE.spec
+liferea.spec
+ltmain.sh
+stamp-h.in
