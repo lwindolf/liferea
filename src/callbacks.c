@@ -582,7 +582,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	g_assert(newdialog != NULL);
 	g_assert(propdialog != NULL);
-	
+getSelection(mainwindow);
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
 	titleentry = lookup_widget(propdialog, "feednameentry");
 	typeoptionmenu = lookup_widget(newdialog, "typeoptionmenu");
@@ -592,7 +592,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	type = gtk_option_menu_get_history(GTK_OPTION_MENU(typeoptionmenu));
 	
 	/* the retrieved number is not yet the real feed type! */
-	if(type < MAX_TYPE_SELECT) {
+	if(type > MAX_TYPE_SELECT) {
 			g_error(_("internal error! invalid type selected! This should never happen!\n"));
 			return;
 	} else {

@@ -22,9 +22,14 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include "htmlview.h"
+#include "support.h"
 #include "ui_selection.h"
 
 static GtkWidget	*selection_widget = NULL;
+
+/* ----------------------------------------------------------------------------	*/
+/*  methods to supply a selection 						*/
+/* ----------------------------------------------------------------------------	*/   
 
 /* method to set selection */
 void supplySelection(void) {
@@ -68,4 +73,54 @@ void setupSelection(void) {
 		g_signal_connect(G_OBJECT(selection_widget), "selection_get",
 				 G_CALLBACK(selection_handle), NULL);
 	}
+}
+
+/* ----------------------------------------------------------------------------	*/
+/*  methods to get the selection 						*/
+/* ----------------------------------------------------------------------------	*/   
+
+/* method to request the selection */
+void getSelection(GtkWidget *window) {
+	static GdkAtom targets_atom = GDK_NONE;
+
+	/* Get the atom corresponding to the string "TARGETS" */
+	if(targets_atom == GDK_NONE)
+  		targets_atom = gdk_atom_intern ("TARGETS", FALSE);
+
+	/* And request the "TARGETS" target for the primary selection */
+	gtk_selection_convert(window, GDK_SELECTION_PRIMARY, targets_atom, GDK_CURRENT_TIME);
+}
+
+/* Signal handler called when the selections owner returns the data */
+static void selection_received(GtkWidget        *widget,
+                               GtkSelectionData *selection_data, 
+                               gpointer          data) {
+	GdkAtom *atoms;
+	GList *item_list;
+	int i;
+
+	/* **** IMPORTANT **** Check to see if retrieval succeeded  */
+	if(selection_data->length < 0) {
+		g_warning(_("Selection retrieval failed\n"));
+		return;
+	}
+	/* Make sure we got the data in the expected form */
+	if(selection_data->type != GDK_SELECTION_TYPE_ATOM) {
+		g_warning(_("Selection \"TARGETS\" was not returned as atoms!\n"));
+		return;
+	}
+  
+	/* Print out the atoms we received */	
+	atoms = (GdkAtom *)selection_data->data;
+
+	item_list = NULL;
+  for (i = 0; i < selection_data->length / sizeof(GdkAtom); i++)
+    {
+      char *name;
+      name = gdk_atom_name (atoms[i]);
+      if (name != NULL)
+g_print ("%s\n",name);
+      else
+g_print ("(bad atom)\n");
+    }
 }
