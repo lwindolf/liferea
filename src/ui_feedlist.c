@@ -396,6 +396,10 @@ void ui_feedlist_select(nodePtr np) {
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
 }
 
+static void on_popup_refresh_selected_cb(nodePtr ptr) {
+	feed_schedule_update((feedPtr)ptr, 0);
+}
+
 void on_popup_refresh_selected(gpointer callback_data,
 						 guint callback_action,
 						 GtkWidget *widget) {
@@ -410,7 +414,7 @@ void on_popup_refresh_selected(gpointer callback_data,
 		if (IS_FEED(ptr->type))
 			feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
 		else
-			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, (gpointer)feed_schedule_update);
+			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, on_popup_refresh_selected_cb);
 	} else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
