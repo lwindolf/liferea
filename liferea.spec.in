@@ -9,7 +9,7 @@ URL: 		http://liferea.sourceforge.net/
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: 	gtk2-devel
 BuildRequires:		gtkhtml2-devel
-BuildRequires: 	libxml2-devel >= 2.4.1
+BuildRequires: 	libxml2-devel >= 2.5.10
 BuildRequires: 	GConf2-devel
 BuildRequires: 	gettext
 BuildRequires: 	libtool

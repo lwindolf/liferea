@@ -17,7 +17,18 @@
 	  external programs to add feeds. (Lars Lindner)
 	* Itemlist sorting order is now saved on a per-feed basis.
 	  (Nathan Conrad)
+
+2004-08-31  Lars Lindner <lars.lindner@gmx.de>
+
+	Version 0.5.3c
 	
+	* Update of the Italian translation (Dario Conigliaro)
+
+	Bugfixes:
+	
+	* Fixed a big memory leak. (Lars Lindner)
+	* Some fixes in the RPM spec file (Noa Resare)
+
 2004-08-21  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.3b
