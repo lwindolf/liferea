@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
 		else if(!strcmp(arg, "--debug-verbose"))
 			debug_flags |= DEBUG_VERBOSE;		
 		else if(!strcmp(arg, "--version") || !strcmp(arg, "-v")) {
-			g_print("Liferea %s\n", VERSION);
+			g_print("liferea %s\n", VERSION);
 			return 0;
 		}
 		else if(!strcmp(arg, "--help") || !strcmp(arg, "-h")) {
@@ -188,7 +188,7 @@ int main(int argc, char *argv[]) {
 								  GTK_MESSAGE_ERROR,
 								  GTK_BUTTONS_OK,
 								  _("Another copy of Liferea was found to be running. Please us it instead. "
-								  "If there is no other copy of liferea running, please delete the "
+								  "If there is no other copy of Liferea running, please delete the "
 								  "\"~/.liferea/lock\" lock file."));
 		gtk_dialog_run(GTK_DIALOG (dialog));
 		gtk_widget_destroy(dialog);
