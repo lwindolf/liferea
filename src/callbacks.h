@@ -144,3 +144,4 @@ on_menu_folder_delete                  (GtkMenuItem     *menuitem,
 void
 on_menu_folder_rename                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
+

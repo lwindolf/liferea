@@ -147,7 +147,7 @@ void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data) {
 void on_menu_folder_delete(GtkMenuItem *menuitem, gpointer user_data) {
 	folderPtr folder = (folderPtr)ui_feedlist_get_selected();
 	
-	on_popup_foldername_selected((gpointer)folder, 0, NULL);
+	on_popup_removefolder_selected((gpointer)folder, 0, NULL);
 	
 }
 
@@ -155,7 +155,6 @@ void on_menu_folder_delete(GtkMenuItem *menuitem, gpointer user_data) {
 void on_menu_folder_rename (GtkMenuItem *menuitem, gpointer user_data) {
 	folderPtr folder = (folderPtr)ui_feedlist_get_selected();
 	
-	on_popup_removefolder_selected((gpointer)folder, 0, NULL);
-	
+	on_popup_foldername_selected((gpointer)folder, 0, NULL);	
 }
 

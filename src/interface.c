@@ -50,17 +50,17 @@ create_mainwindow (void)
   GtkWidget *image1485;
   GtkWidget *feed_new;
   GtkWidget *image1486;
-  GtkWidget *feed_delete;
+  GtkWidget *delete_feed3;
   GtkWidget *image1487;
-  GtkWidget *feed_prop;
+  GtkWidget *properties1;
   GtkWidget *image1488;
   GtkWidget *folder1;
   GtkWidget *folder1_menu;
-  GtkWidget *folder_new;
+  GtkWidget *new_folder1;
   GtkWidget *image1489;
-  GtkWidget *folder_delete;
+  GtkWidget *delete_folder2;
   GtkWidget *image1490;
-  GtkWidget *folder_rename;
+  GtkWidget *edit_folder_name1;
   GtkWidget *image1491;
   GtkWidget *trennlinie2;
   GtkWidget *update_all_feeds1;
@@ -96,26 +96,21 @@ create_mainwindow (void)
   GtkWidget *help_menu;
   GtkWidget *about;
   GtkWidget *toolbar;
-  gint tmp_toolbar_icon_size;
-  GtkWidget *toolitem1;
   GtkWidget *refreshbtn;
   GtkWidget *alignment1;
   GtkWidget *hbox16;
   GtkWidget *image2;
   GtkWidget *label24;
-  GtkWidget *toolitem2;
   GtkWidget *nextbtn;
   GtkWidget *alignment3;
   GtkWidget *hbox27;
   GtkWidget *image678;
   GtkWidget *label49;
-  GtkWidget *toolitem3;
   GtkWidget *searchbtn;
   GtkWidget *alignment2;
   GtkWidget *hbox17;
   GtkWidget *image3;
   GtkWidget *label25;
-  GtkWidget *toolitem4;
   GtkWidget *prefbtn;
   GtkWidget *alignment4;
   GtkWidget *hbox29;
@@ -196,7 +191,7 @@ create_mainwindow (void)
   gtk_widget_show (preferences1);
   gtk_container_add (GTK_CONTAINER (menuitem1_menu), preferences1);
 
-  separator4 = gtk_separator_menu_item_new ();
+  separator4 = gtk_menu_item_new ();
   gtk_widget_show (separator4);
   gtk_container_add (GTK_CONTAINER (menuitem1_menu), separator4);
   gtk_widget_set_sensitive (separator4, FALSE);
@@ -235,21 +230,21 @@ create_mainwindow (void)
   gtk_widget_show (image1486);
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (feed_new), image1486);
 
-  feed_delete = gtk_image_menu_item_new_with_mnemonic (_("_Delete Feed"));
-  gtk_widget_show (feed_delete);
-  gtk_container_add (GTK_CONTAINER (new1_menu), feed_delete);
+  delete_feed3 = gtk_image_menu_item_new_with_mnemonic (_("_Delete Feed"));
+  gtk_widget_show (delete_feed3);
+  gtk_container_add (GTK_CONTAINER (new1_menu), delete_feed3);
 
   image1487 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
   gtk_widget_show (image1487);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (feed_delete), image1487);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (delete_feed3), image1487);
 
-  feed_prop = gtk_image_menu_item_new_with_mnemonic (_("_Edit Properties"));
-  gtk_widget_show (feed_prop);
-  gtk_container_add (GTK_CONTAINER (new1_menu), feed_prop);
+  properties1 = gtk_image_menu_item_new_with_mnemonic (_("_Edit Properties"));
+  gtk_widget_show (properties1);
+  gtk_container_add (GTK_CONTAINER (new1_menu), properties1);
 
   image1488 = gtk_image_new_from_stock ("gtk-properties", GTK_ICON_SIZE_MENU);
   gtk_widget_show (image1488);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (feed_prop), image1488);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (properties1), image1488);
 
   folder1 = gtk_menu_item_new_with_mnemonic (_("F_older"));
   gtk_widget_show (folder1);
@@ -258,31 +253,31 @@ create_mainwindow (void)
   folder1_menu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (folder1), folder1_menu);
 
-  folder_new = gtk_image_menu_item_new_with_mnemonic (_("_New Folder"));
-  gtk_widget_show (folder_new);
-  gtk_container_add (GTK_CONTAINER (folder1_menu), folder_new);
+  new_folder1 = gtk_image_menu_item_new_with_mnemonic (_("_New Folder"));
+  gtk_widget_show (new_folder1);
+  gtk_container_add (GTK_CONTAINER (folder1_menu), new_folder1);
 
   image1489 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
   gtk_widget_show (image1489);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (folder_new), image1489);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new_folder1), image1489);
 
-  folder_delete = gtk_image_menu_item_new_with_mnemonic (_("_Delete Folder"));
-  gtk_widget_show (folder_delete);
-  gtk_container_add (GTK_CONTAINER (folder1_menu), folder_delete);
+  delete_folder2 = gtk_image_menu_item_new_with_mnemonic (_("_Delete Folder"));
+  gtk_widget_show (delete_folder2);
+  gtk_container_add (GTK_CONTAINER (folder1_menu), delete_folder2);
 
   image1490 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
   gtk_widget_show (image1490);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (folder_delete), image1490);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (delete_folder2), image1490);
 
-  folder_rename = gtk_image_menu_item_new_with_mnemonic (_("_Edit Folder Name"));
-  gtk_widget_show (folder_rename);
-  gtk_container_add (GTK_CONTAINER (folder1_menu), folder_rename);
+  edit_folder_name1 = gtk_image_menu_item_new_with_mnemonic (_("_Edit Folder Name"));
+  gtk_widget_show (edit_folder_name1);
+  gtk_container_add (GTK_CONTAINER (folder1_menu), edit_folder_name1);
 
   image1491 = gtk_image_new_from_stock ("gtk-properties", GTK_ICON_SIZE_MENU);
   gtk_widget_show (image1491);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (folder_rename), image1491);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (edit_folder_name1), image1491);
 
-  trennlinie2 = gtk_separator_menu_item_new ();
+  trennlinie2 = gtk_menu_item_new ();
   gtk_widget_show (trennlinie2);
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), trennlinie2);
   gtk_widget_set_sensitive (trennlinie2, FALSE);
@@ -362,7 +357,7 @@ create_mainwindow (void)
   gtk_widget_show (image1495);
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (remove_items), image1495);
 
-  separator3 = gtk_separator_menu_item_new ();
+  separator3 = gtk_menu_item_new ();
   gtk_widget_show (separator3);
   gtk_container_add (GTK_CONTAINER (items1_menu), separator3);
   gtk_widget_set_sensitive (separator3, FALSE);
@@ -404,7 +399,7 @@ create_mainwindow (void)
   gtk_widget_show (image1497);
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (zoom_out1), image1497);
 
-  trennlinie3 = gtk_separator_menu_item_new ();
+  trennlinie3 = gtk_menu_item_new ();
   gtk_widget_show (trennlinie3);
   gtk_container_add (GTK_CONTAINER (menuitem3_menu), trennlinie3);
   gtk_widget_set_sensitive (trennlinie3, FALSE);
@@ -454,17 +449,11 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (vbox1), toolbar, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 1);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_BOTH);
-  tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbar));
-
-  toolitem1 = (GtkWidget*) gtk_tool_item_new ();
-  gtk_widget_show (toolitem1);
-  gtk_container_add (GTK_CONTAINER (toolbar), toolitem1);
 
   refreshbtn = gtk_button_new ();
   gtk_widget_show (refreshbtn);
-  gtk_container_add (GTK_CONTAINER (toolitem1), refreshbtn);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), refreshbtn, _("Update all feeds"), NULL);
   GTK_WIDGET_UNSET_FLAGS (refreshbtn, GTK_CAN_FOCUS);
-  gtk_tooltips_set_tip (tooltips, refreshbtn, _("Update all feeds"), NULL);
   gtk_button_set_relief (GTK_BUTTON (refreshbtn), GTK_RELIEF_NONE);
 
   alignment1 = gtk_alignment_new (0.5, 0.5, 0, 0);
@@ -483,15 +472,10 @@ create_mainwindow (void)
   gtk_widget_show (label24);
   gtk_box_pack_start (GTK_BOX (hbox16), label24, FALSE, FALSE, 0);
 
-  toolitem2 = (GtkWidget*) gtk_tool_item_new ();
-  gtk_widget_show (toolitem2);
-  gtk_container_add (GTK_CONTAINER (toolbar), toolitem2);
-
   nextbtn = gtk_button_new ();
   gtk_widget_show (nextbtn);
-  gtk_container_add (GTK_CONTAINER (toolitem2), nextbtn);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), nextbtn, _("Jumps to the next unread item. If necessary selects the next feed with unread items."), NULL);
   GTK_WIDGET_UNSET_FLAGS (nextbtn, GTK_CAN_FOCUS);
-  gtk_tooltips_set_tip (tooltips, nextbtn, _("Jumps to the next unread item. If necessary selects the next feed with unread items."), NULL);
   gtk_button_set_relief (GTK_BUTTON (nextbtn), GTK_RELIEF_NONE);
 
   alignment3 = gtk_alignment_new (0.5, 0.5, 0, 0);
@@ -510,15 +494,10 @@ create_mainwindow (void)
   gtk_widget_show (label49);
   gtk_box_pack_start (GTK_BOX (hbox27), label49, FALSE, FALSE, 0);
 
-  toolitem3 = (GtkWidget*) gtk_tool_item_new ();
-  gtk_widget_show (toolitem3);
-  gtk_container_add (GTK_CONTAINER (toolbar), toolitem3);
-
   searchbtn = gtk_button_new ();
   gtk_widget_show (searchbtn);
-  gtk_container_add (GTK_CONTAINER (toolitem3), searchbtn);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), searchbtn, _("Search in feeds"), NULL);
   GTK_WIDGET_UNSET_FLAGS (searchbtn, GTK_CAN_FOCUS);
-  gtk_tooltips_set_tip (tooltips, searchbtn, _("Search in feeds"), NULL);
   gtk_button_set_relief (GTK_BUTTON (searchbtn), GTK_RELIEF_NONE);
 
   alignment2 = gtk_alignment_new (0.5, 0.5, 0, 0);
@@ -537,15 +516,10 @@ create_mainwindow (void)
   gtk_widget_show (label25);
   gtk_box_pack_start (GTK_BOX (hbox17), label25, FALSE, FALSE, 0);
 
-  toolitem4 = (GtkWidget*) gtk_tool_item_new ();
-  gtk_widget_show (toolitem4);
-  gtk_container_add (GTK_CONTAINER (toolbar), toolitem4);
-
   prefbtn = gtk_button_new ();
   gtk_widget_show (prefbtn);
-  gtk_container_add (GTK_CONTAINER (toolitem4), prefbtn);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), prefbtn, _("Edit preferences"), NULL);
   GTK_WIDGET_UNSET_FLAGS (prefbtn, GTK_CAN_FOCUS);
-  gtk_tooltips_set_tip (tooltips, prefbtn, _("Edit preferences"), NULL);
   gtk_button_set_relief (GTK_BUTTON (prefbtn), GTK_RELIEF_NONE);
 
   alignment4 = gtk_alignment_new (0.5, 0.5, 0, 0);
@@ -685,19 +659,19 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) feed_new, "activate",
                     G_CALLBACK (on_newbtn_clicked),
                     NULL);
-  g_signal_connect ((gpointer) feed_delete, "activate",
+  g_signal_connect ((gpointer) delete_feed3, "activate",
                     G_CALLBACK (on_menu_feed_delete),
                     NULL);
-  g_signal_connect ((gpointer) feed_prop, "activate",
+  g_signal_connect ((gpointer) properties1, "activate",
                     G_CALLBACK (on_menu_feed_prop),
                     NULL);
-  g_signal_connect ((gpointer) folder_new, "activate",
+  g_signal_connect ((gpointer) new_folder1, "activate",
                     G_CALLBACK (on_menu_folder_new),
                     NULL);
-  g_signal_connect ((gpointer) folder_delete, "activate",
+  g_signal_connect ((gpointer) delete_folder2, "activate",
                     G_CALLBACK (on_menu_folder_delete),
                     NULL);
-  g_signal_connect ((gpointer) folder_rename, "activate",
+  g_signal_connect ((gpointer) edit_folder_name1, "activate",
                     G_CALLBACK (on_menu_folder_rename),
                     NULL);
   g_signal_connect ((gpointer) update_all_feeds1, "activate",
@@ -800,17 +774,17 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, image1485, "image1485");
   GLADE_HOOKUP_OBJECT (mainwindow, feed_new, "feed_new");
   GLADE_HOOKUP_OBJECT (mainwindow, image1486, "image1486");
-  GLADE_HOOKUP_OBJECT (mainwindow, feed_delete, "feed_delete");
+  GLADE_HOOKUP_OBJECT (mainwindow, delete_feed3, "delete_feed3");
   GLADE_HOOKUP_OBJECT (mainwindow, image1487, "image1487");
-  GLADE_HOOKUP_OBJECT (mainwindow, feed_prop, "feed_prop");
+  GLADE_HOOKUP_OBJECT (mainwindow, properties1, "properties1");
   GLADE_HOOKUP_OBJECT (mainwindow, image1488, "image1488");
   GLADE_HOOKUP_OBJECT (mainwindow, folder1, "folder1");
   GLADE_HOOKUP_OBJECT (mainwindow, folder1_menu, "folder1_menu");
-  GLADE_HOOKUP_OBJECT (mainwindow, folder_new, "folder_new");
+  GLADE_HOOKUP_OBJECT (mainwindow, new_folder1, "new_folder1");
   GLADE_HOOKUP_OBJECT (mainwindow, image1489, "image1489");
-  GLADE_HOOKUP_OBJECT (mainwindow, folder_delete, "folder_delete");
+  GLADE_HOOKUP_OBJECT (mainwindow, delete_folder2, "delete_folder2");
   GLADE_HOOKUP_OBJECT (mainwindow, image1490, "image1490");
-  GLADE_HOOKUP_OBJECT (mainwindow, folder_rename, "folder_rename");
+  GLADE_HOOKUP_OBJECT (mainwindow, edit_folder_name1, "edit_folder_name1");
   GLADE_HOOKUP_OBJECT (mainwindow, image1491, "image1491");
   GLADE_HOOKUP_OBJECT (mainwindow, trennlinie2, "trennlinie2");
   GLADE_HOOKUP_OBJECT (mainwindow, update_all_feeds1, "update_all_feeds1");
@@ -846,25 +820,21 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, help_menu, "help_menu");
   GLADE_HOOKUP_OBJECT (mainwindow, about, "about");
   GLADE_HOOKUP_OBJECT (mainwindow, toolbar, "toolbar");
-  GLADE_HOOKUP_OBJECT (mainwindow, toolitem1, "toolitem1");
   GLADE_HOOKUP_OBJECT (mainwindow, refreshbtn, "refreshbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, alignment1, "alignment1");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox16, "hbox16");
   GLADE_HOOKUP_OBJECT (mainwindow, image2, "image2");
   GLADE_HOOKUP_OBJECT (mainwindow, label24, "label24");
-  GLADE_HOOKUP_OBJECT (mainwindow, toolitem2, "toolitem2");
   GLADE_HOOKUP_OBJECT (mainwindow, nextbtn, "nextbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, alignment3, "alignment3");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox27, "hbox27");
   GLADE_HOOKUP_OBJECT (mainwindow, image678, "image678");
   GLADE_HOOKUP_OBJECT (mainwindow, label49, "label49");
-  GLADE_HOOKUP_OBJECT (mainwindow, toolitem3, "toolitem3");
   GLADE_HOOKUP_OBJECT (mainwindow, searchbtn, "searchbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, alignment2, "alignment2");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox17, "hbox17");
   GLADE_HOOKUP_OBJECT (mainwindow, image3, "image3");
   GLADE_HOOKUP_OBJECT (mainwindow, label25, "label25");
-  GLADE_HOOKUP_OBJECT (mainwindow, toolitem4, "toolitem4");
   GLADE_HOOKUP_OBJECT (mainwindow, prefbtn, "prefbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, alignment4, "alignment4");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox29, "hbox29");
@@ -933,7 +903,6 @@ create_propdialog (void)
   gtk_window_set_title (GTK_WINDOW (propdialog), _("Subscription Properties"));
   gtk_window_set_position (GTK_WINDOW (propdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (propdialog), 400, -1);
-  gtk_window_set_type_hint (GTK_WINDOW (propdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox1 = GTK_DIALOG (propdialog)->vbox;
   gtk_widget_show (dialog_vbox1);
@@ -1129,7 +1098,6 @@ create_newdialog (void)
   gtk_window_set_position (GTK_WINDOW (newdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_modal (GTK_WINDOW (newdialog), TRUE);
   gtk_window_set_default_size (GTK_WINDOW (newdialog), 400, -1);
-  gtk_window_set_type_hint (GTK_WINDOW (newdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox2 = GTK_DIALOG (newdialog)->vbox;
   gtk_widget_show (dialog_vbox2);
@@ -1387,7 +1355,6 @@ create_prefdialog (void)
   gtk_window_set_title (GTK_WINDOW (prefdialog), _("program preferences"));
   gtk_window_set_position (GTK_WINDOW (prefdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (prefdialog), 300, -1);
-  gtk_window_set_type_hint (GTK_WINDOW (prefdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_dialog_set_has_separator (GTK_DIALOG (prefdialog), FALSE);
 
   dialog_vbox5 = GTK_DIALOG (prefdialog)->vbox;
@@ -1842,7 +1809,6 @@ create_newfolderdialog (void)
   newfolderdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (newfolderdialog), _("New Folder"));
   gtk_window_set_modal (GTK_WINDOW (newfolderdialog), TRUE);
-  gtk_window_set_type_hint (GTK_WINDOW (newfolderdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox6 = GTK_DIALOG (newfolderdialog)->vbox;
   gtk_widget_show (dialog_vbox6);
@@ -1921,7 +1887,6 @@ create_foldernamedialog (void)
   foldernamedialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (foldernamedialog), _("Rename Folder"));
   gtk_window_set_modal (GTK_WINDOW (foldernamedialog), TRUE);
-  gtk_window_set_type_hint (GTK_WINDOW (foldernamedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox7 = GTK_DIALOG (foldernamedialog)->vbox;
   gtk_widget_show (dialog_vbox7);
@@ -1987,7 +1952,6 @@ create_fileselection (void)
   gtk_container_set_border_width (GTK_CONTAINER (fileselection), 10);
   gtk_window_set_modal (GTK_WINDOW (fileselection), TRUE);
   gtk_window_set_destroy_with_parent (GTK_WINDOW (fileselection), TRUE);
-  gtk_window_set_type_hint (GTK_WINDOW (fileselection), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_file_selection_hide_fileop_buttons (GTK_FILE_SELECTION (fileselection));
 
   fileselectbtn = GTK_FILE_SELECTION (fileselection)->ok_button;
@@ -2130,7 +2094,6 @@ create_ruledialog (void)
 
   ruledialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (ruledialog), _("edit rule properties"));
-  gtk_window_set_type_hint (GTK_WINDOW (ruledialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox8 = GTK_DIALOG (ruledialog)->vbox;
   gtk_widget_show (dialog_vbox8);
@@ -2243,7 +2206,6 @@ create_feedsterdialog (void)
 
   feedsterdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (feedsterdialog), _("Search With Feedster"));
-  gtk_window_set_type_hint (GTK_WINDOW (feedsterdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox9 = GTK_DIALOG (feedsterdialog)->vbox;
   gtk_widget_show (dialog_vbox9);
@@ -2346,7 +2308,6 @@ create_importdialog (void)
 
   importdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (importdialog), _("Import Feed List"));
-  gtk_window_set_type_hint (GTK_WINDOW (importdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox10 = GTK_DIALOG (importdialog)->vbox;
   gtk_widget_show (dialog_vbox10);
@@ -2435,7 +2396,6 @@ create_exportdialog (void)
 
   exportdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (exportdialog), _("Export Feed List"));
-  gtk_window_set_type_hint (GTK_WINDOW (exportdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox11 = GTK_DIALOG (exportdialog)->vbox;
   gtk_widget_show (dialog_vbox11);
@@ -2532,7 +2492,6 @@ create_aboutdialog (void)
   aboutdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (aboutdialog), _("About"));
   gtk_window_set_default_size (GTK_WINDOW (aboutdialog), 300, 200);
-  gtk_window_set_type_hint (GTK_WINDOW (aboutdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox12 = GTK_DIALOG (aboutdialog)->vbox;
   gtk_widget_show (dialog_vbox12);
