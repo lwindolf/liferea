@@ -12,6 +12,8 @@
 	* Network code made more robust. (Nathan Conrad)
 	* Fix crash where an item's enclosure's location is not a URL.
 	  (Nathan Conrad)
+	* Fix crash when searching for favicons and autodetecting feeds
+	  using web sites with invalid HTML markup. (Nathan Conrad)
 	
 2005-01-15  Lars Lindner <lars.lindner@gmx.net>
 

@@ -62,8 +62,10 @@ static gchar *checkLinkRefForFavicon(const gchar* str) {
 	if(NULL == tmp) return NULL;
 	/* FIXME: single quotes support */
 	tmp2 = strchr(tmp, '\"');
+	
 	if(NULL == tmp2) return NULL;
 	tmp = strchr(tmp2+1, '\"');
+	if (tmp == NULL) return NULL;
 	*tmp = '\0';
 	res = g_strdup(tmp2+1);
 	*tmp = '\"';
@@ -87,6 +89,7 @@ static gchar *checkNormalLink(const gchar* str) {
 	tmp2 = strchr(tmp, '\"');
 	if(NULL == tmp2) return NULL;
 	tmp = strchr(tmp2+1, '\"');
+	if (tmp == NULL) return NULL;
 	*tmp = '\0';
 	res = g_strdup(tmp2+1);
 	*tmp = '\"';
