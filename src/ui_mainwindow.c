@@ -327,6 +327,9 @@ void ui_mainwindow_save_position() {
 	if(!GTK_WIDGET_VISIBLE(mainwindow))
 		return;
 	
+	if(getBooleanConfValue(LAST_WINDOW_MAXIMIZED))
+		return;
+
 	gtk_window_get_position(GTK_WINDOW(mainwindow), &x, &y);
 	gtk_window_get_size(GTK_WINDOW(mainwindow), &w, &h);
 
@@ -354,24 +357,30 @@ void ui_mainwindow_restore_position() {
 	w = getNumericConfValue(LAST_WINDOW_WIDTH);
 	h = getNumericConfValue(LAST_WINDOW_HEIGHT);
 	
-	/* Give up if the width or height not saved */
-	if(w == 0 || h == 0)
-		return;
+	/* Restore position only if the width and height were saved */
+	if(w != 0 && h != 0) {
 	
-	if(x >= gdk_screen_width())
-		x = gdk_screen_width() - 100;
-	else if(x + w < 0)
-		x  = 100;
+		if(x >= gdk_screen_width())
+			x = gdk_screen_width() - 100;
+		else if(x + w < 0)
+			x  = 100;
 
-	if(y >= gdk_screen_height())
-		y = gdk_screen_height() - 100;
-	else if(y + w < 0)
-		y  = 100;
+		if(y >= gdk_screen_height())
+			y = gdk_screen_height() - 100;
+		else if(y + w < 0)
+			y  = 100;
 	
-	gtk_window_move(GTK_WINDOW(mainwindow), x, y);
+		gtk_window_move(GTK_WINDOW(mainwindow), x, y);
 
-	/* load window size */
-	gtk_window_resize(GTK_WINDOW(mainwindow), w, h);
+		/* load window size */
+		gtk_window_resize(GTK_WINDOW(mainwindow), w, h);
+	}
+
+	if(getBooleanConfValue(LAST_WINDOW_MAXIMIZED))
+		gtk_window_maximize(GTK_WINDOW(mainwindow));
+	else
+		gtk_window_unmaximize(GTK_WINDOW(mainwindow));
+
 }
 
 /*
@@ -442,4 +451,18 @@ void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data) {
 		ui_mainwindow_save_position();
 		gtk_widget_hide(mainwindow);
 	}
+}
+
+gboolean on_mainwindow_window_state_event (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+	
+	if(!GTK_WIDGET_VISIBLE(mainwindow))
+		return FALSE;
+	
+	if((event->type) == (GDK_WINDOW_STATE)) {
+		if((((GdkEventWindowState*)event)->new_window_state) & GDK_WINDOW_STATE_MAXIMIZED)
+			setBooleanConfValue(LAST_WINDOW_MAXIMIZED, TRUE);
+		else
+			setBooleanConfValue(LAST_WINDOW_MAXIMIZED, FALSE);
+	}
+	return FALSE;
 }

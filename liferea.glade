@@ -20,6 +20,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <signal name="delete_event" handler="on_close" last_modification_time="Tue, 15 Jun 2004 04:16:40 GMT"/>
+  <signal name="window_state_event" handler="on_mainwindow_window_state_event" last_modification_time="Tue, 20 Jul 2004 05:12:24 GMT"/>
 
   <child>
     <widget class="GtkVBox" id="vbox1">

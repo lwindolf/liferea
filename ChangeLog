@@ -20,6 +20,8 @@
 	  during startup. Also favicon.ico files are now retrieved
 	  from the webserver path where the feed is located. Only
 	  if this fails the webserver root is tried. (Lars Lindner)
+	* Liferea now saves when the mainwindow is maximized.
+	  (Marc Deslauriers)
 	
 	Bugfixes:
 

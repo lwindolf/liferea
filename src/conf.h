@@ -56,6 +56,7 @@
 #define LAST_WINDOW_Y			"/apps/liferea/last-window-y"
 #define LAST_WINDOW_WIDTH		"/apps/liferea/last-window-width"
 #define LAST_WINDOW_HEIGHT		"/apps/liferea/last-window-height"
+#define LAST_WINDOW_MAXIMIZED		"/apps/liferea/last-window-maximized"
 #define LAST_VPANE_POS			"/apps/liferea/last-vpane-pos"
 #define LAST_HPANE_POS			"/apps/liferea/last-hpane-pos"
 #define LAST_ITEMLIST_MODE		"/apps/liferea/last-itemlist-mode"

@@ -157,4 +157,10 @@ gboolean
 on_close                               (GtkWidget       *widget,
                                         GdkEvent        *event,
                                         gpointer         user_data);
+
+gboolean
+on_mainwindow_window_state_event       (GtkWidget       *widget,
+                                        GdkEvent        *event,
+                                        gpointer         user_data);
+
 #endif
