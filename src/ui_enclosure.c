@@ -26,6 +26,7 @@
 #include "support.h"
 #include "ui_popup.h"
 #include "ui_enclosure.h"
+#include "debug.h"
 
 static GSList *types = NULL;
 
@@ -40,7 +41,7 @@ void ui_enclosure_init(void) {
 	
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "mime.xml", common_get_cache_path());
 	if(NULL == (doc = xmlParseFile(filename))) {
-		g_warning("could not load enclosure type config file!");
+		debug0(DEBUG_CONF, "could not load enclosure type config file!");
 	} else {
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
 			g_warning("could not read root element from enclosure type config file!");
