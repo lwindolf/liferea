@@ -1427,12 +1427,14 @@ gint checkForUpdateResults(gpointer data) {
 	if(NULL == (request = g_async_queue_try_pop(results)))
 		return TRUE;
 
+	gdk_threads_enter();
 	if(NULL != request->new_fp) {
 		type = getFeedType(request->fp);
 		g_assert(NULL != feedHandler);
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
 			/* can happen during a long update e.g. of an OCS directory, then the type is not set, FIXME ! */
 			//g_warning(g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type));
+			gdk_threads_leave();
 			return TRUE;
 		}
 
@@ -1442,28 +1444,32 @@ gint checkForUpdateResults(gpointer data) {
 		else {
 			/* Otherwise we simply use the new feed info... */
 			copyFeed(request->fp, request->new_fp);
-//			print_status(g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp)));
+			print_status(g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp)));
 		}
 		
 		/* note this is to update the feed URL on permanent redirects */
 		if(0 != strcmp(request->feedurl, getFeedSource(request->fp))) {
 			setFeedSource(request->fp, g_strdup(request->feedurl));	
-//			print_status(g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp)));
+			print_status(g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp)));
 		}
 
-		/* now fp contains the actual feed infos */
-		saveFeed(request->fp);
+		if(NULL != request->fp) {
+			/* now fp contains the actual feed infos */
+			saveFeed(request->fp);
 
-		if((NULL != request->fp) && (selected_fp == request->fp)) {
-			clearItemList();
-			loadItemList(request->fp, NULL);
-			preFocusItemlist();
+			if(selected_fp == request->fp) {
+				clearItemList();
+				loadItemList(request->fp, NULL);
+				preFocusItemlist();
+			}
+			
+			redrawFeedList();	// FIXME: maybe this is overkill ;=)
 		}
-		redrawFeedList();	// FIXME: maybe this is overkill ;=)		
 	} else {
-//		print_status(g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp)));
+		print_status(g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp)));
 		request->fp->available = FALSE;
 	}
+	gdk_threads_leave();
 	
 	return TRUE;
 }
@@ -1558,6 +1564,8 @@ GtkTreeStore * getFeedStore(void) {
 }
 
 void clearItemList(void) {
+
+	selected_ip = NULL;
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
 }
 
