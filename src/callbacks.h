@@ -93,10 +93,6 @@ on_itemlist_button_press_event         (GtkWidget       *widget,
                                         gpointer         user_data);
 
 void
-on_searchbtn_clicked                   (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
 on_hidesearch_clicked                  (GtkButton       *button,
                                         gpointer         user_data);
 
@@ -228,10 +224,13 @@ void on_popup_next_unread_item_selected(void);
 void on_popup_zoomin_selected(void);
 void on_popup_zoomout_selected(void);
 
-void
-on_feedsterbtn_clicked                 (GtkButton       *button,
-                                        gpointer         user_data);
+/* in ui_search.c */
 
+void on_searchbtn_clicked(GtkButton *button, gpointer user_data);
+void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data);
+void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data);
+
+/* in export.c */
 void
 on_import_activate                     (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
@@ -245,15 +244,7 @@ on_exportfileselect_pressed            (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_exportfile_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
 on_importfileselect_clicked            (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_importfile_clicked                  (GtkButton       *button,
                                         gpointer         user_data);
 
 void

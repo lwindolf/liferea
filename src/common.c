@@ -1,5 +1,5 @@
 /*
-   common routines
+   common routines for Liferea
    
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
@@ -10,7 +10,7 @@
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   MERuri[i]ANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
@@ -135,7 +135,7 @@ static gchar* convert(unsigned char *in, gchar *encoding)
 
 /* Conversion function which should be applied to all read XML strings, 
    to ensure proper UTF8. doc points to the xml document and its encoding and
-   string is a xmlChar pointer to the read string. The result gchar
+   string is a xmlchar pointer to the read string. The result gchar
    string is returned, the original XML string is freed. */
 gchar * CONVERT(xmlChar *string) {
 
@@ -363,4 +363,52 @@ gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension) {
 		return g_strdup_printf("%s/%s_%s.%s", getCachePath(), keyprefix, keypos, extension);
 	else
 		return g_strdup_printf("%s/%s_%s", getCachePath(), keyprefix, keypos);
+}
+
+static gchar * byte_to_hex(gint nr) {
+	gchar *result = NULL;
+	
+	result = g_strdup_printf("%%%d%d", nr - (nr % 0x10), nr % 0x10);
+	return result;
+}
+
+gchar * encodeURIString(gchar *uriString) {
+	gchar		*newURIString;
+	gchar		*tmp, *hex;
+	int		i;
+
+	newURIString = g_strdup("");
+	for(i = 0; i < strlen(uriString); i++) {
+		if((('A' <= uriString[i]) && (uriString[i] <= 'Z')) ||
+		   (('a' <= uriString[i]) && (uriString[i] <= 'z')) ||
+		   (('0' <= uriString[i]) && (uriString[i] <= '9')) ||
+		   (uriString[i] == '-') || 
+		   (uriString[i] == '_') ||
+		   (uriString[i] == '.') || 
+		   (uriString[i] == '?') || 
+		   (uriString[i] == '!') ||
+		   (uriString[i] == '~') ||
+		   (uriString[i] == '*') ||
+		   (uriString[i] == '\'') ||
+		   (uriString[i] == '(') ||
+		   (uriString[i] == ')'))
+		   	tmp = g_strdup_printf("%s%c", newURIString, uriString[i]);
+		else if(uriString[i] == ' ')
+			tmp = g_strdup_printf("%s%c", newURIString, '+');
+		else if(uriString[i] <= 0x007f) {
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
+		} else if(uriString[i] <= 0x07FF) {
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0xc0 | (uriString[i] >> 6)));g_free(hex);g_free(newURIString);newURIString = tmp;
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0x80 | (uriString[i] & 0x3F)));g_free(hex);
+		} else {
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0xe0 | (uriString[i] >> 12)));g_free(hex);g_free(newURIString); newURIString = tmp;
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0x80 | ((uriString[i] >> 6) & 0x3F)));g_free(hex);g_free(newURIString); newURIString = tmp;
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0x80 | (uriString[i] & 0x3F)));g_free(hex);
+		}
+		g_free(newURIString); 
+		newURIString = tmp;
+	}
+	g_free(uriString);
+
+	return newURIString;
 }

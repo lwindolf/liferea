@@ -62,4 +62,6 @@ gchar * formatDate(time_t t);
 gchar *	getExtension(gint type);
 gchar *	getCachePath(void);
 gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension);
+
+gchar * encodeURIString(gchar *uriString);
 #endif

@@ -41,6 +41,7 @@ static void createFeedTag(gpointer key, gpointer value, gpointer userdata) {
 	xmlNewProp(feedNode, BAD_CAST"title", BAD_CAST getFeedTitle(fp));
 	xmlNewProp(feedNode, BAD_CAST"description", BAD_CAST getFeedTitle(fp));
 	xmlNewProp(feedNode, BAD_CAST"xmlUrl", BAD_CAST getFeedSource(fp));
+	xmlNewProp(feedNode, BAD_CAST"htmlUrl", BAD_CAST "");
 }
 
 void exportOPMLFeedList(gchar *filename) {

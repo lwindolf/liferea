@@ -678,6 +678,10 @@ char * downloadURL(struct feed_request *request) {
 		data = DownloadFeed(tmpurl, request);
 		g_free(tmpurl);
 	} else {
+		/* fake a status */
+		request->lasthttpstatus = 0;
+		request->lastmodified = NULL;
+		
 		/* no :// so we assume its a local path */
 		if(0 == stat(request->feedurl, &statinfo)) {
 			if(NULL != (f = fopen(request->feedurl, "r"))) {
@@ -688,10 +692,6 @@ char * downloadURL(struct feed_request *request) {
 				memset(data, 0, statinfo.st_size + 1);
 				fread(data, statinfo.st_size, 1, f);
 				fclose(f);
-				
-				/* fake a status */
-				request->lasthttpstatus = 200;
-				request->lastmodified = NULL;
 			} else {
 				print_status(g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl));
 			}

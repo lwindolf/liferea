@@ -12,6 +12,7 @@ liferea_SOURCES = \
 	support.c support.h \
 	interface.c interface.h \
 	callbacks.c callbacks.h \
+	ui_search.c \
 	ui_filter.c \
 	ui_tray.c \
 	ui_popup.c \

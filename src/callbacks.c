@@ -1623,10 +1623,3 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	gtk_main_quit();
 	return FALSE;
 }
-
-void
-on_feedsterbtn_clicked                 (GtkButton       *button,
-                                        gpointer         user_data)
-{
-
-}

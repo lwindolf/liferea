@@ -15,6 +15,7 @@
 	  Barbe, Mike Rhodes and others).
 	* Added a background shading of read items in the
 	  condensed item view.
+	* Added to options to zoom in and out of the HTML view.
 	* Fixed a bug with permanent URL redirection reported
 	  by Christophe Barbe.
 	* Fixed a bug in the blogChannel module support, that
