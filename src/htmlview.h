@@ -187,6 +187,18 @@ gfloat	ui_htmlview_get_zoom(void);
 gchar *	ui_htmlview_get_selected_URL(void);
 
 /**
+ * Function to execute the commands needed to open up a URL with the
+ * browser specified in the preferences.
+ *
+ * @param the URI to load
+ *
+ * @returns TRUE if the URI was opened, or FALSE if the caller should
+ * load the URI in the htmlview itself.
+ */
+
+gboolean ui_htmlview_link_clicked(const gchar *uri);
+
+/**
  * Resets the horizontal and vertical scrolling of the items HTML view. 
  */
 void	ui_htmlview_reset_scrolling(void);

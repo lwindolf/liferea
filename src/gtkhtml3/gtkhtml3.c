@@ -62,7 +62,7 @@ static gchar		*selectedURL = NULL;
 
 /* some prototypes */
 static void on_link_clicked(GtkHTML *html, const gchar *url, gpointer data);
-
+void launchURL(const gchar *url);
 /* ----------------------------------------------------------------------------- */
 /* GtkHTML Callbacks taken from testgtkhtml.c of gtkhtml-3.0.10
    these are needed to automatically resolve links and support formulars
@@ -252,29 +252,9 @@ static void kill_old_connections(GtkHTML *html) {
 }
 
 static void on_link_clicked(GtkHTML *html, const gchar *url, gpointer data) {
-	GError	*error = NULL;
-	gchar	*cmd, *tmp;
-
-	if(2 == getNumericConfValue(GNOME_BROWSER_ENABLED))
-		cmd = getStringConfValue(BROWSER_COMMAND);
-	else
-		cmd = getStringConfValue(GNOME_DEFAULT_BROWSER_COMMAND);
-		
-	g_assert(NULL != cmd);
-	if(NULL == strstr(cmd, "%s")) {
-		ui_show_error_box(_("Invalid browser command! There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
+	if (ui_htmlview_link_clicked(url) == FALSE) {
+		launchURL(url);
 	}
-	tmp = g_strdup_printf(cmd, url);
-	g_free(cmd);
-		
-	g_spawn_command_line_async(tmp, &error);
-	if((NULL != error) && (0 != error->code)) {
-		ui_mainwindow_set_status_bar("browser command failed: %s", error->message);
-		g_error_free(error);
-	} else	
-		ui_mainwindow_set_status_bar("starting: \"%s\"", tmp);
-		
-	g_free(tmp);
 }
 
 /* simulate an async object isntantiation */

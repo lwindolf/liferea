@@ -341,6 +341,34 @@ gfloat ui_htmlview_get_zoom(void) {
 	return ((getZoomLevelFunc)methods[GETZOOMLEVEL])(); 
 }
 
+gboolean ui_htmlview_link_clicked(const gchar *uri) {
+	GError  *error = NULL;
+	gchar   *cmd, *tmp;
+	
+	if(2 == getNumericConfValue(GNOME_BROWSER_ENABLED))
+		cmd = getStringConfValue(BROWSER_COMMAND);
+	else
+		cmd = g_strdup(GNOME_DEFAULT_BROWSER_COMMAND);
+	
+	g_assert(NULL != cmd);
+	if(NULL == strstr(cmd, "%s")) {
+		ui_show_error_box(_("Invalid browser command! There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
+	}
+	tmp = g_strdup_printf(cmd, uri);
+	g_free(cmd);
+	
+	g_spawn_command_line_async(tmp, &error);
+	if((NULL != error) && (0 != error->code)) {
+		ui_mainwindow_set_status_bar(_("browser command failed: %s"), error->message);
+		g_error_free(error);
+	} else
+		ui_mainwindow_set_status_bar(_("starting: \"%s\""), tmp);
+	
+	g_free(tmp);
+	return TRUE;
+}
+
+
 /* -------------------------------------------------------------------- */
 /* other functions... 							*/
 /* -------------------------------------------------------------------- */

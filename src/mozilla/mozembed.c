@@ -140,6 +140,17 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
 	}
 }
 
+/**
+ * mozembed_dom_mouse_click_cb: GTKMOZEMBED SIGNAL, when the document
+ * tries to load a new document, for example when someone clicks on a
+ * link in a web page. This signal gives the embedder the opportunity
+ * to keep the new document from being loaded. The uri argument is the
+ * uri that's going to be loaded.
+ */
+gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
+	return ui_htmlview_link_clicked(uri);
+}
+
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
 static void set_html_view(GtkWidget *pane) {
@@ -170,6 +181,7 @@ static void set_html_view(GtkWidget *pane) {
 		//{ "size_to",         mozembed_size_to_cb           },
 		{ "new_window",      mozembed_new_window_cb        },
 		//{ "security_change", mozembed_security_change_cb   },
+		{ "open_uri",		 mozembed_open_uri_cb},
 		/* terminator -- must be last in the list! */
 		{ NULL, NULL } 
 	};
