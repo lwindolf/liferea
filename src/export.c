@@ -211,6 +211,40 @@ static long parse_long(gchar *str, long def) {
 	return num;
 }
 
+/** 
+ * called by import_parse_outline to parse all children outline tags
+ * as vfolder rule descriptions 
+ */
+static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
+	xmlChar		*type, *ruleId, *value, *additive;
+	rulePtr		rp;
+	
+	/* process any children */
+	cur = cur->xmlChildrenNode;
+	while(cur != NULL) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
+			type = xmlGetProp(cur, BAD_CAST"type");
+			if(type != NULL && !xmlStrcmp(type, BAD_CAST"rule")) {
+
+				ruleId = xmlGetProp(cur, BAD_CAST"rule");
+				value = xmlGetProp(cur, BAD_CAST"value");
+				
+				debug3(DEBUG_CACHE, "loading rule \"%s\" \"%s\" \"%s\"\n", type, ruleId, value);
+
+				additive = xmlGetProp(cur, BAD_CAST"additive");
+				if(additive != NULL && !xmlStrcmp(additive, BAD_CAST"true"))
+					vfolder_add_rule(vp, ruleId, value, FALSE);
+				else
+					vfolder_add_rule(vp, ruleId, value, FALSE);
+				xmlFree(ruleId);
+				xmlFree(value);
+			}
+			xmlFree(type);
+		}
+		cur = cur->next;
+	}
+}
+
 static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr, *sortStr;
 	gchar		*title, *source, *typeStr, *tmp;
@@ -281,6 +315,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		if((NULL != typeStr) && (0 == strcmp("vfolder", typeStr))) {
 			dontParseChildren = TRUE;
 			feed_set_type(fp, FST_VFOLDER);	/* should prevent feed_load to do anything */
+			import_parse_children_as_rules(cur, fp);
 		}
 
 		/* Set the cache limit */
