@@ -112,7 +112,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(UPDATE_ON_STARTUP));
 	
 	widget = lookup_widget(prefdialog, "helpoptionbtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(DISABLE_HELPFEEDS));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), !getBooleanConfValue(DISABLE_HELPFEEDS));
 	
 	widget = lookup_widget(prefdialog, "itemCountBtn");
 	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
@@ -277,7 +277,7 @@ void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 
 
 void on_helpoptionbtn_clicked(GtkButton *button, gpointer user_data) {
-	setBooleanConfValue(DISABLE_HELPFEEDS, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
+	setBooleanConfValue(DISABLE_HELPFEEDS, !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
 
 
