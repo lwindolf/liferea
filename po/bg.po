@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISLD Localization Project 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-09 02:39+0200\n"
-"PO-Revision-Date: 2004-08-17 12:01+0300\n"
+"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"PO-Revision-Date: 2004-09-09 13:58+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/common.c:277
 msgid "[Parser error output was truncated!]"
@@ -57,7 +57,7 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: src/conf.c:462
 msgid "feedlist.opml"
-msgstr ""
+msgstr "feedlist.opml"
 
 #: src/conf.c:487
 #, c-format
@@ -215,9 +215,8 @@ msgid "Feed:"
 msgstr "Абонамент:"
 
 #: src/feed.c:953 src/interface.c:519
-#, fuzzy
 msgid "VFolder"
-msgstr "П_апка"
+msgstr "Виртуална папка"
 
 #: src/feed.c:964 src/interface.c:1071 src/interface.c:1473 src/item.c:269
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
@@ -334,9 +333,8 @@ msgid ""
 msgstr ""
 
 #: src/interface.c:137 src/interface.c:2800
-#, fuzzy
 msgid "Liferea 0.6.0"
-msgstr "Liferea 0.5.3 - RSS агрегатор"
+msgstr "Liferea 0.6.0 - RSS агрегатор"
 
 #: src/interface.c:154
 msgid "_Program"
@@ -382,7 +380,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "Осъвременяване на _всички"
 
-#: src/interface.c:237 src/ui_mainwindow.c:174
+#: src/interface.c:237 src/ui_mainwindow.c:188
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 "Осъвременяване на всички абонаменти. OCS директориите не се осъвременяват."
@@ -439,7 +437,7 @@ msgstr "_Записи"
 msgid "_Next Unread Item"
 msgstr "_Следващия непрочетен запис"
 
-#: src/interface.c:315 src/ui_mainwindow.c:172
+#: src/interface.c:315 src/ui_mainwindow.c:186
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -464,19 +462,16 @@ msgid "Toggles the item flag."
 msgstr "Прикрепяне на флаг на записа"
 
 #: src/interface.c:345
-#, fuzzy
 msgid "Remove Selected"
-msgstr "_Изтриване на избрания"
+msgstr "Изтриване на избраните"
 
 #: src/interface.c:348
-#, fuzzy
 msgid "Removes the selected item."
-msgstr "Премахване на маркирания абонамент."
+msgstr "Премахване на избрания запис."
 
 #: src/interface.c:354
-#, fuzzy
 msgid "Remove All"
-msgstr "Премахване на записи"
+msgstr "Премахване на всички"
 
 #: src/interface.c:357
 msgid "Removes all items of the currently selected feed."
@@ -1052,7 +1047,6 @@ msgid "Contributors"
 msgstr "Сътрудници"
 
 #: src/interface.c:2850
-#, fuzzy
 msgid ""
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -1070,7 +1064,7 @@ msgid ""
 "Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
 "Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 msgstr ""
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
@@ -1083,6 +1077,8 @@ msgstr ""
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
+"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 
 #: src/interface.c:2856
 msgid "Translation"
@@ -1100,13 +1096,12 @@ msgid ""
 msgstr ""
 
 #: src/interface.c:3033
-#, fuzzy
 msgid "VFolder Properties"
-msgstr "_Настройки на абонамента"
+msgstr "Настройки на виртуалната папка"
 
 #: src/interface.c:3049
 msgid "Name"
-msgstr ""
+msgstr "Име"
 
 #: src/interface.c:3078
 msgid ""
@@ -1116,7 +1111,7 @@ msgstr ""
 
 #: src/interface.c:3091
 msgid "Rules"
-msgstr ""
+msgstr "Правила"
 
 #: src/item.c:251 src/item.c:253 src/item.c:264
 msgid "[No title]"
@@ -1181,7 +1176,7 @@ msgstr ""
 #: src/main.c:225
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
-msgstr ""
+msgstr "Liferea срещна непознат аргумент %s\n"
 
 #: src/main.c:244
 msgid ""
@@ -1360,48 +1355,44 @@ msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>Не може да бъде намерена RDF/RSS началото!</p>"
 
 #: src/rule.c:132
-#, fuzzy
 msgid "Item"
-msgstr "Запис:"
+msgstr "Запис"
 
 #: src/rule.c:132
 msgid "does contain"
-msgstr ""
+msgstr "съдържа"
 
 #: src/rule.c:132
 msgid "does not contain"
-msgstr ""
+msgstr "не съдържа"
 
 #: src/rule.c:133
-#, fuzzy
 msgid "Item title"
-msgstr "[Без заглавие]"
+msgstr "Заглавие на записа"
 
 #: src/rule.c:133 src/rule.c:134
 msgid "does match"
-msgstr ""
+msgstr "съвпада"
 
 #: src/rule.c:133 src/rule.c:134
 msgid "does not match"
-msgstr ""
+msgstr "не съвпада"
 
 #: src/rule.c:134
 msgid "Item body"
 msgstr ""
 
 #: src/rule.c:135
-#, fuzzy
 msgid "Read status"
 msgstr "Поставяне на статус на прочетен"
 
 #: src/rule.c:135
-#, fuzzy
 msgid "is unread"
-msgstr "Следващ непрочетен"
+msgstr "е непрочетен"
 
 #: src/rule.c:135
 msgid "is read"
-msgstr ""
+msgstr "е прочетен"
 
 #: src/rule.c:136
 msgid "Flag status"
@@ -1409,11 +1400,11 @@ msgstr ""
 
 #: src/rule.c:136
 msgid "is flagged"
-msgstr ""
+msgstr "е с флаг"
 
 #: src/rule.c:136
 msgid "is unflagged"
-msgstr ""
+msgstr "е без флаг"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
@@ -1537,14 +1528,14 @@ msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "Адресът на \"%s\" беше променен за постоянно и затова беше осъвременен"
 
 #: src/ui_feed.c:182
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
 "p>%s"
 msgstr ""
 "<p>Видът на абонамента не може да бъде определен.·Моля, проверете дали това "
-"е поддържан от програмата формат!</p>"
+"е поддържан от програмата формат!</p>%s"
 
 #: src/ui_feed.c:199
 #, c-format
@@ -1557,9 +1548,8 @@ msgid "\"%s\" is not available"
 msgstr "\"%s\" не е достъпен"
 
 #: src/ui_feed.c:364
-#, fuzzy
 msgid "Unknown source"
-msgstr "оригинален източник"
+msgstr "Непознат източник"
 
 #: src/ui_feed.c:456
 msgid "Directories cannot be autoupdated."
@@ -1580,58 +1570,58 @@ msgstr "Този източник няма подразбиращ се инте�
 msgid "Choose File"
 msgstr "Избор на файл"
 
-#: src/ui_feedlist.c:399
+#: src/ui_feedlist.c:356
 msgid "You have to select a feed entry"
 msgstr "Трябва да изберете адрес на източник"
 
-#: src/ui_feedlist.c:409
+#: src/ui_feedlist.c:366
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea·е в изключен режим.·Осъвременявания на абонаментите не са възможни."
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:387
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
+#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
 msgid "Deleting entry"
 msgstr "Изтриване на запис"
 
-#: src/ui_feedlist.c:473
-#, fuzzy, c-format
+#: src/ui_feedlist.c:430
+#, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "Сигурни ли сте, че искате да изтриете·%s·и всички записи в него?"
+msgstr "Сигурни ли сте, че искате да изтриете·\"%s\"·и всички записи в него?"
 
-#: src/ui_feedlist.c:476
-#, fuzzy, c-format
+#: src/ui_feedlist.c:433
+#, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Сигурни ли сте, че искате да изтриете·%s?"
+msgstr "Сигурни ли сте, че искате да изтриете·\"%s\"?"
 
-#: src/ui_feedlist.c:484
+#: src/ui_feedlist.c:441
 msgid "Deletion Confirmation"
 msgstr "Потвърждаване при изтриване"
 
-#: src/ui_feedlist.c:521
+#: src/ui_feedlist.c:478
 msgid "You must select a feed entry"
 msgstr "Трябва да изберете запис"
 
-#: src/ui_feedlist.c:522
+#: src/ui_feedlist.c:479
 msgid "You must select a feed entry."
 msgstr "Трябва да изберете запис."
 
-#: src/ui_feedlist.c:568
+#: src/ui_feedlist.c:505
 msgid "New subscription"
 msgstr "Нов абонамент"
 
-#: src/ui_folder.c:78
+#: src/ui_folder.c:76 src/ui_folder.c:102
 msgid "A folder must be selected."
 msgstr "Папката трябва да бъде избрана."
 
-#: src/ui_folder.c:178
+#: src/ui_folder.c:220
 msgid "<i>(empty)</i>"
 msgstr "<i>(празен)</i>"
 
-#: src/ui_folder.c:242
+#: src/ui_folder.c:349
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "вътрешна грешка! непознат тип запис! не може да бъде изобразенаподходяща "
@@ -1657,28 +1647,27 @@ msgstr "Трябва да изберете абонамент, за да изт�
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:719
+#: src/ui_itemlist.c:723
 msgid "There are no unread items "
 msgstr "Няма непрочетени записи "
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:185
 msgid "New Feed"
 msgstr "Нов абонамент"
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:185
 msgid "Add a new subscription."
 msgstr "Добавяне на нов абонамент."
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:186
 msgid "Next Unread"
 msgstr "Следващ непрочетен"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:187
 msgid "Mark As Read"
 msgstr "Избиране като прочетен"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:187
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1686,27 +1675,27 @@ msgstr ""
 "Маркиране като прочетени на всички избрани абонаменти или на всички "
 "абонаменти в избраната папка."
 
-#: src/ui_mainwindow.c:174
+#: src/ui_mainwindow.c:188
 msgid "Update All"
 msgstr "Осъвременяване на всички"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:189
 msgid "Search"
 msgstr "Търсене"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:189
 msgid "Search all feeds."
 msgstr "Търсене във всички абонаменти."
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:190
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:190
 msgid "Edit preferences."
 msgstr "Промяна на настройките."
 
-#: src/ui_mainwindow.c:191
+#: src/ui_mainwindow.c:205
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1759,11 +1748,11 @@ msgstr ""
 "прочетете документацията предоставена от абонамента за помощ или секцията с "
 "Често задаваните въпроси на страницата на програмата.</p>"
 
-#: src/ui_mainwindow.c:276
+#: src/ui_mainwindow.c:290
 msgid "Liferea is now online"
 msgstr "Liferea е включена"
 
-#: src/ui_mainwindow.c:279
+#: src/ui_mainwindow.c:293
 msgid "Liferea is now offline"
 msgstr "Liferea е в режим \"изключен\""
 
@@ -1788,9 +1777,8 @@ msgid "/_New"
 msgstr "/_Нов"
 
 #: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:108 src/ui_popup.c:116
-#, fuzzy
 msgid "/_New/New _Subscription"
-msgstr "_Нов абонамент"
+msgstr "/_Нов/Нов·_абонамент"
 
 #: src/ui_popup.c:90 src/ui_popup.c:100 src/ui_popup.c:109 src/ui_popup.c:117
 msgid "/_New/New F_older"
@@ -1825,9 +1813,8 @@ msgid "/Toggle Item _Flag"
 msgstr "/Прикрепяне на _флаг към записа"
 
 #: src/ui_popup.c:124
-#, fuzzy
 msgid "/R_emove Item"
-msgstr "Премахване на записи"
+msgstr "/Пре_махване на запис"
 
 #: src/ui_popup.c:126
 msgid "/_Next Unread Item"
@@ -1917,14 +1904,12 @@ msgstr "Търсене за \"%s\""
 
 #: src/ui_search.c:96
 msgid "Please do a search first!"
-msgstr ""
+msgstr "Моля, първо направете търсене!"
 
 #: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
-msgid_plural "%d new items!"
-msgstr[0] "%d нов запис!"
-msgstr[1] "%d нов запис!"
+msgstr "%d нов запис!"
 
 #: src/ui_tray.c:103
 msgid "No new items."
