@@ -71,17 +71,14 @@
 #define PROXY_PASSWD		"/system/http_proxy/authentication_password"
 
 /* initializing methods */
-void	initConfig(void);
-void	loadConfig(void);
-
-/* config loading on startup */
-void	loadEntries(void);
+void	conf_init(void);
+void	conf_load(void);
 
 /* feed/directory list entry manipulation methods */
-gchar* conf_new_id();
-void	loadSubscriptions();
-void conf_feedlist_schedule_save();
-void conf_feedlist_save();
+gchar*	conf_new_id();
+void	conf_load_subscriptions();
+void 	conf_feedlist_schedule_save();
+void 	conf_feedlist_save();
 
 /* methods to modify folder contents */
 GSList * getFeedKeyList(gchar *keyprefix);

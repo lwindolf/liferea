@@ -87,7 +87,7 @@ static gboolean is_gconf_error(GError **err) {
 }
 
 /* called once on startup */
-void initConfig() {
+void conf_init() {
 	int	ualength;
 	char	*lang;
 	
@@ -126,7 +126,7 @@ void initConfig() {
 }
 
 /* maybe called several times to reload configuration */
-void loadConfig() {
+void conf_load() {
 	gint	maxitemcount;
 	
 	/* check if important preferences exist... */
@@ -478,7 +478,7 @@ static void conf_feedlist_erase_gconf() {
 	gconf_client_suggest_sync(client, NULL);
 }
 
-void loadSubscriptions(void) {
+void conf_load_subscriptions(void) {
 	gchar	*filename;
 	gboolean gconf_changed;
 	

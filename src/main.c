@@ -169,10 +169,10 @@ static void main_schedule_update_default(nodePtr ptr) {
 
 int main(int argc, char *argv[]) {	
 	gulong		debug_flags = 0;
-	gboolean	start_iconified = FALSE;
+	gboolean	startIconified = FALSE;
 	const char 	*arg;
 	gint		i;
-	GtkWidget *dialog;
+	GtkWidget	*dialog;
 	
 #ifdef ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -211,7 +211,7 @@ int main(int argc, char *argv[]) {
 			return 0;
 		}
 		else if(!strcmp(arg, "--iconify")) {
-			start_iconified = TRUE;
+			startIconified = TRUE;
 		}
 	}
 	set_debug_level(debug_flags);
@@ -225,7 +225,7 @@ int main(int argc, char *argv[]) {
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
-	if (main_lock() == -1) {
+	if(main_lock() == -1) {
 		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
 								  0,
 								  GTK_MESSAGE_ERROR,
@@ -242,20 +242,13 @@ int main(int argc, char *argv[]) {
 		ui_queue_init();		/* set up callback queue for other threads */
 		
 		/* order is important! */
-		initConfig();			/* initialize gconf */
+		conf_init();			/* initialize gconf */
 		ui_htmlview_init();		/* setup HTML widgets */
 		download_init();		/* Initialize the download subsystem */
 		metadata_init();
-		mainwindow = ui_mainwindow_new();
-		loadConfig();			/* Load feeds from cache */
 		feed_init();			/* register feed types */
-		ui_init();			/* initialize gconf configured GUI behaviour */
-		
-		gtk_widget_show(mainwindow);
-		ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
-		
-		if(start_iconified)
-			gtk_widget_hide(mainwindow);
+		conf_load();			/* load global feed settings */
+		ui_init(startIconified);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 		
 		switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */

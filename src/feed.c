@@ -184,8 +184,6 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 /* initializing function, only called upon startup */
 void feed_init(void) {
 
-	srand((unsigned int)time(NULL));	/* rand() used in favicon downloading */
-
 	feedhandlers = g_slist_append(feedhandlers, initOCSFeedHandler()); /* Must come before RSS/RDF */
 	feedhandlers = g_slist_append(feedhandlers, initRSSFeedHandler());
 	feedhandlers = g_slist_append(feedhandlers, initCDFFeedHandler());
@@ -219,7 +217,6 @@ feedPtr feed_new(void) {
  * (2) Inside of feed_process_result
  * (3) The callback where items are removed from the itemlist
  */
-
 void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode, itemNode;

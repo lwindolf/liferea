@@ -79,10 +79,10 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 /*------------------------------------------------------------------------------*/
 
 /* GUI initialization, must be called only once! */
-void ui_init(void) {
+void ui_init(gboolean startIconified) {
 	int i;
-	
-	ui_mainwindow_restore_position();
+
+	mainwindow = ui_mainwindow_new();
 	
 	/* load pane proportions */
 	if(0 != getNumericConfValue(LAST_VPANE_POS))
@@ -109,11 +109,17 @@ void ui_init(void) {
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
 	ui_popup_setup_menues();		/* create popup menues */
-	loadSubscriptions();
+	conf_load_subscriptions();
 		
 	/* setup one minute timer for automatic updating, and try updating now */
  	g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
 	ui_feedlist_auto_update(NULL);
+	
+	gtk_widget_show(mainwindow);
+	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
+		
+	if(startIconified)
+		gtk_widget_hide(mainwindow);
 }
 
 void ui_redraw_widget(gchar *name) {

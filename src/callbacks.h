@@ -56,7 +56,7 @@ extern GdkPixbuf *icons[MAX_ICONS];
  * GUI initialization methods. Sets up dynamically created
  * widgets, load persistent settings and starts cache loading.
  */
-void ui_init(void);
+void ui_init(gboolean startIconified);
 
 #define ui_redraw_itemlist()	ui_redraw_widget("Itemlist");
 #define ui_redraw_feedlist()	ui_redraw_widget("feedlist");

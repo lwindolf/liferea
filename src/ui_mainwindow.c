@@ -135,6 +135,7 @@ void ui_mainwindow_zoom_out() {
 }
 
 GtkWidget* ui_mainwindow_new() {
+
 	GtkWidget *window = create_mainwindow();
 	GtkWidget *toolbar = lookup_widget(window, "toolbar");
 	GtkTooltips *tooltips = gtk_tooltips_new();
@@ -160,6 +161,7 @@ GtkWidget* ui_mainwindow_new() {
 	TOOLBAR_ADD(toolbar,  _("Preferences"), GTK_STOCK_PREFERENCES, tooltips,  _("Edit preferences."), on_prefbtn_clicked);
 	gtk_widget_show_all(GTK_WIDGET(toolbar));
 
+	ui_mainwindow_restore_position();
 	
 	return window;
 }
