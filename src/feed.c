@@ -473,7 +473,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	new_fp->items = NULL;
 	feed_free(new_fp);
 	
-	doTrayIcon(traycount);		/* finally update the tray icon */
+	ui_tray_add_new(traycount);		/* finally update the tray icon */
 }
 
 /**

@@ -18,10 +18,27 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-/*#include <gtk/gtk.h>*/
 #include <glib-2.0/glib.h>
 
-void doTrayIcon(gint count);
-void undoTrayIcon(void);
-void setTrayToolTip(gchar *string);
-void updateTrayIcon(void);
+/**
+ * Add some number of messages to the new message count in the tooltip
+ * @param count number of messages.
+ */
+void ui_tray_add_new(gint count);
+
+/**
+ * Set the tooltip to display zero new messages.
+ */
+void ui_tray_zero_new(void);
+
+/**
+ * Set the tooltip message in the systray
+ * @param message new message
+ */
+void ui_tray_tooltip_set(gchar *message);
+
+/**
+ * Enable or disable the systray icon
+ * @param enabled set to TRUE to show icon, or false to hide it
+ */
+void ui_tray_enable(gboolean enabled);

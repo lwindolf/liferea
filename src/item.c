@@ -33,6 +33,7 @@
 #include "common.h"
 #include "htmlview.h"
 #include "callbacks.h"
+#include "ui_tray.h"
 
 /* function to create a new feed structure */
 itemPtr getNewItemStruct(void) {
@@ -96,6 +97,7 @@ void markItemAsRead(itemPtr ip) {
 		if (ip->ui_data)
 			ui_update_item(ip);
 	}
+	ui_tray_zero_new();
 }
 
 /* called when a item matches a vfolder... */

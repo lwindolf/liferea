@@ -45,24 +45,27 @@ static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
 
-void setTrayToolTip(gchar *string) {
+void ui_tray_tooltip_set(gchar *message) {
 	GtkTooltipsData	*data = NULL;
 	g_assert(tray_icon_tips);
 
 	data = gtk_tooltips_data_get(GTK_WIDGET(tray_icon));
 
 	if(NULL != data) {
+		/* FIXME: Is this necessary? Gtk 2.2.4 frees these strings
+		   inside of set_tip, if needed. Also, shouldn't they be set
+		   to NULL after freeing so that GTK does not double-free
+		   them? */
 		g_free(data->tip_text);
 		g_free(data->tip_private);
 	}
 	
 	gtk_tooltips_set_tip(GTK_TOOLTIPS(tray_icon_tips), 
 					 GTK_WIDGET(eventbox),
-					 string, string);
-	g_free(string);
+					 message, message);
 }
 
-static void setTrayIcon(GdkPixbuf *icon) {
+static void ui_tray_icon_set(GdkPixbuf *icon) {
 	g_assert(tray_icon);
 
 	if(NULL != image)
@@ -73,26 +76,28 @@ static void setTrayIcon(GdkPixbuf *icon) {
 	gtk_widget_show_all(GTK_WIDGET(tray_icon));
 }
 
-void doTrayIcon(gint count) {
-
+void ui_tray_add_new(gint count) {
+	gchar *msg;
 	if(!tray_icon)
 		return;
 		
 	if(count > 0) {
-		setTrayIcon(icons[ICON_AVAILABLE]); 
+		ui_tray_icon_set(icons[ICON_AVAILABLE]); 
 		newItems += count;
-		setTrayToolTip(g_strdup_printf(_("%d new items!"), newItems));
+		msg = g_strdup_printf(_("%d new items!"), newItems);
+		ui_tray_tooltip_set(msg);
+		g_free(msg);
 	}
 }
 
-void undoTrayIcon(void) {
+void ui_tray_zero_new(void) {
 
 	if(!tray_icon)
 		return;
 		
 	if(0 != newItems) {
-		setTrayIcon(icons[ICON_EMPTY]);
-		setTrayToolTip(g_strdup(_("No new items.")));
+		ui_tray_icon_set(icons[ICON_EMPTY]);
+		ui_tray_tooltip_set(_("No new items."));
 		newItems = 0;
 	}
 }
@@ -101,7 +106,7 @@ void undoTrayIcon(void) {
    if invisible or hide it if visible */
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
 	gint		x,y;
-	undoTrayIcon();
+	ui_tray_zero_new();
 
 	if (GTK_WIDGET_VISIBLE(mainwindow)) {
 		if (gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) {
@@ -138,12 +143,12 @@ static void installTrayIcon(void) {
 		
 		tray_icon_tips = gtk_tooltips_new();
 		newItems = -1;
-		undoTrayIcon();
+		ui_tray_zero_new();
 	}
 }
 
-void updateTrayIcon(void) {
-	if(getBooleanConfValue(SHOW_TRAY_ICON)) {
+void ui_tray_enable(gboolean enabled) {
+	if(enabled) {
 		if (tray_icon == NULL)
 			installTrayIcon();
 	} else {

@@ -218,7 +218,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	feedPtr			fp;
 	GdkGeometry		geometry;
 	
-	undoTrayIcon();
+	ui_tray_zero_new();
 	
 	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
 		gtk_tree_model_get(model, &iter, 
