@@ -2343,7 +2343,7 @@ create_prefdialog (void)
   gtk_widget_show (label136);
   gtk_box_pack_start (GTK_BOX (hbox55), label136, FALSE, FALSE, 0);
 
-  vbox256 = gtk_vbox_new (FALSE, 0);
+  vbox256 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox256);
   gtk_box_pack_start (GTK_BOX (hbox55), vbox256, TRUE, TRUE, 0);
 
