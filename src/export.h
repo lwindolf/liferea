@@ -28,7 +28,7 @@
  * @param filename filename of export file
  * @returns 0 if no errors were detected
  */
-int export_OPML_feedlist(gchar *filename);
+int export_OPML_feedlist(gchar *filename, gboolean internal);
 
 /**
  * Reads an OPML file and inserts it into the feedlist.

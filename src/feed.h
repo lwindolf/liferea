@@ -91,7 +91,7 @@ typedef struct feed {
 	gint			cacheLimit;  /**< Amount of cache to save: See the cache_limit enum */
 	
 	/* feed properties used for updating */
-	GTimeVal	scheduledUpdate;	/**< time at which the feed needs to be updated */
+	GTimeVal	lastPoll;	/**< time at which the feed was last updated */
 	gboolean	updateRequested;	/**< flag set when update in progress */
 	gpointer	*request;		/**< update request structure */
 

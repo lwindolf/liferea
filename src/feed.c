@@ -775,16 +775,14 @@ gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 void feed_set_update_interval(feedPtr fp, gint interval) {
 	fp->updateInterval = interval; 
 
-	if (interval > 0)
-		feed_reset_update_counter(fp);
 	conf_feedlist_schedule_save();
 }
 
 void feed_reset_update_counter(feedPtr fp) {
 
-	g_get_current_time(&fp->scheduledUpdate);
-	fp->scheduledUpdate.tv_sec += fp->updateInterval*60;
-	debug2(DEBUG_CONF, "Reseting update counter for %s to %ld.\n", fp->title, fp->scheduledUpdate.tv_sec);
+	g_get_current_time(&fp->lastPoll);
+	conf_feedlist_schedule_save();
+	debug2(DEBUG_CONF, "Reseting last poll counter for %s to %ld.\n", fp->title, fp->lastPoll.tv_sec);
 }
 
 void feed_set_available(feedPtr fp, gboolean available) { fp->available = available; }

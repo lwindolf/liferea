@@ -131,7 +131,7 @@ int main (int argc, char *argv[]) {
 
 	/* setup the processing of feed update results */
 	ui_timeout_add(100, feed_process_update_results, NULL);
-
+	
 	gtk_widget_show(mainwindow);
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
 	

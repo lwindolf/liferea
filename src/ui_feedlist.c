@@ -615,16 +615,19 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 
 static void ui_feedlist_check_update_counter(feedPtr fp) {
 	GTimeVal	now;
-	
-	g_get_current_time(&now);
+	gint interval;
 
-	if(feed_get_update_interval(fp) > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
-		feed_schedule_update(fp);
+	g_get_current_time(&now);
+	interval = feed_get_update_interval(fp);
+	
+	if (interval > 0)
+		if (fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+			feed_schedule_update(fp);
 }
 
 gboolean ui_feedlist_auto_update(void *data) {
-
 	debug_enter("ui_feedlist_auto_update");
+
 	if(update_thread_is_online()) {
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)ui_feedlist_check_update_counter);
 	} else {

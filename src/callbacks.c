@@ -118,8 +118,9 @@ void ui_init(void) {
 	
 	loadSubscriptions();
 		
-	/* setup one minute timer for automatic updating */
+	/* setup one minute timer for automatic updating, and try updating now */
  	g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
+	ui_feedlist_auto_update(NULL);
 }
 
 void ui_redraw_widget(gchar *name) {
