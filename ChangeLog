@@ -19,9 +19,22 @@
 	  program window and subscribe to the dropped URL.
 	* Written some more and new text for the Liferea
 	  Online Help Feed.
-	* Many code improvements by Karl Soderstrom.
+	* Many code improvements and a big patch with 
+	  memory leak fixes by Karl Soderstrom.
 	* Added a patch from Christophe Barbe to display
 	  the count of new item in the folder title.
+	* Juho Snellman convinced me that GtkHTML2 does
+	  support CSS. So I included his patch and moved
+	  the HTML style properties into a style sheet.
+	  The user can now create an own style sheet
+	  (~/.liferea/liferea.css) to change the styles.
+	  
+	  THIS CHANGE WILL MAKE ALREADY READ BUT NOT 
+	  UPDATED ITEMS UNREAD AGAIN ON THE FIRST UPDATE
+	  AFTER THIS UPGRADE. THIS IS NOT A BUG AND IS 
+	  DUE TO THE CHANGED HTML CACHE AND WILL HAPPEN 
+	  ONLY ONCE.
+	  
 	* Fixed a bug in the syndication namespace support
 	  which caused an default update interval of one day
 	  for every feed which uses this namespace. The wrong

@@ -6,18 +6,21 @@ James Doherty 					dialog design
 Jeremy Messenger <mezz7@cox.net>		search dialog, icons...
 John McKnight 					Makefile help
 pasp						window position saving
-Karl Soderstrom					heavy debugging and patching
+Karl Soderstrom					heavy debugging, patching
+						and memory leak fixing
 Christophe Barbe <christophe.barbe@ufies.org>	patch to count folder items
+						and Debian maintaining
+Juho Snellman <jsnell@users.sourceforge.net>	CSS support
 
 Documentation and Translations
 ==============================
 
-Stephane Jourdan <stephane.jourdan@itris.fr>	french translation
-Takeshi Aihana <aihana@gnome.gr.jp>		japanese translation
-Park Ji-In <mithrandir@electrang.net>		korean translation
-Carlos Fenollosa <topopardo@humorfreak.com>	spanish translation
-Jose Maria Mateos <chema@chema.homelinux.org>	spanish translation 
-Lars Lindner <lars.lindner@gmx.net>		german translation
+Stephane Jourdan <stephane.jourdan@itris.fr>	french 
+Takeshi Aihana <aihana@gnome.gr.jp>		japanese 
+Park Ji-In <mithrandir@electrang.net>		korean 
+Carlos Fenollosa <topopardo@humorfreak.com>	spanish 
+Jose Maria Mateos <chema@chema.homelinux.org>	spanish  
+Lars Lindner <lars.lindner@gmx.net>		german 
 
 Code included from other projects
 =================================
