@@ -110,10 +110,12 @@ GtkWidget* ui_feed_newdialog_new (GtkWindow *parent) {
 		
 	/* Setup source entry */
 	ui_data->sourceEntry = lookup_widget(newdialog,"sourceEntry");
-
+	gtk_widget_grab_focus(GTK_WIDGET(ui_data->sourceEntry));
+	gtk_entry_set_activates_default(GTK_ENTRY(ui_data->sourceEntry), TRUE);
+		
 	ui_data->selectFile = lookup_widget(newdialog,"selectSourceFileButton");
 	g_signal_connect(ui_data->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
-
+	
 	/* Feed location radio buttons */
 	ui_data->fileRadio = lookup_widget(newdialog, "feed_loc_file");
 	ui_data->urlRadio = lookup_widget(newdialog, "feed_loc_url");
@@ -133,10 +135,11 @@ GtkWidget* ui_feed_newdialog_new (GtkWindow *parent) {
 
 	/* Sensitivity */
 	gtk_widget_set_sensitive(ui_data->selectFile, FALSE);
-	
+
+	gtk_widget_grab_default(lookup_widget(newdialog, "newfeedbtn"));
 	g_signal_connect (G_OBJECT (newdialog), "response",
 				   G_CALLBACK (on_newdialog_response), ui_data);
-
+	
 	gtk_widget_show_all(newdialog);
 
 	return newdialog;
@@ -183,7 +186,7 @@ GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 		
 	/* Setup source entry */
 	ui_data->sourceEntry = lookup_widget(propdialog,"sourceEntry");
-
+	
 	ui_data->selectFile = lookup_widget(propdialog,"selectSourceFileButton");
 	g_signal_connect(ui_data->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
 
