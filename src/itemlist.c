@@ -37,7 +37,7 @@ static gint disableSortingSaving;
 static gboolean deferred_item_remove = FALSE;
 
 static void itemlist_load_feed(feedPtr fp, gpointer data) {
-	gboolean	merge = (gboolean)data;
+	gboolean	merge = GPOINTER_TO_INT(data);
 	GSList		*item, *itemlist;
 	itemPtr		ip;
 	
@@ -88,7 +88,7 @@ void itemlist_reload(nodePtr node) {
 		} else {
 			/* and the user might get click directly on a folder, then we
 			   can unconditionally load all child feeds into the itemlist */
-			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_load_feed, (gpointer)TRUE);
+			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_load_feed, GINT_TO_POINTER(TRUE));
 		}
 	}
 
