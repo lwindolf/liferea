@@ -71,7 +71,7 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 	strsep (&url, "/");
 	if (url == NULL) {
 		free (freeme);
-		return;
+		return NULL;
 	}
 	
 	/* If tmphost contains an '@' strip authinfo off url. */
