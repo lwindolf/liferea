@@ -52,6 +52,7 @@ dd {
 table.itemhead {
 	width:100%;
 	margin-bottom:2px;
+	clear:both;
 }
 
 td.headleft {
@@ -101,6 +102,7 @@ table.feedfoot {
 	border-color:#D0D0D0;
 	margin-bottom:5px;
 	border-collapse:collapse;	/* needed for footer with Mozilla */
+	clear:both;
 }
 
 table.addfoot {	/* used for namespace additions (admin, ag,...) */

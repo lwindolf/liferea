@@ -35,6 +35,9 @@
 	* Liferea now prevents the update of vfolders when you
 	  request the update of all feeds. This bug changed the
 	  vfolder state to unavailable. (Lars Lindner)
+	* Fix for a HTML layout problem where big images could
+	  misalign the item footer and following items.
+	  (Gee Law)
 
 
 2004-09-15  Lars Lindner <lars.lindner@gmx.net>
