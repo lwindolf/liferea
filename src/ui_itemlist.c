@@ -82,27 +82,44 @@ GtkTreeStore * getItemStore(void) {
 }
 
 gchar * ui_itemlist_format_date(time_t t) {
+	gchar		*tmp;
 	gchar		*timestr;
 
+	/* NOTE: This code is partially broken. In the case of a user
+	   supplied format string, such a string is in UTF-8. The
+	   strftime function expects the user locale as its input, BUT
+	   the user's locale may have an alternate representation of '%'
+	   (For example UCS16 has 2 byte characters, although this may be
+	   handled by glibc correctly) or may not be able to represent a
+	   character used in the string. We shall hope that the user's
+	   locale has neither of these problems and convert the format
+	   string to the user's locale before calling strftime. The
+	   result must be converted back to UTF-8 so that it can be
+	   displayed by the itemlist correctly. */
+	
 	if(NULL == date_format) {	
 		switch(getNumericConfValue(TIME_FORMAT_MODE)) {
 			case 1:
-				date_format = g_strdup_printf("%s", nl_langinfo(T_FMT));	
+				date_format = g_strdup_printf("%s", nl_langinfo(T_FMT));
 				break;
 			case 3:
-				date_format = getStringConfValue(TIME_FORMAT);				
+				tmp = getStringConfValue(TIME_FORMAT);
+				date_format = g_locale_from_utf8(tmp, -1, NULL, NULL, NULL);
+				g_free(tmp);
 				break;
 			case 2:
 			default:
-				date_format = g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));	
+				date_format = g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));
 				break;
 		}
 	}
 	
-	timestr = g_new0(gchar, TIMESTRLEN+1);
-	strftime(timestr, TIMESTRLEN, (char *)date_format, localtime(&t));
+	tmp = g_new0(gchar, TIMESTRLEN+1);
+	strftime(tmp, TIMESTRLEN, date_format, localtime(&t));
+	timestr = g_locale_to_utf8(tmp, -1, NULL, NULL, NULL);
+	g_free(tmp);
 	
-	return CONVERT(timestr);
+	return timestr;
 }
 
 void ui_itemlist_reset_date_format(void) {
