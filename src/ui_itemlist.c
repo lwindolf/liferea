@@ -415,14 +415,16 @@ void ui_itemlist_display(void) {
 		}
 	}
 		
-	if(displayed_fp != NULL &&
-	   displayed_fp->source != NULL &&
-	   displayed_fp->source[0] != '|' &&
-	   strstr(displayed_fp->source, "://") != NULL)
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, displayed_fp->source);
-	else
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
-	g_free(buffer);
+	if(buffer) {
+		if(displayed_fp != NULL &&
+		   displayed_fp->source != NULL &&
+		   displayed_fp->source[0] != '|' &&
+		   strstr(displayed_fp->source, "://") != NULL)
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, displayed_fp->source);
+		else
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
+		g_free(buffer);
+	}
 
 	ui_feedlist_update();
 }
