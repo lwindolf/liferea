@@ -1,5 +1,5 @@
 /*
-   Atom/Echo/PIE 0.2 channel parsing
+   Atom/Echo/PIE 0.2/0.3 channel parsing
       
    Note: the PIE parsing is copy & paste & some changes of the RSS
    code...
@@ -57,11 +57,13 @@ GHashTable	*pie_nslist = NULL;
 static gchar *feedTagList[] = {	"title",
 				"tagline",
 				"link",
-				"copyright",
 				"language",
+				"copyright",
 				"generator",
 				"lastBuildDate",
-				"modified",			
+				"modified",
+				"issued",
+				"created",
 				NULL
 			  };
 
@@ -143,8 +145,12 @@ static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
 	FEED_FOOT_WRITE(buffer, "author",		cp->author);
 	FEED_FOOT_WRITE(buffer, "contributors",		cp->contributors);
+	FEED_FOOT_WRITE(buffer, "language",		cp->tags[PIE_FEED_LANGUAGE]);
 	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[PIE_FEED_COPYRIGHT]);
-	FEED_FOOT_WRITE(buffer, "last modified",	cp->tags[PIE_FEED_PUBDATE]);
+	FEED_FOOT_WRITE(buffer, "last build date",	cp->tags[PIE_FEED_LASTBUILDDATE]);
+	FEED_FOOT_WRITE(buffer, "last modified",	cp->tags[PIE_FEED_MODIFIED]);
+	FEED_FOOT_WRITE(buffer, "issued",		cp->tags[PIE_FEED_ISSUED]);
+	FEED_FOOT_WRITE(buffer, "created",		cp->tags[PIE_FEED_CREATED]);
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
 	
 	/* process namespace infos */

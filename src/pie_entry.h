@@ -27,11 +27,10 @@
 
 #define PIE_ENTRY_TITLE			0
 #define PIE_ENTRY_DESCRIPTION		1
-#define PIE_ENTRY_LINK			2
-#define PIE_ENTRY_COPYRIGHT		3
-#define PIE_ENTRY_PUBDATE		4
+#define PIE_ENTRY_COPYRIGHT		2
+#define PIE_ENTRY_ID			3
 
-#define PIE_ENTRY_MAX_TAG		5
+#define PIE_ENTRY_MAX_TAG		4
 
 typedef struct PIEEntry {
 	gchar		*tags[PIE_ENTRY_MAX_TAG];	/* standard namespace infos */
@@ -39,6 +38,7 @@ typedef struct PIEEntry {
 	
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */	
+	gchar		*source;
 	gchar		*author;
 	gchar		*contributors;
 	time_t		time;

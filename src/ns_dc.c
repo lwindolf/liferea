@@ -144,7 +144,7 @@ static gint mapToPIECP[] = { 	PIE_FEED_TITLE,		/* title */
 				PIE_FEED_DESCRIPTION,	/* description */
 				-1,			/* publisher */
 				-1,			/* contributor */	// FIXME: should be mapped, too!
-				PIE_FEED_PUBDATE,	/* date (seldom used, e.g. slashdot, we map it to pubdate) */
+				PIE_FEED_LASTBUILDDATE,	/* date */
 				-1,			/* type */
 				-1,			/* format */
 				-1,			/* identifier */

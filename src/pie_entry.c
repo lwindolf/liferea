@@ -1,5 +1,5 @@
 /*
-   PIE entry parsing 
+   Atom/Echo/PIE 0.2/0.3 entry parsing 
       
    Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
@@ -47,9 +47,8 @@ extern GHashTable *pie_nslist;
 
 static gchar *entryTagList[] = {	"title",
 					"description",
-					"link",
 					"copyright",
-					"modified",
+					"id",
 					NULL
 				  };
 				  
@@ -62,7 +61,7 @@ extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 
 /* <content> tag support, FIXME: base64 not supported */
 static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
-	gchar	*mode, *tmp;
+	gchar	*mode, *type, *tmp;
 
 	g_assert(NULL != cur);
 	if((NULL == i->tags[PIE_ENTRY_DESCRIPTION]) || (TRUE == i->summary)) {	
@@ -81,22 +80,35 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 				i->tags[PIE_ENTRY_DESCRIPTION] = extractHTMLNode(cur);
 				i->summary = FALSE;
 
-			} else if(!strcmp(mode, BAD_CAST"base64"))
+			} else if(!strcmp(mode, BAD_CAST"base64")) {
 				g_warning("Base64 encoded <content> not supported!\n");
 
-			else if(!strcmp(mode, BAD_CAST"multipart/alternative")) {
+			} else if(!strcmp(mode, BAD_CAST"multipart/alternative")) {
 				if(NULL != cur->xmlChildrenNode)
 					parseContent(cur->xmlChildrenNode, i);
 			}
-
 			g_free(mode);
+		} else {
+			/* some feeds don'ts specify a mode but a MIME 
+			   type in the type attribute... */
+			type = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"type"));			
+			/* not sure what MIME types are necessary... */
+			if((NULL == type) ||
+			   !strcmp(type, "text/html") ||
+			   !strcmp(type, "application/xhtml+xml")) {
+				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
+				i->tags[PIE_ENTRY_DESCRIPTION] = extractHTMLNode(cur);
+				i->summary = FALSE;
+			}
+			g_free(type);
 		}
 	}
 }
 
 /* method to parse standard tags for each item element */
 itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
-	gchar			*tmp2, *tmp = NULL;
+	xmlChar			*xtmp;
+	gchar			*tmp2, *tmp;
 	parseEntryTagFunc	fp;
 	PIENsHandler		*nsh;	
 	PIEEntryPtr 		i;
@@ -131,26 +143,36 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 			}
 		}
 
-		// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
-		if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"issued")) {
+			// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
  			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
- 			if(NULL != tmp) {				
+ 			if(NULL != tmp)
 				i->time = parseISO8601Date(tmp);
-				cur = cur->next;
+
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
+			/* 0.2 link : element content is the link
+			   0.3 link : rel, type and href attribute */
+			if(NULL != (xtmp = xmlGetProp(cur, BAD_CAST"rel"))) {
+				if(!xmlStrcmp(xtmp, BAD_CAST"alternate")) {
+					g_free(i->source);
+					i->source = CONVERT(xmlGetProp(cur, BAD_CAST"href"));
+				}
+				xmlFree(xtmp);
+			} else {
+				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL == tmp) {
+					g_free(i->source);
+					i->source = tmp;
+				}				
 			}
-			continue;
-		}
 		
-		/* parse feed author */
-		if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
+			/* parse feed author */
 			g_free(i->author);
 			i->author = parseAuthor(cur);
-			cur = cur->next;		
-			continue;
-		}
 
-		/* parse feed contributors */
-		if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
+			/* parse feed contributors */
 			tmp = parseAuthor(cur);				
 			if(NULL != i->contributors) {
 				/* add another contributor */
@@ -160,20 +182,14 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 				tmp = tmp2;
 			}
 			i->contributors = tmp;
-			cur = cur->next;		
-			continue;
-		}
 		
 		/* <content> support */
-		if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
 			parseContent(cur, i);
-			cur = cur->next;
-			continue;
-		}
 			
-		/* <summary> can be used for short text descriptions, if there is no
-		   <content> description we show the <summary> content */
-		if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {			
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {			
+			/* <summary> can be used for short text descriptions, if there is no
+			   <content> description we show the <summary> content */
 			if(NULL == i->tags[PIE_ENTRY_DESCRIPTION]) {
 				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
@@ -181,21 +197,19 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 					i->tags[PIE_ENTRY_DESCRIPTION] = tmp;
 				}
 			}
-			cur = cur->next;		
-			continue;
-		}
-				
-		/* check for PIE tags */
-		for(j = 0; j < PIE_ENTRY_MAX_TAG; j++) {
-			g_assert(NULL != cur->name);
-			if (!xmlStrcmp(cur->name, (const xmlChar *)entryTagList[j])) {
-				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				if(NULL != tmp) {
-					g_free(i->tags[j]);
-					i->tags[j] = tmp;
-				}
-			}		
-		}		
+		} else {				
+			/* check for PIE tags */
+			for(j = 0; j < PIE_ENTRY_MAX_TAG; j++) {
+				g_assert(NULL != cur->name);
+				if (!xmlStrcmp(cur->name, (const xmlChar *)entryTagList[j])) {
+					tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+					if(NULL != tmp) {
+						g_free(i->tags[j]);
+						i->tags[j] = tmp;
+					}
+				}		
+			}
+		}	
 
 		cur = cur->next;
 	}
@@ -203,9 +217,8 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	/* after parsing we fill the infos into the itemPtr structure */
 	ip->type = FST_PIE;
 	ip->time = i->time;
-	ip->source = i->tags[PIE_ENTRY_LINK];
 	ip->readStatus = FALSE;
-	ip->id = NULL;
+	ip->id = i->tags[PIE_ENTRY_ID];
 
 	/* some postprocessing */
 	if(NULL != i->tags[PIE_ENTRY_TITLE])
@@ -236,7 +249,7 @@ static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
 	g_assert(NULL != ip);	
 	g_assert(NULL != cp);
 	
-	if(NULL != ip->tags[PIE_ENTRY_LINK]) {
+	if(NULL != ip->source) {
 		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
 		
 		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
@@ -249,7 +262,9 @@ static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
 		addToHTMLBuffer(&buffer, HTML_NEWLINE);
 		
 		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",ip->tags[PIE_ENTRY_LINK] , ip->tags[PIE_ENTRY_TITLE]);
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+			ip->source,
+			ip->tags[PIE_ENTRY_TITLE]);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		
@@ -270,7 +285,6 @@ static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
 	FEED_FOOT_WRITE(buffer, "author",		ip->author);
 	FEED_FOOT_WRITE(buffer, "contributors",		ip->contributors);
 	FEED_FOOT_WRITE(buffer, "copyright",		ip->tags[PIE_ENTRY_COPYRIGHT]);
-	FEED_FOOT_WRITE(buffer, "last modified",	ip->tags[PIE_ENTRY_PUBDATE]);
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
 
 	request.type = OUTPUT_ITEM_NS_FOOTER;
