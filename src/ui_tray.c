@@ -72,7 +72,11 @@ static void setTrayIcon(GdkPixbuf *icon) {
 	gtk_widget_show_all(GTK_WIDGET(tray_icon));
 }
 
-void doTrayIcon(gint count) { 
+void doTrayIcon(gint count) {
+
+	if(!tray_icon)
+		return;
+		
 	if(count > 0) {
 		setTrayIcon(icons[ICON_AVAILABLE]); 
 		newItems += count;
@@ -81,6 +85,10 @@ void doTrayIcon(gint count) {
 }
 
 void undoTrayIcon(void) {
+
+	if(!tray_icon)
+		return;
+		
 	if(0 != newItems) {
 		setTrayIcon(icons[ICON_EMPTY]);
 		setTrayToolTip(g_strdup(_("No new items.")));
