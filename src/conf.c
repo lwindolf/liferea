@@ -163,7 +163,7 @@ GSList * getFeedKeyList(gchar *keyprefix) {
 	if(NULL != (value = gconf_client_get(client, gconfpath, &err))) {
 		is_gconf_error(err);
 		list = gconf_value_get_list(value);
-		gconf_value_free(value);
+		// gconf_value_free(value); FIXME: not possible because list is returned! do make a copy of list!!!
 	} else {
 		g_warning(g_strdup_printf(_("internal error! could not retrieve feed list for gconf path %s\n"), gconfpath));
 	}
@@ -762,7 +762,7 @@ gboolean getBooleanConfValue(gchar *valuename) {
 		result = FALSE;
 	} else {
 		result = gconf_value_get_bool(value);
-		gconf_value_free(value);
+		//gconf_value_free(value);
 	}
 		
 	return result;
@@ -791,7 +791,7 @@ gchar * getStringConfValue(gchar *valuename) {
 		result = g_strdup("");
 	} else {
 		result = (gchar *)g_strdup(gconf_value_get_string(value));
-		gconf_value_free(value);
+		//gconf_value_free(value);
 	}
 		
 	return result;
@@ -818,7 +818,7 @@ gint getNumericConfValue(gchar *valuename) {
 	value = gconf_client_get_without_default(client, valuename, NULL);
 	if(NULL != value) {
 		result = gconf_value_get_int(value);
-		gconf_value_free(value);
+		//gconf_value_free(value);
 	}
 			
 	return result;
