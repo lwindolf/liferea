@@ -106,7 +106,7 @@ gchar *		getStringConfValue(gchar *valuename);
 gint		getNumericConfValue(gchar  *valuename);
 
 void 	setBooleanConfValue(gchar *valuename, gboolean value);
-void	setStringConfValue(gchar *valuename, gchar *value);
+void	setStringConfValue(gchar *valuename, const gchar *value);
 void	setNumericConfValue(gchar  *valuename, gint value);
 
 #endif

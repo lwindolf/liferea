@@ -335,7 +335,7 @@ gboolean getBooleanConfValue(gchar *valuename) {
 	return result;
 }
 
-void setStringConfValue(gchar *valuename, gchar *value) {
+void setStringConfValue(gchar *valuename, const gchar *value) {
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
