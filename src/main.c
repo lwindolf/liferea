@@ -78,7 +78,8 @@ int main (int argc, char *argv[]) {
 	emptyIcon = create_pixbuf("empty.xpm");
 	
 	mainwindow = create_mainwindow();
-	setupHTMLView(mainwindow);
+	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
+			 	   lookup_widget(mainwindow, "itemlistview"));
 	gtk_widget_show(mainwindow);
 	     			     			     	
 	setupFeedList(lookup_widget(mainwindow, "feedlist"));

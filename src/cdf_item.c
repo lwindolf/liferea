@@ -130,13 +130,6 @@ gchar * showCDFItem(feedPtr fp, CDFChannelPtr cp, CDFItemPtr ip) {
 	g_assert(ip != NULL);
 	g_assert(cp != NULL);
 	g_assert(fp != NULL);
-		
-	addToHTMLBuffer(&buffer, HTML_START);
-	addToHTMLBuffer(&buffer, HTML_HEAD_START);
-	addToHTMLBuffer(&buffer, META_ENCODING1);
-	addToHTMLBuffer(&buffer, "UTF-8");
-	addToHTMLBuffer(&buffer, META_ENCODING2);
-	addToHTMLBuffer(&buffer, HTML_HEAD_END);
 
 	if(NULL != ip->tags[CDF_ITEM_LINK]) {
 		addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
@@ -165,8 +158,6 @@ gchar * showCDFItem(feedPtr fp, CDFChannelPtr cp, CDFItemPtr ip) {
 
 	if(NULL != ip->tags[CDF_ITEM_DESCRIPTION])
 		addToHTMLBuffer(&buffer, ip->tags[CDF_ITEM_DESCRIPTION]);
-
-	addToHTMLBuffer(&buffer, HTML_END);
 	
 	return buffer;
 }

@@ -153,13 +153,6 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 	g_assert(NULL != cp);
 	g_assert(NULL != fp);
 	
-	addToHTMLBuffer(&buffer, HTML_START);
-	addToHTMLBuffer(&buffer, HTML_HEAD_START);
-	addToHTMLBuffer(&buffer, META_ENCODING1);
-	addToHTMLBuffer(&buffer, "UTF-8");
-	addToHTMLBuffer(&buffer, META_ENCODING2);
-	addToHTMLBuffer(&buffer, HTML_HEAD_END);
-
 	if(NULL != ip->tags[RSS_ITEM_LINK]) {
 		addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
 		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
@@ -198,8 +191,6 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 	request.type = OUTPUT_ITEM_NS_FOOTER;
 	if(NULL != rss_nslist)
 		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
-		
-	addToHTMLBuffer(&buffer, HTML_END);
 
 	return buffer;
 }

@@ -46,6 +46,7 @@ create_mainwindow (void)
   GtkWidget *hpaned1;
   GtkWidget *scrolledwindow3;
   GtkWidget *feedlist;
+  GtkWidget *itemtabs;
   GtkWidget *rightpane;
   GtkWidget *vbox13;
   GtkWidget *searchbox;
@@ -56,13 +57,17 @@ create_mainwindow (void)
   GtkWidget *image1;
   GtkWidget *ilscrolledwindow;
   GtkWidget *Itemlist;
+  GtkWidget *itemview;
+  GtkWidget *label30;
+  GtkWidget *itemlistview;
+  GtkWidget *label31;
   GtkWidget *statusbar;
   GtkTooltips *tooltips;
 
   tooltips = gtk_tooltips_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.9"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.4.0"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -143,9 +148,16 @@ create_mainwindow (void)
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (feedlist), FALSE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (feedlist), TRUE);
 
+  itemtabs = gtk_notebook_new ();
+  gtk_widget_show (itemtabs);
+  gtk_paned_pack2 (GTK_PANED (hpaned1), itemtabs, TRUE, TRUE);
+  GTK_WIDGET_UNSET_FLAGS (itemtabs, GTK_CAN_FOCUS);
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (itemtabs), FALSE);
+  gtk_notebook_set_show_border (GTK_NOTEBOOK (itemtabs), FALSE);
+
   rightpane = gtk_vpaned_new ();
   gtk_widget_show (rightpane);
-  gtk_paned_pack2 (GTK_PANED (hpaned1), rightpane, FALSE, TRUE);
+  gtk_container_add (GTK_CONTAINER (itemtabs), rightpane);
   gtk_paned_set_position (GTK_PANED (rightpane), 200);
 
   vbox13 = gtk_vbox_new (FALSE, 0);
@@ -189,6 +201,26 @@ create_mainwindow (void)
   gtk_widget_show (Itemlist);
   gtk_container_add (GTK_CONTAINER (ilscrolledwindow), Itemlist);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (Itemlist), TRUE);
+
+  itemview = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (itemview);
+  gtk_paned_pack2 (GTK_PANED (rightpane), itemview, TRUE, TRUE);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (itemview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+  label30 = gtk_label_new (_("label30"));
+  gtk_widget_show (label30);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 0), label30);
+  gtk_label_set_justify (GTK_LABEL (label30), GTK_JUSTIFY_LEFT);
+
+  itemlistview = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (itemlistview);
+  gtk_container_add (GTK_CONTAINER (itemtabs), itemlistview);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (itemlistview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+  label31 = gtk_label_new (_("label31"));
+  gtk_widget_show (label31);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 1), label31);
+  gtk_label_set_justify (GTK_LABEL (label31), GTK_JUSTIFY_LEFT);
 
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
@@ -236,6 +268,9 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) Itemlist, "row_activated",
                     G_CALLBACK (on_Itemlist_row_activated),
                     NULL);
+  g_signal_connect ((gpointer) itemlistview, "button_press_event",
+                    G_CALLBACK (on_itemlist_button_press_event),
+                    NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, mainwindow, "mainwindow");
@@ -255,6 +290,7 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, hpaned1, "hpaned1");
   GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow3, "scrolledwindow3");
   GLADE_HOOKUP_OBJECT (mainwindow, feedlist, "feedlist");
+  GLADE_HOOKUP_OBJECT (mainwindow, itemtabs, "itemtabs");
   GLADE_HOOKUP_OBJECT (mainwindow, rightpane, "rightpane");
   GLADE_HOOKUP_OBJECT (mainwindow, vbox13, "vbox13");
   GLADE_HOOKUP_OBJECT (mainwindow, searchbox, "searchbox");
@@ -265,6 +301,10 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, image1, "image1");
   GLADE_HOOKUP_OBJECT (mainwindow, ilscrolledwindow, "ilscrolledwindow");
   GLADE_HOOKUP_OBJECT (mainwindow, Itemlist, "Itemlist");
+  GLADE_HOOKUP_OBJECT (mainwindow, itemview, "itemview");
+  GLADE_HOOKUP_OBJECT (mainwindow, label30, "label30");
+  GLADE_HOOKUP_OBJECT (mainwindow, itemlistview, "itemlistview");
+  GLADE_HOOKUP_OBJECT (mainwindow, label31, "label31");
   GLADE_HOOKUP_OBJECT (mainwindow, statusbar, "statusbar");
   GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, tooltips, "tooltips");
 

@@ -406,17 +406,8 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 	outputRequest	request;
 
 	g_assert(cp != NULL);	
-	addToHTMLBuffer(&buffer, HTML_START);
-	addToHTMLBuffer(&buffer, HTML_HEAD_START);
-
-	addToHTMLBuffer(&buffer, META_ENCODING1);
-	addToHTMLBuffer(&buffer, "UTF-8");
-	addToHTMLBuffer(&buffer, META_ENCODING2);
-
-	addToHTMLBuffer(&buffer, HTML_HEAD_END);
 
 	addToHTMLBuffer(&buffer, FEED_HEAD_START);
-	
 	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 		cp->tags[RSS_CHANNEL_LINK],
@@ -478,8 +469,6 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 	request.type = OUTPUT_RSS_CHANNEL_NS_FOOTER;
 	if(NULL != rss_nslist)
 		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
-
-	addToHTMLBuffer(&buffer, HTML_END);
 	
 	return buffer;
 }

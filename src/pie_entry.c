@@ -207,13 +207,6 @@ static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
 	g_assert(NULL != ip);	
 	g_assert(NULL != cp);
 	
-	addToHTMLBuffer(&buffer, HTML_START);
-	addToHTMLBuffer(&buffer, HTML_HEAD_START);
-	addToHTMLBuffer(&buffer, META_ENCODING1);
-	addToHTMLBuffer(&buffer, "UTF-8");
-	addToHTMLBuffer(&buffer, META_ENCODING2);
-	addToHTMLBuffer(&buffer, HTML_HEAD_END);
-
 	if(NULL != ip->tags[PIE_ENTRY_LINK]) {
 		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
 		
@@ -254,8 +247,6 @@ static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
 	request.type = OUTPUT_ITEM_NS_FOOTER;
 	if(NULL != pie_nslist)
 		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-
-	addToHTMLBuffer(&buffer, HTML_END);
 	
 	return buffer;
 }

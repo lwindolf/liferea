@@ -130,7 +130,7 @@ gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur) {
 static feedPtr readPIEFeed(gchar *url) {
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
-	PIEEntryPtr 		ip;
+	itemPtr 		ip;
 	PIEFeedPtr 		cp;
 	gchar			*tmp2, *tmp = NULL;
 	gchar			*encoding;
@@ -325,12 +325,6 @@ static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
 
 	g_assert(cp != NULL);	
 
-	addToHTMLBuffer(&buffer, HTML_START);
-	addToHTMLBuffer(&buffer, HTML_HEAD_START);
-	addToHTMLBuffer(&buffer, META_ENCODING1);
-	addToHTMLBuffer(&buffer, "UTF-8");
-	addToHTMLBuffer(&buffer, META_ENCODING2);
-	addToHTMLBuffer(&buffer, HTML_HEAD_END);
 	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
 	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
 	
@@ -368,8 +362,6 @@ static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
 	request.type = OUTPUT_PIE_FEED_NS_FOOTER;
 	if(NULL != pie_nslist)
 		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-		
-	addToHTMLBuffer(&buffer, HTML_END);
 	
 	return buffer;
 }

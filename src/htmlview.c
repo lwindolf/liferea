@@ -43,78 +43,89 @@ typedef struct {
 	GnomeVFSAsyncHandle *handle;
 } StreamData;
 
-static HtmlDocument	*doc;
+extern GtkWidget	*mainwindow;
 
 static GnomeVFSURI 	*baseURI = NULL;
+static HtmlDocument	*doc = NULL;
+static GtkWidget	*itemView = NULL;
+static GtkWidget	*itemListView = NULL;
 
 /* some prototypes */
-static void url_requested(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
+static void url_request(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
 static void on_url (HtmlView *view, const char *url, gpointer user_data);
 static void on_submit (HtmlDocument *document, const gchar *action, const gchar *method, const gchar *encoding, gpointer data);
 static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data);
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 static void kill_old_connections (HtmlDocument *doc);
 
-/* does all preparations before outputting HTML */
-void startHTMLOutput(void) {
-
-	g_assert(doc != NULL);
-//	kill_old_connections(doc);	/* if enabled images do not always load */
-	html_document_clear(doc);
-	html_document_open_stream(doc, "text/html");
-}
-
 /* function to write HTML source */
 void writeHTML(gchar *string) {
 
-	g_assert(doc != NULL);
 	if((NULL != string) && (strlen(string) > 0)) 
 		html_document_write_stream(doc, string, strlen(string));
+}
+
+/* does all preparations before outputting HTML */
+void startHTMLOutput(void) {
+
+	//kill_old_connections(doc);	/* if enabled images do not always load */
+	
+	html_document_clear(doc);
+	html_document_open_stream(doc, "text/html");
+	writeHTML(HTML_START);
+	writeHTML(HTML_HEAD_START);
+	writeHTML(META_ENCODING1);
+	writeHTML("UTF-8");
+	writeHTML(META_ENCODING2);
+	writeHTML(HTML_HEAD_END);
 }
 
 /* does all postprocessing after HTML output */
 void finishHTMLOutput(void) {
 
-	g_assert(doc != NULL);
+	writeHTML(HTML_END);
 	html_document_close_stream(doc);
 }
 
-/* creates and initializes the GtkHTML widget */
-void setupHTMLView(GtkWidget *mainwindow) {
-	GtkWidget	*scrolledwindow;
-	GtkWidget	*pane;
+void setHTMLViewMode(gboolean threePane) {
 	GtkWidget	*htmlwidget;
-	char testhtml[] = "<html><body></body></html>";	// FIXME
+
+	if(NULL != doc) {
+		kill_old_connections(doc);	/* if enabled images do not always load */	
+		html_document_clear(doc);
+	}
+	if(NULL == doc)
+		doc = html_document_new();
+
+	html_view_set_document(HTML_VIEW(itemView), NULL);
+	html_view_set_document(HTML_VIEW(itemListView), NULL);
+	if(FALSE == threePane) {
+	g_print("selected list view\n");
+		htmlwidget = itemListView;	}
+	else
+		htmlwidget = itemView;
 	
-	/* prepare HTML widget */
-	doc = html_document_new();
-	startHTMLOutput();
-	writeHTML(testhtml);
-	finishHTMLOutput();
-	
-	/* prepare a scrolled window */
-	scrolledwindow = gtk_scrolled_window_new(NULL, NULL);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolledwindow), 
-					GTK_POLICY_AUTOMATIC,
-					GTK_POLICY_AUTOMATIC);
-	pane = lookup_widget(mainwindow, "rightpane");					
-	gtk_paned_pack2(GTK_PANED (pane), scrolledwindow, TRUE, TRUE);
-				
-	/* create html widget and pack it into the scrolled window */
-	htmlwidget = html_view_new();
-	html_view_set_document(HTML_VIEW (htmlwidget), doc);
-	html_view_set_magnification(HTML_VIEW (htmlwidget), 1.0);	
-	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
+	html_view_set_document(HTML_VIEW(htmlwidget), doc);
 	
 	g_signal_connect (G_OBJECT (doc), "request_url",
-			 GTK_SIGNAL_FUNC (url_requested), htmlwidget);	
+			 GTK_SIGNAL_FUNC (url_request), htmlwidget);
 			 
 	g_signal_connect (G_OBJECT (doc), "submit",
 			  GTK_SIGNAL_FUNC (on_submit), mainwindow);
 
 	g_signal_connect (G_OBJECT (doc), "link_clicked",
 			  G_CALLBACK (link_clicked), mainwindow);
-			  				  
+
+}
+
+static GtkWidget * setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
+	GtkWidget	*htmlwidget;
+	
+	/* create html widget and pack it into the scrolled window */
+	htmlwidget = html_view_new();
+	html_view_set_magnification(HTML_VIEW(htmlwidget), 1.0);	
+	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
+				  				  
 	g_signal_connect (G_OBJECT (htmlwidget), "on_url",
 			  G_CALLBACK (on_url), lookup_widget(mainwindow, "statusbar"));
 
@@ -122,6 +133,20 @@ void setupHTMLView(GtkWidget *mainwindow) {
 			  G_CALLBACK (request_object), NULL);
 
 	gtk_widget_show_all(scrolledwindow);
+	
+	return htmlwidget;
+}
+
+void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2) {
+	char testhtml[] = "<html><body></body></html>";
+	
+	itemView = setupHTMLView(mainwindow, pane1);
+	itemListView = setupHTMLView(mainwindow, pane2);
+	setHTMLViewMode(TRUE);
+	
+	startHTMLOutput();
+	writeHTML(testhtml);
+	finishHTMLOutput();
 }
 
 /* ------------------------------------------------------------------------------- */
@@ -244,7 +269,7 @@ on_submit (HtmlDocument *document, const gchar *action, const gchar *method,
 }
 
 static void
-url_requested (HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data)
+url_request (HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data)
 {
 	GnomeVFSURI *vfs_uri;
 	StreamData *sdata;

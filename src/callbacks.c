@@ -35,6 +35,7 @@
 #include "item.h"
 #include "conf.h"
 #include "common.h"
+#include "htmlview.h"
 #include "callbacks.h"
 
 #include "vfolder.h"	// FIXME
@@ -67,6 +68,7 @@ extern GHashTable	*folders; // FIXME!
 extern GMutex 		*feeds_lock; // FIXME!
 
 static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
+static gboolean	itemlist_mode = FALSE;	/* FALSE means three pane, TRUE means two panes */
 static feedPtr	new_feed;		/* used by new feed dialog */
 
 /* two globals to keep selected entry info while DND actions */
@@ -1007,6 +1009,26 @@ gboolean on_Itemlist_move_cursor(GtkTreeView *treeview, GtkMovementStep  step, g
 	return FALSE;
 }
 
+void on_toggle_condensed_view(void) {
+	GtkWidget	*w1;
+	gchar		*key;
+	
+	itemlist_mode = !itemlist_mode;
+	setHTMLViewMode(itemlist_mode);
+
+	g_assert(mainwindow);
+	w1 = lookup_widget(mainwindow, "itemtabs");
+	if(TRUE == itemlist_mode)
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 1);
+	else 
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 0);
+		
+	if(NULL != (key = getMainFeedListViewSelection())) {
+		clearItemList();
+		loadItemList(getFeed(key), NULL);
+	}
+}
+
 /*------------------------------------------------------------------------------*/
 /* treeview creation and rendering						*/
 /*------------------------------------------------------------------------------*/
@@ -1336,7 +1358,8 @@ static GtkMenu *make_entry_menu(gint type) {
 
 static GtkItemFactoryEntry item_menu_items[] = {
       {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 0, NULL},
-      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 0, NULL}
+      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 0, NULL},
+      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 0, NULL}
 };
 
 static GtkMenu *make_item_menu(void) {
@@ -1546,7 +1569,10 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 		print_status(_("internal error! item display for NULL pointer requested!"));
 		return;
 	}
-	
+
+	if(gnome_vfs_is_primary_thread())	
+		startHTMLOutput();
+			
 	itemlist = fp->items;
 	while(NULL != itemlist) {
 		ip = itemlist->data;
@@ -1578,15 +1604,22 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 					IS_TIME, getItemTime(ip),
 					IS_TYPE, getFeedType(fp),	/* not the item type, this would fail for VFolders! */
 					-1);
+					
+			if(gnome_vfs_is_primary_thread())
+				if(itemlist_mode) {
+					writeHTML(description);
+g_print(description);
+				}
 		}
 
 		itemlist = g_slist_next(itemlist);
 	}
 	
 	if(gnome_vfs_is_primary_thread()) {
-		startHTMLOutput();
-		writeHTML(fp->description);
-		finishHTMLOutput();	
+		if(!itemlist_mode)
+			writeHTML(fp->description);
+		
+		finishHTMLOutput();
 	}
 }
 

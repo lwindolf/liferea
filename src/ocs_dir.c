@@ -404,13 +404,6 @@ static gchar * showDirEntry(dirEntryPtr dep) {
 	
 	g_assert(dep != NULL);
 	g_assert(dp != NULL);
-	
-	addToHTMLBuffer(&buffer, HTML_START);
-	addToHTMLBuffer(&buffer, HTML_HEAD_START);
-	addToHTMLBuffer(&buffer, META_ENCODING1);
-	addToHTMLBuffer(&buffer, "UTF-8");
-	addToHTMLBuffer(&buffer, META_ENCODING2);
-	addToHTMLBuffer(&buffer, HTML_HEAD_END);
 
 	if(NULL != dep->source) {
 		addToHTMLBuffer(&buffer, ITEM_HEAD_START);	
@@ -441,7 +434,6 @@ static gchar * showDirEntry(dirEntryPtr dep) {
 	FEED_FOOT_WRITE(buffer, "updatePeriod",	dep->tags[OCS_UPDATEPERIOD]);
 	FEED_FOOT_WRITE(buffer, "contentType",	dep->tags[OCS_CONTENTTYPE]);
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-	addToHTMLBuffer(&buffer, HTML_END);
 	
 	return buffer;
 }
@@ -452,12 +444,6 @@ static gchar * showDirectoryInfo(directoryPtr dp) {
 
 	g_assert(dp != NULL);	
 
-	addToHTMLBuffer(&buffer, HTML_START);
-	addToHTMLBuffer(&buffer, HTML_HEAD_START);
-	addToHTMLBuffer(&buffer, META_ENCODING1);
-	addToHTMLBuffer(&buffer, "UTF-8");
-	addToHTMLBuffer(&buffer, META_ENCODING2);
-	addToHTMLBuffer(&buffer, HTML_HEAD_END);
 	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
 	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
 	addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
@@ -481,7 +467,6 @@ static gchar * showDirectoryInfo(directoryPtr dp) {
 	FEED_FOOT_WRITE(buffer, "updatePeriod",	dp->tags[OCS_UPDATEPERIOD]);
 	FEED_FOOT_WRITE(buffer, "contentType",	dp->tags[OCS_CONTENTTYPE]);
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-	addToHTMLBuffer(&buffer, HTML_END);
 	
 	return buffer;
 }
