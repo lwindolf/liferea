@@ -25,6 +25,8 @@
 	* Makefile/configure changes including a patch found on the Polish
 	  Linux Distribution web page.
 	* Stylesheet improvements (delusional)
+	* The Mozilla browser module now supports two and three pane
+          mode. (Lars Lindner)
 	
 2004-05-06  Lars Lindner <lars.lindner@gmx.net>
 

@@ -38,8 +38,6 @@
 #include "../common.h"
 #include "mozilla.h"
 
-#define FONT_STYLE	"<style type=\"text/css\">\n<!--\nbody { font-family:Helvetica,Arial,sans-serif; }\ntable { font-family:Helvetica,Arial,sans-serif; }\n--></style>"
-
 /**
  * ContextMenuType: various types of context menu
  */
@@ -54,6 +52,8 @@ typedef enum
 	CONTEXT_XUL      = (1 << 7),
 } ContextMenuType;
 
+static GtkWidget	*itemView = NULL;
+static GtkWidget	*itemListView = NULL;
 static GtkWidget	*htmlwidget = NULL;
 
 static gfloat		zoomLevel = 1.0;
@@ -142,10 +142,10 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
 
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
-void setupHTMLViews(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
+static void set_html_view(GtkWidget *pane) {
 	gchar	*profile;
 	int	i;
-	
+
         /* signals to connect on each embed widget */
 	static const struct
 	{ 
@@ -175,7 +175,7 @@ void setupHTMLViews(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 	};
 	
 	if(NULL != htmlwidget)	/* only call once */
-		return;
+		gtk_widget_destroy(htmlwidget);
 
 	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
 
@@ -210,15 +210,18 @@ void setupHTMLViews(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 }
 
 void setHTMLViewMode(gboolean threePane) {
-
-	if(FALSE == threePane)
-		ui_show_error_box("Sorry, condensed view not yet implemented for Mozilla!");
 		
-/*	if(FALSE == threePane)
-		setupHTMLView(itemListView);
+	if(FALSE == threePane)
+		set_html_view(itemListView);
 	else
-		setupHTMLView(itemView);*/
+		set_html_view(itemView);
 
+}
+
+void setupHTMLViews(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
+
+	itemView = pane1;
+	itemListView = pane2;
 }
 
 /* launches the specified URL */

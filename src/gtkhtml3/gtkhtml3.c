@@ -112,7 +112,7 @@ free_stream_data (StreamData *sdata, gboolean remove)
 		g_object_set_data (G_OBJECT (sdata->html), "connection_list", connection_list);
 	}
 	g_object_ref (sdata->stream);
-	//gtk_html_end(sdata->html, sdata->stream, GTK_HTML_STREAM_OK);
+	gtk_html_end(sdata->html, sdata->stream, GTK_HTML_STREAM_OK);
 	
 	g_free (sdata);
 }
@@ -141,7 +141,7 @@ vfs_read_callback (GnomeVFSAsyncHandle *handle, GnomeVFSResult result,
 
 	if (result != GNOME_VFS_OK) {
 		gnome_vfs_async_close (handle, vfs_close_callback, sdata);
-		free_stream_data (sdata, TRUE);
+		//free_stream_data (sdata, TRUE);
 		g_free (buffer);
 	} else {
 		gtk_html_write (sdata->html, sdata->stream, buffer, bytes_read);

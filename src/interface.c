@@ -705,6 +705,7 @@ create_mainwindow (void)
   gtk_widget_show (itemlistview);
   gtk_container_add (GTK_CONTAINER (itemtabs), itemlistview);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (itemlistview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (itemlistview), GTK_SHADOW_IN);
 
   label31 = gtk_label_new (_("condensed item list"));
   gtk_widget_show (label31);

@@ -207,6 +207,8 @@ void ui_htmlview_setup(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel)
 void ui_htmlview_set_mode(gboolean threePane) {
 	GtkWidget	*w1;
 
+	debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
+	
 	/* switch between list and condensed notebook tabs */
 	w1 = lookup_widget(mainwindow, "itemtabs");
 	g_assert(NULL != w1);
@@ -219,7 +221,7 @@ void ui_htmlview_set_mode(gboolean threePane) {
 	((setHTMLViewModeFunc)methods[SETHTMLVIEWMODE])(threePane); 
 }
 
-static void writeStyleSheetLink(gchar **buffer, gchar *styleSheetFile) {
+static void ui_htmlview_write_css_link(gchar **buffer, gchar *styleSheetFile) {
 
 	if(g_file_test(styleSheetFile, G_FILE_TEST_EXISTS)) {
 		addToHTMLBuffer(buffer, "<link rel='stylesheet' type='text/css' href='file://");
@@ -228,13 +230,13 @@ static void writeStyleSheetLink(gchar **buffer, gchar *styleSheetFile) {
 	}
 }
 
-static void writeStyleSheetLinks(gchar **buffer) {
+static void ui_htmlview_write_css_links(gchar **buffer) {
 	gchar	*styleSheetFile;
     
-	writeStyleSheetLink(buffer, PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea.css");
+	ui_htmlview_write_css_link(buffer, PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea.css");
     
 	styleSheetFile = g_strdup_printf("%s/liferea.css", getCachePath());
-	writeStyleSheetLink(buffer, styleSheetFile);
+	ui_htmlview_write_css_link(buffer, styleSheetFile);
 	g_free(styleSheetFile);
 }
 
@@ -246,7 +248,7 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 	addToHTMLBuffer(buffer, "<head><title></title>");
 	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
 
-        writeStyleSheetLinks(buffer);
+	ui_htmlview_write_css_links(buffer);
 
 	/* font configuration support */
 	font = getStringConfValue(USER_FONT);
