@@ -51,7 +51,7 @@ static gchar 		*date_format = NULL;	/* date formatting string */
 
 
 /* displayed_fp should almost always be the same as selected_fp in ui_feedlist */
-feedPtr	displayed_fp = NULL;
+nodePtr	displayed_node = NULL;
 
 /* mouse/keyboard interaction callbacks */
 static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
@@ -157,7 +157,7 @@ static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
 
 void ui_itemlist_clear(void) {
 
-	displayed_fp = NULL;
+	displayed_node = NULL;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
 }
@@ -405,13 +405,13 @@ void ui_itemlist_display(void) {
 			/* three pane mode */
 
 			/* display feed info */
-			if(displayed_fp) {
+			if(displayed_node) {
 				ui_htmlview_start_output(&buffer, itemlist_mode);
-				
-				tmp = feed_render(displayed_fp);
-				addToHTMLBufferFast(&buffer, tmp);
-				g_free(tmp);
-				
+				if (IS_FEED(displayed_node->type)) {
+					tmp = feed_render((feedPtr)displayed_node);
+					addToHTMLBufferFast(&buffer, tmp);
+					g_free(tmp);
+				}
 				ui_htmlview_finish_output(&buffer);
 			}
 
@@ -425,11 +425,12 @@ void ui_itemlist_display(void) {
 	}
 		
 	if(buffer) {
-		if(displayed_fp != NULL &&
-		   displayed_fp->source != NULL &&
-		   displayed_fp->source[0] != '|' &&
-		   strstr(displayed_fp->source, "://") != NULL)
-			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, displayed_fp->source);
+		if(displayed_node != NULL &&
+		   IS_FEED(displayed_node->type) &&
+		   ((feedPtr)displayed_node)->source != NULL &&
+		   ((feedPtr)displayed_node)->source[0] != '|' &&
+		   strstr(((feedPtr)displayed_node)->source, "://") != NULL)
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)displayed_node)->source);
 		else
 			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 		g_free(buffer);
@@ -455,7 +456,7 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (NULL != searchstring));
 
 	ui_itemlist_clear();
-	displayed_fp = fp;
+	displayed_node = (nodePtr)fp;
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
@@ -604,9 +605,10 @@ void on_toggle_unread_status(void) {
 }
 
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	feedPtr fp = displayed_fp;
+	feedPtr fp;
 	
-	if(fp) {
+	if(displayed_node && IS_FEED(displayed_node->type)) {
+		fp = (feedPtr)displayed_node;
 		ui_itemlist_clear();
 		feed_clear_item_list(fp);	/* delete items */
 		ui_feedlist_update();

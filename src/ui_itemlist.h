@@ -40,7 +40,7 @@ enum is_columns {
 	IS_LEN			/**< Number of columns in the itemstore */
 };
 
-extern feedPtr	displayed_fp;
+extern nodePtr	displayed_node;
 
 /**
  * Returns the itemstore, creating it if needed.

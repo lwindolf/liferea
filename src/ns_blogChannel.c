@@ -139,7 +139,7 @@ static gchar * getOutlineList(gchar *url) {
 static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
 	xmlChar		*string;
 	gchar		*buffer = NULL;
-	gchar		*key, *output, *tmp;
+	gchar		*output, *tmp;
 	
 	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 	  

@@ -47,12 +47,7 @@
 
 */
 
-static gchar * taglist[] = {	"section",
-				"department",				
-				/* "comments",   disabled to avoid unread status after each feed update */
-				/* "hitparade",*/
-				NULL
-			   };
+/* FIXME: Support the "comments" and "hitparande" tags */
 
 static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 	gchar	*tmp = NULL, *section, *department;

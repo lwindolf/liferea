@@ -1085,7 +1085,7 @@ gchar *feed_render(feedPtr fp) {
 		metadata_list_render(fp->metadata, &displayset);
 
 		/* Error description */
-		if(NULL != (tmp = feed_get_error_description(displayed_fp))) {
+		if(NULL != (tmp = feed_get_error_description(fp))) {
 			addToHTMLBufferFast(&buffer, tmp);
 			g_free(tmp);
 		}
@@ -1218,7 +1218,7 @@ void feed_free(feedPtr fp) {
 	
 	g_assert(IS_FEED(fp->type));
 	
-	if(displayed_fp == fp) {
+	if(displayed_node == (nodePtr)fp) { /* This is not strictly necessary. It just speeds deletion of an entire itemlist. */
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		ui_itemlist_clear();
 	}
