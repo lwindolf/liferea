@@ -53,6 +53,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp));
 		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
+		xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
 		xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
 		xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 		xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);

@@ -165,7 +165,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 					    -1);
 		
 		/* make sure thats no grouping iterator */
-		if(fp && (IS_FEED(fp->type) || FST_VFOLDER == fp->type)) {
+		if(fp && (IS_FEED(fp->type) || IS_DIRECTORY(fp->type) || FST_VFOLDER == fp->type)) {
 			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing */
@@ -176,7 +176,9 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			
 			/* Set up the item list */
 			ui_itemlist_load(fp, NULL);
-		} 
+		} else { /* Selecting a folder */
+			ui_itemlist_clear();
+		}
 	} else {
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
@@ -227,6 +229,7 @@ void ui_feedlist_init(GtkWidget *mainview) {
 	/* Setup the selection handler for the main view */
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(mainview));
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+	
 	g_signal_connect(G_OBJECT(select), "changed",
                  	 G_CALLBACK(ui_feedlist_selection_changed_cb),
                 	 lookup_widget(mainwindow, "feedlist"));
@@ -234,17 +237,27 @@ void ui_feedlist_init(GtkWidget *mainview) {
 }
 
 void ui_feedlist_select(nodePtr np) {
+	static gboolean firstCall = TRUE;
 	GtkTreeIter iter = ((ui_data*)(np->ui_data))->row;
 	GtkWidget		*treeview;
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
+
+	/* To work around a GTK+ bug. The first time this is called, it
+	   would always select the first feed in the list */
+	if (firstCall) {
+		firstCall = FALSE;
+		ui_feedlist_select(np);
+	}
+
 	/* some comfort: select the created iter */
 	if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
 		if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
 			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
+			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
 			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
+			gtk_tree_selection_select_path(selection, path);
 			gtk_tree_path_free(path);
-			gtk_tree_selection_select_iter(selection, &iter);
 		} else
 			g_warning(_("internal error! could not get feed tree view selection!\n"));
 	} else {

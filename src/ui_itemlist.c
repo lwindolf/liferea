@@ -574,12 +574,13 @@ static gboolean findUnreadItem(void) {
 					g_warning(_("internal error! could not get feed tree view selection!\n"));
 			} else {
 				g_warning(_("internal error! could not find feed tree view widget!\n"));
-			}			
+			}
+
 			return TRUE;
 		}
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
-	
+
 	return FALSE;
 }
 
@@ -593,17 +594,15 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
 	/* find first feed with unread items */
 	fp = folder_find_unread_feed(folder_get_root());
-	
+
 	if (fp) {
-		/* ui_select_feed(fp); FIXME: This would require an easy lookup from fp to a row, but would be a cleaner feedlist interface. */
-	
 		if(NULL == fp) {
 			return;	/* if we don't find a feed with unread items do nothing */
 		}
 		
 		/* load found feed */
-		ui_itemlist_load(fp, NULL);
-		
+		ui_feedlist_select((nodePtr)fp);
+
 		/* find first unread item */
 		findUnreadItem();
 	} else {
