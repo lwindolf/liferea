@@ -14,6 +14,7 @@ EXTRA_DIST = \
 	liferea.glade \
 	liferea.gladep \
 	liferea.spec \
+	src/liferea \
 	$(desktop_files)
 
 install-data-local:

@@ -28,13 +28,6 @@ liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea
-## dist_bin_SCRIPTS = liferea
-## doesn't work:
-##
-## src/Makefile.am:30: invalid variable `dist_bin_SCRIPTS'
-## src/Makefile.am:30: invalid variable `dist_bin_SCRIPTS'
-##
-
 
 liferea_bin_SOURCES = \
 	callbacks.c callbacks.h \
