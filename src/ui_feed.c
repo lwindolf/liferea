@@ -299,12 +299,20 @@ static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
 	} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio))) {
 		/* Add http:// if needed: */
 		const gchar *tmp = gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry));
-		gchar *str;
+		gchar *str, *tmp2;
 		if (strstr(tmp, "://") == NULL)
 			str = g_strdup_printf("http://%s",tmp);
 		else
 			str = g_strdup(tmp);
-		
+
+		/* Add trailing / if needed */
+		if (strstr(strstr(str, "://") + 3, "/") == NULL) {
+			printf("Adding /\n");
+			tmp2 = g_strdup_printf("%s/", str);
+			g_free(str);
+			str = tmp2;
+		}
+
 		/* Use the values in the textboxes if also specified in the URL! */
 		if((NULL != ui_data->authcheckbox) && 
 		   gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox))) {
