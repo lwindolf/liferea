@@ -35,22 +35,9 @@
 #define	START_ENCLOSURE	"<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right:5px;border-color:black;border-style:solid;border-width:1px;background-color:#E0E0E0\"> enclosed file: "
 #define	END_ENCLOSURE	"</div>"
 
-/* structure for the hashtable callback which itself calls the 
-   namespace output handler */
-#define OUTPUT_RSS_CHANNEL_NS_HEADER	0
-#define	OUTPUT_RSS_CHANNEL_NS_FOOTER	1
-#define OUTPUT_ITEM_NS_HEADER		2
-#define OUTPUT_ITEM_NS_FOOTER		3
-typedef struct {
-	gint		type;
-	gchar		**buffer;	/* pointer to output char buffer pointer */
-	gpointer	obj;		/* thats either a RSSChannelPtr or a RSSItemPtr 
-				 	   depending on the type value */
-} outputRequest;
-
 /* uses the same namespace handler as rss_channel */
-extern GSList *rss_nslist;
-extern GHashTable *rss_nstable;
+extern GSList		*rss_nslist;
+extern GHashTable	*rss_nstable;
 
 static gchar *itemTagList[] = {		"title",
 					"description",
@@ -62,63 +49,8 @@ static gchar *itemTagList[] = {		"title",
 					NULL
 				  };
 
-extern void showRSSFeedNSInfo(gpointer value, gpointer userdata);
-
-/* writes item description as HTML into a buffer and returns
-  a pointer to it */
-static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
-	gchar		*buffer = NULL;
-	gchar		*tmp;
-	outputRequest	request;
-
-	g_assert(NULL != ip);
-	g_assert(NULL != cp);
-	g_assert(NULL != fp);	
-
-	/* process namespace infos */
-	request.obj = ip;
-	request.buffer = &buffer;
-	request.type = OUTPUT_ITEM_NS_HEADER;	
-	if(NULL != rss_nslist)
-		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
-
-	if(NULL != cp->tags[RSS_CHANNEL_IMAGE]) {
-		addToHTMLBuffer(&buffer, IMG_START);
-		addToHTMLBuffer(&buffer, cp->tags[RSS_CHANNEL_IMAGE]);
-		addToHTMLBuffer(&buffer, IMG_END);	
-	}
-
-	if(NULL != ip->tags[RSS_ITEM_DESCRIPTION])
-		addToHTMLBuffer(&buffer, ip->tags[RSS_ITEM_DESCRIPTION]);
-
-	if(NULL != ip->tags[RSS_ITEM_COMMENTS]) {
-		tmp = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
-				ip->tags[RSS_ITEM_COMMENTS],_("comments"));
-		addToHTMLBuffer(&buffer, tmp);
-		g_free(tmp);
-	}
-		
-	if(NULL != ip->enclosure) {
-		addToHTMLBuffer(&buffer, START_ENCLOSURE);
-		addToHTMLBuffer(&buffer, ip->enclosure);
-		addToHTMLBuffer(&buffer, END_ENCLOSURE);
-	}
-
-	if(NULL != ip->tags[RSS_ITEM_AUTHOR]) {
-		addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-		FEED_FOOT_WRITE(buffer, "author", ip->tags[RSS_ITEM_AUTHOR]);
-		addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-	}
-	
-	request.type = OUTPUT_ITEM_NS_FOOTER;
-	if(NULL != rss_nslist)
-		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
-
-	return buffer;
-}
-
 /* method to parse standard tags for each item element */
-itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
+itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 	gchar			*tmp, *link;
 	parseItemTagFunc	parseFunc;
 	GSList			*hp;
@@ -130,8 +62,8 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	g_assert(NULL != cur);
 		
 	i = g_new0(struct RSSItem, 1);
-	i->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	ip = item_new();
+	ip->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 	
 	/* try to get an item about id */
 	tmp =  xmlGetProp(cur, BAD_CAST"about");
@@ -228,8 +160,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML(i->tags[RSS_ITEM_DESCRIPTION]);
 
 	item_set_title(ip, i->tags[RSS_ITEM_TITLE]);		
-	tmp = showRSSItem(fp, cp, i);
-	item_set_description(ip, tmp);	// FIXME: ensure that ns_content.c works!!!!!!
+	item_set_description(ip, "");	// FIXME: fix this and ensure that ns_content.c works!!!!!!
 	g_free(tmp);
 	
 	/* free RSSItem structure */
@@ -237,7 +168,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 		g_free(i->tags[j]);
 	
 	g_free(i->enclosure);
-	g_hash_table_destroy(i->nsinfos);
+	g_hash_table_destroy(ip->tmpdata);
 	g_free(i);
 	
 	return ip;

@@ -21,39 +21,6 @@
 #ifndef _NS_H
 #define _NS_H
 
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include "feed.h"
-
-// FIXME: remove the following
-
-#include "rss_channel.h"
-#include "rss_item.h"
-
-/* -------------------------------------------------------- */
-/* interface definitions for RSS namespace handler          */
-/* -------------------------------------------------------- */
-
-/* definition of various namespace tag handlers */
-typedef void	(*paarseChannelTagFunc)	(RSSChannelPtr cp, xmlNodePtr cur);
-typedef void	(*paarseItemTagFunc)	(RSSItemPtr ip, xmlNodePtr cur);
-
-/* handler called during HTML output generation to display
-   namespace specific information (e.g. <dc:creator> the 
-   handler could return HTML like: "<p>author: Mr. X</a>" */
-typedef gchar *	(*outputFunc)	(gpointer obj);
-
-/* struct used to register RDF namespace handler */
-typedef struct RSSNsHandler {
-	gchar		*prefix;			/**< namespace prefix */
-
-	paarseItemTagFunc	parseItemTag;		/**< item tag parsing method */
-	paarseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
-		
-	outputFunc	doItemHeaderOutput;		/**< item header output method */
-	outputFunc	doItemFooterOutput;		/**< item footer output method */
-	outputFunc	doChannelHeaderOutput;		/**< channel header output method */
-	outputFunc	doChannelFooterOutput;		/**< channel footer output method */
-} RSSNsHandler;
+// FIXME: remove this file
 
 #endif

@@ -21,44 +21,8 @@
 #ifndef _RSS_CHANNEL_H
 #define _RSS_CHANNEL_H
 
-#include <time.h>
 #include "feed.h"
 
-/* all versions */
-#define RSS_CHANNEL_TITLE		0
-#define RSS_CHANNEL_DESCRIPTION		1
-#define RSS_CHANNEL_LINK		2
-#define RSS_CHANNEL_IMAGE		3
-/* since 0.91 and in <dc:rights> */
-#define RSS_CHANNEL_COPYRIGHT		4
-/* in 0.91, 0.92, 2.0 and <dc:language> */
-#define RSS_CHANNEL_LANGUAGE		5
-/* in 0.91, 0.92, 2.0 */
-#define RSS_CHANNEL_LASTBUILDDATE	6
-#define RSS_CHANNEL_PUBDATE		7
-/* in 0.91, 0.92, 2.0 and <dc:publisher> */
-#define RSS_CHANNEL_WEBMASTER		8
-/* in 0.91, 0.92, 2.0 and <dc:creator> */
-#define RSS_CHANNEL_MANAGINGEDITOR	9
-/* 0.92, 2.0 and <dc:subject> */
-#define RSS_CHANNEL_CATEGORY		10
-
-#define RSS_CHANNEL_MAX_TAG		11
-
-typedef struct RSSChannel {		
-	/* standard namespace infos */
-	gchar		*tags[RSS_CHANNEL_MAX_TAG];
-
-	GHashTable	*nsinfos;	/* list to store pointers to namespace
-					   specific informations */
-	
-	gchar		*tiTitle;	/* text input title */
-	gchar		*tiDescription;	/* text input description */
-	gchar		*tiName;	/* text input object name */
-	gchar		*tiLink;	/* text input HTTP GET destination URL */
-	
-	time_t		time;		/* last feed build/creation time */	
-} *RSSChannelPtr;
-
 feedHandlerPtr	initRSSFeedHandler(void);
+
 #endif
