@@ -70,7 +70,7 @@ static void on_feed_prop_filtercheck(GtkToggleButton *button, gpointer user_data
 static void on_propdialog_response(GtkDialog       *dialog,
 							gint             response_id,
 							gpointer         user_data);
-void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data);
+static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data);
 
 GtkWidget* ui_feed_newdialog_new (GtkWindow *parent) {
 	GtkWidget *newdialog;
@@ -273,7 +273,49 @@ GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 	return propdialog;
 }
 
-void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
+	gchar *source;
+
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio))) {
+		source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
+	} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio))) {
+		/* Add http:// if needed: */
+		const gchar *tmp = gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry));
+		gchar *str;
+		if (strstr(tmp, "://") == NULL)
+			str = g_strdup_printf("http://%s",tmp);
+		else
+			str = g_strdup(tmp);
+		
+		/* Use the values in the textboxes if also specified in the URL! */
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox))) {
+			xmlURIPtr uri = xmlParseURI(BAD_CAST str);
+			xmlChar *source;
+			if (uri != NULL) {
+				xmlFree(uri->user);
+				uri->user = g_strdup_printf("%s:%s",
+									   gtk_entry_get_text(GTK_ENTRY(ui_data->username)),
+									   gtk_entry_get_text(GTK_ENTRY(ui_data->password)));
+				source = xmlSaveUri(uri);
+				source = g_strdup(BAD_CAST source);
+				g_free(uri->user);
+				uri->user = NULL;
+				xmlFree(source);
+					xmlFreeURI(uri);
+			} else
+				source = g_strdup(str);
+		} else {
+			source = g_strdup(str);
+		}
+		g_free(str);
+	} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio))) {
+		source = g_strdup_printf("|%s", gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
+	}
+
+	return source;
+}
+
+static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 
 	if (response_id == GTK_RESPONSE_OK) {
@@ -281,34 +323,7 @@ void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_da
 		gchar *filter = NULL;
 
 		/* Source */
-		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio))) {
-			source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-		} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio))) {
-			
-			/* Use the values in the textboxes if also specified in the URL! */
-			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox))) {
-				xmlURIPtr uri = xmlParseURI(BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-				xmlChar *source;
-				if (uri != NULL) {
-					xmlFree(uri->user);
-					uri->user = g_strdup_printf("%s:%s",
-										   gtk_entry_get_text(GTK_ENTRY(ui_data->username)),
-										   gtk_entry_get_text(GTK_ENTRY(ui_data->password)));
-					source = xmlSaveUri(uri);
-					source = g_strdup(BAD_CAST source);
-					g_free(uri->user);
-					uri->user = NULL;
-					xmlFree(source);
-					xmlFreeURI(uri);
-				} else
-					source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-			} else {
-				source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-			}
-			
-		} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio))) {
-			source = g_strdup_printf("|%s", gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-		}
+		source = ui_feed_dialog_decode_source(ui_data);
 
 		/* Filter handling */
 		filter = gtk_editable_get_chars(GTK_EDITABLE(ui_data->filter), 0, -1);
@@ -325,11 +340,11 @@ void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_da
 	g_free(ui_data);
 }
 
-void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		gchar *newSource = NULL;
+		gchar *newSource;
 		const gchar *newFilter;
 		gboolean needsUpdate = FALSE;
 
@@ -338,35 +353,8 @@ void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_d
 		feed_set_update_interval(ui_data->fp, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(ui_data->refreshInterval)));
 
 		/* Source */
-		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio))) {
-			newSource = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-		} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio))) {
-			
-			/* Use the values in the textboxes if also specified in the URL! */
-			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox))) {
-				xmlURIPtr uri = xmlParseURI(BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-				xmlChar *source;
-				if (uri != NULL) {
-					xmlFree(uri->user);
-					uri->user = g_strdup_printf("%s:%s",
-										   gtk_entry_get_text(GTK_ENTRY(ui_data->username)),
-										   gtk_entry_get_text(GTK_ENTRY(ui_data->password)));
-					source = xmlSaveUri(uri);
-					newSource = g_strdup(BAD_CAST source);
-					g_free(uri->user);
-					uri->user = NULL;
-					xmlFree(source);
-					xmlFreeURI(uri);
-				} else
-					newSource = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-			} else {
-				newSource = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-			}
-			
-		} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio))) {
-			newSource = g_strdup_printf("|%s", gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-		}
-
+		newSource = ui_feed_dialog_decode_source(ui_data);
+		
 		/* Filter handling */
 		newFilter = gtk_editable_get_chars(GTK_EDITABLE(ui_data->filter), 0, -1);
 		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox)) &&
@@ -382,7 +370,7 @@ void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_d
 				needsUpdate = TRUE;
 			}
 		}
-
+		
 		/* if URL has changed... */
 		if(strcmp(newSource, feed_get_source(ui_data->fp))) {
 			feed_set_source(ui_data->fp, newSource);
