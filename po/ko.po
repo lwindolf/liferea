@@ -756,8 +756,10 @@ msgid ""
 "significant memory footprint if you have a lot \n"
 "of feeds!"
 msgstr ""
-"모든 피드를 불러온 상태를 유지합니다(_K). 이렇게 하면 속도가 향상됩니다.(특"
-"히 검색할 때) 하지만 많은 피드를 가지고 있다면메모리를 무지하게 써댑니다!"
+"모든 피드를 불러온 상태를 유지합니다(_K).\n"
+"이렇게 하면 속도가 향상됩니다.(특히 검색할 때)\n"
+"하지만 많은 피드를 가지고 있다면\n"
+"메모리를 무지하게 써댑니다!"
 
 #: src/interface.c:1824
 msgid "Feed Handling"
