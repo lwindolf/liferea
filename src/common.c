@@ -166,22 +166,19 @@ gchar * extractHTMLNode(xmlNodePtr cur) {
 	return result;
 }
 
-void unhtmlizeHandleCharacters (void *userData_p, const xmlChar *string_p, int len)
-{
-/*        gchar *result_p = (gchar *) userData_p;
-        int curLen = g_utf8_strlen(result_p, -1);
+typedef struct {
+	gchar	*data;
+	gint	length;
+} result_buffer;
 
-	result_p = g_utf8_offset_to_pointer(result_p, curLen);                                                                                
-        g_utf8_strncpy(result_p, (gchar *)string_p, len);
-	/ Make sure it's null-terminated
-	result_p = g_utf8_offset_to_pointer(result_p, curLen + len + 1);
-	*result_p = '\0';*/
-        gchar *result_p = (gchar *) userData_p;
-        int curLen = strlen(result_p);
+void unhtmlizeHandleCharacters (void *user_data, const xmlChar *string, int length) {
+	result_buffer	*buffer = (result_buffer *)user_data;
+	gint 		old_length;
 
-        strncpy (&result_p[curLen], (char *) string_p, len);
-	// Make sure it's null-terminated
-        result_p[curLen + len] = '\0';
+	old_length = buffer->length;	
+	buffer->length += length;
+	buffer->data = g_renew(gchar, buffer->data, buffer->length);
+        strncpy(buffer->data + old_length, (gchar *)string, length);
 }
 
 /* Converts a UTF-8 strings containing any HTML stuff to 
@@ -192,7 +189,8 @@ gchar * unhtmlize(gchar *string) {
 	htmlDocPtr		doc_p = NULL;
 	htmlSAXHandlerPtr	sax_p = NULL;
 	int			length;
-	gchar			*result_p = NULL;
+	gchar			*result;
+	result_buffer		*buffer;
 	
 	if(NULL == string)
 		return NULL;
@@ -201,32 +199,30 @@ gchar * unhtmlize(gchar *string) {
 	if(NULL == (strpbrk(string, "&<>")))
 		return string;
 	
-	sax_p = g_new0(xmlSAXHandler, 1);
- 	if (sax_p != NULL) {
- 		sax_p->characters = unhtmlizeHandleCharacters;
+	if(!g_utf8_validate(string, -1, NULL))
+		g_warning("Invalid encoded UTF8 string passed to unhtmlize()!");
 	
-		length = strlen(string);	/* the result should not get bigger than the original string... (is this correct?) */
- 		result_p = g_new(gchar, length + 1);
- 		if (result_p != NULL) {
- 			result_p[0] = '\0';
+	buffer = g_new0(result_buffer, 1);
+	sax_p = g_new0(htmlSAXHandler, 1);
+ 	sax_p->characters = unhtmlizeHandleCharacters;
+
+	length = strlen(string);	/* the result should not get bigger than the original string... (is this correct?) */
+	doc_p = htmlSAXParseDoc(string, standard_encoding, sax_p, &buffer);
+	if (doc_p != NULL) {
+		xmlFreeDoc(doc_p);
+	}
+	result = buffer->data;
+	g_free(buffer);
+ 	g_free(sax_p);
  
- 			doc_p = htmlSAXParseDoc(string, standard_encoding, sax_p, result_p);
- 			if (doc_p != NULL) {
- 				xmlFreeDoc(doc_p);
- 			}
- 		}
- 
- 		g_free(sax_p);
- 	}
- 
- 	if (result_p == NULL || !g_utf8_strlen(result_p, -1)) {
+ 	if (result == NULL || !g_utf8_strlen(result, -1)) {
  		/* Something went wrong in the parsing.
  		 * Use original string instead */
- 		g_free(result_p);
+ 		g_free(result);
  		return string;
  	} else {
  		g_free(string);
- 		return result_p;
+ 		return result;
  	}
 }
 
