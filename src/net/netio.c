@@ -97,11 +97,11 @@ int NetPoll (struct feed_request * cur_ptr, int * my_socket, int rw) {
 			retval = select (*my_socket+1, &rfds, NULL, NULL, &tv);
 		else
 			retval = select (*my_socket+1, NULL, &rfds, NULL, &tv);
-	} while((retval == -1) && (errno = EINTR));
+	} while((retval == -1) && (errno == EINTR));
 
 	if (retval == -1) {
 		perror("Select returned error in netio: ");
-		cur_ptr->netio_error = NET_ERR_TIMEOUT;
+		cur_ptr->netio_error = NET_ERR_SOCK_ERR;
 		return -1;
 	}
 	
