@@ -420,7 +420,9 @@ void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWid
 
 void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	GtkWidget	*feedview;
-
+	
+	ui_feedlist_select(NULL); /* This is needed to make the feed menu update itself correctly */
+	
 	filter_feeds_without_unread_headlines = GTK_CHECK_MENU_ITEM(menuitem)->active;
 	feedview = lookup_widget(mainwindow, "feedlist");
 	g_assert(feedview != NULL);
