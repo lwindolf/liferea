@@ -2,8 +2,8 @@
 
 	Version 0.5.3
 	
-	* New File selectors are used when compiled with GTK+ 2.4).
-	  (Nathan Conrad)
+	* New File selectors are used when compiled with GTK+ 2.4 or
+	  later). (Nathan Conrad)
 	* XML parsers now detect namespaces based on their URL. (Nathan
 	  Conrad)
 	* UTF-16 formatted documents are now supported. Please complain if
@@ -14,9 +14,11 @@
 	* Authenticated proxies are now supported via the GNOME proxy
 	  settings and http_proxy environment variable. (Nathan Conrad)
 	* Help feeds are no longer downloaded at every startup.
-	* Fix parsing of atom feeds that do not escape their content.
 	  
 	Bugfixes:
+
+	* Fixed bug where some invalid feeds were causing their item lists
+	  to be erased when they were updated. (Nathan Conrad)
 	
 2004-08-02 Lars Linder <lars.lindner@gmx.net>
 
@@ -34,6 +36,8 @@
 	  (Nathan Conrad)
 	* Fixed a parsing bug that treated Atom feed modified/issued
 	  dates as RFC822 instead of ISO6801 dates. (Lars Lindner)
+	* Fix parsing of atom feeds that do not escape their content.
+	  (Nathan Conrad)
 
 2004-07-23 Lars Lindner <lars.lindner@gmx.net>
 
