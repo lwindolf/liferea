@@ -108,7 +108,7 @@ static void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
 	g_free(selectedURL);
 	if(NULL != (selectedURL = gtk_moz_embed_get_link_message(dummy))) {
 		/* overwrite or clear last status line text */
-		print_status(g_strdup(selectedURL));
+		ui_mainwindow_set_status_bar(g_strdup(selectedURL));
 		
 		/* mozilla gives us an empty string when no link is selected */
 		if(0 == strlen(selectedURL)) {
