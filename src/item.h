@@ -1,22 +1,22 @@
-/*
-   common item handling
-   
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file feed.h common item handling
+ * 
+ * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version. 
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #ifndef _ITEM_H
 #define _ITEM_H
@@ -54,32 +54,64 @@ typedef struct item {
 	void		*ui_data;	/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
 
-void 	initItemTypes(void);
-
-itemPtr 	getNewItemStruct(void);
-void 		addVFolderToItem(itemPtr ip, gpointer fp);
-void		removeVFolderFromItem(itemPtr ip, gpointer fp);
-
 void ui_free_item_ui_data(itemPtr ip); /* This is in itemlist.c */
 void ui_update_item(itemPtr ip); /* This is in itemlist.c */
 /* Update all items listed. Useful after a display preference change */
 void ui_update_itemlist();
 
-void displayItem(itemPtr ip);
-void		freeItem(itemPtr ip);
+/**
+ * Allocates a new item structure.
+ * @returns the new structure
+ */
+itemPtr 	item_new(void);
+
+void 		addVFolderToItem(itemPtr ip, gpointer fp);
+void		removeVFolderFromItem(itemPtr ip, gpointer fp);
+
+
+/**
+ * Adds an item to the htmlview. This is used in 3-pane mode
+ * @param ip the item to display
+ */
+void item_display(itemPtr ip);
+
+/**
+ * Free the memory used by an itempointer. The item needs to be
+ * removed from the itemlist before calling this function.
+ *
+ * @param ip the item to remove
+ */
+void	item_free(itemPtr ip);
 
 /* methods to access properties */
-gchar *		getItemTitle(itemPtr ip);
-gchar *		getItemDescription(itemPtr ip);
-gchar *		getItemSource(itemPtr ip);
-time_t		getItemTime(itemPtr ip);
-gboolean	getItemMark(itemPtr ip);
-void		setItemMark(itemPtr ip, gboolean flag);
-gboolean	getItemReadStatus(itemPtr ip);
-void 		markItemAsRead(itemPtr ip);
-void 		markItemAsUnread(itemPtr ip);
+/** Returns the title of ip. */
+gchar *		item_get_title(itemPtr ip);
+/** Returns the description of ip. */
+gchar *		item_get_description(itemPtr ip);
+/** Returns the source of ip. */
+gchar *		item_get_source(itemPtr ip);
+/** Returns the modification time of ip. */
+time_t		item_get_time(itemPtr ip);
+/** Returns the mark status of ip */
+gboolean       item_get_mark(itemPtr ip);
+/** Returns the read status of ip. */
+gboolean	     item_get_read_status(itemPtr ip);
+/** Marks ip as read and updates the UI to reflect this change */
+void 		item_set_read(itemPtr ip);
+/** Marks ip as unread and updates the UI to reflect this change */
+void 		item_set_unread(itemPtr ip);
+/**
+ * Marks ip as marked or unmarked and updates the UI to reflect this
+ * change.
+ *
+ * @param ip item to be marked or unmarked
+ * @param flag set to TRUE if the item is to be marked, or FALSE to
+ * unmark the item
+ */
+void	item_set_mark(itemPtr ip, gboolean flag);
 
-/* for cache loading */
-itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur);
+/** Parse an xml tree and return a new itempointer generated from the
+    current node's information */
+itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur);
 
 #endif

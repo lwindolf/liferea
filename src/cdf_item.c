@@ -91,7 +91,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		
 	i = g_new0(struct CDFItem, 1);
 	i->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-	ip = getNewItemStruct();
+	ip = item_new();
 	
 	/* save the item link */
 	i->tags[CDF_ITEM_LINK] = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"href"));

@@ -215,7 +215,7 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	
 	g_assert(NULL != cur);
 	g_assert(NULL != cur->doc);
-	ip = getNewItemStruct();
+	ip = item_new();
 
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
@@ -319,7 +319,7 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	
 	g_assert(NULL != cur);
 	g_assert(NULL != cur->doc);
-	ip = getNewItemStruct();
+	ip = item_new();
 
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {

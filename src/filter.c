@@ -129,14 +129,14 @@ gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
 	g_assert(rp != NULL);
 	g_assert(ip != NULL);
 
-	if(NULL != getItemTitle(ip)) {
-		if(NULL != strstr(getItemTitle(ip), rp->value)) {
+	if(NULL != item_get_title(ip)) {
+		if(NULL != strstr(item_get_title(ip), rp->value)) {
 			return TRUE;
 		}
 	}
 	
-	if(NULL != getItemDescription(ip)) {
-		if(NULL != strstr(getItemDescription(ip), rp->value)) {
+	if(NULL != item_get_description(ip)) {
+		if(NULL != strstr(item_get_description(ip), rp->value)) {
 			return TRUE;
 		}
 	}

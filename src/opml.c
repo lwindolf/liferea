@@ -194,7 +194,7 @@ static void readOPML(feedPtr fp, gchar *data) {
 						addToHTMLBuffer(&buffer, tmp = getOutlineContents(child));
 						g_free(tmp);
 						
-						ip = getNewItemStruct();
+						ip = item_new();
 						if(NULL == (tmp = CONVERT(xmlGetProp(child, BAD_CAST"text"))))
 							tmp = CONVERT(xmlGetProp(child, BAD_CAST"title"));
 						ip->title = tmp;

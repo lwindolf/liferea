@@ -163,8 +163,8 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 				    -1);
 
 	/* Icon */
-	if(FALSE == getItemMark(ip)) {
-		if(FALSE == getItemReadStatus(ip)) {
+	if(FALSE == item_get_mark(ip)) {
+		if(FALSE == item_get_read_status(ip)) {
 			pixbuf = icons[ICON_UNREAD];
 		} else {
 			pixbuf = icons[ICON_READ];
@@ -184,7 +184,7 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 		//else
 			esc_title = g_markup_escape_text(title, -1);
 			
-		if(FALSE == getItemReadStatus(ip)) {
+		if(FALSE == item_get_read_status(ip)) {
 			label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
 		} else {
 			label = g_strdup_printf("%s", esc_title);
@@ -196,7 +196,7 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 
 	/* Time */
 	if(0 != time) {
-		if(FALSE == getItemReadStatus(ip)) {
+		if(FALSE == item_get_read_status(ip)) {
 			/* the time value is no markup, so we escape it... */
 			time_str = ui_itemlist_format_date((time_t)time);
 			tmp = g_markup_escape_text(time_str,-1);
@@ -333,18 +333,18 @@ void ui_itemlist_display(void) {
 		while(valid) {	
 			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 
-			if(getItemReadStatus(ip)) 
+			if(item_get_read_status(ip)) 
 				addToHTMLBuffer(&buffer, UNSHADED_START);
 			else
 				addToHTMLBuffer(&buffer, SHADED_START);
 
-			addToHTMLBuffer(&buffer, getItemDescription(ip));
+			addToHTMLBuffer(&buffer, item_get_description(ip));
 
-			if(getItemReadStatus(ip))
+			if(item_get_read_status(ip))
 				addToHTMLBuffer(&buffer, UNSHADED_END);
 			else {
 				addToHTMLBuffer(&buffer, SHADED_END);
-				markItemAsRead(ip);
+				item_set_read(ip);
 			}
 
 			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
@@ -366,8 +366,8 @@ void ui_itemlist_display(void) {
 			}
 		} else {
 			/* display item content */
-			markItemAsRead(ip);
-			addToHTMLBuffer(&buffer, getItemDescription(ip));
+			item_set_read(ip);
+			addToHTMLBuffer(&buffer, item_get_description(ip));
 		}
 
 		/* no scrolling reset, because this code should only be
@@ -395,8 +395,8 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
-		title = getItemTitle(ip);
-		description = getItemDescription(ip);
+		title = item_get_title(ip);
+		description = item_get_description(ip);
 		
 		add = TRUE;
 		if(NULL != searchstring) {
@@ -414,7 +414,7 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 			gtk_tree_store_set(itemstore, &iter,
 						    IS_TITLE, title,
 						    IS_PTR, ip,
-						    IS_TIME, getItemTime(ip),
+						    IS_TIME, item_get_time(ip),
 						    IS_TYPE, feed_get_type(fp),	/* not the item type, this would fail for VFolders! */
 						    -1);
 			g_assert(ip->ui_data == NULL);
@@ -464,7 +464,8 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 	if(!itemlist_loading) {
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			gtk_tree_model_get(model, &iter, IS_PTR, &ip, -1);
-			displayItem(ip);
+			item_display(ip);
+			item_set_read(ip);
 			ui_feedlist_update();
 			ui_htmlview_reset_scrolling();
 		}
@@ -475,10 +476,10 @@ void on_popup_toggle_read(gpointer callback_data,
 						 guint callback_action,
 						 GtkWidget *widget) {
 	itemPtr ip = (itemPtr)callback_data;
-	if(getItemReadStatus(ip)) 
-		markItemAsUnread(ip);
+	if(item_get_read_status(ip)) 
+		item_set_unread(ip);
 	else
-		markItemAsRead(ip);
+		item_set_read(ip);
 	ui_feedlist_update();
 }
 
@@ -486,7 +487,7 @@ void on_popup_toggle_flag(gpointer callback_data,
 						 guint callback_action,
 						 GtkWidget *widget) {
 	itemPtr ip = (itemPtr)callback_data;
-	setItemMark(ip, !getItemMark(ip));		
+	item_set_mark(ip, !item_get_mark(ip));		
 }
 
 void ui_itemlist_mark_all_as_read(void) {
@@ -500,7 +501,7 @@ void ui_itemlist_mark_all_as_read(void) {
 		gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter,
 					    IS_PTR, &ip, -1);
 		g_assert(ip != NULL);
-		markItemAsRead(ip);
+		item_set_read(ip);
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
 	ui_feedlist_update();
@@ -515,7 +516,7 @@ void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTree
 void on_toggle_item_flag(void) {
 	itemPtr ip = ui_itemlist_get_selected();
 	if(ip)
-		setItemMark(ip, !getItemMark(ip));	
+		item_set_mark(ip, !item_get_mark(ip));	
 }
 
 
@@ -524,7 +525,7 @@ void on_popup_launchitem_selected(void) {
 
 	ip = ui_itemlist_get_selected();
 	if(ip != NULL)
-		ui_htmlview_launch_URL(getItemSource(ip));
+		ui_htmlview_launch_URL(item_get_source(ip));
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected!"));
 }
@@ -533,10 +534,10 @@ void on_toggle_unread_status(void) {
 
 	itemPtr ip = ui_itemlist_get_selected();
 	if(ip) {
-		if(getItemReadStatus(ip)) 
-			markItemAsUnread(ip);
+		if(item_get_read_status(ip)) 
+			item_set_unread(ip);
 		else
-			markItemAsRead(ip);
+			item_set_read(ip);
 		ui_feedlist_update();
 	}
 }
@@ -566,7 +567,7 @@ static gboolean findUnreadItem(void) {
 	while(valid) {
 		gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 		g_assert(ip != NULL);
-		if(FALSE == getItemReadStatus(ip)) {
+		if(FALSE == item_get_read_status(ip)) {
 			/* select found item and the item list... */
 			if(NULL != (treeview = lookup_widget(mainwindow, "Itemlist"))) {
 				if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {

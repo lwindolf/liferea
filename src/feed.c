@@ -355,7 +355,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 				((struct feed_request *)(fp->request))->lastmodified = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-				feed_add_item((feedPtr)fp, parseCacheItem(doc, cur));
+				feed_add_item((feedPtr)fp, item_parse_cache(doc, cur));
 			}			
 			g_free(tmp);	
 			cur = cur->next;
@@ -468,7 +468,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					old_ip->title = g_strdup(new_ip->title);
 					old_ip->description = g_strdup(new_ip->description);
 					old_ip->time = new_ip->time;
-					markItemAsUnread(old_ip);
+					item_set_unread(old_ip);
 					newcount++;
 					traycount++;
 				} else {
@@ -482,7 +482,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			if(found && (old_fp->type != FST_HELPFEED)) { 
 				new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
 				allItems->items = g_slist_remove(allItems->items, new_ip);
-				freeItem(new_ip);
+				item_free(new_ip);
 			}
 		}
 		
@@ -504,7 +504,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			old_list = old_fp->items;
 			while(NULL != old_list) {
 				allItems->items = g_slist_remove(allItems->items, old_list->data);
-				freeItem((itemPtr)old_list->data);
+				item_free((itemPtr)old_list->data);
 				old_list = g_slist_next(old_list);
 			}
 			g_slist_free(old_fp->items);
@@ -814,7 +814,7 @@ void feed_clear_item_list(feedPtr fp) {
 	item = fp->items;
 	while(NULL != item) {
 		allItems->items = g_slist_remove(allItems->items, item->data);
-		freeItem(item->data);
+		item_free(item->data);
 		item = g_slist_next(item);
 	}
 	fp->items = NULL;
@@ -825,7 +825,7 @@ void feed_mark_all_items_read(feedPtr fp) {
 	
 	item = fp->items;
 	while(NULL != item) {
-		markItemAsRead((itemPtr)item->data);
+		item_set_read((itemPtr)item->data);
 		item = g_slist_next(item);
 	}
 	ui_feedlist_update();

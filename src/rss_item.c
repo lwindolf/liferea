@@ -155,7 +155,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 		
 	i = g_new0(struct RSSItem, 1);
 	i->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-	ip = getNewItemStruct();
+	ip = item_new();
 	
 	/* try to get an item about id */
 	ip->id = xmlGetProp(cur, BAD_CAST"about");

@@ -36,7 +36,7 @@
 #include "ui_tray.h"
 
 /* function to create a new feed structure */
-itemPtr getNewItemStruct(void) {
+itemPtr item_new(void) {
 	itemPtr		ip;
 	
 	ip = g_new0(struct item, 1);
@@ -47,19 +47,19 @@ itemPtr getNewItemStruct(void) {
 	return ip;
 }
 
-gchar *	getItemTitle(itemPtr ip) { return (ip != NULL ? ip->title : NULL); }
-gchar *	getItemDescription(itemPtr ip) { return (ip != NULL ? ip->description : NULL); }
-gchar * getItemSource(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
-time_t	getItemTime(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
-gboolean getItemReadStatus(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
-gboolean getItemMark(itemPtr ip) { g_assert(ip != NULL); return ip->marked;}
+gchar *	item_get_title(itemPtr ip) {return (ip != NULL ? ip->title : NULL); }
+gchar *	item_get_description(itemPtr ip) { return (ip != NULL ? ip->description : NULL); }
+gchar * item_get_source(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
+time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
+gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
+gboolean item_get_mark(itemPtr ip) { g_assert(ip != NULL); return ip->marked;}
 
-void setItemMark(itemPtr ip, gboolean flag) {
+void item_set_mark(itemPtr ip, gboolean flag) {
 	ip->marked = flag;
 	ui_update_item(ip);
 }
 
-void markItemAsUnread(itemPtr ip) { 
+void item_set_unread(itemPtr ip) { 
 	GSList		*vfolders;
 	feedPtr		fp;
 	
@@ -79,7 +79,7 @@ void markItemAsUnread(itemPtr ip) {
 	} 
 }
 
-void markItemAsRead(itemPtr ip) { 
+void item_set_read(itemPtr ip) { 
 	GSList		*vfolders;
 	feedPtr		fp;
 
@@ -113,7 +113,7 @@ void removeVFolderFromItem(itemPtr ip, gpointer fp) {
 	ip->vfolders = g_slist_remove(ip->vfolders, fp);
 }
 
-void freeItem(itemPtr ip) {
+void item_free(itemPtr ip) {
 
 	if(FALSE == ip->readStatus)
 		feed_decrease_unread_counter(ip->fp);
@@ -128,7 +128,7 @@ void freeItem(itemPtr ip) {
 	g_free(ip);
 }
 
-void displayItem(itemPtr ip) {
+void item_display(itemPtr ip) {
 	gchar	*buffer = NULL;
 	
 	ui_htmlview_start_output(&buffer, TRUE);
@@ -136,18 +136,16 @@ void displayItem(itemPtr ip) {
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(buffer);
 	//g_free(buffer);
-	markItemAsRead(ip);
-	ui_feedlist_update();
 }
 
-itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
+itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 	ip;
 	gchar		*tmp;
 	
 	g_assert(NULL != doc);
 	g_assert(NULL != cur);
 	
-	ip = getNewItemStruct();
+	ip = item_new();
 	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
