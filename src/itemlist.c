@@ -170,9 +170,10 @@ void itemlist_update_vfolder(nodePtr vp) {
 }
 
 void itemlist_reset_date_format(void) {
-
+	
 	ui_itemlist_reset_date_format();
-	ui_itemlist_update();
+	if (!ui_itemlist_get_two_pane_mode())
+		ui_itemlist_update();
 }
 
 /* menu commands */
