@@ -503,7 +503,7 @@ void ui_itemlist_load(nodePtr node, gchar *searchstring) {
 	gtk_tree_view_set_model(itemlist, NULL);
 	
 	ui_itemlist_clear();
-	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
+	// explicitly no ui_htmlview_clear() !!!
 	displayed_node = node;
 	g_object_unref(model);
 	itemstore = NULL;
@@ -517,7 +517,7 @@ void ui_itemlist_load(nodePtr node, gchar *searchstring) {
 	}
 	
 	/* Reset the sorting order of the itemstore and add it to the GtkTreeView */
-	if (sorted)
+	if(sorted)
 		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), sortColumn, sortType);
 	
 	gtk_tree_view_set_model(itemlist, model);
