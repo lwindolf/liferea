@@ -782,6 +782,9 @@ void feed_process_update_result(struct request *request) {
 	old_fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
 	ui_feedlist_update();
 	
+	if (request->flags & FEED_REQ_DOWNLOAD_FAVICON)
+		favicon_download(old_fp);
+	
 	ui_unlock();
 }
 
