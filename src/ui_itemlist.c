@@ -179,9 +179,14 @@ static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
 }
 
 void ui_itemlist_clear(void) {
-	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
+	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
+	GtkTreeSelection	*itemselection;
 
-	displayed_item = NULL;
+	/* unselecting all items is important for to remove items
+	   from vfolders whose removal is deferred until unselecting */
+	if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")))))
+		gtk_tree_selection_unselect_all(itemselection);
+		
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
 	gtk_tree_store_clear(itemstore);
 }
