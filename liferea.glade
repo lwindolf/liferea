@@ -908,12 +908,11 @@
 		  <property name="has_focus">True</property>
 		  <property name="headers_visible">False</property>
 		  <property name="rules_hint">False</property>
-		  <property name="reorderable">True</property>
+		  <property name="reorderable">False</property>
 		  <property name="enable_search">True</property>
 		  <signal name="button_press_event" handler="on_mainfeedlist_button_press_event" last_modification_time="Wed, 06 Aug 2003 23:10:51 GMT"/>
-		  <signal name="drag_begin" handler="on_feedlist_drag_begin" last_modification_time="Sat, 13 Sep 2003 14:06:15 GMT"/>
-		  <signal name="drag_end" handler="on_feedlist_drag_end" last_modification_time="Sat, 20 Sep 2003 14:55:45 GMT"/>
-		  <signal name="drag_drop" handler="on_feedlist_drag_drop" last_modification_time="Sun, 21 Sep 2003 11:16:59 GMT"/>
+		  <signal name="drag_data_get" handler="on_feedlist_drag_data_get" last_modification_time="Fri, 09 Jan 2004 18:23:23 GMT"/>
+		  <signal name="drag_data_received" handler="on_feedlist_drag_data_received" last_modification_time="Fri, 09 Jan 2004 18:23:42 GMT"/>
 		</widget>
 	      </child>
 	    </widget>
