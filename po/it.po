@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: liferea 0.4.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-04-21 01:04+0200\n"
-"PO-Revision-Date: 2004-05-07 02:50+0200\n"
+"PO-Revision-Date: 2004-05-07 17:50+0200\n"
 "Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.no-ip.org>\n"
 "Language-Team: Italian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "errore interno! tipo di notiziario %d sconosciuto durante l'aggiornament
 #: src/callbacks.c:310
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" aggiornato"
+msgstr "\"%s\" aggiornato..."
 
 #: src/callbacks.c:316
 #, c-format
@@ -50,7 +50,7 @@ msgstr "\"%s\" non è disponibile!"
 #: src/rss_channel.c:327
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
-msgstr "<p>errore XML durante la lettura del notiziario! Il notiziario \"%s\" non può essere caricato!</p>"
+msgstr "<p>Errore XML durante la lettura del notiziario! Il notiziario \"%s\" non può essere caricato!</p>"
 
 #: src/cdf_channel.c:156 src/feed.c:303 src/ocs_dir.c:457 src/opml.c:149
 #: src/pie_feed.c:218 src/rss_channel.c:333
@@ -60,7 +60,7 @@ msgstr "<p>Documento vuoto!</p>"
 #: src/cdf_channel.c:202 src/ocs_dir.c:519 src/opml.c:248 src/pie_feed.c:341
 #: src/rss_channel.c:424
 msgid "There were errors while parsing this feed!"
-msgstr "Si sono verificati degli erori durante l'interpretazione del notiziario!"
+msgstr "Si sono verificati degli errori durante l'interpretazione del notiziario!"
 
 #: src/common.c:125
 msgid "conversion wasn't successful.\n"
@@ -112,7 +112,7 @@ msgstr "Errore interno durante la conversione di caratteri UTF-8 in URI HTTP!"
 #. _() for HELP1URL to allow localised help feeds
 #: src/conf.c:41
 msgid "http://liferea.sf.net/help047.rdf"
-msgstr ""
+msgstr "http://liferea.sf.net/help047.rdf"
 
 #: src/conf.c:155
 #, c-format
@@ -152,7 +152,7 @@ msgstr "Notiziario di aiuto online"
 
 #: src/conf.c:699
 msgid "Liferea SF News"
-msgstr ""
+msgstr "Liferea su SourceForge"
 
 #: src/conf.c:717
 #, c-format
@@ -202,7 +202,7 @@ msgstr "\"%s\" non è un file cache valido! Non posso leggere il file OPML!"
 
 #: src/export.c:241 src/export.c:254 src/ui_feedlist.c:674
 msgid "internal error! could not find file dialog select button!"
-msgstr "errore interno! non posso trovare il pulsante di selezione del file dialog"
+msgstr "errore interno! non posso trovare il pulsante di selezione del file dialog!"
 
 #: src/favicon.c:411
 #, c-format
@@ -235,7 +235,7 @@ msgid ""
 "loaded!</p>"
 msgstr ""
 "<p>Errore XML durante l'interpretazione del file cache! Il file cache dei notiziari "
-"\"%s\" non può essere caricato! </p>"
+"\"%s\" non può essere caricato!</p>"
 
 #: src/feed.c:312
 #, c-format
@@ -306,19 +306,19 @@ msgstr "E' richiesto un pagamento"
 
 #: src/feed.c:768
 msgid "Access Forbidden"
-msgstr "Accesso vietato"
+msgstr "Accesso Vietato"
 
 #: src/feed.c:769
 msgid "Ressource Not Found"
-msgstr "Risorsa non trovata"
+msgstr "Risorsa Non Trovata"
 
 #: src/feed.c:770
 msgid "Method Not Allowed"
-msgstr "Metodo non consentito"
+msgstr "Metodo Non Consentito"
 
 #: src/feed.c:771
 msgid "Not Acceptable"
-msgstr "Non accettabile"
+msgstr "Non Accettabile"
 
 #: src/feed.c:772
 msgid "Proxy Authentication Required"
@@ -403,9 +403,8 @@ msgid ""
 "key /apps/liferea/browser-module!\n"
 "\n"
 msgstr ""
-"\n"
 "Provo a caricare il modulo browser Mozilla...Notare che questo\n"
-"potrebbe non funzionare con tutte le versioni di Mozilla. Se si\n"
+"potrebbe non funzionare con alcune versioni di Mozilla. Se si\n"
 "dovessero verificare dei problemi e Liferea non dovesse partire\n"
 "prova ad impostare la variabile MOZILLA_FIVE_HOME ad un'altro percorso\n"
 "di installazione di Mozilla o\telimina la chiave di configurazione gconf\n"
@@ -419,6 +418,7 @@ msgid ""
 "%s\n"
 msgstr ""
 "Impossibile aprire il componente HTML (%s) specificato nella configurazione!\n"
+"%s\n"
 
 #: src/htmlview.c:107
 #, c-format
@@ -522,7 +522,7 @@ msgstr "_Aggiorna Tutti"
 
 #: src/interface.c:277
 msgid "Immediately updates all feeds (excluding directories)."
-msgstr "Aggiorna immediatamente tutti i notiziari (ad eslusione delle directory)."
+msgstr "Aggiorna immediatamente tutti i notiziari (ad esclusione delle directory)."
 
 #: src/interface.c:286
 msgid "_Items"
@@ -534,7 +534,7 @@ msgstr "_Segna Tutti Come Letti"
 
 #: src/interface.c:296
 msgid "Marks all items of the current feed as read."
-msgstr "Segna tutti gli elementi del notiziario corrente, come letti."
+msgstr "Segna come letti tutti gli elementi del notiziario corrente."
 
 #: src/interface.c:301
 msgid "_Next Unread Item"
@@ -551,7 +551,7 @@ msgstr ""
 
 #: src/interface.c:313
 msgid "_Scroll Or Next Unread"
-msgstr "_Scorri O Prossimo Da Leggere"
+msgstr "_Scorri o Prossimo Da Leggere"
 
 #: src/interface.c:324
 msgid "Toggle _Read Status"
@@ -559,7 +559,7 @@ msgstr "_Commuta Stato Letto/Da Leggere"
 
 #: src/interface.c:327
 msgid "Toggles the read status of the selected item."
-msgstr "Commuta lo stato 'Letto/Da Leggere' dell'elemento selezionato"
+msgstr "Commuta lo stato 'Letto/Da Leggere' dell'elemento selezionato."
 
 #: src/interface.c:332
 msgid "Toggle Item _Flag"
@@ -825,7 +825,7 @@ msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
 msgstr ""
-"per utenti esperti: specificare una stringa di formattazione della data, "
+"per utenti esperti: specificare una stringa di formattazione dell'ora, "
 "per i codici di formattazione fare riferimento alla pagina del manuale di strftime()"
 
 #: src/interface.c:1418
@@ -870,7 +870,7 @@ msgstr "Area Notifica"
 
 #: src/interface.c:1500
 msgid "Show Menu _And Toolbar"
-msgstr "Mostra Menu _E Toolbar"
+msgstr "Mostra Menu _e Toolbar"
 
 #: src/interface.c:1506
 msgid "Show _Menu Only"
@@ -878,7 +878,7 @@ msgstr "Mostra Solo _Menu"
 
 #: src/interface.c:1512
 msgid "Show _Toolbar Only"
-msgstr "Mostra SOlo _Toolbar"
+msgstr "Mostra Solo _Toolbar"
 
 #: src/interface.c:1518
 msgid "Menu Settings"
@@ -1089,8 +1089,8 @@ msgstr ""
 "\n"
 "Codice da altri progetti\n"
 "\n"
-"Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
-"Philippe Martin, Brion Vibber (favicon support)"
+"Anders Carlsson <andersca@gnu.org> (supporto tray icon)\n"
+"Philippe Martin, Brion Vibber (supporto favicon)"
 
 #: src/interface.c:2516
 msgid "Contributors"
@@ -1198,11 +1198,11 @@ msgstr "non puoi modificare il contenuto delle cartelle speciali di aiuto!"
 
 #: src/ui_feedlist.c:126
 msgid "entry list widget lookup failed!\n"
-msgstr "componente di lista delle notizie non trovato!\n"
+msgstr "componente di lista elementi non trovato!\n"
 
 #: src/ui_feedlist.c:131
 msgid "could not retrieve selection of entry list!"
-msgstr "non posso recuperare la selezione dalla lista delle notizie!"
+msgstr "non posso recuperare la selezione dalla lista degli elementi!"
 
 #: src/ui_feedlist.c:147
 msgid "fatal! selected feed entry has no key!!!"
@@ -1256,7 +1256,7 @@ msgid ""
 msgstr ""
 "Impossibile scaricare \"%s\"!\n"
 "\n"
-" Forse l'URL non è valido o il notiziario non è temporaneamente disponibile. "
+" Forse l'URL non è valido o il notiziario non è momentaneamente disponibile. "
 "Puoi riprovare a scaricarlo o a rimuovere la sottoscrizione usando il menu "
 "contestuale dalla lista dei notiziari.\n"
 
@@ -1266,11 +1266,11 @@ msgstr "errore interno! Impossibile ottenere la selezione dall'albero dei notizi
 
 #: src/ui_feedlist.c:721 src/ui_itemlist.c:527
 msgid "internal error! could not find feed tree view widget!\n"
-msgstr "errore interno! impossibile trovare il componente dell'albero dei notiziari!\n"
+msgstr "errore interno! Impossibile trovare il componente dell'albero dei notiziari!\n"
 
 #: src/ui_filter.c:54
 msgid "Rule Type"
-msgstr "Typo di Regola"
+msgstr "Tipo di Regola"
 
 #: src/ui_filter.c:57
 msgid "Value"
@@ -1314,7 +1314,7 @@ msgstr "impossibile trovare il componente lista di elementi!"
 
 #: src/ui_itemlist.c:397
 msgid "could not retrieve selection of item list!"
-msgstr "impossibile recuperare la selezione dalla lista di elementi"
+msgstr "impossibile recuperare la selezione dalla lista di elementi!"
 
 #: src/ui_itemlist.c:476
 msgid "No item has been selected!"
@@ -1330,7 +1330,7 @@ msgstr "Non ci sono elementi da leggere!"
 
 #: src/ui_popup.c:61
 msgid "could not allocate memory!"
-msgstr "non posso allocare la memoria!"
+msgstr "impossibile allocare la memoria!"
 
 #: src/ui_popup.c:81
 msgid "/_Update Feed"
@@ -1389,7 +1389,7 @@ msgstr "/Commuta _Flag Elemento"
 
 #: src/ui_popup.c:124
 msgid "/_Next Unread Item"
-msgstr "/_Prossimo Elemento Non Letto"
+msgstr "/_Prossimo Elemento Da Leggere"
 
 #: src/ui_popup.c:126
 msgid "/_Launch Item In Browser"
@@ -1410,16 +1410,16 @@ msgstr "/_Copia Collegamento"
 #: src/ui_popup.c:139
 msgid "/_Subscribe"
 msgstr "/So_ttoscrivi"
-#MADHORSE
+
 #: src/ui_search.c:70
 #, c-format
 msgid "searching for \"%s\""
-msgstr ""
+msgstr "cerco \"%s\""
 
 #: src/ui_search.c:123
 #, c-format
 msgid "creating VFolder for search term \"%s\""
-msgstr ""
+msgstr "creazione cartella virtuale sulla ricerca \"%s\""
 
 #. FIXME: this really does not belong here!!! -> vfolder.c
 #. setup a rule
@@ -1428,28 +1428,28 @@ msgstr ""
 #: src/ui_search.c:135
 #, c-format
 msgid "VFolder %s"
-msgstr ""
+msgstr "Cartella virtuale %s"
 
 #: src/ui_search.c:146
 msgid "internal error! could not get folder key prefix!"
-msgstr ""
+msgstr "errore interno! impossibile ottenere il prefisso chiave della cartella!"
 
 #: src/ui_tray.c:83
 #, c-format
 msgid "%d new items!"
-msgstr ""
+msgstr "%d nuovi elementi!"
 
 #: src/ui_tray.c:94
 msgid "No new items."
-msgstr ""
+msgstr "Nessun nuovo elemento."
 
 #: src/update.c:142
 msgid "Feed source is NULL! This should never happen - cannot update!"
-msgstr ""
+msgstr "La sorgente del notiziario è NULL! Questo non dovrebbe mai accadere - impossibile aggiornare!"
 
 #: src/gtkhtml2/gtkhtml2.c:66
 msgid "GtkHTML2"
-msgstr ""
+msgstr "GtkHTML2"
 
 #: src/gtkhtml2/gtkhtml2.c:291
 #, c-format
@@ -1457,60 +1457,62 @@ msgid ""
 "Invalid browser command! There is no %%s URL place holder in the browser "
 "command string you specified in the preferences dialog!!!"
 msgstr ""
+"Comando del browser non valido! Non è presente il simbolo %%s di sostituzione "
+"dell'URL nella stringa di comando del browser specificata nella pagina delle preferenze!!!"
 
 #: src/gtkhtml2/gtkhtml2.c:298
 #, c-format
 msgid "browser command failed: %s"
-msgstr ""
+msgstr "comando del browser fallito: %s"
 
 #: src/gtkhtml2/gtkhtml2.c:301
 #, c-format
 msgid "starting: \"%s\""
-msgstr ""
+msgstr "avvio: \"%s\""
 
 #: src/mozilla/mozembed.c:69
 msgid "Mozilla (experimental)"
-msgstr ""
+msgstr "Mozilla (sperimentale)"
 
 #: src/net/conversions.c:73
 msgid "No description available."
-msgstr ""
+msgstr "Nessuna descrizione disponibile."
 
 #: src/net/conversions.c:354
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
-msgstr ""
+msgstr "ERRORE: zlib_uncompress: %d %s\n"
 
 #: src/net/conversions.c:370
 msgid "ERROR: No output during decompression"
-msgstr ""
+msgstr "ERRORE: Nessun output durante la decompressione"
 
 #: src/net/conversions.c:403
 msgid "ERROR: Invalid magic bytes for GZIP data"
-msgstr ""
+msgstr "ERRORE: Byte magici non validi per i dati GZIP"
 
 #: src/net/conversions.c:408
 msgid "ERROR: Compression method is not deflate"
-msgstr ""
+msgstr "ERRORE: Il metodo di compressione non è deflate"
 
 #: src/net/conversions.c:413
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
-msgstr ""
+msgstr "ERRORE: Flag %d non supportati\n"
 
 #: src/net/netio.c:84
 msgid "Connecting to "
-msgstr ""
+msgstr "Connessione a "
 
 #: src/net/netio.c:86
 #, c-format
 msgid "Connecting to %s..."
-msgstr ""
+msgstr "Connessione a %s..."
 
 #: src/net/netio.c:217
 #, c-format
 msgid "Downloading \"http://%s%s\""
-msgstr ""
+msgstr "Scaricamento \"http://%s%s\""
 
 #. This is a serious non-continueable OS error as it will probably not
 #. go away if we retry.
@@ -1518,59 +1520,59 @@ msgstr ""
 #. BeOS will stupidly return SUCCESS here making this code silently fail on BeOS.
 #: src/net/netio.c:242
 msgid "socket connect"
-msgstr ""
+msgstr "connessione socket"
 
 #: src/net/netio.c:344
 msgid "Too many HTTP redirects encountered! Giving up."
-msgstr ""
+msgstr "Troppe redirezioni HTTP! Abbandono."
 
 #. Something bad happened. Server sent stupid stuff.
 #: src/net/netio.c:351
 msgid "Following HTTP redirects"
-msgstr ""
+msgstr "Seguo le redirezioni HTTP"
 
 #: src/net/netio.c:398
 msgid "URL points to permanent redirect, updating with new location..."
-msgstr ""
+msgstr "L'URL punta ad una redirezione permanente, aggiorno con il nuovo indirizzo..."
 
 #: src/net/netio.c:430
 msgid "Webserver sent an invalid redirect!"
-msgstr ""
+msgstr "Il server web ha spedito una redirezione non valida!"
 
 #: src/net/netio.c:513
 #, c-format
 msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
-msgstr ""
+msgstr "Il server web %s ha mandato una risposta HTTP/1.0 illegale! Non posso interpretarla."
 
 #. Don't repeat authrequest if it already failed before!
 #: src/net/netio.c:553
 msgid "Authentication failed!"
-msgstr ""
+msgstr "Autenticazione fallita!"
 
 #: src/net/netio.c:577
 msgid "URL does not contain authentication information!"
-msgstr ""
+msgstr "L'URL non contiene informazioni di autenticazione!"
 
 #: src/net/netio.c:582
 msgid "Could not generate authentication information!"
-msgstr ""
+msgstr "Impossibile generare le informazioni di autenticazione!"
 
 #: src/net/netio.c:587
 msgid "Unsupported authentication method requested by server!"
-msgstr ""
+msgstr "Il server ha richiesto un metodo di autenticazione non supportato!"
 
 #: src/net/netio.c:728
 msgid "This URL doesn't look too valid to me, don't you think?"
-msgstr ""
+msgstr "Questo URL non mi sembra valido, non pensi?"
 
 #: src/net/netio.c:756
 msgid "Couldn't create network socket!"
-msgstr ""
+msgstr "Impossibile creare il socket di rete!"
 
 #: src/net/netio.c:762
 #, c-format
 msgid "Can't resolve host %s!"
-msgstr ""
+msgstr "Impossibile risolvere l'host %s!"
 
 #. On Solaris connect() might return -1, passing -1 to strerror()
 #. will return a NULL pointer which will segfault snprintf().
@@ -1578,23 +1580,23 @@ msgstr ""
 #: src/net/netio.c:773
 #, c-format
 msgid "Could not connect to server %s: %s"
-msgstr ""
+msgstr "Impossibile connettersi al server %s: %s"
 
 #: src/net/netio.c:783
 msgid "Aborted."
-msgstr ""
+msgstr "Abortito."
 
 #: src/net/netio.c:845
 #, c-format
 msgid "Could not open pipe \"%s\"!"
-msgstr ""
+msgstr "Impossibile aprire la pipe \"%s\"!"
 
 #: src/net/netio.c:852
 #, c-format
 msgid "Could not open file \"%s\"!"
-msgstr ""
+msgstr "Impossibile aprire il file \"%s\"!"
 
 #: src/net/netio.c:858
 #, c-format
 msgid "There is no file \"%s\"!"
-msgstr ""
+msgstr "Non esiste alcun file \"%s\"!"
