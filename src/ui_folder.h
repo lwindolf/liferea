@@ -46,7 +46,7 @@ void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position);
  */
 void ui_folder_remove_node(nodePtr ptr);
 
-void ui_update_folder(folderPtr folder);
+void ui_folder_update(folderPtr folder);
 gboolean ui_is_folder_expanded(folderPtr folder);
 void checkForEmptyFolders(void);
 /* expansion/collapsing */

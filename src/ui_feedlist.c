@@ -144,7 +144,39 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 	}	
 }
 
-void ui_update_feed(feedPtr fp) {
+void ui_feedlist_update_(GtkTreeIter *iter) {
+	GtkTreeModel *tree_model = GTK_TREE_MODEL(feedstore);
+	GtkTreeIter childiter;
+	gboolean valid;
+	nodePtr ptr = NULL;
+	
+	if (iter != NULL) {
+		gtk_tree_model_get(tree_model, iter,
+					    FS_PTR, &ptr,
+					    -1);
+		
+		valid = gtk_tree_model_iter_children(tree_model, &childiter, iter);
+	} else {
+		valid = gtk_tree_model_get_iter_first(tree_model, &childiter);
+	}
+
+	if (ptr != NULL)
+		((ui_data*)(ptr->ui_data))->row = *iter;
+
+	while (valid) {
+	ui_feedlist_update_(&childiter);
+		valid = gtk_tree_model_iter_next(tree_model, &childiter);
+	}
+
+	if (ptr != NULL) {
+		if (IS_FOLDER(ptr->type))
+			ui_folder_update((folderPtr)ptr);
+		else
+			ui_feed_update((feedPtr)ptr);
+	}
+}
+
+void ui_feed_update(feedPtr fp) {
 	GtkTreeModel      *model;
 	GtkTreeIter       *iter;
 	gchar     *label, *tmp;
@@ -173,16 +205,13 @@ void ui_update_feed(feedPtr fp) {
 		g_free(label);
 		label = tmp;
 	}
-
+	
 	gtk_tree_store_set(feedstore, iter,
 				    FS_LABEL, label,
 				    FS_UNREAD, count,
 				    FS_ICON, ui_feed_select_icon(fp),
 				    -1);
-
 	
-	ui_update_folder((folderPtr)ui_feedlist_get_parent((nodePtr)fp));
-
 	g_free(label);
 }
 
@@ -433,7 +462,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 				interval = -1;	/* this is due to ignore this feed while updating */
 			feed_set_update_interval(fp, interval);
 		}
-		ui_update_feed(fp);
+		ui_feedlist_update();
 	} else {
 		g_warning(_("Internal error! No feed selected, but property change requested...\n"));
 	}

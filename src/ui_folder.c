@@ -121,7 +121,7 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
 	setFolderTitle(activeFolder, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
-
+	ui_feedlist_update();
 	gtk_widget_hide(foldernamedialog);
 	activeFolder = NULL;
 }
@@ -266,7 +266,7 @@ void ui_add_folder(folderPtr parent, folderPtr folder, gint position) {
 
 	checkForEmptyFolders();
 
-	ui_update_folder(folder);
+	ui_feedlist_update();
 }
 
 void ui_folder_remove_node(nodePtr ptr) {
@@ -290,11 +290,11 @@ void ui_folder_remove_node(nodePtr ptr) {
 	ptr->ui_data = NULL;
 
 	if(parent != NULL) {
-		ui_update_folder(parent);
 		checkForEmptyFolders();
 		if (parent != NULL && parentExpanded)
 			ui_folder_set_expansion(parent, TRUE);
 	}
+	ui_feedlist_update();
 }
 
 /* If pos == -1, position == end */
@@ -327,7 +327,7 @@ void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position) {
 				    -1);
 
 	checkForEmptyFolders();
-	ui_update_feed(fp);
+	ui_feedlist_update();
 }
 
 static GdkPixbuf* ui_folder_select_icon(folderPtr np) {
@@ -343,15 +343,14 @@ static GdkPixbuf* ui_folder_select_icon(folderPtr np) {
 	}
 }
 
-static void ui_update_folder_from_iter(GtkTreeIter *iter) {
+static void ui_folder_update_from_iter(GtkTreeIter *iter) {
 	gboolean			rc;
-	GtkTreeIter		child, parent;
+	GtkTreeIter		child;
 	gint 			count, ccount;
 	gchar			*title, *label;
 	GtkTreeModel		*model;
 	folderPtr			ptr;
 	
-
 	model =  GTK_TREE_MODEL(feedstore);
 
 	gtk_tree_model_get(model, iter,
@@ -388,17 +387,14 @@ static void ui_update_folder_from_iter(GtkTreeIter *iter) {
 				    FS_UNREAD, count,
 				    -1);
 	g_free(label);
-
-	if(gtk_tree_model_iter_parent(model,&parent, iter))
-		ui_update_folder_from_iter(&parent);
 }
 
-void ui_update_folder(folderPtr folder) {
+void ui_folder_update(folderPtr folder) {
 	nodePtr node = (nodePtr)folder;
 	
 	if(NULL != node) {
 		g_assert(IS_FOLDER(node->type));
 		g_assert(NULL != node->ui_data);
-		ui_update_folder_from_iter(&((ui_data*)(node->ui_data))->row);
+		ui_folder_update_from_iter(&((ui_data*)(node->ui_data))->row);
 	}
 }

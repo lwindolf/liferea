@@ -90,7 +90,6 @@ void markItemAsRead(itemPtr ip) {
 			fp = vfolders->data;
 			feed_decrease_unread_counter(fp);
 			vfolders = g_slist_next(vfolders);
-			ui_update_feed(fp);
 		}
 		
 		ip->readStatus = TRUE; 
@@ -135,8 +134,8 @@ void displayItem(itemPtr ip) {
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(buffer);
 	//g_free(buffer);
-	
 	markItemAsRead(ip);
+	ui_feedlist_update();
 }
 
 itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {

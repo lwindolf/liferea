@@ -40,40 +40,9 @@ static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
 /* DnD callbacks								*/
 /* ---------------------------------------------------------------------------- */
 
-static void ui_dnd_update_iters(GtkTreeModel *tree_model, GtkTreeIter *iter) {
-	GtkTreeIter childiter;
-	gboolean valid;
-	nodePtr ptr = NULL;
-	
-	if (iter != NULL) {
-		gtk_tree_model_get(tree_model, iter,
-					    FS_PTR, &ptr,
-					    -1);
-		
-		valid = gtk_tree_model_iter_children(tree_model, &childiter, iter);
-	} else {
-		valid = gtk_tree_model_get_iter_first(tree_model, &childiter);
-	}
-
-	if (ptr != NULL)
-		((ui_data*)(ptr->ui_data))->row = *iter;
-
-	while (valid) {
-		ui_dnd_update_iters(tree_model, &childiter);
-		valid = gtk_tree_model_iter_next(tree_model, &childiter);
-	}
-
-	if (ptr != NULL) {
-		if (IS_FOLDER(ptr->type))
-			ui_update_folder((folderPtr)ptr);
-		else
-			ui_update_feed((feedPtr)ptr);
-	}
-}
-
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
-	ui_dnd_update_iters(GTK_TREE_MODEL(feedstore), NULL);
+	ui_feedlist_update();
 	checkForEmptyFolders();
 	conf_feedlist_save();
 	ui_itemlist_prefocus();

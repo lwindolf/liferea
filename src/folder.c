@@ -66,8 +66,6 @@ void setFolderTitle(folderPtr folder, gchar *title) {
 
 	/* topiter must not be NULL! because we cannot rename the root folder ! */
 	conf_feedlist_schedule_save();
-	if (folder->ui_data)
-		ui_update_folder(folder);
 	conf_feedlist_schedule_save();
 }
 

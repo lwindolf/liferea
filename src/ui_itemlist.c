@@ -375,6 +375,7 @@ void ui_itemlist_display(void) {
 	}
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(buffer);
+	ui_feedlist_update();
 }
 
 void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
@@ -464,7 +465,7 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			gtk_tree_model_get(model, &iter, IS_PTR, &ip, -1);
 			displayItem(ip);
-			ui_update_feed(displayed_fp);
+			ui_feedlist_update();
 			ui_htmlview_reset_scrolling();
 		}
 	}
@@ -478,8 +479,7 @@ void on_popup_toggle_read(gpointer callback_data,
 		markItemAsUnread(ip);
 	else
 		markItemAsRead(ip);
-	if (((feedPtr)ip->fp)->ui_data != NULL)
-		ui_update_feed(ip->fp);
+	ui_feedlist_update();
 }
 
 void on_popup_toggle_flag(gpointer callback_data,
@@ -503,6 +503,7 @@ void ui_itemlist_mark_all_as_read(void) {
 		markItemAsRead(ip);
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
+	ui_feedlist_update();
 }
 
 void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data) {
@@ -536,8 +537,7 @@ void on_toggle_unread_status(void) {
 			markItemAsUnread(ip);
 		else
 			markItemAsRead(ip);
-		if (((feedPtr)ip->fp)->ui_data != NULL)
-			ui_update_feed(ip->fp);
+		ui_feedlist_update();
 	}
 }
 
@@ -547,7 +547,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	if(fp) {
 		ui_itemlist_clear();
 		feed_clear_item_list(fp);	/* delete items */
-		ui_update_feed(fp);
+		ui_feedlist_update();
 	} else {
 		ui_show_error_box(_("You have to select a feed to delete its items!"));
 	}

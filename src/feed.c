@@ -709,6 +709,7 @@ void feed_mark_all_items_read(feedPtr fp) {
 		markItemAsRead((itemPtr)item->data);
 		item = g_slist_next(item);
 	}
+	ui_feedlist_update();
 }
 
 /* Method to copy the info payload of the structure given by

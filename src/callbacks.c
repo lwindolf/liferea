@@ -169,11 +169,11 @@ void on_popup_allunread_selected(void) {
 		if(IS_FOLDER(np->type)) {
 			/* if we have selected a folder we mark all item of all feeds as read */
 			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
-			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)ui_update_feed);
+			ui_feedlist_update();
 		} else {
 			/* if not we mark all items of the item list as read */
 			ui_itemlist_mark_all_as_read();
-			ui_update_feed((feedPtr)np);
+			ui_feedlist_update();
 		}
 	}
 }
@@ -262,7 +262,7 @@ gint checkForUpdateResults(gpointer data) {
 		/* determine feed type handler */
 		g_assert(NULL != feedHandler);
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			g_warning("internal error! unknown feed type %d while updating feeds!", type);
+			g_warning("internal error! %s has unknown feed type %d while updating feeds!", request->fp->title, type);
 			ui_unlock();
 			return TRUE;
 		}
@@ -317,8 +317,7 @@ gint checkForUpdateResults(gpointer data) {
 	g_free(request->data);
 	request->fp->updateRequested = FALSE;
 
-	if (request->fp->ui_data)
-		ui_update_feed(request->fp);
+	ui_feedlist_update();
 
 	return TRUE;
 }
