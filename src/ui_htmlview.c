@@ -29,7 +29,6 @@
 #include "common.h"
 #include "conf.h"
 #include "callbacks.h"
-#include "ui_queue.h"
 #include "support.h"
 #include "ui_htmlview.h"
 #include "ui_tabs.h"

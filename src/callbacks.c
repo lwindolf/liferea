@@ -220,3 +220,10 @@ void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gtk_widget_show(dialog);
 
 }
+
+void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
+
+	/* launch the homepage when button in about dialog is pressed */
+	ui_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
+}
+

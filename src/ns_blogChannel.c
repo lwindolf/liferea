@@ -21,7 +21,6 @@
 #include "ns_blogChannel.h"
 #include "common.h"
 #include "update.h"
-#include "ui_queue.h"
 #include <string.h>
 
 #define BLOGROLL_START		"<p><div class=\"blogchanneltitle\"><b>BlogRoll</b></div></p>"

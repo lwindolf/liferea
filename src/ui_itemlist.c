@@ -434,28 +434,17 @@ void ui_itemlist_enable_favicon_column(gboolean enabled) {
 }
 
 static itemPtr ui_itemlist_get_selected() {
-	GtkWidget		*itemlist;
 	GtkTreeIter		iter;
 	GtkTreeModel		*model;
-	itemPtr			item;
+	itemPtr			item = NULL;
 	GtkTreeSelection	*selection;
 
-	if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
-		g_warning("could not find item list widget!");
-		return NULL;
-	}
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
 	
-	if(NULL == (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
-		g_warning("could not retrieve selection of item list!");
-		return NULL;
-	}
-	
-	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
+	if(gtk_tree_selection_get_selected(selection, &model, &iter))
 		gtk_tree_model_get(model, &iter, IS_PTR, &item, -1);
-		return item;
-	}
 
-	return NULL;
+	return item;
 }
 
 void on_popup_launchitem_selected(void) {

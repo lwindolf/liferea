@@ -134,4 +134,8 @@ on_mainwindow_window_state_event       (GtkWidget       *widget,
                                         GdkEvent        *event,
                                         gpointer         user_data);
 
+void
+on_homepagebtn_clicked                 (GtkButton       *button,
+                                        gpointer         user_data);
+
 #endif

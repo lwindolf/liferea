@@ -307,8 +307,8 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	ui_htmlview_deinit();
 	
 #ifdef USE_SM
-     /* unplug */
-     session_end();
+	/* unplug */
+	session_end();
 #endif
 	
 	gtk_main_quit();

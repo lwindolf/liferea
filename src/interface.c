@@ -3018,6 +3018,8 @@ create_aboutdialog (void)
   GtkWidget *vbox231;
   GtkWidget *label57;
   GtkWidget *label58;
+  GtkWidget *homepagebtn;
+  GtkWidget *label194;
   GtkWidget *label59;
   GtkWidget *label55;
   GtkWidget *scrolledwindow5;
@@ -3057,6 +3059,16 @@ create_aboutdialog (void)
   gtk_widget_show (label58);
   gtk_box_pack_start (GTK_BOX (vbox231), label58, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label58), 0, 4);
+
+  homepagebtn = gtk_button_new ();
+  gtk_widget_show (homepagebtn);
+  gtk_box_pack_start (GTK_BOX (vbox231), homepagebtn, FALSE, FALSE, 0);
+  gtk_button_set_relief (GTK_BUTTON (homepagebtn), GTK_RELIEF_NONE);
+
+  label194 = gtk_label_new (_("<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"));
+  gtk_widget_show (label194);
+  gtk_container_add (GTK_CONTAINER (homepagebtn), label194);
+  gtk_label_set_use_markup (GTK_LABEL (label194), TRUE);
 
   label59 = gtk_label_new (_("Copyright (c) 2003-2004 \nLars Lindner <lars.lindner@gmx.net> and \nNathan J. Conrad <t98502@users.sourceforge.net>\n"));
   gtk_widget_show (label59);
@@ -3117,6 +3129,9 @@ create_aboutdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (aboutdialog), closebutton1, GTK_RESPONSE_CLOSE);
   GTK_WIDGET_SET_FLAGS (closebutton1, GTK_CAN_DEFAULT);
 
+  g_signal_connect ((gpointer) homepagebtn, "clicked",
+                    G_CALLBACK (on_homepagebtn_clicked),
+                    NULL);
   g_signal_connect_swapped ((gpointer) closebutton1, "clicked",
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (aboutdialog));
@@ -3128,6 +3143,8 @@ create_aboutdialog (void)
   GLADE_HOOKUP_OBJECT (aboutdialog, vbox231, "vbox231");
   GLADE_HOOKUP_OBJECT (aboutdialog, label57, "label57");
   GLADE_HOOKUP_OBJECT (aboutdialog, label58, "label58");
+  GLADE_HOOKUP_OBJECT (aboutdialog, homepagebtn, "homepagebtn");
+  GLADE_HOOKUP_OBJECT (aboutdialog, label194, "label194");
   GLADE_HOOKUP_OBJECT (aboutdialog, label59, "label59");
   GLADE_HOOKUP_OBJECT (aboutdialog, label55, "label55");
   GLADE_HOOKUP_OBJECT (aboutdialog, scrolledwindow5, "scrolledwindow5");
