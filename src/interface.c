@@ -2555,9 +2555,10 @@ create_aboutdialog (void)
   gtk_box_pack_start (GTK_BOX (vbox231), label58, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label58), 0, 4);
 
-  label59 = gtk_label_new (_("Copyright (c) 2003-2004 Lars Lindner"));
+  label59 = gtk_label_new (_("Copyright (c) 2003-2004 \nLars Lindner <lars.lindner@gmx.net> and \nNathan J. Conrad <t98502@users.sourceforge.net>\n"));
   gtk_widget_show (label59);
   gtk_box_pack_start (GTK_BOX (vbox231), label59, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (label59), GTK_JUSTIFY_CENTER);
   gtk_misc_set_padding (GTK_MISC (label59), 0, 5);
 
   label55 = gtk_label_new (_("About"));
@@ -2574,7 +2575,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow5), viewport1);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport1), GTK_SHADOW_NONE);
 
-  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@ll.pl>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNathan J. Conrad <t98502@users.sourceforge.net>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)"));
+  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@ll.pl>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)"));
   gtk_widget_show (label62);
   gtk_container_add (GTK_CONTAINER (viewport1), label62);
   gtk_misc_set_alignment (GTK_MISC (label62), 0, 0.1);
@@ -2594,7 +2595,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Gernauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>"));
+  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Gernauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>"));
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);

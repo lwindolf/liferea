@@ -1,14 +1,73 @@
 2004-04-??  Lars Lindner <lars.lindner@gmx.net>
 
+	Version 0.4.8
+
+	* A lot of rewrites. Everywhere!
+	* Rewrite of the feedlist tree handling. The program
+	  now allows arbitrary nested folders. You can now
+	  drag and drop folders.
+	* Rewrite and change of the feedlist saving method.
+	  Now the feedlist isn't saved into gconf but into
+	  an OPML file in the cache directory. This allows
+	  you to easily backup feedlist and cache by 
+	  archiving the cache directory ~/.liferea. It
+	  also allows exchanging subscriptions with other
+	  aggregators without depending on the program
+	  to export the list.
+	  
+	      !!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!
+
+	  THIS CHANGE BREAKS DOWNWARD COMPATIBILITY. ONCE 
+	    YOU'VE CONVERTED THE FEEDLIST OLDER VERSIONS 
+	       OF LIFEREA CANNOT ACCESS IT ANYMORE! 
+
+ 	      !!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!
+
+	
+	  To be prepared for problems during the conversion
+	  you should export the feedlist using the last
+	  installed version!
+	* Change of the cache file naming scheme. Now
+	  random filenames are generated.
+	* New Feed Auto Saving feature. To avoid data loss
+	  on program crashes or forced shutdown changed
+	  feeds are automatically saved all 5 minutes.
+	* Also when you request saving only changed feeds
+	  are saved. Formerly every feed was saved.
+	* Improved OPML support. Redundant attributes when
+	  exporting to provide wider compatibility with
+	  other aggregators.
+	* Added Italian translation done by Dario Conigliaro.
+
+2004-04-21  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.4.7c
+	
+	* Added patch from Ed Catmur to fix bug 934785 which
+	  caused the a locale switch to "C" as soon
+	  as a RFC822 date was parsed.
+	* Added patch from Christophe Barbe to fix bug 934326
+	  which caused crashes when using piped commands as 
+	  feed source.
+	* Fixes a crash when parsing RSS module tags reported
+	  by Guillaume Morin and Christophe Barbe.
+	* Fixes bug 938278 which caused an unwanted asserting
+	  when parsing invalid HTML.
+	* When headlines are updated the new headline time
+	  overwrites the old headline date.
+
+2004-04-11  Lars Lindner <lars.lindner@gmx.net>
+
 	Version 0.4.7b
 
+	* Added a macedonian translation from Tomislav Markovski.
 	* Upgrade to an improved version of the SnowNews
 	  networking code from Oliver Feiler. The new
 	  code now supports basic and digest HTTP
 	  authentication. This should satisfy change
 	  request 932183 from Eric Gregory.
 	* Fixes drag&drop crash reported with patch
-	  931558 by an anonymous guy.
+	  931558 from morberg.
 	* Fixes a thread safety problem which caused
 	  wrong download results. A patch to fix this
 	  was provided by Oliver Feiler.

@@ -1,7 +1,15 @@
+The following sections list people who have contributed
+to Liferea. Its more a credits file...
+
 Coding
 ======
 
-Lars Lindner <lars.lindner@gmx.net>		some of the coding...
+Lars Lindner <lars.lindner@gmx.net>
+Nathan J. Conrad <t98502@users.sourceforge.net>
+
+
+Contributors
+============
 
 James Doherty 					dialog design
 
@@ -16,35 +24,42 @@ Karl Soderstrom <ks@debian.org>			heavy debugging, patching
 						mini popup support
 						
 Christophe Barbe <christophe.barbe@ufies.org>	patch to count folder items
-						and Debian maintaining
+						and Debian bug managment
 						
 Juho Snellman <jsnell@users.sourceforge.net>	CSS support
 
 Roshan Revankar	<roshweb@users.sourceforge.net>	patch for selection handling
-
-Nathan J. Conrad <t98502@users.sourceforge.net>	patch for selection handling,
-						instant applying preferences,
-						much improved GUI code
 						
 Johannes Schlueter <joscherl@users.sourceforge.net>	pipe as feed source
 
 Niklas Morberg <morberg@users.sourceforge.net>	debugging and patching
 
-Pierre Phaneuf<pp@ludusdesign.com>		RPM spec update
+Pierre Phaneuf <pp@ludusdesign.com>		RPM spec update
+
+
+Packaging
+=========
+
+Christophe Barbe <christophe.barbe@ufies.org>	Debian
+Harry Auschner					SuSE
+John McKnight					Slackware
+Dario Conigliaro <djdas@djdas.no-ip.org>	Slackware
+Phillip Compton					Fedora
 
 
 Documentation and Translations
 ==============================
 
-Stephane Jourdan <stephane.jourdan@itris.fr>	french 
-Takeshi AIHANA <aihana@gnome.gr.jp>		japanese 
-Park Ji-In <mithrandir@electrang.net>		korean 
-Carlos Fenollosa <topopardo@humorfreak.com>	spanish 
-Jose Maria Mateos <chema@chema.homelinux.org>	spanish  
-Lars Lindner <lars.lindner@gmx.net>		german 
-Enrico Gernauck <enrico@fanglomerat.de>		german
-Vladimir Petkov <vpetkov@i-space.org>		bulgarian
-Tomislav Markovski <tome@set.com.mk>		macedonian
+Stephane Jourdan <stephane.jourdan@itris.fr>	French 
+Takeshi AIHANA <aihana@gnome.gr.jp>		Japanese 
+Park Ji-In <mithrandir@electrang.net>		Korean 
+Carlos Fenollosa <topopardo@humorfreak.com>	Spanish 
+Jose Maria Mateos <chema@chema.homelinux.org>	Spanish  
+Enrico Gernauck <enrico@fanglomerat.de>		German
+Vladimir Petkov <vpetkov@i-space.org>		Bulgarian
+Tomislav Markovski <tome@set.com.mk>		Macedonian
+Dario Conigliaro <djdas@djdas.no-ip.org>	Italian
+
 
 Code included from other projects
 =================================
