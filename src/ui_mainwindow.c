@@ -236,7 +236,7 @@ void ui_mainwindow_update_toolbar(void) {
 }
 
 void ui_mainwindow_update_feed_menu(gint type) {
-	gboolean enabled = (FST_FEED == type) || (FST_FOLDER == type);
+	gboolean enabled = (FST_FEED == type) || (FST_FOLDER == type) || (FST_VFOLDER == type);
 	GtkWidget *item;
 	
 	item = lookup_widget(mainwindow, "properties");
