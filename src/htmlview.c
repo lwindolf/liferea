@@ -298,12 +298,15 @@ void ui_htmlview_clear(GtkWidget *htmlview) {
 	g_free(buffer);
 }
 
-void ui_htmlview_launch_URL(const gchar *url, gboolean force_external) {
+void ui_htmlview_launch_URL(gchar *url, gboolean force_external) {
 	
 	if(NULL == url) {
+		/* FIXME: bad because this is not only used for item links! */
 		ui_show_error_box(_("This item does not have a link assigned!"));
 		return;
 	}
+	
+	url = encode_uri(url);
 	
 	debug3(DEBUG_GUI, "launch URL: %s  %s %s\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewInfo->launchInsidePossible)()?"true":"false",
@@ -355,6 +358,7 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 }
 
 gboolean ui_htmlview_scroll() {
+
 	return htmlviewInfo->scrollPagedown(ui_mainwindow_get_active_htmlview());
 }
 

@@ -1,6 +1,22 @@
 2004-??-?? ???
 
 	Version 0.5.1
+	
+	* Favicons are now processed with gdkpixbuf and saved
+	  to disc in PNG format. This should save some disk space
+	  and now supports image with 24bit colors and sizes other
+	  than 16x16. (Nathan Conrad)
+	* Now a short help text is displayed in the HTML view
+	  after startup.
+	  
+	Bugfixes:
+	  
+	* When URLs are passed to an external browser they are
+	  now escaped correctly. (Lars Lindner)
+	* When a feed could not be downloaded after the 
+	  subscription it was missing a cache file. This caused
+	  an error message each time the program starts. This
+	  is fixed now. (Lars Lindner)
 
 
 2004-06-19 Lars Lindner <lars.lindner@gmx.net>

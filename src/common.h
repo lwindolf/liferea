@@ -66,15 +66,38 @@ time_t 	parseISO8601Date(gchar *date);
 time_t 	parseRFC822Date(gchar *date);
 gchar *createRFC822Date(const time_t *time);
 // FIXME: formatDate used by several functions not only
-// to format date column, dontt use always date column format!!!
+// to format date column, don't use always date column format!!!
 // maybe gchar * formatDate(time_t, gchar *format)
 gchar * formatDate(time_t t);
 
 gchar *	getCachePath(void);
 gchar * common_create_cache_filename( gchar *folder, gchar *key, gchar *extension);
 
-gchar * encodeURIString(gchar *uriString);
+/**
+ * Encodes all non URI conformant characters in the passed
+ * string to be included in a HTTP URI. The original string
+ * is freed.
+ *
+ * @param string	string to be URI-escaped
+ * @returns new string that can be inserted into a HTTP URI
+ */
+gchar * encode_uri_string(gchar *string);
 
-/** Filter the title. Note that the string is modified. */
+/**
+ * Encodes all non URI conformant characters in the passed
+ * string and returns a valid HTTP URI. The original string
+ * is freed.
+ *
+ * @param uri_string	string to be URI-escaped
+ * @returns valid HTTP URI
+ */
+gchar * encode_uri(gchar *uri_string);
+
+/**
+ * Filter the title. Note that the string is modified. 
+ *
+ * @param title		title string be be filtered
+ */
 gchar * filter_title(gchar * title);
+
 #endif

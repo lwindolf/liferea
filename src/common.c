@@ -462,11 +462,7 @@ static gchar * byte_to_hex(unsigned char nr) {
 	return result;
 }
 
-/* Encodes any UTF-8 string in uriString and returns a 
-   valid UTF-8 encoded HTTP URI. Note that the uriString will 
-   be freed. This function is actually used to generate Feedster
-   search feed URLs. */
-gchar * encodeURIString(gchar *uriString) {
+gchar * encode_uri_string(gchar *string) {
 	gchar		*newURIString;
 	gchar		*hex, *tmp = NULL;
 	int		i, j, len, bytes;
@@ -475,37 +471,25 @@ gchar * encodeURIString(gchar *uriString) {
 	   the characters bytewise and convert non-ASCII
 	   compatible chars to URI hexcodes */
 	newURIString = g_strdup("");
-	len = strlen(uriString);
+	len = strlen(string);
 	for(i = 0; i < len; i++) {
-		if((('A' <= uriString[i]) && (uriString[i] <= 'Z')) ||
-		   (('a' <= uriString[i]) && (uriString[i] <= 'z')) ||
-		   (('0' <= uriString[i]) && (uriString[i] <= '9')) ||
-		   (uriString[i] == '-') || 
-		   (uriString[i] == '_') ||
-		   (uriString[i] == '.') || 
-		   (uriString[i] == '?') || 
-		   (uriString[i] == '!') ||
-		   (uriString[i] == '~') ||
-		   (uriString[i] == '*') ||
-		   (uriString[i] == '\'') ||
-		   (uriString[i] == '(') ||
-		   (uriString[i] == ')'))
-		   	tmp = g_strdup_printf("%s%c", newURIString, uriString[i]);
-		else if(uriString[i] == ' ')
-			tmp = g_strdup_printf("%s%c", newURIString, '+');
-		else if((unsigned char)uriString[i] <= 127) {
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
+		if(g_ascii_isalnum(string[i]) || strchr("-_.!~*'()", (int)string[i]))
+		   	tmp = g_strdup_printf("%s%c", newURIString, string[i]);
+		else if(string[i] == ' ')
+			tmp = g_strdup_printf("%s%%20", newURIString);
+		else if((unsigned char)string[i] <= 127) {
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(string[i]));g_free(hex);
 		} else {
 			bytes = 0;
-			if(((unsigned char)uriString[i] >= 192) && ((unsigned char)uriString[i] <= 223))
+			if(((unsigned char)string[i] >= 192) && ((unsigned char)string[i] <= 223))
 				bytes = 2;
-			else if(((unsigned char)uriString[i] > 223) && ((unsigned char)uriString[i] <= 239))
+			else if(((unsigned char)string[i] > 223) && ((unsigned char)string[i] <= 239))
 				bytes = 3;
-			else if(((unsigned char)uriString[i] > 239) && ((unsigned char)uriString[i] <= 247))
+			else if(((unsigned char)string[i] > 239) && ((unsigned char)string[i] <= 247))
 				bytes = 4;
-			else if(((unsigned char)uriString[i] > 247) && ((unsigned char)uriString[i] <= 251))
+			else if(((unsigned char)string[i] > 247) && ((unsigned char)string[i] <= 251))
 				bytes = 5;
-			else if(((unsigned char)uriString[i] > 247) && ((unsigned char)uriString[i] <= 251))
+			else if(((unsigned char)string[i] > 247) && ((unsigned char)string[i] <= 251))
 				bytes = 6;
 				
 			if(0 != bytes) {
@@ -515,24 +499,45 @@ gchar * encodeURIString(gchar *uriString) {
 				}
 
 				for(j=0; j < (bytes - 1); j++) {
-					tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)uriString[i++]));
+					tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)string[i++]));
 					g_free(hex);
 					g_free(newURIString);
 					newURIString = tmp;
 				}
-				tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)uriString[i]));
+				tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)string[i]));
 				g_free(hex);
 			} else {
 				// sh..!
-				g_error(_("Internal error while converting UTF-8 chars to HTTP URI!"));
+				g_error("Internal error while converting UTF-8 chars to HTTP URI!");
 			}
 		}
 		g_free(newURIString); 
 		newURIString = tmp;
 	}
-	g_free(uriString);
+	g_free(string);
 
 	return newURIString;
+}
+
+gchar * encode_uri(gchar *uri_string) {
+	gchar		*new_uri_string, *tmp;
+	guint 		i;
+
+	g_return_val_if_fail(uri_string != NULL, NULL);
+	new_uri_string = g_strdup("");
+	for(i = 0; i < strlen(uri_string); i++) {
+		if(g_ascii_isalnum(uri_string[i]) || 
+		   strchr(";/?:@&=+$,", (int)uri_string[i]) ||	/* reserved URI chars */
+   		   strchr("-_.!~*'()", (int)uri_string[i]))	/* unreserved URI chars */
+			tmp = g_strdup_printf("%s%c", new_uri_string, (unsigned char)uri_string[i]);
+		else
+			tmp = g_strdup_printf("%s%%%02x", new_uri_string, (unsigned char)uri_string[i]);
+			
+		g_free(new_uri_string);
+		new_uri_string = tmp;
+	}
+	
+	return new_uri_string;
 }
 
 gchar * filter_title(gchar * title) {

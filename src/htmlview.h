@@ -174,7 +174,7 @@ void	ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
  * @param url			URL to launch
  * @param force_external	to force loading in external browser
  */
-void	ui_htmlview_launch_URL(const gchar *url, gboolean force_external);
+void	ui_htmlview_launch_URL(gchar *url, gboolean force_external);
 
 /**
  * Function to change the zoom level of the HTML widget.
