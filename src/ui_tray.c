@@ -40,10 +40,10 @@ extern GdkPixbuf	*availableIcon;
 
 extern GtkWidget	*mainwindow;
 
-static GtkWidget	*eventbox;
+static GtkWidget	*eventbox = NULL;
 static gboolean		newItems = FALSE;
-static EggTrayIcon 	*tray_icon;
-static GtkTooltips	*tray_icon_tips;
+static EggTrayIcon 	*tray_icon =  NULL;
+static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
 
 void setTrayToolTip(gchar *string) {
@@ -109,19 +109,19 @@ static gboolean mainwindow_state_changed(GtkWidget *widget, GdkEvent *event, gpo
 
 void setupTrayIcon(void) {
 
-	if(getBooleanConfValue(SHOW_TRAY_ICON)) {
-		tray_icon = egg_tray_icon_new(PACKAGE);
-		eventbox = gtk_event_box_new();
+	if(NULL == tray_icon) {
+		if(getBooleanConfValue(SHOW_TRAY_ICON)) {
+			tray_icon = egg_tray_icon_new(PACKAGE);
+			eventbox = gtk_event_box_new();
 
-		g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);
-		g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
-		gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
+			g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);
+			g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
+			gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
 
-		setTrayIcon(emptyIcon);
+			setTrayIcon(emptyIcon);
 
-		tray_icon_tips = gtk_tooltips_new();
-		setTrayToolTip(_(NO_NEW_MESSAGES));	
-	} else {
-		tray_icon = NULL;
+			tray_icon_tips = gtk_tooltips_new();
+			setTrayToolTip(_(NO_NEW_MESSAGES));	
+		}
 	}
 }

@@ -7,6 +7,11 @@
 	  selected treeview entry and not at the end of the folder.
 	* Using feed type auto detection now doesn't require
 	  two downloads of the feed anymore.
+	* Added support for a systray (notification area) icon.
+	* Added a menubar. You can now enable/disable menubar
+	  and toolbar.
+	* Fixed a segfault when creating a folder and immediatly
+	  subscribing to a feed in this folder.
 
 2003-10-17  Lars Lindner <lars.lindner@gmx.net>
 

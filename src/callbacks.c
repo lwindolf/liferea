@@ -93,6 +93,7 @@ gchar	*selected_keyprefix = NULL;
 
 /* prototypes */
 void preFocusItemlist(void);
+void setSelectedFeed(feedPtr fp, gchar *keyprefix);
 GtkTreeStore * getFeedStore(void);
 GtkTreeStore * getItemStore(void);
 void loadItemList(feedPtr fp, gchar *searchstring);
@@ -127,25 +128,26 @@ void initGUI(void) {
 }
 
 /* returns the selected feed list iterator */
-void getFeedListIter(GtkTreeIter *iter) {
+gboolean getFeedListIter(GtkTreeIter *iter) {
 	GtkWidget		*treeview;
 	GtkTreeSelection	*select;
         GtkTreeModel		*model;
 	
 	if(NULL == mainwindow)
-		return;
+		return FALSE;
 	
 	if(NULL == (treeview = lookup_widget(mainwindow, "feedlist"))) {
 		g_warning(_("entry list widget lookup failed!\n"));
-		return;
+		return FALSE;
 	}
 		
 	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
 		print_status(_("could not retrieve selection of entry list!"));
-		return;
+		return FALSE;
 	}
 
         gtk_tree_selection_get_selected(select, &model, iter);
+	return TRUE;
 }
 
 void redrawFeedList(void) {
@@ -296,6 +298,11 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, "toolbarbtn");
 	setBooleanConfValue(DISABLE_TOOLBAR, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));	
 	
+	if(getBooleanConfValue(DISABLE_MENUBAR) && getBooleanConfValue(DISABLE_TOOLBAR)) {
+		showErrorBox(_("You have disabled both the menubar and the toolbar. Without one of these you won't be able to access all program functions. I'll reenable the toolbar!"));
+		setBooleanConfValue(DISABLE_TOOLBAR, FALSE);	
+	}
+	
 	/* refresh item list (in case date format was changed) */
 	redrawItemList();
 	
@@ -321,14 +328,17 @@ void on_deletebtn(void) {
 	}
 
 	print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp)));
-	getFeedListIter(&iter);
-	gtk_tree_store_remove(feedstore, &iter);
-	removeFeed(selected_fp);
-	selected_fp = NULL;
-				
-	clearItemList();
-	clearHTMLView();
-	checkForEmptyFolders();
+	if(getFeedListIter(&iter)) {
+		gtk_tree_store_remove(feedstore, &iter);
+		removeFeed(selected_fp);
+		setSelectedFeed(NULL, "");
+
+		clearItemList();
+		clearHTMLView();
+		checkForEmptyFolders();
+	} else {
+		showErrorBox(_("It seems like there is no selected feed entry!"));
+	}
 }
 
 void on_popup_delete_selected(void) { on_deletebtn(); }
@@ -343,6 +353,11 @@ void on_propbtn(GtkWidget *widget) {
 	GtkAdjustment	*updateInterval;
 	gint		defaultInterval;
 	gchar		*defaultIntervalStr;
+
+	if(NULL == fp) {
+		showErrorBox("You need to select a feed entry before trying to change properties!");
+		return;
+	}
 	
 	/* block changing of help feeds */
 	if(0 == strncmp(getFeedKey(fp), "help", strlen("help"))) {
@@ -445,17 +460,24 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 	GtkTreeIter		iter;
 	GtkTreeIter		*topiter;
 	
+	g_assert(NULL != fp);
 	g_assert(NULL != getFeedKey(fp));
 	g_assert(NULL != getFeedKeyPrefix(fp));
 	g_assert(NULL != feedstore);
 	g_assert(NULL != folders);
+	
 	// FIXME: maybe this should not happen here?
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(getFeedKeyPrefix(fp)));
-
+	g_assert(NULL != topiter);
+	
 	if(!startup) {
 		/* used when creating feed entries manually */
-		getFeedListIter(&selected_iter);
-		gtk_tree_store_insert_after(feedstore, &iter, topiter, &selected_iter);
+		if(getFeedListIter(&selected_iter) && (selected_iter.user_data != topiter->user_data))
+			/* if a feed entry is marked after which we shall insert */
+			gtk_tree_store_insert_after(feedstore, &iter, topiter, &selected_iter);
+		else
+			/* if no feed entry is marked (e.g. on empty folders) */		
+			gtk_tree_store_prepend(feedstore, &iter, topiter);
 	} else {
 		/* typically on startup when adding feeds from configuration */
 		gtk_tree_store_append(feedstore, &iter, topiter);
@@ -467,19 +489,10 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 			   -1);
 
 	if(!startup) {			   
-		if(NULL == (treeview = lookup_widget(mainwindow, "feedlist"))) {
-			g_warning(_("internal error! could not find feed tree view!\n"));
-			return;
-		}
-
-		/* this selection is necessary for the property dialog, which is
+		/* this selection fake is necessary for the property dialog, which is
 		   opened after feed subscription and depends on the correctly
-		   selected feed (FIXME: maybe a static feedkey storage instead
-		   of the continuous selection retrieval) */
-		if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
-			gtk_tree_selection_select_iter(selection, &iter);
-		else
-			g_warning(_("internal error! could not get feed tree view selection!\n"));
+		   selected feed */
+		setSelectedFeed(fp, NULL);
 	}
 }
 
@@ -557,7 +570,6 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 			}
 
 			on_propbtn(NULL);		/* prepare prop dialog */
-			gtk_widget_show(propdialog);	/* and popup */
 		}
 	}
 
@@ -772,6 +784,38 @@ void preFocusItemlist(void) {
 	itemlist_loading = 0;
 }
 
+/* sets the selected_* variables which indicate the selected feed list
+   entry which can either be a feed or a directory 
+ 
+   to set the selection info for a feed: fp must be specified and
+                                         keyprefix can be NULL
+					 
+   to set the selection info for a folder: fp has to be NULL and
+                                           keyprefix has to be given				 
+ */
+void setSelectedFeed(feedPtr fp, gchar *keyprefix) {
+
+	if(NULL != (selected_fp = fp)) {
+		/* we select a feed */
+		selected_type = getFeedType(fp);;
+		g_free(selected_keyprefix);
+		if(NULL == keyprefix)
+			selected_keyprefix = g_strdup(getFeedKeyPrefix(fp));
+		else
+			selected_keyprefix = g_strdup(keyprefix);
+	} else {
+		/* we select a folder */
+		if(0 == strcmp(keyprefix, "empty"))
+			selected_type = FST_EMPTY;
+		else
+			selected_type = FST_NODE;
+
+		g_free(selected_keyprefix);
+		selected_keyprefix = g_strdup(keyprefix);
+	}
+	selected_ip = NULL;	
+}
+
 void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeIter		iter;
         GtkTreeModel		*model;
@@ -782,8 +826,8 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 
 	undoTrayIcon();
 	
-        if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-                gtk_tree_model_get (model, &iter, 
+        if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
+                gtk_tree_model_get(model, &iter, 
 				FS_KEY, &tmp_key,
 				FS_TYPE, &tmp_type,
 				-1);
@@ -802,18 +846,11 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 	
 			/* save new selection infos */
-			selected_fp = fp;
-			selected_type = tmp_type;
-			g_free(selected_keyprefix);
-			selected_keyprefix = g_strdup(getFeedKeyPrefix(fp));
-			
+			setSelectedFeed(fp, NULL);		
 			loadItemList(fp, NULL);
 		} else {
 			/* save new selection infos */
-			selected_fp = NULL;
-			selected_type = tmp_type;
-			g_free(selected_keyprefix);
-			selected_keyprefix = g_strdup(tmp_key);
+			setSelectedFeed(NULL, tmp_key);
 		}
 		g_free(tmp_key);
        	}
@@ -876,6 +913,8 @@ void on_toggle_item_flag(void) {
 	
 	if(NULL != selected_ip)
 		setItemMark(selected_ip, !getItemMark(selected_ip));
+		
+	updateUI();
 }
 
 void on_toggle_condensed_view(void) {
