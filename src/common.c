@@ -406,7 +406,7 @@ time_t parseRFC822Date(gchar *date) {
 			g_warning(_("internal error! time conversion error! mktime failed!\n"));
 	} else {
 
-		g_message(_("Invalid RFC822 date format! Ignoring <pubDate> information!\n"));
+		g_message(_("Invalid RFC822 date format! Ignoring date information!\n"));
 	}
 	
 	return 0;
