@@ -299,15 +299,17 @@ gchar *item_render(itemPtr ip) {
 void item_display(itemPtr ip) {
 	gchar	*buffer = NULL, *tmp;
 	
-	ui_htmlview_start_output(&buffer, TRUE);
+	ui_htmlview_start_output(&buffer, feed_get_html_url(ip->fp), TRUE);
 	tmp = item_render(ip);
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 	ui_htmlview_finish_output(&buffer);
-	if (feed_get_source(ip->fp) != NULL &&
-	    ip->fp->source[0] != '|' &&
-	    strstr(feed_get_source(ip->fp), "://") != NULL)
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, feed_get_source(ip->fp));
+	if((ip->fp != NULL) &&
+	   (FST_FEED == ((feedPtr)ip->fp)->type) &&
+	   ((feedPtr)(ip->fp))->htmlUrl != NULL &&
+	   ((feedPtr)(ip->fp))->htmlUrl[0] != '|' &&
+	    strstr(((feedPtr)(ip->fp))->htmlUrl, "://") != NULL)
+		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)(ip->fp))->htmlUrl);
 	else
 		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 	g_free(buffer);

@@ -274,11 +274,16 @@ static void ui_htmlview_write_css(gchar **buffer, gboolean twoPane) {
 	addToHTMLBuffer(buffer, "\n//-->\n</style>\n");
 }
 
-void ui_htmlview_start_output(gchar **buffer, gboolean twoPane) { 
+void ui_htmlview_start_output(gchar **buffer, const gchar *base, gboolean twoPane) { 
 	
 	addToHTMLBuffer(buffer, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>\n");
 	addToHTMLBuffer(buffer, "<head>\n<title></title>");
 	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
+	if(NULL != base) {
+		addToHTMLBuffer(buffer, "<base href=\"");
+		addToHTMLBuffer(buffer, base);
+		addToHTMLBuffer(buffer, "\">\n");
+	}
 
 	ui_htmlview_write_css(buffer, twoPane);
 	
@@ -298,7 +303,7 @@ void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *bas
 	widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
 
 	if(base == NULL)
-		base = "file:///";	
+		base = "file:///";
 
 	g_assert(htmlview != NULL);
 	
@@ -328,7 +333,7 @@ void ui_htmlview_finish_output(gchar **buffer) {
 void ui_htmlview_clear(GtkWidget *htmlview) {
 	gchar	*buffer = NULL;
 
-	ui_htmlview_start_output(&buffer, FALSE);
+	ui_htmlview_start_output(&buffer, NULL, FALSE);
 	ui_htmlview_finish_output(&buffer); 
 	ui_htmlview_write(htmlview, buffer, NULL);
 	g_free(buffer);

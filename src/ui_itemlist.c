@@ -335,7 +335,7 @@ void ui_itemlist_display(void) {
 	if(np = ui_feedlist_get_selected()) {
 		if(TRUE == ui_itemlist_get_two_pane_mode()) {
 			/* two pane mode */
-			ui_htmlview_start_output(&buffer, FALSE);
+			ui_htmlview_start_output(&buffer, feed_get_html_url((feedPtr)np), FALSE);
 			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 			while(valid) {	
 				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
@@ -362,7 +362,7 @@ void ui_itemlist_display(void) {
 				/* three pane mode */
 
 				/* display feed info */
-				ui_htmlview_start_output(&buffer, TRUE);
+				ui_htmlview_start_output(&buffer, feed_get_html_url((feedPtr)np), TRUE);
 				if((FST_FEED == np->type) || 
 				   (FST_VFOLDER == np->type)) {
 					tmp = feed_render((feedPtr)np);
@@ -382,12 +382,12 @@ void ui_itemlist_display(void) {
 	}
 	
 	if(buffer) {
-		if(np != NULL &&
+		if((np != NULL) &&
 		   (FST_FEED == np->type) &&
-		   ((feedPtr)np)->source != NULL &&
-		   ((feedPtr)np)->source[0] != '|' &&
-		   strstr(((feedPtr)np)->source, "://") != NULL)
-			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)np)->source);
+		   ((feedPtr)np)->htmlUrl != NULL &&
+		   ((feedPtr)np)->htmlUrl[0] != '|' &&
+		   strstr(((feedPtr)np)->htmlUrl, "://") != NULL)
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)np)->htmlUrl);
 		else
 			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 		g_free(buffer);

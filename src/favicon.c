@@ -40,7 +40,6 @@
 #include "ui_feedlist.h"
 #include "ui_mainwindow.h"
 #include "ui_feed.h"
-#include "ui_queue.h"
 
 void favicon_load(feedPtr fp) {
 	struct stat	statinfo;
@@ -157,14 +156,13 @@ static void favicon_download_4(feedPtr fp) {
 }
 
 static void favicon_download_request_favicon_cb(struct request *request) {
-	feedPtr	fp = (feedPtr)request->user_data;
-	gchar	*tmp;
-	gboolean success = FALSE;
+	feedPtr		fp = (feedPtr)request->user_data;
+	gchar		*tmp;
+	gboolean	success = FALSE;
 	
 	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
 	fp->otherRequests = g_slist_remove(fp->otherRequests, request);
 	
-	ui_lock();
 	if(NULL != request->data && request->size > 0) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
@@ -195,7 +193,6 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 			favicon_download_5(fp);
 		}
 	}
-	ui_unlock();
 }
 
 static void favicon_download_html_request_cb(struct request *request) {
@@ -203,9 +200,8 @@ static void favicon_download_html_request_cb(struct request *request) {
 	struct request *request2 = NULL;
 	feedPtr fp = (feedPtr)request->user_data;
 	
-	ui_lock();
 	fp->otherRequests = g_slist_remove(fp->otherRequests, request);
-	
+		
 	if (request->size > 0 && request->data != NULL) {
 		iconUri = html_discover_favicon(request->data, request->source);
 		if (iconUri != NULL) {
@@ -224,7 +220,6 @@ static void favicon_download_html_request_cb(struct request *request) {
 		else /* flags == 2 */
 			favicon_download_4((feedPtr)fp);
 	}
-	ui_unlock();
 }
 
 static void favicon_download_html(feedPtr fp, int phase) {

@@ -182,7 +182,7 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	ui_htmlview_set_zoom(htmlview, zoom);
 	
 	/* create welcome text */
-	ui_htmlview_start_output(&buffer, FALSE);
+	ui_htmlview_start_output(&buffer, NULL, FALSE);
 	/*addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
 	                           "When Liferea starts for the first time it loads a localized default "
 				   "feed list. There are already default lists for English, French, German "

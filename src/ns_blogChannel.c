@@ -93,7 +93,6 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 
 	g_assert(NULL != requestData);
 	
-	ui_lock();
 	/* the following code somewhat duplicates opml.c */	
 	if(request->data != NULL) {
 		while(1) {
@@ -172,7 +171,6 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 		feed_unload(requestData->fp);
 	}
 	g_free(requestData);
-	ui_unlock();
 }
 
 static void getOutlineList(struct requestData *requestData, gchar *url) {

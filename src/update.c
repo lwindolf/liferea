@@ -267,14 +267,29 @@ gboolean download_is_online(void) {
 }
 
 static gboolean download_dequeuer(gpointer user_data) {
-	struct request *request;
+	struct request	*request;
+	gboolean	locked = FALSE;
 	
 	while((request = g_async_queue_try_pop(results)) != NULL) {
 
 		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
 		} else {
+			/* When processing a request that is assigned to a
+			   certain feed the callback depends on the existence 
+			   of the feed. To prevent any user interactions
+			   that could delete the feed we lock the GUI */
+			if(!(request->flags & FEED_REQ_NOLOCK)) {
+				ui_lock();
+				locked = TRUE;
+			}
+			
 			(request->callback)(request);
+			
+			if(locked) {
+				locked = FALSE;
+				ui_unlock();
+			}
 		}
 		download_request_free(request);
 	}

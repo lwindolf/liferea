@@ -60,7 +60,7 @@ static void mozilla_write(GtkWidget *widget, const gchar *string, const gchar *b
 		   245960. Now off to eat dinner hours late because I missed
 		   the bus that I needed to use to get home. -Nathan*/
 		int left = strlen(string);
-		gtk_moz_embed_open_stream(GTK_MOZ_EMBED(widget), base, "text/html");
+		gtk_moz_embed_open_stream(GTK_MOZ_EMBED(widget), "file://", "text/html");
 		while (left > 0) {
 			if (left > 4096) {
 				gtk_moz_embed_append_data(GTK_MOZ_EMBED(widget), string, 4096);

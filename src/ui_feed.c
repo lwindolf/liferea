@@ -28,7 +28,6 @@
 #include "update.h"
 #include "interface.h"
 #include "ui_feed.h"
-#include "ui_queue.h"
 #include "favicon.h"
 #include "ui_notification.h"
 
@@ -140,7 +139,6 @@ void ui_feed_process_update_result(struct request *request) {
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
 	
-	ui_lock();
 	g_assert(NULL != request);
 
 	feed_load(fp);
@@ -222,8 +220,6 @@ void ui_feed_process_update_result(struct request *request) {
 		favicon_download(fp);
 	
 	feed_unload(fp);
-	
-	ui_unlock();
 }
 
 /** determines the feeds favicon or default icon */
