@@ -153,6 +153,7 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
 	gint		error = 0;
+	int		old_umask;
 
 	debug_enter("export_OPML_feedlist");
 	
@@ -178,10 +179,18 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 			g_warning("could not create XML feed node for feed cache document!");
 			error = 1;
 		}
+		
+		if(internal)
+			old_umask = umask(077);
+			
 		if(-1 == xmlSaveFormatFileEnc(filename, doc, NULL, 1)) {
 			g_warning("Could not export to OPML file!!");
 			error = 1;
 		}
+		
+		if(internal)
+			umask(old_umask);
+			
 		xmlFreeDoc(doc);
 	} else {
 		g_warning("could not create XML document!");
