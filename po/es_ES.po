@@ -28,7 +28,7 @@ msgstr "No se ha podido encontrar la imagen: %s"
 
 #: src/callbacks.c:170
 msgid "entry list widget lookup failed!\n"
-msgstr "No se pudo encontrar el 'widget': lista de entradas."
+msgstr "No se pudo encontrar el 'widget': lista de entradas.\n"
 
 #: src/callbacks.c:175
 msgid "could not retrieve selection of entry list!"
@@ -116,7 +116,7 @@ msgstr "No se ha podido obtener la lista con los elementos seleccionados."
 
 #: src/callbacks.c:810
 msgid "item list widget lookup failed!\n"
-msgstr "No se ha podido encontrar el 'widget': lista de elementos."
+msgstr "No se ha podido encontrar el 'widget': lista de elementos.\n"
 
 #: src/callbacks.c:820
 msgid "could not retrieve selection of item list!\n"
@@ -128,12 +128,12 @@ msgstr "No se ha podido encontrar el 'widget': lista de elementos."
 
 #: src/callbacks.c:1014 src/callbacks.c:1055
 msgid "internal error! could not get feed tree view selection!\n"
-msgstr "Error interno. No se pudo obtener la selección de vista en árbol de las fuentes."
+msgstr "Error interno. No se pudo obtener la selección de vista en árbol de las fuentes.\n"
 
 #: src/callbacks.c:1016 src/callbacks.c:1057
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr "Error interno. No se pudo encontrar el 'widget' para la vista en árbol "
-"de fuentes."
+"de fuentes.\n"
 
 #: src/callbacks.c:1084
 msgid "There are no unread items!"
@@ -142,7 +142,7 @@ msgstr "¡Nada nuevo!"
 #: src/callbacks.c:1201
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "Error interno: Tipo de entrada desconocido. No se ha podido "
-"mostrar un icono apropiado."
+"mostrar un icono apropiado.\n"
 
 #: src/callbacks.c:1344
 msgid "Date"
@@ -163,7 +163,7 @@ msgstr "Lo siento, no puedes modificar los contenidos de las carpetas especiales
 #: src/callbacks.c:1622
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr "Error interno: ¡Se ha intentado representar un elemento de la lista que "
-"es un puntero nulo!"
+"es un puntero nulo!\n"
 
 #: src/cdf_channel.c:106 src/cdf_item.c:52 src/common.c:150 src/item.c:137
 #: src/ns_dc.c:225 src/ns_dc.c:275 src/ns_dc.c:318 src/ns_dc.c:358
@@ -800,7 +800,7 @@ msgstr "Nota: Liferea generará una subscripción que se podrá usar para consul
 "permanentemente, y actualizarla como cualquier otra."
 
 #: src/interface.c:1900
-msgid "Export Feed List"
+msgid "Import Feed List"
 msgstr "Importar lista"
 
 #: src/interface.c:1910
@@ -821,7 +821,7 @@ msgid "Select File"
 msgstr "Explorar..."
 
 #: src/interface.c:1988
-msgid "Import Feed List"
+msgid "Export Feed List"
 msgstr "Exportar lista"
 
 #: src/interface.c:1998
