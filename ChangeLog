@@ -15,6 +15,11 @@
 	  (Lars Lindner)
 	* Keyboard focus is adjusted on "Next Unread".
 	  (Lars Lindner)
+	
+	Bugfixes:
+
+	* 100% CPU usage on HTTP 202 (e.g. Slashdot after banning)
+	  is now fixed. (Oliver Feiler)
 
 2004-11-14  Lars Lindner <lars.lindner@gmx.net>
 

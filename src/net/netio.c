@@ -510,7 +510,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 				/* Received good status from server, clear problem field. */
 				cur_ptr->netio_error = NET_ERR_OK;
 				cur_ptr->problem = 0;
-				handled = 0;
+				handled = 1;
 				break;
 			case 300:	/* Multiple choice and everything 300 not handled is fatal. */
 				cur_ptr->netio_error = NET_ERR_HTTP_NON_200;
