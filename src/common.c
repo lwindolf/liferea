@@ -122,9 +122,9 @@ static gchar* convert(unsigned char *in, gchar *encoding)
                 ret = handler->input(out, &out_size, in, &temp);
                 if (ret || temp-size+1) {
                         if (ret) {
-                                g_print(_("conversion wasn't successful.\n"));
+                                g_message(_("conversion wasn't successful.\n"));
                         } else {
-                                g_print(_("conversion wasn't successful. converted: %i octets.\n"), temp);
+                                g_message(_("conversion wasn't successful. converted: %i octets.\n"), temp);
                         }
                         g_free(out);
                         out = NULL;
@@ -230,61 +230,103 @@ gchar * unhtmlize(gchar *string) {
  	}
 }
 
-/* error buffering function to be registered by 
-   xmlSetGenericErrorFunc() */
+#define MAX_PARSE_ERROR_LINES	10
+
+/** used by bufferParseError to keep track of error messages */
+typedef struct errorCtxt {
+	gchar	*buffer;
+	gint	errorCount;
+} *errorCtxtPtr;
+
+/**
+ * Error buffering function to be registered by 
+ * xmlSetGenericErrorFunc(). This function is called on
+ * each libxml2 error output and collects all output as
+ * HTML in the buffer ctxt points to. 
+ *
+ * @param	ctxt	error context
+ * @param	msg	printf like format string 
+ */
 void bufferParseError(void *ctxt, const gchar * msg, ...) {
 	va_list		params;
-	gchar		**errormsg = (gchar **)ctxt;
+	errorCtxtPtr	errors = (errorCtxtPtr)ctxt;
+	gchar		*oldmsg;
+	gchar		*newmsg;
 	gchar		*tmp;
 
-	tmp = *errormsg;
-	
-	va_start(params, msg);
-	*errormsg = g_strdup_vprintf(msg, params);
-	va_end(params);
-	
-	if(NULL == *errormsg)
-		*errormsg = tmp;
-	else
-		g_free(tmp);
+	g_assert(NULL != errors);
 
+	if(MAX_PARSE_ERROR_LINES + 1 >= errors->errorCount++) {
+		oldmsg = errors->buffer;
+		
+		va_start(params, msg);
+		newmsg = g_strdup_vprintf(msg, params);
+		va_end(params);
+
+		g_assert(NULL != newmsg);
+		tmp = g_markup_escape_text(newmsg, -1);
+		g_free(newmsg);
+		newmsg = tmp;
+
+		if(NULL != oldmsg) 
+			errors->buffer = g_strdup_printf("%s<br>%s", oldmsg, newmsg);
+		else
+			errors->buffer = g_strdup(newmsg);
+
+		g_free(oldmsg);
+		g_free(newmsg);
+	}
+	
+	if(MAX_PARSE_ERROR_LINES == errors->errorCount) {
+		newmsg = g_strdup_printf("%s<br>%s", errors->buffer, _("[Parser error output was truncated!]"));
+		g_free(errors->buffer);
+		errors->buffer = newmsg;
+	}
 }
 
-/* Common function to create a XML DOM object from a given
-   XML buffer. This function sets up a parser context,
-   enables recovery mode and sets up the error handler.
-   
-   The function returns a XML document pointer or NULL
-   if the document could not be read. It also sets the 
-   errormsg to the last error message on parsing
-   errors. */
+/**
+ * Common function to create a XML DOM object from a given
+ * XML buffer. This function sets up a parser context,
+ * enables recovery mode and sets up the error handler.
+ * 
+ * The function returns a XML document pointer or NULL
+ * if the document could not be read. It also sets 
+ * errormsg to the last error messages on parsing
+ * errors. 
+ *
+ * @param data		XML source
+ * @param errormsg	error buffer
+ *
+ * @return XML document
+ */
 xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
+	errorCtxtPtr		errors;
 	xmlParserCtxtPtr	parser;
 	xmlDocPtr		doc;
 	gint			length;
+	gchar			*tmp = NULL;
 	
 	g_assert(NULL != data);
-	
+
 	/* xmlCreateMemoryParserCtxt() doesn't like no data */
 	if(0 == (length = strlen(data))) {
-		g_warning(_("parseBuffer(): Empty input!\n"));
+		g_warning("parseBuffer(): Empty input!\n");
+		*errormsg = g_strdup("parseBuffer(): Empty input!\n");
 		return NULL;
 	}
-
+	
 	if(NULL != (parser = xmlCreateMemoryParserCtxt(data, length))) {
 		parser->recovery = 1;
-/*		parser->sax->fatalError = NULL;
-		parser->sax->error = NULL;
-		parser->sax->warning = NULL;
-		parser->vctxt.error = NULL;
-		parser->vctxt.warning = NULL;*/
-		xmlSetGenericErrorFunc(errormsg, (xmlGenericErrorFunc)bufferParseError);
-		xmlParseDocument(parser);	// ignore returned errors
-
+		errors = g_new0(struct errorCtxt, 1);
+		xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)bufferParseError);
+		xmlParseDocument(parser);	/* ignore returned errors */
 		doc = parser->myDoc;
-		xmlFreeParserCtxt(parser);
+		xmlFreeParserCtxt(parser);		
+		*errormsg = errors->buffer;
+		g_free(errors);
 	} else {
-		g_warning(_("parseBuffer(): Could not create parsing context!\n"));
+		g_warning("parseBuffer(): Could not create parsing context!\n");
+		*errormsg = g_strdup("parseBuffer(): Could not create parsing context!\n");
 		return NULL;
 	}
 	
@@ -320,7 +362,7 @@ time_t parseISO8601Date(gchar *date) {
 			g_warning(_("internal error! time conversion error! mktime failed!\n"));
 		}
 	} else {
-		g_print(_("Invalid ISO8601 date format! Ignoring <dc:date> information!\n"));				
+		g_message(_("Invalid ISO8601 date format! Ignoring <dc:date> information!\n"));				
 	}
 	
 	return 0;
@@ -365,7 +407,7 @@ time_t parseRFC822Date(gchar *date) {
 			g_warning(_("internal error! time conversion error! mktime failed!\n"));
 	} else {
 
-		g_print(_("Invalid RFC822 date format! Ignoring <pubDate> information!\n"));
+		g_message(_("Invalid RFC822 date format! Ignoring <pubDate> information!\n"));
 	}
 	
 	return 0;

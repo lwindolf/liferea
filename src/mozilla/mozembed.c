@@ -185,7 +185,7 @@ void setupHTMLViews(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
 
 	/* init mozilla home */
-	gtk_moz_embed_set_comp_path(g_getenv("MOZILLA_FIVE_HOME"));
+	gtk_moz_embed_set_comp_path((char *)g_getenv("MOZILLA_FIVE_HOME"));
 
 	/* set a path for the profile */
 	profile = g_build_filename(g_get_home_dir(), ".liferea/mozilla", NULL);
