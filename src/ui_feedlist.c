@@ -403,6 +403,7 @@ static void ui_feedlist_delete_(nodePtr ptr) {
 		ui_feedlist_do_for_all(ptr, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, ui_feedlist_delete_);
 		folder_free((folderPtr)ptr);
 	}
+	ui_feedlist_update();	/* because vfolder unread counts may have changed */
 }
 
 static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, gpointer user_data) {

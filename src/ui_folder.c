@@ -304,7 +304,6 @@ void ui_folder_remove_node(nodePtr ptr) {
 		if (parent != NULL && parentExpanded)
 			ui_folder_set_expansion(parent, TRUE);
 	}
-	ui_feedlist_update();
 }
 
 /* If pos == -1, position == end */

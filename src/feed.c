@@ -1025,7 +1025,7 @@ void feed_free(feedPtr fp) {
 	}
 
 	/* free items */
-	feed_clear_item_list(fp);
+	feed_remove_items(fp);
 
 	if(fp->id && fp->id[0] != '\0')
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
