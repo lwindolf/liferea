@@ -335,9 +335,8 @@ gchar * addFolderToConfig(gchar *title) {
 	gconfpath = g_strdup_printf("%s/groups", PATH);
 	value = gconf_client_get(client, gconfpath, &err);
 	is_gconf_error(err);
-g_print("get dir list\n");
+
 	list = gconf_value_get_list(value);
-g_print("end of get dir list\n");
 	g_free(value);
 	g_free(gconfpath);
 	
@@ -397,10 +396,10 @@ void removeFolderFromConfig(gchar *keyprefix) {
 	gconfpath = g_strdup_printf("%s/groups", PATH);
 	value = gconf_client_get(client, gconfpath, &err);
 	is_gconf_error(err);
-g_print("removeFolder value_get_list\n");
+
 	iter = list = gconf_value_get_list(value);
 	g_free(value);
-g_print("end of removeFolder value_get_list\n");
+
 	while(iter != NULL) {
 		element = iter->data;
 		tmpkeyprefix = gconf_value_get_string(element);

@@ -432,8 +432,8 @@ void removeEntry(gchar *keyprefix, gchar *key) {
 		   structure because it finds it in the feeds hashtable
 		   before its deleted */
 		g_mutex_lock(feeds_lock);
-		(*(fhp->removeFeed))(keyprefix, key, ep);
 		g_hash_table_remove(feeds, (gpointer)key);
+		(*(fhp->removeFeed))(keyprefix, key, ep);
 		g_mutex_unlock(feeds_lock);
 	} else {
 		//g_warning(_("FIXME: no handler to remove this feed type (delete cached contents manually)!"));
@@ -886,7 +886,7 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 			}
 		
 			g_mutex_lock(feeds_lock);	/* prevent any access during the feed structure modifications */
-			
+
 			/* move key in configuration */
 			removeEntryFromConfig(ep->keyprefix, key);	/* delete old one */
 			ep->key = newkey;				/* update feed structure key */
@@ -894,13 +894,13 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 			g_hash_table_insert(feeds, (gpointer)newkey, (gpointer)ep);	/* update in feed list */
 			g_hash_table_remove(feeds, (gpointer)key);
 
+			g_mutex_unlock(feeds_lock);
+			
 			/* write feed properties to new key */
 			setEntryTitleInConfig(newkey, (gchar *)getFeedProp(newkey, FEED_PROP_USERTITLE));
 			if(IS_FEED(tmp_type))
 				setFeedUpdateIntervalInConfig(newkey, (gint)getFeedProp(newkey, FEED_PROP_UPDATEINTERVAL));
-				
-			g_mutex_unlock(feeds_lock);
-			
+
 			/* update changed row contents */
 			gtk_tree_store_set(feedstore, &iter, FS_KEY, (gpointer)newkey, -1);
 		}
@@ -909,11 +909,10 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 		
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
 	}
-	
+
 	/* if we found the new entry, we have to save the new folder
 	   contents order */
 	if(found) {
-//g_print("saving keylist for prefix %s\n", keyprefix);
 		setEntryKeyList(keyprefix, newkeylist);
 	}
 	g_slist_free(newkeylist);

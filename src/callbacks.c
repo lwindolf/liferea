@@ -153,14 +153,19 @@ gchar * getEntryViewSelectionPrefix(GtkWidget *window) {
 			}
 			g_warning(_("internal error! could not find folder iterator of selected entry\n"));
 			return NULL;
+		} else {
+	                gtk_tree_model_get(model, &iter, FS_KEY, &keyprefix, 
+							 FS_TYPE, &tmp_type, -1);
+			if(IS_NODE(tmp_type))
+				return keyprefix;	/* selected iter is either a folder... */
+			else
+				return g_strdup("");	/* or a root folder feed entry */
 		}
-	} 
+	}
 	
 	/* if nothing was selected or the tree depth is 0
 	   -> we assume the default (root) folder */
-	keyprefix = g_strdup("");
-	
-	return keyprefix;
+	return g_strdup("");
 }
 
 gint getEntryViewSelectionType(GtkWidget *window) {
@@ -390,9 +395,8 @@ void on_deletebtn(GtkWidget *feedlist) {
 		}
 
 		print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getDefaultEntryTitle(key)));
-		removeEntry(keyprefix, key);
 		gtk_tree_store_remove(getFeedStore(), iter);
-		g_free(key);
+		removeEntry(keyprefix, key);
 		g_free(iter);
 				
 		clearItemList();
@@ -596,8 +600,8 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	if(NULL != (keyprefix = getEntryViewSelectionPrefix(mainwindow))) {
 		key = newEntry(type, source, keyprefix);
-		checkForEmptyFolders();
 		if(NULL != key) {
+			checkForEmptyFolders();
 
 			gtk_entry_set_text(GTK_ENTRY(titleentry), getDefaultEntryTitle(key));
 			new_key = key;
@@ -869,9 +873,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	gchar			*key, *keyprefix;
 	
 	g_assert(mainwindow != NULL);
-	keyprefix = getEntryViewSelectionPrefix(mainwindow);
 		
-
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		print_status(g_strdup_printf(_("creating VFolder for search term \"%s\""), searchstring));
@@ -879,6 +881,8 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		if(NULL != (keyprefix = getEntryViewSelectionPrefix(mainwindow))) {
 
 			if(NULL != (key = newEntry(FST_VFOLDER, "", keyprefix))) {
+				checkForEmptyFolders();
+				
 				// FIXME: this really does not belong here!!! -> vfolder.c
 				/* setup a rule */
 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule)))) 
