@@ -101,7 +101,7 @@ liferea_SOURCES = \
 	callbacks.c callbacks.h \
 	ui_filter.c \
 	ui_tray.c \
-	eggtrayicon.c \
+	eggtrayicon.h eggtrayicon.c \
 	common.c common.h \
 	folder.c folder.h \
 	feed.c feed.h \
