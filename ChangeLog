@@ -1,5 +1,12 @@
 2004-01-07  Lars Lindner <lars.lindner@gmx.net>
 
+	Version 0.4.6b
+	
+	* Fixes bug 872185 (crash on popup menu after
+	  preference changes) reported by mezz7.
+
+2004-01-07  Lars Lindner <lars.lindner@gmx.net>
+
 	Version 0.4.6
 	
 	* Added missing pubDate support for RSS 2.0 items.

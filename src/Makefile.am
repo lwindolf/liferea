@@ -17,7 +17,6 @@ liferea_SOURCES = \
 	ui_tray.c \
 	ui_popup.c ui_popup.h \
 	ui_dnd.c ui_dnd.h \
-	ui_selection.c ui_selection.h \
 	eggtrayicon.h eggtrayicon.c \
 	common.c common.h \
 	folder.c folder.h \

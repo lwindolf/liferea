@@ -128,8 +128,4 @@ void changeZoomLevel(gfloat diff);
 /* returns the currently set zoom level */
 gfloat getZoomLevel(void);
 
-/* Returns the currently selected URL string. The string
-   must be freed by the caller. */
-gchar * getSelectedURL(void);
-
 #endif

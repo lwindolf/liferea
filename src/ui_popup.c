@@ -142,12 +142,12 @@ void setupPopupMenues(void) {
 }
 
 /* function to generate a generic menu specified by its number */
-GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items) {
+GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer cb_data) {
 	GtkWidget 		*menu, *toggle;
 	GtkItemFactory 		*item_factory;
 	
 	item_factory = gtk_item_factory_new(GTK_TYPE_MENU, "<popup>", NULL);
-	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, NULL);
+	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, cb_data);
 	menu = gtk_item_factory_get_widget(item_factory, "<popup>");
 	
 	/* check if the itemlist toogle option is in the generated menu
@@ -164,16 +164,18 @@ GtkMenu *make_item_menu(void) {
 	GtkMenu 	*menu;
 	
 	if(TRUE == itemlist_mode)
-		menu = make_menu(item_menu_items, item_menu_len);
+		menu = make_menu(item_menu_items, item_menu_len, NULL);
 	else
-		menu = make_menu(html_menu_items, html_menu_len);
+		menu = make_menu(html_menu_items, html_menu_len, NULL);
 
 	return menu;
 }
 
 /* popup menu generating functions for the HTML view */
-GtkMenu *make_html_menu(void) { return make_menu(html_menu_items, html_menu_len); }
-GtkMenu *make_url_menu(void) { return make_menu(url_menu_items, url_menu_len); }
+GtkMenu *make_html_menu(void) { return make_menu(html_menu_items, html_menu_len, NULL); }
+GtkMenu *make_url_menu(char* url) {
+	return make_menu(url_menu_items, url_menu_len, g_strdup(url));
+}
 
 /* function to generate popup menus for the feed list depending
    on the type parameter. */
@@ -182,26 +184,26 @@ static GtkMenu *make_entry_menu(gint type) {
 	
 	switch(type) {
 		case FST_NODE:
-			menu = make_menu(node_menu_items, node_menu_len);
+			menu = make_menu(node_menu_items, node_menu_len, NULL);
 			break;
 		case FST_VFOLDER:
-			menu = make_menu(vfolder_menu_items, vfolder_menu_len);
+			menu = make_menu(vfolder_menu_items, vfolder_menu_len, NULL);
 			break;
 		case FST_PIE:
 		case FST_RSS:
 		case FST_CDF:
 		case FST_HELPFEED:
-			menu = make_menu(feed_menu_items, feed_menu_len);
+			menu = make_menu(feed_menu_items, feed_menu_len, NULL);
 			break;
 		case FST_OPML:
 		case FST_OCS:
-			menu = make_menu(dir_menu_items, dir_menu_len);
+			menu = make_menu(dir_menu_items, dir_menu_len, NULL);
 			break;
 		case FST_EMPTY:
 			menu = NULL;
 			break;
 		default:
-			menu = make_menu(default_menu_items, default_menu_len);
+			menu = make_menu(default_menu_items, default_menu_len, NULL);
 			break;
 	}
 	

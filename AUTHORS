@@ -11,6 +11,8 @@ Karl Soderstrom					heavy debugging, patching
 Christophe Barbe <christophe.barbe@ufies.org>	patch to count folder items
 						and Debian maintaining
 Juho Snellman <jsnell@users.sourceforge.net>	CSS support
+Nathan J. Conrad <t98502@users.sourceforge.net>	patch for selection handling
+Roshan Revankar	<roshweb@users.sourceforge.net>	patch for selection handling
 
 Documentation and Translations
 ==============================

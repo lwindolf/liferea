@@ -59,10 +59,6 @@ static gfloat		zoomLevel = 1.0;
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
-/* is used to store a URL after right click till retrieval via
-   getSelectedURL() */
-static gchar		*clickedURL = NULL;
-
 /* some prototypes */
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata);
 static void url_request(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
@@ -207,9 +203,7 @@ static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer u
 			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		else {
-			g_free(clickedURL);
-			clickedURL = g_strdup(selectedURL);
-			gtk_menu_popup(GTK_MENU(make_url_menu()), NULL, NULL,
+			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		}
 		return TRUE; 
@@ -372,10 +366,10 @@ static void
 on_url (HtmlView *view, const char *url, gpointer user_data)
 {
 	GtkWidget *statusbar = GTK_WIDGET(user_data);
-
 	gtk_label_set_text (GTK_LABEL (GTK_STATUSBAR (statusbar)->label), url);
-	
-	g_free(selectedURL);
+
+	if(selectedURL)
+		g_free(selectedURL);
 	selectedURL = g_strdup(url);
 }
 
@@ -457,13 +451,4 @@ void changeZoomLevel(gfloat diff) {
 gfloat getZoomLevel(void) {
 
 	return zoomLevel;
-}
-
-/* Returns the currently selected URL string. The string
-   must be freed by the caller. */
-gchar * getSelectedURL(void) {
-	gchar 	*tmp = clickedURL;
-	
-	clickedURL = NULL;
-	return tmp;
 }

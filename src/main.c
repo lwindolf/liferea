@@ -103,6 +103,6 @@ int main (int argc, char *argv[]) {
 	gdk_threads_enter();
 	gtk_main();
 	gdk_threads_leave();
-		
+	
 	return 0;
 }

@@ -1,7 +1,6 @@
 /*
-   Copyright (C) 2003, 2004
-   Lars Lindner <lars.lindner@gmx.net>
-   Christophe Barbe <christophe.barbe@ufies.org>	
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>	
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,7 +40,6 @@
 #include "htmlview.h"
 #include "callbacks.h"
 #include "ui_dnd.h"
-#include "ui_selection.h"
 #include "update.h"
 
 #include "vfolder.h"	// FIXME
@@ -159,7 +157,6 @@ void initGUI(void) {
 	if(NULL == emptyIcon)		emptyIcon	= create_pixbuf("empty.png");
 	
 	setupTrayIcon();
-	setupSelection(mainwindow);
 	setupURLReceiver(mainwindow);
 	setupPopupMenues();
 }
@@ -1195,11 +1192,26 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 void on_popup_zoomin_selected(void) { changeZoomLevel(0.2); }
 void on_popup_zoomout_selected(void) { changeZoomLevel(-0.2); }
 
-void on_popup_copy_url_selected(void) {	supplySelection(); }
+void on_popup_copy_url_selected(gpointer    url,
+						  guint       callback_action,
+						  GtkWidget  *widget) {
+	GtkClipboard *clipboard;
 
-void on_popup_subscribe_url_selected(void) {
+	clipboard = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
+	gtk_clipboard_set_text(clipboard, url, -1);
+ 
+	clipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+	gtk_clipboard_set_text(clipboard, url, -1);
+	
+	g_free(url);
+}
 
-	subscribeTo(FST_AUTODETECT, getSelectedURL(), g_strdup(selected_keyprefix), TRUE);
+void on_popup_subscribe_url_selected(gpointer    url,
+							  guint       callback_action,
+							  GtkWidget  *widget) {
+
+	subscribeTo(FST_AUTODETECT, url, g_strdup(selected_keyprefix), TRUE);
+	g_free(url);
 }
 
 /*------------------------------------------------------------------------------*/
@@ -1665,7 +1677,7 @@ void displayItemList(void) {
 	gchar			*buffer = NULL;
 	gboolean		valid;
 	itemPtr			ip;
-
+	gchar               *tmp = NULL;
 	g_assert(NULL != mainwindow);
 	
 	/* HTML widget can be used only from GTK thread */	
@@ -1701,9 +1713,12 @@ void displayItemList(void) {
 			if(NULL == selected_ip) {
 				/* display feed info */
 				if(NULL != selected_fp) {
-					if(!getFeedAvailable(selected_fp))
-						addToHTMLBuffer(&buffer, getFeedErrorDescription(selected_fp));
-					addToHTMLBuffer(&buffer, getFeedDescription(selected_fp));
+					if(!getFeedAvailable(selected_fp)) {
+						tmp = getFeedErrorDescription(selected_fp);
+						addToHTMLBuffer(&buffer, tmp);
+						g_free(tmp);
+					}
+  					addToHTMLBuffer(&buffer, getFeedDescription(selected_fp));
 				}
 			} else {
 				/* display item content */

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-07 02:20+0100\n"
+"POT-Creation-Date: 2004-01-07 10:07+0100\n"
 "PO-Revision-Date: 2004-01-04 01:29+0100\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
@@ -1215,78 +1215,78 @@ msgstr "Valor"
 msgid "could not allocate memory!"
 msgstr "No se ha podido asignar memoria suficiente."
 
-#: src/ui_popup.c:80
+#: src/ui_popup.c:81
 msgid "/_Update Feed"
 msgstr "/_Actualizar fuente"
 
-#: src/ui_popup.c:81 src/ui_popup.c:89 src/ui_popup.c:96 src/ui_popup.c:103
-#: src/ui_popup.c:109
+#: src/ui_popup.c:82 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:107
+#: src/ui_popup.c:114
 msgid "/_New"
 msgstr "/_Nuevo"
 
-#: src/ui_popup.c:82 src/ui_popup.c:90 src/ui_popup.c:97 src/ui_popup.c:104
-#: src/ui_popup.c:110
+#: src/ui_popup.c:83 src/ui_popup.c:92 src/ui_popup.c:100 src/ui_popup.c:108
+#: src/ui_popup.c:115
 msgid "/_New/New _Feed"
 msgstr "/_Nuevo/Nueva _fuente"
 
-#: src/ui_popup.c:83 src/ui_popup.c:91 src/ui_popup.c:98 src/ui_popup.c:105
-#: src/ui_popup.c:111
+#: src/ui_popup.c:84 src/ui_popup.c:93 src/ui_popup.c:101 src/ui_popup.c:109
+#: src/ui_popup.c:116
 msgid "/_New/New F_older"
 msgstr "/_Nuevo/Nueva _carpeta..."
 
-#: src/ui_popup.c:84
+#: src/ui_popup.c:85
 msgid "/_Delete Feed"
 msgstr "/_Eliminar fuente"
 
-#: src/ui_popup.c:85 src/ui_popup.c:93
+#: src/ui_popup.c:86 src/ui_popup.c:95
 msgid "/_Properties"
 msgstr "/_Propiedades..."
 
-#: src/ui_popup.c:88
+#: src/ui_popup.c:90
 msgid "/_Update Directory"
 msgstr "/_Actualizar directorio"
 
-#: src/ui_popup.c:92
+#: src/ui_popup.c:94
 msgid "/_Delete Directory"
 msgstr "/_Borrar directorio"
 
-#: src/ui_popup.c:99
+#: src/ui_popup.c:102
 msgid "/_Rename Folder"
 msgstr "/_Renombrar carpeta"
 
-#: src/ui_popup.c:100
+#: src/ui_popup.c:103
 msgid "/_Delete Folder"
 msgstr "/_Eliminar carpeta"
 
-#: src/ui_popup.c:106
+#: src/ui_popup.c:110
 msgid "/_Delete VFolder"
 msgstr "/Eliminar carpeta _virtual"
 
-#: src/ui_popup.c:115
+#: src/ui_popup.c:121
 msgid "/_Mark All As Read"
 msgstr "/Marcar _todos como leídos"
 
-#: src/ui_popup.c:116
+#: src/ui_popup.c:122
 msgid "/_Next Unread Item"
 msgstr "/_Siguiente elemento nuevo"
 
-#: src/ui_popup.c:118
+#: src/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/Abrir en _navegador"
 
-#: src/ui_popup.c:126
+#: src/ui_popup.c:133
 msgid "/Zoom In"
 msgstr "/A_cercar"
 
-#: src/ui_popup.c:127
+#: src/ui_popup.c:134
 msgid "/Zoom Out"
 msgstr "/A_lejar"
 
-#: src/ui_popup.c:132
+#: src/ui_popup.c:140
 msgid "/_Copy Link Location"
 msgstr "/_Copiar dirección del enlace"
 
-#: src/ui_popup.c:133
+#: src/ui_popup.c:141
 msgid "/_Subscribe"
 msgstr "/_Suscribirse"
 

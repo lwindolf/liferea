@@ -127,4 +127,4 @@
 
 /*
    Version number of package */
-#define VERSION "0.4.6"
+#define VERSION "0.4.7"

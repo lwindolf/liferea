@@ -33,6 +33,6 @@ GtkMenu *make_item_menu(void);
 
 /* popup menu generating functions for the HTML view */
 GtkMenu *make_html_menu(void);
-GtkMenu *make_url_menu(void);
+GtkMenu *make_url_menu(char* url);
 
 #endif
