@@ -45,6 +45,7 @@ static GtkTreeStore	*itemstore = NULL;
 extern gboolean 	itemlist_mode;
 
 static gint		itemlist_loading;	/* freaky workaround for item list focussing problem */
+static gint		disableSortingSaving;
 
 #define	TIMESTRLEN	256
 
@@ -71,6 +72,21 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 	return timeb-timea;
 }
 
+void ui_itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {
+     GtkTreeView    *itemlist;
+     GtkTreeModel   *model;
+     gint      sortColumn;
+     GtkSortType    sortType;
+     gboolean  sorted;
+	
+	if(displayed_node == NULL || disableSortingSaving != 0)
+		return;
+	
+     sorted = gtk_tree_sortable_get_sort_column_id(treesortable, &sortColumn, &sortType);
+	if (IS_FEED(displayed_node->type) || FST_VFOLDER == displayed_node->type)
+		feed_set_sort_column((feedPtr)displayed_node, sortColumn, sortType == GTK_SORT_DESCENDING);
+}
+
 GtkTreeStore * getItemStore(void) {
 
 	if(NULL == itemstore) {
@@ -84,15 +100,16 @@ GtkTreeStore * getItemStore(void) {
 			- feed icon
 		 */
 		itemstore = gtk_tree_store_new(IS_LEN,
+						 G_TYPE_INT,
+						 G_TYPE_STRING,
 						 G_TYPE_STRING, 
 						 G_TYPE_STRING,
 						 GDK_TYPE_PIXBUF,
 						 G_TYPE_POINTER, 
 						 G_TYPE_INT,
-						 G_TYPE_STRING,
-						 G_TYPE_INT,
  						 GDK_TYPE_PIXBUF);
 		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
+		g_signal_connect(G_OBJECT(itemstore), "sort-column-changed", G_CALLBACK(ui_itemlist_sort_column_changed_cb), NULL);
 	}
 	
 	return itemstore;
@@ -495,10 +512,12 @@ void ui_itemlist_load(nodePtr node) {
 	}
 	
 	/* Reset the sorting order of the itemstore and add it to the GtkTreeView */
-	if(sorted)
-		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), sortColumn, sortType);
-	
 	gtk_tree_view_set_model(itemlist, model);
+	
+	disableSortingSaving++;
+	if(IS_FEED(node->type) || node->type == FST_VFOLDER)
+		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed);
+	disableSortingSaving--;
 	
 	ui_itemlist_display();
 	ui_itemlist_prefocus();

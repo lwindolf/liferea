@@ -118,6 +118,8 @@ typedef struct feed {
 	GSList		*otherRequests;		/**< list of other update request structures used for downloading anything (favicon, blogChannel stuff, ...) */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
+	gint		sortColumn;		/**< Sorting column. Set to either IS_TITLE, or IS_TIME */
+	gboolean	sortReversed;		/**< Sort in the reverse order? */
 } *feedPtr;
 
 /* ------------------------------------------------------------ */
@@ -204,6 +206,8 @@ void feed_add_item(feedPtr fp, itemPtr ip);
  * passed GList is free'd afterwards!
  */
 void feed_add_items(feedPtr fp, GList *items);
+
+void feed_remove_item(feedPtr fp, itemPtr ip);
 
 /** 
  * To lookup an item given by it's unique item nr 
@@ -298,6 +302,7 @@ void feed_set_image_url(feedPtr fp, const gchar *url);
 const feedHandlerPtr feed_get_fhp(feedPtr fp);
 
 GSList * feed_get_item_list(feedPtr fp);
+void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed);
 void feed_clear_item_list(feedPtr fp);
 void feed_remove_items(feedPtr fp);
 

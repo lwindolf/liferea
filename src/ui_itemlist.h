@@ -29,12 +29,12 @@
 
 /** Enumeration of the columns in the itemstore. */
 enum is_columns {
+	IS_TIME,		/**< Time of item creation */ /* This is set to the first item so that default sorting is by time */
+	IS_TIME_STR,		/**< Time of item creation as a string*/
 	IS_TITLE,		/**< Name of the item */
 	IS_LABEL,		/**< Displayed name */
 	IS_ICON,		/**< Pixbuf reference to the item's icon */
 	IS_PTR,			/**< Pointer to item sturuct */
-	IS_TIME,		/**< Time of item creation */
-	IS_TIME_STR,		/**< Time of item creation as a string*/
 	IS_TYPE,		/**< Type of feed that the item came from */
 	IS_ICON2,		/**< Pixbuf reference to the item's feed's icon */
 	IS_LEN			/**< Number of columns in the itemstore */

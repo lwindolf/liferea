@@ -114,6 +114,12 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
 				g_free(lastPoll);
 			}
+			if (fp->sortColumn == IS_TITLE)
+				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
+			else if (fp->sortColumn == IS_TIME)
+				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
+			if (fp->sortReversed)
+				xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"true");
 		}
 		
 		/* add vfolder rules */
@@ -205,7 +211,7 @@ static long parse_long(gchar *str, long def) {
 }
 
 static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trusted) {
-	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr;
+	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr, *sortStr;
 	gchar		*title, *source, *typeStr, *tmp;
 	feedPtr		fp = NULL;
 	folderPtr	child;
@@ -302,6 +308,18 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		fp->lastFaviconPoll.tv_usec = 0L;
 		if (lastPollStr != NULL)
 			xmlFree(lastPollStr);
+
+		/* sorting order */
+		sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
+		if (sortStr != NULL) {
+			if (!xmlStrcmp(sortStr, "title"))
+				fp->sortColumn = IS_TITLE;
+			else if (!xmlStrcmp(sortStr, "time"))
+				fp->sortColumn = IS_TIME;
+		}
+		sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
+		if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"true"))
+			fp->sortReversed = TRUE;
 		
 		/* set feed properties available from the OPML feed list 
 		   they may be overwritten by the values of the cache file

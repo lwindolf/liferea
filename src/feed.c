@@ -59,9 +59,6 @@ struct feed_type {
 	gchar *id_str;
 };
 
-/* prototypes */
-static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode);
-
 /* initializing function, only called upon startup */
 void feed_init(void) {
 
@@ -887,6 +884,12 @@ GSList * feed_get_item_list(feedPtr fp) {
 
 	g_assert(0 != fp->loaded);
 	return fp->items; 
+}
+
+void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed) {
+	fp->sortColumn = sortColumn;
+	fp->sortReversed = reversed;
+	conf_feedlist_schedule_save();
 }
 
 /* method to free all items of a feed, does not remove items from cache! */

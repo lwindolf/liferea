@@ -30,6 +30,7 @@
 #include "interface.h"
 #include "ui_feed.h"
 #include "ui_queue.h"
+#include "favicon.h"
 
 /**
  * Creates a new error description according to the passed
