@@ -545,8 +545,8 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 /* ---------------------------------------------------------------------------- */
 
 void feed_set_id(feedPtr fp, gchar *id) {
-	if(fp->id)
-		g_free(fp->id);
+
+	g_free(fp->id);
 	fp->id = g_strdup(id);
 }
 gchar *feed_get_id(feedPtr fp) { return fp->id; }
@@ -586,6 +586,7 @@ void feed_reset_update_counter(feedPtr fp) {
 	printf("Reseting update counter for %s to %ld.\n", fp->title, fp->scheduledUpdate.tv_sec);
 }
 
+void feed_set_available(feedPtr fp, gboolean available) { fp->available = available; }
 gboolean feed_get_available(feedPtr fp) { return fp->available; }
 
 /* Returns a HTML string describing the last retrieval error 

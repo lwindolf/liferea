@@ -68,10 +68,11 @@
 
 /** common structure to access feed info structures */
 typedef struct feed {
-	gint		type;			/**< feed type */
+	gint		type;			/**< feed type (position is important!!!)*/
 	
 	/* per-feed UI data */
 	gpointer	*ui_data;
+	
 	gchar		*id;			/**< unique feed identifier string */
 	gint		unreadCount;		/**< number of unread items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
@@ -94,10 +95,6 @@ typedef struct feed {
 	/* feed properties used for updating */
 	GTimeVal	scheduledUpdate;	/**< time at which the feed needs to be updated */
 	gboolean	updateRequested;	/**< flag set when update in progress */
-	
-	//FIXME: I think this really does not belong here (Lars)
-	gboolean displayProps; /**< flag set when property dialog should be shown after updating */
-	
 	gpointer	*request;		/**< update request structure */
 } *feedPtr;
 
@@ -118,7 +115,10 @@ typedef struct feedHandler {
 /* feed creation/modification interface				*/
 /* ------------------------------------------------------------ */
 
-void saveAllFeeds(void);
+/** 
+ * Initializes feed parsing handlers. Should be called 
+ * only once on program startup.
+ */
 void feed_init(void);
 
 /**
@@ -179,8 +179,11 @@ gint feed_get_unread_counter(feedPtr fp);
 gint feed_get_default_update_interval(feedPtr fp);
 gint feed_get_update_interval(feedPtr fp);
 void feed_set_update_interval(feedPtr fp, gint interval);
+
 void feed_reset_update_counter(feedPtr fp);
+
 gboolean feed_get_available(feedPtr fp);
+void feed_set_available(feedPtr fp, gboolean available);
 
 /**
  * Returns a HTML string describing the last retrieval error 

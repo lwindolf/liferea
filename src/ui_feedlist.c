@@ -27,6 +27,7 @@
 #include "conf.h"
 #include "ui_feedlist.h"
 #include "ui_tray.h"
+#include "update.h"
 #include "htmlview.h"
 #include "favicon.h"
 
@@ -443,18 +444,52 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 /*------------------------------------------------------------------------------*/
 
 void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDialog) {
-	feedPtr		fp;
+	GtkWidget 		*updateIntervalBtn;
+	GtkWidget 		*propdialog;
+	gint 			interval;
+	struct feed_request 	*request;
+	feedPtr			fp;
 
+	/* directly download (do not use update queue to avoid
+	   waiting for the end of other updates and to
+	   get control back when feed is downloaded to show
+	   properties dialog) */
+	
+	request = (struct feed_request *)update_request_new(NULL);
+	downloadURL(request);		// FIXME: this blocks the program!!!
+
+	/* determine feed type if necessary */
+	if(type == FST_AUTODETECT)
+		type = feed_detect_type(request->data);
+		
 	fp = feed_new();
-	fp->displayProps = showPropDialog; 	// FIXME!
 	feed_set_id(fp, conf_new_id());
-	feed_set_title(fp, g_strdup("New feed...."));
+	feed_set_title(fp, g_strdup(""));
 	feed_set_type(fp, type);
 	feed_set_source(fp, source);
-	favicon_download(fp);
-	feed_update(fp);
+	favicon_download(fp);		// FIXME: this blocks the program!!!
+	ui_folder_add_feed(ui_feedlist_get_target_folder(), fp, -1);			
+
+	if(NULL == request->data) {
+		ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), feed_get_source(request->fp));
+		feed_set_available(fp, FALSE);
+	} else {
+		feed_set_available(fp, TRUE);
 	
-	ui_folder_add_feed(ui_feedlist_get_target_folder(), fp, -1);
+		if(showPropDialog) {
+			/* built, set default update interval and show properties dialog */
+			propdialog = ui_feedlist_build_prop_dialog();
+
+			if(-1 != (interval = feed_get_default_update_interval(fp))) {
+				updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
+				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
+			}
+
+			on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
+		}
+	}
+	
+	update_request_free(request);
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	

@@ -239,46 +239,47 @@ gint checkForUpdateResults(gpointer data) {
 	feedPtr			new_fp;
 	feedHandlerPtr		fhp;
 	gint			type;
-	gboolean autodetectPhase = FALSE;
+	gboolean 		firstDownload = FALSE;
 
-	request = update_thread_get_result();
-
-	if(request == NULL)
+	if(NULL == (request = update_thread_get_result()))
 		return TRUE;
 
 	ui_lock();
-	request->fp->available = TRUE;
+	g_assert(NULL != request->fp);
+	feed_set_available(request->fp, TRUE);
 	
 	if(304 == request->lasthttpstatus) {	
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), feed_get_title(request->fp));
+		ui_unlock();
+		return TRUE;
 	} else if(NULL != request->data) {
-		/* determine feed type handler */
-		type = feed_get_type(request->fp);
-		g_assert(NULL != feedHandler);
-		if (type == FST_AUTODETECT) {
-			autodetectPhase = TRUE;
-			type = feed_detect_type(request->data);
-			feed_set_type(request->fp,type);
+		/* determine feed type if necessary (e.g. when importing) */
+		if(feed_get_type(request->fp) == FST_AUTODETECT) {
+			firstDownload = TRUE;
+			feed_set_type(request->fp, feed_detect_type(request->data));
 		}
+		
+		/* determine feed type handler */
+		g_assert(NULL != feedHandler);
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
 			g_warning("internal error! unknown feed type %d while updating feeds!", type);
 			ui_unlock();
 			return TRUE;
 		}
 		
-		/* parse the new downloaded feed into new_fp */
+		/* parse the new downloaded feed into new_fp, feed type must be 
+		   set here because the parsing implementations maybe used for
+		   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
 		new_fp = feed_new();
-		new_fp->source = g_strdup(request->fp->source);
 		(*(fhp->readFeed))(new_fp, request->data);
-		new_fp->type = request->fp->type; /* FIXME:  This is a hack. The type should be set in the parser functions*/
+		feed_set_source(new_fp, feed_get_source(request->fp));
+		feed_set_type(new_fp, feed_get_type(request->fp));
 
-		if (autodetectPhase) {
+		if(firstDownload) {
 			if (feed_get_title(new_fp) != NULL)
 				feed_set_title(request->fp, feed_get_title(new_fp));
 			feed_set_update_interval(request->fp, feed_get_default_update_interval(new_fp));
 		}
-		if(ui_feedlist_get_selected() == (nodePtr)request->fp)
-			ui_itemlist_clear();	// FIXME: move this down to the other ui_* stuff?
 		
 		if(TRUE == fhp->merge)
 			/* If the feed type supports merging... */
@@ -300,35 +301,14 @@ gint checkForUpdateResults(gpointer data) {
 			feed_save(request->fp);
 
 			if((feedPtr)ui_feedlist_get_selected() == request->fp) {
+				ui_itemlist_clear();
 				ui_itemlist_load(request->fp, NULL);
 				ui_itemlist_prefocus();
 			}
 		}
-		if(request->fp->displayProps) {
-			GtkWidget *updateIntervalBtn;
-			GtkWidget *propdialog;
-			gint interval;
-			request->fp->displayProps = FALSE;
-
-			propdialog = ui_feedlist_build_prop_dialog();
-			
-			if(-1 != (interval = feed_get_default_update_interval(request->fp))) {
-				updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-			}
-			
-			on_popup_prop_selected(request->fp, 0, NULL);		/* prepare prop dialog */
-		}
-	} else {
-		if(request->fp->displayProps) {
-			request->fp->displayProps = FALSE;
-			gchar *tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), feed_get_source(request->fp));
-			ui_show_error_box(tmp);
-			g_free(tmp);
-		}
-		
+	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(request->fp));
-		request->fp->available = FALSE;
+		feed_set_available(request->fp, FALSE);
 	}
 
 	ui_unlock();
