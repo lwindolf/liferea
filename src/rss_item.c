@@ -56,6 +56,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 	/* try to get an item about id */
 	if(NULL != (tmp = xmlGetProp(cur, BAD_CAST"about"))) {
 		item_set_id(ip, tmp);
+		item_set_source(ip, tmp);
 		g_free(tmp);
 	}
 	
@@ -132,7 +133,6 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
  			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
 				item_set_source(ip, tmp);
-g_print("rss item link: %s\n", tmp);
 				g_free(tmp);
 			}
 		}
