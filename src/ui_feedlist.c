@@ -447,26 +447,17 @@ void ui_feedlist_delete(nodePtr ptr) {
 		text = g_strdup_printf(_("Are you sure that you want to delete %s?"), feed_get_title((feedPtr)ptr));
 	}
 
-	dialog = gtk_dialog_new();
+	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
+							  GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
+							  GTK_MESSAGE_QUESTION,
+							  GTK_BUTTONS_YES_NO,
+							  "%s", text);
 	gtk_dialog_set_has_separator(GTK_DIALOG(dialog), FALSE);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(mainwindow));
 
-	widget = gtk_label_new(text);
 	g_free(text);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), widget, TRUE, TRUE, 0);
-	
-	action_area = GTK_DIALOG (dialog)->action_area;
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (action_area), GTK_BUTTONBOX_END);
-	
-	widget = gtk_button_new_from_stock ("gtk-no");
-	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), widget, GTK_RESPONSE_NO);
-	GTK_WIDGET_SET_FLAGS (widget, GTK_CAN_DEFAULT);
-	
-	widget = gtk_button_new_from_stock ("gtk-yes");
-	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), widget, GTK_RESPONSE_YES);
-	GTK_WIDGET_SET_FLAGS (widget, GTK_CAN_DEFAULT);
 	
 	gtk_widget_show_all(dialog);
 
