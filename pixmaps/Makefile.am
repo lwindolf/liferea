@@ -11,13 +11,13 @@ EXTRA_DIST = \
 	online.png	\
 	offline.png	\
 	vfolder.png     \
-	liferea.png
-
+	liferea.png	\
+	updating.png
 
 lifereadistpixdir = $(datadir)/liferea/pixmaps
 lifereadistpix_DATA = available.png  directory.png  empty.png  flag.png  help.png  \
 	ocs.png read.xpm unavailable.png  unread.png online.png offline.png vfolder.png \
-	liferea.png
+	liferea.png updating.png
 
 distpixmapdir = $(datadir)/pixmaps
 distpixmap_DATA = liferea.png

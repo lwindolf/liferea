@@ -634,8 +634,10 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 		request->filtercmd = g_strdup(feed_get_filter(fp));
 	/* prepare request url (strdup because it might be
 	   changed on permanent HTTP redirection in netio.c) */
+	ui_feed_update(fp); /* Change icon to arrows */
 	
 	download_queue(request);
+	
 }
 
 /*------------------------------------------------------------------------------*/
@@ -717,11 +719,11 @@ void feed_process_update_result(struct request *request) {
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(old_fp));
 		feed_set_available(old_fp, FALSE);
 	}
-	
+
+	old_fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
 	ui_feedlist_update();
 	
 	ui_unlock();
-	old_fp->request = NULL;
 }
 
 void feed_add_item(feedPtr fp, itemPtr ip) {

@@ -70,6 +70,7 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 				"empty.png",		/* ICON_EMPTY */
 				"online.png",		/* ICON_ONLINE */
 				"offline.png",		/* ICON_OFFLINE */
+				"updating.png",		/* ICON_UPDATING */
 				NULL
 				};
 				
@@ -98,9 +99,9 @@ void ui_init(void) {
 
 	ui_mainwindow_set_mode(itemlist_mode);
 		
-	for(i = 0; i < MAX_ICONS; i++)
+	for(i = 0;  i < MAX_ICONS; i++)
 		icons[i] = create_pixbuf(iconNames[i]);
-		
+
 	ui_mainwindow_update_toolbar();
 	ui_mainwindow_update_menubar();
 	ui_mainwindow_update_onlinebtn();

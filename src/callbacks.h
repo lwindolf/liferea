@@ -33,19 +33,22 @@
 #include "export.h"
 
 /* icon constants */
-#define ICON_READ 		0
-#define ICON_UNREAD 		1
-#define ICON_FLAG 		2
-#define ICON_AVAILABLE		3
-#define ICON_UNAVAILABLE	4
-#define ICON_OCS		5
-#define ICON_FOLDER		6
-#define ICON_HELP		7
-#define ICON_VFOLDER		8
-#define ICON_EMPTY		9
-#define ICON_ONLINE		10
-#define ICON_OFFLINE		11
-#define MAX_ICONS		12
+enum icons {
+	ICON_READ,
+	ICON_UNREAD,
+	ICON_FLAG,
+	ICON_AVAILABLE,
+	ICON_UNAVAILABLE,
+	ICON_OCS,
+	ICON_FOLDER,
+	ICON_HELP,
+	ICON_VFOLDER,
+	ICON_EMPTY,
+	ICON_ONLINE,
+	ICON_OFFLINE,
+	ICON_UPDATING,
+	MAX_ICONS
+};
 
 extern GdkPixbuf *icons[MAX_ICONS];
 

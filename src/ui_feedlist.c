@@ -112,6 +112,9 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 	gpointer	favicon;
 	g_assert(!IS_FOLDER(fp->type));
 	
+	if (fp->request != NULL)
+		return icons[ICON_UPDATING];
+	
 	if(!feed_get_available(fp)) {
 		return icons[ICON_UNAVAILABLE];
 	}
