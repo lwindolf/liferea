@@ -111,3 +111,49 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
 
 	ui_queue_add(ui_mainwindow_set_status_idle, (gpointer)str); 
 }
+
+/*
+ * Feed menu callbacks
+ */
+
+void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
+	feedPtr fp = ui_feedlist_get_selected();
+
+	on_popup_refresh_selected((gpointer)fp, 0, NULL);
+}
+
+
+void on_menu_feed_delete(GtkMenuItem *menuitem, gpointer user_data) {
+	feedPtr fp = ui_feedlist_get_selected();
+	
+	on_popup_delete_selected((gpointer)fp, 0, NULL);
+}
+
+
+void on_menu_feed_prop(GtkMenuItem *menuitem, gpointer user_data) {
+	feedPtr fp = ui_feedlist_get_selected();
+	
+	on_popup_prop_selected((gpointer)fp, 0, NULL);
+}
+
+
+void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data) {
+	on_popup_newfolder_selected();
+}
+
+
+void on_menu_folder_delete(GtkMenuItem *menuitem, gpointer user_data) {
+	folderPtr folder = ui_feedlist_get_selected();
+	
+	on_popup_foldername_selected((gpointer)folder, 0, NULL);
+	
+}
+
+
+void on_menu_folder_rename (GtkMenuItem *menuitem, gpointer user_data) {
+	folderPtr folder = ui_feedlist_get_selected();
+	
+	on_popup_removefolder_selected((gpointer)folder, 0, NULL);
+	
+}
+
