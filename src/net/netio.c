@@ -811,7 +811,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 char * downloadURL(struct feed_request *request) {
 	FILE		*f;
 	gchar		*tmpurl = NULL;
-	int 		i;
+	int 		i, n;
 	char		*data = NULL;
 	struct stat	statinfo;
 
@@ -834,9 +834,11 @@ char * downloadURL(struct feed_request *request) {
 				while(!feof(f)) {
 					++i;
 					data = g_realloc(data, i*1024);
-					fread(&data[(i-1)*1024], 1024, 1, f);
+					n = fread(&data[(i-1)*1024], 1024, 1, f);
 				}
 				fclose(f);
+				if (n == 1024) data = g_realloc(data, (i+1)*1024);
+				data[(i-1)*1024+n] = 0;
 			} else {
 				ui_mainwindow_set_status_bar(_("Could not open pipe \"%s\"!"), request->feedurl);
 			}
