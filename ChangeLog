@@ -2,6 +2,9 @@
 
 	Version 0.4.7
 	
+	* Added support for OPML files with lowercase
+	  tags ("xmlurl" instead of "xmlUrl"). 
+	  AmphetaDesk does such exports.
 	* Added a preferences checkbox to disable the 
 	  automatical adding of the help feeds.
 	* Added a patch from Nathan J. Conrad to make

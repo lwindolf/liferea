@@ -89,7 +89,9 @@ static void parseOutline(xmlNodePtr cur, gchar *folderkey) {
 	
 	/* process the outline node */	
 	title = xmlGetProp(cur, BAD_CAST"title");
-	source = xmlGetProp(cur, BAD_CAST"xmlUrl");
+	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
+		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
+		
 	if(NULL != source) {
 		if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), g_strdup(folderkey)))) {
 			addToFeedList(fp, TRUE);
