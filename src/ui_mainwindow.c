@@ -466,3 +466,102 @@ gboolean on_mainwindow_window_state_event (GtkWidget *widget, GdkEvent *event, g
 	}
 	return FALSE;
 }
+
+struct file_chooser_tuple {
+	GtkWidget *dialog;
+	fileChoosenCallback func;
+	gpointer user_data;
+};
+
+#if GTK_CHECK_VERSION(2,4,0)
+static void ui_choose_file_save_cb(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	struct file_chooser_tuple *tuple = (struct file_chooser_tuple*)user_data;
+	gchar *filename;
+	
+	if (response_id == GTK_RESPONSE_ACCEPT) {
+		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		tuple->func(filename, user_data);
+		g_free(filename);
+	} else {
+		tuple->func(NULL, user_data);
+	}
+	
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+	g_free(tuple);
+}
+
+#else
+
+static void ui_choose_file_cb(GtkButton *button, gpointer user_data) {
+	struct file_chooser_tuple *tuple = (struct file_chooser_tuple*)user_data;
+	const gchar *filename;
+	
+	filename = gtk_file_selection_get_filename(GTK_FILE_SELECTION(tuple->dialog));
+	tuple->func(filename, user_data);
+	gtk_widget_destroy(GTK_WIDGET(tuple->dialog));
+	g_free(tuple);
+}
+
+static void ui_choose_file_cb_canceled(GtkButton *button, gpointer user_data) {
+	struct file_chooser_tuple *tuple = (struct file_chooser_tuple*)user_data;
+	
+	tuple->func(NULL, tuple->user_data);
+	
+	gtk_widget_destroy(GTK_WIDGET(tuple->dialog));
+	g_free(tuple);
+}
+#endif
+
+void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, gpointer user_data) {
+	GtkWidget *dialog;
+	struct file_chooser_tuple *tuple;
+#if GTK_CHECK_VERSION(2,4,0)
+	GtkWidget *button;
+	
+	dialog = gtk_file_chooser_dialog_new (title,
+								   parent,
+								   saving ? GTK_FILE_CHOOSER_ACTION_SAVE : GTK_FILE_CHOOSER_ACTION_OPEN,
+								   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+								   NULL);
+	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
+
+	tuple = (struct file_chooser_tuple*)malloc(sizeof(struct file_chooser_tuple));
+	tuple->dialog = dialog;
+	tuple->func = callback;
+	tuple->user_data = user_data;
+
+	button = gtk_dialog_add_button(GTK_DIALOG(dialog), buttonName, GTK_RESPONSE_ACCEPT);
+	GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+	gtk_widget_grab_default(button);
+	
+	g_signal_connect(G_OBJECT(dialog), "response",
+				  G_CALLBACK (ui_choose_file_save_cb), tuple);
+	
+	gtk_widget_show_all(dialog);
+#else
+	dialog = gtk_file_selection_new (title);
+	gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(parent));
+	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+
+	tuple = (struct file_chooser_tuple*)malloc(sizeof(struct file_chooser_tuple));
+	tuple->dialog = dialog;
+	tuple->func = callback;
+	tuple->user_data = user_data;
+
+	/*if (name != NULL)
+	  gtk_file_selection_set_filename(GTK_FILE_SELECTION(dialog), name);
+	  g_free(name);*/
+
+	g_signal_connect (GTK_FILE_SELECTION (dialog)->ok_button,
+				   "clicked",
+				   G_CALLBACK (ui_choose_file_cb),
+				   tuple);
+
+	g_signal_connect (GTK_FILE_SELECTION (dialog)->cancel_button,
+				   "clicked",
+				   G_CALLBACK (ui_choose_file_cb_canceled),
+				   tuple);
+	
+	gtk_widget_show_all(dialog);
+#endif
+}

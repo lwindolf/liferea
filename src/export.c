@@ -28,10 +28,6 @@
 #include "ui_folder.h"
 #include "debug.h"
 
-static GtkWidget * filedialog;
-static GtkWidget * importdialog = NULL;
-static GtkWidget * exportdialog = NULL;
-
 struct exportData {
 	gboolean internal; /**< Include all the extra Liferea-specific tags */
 	xmlNodePtr cur;
@@ -115,7 +111,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 }
 
 
-int export_OPML_feedlist(gchar *filename, gboolean internal) {
+int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
 	gint		error = 0;
@@ -353,7 +349,7 @@ static void import_parse_OPML(xmlNodePtr n, folderPtr parent, gboolean trusted) 
 	}	
 }
 
-void import_OPML_feedlist(gchar *filename, folderPtr parent, gboolean showErrors, gboolean trusted) {
+void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
@@ -392,130 +388,41 @@ void import_OPML_feedlist(gchar *filename, folderPtr parent, gboolean showErrors
 
 /* UI stuff */
 
+void on_import_activate_cb(const gchar *filename, gpointer user_data) {
+	folderPtr folder;
+	
+	if (filename != NULL) {
+		
+		folder = restore_folder(NULL, _("Imported feed list"), NULL, FST_FOLDER);
+		
+		/* add the new folder to the model */
+		ui_add_folder(NULL, folder, -1);
+		
+		import_OPML_feedlist(filename, folder, TRUE, FALSE);
+	}
+}
 
 void on_import_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	if(NULL == importdialog || !G_IS_OBJECT(importdialog))
-		importdialog = create_importdialog();
-		
-	gtk_widget_show(importdialog);
+	ui_choose_file(_("Import Feed List"), GTK_WINDOW(mainwindow), _("Import"), FALSE, on_import_activate_cb, NULL);
 }
+
+static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
+	gint error = 0;
+
+	if (filename != NULL) {
+		error = export_OPML_feedlist(filename, FALSE);
+	
+		if(0 != error)
+			ui_show_error_box(_("Error while exporting feed list!"));
+		else 
+			ui_show_info_box(_("Feed List exported!"));
+	}
+}
+
 
 void on_export_activate(GtkMenuItem *menuitem, gpointer user_data) {
-
-	if(NULL == exportdialog || !G_IS_OBJECT(exportdialog)) 
-		exportdialog = create_exportdialog();
-		
-	gtk_widget_show(exportdialog);
 	
+	ui_choose_file(_("Export Feed List"), GTK_WINDOW(mainwindow), _("Export"), TRUE, on_export_activate_cb, NULL);
 }
 
-void on_exportfileselected_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*source;
-	const gchar *name;
-	gchar *utfname;
-
-	gtk_widget_hide(filedialog);	
-
-	if(NULL != (source = lookup_widget(exportdialog, "exportfileentry"))) {
-		name = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog));
-		utfname = g_filename_to_utf8(name, -1, NULL, NULL, NULL);
-		if (utfname!= NULL) {
-			gtk_entry_set_text(GTK_ENTRY(source), utfname);
-		}
-		g_free(utfname);
-	}
-}
-
-void on_importfileselected_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*source;
-	const gchar *name;
-	gchar *utfname;
-	
-	gtk_widget_hide(filedialog);	
-
-	if(NULL != (source = lookup_widget(importdialog, "importfileentry"))) {
-		name = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog));
-		utfname = g_filename_to_utf8(name, -1, NULL, NULL, NULL);
-		if (utfname!= NULL) {
-			gtk_entry_set_text(GTK_ENTRY(source), utfname);
-		}
-		g_free(utfname);
-	}
-}
-
-void on_exportfileselect_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*okbutton;
-	
-	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
-		filedialog = create_fileselection();
-	
-	okbutton = lookup_widget(filedialog, "fileselectbtn");
-	g_assert(okbutton != NULL);
-		
-	g_signal_connect((gpointer)okbutton, "clicked", G_CALLBACK (on_exportfileselected_clicked), NULL);
-	gtk_widget_show(filedialog);
-}
-
-void on_importfileselect_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*okbutton;
-	
-	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
-		filedialog = create_fileselection();
-	
-	okbutton = lookup_widget(filedialog, "fileselectbtn");
-	g_assert(okbutton != NULL);
-		
-	g_signal_connect((gpointer) okbutton, "clicked", G_CALLBACK (on_importfileselected_clicked), NULL);
-	gtk_widget_show(filedialog);
-}
-
-void on_exportfile_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*source;
-	const gchar *utfname;
-	gchar *name;
-	gint error = 1;
-
-	gtk_widget_hide(exportdialog);
-
-	if(NULL != (source = lookup_widget(exportdialog, "exportfileentry"))) {
-		utfname = gtk_entry_get_text(GTK_ENTRY(source));
-		name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
-		if (name != NULL) {
-			error = export_OPML_feedlist(name, FALSE);
-			g_free(name);
-		}
-	}
-	if(0 != error)
-		ui_show_error_box(_("Error while exporting feed list!"));
-	else 
-		ui_show_info_box(_("Feed List exported!"));
-}
-
-void on_importfile_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*source;
-	const gchar *utfname;
-	gchar *name;
-	GError *err = NULL;
-	gtk_widget_hide(importdialog);
-	if(NULL != (source = lookup_widget(importdialog, "importfileentry"))) {
-		utfname = gtk_entry_get_text(GTK_ENTRY(source));
-		name = g_filename_from_utf8(utfname,-1,NULL, NULL, &err);
-		if (name != NULL) {
-			gchar *foldertitle;
-			folderPtr folder;
-			
-			foldertitle = g_strdup(_("Imported feed list"));
-			
-			folder = restore_folder(NULL, foldertitle, NULL, FST_FOLDER);
-
-			/* add the new folder to the model */
-			ui_add_folder(NULL, folder, -1);
-
-			g_free(foldertitle);
-			
-			import_OPML_feedlist(name, folder, TRUE, FALSE);
-			g_free(name);
-		}
-	}
-}

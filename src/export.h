@@ -28,7 +28,7 @@
  * @param filename filename of export file
  * @returns 0 if no errors were detected
  */
-int export_OPML_feedlist(gchar *filename, gboolean internal);
+int export_OPML_feedlist(const gchar *filename, gboolean internal);
 
 /**
  * Reads an OPML file and inserts it into the feedlist.
@@ -37,7 +37,7 @@ int export_OPML_feedlist(gchar *filename, gboolean internal);
  * @param parent folder
  * @param trusted set to TRUE if the feedlist is being imported from a trusted source
  */
-void import_OPML_feedlist(gchar *filename, folderPtr parent, gboolean showErrors, gboolean trusted);
+void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean showErrors, gboolean trusted);
 
 
 /* GUI dialog callbacks */

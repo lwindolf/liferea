@@ -60,4 +60,17 @@ on_work_offline_activate               (GtkMenuItem     *menuitem,
 								gpointer         user_data);
 
 void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data);
+
+typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
+
+/**
+ * Open up a file selector
+ * @param title window title
+ * @param parent window
+ * @param buttonName Text to be used as the name of the accept button
+ * @param saving TRUE if saving, FALSE if opening
+ * @param callback that will be passed the filename (in the system's locale (NOT UTF-8), and some user data
+ * @param user data passed to the callback
+ */
+void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean savinng, fileChoosenCallback callback, gpointer user_data);
 #endif
