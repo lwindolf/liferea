@@ -677,9 +677,10 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 
 void feed_remove_item(feedPtr fp, itemPtr ip) {
 
-	fp->items = g_slist_remove(fp->items, ip);
+	fp->items = g_slist_remove(fp->items, ip);	
+	vfolder_remove_item(ip);			/* remove item copies */
+	item_free(ip);					/* remove the item */
 	fp->needsCacheSave = TRUE;
-	item_free(ip);
 }
 
 itemPtr feed_lookup_item(feedPtr fp, gulong nr) {
@@ -859,11 +860,15 @@ void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed) {
 	conf_feedlist_schedule_save();
 }
 
-/* method to free all items of a feed, does not remove items from cache! */
+/**
+ * Method to free all items structures of a feed, does not mean
+ * that it removes items from cache! This method is used 
+ * for feed unloading.
+ */
 void feed_clear_item_list(feedPtr fp) {
-	GSList	*items, *item;
+	GSList	*item;
 
-	item = items = fp->items;
+	item = fp->items;
 
 	while(NULL != item) {
 		item_free(item->data);
@@ -871,13 +876,25 @@ void feed_clear_item_list(feedPtr fp) {
 	}
 	g_slist_free(fp->items);
 	fp->items = NULL;
+	/* explicitly not forcing feed saving to allow feed unloading */
 }
 
-/* uses feed_clear_item_list and forces saving, thus effectivly removing items */
+/** 
+ * Method to permanently removing all items from the given feed
+ */
 void feed_remove_items(feedPtr fp) {
+	GSList	*item;
 
-	feed_clear_item_list(fp);
-	fp->needsCacheSave = TRUE;	/* force saving */
+	item = fp->items;
+
+	while(NULL != item) {
+		vfolder_remove_item(item->data);	/* remove item copies */
+		item_free(item->data);			/* remove the item */
+		item = g_slist_next(item);
+	}
+	g_slist_free(fp->items);
+	fp->items = NULL;
+	fp->needsCacheSave = TRUE;	/* force feed saving to make it permanent */
 }
 
 void feed_mark_all_items_read(feedPtr fp) {

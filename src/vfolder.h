@@ -67,9 +67,17 @@ void	vfolder_refresh(feedPtr vp);
  * Method to be called when a item was updated. This maybe
  * after user interaction or updated item contents 
  *
- * @param ip	item to check
+ * @param ip	item of a feed to check
  */
 void	vfolder_update_item(itemPtr ip);
+
+/** 
+ * Searches all vfolders for copies of the given item and
+ * removes them. Used for item remove propagation.
+ *
+ * @param ip	item of a feed to remove
+ */
+void	vfolder_remove_item(itemPtr ip);
 
 /**
  * Called when a vfolder is processed by feed_free
