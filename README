@@ -6,10 +6,10 @@ for Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 0.4.8.
+This documentation was last updated for Liferea version 0.5.2.
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  NOTE THAT 0.4.8 BREAKS DOWNWARD COMPATIBILITY. PLEASE READ
+  NOTE THAT 0.5.2 BREAKS DOWNWARD COMPATIBILITY. PLEASE READ
         THE "UPGRADING TO NEWER VERSIONS" SECTION.
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -32,9 +32,8 @@ Fedora:		at least 2.5.10 or you will experience nasty
 		Fedora Core 1 packages for 0.4.7 and 0.4.8 are available from
 		http://download.fedora.us/fedora/fedora/1/i386/RPMS.testing/.
 		
-		Dag Wieers provides 0.4.8 packages for both 
-                Fedora Core 1 and 2 which can be found at 
-                http://dag.wieers.com/packages/liferea/.
+		Dag Wieers provides packages for both Fedora Core 1 and 2 
+		which can be found at http://dag.wieers.com/packages/liferea/.
 		
 SuSE:		Since 0.4.6 Harry Auschner builds packages for
 		SuSE i586 which are available from the SourceForge
@@ -63,7 +62,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-0.4.8.tar.gz 
+   tar zxvf liferea-0.5.2.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
@@ -76,24 +75,6 @@ run the standard autotools commands:
 Upgrading to newer versions
 ===========================
 
-If you upgrade from 0.1 to 0.2 you will loose your feed list (but you may 
-correct this by creating a gconf string list named "feedlist" and adding all
-feed key names to it).
-
-Upgrading from 0.2 to 0.2.5 till 0.3.0 should not harm the feed list.
-
-Upgrading from the non-auto updating version (all versions below 0.3.0)
-should be no problem. The non existing upgrade interval will be interpreted
-as auto updating is disabled. To enable use the feed properties dialog.
-
-Upgrading from 0.3.0 or below to 0.3.1 which introduces folder should
-be possible without problems. All subscribed feeds will appear in the
-folder "my feeds".
-
-When upgrading to 0.4.0 the OCS directory cache format changes. The
-program 'll automatically update all OCS directories. Please be
-patient while downloading.
-
 When upgrading to 0.4.8 the cache directory structure and the save 
 mechanism of the feed list will be changed. After the automatic
 conversion older versions of Liferea cannot read the cache anymore
@@ -101,6 +82,13 @@ and the won't see the converted feed list anymore. To be prepared
 for problems please export the feed list using the older version
 of Liferea! In case of problems you can reinstall the older version
 and import the backup feed list.
+
+When upgrading to 0.5.1 the favicon format and location changes. When
+downgrading you will loose all icons.
+
+When upgrading to 0.5.2 the feed cache format was changed. When you
+downgrade you will loose metadata information (the stuff displayed
+in the footer).
 
 Dependencies
 ============
@@ -111,6 +99,10 @@ others are all set to 2.0.0. Maybe they could be more specific...
 There is a special issue with RedHat based distributions: you 
 have to install at least libxml2 2.5.10 or you will occur 
 random segfaults.
+
+If you want to use the Mozilla browser module you need a Mozilla
+installation containing libgtkembedmoz.so. Every up-to-date Firefox
+should bring it.
 
 Help Wanted
 ===========
@@ -125,7 +117,7 @@ or just upload the translation as a patch to SourceForge.
 Known Problems
 ==============
 
-Please read the help feed (http://liferea.sf.net/help048.rdf) for
+Please read the help feed (http://liferea.sf.net/help052.rdf) for
 known problems! If you don't find your problem please make a report
 (forum, bugs...) on the SourceForge project page
 (http://liferea.sf.net) or send emails to the project mailing list
