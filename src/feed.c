@@ -111,7 +111,6 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 			g_free(msg);
 			break;
 		}
-	
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			break;
@@ -119,12 +118,11 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 		while(cur && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
-	
 		if(NULL == cur->name) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
 			break;
 		}
-	
+		
 		/* determine the syndication format */
 		handlerIter = feedhandlers;
 		while (handlerIter != NULL) {
@@ -735,7 +733,8 @@ void feed_process_update_result(struct request *request) {
 			if(fhp == NULL) {
 				feed_set_available(old_fp, FALSE);
 				g_free(old_fp->parseErrors);
-				old_fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!"));
+				old_fp->parseErrors = g_strdup(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"));
+				addToHTMLBuffer(&(old_fp->parseErrors), new_fp->parseErrors);
 				feed_free(new_fp);
 				break;
 			} else {
