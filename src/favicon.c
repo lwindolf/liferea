@@ -96,15 +96,21 @@ static void favicon_download_request_cb(struct request *request) {
 	feedPtr fp = (feedPtr)request->user_data;
 	char *tmp;
 	
+	debug1(DEBUG_UPDATE, "icon download processing (%d bytes)", request->size);
+	
 	if(NULL != request->data && request->size > 0) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
 		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
 		
-		if (gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
+		if(gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
 			pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
+			debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
 			gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL);
+			g_object_unref(pixbuf);
 			favicon_load(fp);
+			gdk_pixbuf_loader_close(loader, NULL);
+			g_object_unref(loader);
 		}
 		g_free(tmp);
 	}
@@ -117,6 +123,8 @@ void favicon_download(feedPtr fp) {
 	gchar			*baseurl;
 	gchar			*tmp;
 	struct request	*request;
+	
+	debug_enter("favicon_download");
 	
 	if (fp->faviconRequest != NULL)
 		return; /* It is already being downloaded */
@@ -139,5 +147,7 @@ void favicon_download(feedPtr fp) {
 		}
 	}
 	g_free(baseurl);
+	
+	debug_exit("favicon_download");
 }
 
