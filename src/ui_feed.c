@@ -233,6 +233,7 @@ GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 		gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), &(feed_get_source(fp)[1]));
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio), TRUE);
 		ui_feed_prop_enable_httpauth(ui_data, FALSE);
+		gtk_widget_set_sensitive(ui_data->selectFile, TRUE);
 	} else if (strstr(feed_get_source(fp), "://") != NULL) {
 		xmlURIPtr uri = xmlParseURI(BAD_CAST feed_get_source(fp));
 		xmlChar *parsedUrl;
@@ -258,11 +259,13 @@ GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 			gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), feed_get_source(fp));
 		}
 		ui_feed_prop_enable_httpauth(ui_data, TRUE);
+		gtk_widget_set_sensitive(ui_data->selectFile, FALSE);
 	} else {
 		/* File */
 		gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), feed_get_source(fp));
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio), TRUE);
 		ui_feed_prop_enable_httpauth(ui_data, FALSE);
+		gtk_widget_set_sensitive(ui_data->selectFile, TRUE);
 	}
 	
 	ui_data->filter = lookup_widget(propdialog, "filterEntry");
@@ -278,9 +281,6 @@ GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 	g_signal_connect(ui_data->filterCheckbox, "toggled", G_CALLBACK(on_feed_prop_filtercheck), ui_data);
 	g_signal_connect(ui_data->filterSelectFile, "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
 
-	/* Sensitivity */
-	gtk_widget_set_sensitive(ui_data->selectFile, FALSE);
-	
 	/***********************************************************************
 	 * Cache                                                               *
 	 **********************************************************************/
