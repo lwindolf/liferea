@@ -649,7 +649,8 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 				tmpstring[strlen(tmpstring)-1] = '\0';
 			if (tmpstring[strlen(tmpstring)-1] == '\r')
 				tmpstring[strlen(tmpstring)-1] = '\0';
-			free(cur_ptr->etag);
+			if (cur_ptr->etag != NULL)
+				free(cur_ptr->etag);
 			cur_ptr->etag = strdup(tmpstring);
 			free(freeme);
 		}
