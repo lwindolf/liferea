@@ -23,6 +23,5 @@
 #define _UI_NOTIFICATION_H
 
 void ui_notification_update(const feedPtr feed_p);
-void ui_notification_setup(void);
 
 #endif

@@ -109,7 +109,6 @@ void ui_init(void) {
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
 	ui_popup_setup_menues();		/* create popup menues */
-	ui_notification_setup();		
 	loadSubscriptions();
 		
 	/* setup one minute timer for automatic updating, and try updating now */

@@ -58,8 +58,6 @@ static GSList *notifications_p = NULL;
 /* The notification window */
 static GtkWidget *notifWin_p = NULL;
 
-static GMutex *notifMutex_p = NULL;
-
 /* Function prototypes */
 static int notifCompare (gconstpointer a, gconstpointer b);
 static feedNotif_t *notifCreateFeedNotif (feedPtr feed_p);
@@ -71,10 +69,6 @@ static gint feedNotifTimeoutCallback (gpointer data);
 static void notifRemoveWin();
 static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 static gboolean notifDeleteWinCb (GtkWidget *widget, GdkEvent *event, gpointer user_data);
-
-void ui_notification_setup(void) {
-	notifMutex_p = g_mutex_new ();
-}
 
 static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
 	feedNotif_t *feedNotif_p = (feedNotif_t *) user_data;
@@ -115,17 +109,13 @@ void ui_notification_update(const feedPtr feed_p) {
 	if(!getBooleanConfValue(SHOW_POPUP_WINDOWS))
 		return;
 
-	g_mutex_lock (notifMutex_p);
-							
 	list_p = g_slist_find_custom (notifications_p, feed_p, notifCompare);
 
 	if (list_p != NULL) {
 		curNotif_p = (feedNotif_t *) list_p->data;
 	} else {
-		if(0 == feed_get_new_counter(feed_p)) {
-			g_mutex_unlock (notifMutex_p);
+		if(0 == feed_get_new_counter(feed_p))
 			return;
-		}
 
 		curNotif_p = notifCreateFeedNotif (feed_p);
 		notifications_p = g_slist_append (notifications_p, (gpointer) curNotif_p);
@@ -133,7 +123,6 @@ void ui_notification_update(const feedPtr feed_p) {
 	}
 	
 	notifCheckFeedNotif (curNotif_p);
-	g_mutex_unlock (notifMutex_p);
 }
 		
 
