@@ -1,7 +1,7 @@
 /*
    admin namespace support
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -47,80 +47,85 @@ static gchar ns_admin_prefix[] = "admin";
 
 gchar * ns_admin_getRSSNsPrefix(void) { return ns_admin_prefix; }
 
-static void ns_admin_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
-	GHashTable	*nsvalues;
-	
-	g_assert(nslist != NULL);
-
-	if(tagvalue == NULL)
-		return;
-			
-	if(NULL == (nsvalues = (GHashTable *)g_hash_table_lookup(nslist, ns_admin_prefix))) {
-		nsvalues = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(nslist, (gpointer)ns_admin_prefix, (gpointer)nsvalues);
-	}
-	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
-}
-
-void ns_admin_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
+static void parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
+	xmlChar		*string;
+	gchar		*buffer = NULL;
+	gchar		*name = NULL;
+	gchar		*key, *value;
 	
 	if(!xmlStrcmp("errorReportsTo", cur->name)) 
-		ns_admin_addInfoStruct(cp->nsinfos, "errorReportsTo", CONVERT(xmlGetProp(cur, "resource")));
-
-	if(!xmlStrcmp("generatorAgent", cur->name)) 
-		ns_admin_addInfoStruct(cp->nsinfos, "generatorAgent", CONVERT(xmlGetProp(cur, "resource")));
+		name = g_strdup(_("report errors to"));
+		
+	else if(!xmlStrcmp("generatorAgent", cur->name)) 
+		name = g_strdup(_("feed generator"));
+	
+	if(NULL != name) {
+		string = xmlGetProp(cur, "resource");
+		value = CONVERT(string);
+		xmlFree(string);
+		
+		if(NULL != value) {
+			addToHTMLBuffer(&buffer, FIRSTTD);
+			addToHTMLBuffer(&buffer, name);
+			addToHTMLBuffer(&buffer, NEXTTD);
+			addToHTMLBuffer(&buffer, "<a href=\"");
+			addToHTMLBuffer(&buffer, value);
+			addToHTMLBuffer(&buffer, "\">");
+			addToHTMLBuffer(&buffer, value);
+			addToHTMLBuffer(&buffer, "</a>");	
+			addToHTMLBuffer(&buffer, LASTTD);
+			g_free(name);
+		}
+	}
+	
+	if(NULL != buffer) {
+		key = g_strdup_printf("admin:%s", cur->name);
+		if(NULL != g_hash_table_lookup(cp->nsinfos, key)) 
+			g_hash_table_remove(cp->nsinfos, key);	
+		g_hash_table_insert(cp->nsinfos, key, buffer);
+	}
 }
 
-/* maybe I should overthink method names :-) */
-void ns_admin_output(gpointer key, gpointer value, gpointer userdata) {
-	gchar 	**buffer = (gchar **)userdata;
+static gchar * doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
+	gchar		*output;
+	gchar		*key;
 	
-	addToHTMLBuffer(buffer, FIRSTTD);
-	if(!strcmp(key, "errorReportsTo")) 
-		addToHTMLBuffer(buffer, (gchar *)_("report errors to"));
-	else if(!strcmp(key, "generatorAgent"))
-		addToHTMLBuffer(buffer, (gchar *)_("feed generator"));
-	else g_assert(1==2);
-	
-	addToHTMLBuffer(buffer, NEXTTD);
-	addToHTMLBuffer(buffer, "<a href=\"");
-	addToHTMLBuffer(buffer, value);
-	addToHTMLBuffer(buffer, "\">");
-	addToHTMLBuffer(buffer, value);
-	addToHTMLBuffer(buffer, "</a>");	
-	addToHTMLBuffer(buffer, LASTTD);		
-}
-
-gchar * ns_admin_doOutput(GHashTable *nsinfos) {
-	GHashTable	*nsvalues;
-	gchar		*buffer = NULL;
-	
-	/* we print all channel infos as a (key,value) table */
 	g_assert(NULL != nsinfos);
-	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_admin_prefix))) {
-		addToHTMLBuffer(&buffer, TABLE_START);
-		g_hash_table_foreach(nsvalues, ns_admin_output, (gpointer)&buffer);
-		addToHTMLBuffer(&buffer, TABLE_END);
-	}	
-	return buffer;
+	key = g_strdup_printf("admin:%s", tagname);
+	
+	if(NULL != (output = g_hash_table_lookup(nsinfos, key))) {
+		addToHTMLBuffer(buffer, output);
+		g_hash_table_remove(nsinfos, key);
+	}
+	g_free(key);
 }
 
-gchar * ns_admin_doChannelOutput(gpointer obj) {
-
-	if(NULL != obj)
-		return ns_admin_doOutput(((RSSChannelPtr)obj)->nsinfos);
+static gchar * doChannelOutput(gpointer obj) {
+	gchar	*buffer = NULL;
+	gchar	*output = NULL;
 	
-	return NULL;
+	if(NULL != obj) {
+		doOutput(((RSSChannelPtr)obj)->nsinfos, &output, "errorReportsTo");
+		doOutput(((RSSChannelPtr)obj)->nsinfos, &output, "generatorAgent");
+		
+		if(NULL != output) {
+			addToHTMLBuffer(&buffer, TABLE_START);
+			addToHTMLBuffer(&buffer, output);
+			addToHTMLBuffer(&buffer, TABLE_END);
+			g_free(output);
+		}
+	}
+	return buffer;
 }
 
 RSSNsHandler *ns_admin_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= ns_admin_parseChannelTag;;
+		nsh->parseChannelTag		= parseChannelTag;;
 		nsh->parseItemTag		= NULL;
 		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= ns_admin_doChannelOutput;
+		nsh->doChannelFooterOutput	= doChannelOutput;
 		nsh->doItemHeaderOutput		= NULL;
 		nsh->doItemFooterOutput		= NULL;
 	}

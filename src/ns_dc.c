@@ -106,13 +106,13 @@ static gchar * taglist[] = {	"title",
 
 /* mapping of the tags specified by taglist to the backends channel
    structure taglist */
-static gint mapToCP[] = { 	RSS_CHANNEL_TITLE,		/* title */ 
+static gint mapToRSSCP[] = { 	RSS_CHANNEL_TITLE,		/* title */ 
 				RSS_CHANNEL_MANAGINGEDITOR,	/* creator */
 				RSS_CHANNEL_CATEGORY,		/* subject */
 				RSS_CHANNEL_DESCRIPTION,	/* description */
 				RSS_CHANNEL_WEBMASTER,	/* publisher */
 				-1,			/* contributor */
-				-1,			/* date (seldom used, e.g. slashdot, we map it to pubdate) */
+				RSS_CHANNEL_PUBDATE,	/* date (seldom used, e.g. slashdot, we map it to pubdate) */
 				-1,			/* type */
 				-1,			/* format */
 				-1,			/* identifier */
@@ -122,7 +122,7 @@ static gint mapToCP[] = { 	RSS_CHANNEL_TITLE,		/* title */
 				RSS_CHANNEL_COPYRIGHT	/* rights */
 			  };
 
-static gint mapToIP[] = { 	RSS_ITEM_TITLE,		/* title */ 
+static gint mapToRSSIP[] = { 	RSS_ITEM_TITLE,		/* title */ 
 				-1,			/* creator */
 				RSS_ITEM_CATEGORY,	/* subject */
 				RSS_ITEM_DESCRIPTION,	/* description */
@@ -144,7 +144,7 @@ static gint mapToPIECP[] = { 	PIE_FEED_TITLE,		/* title */
 				PIE_FEED_DESCRIPTION,	/* description */
 				-1,			/* publisher */
 				-1,			/* contributor */	// FIXME: should be mapped, too!
-				-1,			/* date (seldom used, e.g. slashdot, we map it to pubdate) */
+				PIE_FEED_PUBDATE,	/* date (seldom used, e.g. slashdot, we map it to pubdate) */
 				-1,			/* type */
 				-1,			/* format */
 				-1,			/* identifier */
@@ -186,35 +186,18 @@ static gint mapToDP[] = { 	OCS_TITLE,		/* title */
 				-1			/* rights */
 			  };
 
-/* some prototypes */
-static gchar * ns_dc_doRSSItemFooterOutput(gpointer obj);
-static gchar *	ns_dc_doRSSChannelFooterOutput(gpointer obj);
-static gchar * ns_dc_doPIEEntryFooterOutput(gpointer obj);
-static gchar *	ns_dc_doPIEFeedFooterOutput(gpointer obj);
+#define	DC_RSS_CHANNEL	0
+#define DC_RSS_ITEM	1
+#define DC_PIE_FEED	2
+#define DC_PIE_ENTRY	3
 
+/* some prototypes */
 gchar * ns_dc_getRSSNsPrefix(void) { return ns_dc_prefix; }
 gchar * ns_dc_getPIENsPrefix(void) { return ns_dc_prefix; }
 gchar * ns_dc_getOCSNsPrefix(void) { return ns_dc_prefix; }
 
-static void ns_dc_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
-	GHashTable	*nsvalues;
-	
-	g_assert(nslist != NULL);
-
-	if(tagvalue == NULL)
-		return;
-
-	if(NULL == (nsvalues = (GHashTable *)g_hash_table_lookup(nslist, ns_dc_prefix))) {
-		nsvalues = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(nslist, (gpointer)ns_dc_prefix, (gpointer)nsvalues);
-	}
-	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
-}
-
-// FIXME: the parsing is stupid overkill! unify feed parsing by using setFeedTag callbacks !!!!
-
 /* common OCS parsing */
-static void ns_dc_parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
+static void parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
 	directoryPtr	dp = (directoryPtr)p;
 	dirEntryPtr	dep = (dirEntryPtr)p;
 	formatPtr	fp = (formatPtr)p;
@@ -257,24 +240,66 @@ static void ns_dc_parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
 	}
 }
 
-static void ns_dc_parseOCSDirectoryTag(gpointer dp, xmlNodePtr cur) {
-	ns_dc_parseOCSTag(TYPE_DIRECTORY, dp, cur);
+static void parseOCSDirectoryTag(gpointer dp, xmlNodePtr cur)	{ parseOCSTag(TYPE_DIRECTORY, dp, cur); }
+static void parseOCSChannelTag(gpointer cp, xmlNodePtr cur)	{ parseOCSTag(TYPE_CHANNEL, cp, cur); }
+static void parseOCSFormatTag(gpointer fp, xmlNodePtr cur)	{ parseOCSTag(TYPE_FORMAT, fp, cur); }
+
+static void mapTag(gpointer obj, int tagtype, int mapping, gchar *value) {
+
+	switch(tagtype) {
+		case DC_RSS_CHANNEL:
+			g_free(((RSSChannelPtr)obj)->tags[mapping]);
+			((RSSChannelPtr)obj)->tags[mapping] = value;
+			break;
+		case DC_RSS_ITEM:
+			g_free(((RSSItemPtr)obj)->tags[mapping]);
+			((RSSItemPtr)obj)->tags[mapping] = value;
+			break;
+		case DC_PIE_FEED:
+			g_assert(mapping <= PIE_FEED_MAX_TAG);
+			g_free(((PIEFeedPtr)obj)->tags[mapping]);
+			((PIEFeedPtr)obj)->tags[mapping] = value;
+			break;
+		case DC_PIE_ENTRY:
+			g_free(((PIEEntryPtr)obj)->tags[mapping]);
+			((PIEEntryPtr)obj)->tags[mapping] = value;
+			break;
+		default:
+			g_error(_("internal error! unknown tag type while parsing Dublin Core tag!"));
+			break;
+	}
 }
 
-static void ns_dc_parseOCSChannelTag(gpointer cp, xmlNodePtr cur) {
-	ns_dc_parseOCSTag(TYPE_CHANNEL, cp, cur);
+static int getMapping(int tagtype, int tagindex) {
+	int mapping = 0;
+	
+	/* determine if there is a standard tag we should map to */
+	switch(tagtype) {
+		case DC_RSS_CHANNEL:
+			mapping = mapToRSSCP[tagindex];
+			break;
+		case DC_RSS_ITEM:
+			mapping = mapToRSSIP[tagindex];
+			break;
+		case DC_PIE_FEED:
+			mapping = mapToPIECP[tagindex];
+			break;
+		case DC_PIE_ENTRY:
+			mapping = mapToPIEIP[tagindex];
+			break;
+		default:
+			g_error(_("internal error! unknown tag type while parsing Dublin Core tag!"));
+			break;
+	}
+	
+	return mapping;
 }
 
-static void ns_dc_parseOCSFormatTag(gpointer fp, xmlNodePtr cur) {
-	ns_dc_parseOCSTag(TYPE_FORMAT, fp, cur);
-}
-
-/* PIE channel parsing (basically the same as RSS parsing) */
-static void ns_dc_parsePIEFeedTag(PIEFeedPtr cp, xmlNodePtr cur) {
-	int 		i;
-	char		*date;
+/* generic RSS,PIE tag parsing (basically the same as RSS parsing) */
+static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagtype) {
+	int 		i, mapping;
+	gchar		*date, *buffer, *value;
 	xmlChar 	*string;
-	gchar		*value;
 	
 	g_assert(NULL != cur);
 
@@ -287,9 +312,25 @@ static void ns_dc_parsePIEFeedTag(PIEFeedPtr cp, xmlNodePtr cur) {
 
 			i = parseISO8601Date(date);
 			g_free(date);
-			date = formatDate(i);
-			if(NULL != date)
-				cp->tags[PIE_FEED_PUBDATE] = date;
+			if(NULL != date) {
+				switch(tagtype) {
+					case DC_RSS_CHANNEL:
+					case DC_PIE_FEED:
+						date = formatDate(i);
+						mapping = getMapping(tagtype, 6);
+						mapTag(obj, tagtype, mapping, date);	/* !!! 6 is a hardcoded position in the taglist array */
+						break;
+					case DC_RSS_ITEM:
+						((RSSItemPtr)obj)->time = i;
+						break;
+					case DC_PIE_ENTRY:
+						((PIEFeedPtr)obj)->time = i;
+						break;
+					default:
+						g_error(_("internal error! unknown tag type while parsing Dublin Core tag!"));
+						break;
+				}
+			}
 		}
 		return;
 	}
@@ -302,15 +343,18 @@ static void ns_dc_parsePIEFeedTag(PIEFeedPtr cp, xmlNodePtr cur) {
 	 			value = CONVERT(string);
  				xmlFree(string);
 
-				if(-1 == mapToPIECP[i]) {
-					/* add it to the common DC value list, which is processed
-					   by by ns_dc_output() */
-					ns_dc_addInfoStruct(cp->nsinfos, taglist[i], value);
+				if(-1 == (mapping = getMapping(tagtype, i))) {
+					/* append it to the common DC value output */
+					buffer = g_hash_table_lookup(nsinfos, ns_dc_prefix);
+					addToHTMLBuffer(&buffer, FIRSTTD);
+					addToHTMLBuffer(&buffer, taglist[i]);
+					addToHTMLBuffer(&buffer, NEXTTD);
+					addToHTMLBuffer(&buffer, value);
+					addToHTMLBuffer(&buffer, LASTTD);
+					g_hash_table_insert(nsinfos, g_strdup(ns_dc_prefix), buffer);
+					g_free(value);
 				} else {
-					g_assert(mapToPIECP[i] <= PIE_FEED_MAX_TAG);
-					/* map the value to one of the PIE fields */
-					g_free(cp->tags[mapToPIECP[i]]);
-					cp->tags[mapToPIECP[i]] = value;
+					mapTag(obj, tagtype, mapping, value);
 				}
 			}
 			return;
@@ -318,200 +362,55 @@ static void ns_dc_parsePIEFeedTag(PIEFeedPtr cp, xmlNodePtr cur) {
 	}
 }
 
-static void ns_dc_parsePIEEntryTag(PIEEntryPtr ip, xmlNodePtr cur) {
-	int 		i;
-	gchar		*value;
-	gchar		*date;
-	xmlChar 	*string;
-	
-	g_assert(NULL != cur);
-						
-	/* special handling for the ISO 8601 date tag */
-	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
- 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 		if(NULL != string) {
-	 		date = CONVERT(string);
-			xmlFree(string);
-			
-			ip->time = parseISO8601Date(date);
-			g_free(date);
- 		}
-		return;
-	}
+static void parsePIEFeedTag(PIEFeedPtr cp, xmlNodePtr cur)		{ parseTag((gpointer)cp, cp->nsinfos, cur, DC_PIE_FEED); }
+static void parsePIEEntryTag(PIEEntryPtr ip, xmlNodePtr cur)		{ parseTag((gpointer)ip, ip->nsinfos, cur, DC_PIE_ENTRY); }
+static void parseRSSChannelTag(RSSChannelPtr cp, xmlNodePtr cur)	{ parseTag((gpointer)cp, cp->nsinfos, cur, DC_RSS_CHANNEL); }
+static void parseRSSItemTag(RSSItemPtr ip, xmlNodePtr cur)		{ parseTag((gpointer)ip, ip->nsinfos, cur, DC_RSS_ITEM); }
 
-	/* compare with each possible tag name */
-	for(i = 0; taglist[i] != NULL; i++) {
-		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 			if(NULL != string) {
-	 			value = CONVERT(string);
- 				xmlFree(string);
-
-				if(-1 == mapToPIEIP[i]) {
-					/* add it to the common DC value list, which is processed
-					   by by ns_dc_output() */
-					ns_dc_addInfoStruct(ip->nsinfos, taglist[i], value);
-				} else {
-					g_assert(mapToPIEIP[i] <= PIE_ENTRY_MAX_TAG);
-					/* map the value to one of the PIE fields */
-					g_free(ip->tags[mapToPIEIP[i]]);
-					ip->tags[mapToPIEIP[i]] = value;
-				}
-			}
-			return;
-		}
-	}
-}
-
-
-/* RSS channel parsing */
-static void ns_dc_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
-	int 		i;
-	char		*date;
-	xmlChar 	*string;
-	gchar		*value;
-
-	g_assert(NULL != cur);
-
-	/* special handling for the ISO 8601 date tag */
-	if(!xmlStrcmp(cur->name, BAD_CAST"date")) {
- 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 		if(NULL != string) {
-	 		date = CONVERT(string);		
- 			xmlFree(string);
-	
-			i = parseISO8601Date(date);
-			g_free(date);
-			date = formatDate(i);
-			if(NULL != date)
-				cp->tags[RSS_CHANNEL_PUBDATE] = (gchar *)date;
-		}
-		return;
-	}
-
-	/* compare with each possible tag name */
-	for(i = 0; NULL != taglist[i]; i++) {
-		if(!xmlStrcmp(cur->name, BAD_CAST taglist[i])) {
- 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 			if(NULL != string) {
-	 			value = CONVERT(string);
- 				xmlFree(string);
-
-				if(-1 == mapToCP[i]) {
-					/* add it to the common DC value list, which is processed
-					   by by ns_dc_output() */
-					ns_dc_addInfoStruct(cp->nsinfos, taglist[i], value);
-				} else {
-					g_assert(mapToCP[i] <= RSS_CHANNEL_MAX_TAG);
-					/* map the value to one of the RSS fields */
-					g_free(cp->tags[mapToCP[i]]);
-					cp->tags[mapToCP[i]] = value;
-				}
-			}
-			return;
-		}
-	}
-}
-
-static void ns_dc_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
-	int 		i;
-	gchar		*value;
-	gchar		*date;
-	xmlChar 	*string;
-	
-	g_assert(NULL != cur);
-							
-	/* special handling for the ISO 8601 date tag */
-	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
- 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);	
- 		if(NULL != string) {
-	 		date = CONVERT(string);
- 			xmlFree(string);
-	 		if(NULL != date) {
- 				ip->time = parseISO8601Date(date);
- 				g_free(date);
-	 		}
- 		} 
-		return;
-	}
-
-	/* compare with each possible tag name */
-	for(i = 0; taglist[i] != NULL; i++) {
-		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);			
- 			if(NULL != string) {
-	 			value = CONVERT(string);
- 				xmlFree(string);
-				
-				if(-1 == mapToIP[i]) {
-					/* add it to the common DC value list, which is processed
-					   by by ns_dc_output() */
-					ns_dc_addInfoStruct(ip->nsinfos, taglist[i], value);
-				} else {
-					g_assert(mapToIP[i] <= RSS_ITEM_MAX_TAG);
-					/* map the value to one of the RSS fields */
-					g_free(ip->tags[mapToIP[i]]);
-					ip->tags[mapToIP[i]] = value;
- 				}
-			}
-			return;
-		}
-	}
-}
-
-static void ns_dc_output(gpointer key, gpointer value, gpointer userdata) {
-	gchar 	**buffer = (gchar **)userdata;
-	
-	addToHTMLBuffer(buffer, FIRSTTD);
-	addToHTMLBuffer(buffer, (gchar *)key);
-	addToHTMLBuffer(buffer, NEXTTD);
-	addToHTMLBuffer(buffer, (gchar *)value);
-	addToHTMLBuffer(buffer, LASTTD);
-}
-
-static gchar * ns_dc_doFooterOutput(GHashTable *nsinfos) {
-	GHashTable	*nsvalues;
-	gchar		*buffer = NULL;
+static gchar * doFooterOutput(GHashTable *nsinfos) {
+	gchar	*output, *buffer = NULL;
 	
 	g_assert(NULL != nsinfos);
-	/* we print all channel infos as a (key,value) table */
-	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_dc_prefix))) {
+	/* the ns_dc_parse*() functions should have prepared a simple string... */
+	output = g_hash_table_lookup(nsinfos, (gpointer)ns_dc_prefix);
+	if(NULL != output) {
 		addToHTMLBuffer(&buffer, TABLE_START);
-		g_hash_table_foreach(nsvalues, ns_dc_output, (gpointer)&buffer);
-		addToHTMLBuffer(&buffer, TABLE_END);			
-	}	
+		addToHTMLBuffer(&buffer, output);
+		addToHTMLBuffer(&buffer, TABLE_END);
+		g_hash_table_remove(nsinfos, (gpointer)ns_dc_prefix);
+	}
 	return buffer;
 }
 
-static gchar * ns_dc_doRSSItemFooterOutput(gpointer obj) {
+static gchar * doRSSItemFooterOutput(gpointer obj) {
 
 	if(NULL != obj)
-		return ns_dc_doFooterOutput(((RSSItemPtr)obj)->nsinfos);
+		return doFooterOutput(((RSSItemPtr)obj)->nsinfos);
 		
 	return NULL;
 }
 
 
-static gchar *	ns_dc_doRSSChannelFooterOutput(gpointer obj) {
+static gchar *	doRSSChannelFooterOutput(gpointer obj) {
 	
 	if(NULL != obj)
-		return ns_dc_doFooterOutput(((RSSChannelPtr)obj)->nsinfos);
+		return doFooterOutput(((RSSChannelPtr)obj)->nsinfos);
 		
 	return NULL;
 }
 
-static gchar * ns_dc_doPIEEntryFooterOutput(gpointer obj) {
+static gchar * doPIEEntryFooterOutput(gpointer obj) {
 
 	if(NULL != obj)
-		return ns_dc_doFooterOutput(((PIEEntryPtr)obj)->nsinfos);
+		return doFooterOutput(((PIEEntryPtr)obj)->nsinfos);
 
 	return NULL;
 }
 
-static gchar *	ns_dc_doPIEFeedFooterOutput(gpointer obj) {
+static gchar *	doPIEFeedFooterOutput(gpointer obj) {
 	
 	if(NULL != obj) {
-		return ns_dc_doFooterOutput(((PIEFeedPtr)obj)->nsinfos);
+		return doFooterOutput(((PIEFeedPtr)obj)->nsinfos);
 	}
 	
 	return NULL;
@@ -521,12 +420,12 @@ RSSNsHandler *ns_dc_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= ns_dc_parseChannelTag;
-		nsh->parseItemTag		= ns_dc_parseItemTag;
+		nsh->parseChannelTag		= parseRSSChannelTag;
+		nsh->parseItemTag		= parseRSSItemTag;
 		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= ns_dc_doRSSChannelFooterOutput;
+		nsh->doChannelFooterOutput	= doRSSChannelFooterOutput;
 		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= ns_dc_doRSSItemFooterOutput;		
+		nsh->doItemFooterOutput		= doRSSItemFooterOutput;		
 	}
 
 	return nsh;
@@ -536,12 +435,12 @@ PIENsHandler *ns_dc_getPIENsHandler(void) {
 	PIENsHandler 	*nsh;
 	
 	if(NULL != (nsh = (PIENsHandler *)g_malloc(sizeof(PIENsHandler)))) {
-		nsh->parseChannelTag		= ns_dc_parsePIEFeedTag;
-		nsh->parseItemTag		= ns_dc_parsePIEEntryTag;
+		nsh->parseChannelTag		= parsePIEFeedTag;
+		nsh->parseItemTag		= parsePIEEntryTag;
 		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= ns_dc_doPIEFeedFooterOutput;
+		nsh->doChannelFooterOutput	= doPIEFeedFooterOutput;
 		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= ns_dc_doPIEEntryFooterOutput;		
+		nsh->doItemFooterOutput		= doPIEEntryFooterOutput;		
 	}
 
 	return nsh;
@@ -551,9 +450,9 @@ OCSNsHandler *ns_dc_getOCSNsHandler(void) {
 	OCSNsHandler 	*nsh;
 	
 	if(NULL != (nsh = (OCSNsHandler *)g_malloc(sizeof(OCSNsHandler)))) {
-		nsh->parseDirectoryTag		= ns_dc_parseOCSDirectoryTag;
-		nsh->parseDirEntryTag		= ns_dc_parseOCSChannelTag;
-		nsh->parseFormatTag		= ns_dc_parseOCSFormatTag;				
+		nsh->parseDirectoryTag		= parseOCSDirectoryTag;
+		nsh->parseDirEntryTag		= parseOCSChannelTag;
+		nsh->parseFormatTag		= parseOCSFormatTag;				
 	}
 
 	return nsh;

@@ -1,7 +1,7 @@
 /*
    slash namespace support
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -19,7 +19,6 @@
    Boston, MA 02111-1307, USA.
 */
 
-#include "htmlview.h"
 #include "ns_slash.h"
 #include "common.h"
 
@@ -34,7 +33,7 @@ static gchar ns_slash_prefix[] = "slash";
 
 /* a tag list from http://f3.grp.yahoofs.com/v1/YP40P2oiXvP5CAx4TM6aQw8mDrCtNDwF9_BkMwcvulZHdlhYmCk5cS66_06t9OaIVsubWpwtMUTxYNG7/Modules/Proposed/mod_slash.html
 
-   hmm... maybe you can find a somewhat short URL!
+   hmm... maybe you can find a somewhat shorter URL!
 
 -------------------------------------------------------
 
@@ -58,22 +57,9 @@ static gchar * taglist[] = {	"section",
 
 gchar * ns_slash_getRSSNsPrefix(void) { return ns_slash_prefix; }
 
-static void ns_slash_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
-	GHashTable	*nsvalues;
-	
-	g_assert(nslist != NULL);
-	
-	if(tagvalue == NULL)
-		return;
-			
-	if(NULL == (nsvalues = (GHashTable *)g_hash_table_lookup(nslist, ns_slash_prefix))) {
-		nsvalues = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(nslist, (gpointer)ns_slash_prefix, (gpointer)nsvalues);
-	}
-	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
-}
-
-static void ns_slash_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+	gchar		*buffer = NULL;
+	gchar		*tmp;
 	xmlChar		*string;
 	int 		i;
 	
@@ -82,47 +68,55 @@ static void ns_slash_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
  			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
  			if(NULL != string) {
-	 			ns_slash_addInfoStruct(ip->nsinfos, taglist[i], CONVERT(string));
+				tmp = CONVERT(string);
  				xmlFree(string);
+				
+				if(NULL != tmp) {
+					addToHTMLBuffer(&buffer, KEY_START);
+					addToHTMLBuffer(&buffer, taglist[i]);
+					addToHTMLBuffer(&buffer, KEY_END);
+					addToHTMLBuffer(&buffer, VALUE_START);	
+					addToHTMLBuffer(&buffer, tmp);
+					addToHTMLBuffer(&buffer, VALUE_END);
+					g_free(tmp);
+	 				g_hash_table_insert(ip->nsinfos, g_strdup_printf("slash:%s", cur->name), buffer);
+				}
  			}
 			return;
 		}
 	}
 }
 
-/* maybe I should overthink method names :-) */
-static void ns_slash_output(gpointer key, gpointer value, gpointer userdata) {
-	gchar 	**buffer = (gchar **)userdata;
+static gchar * doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
+	gchar		*output;
+	gchar		*key;
 	
-	addToHTMLBuffer(buffer, KEY_START);
-	addToHTMLBuffer(buffer, (gchar *)key);
-	addToHTMLBuffer(buffer, KEY_END);
-	addToHTMLBuffer(buffer, VALUE_START);	
-	addToHTMLBuffer(buffer, (gchar *)value);
-	addToHTMLBuffer(buffer, VALUE_END);
-}
-
-static gchar * ns_slash_doOutput(GHashTable *nsinfos) {
-	GHashTable	*nsvalues;
-	gchar		*buffer = NULL;
-
-	g_assert(NULL != nsinfos);	
-	/* we print all channel infos as a (key,value) table */
-	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_slash_prefix))) {
-		addToHTMLBuffer(&buffer, SLASH_START);
-		g_hash_table_foreach(nsvalues, ns_slash_output, (gpointer)&buffer);
-		addToHTMLBuffer(&buffer, SLASH_END);			
+	g_assert(NULL != nsinfos);
+	key = g_strdup_printf("slash:%s", tagname);
+	
+	if(NULL != (output = g_hash_table_lookup(nsinfos, key))) {
+		addToHTMLBuffer(buffer, output);
+		g_hash_table_remove(nsinfos, key);
 	}
-	
-	return buffer;
+	g_free(key);
 }
 
-static gchar * ns_slash_doItemOutput(gpointer obj) {
+static gchar * doItemOutput(gpointer obj) {
+	gchar	*buffer = NULL;
+	gchar	*output = NULL;
 	
-	if(NULL != obj)
-		return ns_slash_doOutput(((RSSItemPtr)obj)->nsinfos);
-	
-	return NULL;
+	if(NULL != obj) {
+		doOutput(((RSSItemPtr)obj)->nsinfos, &output, "section");
+		doOutput(((RSSItemPtr)obj)->nsinfos, &output, "department");
+		
+		if(NULL != output) {
+			addToHTMLBuffer(&buffer, SLASH_START);
+			addToHTMLBuffer(&buffer, output);
+			addToHTMLBuffer(&buffer, SLASH_END);
+			g_free(output);
+		}
+	}	
+	return buffer;
 }
 
 RSSNsHandler *ns_slash_getRSSNsHandler(void) {
@@ -130,10 +124,10 @@ RSSNsHandler *ns_slash_getRSSNsHandler(void) {
 	
 	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
 		nsh->parseChannelTag		= NULL;
-		nsh->parseItemTag		= ns_slash_parseItemTag;
+		nsh->parseItemTag		= parseItemTag;
 		nsh->doChannelHeaderOutput	= NULL;
 		nsh->doChannelFooterOutput	= NULL;
-		nsh->doItemHeaderOutput		= ns_slash_doItemOutput;
+		nsh->doItemHeaderOutput		= doItemOutput;
 		nsh->doItemFooterOutput		= NULL;
 	}
 

@@ -1,7 +1,7 @@
 /*
    freshmeat namespace support
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -19,12 +19,11 @@
 */
 
 #include <string.h>
-#include "htmlview.h"
 #include "ns_fm.h"
 #include "common.h"
 
 #define FM_IMG_START	"<br><img class=\"freshmeat\" src=\""
-#define FM_IMG_END		" \">"
+#define FM_IMG_END	" \">"
 
 static gchar ns_fm_prefix[] = "fm";
 
@@ -36,66 +35,45 @@ static gchar ns_fm_prefix[] = "fm";
 
 gchar * ns_fm_getRSSNsPrefix(void) { return ns_fm_prefix; }
 
-static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
-	GHashTable	*nsvalues;
-	
-	g_assert(nslist != NULL);
-	
-	if(tagvalue == NULL)
-		return;
-			
-	if(NULL == (nsvalues = (GHashTable *)g_hash_table_lookup(nslist, ns_fm_prefix))) {
-		nsvalues = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(nslist, (gpointer)ns_fm_prefix, (gpointer)nsvalues);
-	}
-	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
-}
-
-static void ns_fm_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	xmlChar *string;
 	gchar	*tmp;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
  		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 		tmp = CONVERT(string);
-		if(NULL != string) {
- 			xmlFree(string);
- 
+ 		tmp = CONVERT(string);	
+		if(NULL != tmp) {
 			if(strlen(tmp) > 0) {
-				/* maybe for just one tag this is overkill, but copy&paste is so easy! */
-				ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url", tmp);
+				g_hash_table_insert(ip->nsinfos, g_strdup("fm:screenshot_url"), tmp);
 			} else {
 				g_free(tmp);
 			}
 		}
+		
+		if(NULL != string)
+ 			xmlFree(string);
 	}
 }
 
-static void ns_fm_output(gpointer key, gpointer value, gpointer userdata) {
-	gchar 	**buffer = (gchar **)userdata;
-	
-	addToHTMLBuffer(buffer, FM_IMG_START);
-	addToHTMLBuffer(buffer, (gchar *)value);
-	addToHTMLBuffer(buffer, FM_IMG_END);	
-}
-
-static gchar * ns_fm_doOutput(GHashTable *nsinfos) {
-	GHashTable	*nsvalues;
-	gchar		*buffer = NULL;
+static gchar * doOutput(GHashTable *nsinfos) {
+	gchar	*buffer = NULL;
+	gchar	*value;
 	
 	g_assert(NULL != nsinfos);
 	/* we print all channel infos as a (key,value) table */
-	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_fm_prefix))) {
-		g_hash_table_foreach(nsvalues, ns_fm_output, (gpointer)&buffer);
-	}
-	
+	if(NULL != (value = g_hash_table_lookup(nsinfos, "fm:screenshot_url"))) {
+		addToHTMLBuffer(&buffer, FM_IMG_START);
+		addToHTMLBuffer(&buffer, (gchar *)value);
+		addToHTMLBuffer(&buffer, FM_IMG_END);
+		g_hash_table_remove(nsinfos, "fm:screenshot_url");
+	}	
 	return buffer;
 }
 
-static gchar * ns_fm_doItemOutput(gpointer obj) {
+static gchar * doItemOutput(gpointer obj) {
 
 	if(NULL != obj)
-		return ns_fm_doOutput(((RSSItemPtr)obj)->nsinfos);
+		return doOutput(((RSSItemPtr)obj)->nsinfos);
 		
 	return NULL;
 }
@@ -105,11 +83,11 @@ RSSNsHandler *ns_fm_getRSSNsHandler(void) {
 	
 	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
 		nsh->parseChannelTag		= NULL;
-		nsh->parseItemTag		= ns_fm_parseItemTag;
+		nsh->parseItemTag		= parseItemTag;
 		nsh->doChannelHeaderOutput	= NULL;
 		nsh->doChannelFooterOutput	= NULL;
 		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= ns_fm_doItemOutput;
+		nsh->doItemFooterOutput		= doItemOutput;
 	}
 
 	return nsh;

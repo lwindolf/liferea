@@ -1,7 +1,7 @@
 /*
    creativeCommon RSS namespace support
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,73 +44,58 @@ static gchar ns_cC_prefix[] = "creativeCommons";
 
 gchar * ns_cC_getRSSNsPrefix(void) { return ns_cC_prefix; }
 
-static void ns_cC_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
-	GHashTable	*nsvalues;
+gchar * ns_cC_parseTag(xmlNodePtr cur) {
+	xmlChar	*string;
+	gchar	*buffer = NULL;
+	gchar	*tmp;
 	
-	g_assert(nslist != NULL);
-
-	if(tagvalue == NULL)
-		return;
-			
-	if(NULL == (nsvalues = (GHashTable *)g_hash_table_lookup(nslist, ns_cC_prefix))) {
-		nsvalues = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(nslist, (gpointer)ns_cC_prefix, (gpointer)nsvalues);
-	}
-	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
+ 	if(!xmlStrcmp("license", cur->name)) {
+ 		if(NULL != (string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+			tmp = CONVERT(string);
+ 			xmlFree(string);
+			addToHTMLBuffer(&buffer, FIRSTTD);
+			addToHTMLBuffer(&buffer, (gchar *)_("license"));
+			addToHTMLBuffer(&buffer, NEXTTD);
+			addToHTMLBuffer(&buffer, "<a href=\"");
+			addToHTMLBuffer(&buffer, tmp);
+			addToHTMLBuffer(&buffer, "\">");
+			addToHTMLBuffer(&buffer, tmp);
+			addToHTMLBuffer(&buffer, "</a>");	
+			addToHTMLBuffer(&buffer, LASTTD);
+			g_free(tmp);
+ 		}
+ 	}	
+	return buffer;
 }
 
 void ns_cC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
-	xmlChar	*string;
-	
- 	if(!xmlStrcmp("license", cur->name)) {
- 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 		ns_cC_addInfoStruct(cp->nsinfos, "license", CONVERT(string));
- 		if (NULL != string) {
- 			xmlFree(string);
- 		}
- 	}
+
+	g_assert(NULL != cp->nsinfos);
+	if(NULL != g_hash_table_lookup(cp->nsinfos, ns_cC_prefix))
+		g_hash_table_remove(cp->nsinfos, ns_cC_prefix);
+	g_hash_table_insert(cp->nsinfos, g_strdup(ns_cC_prefix), ns_cC_parseTag(cur));
 }
 
 void ns_cC_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
-	xmlChar *string;
-	
- 	if(!xmlStrcmp("license", cur->name)) {
- 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 		ns_cC_addInfoStruct(ip->nsinfos, "license", CONVERT(string));
- 		if (NULL != string) {
- 			xmlFree(string);
- 		}
- 	}
-}
 
-void ns_cC_output(gpointer key, gpointer value, gpointer userdata) {
-	gchar 	**buffer = (gchar **)userdata;
-	
-	if(!strcmp(key, "license")) {
-		addToHTMLBuffer(buffer, FIRSTTD);
-		addToHTMLBuffer(buffer, (gchar *)_("license"));
-		addToHTMLBuffer(buffer, NEXTTD);
-		addToHTMLBuffer(buffer, "<a href=\"");
-		addToHTMLBuffer(buffer, value);
-		addToHTMLBuffer(buffer, "\">");
-		addToHTMLBuffer(buffer, value);
-		addToHTMLBuffer(buffer, "</a>");	
-		addToHTMLBuffer(buffer, LASTTD);		
-	}
+	g_assert(NULL != ip->nsinfos);
+	if(NULL != g_hash_table_lookup(ip->nsinfos, ns_cC_prefix))
+		g_hash_table_remove(ip->nsinfos, ns_cC_prefix);
+	g_hash_table_insert(ip->nsinfos, g_strdup(ns_cC_prefix), ns_cC_parseTag(cur));
 }
 
 gchar * ns_cC_doOutput(GHashTable *nsinfos) {
-	GHashTable	*nsvalues;
+	gchar		*output;
 	gchar		*buffer = NULL;
 	
 	/* we print all channel infos as a (key,value) table */
 	g_assert(NULL != nsinfos);
-	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_cC_prefix))) {
+	if(NULL != (output = g_hash_table_lookup(nsinfos, (gpointer)ns_cC_prefix))) {
 		addToHTMLBuffer(&buffer, TABLE_START);
-		g_hash_table_foreach(nsvalues, ns_cC_output, (gpointer)&buffer);
+		addToHTMLBuffer(&buffer, output);
 		addToHTMLBuffer(&buffer, TABLE_END);
-	}
-	
+		g_hash_table_remove(nsinfos, (gpointer)ns_cC_prefix);
+	}	
 	return buffer;
 }
 
@@ -141,7 +126,6 @@ RSSNsHandler *ns_cC_getRSSNsHandler(void) {
 		nsh->doItemHeaderOutput		= NULL;
 		nsh->doItemFooterOutput		= ns_cC_doItemOutput;
 	}
-
 	return nsh;
 }
 

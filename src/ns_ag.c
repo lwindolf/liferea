@@ -1,7 +1,7 @@
 /*
    mod_aggregation support
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "htmlview.h"
 #include "support.h"
 #include "ns_ag.h"
 #include "common.h"
@@ -47,86 +46,86 @@ static gchar ns_ag_prefix[] = "ag";
 
 gchar * ns_ag_getRSSNsPrefix(void) { return ns_ag_prefix; }
 
-static void ns_ag_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
-	GHashTable	*nsvalues;
-	
-	g_assert(nslist != NULL);
-
-	if(tagvalue == NULL)
-		return;
-			
-	if(NULL == (nsvalues = (GHashTable *)g_hash_table_lookup(nslist, ns_ag_prefix))) {
-		nsvalues = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(nslist, (gpointer)ns_ag_prefix, (gpointer)nsvalues);
-	}
-	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
-}
-
-static void ns_ag_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
-	gchar	*date, *tmp;
+static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+	gchar	*date, *tmp = NULL;
 	xmlChar	*string;
 	
 	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
-	if(!xmlStrcmp("source", cur->name)) 
-		ns_ag_addInfoStruct(ip->nsinfos, "source", CONVERT(string));
-
-	if(!xmlStrcmp("sourceURL", cur->name)) 
-		ns_ag_addInfoStruct(ip->nsinfos, "sourceURL", CONVERT(string));
-		
-	if(!xmlStrcmp("timestamp", cur->name)) {
+	if(!xmlStrcmp("source", cur->name))  {
+		tmp = CONVERT(string);
+	} else if(!xmlStrcmp("sourceURL", cur->name)) {
+		tmp = CONVERT(string);
+	} else if(!xmlStrcmp("timestamp", cur->name)) {
 		tmp = CONVERT(string);
 		date = formatDate(parseISO8601Date(tmp));
 		g_free(tmp);
-		ns_ag_addInfoStruct(ip->nsinfos, "timestamp", date);
-	}
+		tmp = date;
+	}	
 	
-	if(NULL != string) {
+	if(NULL != tmp)
+		g_hash_table_insert(ip->nsinfos, g_strdup_printf("ag:%s", cur->name), tmp);
+	
+	if(NULL != string)
  		xmlFree(string);
-  	}
 }
 
-static gchar * ns_ag_doOutput(GHashTable *nsinfos) {
-	GHashTable	*nsvalues;
+static gchar * doOutput(GHashTable *nsinfos) {
 	gchar		*buffer = NULL;
-	gchar		*tmp, *tmp2, *tmp3;
+	gchar		*source, *sourceURL, *timestamp;
 	
 	/* we print all channel infos as a (key,value) table */
 	g_assert(NULL != nsinfos);
-	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_ag_prefix))) {
+	source = g_hash_table_lookup(nsinfos, "ag:source");
+	sourceURL = g_hash_table_lookup(nsinfos, "ag:sourceURL");
+	timestamp = g_hash_table_lookup(nsinfos, "ag:timestamp");
+	
+	if((NULL != timestamp) || (NULL != sourceURL) || (NULL != source)) {
 		addToHTMLBuffer(&buffer, TABLE_START);
 
-		if(NULL != (tmp = (gchar *)g_hash_table_lookup(nsvalues, (gpointer)"source"))) {
+		if((NULL != source) || (NULL != sourceURL)) {
 			addToHTMLBuffer(&buffer, FIRSTTD);
 			addToHTMLBuffer(&buffer, _("source"));
 			addToHTMLBuffer(&buffer, NEXTTD);
-			if(NULL != (tmp2 = (gchar *)g_hash_table_lookup(nsvalues, (gpointer)"source"))) {
-				tmp3 = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
-				addToHTMLBuffer(&buffer, tmp3);
-				g_free(tmp3);
+			if(NULL != sourceURL) {
+				addToHTMLBuffer(&buffer, "<a href=\"");
+				addToHTMLBuffer(&buffer, sourceURL);
+				addToHTMLBuffer(&buffer, "\">");
+				if(NULL != source)
+					addToHTMLBuffer(&buffer, source);
+				else 
+					addToHTMLBuffer(&buffer, sourceURL);
+				addToHTMLBuffer(&buffer, "</a>");
 			} else {
-				addToHTMLBuffer(&buffer, tmp);
+				addToHTMLBuffer(&buffer, source);				
 			}
 			addToHTMLBuffer(&buffer, LASTTD);
 		}
 
-		if(NULL != (tmp = (gchar *)g_hash_table_lookup(nsvalues, (gpointer)"source"))) {
+		if(NULL != timestamp) {
 			addToHTMLBuffer(&buffer, FIRSTTD);
 			addToHTMLBuffer(&buffer, _("time"));
 			addToHTMLBuffer(&buffer, NEXTTD);
-			addToHTMLBuffer(&buffer, tmp);
+			addToHTMLBuffer(&buffer, timestamp);
 			addToHTMLBuffer(&buffer, LASTTD);
 		}
 				
 		addToHTMLBuffer(&buffer, TABLE_END);
 	}
 	
+	if(NULL != timestamp)
+		g_hash_table_remove(nsinfos, "ag:timestamp");
+	if(NULL != source)
+		g_hash_table_remove(nsinfos, "ag:source");
+	if(NULL != sourceURL)
+		g_hash_table_remove(nsinfos, "ag:sourceURL");	
+		
 	return buffer;
 }
 
-static gchar * ns_ag_doItemOutput(gpointer obj) {
+static gchar * doItemOutput(gpointer obj) {
 
 	if(NULL != obj)
-		return ns_ag_doOutput(((RSSItemPtr)obj)->nsinfos);
+		return doOutput(((RSSItemPtr)obj)->nsinfos);
 	
 	return NULL;
 }
@@ -136,11 +135,11 @@ RSSNsHandler *ns_ag_getRSSNsHandler(void) {
 	
 	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
 		nsh->parseChannelTag		= NULL;
-		nsh->parseItemTag		= ns_ag_parseItemTag;
+		nsh->parseItemTag		= parseItemTag;
 		nsh->doChannelHeaderOutput	= NULL;
 		nsh->doChannelFooterOutput	= NULL;
 		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= ns_ag_doItemOutput;
+		nsh->doItemFooterOutput		= doItemOutput;
 	}
 	return nsh;
 }

@@ -1,7 +1,7 @@
 /*
    blogChannel namespace support
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -141,92 +141,71 @@ static gchar * getOutlineList(gchar *url) {
 	return buffer;
 }
 
-static void ns_bC_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
-	GHashTable	*nsvalues;
-	
-	g_assert(nslist != NULL);
-	
-	if(tagvalue == NULL)
-		return;
-			
-	if(NULL == (nsvalues = (GHashTable *)g_hash_table_lookup(nslist, ns_bC_prefix))) {
-		nsvalues = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(nslist, (gpointer)ns_bC_prefix, (gpointer)nsvalues);
-	}
-	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
-}
-
 static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
-	gchar		*output;
 	xmlChar		*string;
+	gchar		*buffer = NULL;
+	gchar		*key, *output, *tmp;
 	
 	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 	  
 	if(!xmlStrcmp("blogRoll", cur->name)) {	
-		if(NULL != (output = getOutlineList(string)))
-			ns_bC_addInfoStruct(cp->nsinfos, "blogRoll", output);
-
-	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
-		if(NULL != (output = getOutlineList(string)))
-			ns_bC_addInfoStruct(cp->nsinfos, "mySubscriptions", output);
-
-	} else if(!xmlStrcmp("blink", cur->name)) {
-		ns_bC_addInfoStruct(cp->nsinfos, "blink", CONVERT(string));
-	}
-	
-	if(NULL != string) {
- 		xmlFree(string);
-  	}
-}
-
-/* maybe I should overthink method names :-) */
-/*static void ns_bC_output(gpointer key, gpointer value, gpointer userdata) {
-	gchar 	**buffer = (gchar **)userdata;
-	
-	addToHTMLBuffer(buffer, (gchar *)value);
-}*/
-
-static gchar * ns_bC_doOutput(GHashTable *nsinfos) {
-	GHashTable	*nsvalues;
-	gchar		*output, *buffer = NULL;
-	
-	g_assert(NULL != nsinfos);
-	/* we print all channel infos as a (key,value) table */
-	/*if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_bC_prefix))) {
-		g_hash_table_foreach(nsvalues, ns_bC_output, (gpointer)&buffer);
-	}*/
-	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_bC_prefix))) {
-		
-		if(NULL != (output = g_hash_table_lookup(nsvalues, "blink"))) {
-			output = g_strdup_printf("<p><a href=\"%s\">%s</a></p>", output,output);
-			addToHTMLBuffer(&buffer, BLINK_START);
-			addToHTMLBuffer(&buffer, output);
-			addToHTMLBuffer(&buffer, BLINK_END);
-			g_free(output);
-		}
-		
-		if(NULL != (output = g_hash_table_lookup(nsvalues, "blogRoll"))) {
+		if(NULL != (output = getOutlineList(string))) {
 			addToHTMLBuffer(&buffer, BLOGROLL_START);
 			addToHTMLBuffer(&buffer, output);
 			addToHTMLBuffer(&buffer, BLOGROLL_END);
+			g_free(output);
 		}
-		
-		if(NULL != (output = g_hash_table_lookup(nsvalues, "mySubscriptions"))) {
-			addToHTMLBuffer(&buffer, MYSUBSCR_START);
+	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
+		if(NULL != (output = getOutlineList(string))) {
+			addToHTMLBuffer(&buffer, BLOGROLL_START);
 			addToHTMLBuffer(&buffer, output);
-			addToHTMLBuffer(&buffer, MYSUBSCR_END);
+			addToHTMLBuffer(&buffer, BLOGROLL_END);
+			g_free(output);
 		}
+	} else if(!xmlStrcmp("blink", cur->name)) {
+		tmp = CONVERT(string);
+		output = g_strdup_printf("<p><a href=\"%s\">%s</a></p>", tmp, tmp);
+		g_free(tmp);
+		addToHTMLBuffer(&buffer, BLINK_START);
+		addToHTMLBuffer(&buffer, output);
+		addToHTMLBuffer(&buffer, BLINK_END);
+		g_free(output);
 	}
+
+	if(NULL != string)
+		xmlFree(string);	
+
+	if(NULL != buffer) {
+		key = g_strdup_printf("cC:%s", cur->name);
+		if(NULL != g_hash_table_lookup(cp->nsinfos, key)) 
+			g_hash_table_remove(cp->nsinfos, key);	
+		g_hash_table_insert(cp->nsinfos, key, buffer);
+	}
+}
+
+static void ns_bC_doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
+	gchar		*output;
+	gchar		*key;
 	
-	return buffer;
+	g_assert(NULL != nsinfos);
+	key = g_strdup_printf("cC:%s", tagname);
+	
+	if(NULL != (output = g_hash_table_lookup(nsinfos, key))) {
+		addToHTMLBuffer(buffer, output);
+		g_hash_table_remove(nsinfos, key);
+	}
+	g_free(key);
 }
 
 static gchar * ns_bC_doChannelOutput(gpointer obj) {
-
-	if(NULL != obj)
-		return ns_bC_doOutput(((RSSChannelPtr)obj)->nsinfos);
-		
-	return NULL;
+	gchar	*buffer = NULL;
+	
+	if(NULL != obj) {
+		ns_bC_doOutput(((RSSChannelPtr)obj)->nsinfos, &buffer, "blink");
+		ns_bC_doOutput(((RSSChannelPtr)obj)->nsinfos, &buffer, "blogRoll");
+		ns_bC_doOutput(((RSSChannelPtr)obj)->nsinfos, &buffer, "mySubscriptions");
+	}
+	return buffer;
 }
 
 RSSNsHandler *ns_bC_getRSSNsHandler(void) {
@@ -240,6 +219,5 @@ RSSNsHandler *ns_bC_getRSSNsHandler(void) {
 		nsh->doItemHeaderOutput		= NULL;
 		nsh->doItemFooterOutput		= NULL;
 	}
-
 	return nsh;
 }

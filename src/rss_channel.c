@@ -348,7 +348,7 @@ static void readRSSFeed(feedPtr fp) {
 		return;
 	}
 	memset(cp, 0, sizeof(struct RSSChannel));
-	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
+	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);		
 	
 	cp->updateInterval = -1;
 
@@ -439,7 +439,6 @@ static void readRSSFeed(feedPtr fp) {
  		g_free(cp->tags[i]);
  	}
 
-	g_hash_table_destroy(cp->nsinfos);
 	g_free(cp->tiTitle);
  	g_free(cp->tiDescription);
  	g_free(cp->tiName);
