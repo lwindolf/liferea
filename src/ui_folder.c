@@ -66,7 +66,7 @@ void on_popup_foldername_selected(void) {
 	gchar 		*title;
 
 	if(selected_type != FST_FOLDER) {
-		showErrorBox(_("You have to select a folder entry!"));
+		ui_show_error_box(_("You have to select a folder entry!"));
 		return;
 	}
 	
@@ -93,7 +93,7 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 		foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
 		setFolderTitle(selected_keyprefix, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
 	} else {
-		showErrorBox("internal error: could not determine folder key!");
+		ui_show_error_box("internal error: could not determine folder key!");
 	}
 
 	gtk_widget_hide(foldernamedialog);
@@ -106,7 +106,7 @@ void on_popup_removefolder_selected(void) {
 	gint		tmp_type, count;
 	
 	if(selected_type != FST_FOLDER) {
-		showErrorBox(_("You have to select a folder entry!"));
+		ui_show_error_box(_("You have to select a folder entry!"));
 		return;
 	}
 
@@ -132,10 +132,10 @@ void on_popup_removefolder_selected(void) {
 				g_free(selected_keyprefix);
 				selected_keyprefix = g_strdup(ROOT_FOLDER_PREFIX);
 			} else {
-				showErrorBox(_("A folder must be empty to delete it!"));
+				ui_show_error_box(_("A folder must be empty to delete it!"));
 			}
 		} else {
-			showErrorBox(_("A folder must be empty to delete it!"));
+			ui_show_error_box(_("A folder must be empty to delete it!"));
 		}
 	} else {
 		g_warning("internal error: Cannot determine folder key!");
@@ -160,7 +160,7 @@ void ui_folder_mark_all_as_read(void) {
 	GtkTreePath	*selected_path;
 
 	if(selected_type != FST_FOLDER) {
-		showErrorBox(_("You have to select a folder entry!"));
+		ui_show_error_box(_("You have to select a folder entry!"));
 		return;
 	}
 

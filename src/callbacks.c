@@ -42,6 +42,7 @@
 #include "callbacks.h"
 #include "ui_mainwindow.h"
 #include "ui_folder.h"
+#include "ui_feedlist.h"
 #include "ui_itemlist.h"
 #include "ui_tray.h"
 #include "ui_queue.h"
@@ -49,8 +50,6 @@
 
 #include "vfolder.h"	// FIXME
 				
-extern GAsyncQueue	*results;
-
 extern GHashTable	*feedHandler;
 
 /* selection information from ui_feedlist.c and ui_itemlist.c */
@@ -82,7 +81,7 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 /*------------------------------------------------------------------------------*/
 
 /* GUI initialization, must be called only once! */
-void initGUI(void) {
+void ui_init(void) {
 	int i;
 
 	selected_keyprefix = g_strdup(ROOT_FOLDER_PREFIX);
@@ -131,7 +130,7 @@ void initGUI(void) {
 	ui_queue_init();		/* set up callback queue for other threads */
 }
 
-void redrawWidget(gchar *name) {
+void ui_redraw_widget(gchar *name) {
 	GtkWidget	*list;
 	gchar		*msg;
 	
@@ -206,34 +205,52 @@ void on_popup_allunread_selected(void) {
 /* status bar callback, error box function, GUI update function			*/
 /*------------------------------------------------------------------------------*/
 
-void updateUI(void) {
+void ui_update(void) {
 	
 	while(gtk_events_pending())
 		gtk_main_iteration();
 }
 
-void showErrorBox(gchar *msg) {
+void ui_show_error_box(const char *format, ...) {
 	GtkWidget	*dialog;
-	
+	va_list		args;
+	gchar		*msg;
+
+	g_return_if_fail(format != NULL);
+
+	va_start(args, format);
+	msg = g_strdup_vprintf(format, args);
+	va_end(args);
+
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
                   GTK_DIALOG_DESTROY_WITH_PARENT,
                   GTK_MESSAGE_ERROR,
                   GTK_BUTTONS_CLOSE,
                   msg);
-	gtk_dialog_run (GTK_DIALOG (dialog));
-	gtk_widget_destroy (dialog);
+	gtk_dialog_run(GTK_DIALOG (dialog));
+	gtk_widget_destroy(dialog);
+	g_free(msg);
 }
 
-void showInfoBox(gchar *msg) { 
+void ui_show_info_box(const char *format, ...) { 
 	GtkWidget	*dialog;
-			
+	va_list		args;
+	gchar		*msg;
+
+	g_return_if_fail(format != NULL);
+
+	va_start(args, format);
+	msg = g_strdup_vprintf(format, args);
+	va_end(args);
+		
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
                   GTK_DIALOG_DESTROY_WITH_PARENT,
                   GTK_MESSAGE_INFO,
                   GTK_BUTTONS_CLOSE,
                   msg);
-	gtk_dialog_run (GTK_DIALOG (dialog));
-	gtk_widget_destroy (dialog);
+	gtk_dialog_run(GTK_DIALOG (dialog));
+	gtk_widget_destroy(dialog);
+	g_free(msg);
 }
 
 /*------------------------------------------------------------------------------*/
@@ -247,7 +264,7 @@ gint checkForUpdateResults(gpointer data) {
 	gint			type;
 	gchar			*msg;
 
-	if(NULL == (request = g_async_queue_try_pop(results)))
+	if(request = update_thread_get_result())
 		return TRUE;
 
 	ui_lock();
@@ -255,19 +272,19 @@ gint checkForUpdateResults(gpointer data) {
 	request->fp->available = TRUE;
 	
 	if(304 == request->lasthttpstatus) {	
-		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), getFeedTitle(request->fp));
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), feed_get_title(request->fp));
 	} else if(NULL != request->data) {
 		/* determine feed type handler */
-		type = getFeedType(request->fp);
+		type = feed_get_type(request->fp);
 		g_assert(NULL != feedHandler);
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			g_warning(_("internal error! unknown feed type %d while updating feeds!"), type);
+			g_warning("internal error! unknown feed type %d while updating feeds!", type);
 			gdk_threads_leave();
 			return TRUE;
 		}
 		
 		/* parse the new downloaded feed into new_fp */
-		new_fp = getNewFeedStruct();
+		new_fp = feed_new();
 		new_fp->source = g_strdup(request->fp->source);
 		(*(fhp->readFeed))(new_fp, request->data);
 
@@ -276,22 +293,22 @@ gint checkForUpdateResults(gpointer data) {
 		
 		if(TRUE == fhp->merge)
 			/* If the feed type supports merging... */
-			mergeFeed(request->fp, new_fp);
+			feed_merge(request->fp, new_fp);
 		else {
 			/* Otherwise we simply use the new feed info... */
-			copyFeed(request->fp, new_fp);
-			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), getFeedTitle(request->fp));
+			feed_copy(request->fp, new_fp);
+			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(request->fp));
 		}
 
 		/* note this is to update the feed URL on permanent redirects */
-		if(0 != strcmp(request->feedurl, getFeedSource(request->fp))) {
-			setFeedSource(request->fp, g_strdup(request->feedurl));				
-			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp));
+		if(0 != strcmp(request->feedurl, feed_get_source(request->fp))) {
+			feed_set_source(request->fp, g_strdup(request->feedurl));				
+			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), feed_get_title(request->fp));
 		}
 
 		if(NULL != request->fp) {
 			/* now fp contains the actual feed infos */
-			saveFeed(request->fp);
+			feed_save(request->fp);
 
 			if(selected_fp == request->fp) {
 				ui_itemlist_load(request->fp, NULL);
@@ -300,11 +317,11 @@ gint checkForUpdateResults(gpointer data) {
 		}
 	} else {
 		
-		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), getFeedTitle(request->fp));
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(request->fp));
 		request->fp->available = FALSE;
 	}
-	redrawFeedList();
-	updateUI();
+	ui_redraw_feedlist();
+	ui_update();
 	ui_unlock();
 	
 	g_free(request->feedurl);	/* request structure cleanup... */
@@ -324,7 +341,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	gtk_widget_hide(mainwindow);
 
-	saveAllFeeds();
+	ui_feedlist_do_for_all(NULL, feed_save);
 	saveAllFolderCollapseStates();
 	
 	/* save pane proportions */

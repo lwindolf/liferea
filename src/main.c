@@ -58,8 +58,8 @@ int main (int argc, char *argv[]) {
 	/* order is important! */
 	initConfig();		/* initialize gconf */
 	loadConfig();		/* maybe this should be merged with initConfig() */
-	initGUI();		/* initialize gconf configured GUI behaviour */
-	initBackend();
+	ui_init();		/* initialize gconf configured GUI behaviour */
+	feed_init();
 
 	/* we need to now this when locking in ui_queue.c */
 	mainThread = g_thread_self();	

@@ -16,6 +16,9 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#ifndef _CALLBACKS_H
+#define _CALLBACKS_H
+
 #include <gtk/gtk.h>
 #include "ui_mainwindow.h"
 #include "ui_feedlist.h"
@@ -46,17 +49,16 @@
 #define ICON_EMPTY		9
 #define MAX_ICONS		10
 
-void initGUI(void);
+void ui_init(void);
 
-#define redrawItemList()	redrawWidget("Itemlist");
-#define redrawFeedList()	redrawWidget("feedlist");
+#define ui_redraw_itemlist()	ui_redraw_widget("Itemlist");
+#define ui_redraw_feedlist()	ui_redraw_widget("feedlist");
 
-void redrawWidget(gchar *name);
+void ui_redraw_widget(gchar *name);
 
-void updateUI(void);
-void print_status(gchar *statustext);
-void showInfoBox(gchar *msg);
-void showErrorBox(gchar *msg);
+void ui_update(void);
+void ui_show_info_box(const char *format, ...);
+void ui_show_error_box(const char *format, ...);
 
 gint checkForUpdateResults(gpointer data);
 
@@ -105,3 +107,5 @@ on_rulechangedbtn_clicked              (GtkButton       *button,
 void
 on_about_activate                      (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
+
+#endif

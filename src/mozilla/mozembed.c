@@ -217,7 +217,7 @@ void setupHTMLViews(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 void setHTMLViewMode(gboolean threePane) {
 
 	if(FALSE == threePane)
-		showErrorBox(g_strdup("Sorry, condensed view not yet implemented for Mozilla!"));
+		ui_show_error_box("Sorry, condensed view not yet implemented for Mozilla!");
 		
 /*	if(FALSE == threePane)
 		setupHTMLView(itemListView);
@@ -235,7 +235,7 @@ void launchURL(gchar *url) {
 /* adds a differences diff to the actual zoom level */
 void changeZoomLevel(gfloat diff) {
 
-	showErrorBox(g_strdup("Sorry, not yet implemented for Mozilla!"));
+	ui_show_error_box("Sorry, not yet implemented for Mozilla!");
 	zoomLevel += diff;
 }
 

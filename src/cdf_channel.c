@@ -116,7 +116,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 			if(NULL != (ip = parseCDFItem(fp, cp, doc, cur))) {
 				if(0 == ip->time)
 					ip->time = cp->time;
-				addItem(fp, ip);
+				feed_add_item(fp, ip);
 			}	
 		}
 

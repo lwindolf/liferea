@@ -308,13 +308,13 @@ void ui_itemlist_display(void) {
 		if(!ip) {
 			/* display feed info */
 			if(displayed_fp) {
-				if(!getFeedAvailable(displayed_fp) || 
+				if(!feed_get_available(displayed_fp) || 
 				   (NULL != displayed_fp->parseErrors)) {
-					tmp = getFeedErrorDescription(displayed_fp);
+					tmp = feed_get_error_description(displayed_fp);
 					addToHTMLBuffer(&buffer, tmp);
 					g_free(tmp);
 				}
-  				addToHTMLBuffer(&buffer, getFeedDescription(displayed_fp));
+  				addToHTMLBuffer(&buffer, feed_get_description(displayed_fp));
 			}
 		} else {
 			/* display item content */
@@ -343,7 +343,7 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 
 	ui_itemlist_clear();
 	displayed_fp = fp;
-	itemlist = getFeedItemList(fp);
+	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
 		title = getItemTitle(ip);
@@ -366,7 +366,7 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 						    IS_TITLE, title,
 						    IS_PTR, ip,
 						    IS_TIME, getItemTime(ip),
-						    IS_TYPE, getFeedType(fp),	/* not the item type, this would fail for VFolders! */
+						    IS_TYPE, feed_get_type(fp),	/* not the item type, this would fail for VFolders! */
 						    -1);
 			g_assert(ip->ui_data == NULL);
 			ip->ui_data = g_new0(ui_item_data, 1);
@@ -492,9 +492,9 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
 	if(fp) {
 		ui_itemlist_clear();
-		clearFeedItemList(fp);	/* delete items */
+		feed_clear_item_list(fp);	/* delete items */
 	} else {
-		showErrorBox(_("You have to select a feed to delete its items!"));
+		ui_show_error_box(_("You have to select a feed to delete its items!"));
 	}
 }
 

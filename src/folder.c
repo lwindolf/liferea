@@ -332,7 +332,7 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 			fp = (feedPtr)g_hash_table_lookup(feeds, (gpointer)key);
 			g_assert(NULL != fp);
 			newkey = addFeedToConfig((gchar *)keyprefix,
-						  (gchar *)getFeedSource(fp),
+						  (gchar *)feed_get_source(fp),
 						  tmp_type);
 
 			/* rename cache file/directory */
@@ -369,9 +369,9 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 			g_mutex_unlock(feeds_lock);
 			
 			/* write feed properties to new key */
-			setFeedTitleInConfig(newkey, getFeedTitle(fp));
+			setFeedTitleInConfig(newkey, feed_get_title(fp));
 			if(IS_FEED(tmp_type))
-				setFeedUpdateIntervalInConfig(newkey, getFeedUpdateInterval(fp));
+				setFeedUpdateIntervalInConfig(newkey, feed_get_update_interval(fp));
 
 			/* update changed row contents */
 			gtk_tree_store_set(feedstore, &iter, FS_KEY, (gpointer)newkey, -1);

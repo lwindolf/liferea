@@ -411,7 +411,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 						new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
 						new_dep->dp = dp;
 						ip = parse04DirectoryEntry(new_dep, cur);
-						addItem(fp, ip);
+						feed_add_item(fp, ip);
 					}
 		
 				} else {
@@ -486,7 +486,7 @@ static void readOCS(feedPtr fp, gchar *data) {
 				new_dep = g_new0(struct dirEntry, 1);
 				new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
 				new_dep->dp = dp;					
-				addItem(fp, parse05DirectoryEntry(new_dep, cur));
+				feed_add_item(fp, parse05DirectoryEntry(new_dep, cur));
 			}
 			/* handling OCS 0.4 top level description tag... */
 			else if(0 == xmlStrcmp(cur->name, (const xmlChar *) "description")) {
@@ -499,14 +499,14 @@ static void readOCS(feedPtr fp, gchar *data) {
 		xmlFreeDoc(doc);
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		setFeedUpdateInterval(fp, -1);
+		feed_set_update_interval(fp, -1);
 		fp->title = dp->tags[OCS_TITLE];
 		
 		if(0 == error) {
 			fp->description = showDirectoryInfo(dp, fp->source);
 			fp->available = TRUE;
 		} else {
-			print_status(g_strdup(_("There were errors while parsing this feed!")));
+			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 			fp->title = g_strdup(fp->source);
 		}
 			

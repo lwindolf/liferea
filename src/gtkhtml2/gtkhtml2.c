@@ -289,7 +289,7 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
 		
 	g_assert(NULL != cmd);
 	if(NULL == strstr(cmd, "%s")) {
-		showErrorBox(_("Invalid browser command! There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
+		ui_show_error_box(_("Invalid browser command! There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
 	}
 	tmp = g_strdup_printf(cmd, url);
 	g_free(cmd);

@@ -132,7 +132,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 //				rp = g_new0(struct rule,1);
 
 				/* we set the searchstring as a default title */
-				setFeedTitle(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
+				feed_set_title(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
 				/* and set the rules... */
 /*				rp->value = g_strdup((gchar *)searchstring);
 				setVFolderRules(fp, rp);*/

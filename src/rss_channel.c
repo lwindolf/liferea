@@ -398,7 +398,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 				if(NULL != (ip = parseRSSItem(fp, cp, cur))) {
 					if(0 == ip->time)
 						ip->time = cp->time;
-					addItem(fp, ip);
+					feed_add_item(fp, ip);
 				}
 			}
 			cur = cur->next;
@@ -409,7 +409,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 
 	/* after parsing we fill in the infos into the feedPtr structure */		
 	fp->defaultInterval = cp->updateInterval;
-	setFeedUpdateInterval(fp,cp->updateInterval);
+	feed_set_update_interval(fp,cp->updateInterval);
 	fp->title = g_strdup(cp->tags[RSS_CHANNEL_TITLE]);
 
 	if(0 == error) {

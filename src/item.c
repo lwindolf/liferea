@@ -63,19 +63,19 @@ void markItemAsUnread(itemPtr ip) {
 	feedPtr		fp;
 	
 	if(TRUE == ip->readStatus) {
-		increaseUnreadCount((feedPtr)(ip->fp));
+		feed_increase_unread_counter((feedPtr)(ip->fp));
 
 		vfolders = ip->vfolders;
 		while(NULL != vfolders) {
 			fp = vfolders->data;
-			increaseUnreadCount(fp);
+			feed_increase_unread_counter(fp);
 			vfolders = g_slist_next(vfolders);
 		}
 		
 		ip->readStatus = FALSE;
 		if (ip->ui_data)
 			ui_update_item(ip);
-		redrawFeedList();
+		ui_redraw_feedlist();
 	} 
 }
 
@@ -84,19 +84,19 @@ void markItemAsRead(itemPtr ip) {
 	feedPtr		fp;
 
 	if(FALSE == ip->readStatus) {
-		decreaseUnreadCount((feedPtr)(ip->fp));
+		feed_decrease_unread_counter((feedPtr)(ip->fp));
 
 		vfolders = ip->vfolders;
 		while(NULL != vfolders) {
 			fp = vfolders->data;
-			decreaseUnreadCount(fp);
+			feed_decrease_unread_counter(fp);
 			vfolders = g_slist_next(vfolders);
 		}
 		
 		ip->readStatus = TRUE; 
 		if (ip->ui_data)
 			ui_update_item(ip);
-		redrawFeedList();
+		ui_redraw_feedlist();
 	}
 }
 
@@ -116,7 +116,7 @@ void removeVFolderFromItem(itemPtr ip, gpointer fp) {
 void freeItem(itemPtr ip) {
 
 	if(FALSE == ip->readStatus)
-		decreaseUnreadCount(ip->fp);
+		feed_decrease_unread_counter(ip->fp);
 
 	g_free(ip->title);
 	g_free(ip->description);

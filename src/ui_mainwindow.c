@@ -98,9 +98,9 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
 	
 	g_return_if_fail(format != NULL);
 
-	va_start (args, format);
+	va_start(args, format);
 	str = g_strdup_vprintf(format, args);
-	va_end (args);
+	va_end(args);
 
 	ui_queue_add(ui_mainwindow_set_status_idle, (gpointer)str); 
 }

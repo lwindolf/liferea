@@ -83,4 +83,12 @@ GThread * update_thread_init(void);
  */
 void update_thread_add_request(struct feed_request *new_request);
 
+/**
+ * Function to wait for an update request result. This
+ * function blocks until a result is available.
+ *
+ * @return pointer to a request structure
+ */
+struct feed_request * update_thread_get_result(void);
+
 #endif

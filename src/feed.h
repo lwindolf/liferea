@@ -1,22 +1,22 @@
-/*
-   @file feed.h common feed handling
-   
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file feed.h common feed handling
+ * 
+ * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version. 
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #ifndef _FEED_H
 #define _FEED_H
@@ -60,10 +60,6 @@
 
 /** macro to test if feed menu action can be applied to this entry */
 #define FEED_MENU(type)		(IS_FEED(type) || IS_DIRECTORY(type))
-
-/* ------------------------------------------------------------ */
-/* feed handler interface					*/
-/* ------------------------------------------------------------ */
 
 /** common structure to access feed info structures */
 typedef struct feed {
@@ -111,45 +107,41 @@ typedef struct feedHandler {
 /* feed creation/modification interface				*/
 /* ------------------------------------------------------------ */
 
-void initBackend(void);
+void feed_init(void);
 
-void initFeedTypes(void);
-void registerFeedType(gint type, feedHandlerPtr fhp);
-
-feedPtr getNewFeedStruct(void);
+feedPtr feed_new(void);
 feedPtr newFeed(gint type, gchar *url, gchar *keyprefix);
 feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval);
-void mergeFeed(feedPtr old_fp, feedPtr new_fp);
-void removeFeed(feedPtr fp);
-void updateFeed(feedPtr fp);
-gint saveFeed(feedPtr fp);
-void saveAllFeeds(void);
+void feed_merge(feedPtr old_fp, feedPtr new_fp);
+void feed_remove(feedPtr fp);
+void feed_update(feedPtr fp);
+void feed_save(feedPtr fp);
 
-void addItem(feedPtr fp, itemPtr ip);
+void feed_add_item(feedPtr fp, itemPtr ip);
 
-void copyFeed(feedPtr fp, feedPtr new_fp);
-void freeFeed(feedPtr fp);
+void feed_copy(feedPtr fp, feedPtr new_fp);
+void feed_free(feedPtr fp);
 
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */
 
-feedPtr getFeed(gchar *key);
+feedPtr feed_get_from_key(gchar *key);
 
-gpointer getFeedIcon(feedPtr fp);
-gint getFeedType(feedPtr fp);
-gchar * getFeedKey(feedPtr fp);
-gchar * getFeedKeyPrefix(feedPtr fp);
+gpointer feed_get_favicon(feedPtr fp);
+gint feed_get_type(feedPtr fp);
+gchar * feed_get_key(feedPtr fp);
+gchar * feed_get_keyprefix(feedPtr fp);
 
-void increaseUnreadCount(feedPtr fp);
-void decreaseUnreadCount(feedPtr fp);
-gint getFeedUnreadCount(feedPtr fp);
+void feed_increase_unread_counter(feedPtr fp);
+void feed_decrease_unread_counter(feedPtr fp);
+gint feed_get_unread_counter(feedPtr fp);
 
-gint getFeedDefaultInterval(feedPtr fp);
-gint getFeedUpdateInterval(feedPtr fp);
-void setFeedUpdateInterval(feedPtr fp, gint interval);
+gint feed_get_default_update_interval(feedPtr fp);
+gint feed_get_update_interval(feedPtr fp);
+void feed_set_update_interval(feedPtr fp, gint interval);
 void feed_reset_update_counter(feedPtr fp);
-gboolean getFeedAvailable(feedPtr fp);
+gboolean feed_get_available(feedPtr fp);
 
 /**
  * Returns a HTML string describing the last retrieval error 
@@ -158,19 +150,19 @@ gboolean getFeedAvailable(feedPtr fp);
  *
  * @return HTML error description
  */
-gchar * getFeedErrorDescription(feedPtr fp);
+gchar * feed_get_error_description(feedPtr fp);
 
-gchar * getFeedTitle(feedPtr fp);
-void setFeedTitle(feedPtr fp, gchar * title);
+gchar * feed_get_title(feedPtr fp);
+void feed_set_title(feedPtr fp, gchar * title);
 
-gchar * getFeedDescription(feedPtr fp);
+gchar * feed_get_description(feedPtr fp);
 
-gchar * getFeedSource(feedPtr fp);
-void setFeedSource(feedPtr fp, gchar * source);
+gchar * feed_get_source(feedPtr fp);
+void feed_set_source(feedPtr fp, gchar * source);
 
-GSList * getFeedItemList(feedPtr fp);
-void clearFeedItemList(feedPtr fp);
+GSList * feed_get_item_list(feedPtr fp);
+void feed_clear_item_list(feedPtr fp);
 
-void markAllItemsAsRead(feedPtr fp);
+void feed_mark_all_items_read(feedPtr fp);
 
 #endif

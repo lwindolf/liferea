@@ -19,13 +19,11 @@
    Boston, MA 02111-1307, USA.
 */
 
-#ifdef SUN
-#	include "os-support.h"	/* for strsep */
-#endif
-
-#include <string.h> /* For strncmp */
+#include <string.h>		/* For strncmp */
+#include "net/os-support.h"	/* for strsep */
 #include "support.h"
 #include "callbacks.h"
+#include "feed.h"
 #include "folder.h"
 #include "ui_dnd.h"
 
@@ -53,7 +51,7 @@ void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpoi
 	g_assert(NULL != selected_keyprefix);
 	
 	if(drag_successful) {	
-		moveInFeedList(selected_keyprefix, getFeedKey(selected_fp));
+		moveInFeedList(selected_keyprefix, feed_get_key(selected_fp));
 		checkForEmptyFolders();	/* to add an "(empty)" entry */
 	}
 	
@@ -80,7 +78,7 @@ gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, 
 
 	/* don't allow folder DND */
 	if(IS_FOLDER(selected_type)) {
-		showErrorBox(_("Sorry Liferea does not yet support drag&drop of folders!"));
+		ui_show_error_box(_("Sorry Liferea does not yet support drag&drop of folders!"));
 		stop = TRUE;
 	} 
 	/* also don't allow "(empty)" entry moving */
@@ -88,8 +86,8 @@ gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, 
 		stop = TRUE;
 	} 
 	/* also don't allow help feed dragging */
-	else if(0 == strncmp(getFeedKey(selected_fp), "help", 4)) {
-		showErrorBox(_("you cannot modify the special help folder contents!"));
+	else if(0 == strncmp(feed_get_from_key(selected_fp), "help", 4)) {
+		ui_show_error_box(_("You cannot modify the special help folder contents!"));
 		stop = TRUE;
 	}
 	

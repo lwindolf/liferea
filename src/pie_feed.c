@@ -297,7 +297,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 				if(NULL != (ip = parseEntry(cp, cur))) {
 					if(0 == ip->time)
 						ip->time = cp->time;
-					addItem(fp, ip);
+					feed_add_item(fp, ip);
 				}
 			}
 			cur = cur->next;
@@ -315,14 +315,14 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 		
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		fp->defaultInterval = cp->updateInterval;
-		setFeedUpdateInterval(fp, cp->updateInterval);
+		feed_set_update_interval(fp, cp->updateInterval);
 		fp->title = cp->tags[PIE_FEED_TITLE];
 
 		if(0 == error) {
 			fp->available = TRUE;
 			fp->description = showPIEFeedInfo(cp, fp->source);
 		} else {
-			print_status(g_strdup(_("There were errors while parsing this feed!")));
+			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
 			
 		g_free(cp->nsinfos);

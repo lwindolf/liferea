@@ -39,9 +39,9 @@ static void createFeedTag(gpointer key, gpointer value, gpointer userdata) {
 	xmlNodePtr	feedNode;
 
 	feedNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-	xmlNewProp(feedNode, BAD_CAST"title", BAD_CAST getFeedTitle(fp));
-	xmlNewProp(feedNode, BAD_CAST"description", BAD_CAST getFeedTitle(fp));
-	xmlNewProp(feedNode, BAD_CAST"xmlUrl", BAD_CAST getFeedSource(fp));
+	xmlNewProp(feedNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
+	xmlNewProp(feedNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
+	xmlNewProp(feedNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
 	xmlNewProp(feedNode, BAD_CAST"htmlUrl", BAD_CAST "");
 }
 
@@ -79,9 +79,9 @@ void exportOPMLFeedList(gchar *filename) {
 	}
 	
 	if(0 != error)
-		showErrorBox(_("Error while exporting feed list!"));
+		ui_show_error_box(_("Error while exporting feed list!"));
 	else 
-		showInfoBox(_("Feed List exported!"));
+		ui_show_info_box(_("Feed List exported!"));
 
 }
 
@@ -99,9 +99,9 @@ static void parseOutline(xmlNodePtr cur, gchar *folderkey) {
 			ui_feedlist_load_subscription(fp, TRUE);
 
 			if(NULL != title)
-				setFeedTitle(fp, g_strdup(title)); 
+				feed_set_title(fp, g_strdup(title)); 
 		}
-		updateUI();
+		ui_update();
 	}
 	
 	/* process any children */

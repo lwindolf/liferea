@@ -202,7 +202,7 @@ static void readOPML(feedPtr fp, gchar *data) {
 						ip->title = tmp;
 						ip->description = buffer;
 						ip->readStatus = TRUE;
-						addItem(fp, ip);
+						feed_add_item(fp, ip);
 					}
 					child = child->next;
 				}
@@ -214,7 +214,7 @@ static void readOPML(feedPtr fp, gchar *data) {
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		fp->type = FST_OPML;
-		setFeedUpdateInterval(fp, -1);
+		feed_set_update_interval(fp, -1);
 		if(NULL == (fp->title = headTags[OPML_TITLE]))
 			fp->title = g_strdup(fp->source);
 		
@@ -245,7 +245,7 @@ static void readOPML(feedPtr fp, gchar *data) {
 			fp->description = buffer;
 			fp->available = TRUE;
 		} else {
-			print_status(g_strdup(_("There were errors while parsing this feed!")));
+			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
 		
 		break;

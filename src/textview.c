@@ -58,7 +58,7 @@ void writeHTML(gchar *string) {
 /* adds a differences diff to the actual zoom level */
 void changeZoomLevel(gfloat diff) {
 
-	showErrorBox(g_strdup("Sorry, not yet implemented for the Text Viewer!"));
+	ui_show_error_box("Sorry, not yet implemented for the Text Viewer!");
 	zoomLevel += diff;
 	// FIXME
 }
@@ -103,10 +103,9 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, g
 	clearHTMLView();	
 }
 
-static void link_clicked(gchar *url)
-{	GError	*error = NULL;
+static void link_clicked(gchar *url) {
+	GError	*error = NULL;
 	gchar	*cmd, *tmp;
-	gchar	*statusline;
 
 	if(2 == getNumericConfValue(GNOME_BROWSER_ENABLED))
 		cmd = getStringConfValue(BROWSER_COMMAND);
@@ -115,18 +114,17 @@ static void link_clicked(gchar *url)
 		
 	g_assert(NULL != cmd);
 	if(NULL == strstr(cmd, "%s")) {
-		showErrorBox(_("There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
+		ui_show_error_box(_("There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
 	}
 	tmp = g_strdup_printf(cmd, url);
 	
 	g_spawn_command_line_async(tmp, &error);
 	if((NULL != error) && (0 != error->code)) {
-		statusline = g_strdup_printf("browser command failed: %s", error->message);
+		ui_mainwindow_set_status_bar(_("browser command failed: %s"), error->message);
 		g_error_free(error);
 	} else	
-		statusline = g_strdup_printf("starting: \"%s\"", tmp);
+		ui_mainwindow_set_status_bar(_("starting: \"%s\""), tmp);
 		
-	print_status(statusline);
 	g_free(cmd);
 	g_free(tmp);
 }
