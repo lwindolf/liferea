@@ -24,6 +24,9 @@ AC_PROG_MAKE_SET
 
 AC_CHECK_FUNCS(strsep)
 
+dnl Search for X libraries
+AC_PATH_XTRA
+
 dnl libcurl support
 AC_MSG_CHECKING([libcurl])
 dnl if curl-config --libs > /dev/null 2>&1; then

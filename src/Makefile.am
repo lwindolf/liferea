@@ -14,7 +14,9 @@ INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LIB_DIR=\""$(pkglibdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	@PACKAGE_CFLAGS@
+	@PACKAGE_CFLAGS@ \
+	@X_CFLAGS@
+
 
 ##lib_LTLIBRARIES = liblihtmlt.la
 
@@ -79,5 +81,4 @@ liferea_bin_SOURCES = \
 	update.c update.h \
 	vfolder.c vfolder.h
 
-liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ $(CURL_LIBS) $ $(INTLLIBS)
-
+liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ @X_LIBS@  $(CURL_LIBS) $ $(INTLLIBS)
