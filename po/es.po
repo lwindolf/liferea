@@ -3,21 +3,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 20:52-0400\n"
+"POT-Creation-Date: 2004-07-01 01:09+0200\n"
 "PO-Revision-Date: 2004-06-26 11:45+0200\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-15\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/cdf_channel.c:56 src/cdf_item.c:55 src/ocs_dir.c:141 src/opml.c:211
-#: src/pie_entry.c:73 src/pie_feed.c:116 src/rss_channel.c:142
+#: src/pie_entry.c:73 src/pie_feed.c:117 src/rss_channel.c:142
 #: src/rss_item.c:84 src/rss_item.c:87
 msgid "Feed:"
 msgstr "Fuente:"
 
-#: src/cdf_channel.c:182 src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:322
+#: src/cdf_channel.c:182 src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:325
 #: src/rss_channel.c:407
 msgid "There were errors while parsing this feed!"
 msgstr "Se encontraron errores al procesar esta fuente"
@@ -95,32 +95,32 @@ msgstr "Error al renombrar %s a %s\n"
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "El espacio RSS %s no estaba configurado. Voy a activarlo.\n"
 
-#: src/export.c:342 src/export.c:344
+#: src/export.c:344 src/export.c:346
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Error XML mientras se le�a el cach� del archivo \"%s\". No se pudo importar."
 
-#: src/export.c:348 src/export.c:350
+#: src/export.c:350 src/export.c:352
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "El documento OPML \"%s\" estaba vac�o y no deber�a estarlo."
 
-#: src/export.c:358 src/export.c:360
+#: src/export.c:360 src/export.c:362
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" no es un documento OPML v�lido. No se pudo importar."
 
-#: src/export.c:468
+#: src/export.c:470
 msgid "Error while exporting feed list!"
 msgstr "Ocurri� un error mientras se exportaba la lista de fuentes."
 
-#: src/export.c:470
+#: src/export.c:472
 msgid "Feed List exported!"
 msgstr "La lista de fuentes se ha exportado con �xito."
 
-#: src/export.c:486
+#: src/export.c:488
 msgid "Imported feed list"
 msgstr "Lista de fuentes importadas"
 
@@ -175,27 +175,27 @@ msgstr "<p>\"%s\" no es un archivo de cach� v�lido. No se pudo leer.</p>"
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Se encontraron errores al procesar el archivo de cach� \"%s\""
 
-#: src/feed.c:563
+#: src/feed.c:565
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" no tiene elementos nuevos"
 
-#: src/feed.c:565
+#: src/feed.c:567
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" tiene %d elementos nuevos"
 
-#: src/feed.c:661
+#: src/feed.c:671
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "El contenido de \"%s\" no ha cambiado desde la �ltima actualizaci�n"
 
-#: src/feed.c:668
+#: src/feed.c:678
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada"
 
-#: src/feed.c:679
+#: src/feed.c:688
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
@@ -203,69 +203,112 @@ msgstr ""
 "No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL "
 "apunte a un recurso con alguno de los formatos soportados."
 
-#: src/feed.c:705
+#: src/feed.c:714
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" actualizado..."
 
-#: src/feed.c:719
+#: src/feed.c:727
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "Lo siento, \"%s\" no est� disponible"
 
-#: src/feed.c:806
+#: src/feed.c:834
 msgid "The feed no longer exists. Please unsubscribe."
 msgstr "Esta fuente ya no existe. Por favor, elim�nala."
 
-#: src/feed.c:807
+#: src/feed.c:835
 msgid "Payment Required"
 msgstr "Es necesario pagar"
 
-#: src/feed.c:808
+#: src/feed.c:836
 msgid "Access Forbidden"
 msgstr "Acceso denegado"
 
-#: src/feed.c:809
+#: src/feed.c:837
 msgid "Resource Not Found"
 msgstr "Recurso no disponible"
 
-#: src/feed.c:810
+#: src/feed.c:838
 msgid "Method Not Allowed"
 msgstr "M�todo inv�lido"
 
-#: src/feed.c:811
+#: src/feed.c:839
 msgid "Not Acceptable"
 msgstr "No aceptable"
 
-#: src/feed.c:812
+#: src/feed.c:840
 msgid "Proxy Authentication Required"
 msgstr "Se necesita autentificaci�n proxy"
 
-#: src/feed.c:813
+#: src/feed.c:841
 msgid "Request Time-Out"
 msgstr "Expir� el plazo"
 
-#: src/feed.c:814
+#: src/feed.c:842
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
 msgstr "Esta fuente ya no existe. Por favor, elim�nala.."
 
-#: src/feed.c:820
+#: src/feed.c:847
+msgid "URL is invalid"
+msgstr ""
+
+#: src/feed.c:850
+msgid "Error connecting to remote host"
+msgstr ""
+
+#: src/feed.c:851
+msgid "Hostname could not be found"
+msgstr ""
+
+#: src/feed.c:852
+msgid "Network connection was refused by the remote host"
+msgstr ""
+
+#: src/feed.c:853
+msgid "Remote host did not finish sending data"
+msgstr ""
+
+#. Transfer errors
+#: src/feed.c:855
+#, fuzzy
+msgid "Too many HTTP redirects were encountered"
+msgstr "Se encontraron demasiadas redirecciones HTTP. Cancelando."
+
+#: src/feed.c:858
+#, fuzzy
+msgid "Remote host sent an invalid response"
+msgstr ""
+"El servidor web enviÃÂÃÂÃÂÃÂ³ una redirecciÃÂÃÂÃÂÃÂ³n "
+"invÃÂÃÂÃÂÃÂ¡lida"
+
+#: src/feed.c:865
+#, fuzzy
+msgid "Authentication failed"
+msgstr "Autentificaci�n"
+
+#: src/feed.c:867
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr ""
+
+#: src/feed.c:873
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Fuente no disponible: El servidor indic� una redirecci�n inv�lida"
 
-#: src/feed.c:821
+#: src/feed.c:874
 msgid "Client Error"
 msgstr "Error del cliente"
 
-#: src/feed.c:822
+#: src/feed.c:875
 msgid "Server Error"
 msgstr "Error del servidor"
 
-#: src/feed.c:823
-msgid "(unknown error class)"
+#: src/feed.c:876
+#, fuzzy
+msgid "(unknown networking error happened)"
 msgstr "(error desconocido)"
 
-#: src/feed.c:845
+#: src/feed.c:898
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -295,21 +338,21 @@ msgstr ""
 "/apps/liferea/browser-module\n"
 "\n"
 
-#: src/htmlview.c:155
+#: src/htmlview.c:156
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Cargando el m�dulo de navegador (%s)\n"
 
-#: src/htmlview.c:158
+#: src/htmlview.c:159
 msgid "No browser module configured!\n"
 msgstr "No se especific� ning�n m�dulo de navegador\n"
 
-#: src/htmlview.c:166
+#: src/htmlview.c:167
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "Intentando cargar el m�dulo de navegador %s (%s)\n"
 
-#: src/htmlview.c:176
+#: src/htmlview.c:177
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -318,16 +361,16 @@ msgstr ""
 "usar la opci�n \"--debug\" para conseguir informaci�n de depuraci�n"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/htmlview.c:317
+#: src/htmlview.c:318
 msgid "This item does not have a link assigned!"
 msgstr "Este elemento no tiene ning�n enlace asignado"
 
-#: src/htmlview.c:360
+#: src/htmlview.c:363 src/htmlview.c:384
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Fallo al lanzar el navegador: %s"
 
-#: src/htmlview.c:363
+#: src/htmlview.c:366 src/htmlview.c:387
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Abriendo: \"%s\""
@@ -394,7 +437,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "_Actualizar todas"
 
-#: src/interface.c:231 src/ui_mainwindow.c:156
+#: src/interface.c:231 src/ui_mainwindow.c:158
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Actualiza inmediatamente todas las fuentes, excepto directorios OCS"
 
@@ -450,7 +493,7 @@ msgstr "_Elementos"
 msgid "_Next Unread Item"
 msgstr "_Siguiente elemento nuevo"
 
-#: src/interface.c:309 src/ui_mainwindow.c:154
+#: src/interface.c:309 src/ui_mainwindow.c:156
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -654,7 +697,7 @@ msgid "Source Type:"
 msgstr "Tipo:"
 
 #: src/interface.c:1028 src/interface.c:1430 src/ocs_dir.c:147 src/opml.c:217
-#: src/pie_feed.c:122 src/rss_channel.c:149 src/rss_item.c:108
+#: src/pie_feed.c:123 src/rss_channel.c:149 src/rss_item.c:108
 msgid "Source:"
 msgstr "Fuente:"
 
@@ -1259,7 +1302,7 @@ msgstr "<p>No se pudo obtener la cabecera RDF.</p>"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>No se pudo obtener la cabecera OPML.</p>"
 
-#: src/pie_feed.c:212
+#: src/pie_feed.c:215
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>No se pudo obtener la cabecera OPML.</p>"
 
@@ -1287,21 +1330,22 @@ msgstr "Esta fuente sugiere un intervalo de actualizaci�n de %d minutos"
 
 #: src/ui_feed.c:204
 msgid "This feed specifies no default update interval."
-msgstr "Esta fuente no especifica ning�n intervalo de actualizaci�n por defecto"
+msgstr ""
+"Esta fuente no especifica ning�n intervalo de actualizaci�n por defecto"
 
-#: src/ui_feedlist.c:402
+#: src/ui_feedlist.c:405
 msgid "You have to select a feed entry"
 msgstr "Por favor, elige una fuente de noticias"
 
-#: src/ui_feedlist.c:412
+#: src/ui_feedlist.c:415
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Se est� trabajando sin conexi�n. No se pueden actualizar las fuentes"
 
-#: src/ui_feedlist.c:436
+#: src/ui_feedlist.c:439
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "Nota: Los filtros de subscripciones desactivan el arrastrar-y-soltar"
 
-#: src/ui_feedlist.c:448 src/ui_feedlist.c:483
+#: src/ui_feedlist.c:451 src/ui_feedlist.c:486
 msgid ""
 "You cannot delete the help! Disable loading the help by changing the "
 "preferences. You will be able to delete the help folder after restarting "
@@ -1310,38 +1354,38 @@ msgstr ""
 "No se puede eliminar la ayuda. Desde las preferencias es posible "
 "desactivarla. Despu�s de reiniciar, se podr� borrar la carpeta de ayuda."
 
-#: src/ui_feedlist.c:490
+#: src/ui_feedlist.c:493
 #, c-format
 msgid "Deleting \"%s\""
 msgstr "Borrando entrada \"%s\""
 
-#: src/ui_feedlist.c:491
+#: src/ui_feedlist.c:494
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
 msgstr "�Realmente desea eliminar %s y todos sus contenidos?"
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:496
 msgid "Deleting entry"
 msgstr "Borrando entrada"
 
-#: src/ui_feedlist.c:494
+#: src/ui_feedlist.c:497
 #, c-format
 msgid "Are you sure that you want to delete %s?"
 msgstr "�Realmente desea eliminar %s?"
 
-#: src/ui_feedlist.c:502
+#: src/ui_feedlist.c:505
 msgid "Deletion Confirmation"
 msgstr "Confirmaci�n de eliminaci�n"
 
-#: src/ui_feedlist.c:533
+#: src/ui_feedlist.c:536
 msgid "You must select a feed entry"
 msgstr "Por favor, elige una fuente de noticias"
 
-#: src/ui_feedlist.c:534
+#: src/ui_feedlist.c:537
 msgid "You must select a feed entry."
 msgstr "Por favor, elige una fuente de noticias"
 
-#: src/ui_feedlist.c:568
+#: src/ui_feedlist.c:571
 msgid "New subscription"
 msgstr "Nueva subscripci�n"
 
@@ -1375,41 +1419,41 @@ msgstr "Fecha"
 msgid "Headline"
 msgstr "Titular"
 
-#: src/ui_itemlist.c:577
+#: src/ui_itemlist.c:573
 msgid "No item has been selected"
 msgstr "No se ha seleccionado ning�n elemento"
 
-#: src/ui_itemlist.c:601
+#: src/ui_itemlist.c:597
 msgid "You must select a feed to delete its items!"
 msgstr "Por favor, elige una fuente para eliminar sus elementos"
 
-#: src/ui_itemlist.c:631
+#: src/ui_itemlist.c:627
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Error interno. No se pudo obtener la selecci�n de vista en �rbol de las "
 "fuentes.\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:659
 msgid "There are no unread items "
 msgstr "No hay elementos nuevos"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "New Feed"
 msgstr "Nueva fuente"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "Add a new subscription."
 msgstr "Nueva subscripci�n."
 
-#: src/ui_mainwindow.c:154
+#: src/ui_mainwindow.c:156
 msgid "Next Unread"
 msgstr "Siguiente nuevo"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid "Mark As Read"
 msgstr "Marcar como le�dos"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1417,27 +1461,27 @@ msgstr ""
 "Marca como le�dos todos los elementos de la subscripci�n seleccionada o, en "
 "caso de una carpeta, todas sus subscripciones."
 
-#: src/ui_mainwindow.c:156
+#: src/ui_mainwindow.c:158
 msgid "Update All"
 msgstr "Actualizar todas"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search"
 msgstr "Buscar"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search all feeds."
 msgstr "Buscar en las fuentes."
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Edit preferences."
 msgstr "Cambiar preferencias."
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:174
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1477,15 +1521,15 @@ msgstr ""
 "favor, mira la documentaci�n de las fuentes de ayuda o las FAQ que hay "
 "disponibles en la p�gina web</p>"
 
-#: src/ui_mainwindow.c:254
+#: src/ui_mainwindow.c:256
 msgid "Liferea is now online"
 msgstr "Trabajando con conexi�n."
 
-#: src/ui_mainwindow.c:257
+#: src/ui_mainwindow.c:259
 msgid "Liferea is now offline"
 msgstr "Trabajando en modo sin conexi�n."
 
-#: src/ui_notification.c:241
+#: src/ui_notification.c:242
 msgid "Liferea notification"
 msgstr "Aviso de Liferea"
 
@@ -1570,23 +1614,23 @@ msgid "/_Subscribe"
 msgstr "/_Suscribirse"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:132
+#: src/ui_prefs.c:182
 msgid "Manual"
 msgstr "Otro:"
 
-#: src/ui_prefs.c:142
+#: src/ui_prefs.c:192
 msgid "Browser default"
 msgstr "Navegador por defecto"
 
-#: src/ui_prefs.c:147
+#: src/ui_prefs.c:197
 msgid "Existing window"
 msgstr "Ventana existente"
 
-#: src/ui_prefs.c:152
+#: src/ui_prefs.c:202
 msgid "New window"
 msgstr "Nueva ventana"
 
-#: src/ui_prefs.c:157
+#: src/ui_prefs.c:207
 msgid "New tab"
 msgstr "Nueva pesta�a"
 
@@ -1596,51 +1640,56 @@ msgid "Searching for \"%s\""
 msgstr "Buscando \"%s\""
 
 #: src/ui_tray.c:89
-#, c-format
+#, fuzzy, c-format
 msgid "%d new item!"
-msgstr "%d elementos nuevos"
+msgid_plural "%d new items!"
+msgstr[0] "%d elementos nuevos"
+msgstr[1] "%d elementos nuevos"
 
 #: src/ui_tray.c:102
 msgid "No new items."
 msgstr "No hay elementos nuevos"
 
-#: src/update.c:104
+#: src/update.c:112
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "No se pudo abrir la tuber�a \"%s\""
 
-#: src/update.c:118
+#: src/update.c:126
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "No se pudo abrir el archivo \"%s\""
 
-#: src/update.c:124
+#: src/update.c:132
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "El archivo \"%s\" no existe."
 
 #~ msgid "Internal error while converting UTF-8 chars to HTTP URI!"
 #~ msgstr ""
-#~ "Error interno mientras se convertÃÂÃÂÃÂÃÂ­an los caracteres UTF-8 a la URI "
-#~ "HTTP."
+#~ "Error interno mientras se convertÃÂÃÂÃÂÃÂ­an los caracteres UTF-8 "
+#~ "a la URI HTTP."
 
 #~ msgid "internal error! could not find file dialog select button!"
 #~ msgstr ""
-#~ "Error interno. No se ha podido encontrar el botÃÂÃÂÃÂÃÂ³n de selecciÃÂÃÂÃÂÃÂ³n "
-#~ "del navegador de archivos."
+#~ "Error interno. No se ha podido encontrar el botÃÂÃÂÃÂÃÂ³n de "
+#~ "selecciÃÂÃÂÃÂÃÂ³n del navegador de archivos."
 
 #~ msgid "internal error! could not get a new folder key!"
 #~ msgstr "Error interno. No se ha podido obtener una nueva ID de carpeta."
 
 #~ msgid "Could not delete icon file %s! Please remove manually!"
-#~ msgstr "No se pudo borrar el icono: %s. Por favor, bÃÂÃÂÃÂÃÂ³rralo manualmente."
+#~ msgstr ""
+#~ "No se pudo borrar el icono: %s. Por favor, bÃÂÃÂÃÂÃÂ³rralo "
+#~ "manualmente."
 
 #~ msgid "could not write XML item node!\n"
 #~ msgstr "No se pudo escribir el nodo del elemento XML.\n"
 
 #~ msgid "could not create XML feed node for feed cache document!"
 #~ msgstr ""
-#~ "No se pudo crear el nodo de la fuente XML para guardarlo en cachÃÂÃÂÃÂÃÂ©."
+#~ "No se pudo crear el nodo de la fuente XML para guardarlo en "
+#~ "cachÃÂÃÂÃÂÃÂ©."
 
 #~ msgid "could not create XML document!"
 #~ msgstr "No se pudo crear el documento XML."
@@ -1648,13 +1697,13 @@ msgstr "El archivo \"%s\" no existe."
 #~ msgid ""
 #~ "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
 #~ msgstr ""
-#~ "Error mientras se leÃÂÃÂÃÂÃÂ­a el cachÃÂÃÂÃÂÃÂ© del archivo \"%s\". No se pudo "
-#~ "cargar."
+#~ "Error mientras se leÃÂÃÂÃÂÃÂ­a el cachÃÂÃÂÃÂÃÂ© del "
+#~ "archivo \"%s\". No se pudo cargar."
 
 #~ msgid "Could not delete cache file %s! Please remove manually!"
 #~ msgstr ""
-#~ "No se pudo borrar el archivo de cachÃÂÃÂÃÂÃÂ©: %s. Por favor, bÃÂÃÂÃÂÃÂ³rralo "
-#~ "manualmente."
+#~ "No se pudo borrar el archivo de cachÃÂÃÂÃÂÃÂ©: %s. Por favor, "
+#~ "bÃÂÃÂÃÂÃÂ³rralo manualmente."
 
 #~ msgid "_Scroll Or Next Unread"
 #~ msgstr "Desplazar _Abajo / Siguiente nuevo"
@@ -1717,32 +1766,33 @@ msgstr "El archivo \"%s\" no existe."
 #~ msgid "socket connect"
 #~ msgstr "Conectando socket"
 
-#~ msgid "Too many HTTP redirects encountered! Giving up."
-#~ msgstr "Se encontraron demasiadas redirecciones HTTP. Cancelando."
-
 #~ msgid "Following HTTP redirects"
 #~ msgstr "Siguiendo redirecciones HTTP"
 
-#~ msgid "Webserver sent an invalid redirect!"
-#~ msgstr "El servidor web enviÃÂÃÂÃÂÃÂ³ una redirecciÃÂÃÂÃÂÃÂ³n invÃÂÃÂÃÂÃÂ¡lida"
-
 #~ msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
 #~ msgstr ""
-#~ "El servidor web %s enviÃÂÃÂÃÂÃÂ³ cÃÂÃÂÃÂÃÂ³digo HTTP/1.0 invÃÂÃÂÃÂÃÂ¡lido. No se "
-#~ "pudieron obtener datos."
+#~ "El servidor web %s enviÃÂÃÂÃÂÃÂ³ cÃÂÃÂÃÂÃÂ³digo HTTP/1.0 "
+#~ "invÃÂÃÂÃÂÃÂ¡lido. No se pudieron obtener datos."
 
 #~ msgid "URL does not contain authentication information!"
-#~ msgstr "Esta URL no contiene informaciÃÂÃÂÃÂÃÂ³n de autentificaciÃÂÃÂÃÂÃÂ³n."
+#~ msgstr ""
+#~ "Esta URL no contiene informaciÃÂÃÂÃÂÃÂ³n de "
+#~ "autentificaciÃÂÃÂÃÂÃÂ³n."
 
 #~ msgid "Could not generate authentication information!"
-#~ msgstr "No se pudo generar la informaciÃÂÃÂÃÂÃÂ³n de autentificaciÃÂÃÂÃÂÃÂ³n"
+#~ msgstr ""
+#~ "No se pudo generar la informaciÃÂÃÂÃÂÃÂ³n de "
+#~ "autentificaciÃÂÃÂÃÂÃÂ³n"
 
 #~ msgid "Unsupported authentication method requested by server!"
 #~ msgstr ""
-#~ "El servidor pidiÃÂÃÂÃÂÃÂ³ un mÃÂÃÂÃÂÃÂ©todo de autentificaciÃÂÃÂÃÂÃÂ³n no soportado."
+#~ "El servidor pidiÃÂÃÂÃÂÃÂ³ un mÃÂÃÂÃÂÃÂ©todo de "
+#~ "autentificaciÃÂÃÂÃÂÃÂ³n no soportado."
 
 #~ msgid "This URL doesn't look too valid to me, don't you think?"
-#~ msgstr "La URL es invÃÂÃÂÃÂÃÂ¡lida. Por favor, compruÃÂÃÂÃÂÃÂ©bala."
+#~ msgstr ""
+#~ "La URL es invÃÂÃÂÃÂÃÂ¡lida. Por favor, "
+#~ "compruÃÂÃÂÃÂÃÂ©bala."
 
 #~ msgid "Couldn't create network socket!"
 #~ msgstr "No se pudo crear el socket de red."
@@ -1763,8 +1813,8 @@ msgstr "El archivo \"%s\" no existe."
 #~ "There is no %%s URL place holder in the browser command string you "
 #~ "specified in the preferences dialog!!!"
 #~ msgstr ""
-#~ "Por favor, escribe \"%%s\" detrÃÂÃÂÃÂÃÂ¡s de tu navegador favorito, en el "
-#~ "cuadro de preferencias."
+#~ "Por favor, escribe \"%%s\" detrÃÂÃÂÃÂÃÂ¡s de tu navegador "
+#~ "favorito, en el cuadro de preferencias."
 
 #~ msgid ""
 #~ "You can't delete the help! Edit the preferences to disable loading the "
@@ -1782,16 +1832,18 @@ msgstr "El archivo \"%s\" no existe."
 #~ msgstr ""
 #~ "No se pudo descargar \"%s\"\n"
 #~ "\n"
-#~ "QuizÃÂÃÂÃÂÃÂ¡ la URL no sea vÃÂÃÂÃÂÃÂ¡lida o la fuente estÃÂÃÂÃÂÃÂ© desactivada "
-#~ "temporalmente. Puedes intentarla bajar de nuevo, o eliminarla desde el "
-#~ "menÃÂÃÂÃÂÃÂº contextual de la lista de fuentes\n"
+#~ "QuizÃÂÃÂÃÂÃÂ¡ la URL no sea vÃÂÃÂÃÂÃÂ¡lida o la fuente "
+#~ "estÃÂÃÂÃÂÃÂ© desactivada temporalmente. Puedes intentarla bajar "
+#~ "de nuevo, o eliminarla desde el menÃÂÃÂÃÂÃÂº contextual de la "
+#~ "lista de fuentes\n"
 
 #~ msgid ""
 #~ "The newly created feed's type could not be detected. Please subscribe "
 #~ "again and select a feed type!"
 #~ msgstr ""
-#~ "No se pudo autodetectar un tipo para la fuente reciÃÂÃÂÃÂÃÂ©n creada. Por "
-#~ "favor, subscrÃÂÃÂÃÂÃÂ­bete otra vez, escogiendo un tipo manualmente."
+#~ "No se pudo autodetectar un tipo para la fuente reciÃÂÃÂÃÂÃÂ©n "
+#~ "creada. Por favor, subscrÃÂÃÂÃÂÃÂ­bete otra vez, escogiendo un "
+#~ "tipo manualmente."
 
 #~ msgid "item list widget lookup failed!\n"
 #~ msgstr "No se ha podido encontrar el control: lista de elementos.\n"
@@ -1806,8 +1858,8 @@ msgstr "El archivo \"%s\" no existe."
 
 #~ msgid "internal error! could not find feed tree view widget!\n"
 #~ msgstr ""
-#~ "Error interno. No se pudo encontrar el control para la vista en ÃÂÃÂÃÂÃÂ¡rbol "
-#~ "de fuentes.\n"
+#~ "Error interno. No se pudo encontrar el control para la vista en "
+#~ "ÃÂÃÂÃÂÃÂ¡rbol de fuentes.\n"
 
 #~ msgid "could not allocate memory!"
 #~ msgstr "No se ha podido asignar memoria suficiente."
@@ -1822,8 +1874,8 @@ msgstr "El archivo \"%s\" no existe."
 #~ "Invalid browser command! There is no %%s URL place holder in the browser "
 #~ "command string you specified in the preferences dialog!!!"
 #~ msgstr ""
-#~ "Por favor, escribe \"%%s\" detrÃÂÃÂÃÂÃÂ¡s de tu navegador favorito, en el "
-#~ "cuadro de preferencias."
+#~ "Por favor, escribe \"%%s\" detrÃÂÃÂÃÂÃÂ¡s de tu navegador "
+#~ "favorito, en el cuadro de preferencias."
 
 #~ msgid "GtkHTML3 (experimental)"
 #~ msgstr "GtkHTML3 (experimental)"

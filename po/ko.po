@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-28 20:09-0400\n"
+"POT-Creation-Date: 2004-07-01 01:09+0200\n"
 "PO-Revision-Date: 2004-05-25 23:42+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -98,13 +98,13 @@ msgstr "%s을(를) %s(으)로 변환하는 중 에러발생\n"
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 네임스페이스 %s이(가) 아직 설정되지 않았습니다. 활성화중...\n"
 
-#: src/export.c:342 src/export.c:344
+#: src/export.c:344 src/export.c:346
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "캐시파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 가져올 수 없습니다!"
 
-#: src/export.c:348 src/export.c:350
+#: src/export.c:350 src/export.c:352
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -112,22 +112,22 @@ msgstr ""
 "빈 도큐먼트 입니다! OPML 도큐먼트 \"%s\"은(는) 가져오기 할 때 비어있으면 안됩"
 "니다."
 
-#: src/export.c:358 src/export.c:360
+#: src/export.c:360 src/export.c:362
 #, fuzzy, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\"은(는) 올바른 OPML 파일이 아닙니다. Liferea는 이 파일을 가져올 수 없습"
 "니다."
 
-#: src/export.c:468
+#: src/export.c:470
 msgid "Error while exporting feed list!"
 msgstr "피드 리스트를 내보내던 중 에러가 발생했습니다."
 
-#: src/export.c:470
+#: src/export.c:472
 msgid "Feed List exported!"
 msgstr "피드 목록이 내보내졌습니다"
 
-#: src/export.c:486
+#: src/export.c:488
 #, fuzzy
 msgid "Imported feed list"
 msgstr "가져온 피드 리스트"
@@ -193,17 +193,17 @@ msgstr "\"%s\"은(는) 새로운 아이템이 없습니다."
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\"은(는) %d개의 새로운 아이템이 있습니다."
 
-#: src/feed.c:672
+#: src/feed.c:671
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
 
-#: src/feed.c:679
+#: src/feed.c:678
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
 
-#: src/feed.c:689
+#: src/feed.c:688
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
@@ -212,12 +212,12 @@ msgstr ""
 "이 피드의 종류를 결정할 수 없습니다. URL이 지원되는 형식의 자원을 정확히 가리"
 "키는지 확인해 주세요 "
 
-#: src/feed.c:715
+#: src/feed.c:714
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\"이(가) 갱신되었습니다..."
 
-#: src/feed.c:728
+#: src/feed.c:727
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
@@ -348,21 +348,21 @@ msgstr ""
 "/apps/liferea/brower-module gconf키를 지워버리세요.\n"
 "\n"
 
-#: src/htmlview.c:155
+#: src/htmlview.c:156
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "브라우져 모듈(%s)을(를) 불러옵니다! \n"
 
-#: src/htmlview.c:158
+#: src/htmlview.c:159
 msgid "No browser module configured!\n"
 msgstr "설정된 브라우져 모듈이 없습니다!\n"
 
-#: src/htmlview.c:166
+#: src/htmlview.c:167
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "브라우져 모듈 %s (%s)을(를) 불러오는것을 시도합니다.\n"
 
-#: src/htmlview.c:176
+#: src/htmlview.c:177
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -371,16 +371,16 @@ msgstr ""
 "해서 디버깅 정보를 보세요."
 
 #. FIXME: bad because this is not only used for item links!
-#: src/htmlview.c:317
+#: src/htmlview.c:318
 msgid "This item does not have a link assigned!"
 msgstr "이 아이템은 어떠한 연결도 할당되지 않았습니다."
 
-#: src/htmlview.c:362 src/htmlview.c:383
+#: src/htmlview.c:363 src/htmlview.c:384
 #, fuzzy, c-format
 msgid "Browser command failed: %s"
 msgstr "브라우져 명령 실패: %s"
 
-#: src/htmlview.c:365 src/htmlview.c:386
+#: src/htmlview.c:366 src/htmlview.c:387
 #, fuzzy, c-format
 msgid "Starting: \"%s\""
 msgstr "%s을(를) 시작함"
@@ -1332,63 +1332,63 @@ msgstr "이 피드의 제공자는 갱신 주기를 %d분 으로 제안했습니
 msgid "This feed specifies no default update interval."
 msgstr "이 피드는 기본 갱신 주기를 정하지 않습니다."
 
-#: src/ui_feedlist.c:402
+#: src/ui_feedlist.c:405
 #, fuzzy
 msgid "You have to select a feed entry"
 msgstr "피드 엔트리를 선택해야 합니다!"
 
-#: src/ui_feedlist.c:412
+#: src/ui_feedlist.c:415
 #, fuzzy
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea가 오프라인 상태로 동작중입니다. 새로고침이 불가능합니다."
 
-#: src/ui_feedlist.c:436
+#: src/ui_feedlist.c:439
 #, fuzzy
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "참고: 구독에 대한 필터를 사용하는 것은 긁기&놓기 를 끕니다."
 
-#: src/ui_feedlist.c:448 src/ui_feedlist.c:483
+#: src/ui_feedlist.c:451 src/ui_feedlist.c:486
 msgid ""
 "You cannot delete the help! Disable loading the help by changing the "
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
 
-#: src/ui_feedlist.c:490
+#: src/ui_feedlist.c:493
 #, c-format
 msgid "Deleting \"%s\""
 msgstr "\"%s\"을(를) 지웁니다"
 
-#: src/ui_feedlist.c:491
+#: src/ui_feedlist.c:494
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
 msgstr "정말 %s을(를) 지우고 내용을 없애시겠습니까?"
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:496
 msgid "Deleting entry"
 msgstr "엔트리 지우기"
 
-#: src/ui_feedlist.c:494
+#: src/ui_feedlist.c:497
 #, c-format
 msgid "Are you sure that you want to delete %s?"
 msgstr "정말 %s을(를) 지우고 싶으세요?"
 
-#: src/ui_feedlist.c:502
+#: src/ui_feedlist.c:505
 #, fuzzy
 msgid "Deletion Confirmation"
 msgstr "지우기 확인"
 
-#: src/ui_feedlist.c:533
+#: src/ui_feedlist.c:536
 #, fuzzy
 msgid "You must select a feed entry"
 msgstr "피드 엔트리를 선택해야 합니다!"
 
-#: src/ui_feedlist.c:534
+#: src/ui_feedlist.c:537
 #, fuzzy
 msgid "You must select a feed entry."
 msgstr "피드 엔트리를 선택해야 합니다!"
 
-#: src/ui_feedlist.c:568
+#: src/ui_feedlist.c:571
 #, fuzzy
 msgid "New subscription"
 msgstr "새 서명"

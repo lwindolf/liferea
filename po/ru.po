@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-28 20:09-0400\n"
+"POT-Creation-Date: 2004-07-01 01:09+0200\n"
 "PO-Revision-Date: 2004-05-25 15:00+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian <LL@li.org>\n"
@@ -97,13 +97,13 @@ msgstr "Ошибка переименования %s в %s\n"
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "Пространство имён RSS %s ещё не сконфигурировано! Активация...\n"
 
-#: src/export.c:342 src/export.c:344
+#: src/export.c:344 src/export.c:346
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
-#: src/export.c:348 src/export.c:350
+#: src/export.c:350 src/export.c:352
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -111,22 +111,22 @@ msgstr ""
 "Пустой документ! Документ OPML \"%s\" не должен быть пустым во время "
 "импортирования."
 
-#: src/export.c:358 src/export.c:360
+#: src/export.c:360 src/export.c:362
 #, fuzzy, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/export.c:468
+#: src/export.c:470
 msgid "Error while exporting feed list!"
 msgstr "Ошибка во время экспорта списка лент новостей!"
 
-#: src/export.c:470
+#: src/export.c:472
 msgid "Feed List exported!"
 msgstr "Список лент новостей экспортирован!"
 
-#: src/export.c:486
+#: src/export.c:488
 #, fuzzy
 msgid "Imported feed list"
 msgstr "экспортированный(ых) лист(а)(ов) лент новостей"
@@ -197,17 +197,17 @@ msgstr "\"%s\" не имеет новых новостей."
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" имеет %d новость(и)(ей)."
 
-#: src/feed.c:672
+#: src/feed.c:671
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не изменился с момента последнего обновления."
 
-#: src/feed.c:679
+#: src/feed.c:678
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL для \"%s\" изменился на постоянный и был обновлён."
 
-#: src/feed.c:689
+#: src/feed.c:688
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
@@ -216,12 +216,12 @@ msgstr ""
 "Невозможно определить тип этой ленты новостей! Пожалуйста, проверьте "
 "указывает ли URL на ресурс, доступный в одном из поддерживаемых форматах!"
 
-#: src/feed.c:715
+#: src/feed.c:714
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" обновлён..."
 
-#: src/feed.c:728
+#: src/feed.c:727
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступен!"
@@ -355,21 +355,21 @@ msgstr ""
 "/apps/liferea/browser-module!\n"
 "\n"
 
-#: src/htmlview.c:155
+#: src/htmlview.c:156
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Загрузка сконфигурированного модуля браузера (%s)!\n"
 
-#: src/htmlview.c:158
+#: src/htmlview.c:159
 msgid "No browser module configured!\n"
 msgstr "Ни одного модуля браузеров не определено!\n"
 
-#: src/htmlview.c:166
+#: src/htmlview.c:167
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "попытка загрузить модуль браузера %s (%s)\n"
 
-#: src/htmlview.c:176
+#: src/htmlview.c:177
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -378,16 +378,16 @@ msgstr ""
 "Просмотрите опцию --debug-all для получения информации!"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/htmlview.c:317
+#: src/htmlview.c:318
 msgid "This item does not have a link assigned!"
 msgstr "Этот элемент не имеет закреплённой ссылки!"
 
-#: src/htmlview.c:362 src/htmlview.c:383
+#: src/htmlview.c:363 src/htmlview.c:384
 #, fuzzy, c-format
 msgid "Browser command failed: %s"
 msgstr "ошибка команды браузера: %s"
 
-#: src/htmlview.c:365 src/htmlview.c:386
+#: src/htmlview.c:366 src/htmlview.c:387
 #, fuzzy, c-format
 msgid "Starting: \"%s\""
 msgstr "запуск: \"%s\""
@@ -1363,65 +1363,65 @@ msgstr ""
 msgid "This feed specifies no default update interval."
 msgstr ""
 
-#: src/ui_feedlist.c:402
+#: src/ui_feedlist.c:405
 #, fuzzy
 msgid "You have to select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей!"
 
-#: src/ui_feedlist.c:412
+#: src/ui_feedlist.c:415
 #, fuzzy
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в режиме \"отключена\". Обновления невозможны!"
 
-#: src/ui_feedlist.c:436
+#: src/ui_feedlist.c:439
 #, fuzzy
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Заметка: Использования фильтров подписки отключает возможность использования "
 "drag&drop!"
 
-#: src/ui_feedlist.c:448 src/ui_feedlist.c:483
+#: src/ui_feedlist.c:451 src/ui_feedlist.c:486
 msgid ""
 "You cannot delete the help! Disable loading the help by changing the "
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
 
-#: src/ui_feedlist.c:490
+#: src/ui_feedlist.c:493
 #, c-format
 msgid "Deleting \"%s\""
 msgstr "Удаление \"%s\""
 
-#: src/ui_feedlist.c:491
+#: src/ui_feedlist.c:494
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
 msgstr "Вы действительно хотите удалить каталог %s и его содержимое"
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:496
 msgid "Deleting entry"
 msgstr "Удаление записи"
 
-#: src/ui_feedlist.c:494
+#: src/ui_feedlist.c:497
 #, c-format
 msgid "Are you sure that you want to delete %s?"
 msgstr "Вы действительно хотите удалить %s?"
 
-#: src/ui_feedlist.c:502
+#: src/ui_feedlist.c:505
 #, fuzzy
 msgid "Deletion Confirmation"
 msgstr "Потверждение об удалении"
 
-#: src/ui_feedlist.c:533
+#: src/ui_feedlist.c:536
 #, fuzzy
 msgid "You must select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей!"
 
-#: src/ui_feedlist.c:534
+#: src/ui_feedlist.c:537
 #, fuzzy
 msgid "You must select a feed entry."
 msgstr "Вы должны выбрать строку с лентой новостей!"
 
-#: src/ui_feedlist.c:568
+#: src/ui_feedlist.c:571
 #, fuzzy
 msgid "New subscription"
 msgstr "Новая Подписка"

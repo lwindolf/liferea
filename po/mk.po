@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-28 20:09-0400\n"
+"POT-Creation-Date: 2004-07-01 01:09+0200\n"
 "PO-Revision-Date: 2004-04-09 16:25+0200\n"
 "Last-Translator: Tomislav Markovski <tome@set.com.mk>\n"
 "Language-Team: Macedonian <mk@li.org>\n"
@@ -100,32 +100,32 @@ msgstr ""
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS namespace %s not yet configured! Activating...\n"
 
-#: src/export.c:342 src/export.c:344
+#: src/export.c:344 src/export.c:346
 #, fuzzy, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "XML error while reading cache file \"%s\" ! Cache file could not be loaded!"
 
-#: src/export.c:348 src/export.c:350
+#: src/export.c:350 src/export.c:352
 #, fuzzy, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Празен документ. OPML документот не смее да биде празен..."
 
-#: src/export.c:358 src/export.c:360
+#: src/export.c:360 src/export.c:362
 #, fuzzy, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" is no valid cache file! Cannot read OPML file!"
 
-#: src/export.c:468
+#: src/export.c:470
 msgid "Error while exporting feed list!"
 msgstr "Грешка при извезување на листата со вести!"
 
-#: src/export.c:470
+#: src/export.c:472
 msgid "Feed List exported!"
 msgstr "Листата со вести е извезена!"
 
-#: src/export.c:486
+#: src/export.c:488
 #, fuzzy
 msgid "Imported feed list"
 msgstr "imported feed list"
@@ -190,28 +190,28 @@ msgstr "\"%s\" нема нови ставки."
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" има \"%d\" нови ставки."
 
-#: src/feed.c:672
+#: src/feed.c:671
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не е променет од последеното ажурирање."
 
-#: src/feed.c:679
+#: src/feed.c:678
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL адресата на \"%s\" е перманетно променета и ажурирана."
 
-#: src/feed.c:689
+#: src/feed.c:688
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
 
-#: src/feed.c:715
+#: src/feed.c:714
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" ажурирано..."
 
-#: src/feed.c:728
+#: src/feed.c:727
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" е недостапно!"
@@ -345,21 +345,21 @@ msgstr ""
 "key /apps/liferea/browser-module!\n"
 "\n"
 
-#: src/htmlview.c:155
+#: src/htmlview.c:156
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Се вчитува модулот за прелистувач (%s)!\n"
 
-#: src/htmlview.c:158
+#: src/htmlview.c:159
 msgid "No browser module configured!\n"
 msgstr "Не е конфигуриран модулот за прелистувач!\n"
 
-#: src/htmlview.c:166
+#: src/htmlview.c:167
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "се вчитува модулот за прелистувач %s (%s)\n"
 
-#: src/htmlview.c:176
+#: src/htmlview.c:177
 #, fuzzy
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
@@ -367,16 +367,16 @@ msgid ""
 msgstr "Sorry, I was not able to load any installed browser modules!"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/htmlview.c:317
+#: src/htmlview.c:318
 msgid "This item does not have a link assigned!"
 msgstr "Предметот нема означено врска!"
 
-#: src/htmlview.c:362 src/htmlview.c:383
+#: src/htmlview.c:363 src/htmlview.c:384
 #, fuzzy, c-format
 msgid "Browser command failed: %s"
 msgstr "команда за прелистувач е науспешна: \"%s\""
 
-#: src/htmlview.c:365 src/htmlview.c:386
+#: src/htmlview.c:366 src/htmlview.c:387
 #, fuzzy, c-format
 msgid "Starting: \"%s\""
 msgstr "започнува: \"%s\""
@@ -1348,60 +1348,60 @@ msgstr "Опслужувачот на овие вести сугерира вр�
 msgid "This feed specifies no default update interval."
 msgstr "Овие вести немаат информација за време на ажурирање."
 
-#: src/ui_feedlist.c:402
+#: src/ui_feedlist.c:405
 #, fuzzy
 msgid "You have to select a feed entry"
 msgstr "Мора да избереш вест!"
 
-#: src/ui_feedlist.c:412
+#: src/ui_feedlist.c:415
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 
-#: src/ui_feedlist.c:436
+#: src/ui_feedlist.c:439
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:448 src/ui_feedlist.c:483
+#: src/ui_feedlist.c:451 src/ui_feedlist.c:486
 msgid ""
 "You cannot delete the help! Disable loading the help by changing the "
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
 
-#: src/ui_feedlist.c:490
+#: src/ui_feedlist.c:493
 #, fuzzy, c-format
 msgid "Deleting \"%s\""
 msgstr "Бришење на вестите"
 
-#: src/ui_feedlist.c:491
+#: src/ui_feedlist.c:494
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
 msgstr ""
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:496
 msgid "Deleting entry"
 msgstr "Бришење на вестите"
 
-#: src/ui_feedlist.c:494
+#: src/ui_feedlist.c:497
 #, c-format
 msgid "Are you sure that you want to delete %s?"
 msgstr ""
 
-#: src/ui_feedlist.c:502
+#: src/ui_feedlist.c:505
 msgid "Deletion Confirmation"
 msgstr ""
 
-#: src/ui_feedlist.c:533
+#: src/ui_feedlist.c:536
 #, fuzzy
 msgid "You must select a feed entry"
 msgstr "Мора да избереш вест!"
 
-#: src/ui_feedlist.c:534
+#: src/ui_feedlist.c:537
 #, fuzzy
 msgid "You must select a feed entry."
 msgstr "Мора да избереш вест!"
 
-#: src/ui_feedlist.c:568
+#: src/ui_feedlist.c:571
 #, fuzzy
 msgid "New subscription"
 msgstr "Нова претплата"
