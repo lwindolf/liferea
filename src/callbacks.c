@@ -465,7 +465,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	/* the retrieved number is not yet the real feed type! */
 	switch(type) {
 		case 0: 
-			type = autoDetectFeedType(source);
+			type = FST_AUTODETECT;
 			break;
 		case 1:
 			type = FST_RSS;
@@ -485,12 +485,6 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 		default:
 			g_error(_("internal error! invalid type selected! This should never happen!\n"));
 			return;
-	}
-	
-	if(FST_INVALID == type) {
-		showErrorBox(_("Could not detect feed type! Please manually select a feed type."));
-		g_free(source);
-		return;
 	}
 
 	keyprefix = g_strdup(selected_keyprefix);

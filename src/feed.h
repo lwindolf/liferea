@@ -42,6 +42,8 @@
 
 #define FST_EMPTY	100	/* special type for "(empty)" entry */
 
+#define FST_AUTODETECT	200	/* special type to enforce type auto detection */
+
 /* macro to test wether a type is a ressource which is regularily updated */
 #define IS_FEED(type)		((FST_RSS == type) || \
 				 (FST_CDF == type) || \
@@ -72,6 +74,8 @@ typedef struct feed {
 	gint		defaultInterval;	/* update interval as specified by the feed */
 	gint		updateCounter;		/* minutes till next auto-update */
 	gboolean	available;		/* flag to signalize loading errors */
+	
+	gchar		*data;		/* raw XML data, used while downloading/parsing the feed */
 		
 	/* feed properties needed to be saved */
 	gchar		*title;		/* feed/channel title */
@@ -83,12 +87,11 @@ typedef struct feed {
 } *feedPtr;
 
 /* ------------------------------------------------------------ */
-/* feed handler interface (FIXME: simplify???)			*/
+/* feed handler interface					*/
 /* ------------------------------------------------------------ */
 
-/* a function which reads a feed from the specified URL and
-   return as pointer to a feed structure */
-typedef feedPtr 	(*readFeedFunc)		(gchar *url);
+/* a function which parses the feed data given with the feed ptr fp */
+typedef void 	(*readFeedFunc)		(feedPtr fp);
 
 typedef struct feedHandler {
 	readFeedFunc		readFeed;
@@ -101,7 +104,6 @@ typedef struct feedHandler {
 
 void initFeedTypes(void);
 void registerFeedType(gint type, feedHandlerPtr fhp);
-gint autoDetectFeedType(gchar *url);
 
 feedPtr getNewFeedStruct(void);
 feedPtr newFeed(gint type, gchar *url, gchar *keyprefix);

@@ -86,48 +86,125 @@ static gchar *channelTagList[] = {	"title",
 					NULL
 				  };
 
-/* prototypes */
-static feedPtr 	readRSSFeed(gchar *url);
-static gchar * 	showRSSFeedInfo(RSSChannelPtr cp, gchar *url);
+/* ---------------------------------------------------------------------------- */
+/* HTML output 		 							*/
+/* ---------------------------------------------------------------------------- */
 
-static addNameSpaceHandler(gchar *prefix, gpointer handler) {
+/* method called by g_slist_foreach for thee HTML
+   generation functions to output namespace specific infos 
+   
+   not static because its reused by rss_item.c */
+void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
+	outputRequest	*request = (outputRequest *)userdata;
+	RSSNsHandler	*nsh = (RSSNsHandler *)value;
+	outputFunc	fp;
+	gchar		*tmp;
 
-	g_assert(NULL != rss_nstable);
-	if(getNameSpaceStatus(prefix)) {
-		rss_nslist = g_slist_append(rss_nslist, handler);
-		g_hash_table_insert(rss_nstable, (gpointer)prefix, g_slist_last(rss_nslist));
+	switch(request->type) {
+		case OUTPUT_RSS_CHANNEL_NS_HEADER:
+			fp = nsh->doChannelHeaderOutput;
+			break;
+		case OUTPUT_RSS_CHANNEL_NS_FOOTER:
+			fp = nsh->doChannelFooterOutput;
+			break;
+		case OUTPUT_ITEM_NS_HEADER:
+			fp = nsh->doItemHeaderOutput;
+			break;		
+		case OUTPUT_ITEM_NS_FOOTER:
+			fp = nsh->doItemFooterOutput;
+			break;			
+		default:	
+			g_warning(_("Internal error! Invalid output request mode for namespace information!"));
+			return;
+			break;	
 	}
+	
+	if(NULL == fp)
+		return;
+		
+	if(NULL == (tmp = (*fp)(request->obj)))
+		return;
+		
+	addToHTMLBuffer(request->buffer, tmp);
 }
 
-feedHandlerPtr initRSSFeedHandler(void) {
-	feedHandlerPtr	fhp;
-	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(fhp, 0, sizeof(struct feedHandler));
+/* writes RSS channel description as HTML into the gtkhtml widget */
+static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
+	gchar		*buffer = NULL;
+	gchar		*tmp;
+	outputRequest	request;
 
-	/* because initRSSFeedHandler() is called twice, once for FST_RSS and again for FST_HELPFEED */	
-	if(NULL == rss_nstable) {
-		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
+	g_assert(cp != NULL);	
+
+	addToHTMLBuffer(&buffer, FEED_HEAD_START);
+	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+		cp->tags[RSS_CHANNEL_LINK],
+		cp->tags[RSS_CHANNEL_TITLE]);
+	addToHTMLBuffer(&buffer, tmp);
+	g_free(tmp);
 	
-		/* register RSS name space handlers */
-		addNameSpaceHandler(ns_bC_getRSSNsPrefix(), (gpointer)ns_bC_getRSSNsHandler());
-		addNameSpaceHandler(ns_dc_getRSSNsPrefix(), (gpointer)ns_dc_getRSSNsHandler());
-		addNameSpaceHandler(ns_fm_getRSSNsPrefix(), (gpointer)ns_fm_getRSSNsHandler());					    
-		addNameSpaceHandler(ns_slash_getRSSNsPrefix(), (gpointer)ns_slash_getRSSNsHandler());
-		addNameSpaceHandler(ns_content_getRSSNsPrefix(), (gpointer)ns_content_getRSSNsHandler());
-		addNameSpaceHandler(ns_syn_getRSSNsPrefix(), (gpointer)ns_syn_getRSSNsHandler());
-		addNameSpaceHandler(ns_admin_getRSSNsPrefix(), (gpointer)ns_admin_getRSSNsHandler());
-		addNameSpaceHandler(ns_cC_getRSSNsPrefix(), (gpointer)ns_cC_getRSSNsHandler());
+	addToHTMLBuffer(&buffer, HTML_NEWLINE);	
+
+	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);
+	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
+	addToHTMLBuffer(&buffer, tmp);
+	g_free(tmp);
+
+	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
+		
+	/* process namespace infos */
+	request.obj = (gpointer)cp;
+	request.type = OUTPUT_RSS_CHANNEL_NS_HEADER;
+	request.buffer = &buffer;
+	if(NULL != rss_nslist)
+		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
+
+	if(NULL != cp->tags[RSS_CHANNEL_IMAGE]) {
+		addToHTMLBuffer(&buffer, IMG_START);
+		addToHTMLBuffer(&buffer, cp->tags[RSS_CHANNEL_IMAGE] );
+		addToHTMLBuffer(&buffer, IMG_END);	
 	}
-							
-	/* prepare feed handler structure */
-	fhp->readFeed		= readRSSFeed;
-	fhp->merge		= TRUE;
-	
-	return fhp;
+
+	if(NULL != cp->tags[RSS_CHANNEL_DESCRIPTION])
+		addToHTMLBuffer(&buffer, cp->tags[RSS_CHANNEL_DESCRIPTION]);
+
+	/* if available output text[iI]nput formular */
+	if((NULL != cp->tiLink) && (NULL != cp->tiName) && 
+	   (NULL != cp->tiDescription) && (NULL != cp->tiTitle)) {
+	   
+		addToHTMLBuffer(&buffer, "<br><br>");
+		addToHTMLBuffer(&buffer, cp->tiDescription);
+		addToHTMLBuffer(&buffer, TEXT_INPUT_FORM_START);
+		addToHTMLBuffer(&buffer, cp->tiLink);
+		addToHTMLBuffer(&buffer, TEXT_INPUT_TEXT_FIELD);
+		addToHTMLBuffer(&buffer, cp->tiName);
+		addToHTMLBuffer(&buffer, TEXT_INPUT_SUBMIT);
+		addToHTMLBuffer(&buffer, cp->tiTitle);
+		addToHTMLBuffer(&buffer, TEXT_INPUT_FORM_END);
+	}
+
+	/* process namespace infos */
+	request.type = OUTPUT_RSS_CHANNEL_NS_FOOTER;
+	if(NULL != rss_nslist)
+		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
+
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "language",		cp->tags[RSS_CHANNEL_LANGUAGE]);
+	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[RSS_CHANNEL_COPYRIGHT]);
+	FEED_FOOT_WRITE(buffer, "last build date",	cp->tags[RSS_CHANNEL_LASTBUILDDATE]);
+	FEED_FOOT_WRITE(buffer, "publication date",	cp->tags[RSS_CHANNEL_PUBDATE]);
+	FEED_FOOT_WRITE(buffer, "webmaster",		cp->tags[RSS_CHANNEL_WEBMASTER]);
+	FEED_FOOT_WRITE(buffer, "managing editor",	cp->tags[RSS_CHANNEL_MANAGINGEDITOR]);
+	FEED_FOOT_WRITE(buffer, "category",		cp->tags[RSS_CHANNEL_CATEGORY]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+		
+	return buffer;
 }
+
+/* ---------------------------------------------------------------------------- */
+/* RSS parsing		 							*/
+/* ---------------------------------------------------------------------------- */
 
 /* method to parse standard tags for the channel element */
 static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
@@ -243,12 +320,11 @@ static void parseImage(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
 
 /* reads a RSS feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static feedPtr readRSSFeed(gchar *url) {
+static void readRSSFeed(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	itemPtr 	ip;
 	RSSChannelPtr 	cp;
-	feedPtr		fp;
 	gchar		*encoding;
 	char		*data;
 	short 		rdf = 0;
@@ -257,24 +333,17 @@ static feedPtr readRSSFeed(gchar *url) {
 	/* initialize channel structure */
 	if(NULL == (cp = (RSSChannelPtr) malloc(sizeof(struct RSSChannel)))) {
 		g_error("not enough memory!\n");
-		return NULL;
+		return;
 	}
 	memset(cp, 0, sizeof(struct RSSChannel));
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
 	
 	cp->updateInterval = -1;
-	fp = getNewFeedStruct();
-	g_assert(NULL != fp);
 
 	while(1) {
-		if(NULL == (data = downloadURL(url))) {
-			error = 1;
-			break;
-		}
-
-		doc = xmlRecoverMemory(data, strlen(data));
+		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), url));
+			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), fp->source));
 			error = 1;
 			break;
 		}
@@ -354,127 +423,52 @@ static feedPtr readRSSFeed(gchar *url) {
 
 	if(0 == error) {
 		fp->available = TRUE;
-		fp->description = showRSSFeedInfo(cp, url);
+		fp->description = showRSSFeedInfo(cp, fp->source);
 	}
 		
 	g_free(cp->nsinfos);
 	g_free(cp);
-
-	return fp;
 }
 
 /* ---------------------------------------------------------------------------- */
-/* HTML output stuff	 							*/
+/* initialization		 						*/
 /* ---------------------------------------------------------------------------- */
 
-/* method called by g_slist_foreach for thee HTML
-   generation functions to output namespace specific infos 
-   
-   not static because its reused by rss_item.c */
-void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
-	outputRequest	*request = (outputRequest *)userdata;
-	RSSNsHandler	*nsh = (RSSNsHandler *)value;
-	outputFunc	fp;
-	gchar		*tmp;
+static addNameSpaceHandler(gchar *prefix, gpointer handler) {
 
-	switch(request->type) {
-		case OUTPUT_RSS_CHANNEL_NS_HEADER:
-			fp = nsh->doChannelHeaderOutput;
-			break;
-		case OUTPUT_RSS_CHANNEL_NS_FOOTER:
-			fp = nsh->doChannelFooterOutput;
-			break;
-		case OUTPUT_ITEM_NS_HEADER:
-			fp = nsh->doItemHeaderOutput;
-			break;		
-		case OUTPUT_ITEM_NS_FOOTER:
-			fp = nsh->doItemFooterOutput;
-			break;			
-		default:	
-			g_warning(_("Internal error! Invalid output request mode for namespace information!"));
-			return;
-			break;	
+	g_assert(NULL != rss_nstable);
+	if(getNameSpaceStatus(prefix)) {
+		rss_nslist = g_slist_append(rss_nslist, handler);
+		g_hash_table_insert(rss_nstable, (gpointer)prefix, g_slist_last(rss_nslist));
 	}
-	
-	if(NULL == fp)
-		return;
-		
-	if(NULL == (tmp = (*fp)(request->obj)))
-		return;
-		
-	addToHTMLBuffer(request->buffer, tmp);
 }
 
-/* writes RSS channel description as HTML into the gtkhtml widget */
-static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
-	gchar		*buffer = NULL;
-	gchar		*tmp;
-	outputRequest	request;
-
-	g_assert(cp != NULL);	
-
-	addToHTMLBuffer(&buffer, FEED_HEAD_START);
-	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-		cp->tags[RSS_CHANNEL_LINK],
-		cp->tags[RSS_CHANNEL_TITLE]);
-	addToHTMLBuffer(&buffer, tmp);
-	g_free(tmp);
+feedHandlerPtr initRSSFeedHandler(void) {
+	feedHandlerPtr	fhp;
 	
-	addToHTMLBuffer(&buffer, HTML_NEWLINE);	
-
-	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-	addToHTMLBuffer(&buffer, tmp);
-	g_free(tmp);
-
-	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
-		
-	/* process namespace infos */
-	request.obj = (gpointer)cp;
-	request.type = OUTPUT_RSS_CHANNEL_NS_HEADER;
-	request.buffer = &buffer;
-	if(NULL != rss_nslist)
-		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
-
-	if(NULL != cp->tags[RSS_CHANNEL_IMAGE]) {
-		addToHTMLBuffer(&buffer, IMG_START);
-		addToHTMLBuffer(&buffer, cp->tags[RSS_CHANNEL_IMAGE] );
-		addToHTMLBuffer(&buffer, IMG_END);	
+	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
+		g_error(_("not enough memory!"));
 	}
+	memset(fhp, 0, sizeof(struct feedHandler));
 
-	if(NULL != cp->tags[RSS_CHANNEL_DESCRIPTION])
-		addToHTMLBuffer(&buffer, cp->tags[RSS_CHANNEL_DESCRIPTION]);
-
-	/* if available output text[iI]nput formular */
-	if((NULL != cp->tiLink) && (NULL != cp->tiName) && 
-	   (NULL != cp->tiDescription) && (NULL != cp->tiTitle)) {
-	   
-		addToHTMLBuffer(&buffer, "<br><br>");
-		addToHTMLBuffer(&buffer, cp->tiDescription);
-		addToHTMLBuffer(&buffer, TEXT_INPUT_FORM_START);
-		addToHTMLBuffer(&buffer, cp->tiLink);
-		addToHTMLBuffer(&buffer, TEXT_INPUT_TEXT_FIELD);
-		addToHTMLBuffer(&buffer, cp->tiName);
-		addToHTMLBuffer(&buffer, TEXT_INPUT_SUBMIT);
-		addToHTMLBuffer(&buffer, cp->tiTitle);
-		addToHTMLBuffer(&buffer, TEXT_INPUT_FORM_END);
+	/* because initRSSFeedHandler() is called twice, once for FST_RSS and again for FST_HELPFEED */	
+	if(NULL == rss_nstable) {
+		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
+	
+		/* register RSS name space handlers */
+		addNameSpaceHandler(ns_bC_getRSSNsPrefix(), (gpointer)ns_bC_getRSSNsHandler());
+		addNameSpaceHandler(ns_dc_getRSSNsPrefix(), (gpointer)ns_dc_getRSSNsHandler());
+		addNameSpaceHandler(ns_fm_getRSSNsPrefix(), (gpointer)ns_fm_getRSSNsHandler());					    
+		addNameSpaceHandler(ns_slash_getRSSNsPrefix(), (gpointer)ns_slash_getRSSNsHandler());
+		addNameSpaceHandler(ns_content_getRSSNsPrefix(), (gpointer)ns_content_getRSSNsHandler());
+		addNameSpaceHandler(ns_syn_getRSSNsPrefix(), (gpointer)ns_syn_getRSSNsHandler());
+		addNameSpaceHandler(ns_admin_getRSSNsPrefix(), (gpointer)ns_admin_getRSSNsHandler());
+		addNameSpaceHandler(ns_cC_getRSSNsPrefix(), (gpointer)ns_cC_getRSSNsHandler());
 	}
-
-	/* process namespace infos */
-	request.type = OUTPUT_RSS_CHANNEL_NS_FOOTER;
-	if(NULL != rss_nslist)
-		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
-
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "language",		cp->tags[RSS_CHANNEL_LANGUAGE]);
-	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[RSS_CHANNEL_COPYRIGHT]);
-	FEED_FOOT_WRITE(buffer, "last build date",	cp->tags[RSS_CHANNEL_LASTBUILDDATE]);
-	FEED_FOOT_WRITE(buffer, "publication date",	cp->tags[RSS_CHANNEL_PUBDATE]);
-	FEED_FOOT_WRITE(buffer, "webmaster",		cp->tags[RSS_CHANNEL_WEBMASTER]);
-	FEED_FOOT_WRITE(buffer, "managing editor",	cp->tags[RSS_CHANNEL_MANAGINGEDITOR]);
-	FEED_FOOT_WRITE(buffer, "category",		cp->tags[RSS_CHANNEL_CATEGORY]);
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-		
-	return buffer;
+							
+	/* prepare feed handler structure */
+	fhp->readFeed		= readRSSFeed;
+	fhp->merge		= TRUE;
+	
+	return fhp;
 }

@@ -65,32 +65,99 @@ static gchar *feedTagList[] = {	"title",
 				NULL
 			  };
 
-/* prototypes */
-static feedPtr 	readPIEFeed(gchar *url);
-static gchar *	showPIEFeedInfo(PIEFeedPtr cp, gchar *url);
+/* ---------------------------------------------------------------------------- */
+/* HTML output		 							*/
+/* ---------------------------------------------------------------------------- */
 
-feedHandlerPtr initPIEFeedHandler(void) {
-	feedHandlerPtr	fhp;
-	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
+/* method called by g_hash_table_foreach from inside the HTML
+   generator functions to output namespace specific infos 
+   
+   not static because its reused by pie_entry.c */
+void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
+	outputRequest	*request = (outputRequest *)userdata;
+	PIENsHandler	*nsh = (PIENsHandler *)value;
+	gchar		*tmp;
+	PIEOutputFunc	fp;
+
+	switch(request->type) {
+		case OUTPUT_PIE_FEED_NS_HEADER:
+			fp = nsh->doChannelHeaderOutput;
+			break;
+		case OUTPUT_PIE_FEED_NS_FOOTER:
+			fp = nsh->doChannelFooterOutput;
+			break;
+		case OUTPUT_ITEM_NS_HEADER:
+			fp = nsh->doItemHeaderOutput;
+			break;		
+		case OUTPUT_ITEM_NS_FOOTER:
+			fp = nsh->doItemFooterOutput;
+			break;			
+		default:	
+			g_warning(_("Internal error! Invalid output request mode for namespace information!"));
+			return;
+			break;		
 	}
-	memset(fhp, 0, sizeof(struct feedHandler));
 	
-	g_free(pie_nslist);
-	pie_nslist = g_hash_table_new(g_str_hash, g_str_equal);
-	
-	/* register PIE name space handlers, not sure which namespaces beside DC are common */
-	if(getNameSpaceStatus(ns_dc_getPIENsPrefix()))
-		g_hash_table_insert(pie_nslist, (gpointer)ns_dc_getPIENsPrefix(),
-					        (gpointer)ns_dc_getPIENsHandler());
-
-	/* prepare feed handler structure */
-	fhp->readFeed		= readPIEFeed;
-	fhp->merge		= TRUE;
-
-	return fhp;
+	if(NULL == fp)
+		return;
+		
+	if(NULL == (tmp = (*fp)(request->obj)))
+		return
+		
+	addToHTMLBuffer(request->buffer, tmp);
 }
+
+/* writes PIE channel description as HTML into the gtkhtml widget */
+static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
+	gchar		*tmp, *buffer = NULL;	
+	outputRequest	request;
+
+	g_assert(cp != NULL);	
+
+	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
+	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+	
+	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+		cp->tags[PIE_FEED_LINK],
+		cp->tags[PIE_FEED_TITLE]);
+	addToHTMLBuffer(&buffer, tmp);
+	g_free(tmp);
+	
+	addToHTMLBuffer(&buffer, HTML_NEWLINE);
+	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);
+	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
+	addToHTMLBuffer(&buffer, tmp);
+	g_free(tmp);
+	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
+		
+	/* process namespace infos */
+	request.obj = (gpointer)cp;
+	request.buffer = &buffer;
+	request.type = OUTPUT_PIE_FEED_NS_HEADER;	
+	if(NULL != pie_nslist)
+		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
+
+	if(NULL != cp->tags[PIE_FEED_DESCRIPTION])
+		addToHTMLBuffer(&buffer, cp->tags[PIE_FEED_DESCRIPTION]);
+
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "author",		cp->author);
+	FEED_FOOT_WRITE(buffer, "contributors",		cp->contributors);
+	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[PIE_FEED_COPYRIGHT]);
+	FEED_FOOT_WRITE(buffer, "last modified",	cp->tags[PIE_FEED_PUBDATE]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+	
+	/* process namespace infos */
+	request.type = OUTPUT_PIE_FEED_NS_FOOTER;
+	if(NULL != pie_nslist)
+		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
+	
+	return buffer;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* PIE parsing		 							*/
+/* ---------------------------------------------------------------------------- */
 
 /* nonstatic because used by pie_entry.c too */
 gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur) {
@@ -128,16 +195,14 @@ gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur) {
 
 /* reads a PIE feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static feedPtr readPIEFeed(gchar *url) {
+static void readPIEFeed(feedPtr fp) {
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
 	itemPtr 		ip;
 	PIEFeedPtr 		cp;
 	gchar			*tmp2, *tmp = NULL;
 	gchar			*encoding;
-	char			*data;
 	parseFeedTagFunc	parseFunc;
-	feedPtr			fp;
 	PIENsHandler		*nsh;
 	int			i;
 	int 			error = 0;
@@ -145,24 +210,16 @@ static feedPtr readPIEFeed(gchar *url) {
 	/* initialize channel structure */
 	if(NULL == (cp = (PIEFeedPtr) malloc(sizeof(struct PIEFeed)))) {
 		g_error("not enough memory!\n");
-		return NULL;
+		return;
 	}
 	memset(cp, 0, sizeof(struct PIEFeed));
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
 	
 	cp->updateInterval = -1;
-	fp = getNewFeedStruct();
-	g_assert(NULL != fp);
-	
 	while(1) {
-		if(NULL == (data = downloadURL(url))) {
-			error = 1;
-			break;
-		}
-
-		doc = xmlRecoverMemory(data, strlen(data));
+		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), url));
+			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), fp->source));
 			error = 1;
 			break;
 		}
@@ -266,103 +323,39 @@ static feedPtr readPIEFeed(gchar *url) {
 
 		if(0 == error) {
 			fp->available = TRUE;
-			fp->description = showPIEFeedInfo(cp, url);
+			fp->description = showPIEFeedInfo(cp, fp->source);
 		}
 			
 		g_free(cp->nsinfos);
 		g_free(cp);
 		break;
 	}
-
-	return fp;
 }
 
 /* ---------------------------------------------------------------------------- */
-/* HTML output stuff	 							*/
+/* initialization		 						*/
 /* ---------------------------------------------------------------------------- */
 
-/* method called by g_hash_table_foreach from inside the HTML
-   generator functions to output namespace specific infos 
-   
-   not static because its reused by pie_entry.c */
-void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
-	outputRequest	*request = (outputRequest *)userdata;
-	PIENsHandler	*nsh = (PIENsHandler *)value;
-	gchar		*tmp;
-	PIEOutputFunc	fp;
-
-	switch(request->type) {
-		case OUTPUT_PIE_FEED_NS_HEADER:
-			fp = nsh->doChannelHeaderOutput;
-			break;
-		case OUTPUT_PIE_FEED_NS_FOOTER:
-			fp = nsh->doChannelFooterOutput;
-			break;
-		case OUTPUT_ITEM_NS_HEADER:
-			fp = nsh->doItemHeaderOutput;
-			break;		
-		case OUTPUT_ITEM_NS_FOOTER:
-			fp = nsh->doItemFooterOutput;
-			break;			
-		default:	
-			g_warning(_("Internal error! Invalid output request mode for namespace information!"));
-			return;
-			break;		
+feedHandlerPtr initPIEFeedHandler(void) {
+	feedHandlerPtr	fhp;
+	
+	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
+		g_error(_("not enough memory!"));
 	}
+	memset(fhp, 0, sizeof(struct feedHandler));
 	
-	if(NULL == fp)
-		return;
-		
-	if(NULL == (tmp = (*fp)(request->obj)))
-		return
-		
-	addToHTMLBuffer(request->buffer, tmp);
+	g_free(pie_nslist);
+	pie_nslist = g_hash_table_new(g_str_hash, g_str_equal);
+	
+	/* register PIE name space handlers, not sure which namespaces beside DC are common */
+	if(getNameSpaceStatus(ns_dc_getPIENsPrefix()))
+		g_hash_table_insert(pie_nslist, (gpointer)ns_dc_getPIENsPrefix(),
+					        (gpointer)ns_dc_getPIENsHandler());
+
+	/* prepare feed handler structure */
+	fhp->readFeed		= readPIEFeed;
+	fhp->merge		= TRUE;
+
+	return fhp;
 }
 
-/* writes PIE channel description as HTML into the gtkhtml widget */
-static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
-	gchar		*tmp, *buffer = NULL;	
-	outputRequest	request;
-
-	g_assert(cp != NULL);	
-
-	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
-	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-	
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-		cp->tags[PIE_FEED_LINK],
-		cp->tags[PIE_FEED_TITLE]);
-	addToHTMLBuffer(&buffer, tmp);
-	g_free(tmp);
-	
-	addToHTMLBuffer(&buffer, HTML_NEWLINE);
-	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-	addToHTMLBuffer(&buffer, tmp);
-	g_free(tmp);
-	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
-		
-	/* process namespace infos */
-	request.obj = (gpointer)cp;
-	request.buffer = &buffer;
-	request.type = OUTPUT_PIE_FEED_NS_HEADER;	
-	if(NULL != pie_nslist)
-		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-
-	if(NULL != cp->tags[PIE_FEED_DESCRIPTION])
-		addToHTMLBuffer(&buffer, cp->tags[PIE_FEED_DESCRIPTION]);
-
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "author",		cp->author);
-	FEED_FOOT_WRITE(buffer, "contributors",		cp->contributors);
-	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[PIE_FEED_COPYRIGHT]);
-	FEED_FOOT_WRITE(buffer, "last modified",	cp->tags[PIE_FEED_PUBDATE]);
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-	
-	/* process namespace infos */
-	request.type = OUTPUT_PIE_FEED_NS_FOOTER;
-	if(NULL != pie_nslist)
-		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-	
-	return buffer;
-}

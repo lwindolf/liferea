@@ -55,6 +55,10 @@ static gchar *opmlTagList[] = {	"title",
 				"ownerEmail",
 				NULL
  			      };
+
+/* ---------------------------------------------------------------------------- */
+/* OPML parsing and HTML output	 						*/
+/* ---------------------------------------------------------------------------- */
 			      
 /* retruns a HTML string containing the text and attributes of the outline */
 static gchar * getOutlineContents(xmlNodePtr cur) {
@@ -113,29 +117,20 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	return buffer;
 }
 
-static feedPtr readOPML(gchar *url) {
+static void readOPML(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, child;
-	feedPtr	 	fp;
 	itemPtr		ip;
 	gchar		*encoding;
-	gchar		*data, *buffer, *tmp;
+	gchar		*buffer, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
 	int 		i, error = 0;
 
-	if(NULL == (data = downloadURL(url))) {
-		showErrorBox(g_strdup_printf(_("Could not fetch %s!"), url));
-		return NULL;
-	}
-
-	fp = getNewFeedStruct();
-
 	while(1) {
-		doc = xmlRecoverMemory(data, strlen(data));
-		g_free(data);
+		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
 		
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"),url));
+			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), fp->source));
 			error = 1;
 			break;
 		}
@@ -219,8 +214,8 @@ static feedPtr readOPML(gchar *url) {
 			addToHTMLBuffer(&buffer, headTags[OPML_TITLE]);
 			addToHTMLBuffer(&buffer, HTML_NEWLINE);	
 			addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);	
-			if(NULL != url) {
-				tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
+			if(NULL != fp->source) {
+				tmp = g_strdup_printf("<a href=\"%s\">%s</a>", fp->source, fp->source);
 				addToHTMLBuffer(&buffer, tmp);
 				g_free(tmp);
 			}
@@ -238,15 +233,13 @@ static feedPtr readOPML(gchar *url) {
 			fp->description = buffer;
 			fp->available = TRUE;
 		} else
-			fp->title = g_strdup(url);
+			fp->title = g_strdup(fp->source);
 		break;
 	}
-
-	return fp;
 }
 
 /* ---------------------------------------------------------------------------- */
-/* HTML output stuff	 							*/
+/* initialization								*/
 /* ---------------------------------------------------------------------------- */
 
 feedHandlerPtr initOPMLFeedHandler(void) {

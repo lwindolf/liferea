@@ -59,39 +59,129 @@ static gchar *directoryTagList[] = {	"title",
 					NULL
 				  };
 
-/* prototypes */
-feedPtr readOCS(gchar *url);
+/* ---------------------------------------------------------------------------- */
+/* HTML output		 							*/
+/* ---------------------------------------------------------------------------- */
 
-/* display an directory entry description and its formats in the HTML widget */
-static gchar *	showDirEntry(dirEntryPtr dep);
-
-/* display a directory info in the HTML widget */
-static gchar *	showDirectoryInfo(directoryPtr dp, gchar *url);
-
-feedHandlerPtr initOCSFeedHandler(void) {
-	feedHandlerPtr	fhp;
+/* print information of a format entry in the HTML */
+static void showFormatEntry(gpointer data, gpointer userdata) {
+	gchar		*tmp;
+	gchar		**buffer = (gchar **)userdata;
+	formatPtr	f = (formatPtr)data;
 	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
+	if(NULL != f->source) {
+		addToHTMLBuffer(buffer, FORMAT_START);
+
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", f->source, f->source);
+		addToHTMLBuffer(buffer, FORMAT_LINK);
+		addToHTMLBuffer(buffer, tmp);		
+		g_free(tmp);
+
+		if(NULL != (tmp = f->tags[OCS_LANGUAGE])) {
+			addToHTMLBuffer(buffer, FORMAT_LANGUAGE);
+			addToHTMLBuffer(buffer, tmp);
+		}
+
+		if(NULL != (tmp = f->tags[OCS_UPDATEPERIOD])) {
+			addToHTMLBuffer(buffer, FORMAT_UPDATEPERIOD);
+			addToHTMLBuffer(buffer, tmp);
+		}
+
+		if(NULL != (tmp = f->tags[OCS_UPDATEFREQUENCY])) {
+			addToHTMLBuffer(buffer, FORMAT_UPDATEFREQUENCY);
+			addToHTMLBuffer(buffer, tmp);
+		}
+		
+		if(NULL != (tmp = f->tags[OCS_CONTENTTYPE])) {
+			addToHTMLBuffer(buffer, FORMAT_CONTENTTYPE);
+			addToHTMLBuffer(buffer, tmp);
+		}
+		
+		addToHTMLBuffer(buffer, FORMAT_END);	
 	}
-	memset(fhp, 0, sizeof(struct feedHandler));
-	
-	g_free(ocs_nslist);
-	ocs_nslist = g_hash_table_new(g_str_hash, g_str_equal);
-	
-	/* register OCS name space handlers */
-	g_hash_table_insert(ocs_nslist, (gpointer)ns_dc_getOCSNsPrefix(),
-				        (gpointer)ns_dc_getOCSNsHandler());
-
-	g_hash_table_insert(ocs_nslist, (gpointer)ns_ocs_getOCSNsPrefix(),
-				        (gpointer)ns_ocs_getOCSNsHandler());
-
-	/* prepare feed handler structure */
-	fhp->readFeed		= readOCS;
-	fhp->merge		= FALSE;
-	
-	return fhp;
 }
+
+/* display a directory entry description and its formats in the HTML widget */
+static gchar * showDirEntry(dirEntryPtr dep) {
+	directoryPtr	dp = dep->dp;
+	GSList		*iter;
+	gchar		*tmp, *buffer = NULL;
+	
+	g_assert(dep != NULL);
+	g_assert(dp != NULL);
+
+	if(NULL != dep->source) {
+		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
+		addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+		addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
+		addToHTMLBuffer(&buffer, HTML_NEWLINE);	
+		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", dep->source, dep->tags[OCS_TITLE]);
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+		
+		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
+	}
+
+	if(NULL != dep->tags[OCS_IMAGE]) {
+		addToHTMLBuffer(&buffer, IMG_START);
+		addToHTMLBuffer(&buffer, dep->tags[OCS_IMAGE]);
+		addToHTMLBuffer(&buffer, IMG_END);	
+	}
+
+	if(NULL != dep->tags[OCS_DESCRIPTION])
+		addToHTMLBuffer(&buffer, dep->tags[OCS_DESCRIPTION]);
+		
+	/* output infos about the available formats */
+	g_slist_foreach(dep->formats, showFormatEntry, &buffer);
+
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "creator",	dep->tags[OCS_CREATOR]);
+	FEED_FOOT_WRITE(buffer, "subject",	dep->tags[OCS_SUBJECT]);
+	FEED_FOOT_WRITE(buffer, "language",	dep->tags[OCS_LANGUAGE]);
+	FEED_FOOT_WRITE(buffer, "updatePeriod",	dep->tags[OCS_UPDATEPERIOD]);
+	FEED_FOOT_WRITE(buffer, "contentType",	dep->tags[OCS_CONTENTTYPE]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+	
+	return buffer;
+}
+
+/* writes directory info as HTML */
+static gchar * showDirectoryInfo(directoryPtr dp, gchar *url) {
+	gchar		*tmp, *buffer = NULL;	
+
+	g_assert(dp != NULL);	
+
+	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
+	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+	addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
+	addToHTMLBuffer(&buffer, HTML_NEWLINE);	
+	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);	
+	if(NULL != url) {
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+	}
+
+	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
+
+	if(NULL != dp->tags[OCS_DESCRIPTION])
+		addToHTMLBuffer(&buffer, dp->tags[OCS_DESCRIPTION]);
+
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "creator",	dp->tags[OCS_CREATOR]);
+	FEED_FOOT_WRITE(buffer, "subject",	dp->tags[OCS_SUBJECT]);
+	FEED_FOOT_WRITE(buffer, "language",	dp->tags[OCS_LANGUAGE]);
+	FEED_FOOT_WRITE(buffer, "updatePeriod",	dp->tags[OCS_UPDATEPERIOD]);
+	FEED_FOOT_WRITE(buffer, "contentType",	dp->tags[OCS_CONTENTTYPE]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+	
+	return buffer;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* OCS parsing		 							*/
+/* ---------------------------------------------------------------------------- */
 
 static void parseFormatEntry(formatPtr fep, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar			*tmp = NULL;
@@ -282,28 +372,18 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlDocPtr doc, xmlNodePt
 		dp->tags[OCS_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, dp->tags[OCS_DESCRIPTION]);
 }
 
-feedPtr readOCS(gchar *url) {
+static void readOCS(feedPtr fp) {
 	xmlDocPtr 	doc = NULL;
 	xmlNodePtr 	cur = NULL;
 	directoryPtr	dp;
-	feedPtr	 	fp;
 	gchar		*encoding;
-	gchar		*data;
 	int 		error = 0;
 
-	fp = getNewFeedStruct();
-
 	while(1) {
-		if(NULL == (data = downloadURL(url))) {
-			error = 1;
-			break;
-		}
-
-		doc = xmlRecoverMemory(data, strlen(data));
-		g_free(data);
+		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
 		
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error wile reading directory! Directory \"%s\" could not be loaded!"),url));
+			print_status(g_strdup_printf(_("XML error wile reading directory! Directory \"%s\" could not be loaded!"), fp->source));
 			error = 1;
 			break;
 		}
@@ -348,134 +428,41 @@ feedPtr readOCS(gchar *url) {
 		fp->title = dp->tags[OCS_TITLE];
 		
 		if(0 == error) {
-			fp->description = showDirectoryInfo(dp, url);
+			fp->description = showDirectoryInfo(dp, fp->source);
 			fp->available = TRUE;
 		} else
-			fp->title = g_strdup(url);
+			fp->title = g_strdup(fp->source);
 			
 		g_free(dp);
 		break;
 	}
-
-	return fp;
 }
 
 /* ---------------------------------------------------------------------------- */
-/* HTML output stuff	 							*/
+/* initialization	 							*/
 /* ---------------------------------------------------------------------------- */
 
-/* print information of a format entry in the HTML */
-static void showFormatEntry(gpointer data, gpointer userdata) {
-	gchar		*tmp;
-	gchar		**buffer = (gchar **)userdata;
-	formatPtr	f = (formatPtr)data;
+feedHandlerPtr initOCSFeedHandler(void) {
+	feedHandlerPtr	fhp;
 	
-	if(NULL != f->source) {
-		addToHTMLBuffer(buffer, FORMAT_START);
-
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", f->source, f->source);
-		addToHTMLBuffer(buffer, FORMAT_LINK);
-		addToHTMLBuffer(buffer, tmp);		
-		g_free(tmp);
-
-		if(NULL != (tmp = f->tags[OCS_LANGUAGE])) {
-			addToHTMLBuffer(buffer, FORMAT_LANGUAGE);
-			addToHTMLBuffer(buffer, tmp);
-		}
-
-		if(NULL != (tmp = f->tags[OCS_UPDATEPERIOD])) {
-			addToHTMLBuffer(buffer, FORMAT_UPDATEPERIOD);
-			addToHTMLBuffer(buffer, tmp);
-		}
-
-		if(NULL != (tmp = f->tags[OCS_UPDATEFREQUENCY])) {
-			addToHTMLBuffer(buffer, FORMAT_UPDATEFREQUENCY);
-			addToHTMLBuffer(buffer, tmp);
-		}
-		
-		if(NULL != (tmp = f->tags[OCS_CONTENTTYPE])) {
-			addToHTMLBuffer(buffer, FORMAT_CONTENTTYPE);
-			addToHTMLBuffer(buffer, tmp);
-		}
-		
-		addToHTMLBuffer(buffer, FORMAT_END);	
+	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
+		g_error(_("not enough memory!"));
 	}
-}
-
-/* display a directory entry description and its formats in the HTML widget */
-static gchar * showDirEntry(dirEntryPtr dep) {
-	directoryPtr	dp = dep->dp;
-	GSList		*iter;
-	gchar		*tmp, *buffer = NULL;
+	memset(fhp, 0, sizeof(struct feedHandler));
 	
-	g_assert(dep != NULL);
-	g_assert(dp != NULL);
-
-	if(NULL != dep->source) {
-		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
-		addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-		addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
-		addToHTMLBuffer(&buffer, HTML_NEWLINE);	
-		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", dep->source, dep->tags[OCS_TITLE]);
-		addToHTMLBuffer(&buffer, tmp);
-		g_free(tmp);
-		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
-	}
-
-	if(NULL != dep->tags[OCS_IMAGE]) {
-		addToHTMLBuffer(&buffer, IMG_START);
-		addToHTMLBuffer(&buffer, dep->tags[OCS_IMAGE]);
-		addToHTMLBuffer(&buffer, IMG_END);	
-	}
-
-	if(NULL != dep->tags[OCS_DESCRIPTION])
-		addToHTMLBuffer(&buffer, dep->tags[OCS_DESCRIPTION]);
-		
-	/* output infos about the available formats */
-	g_slist_foreach(dep->formats, showFormatEntry, &buffer);
-
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "creator",	dep->tags[OCS_CREATOR]);
-	FEED_FOOT_WRITE(buffer, "subject",	dep->tags[OCS_SUBJECT]);
-	FEED_FOOT_WRITE(buffer, "language",	dep->tags[OCS_LANGUAGE]);
-	FEED_FOOT_WRITE(buffer, "updatePeriod",	dep->tags[OCS_UPDATEPERIOD]);
-	FEED_FOOT_WRITE(buffer, "contentType",	dep->tags[OCS_CONTENTTYPE]);
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+	g_free(ocs_nslist);
+	ocs_nslist = g_hash_table_new(g_str_hash, g_str_equal);
 	
-	return buffer;
-}
+	/* register OCS name space handlers */
+	g_hash_table_insert(ocs_nslist, (gpointer)ns_dc_getOCSNsPrefix(),
+				        (gpointer)ns_dc_getOCSNsHandler());
 
-/* writes directory info as HTML */
-static gchar * showDirectoryInfo(directoryPtr dp, gchar *url) {
-	gchar		*tmp, *buffer = NULL;	
+	g_hash_table_insert(ocs_nslist, (gpointer)ns_ocs_getOCSNsPrefix(),
+				        (gpointer)ns_ocs_getOCSNsHandler());
 
-	g_assert(dp != NULL);	
-
-	addToHTMLBuffer(&buffer, FEED_HEAD_START);	
-	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-	addToHTMLBuffer(&buffer, dp->tags[OCS_TITLE]);
-	addToHTMLBuffer(&buffer, HTML_NEWLINE);	
-	addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);	
-	if(NULL != url) {
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-		addToHTMLBuffer(&buffer, tmp);
-		g_free(tmp);
-	}
-
-	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
-
-	if(NULL != dp->tags[OCS_DESCRIPTION])
-		addToHTMLBuffer(&buffer, dp->tags[OCS_DESCRIPTION]);
-
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "creator",	dp->tags[OCS_CREATOR]);
-	FEED_FOOT_WRITE(buffer, "subject",	dp->tags[OCS_SUBJECT]);
-	FEED_FOOT_WRITE(buffer, "language",	dp->tags[OCS_LANGUAGE]);
-	FEED_FOOT_WRITE(buffer, "updatePeriod",	dp->tags[OCS_UPDATEPERIOD]);
-	FEED_FOOT_WRITE(buffer, "contentType",	dp->tags[OCS_CONTENTTYPE]);
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+	/* prepare feed handler structure */
+	fhp->readFeed		= readOCS;
+	fhp->merge		= FALSE;
 	
-	return buffer;
+	return fhp;
 }

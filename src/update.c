@@ -25,6 +25,7 @@
 
 #include "feed.h"
 #include "vfolder.h"
+#include "netio.h"
 #include "update.h"
 #include "callbacks.h"
 #include "support.h"
@@ -118,11 +119,16 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 			return;
 		}
 
-		g_assert(NULL != fhp->readFeed);
-		new_fp = (feedPtr)(*(fhp->readFeed))(source);
-
-		if(NULL == new_fp)
+		new_fp = getNewFeedStruct();
+		if(NULL != (new_fp->data = downloadURL(source))) {
+			new_fp->source = g_strdup(source);	// FIXME: is this correct?
+			g_assert(NULL != fhp->readFeed);
+			(*(fhp->readFeed))(new_fp);
+		} else {
+			print_status(g_strdup_printf(_("\"%s\" is not available!"), source));
+			freeFeed(new_fp);
 			return;
+		}
 
 		if(TRUE == fhp->merge)
 			/* If the feed type supports merging... */

@@ -83,30 +83,24 @@ void initFeedTypes(void) {
 	registerFeedType(FST_VFOLDER,	initVFolderFeedHandler());
 }
 
-gint autoDetectFeedType(gchar *url) {
+static gint autoDetectFeedType(gchar *url, gchar **data) {
 	detectStrPtr	pattern = detectPattern;
-	gchar		*data, *tmp;
 	gint		type = FST_INVALID;
 	
 	g_assert(NULL != pattern);
 	g_assert(NULL != url);
 	
-	if(NULL != (data = downloadURL(url))) {
+	if(NULL != (*data = downloadURL(url))) {
 		while(NULL != pattern->string) {	
-			if(NULL != strstr(data, pattern->string)) {
+			if(NULL != strstr(*data, pattern->string)) {
 				type = pattern->type;
 				break;
 			}
 			
 			pattern++;
 		} 
-	} else {
-		tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available.\n"), url);
-		showErrorBox(tmp);
-		g_free(tmp);
 	}
-	
-	g_free(data);	// FIXME: reuse downloaded data
+
 	return type;
 }
 
@@ -346,38 +340,53 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 	feedHandlerPtr	fhp;
 	gchar		*key;
-	gchar		*oldfilename, *newfilename;
-	feedPtr		fp = NULL;
+	gchar		*tmp;
+	feedPtr		fp;
 
-	g_assert(NULL != feedHandler);
-	if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-		g_assert(NULL != fhp->readFeed);
-		fp = (*(fhp->readFeed))(url);
-	} else {
-		g_error(_("internal error! unknown feed type in newFeed()!"));
-		return NULL;
-	}
-		
-	if(NULL != fp) {	
-		if(NULL != (key = addFeedToConfig(keyprefix, url, type))) {
-
-			fp->type = type;
-			fp->keyprefix = keyprefix;
-			fp->key = key;
-			fp->source = url;
+	fp = getNewFeedStruct();
+	fp->source = url;
 	
-			if(TRUE == fp->available)		
-				saveFeed(fp);
-			
-			g_mutex_lock(feeds_lock);
-			g_hash_table_insert(feeds, (gpointer)getFeedKey(fp), (gpointer)fp);
-			g_mutex_unlock(feeds_lock);
-		} else {
-			g_print(_("error! could not add feed to configuration!\n"));
+	g_assert(NULL != fp);
+	if(FST_AUTODETECT == type) {
+		/* if necessary download and detect type */
+		if(FST_INVALID == (type = autoDetectFeedType(url, &(fp->data)))) {	// FIXME: pass fp to adjust URL
+			showErrorBox(_("Could not detect feed type! Please manually select a feed type."));
+			g_free(fp->data);
 			return NULL;
 		}
 	} else {
-		g_print(_("internal error while loading feed!\n"));
+		/* else only download */
+		fp->data = downloadURL(url);	// FIXME: pass fp to adjust URL
+	}
+
+	if(NULL != fp->data) {
+		/* parse data */
+		g_assert(NULL != feedHandler);
+		if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
+			g_assert(NULL != fhp->readFeed);
+			(*(fhp->readFeed))(fp);
+		} else {
+			g_error(_("internal error! unknown feed type in newFeed()!"));
+			return NULL;
+		}
+	}
+	
+	/* postprocess read feed */
+	if(NULL != (key = addFeedToConfig(keyprefix, url, type))) {
+
+		fp->type = type;
+		fp->keyprefix = keyprefix;
+		fp->key = key;
+
+		if(TRUE == fp->available)		
+			saveFeed(fp);
+
+		g_mutex_lock(feeds_lock);
+		g_hash_table_insert(feeds, (gpointer)getFeedKey(fp), (gpointer)fp);
+		g_mutex_unlock(feeds_lock);
+	} else {
+		g_print(_("error! could not add feed to configuration!\n"));
+		return NULL;
 	}
 
 	return fp;
@@ -479,7 +488,10 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 		   for all normal feeds, and skipping old item
 		   merging for help feeds... */
 		if(old_fp->type != FST_HELPFEED) {
-			g_slist_free(new_fp->items);	/* dispose new item list */		
+			g_slist_free(new_fp->items);	/* dispose new item list */
+			
+			if(NULL == diff_list)
+				print_status(g_strdup_printf(_("\"%s\" has no new items."), old_fp->title));
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
 		} else {
@@ -503,6 +515,8 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 	}
 	
 	old_fp->available = new_fp->available;
+	g_free(new_fp->source);
+	g_free(new_fp->title);
 	g_free(new_fp);			/* dispose new feed structure */
 }
 

@@ -49,26 +49,50 @@ static gchar *CDFChannelTagList[] = {	"title",
 					NULL
 				  };
 
-/* prototypes */
-feedPtr		readCDFFeed(gchar *url);
-gchar *		showCDFFeedInfo(CDFChannelPtr cp, gchar *url);
 
-feedHandlerPtr initCDFFeedHandler(void) {
-	feedHandlerPtr	fhp;
+/* ---------------------------------------------------------------------------- */
+/* HTML output		 							*/
+/* ---------------------------------------------------------------------------- */
+
+/* writes CDF channel description as HTML into the gtkhtml widget */
+gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
+	gchar		*buffer = NULL;
+	gchar		*tmp;
+
+	g_assert(cp != NULL);
+
+	addToHTMLBuffer(&buffer, FEED_HEAD_START);
+	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
+	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
+		url, 
+		cp->tags[CDF_CHANNEL_TITLE]);
+	addToHTMLBuffer(&buffer, tmp);
+	g_free(tmp);
 	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
+	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
+
+	if(NULL != cp->tags[CDF_CHANNEL_IMAGE]) {
+		addToHTMLBuffer(&buffer, IMG_START);
+		addToHTMLBuffer(&buffer, cp->tags[CDF_CHANNEL_IMAGE]);
+		addToHTMLBuffer(&buffer, IMG_END);	
 	}
-	memset(fhp, 0, sizeof(struct feedHandler));
-	
-	/* there are no name space handlers! */
 
-	/* prepare feed handler structure */
-	fhp->readFeed		= readCDFFeed;
-	fhp->merge		= TRUE;
-	
-	return fhp;
+	if(NULL != cp->tags[CDF_CHANNEL_DESCRIPTION])
+		addToHTMLBuffer(&buffer, cp->tags[CDF_CHANNEL_DESCRIPTION]);
+
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[CDF_CHANNEL_COPYRIGHT]);
+	FEED_FOOT_WRITE(buffer, "publication date",	cp->tags[CDF_CHANNEL_PUBDATE]);
+	FEED_FOOT_WRITE(buffer, "webmaster",		cp->tags[CDF_CHANNEL_WEBMASTER]);
+	FEED_FOOT_WRITE(buffer, "category",		cp->tags[CDF_CHANNEL_CATEGORY]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+
+	return buffer;
 }
+
+/* ---------------------------------------------------------------------------- */
+/* CDF parsing		 							*/
+/* ---------------------------------------------------------------------------- */
 
 /* method to parse standard tags for the channel element */
 static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
@@ -131,33 +155,25 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 
 /* reads a CDF feed URL and returns a new channel structure (even if
    the feed could not be read) */
-feedPtr readCDFFeed(gchar *url) {
+static void readCDFFeed(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	CDFChannelPtr 	cp;
-	feedPtr		fp;
 	gchar		*encoding;
-	char		*data;
 	int 		error = 0;
 	
 	/* initialize channel structure */
 	if(NULL == (cp = (CDFChannelPtr) malloc(sizeof(struct CDFChannel)))) {
 		g_error("not enough memory!\n");
-		return NULL;
+		return;
 	}
 	memset(cp, 0, sizeof(struct CDFChannel));
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
-	fp = getNewFeedStruct();
 	
 	while(1) {
-		if(NULL == (data = downloadURL(url))) {
-			error = 1;
-			break;
-		}
-
-		doc = xmlRecoverMemory(data, strlen(data));
+		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), url));
+			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), fp->source));
 			error = 1;
 			break;
 		}
@@ -209,53 +225,32 @@ feedPtr readCDFFeed(gchar *url) {
 
 		if(0 == error) {
 			fp->available = TRUE;
-			fp->description = showCDFFeedInfo(cp, url);
+			fp->description = showCDFFeedInfo(cp, fp->source);
 		}
 		
 		g_free(cp->nsinfos);
 		g_free(cp);
 		break;
 	}
-
-	return fp;
 }
 
 /* ---------------------------------------------------------------------------- */
-/* HTML output stuff	 							*/
+/* initialization		 						*/
 /* ---------------------------------------------------------------------------- */
 
-/* writes CDF channel description as HTML into the gtkhtml widget */
-gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
-	gchar		*buffer = NULL;
-	gchar		*tmp;
-
-	g_assert(cp != NULL);
-
-	addToHTMLBuffer(&buffer, FEED_HEAD_START);
-	addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-		url, 
-		cp->tags[CDF_CHANNEL_TITLE]);
-	addToHTMLBuffer(&buffer, tmp);
-	g_free(tmp);
+feedHandlerPtr initCDFFeedHandler(void) {
+	feedHandlerPtr	fhp;
 	
-	addToHTMLBuffer(&buffer, FEED_HEAD_END);	
-
-	if(NULL != cp->tags[CDF_CHANNEL_IMAGE]) {
-		addToHTMLBuffer(&buffer, IMG_START);
-		addToHTMLBuffer(&buffer, cp->tags[CDF_CHANNEL_IMAGE]);
-		addToHTMLBuffer(&buffer, IMG_END);	
+	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
+		g_error(_("not enough memory!"));
 	}
+	memset(fhp, 0, sizeof(struct feedHandler));
+	
+	/* there are no name space handlers! */
 
-	if(NULL != cp->tags[CDF_CHANNEL_DESCRIPTION])
-		addToHTMLBuffer(&buffer, cp->tags[CDF_CHANNEL_DESCRIPTION]);
-
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[CDF_CHANNEL_COPYRIGHT]);
-	FEED_FOOT_WRITE(buffer, "publication date",	cp->tags[CDF_CHANNEL_PUBDATE]);
-	FEED_FOOT_WRITE(buffer, "webmaster",		cp->tags[CDF_CHANNEL_WEBMASTER]);
-	FEED_FOOT_WRITE(buffer, "category",		cp->tags[CDF_CHANNEL_CATEGORY]);
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-
-	return buffer;
+	/* prepare feed handler structure */
+	fhp->readFeed		= readCDFFeed;
+	fhp->merge		= TRUE;
+	
+	return fhp;
 }
