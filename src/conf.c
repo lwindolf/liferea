@@ -46,16 +46,16 @@ static gchar * build_path_str(gchar *str1, gchar *str2) {
 	return gconfpath;
 }
 
-int is_gconf_error(GError *err) {
+gboolean is_gconf_error(GError *err) {
 
 	if(err != NULL) {
 		g_print(err->message);
 		g_error_free(err);
 		err = NULL;
-		return 1;
+		return TRUE;
 	}
 	
-	return 0;
+	return FALSE;
 }
 
 void initConfig() {
@@ -575,15 +575,22 @@ void loadEntries() {
 
 /* returns true if namespace is enabled in configuration */
 gboolean getNameSpaceStatus(gchar *nsname) {
+	GConfValue	*value = NULL;
 	gchar		*gconfpath;
 	gboolean	status;
 	
 	g_assert(NULL != nsname);
-	
 	gconfpath = g_strdup_printf("%s/ns_%s", PATH, nsname);
-	status = getBooleanConfValue(gconfpath);
+	value = gconf_client_get_without_default(client, gconfpath, NULL);
+	if(NULL == value) {
+		g_print(_("RSS namespace %s not yet configured! Activating...\n"), nsname);
+		setNameSpaceStatus(nsname, TRUE);
+		status = TRUE;
+	} else {
+		status = gconf_value_get_bool(value);
+	}
 	g_free(gconfpath);
-	
+	g_free(value);	
 	return status;
 }
 
