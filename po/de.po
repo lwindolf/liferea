@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-04-20 17:15+0200\n"
+"POT-Creation-Date: 2004-04-25 01:05+0200\n"
 "PO-Revision-Date: 2003-12-28 09:00+0100\n"
 "Last-Translator: Lars Lindner <lars.linder@gmx.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,25 +21,21 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Konnte pixmap Datei nicht finden: %"
 
-#: src/cdf_channel.c:98 src/cdf_item.c:51
-msgid "internal error: XML document pointer NULL! This should not happen!\n"
-msgstr ""
-
-#: src/cdf_channel.c:156 src/ocs_dir.c:450 src/opml.c:141 src/pie_feed.c:216
-#: src/rss_channel.c:336
+#: src/cdf_channel.c:148 src/ocs_dir.c:451 src/opml.c:141 src/pie_feed.c:210
+#: src/rss_channel.c:327
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>XML Fehler beim Lesen des Feeds! Feed \"%s\" konnte nicht geladen werden!"
 "</p>"
 
-#: src/cdf_channel.c:164 src/feed.c:310 src/ocs_dir.c:456 src/opml.c:147
-#: src/pie_feed.c:224 src/rss_channel.c:342
+#: src/cdf_channel.c:156 src/feed.c:310 src/ocs_dir.c:457 src/opml.c:147
+#: src/pie_feed.c:218 src/rss_channel.c:333
 msgid "<p>Empty document!</p>"
 msgstr "<p>Leeres Dokument!</p>"
 
-#: src/cdf_channel.c:210 src/ocs_dir.c:507 src/opml.c:246 src/pie_feed.c:337
-#: src/rss_channel.c:417
+#: src/cdf_channel.c:202 src/ocs_dir.c:519 src/opml.c:246 src/pie_feed.c:342
+#: src/rss_channel.c:425
 msgid "There were errors while parsing this feed!"
 msgstr "Es traten Fehler beim Einlesen des Feeds auf"
 
@@ -170,6 +166,13 @@ msgstr "Konnte XML Feed Node für Cache-Datei nicht erzeugen!"
 msgid "could not create XML document!"
 msgstr "Konnte XML Datei nicht anlegen!"
 
+#: src/feed.c:294
+#, fuzzy, c-format
+msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
+msgstr ""
+"Fehler beim Lesen der Cache-Datei \"%s\" ! Cache-Datei konnte nicht geladen "
+"werden!"
+
 #: src/feed.c:295
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
@@ -230,6 +233,7 @@ msgstr "\"%s\" ist nicht verfügbar!"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
 #: src/feed.c:724 src/net/netio.c:478
+#, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "Dieses Feed existiert nicht mehr. Bitte entfernen Sie das Abonnement!"
 
@@ -288,7 +292,9 @@ msgstr ""
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
-msgstr "Es trat ein Fehler beim Einlesen des Abonnements auf. Bitte überfrüfen Sie die URL und die Ausgabe auf der Konsole."
+msgstr ""
+"Es trat ein Fehler beim Einlesen des Abonnements auf. Bitte überfrüfen Sie "
+"die URL und die Ausgabe auf der Konsole."
 
 #: src/feed.c:891
 #, c-format
@@ -308,30 +314,14 @@ msgid ""
 msgstr ""
 "\n"
 "Es wird versucht das Mozilla-HTML Modul zu laden...\n"
-"Beachten Sie bitte, dass dies nicht mit jeder Mozilla-Version funktionieren könnte.\n"
-"Sollten Probleme auftreten und Liferea nicht starten, versuchen Sie die Umgebungsvariable "
-"MOZILLA_FIVE_HOME auf eine andere Mozilla-Installation verweisen zu lassen\n"
-"oder den Schlüssel \"/apps/liferea/browser-module/\" in der Gnome-Konfiguartion (gconf) "
-"zu löschen.\n"
+"Beachten Sie bitte, dass dies nicht mit jeder Mozilla-Version funktionieren "
+"könnte.\n"
+"Sollten Probleme auftreten und Liferea nicht starten, versuchen Sie die "
+"Umgebungsvariable MOZILLA_FIVE_HOME auf eine andere Mozilla-Installation "
+"verweisen zu lassen\n"
+"oder den Schlüssel \"/apps/liferea/browser-module/\" in der Gnome-"
+"Konfiguartion (gconf) zu löschen.\n"
 "\n"
-
-#: src/htmlview.c:100 src/htmlview.c:102
-#, c-format
-msgid ""
-"Failed to open HTML widget module (%s) specified in configuration!n"
-"%s\n"
-msgstr "Der Versuch, das angegebene HTML-Modul (%s) zu laden, schlug fehl."
-"\n"
-
-#: src/htmlview.c:112 src/htmlview.c:114
-#, c-format
-msgid "Missing symbol \"%s\" in configured HTML module!"
-msgstr "Fehlendes Symbol \"%s\" in eingestelltem HTML-Modul!"
-
-#: src/htmlview.c:135
-#, c-format
-msgid "Cannot load HTML widget module (%s)!"
-msgstr "HTML-Modul (%s) konnte nicht geladen werden!"
 
 #: src/htmlview.c:176
 #, c-format
@@ -351,7 +341,7 @@ msgstr "Es wird versucht, das HTML-Modul %s zu laden\n"
 msgid "Sorry, I was not able to load any installed browser modules!"
 msgstr "Es konnte kein installiertes HTML-Modul geladen werden!"
 
-#: src/htmlview.c:287
+#: src/htmlview.c:313
 msgid "This item does not have a link assigned!"
 msgstr ""
 
@@ -802,9 +792,9 @@ msgid ""
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
-"Liferea zeigt den Inhalt eines Feeds mit Hilfe von verschiedenen HTML-Modulen. "
-"Abhängig von den jeweils installierten Modulen auf Ihrem Rechner werden verschiedene Optionen "
-"zur Verfügung stehen.\n"
+"Liferea zeigt den Inhalt eines Feeds mit Hilfe von verschiedenen HTML-"
+"Modulen. Abhängig von den jeweils installierten Modulen auf Ihrem Rechner "
+"werden verschiedene Optionen zur Verfügung stehen.\n"
 "Um Änderungen zu übernehmen, muss Liferea neu gestartet werden."
 
 #: src/interface.c:1569
@@ -1016,8 +1006,9 @@ msgid ""
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Lars Lindner <lars.lindner@gmx.net>\n"
-"Vladimir Petkov <vpetkov@i-space.org>"
+"Enrico Gernauck <enrico@fanglomerat.de>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
+"Tomislav Markovski <tome@set.com.mk>"
 msgstr ""
 
 #: src/interface.c:2562
@@ -1045,12 +1036,12 @@ msgstr ""
 #: src/main.c:56
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
-msgstr ""
-"  --debug-update   Gibt Debug-Meldungen für die Feedaktualisierung aus"
+msgstr "  --debug-update   Gibt Debug-Meldungen für die Feedaktualisierung aus"
 
 #: src/main.c:57
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  Gibt Debug-Meldungen aller Parserfunktionen aus"
+
 #: src/main.c:58
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr "  --debug-gui      Gibt Debug-Meldungen aller GUI-Funktionen aus."
@@ -1058,7 +1049,9 @@ msgstr "  --debug-gui      Gibt Debug-Meldungen aller GUI-Funktionen aus."
 #: src/main.c:59
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
-msgstr "  --debug-trace    Gibt Debug-Meldungen aus, wenn Funktionen gestartet und beendet werden"
+msgstr ""
+"  --debug-trace    Gibt Debug-Meldungen aus, wenn Funktionen gestartet und "
+"beendet werden"
 
 #: src/main.c:60
 msgid "  --debug-all      Print debugging messages of all types"
@@ -1226,12 +1219,16 @@ msgid "internal error! unknown tag type while parsing Dublin Core tag!"
 msgstr ""
 "Interner Fehler! Unbekannter Tag beim Lesen der Dublin Core Erweiterungen!"
 
-#: src/ocs_dir.c:198 src/ocs_dir.c:240 src/ocs_dir.c:354 src/ocs_dir.c:423
+#: src/ocs_dir.c:193 src/ocs_dir.c:238 src/ocs_dir.c:354 src/ocs_dir.c:425
 #, c-format
 msgid "no namespace handler for <%s:%s>!\n"
 msgstr ""
 
-#: src/ocs_dir.c:465
+#: src/ocs_dir.c:463 src/pie_feed.c:224 src/rss_channel.c:340
+msgid "<p>Invalid XML!</p>"
+msgstr ""
+
+#: src/ocs_dir.c:472
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Konnte RDF Header nicht finden!</p>"
 
@@ -1239,19 +1236,15 @@ msgstr "<p>Konnte RDF Header nicht finden!</p>"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>Konnte OPML Header nicht finden!</p>"
 
-#: src/pie_feed.c:96 src/rss_channel.c:116
-msgid "Internal error! Invalid output request mode for namespace information!"
-msgstr ""
-
 #: src/pie_feed.c:230
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Konnte OPML Header nicht finden!</p>"
 
-#: src/rss_channel.c:354
+#: src/rss_channel.c:351
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>Konnte RDF/RSS Header nicht finden!</p>"
 
-#: src/rss_item.c:233
+#: src/rss_item.c:120
 msgid "comments"
 msgstr "Kommentare"
 
@@ -1294,7 +1287,9 @@ msgstr "Es muß ein Abonnement ausgewählt werden!"
 #: src/ui_feedlist.c:350
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
-msgstr "Sie können die Hilfe nicht löschen! Schalten Sie die Anzeige der Hilfe in den Programm-Einstellungen ab."
+msgstr ""
+"Sie können die Hilfe nicht löschen! Schalten Sie die Anzeige der Hilfe in "
+"den Programm-Einstellungen ab."
 
 #: src/ui_feedlist.c:354
 msgid "Deleting entry"
@@ -1303,7 +1298,9 @@ msgstr "Lösche Feed"
 #: src/ui_feedlist.c:418
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
-msgstr "Der Anbieter dieses Feeds gibt ein Aktualisierungsinterval von %d Minuten vor."
+msgstr ""
+"Der Anbieter dieses Feeds gibt ein Aktualisierungsinterval von %d Minuten "
+"vor."
 
 #: src/ui_feedlist.c:420
 msgid "This feed specifies no default update interval."
@@ -1317,8 +1314,9 @@ msgstr ""
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
-msgstr "Der Typ des abonnierten Feeds konnte nicht ermittelt werden. "
-"Bitte abonnieren Sie ihn erneut und wählen den Typ des Feeds selbst."
+msgstr ""
+"Der Typ des abonnierten Feeds konnte nicht ermittelt werden. Bitte "
+"abonnieren Sie ihn erneut und wählen den Typ des Feeds selbst."
 
 #: src/ui_feedlist.c:512
 #, c-format
@@ -1502,6 +1500,7 @@ msgid "GtkHTML2"
 msgstr ""
 
 #: src/gtkhtml2/gtkhtml2.c:292 src/gtkhtml3/gtkhtml3.c:265
+#, c-format
 msgid ""
 "Invalid browser command! There is no %%s URL place holder in the browser "
 "command string you specified in the preferences dialog!!!"
@@ -1513,9 +1512,20 @@ msgstr ""
 msgid "GtkHTML3 (experimental)"
 msgstr "GtkHTML3-Ansicht (experimentell)"
 
-#: src/mozilla/mozembed.c:69
+#: src/mozilla/mozembed.c:65
 msgid "Mozilla (experimental)"
 msgstr "Mozilla (experimentell)"
+
+#~ msgid ""
+#~ "Failed to open HTML widget module (%s) specified in configuration!n%s\n"
+#~ msgstr ""
+#~ "Der Versuch, das angegebene HTML-Modul (%s) zu laden, schlug fehl.\n"
+
+#~ msgid "Missing symbol \"%s\" in configured HTML module!"
+#~ msgstr "Fehlendes Symbol \"%s\" in eingestelltem HTML-Modul!"
+
+#~ msgid "Cannot load HTML widget module (%s)!"
+#~ msgstr "HTML-Modul (%s) konnte nicht geladen werden!"
 
 #~ msgid "could not read from gconf path \"%s\"!\n"
 #~ msgstr "Konnte gconf-Pfad \"%s\" nicht öffnen!\n"
