@@ -109,7 +109,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 				if(NULL != tmp) {
 					item_set_id(ip, tmp);
 					tmp2 = xmlGetProp(cur, "isPermaLink");
-					if(tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"true"))
+					if(item_get_source(ip) == NULL && (tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"true")))
 						item_set_source(ip, tmp); /* Per the RSS 2.0 spec. */
 					if (tmp2 != NULL)
 						xmlFree(tmp2);
