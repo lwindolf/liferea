@@ -220,7 +220,7 @@ echo Use X Session Management........ : $enable_sm
 echo
 dnl echo Use libcurl download library.... : $enable_libcurl
 dnl echo
-eval eval echo Gaim will be installed in $bindir.
+eval eval echo Liferea will be installed in $bindir.
 echo
 echo configure complete, now type \'make\'
 echo
