@@ -1,7 +1,7 @@
 /*
    everything concerning DnD
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -18,6 +18,10 @@
    the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
    Boston, MA 02111-1307, USA.
 */
+
+#ifdef SUN
+#	include "os-support.h"	/* for strsep */
+#endif
 
 #include <string.h> /* For strncmp */
 #include "support.h"
@@ -100,22 +104,18 @@ gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, 
 
 /* method to receive URLs which were dropped anywhere in the main window */
 static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {	
-	gchar	*tmp1, *tmp2, *tmp3;
+	char	*tmp1, *tmp2, *freeme;
 	
 	g_return_if_fail (data->data != NULL);
 	
 	if((data->length >= 0) && (data->format == 8)) {
 		/* extra handling to accept multiple drops */	
-		tmp3 = tmp2 = tmp1 = g_strdup(data->data);
-		while(*tmp1) {
-			while(*tmp1 != '\n')
-				tmp1++;
-			*(tmp1 - 1) = 0;
-			
-			subscribeTo(FST_AUTODETECT, g_strdup(tmp2), g_strdup(selected_keyprefix), TRUE);			
-			tmp2 = ++tmp1;
+		freeme = tmp1 = strdup(data->data);
+		while(tmp2 = strsep(&tmp1, "\n\r")) {			
+			if(0 != strlen(tmp2))
+				subscribeTo(FST_AUTODETECT, g_strdup(tmp2), g_strdup(selected_keyprefix), TRUE);
 		}
-		g_free(tmp3);
+		free(freeme);
 		gtk_drag_finish(context, TRUE, FALSE, time);		
 	} else {
 		gtk_drag_finish(context, FALSE, FALSE, time);
