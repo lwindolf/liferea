@@ -34,6 +34,7 @@ extern GdkPixbuf	*icons[];
 static GtkTreeStore	*itemstore = NULL;
 
 extern feedPtr		selected_fp;
+extern gint       selected_type;
 
 extern gboolean 	itemlist_mode;
 
@@ -398,18 +399,65 @@ gboolean on_Itemlist_move_cursor(GtkTreeView *treeview, GtkMovementStep  step, g
 }
 
 void on_popup_allunread_selected(void) {
-	GtkTreeIter	iter;
 	itemPtr		ip;
-	gboolean 	valid;
+	gboolean    valid;
+	GtkWidget		*treeview;
+	GtkTreeSelection	*select;
+   GtkTreeModel		*model;
+	GtkTreeIter iter, child;
+	gchar			*ckey;
+	feedPtr     fp;
+	GSList		*itemlist;
 
-	g_assert(NULL != itemstore);
-	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-	while(valid) {
-               	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
-		g_assert(ip != NULL);
-		markItemAsRead(ip);
+	if (selected_type == FST_NODE) {
+		/* A folder is selected, mark as read the content of all its feeds */
 
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+		g_assert(NULL != mainwindow);
+		treeview = lookup_widget(mainwindow, "feedlist");
+		g_assert(NULL != treeview);
+
+		select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+		g_assert(NULL != select);
+
+		if(!gtk_tree_selection_get_selected(select, &model, &iter)) {
+			print_status(_("could not retrieve selected of entry list!"));
+			return;
+		}
+
+		valid = gtk_tree_model_iter_children(model, &child, &iter);
+		while (valid) {
+
+			/* get the feed pointer */
+			gtk_tree_model_get(model, &child, FS_KEY, &ckey, -1);
+			g_assert(NULL != ckey);
+			fp = getFeed(ckey);
+			g_free(ckey);
+
+			/* Mark all as read */
+			itemlist = getFeedItemList(fp);
+			while(NULL != itemlist) {
+				ip = itemlist->data;
+				markItemAsRead(ip);
+				itemlist = g_slist_next(itemlist);
+			}
+
+			/* next feed in selected folder */
+			valid = gtk_tree_model_iter_next(model, &child);
+		}
+
+	} else {
+
+		g_assert(NULL != itemstore);
+
+		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+		while(valid) {
+			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+			g_assert(ip != NULL);
+			markItemAsRead(ip);
+
+			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+		}
+
 	}
 
 	/* redraw feed list to update unread items count */
