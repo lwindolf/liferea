@@ -2090,7 +2090,7 @@ create_prefdialog (void)
 
   hbox62 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox62);
-  gtk_box_pack_start (GTK_BOX (vbox2582), hbox62, TRUE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2582), hbox62, FALSE, FALSE, 0);
 
   timeradiobtn3 = gtk_radio_button_new_with_mnemonic (NULL, _("User defined format:"));
   gtk_widget_show (timeradiobtn3);
