@@ -45,21 +45,24 @@
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
+static GdkCursor	*link_cursor = NULL;
+
 /* prototypes */
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 static void launch_url(GtkWidget *widget, const gchar *url);
 static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane);
 
-static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {
+static int button_press_event(HtmlView *view, GdkEventButton *event, gpointer userdata) {
 
-	g_return_val_if_fail (html != NULL, FALSE);
-	g_return_val_if_fail (event != NULL, FALSE);
+	g_return_val_if_fail(view != NULL, FALSE);
+	g_return_val_if_fail(event != NULL, FALSE);
 
 	if((event->type == GDK_BUTTON_PRESS) && (event->button == 3)) {
-		if(NULL == selectedURL)
+		if(NULL == selectedURL) {
 			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
-		else {
+		} else {
+			gdk_window_set_cursor(GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), NULL);
 			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		}
@@ -195,6 +198,7 @@ static void on_url (HtmlView *view, const char *url, gpointer user_data) {
 	selectedURL = NULL;
 
 	if(NULL != url) {
+		gdk_window_set_cursor(GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), link_cursor);
 		absURL = common_build_url(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));
 		if(absURL != NULL) {
 			selectedURL = g_strdup(absURL);
@@ -202,6 +206,7 @@ static void on_url (HtmlView *view, const char *url, gpointer user_data) {
 			xmlFree(absURL);
 		}
 	} else {
+		gdk_window_set_cursor(GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), NULL);
 		ui_mainwindow_set_status_bar("");
 	}
 }
@@ -301,7 +306,10 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 static GtkWidget* gtkhtml2_new() {
 	gulong	handler;
 	GtkWidget *htmlwidget;
-	GtkWidget *scrollpane = gtk_scrolled_window_new(NULL, NULL);
+	GtkWidget *scrollpane;
+	
+	link_cursor = gdk_cursor_new(GDK_HAND1);
+	scrollpane = gtk_scrolled_window_new(NULL, NULL);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrollpane), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrollpane), GTK_SHADOW_IN);

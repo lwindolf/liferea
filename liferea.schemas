@@ -95,17 +95,6 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/liferea/disable-helpfeeds</key>
-      <applyto>/apps/liferea/disable-helpfeeds</applyto>
-      <owner>liferea</owner>
-      <type>bool</type>
-      <locale name="C">
-        <default>false</default>
-        <short>Disable loading of help feeds</short>
-	   <long>Disable loading of the help feeds at Liferea startup.</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/liferea/disable-menubar</key>
       <applyto>/apps/liferea/disable-menubar</applyto>
       <owner>liferea</owner>
