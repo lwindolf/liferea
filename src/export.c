@@ -199,20 +199,38 @@ void on_export_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 void on_exportfileselected_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*source;
-	
+	const gchar *name;
+	gchar *utfname;
+	gint read, written;
+
 	gtk_widget_hide(filedialog);	
 
-	if(NULL != (source = lookup_widget(exportdialog, "exportfileentry")))
-		gtk_entry_set_text(GTK_ENTRY(source), gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog)));
+	if(NULL != (source = lookup_widget(exportdialog, "exportfileentry"))) {
+		name = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog));
+		utfname = g_filename_to_utf8(name,-1,&read, &written, NULL);
+		if (utfname!= NULL) {
+			gtk_entry_set_text(GTK_ENTRY(source), utfname);
+		}
+		g_free(utfname);
+	}
 }
 
 void on_importfileselected_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*source;
+	const gchar *name;
+	gchar *utfname;
+	gint read, written;
 	
 	gtk_widget_hide(filedialog);	
 
-	if(NULL != (source = lookup_widget(importdialog, "importfileentry")))
-		gtk_entry_set_text(GTK_ENTRY(source), gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog)));
+	if(NULL != (source = lookup_widget(importdialog, "importfileentry"))) {
+		name = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog));
+		utfname = g_filename_to_utf8(name,-1,&read, &written, NULL);
+		if (utfname!= NULL) {
+			gtk_entry_set_text(GTK_ENTRY(source), utfname);
+		}
+		g_free(utfname);
+	}
 }
 
 void on_exportfileselect_clicked(GtkButton *button, gpointer user_data) {
@@ -242,13 +260,34 @@ void on_importfileselect_clicked(GtkButton *button, gpointer user_data) {
 }
 
 void on_exportfile_clicked(GtkButton *button, gpointer user_data) {
-
+	GtkWidget	*source;
+	const gchar *utfname;
+	gchar *name;
+	gint read, written;
 	gtk_widget_hide(exportdialog);
-	exportOPMLFeedList((gchar *)gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog)));
+
+	if(NULL != (source = lookup_widget(exportdialog, "exportfileentry"))) {
+		utfname = gtk_entry_get_text(GTK_ENTRY(source));
+		name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
+		if (name != NULL) {
+			exportOPMLFeedList(name);
+			g_free(name);
+		}
+	}
 }
 
 void on_importfile_clicked(GtkButton *button, gpointer user_data) {
-
+	GtkWidget	*source;
+	const gchar *utfname;
+	gchar *name;
+	GError *err = NULL;
 	gtk_widget_hide(importdialog);
-	importOPMLFeedList((gchar *)gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog)));
+	if(NULL != (source = lookup_widget(importdialog, "importfileentry"))) {
+		utfname = gtk_entry_get_text(GTK_ENTRY(source));
+		name = g_filename_from_utf8(utfname,-1,NULL, NULL, &err);
+		if (name != NULL) {
+			importOPMLFeedList(name);
+			g_free(name);
+		}
+	}
 }
