@@ -215,7 +215,7 @@ void feed_save(feedPtr fp) {
 		return;
 	
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
-	filename = getCacheFileName(fp->id, NULL);
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
@@ -314,7 +314,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
 	
-	filename = getCacheFileName(fp->id, NULL);
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
@@ -903,7 +903,7 @@ void feed_free(feedPtr fp) {
 	g_assert(IS_FEED(fp->type) || IS_DIRECTORY(fp->type));
 	
 	if (fp->id && fp->id[0] != '\0')
-		filename = getCacheFileName(fp->id, NULL);
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	
 	/* free UI info */
 	if(fp->ui_data)

@@ -249,13 +249,22 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		}
 
 		newid = conf_new_id();
-		
-		oldfilename = getCacheFileName(cacheid, getExtension(type));
-		newfilename = getCacheFileName(newid, NULL);
+
+		/* Move feed cache file */
+		oldfilename = common_create_cache_filename(NULL, cacheid, getExtension(type));
+		newfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", newid, NULL);
 		rename(oldfilename, newfilename);
 		g_free(oldfilename);
 		g_free(newfilename);
-		
+
+		/* Move feed favicon file */
+		oldfilename = common_create_cache_filename(NULL, cacheid, "xpm");
+		newfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", newid, "xpm");
+		rename(oldfilename, newfilename);
+		g_free(oldfilename);
+		g_free(newfilename);
+
+		/* FIXME: Move XPM also! */
 		fp = feed_new();
 		feed_set_type(fp, type);
 		feed_set_source(fp, url);

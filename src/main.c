@@ -116,8 +116,7 @@ int main (int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
 	mainThread = g_thread_self();		/* we need to now this when locking in ui_queue.c */
 
-	add_pixmap_directory(PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
-	add_pixmap_directory(getCachePath());
+	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
 	mainwindow = create_mainwindow();
 	ui_queue_init();		/* set up callback queue for other threads */

@@ -408,7 +408,7 @@ time_t parseRFC822Date(gchar *date) {
 }
 
 void initCachePath(void) {
-	CACHEPATH = g_strdup_printf("%s/.liferea", g_get_home_dir());
+	CACHEPATH = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea", g_get_home_dir());
 
 	if(!g_file_test(CACHEPATH, G_FILE_TEST_IS_DIR)) {
 		if(0 != mkdir(CACHEPATH, S_IRUSR | S_IWUSR | S_IXUSR)) {
@@ -444,26 +444,17 @@ gchar *getExtension(gint type) {
 	return extension;
 }
 
-gchar * getCacheFileName( gchar *key, gchar *extension) {
+gchar * common_create_cache_filename( gchar *folder, gchar *key, gchar *extension) {
 	gchar *filename;
-	gchar *i;
-	gchar *all;
 
-	/* build filename */	
-	filename = g_strdup(key);
-	i = filename;
-	while(*i !='\0') {
-		if (*i == '/')
-			*i = '_';
-		i++;
-	}
-
-	if(NULL != extension)	
-		all = g_strdup_printf("%s/%s.%s", getCachePath(), filename, extension);
-	else
-		all = g_strdup_printf("%s/%s", getCachePath(), filename);
-	g_free(filename);
-	return all;
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", getCachePath(),
+						  (folder != NULL) ? folder : "",
+						  (folder != NULL) ? G_DIR_SEPARATOR_S : "",
+						  key,
+						  (extension != NULL)? "." : "",
+						  (extension != NULL)? extension : "");
+	
+	return filename;
 }
 
 static gchar * byte_to_hex(unsigned char nr) {

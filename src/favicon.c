@@ -398,15 +398,23 @@ convert_favicon_to_XPM(gchar *outputfile, unsigned char *icondata, int datalen)
 void favicon_load(feedPtr fp) {
 	gchar		*filename, *tmp;
 	GdkPixbuf	*pixbuf;
+	GError *error = NULL;
 	
 	/* try to load a saved favicon */
-	filename = getCacheFileName(fp->id, "xpm");
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons",fp->id, "xpm");
+
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		/* remove path, because create_pixbuf allows no absolute pathnames */
-		tmp = strrchr(filename, '/');
-		pixbuf = create_pixbuf(++tmp);
-		fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
-		g_object_unref(pixbuf);
+		pixbuf = gdk_pixbuf_new_from_file (filename, &error);
+		if (pixbuf) {
+			fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
+			g_object_unref(pixbuf);
+		} else { /* Error */
+			fprintf (stderr, "Failed to load pixbuf file: %s: %s\n",
+				    filename, error->message);
+			g_error_free (error);
+		}
+		
 	}
 	g_free(filename);
 }
@@ -415,7 +423,7 @@ void favicon_remove(feedPtr fp) {
 	gchar		*filename;
 	
 	/* try to load a saved favicon */
-	filename = getCacheFileName( fp->id, "xpm");
+	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", fp->id, "xpm");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename)) {
 			g_warning(_("Could not delete icon file %s! Please remove manually!"), filename);
@@ -444,7 +452,7 @@ void favicon_download(feedPtr fp) {
 			update_request_free(request);
 			
 			if(NULL != icodata) {
-				tmp = getCacheFileName(fp->id, "xpm");
+				tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "xpm");
 					convert_favicon_to_XPM(tmp, icodata, 10000000);
 					favicon_load(fp);
 					g_free(tmp);

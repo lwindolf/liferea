@@ -71,7 +71,7 @@ gchar * formatDate(time_t t);
 
 gchar *	getExtension(gint type);
 gchar *	getCachePath(void);
-gchar * getCacheFileName(gchar *key, gchar *extension);
+gchar * common_create_cache_filename( gchar *folder, gchar *key, gchar *extension);
 
 gchar * encodeURIString(gchar *uriString);
 #endif
