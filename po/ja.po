@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.5.3-test\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-09 02:39+0200\n"
+"POT-Creation-Date: 2004-09-10 20:05+0200\n"
 "PO-Revision-Date: 2004-08-15 22:15+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -16,35 +16,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/common.c:277
+#: src/common.c:278
 msgid "[Parser error output was truncated!]"
 msgstr "[パーサのエラー出力を切りつめました]"
 
-#: src/common.c:317
+#: src/common.c:318
 #, c-format
 msgid ""
 "xmlReadMemory(): Could not parse document:\n"
 "%s%s"
 msgstr ""
 
-#: src/common.c:390 src/common.c:501
+#: src/common.c:391 src/common.c:502
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "[内部エラー] 時刻変換 (mktime) に失敗しました！\n"
 
-#: src/common.c:393
+#: src/common.c:394
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "ISO8601 の日付の書式が間違っています！ (<dc:date> 情報を無視します)\n"
 
-#: src/common.c:504
+#: src/common.c:505
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "RFC822 の日付の書式が間違っています！ (日付の情報を無視します)\n"
 
-#: src/common.c:518 src/common.c:525 src/common.c:531 src/common.c:538
+#: src/common.c:519 src/common.c:526 src/common.c:532 src/common.c:539
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "キャッシュ・フォルダ %s を生成できません！"
 
-#: src/common.c:608
+#: src/common.c:609
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -1299,28 +1299,28 @@ msgstr "ソース"
 msgid "coverage"
 msgstr "適用範囲"
 
-#: src/net/conversions.c:74
+#: src/net/conversions.c:80
 msgid "No description available."
 msgstr "有効な説明がありません。"
 
-#: src/net/conversions.c:355
+#: src/net/conversions.c:361
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "[エラー] zlib_uncompress: %d %s\n"
 
-#: src/net/conversions.c:371
+#: src/net/conversions.c:377
 msgid "ERROR: No output during decompression"
 msgstr "[エラー] 解凍結果の出力がありません"
 
-#: src/net/conversions.c:404
+#: src/net/conversions.c:410
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "[エラー] GZIP データのマジック・バイトが正しくありません"
 
-#: src/net/conversions.c:409
+#: src/net/conversions.c:415
 msgid "ERROR: Compression method is not deflate"
 msgstr "[エラー] 圧縮方法が定義されていません"
 
-#: src/net/conversions.c:414
+#: src/net/conversions.c:420
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "[エラー] フラグ %d はサポートしていません\n"

@@ -8,45 +8,45 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISLD Localization Project 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"POT-Creation-Date: 2004-09-10 20:05+0200\n"
 "PO-Revision-Date: 2004-09-09 13:58+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
-#: src/common.c:277
+#: src/common.c:278
 msgid "[Parser error output was truncated!]"
 msgstr "[Четенето беше прекъснато!]"
 
-#: src/common.c:317
+#: src/common.c:318
 #, c-format
 msgid ""
 "xmlReadMemory(): Could not parse document:\n"
 "%s%s"
 msgstr ""
 
-#: src/common.c:390 src/common.c:501
+#: src/common.c:391 src/common.c:502
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr ""
 "вътрешна грешка! грешка при преустройването на датата·!·mktime·неуспешно!\n"
 
-#: src/common.c:393
+#: src/common.c:394
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "Невалиден ISO8601 формат на датата.! Игнорира <dc:date> информация!\n"
 
-#: src/common.c:504
+#: src/common.c:505
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr ""
 "Невалиден RFC822 формат на датата! Игнориране на информацията за датата!\n"
 
-#: src/common.c:518 src/common.c:525 src/common.c:531 src/common.c:538
+#: src/common.c:519 src/common.c:526 src/common.c:532 src/common.c:539
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "Не може да създаде кеш директория \"%s\" !"
 
-#: src/common.c:608
+#: src/common.c:609
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -380,7 +380,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "Осъвременяване на _всички"
 
-#: src/interface.c:237 src/ui_mainwindow.c:188
+#: src/interface.c:237 src/ui_mainwindow.c:174
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 "Осъвременяване на всички абонаменти. OCS директориите не се осъвременяват."
@@ -437,7 +437,7 @@ msgstr "_Записи"
 msgid "_Next Unread Item"
 msgstr "_Следващия непрочетен запис"
 
-#: src/interface.c:315 src/ui_mainwindow.c:186
+#: src/interface.c:315 src/ui_mainwindow.c:172
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1285,28 +1285,28 @@ msgstr "първичен код"
 msgid "coverage"
 msgstr "покритие"
 
-#: src/net/conversions.c:74
+#: src/net/conversions.c:80
 msgid "No description available."
 msgstr "Няма описание."
 
-#: src/net/conversions.c:355
+#: src/net/conversions.c:361
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "ГРЕШКА: zlib_uncompress: %d %s\n"
 
-#: src/net/conversions.c:371
+#: src/net/conversions.c:377
 msgid "ERROR: No output during decompression"
 msgstr "ГРЕШКА: няма изход по време на декомпресията"
 
-#: src/net/conversions.c:404
+#: src/net/conversions.c:410
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "ГРЕШКА: Невалидни байтове за GZIP информация"
 
-#: src/net/conversions.c:409
+#: src/net/conversions.c:415
 msgid "ERROR: Compression method is not deflate"
 msgstr "ГРЕШКА: Методът за компресия не е изпразнен!"
 
-#: src/net/conversions.c:414
+#: src/net/conversions.c:420
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "ГРЕШКА: неподдържани флагове %d\n"
@@ -1570,58 +1570,58 @@ msgstr "Този източник няма подразбиращ се инте�
 msgid "Choose File"
 msgstr "Избор на файл"
 
-#: src/ui_feedlist.c:356
+#: src/ui_feedlist.c:399
 msgid "You have to select a feed entry"
 msgstr "Трябва да изберете адрес на източник"
 
-#: src/ui_feedlist.c:366
+#: src/ui_feedlist.c:409
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea·е в изключен режим.·Осъвременявания на абонаментите не са възможни."
 
-#: src/ui_feedlist.c:387
+#: src/ui_feedlist.c:430
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
+#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
 msgid "Deleting entry"
 msgstr "Изтриване на запис"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:473
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Сигурни ли сте, че искате да изтриете·\"%s\"·и всички записи в него?"
 
-#: src/ui_feedlist.c:433
+#: src/ui_feedlist.c:476
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Сигурни ли сте, че искате да изтриете·\"%s\"?"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:484
 msgid "Deletion Confirmation"
 msgstr "Потвърждаване при изтриване"
 
-#: src/ui_feedlist.c:478
+#: src/ui_feedlist.c:521
 msgid "You must select a feed entry"
 msgstr "Трябва да изберете запис"
 
-#: src/ui_feedlist.c:479
+#: src/ui_feedlist.c:522
 msgid "You must select a feed entry."
 msgstr "Трябва да изберете запис."
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:568
 msgid "New subscription"
 msgstr "Нов абонамент"
 
-#: src/ui_folder.c:76 src/ui_folder.c:102
+#: src/ui_folder.c:78
 msgid "A folder must be selected."
 msgstr "Папката трябва да бъде избрана."
 
-#: src/ui_folder.c:220
+#: src/ui_folder.c:178
 msgid "<i>(empty)</i>"
 msgstr "<i>(празен)</i>"
 
-#: src/ui_folder.c:349
+#: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "вътрешна грешка! непознат тип запис! не може да бъде изобразенаподходяща "
@@ -1647,27 +1647,28 @@ msgstr "Трябва да изберете абонамент, за да изт�
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:723
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:719
 msgid "There are no unread items "
 msgstr "Няма непрочетени записи "
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "New Feed"
 msgstr "Нов абонамент"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "Add a new subscription."
 msgstr "Добавяне на нов абонамент."
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:172
 msgid "Next Unread"
 msgstr "Следващ непрочетен"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid "Mark As Read"
 msgstr "Избиране като прочетен"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1675,27 +1676,27 @@ msgstr ""
 "Маркиране като прочетени на всички избрани абонаменти или на всички "
 "абонаменти в избраната папка."
 
-#: src/ui_mainwindow.c:188
+#: src/ui_mainwindow.c:174
 msgid "Update All"
 msgstr "Осъвременяване на всички"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search"
 msgstr "Търсене"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search all feeds."
 msgstr "Търсене във всички абонаменти."
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Edit preferences."
 msgstr "Промяна на настройките."
 
-#: src/ui_mainwindow.c:205
+#: src/ui_mainwindow.c:191
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1748,11 +1749,11 @@ msgstr ""
 "прочетете документацията предоставена от абонамента за помощ или секцията с "
 "Често задаваните въпроси на страницата на програмата.</p>"
 
-#: src/ui_mainwindow.c:290
+#: src/ui_mainwindow.c:276
 msgid "Liferea is now online"
 msgstr "Liferea е включена"
 
-#: src/ui_mainwindow.c:293
+#: src/ui_mainwindow.c:279
 msgid "Liferea is now offline"
 msgstr "Liferea е в режим \"изключен\""
 
@@ -1909,7 +1910,9 @@ msgstr "Моля, първо направете търсене!"
 #: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
-msgstr "%d нов запис!"
+msgid_plural "%d new items!"
+msgstr[0] "%d нов запис!"
+msgstr[1] "%d нов запис!"
 
 #: src/ui_tray.c:103
 msgid "No new items."
