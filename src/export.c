@@ -82,12 +82,37 @@ void exportOPMLFeedList(gchar *filename) {
 
 }
 
+static void parseOutline(xmlNodePtr cur, gchar *folderkey) {
+	gchar		*title, *source;
+	feedPtr		fp;
+	
+	/* process the outline node */	
+	title = xmlGetProp(cur, BAD_CAST"title");
+	source = xmlGetProp(cur, BAD_CAST"xmlUrl");
+	if(NULL != source) {
+		if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), g_strdup(folderkey)))) {
+			addToFeedList(fp, FALSE);
+
+			if(NULL != title)
+				setFeedTitle(fp, g_strdup(title)); 
+		}
+		updateUI();
+	}
+	
+	/* process any children */
+	cur = cur->xmlChildrenNode;
+	while(cur != NULL) {
+		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
+			parseOutline(cur, folderkey);
+
+		cur = cur->next;
+	}
+}
+
 void importOPMLFeedList(gchar *filename) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gchar		*folderkey, *foldertitle;
-	gchar		*title, *source;
-	feedPtr		fp;
 
 	/* create a new import folder */	
 	foldertitle = g_strdup(_("imported feed list"));
@@ -127,19 +152,9 @@ void importOPMLFeedList(gchar *filename) {
 			if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
 				cur = cur->xmlChildrenNode;
 				while(cur != NULL) {
-					if((!xmlStrcmp(cur->name, BAD_CAST"outline"))) {
-						title = xmlGetProp(cur, BAD_CAST"title");
-						source = xmlGetProp(cur, BAD_CAST"xmlUrl");
-						if(NULL != source) {
-							if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), g_strdup(folderkey)))) {
-								addToFeedList(fp, FALSE);
-								
-								if(NULL != title)
-									setFeedTitle(fp, g_strdup(title)); 
-							}
-							updateUI();
-						}
-					}
+					if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
+						parseOutline(cur, folderkey);
+
 					cur = cur->next;
 				}
 				break;
