@@ -1047,6 +1047,10 @@ create_newdialog (void)
   g_signal_connect_swapped ((gpointer) newfeedbtn, "clicked",
                             G_CALLBACK (on_newfeedbtn_clicked),
                             GTK_OBJECT (newfeedentry));
+  g_signal_connect_data ((gpointer) newfeedbtn, "clicked",
+                         G_CALLBACK (gtk_widget_hide),
+                         GTK_OBJECT (newdialog),
+                         NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
   g_signal_connect_swapped ((gpointer) cancelbtn, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (newdialog));

@@ -1324,6 +1324,7 @@ the feed title, which is displayed in the feed list.</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="response_id">-5</property>
 	      <signal name="clicked" handler="on_newfeedbtn_clicked" object="newfeedentry" last_modification_time="Fri, 25 Jul 2003 21:56:23 GMT"/>
+	      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="newdialog" last_modification_time="Sun, 30 Nov 2003 01:35:13 GMT"/>
 	    </widget>
 	  </child>
 
