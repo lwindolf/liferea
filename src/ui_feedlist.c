@@ -176,7 +176,11 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			/* Set up the item list */
 			ui_itemlist_load(fp, NULL);
 		} 
+	} else {
+		/* If we cannot get the new selection we keep the old one
+		   this happens when we're doing drag&drop for example. */
 	}
+}
 }
 
 /* sets up the entry list store and connects it to the entry list
