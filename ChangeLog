@@ -1,10 +1,18 @@
 2004-07-24  Lars Lindner <lars.lindner@gmx.net>
 
+	Version 0.5.3
+	
 	* New File selectors are used when compiled with GTK+ 2.4).
 	  (Nathan Conrad)
 	* XML parsers now detect namespaces based on their URL. (Nathan
-	Conrad)
+	  Conrad)
 
+	Bugfixes:
+	
+	* Favicons downloaded using gzip compression are no longer
+	  corrupted. This might fix some other download problems. (Nathan
+	  Conrad)
+	
 2004-07-23 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.2b
