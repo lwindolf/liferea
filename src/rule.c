@@ -1,7 +1,7 @@
 /**
  * @file rule.c feed/vfolder rule handling
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,10 @@
 #include "feed.h"
 #include "item.h"
 #include "rule.h"
+
+#define EXACT_MATCH_RULE_ID		"exact"
+#define EXACT_TITLE_MATCH_RULE_ID	"exact_title"
+#define EXACT_DESC_MATCH_RULE_ID	"exact_desc"
    
 /* rule function interface, each function requires a item
    structure which it matches somehow against its values and
@@ -45,10 +49,20 @@ rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean a
 	for(i = 0, ri = ruleFunctions; i < nrOfRuleFunctions; i++, ri++) {
 		if(0 == strcmp(ri->ruleId, ruleId)) {
 			rp = (rulePtr)g_new0(struct rule, 1);
-			rp->fp = fp;
-			rp->value = g_strdup(value);
 			rp->ruleInfo = ri;
 			rp->additive = additive;
+			rp->fp = fp;
+			
+			/* if it is a text matching rule make the text
+			   matching value case insensitive */
+			if((0 == strcmp(ruleId, EXACT_MATCH_RULE_ID)) ||
+			   (0 == strcmp(ruleId, EXACT_TITLE_MATCH_RULE_ID)) ||
+			   (0 == strcmp(ruleId, EXACT_DESC_MATCH_RULE_ID))) {
+				rp->value = g_utf8_casefold(value, -1);
+			} else {
+				rp->value = g_strdup(value);
+			}
+			
 			return rp;
 		}
 	}	
@@ -72,23 +86,31 @@ void rule_free(rulePtr rp) {
 /* -------------------------------------------------------------------- */
 
 static gboolean rule_exact_title_match(rulePtr rp, itemPtr ip) {
-
-	if(NULL != item_get_title(ip)) {
-		if(NULL != strstr(item_get_title(ip), rp->value))
-			return TRUE;
+	gboolean	result = FALSE;
+	gchar 		*title;
+	
+	if(NULL != (title = (gchar *)item_get_title(ip))) {
+		title = g_utf8_casefold(title, -1);
+		if(NULL != strstr(title, rp->value))
+			result = TRUE;
+		g_free(title);
 	}
 	
-	return FALSE;
+	return result;
 }
 
 static gboolean rule_exact_description_match(rulePtr rp, itemPtr ip) {
+	gboolean	result = FALSE;
+	gchar 		*desc;
 
-	if(NULL != item_get_description(ip)) {
+	if(NULL != (desc = (gchar *)item_get_description(ip))) {
+		desc = g_utf8_casefold(desc, -1);
 		if(NULL != strstr(item_get_description(ip), rp->value))
-			return TRUE;
+			result = TRUE;
+		g_free(desc);
 	}
 	
-	return FALSE;
+	return result;
 }
 
 static gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
@@ -130,9 +152,9 @@ static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gchar *
 
 void rule_init(void) {
 
-	rule_add(rule_exact_match,		"exact",		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
-	rule_add(rule_exact_title_match,	"exact_title",		_("Item title"),	_("does match"),	_("does not match"),	TRUE);
-	rule_add(rule_exact_description_match,	"exact_desc",		_("Item body"),		_("does match"),	_("does not match"),	TRUE);
-	rule_add(rule_is_unread,		"unread",		_("Read status"),	_("is unread"),		_("is read"),		FALSE);
-	rule_add(rule_is_flagged,		"flagged",		_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
+	rule_add(rule_exact_match,		EXACT_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_add(rule_exact_title_match,	EXACT_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE);
+	rule_add(rule_exact_description_match,	EXACT_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE);
+	rule_add(rule_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
+	rule_add(rule_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
 }
