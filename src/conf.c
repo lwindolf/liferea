@@ -124,6 +124,9 @@ void conf_init() {
 	gconf_client_notify_add(client, "/desktop/gnome/interface/toolbar_style", conf_toolbar_style_settings_cb, NULL, NULL, NULL);
 	gconf_client_notify_add(client, SHOW_TRAY_ICON, conf_tray_settings_cb, NULL, NULL, NULL);
 	
+	/* for 0.6.4 migrations ... */
+	setBooleanConfValue("/apps/liferea/last-itemlist-mode", FALSE);
+	
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb(NULL, 0, NULL, NULL);
 }
