@@ -297,7 +297,7 @@ gchar * formatDate(time_t t) {
 				timeformat =  g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));	
 				break;
 		}		
-		strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
+		strftime(timestr, TIMESTRLEN, (char *)timeformat, localtime(&t));
 		g_free(timeformat);
 	}
 	
@@ -372,10 +372,12 @@ static gchar * byte_to_hex(gint nr) {
 	return result;
 }
 
+/* Encodes any UTF-8 string in uriString and returns a 
+   valid UTF-8 encoded HTTP URI. Note that the uriString will be freed. */
 gchar * encodeURIString(gchar *uriString) {
 	gchar		*newURIString;
 	gchar		*tmp, *hex;
-	int		i, len;
+	int		i, j, len;
 
 	newURIString = g_strdup("");
 	len = strlen(uriString);
@@ -396,15 +398,51 @@ gchar * encodeURIString(gchar *uriString) {
 		   	tmp = g_strdup_printf("%s%c", newURIString, uriString[i]);
 		else if(uriString[i] == ' ')
 			tmp = g_strdup_printf("%s%c", newURIString, '+');
-		else if(uriString[i] <= 0x007f) {
+		else if((unsigned char)uriString[i] <= 127) {
 			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
-		} else if(uriString[i] <= 0x07FF) {
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0xc0 | (uriString[i] >> 6)));g_free(hex);g_free(newURIString);newURIString = tmp;
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0x80 | (uriString[i] & 0x3F)));g_free(hex);
-		} else {
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0xe0 | (uriString[i] >> 12)));g_free(hex);g_free(newURIString); newURIString = tmp;
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0x80 | ((uriString[i] >> 6) & 0x3F)));g_free(hex);g_free(newURIString); newURIString = tmp;
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(0x80 | (uriString[i] & 0x3F)));g_free(hex);
+		} else if(((unsigned char)uriString[i] >= 192) && ((unsigned char)uriString[i] <= 223)) {	// two bytes
+			if((i + 1) > len) {
+				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
+				break;
+			}
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
+		} else if(((unsigned char)uriString[i] > 223) && ((unsigned char)uriString[i] <= 239)) {	// three bytes
+			if((i + 2) > len) {
+				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
+				break;
+			}
+			for(j=0; j < 2; j++) {
+				tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
+			}
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
+		} else if(((unsigned char)uriString[i] > 239) && ((unsigned char)uriString[i] <= 247)) {	// four bytes
+			if((i + 3) > len) {
+				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
+				break;
+			}
+			for(j=0; j < 3; j++) {
+				tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
+			}
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
+		} else if(((unsigned char)uriString[i] > 247) && ((unsigned char)uriString[i] <= 251)) {	// five bytes
+			if((i + 4) > len) {
+				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
+				break;
+			}
+			for(j=0; j < 4; j++) {
+				tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
+			}			
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
+		} else if(((unsigned char)uriString[i] > 247) && ((unsigned char)uriString[i] <= 251)) {	// guess how many!
+			if((i + 5) > len) {
+				g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
+				break;
+			}
+			for(j=0; j < 5; j++) {
+				tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i++]));g_free(hex);g_free(newURIString);newURIString = tmp;
+			}
+			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(uriString[i]));g_free(hex);
 		}
 		g_free(newURIString); 
 		newURIString = tmp;
