@@ -1,0 +1,343 @@
+<gconfschemafile>
+
+<!--
+Note: all double hyphens in this comment have a space in the middle
+because double hyphen isn't allowed in comments. So, remove the space
+before use.
+
+To install this file type:
+      gconftool - -install-schema-file basic-gconf-app.schemas
+You probably want your "make install" to do this for real applications.
+Also, you probably want a configure option so people can retarget where the
+schema file gets installed. The option should be called - -gconf-config-source=blah
+To change the gconftool target use the - -config-source=blah option to gconftool.
+-->
+
+
+  <schemalist>
+    <schema>
+      <key>/schemas/apps/liferea/browse-inside-application</key>
+      <applyto>/apps/liferea/browse-inside-application</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Open links inside of Liferea?</short>
+        <long>If set to true, links clicked will be opened inside of
+        Liferea, otherwise they will be opened in the selected
+        external browser.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/browse-key-setting</key>
+      <applyto>/apps/liferea/browse-key-setting</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>1</default>
+        <short>Selects which key to use to pagedown or go to the next
+	   unread item</short>
+        <long>Selects which key to use to pagedown or go to the next
+	   unread item. Set to 0 to use ctrl-space, 1 to use space, or 2
+	   to use alt-space.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/browser</key>
+      <applyto>/apps/liferea/browser</applyto>
+      <owner>liferea</owner>
+      <type>string</type>
+      <locale name="C">
+        <default>mozilla %s</default>
+        <short>Selects the browser command to use when browser_module
+	   is set to manual</short>
+        <long>Selects the browser command to use when browser_module
+	   is set to manual.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/browser_id</key>
+      <applyto>/apps/liferea/browser_id</applyto>
+      <owner>liferea</owner>
+      <type>string</type>
+      <locale name="C">
+        <default>gnome</default>
+        <short>Selects which browser to use to open external links</short>
+        <long>Selects which browser to use to open external
+	   links. The choices include "gnome", "mozilla", "firefox",
+	   "netscape", "opera", "konqueror", and "manual". </long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/browser-module</key>
+      <applyto>/apps/liferea/browser-module</applyto>
+      <owner>liferea</owner>
+      <type>string</type>
+      <locale name="C">
+        <default>libihtmlm.so</default>
+        <short>Selects which HTML rendering engine to use</short>
+        <long>Selects which HTML rendering engine to use. Usually
+	   'libihtmlg.so' and 'libihtmlm.so' are available.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/browser_place</key>
+      <applyto>/apps/liferea/browser_place</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Location of position to open up the link in the
+	   selected browser</short>
+        <long>Selects the location in the browser to open up the
+	   link. Use 0 for the browser's default, 1 for in an existing
+	   window, 2 for in a new window, and 3 for in a new tab.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/disable-helpfeeds</key>
+      <applyto>/apps/liferea/disable-helpfeeds</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Disable loading of help feeds</short>
+	   <long>Disable loading of the help feeds at Liferea startup.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/disable-menubar</key>
+      <applyto>/apps/liferea/disable-menubar</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Disable displaying the menubar in the Liferea main
+	   window</short>
+        <long>Disable displaying the menubar in the Liferea main
+        window.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/disable-toolbar</key>
+      <applyto>/apps/liferea/disable-toolbar</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Disable displaying the toolbar in the Liferea main
+	   window</short>
+        <long>Disable displaying the toolbar in the Liferea main
+        window.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/keep-feeds-in-memory</key>
+      <applyto>/apps/liferea/keep-feeds-in-memory</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Keep all items loaded in memory</short>
+        <long>Keep all items loaded in memory. This increases speed
+	   and memory usage of Liferea.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-hpane-pos</key>
+      <applyto>/apps/liferea/last-hpane-pos</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Height of the itemlist pane in the mainwindow</short>
+        <long>Height of the itemlist pane in the mainwindow. Use 0 to
+	   let GTK+ decide the height.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-itemlist-mode</key>
+      <applyto>/apps/liferea/last-itemlist-mode</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Enables condensed mode</short>
+        <long>Set to true to make Liferea use condensed mode or false
+        to make Liferea use the three pane mode.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-vpane-pos</key>
+      <applyto>/apps/liferea/last-vpane-pos</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Width of the feedlist pane in the mainwindow</short>
+        <long>Width of the feedlist pane in the mainwindow. Use 0 to
+	   let GTK+ decide the width.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-window-height</key>
+      <applyto>/apps/liferea/last-window-height</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Height of the Liferea main window</short>
+        <long>Height of the Liferea main window. Use 0 to let GTK+
+	   decide on the height.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-window-maximized</key>
+      <applyto>/apps/liferea/last-window-maximized</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Mainwindow is maximized when Liferea starts up</short>
+        <long>Determines if the Liferea main window will be maximized
+	   at startup.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-window-width</key>
+      <applyto>/apps/liferea/last-window-width</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Width of the Liferea main window</short>
+        <long>Width of the Liferea main window. Use 0 to let GTK+
+	   decide on the width.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-window-x</key>
+      <applyto>/apps/liferea/last-window-x</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Left position of the Liferea main window</short>
+        <long>Left position of the Liferea main window.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-window-y</key>
+      <applyto>/apps/liferea/last-window-y</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Top position of the Liferea main window</short>
+        <long>Top position of the Liferea main window.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/last-zoomlevel</key>
+      <applyto>/apps/liferea/last-zoomlevel</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>100</default>
+        <short>Zoom level of the HTML view</short>
+        <long>Zoom level of the HTML view. (100 = 1:1)</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/maxitemcount</key>
+      <applyto>/apps/liferea/maxitemcount</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>100</default>
+        <short>Determines the default number of items saved on each
+        feed</short>
+        <long>This value is used to determine how many items are saved
+	   in each feed when Liferea exits. Note that marked items are
+	   always saved.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/show-popup-windows</key>
+      <applyto>/apps/liferea/show-popup-windows</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Display popup window advertising new items as they are downloaded</short>
+        <long>Display popup window advertising new items as they are downloaded.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/startup_feed_action</key>
+      <applyto>/apps/liferea/startup_feed_action</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Determines how feed updating works at Liferea startup</short>
+        <long>Numeric value determines how feed updating works at
+	   Liferea startup. Set to 0 to use the last poll times to
+	   "automatically" determine which feeds will be updated. Set to
+	   1 to update all feeds at startup. Set to 2 to reset all poll
+	   times at startup so that no feeds are updated at startup.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/timeformat</key>
+      <applyto>/apps/liferea/timeformat</applyto>
+      <owner>liferea</owner>
+      <type>string</type>
+      <locale name="C">
+        <default>%D %t</default>
+        <short>Format string to use to show the date in the Liferea itemlist</short>
+        <long>This string controls what is displayed in the date
+	   column of the Liferea itemlist if timeformatmode is set to
+	   1. The syntax used is the syntax of strftime(2).</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/timeformatmode</key>
+      <applyto>/apps/liferea/timeformatmode</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>2</default>
+        <short>Determines how the date is rendered in the itemview</short>
+        <long>If timeformat is set to 1, then only the time is
+	   shown. If set to 2, then both the time and date are shown. If
+	   set to 3, then the format string stored in timeformat is used.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/trayicon</key>
+      <applyto>/apps/liferea/trayicon</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>true</default>
+        <short>Determines if the system tray icon is to be shown</short>
+	   <long>Determines if the system tray icon is to be shown</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/update-thread-concurrency</key>
+      <applyto>/apps/liferea/update-thread-concurrency</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>2</default>
+        <short>Number of update threads used in downloading</short>
+        <long>Numer of threads used to download feeds and web objects
+	   in Liferea. An additional thread is created that only
+	   services 'interactive' requests (for example when a user
+	   manually selects a feed to update).</long>
+      </locale>
+    </schema>
+  </schemalist>
+</gconfschemafile>

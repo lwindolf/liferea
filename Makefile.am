@@ -9,6 +9,9 @@ Applications_DATA = $(desktop_files)
 
 man_MANS = liferea.1
 
+schemadir   = @GCONF_SCHEMA_FILE_DIR@
+schema_DATA = liferea.schemas
+
 EXTRA_DIST = \
 	autogen.sh \
 	liferea.glade \
@@ -17,9 +20,13 @@ EXTRA_DIST = \
 	liferea-SuSE.spec \
 	liferea.1 \
 	src/liferea \
-	$(desktop_files)
+	$(desktop_files) \
+	$(schema_DATA)
 
 install-data-local:
+if GCONF_SCHEMAS_INSTALL
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(top_builddir)/$(schema_DATA)
+endif
 	@$(NORMAL_INSTALL)
 	if test -d $(srcdir)/css; then \
 	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/css; \
@@ -32,3 +39,4 @@ dist-hook:
           $(INSTALL_DATA) $(srcdir)/css/liferea.css $(distdir)/css; \
 	fi
 
+DISTCLEANFILES = liferea-SuSE.spec liferea.spec
