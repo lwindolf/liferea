@@ -25,7 +25,7 @@
 #include "update.h"
 #include "conf.h"
 
-#define DEFAULT_UPDATE_THREAD_CONCURRENCY	5
+#define DEFAULT_UPDATE_THREAD_CONCURRENCY	3
 
 /* communication queues for requesting updates and sending the results */
 GAsyncQueue	*requests = NULL;
