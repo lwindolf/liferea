@@ -19,6 +19,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include "ns_slash.h"
 #include "common.h"
 #include "ui_htmlview.h"

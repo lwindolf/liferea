@@ -19,6 +19,10 @@
  */
 
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #define _XOPEN_SOURCE 	/* glibc2 needs this (man strptime) */
 
 #include "ns_ocs.h"

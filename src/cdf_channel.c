@@ -18,6 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 /* CDF is evil. There is only one outdated specification of it and its
    example is not even well-formed XML! Also, it seems to rely on
    things being case insensitive. Some people seem to make the tags

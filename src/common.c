@@ -28,8 +28,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #define _XOPEN_SOURCE /* glibc2 needs this (man strptime) */
-#include <config.h>
 
 #include <libxml/xmlerror.h>
 #include <libxml/uri.h>
