@@ -650,8 +650,9 @@ static void ui_feedlist_check_update_counter(feedPtr fp) {
 
 gboolean ui_feedlist_auto_update(void *data) {
 
-	g_message("Checking to see if feeds need to be updated");
+	debug_enter("ui_feedlist_auto_update");
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)ui_feedlist_check_update_counter);
- 
+	debug_exit("ui_feedlist_auto_update");
+
 	return TRUE;
 }

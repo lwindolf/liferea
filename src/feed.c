@@ -484,7 +484,7 @@ void feed_update(feedPtr fp) {
 	
 	g_assert(NULL != fp);
 
-	g_print("Queueing update of %s\n", feed_get_title(fp));
+	debug1(DEBUG_CONF, "Scheduling %s to be updated", feed_get_title(fp));
 	
 	if(TRUE == fp->updateRequested) {
 		ui_mainwindow_set_status_bar("This feed \"%s\" is already being updated!", feed_get_title(fp));
