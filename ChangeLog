@@ -2,6 +2,14 @@
 
 	Version 0.4.7
 
+	* The program now loads a configured HTML
+	  view widget plugin. There is a GtkHTML
+	  plugin which should work as before. There
+	  is an experimental Mozilla plugin. To 
+	  easily find the needed Mozilla libraries 
+	  the program binary is now called "liferea-bin" 
+	  and their is a script "liferea" which tries
+	  to correctly set up the library paths.
 	* When you change a feed URL the feed is
 	  now updated automatically after closing
 	  the properties dialog.

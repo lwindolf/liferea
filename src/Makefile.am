@@ -73,6 +73,7 @@ liferea_bin_SOURCES = \
 	rss_item.c rss_item.h \
 	rss_ns.h \
 	support.c support.h \
+	ui_queue.c ui_queue.h \
 	ui_mainwindow.c ui_mainwindow.h \
 	ui_feedlist.c ui_feedlist.h \
 	ui_itemlist.c ui_itemlist.h \

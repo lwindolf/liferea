@@ -27,16 +27,14 @@
 #include "interface.h"
 #include "support.h"
 #include "callbacks.h"
-#include "htmlview.h"
 #include "feed.h"
 #include "conf.h"
-#include "update.h"
-#include "netio.h"
 #include "common.h"
+#include "update.h"
+#include "ui_queue.h"
 #include "ui_mainwindow.h"
 
 GThread	*mainThread = NULL;
-GThread	*updateThread = NULL;
 
 int main (int argc, char *argv[]) {	
 
@@ -62,36 +60,14 @@ int main (int argc, char *argv[]) {
 	loadConfig();		/* maybe this should be merged with initConfig() */
 	initGUI();		/* initialize gconf configured GUI behaviour */
 	initBackend();
-	updateThread = initUpdateThread();	/* start thread for update processing */
-	initAutoUpdateThread();	/* start thread for automatic updating */
 
-	loadEntries();		/* load feed list from gconf */
+	/* we need to now this when locking in ui_queue.c */
+	mainThread = g_thread_self();	
 
-	if(getBooleanConfValue(UPDATE_ON_STARTUP))
-		updateAllFeeds();
+	/* setup the processing of feed update results */
+	ui_timeout_add(100, checkForUpdateResults, NULL);
 
 	gtk_widget_show(mainwindow);
-			
-	/* load window position */
-	if((0 != getNumericConfValue(LAST_WINDOW_X)) && 
-	   (0 != getNumericConfValue(LAST_WINDOW_Y)))
-	   	gtk_window_move(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_X),
-					 		getNumericConfValue(LAST_WINDOW_Y));
-
-	/* load window size */
-	if((0 != getNumericConfValue(LAST_WINDOW_WIDTH)) && 
-	   (0 != getNumericConfValue(LAST_WINDOW_HEIGHT)))
-	   	gtk_window_resize(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_WIDTH),
-					 		  getNumericConfValue(LAST_WINDOW_HEIGHT));
-	
-	/* load pane proportions */
-	if(0 != getNumericConfValue(LAST_VPANE_POS))
-		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "leftpane")), getNumericConfValue(LAST_VPANE_POS));
-	if(0 != getNumericConfValue(LAST_HPANE_POS))
-		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
-
-	/* add timeout function to check for update results from the update thread */
-	gtk_timeout_add(100, checkForUpdateResults, NULL);
 
 	gdk_threads_enter();
 	gtk_main();

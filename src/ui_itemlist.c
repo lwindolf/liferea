@@ -435,12 +435,12 @@ static itemPtr ui_itemlist_get_selected() {
 	GtkTreeSelection	*selection;
 
 	if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
-		print_status(_("could not find item list widget!"));
+		print_status(g_strdup(_("could not find item list widget!")));
 		return NULL;
 	}
 	
 	if(NULL == (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
-		print_status(_("could not retrieve selection of item list!"));
+		print_status(g_strdup(_("could not retrieve selection of item list!")));
 		return NULL;
 	}
 	
@@ -523,7 +523,7 @@ void on_popup_launchitem_selected(void) {
 	if(ip)
 		launchURL(getItemSource(ip));
 	else
-		print_status(_("No item has been selected!"));
+		print_status(g_strdup(_("No item has been selected!")));
 }
 
 void on_toggle_unread_status(void) {
@@ -607,7 +607,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		/* find first unread item */
 		findUnreadItem();
 	} else {
-		print_status(_("There are no unread items!"));
+		print_status(g_strdup(_("There are no unread items!")));
 	}
 }
 
@@ -630,7 +630,7 @@ static void ui_select_item(itemPtr ip) {
 		} else
 			g_warning(_("internal error! could not get feed tree view selection!\n"));
 	} else {
-		print_status(_("internal error! could not select newly created treestore iter!"));
+		print_status(g_strdup(_("internal error! could not select newly created treestore iter!")));
 	}
 }
 

@@ -55,11 +55,7 @@ void	initConfig(void);
 void	loadConfig(void);
 
 /* config loading on startup */
-void	loadEntries(void);
-
-/* feed/directory list entry manipulation methods */
-
-void	loadFeeds();
+void	loadSubscriptions(void);
 
 /* methods to modify folder contents */
 GSList * getFeedKeyList(gchar *keyprefix);

@@ -535,7 +535,7 @@ static void readOCS(feedPtr fp, gchar *data) {
 			fp->description = showDirectoryInfo(dp, fp->source);
 			fp->available = TRUE;
 		} else {
-			print_status(_("There were errors while parsing this feed!"));
+			print_status(g_strdup(_("There were errors while parsing this feed!")));
 			fp->title = g_strdup(fp->source);
 		}
 			

@@ -42,12 +42,12 @@
 #include "callbacks.h"
 #include "ui_mainwindow.h"
 #include "ui_tray.h"
+#include "ui_queue.h"
 #include "update.h"
 
 #include "vfolder.h"	// FIXME
 				
 extern GAsyncQueue	*results;
-extern GThread		*updateThread;
 
 extern GHashTable	*feedHandler;
 
@@ -85,6 +85,24 @@ void initGUI(void) {
 
 	selected_keyprefix = g_strdup(ROOT_FOLDER_PREFIX);
 
+	/* load window position */
+	if((0 != getNumericConfValue(LAST_WINDOW_X)) && 
+	   (0 != getNumericConfValue(LAST_WINDOW_Y)))
+	   	gtk_window_move(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_X),
+					 		getNumericConfValue(LAST_WINDOW_Y));
+
+	/* load window size */
+	if((0 != getNumericConfValue(LAST_WINDOW_WIDTH)) && 
+	   (0 != getNumericConfValue(LAST_WINDOW_HEIGHT)))
+	   	gtk_window_resize(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_WIDTH),
+					 		  getNumericConfValue(LAST_WINDOW_HEIGHT));
+	
+	/* load pane proportions */
+	if(0 != getNumericConfValue(LAST_VPANE_POS))
+		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "leftpane")), getNumericConfValue(LAST_VPANE_POS));
+	if(0 != getNumericConfValue(LAST_HPANE_POS))
+		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
+
 	switchPaneMode(!getBooleanConfValue(LAST_ITEMLIST_MODE));
 	loadHTMLViewModule(getNumericConfValue(BROWSER_WIDGET));
 	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
@@ -104,6 +122,7 @@ void initGUI(void) {
 	updateTrayIcon();		/* init tray icon */
 	setupURLReceiver(mainwindow);	/* setup URL dropping support */
 	setupPopupMenues();		/* create popup menues */
+	ui_queue_init();		/* set up callback queue for other threads */
 }
 
 void redrawWidget(gchar *name) {
@@ -171,23 +190,21 @@ void updateUI(void) {
 		gtk_main_iteration();
 }
 
-void print_status(gchar *statustext) {
+static int print_status_idle(gpointer data) {
+	gchar *statustext = (gchar *)data;
 	GtkWidget *statusbar;
 	
-	g_assert(mainwindow != NULL);
+	g_assert(NULL != mainwindow);
 	statusbar = lookup_widget(mainwindow, "statusbar");
+	g_assert(NULL != statusbar);
 
 	g_print("%s\n", statustext);
-
-	/* lock handling, because this method may be called from main
-	   and update thread */
-	if(updateThread == g_thread_self())
-		gdk_threads_enter();
-
 	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), statustext);	
+}
 
-	if(updateThread == g_thread_self())
-		gdk_threads_leave();
+void print_status(gchar *statustext) {
+
+	ui_queue_add(print_status_idle, (gpointer)statustext);
 }
 
 void showErrorBox(gchar *msg) {
@@ -228,14 +245,12 @@ gint checkForUpdateResults(gpointer data) {
 	if(NULL == (request = g_async_queue_try_pop(results)))
 		return TRUE;
 
-	gdk_threads_enter();
+	ui_lock();
 	
 	request->fp->available = TRUE;
 	
-	if(304 == request->lasthttpstatus) {
-		msg = g_strdup_printf(_("\"%s\" has not changed since last update."), getFeedTitle(request->fp));
-		print_status(msg);
-		g_free(msg);
+	if(304 == request->lasthttpstatus) {	
+		print_status(g_strdup_printf(_("\"%s\" has not changed since last update."), getFeedTitle(request->fp)));
 	} else if(NULL != request->data) {
 		/* determine feed type handler */
 		type = getFeedType(request->fp);
@@ -263,17 +278,13 @@ gint checkForUpdateResults(gpointer data) {
 		else {
 			/* Otherwise we simply use the new feed info... */
 			copyFeed(request->fp, new_fp);
-			msg = g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp));
-			print_status(msg);
-			g_free(msg);
+			print_status(g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp)));
 		}
 
 		/* note this is to update the feed URL on permanent redirects */
 		if(0 != strcmp(request->feedurl, getFeedSource(request->fp))) {
-			setFeedSource(request->fp, g_strdup(request->feedurl));	
-			msg = g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp));
-			print_status(msg);
-			g_free(msg);
+			setFeedSource(request->fp, g_strdup(request->feedurl));				
+			print_status(g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp)));
 		}
 
 		if(NULL != request->fp) {
@@ -289,17 +300,16 @@ gint checkForUpdateResults(gpointer data) {
 			updateUI();
 		}
 	} else {
-		msg = g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp));
-		print_status(msg);
-		g_free(msg);
+		
+		print_status(g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp)));
 		request->fp->available = FALSE;
 	}
+
+	ui_unlock();
 	
 	/* request structure cleanup... */
 	g_free(request->feedurl);
 	g_free(request->data);
-	
-	gdk_threads_leave();
 		
 	return TRUE;
 }

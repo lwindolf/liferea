@@ -125,7 +125,7 @@ void importOPMLFeedList(gchar *filename) {
 		/* add the new folder to the model */
 		addFolder(folderkey, foldertitle, FST_NODE);
 	} else {
-		print_status(_("internal error! could not get a new folder key!"));
+		print_status(g_strdup(_("internal error! could not get a new folder key!")));
 		return;
 	}
 	
@@ -139,7 +139,7 @@ void importOPMLFeedList(gchar *filename) {
 		} 
 
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			print_status(_("Empty document! OPML document should not be empty..."));
+			print_status(g_strdup(_("Empty document! OPML document should not be empty...")));
 			break;
 		}
 

@@ -114,23 +114,14 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 	return type;
 }
 
-/* initializing function, called upon initialization and each
-   preference change */
+/* initializing function, only called upon startup */
 void initBackend(void) {
 
-	if(NULL == feeds_lock)
-		feeds_lock = g_mutex_new();
-	
-	if(NULL == feeds) {
-		g_mutex_lock(feeds_lock);		
-		feeds = g_hash_table_new(g_str_hash, g_str_equal);
-		g_mutex_unlock(feeds_lock);
-	}
+	feeds_lock = g_mutex_new();
+	feeds = g_hash_table_new(g_str_hash, g_str_equal);
 
-	if(NULL == allItems) {
-		allItems = getNewFeedStruct();
-		allItems->type = FST_VFOLDER;
-	}
+	allItems = getNewFeedStruct();
+	allItems->type = FST_VFOLDER;
 	
 	feedHandler = g_hash_table_new(g_int_hash, g_int_equal);
 
@@ -142,7 +133,11 @@ void initBackend(void) {
 	registerFeedType(FST_OPML,	initOPMLFeedHandler());	
 	registerFeedType(FST_VFOLDER,	initVFolderFeedHandler());
 	
+	initUpdateThread();	/* start thread for update processing */
+	initAutoUpdateThread();	/* start thread for automatic updating */
+	
 	initFolders();
+	loadSubscriptions();
 }
 
 /* function to create a new feed structure */
@@ -275,8 +270,7 @@ static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 void saveAllFeeds(void) {
 
 	/* we must save here to save changed read flags */	
-	print_status(_("saving all feeds..."));
-	updateUI();
+	print_status(g_strdup(_("saving all feeds...")));
 	
 	g_mutex_lock(feeds_lock);
 	g_hash_table_foreach(feeds, saveFeedFunc, NULL);
@@ -356,9 +350,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	}
 	
 	if(0 != error) {
-		tmp = g_strdup_printf(_("There were errors while parsing cache file \"%s\"!"), filename);
-		print_status(tmp);
-		g_free(tmp);
+		print_status(g_strdup_printf(_("There were errors while parsing cache file \"%s\"!"), filename));
 	}
 	
 	if(NULL != doc)
@@ -616,7 +608,6 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 				status = g_strdup_printf(_("\"%s\" has %d new items."), old_fp->title, newcount);
 			
 			print_status(status);
-			g_free(status);
 
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
@@ -677,7 +668,7 @@ static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 /* this method is called upon the refresh all button... */
 void updateAllFeeds(void) {
 
-	print_status(_("updating all feeds..."));
+	print_status(g_strdup(_("updating all feeds...")));
 	g_mutex_lock(feeds_lock);
 	g_hash_table_foreach(feeds, updateFeedHelper, NULL);
 	g_mutex_unlock(feeds_lock);

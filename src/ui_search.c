@@ -146,7 +146,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				addToFeedList(fp, FALSE);
 			}
 		} else {
-			print_status(_("internal error! could not get folder key prefix!"));
+			print_status(g_strdup(_("internal error! could not get folder key prefix!")));
 		}
 		
 	}

@@ -420,7 +420,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 		fp->available = TRUE;
 		fp->description = showRSSFeedInfo(cp, fp->source);
 	} else {
-		print_status(_("There were errors while parsing this feed!"));
+		print_status(g_strdup(_("There were errors while parsing this feed!")));
 	}
 
 	for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {

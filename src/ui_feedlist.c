@@ -126,7 +126,7 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
 	}
 		
 	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-		print_status(_("could not retrieve selection of entry list!"));
+		print_status(g_strdup(_("could not retrieve selection of entry list!")));
 		return FALSE;
 	}
 
@@ -416,7 +416,7 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
 			gtk_tree_path_free(path);
 		} else {
-			print_status(_("internal error! could not select newly created treestore iter!"));
+			print_status(g_strdup(_("internal error! could not select newly created treestore iter!")));
 		}
 	}
 }

@@ -26,6 +26,7 @@
 #include <string.h>
 #include "support.h"
 #include "callbacks.h"
+#include "update.h"
 #include "feed.h"
 #include "folder.h"
 #include "common.h"
@@ -559,7 +560,7 @@ int setFolderCollapseStateInConfig(gchar *keyprefix, gboolean collapsed) {
 /* config loading on startup						*/
 /*----------------------------------------------------------------------*/
 
-void loadEntries(void) {
+void loadSubscriptions(void) {
 	GError		*err = NULL;
 	GSList		*groupiter = NULL, *iter = NULL;
 	GConfValue	*element, *keylist, *groups;
@@ -702,6 +703,9 @@ void loadEntries(void) {
 		addFeed(FST_HELPFEED, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
 	}
 	checkForEmptyFolders();
+	
+	if(getBooleanConfValue(UPDATE_ON_STARTUP))
+		updateAllFeeds();
 }
 
 /* returns true if namespace is enabled in configuration */

@@ -245,7 +245,7 @@ static void readOPML(feedPtr fp, gchar *data) {
 			fp->description = buffer;
 			fp->available = TRUE;
 		} else {
-			print_status(_("There were errors while parsing this feed!"));
+			print_status(g_strdup(_("There were errors while parsing this feed!")));
 		}
 		
 		break;

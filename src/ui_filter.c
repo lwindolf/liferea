@@ -110,7 +110,7 @@ static gboolean getSelectedRuleIter(GtkTreeIter *iter) {
 	}
 		
 	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-		print_status("could not retrieve selection of entry list!");
+		print_status(g_strdup("could not retrieve selection of entry list!"));
 		return FALSE;
 	}
 

@@ -131,13 +131,10 @@ static void *updateMainLoop(void *data) {
 /* method to be called by other threads to create requests */
 void requestUpdate(feedPtr fp) {
 	gchar			*source;
-	gchar			*msg;
 	
 	g_assert(NULL != fp);
 	
-	msg = g_strdup_printf("updating \"%s\"", getFeedTitle(fp));
-	print_status(msg);
-	g_free(msg);
+	print_status(g_strdup_printf("updating \"%s\"", getFeedTitle(fp)));
 	
 	if(NULL == (source = getFeedSource(fp))) {
 		g_warning(_("Feed source is NULL! This should never happen - cannot update!"));

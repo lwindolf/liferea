@@ -48,9 +48,9 @@ extern GtkTreeStore * getFeedStore(void);
 /* ---------------------------------------------------------------------------- */
 
 void initFolders(void) {
-			
-	if(NULL == folders)
-		folders =  g_hash_table_new(g_str_hash, g_str_equal);	
+
+	/* the folder code should reuse the feed list lock... */			
+	folders =  g_hash_table_new(g_str_hash, g_str_equal);	
 }
 
 gchar * getFolderTitle(gchar *keyprefix) {

@@ -114,8 +114,6 @@ static void link_clicked(gchar *url)
 	print_status(statusline);
 	g_free(cmd);
 	g_free(tmp);
-	g_free(statusline);
-
 }
 
 /* launches the specified URL */

@@ -707,7 +707,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
  */
 char * downloadURL(struct feed_request *request) {
 	FILE		*f;
-	gchar		*msg, *tmpurl = NULL;
+	gchar		*tmpurl = NULL;
 	int 		i;
 	char		*data = NULL;
 	struct stat	statinfo;
@@ -740,18 +740,14 @@ char * downloadURL(struct feed_request *request) {
 		} else if(g_file_test(request->feedurl, G_FILE_TEST_EXISTS)) {
 			/* we have a file... */
 			if(!g_file_get_contents(request->feedurl, &data, NULL, NULL)) {
-				request->problem = 1;
-				msg = g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl);
-				print_status(msg);
-				g_free(msg);
+				request->problem = 1;				
+				print_status(g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl));
 			} else {
 				g_assert(NULL != data);
 			}
 		} else {
 			request->problem = 1;
-			msg = g_strdup_printf(_("There is no file \"%s\"!"), request->feedurl);
-			print_status(msg);
-			g_free(msg);
+			print_status(g_strdup_printf(_("There is no file \"%s\"!"), request->feedurl));
 		}
 		
 		/* fake a status */

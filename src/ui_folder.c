@@ -57,7 +57,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 		addFolder(folderkey, g_strdup(foldertitle), FST_NODE);
 		checkForEmptyFolders();
 	} else {
-		print_status(_("internal error! could not get a new folder key!"));
+		print_status(g_strdup(_("internal error! could not get a new folder key!")));
 	}	
 }
 
@@ -138,6 +138,6 @@ void on_popup_removefolder_selected(void) {
 			showErrorBox(_("A folder must be empty to delete it!"));
 		}
 	} else {
-		print_status(_("Error: Cannot determine folder key!"));
+		print_status(g_strdup(_("Error: Cannot determine folder key!")));
 	}
 }
