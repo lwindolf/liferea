@@ -265,7 +265,10 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *base) { 
 	if (base == NULL)
 		base = "file:///";
-
+	
+	if (htmlview == NULL)
+		return;
+	
 	if(!g_utf8_validate(string, -1, NULL)) {
 		gchar *buffer = g_strdup(string);
 		
