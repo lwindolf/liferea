@@ -85,8 +85,6 @@ void itemlist_reload(nodePtr node) {
 			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_check_if_child, (gpointer)node);
 			ui_itemlist_display();
 			return;
-		} else {
-			ui_feedlist_do_for_all_data(node, ACTION_FILTER_FEED, itemlist_load_feed, (gpointer)TRUE);
 		}
 	}
 
