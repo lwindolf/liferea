@@ -854,6 +854,7 @@ void feed_clear_item_list(feedPtr fp) {
 		item = g_slist_next(item);
 	}
 	g_slist_free(fp->items);
+	fp->items = NULL;
 }
 
 void feed_mark_all_items_read(feedPtr fp) {
