@@ -63,6 +63,7 @@ td.itemhead {	/* old definition replaced by td.head (for compatibilty) */
 td.headleft {
 	padding:2px 2px;
 	text-align:right;
+	white-space:nowrap;	/* workaround to prevent buggy gtkhtml2 word wrappings */
 }
 
 td.headright {
