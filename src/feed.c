@@ -367,12 +367,16 @@ g_print("feed_load for %s\n", feed_get_source(fp));
 		g_assert(NULL != data);
 
 		if(NULL == (doc = parseBuffer(data, length, &(fp->parseErrors)))) {
+			g_free(fp->parseErrors);
+			fp->parseErrors = NULL;
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
 			error = 1;
 			break;
 		} 
 
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
+			g_free(fp->parseErrors);
+			fp->parseErrors = NULL;
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			error = 1;
 			break;
@@ -382,12 +386,17 @@ g_print("feed_load for %s\n", feed_get_source(fp));
 			cur = cur->next;
 
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
+			g_free(fp->parseErrors);
+			fp->parseErrors = NULL;
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
 			error = 1;
 			break;		
 		}
 
-		fp->available = TRUE;		
+		fp->available = TRUE;
+		fp->unreadCount = 0;
+		metadata_list_free(fp->metadata);
+		fp->metadata = NULL;
 
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
@@ -399,6 +408,7 @@ g_print("feed_load for %s\n", feed_get_source(fp));
 			}
 
 			if(fp->description == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
+				g_free(fp->description);
 				fp->description = g_strdup(tmp);
 				
 			} else if(fp->title == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
@@ -1275,7 +1285,7 @@ void feed_free(feedPtr fp) {
 	feed_unload(fp);
 
 	if(fp->id && fp->id[0] != '\0')
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);		
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 
 	/* FIXME: Move this to a better place. The cache file does not
 	   need to always be deleted, for example when freeing a
@@ -1284,7 +1294,7 @@ void feed_free(feedPtr fp) {
 		/* Oh well.... Can't do anything about it. 99% of the time,
 		   this is spam anyway. */;
 		g_free(filename);
-	
+
 	/* Don't free active feed requests here, because they might still
 	   be processed in the update queues! Abandoned requests are
 	   free'd in feed_process. They must be freed in the main thread
@@ -1307,10 +1317,10 @@ void feed_free(feedPtr fp) {
 	g_free(fp->description);
 	g_free(fp->errorDescription);
 	g_free(fp->source);
-	g_free(fp->parseErrors);
 	g_free(fp->filtercmd);
 	g_free(fp->htmlUrl);
 	g_free(fp->imageUrl);
+	g_free(fp->parseErrors);
 	metadata_list_free(fp->metadata);
 	g_free(fp);
 }
