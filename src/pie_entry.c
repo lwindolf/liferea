@@ -288,7 +288,6 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	
 	g_free(i->contributors);
 	g_free(i->author);
-	g_free(i->source);
 	
 	/* free PIEEntry structure */
 	for(j = 0; j < PIE_ENTRY_MAX_TAG; j++)
