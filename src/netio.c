@@ -48,7 +48,7 @@
 #include "support.h"
 
 /* we redefine some SnowNews functions */
-#define UIStatus		print_status
+#define UIStatus(a, b)		print_status(a)
 #define MainQuit(str, errno)	g_error(str);
 #define	getch()			0
 
@@ -65,7 +65,6 @@ struct feed_request {
 
 #define MAX_HTTP_REDIRECTS 10	/* Maximum number of redirects we will follow. */
 
-extern struct feed_request *first_ptr;
 int my_socket;
 int lasthttpstatus;					/* Last HTTP server status code. */
 extern char *proxyname;				/* Hostname of proxyserver. */
@@ -100,7 +99,7 @@ int NetConnect (char * host) {
 	uistringlength = strlen(_("Connecting to ")) + strlen(host) + 4;
 	uistring = malloc (uistringlength);
 	snprintf (uistring, uistringlength, _("Connecting to %s..."), host);
-	UIStatus (uistring);
+	UIStatus (uistring, 0);
 	free (uistring);
 	
 	/* Create a inet stream TCP socket. */
@@ -255,12 +254,12 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	fd_set rfds;
 	int retval;
 	int handled;
-	int tmplasthttpstatus;
+	int tmphttpstatus;
 
 	lasthttpstatus = 0;
 	
 	snprintf (tmp, sizeof(tmp), _("Downloading http://%s%s..."), host, url);
-	UIStatus (tmp);
+	UIStatus (tmp, 0);
 
 	redirectcount = 0;
 	
@@ -331,38 +330,40 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	strncpy (httpstatus, tmpstatus, 3);
 	free (savestart);
 	
-	tmplasthttpstatus = lasthttpstatus = atoi (httpstatus);
+	lasthttpstatus = atoi (httpstatus);
 	
-	/* If the redirectloop was run newhost and newurl were located.
+	/* If the redirectloop was run newhost and newurl were allocated.
 	   We need to free them here. */
 	if (redirectcount > 0) {
 		free (host);
 		free (url);
 	}
 
+	tmphttpstatus = lasthttpstatus;
 	handled = 1;
 	/* Check HTTP server response and handle redirects. */
 	do {
-		switch (lasthttpstatus) {
+		switch (tmphttpstatus) {
+			case 200:	/* OK */
+				break;
+			case 300:	/* Multiple choice and everything 300 not handled is fatal. */
+				fclose (stream);
+				return NULL;
 			case 301:
 				/* Permanent redirect. Change feed->feedurl to new location.
-				   Done some way down when we have extracted the new url.
-				   Like the description to NetIO() said... crufty. Argh! */
-
-			case 302: /* temporary redirect */
-			case 303: /* redirect after POST */
-			case 307: /* temporary redirect */
-
+				   Done some way down when we have extracted the new url. */
+			case 302:	/* Found */
+			case 303:	/* See Other */
+			case 307:	/* Temp redirect. This is HTTP/1.1 */
 				redirectcount++;
-
+			
 				/* Give up if we reach MAX_HTTP_REDIRECTS to avoid loops. */
 				if (redirectcount > MAX_HTTP_REDIRECTS) {
 					fclose (stream);
-					UIStatus (_("Too many HTTP redirects encountered! Giving up."));
-					sleep (2);
+					UIStatus (_("Too many HTTP redirects encountered! Giving up."), 2);
 					return NULL;
 				}
-
+				
 				while (!feof(stream)) {
 					if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL) {
 						/* Something bad happened. Server sent stupid stuff. */
@@ -371,21 +372,20 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 					/* Split netbuf into hostname and trailing url.
 					   Place hostname in *newhost and tail into *newurl.
 					   Close old connection and reconnect to server.
-
+					   
 					   Do not touch any of the following code! :P */
 					if (strstr (netbuf, "Location") != NULL) {
 						tmpstring = malloc(strlen(netbuf)+1);
-
+						
 						redirecttarget = strdup (netbuf);
 						freeme = redirecttarget;
 						/* In theory pointer should now be after the space char
 						   after the word "Location:" */
 						strsep (&redirecttarget, " ");
-
+						
 						/* Change cur_ptr->feedurl on 301. */
 						if (lasthttpstatus == 301) {
-							UIStatus (_("URL points to permanent redirect, updating with new location..."));
-							sleep (2);
+							UIStatus (_("URL points to permanent redirect, updating with new location..."), 2);
 							free (cur_ptr->feedurl);
 							/* netbuf contains \r\n */
 							/* Should review this stuff! */
@@ -394,7 +394,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 							cur_ptr->feedurl[strlen(redirecttarget)-2] = '\0';
 						}
 						free (freeme);
-
+					
 						freeme = tmpstring;
 						strcpy (tmpstring, netbuf);
 						strsep (&tmpstring, "/");
@@ -407,52 +407,48 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 						newurl = strdup (tmpstring);
 						newurl[strlen(newurl)-2] = '\0';
 						free (freeme);
-
+					
 						/* Close connection. */	
 						fclose (stream);
-
+					
 						/* Reconnect to server. */
 						if ((NetConnect (newhost)) != 0) {
 							MainQuit (_("Reconnecting for redirect"), strerror(errno));
 						}
-
+					
 						host = newhost;
 						url = newurl;
-
+					
 						goto tryagain;
 					}
 				}
 				break;
-			case 200:
-				break;
-						
 			case 304:
 				/* Not modified received. We can close stream and return from here.
 				   Not very friendly though. :) */
 				fclose (stream);
 				return NULL;
-								
-			case 403: /* forbidden */
-			case 410: /* gone */
-				UIStatus (_("This feed no longer exists. Please unsubscribe!."));
+			case 403: /* Forbidden */
+//			case 404: /* Not found. Not sure if this should be here. */
+			case 410: /* Gone */
+				snprintf (tmp, sizeof(tmp), _("The feed no longer exists. Please unsubscribe!"));
+				UIStatus (tmp, 3);
 			case 400:
 				fclose (stream);
 				return NULL;
-						
 			default:
 				/* unknown error codes have to be treated like the base class */
-				if(handled) {		
+				if(handled) {
 					/* first pass, modify error code to base class */
 					handled = 0;
-					lasthttpstatus -= lasthttpstatus % 100;
-				} else {		
+					tmphttpstatus -= tmphttpstatus % 100;
+				} else {
 					/* second pass, give up on unknown error base class */
 					fclose (stream);
 					return NULL;
 				}
 		}
-	} while (!handled);
-	lasthttpstatus = tmplasthttpstatus;
+	} while(!handled);
 	
 	/* Read rest of HTTP header and... throw it away. */
 	while (!feof(stream)) {
@@ -485,8 +481,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 			/* Server sent junked encoding. We didn't request this. Bäh! */
 			chunked = 1;
 			snprintf (tmp, sizeof(tmp), _("The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."), host);
-			UIStatus (tmp);
-			sleep (5);
+			UIStatus (tmp, 2);
 			fclose (stream);
 			return NULL;
 		}
@@ -580,8 +575,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 		/* End of string url. Probably entered invalid stuff like
 		   http://asdf or something. Since we don't want to crash and burn
 		   return the dreaded NULL pointer. */
-		UIStatus (_("This URL doesn't look too valid to me, don't you think?"));
-		sleep (4);
+		UIStatus (_("This URL doesn't look too valid to me, don't you think?"), 2);
 		return NULL;
 	}
 	/* url[0] = '\0'; */
@@ -601,25 +595,21 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 	
 	switch (result) {
 		case 1:
-			UIStatus (_("Couldn't create network socket!"));
-			sleep (2);
+			UIStatus (_("Couldn't create network socket!"), 2);
 			free (freeme);
 			return NULL;
 		case 2:
 			snprintf (tmp, sizeof(tmp), _("Can't resolve host %s!"), host);
-			UIStatus (tmp);
-			sleep (2);
+			UIStatus (tmp, 2);
 			free (freeme);
 			return NULL;
 		case 3:
 			snprintf (tmp, sizeof(tmp), _("Could not connect to server %s: %s"), host, strerror(connectresult));
-			UIStatus (tmp);
-			sleep (2);
+			UIStatus (tmp, 2);
 			free (freeme);
 			return NULL;
 		case -1:
-			UIStatus (_("Aborted."));
-			sleep (2);
+			UIStatus (_("Aborted."), 2);
 			free (freeme);
 			return NULL;
 		default:

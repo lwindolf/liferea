@@ -39,7 +39,8 @@ void		initVFolders(void);
 void		removeOldItemsFromVFolder(feedPtr vp, feedPtr fp);
 void 		removeOldItemsFromVFolders(gpointer key, gpointer value, gpointer userdata);	// FIXME!
 void 		scanFeed(gpointer key, gpointer value, gpointer userdata);		// FIXME!
-void		addItemToVFolder(feedPtr vp, feedPtr fp, itemPtr ip);
+void		removeItemFromVFolder(feedPtr fp, itemPtr ip);
+
 void		setVFolderRules(feedPtr vp, rulePtr rp);
 rulePtr		getVFolderRules(feedPtr vp);
 gboolean	matchVFolderRules(feedPtr vp, gchar *string);

@@ -5,7 +5,7 @@
 GtkWidget* create_mainwindow (void);
 GtkWidget* create_propdialog (void);
 GtkWidget* create_newdialog (void);
-GtkWidget* create_feednamedialog (void);
 GtkWidget* create_prefdialog (void);
 GtkWidget* create_newfolderdialog (void);
 GtkWidget* create_foldernamedialog (void);
+GtkWidget* create_fileselection (void);

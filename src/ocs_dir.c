@@ -287,14 +287,14 @@ feedPtr readOCS(gchar *url) {
 	gchar		*data;
 	int 		error = 0;
 
-	if(NULL == (data = downloadURL(url))) {
-		showErrorBox(g_strdup_printf(_("Could not fetch %s!"), url));
-		return NULL;
-	}
-
 	fp = getNewFeedStruct();
 
 	while(1) {
+		if(NULL == (data = downloadURL(url))) {
+			error = 1;
+			break;
+		}
+
 		doc = xmlRecoverMemory(data, strlen(data));
 		g_free(data);
 		

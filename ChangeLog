@@ -2,6 +2,11 @@
 
         Version 0.4.1
 	
+	* proxy support was broken	
+	* basic OPML support (reads the compatible parts of OML too)
+	* added a file selection dialog to the new subscription dialog
+	* added a feed type autodetection function
+	
 2003-10-10  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.4.0

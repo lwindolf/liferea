@@ -239,13 +239,10 @@ void scanFeed(gpointer key, gpointer value, gpointer userdata) {
 	}
 }
 
-/* g_hash_table_foreach-function to be called from update.c to 
-   remove old items of a feed from all vfolders */
-void removeOldItemsFromVFolders(gpointer key, gpointer value, gpointer userdata) {
-	feedPtr	vp = (feedPtr)value;
-	
-	if(FST_VFOLDER == getFeedType(vp))
-		removeOldItemsFromVFolder(vp, userdata);
+/* called when a feed is deleted, whose items are in a the vfolder fp */
+void removeItemFromVFolder(feedPtr fp, itemPtr ip) {
+
+	g_slist_remove(fp->items, (gpointer)ip);
 }
 
 /* scan all feeds for matching any vfolder rules */

@@ -217,3 +217,15 @@ gboolean
 on_itemlist_button_press_event         (GtkWidget       *widget,
                                         GdkEventButton  *event,
                                         gpointer         user_data);
+
+void
+on_localfilebtn_pressed                (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_fileselect_clicked                  (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_localfilebtn_pressed                (GtkButton       *button,
+                                        gpointer         user_data);

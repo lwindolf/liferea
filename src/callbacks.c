@@ -42,11 +42,11 @@
 
 GtkWidget	*mainwindow;
 GtkWidget	*newdialog = NULL;
-GtkWidget	*feednamedialog = NULL;
 GtkWidget	*propdialog = NULL;
 GtkWidget	*prefdialog = NULL;
 GtkWidget	*newfolderdialog = NULL;
 GtkWidget	*foldernamedialog = NULL;
+GtkWidget	*filedialog = NULL;
 
 GtkTreeStore	*itemstore = NULL;
 GtkTreeStore	*feedstore = NULL;
@@ -400,7 +400,7 @@ void on_popup_delete_selected(void) {
 /*------------------------------------------------------------------------------*/
 /* property dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
-
+// FIXME: change getFeed*Selection*() to static fp variable!!!!
 void on_propbtn(GtkWidget *feedlist) {
 	gint		type;
 	feedPtr		fp;
@@ -519,8 +519,10 @@ void on_popup_prop_selected(void) {
 /*------------------------------------------------------------------------------*/
 
 void addToFeedList(feedPtr fp) {
-	GtkTreeIter	iter;
-	GtkTreeIter	*topiter;
+	GtkTreeSelection	*selection;
+	GtkWidget		*treeview;
+	GtkTreeIter		iter;
+	GtkTreeIter		*topiter;
 	
 	g_assert(NULL != getFeedKey(fp));
 	g_assert(NULL != getFeedKeyPrefix(fp));
@@ -533,12 +535,25 @@ void addToFeedList(feedPtr fp) {
 			   FS_TITLE, getFeedTitle(fp),
 			   FS_KEY, getFeedKey(fp),
 			   FS_TYPE, getFeedType(fp),
-			   -1);		   
+			   -1);
+			   
+	if(NULL == (treeview = lookup_widget(mainwindow, "feedlist"))) {
+		g_warning(_("internal error! could not find feed tree view!\n"));
+		return;
+	}
+	
+	/* this selection is necessary for the property dialog, which is
+	   opened after feed subscription and depends on the correctly
+	   selected feed (FIXME: maybe a static feedkey storage instead
+	   of the continuous selection retrieval) */
+	if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
+		gtk_tree_selection_select_iter(selection, &iter);
+	else
+		g_warning(_("internal error! could not get feed tree view selection!\n"));
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
 	GtkWidget	*feedurlentry;
-	GtkWidget	*feednameentry;
 	gchar		*keyprefix;
 	
 	keyprefix = getFeedListSelectionPrefix(mainwindow);
@@ -550,16 +565,12 @@ void on_newbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	if(NULL == newdialog || !G_IS_OBJECT(newdialog)) 
 		newdialog = create_newdialog();
-
-	if(NULL == feednamedialog || !G_IS_OBJECT(feednamedialog)) 
-		feednamedialog = create_feednamedialog();
+		
+	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
+		propdialog = create_propdialog();
 
 	g_assert(NULL != newdialog);
-	
-	/* always clear the edit field */
-	feedurlentry = lookup_widget(newdialog, "newfeedentry");
-	gtk_entry_set_text(GTK_ENTRY(feedurlentry), "");	
-
+	g_assert(NULL != propdialog);
 	gtk_widget_show(newdialog);
 }
 
@@ -569,14 +580,13 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget 	*titleentry, *typeoptionmenu,
 			*updateIntervalBtn;
 	feedPtr		fp;
-	gint		type = FST_RSS;
-	gint		interval;
+	gint		type, interval;
 	
 	g_assert(newdialog != NULL);
-	g_assert(feednamedialog != NULL);
+	g_assert(propdialog != NULL);
 	
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
-	titleentry = lookup_widget(feednamedialog, "feednameentry");
+	titleentry = lookup_widget(propdialog, "feednameentry");
 	typeoptionmenu = lookup_widget(newdialog, "typeoptionmenu");
 		
 	source = (gchar *)gtk_entry_get_text(GTK_ENTRY(sourceentry));
@@ -585,24 +595,32 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	type = gtk_option_menu_get_history(GTK_OPTION_MENU(typeoptionmenu));
 	/* the retrieved number is not yet the real feed type! */
 	switch(type) {
-		case 0:
-			type = FST_RSS;
+		case 0: 
+			type = autoDetectFeedType(source);
 			break;
 		case 1:
-			type = FST_CDF;
+			type = FST_RSS;
 			break;
 		case 2:
-			type = FST_PIE;
+			type = FST_CDF;
 			break;
 		case 3:
-			type = FST_OCS;
+			type = FST_PIE;
 			break;
 		case 4:
+			type = FST_OCS;
+			break;
+		case 5:
 			type = FST_OPML;
 			break;
 		default:
-			g_error(_("internal error! invalid type selected!\n"));
-			break;
+			g_error(_("internal error! invalid type selected! This should never happen!\n"));
+			return;
+	}
+	
+	if(FST_INVALID == type) {
+		showErrorBox(_("Could not detect feed type! Please manually select a feed type."));
+		return;
 	}
 
 	if(NULL != (keyprefix = getFeedListSelectionPrefix(mainwindow))) {
@@ -612,57 +630,42 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 			checkForEmptyFolders();
 			
 			if(FALSE == getFeedAvailable(fp)) {
-				tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"));
+				tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 				showErrorBox(tmp);
 				g_free(tmp);
 			} else {
 			
-				gtk_entry_set_text(GTK_ENTRY(titleentry), getFeedTitle(fp));
-				
-				new_feed = fp;
-
-				updateIntervalBtn = lookup_widget(feednamedialog, "feedrefreshcount");
-				if(-1 != (interval = getFeedDefaultInterval(fp)))
+				if(-1 != (interval = getFeedDefaultInterval(fp))) {
+					updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
 					gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
+				}
 					
-				gtk_widget_show(feednamedialog);
+				gtk_widget_show(propdialog);
 			}
 		}
 	} else {
-		print_status("could not get entry key prefix! maybe you did not select a group");
+		print_status("internal error! could not get entry key prefix! maybe you did not select a group");
 	}
+	
+	gtk_widget_hide(newdialog);
 	
 	/* don't free source/keyprefix for they are reused by newFeed! */
 }
 
-void on_feednamebutton_clicked(GtkButton *button, gpointer user_data) {	
-	GtkWidget	*feednameentry;
-	GtkWidget 	*updateIntervalBtn;
-	GtkAdjustment	*updateInterval;
-	gint		interval;
-	
-	gchar		*feedurl;
-	gchar		*feedname;
+void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
 
-	g_assert(feednamedialog != NULL);
-
-	feednameentry = lookup_widget(feednamedialog, "feednameentry");
-	updateIntervalBtn = lookup_widget(feednamedialog, "feedrefreshcount");
-	updateInterval = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(updateIntervalBtn));
-
-	/* this button may be disabled, because we added an OCS directory
-	   enable it for the next new dialog usage... */
-	gtk_widget_set_sensitive(GTK_WIDGET(updateIntervalBtn), TRUE);
-	
-	feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
-	interval = gtk_adjustment_get_value(updateInterval);
-	
-	setFeedTitle(new_feed, g_strdup(feedname));
-	
-	if(IS_FEED(getFeedType(new_feed)))
-		setFeedUpdateInterval(new_feed, interval);
+	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
+		filedialog = create_fileselection();
 		
-	new_feed = NULL;
+	gtk_widget_show(filedialog);
+}
+
+void on_fileselect_clicked(GtkButton *button, gpointer user_data) {
+	GtkWidget	*source;
+	
+	g_assert(NULL != newdialog);
+	if(NULL != (source = lookup_widget(newdialog, "newfeedentry")))
+		gtk_entry_set_text(GTK_ENTRY(source), gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog)));
 }
 
 /*------------------------------------------------------------------------------*/

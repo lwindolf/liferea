@@ -108,9 +108,7 @@ void initConfig() {
 /* maybe called several times to reload configuration */
 void loadConfig() {
 	GError	*err = NULL;
-        gchar	*proxy_url;
-        gint	proxy_port;
-        gchar	*proxy_host;
+	gchar	*proxy_url;
 	gint	maxitemcount;
 	
 	/* GConf client */
@@ -130,7 +128,7 @@ void loadConfig() {
 	        proxyname = getStringConfValue(PROXY_HOST);
         	proxyport = getNumericConfValue(PROXY_PORT);
 
-        	proxy_url = g_strdup_printf("http://%s:%d/", proxy_host, proxy_port);
+        	proxy_url = g_strdup_printf("http://%s:%d/", proxyname, proxyport);
 		g_print("using proxy: \"%s\"\n", proxy_url);
 		// FIXME: don't use NanoHTTP anymore!!!	
         	xmlNanoHTTPScanProxy(proxy_url);
