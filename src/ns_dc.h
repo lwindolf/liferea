@@ -25,10 +25,6 @@
 #include "pie_ns.h"
 #include "ocs_ns.h"
 
-gchar	*ns_dc_getRSSNsPrefix(void);
-gchar * ns_dc_getPIENsPrefix(void);
-gchar * ns_dc_getOCSNsPrefix(void);
-
 RSSNsHandler *ns_dc_getRSSNsHandler(void);
 PIENsHandler *ns_dc_getPIENsHandler(void);
 OCSNsHandler *ns_dc_getOCSNsHandler(void);

@@ -24,15 +24,11 @@
 #define FM_IMG_START	"<br><img class=\"freshmeat\" src=\""
 #define FM_IMG_END	" \">"
 
-static gchar ns_fm_prefix[] = "fm";
-
 /* you can find the fm DTD under http://freshmeat.net/backend/fm-releases-0.1.dtd
 
   it defines a lot of entities and one tag "screenshot_url", which we
   output as a HTML image in the item view footer
 */
-
-gchar * ns_fm_getRSSNsPrefix(void) { return ns_fm_prefix; }
 
 static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	gchar	*tmp;
@@ -77,11 +73,8 @@ RSSNsHandler *ns_fm_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
-	nsh->parseChannelTag		= NULL;
+	nsh->prefix			= "fm";
 	nsh->parseItemTag		= parseItemTag;
-	nsh->doChannelHeaderOutput	= NULL;
-	nsh->doChannelFooterOutput	= NULL;
-	nsh->doItemHeaderOutput		= NULL;
 	nsh->doItemFooterOutput		= doItemOutput;
 
 	return nsh;

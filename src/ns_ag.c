@@ -29,8 +29,6 @@
 #define LASTTD		"</span></td></tr>"
 #define TABLE_END	"</table>"
 
-static gchar ns_ag_prefix[] = "ag";
-
 /* you can find an aggregation namespace spec at:
    http://web.resource.org/rss/1.0/modules/aggregation/
  
@@ -44,8 +42,6 @@ static gchar ns_ag_prefix[] = "ag";
   both tags usually contains URIs which we simply display in the
   feed info view footer
 */
-
-gchar * ns_ag_getRSSNsPrefix(void) { return ns_ag_prefix; }
 
 static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	gchar	*date, *tmp;
@@ -138,11 +134,8 @@ RSSNsHandler *ns_ag_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
-	nsh->parseChannelTag		= NULL;
+	nsh->prefix			= "ag";
 	nsh->parseItemTag		= parseItemTag;
-	nsh->doChannelHeaderOutput	= NULL;
-	nsh->doChannelFooterOutput	= NULL;
-	nsh->doItemHeaderOutput		= NULL;
 	nsh->doItemFooterOutput		= doItemOutput;
 
 	return nsh;

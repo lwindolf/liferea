@@ -428,12 +428,12 @@ static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	return FALSE;
 }
 
-static void addNameSpaceHandler(gchar *prefix, gpointer handler) {
+static void addNameSpaceHandler(RSSNsHandler *handler) {
 
 	g_assert(NULL != rss_nstable);
-	if(getNameSpaceStatus(prefix)) {
+	if(getNameSpaceStatus(handler->prefix)) {
 		rss_nslist = g_slist_append(rss_nslist, handler);
-		g_hash_table_insert(rss_nstable, (gpointer)prefix, g_slist_last(rss_nslist));
+		g_hash_table_insert(rss_nstable, handler->prefix, g_slist_last(rss_nslist));
 	}
 }
 
@@ -447,14 +447,15 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
 	
 		/* register RSS name space handlers */
-		addNameSpaceHandler(ns_bC_getRSSNsPrefix(), (gpointer)ns_bC_getRSSNsHandler());
-		addNameSpaceHandler(ns_dc_getRSSNsPrefix(), (gpointer)ns_dc_getRSSNsHandler());
-		addNameSpaceHandler(ns_fm_getRSSNsPrefix(), (gpointer)ns_fm_getRSSNsHandler());	
-  		addNameSpaceHandler(ns_slash_getRSSNsPrefix(), (gpointer)ns_slash_getRSSNsHandler());
-		addNameSpaceHandler(ns_content_getRSSNsPrefix(), (gpointer)ns_content_getRSSNsHandler());
-		addNameSpaceHandler(ns_syn_getRSSNsPrefix(), (gpointer)ns_syn_getRSSNsHandler());
-		addNameSpaceHandler(ns_admin_getRSSNsPrefix(), (gpointer)ns_admin_getRSSNsHandler());
-		addNameSpaceHandler(ns_cC_getRSSNsPrefix(), (gpointer)ns_cC_getRSSNsHandler());
+		addNameSpaceHandler(ns_bC_getRSSNsHandler());
+		addNameSpaceHandler(ns_dc_getRSSNsHandler());
+		addNameSpaceHandler(ns_fm_getRSSNsHandler());	
+  		addNameSpaceHandler(ns_slash_getRSSNsHandler());
+		addNameSpaceHandler(ns_content_getRSSNsHandler());
+		addNameSpaceHandler(ns_syn_getRSSNsHandler());
+		addNameSpaceHandler(ns_admin_getRSSNsHandler());
+		addNameSpaceHandler(ns_cC1_getRSSNsHandler());
+		addNameSpaceHandler(ns_cC2_getRSSNsHandler());
 	}
 							
 	/* prepare feed handler structure */

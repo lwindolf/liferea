@@ -29,8 +29,6 @@
 #define VALUE_END	"</span> "
 #define SLASH_END	"</td></tr></table>"
 
-static gchar ns_slash_prefix[] = "slash";
-
 /* a tag list from http://f3.grp.yahoofs.com/v1/YP40P2oiXvP5CAx4TM6aQw8mDrCtNDwF9_BkMwcvulZHdlhYmCk5cS66_06t9OaIVsubWpwtMUTxYNG7/Modules/Proposed/mod_slash.html
 
    hmm... maybe you can find a somewhat shorter URL!
@@ -54,8 +52,6 @@ static gchar * taglist[] = {	"section",
 				/* "hitparade",*/
 				NULL
 			   };
-
-gchar * ns_slash_getRSSNsPrefix(void) { return ns_slash_prefix; }
 
 static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	gchar		*buffer = NULL;
@@ -118,12 +114,9 @@ RSSNsHandler *ns_slash_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
-	nsh->parseChannelTag		= NULL;
+	nsh->prefix			= "slash";
 	nsh->parseItemTag		= parseItemTag;
-	nsh->doChannelHeaderOutput	= NULL;
-	nsh->doChannelFooterOutput	= NULL;
 	nsh->doItemHeaderOutput		= doItemOutput;
-	nsh->doItemFooterOutput		= NULL;
 
 	return nsh;
 }

@@ -30,8 +30,6 @@
 #define LASTTD		"</span></td></tr>"
 #define TABLE_END	"</table>"
 
-static gchar ns_admin_prefix[] = "admin";
-
 /* you can find an admin namespace spec at:
    http://web.resource.org/rss/1.0/modules/admin/
  
@@ -44,8 +42,6 @@ static gchar ns_admin_prefix[] = "admin";
   both tags usually contains URIs which we simply display in the
   feed info view footer
 */
-
-gchar * ns_admin_getRSSNsPrefix(void) { return ns_admin_prefix; }
 
 static void parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar		*buffer = NULL;
@@ -117,12 +113,9 @@ RSSNsHandler *ns_admin_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
+	nsh->prefix			= "admin";
 	nsh->parseChannelTag		= parseChannelTag;;
-	nsh->parseItemTag		= NULL;
-	nsh->doChannelHeaderOutput	= NULL;
 	nsh->doChannelFooterOutput	= doChannelOutput;
-	nsh->doItemHeaderOutput		= NULL;
-	nsh->doItemFooterOutput		= NULL;
 
 	return nsh;
 }

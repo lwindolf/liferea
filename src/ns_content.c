@@ -21,9 +21,6 @@
 #include "ns_content.h"
 #include "common.h"
 
-static gchar ns_content_prefix[] = "content";
-
-
 /* a namespace documentation can be found at 
    http://web.resource.org/rss/1.0/modules/content/
 
@@ -41,18 +38,12 @@ static void ns_content_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
   	}
 }
 
-gchar * ns_content_getRSSNsPrefix(void) { return ns_content_prefix; }
-
 RSSNsHandler *ns_content_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
-	nsh->parseChannelTag		= NULL;
+	nsh->prefix			= "content";
 	nsh->parseItemTag		= ns_content_parseItemTag;
-	nsh->doChannelHeaderOutput	= NULL;
-	nsh->doChannelFooterOutput	= NULL;
-	nsh->doItemHeaderOutput		= NULL;
-	nsh->doItemFooterOutput		= NULL;
 
 	return nsh;
 }

@@ -22,8 +22,6 @@
 #include "rss_channel.h"
 #include "ns_syn.h"
 
-static gchar ns_syn_prefix[] = "syn";
-
 /* you can find the syn module documentation at
    http://web.resource.org/rss/1.0/modules/synndication/
 
@@ -34,8 +32,6 @@ static gchar ns_syn_prefix[] = "syn";
     <syn:updateBase>
    -------------------------------------------------------
 */
-
-gchar * ns_syn_getRSSNsPrefix(void) { return ns_syn_prefix; }
 
 void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	xmlChar	*tmp;
@@ -78,12 +74,8 @@ RSSNsHandler *ns_syn_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
+	nsh->prefix			= "syn";
 	nsh->parseChannelTag		= ns_syn_parseChannelTag;
-	nsh->parseItemTag		= NULL;
-	nsh->doChannelHeaderOutput	= NULL;
-	nsh->doChannelFooterOutput	= NULL;
-	nsh->doItemHeaderOutput		= NULL;
-	nsh->doItemFooterOutput		= NULL;
 
 	return nsh;
 }

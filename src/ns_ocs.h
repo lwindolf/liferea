@@ -24,7 +24,6 @@
 
 #include "ocs_ns.h"
 
-gchar	*ns_ocs_getOCSNsPrefix(void);
 OCSNsHandler *ns_ocs_getOCSNsHandler(void);
 
 #endif

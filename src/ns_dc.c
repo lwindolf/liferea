@@ -39,7 +39,7 @@
 #define TYPE_CHANNEL	1
 #define TYPE_FORMAT	2
 
-static gchar ns_dc_prefix[] = "dc";
+#define DC_PREFIX	"dc"
 
 /* a tag list from http://web.resource.org/rss/1.0/modules/dc/
 
@@ -192,11 +192,6 @@ static gint mapToDP[] = { 	OCS_TITLE,		/* title */
 #define DC_PIE_FEED	2
 #define DC_PIE_ENTRY	3
 
-/* some prototypes */
-gchar * ns_dc_getRSSNsPrefix(void) { return ns_dc_prefix; }
-gchar * ns_dc_getPIENsPrefix(void) { return ns_dc_prefix; }
-gchar * ns_dc_getOCSNsPrefix(void) { return ns_dc_prefix; }
-
 /* common OCS parsing */
 static void parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
 	directoryPtr	dp = (directoryPtr)p;
@@ -346,13 +341,13 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 				if(isNotEmpty) {
 					if(-1 == (mapping = getMapping(tagtype, i))) {
 						/* append it to the common DC value output */
-						buffer = g_hash_table_lookup(nsinfos, ns_dc_prefix);
+						buffer = g_hash_table_lookup(nsinfos, DC_PREFIX);
 						addToHTMLBuffer(&buffer, FIRSTTD);
 						addToHTMLBuffer(&buffer, taglist[i]);
 						addToHTMLBuffer(&buffer, NEXTTD);
 						addToHTMLBuffer(&buffer, value);
 						addToHTMLBuffer(&buffer, LASTTD);
-						g_hash_table_insert(nsinfos, g_strdup(ns_dc_prefix), buffer);
+						g_hash_table_insert(nsinfos, g_strdup(DC_PREFIX), buffer);
 						g_free(value);
 					} else {
 						mapTag(obj, tagtype, mapping, value);
@@ -376,13 +371,13 @@ static gchar * doFooterOutput(GHashTable *nsinfos) {
 	
 	g_assert(NULL != nsinfos);
 	/* the ns_dc_parse*() functions should have prepared a simple string... */
-	output = g_hash_table_lookup(nsinfos, (gpointer)ns_dc_prefix);
+	output = g_hash_table_lookup(nsinfos, (gpointer)DC_PREFIX);
 	if(NULL != output) {
 		addToHTMLBuffer(&buffer, TABLE_START);
 		addToHTMLBuffer(&buffer, output);
 		addToHTMLBuffer(&buffer, TABLE_END);
 		g_free(output);
-		g_hash_table_remove(nsinfos, (gpointer)ns_dc_prefix);
+		g_hash_table_remove(nsinfos, (gpointer)DC_PREFIX);
 	}
 	return buffer;
 }
@@ -425,11 +420,10 @@ RSSNsHandler *ns_dc_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
+	nsh->prefix			= g_strdup("dc");
 	nsh->parseChannelTag		= parseRSSChannelTag;
 	nsh->parseItemTag		= parseRSSItemTag;
-	nsh->doChannelHeaderOutput	= NULL;
 	nsh->doChannelFooterOutput	= doRSSChannelFooterOutput;
-	nsh->doItemHeaderOutput		= NULL;
 	nsh->doItemFooterOutput		= doRSSItemFooterOutput;		
 
 	return nsh;
@@ -439,11 +433,10 @@ PIENsHandler *ns_dc_getPIENsHandler(void) {
 	PIENsHandler 	*nsh;
 	
 	nsh = g_new0(PIENsHandler, 1);
+	nsh->prefix			= g_strdup("dc");
 	nsh->parseChannelTag		= parsePIEFeedTag;
 	nsh->parseItemTag		= parsePIEEntryTag;
-	nsh->doChannelHeaderOutput	= NULL;
 	nsh->doChannelFooterOutput	= doPIEFeedFooterOutput;
-	nsh->doItemHeaderOutput		= NULL;
 	nsh->doItemFooterOutput		= doPIEEntryFooterOutput;		
 
 	return nsh;
@@ -453,6 +446,7 @@ OCSNsHandler *ns_dc_getOCSNsHandler(void) {
 	OCSNsHandler 	*nsh;
 	
 	nsh = g_new0(OCSNsHandler, 1);
+	nsh->prefix			= g_strdup("dc");
 	nsh->parseDirectoryTag		= parseOCSDirectoryTag;
 	nsh->parseDirEntryTag		= parseOCSChannelTag;
 	nsh->parseFormatTag		= parseOCSFormatTag;				

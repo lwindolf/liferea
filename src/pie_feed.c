@@ -337,6 +337,7 @@ static gboolean pie_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 
 feedHandlerPtr initPIEFeedHandler(void) {
 	feedHandlerPtr	fhp;
+	PIENsHandler	*handler;
 	
 	fhp = g_new0(struct feedHandler, 1);
 	
@@ -344,9 +345,9 @@ feedHandlerPtr initPIEFeedHandler(void) {
 	pie_nslist = g_hash_table_new(g_str_hash, g_str_equal);
 	
 	/* register PIE name space handlers, not sure which namespaces beside DC are common */
-	if(getNameSpaceStatus(ns_dc_getPIENsPrefix()))
-		g_hash_table_insert(pie_nslist, (gpointer)ns_dc_getPIENsPrefix(),
-					        (gpointer)ns_dc_getPIENsHandler());
+	handler = ns_dc_getPIENsHandler();
+	if(getNameSpaceStatus(handler->prefix))
+		g_hash_table_insert(pie_nslist, (gpointer)handler->prefix, (gpointer)handler);
 
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";

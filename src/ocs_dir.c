@@ -537,6 +537,7 @@ gboolean ocs_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 
 feedHandlerPtr initOCSFeedHandler(void) {
 	feedHandlerPtr	fhp;
+	OCSNsHandler	*handler;
 	
 	fhp = g_new0(struct feedHandler, 1);
 
@@ -544,11 +545,10 @@ feedHandlerPtr initOCSFeedHandler(void) {
 	ocs_nslist = g_hash_table_new(g_str_hash, g_str_equal);
 	
 	/* register OCS name space handlers */
-	g_hash_table_insert(ocs_nslist, (gpointer)ns_dc_getOCSNsPrefix(),
-				        (gpointer)ns_dc_getOCSNsHandler());
-
-	g_hash_table_insert(ocs_nslist, (gpointer)ns_ocs_getOCSNsPrefix(),
-				        (gpointer)ns_ocs_getOCSNsHandler());
+	handler = ns_dc_getOCSNsHandler();
+	g_hash_table_insert(ocs_nslist, handler->prefix, (gpointer)handler);
+	handler = ns_ocs_getOCSNsHandler();
+	g_hash_table_insert(ocs_nslist, handler->prefix, (gpointer)handler);
 
 	/* prepare feed handler structure */
 	fhp->typeStr = "ocs";
@@ -556,7 +556,7 @@ feedHandlerPtr initOCSFeedHandler(void) {
 	fhp->directory = TRUE;
 	fhp->feedParser	= ocs_parse;
 	fhp->checkFormat = ocs_format_check;
-	fhp->merge		= FALSE;
+	fhp->merge = FALSE;
 	
 	return fhp;
 }

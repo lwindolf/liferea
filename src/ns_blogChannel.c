@@ -31,8 +31,6 @@
 #define BLINK_START		"<p><div class=\"blogchanneltitle\"><b>Promoted Weblog</b></div></p>"
 #define BLINK_END		""
 
-static gchar ns_bC_prefix[] = "blogChannel";
-
 /* the spec at Userland http://backend.userland.com/blogChannelModule
 
    blogChannel contains of four channel tags
@@ -41,8 +39,6 @@ static gchar ns_bC_prefix[] = "blogChannel";
    - blink
    - changes	(ignored)
 */
-
-gchar * ns_bC_getRSSNsPrefix(void) { return ns_bC_prefix; }
 
 /* returns a HTML string containing the text and attributes of the outline */
 static gchar * getOutlineContents(xmlNodePtr cur) {
@@ -176,7 +172,7 @@ static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 		xmlFree(string);	
 
 	if(NULL != buffer) {
-		key = g_strdup_printf("cC:%s", cur->name);
+		key = g_strdup_printf("blogChannel:%s", cur->name);
 		g_hash_table_insert(cp->nsinfos, g_strdup(key), buffer);
 	}
 }
@@ -186,7 +182,7 @@ static void ns_bC_doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) 
 	gchar		*key;
 	
 	g_assert(NULL != nsinfos);
-	key = g_strdup_printf("cC:%s", tagname);
+	key = g_strdup_printf("blogChannel:%s", tagname);
 	
 	if(NULL != (output = g_hash_table_lookup(nsinfos, key))) {
 		addToHTMLBuffer(buffer, output);
@@ -211,12 +207,9 @@ RSSNsHandler *ns_bC_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
+	nsh->prefix			= "blogChannel";
 	nsh->parseChannelTag		= ns_bC_parseChannelTag;
-	nsh->parseItemTag		= NULL;
-	nsh->doChannelHeaderOutput	= NULL;
 	nsh->doChannelFooterOutput	= ns_bC_doChannelOutput;
-	nsh->doItemHeaderOutput		= NULL;
-	nsh->doItemFooterOutput		= NULL;
 
 	return nsh;
 }

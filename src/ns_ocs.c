@@ -27,8 +27,6 @@
 #define TYPE_CHANNEL	1
 #define TYPE_FORMAT	2
 
-static gchar ns_ocs_prefix[] = "ocs";
-
 /* you can find the OCS specification at
 
    http://internetalchemy.org/ocs/directory.html 
@@ -54,9 +52,6 @@ static gint mapTo[] = { 	OCS_IMAGE,		/* image */
 				OCS_UPDATEBASE,		/* updateBase */
 				OCS_LANGUAGE		/* language */
 			  };
-
-			  
-gchar * ns_ocs_getOCSNsPrefix(void) { return ns_ocs_prefix; }
 
 /* set the tag property of any OCS element (directory, channel, format)
 
@@ -117,6 +112,7 @@ OCSNsHandler *ns_ocs_getOCSNsHandler(void) {
 	OCSNsHandler 	*nsh;
 	
 	nsh = g_new0(OCSNsHandler, 1);
+	nsh->prefix		= "ocs";
 	nsh->parseDirectoryTag	= ns_ocs_parseDirectoryTag;
 	nsh->parseDirEntryTag	= ns_ocs_parseChannelTag;
 	nsh->parseFormatTag	= ns_ocs_parseFormatTag;				

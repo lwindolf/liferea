@@ -23,7 +23,6 @@
 
 #include "rss_ns.h"
 
-gchar	*ns_content_getRSSNsPrefix(void);
 RSSNsHandler *ns_content_getRSSNsHandler(void);
 
 #endif

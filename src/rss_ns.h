@@ -42,13 +42,15 @@ typedef gchar *	(*outputFunc)	(gpointer obj);
 
 /* struct used to register RDF namespace handler */
 typedef struct RSSNsHandler {
-	parseItemTagFunc	parseItemTag;
-	parseChannelTagFunc	parseChannelTag;
+	gchar		*prefix;			/**< namespace prefix */
+
+	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
+	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
 		
-	outputFunc	doItemHeaderOutput;
-	outputFunc	doItemFooterOutput;	
-	outputFunc	doChannelHeaderOutput;
-	outputFunc	doChannelFooterOutput;	
+	outputFunc	doItemHeaderOutput;		/**< item header output method */
+	outputFunc	doItemFooterOutput;		/**< item footer output method */
+	outputFunc	doChannelHeaderOutput;		/**< channel header output method */
+	outputFunc	doChannelFooterOutput;		/**< channel footer output method */
 } RSSNsHandler;
 
 #endif

@@ -24,7 +24,6 @@
 
 #include "rss_ns.h"
 
-gchar	*ns_syn_getRSSNsPrefix(void);
 RSSNsHandler *ns_syn_getRSSNsHandler(void);
 
 #endif

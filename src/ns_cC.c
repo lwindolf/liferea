@@ -1,5 +1,5 @@
 /*
-   creativeCommon RSS namespace support
+   creativeCommon RSS 1.0 and 2.0 namespace support
    
    Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
@@ -18,7 +18,6 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "htmlview.h"
 #include "support.h"
 #include "ns_cC.h"
 #include "common.h"
@@ -29,19 +28,33 @@
 #define LASTTD		"</span></td></tr>"
 #define TABLE_END	"</table>"
 
-static gchar ns_cC_prefix[] = "creativeCommons";
+#define RSS1_CC_PREFIX	"cc"
+#define RSS2_CC_PREFIX	"creativeCommons"
 
-/* you can find an creativeCommon namespace spec at:
+/* you can find the RSS 2.0 creativeCommon namespace spec at:
    http://backend.userland.com/creativeCommonsRssModule
  
    there is only one tag which can appear inside
    channel and items:
 
-    license
+   license
+   
+   --------------------------------------------------------
+   you can find the RSS 1.0 cC namespace spec at:
+   http://web.resource.org/rss/1.0/modules/cc/
 
+   channels, images and items can have a license tag,
+   for every license rdf:ressource a License tag must
+   exist...
+
+   license
+   License
+      permits
+      requires
+      
+   for simplicity we only parse the license tags and
+   provide a link to the license
 */
-
-gchar * ns_cC_getRSSNsPrefix(void) { return ns_cC_prefix; }
 
 gchar * ns_cC_parseTag(xmlNodePtr cur) {
 	gchar	*buffer = NULL;
@@ -49,6 +62,7 @@ gchar * ns_cC_parseTag(xmlNodePtr cur) {
 	
  	if(!xmlStrcmp("license", cur->name)) {
  		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+			/* RSS 2.0 module handling */
 			addToHTMLBuffer(&buffer, FIRSTTD);
 			addToHTMLBuffer(&buffer, (gchar *)_("license"));
 			addToHTMLBuffer(&buffer, NEXTTD);
@@ -59,6 +73,13 @@ gchar * ns_cC_parseTag(xmlNodePtr cur) {
 			addToHTMLBuffer(&buffer, "</a>");	
 			addToHTMLBuffer(&buffer, LASTTD);
 			g_free(tmp);
+ 		} else {
+			/* RSS 1.0 module handling */
+			addToHTMLBuffer(&buffer, FIRSTTD);
+			addToHTMLBuffer(&buffer, (gchar *)_("license"));
+			addToHTMLBuffer(&buffer, NEXTTD);
+			addToHTMLBuffer(&buffer, "Creative Commons");	
+			addToHTMLBuffer(&buffer, LASTTD);
  		}
  	}	
 	return buffer;
@@ -67,13 +88,13 @@ gchar * ns_cC_parseTag(xmlNodePtr cur) {
 void ns_cC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 
 	g_assert(NULL != cp->nsinfos);
-	g_hash_table_insert(cp->nsinfos, g_strdup(ns_cC_prefix), ns_cC_parseTag(cur));
+	g_hash_table_insert(cp->nsinfos, g_strdup(RSS1_CC_PREFIX), ns_cC_parseTag(cur));
 }
 
 void ns_cC_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 
 	g_assert(NULL != ip->nsinfos);
-	g_hash_table_insert(ip->nsinfos, g_strdup(ns_cC_prefix), ns_cC_parseTag(cur));
+	g_hash_table_insert(ip->nsinfos, g_strdup(RSS1_CC_PREFIX), ns_cC_parseTag(cur));
 }
 
 gchar * ns_cC_doOutput(GHashTable *nsinfos) {
@@ -82,12 +103,12 @@ gchar * ns_cC_doOutput(GHashTable *nsinfos) {
 	
 	/* we print all channel infos as a (key,value) table */
 	g_assert(NULL != nsinfos);
-	if(NULL != (output = g_hash_table_lookup(nsinfos, (gpointer)ns_cC_prefix))) {
+	if(NULL != (output = g_hash_table_lookup(nsinfos, (gpointer)RSS1_CC_PREFIX))) {
 		addToHTMLBuffer(&buffer, TABLE_START);
 		addToHTMLBuffer(&buffer, output);
 		addToHTMLBuffer(&buffer, TABLE_END);
 		g_free(output);
-		g_hash_table_remove(nsinfos, (gpointer)ns_cC_prefix);
+		g_hash_table_remove(nsinfos, (gpointer)RSS1_CC_PREFIX);
 	}	
 	return buffer;
 }
@@ -108,17 +129,30 @@ gchar * ns_cC_doItemOutput(gpointer obj) {
 	return NULL;
 }
 
-RSSNsHandler *ns_cC_getRSSNsHandler(void) {
+RSSNsHandler *ns_cC1_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
 	nsh = g_new0(RSSNsHandler, 1);
+	nsh->prefix 			= RSS1_CC_PREFIX;
 	nsh->parseChannelTag		= ns_cC_parseChannelTag;
 	nsh->parseItemTag		= ns_cC_parseItemTag;
-	nsh->doChannelHeaderOutput	= NULL;
 	nsh->doChannelFooterOutput	= ns_cC_doChannelOutput;
-	nsh->doItemHeaderOutput		= NULL;
 	nsh->doItemFooterOutput		= ns_cC_doItemOutput;
 
 	return nsh;
 }
+
+RSSNsHandler *ns_cC2_getRSSNsHandler(void) {
+	RSSNsHandler 	*nsh;
+	
+	nsh = g_new0(RSSNsHandler, 1);
+	nsh->prefix			= RSS2_CC_PREFIX;
+	nsh->parseChannelTag		= ns_cC_parseChannelTag;
+	nsh->parseItemTag		= ns_cC_parseItemTag;
+	nsh->doChannelFooterOutput	= ns_cC_doChannelOutput;
+	nsh->doItemFooterOutput		= ns_cC_doItemOutput;
+
+	return nsh;
+}
+
 
