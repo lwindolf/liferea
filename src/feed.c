@@ -63,6 +63,7 @@ struct feed_type {
 
 /* prototypes */
 static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode);
+static void feed_replace(feedPtr fp, feedPtr new_fp);
 
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
@@ -1231,7 +1232,7 @@ gchar *feed_render(feedPtr fp) {
    
    This method is primarily used for feeds which do not want
    to incrementally update items like directories. */
-void feed_replace(feedPtr fp, feedPtr new_fp) {
+static void feed_replace(feedPtr fp, feedPtr new_fp) {
 	feedPtr		tmp_fp;
 	itemPtr		ip;
 	GSList		*item;

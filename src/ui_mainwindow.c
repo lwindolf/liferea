@@ -1,24 +1,24 @@
-/*
-   some functions concerning the main window 
-   
-   Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
-   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-   
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-   
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.
-*/
+/**
+ * @file ui_mainwindow.c some functions concerning the main window 
+ *
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -70,6 +70,9 @@ gfloat zoom;
 
 gboolean	itemlist_mode = TRUE;		/* TRUE means three pane, FALSE means two panes */
 
+/* some prototypes */
+static void ui_mainwindow_restore_position(GtkWidget *window);
+
 GtkWidget *ui_mainwindow_get_active_htmlview() {
 	return htmlview;
 }
@@ -86,12 +89,13 @@ static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventK
 }
 
 void ui_mainwindow_set_mode(gboolean threePane) {
-     debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
 	
-     if (threePane == TRUE && (itemlist_mode == FALSE || htmlview == NULL)) {
+	debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
+	
+	if(threePane == TRUE && (itemlist_mode == FALSE || htmlview == NULL)) {
 		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
 		ui_update();
-		if (htmlview != NULL)
+		if(htmlview != NULL)
 			gtk_widget_destroy(htmlview);
 		htmlview = NULL;
 		ui_update();
@@ -102,21 +106,21 @@ void ui_mainwindow_set_mode(gboolean threePane) {
 		ui_htmlview_clear(htmlview);
 		ui_htmlview_set_zoom(htmlview, zoom);
 		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
-     } else if (threePane == FALSE && (itemlist_mode == TRUE || htmlview == NULL)) {
+	} else if (threePane == FALSE && (itemlist_mode == TRUE || htmlview == NULL)) {
 		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
 		ui_update();
 		if (htmlview != NULL)
 			gtk_widget_destroy(htmlview);
 		htmlview = NULL;
 		ui_update();
-          gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
 		htmlview = ui_htmlview_new();
 		gtk_widget_show(htmlview);
 		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "viewportTwoPaneHtml")), htmlview);
 		ui_htmlview_clear(htmlview);
 		ui_htmlview_set_zoom(htmlview, zoom);
 		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
-     }
+	}
 	itemlist_mode = threePane;
 }
 
@@ -161,7 +165,7 @@ GtkWidget* ui_mainwindow_new() {
 	TOOLBAR_ADD(toolbar,  _("Preferences"), GTK_STOCK_PREFERENCES, tooltips,  _("Edit preferences."), on_prefbtn_clicked);
 	gtk_widget_show_all(GTK_WIDGET(toolbar));
 
-	ui_mainwindow_restore_position();
+	ui_mainwindow_restore_position(window);
 	
 	return window;
 }
@@ -349,7 +353,11 @@ void ui_mainwindow_save_position() {
 	setNumericConfValue(LAST_WINDOW_HEIGHT, h);
 }
 
-void ui_mainwindow_restore_position() {
+/**
+ * Restore the window position from the values saved into gconf. Note
+ * that this does not display/present/show the mainwindow.
+ */
+static void ui_mainwindow_restore_position(GtkWidget *window) {
 	/* load window position */
 	int x, y, w, h;
 	
@@ -372,16 +380,16 @@ void ui_mainwindow_restore_position() {
 		else if(y + w < 0)
 			y  = 100;
 	
-		gtk_window_move(GTK_WINDOW(mainwindow), x, y);
+		gtk_window_move(GTK_WINDOW(window), x, y);
 
 		/* load window size */
-		gtk_window_resize(GTK_WINDOW(mainwindow), w, h);
+		gtk_window_resize(GTK_WINDOW(window), w, h);
 	}
 
 	if(getBooleanConfValue(LAST_WINDOW_MAXIMIZED))
-		gtk_window_maximize(GTK_WINDOW(mainwindow));
+		gtk_window_maximize(GTK_WINDOW(window));
 	else
-		gtk_window_unmaximize(GTK_WINDOW(mainwindow));
+		gtk_window_unmaximize(GTK_WINDOW(window));
 
 }
 
@@ -447,7 +455,7 @@ gboolean on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data) {
 	if((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
-		ui_mainwindow_restore_position();
+		ui_mainwindow_restore_position(mainwindow);
 		gtk_window_present(GTK_WINDOW(mainwindow));
 	} else {
 		ui_mainwindow_save_position();
