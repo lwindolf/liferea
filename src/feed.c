@@ -394,7 +394,6 @@ g_print("feed_load for %s\n", feed_get_source(fp));
 			break;		
 		}
 
-		fp->available = TRUE;
 		fp->unreadCount = 0;
 		metadata_list_free(fp->metadata);
 		fp->metadata = NULL;
