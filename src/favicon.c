@@ -180,9 +180,10 @@ void favicon_download(feedPtr fp) {
 			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
 			request->callback = &favicon_download_request_cb;
 			request->user_data = fp;
+			fp->faviconRequest = request;
 			
 			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
-
+			
 			download_queue(request);
 		}
 	}
