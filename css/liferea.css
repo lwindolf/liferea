@@ -74,7 +74,7 @@ td.headright {
    
 div.feedfoottitle {
 	margin-top:15px;
-	font-size:8pt;
+	font-size:0.7em;
 	color:#C0C0C0;
 }
 
@@ -109,7 +109,7 @@ td.feedfootname {
 }
 
 span.feedfootname {
-	font-size:9pt;
+	font-size:0.8em;
 	color:#C0C0C0;
 }
 
@@ -119,7 +119,7 @@ td.feedfootvalue {
 */
 
 span.feedfootvalue {
-	font-size:9pt;
+	font-size:0.8em;
 	color:#C0C0C0;
 }
 
