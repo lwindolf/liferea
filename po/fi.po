@@ -1,19 +1,20 @@
 # Liferea Finnish translation.  
 # This file is covered by the same license as the Liferea package.
-# Copyright © 2004 Pauli Virtanen
-# Pauli Virtanen <pauli.virtanen@hut.fi>, 2004.
+# Copyright © 2004, 2005 Pauli Virtanen
+# Pauli Virtanen <pauli.virtanen@hut.fi>, 2004-2005.
 #
 # Note: we set
 #
 # subscription = feed = syöte
 # item = headline = otsikko
+# enclosure = liitetiedosto
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-06 02:38+0100\n"
-"PO-Revision-Date: 2004-11-26 23:31+0200\n"
+"POT-Creation-Date: 2005-03-03 09:46+0100\n"
+"PO-Revision-Date: 2005-03-03 19:23+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <lokalisointi-laatu@linux-aktivaattori.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +26,6 @@ msgstr ""
 #: src/callbacks.c:227
 msgid "http://liferea.sf.net"
 msgstr ""
-# test
 
 #: src/common.c:279
 msgid "[Parser error output was truncated!]"
