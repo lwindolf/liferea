@@ -109,22 +109,24 @@ const gboolean item_get_update_status(itemPtr ip) { g_assert(ip != NULL); return
 void item_set_mark(itemPtr ip, gboolean flag) {
 	itemPtr		sourceItem;
 
-	ip->marked = flag;
-	
-	if(ip->ui_data != NULL)
-		ui_item_update(ip);
-	if(ip->fp != NULL)
-		ip->fp->needsCacheSave = TRUE;
-		
-	/* if this item belongs to a vfolder update the source feed */
-	if(ip->sourceFeed != NULL) {
-		feed_load(ip->sourceFeed);
-		if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-			item_set_mark(sourceItem, flag);
-		feed_unload(ip->sourceFeed);
-	} else {
-		vfolder_update_item(ip);	/* there might be vfolders using this item */
-		vfolder_check_item(ip);		/* and check if now a rule matches */
+	if(ip->marked != flag) {
+		ip->marked = flag;
+
+		if(ip->ui_data != NULL)
+			ui_item_update(ip);
+		if(ip->fp != NULL)
+			ip->fp->needsCacheSave = TRUE;
+
+		/* if this item belongs to a vfolder update the source feed */
+		if(ip->sourceFeed != NULL) {
+			feed_load(ip->sourceFeed);
+			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+				item_set_mark(sourceItem, flag);
+			feed_unload(ip->sourceFeed);
+		} else {
+			vfolder_update_item(ip);	/* there might be vfolders using this item */
+			vfolder_check_item(ip);		/* and check if now a rule matches */
+		}
 	}
 }
 
@@ -143,21 +145,23 @@ void item_set_new_status(itemPtr ip, const gboolean newStatus) {
 void item_set_update_status(itemPtr ip, const gboolean newStatus) { 
 	itemPtr		sourceItem;
 	
-	ip->updateStatus = newStatus; 
-	if(ip->ui_data != NULL)
-		ui_item_update(ip);
-	if(ip->fp != NULL)
-		ip->fp->needsCacheSave = TRUE;
+	if(ip->updateStatus != newStatus) {
+		ip->updateStatus = newStatus; 
+		if(ip->ui_data != NULL)
+			ui_item_update(ip);
+		if(ip->fp != NULL)
+			ip->fp->needsCacheSave = TRUE;
 
-	/* if this item belongs to a vfolder update the source feed */
-	if(ip->sourceFeed != NULL) {
-		feed_load(ip->sourceFeed);
-		if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-			item_set_update_status(sourceItem, newStatus);
-		feed_unload(ip->sourceFeed);
-	} else {
-		vfolder_update_item(ip);	/* there might be vfolders using this item */
-		vfolder_check_item(ip);		/* and check if now a rule matches */
+		/* if this item belongs to a vfolder update the source feed */
+		if(ip->sourceFeed != NULL) {
+			feed_load(ip->sourceFeed);
+			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+				item_set_update_status(sourceItem, newStatus);
+			feed_unload(ip->sourceFeed);
+		} else {
+			vfolder_update_item(ip);	/* there might be vfolders using this item */
+			vfolder_check_item(ip);		/* and check if now a rule matches */
+		}
 	}
 }
 

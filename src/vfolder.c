@@ -85,6 +85,12 @@ void vfolder_remove_rule(feedPtr vp, rulePtr rp) {
 static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	GSList		*iter;
 	itemPtr		tmp;
+	
+	/* need to check for vfolder item because the
+	   rule checking can be called on item copies and
+	   may trigger the adding */
+	if(FST_VFOLDER == feed_get_type(ip->fp))
+		return;
 
 	/* check if the item was already added */
 	iter = vp->items;
