@@ -257,17 +257,25 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 		addToHTMLBuffer(buffer, "<style type=\"text/css\">\n<!--\nbody {");
 		
 		fontsize = font;
-		/* the GTK/GNOME font name format is <font name>,<font size in point> */		
+		/* the GTK/GNOME font name format is <font name>,<font size in point>
+		 Or it can also be "Font Name size*/
 		strsep(&fontsize, ",");
+		if (fontsize == NULL) {
+			if (NULL != (fontsize = strrchr(font, ' '))) {
+				*fontsize = '\0';
+				fontsize++;
+			}
+		}
 		addToHTMLBuffer(buffer, "font-family:");
 		addToHTMLBuffer(buffer, font);
 		addToHTMLBuffer(buffer, ";");
-		
+		printf("font: %s\n", font);
 		if(NULL != fontsize) {
 			addToHTMLBuffer(buffer, "font-size:");
 			addToHTMLBuffer(buffer, fontsize);
 			addToHTMLBuffer(buffer, "pt;");
 		}		
+		printf("fontsize: %s\n", fontsize);
 		g_free(font);
 		
 		addToHTMLBuffer(buffer, "}\n//-->\n</style>\n");
