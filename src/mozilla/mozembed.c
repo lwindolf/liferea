@@ -223,10 +223,13 @@ static GtkWidget * mozilla_create() {
 	/* set proxy and other stuff (can't be in mozilla_init() because 
 	   proxy config is not yet available at this time */
 	if(NULL != proxyname) {	/* bad access to global stuff from conf.c */
+		debug0(DEBUG_GUI, "setting proxy for Mozilla");
 		mozilla_preference_set("network.proxy.http", proxyname);
 		mozilla_preference_set_int("network.proxy.http_port", proxyport);
 		mozilla_preference_set_int("network.proxy.type", 1);
-	}	
+	} else {
+		mozilla_preference_set_int("network.proxy.type", 0);
+	}
 	mozilla_preference_set_boolean("mozilla.widget.raise-on-setfocus", FALSE);
 	mozilla_save_prefs();
 
