@@ -81,6 +81,7 @@ typedef struct feed {
 	gchar		*title;			/**< feed/channel title */
 	gchar		*description;		/**< HTML string describing the feed */
 	gchar		*source;		/**< feed source, FIXME: needed??? */
+	gchar		*filtercmd;	/**< feed filter command */
 	gint		updateInterval;		/**< user defined update interval in minutes */
 
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
@@ -214,6 +215,8 @@ gchar * feed_get_description(feedPtr fp);
 
 gchar * feed_get_source(feedPtr fp);
 void feed_set_source(feedPtr fp, gchar * source);
+gchar * feed_get_filter(feedPtr fp);
+void feed_set_filter(feedPtr fp, const gchar * filter);
 
 GSList * feed_get_item_list(feedPtr fp);
 void feed_clear_item_list(feedPtr fp);

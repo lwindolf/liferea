@@ -954,11 +954,13 @@ create_propdialog (void)
   GtkWidget *label89;
   GtkWidget *vbox241;
   GtkWidget *label91;
-  GtkWidget *hbox38;
-  GtkWidget *label90;
-  GtkWidget *filtermenu;
-  GtkWidget *menu4;
-  GtkWidget *none;
+  GtkWidget *vbox243;
+  GtkWidget *filterCheckbox;
+  GtkWidget *filterbox;
+  GtkWidget *label99;
+  GtkWidget *label100;
+  GtkWidget *filterEntry;
+  GtkWidget *filterSelectFile;
   GtkWidget *label67;
   GtkWidget *vbox240;
   GtkWidget *label83;
@@ -1252,31 +1254,39 @@ create_propdialog (void)
   gtk_widget_show (vbox241);
   gtk_box_pack_start (GTK_BOX (hbox37), vbox241, TRUE, TRUE, 0);
 
-  label91 = gtk_label_new (_("Liferea can use external filter plugins in order to access feeds and directories in non-supported formats. Filters are installed by placing them in ~/.liferea/filters. See the documentation for more information."));
+  label91 = gtk_label_new (_("Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."));
   gtk_widget_show (label91);
   gtk_box_pack_start (GTK_BOX (vbox241), label91, FALSE, FALSE, 0);
   gtk_label_set_line_wrap (GTK_LABEL (label91), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label91), 0, 0.5);
 
-  hbox38 = gtk_hbox_new (FALSE, 6);
-  gtk_widget_show (hbox38);
-  gtk_box_pack_start (GTK_BOX (vbox241), hbox38, FALSE, FALSE, 0);
+  vbox243 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox243);
+  gtk_box_pack_start (GTK_BOX (vbox241), vbox243, FALSE, FALSE, 0);
 
-  label90 = gtk_label_new (_("Convert using: "));
-  gtk_widget_show (label90);
-  gtk_box_pack_start (GTK_BOX (hbox38), label90, FALSE, FALSE, 0);
+  filterCheckbox = gtk_check_button_new_with_mnemonic (_("Use conversion filter"));
+  gtk_widget_show (filterCheckbox);
+  gtk_box_pack_start (GTK_BOX (vbox243), filterCheckbox, FALSE, FALSE, 0);
 
-  filtermenu = gtk_option_menu_new ();
-  gtk_widget_show (filtermenu);
-  gtk_box_pack_start (GTK_BOX (hbox38), filtermenu, FALSE, FALSE, 0);
+  filterbox = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (filterbox);
+  gtk_box_pack_start (GTK_BOX (vbox243), filterbox, TRUE, TRUE, 0);
 
-  menu4 = gtk_menu_new ();
+  label99 = gtk_label_new (_("    "));
+  gtk_widget_show (label99);
+  gtk_box_pack_start (GTK_BOX (filterbox), label99, FALSE, FALSE, 0);
 
-  none = gtk_menu_item_new_with_mnemonic (_("No conversion"));
-  gtk_widget_show (none);
-  gtk_container_add (GTK_CONTAINER (menu4), none);
+  label100 = gtk_label_new (_("Convert using:"));
+  gtk_widget_show (label100);
+  gtk_box_pack_start (GTK_BOX (filterbox), label100, FALSE, FALSE, 0);
 
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (filtermenu), menu4);
+  filterEntry = gtk_entry_new ();
+  gtk_widget_show (filterEntry);
+  gtk_box_pack_start (GTK_BOX (filterbox), filterEntry, TRUE, TRUE, 0);
+
+  filterSelectFile = gtk_button_new_with_mnemonic (_("Select File..."));
+  gtk_widget_show (filterSelectFile);
+  gtk_box_pack_start (GTK_BOX (filterbox), filterSelectFile, FALSE, FALSE, 0);
 
   label67 = gtk_label_new (_("Feed Source"));
   gtk_widget_show (label67);
@@ -1413,11 +1423,13 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, label89, "label89");
   GLADE_HOOKUP_OBJECT (propdialog, vbox241, "vbox241");
   GLADE_HOOKUP_OBJECT (propdialog, label91, "label91");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox38, "hbox38");
-  GLADE_HOOKUP_OBJECT (propdialog, label90, "label90");
-  GLADE_HOOKUP_OBJECT (propdialog, filtermenu, "filtermenu");
-  GLADE_HOOKUP_OBJECT (propdialog, menu4, "menu4");
-  GLADE_HOOKUP_OBJECT (propdialog, none, "none");
+  GLADE_HOOKUP_OBJECT (propdialog, vbox243, "vbox243");
+  GLADE_HOOKUP_OBJECT (propdialog, filterCheckbox, "filterCheckbox");
+  GLADE_HOOKUP_OBJECT (propdialog, filterbox, "filterbox");
+  GLADE_HOOKUP_OBJECT (propdialog, label99, "label99");
+  GLADE_HOOKUP_OBJECT (propdialog, label100, "label100");
+  GLADE_HOOKUP_OBJECT (propdialog, filterEntry, "filterEntry");
+  GLADE_HOOKUP_OBJECT (propdialog, filterSelectFile, "filterSelectFile");
   GLADE_HOOKUP_OBJECT (propdialog, label67, "label67");
   GLADE_HOOKUP_OBJECT (propdialog, vbox240, "vbox240");
   GLADE_HOOKUP_OBJECT (propdialog, label83, "label83");
@@ -2111,6 +2123,7 @@ create_newfolderdialog (void)
   foldertitleentry = gtk_entry_new ();
   gtk_widget_show (foldertitleentry);
   gtk_box_pack_start (GTK_BOX (hbox12), foldertitleentry, TRUE, TRUE, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (foldertitleentry), TRUE);
 
   dialog_action_area6 = GTK_DIALOG (newfolderdialog)->action_area;
   gtk_widget_show (dialog_action_area6);
@@ -2185,6 +2198,7 @@ create_foldernamedialog (void)
   foldernameentry = gtk_entry_new ();
   gtk_widget_show (foldernameentry);
   gtk_box_pack_start (GTK_BOX (hbox13), foldernameentry, TRUE, TRUE, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (foldernameentry), TRUE);
 
   dialog_action_area7 = GTK_DIALOG (foldernamedialog)->action_area;
   gtk_widget_show (dialog_action_area7);
@@ -2509,6 +2523,7 @@ create_feedsterdialog (void)
   gtk_widget_show (feedsterkeywords);
   gtk_box_pack_start (GTK_BOX (hbox23), feedsterkeywords, TRUE, TRUE, 0);
   gtk_tooltips_set_tip (tooltips, feedsterkeywords, _("enter any search string you want"), NULL);
+  gtk_entry_set_activates_default (GTK_ENTRY (feedsterkeywords), TRUE);
 
   hbox24 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox24);
@@ -2616,6 +2631,7 @@ create_importdialog (void)
   importfileentry = gtk_entry_new ();
   gtk_widget_show (importfileentry);
   gtk_box_pack_start (GTK_BOX (hbox25), importfileentry, TRUE, TRUE, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (importfileentry), TRUE);
 
   button24 = gtk_button_new_with_mnemonic (_("Select File"));
   gtk_widget_show (button24);
@@ -2704,6 +2720,7 @@ create_exportdialog (void)
   exportfileentry = gtk_entry_new ();
   gtk_widget_show (exportfileentry);
   gtk_box_pack_start (GTK_BOX (hbox26), exportfileentry, TRUE, TRUE, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (exportfileentry), TRUE);
 
   button25 = gtk_button_new_with_mnemonic (_("Select File"));
   gtk_widget_show (button25);

@@ -577,7 +577,7 @@ void feed_schedule_update(feedPtr fp) {
 		return;
 	}
 
-	ui_mainwindow_set_status_bar("updating \"%s\"", feed_get_title(fp));
+	ui_mainwindow_set_status_bar("Updating \"%s\"", feed_get_title(fp));
 	
 	if(NULL == (source = feed_get_source(fp))) {
 		g_warning("Feed source is NULL! This should never happen - cannot update!");
@@ -594,6 +594,9 @@ void feed_schedule_update(feedPtr fp) {
 	   changed on permanent HTTP redirection in netio.c) */
 	g_assert(((struct feed_request *)fp->request)->feedurl  == NULL);
 	((struct feed_request *)fp->request)->feedurl = g_strdup(source);
+	g_assert(((struct feed_request *)fp->request)->filtercmd  == NULL);
+	if (feed_get_filter(fp) != NULL)
+		((struct feed_request *)fp->request)->filtercmd = g_strdup(feed_get_filter(fp));
 
 	update_thread_add_request((struct feed_request *)fp->request);
 }
@@ -614,7 +617,6 @@ gint feed_process_update_results(gpointer data) {
 	if (request->fp == NULL) { /* Feed deleted during update of feed*/
 		debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
 		g_free(request->data);
-		g_free(request->feedurl);
 		request->data = NULL;
 		update_request_free(request);
 		return TRUE;
@@ -679,6 +681,8 @@ gint feed_process_update_results(gpointer data) {
 	
 	g_free(request->feedurl);	/* request structure cleanup... */
 	request->feedurl = NULL;
+	g_free(request->filtercmd);
+	request->filtercmd = NULL;
 	g_free(request->data);
 	request->data = NULL;
 	
@@ -833,11 +837,19 @@ void feed_set_title(feedPtr fp, gchar *title) {
 
 gchar * feed_get_description(feedPtr fp) { return fp->description; }
 gchar * feed_get_source(feedPtr fp) { return fp->source; }
+gchar * feed_get_filter(feedPtr fp) { return fp->filtercmd; }
 
 void feed_set_source(feedPtr fp, gchar *source) {
 	g_free(fp->source);
 
 	fp->source = g_strdup(source);
+	conf_feedlist_schedule_save();
+}
+
+void feed_set_filter(feedPtr fp, const gchar *filter) {
+	g_free(fp->filtercmd);
+
+	fp->filtercmd = g_strdup(filter);
 	conf_feedlist_schedule_save();
 }
 

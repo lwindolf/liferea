@@ -67,7 +67,6 @@ extern char *useragent;
  *                 	-1	aborted by user
  */
 int NetConnect (int * my_socket, int * connectresult, char * host, int httpproto, int suppressoutput) {
-	int retval;
 	struct sockaddr_in address;	
 	struct hostent *remotehost;
 	char *uistring;
@@ -808,12 +807,12 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
    request structure 'll also contain the HTTP status and the
    last modified string.
  */
+
 char * downloadURL(struct feed_request *request) {
 	FILE		*f;
 	gchar		*tmpurl = NULL;
 	int 		i, n;
 	char		*data = NULL;
-	struct stat	statinfo;
 
 	request->problem = 0;
 
@@ -836,7 +835,7 @@ char * downloadURL(struct feed_request *request) {
 					data = g_realloc(data, i*1024);
 					n = fread(&data[(i-1)*1024], 1, 1024, f);
 				}
-				fclose(f);
+				pclose(f);
 				if (n == 1024) data = g_realloc(data, (i+1)*1024);
 				data[(i-1)*1024+n] = 0;
 			} else {

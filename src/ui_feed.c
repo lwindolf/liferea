@@ -44,7 +44,9 @@ struct fp_prop_ui_data {
 	GtkWidget *credTable;
 	GtkWidget *username;
 	GtkWidget *password;
-	GtkWidget *filters;
+	GtkWidget *filter;
+	GtkWidget *filterCheckbox;
+	GtkWidget *filterbox;
 	GtkWidget *cacheDefaultRadio;
 	GtkWidget *cacheDisableRadio;
 	GtkWidget *cacheUnlimitedRadio;
@@ -58,10 +60,10 @@ static void on_selectfileok_clicked(GtkButton *button, gpointer user_data);
 static void ui_feed_prop_enable_httpauth(struct fp_prop_ui_data *ui_data, gboolean enable);
 static void on_feed_prop_cache_radio(GtkToggleButton *button, gpointer user_data);
 static void on_feed_prop_authcheck(GtkToggleButton *button, gpointer user_data);
+static void on_feed_prop_filtercheck(GtkToggleButton *button, gpointer user_data);
 static void on_propdialog_response(GtkDialog       *dialog,
 							gint             response_id,
 							gpointer         user_data);
-static void feed_prop_list_filters(GtkWidget *menu);
 
 GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 	GtkWidget *propdialog;
@@ -159,9 +161,16 @@ GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 		ui_feed_prop_enable_httpauth(ui_data, FALSE);
 	}
 	
-	ui_data->filters = lookup_widget(propdialog, "filtermenu");
-	feed_prop_list_filters(gtk_option_menu_get_menu(GTK_OPTION_MENU(ui_data->filters)));
-	
+	ui_data->filter = lookup_widget(propdialog, "filterEntry");
+	ui_data->filterCheckbox = lookup_widget(propdialog, "filterCheckbox");
+	ui_data->filterbox = lookup_widget(propdialog, "filterbox");
+	if (feed_get_filter(fp) != NULL) {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox), TRUE);
+		gtk_entry_set_text(GTK_ENTRY(ui_data->filter), feed_get_filter(fp));
+	}
+	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox), ui_data);
+	g_signal_connect(ui_data->filterCheckbox, "toggled", G_CALLBACK(on_feed_prop_filtercheck), ui_data);
+
 	/* Sensitivity */
 	gtk_widget_set_sensitive(ui_data->selectFile, FALSE);
 	
@@ -204,7 +213,8 @@ void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_d
 
 	if (response_id == GTK_RESPONSE_OK) {
 		gchar *newSource = NULL;
-		const gchar *filter;
+		const gchar *newFilter;
+		gboolean needsUpdate = FALSE;
 
 		/* General*/
 		feed_set_title(ui_data->fp, gtk_editable_get_chars(GTK_EDITABLE(ui_data->feedNameEntry), 0, -1));
@@ -239,13 +249,27 @@ void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_d
 		} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio))) {
 			newSource = g_strdup_printf("|%s", gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
 		}
-		
-		filter = ui_data->filters;
-		
+
+		/* Filter handling */
+		newFilter = gtk_editable_get_chars(GTK_EDITABLE(ui_data->filter), 0, -1);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox)) &&
+		    strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
+			if (feed_get_filter(ui_data->fp) == NULL ||
+			    strcmp(newFilter, feed_get_filter(ui_data->fp))) {
+				feed_set_filter(ui_data->fp, newFilter);
+				needsUpdate = TRUE;
+			}
+		} else {
+			if (feed_get_filter(ui_data->fp) != NULL) {
+				feed_set_filter(ui_data->fp, NULL);
+				needsUpdate = TRUE;
+			}
+		}
+
 		/* if URL has changed... */
 		if(strcmp(newSource, feed_get_source(ui_data->fp))) {
 			feed_set_source(ui_data->fp, newSource);
-			feed_schedule_update(ui_data->fp);
+			needsUpdate = TRUE;
 		}
 		g_free(newSource);
 
@@ -262,10 +286,18 @@ void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_d
 
 		ui_feedlist_update();
 		conf_feedlist_schedule_save();
+		if (needsUpdate)
+			feed_schedule_update(ui_data->fp);
 	}
 
 	g_free(ui_data);
 	gtk_widget_destroy(GTK_WIDGET(dialog));
+}
+
+static void on_feed_prop_filtercheck(GtkToggleButton *button, gpointer user_data) {
+	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+	gboolean filter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox));
+	gtk_widget_set_sensitive(ui_data->filterbox, filter);
 }
 
 static void on_feed_prop_authcheck(GtkToggleButton *button, gpointer user_data) {
@@ -333,23 +365,4 @@ static void on_feed_prop_cache_radio(GtkToggleButton *button, gpointer user_data
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	gboolean limited = gtk_toggle_button_get_active(button);
 	gtk_widget_set_sensitive(ui_data->cacheItemLimit, limited);
-}
-
-static void feed_prop_list_filters(GtkWidget *menu) {
-	gchar *dirpath = g_strdup_printf("%s/filters/", getCachePath());
-	GDir  *dir = g_dir_open(dirpath, 0, NULL);
-	if (dir != NULL) {
-		const gchar *entry;
-		while ((entry = g_dir_read_name(dir)) != NULL) {
-			gchar *full = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirpath, entry);
-			if (g_file_test(full, G_FILE_TEST_IS_REGULAR) &&
-			    g_file_test(full, G_FILE_TEST_IS_EXECUTABLE)) {
-				GtkWidget *item = gtk_menu_item_new_with_label(entry);
-				gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-			}
-			g_free(full);
-		}
-	g_dir_close(dir);
-	}
-	g_free(dirpath);
 }

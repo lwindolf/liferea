@@ -36,6 +36,7 @@
 struct feed_request {
 	
 	char * 	feedurl;		/**< Non hashified URL set from the requestion function (Or a command, etc....) */
+	char * filtercmd;		/**< Command to run to convert the input into a valid feed */
 	char * 	lastmodified; 		/**< Content of header as sent by the server. */
 	int 	lasthttpstatus;		/**< last HTTP status :-)*/
 	char *	authinfo;		/**< HTTP authinfo string. */

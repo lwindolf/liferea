@@ -2204,7 +2204,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label91">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Liferea can use external filter plugins in order to access feeds and directories in non-supported formats. Filters are installed by placing them in ~/.liferea/filters. See the documentation for more information.</property>
+			  <property name="label" translatable="yes">Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information.</property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2223,24 +2223,21 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkHBox" id="hbox38">
+			<widget class="GtkVBox" id="vbox243">
 			  <property name="visible">True</property>
 			  <property name="homogeneous">False</property>
-			  <property name="spacing">6</property>
+			  <property name="spacing">0</property>
 
 			  <child>
-			    <widget class="GtkLabel" id="label90">
+			    <widget class="GtkCheckButton" id="filterCheckbox">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">Convert using: </property>
-			      <property name="use_underline">False</property>
-			      <property name="use_markup">False</property>
-			      <property name="justify">GTK_JUSTIFY_LEFT</property>
-			      <property name="wrap">False</property>
-			      <property name="selectable">False</property>
-			      <property name="xalign">0.5</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
+			      <property name="can_focus">True</property>
+			      <property name="label" translatable="yes">Use conversion filter</property>
+			      <property name="use_underline">True</property>
+			      <property name="relief">GTK_RELIEF_NORMAL</property>
+			      <property name="active">False</property>
+			      <property name="inconsistent">False</property>
+			      <property name="draw_indicator">True</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -2250,28 +2247,91 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkOptionMenu" id="filtermenu">
+			    <widget class="GtkHBox" id="filterbox">
 			      <property name="visible">True</property>
-			      <property name="can_focus">True</property>
-			      <property name="history">0</property>
+			      <property name="homogeneous">False</property>
+			      <property name="spacing">6</property>
 
 			      <child>
-				<widget class="GtkMenu" id="menu4">
-
-				  <child>
-				    <widget class="GtkMenuItem" id="none">
-				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">No conversion</property>
-				      <property name="use_underline">True</property>
-				    </widget>
-				  </child>
+				<widget class="GtkLabel" id="label99">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">    </property>
+				  <property name="use_underline">False</property>
+				  <property name="use_markup">False</property>
+				  <property name="justify">GTK_JUSTIFY_LEFT</property>
+				  <property name="wrap">False</property>
+				  <property name="selectable">False</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
 				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">False</property>
+				  <property name="fill">False</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkLabel" id="label100">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes">Convert using:</property>
+				  <property name="use_underline">False</property>
+				  <property name="use_markup">False</property>
+				  <property name="justify">GTK_JUSTIFY_LEFT</property>
+				  <property name="wrap">False</property>
+				  <property name="selectable">False</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
+				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">False</property>
+				  <property name="fill">False</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkEntry" id="filterEntry">
+				  <property name="visible">True</property>
+				  <property name="can_focus">True</property>
+				  <property name="editable">True</property>
+				  <property name="visibility">True</property>
+				  <property name="max_length">0</property>
+				  <property name="text" translatable="yes"></property>
+				  <property name="has_frame">True</property>
+				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="activates_default">False</property>
+				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">True</property>
+				  <property name="fill">True</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkButton" id="filterSelectFile">
+				  <property name="visible">True</property>
+				  <property name="can_focus">True</property>
+				  <property name="label" translatable="yes">Select File...</property>
+				  <property name="use_underline">True</property>
+				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">False</property>
+				  <property name="fill">False</property>
+				</packing>
 			      </child>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
-			      <property name="expand">False</property>
-			      <property name="fill">False</property>
+			      <property name="expand">True</property>
+			      <property name="fill">True</property>
 			    </packing>
 			  </child>
 			</widget>
@@ -3851,7 +3911,7 @@ subscribe to. Or enter a valid pathname if you want to load a local file.</prope
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
 		  <property name="invisible_char" translatable="yes">*</property>
-		  <property name="activates_default">False</property>
+		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -3971,7 +4031,7 @@ subscribe to. Or enter a valid pathname if you want to load a local file.</prope
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
 	      <property name="invisible_char" translatable="yes">*</property>
-	      <property name="activates_default">False</property>
+	      <property name="activates_default">True</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -4437,7 +4497,7 @@ subscribe to. Or enter a valid pathname if you want to load a local file.</prope
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
 		  <property name="invisible_char" translatable="yes">*</property>
-		  <property name="activates_default">False</property>
+		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -4657,7 +4717,7 @@ subscribe to. Or enter a valid pathname if you want to load a local file.</prope
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
 		  <property name="invisible_char" translatable="yes">*</property>
-		  <property name="activates_default">False</property>
+		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -4819,7 +4879,7 @@ subscribe to. Or enter a valid pathname if you want to load a local file.</prope
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
 		  <property name="invisible_char" translatable="yes">*</property>
-		  <property name="activates_default">False</property>
+		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>

@@ -78,6 +78,8 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 			xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
 			if (cacheLimit != NULL)
 				xmlNewProp(childNode, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
+			if (feed_get_filter(fp) != NULL)
+				xmlNewProp(childNode, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
 			debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval, cacheLimit);
 		} else
 			debug1(DEBUG_CONF, "not adding help feed %s to feedlist", feed_get_title(fp));
@@ -160,8 +162,18 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) { /* Reading a feed */
-		gchar *cacheLimitStr;
+		gchar *cacheLimitStr, *filter;
+		
+		filter =  xmlGetProp(cur, BAD_CAST"filtercmd");
 
+		if(!trusted && filter != NULL) {
+			/* FIXME: Display warning dialog asking if the command
+			   is safe? */
+			tmp = g_strdup_printf("unsafe command: %s", filter);
+			g_free(filter);
+			filter = tmp;
+		}
+		
 		if(!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
 			   is safe? */
@@ -169,6 +181,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			g_free(source);
 			source = tmp;
 		}
+		
 		
 		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
 		interval = parse_integer(intervalStr, -1);
@@ -201,6 +214,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		   but we need them in case the cache file loading fails */
 		
 		feed_set_source(fp, source);
+		feed_set_filter(fp, filter);
 		feed_set_title(fp, title);
 		feed_set_update_interval(fp, interval);
 		debug5(DEBUG_CONF, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d", title, source, typeStr, id, interval);
@@ -222,6 +236,8 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 
 		if(source != NULL)
 			xmlFree(source);
+		if (filter != NULL)
+			xmlFree(filter);
 	} else { /* It is a folder */
 		if(NULL != xmlHasProp(cur, BAD_CAST"helpFolder")) {
 			debug0(DEBUG_CONF, "adding help folder");
