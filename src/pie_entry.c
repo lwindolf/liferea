@@ -265,7 +265,6 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->type = FST_PIE;
 	ip->time = i->time;
 	ip->source = i->source;
 	ip->readStatus = FALSE;

@@ -50,7 +50,6 @@ typedef struct item {
 	gchar		*id;		/**< Unique item identifier, for example <guid> in RSS */
 	time_t		time;		/**< Item's modified date */
 	
-	gint		type;		/**< Type of item's associated feed */
 	struct feed	*fp;		/**< Pointer to the feed to which this item belongs */
 	GSList		*vfolders;	/**< List of vfolders in which this item appears */
 	void		*ui_data;	/**< UI specific data such as in which row an item is displayed */

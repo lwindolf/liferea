@@ -223,7 +223,6 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->type = FST_RSS;
 	ip->time = i->time;
 	ip->source = g_strdup(i->tags[RSS_ITEM_LINK]);
 	ip->readStatus = FALSE;

@@ -128,7 +128,6 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->type = FST_CDF;
 	ip->time = i->time;
 	ip->source = i->tags[CDF_ITEM_LINK];
 	ip->readStatus = FALSE;

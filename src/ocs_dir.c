@@ -290,7 +290,6 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->type = FST_OCS;
 	ip->source = dep->source;
 	ip->readStatus = TRUE;
 	ip->id = NULL;
@@ -361,7 +360,6 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->type = FST_OCS;
 	ip->source = dep->source;
 	ip->readStatus = TRUE;
 	ip->id = NULL;

@@ -42,7 +42,6 @@ itemPtr item_new(void) {
 	ip = g_new0(struct item, 1);
 	ip->readStatus = FALSE;
 	ip->marked = FALSE;
-	ip->type = FST_INVALID;
 
 	return ip;
 }
