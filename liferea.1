@@ -42,6 +42,14 @@ Print debugging messages of all types
 .TP
 .B \-\-debug\-verbose
 Print verbose debugging messages
+.SH ENVIRONMENT
+.TP
+.B http_proxy
+If a proxy is not specified in the Liferea preferences (which uses the proxy
+settings in gconf), then Liferea will use the proxy specified in $http_proxy.
+$http_proxy should be set to a URI specifying the desired proxy, for example
+.RB \(oqhttp://proxy.example.com:3128/\(cq.
+
 .SH FILES
 .I ~/.liferea/feedlist.opml
 .I ~/.liferea/cache/feeds
