@@ -213,7 +213,7 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 	
 	/* Label and state icon */
 	if(title == NULL) 
-		title = g_strdup(_("[no title]"));
+		title = g_strdup(_("[No title]"));
 		
 	/* Here we have the following problem: a title string might contain 
 	   either escaped markup (which we should not escape again) or 
@@ -448,6 +448,9 @@ void ui_itemlist_load_feed(feedPtr fp) {
 	GtkTreeIter	iter;
 	GSList		*itemlist;
 	itemPtr		ip;
+
+	if(itemlist_mode != !feed_get_two_pane_mode(fp))
+		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
 
 	/* we depend on the fact that the third column is the favicon column!!! 
 	   if we are in search mode (or have a vfolder) we show the favicon 

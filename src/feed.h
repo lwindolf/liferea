@@ -105,14 +105,15 @@ typedef struct feed {
 	GSList		*rules;			/**< list of rules if this is a vfolder */
 	
 	/* feed properties used for updating */
-	gchar	*lastModified;		/**< Last modified string as sent by the server */
-	gchar	*etag;			/**< E-Tag sent by the server */
+	gchar		*lastModified;		/**< Last modified string as sent by the server */
+	gchar		*etag;			/**< E-Tag sent by the server */
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	GTimeVal	lastFaviconPoll;	/**< time at which the feed was last updated */
 	struct request	*request;		/**< update request structure used when downloading xml content */
 	GSList		*otherRequests;		/**< list of other update request structures used for downloading anything (favicon, blogChannel stuff, ...) */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
+	gboolean	twoPane;		/**< Flag if three pane or condensed mode is set for this feed */
 	gint		sortColumn;		/**< Sorting column. Set to either IS_TITLE, or IS_TIME */
 	gboolean	sortReversed;		/**< Sort in the reverse order? */
 } *feedPtr;
@@ -303,9 +304,13 @@ void feed_set_etag(feedPtr fp, const gchar *etag);
 const feedHandlerPtr feed_get_fhp(feedPtr fp);
 
 GSList * feed_get_item_list(feedPtr fp);
+
 void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed);
 void feed_clear_item_list(feedPtr fp);
 void feed_remove_items(feedPtr fp);
+
+void feed_set_two_pane_mode(feedPtr fp, gboolean newMode);
+gboolean feed_get_two_pane_mode(feedPtr fp);
 
 /**
  * Unsets bot the unread and update flag for all items

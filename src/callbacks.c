@@ -98,12 +98,7 @@ void ui_init(gboolean startIconified) {
 	/* order important !!! */
 	ui_feedlist_init(lookup_widget(mainwindow, "feedlist"));
 	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
-	
-	if(getBooleanConfValue(LAST_ITEMLIST_MODE))
-		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
-
-	ui_mainwindow_set_mode(itemlist_mode);
-		
+			
 	for(i = 0;  i < MAX_ICONS; i++)
 		icons[i] = create_pixbuf(iconNames[i]);
 

@@ -880,10 +880,14 @@ GSList * feed_get_item_list(feedPtr fp) {
 }
 
 void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed) {
+
 	fp->sortColumn = sortColumn;
 	fp->sortReversed = reversed;
 	conf_feedlist_schedule_save();
 }
+
+void feed_set_two_pane_mode(feedPtr fp, gboolean newMode) { fp->twoPane = newMode; }
+gboolean feed_get_two_pane_mode(feedPtr fp) { return fp->twoPane; }
 
 /**
  * Method to free all items structures of a feed, does not mean

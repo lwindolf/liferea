@@ -12,6 +12,10 @@
 	  unread counter anymore. 
 	  I hope this improves usability with broken feeds.
 	  (Lars Lindner)
+	* Finally made the condensed mode a permanent feed state.
+	  Just select it once and the feed you like to read in 
+	  this mode will stay this way until you switch it off.
+	  (Lars Lindner)
 
 
 2004-09-15  Lars Lindner <lars.lindner@gmx.net>

@@ -114,37 +114,30 @@ static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventK
 
 void ui_mainwindow_set_mode(gboolean threePane) {
 	
+	if((threePane == itemlist_mode) && (NULL != htmlview))
+		return;
+		
 	debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
-	
-	if(threePane == TRUE && (itemlist_mode == FALSE || htmlview == NULL)) {
-		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		ui_update();
-		if(htmlview != NULL)
-			gtk_widget_destroy(htmlview);
-		htmlview = NULL;
-		ui_update();
+	gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));	
+	ui_update();
+	if(htmlview != NULL)
+		gtk_widget_destroy(htmlview);
+	htmlview = NULL;
+	ui_update();	
+	htmlview = ui_htmlview_new();
+	gtk_widget_show(htmlview);
+
+	if(threePane == TRUE) {
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
-		htmlview = ui_htmlview_new();
-		gtk_widget_show(htmlview);
 		gtk_container_add(GTK_CONTAINER (lookup_widget(mainwindow, "viewportThreePaneHtml")), GTK_WIDGET(htmlview));
-		ui_htmlview_clear(htmlview);
-		ui_htmlview_set_zoom(htmlview, zoom);
-		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
-	} else if (threePane == FALSE && (itemlist_mode == TRUE || htmlview == NULL)) {
-		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		ui_update();
-		if (htmlview != NULL)
-			gtk_widget_destroy(htmlview);
-		htmlview = NULL;
-		ui_update();
+	} else {
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
-		htmlview = ui_htmlview_new();
-		gtk_widget_show(htmlview);
 		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "viewportTwoPaneHtml")), htmlview);
-		ui_htmlview_clear(htmlview);
-		ui_htmlview_set_zoom(htmlview, zoom);
-		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
 	}
+	
+	ui_htmlview_clear(htmlview);
+	ui_htmlview_set_zoom(htmlview, zoom);
+	g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
 	itemlist_mode = threePane;
 }
 
@@ -189,10 +182,15 @@ GtkWidget* ui_mainwindow_new() {
 
 void ui_mainwindow_finish(GtkWidget *window) {
 	gchar	*buffer = NULL;
+
+	/* force two pane mode */
+	gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));	
 	
+	/* set zooming properties */	
 	zoom = getNumericConfValue(LAST_ZOOMLEVEL)/100.;
 	ui_htmlview_set_zoom(htmlview, zoom);
 	
+	/* create welcome text */
 	ui_htmlview_start_output(&buffer, FALSE);
 	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
 	                           "We started gathering requirements for 1.1. Please have a <a href=\"http://liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">look</a> and "
@@ -223,10 +221,6 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	                           "<a href=\"http://liferea.sf.net\">project homepage</a>.</p>"));
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
-	
-	zoom = getNumericConfValue(LAST_ZOOMLEVEL)/100.;
-	ui_htmlview_set_zoom(htmlview, zoom);
-	
 	g_free(buffer);
 }
 
@@ -302,7 +296,11 @@ void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 static void ui_mainwindow_toggle_condensed_view(void) {
+	feedPtr		fp;
 	
+	if((NULL != (fp = (feedPtr)ui_feedlist_get_selected())) &&
+	   ((FST_FEED == feed_get_type(fp) || (FST_VFOLDER == feed_get_type(fp)))))
+		feed_set_two_pane_mode(fp, itemlist_mode);	
 	ui_mainwindow_set_mode(!itemlist_mode);
 	ui_itemlist_display();
 }

@@ -116,12 +116,15 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
 				g_free(lastPoll);
 			}
-			if (fp->sortColumn == IS_TITLE)
+			if(fp->sortColumn == IS_TITLE)
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
-			else if (fp->sortColumn == IS_TIME)
+			else if(fp->sortColumn == IS_TIME)
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
-			if (fp->sortReversed)
+			if(fp->sortReversed)
 				xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"true");
+				
+			if(TRUE == feed_get_two_pane_mode(fp))
+				xmlNewProp(childNode, BAD_CAST"twoPane", BAD_CAST"true");
 		}
 		
 		/* add vfolder rules */
@@ -372,7 +375,12 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			fp->sortReversed = TRUE;
 		if(sortStr != NULL)
 			xmlFree(sortStr);
+			
 		
+		tmp = xmlGetProp(cur, BAD_CAST"twoPane");
+		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+			feed_set_two_pane_mode(fp, TRUE);
+			
 		/* set feed properties available from the OPML feed list 
 		   they may be overwritten by the values of the cache file
 		   but we need them in case the cache file loading fails */
