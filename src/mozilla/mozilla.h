@@ -36,6 +36,15 @@ gfloat mozilla_get_zoom (GtkWidget *embed);
 gint mozilla_get_mouse_event_button(gpointer event);
 gint mozilla_key_press_cb(GtkWidget *widget, gpointer ev);
 gboolean mozilla_scroll_pagedown(GtkWidget *widget);
+
+/* preference setting */
+gboolean mozilla_save_prefs (void);
+gboolean mozilla_preference_set (const char *preference_name,
+				 const char *new_value);
+gboolean mozilla_preference_set_boolean (const char *preference_name,
+					 gboolean  new_boolean_value);
+gboolean mozilla_preference_set_int (const char *preference_name,
+				     int new_int_value);
 #ifdef __cplusplus
 }
 #endif 

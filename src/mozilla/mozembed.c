@@ -34,9 +34,12 @@
 #include "../htmlview.h"
 #include "../conf.h"
 #include "../support.h"
-#include "../callbacks.h"
-#include "../common.h"
+#include "../debug.h"
 #include "mozilla.h"
+
+/* from conf.c */
+extern char	*proxyname;
+extern int	proxyport;
 
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
@@ -216,6 +219,16 @@ static GtkWidget * mozilla_create() {
 						
 	}
 
+	/* set proxy and other stuff (can't be in mozilla_init() because 
+	   proxy config is not yet available at this time */
+	if(NULL != proxyname) {	/* bad access to global stuff from conf.c */
+		mozilla_preference_set("network.proxy.http", proxyname);
+		mozilla_preference_set_int("network.proxy.http_port", proxyport);
+		mozilla_preference_set_int("network.proxy.type", 1);
+	}	
+	mozilla_preference_set_boolean("mozilla.widget.raise-on-setfocus", FALSE);
+	mozilla_save_prefs();
+
 	return widget;
 }
 
@@ -233,7 +246,7 @@ static void mozilla_init() {
 	/* initialize profile */
 	gtk_moz_embed_set_profile_path(profile, "liferea");
 	g_free(profile);
-
+	
 	/* startup done */
 	gtk_moz_embed_push_startup();
 }

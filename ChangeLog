@@ -10,6 +10,8 @@
 	* The search result now provides an extra column with
 	  the favicon of the feed the found headline belongs to.
 	  (Lars Lindner)
+	* The mozilla browser module now respects the configured
+	  proxy settings. (Lars Lindner)
 
 	Bugfixes:
 
