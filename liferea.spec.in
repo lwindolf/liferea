@@ -3,12 +3,12 @@ Name: 		@PACKAGE@
 Version: 	@VERSION@
 Release: 	1
 Group: 		Applications/Internet
-Copyright: 	GPL
+License: 	GPL
 Source: 	%{name}-%{version}.tar.gz
 URL: 		http://liferea.sourceforge.net/
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: 	gtk2-devel
-BuildRequires:		gtkhtml2-devel
+BuildRequires:	gtkhtml2-devel
 BuildRequires: 	libxml2-devel >= 2.5.10
 BuildRequires: 	GConf2-devel
 BuildRequires: 	gettext
@@ -40,7 +40,7 @@ CFLAGS="$RPM_OPT_FLAGS" %{__make} %{?_smp_mflags}
 %find_lang %{name}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+%{__rm} -rf ${RPM_BUILD_ROOT}
 
 %post
 export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
@@ -57,22 +57,28 @@ gconftool-2 --makefile-uninstall-rule \
 %doc COPYING AUTHORS NEWS README ChangeLog
 %{_bindir}/%{name}
 %{_bindir}/%{name}-bin
-%{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
+%dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/css
+%dir %{_datadir}/%{name}/opml
+%dir %{_datadir}/%{name}/pixmaps
 %{_datadir}/%{name}/css/%{name}.css
 %{_datadir}/%{name}/opml/feedlist.opml
+%{_datadir}/%{name}/pixmaps/*
 %{_datadir}/pixmaps/%{name}.png
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/*.so
-%{_mandir}/man1/liferea.1
+%exclude %{_libdir}/%{name}/*.la
+%{_mandir}/man1/liferea.1.gz
 %{_sysconfdir}/gconf/schemas/%{name}.schemas
 
 %changelog
-* Tue Aug 17 2004 Noa Resare <noa@resare.com> - 0.5.3
-- removed gconf schema installation at build time
-- added gconf schema installation at install time
-- added manpage
-- GConf2 is now a prereq
+* Wed Sep 10 2004 Ricardo Veguilla <veguilla@hpcf.upr.edu> - 0.6.0
+- Additional fixes to %files section (thanks to Michael Schwendt)
+
+* Wed Sep 8 2004 Ricardo Veguilla <veguilla@hpcf.upr.edu> - 0.6.0
+- Fixes to %files section
+- %changelog section must be in reverse chronlogical order
 
 * Thu Aug 26 2004 Lars Lindner <lars.lindner@gmx.net> 0.6.0
 - Wrongs paths fixed (reported by Ricardo Veguilla)
@@ -80,6 +86,12 @@ gconftool-2 --makefile-uninstall-rule \
 * Sat Aug 21 2004 Lars Lindner <lars.lindner@gmx.net> 0.6.0
 - Added stylesheet file to %files
 - Added default feed list to %files
+
+* Tue Aug 17 2004 Noa Resare <noa@resare.com> - 0.5.3
+- removed gconf schema installation at build time
+- added gconf schema installation at install time
+- added manpage
+- GConf2 is now a prereq
 
 * Sat May 8 2004 Nathan Conrad <conrad@bungled.net> 0.4.9
 - Removed *.la files
