@@ -27,6 +27,7 @@
 #include <glib.h>
 #include "conf.h"
 #include "feed.h"
+#include "item.h"
 #include "ui_feedlist.h"
 #include "callbacks.h"
 #include "support.h"
@@ -42,11 +43,11 @@
 #define DISPLAY_TIME 10000
 
 typedef struct {
-	feedPtr feed_p;
-	GtkWidget *box_p;
-	GtkWidget *eventBox_p;
-	gint unreadCount;
-	gint timerTag;
+	feedPtr		feed_p;
+	GtkWidget	*box_p;
+	GtkWidget	*eventBox_p;
+	gint		newCount;
+	gint		timerTag;
 } feedNotif_t;
 
 extern GtkWidget *mainwindow;
@@ -121,7 +122,7 @@ void ui_notification_update(const feedPtr feed_p) {
 	if (list_p != NULL) {
 		curNotif_p = (feedNotif_t *) list_p->data;
 	} else {
-		if (!feed_p->unreadCount) {
+		if(0 == feed_get_new_counter(feed_p)) {
 			g_mutex_unlock (notifMutex_p);
 			return;
 		}
@@ -149,12 +150,12 @@ static feedNotif_t *notifCreateFeedNotif (feedPtr feed_p) {
 }
 
 static void notifCheckFeedNotif (feedNotif_t *feedNotif_p) {
-	if (feedNotif_p->unreadCount < feedNotif_p->feed_p->unreadCount) {
+	if (feedNotif_p->newCount < feed_get_new_counter(feedNotif_p->feed_p)) {
 		if (notifWin_p == NULL) {
 			notifWin_p = notifCreateWin();
 		}
 		notifAddFeedNotif (feedNotif_p);
-	} else if (feedNotif_p->unreadCount > feedNotif_p->feed_p->unreadCount) {
+	} else if (feedNotif_p->newCount > feed_get_new_counter(feedNotif_p->feed_p)) {
 		notifRemoveFeedNotif (feedNotif_p);
 		notifRemoveWin();
 	}
@@ -192,7 +193,8 @@ static void notifAddFeedNotif (feedNotif_t *feedNotif_p) {
 	list_p = feedNotif_p->feed_p->items;
 	while (list_p != NULL) {
 		item_p = list_p->data;
-		if (!item_p->readStatus) {
+		if(item_get_new_status(item_p)) {
+			item_set_new_status(item_p, FALSE);
 			labelText_p = g_strdup_printf ("%s %s", NOTIF_BULLET, item_p->title);
 			label_p = gtk_label_new (labelText_p);
 			g_free(labelText_p);
@@ -214,7 +216,7 @@ static void notifAddFeedNotif (feedNotif_t *feedNotif_p) {
 		gtk_box_pack_start(GTK_BOX(list_p->data), feedNotif_p->eventBox_p, FALSE, FALSE, 0);
 	}
 	
-	feedNotif_p->unreadCount = feedNotif_p->feed_p->unreadCount;
+	feedNotif_p->newCount = feed_get_new_counter(feedNotif_p->feed_p);
 
 	/* Add timer */
 	feedNotif_p->timerTag = g_timeout_add (DISPLAY_TIME, feedNotifTimeoutCallback, (gpointer) feedNotif_p);
@@ -229,7 +231,7 @@ static void notifRemoveFeedNotif (feedNotif_t *feedNotif_p) {
 		g_source_remove (feedNotif_p->timerTag);
 		feedNotif_p->timerTag = 0;
 	}
-	feedNotif_p->unreadCount = feedNotif_p->feed_p->unreadCount;
+	feedNotif_p->newCount = feed_get_new_counter(feedNotif_p->feed_p);
 }
 
 static GtkWidget *notifCreateWin (void) {

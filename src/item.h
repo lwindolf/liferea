@@ -44,6 +44,7 @@ typedef struct item {
 /* those fields should not be accessed directly. Accessors are provided. */
 	gchar		*title;		/**< item title */
 	gboolean 	readStatus;	/**< TRUE if the item has been read */
+	gboolean	newStatus;	/**< TRUE if the item was downloaded and not yet displayed by notification features */
 	gboolean 	marked;		/**< TRUE if the item has been marked */
 	gboolean	hidden;		/**< TRUE if the item should not be displayed due to filtering */
 	gchar		*description;	/**< HTML string containing the item's description */
@@ -87,21 +88,23 @@ void	item_free(itemPtr ip);
 
 /* methods to access properties */
 /** Returns the id of ip. */
-const gchar *		item_get_id(itemPtr ip);
+const gchar *	item_get_id(itemPtr ip);
 /** Returns the title of ip. */
-const gchar *		item_get_title(itemPtr ip);
+const gchar *	item_get_title(itemPtr ip);
 /** Returns the description of ip. */
-const gchar *		item_get_description(itemPtr ip);
+const gchar *	item_get_description(itemPtr ip);
 /** Returns the source of ip. */
-const gchar *		item_get_source(itemPtr ip);
+const gchar *	item_get_source(itemPtr ip);
 /** Returns the modification time of ip. */
-const time_t		item_get_time(itemPtr ip);
+const time_t	item_get_time(itemPtr ip);
 /** Returns the mark status of ip */
-const gboolean       item_get_mark(itemPtr ip);
+const gboolean	item_get_mark(itemPtr ip);
 /** Returns the read status of ip. */
-const gboolean	     item_get_read_status(itemPtr ip);
+const gboolean	item_get_read_status(itemPtr ip);
 /** Returns the hidden flag of ip. */
-const gboolean item_get_hidden(itemPtr ip);
+const gboolean	item_get_hidden(itemPtr ip);
+/** Returns the new flag of ip. */
+const gboolean	item_get_new_status(itemPtr ip);
 
 /** Marks ip as read and updates the UI to reflect this change */
 void 		item_set_read(itemPtr ip);
@@ -121,6 +124,8 @@ void		item_set_read_status(itemPtr ip, const gboolean readStatus);
 void		item_set_id(itemPtr ip, const gchar * id);
 /** Sets the ip's hidden flag */
 void 		item_set_hidden(itemPtr ip, const gboolean hidden);
+/** Sets the ip's new flag */
+void 		item_set_new_status(itemPtr ip, const gboolean newStatus);
 
 /**
  * Marks ip as marked or unmarked and updates the UI to reflect this

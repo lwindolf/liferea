@@ -80,6 +80,7 @@ typedef struct feed {
 	
 	gchar		*id;			/**< unique feed identifier string */
 	gint		unreadCount;		/**< number of unread items */
+	gint		newCount;		/**< number of new items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gboolean	available;		/**< flag to signalize loading errors */
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
@@ -206,6 +207,10 @@ const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
 void feed_increase_unread_counter(feedPtr fp);
 void feed_decrease_unread_counter(feedPtr fp);
 gint feed_get_unread_counter(feedPtr fp);
+
+void feed_increase_new_counter(feedPtr fp);
+void feed_decrease_new_counter(feedPtr fp);
+gint feed_get_new_counter(feedPtr fp);
 
 gint feed_get_default_update_interval(feedPtr fp);
 gint feed_get_update_interval(feedPtr fp);

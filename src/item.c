@@ -76,11 +76,12 @@ void item_set_hidden(itemPtr ip, const gboolean hidden) { ip->hidden = hidden; }
 const gchar *	item_get_id(itemPtr ip) { return (ip != NULL ? ip->id : NULL); }
 const gchar *	item_get_title(itemPtr ip) {return (ip != NULL ? ip->title : NULL); }
 const gchar *	item_get_description(itemPtr ip) { return (ip != NULL ? ip->description : NULL); }
-const gchar * item_get_source(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
+const gchar *	item_get_source(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
 const time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
 const gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
-const gboolean item_get_mark(itemPtr ip) { g_assert(ip != NULL); return ip->marked;}
-const gboolean item_get_hidden(itemPtr ip) { g_assert(ip != NULL); return ip->hidden;}
+const gboolean item_get_mark(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
+const gboolean item_get_hidden(itemPtr ip) { g_assert(ip != NULL); return ip->hidden; }
+const gboolean item_get_new_status(itemPtr ip) { g_assert(ip != NULL); return ip->newStatus; }
 
 void item_set_mark(itemPtr ip, gboolean flag) {
 	ip->marked = flag;
@@ -90,6 +91,18 @@ void item_set_mark(itemPtr ip, gboolean flag) {
 
 	if (ip->fp != NULL)
 		ip->fp->needsCacheSave = TRUE;
+}
+
+void item_set_new_status(itemPtr ip, const gboolean newStatus) { 
+
+	if(newStatus != ip->newStatus) {
+		ip->newStatus = newStatus; 
+		
+		if(TRUE == newStatus)
+			feed_increase_new_counter((feedPtr)(ip->fp));
+		else
+			feed_decrease_new_counter((feedPtr)(ip->fp));
+	}
 }
 
 void item_set_unread(itemPtr ip) { 

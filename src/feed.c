@@ -450,7 +450,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	gint		traycount = 0;
 
 	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
-	
+		
 	if(TRUE == new_fp->available) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
 		   in case they are reused... */
@@ -521,6 +521,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
 				} else {
 					feed_increase_unread_counter(old_fp);
+					feed_increase_new_counter(old_fp);
 					debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
 					traycount++;
 				}
@@ -538,6 +539,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					traycount++;
 				} else {
 					item_set_read_status(new_ip, TRUE);
+					/* no item_set_new_status() - we don't treat changed items as new items! */
 					debug0(DEBUG_VERBOSE, "-> item already exists");
 				}
 
@@ -563,6 +565,14 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				ui_mainwindow_set_status_bar(_("\"%s\" has no new items"), old_fp->title);
 			else 
 				ui_mainwindow_set_status_bar(_("\"%s\" has %d new items"), old_fp->title, newcount);
+			
+			/* mark all items in new_fp as new (needed for notification features) */
+			new_list = diff_list;
+			while(new_list) {
+				new_ip = new_list->data;
+				item_set_new_status(new_ip, TRUE);
+				new_list = g_slist_next(new_list);
+			}
 			
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
@@ -761,6 +771,14 @@ void feed_decrease_unread_counter(feedPtr fp) {
 	fp->unreadCount--;
 }
 gint feed_get_unread_counter(feedPtr fp) { return fp->unreadCount; }
+
+void feed_increase_new_counter(feedPtr fp) {
+	fp->newCount++;
+}
+void feed_decrease_new_counter(feedPtr fp) {
+	fp->newCount--;
+}
+gint feed_get_new_counter(feedPtr fp) { return fp->newCount; }
 
 gint feed_get_default_update_interval(feedPtr fp) { return fp->defaultInterval; }
 gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
@@ -994,7 +1012,7 @@ void feed_free(feedPtr fp) {
 	if(filename && 0 != unlink(filename))
 		/* Oh well.... Can't do anything about it. 99% of the time,
 		   this is spam anyway. */;
-	g_free(filename);
+		g_free(filename);
 	
 	// FIXME: free filter structures too when implemented
 	
