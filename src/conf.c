@@ -182,7 +182,7 @@ gchar* conf_new_id() {
 /* config loading on startup						*/
 /*----------------------------------------------------------------------*/
 
-static void load_folder_contents(folderPtr folder, gchar* path);
+static gboolean load_folder_contents(folderPtr folder, gchar* path);
 
 static gboolean load_key(folderPtr parent, gchar *id) {
 	int		type, interval;
@@ -280,11 +280,12 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 	return TRUE;
 }
 
-static void load_folder_contents(folderPtr folder, gchar* fid) {
+static gboolean load_folder_contents(folderPtr folder, gchar* fid) {
 	GSList *list;
 	gchar *id;
 	GError		*err = NULL;
 	gchar *name;
+	gboolean changed = FALSE;
 	
 	/* First, try to look and (and migrate groups) */
 	
@@ -297,6 +298,7 @@ static void load_folder_contents(folderPtr folder, gchar* fid) {
 			g_assert(id);
 			g_assert(NULL != id);
 			load_key(folder, id);
+			changed = TRUE;
 			list = list->next;
 		}
 	}
@@ -311,10 +313,12 @@ static void load_folder_contents(folderPtr folder, gchar* fid) {
 			g_assert(id);
 			g_assert(NULL != id);
 			load_key(folder, id);
+			changed = TRUE;
 			list = list->next;
 		}
 	}
 	g_free(name);
+	return changed;
 }
 
 folderPtr feedlist_insert_help_folder(folderPtr parent) {
@@ -392,7 +396,6 @@ static void conf_recursive_unset(gchar *path) {
 	}
 	g_slist_free(list);
 
-
 	iter = list = gconf_client_all_entries(client, path, &err);
 
 	if(is_gconf_error(&err))
@@ -405,7 +408,7 @@ static void conf_recursive_unset(gchar *path) {
 		iter = iter->next;
 	}
 	g_slist_free(list);
-
+	
 	gconf_client_unset(client, path, &err);
 	is_gconf_error(&err);
 }
@@ -418,7 +421,9 @@ static void conf_feedlist_erase_gconf() {
 	
 	/* Remove all directories */
 	while(!is_gconf_error(&err) && iter != NULL) {
-		if (strstr(iter->data,"dir") != NULL || is_number(iter->data)) {
+		gchar *key = strrchr(iter->data, '/')+1;
+		
+		if (strncmp(key, "dir", 3) == 0 || is_number(key)) {
 			conf_recursive_unset(iter->data);
 		}
 		g_free(iter->data);
@@ -436,21 +441,24 @@ static void conf_feedlist_erase_gconf() {
 
 void loadSubscriptions(void) {
 	gchar	*filename;
+	gboolean gconf_changed;
 	
 	feedlistLoading = TRUE;
-	load_folder_contents(NULL, "");
+	gconf_changed = load_folder_contents(NULL, "");
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
 	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
 	g_free(filename);
 	debug0(DEBUG_CONF, "Erasing old gconf enteries.");
-	conf_feedlist_erase_gconf();
 	
 	/* if help folder was not yet created... */
 	if(!getBooleanConfValue(DISABLE_HELPFEEDS))
 		feedlist_insert_help_folder(NULL);
-	
-	
 	feedlistLoading = FALSE;
+
+	if (gconf_changed) {
+		conf_feedlist_save();
+		conf_feedlist_erase_gconf();
+	}
 }
 
 void conf_feedlist_save() {
