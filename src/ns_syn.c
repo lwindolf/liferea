@@ -37,7 +37,7 @@ static void ns_syn_parse_tag(feedPtr fp, xmlNodePtr cur) {
 	gint	period;
 	gint	frequency = 1;
 	
-	period = feed_get_update_interval(fp);
+	period = feed_get_default_update_interval(fp);
 	if(!xmlStrcmp(cur->name, BAD_CAST"updatePeriod")) {
 		if(NULL != (tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 
@@ -66,7 +66,7 @@ static void ns_syn_parse_tag(feedPtr fp, xmlNodePtr cur) {
 	if(0 != frequency)
 		period /= frequency;
 
-	feed_set_update_interval(fp, period);
+	feed_set_default_update_interval(fp, period);
 }
 
 NsHandler *ns_syn_getRSSNsHandler(void) {
