@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-02 23:58+0100\n"
+"POT-Creation-Date: 2005-03-09 23:49+0100\n"
 "PO-Revision-Date: 2005-03-03 00:00+0100\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -53,11 +53,11 @@ msgstr ""
 "Certains caractères ont été perdus !"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:259
+#: src/conf.c:262
 msgid "feedlist.opml"
 msgstr "feedlist_fr.opml"
 
-#: src/conf.c:278
+#: src/conf.c:281
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Erreur lors du renommage de %s en %s\n"
@@ -1587,48 +1587,48 @@ msgstr ""
 msgid "This feed specifies no default update interval."
 msgstr "Ce flux ne spécifie aucun intervalle de mise à jour."
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:445
 msgid "You have to select a feed entry"
 msgstr "Vous devez sélectionner un flux"
 
-#: src/ui_feedlist.c:451
+#: src/ui_feedlist.c:455
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
 "jour."
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:497
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Note : l'utilisation du filtre d'abonnements désactive le glisser-déposer"
 
-#: src/ui_feedlist.c:539 src/ui_feedlist.c:542
+#: src/ui_feedlist.c:543 src/ui_feedlist.c:546
 msgid "Deleting entry"
 msgstr "Suppression de l'entrée"
 
-#: src/ui_feedlist.c:540
+#: src/ui_feedlist.c:544
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Êtes-vous sûr de vouloir supprimer \"%s\" et son contenu ?"
 
-#: src/ui_feedlist.c:543
+#: src/ui_feedlist.c:547
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Êtes-vous sûr de vouloir supprimer \"%s\" ?"
 
-#: src/ui_feedlist.c:551
+#: src/ui_feedlist.c:555
 msgid "Deletion Confirmation"
 msgstr "Confirmation de la suppression"
 
-#: src/ui_feedlist.c:587
+#: src/ui_feedlist.c:591
 msgid "You must select a feed entry"
 msgstr "Vous devez sélectionner un flux"
 
-#: src/ui_feedlist.c:588
+#: src/ui_feedlist.c:592
 msgid "You must select a feed entry."
 msgstr "Vous devez sélectionner un flux."
 
-#: src/ui_feedlist.c:634
+#: src/ui_feedlist.c:638
 msgid "New subscription"
 msgstr "Nouvel abonnement"
 
@@ -2079,17 +2079,18 @@ msgstr[1] "%d nouveaux éléments !"
 msgid "No new items."
 msgstr "Pas de nouveaux éléments."
 
-#: src/update.c:122
+#: src/update.c:93 src/update.c:128
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Erreur : impossible d'ouvrir le tuyau \"%s\""
 
-#: src/update.c:136
+#. FIXME: maybe setting request->returncode would be better
+#: src/update.c:144
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Erreur : impossible d'ouvrir le fichier \"%s\""
 
-#: src/update.c:142
+#: src/update.c:150
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Erreur : il n'y a pas de fichier \"%s\""

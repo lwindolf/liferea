@@ -1,7 +1,7 @@
 /**
  * @file ui_search.c everything about searching
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 
 #include "callbacks.h"
 #include "interface.h"
+#include "ui_mainwindow.h"
 #include "feed.h"
 #include "folder.h"
 #include "rule.h"
@@ -31,7 +32,7 @@
 #include "support.h"
 #include "common.h"
 
-extern GtkWidget 	*mainwindow;
+static GtkWidget	*searchdialog = NULL;
 static GtkWidget 	*feedsterdialog = NULL;
 static feedPtr		searchFeed = NULL;
 
@@ -39,48 +40,70 @@ static feedPtr		searchFeed = NULL;
 /* search dialog callbacks							*/
 /*------------------------------------------------------------------------------*/
 
-/* called when toolbar search button is clicked */
 void on_searchbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*searchbox;
 	gboolean	visible;
 
-	g_assert(mainwindow != NULL);
-
-	if(NULL != (searchbox = lookup_widget(mainwindow, "searchbox"))) {
-		g_object_get(searchbox, "visible", &visible, NULL);
-		g_object_set(searchbox, "visible", !visible, NULL);
-	}
-}
-
-/* called when close button in search dialog is clicked */
-void on_hidesearch_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*searchbox;
-
-	g_assert(mainwindow != NULL);
+	if(NULL == searchdialog)
+		searchdialog = create_searchdialog();
 	
-	if(NULL != (searchbox = lookup_widget(mainwindow, "searchbox"))) {
-		g_object_set(searchbox, "visible", FALSE, NULL);
-	}
+	g_object_get(searchdialog, "visible", &visible, NULL);
+	g_object_set(searchdialog, "visible", !visible, NULL);
 }
 
-void on_searchentry_activate(GtkButton *button, gpointer user_data) {
+void on_hidesearch_clicked(GtkButton *button, gpointer user_data) {
+
+	if(NULL != searchFeed) {
+		feed_free(searchFeed);
+		searchFeed = NULL;
+	}
+
+	gtk_widget_set_sensitive(lookup_widget(searchdialog, "vfolderaddbtn"), FALSE);	
+	gtk_widget_hide(searchdialog);
+}
+
+void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
+	/* do not use passed entry because callback is used from a button too */
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
+	gchar			*buffer = NULL;
 
-	g_assert(mainwindow != NULL);
-	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
-		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
-		ui_itemlist_clear();
-		if(NULL != searchFeed)
-			feed_free(searchFeed);
-		searchFeed = vfolder_new();
-		feed_set_title(searchFeed, searchstring);
-		vfolder_add_rule(searchFeed, "exact", searchstring, TRUE);
-		vfolder_refresh(searchFeed);
-		ui_feedlist_select(NULL);
-		itemlist_load((nodePtr)searchFeed);
-	}
+	searchentry = lookup_widget(searchdialog, "searchentry");
+	searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
+	ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
+	ui_itemlist_clear();
+	if(NULL != searchFeed)
+		feed_free(searchFeed);
+	searchFeed = vfolder_new();
+	feed_set_title(searchFeed, searchstring);
+	vfolder_add_rule(searchFeed, "exact", searchstring, TRUE);
+	vfolder_refresh(searchFeed);
+	ui_feedlist_select(NULL);
+	itemlist_load((nodePtr)searchFeed);
+	
+	/* switch to item list view and inform user in HTML view */
+	ui_itemlist_set_two_pane_mode(FALSE);
+	ui_htmlview_start_output(&buffer, NULL, TRUE);
+	addToHTMLBuffer(&buffer, "<h2>Search Results for \"");
+	addToHTMLBuffer(&buffer, searchstring);
+	addToHTMLBuffer(&buffer, "\"</h2><p>The item list now contains all items matching the "
+	                         "specified search pattern. If you want to save this search "
+	                         "result permanently you can click the VFolder button in "
+	                         "the search dialog and Liferea will add a VFolder to your "
+	                         "feed list.</h2>");
+	ui_htmlview_finish_output(&buffer);
+	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
+
+	/* enable vfolder add button */	
+	gtk_widget_set_sensitive(lookup_widget(searchdialog, "vfolderaddbtn"), TRUE);
+}
+
+void on_searchentry_changed(GtkEditable *editable, gpointer user_data) {
+	gchar *searchtext;
+	
+	/* just to disable the start search button when search string is empty... */
+	searchtext = gtk_editable_get_chars(editable,0,-1);
+	gtk_widget_set_sensitive(lookup_widget(searchdialog, "searchstartbtn"), (NULL != searchtext) && (0 < strlen(searchtext)));
+		
 }
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
@@ -99,6 +122,12 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		ui_show_info_box(_("Please do a search first!"));
 	}
 }
+
+void on_casecheckbtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
+
+	g_print("Implement me!\n");
+}
+
 
 /*------------------------------------------------------------------------------*/
 /* feedster support								*/

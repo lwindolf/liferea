@@ -7,13 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-03 09:46+0100\n"
+"POT-Creation-Date: 2005-03-09 23:49+0100\n"
 "PO-Revision-Date: 2005-03-08 21:56-0300\n"
 "Last-Translator: Fernando Ike <fernando@ikenet.com.br>\n"
 "Language-Team: Portuguese/Brazil <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:229
@@ -57,11 +57,11 @@ msgstr ""
 "corrompido!  Alguns caracteres foram perdidos!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:259
+#: src/conf.c:262
 msgid "feedlist.opml"
 msgstr "feedlist_ptBR.opml"
 
-#: src/conf.c:278
+#: src/conf.c:281
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Erro ao renomear %s para %s\n"
@@ -693,7 +693,8 @@ msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
 msgstr ""
-"<i>Isto pode atrasar o carregamento das pastas com os muitas fontes dentro.</i>"
+"<i>Isto pode atrasar o carregamento das pastas com os muitas fontes dentro.</"
+"i>"
 
 #: src/interface.c:2028
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
@@ -1104,7 +1105,8 @@ msgid ""
 "want to be executed below. The downloaded file will be supplied as an "
 "argument for this command:"
 msgstr ""
-"O que deve fazer o Liferea com este Enclosure? Entre com comando para ser executado. O Arquivo baixado será usado como argumento para o comando."
+"O que deve fazer o Liferea com este Enclosure? Entre com comando para ser "
+"executado. O Arquivo baixado será usado como argumento para o comando."
 
 #: src/interface.c:3741
 msgid "_Browse"
@@ -1557,45 +1559,45 @@ msgstr "Este fonte sugere um intervalo de atualização de %d minutos "
 msgid "This feed specifies no default update interval."
 msgstr "Fonte sem intervalo de atualização definido."
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:445
 msgid "You have to select a feed entry"
 msgstr "Selecione um fonte"
 
-#: src/ui_feedlist.c:451
+#: src/ui_feedlist.c:455
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea em modo offline. Impossível atualizar."
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:497
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "Nota: Os filtros de assinatura desabilitam arrastar & soltar"
 
-#: src/ui_feedlist.c:539 src/ui_feedlist.c:542
+#: src/ui_feedlist.c:543 src/ui_feedlist.c:546
 msgid "Deleting entry"
 msgstr "Apagando entrada"
 
-#: src/ui_feedlist.c:540
+#: src/ui_feedlist.c:544
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Realmente quer apagar \"%s\" e seu conteúdo?"
 
-#: src/ui_feedlist.c:543
+#: src/ui_feedlist.c:547
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Realmente quer apagar \"%s\"?"
 
-#: src/ui_feedlist.c:551
+#: src/ui_feedlist.c:555
 msgid "Deletion Confirmation"
 msgstr "Confirmar exclusão"
 
-#: src/ui_feedlist.c:587
+#: src/ui_feedlist.c:591
 msgid "You must select a feed entry"
 msgstr "Selecione um fonte"
 
-#: src/ui_feedlist.c:588
+#: src/ui_feedlist.c:592
 msgid "You must select a feed entry."
 msgstr "Selecione um fonte."
 
-#: src/ui_feedlist.c:634
+#: src/ui_feedlist.c:638
 msgid "New subscription"
 msgstr "Nova Inscrição"
 
@@ -2024,25 +2026,28 @@ msgid "URL"
 msgstr "URL"
 
 #: src/ui_tray.c:93
-#, c-format
+#, fuzzy, c-format
 msgid "%d new item!"
-msgstr "%d novo item!"
+msgid_plural "%d new items!"
+msgstr[0] "%d novo item!"
+msgstr[1] "%d novo item!"
 
 #: src/ui_tray.c:106
 msgid "No new items."
 msgstr "Não há novos artigos."
 
-#: src/update.c:122
+#: src/update.c:93 src/update.c:128
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Erro:Impossível abrir pipe \"%s\""
 
-#: src/update.c:136
+#. FIXME: maybe setting request->returncode would be better
+#: src/update.c:144
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Erro:Impossível abrir arquivo \"%s\""
 
-#: src/update.c:142
+#: src/update.c:150
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Erro: Nâo há arquivo: \"%s\""

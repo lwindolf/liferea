@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-06 09:27-0500\n"
+"POT-Creation-Date: 2005-03-09 23:49+0100\n"
 "PO-Revision-Date: 2005-03-04 17:29+0200\n"
 "Last-Translator: SpoialÄ Cristiană Cristian <scristian@gmail.com>\n"
 "Language-Team: Romanian\n"
@@ -53,11 +53,11 @@ msgstr ""
 "nu au fost încărcate!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:259
+#: src/conf.c:262
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
-#: src/conf.c:278
+#: src/conf.c:281
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Eroare la redenumirea %s în %s\n"
@@ -1199,9 +1199,7 @@ msgstr ""
 "O altă copie a Liferea rulează în sistem. Vă rog folosiţi această instanţă. "
 "Dacă nu rulează alt Liferea vă rog să ştergeţi fişierul \"~/.liferea/lock\"."
 
-#. types for slash
-#. This one should only be set, not appended
-#: src/metadata.c:290 src/metadata.c:384
+#: src/metadata.c:290
 msgid "comments"
 msgstr "comentarii"
 
@@ -2038,17 +2036,18 @@ msgstr[1] "%d element nou!"
 msgid "No new items."
 msgstr "Nu sunt articole noi."
 
-#: src/update.c:122
+#: src/update.c:93 src/update.c:128
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Eroare: Nu s-a putut face legătura \"%s\""
 
-#: src/update.c:136
+#. FIXME: maybe setting request->returncode would be better
+#: src/update.c:144
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Eroare: Nu s-a putut deschide fişierul \"%s\"!"
 
-#: src/update.c:142
+#: src/update.c:150
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Eroare: Nu este nici un fişier \"%s\"!"

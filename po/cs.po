@@ -7,14 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-03 09:46+0100\n"
+"POT-Creation-Date: 2005-03-09 23:49+0100\n"
 "PO-Revision-Date: 2005-03-10 21:37+0100\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:229
@@ -56,11 +57,11 @@ msgstr ""
 "byly zahozeny!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:259
+#: src/conf.c:262
 msgid "feedlist.opml"
 msgstr ""
 
-#: src/conf.c:278
+#: src/conf.c:281
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Chyba při přejmenovávání %s na %s\n"
@@ -686,7 +687,9 @@ msgstr "Zobrazit články všech zdrojů příslušejících složce, když je v
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
-msgstr "<i>Toto nastavení může způsobit významné zpomalení při nahrávání složek s mnoha zdroji.</i>"
+msgstr ""
+"<i>Toto nastavení může způsobit významné zpomalení při nahrávání složek s "
+"mnoha zdroji.</i>"
 
 #: src/interface.c:2028
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
@@ -1098,7 +1101,10 @@ msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The downloaded file will be supplied as an "
 "argument for this command:"
-msgstr "Co by měl program Liferea dělat s touto přílohou? Prosím vložte příkaz, který chcete, aby se spouštěl. Soubor ke stažení bude tomuto příkazu předložen jako jeho argument:"
+msgstr ""
+"Co by měl program Liferea dělat s touto přílohou? Prosím vložte příkaz, "
+"který chcete, aby se spouštěl. Soubor ke stažení bude tomuto příkazu "
+"předložen jako jeho argument:"
 
 #: src/interface.c:3741
 msgid "_Browse"
@@ -1550,48 +1556,48 @@ msgstr "Poskytovatel tohoto zdroje navrhuje aktualizovat každých %d minut."
 msgid "This feed specifies no default update interval."
 msgstr "Tento zdroj neuvádí výchozí interval pro aktualizaci."
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:445
 msgid "You have to select a feed entry"
 msgstr "Musíte vybrat zdroj"
 
-#: src/ui_feedlist.c:451
+#: src/ui_feedlist.c:455
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Program Liferea je nyní odpojen od internetu. Aktualizace nejsou umožněny."
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:497
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Poznámka: Použití filtru pro zdroj znemožní použití technologie umístění "
 "tažením (drag & drop)"
 
-#: src/ui_feedlist.c:539 src/ui_feedlist.c:542
+#: src/ui_feedlist.c:543 src/ui_feedlist.c:546
 msgid "Deleting entry"
 msgstr "Mažu údaj"
 
-#: src/ui_feedlist.c:540
+#: src/ui_feedlist.c:544
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Jste si jist, že chcete smazat \"%s\" a jeho obsah?"
 
-#: src/ui_feedlist.c:543
+#: src/ui_feedlist.c:547
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Jste si jist, že chcete smazat \"%s\"?"
 
-#: src/ui_feedlist.c:551
+#: src/ui_feedlist.c:555
 msgid "Deletion Confirmation"
 msgstr "Potvrzení smazání"
 
-#: src/ui_feedlist.c:587
+#: src/ui_feedlist.c:591
 msgid "You must select a feed entry"
 msgstr "Musíte vybrat zdroj"
 
-#: src/ui_feedlist.c:588
+#: src/ui_feedlist.c:592
 msgid "You must select a feed entry."
 msgstr "Musíte vybrat zdroj."
 
-#: src/ui_feedlist.c:634
+#: src/ui_feedlist.c:638
 msgid "New subscription"
 msgstr "Nový zdroj"
 
@@ -2036,17 +2042,18 @@ msgstr[2] "%d nových článků!"
 msgid "No new items."
 msgstr "Žádné nové články."
 
-#: src/update.c:122
+#: src/update.c:93 src/update.c:128
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Chyba: Nemohu otevřít rouru \"%s\""
 
-#: src/update.c:136
+#. FIXME: maybe setting request->returncode would be better
+#: src/update.c:144
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Chyba: nemohu otevřít soubor \"%s\""
 
-#: src/update.c:142
+#: src/update.c:150
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Chyba: Zde není soubor \"%s\""

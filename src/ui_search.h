@@ -24,7 +24,8 @@
 #include <gtk/gtk.h>
 
 void on_searchbtn_clicked(GtkButton *button, gpointer user_data);
-void on_searchentry_activate(GtkButton *button, gpointer user_data);
+void on_searchentry_activate(GtkEntry *entry, gpointer user_data);
+void on_searchentry_changed(GtkEditable *editable, gpointer user_data);
 
 void on_hidesearch_clicked(GtkButton *button, gpointer user_data);
 
@@ -32,5 +33,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data);
 void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data);
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data);
+
+void on_casecheckbtn_toggled(GtkToggleButton *togglebutton, gpointer user_data);
 
 #endif

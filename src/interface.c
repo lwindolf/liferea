@@ -103,18 +103,6 @@ create_mainwindow (void)
   GtkWidget *feedlist;
   GtkWidget *browsertabs;
   GtkWidget *vbox18;
-  GtkWidget *searchbox;
-  GtkWidget *label21;
-  GtkWidget *searchentry;
-  GtkWidget *button26;
-  GtkWidget *image2295;
-  GtkWidget *newVFolder;
-  GtkWidget *alignment9;
-  GtkWidget *hbox66;
-  GtkWidget *image2090;
-  GtkWidget *label155;
-  GtkWidget *hidesearch;
-  GtkWidget *image1;
   GtkWidget *itemtabs;
   GtkWidget *rightpane;
   GtkWidget *ilscrolledwindow;
@@ -479,59 +467,6 @@ create_mainwindow (void)
   gtk_widget_show (vbox18);
   gtk_container_add (GTK_CONTAINER (browsertabs), vbox18);
 
-  searchbox = gtk_hbox_new (FALSE, 5);
-  gtk_box_pack_start (GTK_BOX (vbox18), searchbox, FALSE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (searchbox), 5);
-
-  label21 = gtk_label_new (_("Search for"));
-  gtk_widget_show (label21);
-  gtk_box_pack_start (GTK_BOX (searchbox), label21, FALSE, FALSE, 0);
-
-  searchentry = gtk_entry_new ();
-  gtk_widget_show (searchentry);
-  gtk_box_pack_start (GTK_BOX (searchbox), searchentry, TRUE, TRUE, 0);
-
-  button26 = gtk_button_new ();
-  gtk_widget_show (button26);
-  gtk_box_pack_start (GTK_BOX (searchbox), button26, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, button26, _("Starts a search for all items that do match the given search string either in title or content."), NULL);
-  gtk_button_set_relief (GTK_BUTTON (button26), GTK_RELIEF_NONE);
-
-  image2295 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_BUTTON);
-  gtk_widget_show (image2295);
-  gtk_container_add (GTK_CONTAINER (button26), image2295);
-
-  newVFolder = gtk_button_new ();
-  gtk_widget_show (newVFolder);
-  gtk_box_pack_start (GTK_BOX (searchbox), newVFolder, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, newVFolder, _("saves this search as a VFolder, which will appear in the feed list"), NULL);
-
-  alignment9 = gtk_alignment_new (0.5, 0.5, 0, 0);
-  gtk_widget_show (alignment9);
-  gtk_container_add (GTK_CONTAINER (newVFolder), alignment9);
-
-  hbox66 = gtk_hbox_new (FALSE, 2);
-  gtk_widget_show (hbox66);
-  gtk_container_add (GTK_CONTAINER (alignment9), hbox66);
-
-  image2090 = gtk_image_new_from_stock ("gtk-add", GTK_ICON_SIZE_BUTTON);
-  gtk_widget_show (image2090);
-  gtk_box_pack_start (GTK_BOX (hbox66), image2090, FALSE, FALSE, 0);
-
-  label155 = gtk_label_new_with_mnemonic (_("VFolder"));
-  gtk_widget_show (label155);
-  gtk_box_pack_start (GTK_BOX (hbox66), label155, FALSE, FALSE, 0);
-
-  hidesearch = gtk_button_new ();
-  gtk_widget_show (hidesearch);
-  gtk_box_pack_start (GTK_BOX (searchbox), hidesearch, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, hidesearch, _("Close search"), NULL);
-  gtk_button_set_relief (GTK_BUTTON (hidesearch), GTK_RELIEF_NONE);
-
-  image1 = gtk_image_new_from_stock ("gtk-close", GTK_ICON_SIZE_BUTTON);
-  gtk_widget_show (image1);
-  gtk_container_add (GTK_CONTAINER (hidesearch), image1);
-
   itemtabs = gtk_notebook_new ();
   gtk_widget_show (itemtabs);
   gtk_box_pack_start (GTK_BOX (vbox18), itemtabs, TRUE, TRUE, 0);
@@ -682,18 +617,6 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) feedlist, "drag_end",
                     G_CALLBACK (on_feedlist_drag_end),
                     NULL);
-  g_signal_connect ((gpointer) searchentry, "activate",
-                    G_CALLBACK (on_searchentry_activate),
-                    NULL);
-  g_signal_connect ((gpointer) button26, "clicked",
-                    G_CALLBACK (on_searchentry_activate),
-                    NULL);
-  g_signal_connect ((gpointer) newVFolder, "clicked",
-                    G_CALLBACK (on_newVFolder_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) hidesearch, "clicked",
-                    G_CALLBACK (on_hidesearch_clicked),
-                    NULL);
   g_signal_connect ((gpointer) Itemlist, "button_press_event",
                     G_CALLBACK (on_itemlist_button_press_event),
                     NULL);
@@ -777,18 +700,6 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, feedlist, "feedlist");
   GLADE_HOOKUP_OBJECT (mainwindow, browsertabs, "browsertabs");
   GLADE_HOOKUP_OBJECT (mainwindow, vbox18, "vbox18");
-  GLADE_HOOKUP_OBJECT (mainwindow, searchbox, "searchbox");
-  GLADE_HOOKUP_OBJECT (mainwindow, label21, "label21");
-  GLADE_HOOKUP_OBJECT (mainwindow, searchentry, "searchentry");
-  GLADE_HOOKUP_OBJECT (mainwindow, button26, "button26");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2295, "image2295");
-  GLADE_HOOKUP_OBJECT (mainwindow, newVFolder, "newVFolder");
-  GLADE_HOOKUP_OBJECT (mainwindow, alignment9, "alignment9");
-  GLADE_HOOKUP_OBJECT (mainwindow, hbox66, "hbox66");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2090, "image2090");
-  GLADE_HOOKUP_OBJECT (mainwindow, label155, "label155");
-  GLADE_HOOKUP_OBJECT (mainwindow, hidesearch, "hidesearch");
-  GLADE_HOOKUP_OBJECT (mainwindow, image1, "image1");
   GLADE_HOOKUP_OBJECT (mainwindow, itemtabs, "itemtabs");
   GLADE_HOOKUP_OBJECT (mainwindow, rightpane, "rightpane");
   GLADE_HOOKUP_OBJECT (mainwindow, ilscrolledwindow, "ilscrolledwindow");
@@ -3331,7 +3242,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new ("Liferea 0.9.1");
+  label57 = gtk_label_new ("Liferea 0.9.2");
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);
@@ -3781,5 +3692,135 @@ create_enchandlerdialog (void)
   GLADE_HOOKUP_OBJECT (enchandlerdialog, okbutton3, "okbutton3");
 
   return enchandlerdialog;
+}
+
+GtkWidget*
+create_searchdialog (void)
+{
+  GtkWidget *searchdialog;
+  GtkWidget *dialog_vbox17;
+  GtkWidget *vbox2614;
+  GtkWidget *hbox92227;
+  GtkWidget *label222;
+  GtkWidget *searchentry;
+  GtkWidget *casecheckbtn;
+  GtkWidget *dialog_action_area17;
+  GtkWidget *closebutton2;
+  GtkWidget *vfolderaddbtn;
+  GtkWidget *alignment11;
+  GtkWidget *hbox92228;
+  GtkWidget *image2461;
+  GtkWidget *label223;
+  GtkWidget *searchstartbtn;
+  GtkTooltips *tooltips;
+
+  tooltips = gtk_tooltips_new ();
+
+  searchdialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (searchdialog), _("Search All Feeds"));
+  gtk_window_set_type_hint (GTK_WINDOW (searchdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+  dialog_vbox17 = GTK_DIALOG (searchdialog)->vbox;
+  gtk_widget_show (dialog_vbox17);
+
+  vbox2614 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2614);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox17), vbox2614, TRUE, TRUE, 6);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2614), 12);
+
+  hbox92227 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox92227);
+  gtk_box_pack_start (GTK_BOX (vbox2614), hbox92227, FALSE, TRUE, 6);
+
+  label222 = gtk_label_new (_("Search for"));
+  gtk_widget_show (label222);
+  gtk_box_pack_start (GTK_BOX (hbox92227), label222, FALSE, FALSE, 0);
+
+  searchentry = gtk_entry_new ();
+  gtk_widget_show (searchentry);
+  gtk_box_pack_start (GTK_BOX (hbox92227), searchentry, TRUE, TRUE, 0);
+  gtk_tooltips_set_tip (tooltips, searchentry, _("Enter a search string Liferea should find either in a items title or in its content."), NULL);
+
+  casecheckbtn = gtk_check_button_new_with_mnemonic (_("case sensitive"));
+  gtk_widget_show (casecheckbtn);
+  gtk_box_pack_start (GTK_BOX (vbox2614), casecheckbtn, FALSE, FALSE, 0);
+
+  dialog_action_area17 = GTK_DIALOG (searchdialog)->action_area;
+  gtk_widget_show (dialog_action_area17);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area17), GTK_BUTTONBOX_END);
+
+  closebutton2 = gtk_button_new_from_stock ("gtk-close");
+  gtk_widget_show (closebutton2);
+  gtk_dialog_add_action_widget (GTK_DIALOG (searchdialog), closebutton2, GTK_RESPONSE_CLOSE);
+  GTK_WIDGET_SET_FLAGS (closebutton2, GTK_CAN_DEFAULT);
+
+  vfolderaddbtn = gtk_button_new ();
+  gtk_widget_show (vfolderaddbtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (searchdialog), vfolderaddbtn, GTK_RESPONSE_APPLY);
+  gtk_widget_set_sensitive (vfolderaddbtn, FALSE);
+  GTK_WIDGET_SET_FLAGS (vfolderaddbtn, GTK_CAN_DEFAULT);
+  gtk_tooltips_set_tip (tooltips, vfolderaddbtn, _("Saves this search as a VFolder, which will appear in the feed list."), NULL);
+
+  alignment11 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_show (alignment11);
+  gtk_container_add (GTK_CONTAINER (vfolderaddbtn), alignment11);
+
+  hbox92228 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_show (hbox92228);
+  gtk_container_add (GTK_CONTAINER (alignment11), hbox92228);
+
+  image2461 = gtk_image_new_from_stock ("gtk-add", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show (image2461);
+  gtk_box_pack_start (GTK_BOX (hbox92228), image2461, FALSE, FALSE, 0);
+
+  label223 = gtk_label_new_with_mnemonic (_("VFolder"));
+  gtk_widget_show (label223);
+  gtk_box_pack_start (GTK_BOX (hbox92228), label223, FALSE, FALSE, 0);
+
+  searchstartbtn = gtk_button_new_from_stock ("gtk-find");
+  gtk_widget_show (searchstartbtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (searchdialog), searchstartbtn, 0);
+  gtk_widget_set_sensitive (searchstartbtn, FALSE);
+  GTK_WIDGET_SET_FLAGS (searchstartbtn, GTK_CAN_DEFAULT);
+  gtk_tooltips_set_tip (tooltips, searchstartbtn, _("Starts searching the specified text in all feeds. The search result will appear in the item list."), NULL);
+
+  g_signal_connect ((gpointer) searchentry, "activate",
+                    G_CALLBACK (on_searchentry_activate),
+                    NULL);
+  g_signal_connect ((gpointer) searchentry, "changed",
+                    G_CALLBACK (on_searchentry_changed),
+                    NULL);
+  g_signal_connect ((gpointer) casecheckbtn, "toggled",
+                    G_CALLBACK (on_casecheckbtn_toggled),
+                    NULL);
+  g_signal_connect ((gpointer) closebutton2, "clicked",
+                    G_CALLBACK (on_hidesearch_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) vfolderaddbtn, "clicked",
+                    G_CALLBACK (on_newVFolder_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) searchstartbtn, "clicked",
+                    G_CALLBACK (on_searchentry_activate),
+                    NULL);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (searchdialog, searchdialog, "searchdialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (searchdialog, dialog_vbox17, "dialog_vbox17");
+  GLADE_HOOKUP_OBJECT (searchdialog, vbox2614, "vbox2614");
+  GLADE_HOOKUP_OBJECT (searchdialog, hbox92227, "hbox92227");
+  GLADE_HOOKUP_OBJECT (searchdialog, label222, "label222");
+  GLADE_HOOKUP_OBJECT (searchdialog, searchentry, "searchentry");
+  GLADE_HOOKUP_OBJECT (searchdialog, casecheckbtn, "casecheckbtn");
+  GLADE_HOOKUP_OBJECT_NO_REF (searchdialog, dialog_action_area17, "dialog_action_area17");
+  GLADE_HOOKUP_OBJECT (searchdialog, closebutton2, "closebutton2");
+  GLADE_HOOKUP_OBJECT (searchdialog, vfolderaddbtn, "vfolderaddbtn");
+  GLADE_HOOKUP_OBJECT (searchdialog, alignment11, "alignment11");
+  GLADE_HOOKUP_OBJECT (searchdialog, hbox92228, "hbox92228");
+  GLADE_HOOKUP_OBJECT (searchdialog, image2461, "image2461");
+  GLADE_HOOKUP_OBJECT (searchdialog, label223, "label223");
+  GLADE_HOOKUP_OBJECT (searchdialog, searchstartbtn, "searchstartbtn");
+  GLADE_HOOKUP_OBJECT_NO_REF (searchdialog, tooltips, "tooltips");
+
+  return searchdialog;
 }
 

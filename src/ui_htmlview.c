@@ -339,7 +339,7 @@ void ui_htmlview_clear(GtkWidget *htmlview) {
 	g_free(buffer);
 }
 
-gboolean ui_htmlview_is_special_url(gchar *url) {
+gboolean ui_htmlview_is_special_url(const gchar *url) {
 
 	/* match against all special protocols... */
 	if(url == strstr(url, ENCLOSURE_PROTOCOL))

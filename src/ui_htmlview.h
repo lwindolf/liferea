@@ -200,7 +200,7 @@ enum {
  * @param url		the URL to check
  * @return		TRUE if it is a special URL
  */
-gboolean ui_htmlview_is_special_url(gchar *url);
+gboolean ui_htmlview_is_special_url(const gchar *url);
 
 /**
  * Launches the specified URL in the configured browser or
