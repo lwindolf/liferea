@@ -93,7 +93,7 @@ gchar *prefs_get_browser_remotecmd() {
 
 	libname = getStringConfValue(BROWSER_ID);
 	if (!strcmp(libname, "manual")) {
-		ret = g_strdup(getStringConfValue(BROWSER_COMMAND));
+		ret = NULL;
 	} else {
 		struct browser *iter;
 		for (iter = browsers; iter->id != NULL; iter++) {
