@@ -240,41 +240,6 @@ void on_popup_quit(gpointer callback_data,
 	on_quit(NULL, NULL, NULL);
 }
 
-gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
-	GtkWidget	*pane;
-	gint x, y;
-
-	debug_enter("on_quit");
-
-	ui_mainwindow_save_position();
-	gtk_widget_hide(mainwindow);
-
-	conf_feedlist_save();	/* should save feedlist and folder states */
-	feed_unload(NULL);	/* should save all feeds still in memory */	
-	
-	/* save pane proportions */
-	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {
-		x = gtk_paned_get_position(GTK_PANED(pane));
-		setNumericConfValue(LAST_VPANE_POS, x);
-	}
-	
-	if(NULL != (pane = lookup_widget(mainwindow, "rightpane"))) {
-		y = gtk_paned_get_position(GTK_PANED(pane));
-		setNumericConfValue(LAST_HPANE_POS, y);
-	}
-	
-	/* save itemlist properties */
-	setBooleanConfValue(LAST_ITEMLIST_MODE, !itemlist_mode);
-	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100.*ui_htmlview_get_zoom(ui_mainwindow_get_active_htmlview())));
-
-	gtk_widget_destroy(mainwindow);
-	ui_htmlview_deinit();
-	gtk_main_quit();
-	debug_exit("on_quit");
-	
-	return FALSE;
-}
-
 void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	GtkWidget	*dialog;
 

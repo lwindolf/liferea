@@ -22,10 +22,34 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
+AC_ARG_ENABLE(sm,      [  --disable-sm            compile without X session management support],,enable_sm=yes)
+				   
 AC_CHECK_FUNCS(strsep)
 
 dnl Search for X libraries
 AC_PATH_XTRA
+
+dnl #######################################################################
+dnl # Check for X session management libs
+dnl #######################################################################
+
+AC_MSG_CHECKING([for X11 session management library])
+
+if test "x$enable_sm" = "xyes"; then
+   enable_sm=no
+   tmp=`echo "$X_PRE_LIBS" | grep -e "-lSM"`
+   if test "x$tmp" != "x" ; then
+		 enable_sm=yes
+   fi 
+else
+     enable_sm=no
+fi
+if test "x$enable_sm" = "xyes"; then
+   AC_DEFINE(USE_SM, 1, [Define if we're using X Session Management.])
+   AC_MSG_RESULT(yes)
+else
+   AC_MSG_RESULT(no)
+fi
 
 dnl libcurl support
 dnl AC_MSG_CHECKING([libcurl])
@@ -157,7 +181,7 @@ pkg_modules="	gtk+-2.0 >= 2.0.0
 		gmodule-2.0 >= 2.0.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
-dnl PACKAGE_CFLAGS="-Wall $PACKAGE_CFLAGS" <--- This is bad for some compilers
+
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
@@ -192,5 +216,11 @@ echo
 echo Build Mozilla Plugin............ : $enable_mozilla
 echo Build GtkHTML Plugin............ : $enable_gtkhtml2
 echo 
+echo Use X Session Management........ : $enable_sm
+echo
 dnl echo Use libcurl download library.... : $enable_libcurl
 dnl echo
+eval eval echo Gaim will be installed in $bindir.
+echo
+echo configure complete, now type \'make\'
+echo

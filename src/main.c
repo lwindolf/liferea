@@ -54,6 +54,7 @@
 #include "ui_queue.h"
 #include "ui_mainwindow.h"
 #include "metadata.h"
+#include "ui_session.h"
 
 GThread	*mainThread = NULL;
 gboolean lifereaStarted = FALSE;
@@ -173,7 +174,9 @@ int main(int argc, char *argv[]) {
 	const char 	*arg;
 	gint		i;
 	GtkWidget	*dialog;
-	
+#ifdef USE_SM
+     gchar *opt_session_arg = NULL, *opt_config_dir_arg = NULL;
+#endif
 #ifdef ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
@@ -183,9 +186,9 @@ int main(int argc, char *argv[]) {
 
 	/* parse arguments  */
 	debug_flags = 0;
-	for(i = 0; i < argc; ++i) {		
+	for(i = 1; i < argc; ++i) {
 		arg = argv[i];
-
+		
 		if(!strcmp(arg, "--debug-cache"))
 			debug_flags |= DEBUG_CACHE;
 		else if(!strcmp(arg, "--debug-conf"))
@@ -212,6 +215,17 @@ int main(int argc, char *argv[]) {
 		}
 		else if(!strcmp(arg, "--iconify")) {
 			startIconified = TRUE;
+#ifdef USE_SM
+		}
+		else if (!strcmp(arg, "--session")) {
+			i++;
+			if (i < argc) {
+				opt_session_arg = g_strdup(argv[i]);
+			} else
+				fprintf(stderr, _("The --session argument must be given a parameter.\n"));
+#endif
+		} else {
+			fprintf(stderr, _("Liferea encountered an unknown argument: %s\n"), arg);
 		}
 	}
 	set_debug_level(debug_flags);
@@ -243,6 +257,9 @@ int main(int argc, char *argv[]) {
 		
 		/* order is important! */
 		conf_init();			/* initialize gconf */
+#ifdef USE_SM
+		session_init(argv[0], opt_session_arg, opt_config_dir_arg);
+#endif
 		ui_htmlview_init();		/* setup HTML widgets */
 		download_init();		/* Initialize the download subsystem */
 		metadata_init();
@@ -264,9 +281,50 @@ int main(int argc, char *argv[]) {
 		lifereaStarted = TRUE;
 		gtk_main();
 		gdk_threads_leave();
-		
-		main_unlock();
 	}
 
 	return 0;
+}
+
+gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+	GtkWidget	*pane;
+	gint x, y;
+
+	debug_enter("on_quit");
+
+	ui_mainwindow_save_position();
+	gtk_widget_hide(mainwindow);
+
+	conf_feedlist_save();	/* should save feedlist and folder states */
+	feed_unload(NULL);	/* should save all feeds still in memory */	
+	
+	/* save pane proportions */
+	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {
+		x = gtk_paned_get_position(GTK_PANED(pane));
+		setNumericConfValue(LAST_VPANE_POS, x);
+	}
+	
+	if(NULL != (pane = lookup_widget(mainwindow, "rightpane"))) {
+		y = gtk_paned_get_position(GTK_PANED(pane));
+		setNumericConfValue(LAST_HPANE_POS, y);
+	}
+	
+	/* save itemlist properties */
+	setBooleanConfValue(LAST_ITEMLIST_MODE, !itemlist_mode);
+	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100.*ui_htmlview_get_zoom(ui_mainwindow_get_active_htmlview())));
+
+	gtk_widget_destroy(mainwindow);
+	ui_htmlview_deinit();
+	
+#ifdef USE_SM
+     /* unplug */
+     session_end();
+#endif
+	
+	gtk_main_quit();
+	main_unlock();
+	
+	debug_exit("on_quit");
+	
+	return FALSE;
 }

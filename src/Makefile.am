@@ -65,20 +65,21 @@ liferea_bin_SOURCES = \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h \
 	support.c support.h \
-	ui_queue.c ui_queue.h \
-	ui_mainwindow.c ui_mainwindow.h \
+	ui_dnd.c ui_dnd.h \
 	ui_feed.c ui_feed.h \
-	ui_feedlist.c ui_feedlist.h \
-	ui_itemlist.c ui_itemlist.h \
-	ui_folder.c ui_folder.h \
-	ui_search.c ui_search.h \
 	ui_filter.c \
-	ui_tray.c ui_tray.h \
+	ui_feedlist.c ui_feedlist.h \
+	ui_folder.c ui_folder.h \
+	ui_itemlist.c ui_itemlist.h \
+	ui_mainwindow.c ui_mainwindow.h \
+	ui_notification.c ui_notification.h \
 	ui_popup.c ui_popup.h \
 	ui_prefs.c ui_prefs.h \
-	ui_dnd.c ui_dnd.h \
-	ui_notification.c ui_notification.h \
+	ui_queue.c ui_queue.h \
+	ui_search.c ui_search.h \
+	ui_session.c ui_session.h \
+	ui_tray.c ui_tray.h \
 	update.c update.h \
 	vfolder.c vfolder.h
 
-liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ @X_PRE_LIBS@ -lX11 @X_LIBS@ $(INTLLIBS)
+liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@ $(INTLLIBS)
