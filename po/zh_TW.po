@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.7d\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-23 00:26+0200\n"
+"POT-Creation-Date: 2004-05-23 01:31+0200\n"
 "PO-Revision-Date: 2004-04-30 19:03+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -1609,7 +1609,8 @@ msgstr "GtkHTML2"
 msgid "GtkHTML3 (experimental)"
 msgstr "GtkHTML3 (experimental)"
 
-#: src/mozilla/mozembed.c:64
+#. --------------------------------------------------------------------
+#: src/mozilla/mozembed.c:52
 msgid "Mozilla (experimental)"
 msgstr "Mozilla (experimental)"
 

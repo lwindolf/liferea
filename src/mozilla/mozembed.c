@@ -38,43 +38,35 @@
 #include "../common.h"
 #include "mozilla.h"
 
-/**
- * ContextMenuType: various types of context menu
- */
-typedef enum
-{
-	CONTEXT_NONE     = 0,
-	CONTEXT_DEFAULT  = (1 << 1),
-	CONTEXT_LINK     = (1 << 2),
-	CONTEXT_IMAGE    = (1 << 3),
-	CONTEXT_DOCUMENT = (1 << 4),
-	CONTEXT_INPUT    = (1 << 5),
-	CONTEXT_XUL      = (1 << 7),
-} ContextMenuType;
-
-static GtkWidget	*itemView = NULL;
-static GtkWidget	*itemListView = NULL;
-static GtkWidget	*htmlwidget = NULL;
+static GtkWidget	*widget1 = NULL;
+static GtkWidget	*widget2 = NULL;
+static GtkWidget	*active_widget = NULL;
 
 static gfloat		zoomLevel = 1.0;
 
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
+/* -------------------------------------------------------------------- */
+
 gchar * get_module_name(void) { return g_strdup(_("Mozilla (experimental)")); }
 
 /* function to write HTML source into the widget */
 void write_html(const gchar *string) {
 
-	g_assert(NULL != htmlwidget);	
-	gtk_moz_embed_open_stream(GTK_MOZ_EMBED(htmlwidget), "file://localhost/", "text/html");
+	g_assert(NULL != active_widget);
+	
+	if(!GTK_WIDGET_REALIZED(active_widget)) 
+		return;
+		
+	gtk_moz_embed_open_stream(GTK_MOZ_EMBED(active_widget), "file://localhost/", "text/html");
 
 	if((NULL != string) && (strlen(string) > 0))
-		gtk_moz_embed_append_data(GTK_MOZ_EMBED(htmlwidget), string, strlen(string));
+		gtk_moz_embed_append_data(GTK_MOZ_EMBED(active_widget), string, strlen(string));
 	else
-		gtk_moz_embed_append_data(GTK_MOZ_EMBED(htmlwidget), EMPTY, strlen(EMPTY));	
+		gtk_moz_embed_append_data(GTK_MOZ_EMBED(active_widget), EMPTY, strlen(EMPTY));	
 
-	gtk_moz_embed_close_stream(GTK_MOZ_EMBED(htmlwidget));
+	gtk_moz_embed_close_stream(GTK_MOZ_EMBED(active_widget));
 }
 
 /* -------------------------------------------------------------------- */
@@ -157,9 +149,9 @@ gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
 
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
-static void set_html_view(GtkWidget *pane) {
-	gchar	*profile;
-	int	i;
+static GtkWidget * set_html_view(GtkWidget *pane) {
+	GtkWidget	*widget;
+	int		i;
 
         /* signals to connect on each embed widget */
 	static const struct
@@ -190,9 +182,37 @@ static void set_html_view(GtkWidget *pane) {
 		{ NULL, NULL } 
 	};
 	
-	if(NULL != htmlwidget)	/* only call once */
-		gtk_widget_destroy(htmlwidget);
+	/* create html widget and pack it into the scrolled window */
+	widget = gtk_moz_embed_new();
+	
+	/* connect to interesting Mozilla signals */
+	for(i = 0; signal_connections[i].event != NULL; i++)
+	{
+		gtk_signal_connect_while_alive (GTK_OBJECT(widget),
+						signal_connections[i].event,
+						signal_connections[i].func, 
+						widget,
+						GTK_OBJECT(widget));
+	}
 
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(pane), widget);		  
+	gtk_widget_show_all(pane);
+	
+	return widget;
+}
+
+void set_html_view_mode(gboolean threePane) {
+	
+	if(FALSE == threePane)
+		active_widget = widget2;
+	else
+		active_widget = widget1;
+
+}
+
+void setup_html_views(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
+	gchar	*profile;
+	
 	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
 
 	/* init mozilla home */
@@ -208,42 +228,16 @@ static void set_html_view(GtkWidget *pane) {
 	/* startup done */
 	gtk_moz_embed_push_startup();
 
-	/* create html widget and pack it into the scrolled window */
-	htmlwidget = gtk_moz_embed_new();
+	widget1 = set_html_view(pane1);
+	widget2 = set_html_view(pane2);
 	
-	/* connect to interesting Mozilla signals */
-	for(i = 0; signal_connections[i].event != NULL; i++)
-	{
-		gtk_signal_connect_while_alive (GTK_OBJECT(htmlwidget),
-						signal_connections[i].event,
-						signal_connections[i].func, 
-						htmlwidget,
-						GTK_OBJECT(htmlwidget));
-	}
-
-	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(pane), htmlwidget);		  
-	gtk_widget_show_all(pane);
-}
-
-void set_html_view_mode(gboolean threePane) {
-		
-	if(FALSE == threePane)
-		set_html_view(itemListView);
-	else
-		set_html_view(itemView);
-
-}
-
-void setup_html_views(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
-
-	itemView = pane1;
-	itemListView = pane2;
+	set_html_view_mode(FALSE);
 }
 
 /* launches the specified URL */
 void launch_url(const gchar *url) {
 
-	gtk_moz_embed_load_url(GTK_MOZ_EMBED(htmlwidget), url); 
+	gtk_moz_embed_load_url(GTK_MOZ_EMBED(active_widget), url); 
 }
 
 gboolean launch_inside_possible(void) { return TRUE; }

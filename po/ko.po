@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-23 00:26+0200\n"
+"POT-Creation-Date: 2004-05-23 01:31+0200\n"
 "PO-Revision-Date: 2004-03-28 02:00+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -1639,7 +1639,8 @@ msgstr "GtkHTML2"
 msgid "GtkHTML3 (experimental)"
 msgstr "모질라 (실험용)"
 
-#: src/mozilla/mozembed.c:64
+#. --------------------------------------------------------------------
+#: src/mozilla/mozembed.c:52
 msgid "Mozilla (experimental)"
 msgstr "모질라 (실험용)"
 
