@@ -98,6 +98,16 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 			/* RSS 0.93 allows multiple enclosures */
 			tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"url"));
 			if(NULL != tmp) {
+				if((strstr(tmp, "://") == NULL) &&
+				   (fp->htmlUrl != NULL) &&
+				   (fp->htmlUrl[0] != '|') &&
+				   (strstr(fp->htmlUrl, "://") != NULL)) {
+					/* add base URL if necessary and possible */
+					 tmp2 = g_strdup_printf("%s/%s", fp->htmlUrl, tmp);
+					 g_free(tmp);
+					 tmp = tmp2;
+				}
+		
 				ip->metadata = metadata_list_append(ip->metadata, "enclosure", tmp);
 				g_free(tmp);
 			}
