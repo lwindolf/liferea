@@ -372,6 +372,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	debug_enter("feed_load_from_cache");
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
+	fp->loaded = TRUE;
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
@@ -463,6 +464,18 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	
 	debug_exit("feed_load_from_cache");	
 	return TRUE;
+}
+
+/* Only some feed informations are kept in memory to lower memory
+   usage. This method unloads everything besides necessary infos. */
+static void feed_unload(feedPtr fp) {
+
+	fp->loaded = FALSE;
+	
+	/* FIXME: free filter structures too when implemented */
+	
+	/* free items */	
+	feed_clear_item_list(fp);
 }
 
 /* Merges the feeds specified by old_fp and new_fp, so that
@@ -1043,7 +1056,12 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 		fp->imageUrl = NULL;
 }
 
-GSList * feed_get_item_list(feedPtr fp) { return fp->items; }
+GSList * feed_get_item_list(feedPtr fp) { 
+
+	if(!fp->loaded)
+		feed_load_from_cache(fp);
+	return fp->items; 
+}
 
 /* method to free all items of a feed */
 void feed_clear_item_list(feedPtr fp) {
@@ -1235,14 +1253,14 @@ void feed_free(feedPtr fp) {
 		ui_itemlist_clear();
 	}
 	
-	if(fp->id && fp->id[0] != '\0')
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
-	
 	/* free UI info */
 	if(fp->ui_data)
 		ui_folder_remove_node((nodePtr)fp);
-		
-	/* free items */
+
+	feed_unload(fp);
+
+	if(fp->id && fp->id[0] != '\0')
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);		
 
 	/* FIXME: Move this to a better place. The cache file does not
 	   need to always be deleted, for example when freeing a
@@ -1252,20 +1270,16 @@ void feed_free(feedPtr fp) {
 		   this is spam anyway. */;
 		g_free(filename);
 	
-		/* FIXME: free filter structures too when implemented */
-	
 	/* Don't free active feed requests here, because they might still
 	   be processed in the update queues! Abandoned requests are
 	   free'd in feed_process. They must be freed in the main thread
 	   for locking reasons. */
 	if(fp->request != NULL)
 		fp->request->callback = NULL;
-	if (fp->faviconRequest != NULL)
+	if(fp->faviconRequest != NULL)
 		fp->faviconRequest->callback = NULL;
-	
-	feed_clear_item_list(fp);
 
-	if (fp->icon != NULL)
+	if(fp->icon != NULL)
 		g_object_unref(fp->icon);
 	
 	if(fp->id) {
@@ -1284,5 +1298,4 @@ void feed_free(feedPtr fp) {
 	g_free(fp->imageUrl);
 	metadata_list_free(fp->metadata);
 	g_free(fp);
-
 }
