@@ -500,6 +500,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 			if(0 == interval)
 				interval = -1;	/* this is due to ignore this feed while updating */
 			setFeedUpdateInterval(fp, interval);
+			setFeedUpdateCounter(fp, interval);
 		}
 		
 		redrawFeedList();
@@ -1065,15 +1066,16 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 	             gpointer           data)
 {
 	gint		type;
-	gchar		*key;
+	gchar		*key, *title;
 	feedPtr		fp;
 	int		count;
 	gboolean	unspecific = TRUE;
 
-	gtk_tree_model_get(model, iter, FS_TYPE, &type, 
+	gtk_tree_model_get(model, iter, FS_TYPE, &type,
+					FS_TITLE, &title,
 	                                FS_KEY, &key, -1);
 	
-	if(!IS_NODE(type)) {
+	if(!IS_NODE(type) && (type != FST_EMPTY)) {
 		g_assert(NULL != key);
 		fp = getFeed(key);
 		count = getFeedUnreadCount(fp);
@@ -1084,13 +1086,14 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 			g_object_set(GTK_CELL_RENDERER(cell), "text", g_strdup_printf("%s (%d)", getFeedTitle(fp), count), NULL);
 		} else {
 			g_object_set(GTK_CELL_RENDERER(cell), "text", getFeedTitle(fp), NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
+			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);	
 		}
+	} else {
+		g_object_set(GTK_CELL_RENDERER(cell), "text", title, NULL);
+		g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);	
 	}
-	
+	g_free(title);
 	g_free(key);
-	
-
 }
 
 

@@ -89,7 +89,7 @@ static void *update_mainloop(void *data) {
 static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr		fp = (feedPtr)value;
 	gint 		counter;
-
+//g_print("update counter for %s is %d\n", getFeedTitle(fp), getFeedUpdateCounter(fp));
 	if(0 < (counter = getFeedUpdateCounter(fp))) 
 		setFeedUpdateCounter(fp, counter - 1);
 }
