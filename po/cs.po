@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-27 20:03+0200\n"
+"POT-Creation-Date: 2004-06-28 20:09-0400\n"
 "PO-Revision-Date: 2004-05-31 22:09+0200\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -18,13 +18,13 @@ msgstr ""
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/cdf_channel.c:56 src/cdf_item.c:55 src/ocs_dir.c:141 src/opml.c:211
-#: src/pie_entry.c:73 src/pie_feed.c:116 src/rss_channel.c:142
+#: src/pie_entry.c:73 src/pie_feed.c:117 src/rss_channel.c:142
 #: src/rss_item.c:84 src/rss_item.c:87
 #, fuzzy
 msgid "Feed:"
 msgstr "Z_droje"
 
-#: src/cdf_channel.c:182 src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:322
+#: src/cdf_channel.c:182 src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:325
 #: src/rss_channel.c:407
 msgid "There were errors while parsing this feed!"
 msgstr ""
@@ -661,7 +661,7 @@ msgid "Source Type:"
 msgstr ""
 
 #: src/interface.c:1028 src/interface.c:1430 src/ocs_dir.c:147 src/opml.c:217
-#: src/pie_feed.c:122 src/rss_channel.c:149 src/rss_item.c:108
+#: src/pie_feed.c:123 src/rss_channel.c:149 src/rss_item.c:108
 msgid "Source:"
 msgstr ""
 
@@ -1189,7 +1189,7 @@ msgstr ""
 msgid "<p>Could not find OPML header!</p>"
 msgstr ""
 
-#: src/pie_feed.c:212
+#: src/pie_feed.c:215
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr ""
 
@@ -1519,17 +1519,17 @@ msgstr[2] "%d nových článků!"
 msgid "No new items."
 msgstr "Žádné nové články."
 
-#: src/update.c:110
+#: src/update.c:112
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr ""
 
-#: src/update.c:124
+#: src/update.c:126
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr ""
 
-#: src/update.c:130
+#: src/update.c:132
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr ""

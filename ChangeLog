@@ -3,9 +3,8 @@
 	Version 0.5.1
 	
 	* Favicons are now processed with gdkpixbuf and saved
-	  to disc in PNG format. This should save some disk space
-	  and now supports image with 24bit colors and sizes other
-	  than 16x16. (Nathan Conrad)
+	  to disc in PNG format. Images with 24bit colors and
+	  sizes other than 16x16 are now supported. (Nathan Conrad)
 	* Now a short help text is displayed in the HTML view
 	  after startup. (Lars Linder)
 	* Updated networking code. Many more things, such as
@@ -24,13 +23,16 @@
 	  subscription it was missing a cache file. This caused
 	  an error message each time the program starts. This
 	  is fixed now. (Lars Lindner)
-	* Debian bug 254959 reported by Martin-Aric Racine was
+	* Debian bug #254959 reported by Martin-Éric Racine was
 	  fixed. No Liferea recognizes RSS 1.0 Creative Commons
 	  license information. (Lars Lindner)
 	* Better favicon detection (more coming in the next release).
 	* Feed properties (such as titles) are now saved when they
 	  change. (Nathan Conrad)
-	
+	* Compiles on Solaris, and is hopefully more portable now.
+	  (Nathan Conrad)
+	* Feed update locking issues were fixed. (Nathan Conrad)
+
 2004-06-19 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.0

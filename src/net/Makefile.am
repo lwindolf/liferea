@@ -9,11 +9,11 @@ INCLUDES = \
 noinst_LIBRARIES = liblinet.a
 
 
-if USE_LIBCURL
-liblinet_a_CFLAGS = @PACKAGE_CFLAGS@ \
-	@CURL_CFLAGS@
-liblinet_a_SOURCES = curl.c downloadlib.h
-else
+# if USE_LIBCURL
+# liblinet_a_CFLAGS = @PACKAGE_CFLAGS@ \
+# 	@CURL_CFLAGS@
+# liblinet_a_SOURCES = curl.c downloadlib.h
+# else
 liblinet_a_CFLAGS = @PACKAGE_CFLAGS@
 liblinet_a_SOURCES = \
 	compat.h \
@@ -24,4 +24,4 @@ liblinet_a_SOURCES = \
 	net-support.c net-support.h \
 	os-support.c os-support.h \
 	downloadlib.h
-endif
+# endif
