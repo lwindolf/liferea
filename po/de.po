@@ -25,7 +25,7 @@ msgstr "Konnte pixmap Datei nicht finden: %s"
 #: src/pie_entry.c:73 src/pie_feed.c:116 src/rss_channel.c:142
 #: src/rss_item.c:84 src/rss_item.c:87
 msgid "Feed:"
-msgstr "Abonnements:"
+msgstr "Abonnement:"
 
 #: src/cdf_channel.c:182 src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:322
 #: src/rss_channel.c:407
