@@ -58,13 +58,8 @@ td.headleft {
 	display:none;
 }
 
-td.headright {
-	border-bottom-style:solid;
-	border-bottom-color:gray;
-	border-bottom-width:1px;
-/*	font-weight:bold;*/
-	font-size:1.3em;
-}
+/*td.headright {
+}*/
 
 img.favicon {
 	height:16px;
@@ -75,6 +70,18 @@ img.favicon {
 td.headright a {
 	text-decoration:none;
 	color:black;
+}
+
+span.feedlink {
+	display:none;
+}
+
+span.itemtitle {
+	font-size:1.3em;
+	border-bottom-style:solid;
+	border-bottom-color:gray;
+	border-bottom-width:1px;
+	display:block;
 }
 
 /* styles to display generic namespace augmentation in the 
@@ -103,10 +110,6 @@ table.addfoot {	/* used for namespace additions (admin, ag,...) */
 	border-color:#D0D0D0;
 	margin-bottom:5px;
 	border-collapse:collapse;	/* needed for footer with Mozilla */
-}
-
-span.feedlink {
-	display:none;
 }
 
 tr.feedfoot {

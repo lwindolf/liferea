@@ -56,10 +56,6 @@ table.itemhead {
 	border: 1px solid black;
 }
 
-td.itemhead {	/* old definition replaced by td.head (for compatibilty) */
-	padding:2px 5px;
-}
-
 td.headleft {
 	padding:2px 2px;
 	text-align:right;
@@ -73,6 +69,14 @@ td.headright {
 img.favicon {
 	display:none;
 }
+
+/*
+span.feedlink {
+}
+
+span.itemtitle {
+}
+*/
 
 /* styles to display generic namespace augmentation in the 
    item/feed description footer */
