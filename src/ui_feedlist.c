@@ -405,7 +405,7 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 
 static void ui_feedlist_delete_(nodePtr ptr) {
 
-	if(ptr->type == FST_HELPFEED || ptr->type == FST_HELPFOLDER) {
+	if(ptr->type == FST_HELPFEED) {
 		ui_show_error_box(_("You can't delete the help! Edit the preferences to disable loading the help."));
 		return;
 	}
@@ -438,7 +438,7 @@ void ui_feedlist_delete(nodePtr ptr) {
 	g_assert(ptr->ui_data != NULL);
 	g_assert(ptr == ui_feedlist_get_selected());
 
-	if(ptr->type == FST_HELPFEED || ptr->type == FST_HELPFOLDER) {
+	if(ptr->type == FST_HELPFEED) {
 		ui_show_error_box(_("You can't delete the help! Edit the preferences to disable loading the help."));
 		return;
 	}
