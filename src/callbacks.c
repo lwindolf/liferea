@@ -78,6 +78,11 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 /*------------------------------------------------------------------------------*/
 
 /* GUI initialization, must be called only once! */
+
+static void callbacks_schedule_update_default_cb(nodePtr ptr) {
+	feed_schedule_update((feedPtr)ptr, 0);
+}
+
 void ui_init(gboolean startIconified) {
 	int i;
 
@@ -109,7 +114,18 @@ void ui_init(gboolean startIconified) {
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
 	ui_popup_setup_menues();		/* create popup menues */
 	conf_load_subscriptions();
-		
+
+	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
+	case 1: /* Update all feeds */
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, callbacks_schedule_update_default_cb);
+		break;
+	case 2:
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_reset_update_counter);
+		break;
+	default:
+		/* default, which is to use the lastPoll times, does not need any actions here. */;
+	}
+	
 	/* setup one minute timer for automatic updating, and try updating now */
  	g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
 	ui_feedlist_auto_update(NULL);
