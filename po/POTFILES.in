@@ -113,6 +113,8 @@ src/ui_queue.c
 src/ui_queue.h
 src/ui_search.c
 src/ui_search.h
+src/ui_tabs.h
+src/ui_tabs.c
 src/ui_tray.c
 src/ui_tray.h
 src/update.c
