@@ -24,9 +24,9 @@ AC_DEFINE(MODULE_DIR, $libdir, [path of HTML widget modules])
 html_modules=
 
 AC_MSG_CHECKING([for GtkHTML2 support])
-temptest=`pkg-config --cflags libgtkhtml-2.0 2> /dev/null`
-AM_CONDITIONAL(WITH_GTKHTML2, test "x$temptest" != "x")
-if test "x$temptest" != "x" ; then
+gtkhtml2=`pkg-config --cflags libgtkhtml-2.0 2> /dev/null`
+AM_CONDITIONAL(WITH_GTKHTML2, test "x$gtkhtml2" != "x")
+if test "x$gtkhtml2" != "x" ; then
    AC_MSG_RESULT(yes)
    PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
    AC_SUBST(GTKHTML2_CFLAGS)
@@ -36,21 +36,21 @@ else
 fi
 
 AC_MSG_CHECKING([for GtkHTML3 support])
-temptest=`pkg-config --cflags libgtkhtml-3.0 2> /dev/null`
-AM_CONDITIONAL(WITH_GTKHTML3, test "x$temptest" != "x")
-if test "x$temptest" != "x" ; then
-   AC_MSG_RESULT(yes)
-   PKG_CHECK_MODULES(GTKHTML3, libgtkhtml-3.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
-   AC_SUBST(GTKHTML3_CFLAGS)
-   AC_SUBST(GTKHTML3_LIBS)
+gtkhtml3=`pkg-config --cflags libgtkhtml-3.0 2> /dev/null`
+AM_CONDITIONAL(WITH_GTKHTML3, test "x$gtkhtml3" != "x")
+if test "x$gtkhtml3" != "x" ; then
+    AC_MSG_RESULT(yes)
+    PKG_CHECK_MODULES(GTKHTML3, libgtkhtml-3.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
+    AC_SUBST(GTKHTML3_CFLAGS)
+    AC_SUBST(GTKHTML3_LIBS)
 else
-   AC_MSG_RESULT(no)
+    AC_MSG_RESULT(no)
 fi
 
 AC_MSG_CHECKING([for Mozilla support])
-temptest=`pkg-config --cflags mozilla-gtkmozembed 2> /dev/null`
-AM_CONDITIONAL(WITH_MOZILLA, test "x$temptest" != "x")
-if test "x$temptest" != "x" ; then
+mozilla=`pkg-config --cflags mozilla-gtkmozembed 2> /dev/null`
+AM_CONDITIONAL(WITH_MOZILLA, test "x$mozilla" != "x")
+if test "x$mozilla" != "x" ; then
 
    dnl the Mozilla XPCOM access means C++
    AC_PROG_CXX
@@ -116,6 +116,14 @@ else
    AC_MSG_RESULT(no)
 fi
 
+dnl For now, require GtkHTML2 or Mozilla. GtkHTML3 should not be used!
+if test "x$mozilla" = "x" -a "x$gtkhtml2" = "x" ; then
+	AC_MSG_ERROR([
+*** You must have either the GtkHTML2 or the Mozilla development
+*** libraries installed in order to build Liferea!
+])
+fi
+
 dnl hmm... I really have no clue which versions are neccessary!
 pkg_modules="	gtk+-2.0 >= 2.0.0 
 		gconf-2.0 >= 2.0.0 
@@ -150,4 +158,5 @@ pixmaps/Makefile
 po/Makefile.in
 liferea.spec
 ])
+
 
