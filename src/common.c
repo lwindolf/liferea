@@ -416,20 +416,19 @@ gchar * getActualTime(void) {
 	
 	/* get receive time */
 	if((time_t)-1 != time(&t)) {
-		if(NULL != (timestr = (gchar *)g_malloc(TIMESTRLEN+1))) {
-			timeformat = getStringConfValue(TIME_FORMAT);
-			
-			/* if not set conf.c delivers a "" and D_T_FMT will be used... */
-			if(0 == strlen(timeformat)) {
-				g_free(timeformat);
-				timeformat =  g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));
-				
-			}
-			
-			if(NULL != timeformat) {
-				strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
-				g_free(timeformat);
-			}
+		timestr = g_new0(gchar, TIMESTRLEN+1);
+		timeformat = getStringConfValue(TIME_FORMAT);
+
+		/* if not set conf.c delivers a "" and D_T_FMT will be used... */
+		if(0 == strlen(timeformat)) {
+			g_free(timeformat);
+			timeformat = g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));
+
+		}
+
+		if(NULL != timeformat) {
+			strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
+			g_free(timeformat);
 		}
 	}
 	
@@ -440,22 +439,21 @@ gchar * formatDate(time_t t) {
 	gchar		*timestr;
 	gchar		*timeformat;
 	
-	if(NULL != (timestr = (gchar *)g_malloc(TIMESTRLEN+1))) {
-		switch(getNumericConfValue(TIME_FORMAT_MODE)) {
-			case 1:
-				timeformat =  g_strdup_printf("%s", nl_langinfo(T_FMT));	
-				break;
-			case 3:
-				timeformat = getStringConfValue(TIME_FORMAT);				
-				break;
-			case 2:
-			default:
-				timeformat =  g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));	
-				break;
-		}		
-		strftime(timestr, TIMESTRLEN, (char *)timeformat, localtime(&t));
-		g_free(timeformat);
-	}
+	timestr = g_new0(gchar, TIMESTRLEN+1);
+	switch(getNumericConfValue(TIME_FORMAT_MODE)) {
+		case 1:
+			timeformat =  g_strdup_printf("%s", nl_langinfo(T_FMT));	
+			break;
+		case 3:
+			timeformat = getStringConfValue(TIME_FORMAT);				
+			break;
+		case 2:
+		default:
+			timeformat =  g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));	
+			break;
+	}		
+	strftime(timestr, TIMESTRLEN, (char *)timeformat, localtime(&t));
+	g_free(timeformat);
 	
 	return timestr;
 }
@@ -465,7 +463,7 @@ void initCachePath(void) {
 
 	if(!g_file_test(CACHEPATH, G_FILE_TEST_IS_DIR)) {
 		if(0 != mkdir(CACHEPATH, S_IRUSR | S_IWUSR | S_IXUSR)) {
-			g_error(g_strdup_printf(_("Cannot create cache directory %s!"), CACHEPATH));
+			g_error(_("Cannot create cache directory %s!"), CACHEPATH);
 		}
 	}
 }

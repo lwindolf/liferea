@@ -932,7 +932,7 @@ void feed_free(feedPtr fp) {
 	   need to always be deleted, for example when freeing a
 	   feedstruct used for updating. */
 	if(filename && 0 != unlink(filename)) {
-		g_warning(g_strdup_printf(_("Could not delete cache file %s! Please remove manually!"), filename));
+		g_warning(_("Could not delete cache file %s! Please remove manually!"), filename);
 	}
 
 	// FIXME: free filter structures too when implemented

@@ -408,7 +408,7 @@ void removeFavIcon(feedPtr fp) {
 	filename = getCacheFileName( fp->id, "xpm");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename)) {
-			g_warning(g_strdup_printf(_("Could not delete icon file %s! Please remove manually!"), filename));
+			g_warning(_("Could not delete icon file %s! Please remove manually!"), filename);
 		}	
 	}
 	g_free(filename);
