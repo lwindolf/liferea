@@ -2811,6 +2811,12 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) proxypasswordentry, "changed",
                     G_CALLBACK (on_proxypasswordentry_changed),
                     NULL);
+  g_signal_connect ((gpointer) save_download_entry, "changed",
+                    G_CALLBACK (on_save_download_entry_changed),
+                    NULL);
+  g_signal_connect ((gpointer) save_download_select_btn, "clicked",
+                    G_CALLBACK (on_save_download_select_btn_clicked),
+                    NULL);
   g_signal_connect ((gpointer) enc_action_change_btn, "clicked",
                     G_CALLBACK (on_enc_action_change_btn_clicked),
                     NULL);
@@ -3385,7 +3391,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. J\303\263\305\272wicki <jakubj@users.sourceforge.net>");
+  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. Jóźwicki <jakubj@users.sourceforge.net>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);

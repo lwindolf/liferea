@@ -95,4 +95,10 @@ typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
  * @param user data passed to the callback
  */
 void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean savinng, fileChoosenCallback callback, const gchar *filename, gpointer user_data);
+
+/** 
+ * Like ui_choose_file but allows to select a directory 
+ */
+void ui_choose_directory(gchar *title, GtkWindow *parent, gchar *buttonName, fileChoosenCallback callback, const gchar *filename, gpointer user_data);
+
 #endif

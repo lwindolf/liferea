@@ -5978,6 +5978,7 @@ of feeds!</property>
 				  <property name="has_frame">True</property>
 				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
+				  <signal name="changed" handler="on_save_download_entry_changed" last_modification_time="Sun, 27 Feb 2005 19:57:24 GMT"/>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>
@@ -5994,6 +5995,7 @@ of feeds!</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
 				  <property name="focus_on_click">True</property>
+				  <signal name="clicked" handler="on_save_download_select_btn_clicked" last_modification_time="Fri, 21 Jan 2005 22:01:56 GMT"/>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>

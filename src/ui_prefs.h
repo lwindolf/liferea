@@ -123,5 +123,12 @@ void
 on_enc_action_remove_btn_clicked       (GtkButton       *button,
                                         gpointer         user_data);
 
+void
+on_save_download_select_btn_clicked    (GtkButton       *button,
+                                        gpointer         user_data);
+					
+void
+on_save_download_entry_changed         (GtkEditable     *editable,
+                                        gpointer         user_data);
 
 #endif

@@ -484,6 +484,9 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		i++;
 	}		
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "enc_download_tool_option_btn")), menu);
+
+	/* set enclosure download path entry */	
+	gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "save_download_entry")), getStringConfValue(ENCLOSURE_DOWNLOAD_PATH));
 	
 	/* set up list of configured enclosure types */
 	treestore = gtk_tree_store_new(FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
@@ -731,4 +734,32 @@ void on_enc_action_remove_btn_clicked(GtkButton *button, gpointer user_data) {
 		ui_enclosure_remove_type(type);
 	}
 }
+
+void on_save_download_entry_changed(GtkEditable *editable, gpointer user_data) {
+
+	setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, gtk_editable_get_chars(editable , 1, -1));
+}
+
+static void on_save_download_finished(const gchar *filename, gpointer user_data) {
+	GtkWidget	*dialog = (GtkWidget *)user_data;
+	gchar		*utfname;
+	
+	if(filename == NULL)
+		return;
+	
+	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+
+	if(utfname != NULL) {
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "save_download_entry")), utfname);
+		setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, utfname);
+	}
+	
+	g_free(utfname);
+}
+
+void on_save_download_select_btn_clicked(GtkButton *button, gpointer user_data) {
+	
+	ui_choose_directory(_("Choose download directory"), GTK_WINDOW(prefdialog), GTK_STOCK_OPEN, on_save_download_finished, "", prefdialog);
+}
+
 

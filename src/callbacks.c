@@ -228,3 +228,4 @@ void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
 	/* launch the homepage when button in about dialog is pressed */
 	ui_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
 }
+
