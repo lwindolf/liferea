@@ -123,7 +123,7 @@ void removeVFolderFromItem(itemPtr ip, gpointer fp) {
 }
 
 void item_free(itemPtr ip) {
-
+	
 	if(FALSE == ip->readStatus)
 		feed_decrease_unread_counter(ip->fp);
 
@@ -132,7 +132,7 @@ void item_free(itemPtr ip) {
 	g_free(ip->source);
 	g_free(ip->id);
 	// FIXME: remove item from all assigned VFolders!
-	if (ip->ui_data)
+	if (ip->ui_data != NULL)
 		ui_free_item_ui_data(ip);
 	g_free(ip);
 }

@@ -423,15 +423,15 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 		new_list = new_fp->items;
 		while(new_list) {
 			new_ip = new_list->data;
-
+			
 			found = FALSE;
 			/* scan the old list to see if the new_fp item does already exist */
 			old_list = old_fp->items;
 			while(old_list) {
 				old_ip = old_list->data;
-
+				
 				/* try to compare the two items */
-
+				
 				/* both items must have either ids or none */
 				if(((old_ip->id == NULL) && (new_ip->id != NULL)) ||
 				   ((old_ip->id != NULL) && (new_ip->id == NULL))) {	
@@ -440,7 +440,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					old_list = g_slist_next(old_list);
 			   		continue;
 				}
-
+				
 				/* compare titles and HTML descriptions */
 				equal = TRUE;
 
@@ -464,10 +464,10 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					found = TRUE;
 					break;
 				}
-
+				
 				old_list = g_slist_next(old_list);
 			}
-
+			
 			if(!found) {
 				/* Check if feed filters allow display of this item, we don't
 				   delete the item because there can be vfolders which display
@@ -495,16 +495,16 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				} else {
 					new_ip->readStatus = TRUE;
 				}
-			}
 
+				/* any found new_fp items are not needed anymore */
+				if(old_fp->type != FST_HELPFEED) { 
+					new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
+					allItems->items = g_slist_remove(allItems->items, new_ip);
+					item_free(new_ip);
+				}
+			}
+			
 			new_list = g_slist_next(new_list);
-
-			/* any found new_fp items are not needed anymore */
-			if(found && (old_fp->type != FST_HELPFEED)) { 
-				new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
-				allItems->items = g_slist_remove(allItems->items, new_ip);
-				item_free(new_ip);
-			}
 		}
 		
 		/* now we distinguish between incremental merging
@@ -580,6 +580,7 @@ void feed_update(feedPtr fp) {
 
 	/* prepare request url (strdup because it might be
 	   changed on permanent HTTP redirection in netio.c) */
+	g_assert(((struct feed_request *)fp->request)->feedurl  == NULL);
 	((struct feed_request *)fp->request)->feedurl = g_strdup(source);
 
 	update_thread_add_request((struct feed_request *)fp->request);
@@ -602,6 +603,7 @@ gint feed_process_update_results(gpointer data) {
 	if (request->fp == NULL) { /* Feed deleted during update of feed*/
 		debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
 		g_free(request->data);
+		request->data = NULL;
 		update_request_free(request);
 		return TRUE;
 	}
@@ -682,8 +684,10 @@ gint feed_process_update_results(gpointer data) {
 	}
 	
 	g_free(request->feedurl);	/* request structure cleanup... */
+	request->feedurl = NULL;
 	g_free(request->data);
-
+	request->data = NULL;
+	
 	ui_feedlist_update();
 
 	ui_unlock();
@@ -855,7 +859,7 @@ void feed_clear_item_list(feedPtr fp) {
 		item_free(item->data);
 		item = g_slist_next(item);
 	}
-	fp->items = NULL;
+	g_slist_free(fp->items);
 }
 
 void feed_mark_all_items_read(feedPtr fp) {
