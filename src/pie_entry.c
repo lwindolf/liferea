@@ -252,7 +252,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 		} else {				
 			/* check for PIE tags */
 			for(j = 0; j < PIE_ENTRY_MAX_TAG; j++) {
-				if (!xmlStrcmp(cur->name, (const xmlChar *)entryTagList[j])) {
+				if(!xmlStrcmp(cur->name, BAD_CAST entryTagList[j])) {
 					tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 					if(NULL != tmp) {
 						g_free(i->tags[j]);
@@ -260,14 +260,14 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 					}
 				}		
 			}
-		}	
-
+		}
 		cur = cur->next;
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
 	ip->type = FST_PIE;
 	ip->time = i->time;
+	ip->source = i->source;
 	ip->readStatus = FALSE;
 	ip->id = i->tags[PIE_ENTRY_ID];
 
@@ -278,10 +278,14 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	if(NULL != i->tags[PIE_ENTRY_DESCRIPTION])
 		i->tags[PIE_ENTRY_DESCRIPTION] = convertToHTML(i->tags[PIE_ENTRY_DESCRIPTION]);	
 
-	ip->title = i->tags[PIE_ENTRY_TITLE];		
+	ip->title = g_strdup(i->tags[PIE_ENTRY_TITLE]);
 	ip->description = showPIEEntry((PIEFeedPtr)cp, i);
 
+	/* free PIEEntry structure */
+	for(j = 0; j < PIE_ENTRY_MAX_TAG; j++)
+		g_free(i->tags[j]);
 	g_hash_table_destroy(i->nsinfos);
 	g_free(i);
+	
 	return ip;
 }
