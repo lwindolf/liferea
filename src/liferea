@@ -3,39 +3,48 @@
 
 # This script is used to find an existing Mozilla
 # instance in your system and to supply its path
-# to Liferea. This script was originally written
-# for Galeon.
+# to Liferea.
 
 dist_bin=`dirname $0`
+params="$@"
 
-if test -n "$MOZILLA_FIVE_HOME"; then
-	MOZILLA_HOME=$MOZILLA_FIVE_HOME
-elif [ -f /usr/lib/mozilla/chrome/comm.jar ]; then
-	MOZILLA_HOME=/usr/lib/mozilla
-elif [ -f /usr/local/mozilla/chrome/comm.jar ]; then
-	MOZILLA_HOME=/usr/local/mozilla
-elif [ -f /usr/lib/mozilla/chrome/comm.jar ]; then
-	MOZILLA_HOME=/usr/lib/mozilla
-elif [ -f /opt/mozilla/chrome/comm.jar ]; then
-	MOZILLA_HOME=/opt/mozilla
-elif [ -f /usr/lib/mozilla-0.9.7/chrome/comm.jar ]; then
-	MOZILLA_HOME=/usr/lib/mozilla-0.9.7
-elif [ -f /usr/lib/mozilla-1.4.1/chrome/comm.jar ]; then
-    MOZILLA_HOME=/usr/lib/mozilla-1.4.1
-elif [ -f /usr/lib/mozilla-1.7.2/chrome/comm.jar ]; then
-    MOZILLA_HOME=/usr/lib/mozilla-1.7.2
-elif [ -f /opt/mozilla/lib/chrome/comm.jar ]; then
-	MOZILLA_HOME=/opt/mozilla/lib
-elif [ -f /opt/gnome/lib/mozilla/chrome/comm.jar ]; then
-     MOZILLA_HOME=/opt/gnome/lib/mozilla
-else
-	echo "Mozilla is not available..."
+run_with_mozilla() {
+	MOZILLA_HOME=$1
+
+	if [ -f $MOZILLA_HOME/libgtkembedmoz.so ]; then
+	
+		LD_LIBRARY_PATH=$MOZILLA_HOME:$LD_LIBRARY_PATH
+		export LD_LIBRARY_PATH
+
+		MOZILLA_FIVE_HOME=$MOZILLA_HOME
+		export MOZILLA_FIVE_HOME
+		exec "$dist_bin/liferea-bin" $params
+	fi
+}
+
+look_for_mozilla() {
+
+	results=`ls -1d $1 2>/dev/null | sort -n`
+	while [ -n "$results" ]
+	do
+		path=`echo "$results" | tail -n 1`
+		results=`echo "$results" | grep -v $path`
+		path=`dirname $path` 	# strip comm.jar
+		path=`dirname $path`	# strip chrome
+		run_with_mozilla $path
+		
+	done
+}
+
+if [ -n "$MOZILLA_FIVE_HOME" ]; then
+	run_with_mozilla $MOZILLA_FIVE_HOME
 fi
 
-LD_LIBRARY_PATH=$MOZILLA_HOME:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH
+look_for_mozilla "/usr/lib/mozilla*/chrome/comm.jar"
+look_for_mozilla "/usr/local/mozilla*/chrome/comm.jar"
+look_for_mozilla "/opt/mozilla/chrome/comm.jar"
+look_for_mozilla "/opt/mozilla/lib/chrome/comm.jar"
+look_for_mozilla "/opt/gnome/lib/mozilla/chrome/comm.jar"
 
-MOZILLA_FIVE_HOME=$MOZILLA_HOME
-export MOZILLA_FIVE_HOME
-
-exec "$dist_bin/liferea-bin" "$@"
+echo 'Mozilla is not available...'
+exec "$dist_bin/liferea-bin" $params
