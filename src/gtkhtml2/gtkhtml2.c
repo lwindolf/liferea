@@ -33,6 +33,7 @@
 #include <string.h>
 #include <glib.h>
 #include <errno.h>
+#include <libxml/uri.h>
 #include "../htmlview.h"
 #include "../support.h"
 #include "../callbacks.h"
@@ -192,13 +193,17 @@ on_submit (HtmlDocument *document, const gchar *action, const gchar *method,
 }
 
 static void
-url_request (HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data)
+url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *stream, gpointer data)
 {
 	GnomeVFSURI *vfs_uri;
 	StreamData *sdata;
 	GSList *connection_list;
-
-	vfs_uri = gnome_vfs_uri_resolve_relative (g_object_get_data(G_OBJECT(doc), "liferea-base-url"), uri);
+	xmlChar *uri;
+	
+	uri = xmlBuildURI(rel_uri, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+	vfs_uri = gnome_vfs_uri_new(uri);
+	if (uri != NULL)
+		xmlFree(uri);
 
 	g_assert (HTML_IS_DOCUMENT(doc));
 	g_assert (stream != NULL);
@@ -222,17 +227,17 @@ url_request (HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer d
 static void
 on_url (HtmlView *view, const char *url, gpointer user_data)
 {
-	GnomeVFSURI *vfs_uri;
-     gchar *location = NULL;
+	xmlChar *uri;
 	
 	if(NULL != url) {
-		vfs_uri = gnome_vfs_uri_resolve_relative (g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-url"), url);
-		location = gnome_vfs_uri_to_string (vfs_uri, GNOME_VFS_URI_HIDE_NONE);
-		gnome_vfs_uri_unref (vfs_uri);
-		if(selectedURL)
-			g_free(selectedURL);
-		selectedURL = g_strdup(location);
-		ui_mainwindow_set_status_bar(selectedURL);
+		uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));
+		if (uri != NULL) {
+			if(selectedURL)
+				g_free(selectedURL);
+			selectedURL = g_strdup(uri);
+			ui_mainwindow_set_status_bar(selectedURL);
+			xmlFree(uri);
+		}
 	} else
 		ui_mainwindow_set_status_bar("");
 }
@@ -269,17 +274,16 @@ kill_old_connections (HtmlDocument *doc)
 }
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
-	GnomeVFSURI *vfs_uri;
-	gchar *location;
+	xmlChar *uri;
 	
-	vfs_uri = gnome_vfs_uri_resolve_relative (g_object_get_data(G_OBJECT(doc), "liferea-base-url"), url);
-	location = gnome_vfs_uri_to_string (vfs_uri, GNOME_VFS_URI_HIDE_NONE);
-	gnome_vfs_uri_unref (vfs_uri);
+	uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	
-	if (ui_htmlview_launch_in_external_browser(location) == FALSE) {
-		launch_url(NULL, location);
+	if (uri != NULL) {
+		if (ui_htmlview_launch_in_external_browser(uri) == FALSE) {
+			launch_url(NULL, uri);
+		}
+		xmlFree(uri);
 	}
-	g_free(location);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -312,14 +316,14 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 		if(NULL != doc) {
 			kill_old_connections(doc);
 			html_document_clear(doc);	/* heard rumors that this is necessary... */
-			if (g_object_get_data(G_OBJECT(doc), "liferea-base-url") != NULL)
-				gnome_vfs_uri_unref(g_object_get_data(G_OBJECT(doc), "liferea-base-url"));
+			if (g_object_get_data(G_OBJECT(doc), "liferea-base-uri") != NULL)
+				g_free(g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 			g_object_unref(G_OBJECT(doc));
 		}
 	
 		doc = html_document_new();
 		html_view_set_document(HTML_VIEW(htmlwidget), doc);
-		g_object_set_data(G_OBJECT(doc), "liferea-base-url", gnome_vfs_uri_new(base));
+		g_object_set_data(G_OBJECT(doc), "liferea-base-uri", g_strdup(base));
 		html_document_clear(doc);
 		html_document_open_stream(doc, "text/html");
 		
