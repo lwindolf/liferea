@@ -38,6 +38,7 @@
 #include "common.h"
 #include "htmlview.h"
 #include "callbacks.h"
+#include "ui_selection.h"
 
 #include "vfolder.h"	// FIXME
 
@@ -149,7 +150,8 @@ void initGUI(void) {
 	if(NULL == vfolderIcon)		vfolderIcon	= create_pixbuf("vfolder.png");
 	if(NULL == emptyIcon)		emptyIcon	= create_pixbuf("empty.png");
 	
-	setupTrayIcon();	
+	setupTrayIcon();
+	setupSelection();
 }
 
 /* returns the selected feed list iterator */
@@ -1093,9 +1095,7 @@ void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NUL
 void on_popup_zoomin_selected(void) { changeZoomLevel(0.2); }
 void on_popup_zoomout_selected(void) { changeZoomLevel(-0.2); }
 
-void on_popup_copy_url_selected(void) {
-	// FIXME:
-}
+void on_popup_copy_url_selected(void) {	supplySelection(); }
 
 void on_popup_subscribe_url_selected(void) {
 
