@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea Ver0.5.1-test1\n"
+"Project-Id-Version: liferea Ver0.5.2-test1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-15 18:26-0400\n"
-"PO-Revision-Date: 2004-06-26 22:59+0900\n"
+"POT-Creation-Date: 2004-07-19 00:13+0900\n"
+"PO-Revision-Date: 2004-07-19 00:13+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -112,26 +112,26 @@ msgstr "配信元一覧をエキスポートしました！"
 msgid "Imported feed list"
 msgstr "配信元一覧を取り込みました"
 
-#: src/feed.c:108
+#: src/feed.c:109
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>配信元を読み込む際に XML エラーが発生しました！ (配信元 \"%s\" を読み込め"
 "ませんでした)</p>"
 
-#: src/feed.c:115 src/feed.c:393
+#: src/feed.c:116 src/feed.c:396
 msgid "<p>Empty document!</p>"
 msgstr "<p>ドキュメントが空です！</p>"
 
-#: src/feed.c:123
+#: src/feed.c:124
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML が間違っています！</p>"
 
-#: src/feed.c:172
+#: src/feed.c:173
 msgid "There were errors while parsing a feed"
 msgstr "配信元を解析する際に複数のエラーが発生しました"
 
-#: src/feed.c:173
+#: src/feed.c:174
 msgid ""
 "<p>Could not determine the feed type. Please check that it is in a supported "
 "format.</p>"
@@ -139,14 +139,14 @@ msgstr ""
 "<p>配信元の種類を特定できませんでした (サポートしているフォーマットかどうか確"
 "認して下さい)。</p>"
 
-#: src/feed.c:376 src/feed.c:377
+#: src/feed.c:379 src/feed.c:380
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイルを読み込めませんでした)"
 
-#: src/feed.c:387
+#: src/feed.c:390
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -155,58 +155,58 @@ msgstr ""
 "<p>キャッシュ・ファイルを読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイル \"%s\" を読み込めませんでした)</p>"
 
-#: src/feed.c:402
+#: src/feed.c:405
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" は正しいキャッシュ・ファイルではありません！ キャッシュ・ファイルが"
 "読めません！</p>"
 
-#: src/feed.c:451
+#: src/feed.c:454
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "キャッシュ・ファイル \"%s\" を解析する際にエラーが発生しました"
 
-#: src/feed.c:587
+#: src/feed.c:590
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" には新しいトピックはありません"
 
-#: src/feed.c:589
+#: src/feed.c:592
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" には %d 個の新しいトピックがあります"
 
-#: src/feed.c:658
+#: src/feed.c:661
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
-msgstr ""
+msgstr "この配信元 \"%s\" は既に更新済みです！"
 
-#: src/feed.c:663
+#: src/feed.c:666
 msgid "The feed was discontinued. Liferea won't update it anymore!"
-msgstr ""
+msgstr "配信元は停止しています。今後 Liferea が更新することはありません！"
 
-#: src/feed.c:667
-#, fuzzy, c-format
+#: src/feed.c:670
+#, c-format
 msgid "Updating \"%s\""
-msgstr "起動中: \"%s\""
+msgstr "\"%s\" の更新中"
 
-#: src/feed.c:715
+#: src/feed.c:718
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr ""
+msgstr "\"%s\" は停止しています。今後 Liferea が更新することはありません！"
 
-#: src/feed.c:717
+#: src/feed.c:720
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" には最後の更新から変更はありません"
 
-#: src/feed.c:724
+#: src/feed.c:727
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" の URL が変更されていたので更新しました"
 
-#: src/feed.c:734
+#: src/feed.c:737
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
@@ -214,111 +214,108 @@ msgstr ""
 "この配信元の種類を特定できませんでした。本当に指定した配信元ソースが "
 "syndication フォーマットをサポートしているか確認して下さい！"
 
-#: src/feed.c:760
+#: src/feed.c:763
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" の更新が完了しました..."
 
-#: src/feed.c:773
+#: src/feed.c:776
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" は利用できません"
 
-#: src/feed.c:896
+#: src/feed.c:899
 msgid "The feed no longer exists. Please unsubscribe."
 msgstr "この配信元はもう存在しません。購読を停止して下さい。"
 
-#: src/feed.c:897
+#: src/feed.c:900
 msgid "Payment Required"
 msgstr "有料コンテンツの認証に失敗しました (402)"
 
-#: src/feed.c:898
+#: src/feed.c:901
 msgid "Access Forbidden"
 msgstr "アクセス権限がありません (403)"
 
-#: src/feed.c:899
+#: src/feed.c:902
 msgid "Resource Not Found"
 msgstr "リソースがありません (404)"
 
-#: src/feed.c:900
+#: src/feed.c:903
 msgid "Method Not Allowed"
 msgstr "許可されていないメソッドです (405)"
 
-#: src/feed.c:901
+#: src/feed.c:904
 msgid "Not Acceptable"
 msgstr "受け付けられないヘッダ内容です (406)"
 
-#: src/feed.c:902
+#: src/feed.c:905
 msgid "Proxy Authentication Required"
 msgstr "プロキシの認証に失敗しました (407)"
 
-#: src/feed.c:903
+#: src/feed.c:906
 msgid "Request Time-Out"
 msgstr "タイムアウトになりました (408)"
 
-#: src/feed.c:904
-#, fuzzy
+#: src/feed.c:907
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "この配信元はもう存在しません。購読を停止して下さい。"
-
-#: src/feed.c:909
-msgid "URL is invalid"
-msgstr ""
+msgstr "完了ですが、この配信元はもう存在しません。購読を停止して下さい！"
 
 #: src/feed.c:912
-msgid "Error connecting to remote host"
-msgstr ""
-
-#: src/feed.c:913
-msgid "Hostname could not be found"
-msgstr ""
-
-#: src/feed.c:914
-msgid "Network connection was refused by the remote host"
-msgstr ""
+msgid "URL is invalid"
+msgstr "URL が間違っています"
 
 #: src/feed.c:915
+msgid "Error connecting to remote host"
+msgstr "リモート・ホストへ接続する際にエラー"
+
+#: src/feed.c:916
+msgid "Hostname could not be found"
+msgstr "ホスト名を見つけられませんでした"
+
+#: src/feed.c:917
+msgid "Network connection was refused by the remote host"
+msgstr "リモート・ホストがネットワーク接続を拒否しました"
+
+#: src/feed.c:918
 msgid "Remote host did not finish sending data"
-msgstr ""
+msgstr "リモート・ホストからのデータ送信が完了しませんでした"
 
 #. Transfer errors
-#: src/feed.c:917
-msgid "Too many HTTP redirects were encountered"
-msgstr ""
-
 #: src/feed.c:920
+msgid "Too many HTTP redirects were encountered"
+msgstr "非常に多くの HTTP リダイレクトに遭遇しました"
+
+#: src/feed.c:923
 msgid "Remote host sent an invalid response"
-msgstr ""
+msgstr "リモート・ホストがおかしな応答を返しました"
 
-#: src/feed.c:927
-#, fuzzy
+#: src/feed.c:930
 msgid "Authentication failed"
-msgstr "認証"
+msgstr "認証に失敗しました"
 
-#: src/feed.c:929
+#: src/feed.c:932
 msgid "Webserver's authentication method incompatible with Liferea"
-msgstr ""
+msgstr "ウェブサーバの認証方法が Liferea の方法と互換性がありません"
 
-#: src/feed.c:935
+#: src/feed.c:938
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "配信元は利用できません: サーバがサポートしていないリダイレクションを要求しま"
 "した！"
 
-#: src/feed.c:936
+#: src/feed.c:939
 msgid "Client Error"
 msgstr "クライアントのエラー"
 
-#: src/feed.c:937
+#: src/feed.c:940
 msgid "Server Error"
 msgstr "サーバのエラー"
 
-#: src/feed.c:938
-#, fuzzy
+#: src/feed.c:941
 msgid "(unknown networking error happened)"
-msgstr "(クラスが不明なエラー)"
+msgstr "(不明なネットワーク・エラーが発生しました)"
 
-#: src/feed.c:960
+#: src/feed.c:963
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -327,12 +324,12 @@ msgstr ""
 "確認して下さい。"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1100 src/item.c:212 src/metadata.c:288 src/ocs_dir.c:141
+#: src/feed.c:1103 src/item.c:212 src/metadata.c:288 src/ocs_dir.c:141
 #: src/opml.c:211
 msgid "Feed:"
 msgstr "配信元:"
 
-#: src/feed.c:1111 src/interface.c:1028 src/interface.c:1430 src/item.c:239
+#: src/feed.c:1114 src/interface.c:1028 src/interface.c:1430 src/item.c:239
 #: src/metadata.c:290 src/metadata.c:291 src/ocs_dir.c:147 src/opml.c:217
 msgid "Source:"
 msgstr "ソース:"
@@ -364,28 +361,30 @@ msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
 "%s\n"
 msgstr ""
+"設定で指定した HTML ウィジット・モジュール (%s) のオープンに失敗しました！\n"
+"%s\n"
 
 #: src/htmlview.c:85
 msgid "Htmlview API mismatch!"
-msgstr ""
+msgstr "HTML 表示 API が一致しません！"
 
 #: src/htmlview.c:93
 msgid "Detected module is not a valid htmlview module!"
-msgstr ""
+msgstr "検出したモジュールは妥当な HTML 表示モジュールではありません！"
 
 #: src/htmlview.c:115
 #, c-format
 msgid "Cannot load HTML widget module (%s)!"
-msgstr ""
+msgstr "HTML ウィジット・モジュール (%s) を読み込めません！"
 
 #. now we determine a list of all available modules
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
 #: src/htmlview.c:121
-#, fuzzy, c-format
+#, c-format
 msgid "Available browser modules (%s):\n"
-msgstr "ブラウザ・モジュール %s (%s) を読み込んでみます\n"
+msgstr "利用可能なブラウザ・モジュール(%s):\n"
 
 #: src/htmlview.c:156
 #, c-format
@@ -446,11 +445,12 @@ msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
 msgstr ""
+"この配信元は停止しているので、利用できません。今後 Liferea が更新することはあ"
+"りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
 
 #: src/interface.c:131 src/interface.c:2996
-#, fuzzy
 msgid "Liferea 0.5.2"
-msgstr "Liferea 0.5.1"
+msgstr "Liferea 0.5.2"
 
 #: src/interface.c:148
 msgid "_Program"
@@ -720,7 +720,7 @@ msgid ""
 msgstr ""
 "注記: <i>妥当な更新時間をセットするようにして下さい。配信元を毎日 15 分間隔で"
 "更新することは妥当ではありません。自動的に更新しない場合はこの間隔を 0にセッ"
-"トして下さい</i>"
+"トして下さい。</i>"
 
 #: src/interface.c:945
 msgid "General"
@@ -847,7 +847,7 @@ msgstr "Liferea を終了する際に保存するトピックのデフォルト�
 
 #: src/interface.c:1712
 msgid "At _startup:"
-msgstr ""
+msgstr "起動時の動作(_S):"
 
 #: src/interface.c:1720
 msgid "Add the _help feeds to the feed list on startup."
@@ -877,9 +877,8 @@ msgid "View Headlines With"
 msgstr "使用するエンジン:"
 
 #: src/interface.c:1780
-#, fuzzy
 msgid "Open links in Liferea's _window."
-msgstr "リンクを Liferea のウィンドウの中で開く (要 Mozilla)(_W)"
+msgstr "リンクを Liferea のウィンドウ内で開く(_W)"
 
 #: src/interface.c:1788
 msgid "<span weight=\"bold\">Date Column Settings</span>"
@@ -1182,6 +1181,19 @@ msgid ""
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
 msgstr ""
+"相花 毅 <aihana@gnome.gr.jp>\n"
+"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+"Vincent Lefevre <vincent@vinc17.org>\n"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
+"Rex Tsai <chihchun@users.sourceforge.net>\n"
+"Alekseev Vladimir <compress@linux-online.ru>\n"
 
 #: src/interface.c:3052
 msgid "Translation"
@@ -1206,7 +1218,6 @@ msgid "window1"
 msgstr "window1"
 
 #: src/item.c:221 src/item.c:223 src/item.c:234
-#, fuzzy
 msgid "[No title]"
 msgstr "[タイトルなし]"
 
@@ -1270,7 +1281,7 @@ msgstr "コメント"
 #: src/metadata.c:263
 #, c-format
 msgid "enclosed file: <a href=\"%s\">%s</a>"
-msgstr ""
+msgstr "添付ファイル: <a href=\"%s\">%s</a>"
 
 #: src/metadata.c:274 src/metadata.c:301
 msgid "feed generator"
@@ -1278,40 +1289,39 @@ msgstr "配信元の生成者"
 
 #: src/metadata.c:292
 msgid "author"
-msgstr ""
+msgstr "作者"
 
 #: src/metadata.c:293
-#, fuzzy
 msgid "contributors"
-msgstr "その他の貢献者"
+msgstr "貢献者"
 
 #: src/metadata.c:294
 msgid "copyright"
-msgstr ""
+msgstr "コピーライト"
 
 #: src/metadata.c:295
 msgid "language"
-msgstr ""
+msgstr "言語"
 
 #: src/metadata.c:296
 msgid "feed published on"
-msgstr ""
+msgstr "配信元"
 
 #: src/metadata.c:297
 msgid "content last updated"
-msgstr ""
+msgstr "最終更新日"
 
 #: src/metadata.c:298
 msgid "managing editor"
-msgstr ""
+msgstr "エディタ"
 
 #: src/metadata.c:299
 msgid "webmaster"
-msgstr ""
+msgstr "ウェブマスタ"
 
 #: src/metadata.c:300
 msgid "category"
-msgstr ""
+msgstr "カテゴリ"
 
 #. types for admin
 #: src/metadata.c:308
@@ -1321,11 +1331,11 @@ msgstr "エラーの報告先"
 #. types for aggregation
 #: src/metadata.c:312
 msgid "original source"
-msgstr ""
+msgstr "オリジナルのソース"
 
 #: src/metadata.c:313
 msgid "original time"
-msgstr ""
+msgstr "オリジナルの時刻"
 
 #. types for creative commons
 #: src/metadata.c:319
@@ -1334,25 +1344,24 @@ msgstr "ライセンス"
 
 #. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
 #: src/metadata.c:322
-#, fuzzy
 msgid "creator"
-msgstr "仮想フォルダの生成"
+msgstr "作成者"
 
 #: src/metadata.c:323
 msgid "publisher"
-msgstr ""
+msgstr "公開者"
 
 #: src/metadata.c:324
 msgid "type"
-msgstr ""
+msgstr "種類"
 
 #: src/metadata.c:325
 msgid "format"
-msgstr ""
+msgstr "書式"
 
 #: src/metadata.c:326
 msgid "identifier"
-msgstr ""
+msgstr "識別子"
 
 #: src/metadata.c:327
 msgid "source"
@@ -1360,7 +1369,7 @@ msgstr "ソース"
 
 #: src/metadata.c:328
 msgid "coverage"
-msgstr ""
+msgstr "適用範囲"
 
 #: src/net/conversions.c:74
 msgid "No description available."
@@ -1639,109 +1648,105 @@ msgstr "Liferea は現在オフラインです"
 msgid "Liferea notification"
 msgstr "Liferea からの通知"
 
-#: src/ui_popup.c:85
+#: src/ui_popup.c:86
 msgid "/_Update"
 msgstr "/更新(_U)"
 
-#: src/ui_popup.c:86 src/ui_popup.c:96
+#: src/ui_popup.c:87 src/ui_popup.c:97
 msgid "/_Mark As Read"
 msgstr "既読としてマーク(_M)"
 
-#: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:105 src/ui_popup.c:112
+#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:106 src/ui_popup.c:113
 msgid "/_New"
 msgstr "/新規(_N)"
 
-#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:106 src/ui_popup.c:113
+#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:107 src/ui_popup.c:114
 msgid "/_New/New _Feed"
 msgstr "/新規(_N)/新しい配信元(_F)"
 
-#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:107 src/ui_popup.c:114
+#: src/ui_popup.c:90 src/ui_popup.c:100 src/ui_popup.c:108 src/ui_popup.c:115
 msgid "/_New/New F_older"
 msgstr "/新規(_N)/新しいフォルダ(_O)"
 
-#: src/ui_popup.c:90
+#: src/ui_popup.c:91
 msgid "/_Properties"
 msgstr "/プロパティ(_P)"
 
-#: src/ui_popup.c:91
+#: src/ui_popup.c:92
 msgid "/_Delete"
 msgstr "/削除(_D)"
 
-#: src/ui_popup.c:95
+#: src/ui_popup.c:96
 msgid "/_Update Folder"
 msgstr "/フォルダの更新(_U)"
 
-#: src/ui_popup.c:100
+#: src/ui_popup.c:101
 msgid "/_Rename Folder"
 msgstr "/フォルダ名の変更(_R)"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:102
 msgid "/_Delete Folder"
 msgstr "/フォルダの削除(_D)"
 
-#: src/ui_popup.c:108
+#: src/ui_popup.c:109
 msgid "/_Delete VFolder"
 msgstr "/仮想フォルダの削除(_D)"
 
-#: src/ui_popup.c:119
+#: src/ui_popup.c:120
 msgid "/Toggle _Read Status"
 msgstr "/既読ステータスの切替え(_R)"
 
-#: src/ui_popup.c:120
+#: src/ui_popup.c:121
 msgid "/Toggle Item _Flag"
 msgstr "/トピック・フラグの切り替え(_F)"
 
-#: src/ui_popup.c:122
+#: src/ui_popup.c:123
 msgid "/_Next Unread Item"
 msgstr "/次の未読のトピック(_N)"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:125
 msgid "/_Launch Item In Browser"
 msgstr "/ブラウザで開く(_L)"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:132
 msgid "/_Increase Text Size"
 msgstr "/文字を大きくする(_I)"
 
-#: src/ui_popup.c:132
+#: src/ui_popup.c:133
 msgid "/_Decrease Text Size"
 msgstr "/文字を小さくする(_D)"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:137
 msgid "/_Copy Link Location"
 msgstr "リンク先のアドレスのコピー(_C)"
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:138
 msgid "/_Launch Link In Browser"
 msgstr "/ブラウザで開く(_L)"
 
-#: src/ui_popup.c:138
+#: src/ui_popup.c:139
 msgid "/_Subscribe"
 msgstr "/購読(_S)"
 
-#: src/ui_popup.c:143
-#, fuzzy
-msgid "/_Work Offline"
-msgstr "オフラインにする"
-
 #: src/ui_popup.c:144
-#, fuzzy
-msgid "/_Update All"
-msgstr "全て更新"
+msgid "/_Work Offline"
+msgstr "/オフラインにする(_W)"
 
 #: src/ui_popup.c:145
-#, fuzzy
-msgid "/_Preferences"
-msgstr "設定"
+msgid "/_Update All"
+msgstr "/全て更新(_U)"
 
-#: src/ui_popup.c:147
-#, fuzzy
-msgid "/_Show Window"
-msgstr "新しいウィンドウ"
+#: src/ui_popup.c:146
+msgid "/_Preferences"
+msgstr "/設定(_P)"
 
 #: src/ui_popup.c:148
+msgid "/_Show Window"
+msgstr "/ウィンドウの表示(_S)"
+
+#: src/ui_popup.c:149
 msgid "/_Quit"
-msgstr ""
+msgstr "/終了(_Q)"
 
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:183
@@ -1766,16 +1771,15 @@ msgstr "新しいタブ"
 
 #: src/ui_prefs.c:218
 msgid "Update only feeds scheduled for updates"
-msgstr ""
+msgstr "更新間隔がセットされた配信元のみ更新する"
 
 #: src/ui_prefs.c:223
-#, fuzzy
 msgid "Update all feeds"
-msgstr "全て更新"
+msgstr "全ての配信元を更新する"
 
 #: src/ui_prefs.c:228
 msgid "Reset feed update timers (Update no feeds)"
-msgstr ""
+msgstr "更新せずに更新用タイマーをクリアする"
 
 #: src/ui_search.c:70
 #, c-format
@@ -1807,42 +1811,3 @@ msgstr "エラー: ファイル \"%s\" を開けませんでした"
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "エラー: ファイル \"%s\" がありません"
-
-#, fuzzy
-#~ msgid ""
-#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-#~ "Park Ji-In <mithrandir@electrang.net>\n"
-#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
-#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
-#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
-#~ "Tomislav Markovski <tome@set.com.mk>\n"
-#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
-#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
-#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-#~ "Martin-Eric Racine <q-funk@pp.fishpool.fi>"
-#~ msgstr ""
-#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-#~ "相花 毅 <aihana@gnome.gr.jp>\n"
-#~ "Park Ji-In <mithrandir@electrang.net>\n"
-#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
-#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
-#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
-#~ "Tomislav Markovski <tome@set.com.mk>\n"
-#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
-#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
-#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>"
-
-#~ msgid "_Update all feeds on program startup."
-#~ msgstr "起動時に全ての配信元を更新する(_U)"
-
-#~ msgid "time"
-#~ msgstr "時刻"
-
-#~ msgid "internal error! unknown tag type while parsing Dublin Core tag!"
-#~ msgstr ""
-#~ "[内部エラー] Dublin Core タグを解析する際に不明なタグの種類があります！"
