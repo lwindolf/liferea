@@ -364,7 +364,6 @@ gboolean feed_load(feedPtr fp) {
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
 	if((!g_file_get_contents(filename, &data, &length, NULL)) || (*data == 0)) {
-		g_warning(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		fp->needsCacheSave = TRUE;
 		g_free(filename);

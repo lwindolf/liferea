@@ -97,6 +97,8 @@ void ui_tabs_new(const gchar *url, const gchar *title) {
 	vbox = gtk_vbox_new(FALSE, 0);
 	htmlview = ui_htmlview_new(TRUE);
 	toolbar = gtk_hbox_new(FALSE, 6);
+	
+	g_object_set_data(G_OBJECT(vbox), "htmlview", htmlview);
 
 	widget = gtk_label_new(_("URL"));
 	gtk_box_pack_start(GTK_BOX(toolbar), widget, FALSE, FALSE, 6);
@@ -143,7 +145,7 @@ GtkWidget * ui_tabs_get_active_htmlview(void) {
 	if(0 == current)
 		return ui_mainwindow_get_active_htmlview();
 		
-	return gtk_notebook_get_nth_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), current);
+	return g_object_get_data(G_OBJECT(gtk_notebook_get_nth_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), current)), "htmlview");
 }
 
 void on_popup_open_link_in_tab_selected(gpointer url, guint callback_action, GtkWidget *widget) {
