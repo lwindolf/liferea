@@ -98,6 +98,11 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 					xmlNewProp(childNode, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
 					g_free(lastPoll);
 				}
+				if (fp->lastFaviconPoll.tv_sec > 0) {
+					gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
+					xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
+					g_free(lastPoll);
+				}
 			}
 			debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval, cacheLimit);
 		} else
@@ -250,6 +255,12 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
 		fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
 		fp->lastPoll.tv_usec = 0L;
+		if (lastPollStr != NULL)
+			xmlFree(lastPollStr);
+
+		lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
+		fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
+		fp->lastFaviconPoll.tv_usec = 0L;
 		if (lastPollStr != NULL)
 			xmlFree(lastPollStr);
 		

@@ -643,6 +643,10 @@ static void ui_feedlist_check_update_counter(feedPtr fp) {
 	if (interval > 0)
 		if (fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
 			feed_schedule_update(fp, 0);
+
+	/* And check for favicon updating */
+	if (fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
+		favicon_download(fp);
 }
 
 gboolean ui_feedlist_auto_update(void *data) {

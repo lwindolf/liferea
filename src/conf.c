@@ -459,7 +459,7 @@ void loadSubscriptions(void) {
 	if(!getBooleanConfValue(DISABLE_HELPFEEDS))
 		feedlist_insert_help_folder(NULL);
 	feedlistLoading = FALSE;
-
+	
 	if (gconf_changed) {
 		conf_feedlist_save();
 		conf_feedlist_erase_gconf();

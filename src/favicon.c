@@ -30,10 +30,6 @@
 #include <string.h>
 #include <time.h>
 
-#ifdef STDC_HEADERS
-#include <stdlib.h>
-#endif
-
 #include "favicon.h"
 #include "support.h"
 #include "feed.h"
@@ -88,12 +84,6 @@ void favicon_load(feedPtr fp) {
 	}
 	g_free(pngfilename);
 	g_free(xpmfilename);
-	
-	/* with a low propability (1 out of 50) try again to initially download a favicon */
-	if((NULL == fp->icon) && (25 == (1 + (int)(50.0*rand()/(RAND_MAX+1.0))))) {
-		debug1(DEBUG_UPDATE, "feed \"%s\" has no favicon, trying to download one...", feed_get_title(fp));
-		favicon_download(fp);
-	}
 	
 }
 
@@ -166,6 +156,8 @@ void favicon_download(feedPtr fp) {
 	if(fp->faviconRequest != NULL)
 		return; /* It is already being downloaded */
 
+	g_get_current_time(&fp->lastFaviconPoll);
+	
 	/* try to download favicon */
 	baseurl = g_strdup(feed_get_source(fp));
 	if(NULL != (tmp = strstr(baseurl, "://"))) {

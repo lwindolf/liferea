@@ -15,11 +15,11 @@
 	* Feed and item information is now properly localized.
 	  (Lars Lindner and Nathan Conrad)
 	* Popup menu for the systray icon. (James Bowes)
-	* Improvements for the favicon handling. Now if a feed
-	  has no favicon the program tries to download one again
-	  during startup. Also favicon.ico files are now retrieved
-	  from the webserver path where the feed is located. Only
-	  if this fails the webserver root is tried. (Lars Lindner)
+	* Improvements for the favicon handling. favicon.ico files are now
+	  retrieved from the webserver path where the feed is
+	  located. favicon.ico in the webserver root is tried only if this
+	  first attempt fails. favicons are now redownloaded every 30
+	  days. (Lars Lindner & Nathan Conrad)
 	* Liferea now saves when the mainwindow is maximized.
 	  (Marc Deslauriers)
 	

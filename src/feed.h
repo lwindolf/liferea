@@ -112,6 +112,7 @@ typedef struct feed {
 	/* feed properties used for updating */
 	GTimeVal	lastModified;		/**< Date at which the feed last changed */
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
+	GTimeVal	lastFaviconPoll;    /**< time at which the feed was last updated */
 	struct request	*request;		/**< update request structure used when downloading xml content */
 	struct request *faviconRequest;		/**< update request structure used for downloading the favicon */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
