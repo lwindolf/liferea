@@ -29,8 +29,9 @@
  * one if at least one link could be found.
  *
  * @parm data	HTML source
+ * @param baseUri URI that relative links will be based off of
  * @returns	feed URL or NULL
  */
-gchar * html_auto_discover_feed(gchar* data);
+gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
 
 #endif

@@ -21,12 +21,13 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <libxml/uri.h>
 #include "support.h"
 #include "callbacks.h"
 #include "debug.h"
 #include "html.h"
 
-static gchar *checkLinkRef(gchar* str) {
+static gchar *checkLinkRef(const gchar* str) {
 	gchar	*res;
 	gchar	*tmp, *tmp2;
 
@@ -52,7 +53,7 @@ static gchar *checkLinkRef(gchar* str) {
 	return NULL;
 }
 
-static gchar *checkNormalLink(gchar* str) {
+static gchar *checkNormalLink(const gchar* str) {
 	gchar	*res, *tmp, *tmp2;
 
 	debug1(DEBUG_PARSING, "checking link %s", str);
@@ -74,9 +75,9 @@ static gchar *checkNormalLink(gchar* str) {
 	return NULL;
 }
 
-static gchar *search_links(gchar* data, int type) {
+static gchar *search_links(const gchar* data, int type) {
 	gchar	*ptr;
-	gchar	*tmp = data;
+	const gchar	*tmp = data;
 	gchar	*result = NULL;
 	gchar	*res;
 	gchar	*tstr;
@@ -117,9 +118,9 @@ static gchar *search_links(gchar* data, int type) {
 	return result;
 }
 
-gchar * html_auto_discover_feed(gchar* data) {
+gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri) {
 	int	f = 0;
-	gchar	*res, *tmp;
+	gchar	*res;
 
 	debug0(DEBUG_UPDATE, "searching through link tags");
 	res = search_links(data, 0);
@@ -136,16 +137,13 @@ gchar * html_auto_discover_feed(gchar* data) {
 	if(!f) {
 		ui_show_error_box(_("Feed link auto discovery failed! No feed links found!"));
 	} else {
-		/* the result link maybe without protocol prefix but
-		   we need the prefix... */
-		if(NULL == strstr(res, "://")) {
-			/* the following is to handle links like "//slashdot.org/index.rss" */
-			tmp = res;
-			while('/' == *tmp) tmp++;
-			/* now add the prefix */
-			tmp = g_strdup_printf("http://%s", tmp);
+		/* turn relative URIs into absolute URIs */
+		xmlChar *tmp;
+		if (baseUri != NULL) {
+			tmp = xmlBuildURI(res, baseUri);
 			g_free(res);
-			res = tmp;
+			res = g_strdup(tmp);
+			xmlFree(tmp);
 		}
 	}
 

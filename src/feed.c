@@ -144,7 +144,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 		  )) {
 			/* if yes we should scan for links */
 			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(fp));
-			if(NULL != (source = html_auto_discover_feed(data))) {			
+			if(NULL != (source = html_auto_discover_feed(data, feed_get_source(fp)))) {
 				/* now download the first feed link found */
 				struct request *request = download_request_new(NULL);
 				debug1(DEBUG_UPDATE, "feed link found: %s", source);
