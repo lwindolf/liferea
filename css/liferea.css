@@ -1,5 +1,5 @@
 /*
- * Liferea HTML view stylesheet
+ * Liferea HTML view default stylesheet
  *
  * (C) 2004 Lars Linder <lars.lindner@gmx.net>
  * (C) 2004 delusional <delusional@dx13.co.uk>
@@ -20,8 +20,15 @@
  *
  */
 
-/* General note: no style definition should set absolute font sizes!
-   This is to allow a preference controlled default font size. */
+/* General note: no style definition should set absolute font sizes,
+   font families or line heigth and spacing.
+   
+   This is to allow a preference controlled default font size. 
+   
+   If you make changes please change implications with both
+   GtkHTML2 and Mozilla! Please document browser specific
+   decisions with comments!  
+ */
 
 body {
 	background: white;
@@ -36,13 +43,13 @@ blockquote {
 }
 
 dd {
-    padding-left: 30px;
+	padding-left: 30px;
 }
 
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
-	margin-bottom:15px;
+	margin-bottom:10px;
 	width:100%;
 	background-color:#DDD;
 	border: 1px solid black;
@@ -77,7 +84,7 @@ table.feedfoot {
 	border-top-style:solid;
 	border-color:#D0D0D0;
 	margin-bottom:5px;
-	border-collapse:collapse;
+	border-collapse:collapse;	/* needed for footer with Mozilla */
 }
 
 table.addfoot {	/* used for namespace additions (admin, ag,...) */
@@ -86,7 +93,7 @@ table.addfoot {	/* used for namespace additions (admin, ag,...) */
 	border-top-style:solid;
 	border-color:#D0D0D0;
 	margin-bottom:5px;
-	border-collapse:collapse;
+	border-collapse:collapse;	/* needed for footer with Mozilla */
 }
 
 tr.feedfoot {
@@ -196,11 +203,12 @@ div.itemshaded {
 	border-style:solid;
 	border-width:1px;
 	padding:5px;
-	margin-bottom:4px;
+	margin-bottom:15px;
 }
 
 div.itemunshaded {
 	padding:5px;
+	margin-bottom:15px;
 }
 
 /* style for the HTTP error box at the beginning
@@ -232,8 +240,8 @@ img.freshmeat {
 }
 
 table.slash {
+	margin-bottom:5px;	/* must not be in td.slash to work with Mozilla */
 	width:100%;
-	margin-bottom:5px;
 }
 
 td.slash {
