@@ -40,18 +40,18 @@ create_mainwindow (void)
   GtkWidget *hpaned1;
   GtkWidget *scrolledwindow3;
   GtkWidget *feedlist;
-  GtkWidget *vbox11;
+  GtkWidget *rightpane;
+  GtkWidget *vbox13;
   GtkWidget *searchbox;
   GtkWidget *label21;
   GtkWidget *searchentry;
   GtkWidget *hidesearch;
-  GtkWidget *rightpane;
-  GtkWidget *scrolledwindow5;
+  GtkWidget *ilscrolledwindow;
   GtkWidget *Itemlist;
   GtkWidget *statusbar;
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.5"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.6"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -100,7 +100,7 @@ create_mainwindow (void)
 
   scrolledwindow3 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow3);
-  gtk_paned_pack1 (GTK_PANED (hpaned1), scrolledwindow3, FALSE, FALSE);
+  gtk_paned_pack1 (GTK_PANED (hpaned1), scrolledwindow3, FALSE, TRUE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow3), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   feedlist = gtk_tree_view_new ();
@@ -110,12 +110,17 @@ create_mainwindow (void)
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (feedlist), FALSE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (feedlist), TRUE);
 
-  vbox11 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox11);
-  gtk_paned_pack2 (GTK_PANED (hpaned1), vbox11, TRUE, TRUE);
+  rightpane = gtk_vpaned_new ();
+  gtk_widget_show (rightpane);
+  gtk_paned_pack2 (GTK_PANED (hpaned1), rightpane, FALSE, TRUE);
+  gtk_paned_set_position (GTK_PANED (rightpane), 200);
+
+  vbox13 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox13);
+  gtk_paned_pack1 (GTK_PANED (rightpane), vbox13, FALSE, TRUE);
 
   searchbox = gtk_hbox_new (FALSE, 5);
-  gtk_box_pack_start (GTK_BOX (vbox11), searchbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox13), searchbox, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (searchbox), 5);
 
   label21 = gtk_label_new (_("search for"));
@@ -131,24 +136,23 @@ create_mainwindow (void)
   gtk_widget_show (hidesearch);
   gtk_box_pack_start (GTK_BOX (searchbox), hidesearch, FALSE, FALSE, 0);
 
-  rightpane = gtk_vpaned_new ();
-  gtk_widget_show (rightpane);
-  gtk_box_pack_start (GTK_BOX (vbox11), rightpane, TRUE, TRUE, 0);
-
-  scrolledwindow5 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow5);
-  gtk_paned_pack1 (GTK_PANED (rightpane), scrolledwindow5, TRUE, TRUE);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (ilscrolledwindow);
+  gtk_box_pack_start (GTK_BOX (vbox13), ilscrolledwindow, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
   Itemlist = gtk_tree_view_new ();
   gtk_widget_show (Itemlist);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow5), Itemlist);
+  gtk_container_add (GTK_CONTAINER (ilscrolledwindow), Itemlist);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (Itemlist), TRUE);
 
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
   gtk_box_pack_start (GTK_BOX (vbox1), statusbar, FALSE, FALSE, 0);
 
+  g_signal_connect ((gpointer) mainwindow, "delete_event",
+                    G_CALLBACK (gtk_main_quit),
+                    NULL);
   g_signal_connect_swapped ((gpointer) refreshbtn, "clicked",
                             G_CALLBACK (on_refreshbtn_clicked),
                             GTK_OBJECT (feedlist));
@@ -189,13 +193,13 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, hpaned1, "hpaned1");
   GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow3, "scrolledwindow3");
   GLADE_HOOKUP_OBJECT (mainwindow, feedlist, "feedlist");
-  GLADE_HOOKUP_OBJECT (mainwindow, vbox11, "vbox11");
+  GLADE_HOOKUP_OBJECT (mainwindow, rightpane, "rightpane");
+  GLADE_HOOKUP_OBJECT (mainwindow, vbox13, "vbox13");
   GLADE_HOOKUP_OBJECT (mainwindow, searchbox, "searchbox");
   GLADE_HOOKUP_OBJECT (mainwindow, label21, "label21");
   GLADE_HOOKUP_OBJECT (mainwindow, searchentry, "searchentry");
   GLADE_HOOKUP_OBJECT (mainwindow, hidesearch, "hidesearch");
-  GLADE_HOOKUP_OBJECT (mainwindow, rightpane, "rightpane");
-  GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow5, "scrolledwindow5");
+  GLADE_HOOKUP_OBJECT (mainwindow, ilscrolledwindow, "ilscrolledwindow");
   GLADE_HOOKUP_OBJECT (mainwindow, Itemlist, "Itemlist");
   GLADE_HOOKUP_OBJECT (mainwindow, statusbar, "statusbar");
 
@@ -311,6 +315,7 @@ create_propdialog (void)
   gtk_box_pack_start (GTK_BOX (vbox8), feedupdateinfo, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (feedupdateinfo), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment (GTK_MISC (feedupdateinfo), 0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (feedupdateinfo), 5, 0);
 
   label19 = gtk_label_new (_("update interval"));
   gtk_widget_show (label19);
@@ -379,14 +384,21 @@ create_newdialog (void)
   GtkWidget *hbox1;
   GtkWidget *label5;
   GtkWidget *newfeedentry;
+  GtkWidget *vbox12;
+  GtkWidget *frame5;
   GtkWidget *hbox11;
   GtkWidget *typeradiobtn;
   GSList *typeradiobtn_group = NULL;
-  GtkWidget *typeradiobutton1;
+  GtkWidget *typeradiobtn1;
+  GtkWidget *typeradiobtn3;
   GtkWidget *typeradiobtn2;
+  GtkWidget *label22;
   GtkWidget *dialog_action_area2;
   GtkWidget *newfeedbtn;
   GtkWidget *cancelbtn;
+  GtkTooltips *tooltips;
+
+  tooltips = gtk_tooltips_new ();
 
   newdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (newdialog), _("New Entry"));
@@ -416,29 +428,54 @@ create_newdialog (void)
   gtk_widget_show (newfeedentry);
   gtk_box_pack_start (GTK_BOX (hbox1), newfeedentry, TRUE, TRUE, 0);
 
+  vbox12 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox12);
+  gtk_box_pack_start (GTK_BOX (vbox9), vbox12, FALSE, FALSE, 5);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox12), 5);
+
+  frame5 = gtk_frame_new (NULL);
+  gtk_widget_show (frame5);
+  gtk_box_pack_start (GTK_BOX (vbox12), frame5, TRUE, TRUE, 0);
+
   hbox11 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox11);
-  gtk_box_pack_start (GTK_BOX (vbox9), hbox11, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (frame5), hbox11);
   gtk_container_set_border_width (GTK_CONTAINER (hbox11), 5);
 
-  typeradiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("RSS Feed"));
+  typeradiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("RSS"));
   gtk_widget_show (typeradiobtn);
   gtk_box_pack_start (GTK_BOX (hbox11), typeradiobtn, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, typeradiobtn, _("select this type to subscribe to a RDF/RSS feed"), NULL);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobtn), typeradiobtn_group);
   typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobtn));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (typeradiobtn), TRUE);
 
-  typeradiobutton1 = gtk_radio_button_new_with_mnemonic (NULL, _("CDF Feed"));
-  gtk_widget_show (typeradiobutton1);
-  gtk_box_pack_start (GTK_BOX (hbox11), typeradiobutton1, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobutton1), typeradiobtn_group);
-  typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobutton1));
+  typeradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("CDF"));
+  gtk_widget_show (typeradiobtn1);
+  gtk_box_pack_start (GTK_BOX (hbox11), typeradiobtn1, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, typeradiobtn1, _("select this type to subscribe to a CDF feed (the feed type used by MSIE)"), NULL);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobtn1), typeradiobtn_group);
+  typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobtn1));
+
+  typeradiobtn3 = gtk_radio_button_new_with_mnemonic (NULL, _("Atom/Echo/PIE"));
+  gtk_widget_show (typeradiobtn3);
+  gtk_box_pack_start (GTK_BOX (hbox11), typeradiobtn3, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, typeradiobtn3, _("select this type if you want to subscribe to a Atom/Echo/PIE 0.2 feed"), NULL);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobtn3), typeradiobtn_group);
+  typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobtn3));
 
   typeradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("OCS Directory"));
   gtk_widget_show (typeradiobtn2);
   gtk_box_pack_start (GTK_BOX (hbox11), typeradiobtn2, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, typeradiobtn2, _("select this type to subscribe to a OCS directory"), NULL);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (typeradiobtn2), typeradiobtn_group);
   typeradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (typeradiobtn2));
+
+  label22 = gtk_label_new (_("feed type"));
+  gtk_widget_show (label22);
+  gtk_frame_set_label_widget (GTK_FRAME (frame5), label22);
+  gtk_label_set_justify (GTK_LABEL (label22), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_padding (GTK_MISC (label22), 5, 0);
 
   dialog_action_area2 = GTK_DIALOG (newdialog)->action_area;
   gtk_widget_show (dialog_action_area2);
@@ -472,13 +509,18 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, hbox1, "hbox1");
   GLADE_HOOKUP_OBJECT (newdialog, label5, "label5");
   GLADE_HOOKUP_OBJECT (newdialog, newfeedentry, "newfeedentry");
+  GLADE_HOOKUP_OBJECT (newdialog, vbox12, "vbox12");
+  GLADE_HOOKUP_OBJECT (newdialog, frame5, "frame5");
   GLADE_HOOKUP_OBJECT (newdialog, hbox11, "hbox11");
   GLADE_HOOKUP_OBJECT (newdialog, typeradiobtn, "typeradiobtn");
-  GLADE_HOOKUP_OBJECT (newdialog, typeradiobutton1, "typeradiobutton1");
+  GLADE_HOOKUP_OBJECT (newdialog, typeradiobtn1, "typeradiobtn1");
+  GLADE_HOOKUP_OBJECT (newdialog, typeradiobtn3, "typeradiobtn3");
   GLADE_HOOKUP_OBJECT (newdialog, typeradiobtn2, "typeradiobtn2");
+  GLADE_HOOKUP_OBJECT (newdialog, label22, "label22");
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, dialog_action_area2, "dialog_action_area2");
   GLADE_HOOKUP_OBJECT (newdialog, newfeedbtn, "newfeedbtn");
   GLADE_HOOKUP_OBJECT (newdialog, cancelbtn, "cancelbtn");
+  GLADE_HOOKUP_OBJECT_NO_REF (newdialog, tooltips, "tooltips");
 
   return newdialog;
 }
@@ -725,7 +767,6 @@ create_prefdialog (void)
   usesyn = gtk_check_button_new_with_mnemonic (_("syn"));
   gtk_widget_show (usesyn);
   gtk_box_pack_start (GTK_BOX (hbox9), usesyn, FALSE, FALSE, 0);
-  gtk_widget_set_sensitive (usesyn, FALSE);
 
   usesy = gtk_check_button_new_with_mnemonic (_("sy"));
   gtk_widget_show (usesy);
@@ -735,7 +776,6 @@ create_prefdialog (void)
   useadmin = gtk_check_button_new_with_mnemonic (_("admin"));
   gtk_widget_show (useadmin);
   gtk_box_pack_start (GTK_BOX (hbox9), useadmin, FALSE, FALSE, 0);
-  gtk_widget_set_sensitive (useadmin, FALSE);
 
   label16 = gtk_label_new (_("(Note: you have to refresh feeds to load affected information after enabling a module)"));
   gtk_widget_show (label16);
@@ -942,43 +982,5 @@ create_newfolderdialog (void)
   GLADE_HOOKUP_OBJECT (newfolderdialog, button3, "button3");
 
   return newfolderdialog;
-}
-
-GtkWidget*
-create_window1 (void)
-{
-  GtkWidget *window1;
-  GtkWidget *rightpane;
-  GtkWidget *scrolledwindow4;
-  GtkWidget *Itemlist;
-
-  window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window1), _("window1"));
-
-  rightpane = gtk_vpaned_new ();
-  gtk_widget_show (rightpane);
-  gtk_container_add (GTK_CONTAINER (window1), rightpane);
-
-  scrolledwindow4 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow4);
-  gtk_paned_pack1 (GTK_PANED (rightpane), scrolledwindow4, TRUE, TRUE);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-
-  Itemlist = gtk_tree_view_new ();
-  gtk_widget_show (Itemlist);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow4), Itemlist);
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (Itemlist), TRUE);
-
-  g_signal_connect ((gpointer) Itemlist, "button_press_event",
-                    G_CALLBACK (on_itemlist_button_press_event),
-                    NULL);
-
-  /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (window1, window1, "window1");
-  GLADE_HOOKUP_OBJECT (window1, rightpane, "rightpane");
-  GLADE_HOOKUP_OBJECT (window1, scrolledwindow4, "scrolledwindow4");
-  GLADE_HOOKUP_OBJECT (window1, Itemlist, "Itemlist");
-
-  return window1;
 }
 

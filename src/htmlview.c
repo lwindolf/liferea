@@ -30,76 +30,11 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "htmlview.h"
-#include "backend.h"
-
-#include "rss_channel.h"
-#include "rss_item.h"
-#include "rss_ns.h"
-
-#include "cdf_channel.h"
-#include "cdf_item.h"
-
-#include "ocs_dir.h"
-#include "ocs_ns.h"
-
 #include "conf.h"
 #include "support.h"
+#include "callbacks.h"
 
 #define BUFFER_SIZE 8192
-
-#define HTML_WRITE(doc, tags)	{ if((NULL != tags) && (strlen(tags) > 0)) html_document_write_stream(doc, tags, strlen(tags)); }
-
-/* common HTML definitions */
-
-#define EMPTY		"<html><body>Item has no contents!</body></html>"
-#define HTML_START	"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>"
-#define HTML_HEAD_START	"<head><title>itemview</title>"
-#define META_ENCODING1	"<meta http-equiv=\"Content-Type\" content=\"text/html; charset="
-#define META_ENCODING2	"\">"
-#define HTML_HEAD_END	"</head><body>"
-
-#define HTML_NEWLINE	"<br>"
-
-#define HTML_END	"</body></html>"
-
-/* RSS feed/item output definitions (some are used by OCS too!) */
-
-#define ITEM_HEAD_START	"<table cellspacing=\"0\" style=\"margin-bottom:5px;width:100%;background:#D0D0D0;border-width:1px;border-style:solid;\"><tr><td style=\"padding:2px;padding-left:5px;padding-right:5px;\">"
-#define ITEM_HEAD_CHANNEL	"<b>Feed: </b>"
-#define ITEM_HEAD_ITEM		"<b>Item: </b>"
-#define ITEM_HEAD_END	"</td></tr></table>"
-
-#define FEED_HEAD_START		ITEM_HEAD_START
-#define FEED_HEAD_CHANNEL	ITEM_HEAD_CHANNEL
-#define FEED_HEAD_SOURCE	"<b>Source: </b>"
-#define FEED_HEAD_END		ITEM_HEAD_END
-
-#define FEED_FOOT_TABLE_START	"<table style=\"width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;\">"
-#define FEED_FOOT_FIRSTTD	"<tr style=\"border-width:0;border-bottom-width:1px;border-style:dashed;border-color:#D0D0D0;\"><td><span style=\"font-size:8pt;color:#C0C0C0\">"
-#define FEED_FOOT_NEXTTD	"</span></td><td><span style=\"font-size:8pt;color:#C0C0C0\">"
-#define FEED_FOOT_LASTTD	"</span></td></tr>"
-#define FEED_FOOT_TABLE_END	"</table>"
-
-#define FEED_FOOT_WRITE(doc, key, value)	if(NULL != value) { \
-							HTML_WRITE(doc, FEED_FOOT_FIRSTTD); \
-							HTML_WRITE(doc, (gchar *)key); \
-							HTML_WRITE(doc, FEED_FOOT_NEXTTD); \
-							HTML_WRITE(doc, (gchar *)value); \
-							HTML_WRITE(doc, FEED_FOOT_LASTTD); \
-						}
-						
-#define	IMG_START	"<img style=\"margin-bottom:5px;\" src=\""
-#define IMG_END		"\"><br>"
-
-/* OCS direntry output definitions */
-
-#define FORMAT_START	"<table cellspacing=\"0\" style=\"margin-bottom:5px;width:100%;background:#E0E0E0;border-color:#D0D0D0;border-width:1px;border-style:solid;\"><tr><td style=\"padding:2px\";>"
-#define FORMAT_LINK	"<b>Format: </b>"
-#define FORMAT_LANGUAGE		"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Language: "
-#define FORMAT_UPDATEPERIOD	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Update Period: "
-#define FORMAT_UPDATEFREQUENCY	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Update Frequency: "
-#define FORMAT_CONTENTTYPE	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Content Type: "
-#define FORMAT_END	"</td></tr></table>"
 
 /* declarations and globals for the gtkhtml callbacks */
 typedef struct {
@@ -112,35 +47,45 @@ static HtmlDocument	*doc;
 
 static GnomeVFSURI 	*baseURI = NULL;
 
-/* structure for the hashtable callback which itself calls the 
-   namespace output handler */
-#define OUTPUT_CHANNEL_NS_HEADER	0
-#define	OUTPUT_CHANNEL_NS_FOOTER	1
-#define OUTPUT_ITEM_NS_HEADER		2
-#define OUTPUT_ITEM_NS_FOOTER		3
-typedef struct {
-	gint		type;	
-	gpointer	obj;	/* thats either a channelPtr or a itemPtr 
-				   depending on the type value */
-} outputRequest;
-
 /* some prototypes */
 static void url_requested(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
 static void on_url (HtmlView *view, const char *url, gpointer user_data);
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 
+/* does all preparations before outputting HTML */
+void startHTMLOutput(void) {
+
+	g_assert(doc != NULL);
+	html_document_open_stream(doc, "text/html");
+}
+
+/* function to write HTML source */
+void writeHTML(gchar *string) {
+
+	g_assert(doc != NULL);
+	if((NULL != string) && (strlen(string) > 0)) 
+		html_document_write_stream(doc, string, strlen(string));
+}
+
+/* does all postprocessing after HTML output */
+void finishHTMLOutput(void) {
+
+	g_assert(doc != NULL);
+	html_document_close_stream(doc);
+}
+
 /* creates and initializes the GtkHTML widget */
 void setupHTMLView(GtkWidget *mainwindow) {
 	GtkWidget	*scrolledwindow;
 	GtkWidget	*pane;
-	GtkWidget	*htmlwidget;	
+	GtkWidget	*htmlwidget;
 	char testhtml[] = "<html><body></body></html>";	// FIXME
 	
 	/* prepare HTML widget */
 	doc = html_document_new();
-	html_document_open_stream(doc, "text/html");
-	html_document_write_stream(doc, testhtml, strlen (testhtml));
-	html_document_close_stream(doc);
+	startHTMLOutput();
+	writeHTML(testhtml);
+	finishHTMLOutput();
 	
 	/* prepare a scrolled window */
 	scrolledwindow = gtk_scrolled_window_new(NULL, NULL);
@@ -167,417 +112,6 @@ void setupHTMLView(GtkWidget *mainwindow) {
 
 	gtk_widget_show_all(scrolledwindow);
 }
-
-/* method called by g_hash_table_foreach from inside the HTML
-   generator functions to output namespace specific infos */
-void showFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
-	outputRequest	*request = (outputRequest *)userdata;
-	RSSNsHandler	*nsh = (RSSNsHandler *)value;
-	outputFunc	fp;
-
-	switch(request->type) {
-		case OUTPUT_CHANNEL_NS_HEADER:
-			fp = nsh->doChannelHeaderOutput;
-			if(NULL != fp)
-				(*fp)(request->obj, doc);
-			break;
-		case OUTPUT_CHANNEL_NS_FOOTER:
-			fp = nsh->doChannelFooterOutput;
-			if(NULL != fp)
-				(*fp)(request->obj, doc);
-			break;
-		case OUTPUT_ITEM_NS_HEADER:
-			fp = nsh->doItemHeaderOutput;
-			if(NULL != fp)
-				(*fp)(request->obj, doc);
-			break;		
-		case OUTPUT_ITEM_NS_FOOTER:
-			fp = nsh->doItemFooterOutput;
-			if(NULL != fp)
-				(*fp)(request->obj, doc);
-			break;			
-		default:	
-			g_warning(_("Internal error! Invalid output request mode for namespace information!"));
-			break;		
-	}
-}
-
-/* writes item description as HTML into the gtkhtml widget */
-void showItem(gpointer ip, gpointer cp) {
-	GHashTable	*RSSNsHandler;
-	gchar		*itemlink;
-	gchar		*feedimage;
-	gchar		*tmp;	
-	outputRequest	request;
-	
-	g_assert(doc != NULL);
-	g_assert(cp != NULL);
-	g_assert(ip != NULL);
-	html_document_open_stream(doc, "text/html");
-	HTML_WRITE(doc, HTML_START);
-	HTML_WRITE(doc, HTML_HEAD_START);
-
-	HTML_WRITE(doc, META_ENCODING1);
-	HTML_WRITE(doc, "UTF-8");
-	HTML_WRITE(doc, META_ENCODING2);
-
-	HTML_WRITE(doc, HTML_HEAD_END);
-
-	if(NULL != (itemlink = getRSSItemTag(ip, ITEM_LINK))) {
-		HTML_WRITE(doc, ITEM_HEAD_START);
-		
-		HTML_WRITE(doc, ITEM_HEAD_CHANNEL);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", getFeedTag(cp, CHANNEL_LINK), getDefaultEntryTitle(((channelPtr)cp)->key));
-		HTML_WRITE(doc, tmp);
-		g_free(tmp);
-		
-		HTML_WRITE(doc, HTML_NEWLINE);
-		
-		HTML_WRITE(doc, ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", itemlink, getRSSItemTag(ip, ITEM_TITLE));
-		HTML_WRITE(doc, tmp);
-		g_free(tmp);
-		
-		HTML_WRITE(doc, ITEM_HEAD_END);	
-	}	
-
-	/* process namespace infos */
-	RSSNsHandler = getFeedNsHandler(cp);
-	request.obj = (gpointer)ip;
-	request.type = OUTPUT_ITEM_NS_HEADER;	
-	if(NULL != RSSNsHandler)
-		g_hash_table_foreach(RSSNsHandler, showFeedNSInfo, (gpointer)&request);
-
-	if(NULL != (feedimage = getFeedTag(cp, CHANNEL_IMAGE))) {
-		HTML_WRITE(doc, IMG_START);
-		HTML_WRITE(doc, feedimage);
-		HTML_WRITE(doc, IMG_END);	
-	}
-
-	if(NULL != getRSSItemTag(ip, ITEM_DESCRIPTION))
-		HTML_WRITE(doc, getRSSItemTag(ip, ITEM_DESCRIPTION));
-
-	request.type = OUTPUT_ITEM_NS_FOOTER;
-	if(NULL != RSSNsHandler)
-		g_hash_table_foreach(RSSNsHandler, showFeedNSInfo, (gpointer)&request);
-
-
-	HTML_WRITE(doc, HTML_END);
-	html_document_close_stream(doc);
-}
-
-/* writes RSS channel description as HTML into the gtkhtml widget */
-void showFeedInfo(gpointer cp) {
-	GHashTable	*RSSNsHandler;
-	gchar		*feedimage;
-	gchar		*feeddescription;
-	gchar		*tmp;	
-	outputRequest	request;
-
-	g_assert(doc != NULL);
-	g_assert(cp != NULL);	
-	html_document_open_stream(doc, "text/html");
-	HTML_WRITE(doc, HTML_START);
-	HTML_WRITE(doc, HTML_HEAD_START);
-
-	HTML_WRITE(doc, META_ENCODING1);
-	HTML_WRITE(doc, "UTF-8");
-	HTML_WRITE(doc, META_ENCODING2);
-
-	HTML_WRITE(doc, HTML_HEAD_END);
-
-	HTML_WRITE(doc, FEED_HEAD_START);
-	
-	HTML_WRITE(doc, FEED_HEAD_CHANNEL);
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", getFeedTag(cp, CHANNEL_LINK), getDefaultEntryTitle(((channelPtr)cp)->key));
-	HTML_WRITE(doc, tmp);
-	g_free(tmp);
-	
-	HTML_WRITE(doc, HTML_NEWLINE);	
-
-	HTML_WRITE(doc, FEED_HEAD_SOURCE);	
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", getEntrySource(((channelPtr)cp)->key), getEntrySource(((channelPtr)cp)->key));
-	HTML_WRITE(doc, tmp);
-	g_free(tmp);
-
-	HTML_WRITE(doc, FEED_HEAD_END);	
-		
-	/* process namespace infos */
-	RSSNsHandler = getFeedNsHandler(cp);
-	request.obj = (gpointer)cp;
-	request.type = OUTPUT_CHANNEL_NS_HEADER;	
-	if(NULL != RSSNsHandler)
-		g_hash_table_foreach(RSSNsHandler, showFeedNSInfo, (gpointer)&request);
-
-	if(NULL != (feedimage = getFeedTag(cp, CHANNEL_IMAGE))) {
-		HTML_WRITE(doc, IMG_START);
-		HTML_WRITE(doc, feedimage);
-		HTML_WRITE(doc, IMG_END);	
-	}
-
-	if(NULL != (feeddescription = getFeedTag(cp, CHANNEL_DESCRIPTION)))
-		HTML_WRITE(doc, feeddescription);
-
-	HTML_WRITE(doc, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(doc, "language",		getFeedTag(cp, CHANNEL_LANGUAGE));
-	FEED_FOOT_WRITE(doc, "copyright",		getFeedTag(cp, CHANNEL_COPYRIGHT));
-	FEED_FOOT_WRITE(doc, "last build date",		getFeedTag(cp, CHANNEL_LASTBUILDDATE));
-	FEED_FOOT_WRITE(doc, "publication date",	getFeedTag(cp, CHANNEL_PUBDATE));
-	FEED_FOOT_WRITE(doc, "webmaster",		getFeedTag(cp, CHANNEL_WEBMASTER));
-	FEED_FOOT_WRITE(doc, "managing editor",		getFeedTag(cp, CHANNEL_MANAGINGEDITOR));
-	FEED_FOOT_WRITE(doc, "category",		getFeedTag(cp, CHANNEL_CATEGORY));
-	HTML_WRITE(doc, FEED_FOOT_TABLE_END);
-	
-	/* process namespace infos */
-	request.type = OUTPUT_CHANNEL_NS_FOOTER;
-	if(NULL != RSSNsHandler)
-		g_hash_table_foreach(RSSNsHandler, showFeedNSInfo, (gpointer)&request);
-
-	HTML_WRITE(doc, HTML_END);
-	html_document_close_stream(doc);
-}
-
-
-/* writes CDF item description as HTML into the gtkhtml widget */
-void showCDFItem(gpointer ip, gpointer cp) {
-	gchar		*itemlink;
-	gchar		*feedimage;
-	gchar		*tmp;	
-	
-	g_assert(doc != NULL);
-	g_assert(cp != NULL);
-	g_assert(ip != NULL);
-	html_document_open_stream(doc, "text/html");
-	HTML_WRITE(doc, HTML_START);
-	HTML_WRITE(doc, HTML_HEAD_START);
-
-	HTML_WRITE(doc, META_ENCODING1);
-	HTML_WRITE(doc, "UTF-8");
-	HTML_WRITE(doc, META_ENCODING2);
-
-	HTML_WRITE(doc, HTML_HEAD_END);
-
-	if(NULL != (itemlink = getCDFItemTag(ip, CDF_ITEM_LINK))) {
-		HTML_WRITE(doc, ITEM_HEAD_START);
-		
-		HTML_WRITE(doc, ITEM_HEAD_CHANNEL);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", getEntrySource(((CDFChannelPtr)cp)->key), getDefaultEntryTitle(((CDFChannelPtr)cp)->key));
-		HTML_WRITE(doc, tmp);
-		g_free(tmp);
-		
-		HTML_WRITE(doc, HTML_NEWLINE);
-		
-		HTML_WRITE(doc, ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", itemlink, getCDFItemTag(ip, CDF_ITEM_TITLE));
-		HTML_WRITE(doc, tmp);
-		g_free(tmp);
-		
-		HTML_WRITE(doc, ITEM_HEAD_END);	
-	}	
-
-	if(NULL != (feedimage = getCDFItemTag(ip, CDF_ITEM_IMAGE))) {
-		HTML_WRITE(doc, IMG_START);
-		HTML_WRITE(doc, feedimage);
-		HTML_WRITE(doc, IMG_END);	
-	}
-
-	if(NULL != getCDFItemTag(ip, CDF_ITEM_DESCRIPTION))
-		HTML_WRITE(doc, getCDFItemTag(ip, CDF_ITEM_DESCRIPTION));
-
-	HTML_WRITE(doc, HTML_END);
-	html_document_close_stream(doc);
-}
-
-/* writes CDF channel description as HTML into the gtkhtml widget */
-void showCDFFeedInfo(gpointer cp) {
-	gchar		*feedimage;
-	gchar		*feeddescription;
-	gchar		*source;
-	gchar		*tmp;
-
-	g_assert(doc != NULL);
-	g_assert(cp != NULL);	
-	html_document_open_stream(doc, "text/html");
-	HTML_WRITE(doc, HTML_START);
-	HTML_WRITE(doc, HTML_HEAD_START);
-
-	HTML_WRITE(doc, META_ENCODING1);
-	HTML_WRITE(doc, "UTF-8");
-	HTML_WRITE(doc, META_ENCODING2);
-
-	HTML_WRITE(doc, HTML_HEAD_END);
-
-	HTML_WRITE(doc, FEED_HEAD_START);
-	
-	HTML_WRITE(doc, FEED_HEAD_CHANNEL);
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", getEntrySource(((CDFChannelPtr)cp)->key), getDefaultEntryTitle(((CDFChannelPtr)cp)->key));
-	HTML_WRITE(doc, tmp);
-	g_free(tmp);
-	
-	HTML_WRITE(doc, FEED_HEAD_END);	
-
-	if(NULL != (feedimage = getCDFFeedTag(cp, CDF_CHANNEL_IMAGE))) {
-		HTML_WRITE(doc, IMG_START);
-		HTML_WRITE(doc, feedimage);
-		HTML_WRITE(doc, IMG_END);	
-	}
-
-	if(NULL != (feeddescription = getCDFFeedTag(cp, CDF_CHANNEL_DESCRIPTION)))
-		HTML_WRITE(doc, feeddescription);
-
-	HTML_WRITE(doc, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(doc, "copyright",		getCDFFeedTag(cp, CDF_CHANNEL_COPYRIGHT));
-	FEED_FOOT_WRITE(doc, "publication date",	getCDFFeedTag(cp, CDF_CHANNEL_PUBDATE));
-	FEED_FOOT_WRITE(doc, "webmaster",		getCDFFeedTag(cp, CDF_CHANNEL_WEBMASTER));
-	FEED_FOOT_WRITE(doc, "category",		getCDFFeedTag(cp, CDF_CHANNEL_CATEGORY));
-	HTML_WRITE(doc, FEED_FOOT_TABLE_END);
-
-	HTML_WRITE(doc, HTML_END);
-	html_document_close_stream(doc);
-}
-
-/* print information of a format entry in the HTML */
-static void showFormatEntry(gpointer data, gpointer userdata) {
-	gchar		*link, *tmp;
-	
-	if(NULL != (link = getOCSFormatSource(data))) {
-		HTML_WRITE(doc, FORMAT_START);
-
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", link, link);
-		HTML_WRITE(doc, FORMAT_LINK);
-		HTML_WRITE(doc, tmp);		
-		g_free(tmp);
-
-		if(NULL != (tmp = getOCSFormatTag(data, OCS_LANGUAGE))) {
-			HTML_WRITE(doc, FORMAT_LANGUAGE);
-			HTML_WRITE(doc, tmp);
-		}
-
-		if(NULL != (tmp = getOCSFormatTag(data, OCS_UPDATEPERIOD))) {
-			HTML_WRITE(doc, FORMAT_UPDATEPERIOD);
-			HTML_WRITE(doc, tmp);
-		}
-
-		if(NULL != (tmp = getOCSFormatTag(data, OCS_UPDATEFREQUENCY))) {
-			HTML_WRITE(doc, FORMAT_UPDATEFREQUENCY);
-			HTML_WRITE(doc, tmp);
-		}
-		
-		if(NULL != (tmp = getOCSFormatTag(data, OCS_CONTENTTYPE))) {
-			HTML_WRITE(doc, FORMAT_CONTENTTYPE);
-			HTML_WRITE(doc, tmp);
-		}
-		
-		HTML_WRITE(doc, FORMAT_END);	
-	}
-}
-
-/* display a directory entry description and its formats in the HTML widget */
-void showDirectoryEntry(gpointer dep, gpointer dp) {
-	GSList		*iter;
-	gchar		*link;
-	gchar		*channelimage;
-	gchar		*tmp;
-	gpointer	fp;
-	
-	g_assert(doc != NULL);
-	g_assert(dep != NULL);
-	g_assert(dp != NULL);
-	html_document_open_stream(doc, "text/html");
-	HTML_WRITE(doc, HTML_START);
-	HTML_WRITE(doc, HTML_HEAD_START);
-
-	HTML_WRITE(doc, META_ENCODING1);
-	HTML_WRITE(doc, "UTF-8");
-	HTML_WRITE(doc, META_ENCODING2);
-
-	HTML_WRITE(doc, HTML_HEAD_END);
-
-	if(NULL != (link = getOCSDirEntrySource(dep))) {
-		HTML_WRITE(doc, ITEM_HEAD_START);
-	
-		HTML_WRITE(doc, ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", link, getOCSDirEntryTag(dep, OCS_TITLE));
-		HTML_WRITE(doc, tmp);
-		g_free(tmp);
-		
-		HTML_WRITE(doc, ITEM_HEAD_END);	
-	}
-
-	if(NULL != (channelimage = getOCSDirEntryTag(dep, OCS_IMAGE))) {
-		HTML_WRITE(doc, IMG_START);
-		HTML_WRITE(doc, channelimage);
-		HTML_WRITE(doc, IMG_END);	
-	}
-
-	if(NULL != getOCSDirEntryTag(dep, OCS_DESCRIPTION))
-		HTML_WRITE(doc, getOCSDirEntryTag(dep, OCS_DESCRIPTION));
-		
-	/* output infos about the available formats */
-	g_slist_foreach(((dirEntryPtr)dep)->formats, showFormatEntry, NULL);
-
-	HTML_WRITE(doc, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(doc, "creator",		getOCSDirEntryTag(dep, OCS_CREATOR));
-	FEED_FOOT_WRITE(doc, "subject",		getOCSDirEntryTag(dep, OCS_SUBJECT));
-	FEED_FOOT_WRITE(doc, "language",	getOCSDirEntryTag(dep, OCS_LANGUAGE));
-	FEED_FOOT_WRITE(doc, "updatePeriod",	getOCSDirEntryTag(dep, OCS_UPDATEPERIOD));
-	FEED_FOOT_WRITE(doc, "contentType",	getOCSDirEntryTag(dep, OCS_CONTENTTYPE));
-	HTML_WRITE(doc, FEED_FOOT_TABLE_END);
-
-	HTML_WRITE(doc, HTML_END);
-	html_document_close_stream(doc);
-}
-
-/* writes directory info as HTML */
-void showDirectoryInfo(gpointer dp) {
-	gchar		*description;
-	gchar		*source;
-	gchar		*tmp;	
-
-	g_assert(doc != NULL);
-	g_assert(dp != NULL);	
-	html_document_open_stream(doc, "text/html");
-	HTML_WRITE(doc, HTML_START);
-	HTML_WRITE(doc, HTML_HEAD_START);
-
-	HTML_WRITE(doc, META_ENCODING1);
-	HTML_WRITE(doc, "UTF-8");
-	HTML_WRITE(doc, META_ENCODING2);
-
-	HTML_WRITE(doc, HTML_HEAD_END);
-
-	HTML_WRITE(doc, FEED_HEAD_START);
-	
-	HTML_WRITE(doc, FEED_HEAD_CHANNEL);
-	HTML_WRITE(doc, getDefaultEntryTitle(((directoryPtr)dp)->key));
-
-	HTML_WRITE(doc, HTML_NEWLINE);	
-// FIXME: segfaults with Moreover....
-/*
-	HTML_WRITE(doc, FEED_HEAD_SOURCE);	
-	if(NULL != (source = getOCSDirectorySource(((directoryPtr)dp)->key))) {
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", source, source);
-		HTML_WRITE(doc, tmp);
-		g_free(tmp);
-	}
-
-*/	HTML_WRITE(doc, FEED_HEAD_END);	
-
-	if(NULL != (description = getOCSDirectoryTag(dp, OCS_DESCRIPTION)))
-		HTML_WRITE(doc, description);
-
-	HTML_WRITE(doc, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(doc, "creator",		getOCSDirectoryTag(dp, OCS_CREATOR));
-	FEED_FOOT_WRITE(doc, "subject",		getOCSDirectoryTag(dp, OCS_SUBJECT));
-	FEED_FOOT_WRITE(doc, "language",	getOCSDirectoryTag(dp, OCS_LANGUAGE));
-	FEED_FOOT_WRITE(doc, "updatePeriod",	getOCSDirectoryTag(dp, OCS_UPDATEPERIOD));
-	FEED_FOOT_WRITE(doc, "contentType",	getOCSDirectoryTag(dp, OCS_CONTENTTYPE));
-	HTML_WRITE(doc, FEED_FOOT_TABLE_END);
-
-	HTML_WRITE(doc, HTML_END);
-	html_document_close_stream(doc);
-}
-
 
 /* ------------------------------------------------------------------------------- */
 /* GtkHTML Callbacks taken from browser-window.c of libgtkhtml-2.2.0 
@@ -693,18 +227,26 @@ on_url (HtmlView *view, const char *url, gpointer user_data)
 
 static void
 link_clicked (HtmlDocument *doc, const gchar *url, gpointer data)
-{
+{	GError	*error = NULL;
 	gchar	*cmd;
 	gchar	*statusline;
 
-	// BROWSER_COMMAND should better contain a %s, checking this?
-	cmd = g_strdup_printf(getStringConfValue(BROWSER_COMMAND), url);	
-	cmd = g_strdup_printf("%s &", cmd);	/* to lazy to fork+exec... */
-	if(-1 == system(cmd))
-		statusline = g_strdup_printf("browser command failed: %s", g_strerror(errno));
-	else	
+	// FIXME: BROWSER_COMMAND should better contain a %s, checking this?
+	cmd = g_strdup_printf(getStringConfValue(BROWSER_COMMAND), url);
+	g_assert(NULL != cmd);
+	if(0 != strstr(cmd, "%s")) {
+		showErrorBox(_("There is no %s URL place holder in the browser command string you specified in the preferences dialog!!!"));
+	}
+	
+	g_spawn_command_line_async(cmd, &error);
+	if((NULL != error) && (0 != error->code)) {
+		statusline = g_strdup_printf("browser command failed: %s", error->message);
+		g_error_free(error);
+	} else	
 		statusline = g_strdup_printf("starting: \"%s\"", cmd);
 		
 	print_status(statusline);
-	g_free(statusline);	
+	g_free(cmd);
+	g_free(statusline);
+
 }

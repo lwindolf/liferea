@@ -21,12 +21,10 @@
 
 #include "ns_content.h"
 
-#define HTML_WRITE(doc, tags)	html_document_write_stream(doc, tags, strlen(tags));
-
 static gchar ns_content_prefix[] = "content";
 
 /* some prototypes */
-void ns_content_parseItemTag(itemPtr ip,xmlDocPtr doc, xmlNodePtr cur);
+void ns_content_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur);
 
 /* a namespace documentation can be found at 
    http://web.resource.org/rss/1.0/modules/content/
@@ -55,12 +53,12 @@ RSSNsHandler *ns_content_getRSSNsHandler(void) {
 	return nsh;
 }
 
-void ns_content_parseItemTag(itemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
+void ns_content_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
 	
 	while (cur != NULL) {
 		if(!xmlStrcmp(cur->name, "encoded")) {
-			g_free(ip->tags[ITEM_DESCRIPTION]);
-			ip->tags[ITEM_DESCRIPTION] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			g_free(ip->tags[RSS_ITEM_DESCRIPTION]);
+			ip->tags[RSS_ITEM_DESCRIPTION] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			// FIXME: may we need some conversion functionality?
 		}
 		

@@ -22,7 +22,9 @@
 #ifndef _RSS_NS_H
 #define _RSS_NS_H
 
-#include <libgtkhtml/gtkhtml.h>
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+
 #include "rss_channel.h"
 #include "rss_item.h"
 
@@ -31,13 +33,13 @@
 /* -------------------------------------------------------- */
 
 /* definition of various namespace tag handlers */
-typedef void	(*parseChannelTagFunc)	(channelPtr cp, xmlDocPtr doc, xmlNodePtr cur);
-typedef void	(*parseItemTagFunc)	(itemPtr ip, xmlDocPtr doc, xmlNodePtr cur);
+typedef void	(*parseChannelTagFunc)	(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur);
+typedef void	(*parseItemTagFunc)	(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur);
 
 /* handler called during HTML output generation to display
    namespace specific information (e.g. <dc:creator> the 
    handler could return HTML like: "<p>author: Mr. X</a>" */
-typedef gchar *	(*outputFunc)	(gpointer obj, gpointer htmlStream);
+typedef gchar *	(*outputFunc)	(gpointer obj);
 
 /* struct used to register RDF namespace handler */
 typedef struct RSSNsHandler {

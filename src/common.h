@@ -33,7 +33,12 @@ gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * strin
 gchar * convertToUTF8(gchar * from_encoding, gchar * string);
 gchar * convertToHTML(gchar * from_encoding, gchar * string);
 gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string);
+
+/* to extract not escaped XHTML from a node */
+gchar * extractHTMLNode(xmlNodePtr cur);
+
 gchar * unhtmlize(gchar * from_encoding, gchar *string);
+gchar * getActualTime(void);
 char * 	convertDate(char *date);
 gchar *	getCachePath(void);
 #endif

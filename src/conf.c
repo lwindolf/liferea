@@ -70,10 +70,10 @@ void loadConfig() {
 	if (client == NULL)
 		client = gconf_client_get_default();
 
-	/* Make sure the base directory exists. Subdirectories will be added 
-	   as needed. */
 	gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);	
-		
+
+	/* check if several preferences exist */
+
         /* load proxy settings for libxml */
         xmlNanoHTTPInit();
         
@@ -622,7 +622,7 @@ void loadEntries() {
 
 
 			if(type == 0)
-				type = FST_FEED;
+				type = FST_RSS;
 				
 			if(interval == 0)
 				interval = -1;
@@ -642,6 +642,31 @@ void loadEntries() {
 		
 	/* enforce background loading */
 	updateNow();
+}
+
+/* returns true if namespace is enabled in configuration */
+gboolean getNameSpaceStatus(gchar *nsname) {
+	gchar		*gconfpath;
+	gboolean	status;
+	
+	g_assert(NULL != nsname);
+	
+	gconfpath = g_strdup_printf("%s/ns_%s", PATH, nsname);
+	status = getBooleanConfValue(gconfpath);
+	g_free(gconfpath);
+	
+	return status;
+}
+
+/* used to enable/disable a namespace in configuration */
+void setNameSpaceStatus(gchar *nsname, gboolean enable) {
+	gchar		*gconfpath;
+	
+	g_assert(NULL != nsname);
+		
+	gconfpath = g_strdup_printf("%s/ns_%s", PATH, nsname);
+	setBooleanConfValue(gconfpath, enable);
+	g_free(gconfpath);
 }
 
 /* generic configuration access methods used for preferences */

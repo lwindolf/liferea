@@ -19,8 +19,8 @@
    Boston, MA 02111-1307, USA.
 */
 
-#ifndef _NS_DC_H
-#define _NS_DC_H
+#ifndef _NS_CONTENT_H
+#define _NS_CONTENT_H
 
 #include "rss_ns.h"
 

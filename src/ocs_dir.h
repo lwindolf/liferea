@@ -22,7 +22,7 @@
 #ifndef _OCS_DIR_H
 #define _OCS_DIR_H
 
-#include <glib.h>
+#include "backend.h"
 
 /* this is a generic subtag list for directory, channel and format description tags */
 #define OCS_TITLE		0
@@ -55,10 +55,12 @@ typedef struct dirEntry {
 
 /* a structure to store OCS feed list information */
 typedef struct directory {
-	/* common attributes, order and position important ! */
+	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
+	   this structure, order is important! */
 	gint		type;			/* FST_OCS for OCS feed lists */
 	gchar		*key;			/* configuration storage key */	
 	gchar		*keyprefix;	
+	
 	gchar		*usertitle;		/* feed title may be modified by user */	
 	gchar 		*source;		/* source url */
 	gboolean	available;		/* flag to signalize load/update errors */
@@ -69,19 +71,7 @@ typedef struct directory {
 	GSList		*items;			/* list of dirEntry structures */
 } *directoryPtr;
 
-directoryPtr readOCS(gchar *url);
-directoryPtr loadOCS(gchar *filename);
-
-gchar * getOCSDirectorySource(gpointer dp);
-gchar * getOCSDirectoryTag(gpointer dp, gint tag);
-void setOCSDirectoryTag(gpointer dp, gint tag, gchar *value);
-
-gchar * getOCSDirEntrySource(gpointer dep);
-gchar * getOCSDirEntryTag(gpointer dep, gint tag);
-void setOCSDirEntryTag(gpointer dep, gint tag, gchar *value);
-
-gchar * getOCSFormatSource(gpointer fp);
-gchar * getOCSFormatTag(gpointer fp, gint tag);
-void setOCSFormatTag(gpointer fp, gint tag, gchar *value);
+feedHandlerPtr	initOCSFeedHandler(void);
+itemHandlerPtr	initOCSItemHandler(void);
 
 #endif

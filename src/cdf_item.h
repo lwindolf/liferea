@@ -46,14 +46,6 @@ typedef struct CDFItem {
 	struct CDFItem	*next;
 } *CDFItemPtr;
 
-/* -------------------------------------------------------- */
-/* functions to access properties of the CDFItem structure  */
-/* -------------------------------------------------------- */
-
-gboolean getCDFItemReadStatus(gpointer ip);
-
-gchar * getCDFItemTag(gpointer ip, int tag);
-
-void	markCDFItemAsRead(gpointer ip);
+itemHandlerPtr initCDFItemHandler(void);
 
 #endif

@@ -1,3 +1,19 @@
+2003-09-07  Lars Lindner <lars.lindner@gmx.net>
+
+        Version 0.3.6
+	
+	* fixes bug 796927 (hanging on close by windowmanager)
+	* fixes bug 800921 (memory leak on browser launch)
+	* added support for Atom/Echo/PIE version 0.2 feeds
+	* added support for the admin namespace (used by RSS)
+	* added support for the syndication namespace (typically
+	  used by RSS/RDF) to specify feed update intervals,
+	  the program now also uses these defaults when
+	  subscribing to new feeds and displays the feed default
+	  interval in the property dialog
+	
+
+
 2003-09-03  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.3.5

@@ -19,6 +19,9 @@
    Boston, MA 02111-1307, USA.
 */
 
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+
 #include <time.h>
 #include <pwd.h>
 #include <errno.h>
@@ -90,6 +93,20 @@ gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string) {
 	}
 	
 	return newstring;
+}
+
+gchar * extractHTMLNode(xmlNodePtr cur) {
+	xmlBufferPtr	buf = NULL;
+	gchar		*result = NULL;
+	
+	buf = xmlBufferCreate();
+	
+	if(-1 != xmlNodeDump(buf, cur->doc, cur, 0, 0))
+		result = xmlCharStrdup(xmlBufferContent(buf));
+
+	xmlBufferFree(buf);
+	
+	return result;
 }
 
 /* converts strings containing any HTML stuff
@@ -168,6 +185,24 @@ char * convertDate(char *date) {
 	}
 	
 	return result;
+}
+
+gchar * getActualTime(void) {
+	time_t		t;
+	gchar		*timestr;
+	gchar		*timeformat;
+	
+	/* get receive time */
+	if((time_t)-1 != time(&t)) {
+		if(NULL != (timestr = (gchar *)g_malloc(TIMESTRLEN+1))) {
+			if(NULL != (timeformat = getStringConfValue(TIME_FORMAT))) {
+				strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
+				g_free(timeformat);
+			}
+		}
+	}
+	
+	return timestr;
 }
 
 void initCachePath(void) {

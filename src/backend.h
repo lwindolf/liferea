@@ -28,12 +28,12 @@
 #define FST_INVALID	0
 #define FST_NODE	1
 #define FST_HELPFEED	2
-/* thats the standard RDF Site Summary type */
-#define FST_FEED	3	
-#define FST_OCS		4
-#define FST_CDF		5
+#define FST_RSS		3	/* thats the standard RDF Site Summary type */
+#define FST_OCS		4	/* OCS directories */
+#define FST_CDF		5	/* Microsoft CDF */
+#define FST_PIE		6	/* Echo/Atom/PIE */
 
-#define IS_FEED(type)		((FST_FEED == type) || (FST_CDF == type))
+#define IS_FEED(type)		((FST_RSS == type) || (FST_CDF == type) || (FST_PIE == type))
 
 /* constants for attributes in feedstore */
 #define FS_TITLE	0
@@ -53,20 +53,70 @@
 GtkTreeStore * getFeedStore(void);
 GtkTreeStore * getItemStore(void);
 
-/* common structure to access channelPtr and directoryPtr */
+/* common structure to access feed info structures */
 typedef struct entry {
-	/* common attributes, order and position important ! */
+	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
+	   this structure, order is important! */
 	gint		type;		
 	gchar		*key;	
 	gchar		*keyprefix;
-	gchar		*usertitle;	
-	gchar 		*source;	
-	gboolean	available;	
-	gint		updateCounter;
 } *entryPtr;
 
 /* ------------------------------------------------------------ */
-/* functions to create/change/remove entries			*/
+/* feed handler interface					*/
+/* ------------------------------------------------------------ */
+
+#define FEED_PROP_TITLE			0
+#define FEED_PROP_USERTITLE		1
+#define FEED_PROP_SOURCE		2
+#define FEED_PROP_UPDATEINTERVAL	3
+#define FEED_PROP_DFLTUPDINTERVAL	4
+#define FEED_PROP_UPDATECOUNTER		5
+#define FEED_PROP_UNREADCOUNT		6
+#define FEED_PROP_ITEMLIST		7
+#define FEED_PROP_AVAILABLE		8
+
+typedef gpointer	(*mergeFeedFunc)	(gpointer old_fp, gpointer new_fp);
+typedef gpointer 	(*readFeedFunc)		(gchar *url);
+typedef gpointer 	(*loadFeedFunc)		(gchar *keyprefix, gchar *key);
+typedef void	 	(*removeFeedFunc)	(gchar *keyprefix, gchar *key, gpointer fp);
+typedef void		(*showFeedInfoFunc)	(gpointer fp);
+/* methods to set/get the FEED_PROP_* properties */
+typedef void 		(*setFeedPropFunc)	(gpointer fp, gint proptype, gpointer data);
+typedef gpointer	(*getFeedPropFunc)	(gpointer fp, gint proptype);
+
+typedef struct feedHandler {
+	getFeedPropFunc		getFeedProp;
+	setFeedPropFunc		setFeedProp;
+	loadFeedFunc		loadFeed;
+	readFeedFunc		readFeed;
+	mergeFeedFunc		mergeFeed;
+	removeFeedFunc		removeFeed;
+	showFeedInfoFunc	showFeedInfo;
+} *feedHandlerPtr;
+
+/* ------------------------------------------------------------ */
+/* item handler interface					*/
+/* ------------------------------------------------------------ */
+
+#define ITEM_PROP_TITLE			0
+#define ITEM_PROP_READSTATUS		1
+#define ITEM_PROP_DESCRIPTION		2
+#define ITEM_PROP_TIME			3
+
+typedef void		(*showItemFunc)		(gpointer fp);
+/* methods to set/get the ITEM_PROP_* properties */
+typedef void 		(*setItemPropFunc)	(gpointer ip, gint proptype, gpointer data);
+typedef gpointer	(*getItemPropFunc)	(gpointer ip, gint proptype);
+
+typedef struct itemHandler {
+	getItemPropFunc		getItemProp;
+	setItemPropFunc		setItemProp;
+	showItemFunc		showItem;
+} *itemHandlerPtr;
+
+/* ------------------------------------------------------------ */
+/* functions to create/change/remove feed entries		*/
 /* ------------------------------------------------------------ */
 
 gchar * newEntry(gint type, gchar *url, gchar *keyprefix);
@@ -77,34 +127,29 @@ void 	removeEntry(gchar *keyprefix, gchar *key);
 void	moveUpEntryPosition(gchar *keyprefix, gchar *key);
 void	moveDownEntryPosition(gchar *keyprefix, gchar *key);
 
-void 	setEntryTitle(gchar *key, gchar *title);
-void 	setEntrySource(gchar *key, gchar *source);
-
-gboolean	getEntryStatus(gchar *key);
-gchar *		getEntrySource(gchar *key);
+gpointer	getFeedProp(gchar *key, gint proptype);
+void		setFeedProp(gchar *key, gint proptype, gpointer data);
 gchar *		getDefaultEntryTitle(gchar *key);	/* returns the title defined by the feed */
 gint		getEntryType(gchar *key);
 
 GtkTreeStore * 	getEntryStore(void);
 
 /* -------------------------------------------------------- */
-/* RSS only methods used by callbacks           	    */
-/* -------------------------------------------------------- */
-
-gint	getFeedUpdateInterval(gchar *feedkey);
-gint	getFeedUnreadCount(gchar *feedkey);
-void	setFeedUpdateInterval(gchar *feedkey, gint interval);
-void	resetAllUpdateCounters(void);
-gchar * getHelpFeedKey(void);
-
-/* -------------------------------------------------------- */
-/* functions to change items and the item list		    */
+/* callback interface to access items and the item list	    */
 /* -------------------------------------------------------- */
 
 void	loadItem(gint type, gpointer ip);
 void	loadItemList(gchar *feedkey, gchar *searchstring);
+gboolean getItemReadStatus(gint type, gpointer ip);
 void	markItemAsRead(gint type, gpointer ip);
 void	searchItems(gchar *string);
 void	clearItemList();
+
+/* -------------------------------------------------------- */
+/* feed (not directories) specific methods            	    */
+/* -------------------------------------------------------- */
+
+void	resetAllUpdateCounters(void);
+gchar * getHelpFeedKey(void);
 
 #endif

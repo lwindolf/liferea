@@ -19,29 +19,24 @@
    Boston, MA 02111-1307, USA.
 */
 
-#include <libgtkhtml/gtkhtml.h>
+#include "htmlview.h"
 #include "ns_fm.h"
 
-#define IMG_START	"<br><img style=\"margin-top:10px;\" src=\""
-#define IMG_END		" \">"
-
-#define HTML_WRITE(doc, tags)	{ if((NULL != tags) && (strlen(tags) > 0)) html_document_write_stream(doc, tags, strlen(tags)); }
+#define FM_IMG_START	"<br><img style=\"margin-top:10px;\" src=\""
+#define FM_IMG_END		" \">"
 
 static gchar ns_fm_prefix[] = "fm";
 
 /* some prototypes */
-void ns_fm_parseItemTag(itemPtr ip,xmlDocPtr doc, xmlNodePtr cur);
+void ns_fm_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur);
 
-gchar * ns_fm_doItemOutput(gpointer obj, gpointer htmlStream);
+gchar * ns_fm_doItemOutput(gpointer obj);
 
 /* you can find the fm DTD under http://freshmeat.net/backend/fm-releases-0.1.dtd
 
   it defines a lot of entities and one tag "screenshot_url", which we
   output as a HTML image in the item view footer
 */
-
-/* the HTML stream the output handler write to */			   
-static HtmlDocument	*doc;
 
 gchar * ns_fm_getRSSNsPrefix(void) { return ns_fm_prefix; }
 
@@ -75,7 +70,7 @@ static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-void ns_fm_parseItemTag(itemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
+void ns_fm_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 	int 		i;
 	
 	while (cur != NULL) {
@@ -91,9 +86,9 @@ void ns_fm_parseItemTag(itemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 /* maybe I should overthink method names :-) */
 void ns_fm_output(gpointer key, gpointer value, gpointer userdata) {
 
-	HTML_WRITE(doc, IMG_START);
-	HTML_WRITE(doc, (gchar *)value);
-	HTML_WRITE(doc, IMG_END);	
+	writeHTML(FM_IMG_START);
+	writeHTML((gchar *)value);
+	writeHTML(FM_IMG_END);	
 }
 
 void ns_fm_doOutput(GHashTable *nsinfos) {
@@ -105,11 +100,9 @@ void ns_fm_doOutput(GHashTable *nsinfos) {
 	}
 }
 
-gchar * ns_fm_doItemOutput(gpointer obj, gpointer htmlStream) {
+gchar * ns_fm_doItemOutput(gpointer obj) {
 
-	doc = (HtmlDocument *)htmlStream;
-	
-	if((obj != NULL) && (doc != NULL)) {
-		ns_fm_doOutput(((itemPtr)obj)->nsinfos);
+	if(NULL != obj) {
+		ns_fm_doOutput(((RSSItemPtr)obj)->nsinfos);
 	}
 }

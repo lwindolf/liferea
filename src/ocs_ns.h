@@ -22,8 +22,10 @@
 #ifndef _OCS_NS_H
 #define _OCS_NS_H
 
-#include <libgtkhtml/gtkhtml.h>
 #include "ocs_dir.h"
+
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
 
 /* -------------------------------------------------------- */
 /* interface definitions for OCS namespace handler          */

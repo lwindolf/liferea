@@ -23,43 +23,36 @@
 #define _RSS_ITEM_H
 
 #include <glib.h>
+#include "rss_channel.h"
 
 /* all RSS versions */
-#define ITEM_TITLE		0
-#define ITEM_DESCRIPTION	1
-#define ITEM_LINK		2
+#define RSS_ITEM_TITLE			0
+#define RSS_ITEM_DESCRIPTION		1
+#define RSS_ITEM_LINK			2
 /* 2.0 and <dc:creator> */
-#define ITEM_AUTHOR		3
+#define RSS_ITEM_AUTHOR			3
 /* 2.0 and Annotate-Module */
-#define ITEM_COMMENTS		4
+#define RSS_ITEM_COMMENTS		4
 /* 0.92, 2.0 */
-#define ITEM_ENCLOSURE		5
+#define RSS_ITEM_ENCLOSURE		5
 /* 0.92, 2.0 and <dc:subject> */
-#define ITEM_CATEGORY		6
+#define RSS_ITEM_CATEGORY		6
 	
-#define ITEM_MAX_TAG		7
+#define RSS_ITEM_MAX_TAG		7
 
-typedef struct item {
+typedef struct RSSItem {
 	gpointer	cp;		/* the channel structure this item belongs to,
 					   must be the first element of the structure! */
 	
-	gchar		*tags[ITEM_MAX_TAG];	/* standard namespace infos */
+	gchar		*tags[RSS_ITEM_MAX_TAG];	/* standard namespace infos */
 	
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */	
 	gboolean	read;
 	gchar		*time;
-	struct item	*next;
-} *itemPtr;
+	struct RSSItem	*next;
+} *RSSItemPtr;
 
-/* -------------------------------------------------------- */
-/* functions to access properties of the item structure     */
-/* -------------------------------------------------------- */
-
-gboolean getRSSItemReadStatus(gpointer ip);
-
-gchar * getRSSItemTag(gpointer ip, int tag);
-
-void	markRSSItemAsRead(gpointer ip);
+itemHandlerPtr initRSSItemHandler(void);
 
 #endif

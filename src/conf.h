@@ -22,15 +22,10 @@
 
 #include <glib.h>
 
-/* these defines don't belong here! */
 #define BROWSER_COMMAND		"/apps/liferea/browser"
 #define GNOME_DEFAULT_BROWSER_COMMAND	"/desktop/gnome/url-handlers/unknown"
 #define DEFAULT_BROWSER_COMMAND	"mozilla %s"
 #define TIME_FORMAT		"/apps/liferea/timeformat"
-#define USE_DC			"/apps/liferea/ns_dc"
-#define USE_FM			"/apps/liferea/ns_fm"
-#define USE_CONTENT		"/apps/liferea/ns_content"
-#define USE_SLASH		"/apps/liferea/ns_slash"
 	
 #define PROXY_HOST		"/system/http_proxy/host"
 #define PROXY_PORT		"/system/http_proxy/port"
@@ -50,14 +45,20 @@ gchar *	addEntryToConfig(gchar *keyprefix, gchar *url, gint type);
 void	removeEntryFromConfig(gchar *keyprefix, gchar *feedkey);
 gchar * getFreeEntryKey(gchar *keyprefix);
 
-// FIXME: setEntryTypeInConfig(gchar *feedkey, gint type);
 int	setEntryTitleInConfig(gchar *feedkey, gchar *feedname);
 int	setEntryURLInConfig(gchar *feedkey, gchar *feedurl);
 int	setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval);
 
-void	moveUpEntryPositionInConfig(gchar *keyprefix, gchar *key);
+/*void	moveUpEntryPositionInConfig(gchar *keyprefix, gchar *key);
 void	moveDownEntryPositionInConfig(gchar *keyprefix, gchar *key);
 void	sortEntryKeyList(gchar *keyprefix);
+*/
+
+/* returns true if namespace is enabled in configuration */
+gboolean	getNameSpaceStatus(gchar *nsname);
+
+/* used to enable/disable a namespace in configuration */
+void		setNameSpaceStatus(gchar *nsname, gboolean enable);
 
 /* preferences configuration methods */
 

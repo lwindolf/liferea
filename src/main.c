@@ -47,8 +47,9 @@ GdkPixbuf	*listIcon = NULL;
 GdkPixbuf	*directoryIcon = NULL;
 
 int main (int argc, char *argv[]) {	
-	GtkTooltips *button_bar_tips;
-   
+	GtkTooltips	*button_bar_tips;
+   	GtkWidget	*viewport;
+	
 #ifdef ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
@@ -86,6 +87,10 @@ int main (int argc, char *argv[]) {
 			     _("edit program preferences"),
 			     _("edit program preferences"));
 	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
+			     lookup_widget(mainwindow, "searchbtn"),
+			     _("search all feeds"),
+			     _("search all feeds"));
+	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
 			     lookup_widget(mainwindow, "refreshbtn"),
 			     _("refresh feeds"),
 			     _("refresh feeds"));
@@ -100,12 +105,12 @@ int main (int argc, char *argv[]) {
 			     			     			     	
 	setupEntryList(lookup_widget(mainwindow, "feedlist"));
 	setupItemList(lookup_widget(mainwindow, "Itemlist"));
-	
+		
 	/* order is important! */
 	updateThread = initUpdateThread();
 	initConfig();
 	loadConfig();
-	initBackend();	
+	initBackend();
 	loadEntries();
 		
 	/* FIXME: move to somewhere else :) */

@@ -1,4 +1,30 @@
-Note: This program is under heavy development :)
+This documentation was last updated for Liferea version 0.3.6.
+
+Installation
+============
+
+Debian:		You have two choices: either download a package
+		from the sourceforge project page (these packages
+		are built by Joern Seemann) or you use the installation
+		sources provided by Rex Tsai. To do so add the following 
+		lines to your /etc/apt/sources.list:
+		
+			deb http://kalug.linux.org.tw/~chihchun/debian unstable liferea
+			deb-src http://kalug.linux.org.tw/~chihchun/debian unstable liferea		
+
+RedHat:		Please ensure you have a libxml2 version
+		at least 2.5.10 or you will experience nasty
+		segfaults. You can download RPM packages
+		from the sourceforge project page. If you
+		have dependency problems try the "--nodeps"
+		option.
+		
+SuSE:		You can download RPM packages built on SuSE 8.1
+		from the sourceforge project page.
+
+FreeBSD:	There are Liferea packages (built by Hye-Shik Chang) at
+		
+		http://www.freshports.org/net/liferea/
 
 Upgrading to newer versions
 ===========================
@@ -23,8 +49,12 @@ Dependencies
 The library dependencies for gtk2, gconf2, gtkhtml2, libxml2 and 
 others are all set to 2.0.0. Maybe they could be more specific...
 
-Help
-====
+There is a special issue with RedHat based distributions: you 
+have to install at least libxml2 2.5.10 or you will occur 
+random segfaults.
+
+Help Wanted
+===========
 
 As you can see in the code I'm not that experienced
 programmer, so I would appreciate any help!
@@ -32,14 +62,7 @@ programmer, so I would appreciate any help!
 Known Problems
 ==============
 
-- pressing Shift-Tab in the main window item list twice crashes
-  immediatly
-- Item/Channel Titles with HTML-tags are not correctly parsed,
-  all text in enclosing tags is lost
-- feed property changing in main window feed list behaves
-  strange -> thus deactivated
-- no matter which item is clicked first, after a feed was reloaded
-  always the item AND the first item is marked as unread
-- the program specifies no user agent when accessing feed urls
-- heavy memory usage (e.g. 15 feeds -> 2MB program memory) and
-  theres still no cleanup of old data on updates!
+Please read the help feed (http://liferea.sf.net/help036.rdf) 
+for known problems! If you don't find your problem please
+make a report (forum, bugs...) on the SourceForge project
+page (http://liferea.sf.net).

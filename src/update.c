@@ -34,9 +34,10 @@
 #include "callbacks.h"
 #include "support.h"
 
-extern GHashTable	*entries;
+extern GHashTable	*feeds;
+extern GHashTable	*feedHandler;
 
-GMutex * entries_lock = NULL;
+GMutex * feeds_lock = NULL;
 static GMutex * cond_mutex = NULL;
 /*static GMutex * todo_mutex = NULL;*/
 
@@ -45,7 +46,7 @@ static gboolean work_to_do = FALSE;
 
 /* prototypes */
 static void *update_mainloop(void *data);
-static void updateEntries(gboolean autoupdate);
+static void updateFeeds(gboolean autoupdate);
 
 void updateNow(void)
 {
@@ -57,7 +58,7 @@ void updateNow(void)
 
 GThread * initUpdateThread(void) {
 
-	entries_lock = g_mutex_new();
+	feeds_lock = g_mutex_new();
 	cond_mutex = g_mutex_new();
 
 	qcond = g_cond_new();
@@ -85,134 +86,93 @@ static void *update_mainloop(void *data) {
 		work_to_do = FALSE;
                 g_mutex_unlock (cond_mutex);
 
-		updateEntries(was_timeout);		
+		updateFeeds(was_timeout);		
 	}
 }
 
 static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata) {
-	channelPtr	cp = (channelPtr)value;
-
-	if((cp == NULL) || (!IS_FEED(cp->type)))
+	entryPtr	ep = (entryPtr)value;
+	gint 		counter;
+	feedHandlerPtr	fhp;
+	
+	if((ep == NULL) || (!IS_FEED(ep->type)))
 		return;
 
-	if(cp->updateCounter > 0) {
-		//g_print("-- %d %s\n", cp->updateCounter, cp->source);
-		cp->updateCounter--;
-	}
+	/* we can use set/getFeedProp() here, this would cause deadlocks */
+	if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type)))) 
+		g_error(_("internal error! no feed handler for this type!"));	
+	
+	g_assert(NULL != fhp->getFeedProp);
+	g_assert(NULL != fhp->setFeedProp);
+
+	if(0 < (counter = (gint)(*(fhp->getFeedProp))(ep, FEED_PROP_UPDATECOUNTER))) 
+		(*(fhp->setFeedProp))(ep, FEED_PROP_UPDATECOUNTER, (gpointer)(counter - 1));
+	
 }
 
-static void doUpdateEntries(gpointer key, gpointer value, gpointer userdata) {
+static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 	entryPtr	ep = (entryPtr)value;
-	channelPtr	cp;
-	channelPtr	new_cp;
-	CDFChannelPtr	cdfp;
-	CDFChannelPtr	new_cdfp;	
-	directoryPtr	dp;		
-	directoryPtr	new_dp;
-	gchar		*tmp_key;
-	
+	entryPtr	new_ep;
+	gchar		*tmp_key, *source;
+	feedHandlerPtr	fhp;
+		
 	if(ep == NULL)
 		return;
-	
-	if(FST_FEED == ep->type) {
-	
-		cp = (channelPtr)ep;
-		if(cp->updateCounter == 0) {
-		
-			new_cp = (channelPtr)readRSSFeed(cp->source);
-			g_assert(new_cp != NULL);
-			new_cp = (channelPtr)mergeRSSFeed(cp, new_cp);
-			g_assert(new_cp != NULL);
-			
-			g_mutex_lock(entries_lock);			
-			g_hash_table_insert(entries, key, (gpointer)new_cp);
-			g_mutex_unlock(entries_lock);
-			
-			gdk_threads_enter();
-			tmp_key = getMainFeedListViewSelection();	// FIXME: inperformant
 
-			if(NULL != tmp_key) {
-				if(0 == strcmp(tmp_key, new_cp->key)) {
-					clearItemList();
-					loadItemList(new_cp->key, NULL);
-				}
-			}
+	if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type)))) 
+		g_error(_("internal error! no feed handler for this type!"));	
 
-			g_mutex_lock(entries_lock);
-			redrawFeedList();	// FIXME: maybe this is overkill
-			g_mutex_unlock (entries_lock);
-			
-			gdk_threads_leave();
+	g_assert(NULL != fhp->getFeedProp);
+	if(0 == (*(fhp->getFeedProp))(ep, FEED_PROP_UPDATECOUNTER)) {
+
+		if(NULL == (source = (gchar *)(*(fhp->getFeedProp))(ep, FEED_PROP_SOURCE))) {
+			g_warning(_("feed source is NULL! this should never happen!"));
+			return;
 		}
-	} else if(FST_CDF == ep->type) { /* FIXME: hmm the same code as for FST_FEED */
-	
-		cdfp = (CDFChannelPtr)ep;
-		if(cdfp->updateCounter == 0) {
+
+		g_assert(NULL != fhp->readFeed);
+		new_ep = (entryPtr)(*(fhp->readFeed))(source);
+		if(NULL == new_ep)
+			return;		/* FIXME: the assert would be better but OCS still does not behave correctly! */
+		//g_assert(NULL != new_ep);
 		
-			new_cdfp = (CDFChannelPtr)readCDFFeed(cdfp->source);
-			g_assert(new_cdfp != NULL);
-			new_cdfp = (CDFChannelPtr)mergeCDFFeed(cdfp, new_cdfp);
-			g_assert(new_cdfp != NULL);
-			
-			g_mutex_lock(entries_lock);			
-			g_hash_table_insert(entries, key, (gpointer)new_cdfp);
-			g_mutex_unlock(entries_lock);
-			
-			gdk_threads_enter();
-			tmp_key = getMainFeedListViewSelection();	// FIXME: inperformant
-
-			if(NULL != tmp_key) {
-				if(0 == strcmp(tmp_key, new_cdfp->key)) {
-					clearItemList();
-					loadItemList(new_cdfp->key, NULL);
-				}
-			}
-
-			g_mutex_lock(entries_lock);
-			redrawFeedList();	// FIXME: maybe this is overkill
-			g_mutex_unlock (entries_lock);
-			
-			gdk_threads_leave();
-		}		
-	} else if(FST_OCS == ep->type) {
-	
-		dp = (directoryPtr)ep;
-		if(dp->updateCounter == 0) {
-			new_dp = (directoryPtr)readOCS(dp->source);		
-			// FIXME: free old OCS
-
-			g_mutex_lock(entries_lock);			
-			g_hash_table_insert(entries, key, (gpointer)new_dp);
-			g_mutex_unlock(entries_lock);
-			
-			gdk_threads_enter();
-
-			/* OCS directories can only be manually updated so
-			   we can always reload the item list */
-			clearItemList();
-			loadItemList(new_dp->key, NULL);
-
-			g_mutex_lock(entries_lock);
-			redrawFeedList();	// FIXME: maybe this is overkill
-			g_mutex_unlock (entries_lock);
-			
-			gdk_threads_leave();
+		/* we don't merge some types, e.g. OCS directories... */
+		if(NULL != fhp->mergeFeed) {
+			new_ep = (entryPtr)(*(fhp->mergeFeed))((gpointer)ep, (gpointer)new_ep);
+			g_assert(new_ep != NULL);
 		}
-	} else {
-	
-		g_assert(_("internal error! unknown entry type while updating!"));
+		
+		g_mutex_lock(feeds_lock);			
+		g_hash_table_insert(feeds, key, (gpointer)new_ep);
+		g_mutex_unlock(feeds_lock);
+			
+		gdk_threads_enter();
+		tmp_key = getMainFeedListViewSelection();	// FIXME: inperformant
+
+		if(NULL != tmp_key) {
+			if(0 == strcmp(tmp_key, new_ep->key)) {
+				clearItemList();
+				loadItemList(new_ep->key, NULL);
+			}
+		}
+
+		g_mutex_lock(feeds_lock);
+		redrawFeedList();	// FIXME: maybe this is overkill
+		g_mutex_unlock(feeds_lock);
+			
+		gdk_threads_leave();
 	}
 }
 
-static void updateEntries(gboolean autoupdate) {
+static void updateFeeds(gboolean autoupdate) {
 
 	/* we update in two steps, first we decrement all updateCounter by 1 */
 	if(autoupdate) {
-		g_mutex_lock(entries_lock);
-		g_hash_table_foreach(entries, doUpdateFeedCounter, NULL);
-		g_mutex_unlock(entries_lock);
+		g_mutex_lock(feeds_lock);
+		g_hash_table_foreach(feeds, doUpdateFeedCounter, NULL);
+		g_mutex_unlock(feeds_lock);
 	}
 	
 	/* second step - scan the feed list for feeds that have to be updated */
-	g_hash_table_foreach(entries, doUpdateEntries, NULL);	
+	g_hash_table_foreach(feeds, doUpdateFeeds, NULL);	
 }

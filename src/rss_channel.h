@@ -22,67 +22,57 @@
 #ifndef _RSS_CHANNEL_H
 #define _RSS_CHANNEL_H
 
+#include "backend.h"
 #include "rss_item.h"
 
 /* all versions */
-#define CHANNEL_TITLE		0
-#define CHANNEL_DESCRIPTION	1
-#define CHANNEL_LINK		2
-#define CHANNEL_IMAGE		3
+#define RSS_CHANNEL_TITLE		0
+#define RSS_CHANNEL_DESCRIPTION		1
+#define RSS_CHANNEL_LINK		2
+#define RSS_CHANNEL_IMAGE		3
 /* since 0.91 and in <dc:rights> */
-#define CHANNEL_COPYRIGHT	4
+#define RSS_CHANNEL_COPYRIGHT		4
 /* in 0.91, 0.92, 2.0 and <dc:language> */
-#define CHANNEL_LANGUAGE	5
+#define RSS_CHANNEL_LANGUAGE		5
 /* in 0.91, 0.92, 2.0 */
-#define CHANNEL_LASTBUILDDATE	6
-#define CHANNEL_PUBDATE		7
+#define RSS_CHANNEL_LASTBUILDDATE	6
+#define RSS_CHANNEL_PUBDATE		7
 /* in 0.91, 0.92, 2.0 and <dc:publisher> */
-#define CHANNEL_WEBMASTER	8
+#define RSS_CHANNEL_WEBMASTER		8
 /* in 0.91, 0.92, 2.0 and <dc:creator> */
-#define CHANNEL_MANAGINGEDITOR	9
+#define RSS_CHANNEL_MANAGINGEDITOR	9
 /* 0.92, 2.0 and <dc:subject> */
-#define CHANNEL_CATEGORY	10
+#define RSS_CHANNEL_CATEGORY		10
 
-#define CHANNEL_MAX_TAG		11
+#define RSS_CHANNEL_MAX_TAG		11
 
-typedef struct channel {
-	/* common attributes, order and position important ! */
-	gint		type;		/* FST_FEED for RSS channels */
+typedef struct RSSChannel {
+	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
+	   this structure, order is important! */
+	gint		type;		/* FST_RSS for RSS channels */
 	gchar		*key;		/* configuration storage key */	
 	gchar		*keyprefix;	
-	gchar		*usertitle;	/* feed title may be modified by user */	
-	gchar 		*source;	/* source url */
-	gboolean	available;	/* flag to signalize load/update errors */
-	gint		updateCounter;	/* counter of minutes till next feed refresh */
-				
+			
 	/* standard namespace infos */
-	gchar		*tags[CHANNEL_MAX_TAG];
+	gchar		*tags[RSS_CHANNEL_MAX_TAG];
 
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */
 					   
-	itemPtr 	items;		/* the item list */
+	GSList		*items;		/* the item list */
 	
 	/* other information */
+	gchar		*usertitle;	/* feed title may be modified by user */	
+	gchar 		*source;	/* source url */
+	gboolean	available;	/* flag to signalize load/update errors */
 	gchar		*time;		/* last feed build/creation time */	
 	gchar 		*encoding;	/* xml encoding */
-	gint		updateInterval;	/* feed refresh interval */
+	gint		updateInterval;	/* user defined feed refresh interval */
+	gint		defaultUpdateInterval;	/* feed defined refresh interval */
+	gint		updateCounter;	/* counter of minutes till next feed refresh */	
 	gint		unreadCounter;	/* counter of unread items */
-} *channelPtr;
+} *RSSChannelPtr;
 
-/* -------------------------------------------------------- */
-/* RSS only methods used during the HTML processing	    */
-/* -------------------------------------------------------- */
-
-GHashTable * 	getFeedNsHandler(gpointer cp);	/* returns the Hashtable with the namespace I/O-handlers */
-gchar * 	getFeedTag(gpointer cp, int tag);
-gint		getRSSFeedUnreadCount(gchar *feedkey);
-
-/* -------------------------------------------------------- */
-/* RSS read/update methods				    */
-/* -------------------------------------------------------- */
-
-channelPtr readRSSFeed(gchar *url);
-channelPtr mergeRSSFeed(channelPtr old_cp, channelPtr new_cp);
+feedHandlerPtr	initRSSFeedHandler(void);
 
 #endif

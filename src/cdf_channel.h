@@ -22,9 +22,8 @@
 #ifndef _CDF_CHANNEL_H
 #define _CDF_CHANNEL_H
 
-#include "cdf_item.h"
+#include "backend.h"
 
-/* all versions */
 #define CDF_CHANNEL_TITLE		0
 #define CDF_CHANNEL_DESCRIPTION		1
 #define CDF_CHANNEL_IMAGE		2
@@ -36,42 +35,31 @@
 #define CDF_CHANNEL_MAX_TAG		7
 
 typedef struct CDFChannel {
-	/* common attributes, order and position important ! */
-	gint		type;		/* FST_FEED for RSS channels */
+	/* type, key and keyprefix HAVE TO BE THE FIRST elements of 
+	   this structure, order is important! */
+	gint		type;		/* FST_CDF for CDF channels */
 	gchar		*key;		/* configuration storage key */	
-	gchar		*keyprefix;	
-	gchar		*usertitle;	/* feed title may be modified by user */	
-	gchar 		*source;	/* source url */
-	gboolean	available;	/* flag to signalize load/update errors */
-	gint		updateCounter;	/* counter of minutes till next feed refresh */
-				
+	gchar		*keyprefix;	/* folder key the feed is stored in */
+
 	/* standard namespace infos */
 	gchar		*tags[CDF_CHANNEL_MAX_TAG];
 
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */
 					   
-	CDFItemPtr 	items;		/* the item list */
+	GSList		*items;		/* the item list */
 	
 	/* other information */
+	gchar		*usertitle;	/* feed title may be modified by user */	
+	gchar 		*source;	/* source url */	
+	gboolean	available;	/* flag to signalize load/update errors */
 	gchar		*time;		/* last feed build/creation time */	
 	gchar 		*encoding;	/* xml encoding */
 	gint		updateInterval;	/* feed refresh interval */
+	gint		updateCounter;	/* counter of minutes till next feed refresh */	
 	gint		unreadCounter;	/* counter of unread items */
 } *CDFChannelPtr;
 
-/* -------------------------------------------------------- */
-/* CDF only methods used during the HTML processing	    */
-/* -------------------------------------------------------- */
-
-gchar * 	getCDFFeedTag(gpointer cp, int tag);
-gint		getCDFFeedUnreadCount(gchar *feedkey);
-
-/* -------------------------------------------------------- */
-/* CDF read/update methods				    */
-/* -------------------------------------------------------- */
-
-CDFChannelPtr readCDFFeed(gchar *url);
-CDFChannelPtr mergeCDFFeed(CDFChannelPtr old_cp, CDFChannelPtr new_cp);
+feedHandlerPtr initCDFFeedHandler(void);
 
 #endif

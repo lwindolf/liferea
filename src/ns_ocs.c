@@ -64,6 +64,9 @@ gchar * ns_ocs_getOCSNsPrefix(void) { return ns_ocs_prefix; }
    Note: this demands that each element types tags array has to be
          the same structure and content order... */
 void ns_ocs_parseTag(gint type, gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
+	directoryPtr	dp = (directoryPtr)p;
+	dirEntryPtr	dep = (dirEntryPtr)p;
+	formatPtr	fp = (formatPtr)p;
 	int 		i;
 	gchar		*value;
 	
@@ -83,13 +86,13 @@ void ns_ocs_parseTag(gint type, gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
 					/* map the value to one of the RSS fields */
 					switch(type) {
 						case TYPE_DIRECTORY:
-							setOCSDirectoryTag(p, mapTo[i], g_strdup(value));
+							dp->tags[mapTo[i]] = g_strdup(value);
 							break;
 						case TYPE_CHANNEL:
-							setOCSDirEntryTag(p, mapTo[i], g_strdup(value));
+							dep->tags[mapTo[i]] = g_strdup(value);
 							break;
 						case TYPE_FORMAT:
-							setOCSFormatTag(p, mapTo[i], g_strdup(value));
+							fp->tags[mapTo[i]] = g_strdup(value);
 							break;
 						default:
 							g_error(_("internal OCS namespace parsing error!"));
@@ -104,15 +107,15 @@ void ns_ocs_parseTag(gint type, gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 void ns_ocs_parseDirectoryTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_ocs_parseTag(TYPE_DIRECTORY, (directoryPtr)p, doc, cur);
+	ns_ocs_parseTag(TYPE_DIRECTORY, p, doc, cur);
 }
 
 void ns_ocs_parseChannelTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_ocs_parseTag(TYPE_CHANNEL, (dirEntryPtr)p, doc, cur);
+	ns_ocs_parseTag(TYPE_CHANNEL, p, doc, cur);
 }
 
 void ns_ocs_parseFormatTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_ocs_parseTag(TYPE_FORMAT, (formatPtr)p, doc, cur);
+	ns_ocs_parseTag(TYPE_FORMAT, p, doc, cur);
 }
 
 OCSNsHandler *ns_ocs_getOCSNsHandler(void) {
