@@ -31,6 +31,7 @@
 #include "ui_mainwindow.h"
 #include "ui_tray.h"
 #include "ui_feed.h"
+#include "ui_vfolder.h"
 #include "update.h"
 #include "htmlview.h"
 #include "favicon.h"
@@ -501,9 +502,7 @@ void ui_feedlist_delete(nodePtr ptr) {
 				   G_CALLBACK (ui_feedlist_delete_response_cb), ptr);
 }
 
-void on_popup_delete(gpointer callback_data,
-                                             guint callback_action,
-                                             GtkWidget *widget) {
+void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	nodePtr ptr = (nodePtr)callback_data;
 	
 	ui_feedlist_delete(ptr);
@@ -514,20 +513,23 @@ void on_popup_delete(gpointer callback_data,
 /* property dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void on_popup_prop_selected(gpointer callback_data,
-                                             guint callback_action,
-                                             GtkWidget *widget) {
+void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	feedPtr		fp = (feedPtr)callback_data;
 	
-	if(!fp || !IS_FEED(feed_get_type(fp))) {
-		g_message(_("You must select a feed entry"));
-		ui_show_error_box(_("You must select a feed entry."));
-		return;
+	g_assert(NULL != fp);
+	if(NULL != fp) {
+		if(IS_FEED(feed_get_type(fp))) {
+			ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
+//ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow),fp); // for debugging
+			return;
+		} 
+		if(FST_VFOLDER == feed_get_type(fp)) {
+			ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow),fp);
+			return;
+		}
 	}
-	
-	/* prop dialog may not yet exist */
-	ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
-	return;
+	g_message(_("You must select a feed entry"));
+	ui_show_error_box(_("You must select a feed entry."));
 }
 
 /*------------------------------------------------------------------------------*/

@@ -21,35 +21,54 @@
 #ifndef _RULE_H
 #define _RULE_H
 
-/* structure to store a filter instance */
+/** structure to store a rule instance */
 typedef struct rule {
 	feedPtr		fp;		/* the feed the filter is applied to */
 	gchar		*value;		/* the value of the rule, e.g. a search text */
 	gpointer	ruleInfo;	/* info structure about rule check function */
-	/* could be extended... */
 } *rulePtr;
 
-/* initializes the rule handling */
+/** rule info structure */
+typedef struct ruleInfo {
+	gpointer		ruleFunc;	/* the rules test function */
+	gchar			*ruleId;	/* rule id for cache file storage */
+	gchar			*title;		/* rule type title for dialogs */
+	gboolean		needsParameter;	/* some rules may require no parameter... */
+	gboolean		additive;	/* is it a removing or adding rule */
+} *ruleInfoPtr;
+
+/** the list of implemented rules */
+extern struct ruleInfo *ruleFunctions;
+extern gint nrOfRuleFunctions;
+
+/** initializes the rule handling */
 void rule_init(void);
 
-/* looks up the given rule id and sets up a new rule
-   structure with for the given vfolder and rule value */
+/** 
+ * Looks up the given rule id and sets up a new rule
+ * structure with for the given vfolder and rule value 
+ */
 rulePtr rule_new(feedPtr fp, gchar *ruleId, gchar *value);
 
-/* returns TRUE if the rule is additive... */
+/**
+ * Returns TRUE if the rule is additive... 
+ */
 gboolean rule_is_additive(rulePtr rp);
 
-/* Checks a new item against all additive rules of all feeds
-   except the addition rules of the parent feed. In the second
-   step the function checks wether there are parent feed rules,
-   which do exclude this item. If there is such a rule the 
-   function returns FALSE, otherwise TRUE to signalize if 
-   this new item should be added. 
+/**
+ * Checks a new item against all additive rules of all feeds
+ * except the addition rules of the parent feed. In the second
+ * step the function checks wether there are parent feed rules,
+ * which do exclude this item. If there is such a rule the 
+ * function returns FALSE, otherwise TRUE to signalize if 
+ * this new item should be added. 
  */
 gboolean rule_check_item(rulePtr rp, itemPtr ip);
 
-/* returns a title to be displayed in the filter editing dialog,
-   the returned title must be freed */
+/**
+ * Returns a title to be displayed in the filter editing dialog,
+ * the returned title must be freed 
+ */
 gchar * rule_get_title(rulePtr rp);
 
 #endif

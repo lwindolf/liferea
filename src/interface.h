@@ -11,3 +11,4 @@ GtkWidget* create_foldernamedialog (void);
 GtkWidget* create_feedsterdialog (void);
 GtkWidget* create_aboutdialog (void);
 GtkWidget* create_authdialog (void);
+GtkWidget* create_vfolderdialog (void);

@@ -178,11 +178,12 @@ GtkWidget* ui_feed_newdialog_new (GtkWindow *parent) {
 }
 
 GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
-	GtkWidget *propdialog;
-	struct fp_prop_ui_data *ui_data = g_new0(struct fp_prop_ui_data, 1);
-	int defaultInterval;
-	gchar *defaultIntervalStr;
+	GtkWidget		*propdialog;
+	struct fp_prop_ui_data	*ui_data;
+	int 			defaultInterval;
+	gchar 			*defaultIntervalStr;
 
+	ui_data = g_new0(struct fp_prop_ui_data, 1);
 	ui_data->fp = fp;
 	
 	/* Create the dialog */
