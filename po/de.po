@@ -1177,7 +1177,7 @@ msgstr ""
 "Code von anderen Projekten\n"
 "\n"
 "Anders Carlsson <andersca@gnu.org> (Kontrollleisten-Icon Unterstützung)\n"
-"Philippe Martin, Brion Vibber (Favicon Unterstützung)Jonathan Blandford "
+"Philippe Martin, Brion Vibber (Favicon Unterstützung)Jonathan Blandford\n"
 "<jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 

@@ -1315,6 +1315,9 @@ void feed_free(feedPtr fp) {
 		ui_itemlist_clear();
 	}
 	
+	/* removes an existing notification for this feed */
+	ui_notification_remove_feed(fp);
+	
 	/* free UI info */
 	if(fp->ui_data)
 		ui_folder_remove_node((nodePtr)fp);

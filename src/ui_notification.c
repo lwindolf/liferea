@@ -1,4 +1,5 @@
-/** @file ui_notification.c mini popup windows
+/** 
+ * @file ui_notification.c mini popup windows
  *
  * Copyright (c) 2004, Karl Soderstrom <ks@xanadunet.net>
  *	      
@@ -123,8 +124,7 @@ void ui_notification_update(const feedPtr feed_p) {
 	}
 	
 	notifCheckFeedNotif (curNotif_p);
-}
-		
+}	
 
 static feedNotif_t *notifCreateFeedNotif (feedPtr feed_p) {
 	feedNotif_t *feedNotif_p = NULL;
@@ -221,6 +221,23 @@ static void notifRemoveFeedNotif (feedNotif_t *feedNotif_p) {
 		feedNotif_p->timerTag = 0;
 	}
 	feedNotif_p->newCount = feed_get_new_counter(feedNotif_p->feed_p);
+}
+
+/* to be called when a feed is removed and needs to be removed
+   from the notification window too */
+void ui_notification_remove_feed(feedPtr fp) {
+	feedNotif_t	*feedNotif_p;
+	GSList		*iter; 
+	
+	iter = notifications_p;
+	while(NULL != iter) {
+		feedNotif_p = iter->data;
+		if(fp == feedNotif_p->feed_p) {
+			notifRemoveFeedNotif(feedNotif_p);
+			return;
+		}
+		iter = g_slist_next(iter);
+	}
 }
 
 static GtkWidget *notifCreateWin (void) {
