@@ -570,7 +570,7 @@ static gboolean ui_itemlist_find_unread_item(void) {
 				ui_itemlist_select(iter);
 				itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 			} else {
-				itemlist_mark_all_read(ip->fp);
+				itemlist_mark_all_read((nodePtr)ip->fp);
 			}
 			return TRUE;
 		}
