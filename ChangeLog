@@ -1,8 +1,10 @@
-2003-12-??  Lars Lindner <lars.lindner@gmx.net>
+2004-01-??  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.6
 	
 	* Added missing pubDate support for RSS 2.0 items.
+	* Added support for the ttl tag in RSS channels
+	  as proposed by Bud Hovell.
 	* Added .desktop file and its install targets as 
 	  proposed by John McKnight.
 	* Added a window position save patch from pasp.

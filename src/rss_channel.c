@@ -219,6 +219,12 @@ static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 			
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
+			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			cp->updateInterval = atoi(tmp);
+			g_free(tmp);
+		}
+	
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
 			if(NULL != cur->ns->prefix) {
@@ -265,13 +271,13 @@ static void parseTextInput(RSSChannelPtr cp, xmlNodePtr cur) {
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
-		if(!xmlStrcmp(cur->name, (const xmlChar *)"title"))
+		if(!xmlStrcmp(cur->name, BAD_CAST"title"))
 			cp->tiTitle = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(!xmlStrcmp(cur->name, (const xmlChar *)"description"))
+		if(!xmlStrcmp(cur->name, BAD_CAST"description"))
 			cp->tiDescription = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(!xmlStrcmp(cur->name, (const xmlChar *)"name"))
+		if(!xmlStrcmp(cur->name, BAD_CAST"name"))
 			cp->tiName = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(!xmlStrcmp(cur->name, (const xmlChar *)"link"))
+		if(!xmlStrcmp(cur->name, BAD_CAST"link"))
 			cp->tiLink = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			
 		cur = cur->next;
@@ -292,7 +298,7 @@ static void parseImage(RSSChannelPtr cp, xmlNodePtr cur) {
 
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"url"))
+		if (!xmlStrcmp(cur->name, BAD_CAST"url"))
 			cp->tags[RSS_CHANNEL_IMAGE] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));			
 			
 		cur = cur->next;
@@ -320,26 +326,23 @@ static void readRSSFeed(feedPtr fp) {
 	cp->updateInterval = -1;
 
 	while(1) {
-		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
-		if(NULL == doc) {
+		if(NULL == (doc = xmlRecoverMemory(fp->data, strlen(fp->data)))) {
 			print_status(g_strdup_printf(_("XML error while reading feed! Feed \"%s\" could not be loaded!"), fp->source));
 			error = 1;
 			break;
 		}
 
-		cur = xmlDocGetRootElement(doc);
-
-		if(NULL == cur) {
+		if(NULL == (cur = xmlDocGetRootElement(doc))) {
 			print_status(_("Empty document!"));
 			xmlFreeDoc(doc);
 			error = 1;
 			break;			
 		}
 
-		if(!xmlStrcmp(cur->name, (const xmlChar *)"rss")) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 			rdf = 0;
-		} else if(!xmlStrcmp(cur->name, (const xmlChar *)"rdf") || 
-                	  !xmlStrcmp(cur->name, (const xmlChar *)"RDF")) {
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
+                	  !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 			rdf = 1;
 		} else {
 			print_status(_("Could not find RDF/RSS header!"));
@@ -354,7 +357,7 @@ static void readRSSFeed(feedPtr fp) {
 		}
 	
 		while (cur != NULL) {
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "channel"))) {
+			if ((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
 				parseChannel(cp, cur);
 				g_assert(NULL != cur);
 				if(0 == rdf)
@@ -370,20 +373,20 @@ static void readRSSFeed(feedPtr fp) {
 		/* parse channel contents */
 		while(cur != NULL) {
 			/* save link to channel image */
-			if((!xmlStrcmp(cur->name, (const xmlChar *) "image"))) {
+			if((!xmlStrcmp(cur->name, BAD_CAST"image"))) {
 				parseImage(cp, cur);
 			}
 
 			/* no matter if we parse Userland or Netscape, there should be
 			   only one text[iI]nput per channel and parsing the rdf:ressource
 			   one should not harm */
-			if((!xmlStrcmp(cur->name, (const xmlChar *) "textinput")) ||
-			   (!xmlStrcmp(cur->name, (const xmlChar *) "textInput"))) {
+			if((!xmlStrcmp(cur->name, BAD_CAST"textinput")) ||
+			   (!xmlStrcmp(cur->name, BAD_CAST"textInput"))) {
 				parseTextInput(cp, cur);
 			}
 			
 			/* collect channel items */
-			if((!xmlStrcmp(cur->name, (const xmlChar *) "item"))) {
+			if((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
 				if(NULL != (ip = parseRSSItem(fp, cp, cur))) {
 					if(0 == ip->time)
 						ip->time = cp->time;
