@@ -238,7 +238,7 @@ static void attribs_render_str(gpointer data, struct displayset *displayset, gpo
 
 static void attribs_render_image(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar *tmp = g_strdup_printf("<p>" IMG_START "%s" IMG_END "</p>", (gchar*)data);
-	addToHTMLBufferFast(&(displayset->head), tmp);
+	addToHTMLBufferFast(&(displayset->body), tmp);
 	g_free(tmp);
 }
 
@@ -299,7 +299,6 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "webmaster", _("webmaster"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "category", _("category"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generator"));
-	metadata_register_renderer("imageUrl", attribs_render_image, NULL);	
 	metadata_register_renderer("textInput", attribs_render_foot_text, NULL);
 	metadata_register_renderer("commentsUri", attribs_render_comments_uri, NULL);
 	metadata_register_renderer("enclosure", attribs_render_enclosure, NULL);
