@@ -645,12 +645,6 @@ gint feed_process_update_results(gpointer data) {
 			feed_set_update_interval(request->fp, feed_get_default_update_interval(new_fp));
 		}
 	
-		/* Note the items but be cleared before the may get 
-		   deleted when merging!!! */
-		if((feedPtr)ui_feedlist_get_selected() == request->fp) {
-			ui_itemlist_clear();
-		}
-		
 		if(TRUE == fhp->merge)
 			/* If the feed type supports merging... */
 			feed_merge(request->fp, new_fp);

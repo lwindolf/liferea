@@ -131,6 +131,7 @@ void ui_itemlist_reset_date_format(void) {
 void ui_free_item_ui_data(itemPtr ip) {
 
 	g_assert(ip->ui_data);
+	gtk_tree_store_remove(GTK_TREE_STORE(itemstore), &((ui_item_data*)ip->ui_data)->row);
 	g_free(ip->ui_data);
 	ip->ui_data = NULL;
 }
@@ -142,7 +143,13 @@ static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
 	itemPtr ip;
 	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter,
 				    IS_PTR, &ip, -1);
-	ui_free_item_ui_data(ip);
+	
+	/* The ui_free_item_ui_data method cannot be used because it
+	   modifies the tree store and messes up the
+	   gtk_tree_store_foreach function. */
+	g_free(ip->ui_data);
+	ip->ui_data = NULL;
+	
 	return FALSE;
 }
 
