@@ -77,52 +77,41 @@ extern char *useragent;
  *	-1	Error occurred (netio_error is set)
  */
 int NetPoll (struct feed_request * cur_ptr, int * my_socket, int rw) {
-	fd_set rfdsr;
-	fd_set rfdsw;
+	fd_set rfds;
 	struct timeval tv;
 	int retval;				/* FD_ISSET + assert == Heisenbug? */
 	
 	/* Set global network timeout */
-	tv.tv_sec = NET_TIMEOUT;
-	tv.tv_usec = 0;
 	
-	FD_ZERO(&rfdsr);
-	FD_ZERO(&rfdsw);
-	
-	if (rw == NET_READ) {
-		FD_SET(*my_socket, &rfdsr);
-		if (select (*my_socket+1, &rfdsr, NULL, NULL, &tv) == 0) {
-			/* Timed out */
-			cur_ptr->netio_error = NET_ERR_TIMEOUT;
-			return -1;
-		}
-		retval = FD_ISSET (*my_socket, &rfdsr);
-		assert (retval);
-		if (!retval) {
-			/* Wtf? */
-			cur_ptr->netio_error = NET_ERR_UNKNOWN;
-			return -1;
-		}
-	} else if (rw == NET_WRITE) {
-		FD_SET(*my_socket, &rfdsw);
-		if (select (*my_socket+1, NULL, &rfdsw, NULL, &tv) == 0) {
-			/* Timed out */
-			cur_ptr->netio_error = NET_ERR_TIMEOUT;
-			return -1;
-		}
-		retval = FD_ISSET (*my_socket, &rfdsw);
-		assert (retval);
-		if (!retval) {
-			/* Wtf? */
-			cur_ptr->netio_error = NET_ERR_UNKNOWN;
-			return -1;
-		}
-	} else {
+	if ((rw != NET_READ) && (rw != NET_WRITE)) {
 		cur_ptr->netio_error = NET_ERR_UNKNOWN;
 		return -1;
 	}
 	
-	return 0;
+	do {
+		tv.tv_sec = NET_TIMEOUT;
+		tv.tv_usec = 0;
+		FD_ZERO(&rfds);
+		FD_SET(*my_socket, &rfds);
+		if (rw == NET_READ)
+			retval = select (*my_socket+1, &rfds, NULL, NULL, &tv);
+		else
+			retval = select (*my_socket+1, NULL, &rfds, NULL, &tv);
+	} while((retval == -1) && (errno = EINTR));
+
+	if (retval == -1) {
+		perror("Select returned error in netio: ");
+		cur_ptr->netio_error = NET_ERR_TIMEOUT;
+		return -1;
+	}
+	
+	if (!FD_ISSET(*my_socket, &rfds)) {
+		/* Timed out */
+		cur_ptr->netio_error = NET_ERR_TIMEOUT;
+		return -1;
+	} else {
+		return 0;
+	}
 }
 
 
