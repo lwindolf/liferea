@@ -804,51 +804,6 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 
 #include "../debug.h"
 
-/* filter was taken from Snownews */
-static char* filter(gchar *cmd, gchar *data) {
-	int fd, status;
-	gchar *command;
-	const gchar *tmpdir = g_get_tmp_dir();
-	char *tmpfilename;
-	char		*out = NULL;
-	FILE *file, *p;
-	GError *err = NULL;
-	
-	tmpfilename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea-XXXXXX", tmpdir);
-	
-	fd = g_mkstemp(tmpfilename);
-	
-	if (fd == -1) {
-		odebug1("Error opening temp file %s to use for filtering!", tmpfilename);
-		g_free(tmpfilename);
-		return NULL;
-	}
-	
-	
-	file = fdopen (fd, "w");
-	
-	fwrite (data, strlen(data), 1, file);
-	fclose (file);
-	
-	/* Pipe temp file contents to process and popen it. */
-	command = g_strdup_printf ("sh -c '%s < %s'", cmd, tmpfilename);
-	out = NULL;
-	if (FALSE == g_spawn_command_line_sync(command, &out, NULL, &status, &err)) {
-		g_warning("Error reading from conversion filter: %s", err->message);
-		g_error_free(err);
-		g_free(out);
-		unlink (tmpfilename);
-		g_free(tmpfilename);
-		return NULL;
-	}
-	
-	
-	/* Clean up. */
-	unlink (tmpfilename);
-	g_free(tmpfilename);
-	return out;
-}
-
 /* Downloads a feed and returns the data or NULL as return value.
    The url of the has to be passed in the feed structure.
    If the the webserver reports a permanent redirection, the
@@ -875,48 +830,12 @@ char * downloadURL(struct feed_request *request) {
 	} else {
 		/* no :// so we assume its a local path or command */
 		
-		if(request->feedurl[0] == '|') {
-			/* if the first char is a | we have a pipe else a file */
-			f = popen(&request->feedurl[1], "r");
-			if(NULL != f) {
-				i = 0;
-				while(!feof(f)) {
-					++i;
-					data = g_realloc(data, i*1024);
-					n = fread(&data[(i-1)*1024], 1, 1024, f);
-				}
-				pclose(f);
-				if (n == 1024) data = g_realloc(data, (i+1)*1024);
-				data[(i-1)*1024+n] = 0;
-			} else {
-				ui_mainwindow_set_status_bar(_("Could not open pipe \"%s\"!"), request->feedurl);
-			}
-		} else if(g_file_test(request->feedurl, G_FILE_TEST_EXISTS)) {
-			/* we have a file... */
-			if((!g_file_get_contents(request->feedurl, &data, NULL, NULL)) || (*data == 0)) {
-				request->problem = 1;				
-				ui_mainwindow_set_status_bar(_("Could not open file \"%s\"!"), request->feedurl);
-			} else {
-				g_assert(NULL != data);
-			}
-		} else {
-			request->problem = 1;
-			ui_mainwindow_set_status_bar(_("There is no file \"%s\"!"), request->feedurl);
-		}
-		
+ else 		
 		/* fake a status */
 		request->lasthttpstatus = 0;
 		request->lastmodified = NULL;
 	}
 	
-	/* And execute the postfilter */
-	if (data != NULL && request->filtercmd != NULL) {
-		tmp = filter(request->filtercmd, data);
-		if (tmp != NULL) {
-			g_free(data);
-			data = tmp;
-		}
-	}
 	request->data = data;
 	debug3(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, data: %d", request->lasthttpstatus, request->problem, request->data);
 	return data;

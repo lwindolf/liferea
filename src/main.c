@@ -128,14 +128,12 @@ int main(int argc, char *argv[]) {
 	/* order is important! */
 	initConfig();			/* initialize gconf */
 	ui_htmlview_init();		/* setup HTML widgets */
+	download_init();		/* Initialize the download subsystem */
 	mainwindow = ui_mainwindow_new();
 	loadConfig();			/* maybe this should be merged with initConfig() */
 	feed_init();			/* register feed types */
 	ui_init();			/* initialize gconf configured GUI behaviour */
 
-	/* setup the processing of feed update results */
-	ui_timeout_add(100, feed_process_update_results, NULL);
-	
 	gtk_widget_show(mainwindow);
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
 	

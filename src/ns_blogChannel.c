@@ -19,9 +19,9 @@
 */
 
 #include "htmlview.h"
-#include "net/netio.h"
 #include "ns_blogChannel.h"
 #include "common.h"
+#include "update.h"
 #include <string.h>
 
 #define BLOGROLL_START		"<p><div class=\"blogchanneltitle\"><b>BlogRoll</b></div></p>"
@@ -82,23 +82,23 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
    parse and output all depth 1 outline tags as
    HTML into a buffer */
 static gchar * getOutlineList(gchar *url) {
-	struct feed_request	*request;
+	struct request	*request;
 	xmlDocPtr 		doc = NULL;
 	xmlNodePtr 		cur;
-	gchar			*data, *tmp, *buffer;
+	gchar			*tmp, *buffer;
 	
-	request = update_request_new(NULL);
-	request->feedurl = g_strdup(url);
-	data = downloadURL(request);
-	update_request_free(request);
+	request = download_request_new();
+	request->source = g_strdup(url);
+	download_process(request);
 
-	if(NULL == data)
+	if (request->data == NULL) {
+		download_request_free(request);
 		return NULL;
+	}
 
 	buffer = NULL;	/* the following code somewhat duplicates opml.c */
 	while(1) {
-		doc = xmlRecoverMemory(data, strlen(data));
-		g_free(data);
+		doc = xmlRecoverMemory(request->data, request->size);
 		
 		if(NULL == doc)
 			break;
@@ -135,7 +135,8 @@ static gchar * getOutlineList(gchar *url) {
 
 	if(NULL != doc)
 		xmlFreeDoc(doc);
-		
+
+	download_request_free(request);		
 	return buffer;
 }
 

@@ -22,6 +22,24 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
+dnl libcurl support
+AC_MSG_CHECKING([libcurl])
+if curl-config --libs > /dev/null 2>&1; then
+	AC_MSG_RESULT(yes)
+	AM_CONDITIONAL(USE_LIBCURL, true)
+	CURL_CFLAGS="`curl-config --cflags`"
+	CURL_LIBS="`curl-config --libs`"
+	enable_libcurl=yes
+else
+	enable_libcurl=no
+	AC_MSG_RESULT(no)
+	AM_CONDITIONAL(USE_LIBCURL, false)
+fi
+
+AC_SUBST(CURL_CFLAGS)
+AC_SUBST(CURL_LIBS)
+
+
 html_modules=
 
 AC_MSG_CHECKING([for GtkHTML2 support])
@@ -159,3 +177,5 @@ echo
 echo Build Mozilla Plugin............ : $enable_mozilla
 echo Build GtkHTML Plugin............ : $enable_gtkhtml2
 echo 
+echo Use libcurl download library.... : $enable_libcurl
+echo

@@ -35,7 +35,6 @@
 #include "htmlview.h"
 #include "favicon.h"
 #include "debug.h"
-#include "net/netio.h"
 
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
@@ -408,7 +407,7 @@ void on_popup_refresh_selected(gpointer callback_data,
 		return;
 	}
 	
-	if(update_thread_is_online()) {
+	if(download_is_online()) {
 		if (IS_FEED(ptr->type))
 			feed_schedule_update((feedPtr)ptr);
 		else
@@ -551,9 +550,9 @@ void on_popup_prop_selected(gpointer callback_data,
 /*------------------------------------------------------------------------------*/
 
 void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboolean showPropDialog) {
-	struct feed_request 	*request;
+	struct request 	*request;
 	feedPtr			fp;
-	gchar			*data, *tmp;
+	gchar			*tmp;
 	int			pos;
 	folderPtr		parent;
 	
@@ -563,13 +562,14 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 	   waiting for the end of other updates and to
 	   get control back when feed is downloaded to show
 	   properties dialog) */
-	request = update_request_new(NULL);
-	request->feedurl = g_strdup(source);
-	request->filtercmd = g_strdup(filter);
-	data = downloadURL(request);	/* FIXME: The downloading should not block? */
+	request = download_request_new(NULL);
+	request->source = g_strdup(source);
+	if (filter != NULL)
+		request->filtercmd = g_strdup(filter);
+	download_process(request);	/* FIXME: The downloading should not block? */
 	
 	/* maybe we need authentication */
-	if(403 == request->lasthttpstatus) {		
+	if(403 == request->httpstatus) {		
 		authdialog = create_authdialog();
 		g_print("FIXME!!!\n");
 		/*ui_feedlist_new_subscription(source, filter, showPropDialog);*/
@@ -579,7 +579,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 		tmp = conf_new_id();
 		feed_set_id(fp, tmp);
 		g_free(tmp);
-		feed_set_source(fp, request->feedurl);
+		feed_set_source(fp, request->source);
 		feed_set_filter(fp, filter);
 		favicon_download(fp);		// FIXME: this blocks the program!!!
 		
@@ -587,11 +587,11 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 		ui_folder_add_feed(parent, fp, pos);
 		
 		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
-		if(data == NULL) {
+		if(request->data == NULL) {
 			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 		} else {
 			gchar *tmp;
-			fp->fhp = feed_parse(fp, data, TRUE);
+			fp->fhp = feed_parse(fp, request->data, TRUE);
 			tmp = filter_title(g_strdup(feed_get_title(fp)));
 			feed_set_title(fp, tmp);
 			g_free(tmp);
@@ -609,8 +609,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 			}
 		}
 
-		g_free(data);
-		update_request_free(request);
+		download_request_free(request);
 		ui_feedlist_select((nodePtr)fp);
 	}
 	debug_exit("ui_feedlist_new_subscription");
@@ -680,7 +679,7 @@ static void ui_feedlist_check_update_counter(feedPtr fp) {
 gboolean ui_feedlist_auto_update(void *data) {
 	debug_enter("ui_feedlist_auto_update");
 
-	if(update_thread_is_online()) {
+	if(download_is_online()) {
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)ui_feedlist_check_update_counter);
 	} else {
 		debug0(DEBUG_UPDATE, "no update processing because we are offline!");

@@ -50,7 +50,7 @@ enum node_types {
 #define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
 
 struct feedhandler;
-
+struct request;
 /* ------------------------------------------------------------ */
 /* Feed structure                                               */
 /* ------------------------------------------------------------ */
@@ -89,9 +89,9 @@ typedef struct feed {
 	GSList		*filter;		/**< list of filters applied to this feed */
 	
 	/* feed properties used for updating */
+	GTimeVal	lastModified; /**< Date at which the feed last changed */
 	GTimeVal	lastPoll;	/**< time at which the feed was last updated */
-	gboolean	updateRequested;	/**< flag set when update in progress */
-	gpointer	*request;		/**< update request structure */
+	struct request	*request;		/**< update request structure */
 
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
@@ -172,7 +172,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover);
  * If there is a result pending its data is parsed and merged
  * against the feed it belongs to.
  */
-gint feed_process_update_results(gpointer data);
+void feed_process_update_result(struct request *request);
 
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/

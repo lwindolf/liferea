@@ -78,4 +78,5 @@ liferea_bin_SOURCES = \
 	update.c update.h \
 	vfolder.c vfolder.h
 
-liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ $(INTLLIBS)
+liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ $(CURL_LIBS) $ $(INTLLIBS)
+

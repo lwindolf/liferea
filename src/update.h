@@ -22,8 +22,16 @@
 #ifndef _UPDATE_H
 #define _UPDATE_H
 
+#include <time.h>
 #include <glib.h>
-#include "feed.h"
+
+struct request;
+
+/**
+ *  This callback should not free the request structure. It will be
+ *  freed by the download system after the callback returns.
+ */
+typedef void (*request_cb)(struct request *request);
 
 /** 
  * The feed request structure is used in two places, on the one
@@ -33,23 +41,28 @@
  * the SnowNews netio.c code which is displayed in the GUI. 
  */
 
-struct feed_request {
+struct request {
 	
-	char * 	feedurl;		/**< Non hashified URL set from the requestion function (Or a command, etc....) */
-	char * filtercmd;		/**< Command to run to convert the input into a valid feed */
-	char * 	lastmodified; 		/**< Content of header as sent by the server. */
-	int 	lasthttpstatus;		/**< last HTTP status :-)*/
-	char *	authinfo;		/**< HTTP authinfo string. */
-	char *	servauth;		/**< Server supplied authorization header. */
-	char *	cookies;		/**< Login cookies for this feed. */
-	int 	problem;		/**< Set if there was a problem downloading the feed. */
-	char *	data;			/**< newly downloaded feed data to be parsed */
-	gboolean updateRequested; 	/**< Lock used in order to insure that a feed is being updated only once */
-	feedPtr	fp;			/**< pointer to feed structure which is to be updated */
-	int size;				/**< length of received data*/
+	/* Set by requester */
+	gchar *source; /**< Location of the source. If it starts with
+				   '|', it is a command. If it contains "://",
+				   then it is parsed as a URL, otherwise it is a
+				   filename. Eventually, everything should be a
+				   URL. Use file:// and exec:// */
+	gchar *filtercmd; /**< Command will filter output of URL */
+	request_cb callback; /**< Function to be called after retreival */
+	gpointer user_data; /**< Accessed by the callback. Would contain a feedPtr for the feed_process_request_result callbacks. */
+	guint32 flags; /**< Flags to be passed to the callback */
+	
+	/* Set by download system*/
+	int httpstatus; /**< last HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
+	GTimeVal lastmodified; /**< Time of last modification. Stored in UTC? */
+	gchar *data;
+	size_t size;
 };
 
-extern GAsyncQueue      *results;
+/** Initialises the download subsystem, including its thread(s). */
+void download_init(); 
 
 /** 
  * Creates a new request structure and sets the feed the
@@ -59,34 +72,28 @@ extern GAsyncQueue      *results;
  * @param fp	feed pointer
  * @return pointer to new request structure
  */
-gpointer update_request_new(feedPtr fp);
+gpointer download_request_new();
 
 /**
- * Used to free a request structure.
+ * Used to free a request structure. Frees all members, including data.
  *
  * @param request	pointer to a request structure
  */
-void update_request_free(gpointer request);
-
-/**
- * Initializes and starts the update request processing
- * thread. Should be called only once! 
- */
-void update_thread_init(void);
+void download_request_free(struct request *request);
 
 /**
  * Sets the online status according to mode.
  *
  * @param mode	TRUE for online, FALSE for offline
  */ 
-void update_thread_set_online(gboolean mode);
+void download_set_online(gboolean mode);
 
 /**
  * Queries the online status.
  *
  * @return TRUE if online
  */
-gboolean update_thread_is_online(void);
+gboolean download_is_online(void);
 
 /**
  * Function to pass a request to the update request
@@ -97,14 +104,12 @@ gboolean update_thread_is_online(void);
  *
  * @param new_request	pointer to a request structure
  */
-void update_thread_add_request(struct feed_request *new_request);
+void download_queue(struct request *new_request);
 
 /**
- * Function to wait for an update request result. This
- * function blocks until a result is available.
- *
- * @return pointer to a request structure
+ * Process a download request, and pass it to the URL handler, if
+ * needed. This should not be used very often because it will block.
  */
-struct feed_request * update_thread_get_result(void);
 
+void download_process(struct request *request);
 #endif

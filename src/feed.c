@@ -36,7 +36,6 @@
 #include "ocs_dir.h"
 #include "opml.h"
 #include "vfolder.h"
-#include "net/netio.h"
 #include "feed.h"
 #include "folder.h"
 #include "favicon.h"
@@ -91,7 +90,6 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 }
 
 feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
-	struct feed_request 	*request;
 	gchar			*source;
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
@@ -146,14 +144,14 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(fp));
 			if(NULL != (source = html_auto_discover_feed(data))) {			
 				/* now download the first feed link found */
+				struct request *request = download_request_new(NULL);
 				debug1(DEBUG_UPDATE, "feed link found: %s", source);
-				request = update_request_new(NULL);
-				request->feedurl = g_strdup(source);				
-				if(NULL != (data = downloadURL(request))) {
+				request->source = g_strdup(source);
+				download_process(request);
+				if(NULL != request->data) {
 					debug0(DEBUG_UPDATE, "feed link download successful!");
 					feed_set_source(fp, source);
-					handler = feed_parse(fp, data, FALSE);
-					g_free(data);
+					handler = feed_parse(fp, request->data, FALSE);
 				} else {
 					/* if the download fails we do nothing except
 					   unsetting the handler so the original source
@@ -162,7 +160,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 					debug0(DEBUG_UPDATE, "feed link download failed!");
 				}
 				g_free(source);
-				update_request_free(request);
+				download_request_free(request);
 			} else {
 				debug0(DEBUG_UPDATE, "no feed link found!");
 			}
@@ -196,7 +194,6 @@ void feed_init(void) {
 	feedhandlers = g_slist_append(feedhandlers, initOPMLFeedHandler());
 	/*feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());*/
 	
-	update_thread_init();	/* start thread for update request processing */
 	ui_timeout_add(5*60*1000, feed_save_timeout, NULL);
 
 	initFolders();
@@ -218,7 +215,6 @@ feedPtr feed_new(void) {
 	fp->cacheLimit = CACHE_DEFAULT;
 	fp->parseErrors = NULL;
 	fp->ui_data = NULL;
-	fp->updateRequested = FALSE;
 	
 	return fp;
 }
@@ -274,10 +270,10 @@ void feed_save(feedPtr fp) {
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 			g_free(tmp);
 			
-			if(NULL != fp->request) {
-				if(NULL != ((struct feed_request *)(fp->request))->lastmodified)
-					xmlNewTextChild(feedNode, NULL, "feedLastModified", 
-							((struct feed_request *)(fp->request))->lastmodified);
+			if(NULL != fp->request && 0 != (fp->request->lastmodified.tv_sec)) {
+				tmp = g_strdup_printf("%ld", fp->request->lastmodified.tv_sec);
+				xmlNewTextChild(feedNode, NULL, "feedLastModified", tmp);
+				g_free(tmp);
 			}
 
 			itemlist = feed_get_item_list(fp);
@@ -413,8 +409,8 @@ gboolean feed_load_from_cache(feedPtr fp) {
 				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
-				update_request_new(fp);
-				((struct feed_request *)(fp->request))->lastmodified = g_strdup(tmp);
+				fp->lastModified.tv_sec = atol(tmp);
+				fp->lastModified.tv_usec = 0L;
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				feed_add_item((feedPtr)fp, item_parse_cache(doc, cur));
@@ -603,16 +599,16 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
  */
 void feed_schedule_update(feedPtr fp) {
 	const gchar		*source;
-	
+	struct request		*request;
 	g_assert(NULL != fp);
 
 	debug1(DEBUG_CONF, "Scheduling %s to be updated", feed_get_title(fp));
 	
-	if(TRUE == fp->updateRequested) {
+	if(fp->request != NULL) {
 		ui_mainwindow_set_status_bar("This feed \"%s\" is already being updated!", feed_get_title(fp));
 		return;
 	}
-
+	
 	ui_mainwindow_set_status_bar("Updating \"%s\"", feed_get_title(fp));
 	
 	if(NULL == (source = feed_get_source(fp))) {
@@ -621,112 +617,95 @@ void feed_schedule_update(feedPtr fp) {
 	}
 	
 	feed_reset_update_counter(fp);
-	fp->updateRequested = TRUE;
 
-	if(NULL == fp->request)
-		update_request_new(fp);
-
+	request = download_request_new();
+	fp->request = request;
+	request->callback = feed_process_update_result;
+	
+	request->user_data = fp;
+	request->source = g_strdup(source);
+	request->lastmodified = fp->lastModified;
+	if (feed_get_filter(fp) != NULL)
+		request->filtercmd = g_strdup(feed_get_filter(fp));
+	request->flags = 0;
 	/* prepare request url (strdup because it might be
 	   changed on permanent HTTP redirection in netio.c) */
-	g_assert(((struct feed_request *)fp->request)->feedurl  == NULL);
-	((struct feed_request *)fp->request)->feedurl = g_strdup(source);
-	g_assert(((struct feed_request *)fp->request)->filtercmd  == NULL);
-	if (feed_get_filter(fp) != NULL)
-		((struct feed_request *)fp->request)->filtercmd = g_strdup(feed_get_filter(fp));
-
-	update_thread_add_request((struct feed_request *)fp->request);
+	
+	download_queue(request);
 }
 
 /*------------------------------------------------------------------------------*/
 /* timeout callback to check for update results					*/
 /*------------------------------------------------------------------------------*/
 
-gint feed_process_update_results(gpointer data) {
-	struct feed_request	*request = NULL;
+void feed_process_update_result(struct request *request) {
+	feedPtr			old_fp = (feedPtr)request->user_data;
 	feedPtr			new_fp;
 	feedHandlerPtr		fhp;
 	gboolean 		firstDownload = FALSE;
-
-	if(NULL == (request = update_thread_get_result()))
-		return TRUE;
 	
-	if (request->fp == NULL) { /* Feed deleted during update of feed*/
-		debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
-		g_free(request->data);
-		request->data = NULL;
-		update_request_free(request);
-		return TRUE;
-	}
 	ui_lock();
 
-	request->fp->updateRequested = FALSE;
-	feed_set_available(request->fp, TRUE);
+	feed_set_available(old_fp, TRUE);
 	
-	if(304 == request->lasthttpstatus) {	
-		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), feed_get_title(request->fp));
+	if(304 == request->httpstatus) {	
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), feed_get_title(old_fp));
 	} else if(NULL != request->data) {
 		do {
 			/* parse the new downloaded feed into new_fp, feed type must be 
 			   set here because the parsing implementations maybe used for
 			   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
+			old_fp->lastModified = request->lastmodified;
 			new_fp = feed_new();
-			feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source */
+			feed_set_source(new_fp, feed_get_source(old_fp)); /* Used by the parser functions to determine source */
 			fhp = feed_parse(new_fp, request->data, FALSE);
 			if (fhp == NULL) {
-				feed_set_available(request->fp, FALSE);
-				g_free(request->fp->parseErrors);
-				request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!"));
+				feed_set_available(old_fp, FALSE);
+				g_free(old_fp->parseErrors);
+				old_fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!"));
 				feed_free(new_fp);
 				break;
 			}
 			
-			request->fp->fhp = fhp;
+			old_fp->fhp = fhp;
 			
 			if(firstDownload) {
 				if (feed_get_title(new_fp) != NULL)
-					feed_set_title(request->fp, feed_get_title(new_fp));
-				feed_set_update_interval(request->fp, feed_get_default_update_interval(new_fp));
+					feed_set_title(old_fp, feed_get_title(new_fp));
+				feed_set_update_interval(old_fp, feed_get_default_update_interval(new_fp));
 			}
 
 			if(TRUE == fhp->merge)
 				/* If the feed type supports merging... */
-				feed_merge(request->fp, new_fp);
+				feed_merge(old_fp, new_fp);
 			else {
 				/* Otherwise we simply use the new feed info... */
-				feed_copy(request->fp, new_fp);
-				ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(request->fp));
+				feed_copy(old_fp, new_fp);
+				ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(old_fp));
 			}
 
 			/* note this is to update the feed URL on permanent redirects */
-			if(0 != strcmp(request->feedurl, feed_get_source(request->fp))) {
-				feed_set_source(request->fp, request->feedurl);
-				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), feed_get_title(request->fp));
+			if(0 != strcmp(request->source, feed_get_source(old_fp))) {
+				feed_set_source(old_fp, request->source);
+				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), feed_get_title(old_fp));
 			}
 
 			/* now fp contains the actual feed infos */
-			request->fp->needsCacheSave = TRUE;
+			old_fp->needsCacheSave = TRUE;
 
-			if((feedPtr)ui_feedlist_get_selected() == request->fp) {
-				ui_itemlist_load(request->fp, NULL);
+			if((feedPtr)ui_feedlist_get_selected() == old_fp) {
+				ui_itemlist_load(old_fp, NULL);
 			}
 		} while(0);
 	} else {	
-		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(request->fp));
-		feed_set_available(request->fp, FALSE);
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(old_fp));
+		feed_set_available(old_fp, FALSE);
 	}
 	
-	g_free(request->feedurl);	/* request structure cleanup... */
-	request->feedurl = NULL;
-	g_free(request->filtercmd);
-	request->filtercmd = NULL;
-	g_free(request->data);
-	request->data = NULL;
-	
 	ui_feedlist_update();
-
+	
 	ui_unlock();
-
-	return TRUE;
+	old_fp->request = NULL;
 }
 
 void feed_add_item(feedPtr fp, itemPtr ip) {
@@ -795,13 +774,13 @@ gchar * feed_get_error_description(feedPtr fp) {
 	if(NULL == fp->request)
 		return NULL;
 		
-	if((0 == ((struct feed_request *)fp->request)->problem) &&
-	   (NULL == fp->parseErrors))
-		return NULL;
+	if((fp->request->httpstatus >= 200 && fp->request->httpstatus < 400) && /* HTTP codes starting with 2 and 3 mean no error */
+	    (NULL == fp->parseErrors))
+	   return NULL;
 	
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
 	
-	httpstatus = ((struct feed_request *)fp->request)->lasthttpstatus;
+	httpstatus = fp->request->httpstatus;
 	/* httpstatus is always zero for file subscriptions... */
 	if((200 != httpstatus) && (0 != httpstatus)) {
 		/* first specific codes */
@@ -941,9 +920,9 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	g_free(new_fp->source);
 	new_fp->title = fp->title;
 	new_fp->source = fp->source;
+	new_fp->filtercmd = fp->filtercmd;
 	new_fp->type = fp->type;
 	new_fp->request = fp->request;
-	new_fp->ui_data = fp->ui_data;
 	new_fp->ui_data = fp->ui_data;
 	new_fp->fhp = fp->fhp;	
 	tmp_fp = feed_new();
@@ -955,6 +934,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	tmp_fp->source = NULL;
 	tmp_fp->request = NULL;
 	tmp_fp->ui_data = NULL;
+	tmp_fp->filtercmd = NULL;
 	feed_free(tmp_fp);				/* we use tmp_fp to free almost all infos
 							   allocated by old feed structure */
 	g_free(new_fp);
@@ -1003,10 +983,7 @@ void feed_free(feedPtr fp) {
 	   free'd in feed_process. They must be freed in the main thread
 	   for locking reasons. */
 	if(fp->request != NULL) {
-		if(FALSE == fp->updateRequested)
-			update_request_free(fp->request);
-		else
-			((struct feed_request *)fp->request)->fp = NULL;
+		fp->request->callback = NULL;
 	}
 
 	feed_clear_item_list(fp);

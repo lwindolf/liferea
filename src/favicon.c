@@ -36,7 +36,7 @@
 #include "feed.h"
 #include "common.h"
 #include "update.h"
-#include "net/netio.h"
+#include "update.h"
 #include "debug.h"
 
 #ifdef STDC_HEADERS
@@ -98,10 +98,9 @@ void favicon_remove(feedPtr fp) {
 }
 
 void favicon_download(feedPtr fp) {
-	unsigned char		*icodata;
 	gchar			*baseurl;
 	gchar			*tmp;
-	struct feed_request	*request;
+	struct request	*request;
 	
 	/* try to download favicon */
 	baseurl = g_strdup(fp->source);
@@ -110,28 +109,26 @@ void favicon_download(feedPtr fp) {
 		if(NULL != (tmp = strchr(tmp, '/'))) {
 			*tmp = 0;
 			
-			request = update_request_new(NULL);
-			request->feedurl = g_strdup_printf("%s/favicon.ico", baseurl);
-			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->feedurl);
-			icodata = downloadURL(request);
+			request = download_request_new(NULL);
+			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
+			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
+			download_process(request);
 			
-			if(NULL != icodata) {
+			if(NULL != request->data && request->size > 0) {
 				GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 				GdkPixbuf *pixbuf;
 				tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
 				
-				if (gdk_pixbuf_loader_write(loader, icodata, request->size, NULL)) {
+				if (gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
 					pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
 					gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL);
 					favicon_load(fp);
 				}
 
 				g_free(tmp);
-				g_free(icodata);
 			}
 			
-			update_request_free(request);
-			
+			download_request_free(request);
 		}
 	}
 	g_free(baseurl);

@@ -209,7 +209,7 @@ void ui_mainwindow_update_onlinebtn(void) {
 
 	g_return_if_fail(NULL != (widget = lookup_widget(mainwindow, "onlineimage")));
 	
-	if(update_thread_is_online()) {
+	if(download_is_online()) {
 		ui_mainwindow_set_status_bar(_("Liferea is now online."));
 		gtk_image_set_from_pixbuf(GTK_IMAGE(widget), icons[ICON_ONLINE]);
 	} else {
@@ -220,15 +220,15 @@ void ui_mainwindow_update_onlinebtn(void) {
 
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data) {
 	
-	update_thread_set_online(!update_thread_is_online());
+	download_set_online(!download_is_online());
 	ui_mainwindow_update_onlinebtn();
 
-	GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "work_offline"))->active = !update_thread_is_online();
+	GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "work_offline"))->active = !download_is_online();
 }
 
 void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	update_thread_set_online(!GTK_CHECK_MENU_ITEM(menuitem)->active);
+	download_set_online(!GTK_CHECK_MENU_ITEM(menuitem)->active);
 	ui_mainwindow_update_onlinebtn();
 }
 
