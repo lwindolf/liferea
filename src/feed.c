@@ -557,6 +557,7 @@ gint feed_process_update_results(gpointer data) {
 		   set here because the parsing implementations maybe used for
 		   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
 		new_fp = feed_new();
+		feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source*/
 		(*(fhp->readFeed))(new_fp, request->data);
 		feed_set_source(new_fp, feed_get_source(request->fp));
 		feed_set_type(new_fp, feed_get_type(request->fp));

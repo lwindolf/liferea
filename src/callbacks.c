@@ -31,6 +31,7 @@
 #include <gdk/gdk.h>
 #include <string.h>
 
+#include "debug.h"
 #include "interface.h"
 #include "support.h"
 #include "folder.h"
@@ -239,6 +240,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	gint		x,y;
 	gtk_widget_hide(mainwindow);
 
+	debug_enter("on_quit");
 	conf_feedlist_save();
 	
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_save);
@@ -270,6 +272,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100*ui_htmlview_get_zoom()));
 		
 	gtk_main_quit();
+	debug_exit("on_quit");
 	return FALSE;
 }
 
