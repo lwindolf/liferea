@@ -79,18 +79,8 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 /* GUI initialization, must be called only once! */
 void ui_init(void) {
 	int i;
-
-	/* load window position */
-	if((0 != getNumericConfValue(LAST_WINDOW_X)) && 
-	   (0 != getNumericConfValue(LAST_WINDOW_Y)))
-	   	gtk_window_move(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_X),
-					 		getNumericConfValue(LAST_WINDOW_Y));
-
-	/* load window size */
-	if((0 != getNumericConfValue(LAST_WINDOW_WIDTH)) && 
-	   (0 != getNumericConfValue(LAST_WINDOW_HEIGHT)))
-	   	gtk_window_resize(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_WIDTH),
-					 		  getNumericConfValue(LAST_WINDOW_HEIGHT));
+	
+	ui_mainwindow_restore_position();
 	
 	/* load pane proportions */
 	if(0 != getNumericConfValue(LAST_VPANE_POS))
@@ -233,10 +223,13 @@ void ui_show_info_box(const char *format, ...) {
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	GtkWidget	*pane;
-	gint		x,y;
-	gtk_widget_hide(mainwindow);
+	gint x, y;
 
 	debug_enter("on_quit");
+
+	ui_mainwindow_save_position();
+	gtk_widget_hide(mainwindow);
+
 	conf_feedlist_save();
 	
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_save);
@@ -252,16 +245,6 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 		y = gtk_paned_get_position(GTK_PANED(pane));
 		setNumericConfValue(LAST_HPANE_POS, y);
 	}
-	
-	/* save window position */
-	gtk_window_get_position(GTK_WINDOW(mainwindow), &x, &y);
-	setNumericConfValue(LAST_WINDOW_X, x);
-	setNumericConfValue(LAST_WINDOW_Y, y);	
-
-	/* save window size */
-	gtk_window_get_size(GTK_WINDOW(mainwindow), &x, &y);
-	setNumericConfValue(LAST_WINDOW_WIDTH, x);
-	setNumericConfValue(LAST_WINDOW_HEIGHT, y);
 	
 	/* save itemlist properties */
 	setBooleanConfValue(LAST_ITEMLIST_MODE, !itemlist_mode);
@@ -282,3 +265,4 @@ void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gtk_widget_show(dialog);
 
 }
+

@@ -107,31 +107,17 @@ void ui_tray_zero_new(void) {
 /* a click on the systray icon should show the program window
    if invisible or hide it if visible */
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
-	gint		x,y;
 	ui_tray_zero_new();
-
-	if (GTK_WIDGET_VISIBLE(mainwindow)) {
-		if (gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) {
-			gtk_window_present(GTK_WINDOW(mainwindow));
-		} else {
-			/* save window position */
-			gtk_window_get_position(GTK_WINDOW(mainwindow), &x, &y);
-			setNumericConfValue(LAST_WINDOW_X, x);
-			setNumericConfValue(LAST_WINDOW_Y, y);
-			/* hide window */
-			gtk_widget_hide(mainwindow);
-		}
-	} else {
-		/* restore window position */
-		if((0 != getNumericConfValue(LAST_WINDOW_X)) &&
-			(0 != getNumericConfValue(LAST_WINDOW_Y)))
-				gtk_window_move(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_X),
-								getNumericConfValue(LAST_WINDOW_Y));
-		/* unhide window */
+	
+	if ((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
+		ui_mainwindow_restore_position();
 		gtk_window_present(GTK_WINDOW(mainwindow));
+	} else {
+		ui_mainwindow_save_position();
+		gtk_widget_hide(mainwindow);
 	}
-	return;
 
+	return;
 }
 
 static void installTrayIcon(void) {

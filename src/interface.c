@@ -556,7 +556,7 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (hbox30), statusbar, TRUE, TRUE, 0);
 
   g_signal_connect ((gpointer) mainwindow, "delete_event",
-                    G_CALLBACK (on_quit),
+                    G_CALLBACK (on_close),
                     NULL);
   g_signal_connect ((gpointer) preferences1, "activate",
                     G_CALLBACK (on_prefbtn_clicked),

@@ -279,6 +279,59 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
 	ui_queue_add(ui_mainwindow_set_status_idle, (gpointer)str); 
 }
 
+void ui_mainwindow_save_position() {
+	gint x, y, w, h;
+
+	if (!GTK_WIDGET_VISIBLE(mainwindow))
+		return;
+	
+	gtk_window_get_position(GTK_WINDOW(mainwindow), &x, &y);
+	gtk_window_get_size(GTK_WINDOW(mainwindow), &w, &h);
+
+	if (x+w<0 || y+h<0 ||
+	    x > gdk_screen_width() ||
+	    y > gdk_screen_height())
+		return;
+	
+	/* save window position */
+	setNumericConfValue(LAST_WINDOW_X, x);
+	setNumericConfValue(LAST_WINDOW_Y, y);	
+
+	/* save window size */
+	setNumericConfValue(LAST_WINDOW_WIDTH, w);
+	setNumericConfValue(LAST_WINDOW_HEIGHT, h);
+}
+
+void ui_mainwindow_restore_position() {
+	/* load window position */
+	int x, y, w, h;
+	
+	x = getNumericConfValue(LAST_WINDOW_X);
+	y = getNumericConfValue(LAST_WINDOW_Y);
+	
+	w = getNumericConfValue(LAST_WINDOW_WIDTH);
+	h = getNumericConfValue(LAST_WINDOW_HEIGHT);
+	
+	/* Give up if the width or height not saved */
+	if (w == 0 || h == 0)
+		return;
+	
+	if (x >= gdk_screen_width())
+		x = gdk_screen_width() - 100;
+	else if (x + w < 0)
+		x  = 100;
+
+	if (y >= gdk_screen_height())
+		y = gdk_screen_height() - 100;
+	else if (y + w < 0)
+		y  = 100;
+	
+	gtk_window_move(GTK_WINDOW(mainwindow), x, y);
+
+	/* load window size */
+	gtk_window_resize(GTK_WINDOW(mainwindow), w, h);
+}
+
 /*
  * Feed menu callbacks
  */
@@ -327,5 +380,13 @@ void on_menu_update (GtkMenuItem     *menuitem, gpointer         user_data) {
 	} else {
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
 	}
+}
+
+gboolean on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+	if(getBooleanConfValue(SHOW_TRAY_ICON) == FALSE)
+		return on_quit(widget, event, user_data);
+	ui_mainwindow_save_position();
+	gtk_widget_hide(mainwindow);
+	return TRUE;
 }
 

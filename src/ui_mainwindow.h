@@ -35,6 +35,20 @@ void ui_mainwindow_update_menubar();
 void ui_mainwindow_set_status_bar(const char *format, ...);
 
 void ui_mainwindow_update_onlinebtn(void);
+
+/* don't save off-screen positioning */
+
+/**
+ * Save the current mainwindow position to gconf, if the window is
+ * shown and completely on the screen.
+ */
+void ui_mainwindow_save_position();
+
+/**
+ * Restore the window position from the values saved into gconf. Note
+ * that this does not display/present/show the mainwindow.
+ */
+void ui_mainwindow_restore_position();
 /* GUI callbacks */
 void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item);
