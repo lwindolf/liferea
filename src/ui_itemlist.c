@@ -41,6 +41,8 @@ static GHashTable 	*iterhash = NULL;	/* hash table used for fast item->tree iter
 
 gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
 
+itemPtr			displayed_item = NULL;
+
 #define	TIMESTRLEN	256
 
 static gchar 		*date_format = NULL;	/* date formatting string */
@@ -147,9 +149,8 @@ void ui_itemlist_remove_item(itemPtr ip) {
 	GtkTreeIter	*iter;
 
 	g_assert(NULL != ip);
-	iter = g_hash_table_lookup(iterhash, (gpointer)ip);
-	g_assert(NULL != iter);
-	gtk_tree_store_remove(itemstore, iter);
+	if(NULL != (iter = g_hash_table_lookup(iterhash, (gpointer)ip)))
+		gtk_tree_store_remove(itemstore, iter);
 }
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
@@ -173,11 +174,13 @@ void ui_itemlist_update_item(itemPtr ip) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	*iter;
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
-	GdkPixbuf	*icon = NULL, *favicon = NULL;
+	GdkPixbuf	*icon = NULL, *favicon;
 
 	/* favicon for vfolders */
 	if(NULL != ip->sourceFeed)
 		favicon = ip->sourceFeed->icon;
+	else
+		favicon = ip->fp->icon;
 
 	/* Time */
 	if(0 != ip->time) {
@@ -236,6 +239,17 @@ void ui_itemlist_update_item(itemPtr ip) {
 	g_free(time_str);
 	g_free(title);
 	g_free(label);
+}
+
+static void ui_itemlist_update_foreach(gpointer key, gpointer value, gpointer data) {
+	
+	ui_itemlist_update_item((itemPtr)key);
+}
+
+/* update all item list entries */
+void ui_itemlist_update(void) {
+ 
+	g_hash_table_foreach(iterhash, ui_itemlist_update_foreach, NULL);
 }
 
 void ui_itemlist_init(GtkWidget *itemlist) {

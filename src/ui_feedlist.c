@@ -50,6 +50,8 @@ extern GHashTable	*feedHandler;
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
+nodePtr			displayed_node = NULL;
+
 /* flag to enable/disable the GtkTreeModel filter */
 gboolean filter_feeds_without_unread_headlines = FALSE;
 

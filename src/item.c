@@ -41,6 +41,7 @@ itemPtr item_new(void) {
 	
 	ip = g_new0(struct item, 1);
 	ip->newStatus = TRUE;
+	ip->fp=5;
 
 	return ip;
 }

@@ -209,6 +209,18 @@ void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_a
 
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 
+/**
+ * Update a single item of the currently displayed item list .
+ *
+ * @param ip	item pointer
+ */
+void ui_itemlist_update_item(itemPtr ip);
+
+/**
+ * Update all item list entries of the currently displayed item list.
+ */
+void ui_itemlist_update(void);
+
 /*@}*/
 
 #endif
