@@ -23,8 +23,8 @@
 #include "update.h"
 
 /* communication queues for requesting updates and sending the results */
-static GAsyncQueue	*requests = NULL;
-static GAsyncQueue	*results = NULL;
+GAsyncQueue	*requests = NULL;
+GAsyncQueue	*results = NULL;
 
 /* prototypes */
 static void *update_thread_main(void *data);

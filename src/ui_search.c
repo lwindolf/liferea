@@ -68,8 +68,6 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		ui_mainwindow_set_status_bar(_("searching for \"%s\""), searchstring);
-		selected_fp = NULL;
-		selected_type = FST_VFOLDER;
 		ui_itemlist_load(allItems, (gchar *)searchstring);
 	}
 }
@@ -81,8 +79,11 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*keywords, *resultCountButton;
 	GtkAdjustment	*resultCount;
-	gchar		*searchtext = NULL;
-	
+	feedPtr		fp;
+	nodePtr		ptr;
+	gchar		*tmp, *searchtext = NULL, *keyprefix = NULL;
+	folderPtr 	folder = NULL;
+
 	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
 	resultCountButton = lookup_widget(feedsterdialog, "feedsterresultcount");
 	if((NULL != keywords) && (NULL != resultCountButton)) {
@@ -92,10 +93,30 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 		searchtext = g_strdup_printf("http://www.feedster.com/rss.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
 					    searchtext, (int)gtk_adjustment_get_value(resultCount));
 
+		if(ptr && IS_FOLDER(ptr->type)) {
+			folder = (folderPtr)ptr;
+		} else if (ptr && ptr->parent) {
+			folder = ptr->parent;
+		} else {
+			folder = folder_get_root();
+		}
+		
+		if(NULL != (fp = newFeed(FST_RSS, searchtext, folder))) {
+			ui_folder_add_feed(fp, -1);
+
+			if(FALSE == feed_get_available(fp)) {
+				tmp = g_strdup_printf(_("Feedster search request failed.\n"));
+				ui_show_error_box(tmp);
+				g_free(tmp);
+			}
+		}
+		g_free(keyprefix);
+
 		/* It is possible, that there is no selected folder when we are
 		   called from the menu! In this case we default to the root folder */
-		ui_feedlist_new_subscription(FST_RSS, searchtext, 
+		/*ui_feedlist_new_subscription(FST_RSS, searchtext, 
 			(NULL != selected_keyprefix)?g_strdup(selected_keyprefix):g_strdup(""), FALSE);	
+		*/
 	}
 }
 
@@ -115,17 +136,26 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	G_CONST_RETURN gchar	*searchstring;
 //	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
 	feedPtr			fp;
-	
+	folderPtr			folder = NULL;
+	nodePtr			ptr;
+
 	g_assert(mainwindow != NULL);
 		
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		ui_mainwindow_set_status_bar(_("creating VFolder for search term \"%s\""), searchstring);
 
-		if(NULL != selected_keyprefix) {
+		if(ptr && IS_FOLDER(ptr->type)) {
+			folder = (folderPtr)ptr;
+		} else if (ptr && ptr->parent) {
+			folder = ptr->parent;
+		} else {
+			folder = folder_get_root();
+		}
 
-			if(NULL != (fp = newFeed(FST_VFOLDER, "", g_strdup(selected_keyprefix)))) {
-				checkForEmptyFolders();
+		if(NULL != folder) {
+
+			if(NULL != (fp = newFeed(FST_VFOLDER, "", folder))) {
 				
 				// FIXME: this really does not belong here!!! -> vfolder.c
 				/* setup a rule */
@@ -140,12 +170,11 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				/* FIXME: brute force: update of all vfolders redundant */
 //				loadVFolders();
 				
-				ui_feedlist_load_subscription(fp, FALSE);
+				ui_folder_add_feed(fp, FALSE);
 			}
 		} else {
 			g_warning("internal error! could not get folder key prefix!");
 		}
-		
 	}
 }
 

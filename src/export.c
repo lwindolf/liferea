@@ -30,19 +30,23 @@ static GtkWidget * importdialog = NULL;
 static GtkWidget * exportdialog = NULL;
 
 extern GMutex * feeds_lock;
-extern GHashTable * feeds;
 
 /* the real import/export functions */
-static void createFeedTag(gpointer key, gpointer value, gpointer userdata) {
+static void createFeedTag(gpointer value, gpointer userdata) {
+	folderPtr		folder = (folderPtr)folder;
 	feedPtr		fp = (feedPtr)value;
 	xmlNodePtr 	cur = (xmlNodePtr)userdata;
 	xmlNodePtr	feedNode;
-
-	feedNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-	xmlNewProp(feedNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
-	xmlNewProp(feedNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
-	xmlNewProp(feedNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
-	xmlNewProp(feedNode, BAD_CAST"htmlUrl", BAD_CAST "");
+	
+	if (IS_FOLDER(fp->type))
+		g_slist_foreach(folder->children, createFeedTag, userdata);
+	else {
+		feedNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+		xmlNewProp(feedNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
+		xmlNewProp(feedNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
+		xmlNewProp(feedNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
+		xmlNewProp(feedNode, BAD_CAST"htmlUrl", BAD_CAST "");
+	}
 }
 
 
@@ -64,7 +68,7 @@ void exportOPMLFeedList(gchar *filename) {
 			/* create body with feed list */
 			if(NULL != (cur = xmlNewChild(opmlNode, NULL, BAD_CAST"body", NULL))) {
 				g_mutex_lock(feeds_lock);
-				g_hash_table_foreach(feeds, createFeedTag, (gpointer)cur);
+				g_slist_foreach(folder_get_root()->children, createFeedTag, (gpointer)cur);
 				g_mutex_unlock(feeds_lock);
 			}
 			
@@ -85,7 +89,7 @@ void exportOPMLFeedList(gchar *filename) {
 
 }
 
-static void parseOutline(xmlNodePtr cur, gchar *folderkey) {
+static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 	gchar		*title, *source;
 	feedPtr		fp;
 	
@@ -95,8 +99,8 @@ static void parseOutline(xmlNodePtr cur, gchar *folderkey) {
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 		
 	if(NULL != source) {
-		if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), g_strdup(folderkey)))) {
-			ui_feedlist_load_subscription(fp, TRUE);
+		if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), folder))) {
+			ui_folder_add_feed(fp, -1);
 
 			if(NULL != title)
 				feed_set_title(fp, g_strdup(title)); 
@@ -108,7 +112,7 @@ static void parseOutline(xmlNodePtr cur, gchar *folderkey) {
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			parseOutline(cur, folderkey);
+			parseOutline(cur, folder);
 
 		cur = cur->next;
 	}
@@ -117,13 +121,15 @@ static void parseOutline(xmlNodePtr cur, gchar *folderkey) {
 void importOPMLFeedList(gchar *filename) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
-	gchar		*folderkey, *foldertitle;
-
+	gchar	     *foldertitle;
+	folderPtr		folder;
 	/* create a new import folder */	
 	foldertitle = g_strdup(_("imported feed list"));
-	if(NULL != (folderkey = addFolderToConfig(foldertitle))) {
+	
+	
+	if(NULL != (folder = get_new_folder(folder_get_root(), -1, foldertitle, FST_FOLDER))) {
 		/* add the new folder to the model */
-		addFolder(folderkey, foldertitle, FST_FOLDER);
+		ui_add_folder(folder);
 	} else {
 		ui_mainwindow_set_status_bar(_("internal error! could not get a new folder key!"));
 		return;
@@ -158,7 +164,7 @@ void importOPMLFeedList(gchar *filename) {
 				cur = cur->xmlChildrenNode;
 				while(cur != NULL) {
 					if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-						parseOutline(cur, folderkey);
+						parseOutline(cur, folder);
 
 					cur = cur->next;
 				}
@@ -172,8 +178,6 @@ void importOPMLFeedList(gchar *filename) {
 	
 	if(NULL != doc)
 		xmlFreeDoc(doc);
-
-	checkForEmptyFolders();
 }
 
 

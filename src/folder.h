@@ -21,30 +21,44 @@
 #ifndef _FOLDER_H
 #define _FOLDER_H
 
-#include <gtk/gtk.h>
 #include <string.h>
+#include "common.h"
 #include "feed.h"
 
+typedef struct folder {
+	gint type;
+	gpointer *ui_data;
+	struct folder *parent;
+	gchar *title;
+	gchar *id; /* The gconf key name of the directory, for example "dir5" */
+	GSList *children; /* These can be nodePtrs */
+} *folderPtr;
+
+struct feed;
+
+void folder_set_pos(folderPtr folder, folderPtr destFolder, int position);
 /* ------------------------------------------------------------ */
 /* functions to create/change/remove folder			*/
 /* ------------------------------------------------------------ */
 void 	initFolders(void);
+folderPtr folder_get_root();
+gchar* folder_get_conf_path(folderPtr folder);
+void folder_add_feed(folderPtr foldr, struct feed *feed, gint position);
+void folder_remove(folderPtr folder);
 
 /* to create/delete folders */
-void	addFolder(gchar *keyprefix, gchar *title, gint type);
-void	removeFolder(gchar *keyprefix);
+folderPtr get_new_folder(folderPtr parent, gint position, gchar *title, gint type);
+folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *key, gint type);
+void removeFolder(folderPtr folder);
 
 /* to read/change folder properties */
-gchar *	getFolderTitle(gchar *keyprefix);
-void	setFolderTitle(gchar *keyprefix, gchar *title);
-void	setFolderCollapseState(gchar *keyprefix, gboolean collapsed);
-
-/* necessary for drag&drop actions */
-void	checkForEmptyFolders(void);
-void	moveInFeedList(gchar *oldkeyprefix, gchar *oldkey);
+gchar* folder_get_title(folderPtr folder);
+void	setFolderTitle(folderPtr folder, gchar *title);
+void	setFolderCollapseState(struct folder *folder, gboolean collapsed);
 
 /* save functions */
-void	folder_state_save(gchar *keyprefix, GtkTreeIter *iter);
-void	saveFolderFeedList(gchar *keyprefix);
+void folder_state_save(nodePtr ptr);
 
+/* Misc */
+struct feed* folder_find_unread_feed(folderPtr folder);
 #endif

@@ -52,13 +52,6 @@
 				
 extern GHashTable	*feedHandler;
 
-/* selection information from ui_feedlist.c and ui_itemlist.c */
-extern gchar		*selected_keyprefix;
-extern feedPtr		selected_fp;
-
-/* 2 or 3 pane mode flag from ui_mainwindow.c */
-extern gboolean 	itemlist_mode;
-
 /* all used icons */
 GdkPixbuf *icons[MAX_ICONS];
 
@@ -83,8 +76,6 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 /* GUI initialization, must be called only once! */
 void ui_init(void) {
 	int i;
-
-	selected_keyprefix = g_strdup(ROOT_FOLDER_PREFIX);
 
 	/* load window position */
 	if((0 != getNumericConfValue(LAST_WINDOW_X)) && 
@@ -130,29 +121,13 @@ void ui_init(void) {
 	ui_queue_init();		/* set up callback queue for other threads */
 }
 
-void ui_redraw_widget(gchar *name) {
-	GtkWidget	*list;
-	gchar		*msg;
-	
-	if(NULL == mainwindow)
-		return;
-	
-	if(NULL != (list = lookup_widget(mainwindow, name)))
-		gtk_widget_queue_draw(list);
-	else {
-		msg = g_strdup_printf("Fatal! Could not lookup widget \"%s\"!", name);
-		g_warning(msg);
-		g_free(msg);
-	}
-}
-
 /*------------------------------------------------------------------------------*/
 /* simple callbacks which don't belong to item or feed list 			*/
 /*------------------------------------------------------------------------------*/
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
-	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, feed_update);
+	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (nodeActionFunc)feed_update);
 }
 
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
@@ -180,20 +155,27 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 }
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
+	nodePtr ptr;
 
-	ui_feedlist_new_subscription(FST_AUTODETECT, g_strdup(url), g_strdup(selected_keyprefix), TRUE);
+	ptr = ui_feedlist_get_selected();
+	
+	if(IS_FOLDER(ptr->type)) {
+		ui_feedlist_new_subscription(FST_AUTODETECT, url, (folderPtr)ptr, TRUE);
+	} else if (ptr && ptr->parent) {
+		ui_feedlist_new_subscription(FST_AUTODETECT, url, ptr->parent, TRUE);
+	} else {
+		ui_feedlist_new_subscription(FST_AUTODETECT, url, folder_get_root(), TRUE);
+	}
 	g_free(url);
 }
 
 void on_popup_allunread_selected(void) {
-	GtkTreeIter	iter;
-	gint		tmp_type;
-
-	if(ui_feedlist_get_iter(&iter)) {
-		gtk_tree_model_get(GTK_TREE_MODEL(getFeedStore()), &iter, FS_TYPE, &tmp_type, -1);
-		if(IS_FOLDER(tmp_type)) {
+	
+	nodePtr np = ui_feedlist_get_selected();
+	if (np) {
+		if(IS_FOLDER(np->type)) {
 			/* if we have selected a folder we mark all item of all feeds as read */
-			ui_folder_mark_all_as_read();
+			ui_feedlist_do_for_all(np, FEEDLIST_FEED_ACTION, (nodeActionFunc)feed_mark_all_items_read);
 		} else {
 			/* if not we mark all items of the item list as read */
 			ui_itemlist_mark_all_as_read();
@@ -262,9 +244,10 @@ gint checkForUpdateResults(gpointer data) {
 	feedPtr			new_fp;
 	feedHandlerPtr		fhp;
 	gint			type;
-	gchar			*msg;
 
-	if(request = update_thread_get_result())
+	request = update_thread_get_result();
+	
+	if(request == NULL)
 		return TRUE;
 
 	ui_lock();
@@ -288,7 +271,7 @@ gint checkForUpdateResults(gpointer data) {
 		new_fp->source = g_strdup(request->fp->source);
 		(*(fhp->readFeed))(new_fp, request->data);
 
-		if(selected_fp == request->fp)
+		if(ui_feedlist_get_selected() == (nodePtr)request->fp)
 			ui_itemlist_clear();	// FIXME: move this down to the other ui_* stuff?
 		
 		if(TRUE == fhp->merge)
@@ -310,18 +293,18 @@ gint checkForUpdateResults(gpointer data) {
 			/* now fp contains the actual feed infos */
 			feed_save(request->fp);
 
-			if(selected_fp == request->fp) {
+			if((feedPtr)ui_feedlist_get_selected() == request->fp) {
 				ui_itemlist_load(request->fp, NULL);
 				ui_itemlist_prefocus();
 			}
+			ui_update_feed(request->fp);
 		}
 	} else {
 		
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(request->fp));
 		request->fp->available = FALSE;
 	}
-	ui_redraw_feedlist();
-	ui_update();
+
 	ui_unlock();
 	
 	g_free(request->feedurl);	/* request structure cleanup... */
@@ -343,7 +326,6 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (gpointer)feed_save);
 	ui_feedlist_do_for_all(NULL, FEEDLIST_FOLDER_ACTION, (gpointer)folder_state_save);
-	//saveAllFolderCollapseStates();
 	
 	/* save pane proportions */
 	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {

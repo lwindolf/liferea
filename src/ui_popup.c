@@ -140,7 +140,7 @@ void setupPopupMenues(void) {
 }
 
 /* function to generate a generic menu specified by its number */
-GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer cb_data) {
+static GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer cb_data) {
 	GtkWidget 		*menu, *toggle;
 	GtkItemFactory 		*item_factory;
 	
@@ -158,6 +158,7 @@ GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer c
 
 /* function to generate popup menus for the item list depending
    on the list mode given in itemlist_mode */
+
 GtkMenu *make_item_menu(itemPtr ip) {
 	GtkMenu 	*menu;
 	
@@ -177,10 +178,10 @@ GtkMenu *make_url_menu(char* url) {
 
 /* function to generate popup menus for the feed list depending on the
    type parameter. The item will be passed as a callback_data. For
-   example, an itemPtr or feedPtr would be passed. */
+   example, an folderPtr or feedPtr would be passed. */
 static GtkMenu *make_entry_menu(gint type, gpointer item) {
 	GtkMenu		*menu;
-	
+
 	switch(type) {
 		case FST_FOLDER:
 			menu = make_menu(node_menu_items, node_menu_len, item);
@@ -191,18 +192,18 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 		case FST_PIE:
 		case FST_RSS:
 		case FST_CDF:
-		case FST_HELPFEED:
 			menu = make_menu(feed_menu_items, feed_menu_len, item);
 			break;
 		case FST_OPML:
 		case FST_OCS:
 			menu = make_menu(dir_menu_items, dir_menu_len, item);
 			break;
+		case FST_HELPFEED:
+		case FST_HELPFOLDER:
 		case FST_EMPTY:
-			menu = NULL;
-			break;
+		case FST_INVALID:
 		default:
-			menu = make_menu(default_menu_items, default_menu_len, item);
+			menu = make_menu(default_menu_items, default_menu_len, NULL);
 			break;
 	}
 	
@@ -220,8 +221,17 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 {
 	GdkEventButton 	*eb;
 	GtkMenu		*menu;
-  
-	if (event->type != GDK_BUTTON_PRESS) return FALSE;
+	GtkWidget		*treeview;
+	GtkTreePath	*path;
+	gboolean		selected = TRUE;
+	nodePtr		node = NULL;
+
+	treeview = lookup_widget(mainwindow, "feedlist");
+	g_assert(treeview);
+
+	if (event->type != GDK_BUTTON_PRESS)
+		return FALSE;
+
 	eb = (GdkEventButton*) event;
 
 	if (eb->button != 3)
@@ -229,7 +239,21 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 
 	// FIXME: don't use existing selection, but determine
 	// which selection would result from the right mouse click
-	if(NULL != (menu = make_entry_menu(selected_type, NULL)))
+	if (!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), event->x, event->y, &path, NULL, NULL, NULL))
+		selected=FALSE;
+	else {
+		GtkTreeIter iter;
+		gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, path);
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
+					    FS_PTR, &node, -1);
+		ui_feedlist_select(node);
+	}
+	if (selected && node)
+		menu = make_entry_menu(node->type, node);
+	else
+		menu = make_entry_menu(FST_INVALID, NULL);
+
+	if (menu)
 		gtk_menu_popup(menu, NULL, NULL, NULL, NULL, eb->button, eb->time);
 		
 	return TRUE;

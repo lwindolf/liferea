@@ -22,8 +22,9 @@
 #define _FEED_H
 
 #include <glib.h>
-#include <gtk/gtk.h>
+#include "common.h"
 #include "item.h"
+#include "folder.h"
 
 /* ------------------------------------------------------------ */
 /* feed list view entry types (FS_TYPE) 			*/
@@ -64,8 +65,10 @@
 /** common structure to access feed info structures */
 typedef struct feed {
 	gint		type;			/**< feed type */
-	gchar		*key;			/**< unique feed identifier */
-	gchar		*keyprefix;		/**< FIXME: remove this, bad design! */
+	/* per-feed UI data */
+	gpointer  *ui_data;
+	struct folder *parent;
+	gchar	*id;
 	gint		unreadCount;		/**< number of unread items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gboolean	available;		/**< flag to signalize loading errors */
@@ -107,11 +110,14 @@ typedef struct feedHandler {
 /* feed creation/modification interface				*/
 /* ------------------------------------------------------------ */
 
+void saveAllFeeds(void);
 void feed_init(void);
 
 feedPtr feed_new(void);
-feedPtr newFeed(gint type, gchar *url, gchar *keyprefix);
+feedPtr newFeed(gint type, gchar *url, struct folder *parent);
 feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval);
+feedPtr feed_add_from_config(gint type, gchar *url, struct folder *parent, gchar *feedname, gchar *id, gint interval);
+gchar* feed_get_conf_path(struct feed *fp);
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
 void feed_update(feedPtr fp);
@@ -126,12 +132,8 @@ void feed_free(feedPtr fp);
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */
 
-feedPtr feed_get_from_key(gchar *key);
-
 gpointer feed_get_favicon(feedPtr fp);
 gint feed_get_type(feedPtr fp);
-gchar * feed_get_key(feedPtr fp);
-gchar * feed_get_keyprefix(feedPtr fp);
 
 void feed_increase_unread_counter(feedPtr fp);
 void feed_decrease_unread_counter(feedPtr fp);
@@ -164,5 +166,6 @@ GSList * feed_get_item_list(feedPtr fp);
 void feed_clear_item_list(feedPtr fp);
 
 void feed_mark_all_items_read(feedPtr fp);
+void feed_set_pos(feedPtr fp, struct folder *folder, gint position);
 
 #endif

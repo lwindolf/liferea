@@ -72,9 +72,6 @@ struct detectStr detectPattern[] = {
 /* hash table to look up feed type handlers */
 GHashTable	*feedHandler = NULL;
 
-/* used to lookup a feed pointer specified by a key */
-GHashTable	*feeds = NULL;
-
 /* a list containing all items of all feeds, used for VFolder
    and searching functionality */
 feedPtr		allItems = NULL;
@@ -83,6 +80,14 @@ GMutex * feeds_lock = NULL;
 
 /* prototypes */
 static gboolean update_timer_main(gpointer data);
+
+gchar *feed_get_conf_path(feedPtr feed) {
+	g_assert(feed->id);
+	gchar *ppath = folder_get_conf_path(feed->parent);
+	gchar *path = g_strdup_printf("%s/%s",ppath,feed->id);
+	g_free(ppath);
+	return path;
+}
 
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
@@ -128,8 +133,7 @@ static gint feed_auto_detect_type(gchar *url, gchar **data) {
 void feed_init(void) {
 
 	feeds_lock = g_mutex_new();
-	feeds = g_hash_table_new(g_str_hash, g_str_equal);
-
+	
 	allItems = feed_new();
 	allItems->type = FST_VFOLDER;
 	
@@ -166,6 +170,7 @@ feedPtr feed_new(void) {
 	fp->available = FALSE;
 	fp->type = FST_INVALID;
 	fp->parseErrors = NULL;
+	fp->ui_data = NULL;
 	fp->updateRequested = FALSE;
 	
 	return fp;
@@ -182,11 +187,11 @@ void feed_save(feedPtr fp) {
 	gint		saveMaxCount;
 			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
-	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
+	filename = getCacheFileName(fp->id, getExtension(fp->type));
 
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
-			xmlDocSetRootElement(doc, feedNode);		
+			xmlDocSetRootElement(doc, feedNode);
 
 			xmlNewTextChild(feedNode, NULL, "feedTitle", feed_get_title(fp));
 			
@@ -259,15 +264,38 @@ void feed_save(feedPtr fp) {
 	}
 }
 
+/* hash table foreach wrapper function */
+static void saveFeedFunc(gpointer value, gpointer userdata) {
+	nodePtr	ptr = (nodePtr)value;
+	
+	if(IS_FEED(ptr->type)) {
+		ui_mainwindow_set_status_bar(_("saving feed \"%s\""), feed_get_title((feedPtr)ptr));
+		feed_save((feedPtr)ptr);
+	} else if (IS_FOLDER(ptr->type)) {
+		g_slist_foreach(((folderPtr)ptr)->children, saveFeedFunc, NULL);
+	}
+}
+
+/* function to be called on program shutdown to save read stati */
+void saveAllFeeds(void) {
+
+	/* we must save here to save changed read flags */	
+	ui_mainwindow_set_status_bar(_("saving all feeds..."));
+	
+	g_mutex_lock(feeds_lock);
+	saveFeedFunc(folder_get_root(),NULL);
+	g_mutex_unlock(feeds_lock);
+}
+
 /* function which is called to load a feed's cache file */
-static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
+static feedPtr loadFeed(gint type, gchar *id) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gchar		*filename, *tmp, *data = NULL;
 	feedPtr		fp;
 	int		error = 0;
 
-	filename = getCacheFileName(keyprefix, key, getExtension(type));
+	filename = getCacheFileName(id, getExtension(type));
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		return NULL;
@@ -300,8 +328,8 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		}
 
 		fp->available = TRUE;		
-		fp->key = key;
-		fp->keyprefix = keyprefix;
+		fp->id = g_strdup(id);
+
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
 			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -345,35 +373,34 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	return fp;
 }
 
-/* Function to add a feed to the feed list. Url and feedname 
-   may be NULL. Called only from loadSubscriptions() */
-feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval) {
+/* Function to add a feed to the feed list in memory. Url and feedname
+   may be NULL. Called only from loadSubscriptions(). Used when
+   reading gconf information at startup. */
+feedPtr feed_add_from_config(gint type, gchar *url, folderPtr parent, gchar *feedname, gchar *id, gint interval) {
 	feedPtr		new_fp;
 	
-	g_assert(NULL != key);
-	g_assert(NULL != keyprefix);
-	
-	if(NULL == (new_fp = loadFeed(type, key, keyprefix)))
-		/* maybe cache file was deleted or entry has no cache 
-		   (like help entries) so we reload the entry from its URL */
+	g_assert(NULL != id);
+	if(NULL == (new_fp = loadFeed(type, id))) {
+		/* maybe cache file was deleted or entry has no cache (like
+		   help entries) or feed was just created from new feed
+		   dialog, therefore we create a new feed structure for it
+		   and reload the entry from its URL */
 		new_fp = feed_new();
+		new_fp->id = g_strdup(id);
+	}
 	
 	new_fp->type = type;
-	new_fp->key = key;	
-	new_fp->keyprefix = keyprefix;
+	new_fp->parent = parent;
+	parent->children = g_slist_append(parent->children, new_fp);
 
 	/* user defined feed name from gconf is stronger */
 	if(NULL != feedname) {
-		g_free(new_fp->title);
-		new_fp->title = feedname;
+		new_fp->title = g_strdup(feedname);
 	}
 
 	if(NULL != url) {
-		g_free(new_fp->source);
-		new_fp->source = url;
-	}
-	
-	if(NULL == new_fp->source) {
+		new_fp->source = g_strdup(url);
+	} else if (NULL == new_fp->source) {
 		/* bad, that means there is no URL in gconf and
 		   in the cache file, looks like a huge mess to me... */
 		new_fp->source = g_strdup(_("error: URL missing!"));
@@ -384,11 +411,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 	if(FALSE == feed_get_available(new_fp))
 		feed_update(new_fp);
 
-	g_mutex_lock(feeds_lock);
-	g_hash_table_insert(feeds, (gpointer)key, (gpointer)new_fp);
-	g_mutex_unlock(feeds_lock);
-
-	ui_feedlist_load_subscription(new_fp, TRUE);
+	ui_folder_add_feed(new_fp, -1);
 	
 	if(getBooleanConfValue(UPDATE_ON_STARTUP))
 		feed_update(new_fp);
@@ -396,21 +419,26 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 	return new_fp;
 }
 
-/* function for first time loading of a newly subscribed feed */
-feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
+/* Used to create a newly subscribed feed. This function is used by
+   the new subscription dialog and the import module */
+feedPtr newFeed(gint type, gchar *url, folderPtr parent) {
 	feedHandlerPtr		fhp;
 	struct feed_request	*request;
 	unsigned char		*icodata;
 	gchar			*baseurl;
-	gchar			*key;
 	gchar			*tmp;
 	gchar			*data;
 	feedPtr			fp;
 
 	fp = feed_new();
-	fp->source = url;
-	
+	fp->source = g_strdup(url);
+	fp->parent = parent;
+	fp->parent->children = g_slist_insert(fp->parent->children, fp, -1);
+	fp->type = type;
+	folder_add_feed(parent, fp, -1);
+
 	g_assert(NULL != fp);
+	g_message("feed_new A");
 	if(FST_AUTODETECT == type) {
 		/* if necessary download and detect type */
 		if(FST_INVALID == (type = feed_auto_detect_type(url, &data))) {	// FIXME: pass fp to adjust URL
@@ -425,7 +453,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		data = downloadURL(request);
 		/* don't free request! */
 	}
-
+	g_message("feed_new B");
 	if(NULL != data) {
 		/* parse data */
 		g_assert(NULL != feedHandler);
@@ -437,14 +465,11 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 			return NULL;
 		}
 	}
-	
+
 	/* postprocess read feed */
-	if(NULL != (key = addFeedToConfig(keyprefix, url, type))) {
-
-		fp->type = type;
-		fp->keyprefix = keyprefix;
-		fp->key = key;
-
+	fp->type = type;
+	fp->id = conf_new_id();
+	if(NULL != (addFeedToConfig(fp))) {
 		if(TRUE == fp->available)		
 			feed_save(fp);
 
@@ -461,7 +486,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 				update_request_free(request);
 
 				if(NULL != icodata) {
-					tmp = getCacheFileName(keyprefix, key, "xpm");
+					tmp = getCacheFileName(fp->id, "xpm");
 					convertIcoToXPM(tmp, icodata, 10000000);
 					loadFavIcon(fp);
 					g_free(tmp);
@@ -470,15 +495,12 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 			}
 		}
 		g_free(baseurl);
-	
-		/* and finally add the feed to the feed list */
-		g_mutex_lock(feeds_lock);
-		g_hash_table_insert(feeds, (gpointer)feed_get_key(fp), (gpointer)fp);
-		g_mutex_unlock(feeds_lock);
 	} else {
 		g_print(_("error! could not add feed to configuration!\n"));
 		return NULL;
 	}
+
+	ui_folder_add_feed(fp, -1);
 
 	return fp;
 }
@@ -490,7 +512,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	GSList		*new_list, *old_list, *diff_list = NULL;
 	itemPtr		new_ip, old_ip;
 	gchar 		*status;
-	gboolean	found, equal;
+	gboolean	found, equal=FALSE;
 	gint		newcount = 0;
 	gint		traycount = 0;
 
@@ -547,7 +569,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 
 				if(equal) {
 					found = TRUE;
-					break;					
+					break;
 				}
 
 				old_list = g_slist_next(old_list);
@@ -563,7 +585,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				} else {
 					feed_increase_unread_counter(old_fp);
 					traycount++;
-				}			
+				}
 				newcount++;
 				diff_list = g_slist_append(diff_list, (gpointer)new_ip);
 			} else {
@@ -630,26 +652,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	feed_free(new_fp);
 	
 	doTrayIcon(traycount);		/* finally update the tray icon */
-}
-
-void feed_remove(feedPtr fp) {
-	gchar	*filename;
-	
-	/* there may be an update request for this feed, 
-	   we abandon it by unsetting its feed pointer */
-	if(NULL != fp->request)
-		((struct feed_request *)fp->request)->fp = NULL;
-		
-	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
-	if(0 != unlink(filename)) {
-		g_warning(g_strdup_printf(_("Could not delete cache file %s! Please remove manually!"), filename));
-	}
-
-	removeFavIcon(fp);
-
-	g_hash_table_remove(feeds, (gpointer)fp);
-	removeFeedFromConfig(fp->keyprefix, fp->key);	
-	feed_free(fp);
+	if(old_fp->ui_data)
+		ui_update_feed(old_fp);			/* and the UI */
 }
 
 /**
@@ -694,24 +698,43 @@ static void feed_check_update_counter(feedPtr fp) {
 		update_thread_add_request((struct feed_request *)fp->request);
 }
 
+static void update_feed_counter_(gpointer pointer, gpointer user_data) {
+	nodePtr np = (nodePtr)pointer;
+                                                                                                                                               
+	if (IS_FOLDER(np->type)) {
+		g_slist_foreach(((folderPtr)np)->children,update_feed_counter_, NULL);
+	} else {
+		feed_check_update_counter((feedPtr)np);
+	}
+}
+                                                                                                                                               
 // FIXME: does this function belong here?
 static gboolean update_timer_main(void *data) {
 
 	g_message("Checking to see if feeds need to be updated");
-	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (gpointer)feed_check_update_counter);
+
+	g_mutex_lock(feeds_lock);
+	update_feed_counter_(folder_get_root(), NULL);
+
+	g_mutex_unlock(feeds_lock);
+	//ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (gpointer)feed_check_update_counter);
  
 	return TRUE;
 }
 
-static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
-	feedPtr		fp = (feedPtr)value;
+static void updateFeedHelper(gpointer value, gpointer userdata) {
+	nodePtr		ptr = (nodePtr)value;
 
-	g_message("update_feed_helper");
-	
-	g_assert(NULL != fp);
-	feed_update(fp);
+	ui_mainwindow_set_status_bar(_("updating all feeds..."));
+	g_assert(NULL != ptr);
+
+	g_mutex_lock(feeds_lock);
+	if (IS_FOLDER(ptr->type))
+		g_slist_foreach(((folderPtr)ptr)->children, updateFeedHelper, NULL);
+	else
+		feed_update((feedPtr)ptr);
+	g_mutex_unlock(feeds_lock);
 }
-
 
 void feed_add_item(feedPtr fp, itemPtr ip) {
 
@@ -726,35 +749,31 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
 
-feedPtr feed_get_from_key(gchar *feedkey) {
-	feedPtr	fp;
-
-	g_assert(NULL != feeds);
-	g_mutex_lock(feeds_lock);
-	if(NULL == (fp = g_hash_table_lookup(feeds, (gpointer)feedkey))) {
-		g_warning(g_strdup_printf(_("internal error! there is no feed assigned to feedkey \"%s\"!\n"), feedkey));
-	}
-	g_mutex_unlock(feeds_lock);	
-	
-	return fp;
-}
-
 gint feed_get_type(feedPtr fp) { return fp->type; }
 gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
-gchar * feed_get_key(feedPtr fp) { return fp->key; }
-gchar * feed_get_keyprefix(feedPtr fp) { return fp->keyprefix; }
 
-void feed_increase_unread_counter(feedPtr fp) { fp->unreadCount++; }
-void feed_decrease_unread_counter(feedPtr fp) { fp->unreadCount--; }
+void feed_increase_unread_counter(feedPtr fp) {
+	fp->unreadCount++;
+	if(fp->ui_data)
+		ui_update_feed(fp);
+}
+void feed_decrease_unread_counter(feedPtr fp) {
+	fp->unreadCount--;
+	if(fp->ui_data)
+		ui_update_feed(fp);
+}
 gint feed_get_unread_counter(feedPtr fp) { return fp->unreadCount; }
 
 gint feed_get_default_update_interval(feedPtr fp) { return fp->defaultInterval; }
 gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 
-void feed_set_update_interval(feedPtr fp, gint interval) { 
+void feed_set_update_interval(feedPtr fp, gint interval) {
 
+	gchar *path = feed_get_conf_path(fp);
 	fp->updateInterval = interval; 
-	setFeedUpdateIntervalInConfig(fp->key, interval);
+	setFeedUpdateIntervalInConfig(path, interval);
+	g_free(path);
+
 	if (interval > 0)
 		feed_reset_update_counter(fp);
 }
@@ -850,9 +869,13 @@ gchar * feed_get_title(feedPtr fp) {
 
 void feed_set_title(feedPtr fp, gchar *title) {
 
+	gchar *path = feed_get_conf_path(fp);
+
 	g_free(fp->title);
 	fp->title = title;
-	setFeedTitleInConfig(fp->key, title);
+	setFeedTitleInConfig(path, title);
+	ui_update_feed(fp);
+	g_free(path);
 }
 
 gchar * feed_get_description(feedPtr fp) { return fp->description; }
@@ -860,9 +883,11 @@ gchar * feed_get_source(feedPtr fp) { return fp->source; }
 
 void feed_set_source(feedPtr fp, gchar *source) {
 
-	g_free(fp->source);
+	if(fp->source)
+		g_free(fp->source);
+
 	fp->source = source;
-	setFeedURLInConfig(fp->key, source);
+	setFeedURLInConfig(fp, source);
 }
 
 GSList * feed_get_item_list(feedPtr fp) { return fp->items; }
@@ -901,16 +926,15 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	feedPtr		tmp_fp;
 	itemPtr		ip;
 	GSList		*item;
-	
+	g_message("copyFeed");
 	/* To prevent updating feed ptr in the tree store and
 	   feeds hashtable we reuse the old structure! */
-
+	
 	/* in the next step we will copy the new_fp structure
 	   to fp, but we need to keep some fp attributes... */
 	g_free(new_fp->title);
+	new_fp->id = fp->id;
 	g_free(new_fp->source);
-	new_fp->key = fp->key;			
-	new_fp->keyprefix = fp->keyprefix;
 	new_fp->title = fp->title;
 	new_fp->source = fp->source;
 	new_fp->type = fp->type;
@@ -919,8 +943,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	tmp_fp = feed_new();
 	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
 	memcpy(fp, new_fp, sizeof(struct feed));
-	
-	tmp_fp->key = NULL;				/* to prevent removal of reused attributes... */
+	tmp_fp->id = NULL;			/* to prevent removal of reused attributes... */
 	tmp_fp->items = NULL;
 	tmp_fp->title = NULL;
 	tmp_fp->source = NULL;
@@ -936,13 +959,34 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 		ip->fp = fp;
 		item = g_slist_next(item);
 	}
+	if(fp->ui_data)
+		ui_update_feed(fp);
 }
 
-/* method to free all memory allocated by a feed */
+/* method to totally erase a feed, remove it from the config, etc.... */
 void feed_free(feedPtr fp) {
-
+	gchar *filename = NULL;
+	
+	g_assert(IS_FEED(fp->type));
+	
+	if (fp->id && fp->id[0] != '\0')
+		filename = getCacheFileName(fp->id, getExtension(fp->type));
+	
+	/* free UI info */
+	if(fp->ui_data)
+		ui_folder_remove_feed(fp);
+		
 	/* free items */
+
+	/* FIXME: Move this to a better place. The cache file does not
+	   need to always be deleted, for example when freeing a
+	   feedstruct used for updating. */
+	if(filename && 0 != unlink(filename)) {
+		g_warning(g_strdup_printf(_("Could not delete cache file %s! Please remove manually!"), filename));
+	}
+
 	feed_clear_item_list(fp);
+
 	
 	// FIXME: free filter structures too when implemented
 
@@ -954,11 +998,67 @@ void feed_free(feedPtr fp) {
 	else
 		((struct feed_request *)fp->request)->fp = NULL;
 
-	/* free feed info */
+	if (fp->id) {
+		removeFeedFromConfig(fp);
+		removeFavIcon(fp);
+		g_free(fp->id);
+	}
+	
+	if (fp->parent) {
+		folderPtr folder = fp->parent;
+		fp->parent->children = g_slist_remove(fp->parent->children, fp);
+		ui_update_folder(folder);
+	}
 	g_free(fp->title);
 	g_free(fp->description);
 	g_free(fp->source);
-	g_free(fp->key);
 	g_free(fp->parseErrors);
 	g_free(fp);
+}
+
+void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
+	gboolean ui=FALSE;
+	gchar *oldPath, *newPath;
+	GSList *oldNode = g_slist_find(fp->parent->children,fp), *siter;
+	g_assert(NULL != dest_folder);
+	g_assert(NULL != fp);
+	g_assert(NULL != fp->parent);
+	
+	if(fp->ui_data) {
+		ui=TRUE;
+		ui_folder_remove_feed(fp);
+	}
+
+	siter = fp->parent->children;
+	
+	
+	oldPath = feed_get_conf_path(fp);
+	g_assert(oldNode);
+
+	if (dest_folder == fp->parent) {
+		/* move item in slist */
+		dest_folder->children = g_slist_insert(fp->parent->children, fp, position);
+		fp->parent->children = g_slist_remove_link(fp->parent->children, oldNode);
+	} else {
+		/* remove feed from old slist */
+		fp->parent->children = g_slist_remove_link(fp->parent->children, oldNode);
+		/* add feed to new slist */
+		dest_folder->children = g_slist_insert(dest_folder->children, fp, position);
+	}
+	
+	removeFeedFromConfig(fp);	/* delete old one */
+	fp->parent = dest_folder;
+	newPath = feed_get_conf_path(fp);
+	/* move key in configuration */
+	addFeedToConfig(fp);
+	/* write feed properties to new key */
+	setFeedTitleInConfig(newPath, feed_get_title(fp));
+	if(IS_FEED(fp->type))
+		setFeedUpdateIntervalInConfig(newPath, feed_get_update_interval(fp));
+
+	g_free(oldPath);
+	
+	if(ui) {
+		ui_folder_add_feed(fp, position);
+	}
 }

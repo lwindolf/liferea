@@ -5,6 +5,9 @@
 
 extern GtkWidget		*mainwindow;
 
+/* 2 or 3 pane mode flag from ui_mainwindow.c */
+extern gboolean 	itemlist_mode;
+
 void switchPaneMode(gboolean new_mode);
 void ui_mainwindow_update_toolbar();
 void ui_mainwindow_update_menubar();

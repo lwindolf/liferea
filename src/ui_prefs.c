@@ -29,6 +29,8 @@
 #include "conf.h"
 #include "interface.h"
 #include "support.h"
+#include "ui_mainwindow.h"
+#include "ui_itemlist.h"
 #include "ui_prefs.h"
 #include "ui_mainwindow.h"
 #include "ui_tray.h"
@@ -219,13 +221,12 @@ void on_timeformatselection_clicked(GtkButton *button, gpointer user_data) {
 	setNumericConfValue(TIME_FORMAT_MODE, active_button);
 	gtk_widget_set_sensitive(GTK_WIDGET(editbox), active_button == 3);
 
-	// FIXME there is a better way to do this.... Same goes for the next function
-	ui_redraw_widget("mainwindow");
+	ui_update_itemlist();
 }
 
 void on_timeformatentry_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(TIME_FORMAT, gtk_editable_get_chars(editable,0,-1));
-	ui_redraw_widget("mainwindow");
+	ui_update_itemlist();
 }
 
 void on_itemCountBtn_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {
@@ -260,9 +261,6 @@ void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 	
 	ui_mainwindow_update_menubar();
 	ui_mainwindow_update_toolbar();
-
-	// FIXME there is a better way to do this.... 
-	ui_redraw_widget("mainwindow");
 }
 
 
@@ -284,7 +282,6 @@ void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);
 
 	loadConfig();
-	ui_redraw_widget("mainwindow");
 }
 
 
@@ -292,7 +289,6 @@ void on_proxyhostentry_changed(GtkEditable *editable, gpointer user_data) {
 
 	setStringConfValue(PROXY_HOST, gtk_editable_get_chars(editable,0,-1));
 	loadConfig();
-	ui_redraw_widget("mainwindow");
 }
 
 
@@ -300,5 +296,4 @@ void on_proxyportentry_changed(GtkEditable *editable, gpointer user_data) {
 
 	setNumericConfValue(PROXY_PORT, atoi(gtk_editable_get_chars(editable,0,-1)));
 	loadConfig();
-	ui_redraw_widget("mainwindow");
 }

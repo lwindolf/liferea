@@ -77,8 +77,12 @@ void 	registerItemType(gint type, itemHandlerPtr ihp);
 itemPtr 	getNewItemStruct(void);
 void 		addVFolderToItem(itemPtr ip, gpointer fp);
 void		removeVFolderFromItem(itemPtr ip, gpointer fp);
-void ui_free_item_ui_data(itemPtr ip); /* This is in item.c */
-void ui_update_item(itemPtr ip); /* This is in item.c */
+
+void ui_free_item_ui_data(itemPtr ip); /* This is in itemlist.c */
+void ui_update_item(itemPtr ip); /* This is in itemlist.c */
+/* Update all items listed. Useful after a display preference change */
+void ui_update_itemlist();
+
 void displayItem(itemPtr ip);
 void		freeItem(itemPtr ip);
 

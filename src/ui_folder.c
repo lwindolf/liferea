@@ -30,9 +30,6 @@
 static GtkWidget	*newfolderdialog = NULL;
 static GtkWidget	*foldernamedialog = NULL;
 
-extern gchar	*selected_keyprefix;
-extern gint	selected_type;
-
 /*------------------------------------------------------------------------------*/
 /* new/change/remove folder dialog callbacks 					*/
 /*------------------------------------------------------------------------------*/
@@ -44,132 +41,371 @@ void on_popup_newfolder_selected(void) {
 	gtk_widget_show(newfolderdialog);
 }
 
+/* This is used as a hack in order to pass a folderPtr to the save
+   button callback. This is very evil and should be changed at some
+   point. Unfortunatly, glade does not make it easy to change. */
+
+folderPtr activeFolder = NULL;
+
 void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*foldertitleentry;
-	gchar		*folderkey, *foldertitle;
-	
+	gchar *foldertitle;
+	folderPtr folder;
 	g_assert(newfolderdialog != NULL);
 	
 	foldertitleentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
-	if(NULL != (folderkey = addFolderToConfig(foldertitle))) {
+	folder = get_new_folder(folder_get_root(), -1, foldertitle, FST_FOLDER);
+	if(folder) {
 		/* add the new folder to the model */
-		addFolder(folderkey, g_strdup(foldertitle), FST_FOLDER);
-		checkForEmptyFolders();
+		ui_add_folder(folder);
 	} else {
 		g_warning("internal error! could not get a new folder key!");
 	}	
 }
 
-void on_popup_foldername_selected(void) {
+void on_popup_foldername_selected(gpointer callback_data,
+						    guint callback_action,
+						    GtkWidget *widget) {
+	folderPtr folder = (folderPtr)callback_data;
 	GtkWidget	*foldernameentry;
 	gchar 		*title;
-
-	if(selected_type != FST_FOLDER) {
-		ui_show_error_box(_("You have to select a folder entry!"));
-		return;
-	}
+	GtkTreeIter	*iter;
+	
+	g_assert(folder);
+	g_assert(folder->type == FST_FOLDER);
 	
 	if(NULL == foldernamedialog || !G_IS_OBJECT(foldernamedialog))
 		foldernamedialog = create_foldernamedialog();
-		
+	
 	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-	if(NULL != selected_keyprefix) {
-		title = getFolderTitle(selected_keyprefix);
-		gtk_entry_set_text(GTK_ENTRY(foldernameentry), title);
-		g_free(title);
-		gtk_widget_show(foldernamedialog);
-	} else {
-		g_warning("internal error: could not determine folder key!");
-	}
+	title = folder_get_title(folder);
+	gtk_entry_set_text(GTK_ENTRY(foldernameentry), title);
+	activeFolder = folder;
+
+	gtk_widget_show(foldernamedialog);
+	g_free(title);
+	g_free(iter);
 }
 
-void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data) { on_popup_foldername_selected(); }
+void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	GtkTreeIter *iter = (GtkTreeIter *)g_malloc(sizeof(GtkTreeIter));
+	folderPtr folder = (folderPtr)ui_feedlist_get_selected();
+	if (folder && IS_FOLDER(folder->type)) {
+		*iter = ((ui_data*)(folder->ui_data))->row;
+		on_popup_foldername_selected(iter, 0, NULL);
+	} else
+		g_message(_("A folder must be selected."));
+}
 
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*foldernameentry;
+	g_assert(activeFolder);
 	
-	if(NULL != selected_keyprefix) {
-		foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-		setFolderTitle(selected_keyprefix, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
-	} else {
-		ui_show_error_box("internal error: could not determine folder key!");
-	}
+	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
+	setFolderTitle(activeFolder, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
 
 	gtk_widget_hide(foldernamedialog);
+	activeFolder = NULL;
 }
 
-void on_popup_removefolder_selected(void) {
-	GtkTreeStore	*feedstore;
-	GtkTreeIter	childiter;
-	GtkTreeIter	selected_iter;	
-	gint		tmp_type, count;
+void on_popup_removefolder_selected(gpointer callback_data,
+							 guint callback_action,
+							 GtkWidget *widget) {
+	folderPtr		folder = (folderPtr)callback_data;
 	
-	if(selected_type != FST_FOLDER) {
-		ui_show_error_box(_("You have to select a folder entry!"));
-		return;
+	g_assert(folder);
+	g_assert(folder->type == FST_FOLDER);
+	
+	if(folder->children == NULL)
+		folder_remove(folder);
+	else
+		ui_show_error_box(_("A folder must be empty to delete it!"));
+}
+
+/*
+ * Expansion & Collapsing
+ */
+
+gboolean ui_is_folder_expanded(folderPtr folder) {
+	GtkTreeIter		*iter;
+	GtkTreePath		*path;
+	GtkWidget		*treeview;
+	gboolean expanded = FALSE;
+
+	g_assert(NULL != feedstore);
+
+	if (folder->ui_data == NULL)
+		return FALSE;
+
+	if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
+		iter = &((ui_data*)(folder->ui_data))->row;
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
+		expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(treeview), path);
+		gtk_tree_path_free(path);
 	}
+	return expanded;
+}
 
-	ui_feedlist_get_iter(&selected_iter);
-	feedstore = getFeedStore();
-	g_assert(feedstore != NULL);
+void ui_folder_set_expansion(folderPtr folder, gboolean expanded) {
+	GtkTreeIter		*iter;
+	GtkTreePath		*path;
+	GtkWidget		*treeview;	
+
+	g_assert(NULL != feedstore);
 	
-	/* make sure thats no grouping iterator */
-	if(NULL != selected_keyprefix) {
-		/* check if folder is empty */
-		count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), &selected_iter);
-		if(0 == count) 
-			g_warning("this should not happen! A folder must have an empty entry!!!\n");
+	if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
+		iter = &((ui_data*)((nodePtr)folder)->ui_data)->row;
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
+		if (expanded)
+			gtk_tree_view_expand_row(GTK_TREE_VIEW(treeview), path, FALSE);
+		else
+			gtk_tree_view_collapse_row(GTK_TREE_VIEW(treeview), path);
+		gtk_tree_path_free(path);
+	}
+}
+void folder_state_save(nodePtr ptr) {
+	folderPtr folder = (folderPtr)ptr;
+	g_assert(folder);
+	g_assert(IS_FOLDER(folder->type));
+	setFolderCollapseStateInConfig(folder, !ui_is_folder_expanded(folder));
+}
 
-		if(1 == count) {
-			/* check if the only entry is type FST_EMPTY */
-			gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, &selected_iter);
-			gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_TYPE, &tmp_type, -1);
-			if(FST_EMPTY == tmp_type) {
-				gtk_tree_store_remove(feedstore, &childiter);		/* remove "(empty)" iter */
-				gtk_tree_store_remove(feedstore, &selected_iter);	/* remove folder iter */
-				removeFolder(selected_keyprefix);
-				g_free(selected_keyprefix);
-				selected_keyprefix = g_strdup(ROOT_FOLDER_PREFIX);
-			} else {
-				ui_show_error_box(_("A folder must be empty to delete it!"));
+/* Subfolders */
+static void ui_add_empty_subfolder(folderPtr folder) {
+	GtkTreeIter *iter;
+	GtkTreeIter child;
+	gint count;
+
+	if (folder == folder_get_root())
+		return;
+
+	iter = &((ui_data*)(folder->ui_data))->row;
+	count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), iter);
+	if (count == 0) {
+		gtk_tree_store_append(feedstore, &child, iter);
+		gtk_tree_store_set(feedstore, &child,
+			   FS_PTR, NULL,
+			   -1);	
+	}
+}
+
+static void ui_delete_empty_subfolders(folderPtr folder) {
+	GtkTreeIter *iter = &((ui_data*)(folder->ui_data))->row;
+	GtkTreeIter child;
+	nodePtr ptr;
+	if (folder == folder_get_root())
+		return;
+
+	if (gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &child, iter)) {
+		do {
+			gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &child,
+						    FS_PTR, &ptr, -1);
+			if (ptr == NULL) {
+				gtk_tree_store_remove(feedstore, &child);
+				return;
 			}
-		} else {
-			ui_show_error_box(_("A folder must be empty to delete it!"));
-		}
+		} while (gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &child));
+	}
+}
+
+void ui_add_folder(folderPtr folder) {
+	GtkTreeIter		*iter;
+	gint				position;
+	/* check if a folder with this keyprefix already
+	   exists to check config consistency */
+
+	g_assert(folder->ui_data == NULL);
+
+	g_assert(feedstore != NULL);
+	g_assert(folder->parent);
+
+	position = g_slist_index(folder->parent->children, folder);
+
+	/* if parent is NULL we have the root folder and don't create
+	   a new row! */
+	folder->ui_data = g_malloc(sizeof(ui_data));
+	iter = &(((ui_data*)(folder->ui_data))->row);
+	gchar *path = folder_get_conf_path(folder);
+	if (folder->parent == folder_get_root()) {
+		if (position < 0)
+			gtk_tree_store_append(feedstore, iter, NULL);
+		else
+			gtk_tree_store_insert(feedstore, iter, NULL,position);
 	} else {
-		g_warning("internal error: Cannot determine folder key!");
+		if (position < 0)
+			gtk_tree_store_append(feedstore, iter, &((ui_data*)folder->parent->ui_data)->row);
+		else
+			gtk_tree_store_insert(feedstore, iter, &((ui_data*)folder->parent->ui_data)->row,position);
+	}
+	gtk_tree_store_set(feedstore, iter,
+				    FS_PTR, folder,
+				    -1);
+	g_free(path);
+	if(folder->parent)
+		ui_delete_empty_subfolders(folder->parent);
+	ui_add_empty_subfolder(folder);
+
+	ui_update_folder(folder);
+}
+
+void ui_remove_folder(folderPtr folder) {
+	GtkTreeIter	parent, iter;
+	gboolean has_parent, parentExpanded;
+	folderPtr parentNode;
+	
+	g_assert(folder);
+	g_assert(folder->ui_data);
+
+	has_parent = gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore),&parent, &((ui_data*)(folder->ui_data))->row);
+	g_message("%s has a parent: %d", folder->title, has_parent);
+	iter = ((ui_data*)(folder->ui_data))->row;
+	parentNode = folder->parent;
+	parentExpanded = ui_is_folder_expanded(parentNode); /* If the folder becomes empty, the folder would collapse */
+	
+	gtk_tree_store_remove(feedstore, &iter);
+	
+	g_free((ui_data*)(folder->ui_data));
+	folder->ui_data = NULL;
+
+	if(has_parent) {
+		ui_update_folder(parentNode);
+		ui_add_empty_subfolder(parentNode);
+		if (parentExpanded)
+			ui_folder_set_expansion(parentNode, TRUE);
 	}
 }
 
-/* methos to mark everything in a folder as unread */
+/* If pos == -1, position == end */
+void ui_folder_add_feed(feedPtr fp, gint position) {
+	GtkTreeIter		*topiter;
 
-static gboolean ui_folder_mark_all_as_read_foreach(GtkTreeModel *model, GtkTreePath	*child_path, GtkTreeIter *child_iter, gpointer user_data) {
-	GtkTreePath	*selected = (GtkTreePath *)user_data;
+	g_assert(NULL != fp);
+	g_assert(NULL != feedstore);
+	g_assert(NULL != fp->parent);
+	g_assert(NULL == fp->ui_data);
 	
-	if(gtk_tree_path_is_ancestor(selected, child_path)) {
-		ui_feedlist_mark_items_as_unread(child_iter);
+	if (fp->parent == folder_get_root())
+		topiter = NULL;
+	else {
+		g_assert(fp->parent->ui_data);
+		topiter = &((ui_data*)(fp->parent->ui_data))->row;
+	}
+
+	fp->ui_data = g_malloc(sizeof(ui_data));
+
+	if(position >= 0) {
+		/* if a feed entry is marked after which we shall insert */
+		gtk_tree_store_insert(feedstore, &((ui_data*)(fp->ui_data))->row, topiter, position);
+	} else {
+		/* typically on startup when adding feeds from configuration */
+		gtk_tree_store_append(feedstore, &((ui_data*)(fp->ui_data))->row, topiter);
 	}
 	
-	return FALSE;
+	gtk_tree_store_set(feedstore, &((ui_data*)(fp->ui_data))->row,
+				    FS_PTR, fp,
+				    -1);
+
+	ui_delete_empty_subfolders(fp->parent);
+	ui_update_feed(fp);
 }
 
-void ui_folder_mark_all_as_read(void) {
-	GtkTreeModel	*model;
-	GtkTreeIter	selected_iter;	
-	GtkTreePath	*selected_path;
+void ui_folder_remove_feed(feedPtr fp) {
+     GtkTreeIter iter;
+	gboolean has_parent;
+	GtkTreeIter parent;
+	folderPtr parentNode;
+	gboolean parentExpanded;
 
-	if(selected_type != FST_FOLDER) {
-		ui_show_error_box(_("You have to select a folder entry!"));
+	g_assert(fp);
+	g_assert(fp->ui_data);
+
+	has_parent = gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore),&parent, &((ui_data*)(fp->ui_data))->row);
+	iter = ((ui_data*)(fp->ui_data))->row;
+	parentNode = fp->parent;
+	parentExpanded = ui_is_folder_expanded(fp->parent); /* If the folder becomes empty, the folder would collapse */
+	gtk_tree_store_remove(feedstore, &iter);
+	
+	g_free((ui_data*)(fp->ui_data));
+	fp->ui_data = NULL;
+
+	if(has_parent) {
+		ui_update_folder(parentNode);
+		ui_add_empty_subfolder(parentNode);
+		if (parentExpanded)
+			ui_folder_set_expansion(parentNode, TRUE);
+	}
+}
+static GdkPixbuf* ui_folder_select_icon(folderPtr np) {
+	g_assert(IS_FOLDER(np->type));
+	switch(np->type) {
+	case FST_FOLDER:
+		return icons[ICON_FOLDER];
+	case FST_HELPFOLDER:
+		return icons[ICON_HELP];
+	default:
+		g_print(_("internal error! unknown entry type! cannot display appropriate icon!\n"));
+		return icons[ICON_UNAVAILABLE];
+	}
+}
+
+static void ui_update_folder_from_iter(GtkTreeIter *iter) {
+	gboolean			rc;
+	GtkTreeIter		child, parent;
+	gint 			count, ccount;
+	gchar			*title, *label;
+	GtkTreeModel		*model;
+	folderPtr			ptr;
+	
+
+	model =  GTK_TREE_MODEL(feedstore);
+
+	gtk_tree_model_get(model, iter,
+				    FS_PTR, &ptr,
+				    -1);
+	g_assert(IS_FOLDER(ptr->type));
+
+	if(folder_get_root() == ptr)
 		return;
+
+	g_assert(ptr->ui_data);
+
+	title = folder_get_title(ptr);
+
+	count = 0;
+	rc = gtk_tree_model_iter_children(model, &child, iter);
+
+	while(rc) {
+		gtk_tree_model_get(model, &child,
+					    FS_UNREAD, &ccount,
+					    -1);
+		count += ccount;
+		rc = gtk_tree_model_iter_next(model, &child);
+	}
+	
+	if (count>0) {
+		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", title, count);
+	} else {
+		label = g_strdup_printf("%s", title);
 	}
 
-	model = GTK_TREE_MODEL(getFeedStore());
-	g_assert(NULL != model);
+	gtk_tree_store_set(feedstore, iter,
+				    FS_LABEL, label,
+				    FS_ICON, ui_folder_select_icon(ptr),
+				    FS_UNREAD, count,
+				    -1);
+	g_free(title);
+	g_free(label);
 
-	ui_feedlist_get_iter(&selected_iter);
-	selected_path = gtk_tree_model_get_path(model, &selected_iter);	
-	g_assert(NULL != selected_path);
-	gtk_tree_model_foreach(model, ui_folder_mark_all_as_read_foreach, selected_path);
+	if(gtk_tree_model_iter_parent(model,&parent, iter))
+		ui_update_folder_from_iter(&parent);
 }
 
+void ui_update_folder(folderPtr folder) {
+	nodePtr node = (nodePtr)folder;
+	g_assert(IS_FOLDER(node->type));
+	if (NULL == node->ui_data)
+		return;
+
+	ui_update_folder_from_iter(&((ui_data*)(node->ui_data))->row);
+}

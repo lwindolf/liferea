@@ -552,7 +552,6 @@ create_mainwindow (void)
   gtk_widget_show (feedlist);
   gtk_container_add (GTK_CONTAINER (scrolledwindow3), feedlist);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (feedlist), FALSE);
-  gtk_tree_view_set_reorderable (GTK_TREE_VIEW (feedlist), TRUE);
 
   vbox18 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox18);
@@ -731,14 +730,11 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) feedlist, "button_press_event",
                     G_CALLBACK (on_mainfeedlist_button_press_event),
                     NULL);
-  g_signal_connect ((gpointer) feedlist, "drag_begin",
-                    G_CALLBACK (on_feedlist_drag_begin),
+  g_signal_connect ((gpointer) feedlist, "drag_data_get",
+                    G_CALLBACK (on_feedlist_drag_data_get),
                     NULL);
-  g_signal_connect ((gpointer) feedlist, "drag_end",
-                    G_CALLBACK (on_feedlist_drag_end),
-                    NULL);
-  g_signal_connect ((gpointer) feedlist, "drag_drop",
-                    G_CALLBACK (on_feedlist_drag_drop),
+  g_signal_connect ((gpointer) feedlist, "drag_data_received",
+                    G_CALLBACK (on_feedlist_drag_data_received),
                     NULL);
   g_signal_connect ((gpointer) searchentry, "activate",
                     G_CALLBACK (on_searchentry_activate),

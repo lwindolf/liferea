@@ -63,6 +63,7 @@ void on_popup_filter_selected(void) {
 	GtkTreeIter	iter;
 	GSList		*rule;
 	rulePtr		r;
+	feedPtr		fp;
 
 	if(NULL == filterdialog || !G_IS_OBJECT(filterdialog))
 		filterdialog = create_filterdialog();
@@ -73,8 +74,8 @@ void on_popup_filter_selected(void) {
 		setupRuleList(ruleList);
 		gtk_tree_store_clear(GTK_TREE_STORE(ruleStore));
 		
-		g_assert(NULL != selected_fp);
-		rule = selected_fp->filter;
+		fp = (feedPtr)ui_feedlist_get_selected();
+		rule = fp->filter;
 		while(NULL != rule) {
 			r = rule->data;
 			gtk_tree_store_append(ruleStore, &iter, NULL);

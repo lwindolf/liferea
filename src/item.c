@@ -75,7 +75,6 @@ void markItemAsUnread(itemPtr ip) {
 		ip->readStatus = FALSE;
 		if (ip->ui_data)
 			ui_update_item(ip);
-		ui_redraw_feedlist();
 	} 
 }
 
@@ -96,7 +95,6 @@ void markItemAsRead(itemPtr ip) {
 		ip->readStatus = TRUE; 
 		if (ip->ui_data)
 			ui_update_item(ip);
-		ui_redraw_feedlist();
 	}
 }
 

@@ -35,7 +35,6 @@
 #define MAX_GCONF_PATHLEN	256
 
 #define PATH		"/apps/liferea"
-#define GROUPS		"/apps/liferea/groups"
 
 /* _() for HELP1URL to allow localised help feeds */
 #define HELP1URL 	_("http://liferea.sf.net/help048.rdf")
@@ -50,7 +49,7 @@ char	*proxyname = NULL;
 int	proxyport = 0;
 
 /* Function prototypes */
-int setFeedTypeInConfig(gchar *key, gint type);
+int setFeedTypeInConfig(feedPtr fp);
 
 static gchar * build_path_str(gchar *str1, gchar *str2) {
 	gchar	*gconfpath;
@@ -64,19 +63,12 @@ static gchar * build_path_str(gchar *str1, gchar *str2) {
 	return gconfpath;
 }
 
-static void free_gconf_key(gchar *key, gchar *attribute) {
-	gchar	*gconfpath;
-	
-	gconfpath = build_path_str(key, attribute);
-	gconf_client_unset(client, gconfpath, NULL);
-	g_free(gconfpath);
-}
-
-gboolean is_gconf_error(GError *err) {
+static gboolean is_gconf_error(GError *err) {
 
 	if(err != NULL) {
 		g_print(err->message);
 		g_error_free(err);
+		err = NULL;
 		return TRUE;
 	}
 	
@@ -93,23 +85,23 @@ void initConfig() {
 	
 	/* the following code was copied from SnowNews and adapted to build
 	   a Liferea user agent... */
-	   
-        /* Constuct the User-Agent string of Liferea. This is done here in program init,
-           because we need to do it exactly once and it will never change while the program
-           is running. */
-        if (getenv("LANG") != NULL) {
-                lang = getenv("LANG");
-                /* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
-                ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(lang) + 2 + strlen(OSNAME)+2 + strlen(HOMEPAGE) + 2;
-                useragent = g_malloc(ualength);
-                snprintf (useragent, ualength, "Liferea/%s (%s; %s; %s)", VERSION, OSNAME, lang, HOMEPAGE);
-        } else {
-                /* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
-                ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(OSNAME) + 2 + strlen("http://liferea.sf.net/") + 2;
-                useragent = g_malloc(ualength);
-                snprintf (useragent, ualength, "Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
-                printf ("%s\n", useragent);
-        }
+	
+	/* Constuct the User-Agent string of Liferea. This is done here in program init,
+	   because we need to do it exactly once and it will never change while the program
+	   is running. */
+	if (getenv("LANG") != NULL) {
+		lang = getenv("LANG");
+		/* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
+		ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(lang) + 2 + strlen(OSNAME)+2 + strlen(HOMEPAGE) + 2;
+		useragent = g_malloc(ualength);
+		snprintf (useragent, ualength, "Liferea/%s (%s; %s; %s)", VERSION, OSNAME, lang, HOMEPAGE);
+	} else {
+		/* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
+		ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(OSNAME) + 2 + strlen("http://liferea.sf.net/") + 2;
+		useragent = g_malloc(ualength);
+		snprintf (useragent, ualength, "Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
+		printf ("%s\n", useragent);
+	}
 	
 	/* initialize GConf client */
 	if (client == NULL) {
@@ -138,180 +130,70 @@ void loadConfig() {
 }
 
 /* return the entry list of a given key prefix */
-GSList * getFeedKeyList(gchar *keyprefix) {
-	GSList		*list = NULL;
+void removeFeedFromConfig(feedPtr fp) {
+	GSList		*list, *newlist = NULL, *n;
 	GError		*err = NULL;
-	GConfValue	*value;
-	gchar		*gconfpath;
-
-	gconfpath = build_path_str(keyprefix, "feedlist");
+	gchar          *parentPrefix, *fpkey, *key;
 	
-	if(NULL != (value = gconf_client_get(client, gconfpath, &err))) {
-		is_gconf_error(err);
-		list = gconf_value_get_list(value);
-		// gconf_value_free(value); FIXME: not possible because list is returned! do make a copy of list!!!
-	} else {
-		g_warning(g_strdup_printf(_("internal error! could not retrieve feed list for gconf path %s\n"), gconfpath));
-	}
-	g_free(gconfpath);
-	
-	return list;
-}
-
-void setFeedKeyList(gchar *keyprefix, GSList *newlist) {
-	GConfValue	*value;
-	GError		*err = NULL;
-	gchar		*gconfpath;	
-
-	gconfpath = build_path_str(keyprefix, "feedlist");
-
-	value = gconf_value_new(GCONF_VALUE_LIST);
-	gconf_value_set_list_type(value, GCONF_VALUE_STRING);
-	gconf_value_set_list(value, newlist);
-	gconf_client_set(client, gconfpath, value, &err);
-	is_gconf_error(err);
-	gconf_value_free(value);
-	g_free(gconfpath);
-}
-
-void removeFeedFromConfig(gchar *keyprefix, gchar *key) {
-	GConfValue	*element;
-	GSList		*list, *newlist = NULL;
-	GSList		*iter;
-	const char	*tmp;
-	int 		found = 0;
-
 	/* remove key from key list */
-	iter = list = getFeedKeyList(keyprefix);
-	while(iter != NULL) {
-		element = iter->data;
-		tmp = gconf_value_get_string(element);
-		if(0 != strcmp(tmp, key)) {
-			newlist = g_slist_append(newlist, element);
-		} else {
-			found = 1;
-		}
-		iter = g_slist_next(iter);		
-	}
-	
-	if(!found)
-		g_warning("internal error: could not find key in configuration!");
-	
-	/* write new list back to gconf */
-	setFeedKeyList(keyprefix, newlist);
-	
-	/* remove entry gconf keys */
-	free_gconf_key(key, "url");
-	free_gconf_key(key, "name");
-	free_gconf_key(key, "type");
-	free_gconf_key(key, "updateInterval");
-	
-	g_slist_free(list);
-	g_slist_free(newlist);
-}
+	parentPrefix = folder_get_conf_path(fp->parent);
+	key = g_strdup_printf("%s/%s/feedlist", PATH, parentPrefix);
+	g_free(parentPrefix);
 
-/* compare function for numerical GSList sorting in getFreeFeedKey() */
-static gint compare_func(gconstpointer a, gconstpointer b) {
-	GError		*err = NULL;
-	GConfValue	*element;
-	const char	*feedkey1, *feedkey2;
-	char		*tmp, *tmp1, *tmp2;
-	gint		result, res;
-	
-	element = (GConfValue *)a;
-	feedkey1 = gconf_value_get_string(element);
+	g_message("Removing %s from list %s", fp->title, key);
+	list = gconf_client_get_list(client, key, GCONF_VALUE_STRING,  &err);
 	is_gconf_error(err);
-	
-	element = (GConfValue *)b;
-	feedkey2 = gconf_value_get_string(element);
-	is_gconf_error(err);	
-	
-	/* skip the keyprefixes to get the key numbers */
-	if(NULL == (tmp1 = strrchr(feedkey1, '/'))) {
-		tmp1 = (char *)feedkey1;
-	} else {
-		tmp1++;
-	}	
-	/* skip chars in front of directory keys */
-	if(NULL != (tmp = strpbrk(tmp1, "0123456789")))
-		tmp1 = tmp;
-	
-	if(NULL == (tmp2 = strrchr(feedkey2, '/'))) {
-		tmp2 = (char *)feedkey2;
-	} else {
-		tmp2++;
+
+	while(list) {
+		n = list->next;
+		g_message("comparing %s", (gchar*)list->data);
+		g_message("-- with %s", fp->id);
+		if(0 != strcmp((gchar*)list->data, fp->id)) {
+			newlist = g_slist_append(newlist, list->data);
+		} else
+			g_free(list->data);
+		g_slist_free_1(list);
+		list = n;
 	}
-	/* skip chars in front of directory keys */
-	if(NULL != (tmp = strpbrk(tmp2, "0123456789")))
-		tmp2 = tmp;
-
-	result = atoi(tmp1) - atoi(tmp2);
-	res = (result)?result/abs(result):0;
-
-	return res;
-}
-
-/* this method is used to get a feedkey which is not already
-   used for an existing feed */
-gchar * getFreeFeedKey(gchar *keyprefix) {
-	GError		*err = NULL;
-	GSList		*iter = NULL;	
-	GConfValue	*element;
-	const char 	*key;
-
-	/* actually we use only numbers as feedkeys... */
-	int		nr = 1;
-	gchar		*newkey;	/* the number as a string */
-
-	g_assert(keyprefix != NULL);	
-	if(0 == strcmp(keyprefix, ""))
-		newkey = g_strdup_printf("%d", nr);
-	else
-		newkey = g_strdup_printf("%s/%d", keyprefix, nr);
-				
-	iter = getFeedKeyList(keyprefix);
-	iter = g_slist_sort(iter, compare_func);	
-	while (iter != NULL) {
-		element = iter->data;
-		key = gconf_value_get_string(element);
-		is_gconf_error(err);	
-
-		g_assert(NULL != key);
-		if(0 == strcmp(key, newkey)) {
-			nr++;
-			g_free(newkey);
-			
-			if(0 == strcmp(keyprefix, ""))
-				newkey = g_strdup_printf("%d", nr);
-			else
-				newkey = g_strdup_printf("%s/%d", keyprefix, nr);
-		}
 	
-		iter = g_slist_next(iter);
-	}
+	gconf_client_set_list(client, key, GCONF_VALUE_STRING, newlist, &err);
+	is_gconf_error(err);
 
-	return newkey;
+	g_free(key);
+
+	fpkey = feed_get_conf_path(fp);
+	key = g_strdup_printf("%s/%s", PATH, fpkey);
+	g_message("Feed path is %s", key);
+	gconf_client_recursive_unset(client, key, GCONF_UNSET_INCLUDING_SCHEMA_NAMES, &err);
+	is_gconf_error(err);
+
+	g_free(fpkey);
+	g_free(key);
 }
 
 /*----------------------------------------------------------------------*/
 /* folder entry handling							*/
 /*----------------------------------------------------------------------*/
 
-int setFolderTitleInConfig(gchar *keyprefix, gchar *title) {
-	gchar 	*gconfpath;
+int setFolderTitleInConfig(folderPtr folder, gchar *title) {
+	gchar 	*folderpath, *gconfpath;
 	
-	gconfpath = g_strdup_printf("%s/%s/feedlistname", PATH, keyprefix);
+	folderpath = folder_get_conf_path(folder);
+	gconfpath = g_strdup_printf("%s/%s/feedlistname", PATH, folderpath);
+	g_message("setfoldertitleinconfig: Setting %s to %s", gconfpath, title);
 	setStringConfValue(gconfpath, title);
+	g_free(folderpath);
 	g_free(gconfpath);
 
 	return 0;	
 }
 
-int setFolderTypeInConfig(gchar *keyprefix, gint type) {
+int setFolderTypeInConfig(gchar *path, gint type) {
 	gchar 	*gconfpath;
 	
-	gconfpath = g_strdup_printf("%s/%s/type", PATH, keyprefix);
+	gconfpath = g_strdup_printf("%s/type", path);
 	setNumericConfValue(gconfpath, type);
+	
 	g_free(gconfpath);
 
 	return 0;	
@@ -321,112 +203,82 @@ int setFolderTypeInConfig(gchar *keyprefix, gint type) {
    and saves the title in the directory path as key 
    feedlisttitle, on successful execution this function
    returns the new directory key... */
-gchar * addFolderToConfig(gchar *title) {
+void addEmptyFolderToConfig(folderPtr folder, int type) {
 	GError		*err = NULL;
-	GSList		*list, *newlist, *iter;
-	GConfValue	*value, *value2;
-	GConfValue	*element;
+	GSList		*list;
 	gchar		*gconfpath;
-	gchar		*newdirkey;
-	const char 	*dirkey;
-	int		nr = 1;
-	
+	gchar		*dirPath, *parentDirPath, *tmp;
+	gint			position = g_slist_index(folder->parent->children, folder);
+
+	g_assert(folder->id);
+
 	/* first step: find free directory key */
+     tmp = folder_get_conf_path(folder->parent);
+	parentDirPath = g_strdup_printf("%s/%s", PATH, tmp);
+	dirPath = g_strdup_printf("%s/%s/%s", PATH, tmp, folder->id);
+	g_free(tmp);
 
-	/* we use "dir#" were # is a number as directory keys */
-	newdirkey = g_strdup_printf("dir%d", nr);
-				
-	gconfpath = g_strdup_printf("%s/groups", PATH);
-	value = gconf_client_get(client, gconfpath, &err);
+	/* Add the id to feedlist */
+	gconfpath = g_strdup_printf("%s/feedlist", parentDirPath);
+	list = gconf_client_get_list(client, gconfpath, GCONF_VALUE_STRING,  &err);
 	is_gconf_error(err);
 
-	list = gconf_value_get_list(value);
-	g_free(value);
+	list = g_slist_insert (list, g_strdup (folder->id), position);
+
+	gconf_client_set_list (client, gconfpath, GCONF_VALUE_STRING, list, &err);
+	is_gconf_error(err);
+	g_slist_foreach (list, (GFunc) g_free, NULL);
+	g_slist_free (list);
+
+	/* last step: save directory type*/	
+	setFolderTypeInConfig(dirPath, type);
+
+	g_free(dirPath);
+	g_free(parentDirPath);
 	g_free(gconfpath);
-	
-	iter = g_slist_sort(list, compare_func);	
-	while (iter != NULL) {
-		element = iter->data;
-		dirkey = gconf_value_get_string(element);
-		is_gconf_error(err);	
-
-		g_assert(NULL != dirkey);
-		if(0 == strcmp(dirkey, newdirkey)) {
-			nr++;
-			g_free(newdirkey);			
-			newdirkey = g_strdup_printf("dir%d", nr);		
-		}
-	
-		iter = g_slist_next(iter);
-	}
-
-	/* second step: insert key into directory list */
-	value = gconf_value_new(GCONF_VALUE_STRING);
-	gconf_value_set_string(value, newdirkey);
-	is_gconf_error(err);
-	newlist = g_slist_append(list, value);
-
-	/* write new list back to gconf */
-	gconfpath = g_strdup_printf("%s/groups", PATH);
-
-	value2 = gconf_value_new(GCONF_VALUE_LIST);
-	gconf_value_set_list_type(value2, GCONF_VALUE_STRING);
-	gconf_value_set_list(value2, newlist);
-	gconf_client_set(client, gconfpath, value2, &err);
-	is_gconf_error(err);
-	g_free(value);
-	g_free(value2);
-	g_free(gconfpath);
-
-	/* last step: save directory title & type*/	
-	setFolderTitleInConfig(newdirkey, title);
-	setFolderTypeInConfig(newdirkey, FST_FOLDER);
-	
-	g_slist_free(newlist);
-	
-	return newdirkey;
 }
 
-void removeFolderFromConfig(gchar *keyprefix) {
+void removeFolderFromConfig(folderPtr folder) {
 	GError		*err = NULL;
-	GConfValue	*element, *value;
-	GSList		*list, *newlist = NULL;
-	GSList		*iter;
-	const char	*tmpkeyprefix;
+	GSList		*list, *newlist = NULL, *n;
 	gchar		*gconfpath;
+	
+	g_message("Deleting ID %s", folder->id);
+	gchar *parentPath = folder_get_conf_path(folder->parent);
+	gchar *path = folder_get_conf_path(folder);
+	gchar *path2 = g_strdup_printf("%s/%s", PATH, path);
 
-	/* remove key from key list */
-	gconfpath = g_strdup_printf("%s/groups", PATH);
-	value = gconf_client_get(client, gconfpath, &err);
+	/* Remove the key from gconf */
+	g_message("Unsetting %s", path2);
+	gconf_client_recursive_unset(client, path2, GCONF_UNSET_INCLUDING_SCHEMA_NAMES, &err);
 	is_gconf_error(err);
 
-	iter = list = gconf_value_get_list(value);
-	g_free(value);
+	/* remove key from key list */
+	gconfpath = g_strdup_printf("%s/%s/feedlist", PATH, parentPath);
+	list = gconf_client_get_list(client, gconfpath, GCONF_VALUE_STRING, &err);
+	is_gconf_error(err);
 
-	while(iter != NULL) {
-		element = iter->data;
-		tmpkeyprefix = gconf_value_get_string(element);
-		if(0 != strcmp(tmpkeyprefix, keyprefix)) {
-			newlist = g_slist_append(newlist, element);
-		}
-		iter = g_slist_next(iter);		
+	while(list) {
+		n = list->next;
+		g_message("comparing %s", (gchar*)list->data);
+		g_message("-- with %s", folder->id);
+		if(0 != strcmp((gchar*)list->data, folder->id)) {
+			newlist = g_slist_append(newlist, list->data);
+		} else
+			g_free(list->data);
+		g_slist_free_1(list);
+		list = n;
 	}
 	
 	/* write new list back to gconf */
-	value = gconf_value_new(GCONF_VALUE_LIST);
-	gconf_value_set_list_type(value, GCONF_VALUE_STRING);
-	gconf_value_set_list(value, newlist);
-	gconf_client_set(client, gconfpath, value, &err);
+	gconf_client_set_list(client, gconfpath, GCONF_VALUE_STRING, newlist, &err);
 	is_gconf_error(err);
-	g_free(value);
+
 	g_free(gconfpath);
-	
+	g_free(parentPath);
+	g_free(path);
+	g_free(path2);
 	/* remove entry gconf keys */
-	free_gconf_key(keyprefix, "feedlistname");
-	free_gconf_key(keyprefix, "feedlist");
-	free_gconf_key(keyprefix, "type");
-	
-	g_slist_free(list);
 	g_slist_free(newlist);
 }
 
@@ -434,42 +286,47 @@ void removeFolderFromConfig(gchar *keyprefix) {
 /* feed entry handling							*/
 /*----------------------------------------------------------------------*/
 
-/* adds the given URL to the list of feeds... */
-gchar * addFeedToConfig(gchar *keyprefix, gchar *url, gint type) {
+gchar* conf_new_id() {
+	GRand *grand = g_rand_new();
+	int i;
+	gchar *id = g_malloc(10);
+	for(i=0;i<5;i++)
+		id[i] = (char)g_rand_int_range(grand, 'a', 'z');
+	id[5] = '\0';
+	g_rand_free(grand);
+	return id;
+}
+
+/* adds the given new fp to gconf... */
+gchar * addFeedToConfig(feedPtr fp) {
 	GError		*err = NULL;
-	GConfValue	*newkey = NULL;
-	GSList		*list, *newlist;
-	gchar		*key;
-
-	/* get available key */
-	if(NULL == (key = getFreeFeedKey(keyprefix))) {
-		g_print(_("error! could not get a free entry key!\n"));
-		return NULL;
-	}
-
-	/* save feed url and type */	
-	if((NULL != url) && (0 != setFeedURLInConfig(key, url)))
-		g_print(_("error! could not set a URL for this key!\n"));	
-
-	if(0 != setFeedTypeInConfig(key, type)) 
-		g_print(_("error! could not set a type for this key!\n"));
-		
-	/* add feedkey to feedlist */
-	list = getFeedKeyList(keyprefix);
-		
-	newkey = gconf_value_new(GCONF_VALUE_STRING);
-	gconf_value_set_string(newkey, key);
-	is_gconf_error(err);
+	GSList		*list;
+	gchar		*parent, *path;
+	gint			position = g_slist_index(fp->parent->children, fp);
 	
-	newlist = g_slist_append(list, newkey);
+	g_assert(fp->parent);
+	g_message("Adding %s at pos=%d with URL %s", fp->title,position, fp->source);
+	
+	/* save feed url and type */	
+	if((fp->source == NULL) || (0 != setFeedURLInConfig(fp, fp->source)))
+		g_print(_("error! could not set a URL for this key!\n"));	
+	
+	if(0 != setFeedTypeInConfig(fp)) 
+		g_print(_("error! could not set a type for this key!\n"));
+	
+	/* add feedkey to feedlist */
+	parent = folder_get_conf_path(fp->parent);
+	path = g_strdup_printf("%s/%s/feedlist", PATH, parent);
+	g_message("Feedlist is at %s", path);
+	list = gconf_client_get_list(client, path, GCONF_VALUE_STRING, &err);
+	is_gconf_error(err);
+		
+	list = g_slist_insert(list, g_strdup(fp->id), position);
 	
 	/* write new list back to gconf */
-	setFeedKeyList(keyprefix, newlist);
+	gconf_client_set_list(client, path, GCONF_VALUE_STRING, list, &err);
 		
-	g_free(newkey);
-	g_slist_free(newlist);
-	
-	return key;
+	return fp->id;
 }
 
 int setFeedTitleInConfig(gchar *key, gchar *title) {
@@ -486,31 +343,36 @@ int setFeedTitleInConfig(gchar *key, gchar *title) {
 	return 0;	
 }
 
-int setFeedTypeInConfig(gchar *key, gint type) {
+int setFeedTypeInConfig(feedPtr fp) {
 	GError		*err = NULL;
-	gchar		*gconfpath;
-					
+	gchar		*gconfpath, *fpPath;
+
+	fpPath = feed_get_conf_path(fp);
 	/* update URL */
-	gconfpath = g_strdup_printf("%s/%s/type", PATH, key);
-	gconf_client_set_int(client, gconfpath, type, &err);
+	gconfpath = g_strdup_printf("%s/%s/type", PATH, fpPath);
+	gconf_client_set_int(client, gconfpath, fp->type, &err);
 	g_free(gconfpath);
+	g_free(fpPath);
 	if(is_gconf_error(err))
 		return 1;
 	
-	return 0;	
+	return 0;
 }
 
-int setFeedURLInConfig(gchar *key, gchar *url) {
+int setFeedURLInConfig(feedPtr fp, gchar *url) {
 	GError		*err = NULL;
-	gchar		*gconfpath;
-					
+	gchar		*gconfpath, *fpPath;
+
+	fpPath = feed_get_conf_path(fp);
 	/* update URL */
-	gconfpath = g_strdup_printf("%s/%s/url", PATH, key);
+	gconfpath = g_strdup_printf("%s/%s/url", PATH, fpPath);
+	printf("Setting %s to %s\n", gconfpath, url);
 	gconf_client_set_string(client, gconfpath, url, &err);
-	g_free(gconfpath);	
+	g_free(gconfpath);
+	g_free(fpPath);
+
 	if(is_gconf_error(err))
-		return 1;
-	
+		return 1;	
 	return 0;	
 }
 
@@ -527,12 +389,14 @@ int setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval) {
 	return 0;
 }
 
-int setFolderCollapseStateInConfig(gchar *keyprefix, gboolean collapsed) {
+int setFolderCollapseStateInConfig(folderPtr folder, gboolean collapsed) {
 	GError		*err = NULL;
 	gchar		*gconfpath;
-	
-	gconfpath = build_path_str(keyprefix, "collapseState");
+	gchar		*key;
+	key = folder_get_conf_path(folder);
+	gconfpath = build_path_str(key, "collapseState");
 	gconf_client_set_bool(client, gconfpath, collapsed, &err);
+	g_free(key);
 	g_free(gconfpath);	
 	if(is_gconf_error(err))
 		return 1;
@@ -544,160 +408,160 @@ int setFolderCollapseStateInConfig(gchar *keyprefix, gboolean collapsed) {
 /* config loading on startup						*/
 /*----------------------------------------------------------------------*/
 
-void loadSubscriptions(void) {
+static void load_folder_contents(folderPtr folder, gchar* path, folderPtr *helpFolder);
+
+static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id, folderPtr *helpFolder) {
 	GError		*err = NULL;
-	GSList		*groupiter = NULL, *iter = NULL;
-	GConfValue	*element, *keylist, *groups;
-	gchar		*gconfpath;
-	gchar		*name, *url, *keyprefix, *keylisttitle;
-	const char	*key;
-	gchar 		*helpFolderPrefix = NULL;
-	gint		interval;
-	gint		type;
+	int type, interval;
+	gchar *path2, *name, *url;
+	folderPtr folder;
+	gboolean expanded;
 
-	/* get (and create if not yet existing) entry group prefix list */
-	groups = gconf_client_get(client, GROUPS, &err);
-	is_gconf_error(err);
-
-	if(NULL == groups) {
-		/* first call key still does not exists, we create
-		   an list with the standard key "" */
-		element = gconf_value_new(GCONF_VALUE_STRING);		   
-		gconf_value_set_string(element, g_strdup(""));
-		groupiter = g_slist_append(groupiter, element);
-		groups = gconf_value_new(GCONF_VALUE_LIST);
-		gconf_value_set_list_type(groups, GCONF_VALUE_STRING);
-		gconf_value_set_list(groups, groupiter);
-		gconf_client_set(client, GROUPS, groups, &err);
-		is_gconf_error(err);
-	}
-
-	if(GCONF_VALUE_LIST != groups->type) {
-		g_print("group list: fatal thats not a list type!\n");
-		return;
-	}
+	/* Type */
+	path2 = g_strdup_printf("%s/%s/type", prefix, id);
+	type = gconf_client_get_int(client, path2, &err);
 	
-	groupiter = gconf_value_get_list(groups);
-	while (groupiter != NULL) {
-		/* get keyprefix, build gconf path and get key list */
-		element = groupiter->data;
-		keyprefix = (gchar *)gconf_value_get_string(element);
-		g_assert(NULL != keyprefix);
+	if (type == 0 || is_gconf_error(err))
+		return FALSE;
+	g_free(path2);
+
+	switch(type) {
+	case FST_FOLDER:
+		path2 = g_strdup_printf("%s/%s/feedlistname", prefix, id);
+		name = gconf_client_get_string(client, path2, &err);
+		g_message("Loading feed with title %s at %s", name, path2);
+		is_gconf_error(err);
+		g_free(path2);
+
+		path2 = g_strdup_printf("%s/%s/collapseState", prefix, id);
+		expanded = !getBooleanConfValue(path2);
+		g_message("%s is expanded? %d", path2, expanded);
+		g_free(path2);
+
+		path2 = g_strdup_printf("%s/%s", prefix, id);
+
+		folder = restore_folder(parent, -1, name, id, FST_FOLDER);
 		
-		gconfpath = build_path_str(keyprefix, "feedlist");		
-		keylist = gconf_client_get(client, gconfpath, &err);
-		if(is_gconf_error(err)) {
-			g_warning(_("could not read from gconf path \"%s\"!\n"), gconfpath);
-			continue;
-		}
-				
-		if(NULL == keylist) {
-			/* first call keylist still does not exists, we create
-			   an empty list */
-			keylist = gconf_value_new(GCONF_VALUE_LIST);
-			gconf_value_set_list_type(keylist, GCONF_VALUE_STRING);
-			gconf_value_set_list(keylist, NULL);
-			gconf_client_set(client, gconfpath, keylist, &err);
-			if(is_gconf_error(err)) {
-				g_warning(_("could not create empty keylist in gconf path \"%s\"!\n"), gconfpath);
-				continue;
-			}
-		}
-		g_free(gconfpath);
+		ui_add_folder(folder);
+		load_folder_contents(folder, path2, helpFolder);
+		if (expanded)
+			ui_folder_set_expansion(folder, TRUE);
+		g_free(path2);
+		break;
+	case FST_HELPFOLDER:
+		*helpFolder = restore_folder(parent, -1, _("Liferea Help"), id, FST_HELPFOLDER);
+		ui_add_folder(*helpFolder);
+		feed_add_from_config(FST_HELPFEED, HELP1URL, *helpFolder, _("Online Help Feed"), "helpfeed1", 1440) ;
+		feed_add_from_config(FST_HELPFEED, HELP2URL, *helpFolder, _("Liferea SF News"), "helpfeed2", 1440) ;
+
+		path2 = g_strdup_printf("%s/%s/collapseState", prefix, id);
+		expanded = !getBooleanConfValue(path2);
+		if (expanded)
+			ui_folder_set_expansion(*helpFolder, TRUE);
+		g_free(path2);
+		break;
+	default:
+		path2 = g_strdup_printf("%s/%s/name", prefix, id);
+		g_message("%s", path2);
+		name = gconf_client_get_string(client, path2, &err);
+		is_gconf_error(err);
+		g_free(path2);
+
+		path2 = g_strdup_printf("%s/%s/updateInterval", prefix, id);
+		g_message("%s", path2);
+		interval = gconf_client_get_int(client, path2, &err);
+		is_gconf_error(err);
+		g_free(path2);	
 		
-		gconfpath = build_path_str(keyprefix, "feedlistname");
-		keylisttitle = getStringConfValue(gconfpath);
-		g_free(gconfpath);
-
-		gconfpath = build_path_str(keyprefix, "type");
-		type = getNumericConfValue(gconfpath);		
-		g_free(gconfpath);
-
-		if(NULL == keylisttitle)
-			keylisttitle = g_strdup("");
-
+		path2 = g_strdup_printf("%s/%s/url", prefix, id);
+		g_message("%s", path2);
+		url = getStringConfValue(path2);	/* we use this function to get a "" on empty conf value */
+		g_free(path2);
+		
 		if(0 == type)
 			type = FST_FOLDER;
 			
-		if(FST_HELPFOLDER == type)
-			helpFolderPrefix = keyprefix;
-			
-		addFolder(keyprefix, keylisttitle, type);
-		/* don't free keyprefix because its used as hash table key in backend */
-		g_free(keylisttitle);
-
-		if(GCONF_VALUE_LIST != keylist->type) {
-			g_print("fatal thats not a list type!\n");
-			return;
-		}
+		if(0 == interval)
+			interval = -1;
 		
-		iter = gconf_value_get_list(keylist);
-		while (iter != NULL) {
-		
-			element = iter->data;
-			key = gconf_value_get_string(element);
-			is_gconf_error(err);		
-			g_assert(NULL != key);			
-
-			gconfpath = g_strdup_printf("%s/%s/type", PATH, key);
-			type = gconf_client_get_int(client, gconfpath, &err);	/* retrieve the values manually to avoid error messages */
-			is_gconf_error(err);
-			g_free(gconfpath);
-
-			gconfpath = g_strdup_printf("%s/%s/updateInterval", PATH, key);
-			interval = gconf_client_get_int(client, gconfpath, &err);
-			is_gconf_error(err);
-			g_free(gconfpath);
-
-			gconfpath = g_strdup_printf("%s/%s/url", PATH, key);
-			url = getStringConfValue(gconfpath);	/* we use this function to get a "" on empty conf value */
-			is_gconf_error(err);
-			g_free(gconfpath);
-		
-			gconfpath = g_strdup_printf("%s/%s/name", PATH, key);
-			name = gconf_client_get_string(client, gconfpath, &err);
-			is_gconf_error(err);
-			g_free(gconfpath);	
-
-			if(0 == type)
-				type = FST_RSS;
-				
-			if(0 == interval)
-				interval = -1;
-				
-			/* we accept NULL titles, they will be replaced by the cached title */
-			addFeed(type, url, (gchar *)key, keyprefix, name, interval);
-
-			iter = g_slist_next(iter);
-		}
-			
-		// FIXME: free keylist data with g_slist_free(...
-		g_free(keylist);		
-		groupiter = g_slist_next(groupiter);
-		
-		/* restore folder collapse state */
-		gconfpath = build_path_str(keyprefix, "collapseState");
-		setFolderCollapseState(keyprefix, getBooleanConfValue(gconfpath));
-		g_free(gconfpath);		
+		feed_add_from_config(type, url, parent, name, id, interval);
+		g_free(id);
+		g_free(url);
 	}
+	g_free(name);
+	return TRUE;
+}
+
+static void load_folder_contents(folderPtr folder, gchar* path, folderPtr *helpFolder) {
+	GSList *list;
+	gchar *id;
+	GError		*err = NULL;
+	gchar *name;
 	
-	g_slist_free(groupiter);
-	g_free(groups);
-	
-	if(!getBooleanConfValue(DISABLE_HELPFEEDS)) {
-		/* if help folder was not yet created... */
-		if(NULL == helpFolderPrefix) {
-			/* add to config and UI feed list*/
-			helpFolderPrefix = addFolderToConfig(_("Liferea Help"));
-			setFolderTypeInConfig(helpFolderPrefix, FST_HELPFOLDER);
-			addFolder(helpFolderPrefix, _("Liferea Help"), FST_HELPFOLDER );
+	g_message("Loading from gconf: %s, path: %s", folder->title, path);
+
+	/* First, try to look and (and migrate groups) */
+
+	name = g_strdup_printf("%s/groups", path);
+
+	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
+	is_gconf_error(err);
+
+	if (list) {
+		while (list != NULL) {
+			id = (gchar*)list->data;
+			g_assert(id);
+			g_message("**found value of %s", id);
+			g_assert(NULL != id);
+			load_key(folder, path, id, helpFolder);
+			list = list->next;
 		}
-		
-		g_assert(NULL != helpFolderPrefix);
-		addFeed(FST_HELPFEED, HELP1URL, HELP1KEY, helpFolderPrefix, g_strdup(_("Online Help Feed")), 1440);
-		addFeed(FST_HELPFEED, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
 	}
-	checkForEmptyFolders();
+	g_free(name);
+	/* Then, look at the feedlist */
+	name = g_strdup_printf("%s/feedlist", path);
+	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
+	is_gconf_error(err);
+
+	if (list) {
+		while (list != NULL) {
+			id = (gchar*)list->data;
+			g_assert(id);
+			g_message("**found value of %s", id);
+			g_assert(NULL != id);
+			load_key(folder, path, id, helpFolder);
+			list = list->next;
+		}
+	}
+	g_free(name);
+	/*
+	nodes = gconf_value_new(GCONF_VALUE_LIST);
+	gconf_value_set_list_type(nodes, GCONF_VALUE_STRING);
+	gconf_value_set_list(nodes, (GSList*)NULL);
+	gconf_client_set(client, path2, nodes, &err);
+	is_gconf_error(err);
+	gconf_value_free(nodes);
+	g_free(path2);
+	*/
+	g_message("done reading %s", path);
+}
+
+void loadSubscriptions(void) {
+	gchar		*gconfpath;
+	folderPtr rootFolder = folder_get_root();
+	folderPtr helpFolder = NULL;
+	//load_folder_contents(rootFolder, PATH);
+	gconfpath = g_strdup_printf("%s/root", PATH);
+	load_folder_contents(rootFolder, gconfpath, &helpFolder);
+	g_free(gconfpath);
+	/* if help folder was not yet created... */
+	if(helpFolder == NULL) {
+		helpFolder = restore_folder(rootFolder, -1, _("Liferea Help"), "helpFolder", FST_HELPFOLDER);
+		ui_add_folder(helpFolder);
+		addEmptyFolderToConfig(helpFolder, FST_HELPFOLDER);
+		feed_add_from_config(FST_HELPFEED, HELP1URL, helpFolder, _("Online Help Feed"), "helpfeed1", 1440) ;
+		feed_add_from_config(FST_HELPFEED, HELP2URL, helpFolder, _("Liferea SF News"), "helpfeed2", 1440) ;
+	}
 }
 
 /* returns true if namespace is enabled in configuration */
@@ -745,6 +609,7 @@ void setBooleanConfValue(gchar *valuename, gboolean value) {
 	gcv = gconf_value_new(GCONF_VALUE_BOOL);
 	gconf_value_set_bool(gcv, value);
 	gconf_client_set(client, valuename, gcv, &err);
+	gconf_value_free(gcv);
 	is_gconf_error(err);
 }
 
@@ -775,6 +640,7 @@ void setStringConfValue(gchar *valuename, gchar *value) {
 	gcv = gconf_value_new(GCONF_VALUE_STRING);
 	gconf_value_set_string(gcv, value);
 	gconf_client_set(client, valuename, gcv, &err);
+	gconf_value_free(gcv);
 	is_gconf_error(err);
 }
 
@@ -800,11 +666,12 @@ void setNumericConfValue(gchar *valuename, gint value) {
 	GConfValue	*gcv;
 	
 	g_assert(valuename != NULL);
-	
+	g_message("Setting %s to %d", valuename, value);
 	gcv = gconf_value_new(GCONF_VALUE_INT);
 	gconf_value_set_int(gcv, value);
 	gconf_client_set(client, valuename, gcv, &err);
 	is_gconf_error(err);
+	gconf_value_free(gcv);
 }
 
 gint getNumericConfValue(gchar *valuename) {

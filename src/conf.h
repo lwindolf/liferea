@@ -20,9 +20,7 @@
 #define _CONF_H
 
 #include <glib.h>
-
-#define HELP1KEY			"help/helpfeed1"
-#define HELP2KEY			"help/helpfeed2"
+#include "folder.h"
 
 #define GNOME_BROWSER_ENABLED		"/apps/liferea/browsermode"
 #define BROWSER_COMMAND			"/apps/liferea/browser"
@@ -55,23 +53,27 @@ void	initConfig(void);
 void	loadConfig(void);
 
 /* config loading on startup */
-void	loadSubscriptions(void);
+void	loadEntries(void);
+
+/* feed/directory list entry manipulation methods */
+gchar* conf_new_id();
+void	loadSubscriptions();
 
 /* methods to modify folder contents */
 GSList * getFeedKeyList(gchar *keyprefix);
 void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
 
-gchar *	addFolderToConfig(gchar *title);
-void	removeFolderFromConfig(gchar *keyprefix);
-gchar *	addFeedToConfig(gchar *keyprefix, gchar *url, gint type);
-void	removeFeedFromConfig(gchar *keyprefix, gchar *feedkey);
+void	addEmptyFolderToConfig(folderPtr dest_folder, gint type);
+void	removeFolderFromConfig(struct folder *folder);
+gchar *	addFeedToConfig(struct feed *folder);
+void	removeFeedFromConfig(struct feed *folder);
 gchar * getFreeFeedKey(gchar *keyprefix);
 
 int	setFeedTitleInConfig(gchar *feedkey, gchar *feedname);
-int	setFeedURLInConfig(gchar *feedkey, gchar *feedurl);
+int	setFeedURLInConfig(feedPtr fp, gchar *feedurl);
 int	setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval);
-int	setFolderTitleInConfig(gchar *keyprefix, gchar *title);
-int	setFolderCollapseStateInConfig(gchar *keyprefix, gboolean collapsed);
+int	setFolderTitleInConfig(folderPtr folder, gchar *title);
+int	setFolderCollapseStateInConfig(folderPtr folder, gboolean collapsed);
 
 /* returns true if namespace is enabled in configuration */
 gboolean	getNameSpaceStatus(gchar *nsname);

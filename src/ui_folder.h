@@ -24,14 +24,25 @@
 
 #define	ROOT_FOLDER_PREFIX	""
 
+/* Adding/removing folders & feeds*/
+void ui_add_folder(folderPtr folder);
+void ui_remove_folder(folderPtr folder);
+
+void ui_folder_add_feed(feedPtr fp, gint position);
+void ui_folder_remove_feed(feedPtr fp);
+
+void ui_update_folder(folderPtr folder);
+gboolean ui_is_folder_expanded(folderPtr folder);
+
+/* expansion/collapsing */
+void ui_folder_set_expansion(folderPtr folder, gboolean expanded);
+
+/* Callbacks */
 void on_popup_newfolder_selected(void);
 void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data);
-void on_popup_foldername_selected(void);
+void on_popup_foldername_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data);
-void on_popup_removefolder_selected(void);
-
-/* function that marks all items of all feeds of the selected folder unread */
-void ui_folder_mark_all_as_read(void);
+void on_popup_removefolder_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 #endif

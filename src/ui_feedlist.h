@@ -23,13 +23,32 @@
 
 #include <gtk/gtk.h>
 #include "feed.h"
+#include "folder.h"
 
-extern gint 	selected_type;
-extern feedPtr	selected_fp;
-extern gchar 	*selected_keyprefix;
+/* constants for attributes in feedstore */
+enum {
+	FS_LABEL, /* Displayed name */
+	FS_ICON,  /* Icon to use */
+	FS_PTR,   /* pointer to the folder or feed */
+	FS_UNREAD, /* Number of unread items */
+	FS_LEN
+};
 
-typedef void 	(*feedActionFunc)	(feedPtr fp);
-typedef void 	(*folderActionFunc)	(gchar *key, GtkTreeIter *iter);
+typedef struct ui_data {
+	GtkTreeIter row;
+} ui_data;
+
+extern GtkTreeStore	*feedstore;
+
+/* Add/remove/update nodes */
+void ui_update_feed(feedPtr fp); 
+
+/* Selections */
+nodePtr ui_feedlist_get_selected();
+void ui_feedlist_select(nodePtr fp);
+
+
+typedef void 	(*nodeActionFunc)	(nodePtr fp);
 
 /**
  * Returns the feed store, creating it if needed.
@@ -64,10 +83,10 @@ void ui_feedlist_load_subscription(feedPtr fp, gboolean startup);
  *
  * @param type		feed type
  * @param source	feed source URL or local file name or piped command
- * @param keyprefix	folder key
+ * @param folder	parent of the new feed
  * @param showPropDialog TRUE if the property dialog should popup
  */
-void ui_feedlist_new_subscription(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog);
+void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr folder, gboolean showPropDialog);
 
 #define FEEDLIST_FEED_ACTION	0
 #define FEEDLIST_FOLDER_ACTION	1
@@ -77,11 +96,11 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gchar * keyprefix, g
  * Helper function to recursivly call feed_save() for all
  * elements of the given type in the feed list.
  *
- * @param iter	iterator whose children should be processed (NULL for root)
+ * @param ptr	node pointer whose children should be processed (NULL defaults to root)
  * @param type	the element type to apply func to
  * @param func	the function to process all found elements
  */
-void ui_feedlist_do_for_all(GtkTreeIter *iter, gint type, gpointer func);
+void ui_feedlist_do_for_all(nodePtr ptr, gint type, nodeActionFunc func);
 
 /**
  * helper function to find next unread item 
@@ -101,15 +120,26 @@ void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
  * @name menu and dialog callbacks 
  * @{
  */
-void on_popup_refresh_selected(void);
-void on_popup_delete_selected(void);
-void on_popup_prop_selected(void);
+void on_popup_refresh_selected(gpointer callback_data,
+						 guint callback_action,
+						 GtkWidget *widget);
+void on_popup_delete_selected(gpointer callback_data,
+						guint callback_action,
+						GtkWidget *widget);
+void on_popup_prop_selected(gpointer callback_data,
+					   guint callback_action,
+					   GtkWidget *widget);
 void on_propchangebtn_clicked(GtkButton *button, gpointer user_data);
 void on_newbtn_clicked(GtkButton *button, gpointer user_data);
 void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data);
 
 void on_fileselect_clicked(GtkButton *button, gpointer user_data);
 void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);
+void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data);
+
 /*@}*/
+
+/* UI folder stuff */
+void verify_iter(nodePtr node);
 
 #endif

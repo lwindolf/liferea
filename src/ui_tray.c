@@ -30,6 +30,7 @@
 #include "callbacks.h"
 #include "eggtrayicon.h"
 #include "support.h"
+#include "ui_tray.h"
 
 #define NO_NEW_ITEMS	0
 #define NEW_ITEMS	1

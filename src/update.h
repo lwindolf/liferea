@@ -47,6 +47,8 @@ struct feed_request {
 
 };
 
+extern GAsyncQueue      *results;
+
 /** 
  * Creates a new request structure and sets the feed the
  * request belongs to with fp. If there is no assigned

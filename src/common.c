@@ -500,20 +500,26 @@ gchar *getExtension(gint type) {
 	return extension;
 }
 
-gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension) {
-	gchar	*keypos;
-	
+gchar * getCacheFileName( gchar *key, gchar *extension) {
+	gchar *filename;
+	gchar *i;
+	gchar *all;
+
 	/* build filename */	
-	keypos = strrchr(key, '/');
-	if(NULL == keypos)
-		keypos = key;
-	else
-		keypos++;
-	
+	filename = g_strdup(key);
+	i = filename;
+	while(*i !='\0') {
+		if (*i == '/')
+			*i = '_';
+		i++;
+	}
+
 	if(NULL != extension)	
-		return g_strdup_printf("%s/%s_%s.%s", getCachePath(), keyprefix, keypos, extension);
+		all = g_strdup_printf("%s/%s.%s", getCachePath(), filename, extension);
 	else
-		return g_strdup_printf("%s/%s_%s", getCachePath(), keyprefix, keypos);
+		all = g_strdup_printf("%s/%s", getCachePath(), filename);
+	g_free(filename);
+	return all;
 }
 
 static gchar * byte_to_hex(unsigned char nr) {

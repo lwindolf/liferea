@@ -71,9 +71,15 @@ static void ui_mainwindow_toggle_condensed_view(void) {
 	ui_itemlist_display();
 }
 
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) {
- 
+void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { 
+
 	if(!itemlist_mode != GTK_CHECK_MENU_ITEM(menuitem)->active)
+		ui_mainwindow_toggle_condensed_view();
+}
+
+void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item) {
+
+	if(!itemlist_mode != GTK_CHECK_MENU_ITEM(item)->active)
 		ui_mainwindow_toggle_condensed_view();
 }
 

@@ -191,6 +191,16 @@ void ui_update_item(itemPtr ip) {
 		ui_update_item_from_iter(&((ui_item_data*)ip->ui_data)->row);
 }
 
+void ui_update_itemlist() {
+	GtkTreeIter iter;
+	if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter)) {
+		do {
+			ui_update_item_from_iter(&iter);
+		} while (gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter));
+	}
+         
+}
+
 void ui_itemlist_init(GtkWidget *itemlist) {
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
@@ -543,7 +553,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		return;
 	
 	/* find first feed with unread items */
-	fp = ui_feedlist_find_unread(NULL);
+	fp = folder_find_unread_feed(folder_get_root());
 	
 	if (fp) {
 		/* ui_select_feed(fp); FIXME: This would require an easy lookup from fp to a row, but would be a cleaner feedlist interface. */

@@ -27,93 +27,34 @@
 #include "folder.h"
 #include "ui_dnd.h"
 
-extern gchar	*selected_keyprefix;
-extern gint	selected_type;
-extern feedPtr	selected_fp;
-
-/* flag to check if DND should be aborted (e.g. on folders and help feeds) */
-static gboolean	drag_successful = FALSE;
-
-/* Flag to allow both url and tree iter drops in the feed list. This flag
-   is set when feedlist DnD is active. And the feedlist drop handler will
-   only work if this flag is set. This leaves still a chance that the
-   user simultanously drags in the feed list and drops a URL...
-   How? Hmm, maybe with two mices! Anyway the data type check in the URL
-   drop handler should not handle the dropped tree iter. */
-static gboolean is_feedlist_drop = FALSE;
-
-/*------------------------------------------------------------------------------*/
-/* feed list DND handling							*/
-/*------------------------------------------------------------------------------*/
-
-void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
-
-	g_assert(NULL != selected_keyprefix);
-	
-	if(drag_successful) {	
-		moveInFeedList(selected_keyprefix, feed_get_key(selected_fp));
-		checkForEmptyFolders();	/* to add an "(empty)" entry */
-	}
-	
-	ui_itemlist_prefocus();
-}
-
-void on_feedlist_drag_begin(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
-
-	drag_successful = FALSE;
-	is_feedlist_drop = TRUE;
-}
-
-/* reacts on drops of feed list tree iters */
-gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, gint x, gint y, guint time, gpointer user_data) {
-	gboolean	stop = FALSE;
-
-	g_assert(NULL != selected_keyprefix);
-
-	/* don't process URL drops... */
-	if(!is_feedlist_drop)
-		return FALSE;
-		
-	is_feedlist_drop = FALSE;
-
-	/* don't allow folder DND */
-	if(IS_FOLDER(selected_type)) {
-		ui_show_error_box(_("Sorry Liferea does not yet support drag&drop of folders!"));
-		stop = TRUE;
-	} 
-	/* also don't allow "(empty)" entry moving */
-	else if(FST_EMPTY == selected_type) {
-		stop = TRUE;
-	} 
-	/* also don't allow help feed dragging */
-	else if(0 == strncmp(feed_get_from_key(selected_fp), "help", 4)) {
-		ui_show_error_box(_("You cannot modify the special help folder contents!"));
-		stop = TRUE;
-	}
-	
-	drag_successful = !stop;
-	
-	return stop;
-}
-
 /* ---------------------------------------------------------------------------- */
 /* receiving URLs 								*/
 /* ---------------------------------------------------------------------------- */
 
 /* method to receive URLs which were dropped anywhere in the main window */
-static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {	
-	char	*tmp1, *tmp2, *freeme;
-	
+static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
+	gchar	*tmp1, *tmp2, *freeme;
+	nodePtr ptr;
+	folderPtr parent;
 	g_return_if_fail (data->data != NULL);
 	
 	if((data->length >= 0) && (data->format == 8)) {
 		/* extra handling to accept multiple drops */	
-		freeme = tmp1 = strdup(data->data);
+
+		if(ptr && IS_FOLDER(ptr->type)) {
+			parent = (folderPtr)ptr;
+		} else if (ptr && ptr->parent) {
+			parent = ptr->parent;
+		} else {
+			parent = folder_get_root();
+		}
+
+		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(0 != strlen(tmp2))
-				ui_feedlist_new_subscription(FST_AUTODETECT, g_strdup(tmp2), g_strdup(selected_keyprefix), TRUE);
+				ui_feedlist_new_subscription(FST_AUTODETECT, g_strdup(tmp2), parent, TRUE);
 		}
-		free(freeme);
+		g_free(freeme);
 		gtk_drag_finish(context, TRUE, FALSE, time);		
 	} else {
 		gtk_drag_finish(context, FALSE, FALSE, time);

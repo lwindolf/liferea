@@ -390,7 +390,7 @@ void loadFavIcon(feedPtr fp) {
 	GdkPixbuf	*pixbuf;
 	
 	/* try to load a saved favicon */
-	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
+	filename = getCacheFileName(fp->id, "xpm");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		/* remove path, because create_pixbuf allows no absolute pathnames */
 		tmp = strrchr(filename, '/');
@@ -405,7 +405,7 @@ void removeFavIcon(feedPtr fp) {
 	gchar		*filename;
 	
 	/* try to load a saved favicon */
-	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
+	filename = getCacheFileName( fp->id, "xpm");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename)) {
 			g_warning(g_strdup_printf(_("Could not delete icon file %s! Please remove manually!"), filename));

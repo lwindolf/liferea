@@ -30,12 +30,6 @@
 #include "ui_dnd.h"
 #include "export.h"
 
-/* constants for attributes in feedstore */
-#define FS_TITLE	0
-#define FS_STATE	1
-#define FS_KEY		2
-#define FS_TYPE		3
-
 /* icon constants */
 #define ICON_READ 		0
 #define ICON_UNREAD 		1
@@ -48,6 +42,8 @@
 #define ICON_VFOLDER		8
 #define ICON_EMPTY		9
 #define MAX_ICONS		10
+
+extern GdkPixbuf *icons[MAX_ICONS];
 
 void ui_init(void);
 
@@ -64,7 +60,6 @@ gint checkForUpdateResults(gpointer data);
 
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
-void on_popup_refresh_selected(void);
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 		
@@ -102,6 +97,24 @@ on_ruledownbtn_clicked                 (GtkButton       *button,
 
 void
 on_rulechangedbtn_clicked              (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_feedlist_drag_data_get              (GtkWidget       *widget,
+                                        GdkDragContext  *drag_context,
+                                        GtkSelectionData *data,
+                                        guint            info,
+                                        guint            time,
+                                        gpointer         user_data);
+
+void
+on_feedlist_drag_data_received         (GtkWidget       *widget,
+                                        GdkDragContext  *drag_context,
+                                        gint             x,
+                                        gint             y,
+                                        GtkSelectionData *data,
+                                        guint            info,
+                                        guint            time,
                                         gpointer         user_data);
 
 void
