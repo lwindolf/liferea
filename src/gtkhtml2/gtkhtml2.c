@@ -399,4 +399,4 @@ void setupHTMLViews(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
 }
 
 /* launches the specified URL */
-void launchURL(gchar *url) { link_clicked(NULL, url, NULL); }
+void launchURL(const gchar *url) { link_clicked(NULL, url, NULL); }

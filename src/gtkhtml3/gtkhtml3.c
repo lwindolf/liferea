@@ -310,7 +310,7 @@ static gboolean object_requested_cmd(GtkHTML *html, GtkHTMLEmbedded *eb, void *d
 /* ---------------------------------------------------------------------------- */
 
 /* launches the specified URL */
-void launchURL(gchar *url) { on_link_clicked(NULL, url, NULL); }
+void launchURL(const gchar *url) { on_link_clicked(NULL, url, NULL); }
 
 /* adds a differences diff to the actual zoom level */
 void changeZoomLevel(gfloat diff) {

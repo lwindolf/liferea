@@ -39,7 +39,7 @@ typedef gchar *	(*getModuleNameFunc)	(void);
 typedef void	(*setupHTMLViewsFunc)	(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 typedef void	(*setHTMLViewModeFunc)	(gboolean threePane);
 typedef void	(*writeHTMLFunc)	(gchar *string);
-typedef void	(*launchURLFunc)	(gchar *url);
+typedef void	(*launchURLFunc)	(const gchar *url);
 typedef gfloat	(*getZoomLevelFunc)	(void);
 typedef void	(*changeZoomLevelFunc)	(gfloat diff);
 

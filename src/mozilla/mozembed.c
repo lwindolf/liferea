@@ -222,7 +222,7 @@ void setHTMLViewMode(gboolean threePane) {
 }
 
 /* launches the specified URL */
-void launchURL(gchar *url) {
+void launchURL(const gchar *url) {
 
 	gtk_moz_embed_load_url(GTK_MOZ_EMBED(htmlwidget), url); 
 }
