@@ -363,7 +363,7 @@ time_t parseISO8601Date(gchar *date) {
 }
 
 gchar *dayofweek[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-gchar *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug" "Sep", "Oct", "Nov", "Dec"};
+gchar *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 gchar *createRFC822Date(const time_t *time) {
 	struct tm *tm;
