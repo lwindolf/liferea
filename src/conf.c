@@ -55,6 +55,8 @@ static guint feedlistLoading;
 /* configuration strings for the SnowNews HTTP code used from within netio.c */
 char 	*useragent = NULL;
 char	*proxyname = NULL;
+char *proxyusername = NULL;
+char *proxypassword = NULL;
 int	proxyport = 0;
 
 /* Function prototypes */

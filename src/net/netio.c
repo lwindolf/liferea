@@ -65,6 +65,8 @@ static int const NET_WRITE = 2;
 
 extern char *proxyname;						/* Hostname of proxyserver. */
 extern unsigned short proxyport;			/* Port on proxyserver to use. */
+extern char *proxyusername;
+extern char *proxypassword;
 extern char *useragent;
 
 /* Waits NET_TIMEOUT seconds for the socket to return data.
@@ -362,7 +364,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL) {
 			fprintf(stream,
-					"GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n",
+					"GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s",
 					host,
 					url,
 					useragent,
@@ -372,7 +374,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 					(cur_ptr->cookies ? cur_ptr->cookies : ""));
 		} else {
 			fprintf(stream,
-					"GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n",
+					"GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s",
 					host,
 					url,
 					useragent,
@@ -380,6 +382,10 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 					(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
 					(cur_ptr->cookies ? cur_ptr->cookies : ""));
 		}
+		if (proxyusername != NULL && proxypassword != NULL && ((proxyusername[0] != '\0') || (proxypassword[0] != '\0')))
+			/* construct auth function appends \r\n to string */
+			fprintf(stream, "Proxy-%s", ConstructBasicAuth(proxyusername,proxypassword));
+		fprintf(stream, "\r\n");
 		fflush(stream);		/* We love Solaris, don't we? */
 	}
 	

@@ -26,5 +26,5 @@
 #include "compat.h"
 #include "netio.h"
 int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, char * netbuf);
-
+char * ConstructBasicAuth (char * username, char * password);
 #endif
