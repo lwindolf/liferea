@@ -277,13 +277,14 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 	
 	if(NULL != source) { /* Reading a feed */
 		/* check if source is a help feed... */
-		if(0 == strcmp(source, HELP1URL_1)) {
+		if(0 == strncmp(source, HELP1URL_1, strlen(HELP1URL_1))) {
 			/* If it is we rebuild it with the current version 
 			   just to be sure it is up-to-date. Of course this 
 			   means there must be no other feeds under the
 			   URL given by HELP1URL!!! */
 			xmlFree(source);
 			source = g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2);
+g_print("help feed source -> new: %s\n", source);
 		}
 	
 		filter = xmlGetProp(cur, BAD_CAST"filtercmd");
