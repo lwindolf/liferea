@@ -77,7 +77,6 @@ gboolean is_gconf_error(GError *err) {
 	if(err != NULL) {
 		g_print(err->message);
 		g_error_free(err);
-		err = NULL;
 		return TRUE;
 	}
 	
@@ -95,7 +94,7 @@ void initConfig() {
 	/* the following code was copied from SnowNews and adapted to build
 	   a Liferea user agent... */
 	   
-        /* Constuct the User-Agent string of snownews. This is done here in program init,
+        /* Constuct the User-Agent string of Liferea. This is done here in program init,
            because we need to do it exactly once and it will never change while the program
            is running. */
         if (getenv("LANG") != NULL) {
@@ -111,45 +110,31 @@ void initConfig() {
                 snprintf (useragent, ualength, "Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
                 printf ("%s\n", useragent);
         }
+	
+	/* initialize GConf client */
+	if (client == NULL) {
+		client = gconf_client_get_default();
+		gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
+	}
 }
 
 /* maybe called several times to reload configuration */
 void loadConfig() {
 	gchar	*proxy_url;
 	gint	maxitemcount;
-	
-	/* GConf client */
-	if (client == NULL) {
-		client = gconf_client_get_default();
-
-		gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);	
-	}
 
 	/* check if important preferences exist... */
 	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
 		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
 
-        /* load proxy settings for libxml */
-        xmlNanoHTTPInit();
-        
 	if(getBooleanConfValue(USE_PROXY)) {
 		g_free(proxyname);
 	        proxyname = getStringConfValue(PROXY_HOST);
         	proxyport = getNumericConfValue(PROXY_PORT);
-
-        	proxy_url = g_strdup_printf("http://%s:%d/", proxyname, proxyport);
-		g_print("using proxy: \"%s\"\n", proxy_url);
-		// FIXME: don't use NanoHTTP anymore!!!	
-        	xmlNanoHTTPScanProxy(proxy_url);
-		g_free(proxy_url);
 	} else {
 		g_free(proxyname);
 		proxyname = NULL;
 		proxyport = 0;
-		
-		/* this is neccessary to reset proxy after config change */
-		// FIXME: don't use NanoHTTP anymore!!!	
-        	xmlNanoHTTPScanProxy(NULL);	
 	}
 }
 
@@ -602,7 +587,10 @@ void loadSubscriptions(void) {
 		
 		gconfpath = build_path_str(keyprefix, "feedlist");		
 		keylist = gconf_client_get(client, gconfpath, &err);
-		is_gconf_error(err);
+		if(is_gconf_error(err)) {
+			g_warning(_("could not read from gconf path \"%s\"!\n"), gconfpath);
+			continue;
+		}
 				
 		if(NULL == keylist) {
 			/* first call keylist still does not exists, we create
@@ -611,17 +599,23 @@ void loadSubscriptions(void) {
 			gconf_value_set_list_type(keylist, GCONF_VALUE_STRING);
 			gconf_value_set_list(keylist, NULL);
 			gconf_client_set(client, gconfpath, keylist, &err);
-			is_gconf_error(err);
+			if(is_gconf_error(err)) {
+				g_warning(_("could not create empty keylist in gconf path \"%s\"!\n"), gconfpath);
+				continue;
+			}
 		}
 		g_free(gconfpath);
 		
 		gconfpath = build_path_str(keyprefix, "feedlistname");
-		keylisttitle = getStringConfValue(gconfpath);		
+		keylisttitle = getStringConfValue(gconfpath);
 		g_free(gconfpath);
 
 		gconfpath = build_path_str(keyprefix, "type");
 		type = getNumericConfValue(gconfpath);		
 		g_free(gconfpath);
+
+		if(NULL == keylisttitle)
+			keylisttitle = g_strdup("");
 
 		if(0 == type)
 			type = FST_NODE;
@@ -651,26 +645,28 @@ void loadSubscriptions(void) {
 			is_gconf_error(err);
 			g_free(gconfpath);
 
+			gconfpath = g_strdup_printf("%s/%s/updateInterval", PATH, key);
+			interval = gconf_client_get_int(client, gconfpath, &err);
+			is_gconf_error(err);
+			g_free(gconfpath);
+
+			gconfpath = g_strdup_printf("%s/%s/url", PATH, key);
+			url = getStringConfValue(gconfpath);	/* we use this function to get a "" on empty conf value */
+			is_gconf_error(err);
+			g_free(gconfpath);
+		
 			gconfpath = g_strdup_printf("%s/%s/name", PATH, key);
 			name = gconf_client_get_string(client, gconfpath, &err);
 			is_gconf_error(err);
 			g_free(gconfpath);	
-
-			gconfpath = g_strdup_printf("%s/%s/updateInterval", PATH, key);
-			interval = gconf_client_get_int(client, gconfpath, &err);
-			is_gconf_error(err);
-			g_free(gconfpath);	
-
-			gconfpath = g_strdup_printf("%s/%s/url", PATH, key);
-			url = getStringConfValue(gconfpath);	/* we use this function to get a "" on empty conf value */
-			g_free(gconfpath);
 
 			if(0 == type)
 				type = FST_RSS;
 				
 			if(0 == interval)
 				interval = -1;
-
+				
+			/* we accept NULL titles, they will be replaced by the cached title */
 			addFeed(type, url, (gchar *)key, keyprefix, name, interval);
 
 			iter = g_slist_next(iter);

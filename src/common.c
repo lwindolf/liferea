@@ -236,7 +236,6 @@ void bufferParseError(void *ctxt, const gchar * msg, ...) {
 	gchar		**errormsg = (gchar **)ctxt;
 	gchar		*tmp;
 
-
 	tmp = *errormsg;
 	
 	va_start(params, msg);
@@ -254,28 +253,39 @@ void bufferParseError(void *ctxt, const gchar * msg, ...) {
    XML buffer. This function sets up a parser context,
    enables recovery mode and sets up the error handler.
    
-   The function returns a XML document and (if errors)
-   occur sets the errormsg to the last error message. */
+   The function returns a XML document pointer or NULL
+   if the document could not be read. It also sets the 
+   errormsg to the last error message on parsing
+   errors. */
 xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
 	xmlParserCtxtPtr	parser;
 	xmlDocPtr		doc;
+	gint			length;
 	
-	parser = xmlCreateMemoryParserCtxt(data, strlen(data));
-	parser->recovery = 1;
-/*	parser->sax->fatalError = NULL;
-	parser->sax->error = NULL;
-	parser->sax->warning = NULL;
-	parser->vctxt.error = NULL;
-	parser->vctxt.warning = NULL;*/
-	xmlSetGenericErrorFunc(errormsg, (xmlGenericErrorFunc)bufferParseError);
-	xmlParseDocument(parser);	// ignore returned errors
+	g_assert(NULL != data);
 	
-//	if(*errormsg != NULL)
-//		g_free(*errormsg);
-//	*errormsg = g_strdup(parser->lastError.message);
+	/* xmlCreateMemoryParserCtxt() doesn't like no data */
+	if(0 == (length = strlen(data))) {
+		g_warning(_("parseBuffer(): Empty input!\n"));
+		return NULL;
+	}
 
-	doc = parser->myDoc;
-	xmlFreeParserCtxt(parser);
+	if(NULL != (parser = xmlCreateMemoryParserCtxt(data, length))) {
+		parser->recovery = 1;
+/*		parser->sax->fatalError = NULL;
+		parser->sax->error = NULL;
+		parser->sax->warning = NULL;
+		parser->vctxt.error = NULL;
+		parser->vctxt.warning = NULL;*/
+		xmlSetGenericErrorFunc(errormsg, (xmlGenericErrorFunc)bufferParseError);
+		xmlParseDocument(parser);	// ignore returned errors
+
+		doc = parser->myDoc;
+		xmlFreeParserCtxt(parser);
+	} else {
+		g_warning(_("parseBuffer(): Could not create parsing context!\n"));
+		return NULL;
+	}
 	
 	return doc;
 }

@@ -71,7 +71,7 @@ void writeHTML(gchar *string) {
  * mozembed_new_window_cb: GTKMOZEMBED SIGNAL, emitted any time a new 
  * window is requested by the document 
  */
-void mozembed_new_window_cb (GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chrome_mask, gpointer embed) {
+void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chrome_mask, gpointer embed) {
 
 	g_print("mozembed_new_window_cb\n");
 	*retval = NULL;
@@ -81,7 +81,7 @@ void mozembed_new_window_cb (GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chr
  * mozembed_link_message_cb: GTKMOZEMBED SIGNAL, emitted when the 
  * link message changes
  */
-void mozembed_link_message_cb (GtkMozEmbed *dummy, gpointer embed) {
+void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
 	GtkWidget *statusbar;
 	
 	if(NULL != (statusbar = lookup_widget(mainwindow, "statusbar"))) {
@@ -90,6 +90,13 @@ void mozembed_link_message_cb (GtkMozEmbed *dummy, gpointer embed) {
 		gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), selectedURL);
 	}
 }
+
+void mozembed_load_finished_cb(GtkMozEmbed *dummy, gpointer embed) {		
+
+	/* this is a Mozilla workaround for the Mozilla widget does 
+	   take or focus away, so key navigation would be impossible ... */
+	gtk_widget_grab_focus(GTK_WIDGET(lookup_widget(mainwindow, "itemview")));
+}			
 
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
@@ -108,7 +115,7 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gi
 		//{ "location",        mozembed_location_changed_cb  },
 		//{ "title",           mozembed_title_changed_cb     },
 		//{ "net_start",       mozembed_load_started_cb      },
-		//{ "net_stop",        mozembed_load_finished_cb     },
+		{ "net_stop",        mozembed_load_finished_cb     },
 		//{ "net_state_all",   mozembed_net_status_change_cb },
 		//{ "progress",        mozembed_progress_change_cb   },
 		{ "link_message",    mozembed_link_message_cb      },

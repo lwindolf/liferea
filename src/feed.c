@@ -161,6 +161,7 @@ feedPtr getNewFeedStruct(void) {
 	fp->defaultInterval = -1;
 	fp->available = FALSE;
 	fp->type = FST_INVALID;
+	fp->parseErrors = NULL;
 	
 	return fp;
 }
@@ -264,6 +265,7 @@ static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr	fp = (feedPtr)value;
 	
 	if(IS_FEED(fp->type)) {
+		print_status(g_strdup_printf(_("saving feed \"%s\""), getFeedTitle(fp)));
 		saveFeed(fp);
 	}
 }
@@ -348,6 +350,9 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 			g_free(tmp);	
 			cur = cur->next;
 		}
+	
+		loadFavIcon(fp);
+		
 		break;
 	}
 	
@@ -358,18 +363,18 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	if(NULL != doc)
 		xmlFreeDoc(doc);
 	g_free(filename);
-	
-	if(NULL != fp)
-		loadFavIcon(fp);
 		
 	return fp;
 }
 
-/* function to add a feed to the feed list */
+/* Function to add a feed to the feed list. Url and feedname 
+   may be NULL. Called only from loadSubscriptions() */
 feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval) {
 	feedPtr		new_fp;
 	
 	g_assert(NULL != key);
+	g_assert(NULL != keyprefix);
+	
 	if(NULL == (new_fp = loadFeed(type, key, keyprefix)))
 		/* maybe cache file was deleted or entry has no cache 
 		   (like help entries) so we reload the entry from its URL */
@@ -379,13 +384,22 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 	new_fp->key = key;	
 	new_fp->keyprefix = keyprefix;
 
+	/* user defined feed name from gconf is stronger */
 	if(NULL != feedname) {
 		g_free(new_fp->title);
 		new_fp->title = feedname;
 	}
 
-	g_free(new_fp->source);
-	new_fp->source = url;
+	if(NULL != url) {
+		g_free(new_fp->source);
+		new_fp->source = url;
+	}
+	
+	if(NULL == new_fp->source) {
+		/* bad, that means there is no URL in gconf and
+		   in the cache file, looks like a huge mess to me... */
+		new_fp->source = g_strdup(_("error: URL missing!"));
+	}
 
 	if(IS_FEED(type))
 		new_fp->updateCounter = new_fp->updateInterval = interval;

@@ -454,9 +454,10 @@ static itemPtr ui_itemlist_get_selected() {
 
 /* mouse/keyboard interaction callbacks */
 static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
-	GtkTreeIter iter;
-	GtkTreeModel		*model;
-	itemPtr ip;
+	GtkTreeIter 	iter;
+	GtkTreeModel	*model;
+	itemPtr 	ip;
+	
 	if(!itemlist_loading) {
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			gtk_tree_model_get(model, &iter, IS_PTR, &ip, -1);
@@ -464,7 +465,7 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 			displayItem(ip);
 
 			/* reset HTML widget scrolling */
-			resetItemViewScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemview")));			
+			resetItemViewScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemview")));
 		}
 	}
 }
