@@ -32,6 +32,7 @@
 #include "ui_queue.h"
 #include "support.h"
 #include "htmlview.h"
+#include "debug.h"
 
 /* function types for the imported symbols */
 typedef gchar *	(*getModuleNameFunc)	(void);
@@ -97,6 +98,8 @@ key /apps/liferea/browser-module!\n\n"));
 	if((handle = g_module_open(filename, 0)) == NULL) {
 		if(!testmode)
 			g_warning(_("Failed to open HTML widget module (%s) specified in configuration!\n%s\n"), filename, g_module_error());
+		else
+			debug2(DEBUG_GUI, _("Failed to open HTML widget module (%s) specified in configuration!\n%s\n"), filename, g_module_error());
 		return FALSE;
 	}
 	g_free(filename);
@@ -107,6 +110,8 @@ key /apps/liferea/browser-module!\n\n"));
 		} else {
 			if(!testmode)
 				g_warning(_("Missing symbol \"%s\" in configured HTML module!"), symbols[i]);
+			else
+				debug1(DEBUG_GUI, _("Missing symbol \"%s\" in configured HTML module!"), symbols[i]);
 			g_module_close(handle);
 			return FALSE;
 		}
