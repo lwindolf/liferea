@@ -34,6 +34,9 @@
 	* The notification window is now moved to the upper left of the
 	  screen before it is shown so that the user does not see the
 	  notification window move. (Søren Hansen)
+	* The network library now correctly tries to connect to all hosts
+	  that share a domain name. This helps on some IPv6 enabled
+	  computers. (Sjoerd Simons and Nathan Conrad)
 
 	Translations:
 
