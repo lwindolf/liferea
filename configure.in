@@ -136,7 +136,7 @@ AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the 
 AC_MSG_RESULT(user agent OS = $uname)
 
 dnl Add the languages which your application supports here.
-ALL_LINGUAS="bg de es fr it ja ko mk"
+ALL_LINGUAS="bg de es fr it ja ko mk zh_TW"
 AM_GLIB_GNU_GETTEXT
 
 AC_OUTPUT([

@@ -2,24 +2,25 @@
 
 	Version 0.4.8
 
-	* A lot of rewrites. Everywhere!
+	* A lot of rewrites. Everywhere! Lots of bug fixes too.
 	* Rewrite of the feedlist tree handling. The program
 	  now allows arbitrary nested folders. You can now
 	  drag and drop folders.
 	* Rewrite and change of the feedlist saving method.
 	  Now the feedlist isn't saved into gconf but into
 	  an OPML file in the cache directory. This allows
-	  you to easily backup feedlist and cache by 
-	  archiving the cache directory ~/.liferea. It
+	  one to easily backup one's feedlist and cache by
+	  archiving the settings directory ~/.liferea. It
 	  also allows exchanging subscriptions with other
 	  aggregators without depending on the program
-	  to export the list.
+	  to export the list by directly manipulating the
+	  ~/.liferea/feedlist.opml file.
 	  
 	      !!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!
 
-	  THIS CHANGE BREAKS DOWNWARD COMPATIBILITY. ONCE 
-	    YOU'VE CONVERTED THE FEEDLIST OLDER VERSIONS 
-	       OF LIFEREA CANNOT ACCESS IT ANYMORE! 
+	     THIS CHANGE BREAKS DOWNWARD COMPATIBILITY.
+	    ONCE YOU'VE RUN 0.4.8, THE FEEDLIST CANNOT
+	      BE READ BY OLDER VERSIONS OF LIFEREA!
 
  	      !!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!
 
@@ -32,12 +33,14 @@
 	* New Feed Auto Saving feature. To avoid data loss
 	  on program crashes or forced shutdown changed
 	  feeds are automatically saved all 5 minutes.
-	* Also when you request saving only changed feeds
-	  are saved. Formerly every feed was saved.
+	* Also only changed feeds are saved during feed saves. 
+	  Formerly every feed was saved.
 	* Improved OPML support. Redundant attributes when
 	  exporting to provide wider compatibility with
-	  other aggregators.
+	  other aggregators. More information is now exported.
 	* Added Italian translation done by Dario Conigliaro.
+	* Added Traditional Chinese translation by Rex Tsai.
+	* Updated RPM spec file from Brian Pepple.
 
 2004-04-21  Lars Lindner <lars.lindner@gmx.net>
 
