@@ -43,6 +43,7 @@ feedPtr vfolder_new(void) {
 	feed_set_source(fp, "vfolder");
 	feed_set_id(fp, conf_new_id());
 	feed_set_available(fp, TRUE);
+	feed_set_update_interval(fp, -2);	/* never update */
 	fp->fhp = feed_type_str_to_fhp("vfolder");
 	vfolders = g_slist_append(vfolders, fp);
 	
