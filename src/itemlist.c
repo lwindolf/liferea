@@ -317,7 +317,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeModel	*model;
 	itemPtr 	ip;
 	
-	if(!itemlist_loading) {
+	if(!itemlist_loading && (FALSE == ui_itemlist_get_two_pane_mode())) {
 		/* vfolder postprocessing to remove unselected items not
 		   more matching the rules because they have changed state */
 		if(NULL != displayed_item) {
