@@ -244,7 +244,7 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 		for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {
 			if (!xmlStrcmp(cur->name, (const xmlChar *)channelTagList[i])) {
 				tmp = c->tags[i];
-				if(NULL == (c->tags[i] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+				if(NULL == (c->tags[i] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
 					c->tags[i] = tmp;
 				} else {
 					g_free(tmp);
@@ -256,10 +256,10 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 
 	/* some postprocessing */
 	if(NULL != c->tags[RSS_CHANNEL_TITLE])
-		c->tags[RSS_CHANNEL_TITLE] = unhtmlize((gchar *)doc->encoding, c->tags[RSS_CHANNEL_TITLE]);
+		c->tags[RSS_CHANNEL_TITLE] = unhtmlize("UTF-8", c->tags[RSS_CHANNEL_TITLE]);
 		
 	if(NULL != c->tags[RSS_CHANNEL_DESCRIPTION])
-		c->tags[RSS_CHANNEL_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, c->tags[RSS_CHANNEL_DESCRIPTION]);		
+		c->tags[RSS_CHANNEL_DESCRIPTION] = convertToHTML("UTF-8", c->tags[RSS_CHANNEL_DESCRIPTION]);		
 	
 }
 
@@ -278,23 +278,23 @@ static void parseTextInput(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"title"))
-			cp->tiTitle = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			cp->tiTitle = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"description"))
-			cp->tiDescription = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			cp->tiDescription = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"name"))
-			cp->tiName = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			cp->tiName = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"link"))
-			cp->tiLink = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			cp->tiLink = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			
 		cur = cur->next;
 	}
 	
 	/* some postprocessing */
 	if(NULL != cp->tiTitle)
-		cp->tiTitle = unhtmlize((gchar *)doc->encoding, cp->tiTitle);
+		cp->tiTitle = unhtmlize("UTF-8", cp->tiTitle);
 		
 	if(NULL != cp->tiDescription)
-		cp->tiDescription = unhtmlize((gchar *)doc->encoding, cp->tiDescription);
+		cp->tiDescription = unhtmlize("UTF-8", cp->tiDescription);
 }
 
 static void parseImage(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
@@ -312,7 +312,7 @@ static void parseImage(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"url"))
-			cp->tags[RSS_CHANNEL_IMAGE] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			cp->tags[RSS_CHANNEL_IMAGE] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			
 		cur = cur->next;
 	}

@@ -159,7 +159,7 @@ gint saveFeed(feedPtr fp) {
 			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
 	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
-	
+
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
 			xmlDocSetRootElement(doc, feedNode);		
@@ -244,12 +244,15 @@ static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 /* function to be called on program shutdown to save read stati */
 void saveAllFeeds(void) {
 
+/*	is this functionality? maybe with vfolders there 'll come a functionality
+	which forces to save on exit...
+	
 	print_status(_("saving all feeds..."));
 	updateUI();
 	
 	g_mutex_lock(feeds_lock);
 	g_hash_table_foreach(feeds, saveFeedFunc, NULL);
-	g_mutex_unlock(feeds_lock);
+	g_mutex_unlock(feeds_lock);*/
 }
 
 /* function which is called to load a feed's cache file */
@@ -684,6 +687,7 @@ void copyFeed(feedPtr fp, feedPtr new_fp) {
 	new_fp->key = fp->key;			/* reuse some attributes */
 	new_fp->keyprefix = fp->keyprefix;
 	new_fp->title = fp->title;
+	new_fp->type = fp->type;
 	
 	tmp_fp = getNewFeedStruct();
 	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */

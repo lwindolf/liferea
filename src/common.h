@@ -35,7 +35,7 @@ static gchar	*standard_encoding = { "UTF-8" };
    to ensure proper UTF8. doc points to the xml document and its encoding and
    string is a xmlChar pointer to the read string. The result gchar
    string is returned, the original XML string is freed. */
-gchar * CONVERT(xmlDocPtr doc, xmlChar * string);
+gchar * CONVERT(xmlChar * string);
 
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
 /* converts a UTF-8 string to HTML */

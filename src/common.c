@@ -84,38 +84,60 @@ gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * strin
 gchar * convertToUTF8(gchar * from_encoding, gchar * string) { return convertCharSet(from_encoding, "UTF-8", string); }
 gchar * convertToHTML(gchar * from_encoding, gchar * string) { return convertCharSet(from_encoding, "HTML", string); }
 
+static gchar* convert(unsigned char *in, char *encoding)
+{
+	unsigned char *out;
+        int ret,size,out_size,temp;
+        xmlCharEncodingHandlerPtr handler;
+
+	if(NULL == in)
+		return g_strdup("");
+
+        size = (int)strlen(in)+1; 
+        out_size = size*2-1; 
+        out = g_malloc((size_t)out_size); 
+
+        if (out) {
+                handler = xmlFindCharEncodingHandler(encoding);
+                
+                if (!handler) {
+                        g_free(out);
+                        out = NULL;
+                }
+        }
+        if (out) {
+                temp=size-1;
+                ret = handler->input(out, &out_size, in, &temp);
+                if (ret || temp-size+1) {
+                        if (ret) {
+                                g_print(_("conversion wasn't successful.\n"));
+                        } else {
+                                g_print(_("conversion wasn't successful. converted: %i octets.\n"), temp);
+                        }
+                        g_free(out);
+                        out = NULL;
+                } else {
+                        out = g_realloc(out,out_size+1); 
+                        out[out_size]=0; /*null terminating out*/
+                        
+                }
+        } else {
+                g_error(_("not enough memory\n"));
+        }
+	
+	if(NULL == out)
+		out = g_strdup("");
+		
+        return(out);
+}
+
 /* Conversion function which should be applied to all read XML strings, 
    to ensure proper UTF8. doc points to the xml document and its encoding and
    string is a xmlChar pointer to the read string. The result gchar
    string is returned, the original XML string is freed. */
-gchar * CONVERT(xmlDocPtr doc, xmlChar * string) {
-	GError	*err = NULL;
-	gint	bw, br;
-	gchar	*new, *from_encoding;
+gchar * CONVERT(xmlChar *string) {
 
-	g_assert(NULL != doc);
-	if(NULL != string) {
-		from_encoding = (gchar *)doc->encoding;
-		if(NULL == from_encoding)
-			from_encoding = standard_encoding;
-			
-		new = g_convert(string, strlen(string), standard_encoding, from_encoding, &br, &bw, &err);
-		
-		if(NULL != new)
-			xmlFree(string);
-		else
-			new = string;
-	
-		if(NULL != err)	{
-			g_print(err->message);
-			g_print("\n");
-			g_error_free(err);
-		}
-	} else {	
-		return g_strdup("");
-	}
-
-	return new;
+	convert(string, "UTF-8");
 }
 
 gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string) {

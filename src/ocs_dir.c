@@ -263,42 +263,44 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 				}
 			}
 		}
-		
+
 		if(!xmlStrcmp(cur->name, "formats")) {
 			found = FALSE;
 			tmpNode = cur->xmlChildrenNode;
 			while(NULL != tmpNode) {
-				if(!xmlStrcmp(tmpNode->name, "formats")) {
+				if(!xmlStrcmp(tmpNode->name, "Alt")) {
 					found = TRUE;
 					break;
 				}
 				tmpNode = tmpNode->next;
 			}
-			
+					
 			if(found) {
 				found = FALSE;
 				tmpNode = tmpNode->xmlChildrenNode;
 				while(NULL != tmpNode) {
-					if(!xmlStrcmp(tmpNode->name, "Alt")) {
+					if(!xmlStrcmp(tmpNode->name, "li")) {
 						found = TRUE;
 						break;
 					}
 					tmpNode = tmpNode->next;
 				}
 			}
-			
+
+			/* FIXME: something remembers me to use XPath or something... :-) */
 			if(found) {
 				found = FALSE;
 				tmpNode = tmpNode->xmlChildrenNode;
 				while(NULL != tmpNode) {
-					if(!xmlStrcmp(tmpNode->name, "li")) {
+					if(!xmlStrcmp(tmpNode->name, "Description")) {
 						/* now search for <format> nodes... */
 						formatNode = tmpNode->xmlChildrenNode;
 						while(NULL != formatNode) {
-							if(!xmlStrcmp(tmpNode->name, "format")) {
+							if(!xmlStrcmp(formatNode->name, "format")) {
 								if(NULL != (new_fp = (formatPtr)g_malloc(sizeof(struct format)))) {
 									memset(new_fp, 0, sizeof(struct format));
-									new_fp->source = CONVERT(cur->doc, xmlGetNoNsProp(cur, "resource"));									
+									new_fp->source = CONVERT(xmlGetProp(tmpNode, "about"));
+									new_fp->tags[OCS_CONTENTTYPE] = CONVERT(xmlGetProp(formatNode, "resource"));
 									dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
 								} else {
 									g_error(_("not enough memory!"));
@@ -310,8 +312,6 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 					tmpNode = tmpNode->next;
 				}
 			}
-
-
 		}
 
 		cur = cur->next;
@@ -366,7 +366,7 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 					if (!xmlStrcmp(cur->name, "description")) {
 						if(NULL != (new_fp = (formatPtr)g_malloc(sizeof(struct format)))) {
 							memset(new_fp, 0, sizeof(struct format));
-							new_fp->source = CONVERT(cur->doc, xmlGetNoNsProp(cur, "about"));
+							new_fp->source = CONVERT(xmlGetNoNsProp(cur, "about"));
 							parseFormatEntry(new_fp, cur);
 							dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
 						} else {
@@ -441,7 +441,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 					if (!xmlStrcmp(cur->name, "description")) {
 						if(NULL != (new_dep = (dirEntryPtr)g_malloc(sizeof(struct dirEntry)))) {
 							memset(new_dep, 0, sizeof(struct dirEntry));						
-							new_dep->source = CONVERT(cur->doc, xmlGetNoNsProp(cur, "about"));
+							new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
 							new_dep->dp = dp;
 							ip = parse04DirectoryEntry(new_dep, cur);
 							addItem(fp, ip);
@@ -530,7 +530,7 @@ static void readOCS(feedPtr fp) {
 			else if(0 == xmlStrcmp(cur->name, "channel")) {
 				if(NULL != (new_dep = (dirEntryPtr)g_malloc(sizeof(struct dirEntry)))) {
 					memset(new_dep, 0, sizeof(struct dirEntry));						
-					new_dep->source = CONVERT(cur->doc, xmlGetNoNsProp(cur, "about"));
+					new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
 					new_dep->dp = dp;					
 					addItem(fp, parse05DirectoryEntry(new_dep, cur));
 				} else {

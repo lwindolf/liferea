@@ -114,7 +114,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
 				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
+				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
 					i->tags[j] = tmp;
 				} else {
 					g_free(tmp);
@@ -125,7 +125,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures, so we build
 			   a simple string of HTML-links... */
-			link = xmlGetNoNsProp(cur, BAD_CAST"url");
+			link = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"url"));
 			
 			if(NULL == (tmp = i->enclosure))
 				tmp = g_strdup("");
@@ -148,11 +148,11 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		ip->id = g_strdup(i->tags[RSS_ITEM_GUID]);
 
 	/* some postprocessing before generating HTML */
-	if(NULL != i->tags[RSS_ITEM_TITLE])
-		i->tags[RSS_ITEM_TITLE] = unhtmlize((gchar *)doc->encoding, i->tags[RSS_ITEM_TITLE]);
+/*	if(NULL != i->tags[RSS_ITEM_TITLE])
+		i->tags[RSS_ITEM_TITLE] = unhtmlize("UTF-8", i->tags[RSS_ITEM_TITLE]);*/
 		
 	if(NULL != i->tags[RSS_ITEM_DESCRIPTION])
-		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[RSS_ITEM_DESCRIPTION]);
+		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML("UTF-8", i->tags[RSS_ITEM_DESCRIPTION]);
 
 	ip->title = g_strdup(i->tags[RSS_ITEM_TITLE]);		
 	ip->description = showRSSItem(fp, cp, i);
