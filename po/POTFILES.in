@@ -11,8 +11,6 @@ src/common.c
 src/common.h
 src/conf.c
 src/conf.h
-src/conversions.c
-src/conversions.h
 src/eggtrayicon.c
 src/eggtrayicon.h
 src/export.c
@@ -25,7 +23,6 @@ src/filter.c
 src/filter.h
 src/folder.c
 src/folder.h
-src/gtkhtml.c
 src/htmlview.c
 src/htmlview.h
 src/interface.c
@@ -33,8 +30,10 @@ src/interface.h
 src/item.c
 src/item.h
 src/main.c
-src/netio.c
-src/netio.h
+src/net/conversions.c
+src/net/conversions.h
+src/net/netio.c
+src/net/netio.h
 src/ns_admin.c
 src/ns_admin.h
 src/ns_ag.c
@@ -60,8 +59,6 @@ src/ocs_dir.h
 src/ocs_ns.h
 src/opml.c
 src/opml.h
-src/os-support.c
-src/os-support.h
 src/pie_entry.c
 src/pie_entry.h
 src/pie_feed.c

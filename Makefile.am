@@ -9,8 +9,6 @@ Applications_DATA = $(desktop_files)
 
 EXTRA_DIST = \
 	autogen.sh \
-	.glade \
-	.gladep \
 	liferea.glade \
 	liferea.gladep \
 	liferea.spec \
