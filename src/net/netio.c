@@ -243,25 +243,53 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		MainQuit (_("socket connect"), strerror(errno));
 		return NULL;
 	}
-	
-	/* Again is proxyport == 0, non proxy mode, otherwise make proxy requests. */
-	if (proxyport == 0) {
-		/* Request URL from HTTP server. */
-		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n", url, useragent, host, cur_ptr->lastmodified, (cur_ptr->authinfo ? cur_ptr->authinfo : ""), (cur_ptr->cookies ? cur_ptr->cookies : ""));
-		else
-			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n", url, useragent, host, (cur_ptr->authinfo ? cur_ptr->authinfo : ""), (cur_ptr->cookies ? cur_ptr->cookies : ""));
 
-		fflush(stream);
-	} else {
-		/* Request URL from HTTP server. */
-		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s\r\n", host, url, useragent, host, cur_ptr->lastmodified, (cur_ptr->cookies ? cur_ptr->cookies : ""));
-		else
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s\r\n", host, url, useragent, host, (cur_ptr->cookies ? cur_ptr->cookies : ""));
-		
-		fflush(stream);
-	}
+	/* Again is proxyport == 0, non proxy mode, otherwise make proxy requests. */
+        if (proxyport == 0) {
+                /* Request URL from HTTP server. */
+                if (cur_ptr->lastmodified != NULL) {
+                        fprintf(stream,
+                                        "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n",
+                                        url,
+                                        useragent,
+                                        host,
+                                        cur_ptr->lastmodified,
+                                        (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+                                        (cur_ptr->cookies ? cur_ptr->cookies : ""));
+                } else {
+                        fprintf(stream,
+                                        "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n",
+                                        url,
+                                        useragent,
+                                        host,
+                                        (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+                                        (cur_ptr->cookies ? cur_ptr->cookies : ""));
+                }
+                fflush(stream);
+        } else {
+                /* Request URL from HTTP server. */
+                if (cur_ptr->lastmodified != NULL) {
+                        fprintf(stream,
+                                        "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n",
+                                        host,
+                                        url,
+                                        useragent,
+                                        host,
+                                        cur_ptr->lastmodified,
+                                        (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+                                        (cur_ptr->cookies ? cur_ptr->cookies : ""));
+                } else {
+                        fprintf(stream,
+                                        "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n",
+                                        host,
+                                        url,
+                                        useragent,
+                                        host,
+                                        (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+                                        (cur_ptr->cookies ? cur_ptr->cookies : ""));
+                }
+                fflush(stream);
+        }
 	
 	if ((fgets (tmp, sizeof(tmp), stream)) == NULL) {
 		fclose (stream);

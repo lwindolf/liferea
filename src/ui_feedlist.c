@@ -181,7 +181,6 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		   this happens when we're doing drag&drop for example. */
 	}
 }
-}
 
 /* sets up the entry list store and connects it to the entry list
    view in the main window */
