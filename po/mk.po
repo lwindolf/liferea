@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 23:32+0200\n"
+"POT-Creation-Date: 2004-06-25 20:52-0400\n"
 "PO-Revision-Date: 2004-04-09 16:25+0200\n"
 "Last-Translator: Tomislav Markovski <tome@set.com.mk>\n"
 "Language-Team: Macedonian <mk@li.org>\n"
@@ -15,11 +15,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.2\n"
-
-#: src/support.c:90 src/support.c:114
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Не можам да ја најдам pixmap датотеката: %s"
 
 #: src/cdf_channel.c:56 src/cdf_item.c:55 src/ocs_dir.c:141 src/opml.c:211
 #: src/pie_entry.c:73 src/pie_feed.c:116 src/rss_channel.c:142
@@ -285,6 +280,10 @@ msgid ""
 msgstr ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
+
+#: src/html.c:138
+msgid "Feed link auto discovery failed! No feed links found!"
+msgstr ""
 
 #: src/htmlview.c:61
 #, fuzzy
@@ -1138,7 +1137,8 @@ msgstr ""
 msgid "Translation"
 msgstr "Превод"
 
-#: src/interface.c:3113
+#. Auth check box
+#: src/interface.c:3113 src/ui_feed.c:90
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr ""
@@ -1289,60 +1289,78 @@ msgstr "<p>Could not find RDF/RSS header!</p>"
 msgid "comments"
 msgstr "коментари"
 
-#: src/ui_feedlist.c:405
+#: src/support.c:90 src/support.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Не можам да ја најдам pixmap датотеката: %s"
+
+#: src/ui_feed.c:199
+msgid "Directories cannot be autoupdated."
+msgstr ""
+
+#: src/ui_feed.c:202
+#, fuzzy, c-format
+msgid "The provider of this feed suggests an update interval of %d minutes."
+msgstr "Опслужувачот на овие вести сугерира време на ажурирање од %d минути"
+
+#: src/ui_feed.c:204
+msgid "This feed specifies no default update interval."
+msgstr "Овие вести немаат информација за време на ажурирање."
+
+#: src/ui_feedlist.c:402
 #, fuzzy
 msgid "You have to select a feed entry"
 msgstr "Мора да избереш вест!"
 
-#: src/ui_feedlist.c:415
+#: src/ui_feedlist.c:412
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 
-#: src/ui_feedlist.c:439
+#: src/ui_feedlist.c:436
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:451 src/ui_feedlist.c:486
+#: src/ui_feedlist.c:448 src/ui_feedlist.c:483
 msgid ""
 "You cannot delete the help! Disable loading the help by changing the "
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:490
 #, fuzzy, c-format
 msgid "Deleting \"%s\""
 msgstr "Бришење на вестите"
 
-#: src/ui_feedlist.c:494
+#: src/ui_feedlist.c:491
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
 msgstr ""
 
-#: src/ui_feedlist.c:496
+#: src/ui_feedlist.c:493
 msgid "Deleting entry"
 msgstr "Бришење на вестите"
 
-#: src/ui_feedlist.c:497
+#: src/ui_feedlist.c:494
 #, c-format
 msgid "Are you sure that you want to delete %s?"
 msgstr ""
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:502
 msgid "Deletion Confirmation"
 msgstr ""
 
-#: src/ui_feedlist.c:536
+#: src/ui_feedlist.c:533
 #, fuzzy
 msgid "You must select a feed entry"
 msgstr "Мора да избереш вест!"
 
-#: src/ui_feedlist.c:537
+#: src/ui_feedlist.c:534
 #, fuzzy
 msgid "You must select a feed entry."
 msgstr "Мора да избереш вест!"
 
-#: src/ui_feedlist.c:571
+#: src/ui_feedlist.c:568
 #, fuzzy
 msgid "New subscription"
 msgstr "Нова претплата"
@@ -1478,6 +1496,11 @@ msgstr "Не постои датотеката \"%s\"!"
 msgid "Liferea is now offline"
 msgstr "Не постои датотеката \"%s\"!"
 
+#: src/ui_notification.c:241
+#, fuzzy
+msgid "Liferea notification"
+msgstr "Не постои датотеката \"%s\"!"
+
 #: src/ui_popup.c:78
 #, fuzzy
 msgid "/_Update"
@@ -1600,11 +1623,6 @@ msgstr[1] "%d нови ставки!"
 #: src/ui_tray.c:102
 msgid "No new items."
 msgstr "Нема нови ставки."
-
-#: src/ui_notification.c:241
-#, fuzzy
-msgid "Liferea notification"
-msgstr "Не постои датотеката \"%s\"!"
 
 #: src/update.c:104
 #, fuzzy, c-format
@@ -1870,12 +1888,6 @@ msgstr "Не постои датотеката \"%s\"!"
 
 #~ msgid "Feed Update Interval"
 #~ msgstr "Интервал на ажурирање на вестите"
-
-#~ msgid "The provider of this feed suggests an update interval of %d minutes"
-#~ msgstr "Опслужувачот на овие вести сугерира време на ажурирање од %d минути"
-
-#~ msgid "This feed specifies no default update interval."
-#~ msgstr "Овие вести немаат информација за време на ажурирање."
 
 #~ msgid "Internal error! No feed selected, but property change requested...\n"
 #~ msgstr ""
