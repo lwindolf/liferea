@@ -147,6 +147,4 @@ int main(int argc, char *argv[]) {
 	lifereaStarted = TRUE;
 	gtk_main();
 	gdk_threads_leave();
-	
-	return 0;
 }

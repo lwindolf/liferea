@@ -16,3 +16,4 @@ GtkWidget* create_importdialog (void);
 GtkWidget* create_exportdialog (void);
 GtkWidget* create_aboutdialog (void);
 GtkWidget* create_authdialog (void);
+GtkWidget* create_window1 (void);
