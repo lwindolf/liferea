@@ -33,7 +33,6 @@ src/interface.h
 src/item.c
 src/item.h
 src/main.c
-src/mozilla.c
 src/netio.c
 src/netio.h
 src/ns_admin.c
@@ -101,3 +100,6 @@ src/update.c
 src/update.h
 src/vfolder.c
 src/vfolder.h
+src/gtkhtml2/gtkhtml2.c
+src/gtkhtml3/gtkhtml3.c
+src/mozilla/mozembed.c
