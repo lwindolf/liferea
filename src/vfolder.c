@@ -243,7 +243,12 @@ gboolean matchVFolderRules(VFolderPtr vp, gchar *string) {
 	}
 	
 	g_assert(NULL != vp);
-	g_assert(NULL != vp->rules);
+	
+	if(NULL == vp->rules) {
+		g_warning(_("internal error! VFolder has no rules!"));
+		return FALSE;
+	}
+	
 	g_assert(NULL != vp->rules->value);
 
 	if(NULL != strstr(string, vp->rules->value)) {
