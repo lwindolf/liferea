@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-18 23:06+0200\n"
+"POT-Creation-Date: 2004-05-19 22:08+0200\n"
 "PO-Revision-Date: 2003-10-21 14:13+0200\n"
 "Last-Translator: Stephane Jourdanéphane Jourdan <stephane.jourdan@itris.fr>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
@@ -355,7 +355,7 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr ""
 
-#: src/interface.c:161 src/interface.c:3077
+#: src/interface.c:161 src/interface.c:3172
 #, fuzzy
 msgid "Liferea 0.4.9"
 msgstr "Liferea 0.4.3"
@@ -564,7 +564,7 @@ msgstr ""
 msgid "_Help"
 msgstr ""
 
-#: src/interface.c:471 src/interface.c:3063 src/interface.c:3093
+#: src/interface.c:471 src/interface.c:3157 src/interface.c:3188
 msgid "About"
 msgstr ""
 
@@ -637,7 +637,7 @@ msgstr "Vue à simple entrée"
 msgid "condensed item list"
 msgstr "Liste des entrées compacte."
 
-#: src/interface.c:1066
+#: src/interface.c:1067
 msgid "Subscription Properties"
 msgstr "Propriétés des abonnements"
 
@@ -645,33 +645,35 @@ msgstr "Propriétés des abonnements"
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr ""
 
-#: src/interface.c:1097 src/interface.c:1127 src/interface.c:1180
-#: src/interface.c:1254 src/interface.c:1270 src/interface.c:1317
-#: src/interface.c:1343 src/interface.c:1595 src/interface.c:1669
-#: src/interface.c:1685 src/interface.c:1732 src/interface.c:1758
+#: src/interface.c:1097 src/interface.c:1128 src/interface.c:1181
+#: src/interface.c:1261 src/interface.c:1277 src/interface.c:1324
+#: src/interface.c:1350 src/interface.c:1604 src/interface.c:1684
+#: src/interface.c:1700 src/interface.c:1747 src/interface.c:1773
+#: src/interface.c:1978 src/interface.c:2023 src/interface.c:2124
+#: src/interface.c:2151 src/interface.c:2192 src/interface.c:2248
 msgid "    "
 msgstr ""
 
-#: src/interface.c:1105
+#: src/interface.c:1106
 #, fuzzy
 msgid "Feed _Name:"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:1117
+#: src/interface.c:1118
 msgid "<span weight=\"bold\">Refresh Interval</span>"
 msgstr ""
 
-#: src/interface.c:1136
+#: src/interface.c:1137
 #, c-format
 msgid "This feed's refresh interval defaults to %d seconds."
 msgstr ""
 
-#: src/interface.c:1147
+#: src/interface.c:1148
 #, fuzzy
 msgid "Feed Refresh _Interval:"
 msgstr "Intervalle de rafraichissement du canal (en minutes)"
 
-#: src/interface.c:1155
+#: src/interface.c:1156
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
@@ -682,164 +684,171 @@ msgstr ""
 "canal mis à jour quotidiennement. Pour désactiver la mise à jour "
 "automatique, réglez l'intervalle à 0."
 
-#: src/interface.c:1157
+#: src/interface.c:1158
 msgid "minutes."
 msgstr ""
 
-#: src/interface.c:1161
+#: src/interface.c:1162
 msgid "General"
 msgstr ""
 
-#: src/interface.c:1170 src/interface.c:1585
+#: src/interface.c:1171 src/interface.c:1594
 msgid "<b>Data Source</b>"
 msgstr ""
 
-#: src/interface.c:1196 src/interface.c:1611
+#: src/interface.c:1197 src/interface.c:1620
 #, fuzzy
 msgid "_Select File..."
 msgstr "créer un VFolder"
 
-#: src/interface.c:1213 src/interface.c:1628
+#: src/interface.c:1214 src/interface.c:1637
 msgid "_URL"
 msgstr ""
 
-#: src/interface.c:1219 src/interface.c:1634
+#: src/interface.c:1220 src/interface.c:1643
 #, fuzzy
 msgid "_File"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:1225 src/interface.c:1640
+#: src/interface.c:1226 src/interface.c:1649
 msgid "_Command"
 msgstr ""
 
-#: src/interface.c:1237 src/interface.c:1652
+#: src/interface.c:1238 src/interface.c:1661
 #, fuzzy
 msgid "Source Type:"
 msgstr "Type de canal"
 
-#: src/interface.c:1243 src/interface.c:1658
+#: src/interface.c:1244 src/interface.c:1667
 msgid "Source:"
 msgstr ""
 
-#: src/interface.c:1262 src/interface.c:1677
+#: src/interface.c:1251 src/interface.c:1674
+msgid "<b>HTTP Authentication</b>"
+msgstr ""
+
+#: src/interface.c:1269 src/interface.c:1692
 msgid "Use HTTP _authentication"
 msgstr ""
 
-#: src/interface.c:1280 src/interface.c:1695
+#: src/interface.c:1287 src/interface.c:1710
 #, fuzzy
 msgid "User_name:"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:1287 src/interface.c:1702
+#: src/interface.c:1294 src/interface.c:1717
 msgid "_Password:"
 msgstr ""
 
-#: src/interface.c:1307 src/interface.c:1722
+#: src/interface.c:1314 src/interface.c:1737
 msgid "<b>Conversion Filter</b>"
 msgstr ""
 
-#: src/interface.c:1325 src/interface.c:1740
+#: src/interface.c:1332 src/interface.c:1755
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
 
-#: src/interface.c:1335 src/interface.c:1750
+#: src/interface.c:1342 src/interface.c:1765
 msgid "Use conversion filter"
 msgstr ""
 
-#: src/interface.c:1347 src/interface.c:1762
+#: src/interface.c:1354 src/interface.c:1777
 msgid "Convert using:"
 msgstr ""
 
-#: src/interface.c:1355 src/interface.c:1770
+#: src/interface.c:1362 src/interface.c:1785
 #, fuzzy
 msgid "Select File..."
 msgstr "créer un VFolder"
 
-#: src/interface.c:1359
+#: src/interface.c:1366
 #, fuzzy
 msgid "Feed Source"
 msgstr "Type de canal"
 
-#: src/interface.c:1368
+#: src/interface.c:1375
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
 msgstr ""
 
-#: src/interface.c:1375
+#: src/interface.c:1382
 msgid "_Default cache settings"
 msgstr ""
 
-#: src/interface.c:1381
+#: src/interface.c:1388
 msgid "Di_sable cache"
 msgstr ""
 
-#: src/interface.c:1387
+#: src/interface.c:1394
 msgid "_Umlimited cache"
 msgstr ""
 
-#: src/interface.c:1397
+#: src/interface.c:1404
 msgid "_Limit cache to"
 msgstr ""
 
-#: src/interface.c:1410
+#: src/interface.c:1417
 msgid "items."
 msgstr ""
 
-#: src/interface.c:1414
+#: src/interface.c:1421
 #, fuzzy
 msgid "Feed Cache"
 msgstr "Type de canal"
 
-#: src/interface.c:1568
+#: src/interface.c:1577
 msgid "New Subscription"
 msgstr "Nouvel Abonnement"
 
-#: src/interface.c:1919
+#: src/interface.c:1947
 msgid "program preferences"
 msgstr "préférences du programme"
 
-#: src/interface.c:1945
+#: src/interface.c:1968
+msgid "<span weight=\"bold\">Browser Settings</span>"
+msgstr ""
+
+#: src/interface.c:1987
 #, fuzzy
 msgid "Use the GNOME default browser"
 msgstr "utiliser le navigateur par défaut de GNOME"
 
-#: src/interface.c:1955
+#: src/interface.c:1997
 #, fuzzy
 msgid "Use browser command:"
 msgstr "commande du navigateur"
 
-#: src/interface.c:1965
+#: src/interface.c:2007
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr ""
 "Spécifier la commande du navigateur en utilisant %s pour l'emplacement de "
 "l'URL"
 
-#: src/interface.c:1967
-#, fuzzy
-msgid "Browser Settings"
-msgstr "Paramètres du navigateur"
+#: src/interface.c:2013
+msgid "<span weight=\"bold\">Date Column Settings</span>"
+msgstr ""
 
-#: src/interface.c:1981
+#: src/interface.c:2032
 #, fuzzy
 msgid "Display only time"
 msgstr "Afficher seulement l'heure"
 
-#: src/interface.c:1987
+#: src/interface.c:2038
 #, fuzzy
 msgid "Display date and time"
 msgstr "Affiche la date et l'heure"
 
-#: src/interface.c:1997
+#: src/interface.c:2048
 #, fuzzy
 msgid "User defined format:"
 msgstr "Format défini par l'utilisateur"
 
-#: src/interface.c:2006
+#: src/interface.c:2057
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -847,82 +856,79 @@ msgstr ""
 "pour les utilisateurs experts : spécifie une chaine de formatage de temps, "
 "consulter le manuel de strftime() pour le format des codes."
 
-#: src/interface.c:2008
+#: src/interface.c:2063
 #, fuzzy
-msgid "Date Column Settings"
-msgstr "Paramètres de la colonne de date"
+msgid "<span weight=\"bold\">Feed Handling Settings</span>"
+msgstr "Paramètres de la gestion des canaux"
 
-#: src/interface.c:2027
+#: src/interface.c:2079
 #, fuzzy
 msgid "Default number of items per feed to save when Liferea exits:"
 msgstr "Nombre maximum d'entrées par canaux à sauvegarder"
 
-#: src/interface.c:2039
+#: src/interface.c:2091
 msgid "Update all feeds on program startup."
 msgstr "Mettre à jour tous les canaux au démarrage"
 
-#: src/interface.c:2043
+#: src/interface.c:2095
 msgid "Don't add the help feeds to the feed list on startup."
 msgstr ""
 
-#: src/interface.c:2047
-#, fuzzy
-msgid "Feed Handling Settings"
-msgstr "Paramètres de la gestion des canaux"
-
-#: src/interface.c:2052
+#: src/interface.c:2099
 #, fuzzy
 msgid "Feed Handling"
 msgstr "Paramètres de la gestion des canaux"
 
-#: src/interface.c:2071
+#: src/interface.c:2114
+msgid "<span weight=\"bold\">Notification Settings</span>"
+msgstr ""
+
+#: src/interface.c:2132
 msgid ""
 "Show a status icon in the notification area \n"
 "(also called system tray)."
 msgstr ""
 
-#: src/interface.c:2076
-msgid "Notification Area"
+#: src/interface.c:2141
+msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr ""
 
-#: src/interface.c:2091
+#: src/interface.c:2160
 msgid "Show Menu _And Toolbar"
 msgstr ""
 
-#: src/interface.c:2097
+#: src/interface.c:2166
 msgid "Show _Menu Only"
 msgstr ""
 
-#: src/interface.c:2103
+#: src/interface.c:2172
 msgid "Show _Toolbar Only"
 msgstr ""
 
-#: src/interface.c:2109
-#, fuzzy
-msgid "Menu Settings"
-msgstr "Paramètres du navigateur"
+#: src/interface.c:2182
+msgid "<span weight=\"bold\">Viewing Headlines</span>"
+msgstr ""
 
-#: src/interface.c:2124
+#: src/interface.c:2201
 msgid ""
 "Liferea displays feeds' content using various HTML renderers. Depending on "
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
 
-#: src/interface.c:2134
+#: src/interface.c:2211
 msgid "View Headlines With"
 msgstr ""
 
-#: src/interface.c:2146
-#, fuzzy
-msgid "Viewing Headlines"
-msgstr "Gros titre"
-
-#: src/interface.c:2151
+#: src/interface.c:2223
 msgid "GUI Settings"
 msgstr ""
 
-#: src/interface.c:2171
+#: src/interface.c:2238
+msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
+msgstr ""
+
+#: src/interface.c:2257
 msgid ""
 "Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center. Note: changing these settings "
@@ -930,139 +936,137 @@ msgid ""
 "GNOME to be able to use Liferea with a proxy."
 msgstr ""
 
-#: src/interface.c:2181
+#: src/interface.c:2267
 msgid "Enable Proxy"
 msgstr ""
 
-#: src/interface.c:2191
+#: src/interface.c:2277
 msgid "Proxy Host"
 msgstr ""
 
-#: src/interface.c:2210
+#: src/interface.c:2296
 msgid "Proxy Port"
 msgstr ""
 
-#: src/interface.c:2217
-msgid "HTTP Proxy Server"
-msgstr ""
-
-#: src/interface.c:2221
+#: src/interface.c:2303
 #, fuzzy
 msgid "Proxy Settings"
 msgstr "Paramètres du navigateur"
 
-#: src/interface.c:2375
+#: src/interface.c:2469
 #, fuzzy
 msgid "New Folder"
 msgstr "créer un VFolder"
 
-#: src/interface.c:2390 src/interface.c:2465
+#: src/interface.c:2484 src/interface.c:2559
 #, fuzzy
 msgid "Folder name:"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:2454
+#: src/interface.c:2548
 #, fuzzy
 msgid "Rename Folder"
 msgstr "créer un VFolder"
 
-#: src/interface.c:2518
+#: src/interface.c:2612
 msgid "Select A File"
 msgstr ""
 
-#: src/interface.c:2563
+#: src/interface.c:2657
 #, fuzzy
 msgid "edit filter rules"
 msgstr "Editer le nom du répertoire"
 
-#: src/interface.c:2663
+#: src/interface.c:2757
 msgid "edit rule properties"
 msgstr ""
 
-#: src/interface.c:2677
-msgid "rule type"
-msgstr ""
+#: src/interface.c:2771 src/ui_filter.c:54
+#, fuzzy
+msgid "Rule Type"
+msgstr "Type de canal"
 
-#: src/interface.c:2687
+#: src/interface.c:2781
 msgid "add items with exact match"
 msgstr ""
 
-#: src/interface.c:2691
+#: src/interface.c:2785
 msgid "remove items with exact match"
 msgstr ""
 
-#: src/interface.c:2701
-msgid "rule value"
-msgstr ""
+#: src/interface.c:2795
+#, fuzzy
+msgid "Rule Value"
+msgstr "Type de canal"
 
-#: src/interface.c:2775
+#: src/interface.c:2869
 #, fuzzy
 msgid "Search With Feedster"
 msgstr "Chercher dans les canaux"
 
-#: src/interface.c:2789
+#: src/interface.c:2883
 #, fuzzy
 msgid "Search for "
 msgstr "Chercher"
 
-#: src/interface.c:2796
+#: src/interface.c:2890
 msgid "enter any search string you want"
 msgstr ""
 
-#: src/interface.c:2803
+#: src/interface.c:2897
 msgid "Maximal Number Of Result Items"
 msgstr ""
 
-#: src/interface.c:2812
+#: src/interface.c:2906
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
 "permanently and update it like any other subscription.  "
 msgstr ""
 
-#: src/interface.c:2878
+#: src/interface.c:2972
 msgid "Import Feed List"
 msgstr ""
 
-#: src/interface.c:2888
+#: src/interface.c:2982
 msgid ""
 "Liferea can import a list of feeds from an OPML file. This  can be used to "
 "either restore a backup feed list or import a feed list from another "
 "aggregator like that supports OPML export."
 msgstr ""
 
-#: src/interface.c:2898 src/interface.c:2987
+#: src/interface.c:2992 src/interface.c:3081
 #, fuzzy
 msgid "Filename"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:2907 src/interface.c:2996
+#: src/interface.c:3001 src/interface.c:3090
 msgid "Select File"
 msgstr ""
 
-#: src/interface.c:2967
+#: src/interface.c:3061
 msgid "Export Feed List"
 msgstr ""
 
-#: src/interface.c:2977
+#: src/interface.c:3071
 msgid ""
 "Liferea can export the list of feeds as an OPML list. You can use this "
 "feature to backup your feed list or export your feed list to another "
 "aggregator."
 msgstr ""
 
-#: src/interface.c:3082
+#: src/interface.c:3177
 msgid "Liferea is a news aggregator for GTK"
 msgstr ""
 
-#: src/interface.c:3087
+#: src/interface.c:3182
 msgid ""
 "Copyright (c) 2003-2004 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
 
-#: src/interface.c:3107
+#: src/interface.c:3202
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1085,11 +1089,11 @@ msgid ""
 "Philippe Martin, Brion Vibber (favicon support)"
 msgstr ""
 
-#: src/interface.c:3113
+#: src/interface.c:3208
 msgid "Contributors"
 msgstr ""
 
-#: src/interface.c:3127
+#: src/interface.c:3222
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -1102,7 +1106,7 @@ msgid ""
 "Dario Conigliaro <djdas@djdas.no-ip.org>"
 msgstr ""
 
-#: src/interface.c:3133
+#: src/interface.c:3228
 msgid "Translation"
 msgstr ""
 
@@ -1420,11 +1424,6 @@ msgid ""
 "and select a feed type!"
 msgstr ""
 
-#: src/ui_filter.c:54
-#, fuzzy
-msgid "Rule Type"
-msgstr "Type de canal"
-
 #: src/ui_filter.c:57
 msgid "Value"
 msgstr ""
@@ -1619,6 +1618,22 @@ msgstr ""
 #: src/mozilla/mozembed.c:65
 msgid "Mozilla (experimental)"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Browser Settings"
+#~ msgstr "Paramètres du navigateur"
+
+#, fuzzy
+#~ msgid "Date Column Settings"
+#~ msgstr "Paramètres de la colonne de date"
+
+#, fuzzy
+#~ msgid "Menu Settings"
+#~ msgstr "Paramètres du navigateur"
+
+#, fuzzy
+#~ msgid "Viewing Headlines"
+#~ msgstr "Gros titre"
 
 #~ msgid ""
 #~ "Please enter the URL (including the http:// prefix) you want to \n"
