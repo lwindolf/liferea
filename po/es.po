@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.6.0\n"
 "POT-Creation-Date: 2004-09-08 01:19+0200\n"
-"PO-Revision-Date: 2005-03-04 21:31+0100\n"
+"PO-Revision-Date: 2005-03-05 02:03+0100\n"
 "Last-Translator: Carlos Fenollosa Bielsa <topopardo@topopardo.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -812,7 +812,7 @@ msgstr "    "
 
 #: src/interface.c:2375
 msgid "Lower Right"
-msgstr "Debajo a la derecha"
+msgstr "Abajo a la derecha"
 
 #: src/interface.c:2383
 msgid "Upper Right"
