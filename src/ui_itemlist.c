@@ -566,9 +566,12 @@ static gboolean ui_itemlist_find_unread_item(void) {
 		gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 		g_assert(ip != NULL);
 		if(FALSE == item_get_read_status(ip)) {
-			if(!ui_itemlist_get_two_pane_mode())
+			if(!ui_itemlist_get_two_pane_mode()) {
 				ui_itemlist_select(iter);
-			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
+				itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
+			} else {
+				itemlist_mark_all_read(ip->fp);
+			}
 			return TRUE;
 		}
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
