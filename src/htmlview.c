@@ -59,7 +59,7 @@ static void kill_old_connections (HtmlDocument *doc);
 void startHTMLOutput(void) {
 
 	g_assert(doc != NULL);
-	kill_old_connections(doc);
+//	kill_old_connections(doc);	/* if enabled images do not always load */
 	html_document_clear(doc);
 	html_document_open_stream(doc, "text/html");
 }
