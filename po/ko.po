@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-11 04:09+0200\n"
+"POT-Creation-Date: 2004-08-14 17:33+0200\n"
 "PO-Revision-Date: 2004-07-18 20:03+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -175,48 +175,48 @@ msgstr "<p>\"%s\" 는 올바른 캐시 파일이 아닙니다. 읽을 수 없습
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "캐시파일 \"%s\"을(를) 해석하던 중 에러가 발생했습니다!"
 
-#: src/feed.c:639
+#: src/feed.c:659
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\"은(는) 새로운 아이템이 없습니다."
 
-#: src/feed.c:641
+#: src/feed.c:661
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\"은(는) %d개의 새로운 아이템이 있습니다."
 
-#: src/feed.c:709
+#: src/feed.c:729
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "피드 \"%s\"는 이미 새로 고쳐졌습니다!"
 
-#: src/feed.c:714
+#: src/feed.c:734
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "피드가 연속적이지 않습니다. Liferea는 더이상 그 피드를 새로 고칠 수 없습니다."
 
-#: src/feed.c:718
+#: src/feed.c:738
 #, c-format
 msgid "Updating \"%s\""
 msgstr "%s을(를) 새로고치는 중"
 
-#: src/feed.c:767
+#: src/feed.c:787
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "\"%s\"가 연속적이지 않습니다. Liferea는 그것을 더이상 새로 고칠 수 없습니다!"
 
-#: src/feed.c:769
+#: src/feed.c:789
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
 
-#: src/feed.c:776
+#: src/feed.c:796
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
 
-#: src/feed.c:787
+#: src/feed.c:807
 #, fuzzy
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -226,108 +226,108 @@ msgstr ""
 "이 피드의 종류를 결정할 수 없습니다. 소스가 지원되는 형식의 자원을 정확히 가"
 "리키는지 확인해 주세요 "
 
-#: src/feed.c:813
+#: src/feed.c:833
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\"이(가) 갱신되었습니다..."
 
-#: src/feed.c:823
+#: src/feed.c:843
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
 
-#: src/feed.c:976
+#: src/feed.c:996
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
 
-#: src/feed.c:978
+#: src/feed.c:998
 msgid "Payment Required"
 msgstr "(돈)지불이 필요합니다"
 
-#: src/feed.c:979
+#: src/feed.c:999
 msgid "Access Forbidden"
 msgstr "접근이 금지되었습니다"
 
-#: src/feed.c:980
+#: src/feed.c:1000
 msgid "Resource Not Found"
 msgstr "자원을 찾을 수 없습니다"
 
-#: src/feed.c:981
+#: src/feed.c:1001
 msgid "Method Not Allowed"
 msgstr "동작이 허용되지 않습니다"
 
-#: src/feed.c:982
+#: src/feed.c:1002
 msgid "Not Acceptable"
 msgstr "받아들일 수 없습니다"
 
-#: src/feed.c:983
+#: src/feed.c:1003
 msgid "Proxy Authentication Required"
 msgstr "프록시 인증이 필요합니다"
 
-#: src/feed.c:984
+#: src/feed.c:1004
 msgid "Request Time-Out"
 msgstr "요청 시간이 초과되었습니다"
 
-#: src/feed.c:985
+#: src/feed.c:1005
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "사라짐.자원이 더 이상 존재하지 않습니다. 해지 해 주세요."
 
-#: src/feed.c:990
+#: src/feed.c:1010
 msgid "URL is invalid"
 msgstr "URL이 잘못 되었습니다"
 
-#: src/feed.c:993
+#: src/feed.c:1013
 msgid "Error connecting to remote host"
 msgstr "원격 호스트로 접속하던 중 에러"
 
-#: src/feed.c:994
+#: src/feed.c:1014
 msgid "Hostname could not be found"
 msgstr "호스트 이름을 찾을 수 없습니다"
 
-#: src/feed.c:995
+#: src/feed.c:1015
 msgid "Network connection was refused by the remote host"
 msgstr "원격 호스트로 부터 접속이 거부되었습니다"
 
-#: src/feed.c:996
+#: src/feed.c:1016
 msgid "Remote host did not finish sending data"
 msgstr "원격 호스트가 데이터를 보내다 말았습니다."
 
 #. Transfer errors
-#: src/feed.c:998
+#: src/feed.c:1018
 msgid "Too many HTTP redirects were encountered"
 msgstr "너무 많은 HTTP 리다이렉션입니다! 포기할래요 엉엉."
 
-#: src/feed.c:1001
+#: src/feed.c:1021
 msgid "Remote host sent an invalid response"
 msgstr "웹서버가 잘못된 리다이렉트를 보내왔습니다"
 
-#: src/feed.c:1008
+#: src/feed.c:1028
 msgid "Authentication failed"
 msgstr "인증이 실패하였습니다!"
 
-#: src/feed.c:1010
+#: src/feed.c:1030
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "웹서버의 인증 방법을 지원할 수 없습니다"
 
-#: src/feed.c:1016
+#: src/feed.c:1036
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "피드 사용 불가: 서버가 지원되지 않는 리다이렉션을 요청받았습니다."
 
-#: src/feed.c:1017
+#: src/feed.c:1037
 msgid "Client Error"
 msgstr "클라이언트 에러"
 
-#: src/feed.c:1018
+#: src/feed.c:1038
 msgid "Server Error"
 msgstr "서버 에러"
 
-#: src/feed.c:1019
+#: src/feed.c:1039
 msgid "(unknown networking error happened)"
 msgstr "(알 수 없는 네트워크 에러가 일어남)"
 
-#: src/feed.c:1041
+#: src/feed.c:1061
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -335,12 +335,12 @@ msgstr ""
 "이 등록피드를 읽던 중 문제가 발생했습니다. URL과 콘솔 출력을 확인하세요"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1189 src/item.c:244 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:1208 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 msgid "Feed:"
 msgstr "피드:"
 
-#: src/feed.c:1200 src/interface.c:1031 src/interface.c:1433 src/item.c:271
+#: src/feed.c:1219 src/interface.c:1031 src/interface.c:1433 src/item.c:270
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "소스:"
@@ -1194,9 +1194,10 @@ msgstr "도움을 주신 분들"
 #: src/interface.c:3025
 #, fuzzy
 msgid ""
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1207,6 +1208,8 @@ msgid ""
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
+"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 msgstr ""
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -1240,11 +1243,11 @@ msgstr ""
 "참고: <i>사용자 이름과 암호는 Liferea 피드리스트에 암호화되지 않은채로저장됩"
 "니다.</i>"
 
-#: src/item.c:253 src/item.c:255 src/item.c:266
+#: src/item.c:252 src/item.c:254 src/item.c:265
 msgid "[No title]"
 msgstr "[제목 없음]"
 
-#: src/item.c:256 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:255 src/metadata.c:320 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "아이템:"
 
@@ -1574,7 +1577,7 @@ msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "내부 에러! 알 수 없는 엔트리 종류! 적당한 아이콘을 보여줄 수 없습니다.\n"
 
-#: src/ui_itemlist.c:294
+#: src/ui_itemlist.c:295
 msgid "Date"
 msgstr "날짜"
 
@@ -1694,11 +1697,11 @@ msgstr "Liferea가 온라인으로 동작합니다"
 msgid "Liferea is now offline"
 msgstr "Liferea는 현재 오프라인입니다."
 
-#: src/ui_notification.c:187
+#: src/ui_notification.c:195
 msgid "Untitled"
 msgstr ""
 
-#: src/ui_notification.c:248
+#: src/ui_notification.c:256
 msgid "Liferea notification"
 msgstr "Liferea 알림"
 

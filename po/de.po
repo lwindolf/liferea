@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-11 04:09+0200\n"
+"POT-Creation-Date: 2004-08-14 17:33+0200\n"
 "PO-Revision-Date: 2004-08-11 04:23+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
@@ -181,49 +181,49 @@ msgstr ""
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Es gab Fehler beim Parsen der Cachedatei  \"%s\"!"
 
-#: src/feed.c:639
+#: src/feed.c:659
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" hat keine neuen Schlagzeilen"
 
-#: src/feed.c:641
+#: src/feed.c:661
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" hat %d neue Schlagzeilen"
 
-#: src/feed.c:709
+#: src/feed.c:729
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Das Abonnement \"%s\" wird bereits aktualisiert!"
 
-#: src/feed.c:714
+#: src/feed.c:734
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Dieses Abonnement wurde eingestellt. Liferea wird es nicht mehr "
 "aktualisieren!"
 
-#: src/feed.c:718
+#: src/feed.c:738
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Aktualisiere \"%s\""
 
-#: src/feed.c:767
+#: src/feed.c:787
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" ist eingestellt. Liferea wird es nicht mehr aktualisieren."
 
-#: src/feed.c:769
+#: src/feed.c:789
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" hat sich seit dem letzten Update nicht verändert"
 
-#: src/feed.c:776
+#: src/feed.c:796
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr ""
 "Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert. "
 
-#: src/feed.c:787
+#: src/feed.c:807
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -232,17 +232,17 @@ msgstr ""
 "<p>Konnte Feedtyp nicht bestimmen! Bitte überprüfen Sie ob die URL wirklich "
 "auf eine Datei in einem der unterstützten Formate zeigt!</p>"
 
-#: src/feed.c:813
+#: src/feed.c:833
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualisiert.."
 
-#: src/feed.c:823
+#: src/feed.c:843
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" ist nicht verfügbar! "
 
-#: src/feed.c:976
+#: src/feed.c:996
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -251,99 +251,99 @@ msgstr ""
 "aktualisieren Sie Passwort und Benutzernamen in den Eigenschaften des "
 "Abonnements."
 
-#: src/feed.c:978
+#: src/feed.c:998
 msgid "Payment Required"
 msgstr "Bezahlung erforderlich"
 
-#: src/feed.c:979
+#: src/feed.c:999
 msgid "Access Forbidden"
 msgstr "Zugriff verweigert"
 
-#: src/feed.c:980
+#: src/feed.c:1000
 msgid "Resource Not Found"
 msgstr "Ressource nicht gefunden."
 
-#: src/feed.c:981
+#: src/feed.c:1001
 msgid "Method Not Allowed"
 msgstr "Methode nicht erlaubt"
 
-#: src/feed.c:982
+#: src/feed.c:1002
 msgid "Not Acceptable"
 msgstr "Ungültig"
 
-#: src/feed.c:983
+#: src/feed.c:1003
 msgid "Proxy Authentication Required"
 msgstr "Proxy Authentifizierung nötig"
 
-#: src/feed.c:984
+#: src/feed.c:1004
 msgid "Request Time-Out"
 msgstr "Antwortzeit überschritten"
 
-#: src/feed.c:985
+#: src/feed.c:1005
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 "Dieser Feed existiert nicht (mehr). Bitte entfernen Sie das Abonnement!"
 
-#: src/feed.c:990
+#: src/feed.c:1010
 msgid "URL is invalid"
 msgstr "URL ist ungültig"
 
-#: src/feed.c:993
+#: src/feed.c:1013
 msgid "Error connecting to remote host"
 msgstr "Fehler beim Kontaktieren des Servers"
 
-#: src/feed.c:994
+#: src/feed.c:1014
 msgid "Hostname could not be found"
 msgstr "Hostname nicht gefunden"
 
-#: src/feed.c:995
+#: src/feed.c:1015
 msgid "Network connection was refused by the remote host"
 msgstr "Netzwerkverbindung wurde von Server abgewiesen"
 
-#: src/feed.c:996
+#: src/feed.c:1016
 msgid "Remote host did not finish sending data"
 msgstr "Server hat Datenübertragung nicht korrekt beendet"
 
 #. Transfer errors
-#: src/feed.c:998
+#: src/feed.c:1018
 #, fuzzy
 msgid "Too many HTTP redirects were encountered"
 msgstr "Zuviele HTTP Umleitungen! Abbruch."
 
-#: src/feed.c:1001
+#: src/feed.c:1021
 #, fuzzy
 msgid "Remote host sent an invalid response"
 msgstr "Webserver spezifierte ungültige Umleitung!"
 
-#: src/feed.c:1008
+#: src/feed.c:1028
 #, fuzzy
 msgid "Authentication failed"
 msgstr "Authentifizierung schlug fehl"
 
-#: src/feed.c:1010
+#: src/feed.c:1030
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Webserver-Authentifikationsmethode nicht von Liferea unterstützt"
 
-#: src/feed.c:1016
+#: src/feed.c:1036
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Auf den Feed kann nicht zugegriffen werden: Der Server gab eine nicht "
 "unterstützte Weiterleitung zurück!"
 
-#: src/feed.c:1017
+#: src/feed.c:1037
 msgid "Client Error"
 msgstr "Client Fehler"
 
-#: src/feed.c:1018
+#: src/feed.c:1038
 msgid "Server Error"
 msgstr "Server Fehler"
 
-#: src/feed.c:1019
+#: src/feed.c:1039
 msgid "(unknown networking error happened)"
 msgstr "(unbekannte Netzwerkfehler aufgetreten)"
 
-#: src/feed.c:1041
+#: src/feed.c:1061
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -352,12 +352,12 @@ msgstr ""
 "die URL und die Ausgabe auf der Konsole."
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1189 src/item.c:244 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:1208 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 msgid "Feed:"
 msgstr "Abonnement:"
 
-#: src/feed.c:1200 src/interface.c:1031 src/interface.c:1433 src/item.c:271
+#: src/feed.c:1219 src/interface.c:1031 src/interface.c:1433 src/item.c:270
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "Quelle:"
@@ -1227,10 +1227,12 @@ msgid "Contributors"
 msgstr "Beitragende"
 
 #: src/interface.c:3025
+#, fuzzy
 msgid ""
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1241,6 +1243,8 @@ msgid ""
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
+"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 msgstr ""
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -1274,12 +1278,12 @@ msgstr ""
 "Hinweis: <i>Benutzername und Paßwort werden durch Liferea unverschlüsselt "
 "mit der Liste der Abonnements gesichert.</i>"
 
-#: src/item.c:253 src/item.c:255 src/item.c:266
+#: src/item.c:252 src/item.c:254 src/item.c:265
 #, fuzzy
 msgid "[No title]"
 msgstr "[Kein Titel]"
 
-#: src/item.c:256 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:255 src/metadata.c:320 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "Schlagzeile:"
 
@@ -1618,7 +1622,7 @@ msgstr "<i>(leer)</i>"
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "internal error! unknown entry type! cannot display appropriate icon!\n"
 
-#: src/ui_itemlist.c:294
+#: src/ui_itemlist.c:295
 msgid "Date"
 msgstr "Datum"
 
@@ -1750,11 +1754,11 @@ msgstr "Liferea ist jetzt online."
 msgid "Liferea is now offline"
 msgstr "Liferea ist jetzt offline!"
 
-#: src/ui_notification.c:187
+#: src/ui_notification.c:195
 msgid "Untitled"
 msgstr "Ohne Titel"
 
-#: src/ui_notification.c:248
+#: src/ui_notification.c:256
 msgid "Liferea notification"
 msgstr "Liferea Benachrichtigung"
 

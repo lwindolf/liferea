@@ -3,13 +3,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-11 04:09+0200\n"
+"POT-Creation-Date: 2004-08-14 17:33+0200\n"
 "PO-Revision-Date: 2004-08-12 00:55+0200\n"
 "Last-Translator: José María Mateos <chema@sl-form.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/common.c:267
 msgid "[Parser error output was truncated!]"
@@ -28,7 +28,6 @@ msgstr ""
 #: src/common.c:410
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "Formato de fecha inválido según RFC822. Se ignorará.\n"
-""
 
 #: src/common.c:424 src/common.c:431 src/common.c:437 src/common.c:444
 #, c-format
@@ -142,9 +141,11 @@ msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
-msgstr "<p>No se pudo determinar el tipo de fuente. Por favor, comprueba que sea <a href="
-"\"http://feedvalidator.org\">válida</a> y que su formato <a href=\"http://liferea."
-"sourceforge.net/index.php#supported_formats\">esté soportado</a>.</p>"
+msgstr ""
+"<p>No se pudo determinar el tipo de fuente. Por favor, comprueba que sea <a "
+"href=\"http://feedvalidator.org\">válida</a> y que su formato <a href="
+"\"http://liferea.sourceforge.net/index.php#supported_formats\">esté "
+"soportado</a>.</p>"
 
 #: src/feed.c:376 src/feed.c:377
 #, c-format
@@ -171,46 +172,46 @@ msgstr "<p>\"%s\" no es un archivo de caché válido. No se pudo leer.</p>"
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Se encontraron errores al procesar el archivo de caché \"%s\""
 
-#: src/feed.c:639
+#: src/feed.c:659
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" no tiene elementos nuevos"
 
-#: src/feed.c:641
+#: src/feed.c:661
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" tiene %d elementos nuevos"
 
-#: src/feed.c:709
+#: src/feed.c:729
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "La fuente \"%s\" ya se está actualizando"
 
-#: src/feed.c:714
+#: src/feed.c:734
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "La fuente ya no existe. Liferea no la actualizará."
 
-#: src/feed.c:718
+#: src/feed.c:738
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Actualizando: \"%s\""
 
-#: src/feed.c:767
+#: src/feed.c:787
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" ha sido abandonada. Liferea no la actualizará."
 
-#: src/feed.c:769
+#: src/feed.c:789
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "El contenido de \"%s\" no ha cambiado desde la última actualización"
 
-#: src/feed.c:776
+#: src/feed.c:796
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada"
 
-#: src/feed.c:787
+#: src/feed.c:807
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -219,109 +220,111 @@ msgstr ""
 "<p>No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL "
 "apunte a un recurso con alguno de los formatos soportados.</p>"
 
-#: src/feed.c:813
+#: src/feed.c:833
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" actualizado..."
 
-#: src/feed.c:823
+#: src/feed.c:843
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "Lo siento, \"%s\" no está disponible"
 
-#: src/feed.c:976
+#: src/feed.c:996
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
-msgstr "No se pudo acceder a esta fuente. Por favor, especifica el nombre de usuario y la contraseña en el cuadro de propiedades."
+msgstr ""
+"No se pudo acceder a esta fuente. Por favor, especifica el nombre de usuario "
+"y la contraseña en el cuadro de propiedades."
 
-#: src/feed.c:978
+#: src/feed.c:998
 msgid "Payment Required"
 msgstr "Es necesario pagar"
 
-#: src/feed.c:979
+#: src/feed.c:999
 msgid "Access Forbidden"
 msgstr "Acceso denegado"
 
-#: src/feed.c:980
+#: src/feed.c:1000
 msgid "Resource Not Found"
 msgstr "Recurso no encontrado"
 
-#: src/feed.c:981
+#: src/feed.c:1001
 msgid "Method Not Allowed"
 msgstr "Método inválido"
 
-#: src/feed.c:982
+#: src/feed.c:1002
 msgid "Not Acceptable"
 msgstr "No aceptable"
 
-#: src/feed.c:983
+#: src/feed.c:1003
 msgid "Proxy Authentication Required"
 msgstr "Se necesita autentificación para el proxy"
 
-#: src/feed.c:984
+#: src/feed.c:1004
 msgid "Request Time-Out"
 msgstr "Expiró el plazo"
 
-#: src/feed.c:985
+#: src/feed.c:1005
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Esta fuente ya no existe. Por favor, elimínela."
 
-#: src/feed.c:990
+#: src/feed.c:1010
 msgid "URL is invalid"
 msgstr "La URL no es válida"
 
-#: src/feed.c:993
+#: src/feed.c:1013
 msgid "Error connecting to remote host"
 msgstr "Se produjo un error conectándose al servidor remoto"
 
-#: src/feed.c:994
+#: src/feed.c:1014
 msgid "Hostname could not be found"
 msgstr "No se pudo encontrar el nombre del servidor"
 
-#: src/feed.c:995
+#: src/feed.c:1015
 msgid "Network connection was refused by the remote host"
 msgstr "La conexión fue rechazada por el servidor"
 
-#: src/feed.c:996
+#: src/feed.c:1016
 msgid "Remote host did not finish sending data"
 msgstr "El servidor no terminó de enviar los datos"
 
 #. Transfer errors
-#: src/feed.c:998
+#: src/feed.c:1018
 msgid "Too many HTTP redirects were encountered"
 msgstr "Se encontraron demasiadas redirecciones HTTP. Cancelando."
 
-#: src/feed.c:1001
+#: src/feed.c:1021
 msgid "Remote host sent an invalid response"
 msgstr "El servidor envió una respuesta incorrecta"
 
-#: src/feed.c:1008
+#: src/feed.c:1028
 msgid "Authentication failed"
 msgstr "Falló la autentificación"
 
-#: src/feed.c:1010
+#: src/feed.c:1030
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 "El método de autentificación del servidor web no es compatible con Liferea"
 
-#: src/feed.c:1016
+#: src/feed.c:1036
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Fuente no disponible: El servidor indicó una redirección inválida"
 
-#: src/feed.c:1017
+#: src/feed.c:1037
 msgid "Client Error"
 msgstr "Error del cliente"
 
-#: src/feed.c:1018
+#: src/feed.c:1038
 msgid "Server Error"
 msgstr "Error del servidor"
 
-#: src/feed.c:1019
+#: src/feed.c:1039
 msgid "(unknown networking error happened)"
 msgstr "(error desconocido)"
 
-#: src/feed.c:1041
+#: src/feed.c:1061
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -330,12 +333,12 @@ msgstr ""
 "y la salida por consola."
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1189 src/item.c:244 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:1208 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 msgid "Feed:"
 msgstr "Fuente:"
 
-#: src/feed.c:1200 src/interface.c:1031 src/interface.c:1433 src/item.c:271
+#: src/feed.c:1219 src/interface.c:1031 src/interface.c:1433 src/item.c:270
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "Fuente:"
@@ -872,7 +875,8 @@ msgstr "<span weight=\"bold\">Opciones de carga de la fuente</span>"
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds,"
-msgstr "_Cargar fuentes de disco, si es necesario. Las \n"
+msgstr ""
+"_Cargar fuentes de disco, si es necesario. Las \n"
 "búsquedas pueden ralentizarse si tienes muchas fuentes"
 
 #: src/interface.c:1783
@@ -881,7 +885,8 @@ msgid ""
 "(especially when searching) but can cause a \n"
 "significant memory footprint if you have a lot \n"
 "of feeds!"
-msgstr "_Mantener todas las fuentes cargadas. Esto puede\n"
+msgstr ""
+"_Mantener todas las fuentes cargadas. Esto puede\n"
 "mejorar la velocidad, especialmente en búsquedas,\n"
 "pero puede aumentar el consumo de memoria si\n"
 "tienes muchas fuentes"
@@ -1191,10 +1196,12 @@ msgid "Contributors"
 msgstr "Agradecimientos"
 
 #: src/interface.c:3025
+#, fuzzy
 msgid ""
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1205,6 +1212,8 @@ msgid ""
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
+"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 msgstr ""
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -1238,11 +1247,11 @@ msgstr ""
 "Nota: <i>El nombre de usuario y la contraseña se guardarán en el disco, sin "
 "encriptar</i>"
 
-#: src/item.c:253 src/item.c:255 src/item.c:266
+#: src/item.c:252 src/item.c:254 src/item.c:265
 msgid "[No title]"
 msgstr "[Sin título]"
 
-#: src/item.c:256 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:255 src/metadata.c:320 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "Elemento:"
 
@@ -1308,8 +1317,10 @@ msgid ""
 "Another copy of Liferea was found to be running. Please us it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
-msgstr "Otra copia de Liferea está ya ejecutándose, por favor, utilízala. Si "
-"no hubiera ninguna copia en memoria, por favor borra el archivo \"~/.liferea/lock\""
+msgstr ""
+"Otra copia de Liferea está ya ejecutándose, por favor, utilízala. Si no "
+"hubiera ninguna copia en memoria, por favor borra el archivo \"~/.liferea/"
+"lock\""
 
 #: src/metadata.c:284
 msgid "comments"
@@ -1582,7 +1593,7 @@ msgstr ""
 "Error interno: Tipo de entrada desconocido. No se ha podido mostrar un icono "
 "apropiado.\n"
 
-#: src/ui_itemlist.c:294
+#: src/ui_itemlist.c:295
 msgid "Date"
 msgstr "Fecha"
 
@@ -1681,29 +1692,29 @@ msgid ""
 "p>"
 msgstr ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">Se han empezado la lista de características para la versión 1.1. Por favor, <a href=\"http://"
-"liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">mira ésta</"
-"a> y <a href=\"mailto:liferea-devel@lists.sourceforge.net"
-"\">propón</a> algunas ideas que te gustaría que tuviera Liferea"
-"</div>"
-""
-"<h2>Bienvenido a Liferea</h2><p>El panel de la izquierda contiene la lista "
-"de fuentes, donde se pueden añadir nuevas subscripciones. En la parte "
-"derecha se muestran los titulares junto con los contenidos de cada elemento. "
-"También se puede seleccionar el modo de \"vista condensada\" para que se "
-"muestren a la vez los titulares y los contenidos</p><h3>Acciones básicas</"
-"h3><ul><li><p><b>Añadir subscripción</b> - Crea un nuevo elemento en la "
-"carpeta seleccionada. Para ello, introduce la URL de la fuente de noticias "
-"o, si es desconocida, la dirección de la página web que la contiene</p></li>"
-"<li><p><b>Actualizar subscripción</b> - Actualiza los contenidos de la "
-"fuente seleccionada. Normalmente, las actualizaciones automáticas son "
-"suficientes, pero en caso de desearse una actualización automática, usa esta "
-"opción</p></li><li><p><b>Actualizar todos</b> - Actualiza todas las fuentes "
-"de golpe. </li><li><p><b>Propiedades de la fuente</b> - Desde aquí se pueden "
-"cambiar el intervalo de actualización, el título y otras propiedades de cada "
-"elemento</p></li></ul><p>Para más información sobre el uso de Liferea, por "
-"favor, mira la documentación de las fuentes de ayuda o las <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</a> que hay "
-"disponibles en la <a href=\"http://liferea.sf.net\">página web de Liferea</a></p>"
+"\">Se han empezado la lista de características para la versión 1.1. Por "
+"favor, <a href=\"http://liferea.sourceforge.net/dokuwiki/doku.php?"
+"id=programrequirements1.1\">mira ésta</a> y <a href=\"mailto:liferea-"
+"devel@lists.sourceforge.net\">propón</a> algunas ideas que te gustaría que "
+"tuviera Liferea</div><h2>Bienvenido a Liferea</h2><p>El panel de la "
+"izquierda contiene la lista de fuentes, donde se pueden añadir nuevas "
+"subscripciones. En la parte derecha se muestran los titulares junto con los "
+"contenidos de cada elemento. También se puede seleccionar el modo de \"vista "
+"condensada\" para que se muestren a la vez los titulares y los contenidos</"
+"p><h3>Acciones básicas</h3><ul><li><p><b>Añadir subscripción</b> - Crea un "
+"nuevo elemento en la carpeta seleccionada. Para ello, introduce la URL de la "
+"fuente de noticias o, si es desconocida, la dirección de la página web que "
+"la contiene</p></li><li><p><b>Actualizar subscripción</b> - Actualiza los "
+"contenidos de la fuente seleccionada. Normalmente, las actualizaciones "
+"automáticas son suficientes, pero en caso de desearse una actualización "
+"automática, usa esta opción</p></li><li><p><b>Actualizar todos</b> - "
+"Actualiza todas las fuentes de golpe. </li><li><p><b>Propiedades de la "
+"fuente</b> - Desde aquí se pueden cambiar el intervalo de actualización, el "
+"título y otras propiedades de cada elemento</p></li></ul><p>Para más "
+"información sobre el uso de Liferea, por favor, mira la documentación de las "
+"fuentes de ayuda o las <a href=\"http://liferea.sourceforge.net/faq.php"
+"\">FAQ</a> que hay disponibles en la <a href=\"http://liferea.sf.net"
+"\">página web de Liferea</a></p>"
 
 #: src/ui_mainwindow.c:283
 msgid "Liferea is now online"
@@ -1713,11 +1724,11 @@ msgstr "Trabajando con conexión."
 msgid "Liferea is now offline"
 msgstr "Trabajando en modo sin conexión."
 
-#: src/ui_notification.c:187
+#: src/ui_notification.c:195
 msgid "Untitled"
 msgstr "Sin título"
 
-#: src/ui_notification.c:248
+#: src/ui_notification.c:256
 msgid "Liferea notification"
 msgstr "Aviso de Liferea"
 
@@ -1861,9 +1872,11 @@ msgid "Searching for \"%s\""
 msgstr "Buscando \"%s\""
 
 #: src/ui_tray.c:90
-#, c-format
+#, fuzzy, c-format
 msgid "%d new item!"
-msgstr "%d elemento(s) nuevo(s)"
+msgid_plural "%d new items!"
+msgstr[0] "%d elemento(s) nuevo(s)"
+msgstr[1] "%d elemento(s) nuevo(s)"
 
 #: src/ui_tray.c:103
 msgid "No new items."

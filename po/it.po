@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-11 04:09+0200\n"
+"POT-Creation-Date: 2004-08-14 17:33+0200\n"
 "PO-Revision-Date: 2004-07-21 02:51+0100\n"
 "Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.no-ip.org>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -188,46 +188,46 @@ msgstr ""
 "Si sono verificati degli errori durante l'interpretazione del file di cache "
 "\"%s\""
 
-#: src/feed.c:639
+#: src/feed.c:659
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" non ha nuovi elementi"
 
-#: src/feed.c:641
+#: src/feed.c:661
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" ha %d nuovi elementi"
 
-#: src/feed.c:709
+#: src/feed.c:729
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Questo notiziario \"%s\" è già stato aggiornato!"
 
-#: src/feed.c:714
+#: src/feed.c:734
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "Questo notiziario è stato rimosso. Liferea non lo aggiornerà più|"
 
-#: src/feed.c:718
+#: src/feed.c:738
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Aggiorno \"%s\""
 
-#: src/feed.c:767
+#: src/feed.c:787
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" è stato rimosso. Liferea non lo aggiornerà più|"
 
-#: src/feed.c:769
+#: src/feed.c:789
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" non è cambiato dopo l'ultimo aggiornamento"
 
-#: src/feed.c:776
+#: src/feed.c:796
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "L'URL di \"%s\" è cambiato in modo permanente ed è stato aggiornato"
 
-#: src/feed.c:787
+#: src/feed.c:807
 #, fuzzy
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -238,114 +238,114 @@ msgstr ""
 "che la sorgente punti realmente ad una risorsa fornita in uno dei formati "
 "supportati!"
 
-#: src/feed.c:813
+#: src/feed.c:833
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aggiornato..."
 
-#: src/feed.c:823
+#: src/feed.c:843
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" non è disponibile"
 
-#: src/feed.c:976
+#: src/feed.c:996
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
 
-#: src/feed.c:978
+#: src/feed.c:998
 msgid "Payment Required"
 msgstr "E' richiesto un pagamento"
 
-#: src/feed.c:979
+#: src/feed.c:999
 msgid "Access Forbidden"
 msgstr "Accesso Vietato"
 
-#: src/feed.c:980
+#: src/feed.c:1000
 msgid "Resource Not Found"
 msgstr "Risorsa Non Trovata"
 
-#: src/feed.c:981
+#: src/feed.c:1001
 msgid "Method Not Allowed"
 msgstr "Metodo Non Consentito"
 
-#: src/feed.c:982
+#: src/feed.c:1002
 msgid "Not Acceptable"
 msgstr "Non Accettabile"
 
-#: src/feed.c:983
+#: src/feed.c:1003
 msgid "Proxy Authentication Required"
 msgstr "E' richiesta l'autenticazione sul proxy"
 
-#: src/feed.c:984
+#: src/feed.c:1004
 msgid "Request Time-Out"
 msgstr "Timeout della richiesta"
 
-#: src/feed.c:985
+#: src/feed.c:1005
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 "Andata. La risorsa non esiste. Per favore cancellare la sottoscrizione!"
 
-#: src/feed.c:990
+#: src/feed.c:1010
 msgid "URL is invalid"
 msgstr "URL non valido"
 
-#: src/feed.c:993
+#: src/feed.c:1013
 msgid "Error connecting to remote host"
 msgstr "Errore di connessione all'host remoto"
 
-#: src/feed.c:994
+#: src/feed.c:1014
 msgid "Hostname could not be found"
 msgstr "Impossibile trovare il nome dell'host"
 
-#: src/feed.c:995
+#: src/feed.c:1015
 msgid "Network connection was refused by the remote host"
 msgstr "Connessione rifiutata dall'host remoto"
 
-#: src/feed.c:996
+#: src/feed.c:1016
 msgid "Remote host did not finish sending data"
 msgstr "L'host remoto non ha terminato di inviare dati"
 
 #  Transfer errors
 #. Transfer errors
-#: src/feed.c:998
+#: src/feed.c:1018
 msgid "Too many HTTP redirects were encountered"
 msgstr "Si sono verificate troppe redirezioni HTTP"
 
-#: src/feed.c:1001
+#: src/feed.c:1021
 msgid "Remote host sent an invalid response"
 msgstr "L'host remoto ha inviato una risposta non valida"
 
 #  Don't repeat authrequest if it already failed before!
-#: src/feed.c:1008
+#: src/feed.c:1028
 msgid "Authentication failed"
 msgstr "Autenticazione fallita"
 
-#: src/feed.c:1010
+#: src/feed.c:1030
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 "Il metodo di autenticazione del server web non è compatibile con Liferea"
 
-#: src/feed.c:1016
+#: src/feed.c:1036
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Notiziario non disponibile: il server ha richiesto una redirezione non "
 "supportata!"
 
-#: src/feed.c:1017
+#: src/feed.c:1037
 msgid "Client Error"
 msgstr "Errore del client"
 
-#: src/feed.c:1018
+#: src/feed.c:1038
 msgid "Server Error"
 msgstr "Errore del server"
 
-#: src/feed.c:1019
+#: src/feed.c:1039
 msgid "(unknown networking error happened)"
 msgstr "(errore di rete sconosciuto)"
 
-#: src/feed.c:1041
+#: src/feed.c:1061
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -354,12 +354,12 @@ msgstr ""
 "favore verificare l'URL e l'output in console."
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1189 src/item.c:244 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:1208 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 msgid "Feed:"
 msgstr "Notiziario:"
 
-#: src/feed.c:1200 src/interface.c:1031 src/interface.c:1433 src/item.c:271
+#: src/feed.c:1219 src/interface.c:1031 src/interface.c:1433 src/item.c:270
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "Sorgente:"
@@ -1238,10 +1238,12 @@ msgid "Contributors"
 msgstr "Contribuenti"
 
 #: src/interface.c:3025
+#, fuzzy
 msgid ""
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1252,6 +1254,8 @@ msgid ""
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
+"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 msgstr ""
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -1285,11 +1289,11 @@ msgstr ""
 "Nota: <I>Il nome utente e la password saranno salvati nel file della lista "
 "dei notiziari in chiaro.</I>"
 
-#: src/item.c:253 src/item.c:255 src/item.c:266
+#: src/item.c:252 src/item.c:254 src/item.c:265
 msgid "[No title]"
 msgstr "[Senza Titolo]"
 
-#: src/item.c:256 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:255 src/metadata.c:320 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "Elemento:"
 
@@ -1639,7 +1643,7 @@ msgstr ""
 "errore interno! tipo di elemento sconosciuto! impossibile visualizzare "
 "un'icona appropriata!\n"
 
-#: src/ui_itemlist.c:294
+#: src/ui_itemlist.c:295
 msgid "Date"
 msgstr "Data"
 
@@ -1768,11 +1772,11 @@ msgstr "Liferea adesso è online"
 msgid "Liferea is now offline"
 msgstr "Liferea adesso è offline"
 
-#: src/ui_notification.c:187
+#: src/ui_notification.c:195
 msgid "Untitled"
 msgstr ""
 
-#: src/ui_notification.c:248
+#: src/ui_notification.c:256
 msgid "Liferea notification"
 msgstr "Notifica Liferea"
 

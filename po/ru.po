@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-11 04:09+0200\n"
+"POT-Creation-Date: 2004-08-14 17:33+0200\n"
 "PO-Revision-Date: 2004-05-25 15:00+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian <LL@li.org>\n"
@@ -180,46 +180,46 @@ msgstr ""
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Произошла ошибка во время парсинга файла кэша \"%s\"!"
 
-#: src/feed.c:639
+#: src/feed.c:659
 #, fuzzy, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" не имеет новых новостей."
 
-#: src/feed.c:641
+#: src/feed.c:661
 #, fuzzy, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" имеет %d новость(и)(ей)."
 
-#: src/feed.c:709
+#: src/feed.c:729
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr ""
 
-#: src/feed.c:714
+#: src/feed.c:734
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 
-#: src/feed.c:718
+#: src/feed.c:738
 #, fuzzy, c-format
 msgid "Updating \"%s\""
 msgstr "запуск: \"%s\""
 
-#: src/feed.c:767
+#: src/feed.c:787
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 
-#: src/feed.c:769
+#: src/feed.c:789
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не изменился с момента последнего обновления."
 
-#: src/feed.c:776
+#: src/feed.c:796
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL для \"%s\" изменился на постоянный и был обновлён."
 
-#: src/feed.c:787
+#: src/feed.c:807
 #, fuzzy
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -229,114 +229,114 @@ msgstr ""
 "Невозможно определить тип этой ленты новостей! Пожалуйста, проверьте "
 "указывает ли URL на ресурс, доступный в одном из поддерживаемых форматах!"
 
-#: src/feed.c:813
+#: src/feed.c:833
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" обновлён..."
 
-#: src/feed.c:823
+#: src/feed.c:843
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступен!"
 
-#: src/feed.c:976
+#: src/feed.c:996
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
 
-#: src/feed.c:978
+#: src/feed.c:998
 msgid "Payment Required"
 msgstr "Необходим Платёж"
 
-#: src/feed.c:979
+#: src/feed.c:999
 msgid "Access Forbidden"
 msgstr "Доступ Запрещён"
 
-#: src/feed.c:980
+#: src/feed.c:1000
 msgid "Resource Not Found"
 msgstr "Ресурс Не Найден"
 
-#: src/feed.c:981
+#: src/feed.c:1001
 msgid "Method Not Allowed"
 msgstr "Метод Не Разрешён"
 
-#: src/feed.c:982
+#: src/feed.c:1002
 msgid "Not Acceptable"
 msgstr "Не Допустимо"
 
-#: src/feed.c:983
+#: src/feed.c:1003
 msgid "Proxy Authentication Required"
 msgstr "Необходима Прокси-Аутентификация"
 
-#: src/feed.c:984
+#: src/feed.c:1004
 msgid "Request Time-Out"
 msgstr "Запрос Превысил Время Ожидания Ответа"
 
-#: src/feed.c:985
+#: src/feed.c:1005
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Не найдено. Ресурс не существует. Пожалуйста, отмените подписку!"
 
-#: src/feed.c:990
+#: src/feed.c:1010
 msgid "URL is invalid"
 msgstr ""
 
-#: src/feed.c:993
+#: src/feed.c:1013
 msgid "Error connecting to remote host"
 msgstr ""
 
-#: src/feed.c:994
+#: src/feed.c:1014
 msgid "Hostname could not be found"
 msgstr ""
 
-#: src/feed.c:995
+#: src/feed.c:1015
 msgid "Network connection was refused by the remote host"
 msgstr ""
 
-#: src/feed.c:996
+#: src/feed.c:1016
 msgid "Remote host did not finish sending data"
 msgstr ""
 
 #. Transfer errors
-#: src/feed.c:998
+#: src/feed.c:1018
 #, fuzzy
 msgid "Too many HTTP redirects were encountered"
 msgstr "Встречено слишком много перенаправлений HTTP! Сдаюсь."
 
-#: src/feed.c:1001
+#: src/feed.c:1021
 #, fuzzy
 msgid "Remote host sent an invalid response"
 msgstr "Вебсервер послал неверное перенаправление!"
 
-#: src/feed.c:1008
+#: src/feed.c:1028
 #, fuzzy
 msgid "Authentication failed"
 msgstr "Аутентификация прошла неудачно!"
 
-#: src/feed.c:1010
+#: src/feed.c:1030
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 
-#: src/feed.c:1016
+#: src/feed.c:1036
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Лента новостей недоступна: Сервер запросил неподдерживаемое перенаправление!"
 
-#: src/feed.c:1017
+#: src/feed.c:1037
 msgid "Client Error"
 msgstr "Ошибка клиента"
 
-#: src/feed.c:1018
+#: src/feed.c:1038
 msgid "Server Error"
 msgstr "Ошибка Сервера"
 
-#: src/feed.c:1019
+#: src/feed.c:1039
 #, fuzzy
 msgid "(unknown networking error happened)"
 msgstr "(неизвестный класс ошибки)"
 
-#: src/feed.c:1041
+#: src/feed.c:1061
 #, fuzzy
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
@@ -346,13 +346,13 @@ msgstr ""
 "вывод командной строки!"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1189 src/item.c:244 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:1208 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 #, fuzzy
 msgid "Feed:"
 msgstr "_Ленты новостей"
 
-#: src/feed.c:1200 src/interface.c:1031 src/interface.c:1433 src/item.c:271
+#: src/feed.c:1219 src/interface.c:1031 src/interface.c:1433 src/item.c:270
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "Источник:"
@@ -1225,10 +1225,12 @@ msgid "Contributors"
 msgstr "Участники"
 
 #: src/interface.c:3025
+#, fuzzy
 msgid ""
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1239,7 +1241,19 @@ msgid ""
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
+"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 msgstr ""
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Enrico Gernauck <enrico@fanglomerat.de>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Alekseev Vladimir <compress@linux-online.ru>"
 
 #: src/interface.c:3031
 msgid "Translation"
@@ -1257,11 +1271,11 @@ msgid ""
 "file without using encryption.</i>"
 msgstr ""
 
-#: src/item.c:253 src/item.c:255 src/item.c:266
+#: src/item.c:252 src/item.c:254 src/item.c:265
 msgid "[No title]"
 msgstr ""
 
-#: src/item.c:256 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:255 src/metadata.c:320 src/ocs_dir.c:102
 #, fuzzy
 msgid "Item:"
 msgstr "_Новости"
@@ -1606,7 +1620,7 @@ msgstr ""
 "внутренняя ошибка! неизвестный тип записи! невозможно отобразить "
 "соответствующую иконку!\n"
 
-#: src/ui_itemlist.c:294
+#: src/ui_itemlist.c:295
 msgid "Date"
 msgstr "Дата"
 
@@ -1722,11 +1736,11 @@ msgstr "Liferea подключена."
 msgid "Liferea is now offline"
 msgstr "Liferea отключена!"
 
-#: src/ui_notification.c:187
+#: src/ui_notification.c:195
 msgid "Untitled"
 msgstr ""
 
-#: src/ui_notification.c:248
+#: src/ui_notification.c:256
 #, fuzzy
 msgid "Liferea notification"
 msgstr "Liferea отключена!"
@@ -1938,33 +1952,6 @@ msgstr "Не существует файла \"%s\"!"
 #~ "можете использовать эту возможность для резервного копирования своего "
 #~ "списка лент новостей или экспорта в другую программу для просмотра "
 #~ "новостей в формате RSS."
-
-#, fuzzy
-#~ msgid ""
-#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-#~ "Park Ji-In <mithrandir@electrang.net>\n"
-#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
-#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
-#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
-#~ "Tomislav Markovski <tome@set.com.mk>\n"
-#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
-#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
-#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-#~ "Martin-Eric Racine <q-funk@pp.fishpool.fi>"
-#~ msgstr ""
-#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-#~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
-#~ "Park Ji-In <mithrandir@electrang.net>\n"
-#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
-#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-#~ "Enrico Gernauck <enrico@fanglomerat.de>\n"
-#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
-#~ "Tomislav Markovski <tome@set.com.mk>\n"
-#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-#~ "Alekseev Vladimir <compress@linux-online.ru>"
 
 #, fuzzy
 #~ msgid "_Update all feeds on program startup."

@@ -556,8 +556,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					   next old item */
 					old_list = g_slist_next(old_list);
 			   		continue;
-				}
-				
+				} 
+						
 				/* compare titles and HTML descriptions */
 				equal = TRUE;
 
@@ -576,6 +576,15 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 						break;
 					}
 				} 
+				
+				/* if both items have no id's we try to use the link as the id
+				   hoping that it is unique */
+/*				if((NULL == item_get_id(old_ip)) && (NULL == item_get_id(new_ip)) && 
+				   (NULL != item_get_source(old_ip)) && (NULL != item_get_source(new_ip)) &&
+				   (0 == {
+				
+				}*/
+
 				
 				if(equal) {
 					found = TRUE;
@@ -604,6 +613,17 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			} else {
 				/* if the item was found but has other contents -> update */
 				if(!equal) {
+				if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
+				    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
+{ g_print("different descriptions: \"%s\" and \"%s\"\n", item_get_title(old_ip), item_get_title(new_ip));
+			    		equal = FALSE;
+}
+				if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
+				    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
+{ g_print("different descriptions: \"%s\" and \"%s\"\n", item_get_description(old_ip), item_get_description(new_ip));
+			    		equal = FALSE;
+}
+
 					item_set_title(old_ip, item_get_title(new_ip));
 					item_set_description(old_ip, item_get_description(new_ip));
 					item_set_time(old_ip, item_get_time(new_ip));
