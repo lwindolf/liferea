@@ -378,18 +378,18 @@ void ui_feedlist_select(nodePtr np) {
 	focused = gtk_window_get_focus(GTK_WINDOW(mainwindow));
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
 	
-	if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-		if(NULL != np) {
-			g_assert(NULL != np->ui_data);
-			iter = ((ui_data*)(np->ui_data))->row;
-			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
-			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
-			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
-			gtk_tree_selection_select_path(selection, path);
-			gtk_tree_path_free(path);
-		} else {
-			gtk_tree_selection_unselect_all(selection);
-		}
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+	
+	if(NULL != np) {
+		g_assert(NULL != np->ui_data);
+		iter = ((ui_data*)(np->ui_data))->row;
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
+		gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
+		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
+		gtk_tree_selection_select_path(selection, path);
+		gtk_tree_path_free(path);
+	} else {
+		gtk_tree_selection_unselect_all(selection);
 	}
 	
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
