@@ -19,7 +19,7 @@
 	  properly and there is no time to fix it.
 	* Added link to FeedValidator in the feed syntax error
 	  messages. (Nathan Conrad)
-	  
+
 	Bugfixes:
 
 	* Fix for crash when deleting feed while favicon
@@ -37,6 +37,8 @@
 	* The network library now correctly tries to connect to all hosts
 	  that share a domain name. This helps on some IPv6 enabled
 	  computers. (Sjoerd Simons and Nathan Conrad)
+	* Atom feed elements that are of type "text/plain" are now
+	  displayed as text instead of as HTML. (Nathan Conrad)
 
 	Translations:
 
