@@ -130,7 +130,7 @@ if test "x$mozilla" != "x" ; then
    enable_mozilla=yes
 else
    AC_MSG_RESULT(no)
-   $enable_mozilla=no
+   enable_mozilla=no
 fi
 
 dnl For now, require GtkHTML2 or Mozilla. GtkHTML3 should not be used!
