@@ -30,6 +30,7 @@
 #include "ui_feed.h"
 #include "favicon.h"
 #include "ui_notification.h"
+#include "itemlist.h"
 
 /**
  * Creates a new error description according to the passed

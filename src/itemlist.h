@@ -25,6 +25,14 @@
 #include "item.h"
 #include "feed.h"
 
+
+/** Loads or merges the passed feeds items into the itemlist.  If the
+ * selected feed is equal to the passed one we do merging. Otherwise
+ * we can just clear the list and load the new items.
+ */
+void itemlist_load(nodePtr node);
+
+
 /* item handling functions */
 
 void itemlist_add_item(feedPtr fp, itemPtr ip);

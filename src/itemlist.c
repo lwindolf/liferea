@@ -24,6 +24,10 @@
 #include "feed.h"
 #include "ui_itemlist.h"
 #include "ui_feedlist.h"
+#include "ui_htmlview.h"
+#include "ui_tray.h"
+#include "ui_feed.h"
+#include "ui_mainwindow.h"
 
 /* controller implementation for itemlist handling, bypass only for read-only feed/item access! */
 
@@ -37,7 +41,6 @@ static gboolean deferred_item_remove = FALSE;
 
 static void itemlist_load_feed(feedPtr fp, gpointer data) {
 	gboolean	merge = *(gboolean *)data;
-	GtkTreeIter	*iter;
 	GSList		*item, *itemlist;
 	itemPtr		ip;
 	

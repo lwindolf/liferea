@@ -332,7 +332,9 @@ void ui_itemlist_display(void) {
 	gboolean	valid;
 	gchar		*tmp = NULL;
 	
-	if(np = ui_feedlist_get_selected()) {
+	np = ui_feedlist_get_selected();
+	
+	if(np != NULL) {
 		if(TRUE == ui_itemlist_get_two_pane_mode()) {
 			/* two pane mode */
 			ui_htmlview_start_output(&buffer, feed_get_html_url((feedPtr)np), FALSE);
@@ -509,7 +511,6 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeSelection	*selection;
 	nodePtr			np;
 	itemPtr			ip;
@@ -552,9 +553,6 @@ static void ui_itemlist_select(GtkTreeIter iter) {
 
 static gboolean ui_itemlist_find_unread_item(void) {
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
-	GtkTreeSelection	*selection;
-	GtkTreePath		*path;
-	GtkWidget		*treeview;
 	GtkTreeIter		iter;
 	gboolean		valid;
 	itemPtr			ip;

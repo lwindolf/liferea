@@ -76,6 +76,24 @@ void ui_itemlist_display(void);
 void ui_itemlist_load(nodePtr fp);
 
 /**
+ * Add an item to the itemlist
+ * @param merge set to true when the itemlist should be searched for
+ * the particular item and the item be updated if necessary.
+ */
+void ui_itemlist_add_item(itemPtr ip, gboolean merge);
+
+/**
+ * Remove an item from the itemlist
+ */
+
+void ui_itemlist_remove_item(itemPtr ip);
+
+/**
+ * Enable the favicon column of the currently displayed itemlist
+ */
+void ui_itemlist_enable_favicon_column(gboolean enabled);
+
+/**
  * Remove the items from the itemlist.
  */
 void ui_itemlist_clear(void);
