@@ -191,7 +191,9 @@ void ui_feed_process_update_result(struct request *request) {
 			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
 				feed_set_source(fp, old_source);
 
-			if(!(request->flags & FEED_REQ_RESET_UPDATE_INT))
+			if(request->flags & FEED_REQ_RESET_UPDATE_INT)
+				feed_set_update_interval(fp, feed_get_default_update_interval(fp));
+			else
 				feed_set_update_interval(fp, old_update_interval);
 				
 			g_free(old_title);

@@ -38,6 +38,12 @@
 	  as source does not show the command string anymore.
 	  This is to avoid showing sensitive information.
 	  (Lars Lindner)
+	* Liferea now has a global feed update interval setting.
+	  This setting defines the update behaviour of a feed
+	  for which neither you or the feed provider did define
+	  a feed specific update interval. There is also a new
+	  option in the feed properties to disable automatic
+	  updates of the feed. (Lars Lindner)
 	
 	Bugfixes:
 
@@ -51,6 +57,9 @@
 	  the date column. But this means that you have to
 	  reset the sort order of all your feeds once. Sorry
 	  about that! (Lars Lindner)
+	* The handling of the default update interval information
+	  of feeds was broken so the properties dialog never 
+	  showed the value. This is fixed now. (Lars Lindner)
 
 2004-09-15  Lars Lindner <lars.lindner@gmx.net>
 

@@ -660,7 +660,7 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 
 static void ui_feedlist_check_update_counter(feedPtr fp) {
 	GTimeVal	now;
-	gint interval;
+	gint		interval;
 
 	g_get_current_time(&now);
 	interval = feed_get_update_interval(fp);
