@@ -403,7 +403,7 @@ time_t parseISO8601Date(gchar *date) {
 			tm.tm_sec = pos[0] - '0';
 			pos++;
 		} else if (isdigit(pos[0]) && isdigit(pos[1])) {
-			tm.tm_sec = 10*(pos[0]-'0') + pos[0] - '0';
+			tm.tm_sec = 10*(pos[0]-'0') + pos[1] - '0';
 			pos +=2;
 		}
 		/* Parse timezone */
