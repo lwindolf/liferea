@@ -42,6 +42,7 @@ itemPtr getNewItemStruct(void) {
 	
 	memset(ip, 0, sizeof(struct item));
 	ip->readStatus = FALSE;
+	ip->marked = FALSE;
 	ip->type = FST_INVALID;
 	
 	return ip;
@@ -52,6 +53,8 @@ gchar *	getItemDescription(itemPtr ip) { return ip->description; }
 gchar * getItemSource(itemPtr ip) { return ip->source; }
 time_t	getItemTime(itemPtr ip) { return ip->time; }
 gboolean getItemReadStatus(itemPtr ip) { return ip->readStatus; }
+gboolean getItemMark(itemPtr ip) { return ip->marked; }
+void setItemMark(itemPtr ip, gboolean flag) { ip->marked = flag; }
 
 void markItemAsUnread(itemPtr ip) { 
 	GSList		*vfolders;
@@ -151,6 +154,13 @@ itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
 			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
 			xmlFree(tmp);
 		}
+
+		if (!xmlStrcmp(cur->name, (const xmlChar *)"mark")) {
+			tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			ip->marked = (1 == atoi(tmp))?TRUE:FALSE;
+			xmlFree(tmp);
+		}
+				
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"time")) {
 			tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);			
 			ip->time = atol(tmp);

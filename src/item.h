@@ -41,6 +41,7 @@ typedef struct item {
 	/* common attributes accessed by the GUI */
 	gchar		*title;		
 	gboolean 	readStatus;	/* FALSE if item was not yet read */
+	gboolean 	marked;		
 	gchar		*description;	/* HTML string containing the item infos */	
 	gchar		*source;	/* item link */
 	gchar		*id;		/* depending on the feed type, a unique item identifier like <guid> for RSS */
@@ -74,6 +75,8 @@ gchar *		getItemTitle(itemPtr ip);
 gchar *		getItemDescription(itemPtr ip);
 gchar *		getItemSource(itemPtr ip);
 time_t		getItemTime(itemPtr ip);
+gboolean	getItemMark(itemPtr ip);
+void		setItemMark(itemPtr ip, gboolean flag);
 gboolean	getItemReadStatus(itemPtr ip);
 void 		markItemAsRead(itemPtr ip);
 void 		markItemAsUnread(itemPtr ip);

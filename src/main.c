@@ -37,6 +37,7 @@ GThread	*updateThread = NULL;
 /* icons for itemlist */
 GdkPixbuf	*readIcon = NULL;
 GdkPixbuf	*unreadIcon = NULL;
+GdkPixbuf	*flagIcon = NULL;
 /* icons for feedlist */
 GdkPixbuf	*availableIcon = NULL;
 GdkPixbuf	*unavailableIcon = NULL;
@@ -69,13 +70,14 @@ int main (int argc, char *argv[]) {
 	add_pixmap_directory(PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
 	readIcon = create_pixbuf("read.xpm");
 	unreadIcon = create_pixbuf("unread.xpm");
-	availableIcon = create_pixbuf("available.xpm");
-	unavailableIcon = create_pixbuf("unavailable.xpm");
-	listIcon = create_pixbuf("ocs.xpm");	
-	directoryIcon = create_pixbuf("directory.xpm");
-	helpIcon = create_pixbuf("help.xpm");
-	vfolderIcon = create_pixbuf("vfolder.xpm");
-	emptyIcon = create_pixbuf("empty.xpm");
+	flagIcon = create_pixbuf("flag.xpm");
+	availableIcon = create_pixbuf("available.png");
+	unavailableIcon = create_pixbuf("unavailable.png");
+	listIcon = create_pixbuf("ocs.png");
+	directoryIcon = create_pixbuf("directory.png");
+	helpIcon = create_pixbuf("help.png");
+	vfolderIcon = create_pixbuf("vfolder.png");
+	emptyIcon = create_pixbuf("empty.png");
 	
 	mainwindow = create_mainwindow();
 	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),

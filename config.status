@@ -490,7 +490,7 @@ s,@INSTALL_SCRIPT@,${INSTALL},;t t
 s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
 s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,liferea,;t t
-s,@VERSION@,0.4.2,;t t
+s,@VERSION@,0.4.3,;t t
 s,@ACLOCAL@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run aclocal-1.7,;t t
 s,@AUTOCONF@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run autoconf,;t t
 s,@AUTOMAKE@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run automake-1.7,;t t
@@ -825,7 +825,7 @@ ${ac_dA}PACKAGE_VERSION${ac_dB}PACKAGE_VERSION${ac_dC}""${ac_dD}
 ${ac_dA}PACKAGE_STRING${ac_dB}PACKAGE_STRING${ac_dC}""${ac_dD}
 ${ac_dA}PACKAGE_BUGREPORT${ac_dB}PACKAGE_BUGREPORT${ac_dC}""${ac_dD}
 ${ac_dA}PACKAGE${ac_dB}PACKAGE${ac_dC}"liferea"${ac_dD}
-${ac_dA}VERSION${ac_dB}VERSION${ac_dC}"0.4.2"${ac_dD}
+${ac_dA}VERSION${ac_dB}VERSION${ac_dC}"0.4.3"${ac_dD}
 ${ac_dA}STDC_HEADERS${ac_dB}STDC_HEADERS${ac_dC}1${ac_dD}
 ${ac_dA}GETTEXT_PACKAGE${ac_dB}GETTEXT_PACKAGE${ac_dC}"liferea"${ac_dD}
 ${ac_dA}OS${ac_dB}OS${ac_dC}"Linux"${ac_dD}
@@ -862,7 +862,7 @@ ${ac_uA}PACKAGE_VERSION${ac_uB}PACKAGE_VERSION${ac_uC}""${ac_uD}
 ${ac_uA}PACKAGE_STRING${ac_uB}PACKAGE_STRING${ac_uC}""${ac_uD}
 ${ac_uA}PACKAGE_BUGREPORT${ac_uB}PACKAGE_BUGREPORT${ac_uC}""${ac_uD}
 ${ac_uA}PACKAGE${ac_uB}PACKAGE${ac_uC}"liferea"${ac_uD}
-${ac_uA}VERSION${ac_uB}VERSION${ac_uC}"0.4.2"${ac_uD}
+${ac_uA}VERSION${ac_uB}VERSION${ac_uC}"0.4.3"${ac_uD}
 ${ac_uA}STDC_HEADERS${ac_uB}STDC_HEADERS${ac_uC}1${ac_uD}
 ${ac_uA}GETTEXT_PACKAGE${ac_uB}GETTEXT_PACKAGE${ac_uC}"liferea"${ac_uD}
 ${ac_uA}OS${ac_uB}OS${ac_uC}"Linux"${ac_uD}

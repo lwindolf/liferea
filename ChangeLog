@@ -1,9 +1,12 @@
-2003-10-??  Lars Lindner <lars.lindner@gmx.net>
+2003-10-17  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.4.3
 	
+	* Several usability fixes.
 	* GNOME default browser preference works now. Bug 824955
 	* Fixed the help feed updating behaviour.
+	* Added a flagging feature to mark important items like
+	  typical mail/news clients provide.
 	
 2003-10-15  Lars Lindner <lars.lindner@gmx.net>
 

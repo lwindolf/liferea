@@ -53,6 +53,7 @@ GtkTreeStore	*feedstore = NULL;
 
 extern GdkPixbuf	*unreadIcon;
 extern GdkPixbuf	*readIcon;
+extern GdkPixbuf	*flagIcon;
 extern GdkPixbuf	*directoryIcon;
 extern GdkPixbuf	*helpIcon;
 extern GdkPixbuf	*listIcon;
@@ -75,6 +76,9 @@ static gboolean	drag_successful = FALSE;
 
 /* feedPtr which points to the last selected (and in most cases actually selected) feed */
 feedPtr	selected_fp = NULL;
+
+/* like selected_fp, to remember the last selected item */
+itemPtr	selected_ip = NULL;
 
 /* contains the type of the actually selected feedlist entry */
 gint selected_type = FST_INVALID;
@@ -876,7 +880,6 @@ void itemlist_selection_changed(void) {
 	GtkTreeIter		iter;
         GtkTreeModel		*model;
 
-	gpointer	tmp_ip;
 	gint		type;
 	gchar		*tmp_key;
 
@@ -895,13 +898,13 @@ void itemlist_selection_changed(void) {
 
        		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 
-               		gtk_tree_model_get (model, &iter, IS_PTR, &tmp_ip,
+               		gtk_tree_model_get (model, &iter, IS_PTR, &selected_ip,
 							  IS_TYPE, &type, -1);
 
-			g_assert(tmp_ip != NULL);
+			g_assert(selected_ip != NULL);
 			if((0 == itemlist_loading)) {
 				if(NULL != (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
-					displayItem(tmp_ip);
+					displayItem(selected_ip);
 
 					/* redraw feed list to update unread items numbers */
 					redrawFeedList();
@@ -920,6 +923,12 @@ gboolean on_Itemlist_move_cursor(GtkTreeView *treeview, GtkMovementStep  step, g
 
 	itemlist_selection_changed();
 	return FALSE;
+}
+
+void on_toggle_item_flag(void) {
+	
+	if(NULL != selected_ip)
+		setItemMark(selected_ip, !getItemMark(selected_ip));
 }
 
 void on_toggle_condensed_view(void) {
@@ -1109,10 +1118,14 @@ static void renderItemStatus(GtkTreeViewColumn *tree_column,
 
 	gtk_tree_model_get(model, iter, IS_PTR, &ip, -1);
 
-	if(FALSE == getItemReadStatus(ip)) {
-		g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unreadIcon, NULL);
+	if(FALSE == getItemMark(ip)) {
+		if(FALSE == getItemReadStatus(ip)) {
+			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unreadIcon, NULL);
+		} else {
+			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", readIcon, NULL);
+		}
 	} else {
-		g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", readIcon, NULL);
+		g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", flagIcon, NULL);
 	}
 }
 
@@ -1279,6 +1292,7 @@ static GtkMenu *make_entry_menu(gint type) {
 static GtkItemFactoryEntry item_menu_items[] = {
       {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 0, NULL},
       {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 0, NULL},
+      {"/_Toggle Item Flag",	 	NULL, on_toggle_item_flag, 0, NULL},
       {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 0, NULL}
 };
 

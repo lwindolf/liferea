@@ -200,6 +200,10 @@ static gint saveFeed(feedPtr fp) {
 					tmp = g_strdup_printf("%d", (TRUE == ip->readStatus)?1:0);
 					xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
 					g_free(tmp);
+					
+					tmp = g_strdup_printf("%d", (TRUE == ip->marked)?1:0);
+					xmlNewTextChild(itemNode, NULL, "mark", tmp);
+					g_free(tmp);
 
 					tmp = g_strdup_printf("%ld", ip->time);
 					xmlNewTextChild(itemNode, NULL, "time", tmp);
