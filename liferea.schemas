@@ -139,7 +139,7 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <type>bool</type>
       <locale name="C">
         <default>false</default>
-        <shortDisable the new subscriptions pipe</short>
+        <short>Disable the new subscriptions pipe</short>
         <long>External programs can use a pipe in ~/.liferea to
 	   add subscriptions to the feed list. This option
 	   allows to prevent this.</long>
