@@ -241,7 +241,7 @@ gboolean download_is_online(void) {
 
 static gboolean download_dequeuer(gpointer user_data) {
 	struct request *request;
-	debug0(DEBUG_UPDATE, "dequeuer running");
+	
 	while ((request =g_async_queue_try_pop(results)) != NULL) {
 
 		if(request->callback == NULL) {

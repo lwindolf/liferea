@@ -923,6 +923,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	new_fp->filtercmd = fp->filtercmd;
 	new_fp->type = fp->type;
 	new_fp->request = fp->request;
+	new_fp->faviconRequest = fp->faviconRequest;
 	new_fp->ui_data = fp->ui_data;
 	new_fp->fhp = fp->fhp;	
 	tmp_fp = feed_new();
@@ -935,6 +936,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	tmp_fp->request = NULL;
 	tmp_fp->ui_data = NULL;
 	tmp_fp->filtercmd = NULL;
+	tmp_fp->faviconRequest = NULL;
 	feed_free(tmp_fp);				/* we use tmp_fp to free almost all infos
 							   allocated by old feed structure */
 	g_free(new_fp);
@@ -982,10 +984,11 @@ void feed_free(feedPtr fp) {
 	   be processed in the update queues! Abandoned requests are
 	   free'd in feed_process. They must be freed in the main thread
 	   for locking reasons. */
-	if(fp->request != NULL) {
+	if(fp->request != NULL)
 		fp->request->callback = NULL;
-	}
-
+	if (fp->faviconRequest != NULL)
+		fp->faviconRequest->callback = NULL;
+	
 	feed_clear_item_list(fp);
 
 	if(fp->id) {

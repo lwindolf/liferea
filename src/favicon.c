@@ -96,11 +96,35 @@ void favicon_remove(feedPtr fp) {
 	g_free(filename);
 }
 
+static void favicon_download_request_cb(struct request *request) {
+	feedPtr fp = (feedPtr)request->user_data;
+	char *tmp;
+	printf("favicon downloaded\n");
+	if(NULL != request->data && request->size > 0) {
+		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
+		GdkPixbuf *pixbuf;
+		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
+		
+		if (gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
+			pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
+			gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL);
+			favicon_load(fp);
+		}
+		g_free(tmp);
+	}
+
+	fp->faviconRequest = NULL;
+	ui_feed_update(fp);
+}
+
 void favicon_download(feedPtr fp) {
 	gchar			*baseurl;
 	gchar			*tmp;
 	struct request	*request;
 	
+	if (fp->faviconRequest != NULL)
+		return; /* It is already being downloaded */
+
 	/* try to download favicon */
 	baseurl = g_strdup(fp->source);
 	if(NULL != (tmp = strstr(baseurl, "://"))) {
@@ -110,24 +134,12 @@ void favicon_download(feedPtr fp) {
 			
 			request = download_request_new(NULL);
 			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
+			request->callback = &favicon_download_request_cb;
+			request->user_data = fp;
+			
 			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
-			download_process(request);
-			
-			if(NULL != request->data && request->size > 0) {
-				GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
-				GdkPixbuf *pixbuf;
-				tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
-				
-				if (gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
-					pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
-					gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL);
-					favicon_load(fp);
-				}
 
-				g_free(tmp);
-			}
-			
-			download_request_free(request);
+			download_queue(request);
 		}
 	}
 	g_free(baseurl);
