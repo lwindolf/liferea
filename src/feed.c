@@ -771,7 +771,7 @@ void feed_free(feedPtr fp) {
 	
 	/* free UI info */
 	if(fp->ui_data)
-		ui_folder_remove_feed(fp);
+		ui_folder_remove_node((nodePtr)fp);
 		
 	/* free items */
 
@@ -823,7 +823,7 @@ void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 	
 	if(fp->ui_data) {
 		ui=TRUE;
-		ui_folder_remove_feed(fp);
+		ui_folder_remove_node((nodePtr)fp);
 	}
 
 	fp->parent = dest_folder;

@@ -43,7 +43,12 @@ void 	initFolders(void);
 folderPtr folder_get_root();
 gchar* folder_get_conf_path(folderPtr folder);
 void folder_add_feed(folderPtr foldr, struct feed *feed, gint position);
-void folder_remove(folderPtr folder);
+
+/**
+ * Free an empty folder structure, removing it from the feedlist if
+ * necessary.
+ */
+void folder_free(folderPtr folder);
 
 /* to create/delete folders */
 folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type);

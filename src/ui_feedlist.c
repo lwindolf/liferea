@@ -53,7 +53,7 @@ GtkWidget		*filedialog = NULL;
 static GtkWidget	*newdialog = NULL;
 static GtkWidget	*propdialog = NULL;
 
-folderPtr feedlist_get_parent(nodePtr ptr) {
+folderPtr ui_feedlist_get_parent(nodePtr ptr) {
 	GtkTreeIter *iter = &((ui_data*)(ptr->ui_data))->row;
 	GtkTreeIter parent;
 	folderPtr parentPtr;
@@ -106,7 +106,7 @@ folderPtr ui_feedlist_get_target_folder() {
 	} if(IS_FOLDER(ptr->type)) {
 		return (folderPtr)ptr;
 	} else
-		return feedlist_get_parent(ptr);
+		return ui_feedlist_get_parent(ptr);
 }
 
 
@@ -180,7 +180,7 @@ void ui_update_feed(feedPtr fp) {
 				    -1);
 
 	
-	ui_update_folder((folderPtr)feedlist_get_parent((nodePtr)fp));
+	ui_update_folder((folderPtr)ui_feedlist_get_parent((nodePtr)fp));
 
 	g_free(label);
 }
@@ -443,10 +443,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 /*------------------------------------------------------------------------------*/
 
 void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr parent, gboolean showPropDialog) {
-	GtkWidget	*updateIntervalBtn;
 	feedPtr		fp;
-	gint		interval;
-	gchar		*tmp;
 
 	fp = feed_new();
 	fp->displayProps = showPropDialog; 	// FIXME!

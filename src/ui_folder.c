@@ -135,7 +135,7 @@ void on_popup_removefolder_selected(gpointer callback_data,
 	g_assert(folder->type == FST_FOLDER);
 	
 	if(folder_is_empty(folder))
-		folder_remove(folder);
+		folder_free(folder);
 	else
 		ui_show_error_box(_("A folder must be empty to delete it!"));
 }
@@ -244,14 +244,13 @@ void ui_add_folder(folderPtr folder, gint position) {
 	g_assert(folder->ui_data == NULL);
 
 	g_assert(feedstore != NULL);
-	g_assert(folder->parent);
 
 	/* if parent is NULL we have the root folder and don't create
 	   a new row! */
 	folder->ui_data = g_malloc(sizeof(ui_data));
 	iter = &(((ui_data*)(folder->ui_data))->row);
 	gchar *path = folder_get_conf_path(folder);
-	if (folder->parent == folder_get_root()) {
+	if (folder == NULL) {
 		if (position < 0)
 			gtk_tree_store_append(feedstore, iter, NULL);
 		else
@@ -272,30 +271,31 @@ void ui_add_folder(folderPtr folder, gint position) {
 	ui_update_folder(folder);
 }
 
-void ui_remove_folder(folderPtr folder) {
-	GtkTreeIter	parent, iter;
-	gboolean has_parent, parentExpanded;
-	folderPtr parentNode;
+void ui_folder_remove_node(nodePtr ptr) {
+	GtkTreeIter	iter;
+	gboolean parentExpanded;
+	folderPtr parent;
 	
-	g_assert(folder);
-	g_assert(folder->ui_data);
+	g_assert(ptr);
+	g_assert(ptr->ui_data);
 
-	has_parent = gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore),&parent, &((ui_data*)(folder->ui_data))->row);
-	g_message("%s has a parent: %d", folder->title, has_parent);
-	iter = ((ui_data*)(folder->ui_data))->row;
-	parentNode = folder->parent;
-	parentExpanded = ui_is_folder_expanded(parentNode); /* If the folder becomes empty, the folder would collapse */
+	parent = ui_feedlist_get_parent(ptr);
+
+	iter = ((ui_data*)(ptr->ui_data))->row;
+	parent = ui_feedlist_get_parent(ptr);
+	if (parent != NULL)
+		parentExpanded = ui_is_folder_expanded(parent); /* If the folder becomes empty, the folder would collapse */
 	
 	gtk_tree_store_remove(feedstore, &iter);
 	
-	g_free((ui_data*)(folder->ui_data));
-	folder->ui_data = NULL;
+	g_free((ui_data*)(ptr->ui_data));
+	ptr->ui_data = NULL;
 
-	if(has_parent) {
-		ui_update_folder(parentNode);
+	if(parent != NULL) {
+		ui_update_folder(parent);
 		checkForEmptyFolders();
-		if (parentExpanded)
-			ui_folder_set_expansion(parentNode, TRUE);
+		if (parent != NULL && parentExpanded)
+			ui_folder_set_expansion(parent, TRUE);
 	}
 }
 
@@ -333,32 +333,6 @@ void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position) {
 	ui_update_feed(fp);
 }
 
-void ui_folder_remove_feed(feedPtr fp) {
-	GtkTreeIter iter;
-	gboolean has_parent;
-	GtkTreeIter parent;
-	folderPtr parentNode;
-	gboolean parentExpanded;
-
-	g_assert(fp);
-	g_assert(fp->ui_data);
-
-	has_parent = gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore),&parent, &((ui_data*)(fp->ui_data))->row);
-	iter = ((ui_data*)(fp->ui_data))->row;
-	parentNode = fp->parent;
-	parentExpanded = ui_is_folder_expanded(fp->parent); /* If the folder becomes empty, the folder would collapse */
-	gtk_tree_store_remove(feedstore, &iter);
-	
-	g_free((ui_data*)(fp->ui_data));
-	fp->ui_data = NULL;
-
-	if(has_parent) {
-		ui_update_folder(parentNode);
-		checkForEmptyFolders();
-		if (parentExpanded)
-			ui_folder_set_expansion(parentNode, TRUE);
-	}
-}
 static GdkPixbuf* ui_folder_select_icon(folderPtr np) {
 	g_assert(IS_FOLDER(np->type));
 	switch(np->type) {

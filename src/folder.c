@@ -98,9 +98,9 @@ void folder_add_feed(folderPtr folder, feedPtr feed, gint position) {
 	conf_feedlist_schedule_save();
 }
 
-void folder_remove(folderPtr folder) {
+void folder_free(folderPtr folder) {
 	if (folder->ui_data)
-		ui_remove_folder(folder);
+		ui_folder_remove_node((nodePtr)folder);
 	if (folder->title)
 		g_free(folder->title);
 	if (folder->id)
@@ -154,9 +154,9 @@ void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
 		ui_folder_set_expansion(newFolder, TRUE);
 
 	/* Delete (empty) old folder */
-	ui_remove_folder(folder);
+	ui_folder_remove_node((nodePtr)folder);
 	g_assert(folder->ui_data == NULL);
-	folder_remove(folder);
+	folder_free(folder);
 	conf_feedlist_schedule_save();
 }
 

@@ -185,10 +185,8 @@ void unhtmlizeHandleCharacters (void *user_data, const xmlChar *string, int leng
    text nodes of the given HTML string. The original 
    string will be freed. */
 gchar * unhtmlize(gchar *string) {
-	htmlDocPtr		doc_p = NULL;
 	htmlSAXHandlerPtr	sax_p = NULL;
 	htmlParserCtxtPtr	ctxt;
-	int			length;
 	gchar			*result;
 	result_buffer		*buffer;
 	

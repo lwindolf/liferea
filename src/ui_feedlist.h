@@ -70,6 +70,15 @@ void ui_feedlist_init(GtkWidget *mainview);
  */
 gboolean ui_feedlist_get_iter(GtkTreeIter *iter);
 
+/**
+ * Returns the parent folder of a node, or NULL if the root folder is
+ * the parent.
+ * 
+ * @returns the parent folder.
+ */
+
+folderPtr ui_feedlist_get_parent(nodePtr ptr);
+
 /* Selects the proper destination for a new item based on which item
  * is curretnly selected.
  * @returns folder into which the item should be inserted

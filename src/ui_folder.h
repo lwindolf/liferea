@@ -26,10 +26,15 @@
 
 /* Adding/removing folders & feeds*/
 void ui_add_folder(folderPtr folder, gint position);
-void ui_remove_folder(folderPtr folder);
 
 void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position);
-void ui_folder_remove_feed(feedPtr fp);
+
+/**
+ * Remove a node from the feedlist and free its ui_data.
+ *
+ * @param ptr the node to free
+ */
+void ui_folder_remove_node(nodePtr ptr);
 
 void ui_update_folder(folderPtr folder);
 gboolean ui_is_folder_expanded(folderPtr folder);
