@@ -1,3 +1,11 @@
+2003-11-??  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.4.5
+
+	* favicon.ico support, feeds which webserver provides
+	  a favicon.ico have the standard icon replaced by the
+	  favicon.
+
 2003-11-10  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.4.4

@@ -1,6 +1,6 @@
 /*
  * HTTP feed download, Liferea reuses the only slightly
- * adapted Snownews code:
+ * adapted Snownews code...
  * 
  * Snownews - A lightweight console RSS newsreader
  * 
@@ -40,6 +40,8 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <sys/stat.h>
+#include <zlib.h>
+#include <conversions.h>
 
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -49,14 +51,10 @@
 
 #include "support.h"
 
-/* we redefine some SnowNews functions */
-#define UIStatus(a, b)		print_status(a)
-#define MainQuit(str, errno)	g_error(str);
-#define	getch()			0
-
 struct feed_request {
-        char * feedurl;        /* Non hashified URL */
-        char * lastmodified;   /* Content of header as sent by the server. */
+        char * feedurl;		/* Non hashified URL */
+        char * lastmodified; 	/* Content of header as sent by the server. */
+	int problem;		/* Set if there was a problem downloading the feed. */
 };
 
 /*-----------------------------------------------------------------------*/
@@ -81,7 +79,7 @@ int connectresult;
  *					3	couldn't connect
  *                  -1  aborted by user
  */
-int NetConnect (char * host) {
+int NetConnect (char * host, int httpproto) {
 	int retval;
 	struct sockaddr_in address;	
 	struct hostent *remotehost;
@@ -236,7 +234,7 @@ int NetConnect (char * host) {
 /*
  * Kiza's crufty HTTP client hack.
  */
-char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
+char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httpproto) {
 	char netbuf[4096];			/* Network read buffer. */
 	char *body;					/* XML body. */
 	int length;
@@ -252,12 +250,17 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	char *newurl;				/* New document name ". */
 	char *tmpstring;			/* Temp pointers. */
 	char *freeme;
+	char *freemetoo;
 	char *redirecttarget;
 	fd_set rfds;
 	int retval;
 	int handled;
 	int tmphttpstatus;
-int tmplen;
+	int inflate = 0;			/* Whether feed data needs decompressed with deflate(1), gzip(2). */
+	int contentlength = 0;		/* Content-Length of server reply. */
+	int len;
+	char * inflatedbody;
+
 	lasthttpstatus = 0;
 	
 	snprintf (tmp, sizeof(tmp), _("Downloading http://%s%s..."), host, url);
@@ -272,7 +275,9 @@ int tmplen;
 	stream = fdopen (my_socket, "r+");
 	if (stream == NULL) {
 		/* This is a serious non-continueable OS error as it will probably not
-		   go away if we retry. */
+		   go away if we retry.
+		   
+		   BeOS will stupidly return SUCCESS here making this code silently fail on BeOS. */
 		MainQuit (_("socket connect"), strerror(errno));
 		return NULL;
 	}
@@ -281,17 +286,17 @@ int tmplen;
 	if (proxyport == 0) {
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET %s HTTP/1.0\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n\r\n", url, useragent, host, cur_ptr->lastmodified);
+			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n\r\n", url, useragent, host, cur_ptr->lastmodified);
 		else
-			fprintf(stream, "GET %s HTTP/1.0\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n\r\n", url, useragent, host);
+			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n\r\n", url, useragent, host);
 		
 		fflush(stream);
 	} else {
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nUser-Agent: %s\r\nConnection: close\r\nIf-Modified-Since: %s\r\n\r\n", host, url, useragent, cur_ptr->lastmodified);
+			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nIf-Modified-Since: %s\r\n\r\n", host, url, useragent, cur_ptr->lastmodified);
 		else
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nUser-Agent: %s\r\nConnection: close\r\n\r\n", host, url, useragent);
+			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\n\r\n", host, url, useragent);
 		
 		fflush(stream);
 	}
@@ -347,8 +352,11 @@ int tmplen;
 	do {
 		switch (tmphttpstatus) {
 			case 200:	/* OK */
+				/* Received good status from server, clear problem field. */
+				cur_ptr->problem = 0;
 				break;
 			case 300:	/* Multiple choice and everything 300 not handled is fatal. */
+				cur_ptr->problem = 1;
 				fclose (stream);
 				return NULL;
 			case 301:
@@ -403,18 +411,50 @@ int tmplen;
 						strsep (&tmpstring, "/");
 						tmphost = tmpstring;
 						strsep (&tmpstring, "/");
-						newhost = strdup (tmphost);
-						tmpstring--;
-						tmpstring[0] = '/';
-						newurl = strdup (tmpstring);
-						newurl[strlen(newurl)-2] = '\0';
+						
+						/* Don't crash here when parsing Location header of IIS or
+						   other broken servers that don't send an absoluteURI in
+						   the header. This behaviour violates RFC1945, RFC2616. */
+						if (tmphost == NULL) {
+							/* If the server didn't sent a new hostname, just copy
+							   the original host again. MAX_HTTP_REDIRECTS will
+							   ensure we don't loop endlessly. */
+							redirecttarget = strdup (netbuf);
+							freemetoo = redirecttarget;
+							strsep (&redirecttarget, " ");
+							
+							/* Recycle old hostname. */
+							newhost = strdup (host);
+							
+							/* Add / if there is none. FUCK IIS! */
+							if (redirecttarget[0] != '/') {
+								len = strlen(redirecttarget)+2;
+								newurl = malloc (len);
+								memset (newurl, 0, len);
+								newurl[0] = '/';
+								strncat (newurl, redirecttarget, len-1);
+							} else
+								newurl = strdup (redirecttarget);
+							
+							/* Munch trailing \r\n */
+							newurl[strlen(newurl)-2] = '\0';
+							
+							free (freemetoo);
+						} else {
+							newhost = strdup (tmphost);
+						
+							tmpstring--;
+							tmpstring[0] = '/';
+							newurl = strdup (tmpstring);
+							newurl[strlen(newurl)-2] = '\0';
+						}
 						free (freeme);
 					
 						/* Close connection. */	
 						fclose (stream);
 					
 						/* Reconnect to server. */
-						if ((NetConnect (newhost)) != 0) {
+						if ((NetConnect (newhost, httpproto)) != 0) {
 							MainQuit (_("Reconnecting for redirect"), strerror(errno));
 						}
 					
@@ -430,29 +470,29 @@ int tmplen;
 				   Not very friendly though. :) */
 				fclose (stream);
 				return NULL;
-			case 403: /* Forbidden */
-//			case 404: /* Not found. Not sure if this should be here. */
-			case 410: /* Gone */
+			case 410: /* The feed is gone. Politely remind the user to unsubscribe. */
 				snprintf (tmp, sizeof(tmp), _("The feed no longer exists. Please unsubscribe!"));
 				UIStatus (tmp, 3);
 			case 400:
+				cur_ptr->problem = 1;
 				fclose (stream);
 				return NULL;
 			default:
 				/* unknown error codes have to be treated like the base class */
-				if(handled) {
+				if (handled) {
 					/* first pass, modify error code to base class */
 					handled = 0;
 					tmphttpstatus -= tmphttpstatus % 100;
 				} else {
 					/* second pass, give up on unknown error base class */
+					cur_ptr->problem = 1;
 					fclose (stream);
 					return NULL;
 				}
 		}
 	} while(!handled);
 	
-	/* Read rest of HTTP header and... throw it away. */
+	/* Read rest of HTTP header and parse what we need. */
 	while (!feof(stream)) {
 	
 		/* Use select to make the connection interuptable if it should hang. */
@@ -473,22 +513,25 @@ int tmplen;
 			if (FD_ISSET (my_socket, &rfds))
 				break;
 		}
-		/* END new select stuff. */
 	
 		/* Max line length of sizeof(netbuf) is assumed here.
 		   If header has longer lines than 4096 bytes something may go wrong. :) */
 		if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL)
 			break;
 		if (strstr (netbuf, "chunked") != NULL) {
-			/* Server sent junked encoding. We didn't request this. Bäh! */
+			/* Server sent junked encoding. Until I understand how it works
+			   and snownews uses HTTP/1.1 we must reject this answer.
+			   Chunked encoding is not defined in HTTP/1.0. */
 			chunked = 1;
 			snprintf (tmp, sizeof(tmp), _("The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."), host);
 			UIStatus (tmp, 2);
+			cur_ptr->problem = 1;
 			fclose (stream);
 			return NULL;
 		}
 		/* Get last modified date. This is only relevant on HTTP 200. */
-		if (strstr (netbuf, "Last-Modified") != NULL) {
+		if ((strstr (netbuf, "Last-Modified") != NULL) &&
+			(lasthttpstatus == 200)) {
 			tmpstring = strdup(netbuf);
 			freeme = tmpstring;
 			strsep (&tmpstring, ":");
@@ -503,9 +546,33 @@ int tmplen;
 				cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] = '\0';
 			free(freeme);
 		}
+		/* Check and parse Content-Encoding header. */
+		if (strstr (netbuf, "Content-Encoding") != NULL) {
+			if (strstr (netbuf, "deflate") != NULL)
+				inflate = 1;
+			/* Will also catch x-gzip. */
+			if (strstr (netbuf, "gzip") != NULL)
+				inflate = 2;
+		}
+		/* Check and parse Content-Length header (needed for zlib). */
+		if (strstr (netbuf, "Content-Length") != NULL) {
+	 		tmpstring = strdup (netbuf);
+			freeme = tmpstring;
+			/* Cut string at ":" sign */
+			strsep (&tmpstring, ":");
+			/* Pointer points to space after ":", advance one char */
+			tmpstring++;
+			contentlength = atoi (tmpstring);
+			free (freeme);
+	 	}
+		
 		if (strcmp(netbuf, "\r\n") == 0)
 			break;
 	}
+	
+	/**********************
+	 * End of HTTP header *
+	 **********************/
 	
 	/* Init pointer so strncat works.
 	   Workaround class hack. */
@@ -535,36 +602,73 @@ int tmplen;
 			if (FD_ISSET (my_socket, &rfds))
 				break;
 		}
-		/* END new select stuff. */
-	
-		/*if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL)
+		
+		/* Since we handle binary data if we read compressed input we
+		   need to use fread instead of fgets after reading the header. */ 
+		retval = fread (netbuf, 1, sizeof(netbuf), stream);
+		if (retval == 0)
 			break;
-		length += strlen(netbuf);
-		body = realloc(body, length+1);
-		strncat (body, netbuf, strlen(netbuf));*/
-		if(0 >= (tmplen = fread(netbuf, 1, sizeof(netbuf), stream)))
+		body = realloc (body, length+retval);
+		memcpy (body+length, netbuf, retval);
+		length += retval;
+		if (retval != 4096)
 			break;
-		length += tmplen;
-		body = realloc(body, length);
-		memcpy(body + length - tmplen, netbuf, tmplen);
 	}
 	body = realloc(body, length+1);
 	body[length] = '\0';
 	
 	/* Close connection. */
 	fclose (stream);
+	
+	/* If inflate==1 we need to decompress content with deflate.
+	   Probably not needed since every webserver seems to send gzip. */
+	if (inflate == 1) {
+		inflatedbody = zlib_uncompress (body, contentlength, NULL, 0);
+		
+		if (inflatedbody == NULL) {
+			free (body);
+			return NULL;
+		}
+		
+		/* Copy uncompressed data back to body. */
+		free (body);
+		body = strdup (inflatedbody);
+		free (inflatedbody);
+	} else if (inflate == 2) {
+		/* gzipinflate */
+		inflatedbody = gzip_uncompress (body, contentlength, NULL);
+		
+		if (inflatedbody == NULL) {
+			free (body);
+			return NULL;
+		}
+		
+		/* Copy uncompressed data back to body. */
+		free (body);
+		body = strdup (inflatedbody);
+		free (inflatedbody);
+	}
 		
 	return body;
 }
 
 char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 	int result;
-	char *host;			/* Needs to freed. */
+	char *host;					/* Needs to freed. */
 	char *tmphost;
 	char *freeme;
 	char *returndata;
 	char tmp[1024];
-int i;
+	char httpprotostr[6];		/* http or https */
+	int httpproto = 0;			/* 0: http; 1: https */
+	
+	strncpy (httpprotostr, url, 5);
+	httpprotostr[5] = 0;
+	if (strstr (httpprotostr, "https") != NULL)
+		httpproto = 1;
+	else
+		httpproto = 0;
+	
 	/* hahteeteepeh://foo.bar/jaaaaaguar.html. */
 	/*              00^      0^*/
 	
@@ -572,7 +676,7 @@ int i;
 	   This "function" will not handle the following URLs:
 	   http://foo.bar/
 	   
-	   RDF must not reside on root dir on server.
+	   Must add index.rdf or whatever.
 	*/
 	strsep (&url, "/");
 	strsep (&url, "/");
@@ -598,21 +702,24 @@ int i;
 		url[strlen(url)-1] = '\0';
 	}
 	
-	result = NetConnect (host);
+	result = NetConnect (host, httpproto);
 	
 	switch (result) {
 		case 1:
 			UIStatus (_("Couldn't create network socket!"), 2);
+			cur_ptr->problem = 1;
 			free (freeme);
 			return NULL;
 		case 2:
 			snprintf (tmp, sizeof(tmp), _("Can't resolve host %s!"), host);
 			UIStatus (tmp, 2);
+			cur_ptr->problem = 1;
 			free (freeme);
 			return NULL;
 		case 3:
 			snprintf (tmp, sizeof(tmp), _("Could not connect to server %s: %s"), host, strerror(connectresult));
 			UIStatus (tmp, 2);
+			cur_ptr->problem = 1;
 			free (freeme);
 			return NULL;
 		case -1:
@@ -623,10 +730,8 @@ int i;
 			break;
 	}
 	
-	/* Return allocated pointer with XML data. */
-	/* return NetIO (host, url, cur_ptr); */
-	returndata = NetIO (host, url, cur_ptr);
-
+	returndata = NetIO (host, url, cur_ptr, httpproto);
+	
 	/* url will be freed in the calling function. */
 	free (freeme);		/* This is *host. */
 	

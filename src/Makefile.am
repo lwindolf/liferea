@@ -49,7 +49,8 @@ liferea_SOURCES = \
 	vfolder.c vfolder.h \
 	favicon.c favicon.h \
 	os-support.c os-support.h \
-	netio.c netio.h
+	netio.c netio.h \
+	conversions.c conversions.h
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
