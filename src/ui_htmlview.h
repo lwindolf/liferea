@@ -151,7 +151,7 @@ void	ui_htmlview_init(void);
  * Close/free any resources that were allocated when ui_htmlview_init
  * was called.
  */
-void ui_htmlview_deinit();
+void	ui_htmlview_deinit();
 
 /** 
  * Function to set up the html view widget for the three
@@ -192,6 +192,15 @@ enum {
 	UI_HTMLVIEW_LAUNCH_EXTERNAL,
 	UI_HTMLVIEW_LAUNCH_INTERNAL
 };
+
+/**
+ * Checks if the passed URL is a special internal Liferea
+ * link that should never be handled by the browser.
+ *
+ * @param url		the URL to check
+ * @return		TRUE if it is a special URL
+ */
+gboolean ui_htmlview_is_special_url(gchar *url);
 
 /**
  * Launches the specified URL in the configured browser or

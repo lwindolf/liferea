@@ -169,7 +169,9 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
  */
 static gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
 	
-	if(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(embed), "internal_browsing")) || getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) {
+	if((FALSE == ui_htmlview_is_special_url(uri)) && 
+	   (GPOINTER_TO_INT(g_object_get_data(G_OBJECT(embed), "internal_browsing")) || 
+	    getBooleanConfValue(BROWSE_INSIDE_APPLICATION))) {
 		return FALSE;
 	} else {
 		ui_htmlview_launch_URL(GTK_WIDGET(data), (gchar *)uri, UI_HTMLVIEW_LAUNCH_DEFAULT);

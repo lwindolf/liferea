@@ -40,6 +40,9 @@ GtkMenu *make_url_menu(char* url);
 /** Create the popup menu for the systray icon */
 GtkMenu *ui_popup_make_systray_menu(void);
 
+/** popup menu generation for the enclosure popup menu */
+GtkMenu *ui_popup_make_enclosure_menu(gchar *enclosure);
+
 /* GUI callbacks */
 gboolean
 on_mainfeedlist_button_press_event     (GtkWidget       *widget,

@@ -60,6 +60,7 @@ liferea_bin_SOURCES = \
 	rule.c rule.h \
 	support.c support.h \
 	ui_dnd.c ui_dnd.h \
+	ui_enclosure.c ui_enclosure.h \
 	ui_feed.c ui_feed.h \
 	ui_feedlist.c ui_feedlist.h \
 	ui_folder.c ui_folder.h \

@@ -33,6 +33,7 @@
 #include "ui_htmlview.h"
 #include "ui_tabs.h"
 #include "ui_prefs.h"
+#include "ui_enclosure.h"
 #include "debug.h"
 
 /* function types for the imported symbols */
@@ -338,6 +339,15 @@ void ui_htmlview_clear(GtkWidget *htmlview) {
 	g_free(buffer);
 }
 
+gboolean ui_htmlview_is_special_url(gchar *url) {
+
+	/* match against all special protocols... */
+	if(url == strstr(url, ENCLOSURE_PROTOCOL))
+		return TRUE;
+	
+	return FALSE;
+}
+
 void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType) {
 	
 	if(NULL == url) {
@@ -349,6 +359,13 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType) {
 	debug3(DEBUG_GUI, "launch URL: %s  %s %d\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewInfo->launchInsidePossible)()?"true":"false",
 		  launchType);
+		  
+	/* first catch all links with special URLs... */
+	if(url == strstr(url, ENCLOSURE_PROTOCOL)) {
+		ui_enclosure_new_popup(url);
+		return;
+	}
+	
 	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) &&
 	   (htmlviewInfo->launchInsidePossible)() &&
 	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {

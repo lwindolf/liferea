@@ -78,9 +78,7 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 		} /* explicitly no following else !!! */
 		
 		if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-g_print("atom title: %s\n", xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp = unhtmlize(utf8_fix(pie_parse_content_construct(cur)));
-g_print("         -> %s\n",tmp);
 			if (tmp != NULL)
 				item_set_title(ip, tmp);
 			g_free(tmp);

@@ -292,3 +292,24 @@ div.photoheader {
 div.technorati {
 	text-align:right;
 }
+
+table.enclosure {
+	background:#F0F0F0;
+	border:#C0C0C0 solid 1px;
+	margin-bottom:5px;
+	width:100%;
+}
+
+a.enclosure {
+	text-decoration:none;
+	color:black;
+}
+
+img.enclosurebtn {
+/*	border:#E0E0E0 solid 1px;
+	border-bottom-color:#808080;
+	border-right-color:#808080;
+	background:#D0D0D0;*/
+	padding:2px;
+	margin-left:2px;
+}

@@ -290,16 +290,21 @@ static void attribs_render_comments_uri(gpointer data, struct displayset *displa
 }
 
 static void attribs_render_enclosure(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar *tmp;
-	gchar *tmp2; 
+	gchar *tmp, *escaped, *filename; 
 	
-	tmp = g_strdup_printf(_("enclosed file: <a href=\"%s\">%s</a>"), (gchar *)data, (gchar *)data);
-	tmp2 = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right"
-	                       ":5px;border-color:black;border-style:solid;border-width:1px;"
-	                       "background-color:#E0E0E0\">%s</div>", tmp);
-	addToHTMLBufferFast(&(displayset->foot), tmp2);
+	filename = strrchr((char *)data, '/');
+	filename++;
+	escaped = encode_uri_string(g_strdup((gchar *)data));
+	tmp = g_strdup_printf("<table class=\"enclosure\" cellspacing=\"0\"><tr><td>"
+	                      "<a href=\"liferea-enclosure://load?%s\">"
+	                      "<img class=\"enclosurebtn\" src=\"file://" 
+			       PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S 
+			       "pixmaps" G_DIR_SEPARATOR_S "arrow.png\"></a></td><td>"
+			       "&nbsp;<a class=\"enclosure\" href=\"%s\">%s</a>"
+			       "</td></tr></table>", escaped, (gchar *)data, filename);
+	addToHTMLBufferFast(&(displayset->head), tmp);
+	g_free(escaped);
 	g_free(tmp);
-	g_free(tmp2);
 }
 
 static void attribs_render_feedgenerator_uri(gpointer data, struct displayset *displayset, gpointer user_data) {

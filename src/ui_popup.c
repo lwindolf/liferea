@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.c popup menus
  *
- * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "callbacks.h"
 #include "ui_popup.h"
 #include "ui_mainwindow.h"
+#include "ui_enclosure.h"
 #include "update.h"
 
 /*------------------------------------------------------------------------------*/
@@ -51,6 +52,10 @@ static GtkItemFactoryEntry *url_menu_items;
 /* tray menu */
 static gint tray_menu_len = 0;
 static GtkItemFactoryEntry *tray_menu_items;
+
+/* enclosures popup menu */
+static gint enclosure_menu_len = 0;
+static GtkItemFactoryEntry *enclosure_menu_items;
 
 static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *path, gchar *acc, 
 			   GtkItemFactoryCallback cb, guint cb_action, gchar *item_type, gconstpointer extra_data) {
@@ -146,6 +151,13 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&tray_menu_items, &tray_menu_len, "/",	                NULL, NULL,		                0, "<Separator>", 0);
 	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Show Window"),	NULL, ui_mainwindow_toggle_visibility,		0, "<CheckItem>", 0);
 	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Quit"),	        NULL, on_popup_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
+	
+	/* System tray popup menu */
+	enclosure_menu_items = NULL;
+	enclosure_menu_len = 0;
+	addPopupOption(&enclosure_menu_items, &enclosure_menu_len, _("/Open"),	NULL, on_popup_open_enclosure,		0, NULL, 0);
+	addPopupOption(&enclosure_menu_items, &enclosure_menu_len, _("/Save"),	NULL, on_popup_save_enclosure,		0, NULL, 0);
+
 }
 
 /* function to generate a generic menu specified by its number */
@@ -188,12 +200,15 @@ GtkMenu *make_item_menu(itemPtr ip) {
 
 /* popup menu generating functions for the HTML view */
 GtkMenu *make_html_menu(void) { return make_menu(html_menu_items, html_menu_len, NULL); }
-GtkMenu *make_url_menu(char* url) {
+GtkMenu *make_url_menu(char *url) {
 	return make_menu(url_menu_items, url_menu_len, g_strdup(url));
 }
 
 /* popup menu generation for the tray icon */
 GtkMenu *ui_popup_make_systray_menu(void) { return make_menu(tray_menu_items, tray_menu_len, NULL); }
+
+/* popup menu generation for the enclosure popup menu */
+GtkMenu *ui_popup_make_enclosure_menu(gchar *enclosure) { return make_menu(enclosure_menu_items, enclosure_menu_len, g_strdup(enclosure)); }
 
 /* function to generate popup menus for the feed list depending on the
    type parameter. The item will be passed as a callback_data. For
