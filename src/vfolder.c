@@ -302,9 +302,10 @@ static void setVFolderProp(gpointer fp, gint proptype, gpointer data) {
 			case FEED_PROP_DFLTUPDINTERVAL:
 			case FEED_PROP_UPDATEINTERVAL:
 			case FEED_PROP_UPDATECOUNTER:
+				break;
 			case FEED_PROP_UNREADCOUNT:
 			case FEED_PROP_AVAILABLE:
-			case FEED_PROP_ITEMLIST:
+			case FEED_PROP_ITEMLIST:		
 				g_error("internal error! please don't do this!");
 				break;
 			default:
