@@ -356,14 +356,15 @@ static gboolean feed_save_timeout(gpointer user_data) {
 }
 
 /* function which is called to load a feed's cache file */
-gboolean feed_load_from_cache(feedPtr fp) {
+gboolean feed_load(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gchar		*filename, *tmp, *data = NULL;
 	int		error = 0;
 	gsize length;
 	
-	debug_enter("feed_load_from_cache");
+	debug_enter("feed_load");
+g_print("feed_load for %s\n", feed_get_source(fp));
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
 	fp->loaded = TRUE;
@@ -456,7 +457,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 		xmlFreeDoc(doc);
 	g_free(filename);
 	
-	debug_exit("feed_load_from_cache");	
+	debug_exit("feed_load");	
 	return TRUE;
 }
 
@@ -464,12 +465,13 @@ gboolean feed_load_from_cache(feedPtr fp) {
    usage. This method unloads everything besides necessary infos. */
 void feed_unload(feedPtr fp) {
 
-	fp->loaded = FALSE;
+g_print("feed_unload for %s\n", feed_get_source(fp));
 	
 	/* FIXME: free filter structures too when implemented */
 	
 	/* free items */	
 	feed_clear_item_list(fp);
+	fp->loaded = FALSE;
 }
 
 /* Merges the feeds specified by old_fp and new_fp, so that
@@ -485,7 +487,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
 	
 	if(!old_fp->loaded)
-		feed_load_from_cache(old_fp);	/* because we access old_fp->items directly */
+		feed_load(old_fp);	/* because we access old_fp->items directly */
 	
 	if(TRUE == new_fp->available) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
@@ -1055,14 +1057,15 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 GSList * feed_get_item_list(feedPtr fp) { 
 
 	if(!fp->loaded)
-		feed_load_from_cache(fp);
+		feed_load(fp);
 	return fp->items; 
 }
 
-/* method to free all items of a feed, maybe called for unloaded feeds too */
+/* method to free all items of a feed */
 void feed_clear_item_list(feedPtr fp) {
 	GSList	*item;
-	
+
+	g_assert(TRUE == fp->loaded);	
 	item = fp->items;
 	while(NULL != item) {
 		item_free(item->data);
@@ -1075,7 +1078,7 @@ void feed_clear_item_list(feedPtr fp) {
 void feed_mark_all_items_read(feedPtr fp) {
 	GSList	*item;
 
-	g_assert(TRUE == fp->loaded);	
+	g_assert(TRUE == fp->loaded);
 	item = fp->items;
 	while(NULL != item) {
 		item_set_read((itemPtr)item->data);

@@ -167,7 +167,7 @@ feedPtr feed_new(void);
  * @returns FALSE if the feed file could not be opened and TRUE if it
  * was opened.
  */
-gboolean feed_load_from_cache(feedPtr fp);
+gboolean feed_load(feedPtr fp);
 
 /* Only some feed informations are kept in memory to lower memory
    usage. This method unloads everything besides necessary infos. */

@@ -287,13 +287,13 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		feed_set_title(fp, title);
 		feed_set_update_interval(fp, interval);
 		debug6(DEBUG_CONF, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
-
 		
 		if(id != NULL) {
 			feed_set_id(fp, id);
 			xmlFree(id);
-			if (!feed_load_from_cache(fp))
+			if(!feed_load(fp))
 				feed_schedule_update(fp, 0);
+			feed_unload(fp);
 		} else {
 			id = conf_new_id();
 			feed_set_id(fp, id);

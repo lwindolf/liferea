@@ -222,7 +222,7 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 	type = getNumericConfValue(path2);
 	g_free(path2);
 	
-	if (type == 0)
+	if(type == 0)
 		return FALSE;
 
 	switch(type) {
@@ -294,7 +294,7 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		feed_set_title(fp, name);
 		feed_set_id(fp, newid);
 		feed_set_update_interval(fp, interval);
-		feed_load_from_cache(fp);	/* to load feed information */
+		feed_load(fp);	/* to load feed information */
 		ui_folder_add_feed(parent, fp, -1);
 		feed_unload(fp);		/* to remove currently unnecessary items from cache */
 		
@@ -372,28 +372,30 @@ folderPtr feedlist_insert_help_folder(folderPtr parent, GTimeVal *lastPoll, GTim
 			g_free(tmp);
 			feed_set_title(fp, _("Online Help Feed"));
 			feed_set_id(fp, "helpfeed1");
-			if (lastPoll != NULL)
+			if(lastPoll != NULL)
 				fp->lastPoll = *lastPoll;
-			if (lastFaviconPoll != NULL)
+			if(lastFaviconPoll != NULL)
 				fp->lastFaviconPoll = *lastFaviconPoll;
 			feed_set_update_interval(fp, 1440);
-			if (feed_load_from_cache(fp) == FALSE)
+			if(feed_load(fp) == FALSE)
 				feed_schedule_update(fp, 0);
 			ui_folder_add_feed(helpFolder, fp, -1);
+			feed_unload(fp);
 			
 			fp = feed_new();
 			feed_set_type(fp, FST_HELPFEED);
 			feed_set_source(fp, HELP2URL);
 			feed_set_title(fp, _("Liferea SF News"));
 			feed_set_id(fp, "helpfeed2");
-			if (lastPoll != NULL)
+			if(lastPoll != NULL)
 				fp->lastPoll = *lastPoll;
-			if (lastFaviconPoll != NULL)
+			if(lastFaviconPoll != NULL)
 				fp->lastFaviconPoll = *lastFaviconPoll;
 			feed_set_update_interval(fp, 1440);
-			if (feed_load_from_cache(fp) == FALSE)
+			if(feed_load(fp) == FALSE)
 				feed_schedule_update(fp, 0);
 			ui_folder_add_feed( helpFolder, fp, -1);
+			feed_unload(fp);
 			
 			/* Note: help feeds are update automatically on first adding 
 			   because they miss a cache file. And of course they are
