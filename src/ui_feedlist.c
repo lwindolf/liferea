@@ -687,14 +687,11 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 	}
 	
 	while(valid) {
-		gchar *name;
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter,
-					    FS_LABEL, &name,
 					    FS_PTR, &child, -1);
 		/* If child == NULL, this is an empty node. */
 		if (child != NULL) {
-			apply = (filter & ACTION_FILTER_ANY) ||
-				(filter & ACTION_FILTER_CHILDREN) ||
+			apply = (filter & ACTION_FILTER_CHILDREN) ||
 				((filter & ACTION_FILTER_FEED) && IS_FEED(child->type)) ||
 				((filter & ACTION_FILTER_DIRECTORY) && IS_DIRECTORY(child->type)) ||
 				((filter & ACTION_FILTER_FOLDER) && IS_FOLDER(child->type));
@@ -708,7 +705,7 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 			}
 			
 			/* if the iter has children and we are descending, iterate over the children. */
-			if((gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), &childiter) > 0) && descend)
+			if(descend && (gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), &childiter) > 0))
 				ui_feedlist_do_for_all_data(child, filter, func, user_data);
 		}
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);

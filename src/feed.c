@@ -251,24 +251,24 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	int		error = 0;
 	
 	filename = getCacheFileName(id, NULL);
-	g_message("Loading feed config for %s from %s", id, filename);
 	
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		g_message("Error while reading cache file");
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
+		g_free(filename);
 		return NULL;
 	}
 
 	fp = feed_new();		
-	while(1) {	
+	do {
 		g_assert(NULL != data);
-g_print("%s\n", id);
+
 		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
 			error = 1;
 			break;
 		} 
-g_print("%s\n", id);
+
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			error = 1;
@@ -315,14 +315,14 @@ g_print("%s\n", id);
 		}
 	
 		loadFavIcon(fp);
-		
-		break;
-	}
+	} while (FALSE);
 	
 	if(0 != error) {
 		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\"!"), filename);
 	}
 	
+	if (NULL != data)
+		g_free(data);
 	if(NULL != doc)
 		xmlFreeDoc(doc);
 	g_free(filename);

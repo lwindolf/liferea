@@ -68,8 +68,8 @@ int main (int argc, char *argv[]) {
 
 	gtk_widget_show(mainwindow);
 
-//	if(getBooleanConfValue(UPDATE_ON_STARTUP))
-//		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_update);
+	if(getBooleanConfValue(UPDATE_ON_STARTUP))
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_update);
 
 	gdk_threads_enter();
 	gtk_main();

@@ -230,15 +230,12 @@ static void load_folder_contents(folderPtr folder, gchar* fid) {
 	GError		*err = NULL;
 	gchar *name;
 	
-	g_message("Loading folder contents: %s, fid: %s", folder->title, fid);
-	
 	/* First, try to look and (and migrate groups) */
 	
 	name = build_path_str(fid,"groups");
 	
 	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
 	if (!is_gconf_error(&err) && list) {
-		g_message("looking at groups");
 		while (list != NULL) {
 			id = (gchar*)list->data;
 			g_assert(id);
@@ -278,7 +275,6 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 
 static gboolean is_number(gchar *s) {
 	while (*s != '\0') {
-		printf(".");
 		if(!g_ascii_isdigit(*s))
 			return FALSE;
 		s++;
@@ -289,7 +285,7 @@ static gboolean is_number(gchar *s) {
 static void conf_feedlist_erase_gconf() {
 	GSList *list, *iter;
 	GError		*err = NULL;
-	g_message("Erasing old gconf enteries.");
+
 	iter = list = gconf_client_all_dirs(client, PATH, &err);
 	err=NULL;
 
@@ -317,9 +313,10 @@ void loadSubscriptions(void) {
 	feedlistLoading = TRUE;
 	load_folder_contents(folder_get_root(), "");
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
-	importOPMLFeedList(filename, folder_get_root());
+	importOPMLFeedList(filename, folder_get_root(), FALSE);
 	g_free(filename);
-	//conf_feedlist_erase_gconf();
+	g_message("Erasing old gconf enteries.");
+	conf_feedlist_erase_gconf();
 	/* if help folder was not yet created... */
 	feedlist_insert_help_folder(folder_get_root());
 	feedlistLoading = FALSE;

@@ -355,12 +355,9 @@ gint checkForUpdateResults(gpointer data) {
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	GtkWidget	*pane;
 	gint		x,y;
-	gchar *filename;
 	gtk_widget_hide(mainwindow);
 
-	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
 	conf_feedlist_save();
-	g_free(filename);
 	
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_save);
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, (gpointer)folder_state_save);

@@ -33,9 +33,10 @@ int exportOPMLFeedList(gchar *filename);
 /**
  * Reads an OPML file and inserts it into the feedlist.
  * @param filename path to file that will be read for importing
+ * @param showErrors set to TRUE if errors should generate a error dialog
  * @param parent folder
  */
-void importOPMLFeedList(gchar *filename, folderPtr parent);
+void importOPMLFeedList(gchar *filename, folderPtr parent, gboolean showErrors);
 
 
 /* GUI dialog callbacks */
