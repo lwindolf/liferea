@@ -492,16 +492,13 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					item_set_unread(old_ip);
 					newcount++;
 					traycount++;
-				} else {
-					new_ip->readStatus = TRUE;
 				}
 
 				/* any found new_fp items are not needed anymore */
-				if(old_fp->type != FST_HELPFEED) { 
-					new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
-					allItems->items = g_slist_remove(allItems->items, new_ip);
-					item_free(new_ip);
-				}
+				new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
+				
+				allItems->items = g_slist_remove(allItems->items, new_ip); /* FIXME: Maybe this should be moved to item_free()? */
+				item_free(new_ip);
 			}
 			
 			new_list = g_slist_next(new_list);
@@ -510,30 +507,16 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 		/* now we distinguish between incremental merging
 		   for all normal feeds, and skipping old item
 		   merging for help feeds... */
-		if(old_fp->type != FST_HELPFEED) {
-			g_slist_free(new_fp->items);	/* dispose new item list */
-			
-			if(NULL == diff_list)
-				ui_mainwindow_set_status_bar(_("\"%s\" has no new items."), old_fp->title);
-			else 
-				ui_mainwindow_set_status_bar(_("\"%s\" has %d new items."), old_fp->title, newcount);
-			
-			old_list = g_slist_concat(diff_list, old_fp->items);
-			old_fp->items = old_list;
-		} else {
-			/* free old list and items of old list */
-			old_list = old_fp->items;
-			while(NULL != old_list) {
-				allItems->items = g_slist_remove(allItems->items, old_list->data);
-				item_free((itemPtr)old_list->data);
-				old_list = g_slist_next(old_list);
-			}
-			g_slist_free(old_fp->items);
-			
-			/* parent feed pointers are already correct, we can reuse simply the new list */
-			old_fp->items = new_fp->items;
-		}		
-
+		g_slist_free(new_fp->items);	/* dispose new item list */
+		
+		if(NULL == diff_list)
+			ui_mainwindow_set_status_bar(_("\"%s\" has no new items."), old_fp->title);
+		else 
+			ui_mainwindow_set_status_bar(_("\"%s\" has %d new items."), old_fp->title, newcount);
+		
+		old_list = g_slist_concat(diff_list, old_fp->items);
+		old_fp->items = old_list;
+		
 		/* copy description and default update interval */
 		g_free(old_fp->description);
 		old_fp->description = g_strdup(new_fp->description);
@@ -655,8 +638,8 @@ gint feed_process_update_results(gpointer data) {
 				feed_set_update_interval(request->fp, feed_get_default_update_interval(new_fp));
 			}
 
-			if(TRUE == fhp->merge)
-				/* If the feed type supports merging... */
+			if(TRUE == fhp->merge && request->fp->type != FST_HELPFEED)
+				/* If the feed type supports merging... Help feeds are always copied. */
 				feed_merge(request->fp, new_fp);
 			else {
 				/* Otherwise we simply use the new feed info... */
