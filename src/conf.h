@@ -21,20 +21,21 @@
 
 #include <glib.h>
 
-#define HELP1KEY	"help/helpfeed1"
-#define HELP2KEY	"help/helpfeed2"
+#define HELP1KEY			"help/helpfeed1"
+#define HELP2KEY			"help/helpfeed2"
 
-#define BROWSER_COMMAND		"/apps/liferea/browser"
-#define GNOME_DEFAULT_BROWSER_COMMAND	"/desktop/gnome/url-handlers/unknown"
-#define DEFAULT_BROWSER_COMMAND	"mozilla %s"
-#define TIME_FORMAT		"/apps/liferea/timeformat"
-#define TIME_FORMAT_MODE	"/apps/liferea/timeformatmode"
-#define DEFAULT_MAX_ITEMS	"/apps/liferea/maxitemcount"
-#define UPDATE_ON_STARTUP	"/apps/liferea/updateonstartup"
+#define GNOME_BROWSER_ENABLED		"/apps/liferea/browsermode"
+#define BROWSER_COMMAND			"/apps/liferea/browser"
+#define GNOME_DEFAULT_BROWSER_COMMAND	"/desktop/gnome/url-handlers/http/command"
+#define DEFAULT_BROWSER_COMMAND		"mozilla %s"
+#define TIME_FORMAT			"/apps/liferea/timeformat"
+#define TIME_FORMAT_MODE		"/apps/liferea/timeformatmode"
+#define DEFAULT_MAX_ITEMS		"/apps/liferea/maxitemcount"
+#define UPDATE_ON_STARTUP		"/apps/liferea/updateonstartup"
 	
-#define PROXY_HOST		"/system/http_proxy/host"
-#define PROXY_PORT		"/system/http_proxy/port"
-#define USE_PROXY		"/system/http_proxy/use_http_proxy"
+#define PROXY_HOST			"/system/http_proxy/host"
+#define PROXY_PORT			"/system/http_proxy/port"
+#define USE_PROXY			"/system/http_proxy/use_http_proxy"
 
 void	initConfig(void);
 void	loadConfig(void);

@@ -179,26 +179,35 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	g_assert(NULL != prefdialog);
 
 	widget = lookup_widget(prefdialog, "browsercmd");
+	tmp = getNumericConfValue(GNOME_BROWSER_ENABLED);
+	if((tmp > 2) || (tmp < 1)) 
+		tmp = 1;	/* correct configuration if necessary */
+		
 	gtk_entry_set_text(GTK_ENTRY(widget), getStringConfValue(BROWSER_COMMAND));
+
+	widgetname = g_strdup_printf("%s%d", "browserradiobtn", tmp);
+	widget = lookup_widget(prefdialog, widgetname);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+	g_free(widgetname);		
 
 	widget = lookup_widget(prefdialog, "timeformatentry");
 	gtk_entry_set_text(GTK_ENTRY(widget), getStringConfValue(TIME_FORMAT));
 
-	widget = lookup_widget(prefdialog, "updateallbtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(UPDATE_ON_STARTUP));
-	
 	tmp = getNumericConfValue(TIME_FORMAT_MODE);
 	if((tmp > 3) || (tmp < 1)) 
 		tmp = 1;	/* correct configuration if necessary */
 
-	widget = lookup_widget(prefdialog, "itemCountBtn");
-	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
-	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
-		
 	widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
 	widget = lookup_widget(prefdialog, widgetname);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-	g_free(widgetname);	
+	g_free(widgetname);		
+
+	widget = lookup_widget(prefdialog, "updateallbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(UPDATE_ON_STARTUP));
+	
+	widget = lookup_widget(prefdialog, "itemCountBtn");
+	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
+	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
 		
 	gtk_widget_show(prefdialog);
 }
@@ -223,6 +232,16 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	widget = lookup_widget(prefdialog, "updateallbtn");
 	setBooleanConfValue(UPDATE_ON_STARTUP, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
+	
+	tmp = 0;
+	for(i = 1; i <= 2; i++) {
+		widgetname = g_strdup_printf("%s%d", "browserradiobtn", i);
+		widget = lookup_widget(prefdialog, widgetname);
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
+			tmp = i;
+		g_free(widgetname);	
+	}
+	setNumericConfValue(GNOME_BROWSER_ENABLED, tmp);
 	
 	tmp = 0;
 	for(i = 1; i <= 3; i++) {

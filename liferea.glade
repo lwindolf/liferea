@@ -1309,9 +1309,8 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 		  <property name="spacing">0</property>
 
 		  <child>
-		    <widget class="GtkRadioButton" id="radiobutton1">
+		    <widget class="GtkRadioButton" id="browserradiobtn1">
 		      <property name="visible">True</property>
-		      <property name="sensitive">False</property>
 		      <property name="can_focus">True</property>
 		      <property name="label" translatable="yes">use the GNOME default browser</property>
 		      <property name="use_underline">True</property>
@@ -1334,7 +1333,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 		      <property name="spacing">5</property>
 
 		      <child>
-			<widget class="GtkRadioButton" id="radiobutton2">
+			<widget class="GtkRadioButton" id="browserradiobtn2">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="label" translatable="yes">use browser command</property>
@@ -1343,7 +1342,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			  <property name="active">True</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
-			  <property name="group">radiobutton1</property>
+			  <property name="group">browserradiobtn1</property>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>

@@ -491,13 +491,13 @@ s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
 s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,liferea,;t t
 s,@VERSION@,0.4.2,;t t
-s,@ACLOCAL@,${SHELL} /home/lars/tech/coding/liferea/missing --run aclocal-1.7,;t t
-s,@AUTOCONF@,${SHELL} /home/lars/tech/coding/liferea/missing --run autoconf,;t t
-s,@AUTOMAKE@,${SHELL} /home/lars/tech/coding/liferea/missing --run automake-1.7,;t t
-s,@AUTOHEADER@,${SHELL} /home/lars/tech/coding/liferea/missing --run autoheader,;t t
-s,@MAKEINFO@,${SHELL} /home/lars/tech/coding/liferea/missing --run makeinfo,;t t
-s,@AMTAR@,${SHELL} /home/lars/tech/coding/liferea/missing --run tar,;t t
-s,@install_sh@,/home/lars/tech/coding/liferea/install-sh,;t t
+s,@ACLOCAL@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run aclocal-1.7,;t t
+s,@AUTOCONF@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run autoconf,;t t
+s,@AUTOMAKE@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run automake-1.7,;t t
+s,@AUTOHEADER@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run autoheader,;t t
+s,@MAKEINFO@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run makeinfo,;t t
+s,@AMTAR@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run tar,;t t
+s,@install_sh@,/home/lars/tech/coding/t/liferea/install-sh,;t t
 s,@STRIP@,,;t t
 s,@ac_ct_STRIP@,,;t t
 s,@INSTALL_STRIP_PROGRAM@,${SHELL} $(install_sh) -c -s,;t t

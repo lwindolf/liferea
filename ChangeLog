@@ -1,3 +1,10 @@
+2003-10-??  Lars Lindner <lars.lindner@gmx.net>
+
+        Version 0.4.3
+	
+	* GNOME default browser preference works now. Bug 824955
+	* Fixed the help feed updating behaviour.
+	
 2003-10-15  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.4.2

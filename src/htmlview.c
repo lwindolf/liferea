@@ -355,24 +355,30 @@ kill_old_connections (HtmlDocument *doc)
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
 {	GError	*error = NULL;
-	gchar	*cmd;
+	gchar	*cmd, *tmp;
 	gchar	*statusline;
 
-	cmd = g_strdup_printf(getStringConfValue(BROWSER_COMMAND), url);
+	if(2 == getNumericConfValue(GNOME_BROWSER_ENABLED))
+		cmd = getStringConfValue(BROWSER_COMMAND);
+	else
+		cmd = getStringConfValue(GNOME_DEFAULT_BROWSER_COMMAND);
+		
 	g_assert(NULL != cmd);
-	if(0 != strstr(cmd, "%s")) {
-		showErrorBox(_("There is no %s URL place holder in the browser command string you specified in the preferences dialog!!!"));
+	if(NULL == strstr(cmd, "%s")) {
+		showErrorBox(_("There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
 	}
+	tmp = g_strdup_printf(cmd, url);
 	
-	g_spawn_command_line_async(cmd, &error);
+	g_spawn_command_line_async(tmp, &error);
 	if((NULL != error) && (0 != error->code)) {
 		statusline = g_strdup_printf("browser command failed: %s", error->message);
 		g_error_free(error);
 	} else	
-		statusline = g_strdup_printf("starting: \"%s\"", cmd);
+		statusline = g_strdup_printf("starting: \"%s\"", tmp);
 		
 	print_status(statusline);
 	g_free(cmd);
+	g_free(tmp);
 	g_free(statusline);
 
 }

@@ -733,10 +733,10 @@ create_prefdialog (void)
   GtkWidget *vbox3;
   GtkWidget *frame2;
   GtkWidget *vbox14;
-  GtkWidget *radiobutton1;
-  GSList *radiobutton1_group = NULL;
+  GtkWidget *browserradiobtn1;
+  GSList *browserradiobtn1_group = NULL;
   GtkWidget *hbox14;
-  GtkWidget *radiobutton2;
+  GtkWidget *browserradiobtn2;
   GtkWidget *browsercmd;
   GtkWidget *label13;
   GtkWidget *frame6;
@@ -785,23 +785,22 @@ create_prefdialog (void)
   gtk_container_add (GTK_CONTAINER (frame2), vbox14);
   gtk_container_set_border_width (GTK_CONTAINER (vbox14), 5);
 
-  radiobutton1 = gtk_radio_button_new_with_mnemonic (NULL, _("use the GNOME default browser"));
-  gtk_widget_show (radiobutton1);
-  gtk_box_pack_start (GTK_BOX (vbox14), radiobutton1, FALSE, FALSE, 0);
-  gtk_widget_set_sensitive (radiobutton1, FALSE);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton1), radiobutton1_group);
-  radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton1));
+  browserradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("use the GNOME default browser"));
+  gtk_widget_show (browserradiobtn1);
+  gtk_box_pack_start (GTK_BOX (vbox14), browserradiobtn1, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (browserradiobtn1), browserradiobtn1_group);
+  browserradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (browserradiobtn1));
 
   hbox14 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox14);
   gtk_box_pack_start (GTK_BOX (vbox14), hbox14, TRUE, TRUE, 0);
 
-  radiobutton2 = gtk_radio_button_new_with_mnemonic (NULL, _("use browser command"));
-  gtk_widget_show (radiobutton2);
-  gtk_box_pack_start (GTK_BOX (hbox14), radiobutton2, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton2), radiobutton1_group);
-  radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton2));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radiobutton2), TRUE);
+  browserradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("use browser command"));
+  gtk_widget_show (browserradiobtn2);
+  gtk_box_pack_start (GTK_BOX (hbox14), browserradiobtn2, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (browserradiobtn2), browserradiobtn1_group);
+  browserradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (browserradiobtn2));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (browserradiobtn2), TRUE);
 
   browsercmd = gtk_entry_new ();
   gtk_widget_show (browsercmd);
@@ -922,9 +921,9 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox3, "vbox3");
   GLADE_HOOKUP_OBJECT (prefdialog, frame2, "frame2");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox14, "vbox14");
-  GLADE_HOOKUP_OBJECT (prefdialog, radiobutton1, "radiobutton1");
+  GLADE_HOOKUP_OBJECT (prefdialog, browserradiobtn1, "browserradiobtn1");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox14, "hbox14");
-  GLADE_HOOKUP_OBJECT (prefdialog, radiobutton2, "radiobutton2");
+  GLADE_HOOKUP_OBJECT (prefdialog, browserradiobtn2, "browserradiobtn2");
   GLADE_HOOKUP_OBJECT (prefdialog, browsercmd, "browsercmd");
   GLADE_HOOKUP_OBJECT (prefdialog, label13, "label13");
   GLADE_HOOKUP_OBJECT (prefdialog, frame6, "frame6");
