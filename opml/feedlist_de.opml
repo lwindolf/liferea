@@ -5,7 +5,7 @@
   </head>
   <body>
     <outline text="Liferea Hilfe">
-      <outline text="Online Hilfe" type="rss" htmlUrl="http://liferea.sf.net/" xmlUrl="http://liferea.sf.net/help/help0.5.3.rdf" updateInterval="1440" noIncremental="true"/>
+      <outline text="Online Hilfe" type="rss" htmlUrl="http://liferea.sf.net/" xmlUrl="http://liferea.sf.net/help/help0.6.0.rdf" updateInterval="1440" noIncremental="true"/>
       <outline text="Liferea SF News" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental="true"/>
     </outline>
     <outline text="Beispiel Abonnements">
@@ -15,6 +15,7 @@
 	<outline text="Heise Online" htmlUrl="http://www.heise.de" xmlUrl="http://www.heise.de/newsticker/heise.rdf" />
 	<outline text="golem.de" htmlUrl="http://golem.de" xmlUrl="http://www.golem.de/rss.php?feed=RSS1.0" />
       </outline>
+      <!-- lets keep this English block in sync over all feed lists! -->
       <outline text="international">
 	      <outline text="OSS">
         	<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
