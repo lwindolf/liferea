@@ -660,7 +660,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 				item_set_title(old_ip, item_get_title(new_ip));
 				item_set_description(old_ip, item_get_description(new_ip));
 				item_set_time(old_ip, item_get_time(new_ip));
-				item_set_unread(old_ip);	// FIXME: needed?
+				item_set_unread(old_ip);	/* FIXME: needed? */
 				metadata_list_free(old_ip->metadata);
 				old_ip->metadata = new_ip->metadata;
 				vfolder_update_item(old_ip);

@@ -497,7 +497,7 @@ void ui_itemlist_load(nodePtr node) {
 	gtk_tree_view_set_model(itemlist, NULL);
 	
 	ui_itemlist_clear();
-	// explicitly no ui_htmlview_clear() !!!
+	/* explicitly no ui_htmlview_clear() !!! */
 	displayed_node = node;
 	g_object_unref(model);
 	itemstore = NULL;
