@@ -395,7 +395,7 @@ static void ui_folder_update_from_iter(GtkTreeIter *iter) {
 
 	g_assert(ptr->ui_data);
 
-	title = folder_get_title(ptr);
+	title = g_markup_escape_text(folder_get_title(ptr), -1);
 
 	count = 0;
 	rc = gtk_tree_model_iter_children(model, &child, iter);
@@ -419,6 +419,7 @@ static void ui_folder_update_from_iter(GtkTreeIter *iter) {
 				    FS_ICON, ui_folder_select_icon(ptr),
 				    FS_UNREAD, count,
 				    -1);
+	g_free(title);
 	g_free(label);
 }
 

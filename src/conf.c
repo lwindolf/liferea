@@ -325,35 +325,42 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 
 	debug_enter("feedlist_insert_help_folder");
 	
+	/* Ok... If we are here, a help folder has been requested to be
+	 * created. The feeds are conditionally added if the
+	 * DISABLE_HELPFEED is false. This allows an empty helpfolder to
+	 * be added from the feedlist.
+	 */
+	
 	if(helpFolder == NULL) {
 		helpFolder = restore_folder(parent, _("Liferea Help"), "helpFolder", FST_HELPFOLDER);
 		ui_add_folder(parent, helpFolder, -1);
 		
-		fp = feed_new();
-		feed_set_type(fp, FST_HELPFEED);
-		feed_set_source(fp, HELP1URL);
-		feed_set_title(fp, _("Online Help Feed"));
-		feed_set_id(fp, "helpfeed1");
-		feed_set_update_interval(fp, 1440);
-		if (feed_load_from_cache(fp) == FALSE)
-			feed_update(fp);
-		ui_folder_add_feed(helpFolder, fp, -1);
-
-		fp = feed_new();
-		feed_set_type(fp, FST_HELPFEED);
-		feed_set_source(fp, HELP2URL);
-		feed_set_title(fp, _("Liferea SF News"));
-		feed_set_id(fp, "helpfeed2");
-		feed_set_update_interval(fp, 1440);
-		if (feed_load_from_cache(fp) == FALSE)
-			feed_update(fp);
-		ui_folder_add_feed( helpFolder, fp, -1);
-		
-		/* Note: help feeds are update automatically on first adding 
-		   because they miss a cache file. And of course they are
-		   updated daily because of the update interval */
+		if(!getBooleanConfValue(DISABLE_HELPFEEDS)) {
+			fp = feed_new();
+			feed_set_type(fp, FST_HELPFEED);
+			feed_set_source(fp, HELP1URL);
+			feed_set_title(fp, _("Online Help Feed"));
+			feed_set_id(fp, "helpfeed1");
+			feed_set_update_interval(fp, 1440);
+			if (feed_load_from_cache(fp) == FALSE)
+				feed_update(fp);
+			ui_folder_add_feed(helpFolder, fp, -1);
+			
+			fp = feed_new();
+			feed_set_type(fp, FST_HELPFEED);
+			feed_set_source(fp, HELP2URL);
+			feed_set_title(fp, _("Liferea SF News"));
+			feed_set_id(fp, "helpfeed2");
+			feed_set_update_interval(fp, 1440);
+			if (feed_load_from_cache(fp) == FALSE)
+				feed_update(fp);
+			ui_folder_add_feed( helpFolder, fp, -1);
+			
+			/* Note: help feeds are update automatically on first adding 
+			   because they miss a cache file. And of course they are
+			   updated daily because of the update interval */
+		}
 	}
-	
 	debug_exit("feedlist_insert_help_folder");
 	return helpFolder;
 }
