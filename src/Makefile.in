@@ -107,6 +107,7 @@ liferea_SOURCES = \
 	folder.c folder.h \
 	feed.c feed.h \
 	item.c item.h \
+	export.c export.h \
 	filter.c filter.h \
 	update.c update.h \
 	htmlview.c htmlview.h \
@@ -149,15 +150,15 @@ am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	interface.$(OBJEXT) callbacks.$(OBJEXT) ui_filter.$(OBJEXT) \
 	ui_tray.$(OBJEXT) ui_popup.$(OBJEXT) eggtrayicon.$(OBJEXT) \
 	common.$(OBJEXT) folder.$(OBJEXT) feed.$(OBJEXT) item.$(OBJEXT) \
-	filter.$(OBJEXT) update.$(OBJEXT) htmlview.$(OBJEXT) \
-	rss_channel.$(OBJEXT) rss_item.$(OBJEXT) cdf_channel.$(OBJEXT) \
-	cdf_item.$(OBJEXT) pie_feed.$(OBJEXT) pie_entry.$(OBJEXT) \
-	opml.$(OBJEXT) ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) \
-	ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) \
-	ns_content.$(OBJEXT) ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) \
-	ns_blogChannel.$(OBJEXT) ns_cC.$(OBJEXT) ns_ag.$(OBJEXT) \
-	conf.$(OBJEXT) vfolder.$(OBJEXT) os-support.$(OBJEXT) \
-	netio.$(OBJEXT)
+	export.$(OBJEXT) filter.$(OBJEXT) update.$(OBJEXT) \
+	htmlview.$(OBJEXT) rss_channel.$(OBJEXT) rss_item.$(OBJEXT) \
+	cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) pie_feed.$(OBJEXT) \
+	pie_entry.$(OBJEXT) opml.$(OBJEXT) ocs_dir.$(OBJEXT) \
+	ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) \
+	ns_slash.$(OBJEXT) ns_content.$(OBJEXT) ns_syn.$(OBJEXT) \
+	ns_admin.$(OBJEXT) ns_blogChannel.$(OBJEXT) ns_cC.$(OBJEXT) \
+	ns_ag.$(OBJEXT) conf.$(OBJEXT) vfolder.$(OBJEXT) \
+	os-support.$(OBJEXT) netio.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -171,22 +172,22 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/callbacks.Po $(DEPDIR)/cdf_channel.Po \
 @AMDEP_TRUE@	$(DEPDIR)/cdf_item.Po $(DEPDIR)/common.Po \
 @AMDEP_TRUE@	$(DEPDIR)/conf.Po $(DEPDIR)/eggtrayicon.Po \
-@AMDEP_TRUE@	$(DEPDIR)/feed.Po $(DEPDIR)/filter.Po \
-@AMDEP_TRUE@	$(DEPDIR)/folder.Po $(DEPDIR)/htmlview.Po \
-@AMDEP_TRUE@	$(DEPDIR)/interface.Po $(DEPDIR)/item.Po \
-@AMDEP_TRUE@	$(DEPDIR)/main.Po $(DEPDIR)/netio.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_admin.Po $(DEPDIR)/ns_ag.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_blogChannel.Po $(DEPDIR)/ns_cC.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_content.Po $(DEPDIR)/ns_dc.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_fm.Po $(DEPDIR)/ns_ocs.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_slash.Po $(DEPDIR)/ns_syn.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ocs_dir.Po $(DEPDIR)/opml.Po \
-@AMDEP_TRUE@	$(DEPDIR)/os-support.Po $(DEPDIR)/pie_entry.Po \
-@AMDEP_TRUE@	$(DEPDIR)/pie_feed.Po $(DEPDIR)/rss_channel.Po \
-@AMDEP_TRUE@	$(DEPDIR)/rss_item.Po $(DEPDIR)/support.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ui_filter.Po $(DEPDIR)/ui_popup.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ui_tray.Po $(DEPDIR)/update.Po \
-@AMDEP_TRUE@	$(DEPDIR)/vfolder.Po
+@AMDEP_TRUE@	$(DEPDIR)/export.Po $(DEPDIR)/feed.Po \
+@AMDEP_TRUE@	$(DEPDIR)/filter.Po $(DEPDIR)/folder.Po \
+@AMDEP_TRUE@	$(DEPDIR)/htmlview.Po $(DEPDIR)/interface.Po \
+@AMDEP_TRUE@	$(DEPDIR)/item.Po $(DEPDIR)/main.Po \
+@AMDEP_TRUE@	$(DEPDIR)/netio.Po $(DEPDIR)/ns_admin.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ns_ag.Po $(DEPDIR)/ns_blogChannel.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ns_cC.Po $(DEPDIR)/ns_content.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ns_dc.Po $(DEPDIR)/ns_fm.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ns_ocs.Po $(DEPDIR)/ns_slash.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ns_syn.Po $(DEPDIR)/ocs_dir.Po \
+@AMDEP_TRUE@	$(DEPDIR)/opml.Po $(DEPDIR)/os-support.Po \
+@AMDEP_TRUE@	$(DEPDIR)/pie_entry.Po $(DEPDIR)/pie_feed.Po \
+@AMDEP_TRUE@	$(DEPDIR)/rss_channel.Po $(DEPDIR)/rss_item.Po \
+@AMDEP_TRUE@	$(DEPDIR)/support.Po $(DEPDIR)/ui_filter.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ui_popup.Po $(DEPDIR)/ui_tray.Po \
+@AMDEP_TRUE@	$(DEPDIR)/update.Po $(DEPDIR)/vfolder.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -246,6 +247,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/conf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/eggtrayicon.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/export.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/feed.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/filter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/folder.Po@am__quote@

@@ -35,6 +35,24 @@
 		<widget class="GtkMenu" id="menuitem1_menu">
 
 		  <child>
+		    <widget class="GtkMenuItem" id="import_feed_list1">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Import Feed List</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_import_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="export_feed_list1">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Export Feed List</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_export_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
+		    </widget>
+		  </child>
+
+		  <child>
 		    <widget class="GtkImageMenuItem" id="preferences1">
 		      <property name="visible">True</property>
 		      <property name="label">gtk-preferences</property>
@@ -88,7 +106,7 @@
 			      <signal name="activate" handler="on_popup_refresh_selected" last_modification_time="Wed, 05 Nov 2003 19:48:14 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image259">
+				<widget class="GtkImage" id="image277">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-refresh</property>
 				  <property name="icon_size">1</property>
@@ -109,7 +127,7 @@
 			      <signal name="activate" handler="on_newbtn_clicked" last_modification_time="Wed, 05 Nov 2003 19:48:14 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image260">
+				<widget class="GtkImage" id="image278">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-new</property>
 				  <property name="icon_size">1</property>
@@ -130,7 +148,7 @@
 			      <signal name="activate" handler="on_popup_delete_selected" last_modification_time="Wed, 05 Nov 2003 19:56:31 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image261">
+				<widget class="GtkImage" id="image279">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-delete</property>
 				  <property name="icon_size">1</property>
@@ -151,7 +169,7 @@
 			      <signal name="activate" handler="on_popup_prop_selected" last_modification_time="Wed, 05 Nov 2003 19:56:31 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image262">
+				<widget class="GtkImage" id="image280">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-properties</property>
 				  <property name="icon_size">1</property>
@@ -185,7 +203,7 @@
 			      <signal name="activate" handler="on_popup_newfolder_selected" last_modification_time="Wed, 05 Nov 2003 19:56:31 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image263">
+				<widget class="GtkImage" id="image281">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-new</property>
 				  <property name="icon_size">1</property>
@@ -206,7 +224,7 @@
 			      <signal name="activate" handler="on_popup_removefolder_selected" last_modification_time="Wed, 05 Nov 2003 19:56:31 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image264">
+				<widget class="GtkImage" id="image282">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-delete</property>
 				  <property name="icon_size">1</property>
@@ -227,7 +245,7 @@
 			      <signal name="activate" handler="on_foldername_activate" last_modification_time="Wed, 05 Nov 2003 20:27:40 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image265">
+				<widget class="GtkImage" id="image283">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-properties</property>
 				  <property name="icon_size">1</property>
@@ -259,7 +277,7 @@
 		      <accelerator key="a" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image266">
+			<widget class="GtkImage" id="image284">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -345,7 +363,7 @@
 		      <accelerator key="s" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image267">
+			<widget class="GtkImage" id="image285">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -367,7 +385,7 @@
 		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image268">
+			<widget class="GtkImage" id="image286">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-forward</property>
 			  <property name="icon_size">1</property>
@@ -2489,7 +2507,7 @@ take place after restarting the program.</property>
 <widget class="GtkFileSelection" id="fileselection">
   <property name="border_width">10</property>
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Select Local File</property>
+  <property name="title" translatable="yes">Select A File</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">True</property>
@@ -2508,12 +2526,11 @@ take place after restarting the program.</property>
   </child>
 
   <child internal-child="ok_button">
-    <widget class="GtkButton" id="ok_button1">
+    <widget class="GtkButton" id="fileselectbtn">
       <property name="visible">True</property>
       <property name="can_default">True</property>
       <property name="can_focus">True</property>
       <property name="relief">GTK_RELIEF_NORMAL</property>
-      <signal name="clicked" handler="on_fileselect_clicked" last_modification_time="Sun, 12 Oct 2003 00:40:16 GMT"/>
       <signal name="clicked" handler="gtk_widget_hide" after="yes" object="fileselection" last_modification_time="Sun, 12 Oct 2003 01:02:46 GMT"/>
     </widget>
   </child>
@@ -2823,6 +2840,529 @@ take place after restarting the program.</property>
 	<packing>
 	  <property name="padding">0</property>
 	  <property name="expand">True</property>
+	  <property name="fill">True</property>
+	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkDialog" id="feedsterdialog">
+  <property name="visible">True</property>
+  <property name="title" translatable="yes">Search With Feedster</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+  <property name="has_separator">True</property>
+
+  <child internal-child="vbox">
+    <widget class="GtkVBox" id="dialog-vbox9">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">3</property>
+
+      <child internal-child="action_area">
+	<widget class="GtkHButtonBox" id="dialog-action_area9">
+	  <property name="visible">True</property>
+	  <property name="layout_style">GTK_BUTTONBOX_END</property>
+
+	  <child>
+	    <widget class="GtkButton" id="feedsterbtn">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-ok</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-5</property>
+	      <signal name="clicked" handler="on_feedsterbtn_clicked" last_modification_time="Wed, 12 Nov 2003 00:23:58 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="feedstercancelbtn">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	    </widget>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">True</property>
+	  <property name="pack_type">GTK_PACK_END</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkVBox" id="vbox224">
+	  <property name="border_width">5</property>
+	  <property name="visible">True</property>
+	  <property name="homogeneous">False</property>
+	  <property name="spacing">0</property>
+
+	  <child>
+	    <widget class="GtkHBox" id="hbox23">
+	      <property name="visible">True</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">5</property>
+
+	      <child>
+		<widget class="GtkLabel" id="label42">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Search for </property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkEntry" id="entry2">
+		  <property name="visible">True</property>
+		  <property name="tooltip" translatable="yes">enter any search string you want</property>
+		  <property name="can_focus">True</property>
+		  <property name="editable">True</property>
+		  <property name="visibility">True</property>
+		  <property name="max_length">0</property>
+		  <property name="text" translatable="yes"></property>
+		  <property name="has_frame">True</property>
+		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="activates_default">False</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">True</property>
+	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkHBox" id="hbox24">
+	      <property name="visible">True</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">5</property>
+
+	      <child>
+		<widget class="GtkLabel" id="label43">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Maximal Number Of Result Items</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkSpinButton" id="spinbutton1">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="climb_rate">1</property>
+		  <property name="digits">0</property>
+		  <property name="numeric">False</property>
+		  <property name="update_policy">GTK_UPDATE_ALWAYS</property>
+		  <property name="snap_to_ticks">False</property>
+		  <property name="wrap">False</property>
+		  <property name="adjustment">15 1 1000 1 10 10</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">True</property>
+	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkLabel" id="label44">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">Note: Liferea will generate a feed subscription which is used to query the Feedster results for the specified search string. You can keep this feed permanently and update it like any other subscription.  </property>
+	      <property name="use_underline">False</property>
+	      <property name="use_markup">False</property>
+	      <property name="justify">GTK_JUSTIFY_LEFT</property>
+	      <property name="wrap">True</property>
+	      <property name="selectable">False</property>
+	      <property name="xalign">0</property>
+	      <property name="yalign">0.5</property>
+	      <property name="xpad">0</property>
+	      <property name="ypad">0</property>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
+	    </packing>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">True</property>
+	  <property name="fill">True</property>
+	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkDialog" id="importdialog">
+  <property name="visible">True</property>
+  <property name="title" translatable="yes">Export Feed List</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+  <property name="has_separator">True</property>
+
+  <child internal-child="vbox">
+    <widget class="GtkVBox" id="dialog-vbox10">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">0</property>
+
+      <child internal-child="action_area">
+	<widget class="GtkHButtonBox" id="dialog-action_area10">
+	  <property name="visible">True</property>
+	  <property name="layout_style">GTK_BUTTONBOX_END</property>
+
+	  <child>
+	    <widget class="GtkButton" id="button20">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-execute</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-10</property>
+	      <signal name="clicked" handler="on_importfile_clicked" last_modification_time="Wed, 12 Nov 2003 22:01:08 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="button21">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	      <signal name="clicked" handler="gtk_widget_hide" object="importdialog" last_modification_time="Wed, 12 Nov 2003 20:52:29 GMT"/>
+	    </widget>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">True</property>
+	  <property name="pack_type">GTK_PACK_END</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkVBox" id="vbox225">
+	  <property name="border_width">5</property>
+	  <property name="visible">True</property>
+	  <property name="homogeneous">False</property>
+	  <property name="spacing">5</property>
+
+	  <child>
+	    <widget class="GtkLabel" id="label45">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">Liferea can import a list of feeds from an OPML file. This  can be used to either restore a backup feed list or import a feed list from another aggregator like that supports OPML export.</property>
+	      <property name="use_underline">False</property>
+	      <property name="use_markup">False</property>
+	      <property name="justify">GTK_JUSTIFY_LEFT</property>
+	      <property name="wrap">True</property>
+	      <property name="selectable">False</property>
+	      <property name="xalign">0</property>
+	      <property name="yalign">0.5</property>
+	      <property name="xpad">0</property>
+	      <property name="ypad">0</property>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkHBox" id="hbox25">
+	      <property name="visible">True</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">5</property>
+
+	      <child>
+		<widget class="GtkLabel" id="label47">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Filename</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkEntry" id="importfileentry">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="editable">True</property>
+		  <property name="visibility">True</property>
+		  <property name="max_length">0</property>
+		  <property name="text" translatable="yes"></property>
+		  <property name="has_frame">True</property>
+		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="activates_default">False</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkButton" id="button24">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">Select File</property>
+		  <property name="use_underline">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <signal name="clicked" handler="on_importfileselect_clicked" last_modification_time="Wed, 12 Nov 2003 22:23:10 GMT"/>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">True</property>
+	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">True</property>
+	  <property name="fill">False</property>
+	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkDialog" id="exportdialog">
+  <property name="visible">True</property>
+  <property name="title" translatable="yes">Import Feed List</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
+  <property name="modal">False</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+  <property name="has_separator">True</property>
+
+  <child internal-child="vbox">
+    <widget class="GtkVBox" id="dialog-vbox11">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">0</property>
+
+      <child internal-child="action_area">
+	<widget class="GtkHButtonBox" id="dialog-action_area11">
+	  <property name="visible">True</property>
+	  <property name="layout_style">GTK_BUTTONBOX_END</property>
+
+	  <child>
+	    <widget class="GtkButton" id="button22">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-execute</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">0</property>
+	      <signal name="clicked" handler="on_exportfile_clicked" last_modification_time="Wed, 12 Nov 2003 22:03:14 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="button23">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	      <signal name="clicked" handler="gtk_widget_hide" object="exportdialog" last_modification_time="Wed, 12 Nov 2003 20:52:12 GMT"/>
+	    </widget>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">True</property>
+	  <property name="pack_type">GTK_PACK_END</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkVBox" id="vbox226">
+	  <property name="border_width">5</property>
+	  <property name="visible">True</property>
+	  <property name="homogeneous">False</property>
+	  <property name="spacing">5</property>
+
+	  <child>
+	    <widget class="GtkLabel" id="label46">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">Liferea can export the list of feeds as an OPML list. You can use this feature to backup your feed list or export your feed list to another aggregator.</property>
+	      <property name="use_underline">False</property>
+	      <property name="use_markup">False</property>
+	      <property name="justify">GTK_JUSTIFY_LEFT</property>
+	      <property name="wrap">True</property>
+	      <property name="selectable">False</property>
+	      <property name="xalign">0</property>
+	      <property name="yalign">0.5</property>
+	      <property name="xpad">0</property>
+	      <property name="ypad">0</property>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkHBox" id="hbox26">
+	      <property name="visible">True</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">5</property>
+
+	      <child>
+		<widget class="GtkLabel" id="label48">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Filename</property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkEntry" id="exportfileentry">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="editable">True</property>
+		  <property name="visibility">True</property>
+		  <property name="max_length">0</property>
+		  <property name="text" translatable="yes"></property>
+		  <property name="has_frame">True</property>
+		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="activates_default">False</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">True</property>
+		  <property name="fill">True</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkButton" id="button25">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">Select File</property>
+		  <property name="use_underline">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <signal name="clicked" handler="on_exportfileselect_clicked" last_modification_time="Wed, 12 Nov 2003 22:11:22 GMT"/>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">True</property>
+	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
 	  <property name="fill">True</property>
 	</packing>
       </child>

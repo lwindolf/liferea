@@ -64,13 +64,6 @@
 /* feed handler interface					*/
 /* ------------------------------------------------------------ */
 
-#define FEED_PROP_TITLE			0
-#define FEED_PROP_USERTITLE		1
-#define FEED_PROP_SOURCE		2
-#define FEED_PROP_UPDATEINTERVAL	3
-#define FEED_PROP_DFLTUPDINTERVAL	4
-#define FEED_PROP_UPDATECOUNTER		5
-
 /* common structure to access feed info structures */
 typedef struct feed {
 	gint		type;			/* feed type */

@@ -274,8 +274,11 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 			print_status(_("Empty document! Feed cache file should not be empty..."));
 			break;
 		}
+		
+		while(cur && xmlIsBlankNode(cur))
+			cur = cur->next;
 
-		if(!xmlStrcmp(cur->name, (const xmlChar *)"feedCache")) {
+		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			print_status(g_strdup_printf(_("\"%s\" is no valid cache file! Cannot read cache file!"), filename));
 			break;		
 		}
@@ -284,22 +287,22 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		fp->available = TRUE;
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "feedDescription"))) 
+			if ((!xmlStrcmp(cur->name, BAD_CAST"feedDescription"))) 
 				fp->description = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "feedTitle"))) 
+			if ((!xmlStrcmp(cur->name, BAD_CAST"feedTitle"))) 
 				fp->title = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "feedUpdateInterval"))) {
+			if ((!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval"))) {
 				tmp = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 				fp->defaultInterval = atoi(tmp);
 				xmlFree(tmp);
 			}
-			if (!xmlStrcmp(cur->name, (const xmlChar *)"feedStatus")) {
+			if (!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
 				tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
 				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
 				xmlFree(tmp);
 			}
 
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "item"))) {
+			if ((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
 				ip = parseCacheItem(doc, cur);
 				addItem(fp, ip);
 			}

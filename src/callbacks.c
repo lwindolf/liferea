@@ -42,12 +42,12 @@
 #include "vfolder.h"	// FIXME
 
 GtkWidget		*mainwindow;
+GtkWidget		*filedialog = NULL;
 static GtkWidget	*newdialog = NULL;
 static GtkWidget	*propdialog = NULL;
 static GtkWidget	*prefdialog = NULL;
 static GtkWidget	*newfolderdialog = NULL;
 static GtkWidget	*foldernamedialog = NULL;
-static GtkWidget	*filedialog = NULL;
 
 GtkTreeStore	*itemstore = NULL;
 GtkTreeStore	*feedstore = NULL;
@@ -559,8 +559,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	}
 
 	keyprefix = g_strdup(selected_keyprefix);
-	fp = newFeed(type, source, keyprefix);
-	if(NULL != fp) {
+	if(NULL != (fp = newFeed(type, source, keyprefix))) {
 		addToFeedList(fp, FALSE);
 		checkForEmptyFolders();
 
@@ -584,20 +583,26 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	/* don't free source/keyprefix for they are reused by newFeed! */
 }
 
-void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
-
-	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
-		filedialog = create_fileselection();
-		
-	gtk_widget_show(filedialog);
-}
-
-void on_fileselect_clicked(GtkButton *button, gpointer user_data) {
+void on_localfileselect_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*source;
 	
+	gtk_widget_hide(filedialog);
 	g_assert(NULL != newdialog);
 	if(NULL != (source = lookup_widget(newdialog, "newfeedentry")))
 		gtk_entry_set_text(GTK_ENTRY(source), gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog)));
+}
+
+void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
+	GtkWidget	*okbutton;
+	
+	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
+		filedialog = create_fileselection();
+		
+	if(NULL == (okbutton = lookup_widget(filedialog, "fileselectbtn")))
+		g_error(_("internal error! could not find file dialog select button!"));
+
+	g_signal_connect((gpointer) okbutton, "clicked", G_CALLBACK (on_localfileselect_clicked), NULL);
+	gtk_widget_show(filedialog);
 }
 
 /*------------------------------------------------------------------------------*/
@@ -1366,6 +1371,21 @@ void showErrorBox(gchar *msg) {
 	 gtk_widget_destroy (dialog);
 }
 
+void showInfoBox(gchar *msg) {
+	GtkWidget	*dialog;
+
+	if(updateThread == g_thread_self())	// FIXME: deadlock when using this function from update thread
+		return;
+			
+	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
+                  GTK_DIALOG_DESTROY_WITH_PARENT,
+                  GTK_MESSAGE_INFO,
+                  GTK_BUTTONS_CLOSE,
+                  msg);
+	 gtk_dialog_run (GTK_DIALOG (dialog));
+	 gtk_widget_destroy (dialog);
+}
+
 /*------------------------------------------------------------------------------*/
 /* feed list DND handling							*/
 /*------------------------------------------------------------------------------*/
@@ -1551,4 +1571,11 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	
 	gtk_main_quit();
 	return FALSE;
+}
+
+void
+on_feedsterbtn_clicked                 (GtkButton       *button,
+                                        gpointer         user_data)
+{
+
 }

@@ -783,7 +783,7 @@ gchar * getStringConfValue(gchar *valuename) {
 	if(NULL == value) {
 		result = g_strdup("");
 	} else {
-		result = gconf_value_get_string(value);
+		result = (gchar *)gconf_value_get_string(value);
 	}
 		
 	return result;

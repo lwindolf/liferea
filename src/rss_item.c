@@ -163,6 +163,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	g_free(i->enclosure);
 	g_free(i->nsinfos);
 	g_free(i);
+
 	return ip;
 }
 

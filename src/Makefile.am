@@ -20,6 +20,7 @@ liferea_SOURCES = \
 	folder.c folder.h \
 	feed.c feed.h \
 	item.c item.h \
+	export.c export.h \
 	filter.c filter.h \
 	update.c update.h \
 	htmlview.c htmlview.h \

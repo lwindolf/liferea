@@ -35,6 +35,7 @@
 void initGUI(void);
 void updateUI(void);
 void print_status(gchar *statustext);
+void showInfoBox(gchar *msg);
 void showErrorBox(gchar *msg);
 void doTrayIcon(void);
 void undoTrayIcon(void);
@@ -224,3 +225,51 @@ void on_popup_allunread_selected(void);
 
 void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_next_unread_item_selected(void);
+
+void
+on_feedsterbtn_clicked                 (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_import_activate                     (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_export_activate                     (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_exportfileselect_pressed            (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_exportfile_clicked                  (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_importfileselect_clicked            (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_importfile_clicked                  (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_importfile_clicked                  (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_exportfile_clicked                  (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_importfileselect_pressed            (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_exportfileselect_clicked            (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_importfileselect_clicked            (GtkButton       *button,
+                                        gpointer         user_data);
