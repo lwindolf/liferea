@@ -127,6 +127,13 @@ void folder_remove(folderPtr folder) {
 	g_free(folder);
 }
 
+void folder_state_save(nodePtr ptr) {
+	folderPtr folder = (folderPtr)ptr;
+	g_assert(folder);
+	g_assert(IS_FOLDER(folder->type));
+	setFolderCollapseStateInConfig(folder, !ui_is_folder_expanded(folder));
+}
+
 void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
 	folderPtr newFolder;
 	gboolean expanded=FALSE;

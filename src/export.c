@@ -32,25 +32,39 @@ static GtkWidget * exportdialog = NULL;
 extern GMutex * feeds_lock;
 
 /* the real import/export functions */
-static void createFeedTag(gpointer value, gpointer userdata) {
+static void append_node_tag(nodePtr ptr, gpointer userdata) {
 	folderPtr		folder = (folderPtr)folder;
-	feedPtr		fp = (feedPtr)value;
 	xmlNodePtr 	cur = (xmlNodePtr)userdata;
-	xmlNodePtr	feedNode;
+	xmlNodePtr	childNode;
 	
-	if (IS_FOLDER(fp->type))
-		g_slist_foreach(folder->children, createFeedTag, userdata);
-	else {
-		feedNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-		xmlNewProp(feedNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
-		xmlNewProp(feedNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
-		xmlNewProp(feedNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
-		xmlNewProp(feedNode, BAD_CAST"htmlUrl", BAD_CAST "");
+	if (IS_FOLDER(ptr->type)) {
+		folderPtr folder = (folderPtr)ptr;
+		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST folder_get_title(folder));
+		if (ptr->type == FST_HELPFOLDER) {
+			gchar *type = g_strdup_printf("%d", folder->type);
+			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
+			g_free(type);
+		} else {
+			ui_feedlist_do_for_all_data(ptr,ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)childNode);
+		}
+	} else {
+		feedPtr fp = (feedPtr)ptr;
+		gchar *type = g_strdup_printf("%d",feed_get_type(fp));
+		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
+
+		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp));
+		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
+		xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
+		xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
+
+		g_free(interval);
+		g_free(type);
 	}
 }
 
 
-// FIXME: make hierarchical exports as soon as there are folderPtr structures
 void exportOPMLFeedList(gchar *filename) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
@@ -67,9 +81,7 @@ void exportOPMLFeedList(gchar *filename) {
 			
 			/* create body with feed list */
 			if(NULL != (cur = xmlNewChild(opmlNode, NULL, BAD_CAST"body", NULL))) {
-				g_mutex_lock(feeds_lock);
-				g_slist_foreach(folder_get_root()->children, createFeedTag, (gpointer)cur);
-				g_mutex_unlock(feeds_lock);
+				ui_feedlist_do_for_all_data(NULL,ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)cur);
 			}
 			
 			xmlDocSetRootElement(doc, opmlNode);		

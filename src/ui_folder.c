@@ -164,12 +164,6 @@ void ui_folder_set_expansion(folderPtr folder, gboolean expanded) {
 		gtk_tree_path_free(path);
 	}
 }
-void folder_state_save(nodePtr ptr) {
-	folderPtr folder = (folderPtr)ptr;
-	g_assert(folder);
-	g_assert(IS_FOLDER(folder->type));
-	setFolderCollapseStateInConfig(folder, !ui_is_folder_expanded(folder));
-}
 
 /* Subfolders */
 static void ui_add_empty_subfolder(folderPtr folder) {

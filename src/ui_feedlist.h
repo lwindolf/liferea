@@ -48,7 +48,8 @@ nodePtr ui_feedlist_get_selected();
 void ui_feedlist_select(nodePtr fp);
 
 
-typedef void 	(*nodeActionFunc)	(nodePtr fp);
+typedef void 	(*nodeActionFunc)		(nodePtr fp);
+typedef void 	(*nodeActionDataFunc)	(nodePtr fp, gpointer user_data);
 
 /**
  * Returns the feed store, creating it if needed.
@@ -101,11 +102,21 @@ enum {
  * elements of the given type in the feed list.
  *
  * @param ptr	node pointer whose children should be processed (NULL defaults to root)
- * @param type	the element type to apply func to
+ * @param filter specifies the types of nodes for which func should be called
  * @param func	the function to process all found elements
  */
-void ui_feedlist_do_for_all(nodePtr ptr, gint actionType, nodeActionFunc func);
+void ui_feedlist_do_for_all(nodePtr ptr, gint filter, nodeActionFunc func);
 
+/**
+ * Helper function to recursivly call feed_save() for all
+ * elements of the given type in the feed list.
+ *
+ * @param ptr	node pointer whose children should be processed (NULL defaults to root)
+ * @param filter specifies the types of nodes for which func should be called
+ * @param func	the function to process all found elements
+ * @param user_data specifies the second argument that func should be passed
+ */
+void ui_feedlist_do_for_all_data(nodePtr ptr, gint filter, nodeActionDataFunc func, gpointer user_data);
 /**
  * helper function to find next unread item 
  *
