@@ -57,6 +57,19 @@ nodePtr	displayed_node = NULL;
 static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
 static itemPtr ui_itemlist_get_selected();
 
+/* sort function for the item list date column */
+static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
+	time_t	timea, timeb;
+	
+	g_assert(model != NULL);
+	g_assert(a != NULL);
+	g_assert(b != NULL);
+	gtk_tree_model_get(model, a, IS_TIME, &timea, -1);
+	gtk_tree_model_get(model, b, IS_TIME, &timeb, -1);
+	
+	return timeb-timea;
+}
+
 GtkTreeStore * getItemStore(void) {
 
 	if(NULL == itemstore) {
@@ -78,6 +91,7 @@ GtkTreeStore * getItemStore(void) {
 						 G_TYPE_STRING,
 						 G_TYPE_INT,
  						 GDK_TYPE_PIXBUF);
+		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
 	}
 	
 	return itemstore;
@@ -160,19 +174,6 @@ void ui_itemlist_clear(void) {
 	displayed_node = NULL;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
-}
-
-/* sort function for the item list date column */
-static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
-	time_t	timea, timeb;
-	
-	g_assert(model != NULL);
-	g_assert(a != NULL);
-	g_assert(b != NULL);
-	gtk_tree_model_get(model, a, IS_TIME, &timea, -1);
-	gtk_tree_model_get(model, b, IS_TIME, &timeb, -1);
-	
-	return timea-timeb;
 }
 
 static void ui_update_item_from_iter(GtkTreeIter *iter) {
@@ -294,10 +295,9 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	column = gtk_tree_view_column_new_with_attributes(_("Date"), renderer, "markup", IS_TIME_STR, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
-	gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
 	g_object_set(column, "resizable", TRUE, NULL);
-
-
+	
+	
 	renderer = gtk_cell_renderer_pixbuf_new();
 	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ICON2, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
