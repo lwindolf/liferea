@@ -117,11 +117,10 @@ void ns_ocs_parseFormatTag(gpointer fp, xmlNodePtr cur) {
 OCSNsHandler *ns_ocs_getOCSNsHandler(void) {
 	OCSNsHandler 	*nsh;
 	
-	if(NULL != (nsh = (OCSNsHandler *)g_malloc(sizeof(OCSNsHandler)))) {
-		nsh->parseDirectoryTag	= ns_ocs_parseDirectoryTag;
-		nsh->parseDirEntryTag	= ns_ocs_parseChannelTag;
-		nsh->parseFormatTag	= ns_ocs_parseFormatTag;				
-	}
+	nsh = g_new0(OCSNsHandler, 1);
+	nsh->parseDirectoryTag	= ns_ocs_parseDirectoryTag;
+	nsh->parseDirEntryTag	= ns_ocs_parseChannelTag;
+	nsh->parseFormatTag	= ns_ocs_parseFormatTag;				
 
 	return nsh;
 }

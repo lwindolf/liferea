@@ -77,14 +77,13 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 RSSNsHandler *ns_syn_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
-	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= ns_syn_parseChannelTag;
-		nsh->parseItemTag		= NULL;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= NULL;
-		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= NULL;
-	}
+	nsh = g_new0(RSSNsHandler, 1);
+	nsh->parseChannelTag		= ns_syn_parseChannelTag;
+	nsh->parseItemTag		= NULL;
+	nsh->doChannelHeaderOutput	= NULL;
+	nsh->doChannelFooterOutput	= NULL;
+	nsh->doItemHeaderOutput		= NULL;
+	nsh->doItemFooterOutput		= NULL;
 
 	return nsh;
 }

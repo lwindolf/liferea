@@ -336,7 +336,7 @@ gint checkForUpdateResults(gpointer data) {
 	
 	g_free(request->feedurl);	/* request structure cleanup... */
 	g_free(request->data);
-	request->fp->update_requested = FALSE;
+	request->fp->updateRequested = FALSE;
 		
 	return TRUE;
 }

@@ -146,9 +146,8 @@ void addFolder(gchar *keyprefix, gchar *title, gint type) {
 		return;
 	}
 
-	if(NULL == (iter = (GtkTreeIter *)g_malloc(sizeof(GtkTreeIter)))) 
-		g_error("could not allocate memory!\n");
-
+	iter = g_new0(GtkTreeIter, 1);
+	
 	feedstore = getFeedStore();
 	g_assert(feedstore != NULL);
 

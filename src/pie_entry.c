@@ -117,11 +117,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 
 	g_assert(NULL != cur);
 		
-	if(NULL == (i = (PIEEntryPtr) g_malloc(sizeof(struct PIEEntry)))) {
-		g_error("not enough memory!\n");
-		return(NULL);
-	}
-	memset(i, 0, sizeof(struct PIEEntry));
+	i = g_new0(struct PIEEntry, 1);
 	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
 	ip = getNewItemStruct();
 	

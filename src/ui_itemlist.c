@@ -369,7 +369,7 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 						    IS_TYPE, getFeedType(fp),	/* not the item type, this would fail for VFolders! */
 						    -1);
 			g_assert(ip->ui_data == NULL);
-			ip->ui_data = g_malloc(sizeof(ui_item_data));
+			ip->ui_data = g_new0(ui_item_data, 1);
 			((ui_item_data*)(ip->ui_data))->row = iter;
 
 			ui_update_item_from_iter(&iter);

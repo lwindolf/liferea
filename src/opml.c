@@ -259,10 +259,7 @@ static void readOPML(feedPtr fp, gchar *data) {
 feedHandlerPtr initOPMLFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(fhp, 0, sizeof(struct feedHandler));
+	fhp = g_new0(struct feedHandler, 1);
 	
 	/* prepare feed handler structure */
 	fhp->readFeed		= readOPML;

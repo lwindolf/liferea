@@ -82,10 +82,9 @@ GMutex * feeds_lock = NULL;
 void registerFeedType(gint type, feedHandlerPtr fhp) {
 	gint	*typeptr;
 		
-	if(NULL != (typeptr = (gint *)g_malloc(sizeof(gint)))) {
-		*typeptr = type;
-		g_hash_table_insert(feedHandler, (gpointer)typeptr, (gpointer)fhp);
-	}
+	typeptr = g_new0(gint, 1);
+	*typeptr = type;
+	g_hash_table_insert(feedHandler, (gpointer)typeptr, (gpointer)fhp);
 }
 
 static gint autoDetectFeedType(gchar *url, gchar **data) {
@@ -146,12 +145,7 @@ void initBackend(void) {
 feedPtr getNewFeedStruct(void) {
 	feedPtr			fp;
 	
-	/* initialize channel structure */
-	if(NULL == (fp = (feedPtr) g_malloc(sizeof(struct feed)))) {
-		g_error("not enough memory!\n");
-		exit(1);
-	}
-	memset(fp, 0, sizeof(struct feed));
+	fp = g_new0(struct feed, 1);
 
 	/* we dont allocate a request structure this is done
 	   during cache loading or first update! */		
@@ -162,7 +156,7 @@ feedPtr getNewFeedStruct(void) {
 	fp->available = FALSE;
 	fp->type = FST_INVALID;
 	fp->parseErrors = NULL;
-	fp->update_requested = FALSE;
+	fp->updateRequested = FALSE;
 	
 	return fp;
 }
@@ -291,7 +285,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	int		error = 0;
 
 	filename = getCacheFileName(keyprefix, key, getExtension(type));
-	if(!g_file_get_contents(filename, &data, NULL, NULL)) {
+	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		print_status(g_strdup_printf(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
 		return NULL;
 	}
@@ -660,6 +654,11 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 void removeFeed(feedPtr fp) {
 	gchar	*filename;
 	
+	/* there may be an update request for this feed, 
+	   we abandon it by unsetting its feed pointer */
+	if(NULL != fp->request)
+		((struct feed_request *)fp->request)->fp = NULL;
+		
 	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
 	if(0 != unlink(filename)) {
 		g_warning(g_strdup_printf(_("Could not delete cache file %s! Please remove manually!"), filename));
@@ -668,7 +667,8 @@ void removeFeed(feedPtr fp) {
 	removeFavIcon(fp);
 
 	g_hash_table_remove(feeds, (gpointer)fp);
-	removeFeedFromConfig(fp->keyprefix, fp->key);
+	removeFeedFromConfig(fp->keyprefix, fp->key);	
+	freeFeed(fp);
 }
 
 /* "foreground" user caused update executed in the main thread to update
@@ -917,7 +917,11 @@ void freeFeed(feedPtr fp) {
 	
 	// FIXME: free filter structures too as soon as implemented
 
-	freeRequest(fp->request);
+	/* Don't free active feed requests here, because they might
+	   still be processed in the update queues! Abandoned
+	   requests are free'd in update.c. */
+	if(FALSE == fp->updateRequested)
+		freeRequest(fp->request);
 
 	/* free feed info */
 	g_free(fp->title);

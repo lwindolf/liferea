@@ -209,11 +209,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 	int 			error = 0;
 	
 	/* initialize channel structure */
-	if(NULL == (cp = (PIEFeedPtr) g_malloc(sizeof(struct PIEFeed)))) {
-		g_error("not enough memory!\n");
-		return;
-	}
-	memset(cp, 0, sizeof(struct PIEFeed));
+	cp = g_new0(struct PIEFeed, 1);
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
 	
 	cp->updateInterval = -1;
@@ -341,10 +337,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 feedHandlerPtr initPIEFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(fhp, 0, sizeof(struct feedHandler));
+	fhp = g_new0(struct feedHandler, 1);
 	
 	g_free(pie_nslist);
 	pie_nslist = g_hash_table_new(g_str_hash, g_str_equal);

@@ -107,6 +107,7 @@ static gchar* convert(unsigned char *in, gchar *encoding)
         size = (int)strlen(in)+1; 
         out_size = size*2-1; 
         out = g_malloc((size_t)out_size); 
+	g_assert(NULL != out);
 
         if (out) {
                 handler = xmlFindCharEncodingHandler(encoding);

@@ -38,13 +38,7 @@
 itemPtr getNewItemStruct(void) {
 	itemPtr		ip;
 	
-	/* initialize channel structure */
-	if(NULL == (ip = (itemPtr) g_malloc(sizeof(struct item)))) {
-		g_error("not enough memory!\n");
-		exit(1);
-	}
-	
-	memset(ip, 0, sizeof(struct item));
+	ip = g_new0(struct item, 1);
 	ip->readStatus = FALSE;
 	ip->marked = FALSE;
 	ip->type = FST_INVALID;

@@ -52,11 +52,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		return NULL;
 	}
 		
-	if(NULL == (i = (CDFItemPtr) g_malloc(sizeof(struct CDFItem)))) {
-		g_error("not enough memory!\n");
-		return(NULL);
-	}
-	memset(i, 0, sizeof(struct CDFItem));
+	i = g_new0(struct CDFItem, 1);
 	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
 	ip = getNewItemStruct();
 	

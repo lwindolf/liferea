@@ -117,14 +117,13 @@ static gchar * doItemOutput(gpointer obj) {
 RSSNsHandler *ns_slash_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
-	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= NULL;
-		nsh->parseItemTag		= parseItemTag;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= NULL;
-		nsh->doItemHeaderOutput		= doItemOutput;
-		nsh->doItemFooterOutput		= NULL;
-	}
+	nsh = g_new0(RSSNsHandler, 1);
+	nsh->parseChannelTag		= NULL;
+	nsh->parseItemTag		= parseItemTag;
+	nsh->doChannelHeaderOutput	= NULL;
+	nsh->doChannelFooterOutput	= NULL;
+	nsh->doItemHeaderOutput		= doItemOutput;
+	nsh->doItemFooterOutput		= NULL;
 
 	return nsh;
 }

@@ -129,8 +129,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				
 				// FIXME: this really does not belong here!!! -> vfolder.c
 				/* setup a rule */
-//				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule)))) 
-//					g_error(_("Could not allocate memory!"));
+//				rp = g_new0(struct rule,1);
 
 				/* we set the searchstring as a default title */
 				setFeedTitle(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));

@@ -90,7 +90,7 @@ typedef struct feed {
 	GSList		*filter;		/**< list of filters applied to this feed */
 	
 	/* feed properties used for updating */
-	gboolean	update_requested;	/**< flag set when update in progress */
+	gboolean	updateRequested;	/**< flag set when update in progress */
 	gpointer	*request;		/**< update request structure */
 } *feedPtr;
 

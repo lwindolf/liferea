@@ -50,19 +50,16 @@ gpointer getNewRequestStruct(feedPtr fp) {
 	/* we always reuse one request structure per feed, to
 	   allow to reuse the lastmodified attribute of the
 	   last request... */
-	if(NULL == (request = (struct feed_request *)g_malloc(sizeof(struct feed_request)))) {
-		g_error(_("Could not allocate memory!"));
-		exit(1);
-	} else {
-		request->feedurl = NULL;
-		request->lastmodified = NULL;
-		request->lasthttpstatus = 0;
-		request->fp = fp;
-		if(NULL != fp) {
-			g_assert(fp->request == NULL);
-			fp->request = (gpointer)request;
-		}
-	}	
+	   
+	request = g_new0(struct feed_request, 1);
+	request->feedurl = NULL;
+	request->lastmodified = NULL;
+	request->lasthttpstatus = 0;
+	request->fp = fp;
+	if(NULL != fp) {
+		g_assert(fp->request == NULL);
+		fp->request = (gpointer)request;
+	}
 	return (gpointer)request;
 }
 
@@ -134,7 +131,7 @@ void requestUpdate(feedPtr fp) {
 	
 	g_assert(NULL != fp);
 	
-	if(TRUE == fp->update_requested) {
+	if(TRUE == fp->updateRequested) {
 		print_status(g_strdup("There already is an update of this feed in progress!"));
 		return;
 	}
@@ -148,7 +145,7 @@ void requestUpdate(feedPtr fp) {
 
 	/* reset feed update counter */
 	fp->updateCounter = fp->updateInterval;
-	fp->update_requested = TRUE;
+	fp->updateRequested = TRUE;
 
 	if(NULL == fp->request)
 		getNewRequestStruct(fp);
@@ -157,7 +154,6 @@ void requestUpdate(feedPtr fp) {
 	   changed on permanent HTTP redirection in netio.c) */
 	((struct feed_request *)fp->request)->feedurl = g_strdup(source);
 
-	/* FIXME: check if feed is already in the queue! */
 	g_async_queue_push(requests, (gpointer)fp->request);
 }
 
@@ -179,7 +175,12 @@ static void doUpdateFeed(struct feed_request *request) {
 	g_assert(NULL != request);
 	downloadURL(request);
 
-	/* finally we return the request so the GUI can merge the feeds
-	   and display the results... */
-	g_async_queue_push(results, (gpointer)request);
+	if(NULL == request->fp) {
+		/* request was abandoned (feed deleted) */
+		g_free(request->data);
+		freeRequest(request);
+	} else {
+		/* return the request so the GUI can merge the feeds and display the results... */
+		g_async_queue_push(results, (gpointer)request);
+	}
 }

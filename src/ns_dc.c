@@ -424,14 +424,13 @@ static gchar *	doPIEFeedFooterOutput(gpointer obj) {
 RSSNsHandler *ns_dc_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
-	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= parseRSSChannelTag;
-		nsh->parseItemTag		= parseRSSItemTag;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= doRSSChannelFooterOutput;
-		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= doRSSItemFooterOutput;		
-	}
+	nsh = g_new0(RSSNsHandler, 1);
+	nsh->parseChannelTag		= parseRSSChannelTag;
+	nsh->parseItemTag		= parseRSSItemTag;
+	nsh->doChannelHeaderOutput	= NULL;
+	nsh->doChannelFooterOutput	= doRSSChannelFooterOutput;
+	nsh->doItemHeaderOutput		= NULL;
+	nsh->doItemFooterOutput		= doRSSItemFooterOutput;		
 
 	return nsh;
 }
@@ -439,14 +438,13 @@ RSSNsHandler *ns_dc_getRSSNsHandler(void) {
 PIENsHandler *ns_dc_getPIENsHandler(void) {
 	PIENsHandler 	*nsh;
 	
-	if(NULL != (nsh = (PIENsHandler *)g_malloc(sizeof(PIENsHandler)))) {
-		nsh->parseChannelTag		= parsePIEFeedTag;
-		nsh->parseItemTag		= parsePIEEntryTag;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= doPIEFeedFooterOutput;
-		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= doPIEEntryFooterOutput;		
-	}
+	nsh = g_new0(PIENsHandler, 1);
+	nsh->parseChannelTag		= parsePIEFeedTag;
+	nsh->parseItemTag		= parsePIEEntryTag;
+	nsh->doChannelHeaderOutput	= NULL;
+	nsh->doChannelFooterOutput	= doPIEFeedFooterOutput;
+	nsh->doItemHeaderOutput		= NULL;
+	nsh->doItemFooterOutput		= doPIEEntryFooterOutput;		
 
 	return nsh;
 }
@@ -454,11 +452,10 @@ PIENsHandler *ns_dc_getPIENsHandler(void) {
 OCSNsHandler *ns_dc_getOCSNsHandler(void) {
 	OCSNsHandler 	*nsh;
 	
-	if(NULL != (nsh = (OCSNsHandler *)g_malloc(sizeof(OCSNsHandler)))) {
-		nsh->parseDirectoryTag		= parseOCSDirectoryTag;
-		nsh->parseDirEntryTag		= parseOCSChannelTag;
-		nsh->parseFormatTag		= parseOCSFormatTag;				
-	}
+	nsh = g_new0(OCSNsHandler, 1);
+	nsh->parseDirectoryTag		= parseOCSDirectoryTag;
+	nsh->parseDirEntryTag		= parseOCSChannelTag;
+	nsh->parseFormatTag		= parseOCSFormatTag;				
 
 	return nsh;
 }

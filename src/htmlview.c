@@ -143,14 +143,11 @@ void ui_htmlview_init(void) {
 					/* if we find one, try to load all symbols and if successful
 					   add it to the available module list */
 					if(TRUE == loadSymbols(filename, TRUE)) {
-						if(NULL != (info = (struct browserModule *)g_malloc(sizeof(struct browserModule)))) {
-							info->libname = g_strdup(filename);
-							info->description = ((getModuleNameFunc)methods[GETMODULENAME])();
-							availableBrowserModules = g_slist_append(availableBrowserModules, (gpointer)info);
-							g_print("-> %s (%s)\n", info->description, info->libname);
-						} else {
-							g_error("could not allocate memory!");
-						}
+						info = g_new0(struct browserModule, 1);
+						info->libname = g_strdup(filename);
+						info->description = ((getModuleNameFunc)methods[GETMODULENAME])();
+						availableBrowserModules = g_slist_append(availableBrowserModules, (gpointer)info);
+						g_print("-> %s (%s)\n", info->description, info->libname);
 					}
 				}
 			}

@@ -150,12 +150,7 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 	CDFChannelPtr 	cp;
 	int 		error = 0;
 	
-	/* initialize channel structure */
-	if(NULL == (cp = (CDFChannelPtr) g_malloc(sizeof(struct CDFChannel)))) {
-		g_error("not enough memory!\n");
-		return;
-	}
-	memset(cp, 0, sizeof(struct CDFChannel));
+	cp = g_new0(struct CDFChannel, 1);
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
 	
 	while(1) {
@@ -230,10 +225,7 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 feedHandlerPtr initCDFFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(fhp, 0, sizeof(struct feedHandler));
+	fhp = g_new0(struct feedHandler, 1);
 	
 	/* there are no name space handlers! */
 

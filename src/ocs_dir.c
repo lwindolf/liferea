@@ -279,14 +279,10 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 						formatNode = tmpNode->xmlChildrenNode;
 						while(NULL != formatNode) {
 							if(!xmlStrcmp(formatNode->name, "format")) {
-								if(NULL != (new_fp = (formatPtr)g_malloc(sizeof(struct format)))) {
-									memset(new_fp, 0, sizeof(struct format));
-									new_fp->source = CONVERT(xmlGetProp(tmpNode, "about"));
-									new_fp->tags[OCS_CONTENTTYPE] = CONVERT(xmlGetProp(formatNode, "resource"));
-									dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
-								} else {
-									g_error(_("not enough memory!"));
-								}
+								new_fp = g_new0(struct format, 1);
+								new_fp->source = CONVERT(xmlGetProp(tmpNode, "about"));
+								new_fp->tags[OCS_CONTENTTYPE] = CONVERT(xmlGetProp(formatNode, "resource"));
+								dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
 							}
 							formatNode = formatNode->next;
 						}
@@ -343,14 +339,10 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 					/* check for <rdf:description> tags, if we find one, this means
 					   a new format for the actual channel */
 					if (!xmlStrcmp(cur->name, "description")) {
-						if(NULL != (new_fp = (formatPtr)g_malloc(sizeof(struct format)))) {
-							memset(new_fp, 0, sizeof(struct format));
-							new_fp->source = CONVERT(xmlGetNoNsProp(cur, "about"));
-							parseFormatEntry(new_fp, cur);
-							dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
-						} else {
-							g_error(_("not enough memory!"));
-						}
+						new_fp = g_new0(struct format, 1);
+						new_fp->source = CONVERT(xmlGetNoNsProp(cur, "about"));
+						parseFormatEntry(new_fp, cur);
+						dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
 					}		
 					
 		
@@ -416,17 +408,12 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 					/* check for <rdf:description tags, if we find one this
 					   means a new channel description */
 					if (!xmlStrcmp(cur->name, "description")) {
-						if(NULL != (new_dep = (dirEntryPtr)g_malloc(sizeof(struct dirEntry)))) {
-							memset(new_dep, 0, sizeof(struct dirEntry));						
-							new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
-							new_dep->dp = dp;
-							ip = parse04DirectoryEntry(new_dep, cur);
-							addItem(fp, ip);
-						} else {
-							g_error(_("not enough memory!"));
-						}
-					}		
-					
+						new_dep = g_new0(struct dirEntry, 1);
+						new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
+						new_dep->dp = dp;
+						ip = parse04DirectoryEntry(new_dep, cur);
+						addItem(fp, ip);
+					}
 		
 				} else {
 					g_assert(NULL != ocs_nslist);
@@ -492,34 +479,19 @@ static void readOCS(feedPtr fp, gchar *data) {
 
 			/* handling OCS 0.5 directory tag... */
 			if(0 == xmlStrcmp(cur->name, "directory")) {
-				/* initialize directory structure */
-				if(NULL == (dp = (directoryPtr) g_malloc(sizeof(struct directory)))) {
-					g_error("not enough memory!\n");
-					exit(1);
-				}
-				memset(dp, 0, sizeof(struct directory));
+				dp = g_new0(struct directory, 1);
 				parseDirectory(fp, dp, cur, 5);
 			}
 			/* handling OCS 0.5 channel tag... */
 			else if(0 == xmlStrcmp(cur->name, "channel")) {
-				if(NULL != (new_dep = (dirEntryPtr)g_malloc(sizeof(struct dirEntry)))) {
-					memset(new_dep, 0, sizeof(struct dirEntry));						
-					new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
-					new_dep->dp = dp;					
-					addItem(fp, parse05DirectoryEntry(new_dep, cur));
-				} else {
-					g_error(_("not enough memory!"));
-				}
+				new_dep = g_new0(struct dirEntry, 1);
+				new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
+				new_dep->dp = dp;					
+				addItem(fp, parse05DirectoryEntry(new_dep, cur));
 			}
 			/* handling OCS 0.4 top level description tag... */
 			else if(0 == xmlStrcmp(cur->name, (const xmlChar *) "description")) {
-
-				/* initialize directory structure */
-				if(NULL == (dp = (directoryPtr) g_malloc(sizeof(struct directory)))) {
-					g_error("not enough memory!\n");
-					exit(1);
-				}
-				memset(dp, 0, sizeof(struct directory));
+				dp = g_new0(struct directory, 1);
 				parseDirectory(fp, dp, cur, 4);
 				break;
 			}
@@ -551,11 +523,8 @@ static void readOCS(feedPtr fp, gchar *data) {
 feedHandlerPtr initOCSFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(fhp, 0, sizeof(struct feedHandler));
-	
+	fhp = g_new0(struct feedHandler, 1);
+
 	g_free(ocs_nslist);
 	ocs_nslist = g_hash_table_new(g_str_hash, g_str_equal);
 	

@@ -114,14 +114,14 @@ gchar * ns_cC_doItemOutput(gpointer obj) {
 RSSNsHandler *ns_cC_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
-	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= ns_cC_parseChannelTag;
-		nsh->parseItemTag		= ns_cC_parseItemTag;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= ns_cC_doChannelOutput;
-		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= ns_cC_doItemOutput;
-	}
+	nsh = g_new0(RSSNsHandler, 1);
+	nsh->parseChannelTag		= ns_cC_parseChannelTag;
+	nsh->parseItemTag		= ns_cC_parseItemTag;
+	nsh->doChannelHeaderOutput	= NULL;
+	nsh->doChannelFooterOutput	= ns_cC_doChannelOutput;
+	nsh->doItemHeaderOutput		= NULL;
+	nsh->doItemFooterOutput		= ns_cC_doItemOutput;
+
 	return nsh;
 }
 

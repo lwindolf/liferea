@@ -46,14 +46,13 @@ gchar * ns_content_getRSSNsPrefix(void) { return ns_content_prefix; }
 RSSNsHandler *ns_content_getRSSNsHandler(void) {
 	RSSNsHandler 	*nsh;
 	
-	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= NULL;
-		nsh->parseItemTag		= ns_content_parseItemTag;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= NULL;
-		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= NULL;
-	}
+	nsh = g_new0(RSSNsHandler, 1);
+	nsh->parseChannelTag		= NULL;
+	nsh->parseItemTag		= ns_content_parseItemTag;
+	nsh->doChannelHeaderOutput	= NULL;
+	nsh->doChannelFooterOutput	= NULL;
+	nsh->doItemHeaderOutput		= NULL;
+	nsh->doItemFooterOutput		= NULL;
 
 	return nsh;
 }

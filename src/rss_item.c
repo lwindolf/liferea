@@ -76,11 +76,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 
 	g_assert(NULL != cur);
 		
-	if(NULL == (i = (RSSItemPtr) g_malloc(sizeof(struct RSSItem)))) {
-		g_error("not enough memory!\n");
-		return(NULL);
-	}
-	memset(i, 0, sizeof(struct RSSItem));
+	i = g_new0(struct RSSItem, 1);
 	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
 	ip = getNewItemStruct();
 	

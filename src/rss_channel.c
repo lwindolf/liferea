@@ -329,13 +329,8 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 	int			i;
 	
 	/* initialize channel structure */
-	if(NULL == (cp = (RSSChannelPtr) g_malloc(sizeof(struct RSSChannel)))) {
-		g_error("not enough memory!\n");
-		return;
-	}
-	memset(cp, 0, sizeof(struct RSSChannel));
-	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);		
-	
+	cp = g_new0(struct RSSChannel, 1);
+	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 	cp->updateInterval = -1;
 
 	while(1) {
@@ -450,10 +445,7 @@ static void addNameSpaceHandler(gchar *prefix, gpointer handler) {
 feedHandlerPtr initRSSFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(fhp, 0, sizeof(struct feedHandler));
+	fhp = g_new0(struct feedHandler, 1);
 
 	/* because initRSSFeedHandler() is called twice, once for FST_RSS and again for FST_HELPFEED */	
 	if(NULL == rss_nstable) {

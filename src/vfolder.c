@@ -43,11 +43,7 @@ static feedPtr readVFolder(gchar *url) {
 	feedPtr	vp;
 	
 	/* initialize channel structure */
-	if(NULL == (vp = (feedPtr) g_malloc(sizeof(struct feed)))) {
-		g_error("not enough memory!\n");
-		return NULL;
-	}
-	memset(vp, 0, sizeof(struct feed));
+	vp = g_new0(struct feed, 1);
 	vp->type = FST_VFOLDER;
 	vp->title = url;
 	
@@ -120,11 +116,8 @@ static void showVFolderInfo(feedPtr vp) {
 feedHandlerPtr initVFolderFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
-	if(NULL == (fhp = (feedHandlerPtr)g_malloc(sizeof(struct feedHandler)))) {
-		g_error(_("not enough memory!"));
-	}
-	memset(fhp, 0, sizeof(struct feedHandler));
-	
+	fhp = g_new0(struct feedHandler, 1);
+
 	/* prepare feed handler structure */
 	//fhp->readFeed		= readVFolder;
 	fhp->merge		= FALSE;	/* if that happens its much to late... */
