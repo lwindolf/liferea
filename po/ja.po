@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea Ver0.5.0-test2\n"
+"Project-Id-Version: liferea Ver0.5.1-test1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 20:52-0400\n"
-"PO-Revision-Date: 2004-06-15 02:25+0900\n"
+"POT-Creation-Date: 2004-06-27 20:03+0200\n"
+"PO-Revision-Date: 2004-06-26 22:59+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -114,7 +114,7 @@ msgstr ""
 "いで下さい...)"
 
 #: src/export.c:358 src/export.c:360
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" は正しい OPML ドキュメントではありません！ (このファイルをインポートで"
@@ -129,7 +129,6 @@ msgid "Feed List exported!"
 msgstr "配信元一覧をエキスポートしました！"
 
 #: src/export.c:486
-#, fuzzy
 msgid "Imported feed list"
 msgstr "配信元一覧を取り込みました"
 
@@ -149,18 +148,16 @@ msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML が間違っています！</p>"
 
 #: src/feed.c:171
-#, fuzzy
 msgid "There were errors while parsing a feed"
-msgstr "配信元を解析する際に複数のエラーが発生しました！"
+msgstr "配信元を解析する際に複数のエラーが発生しました"
 
 #: src/feed.c:172
-#, fuzzy
 msgid ""
 "<p>Could not determine the feed type. Please check that it is in a supported "
 "format.</p>"
 msgstr ""
-"<p>配信元の種類を特定できませんでした！ (サポートしているか確認して下さい)</"
-"p>"
+"<p>配信元の種類を特定できませんでした (サポートしているフォーマットかどうか確"
+"認して下さい)。</p>"
 
 #: src/feed.c:363 src/feed.c:364
 #, c-format
@@ -186,31 +183,31 @@ msgstr ""
 "読めません！</p>"
 
 #: src/feed.c:429
-#, fuzzy, c-format
+#, c-format
 msgid "There were errors while parsing cache file \"%s\""
-msgstr "キャッシュ・ファイル \"%s\" を解析する際にエラーが発生しました！"
-
-#: src/feed.c:563
-#, fuzzy, c-format
-msgid "\"%s\" has no new items"
-msgstr "\"%s\" に新しいトピックはありません"
+msgstr "キャッシュ・ファイル \"%s\" を解析する際にエラーが発生しました"
 
 #: src/feed.c:565
-#, fuzzy, c-format
+#, c-format
+msgid "\"%s\" has no new items"
+msgstr "\"%s\" には新しいトピックはありません"
+
+#: src/feed.c:567
+#, c-format
 msgid "\"%s\" has %d new items"
-msgstr "\"%s\" に %d 個の新しいトピックがあります"
+msgstr "\"%s\" には %d 個の新しいトピックがあります"
 
-#: src/feed.c:661
-#, fuzzy, c-format
+#: src/feed.c:672
+#, c-format
 msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" は最後の更新から変更されていません。"
-
-#: src/feed.c:668
-#, fuzzy, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "\"%s\" の URL が変更されていたので更新しました。"
+msgstr "\"%s\" には最後の更新から変更はありません"
 
 #: src/feed.c:679
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "\"%s\" の URL が変更されていたので更新しました"
+
+#: src/feed.c:689
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
@@ -218,87 +215,122 @@ msgstr ""
 "この配信元の種類を特定できませんでした。本当に指定した配信元ソースが "
 "syndication フォーマットをサポートしているか確認して下さい！"
 
-#: src/feed.c:705
+#: src/feed.c:715
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" の更新が完了しました..."
 
-#: src/feed.c:719
-#, fuzzy, c-format
+#: src/feed.c:728
+#, c-format
 msgid "\"%s\" is not available"
-msgstr "\"%s\" は利用できません！"
+msgstr "\"%s\" は利用できません"
 
-#: src/feed.c:806
-#, fuzzy
+#: src/feed.c:834
 msgid "The feed no longer exists. Please unsubscribe."
-msgstr "この配信元はもう存在しません。購読を停止して下さい！"
+msgstr "この配信元はもう存在しません。購読を停止して下さい。"
 
-#: src/feed.c:807
+#: src/feed.c:835
 msgid "Payment Required"
 msgstr "有料コンテンツの認証に失敗しました (402)"
 
-#: src/feed.c:808
+#: src/feed.c:836
 msgid "Access Forbidden"
 msgstr "アクセス権限がありません (403)"
 
-#: src/feed.c:809
+#: src/feed.c:837
 msgid "Resource Not Found"
 msgstr "リソースがありません (404)"
 
-#: src/feed.c:810
+#: src/feed.c:838
 msgid "Method Not Allowed"
 msgstr "許可されていないメソッドです (405)"
 
-#: src/feed.c:811
+#: src/feed.c:839
 msgid "Not Acceptable"
 msgstr "受け付けられないヘッダ内容です (406)"
 
-#: src/feed.c:812
+#: src/feed.c:840
 msgid "Proxy Authentication Required"
 msgstr "プロキシの認証に失敗しました (407)"
 
-#: src/feed.c:813
+#: src/feed.c:841
 msgid "Request Time-Out"
 msgstr "タイムアウトになりました (408)"
 
-#: src/feed.c:814
-#, fuzzy
+#: src/feed.c:842
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
-msgstr "この配信元はもう存在しません。購読を停止して下さい！"
+msgstr "この配信元はもう存在しません。購読を停止して下さい。"
 
-#: src/feed.c:820
+#: src/feed.c:847
+msgid "URL is invalid"
+msgstr ""
+
+#: src/feed.c:850
+msgid "Error connecting to remote host"
+msgstr ""
+
+#: src/feed.c:851
+msgid "Hostname could not be found"
+msgstr ""
+
+#: src/feed.c:852
+msgid "Network connection was refused by the remote host"
+msgstr ""
+
+#: src/feed.c:853
+msgid "Remote host did not finish sending data"
+msgstr ""
+
+#. Transfer errors
+#: src/feed.c:855
+msgid "Too many HTTP redirects were encountered"
+msgstr ""
+
+#: src/feed.c:858
+msgid "Remote host sent an invalid response"
+msgstr ""
+
+#: src/feed.c:865
+#, fuzzy
+msgid "Authentication failed"
+msgstr "認証"
+
+#: src/feed.c:867
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr ""
+
+#: src/feed.c:873
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "配信元は利用できません: サーバがサポートしていないリダイレクションを要求しま"
 "した！"
 
-#: src/feed.c:821
+#: src/feed.c:874
 msgid "Client Error"
 msgstr "クライアントのエラー"
 
-#: src/feed.c:822
+#: src/feed.c:875
 msgid "Server Error"
 msgstr "サーバのエラー"
 
-#: src/feed.c:823
-msgid "(unknown error class)"
+#: src/feed.c:876
+#, fuzzy
+msgid "(unknown networking error happened)"
 msgstr "(クラスが不明なエラー)"
 
-#: src/feed.c:845
-#, fuzzy
+#: src/feed.c:898
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
 "この配信元を読み込んでいる際に問題が発生しました。指定した URL と端末の出力を"
-"確認して下さい！"
+"確認して下さい。"
 
 #: src/html.c:138
 msgid "Feed link auto discovery failed! No feed links found!"
-msgstr ""
+msgstr "配信元リンクの自動検出に失敗しました。配信元リンクが見つかりません！"
 
 #: src/htmlview.c:61
-#, fuzzy
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -309,11 +341,11 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Mozilla ブラウザのモジュールを読み込んでいます... (注記: これは全てのバージョ"
-"ンの Mozilla で動作するとは限りません。もし問題が発生して Liferea が起動しな"
-"かった場合は、環境変数 MOZILLA_FIVE_HOME を別のバージョンの Mozilla にセット"
-"するか、あるいは GConf 設定キー /apps/liferea/browser-module を削除してみて下"
-"さい)\n"
+"Mozilla ブラウザのモジュールを読み込んでいます... \n"
+"注記: これは全てのバージョンの Mozilla で動作するとは限りません。\n"
+"もし問題が発生して Liferea が起動しなかった場合は、\n"
+"環境変数 MOZILLA_FIVE_HOME を別のバージョンの Mozilla にセットするか、\n"
+"あるいは GConf 設定キー /apps/liferea/browser-module を削除してみて下さい！\n"
 
 #: src/htmlview.c:155
 #, c-format
@@ -343,13 +375,13 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "このトピックにはリンクが割り当てられていません！"
 
-#: src/htmlview.c:360
-#, fuzzy, c-format
+#: src/htmlview.c:362 src/htmlview.c:383
+#, c-format
 msgid "Browser command failed: %s"
-msgstr "起動に失敗したブラウザ・コマンド: %s"
+msgstr "ブラウザの起動に失敗しました: %s"
 
-#: src/htmlview.c:363
-#, fuzzy, c-format
+#: src/htmlview.c:365 src/htmlview.c:386
+#, c-format
 msgid "Starting: \"%s\""
 msgstr "起動中: \"%s\""
 
@@ -358,18 +390,20 @@ msgstr "起動中: \"%s\""
 msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
 msgstr ""
+"この購読の最後の更新が失敗しました。<br><b>HTTP エラー・コード %d: %s</b>"
 
 #: src/htmlview.h:90
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occured:"
 "<br><b>%s</b>"
-msgstr "この配信元を解析する際にエラーが発生しました！"
+msgstr ""
+"この配信元を解析する際にエラーが発生しました。次のエラーが発生しました: "
+"<br><b>/%s</b>"
 
 #: src/interface.c:131 src/interface.c:2987
-#, fuzzy
 msgid "Liferea 0.5.1"
-msgstr "Liferea 0.5.0"
+msgstr "Liferea 0.5.1"
 
 #: src/interface.c:148
 msgid "_Program"
@@ -404,7 +438,6 @@ msgid "Update _Selected"
 msgstr "配信元の更新(_S)"
 
 #: src/interface.c:222
-#, fuzzy
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -414,10 +447,9 @@ msgstr "選択した購読または選択したフォルダにある全ての購
 msgid "Update _All"
 msgstr "全て更新(_A)"
 
-#: src/interface.c:231 src/ui_mainwindow.c:156
-#, fuzzy
+#: src/interface.c:231 src/ui_mainwindow.c:158
 msgid "Updates all subscriptions. This does not update OCS directories."
-msgstr "今すぐ全ての配信元を更新します (フォルダは除く)"
+msgstr "(OCS ディレクトリを除く) 全ての配信元を更新します "
 
 #: src/interface.c:245
 msgid "_Delete Selected"
@@ -444,7 +476,7 @@ msgid ""
 "Marks all items of the current selected subscription or all of subscriptions "
 "of the selected folder as read."
 msgstr ""
-"現在選択している購読の全てのアイテム、または選択したフォルダの全てのエントリ"
+"現在選択している購読の全てのトピック、または選択したフォルダの全てのエントリ"
 "に既読マークを付与します"
 
 #: src/interface.c:281
@@ -471,7 +503,7 @@ msgstr "トピック(_I)"
 msgid "_Next Unread Item"
 msgstr "次の未読のトピック(_N)"
 
-#: src/interface.c:309 src/ui_mainwindow.c:154
+#: src/interface.c:309 src/ui_mainwindow.c:156
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -545,7 +577,7 @@ msgstr "検索(_S)"
 
 #: src/interface.c:409
 msgid "Toggle Search Box"
-msgstr "検索ボックスの切り替え"
+msgstr "検索ボックス表示の切り替え"
 
 #: src/interface.c:412
 msgid "Shows or hides the search box."
@@ -634,15 +666,14 @@ msgid "minutes."
 msgstr "分"
 
 #: src/interface.c:938
-#, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating the "
 "feed set the interval to 0 minutes.</i>"
 msgstr ""
-"妥当な更新時間をセットするようにして下さい。毎日 15 分単位に配信元を更新する"
-"ことは妥当ではないですよ！自動的に更新しない場合はこの間隔を 0にセットして下"
-"さい"
+"注記: <i>妥当な更新時間をセットするようにして下さい。配信元を毎日 15 分間隔で"
+"更新することは妥当ではありません。自動的に更新しない場合はこの間隔を 0にセッ"
+"トして下さい</i>"
 
 #: src/interface.c:945
 msgid "General"
@@ -761,9 +792,8 @@ msgid "New Subscription"
 msgstr "新しい購読"
 
 #: src/interface.c:1647
-#, fuzzy
 msgid "Lifeera Preferences"
-msgstr "設定"
+msgstr "Liferea の設定"
 
 #: src/interface.c:1671
 msgid "<span weight=\"bold\">Feed Handling Settings</span>"
@@ -771,17 +801,15 @@ msgstr "<span weight=\"bold\">配信元の取り扱い</span>"
 
 #: src/interface.c:1695
 msgid "Default number of items per feed to save when Liferea exits:"
-msgstr "Liferea を終了する際に保存するアイテムのデフォルト数/配信元:"
+msgstr "Liferea を終了する際に保存するトピックのデフォルト数/配信元:"
 
 #: src/interface.c:1707
-#, fuzzy
 msgid "_Update all feeds on program startup."
-msgstr "起動時に全ての配信元を更新する"
+msgstr "起動時に全ての配信元を更新する(_U)"
 
 #: src/interface.c:1711
-#, fuzzy
 msgid "Add the _help feeds to the feed list on startup."
-msgstr "起動時に Liferea ヘルプ・トピックを配信元一覧へ追加しない"
+msgstr "起動時に Liferea ヘルプ・トピックを配信元一覧へ追加する(_H)"
 
 #: src/interface.c:1715
 msgid "Feed Handling"
@@ -808,7 +836,7 @@ msgstr "使用するエンジン:"
 
 #: src/interface.c:1771
 msgid "Open links in Liferea's _window (requires Mozilla)."
-msgstr ""
+msgstr "リンクを Liferea のウィンドウの中で開く (要 Mozilla)(_W)"
 
 #: src/interface.c:1779
 msgid "<span weight=\"bold\">Date Column Settings</span>"
@@ -835,18 +863,16 @@ msgstr ""
 "指定して下さい"
 
 #: src/interface.c:1826
-#, fuzzy
 msgid "Headline Display"
-msgstr "ヘッドライン"
+msgstr "ヘッドラインの表示"
 
 #: src/interface.c:1839
-#, fuzzy
 msgid "<span weight=\"bold\">External Browser Settings</span>"
-msgstr "<span weight=\"bold\">ブラウザの設定</span>"
+msgstr "<span weight=\"bold\">外部ブラウザの設定</span>"
 
 #: src/interface.c:1863
 msgid "_Browser:"
-msgstr ""
+msgstr "ブラウザ(_B):"
 
 #: src/interface.c:1870
 #, c-format
@@ -854,31 +880,32 @@ msgid ""
 "_Manual:\n"
 "(%s for URL)"
 msgstr ""
+"手動(_M):\n"
+"(URL は %s で指定する)"
 
 #: src/interface.c:1884
 msgid "_Open link in:"
-msgstr ""
+msgstr "リンクを開く場所(_O):"
 
 #: src/interface.c:1907
 msgid "External Browser"
-msgstr ""
+msgstr "外部ブラウザ"
 
 #: src/interface.c:1920
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">通知の設定</span>"
 
 #: src/interface.c:1938
-#, fuzzy
 msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
 msgstr ""
 "通知エリア (別名: システム・トレイ) の中に\n"
-"ステータス・アイコンを表示する"
+"ステータス・アイコンを表示する(_I)"
 
 #: src/interface.c:1955
 msgid "Show a _popup window with new headlines."
-msgstr ""
+msgstr "新しいヘッドラインをポップアップ・ウィンドウで表示する(_P)"
 
 #: src/interface.c:1964
 msgid "<span weight=\"bold\">Menu Settings</span>"
@@ -898,7 +925,7 @@ msgstr "ツールバーのみ表示する(_T)"
 
 #: src/interface.c:2001
 msgid "GUI"
-msgstr ""
+msgstr "GUI"
 
 #: src/interface.c:2018
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
@@ -914,28 +941,24 @@ msgstr ""
 "Liferea は GNOME デスクトップのプロキシ設定を再利用します。GNOME をお使いな"
 "ら、これらの設定をコントロール・センターで変更することができます。[注記: これ"
 "らを変更すると他のアプリケーションにも影響を与えます。ここでの設定は GNOME デ"
-"スクトップを利用していないユーザがプロキシ経由で Liferea をご利用できるようす"
-"るためのものです]"
+"スクトップを利用していないユーザがプロキシ経由で Liferea をご利用できるように"
+"するためのものです]"
 
 #: src/interface.c:2047
-#, fuzzy
 msgid "_Enable Proxy"
-msgstr "プロキシを有効にする"
+msgstr "プロキシを有効にする(_E)"
 
 #: src/interface.c:2057
-#, fuzzy
 msgid "Proxy _Host"
-msgstr "プロキシのホスト:"
+msgstr "プロキシのホスト(_H):"
 
 #: src/interface.c:2076
-#, fuzzy
 msgid "Proxy _Port"
-msgstr "プロキシのポート番号:"
+msgstr "プロキシのポート番号(_P):"
 
 #: src/interface.c:2083
-#, fuzzy
 msgid "Proxy"
-msgstr "プロキシのポート番号:"
+msgstr "プロキシ"
 
 #: src/interface.c:2271
 msgid "New Folder"
@@ -978,23 +1001,20 @@ msgid "Rule Value"
 msgstr "ルールの値"
 
 #: src/interface.c:2677
-#, fuzzy
 msgid "Feedster Search"
-msgstr "配信元のキャッシュ"
+msgstr "Feedster で検索する"
 
 #: src/interface.c:2692
-#, fuzzy
 msgid "Search for:"
-msgstr "検索する単語"
+msgstr "検索する単語:"
 
 #: src/interface.c:2699
 msgid "enter any search string you want"
 msgstr "検索する文字列を入力して下さい"
 
 #: src/interface.c:2706
-#, fuzzy
 msgid "Maximal Number Of Result Items:"
-msgstr "検索結果の表示数"
+msgstr "検索結果の最大数:"
 
 #: src/interface.c:2715
 msgid ""
@@ -1003,8 +1023,7 @@ msgid ""
 "permanently and update it like any other subscription.  "
 msgstr ""
 "注記: Liferea は指定した検索文字列に対して Feedster 検索を行うために使用する"
-"配信元のサブスクリプションを生成します。この配信元を保存し、他のサブスクリプ"
-"ションを更新することができます。"
+"配信元を生成します。この配信元を保存し、他の配信元を更新することができます。"
 
 #: src/interface.c:2782
 msgid "Import Feed List"
@@ -1039,7 +1058,6 @@ msgstr ""
 "配信元一覧をエキスポートできます。"
 
 #: src/interface.c:2992
-#, fuzzy
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea は GTK+ 版のニュース・アグリゲータです。"
 
@@ -1054,7 +1072,6 @@ msgstr ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3017
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1079,7 +1096,7 @@ msgid ""
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 msgstr ""
-"コード、パッチ、デバッグの協力\n"
+"コード、パッチ、デバッグ\n"
 "\n"
 "James Doherty <...>\n"
 "Jeremy Messenger <mezz7@cox.net>\n"
@@ -1093,18 +1110,20 @@ msgstr ""
 "Niklas Morberg <morberg@users.sourceforge.net>\n"
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
+"ahmed el-helw <ahmedre@cc.gatech.edu>\n"
 "\n"
 "他のプロジェクトからのコード提供\n"
 "\n"
-"Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
-"Philippe Martin, Brion Vibber (favicon support)"
+"Anders Carlsson <andersca@gnu.org> (トレイ・アイコンのサポート)\n"
+"Philippe Martin, Brion Vibber (favicon のサポート)\n"
+"Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
+"Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
 #: src/interface.c:3023
 msgid "Contributors"
 msgstr "その他の貢献者"
 
 #: src/interface.c:3037
-#, fuzzy
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -1124,12 +1143,13 @@ msgstr ""
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Gernauck <enrico@fanglomerat.de>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev Vladimir <compress@linux-online.ru>"
+"Alekseev Vladimir <compress@linux-online.ru>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>"
 
 #: src/interface.c:3043
 msgid "Translation"
@@ -1139,17 +1159,19 @@ msgstr "翻訳者"
 #: src/interface.c:3113 src/ui_feed.c:90
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
-msgstr ""
+msgstr "\"%s\" (%s) のユーザ名とパスワードを入力して下さい:"
 
 #: src/interface.c:3154
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
+"注記: <i>ユーザ名とパスワードは暗号化せずに Liferea 配信元一覧のファイルへ保"
+"存されます。</i>"
 
 #: src/interface.c:3203
 msgid "window1"
-msgstr ""
+msgstr "window1"
 
 #: src/main.c:51
 msgid "  --version        Prints Liferea's version number"
@@ -1295,31 +1317,28 @@ msgstr "Pixmap ファイルが見つかりませんでした: %s"
 
 #: src/ui_feed.c:199
 msgid "Directories cannot be autoupdated."
-msgstr ""
+msgstr "ディレクトリは自動更新できません"
 
 #: src/ui_feed.c:202
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
-msgstr ""
+msgstr "この配信元では更新間隔を %d 分にすることを推奨しています。"
 
 #: src/ui_feed.c:204
 msgid "This feed specifies no default update interval."
-msgstr ""
+msgstr "この配信元はデフォルトの更新間隔を指定していません。"
 
 #: src/ui_feedlist.c:402
-#, fuzzy
 msgid "You have to select a feed entry"
-msgstr "配信元エントリを一つ選択して下さい！"
+msgstr "配信元エントリを一つ選択して下さい"
 
 #: src/ui_feedlist.c:412
-#, fuzzy
 msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea はオフライン・モードです (アップデートできません！)"
+msgstr "Liferea はオフライン・モードです (アップデートできません)"
 
 #: src/ui_feedlist.c:436
-#, fuzzy
 msgid "Note: Using the subscriptions filter disables drag & drop"
-msgstr "ヒント: 購読フィルを利用すると、ドラッグ＆ドロップが無効になります！"
+msgstr "ヒント: 購読フィルタを利用すると、ドラッグ＆ドロップが無効になります"
 
 #: src/ui_feedlist.c:448 src/ui_feedlist.c:483
 msgid ""
@@ -1327,6 +1346,8 @@ msgid ""
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
+"ヘルプは削除できません。ヘルプの読み込みを無効にする場合は設定で変更して下さ"
+"い。Liferea を再起動した後にヘルプ・フォルダを削除することが可能になります。"
 
 #: src/ui_feedlist.c:490
 #, c-format
@@ -1348,22 +1369,18 @@ msgid "Are you sure that you want to delete %s?"
 msgstr "%s を削除してもよろしいですか？"
 
 #: src/ui_feedlist.c:502
-#, fuzzy
 msgid "Deletion Confirmation"
 msgstr "削除の確認"
 
 #: src/ui_feedlist.c:533
-#, fuzzy
 msgid "You must select a feed entry"
-msgstr "配信元エントリを一つ選択して下さい！"
+msgstr "配信元エントリを一つ選択して下さい"
 
 #: src/ui_feedlist.c:534
-#, fuzzy
 msgid "You must select a feed entry."
-msgstr "配信元エントリを一つ選択して下さい！"
+msgstr "配信元エントリを一つ選択して下さい。"
 
 #: src/ui_feedlist.c:568
-#, fuzzy
 msgid "New subscription"
 msgstr "新しい購読"
 
@@ -1396,42 +1413,39 @@ msgstr "日付"
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: src/ui_itemlist.c:577
-#, fuzzy
+#: src/ui_itemlist.c:573
 msgid "No item has been selected"
-msgstr "トピックが選択されていません！"
+msgstr "トピックが選択されていません"
 
-#: src/ui_itemlist.c:601
-#, fuzzy
+#: src/ui_itemlist.c:597
 msgid "You must select a feed to delete its items!"
 msgstr "トピックを削除する配信元を選択して下さい！"
 
-#: src/ui_itemlist.c:631
+#: src/ui_itemlist.c:627
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
 
-#: src/ui_itemlist.c:663
-#, fuzzy
+#: src/ui_itemlist.c:659
 msgid "There are no unread items "
-msgstr "未読のトピックはありません！"
+msgstr "未読のトピックはありません"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "New Feed"
 msgstr "新しい配信元"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "Add a new subscription."
 msgstr "新しい購読を追加します"
 
-#: src/ui_mainwindow.c:154
+#: src/ui_mainwindow.c:156
 msgid "Next Unread"
 msgstr "次の未読のトピック"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid "Mark As Read"
 msgstr "全て既読"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1439,28 +1453,27 @@ msgstr ""
 "現在選択している購読の全てのトピック、または選択したフォルダの全てのトピック"
 "に既読マークを付与します"
 
-#: src/ui_mainwindow.c:156
-#, fuzzy
+#: src/ui_mainwindow.c:158
 msgid "Update All"
-msgstr "全て更新(_A)"
+msgstr "全て更新"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search"
 msgstr "検索"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search all feeds."
 msgstr "全ての配信元から検索します"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Preferences"
 msgstr "設定"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Edit preferences."
 msgstr "設定を編集します"
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:174
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1482,28 +1495,40 @@ msgid ""
 "the documentation provided in the help feed or in the FAQ available at the "
 "project homepage.</p>"
 msgstr ""
+"<h2>Liferea へようこそ</h2><p>左側のウィンドウには配信元一覧が表示されてお"
+"り、新しい購読を追加したり、お好みの購読を選択してトピックを閲覧することが可"
+"能です。右側のウィンドウには選択した購読のヘッドライン一覧が表示されており、"
+"選択したヘッドラインの内容を表示したり、一度に全てのヘッドラインを表示するこ"
+"とが可能なウィンドウがあります (これらは選択可能です)。</p><h3>基本的なアク"
+"ション</h3><ul><li><p><b>購読の追加</b> - 選択したフォルダに新しい購読を作成"
+"します。新しい購読を作成する場合は、配信元の URL を入力するか、URL が不明な場"
+"合は配信しているウェブサイトの URL を入力して下さい。</p></li><li><p><b>購読"
+"の更新</b> - これは選択した購読を更新します。更新する購読をすぐにチェックする"
+"場合にこの機能を必要とするかもしれません。通常は、配信元の更新間隔に応じて自"
+"動更新するだけで十分でしょう。</p></li><li><p><b>全て更新</b> - これは一度に"
+"全ての購読を更新します。こちらも通常は自動更新を利用した方が良いでしょう。</"
+"li><li><p><b>購読プロパティの編集</b> - 更新間隔、認証あるいは購読のキャッ"
+"シュ・プロパティを変更したくなる時があるかもしれません。</p></li></"
+"ul><p>Liferea についてもっと知りたい場合はオンライン・ヘルプで提供しているド"
+"キュメントをお読みになるか、あるいはプロジェクトにある FAQ をご覧下さい。</p>"
 
-#: src/ui_mainwindow.c:254
-#, fuzzy
+#: src/ui_mainwindow.c:256
 msgid "Liferea is now online"
 msgstr "Liferea は現在オンラインです"
 
-#: src/ui_mainwindow.c:257
-#, fuzzy
+#: src/ui_mainwindow.c:259
 msgid "Liferea is now offline"
 msgstr "Liferea は現在オフラインです"
 
-#: src/ui_notification.c:241
-#, fuzzy
+#: src/ui_notification.c:242
 msgid "Liferea notification"
-msgstr "Liferea は現在オフラインです"
+msgstr "Liferea からの通知"
 
 #: src/ui_popup.c:78
 msgid "/_Update"
 msgstr "/更新(_U)"
 
 #: src/ui_popup.c:79 src/ui_popup.c:89
-#, fuzzy
 msgid "/_Mark As Read"
 msgstr "既読としてマーク(_M)"
 
@@ -1580,28 +1605,28 @@ msgid "/_Subscribe"
 msgstr "/購読(_S)"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:132
+#: src/ui_prefs.c:182
 msgid "Manual"
-msgstr ""
+msgstr "手動"
 
-#: src/ui_prefs.c:142
+#: src/ui_prefs.c:192
 msgid "Browser default"
-msgstr ""
+msgstr "デフォルト"
 
-#: src/ui_prefs.c:147
+#: src/ui_prefs.c:197
 msgid "Existing window"
-msgstr ""
+msgstr "既存のウィンドウ"
 
-#: src/ui_prefs.c:152
+#: src/ui_prefs.c:202
 msgid "New window"
-msgstr ""
+msgstr "新しいウィンドウ"
 
-#: src/ui_prefs.c:157
+#: src/ui_prefs.c:207
 msgid "New tab"
-msgstr ""
+msgstr "新しいタブ"
 
 #: src/ui_search.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Searching for \"%s\""
 msgstr "\"%s\" の検索中"
 
@@ -1614,203 +1639,19 @@ msgstr[1] "%d 個の新しいトピックがあります！"
 
 #: src/ui_tray.c:102
 msgid "No new items."
-msgstr "新しいトピックはありません。"
+msgstr "新しいトピックはありません"
 
-#: src/update.c:104
-#, fuzzy, c-format
+#: src/update.c:110
+#, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr "パイプ \"%s\" を開けませんでした！"
-
-#: src/update.c:118
-#, fuzzy, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "ファイル \"%s\" を開けませんでした！"
+msgstr "エラー: パイプ \"%s\" を開けませんでした"
 
 #: src/update.c:124
-#, fuzzy, c-format
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "エラー: ファイル \"%s\" を開けませんでした"
+
+#: src/update.c:130
+#, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "ファイル \"%s\" がありません！"
-
-#~ msgid ""
-#~ "Invalid browser command! There is no %%s URL place holder in the browser "
-#~ "command string you specified in the preferences dialog!!!"
-#~ msgstr ""
-#~ "ブラウザ起動コマンドが不正です！(設定ダイアログの中で指定したブラウザのコ"
-#~ "マンド列の中に URL プレイスフォルダ %%s がありません！！！)"
-
-#~ msgid "Use the GNOME default browser"
-#~ msgstr "GNOME のデフォルト・ブラウザを使用する"
-
-#~ msgid "Use browser command:"
-#~ msgstr "ブラウザのコマンド:"
-
-#~ msgid "specify a browser command using %s as URL placeholder"
-#~ msgstr "URL を示す記号 %s を使ってブラウザのコマンドを指定して下さい"
-
-#~ msgid "If the browser module allows it open links inside Liferea."
-#~ msgstr "可能ならば Liferea の内部でリンクを開く"
-
-#~ msgid "GUI Settings"
-#~ msgstr "GUI の設定"
-
-#~ msgid "Proxy Settings"
-#~ msgstr "プロキシの設定"
-
-#~ msgid "Connecting to "
-#~ msgstr "接続中"
-
-#~ msgid "Connecting to %s..."
-#~ msgstr "%s へ接続中..."
-
-#~ msgid "Downloading \"http://%s%s\""
-#~ msgstr "\"http://%s%s\" のダウンロード中"
-
-#~ msgid "socket connect"
-#~ msgstr "ソケット接続"
-
-#~ msgid "Too many HTTP redirects encountered! Giving up."
-#~ msgstr "HTTP リダイレクト先が多すぎます！ 処理を中断します。"
-
-#~ msgid "Following HTTP redirects"
-#~ msgstr "HTTP リダイレクト先"
-
-#~ msgid "Webserver sent an invalid redirect!"
-#~ msgstr "ウェブサーバがおかしなリダイレクトを返しました！"
-
-#~ msgid "The feed no longer exists. Please unsubscribe!"
-#~ msgstr "この配信元はもう存在しません。購読を停止して下さい！"
-
-#~ msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
-#~ msgstr ""
-#~ "ウェブサーバ %s が不正な HTTP/1.0 リプライを送信してきました！ これを解析"
-#~ "できません。"
-
-#~ msgid "Authentication failed!"
-#~ msgstr "認証に失敗しました！"
-
-#~ msgid "URL does not contain authentication information!"
-#~ msgstr "URL には認証情報がありません！"
-
-#~ msgid "Could not generate authentication information!"
-#~ msgstr "認証情報を生成できませんでした！"
-
-#~ msgid "Unsupported authentication method requested by server!"
-#~ msgstr "サーバからサポートしていない認証方法を要求されました！"
-
-#~ msgid "This URL doesn't look too valid to me, don't you think?"
-#~ msgstr "この URL は正しくないようです。そう思いませんか？"
-
-#~ msgid "Couldn't create network socket!"
-#~ msgstr "ネットワーク・ソケットを生成できませんでした！"
-
-#~ msgid "Can't resolve host %s!"
-#~ msgstr "ホスト %s を解決できません！"
-
-#~ msgid "Could not connect to server %s: %s"
-#~ msgstr "サーバ %s へ接続できませんでした: %s"
-
-#, fuzzy
-#~ msgid "Connection timed out."
-#~ msgstr "接続中"
-
-#~ msgid "Aborted."
-#~ msgstr "中止します。"
-
-#~ msgid "Internal error while converting UTF-8 chars to HTTP URI!"
-#~ msgstr ""
-#~ "[内部エラー] UTF-8 文字を HTTP URI に変換する際にエラーが発生しました！"
-
-#~ msgid "internal error! could not find file dialog select button!"
-#~ msgstr "[内部エラー] ファイル選択ダイアログの選択ボタンが見つかりません！"
-
-#~ msgid "internal error! could not get a new folder key!"
-#~ msgstr "[内部エラー] 新しいフォルダ・キーを取得できませんでした！"
-
-#~ msgid "Could not delete icon file %s! Please remove manually!"
-#~ msgstr "アイコン・ファイル %s を削除できません！ (手動で削除して下さい)"
-
-#~ msgid "could not write XML item node!\n"
-#~ msgstr "XML トピック・ノードを書き込めませんでした！\n"
-
-#~ msgid "could not create XML feed node for feed cache document!"
-#~ msgstr ""
-#~ "配信元キャッシュ・ドキュメントの XML 配信元ノードを生成できませんでした！"
-
-#~ msgid "could not create XML document!"
-#~ msgstr "XML ドキュメントを生成できませんでした！"
-
-#~ msgid ""
-#~ "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
-#~ msgstr ""
-#~ "キャッシュ・ファイル \"%s\" を読み込む際にエラーが発生しました！ (キャッ"
-#~ "シュ・ファイルを読み込めませんでした)"
-
-#~ msgid "Could not delete cache file %s! Please remove manually!"
-#~ msgstr "キャッシュ・ファイル %s を削除できません！ 手動で削除して下さい！"
-
-#~ msgid "program preferences"
-#~ msgstr "liferea の設定"
-
-#~ msgid "Search With Feedster"
-#~ msgstr "Feedster で検索"
-
-#~ msgid "Search for "
-#~ msgstr "検索する単語 "
-
-#~ msgid "Select File"
-#~ msgstr "ファイルの選択"
-
-#~ msgid ""
-#~ "The webserver of the feed you are subscribing to is requesting "
-#~ "authentication information. Please enter the appropriate username and "
-#~ "password below!"
-#~ msgstr ""
-#~ "購読する配信元のウェブサーバが認証情報を要求しています。適切なユーザ名とパ"
-#~ "スワードを入力して下さい！"
-
-#~ msgid ""
-#~ "You can't delete the help! Edit the preferences to disable loading the "
-#~ "help."
-#~ msgstr ""
-#~ "ヘルプを削除することはできません！ (設定を変更することでヘルプの読み込みを"
-#~ "無効にすることは可能です)"
-
-#~ msgid ""
-#~ "Could not download \"%s\"!\n"
-#~ "\n"
-#~ " Maybe the URL is invalid or the feed is temporarily not available. You "
-#~ "can retry downloading or remove the feed subscription via the context "
-#~ "menu from the feed list.\n"
-#~ msgstr ""
-#~ "\"%s\" をダウンロードできませんでした！\n"
-#~ "\n"
-#~ "URL が不正か、あるいは配信元が一時的に利用できないかもしれません。配信元一"
-#~ "覧のコンテキスト・メニューから購読のリトライまたは削除を行うことができま"
-#~ "す。\n"
-
-#~ msgid ""
-#~ "The newly created feed's type could not be detected! Please check if the "
-#~ "source really points to a resource provided in one of the supported "
-#~ "syndication formats"
-#~ msgstr ""
-#~ "新らしく作成した配信元の種類を特定できませんでした。本当に指定した配信元"
-#~ "ソースがサポートしている syndication の一つであるか確認して下さい！"
-
-#~ msgid "internal error! item list display for NULL pointer requested!\n"
-#~ msgstr "[内部エラー] トピックの一覧表示で NULL ポインタを要求しました！\n"
-
-#~ msgid "internal error! could not find feed tree view widget!\n"
-#~ msgstr ""
-#~ "[内部エラー] 配信元ツリー・ビュー・ウィジットが見つかりませんでした！\n"
-
-#~ msgid "Update"
-#~ msgstr "更新"
-
-#~ msgid "Update all feeds."
-#~ msgstr "全ての配信元を更新します"
-
-#~ msgid "could not allocate memory!"
-#~ msgstr "メモリを確保できませんでした！"
-
-#~ msgid "creating VFolder for search term \"%s\""
-#~ msgstr "検索文字列 \"%s\" の仮想フォルダを生成します"
+msgstr "エラー: ファイル \"%s\" がありません"
