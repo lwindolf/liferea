@@ -265,6 +265,8 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	g_assert(mainwindow != NULL);
 	g_assert(itemlist != NULL);
 
+	iterhash = g_hash_table_new(g_direct_hash, g_direct_equal);
+
 	itemstore = ui_itemlist_get_tree_store();
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist), GTK_TREE_MODEL(itemstore));
