@@ -595,7 +595,7 @@ gint feed_process_update_results(gpointer data) {
 		   set here because the parsing implementations maybe used for
 		   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
 		new_fp = feed_new();
-		feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source*/
+		feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source */
 		feed_set_type(new_fp, feed_get_type(request->fp));
 		(*(fhp->readFeed))(new_fp, request->data);
 
@@ -624,22 +624,20 @@ gint feed_process_update_results(gpointer data) {
 		feed_save(request->fp);
 
 		if((feedPtr)ui_feedlist_get_selected() == request->fp) {
-			ui_itemlist_clear();
 			ui_itemlist_load(request->fp, NULL);
-			ui_itemlist_prefocus();
 		}
 	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(request->fp));
 		feed_set_available(request->fp, FALSE);
 	}
-
-	ui_unlock();
 	
 	g_free(request->feedurl);	/* request structure cleanup... */
 	g_free(request->data);
 	request->fp->updateRequested = FALSE;
 
 	ui_feedlist_update();
+
+	ui_unlock();
 
 	return TRUE;
 }
