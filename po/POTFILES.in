@@ -22,8 +22,6 @@ src/feed.c
 src/feed.h
 src/folder.c
 src/folder.h
-src/guitreemodelfilter.c
-src/guitreemodelfilter.h
 src/html.c
 src/html.h
 src/interface.c
