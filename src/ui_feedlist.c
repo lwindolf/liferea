@@ -514,10 +514,10 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDia
 			if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
 				g_assert(NULL != fhp->readFeed);
 				(*(fhp->readFeed))(fp, data);			
-
+				
 				ui_feedlist_update();
-				feed_save(fp);
-
+				fp->needsCacheSave = TRUE;
+				
 				if(showPropDialog) {
 					/* built, set default update interval and show properties dialog */
 					propdialog = ui_feedlist_build_prop_dialog();

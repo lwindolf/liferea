@@ -92,6 +92,8 @@ typedef struct feed {
 	GTimeVal	scheduledUpdate;	/**< time at which the feed needs to be updated */
 	gboolean	updateRequested;	/**< flag set when update in progress */
 	gpointer	*request;		/**< update request structure */
+
+	gboolean needsCacheSave; /**< flag set when the feed's cache needs to be resaved */
 } *feedPtr;
 
 /* ------------------------------------------------------------ */

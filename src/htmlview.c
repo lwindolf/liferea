@@ -269,13 +269,13 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 		addToHTMLBuffer(buffer, "font-family:");
 		addToHTMLBuffer(buffer, font);
 		addToHTMLBuffer(buffer, ";");
-		printf("font: %s\n", font);
+		
 		if(NULL != fontsize) {
 			addToHTMLBuffer(buffer, "font-size:");
 			addToHTMLBuffer(buffer, fontsize);
 			addToHTMLBuffer(buffer, "pt;");
 		}		
-		printf("fontsize: %s\n", fontsize);
+		
 		g_free(font);
 		
 		addToHTMLBuffer(buffer, "}\n//-->\n</style>\n");

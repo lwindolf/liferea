@@ -37,6 +37,8 @@
 #define ITEM_PROP_TIME			5
 #define ITEM_PROP_TYPE			6
 
+struct feed;
+
 /** An item stores a particular entry in a feed or a search */
 typedef struct item {
 	gchar		*title;		/**< item title */
@@ -49,7 +51,7 @@ typedef struct item {
 	time_t		time;		/**< Item's modified date */
 	
 	gint		type;		/**< Type of item's associated feed */
-	gpointer	fp;		/**< Pointer to the feed to which this item belongs */
+	struct feed	*fp;		/**< Pointer to the feed to which this item belongs */
 	GSList		*vfolders;	/**< List of vfolders in which this item appears */
 	void		*ui_data;	/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;

@@ -549,6 +549,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		ui_itemlist_clear();
 		feed_clear_item_list(fp);	/* delete items */
 		ui_feedlist_update();
+		fp->needsCacheSave = TRUE;
 	} else {
 		ui_show_error_box(_("You have to select a feed to delete its items!"));
 	}

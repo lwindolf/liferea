@@ -192,6 +192,14 @@ feedPtr feed_new(void) {
 	return fp;
 }
 
+/*
+ * Feeds caches are marked to be saved at a few different places:
+ * (1) Inside whe feed_set_* functions where an item is marked or made read or unread
+ * (2) Inside of feed_process_result
+ * (3) The callback where items are removed from the itemlist
+ */
+
+
 void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode, itemNode;
@@ -202,6 +210,10 @@ void feed_save(feedPtr fp) {
 	gint		saveCount = 0;
 	gint		saveMaxCount;
 			
+	
+	if (fp->needsCacheSave == FALSE)
+		return;
+	
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
 	filename = getCacheFileName(fp->id, NULL);
 
@@ -278,6 +290,8 @@ void feed_save(feedPtr fp) {
 	} else {
 		g_warning(_("could not create XML document!"));
 	}
+	
+	fp->needsCacheSave = FALSE;
 }
 
 static gboolean feed_save_timeout(gpointer user_data) {
@@ -633,7 +647,7 @@ gint feed_process_update_results(gpointer data) {
 		}
 
 		/* now fp contains the actual feed infos */
-		feed_save(request->fp);
+		request->fp->needsCacheSave = TRUE;
 
 		if((feedPtr)ui_feedlist_get_selected() == request->fp) {
 			ui_itemlist_load(request->fp, NULL);
@@ -660,6 +674,7 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 		feed_increase_unread_counter(fp);
 	fp->items = g_slist_append(fp->items, (gpointer)ip);
 	allItems->items = g_slist_append(allItems->items, (gpointer)ip);
+	fp->needsCacheSave = TRUE;
 }
 
 /* ---------------------------------------------------------------------------- */
