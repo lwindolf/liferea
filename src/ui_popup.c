@@ -118,11 +118,10 @@ void setupPopupMenues(void) {
 	/* item list menues */
 	item_menu_items = NULL;
 	item_menu_len = 0;
-	addPopupOption(&item_menu_items, &item_menu_len, _("/_Mark All As Read"),	NULL, on_popup_allunread_selected, 		0, NULL, 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),	NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
-	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),	NULL, on_popup_toggle_read, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle Item _Flag"),	NULL, on_popup_toggle_flag, 			0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),	NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
 	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Launch Item In Browser"), NULL, on_popup_launchitem_selected, 		0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, "/"	,			NULL, NULL, 					0, "<Separator>", 0);
