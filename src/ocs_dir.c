@@ -215,7 +215,6 @@ static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 
 static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	xmlNodePtr		tmpNode, formatNode;
-	xmlChar			*string;
 	formatPtr		new_fp;	
 	parseOCSTagFunc		fp;
 	OCSNsHandler		*nsh;

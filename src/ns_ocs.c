@@ -67,7 +67,6 @@ void ns_ocs_parseTag(gint type, gpointer p, xmlNodePtr cur) {
 	dirEntryPtr	dep = (dirEntryPtr)p;
 	formatPtr	fp = (formatPtr)p;
 	int 		i;
-	xmlChar 	*string;
 	gchar		*value;
 	
 	g_assert(NULL != cur);

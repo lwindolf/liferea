@@ -77,6 +77,11 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring);
 void ui_itemlist_clear(void);
 
 /**
+ * Mark all items in the displayed itemlist as read.
+ */
+void ui_itemlist_mark_all_as_read(void);
+
+/**
  * @name Callbacks used from interface.c
  * @{
  */

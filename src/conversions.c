@@ -33,8 +33,9 @@
 #include <errno.h>
 #include <zlib.h>
 
-#include "conversions.h"
 #include "config.h"
+#include "callbacks.h"
+#include "conversions.h"
 #include "interface.h"
 
 #ifdef SUN

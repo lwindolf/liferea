@@ -120,7 +120,6 @@ void initConfig() {
 
 /* maybe called several times to reload configuration */
 void loadConfig() {
-	gchar	*proxy_url;
 	gint	maxitemcount;
 
 	/* check if important preferences exist... */

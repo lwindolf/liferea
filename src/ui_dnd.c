@@ -111,7 +111,7 @@ static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint
 	if((data->length >= 0) && (data->format == 8)) {
 		/* extra handling to accept multiple drops */	
 		freeme = tmp1 = strdup(data->data);
-		while(tmp2 = strsep(&tmp1, "\n\r")) {			
+		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(0 != strlen(tmp2))
 				ui_feedlist_new_subscription(FST_AUTODETECT, g_strdup(tmp2), g_strdup(selected_keyprefix), TRUE);
 		}

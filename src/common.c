@@ -304,7 +304,6 @@ xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
 	xmlParserCtxtPtr	parser;
 	xmlDocPtr		doc;
 	gint			length;
-	gchar			*tmp = NULL;
 	
 	g_assert(NULL != data);
 
@@ -465,8 +464,6 @@ gchar * formatDate(time_t t) {
 }
 
 void initCachePath(void) {
-	struct stat	statinfo;
-
 	CACHEPATH = g_strdup_printf("%s/.liferea", g_get_home_dir());
 
 	if(!g_file_test(CACHEPATH, G_FILE_TEST_IS_DIR)) {

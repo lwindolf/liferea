@@ -202,7 +202,6 @@ static void parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
 	dirEntryPtr	dep = (dirEntryPtr)p;
 	formatPtr	fp = (formatPtr)p;
 	int 		i;
-	xmlChar 	*string;
 	gchar		*value;
 	
 	g_assert(NULL != cur);
@@ -296,7 +295,6 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 	int 		i, j, mapping;
 	gchar		*date, *buffer, *value, *tmp;
 	gboolean	isNotEmpty;
-	xmlChar 	*string;
 	
 	g_assert(NULL != cur);
 

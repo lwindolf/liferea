@@ -26,7 +26,9 @@
 #include <string.h>
 #include <glib.h>
 #include <gmodule.h>
+#include "common.h"
 #include "conf.h"
+#include "callbacks.h"
 #include "ui_queue.h"
 #include "support.h"
 #include "htmlview.h"

@@ -60,7 +60,6 @@ gchar * ns_slash_getRSSNsPrefix(void) { return ns_slash_prefix; }
 static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	gchar		*buffer = NULL;
 	gchar		*tmp;
-	xmlChar		*string;
 	int 		i;
 	
 	/* compare with each possible tag name */
