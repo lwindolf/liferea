@@ -60,51 +60,6 @@ static void selection_handle(GtkWidget *widget, GtkSelectionData *selection_data
 	gtk_selection_data_set(selection_data, GDK_SELECTION_TYPE_STRING, 8, url, strlen(url));
 }
 
-/* ----------------------------------------------------------------------------	*/
-/*  methods to get the selection (currently unused)				*/
-/* ----------------------------------------------------------------------------	*/   
-
-/* method to request the selection */
-void getSelection(GtkWidget *window) {
-	static GdkAtom string_atom = GDK_NONE;
-
-	/* Get the atom corresponding to the string "STRING" */
-	if(string_atom == GDK_NONE)
-  		string_atom = gdk_atom_intern("STRING", FALSE);
-
-	/* And request the "STRING" target for the primary selection */
-	gtk_selection_convert(window, GDK_SELECTION_PRIMARY, string_atom, GDK_CURRENT_TIME);
-}
-
-/* Signal handler called when the selections owner returns the data */
-static void selection_received(GtkWidget        *widget,
-                               GtkSelectionData *selection_data, 
-                               gpointer          data) {
-	gchar		*string;
-	GtkWidget	*sourceentry;
-
-	/* **** IMPORTANT **** Check to see if retrieval succeeded  */
-	if(selection_data->length < 0) {
-		//g_warning(_("Selection retrieval failed\n"));
-		return;
-	}
-	/* Make sure we got the data in the expected form */
-	if(selection_data->type != GDK_SELECTION_TYPE_STRING) {
-		//g_warning(_("Selection \"STRING\" was not returned as atoms!\n"));
-		return;
-	}
-  
-	/* paste the received text into the URL field of the subscription dialog */	
-	if(NULL == newdialog)
-		return;
-		
-	if(NULL == (sourceentry = lookup_widget(newdialog, "newfeedentry")))
-		return;
-	
-	if(NULL != selection_data->data)
-		gtk_entry_set_text(GTK_ENTRY(sourceentry), (gchar *)selection_data->data);
-
-}
 
 /* sets up the selection widget and its handlers */
 void setupSelection(GtkWidget *window) { 

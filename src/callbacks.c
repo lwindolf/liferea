@@ -38,6 +38,7 @@
 #include "common.h"
 #include "htmlview.h"
 #include "callbacks.h"
+#include "ui_dnd.h"
 #include "ui_selection.h"
 #include "update.h"
 
@@ -90,9 +91,6 @@ extern feedPtr		allItems;
 
 static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
 gboolean	itemlist_mode = TRUE;	/* TRUE means three pane, FALSE means two panes */
-
-/* flag to check if DND should be aborted (e.g. on folders and help feeds) */
-static gboolean	drag_successful = FALSE;
 
 /* feedPtr which points to the last selected (and in most cases actually selected) feed */
 feedPtr	selected_fp = NULL;
@@ -160,6 +158,7 @@ void initGUI(void) {
 	
 	setupTrayIcon();
 	setupSelection(mainwindow);
+	setupURLReceiver(mainwindow);
 }
 
 /* returns the selected feed list iterator */
@@ -574,7 +573,7 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 	}
 }
 
-static void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog) {
+void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog) {
 	GtkWidget	*updateIntervalBtn;
 	feedPtr		fp;
 	gint		interval;
@@ -1565,52 +1564,6 @@ gint checkForUpdateResults(gpointer data) {
 	gdk_threads_leave();
 		
 	return TRUE;
-}
-
-/*------------------------------------------------------------------------------*/
-/* feed list DND handling							*/
-/*------------------------------------------------------------------------------*/
-
-void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
-
-	g_assert(NULL != selected_keyprefix);
-	
-	if(drag_successful) {	
-		moveInFeedList(selected_keyprefix, getFeedKey(selected_fp));
-		checkForEmptyFolders();	/* to add an "(empty)" entry */
-	}
-	
-	preFocusItemlist();
-}
-
-void on_feedlist_drag_begin(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
-
-	drag_successful = FALSE;
-}
-
-gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, gint x, gint y, guint time, gpointer user_data) {
-	gboolean	stop = FALSE;
-
-	g_assert(NULL != selected_keyprefix);
-	
-	/* don't allow folder DND */
-	if(IS_NODE(selected_type)) {
-		showErrorBox(_("Sorry Liferea does not yet support drag&drop of folders!"));
-		stop = TRUE;
-	} 
-	/* also don't allow "(empty)" entry moving */
-	else if(FST_EMPTY == selected_type) {
-		stop = TRUE;
-	} 
-	/* also don't allow help feed dragging */
-	else if(0 == strncmp(getFeedKey(selected_fp), "help", 4)) {
-		showErrorBox(_("you cannot modify the special help folder contents!"));
-		stop = TRUE;
-	}
-	
-	drag_successful = !stop;
-	
-	return stop;
 }
 
 /*------------------------------------------------------------------------------*/

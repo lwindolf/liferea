@@ -52,11 +52,11 @@ void setupItemList(GtkWidget *itemlist);
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
 void on_popup_refresh_selected(void);
 
-void on_propchangebtn_clicked(GtkButton *button,gpointer user_data);
-
 void on_newbtn_clicked(GtkButton *button, gpointer user_data);
 void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data);
+void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog);
 
+void on_propchangebtn_clicked(GtkButton *button,gpointer user_data);
 void on_propbtn_clicked(GtkButton *button, gpointer user_data);
 void on_popup_prop_selected(void);
 

@@ -102,9 +102,8 @@ CONFIG_CLEAN_FILES =
 DATA =  $(Applications_DATA)
 
 DIST_COMMON =  README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
-Makefile.am Makefile.in NEWS acconfig.h aclocal.m4 config.guess \
-config.h.in config.sub configure configure.in install-sh missing \
-mkinstalldirs
+Makefile.am Makefile.in NEWS acconfig.h aclocal.m4 config.h.in \
+configure configure.in install-sh missing mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)

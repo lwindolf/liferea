@@ -90,7 +90,7 @@ INCLUDES =  	-DPACKAGE_DATA_DIR=\""$(datadir)"\" 	-DPACKAGE_LOCALE_DIR=\""$(pref
 
 bin_PROGRAMS = liferea
 
-liferea_SOURCES =  	main.c 	support.c support.h 	interface.c interface.h 	callbacks.c callbacks.h 	ui_search.c 	ui_filter.c 	ui_tray.c 	ui_popup.c ui_popup.h 	ui_selection.c ui_selection.h 	eggtrayicon.h eggtrayicon.c 	common.c common.h 	folder.c folder.h 	feed.c feed.h 	item.c item.h 	export.c export.h 	filter.c filter.h 	update.c update.h 	htmlview.c htmlview.h 	rss_channel.c rss_channel.h 	rss_item.c rss_item.h 	rss_ns.h 	cdf_channel.c cdf_channel.h 	cdf_item.c cdf_item.h 	pie_feed.c pie_feed.h 	pie_entry.c pie_entry.h 	pie_ns.h 	opml.c opml.h 	ocs_dir.c ocs_dir.h 	ocs_ns.h 	ns_ocs.c ns_ocs.h 	ns_dc.c ns_dc.h 	ns_fm.c ns_fm.h 	ns_slash.c ns_slash.h 	ns_content.c ns_content.h 	ns_syn.c ns_syn.h 	ns_admin.c ns_admin.h 	ns_blogChannel.c ns_blogChannel.h 	ns_cC.c ns_cC.h 	ns_ag.c ns_ag.h 	conf.c conf.h 	vfolder.c vfolder.h 	favicon.c favicon.h 	os-support.c os-support.h 	netio.c netio.h 	conversions.c conversions.h
+liferea_SOURCES =  	main.c 	support.c support.h 	interface.c interface.h 	callbacks.c callbacks.h 	ui_search.c 	ui_filter.c 	ui_tray.c 	ui_popup.c ui_popup.h 	ui_dnd.c ui_dnd.h 	ui_selection.c ui_selection.h 	eggtrayicon.h eggtrayicon.c 	common.c common.h 	folder.c folder.h 	feed.c feed.h 	item.c item.h 	export.c export.h 	filter.c filter.h 	update.c update.h 	htmlview.c htmlview.h 	rss_channel.c rss_channel.h 	rss_item.c rss_item.h 	rss_ns.h 	cdf_channel.c cdf_channel.h 	cdf_item.c cdf_item.h 	pie_feed.c pie_feed.h 	pie_entry.c pie_entry.h 	pie_ns.h 	opml.c opml.h 	ocs_dir.c ocs_dir.h 	ocs_ns.h 	ns_ocs.c ns_ocs.h 	ns_dc.c ns_dc.h 	ns_fm.c ns_fm.h 	ns_slash.c ns_slash.h 	ns_content.c ns_content.h 	ns_syn.c ns_syn.h 	ns_admin.c ns_admin.h 	ns_blogChannel.c ns_blogChannel.h 	ns_cC.c ns_cC.h 	ns_ag.c ns_ag.h 	conf.c conf.h 	vfolder.c vfolder.h 	favicon.c favicon.h 	os-support.c os-support.h 	netio.c netio.h 	conversions.c conversions.h
 
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
@@ -105,8 +105,8 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 liferea_OBJECTS =  main.o support.o interface.o callbacks.o ui_search.o \
-ui_filter.o ui_tray.o ui_popup.o ui_selection.o eggtrayicon.o common.o \
-folder.o feed.o item.o export.o filter.o update.o htmlview.o \
+ui_filter.o ui_tray.o ui_popup.o ui_dnd.o ui_selection.o eggtrayicon.o \
+common.o folder.o feed.o item.o export.o filter.o update.o htmlview.o \
 rss_channel.o rss_item.o cdf_channel.o cdf_item.o pie_feed.o \
 pie_entry.o opml.o ocs_dir.o ns_ocs.o ns_dc.o ns_fm.o ns_slash.o \
 ns_content.o ns_syn.o ns_admin.o ns_blogChannel.o ns_cC.o ns_ag.o \
@@ -133,7 +133,7 @@ DEP_FILES =  .deps/callbacks.P .deps/cdf_channel.P .deps/cdf_item.P \
 .deps/ns_fm.P .deps/ns_ocs.P .deps/ns_slash.P .deps/ns_syn.P \
 .deps/ocs_dir.P .deps/opml.P .deps/os-support.P .deps/pie_entry.P \
 .deps/pie_feed.P .deps/rss_channel.P .deps/rss_item.P .deps/support.P \
-.deps/ui_filter.P .deps/ui_popup.P .deps/ui_search.P \
+.deps/ui_dnd.P .deps/ui_filter.P .deps/ui_popup.P .deps/ui_search.P \
 .deps/ui_selection.P .deps/ui_tray.P .deps/update.P .deps/vfolder.P
 SOURCES = $(liferea_SOURCES)
 OBJECTS = $(liferea_OBJECTS)
