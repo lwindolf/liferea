@@ -291,7 +291,6 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 void ui_itemlist_prefocus(void) {
 	GtkWidget		*itemlist, *focus_widget;
 	GtkTreeSelection	*itemselection;
-	GtkAdjustment		*adj;
 	
 	/* the following is important to prevent setting the unread
 	   flag for the first item in the item list when the user does
@@ -314,16 +313,6 @@ void ui_itemlist_prefocus(void) {
 
 	gtk_widget_grab_focus(focus_widget);		
 	itemlist_loading = 0;
-	
-	/* Finally reset scrolling to the first item. Note: this functionality
-	   means that the current selection and the itemlist positioning is 
-	   lost when a feed is updated which items the user is currently reading.
-	   But one can say this is good because its a rare event and shows the
-	   user the most recent items at the top, while keeping the originally
-	   selected item in the html view. (Lars) */
-	adj = gtk_tree_view_get_vadjustment(GTK_TREE_VIEW(itemlist));
-	gtk_adjustment_set_value(adj, 0.0);
-	gtk_tree_view_set_vadjustment(GTK_TREE_VIEW(itemlist), adj);
 }
 
 /* Function which is called when the contents of currently
@@ -676,6 +665,10 @@ void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
 	
 	old_mode = ui_itemlist_get_two_pane_mode();
 	ui_mainwindow_set_three_pane_mode(!new_mode);
+
+	/* needed because switching does sometimes returns to the tree 
+	   view with a very disturbing horizontal scrolling state */
+	gtk_tree_view_scroll_to_point(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 0, 0);
 
 	if(new_mode != old_mode)
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")), new_mode);

@@ -825,13 +825,17 @@ create_propdialog (void)
   GtkWidget *hbox31;
   GtkWidget *label74;
   GtkWidget *vbox237;
-  GtkWidget *feedUpdateInfo;
-  GtkWidget *hbox32;
-  GtkWidget *label76;
+  GtkWidget *updateradiobtn;
+  GSList *updateradiobtn_group = NULL;
+  GtkWidget *hbox70;
+  GtkWidget *radiobutton2;
+  GtkWidget *hbox71;
   GtkObject *refreshIntervalSpinButton_adj;
   GtkWidget *refreshIntervalSpinButton;
   GtkWidget *label77;
-  GtkWidget *label135;
+  GtkWidget *radiobutton3;
+  GtkWidget *label161;
+  GtkWidget *feedUpdateInfo;
   GtkWidget *label66;
   GtkWidget *vbox238;
   GtkWidget *label86;
@@ -942,7 +946,7 @@ create_propdialog (void)
   gtk_widget_show (vbox236);
   gtk_box_pack_start (GTK_BOX (vbox233), vbox236, FALSE, TRUE, 0);
 
-  label73 = gtk_label_new (_("<span weight=\"bold\">Refresh Interval</span>"));
+  label73 = gtk_label_new (_("<span weight=\"bold\">Update Interval</span>"));
   gtk_widget_show (label73);
   gtk_box_pack_start (GTK_BOX (vbox236), label73, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label73), TRUE);
@@ -958,39 +962,54 @@ create_propdialog (void)
 
   vbox237 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox237);
-  gtk_box_pack_start (GTK_BOX (hbox31), vbox237, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox31), vbox237, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox237), 6);
 
-  feedUpdateInfo = gtk_label_new (_("This feed's refresh interval defaults to %d seconds."));
+  updateradiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("_Use global default update interval."));
+  gtk_widget_show (updateradiobtn);
+  gtk_box_pack_start (GTK_BOX (vbox237), updateradiobtn, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (updateradiobtn), updateradiobtn_group);
+  updateradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (updateradiobtn));
+
+  hbox70 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox70);
+  gtk_box_pack_start (GTK_BOX (vbox237), hbox70, FALSE, FALSE, 0);
+
+  radiobutton2 = gtk_radio_button_new_with_mnemonic (NULL, _("_Feed specific update interval of"));
+  gtk_widget_show (radiobutton2);
+  gtk_box_pack_start (GTK_BOX (hbox70), radiobutton2, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton2), updateradiobtn_group);
+  updateradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton2));
+
+  hbox71 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox71);
+  gtk_box_pack_start (GTK_BOX (hbox70), hbox71, TRUE, TRUE, 0);
+
+  refreshIntervalSpinButton_adj = gtk_adjustment_new (1, 0, 10000, 1, 60, 60);
+  refreshIntervalSpinButton = gtk_spin_button_new (GTK_ADJUSTMENT (refreshIntervalSpinButton_adj), 1, 0);
+  gtk_widget_show (refreshIntervalSpinButton);
+  gtk_box_pack_start (GTK_BOX (hbox71), refreshIntervalSpinButton, TRUE, TRUE, 0);
+
+  label77 = gtk_label_new (_("minutes."));
+  gtk_widget_show (label77);
+  gtk_box_pack_start (GTK_BOX (hbox71), label77, FALSE, FALSE, 0);
+
+  radiobutton3 = gtk_radio_button_new_with_mnemonic (NULL, _("_Don't update this feed automatically."));
+  gtk_widget_show (radiobutton3);
+  gtk_box_pack_start (GTK_BOX (vbox237), radiobutton3, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton3), updateradiobtn_group);
+  updateradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton3));
+
+  label161 = gtk_label_new (_(" "));
+  gtk_widget_show (label161);
+  gtk_box_pack_start (GTK_BOX (vbox237), label161, FALSE, FALSE, 0);
+
+  feedUpdateInfo = gtk_label_new (_("This feed provider suggest a update interval of %d seconds."));
   gtk_widget_show (feedUpdateInfo);
   gtk_box_pack_start (GTK_BOX (vbox237), feedUpdateInfo, FALSE, FALSE, 0);
   gtk_widget_set_size_request (feedUpdateInfo, 339, -1);
   gtk_label_set_line_wrap (GTK_LABEL (feedUpdateInfo), TRUE);
   gtk_misc_set_alignment (GTK_MISC (feedUpdateInfo), 0, 0.5);
-
-  hbox32 = gtk_hbox_new (FALSE, 6);
-  gtk_widget_show (hbox32);
-  gtk_box_pack_start (GTK_BOX (vbox237), hbox32, TRUE, TRUE, 0);
-
-  label76 = gtk_label_new_with_mnemonic (_("Feed Refresh _Interval:"));
-  gtk_widget_show (label76);
-  gtk_box_pack_start (GTK_BOX (hbox32), label76, FALSE, FALSE, 0);
-
-  refreshIntervalSpinButton_adj = gtk_adjustment_new (1, 0, 10000, 1, 60, 60);
-  refreshIntervalSpinButton = gtk_spin_button_new (GTK_ADJUSTMENT (refreshIntervalSpinButton_adj), 1, 0);
-  gtk_widget_show (refreshIntervalSpinButton);
-  gtk_box_pack_start (GTK_BOX (hbox32), refreshIntervalSpinButton, FALSE, TRUE, 0);
-
-  label77 = gtk_label_new (_("minutes."));
-  gtk_widget_show (label77);
-  gtk_box_pack_start (GTK_BOX (hbox32), label77, FALSE, FALSE, 0);
-
-  label135 = gtk_label_new (_("Note: <i>Please remember to set a reasonable refresh time. It is not desired to poll daily updated feeds every 15 minutes. To disable auto-updating the feed set the interval to 0 minutes.</i>"));
-  gtk_widget_show (label135);
-  gtk_box_pack_start (GTK_BOX (vbox237), label135, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label135), TRUE);
-  gtk_label_set_line_wrap (GTK_LABEL (label135), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label135), 0, 0.5);
 
   label66 = gtk_label_new (_("General"));
   gtk_widget_show (label66);
@@ -1262,7 +1281,6 @@ create_propdialog (void)
   GTK_WIDGET_SET_FLAGS (prop_ok, GTK_CAN_DEFAULT);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label85), feedNameEntry);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label76), refreshIntervalSpinButton);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label93), usernameEntry);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label94), passwordEntry);
 
@@ -1283,12 +1301,15 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, hbox31, "hbox31");
   GLADE_HOOKUP_OBJECT (propdialog, label74, "label74");
   GLADE_HOOKUP_OBJECT (propdialog, vbox237, "vbox237");
-  GLADE_HOOKUP_OBJECT (propdialog, feedUpdateInfo, "feedUpdateInfo");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox32, "hbox32");
-  GLADE_HOOKUP_OBJECT (propdialog, label76, "label76");
+  GLADE_HOOKUP_OBJECT (propdialog, updateradiobtn, "updateradiobtn");
+  GLADE_HOOKUP_OBJECT (propdialog, hbox70, "hbox70");
+  GLADE_HOOKUP_OBJECT (propdialog, radiobutton2, "radiobutton2");
+  GLADE_HOOKUP_OBJECT (propdialog, hbox71, "hbox71");
   GLADE_HOOKUP_OBJECT (propdialog, refreshIntervalSpinButton, "refreshIntervalSpinButton");
   GLADE_HOOKUP_OBJECT (propdialog, label77, "label77");
-  GLADE_HOOKUP_OBJECT (propdialog, label135, "label135");
+  GLADE_HOOKUP_OBJECT (propdialog, radiobutton3, "radiobutton3");
+  GLADE_HOOKUP_OBJECT (propdialog, label161, "label161");
+  GLADE_HOOKUP_OBJECT (propdialog, feedUpdateInfo, "feedUpdateInfo");
   GLADE_HOOKUP_OBJECT (propdialog, label66, "label66");
   GLADE_HOOKUP_OBJECT (propdialog, vbox238, "vbox238");
   GLADE_HOOKUP_OBJECT (propdialog, label86, "label86");
@@ -1608,6 +1629,17 @@ create_prefdialog (void)
   GtkWidget *label33;
   GtkObject *itemCountBtn_adj;
   GtkWidget *itemCountBtn;
+  GtkWidget *vbox2585;
+  GtkWidget *label156;
+  GtkWidget *hbox67;
+  GtkWidget *label157;
+  GtkWidget *vbox2586;
+  GtkWidget *hbox68;
+  GtkWidget *label159;
+  GtkObject *spinbutton1_adj;
+  GtkWidget *spinbutton1;
+  GtkWidget *label160;
+  GtkWidget *label135;
   GtkWidget *hbox57;
   GtkWidget *label142;
   GtkWidget *startupfeedhandler;
@@ -1745,7 +1777,7 @@ create_prefdialog (void)
   gtk_widget_show (vbox250);
   gtk_box_pack_start (GTK_BOX (vbox3), vbox250, FALSE, TRUE, 0);
 
-  label122 = gtk_label_new (_("<span weight=\"bold\">Feed Handling Settings</span>"));
+  label122 = gtk_label_new (_("<span weight=\"bold\">Feed Cache Handling</span>"));
   gtk_widget_show (label122);
   gtk_box_pack_start (GTK_BOX (vbox250), label122, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label122), TRUE);
@@ -1768,7 +1800,7 @@ create_prefdialog (void)
   gtk_widget_show (hbox19);
   gtk_box_pack_start (GTK_BOX (vbox20), hbox19, TRUE, TRUE, 0);
 
-  label33 = gtk_label_new (_("Default number of items per feed to save when Liferea exits:"));
+  label33 = gtk_label_new (_("Default number of items per feed to save per feed:"));
   gtk_widget_show (label33);
   gtk_box_pack_start (GTK_BOX (hbox19), label33, FALSE, FALSE, 0);
   gtk_widget_set_size_request (label33, 300, -1);
@@ -1780,9 +1812,56 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
 
+  vbox2585 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox2585);
+  gtk_box_pack_start (GTK_BOX (vbox3), vbox2585, TRUE, TRUE, 0);
+
+  label156 = gtk_label_new (_("<span weight=\"bold\">Feed Update Settings</span>"));
+  gtk_widget_show (label156);
+  gtk_box_pack_start (GTK_BOX (vbox2585), label156, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label156), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label156), 0, 0.5);
+
+  hbox67 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox67);
+  gtk_box_pack_start (GTK_BOX (vbox2585), hbox67, TRUE, TRUE, 0);
+
+  label157 = gtk_label_new (_("    "));
+  gtk_widget_show (label157);
+  gtk_box_pack_start (GTK_BOX (hbox67), label157, FALSE, FALSE, 0);
+
+  vbox2586 = gtk_vbox_new (FALSE, 5);
+  gtk_widget_show (vbox2586);
+  gtk_box_pack_start (GTK_BOX (hbox67), vbox2586, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2586), 5);
+
+  hbox68 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox68);
+  gtk_box_pack_start (GTK_BOX (vbox2586), hbox68, TRUE, TRUE, 0);
+
+  label159 = gtk_label_new_with_mnemonic (_("Default Feed Refresh _Interval:"));
+  gtk_widget_show (label159);
+  gtk_box_pack_start (GTK_BOX (hbox68), label159, FALSE, FALSE, 0);
+
+  spinbutton1_adj = gtk_adjustment_new (1, 0, 10000, 1, 60, 60);
+  spinbutton1 = gtk_spin_button_new (GTK_ADJUSTMENT (spinbutton1_adj), 1, 0);
+  gtk_widget_show (spinbutton1);
+  gtk_box_pack_start (GTK_BOX (hbox68), spinbutton1, FALSE, TRUE, 0);
+
+  label160 = gtk_label_new (_("minutes."));
+  gtk_widget_show (label160);
+  gtk_box_pack_start (GTK_BOX (hbox68), label160, FALSE, FALSE, 0);
+
+  label135 = gtk_label_new (_("Note: <i>Please remember to set a reasonable refresh time. It is not desired to poll daily updated feeds every 15 minutes. To disable auto-updating per default set the interval to 0 minutes.</i>"));
+  gtk_widget_show (label135);
+  gtk_box_pack_start (GTK_BOX (vbox2586), label135, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label135), TRUE);
+  gtk_label_set_line_wrap (GTK_LABEL (label135), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label135), 0, 0.5);
+
   hbox57 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox57);
-  gtk_box_pack_start (GTK_BOX (vbox20), hbox57, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2586), hbox57, TRUE, TRUE, 0);
 
   label142 = gtk_label_new_with_mnemonic (_("At _startup:"));
   gtk_widget_show (label142);
@@ -2368,6 +2447,7 @@ create_prefdialog (void)
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (prefdialog));
 
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label159), spinbutton1);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label142), startupfeedhandler);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label137), browserpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (manuallabel), browsercmd);
@@ -2390,6 +2470,16 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox19, "hbox19");
   GLADE_HOOKUP_OBJECT (prefdialog, label33, "label33");
   GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2585, "vbox2585");
+  GLADE_HOOKUP_OBJECT (prefdialog, label156, "label156");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox67, "hbox67");
+  GLADE_HOOKUP_OBJECT (prefdialog, label157, "label157");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2586, "vbox2586");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox68, "hbox68");
+  GLADE_HOOKUP_OBJECT (prefdialog, label159, "label159");
+  GLADE_HOOKUP_OBJECT (prefdialog, spinbutton1, "spinbutton1");
+  GLADE_HOOKUP_OBJECT (prefdialog, label160, "label160");
+  GLADE_HOOKUP_OBJECT (prefdialog, label135, "label135");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox57, "hbox57");
   GLADE_HOOKUP_OBJECT (prefdialog, label142, "label142");
   GLADE_HOOKUP_OBJECT (prefdialog, startupfeedhandler, "startupfeedhandler");
