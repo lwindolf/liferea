@@ -1059,7 +1059,7 @@ gchar *feed_render(feedPtr fp) {
 
 	/* FIXME: remove with 0.9.x */
 	if((NULL != displayset.body) &&
-	   (0 == strcmp(displayset.body, "class=\"itemhead\"")))	/* I hope this is unique enough...*/
+	   (NULL != strstr(displayset.body, "class=\"itemhead\"")))	/* I hope this is unique enough...*/
 		migration = TRUE;
 
 	if(FALSE == migration) {	
