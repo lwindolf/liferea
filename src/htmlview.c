@@ -294,10 +294,7 @@ void ui_htmlview_write(gchar *string) {
 	if(!g_utf8_validate(string, -1, NULL))
 		g_warning("Invalid encoded UTF8 string passed to HTML widget!");
 
-	/* this is a dirty workaround for the GtkHTML problems with strange
-	   HTML endings with special characters (caused by bugs in Liferea 
-	   HTML generation) */
-	((writeHTMLFunc)methods[WRITEHTML])(g_strdup_printf("%s                ",string));
+	((writeHTMLFunc)methods[WRITEHTML])(g_strdup(string));
 }
 
 void ui_htmlview_finish_output(gchar **buffer) {

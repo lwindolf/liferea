@@ -347,10 +347,10 @@ void writeHTML(gchar *string) {
 		g_signal_connect (G_OBJECT (doc), "link_clicked",
 				  G_CALLBACK (link_clicked), NULL);
 
-		if((NULL != string) && (g_utf8_strlen(string, -1) > 0))
-			html_document_write_stream(doc, string, g_utf8_strlen(string, -1));
+		if((NULL != string) && (strlen(string) > 0))
+			html_document_write_stream(doc, string, strlen(string));
 		else
-			html_document_write_stream(doc, EMPTY, g_utf8_strlen(EMPTY, -1));	
+			html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
 
 		html_document_close_stream(doc);
 		
