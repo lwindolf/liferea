@@ -1176,12 +1176,17 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	   feeds hashtable we reuse the old structure! */
 	
 	/* in the next step we will copy the new_fp structure
-	   to fp, but we need to keep some fp attributes... */
+	   to fp, but we need to keep some fp attributes */
 	g_free(new_fp->title);
-	new_fp->id = fp->id;
-	g_free(new_fp->source);
 	new_fp->title = fp->title;
+
+	g_free(new_fp->source);
 	new_fp->source = fp->source;
+
+	if (new_fp->icon != NULL)
+		g_object_unref(new_fp->icon);
+	new_fp->icon = fp->icon;
+	new_fp->id = fp->id;
 	new_fp->filtercmd = fp->filtercmd;
 	new_fp->type = fp->type;
 	new_fp->request = fp->request;
@@ -1199,6 +1204,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	tmp_fp->ui_data = NULL;
 	tmp_fp->filtercmd = NULL;
 	tmp_fp->faviconRequest = NULL;
+	tmp_fp->icon = NULL;
 	feed_free(tmp_fp);				/* we use tmp_fp to free almost all infos
 							   allocated by old feed structure */
 	g_free(new_fp);
@@ -1253,6 +1259,9 @@ void feed_free(feedPtr fp) {
 	
 	feed_clear_item_list(fp);
 
+	if (fp->icon != NULL)
+		g_object_unref(fp->icon);
+	
 	if(fp->id) {
 		favicon_remove(fp);
 		conf_feedlist_schedule_save();

@@ -112,10 +112,10 @@ static gchar * taglist[] = {	"title",
    be registered explicitly! */
 static gchar * mapToFeedMetadata[] = {
 			 	"feedTitle",		/* title */ 
-				NULL,			/* creator */
+				"creator",			/* creator */
 				"category",		/* subject */
 				"description",		/* description */
-				NULL,			/* publisher */
+				"publisher",			/* publisher */
 				"contributor",		/* contributor */
 				NULL,			/* date (seldom used, e.g. slashdot) */
 				NULL,			/* type */
@@ -242,15 +242,11 @@ static void parse_tag(gpointer obj, xmlNodePtr cur, gboolean isFeedTag) {
 
 				if(isNotEmpty) {
 					if(TRUE == isFeedTag) {
-						if(NULL == (mapping = mapToFeedMetadata[i]))
-							fp->metadata = metadata_list_append(fp->metadata, taglist[i], value);
-						else 
-							metadata_list_set(&(fp->metadata), mapping, value);
+						if(NULL != (mapping = mapToFeedMetadata[i]))
+							fp->metadata = metadata_list_append(fp->metadata, mapping, value);
 					} else {
-						if(NULL == (mapping = mapToItemMetadata[i]))
-							ip->metadata = metadata_list_append(ip->metadata, taglist[i], value);
-						else
-							metadata_list_set(&(ip->metadata), mapping, value);						
+						if(NULL != (mapping = mapToItemMetadata[i]))
+							ip->metadata = metadata_list_append(ip->metadata, mapping, value);
 					}
 				} 
 				g_free(value);

@@ -331,7 +331,7 @@ static void attribs_init() {
 	metadata_register_renderer("fmScreenshot", attribs_render_image, NULL);
 
 	/* types for slash */
-	metadata_register_renderer("slash", ns_slash_render, NULL);	
+	metadata_register_renderer("slash", ns_slash_render, NULL);	 /* This one should only be set, not appended */
 }
 
 static void attribs_register_default_renderer(const gchar *strid) {
