@@ -4,12 +4,12 @@ msgstr ""
 "Project-Id-Version: liferea 0.5.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-08-11 04:09+0200\n"
-"PO-Revision-Date: 2004-07-16 00:52+0200\n"
-"Last-Translator: José María Mateos <josemaria.mateos@hispalinux.es>\n"
+"PO-Revision-Date: 2004-08-12 00:55+0200\n"
+"Last-Translator: José María Mateos <chema@sl-form.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/common.c:267
 msgid "[Parser error output was truncated!]"
@@ -26,11 +26,9 @@ msgstr ""
 "date>\n"
 
 #: src/common.c:410
-#, fuzzy
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
-msgstr ""
-"Formato de fecha inválido según RFC822. Ignorando la información de "
-"<pubDate>\n"
+msgstr "Formato de fecha inválido según RFC822. Se ignorará.\n"
+""
 
 #: src/common.c:424 src/common.c:431 src/common.c:437 src/common.c:444
 #, c-format
@@ -103,7 +101,7 @@ msgstr "Importar lista"
 
 #: src/export.c:438
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #: src/export.c:448
 msgid "Error while exporting feed list!"
@@ -119,7 +117,7 @@ msgstr "Exportar lista"
 
 #: src/export.c:457
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 #: src/feed.c:137
 #, c-format
@@ -144,7 +142,9 @@ msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
-msgstr ""
+msgstr "<p>No se pudo determinar el tipo de fuente. Por favor, comprueba que sea <a href="
+"\"http://feedvalidator.org\">válida</a> y que su formato <a href=\"http://liferea."
+"sourceforge.net/index.php#supported_formats\">esté soportado</a>.</p>"
 
 #: src/feed.c:376 src/feed.c:377
 #, c-format
@@ -184,11 +184,11 @@ msgstr "\"%s\" tiene %d elementos nuevos"
 #: src/feed.c:709
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
-msgstr "La fuente \"%s\" ya se estaba actualizando"
+msgstr "La fuente \"%s\" ya se está actualizando"
 
 #: src/feed.c:714
 msgid "The feed was discontinued. Liferea won't update it anymore!"
-msgstr "La fuente fue abandonada. Liferea no la actualizará."
+msgstr "La fuente ya no existe. Liferea no la actualizará."
 
 #: src/feed.c:718
 #, c-format
@@ -211,14 +211,13 @@ msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada"
 
 #: src/feed.c:787
-#, fuzzy
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
 "p>"
 msgstr ""
-"No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL "
-"apunte a un recurso con alguno de los formatos soportados."
+"<p>No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL "
+"apunte a un recurso con alguno de los formatos soportados.</p>"
 
 #: src/feed.c:813
 #, c-format
@@ -234,7 +233,7 @@ msgstr "Lo siento, \"%s\" no está disponible"
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
-msgstr ""
+msgstr "No se pudo acceder a esta fuente. Por favor, especifica el nombre de usuario y la contraseña en el cuadro de propiedades."
 
 #: src/feed.c:978
 msgid "Payment Required"
@@ -246,7 +245,7 @@ msgstr "Acceso denegado"
 
 #: src/feed.c:980
 msgid "Resource Not Found"
-msgstr "Recurso no disponible"
+msgstr "Recurso no encontrado"
 
 #: src/feed.c:981
 msgid "Method Not Allowed"
@@ -258,7 +257,7 @@ msgstr "No aceptable"
 
 #: src/feed.c:983
 msgid "Proxy Authentication Required"
-msgstr "Se necesita autentificación proxy"
+msgstr "Se necesita autentificación para el proxy"
 
 #: src/feed.c:984
 msgid "Request Time-Out"
@@ -266,7 +265,7 @@ msgstr "Expiró el plazo"
 
 #: src/feed.c:985
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Esta fuente ya no existe. Por favor, elimínala."
+msgstr "Esta fuente ya no existe. Por favor, elimínela."
 
 #: src/feed.c:990
 msgid "URL is invalid"
@@ -357,9 +356,9 @@ msgid ""
 msgstr ""
 "\n"
 "Intentando cargar el módulo del navegador Mozilla... Esto\n"
-"puede no funcionar con alguna versión de Mozilla. Si encuentras\n"
-"problemas y Liferea no arranca, intenta cambiar la variable\n"
-"MOZILLA_FIVE_HOME a otro directorio o borra la clave de gconf:\n"
+"puede no funcionar con alguna versión de Mozilla. Si encuentra\n"
+"problemas y Liferea no arranca, intente cambiar la variable\n"
+"MOZILLA_FIVE_HOME a otro directorio o borre la clave de gconf:\n"
 "/apps/liferea/browser-module\n"
 "\n"
 
@@ -414,7 +413,7 @@ msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
 msgstr ""
-"Lo siento, no se pudo cargar ningún módulo de navegador. Por favor, intenta "
+"Lo siento, no se pudo cargar ningún módulo de navegador. Por favor, intente "
 "usar la opción \"--debug\" para conseguir información de depuración"
 
 #. FIXME: bad because this is not only used for item links!
@@ -455,9 +454,8 @@ msgstr ""
 "seguir accediendo a los elementos que contiene su caché."
 
 #: src/interface.c:131 src/interface.c:2975
-#, fuzzy
 msgid "Liferea 0.5.3"
-msgstr "Liferea 0.5.2"
+msgstr "Liferea 0.5.3"
 
 #: src/interface.c:148
 msgid "_Program"
@@ -548,9 +546,8 @@ msgid "_Export Feed List"
 msgstr "_Exportar fuentes..."
 
 #: src/interface.c:293
-#, fuzzy
 msgid "Exports the feed list as OPML."
-msgstr "Exporta la lista de fuentes con formato OPML"
+msgstr "Exporta la lista de fuentes con formato OPML."
 
 #: src/interface.c:299
 msgid "_Items"
@@ -597,7 +594,6 @@ msgid "_Launch In Browser"
 msgstr "_Abrir en navegador"
 
 #: src/interface.c:356
-#, fuzzy
 msgid "Launches the item's link in the configured browser."
 msgstr "Abre la dirección del elemento en el navegador."
 
@@ -646,7 +642,6 @@ msgid "Search with Feedster"
 msgstr "Buscar con _Feedster..."
 
 #: src/interface.c:421
-#, fuzzy
 msgid "Creates a Feedster search feed."
 msgstr "Inicia una búsqueda con Feedster."
 
@@ -734,8 +729,8 @@ msgid ""
 "to poll daily updated feeds every 15 minutes. To disable auto-updating the "
 "feed set the interval to 0 minutes.</i>"
 msgstr ""
-"Por favor, escribe un tiempo razonable. No es necesario comprobar las "
-"fuentes cada 15 minutos. Para desactivar la actualización automática, pon "
+"Por favor, escriba un tiempo razonable. No es necesario comprobar las "
+"fuentes cada 15 minutos. Para desactivar la actualización automática, ponga "
 "este valor a 0."
 
 #: src/interface.c:948
@@ -777,7 +772,7 @@ msgid ""
 "information."
 msgstr ""
 "Liferea puede usar filtros externos, a modo de plug-ins, para acceder a "
-"fuentes y directorios en formatos que no estén soportados. Por favor, lee la "
+"fuentes y directorios en formatos que no estén soportados. Por favor, lea la "
 "documentación para mayor información"
 
 #: src/interface.c:1066 src/interface.c:1468
@@ -870,15 +865,15 @@ msgid "Add the _help feeds to the feed list on startup."
 msgstr "Al _iniciar, añadir las fuentes de ayuda a la lista."
 
 #: src/interface.c:1757
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
-msgstr "<span weight=\"bold\">Opciones de la fuente</span>"
+msgstr "<span weight=\"bold\">Opciones de carga de la fuente</span>"
 
 #: src/interface.c:1776
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds,"
-msgstr ""
+msgstr "_Cargar fuentes de disco, si es necesario. Las \n"
+"búsquedas pueden ralentizarse si tienes muchas fuentes"
 
 #: src/interface.c:1783
 msgid ""
@@ -886,7 +881,10 @@ msgid ""
 "(especially when searching) but can cause a \n"
 "significant memory footprint if you have a lot \n"
 "of feeds!"
-msgstr ""
+msgstr "_Mantener todas las fuentes cargadas. Esto puede\n"
+"mejorar la velocidad, especialmente en búsquedas,\n"
+"pero puede aumentar el consumo de memoria si\n"
+"tienes muchas fuentes"
 
 #: src/interface.c:1789
 msgid "Feed Handling"
@@ -898,19 +896,19 @@ msgstr "<span weight=\"bold\">Visualización de cabeceras</span>"
 
 #: src/interface.c:1827
 msgid "Skim through articles with "
-msgstr ""
+msgstr "Saltar a artículos con"
 
 #: src/interface.c:1837
 msgid "Space"
-msgstr ""
+msgstr "Espacio"
 
 #: src/interface.c:1841
 msgid "<Ctrl> Space"
-msgstr ""
+msgstr "<Ctrl> Espacio"
 
 #: src/interface.c:1845
 msgid "<Alt> Space"
-msgstr ""
+msgstr "<Alt> Espacio"
 
 #: src/interface.c:1851
 msgid ""
@@ -919,8 +917,8 @@ msgid ""
 "available. Restart Liferea for changes to take effect."
 msgstr ""
 "Liferea muestra el contenido de las fuentes mediante diferentes programas "
-"renderizadores de HTML. Dependiendo de tu sistema, aparecerán más o menos "
-"opciones. Reinicia Liferea para aplicar los cambios."
+"renderizadores de HTML. Dependiendo de su sistema, aparecerán más o menos "
+"opciones. Reinicie Liferea para aplicar los cambios."
 
 #: src/interface.c:1861
 msgid "View Headlines With"
@@ -952,7 +950,7 @@ msgid ""
 "manpage for the format codes"
 msgstr ""
 "Para usuarios avanzados: Especifica un formato de fecha. Para más "
-"información consulta la página de manual de 'strftime()'."
+"información consulte la página de manual de 'strftime()'."
 
 #: src/interface.c:1928
 msgid "Headline Display"
@@ -1031,7 +1029,7 @@ msgid ""
 "will affect other applications! This dialog is primarily for users without "
 "GNOME to be able to use Liferea with a proxy."
 msgstr ""
-"Liferea aprovecha la configuración del proxy de GNOME.Si usas GNOME puedes "
+"Liferea aprovecha la configuración del proxy de GNOME.Si usa GNOME puede "
 "cambiar estas opciones en el centro de control. Nota: Esto también afectará "
 "al resto de aplicaciones. Éste cuadro es útil para usuarios que quieran usar "
 "Liferea con un proxy, pero no estén usando GNOME."
@@ -1041,29 +1039,24 @@ msgid "_Enable Proxy"
 msgstr "_Activar Proxy"
 
 #: src/interface.c:2171
-#, fuzzy
 msgid "Proxy _Host:"
-msgstr "_Servidor"
+msgstr "_Servidor proxy:"
 
 #: src/interface.c:2192
-#, fuzzy
 msgid "Proxy _Port:"
-msgstr "_Puerto"
+msgstr "_Puerto del proxy:"
 
 #: src/interface.c:2199
-#, fuzzy
 msgid "Use Proxy _Authentication"
-msgstr "Usar a_utentificación HTTP"
+msgstr "Usar a_utentificación del Proxy"
 
 #: src/interface.c:2217
-#, fuzzy
 msgid "Proxy _Username:"
-msgstr "Nombre de _usuario:"
+msgstr "Nombre de _usuario del proxy:"
 
 #: src/interface.c:2239
-#, fuzzy
 msgid "Proxy Pass_word:"
-msgstr "C_ontraseña:"
+msgstr "C_ontraseña del proxy:"
 
 #: src/interface.c:2246
 msgid "Proxy"
@@ -1115,7 +1108,7 @@ msgstr "Buscar:"
 
 #: src/interface.c:2869
 msgid "enter any search string you want"
-msgstr "Escribe cualquier frase"
+msgstr "Escriba cualquier frase"
 
 #: src/interface.c:2876
 msgid "Maximal Number Of Result Items:"
@@ -1128,7 +1121,7 @@ msgid ""
 "permanently and update it like any other subscription.  "
 msgstr ""
 "Nota: Liferea generará una subscripción que se podrá usar para consultar los "
-"resultados de la búsqueda con Feedster. Puedes mantener esta fuente "
+"resultados de la búsqueda con Feedster. Puede mantener esta fuente "
 "permanentemente, y actualizarla como cualquier otra."
 
 #: src/interface.c:2980
@@ -1198,7 +1191,6 @@ msgid "Contributors"
 msgstr "Agradecimientos"
 
 #: src/interface.c:3025
-#, fuzzy
 msgid ""
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -1221,7 +1213,7 @@ msgstr ""
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Vincent Lefèvre <vincent@vinc17.org>\n"
+"Vincent Lefevre <vincent@vinc17.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
@@ -1316,7 +1308,8 @@ msgid ""
 "Another copy of Liferea was found to be running. Please us it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
-msgstr ""
+msgstr "Otra copia de Liferea está ya ejecutándose, por favor, utilízala. Si "
+"no hubiera ninguna copia en memoria, por favor borra el archivo \"~/.liferea/lock\""
 
 #: src/metadata.c:284
 msgid "comments"
@@ -1365,7 +1358,7 @@ msgstr "webmaster"
 
 #: src/metadata.c:331
 msgid "category"
-msgstr "catergoría"
+msgstr "categoría"
 
 #. types for admin
 #: src/metadata.c:339
@@ -1453,7 +1446,7 @@ msgstr "Error interno analizando el espacio OCS."
 
 #: src/ns_photo.c:35
 msgid "included photo"
-msgstr ""
+msgstr "foto adjunta"
 
 #: src/ocs_dir.c:97
 msgid "Feed"
@@ -1478,7 +1471,7 @@ msgstr "<p>No se pudo obtener la cabecera OPML.</p>"
 
 #: src/pie_feed.c:140
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
-msgstr "<p>No se pudo obtener la cabecera OPML.</p>"
+msgstr "<p>No se pudo obtener la cabecera Atom/Echo/PIE.</p>"
 
 #: src/rss_channel.c:236
 msgid "<p>Could not find RDF/RSS header!</p>"
@@ -1505,7 +1498,7 @@ msgstr ""
 
 #: src/ui_feed.c:545
 msgid "Choose File"
-msgstr ""
+msgstr "Elegir archivo"
 
 #: src/ui_feedlist.c:408
 msgid "You have to select a feed entry"
@@ -1553,15 +1546,15 @@ msgstr "Confirmación de eliminación"
 
 #: src/ui_feedlist.c:537
 msgid "You must select a feed entry"
-msgstr "Por favor, elige una fuente de noticias"
+msgstr "Por favor, elija una fuente de noticias"
 
 #: src/ui_feedlist.c:538
 msgid "You must select a feed entry."
-msgstr "Por favor, elige una fuente de noticias"
+msgstr "Por favor, elija una fuente de noticias"
 
 #: src/ui_feedlist.c:543
 msgid "You cannot modify help feeds."
-msgstr ""
+msgstr "No se pueden modificar las fuentes de ayuda"
 
 #: src/ui_feedlist.c:570
 msgid "New subscription"
@@ -1603,7 +1596,7 @@ msgstr "No se ha seleccionado ningún elemento"
 
 #: src/ui_itemlist.c:634
 msgid "You must select a feed to delete its items!"
-msgstr "Por favor, elige una fuente para eliminar sus elementos"
+msgstr "Por favor, elija una fuente para eliminar sus elementos"
 
 #: src/ui_itemlist.c:664
 msgid "internal error! could not get feed tree view selection!\n"
@@ -1660,7 +1653,6 @@ msgid "Edit preferences."
 msgstr "Cambiar preferencias."
 
 #: src/ui_mainwindow.c:198
-#, fuzzy
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1688,6 +1680,13 @@ msgid ""
 "a> available at the <a href=\"http://liferea.sf.net\">project homepage</a>.</"
 "p>"
 msgstr ""
+"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+"\">Se han empezado la lista de características para la versión 1.1. Por favor, <a href=\"http://"
+"liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">mira ésta</"
+"a> y <a href=\"mailto:liferea-devel@lists.sourceforge.net"
+"\">propón</a> algunas ideas que te gustaría que tuviera Liferea"
+"</div>"
+""
 "<h2>Bienvenido a Liferea</h2><p>El panel de la izquierda contiene la lista "
 "de fuentes, donde se pueden añadir nuevas subscripciones. En la parte "
 "derecha se muestran los titulares junto con los contenidos de cada elemento. "
@@ -1695,16 +1694,16 @@ msgstr ""
 "muestren a la vez los titulares y los contenidos</p><h3>Acciones básicas</"
 "h3><ul><li><p><b>Añadir subscripción</b> - Crea un nuevo elemento en la "
 "carpeta seleccionada. Para ello, introduce la URL de la fuente de noticias "
-"o, si es desconocida, la dirección de la página web que la contiene</p></"
-"li><li><p><b>Actualizar subscripción</b> - Actualiza los contenidos de la "
+"o, si es desconocida, la dirección de la página web que la contiene</p></li>"
+"<li><p><b>Actualizar subscripción</b> - Actualiza los contenidos de la "
 "fuente seleccionada. Normalmente, las actualizaciones automáticas son "
 "suficientes, pero en caso de desearse una actualización automática, usa esta "
 "opción</p></li><li><p><b>Actualizar todos</b> - Actualiza todas las fuentes "
 "de golpe. </li><li><p><b>Propiedades de la fuente</b> - Desde aquí se pueden "
 "cambiar el intervalo de actualización, el título y otras propiedades de cada "
 "elemento</p></li></ul><p>Para más información sobre el uso de Liferea, por "
-"favor, mira la documentación de las fuentes de ayuda o las FAQ que hay "
-"disponibles en la página web</p>"
+"favor, mira la documentación de las fuentes de ayuda o las <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</a> que hay "
+"disponibles en la <a href=\"http://liferea.sf.net\">página web de Liferea</a></p>"
 
 #: src/ui_mainwindow.c:283
 msgid "Liferea is now online"
@@ -1716,7 +1715,7 @@ msgstr "Trabajando en modo sin conexión."
 
 #: src/ui_notification.c:187
 msgid "Untitled"
-msgstr ""
+msgstr "Sin título"
 
 #: src/ui_notification.c:248
 msgid "Liferea notification"
@@ -1854,7 +1853,7 @@ msgstr "Actualizar todas las fuentes"
 #: src/ui_prefs.c:229
 msgid "Reset feed update timers (Update no feeds)"
 msgstr ""
-"Reiniciar los temporizadores de actualizadión (No actualizar ninguna fuente)"
+"Reiniciar los temporizadores de actualización (No actualizar ninguna fuente)"
 
 #: src/ui_search.c:69
 #, c-format
@@ -1862,11 +1861,9 @@ msgid "Searching for \"%s\""
 msgstr "Buscando \"%s\""
 
 #: src/ui_tray.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item!"
-msgid_plural "%d new items!"
-msgstr[0] "%d elemento nuevo"
-msgstr[1] "%d elemento nuevo"
+msgstr "%d elemento(s) nuevo(s)"
 
 #: src/ui_tray.c:103
 msgid "No new items."
@@ -1895,10 +1892,10 @@ msgstr "El archivo \"%s\" no existe."
 #~ "formato esté soportado</p>"
 
 #~ msgid "The feed no longer exists. Please unsubscribe."
-#~ msgstr "Esta fuente ya no existe. Por favor, elimínala."
+#~ msgstr "Esta fuente ya no existe. Por favor, elimínela."
 
 #~ msgid "Select A File"
-#~ msgstr "Elige un archivo"
+#~ msgstr "Elija un archivo"
 
 #~ msgid ""
 #~ "Liferea can import a list of feeds from an OPML file. This  can be used "
@@ -1917,7 +1914,7 @@ msgstr "El archivo \"%s\" no existe."
 #~ "feature to backup your feed list or export your feed list to another "
 #~ "aggregator."
 #~ msgstr ""
-#~ "Liferea puede exportar las fuentes a un archivo OPML. Puedes usarlo para "
+#~ "Liferea puede exportar las fuentes a un archivo OPML. Puede usarlo para "
 #~ "hacer una copia de seguridad de tu lista, o para abrirlo más tarde con "
 #~ "otro programa."
 
@@ -1932,7 +1929,7 @@ msgstr "El archivo \"%s\" no existe."
 #~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
 #~ "Park Ji-In <mithrandir@electrang.net>\n"
 #~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
-#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Jose Maria Mateos <chema@sl-form.com>\n"
 #~ "Enrico Genauck <enrico@fanglomerat.de>\n"
 #~ "Vladimir Petkov <vpetkov@i-space.org>\n"
 #~ "Tomislav Markovski <tome@set.com.mk>\n"
@@ -1945,7 +1942,7 @@ msgstr "El archivo \"%s\" no existe."
 #~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
 #~ "Park Ji-In <mithrandir@electrang.net>\n"
 #~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
-#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Jose Maria Mateos <chema@sl-form.com>\n"
 #~ "Enrico Genauck <enrico@fanglomerat.de>\n"
 #~ "Vladimir Petkov <vpetkov@i-space.org>\n"
 #~ "Tomislav Markovski <tome@set.com.mk>\n"
