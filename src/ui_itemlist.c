@@ -604,6 +604,7 @@ static gboolean ui_itemlist_find_unread_item(void) {
 					gtk_tree_path_free(path);
 					gtk_widget_grab_focus(treeview);
 					item_set_read(ip);	/* needed when no selection happens (e.g. when the item is already selected) */
+					ui_feedlist_update();
 				} else
 					g_warning(_("internal error! could not get feed tree view selection!\n"));
 			} else {
