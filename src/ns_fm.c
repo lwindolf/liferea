@@ -23,7 +23,7 @@
 #include "ns_fm.h"
 #include "common.h"
 
-#define FM_IMG_START	"<br><img style=\"margin-top:10px;\" src=\""
+#define FM_IMG_START	"<br><img class=\"freshmeat\" src=\""
 #define FM_IMG_END		" \">"
 
 static gchar ns_fm_prefix[] = "fm";

@@ -50,9 +50,9 @@
 
 /* HTML output strings */
 
-#define TEXT_INPUT_FORM_START	"<form method=\"GET\" ACTION=\""
-#define TEXT_INPUT_TEXT_FIELD	"\"><input type=text value=\"\" name=\""
-#define TEXT_INPUT_SUBMIT	"\"><input type=submit value=\""
+#define TEXT_INPUT_FORM_START	"<form class=\"rssform\" method=\"GET\" ACTION=\""
+#define TEXT_INPUT_TEXT_FIELD	"\"><input class=\"rssformtext\" type=text value=\"\" name=\""
+#define TEXT_INPUT_SUBMIT	"\"><input class=\"rssformsubmit\" type=submit value=\""
 #define TEXT_INPUT_FORM_END	"\"></form>"
 
 /* structure for the hashtable callback which itself calls the 

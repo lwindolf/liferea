@@ -24,9 +24,9 @@
 #include "ns_admin.h"
 #include "common.h"
 
-#define TABLE_START	"<div style=\"margin-top:15px;font-size:8pt;color:#C0C0C0\">administrative information</div><table style=\"width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;\">"
-#define FIRSTTD		"<tr style=\"border-width:0;border-bottom-width:1px;border-style:dashed;border-color:#D0D0D0;\"><td width=\"30%\"><span style=\"font-size:8pt;color:#C0C0C0\">"
-#define NEXTTD		"</span></td><td><span style=\"font-size:8pt;color:#C0C0C0\">"
+#define TABLE_START	"<div class=\"feedfoottitle\">administrative information</div><table class=\"addfoot\">"
+#define FIRSTTD		"<tr class=\"feedfoot\"><td class=\"feedfootname\"><span class=\"feedfootname\">"
+#define NEXTTD		"</span></td><td class=\"feedfootvalue\"><span class=\"feedfootvalue\">"
 #define LASTTD		"</span></td></tr>"
 #define TABLE_END	"</table>"
 

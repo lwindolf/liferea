@@ -22,15 +22,19 @@
 #include <glib.h>
 #include <libgtkhtml/gtkhtml.h>
 #include <libgnomevfs/gnome-vfs.h>
+#include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
 
+/* Common HTML definitions, style should be defined in the
+   liferea.css style sheet! For some important HTML literals
+   like the item and feed description headers the styles 
+   are duplicated here just in case the style sheet is 
+   missing. */
 
-// FIXME: move not common defines to specific feed handler module
-
-/* common HTML definitions */
-
-#define EMPTY		"<html><body>Item has no contents!</body></html>"
+#define EMPTY		"<html><body></body></html>"
 #define HTML_START	"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>"
-#define HTML_HEAD_START	"<head><title>itemview</title>"
+#define HTML_HEAD_START	"<head><title>item view</title>"
 #define META_ENCODING1	"<meta http-equiv=\"Content-Type\" content=\"text/html; charset="
 #define META_ENCODING2	"\">"
 #define HTML_HEAD_END	"</head><body>"
@@ -42,19 +46,19 @@
 
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
-#define ITEM_HEAD_START	"<table cellspacing=\"0\" style=\"margin-bottom:5px;width:100%;background:#D0D0D0;border-width:1px;border-style:solid;\"><tr><td style=\"padding:2px;padding-left:5px;padding-right:5px;\">"
+#define ITEM_HEAD_START		"<table cellspacing=\"0\" class=\"itemhead\"><tr><td class=\"itemhead\">"
 #define ITEM_HEAD_CHANNEL	"<b>Feed: </b>"
 #define ITEM_HEAD_ITEM		"<b>Item: </b>"
-#define ITEM_HEAD_END	"</td></tr></table>"
+#define ITEM_HEAD_END		"</td></tr></table>"
 
 #define FEED_HEAD_START		ITEM_HEAD_START
 #define FEED_HEAD_CHANNEL	ITEM_HEAD_CHANNEL
 #define FEED_HEAD_SOURCE	"<b>Source: </b>"
 #define FEED_HEAD_END		ITEM_HEAD_END
 
-#define FEED_FOOT_TABLE_START	"<table style=\"margin-top:15px;width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;margin-bottom:5px;\">"
-#define FEED_FOOT_FIRSTTD	"<tr style=\"border-width:0;border-bottom-width:1px;border-style:dashed;border-color:#D0D0D0;\"><td width=\"30%\"><span style=\"font-size:8pt;color:#C0C0C0\">"
-#define FEED_FOOT_NEXTTD	"</span></td><td><span style=\"font-size:8pt;color:#C0C0C0\">"
+#define FEED_FOOT_TABLE_START	"<table class=\"feedfoot\">"
+#define FEED_FOOT_FIRSTTD	"<tr class=\"feedfoot\"><td class=\"feedfootname\"><span class=\"feedfootname\">"
+#define FEED_FOOT_NEXTTD	"</span></td><td class=\"feedfootvalue\"><span class=\"feedfootvalue\">"
 #define FEED_FOOT_LASTTD	"</span></td></tr>"
 #define FEED_FOOT_TABLE_END	"</table>"
 
@@ -66,29 +70,29 @@
 							addToHTMLBuffer(&(buffer), FEED_FOOT_LASTTD); \
 						}
 
-#define	IMG_START	"<img style=\"margin-bottom:5px;\" src=\""
+#define	IMG_START	"<img class=\"feed\" src=\""
 #define IMG_END		"\"><br>"
 
 /* OCS direntry output definitions */
 
-#define FORMAT_START	"<table cellspacing=\"0\" style=\"margin-bottom:5px;width:100%;background:#E0E0E0;border-color:#D0D0D0;border-width:1px;border-style:solid;\"><tr><td style=\"padding:2px\";>"
+#define FORMAT_START	"<table cellspacing=\"0\" class=\"ocsformats\"><tr><td class=\"ocslink\">"
 #define FORMAT_LINK	"<b>Format: </b>"
-#define FORMAT_LANGUAGE		"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Language: "
-#define FORMAT_UPDATEPERIOD	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Update Period: "
-#define FORMAT_UPDATEFREQUENCY	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Update Frequency: "
-#define FORMAT_CONTENTTYPE	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Content Type: "
+#define FORMAT_LANGUAGE		"</td></tr><tr><td class=\"ocslanguage\">Language: "
+#define FORMAT_UPDATEPERIOD	"</td></tr><tr><td class=\"ocsinterval\">Update Period: "
+#define FORMAT_UPDATEFREQUENCY	"</td></tr><tr><td class=\"ocsfrequency\">Update Frequency: "
+#define FORMAT_CONTENTTYPE	"</td></tr><tr><td class=\"ocscontenttype\">Content Type: "
 #define FORMAT_END	"</td></tr></table>"
 
 /* condensed mode shading */
 
-#define SHADED_START	"<div style=\"background-color:#fffde8;border-color:#ede8a8;border-style:solid;border-width:1px;padding:5px;margin-bottom:4px;\">"
+#define SHADED_START	"<div class=\"itemshaded\">"
 #define SHADED_END	"</div>"
-#define UNSHADED_START	"<div style=\"padding:5px;\">"
+#define UNSHADED_START	"<div class=\"itemunshaded\">"
 #define UNSHADED_END	"</div>"
 
 /* HTTP error */
 
-#define HTTP_ERROR_START	"<table cellspacing=\"0\" style=\"margin-bottom:5px;width:100%;background:#E06060;border-width:1px;border-style:solid;\"><tr><td style=\"padding:2px;padding-left:5px;padding-right:5px;\">"
+#define HTTP_ERROR_START	"<table cellspacing=\"0\" class=\"httperror\"><tr><td class=\"httperror\">"
 #define HTTP_ERROR_TEXT		"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
 #define HTTP_ERROR_END		"</td></tr></table>"
 
@@ -108,6 +112,9 @@ void	startHTML(gchar **buffer, gboolean padded);
 void	writeHTML(gchar *string);
 
 void	finishHTML(gchar **buffer);
+
+void	writeStyleSheetLink(gchar **buffer, gchar *styleSheetFile);
+void	writeStyleSheetLinks(gchar **buffer);
 
 /* to launch any URL */
 void 	launchURL(const gchar *url);

@@ -27,6 +27,10 @@ install-data-local:
 	    fi \
 	  done \
 	fi
+	if test -d $(srcdir)/css; then \
+	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/css; \
+          $(INSTALL_DATA) $(srcdir)/css/liferea.css $(DESTDIR)$(pkgdatadir)/css; \
+	fi
 
 dist-hook:
 	if test -d pixmaps; then \
@@ -36,5 +40,9 @@ dist-hook:
 	      cp -p $$pixmap $(distdir)/pixmaps; \
 	    fi \
 	  done \
+	fi
+	if test -d $(srcdir)/css; then \
+	  $(mkinstalldirs) $(distdir)/css; \
+          $(INSTALL_DATA) $(srcdir)/css/liferea.css $(distdir)/css; \
 	fi
 

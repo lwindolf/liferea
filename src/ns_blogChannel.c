@@ -24,11 +24,11 @@
 #include "ns_blogChannel.h"
 #include "common.h"
 
-#define BLOGROLL_START		"<div style=\"padding-left:10px;padding-right:10px;background-color:#505050;color:white;\"><b>BlogRoll</b></div<br>"
+#define BLOGROLL_START		"<div class=\"blogchanneltitle\"><b>BlogRoll</b></div<br>"
 #define BLOGROLL_END		"<br>" 
-#define MYSUBSCR_START		"<div style=\"padding-left:10px;padding-right:10px;background-color:#505050;color:white;\"><b>Authors Subscriptions</b></div<br>"
+#define MYSUBSCR_START		"<div class=\"blogchanneltitle\"><b>Authors Subscriptions</b></div<br>"
 #define MYSUBSCR_END		"<br>"
-#define BLINK_START		"<div style=\"padding-left:10px;padding-right:10px;background-color:#505050;color:white;\"><b>Promoted Weblog</b></div><br>"
+#define BLINK_START		"<div class=\"blogchanneltitle\"><b>Promoted Weblog</b></div><br>"
 #define BLINK_END		"<br>"
 
 static gchar ns_bC_prefix[] = "blogChannel";

@@ -9,7 +9,8 @@
    
    The rest (the HTML creation) is 
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>   
+   Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>  
+   Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,6 +29,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>	/* access() */
 #include <errno.h>
 #include "htmlview.h"
 #include "conf.h"
@@ -105,6 +107,7 @@ void startHTML(gchar **buffer, gboolean padded) {
 	encoding = g_strdup_printf("%s%s%s", META_ENCODING1, "UTF-8", META_ENCODING2);
 	addToHTMLBuffer(buffer, encoding);
 	g_free(encoding);
+        writeStyleSheetLinks(buffer);
 	
 	if(padded)
 		addToHTMLBuffer(buffer, HTML_HEAD_END);
@@ -117,6 +120,26 @@ void finishHTML(gchar **buffer) {
 
 	addToHTMLBuffer(buffer, HTML_END);
 
+}
+
+void writeStyleSheetLink(gchar **buffer, gchar *styleSheetFile) {
+
+	if (access(styleSheetFile, R_OK) == 0) {
+		addToHTMLBuffer(buffer, "<link rel='stylesheet' type='text/css' href='file://");
+		addToHTMLBuffer(buffer, styleSheetFile);
+		addToHTMLBuffer(buffer, "'>");
+	}
+}
+
+void writeStyleSheetLinks(gchar **buffer) {
+	gchar	*styleSheetFile;
+    
+	writeStyleSheetLink(buffer,
+				PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea.css");
+    
+	styleSheetFile = g_strdup_printf("%s/liferea.css", getCachePath());
+	writeStyleSheetLink(buffer, styleSheetFile);
+	g_free(styleSheetFile);
 }
 
 static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {

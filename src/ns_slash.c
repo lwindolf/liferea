@@ -23,10 +23,10 @@
 #include "ns_slash.h"
 #include "common.h"
 
-#define SLASH_START	"<table style=\"width:100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"margin-bottom:5px;border-width:1px;border-style:solid;border-color:black;background:#408060;width:100%;font-size:x-small;color:black;padding-left:5px;padding-right:5px;\">"
-#define KEY_START	""
-#define KEY_END		" "
-#define VALUE_START	"<span style=\"color:white;\">"
+#define SLASH_START	"<table class=\"slash\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"slash\">"
+#define KEY_START	"<span class=\"slashprop\">"
+#define KEY_END		"</span> "
+#define VALUE_START	"<span class=\"slashvalue\">"
 #define VALUE_END	"</span> "
 #define SLASH_END	"</td></tr></table>"
 

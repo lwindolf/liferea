@@ -1180,7 +1180,7 @@ the feed title, which is displayed in the feed list.</property>
 		      <child>
 			<widget class="GtkEntry" id="feednameentry">
 			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">either leave the name supplied by the feed or enter an alternative name which you like to be listed in the feed list</property>
+			  <property name="tooltip" translatable="yes">Either leave the name supplied by the feed or enter an alternative name which you like to be listed in the feed list.</property>
 			  <property name="can_focus">True</property>
 			  <property name="editable">True</property>
 			  <property name="visibility">True</property>
@@ -1202,7 +1202,7 @@ the feed title, which is displayed in the feed list.</property>
 		      <child>
 			<widget class="GtkEntry" id="feedurlentry">
 			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">enter the URL the feed should be loaded from</property>
+			  <property name="tooltip" translatable="yes">Enter the URL the feed should be loaded from.</property>
 			  <property name="can_focus">True</property>
 			  <property name="editable">True</property>
 			  <property name="visibility">True</property>
