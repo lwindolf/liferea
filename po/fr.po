@@ -1,10 +1,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 0.6.0\n"
+"Project-Id-Version: Liferea 0.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-23 22:02+0200\n"
-"PO-Revision-Date: 2004-09-05 18:25+0200\n"
+"POT-Creation-Date: 2004-10-23 20:17+0200\n"
+"PO-Revision-Date: 2004-10-23 20:36+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -241,7 +241,7 @@ msgstr ""
 #: src/interface.c:138 src/interface.c:2901
 #, fuzzy
 msgid "Liferea 0.6.1"
-msgstr "Liferea 0.6.0"
+msgstr "Liferea 0.6.1"
 
 #: src/interface.c:155
 msgid "_Program"
@@ -258,17 +258,17 @@ msgstr "_Flux"
 #: src/interface.c:191
 #, fuzzy
 msgid "_New Subscription..."
-msgstr "_Nouvel abonnement"
+msgstr "_Nouvel abonnement..."
 
 #: src/interface.c:199
 #, fuzzy
 msgid "New _Folder..."
-msgstr "Nouveau _Dossier"
+msgstr "Nouveau _Dossier..."
 
 #: src/interface.c:212
 #, fuzzy
 msgid "_Properties..."
-msgstr "_Propriétés"
+msgstr "_Propriétés..."
 
 #: src/interface.c:215
 msgid "Opens the property dialog for the selected subscription."
@@ -326,7 +326,7 @@ msgstr ""
 #: src/interface.c:288
 #, fuzzy
 msgid "_Import Feed List..."
-msgstr "_Importer une liste de flux"
+msgstr "_Importer une liste de flux..."
 
 #: src/interface.c:291
 msgid "Imports an OPML feed list."
@@ -335,7 +335,7 @@ msgstr "Importe une liste de flux OPML."
 #: src/interface.c:297
 #, fuzzy
 msgid "_Export Feed List..."
-msgstr "_Exporter la liste des flux"
+msgstr "_Exporter la liste des flux..."
 
 #: src/interface.c:300
 msgid "Exports the feed list as OPML."
@@ -468,6 +468,8 @@ msgid ""
 "Starts a search for all items that do match the given search string either "
 "in title or content."
 msgstr ""
+"Débute une recherche de tous les éléments qui contiennent la chaîne de "
+"recherche donnée, soit dans le titre, soit dans le contenu."
 
 #: src/interface.c:511
 msgid "saves this search as a VFolder, which will appear in the feed list"
@@ -509,19 +511,17 @@ msgid "Feed _Name:"
 msgstr "Nom du _flux :"
 
 #: src/interface.c:949
-#, fuzzy
 msgid "<span weight=\"bold\">Update Interval</span>"
-msgstr "<span weight=\"bold\">Intervalle de rafraîchissement</span>"
+msgstr "<span weight=\"bold\">Intervalle de mise à jour</span>"
 
 #: src/interface.c:968
-#, fuzzy
 msgid "_Use global default update interval."
-msgstr "Ce flux ne spécifie aucun intervalle de rafraîchissement."
+msgstr ""
+"_Utiliser l'intervalle de mise à jour par défaut, défini de manière globale."
 
 #: src/interface.c:978
-#, fuzzy
 msgid "_Feed specific update interval of"
-msgstr "Ce flux ne spécifie aucun intervalle de rafraîchissement."
+msgstr "_Intervalle de mise à jour spécifique au flux de"
 
 #: src/interface.c:993 src/interface.c:1852
 msgid "minutes."
@@ -529,7 +529,7 @@ msgstr "minutes."
 
 #: src/interface.c:997
 msgid "_Don't update this feed automatically."
-msgstr ""
+msgstr "Ne _pas mettre à jour ce flux automatiquement."
 
 #: src/interface.c:1003
 msgid " "
@@ -540,7 +540,7 @@ msgstr ""
 msgid "This feed provider suggests an update interval of %d seconds."
 msgstr ""
 "Le fournisseur de ce flux suggère un intervalle de rafraîchissement de %d "
-"minutes."
+"secondes."
 
 #: src/interface.c:1014
 msgid "General"
@@ -658,29 +658,22 @@ msgid "Lifeera Preferences"
 msgstr "Préférences de Liferea"
 
 #: src/interface.c:1780
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
-msgstr "<span weight=\"bold\">Réglages de la gestion des flux</span>"
+msgstr "<span weight=\"bold\">Gestion du cache des flux</span>"
 
 #: src/interface.c:1803
-#, fuzzy
-msgid "Default number of items per feed to save:"
-msgstr ""
-"Nombre d'éléments par flux à sauvegarder par défaut quand Liferea se "
-"termine :"
+msgid "Default number of items per feed to save per feed:"
+msgstr "Nombre d'éléments de flux par défaut à sauvegarder par flux :"
 
 #: src/interface.c:1819
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
-msgstr "<span weight=\"bold\">Réglages du chargement des flux</span>"
+msgstr "<span weight=\"bold\">Réglages de mise à jour des flux</span>"
 
 #: src/interface.c:1842
-#, fuzzy
 msgid "Default Feed Refresh _Interval:"
-msgstr "_Intervalle de rafraîchissement du flux :"
+msgstr "_Intervalle de rafraîchissement des flux par défaut :"
 
-#: src/interface.c:1856
-#, fuzzy
+#: src/interface.c:1855
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -688,8 +681,8 @@ msgid ""
 msgstr ""
 "Note : <i>Veuillez vous souvenir de régler la vitesse de rafraîchissement "
 "raisonnablement. Il est inutile de rafraîchir tous les quarts d'heure un "
-"flux mis à jour quotidiennement. Pour désactiver la mise à jour automatique, "
-"réglez l'intervalle à 0 minute.</i>"
+"flux mis à jour quotidiennement. Pour désactiver la mise à jour automatique "
+"par défaut, réglez l'intervalle à 0 minute.</i>"
 
 #: src/interface.c:1867
 msgid "At _startup:"
@@ -1792,9 +1785,16 @@ msgid ""
 "sourceforge.net\">mailing list</a> and it will be included in the next "
 "release!</div>"
 msgstr ""
+"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+"\">Quand Liferea est exécuté pour la première fois, il charge une liste "
+"localisée de flux par défaut. Il y a déjà des listes par défaut pour "
+"l'anglais, le français, l'allemand et l'espagnol. Si vous pensez connaître "
+"une bonne liste de flux par défaut pour votre langue, veuillez la poster "
+"(peut-être en OPML) dans la <a href=\"mailto:liferea-devel@lists.sourceforge."
+"net\">liste de diffusion</a> et elle sera incluse dans la prochaine version !"
+"</div>"
 
 #: src/ui_mainwindow.c:194
-#, fuzzy
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1817,29 +1817,24 @@ msgid ""
 "liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
 "liferea.sf.net\">project homepage</a>.</p>"
 msgstr ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">Nous avons commencé à rassembler des choses à faire pour la version 1.1. "
-"Veuillez y <a href=\"http://liferea.sourceforge.net/dokuwiki/doku.php?"
-"id=programrequirements1.1\">jeter un coup d'oeil</a> et <a href=\"mailto:"
-"liferea-devel@lists.sourceforge.net\">envoyer des propositions</a> si vous "
-"trouvez des fonctionnalités manquantes.</div><h2>Bienvenue dans Liferea</"
-"h2><p>Le cadre de gauche contient la liste des flux où vous pouvez ajouter "
-"de nouveaux abonnements et sélectionner des abonnements pour lire leurs "
-"titres. Le côté droit affiche soit la liste des titres de l'abonnement "
-"sélectionné et un cadre pour visualiser le titre sélectionné, soit tous les "
-"titres à la fois si le mode condensé est sélectionné.</p><h3>Opérations "
-"courantes</h3><ul><li><p><b>Ajouter un abonnement</b> - Crée un nouvel "
-"abonnement dans le dossier sélectionné. Pour créer un nouvel abonnement, "
-"entrer l'URL du flux ou, si vous ne la connaissez pas, l'URL du site web "
-"fournissant le flux.</p></li><li><p><b>Mettre à jour un abonnement</b> - "
-"Ceci mettra à jour l'abonnement sélectionné. Vous le ferez si vous voulez "
-"vérifier immédiatement les mises à jour d'un abonnement. D'habitude, il est "
-"suffisant de se baser sur la mise à jour automatique, suivant l'intervalle "
-"de rafraîchissement de l'abonnement.</p></li><li><p><b>Mettre à jour le "
-"tout</b> - Ceci mettra à jour tous vos abonnements à la fois. Encore une "
-"fois, il est généralement suffisant de se baser sur la mise à jour "
-"automatique.</p></li><li><p><b>Éditer les propriétés d'un abonnement</b> - "
-"Vous voudrez parfois changer l'intervalle de rafraîchissement, le titre, "
+"<h2>Bienvenue dans Liferea</h2><p>Le cadre de gauche contient la liste des "
+"flux où vous pouvez ajouter de nouveaux abonnements et sélectionner des "
+"abonnements pour lire leurs titres. Le côté droit affiche soit la liste des "
+"titres de l'abonnement sélectionné et un cadre pour visualiser le titre "
+"sélectionné, soit tous les titres à la fois si le mode condensé est "
+"sélectionné.</p><h3>Opérations courantes</h3><ul><li><p><b>Ajouter un "
+"abonnement</b> - Crée un nouvel abonnement dans le dossier sélectionné. Pour "
+"créer un nouvel abonnement, entrer l'URL du flux ou, si vous ne la "
+"connaissez pas, l'URL du site web fournissant le flux.</p></"
+"li><li><p><b>Mettre à jour un abonnement</b> - Ceci mettra à jour "
+"l'abonnement sélectionné. Vous le ferez si vous voulez vérifier "
+"immédiatement les mises à jour d'un abonnement. D'habitude, il est suffisant "
+"de se baser sur la mise à jour automatique, suivant l'intervalle de "
+"rafraîchissement de l'abonnement.</p></li><li><p><b>Mettre à jour le tout</"
+"b> - Ceci mettra à jour tous vos abonnements à la fois. Encore une fois, il "
+"est généralement suffisant de se baser sur la mise à jour automatique.</p></"
+"li><li><p><b>Éditer les propriétés d'un abonnement</b> - Vous voudrez "
+"parfois changer l'intervalle de rafraîchissement, le titre, "
 "l'authentification ou les propriétés liées au cache d'un abonnement.</p></"
 "li></ul><p>Pour en savoir plus sur Liferea, vous pouvez lire la "
 "documentation fournie dans le flux d'aide ou dans la <a href=\"http://"
@@ -1875,19 +1870,16 @@ msgid "/_New"
 msgstr "/_Nouveau"
 
 #: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
-#, fuzzy
 msgid "/_New/New _Subscription..."
-msgstr "/_Nouveau/Nouvel _abonnement"
+msgstr "/_Nouveau/Nouvel _abonnement..."
 
 #: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
-#, fuzzy
 msgid "/_New/New F_older..."
-msgstr "/_Nouveau/Nouveau _dossier"
+msgstr "/_Nouveau/Nouveau _dossier..."
 
 #: src/ui_popup.c:87 src/ui_popup.c:106
-#, fuzzy
 msgid "/_Properties..."
-msgstr "/_Propriétés"
+msgstr "/_Propriétés..."
 
 #: src/ui_popup.c:88 src/ui_popup.c:107
 msgid "/_Delete"
@@ -1898,9 +1890,8 @@ msgid "/_Update Folder"
 msgstr "/_Mettre à jour le dossier"
 
 #: src/ui_popup.c:97
-#, fuzzy
 msgid "/_Rename Folder..."
-msgstr "/_Renommer le dossier"
+msgstr "/_Renommer le dossier..."
 
 #: src/ui_popup.c:98
 msgid "/_Delete Folder"
@@ -1943,9 +1934,8 @@ msgid "/_Launch Link In Browser"
 msgstr "/_Ouvrir dans le navigateur"
 
 #: src/ui_popup.c:136
-#, fuzzy
 msgid "/_Subscribe..."
-msgstr "/S'_abonner"
+msgstr "/S'_abonner..."
 
 #: src/ui_popup.c:141
 msgid "/_Work Offline"
@@ -1956,9 +1946,8 @@ msgid "/_Update All"
 msgstr "/Mettre à _jour le tout"
 
 #: src/ui_popup.c:143
-#, fuzzy
 msgid "/_Preferences..."
-msgstr "/_Préférences"
+msgstr "/_Préférences..."
 
 #: src/ui_popup.c:145
 msgid "/_Show Window"
@@ -2044,12 +2033,12 @@ msgstr ""
 "La balise HTML <object> incluse n'est pas supportée par GtkHTML2.\n"
 "Les plugins inclus peuvent ne pas s'afficher."
 
+#~ msgid "Directories cannot be autoupdated."
+#~ msgstr "Les répertoires ne peuvent pas être mis à jour automatiquement."
+
 #~ msgid "This feed's refresh interval defaults to %d seconds."
 #~ msgstr ""
 #~ "L'intervalle de rafraîchissement de ce flux est de %d secondes par défaut."
-
-#~ msgid "Directories cannot be autoupdated."
-#~ msgstr "Les répertoires ne peuvent pas être mis à jour automatiquement."
 
 #~ msgid "Deleting \"%s\""
 #~ msgstr "Suppresion de \"%s\""
