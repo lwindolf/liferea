@@ -24,55 +24,117 @@
 #include "interface.h"
 #include "support.h"
 
-/********************************************************************
- * Propdialog                                                       *
- *******************************************************************/
-
 struct fp_vfolder_ui_data {
 	feedPtr		fp;
 	
 	GtkWidget	*dialog;
 	GtkWidget	*feedNameEntry;
 	GtkWidget	*ruleVBox;
+	GSList		*newRules;
 };
 
 struct changeRequest {
 	GtkWidget			*hbox;		/* used for remove button */
-	struct fp_vfolder_ui_data 	*ui_data;	/* used for remove button */ 
+	struct fp_vfolder_ui_data 	*ui_data;	/* used for both types */ 
 	gint				rule;		/* used for rule type change */
 	GtkWidget			*paramHBox;	/* used for rule type change */
 };
 
-static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data);
-static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data);
-static void on_ruletype_changed(GtkOptionMenu *optionmenu, gpointer user_data);
-static void on_ruleremove_clicked(GtkButton *button, gpointer user_data);
+static void on_ruleremove_clicked(GtkButton *button, gpointer user_data) {
+	struct changeRequest *changeRequest = (struct changeRequest *)user_data;
+	
+	gtk_container_remove(GTK_CONTAINER(changeRequest->ui_data->ruleVBox), changeRequest->hbox);
+	g_free(changeRequest);
+}
 
-GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, feedPtr fp) {
-	GtkWidget			*vfolderdialog;
-	struct fp_vfolder_ui_data	*ui_data;
+static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	struct fp_vfolder_ui_data	*ui_data = (struct fp_vfolder_ui_data*)user_data;
+	GSList				*iter, *unused_rules;
+	
+	if(response_id == GTK_RESPONSE_OK) {
+		feed_set_title(ui_data->fp, gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "feedNameEntry"))));
+		unused_rules = ui_data->fp->rules;
+		
+		/* add new rules */
+		iter = ui_data->newRules;
+		while(iter != NULL) {
+			vfolder_add_rule(ui_data->fp, (rulePtr)iter->data);
+			iter = g_slist_next(iter);
+		}
+		g_slist_free(ui_data->newRules);
+		
+		/* update vfolder */
+		vfolder_refresh(ui_data->fp);
+	} else {
+		unused_rules = ui_data->newRules;
+	}
 
-	ui_data = g_new0(struct fp_vfolder_ui_data, 1);
-	ui_data->fp = fp;
+	/* delete old or unused rules */	
+	iter = unused_rules;
+	while(iter != NULL) {
+		vfolder_remove_rule(ui_data->fp, (rulePtr)iter->data);
+		rule_free((rulePtr)iter->data);
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(unused_rules);
 	
-	/* Create the dialog */
-	ui_data->dialog = vfolderdialog = create_vfolderdialog();
-	gtk_window_set_transient_for(GTK_WINDOW(vfolderdialog), GTK_WINDOW(parent));
+	g_free(ui_data);
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+}
 
-	/* Setup feed name */
-	ui_data->feedNameEntry = lookup_widget(vfolderdialog,"feedNameEntry");
-	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), feed_get_title(fp));
+static void ui_vfolder_destroy_param_widget(GtkWidget *widget, gpointer data) {
 	
-	/* Set up rule list vbox */
-	ui_data->ruleVBox = gtk_vbox_new(FALSE, 0);
-	gtk_container_add(GTK_CONTAINER(lookup_widget(vfolderdialog, "ruleview")), ui_data->ruleVBox);
-	gtk_widget_show_all(vfolderdialog);
+	gtk_widget_destroy(widget);
+}
+
+static void on_rulevalue_changed(GtkEditable *editable, gpointer user_data) {
+	rulePtr		rp = (rulePtr)user_data;
 	
-	/* bind buttons */
-	g_signal_connect(lookup_widget(vfolderdialog, "addrulebtn"), "clicked", G_CALLBACK(on_addrulebtn_clicked), ui_data);
-	g_signal_connect(G_OBJECT(vfolderdialog), "response", G_CALLBACK(on_propdialog_response), ui_data);
+	rp->value = g_strdup(gtk_editable_get_chars(editable,0,-1));
+}
+
+static void on_ruletype_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
+	struct changeRequest	*changeRequest = (struct changeRequest *)user_data;
+	ruleInfoPtr		ruleInfo;
+	rulePtr			rule;
+	GtkWidget		*widget, *menu;
+	GList			*iter;
 	
-	return vfolderdialog;
+	if(NULL != (rule = g_object_get_data(G_OBJECT(changeRequest->paramHBox), "rule"))) {
+		changeRequest->ui_data->fp->rules = g_slist_remove(changeRequest->ui_data->fp->rules, rule);
+		rule_free(rule);
+	}
+	ruleInfo = ruleFunctions + changeRequest->rule;
+	rule = rule_new(changeRequest->ui_data->fp, ruleInfo->ruleId, "");
+	changeRequest->ui_data->fp->rules = g_slist_append(changeRequest->ui_data->fp->rules, rule);
+	g_object_set_data(G_OBJECT(changeRequest->paramHBox), "rule", rule);
+	
+	/* remove of old widgets */	
+	gtk_container_foreach(GTK_CONTAINER(changeRequest->paramHBox), ui_vfolder_destroy_param_widget, NULL);
+
+	/* add popup menu for selection of positive or negative logic */
+	menu = gtk_menu_new();
+
+	widget = gtk_menu_item_new_with_label(ruleInfo->positive);
+	gtk_container_add(GTK_CONTAINER(menu), widget);
+	
+	widget = gtk_menu_item_new_with_label(ruleInfo->negative);
+	gtk_container_add(GTK_CONTAINER(menu), widget);
+
+	widget = gtk_option_menu_new();
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(widget), menu);	
+	gtk_widget_show_all(widget);
+	gtk_box_pack_start(GTK_BOX(changeRequest->paramHBox), widget, FALSE, FALSE, 0);
+		
+	/* add new ones... */
+	if(ruleInfo->needsParameter) {
+		widget = gtk_entry_new();
+		gtk_widget_show(widget);
+		gtk_signal_connect(GTK_OBJECT(widget), "changed", GTK_SIGNAL_FUNC(on_rulevalue_changed), rule);
+		gtk_box_pack_start(GTK_BOX(changeRequest->paramHBox), widget, FALSE, FALSE, 0);
+	} else {
+		/* nothing needs to be added */
+	}
 }
 
 static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
@@ -95,6 +157,7 @@ static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
 		changeRequest = g_new0(struct changeRequest, 1);
 		changeRequest->paramHBox = hbox2;
 		changeRequest->rule = i;
+		changeRequest->ui_data = ui_data;
 		if(i == 0) 
 			first = changeRequest;
 
@@ -125,59 +188,30 @@ static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
 	
 }
 
-static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	struct fp_vfolder_ui_data *ui_data = (struct fp_vfolder_ui_data*)user_data;
+GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, feedPtr fp) {
+	GtkWidget			*vfolderdialog;
+	struct fp_vfolder_ui_data	*ui_data;
+
+	ui_data = g_new0(struct fp_vfolder_ui_data, 1);
+	ui_data->fp = fp;
+	// FIXME: load fp->rules into the dialog!!!
 	
-	if(response_id == GTK_RESPONSE_OK) {
-		// FIXME!!!
-	}
-	g_free(ui_data);
-	gtk_widget_destroy(GTK_WIDGET(dialog));
-}
+	/* Create the dialog */
+	ui_data->dialog = vfolderdialog = create_vfolderdialog();
+	gtk_window_set_transient_for(GTK_WINDOW(vfolderdialog), GTK_WINDOW(parent));
 
-static void ui_vfolder_destroy_param_widget(GtkWidget *widget, gpointer data) {
+	/* Setup feed name */
+	ui_data->feedNameEntry = lookup_widget(vfolderdialog,"feedNameEntry");
+	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), feed_get_title(fp));
 	
-	gtk_widget_destroy(widget);
-}
-
-static void on_ruletype_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
-	struct changeRequest	*changeRequest = (struct changeRequest *)user_data;
-	ruleInfoPtr		ruleInfo;
-	GtkWidget		*widget, *menu;
-	GList			*iter;
-
-	ruleInfo = ruleFunctions + changeRequest->rule;
-
-	/* remove old widgets */	
-	gtk_container_foreach(GTK_CONTAINER(changeRequest->paramHBox), ui_vfolder_destroy_param_widget, NULL);
-
-	/* add popup menu for selection of positive or negative logic */
-	menu = gtk_menu_new();
-
-	widget = gtk_menu_item_new_with_label(ruleInfo->positive);
-	gtk_container_add(GTK_CONTAINER(menu), widget);
+	/* Set up rule list vbox */
+	ui_data->ruleVBox = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(lookup_widget(vfolderdialog, "ruleview")), ui_data->ruleVBox);
+	gtk_widget_show_all(vfolderdialog);
 	
-	widget = gtk_menu_item_new_with_label(ruleInfo->negative);
-	gtk_container_add(GTK_CONTAINER(menu), widget);
-
-	widget = gtk_option_menu_new();
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(widget), menu);	
-	gtk_widget_show_all(widget);
-	gtk_box_pack_start(GTK_BOX(changeRequest->paramHBox), widget, FALSE, FALSE, 0);
-		
-	/* add new ones... */
-	if(ruleInfo->needsParameter) {
-		widget = gtk_entry_new();
-		gtk_widget_show(widget);
-		gtk_box_pack_start(GTK_BOX(changeRequest->paramHBox), widget, FALSE, FALSE, 0);
-	} else {
-		/* nothing needs to be added */
-	}
-}
-
-static void on_ruleremove_clicked(GtkButton *button, gpointer user_data) {
-	struct changeRequest *changeRequest = (struct changeRequest *)user_data;
+	/* bind buttons */
+	g_signal_connect(lookup_widget(vfolderdialog, "addrulebtn"), "clicked", G_CALLBACK(on_addrulebtn_clicked), ui_data);
+	g_signal_connect(G_OBJECT(vfolderdialog), "response", G_CALLBACK(on_propdialog_response), ui_data);
 	
-	gtk_container_remove(GTK_CONTAINER(changeRequest->ui_data->ruleVBox), changeRequest->hbox);
-	g_free(changeRequest);
+	return vfolderdialog;
 }

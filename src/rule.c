@@ -73,6 +73,12 @@ gchar * rule_get_title(rulePtr rp) {
 	return NULL;
 }
 
+void rule_free(rulePtr rp) {
+
+	g_free(rp->value);
+	g_free(rp);
+}
+
 /* -------------------------------------------------------------------- */
 /* rule checking implementations					*/
 /* -------------------------------------------------------------------- */

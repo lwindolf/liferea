@@ -68,4 +68,7 @@ gboolean rule_check_item(rulePtr rp, itemPtr ip);
  */
 gchar * rule_get_title(rulePtr rp);
 
+/** Free's the given rule structure */
+void rule_free(rulePtr rp);
+
 #endif

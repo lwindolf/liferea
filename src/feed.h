@@ -108,7 +108,7 @@ typedef struct feed {
 	
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
-	GSList		*filter;		/**< list of filters applied to this feed */
+	GSList		*rules;			/**< list of rules if this is a vfolder */
 	
 	/* feed properties used for updating */
 	GTimeVal	lastModified;		/**< Date at which the feed last changed */

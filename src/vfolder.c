@@ -23,7 +23,6 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "rule.h"
 #include "vfolder.h"
 
 /** 
@@ -64,6 +63,14 @@ void vfolder_add_rule(feedPtr vp, gchar *ruleId, gchar *value) {
 	} else {
 		g_warning("unknown rule id: \"%s\"", ruleId);
 	}
+}
+
+/* Method that remove a rule from a vfolder. To be used
+   when deleting or changing vfolders. Does not process
+   items. */
+void vfolder_remove_rule(feedPtr vp, rulePtr rp) {
+
+	vfolder_rules = g_slist_remove(vfolder_rules, rp);
 }
 
 /* Adds an item to this VFolder, this method is called

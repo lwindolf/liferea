@@ -23,6 +23,7 @@
 
 #include "feed.h"
 #include "item.h"
+#include "rule.h"
 
 /* standard feed/item type interface */
 feedHandlerPtr	vfolder_init_feed_handler(void);
@@ -35,11 +36,16 @@ feedPtr vfolder_new(void);
    not process items. Just sets up the vfolder */
 void	vfolder_add_rule(feedPtr vp, gchar *ruleId, gchar *value);
 
+/* Method that remove a rule from a vfolder. To be used
+   when deleting or changing vfolders. Does not process
+   items. */
+void	vfolder_remove_rule(feedPtr vp, rulePtr rp);
+
 /* Method that applies the rules of the given vfolder to 
    all existing items. To be used for creating search
    results or new vfolders. Not to be used when loading
    vfolders from cache. */
-void vfolder_refresh(feedPtr vp);
+void	vfolder_refresh(feedPtr vp);
 
 /* Method to be called when a item was updated. This maybe
    after user interaction or updated item contents */
