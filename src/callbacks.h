@@ -150,3 +150,4 @@ on_menu_folder_rename                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
 #endif
+

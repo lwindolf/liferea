@@ -550,7 +550,7 @@ void on_popup_launchitem_selected(void) {
 
 	ip = ui_itemlist_get_selected();
 	if(ip != NULL)
-		ui_htmlview_launch_URL(item_get_source(ip));
+		ui_htmlview_launch_URL(item_get_source(ip), TRUE);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected!"));
 }

@@ -159,9 +159,10 @@ void	ui_htmlview_write(const gchar *string);
  * Launches the specified URL in the configured browser or
  * in case of Mozilla inside the HTML widget.
  *
- * @param url	URL to launch
+ * @param url			URL to launch
+ * @param force_external	to force loading in external browser
  */
-void	ui_htmlview_launch_URL(const gchar *url);
+void	ui_htmlview_launch_URL(const gchar *url, gboolean force_external);
 
 /**
  * Function to change the zoom level of the HTML widget.
@@ -196,7 +197,7 @@ gchar *	ui_htmlview_get_selected_URL(void);
  * load the URI in the htmlview itself.
  */
 
-gboolean ui_htmlview_link_clicked(const gchar *uri);
+gboolean ui_htmlview_launch_in_external_browser(const gchar *uri);
 
 /**
  * Resets the horizontal and vertical scrolling of the items HTML view. 

@@ -162,6 +162,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_menu_set_active(GTK_MENU(widget), tmp);
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
 	
+	/* set the inside browsing flag */
+	widget = lookup_widget(prefdialog, "openlinksinsidebtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
+	
 	/* ================= panel 3 "proxy settings" ======================== */
 	
 	enabled = getBooleanConfValue(USE_PROXY);
@@ -176,7 +180,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_entry_set_text(GTK_ENTRY(entry), proxyport);
 	g_free(proxyport);
 
-     widget = lookup_widget(prefdialog, "proxytable");
+	widget = lookup_widget(prefdialog, "proxytable");
 	gtk_widget_set_sensitive(GTK_WIDGET(widget), enabled);
 	
 	gtk_widget_show(prefdialog);
@@ -213,6 +217,12 @@ void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
 void on_browsermodule_changed(GtkObject *object, gchar *libname) {
 	setStringConfValue(BROWSER_MODULE, libname);
 }
+
+
+void on_openlinksinsidebtn_clicked(GtkButton *button, gpointer user_data) {
+	setBooleanConfValue(BROWSE_INSIDE_APPLICATION, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
+}
+
 
 
 void on_timeformatselection_clicked(GtkButton *button, gpointer user_data) {

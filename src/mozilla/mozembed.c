@@ -61,12 +61,10 @@ static gfloat		zoomLevel = 1.0;
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
-gchar * getModuleName(void) {
-	return g_strdup(_("Mozilla (experimental)"));
-}
+gchar * get_module_name(void) { return g_strdup(_("Mozilla (experimental)")); }
 
 /* function to write HTML source into the widget */
-void writeHTML(const gchar *string) {
+void write_html(const gchar *string) {
 
 	g_assert(NULL != htmlwidget);	
 	gtk_moz_embed_open_stream(GTK_MOZ_EMBED(htmlwidget), "file://localhost/", "text/html");
@@ -148,7 +146,13 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
  * uri that's going to be loaded.
  */
 gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
-	return ui_htmlview_link_clicked(uri);
+
+	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) {
+		return FALSE;
+	} else {
+		ui_htmlview_launch_in_external_browser(uri);
+		return TRUE;
+	}
 }
 
 /* Sets up a html view widget using GtkMozEmbed.
@@ -221,7 +225,7 @@ static void set_html_view(GtkWidget *pane) {
 	gtk_widget_show_all(pane);
 }
 
-void setHTMLViewMode(gboolean threePane) {
+void set_html_view_mode(gboolean threePane) {
 		
 	if(FALSE == threePane)
 		set_html_view(itemListView);
@@ -230,24 +234,26 @@ void setHTMLViewMode(gboolean threePane) {
 
 }
 
-void setupHTMLViews(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
+void setup_html_views(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
 
 	itemView = pane1;
 	itemListView = pane2;
 }
 
 /* launches the specified URL */
-void launchURL(const gchar *url) {
+void launch_url(const gchar *url) {
 
 	gtk_moz_embed_load_url(GTK_MOZ_EMBED(htmlwidget), url); 
 }
 
+gboolean launch_inside_possible(void) { return TRUE; }
+
 /* adds a differences diff to the actual zoom level */
-void changeZoomLevel(gfloat diff) {
+void change_zoom_level(gfloat diff) {
 
 	ui_show_error_box("Sorry, not yet implemented for Mozilla!");
 	zoomLevel += diff;
 }
 
 /* returns the currently set zoom level */
-gfloat getZoomLevel(void) { return zoomLevel; }
+gfloat get_zoom_level(void) { return zoomLevel; }

@@ -33,6 +33,7 @@
 #define DEFAULT_BROWSER_COMMAND		"mozilla '%s'"
 #define DEFAULT_FONT			"/desktop/gnome/interface/font_name"
 #define USER_FONT			"/apps/liferea/browser-font"
+#define BROWSE_INSIDE_APPLICATION	"/apps/liferea/browse-inside-application"
 
 /* item list settings */
 #define TIME_FORMAT			"/apps/liferea/timeformat"

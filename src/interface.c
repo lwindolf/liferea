@@ -1921,6 +1921,7 @@ create_prefdialog (void)
   GtkWidget *label65;
   GtkWidget *htmlviewoptionmenu;
   GtkWidget *menu3;
+  GtkWidget *openlinksinsidebtn;
   GtkWidget *label39;
   GtkWidget *vbox227;
   GtkWidget *vbox254;
@@ -2220,6 +2221,10 @@ create_prefdialog (void)
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (htmlviewoptionmenu), menu3);
 
+  openlinksinsidebtn = gtk_check_button_new_with_mnemonic (_("If the browser module allows it open links inside Liferea."));
+  gtk_widget_show (openlinksinsidebtn);
+  gtk_box_pack_start (GTK_BOX (vbox232), openlinksinsidebtn, FALSE, FALSE, 0);
+
   label39 = gtk_label_new (_("GUI Settings"));
   gtk_widget_show (label39);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label39);
@@ -2358,6 +2363,9 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) menuradiobtn3, "clicked",
                     G_CALLBACK (on_menuselection_clicked),
                     NULL);
+  g_signal_connect ((gpointer) openlinksinsidebtn, "clicked",
+                    G_CALLBACK (on_openlinksinsidebtn_clicked),
+                    NULL);
   g_signal_connect ((gpointer) enableproxybtn, "clicked",
                     G_CALLBACK (on_enableproxybtn_clicked),
                     NULL);
@@ -2429,6 +2437,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label65, "label65");
   GLADE_HOOKUP_OBJECT (prefdialog, htmlviewoptionmenu, "htmlviewoptionmenu");
   GLADE_HOOKUP_OBJECT (prefdialog, menu3, "menu3");
+  GLADE_HOOKUP_OBJECT (prefdialog, openlinksinsidebtn, "openlinksinsidebtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label39, "label39");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox227, "vbox227");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox254, "vbox254");

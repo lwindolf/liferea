@@ -61,11 +61,9 @@ static gchar		*selectedURL = NULL;
 
 /* prototypes */
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
-void launchURL(const gchar *url);
+void launch_url(const gchar *url);
 
-gchar * getModuleName(void) {
-	return g_strdup(_("GtkHTML2"));
-}
+gchar * get_module_name(void) {	return g_strdup(_("GtkHTML2")); }
 
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {
 
@@ -280,8 +278,9 @@ kill_old_connections (HtmlDocument *doc)
 }
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
-	if (ui_htmlview_link_clicked(url) == FALSE) {
-		launchURL(url);
+
+	if (ui_htmlview_launch_in_external_browser(url) == FALSE) {
+		launch_url(url);
 	}
 }
 
@@ -290,19 +289,19 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 /* ---------------------------------------------------------------------------- */
 
 /* adds a differences diff to the actual zoom level */
-void changeZoomLevel(gfloat diff) {
+void change_zoom_level(gfloat diff) {
 
 	zoomLevel += diff;
 	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 }
 
 /* returns the currently set zoom level */
-gfloat getZoomLevel(void) { return zoomLevel; }
+gfloat get_zoom_level(void) { return zoomLevel; }
 
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-void writeHTML(const gchar *string) {
+void write_html(const gchar *string) {
 
 	/* HTML widget can be used only from GTK thread */	
 	if(gnome_vfs_is_primary_thread()) {
@@ -335,11 +334,11 @@ void writeHTML(const gchar *string) {
 
 		html_document_close_stream(doc);
 		
-		changeZoomLevel(0.0);	/* to enforce applying of changed zoom levels */
+		change_zoom_level(0.0);	/* to enforce applying of changed zoom levels */
 	}
 }
 
-static void setupHTMLView(GtkWidget *scrolledwindow) {
+static void setup_html_view(GtkWidget *scrolledwindow) {
 	gulong	handler;
 	
 	if(NULL != htmlwidget) 
@@ -347,7 +346,7 @@ static void setupHTMLView(GtkWidget *scrolledwindow) {
 	
 	/* create html widget and pack it into the scrolled window */
 	htmlwidget = html_view_new();
-	writeHTML(NULL);
+	write_html(NULL);
 	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
 		  				  				  
@@ -364,15 +363,15 @@ static void setupHTMLView(GtkWidget *scrolledwindow) {
 	gtk_widget_show_all(scrolledwindow);
 }
 
-void setHTMLViewMode(gboolean threePane) {
+void set_html_view_mode(gboolean threePane) {
 
 	if(FALSE == threePane)
-		setupHTMLView(itemListView);
+		setup_html_view(itemListView);
 	else
-		setupHTMLView(itemView);
+		setup_html_view(itemView);
 }
 
-void setupHTMLViews(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
+void setup_html_views(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
 
 	g_assert(NULL != pane1);
 	g_assert(NULL != pane2);
@@ -381,10 +380,11 @@ void setupHTMLViews(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
 
 	itemView = pane1;
 	itemListView = pane2;
-	setHTMLViewMode(FALSE);
+	set_html_view_mode(FALSE);
 	if(0 != initialZoomLevel)
-		changeZoomLevel(((gfloat)initialZoomLevel)/100 - zoomLevel);
+		change_zoom_level(((gfloat)initialZoomLevel)/100 - zoomLevel);
 }
 
-/* launches the specified URL */
-void launchURL(const gchar *url) { link_clicked(NULL, url, NULL); }
+void launch_url(const gchar *url) { g_warning("should never be called!"); link_clicked(NULL, url, NULL); }
+
+gboolean launch_inside_possible(void) { return FALSE; }

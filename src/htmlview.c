@@ -35,31 +35,34 @@
 #include "debug.h"
 
 /* function types for the imported symbols */
-typedef gchar *	(*getModuleNameFunc)	(void);
-typedef void	(*setupHTMLViewsFunc)	(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
-typedef void	(*setHTMLViewModeFunc)	(gboolean threePane);
-typedef void	(*writeHTMLFunc)	(const gchar *string);
-typedef void	(*launchURLFunc)	(const gchar *url);
-typedef gfloat	(*getZoomLevelFunc)	(void);
-typedef void	(*changeZoomLevelFunc)	(gfloat diff);
+typedef gchar *		(*get_module_name_func)		(void);
+typedef void		(*setup_html_views_func)	(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
+typedef void		(*set_html_view_mode_func)	(gboolean threePane);
+typedef void		(*write_html_func)		(const gchar *string);
+typedef void		(*launch_url_func)		(const gchar *url);
+typedef gboolean	(*launch_inside_possible_func)	(void);
+typedef gfloat		(*get_zoom_level_func)		(void);
+typedef void		(*change_zoom_level_func)	(gfloat diff);
 
 #define GETMODULENAME		0
 #define SETUPHTMLVIEWS		1
 #define SETHTMLVIEWMODE		2
 #define WRITEHTML		3
 #define LAUNCHURL		4
-#define GETZOOMLEVEL		5
-#define CHANGEZOOMLEVEL		6
-#define MAXFUNCTIONS		7
+#define LAUNCHINSIDEPOSSIBLE	5
+#define GETZOOMLEVEL		6
+#define CHANGEZOOMLEVEL		7
+#define MAXFUNCTIONS		8
 
 static gchar *symbols[MAXFUNCTIONS] = {
-	"getModuleName",
-	"setupHTMLViews",
-	"setHTMLViewMode",
-	"writeHTML",
-	"launchURL",
-	"getZoomLevel",
-	"changeZoomLevel"
+	"get_module_name",
+	"setup_html_views",
+	"set_html_view_mode",
+	"write_html",
+	"launch_url",
+	"launch_inside_possible",
+	"get_zoom_level",
+	"change_zoom_level"
 };
 
 static gpointer methods[MAXFUNCTIONS];
@@ -78,7 +81,7 @@ extern GtkWidget *mainwindow;
    symbols from the specified module name libname.  If testmode
    is true no error messages are issued. The function returns
    TRUE on success. */
-static gboolean loadSymbols(gchar *libname, gboolean testmode) {
+static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 	gpointer	ptr;
 	gchar		*filename;
 	int		i;
@@ -151,10 +154,10 @@ void ui_htmlview_init(void) {
 				if(0 == strncmp(G_MODULE_SUFFIX, filename + 11, strlen(G_MODULE_SUFFIX))) {
 					/* if we find one, try to load all symbols and if successful
 					   add it to the available module list */
-					if(TRUE == loadSymbols(filename, TRUE)) {
+					if(TRUE == ui_htmlview_load_symbols(filename, TRUE)) {
 						info = g_new0(struct browserModule, 1);
 						info->libname = g_strdup(filename);
-						info->description = ((getModuleNameFunc)methods[GETMODULENAME])();
+						info->description = ((get_module_name_func)methods[GETMODULENAME])();
 						availableBrowserModules = g_slist_append(availableBrowserModules, (gpointer)info);
 						g_print("-> %s (%s)\n", info->description, info->libname);
 						g_module_close(handle);
@@ -174,7 +177,7 @@ void ui_htmlview_init(void) {
 	filename = getStringConfValue(BROWSER_MODULE);
 	if(0 != strlen(filename)) {
 		g_print(_("Loading configured browser module (%s)!\n"), filename);
-		success = loadSymbols(filename, FALSE);
+		success = ui_htmlview_load_symbols(filename, FALSE);
 	} else {
 		g_print(_("No browser module configured!\n"));
 	}
@@ -185,7 +188,7 @@ void ui_htmlview_init(void) {
 		while(NULL != tmp) {
 			info = (struct browserModule *)tmp->data;
 			g_print(_("trying to load browser module %s (%s)\n"), info->description, info->libname);
-			if(TRUE == (success = loadSymbols(info->libname, FALSE)))
+			if(TRUE == (success = ui_htmlview_load_symbols(info->libname, FALSE)))
 				break;
 			tmp = g_slist_next(tmp);
 		}
@@ -201,7 +204,7 @@ void ui_htmlview_init(void) {
 
 void ui_htmlview_setup(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 
-	((setupHTMLViewsFunc)methods[SETUPHTMLVIEWS])(pane, pane2, initialZoomLevel); 
+	((setup_html_views_func)methods[SETUPHTMLVIEWS])(pane, pane2, initialZoomLevel); 
 }
 
 void ui_htmlview_set_mode(gboolean threePane) {
@@ -218,7 +221,7 @@ void ui_htmlview_set_mode(gboolean threePane) {
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 1);
 
 	/* notify browser implementation */
-	((setHTMLViewModeFunc)methods[SETHTMLVIEWMODE])(threePane); 
+	((set_html_view_mode_func)methods[SETHTMLVIEWMODE])(threePane); 
 }
 
 static void ui_htmlview_write_css_link(gchar **buffer, gchar *styleSheetFile) {
@@ -302,10 +305,10 @@ void ui_htmlview_write(const gchar *string) {
 		
 		/* to prevent crashes inside the browser */
 		buffer = utf8_fix(buffer);
-		((writeHTMLFunc)methods[WRITEHTML])(buffer);
+		((write_html_func)methods[WRITEHTML])(buffer);
 		g_free(buffer);
 	} else
-		((writeHTMLFunc)methods[WRITEHTML])(string);
+		((write_html_func)methods[WRITEHTML])(string);
 }
 
 void ui_htmlview_finish_output(gchar **buffer) {
@@ -322,26 +325,34 @@ void ui_htmlview_clear(void) {
 	g_free(buffer);
 }
 
-void ui_htmlview_launch_URL(const gchar *url) {
-
-	if(NULL != url) {		
-		((launchURLFunc)methods[LAUNCHURL])(url);
-	} else {
+void ui_htmlview_launch_URL(const gchar *url, gboolean force_external) {
+	
+	if(NULL == url) {
 		ui_show_error_box(_("This item does not have a link assigned!"));
+		return;
+	}
+
+g_print("%s  %s %s\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false", ((launch_inside_possible_func)methods[LAUNCHINSIDEPOSSIBLE])()?"true":"false", force_external?"true":"false");
+	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION) &&
+	   ((launch_inside_possible_func)methods[LAUNCHINSIDEPOSSIBLE])() &&
+	   !force_external) {
+		((launch_url_func)methods[LAUNCHURL])(url);
+	} else {
+		ui_htmlview_launch_in_external_browser(url);
 	}
 }
 
 void ui_htmlview_change_zoom(gfloat diff) {
 
-	((changeZoomLevelFunc)methods[CHANGEZOOMLEVEL])(diff); 
+	((change_zoom_level_func)methods[CHANGEZOOMLEVEL])(diff); 
 }
 
 gfloat ui_htmlview_get_zoom(void) {
 
-	return ((getZoomLevelFunc)methods[GETZOOMLEVEL])(); 
+	return ((get_zoom_level_func)methods[GETZOOMLEVEL])(); 
 }
 
-gboolean ui_htmlview_link_clicked(const gchar *uri) {
+gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 	GError  *error = NULL;
 	gchar   *cmd, *tmp;
 	
