@@ -286,6 +286,8 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 		
 	gtk_main_quit();
 	debug_exit("on_quit");
+	
+	exit(0);	/* temporary workaround for exit problem, it just works :-) */
 	return FALSE;
 }
 
