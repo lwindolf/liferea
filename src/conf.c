@@ -389,7 +389,7 @@ void loadSubscriptions(void) {
 	feedlistLoading = TRUE;
 	load_folder_contents(NULL, "");
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
-	import_OPML_feedlist(filename, NULL, FALSE);
+	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
 	g_free(filename);
 	debug0(DEBUG_CONF, "Erasing old gconf enteries.");
 	conf_feedlist_erase_gconf();

@@ -44,8 +44,14 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		folderPtr folder = (folderPtr)ptr;
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST folder_get_title(folder));
+
 		if(ptr->type == FST_HELPFOLDER)
 			xmlNewProp(childNode, BAD_CAST"helpFolder", NULL);
+
+		if(ui_is_folder_expanded(folder))
+			xmlNewProp(childNode, BAD_CAST"expanded", NULL);
+		else
+			xmlNewProp(childNode, BAD_CAST"collapsed", NULL);
 		
 		debug1(DEBUG_CONF, "adding folder %s...", folder_get_title(folder));
 		ui_feedlist_do_for_all_data(ptr, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)childNode);
@@ -125,12 +131,12 @@ static int parse_integer(gchar *str, int def) {
 }
 
 
-static void import_parse_outline(xmlNodePtr cur, folderPtr folder) {
-	gchar		*title, *source, *typeStr, *intervalStr;
+static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trusted) {
+	gchar		*title, *source, *typeStr, *intervalStr, *tmp;
 	feedPtr		fp = NULL;
 	folderPtr	child;
 	gint		type, interval;
-	gchar		*id;
+	gchar		*id = NULL;
 
 	debug_enter("import_parse_outline");
 		
@@ -146,6 +152,14 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder) {
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) { /* Reading a feed */
+		if (!trusted && source[0] == '|') {
+			/* FIXME: Display warning dialog asking if the command
+			   is safe? */
+			tmp = g_strdup_printf("unsafe command: %s", source);
+			g_free(source);
+			source = tmp;
+		}
+		
 		/* type */
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
 		type = parse_integer(typeStr, FST_AUTODETECT);
@@ -155,7 +169,11 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder) {
 		interval = parse_integer(intervalStr, -1);
 		xmlFree(intervalStr);
 
-		id = xmlGetProp(cur, BAD_CAST"id");
+		/* The id should only be used from feedlist.opml. Otherwise,
+		   it could cause corruption if the same id was imported
+		   multiple times. */
+		if (trusted)
+			id = xmlGetProp(cur, BAD_CAST"id");
 
 		fp = feed_new();
 		
@@ -210,7 +228,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder) {
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			import_parse_outline(cur, folder);
+			import_parse_outline(cur, folder, trusted);
 		
 		cur = cur->next;
 	}
@@ -218,31 +236,31 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder) {
 	debug_exit("import_parse_outline");
 }
 
-static void import_parse_body(xmlNodePtr n, folderPtr parent) {
+static void import_parse_body(xmlNodePtr n, folderPtr parent, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
 	while(cur != NULL) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			import_parse_outline(cur, parent);
+			import_parse_outline(cur, parent, trusted);
 		cur = cur->next;
 	}
 }
 
-static void import_parse_OPML(xmlNodePtr n, folderPtr parent) {
+static void import_parse_OPML(xmlNodePtr n, folderPtr parent, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
 	while(cur != NULL) {
 		/* we ignore the head */
 		if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
-			import_parse_body(cur, parent);
+			import_parse_body(cur, parent, trusted);
 		}
 		cur = cur->next;
 	}	
 }
 
-void import_OPML_feedlist(gchar *filename, folderPtr parent, gboolean showErrors) {
+void import_OPML_feedlist(gchar *filename, folderPtr parent, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
@@ -263,7 +281,7 @@ void import_OPML_feedlist(gchar *filename, folderPtr parent, gboolean showErrors
 			while(cur != NULL) {
 				if(!xmlIsBlankNode(cur)) {
 					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
-						import_parse_OPML(cur, parent);
+						import_parse_OPML(cur, parent, trusted);
 					} else {
 						if(showErrors)
 							ui_show_error_box(_("\"%s\" is no valid OPML document! Liferea cannot import this file!"), filename);
@@ -405,7 +423,7 @@ void on_importfile_clicked(GtkButton *button, gpointer user_data) {
 			}
 			g_free(foldertitle);
 			
-			import_OPML_feedlist(name, folder, TRUE);
+			import_OPML_feedlist(name, folder, TRUE, FALSE);
 			g_free(name);
 		}
 	}
