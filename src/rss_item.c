@@ -86,7 +86,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	ip = getNewItemStruct();
 	
 	/* try to get an item about id */
-	ip->id = xmlGetNsProp(cur, BAD_CAST"about", RDF_NS);
+	ip->id = xmlGetProp(cur, BAD_CAST"about");
 
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
@@ -140,7 +140,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	ip->time = i->time;
 	ip->source = g_strdup(i->tags[RSS_ITEM_LINK]);
 	ip->readStatus = FALSE;
-	
+
 	if(NULL == ip->id)
 		ip->id = g_strdup(i->tags[RSS_ITEM_GUID]);
 
@@ -228,6 +228,12 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 		addToHTMLBuffer(&buffer, END_ENCLOSURE);
 	}
 
+	if(NULL != ip->tags[RSS_ITEM_AUTHOR]) {
+		addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+		FEED_FOOT_WRITE(buffer, "author", ip->tags[RSS_ITEM_AUTHOR]);
+		addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+	}
+	
 	request.type = OUTPUT_ITEM_NS_FOOTER;
 	if(NULL != rss_nslist)
 		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);

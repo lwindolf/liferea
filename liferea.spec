@@ -1,7 +1,7 @@
 Summary: Liferea (Linux RSS News Aggregator)
 Name: liferea
 Version: 0.4.2
-Release: 1
+Release: 0
 Group: Productivity/Networking/Web/Browsers
 Copyright: GPL
 Source: liferea-%{version}.tar.gz

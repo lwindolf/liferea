@@ -146,10 +146,7 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 			loadItemList(fp, NULL);
 			preFocusItemlist();
 		}
-		
-		g_mutex_lock(feeds_lock);
 		redrawFeedList();	// FIXME: maybe this is overkill ;=)
-		g_mutex_unlock(feeds_lock);
 		
 		gdk_threads_leave();
 	}

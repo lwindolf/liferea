@@ -266,10 +266,10 @@ static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
 		addToHTMLBuffer(&buffer, ip->tags[PIE_ENTRY_DESCRIPTION]);
 
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "author",			ip->author);
+	FEED_FOOT_WRITE(buffer, "author",		ip->author);
 	FEED_FOOT_WRITE(buffer, "contributors",		ip->contributors);
 	FEED_FOOT_WRITE(buffer, "copyright",		ip->tags[PIE_ENTRY_COPYRIGHT]);
-	FEED_FOOT_WRITE(buffer, "last modified",		ip->tags[PIE_ENTRY_PUBDATE]);
+	FEED_FOOT_WRITE(buffer, "last modified",	ip->tags[PIE_ENTRY_PUBDATE]);
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
 
 	request.type = OUTPUT_ITEM_NS_FOOTER;

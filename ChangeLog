@@ -1,3 +1,16 @@
+2003-10-14  Lars Lindner <lars.lindner@gmx.net>
+
+        Version 0.4.2
+	
+	* Added support for the blogChannel RSS module.
+	* <item> subtag <author> will now be displayed.
+	* Fixed bug 822110
+	* Fixed bug 822434
+	* Fixed an infinite loop problem reported by Ken Huffman
+	  inside feed merging code.
+	* Fixed a possible deadlock when a interactivly
+	  reloading a feed with more than 99 items.
+
 2003-10-12  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.4.1

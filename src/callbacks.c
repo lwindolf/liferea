@@ -1496,8 +1496,8 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 		title = getItemTitle(ip);
 		description = getItemDescription(ip);
 		
-		if(0 == ((++count)%100)) 
-			print_status(g_strdup_printf(_("loading feed... (%d items)"), count));
+/*		if(0 == ((++count)%100)) 
+			print_status(g_strdup_printf(_("loading feed... (%d items)"), count));*/
 
 		add = TRUE;
 		if(NULL != searchstring) {
