@@ -24,6 +24,7 @@
 #include "htmlview.h"
 #include "metadata.h"
 #include "common.h"
+#include "ns_slash.h"
 
 /* HTML definitions used for standard metadata rendering */
 #define	IMG_START	"<img class=\"feed\" src=\""
@@ -319,6 +320,9 @@ static void attribs_init() {
 	
 	/* types for freshmeat */
 	metadata_register_renderer("fmScreenshot", attribs_render_image, NULL);	
+
+	/* types for slash */
+	metadata_register_renderer("slash", ns_slash_render, NULL);	
 }
 
 static void attribs_register_default_renderer(const gchar *strid) {

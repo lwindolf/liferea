@@ -207,7 +207,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	short 			rdf = 0;
 	int 			error = 0;
 	
-	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 		rdf = 0;

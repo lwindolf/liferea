@@ -51,7 +51,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 	g_assert(NULL != cur);
 
 	ip = item_new();
-	ip->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+	ip->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 	
 	/* try to get an item about id */
 	tmp = xmlGetProp(cur, BAD_CAST"about");
@@ -63,7 +63,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL)
 			;
 		/* check namespace of this tag */
-		else if(NULL != cur->ns) {		
+		else if(NULL != cur->ns) {
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
@@ -105,13 +105,13 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 				tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 				if(NULL != tmp) {
 					item_set_id(ip, tmp);
+					tmp2 = xmlGetProp(cur, "isPermaLink");
+					if(tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"true"))
+						item_set_source(ip, tmp); /* Per the RSS 2.0 spec. */
+					if (tmp2 != NULL)
+						xmlFree(tmp2);
 					xmlFree(tmp);
 				}
-				tmp2 = xmlGetProp(cur, "isPermaLink");
-				if(tmp2 == NULL || !xmlStrcmp(tmp, BAD_CAST"true"))
-					item_set_source(ip, tmp); /* Per the RSS 2.0 spec. */
-				if (tmp2 != NULL)
-					xmlFree(tmp2);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
@@ -153,7 +153,6 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 
 	item_set_read_status(ip, FALSE);
 
-	/* free RSSItem structure */
 	g_hash_table_destroy(ip->tmpdata);
 	ip->tmpdata = NULL;
 	return ip;

@@ -55,7 +55,7 @@ static gchar * taglist[] = {	"section",
 			   };
 
 static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
-	gchar	*tmp, *section, *department;
+	gchar	*tmp = NULL, *section, *department;
 	
 	if(!xmlStrcmp(BAD_CAST"section", cur->name)) {
 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
@@ -66,10 +66,10 @@ static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 	}
 	
 	if(NULL != tmp) {
-		g_free(tmp);
 		section = g_hash_table_lookup(ip->tmpdata, "slash:section");
 		department = g_hash_table_lookup(ip->tmpdata, "slash:department");
-		tmp = g_strdup_printf("%s,%s", section, department);
+		tmp = g_strdup_printf("%s,%s", section != NULL ? section : "",
+						  department != NULL ? department : "" );
 		metadata_list_set(&(ip->metadata), "slash", tmp);
 	}
 }
@@ -81,21 +81,22 @@ void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user
 		section = (gchar *)data;
 		
 		addToHTMLBuffer(&(displayset->head), SLASH_START);		
-		
-		addToHTMLBuffer(&(displayset->head), KEY_START);
-		addToHTMLBuffer(&(displayset->head), "section");
-		addToHTMLBuffer(&(displayset->head), KEY_END);
-		addToHTMLBuffer(&(displayset->head), VALUE_START);	
-		addToHTMLBuffer(&(displayset->head), section);
-		addToHTMLBuffer(&(displayset->head), VALUE_END);
-		
-		addToHTMLBuffer(&(displayset->head), KEY_START);
-		addToHTMLBuffer(&(displayset->head), "department");
-		addToHTMLBuffer(&(displayset->head), KEY_END);
-		addToHTMLBuffer(&(displayset->head), VALUE_START);	
-		addToHTMLBuffer(&(displayset->head), department);
-		addToHTMLBuffer(&(displayset->head), VALUE_END);
-		
+		if (section != NULL) {
+			addToHTMLBuffer(&(displayset->head), KEY_START);
+			addToHTMLBuffer(&(displayset->head), "section");
+			addToHTMLBuffer(&(displayset->head), KEY_END);
+			addToHTMLBuffer(&(displayset->head), VALUE_START);	
+			addToHTMLBuffer(&(displayset->head), section);
+			addToHTMLBuffer(&(displayset->head), VALUE_END);
+		}
+		if (department != NULL) {
+			addToHTMLBuffer(&(displayset->head), KEY_START);
+			addToHTMLBuffer(&(displayset->head), "department");
+			addToHTMLBuffer(&(displayset->head), KEY_END);
+			addToHTMLBuffer(&(displayset->head), VALUE_START);	
+			addToHTMLBuffer(&(displayset->head), department);
+			addToHTMLBuffer(&(displayset->head), VALUE_END);
+		}
 		addToHTMLBuffer(&(displayset->head), SLASH_END);
 	}
 }
