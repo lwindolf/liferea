@@ -197,12 +197,6 @@ void ui_feed_update(feedPtr fp) {
 	}
 	g_free(tmp);
 	
-	if(NULL != fp->parseErrors) {
-		tmp = g_strdup_printf("<span foreground=\"red\">%s</span>", label);
-		g_free(label);
-		label = tmp;
-	}
-	
 	gtk_tree_store_set(feedstore, iter,
 				    FS_LABEL, label,
 				    FS_UNREAD, count,
