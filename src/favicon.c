@@ -23,6 +23,7 @@
 #endif
 
 #include <glib.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -40,17 +41,18 @@
 #include "debug.h"
 #include "ui_feedlist.h"
 
-
 void favicon_load(feedPtr fp) {
+	struct stat	statinfo;
+	GTimeVal	now;
 	gchar		*pngfilename, *xpmfilename;
 	GdkPixbuf	*pixbuf;
-	GError *error = NULL;
+	GError 		*error = NULL;
 	
 	/* try to load a saved favicon */
-	pngfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons",fp->id, "png");
-	xpmfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons",fp->id, "xpm");
+	pngfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
+	xpmfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "xpm");
 	
-	if(g_file_test(pngfilename, G_FILE_TEST_EXISTS)) {
+	if(0 == stat((const char*)pngfilename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file (pngfilename, &error);
 		if (pixbuf) {
 			fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
@@ -60,7 +62,15 @@ void favicon_load(feedPtr fp) {
 				    pngfilename, error->message);
 			g_error_free (error);
 		}
+		
+		/* check creation date and update favicon if older than one month */
+		g_get_current_time(&now);
+		if(now.tv_sec > statinfo.st_mtime + 60*60*24*31) {
+			debug1(DEBUG_UPDATE, "updating favicon %s\n", pngfilename);
+			favicon_download(fp);
+		}
 	} else {
+		// FIXME: remove this migration code when time comes
 		if(g_file_test(xpmfilename, G_FILE_TEST_EXISTS)) {
 			pixbuf = gdk_pixbuf_new_from_file (xpmfilename, &error);
 			if (pixbuf) {
@@ -125,7 +135,7 @@ void favicon_download(feedPtr fp) {
 	
 	debug_enter("favicon_download");
 	
-	if (fp->faviconRequest != NULL)
+	if(fp->faviconRequest != NULL)
 		return; /* It is already being downloaded */
 
 	/* try to download favicon */
@@ -149,4 +159,3 @@ void favicon_download(feedPtr fp) {
 	
 	debug_exit("favicon_download");
 }
-

@@ -5,6 +5,8 @@
 	* A middle mouse click on the itemlist now toggles
 	  read status or the headline flag depending on the
 	  column you click. (Lars Lindner)
+	* Now favicons that are older than one month are
+	  automatically updated (Lars Lindner)
 
 	Bugfixes:
 
