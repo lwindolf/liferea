@@ -107,8 +107,8 @@ struct htmlviewPluginInfo_ {
 	void		(*write)		(GtkWidget *widget, const gchar *string);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gboolean	(*launchInsidePossible)	(void);
-	gfloat	(*zoomLevelGet)		(void);
-	void		(*zoomLevelSet)	(gfloat diff);
+	gfloat	(*zoomLevelGet)		(GtkWidget *widget);
+	void		(*zoomLevelSet)	(GtkWidget *widget, gfloat zoom);
 	gboolean      (*scrollPagedown)(GtkWidget *widget);
 };
 
@@ -138,11 +138,9 @@ void	ui_htmlview_init(void);
  * Function to set up the html view widget for the three
  * and two pane view. 
  *
- * @param pane1	scrolled window of the three pane mode
- * @param pane2	scrolled window of the two pane mode
  * @param initialZoomLevel	the initial zoom level of the HTML views
  */
-GtkWidget *ui_htmlview_new(gint initialZoomLevel);
+GtkWidget *ui_htmlview_new();
 
 /** loads a emtpy HTML page */
 void	ui_htmlview_clear(GtkWidget *htmlview);
@@ -181,18 +179,20 @@ void	ui_htmlview_launch_URL(const gchar *url, gboolean force_external);
 
 /**
  * Function to change the zoom level of the HTML widget.
- * Adds a difference diff to the actual zoom level 
+ * 1.0 is a 1:1 zoom.
  *
- * @param diff	delta value for zoom level
+ * @param diff	New zoom
  */
-void	ui_htmlview_change_zoom(gfloat diff);
+void	ui_htmlview_set_zoom(GtkWidget *htmlvew, gfloat zoom);
 
 /**
  * Function to determine the current zoom level.
  *
+ * @param htmlview htmlview to examine
+ *
  * @return the currently set zoom level 
  */
-gfloat	ui_htmlview_get_zoom(void);
+gfloat	ui_htmlview_get_zoom(GtkWidget *htmlview);
 
 /**
  * Function to determine the currently selected URL.

@@ -122,6 +122,7 @@ int main (int argc, char *argv[]) {
 
 	/* order is important! */
 	initConfig();		/* initialize gconf */
+	ui_htmlview_init();
 	mainwindow = ui_mainwindow_new();
 	loadConfig();		/* maybe this should be merged with initConfig() */
 	feed_init();
@@ -131,6 +132,7 @@ int main (int argc, char *argv[]) {
 	ui_timeout_add(100, feed_process_update_results, NULL);
 
 	gtk_widget_show(mainwindow);
+	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
 
 	if(getBooleanConfValue(UPDATE_ON_STARTUP))
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);

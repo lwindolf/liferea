@@ -68,16 +68,6 @@ static GtkWidget *htmlview_three;
 
 gboolean	itemlist_mode = TRUE;		/* TRUE means three pane, FALSE means two panes */
 
-void ui_mainwindow_add_htmlviews() {
-	htmlview_three = ui_htmlview_new(getNumericConfValue(LAST_ZOOMLEVEL));
-	gtk_paned_pack2(GTK_PANED (lookup_widget(mainwindow, "rightpane")), GTK_WIDGET(htmlview_three), FALSE, TRUE);
-	gtk_widget_show_all(htmlview_three);
-
-	htmlview_two = ui_htmlview_new(getNumericConfValue(LAST_ZOOMLEVEL));
-	gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "itemtabs")), htmlview_two);
-	gtk_widget_show_all(htmlview_two);
-}
-
 GtkWidget *ui_mainwindow_get_active_htmlview() {
      if (itemlist_mode == TRUE)
           return htmlview_three;
@@ -96,6 +86,21 @@ void ui_mainwindow_set_mode(gboolean threePane) {
 	itemlist_mode = threePane;
 }
 
+void ui_mainwindow_zoom_in() {
+	gfloat zoom = ui_htmlview_get_zoom(htmlview_three);
+	zoom *= 1.2;
+	
+	ui_htmlview_set_zoom(htmlview_two, zoom);
+	ui_htmlview_set_zoom(htmlview_three, zoom);
+}
+
+void ui_mainwindow_zoom_out() {
+	gfloat zoom = ui_htmlview_get_zoom(htmlview_three);
+	zoom /= 1.2;
+	
+	ui_htmlview_set_zoom(htmlview_two, zoom);
+	ui_htmlview_set_zoom(htmlview_three, zoom);
+}
 
 GtkWidget* ui_mainwindow_new() {
 	GtkWidget *window = create_mainwindow();
@@ -123,7 +128,22 @@ GtkWidget* ui_mainwindow_new() {
 	TOOLBAR_ADD(toolbar,  _("Preferences"), GTK_STOCK_PREFERENCES, tooltips,  _("Edit preferences."), on_prefbtn_clicked);
 	gtk_widget_show_all(GTK_WIDGET(toolbar));
 
+	
 	return window;
+}
+void ui_mainwindow_finish(GtkWidget *window) {
+	htmlview_three = ui_htmlview_new();
+	gtk_widget_show(htmlview_three);
+	gtk_paned_pack2(GTK_PANED (lookup_widget(window, "rightpane")), GTK_WIDGET(htmlview_three), FALSE, TRUE);
+	ui_htmlview_clear(htmlview_three);
+	ui_htmlview_set_zoom(htmlview_three, getNumericConfValue(LAST_ZOOMLEVEL)/100.);
+
+	htmlview_two = ui_htmlview_new();
+	gtk_widget_show(htmlview_two);
+	gtk_container_add(GTK_CONTAINER(lookup_widget(window, "itemtabs")), htmlview_two);
+	ui_htmlview_clear(htmlview_two);
+	ui_htmlview_set_zoom(htmlview_two, getNumericConfValue(LAST_ZOOMLEVEL)/100.);
+
 }
 
 void ui_mainwindow_update_toolbar(void) {
@@ -249,6 +269,7 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
  */
 
 void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
+	ui_htmlview_set_zoom(htmlview_three, getNumericConfValue(LAST_ZOOMLEVEL)/100.);
 	on_newbtn_clicked(NULL, NULL);
 }
 

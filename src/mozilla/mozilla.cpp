@@ -64,41 +64,61 @@ gint mozilla_get_mouse_event_button(gpointer event) {
 	return button;
 }
 
-extern "C" gboolean
-mozilla_set_zoom (gpointer embed, float aZoom) {
+static nsCOMPtr<nsIMarkupDocumentViewer> mozilla_get_mdv(GtkWidget *widget) {
 	nsresult result;
-	
 	nsCOMPtr<nsIWebBrowser>	mWebBrowser;	
-	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(mWebBrowser));
+
+	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(widget), getter_AddRefs(mWebBrowser));
 	
-        nsCOMPtr<nsIDocShellTreeItem> browserAsItem;
-        browserAsItem = do_QueryInterface(mWebBrowser);
-	if (!browserAsItem) return FALSE;
+	nsCOMPtr<nsIDocShellTreeItem> browserAsItem;
+	browserAsItem = do_QueryInterface(mWebBrowser);
+	if (!browserAsItem) return NULL;
 	
 	// get the owner for that item
-        nsCOMPtr<nsIDocShellTreeOwner> treeOwner;
-        browserAsItem->GetTreeOwner(getter_AddRefs(treeOwner));
-        if (!treeOwner) return NS_ERROR_FAILURE;
-
-        // get the primary content shell as an item
-        nsCOMPtr<nsIDocShellTreeItem> contentItem;
-        treeOwner->GetPrimaryContentShell(getter_AddRefs(contentItem));
-        if (!contentItem) return NS_ERROR_FAILURE;
-
-        // QI that back to a docshell
-        nsCOMPtr<nsIDocShell> DocShell;
-        DocShell = do_QueryInterface(contentItem);
-        if (!DocShell) return NS_ERROR_FAILURE;
-
+	nsCOMPtr<nsIDocShellTreeOwner> treeOwner;
+	browserAsItem->GetTreeOwner(getter_AddRefs(treeOwner));
+	if (!treeOwner) return NULL;
+	
+	// get the primary content shell as an item
+	nsCOMPtr<nsIDocShellTreeItem> contentItem;
+	treeOwner->GetPrimaryContentShell(getter_AddRefs(contentItem));
+	if (!contentItem) return NULL;
+	
+	// QI that back to a docshell
+	nsCOMPtr<nsIDocShell> DocShell;
+	DocShell = do_QueryInterface(contentItem);
+	if (!DocShell) return NULL;
+	
 	nsCOMPtr<nsIContentViewer> contentViewer;	
 	result = DocShell->GetContentViewer (getter_AddRefs(contentViewer));
-	if (!NS_SUCCEEDED (result) || !contentViewer) return NS_ERROR_FAILURE;
+	if (!NS_SUCCEEDED (result) || !contentViewer) return NULL;
+	
+	return do_QueryInterface(contentViewer, &result);
+}
 
-	nsCOMPtr<nsIMarkupDocumentViewer> mdv = do_QueryInterface(contentViewer,
-								  &result);
-	if (NS_FAILED(result) || !mdv) return NS_ERROR_FAILURE;
+extern "C" void
+mozilla_set_zoom (GtkWidget *embed, float aZoom) {
+	nsCOMPtr<nsIMarkupDocumentViewer> mdv;
+	printf("kazam\n");
+	if ((mdv = mozilla_get_mdv(embed)) == NULL)
+		return;
+	printf("blamo\n");
+	/* Ignore return because we can't do anything if it fails.... */
+	mdv->SetTextZoom (aZoom);
+}
 
-	return mdv->SetTextZoom (aZoom);	
+extern "C" gfloat
+mozilla_get_zoom (GtkWidget *widget) {
+	nsCOMPtr<nsIMarkupDocumentViewer> mdv;
+	float zoom;
+     nsresult result;
+	printf("intro\n");
+	if ((mdv = mozilla_get_mdv(widget)) == NULL)
+		return 1.0;
+	
+	result = mdv->GetTextZoom (&zoom);
+	printf("GET_ZOOM: %d\n", result);
+	return zoom;
 }
 
 extern "C" gboolean mozilla_scroll_pagedown(GtkWidget *widget) {

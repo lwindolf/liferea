@@ -14,6 +14,8 @@ extern gboolean 	itemlist_mode;
 GtkWidget* ui_mainwindow_new();
 
 void ui_mainwindow_set_mode(gboolean threePane);
+void ui_mainwindow_zoom_in();
+void ui_mainwindow_zoom_out();
 
 GtkWidget *ui_mainwindow_get_active_htmlview();
 

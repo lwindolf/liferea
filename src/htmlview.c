@@ -180,8 +180,9 @@ void ui_htmlview_init(void) {
 /* browser module interface functions					*/
 /* -------------------------------------------------------------------- */
 
-GtkWidget *ui_htmlview_new(gint initialZoomLevel) {
+GtkWidget *ui_htmlview_new() {
 	GtkWidget *htmlview = htmlviewInfo->create();
+	
 	ui_htmlview_clear(htmlview);
 	return htmlview;
 }
@@ -305,14 +306,14 @@ void ui_htmlview_launch_URL(const gchar *url, gboolean force_external) {
 	}
 }
 
-void ui_htmlview_change_zoom(gfloat diff) {
+void ui_htmlview_set_zoom(GtkWidget *htmlview, gfloat diff) {
 
-	(htmlviewInfo->zoomLevelSet)(diff); 
+	(htmlviewInfo->zoomLevelSet)(htmlview, diff); 
 }
 
-gfloat ui_htmlview_get_zoom(void) {
+gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 
-	return htmlviewInfo->zoomLevelGet();
+	return htmlviewInfo->zoomLevelGet(htmlview);
 }
 
 gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {

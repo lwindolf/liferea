@@ -47,7 +47,6 @@ typedef struct {
 } StreamData;
 
 static GnomeVFSURI 	*baseURI = NULL;
-static gfloat		zoomLevel = 1.0;
 
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
@@ -281,14 +280,17 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 /* ---------------------------------------------------------------------------- */
 
 /* adds a differences diff to the actual zoom level */
-void change_zoom_level(gfloat diff) {
-
-	zoomLevel += diff;
-	//html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
+void change_zoom_level(GtkWidget *scrollpane, gfloat zoomLevel) {
+	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
+	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 }
 
 /* returns the currently set zoom level */
-gfloat get_zoom_level(void) { return zoomLevel; }
+gfloat get_zoom_level(GtkWidget *scrollpane) {
+	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
+	
+	return html_view_get_magnification(HTML_VIEW(htmlwidget));
+}
 
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
@@ -327,7 +329,7 @@ void write_html(GtkWidget *scrollpane, const gchar *string) {
 
 		html_document_close_stream(doc);
 		
-		change_zoom_level(0.0);	/* to enforce applying of changed zoom levels */
+		change_zoom_level(scrollpane, get_zoom_level(scrollpane));	/* to enforce applying of changed zoom levels */
 		gtkhtml2_scroll_to_top(scrollpane);
 	}
 }
@@ -355,6 +357,7 @@ static GtkWidget* gtkhtml2_new() {
 	g_signal_connect(G_OBJECT(htmlwidget), "button-press-event", G_CALLBACK(button_press_event), NULL);
 	g_signal_connect(G_OBJECT(htmlwidget), "request_object", G_CALLBACK(request_object), NULL);
 
+	gtk_widget_show(htmlwidget);
 
 	return scrollpane;
 }

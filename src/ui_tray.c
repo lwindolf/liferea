@@ -58,6 +58,8 @@ void ui_tray_tooltip_set(gchar *message) {
 		   them? */
 		g_free(data->tip_text);
 		g_free(data->tip_private);
+		data->tip_text = NULL;
+		data->tip_private = NULL;
 	}
 	
 	gtk_tooltips_set_tip(GTK_TOOLTIPS(tray_icon_tips), 

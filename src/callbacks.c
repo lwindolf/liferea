@@ -99,16 +99,12 @@ void ui_init(void) {
 	/* order important !!! */
 	ui_feedlist_init(lookup_widget(mainwindow, "feedlist"));
 	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
-
-	ui_htmlview_init();
-
-	ui_mainwindow_add_htmlviews();
-
+	
 	if(getBooleanConfValue(LAST_ITEMLIST_MODE))
 		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
-		
-	ui_mainwindow_set_mode(itemlist_mode);
 
+	ui_mainwindow_set_mode(itemlist_mode);
+		
 	for(i = 0; i < MAX_ICONS; i++)
 		icons[i] = create_pixbuf(iconNames[i]);
 		
@@ -160,8 +156,12 @@ void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data) { on_next_unread_item_activate(NULL, NULL); }
 
-void on_popup_zoomin_selected(void) { ui_htmlview_change_zoom(0.2); }
-void on_popup_zoomout_selected(void) { ui_htmlview_change_zoom(-0.2); }
+void on_popup_zoomin_selected(void) {
+	ui_mainwindow_zoom_in();
+}
+void on_popup_zoomout_selected(void) {
+	ui_mainwindow_zoom_out();
+}
 
 void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 	GtkClipboard *clipboard;
@@ -287,7 +287,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	
 	/* save itemlist properties */
 	setBooleanConfValue(LAST_ITEMLIST_MODE, !itemlist_mode);
-	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100*ui_htmlview_get_zoom()));
+	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100.*ui_htmlview_get_zoom(ui_mainwindow_get_active_htmlview())));
 		
 	gtk_main_quit();
 	debug_exit("on_quit");

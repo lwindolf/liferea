@@ -38,8 +38,6 @@
 #include "../common.h"
 #include "mozilla.h"
 
-static gfloat		zoomLevel = 1.0;
-
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
@@ -232,16 +230,6 @@ static void launch_url(GtkWidget *widget, const gchar *url) {
 
 static gboolean launch_inside_possible(void) { return TRUE; }
 
-/* adds a differences diff to the actual zoom level */
-static void change_zoom_level(gfloat diff) {
-
-	zoomLevel += diff;
-	//mozilla_set_zoom(GTK_MOZ_EMBED(widget), zoomLevel);
-}
-
-/* returns the currently set zoom level */
-static gfloat get_zoom_level(void) { return zoomLevel; }
-
 static htmlviewPluginInfo mozillaInfo = {
 	HTMLVIEW_API_VERSION,
 	"Mozilla (experimental)",
@@ -250,8 +238,8 @@ static htmlviewPluginInfo mozillaInfo = {
 	mozilla_write,
 	launch_url,
 	launch_inside_possible,
-	get_zoom_level,
-	change_zoom_level,
+	mozilla_get_zoom,
+	mozilla_set_zoom,
 	mozilla_scroll_pagedown
 };
 
