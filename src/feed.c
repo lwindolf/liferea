@@ -652,9 +652,8 @@ void feed_set_update_interval(feedPtr fp, gint interval) {
 void feed_reset_update_counter(feedPtr fp) {
 
 	g_get_current_time(&fp->scheduledUpdate);
-	printf("%ld: ", fp->scheduledUpdate.tv_sec);
 	fp->scheduledUpdate.tv_sec += fp->updateInterval*60;
-	printf("Reseting update counter for %s to %ld.\n", fp->title, fp->scheduledUpdate.tv_sec);
+	debug2(DEBUG_CONF, "Reseting update counter for %s to %ld.\n", fp->title, fp->scheduledUpdate.tv_sec);
 }
 
 void feed_set_available(feedPtr fp, gboolean available) { fp->available = available; }
