@@ -38,8 +38,6 @@
 #include "../common.h"
 #include "mozilla.h"
 
-static GtkWidget	*widget = NULL;
-
 static gfloat		zoomLevel = 1.0;
 
 /* points to the URL actually under the mouse pointer or is NULL */
@@ -227,7 +225,7 @@ static void mozilla_init() {
 }
 
 /* launches the specified URL */
-static void launch_url(const gchar *url) {
+static void launch_url(GtkWidget *widget, const gchar *url) {
 
 	gtk_moz_embed_load_url(GTK_MOZ_EMBED(widget), url); 
 }
@@ -238,7 +236,7 @@ static gboolean launch_inside_possible(void) { return TRUE; }
 static void change_zoom_level(gfloat diff) {
 
 	zoomLevel += diff;
-	mozilla_set_zoom(GTK_MOZ_EMBED(widget), zoomLevel);
+	//mozilla_set_zoom(GTK_MOZ_EMBED(widget), zoomLevel);
 }
 
 /* returns the currently set zoom level */

@@ -299,7 +299,7 @@ void ui_htmlview_launch_URL(const gchar *url, gboolean force_external) {
 	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION) &&
 	   (htmlviewInfo->launchInsidePossible)() &&
 	   !force_external) {
-		(htmlviewInfo->launch)(url);
+		(htmlviewInfo->launch)(ui_mainwindow_get_active_htmlview(), url);
 	} else {
 		ui_htmlview_launch_in_external_browser(url);
 	}

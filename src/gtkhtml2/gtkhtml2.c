@@ -54,7 +54,7 @@ static gchar		*selectedURL = NULL;
 
 /* prototypes */
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
-void launch_url(const gchar *url);
+void launch_url(GtkWidget *widget, const gchar *url);
 static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane);
 
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {
@@ -272,7 +272,7 @@ kill_old_connections (HtmlDocument *doc)
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 
 	if (ui_htmlview_launch_in_external_browser(url) == FALSE) {
-		launch_url(url);
+		launch_url(NULL, url);
 	}
 }
 
@@ -365,7 +365,7 @@ static void gtkhtml2_init() {
 	gnome_vfs_init();
 }
 
-void launch_url(const gchar *url) { g_warning("should never be called!"); link_clicked(NULL, url, NULL); }
+void launch_url(GtkWidget *widget, const gchar *url) { g_warning("should never be called!"); link_clicked(NULL, url, NULL); }
 
 gboolean launch_inside_possible(void) { return FALSE; }
 

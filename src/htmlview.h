@@ -105,7 +105,7 @@ struct htmlviewPluginInfo_ {
 	GtkWidget* (*create)	();
 	//void (*destroy)    (GtkWidget *widget);
 	void		(*write)		(GtkWidget *widget, const gchar *string);
-	void		(*launch)		(const gchar *url);
+	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gboolean	(*launchInsidePossible)	(void);
 	gfloat	(*zoomLevelGet)		(void);
 	void		(*zoomLevelSet)	(gfloat diff);
