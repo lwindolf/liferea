@@ -84,6 +84,12 @@ void		removeVFolderFromItem(itemPtr ip, gpointer fp);
 void item_display(itemPtr ip);
 
 /**
+ * Returns a HTML string with a representation of the item
+ * @param ip the item to render
+ */
+gchar *item_render(itemPtr ip);
+
+/**
  * Free the memory used by an itempointer. The item needs to be
  * removed from the itemlist before calling this function.
  *

@@ -168,6 +168,11 @@ feedPtr feed_new(void);
  * was opened.
  */
 gboolean feed_load_from_cache(feedPtr fp);
+
+/* Only some feed informations are kept in memory to lower memory
+   usage. This method unloads everything besides necessary infos. */
+void feed_unload(feedPtr fp);
+
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
 void feed_schedule_update(feedPtr fp, gint flags);

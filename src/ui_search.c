@@ -29,8 +29,6 @@
 extern GtkWidget 	*mainwindow;
 static GtkWidget 	*feedsterdialog = NULL;
 
-extern feedPtr          allItems;
-
 /*------------------------------------------------------------------------------*/
 /* search dialog callbacks								*/
 /*------------------------------------------------------------------------------*/
@@ -68,7 +66,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
-		ui_itemlist_load((nodePtr)allItems, (gchar *)searchstring);
+		ui_itemlist_load(NULL, (gchar *)searchstring);
 	}
 }
 

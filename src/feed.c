@@ -61,10 +61,6 @@ struct feed_type {
 	gchar *id_str;
 };
 
-/* a list containing all items of all feeds, used for VFolder
-   and searching functionality */
-feedPtr		allItems = NULL;
-
 /* prototypes */
 static gboolean feed_save_timeout(gpointer user_data);
 static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode);
@@ -190,9 +186,6 @@ void feed_init(void) {
 
 	srand((unsigned int)time(NULL));	/* rand() used in favicon downloading */
 
-	allItems = feed_new();
-	allItems->type = FST_VFOLDER;
-	
 	feedhandlers = g_slist_append(feedhandlers, initOCSFeedHandler()); /* Must come before RSS/RDF */
 	feedhandlers = g_slist_append(feedhandlers, initRSSFeedHandler());
 	feedhandlers = g_slist_append(feedhandlers, initCDFFeedHandler());
@@ -218,6 +211,7 @@ feedPtr feed_new(void) {
 	fp->defaultInterval = -1;
 	fp->type = FST_FEED;
 	fp->cacheLimit = CACHE_DEFAULT;
+	fp->loaded = TRUE;	/* definition: a new feed is always loaded and must explicitly be unloaded */
 	
 	return fp;
 }
@@ -468,7 +462,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 
 /* Only some feed informations are kept in memory to lower memory
    usage. This method unloads everything besides necessary infos. */
-static void feed_unload(feedPtr fp) {
+void feed_unload(feedPtr fp) {
 
 	fp->loaded = FALSE;
 	
@@ -489,6 +483,9 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	gint		traycount = 0;
 
 	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
+	
+	if(!old_fp->loaded)
+		feed_load_from_cache(old_fp);	/* because we access old_fp->items directly */
 	
 	if(TRUE == new_fp->available) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
@@ -585,7 +582,6 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				/* any found new_fp items are not needed anymore */
 				if(old_fp->type != FST_HELPFEED) { 
 					new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
-					allItems->items = g_slist_remove(allItems->items, new_ip);
 					item_free(new_ip);					
 				}
 			}
@@ -620,7 +616,6 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			/* free old list and items of old list */
 			old_list = old_fp->items;
 			while(NULL != old_list) {
-				allItems->items = g_slist_remove(allItems->items, old_list->data);
 				item_free((itemPtr)old_list->data);
 				old_list = g_slist_next(old_list);
 			}
@@ -805,11 +800,11 @@ void feed_process_update_result(struct request *request) {
 
 void feed_add_item(feedPtr fp, itemPtr ip) {
 
+	g_assert(TRUE == fp->loaded);
 	ip->fp = fp;
 	if(FALSE == ip->readStatus)
 		feed_increase_unread_counter(fp);
 	fp->items = g_slist_append(fp->items, (gpointer)ip);
-	allItems->items = g_slist_append(allItems->items, (gpointer)ip);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -1056,6 +1051,7 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 		fp->imageUrl = NULL;
 }
 
+/* returns feed's list of items, if necessary loads the feed from cache */
 GSList * feed_get_item_list(feedPtr fp) { 
 
 	if(!fp->loaded)
@@ -1063,13 +1059,12 @@ GSList * feed_get_item_list(feedPtr fp) {
 	return fp->items; 
 }
 
-/* method to free all items of a feed */
+/* method to free all items of a feed, maybe called for unloaded feeds too */
 void feed_clear_item_list(feedPtr fp) {
 	GSList	*item;
 	
 	item = fp->items;
 	while(NULL != item) {
-		allItems->items = g_slist_remove(allItems->items, item->data);
 		item_free(item->data);
 		item = g_slist_next(item);
 	}
@@ -1079,7 +1074,8 @@ void feed_clear_item_list(feedPtr fp) {
 
 void feed_mark_all_items_read(feedPtr fp) {
 	GSList	*item;
-	
+
+	g_assert(TRUE == fp->loaded);	
 	item = fp->items;
 	while(NULL != item) {
 		item_set_read((itemPtr)item->data);
@@ -1093,7 +1089,8 @@ gchar *feed_render(feedPtr fp) {
 	gchar			*buffer = NULL;
 	gchar			*tmp, *tmp2;
 	gboolean		migration = FALSE;
-	
+
+	g_assert(TRUE == fp->loaded);	
 	displayset.headtable = NULL;
 	displayset.head = NULL;
 	displayset.body = g_strdup(feed_get_description(fp));
@@ -1196,6 +1193,8 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	itemPtr		ip;
 	GSList		*item;
 
+	g_assert(TRUE == fp->loaded);
+	
 	/* To prevent updating feed ptr in the tree store and
 	   feeds hashtable we reuse the old structure! */
 	
@@ -1207,7 +1206,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	g_free(new_fp->source);
 	new_fp->source = fp->source;
 
-	if (new_fp->icon != NULL)
+	if(new_fp->icon != NULL)
 		g_object_unref(new_fp->icon);
 	new_fp->icon = fp->icon;
 	new_fp->id = fp->id;

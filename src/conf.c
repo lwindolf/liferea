@@ -294,8 +294,9 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		feed_set_title(fp, name);
 		feed_set_id(fp, newid);
 		feed_set_update_interval(fp, interval);
-		feed_load_from_cache(fp);
+		feed_load_from_cache(fp);	/* to load feed information */
 		ui_folder_add_feed(parent, fp, -1);
+		feed_unload(fp);		/* to remove currently unnecessary items from cache */
 		
 		g_free(cacheid);
 		g_free(newid);

@@ -510,9 +510,9 @@ void ui_itemlist_load(nodePtr node, gchar *searchstring) {
 	model = GTK_TREE_MODEL(getItemStore());
 	
 	/* Add the new items */
-	if (node == NULL || IS_FOLDER(node->type)) {
+	if(node == NULL || IS_FOLDER(node->type)) {
 		ui_feedlist_do_for_all_data(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed, searchstring);
-	} else if (IS_FEED(node->type) || (node->type == FST_VFOLDER)) {
+	} else if(IS_FEED(node->type) || (node->type == FST_VFOLDER)) {
 		ui_itemlist_load_feed((feedPtr)node, searchstring);
 	}
 	
