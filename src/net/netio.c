@@ -53,21 +53,70 @@
 #include "net-support.h"
 
 #define MAX_HTTP_REDIRECTS 10	/* Maximum number of redirects we will follow. */
+#define NET_TIMEOUT 30			/* Global network timeout in sec */
+#define NET_READ 1
+#define NET_WRITE 2
+
 
 extern char *proxyname;			/* Hostname of proxyserver. */
 extern unsigned short proxyport;	/* Port on proxyserver to use. */
 extern char *useragent;
 
 
+/*
+ * read:	rw = 1
+ * write:	rw = 2
+ */
+int NetPoll (int * my_socket, int rw) {
+	fd_set rfdsr;
+	fd_set rfdsw;
+	struct timeval tv;
+	
+	/* Set global network timeout */
+	tv.tv_sec = NET_TIMEOUT;
+	tv.tv_usec = 0;
+	
+	FD_ZERO(&rfdsr);
+	FD_ZERO(&rfdsw);
+	
+	if (rw == NET_READ) {
+		FD_SET(*my_socket, &rfdsr);
+		if (select (*my_socket+1, &rfdsr, NULL, NULL, &tv) == 0) {
+			/* Timed out */
+			return 1;
+		}
+		if (!FD_ISSET (*my_socket, &rfdsr)) {
+			/* Wtf? */
+			return -1;
+		}
+	} else if (rw == NET_WRITE) {
+		FD_SET(*my_socket, &rfdsw);
+		if (select (*my_socket+1, NULL, &rfdsw, NULL, &tv) == 0) {
+			/* Timed out */
+			return 1;
+		}
+		if (!FD_ISSET (*my_socket, &rfdsw)) {
+			/* Wtf? */
+			return -1;
+		}
+	} else
+		return -1;
+	
+	return 0;
+}
+
 
 /* Connect network sockets.
  *
- * Return codes:	 1	socket creation error
- *			 2	hostname resolve error
- *			 3	couldn't connect
+ * Return codes:	1	socket creation error
+ *					2	hostname resolve error
+ *					3	couldn't connect
+ *					4	timeout
+ *					5	Unknown
  *                 	-1	aborted by user
  */
 int NetConnect (int * my_socket, int * connectresult, char * host, int httpproto, int suppressoutput) {
+	int retval;
 	struct sockaddr_in address;	
 	struct hostent *remotehost;
 	char *uistring;
@@ -123,6 +172,20 @@ int NetConnect (int * my_socket, int * connectresult, char * host, int httpproto
 				return 3;
 			}
 			
+			retval = NetPoll (my_socket, NET_WRITE);
+			switch (retval) {
+				case 1:
+					close (*my_socket);
+					free (realhost);
+					return 4;
+				case -1:
+					close (*my_socket);
+					free (realhost);
+					return 5;
+				default:
+					break;
+			}
+			
 			/* We get errno of connect back via getsockopt SO_ERROR (into connectresult). */
 			len = sizeof(*connectresult);
 			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, connectresult, &len);
@@ -157,6 +220,20 @@ int NetConnect (int * my_socket, int * connectresult, char * host, int httpproto
 				close (*my_socket);
 				free (realhost);
 				return 3;
+			}
+			
+			retval = NetPoll (my_socket, NET_WRITE);
+			switch (retval) {
+				case 1:
+					close (*my_socket);
+					free (realhost);
+					return 4;
+				case -1:
+					close (*my_socket);
+					free (realhost);
+					return 5;
+				default:
+					break;
 			}
 			
 			len = sizeof(*connectresult);
@@ -244,51 +321,61 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 	}
 
 	/* Again is proxyport == 0, non proxy mode, otherwise make proxy requests. */
-        if (proxyport == 0) {
-                /* Request URL from HTTP server. */
-                if (cur_ptr->lastmodified != NULL) {
-                        fprintf(stream,
-                                        "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n",
-                                        url,
-                                        useragent,
-                                        host,
-                                        cur_ptr->lastmodified,
-                                        (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
-                                        (cur_ptr->cookies ? cur_ptr->cookies : ""));
-                } else {
-                        fprintf(stream,
-                                        "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n",
-                                        url,
-                                        useragent,
-                                        host,
-                                        (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
-                                        (cur_ptr->cookies ? cur_ptr->cookies : ""));
-                }
-                fflush(stream);
-        } else {
-                /* Request URL from HTTP server. */
-                if (cur_ptr->lastmodified != NULL) {
-                        fprintf(stream,
-                                        "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n",
-                                        host,
-                                        url,
-                                        useragent,
-                                        host,
-                                        cur_ptr->lastmodified,
-                                        (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
-                                        (cur_ptr->cookies ? cur_ptr->cookies : ""));
-                } else {
-                        fprintf(stream,
-                                        "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n",
-                                        host,
-                                        url,
-                                        useragent,
-                                        host,
-                                        (cur_ptr->authinfo ? cur_ptr->authinfo : ""),
-                                        (cur_ptr->cookies ? cur_ptr->cookies : ""));
-                }
-                fflush(stream);
-        }
+	if (proxyport == 0) {
+			/* Request URL from HTTP server. */
+			if (cur_ptr->lastmodified != NULL) {
+					fprintf(stream,
+									"GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n",
+									url,
+									useragent,
+									host,
+									cur_ptr->lastmodified,
+									(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+									(cur_ptr->cookies ? cur_ptr->cookies : ""));
+			} else {
+					fprintf(stream,
+									"GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n",
+									url,
+									useragent,
+									host,
+									(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+									(cur_ptr->cookies ? cur_ptr->cookies : ""));
+			}
+			fflush(stream);
+	} else {
+			/* Request URL from HTTP server. */
+			if (cur_ptr->lastmodified != NULL) {
+					fprintf(stream,
+									"GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n",
+									host,
+									url,
+									useragent,
+									host,
+									cur_ptr->lastmodified,
+									(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+									(cur_ptr->cookies ? cur_ptr->cookies : ""));
+			} else {
+					fprintf(stream,
+									"GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n",
+									host,
+									url,
+									useragent,
+									host,
+									(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
+									(cur_ptr->cookies ? cur_ptr->cookies : ""));
+			}
+			fflush(stream);
+	}
+		
+	retval = NetPoll (my_socket, NET_READ);
+	switch (retval) {
+		case 1:
+		case -1:
+			fclose (stream);
+			return NULL;
+		default:
+			break;
+	}
 	
 	if ((fgets (tmp, sizeof(tmp), stream)) == NULL) {
 		fclose (stream);
@@ -499,6 +586,15 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 	
 	/* Read rest of HTTP header and parse what we need. */
 	while (!feof(stream) && !ferror(stream)) {
+		retval = NetPoll (my_socket, NET_READ);
+		switch (retval) {
+			case 1:
+			case -1:
+				fclose (stream);
+				return NULL;
+			default:
+				break;
+		}
 	
 		/* Max line length of sizeof(netbuf) is assumed here.
 		   If header has longer lines than 4096 bytes something may go wrong. :) */
@@ -636,6 +732,15 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 
 	/* Read stream until EOF and return it to parent. */
 	while (!feof(stream) && !ferror(stream)) {
+		retval = NetPoll (my_socket, NET_READ);
+		switch (retval) {
+			case 1:
+			case -1:
+				fclose (stream);
+				return NULL;
+			default:
+				break;
+		}
 
 		/* Since we handle binary data if we read compressed input we
 		   need to use fread instead of fgets after reading the header. */ 
@@ -777,6 +882,12 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 			if (!suppressoutput)
 				UIStatus (tmp, 2);
 			cur_ptr->problem = 1;
+			free (freeme);
+			free (authdata);
+			return NULL;
+		case 4:
+			if (!suppressoutput)
+				UIStatus (_("Connection timed out."), 2);
 			free (freeme);
 			free (authdata);
 			return NULL;
