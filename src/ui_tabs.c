@@ -26,7 +26,6 @@
 #include "ui_tabs.h"
 
 extern GtkWidget	*mainwindow;
-static GHashTable	*tabHash = NULL;
 
 static gboolean on_tab_url_entry_activate(GtkWidget *widget, gpointer user_data) {
 
@@ -44,8 +43,6 @@ static gboolean on_tab_close_clicked(GtkWidget *widget, GdkEvent *event, gpointe
 	if(1 == gtk_notebook_get_n_pages(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs"))))
 		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
 		
-	g_hash_table_remove(tabHash, GINT_TO_POINTER(i));
-	
 	return TRUE;
 }
 
@@ -66,7 +63,6 @@ void ui_tabs_init(void) {
 
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
 	g_signal_connect((gpointer)lookup_widget(mainwindow, "browsertabs"), "switch-page", G_CALLBACK(on_tab_switched), NULL);
-	tabHash = g_hash_table_new(g_direct_hash, g_direct_equal);
 }
 
 void ui_tabs_new(const gchar *url, const gchar *title) {
@@ -133,7 +129,6 @@ void ui_tabs_new(const gchar *url, const gchar *title) {
 		ui_htmlview_launch_URL(htmlview, (gchar *)url, UI_HTMLVIEW_LAUNCH_INTERNAL);
 	
 	i = gtk_notebook_get_n_pages(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
-	g_hash_table_insert(tabHash, GINT_TO_POINTER(i-1), (gpointer)htmlview);
 }
 
 void ui_tabs_show_headlines(void) {
@@ -148,7 +143,7 @@ GtkWidget * ui_tabs_get_active_htmlview(void) {
 	if(0 == current)
 		return ui_mainwindow_get_active_htmlview();
 		
-	return (GtkWidget *)g_hash_table_lookup(tabHash, GINT_TO_POINTER(current));
+	return gtk_notebook_get_nth_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), current);
 }
 
 void on_popup_open_link_in_tab_selected(gpointer url, guint callback_action, GtkWidget *widget) {
