@@ -53,7 +53,7 @@ gtkhtml2=`pkg-config --cflags libgtkhtml-2.0 2> /dev/null`
 AM_CONDITIONAL(WITH_GTKHTML2, test "x$gtkhtml2" != "x")
 if test "x$gtkhtml2" != "x" ; then
    AC_MSG_RESULT(yes)
-   PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
+   PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0)
    AC_SUBST(GTKHTML2_CFLAGS)
    AC_SUBST(GTKHTML2_LIBS)
    enable_gtkhtml2=yes
