@@ -10,6 +10,9 @@
 	  automatically and that old items are dropped. This
 	  also removes the special icon of the help folder.
 	  (Lars Linder)
+	* Added support for reading subscriptions URLs from 
+	  a named pipe (~/.liferea/new-subscription) to allow
+	  external programs to add feeds. (Lars Lindner)
 
 2004-08-21  Lars Lindner <lars.lindner@gmx.net>
 

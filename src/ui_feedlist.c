@@ -660,7 +660,7 @@ gboolean ui_feedlist_check_subscription_fifo(void *data) {
 		return FALSE;
 	
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", common_get_cache_path(), "new_subscription");
-	result = mkfifo(filename, 0666);	
+	result = mkfifo(filename, 0600);	
 	if((result == -1) && (errno != EEXIST)) {
 		g_warning("Error creating the named pipe \"%s\". Won't do more checks on this pipe...\n", filename);
 		g_free(filename);
