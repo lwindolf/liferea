@@ -303,54 +303,38 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 
 /* function to add a feed to the feed list */
 feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval) {
-	feedHandlerPtr	fhp;
-	feedPtr		new_fp = NULL;
-	gboolean	saveNeeded = FALSE;
+	feedPtr		new_fp;
 	
 	g_assert(NULL != key);
-	new_fp = loadFeed(type, key, keyprefix);
-	if(NULL == new_fp) {
-		/* maybe cache file was deleted or entry has no cache (like help entries) 
-		   so we reload the entry from its URL */
-		g_assert(NULL != feedHandler);
-		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			g_warning(g_strdup_printf(_("cannot load feed: no feed handler for type %d!"),type));
-			return;
-		}
-		g_assert(NULL != fhp->readFeed);
-		
-		new_fp = (*(fhp->readFeed))(url);
-		saveNeeded = TRUE;
-	}
+	if(NULL == (new_fp = loadFeed(type, key, keyprefix)))
+		/* maybe cache file was deleted or entry has no cache 
+		   (like help entries) so we reload the entry from its URL */
+		new_fp = getNewFeedStruct();
 	
-	if(NULL != new_fp) {
-		new_fp->type = type;
-		new_fp->key = key;	
-		new_fp->keyprefix = keyprefix;
-		
-		if(NULL != feedname) {
-			g_free(new_fp->title);
-			new_fp->title = feedname;
-		}
-	
-		g_free(new_fp->source);
-		new_fp->source = url;
-		
-		if(IS_FEED(type)) {
-			new_fp->updateCounter = new_fp->updateInterval = interval;
-		}
-		
-		g_mutex_lock(feeds_lock);
-		g_hash_table_insert(feeds, (gpointer)key, (gpointer)new_fp);
-		g_mutex_unlock(feeds_lock);
-	
-		/* save feed cache file... */
-		if(saveNeeded)
-			saveFeed(new_fp);
-			
-		addToFeedList(new_fp);
-	} 
+	new_fp->type = type;
+	new_fp->key = key;	
+	new_fp->keyprefix = keyprefix;
 
+	if(NULL != feedname) {
+		g_free(new_fp->title);
+		new_fp->title = feedname;
+	}
+
+	g_free(new_fp->source);
+	new_fp->source = url;
+
+	if(IS_FEED(type))
+		new_fp->updateCounter = new_fp->updateInterval = interval;
+	
+	if(FALSE == getFeedAvailable(new_fp))
+		setFeedUpdateCounter(new_fp, 0);
+
+	g_mutex_lock(feeds_lock);
+	g_hash_table_insert(feeds, (gpointer)key, (gpointer)new_fp);
+	g_mutex_unlock(feeds_lock);
+
+	addToFeedList(new_fp);
+	
 	return new_fp;
 }
 
