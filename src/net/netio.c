@@ -369,7 +369,7 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cur_ptr, char * authdata, int httpproto, int suppressoutput) {
 	char netbuf[4096];			/* Network read buffer. */
 	char *body;					/* XML body. */
-	int length;
+	unsigned int length;
 	FILE *stream;				/* Stream socket. */
 	int chunked = 0;			/* Content-Encoding: chunked received? */
 	int redirectcount;			/* Number of HTTP redirects followed. */
@@ -703,13 +703,12 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 			break;
 		
 		if (strstr (netbuf, "chunked") != NULL) {
-			/* Server sent junked encoding. Until I understand how it works
-			   and snownews uses HTTP/1.1 we must reject this answer.
-			   Chunked encoding is not defined in HTTP/1.0. */
+			/* Server sent junked encoding. Until I understand how
+			   it works and snownews uses HTTP/1.1 we must reject
+			   this answer.  Chunked encoding is not defined in
+			   HTTP/1.0. Some proxys are evil and send it anyway,
+			   so it is now supported in some sense. */
 			chunked = 1;
-			cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
-			fclose (stream);
-			return NULL;
 		}
 		/* Get last modified date. This is only relevant on HTTP 200. */
 		if ((strncasecmp (netbuf, "Last-Modified", 13) == 0) &&
@@ -863,7 +862,15 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		
 	/* Close connection. */
 	fclose (stream);
-
+	
+	if (chunked) {
+		if (decodechunked(body, &length) == NULL) {
+			free (body);
+			cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+			return NULL;
+		}
+	}
+		
 	len = length;
 
 	/* If inflate==1 we need to decompress the content.. */

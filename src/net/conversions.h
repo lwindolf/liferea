@@ -27,6 +27,7 @@ char * WrapText (char * text, int width);
 void *zlib_uncompress(void *in_buf, int in_size, int *out_size, int voodoo_magic);
 void *gzip_uncompress(void *in_buf, int in_size, int *out_size);
 char *base64encode(char const *inbuf, unsigned int inbuf_size);
+char* decodechunked(char * chunked, unsigned int *inputlen);
 void CleanupString (char * string, int tidyness);
 
 struct gzip_header {

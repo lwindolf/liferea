@@ -25,6 +25,8 @@
 	  condensed mode. Now the read state of items is not
 	  set automatically anymore. You can use the mark all
 	  unread feature. (Lars Linder)
+	* Support for broken web-servers and proxies that use
+	  chunked encoding. (Alex Myltsev)
 	
 	Bugfixes:
 

@@ -495,6 +495,33 @@ char *base64encode(char const *inbuf, unsigned int inbuf_size) {
 	return outbuf;
 }
 
+/* Returns NULL on invalid input */
+char* decodechunked(char * chunked, unsigned int *inputlen) {
+	/* We can reuse the same buffer to dechunkify it:
+	 * the data size will never increase. */
+	char *orig = chunked, *dest = chunked;
+	unsigned long chunklen;
+	while((chunklen = strtoul(orig, &orig, 16))) {
+		/* process one more chunk: */
+		/* skip chunk-extension part */
+		while(*orig && (*orig != '\r'))
+			orig++;
+		/* skip '\r\n' after chunk length */
+		orig += 2;
+		if(( chunklen > (chunked + *inputlen - orig)))
+			/* insane chunk length. Well... */
+			return NULL;
+		memmove(dest, orig, chunklen);
+		dest += chunklen;
+		orig += chunklen;
+		/* and go to the next chunk */
+	}
+	*dest = '\0';
+	*inputlen = dest - chunked;
+	
+	return chunked;
+}
+
 /* Remove leading whitspaces, newlines, tabs.
  * This function should be safe for working on UTF-8 strings.
  * tidyness: 0 = only suck chars from beginning of string
