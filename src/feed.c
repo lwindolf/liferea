@@ -492,6 +492,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					item_set_unread(old_ip);
 					newcount++;
 					traycount++;
+				} else {
+					new_ip->readStatus = TRUE;
 				}
 
 				/* any found new_fp items are not needed anymore */
