@@ -87,6 +87,7 @@ feedHandlerPtr initPIEFeedHandler(void) {
 
 	/* prepare feed handler structure */
 	fhp->readFeed		= readPIEFeed;
+	fhp->merge		= TRUE;
 
 	return fhp;
 }

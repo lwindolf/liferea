@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-10-10 19:34+0200\n"
+"POT-Creation-Date: 2003-10-10 22:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -265,11 +265,11 @@ msgstr ""
 msgid "This feed specifies no default interval."
 msgstr ""
 
-#: src/callbacks.c:600
+#: src/callbacks.c:601
 msgid "internal error! invalid type selected!\n"
 msgstr ""
 
-#: src/callbacks.c:611
+#: src/callbacks.c:612
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -279,75 +279,75 @@ msgid ""
 "the feed list.\n"
 msgstr ""
 
-#: src/callbacks.c:688
+#: src/callbacks.c:689
 msgid "internal error! could not get a new folder key!"
 msgstr ""
 
-#: src/callbacks.c:754 src/callbacks.c:757
+#: src/callbacks.c:755 src/callbacks.c:758
 msgid "A folder must be empty to delete it!"
 msgstr ""
 
-#: src/callbacks.c:760
+#: src/callbacks.c:761
 msgid "Error: Cannot determine folder key!"
 msgstr ""
 
-#: src/callbacks.c:806 src/callbacks.c:1007
+#: src/callbacks.c:807 src/callbacks.c:1008
 msgid "could not retrieve selection of item list!"
 msgstr ""
 
-#: src/callbacks.c:861
+#: src/callbacks.c:862
 #, c-format
 msgid "searching for \"%s\""
 msgstr ""
 
-#: src/callbacks.c:878
+#: src/callbacks.c:879
 #, c-format
 msgid "creating VFolder for search term \"%s\""
 msgstr ""
 
-#: src/callbacks.c:888
+#: src/callbacks.c:889
 msgid "could not allocate memory!"
 msgstr ""
 
 #. we set the searchstring as a default title
-#: src/callbacks.c:891
+#: src/callbacks.c:892
 #, c-format
 msgid "VFolder %s"
 msgstr ""
 
-#: src/callbacks.c:925
+#: src/callbacks.c:926
 msgid "item list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:935
+#: src/callbacks.c:936
 msgid "could not retrieve selection of item list!\n"
 msgstr ""
 
-#: src/callbacks.c:1143
+#: src/callbacks.c:1146
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 
-#: src/callbacks.c:1282
+#: src/callbacks.c:1285
 msgid "Date"
 msgstr ""
 
-#: src/callbacks.c:1290
+#: src/callbacks.c:1293
 msgid "Headline"
 msgstr ""
 
-#: src/callbacks.c:1534
+#: src/callbacks.c:1537
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr ""
 
-#: src/callbacks.c:1545
+#: src/callbacks.c:1548
 msgid "you cannot modify the special help folder contents!"
 msgstr ""
 
-#: src/callbacks.c:1625
+#: src/callbacks.c:1628
 msgid "internal error! item display for NULL pointer requested!"
 msgstr ""
 
-#: src/callbacks.c:1636
+#: src/callbacks.c:1639
 #, c-format
 msgid "loading feed... (%d items)"
 msgstr ""

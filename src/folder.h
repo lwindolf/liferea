@@ -27,6 +27,7 @@
 /* ------------------------------------------------------------ */
 /* functions to create/change/remove folder			*/
 /* ------------------------------------------------------------ */
+void 	initFolders(void);
 void	addFolder(gchar *keyprefix, gchar *title, gint type);
 gchar *	getFolderTitle(gchar *keyprefix);
 void	setFolderTitle(gchar *keyprefix, gchar *title);

@@ -120,6 +120,7 @@ feedHandlerPtr initRSSFeedHandler(void) {
 
 	/* prepare feed handler structure */
 	fhp->readFeed		= readRSSFeed;
+	fhp->merge		= TRUE;
 	
 	return fhp;
 }
@@ -157,7 +158,6 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 
 		/* check for RDF tags */
 		for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {
-			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)channelTagList[i])) {
 				tmp = c->tags[i];
 				if(NULL == (c->tags[i] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {

@@ -26,6 +26,7 @@ liferea_SOURCES = \
 	pie_feed.c pie_feed.h \
 	pie_entry.c pie_entry.h \
 	pie_ns.h \
+	opml.c opml.h \
 	ocs_dir.c ocs_dir.h \
 	ocs_ns.h \
 	ns_ocs.c ns_ocs.h \

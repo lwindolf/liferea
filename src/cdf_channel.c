@@ -65,6 +65,7 @@ feedHandlerPtr initCDFFeedHandler(void) {
 
 	/* prepare feed handler structure */
 	fhp->readFeed		= readCDFFeed;
+	fhp->merge		= TRUE;
 	
 	return fhp;
 }

@@ -47,6 +47,13 @@ extern GtkTreeStore * getItemStore(void);
 /* folder handling stuff (thats not the VFolder handling!)			*/
 /* ---------------------------------------------------------------------------- */
 
+void initFolders(void) {
+			
+	if(NULL == folders)
+		folders =  g_hash_table_new(g_str_hash, g_str_equal);
+		
+}
+
 gchar * getFolderTitle(gchar *keyprefix) {
 	GtkTreeStore		*feedstore;
 	GtkTreeIter		*iter;

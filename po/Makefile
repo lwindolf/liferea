@@ -14,7 +14,7 @@
 
 GETTEXT_PACKAGE = liferea
 PACKAGE = liferea
-VERSION = 0.4.0
+VERSION = 0.4.1
 
 SHELL = /bin/sh
 

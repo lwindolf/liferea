@@ -22,7 +22,7 @@
 	* fixed bug 819959
 	* removed support for slash namespace tags comments and hitparade
 	  to prevent marking items unread each time the numbers change
-	* added new items provided by mezz7
+	* added new icons provided by mezz7
 
 
 2003-09-26  Lars Lindner <lars.lindner@gmx.net>

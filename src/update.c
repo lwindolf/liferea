@@ -1,10 +1,8 @@
 /*
-   auto update functionality
+   feed updating functionality
    
    The basics of this code were inspired by queue.c of
-   the Pan News Reader so the following copyright is implied.
-
-   Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
+   the Pan News Reader which was written by Charles Kerr.
    
    Adoption and additional coding
    
@@ -97,7 +95,7 @@ static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata)
 static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 	feedHandlerPtr	fhp;
 	feedPtr		fp = (feedPtr)value;
-	feedPtr		new_fp;
+	feedPtr		tmp_fp, new_fp;
 	gint		type;
 	gchar		*tmp_key, *source;
 		
@@ -123,12 +121,19 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		if(NULL == new_fp)
 			return;		/* feed reading must have failed, FIXME: should never happen (but does with OCS and local files)! */
 
-		mergeFeed(fp, new_fp);
+		if(TRUE == fhp->merge)
+			/* If the feed type supports merging... */
+			mergeFeed(fp, new_fp);
+		else
+			/* Otherwise we simply use the new feed info... */
+			copyFeed(fp, new_fp);
+		
+		/* now fp contains the actual feed infos */
 		
 		g_mutex_lock(feeds_lock);
 		/* update all vfolders */
 		// g_hash_table_foreach(feeds, removeOldItemsFromVFolders, fp); // FIXME: mergeFeed has to do this!
-		g_hash_table_foreach(feeds, scanFeed, fp);
+		g_hash_table_foreach(feeds, scanFeed, fp);		// FIXME: this causes double items, only scan new items -> move functionality to item.c
 		g_mutex_unlock(feeds_lock);
 				
 		gdk_threads_enter();

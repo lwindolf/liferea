@@ -449,7 +449,7 @@ void on_propbtn(GtkWidget *feedlist) {
 
 		defaultInterval = getFeedDefaultInterval(fp);
 		if(-1 != defaultInterval)
-			defaultIntervalStr = g_strdup_printf(_("The feed specifies an update interval of %d minutes"), defaultInterval);
+			defaultIntervalStr = g_strdup_printf(_("The provider of this feed suggests an update interval of %d minutes"), defaultInterval);
 		else
 			defaultIntervalStr = g_strdup(_("This feed specifies no default interval."));
 		gtk_label_set_text(GTK_LABEL(lookup_widget(propdialog, "feedupdateinfo")), defaultIntervalStr);
@@ -596,6 +596,9 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 			break;
 		case 3:
 			type = FST_OCS;
+			break;
+		case 4:
+			type = FST_OPML;
 			break;
 		default:
 			g_error(_("internal error! invalid type selected!\n"));
@@ -1128,6 +1131,7 @@ static void renderFeedStatus(GtkTreeViewColumn *tree_column,
 		case FST_VFOLDER:
 			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", vfolderIcon, NULL);
 			break;
+		case FST_OPML:
 		case FST_OCS:
 			if(getFeedAvailable(fp))
 				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", listIcon, NULL);
@@ -1368,6 +1372,7 @@ static GtkMenu *make_entry_menu(gint type) {
 			menu_items = feedentry_menu_items;
 			nmenu_items = sizeof(feedentry_menu_items)/(sizeof(feedentry_menu_items[0]));
 			break;
+		case FST_OPML:
 		case FST_OCS:
 			menu_items = ocsentry_menu_items;
 			nmenu_items = sizeof(ocsentry_menu_items)/(sizeof(ocsentry_menu_items[0]));

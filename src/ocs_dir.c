@@ -88,6 +88,7 @@ feedHandlerPtr initOCSFeedHandler(void) {
 
 	/* prepare feed handler structure */
 	fhp->readFeed		= readOCS;
+	fhp->merge		= FALSE;
 	
 	return fhp;
 }
@@ -304,16 +305,16 @@ feedPtr readOCS(gchar *url) {
 		}
 
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			print_status(_("Empty document! Feed was not added!"));
+			print_status(_("Empty document!"));
 			error = 1;
 			break;			
 		}
 
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"rdf") || 
                     !xmlStrcmp(cur->name, (const xmlChar *)"RDF")) {
-		    	// nothing, FIXME: is the condition above correct?
+		    	// nothing
 		} else {
-			print_status(_("Could not find RDF header! Directory was not added!"));
+			print_status(_("Could not find RDF header!"));
 			error = 1;
 			break;			
 		}

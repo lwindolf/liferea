@@ -152,6 +152,7 @@ liferea_SOURCES = \
 	pie_feed.c pie_feed.h \
 	pie_entry.c pie_entry.h \
 	pie_ns.h \
+	opml.c opml.h \
 	ocs_dir.c ocs_dir.h \
 	ocs_ns.h \
 	ns_ocs.c ns_ocs.h \
@@ -179,10 +180,11 @@ am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	folder.$(OBJEXT) feed.$(OBJEXT) item.$(OBJEXT) update.$(OBJEXT) \
 	htmlview.$(OBJEXT) rss_channel.$(OBJEXT) rss_item.$(OBJEXT) \
 	cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) pie_feed.$(OBJEXT) \
-	pie_entry.$(OBJEXT) ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) \
-	ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) \
-	ns_content.$(OBJEXT) ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) \
-	conf.$(OBJEXT) vfolder.$(OBJEXT) netio.$(OBJEXT)
+	pie_entry.$(OBJEXT) opml.$(OBJEXT) ocs_dir.$(OBJEXT) \
+	ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) \
+	ns_slash.$(OBJEXT) ns_content.$(OBJEXT) ns_syn.$(OBJEXT) \
+	ns_admin.$(OBJEXT) conf.$(OBJEXT) vfolder.$(OBJEXT) \
+	netio.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -200,10 +202,11 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/ns_content.Po ./$(DEPDIR)/ns_dc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ns_fm.Po ./$(DEPDIR)/ns_ocs.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ns_slash.Po ./$(DEPDIR)/ns_syn.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/pie_entry.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/pie_feed.Po ./$(DEPDIR)/rss_channel.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/rss_item.Po ./$(DEPDIR)/support.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/update.Po ./$(DEPDIR)/vfolder.Po
+@AMDEP_TRUE@	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/opml.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/pie_entry.Po ./$(DEPDIR)/pie_feed.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rss_channel.Po ./$(DEPDIR)/rss_item.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/support.Po ./$(DEPDIR)/update.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/vfolder.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -275,6 +278,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_slash.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_syn.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ocs_dir.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opml.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pie_entry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pie_feed.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rss_channel.Po@am__quote@

@@ -67,7 +67,7 @@ create_mainwindow (void)
   tooltips = gtk_tooltips_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.4.0"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.4.1"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -501,6 +501,7 @@ create_newdialog (void)
   GtkWidget *cdf1;
   GtkWidget *atom1;
   GtkWidget *ocs1;
+  GtkWidget *opml1;
   GtkWidget *label22;
   GtkWidget *dialog_action_area2;
   GtkWidget *newfeedbtn;
@@ -611,6 +612,10 @@ create_newdialog (void)
   gtk_widget_show (ocs1);
   gtk_container_add (GTK_CONTAINER (menu1), ocs1);
 
+  opml1 = gtk_menu_item_new_with_mnemonic (_("OPML"));
+  gtk_widget_show (opml1);
+  gtk_container_add (GTK_CONTAINER (menu1), opml1);
+
   gtk_option_menu_set_menu (GTK_OPTION_MENU (typeoptionmenu), menu1);
 
   label22 = gtk_label_new (_("Feed Type Selection"));
@@ -670,6 +675,7 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, cdf1, "cdf1");
   GLADE_HOOKUP_OBJECT (newdialog, atom1, "atom1");
   GLADE_HOOKUP_OBJECT (newdialog, ocs1, "ocs1");
+  GLADE_HOOKUP_OBJECT (newdialog, opml1, "opml1");
   GLADE_HOOKUP_OBJECT (newdialog, label22, "label22");
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, dialog_action_area2, "dialog_action_area2");
   GLADE_HOOKUP_OBJECT (newdialog, newfeedbtn, "newfeedbtn");

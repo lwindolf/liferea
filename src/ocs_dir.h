@@ -46,7 +46,7 @@ typedef struct format {
 } *formatPtr;
 
 typedef struct dirEntry {
-	gpointer	dp;			/* has to be the first element!!!! */
+	gpointer	dp;
 	gchar 		*source;		/* source url */
 	GSList		*formats;		/* list of format structures */
 	gchar		*tags[OCS_MAX_TAG];	/* standard namespace infos */	
