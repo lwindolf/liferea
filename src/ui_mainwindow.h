@@ -13,12 +13,9 @@ extern gboolean 	itemlist_mode;
  */
 GtkWidget* ui_mainwindow_new();
 
-/**
- * Switches between two and three pane mode.
- *
- * @param new_mode	TRUE if three pane mode is requested
- */
-void switchPaneMode(gboolean new_mode);
+void ui_mainwindow_set_mode(gboolean threePane);
+
+GtkWidget *ui_mainwindow_get_active_htmlview();
 
 /** According to the preferences this function enables/disables the toolbar */
 void ui_mainwindow_update_toolbar();

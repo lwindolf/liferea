@@ -34,10 +34,8 @@
 #include <glib.h>
 #include <errno.h>
 #include "../htmlview.h"
-#include "../conf.h"
 #include "../support.h"
 #include "../callbacks.h"
-#include "../common.h"
 
 #define BUFFER_SIZE 8192
 
@@ -49,11 +47,6 @@ typedef struct {
 } StreamData;
 
 static GnomeVFSURI 	*baseURI = NULL;
-static HtmlDocument	*doc = NULL;
-static GtkWidget	*itemView = NULL;
-static GtkWidget	*itemListView = NULL;
-static GtkWidget	*htmlwidget = NULL;
-
 static gfloat		zoomLevel = 1.0;
 
 /* points to the URL actually under the mouse pointer or is NULL */
@@ -62,8 +55,7 @@ static gchar		*selectedURL = NULL;
 /* prototypes */
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 void launch_url(const gchar *url);
-
-gchar * get_module_name(void) {	return g_strdup(_("GtkHTML2")); }
+static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane);
 
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {
 
@@ -292,7 +284,7 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 void change_zoom_level(gfloat diff) {
 
 	zoomLevel += diff;
-	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
+	//html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 }
 
 /* returns the currently set zoom level */
@@ -301,11 +293,12 @@ gfloat get_zoom_level(void) { return zoomLevel; }
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-void write_html(const gchar *string) {
+void write_html(GtkWidget *scrollpane, const gchar *string) {
 
 	/* HTML widget can be used only from GTK thread */	
 	if(gnome_vfs_is_primary_thread()) {
-	
+		GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
+		HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
 		/* finalizing older stuff */
 		if(NULL != doc) {
 			kill_old_connections(doc);
@@ -335,20 +328,22 @@ void write_html(const gchar *string) {
 		html_document_close_stream(doc);
 		
 		change_zoom_level(0.0);	/* to enforce applying of changed zoom levels */
+		gtkhtml2_scroll_to_top(scrollpane);
 	}
 }
 
-static void setup_html_view(GtkWidget *scrolledwindow) {
+static GtkWidget* gtkhtml2_new() {
 	gulong	handler;
-	
-	if(NULL != htmlwidget) 
-		gtk_widget_destroy(htmlwidget);
+	GtkWidget *htmlwidget;
+	GtkWidget *scrollpane = gtk_scrolled_window_new(NULL, NULL);
+
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrollpane), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrollpane), GTK_SHADOW_IN);
 	
 	/* create html widget and pack it into the scrolled window */
 	htmlwidget = html_view_new();
-	write_html(NULL);
-	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
-	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
+	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET(htmlwidget));
+	write_html(scrollpane, NULL);
 		  				  				  
 	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
 	
@@ -359,32 +354,79 @@ static void setup_html_view(GtkWidget *scrolledwindow) {
 		
 	g_signal_connect(G_OBJECT(htmlwidget), "button-press-event", G_CALLBACK(button_press_event), NULL);
 	g_signal_connect(G_OBJECT(htmlwidget), "request_object", G_CALLBACK(request_object), NULL);
-			  
-	gtk_widget_show_all(scrolledwindow);
+
+
+	return scrollpane;
 }
 
-void set_html_view_mode(gboolean threePane) {
 
-	if(FALSE == threePane)
-		setup_html_view(itemListView);
-	else
-		setup_html_view(itemView);
-}
 
-void setup_html_views(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
-
-	g_assert(NULL != pane1);
-	g_assert(NULL != pane2);
-	
+static void gtkhtml2_init() {
 	gnome_vfs_init();
-
-	itemView = pane1;
-	itemListView = pane2;
-	set_html_view_mode(FALSE);
-	if(0 != initialZoomLevel)
-		change_zoom_level(((gfloat)initialZoomLevel)/100 - zoomLevel);
 }
 
 void launch_url(const gchar *url) { g_warning("should never be called!"); link_clicked(NULL, url, NULL); }
 
 gboolean launch_inside_possible(void) { return FALSE; }
+
+/* -------------------------------------------------------------------- */
+/* other functions... 							*/
+/* -------------------------------------------------------------------- */
+
+/* Resets the horizontal and vertical scrolling of the items HTML view. */
+static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane) {
+	GtkScrolledWindow	*itemview;
+	GtkAdjustment		*adj;
+
+	itemview = GTK_SCROLLED_WINDOW(scrollpane);
+	g_assert(NULL != itemview);
+	adj = gtk_scrolled_window_get_vadjustment(itemview);
+	gtk_adjustment_set_value(adj, 0.0);
+	gtk_scrolled_window_set_vadjustment(itemview, adj);
+	gtk_adjustment_value_changed(adj);
+
+	adj = gtk_scrolled_window_get_hadjustment(itemview);
+	gtk_adjustment_set_value(adj, 0.0);
+	gtk_scrolled_window_set_hadjustment(itemview, adj);
+	gtk_adjustment_value_changed(adj);
+}
+
+/* Function scrolls down the item views scrolled window.
+   This function returns FALSE if the scrolled window
+   vertical scroll position is at the maximum and TRUE
+   if the vertical adjustment was increased. */
+static gboolean gtkhtml2_scroll_pagedown(GtkWidget *scrollpane) {
+	GtkScrolledWindow	*itemview;
+	GtkAdjustment		*vertical_adjustment;
+	gdouble			old_value;
+	gdouble			new_value;
+	gdouble			limit;
+
+	itemview = GTK_SCROLLED_WINDOW(scrollpane);
+	g_assert(NULL != itemview);
+	vertical_adjustment = gtk_scrolled_window_get_vadjustment(itemview);
+	old_value = gtk_adjustment_get_value(vertical_adjustment);
+	new_value = old_value + vertical_adjustment->page_increment;
+	limit = vertical_adjustment->upper - vertical_adjustment->page_size;
+	if(new_value > limit)
+		new_value = limit;
+	gtk_adjustment_set_value(vertical_adjustment, new_value);
+	gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(itemview), vertical_adjustment);
+	return (new_value > old_value);
+}
+
+
+static htmlviewPluginInfo gtkhtml2Info = {
+	HTMLVIEW_API_VERSION,
+	"GtkHTML2",
+	gtkhtml2_init,
+	gtkhtml2_new,
+	write_html,
+	launch_url,
+	launch_inside_possible,
+	get_zoom_level,
+	change_zoom_level,
+	gtkhtml2_scroll_pagedown
+};
+
+DECLARE_HTMLVIEW_PLUGIN(gtkhtml2Info);

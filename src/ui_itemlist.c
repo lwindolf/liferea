@@ -158,7 +158,7 @@ void ui_itemlist_clear(void) {
 	displayed_fp = NULL;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
-	ui_htmlview_clear();
+	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 }
 
 /* sort function for the item list date column */
@@ -376,7 +376,6 @@ void ui_itemlist_display(void) {
 
 			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 		}
-		ui_htmlview_reset_scrolling();
 	} else {	
 		/* three pane mode */
 		itemPtr ip = ui_itemlist_get_selected();
@@ -401,7 +400,7 @@ void ui_itemlist_display(void) {
 		   triggered for redraw purposes! */
 	}
 	ui_htmlview_finish_output(&buffer);
-	ui_htmlview_write(buffer);
+	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer);
 	g_free(buffer);
 	ui_feedlist_update();
 }
@@ -492,7 +491,6 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 			item_display(ip);
 			item_set_read(ip);
 			ui_feedlist_update();
-			ui_htmlview_reset_scrolling();
 		}
 	}
 }

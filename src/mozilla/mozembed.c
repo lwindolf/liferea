@@ -38,9 +38,7 @@
 #include "../common.h"
 #include "mozilla.h"
 
-static GtkWidget	*widget1 = NULL;
-static GtkWidget	*widget2 = NULL;
-static GtkWidget	*active_widget = NULL;
+static GtkWidget	*widget = NULL;
 
 static gfloat		zoomLevel = 1.0;
 
@@ -49,24 +47,20 @@ static gchar		*selectedURL = NULL;
 
 /* -------------------------------------------------------------------- */
 
-gchar * get_module_name(void) { return g_strdup(_("Mozilla (experimental)")); }
-
 /* function to write HTML source into the widget */
-void write_html(const gchar *string) {
+static void mozilla_write(GtkWidget *widget, const gchar *string) {
 
-	g_assert(NULL != active_widget);
+	g_assert(NULL != widget);
 	
-	if(!GTK_WIDGET_REALIZED(active_widget)) 
+	if(!GTK_WIDGET_REALIZED(widget)) 
 		return;
 		
-	gtk_moz_embed_open_stream(GTK_MOZ_EMBED(active_widget), "file://localhost/", "text/html");
+	
 
 	if((NULL != string) && (strlen(string) > 0))
-		gtk_moz_embed_append_data(GTK_MOZ_EMBED(active_widget), string, strlen(string));
+		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), string, strlen(string), "file:///", "text/html");
 	else
-		gtk_moz_embed_append_data(GTK_MOZ_EMBED(active_widget), EMPTY, strlen(EMPTY));	
-
-	gtk_moz_embed_close_stream(GTK_MOZ_EMBED(active_widget));
+		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), EMPTY, strlen(EMPTY), "file:///", "text/html");
 }
 
 /* -------------------------------------------------------------------- */
@@ -156,13 +150,17 @@ gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
 	}
 }
 
+void mozembed_destroy_brsr_cb (GtkMozEmbed *embed, gpointer data) {
+
+}
+
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
-static GtkWidget * set_html_view(GtkWidget *pane) {
+static GtkWidget * mozilla_create() {
 	GtkWidget	*widget;
 	int		i;
-
-        /* signals to connect on each embed widget */
+	printf("Mozilla: Create!\n");
+	/* signals to connect on each embed widget */
 	static const struct
 	{ 
 		char *event; 
@@ -179,12 +177,12 @@ static GtkWidget * set_html_view(GtkWidget *pane) {
 		{ "link_message",    mozembed_link_message_cb      },
 		//{ "js_status",       mozembed_js_status_cb         },
 		//{ "visibility",      mozembed_visibility_cb        },
-		//{ "destroy_browser", mozembed_destroy_brsr_cb      },
+		{ "destroy_browser", mozembed_destroy_brsr_cb      },
 		//{ "dom_mouse_down",  mozembed_dom_mouse_down_cb    },	
 		{ "dom_mouse_click", mozembed_dom_mouse_click_cb   },
 		//{ "dom_key_press",   mozembed_dom_key_press_cb     },
 		//{ "size_to",         mozembed_size_to_cb           },
-		{ "new_window",      mozembed_new_window_cb        },
+		//{ "new_window",      mozembed_new_window_cb        },
 		//{ "security_change", mozembed_security_change_cb   },
 		{ "open_uri",		 mozembed_open_uri_cb},
 		/* terminator -- must be last in the list! */
@@ -197,33 +195,22 @@ static GtkWidget * set_html_view(GtkWidget *pane) {
 	/* connect to interesting Mozilla signals */
 	for(i = 0; signal_connections[i].event != NULL; i++)
 	{
-		gtk_signal_connect_while_alive (GTK_OBJECT(widget),
+		gtk_signal_connect (GTK_OBJECT(widget),
 						signal_connections[i].event,
 						signal_connections[i].func, 
-						widget,
-						GTK_OBJECT(widget));
+						widget);
+						
 	}
 
-	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(pane), widget);		  
-	gtk_widget_show_all(pane);
-	
 	return widget;
 }
 
-void set_html_view_mode(gboolean threePane) {
-	
-	if(FALSE == threePane)
-		active_widget = widget2;
-	else
-		active_widget = widget1;
-
-}
-
-void setup_html_views(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
+static void mozilla_init() {
 	gchar	*profile;
+	printf("Mozilla: Init!\n");
 	
 	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
-
+	
 	/* init mozilla home */
 	gtk_moz_embed_set_comp_path((char *)g_getenv("MOZILLA_FIVE_HOME"));
 
@@ -237,26 +224,37 @@ void setup_html_views(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel)
 	/* startup done */
 	gtk_moz_embed_push_startup();
 
-	widget1 = set_html_view(pane1);
-	widget2 = set_html_view(pane2);
-	
-	set_html_view_mode(FALSE);
 }
 
 /* launches the specified URL */
-void launch_url(const gchar *url) {
+static void launch_url(const gchar *url) {
 
-	gtk_moz_embed_load_url(GTK_MOZ_EMBED(active_widget), url); 
+	gtk_moz_embed_load_url(GTK_MOZ_EMBED(widget), url); 
 }
 
-gboolean launch_inside_possible(void) { return TRUE; }
+static gboolean launch_inside_possible(void) { return TRUE; }
 
 /* adds a differences diff to the actual zoom level */
-void change_zoom_level(gfloat diff) {
+static void change_zoom_level(gfloat diff) {
 
 	zoomLevel += diff;
-	mozilla_set_zoom(GTK_MOZ_EMBED(active_widget), zoomLevel);
+	mozilla_set_zoom(GTK_MOZ_EMBED(widget), zoomLevel);
 }
 
 /* returns the currently set zoom level */
-gfloat get_zoom_level(void) { return zoomLevel; }
+static gfloat get_zoom_level(void) { return zoomLevel; }
+
+static htmlviewPluginInfo mozillaInfo = {
+	HTMLVIEW_API_VERSION,
+	"Mozilla (experimental)",
+	mozilla_init,
+	mozilla_create,
+	mozilla_write,
+	launch_url,
+	launch_inside_possible,
+	get_zoom_level,
+	change_zoom_level,
+	mozilla_scroll_pagedown
+};
+
+DECLARE_HTMLVIEW_PLUGIN(mozillaInfo);

@@ -30,6 +30,7 @@
 #include "interface.h"
 #include "support.h"
 #include "conf.h"
+#include "debug.h"
 #include "callbacks.h"
 #include "ui_feedlist.h"
 #include "ui_mainwindow.h"
@@ -62,7 +63,40 @@
 #endif
 GtkWidget 	*mainwindow;
 
+static GtkWidget *htmlview_two;
+static GtkWidget *htmlview_three;
+
 gboolean	itemlist_mode = TRUE;		/* TRUE means three pane, FALSE means two panes */
+
+void ui_mainwindow_add_htmlviews() {
+	htmlview_three = ui_htmlview_new(getNumericConfValue(LAST_ZOOMLEVEL));
+	gtk_paned_pack2(GTK_PANED (lookup_widget(mainwindow, "rightpane")), GTK_WIDGET(htmlview_three), FALSE, TRUE);
+	gtk_widget_show_all(htmlview_three);
+
+	htmlview_two = ui_htmlview_new(getNumericConfValue(LAST_ZOOMLEVEL));
+	gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "itemtabs")), htmlview_two);
+	gtk_widget_show_all(htmlview_two);
+}
+
+GtkWidget *ui_mainwindow_get_active_htmlview() {
+     if (itemlist_mode == TRUE)
+          return htmlview_three;
+     else
+          return htmlview_two;
+}
+
+void ui_mainwindow_set_mode(gboolean threePane) {
+     debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
+
+     if (threePane == TRUE)
+          gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
+     else {
+          gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
+          ui_htmlview_write(htmlview_two, "<html><body>TEST</body></html>");
+     }
+	itemlist_mode = threePane;
+}
+
 
 GtkWidget* ui_mainwindow_new() {
 	GtkWidget *window = create_mainwindow();
@@ -167,7 +201,7 @@ void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data) {
 static void ui_mainwindow_toggle_condensed_view(void) {
 	
 	itemlist_mode = !itemlist_mode;
-	ui_htmlview_set_mode(itemlist_mode);
+	ui_mainwindow_set_mode(itemlist_mode);
 	ui_itemlist_display();
 }
 

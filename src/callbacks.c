@@ -101,14 +101,13 @@ void ui_init(void) {
 	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
 
 	ui_htmlview_init();
-	ui_htmlview_setup(lookup_widget(mainwindow, "itemview"),
-			  lookup_widget(mainwindow, "itemlistview"),
-			  getNumericConfValue(LAST_ZOOMLEVEL));
+
+	ui_mainwindow_add_htmlviews();
 
 	if(getBooleanConfValue(LAST_ITEMLIST_MODE))
 		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
 		
-	ui_htmlview_set_mode(itemlist_mode);
+	ui_mainwindow_set_mode(itemlist_mode);
 
 	for(i = 0; i < MAX_ICONS; i++)
 		icons[i] = create_pixbuf(iconNames[i]);

@@ -22,8 +22,9 @@
 #ifndef _HTMLVIEW_H
 #define _HTMLVIEW_H
 
-#include <gtk/gtk.h>
 #include <glib.h>
+#include <gmodule.h>
+#include <gtk/gtk.h>
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/types.h>
@@ -91,6 +92,33 @@
 
 /*@}*/
 
+#define HTMLVIEW_API_VERSION 0
+
+typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
+
+struct htmlviewPluginInfo_ {
+	unsigned int api_version;
+	char *name;
+	
+	void (*init)(void);
+	
+	GtkWidget* (*create)	();
+	//void (*destroy)    (GtkWidget *widget);
+	void		(*write)		(GtkWidget *widget, const gchar *string);
+	void		(*launch)		(const gchar *url);
+	gboolean	(*launchInsidePossible)	(void);
+	gfloat	(*zoomLevelGet)		(void);
+	void		(*zoomLevelSet)	(gfloat diff);
+	gboolean      (*scrollPagedown)(GtkWidget *widget);
+};
+
+
+# define DECLARE_HTMLVIEW_PLUGIN(plugininfo) \
+        G_MODULE_EXPORT htmlviewPluginInfo* htmlview_plugin_getinfo() { \
+                return &plugininfo; \
+        }
+
+
 /** list type to provide a list of available modules for the preferences dialog */
 struct browserModule {
 	gchar	*description;
@@ -114,18 +142,10 @@ void	ui_htmlview_init(void);
  * @param pane2	scrolled window of the two pane mode
  * @param initialZoomLevel	the initial zoom level of the HTML views
  */
-void	ui_htmlview_setup(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
+GtkWidget *ui_htmlview_new(gint initialZoomLevel);
 
 /** loads a emtpy HTML page */
-void	ui_htmlview_clear(void);
-
-/**
- * Function to select either the single item view (three pane mode)
- * or the item list view (two pane mode) 
- *
- * @param threePane	TRUE if three pane mode
- */
-void	ui_htmlview_set_mode(gboolean threePane);
+void	ui_htmlview_clear(GtkWidget *htmlview);
 
 /**
  * Function to add HTML source header to create a valid HTML source.
@@ -145,9 +165,10 @@ void	ui_htmlview_finish_output(gchar **buffer);
 /**
  * Method to display the passed HTML source to the HTML widget.
  *
+ * @param htmlview  The htmlview widget to be set
  * @param string	HTML source
  */
-void	ui_htmlview_write(const gchar *string);
+void	ui_htmlview_write(GtkWidget *htmlview, const gchar *string);
 
 /**
  * Launches the specified URL in the configured browser or
@@ -194,16 +215,12 @@ gchar *	ui_htmlview_get_selected_URL(void);
 gboolean ui_htmlview_launch_in_external_browser(const gchar *uri);
 
 /**
- * Resets the horizontal and vertical scrolling of the items HTML view. 
- */
-void	ui_htmlview_reset_scrolling(void);
-
-/**
  * Function scrolls down the item views scrolled window.
  *
  * @return FALSE if the scrolled window vertical scroll position is at
  * the maximum and TRUE if the vertical adjustment was increased.
  */
 gboolean ui_htmlview_scroll(void);
+
 
 #endif

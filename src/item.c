@@ -170,7 +170,7 @@ void item_display(itemPtr ip) {
 	ui_htmlview_start_output(&buffer, TRUE);
 	addToHTMLBuffer(&buffer, item_get_description(ip));
 	ui_htmlview_finish_output(&buffer);
-	ui_htmlview_write(buffer);
+	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer);
 	g_free(buffer);
 }
 

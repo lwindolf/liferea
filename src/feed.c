@@ -976,7 +976,7 @@ void feed_free(feedPtr fp) {
 	g_assert(IS_FEED(fp->type));
 	
 	if (displayed_fp == fp) {
-		ui_htmlview_clear();
+		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		ui_itemlist_clear();
 	}
 	

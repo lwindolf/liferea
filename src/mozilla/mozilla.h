@@ -22,7 +22,7 @@
 #define _MOZILLA_H
 
 #include <glib.h>
-
+#include <gtk/gtk.h>
 #ifdef __cplusplus
 extern "C"
 {
@@ -34,6 +34,7 @@ gboolean mozilla_set_zoom (gpointer embed, float f);
 /* Events */
 gint mozilla_get_mouse_event_button(gpointer event);
 
+gboolean mozilla_scroll_pagedown(GtkWidget *widget);
 #ifdef __cplusplus
 }
 #endif 

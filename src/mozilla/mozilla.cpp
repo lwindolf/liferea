@@ -19,6 +19,7 @@
  */
 
 #include "mozilla.h"
+#include <gtk/gtk.h>
 #include <gtkmozembed.h>
 #include <gtkmozembed_internal.h>
 #include "nsIDocument.h"
@@ -33,6 +34,7 @@
 #include "nsIMarkupDocumentViewer.h"
 #include "nsIDOMNSEvent.h"
 #include "nsIDOMMouseEvent.h"
+#include "nsIDOMWindow.h"
 
 /**
  * Takes a pointer to a mouse event and returns the mouse
@@ -98,3 +100,18 @@ mozilla_set_zoom (gpointer embed, float aZoom) {
 
 	return mdv->SetTextZoom (aZoom);	
 }
+
+extern "C" gboolean mozilla_scroll_pagedown(GtkWidget *widget) {
+	gint initial_y, final_y;
+	nsIWebBrowser *browser;
+	nsIDOMWindow *DOMWindow;
+
+	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(widget), &browser);
+	
+	browser->GetContentDOMWindow(&DOMWindow);
+	DOMWindow->GetScrollY(&initial_y);
+	DOMWindow->ScrollByPages(1);
+	DOMWindow->GetScrollY(&final_y);
+	return initial_y != final_y;
+}
+
