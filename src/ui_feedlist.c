@@ -28,11 +28,14 @@
 #include "conf.h"
 #include "ui_feedlist.h"
 #include "ui_tray.h"
+#include "ui_feed.h"
 #include "update.h"
 #include "htmlview.h"
 #include "favicon.h"
 #include "debug.h"
 #include "net/netio.h"
+
+static GtkWidget		*filedialog = NULL;
 
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
@@ -40,9 +43,7 @@ extern GHashTable	*feedHandler;
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
-GtkWidget		*filedialog = NULL;
 static GtkWidget	*newdialog = NULL;
-static GtkWidget	*propdialog = NULL;
 
 /* flag to enable/disable the GtkTreeModel filter */
 gboolean filter_feeds_without_unread_headlines = FALSE;
@@ -402,21 +403,9 @@ void on_popup_delete_selected(gpointer callback_data,
 /* property dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-GtkWidget *ui_feedlist_build_prop_dialog(void) {
-
-	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
-		propdialog = create_propdialog();
-
-	return propdialog;
-}
-
 void on_popup_prop_selected(gpointer callback_data,
                                              guint callback_action,
                                              GtkWidget *widget) {
-	GtkWidget 	*feednameentry, *feedurlentry, *updateIntervalBtn;
-	GtkAdjustment	*updateInterval;
-	gint		defaultInterval;
-	gchar		*defaultIntervalStr;
 	feedPtr		fp = (feedPtr)callback_data;
 	
 	if(!fp || !IS_FEED(feed_get_type(fp))) {
@@ -431,79 +420,8 @@ void on_popup_prop_selected(gpointer callback_data,
 	}
 	
 	/* prop dialog may not yet exist */
-	ui_feedlist_build_prop_dialog();
-		
-	feednameentry = lookup_widget(propdialog, "feednameentry");
-	feedurlentry = lookup_widget(propdialog, "feedurlentry");
-	updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-	updateInterval = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(updateIntervalBtn));
-
-	g_object_set_data(G_OBJECT(propdialog), "fp", fp);
-
-	gtk_entry_set_text(GTK_ENTRY(feednameentry), feed_get_title(fp));
-	gtk_entry_set_text(GTK_ENTRY(feedurlentry), feed_get_source(fp));
-
-	if(fp->fhp && fp->fhp->directory) {	
-		/* disable the update interval selector for directories (should this be the case for OPML?) */
-		gtk_widget_set_sensitive(lookup_widget(propdialog, "feedrefreshcount"), FALSE);
-	} else {
-		/* enable and adjust values otherwise */
-		gtk_widget_set_sensitive(lookup_widget(propdialog, "feedrefreshcount"), TRUE);	
-		
-		gtk_adjustment_set_value(updateInterval, feed_get_update_interval(fp));
-
-		defaultInterval = feed_get_default_update_interval(fp);
-		if(-1 != defaultInterval)
-			defaultIntervalStr = g_strdup_printf(_("The provider of this feed suggests an update interval of %d minutes"), defaultInterval);
-		else
-			defaultIntervalStr = g_strdup(_("This feed specifies no default update interval."));
-		gtk_label_set_text(GTK_LABEL(lookup_widget(propdialog, "feedupdateinfo")), defaultIntervalStr);
-		g_free(defaultIntervalStr);		
-	}
-
-	gtk_widget_show(propdialog);
-}
-
-void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
-	gchar		*feedurl, *feedname;
-	GtkWidget 	*feedurlentry;
-	GtkWidget 	*feednameentry;
-	GtkWidget 	*updateIntervalBtn;
-	GtkAdjustment	*updateInterval;
-	gint			interval;
-	feedPtr		fp = g_object_get_data(G_OBJECT(propdialog), "fp");
-	
-	g_assert(NULL != propdialog);
-		
-	if(NULL != fp) {
-		feednameentry = lookup_widget(propdialog, "feednameentry");
-		feedurlentry = lookup_widget(propdialog, "feedurlentry");
-
-		feedurl = (gchar *)gtk_entry_get_text(GTK_ENTRY(feedurlentry));
-		feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
-	
-		feed_set_title(fp, feedname);  
-
-		/* if URL has changed... */
-		if(strcmp(feedurl, feed_get_source(fp))) {
-			feed_set_source(fp, feedurl);
-			feed_schedule_update(fp);
-		}
-		
-		if(IS_FEED(feed_get_type(fp))) {
-			updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-			updateInterval = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(updateIntervalBtn));
-
-			interval = gtk_adjustment_get_value(updateInterval);
-			
-			if(0 == interval) 
-				interval = -1;	/* this is due to ignore this feed while updating */
-			feed_set_update_interval(fp, interval);
-		}
-		ui_feedlist_update();
-	} else {
-		g_warning(_("Internal error! No feed selected, but property change requested...\n"));
-	}
+	ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
+	return;
 }
 
 /*------------------------------------------------------------------------------*/
@@ -511,9 +429,6 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 /*------------------------------------------------------------------------------*/
 
 void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
-	GtkWidget 		*updateIntervalBtn;
-	GtkWidget 		*propdialog;
-	gint 			interval;
 	struct feed_request 	*request;
 	feedPtr			fp;
 	gchar			*data;
@@ -554,12 +469,7 @@ void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
 		
 		if(showPropDialog) {
 			/* built, set default update interval and show properties dialog */
-			propdialog = ui_feedlist_build_prop_dialog();
-			
-			if(-1 != (interval = feed_get_default_update_interval(fp))) {
-				updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-			}
+			/* FIXME: propdialog = ui_feedlist_build_prop_dialog();*/
 			
 			on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
 		}
@@ -576,49 +486,42 @@ void on_newbtn_clicked(GtkButton *button, gpointer user_data) {
 	if(NULL == newdialog || !G_IS_OBJECT(newdialog)) 
 		newdialog = create_newdialog();
 		
-	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
-		propdialog = create_propdialog();
-
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
 	gtk_entry_set_text(GTK_ENTRY(sourceentry), "");
 
 	g_assert(NULL != newdialog);
-	g_assert(NULL != propdialog);
 	gtk_widget_show(newdialog);
 }
 
 void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	gchar		*source;
 	GtkWidget 	*sourceentry;	
-	GtkWidget 	*titleentry;
 	
 	g_assert(newdialog != NULL);
-	g_assert(propdialog != NULL);
 
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
-	titleentry = lookup_widget(propdialog, "feednameentry");
 		
 	source = g_strdup(gtk_entry_get_text(GTK_ENTRY(sourceentry)));
 	
 	ui_feedlist_new_subscription(source, TRUE);
-	/* don't free source for it is reused by newFeed! */
+	/* don't free source for it is internal to the textbox! */
 }
 
 void on_localfileselect_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*source;
-	
+	GtkWidget       *source;
+         
 	gtk_widget_hide(filedialog);
 	g_assert(NULL != newdialog);
 	if(NULL != (source = lookup_widget(newdialog, "newfeedentry")))
 		gtk_entry_set_text(GTK_ENTRY(source), gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog)));
 }
-
+ 
 void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
-	GtkWidget	*okbutton;
-	
+	GtkWidget       *okbutton;
+         
 	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
 		filedialog = create_fileselection();
-		
+                 
 	if(NULL == (okbutton = lookup_widget(filedialog, "fileselectbtn")))
 		g_warning("internal error! could not find file dialog select button!");
 

@@ -175,6 +175,7 @@ feedPtr feed_new(void) {
 	fp->defaultInterval = -1;
 	fp->available = FALSE;
 	fp->type = FST_FEED;
+	fp->cacheLimit = CACHE_DEFAULT;
 	fp->parseErrors = NULL;
 	fp->ui_data = NULL;
 	fp->updateRequested = FALSE;
@@ -208,9 +209,13 @@ void feed_save(feedPtr fp) {
 	}
 
 	debug1(DEBUG_CACHE, "saving feed: %s", fp->title);	
-	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 
+	saveMaxCount = fp->cacheLimit;
+	if (saveMaxCount == CACHE_DEFAULT)
+		saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);
+	
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
+	
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
 			xmlDocSetRootElement(doc, feedNode);
@@ -235,10 +240,16 @@ void feed_save(feedPtr fp) {
 			}
 
 			itemlist = feed_get_item_list(fp);
-			while(NULL != itemlist) {
-				saveCount ++;
+			for(itemlist = feed_get_item_list(fp); itemlist != NULL; itemlist = g_slist_next(itemlist)) {
 				ip = itemlist->data;
 				g_assert(NULL != ip);
+				
+				if(saveMaxCount != CACHE_UNLIMITED &&
+				   saveCount >= saveMaxCount &&
+				   IS_FEED(feed_get_type(fp)) && /* FIXME: Why is this here? Are VFolders going to be saved to the cache? */
+				   !item_get_mark(ip)) {
+					continue;
+				}
 				if(NULL != (itemNode = xmlNewChild(feedNode, NULL, "item", NULL))) {
 
 					/* should never happen... */
@@ -271,10 +282,7 @@ void feed_save(feedPtr fp) {
 					g_warning(_("could not write XML item node!\n"));
 				}
 
-				itemlist = g_slist_next(itemlist);
-				
-				if((saveCount >= saveMaxCount) && (IS_FEED(feed_get_type(fp))))
-					break;
+				saveCount++;
 			}
 		} else {
 			g_warning(_("could not create XML feed node for feed cache document!"));

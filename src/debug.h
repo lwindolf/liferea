@@ -55,6 +55,7 @@ extern void debug_printf (const char * strloc, const char * function, unsigned l
 #define debug3(level, fmt, A, B, C) if ((debug_level) & level) debug_printf (G_STRLOC, PRETTY_FUNCTION, level,fmt, A, B, C)
 #define debug4(level, fmt, A, B, C, D) if ((debug_level) & level) debug_printf (G_STRLOC, PRETTY_FUNCTION, level,fmt, A, B, C, D)
 #define debug5(level, fmt, A, B, C, D, E) if ((debug_level) & level) debug_printf (G_STRLOC, PRETTY_FUNCTION, level,fmt, A, B, C, D, E)
+#define debug6(level, fmt, A, B, C, D, E, F) if ((debug_level) & level) debug_printf (G_STRLOC, PRETTY_FUNCTION, level,fmt, A, B, C, D, E, F)
 
 #define debug_enter(A)  debug0 (DEBUG_TRACE, "+ "A)
 #define debug_exit(A)   debug0 (DEBUG_TRACE, "- "A)
@@ -65,5 +66,6 @@ extern void debug_printf (const char * strloc, const char * function, unsigned l
 #define odebug3(fmt, A, B, C) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B, C)
 #define odebug4(fmt, A, B, C, D) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B, C, D)
 #define odebug5(fmt, A, B, C, D, E) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B, C, D, E)
+#define odebug6(fmt, A, B, C, D, E, F) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B, C, D, E, F)
 
 #endif

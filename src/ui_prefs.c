@@ -170,14 +170,14 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	entry = lookup_widget(prefdialog, "proxyhostentry");
 	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(PROXY_HOST));
-	gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);
 	
 	entry = lookup_widget(prefdialog, "proxyportentry");
 	proxyport = g_strdup_printf("%d", getNumericConfValue(PROXY_PORT));
 	gtk_entry_set_text(GTK_ENTRY(entry), proxyport);
 	g_free(proxyport);
-	gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);	
-	
+
+     widget = lookup_widget(prefdialog, "proxytable");
+	gtk_widget_set_sensitive(GTK_WIDGET(widget), enabled);
 	
 	gtk_widget_show(prefdialog);
 }
@@ -272,16 +272,14 @@ void on_helpoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 
 
 void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*entry;
+	GtkWidget	*widget;
 	gboolean	enabled;
 
 	enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
 	setBooleanConfValue(USE_PROXY, enabled);
 	
-	if(NULL != (entry = lookup_widget(prefdialog, "proxyhostentry")))
-		gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);
-	if(NULL != (entry = lookup_widget(prefdialog, "proxyportentry")))
-		gtk_widget_set_sensitive(GTK_WIDGET(entry), enabled);
+	if(NULL != (widget = lookup_widget(prefdialog, "proxytable")))
+		gtk_widget_set_sensitive(GTK_WIDGET(widget), enabled);
 
 	loadConfig();
 }

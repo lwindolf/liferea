@@ -30,15 +30,17 @@
 /* feed list view entry types (FS_TYPE) 			*/
 /* ------------------------------------------------------------ */
 
-#define FST_INVALID	0	/**< invalid type */
-#define FST_FOLDER	1	/**< the folder type */
+enum node_types {
+	FST_INVALID 	= 0,		/**< invalid type */
+	FST_FOLDER 	= 1,		/**< the folder type */
 
-#define FST_VFOLDER	9	/**<special type for VFolders */
-#define FST_FEED 10      /**< Any type of feed */
-#define FST_HELPFOLDER	50	/**< special tree list types to store help feeds */	
-#define FST_HELPFEED	51	/**< special type to allow updating of help feed url */
+	FST_VFOLDER 	= 9,		/**<special type for VFolders */
+	FST_FEED		= 10,     /**< Any type of feed */
+	FST_HELPFOLDER	= 50,	/**< special tree list types to store help feeds */	
+	FST_HELPFEED	= 51,		/**< special type to allow updating of help feed url */
 
-#define FST_AUTODETECT	200	/**< special type to enforce type auto detection */
+	FST_AUTODETECT	= 200,	/**< special type to enforce type auto detection */
+};
 
 /** macro to test whether a type is a resource which is regularly updated */
 #define IS_FEED(type)		((FST_HELPFEED == type) || \
@@ -48,6 +50,17 @@
 #define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
 
 struct feedhandler;
+
+/* ------------------------------------------------------------ */
+/* Feed structure                                               */
+/* ------------------------------------------------------------ */
+
+enum cache_limit {
+	/* Values > 0 are used to specify certain limits */
+	CACHE_DISABLE = 0,
+	CACHE_DEFAULT = -1,
+	CACHE_UNLIMITED = -2,
+};
 
 /** common structure to access feed info structures */
 typedef struct feed {
@@ -73,7 +86,8 @@ typedef struct feed {
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
 	GSList		*filter;		/**< list of filters applied to this feed */
-	struct feedHandler *fhp;
+	struct feedHandler *fhp;      /**< Feed handler saved by the ->typeStr attribute. */
+	gint			cacheLimit;  /**< Amount of cache to save: See the cache_limit enum */
 	
 	/* feed properties used for updating */
 	GTimeVal	scheduledUpdate;	/**< time at which the feed needs to be updated */

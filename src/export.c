@@ -28,7 +28,7 @@
 #include "ui_folder.h"
 #include "debug.h"
 
-extern GtkWidget * filedialog;
+static GtkWidget * filedialog;
 static GtkWidget * importdialog = NULL;
 static GtkWidget * exportdialog = NULL;
 
@@ -59,9 +59,15 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		feedPtr fp = (feedPtr)ptr;
 		const gchar *type = feed_type_fhp_to_str(fp->fhp);
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
-		
+		gchar *cacheLimit = NULL;
+		if (fp->cacheLimit >= 0)
+			cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
+		if (fp->cacheLimit == CACHE_UNLIMITED)
+			cacheLimit = g_strdup("unlimited");
+
 		if (feed_get_type(fp) != FST_HELPFEED) {
 			childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+			xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp)); /* The OPML spec requires "text" */
 			xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
 			xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
 			if (type != NULL)
@@ -70,10 +76,12 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 			xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
 			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 			xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
-			debug5(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval);
+			if (cacheLimit != NULL)
+				xmlNewProp(childNode, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
+			debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval, cacheLimit);
 		} else
 			debug1(DEBUG_CONF, "not adding help feed %s to feedlist", feed_get_title(fp));
-		
+		g_free(cacheLimit);
 		g_free(interval);
 	}
 	
@@ -135,7 +143,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 	gchar		*title, *source, *typeStr, *intervalStr, *tmp;
 	feedPtr		fp = NULL;
 	folderPtr	child;
-	gint		type, interval;
+	gint		interval;
 	gchar		*id = NULL;
 
 	debug_enter("import_parse_outline");
@@ -152,6 +160,8 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) { /* Reading a feed */
+		gchar *cacheLimitStr;
+
 		if(!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
 			   is safe? */
@@ -172,11 +182,19 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 
 		fp = feed_new();
 		
-		/* get type attribute and ensure it has a valid value or
-		   set type auto detect ... */
+		/* get type attribute and use it to assign a value to
+		   fhp. fhp will default to NULL. */
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
 		fp->fhp = feed_type_str_to_fhp(typeStr);
 		xmlFree(typeStr);
+
+		/* Set the cache limit */
+		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
+		if (cacheLimitStr != NULL && !xmlStrcmp(cacheLimitStr, "unlimited")) {
+			fp->cacheLimit = CACHE_UNLIMITED;
+		} else
+			fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
+		xmlFree(cacheLimitStr);
 
 		/* set feed properties available from the OPML feed list 
 		   they may be overwritten by the values of the cache file
@@ -185,7 +203,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		feed_set_source(fp, source);
 		feed_set_title(fp, title);
 		feed_set_update_interval(fp, interval);
-		debug5(DEBUG_CONF, "loading feed: title=%s source=%s type=%d id=%s interval=%d", title, source, type, id, interval);
+		debug5(DEBUG_CONF, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d", title, source, typeStr, id, interval);
 
 		if(id != NULL) {
 			feed_set_id(fp, id);
@@ -381,7 +399,7 @@ void on_exportfile_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*source;
 	const gchar *utfname;
 	gchar *name;
-	gint error;
+	gint error = 1;
 
 	gtk_widget_hide(exportdialog);
 

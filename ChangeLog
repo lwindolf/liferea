@@ -2,19 +2,21 @@
 
 	Version 0.4.9
 
-	* New button in the statusbar to work offline.
-	* Christophe Barbe implemented a filter that hides all
-	  feeds without unread items from the feed list. This
-	  feature is an option available from "Feeds" menu.
-	* Feed menu is re-organized.
+	* New button in the statusbar to work offline. (Lars Lindner)
+	* Feed menu is re-organized. (Nathan Conrad)
+	* New filter mode that hides all feeds without unread items from
+	  the feed list. This feature is an option available from "Feeds"
+	  menu. (Christophe Barbe)
 	* Feed type autodetection has been rewritten. It should be better
 	  than the old version. Thus, the manual feed type selection has
-	  been removed.
+	  been removed. (Nathan Conrad)
 	* The contents of a folder can now be updated by right-clicking a
-	  folder and selecting "Update".
+	  folder and selecting "Update". (Nathan Conrad)
 	* Support for using old versions of GConf2 has been re-added. This
-	  fixes compile problems on many RedHat versions.
-	
+	  fixes compile problems on many RedHat versions. (Nathan Conrad)
+	* New Properties dialog box. Cache settings can now be set
+	  per-feed. (Nathan Conrad)
+	* Marked items are now always saved. (Nathan Conrad)
 	
 2004-05-06  Lars Lindner <lars.lindner@gmx.net>
 

@@ -68,6 +68,7 @@ liferea_bin_SOURCES = \
 	support.c support.h \
 	ui_queue.c ui_queue.h \
 	ui_mainwindow.c ui_mainwindow.h \
+	ui_feed.c ui_feed.h \
 	ui_feedlist.c ui_feedlist.h \
 	ui_itemlist.c ui_itemlist.h \
 	ui_folder.c ui_folder.h \
