@@ -158,6 +158,13 @@ void feed_free(feedPtr fp);
  */
 gint feed_detect_type(gchar *data);
 
+/**
+ * This is a timeout callback to check for feed update results.
+ * If there is a result pending its data is parsed and merged
+ * against the feed it belongs to.
+ */
+gint feed_process_update_results(gpointer data);
+
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */

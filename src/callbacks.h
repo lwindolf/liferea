@@ -56,8 +56,6 @@ void ui_update(void);
 void ui_show_info_box(const char *format, ...);
 void ui_show_error_box(const char *format, ...);
 
-gint checkForUpdateResults(gpointer data);
-
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
 
