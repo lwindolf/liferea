@@ -461,6 +461,11 @@ void on_popup_allunread_selected(void) {
 	}
 }
 
+void on_popup_allfeedsunread_selected(void) {
+
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, itemlist_mark_all_read);
+}
+
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 
 	on_popup_allunread_selected();

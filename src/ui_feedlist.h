@@ -202,7 +202,8 @@ void ui_feedlist_delete(nodePtr ptr);
 /**
  * Sets all displayed items as read
  */
-  void on_popup_allunread_selected(void);
+void on_popup_allunread_selected(void);
+void on_popup_allfeedsunread_selected(void);
 
 /** 
  * @name menu and dialog callbacks 

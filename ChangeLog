@@ -4,6 +4,9 @@
 
 	* New preference to allow positioning the popup
 	  window in all four desktop corners.
+	* New option in the "Feeds" menu to mark all items
+	  of all your feeds read at once.
+	  
 
 2005-01-15  Lars Lindner <lars.lindner@gmx.net>
 
