@@ -112,9 +112,6 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 	gpointer	favicon;
 	g_assert(!IS_FOLDER(fp->type));
 	
-	if (fp->request != NULL)
-		return icons[ICON_UPDATING];
-	
 	if(!feed_get_available(fp)) {
 		return icons[ICON_UNAVAILABLE];
 	}
@@ -571,6 +568,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	feed_set_title(fp, _("New subscription"));
 	feed_set_filter(fp, filter);
 	parent = ui_feedlist_get_target_folder(&pos);
+	feed_set_available(fp, TRUE); /* To prevent the big red X from being next to the new feed */
 	ui_folder_add_feed(parent, fp, pos);
 	ui_feedlist_update();
 	ui_feedlist_select((nodePtr)fp);
