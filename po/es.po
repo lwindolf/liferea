@@ -1,4 +1,4 @@
-# Traducción por Carlos Fenollosa <topopardo@humorfreak.com> y José María Mateos <chema@sl-form.com>José María Mateos <chema@sl-form.com>, 2004.
+# Traducción por Carlos Fenollosa <topopardo@topopardo.com> y José María Mateos <chema@sl-form.com>José María Mateos <chema@sl-form.com>, 2004.
 # 
 # 
 msgid ""
