@@ -311,6 +311,7 @@ void removeFolder(gchar *keyprefix) {
 	/* topiter must not be NULL! because we cannot delete the root folder ! */
 	if(NULL != (iter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
 		removeFolderFromConfig(keyprefix);
+		g_hash_table_remove(folders, (gpointer)keyprefix);
 	} else {
 		g_print(_("internal error! could not determine folder key!"));
 	}
@@ -911,7 +912,7 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 		}
 
 		/* add key to new key list */
-		if(!IS_NODE(tmp_type)) {
+		if(!IS_NODE(tmp_type) && (tmp_type != FST_EMPTY)) {
 			new_value = gconf_value_new(GCONF_VALUE_STRING);
 			if(found)
 				gconf_value_set_string(new_value, new_key);
