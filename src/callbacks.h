@@ -50,35 +50,16 @@ void on_popup_refresh_selected(void);
 
 void on_propchangebtn_clicked(GtkButton *button,gpointer user_data);
 
-
-void
-on_newbtn_clicked                      (GtkButton       *button,
-                                        gpointer         user_data);
+void on_newbtn_clicked(GtkButton *button, gpointer user_data);
+void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data);
 
 void on_propbtn_clicked(GtkButton *button, gpointer user_data);
 void on_popup_prop_selected(void);
 
-void
-on_aboutbtn_clicked                    (GtkButton       *button,
-                                        gpointer         user_data);
+void on_aboutbtn_clicked(GtkButton *button, gpointer user_data);
 
-void
-on_newfeedbtn_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-feedlist_selection_changed_cb          (GtkTreeSelection *selection, 
-					gpointer data);
-
-void
-itemlist_selection_changed_cb          (GtkTreeSelection *selection, 
-					gpointer data);
-
-void
-url_requested 			       (HtmlDocument 	*doc, 
-				        const gchar 	*uri, 
-					HtmlStream 	*stream, 
-					gpointer 	data);
+void feedlist_selection_changed_cb(GtkTreeSelection *selection,  gpointer data);
+void itemlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data);
 
 void
 on_newfeedbutton_clicked               (GtkButton       *button,

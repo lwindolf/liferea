@@ -22,6 +22,9 @@
 #  include <config.h>
 #endif
 
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+
 #include "conf.h"
 #include "callbacks.h"
 #include "eggtrayicon.h"
@@ -83,8 +86,26 @@ void undoTrayIcon(void) {
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
 
 	undoTrayIcon();
-	gtk_window_present(GTK_WINDOW(mainwindow));
+	
+	/* a click on the systray icon should show the program window
+	   if invisible or hide it if visible */
+	if(GTK_WIDGET_VISIBLE(GTK_WIDGET(mainwindow)))
+		gtk_widget_hide(GTK_WIDGET(mainwindow));
+	else
+		gtk_window_present(GTK_WINDOW(mainwindow));
 }
+
+static gboolean mainwindow_state_changed(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+	GdkEventWindowState	*state;
+	
+	/* to hide the window when iconified ... */
+	state = ((GdkEventWindowState *)event);
+	if(GDK_WINDOW_STATE_ICONIFIED == state->new_window_state)
+		gtk_widget_hide(GTK_WIDGET(mainwindow));
+	
+	return TRUE;
+}
+
 
 void setupTrayIcon(void) {
 
@@ -92,8 +113,8 @@ void setupTrayIcon(void) {
 		tray_icon = egg_tray_icon_new(PACKAGE);
 		eventbox = gtk_event_box_new();
 
-		g_signal_connect(eventbox, "button_press_event",
-				 G_CALLBACK (tray_icon_pressed), tray_icon);
+		g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);
+		g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
 		gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
 
 		setTrayIcon(emptyIcon);
