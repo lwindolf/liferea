@@ -52,12 +52,6 @@ void on_searchbtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_hidesearch_clicked(GtkButton *button, gpointer user_data) {
 
-	if(NULL != searchFeed) {
-		feed_free(searchFeed);
-		searchFeed = NULL;
-	}
-
-	gtk_widget_set_sensitive(lookup_widget(searchdialog, "vfolderaddbtn"), FALSE);	
 	gtk_widget_hide(searchdialog);
 }
 
@@ -83,13 +77,12 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	/* switch to item list view and inform user in HTML view */
 	ui_itemlist_set_two_pane_mode(FALSE);
 	ui_htmlview_start_output(&buffer, NULL, TRUE);
-	addToHTMLBuffer(&buffer, "<h2>Search Results for \"");
-	addToHTMLBuffer(&buffer, searchstring);
-	addToHTMLBuffer(&buffer, "\"</h2><p>The item list now contains all items matching the "
+	buffer = g_strdup_printf("%s<h2>%d Search Results for \"%s\"</h2>"
+	                         "<p>The item list now contains all items matching the "
 	                         "specified search pattern. If you want to save this search "
 	                         "result permanently you can click the VFolder button in "
 	                         "the search dialog and Liferea will add a VFolder to your "
-	                         "feed list.</h2>");
+	                         "feed list.</h2>", buffer, g_slist_length(feed_get_item_list(searchFeed)), searchstring);
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 
@@ -123,9 +116,17 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	}
 }
 
-void on_casecheckbtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
-
-	g_print("Implement me!\n");
+void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	gint			pos;
+	feedPtr			fp;
+	folderPtr		folder = NULL;
+	
+	fp = vfolder_new();
+	feed_set_title(fp, _("New VFolder"));
+	folder = ui_feedlist_get_target_folder(&pos);
+	ui_feedlist_add(folder, (nodePtr)fp, pos);
+	ui_feedlist_update();
+	ui_feedlist_select((nodePtr)fp);
 }
 
 

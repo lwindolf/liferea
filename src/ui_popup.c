@@ -93,6 +93,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New"),				NULL, 0, 				0, "<Branch>", 0);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New _Subscription..."),	NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New F_older..."), 		NULL, on_popup_newfolder_selected, 	0, NULL, 0);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New _VFolder..."), 		NULL, on_new_vfolder_activate, 		0, NULL, 0);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Properties..."),			NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Delete"),				NULL, on_popup_delete,			0, "<StockItem>", GTK_STOCK_DELETE);
 
@@ -103,6 +104,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New"),				NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New _Subscription..."),	NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New F_older..."), 		NULL, on_popup_newfolder_selected, 	0, NULL, 0);
+	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New _VFolder..."), 		NULL, on_new_vfolder_activate, 		0, NULL, 0);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_Rename Folder..."),		NULL, on_popup_foldername_selected, 	0, "<StockItem>", GTK_STOCK_PROPERTIES);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_Delete Folder"), 			NULL, on_popup_delete,			0, "<StockItem>", GTK_STOCK_DELETE);
 
@@ -112,6 +114,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New _Subscription..."),	NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New F_older..."), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
+	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New _VFolder..."), 		NULL, on_new_vfolder_activate, 		0, NULL, 0);
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_Properties..."),		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_Delete"),			NULL, on_popup_delete,			0, "<StockItem>", GTK_STOCK_DELETE);
 
