@@ -29,8 +29,6 @@ extern GtkWidget * filedialog;
 static GtkWidget * importdialog = NULL;
 static GtkWidget * exportdialog = NULL;
 
-extern GMutex * feeds_lock;
-
 /* the real import/export functions */
 static void append_node_tag(nodePtr ptr, gpointer userdata) {
 	folderPtr		folder = (folderPtr)folder;

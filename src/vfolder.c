@@ -33,7 +33,6 @@
 /* FIXME: stat() ! */
 #define MAXBUFSIZE	1024
 
-extern GMutex 		*feeds_lock;
 extern GHashTable	*feeds;
 
 /* though VFolders are treated like feeds, there 'll be a read() call

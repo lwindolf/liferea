@@ -76,8 +76,6 @@ GHashTable	*feedHandler = NULL;
    and searching functionality */
 feedPtr		allItems = NULL;
 
-GMutex * feeds_lock = NULL;
-
 /* prototypes */
 static gboolean update_timer_main(gpointer data);
 
@@ -135,8 +133,6 @@ static gint feed_auto_detect_type(gchar *url, gchar **data) {
 /* initializing function, only called upon startup */
 void feed_init(void) {
 
-	feeds_lock = g_mutex_new();
-	
 	allItems = feed_new();
 	allItems->type = FST_VFOLDER;
 	
@@ -265,29 +261,6 @@ void feed_save(feedPtr fp) {
 	} else {
 		g_warning(_("could not create XML document!"));
 	}
-}
-
-/* hash table foreach wrapper function */
-static void saveFeedFunc(gpointer value, gpointer userdata) {
-	nodePtr	ptr = (nodePtr)value;
-	
-	if(IS_FEED(ptr->type)) {
-		ui_mainwindow_set_status_bar(_("saving feed \"%s\""), feed_get_title((feedPtr)ptr));
-		feed_save((feedPtr)ptr);
-	} else if (IS_FOLDER(ptr->type)) {
-		g_slist_foreach(((folderPtr)ptr)->children, saveFeedFunc, NULL);
-	}
-}
-
-/* function to be called on program shutdown to save read stati */
-void saveAllFeeds(void) {
-
-	/* we must save here to save changed read flags */	
-	ui_mainwindow_set_status_bar(_("saving all feeds..."));
-	
-	g_mutex_lock(feeds_lock);
-	saveFeedFunc(folder_get_root(),NULL);
-	g_mutex_unlock(feeds_lock);
 }
 
 /* function which is called to load a feed's cache file */
@@ -701,42 +674,13 @@ static void feed_check_update_counter(feedPtr fp) {
 		update_thread_add_request((struct feed_request *)fp->request);
 }
 
-static void update_feed_counter_(gpointer pointer, gpointer user_data) {
-	nodePtr np = (nodePtr)pointer;
-                                                                                                                                               
-	if (IS_FOLDER(np->type)) {
-		g_slist_foreach(((folderPtr)np)->children,update_feed_counter_, NULL);
-	} else {
-		feed_check_update_counter((feedPtr)np);
-	}
-}
-                                                                                                                                               
 // FIXME: does this function belong here?
 static gboolean update_timer_main(void *data) {
 
 	g_message("Checking to see if feeds need to be updated");
-
-	g_mutex_lock(feeds_lock);
-	update_feed_counter_(folder_get_root(), NULL);
-
-	g_mutex_unlock(feeds_lock);
-	//ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (gpointer)feed_check_update_counter);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_check_update_counter);
  
 	return TRUE;
-}
-
-static void updateFeedHelper(gpointer value, gpointer userdata) {
-	nodePtr		ptr = (nodePtr)value;
-
-	ui_mainwindow_set_status_bar(_("updating all feeds..."));
-	g_assert(NULL != ptr);
-
-	g_mutex_lock(feeds_lock);
-	if (IS_FOLDER(ptr->type))
-		g_slist_foreach(((folderPtr)ptr)->children, updateFeedHelper, NULL);
-	else
-		feed_update((feedPtr)ptr);
-	g_mutex_unlock(feeds_lock);
 }
 
 void feed_add_item(feedPtr fp, itemPtr ip) {
@@ -949,7 +893,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	tmp_fp = feed_new();
 	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
 	memcpy(fp, new_fp, sizeof(struct feed));
-	tmp_fp->id = NULL;			/* to prevent removal of reused attributes... */
+	tmp_fp->id = NULL;				/* to prevent removal of reused attributes... */
 	tmp_fp->items = NULL;
 	tmp_fp->title = NULL;
 	tmp_fp->source = NULL;
@@ -991,9 +935,6 @@ void feed_free(feedPtr fp) {
 		g_warning(g_strdup_printf(_("Could not delete cache file %s! Please remove manually!"), filename));
 	}
 
-	feed_clear_item_list(fp);
-
-	
 	// FIXME: free filter structures too when implemented
 
 	/* Don't free active feed requests here, because they might
@@ -1003,6 +944,8 @@ void feed_free(feedPtr fp) {
 		update_request_free(fp->request);
 	else
 		((struct feed_request *)fp->request)->fp = NULL;
+
+	feed_clear_item_list(fp);
 
 	if (fp->id) {
 		removeFeedFromConfig(fp);

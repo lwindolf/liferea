@@ -84,7 +84,7 @@ static gboolean loadSymbols(gchar *libname, gboolean testmode) {
 	
 	/* print some warnings concerning Mozilla */
 	if((0 == strncmp(libname, "liblihtmlm", 10)) && !testmode) {
-		g_message(_("\nTrying to load the Mozilla browser module... Note that this\n\
+		g_print(_("\nTrying to load the Mozilla browser module... Note that this\n\
 might not work with every Mozilla version. If you have problems\n\
 and Liferea does not start try to set MOZILLA_FIVE_HOME to\n\
 another Mozilla installation or	delete the gconf configuration\n\
@@ -133,7 +133,7 @@ void ui_htmlview_init(void) {
 	   to present in the preferences dialog and to load
 	   one just in case there was no configured module
 	   or it did not load when trying... */	
-	g_message("available browser modules (%s):\n", PACKAGE_LIB_DIR);
+	g_print("available browser modules (%s):\n", PACKAGE_LIB_DIR);
 	dir = g_dir_open(PACKAGE_LIB_DIR, 0, &error);
 	if(!error) {
 		/* maybe no good solution, library name syntax: 
@@ -151,7 +151,7 @@ void ui_htmlview_init(void) {
 						info->libname = g_strdup(filename);
 						info->description = ((getModuleNameFunc)methods[GETMODULENAME])();
 						availableBrowserModules = g_slist_append(availableBrowserModules, (gpointer)info);
-						g_message("-> %s (%s)\n", info->description, info->libname);
+						g_print("-> %s (%s)\n", info->description, info->libname);
 						g_module_close(handle);
 					}
 				}
@@ -168,10 +168,10 @@ void ui_htmlview_init(void) {
 	/* load configured module, we get a empty string if nothing is configured */
 	filename = getStringConfValue(BROWSER_MODULE);
 	if(0 != strlen(filename)) {
-		g_message(_("Loading configured browser module (%s)!\n"), filename);
+		g_print(_("Loading configured browser module (%s)!\n"), filename);
 		success = loadSymbols(filename, FALSE);
 	} else {
-		g_message(_("No browser module configured!\n"));
+		g_print(_("No browser module configured!\n"));
 	}
 	
 	if(!success) {
@@ -179,7 +179,7 @@ void ui_htmlview_init(void) {
 		tmp = availableBrowserModules;
 		while(NULL != tmp) {
 			info = (struct browserModule *)tmp->data;
-			g_message(_("trying to load browser module %s (%s)\n"), info->description, info->libname);
+			g_print(_("trying to load browser module %s (%s)\n"), info->description, info->libname);
 			if(TRUE == (success = loadSymbols(info->libname, FALSE)))
 				break;
 			tmp = g_slist_next(tmp);
