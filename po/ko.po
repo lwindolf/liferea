@@ -7,280 +7,158 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-21 17:51+0900\n"
-"PO-Revision-Date: 2004-03-21 18:34+0900\n"
+"POT-Creation-Date: 2004-03-28 02:04+0900\n"
+"PO-Revision-Date: 2004-03-28 02:00+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "pixmap 파일 %s을(를) 찾을 수 없습니다"
 
-#: src/callbacks.c:132
-msgid ""
-"You have disabled both the menubar and the toolbar. Without one of these you "
-"won't be able to access all program functions. I'll reenable the toolbar!"
-msgstr ""
-"메뉴 막대와 도구 막대를 모두 감추었습니다. 둘중 하나 없이는 모든 기능을 쓸 "
-"수 없습니다. 도구 막다를 다시 보이겠습니다."
-
-#: src/callbacks.c:179
-msgid "entry list widget lookup failed!\n"
-msgstr "엔트리 목록 위젯 찾기 실패\n"
-
-#: src/callbacks.c:184
-msgid "could not retrieve selection of entry list!"
-msgstr "선택한 엔트리 목록을 받을 수 없습니다!"
-
-#: src/callbacks.c:200
-msgid "fatal! selected feed entry has no key!!!"
-msgstr "치명적! 선택한 피드 엔트리는 키가 없습니다!!"
-
-#: src/callbacks.c:226
-msgid "internal error! could not reset HTML widget scrolling!"
-msgstr "내부 에러! HTML위젯 스크롤을 초기화 할 수 없습니"
-
-#: src/callbacks.c:259 src/callbacks.c:397 src/callbacks.c:444
-msgid "You have to select a feed entry!"
-msgstr "피드 엔트리를 선택해야 합니다!"
-
-#: src/callbacks.c:403
-msgid "You can't delete help feeds!"
-msgstr "도움말 피드는 지울 수 없습니다"
-
-#: src/callbacks.c:407
-msgid "Deleting entry"
-msgstr "엔트리 지우기"
-
-#: src/callbacks.c:417
-msgid "It seems like there is no selected feed entry!"
-msgstr "선택한 피드 엔트리가 보이지 않습니다!"
-
-#: src/callbacks.c:476
-#, c-format
-msgid "The provider of this feed suggests an update interval of %d minutes"
-msgstr "이 피드의 제공자는 갱신 주기를 %d분 으로 제안했습니다"
-
-#: src/callbacks.c:478
-msgid "This feed specifies no default update interval."
-msgstr "이 피드는 기본 갱신 주기를 정하지 않습니다."
-
-#: src/callbacks.c:521
-msgid "Internal error! No feed selected, but property change requested...\n"
-msgstr "내부 에러! 피드가 선택되지 않았지만 속성 바꾸기이 요구되었습니다...\n"
-
-#: src/callbacks.c:576
-msgid "internal error! could not select newly created treestore iter!"
-msgstr "내부 에러! 새로 만들어진 treestore iter를 선택할 수 없습니다!"
-
-#: src/callbacks.c:592
-#, c-format
-msgid ""
-"Could not download \"%s\"!\n"
-"\n"
-" Maybe the URL is invalid or the feed is temporarily not available. You can "
-"retry downloading or remove the feed subscription via the context menu from "
-"the feed list.\n"
-msgstr ""
-"\"%s\"을(를) 다운로드 할 수 없습니다\n"
-" URL이 잘못되었거나, 피드가 일시적으로 접근 불가능 한 것 같습니다.다시 받기"
-"를 시도하시거나 피드 목록에서 피드를 지워주세요\n"
-
-#: src/callbacks.c:647
-msgid "internal error! invalid type selected! This should never happen!\n"
-msgstr "내부 에러! 잘못된 타입 선택! 이건 있을 수 없어어어어어!!\n"
-
-#: src/callbacks.c:677 src/export.c:225 src/export.c:238
-msgid "internal error! could not find file dialog select button!"
-msgstr "내부 에러! 파일 대화창 선택단추를 찾을 수 없습니다!"
-
-#: src/callbacks.c:707 src/export.c:128
-msgid "internal error! could not get a new folder key!"
-msgstr "내부 에러! 새 폴더키를 얻을 수 없습니다!"
-
-#: src/callbacks.c:716 src/callbacks.c:756
-msgid "You have to select a folder entry!"
-msgstr "폴더 엔트리를 선택해야만 합니다!"
-
-#: src/callbacks.c:782 src/callbacks.c:785
-msgid "A folder must be empty to delete it!"
-msgstr "폴더를 지우시려면 먼저 폴더를 비우세요!"
-
-#: src/callbacks.c:788
-msgid "Error: Cannot determine folder key!"
-msgstr "폴더키를 정할 수 없습니다!"
-
-#: src/callbacks.c:830 src/callbacks.c:981
-msgid "could not retrieve selection of item list!"
-msgstr "선택한 아이템 목록을 받을 수 없습니다."
-
-#: src/callbacks.c:866
-msgid "item list widget lookup failed!\n"
-msgstr "아이템 목록 위젯을 찾을 수 없습니다!\n"
-
-#: src/callbacks.c:876
-msgid "could not retrieve selection of item list!\n"
-msgstr "선택한 아이템 목록을 받을 수 없습니다.\n"
-
-#: src/callbacks.c:976
-msgid "could not find item list widget!"
-msgstr "아이템 목록 위젤을 찾을 수 없습니다."
-
-#: src/callbacks.c:1100 src/callbacks.c:1142
-msgid "internal error! could not get feed tree view selection!\n"
-msgstr "내부 에러! 트리뷰의 선택부분을 찾을 수 없습니다!\n"
-
-#: src/callbacks.c:1102 src/callbacks.c:1144
-msgid "internal error! could not find feed tree view widget!\n"
-msgstr "내부 에러! 트리 뷰를 찾을 수 없습니다!\n"
-
-#: src/callbacks.c:1171
-msgid "There are no unread items!"
-msgstr "읽지 않은 아이템이 없습니다!"
-
-#: src/callbacks.c:1191
-msgid "You have to select a feed to delete its items!"
-msgstr "아이템을 지울 피드 엔트리를 선택해야 합니다!"
-
-#: src/callbacks.c:1322
-msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr ""
-"내부 에러! 알 수 없는 엔트리 종류! 적당한 아이콘을 보여줄 수 없습니다.\n"
-
-#: src/callbacks.c:1465
-msgid "Date"
-msgstr "날짜"
-
-#: src/callbacks.c:1473
-msgid "Headline"
-msgstr "머릿글"
-
-#: src/callbacks.c:1572
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\"이(가) 갱신되었습니다..."
-
-#: src/callbacks.c:1580
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated."
-msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
-
-#: src/callbacks.c:1599
+#: src/callbacks.c:283
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
 
-#: src/callbacks.c:1603
+#: src/callbacks.c:289
+#, c-format
+msgid "internal error! unknown feed type %d while updating feeds!"
+msgstr "내부 에러! 피드를 갱신하던 중 알 수 없는 피드타입 %d 발견!"
+
+#: src/callbacks.c:310
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\"이(가) 갱신되었습니다..."
+
+#: src/callbacks.c:316
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated."
+msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
+
+#: src/callbacks.c:330
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
 
-#: src/callbacks.c:1731
-msgid "internal error! item list display for NULL pointer requested!\n"
-msgstr "내부 에러! 아이템 리스트가 NULL 포인터 요청을 나타냅니다\n"
-
-#: src/cdf_channel.c:106 src/cdf_item.c:51
+#: src/cdf_channel.c:100 src/cdf_item.c:51
 msgid "internal error: XML document pointer NULL! This should not happen!\n"
 msgstr "내부 에러: XML 도큐먼트 포인터 NULL. 이건 있을 수 없어어어어어!!\n"
 
-#: src/cdf_channel.c:174 src/opml.c:138 src/pie_feed.c:217
-#: src/rss_channel.c:357
+#: src/cdf_channel.c:158 src/ocs_dir.c:453 src/opml.c:143 src/pie_feed.c:218
+#: src/rss_channel.c:338
 #, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "피드를 읽는 도중 XML 에러가 발생!. \"%s\" 피드를 로드할 수 없습니다."
+msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
+msgstr ""
+"<p>피드를 읽는 도중 XML 에러가 발생!. \"%s\" 피드를 로드할 수 없습니다.</p>"
 
-#: src/cdf_channel.c:182 src/pie_feed.c:225
-msgid "Empty document! Feed was not added!"
-msgstr "빈 문서! 피드가 더해지지 않았습니다."
+#: src/cdf_channel.c:166 src/feed.c:303 src/ocs_dir.c:459 src/opml.c:149
+#: src/pie_feed.c:226 src/rss_channel.c:344
+msgid "<p>Empty document!</p>"
+msgstr "<p>빈 도큐먼트!</p>"
 
-#: src/cdf_channel.c:243 src/ocs_dir.c:287 src/ocs_dir.c:351 src/ocs_dir.c:425
-#: src/ocs_dir.c:512 src/ocs_dir.c:554 src/opml.c:259 src/pie_feed.c:338
-#: src/rss_channel.c:467 src/vfolder.c:124
-msgid "not enough memory!"
-msgstr "메모리가 부족합니다 !"
+#: src/cdf_channel.c:212 src/ocs_dir.c:510 src/opml.c:248 src/pie_feed.c:324
+#: src/rss_channel.c:418
+msgid "There were errors while parsing this feed!"
+msgstr "이 피드를 해석하던 중 에러가 발생했습니다."
 
-#: src/common.c:127
+#: src/common.c:125
 msgid "conversion wasn't successful.\n"
 msgstr "변환이 실패했습니다.\n"
 
-#: src/common.c:129
+#: src/common.c:127
 #, c-format
 msgid "conversion wasn't successful. converted: %i octets.\n"
 msgstr "변환이 성공적이지 않습니다. %i 옥텟이 변환되었습니다.\n"
 
-#: src/common.c:139
+#: src/common.c:137
 msgid "not enough memory\n"
 msgstr "메모리가 부족합니다\n"
 
-#: src/common.c:252 src/common.c:297
+#: src/common.c:281
+msgid "[Parser error output was truncated!]"
+msgstr "[해석기 에러 출력이 생략되었습니다!]"
+
+#: src/common.c:362 src/common.c:407
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "내부 에러! 시간 변환 실패! mktime 실패\n"
 
-#: src/common.c:255
+#: src/common.c:365
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "잘못된 ISO8601 날짜 형식. <dc:date> 정보를 무시합니다\n"
 
-#: src/common.c:300
+#: src/common.c:410
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
 msgstr "잘못된 RFC822 날짜 형식. <pubDate> 정보를 무시합니다\n"
 
-#: src/common.c:368
+#: src/common.c:474
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "캐시 디렉토리 %s을(를) 생설할 수 없습니다!"
 
-#: src/common.c:472
+#: src/common.c:577
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
-msgstr "예기치 않은 end-of-character 시퀀스이거나 잘못된 UTF-8 인코딩입니다! "
-"몇몇 문자가 버려집니다"
+msgstr ""
+"예기치 않은 end-of-character 시퀀스이거나 잘못된 UTF-8 인코딩입니다! 몇몇 문"
+"자가 버려집니다"
 
 #. sh..!
-#: src/common.c:486
+#: src/common.c:591
 msgid "Internal error while converting UTF-8 chars to HTTP URI!"
 msgstr "내부에러! UTF-8 문자를 HTTP-URI로 변경하던 중 발생 "
 
 #. _() for HELP1URL to allow localised help feeds
-#: src/conf.c:40
-msgid "http://liferea.sf.net/help046.rdf"
-msgstr "http://liferea.sf.net/help046.rdf"
+#: src/conf.c:41
+msgid "http://liferea.sf.net/help047.rdf"
+msgstr "http://liferea.sf.net/help047.rdf"
 
-#: src/conf.c:168
+#: src/conf.c:155
 #, c-format
 msgid "internal error! could not retrieve feed list for gconf path %s\n"
 msgstr "내부 에러! Gconf 경로 %s에서 피드 목록을 얻을 수 없습니다 !\n"
 
-#: src/conf.c:460
+#: src/conf.c:447
 msgid "error! could not get a free entry key!\n"
 msgstr "에러! 자유 엔트리 키를 얻을 수 없습니다!\n"
 
-#: src/conf.c:466
+#: src/conf.c:453
 msgid "error! could not set a URL for this key!\n"
 msgstr "에러! 이 키에 URL을 지정할 수 없습니다!\n"
 
-#: src/conf.c:469
+#: src/conf.c:456
 msgid "error! could not set a type for this key!\n"
 msgstr "에러! 이 키에 타입을 지정할 수 없습니다!\n"
 
+#: src/conf.c:591
+#, c-format
+msgid "could not read from gconf path \"%s\"!\n"
+msgstr "Gconf 경로 %s을(를) 읽을 수 없습니다 !\n"
+
+#: src/conf.c:603
+#, c-format
+msgid "could not create empty keylist in gconf path \"%s\"!\n"
+msgstr "gconf 경로 %s에 빈 키목록을 만들 수 없습니다!\n"
+
 #. add to config and UI feed list
-#: src/conf.c:693 src/conf.c:695
+#: src/conf.c:692 src/conf.c:694
 msgid "Liferea Help"
 msgstr "Liferea 도움말"
 
-#: src/conf.c:699
+#: src/conf.c:698
 msgid "Online Help Feed"
 msgstr "온라인 도움말 피드"
 
-#: src/conf.c:700
+#: src/conf.c:699
 msgid "Liferea SF News"
 msgstr "Liferea 소스포지 뉴스"
 
-#: src/conf.c:715
+#: src/conf.c:717
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 네임스페이스 %s이(가) 아직 설정되지 않았습니다. 활성화중...\n"
@@ -311,11 +189,11 @@ msgstr "에러: Compression·method·is·not·deflate"
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "에러: 지원하지 않는 플래그 %d\n"
 
-#: src/export.c:73 src/feed.c:260
+#: src/export.c:73 src/feed.c:245
 msgid "could not create XML feed node for feed cache document!"
 msgstr "피드 캐시 도큐먼트를  위한 XML 피드 노드를 만들 수 없습니다."
 
-#: src/export.c:77 src/feed.c:266
+#: src/export.c:77 src/feed.c:251
 msgid "could not create XML document!"
 msgstr "XML 도큐먼트를 만들 수 없습니다"
 
@@ -332,7 +210,11 @@ msgstr "피드 목록이 내보내졌습니다"
 msgid "imported feed list"
 msgstr "가져온 피드 리스트"
 
-#: src/export.c:137 src/feed.c:317
+#: src/export.c:128 src/ui_folder.c:60
+msgid "internal error! could not get a new folder key!"
+msgstr "내부 에러! 새 폴더키를 얻을 수 없습니다!"
+
+#: src/export.c:137
 #, c-format
 msgid ""
 "XML error while reading cache file \"%s\" ! Cache file could not be loaded!"
@@ -349,376 +231,480 @@ msgid "\"%s\" is no valid cache file! Cannot read OPML file!"
 msgstr ""
 "\"%s\"은(는) 올바른 캐시 파일이 아닙니다. OPML 파일을 읽을 수 없습니다."
 
+#: src/export.c:225 src/export.c:238 src/ui_feedlist.c:672
+msgid "internal error! could not find file dialog select button!"
+msgstr "내부 에러! 파일 대화창 선택단추를 찾을 수 없습니다!"
+
 #: src/favicon.c:411
 #, c-format
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr "아이콘파일 %s을(를) 지울 수 없습니다.! 직접 지워주세요."
 
-#: src/feed.c:161
-msgid "Could not allocate memory!"
-msgstr "메모리를 할당 할 수 없습니다!"
-
-#: src/feed.c:250
+#: src/feed.c:235
 msgid "could not write XML item node!\n"
 msgstr "XML 아이템 노드를 기록할 수 없습니다!\n"
 
+#: src/feed.c:263
+#, c-format
+msgid "saving feed \"%s\""
+msgstr "%s 피드를 저장중"
+
 #. we must save here to save changed read flags
-#: src/feed.c:286
+#: src/feed.c:272
 msgid "saving all feeds..."
 msgstr "모든 피드를 저장합니다..."
 
-#: src/feed.c:306
+#: src/feed.c:289
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "캐서파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 읽을 수 없습니다."
 
-#: src/feed.c:322
-msgid "Empty document! Feed cache file should not be empty..."
-msgstr "빈 도큐먼트! 패드 캐시파일은 비어 있으면 안됩니다..."
-
-#: src/feed.c:330
+#: src/feed.c:297
 #, c-format
-msgid "\"%s\" is no valid cache file! Cannot read cache file!"
+msgid ""
+"<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
+"loaded!</p>"
 msgstr ""
-"\"%s\"·는·올바른·캐시·파일이·아닙니다.·올바른 캐시 파일이 아닌 것 같습니다."
+"<p> 피드 캐서파일을(를) 해석하던 중 XML 에러가 발생. 캐시파일 \"%s\"을(를) 읽"
+"을 수 없습니다.</p>"
+
+#: src/feed.c:313
+#, c-format
+msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
+msgstr "<p>\"%s\"·는·올바른·캐시·파일이·아닙니다.·읽을 수 없습니다!</p>"
+
+#: src/feed.c:355
+#, c-format
+msgid "There were errors while parsing cache file \"%s\"!"
+msgstr "캐시파일 \"%s\"을(를) 해석하던 중 에러가 발생했습니다!"
+
+#. bad, that means there is no URL in gconf and
+#. in the cache file, looks like a huge mess to me...
+#: src/feed.c:396
+msgid "error: URL missing!"
+msgstr "에러: URL이 없습니다!"
 
 #. if necessary download and detect type
 #. FIXME: pass fp to adjust URL
-#: src/feed.c:430
+#: src/feed.c:432
 #, c-format
 msgid ""
 "Could not detect feed type of \"%s\"! Please manually select a feed type."
 msgstr "\"%s\"의 피드 종류를 알 수 없습니다.! 피드 종류를 직접 설정해 주세요."
 
-#: src/feed.c:451
+#: src/feed.c:453
 msgid "internal error! unknown feed type in newFeed()!"
 msgstr "내부 에러! NewFeed()에서 알 수 없는 피드타입 !"
 
-#: src/feed.c:494
+#: src/feed.c:496
 msgid "error! could not add feed to configuration!\n"
 msgstr "에러! 설정에 피드를 더할 수 없습니다!\n"
 
-#: src/feed.c:615
+#: src/feed.c:617
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\"은(는) 새로운 아이템이 없습니다."
 
-#: src/feed.c:617
+#: src/feed.c:619
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\"은(는) %d개의 새로운 아이템이 있습니다."
 
-#: src/feed.c:657
+#: src/feed.c:664
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr "캐시파일 %s을(를) 지울 수 없습니다.! 직접 지워주세요."
 
-#: src/feed.c:685
+#: src/feed.c:688
 msgid "updating all feeds..."
 msgstr "모든 피드 갱신..."
 
-#: src/feed.c:710
+#: src/feed.c:713
 #, c-format
 msgid "internal error! there is no feed assigned to feedkey \"%s\"!\n"
 msgstr "내부 에러! 피드키 \"%s\"(으)로 할당된 피드가 없습니다!\n"
 
-#. should never happen!
-#: src/feed.c:750
-msgid ""
-"The last update of this feed failed. Please see the console output for more "
-"information!"
-msgstr "이 피드의 갱신작업이 실패했습니다. "
-"좀 더 많은 정보를 보시려면 콘솔 출력을 보세요"
-
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:754 src/netio.c:415
+#: src/feed.c:765 src/netio.c:415
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "피드가 더 이상 존재하지 않습니다. 해지 해 주세요."
 
-#: src/feed.c:755
+#: src/feed.c:766
 msgid "Payment Required"
 msgstr "(돈)지불이 필요합니다"
 
-#: src/feed.c:756
+#: src/feed.c:767
 msgid "Access Forbidden"
 msgstr "접근이 금지되었습니다"
 
-#: src/feed.c:757
+#: src/feed.c:768
 msgid "Ressource Not Found"
 msgstr "다"
 
-#: src/feed.c:758
+#: src/feed.c:769
 msgid "Method Not Allowed"
 msgstr "동작이 허용되지 않습니다"
 
-#: src/feed.c:759
+#: src/feed.c:770
 msgid "Not Acceptable"
 msgstr "받아들일 수 없습니다"
 
-#: src/feed.c:760
+#: src/feed.c:771
 msgid "Proxy Authentication Required"
 msgstr "프록시 인증이 필요합니다"
 
-#: src/feed.c:761
+#: src/feed.c:772
 msgid "Request Time-Out"
 msgstr "요청 시간이 초과되었습니다"
 
-#: src/feed.c:762
+#: src/feed.c:773
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "사라짐.자원이 더 이상 존재하지 않습니다. 해지 해 주세요."
 
-#: src/feed.c:768
+#: src/feed.c:779
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr "피드 사용 불가: 서버가 리디렉션을 지원하지 않습니다"
 
-#: src/feed.c:769
+#: src/feed.c:780
 msgid "Client Error"
 msgstr "클라이언트 에러"
 
-#: src/feed.c:770
+#: src/feed.c:781
 msgid "Server Error"
 msgstr "서버 에러"
 
-#: src/feed.c:771
+#: src/feed.c:782
 msgid "(unknown error class)"
 msgstr "(알 수 없는 에러종류)"
 
-#: src/folder.c:71
+#: src/feed.c:804
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output!"
+msgstr ""
+"이 등록피드를 읽던 중 문제가 발생했습니다. URL과 콘솔 출력을 확인하세요"
+
+#: src/folder.c:70
 #, c-format
 msgid ""
 "getFolderTitle() internal error! could not determine folder iterator for "
 "keyprefix \"%s\"!\n"
-msgstr "getFolderTitle() 내부 에러! keyprefix \"%s\"에 대한 폴더 이터레이터를 결정 할 수 없습니다!\n"
+msgstr ""
+"getFolderTitle() 내부 에러! keyprefix \"%s\"에 대한 폴더 이터레이터를 결정 "
+"할 수 없습니다!\n"
 
-#: src/folder.c:89
+#: src/folder.c:88
 #, c-format
 msgid ""
 "setFolderTitle() internal error! could not determine folder iter for "
 "keyprefix \"%s\"!\n"
-msgstr "setFolderTitle() 내부 에러! keyprefix \"%s\"에 대한 폴더키를 결정 할 수 없습니다!\n"
+msgstr ""
+"setFolderTitle() 내부 에러! keyprefix \"%s\"에 대한 폴더키를 결정 할 수 없습"
+"니다!\n"
 
-#: src/folder.c:184
+#: src/folder.c:182
 #, c-format
 msgid ""
 "removeFolder() internal error! could not determine folder iter for keyprefix "
 "\"%s\"!\n"
-msgstr "removeFoler() 내부 에러! keyprefix \"%s\"에 대한 폴더키를 결정 할 수 없습니다!\n"
+msgstr ""
+"removeFoler() 내부 에러! keyprefix \"%s\"에 대한 폴더키를 결정 할 수 없습니"
+"다!\n"
 
-#: src/folder.c:215
+#: src/folder.c:213
 msgid "(empty)"
 msgstr "(비었음)"
 
-#: src/folder.c:348
+#: src/folder.c:346
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr "에러! 캐시파일 %s을(를) %s(으)로 옮길 수 없습니다.\n"
 
-#: src/htmlview.c:432
+#: src/htmlview.c:85
+msgid ""
+"\n"
+"Trying to load the Mozilla browser module... Note that this\n"
+"might not work with every Mozilla version. If you have problems\n"
+"and Liferea does not start try to set MOZILLA_FIVE_HOME to\n"
+"another Mozilla installation or\tdelete the gconf configuration\n"
+"key /apps/liferea/browser-module!\n"
+"\n"
+msgstr ""
+"\n"
+"모질라 브라우져 모듈 불러오기를 시도합니다... 이것은 모든\n"
+"모질라 버전에서 잘 동작하지는 않음을 참고하세요. 만약 문제가 있고\n"
+"Liferea가 정상적으로 시작하지 않는다면, MOZILLA_FIVE_HOME을 \n"
+"다른버전의 모질라가 깔린 곳으로 설정하거나, 아니면 \n"
+"/apps/liferea/brower-module gconf키를 지워버리세요.\n"
+"\n"
+
+#: src/htmlview.c:97
 #, c-format
 msgid ""
-"There is no %%s URL place holder in the browser command string you specified "
-"in the preferences dialog!!!"
+"Failed to open HTML widget module (%s) specified in configuration!\n"
+"%s\n"
 msgstr ""
-"당신이 설정한 설정 다이얼로그에 브라우져 명령 문자열인 %%s URL place holder"
-"가 없습니다."
+"설정된 HTML 위젯 모듈 (%s)을(를) 여는 것을 실패했습니다!\n"
+"%s\n"
 
-#: src/interface.c:130
-msgid "Liferea 0.4.6"
-msgstr "Liferea 0.4.6"
+#: src/htmlview.c:107
+#, c-format
+msgid "Missing symbol \"%s\" in configured HTML module!"
+msgstr "설정된 HTML 모듈에서 심볼 \"%s\"이(가) 빠졌습니다!"
 
-#: src/interface.c:141
+#: src/htmlview.c:128
+#, c-format
+msgid "Cannot load HTML widget module (%s)!"
+msgstr "HTML 위젯 모듈 (%s)를 불러올 수 없습니다!"
+
+#: src/htmlview.c:169
+#, c-format
+msgid "Loading configured browser module (%s)!\n"
+msgstr "브라우져 모듈(%s)을(를) 불러옵니다! \n"
+
+#: src/htmlview.c:172
+msgid "No browser module configured!\n"
+msgstr "설정된 브라우져 모듈이 없습니다!\n"
+
+#: src/htmlview.c:180
+#, c-format
+msgid "trying to load browser module %s (%s)\n"
+msgstr "브라우져 모듈 %s (%s)을(를) 불러오는것을 시도합니다.\n"
+
+#: src/htmlview.c:188
+msgid "Sorry, I was not able to load any installed browser modules!"
+msgstr "죄송합니다만, 어떤 브라우져 모듈도 불러올 수 없군요."
+
+#: src/htmlview.c:281
+msgid "This item does not have a link assigned!"
+msgstr "이 아이템은 어떠한 연결도 할당되지 않았습니다."
+
+#: src/interface.c:143 src/interface.c:2481
+msgid "Liferea 0.4.7"
+msgstr "Liferea 0.4.7"
+
+#: src/interface.c:154
 msgid "_Program"
 msgstr "프로그램(_P)"
 
-#: src/interface.c:148
+#: src/interface.c:161
 msgid "_Import Feed List"
 msgstr "피드 목록 들여오기(_I)"
 
-#: src/interface.c:151
+#: src/interface.c:164
 msgid "Imports an OPML feed list."
 msgstr "OPML피드 리스트 가져오기."
 
-#: src/interface.c:157
+#: src/interface.c:170
 msgid "_Export Feed List"
 msgstr "피드 리스트 내보내기 (_F)피드 목록(_F)"
 
-#: src/interface.c:160
+#: src/interface.c:173
 msgid "Export the feed list as OPML."
 msgstr "OPML형식으로 피드 리스트 내보내기."
 
-#: src/interface.c:179
+#: src/interface.c:192
 msgid "_Feeds"
 msgstr "피드(_F)"
 
-#: src/interface.c:186
+#: src/interface.c:199
 msgid "_Feed"
 msgstr "피드(_F)"
 
-#: src/interface.c:193
+#: src/interface.c:206
 msgid "_Update Feed"
 msgstr "피드 갱신(_U)"
 
-#: src/interface.c:201
+#: src/interface.c:214
 msgid "_New Subscription"
 msgstr "새 피드 등록(_N)"
 
-#: src/interface.c:209
+#: src/interface.c:222
 msgid "_Delete Feed"
 msgstr "피드 지우기(_D)"
 
-#: src/interface.c:217
+#: src/interface.c:230
 msgid "_Edit Properties"
 msgstr "항목 수정(_E)"
 
-#: src/interface.c:225
+#: src/interface.c:238
 msgid "F_older"
 msgstr "폴더(_O)"
 
-#: src/interface.c:232
+#: src/interface.c:245
 msgid "_New Folder"
 msgstr "폴더 만들기(_N)"
 
-#: src/interface.c:240
+#: src/interface.c:253
 msgid "_Delete Folder"
 msgstr "폴더 지우기(_D)"
 
-#: src/interface.c:248
+#: src/interface.c:261
 msgid "_Edit Folder Name"
 msgstr "폴더 이름 바꾸기(_E)"
 
-#: src/interface.c:261
+#: src/interface.c:274
 msgid "_Update All"
 msgstr "전부 갱신(_U)"
 
-#: src/interface.c:264
+#: src/interface.c:277
 msgid "Immediately updates all feeds (excluding directories)."
 msgstr "즉시 모든 피드를 업데이트 함 (디렉토리들을 제외하고)."
 
-#: src/interface.c:273
+#: src/interface.c:286
 msgid "_Items"
 msgstr "아이템들(_I)"
 
-#: src/interface.c:280
+#: src/interface.c:293
 msgid "_Mark All As Read"
 msgstr "전부 읽은 것으로 표시(_M)"
 
-#: src/interface.c:283
+#: src/interface.c:296
 msgid "Marks all items of the current feed as read."
 msgstr "현재 피드의 모든 아이템을 읽은 것으로 표시."
 
-#: src/interface.c:288
+#: src/interface.c:301
 msgid "_Next Unread Item"
 msgstr "다음 안 읽은 아이템(_N)"
 
-#: src/interface.c:291 src/interface.c:393
+#: src/interface.c:304 src/interface.c:466
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
-msgstr "다음 안 읽은 아이템으로 뛰어갑니다. 현재 피드에 없다면 다음 피드의 안읽은 "
-"아이템으로 뛰어버립니다."
+msgstr ""
+"다음 안 읽은 아이템으로 뛰어갑니다. 현재 피드에 없다면 다음 피드의 안읽은 아"
+"이템으로 뛰어버립니다."
 
-#: src/interface.c:300
+#: src/interface.c:313
+msgid "_Scroll Or Next Unread"
+msgstr "스크롤 혹은 다음 안 읽은 것(_S)"
+
+#: src/interface.c:324
 msgid "Toggle _Read Status"
 msgstr "읽은 상태를 토글(_R)"
 
-#: src/interface.c:303
+#: src/interface.c:327
 msgid "Toggles the read status of the selected item."
 msgstr "선택한 아이템의 읽은 상태를 토글합니다."
 
-#: src/interface.c:308
+#: src/interface.c:332
 msgid "Toggle Item _Flag"
 msgstr "아이템 플래그 토글(_F)"
 
-#: src/interface.c:311
+#: src/interface.c:335
 msgid "Toggles the item flag."
 msgstr "아이템 플래그 토글."
 
-#: src/interface.c:316
+#: src/interface.c:340
 msgid "Remove Items"
 msgstr "아이템을 지웁니다"
 
-#: src/interface.c:319
+#: src/interface.c:343
 msgid "Removes all items of the currently selected feed."
 msgstr "현재 선택된 피드의 모든 아이템을 지웁니다."
 
-#: src/interface.c:330
+#: src/interface.c:354
 msgid "_Launch In Browser"
 msgstr "브라우져로 띄우기(_L)"
 
-#: src/interface.c:333
+#: src/interface.c:357
 msgid "Launches the items link in the configured browser."
 msgstr "설정된 브라우져로 아이템의 링크를 엽니다."
 
-#: src/interface.c:338 src/interface.c:431
+#: src/interface.c:362
+msgid "Item _View"
+msgstr "아이템 보기(_V)"
+
+#: src/interface.c:369
+msgid "Zoom _In"
+msgstr "확대(_I)"
+
+#: src/interface.c:380
+msgid "Zoom _Out"
+msgstr "축소(_O)"
+
+#: src/interface.c:396
+msgid "Toggle _Condensed View"
+msgstr "간결하게 보기 토글(_C)"
+
+#: src/interface.c:400 src/interface.c:504
 msgid "Search"
 msgstr "찾기"
 
-#: src/interface.c:345
+#: src/interface.c:407
 msgid "Toggle Search Box"
 msgstr "찾기 상자 토글"
 
-#: src/interface.c:348
+#: src/interface.c:410
 msgid "Shows or hides the search box."
 msgstr "찾기 상자 보이거나 감추기."
 
-#: src/interface.c:354
+#: src/interface.c:416
 msgid "Search with Feedster"
 msgstr "피드스터에서 찾기"
 
-#: src/interface.c:357
+#: src/interface.c:419
 msgid "Create a Feedster search feed."
 msgstr "피드스터 찾기 피드를 만듭니다."
 
-#: src/interface.c:371
+#: src/interface.c:425
+msgid "Help"
+msgstr "도움말"
+
+#: src/interface.c:432 src/interface.c:2467 src/interface.c:2496
+msgid "About"
+msgstr "정보"
+
+#: src/interface.c:444
 msgid "Update all feeds"
 msgstr "모든 피드 갱신"
 
-#: src/interface.c:387
+#: src/interface.c:460
 msgid "Update"
 msgstr "갱신"
 
-#: src/interface.c:409
+#: src/interface.c:482
 msgid "Next Unread"
 msgstr "다음 안 읽은 것"
 
-#: src/interface.c:415
+#: src/interface.c:488
 msgid "Search in feeds"
 msgstr "피드에서 찾기"
 
-#: src/interface.c:437
+#: src/interface.c:510
 msgid "Edit preferences"
 msgstr "설정 고치기"
 
-#: src/interface.c:465
+#: src/interface.c:538
 msgid "Search for"
 msgstr "찾기"
 
-#: src/interface.c:482
+#: src/interface.c:555
 msgid "create VFolder"
 msgstr "가상 폴더 만들기"
 
-#: src/interface.c:485
+#: src/interface.c:558
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr "피드 목록에 나타나는 가상 폴더에 이 찾기를 저장합니다"
 
-#: src/interface.c:490
+#: src/interface.c:563
 msgid "Close search"
 msgstr "찾기를 닫습니다."
 
-#: src/interface.c:524
+#: src/interface.c:597
 msgid "single item view"
 msgstr "단일 아이템 보기"
 
-#: src/interface.c:533
+#: src/interface.c:606
 msgid "condensed item list"
 msgstr "간결한 아이템 목록"
 
-#: src/interface.c:780
+#: src/interface.c:878
 msgid "Subscription Properties"
 msgstr "서명 항목"
 
-#: src/interface.c:801
+#: src/interface.c:899
 msgid ""
 "Edit the following entries to adjust the feed source URL or\n"
 "the feed title, which is displayed in the feed list."
@@ -726,53 +712,53 @@ msgstr ""
 "피드 소스 URL이나 피드 목록에 나타난 피드 제목을 설정하기 위해 \n"
 "다음 항목을 수정하시기 바랍니다."
 
-#: src/interface.c:814
+#: src/interface.c:912
 msgid "Feed Title"
 msgstr "피드 제목"
 
-#: src/interface.c:826
+#: src/interface.c:924
 msgid ""
-"either leave the name supplied by the feed or enter an alternative name "
-"which you like to be listed in the feed list"
+"Either leave the name supplied by the feed or enter an alternative name "
+"which you like to be listed in the feed list."
 msgstr ""
-"피드에 의해 제공되는 이름을 놔두거나, 아니면 피드리스트에 보일새 피드 이름을 "
-"정해주세요"
+"피드에 의해 제공되는 이름을 놔두거나, 아니면 피드리스트에 보일 새 피드 이름"
+"을 정해주세요."
 
-#: src/interface.c:833
-msgid "enter the URL the feed should be loaded from"
-msgstr "피드를 읽어올 URL을 입력해 주세요"
+#: src/interface.c:931
+msgid "Enter the URL the feed should be loaded from."
+msgstr "피드를 읽어올 URL을 입력해 주세요."
 
-#: src/interface.c:835 src/interface.c:1007
+#: src/interface.c:933 src/interface.c:1105
 msgid "Feed URL"
 msgstr "피드 URL"
 
-#: src/interface.c:842
+#: src/interface.c:940
 msgid "Feed URL and Title"
 msgstr "피드 URL 과 제목"
 
-#: src/interface.c:862
+#: src/interface.c:960
 msgid "Feed Refresh Interval (in minutes)"
 msgstr "피드 다시읽기 간격 (분단위)"
 
-#: src/interface.c:870
+#: src/interface.c:968
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
 "the interval to 0."
 msgstr ""
 "합리적인 다시읽기 시간을 정하기 위해서 꼭 기억해 주세요. 매일 갱신되는 피드를"
-"15분 간격으로 다시 읽는것은 좋지 않습니다. 자동 갱신을 끄시려면 시간 간격을"
-"0으로 정해주세요."
+"15분 간격으로 다시 읽는것은 좋지 않습니다. 자동 갱신을 끄시려면 시간 간격을0"
+"으로 정해주세요."
 
-#: src/interface.c:879
+#: src/interface.c:977
 msgid "Feed Update Interval"
 msgstr "피드 갱신 간격"
 
-#: src/interface.c:974
+#: src/interface.c:1072
 msgid "New Subscription"
 msgstr "새 서명"
 
-#: src/interface.c:995
+#: src/interface.c:1093
 msgid ""
 "Please enter the URL (including the http:// prefix) you want to \n"
 "subscribe to. Or enter a valid pathname if you want to load a local file."
@@ -780,15 +766,15 @@ msgstr ""
 "등록하기 원하시는 URL(http:// 를 포함해서)을 입력해 주세요.\n"
 "아니면 정확한 로컬 파일 이름을 입력해 주세요."
 
-#: src/interface.c:1017
+#: src/interface.c:1115
 msgid "local file"
 msgstr "로컬 파일"
 
-#: src/interface.c:1021
+#: src/interface.c:1119
 msgid "URL Input"
 msgstr "URL 입력"
 
-#: src/interface.c:1039
+#: src/interface.c:1137
 msgid ""
 "You have to specify the type of the feed you want to subscribe \n"
 "to. If you are unsure select \"Auto Detect\"."
@@ -796,201 +782,259 @@ msgstr ""
 "등록하시려는 피드의 종류를 정해주세요.확실치 않으시다면 알아서 찾기를 선택하"
 "시면 됩니다."
 
-#: src/interface.c:1050
+#: src/interface.c:1148
 msgid "Feed Type"
 msgstr "피드 종류"
 
-#: src/interface.c:1061
+#: src/interface.c:1159
 msgid "Auto Detect"
 msgstr "알아서 찾기"
 
-#: src/interface.c:1065
+#: src/interface.c:1163
 msgid "RSS"
 msgstr "RSS"
 
-#: src/interface.c:1069
+#: src/interface.c:1167
 msgid "CDF"
 msgstr "CDF"
 
-#: src/interface.c:1073
+#: src/interface.c:1171
 msgid "Atom/Echo/PIE"
 msgstr "Atom/Echo/PIE"
 
-#: src/interface.c:1077
+#: src/interface.c:1175
 msgid "OCS"
 msgstr "OCS"
 
-#: src/interface.c:1081
+#: src/interface.c:1179
 msgid "OPML"
 msgstr "OPML"
 
-#: src/interface.c:1087
+#: src/interface.c:1185
 msgid "Feed Type Selection"
 msgstr "피드 종류 고르기"
 
-#: src/interface.c:1209
+#: src/interface.c:1330
 msgid "program preferences"
 msgstr "프로그램 설정"
 
-#: src/interface.c:1234
+#: src/interface.c:1355
 msgid "use the GNOME default browser"
 msgstr "그놈 기본 브라우져를 사용합니다"
 
-#: src/interface.c:1244
+#: src/interface.c:1365
 msgid "use browser command"
 msgstr "브라우져 명령을 사용합니다"
 
-#: src/interface.c:1254
+#: src/interface.c:1375
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr "%s을(를) URL 위치놓기로, 브라우져 명령을 정해주세요 "
 
-#: src/interface.c:1256
-msgid "browser settings"
+#: src/interface.c:1377
+msgid "Browser Settings"
 msgstr "브라우져 설정"
 
-#: src/interface.c:1270
+#: src/interface.c:1391
 msgid "display only time"
 msgstr "시간만 보여주기"
 
-#: src/interface.c:1276
+#: src/interface.c:1397
 msgid "display date and time"
 msgstr "시간과 날짜 보여주기"
 
-#: src/interface.c:1286
+#: src/interface.c:1407
 msgid "user defined format"
 msgstr "사용자가 정한 모양"
 
-#: src/interface.c:1295
+#: src/interface.c:1416
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
 msgstr ""
 "숙련된 사용자에게: strftime() 맨페이지를 참고해서 시간 포맷 문자를 써주세요"
 
-#: src/interface.c:1297
-msgid "date column settings"
+#: src/interface.c:1418
+msgid "Date Column Settings"
 msgstr "날짜 열 설정"
 
-#: src/interface.c:1316
+#: src/interface.c:1437
 msgid ""
-"maximal number of items per feed \n"
+"Maximal number of items per feed \n"
 "to be saved permanently"
-msgstr "피드당 저장될 최대 아이템 숫자"
+msgstr ""
+"각 피드당 영구히 저장될 \n"
+"최대 아이템 숫자"
 
-#: src/interface.c:1327
+#: src/interface.c:1448
 msgid "Update all feeds on program startup."
 msgstr "프로그램이 시작될때 모든 피드를 갱신합니다."
 
-#: src/interface.c:1331
-msgid "feed handling settings"
+#: src/interface.c:1452
+msgid "Dont add the help feeds to the feed list on startup."
+msgstr "시작할 때 피드 리스트에 도움말 피드를 더하지 마세요."
+
+#: src/interface.c:1456
+msgid "Feed Handling Settings"
 msgstr "피드 다루기 설정"
 
-#: src/interface.c:1336
+#: src/interface.c:1461
 msgid "Feed Handling"
 msgstr "피드 다루기 설정"
 
-#: src/interface.c:1353
+#: src/interface.c:1480
 msgid ""
 "Show a status icon in the notification area \n"
-"(also called system tray). Changes of this setting\n"
-"take place after restarting the program."
+"(also called system tray)."
 msgstr ""
 "알림 영역(시스템 트레이 라고도 불리는)에 \n"
-"상태 아이콘을 보입니다. 이 설정은 프래그램을 \n"
-"다시 시작한 후에 적용됩니다."
+"상태 아이콘을 보입니다."
 
-#: src/interface.c:1358
+#: src/interface.c:1485
 msgid "Notification Area"
 msgstr "알림 영역 "
 
-#: src/interface.c:1372
-msgid "Disable Tool Bar."
-msgstr "도구 모음을 감춘다."
+#: src/interface.c:1500
+msgid "Show Menu _And Toolbar"
+msgstr "메뉴와 툴바 보이기(_A)"
 
-#: src/interface.c:1377
-msgid "Disable Menu Bar."
-msgstr "메뉴 모음을 감춘다."
+#: src/interface.c:1506
+msgid "Show _Menu Only"
+msgstr "메뉴만 보이기(_M)"
 
-#: src/interface.c:1382
+#: src/interface.c:1512
+msgid "Show _Toolbar Only"
+msgstr "툴바만 보이기(_T)"
+
+#: src/interface.c:1518
 msgid "Menu Settings"
 msgstr "메뉴 설정"
 
-#: src/interface.c:1386
+#: src/interface.c:1533
+msgid ""
+"Liferea views headlines using a HTML renderer. Depending on your "
+"installation there may be different choices presented below. Note: Changes "
+"will take place after the next restart!"
+msgstr ""
+"Liferea는 HTML 렌더러를 이용해서 머릿글을 읽습니다. 당신의 설치환경에 따라 다"
+"음과 같은 여러가지를 선택할 수 있습니다. 참고: 이 설정의 변경사항은 다음에 다"
+"시 시작할 때 부터적용됩니다!"
+
+#: src/interface.c:1543
+msgid "View Headlines With"
+msgstr "머릿글을 보기"
+
+#: src/interface.c:1555
+msgid "Viewing Headlines"
+msgstr "머릿글 보이기"
+
+#: src/interface.c:1560
 msgid "GUI Settings"
 msgstr "GUI 설정"
 
-#: src/interface.c:1475
+#: src/interface.c:1580
+msgid ""
+"Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
+"these settings in the GNOME Control Center. Note: changing these settings "
+"will affect other applications! This dialog is primarily for users without "
+"GNOME to be able to use Liferea with a proxy."
+msgstr ""
+"Liferea는 그놈 프록시 설정을 사용합니다. 만약 당신이 그놈을 사용한다면, 그놈"
+"메뉴의 '네트워크 프록시'를 통해서 설정할 수 있습니다. 참고: 이 설정의 변경사"
+"항은 다른 프로그램들에 영향을 미칠 수 있습니다! 이 대화창은 그놈을 사용하지 "
+"않는 사용자들이Liferea를 프록시를 통해서 사용할 수 있도록 하기 위해서 존재합"
+"니다."
+
+#: src/interface.c:1590
+msgid "Enable Proxy"
+msgstr "프록시를 사용함"
+
+#: src/interface.c:1600
+msgid "Proxy Host"
+msgstr "프록시 호스트"
+
+#: src/interface.c:1619
+msgid "Proxy Port"
+msgstr "프록시 포트"
+
+#: src/interface.c:1626
+msgid "HTTP Proxy Server"
+msgstr "HTTP 프록시 서버"
+
+#: src/interface.c:1630
+msgid "Proxy Settings"
+msgstr "프록시 설정"
+
+#: src/interface.c:1784
 msgid "add folder"
 msgstr "폴더 더하기"
 
-#: src/interface.c:1490 src/interface.c:1564
+#: src/interface.c:1799 src/interface.c:1873
 msgid "folder name"
 msgstr "폴더 이름"
 
-#: src/interface.c:1553
+#: src/interface.c:1862
 msgid "edit folder name"
 msgstr "폴더 이름 바꾸기"
 
-#: src/interface.c:1616
+#: src/interface.c:1925
 msgid "Select A File"
 msgstr "파일 고르기"
 
-#: src/interface.c:1661
+#: src/interface.c:1970
 msgid "edit filter rules"
 msgstr "거르개 규칙 고치기"
 
-#: src/interface.c:1761
+#: src/interface.c:2070
 msgid "edit rule properties"
 msgstr "규칙 설정하기"
 
-#: src/interface.c:1775
+#: src/interface.c:2084
 msgid "rule type"
 msgstr "규칙 종류"
 
-#: src/interface.c:1785
+#: src/interface.c:2094
 msgid "add items with exact match"
 msgstr "정확히 일치하는 아이템 더하기"
 
-#: src/interface.c:1789
+#: src/interface.c:2098
 msgid "remove items with exact match"
 msgstr "정확히 일치하는 아이템 빼기"
 
-#: src/interface.c:1799
+#: src/interface.c:2108
 msgid "rule value"
 msgstr "규칙 값"
 
-#: src/interface.c:1873
+#: src/interface.c:2182
 msgid "Search With Feedster"
 msgstr "피드스터로 찾기"
 
-#: src/interface.c:1887
+#: src/interface.c:2196
 msgid "Search for "
 msgstr "찾기"
 
-#: src/interface.c:1894
+#: src/interface.c:2203
 msgid "enter any search string you want"
-msgstr "아무거나 원하는 검색어를 입력해보세요"
+msgstr "아무거나 원하는 찾을 말을 입력해보세요"
 
-#: src/interface.c:1900
+#: src/interface.c:2209
 msgid "Maximal Number Of Result Items"
 msgstr "최대 결과 갯수"
 
-#: src/interface.c:1909
+#: src/interface.c:2218
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
 "permanently and update it like any other subscription.  "
 msgstr ""
-"참고: Liferea는 특정한 검색문을 위해 Feedster 결과로 에 질의하는 피드 "
-"subscription을 생성합니다. 이것을 다른 subscription 처럼 영구히 저장하고,갱신"
-"할 수 있습니다."
+"참고: Liferea는 특정한 검색문을 위해 Feedster 결과에 질의하는 피드 등록을 생"
+"성합니다. 이것을 다른 subscription 처럼 영구히 저장하고,갱신할 수 있습니다."
 
-#: src/interface.c:1975
+#: src/interface.c:2284
 msgid "Import Feed List"
 msgstr "피드 목록 들여오기"
 
-#: src/interface.c:1985
+#: src/interface.c:2294
 msgid ""
 "Liferea can import a list of feeds from an OPML file. This  can be used to "
 "either restore a backup feed list or import a feed list from another "
@@ -1000,19 +1044,19 @@ msgstr ""
 "받은 피드 리스트를 가져오거나 혹은 OPML을 지원하는 다른 aggregator로 부터 가"
 "져올 수 있습니다."
 
-#: src/interface.c:1995 src/interface.c:2083
+#: src/interface.c:2304 src/interface.c:2392
 msgid "Filename"
 msgstr "파일 이름"
 
-#: src/interface.c:2003 src/interface.c:2091
+#: src/interface.c:2312 src/interface.c:2400
 msgid "Select File"
 msgstr "파일 고르기"
 
-#: src/interface.c:2063
+#: src/interface.c:2372
 msgid "Export Feed List"
 msgstr "피드 목록 내보내기"
 
-#: src/interface.c:2073
+#: src/interface.c:2382
 msgid ""
 "Liferea can export the list of feeds as an OPML list. You can use this "
 "feature to backup your feed list or export your feed list to another "
@@ -1020,6 +1064,84 @@ msgid ""
 msgstr ""
 "Liferea는 피드 목록을 OPML 목록 으로 내보낼 수 있습니다. 이것을 가지고피드 목"
 "록을 백업하거나 다른 aggregator로 가져갈 수 있습니다."
+
+#: src/interface.c:2486
+msgid "Liferea is a news aggregator for GTK"
+msgstr "Liferea는 GTK를 이용한 뉴스 수집기입니다"
+
+#: src/interface.c:2491
+msgid "Copyright (c) 2003-2004 Lars Lindner"
+msgstr ""
+
+#: src/interface.c:2510
+msgid ""
+"Code, Patches, Debugging\n"
+"\n"
+"James Doherty <...>\n"
+"Jeremy Messenger <mezz7@cox.net>\n"
+"John McKnight <...>\n"
+"Tomasz Maka <pasp@users.sourceforge.net>\n"
+"Karl Soderstrom <ks@debian.org>\t\n"
+"Christophe Barbe <christophe.barbe@ufies.org>\n"
+"Juho Snellman <jsnell@users.sourceforge.net>\n"
+"Roshan Revankar <roshweb@users.sourceforge.net>\n"
+"Oliver Feiler <kiza@kcore.de>\n"
+"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
+"Niklas Morberg <morberg@users.sourceforge.net>\n"
+"Johannes Schlueter <joscherl@users.sourceforge.net>\n"
+"Pierre Phaneuf <pp@ludusdesign.com>\n"
+"\n"
+"Code from other projects\n"
+"\n"
+"Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
+"Philippe Martin, Brion Vibber (favicon support)"
+msgstr ""
+"코딩, 패치, 디버깅\n"
+"\n"
+"James·Doherty·<...>\n"
+"Jeremy·Messenger·<mezz7@cox.net>\n"
+"John·McKnight·<...>\n"
+"Tomasz·Maka·<pasp@users.sourceforge.net>\n"
+"Karl·Soderstrom·<ks@debian.org>\t\n"
+"Christophe·Barbe·<christophe.barbe@ufies.org>\n"
+"Juho·Snellman·<jsnell@users.sourceforge.net>\n"
+"Roshan·Revankar·<roshweb@users.sourceforge.net>\n"
+"Oliver·Feiler·<kiza@kcore.de>\n"
+"Nathan·J.·Conrad·<t98502@users.sourceforge.net>\n"
+"Niklas·Morberg·<morberg@users.sourceforge.net>\n"
+"Johannes·Schlueter·<joscherl@users.sourceforge.net>\n"
+"Pierre·Phaneuf·<pp@ludusdesign.com>\n"
+"\n"
+"다른 프로젝트에서 얻어온 코드들\n"
+"\n"
+"Anders·Carlsson·<andersca@gnu.org>·(tray·icon·support)\n"
+"Philippe·Martin,·Brion·Vibber·(favicon·support)"
+
+#: src/interface.c:2516
+msgid "Contributors"
+msgstr "도움을 주신 분들"
+
+#: src/interface.c:2530
+msgid ""
+"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Park Ji-In <mithrandir@electrang.net>\n"
+"Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Jose Maria Mateos <chema@chema.homelinux.org>\n"
+"Lars Lindner <lars.lindner@gmx.net>\n"
+"Vladimir Petkov <vpetkov@i-space.org>"
+msgstr ""
+"Stephane·Jourdan·<stephane.jourdan@itris.fr>\n"
+"Takeshi·Aihana·<aihana@gnome.gr.jp>\n"
+"박지인·<mithrandir@electrang.net>\n"
+"Carlos·Fenollosa·<topopardo@humorfreak.com>\n"
+"Jose·Maria·Mateos·<chema@chema.homelinux.org>\n"
+"Lars·Lindner·<lars.lindner@gmx.net>\n"
+"Vladimir·Petkov·<vpetkov@i-space.org>"
+
+#: src/interface.c:2536
+msgid "Translation"
+msgstr "번역한 분들"
 
 #: src/netio.c:83
 msgid "Connecting to "
@@ -1066,34 +1188,34 @@ msgstr "웹서버가 잘못된 리다이렉트를 보내왔습니다"
 msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
 msgstr "웹서버 %s이(가) 잘못된 HTTP/1.0 응답을 보내왔습니다. 해독불가합니다."
 
-#: src/netio.c:601
+#: src/netio.c:603
 msgid "This URL doesn't look too valid to me, don't you think?"
 msgstr "이 URL은 잘못 된 것 같은데요.. 그렇게 생각하지 않나요?"
 
-#: src/netio.c:658
+#: src/netio.c:660
 msgid "Couldn't create network socket!"
 msgstr "네트웍 소켓을 열 수 없습니다."
 
-#: src/netio.c:663
+#: src/netio.c:665
 #, c-format
 msgid "Can't resolve host %s!"
 msgstr "%s의 ip주소를 찾을 수 없습니다."
 
-#: src/netio.c:670
+#: src/netio.c:672
 #, c-format
 msgid "Could not connect to server %s: %s"
 msgstr "%s에 접속할 수 없습니다. : %s"
 
-#: src/netio.c:678
+#: src/netio.c:680
 msgid "Aborted."
 msgstr "취소 되었습니다."
 
-#: src/netio.c:736
+#: src/netio.c:738
 #, c-format
 msgid "Could not open pipe \"%s\"!"
 msgstr "파이프 %s을(를) 열 수 없습니다"
 
-#: src/netio.c:742
+#: src/netio.c:744
 #, c-format
 msgid "Could not open file \"%s\"!"
 msgstr "파일 %s을(를) 열 수 없습니다"
@@ -1103,76 +1225,218 @@ msgstr "파일 %s을(를) 열 수 없습니다"
 msgid "There is no file \"%s\"!"
 msgstr "\"%s\" 파일이 없습니다!"
 
-#: src/ns_admin.c:80
+#: src/ns_admin.c:56
 msgid "report errors to"
 msgstr "에러를 보내주세요."
 
-#: src/ns_admin.c:82
+#: src/ns_admin.c:59
 msgid "feed generator"
 msgstr "피드를 만든 사람에게."
 
-#: src/ns_ag.c:100
+#: src/ns_ag.c:85
 msgid "source"
 msgstr "소스"
 
-#: src/ns_ag.c:114
+#: src/ns_ag.c:104
 msgid "time"
 msgstr "시간"
 
-#: src/ns_cC.c:91
+#: src/ns_cC.c:53
 msgid "license"
 msgstr "라이센스"
 
-#: src/ns_dc.c:250 src/ns_ocs.c:98
+#: src/ns_dc.c:229 src/ns_ocs.c:95
 msgid "internal OCS namespace parsing error!"
 msgstr "내부 OSC 네임스페이스 파싱 에러 "
 
-#: src/ocs_dir.c:200 src/ocs_dir.c:242 src/ocs_dir.c:364 src/ocs_dir.c:438
+#: src/ns_dc.c:264 src/ns_dc.c:287 src/ns_dc.c:324
+msgid "internal error! unknown tag type while parsing Dublin Core tag!"
+msgstr "내부 에러! 더블린 코어 태그를 해석하던 중 알 수 없는 태그타입 !"
+
+#: src/ocs_dir.c:200 src/ocs_dir.c:243 src/ocs_dir.c:357 src/ocs_dir.c:426
 #, c-format
 msgid "no namespace handler for <%s:%s>!\n"
 msgstr "<%s:%s> 를 위한 네임스페이스 핸들러가 없습니다!\n"
 
-#: src/ocs_dir.c:467
-#, c-format
-msgid ""
-"XML error while reading directory! Directory \"%s\" could not be loaded!"
-msgstr "디렉토리를 읽는 도중 XML 에러! 디렉토리 \"%s\"을(를) 읽을 수 없습니다."
+#: src/ocs_dir.c:468
+msgid "<p>Could not find RDF header!</p>"
+msgstr "<p>RDF 헤더를 찾을 수 없습니다!</p>"
 
-#: src/ocs_dir.c:473 src/opml.c:144 src/rss_channel.c:363
-msgid "Empty document!"
-msgstr "빈 도큐먼트"
+#: src/opml.c:160
+msgid "<p>Could not find OPML header!</p>"
+msgstr "<p>OPML 헤더를 찾을 수 없습니다.!</p>"
 
-#: src/ocs_dir.c:482
-msgid "Could not find RDF header!"
-msgstr "RDF 헤더를 찾을 수 없습니다!"
-
-#: src/opml.c:155
-msgid "Could not find OPML header!!"
-msgstr "OPML 헤더를 찾을 수 없습니다.!"
-
-#: src/pie_feed.c:96 src/rss_channel.c:118
+#: src/pie_feed.c:98 src/rss_channel.c:118
 msgid "Internal error! Invalid output request mode for namespace information!"
 msgstr "내부 에러! Invalid·output·request·mode·for·namespace·information!"
 
-#: src/pie_feed.c:231
-msgid "Could not find PIE header! Feed was not added!"
-msgstr "PIE 헤더를 찾을 수 없습니다! 헤더가 더해지지 않았습니다!"
+#: src/pie_feed.c:232
+msgid "<p>Could not find Atom/Echo/PIE header!</p>"
+msgstr "<p>Atom/Echo/PIE 헤더를 찾을 수 없습니다.!</p>"
 
-#: src/rss_channel.c:375
-msgid "Could not find RDF/RSS header!"
-msgstr "RDF/RSS 헤더를 찾을 수 없습니다!"
+#: src/rss_channel.c:356
+msgid "<p>Could not find RDF/RSS header!</p>"
+msgstr "<p>RDF/RSS 헤더를 찾을 수 없습니다!</p>"
 
-#: src/rss_item.c:241
+#: src/rss_item.c:233
 msgid "comments"
 msgstr "덧말"
 
-#: src/ui_filter.c:58
+#: src/textview.c:40
+msgid "Text Viewer (experimental)"
+msgstr "텍스트 뷰어 (실험용)"
+
+#: src/textview.c:118
+#, c-format
+msgid ""
+"There is no %%s URL place holder in the browser command string you specified "
+"in the preferences dialog!!!"
+msgstr ""
+"당신이 설정한 설정 다이얼로그에 브라우져 명령 문자열인 %%s URL place holder"
+"가 없습니다."
+
+#: src/ui_dnd.c:83
+msgid "Sorry Liferea does not yet support drag&drop of folders!"
+msgstr "죄송합니다, Liferea는 아직 드래그&드랍을 지원하지 않습니다"
+
+#: src/ui_dnd.c:92
+msgid "you cannot modify the special help folder contents!"
+msgstr "스페셜한 도움말 폴더의 내용을 고칠 수 없습니다"
+
+#: src/ui_feedlist.c:126
+msgid "entry list widget lookup failed!\n"
+msgstr "엔트리 목록 위젯 찾기 실패\n"
+
+#: src/ui_feedlist.c:131
+msgid "could not retrieve selection of entry list!"
+msgstr "선택한 엔트리 목록을 받을 수 없습니다!"
+
+#: src/ui_feedlist.c:147
+msgid "fatal! selected feed entry has no key!!!"
+msgstr "치명적! 선택한 피드 엔트리는 키가 없습니다!!"
+
+#: src/ui_feedlist.c:283
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr ""
+"내부 에러! 알 수 없는 엔트리 종류! 적당한 아이콘을 보여줄 수 없습니다.\n"
+
+#: src/ui_feedlist.c:420 src/ui_itemlist.c:584
+msgid "internal error! could not select newly created treestore iter!"
+msgstr "내부 에러! 새로 만들어진 treestore iter를 선택할 수 없습니다!"
+
+#: src/ui_feedlist.c:428 src/ui_feedlist.c:444 src/ui_feedlist.c:487
+msgid "You have to select a feed entry!"
+msgstr "피드 엔트리를 선택해야 합니다!"
+
+#: src/ui_feedlist.c:450
+msgid "You can't delete help feeds!"
+msgstr "도움말 피드는 지울 수 없습니다"
+
+#: src/ui_feedlist.c:454
+msgid "Deleting entry"
+msgstr "엔트리 지우기"
+
+#: src/ui_feedlist.c:462
+msgid "It seems like there is no selected feed entry!"
+msgstr "선택한 피드 엔트리가 보이지 않습니다!"
+
+#: src/ui_feedlist.c:519
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minutes"
+msgstr "이 피드의 제공자는 갱신 주기를 %d분 으로 제안했습니다"
+
+#: src/ui_feedlist.c:521
+msgid "This feed specifies no default update interval."
+msgstr "이 피드는 기본 갱신 주기를 정하지 않습니다."
+
+#: src/ui_feedlist.c:569
+msgid "Internal error! No feed selected, but property change requested...\n"
+msgstr "내부 에러! 피드가 선택되지 않았지만 속성 바꾸기이 요구되었습니다...\n"
+
+#: src/ui_feedlist.c:588
+#, c-format
+msgid ""
+"Could not download \"%s\"!\n"
+"\n"
+" Maybe the URL is invalid or the feed is temporarily not available. You can "
+"retry downloading or remove the feed subscription via the context menu from "
+"the feed list.\n"
+msgstr ""
+"\"%s\"을(를) 다운로드 할 수 없습니다\n"
+" URL이 잘못되었거나, 피드가 일시적으로 접근 불가능 한 것 같습니다.다시 받기"
+"를 시도하시거나 피드 목록에서 피드를 지워주세요\n"
+
+#: src/ui_feedlist.c:643
+msgid "internal error! invalid type selected! This should never happen!\n"
+msgstr "내부 에러! 잘못된 타입 선택! 이건 있을 수 없어어어어어!!\n"
+
+#: src/ui_feedlist.c:717 src/ui_itemlist.c:525 src/ui_itemlist.c:582
+msgid "internal error! could not get feed tree view selection!\n"
+msgstr "내부 에러! 트리뷰의 선택부분을 찾을 수 없습니다!\n"
+
+#: src/ui_feedlist.c:719 src/ui_itemlist.c:527
+msgid "internal error! could not find feed tree view widget!\n"
+msgstr "내부 에러! 트리 뷰를 찾을 수 없습니다!\n"
+
+#: src/ui_filter.c:54
 msgid "Rule Type"
 msgstr "규칙 종류"
 
-#: src/ui_filter.c:61
+#: src/ui_filter.c:57
 msgid "Value"
 msgstr "값"
+
+#: src/ui_folder.c:69 src/ui_folder.c:109 src/ui_folder.c:163
+msgid "You have to select a folder entry!"
+msgstr "폴더 엔트리를 선택해야만 합니다!"
+
+#: src/ui_folder.c:135 src/ui_folder.c:138
+msgid "A folder must be empty to delete it!"
+msgstr "폴더를 지우시려면 먼저 폴더를 비우세요!"
+
+#: src/ui_folder.c:141
+msgid "Error: Cannot determine folder key!"
+msgstr "폴더키를 정할 수 없습니다!"
+
+#: src/ui_itemlist.c:214
+msgid "Date"
+msgstr "날짜"
+
+#: src/ui_itemlist.c:221
+msgid "Headline"
+msgstr "머릿글"
+
+#: src/ui_itemlist.c:249
+msgid "item list widget lookup failed!\n"
+msgstr "아이템 목록 위젯을 찾을 수 없습니다!\n"
+
+#: src/ui_itemlist.c:259
+msgid "could not retrieve selection of item list!\n"
+msgstr "선택한 아이템 목록을 받을 수 없습니다.\n"
+
+#: src/ui_itemlist.c:340
+msgid "internal error! item list display for NULL pointer requested!\n"
+msgstr "내부 에러! 아이템 리스트가 NULL 포인터 요청을 나타냅니다\n"
+
+#: src/ui_itemlist.c:392
+msgid "could not find item list widget!"
+msgstr "아이템 목록 위젤을 찾을 수 없습니다."
+
+#: src/ui_itemlist.c:397
+msgid "could not retrieve selection of item list!"
+msgstr "선택한 아이템 목록을 받을 수 없습니다."
+
+#: src/ui_itemlist.c:476
+msgid "No item has been selected!"
+msgstr "아이템이 선택되지 않았습니다!"
+
+#: src/ui_itemlist.c:497
+msgid "You have to select a feed to delete its items!"
+msgstr "아이템을 지울 피드 엔트리를 선택해야 합니다!"
+
+#: src/ui_itemlist.c:561
+msgid "There are no unread items!"
+msgstr "읽지 않은 아이템이 없습니다!"
 
 #: src/ui_popup.c:61
 msgid "could not allocate memory!"
@@ -1226,14 +1490,18 @@ msgid "/_Delete VFolder"
 msgstr "/가상 폴더 지우기(_D)"
 
 #: src/ui_popup.c:121
-msgid "/_Mark All As Read"
-msgstr "/전부 읽은 것으로 표시(_M)"
+msgid "/Toggle _Read Status"
+msgstr "/읽은 상태를 토글(_R)"
 
 #: src/ui_popup.c:122
+msgid "/Toggle Item _Flag"
+msgstr "/아이템 플래그 토글(_F)"
+
+#: src/ui_popup.c:124
 msgid "/_Next Unread Item"
 msgstr "/다음 안 읽은 아이템(_N)"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:126
 msgid "/_Launch Item In Browser"
 msgstr "/브라우져로 띄우기(_L)"
 
@@ -1245,66 +1513,127 @@ msgstr "/확대하기"
 msgid "/Zoom Out"
 msgstr "/축소하기"
 
-#: src/ui_popup.c:140
+#: src/ui_popup.c:138
 msgid "/_Copy Link Location"
 msgstr "/링크 위치 복사하기(_C)"
 
-#: src/ui_popup.c:141
+#: src/ui_popup.c:139
 msgid "/_Subscribe"
 msgstr "/등록(_S)"
 
-#: src/ui_search.c:75
+#: src/ui_search.c:70
 #, c-format
 msgid "searching for \"%s\""
 msgstr "%s을(를) 찾기"
 
-#: src/ui_search.c:107
-msgid "Feedster search request failed.\n"
-msgstr "피드스터 찾기 요청이 실패하였습니다.\n"
-
-#: src/ui_search.c:136
+#: src/ui_search.c:123
 #, c-format
 msgid "creating VFolder for search term \"%s\""
 msgstr "검색어 \"%s\"에 대한 가상폴더 만들기"
 
 #. FIXME: this really does not belong here!!! -> vfolder.c
 #. setup a rule
-#. 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule))))
-#. 					g_error(_("Could not allocate memory!"));
+#. 				rp = g_new0(struct rule,1);
 #. we set the searchstring as a default title
-#: src/ui_search.c:149
+#: src/ui_search.c:135
 #, c-format
 msgid "VFolder %s"
 msgstr "가상폴더 %s"
 
-#: src/ui_search.c:160
+#: src/ui_search.c:146
 msgid "internal error! could not get folder key prefix!"
 msgstr "내부 에러! 새 폴더키를 prefix를 얻을 수 없습니다!"
 
-#: src/ui_tray.c:82
+#: src/ui_tray.c:83
 #, c-format
 msgid "%d new items!"
 msgstr "%d개의 새로운 아이템이 있습니다."
 
-#: src/ui_tray.c:90
+#: src/ui_tray.c:94
 msgid "No new items."
 msgstr "새로운 아이템이 없습니다."
 
-#: src/ui_dnd.c:79
-msgid "Sorry Liferea does not yet support drag&drop of folders!"
-msgstr "죄송합니다, Liferea는 아직 드래그&드랍을 지원하지 않습니다"
-
-#: src/ui_dnd.c:88
-msgid "you cannot modify the special help folder contents!"
-msgstr "스페셜한 도움말 폴더의 내용을 고칠 수 없습니다"
-
-#: src/update.c:140
+#: src/update.c:142
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr ""
 "피드 목록이 NULL입니다! 이럴수럴수럴수러럴수..가 업데이트 할 수 없습니다."
 
-#~ msgid "_Toggle Condensed View"
-#~ msgstr "간결하게 보기 토글(_T)"
+#: src/gtkhtml2/gtkhtml2.c:66
+msgid "GtkHTML2"
+msgstr "GtkHTML2"
+
+#: src/gtkhtml2/gtkhtml2.c:293
+#, c-format
+msgid ""
+"Invalid browser command! There is no %%s URL place holder in the browser "
+"command string you specified in the preferences dialog!!!"
+msgstr ""
+"잘못된 브라우져 명령! 당신이 다이얼로그에 설정한 브라우져 명령 문자열인 %%s "
+"URL place holder가 없습니다."
+
+#: src/gtkhtml2/gtkhtml2.c:300
+#, c-format
+msgid "browser command failed: %s"
+msgstr "브라우져 명령 실패: %s"
+
+#: src/gtkhtml2/gtkhtml2.c:303
+#, c-format
+msgid "starting: \"%s\""
+msgstr "%s을(를) 시작함"
+
+#: src/mozilla/mozembed.c:69
+msgid "Mozilla (experimental)"
+msgstr "모질라 (실험용)"
+
+#~ msgid ""
+#~ "You have disabled both the menubar and the toolbar. Without one of these "
+#~ "you won't be able to access all program functions. I'll reenable the "
+#~ "toolbar!"
+#~ msgstr ""
+#~ "메뉴 막대와 도구 막대를 모두 감추었습니다. 둘중 하나 없이는 모든 기능을 "
+#~ "쓸 수 없습니다. 도구 막다를 다시 보이겠습니다."
+
+#~ msgid "internal error! could not reset HTML widget scrolling!"
+#~ msgstr "내부 에러! HTML위젯 스크롤을 초기화 할 수 없습니"
+
+#~ msgid "Empty document! Feed was not added!"
+#~ msgstr "빈 문서! 피드가 더해지지 않았습니다."
+
+#~ msgid "not enough memory!"
+#~ msgstr "메모리가 부족합니다 !"
+
+#~ msgid "Could not allocate memory!"
+#~ msgstr "메모리를 할당 할 수 없습니다!"
+
+#~ msgid "Empty document! Feed cache file should not be empty..."
+#~ msgstr "빈 도큐먼트! 패드 캐시파일은 비어 있으면 안됩니다..."
+
+#~ msgid ""
+#~ "The last update of this feed failed. Please see the console output for "
+#~ "more information!"
+#~ msgstr ""
+#~ "이 피드의 갱신작업이 실패했습니다. 좀 더 많은 정보를 보시려면 콘솔 출력을 "
+#~ "보세요"
+
+#~ msgid "Disable Tool Bar."
+#~ msgstr "도구 모음을 감춘다."
+
+#~ msgid "Disable Menu Bar."
+#~ msgstr "메뉴 모음을 감춘다."
+
+#~ msgid ""
+#~ "XML error while reading directory! Directory \"%s\" could not be loaded!"
+#~ msgstr ""
+#~ "디렉토리를 읽는 도중 XML 에러! 디렉토리 \"%s\"을(를) 읽을 수 없습니다."
+
+#~ msgid "Could not find PIE header! Feed was not added!"
+#~ msgstr "PIE 헤더를 찾을 수 없습니다! 헤더가 더해지지 않았습니다!"
+
+#~ msgid "/_Mark All As Read"
+#~ msgstr "/전부 읽은 것으로 표시(_M)"
+
+#~ msgid "Feedster search request failed.\n"
+#~ msgstr "피드스터 찾기 요청이 실패하였습니다.\n"
 
 #~ msgid "Could not allocate memory to read file!"
 #~ msgstr "파일을 읽을 메모리를 할당 할 수 없습니다.!"
