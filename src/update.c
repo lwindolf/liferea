@@ -23,6 +23,9 @@
 #include "net/netio.h"
 #include "debug.h"
 #include "update.h"
+#include "conf.h"
+
+#define DEFAULT_UPDATE_THREAD_CONCURRENCY	5
 
 /* communication queues for requesting updates and sending the results */
 GAsyncQueue	*requests = NULL;
@@ -70,12 +73,18 @@ void update_request_free(gpointer request) {
 	debug_exit("update_request_free");
 }
 
-GThread * update_thread_init(void) {
+void update_thread_init(void) {
+	int	i;
+	int	count;
 
 	requests = g_async_queue_new();
 	results = g_async_queue_new();
+	
+	if(0 == (count = getNumericConfValue(UPDATE_THREAD_CONCURRENCY)))
+		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
 		
-	return g_thread_create(update_thread_main, NULL, FALSE, NULL);
+	for(i = 0; i < count; i++)
+		g_thread_create(update_thread_main, NULL, FALSE, NULL);
 }
 
 static void *update_thread_main(void *data) {

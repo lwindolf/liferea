@@ -71,10 +71,8 @@ void update_request_free(gpointer request);
 /**
  * Initializes and starts the update request processing
  * thread. Should be called only once! 
- *
- * @return thread handle
  */
-GThread * update_thread_init(void);
+void update_thread_init(void);
 
 /**
  * Sets the online status according to mode.

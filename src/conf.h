@@ -43,6 +43,7 @@
 #define DEFAULT_MAX_ITEMS		"/apps/liferea/maxitemcount"
 #define UPDATE_ON_STARTUP		"/apps/liferea/updateonstartup"
 #define DISABLE_HELPFEEDS		"/apps/liferea/disable-helpfeeds"
+#define UPDATE_THREAD_CONCURRENCY	"/apps/liferea/update-thread-concurrency"
 
 /* GUI settings and persistency values */
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
