@@ -715,6 +715,11 @@ void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_a
 	on_next_unread_item_activate(NULL, NULL); 
 }
 
+void on_nextbtn_clicked(GtkButton *button, gpointer user_data) {
+
+	on_next_unread_item_activate(NULL, NULL); 
+}
+
 static void ui_itemlist_select(itemPtr ip) {
 	GtkTreeIter		iter;
 	GtkWidget		*treeview;

@@ -209,6 +209,8 @@ void on_popup_mark_as_read(gpointer callback_data,
 void on_popup_refresh_selected(gpointer callback_data,
 						 guint callback_action,
 						 GtkWidget *widget);
+void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
+
 void on_popup_delete(gpointer callback_data,
 						guint callback_action,
 						GtkWidget *widget);

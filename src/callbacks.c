@@ -52,8 +52,6 @@
 #include "ui_queue.h"
 #include "ui_notification.h"
 	
-extern GHashTable	*feedHandler;
-
 /* all used icons */
 GdkPixbuf *icons[MAX_ICONS];
 
@@ -153,36 +151,6 @@ void ui_redraw_widget(gchar *name) {
 		msg = g_strdup_printf("Fatal! Could not lookup widget \"%s\"!", name);
 		g_warning(msg);
 		g_free(msg);
-	}
-}
-	
-/*------------------------------------------------------------------------------*/
-/* simple callbacks which don't belong to item or feed list 			*/
-/*------------------------------------------------------------------------------*/
-
-static void on_refreshbtn_clicked_cb(nodePtr ptr) {
-	feed_schedule_update((feedPtr)ptr, 0);
-}
-
-void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
-
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, on_refreshbtn_clicked_cb);
-}
-
-void on_nextbtn_clicked(GtkButton *button, gpointer user_data) { on_next_unread_item_activate(NULL, NULL); }
-
-void on_popup_allunread_selected(void) {
-	nodePtr		np;
-	
-	if(np = ui_feedlist_get_selected()) {
-		if(FST_FOLDER == np->type)
-			/* if we have selected a folder we mark all item of all feeds as read */
-			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
-		else
-			/* if not we mark all items of the item list as read */
-			ui_itemlist_mark_all_as_read();
-
-		ui_feedlist_update();
 	}
 }
 

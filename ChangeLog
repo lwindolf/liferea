@@ -16,6 +16,16 @@
 	  Just select it once and the feed you like to read in 
 	  this mode will stay this way until you switch it off.
 	  (Lars Lindner)
+	* Improvement to the itemlist viewing mode switching.
+	  Now the HTML rendering widget isn't destroyed each
+	  time the mode is switched but reused.
+	  (Lars Lindner)
+
+	Bugfixes:
+
+	* Liferea now prevents the update of vfolders when you
+	  request the update of all feeds. This bug changed the
+	  vfolder state to unavailable. (Lars Lindner)
 
 
 2004-09-15  Lars Lindner <lars.lindner@gmx.net>

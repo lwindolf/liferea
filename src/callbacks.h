@@ -66,38 +66,11 @@ void ui_redraw_widget(gchar *name);
 void ui_show_info_box(const char *format, ...);
 void ui_show_error_box(const char *format, ...);
 
-void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
-void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
-
 void on_popup_quit(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 		
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data);
-
-/* FIXME: move the following to ui_filter... */
-void
-on_popup_filter_selected	       (void);
-
-void
-on_addrulebtn_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_rulepropbtn_clicked                 (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_ruleupbtn_clicked                   (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_ruledownbtn_clicked                 (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_rulechangedbtn_clicked              (GtkButton       *button,
-                                        gpointer         user_data);
 
 void
 on_feedlist_drag_data_get              (GtkWidget       *widget,

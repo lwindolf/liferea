@@ -203,6 +203,8 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
 
 void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
+void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
+
 /*@}*/
 
 #endif

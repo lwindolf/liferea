@@ -397,8 +397,10 @@ feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
 /* refresh feed callback							*/
 /*------------------------------------------------------------------------------*/
 
-static void on_popup_refresh_selected_cb(nodePtr ptr) {
-	feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
+static void ui_feedlist_refresh_node(nodePtr ptr) {
+
+	if(FST_FEED == ptr->type)	/* don't process vfolders */
+		feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
 }
 
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -408,14 +410,34 @@ void on_popup_refresh_selected(gpointer callback_data, guint callback_action, Gt
 		ui_show_error_box(_("You have to select a feed entry"));
 		return;
 	}
-	
+
 	if(download_is_online()) {
 		if(FST_FEED == ptr->type)
 			feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
 		else
-			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, on_popup_refresh_selected_cb);
+			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, ui_feedlist_refresh_node);
 	} else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
+}
+
+void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
+
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, ui_feedlist_refresh_node);
+}
+
+void on_popup_allunread_selected(void) {
+	nodePtr		np;
+	
+	if(np = ui_feedlist_get_selected()) {
+		if(FST_FOLDER == np->type)
+			/* if we have selected a folder we mark all item of all feeds as read */
+			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
+		else
+			/* if not we mark all items of the item list as read */
+			ui_itemlist_mark_all_as_read();
+
+		ui_feedlist_update();
+	}
 }
 
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {

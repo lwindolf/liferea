@@ -122,8 +122,6 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),	NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
 	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Launch Item In Browser"), NULL, on_popup_launchitem_selected, 		0, NULL, 0);
-/*      {"/sep2",			NULL, NULL, 					0, "<Separator>" },
-    	{"/_Edit Filters",		NULL, on_popup_filter_selected, 		0, NULL },*/
 
 	/* HTML view popup menues */
 	html_menu_items = NULL;
