@@ -31,5 +31,7 @@ void 	initFolders(void);
 void	addFolder(gchar *keyprefix, gchar *title, gint type);
 gchar *	getFolderTitle(gchar *keyprefix);
 void	setFolderTitle(gchar *keyprefix, gchar *title);
+void	setFolderCollapseState(gchar *keyprefix, gboolean collapsed);
+void	saveAllFolderCollapseStates(void);
 
 #endif

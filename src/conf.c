@@ -540,14 +540,26 @@ int setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval) {
 	GError		*err = NULL;
 	gchar		*gconfpath;
 					
-	/* update URL */
 	gconfpath = g_strdup_printf("%s/%s/updateInterval", PATH, feedkey);
 	gconf_client_set_int(client, gconfpath, interval, &err);
 	g_free(gconfpath);	
 	if(is_gconf_error(err))
 		return 1;
 	
-	return 0;	
+	return 0;
+}
+
+int setFolderCollapseStateInConfig(gchar *keyprefix, gboolean collapsed) {
+	GError		*err = NULL;
+	gchar		*gconfpath;
+	
+	gconfpath = g_strdup_printf("%s/%scollapseState", PATH, keyprefix);
+	gconf_client_set_bool(client, gconfpath, collapsed, &err);
+	g_free(gconfpath);	
+	if(is_gconf_error(err))
+		return 1;
+	
+	return 0;
 }
 
 /*----------------------------------------------------------------------*/
@@ -656,7 +668,7 @@ void loadEntries() {
 			g_free(gconfpath);	
 
 			gconfpath = g_strdup_printf("%s/%s/url", PATH, key);
-			url = getStringConfValue(gconfpath);	/* use this function to get a "" on empty conf value */
+			url = getStringConfValue(gconfpath);	/* we use this function to get a "" on empty conf value */
 			g_free(gconfpath);
 
 			if(0 == type)
@@ -673,6 +685,11 @@ void loadEntries() {
 		// FIXME: free keylist data with g_slist_free(...
 		g_free(keylist);		
 		groupiter = g_slist_next(groupiter);
+		
+		/* restore folder collapse state */
+		gconfpath = g_strdup_printf("%s/%scollapseState", PATH, keyprefix);
+		setFolderCollapseState(keyprefix, getBooleanConfValue(gconfpath));
+		g_free(gconfpath);		
 	}
 	
 	g_slist_free(groupiter);

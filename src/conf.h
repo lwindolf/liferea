@@ -65,6 +65,7 @@ int	setFeedTitleInConfig(gchar *feedkey, gchar *feedname);
 int	setFeedURLInConfig(gchar *feedkey, gchar *feedurl);
 int	setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval);
 int	setFolderTitleInConfig(gchar *keyprefix, gchar *title);
+int	setFolderCollapseStateInConfig(gchar *keyprefix, gboolean collapsed);
 
 /* returns true if namespace is enabled in configuration */
 gboolean	getNameSpaceStatus(gchar *nsname);

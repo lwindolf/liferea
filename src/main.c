@@ -79,7 +79,6 @@ int i;
 			
 	/* FIXME: move to somewhere else :) */
 	/* load window size */
-	gtk_tree_view_expand_all(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
 	if((0 != getNumericConfValue(LAST_WINDOW_WIDTH)) && 
 	   (0 != getNumericConfValue(LAST_WINDOW_HEIGHT)))
 	   	gtk_window_resize(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_WIDTH),

@@ -1613,6 +1613,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	gint		x,y;
 	
 	saveAllFeeds();
+	saveAllFolderCollapseStates();
 	
 	/* save pane proportions */
 	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {

@@ -39,7 +39,8 @@ GHashTable	*folders = NULL;
 /* used to lookup a feed/folders pointer specified by a key */
 extern GHashTable	*feeds;
 
-// FIXME!
+extern GtkWidget	*mainwindow;
+
 extern GtkTreeStore * getFeedStore(void);
 extern GtkTreeStore * getItemStore(void);
 
@@ -87,6 +88,53 @@ void setFolderTitle(gchar *keyprefix, gchar *title) {
 	} else {
 		g_print(_("internal error! could not determine folder key!"));
 	}
+}
+
+void setFolderCollapseState(gchar *keyprefix, gboolean collapsed) {
+	GtkTreeStore		*feedstore;
+	GtkTreeIter		*iter;
+	GtkTreePath		*path;
+	GtkWidget		*treeview;	
+
+	/* expand folder if necessary (they are collapsed by default */
+	if(!collapsed) {
+		feedstore = getFeedStore();
+		g_assert(NULL != feedstore);
+		
+		g_assert(NULL != folders);
+		if(NULL != (iter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
+			if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
+				path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
+				gtk_tree_view_expand_row(GTK_TREE_VIEW(treeview), path, TRUE);
+				gtk_tree_path_free(path);
+			}
+		} else {
+			g_print(_("internal error! could not determine folder key!"));
+		}
+	}
+}
+
+static void saveFolderCollapseState(gpointer key, gpointer value, gpointer user_data) {
+	gchar			*keyprefix = (gchar *)key;
+	GtkTreeStore		*feedstore;
+	GtkTreeIter		*iter = (GtkTreeIter *)value;
+	GtkTreePath		*path;
+	GtkWidget		*treeview;
+		
+	feedstore = getFeedStore();
+	g_assert(NULL != feedstore);
+
+	if(NULL != iter) {	/* true for root */
+		if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
+			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
+			setFolderCollapseStateInConfig(keyprefix, !gtk_tree_view_row_expanded(GTK_TREE_VIEW(treeview), path));
+			gtk_tree_path_free(path);
+		}
+	}
+}
+
+void saveAllFolderCollapseStates(void) {
+	g_hash_table_foreach(folders, saveFolderCollapseState, NULL);
 }
 
 void addFolder(gchar *keyprefix, gchar *title, gint type) {

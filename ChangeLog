@@ -25,6 +25,8 @@
 	  engine.
 	* Added a possibility to subscribe to a HTML link
 	  and to copy this link URL to the X selection.
+	* Folders now remember their collapse state.
+	  Finally!
 	* Fixed a bug with permanent URL redirection reported
 	  by Christophe Barbe.
 	* Fixed a bug in the blogChannel module support, that
