@@ -599,7 +599,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		return;
 	
 	/* find first feed with unread items */
-	fp = folder_find_unread_feed(folder_get_root());
+	fp = folder_find_unread_feed(NULL);
 
 	if (fp) {
 		if(NULL == fp) {

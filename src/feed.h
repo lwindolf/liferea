@@ -72,7 +72,6 @@ typedef struct feed {
 	
 	/* per-feed UI data */
 	gpointer	*ui_data;
-	struct folder *parent;			//FIXME: remove me!
 	gchar		*id;			/**< unique feed identifier string */
 	gint		unreadCount;		/**< number of unread items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */

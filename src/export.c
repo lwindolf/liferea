@@ -172,8 +172,10 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		if (NULL != xmlHasProp(cur, BAD_CAST"helpFolder"))
 			g_assert(NULL != (folder = feedlist_insert_help_folder(folder)));
 		else {
-			g_assert(NULL != (folder = restore_folder(folder, title, NULL, FST_FOLDER)));
-			ui_add_folder(folder, -1);
+			folderPtr child;
+			g_assert(NULL != (child = restore_folder(folder, title, NULL, FST_FOLDER)));
+			ui_add_folder(folder, child, -1);
+			folder = child;
 		}
 		if (NULL != xmlHasProp(cur, BAD_CAST"expanded"))
 			ui_folder_set_expansion(folder, TRUE);
@@ -371,9 +373,9 @@ void on_importfile_clicked(GtkButton *button, gpointer user_data) {
 			
 			foldertitle = g_strdup(_("imported feed list"));
 			
-			if(NULL != (folder = restore_folder(folder_get_root(), foldertitle, NULL, FST_FOLDER))) {
+			if(NULL != (folder = restore_folder(NULL, foldertitle, NULL, FST_FOLDER))) {
 				/* add the new folder to the model */
-				ui_add_folder(folder, -1);
+				ui_add_folder(NULL, folder, -1);
 			} else {
 				ui_mainwindow_set_status_bar(_("internal error! could not get a new folder key!"));
 				return;

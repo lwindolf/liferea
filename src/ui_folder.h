@@ -25,7 +25,17 @@
 #define	ROOT_FOLDER_PREFIX	""
 
 /* Adding/removing folders & feeds*/
-void ui_add_folder(folderPtr folder, gint position);
+
+/**
+ * Add a folder to the feedlist
+ *
+ * @param parent the parent of the new folder, or NULL to insert in
+ * the root folder
+ * @param folder the folder to add
+ * @param the position in which the folder should be added, or -1 to
+ * append the folder to the parent.
+ */
+void ui_add_folder(folderPtr parent, folderPtr folder, gint position);
 
 void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position);
 

@@ -29,22 +29,11 @@
 #include "folder.h"
 #include "callbacks.h"
 
-folderPtr rootFolder = NULL;
-
 /* ---------------------------------------------------------------------------- */
 /* folder handling stuff (thats not the VFolder handling!)			*/
 /* ---------------------------------------------------------------------------- */
 
 void initFolders(void) {
-	g_assert(rootFolder == NULL);
-	rootFolder = g_new0(struct folder, 1);
-	rootFolder->type = FST_FOLDER;
-	rootFolder->title = g_strdup("Root Feed");
-	rootFolder->id = g_strdup("root");
-}
-
-folderPtr folder_get_root() {
-	return rootFolder;
 }
 
 /* Used to add a folder without adding it to the config */
@@ -55,7 +44,6 @@ folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type) {
 
 	folder = g_new0(struct folder, 1);
 	folder->type = type;
-	folder->parent = parent;
 	folder->title = g_strdup(title);
 	if (id == NULL)
 		folder->id = conf_new_id();
@@ -68,17 +56,6 @@ folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type) {
 
 gchar* folder_get_title(folderPtr folder) {
 	return folder->title;
-}
-
-gchar* folder_get_conf_path(folderPtr folder) {
-	if (folder->parent) {
-		gchar *parentPath = folder_get_conf_path(folder->parent);
-		gchar *path = g_strdup_printf("%s/%s", parentPath, folder->id);
-		g_free(parentPath);
-		return path;
-	} else {
-		return g_strdup_printf("%s", folder->id);
-	}
 }
 
 void setFolderTitle(folderPtr folder, gchar *title) {
@@ -124,14 +101,14 @@ void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
 	g_assert(NULL != folder);
 	g_assert(NULL != dest_folder);
 	g_assert(folder->ui_data);
-	g_assert(dest_folder == folder_get_root() || dest_folder->ui_data);
+	g_assert(dest_folder->ui_data);
 
 	expanded = ui_is_folder_expanded(folder);
 
 	// Make new folder
 	newFolder = restore_folder(dest_folder, folder->title, folder->id, folder->type);
 
-	ui_add_folder(newFolder, position);
+	ui_add_folder(dest_folder, newFolder, position);
 
 	// Recursivly move children
 	while (gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, &((ui_data*)(folder->ui_data))->row)) {

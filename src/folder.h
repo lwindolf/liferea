@@ -28,7 +28,6 @@
 typedef struct folder {
 	gint type;
 	gpointer *ui_data;
-	struct folder *parent;
 	gchar *title;
 	gchar *id; /* The gconf key name of the directory, for example "dir5" */
 } *folderPtr;
@@ -40,8 +39,6 @@ void folder_set_pos(folderPtr folder, folderPtr destFolder, int position);
 /* functions to create/change/remove folder			*/
 /* ------------------------------------------------------------ */
 void 	initFolders(void);
-folderPtr folder_get_root();
-gchar* folder_get_conf_path(folderPtr folder);
 void folder_add_feed(folderPtr foldr, struct feed *feed, gint position);
 
 /**

@@ -210,7 +210,7 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		
 		folder = restore_folder(parent, name, id, FST_FOLDER);
 		
-		ui_add_folder(folder, -1);
+		ui_add_folder(parent, folder, -1);
 		load_folder_contents(folder, id);
 		if (expanded)
 			ui_folder_set_expansion(folder, TRUE);
@@ -306,7 +306,7 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 
 	if(helpFolder == NULL) {
 		helpFolder = restore_folder(parent, _("Liferea Help"), "helpFolder", FST_HELPFOLDER);
-		ui_add_folder(helpFolder, -1);
+		ui_add_folder(parent, helpFolder, -1);
 		
 		fp = feed_new();
 		feed_set_type(fp, FST_HELPFEED);
@@ -369,16 +369,16 @@ void loadSubscriptions(void) {
 	gchar	*filename;
 	
 	feedlistLoading = TRUE;
-	load_folder_contents(folder_get_root(), "");
+	load_folder_contents(NULL, "");
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
-	importOPMLFeedList(filename, folder_get_root(), FALSE);
+	importOPMLFeedList(filename, NULL, FALSE);
 	g_free(filename);
 	debug0(DEBUG_CONF, "Erasing old gconf enteries.");
 	conf_feedlist_erase_gconf();
 	
 	/* if help folder was not yet created... */
 	if(!getBooleanConfValue(DISABLE_HELPFEEDS))
-		feedlist_insert_help_folder(folder_get_root());
+		feedlist_insert_help_folder(NULL);
 	
 	
 	feedlistLoading = FALSE;

@@ -735,7 +735,6 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	new_fp->request = fp->request;
 	new_fp->ui_data = fp->ui_data;
 	new_fp->ui_data = fp->ui_data;
-	new_fp->parent = fp->parent;
 	
 	tmp_fp = feed_new();
 	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
@@ -746,7 +745,6 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	tmp_fp->source = NULL;
 	tmp_fp->request = NULL;
 	tmp_fp->ui_data = NULL;
-	tmp_fp->parent = NULL;
 	feed_free(tmp_fp);				/* we use tmp_fp to free almost all infos
 							   allocated by old feed structure */
 	g_free(new_fp);
@@ -802,10 +800,6 @@ void feed_free(feedPtr fp) {
 		g_free(fp->id);
 	}
 	
-	if (fp->parent) {
-		folderPtr folder = fp->parent;
-		ui_update_folder(folder);
-	}
 	g_free(fp->title);
 	g_free(fp->description);
 	g_free(fp->source);
@@ -819,14 +813,12 @@ void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 	gboolean ui=FALSE;
 	g_assert(NULL != dest_folder);
 	g_assert(NULL != fp);
-	g_assert(NULL != fp->parent);
 	
 	if(fp->ui_data) {
 		ui=TRUE;
 		ui_folder_remove_node((nodePtr)fp);
 	}
 
-	fp->parent = dest_folder;
 	/* move key in configuration */
 	
 	if(ui) {

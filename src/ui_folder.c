@@ -73,10 +73,10 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	foldertitleentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
-	folder = restore_folder(folder_get_root(), foldertitle, NULL, FST_FOLDER);
+	folder = restore_folder(NULL, foldertitle, NULL, FST_FOLDER);
 	if(folder) {
 		/* add the new folder to the model */
-		ui_add_folder(folder, -1);
+		ui_add_folder(NULL, folder, -1);
 	} else {
 		g_warning("internal error! could not get a new folder key!");
 	}	
@@ -236,35 +236,33 @@ void checkForEmptyFolders(void) {
      ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, checkForEmptyFolder);
 }
 
-void ui_add_folder(folderPtr folder, gint position) {
+void ui_add_folder(folderPtr parent, folderPtr folder, gint position) {
 	GtkTreeIter		*iter;
 	/* check if a folder with this keyprefix already
 	   exists to check config consistency */
 
 	g_assert(folder->ui_data == NULL);
-
+	g_assert(parent == NULL || parent->ui_data != NULL);
 	g_assert(feedstore != NULL);
-
+	
 	/* if parent is NULL we have the root folder and don't create
 	   a new row! */
 	folder->ui_data = g_malloc(sizeof(ui_data));
 	iter = &(((ui_data*)(folder->ui_data))->row);
-	gchar *path = folder_get_conf_path(folder);
-	if (folder == NULL) {
+	if (parent == NULL) {
 		if (position < 0)
 			gtk_tree_store_append(feedstore, iter, NULL);
 		else
 			gtk_tree_store_insert(feedstore, iter, NULL,position);
 	} else {
 		if (position < 0)
-			gtk_tree_store_append(feedstore, iter, &((ui_data*)folder->parent->ui_data)->row);
+			gtk_tree_store_append(feedstore, iter, &((ui_data*)parent->ui_data)->row);
 		else
-			gtk_tree_store_insert(feedstore, iter, &((ui_data*)folder->parent->ui_data)->row,position);
+			gtk_tree_store_insert(feedstore, iter, &((ui_data*)parent->ui_data)->row,position);
 	}
 	gtk_tree_store_set(feedstore, iter,
 				    FS_PTR, folder,
 				    -1);
-	g_free(path);
 
 	checkForEmptyFolders();
 
@@ -308,7 +306,7 @@ void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position) {
 	g_assert(NULL != feedstore);
 	g_assert(NULL == fp->ui_data);
 	
-	if (parent == folder_get_root() || parent == NULL)
+	if (parent == NULL)
 		topiter = NULL;
 	else {
 		g_assert(parent->ui_data);
@@ -362,8 +360,7 @@ static void ui_update_folder_from_iter(GtkTreeIter *iter) {
 				    -1);
 	g_assert(IS_FOLDER(ptr->type));
 
-	if(folder_get_root() == ptr)
-		return;
+	g_assert(ptr != NULL);
 
 	g_assert(ptr->ui_data);
 
