@@ -287,7 +287,8 @@ void vfolder_update_item(itemPtr ip) {
 					item_copy(ip, tmp);
 				} else {
 					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...",  ip->title, vp->title);
-					//vfolder_remove_item(ip);
+					/* we need this: vfolder_remove_item(ip); but not here :-) */
+					item_copy(ip, tmp);	/* as long as we don't remove them at least update them */
 				}
 				break;
 			}
