@@ -1677,8 +1677,11 @@ void displayItemList(void) {
 			/* three pane mode */
 			if(NULL == selected_ip) {
 				/* display feed info */
-				if(NULL != selected_fp)
+				if(NULL != selected_fp) {
+					if(!getFeedAvailable(selected_fp))
+						addToHTMLBuffer(&buffer, getFeedErrorDescription(selected_fp));
 					addToHTMLBuffer(&buffer, getFeedDescription(selected_fp));
+				}
 			} else {
 				/* display item content */
 				markItemAsRead(ip);

@@ -86,6 +86,12 @@
 #define UNSHADED_START	"<div style=\"padding:5px;\">"
 #define UNSHADED_END	"</div>"
 
+/* HTTP error */
+
+#define HTTP_ERROR_START	"<table cellspacing=\"0\" style=\"margin-bottom:5px;width:100%;background:#E06060;border-width:1px;border-style:solid;\"><tr><td style=\"padding:2px;padding-left:5px;padding-right:5px;\">"
+#define HTTP_ERROR_TEXT		"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
+#define HTTP_ERROR_END		"</td></tr></table>"
+
 /* creates the HTML widget */
 void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2);
 

@@ -150,6 +150,11 @@ gint getFeedUpdateCounter(feedPtr fp);
 void setFeedUpdateCounter(feedPtr fp, gint count);
 gboolean getFeedAvailable(feedPtr fp);
 
+/* Returns a HTML string describing the last retrieval error 
+   of this feed. Should only be called when getFeedAvailable
+   returns FALSE. Caller must free returned string! */
+gchar * getFeedErrorDescription(feedPtr fp);
+
 gchar * getFeedTitle(feedPtr fp);
 void setFeedTitle(feedPtr fp, gchar * title);
 

@@ -47,21 +47,6 @@
 /* to store the nsHandler structs for all supported RDF namespace handlers */
 GHashTable	*ocs_nslist = NULL;
 
-/* note: the tag order has to correspond with the OCS_* defines in the header file */
-static gchar *directoryTagList[] = {	"title",
-					"creator",
-					"description",
-					"subject",
-					"format",
-					"updatePerdiod",
-					"updateFrequency",
-					"updateBase",
-					"language",	/* this should catch OCS 0.3 */
-					"contentType",
-					"image",
-					NULL
-				  };
-
 /* ---------------------------------------------------------------------------- */
 /* HTML output		 							*/
 /* ---------------------------------------------------------------------------- */
