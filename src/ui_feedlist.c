@@ -19,6 +19,7 @@
  */
 
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include "guitreemodelfilter.h"
 #include "support.h"
 #include "interface.h"
@@ -269,6 +270,21 @@ static void ui_feedlist_row_activated_cb(GtkTreeView *tv, GtkTreePath *path, Gtk
 	}
 
 }
+
+static gboolean ui_feedlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+	if (event->type == GDK_KEY_PRESS &&
+	    event->state == 0 &&
+	    event->keyval == GDK_Delete) {
+		nodePtr ptr = ui_feedlist_get_selected();
+		
+		if (ptr != NULL) {
+			ui_feedlist_delete(ptr);
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
 static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, gpointer data) {
 	gint		count;
 
@@ -339,6 +355,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
 
 	/* And connect signals */
 	g_signal_connect(G_OBJECT(feedview), "row-activated", G_CALLBACK(ui_feedlist_row_activated_cb), NULL);
+	g_signal_connect(G_OBJECT(feedview), "key-press-event", G_CALLBACK(ui_feedlist_key_press_cb), NULL);
 
 	/* Setup the selection handler for the main view */
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(feedview));
