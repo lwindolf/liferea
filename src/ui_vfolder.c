@@ -21,6 +21,8 @@
 #include "feed.h"
 #include "rule.h"
 #include "ui_vfolder.h"
+#include "vfolder.h"
+#include "ui_itemlist.h"
 #include "interface.h"
 #include "support.h"
 
@@ -65,7 +67,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		/* update vfolder */
 		ui_itemlist_clear();
 		vfolder_refresh(ui_data->fp);
-		ui_itemlist_load(ui_data->fp);
+		ui_itemlist_load((nodePtr)ui_data->fp);
 	}
 	
 	g_free(ui_data);
@@ -175,7 +177,7 @@ static void on_ruleremove_clicked(GtkButton *button, gpointer user_data) {
  */
 static void ui_vfolder_add_rule(struct fp_vfolder_ui_data *ui_data, rulePtr rule) {
 	GtkWidget		*hbox, *hbox2, *menu, *widget;
-	struct changeRequest	*changeRequest, *selected;
+	struct changeRequest	*changeRequest, *selected = NULL;
 	ruleInfoPtr		ruleInfo;
 	rulePtr			rp;
 	gint			i;

@@ -80,7 +80,6 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 }
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
-	G_CONST_RETURN gchar	*searchstring;
 	gint			pos;
 	feedPtr			fp;
 	folderPtr		folder = NULL;

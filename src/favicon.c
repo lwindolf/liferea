@@ -38,6 +38,7 @@
 #include "debug.h"
 #include "html.h"
 #include "ui_feedlist.h"
+#include "ui_feed.h"
 
 void favicon_load(feedPtr fp) {
 	struct stat	statinfo;

@@ -52,9 +52,6 @@ rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean a
 }
 
 gboolean rule_check_item(rulePtr rp, itemPtr ip) {
-	ruleInfoPtr	ruleInfo;
-	gboolean	matches = FALSE;
-	
 	g_assert(ip != NULL);
 	
 	return (*((ruleCheckFuncPtr)rp->ruleInfo->ruleFunc))(rp, ip);

@@ -568,7 +568,7 @@ void feed_add_items(feedPtr fp, GList *items) {
  */
 void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	GSList		*old_items;
-	itemPtr		old_ip;
+	itemPtr		old_ip = NULL;
 	gboolean	found, equal = FALSE;
 	
 	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
@@ -634,7 +634,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 
 			/* ensure that the item nr's are unique */
 			if(NULL != feed_lookup_item(fp, new_ip->nr)) {
-				g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%ud)\n", fp->id, new_ip->title, new_ip->nr);
+				g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%lu)\n", fp->id, new_ip->title, new_ip->nr);
 				new_ip->nr = ++(fp->lastItemNr);
 				fp->needsCacheSave = TRUE;
 			}

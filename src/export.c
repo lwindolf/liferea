@@ -222,7 +222,6 @@ static long parse_long(gchar *str, long def) {
  */
 static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
 	xmlChar		*type, *ruleId, *value, *additive;
-	rulePtr		rp;
 	
 	/* process any children */
 	cur = cur->xmlChildrenNode;

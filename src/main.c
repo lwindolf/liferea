@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
 	gint		i;
 	GtkWidget	*dialog;
 #ifdef USE_SM
-	gchar *opt_session_arg = NULL, *opt_config_dir_arg = NULL;
+	gchar *opt_session_arg = NULL;
 #endif
 
 #ifdef ENABLE_NLS
