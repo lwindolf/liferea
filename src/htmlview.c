@@ -49,6 +49,7 @@ static GnomeVFSURI 	*baseURI = NULL;
 static HtmlDocument	*doc = NULL;
 static GtkWidget	*itemView = NULL;
 static GtkWidget	*itemListView = NULL;
+static GtkWidget	*htmlwidget = NULL;
 
 /* some prototypes */
 static void url_request(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
@@ -87,26 +88,26 @@ void finishHTMLOutput(void) {
 	html_document_close_stream(doc);
 }
 
-void setHTMLViewMode(gboolean threePane) {
-	GtkWidget	*htmlwidget;
-
+static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
+	
+	/* finalizing older stuff */
 	if(NULL != doc) {
-		kill_old_connections(doc);	/* if enabled images do not always load */	
-		html_document_clear(doc);
+		//kill_old_connections(doc);	/* if enabled images do not always load */	
+		html_document_clear(doc);	/* heard rumors that this is necessary... */
+		g_object_unref(G_OBJECT(doc));
 	}
-	if(NULL == doc)
-		doc = html_document_new();
-
-	html_view_set_document(HTML_VIEW(itemView), NULL);
-	html_view_set_document(HTML_VIEW(itemListView), NULL);
-	if(FALSE == threePane) {
-	g_print("selected list view\n");
-		htmlwidget = itemListView;	}
-	else
-		htmlwidget = itemView;
 	
+	if(NULL != htmlwidget) 
+		gtk_widget_destroy(htmlwidget);
+		
+	doc = html_document_new();
+	
+	/* create html widget and pack it into the scrolled window */
+	htmlwidget = html_view_new();
 	html_view_set_document(HTML_VIEW(htmlwidget), doc);
-	
+	html_view_set_magnification(HTML_VIEW(htmlwidget), 1.0);	
+	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
+		
 	g_signal_connect (G_OBJECT (doc), "request_url",
 			 GTK_SIGNAL_FUNC (url_request), htmlwidget);
 			 
@@ -115,17 +116,7 @@ void setHTMLViewMode(gboolean threePane) {
 
 	g_signal_connect (G_OBJECT (doc), "link_clicked",
 			  G_CALLBACK (link_clicked), mainwindow);
-
-}
-
-static GtkWidget * setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
-	GtkWidget	*htmlwidget;
-	
-	/* create html widget and pack it into the scrolled window */
-	htmlwidget = html_view_new();
-	html_view_set_magnification(HTML_VIEW(htmlwidget), 1.0);	
-	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
-				  				  
+			  				  				  
 	g_signal_connect (G_OBJECT (htmlwidget), "on_url",
 			  G_CALLBACK (on_url), lookup_widget(mainwindow, "statusbar"));
 
@@ -133,15 +124,23 @@ static GtkWidget * setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindo
 			  G_CALLBACK (request_object), NULL);
 
 	gtk_widget_show_all(scrolledwindow);
-	
-	return htmlwidget;
+}
+
+void setHTMLViewMode(gboolean threePane) {
+
+	if(FALSE == threePane) {
+	g_print("selected list view\n");
+		setupHTMLView(mainwindow, itemListView); }
+	else
+		setupHTMLView(mainwindow, itemView);
+
 }
 
 void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2) {
 	char testhtml[] = "<html><body></body></html>";
 	
-	itemView = setupHTMLView(mainwindow, pane1);
-	itemListView = setupHTMLView(mainwindow, pane2);
+	itemView = pane1;
+	itemListView = pane2;
 	setHTMLViewMode(TRUE);
 	
 	startHTMLOutput();

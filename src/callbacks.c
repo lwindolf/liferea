@@ -68,7 +68,7 @@ extern GHashTable	*folders; // FIXME!
 extern GMutex 		*feeds_lock; // FIXME!
 
 static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
-static gboolean	itemlist_mode = FALSE;	/* FALSE means three pane, TRUE means two panes */
+static gboolean	itemlist_mode = TRUE;	/* TRUE means three pane, FALSE means two panes */
 static feedPtr	new_feed;		/* used by new feed dialog */
 
 /* two globals to keep selected entry info while DND actions */
@@ -1019,9 +1019,9 @@ void on_toggle_condensed_view(void) {
 	g_assert(mainwindow);
 	w1 = lookup_widget(mainwindow, "itemtabs");
 	if(TRUE == itemlist_mode)
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 1);
-	else 
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 0);
+	else 
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 1);
 		
 	if(NULL != (key = getMainFeedListViewSelection())) {
 		clearItemList();
@@ -1605,18 +1605,15 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 					IS_TYPE, getFeedType(fp),	/* not the item type, this would fail for VFolders! */
 					-1);
 					
-			if(gnome_vfs_is_primary_thread())
-				if(itemlist_mode) {
-					writeHTML(description);
-g_print(description);
-				}
+			if(gnome_vfs_is_primary_thread() && !itemlist_mode)
+				writeHTML(description);
 		}
 
 		itemlist = g_slist_next(itemlist);
 	}
 	
 	if(gnome_vfs_is_primary_thread()) {
-		if(!itemlist_mode)
+		if(itemlist_mode)
 			writeHTML(fp->description);
 		
 		finishHTMLOutput();

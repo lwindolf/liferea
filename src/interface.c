@@ -207,7 +207,7 @@ create_mainwindow (void)
   gtk_paned_pack2 (GTK_PANED (rightpane), itemview, TRUE, TRUE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (itemview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-  label30 = gtk_label_new (_("label30"));
+  label30 = gtk_label_new (_("single item view"));
   gtk_widget_show (label30);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 0), label30);
   gtk_label_set_justify (GTK_LABEL (label30), GTK_JUSTIFY_LEFT);
@@ -217,7 +217,7 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (itemtabs), itemlistview);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (itemlistview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-  label31 = gtk_label_new (_("label31"));
+  label31 = gtk_label_new (_("condensed item list"));
   gtk_widget_show (label31);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 1), label31);
   gtk_label_set_justify (GTK_LABEL (label31), GTK_JUSTIFY_LEFT);
