@@ -2489,7 +2489,7 @@ take place after restarting the program.</property>
 <widget class="GtkFileSelection" id="fileselection">
   <property name="border_width">10</property>
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Datei auswählen</property>
+  <property name="title" translatable="yes">Select Local File</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">True</property>

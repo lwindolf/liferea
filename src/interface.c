@@ -1511,7 +1511,7 @@ create_fileselection (void)
   GtkWidget *ok_button1;
   GtkWidget *cancel_button1;
 
-  fileselection = gtk_file_selection_new (_("Datei ausw\303\244hlen"));
+  fileselection = gtk_file_selection_new (_("Select Local File"));
   gtk_container_set_border_width (GTK_CONTAINER (fileselection), 10);
   gtk_window_set_modal (GTK_WINDOW (fileselection), TRUE);
   gtk_window_set_destroy_with_parent (GTK_WINDOW (fileselection), TRUE);

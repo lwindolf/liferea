@@ -169,10 +169,6 @@ itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
 			
 		cur = cur->next;
 	}
-	
-	/* some postprocessing */
-	if(NULL != ip->title)
-		ip->title = unhtmlize((gchar *)doc->encoding, ip->title);
 		
 	return ip;
 }
