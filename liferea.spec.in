@@ -9,12 +9,13 @@ URL: 		http://liferea.sourceforge.net/
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: 	gtk2-devel
 BuildRequires:		gtkhtml2-devel
-BuildRequires: 	libxml2-devel >= 2.5.10
+BuildRequires: 	libxml2-devel >= 2.4.1
 BuildRequires: 	GConf2-devel
 BuildRequires: 	gettext
 BuildRequires: 	libtool
 BuildRequires: 	pkgconfig
-Requires: 	gtk2 >= 2.0.0, libxml2, gconf2
+Requires: 	gtk2 >= 2.0.0, libxml2
+Prereq:		GConf2
 
 %description
 Liferea is an abbreviation for Linux Feed Reader. It is a news
@@ -29,16 +30,27 @@ install news aggregator for GTK/GNOME.
 %setup -q
 
 %build
-%configure
-CFLAGS="$RPM_OPT_FLAGS" make %{?_smp_mflags}
+%configure \
+	--disable-schemas-install
+CFLAGS="$RPM_OPT_FLAGS" %{__make} %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make DESTDIR=${RPM_BUILD_ROOT} install
+%{__rm} -rf ${RPM_BUILD_ROOT}
+%makeinstall
 %find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+gconftool-2 --makefile-install-rule \
+  %{_sysconfdir}/gconf/schemas/%{name}.schemas &>/dev/null
+
+%pre
+export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+gconftool-2 --makefile-uninstall-rule \
+  %{_sysconfdir}/gconf/schemas/%{name}.schemas >/dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root)
@@ -52,8 +64,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/pixmaps/%{name}.png
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/*.so
+%{_mandir}/man1/liferea.1
+%{_sysconfdir}/gconf/schemas/%{name}.schemas
 
 %changelog
+* Tue Aug 17 2004 Noa Resare <noa@resare.com> - 0.5.3
+- removed gconf schema installation at build time
+- added gconf schema installation at install time
+- added manpage
+- GConf2 is now a prereq
+
 * Thu Aug 26 2004 Lars Lindner <lars.lindner@gmx.net> 0.6.0
 - Wrongs paths fixed (reported by Ricardo Veguilla)
 
