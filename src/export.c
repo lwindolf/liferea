@@ -57,7 +57,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		ui_feedlist_do_for_all_data(ptr, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)childNode);
 	} else {
 		feedPtr fp = (feedPtr)ptr;
-		gchar *type = feed_type_num_to_str(feed_get_type(fp));
+		const gchar *type = feed_type_fhp_to_str(fp->fhp);
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 		
 		if (feed_get_type(fp) != FST_HELPFEED) {
@@ -160,15 +160,6 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			source = tmp;
 		}
 		
-		/* get type attribute and ensure it has a valid value or
-		   set type auto detect ... */
-		typeStr = xmlGetProp(cur, BAD_CAST"type");
-		type = feed_type_str_to_num(typeStr);
-		if(!IS_FEED(type) && !IS_DIRECTORY(type) && 
-		   !(FST_HELPFEED == type) && !(FST_VFOLDER == type))
-			type = FST_AUTODETECT;
-		xmlFree(typeStr);
-
 		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
 		interval = parse_integer(intervalStr, -1);
 		xmlFree(intervalStr);
@@ -181,11 +172,16 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 
 		fp = feed_new();
 		
+		/* get type attribute and ensure it has a valid value or
+		   set type auto detect ... */
+		typeStr = xmlGetProp(cur, BAD_CAST"type");
+		fp->fhp = feed_type_str_to_fhp(typeStr);
+		xmlFree(typeStr);
+
 		/* set feed properties available from the OPML feed list 
 		   they may be overwritten by the values of the cache file
 		   but we need them in case the cache file loading fails */
-
-		feed_set_type(fp, type);
+		
 		feed_set_source(fp, source);
 		feed_set_title(fp, title);
 		feed_set_update_interval(fp, interval);

@@ -34,17 +34,6 @@
 #include "debug.h"
 #include "net/netio.h"
 
-/* possible selected new dialog feed types */
-static gint selectableTypes[] = {	FST_AUTODETECT,
-					FST_RSS,
-					FST_CDF,
-					FST_PIE,
-					FST_OCS,
-					FST_OPML
-				};
-
-#define MAX_TYPE_SELECT	6
-
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
 
@@ -125,27 +114,27 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 	gpointer	favicon;
 	g_assert(!IS_FOLDER(fp->type));
 	
+	if(!feed_get_available(fp)) {
+		return icons[ICON_UNAVAILABLE];
+	}
+
+	if(NULL != (favicon = feed_get_favicon(fp))) {
+		return favicon;
+	}
+	
 	switch(fp->type) {
 		case FST_VFOLDER:
 			return icons[ICON_VFOLDER];
 		case FST_OPML:
 		case FST_OCS:
-			if(feed_get_available(fp))
 				return icons[ICON_OCS];
-			else
-				return icons[ICON_UNAVAILABLE];
 		case FST_AUTODETECT:
 		case FST_HELPFEED:
 		case FST_PIE:
 		case FST_RSS:			
 		case FST_CDF:
-			if(feed_get_available(fp)) {
-				if(NULL != (favicon = feed_get_favicon(fp))) {
-					return favicon;
-				} else
-					return icons[ICON_AVAILABLE];
-			} else
-				return icons[ICON_UNAVAILABLE];
+		case FST_FEED:
+			return icons[ICON_AVAILABLE];
 		default:
 			debug0(DEBUG_GUI, "internal error! unknown entry type! cannot display appropriate icon!\n");
 			return icons[ICON_UNAVAILABLE];
@@ -266,7 +255,6 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 
 static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, gpointer data) {
 	gint		count;
-	gchar		*key;
 
 	if(!filter_feeds_without_unread_headlines)
 		return TRUE;
@@ -615,7 +603,6 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	gchar		*source;
 	GtkWidget 	*sourceentry;	
 	GtkWidget 	*titleentry, *typeoptionmenu;
-	gint		type;
 	
 	g_assert(newdialog != NULL);
 	g_assert(propdialog != NULL);

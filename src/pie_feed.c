@@ -345,6 +345,7 @@ feedHandlerPtr initPIEFeedHandler(void) {
 					        (gpointer)ns_dc_getPIENsHandler());
 
 	/* prepare feed handler structure */
+	fhp->typeStr = "pie";
 	fhp->feedParser	= pie_parse;
 	fhp->checkFormat = pie_format_check;
 	fhp->merge		= TRUE;

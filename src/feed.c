@@ -57,19 +57,6 @@ struct feed_type {
 	gchar *id_str;
 };
 
-static struct feed_type type_list[] = {
-	{FST_RSS, "rss"},
-	{FST_OCS, "ocs"},
-	{FST_CDF, "cdf"},
-	{FST_PIE, "pie"},
-	{FST_OPML, "opml"},
-	{FST_VFOLDER, "vfolder"},
-	/* Folder types are never saved, nor are help feeds, so folders
-	   and feeds can be omitted. */
-	{-1, NULL}
-};
-
-
 /* a list containing all items of all feeds, used for VFolder
    and searching functionality */
 feedPtr		allItems = NULL;
@@ -81,24 +68,25 @@ static gboolean feed_save_timeout(gpointer user_data);
 /* feed type registration					*/
 /* ------------------------------------------------------------ */
 
-gchar *feed_type_num_to_str(gint num) {
-	struct feed_type *type;
-	for(type = type_list; type->id_num != -1; type++) {
-		if (num == type->id_num)
-			return type->id_str;
-	}
-	return NULL;
+const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp) {
+	if (fhp == NULL)
+		return NULL;
+	return fhp->typeStr;
 }
 
-gint feed_type_str_to_num(gchar *str) {
-	struct feed_type *type;
+feedHandlerPtr feed_type_str_to_fhp(gchar *str) {
+	GSList *iter;
+	feedHandlerPtr fhp = NULL;
 	if (str == NULL)
-		return -1;
-	for(type = type_list; type->id_num != -1; type++) {
-		if (!strcmp(str, type->id_str))
-			return type->id_num;
+		return NULL;
+
+	for(iter = feedhandlers; iter != NULL; iter = iter->next) {
+		fhp = (feedHandlerPtr)iter->data;
+		if (!strcmp(str, fhp->typeStr))
+			return fhp;
 	}
-	return -1;
+
+	return NULL;
 }
 
 feedHandlerPtr feed_parse(feedPtr fp, gchar *data) {

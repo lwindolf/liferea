@@ -63,6 +63,8 @@
 /** macro to test if feed menu action can be applied to this entry */
 #define FEED_MENU(type)		(IS_FEED(type) || IS_DIRECTORY(type))
 
+struct feedhandler;
+
 /** common structure to access feed info structures */
 typedef struct feed {
 	gint		type;			/**< feed type (position is important!!!)*/
@@ -87,6 +89,7 @@ typedef struct feed {
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
 	GSList		*filter;		/**< list of filters applied to this feed */
+	struct feedHandler *fhp;
 	
 	/* feed properties used for updating */
 	GTimeVal	scheduledUpdate;	/**< time at which the feed needs to be updated */
@@ -106,6 +109,7 @@ typedef gboolean (*checkFormatFunc) (xmlDocPtr doc, xmlNodePtr cur); /**< Return
 
 // FIXME: remove this structure...
 typedef struct feedHandler {
+	const gchar *typeStr; /**< string representation of the feed type */
 	feedParserFunc	    feedParser;	/**< feed type parse function */
 	checkFormatFunc checkFormat;  /**< Parser for the feed type*/
 	gboolean		merge;		/**< flag if feed type supports merging */
@@ -176,8 +180,8 @@ gint feed_get_type(feedPtr fp);
 /**
  * Lookup a feed type string from the feed type number
  */
-gchar *feed_type_num_to_str(gint num);
-gint feed_type_str_to_num(gchar *str);
+feedHandlerPtr feed_type_str_to_fhp(gchar *str);
+const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
 
 void feed_increase_unread_counter(feedPtr fp);
 void feed_decrease_unread_counter(feedPtr fp);

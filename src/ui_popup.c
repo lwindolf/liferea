@@ -35,8 +35,6 @@ extern gboolean itemlist_mode;
 /* feed list menues */
 static gint feed_menu_len = 0;
 static GtkItemFactoryEntry *feed_menu_items;
-static gint dir_menu_len = 0;
-static GtkItemFactoryEntry *dir_menu_items;
 static gint node_menu_len = 0;
 static GtkItemFactoryEntry *node_menu_items;
 static gint vfolder_menu_len = 0;
@@ -78,21 +76,12 @@ void setupPopupMenues(void) {
 	/* feed list menues */
 	feed_menu_items = NULL;
 	feed_menu_len = 0;
-	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Update Feed"), 		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Update"), 		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", 0);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
-	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Delete Feed"),		NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Delete"),		NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Properties"),		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
-
-	dir_menu_items = NULL;
-	dir_menu_len = 0;
-	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_Update Directory"),		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
-	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
-	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
-	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_New/New F_older"), 		NULL, on_popup_newfolder_selected, 	0, NULL, 0);
-	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_Delete Directory"),		NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
-	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_Properties"),		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES);
 
 	node_menu_items = NULL;
 	node_menu_len = 0;
@@ -196,11 +185,10 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 		case FST_CDF:
 		case FST_HELPFEED:
 		case FST_AUTODETECT:
-			menu = make_menu(feed_menu_items, feed_menu_len, item);
-			break;
 		case FST_OPML:
 		case FST_OCS:
-			menu = make_menu(dir_menu_items, dir_menu_len, item);
+		case FST_FEED:
+			menu = make_menu(feed_menu_items, feed_menu_len, item);
 			break;
 		case FST_INVALID:
 		default:

@@ -546,6 +546,7 @@ feedHandlerPtr initOCSFeedHandler(void) {
 				        (gpointer)ns_ocs_getOCSNsHandler());
 
 	/* prepare feed handler structure */
+	fhp->typeStr = "ocs";
 	fhp->feedParser	= ocs_parse;
 	fhp->checkFormat = ocs_format_check;
 	fhp->merge		= FALSE;
