@@ -71,7 +71,7 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 	g_assert(NULL != cur);
 			
 	cur = cur->xmlChildrenNode;
-	while (cur != NULL) {
+	while(cur != NULL) {
 		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL) {
 			cur = cur->next;
 			continue;
@@ -103,6 +103,13 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 			}
 		}	
 		/* check for specific tags */
+		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if(NULL != tmp) {
+				feed_set_time(fp, parseRFC822Date(tmp));
+				g_free(tmp);
+			}
+		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
  			if(NULL != tmp) {
@@ -214,6 +221,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	int 		error = 0;
 	
 	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
+	feed_set_time(fp, time(NULL));
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 		rdf = 0;
@@ -289,7 +297,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			if((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
 				if(NULL != (ip = parseRSSItem(fp, cur))) {
 					if(0 == item_get_time(ip))
-						item_set_time(ip, time(NULL));
+						item_set_time(ip, feed_get_time(fp));
 					feed_add_item(fp, ip);
 				}
 			}
@@ -341,7 +349,6 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		g_hash_table_insert(RssToMetadataMapping, "webMaster", "webmaster");
 		g_hash_table_insert(RssToMetadataMapping, "language", "language");
 		g_hash_table_insert(RssToMetadataMapping, "managingEditor", "managingEditor");
-		g_hash_table_insert(RssToMetadataMapping, "pubDate", "contentUpdateDate");
 		g_hash_table_insert(RssToMetadataMapping, "lastBuildDate", "feedUpdateDate");
 		g_hash_table_insert(RssToMetadataMapping, "generator", "feedgenerator");
 		g_hash_table_insert(RssToMetadataMapping, "publisher", "webmaster");

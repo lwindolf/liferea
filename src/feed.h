@@ -91,7 +91,10 @@ typedef struct feed {
 	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
 	
 	gpointer	icon;			/**< pointer to pixmap, if there is a favicon */
-		
+
+	time_t		time;			/**< Feeds modified date */
+	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
+			
 	/* feed properties needed to be saved */
 	gchar		*title;			/**< feed/channel title */
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
@@ -101,7 +104,6 @@ typedef struct feed {
 	gchar		*filtercmd;		/**< feed filter command */
 	gint		updateInterval;		/**< user defined update interval in minutes */
 	GSList		*metadata;		/**< metadata of this feed */
-	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 	
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
@@ -244,6 +246,9 @@ gchar * feed_get_error_description(feedPtr fp);
 
 const gchar *feed_get_id(feedPtr fp);
 void feed_set_id(feedPtr fp, const gchar *id);
+
+const time_t feed_get_time(feedPtr fp);
+void feed_set_time(feedPtr fp, time_t time);
 
 const gchar * feed_get_title(feedPtr fp);
 void feed_set_title(feedPtr fp, const gchar * title);

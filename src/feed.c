@@ -953,6 +953,9 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 	fp->errorDescription = buffer;
 }
 
+const time_t feed_get_time(feedPtr fp) { return (fp != NULL ? fp->time : 0); }
+void feed_set_time(feedPtr fp, const time_t t) { fp->time = t; }
+
 const gchar * feed_get_title(feedPtr fp) { 
 
 	if(NULL != fp->title)
