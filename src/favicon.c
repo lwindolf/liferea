@@ -396,7 +396,7 @@ convert_favicon_to_XPM(gchar *outputfile, unsigned char *icondata, int datalen)
 /* Liferea specific wrapper functions */
 
 void favicon_load(feedPtr fp) {
-	gchar		*filename, *tmp;
+	gchar		*filename;
 	GdkPixbuf	*pixbuf;
 	GError *error = NULL;
 	

@@ -121,7 +121,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		ui_mainwindow_set_status_bar(_("creating VFolder for search term \"%s\""), searchstring);
 
-		ptr = (nodePtr)ui_feedlist_get_target_folder();
+		//ptr = (nodePtr)ui_feedlist_get_target_folder();
 		
 		if(NULL != folder) {
 

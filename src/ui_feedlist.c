@@ -92,19 +92,23 @@ nodePtr ui_feedlist_get_selected() {
 		return NULL;
 }
 
-/* Selects the proper destination for a new item based on which item
- * is curretnly selected.
- * @returns folder into which the item should be inserted
- */
-folderPtr ui_feedlist_get_target_folder() {
+folderPtr ui_feedlist_get_target_folder(int *pos) {
 	nodePtr ptr = ui_feedlist_get_selected();
+	GtkTreeIter *iter = &((ui_data*)(ptr->ui_data))->row;
 	
 	if (ptr == NULL) {
+		*pos = -1;
 		return NULL;
 	} if(IS_FOLDER(ptr->type)) {
+		*pos = -1;
 		return (folderPtr)ptr;
-	} else
+	} else {
+		GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
+		gint *indices = gtk_tree_path_get_indices(path);
+		*pos = indices[gtk_tree_path_get_depth(path)-1] + 1;
+		gtk_tree_path_free(path);
 		return ui_feedlist_get_parent(ptr);
+	}
 }
 
 
@@ -499,14 +503,17 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDia
 		ui_show_error_box(_("The newly created feed's type could not be detected. Please subscribe again and select a feed type!"));	
 		// FIXME: improve this by reopening a new subscription dialog and preset URL
 	} else {
-	
+		int pos;
+		folderPtr parent;
+		
 		fp = feed_new();
 		feed_set_id(fp, conf_new_id());
 		feed_set_type(fp, type);
 		feed_set_source(fp, request->feedurl);
 		favicon_download(fp);		// FIXME: this blocks the program!!!
-
-		ui_folder_add_feed(ui_feedlist_get_target_folder(), fp, -1);
+		
+		parent = ui_feedlist_get_target_folder(&pos);
+		ui_folder_add_feed(parent, fp, pos);
 		
 		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
 		if(data == NULL) {
