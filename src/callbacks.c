@@ -851,9 +851,12 @@ void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTree
 /*------------------------------------------------------------------------------*/
 /* selection change callbacks							*/
 /*------------------------------------------------------------------------------*/
+
+/* typically called when filling the item tree view */
 void preFocusItemlist(void) {
 	GtkWidget		*itemlist;
 	GtkTreeSelection	*itemselection;
+	GtkAdjustment		*adj;
 	
 	/* the following is important to prevent setting the unread
 	   flag for the first item in the item list when the user does
@@ -880,6 +883,11 @@ void preFocusItemlist(void) {
 
 	gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
 	itemlist_loading = 0;
+	
+	/* finally reset scrolling to the first item */
+	adj = gtk_tree_view_get_vadjustment(GTK_TREE_VIEW(itemlist));
+	gtk_adjustment_set_value(adj, 0.0);
+	gtk_tree_view_set_vadjustment(GTK_TREE_VIEW(itemlist), adj);
 }
 
 /* sets the selected_* variables which indicate the selected feed list
