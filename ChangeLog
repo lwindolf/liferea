@@ -31,6 +31,9 @@
 	
 	* Fixed a bug that caused a crash when right clicking the
 	  feed list in filtered mode. (Lars Lindner)
+	* Fixed a problem with the session managment registering
+	  which prevented the usage of the Mozilla browser module.
+	  (Nathan Conrad)
 
 2004-08-31  Lars Lindner <lars.lindner@gmx.de>
 
