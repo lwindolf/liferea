@@ -259,5 +259,7 @@ feedHandlerPtr vfolder_init_feed_handler(void) {
 	fhp->checkFormat	= NULL;
 	fhp->merge		= FALSE;
 	
+	rule_init();
+	
 	return fhp;
 }

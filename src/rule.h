@@ -29,6 +29,9 @@ typedef struct rule {
 	/* could be extended... */
 } *rulePtr;
 
+/* initializes the rule handling */
+void rule_init(void);
+
 /* looks up the given rule id and sets up a new rule
    structure with for the given vfolder and rule value */
 rulePtr rule_new(feedPtr fp, gchar *ruleId, gchar *value);

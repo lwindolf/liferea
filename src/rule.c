@@ -19,6 +19,7 @@
  */
 
 #include <string.h> /* For strstr() */
+#include "support.h"
 #include "feed.h"
 #include "item.h"
 #include "rule.h"
@@ -35,16 +36,8 @@ typedef struct ruleInfo {
 	gboolean		additive;	/* is it a removing or adding rule */
 } *ruleInfoPtr;
 
-/* check function prototypes */
-static gboolean rule_exact_match(rulePtr rp, itemPtr ip);
-
-/* Definition of all implemented filters, this tables entry positions
-   _MUST_ match the RULE_* definitions! */
-static struct ruleInfo ruleFunctions[] = {
-	{ rule_exact_match,	"add_exact",	"add items matching \"%s\"",	TRUE },
-	{ rule_exact_match,	"del_exact",	"hide items matching \"%s\"",	FALSE },
-	{ NULL,			NULL,		NULL,				FALSE }
-};
+static struct ruleInfo *ruleFunctions = NULL;
+static gint nrOfRuleFunctions = 0;
 
 rulePtr rule_new(feedPtr fp, gchar *ruleId, gchar *value) {
 	ruleInfoPtr	ri;
@@ -95,7 +88,7 @@ gchar * rule_get_title(rulePtr rp) {
 /* rule checking implementations					*/
 /* -------------------------------------------------------------------- */
 
-static gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
+static gboolean rule_exact_title_match(rulePtr rp, itemPtr ip) {
 
 	g_assert(rp != NULL);
 	g_assert(ip != NULL);
@@ -105,10 +98,79 @@ static gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
 			return TRUE;
 	}
 	
+	return FALSE;
+}
+
+static gboolean rule_exact_description_match(rulePtr rp, itemPtr ip) {
+
+	g_assert(rp != NULL);
+	g_assert(ip != NULL);
+
 	if(NULL != item_get_description(ip)) {
 		if(NULL != strstr(item_get_description(ip), rp->value))
 			return TRUE;
 	}
+	
+	return FALSE;
+}
+
+static gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
+
+	g_assert(rp != NULL);
+	g_assert(ip != NULL);
+
+	if(rule_exact_title_match(rp, ip))
+		return TRUE;
+		
+	if(rule_exact_description_match(rp, ip))
+		return TRUE;
 
 	return FALSE;
 }
+
+static gboolean rule_is_unread(rulePtr rp, itemPtr ip) {
+
+	g_assert(ip != NULL);
+
+	if(item_get_read_status(ip)) 
+		return TRUE;
+		
+	return FALSE;
+}
+
+static gboolean rule_is_flagged(rulePtr rp, itemPtr ip) {
+
+	g_assert(ip != NULL);
+
+	if(item_get_mark(ip)) 
+		return TRUE;
+		
+	return FALSE;
+}
+
+/* rule initialization */
+
+static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gboolean additive) {
+
+	ruleFunctions = (ruleInfoPtr)g_realloc(ruleFunctions, sizeof(struct ruleInfo)*(nrOfRuleFunctions + 1));
+	if(NULL == ruleFunctions)
+		g_error("could not allocate memory!");
+	ruleFunctions[nrOfRuleFunctions].ruleFunc = func;
+	ruleFunctions[nrOfRuleFunctions].ruleId = ruleId;
+	ruleFunctions[nrOfRuleFunctions].title = title;
+	ruleFunctions[nrOfRuleFunctions].additive = additive;
+	nrOfRuleFunctions++;
+}
+
+void rule_init(void) {
+
+	rule_add(rule_exact_match,		"add_exact",		_("add items matching \"%s\""),		TRUE);
+	rule_add(rule_exact_match,		"del_exact",		_("hide items matching \"%s\""),	FALSE);
+	rule_add(rule_exact_title_match,	"add_exact_title",	_("add items with title \"%s\""),	TRUE);
+	rule_add(rule_exact_title_match,	"del_exact_title",	_("hide items with title \"%s\""),	FALSE);
+	rule_add(rule_exact_description_match,	"add_exact_desc",	_("add items with text \"%s\""),	TRUE);
+	rule_add(rule_exact_description_match,	"del_exact_desc",	_("hide items with text \"%s\""),	FALSE);
+	rule_add(rule_is_unread,		"add_unread",		_("add all unread items"),		TRUE);
+	rule_add(rule_is_flagged,		"add_flagged",		_("add all flagged items"),		TRUE);
+}
+
