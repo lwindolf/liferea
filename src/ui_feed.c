@@ -307,7 +307,6 @@ static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
 
 		/* Add trailing / if needed */
 		if (strstr(strstr(str, "://") + 3, "/") == NULL) {
-			printf("Adding /\n");
 			tmp2 = g_strdup_printf("%s/", str);
 			g_free(str);
 			str = tmp2;

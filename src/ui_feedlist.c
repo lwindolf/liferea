@@ -538,16 +538,16 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 		feed_set_source(fp, request->feedurl);
 		feed_set_filter(fp, filter);
 		favicon_download(fp);		// FIXME: this blocks the program!!!
-
+		
 		parent = ui_feedlist_get_target_folder(&pos);
 		ui_folder_add_feed(parent, fp, pos);
-
+		
 		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
 		if(data == NULL) {
 			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 		} else {
 			fp->fhp = feed_parse(fp, data, TRUE);
-			fp->title = filter_title(fp->title);
+			fp->title = filter_title(feed_get_title(fp));
 			if (fp->fhp == NULL)
 				ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));	
 			ui_feedlist_update();
