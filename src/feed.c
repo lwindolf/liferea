@@ -1126,7 +1126,6 @@ GSList * feed_get_item_list(feedPtr fp) {
 void feed_clear_item_list(feedPtr fp) {
 	GSList	*item;
 
-	g_assert(0 != fp->loaded);	
 	item = fp->items;
 	while(NULL != item) {
 		item_free(item->data);
