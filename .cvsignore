@@ -3,3 +3,6 @@ config.status
 config.h
 config.h.in
 aclocal.m4
+config.log
+config.guess
+config.sub

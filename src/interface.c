@@ -2357,6 +2357,7 @@ create_importdialog (void)
   GLADE_HOOKUP_OBJECT (importdialog, button20, "button20");
   GLADE_HOOKUP_OBJECT (importdialog, button21, "button21");
 
+  gtk_widget_grab_default (button20);
   return importdialog;
 }
 
