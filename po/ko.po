@@ -1177,8 +1177,7 @@ msgstr "  --debug-verbose  자세한 디버깅 메시지를 보여줍니다."
 
 #: src/main.c:222
 msgid "The --session argument must be given a parameter.\n"
-msgstr "--session 옵션은 반드시 인자를 가져야 합니다."
-""
+msgstr "--session 옵션은 반드시 인자를 가져야 합니다.\n"
 
 #: src/main.c:225
 #, c-format
