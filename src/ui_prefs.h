@@ -101,4 +101,12 @@ void
 on_browsekey_alt_space_activate        (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
+void
+on_disablejavascript_toggled           (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);
+
+void
+on_folderdisplaybtn_toggled            (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);
+
 #endif

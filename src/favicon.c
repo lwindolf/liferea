@@ -260,6 +260,10 @@ static void favicon_download_html(feedPtr fp, int phase) {
 }
 
 void favicon_download(feedPtr fp) {
+	
+	if(FST_VFOLDER == feed_get_type(fp))
+		return;
+		
 	debug_enter("favicon_download");
 	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", feed_get_title(fp));
 	

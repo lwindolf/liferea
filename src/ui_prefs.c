@@ -171,8 +171,8 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gchar		*widgetname, *proxyport, *libname;
 	gboolean	enabled, enabled2;
 	int		tmp, i;
-	static int manual;
-	struct browser *iter;
+	static int	manual;
+	struct browser	*iter;
 	
 	if(NULL == prefdialog || !G_IS_OBJECT(prefdialog)) {
 		GtkWidget *menu;
@@ -243,7 +243,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	}
 	g_assert(NULL != prefdialog);
 	
-	/* ================== panel 1 "feed handling" ==================== */
+	/* ================== panel 1 "feeds" ==================== */
 	
 	tmp = getNumericConfValue(STARTUP_FEED_ACTION);
 	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), tmp);
@@ -272,13 +272,14 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, widgetname);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	g_free(widgetname);
-
-	/* ================== panel 2 "headline display" ==================== */
-
-	/* set the inside browsing flag */
-	widget = lookup_widget(prefdialog, "browseinwindow");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
 	
+	/* ================== panel 2 "folders" ==================== */
+
+	g_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), NULL);	
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "folderdisplaybtn")), (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)?FALSE:TRUE));
+
+	/* ================== panel 3 "headlines" ==================== */
+
 	/* select current browse key menu entry */
 	switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
 		case 0:
@@ -319,10 +320,35 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, widgetname);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	g_free(widgetname);
-
-	g_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), NULL);
 	
-	/* ================== panel 3 "external browser" ==================== */
+	/* ================== panel 4 "browser" ==================== */
+	
+	/* set up the internal browser module option menu */
+	tmp = i = 0;
+	widget = gtk_menu_new();
+	list = availableBrowserModules;
+	libname = getStringConfValue(BROWSER_MODULE);
+	while(NULL != list) {
+		g_assert(NULL != list->data);
+		entry = gtk_menu_item_new_with_label(((struct browserModule *)list->data)->description);
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(widget), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browsermodule_changed), ((struct browserModule *)list->data)->libname);
+		if(0 == strcmp(libname, ((struct browserModule *)list->data)->libname))
+			tmp = i;
+		i++;
+		list = g_slist_next(list);
+	}
+	gtk_menu_set_active(GTK_MENU(widget), tmp);
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
+
+	/* set the inside browsing flag */
+	widget = lookup_widget(prefdialog, "browseinwindow");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
+	
+	/* set the javascript-disabled flag */
+	widget = lookup_widget(prefdialog, "disablejavascript");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(DISABLE_JAVASCRIPT));
 	
 	tmp = 0;
 	libname = getStringConfValue(BROWSER_ID);
@@ -369,26 +395,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	g_free(widgetname);
 	
-	/* set up the browser module option menu */
-	tmp = i = 0;
-	widget = gtk_menu_new();
-	list = availableBrowserModules;
-	libname = getStringConfValue(BROWSER_MODULE);
-	while(NULL != list) {
-		g_assert(NULL != list->data);
-		entry = gtk_menu_item_new_with_label(((struct browserModule *)list->data)->description);
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(widget), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browsermodule_changed), ((struct browserModule *)list->data)->libname);
-		if(0 == strcmp(libname, ((struct browserModule *)list->data)->libname))
-			tmp = i;
-		i++;
-		list = g_slist_next(list);
-	}
-	gtk_menu_set_active(GTK_MENU(widget), tmp);
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
-	
-	
 	/* ================= panel 5 "proxy" ======================== */
 	enabled = getBooleanConfValue(USE_PROXY);
 	widget = lookup_widget(prefdialog, "enableproxybtn");
@@ -422,21 +428,32 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 /*------------------------------------------------------------------------------*/
 /* preference callbacks 							*/
 /*------------------------------------------------------------------------------*/
+
+void on_folderdisplaybtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
+
+	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
+	setNumericConfValue(FOLDER_DISPLAY_MODE, (TRUE == enabled)?1:0);
+}
+
 void on_trayiconoptionbtn_clicked(GtkButton *button, gpointer user_data) {
+
 	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
 	setBooleanConfValue(SHOW_TRAY_ICON, enabled);
 }
 
 void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {
+
 	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
 	setBooleanConfValue(SHOW_POPUP_WINDOWS, enabled);
 }
 
 static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data) {
+
 	setNumericConfValue(STARTUP_FEED_ACTION, GPOINTER_TO_INT(user_data));
 }
 
 void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
+
 	setStringConfValue(BROWSER_COMMAND, gtk_editable_get_chars(editable,0,-1));
 }
 
@@ -465,6 +482,10 @@ static void on_browsermodule_changed(GtkObject *object, gchar *libname) {
 
 void on_openlinksinsidebtn_clicked(GtkToggleButton *button, gpointer user_data) {
 	setBooleanConfValue(BROWSE_INSIDE_APPLICATION, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
+}
+
+void on_disablejavascript_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
+	setBooleanConfValue(DISABLE_JAVASCRIPT, gtk_toggle_button_get_active(togglebutton));
 }
 
 void on_timeformatselection_clicked(GtkButton *button, gpointer user_data) {

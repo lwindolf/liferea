@@ -51,6 +51,9 @@
 #define KEEP_FEEDS_IN_MEMORY		"/apps/liferea/keep-feeds-in-memory"
 #define DISABLE_SUBSCRIPTION_PIPE	"/apps/liferea/disable-subscription-pipe"
 
+/* folder handling settings */
+#define FOLDER_DISPLAY_MODE		"/apps/liferea/folder-display-mode"
+
 /* GUI settings and persistency values */
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
 #define SHOW_POPUP_WINDOWS		"/apps/liferea/show-popup-windows"
