@@ -73,8 +73,6 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 }
 
 void ui_itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {
-	GtkTreeView	*itemlist;
-	GtkTreeModel	*model;
 	gint		sortColumn;
 	GtkSortType	sortType;
 	gboolean	sorted;

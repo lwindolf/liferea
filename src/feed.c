@@ -290,8 +290,8 @@ void feed_save(feedPtr fp) {
 			xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 			g_free(tmp);
 			
-			if(fp->lastModified != NULL) {
-				xmlNewTextChild(feedNode, NULL, "feedLastModified", fp->lastModified);
+			if(feed_get_lastmodified(fp) != NULL) {
+				xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(fp));
 			}
 			
 			metadata_add_xml_nodes(fp->metadata, feedNode);
@@ -420,7 +420,7 @@ gboolean feed_load(feedPtr fp) {
 				feed_set_discontinued(fp, (0 == atoi(tmp))?FALSE:TRUE);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
-				fp->lastModified = g_strdup(tmp);
+				feed_set_lastmodified(fp, tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				items = g_list_append(items, item_parse_cache(doc, cur));
@@ -524,8 +524,10 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 	/* prepare request url (strdup because it might be
 	   changed on permanent HTTP redirection in netio.c) */
 	request->source = g_strdup(source);
-	if (fp->lastModified != NULL)
-		request->lastmodified = g_strdup(fp->lastModified);
+	if (feed_get_lastmodified(fp) != NULL)
+		request->lastmodified = g_strdup(feed_get_lastmodified(fp));
+	if (feed_get_etag(fp) != NULL)
+		request->etag = g_strdup(feed_get_etag(fp));
 	request->flags = flags;
 	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
 	if(feed_get_filter(fp) != NULL)
@@ -838,6 +840,26 @@ void feed_set_html_url(feedPtr fp, const gchar *htmlUrl) {
 		fp->htmlUrl = g_strdup(htmlUrl);
 	else
 		fp->htmlUrl = NULL;
+}
+
+const gchar * feed_get_lastmodified(feedPtr fp) { return fp->lastModified; };
+void feed_set_lastmodified(feedPtr fp, const gchar *lastmodified) {
+
+	g_free(fp->lastModified);
+	if(lastmodified != NULL)
+		fp->lastModified = g_strdup(lastmodified);
+	else
+		fp->lastModified = NULL;
+}
+
+const gchar * feed_get_etag(feedPtr fp) { return fp->etag; };
+void feed_set_etag(feedPtr fp, const gchar *etag) {
+
+	g_free(fp->etag);
+	if(etag != NULL)
+		fp->etag = g_strdup(etag);
+	else
+		fp->etag = NULL;
 }
 
 const gchar * feed_get_image_url(feedPtr fp) { return fp->imageUrl; };

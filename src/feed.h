@@ -294,6 +294,12 @@ void feed_set_html_url(feedPtr fp, const gchar *url);
 const gchar * feed_get_image_url(feedPtr fp);
 void feed_set_image_url(feedPtr fp, const gchar *url);
 
+const gchar * feed_get_lastmodified(feedPtr fp);
+void feed_set_lastmodified(feedPtr fp, const gchar *lastmodified);
+
+const gchar * feed_get_etag(feedPtr fp);
+void feed_set_etag(feedPtr fp, const gchar *etag);
+
 const feedHandlerPtr feed_get_fhp(feedPtr fp);
 
 GSList * feed_get_item_list(feedPtr fp);

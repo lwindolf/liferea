@@ -31,6 +31,7 @@
 #include "ui_feed.h"
 #include "ui_queue.h"
 #include "favicon.h"
+#include "ui_notification.h"
 
 /**
  * Creates a new error description according to the passed
@@ -162,10 +163,8 @@ void ui_feed_process_update_result(struct request *request) {
 	} else if(304 == request->httpstatus) {
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(fp));
 	} else if(NULL != request->data) {
-		g_free(fp->lastModified);
-		fp->lastModified = NULL;
-		if (request->lastmodified != NULL)
-			fp->lastModified = g_strdup(request->lastmodified);
+		feed_set_lastmodified(fp, request->lastmodified);
+		feed_set_etag(fp, request->etag);
 		
 		/* note this is to update the feed URL on permanent redirects */
 		if(0 != strcmp(request->source, feed_get_source(fp))) {

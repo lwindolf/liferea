@@ -42,7 +42,7 @@
 #include "htmlview.h"
 #include "favicon.h"
 #include "debug.h"
-
+#include "ui_notification.h"
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
 
