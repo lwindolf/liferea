@@ -52,8 +52,8 @@ INCLUDES = -I.. -I$(top_srcdir)/intl
 COMPILE = $(CC) -c $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS) $(XCFLAGS)
 
 SOURCES = 
-POFILES =  fr.po ja.po ko.po de.po
-GMOFILES =  fr.gmo ja.gmo ko.gmo de.gmo
+POFILES =  fr.po ja.po ko.po es_ES.po de.po
+GMOFILES =  fr.gmo ja.gmo ko.gmo es_ES.gmo de.gmo
 DISTFILES = ChangeLog Makefile.in.in POTFILES.in $(GETTEXT_PACKAGE).pot \
 $(POFILES) $(GMOFILES) $(SOURCES)
 
@@ -140,7 +140,7 @@ POTFILES = \
 	../src/vfolder.c \
 	../src/vfolder.h
 
-CATALOGS =  fr.gmo ja.gmo ko.gmo de.gmo
+CATALOGS =  fr.gmo ja.gmo ko.gmo es_ES.gmo de.gmo
 CATOBJEXT = .gmo
 INSTOBJEXT = .mo
 

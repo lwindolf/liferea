@@ -5,6 +5,7 @@
 	* Added missing pubDate support for RSS 2.0 items.
 	* Added .desktop file and its install targets as 
 	  proposed by John McKnight.
+	* Added a window position save patch from pasp.
 	* Update to the japanese translation by Takeshi Aihana.
 	* Fixed some memory leaks.
 	* Fixed the broken tray icon logic.

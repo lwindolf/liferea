@@ -1902,7 +1902,7 @@ create_importdialog (void)
   GtkWidget *button21;
 
   importdialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (importdialog), _("Export Feed List"));
+  gtk_window_set_title (GTK_WINDOW (importdialog), _("Import Feed List"));
 
   dialog_vbox10 = GTK_DIALOG (importdialog)->vbox;
   gtk_widget_show (dialog_vbox10);
@@ -1990,7 +1990,7 @@ create_exportdialog (void)
   GtkWidget *button23;
 
   exportdialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (exportdialog), _("Import Feed List"));
+  gtk_window_set_title (GTK_WINDOW (exportdialog), _("Export Feed List"));
 
   dialog_vbox11 = GTK_DIALOG (exportdialog)->vbox;
   gtk_widget_show (dialog_vbox11);

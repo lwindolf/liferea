@@ -1,0 +1,1030 @@
+# Spanish/Spain translation of liferea.
+# Copyright (C) 2003 THE liferea'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the liferea package.
+# Carlos Fenollosa <topopardo@humorfreak.com>, 2003.
+# Si tienes alguna sugerencia sobre la traducción, o has detectado alguna
+# falta ortográfica (¡las odio!), envíame un correo, por favor.
+# Algunas palabras se han quedado en su versión inglesa por la
+# imposibilidad de encontrar una traducción aceptable, por ejemplo 'widget'.
+# Todas estas palabras van entre comillas simples.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: liferea 0.4.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-05 00:04+0100\n"
+"PO-Revision-Date: 2003-12-14 16:19+0100\n"
+"Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Language-Team: Spanish/Spain <es@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: src/support.c:90 src/support.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "No se ha podido encontrar la imagen: %s"
+
+#: src/callbacks.c:170
+msgid "entry list widget lookup failed!\n"
+msgstr "No se pudo encontrar el 'widget': lista de entradas."
+
+#: src/callbacks.c:175
+msgid "could not retrieve selection of entry list!"
+msgstr "No se ha podido obtener la entrada seleccionada."
+
+#: src/callbacks.c:215 src/callbacks.c:362 src/callbacks.c:400
+msgid "You have to select a feed entry!"
+msgstr "Por favor, elige una fuente."
+
+#: src/callbacks.c:338
+msgid ""
+"You have disabled both the menubar and the toolbar. Without one of these you "
+"won't be able to access all program functions. I'll reenable the toolbar!"
+msgstr ""
+"Has desactivado tanto la barra de menú como la de iconos. Sin ellas no podrás "
+"accedar a las funciones del programa. Voy a reactivar la barra de iconos."
+
+#: src/callbacks.c:368
+msgid "You can't delete help feeds!"
+msgstr "¡No puedes borrar las fuentes de ayuda!"
+
+#: src/callbacks.c:372
+msgid "Deleting entry"
+msgstr "Borrando entrada"
+
+#: src/callbacks.c:382
+msgid "It seems like there is no selected feed entry!"
+msgstr "¡Parece que no has elegido ninguna fuente!"
+
+#: src/callbacks.c:435
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minutes"
+msgstr "El proveedor de esta fuente sugiere actualizarla cada %d minutos"
+
+#: src/callbacks.c:437
+msgid "This feed specifies no default update interval."
+msgstr "Esta fuente no tiene definido ningún intervalo de actualización."
+
+#: src/callbacks.c:480
+msgid "Internal error! No feed selected, but property change requested...\n"
+msgstr "Error interno. No se eligió ninguna fuente, pero se intentaron cambiar "
+"sus propiedades...\n"
+
+#: src/callbacks.c:544
+#, c-format
+msgid ""
+"Could not download \"%s\"!\n"
+"\n"
+" Maybe the URL is invalid or the feed is temporarily not available. You can "
+"retry downloading or remove the feed subscription via the context menu from "
+"the feed list.\n"
+msgstr ""
+"No se pudo descargar \"%s\"\n"
+"\n"
+"Quizá la URL no sea válida o la fuente esté desactivada temporalmente. Puedes intentarla bajar "
+"de nuevo, o eliminarla desde el menú contextual de la lista de fuentes\n"
+
+#: src/callbacks.c:599
+msgid "internal error! invalid type selected! This should never happen!\n"
+msgstr "Error interno. Se ha seleccionado un tipo inválido. ¡Esto no debería estar pasando!\n"
+
+#: src/callbacks.c:624 src/export.c:205 src/export.c:218
+msgid "internal error! could not find file dialog select button!"
+msgstr "Error interno. No se ha podido encontrar el botón de selección del navegador de archivos."
+
+#: src/callbacks.c:654 src/export.c:98
+msgid "internal error! could not get a new folder key!"
+msgstr "Error interno. No se ha podido obtener una nueva ID de carpeta."
+
+#: src/callbacks.c:663 src/callbacks.c:703
+msgid "You have to select a folder entry!"
+msgstr "Por favor, elige una entrada de alguna de las carpetas."
+
+#: src/callbacks.c:729 src/callbacks.c:732
+msgid "A folder must be empty to delete it!"
+msgstr "Lo siento, para poder borrar una carpeta, ésta tiene que estar vacía."
+
+#: src/callbacks.c:735
+msgid "Error: Cannot determine folder key!"
+msgstr "Error: No se ha podido determinar el ID de esta carpeta."
+
+#: src/callbacks.c:777 src/callbacks.c:921
+msgid "could not retrieve selection of item list!"
+msgstr "No se ha podido obtener la lista con los elementos seleccionados."
+
+#: src/callbacks.c:810
+msgid "item list widget lookup failed!\n"
+msgstr "No se ha podido encontrar el 'widget': lista de elementos."
+
+#: src/callbacks.c:820
+msgid "could not retrieve selection of item list!\n"
+msgstr "No se han podido obtener los elementos seleccionados\n"
+
+#: src/callbacks.c:916
+msgid "could not find item list widget!"
+msgstr "No se ha podido encontrar el 'widget': lista de elementos."
+
+#: src/callbacks.c:1014 src/callbacks.c:1055
+msgid "internal error! could not get feed tree view selection!\n"
+msgstr "Error interno. No se pudo obtener la selección de vista en árbol de las fuentes."
+
+#: src/callbacks.c:1016 src/callbacks.c:1057
+msgid "internal error! could not find feed tree view widget!\n"
+msgstr "Error interno. No se pudo encontrar el 'widget' para la vista en árbol "
+"de fuentes."
+
+#: src/callbacks.c:1084
+msgid "There are no unread items!"
+msgstr "¡Nada nuevo!"
+
+#: src/callbacks.c:1201
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr "Error interno: Tipo de entrada desconocido. No se ha podido "
+"mostrar un icono apropiado."
+
+#: src/callbacks.c:1344
+msgid "Date"
+msgstr "Fecha"
+
+#: src/callbacks.c:1352
+msgid "Headline"
+msgstr "Cabecera"
+
+#: src/callbacks.c:1500
+msgid "Sorry Liferea does not yet support drag&drop of folders!"
+msgstr "Lo siento, Liferea aún no soporta 'drag&drop' con carpetas."
+
+#: src/callbacks.c:1509
+msgid "you cannot modify the special help folder contents!"
+msgstr "Lo siento, no puedes modificar los contenidos de las carpetas especiales de ayuda."
+
+#: src/callbacks.c:1622
+msgid "internal error! item list display for NULL pointer requested!\n"
+msgstr "Error interno: ¡Se ha intentado representar un elemento de la lista que "
+"es un puntero nulo!"
+
+#: src/cdf_channel.c:106 src/cdf_item.c:52 src/common.c:150 src/item.c:137
+#: src/ns_dc.c:225 src/ns_dc.c:275 src/ns_dc.c:318 src/ns_dc.c:358
+#: src/ns_dc.c:400 src/ns_ocs.c:73 src/pie_entry.c:107 src/pie_feed.c:168
+#: src/rss_channel.c:219 src/rss_channel.c:267 src/rss_channel.c:301
+#: src/rss_item.c:78
+msgid "internal error: XML document pointer NULL! This should not happen!\n"
+msgstr "Error interno: El documento XML es un puntero nulo. ¡Esto no debería "
+"de estar pasando!\n"
+
+#: src/cdf_channel.c:172 src/opml.c:133 src/pie_feed.c:222
+#: src/rss_channel.c:344
+#, c-format
+msgid "XML error wile reading feed! Feed \"%s\" could not be loaded!"
+msgstr "Error XML mientras se leía la fuente. No se ha podido cargar: \"%s\"."
+
+#: src/cdf_channel.c:180 src/pie_feed.c:230 src/rss_channel.c:352
+msgid "Empty document! Feed was not added!"
+msgstr "El documento estaba vacío. La fuente no se añadió."
+
+#: src/cdf_channel.c:241 src/ocs_dir.c:306 src/ocs_dir.c:373 src/ocs_dir.c:449
+#: src/ocs_dir.c:537 src/ocs_dir.c:579 src/opml.c:249 src/pie_feed.c:343
+#: src/rss_channel.c:448 src/vfolder.c:125
+msgid "not enough memory!"
+msgstr "¡No hay memoria suficiente!"
+
+#: src/common.c:115
+msgid "conversion wasn't successful.\n"
+msgstr "Falló la conversión.\n"
+
+#: src/common.c:117
+#, c-format
+msgid "conversion wasn't successful. converted: %i octets.\n"
+msgstr "Falló la conversión. Se pudieron convertir %i bytes.\n"
+
+#: src/common.c:127
+msgid "not enough memory\n"
+msgstr "Memoria insuficiente\n"
+
+#: src/common.c:245
+msgid "internal error! time conversion error! mktime failed!\n"
+msgstr "Error interno: Fallo en la conversión de la fecha con 'mktime'.\n"
+
+#: src/common.c:248
+msgid "Invalid date format! Ignoring <dc:date> information!\n"
+msgstr "Formato de fecha inválido. Ignorando la información de <dc:date>\n"
+
+#: src/common.c:316
+#, c-format
+msgid "Cannot create cache directory %s!"
+msgstr "No se ha podido crear el directorio de caché %s."
+
+#: src/conf.c:164
+#, c-format
+msgid "internal error! could not retrieve feed list for gconf path %s\n"
+msgstr "Error interno: No se pudo obtener la lista de fuentes para "
+"la ruta %s de 'gconf'.\n"
+
+#: src/conf.c:468
+msgid "error! could not get a free entry key!\n"
+msgstr "Error: No se pudo obtener una ID libre para esta entrada.\n"
+
+#: src/conf.c:474
+msgid "error! could not set a URL for this key!\n"
+msgstr "Error: No se pudo obtener una URL para esta ID.\n"
+
+#: src/conf.c:477
+msgid "error! could not set a type for this key!\n"
+msgstr "Error: No se pudo establecer un tipo para esta ID.\n"
+
+#. add to config and UI feed list
+#: src/conf.c:701 src/conf.c:703
+msgid "Liferea Help"
+msgstr "Ayuda de Liferea"
+
+#: src/conf.c:707
+msgid "Online Help Feed"
+msgstr "Ayuda en línea"
+
+#: src/conf.c:708
+msgid "Liferea SF News"
+msgstr "Noticias de Liferea en SF"
+
+#: src/conf.c:723
+#, c-format
+msgid "RSS namespace %s not yet configured! Activating...\n"
+msgstr "El 'namespace' RSS %s no estaba configurado. Voy a activarlo.\n"
+
+#: src/conversions.c:75
+#, c-format
+msgid "ERROR: zlib_uncompress: %d %s\n"
+msgstr "Error en 'zlib_uncompress': %d %s\n"
+
+#: src/conversions.c:91
+msgid "ERROR: No output during decompression"
+msgstr "Error: No se ha producido ninguna salida durante la descompresión."
+
+#: src/conversions.c:121
+msgid "ERROR: Invalid magic bytes for GZIP data"
+msgstr "Error: Datos inválidos en los 'magic bytes' del GZIP."
+
+#: src/conversions.c:126
+msgid "ERROR: Compression method is not deflate"
+msgstr "Error: el método de compresión no es 'deflate'"
+
+#: src/conversions.c:131
+#, c-format
+msgid "ERROR: Unsupported flags %d\n"
+msgstr "Error: 'Flags' no soportadas: %d\n"
+
+#: src/export.c:70 src/feed.c:236
+msgid "could not create XML feed node for feed cache document!"
+msgstr "No se pudo crear el nodo de la fuente XML para su documento en caché."
+
+#: src/export.c:74 src/feed.c:240
+msgid "could not create XML document!"
+msgstr "No se pudo crear el documento XML."
+
+#: src/export.c:79
+msgid "Error while exporting feed list!"
+msgstr "Ocurrió un error mientras se exportaba la lista de fuentes."
+
+#: src/export.c:81
+msgid "Feed List exported!"
+msgstr "La lista de fuentes se ha exportado con éxito."
+
+#. create a new import folder
+#: src/export.c:93
+msgid "imported feed list"
+msgstr "Lista de fuentes importadas."
+
+#: src/export.c:107 src/feed.c:295
+#, c-format
+msgid ""
+"XML error wile reading cache file \"%s\" ! Cache file could not be loaded!"
+msgstr "Error XML mientras se leía la caché del archivo \"%s\". No se pudo cargar."
+
+#: src/export.c:112
+msgid "Empty document! OPML document should not be empty..."
+msgstr "El documento OPML estaba vacío. Y no debería estarlo."
+
+#: src/export.c:120
+#, c-format
+msgid "\"%s\" is no valid cache file! Cannot read OPML file!"
+msgstr "\"%s\" no es un archivo de caché válido. No se pudo leer el archivo OPML."
+
+#: src/feed.c:226
+msgid "could not write XML item node!\n"
+msgstr "No se pudo escribir el nodo del elemento XML.\n"
+
+#. we must save here to save changed read flags
+#: src/feed.c:260
+msgid "saving all feeds..."
+msgstr "Guardando todas las fuentes..."
+
+#: src/feed.c:300
+msgid "Empty document! Feed cache file should not be empty..."
+msgstr "El archivo con las cachés de las fuentes está vacío. Y no debería estarlo."
+
+#: src/feed.c:308
+#, c-format
+msgid "\"%s\" is no valid cache file! Cannot read cache file!"
+msgstr "\"%s\" no es un archivo de caché válido. No se pudo leer."
+
+#. if necessary download and detect type
+#. FIXME: pass fp to adjust URL
+#: src/feed.c:408
+msgid "Could not detect feed type! Please manually select a feed type."
+msgstr "No se pudo detectar el tipo de fuente. Por favor, elígelo manualmente."
+
+#: src/feed.c:427
+msgid "internal error! unknown feed type in newFeed()!"
+msgstr "Error interno: Tipo de fuente desconocido en 'newFeed()'."
+
+#: src/feed.c:470
+msgid "error! could not add feed to configuration!\n"
+msgstr "Lo siento, no se ha podido añadir la fuente a la configuración.\n"
+
+#: src/feed.c:589
+#, c-format
+msgid "\"%s\" has no new items."
+msgstr "\"%s\" no tiene elementos nuevos."
+
+#: src/feed.c:591
+#, c-format
+msgid "\"%s\" has %d new items."
+msgstr "\"%s\" tiene %d elementos nuevos."
+
+#: src/feed.c:623
+#, c-format
+msgid "Could not delete cache file %s! Please remove manually!"
+msgstr "No se pudo borrar el archivo de caché: %s. Por favor, bórralo manualmente."
+
+#: src/feed.c:647
+msgid "updating all feeds..."
+msgstr "Actualizando todas las fuentes..."
+
+#: src/feed.c:672
+#, c-format
+msgid "internal error! there is no feed assigned to feedkey %s!"
+msgstr "Error interno: No se asignó ninguna fuente al ID %s."
+
+#: src/folder.c:72 src/folder.c:89 src/folder.c:112 src/folder.c:186
+msgid "internal error! could not determine folder key!"
+msgstr "Error interno: No se pudo determinar la ID de esta carpeta."
+
+#: src/folder.c:217
+msgid "(empty)"
+msgstr "(vacío)"
+
+#: src/folder.c:309
+#, c-format
+msgid "error! could not move cache file %s to file %s\n"
+msgstr "No se pudo mover el archivo de caché %s a su destino %s.\n"
+
+#: src/htmlview.c:401
+#, c-format
+msgid ""
+"There is no %%s URL place holder in the browser command string you specified "
+"in the preferences dialog!!!"
+msgstr "Por favor, escribe \"%%s\" detrás de tu navegador favorito, en el cuadro de preferencias."
+
+#: src/interface.c:122
+msgid "Liferea 0.4.5"
+msgstr "Liferea 0.4.5"
+
+#: src/interface.c:133
+msgid "_Program"
+msgstr "_Programa"
+
+#: src/interface.c:140
+msgid "_Import Feed List"
+msgstr "_Importar fuentes..."
+
+#: src/interface.c:144
+msgid "_Export Feed List"
+msgstr "_Exportar fuentes..."
+
+#: src/interface.c:161
+msgid "_Feeds"
+msgstr "_Fuentes"
+
+#: src/interface.c:168
+msgid "_Feed"
+msgstr "_Fuente"
+
+#: src/interface.c:175
+msgid "_Update Feed"
+msgstr "_Actualizar fuente"
+
+#: src/interface.c:183
+msgid "_New Subscription"
+msgstr "_Nueva fuente..."
+
+#: src/interface.c:191
+msgid "_Delete Feed"
+msgstr "_Eliminar fuente"
+
+#: src/interface.c:199
+msgid "_Edit Properties"
+msgstr "_Propiedades..."
+
+#: src/interface.c:207
+msgid "F_older"
+msgstr "_Carpeta"
+
+#: src/interface.c:214
+msgid "_New Folder"
+msgstr "_Nueva carpeta..."
+
+#: src/interface.c:222
+msgid "_Delete Folder"
+msgstr "_Eliminar carpeta"
+
+#: src/interface.c:230
+msgid "_Edit Folder Name"
+msgstr "_Cambiar nombre..."
+
+#: src/interface.c:243
+msgid "_Update All"
+msgstr "_Actualizar todas"
+
+#: src/interface.c:254
+msgid "_Items"
+msgstr "_Elementos"
+
+#: src/interface.c:261
+msgid "_Mark All As Read"
+msgstr "_Marcar todos como leídos"
+
+#: src/interface.c:268
+msgid "_Launch In Browser"
+msgstr "_Abrir en navegador"
+
+#: src/interface.c:275
+msgid "Toggle Item _Flag"
+msgstr "Establecer _flag"
+
+#: src/interface.c:287
+msgid "_Toggle Condensed View"
+msgstr "_Cambiar a vista condensada"
+
+#: src/interface.c:296
+msgid "Search In All Items"
+msgstr "Buscar en todos los elementos"
+
+#: src/interface.c:307
+msgid "Next Unread Item"
+msgstr "_Siguiente elemento nuevo"
+
+#: src/interface.c:318 src/interface.c:389
+msgid "Search"
+msgstr "_Buscar"
+
+#: src/interface.c:325
+msgid "Toggle Search Box"
+msgstr "_Mostrar caja de búsquedas"
+
+#: src/interface.c:328
+msgid "Shows or hides the search box."
+msgstr "Muestra u oculta la caja de búsquedas"
+
+#: src/interface.c:334
+msgid "Search with Feedster"
+msgstr "Buscar con _Feedster..."
+
+#: src/interface.c:337
+msgid "Create a Feedster search feed."
+msgstr "Inicia una búsqueda con Feedster."
+
+#: src/interface.c:351
+msgid "Update feeds"
+msgstr "Actualizar todas las fuentes"
+
+#: src/interface.c:367
+msgid "Update"
+msgstr "Actualizar"
+
+#: src/interface.c:373
+msgid "Search in feeds"
+msgstr "Buscar en las fuentes"
+
+#: src/interface.c:395
+msgid "Edit preferences"
+msgstr "Cambiar preferencias"
+
+#: src/interface.c:423
+msgid "Search for"
+msgstr "Buscar:"
+
+#: src/interface.c:431
+msgid "create VFolder"
+msgstr "Crear 'VFolder'"
+
+#: src/interface.c:434
+msgid "saves this search as a VFolder, which will appear in the feed list"
+msgstr "Guarda esta búsqueda como una 'VFolder', que aparecerá en la lista de fuentes."
+
+#: src/interface.c:439
+msgid "Close search"
+msgstr "Cerrar búsqueda"
+
+#: src/interface.c:473
+msgid "single item view"
+msgstr "Vista de un sólo elemento"
+
+#: src/interface.c:482
+msgid "condensed item list"
+msgstr "Vista condensada"
+
+#: src/interface.c:715
+msgid "Subscription Properties"
+msgstr "Propiedades"
+
+#: src/interface.c:736
+msgid ""
+"Edit the following entries to adjust the feed source URL or\n"
+"the feed title, which is displayed in the feed list."
+msgstr "En las siguientes opciones puedes cambiar la URL de \n"
+"la fuente y el título que se muestra en la lista."
+
+#: src/interface.c:749
+msgid "Feed Title"
+msgstr "Título:"
+
+#: src/interface.c:761
+msgid ""
+"either leave the name supplied by the feed or enter an alternative name "
+"which you like to be listed in the feed list"
+msgstr "Puedes dejar el nombre que establece la propia fuente o cambiarlo por otro, que "
+"se mostrará en la lista."
+
+#: src/interface.c:768
+msgid "enter the URL the feed should be loaded from"
+msgstr "Escribe la URL desde donde se descargará la fuente."
+
+#: src/interface.c:770 src/interface.c:942
+msgid "Feed URL"
+msgstr "URL:"
+
+#: src/interface.c:777
+msgid "Feed URL and Title"
+msgstr "Título y URL de la fuente"
+
+#: src/interface.c:797
+msgid "Feed Refresh Interval (in minutes)"
+msgstr "Tiempo de actualización (minutos)"
+
+#: src/interface.c:805
+msgid ""
+"Please remember to set a reasonable refresh time, its not useful to poll "
+"daily updated feeds every 15 minutes! To disable auto-updating the feed set "
+"the interval to 0."
+msgstr "Por favor, escribe un tiempo razonable. No es necesario comprobar las fuentes cada 15 minutos. "
+"Para desactivar la actualización automática, pon este valor a 0."
+
+#: src/interface.c:814
+msgid "Feed Update Interval"
+msgstr "Intervalo de actualización"
+
+#: src/interface.c:909
+msgid "New Subscription"
+msgstr "Nueva subscripción"
+
+#: src/interface.c:930
+msgid ""
+"Please enter the URL (including the http:// prefix) you want to \n"
+"subscribe to. Or enter a valid pathname if you want to load a local file."
+msgstr "Por favor, escribe la URL (con el \"http://\" delante) de la fuente.\n"
+"Si quieres cargar un archivo local, escribe la ruta completa."
+
+#: src/interface.c:952
+msgid "local file"
+msgstr "Examinar..."
+
+#: src/interface.c:956
+msgid "URL Input"
+msgstr "Escribe la URL"
+
+#: src/interface.c:974
+msgid ""
+"You have to specify the type of the feed you want to subscribe \n"
+"to. If you are unsure select \"Auto Detect\"."
+msgstr "Puedes especificar el tipo de fuente al que quieres subscribirte.\n"
+"Si no estás seguro, déjalo en \"Automático\"."
+
+#: src/interface.c:985
+msgid "Feed Type"
+msgstr "Tipo"
+
+#: src/interface.c:996
+msgid "Auto Detect"
+msgstr "Automático"
+
+#: src/interface.c:1000
+msgid "RSS"
+msgstr "RSS"
+
+#: src/interface.c:1004
+msgid "CDF"
+msgstr "CDF"
+
+#: src/interface.c:1008
+msgid "Atom/Echo/PIE"
+msgstr "Atom/Echo/PIE"
+
+#: src/interface.c:1012
+msgid "OCS"
+msgstr "OCS"
+
+#: src/interface.c:1016
+msgid "OPML"
+msgstr "OPML"
+
+#: src/interface.c:1022
+msgid "Feed Type Selection"
+msgstr "Elige el tipo de fuente"
+
+#: src/interface.c:1144
+msgid "program preferences"
+msgstr "Preferencias globales"
+
+#: src/interface.c:1169
+msgid "use the GNOME default browser"
+msgstr "Usar el navegador por defecto de GNOME"
+
+#: src/interface.c:1179
+msgid "use browser command"
+msgstr "Otro navegador:"
+
+#: src/interface.c:1189
+#, c-format
+msgid "specify a browser command using %s as URL placeholder"
+msgstr "Especifica el comando para ejecutar el navegador. Escribe %s, al final, que se substituirá por la URL de la fuente."
+
+#: src/interface.c:1191
+msgid "browser settings"
+msgstr "Propiedades del navegador"
+
+#: src/interface.c:1205
+msgid "display only time"
+msgstr "Mostrar sólo la hora"
+
+#: src/interface.c:1211
+msgid "display date and time"
+msgstr "Mostrar la fecha y hora"
+
+#: src/interface.c:1221
+msgid "user defined format"
+msgstr "Otro formato:"
+
+#: src/interface.c:1230
+msgid ""
+"for expert users: specify a time format string, consult the strftime() "
+"manpage for the format codes"
+msgstr "Para usuarios avanzados: Especifica un formato de fecha. Para más información "
+"consulta la página de manual de 'strftime()'."
+
+#: src/interface.c:1232
+msgid "date column settings"
+msgstr "Opciones de fecha y hora"
+
+#: src/interface.c:1251
+msgid ""
+"maximal number of items per feed \n"
+"to be saved permanently"
+msgstr "Elementos máximos por fuente que\n"
+"se guardarán permanentemente."
+
+#: src/interface.c:1262
+msgid "Update all feeds on program startup."
+msgstr "Actualizar todas las fuentes al inicio del programa"
+
+#: src/interface.c:1266
+msgid "feed handling settings"
+msgstr "Opciones de fuentes"
+
+#: src/interface.c:1271
+msgid "Feed Handling"
+msgstr "Opciones de fuentes"
+
+#: src/interface.c:1288
+msgid ""
+"Show a status icon in the notification area \n"
+"(also called system tray). Changes of this setting\n"
+"take place after restarting the program."
+msgstr "Mostrar un icono en el área de notificación\n"
+"('system tray'). Los cambios se aplicarán al\n"
+"reiniciar el programa."
+
+#: src/interface.c:1293
+msgid "Notification Area"
+msgstr "Área de notificación"
+
+#: src/interface.c:1307
+msgid "Disable Tool Bar."
+msgstr "Desactivar barra de iconos"
+
+#: src/interface.c:1312
+msgid "Disable Menu Bar."
+msgstr "Desactivar barra de menús"
+
+#: src/interface.c:1317
+msgid "Menu Settings"
+msgstr "Opciones de menú"
+
+#: src/interface.c:1321
+msgid "GUI Settings"
+msgstr "Opciones de interfaz"
+
+#: src/interface.c:1410
+msgid "add folder"
+msgstr "Nueva carpeta"
+
+#: src/interface.c:1425 src/interface.c:1499
+msgid "folder name"
+msgstr "Nombre de la carpeta:"
+
+#: src/interface.c:1488
+msgid "edit folder name"
+msgstr "Renombrar carpeta"
+
+#: src/interface.c:1551
+msgid "Select A File"
+msgstr "Elige un archivo"
+
+#: src/interface.c:1596
+msgid "edit filter rules"
+msgstr "Editar filtros"
+
+#: src/interface.c:1696
+msgid "edit rule properties"
+msgstr "Editar reglas"
+
+#: src/interface.c:1710
+msgid "rule type"
+msgstr "Tipo de regla"
+
+#: src/interface.c:1720
+msgid "add items with exact match"
+msgstr "Añadir elementos que coincidan exactamente"
+
+#: src/interface.c:1724
+msgid "remove items with exact match"
+msgstr "Eliminar elementos que coincidan exactamente"
+
+#: src/interface.c:1734
+msgid "rule value"
+msgstr "Valor de la regla"
+
+#: src/interface.c:1798
+msgid "Search With Feedster"
+msgstr "Buscar mediante Feedster"
+
+#: src/interface.c:1812
+msgid "Search for "
+msgstr "Buscar:"
+
+#: src/interface.c:1819
+msgid "enter any search string you want"
+msgstr "Escribe cualquier frase"
+
+#: src/interface.c:1825
+msgid "Maximal Number Of Result Items"
+msgstr "Número máximo de resultados:"
+
+#: src/interface.c:1834
+msgid ""
+"Note: Liferea will generate a feed subscription which is used to query the "
+"Feedster results for the specified search string. You can keep this feed "
+"permanently and update it like any other subscription.  "
+msgstr "Nota: Liferea generará una subscripción que se podrá usar para consultar "
+"los resultados de la búsqueda con Feedster. Puedes mantener esta fuente "
+"permanentemente, y actualizarla como cualquier otra."
+
+#: src/interface.c:1900
+msgid "Export Feed List"
+msgstr "Importar lista"
+
+#: src/interface.c:1910
+msgid ""
+"Liferea can import a list of feeds from an OPML file. This  can be used to "
+"either restore a backup feed list or import a feed list from another "
+"aggregator like that supports OPML export."
+msgstr "Liferea puede importar una lista de fuentes de un archivo OPML. Ésto se puede "
+"usar para recuperar una lista de fuentes exportada así, o importar una lista "
+"de cualquier otro programa que soporte exportación OPML."
+
+#: src/interface.c:1920 src/interface.c:2008
+msgid "Filename"
+msgstr "Archivo:"
+
+#: src/interface.c:1928 src/interface.c:2016
+msgid "Select File"
+msgstr "Explorar..."
+
+#: src/interface.c:1988
+msgid "Import Feed List"
+msgstr "Exportar lista"
+
+#: src/interface.c:1998
+msgid ""
+"Liferea can export the list of feeds as an OPML list. You can use this "
+"feature to backup your feed list or export your feed list to another "
+"aggregator."
+msgstr "Liferea puede exportar las fuentes a un archivo OPML. Puedes usarlo "
+"para hacer una copia de seguridad de tu lista, o para abrirlo más tarde "
+"con otro programa."
+
+#: src/netio.c:91
+msgid "Connecting to "
+msgstr "Conectándose a "
+
+#: src/netio.c:93
+#, c-format
+msgid "Connecting to %s..."
+msgstr "Conectándose a %s..."
+
+#: src/netio.c:227
+#, c-format
+msgid "Downloading http://%s%s..."
+msgstr "Descargando http://%s%s..."
+
+#. This is a serious non-continueable OS error as it will probably not
+#. go away if we retry.
+#.
+#. BeOS will stupidly return SUCCESS here making this code silently fail on BeOS.
+#: src/netio.c:242
+msgid "socket connect"
+msgstr "Conectando socket"
+
+#: src/netio.c:319
+msgid "Too many HTTP redirects encountered! Giving up."
+msgstr "Se encontraron demasiadas redirecciones HTTP. Cancelando."
+
+#. Something bad happened. Server sent stupid stuff.
+#: src/netio.c:326
+msgid "Following HTTP redirects"
+msgstr "Siguiendo redirecciones HTTP"
+
+#: src/netio.c:371
+msgid "URL points to permanent redirect, updating with new location..."
+msgstr "La URL apunta a una redirección permanente, actualizando a la nueva dirección..."
+
+#. The feed is gone. Politely remind the user to unsubscribe.
+#: src/netio.c:413
+msgid "The feed no longer exists. Please unsubscribe!"
+msgstr "Esta fuente ya no existe. Por favor, elimínala."
+
+#: src/netio.c:450
+#, c-format
+msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
+msgstr "El servidor web %s envió código HTTP/1.0 inválido. No se pudieron obtener datos."
+
+#. End of string url. Probably entered invalid stuff like
+#. http://asdf or something. Since we don't want to crash and burn
+#. return the dreaded NULL pointer.
+#: src/netio.c:599
+msgid "This URL doesn't look too valid to me, don't you think?"
+msgstr "La URL es inválida. Por favor, compruébala."
+
+#: src/netio.c:619
+msgid "Couldn't create network socket!"
+msgstr "No se pudo crear el socket de red."
+
+#: src/netio.c:624
+#, c-format
+msgid "Can't resolve host %s!"
+msgstr "Imposible resolver el host %s"
+
+#: src/netio.c:630
+#, c-format
+msgid "Could not connect to server %s: %s"
+msgstr "No se pudo conectar al servidor %s: %s"
+
+#: src/netio.c:636
+msgid "Aborted."
+msgstr "Cancelado."
+
+#: src/netio.c:683
+msgid "Could not allocate memory to read file!"
+msgstr "No se pudo reservar memoria para leer el archivo."
+
+#: src/netio.c:690
+#, c-format
+msgid "Could not open file \"%s\"!"
+msgstr "No se pudo abrir el archivo \"%s\""
+
+#: src/netio.c:693
+#, c-format
+msgid "There is no file \"%s\"!"
+msgstr "El archivo \"%s\" no existe."
+
+#: src/ns_admin.c:100
+msgid "report errors to"
+msgstr "Avisar de errores a"
+
+#: src/ns_admin.c:102
+msgid "feed generator"
+msgstr "Generador de la fuente"
+
+#: src/ns_ag.c:100
+msgid "source"
+msgstr "Fuente"
+
+#: src/ns_ag.c:114
+msgid "time"
+msgstr "Hora"
+
+#: src/ns_cC.c:78
+msgid "license"
+msgstr "Licencia"
+
+#: src/ns_dc.c:247 src/ns_ocs.c:96
+msgid "internal OCS namespace parsing error!"
+msgstr "Error interno analizando el 'namespace' OCS."
+
+#: src/ocs_dir.c:216 src/ocs_dir.c:261 src/ocs_dir.c:386 src/ocs_dir.c:462
+#, c-format
+msgid "no namespace handler for <%s:%s>!\n"
+msgstr "No hay manejador de 'namespaces' para <%s:%s>\n"
+
+#: src/ocs_dir.c:492
+#, c-format
+msgid "XML error wile reading directory! Directory \"%s\" could not be loaded!"
+msgstr "Error XML leyendo el directorio \"%s\". Imposible cargarlo."
+
+#: src/ocs_dir.c:498 src/opml.c:139
+msgid "Empty document!"
+msgstr "El documento está vacío."
+
+#: src/ocs_dir.c:507
+msgid "Could not find RDF header!"
+msgstr "No se pudo obtener la cabecera RDF."
+
+#: src/opml.c:150
+msgid "Could not find OPML header!!"
+msgstr "No se pudo obtener la cabecera OPML."
+
+#: src/pie_feed.c:96 src/rss_channel.c:117
+msgid "Internal error! Invalid output request mode for namespace information!"
+msgstr "Error interno. Método de petición de salida inválido para la información de este 'namespace'."
+
+#: src/pie_feed.c:236
+msgid "Could not find PIE header! Feed was not added!"
+msgstr "No se pudo encontrar la cabecera PIE. La fuente no se añadió."
+
+#: src/rss_channel.c:272
+msgid ""
+"internal error: parseTextInput without a channel! Skipping text input!\n"
+msgstr "Error interno: 'parseTextInput' sin ningún canal. Ignorando la entrada de texto.\n"
+
+#: src/rss_channel.c:306
+msgid "internal error: parseImage without a channel! Skipping image!\n"
+msgstr "Error interno: 'parseImage' sin ningún canal. Ignorando imagen.\n"
+
+#: src/rss_channel.c:364
+msgid "Could not find RDF/RSS header! Feed was not added!"
+msgstr "No se pudo encontrar la cabecera RDF/RSS. La fuente no se añadió."
+
+#: src/rss_item.c:231
+msgid "comments"
+msgstr "Comentarios"
+
+#: src/ui_filter.c:58
+msgid "Rule"
+msgstr "Regla"
+
+#: src/ui_search.c:75
+#, c-format
+msgid "searching for \"%s\""
+msgstr "Buscando \"%s\""
+
+#: src/ui_search.c:107
+msgid "Feedster search request failed.\n"
+msgstr "Falló la petición de búsqueda en Feedster\n"
+
+#: src/ui_search.c:137
+#, c-format
+msgid "creating VFolder for search term \"%s\""
+msgstr "Creando 'VFolder' para la búsqueda: \"%s\""
+
+#. FIXME: this really does not belong here!!! -> vfolder.c
+#. setup a rule
+#. 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule))))
+#. 					g_error(_("Could not allocate memory!"));
+#. we set the searchstring as a default title
+#: src/ui_search.c:150
+#, c-format
+msgid "VFolder %s"
+msgstr "'VFolder' %s"
+
+#: src/ui_search.c:161
+msgid "internal error! could not get folder key prefix!"
+msgstr "Error interno: No se pudo obtener el prefijo de la ID de carpeta."
+
+#: src/update.c:108
+msgid "Could not allocate memory!"
+msgstr "No se ha podido asignar memoria suficiente."
+
+#: src/update.c:156
+msgid "Feed source is NULL! This should never happen - cannot update!"
+msgstr "La fuente es nula. Esto no debería de estar pasando. No se pudo actualizar."
+
