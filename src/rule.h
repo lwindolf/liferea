@@ -26,6 +26,7 @@ typedef struct rule {
 	feedPtr		fp;		/* the feed the filter is applied to */
 	gchar		*value;		/* the value of the rule, e.g. a search text */
 	gpointer	ruleInfo;	/* info structure about rule check function */
+	gboolean	additive;	/* is the rule positive logic */
 } *rulePtr;
 
 /** rule info structure */
@@ -33,8 +34,9 @@ typedef struct ruleInfo {
 	gpointer		ruleFunc;	/* the rules test function */
 	gchar			*ruleId;	/* rule id for cache file storage */
 	gchar			*title;		/* rule type title for dialogs */
+	gchar			*positive;	/* text for positive logic selection */
+	gchar			*negative;	/* text for negative logic selection */
 	gboolean		needsParameter;	/* some rules may require no parameter... */
-	gboolean		additive;	/* is it a removing or adding rule */
 } *ruleInfoPtr;
 
 /** the list of implemented rules */
@@ -49,11 +51,6 @@ void rule_init(void);
  * structure with for the given vfolder and rule value 
  */
 rulePtr rule_new(feedPtr fp, gchar *ruleId, gchar *value);
-
-/**
- * Returns TRUE if the rule is additive... 
- */
-gboolean rule_is_additive(rulePtr rp);
 
 /**
  * Checks a new item against all additive rules of all feeds

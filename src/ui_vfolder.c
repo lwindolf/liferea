@@ -100,7 +100,6 @@ static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
 
 		/* build the menu option */
 		widget = gtk_menu_item_new_with_label(ruleInfo->title);
-		gtk_widget_show(widget);
 		gtk_container_add(GTK_CONTAINER(menu), widget);
 		gtk_signal_connect(GTK_OBJECT(widget), "activate", GTK_SIGNAL_FUNC(on_ruletype_changed), changeRequest);
 	}
@@ -144,14 +143,29 @@ static void ui_vfolder_destroy_param_widget(GtkWidget *widget, gpointer data) {
 static void on_ruletype_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 	struct changeRequest	*changeRequest = (struct changeRequest *)user_data;
 	ruleInfoPtr		ruleInfo;
-	GtkWidget		*widget;
+	GtkWidget		*widget, *menu;
 	GList			*iter;
+
+	ruleInfo = ruleFunctions + changeRequest->rule;
 
 	/* remove old widgets */	
 	gtk_container_foreach(GTK_CONTAINER(changeRequest->paramHBox), ui_vfolder_destroy_param_widget, NULL);
+
+	/* add popup menu for selection of positive or negative logic */
+	menu = gtk_menu_new();
+
+	widget = gtk_menu_item_new_with_label(ruleInfo->positive);
+	gtk_container_add(GTK_CONTAINER(menu), widget);
+	
+	widget = gtk_menu_item_new_with_label(ruleInfo->negative);
+	gtk_container_add(GTK_CONTAINER(menu), widget);
+
+	widget = gtk_option_menu_new();
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(widget), menu);	
+	gtk_widget_show_all(widget);
+	gtk_box_pack_start(GTK_BOX(changeRequest->paramHBox), widget, FALSE, FALSE, 0);
 		
 	/* add new ones... */
-	ruleInfo = ruleFunctions + changeRequest->rule;
 	if(ruleInfo->needsParameter) {
 		widget = gtk_entry_new();
 		gtk_widget_show(widget);

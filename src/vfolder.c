@@ -140,44 +140,30 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	if(vp == fp)
 		return;
 
-	/* check against all additive rules */
+	/* check against all rules */
 	iter = vfolder_rules;
 	while(NULL != iter) {
 		rp = iter->data;
-		/* if rule is from this vfolder process it*/
-		if((vp == rp->fp) && rule_is_additive(rp))  {
+		/* if rule is from this vfolder process it */
+		if(vp == rp->fp)  {
 			/* check all feed items */
 			items = feed_get_item_list(fp);
 			while(NULL != items) {
 				ip = items->data;			
 				if(rule_check_item(rp, ip)) {
-					debug1(DEBUG_UPDATE, "adding matching item: %s\n", item_get_title(ip));
-					vfolder_add_item(vp, ip);
+					if(rp->additive) {
+						debug1(DEBUG_UPDATE, "adding matching item: %s\n", item_get_title(ip));
+						vfolder_add_item(vp, ip);
+					} else {
+						debug1(DEBUG_UPDATE, "deleting matching item: %s\n", item_get_title(ip));
+						vfolder_remove_item(vp, ip);
+					}
 				}
 				items = g_slist_next(items);
 			}
 		}
 		iter = g_slist_next(iter);
 	}
-
-	/* check against all non-additive rules */
-	iter = vfolder_rules;
-	while(NULL != iter) {
-		rp = iter->data;
-		/* if rule is from this vfolder process it*/
-		if((vp == rp->fp) && !rule_is_additive(rp))  {
-			/* check all feed items */
-			items = feed_get_item_list(fp);
-			while(NULL != items) {
-				ip = items->data;			
-				if(rule_check_item(rp, ip))
-					debug1(DEBUG_UPDATE, "deleting matching item: %s\n", item_get_title(ip));
-					vfolder_remove_item(vp, ip);
-				items = g_slist_next(items);
-			}
-		}
-		iter = g_slist_next(iter);
-	}	
 	
 	feed_unload(fp);
 	debug_exit("vfolder_apply_rules");

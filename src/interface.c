@@ -3013,7 +3013,7 @@ create_vfolderdialog (void)
   dialog_vbox15 = GTK_DIALOG (vfolderdialog)->vbox;
   gtk_widget_show (dialog_vbox15);
 
-  vbox2583 = gtk_vbox_new (FALSE, 0);
+  vbox2583 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2583);
   gtk_box_pack_start (GTK_BOX (dialog_vbox15), vbox2583, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2583), 6);
@@ -3045,15 +3045,15 @@ create_vfolderdialog (void)
 
   hbox65 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox65);
-  gtk_box_pack_start (GTK_BOX (vbox2584), hbox65, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2584), hbox65, FALSE, TRUE, 0);
 
   addrulebtn = gtk_button_new_from_stock ("gtk-add");
   gtk_widget_show (addrulebtn);
   gtk_box_pack_start (GTK_BOX (hbox65), addrulebtn, FALSE, FALSE, 0);
 
-  label154 = gtk_label_new ("");
+  label154 = gtk_label_new (_("Note: Items are added to the vfolder if at least one additive rule\nmatches. They are removed if at least one removing rule matches."));
   gtk_widget_show (label154);
-  gtk_box_pack_start (GTK_BOX (hbox65), label154, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox65), label154, TRUE, TRUE, 0);
 
   scrolledwindow7 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow7);

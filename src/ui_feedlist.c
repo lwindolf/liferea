@@ -520,7 +520,7 @@ void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWi
 	if(NULL != fp) {
 		if(IS_FEED(feed_get_type(fp))) {
 			ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
-//ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow),fp); // for debugging
+ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow),fp); // for debugging
 			return;
 		} 
 		if(FST_VFOLDER == feed_get_type(fp)) {

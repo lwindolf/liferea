@@ -51,11 +51,6 @@ rulePtr rule_new(feedPtr fp, gchar *ruleId, gchar *value) {
 	return NULL;
 }
 
-gboolean rule_is_additive(rulePtr rp) {
-
-	return ((ruleInfoPtr)(rp->ruleInfo))->additive;
-}
-
 gboolean rule_check_item(rulePtr rp, itemPtr ip) {
 	ruleInfoPtr	ruleInfo;
 	gboolean	matches = FALSE;
@@ -144,7 +139,7 @@ static gboolean rule_is_flagged(rulePtr rp, itemPtr ip) {
 
 /* rule initialization */
 
-static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gboolean needsParameter, gboolean additive) {
+static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gchar *positive, gchar *negative, gboolean needsParameter) {
 
 	ruleFunctions = (ruleInfoPtr)g_realloc(ruleFunctions, sizeof(struct ruleInfo)*(nrOfRuleFunctions + 1));
 	if(NULL == ruleFunctions)
@@ -152,20 +147,17 @@ static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gboolea
 	ruleFunctions[nrOfRuleFunctions].ruleFunc = func;
 	ruleFunctions[nrOfRuleFunctions].ruleId = ruleId;
 	ruleFunctions[nrOfRuleFunctions].title = title;
+	ruleFunctions[nrOfRuleFunctions].positive = positive;
+	ruleFunctions[nrOfRuleFunctions].negative = negative;
 	ruleFunctions[nrOfRuleFunctions].needsParameter = needsParameter;
-	ruleFunctions[nrOfRuleFunctions].additive = additive;
 	nrOfRuleFunctions++;
 }
 
 void rule_init(void) {
 
-	rule_add(rule_exact_match,		"add_exact",		_("add items containing text"),		TRUE,	TRUE);
-	rule_add(rule_exact_match,		"del_exact",		_("hide items containing text"),	TRUE,	FALSE);
-	rule_add(rule_exact_title_match,	"add_exact_title",	_("add items where title matches"),	TRUE,	TRUE);
-	rule_add(rule_exact_title_match,	"del_exact_title",	_("hide items where title matches"),	TRUE,	FALSE);
-	rule_add(rule_exact_description_match,	"add_exact_desc",	_("add items where text matches"),	TRUE,	TRUE);
-	rule_add(rule_exact_description_match,	"del_exact_desc",	_("hide items where text matches"),	TRUE,	FALSE);
-	rule_add(rule_is_unread,		"add_unread",		_("add all unread items"),		FALSE,	TRUE);
-	rule_add(rule_is_flagged,		"add_flagged",		_("add all flagged items"),		FALSE,	TRUE);
+	rule_add(rule_exact_match,		"exact",		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_add(rule_exact_title_match,	"exact_title",		_("Item title"),	_("does match"),	_("does not match"),	TRUE);
+	rule_add(rule_exact_description_match,	"exact_desc",		_("Item body"),		_("does match"),	_("does not match"),	TRUE);
+	rule_add(rule_is_unread,		"unread",		_("Read status"),	_("is unread"),		_("is read"),		FALSE);
+	rule_add(rule_is_flagged,		"flagged",		_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
 }
-

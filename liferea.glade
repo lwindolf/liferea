@@ -5953,7 +5953,7 @@ Tibor Pittich &lt;Tibor.Pittich@mandrake.org&gt;
 	  <property name="border_width">6</property>
 	  <property name="visible">True</property>
 	  <property name="homogeneous">False</property>
-	  <property name="spacing">0</property>
+	  <property name="spacing">6</property>
 
 	  <child>
 	    <widget class="GtkHBox" id="hbox64">
@@ -6059,7 +6059,8 @@ Tibor Pittich &lt;Tibor.Pittich@mandrake.org&gt;
 			  <child>
 			    <widget class="GtkLabel" id="label154">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes"></property>
+			      <property name="label" translatable="yes">Note: Items are added to the vfolder if at least one additive rule
+matches. They are removed if at least one removing rule matches.</property>
 			      <property name="use_underline">False</property>
 			      <property name="use_markup">False</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -6072,15 +6073,15 @@ Tibor Pittich &lt;Tibor.Pittich@mandrake.org&gt;
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
-			      <property name="expand">False</property>
-			      <property name="fill">False</property>
+			      <property name="expand">True</property>
+			      <property name="fill">True</property>
 			    </packing>
 			  </child>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
 			  <property name="expand">False</property>
-			  <property name="fill">False</property>
+			  <property name="fill">True</property>
 			</packing>
 		      </child>
 
