@@ -65,7 +65,7 @@ static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
 				addToHTMLBuffer(&buffer, KEY_START);
 				addToHTMLBuffer(&buffer, taglist[i]);

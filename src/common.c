@@ -40,6 +40,7 @@
 #include "conf.h"
 #include "support.h"
 #include "feed.h"
+#include "debug.h"
 
 static gchar *standard_encoding = { "UTF-8" };
 
@@ -88,62 +89,35 @@ gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * strin
 
 gchar * convertToHTML(gchar * string) { return convertCharSet("UTF-8", "HTML", string); }
 
-/* the code of this function was taken from a GTK tutorial */
-static gchar* convert(unsigned char *in, gchar *encoding)
-{
-	unsigned char *out;
-        int ret,size,out_size,temp;
-        xmlCharEncodingHandlerPtr handler;
-
-	if(NULL == in)
-		return NULL;
-	
-        size = (int)strlen(in)+1; 
-        out_size = size*2-1; 
-        out = g_malloc((size_t)out_size); 
-	g_assert(NULL != out);
-
-        if (out) {
-                handler = xmlFindCharEncodingHandler(encoding);
-                
-                if (!handler) {
-                        g_free(out);
-                        out = NULL;
-                }
-        }
-        if (out) {
-                temp=size-1;
-                ret = handler->input(out, &out_size, in, &temp);
-                if (ret || temp-size+1) {
-                        if (ret) {
-                                g_message(_("conversion wasn't successful.\n"));
-                        } else {
-                                g_message(_("conversion wasn't successful. converted: %i octets.\n"), temp);
-                        }
-                        g_free(out);
-                        out = NULL;
-                } else {
-                        out = g_realloc(out,out_size+1); 
-                        out[out_size]=0; /*null terminating out*/
-                        
-                }
-        } else {
-                g_error(_("not enough memory\n"));
-        }
-		
-        return out;
-}
-
 /* Conversion function which should be applied to all read XML strings, 
-   to ensure proper UTF8. doc points to the xml document and its encoding and
-   string is a xmlchar pointer to the read string. The result gchar
-   string is returned, the original XML string is freed. */
-gchar * CONVERT(xmlChar *string) {
-	gchar	*result;
+   to ensure proper UTF8. This is because we use libxml2 in recovery
+   mode which can produce invalid UTF-8. 
+   
+   The valid or a corrected string is returned, the original XML 
+   string is freed. */
+gchar * utf8_fix(xmlChar *string) {
+	const gchar	*invalid_offset;
+
+	if(NULL == string)
+		return NULL;
+		
+	if(!g_utf8_validate(string, -1, &invalid_offset)) {
+		/* if we have an invalid string we try to shorten
+		   it until it is valid UTF-8 */
+		debug0(DEBUG_PARSING, "parser delivered invalid UTF-8!");
+		debug1(DEBUG_PARSING, "	>>>%s<<<\n", string);
+		debug1(DEBUG_PARSING, "first invalid char is: >>>%s<<<\n" , invalid_offset);
+		debug0(DEBUG_PARSING, "removing invalid bytes");
+		
+		do {
+			memmove((void *)invalid_offset, invalid_offset + 1, strlen(invalid_offset + 1) + 1);			
+		} while(!g_utf8_validate(string, -1, &invalid_offset));
+		
+		debug0(DEBUG_PARSING, "result is:\n");
+		debug1(DEBUG_PARSING, "	>>>%s<<<\n", string);		
+	}
 	
-	result = convert(string, "UTF-8");
-	xmlFree(string);
-	return result;
+	return string;
 }
 
 gchar * extractHTMLNode(xmlNodePtr cur) {
@@ -189,6 +163,8 @@ gchar * unhtmlize(gchar *string) {
 	
 	if(NULL == string)
 		return NULL;
+		
+	string = utf8_fix(string);
 
 	/* only do something if there are any entities or tags */
 	if(NULL == (strpbrk(string, "&<>")))

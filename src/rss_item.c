@@ -186,7 +186,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 		}
 		
 		if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
 				i->time = parseRFC822Date(tmp);
 				g_free(tmp);
@@ -195,7 +195,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures, so we build
 			   a simple string of HTML-links... */
-			tmp = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"url"));
+			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
 			if(NULL != tmp) {
 				link = tmp;
 				if(NULL == (tmp = i->enclosure)) {
@@ -210,7 +210,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 			/* check for RDF tags */
 			for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
 				if(!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
- 					tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 					if(NULL != tmp) {
 						g_free(i->tags[j]);
 						i->tags[j] = tmp;

@@ -59,7 +59,7 @@ static void parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 		name = g_strdup(_("feed generator"));
 	
 	if(NULL != name) {
-		value = CONVERT(xmlGetProp(cur, "resource"));	
+		value = utf8_fix(xmlGetProp(cur, "resource"));	
 		if(NULL != value) {
 			addToHTMLBuffer(&buffer, FIRSTTD);
 			addToHTMLBuffer(&buffer, name);

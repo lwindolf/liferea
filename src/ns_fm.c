@@ -38,7 +38,7 @@ static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	gchar	*tmp;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
- 		tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		if(NULL != tmp) {
 			if(g_utf8_strlen(tmp, -1) > 0) {
 				g_hash_table_insert(ip->nsinfos, g_strdup("fm:screenshot_url"), tmp);

@@ -167,17 +167,17 @@ gchar * parseAuthor(xmlNodePtr cur) {
 		}
 		
 		if (!xmlStrcmp(cur->name, BAD_CAST"name"))
-			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 
 		if (!xmlStrcmp(cur->name, BAD_CAST"email")) {
-			tmp2 = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			tmp2 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp2 = g_strdup_printf("%s <a href=\"mailto:%s\">%s</a>", tmp, tmp2, tmp2);
 			g_free(tmp);
 			tmp = tmp2;
 		}
 					
 		if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
-			tmp2 = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			tmp2 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp2 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
 			g_free(tmp);
 			tmp = tmp2;
@@ -251,7 +251,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				if(NULL != (tmp = xmlGetProp(cur, BAD_CAST"rel"))) {
 					if(!xmlStrcmp(tmp, BAD_CAST"alternate")) {
 						g_free(cp->tags[PIE_FEED_LINK]);
-						cp->tags[PIE_FEED_LINK] = CONVERT(xmlGetProp(cur, BAD_CAST"href"));
+						cp->tags[PIE_FEED_LINK] = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
 					}
 					xmlFree(tmp);
 					cur = cur->next;
@@ -280,7 +280,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			for(i = 0; i < PIE_FEED_MAX_TAG; i++) {
 				if (!xmlStrcmp(cur->name, BAD_CAST feedTagList[i])) {
 					tmp = cp->tags[i];
-					if(NULL == (cp->tags[i] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+					if(NULL == (cp->tags[i] = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
 						cp->tags[i] = tmp;
 					} else {
 						g_free(tmp);

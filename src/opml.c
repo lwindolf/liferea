@@ -68,7 +68,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	attr = cur->properties;
 	while(NULL != attr) {
 		/* get prop value */
- 		value = CONVERT(xmlGetProp(cur, attr->name));
+ 		value = utf8_fix(xmlGetProp(cur, attr->name));
 		if(NULL != value) {
 			if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
 				tmp = g_strdup_printf("<p class=\"opmltext\">%s</p>", value);
@@ -161,7 +161,7 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				while(child != NULL) {
 					for(i = 0; i < OPML_MAX_TAG; i++) {
 						if (!xmlStrcmp(child->name, (const xmlChar *)opmlTagList[i])) {
-							tmp = CONVERT(xmlNodeListGetString(doc, child->xmlChildrenNode, 1));						
+							tmp = utf8_fix(xmlNodeListGetString(doc, child->xmlChildrenNode, 1));						
 							if(NULL != tmp) {
 								g_free(headTags[i]);
 								headTags[i] = tmp;
@@ -182,8 +182,8 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 						g_free(tmp);
 						
 						ip = item_new();
-						if(NULL == (tmp = CONVERT(xmlGetProp(child, BAD_CAST"text"))))
-							tmp = CONVERT(xmlGetProp(child, BAD_CAST"title"));
+						if(NULL == (tmp = utf8_fix(xmlGetProp(child, BAD_CAST"text"))))
+							tmp = utf8_fix(xmlGetProp(child, BAD_CAST"title"));
 						ip->title = tmp;
 						ip->description = buffer;
 						ip->readStatus = TRUE;

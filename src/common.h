@@ -38,7 +38,7 @@ typedef struct node {
    to ensure proper UTF8. doc points to the xml document and its encoding and
    string is a xmlChar pointer to the read string. The result gchar
    string is returned, the original XML string is freed. */
-gchar * CONVERT(xmlChar * string);
+gchar * utf8_fix(xmlChar * string);
 
 /* converts a UTF-8 string to HTML (resolves XML entities) */
 gchar * convertToHTML(gchar * string);

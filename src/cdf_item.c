@@ -94,7 +94,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	ip = item_new();
 	
 	/* save the item link */
-	i->tags[CDF_ITEM_LINK] = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"href"));
+	i->tags[CDF_ITEM_LINK] = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"href"));
 
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
@@ -107,7 +107,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		/* save first link to a channel image */
 		if((!xmlStrcmp(cur->name, BAD_CAST"logo"))) {
 			if(NULL != i->tags[CDF_ITEM_IMAGE])
-				i->tags[CDF_ITEM_IMAGE] = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"href"));
+				i->tags[CDF_ITEM_IMAGE] = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"href"));
 			cur = cur->next;			
 			continue;
 		}
@@ -116,7 +116,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		for(j = 0; j < CDF_ITEM_MAX_TAG; j++) {		
 			if (!xmlStrcmp(cur->name, BAD_CAST CDFItemTagList[j])) {
 				tmp = i->tags[j];
-				i->tags[j] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				i->tags[j] = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL == i->tags[j]) {
 					i->tags[j] = tmp;
 				} else {

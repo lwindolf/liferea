@@ -291,8 +291,13 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 
 void ui_htmlview_write(gchar *string) { 
 
-	if(!g_utf8_validate(string, -1, NULL))
+	if(!g_utf8_validate(string, -1, NULL)) {
+		/* Its really a bug if we get invalid encoded UTF-8 here!!! */
 		g_warning("Invalid encoded UTF8 string passed to HTML widget!");
+		
+		/* to prevent crashes inside the browser */
+		string = utf8_fix(string);
+	}
 
 	((writeHTMLFunc)methods[WRITEHTML])(g_strdup(string));
 }

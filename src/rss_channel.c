@@ -211,7 +211,7 @@ static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
- 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  			if(NULL != tmp) {
 				cp->updateInterval = atoi(tmp);
 				g_free(tmp);
@@ -237,7 +237,7 @@ static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 		/* check for RDF tags */
 		for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {
 			if(!xmlStrcmp(cur->name, BAD_CAST channelTagList[i])) {
-				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					g_free(cp->tags[i]);
 					cp->tags[i] = tmp;
@@ -264,7 +264,7 @@ static void parseTextInput(RSSChannelPtr cp, xmlNodePtr cur) {
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
- 		tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		if(NULL != tmp) {
 			if(!xmlStrcmp(cur->name, BAD_CAST"title"))
 				cp->tiTitle = tmp;
@@ -297,7 +297,7 @@ static void parseImage(RSSChannelPtr cp, xmlNodePtr cur) {
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
  		if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
- 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
 				g_free(cp->tags[RSS_CHANNEL_IMAGE]);
 				cp->tags[RSS_CHANNEL_IMAGE] = tmp;

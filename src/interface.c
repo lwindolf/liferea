@@ -525,7 +525,7 @@ create_mainwindow (void)
 
   markAllAsRead = gtk_button_new ();
   gtk_widget_show (markAllAsRead);
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), markAllAsRead, _("Edit preferences"), NULL);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), markAllAsRead, _("Mark all items of the selected subscription or of all subscriptions of the selected folder as read."), NULL);
   GTK_WIDGET_UNSET_FLAGS (markAllAsRead, GTK_CAN_FOCUS);
   gtk_button_set_relief (GTK_BUTTON (markAllAsRead), GTK_RELIEF_NONE);
 

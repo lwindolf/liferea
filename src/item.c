@@ -157,7 +157,7 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
- 		tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+ 		tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		
 		if(tmp == NULL) {
 			cur = cur->next;

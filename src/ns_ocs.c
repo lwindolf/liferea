@@ -75,7 +75,7 @@ void ns_ocs_parseTag(gint type, gpointer p, xmlNodePtr cur) {
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(-1 != mapTo[i]) {			
 			if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 				value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 				value = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  				if(NULL != value) {
 					g_assert(mapTo[i] < OCS_MAX_TAG);
 					/* map the value to one of the RSS fields */

@@ -50,7 +50,7 @@ gchar * ns_ag_getRSSNsPrefix(void) { return ns_ag_prefix; }
 static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	gchar	*date, *tmp;
 	
-	tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+	tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 	if(!xmlStrcmp("source", cur->name))  {
 		/* do nothing */
 	} else if(!xmlStrcmp("sourceURL", cur->name)) {

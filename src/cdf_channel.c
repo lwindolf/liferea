@@ -98,7 +98,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 		/* save first link to a channel image */
 		if((!xmlStrcmp(cur->name, BAD_CAST"logo"))) {
 			if(NULL != cp->tags[CDF_CHANNEL_IMAGE])				
-				cp->tags[CDF_CHANNEL_IMAGE] = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"href"));
+				cp->tags[CDF_CHANNEL_IMAGE] = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"href"));
 			cur = cur->next;			
 			continue;
 		}
@@ -113,7 +113,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 
 		for(i = 0; i < CDF_CHANNEL_MAX_TAG; i++) {
 			if (!xmlStrcmp(cur->name, BAD_CAST CDFChannelTagList[i])) {			
-				tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+				tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					g_free(cp->tags[i]);
 					cp->tags[i] = tmp;

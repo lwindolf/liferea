@@ -116,10 +116,10 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 	g_assert(NULL != cur);
 	if((NULL == i->tags[PIE_ENTRY_DESCRIPTION]) || (TRUE == i->summary)) {	
 		/* determine encoding mode */
-		mode = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"mode"));
+		mode = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"mode"));
 		if(NULL != mode) {
 			if(!strcmp(mode, "escaped")) {
- 				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
 					i->tags[PIE_ENTRY_DESCRIPTION] = tmp;
@@ -141,7 +141,7 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 		} else {
 			/* some feeds don'ts specify a mode but a MIME 
 			   type in the type attribute... */
-			type = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"type"));			
+			type = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"type"));			
 			/* not sure what MIME types are necessary... */
 			if((NULL == type) ||
 			   !strcmp(type, "text/html") ||
@@ -197,7 +197,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 
 		if(!xmlStrcmp(cur->name, BAD_CAST"issued")) {
 			// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
- 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  			if(NULL != tmp)
 				i->time = parseISO8601Date(tmp);
 
@@ -207,11 +207,11 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 			if(NULL != (xtmp = xmlGetProp(cur, BAD_CAST"rel"))) {
 				if(!xmlStrcmp(xtmp, BAD_CAST"alternate")) {
 					g_free(i->source);
-					i->source = CONVERT(xmlGetProp(cur, BAD_CAST"href"));
+					i->source = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
 				}
 				xmlFree(xtmp);
 			} else {
-				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL == tmp) {
 					g_free(i->source);
 					i->source = tmp;
@@ -243,7 +243,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 			/* <summary> can be used for short text descriptions, if there is no
 			   <content> description we show the <summary> content */
 			if(NULL == i->tags[PIE_ENTRY_DESCRIPTION]) {
-				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					i->summary = TRUE;
 					i->tags[PIE_ENTRY_DESCRIPTION] = tmp;
@@ -253,7 +253,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 			/* check for PIE tags */
 			for(j = 0; j < PIE_ENTRY_MAX_TAG; j++) {
 				if(!xmlStrcmp(cur->name, BAD_CAST entryTagList[j])) {
-					tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 					if(NULL != tmp) {
 						g_free(i->tags[j]);
 						i->tags[j] = tmp;

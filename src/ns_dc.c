@@ -211,7 +211,7 @@ static void parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(-1 != mapToDP[i]) {
 			if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 				value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 				value = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 
 				g_assert(mapToDP[i] < OCS_MAX_TAG);
 				/* map the value to one of the RSS fields */
@@ -301,7 +301,7 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
- 		date = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 		date = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  		if(NULL != date) {
 			i = parseISO8601Date(date);
 			g_free(date);
@@ -331,7 +331,7 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			value = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 	 		if(NULL != value) {
 				/* check if value consist of whitespaces only */
 				isNotEmpty = FALSE;

@@ -48,7 +48,7 @@ gchar * ns_cC_parseTag(xmlNodePtr cur) {
 	gchar	*tmp;
 	
  	if(!xmlStrcmp("license", cur->name)) {
- 		if(NULL != (tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+ 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			addToHTMLBuffer(&buffer, FIRSTTD);
 			addToHTMLBuffer(&buffer, (gchar *)_("license"));
 			addToHTMLBuffer(&buffer, NEXTTD);

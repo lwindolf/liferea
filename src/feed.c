@@ -354,7 +354,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
-			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 
 			if(tmp == NULL) {
 				cur = cur->next;
