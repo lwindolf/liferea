@@ -339,9 +339,12 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 		ui_add_folder(parent, helpFolder, -1);
 		
 		if(!getBooleanConfValue(DISABLE_HELPFEEDS)) {
+			gchar *tmp;
 			fp = feed_new();
 			feed_set_type(fp, FST_HELPFEED);
-			feed_set_source(fp, g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2));
+			tmp = g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2);
+			feed_set_source(fp, tmp);
+			g_free(tmp);
 			feed_set_title(fp, _("Online Help Feed"));
 			feed_set_id(fp, "helpfeed1");
 			feed_set_update_interval(fp, 1440);
