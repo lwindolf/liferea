@@ -270,7 +270,16 @@ void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *bas
 	if (base == NULL)
 		base = "file:///";
 	
-	g_assert(htmlview != NULL);
+	/* THIS IS A HACK! This should be a g_assert.... I know how to
+	   fix the problem that causes this, but it works well enough,
+	   and this is not much of a hack. What happens is that the focus
+	   of the itemlist changes when switching pane modes, which
+	   causes item_display to be triggered, triggering a write while
+	   a htmlview doesn't exist. Getting rid of the notebook is what
+	   should be done.... I'll do this at some point, but until then,
+	   this works. */
+	if (htmlview == NULL)
+		return;
 	
 	if(!g_utf8_validate(string, -1, NULL)) {
 		gchar *buffer = g_strdup(string);
