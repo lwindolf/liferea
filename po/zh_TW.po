@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-23 20:57+0200\n"
+"POT-Creation-Date: 2004-08-11 04:09+0200\n"
 "PO-Revision-Date: 2004-05-21 02:32+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -16,28 +16,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common.c:270
+#: src/common.c:267
 msgid "[Parser error output was truncated!]"
 msgstr "[Parser error output was truncated!]"
 
-#: src/common.c:354 src/common.c:413
+#: src/common.c:348 src/common.c:407
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "內部錯誤! 時間轉換錯誤! mktime 失敗!\n"
 
-#: src/common.c:357
+#: src/common.c:351
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "無效 ISO8601 日期格式! 忽略 <dc:date> 資訊!\n"
 
-#: src/common.c:416
-msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
+#: src/common.c:410
+#, fuzzy
+msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "無效 RFC822 日期格式! 忽略 <pubDate> 資訊!\n"
 
-#: src/common.c:430 src/common.c:437 src/common.c:443 src/common.c:450
+#: src/common.c:424 src/common.c:431 src/common.c:437 src/common.c:444
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "無法創建快取目錄 %s !"
 
-#: src/common.c:520
+#: src/common.c:514
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -52,256 +53,274 @@ msgstr "http://liferea.sf.net/help/help"
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/conf.c:339
+#: src/conf.c:363
 msgid "Liferea Help"
 msgstr "Liferea 求助"
 
-#: src/conf.c:349
+#: src/conf.c:373
 msgid "Online Help Feed"
 msgstr "線上求助饋流"
 
-#: src/conf.c:359
+#: src/conf.c:388
 msgid "Liferea SF News"
 msgstr "Liferea SF 新聞"
 
-#: src/conf.c:481
+#: src/conf.c:515
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "無法將 %s 更名為 %s\n"
 
-#: src/conf.c:509
+#: src/conf.c:543
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 命名空間 %s 尚未設定! 啟動中...\n"
 
-#: src/export.c:364 src/export.c:366
+#: src/export.c:391 src/export.c:393
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "讀入快取檔案 \"%s\" 時發生 XML 錯誤 ! 無法讀入快取檔案!"
 
-#: src/export.c:370 src/export.c:372
+#: src/export.c:397 src/export.c:399
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "空白文件! OPML \"%s\" 檔案不該空白..."
 
-#: src/export.c:380 src/export.c:382
+#: src/export.c:407 src/export.c:409
 #, fuzzy, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" 不是有效的 OPML 檔案! 無法匯入!"
 
-#: src/export.c:490
-msgid "Error while exporting feed list!"
-msgstr "在匯出饋流列表時錯誤!"
-
-#: src/export.c:492
-msgid "Feed List exported!"
-msgstr "饋流列表已匯出!"
-
-#: src/export.c:508
+#: src/export.c:427
 #, fuzzy
 msgid "Imported feed list"
 msgstr "匯入饋流列表"
 
-#: src/feed.c:109
+#: src/export.c:438
+msgid "Import Feed List"
+msgstr "匯入饋流列表"
+
+#: src/export.c:438
+msgid "Import"
+msgstr ""
+
+#: src/export.c:448
+msgid "Error while exporting feed list!"
+msgstr "在匯出饋流列表時錯誤!"
+
+#: src/export.c:450
+msgid "Feed List exported!"
+msgstr "饋流列表已匯出!"
+
+#: src/export.c:457
+msgid "Export Feed List"
+msgstr "匯出饋流列表"
+
+#: src/export.c:457
+msgid "Export"
+msgstr ""
+
+#: src/feed.c:137
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr "<p>讀入饋流時出現 XML 錯誤! 饋流 \"%s\" 無法載入!</p>"
 
-#: src/feed.c:116 src/feed.c:396
+#: src/feed.c:143 src/feed.c:397
 msgid "<p>Empty document!</p>"
 msgstr "<p>空文件!</p>"
 
-#: src/feed.c:124
+#: src/feed.c:150
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>無效 XML!</p>"
 
-#: src/feed.c:173
+#: src/feed.c:201
 #, fuzzy
 msgid "There were errors while parsing a feed"
 msgstr "分析饋流時出現錯誤!"
 
-#: src/feed.c:174
-#, fuzzy
+#: src/feed.c:202
 msgid ""
-"<p>Could not determine the feed type. Please check that it is in a supported "
-"format.</p>"
-msgstr "<p>無法分析饋流格式！ 請確認那是支援的格式！</p>"
+"<p>Could not determine the feed type. Please check that it is <a href="
+"\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
+"sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
+msgstr ""
 
-#: src/feed.c:379 src/feed.c:380
+#: src/feed.c:376 src/feed.c:377
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr "讀入快取檔案 \"%s\"時錯誤! 無法載入快取檔案!"
 
-#: src/feed.c:390
+#: src/feed.c:389
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr "<p>分析快取檔案時發生 XML 錯誤! 無法載入快取檔案 \"%s\"!</p>"
 
-#: src/feed.c:405
+#: src/feed.c:408
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" 是無效的快取檔案! 無法讀入檔案!</p>"
 
-#: src/feed.c:454
+#: src/feed.c:459
 #, fuzzy, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "分析快取檔案 \"%s\" 時出現錯誤!"
 
-#: src/feed.c:590
+#: src/feed.c:639
 #, fuzzy, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" 沒有新項目"
 
-#: src/feed.c:592
+#: src/feed.c:641
 #, fuzzy, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" 有 %d 個新增項目"
 
-#: src/feed.c:661
+#: src/feed.c:709
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr ""
 
-#: src/feed.c:666
+#: src/feed.c:714
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 
-#: src/feed.c:670
+#: src/feed.c:718
 #, fuzzy, c-format
 msgid "Updating \"%s\""
 msgstr "啟動: \"%s\""
 
-#: src/feed.c:718
+#: src/feed.c:767
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 
-#: src/feed.c:720
+#: src/feed.c:769
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" 自從最後更新後沒有改變。"
 
-#: src/feed.c:727
+#: src/feed.c:776
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" 已經更新為永久網址。"
 
-#: src/feed.c:737
+#: src/feed.c:787
 #, fuzzy
 msgid ""
-"Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!"
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>"
 msgstr "無法偵測此饋流類型! 請確認網址指向已支援的正確餽流來源!"
 
-#: src/feed.c:763
+#: src/feed.c:813
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" 更新中"
 
-#: src/feed.c:776
+#: src/feed.c:823
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" 不可用!"
 
-#: src/feed.c:899
-#, fuzzy
-msgid "The feed no longer exists. Please unsubscribe."
-msgstr "饋流已經不存在。請取消訂閱!"
+#: src/feed.c:976
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr ""
 
-#: src/feed.c:900
+#: src/feed.c:978
 msgid "Payment Required"
 msgstr "Payment Required"
 
-#: src/feed.c:901
+#: src/feed.c:979
 msgid "Access Forbidden"
 msgstr "禁用存取"
 
-#: src/feed.c:902
+#: src/feed.c:980
 msgid "Resource Not Found"
 msgstr "未找到資源"
 
-#: src/feed.c:903
+#: src/feed.c:981
 msgid "Method Not Allowed"
 msgstr "方法不允許"
 
-#: src/feed.c:904
+#: src/feed.c:982
 msgid "Not Acceptable"
 msgstr "無法接受"
 
-#: src/feed.c:905
+#: src/feed.c:983
 msgid "Proxy Authentication Required"
 msgstr "代理伺服器需要認證"
 
-#: src/feed.c:906
+#: src/feed.c:984
 msgid "Request Time-Out"
 msgstr "存取逾時"
 
-#: src/feed.c:907
+#: src/feed.c:985
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了。資源不存在。請取消訂閱!"
 
-#: src/feed.c:912
+#: src/feed.c:990
 msgid "URL is invalid"
 msgstr ""
 
-#: src/feed.c:915
+#: src/feed.c:993
 msgid "Error connecting to remote host"
 msgstr ""
 
-#: src/feed.c:916
+#: src/feed.c:994
 msgid "Hostname could not be found"
 msgstr ""
 
-#: src/feed.c:917
+#: src/feed.c:995
 msgid "Network connection was refused by the remote host"
 msgstr ""
 
-#: src/feed.c:918
+#: src/feed.c:996
 msgid "Remote host did not finish sending data"
 msgstr ""
 
 #. Transfer errors
-#: src/feed.c:920
+#: src/feed.c:998
 #, fuzzy
 msgid "Too many HTTP redirects were encountered"
 msgstr "太多 HTTP 重導! 放棄。"
 
-#: src/feed.c:923
+#: src/feed.c:1001
 #, fuzzy
 msgid "Remote host sent an invalid response"
 msgstr "網站伺服器傳送了一個無效的重導!"
 
-#: src/feed.c:930
+#: src/feed.c:1008
 #, fuzzy
 msgid "Authentication failed"
 msgstr "認證失敗！"
 
-#: src/feed.c:932
+#: src/feed.c:1010
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 
-#: src/feed.c:938
+#: src/feed.c:1016
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "饋流無法使用: 伺服器使用未支援的重導!"
 
-#: src/feed.c:939
+#: src/feed.c:1017
 msgid "Client Error"
 msgstr "Client Error"
 
-#: src/feed.c:940
+#: src/feed.c:1018
 msgid "Server Error"
 msgstr "Server Error"
 
-#: src/feed.c:941
+#: src/feed.c:1019
 #, fuzzy
 msgid "(unknown networking error happened)"
 msgstr "(unknown error class)"
 
-#: src/feed.c:963
+#: src/feed.c:1041
 #, fuzzy
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
@@ -309,18 +328,18 @@ msgid ""
 msgstr "讀取此訂閱時出現問題。請確認網址與終端機輸出！"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1103 src/item.c:214 src/metadata.c:302 src/ocs_dir.c:141
+#: src/feed.c:1189 src/item.c:244 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 #, fuzzy
 msgid "Feed:"
 msgstr "饋流(_F)"
 
-#: src/feed.c:1114 src/interface.c:1031 src/interface.c:1433 src/item.c:241
-#: src/metadata.c:304 src/metadata.c:305 src/ocs_dir.c:147 src/opml.c:219
+#: src/feed.c:1200 src/interface.c:1031 src/interface.c:1433 src/item.c:271
+#: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "來源:"
 
-#: src/html.c:138
+#: src/html.c:160
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr ""
 
@@ -398,12 +417,12 @@ msgstr "抱歉, 我無法載入任何瀏覽器模組!請藉由 --debug-all 選�
 msgid "This item does not have a link assigned!"
 msgstr "此項目沒有連結!"
 
-#: src/htmlview.c:361 src/htmlview.c:382
+#: src/htmlview.c:362 src/htmlview.c:383
 #, fuzzy, c-format
 msgid "Browser command failed: %s"
 msgstr "瀏覽器指令失敗: %s"
 
-#: src/htmlview.c:364 src/htmlview.c:385
+#: src/htmlview.c:365 src/htmlview.c:386
 #, fuzzy, c-format
 msgid "Starting: \"%s\""
 msgstr "啟動: \"%s\""
@@ -427,9 +446,9 @@ msgid ""
 "anymore but you can still access the cached headlines."
 msgstr ""
 
-#: src/interface.c:131 src/interface.c:2999
+#: src/interface.c:131 src/interface.c:2975
 #, fuzzy
-msgid "Liferea 0.5.2b"
+msgid "Liferea 0.5.3"
 msgstr "Liferea 0.4.9"
 
 #: src/interface.c:148
@@ -475,7 +494,7 @@ msgstr "更新選擇的訂閱項目或目錄下的所有訂閱項目。"
 msgid "Update _All"
 msgstr "更新全部(_A)"
 
-#: src/interface.c:231 src/ui_mainwindow.c:158
+#: src/interface.c:231 src/ui_mainwindow.c:181
 #, fuzzy
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "立即升級所有饋流 (除了目錄)。"
@@ -519,7 +538,8 @@ msgid "_Export Feed List"
 msgstr "匯出饋流列表(_E)"
 
 #: src/interface.c:293
-msgid "Export the feed list as OPML."
+#, fuzzy
+msgid "Exports the feed list as OPML."
 msgstr "匯出 OPML 格式饋流列表"
 
 #: src/interface.c:299
@@ -530,7 +550,7 @@ msgstr "項目(_I)"
 msgid "_Next Unread Item"
 msgstr "下筆未讀項目(_N)"
 
-#: src/interface.c:309 src/ui_mainwindow.c:156
+#: src/interface.c:309 src/ui_mainwindow.c:179
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -565,7 +585,8 @@ msgid "_Launch In Browser"
 msgstr "載入瀏覽器(_L)"
 
 #: src/interface.c:356
-msgid "Launches the items link in the configured browser."
+#, fuzzy
+msgid "Launches the item's link in the configured browser."
 msgstr "在已設定瀏覽器載入此項目連結。"
 
 #: src/interface.c:361
@@ -613,14 +634,15 @@ msgid "Search with Feedster"
 msgstr "搜尋 Feedster"
 
 #: src/interface.c:421
-msgid "Create a Feedster search feed."
+#, fuzzy
+msgid "Creates a Feedster search feed."
 msgstr "創造一個 Feedster 搜尋饋流"
 
 #: src/interface.c:427
 msgid "_Help"
 msgstr "求助(_H)"
 
-#: src/interface.c:434 src/interface.c:2983 src/interface.c:3015
+#: src/interface.c:434 src/interface.c:2959 src/interface.c:2991
 msgid "About"
 msgstr "關於"
 
@@ -663,9 +685,10 @@ msgstr "<span weight=\"bold\">饋流名稱</span>"
 #: src/interface.c:876 src/interface.c:908 src/interface.c:967
 #: src/interface.c:1048 src/interface.c:1074 src/interface.c:1162
 #: src/interface.c:1370 src/interface.c:1450 src/interface.c:1476
-#: src/interface.c:1686 src/interface.c:1752 src/interface.c:1801
-#: src/interface.c:1861 src/interface.c:1942 src/interface.c:1959
-#: src/interface.c:1986 src/interface.c:2040
+#: src/interface.c:1712 src/interface.c:1767 src/interface.c:1814
+#: src/interface.c:1891 src/interface.c:1951 src/interface.c:2032
+#: src/interface.c:2049 src/interface.c:2076 src/interface.c:2130
+#: src/interface.c:2157 src/interface.c:2207
 msgid "    "
 msgstr "    "
 
@@ -748,8 +771,7 @@ msgstr "使用轉換篩選器"
 msgid "Convert using:"
 msgstr "轉換:"
 
-#: src/interface.c:1086 src/interface.c:1488 src/interface.c:2824
-#: src/interface.c:2915
+#: src/interface.c:1086 src/interface.c:1488
 msgid "Select File..."
 msgstr "選擇檔案..."
 
@@ -793,15 +815,15 @@ msgstr "饋流快取"
 msgid "Use HTTP _authentication"
 msgstr "使用 HTTP 認證(_A)"
 
-#: src/interface.c:1172 src/interface.c:3137
+#: src/interface.c:1172 src/interface.c:3113
 msgid "User_name:"
 msgstr "使用者名稱:"
 
-#: src/interface.c:1179 src/interface.c:3144
+#: src/interface.c:1179 src/interface.c:3120
 msgid "_Password:"
 msgstr "密碼(_P):"
 
-#: src/interface.c:1199 src/interface.c:3114
+#: src/interface.c:1199 src/interface.c:3090
 #, fuzzy
 msgid "Authentication"
 msgstr "認證失敗！"
@@ -810,37 +832,72 @@ msgstr "認證失敗！"
 msgid "New Subscription"
 msgstr "新增訂閱"
 
-#: src/interface.c:1652
+#: src/interface.c:1678
 #, fuzzy
 msgid "Lifeera Preferences"
 msgstr "編輯偏好"
 
-#: src/interface.c:1676
+#: src/interface.c:1702
 msgid "<span weight=\"bold\">Feed Handling Settings</span>"
 msgstr "<span weight=\"bold\">饋流處理設定</span>"
 
-#: src/interface.c:1699
+#: src/interface.c:1725
 msgid "Default number of items per feed to save when Liferea exits:"
 msgstr "Liferea 退出時單一饋流最多儲存項目數: "
 
-#: src/interface.c:1715
+#: src/interface.c:1741
 msgid "At _startup:"
 msgstr ""
 
-#: src/interface.c:1723
+#: src/interface.c:1749
 #, fuzzy
 msgid "Add the _help feeds to the feed list on startup."
 msgstr "程式啟動時不要加入求助饋流到列表中。"
 
-#: src/interface.c:1727
+#: src/interface.c:1757
+#, fuzzy
+msgid "<span weight=\"bold\">Feed Loading Settings</span>"
+msgstr "<span weight=\"bold\">饋流處理設定</span>"
+
+#: src/interface.c:1776
+msgid ""
+"_Load feeds from disk when needed. Searching can \n"
+"be slow if you have a lot of feeds,"
+msgstr ""
+
+#: src/interface.c:1783
+msgid ""
+"_Keep all feeds loaded. This may improve speed \n"
+"(especially when searching) but can cause a \n"
+"significant memory footprint if you have a lot \n"
+"of feeds!"
+msgstr ""
+
+#: src/interface.c:1789
 msgid "Feed Handling"
 msgstr "處置饋流"
 
-#: src/interface.c:1742
+#: src/interface.c:1804
 msgid "<span weight=\"bold\">Viewing Headlines</span>"
 msgstr "<span weight=\"bold\">檢視標題</span>"
 
-#: src/interface.c:1761
+#: src/interface.c:1827
+msgid "Skim through articles with "
+msgstr ""
+
+#: src/interface.c:1837
+msgid "Space"
+msgstr ""
+
+#: src/interface.c:1841
+msgid "<Ctrl> Space"
+msgstr ""
+
+#: src/interface.c:1845
+msgid "<Alt> Space"
+msgstr ""
+
+#: src/interface.c:1851
 msgid ""
 "Liferea displays feeds' content using various HTML renderers. Depending on "
 "which renderers are installed on your computer, different options will be "
@@ -849,70 +906,70 @@ msgstr ""
 "Liferea 藉由特定的 HTML 顯示軟體顯示饋流內容。不同的選項是基於您已於電腦安裝"
 "的軟體。必須重新啟動 Liferea 才能使改變生效。"
 
-#: src/interface.c:1771
+#: src/interface.c:1861
 msgid "View Headlines With"
 msgstr "標題瀏覽器"
 
-#: src/interface.c:1783
+#: src/interface.c:1873
 msgid "Open links in Liferea's _window."
 msgstr ""
 
-#: src/interface.c:1791
+#: src/interface.c:1881
 msgid "<span weight=\"bold\">Date Column Settings</span>"
 msgstr "<span weight=\"bold\">日期欄位設定</span>"
 
-#: src/interface.c:1810
+#: src/interface.c:1900
 msgid "Display only time"
 msgstr "只顯示時間"
 
-#: src/interface.c:1816
+#: src/interface.c:1906
 msgid "Display date and time"
 msgstr "顯示日期與時間"
 
-#: src/interface.c:1826
+#: src/interface.c:1916
 msgid "User defined format:"
 msgstr "使用自訂格式:"
 
-#: src/interface.c:1835
+#: src/interface.c:1925
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
 msgstr "給專家使用者: 指定一個特定的時間格式，請參考 strftime 手冊中的格式碼"
 
-#: src/interface.c:1838
+#: src/interface.c:1928
 #, fuzzy
 msgid "Headline Display"
 msgstr "標題"
 
-#: src/interface.c:1851
+#: src/interface.c:1941
 #, fuzzy
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">瀏覽器設定</span>"
 
-#: src/interface.c:1875
+#: src/interface.c:1965
 msgid "_Browser:"
 msgstr ""
 
-#: src/interface.c:1882
+#: src/interface.c:1972
 #, c-format
 msgid ""
 "_Manual:\n"
 "(%s for URL)"
 msgstr ""
 
-#: src/interface.c:1896
+#: src/interface.c:1986
 msgid "_Open link in:"
 msgstr ""
 
-#: src/interface.c:1919
+#: src/interface.c:2009
 msgid "External Browser"
 msgstr ""
 
-#: src/interface.c:1932
+#: src/interface.c:2022
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">程式狀態通知區</span>"
 
-#: src/interface.c:1950
+#: src/interface.c:2040
 #, fuzzy
 msgid ""
 "Show a status _icon in the notification area \n"
@@ -921,35 +978,35 @@ msgstr ""
 "在程式狀態通知區中顯示狀態圖示\n"
 "(也叫做系統列)."
 
-#: src/interface.c:1967
+#: src/interface.c:2057
 msgid "Show a _popup window with new headlines."
 msgstr ""
 
-#: src/interface.c:1976
+#: src/interface.c:2066
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">選單設定</span>"
 
-#: src/interface.c:1995
+#: src/interface.c:2085
 msgid "Show Menu _And Toolbar"
 msgstr "顯示選單與工具列(_A)"
 
-#: src/interface.c:2001
+#: src/interface.c:2091
 msgid "Show _Menu Only"
 msgstr "只顯示選單(_M)"
 
-#: src/interface.c:2007
+#: src/interface.c:2097
 msgid "Show _Toolbar Only"
 msgstr "僅顯示工具列(_T)"
 
-#: src/interface.c:2013
+#: src/interface.c:2103
 msgid "GUI"
 msgstr ""
 
-#: src/interface.c:2030
+#: src/interface.c:2120
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">HTTP 代理伺服器</span>"
 
-#: src/interface.c:2049
+#: src/interface.c:2139
 msgid ""
 "Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center. Note: changing these settings "
@@ -960,86 +1017,97 @@ msgstr ""
 "修改。注意: 修改這些設定會影響其他所有的應用程式! 此對話視窗主要提醒 不使用 "
 "GNOME 的使用者可以於 Liferea 使用代理伺服器。"
 
-#: src/interface.c:2059
+#: src/interface.c:2149
 #, fuzzy
 msgid "_Enable Proxy"
 msgstr "啟用代理伺服器"
 
-#: src/interface.c:2069
+#: src/interface.c:2171
 #, fuzzy
-msgid "Proxy _Host"
+msgid "Proxy _Host:"
 msgstr "代理伺服器位址"
 
-#: src/interface.c:2088
+#: src/interface.c:2192
 #, fuzzy
-msgid "Proxy _Port"
+msgid "Proxy _Port:"
 msgstr "代理伺服器埠號"
 
-#: src/interface.c:2095
+#: src/interface.c:2199
+#, fuzzy
+msgid "Use Proxy _Authentication"
+msgstr "使用 HTTP 認證(_A)"
+
+#: src/interface.c:2217
+#, fuzzy
+msgid "Proxy _Username:"
+msgstr "使用者名稱:"
+
+#: src/interface.c:2239
+#, fuzzy
+msgid "Proxy Pass_word:"
+msgstr "密碼(_P):"
+
+#: src/interface.c:2246
 #, fuzzy
 msgid "Proxy"
 msgstr "代理伺服器埠號"
 
-#: src/interface.c:2283
+#: src/interface.c:2479
 msgid "New Folder"
 msgstr "新目錄"
 
-#: src/interface.c:2299 src/interface.c:2376
+#: src/interface.c:2495 src/interface.c:2572
 msgid "Folder name:"
 msgstr "目錄名稱:"
 
-#: src/interface.c:2364
+#: src/interface.c:2560
 msgid "Rename Folder"
 msgstr "更名目錄"
 
-#: src/interface.c:2430
-msgid "Select A File"
-msgstr "選擇檔案"
-
-#: src/interface.c:2476
+#: src/interface.c:2634
 msgid "edit filter rules"
 msgstr "編輯過濾規則"
 
-#: src/interface.c:2576
+#: src/interface.c:2734
 msgid "edit rule properties"
 msgstr "編輯規則屬性"
 
-#: src/interface.c:2591 src/ui_filter.c:54
+#: src/interface.c:2749 src/ui_filter.c:54
 msgid "Rule Type"
 msgstr "規則類型"
 
-#: src/interface.c:2601
+#: src/interface.c:2759
 msgid "add items with exact match"
 msgstr "新增吻合的項目"
 
-#: src/interface.c:2605
+#: src/interface.c:2763
 msgid "remove items with exact match"
 msgstr "移除確切吻合的項目"
 
-#: src/interface.c:2615
+#: src/interface.c:2773
 msgid "Rule Value"
 msgstr "規則數值"
 
-#: src/interface.c:2689
+#: src/interface.c:2847
 #, fuzzy
 msgid "Feedster Search"
 msgstr "饋流快取"
 
-#: src/interface.c:2704
+#: src/interface.c:2862
 #, fuzzy
 msgid "Search for:"
 msgstr "搜尋"
 
-#: src/interface.c:2711
+#: src/interface.c:2869
 msgid "enter any search string you want"
 msgstr "輸入您想搜尋的任何字串"
 
-#: src/interface.c:2718
+#: src/interface.c:2876
 #, fuzzy
 msgid "Maximal Number Of Result Items:"
 msgstr "最多搜尋項目"
 
-#: src/interface.c:2727
+#: src/interface.c:2885
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -1048,42 +1116,12 @@ msgstr ""
 "註: Liferea 將產生一個於 Feedster 查詢特定字串的饋流訂閱。您可以永久保留此訂"
 "閱，並如同其他訂閱一般更新。"
 
-#: src/interface.c:2794
-msgid "Import Feed List"
-msgstr "匯入饋流列表"
-
-#: src/interface.c:2805
-msgid ""
-"Liferea can import a list of feeds from an OPML file. This  can be used to "
-"either restore a backup feed list or import a feed list from another "
-"aggregator like that supports OPML export."
-msgstr ""
-"Liferea 可以從 OPML 檔案中匯入饋流列表。可以用來恢復備份列表或匯入其他 支援 "
-"OPML 匯出功能的資訊蒐集器(aggregator)之列表。"
-
-#: src/interface.c:2815 src/interface.c:2906
-msgid "Filename"
-msgstr "檔案名稱"
-
-#: src/interface.c:2885
-msgid "Export Feed List"
-msgstr "匯出饋流列表"
-
-#: src/interface.c:2896
-msgid ""
-"Liferea can export the list of feeds as an OPML list. You can use this "
-"feature to backup your feed list or export your feed list to another "
-"aggregator."
-msgstr ""
-"Liferea 可以匯出饋流列表為 OPML 檔案。您可以使用此功能來備份您的列表或匯出到"
-"其他的新聞資訊蒐集器。"
-
-#: src/interface.c:3004
+#: src/interface.c:2980
 #, fuzzy
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea 是 GTK 的新聞資訊蒐集器"
 
-#: src/interface.c:3009
+#: src/interface.c:2985
 msgid ""
 "Copyright (c) 2003-2004 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
@@ -1093,7 +1131,7 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: src/interface.c:3029
+#: src/interface.c:3005
 #, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
@@ -1140,11 +1178,11 @@ msgstr ""
 "Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
 "Philippe Martin, Brion Vibber (favicon support)"
 
-#: src/interface.c:3035
+#: src/interface.c:3011
 msgid "Contributors"
 msgstr "貢獻者"
 
-#: src/interface.c:3049
+#: src/interface.c:3025
 msgid ""
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -1161,32 +1199,28 @@ msgid ""
 "Alekseev Vladimir <compress@linux-online.ru>\n"
 msgstr ""
 
-#: src/interface.c:3055
+#: src/interface.c:3031
 msgid "Translation"
 msgstr "翻譯"
 
 #. Auth check box
-#: src/interface.c:3125 src/ui_feed.c:90
+#: src/interface.c:3101 src/ui_feed.c:89
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr ""
 
-#: src/interface.c:3166
+#: src/interface.c:3142
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
 
-#: src/interface.c:3215
-msgid "window1"
-msgstr ""
-
-#: src/item.c:223 src/item.c:225 src/item.c:236
+#: src/item.c:253 src/item.c:255 src/item.c:266
 #, fuzzy
 msgid "[No title]"
 msgstr "饋流標題"
 
-#: src/item.c:226 src/metadata.c:303 src/ocs_dir.c:102
+#: src/item.c:256 src/metadata.c:320 src/ocs_dir.c:102
 #, fuzzy
 msgid "Item:"
 msgstr "項目(_I)"
@@ -1238,110 +1272,110 @@ msgstr "  --debug-all      印出所有類別的除錯訊息"
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  印出繁瑣除錯訊息"
 
-#: src/main.c:229
+#: src/main.c:233
 msgid ""
 "Another copy of Liferea was found to be running. Please us it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
 msgstr ""
 
-#: src/metadata.c:267
+#: src/metadata.c:284
 msgid "comments"
 msgstr "評論"
 
-#: src/metadata.c:277
+#: src/metadata.c:294
 #, c-format
 msgid "enclosed file: <a href=\"%s\">%s</a>"
 msgstr ""
 
-#: src/metadata.c:288 src/metadata.c:315
+#: src/metadata.c:305 src/metadata.c:332
 msgid "feed generator"
 msgstr "饋流產生器"
 
-#: src/metadata.c:306
+#: src/metadata.c:323
 msgid "author"
 msgstr ""
 
-#: src/metadata.c:307
+#: src/metadata.c:324
 #, fuzzy
 msgid "contributors"
 msgstr "貢獻者"
 
-#: src/metadata.c:308
+#: src/metadata.c:325
 msgid "copyright"
 msgstr ""
 
-#: src/metadata.c:309
+#: src/metadata.c:326
 msgid "language"
 msgstr ""
 
-#: src/metadata.c:310
+#: src/metadata.c:327
 msgid "feed published on"
 msgstr ""
 
-#: src/metadata.c:311
+#: src/metadata.c:328
 msgid "content last updated"
 msgstr ""
 
-#: src/metadata.c:312
+#: src/metadata.c:329
 msgid "managing editor"
 msgstr ""
 
-#: src/metadata.c:313
+#: src/metadata.c:330
 msgid "webmaster"
 msgstr ""
 
-#: src/metadata.c:314
+#: src/metadata.c:331
 msgid "category"
 msgstr ""
 
 #. types for admin
-#: src/metadata.c:322
+#: src/metadata.c:339
 msgid "report errors to"
 msgstr "回報錯誤給"
 
 #. types for aggregation
-#: src/metadata.c:326
+#: src/metadata.c:343
 msgid "original source"
 msgstr ""
 
-#: src/metadata.c:327
+#: src/metadata.c:344
 msgid "original time"
 msgstr ""
 
 #. types for creative commons
-#: src/metadata.c:333
+#: src/metadata.c:350
 msgid "license"
 msgstr "授權"
 
 #. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
-#: src/metadata.c:336
+#: src/metadata.c:353
 #, fuzzy
 msgid "creator"
 msgstr "創建虛擬目錄"
 
-#: src/metadata.c:337
+#: src/metadata.c:354
 msgid "publisher"
 msgstr ""
 
-#: src/metadata.c:338
+#: src/metadata.c:355
 #, fuzzy
 msgid "type"
 msgstr "規則類型"
 
-#: src/metadata.c:339
+#: src/metadata.c:356
 msgid "format"
 msgstr ""
 
-#: src/metadata.c:340
+#: src/metadata.c:357
 msgid "identifier"
 msgstr ""
 
-#: src/metadata.c:341
+#: src/metadata.c:358
 msgid "source"
 msgstr "來源"
 
-#: src/metadata.c:342
+#: src/metadata.c:359
 msgid "coverage"
 msgstr ""
 
@@ -1371,13 +1405,17 @@ msgstr "錯誤: Compression method is not deflate"
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "錯誤: 不支援的旗標 %s\n"
 
-#: src/net/netio.c:501
+#: src/net/netio.c:496
 msgid "URL points to permanent redirect, updating with new location..."
 msgstr "網址指出為永久的重導, 更新為新位置..."
 
 #: src/ns_dc.c:192 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
 msgstr "內部 OCS 命名空間分析錯誤!"
+
+#: src/ns_photo.c:35
+msgid "included photo"
+msgstr ""
 
 #: src/ocs_dir.c:97
 #, fuzzy
@@ -1393,7 +1431,7 @@ msgstr "無 <%s:%s> 之 namespace handler!\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>無法找到 RDF 標頭!</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:238 src/pie_feed.c:218 src/rss_channel.c:313
+#: src/ocs_dir.c:501 src/opml.c:240 src/pie_feed.c:261 src/rss_channel.c:316
 msgid "There were errors while parsing this feed!"
 msgstr "分析饋流時出現錯誤"
 
@@ -1401,11 +1439,11 @@ msgstr "分析饋流時出現錯誤"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>無法找到 OPML 標頭!</p>"
 
-#: src/pie_feed.c:97
+#: src/pie_feed.c:140
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>無法找到 Atom/Echo/PIE 標頭!</p>"
 
-#: src/rss_channel.c:233
+#: src/rss_channel.c:236
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>無法找到 RDF/RSS 標頭!</p>"
 
@@ -1414,81 +1452,85 @@ msgstr "<p>無法找到 RDF/RSS 標頭!</p>"
 msgid "Couldn't find pixmap file: %s"
 msgstr "無法找到圖檔: %s"
 
-#: src/ui_feed.c:199
+#: src/ui_feed.c:198
 msgid "Directories cannot be autoupdated."
 msgstr ""
 
-#: src/ui_feed.c:202
+#: src/ui_feed.c:201
 #, fuzzy, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr "饋流供應商建議更新頻率為 60 分鐘"
 
-#: src/ui_feed.c:204
+#: src/ui_feed.c:203
 msgid "This feed specifies no default update interval."
 msgstr "此饋流未指定預設更新頻率"
 
-#: src/ui_feedlist.c:409
+#: src/ui_feed.c:545
+msgid "Choose File"
+msgstr ""
+
+#: src/ui_feedlist.c:408
 #, fuzzy
 msgid "You have to select a feed entry"
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:419
+#: src/ui_feedlist.c:418
 #, fuzzy
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea 在離線模式。無法更新！"
 
-#: src/ui_feedlist.c:443
+#: src/ui_feedlist.c:440
 #, fuzzy
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "註: 使用訂閱過濾將停用拖拉功能!"
 
-#: src/ui_feedlist.c:455 src/ui_feedlist.c:490
+#: src/ui_feedlist.c:452 src/ui_feedlist.c:487
 msgid ""
 "You cannot delete the help! Disable loading the help by changing the "
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
 
-#: src/ui_feedlist.c:497
+#: src/ui_feedlist.c:494
 #, c-format
 msgid "Deleting \"%s\""
 msgstr "刪除 \"%s\" 中"
 
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:495
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
 msgstr "您確定要刪除 %s 及其內容嗎？"
 
-#: src/ui_feedlist.c:500
+#: src/ui_feedlist.c:497
 msgid "Deleting entry"
 msgstr "刪除項目中"
 
-#: src/ui_feedlist.c:501
+#: src/ui_feedlist.c:498
 #, c-format
 msgid "Are you sure that you want to delete %s?"
 msgstr "您確定要刪除 %s 嗎 ？"
 
-#: src/ui_feedlist.c:509
+#: src/ui_feedlist.c:506
 #, fuzzy
 msgid "Deletion Confirmation"
 msgstr "刪除確認"
 
-#: src/ui_feedlist.c:540
+#: src/ui_feedlist.c:537
 #, fuzzy
 msgid "You must select a feed entry"
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:541
+#: src/ui_feedlist.c:538
 #, fuzzy
 msgid "You must select a feed entry."
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:546
+#: src/ui_feedlist.c:543
 #, fuzzy
 msgid "You cannot modify help feeds."
 msgstr "您無法刪除求助饋流"
 
-#: src/ui_feedlist.c:575
+#: src/ui_feedlist.c:570
 #, fuzzy
 msgid "New subscription"
 msgstr "新增訂閱"
@@ -1513,114 +1555,124 @@ msgstr "<i>(空)</i>"
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "內部錯誤! unknown entry type! cannot display appropriate icon!\n"
 
-#: src/ui_itemlist.c:292
+#: src/ui_itemlist.c:294
 msgid "Date"
 msgstr "日期"
 
-#: src/ui_itemlist.c:304
+#: src/ui_itemlist.c:306
 msgid "Headline"
 msgstr "標題"
 
-#: src/ui_itemlist.c:625
+#: src/ui_itemlist.c:608
 #, fuzzy
 msgid "No item has been selected"
 msgstr "未選擇項目!"
 
-#: src/ui_itemlist.c:650
+#: src/ui_itemlist.c:634
 #, fuzzy
 msgid "You must select a feed to delete its items!"
 msgstr "您必須先選擇一個饋流才能刪除!"
 
-#: src/ui_itemlist.c:680
+#: src/ui_itemlist.c:664
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "內部錯誤！ could not get feed tree view selection!\n"
 
-#: src/ui_itemlist.c:712
+#: src/ui_itemlist.c:696
 #, fuzzy
 msgid "There are no unread items "
 msgstr "沒有未讀項目!"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:178
 msgid "New Feed"
 msgstr "新增饋流"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:178
 #, fuzzy
 msgid "Add a new subscription."
 msgstr "新增訂閱"
 
-#: src/ui_mainwindow.c:156
+#: src/ui_mainwindow.c:179
 msgid "Next Unread"
 msgstr "下筆未讀"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:180
 msgid "Mark As Read"
 msgstr "全部標示為已讀"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:180
 #, fuzzy
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:181
 #, fuzzy
 msgid "Update All"
 msgstr "更新全部(_A)"
 
-#: src/ui_mainwindow.c:159
+#: src/ui_mainwindow.c:182
 msgid "Search"
 msgstr "搜尋"
 
-#: src/ui_mainwindow.c:159
+#: src/ui_mainwindow.c:182
 #, fuzzy
 msgid "Search all feeds."
 msgstr "搜尋饋流"
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:183
 msgid "Preferences"
 msgstr "編輯偏好"
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:183
 #, fuzzy
 msgid "Edit preferences."
 msgstr "編輯偏好"
 
-#: src/ui_mainwindow.c:174
+#: src/ui_mainwindow.c:198
 msgid ""
-"<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
-"can add new subscriptions and select subscriptions to read their headlines. "
-"The right side either displays a list of the headlines of the selected "
-"subscription and a pane to view the selected headline or all headlines at "
-"once if condensed mode is selected.</p><h3>Basic Actions</"
-"h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the "
-"selected folder. To create a new subscription enter the feed URL or if you "
-"don't know it the URL of the website which provides the feed.</p></"
-"li><li><p><b>Update Subscription</b> - This will update the subscription you "
-"selected. You may want to do this if you want to immediatly check a "
-"subscription for updates. Usually it is adequate to rely on the auto "
-"updating according to the update interval of the subscription.</p></"
-"li><li><p><b>Update All</b> - This will update all your subscriptions at "
-"once. Again usually it is adequate to rely on the auto updating.</"
-"li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
-"change the update interval, title, authentication or caching properties of a "
-"subscription.</p></li></ul><p>To learn more about Liferea you should read "
-"the documentation provided in the help feed or in the FAQ available at the "
-"project homepage.</p>"
+"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+"\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
+"liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">look</"
+"a> and make <a href=\"mailto:liferea-devel@lists.sourceforge.net"
+"\">proposals</a> if you miss features.</div><h2>Welcome to Liferea</"
+"h2><p>The left pane contains the feed list where you can add new "
+"subscriptions and select subscriptions to read their headlines. The right "
+"side either displays a list of the headlines of the selected subscription "
+"and a pane to view the selected headline or all headlines at once if "
+"condensed mode is selected.</p><h3>Basic Actions</h3><ul><li><p><b>Add "
+"Subscription</b> - Creates a new subscription in the selected folder. To "
+"create a new subscription enter the feed URL or if you don't know it the URL "
+"of the website which provides the feed.</p></li><li><p><b>Update "
+"Subscription</b> - This will update the subscription you selected. You may "
+"want to do this if you want to immediatly check a subscription for updates. "
+"Usually it is adequate to rely on the auto updating according to the update "
+"interval of the subscription.</p></li><li><p><b>Update All</b> - This will "
+"update all your subscriptions at once. Again usually it is adequate to rely "
+"on the auto updating.</li><li><p><b>Edit Subscription Properties</b> - "
+"Sometimes you might want to change the update interval, title, "
+"authentication or caching properties of a subscription.</p></li></ul><p>To "
+"learn more about Liferea you should read the documentation provided in the "
+"help feed or in the <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</"
+"a> available at the <a href=\"http://liferea.sf.net\">project homepage</a>.</"
+"p>"
 msgstr ""
 
-#: src/ui_mainwindow.c:256
+#: src/ui_mainwindow.c:283
 #, fuzzy
 msgid "Liferea is now online"
 msgstr "Liferea 現為線上模式。"
 
-#: src/ui_mainwindow.c:259
+#: src/ui_mainwindow.c:286
 #, fuzzy
 msgid "Liferea is now offline"
 msgstr "Lifeare 正在離線模式！"
 
-#: src/ui_notification.c:242
+#: src/ui_notification.c:187
+msgid "Untitled"
+msgstr ""
+
+#: src/ui_notification.c:248
 #, fuzzy
 msgid "Liferea notification"
 msgstr "Lifeare 正在離線模式！"
@@ -1731,41 +1783,41 @@ msgid "/_Quit"
 msgstr ""
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:183
+#: src/ui_prefs.c:184
 msgid "Manual"
 msgstr ""
 
-#: src/ui_prefs.c:193
+#: src/ui_prefs.c:194
 #, fuzzy
 msgid "Browser default"
 msgstr "瀏覽器設定"
 
-#: src/ui_prefs.c:198
+#: src/ui_prefs.c:199
 msgid "Existing window"
 msgstr ""
 
-#: src/ui_prefs.c:203
+#: src/ui_prefs.c:204
 msgid "New window"
 msgstr ""
 
-#: src/ui_prefs.c:208
+#: src/ui_prefs.c:209
 msgid "New tab"
 msgstr ""
 
-#: src/ui_prefs.c:218
+#: src/ui_prefs.c:219
 msgid "Update only feeds scheduled for updates"
 msgstr ""
 
-#: src/ui_prefs.c:223
+#: src/ui_prefs.c:224
 #, fuzzy
 msgid "Update all feeds"
 msgstr "更新所有饋流"
 
-#: src/ui_prefs.c:228
+#: src/ui_prefs.c:229
 msgid "Reset feed update timers (Update no feeds)"
 msgstr ""
 
-#: src/ui_search.c:70
+#: src/ui_search.c:69
 #, fuzzy, c-format
 msgid "Searching for \"%s\""
 msgstr "搜尋 \"%s\""
@@ -1795,6 +1847,38 @@ msgstr "無法開啟檔案 \"%s\"!"
 #, fuzzy, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "無檔案 \"%s\"!"
+
+#, fuzzy
+#~ msgid ""
+#~ "<p>Could not determine the feed type. Please check that it is in a "
+#~ "supported format.</p>"
+#~ msgstr "<p>無法分析饋流格式！ 請確認那是支援的格式！</p>"
+
+#, fuzzy
+#~ msgid "The feed no longer exists. Please unsubscribe."
+#~ msgstr "饋流已經不存在。請取消訂閱!"
+
+#~ msgid "Select A File"
+#~ msgstr "選擇檔案"
+
+#~ msgid ""
+#~ "Liferea can import a list of feeds from an OPML file. This  can be used "
+#~ "to either restore a backup feed list or import a feed list from another "
+#~ "aggregator like that supports OPML export."
+#~ msgstr ""
+#~ "Liferea 可以從 OPML 檔案中匯入饋流列表。可以用來恢復備份列表或匯入其他 支"
+#~ "援 OPML 匯出功能的資訊蒐集器(aggregator)之列表。"
+
+#~ msgid "Filename"
+#~ msgstr "檔案名稱"
+
+#~ msgid ""
+#~ "Liferea can export the list of feeds as an OPML list. You can use this "
+#~ "feature to backup your feed list or export your feed list to another "
+#~ "aggregator."
+#~ msgstr ""
+#~ "Liferea 可以匯出饋流列表為 OPML 檔案。您可以使用此功能來備份您的列表或匯出"
+#~ "到其他的新聞資訊蒐集器。"
 
 #, fuzzy
 #~ msgid ""
