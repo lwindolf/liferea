@@ -126,7 +126,7 @@ void ui_dnd_init(void) {
 /* ---------------------------------------------------------------------------- */
 
 /* method to receive URLs which were dropped anywhere in the main window */
-static void ui_dnd_URL_received(GtkWidget *mainwindow, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
+static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
 	gchar		*tmp1, *tmp2, *freeme;
 	
 	g_return_if_fail (data->data != NULL);
@@ -136,7 +136,8 @@ static void ui_dnd_URL_received(GtkWidget *mainwindow, GdkDragContext *context, 
 		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(0 != strlen(tmp2))
-				ui_feedlist_new_subscription(g_strdup(tmp2), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+				ui_feedlist_new_subscription(g_strdup(tmp2), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE |
+									    FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER | FEED_REQ_PRIORITY_HIGH);
 		}
 		g_free(freeme);
 		gtk_drag_finish(context, TRUE, FALSE, time);		
@@ -146,7 +147,7 @@ static void ui_dnd_URL_received(GtkWidget *mainwindow, GdkDragContext *context, 
 }
 
 /* sets up URL receiving */
-void ui_dnd_setup_URL_receiver(GtkWidget *mainwindow) {
+void ui_dnd_setup_URL_receiver(GtkWidget *widget) {
 
 	GtkTargetEntry target_table[] = {
 		{ "STRING",     		0, 0 },
@@ -157,10 +158,10 @@ void ui_dnd_setup_URL_receiver(GtkWidget *mainwindow) {
 	};
 
 	/* doesn't work with GTK_DEST_DEFAULT_DROP... */
-	gtk_drag_dest_set(mainwindow, GTK_DEST_DEFAULT_ALL,
+	gtk_drag_dest_set(widget, GTK_DEST_DEFAULT_ALL,
 			target_table, sizeof(target_table)/sizeof(target_table[0]),
 			GDK_ACTION_COPY | GDK_ACTION_MOVE | GDK_ACTION_LINK);
 		       
-	gtk_signal_connect(GTK_OBJECT(mainwindow), "drag_data_received",
+	gtk_signal_connect(GTK_OBJECT(widget), "drag_data_received",
 			G_CALLBACK(ui_dnd_URL_received), NULL);
 }

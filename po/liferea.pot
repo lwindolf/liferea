@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-06 02:38+0100\n"
+"POT-Creation-Date: 2005-01-16 14:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,11 +53,11 @@ msgid ""
 msgstr ""
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:262
+#: src/conf.c:265
 msgid "feedlist.opml"
 msgstr ""
 
-#: src/conf.c:281
+#: src/conf.c:284
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
@@ -115,6 +115,11 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
+#: src/favicon.c:265
+#, c-format
+msgid "Updating feed icon for \"%s\""
+msgstr ""
+
 #: src/feed.c:147
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
@@ -163,7 +168,7 @@ msgstr ""
 
 #: src/feed.c:519
 #, c-format
-msgid "This feed \"%s\" is already being updated!"
+msgid "This  \"%s\" is already being updated!"
 msgstr ""
 
 #: src/feed.c:524
@@ -176,20 +181,20 @@ msgid "Updating \"%s\""
 msgstr ""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1011 src/item.c:196 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:1010 src/item.c:195 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr ""
 
-#: src/feed.c:1011 src/interface.c:511
+#: src/feed.c:1010 src/interface.c:511
 msgid "VFolder"
 msgstr ""
 
-#: src/feed.c:1019
+#: src/feed.c:1018
 msgid "user defined command"
 msgstr ""
 
-#: src/feed.c:1042 src/interface.c:1089 src/interface.c:1499 src/item.c:245
+#: src/feed.c:1041 src/interface.c:1089 src/interface.c:1499 src/item.c:244
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr ""
@@ -867,8 +872,8 @@ msgstr ""
 
 #: src/interface.c:3073
 msgid ""
-"Copyright (c) 2003-2004 \n"
-"Lars Lindner <lars.lindner@gmx.net> and \n"
+"Copyright (c) 2003-2005\n"
+"Lars Lindner <lars.lindner@gmx.net> and\n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
 
@@ -940,12 +945,16 @@ msgstr ""
 msgid "Rules"
 msgstr ""
 
-#: src/item.c:223 src/item.c:227 src/item.c:239 src/ui_itemlist.c:199
+#: src/item.c:222 src/item.c:226 src/item.c:238 src/ui_itemlist.c:207
 msgid "[No title]"
 msgstr ""
 
-#: src/item.c:229 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:228 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
+msgstr ""
+
+#: src/item.c:290 src/ui_itemlist.c:286
+msgid "Date"
 msgstr ""
 
 #: src/main.c:68
@@ -1137,7 +1146,7 @@ msgstr ""
 msgid "<p>Could not find RDF header!</p>"
 msgstr ""
 
-#: src/ocs_dir.c:502 src/opml.c:241 src/pie_feed.c:262 src/rss_channel.c:308
+#: src/ocs_dir.c:502 src/opml.c:241 src/pie_feed.c:271 src/rss_channel.c:308
 msgid "There were errors while parsing this feed!"
 msgstr ""
 
@@ -1145,7 +1154,7 @@ msgstr ""
 msgid "<p>Could not find OPML header!</p>"
 msgstr ""
 
-#: src/pie_feed.c:141
+#: src/pie_feed.c:150
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr ""
 
@@ -1515,24 +1524,20 @@ msgid ""
 "anymore but you can still access the cached headlines."
 msgstr ""
 
-#: src/ui_itemlist.c:278
-msgid "Date"
-msgstr ""
-
-#: src/ui_itemlist.c:289
+#: src/ui_itemlist.c:297
 msgid "Headline"
 msgstr ""
 
-#: src/ui_itemlist.c:478 src/ui_itemlist.c:487 src/ui_itemlist.c:538
+#: src/ui_itemlist.c:485 src/ui_itemlist.c:494 src/ui_itemlist.c:545
 msgid "No item has been selected"
 msgstr ""
 
-#: src/ui_itemlist.c:521 src/ui_itemlist.c:541
+#: src/ui_itemlist.c:528 src/ui_itemlist.c:548
 msgid "You must select a feed to delete its items!"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:608
+#: src/ui_itemlist.c:615
 msgid "There are no unread items "
 msgstr ""
 
@@ -1804,7 +1809,7 @@ msgstr ""
 msgid "Error: There is no file \"%s\""
 msgstr ""
 
-#: src/gtkhtml2/gtkhtml2.c:231
+#: src/gtkhtml2/gtkhtml2.c:225
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."

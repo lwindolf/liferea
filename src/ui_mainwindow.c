@@ -544,12 +544,13 @@ void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean
 	                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 	                                     NULL);
 	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
-
+	if (saving)
+		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "feedlist.opml");
 	tuple = g_new0(struct file_chooser_tuple, 1);
 	tuple->dialog = dialog;
 	tuple->func = callback;
 	tuple->user_data = user_data;
-
+	
 	button = gtk_dialog_add_button(GTK_DIALOG(dialog), buttonName, GTK_RESPONSE_ACCEPT);
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);

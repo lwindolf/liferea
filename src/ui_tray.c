@@ -157,7 +157,9 @@ static void installTrayIcon(void) {
 	g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
 	g_signal_connect(G_OBJECT(tray_icon), "embedded", G_CALLBACK(ui_tray_embedded_cb), NULL);
 	g_signal_connect(G_OBJECT(tray_icon), "destroy", G_CALLBACK(ui_tray_destroyed_cb), NULL);
-
+	
+	ui_dnd_setup_URL_receiver(eventbox);
+	
 	gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
 	g_object_ref(G_OBJECT(tray_icon));
 	

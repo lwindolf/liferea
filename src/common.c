@@ -62,11 +62,11 @@ void addToHTMLBufferFast(gchar **buffer, const gchar *string) {
 		return;
 	
 	if(NULL != *buffer) {
-		int oldlength = strlen(*buffer);
-		int newlength = strlen(string);
-		int allocsize = (((oldlength+newlength+1)/512)+1)*512; /* Round up to nearest 512 KB */
+		gulong oldlength = strlen(*buffer);
+		gulong newlength = strlen(string);
+		gulong allocsize = (((oldlength+newlength+1L)/512L)+1L)*512L; /* Round up to nearest 512 KB */
 		*buffer = g_realloc(*buffer, allocsize);
-		g_memmove(&((*buffer)[oldlength]), string, newlength+1 );
+		g_memmove(&((*buffer)[oldlength]), string, newlength+1L );
 	} else {
 		*buffer = g_strdup(string);
 	}
@@ -78,11 +78,11 @@ void addToHTMLBuffer(gchar **buffer, const gchar *string) {
 		return;
 	
 	if(NULL != *buffer) {
-		int oldlength = strlen(*buffer);
-		int newlength = strlen(string);
-		int allocsize = (oldlength+newlength+1);
+		gulong oldlength = strlen(*buffer);
+		gulong newlength = strlen(string);
+		gulong allocsize = (oldlength+newlength+1L);
 		*buffer = g_realloc(*buffer, allocsize);
-		g_memmove(&((*buffer)[oldlength]), string, newlength+1 );
+		g_memmove(&((*buffer)[oldlength]), string, newlength+1L );
 	} else {
 		*buffer = g_strdup(string);
 	}

@@ -7,7 +7,8 @@
 	* New option in the "Feeds" menu to mark all items
 	  of all your feeds read at once.
 	* Full HTML4 entities support.
-	  
+	* Added ability to drag and drop a URL onto the systray
+	  notification icon. (Nathan Conrad)
 
 2005-01-15  Lars Lindner <lars.lindner@gmx.net>
 
