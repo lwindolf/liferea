@@ -28,15 +28,18 @@
 /* -------------------------------------------------------- */
 /* interface definitions for namespace parsing handler      */
 /* -------------------------------------------------------- */
+struct NsHandler;
 
 /** definition of various namespace tag handler */
+typedef void	(*insertNsUrisFunc) (struct NsHandler *nsh, GHashTable *hash);
 typedef void	(*parseChannelTagFunc)	(feedPtr fp, xmlNodePtr cur);
 typedef void	(*parseItemTagFunc)	(itemPtr ip, xmlNodePtr cur);
 
 /** struct used to register namespace handler */
 typedef struct NsHandler {
 	gchar			*prefix;		/**< namespace prefix */
-
+	insertNsUrisFunc	insertNsUris;
+	
 	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
 	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
 } NsHandler;

@@ -35,6 +35,7 @@
 
 /* to store the PIENsHandler structs for all supported RDF namespace handlers */
 GHashTable	*pie_nstable = NULL;
+GHashTable	*ns_pie_ns_uri_table = NULL;
 
 /* note: the tag order has to correspond with the PIE_FEED_* defines in the header file */
 /*
@@ -109,19 +110,19 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			
 			/* check namespace of this tag */
 			if(NULL != cur->ns) {
-				if(NULL != cur->ns->prefix) {
-					if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(pie_nstable, (gpointer)cur->ns->prefix))) {
-						pf = nsh->parseChannelTag;
-						if(NULL != pf)
-							(*pf)(fp, cur);
-						cur = cur->next;
-						continue;
-					} else {
-						/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
-					}
+				if(((cur->ns->href != NULL) &&
+				    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_pie_ns_uri_table, (gpointer)cur->ns->href))) ||
+				   ((cur->ns->prefix != NULL) &&
+				    NULL != (nsh = (NsHandler *)g_hash_table_lookup(pie_nstable, (gpointer)cur->ns->prefix)))) {
+					pf = nsh->parseChannelTag;
+					if(NULL != pf)
+						(*pf)(fp, cur);
+					cur = cur->next;
+					continue;
+				} else {
+					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 				}
 			} /* explicitly no following else !!! */
-			
 			
 			if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
 				tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
@@ -232,8 +233,11 @@ static gboolean pie_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 static void pie_add_ns_handler(NsHandler *handler) {
 
 	g_assert(NULL != pie_nstable);
-	if(getNameSpaceStatus(handler->prefix))
+	if(getNameSpaceStatus(handler->prefix)) {
 		g_hash_table_insert(pie_nstable, handler->prefix, handler);
+		if (handler->insertNsUris != NULL)
+			handler->insertNsUris(handler, ns_pie_ns_uri_table);
+	}
 }
 
 feedHandlerPtr initPIEFeedHandler(void) {
@@ -243,7 +247,8 @@ feedHandlerPtr initPIEFeedHandler(void) {
 	
 	if(NULL == pie_nstable) {
 		pie_nstable = g_hash_table_new(g_str_hash, g_str_equal);
-
+		ns_pie_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);
+		
 		/* register RSS name space handlers */
 		pie_add_ns_handler(ns_dc_getRSSNsHandler());
 	}	

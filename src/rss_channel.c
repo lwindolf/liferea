@@ -58,6 +58,7 @@ GHashTable *RssToMetadataMapping = NULL;
 
 /* to store the NsHandler structs for all supported RDF namespace handlers */
 GHashTable	*rss_nstable = NULL;	/* duplicate storage: for quick finding... */
+GHashTable	*ns_rss_ns_uri_table = NULL;
 
 /* This function parses the metadata for the channel. This does not
    parse the items. The items are parsed elsewhere. */
@@ -77,16 +78,17 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 		
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
-			if(NULL != cur->ns->prefix) {
-				if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					pf = nsh->parseChannelTag;
-					if(NULL != pf)
-						(*pf)(fp, cur);
-					cur = cur->next;
-					continue;
-				} else {
-					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
-				}
+			if(((cur->ns->href != NULL) &&
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
+			   ((cur->ns->prefix != NULL) &&
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
+				pf = nsh->parseChannelTag;
+				if(NULL != pf)
+					(*pf)(fp, cur);
+				cur = cur->next;
+				continue;
+			} else {
+				/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 			}
 		} /* explicitly no following else !!! */
 			
@@ -331,6 +333,8 @@ static void rss_add_ns_handler(NsHandler *handler) {
 	g_assert(NULL != rss_nstable);
 	if(getNameSpaceStatus(handler->prefix)) {
 		g_hash_table_insert(rss_nstable, handler->prefix, handler);
+		if (handler->insertNsUris != NULL)
+			handler->insertNsUris(handler, ns_rss_ns_uri_table);
 	}
 }
 
@@ -359,7 +363,8 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	/* because initRSSFeedHandler() is called twice, once for FST_RSS and again for FST_HELPFEED */	
 	if(NULL == rss_nstable) {
 		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
-	
+		ns_rss_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);
+		
 		/* register RSS name space handlers */
 		rss_add_ns_handler(ns_bC_getRSSNsHandler());
 		rss_add_ns_handler(ns_dc_getRSSNsHandler());

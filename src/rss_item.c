@@ -34,11 +34,8 @@
 extern GHashTable *RssToMetadataMapping;
 
 /* uses the same namespace handler as rss_channel */
-extern GSList *rss_nslist;
-extern GHashTable *rss_nstable;
-
-extern GSList		*rss_nslist;
 extern GHashTable	*rss_nstable;
+extern GHashTable	*ns_rss_ns_uri_table;
 
 /* method to parse standard tags for each item element */
 itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
@@ -68,8 +65,10 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 		
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
-			if(NULL != cur->ns->prefix) {
-				
+			if(((cur->ns->href != NULL) &&
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
+			   ((cur->ns->prefix != NULL) &&
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
 				if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
 					pf = nsh->parseItemTag;
 					if(NULL != pf)

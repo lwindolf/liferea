@@ -31,6 +31,7 @@
 
 /* uses the same namespace handler as PIE_channel */
 extern GHashTable *pie_nstable;
+extern GHashTable *ns_pie_ns_uri_table;
 
 /* we reuse some pie_feed.c function */
 extern gchar * parseAuthor(xmlNodePtr cur);
@@ -102,16 +103,18 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 		
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
-			if(NULL != cur->ns->prefix) {
-				if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(pie_nstable, (gpointer)cur->ns->prefix))) {
-					pf = nsh->parseItemTag;
-					if(NULL != pf)
-						(*pf)(ip, cur);
-					cur = cur->next;
-					continue;
-				} else {
-					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
-				}
+			if(((cur->ns->href != NULL) &&
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_pie_ns_uri_table, (gpointer)cur->ns->href))) ||
+			   ((cur->ns->prefix != NULL) &&
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(pie_nstable, (gpointer)cur->ns->prefix)))) {
+				
+				pf = nsh->parseItemTag;
+				if(NULL != pf)
+					(*pf)(ip, cur);
+				cur = cur->next;
+				continue;
+			} else {
+				/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 			}
 		} /* explicitly no following else !!! */
 		
