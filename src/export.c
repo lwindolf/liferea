@@ -54,16 +54,19 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		gchar *type = g_strdup_printf("%d",feed_get_type(fp));
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 
-		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
-		xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
-		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
-		xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
-		xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
-		xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
-		xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
-		debug5(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval);
-
+		if (feed_get_type(fp) != FST_HELPFEED) {
+			childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+			xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
+			xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
+			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
+			xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
+			xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
+			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
+			xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
+			debug5(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval);
+		} else
+			debug1(DEBUG_CONF, "not adding help feed %s to feedlist", feed_get_title(fp));
+		
 		g_free(interval);
 		g_free(type);
 	}
