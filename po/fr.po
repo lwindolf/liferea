@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Liferea VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-05-19 21:18-0400\n"
-"PO-Revision-Date: 2004-05-19 21:19-0400\n"
+"PO-Revision-Date: 2004-05-19 22:39-0400\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1587,7 +1587,7 @@ msgstr "Imposible d'allouer de la mémoire !"
 
 #: src/ui_popup.c:79
 msgid "/_Update"
-msgstr "Mise à jour"
+msgstr "/Mise à _jour"
 
 #: src/ui_popup.c:80 src/ui_popup.c:89 src/ui_popup.c:97 src/ui_popup.c:104
 msgid "/_New"
