@@ -29,6 +29,17 @@
 
 #include <gtk/gtk.h>
 #include <locale.h> /* For setlocale */
+
+#include <sys/types.h> /* Three includes for open(2). My BSD manual says */
+#include <sys/stat.h>  /* to include only <sys/file.h>. I wonder if this */
+#include <fcntl.h>     /* will break any systems. */
+
+#include <sys/types.h> /* For getpid(2) */
+
+#include <unistd.h> /* For gethostname() and symlink() */
+
+#include <errno.h>
+
 #include "interface.h"
 #include "support.h"
 #include "callbacks.h"
@@ -44,6 +55,7 @@
 
 GThread	*mainThread = NULL;
 gboolean lifereaStarted = FALSE;
+
 static void show_help(void) {
 	GString	*str = g_string_new(NULL);
 	
@@ -66,12 +78,58 @@ static void show_help(void) {
 	g_print("%s", str->str);
 	g_string_free(str, TRUE);
 }
+/**
+ * Tries to create a lock file for Liferea.
+ *
+ * @returns -1 if the lock failed and is locked by someone else. -2
+ * for general failures. Some non-negative number means success.
+ */
+
+static gboolean main_lock() {
+	gchar *filename, *filename2;
+	gchar hostname[256];
+	gint fd;
+	int retval;
+	
+	if (gethostname(hostname, 256) == -1)
+		return -2; /* Skip locking if this happens, which it should not.... */
+	
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock-%s:%d", getCachePath(), hostname, getpid());
+	retval = fd = open(filename, O_CREAT|O_EXCL, S_IRUSR | S_IWUSR);
+	if (fd == -1) {
+		g_free(filename);
+		return -1;
+	}
+	
+	filename2 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", getCachePath());
+	if (-1 == symlink(filename, filename2)) {
+		if (errno == EEXIST)
+			retval = -1;
+		else
+			retval = -2;
+	}
+	
+	close(fd);
+	unlink(filename);
+	g_free(filename);
+	g_free(filename2);
+	
+	return retval;
+}
+
+static void main_unlock() {
+	gchar *filename;
+	
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", getCachePath());
+	unlink(filename);
+}
 
 int main(int argc, char *argv[]) {	
 	gulong		debug_flags = 0;
 	gboolean	start_iconified = FALSE;
 	const char 	*arg;
 	gint		i;
+	GtkWidget *dialog;
 	
 #ifdef ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -124,39 +182,53 @@ int main(int argc, char *argv[]) {
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
-	ui_queue_init();		/* set up callback queue for other threads */
+	if (main_lock() == -1) {
+		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
+								  0,
+								  GTK_MESSAGE_ERROR,
+								  GTK_BUTTONS_OK,
+								  _("Another copy of Liferea was found to be running. Please us it instead. "
+								  "If there is no other copy of liferea running, please delete the "
+								  "\"~/.liferea/lock\" lock file."));
+		gtk_dialog_run(GTK_DIALOG (dialog));
+		gtk_widget_destroy(dialog);
 
-	/* order is important! */
-	initConfig();			/* initialize gconf */
-	ui_htmlview_init();		/* setup HTML widgets */
-	download_init();		/* Initialize the download subsystem */
-	metadata_init();
-	mainwindow = ui_mainwindow_new();
-	loadConfig();			/* Load feeds from cache */
-	feed_init();			/* register feed types */
-	ui_init();			/* initialize gconf configured GUI behaviour */
-
-	gtk_widget_show(mainwindow);
-	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
-	
-	if(start_iconified)
-		gtk_widget_hide(mainwindow);
-	
-	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
-	case 1: /* Update all feeds */
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
-		break;
-	case 2:
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_reset_update_counter);
-		break;
-	default:
-		/* default, which is to use the lastPoll times, does not need any actions here. */;
+	} else {
+		ui_queue_init();		/* set up callback queue for other threads */
+		
+		/* order is important! */
+		initConfig();			/* initialize gconf */
+		ui_htmlview_init();		/* setup HTML widgets */
+		download_init();		/* Initialize the download subsystem */
+		metadata_init();
+		mainwindow = ui_mainwindow_new();
+		loadConfig();			/* Load feeds from cache */
+		feed_init();			/* register feed types */
+		ui_init();			/* initialize gconf configured GUI behaviour */
+		
+		gtk_widget_show(mainwindow);
+		ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
+		
+		if(start_iconified)
+			gtk_widget_hide(mainwindow);
+		
+		switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
+		case 1: /* Update all feeds */
+			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
+			break;
+		case 2:
+			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_reset_update_counter);
+			break;
+		default:
+			/* default, which is to use the lastPoll times, does not need any actions here. */;
+		}
+		gdk_threads_enter();
+		lifereaStarted = TRUE;
+		gtk_main();
+		gdk_threads_leave();
+		
+		main_unlock();
 	}
-	
-	gdk_threads_enter();
-	lifereaStarted = TRUE;
-	gtk_main();
-	gdk_threads_leave();
 
 	return 0;
 }
