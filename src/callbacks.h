@@ -225,6 +225,8 @@ void on_popup_allunread_selected(void);
 
 void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_next_unread_item_selected(void);
+void on_popup_zoomin_selected(void);
+void on_popup_zoomout_selected(void);
 
 void
 on_feedsterbtn_clicked                 (GtkButton       *button,

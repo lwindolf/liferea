@@ -1089,6 +1089,9 @@ selected_ip = NULL;
 
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
 
+void on_popup_zoomin_selected(void) { changeZoomLevel(0.2); }
+void on_popup_zoomout_selected(void) { changeZoomLevel(-0.2); }
+
 /*------------------------------------------------------------------------------*/
 /* treeview creation and rendering						*/
 /*------------------------------------------------------------------------------*/

@@ -106,4 +106,13 @@ void	finishHTML(gchar **buffer);
 /* to launch any URL */
 void 	launchURL(const gchar *url);
 
+/* launches the specified URL */
+void launchURL(const gchar *url);
+
+/* adds a differences diff to the actual zoom level */
+void changeZoomLevel(gfloat diff);
+
+/* returns the currently set zoom level */
+gfloat getZoomLevel(void);
+
 #endif

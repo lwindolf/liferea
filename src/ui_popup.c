@@ -129,8 +129,8 @@ static GtkItemFactoryEntry item_menu_items[] = {
 static GtkItemFactoryEntry htmlview_menu_items[] = {
       {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view_selected, 	0, NULL },
       {"/sep1",				NULL, NULL, 					0, "<Separator>"}, 
-      {"/Zoom In",			NULL, NULL,					0, NULL },
-      {"/Zoom Out",			NULL, NULL,					0, NULL }
+      {"/Zoom In",			NULL, on_popup_zoomin_selected,			0, NULL },
+      {"/Zoom Out",			NULL, on_popup_zoomout_selected,		0, NULL }
 };
 
 GtkMenu *make_item_menu(void) {

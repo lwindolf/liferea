@@ -51,6 +51,8 @@ static GtkWidget	*itemView = NULL;
 static GtkWidget	*itemListView = NULL;
 static GtkWidget	*htmlwidget = NULL;
 
+static gfloat		zoomLevel = 1.0;
+
 /* some prototypes */
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata);
 static void url_request(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
@@ -125,7 +127,7 @@ static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
 	/* create html widget and pack it into the scrolled window */
 	htmlwidget = html_view_new();
 	html_view_set_document(HTML_VIEW(htmlwidget), doc);
-	html_view_set_magnification(HTML_VIEW(htmlwidget), 1.0);	
+	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
 		
 	g_signal_connect (G_OBJECT (doc), "request_url",
@@ -398,7 +400,21 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
 
 }
 
+/* launches the specified URL */
 void launchURL(const gchar *url) {
 
 	link_clicked(NULL, url, NULL);
+}
+
+/* adds a differences diff to the actual zoom level */
+void changeZoomLevel(gfloat diff) {
+
+	zoomLevel += diff;
+	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
+}
+
+/* returns the currently set zoom level */
+gfloat getZoomLevel(void) {
+
+	return zoomLevel;
 }
