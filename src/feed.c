@@ -466,17 +466,21 @@ g_print("feed_load for %s\n", feed_get_source(fp));
    
    If the feed parameter is NULL the function is called for all feeds. */
 void feed_unload(feedPtr fp) {
+	gint 	unreadCount;
 
 	if(NULL == fp) {
 		g_print("unloading everything...");
-		ui_feedlist_do_for_all(fp, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
+		ui_feedlist_do_for_all((nodePtr)fp, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
 	} else {
 		if(TRUE == fp->loaded) {
+			/* save feed before unloading */
+			feed_save(fp);	
+			
 			g_print("feed_unload for %s\n", feed_get_source(fp));
 	
 			/* FIXME: free filter structures too when implemented */
 	
-			/* free items */	
+			/* free items */
 			feed_clear_item_list(fp);
 			fp->loaded = FALSE;
 		}
@@ -568,7 +572,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					item_set_hidden(new_ip, TRUE);
 					debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
 				} else {
-					feed_increase_unread_counter(old_fp);
+					old_fp->unreadCount++;
 					feed_increase_new_counter(old_fp);
 					debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
 					traycount++;
@@ -817,7 +821,7 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 	g_assert(TRUE == fp->loaded);
 	ip->fp = fp;
 	if(FALSE == ip->readStatus)
-		feed_increase_unread_counter(fp);
+		fp->unreadCount++;
 	fp->items = g_slist_append(fp->items, (gpointer)ip);
 }
 
@@ -840,13 +844,21 @@ gint feed_get_type(feedPtr fp) { return fp->type; }
 
 gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
 
-void feed_increase_unread_counter(feedPtr fp) {
-	fp->unreadCount++;
+gint feed_get_unread_counter(feedPtr fp) { 
+	GSList	*item;
+	
+	/* if feed is in memory count items, otherwise just return last count value */
+	if(fp->loaded) {
+		fp->unreadCount = 0;
+		item = fp->items;
+		while(NULL != item) {
+			if(!item_get_read_status((itemPtr)(item->data)))
+				fp->unreadCount++;
+			item = g_slist_next(item);
+		}
+	}
+	return fp->unreadCount; 
 }
-void feed_decrease_unread_counter(feedPtr fp) {
-	fp->unreadCount--;
-}
-gint feed_get_unread_counter(feedPtr fp) { return fp->unreadCount; }
 
 void feed_increase_new_counter(feedPtr fp) {
 	fp->newCount++;

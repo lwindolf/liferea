@@ -79,7 +79,7 @@ void addItemToVFolder(feedPtr vp, itemPtr ip) {
 	g_assert(NULL != ip);
 
 	if(FALSE == item_get_read_status(ip))
-		feed_increase_unread_counter(vp);
+		vp->unreadCount++;
 	vp->items = g_slist_append(vp->items, ip);
 }
 

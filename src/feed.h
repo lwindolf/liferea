@@ -223,8 +223,6 @@ gint feed_get_type(feedPtr fp);
 feedHandlerPtr feed_type_str_to_fhp(const gchar *str);
 const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
 
-void feed_increase_unread_counter(feedPtr fp);
-void feed_decrease_unread_counter(feedPtr fp);
 gint feed_get_unread_counter(feedPtr fp);
 
 void feed_increase_new_counter(feedPtr fp);

@@ -109,13 +109,11 @@ void item_set_unread(itemPtr ip) {
 	GSList		*vfolders;
 	
 	if(TRUE == ip->readStatus) {
-		feed_increase_unread_counter((feedPtr)(ip->fp));
-
-		vfolders = ip->vfolders;
+		/*vfolders = ip->vfolders;
 		while(NULL != vfolders) {
 			feed_increase_unread_counter(vfolders->data);
 			vfolders = g_slist_next(vfolders);
-		}
+		}*/
 		
 		ip->readStatus = FALSE;
 		if (ip->ui_data != NULL)
@@ -131,14 +129,12 @@ void item_set_read(itemPtr ip) {
 	feedPtr		fp;
 
 	if(FALSE == ip->readStatus) {
-		feed_decrease_unread_counter((feedPtr)(ip->fp));
-
-		vfolders = ip->vfolders;
+		/*vfolders = ip->vfolders;
 		while(NULL != vfolders) {
 			fp = vfolders->data;
 			feed_decrease_unread_counter(fp);
 			vfolders = g_slist_next(vfolders);
-		}
+		}*/
 		
 		ip->readStatus = TRUE; 
 		if (ip->ui_data)
@@ -165,7 +161,6 @@ void removeVFolderFromItem(itemPtr ip, gpointer fp) {
 void item_free(itemPtr ip) {
 	
 	if(FALSE == ip->readStatus) {
-		feed_decrease_unread_counter(ip->fp);
 		ui_notification_update(ip->fp);
 	}
 
