@@ -319,8 +319,6 @@ void ui_htmlview_launch_URL(gchar *url, gboolean force_external) {
 		return;
 	}
 	
-	url = encode_uri(url);
-	
 	debug3(DEBUG_GUI, "launch URL: %s  %s %s\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewInfo->launchInsidePossible)()?"true":"false",
 		  force_external?"true":"false");

@@ -1,6 +1,7 @@
 /*
    GtkHTML2 browser module implementation for Liferea
 
+   Copyright (C) 2004 Nathan Conrad <conrad@bungled.net>
    Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>  
    Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
    
@@ -38,15 +39,9 @@
 #include "../support.h"
 #include "../callbacks.h"
 #include "../update.h"
+#include "../debug.h"
 
 #define BUFFER_SIZE 8192
-
-/* declarations and globals for the gtkhtml callbacks */
-typedef struct {
-	HtmlDocument *doc;
-	HtmlStream *stream;
-	GnomeVFSAsyncHandle *handle;
-} StreamData;
 
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
@@ -80,72 +75,6 @@ static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer u
    these are needed to automatically resolve links and support formulars
    in the displayed HTML */ 
 
-static void
-free_stream_data (StreamData *sdata, gboolean remove)
-{
-	GSList *connection_list;
-
-	if (remove) {
-		connection_list = g_object_get_data (G_OBJECT (sdata->doc), "connection_list");
-		connection_list = g_slist_remove (connection_list, sdata);
-		g_object_set_data (G_OBJECT (sdata->doc), "connection_list", connection_list);
-	}
-	g_object_ref (sdata->stream);
-	html_stream_close(sdata->stream);
-	
-	g_free (sdata);
-}
-
-static void
-stream_cancel (HtmlStream *stream, gpointer user_data, gpointer cancel_data)
-{
-	StreamData *sdata = (StreamData *)cancel_data;
-	gnome_vfs_async_cancel (sdata->handle);
-	free_stream_data (sdata, TRUE);
-}
-
-static void
-vfs_close_callback (GnomeVFSAsyncHandle *handle,
-		GnomeVFSResult result,
-		gpointer callback_data)
-{
-}
-
-static void
-vfs_read_callback (GnomeVFSAsyncHandle *handle, GnomeVFSResult result,
-               gpointer buffer, GnomeVFSFileSize bytes_requested,
-	       GnomeVFSFileSize bytes_read, gpointer callback_data)
-{
-	StreamData *sdata = (StreamData *)callback_data;
-
-	if (result != GNOME_VFS_OK) {
-		gnome_vfs_async_close (handle, vfs_close_callback, sdata);
-		free_stream_data (sdata, TRUE);
-		g_free (buffer);
-	} else {
-		html_stream_write (sdata->stream, buffer, bytes_read);
-		
-		gnome_vfs_async_read (handle, buffer, bytes_requested, 
-				      vfs_read_callback, sdata);
-	}
-}
-
-static void
-vfs_open_callback  (GnomeVFSAsyncHandle *handle, GnomeVFSResult result, gpointer callback_data)
-{
-	StreamData *sdata = (StreamData *)callback_data;
-	if (result != GNOME_VFS_OK) {
-
-		g_warning ("Open failed: %s.\n", gnome_vfs_result_to_string (result));
-		free_stream_data (sdata, TRUE);
-	} else {
-		gchar *buffer;
-
-		buffer = g_malloc (BUFFER_SIZE);
-		gnome_vfs_async_read (handle, buffer, BUFFER_SIZE, vfs_read_callback, sdata);
-	}
-}
-
 typedef struct {
 	gpointer window;
 	gchar *action;
@@ -163,7 +92,7 @@ on_submit_idle (gpointer data)
 
 	if (ctx->method == NULL || strcasecmp (ctx->method, "get") == 0) {
 		gchar *url;
-
+		
 		url = g_strdup_printf ("%s?%s", ctx->action, ctx->encoding);
 		link_clicked (NULL, url, ctx->window);
 		g_free (url);
@@ -193,58 +122,88 @@ on_submit (HtmlDocument *document, const gchar *action, const gchar *method,
 	gtk_idle_add (on_submit_idle, ctx);
 }
 
-static void
-url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *stream, gpointer data)
-{
-	GnomeVFSURI *vfs_uri;
-	StreamData *sdata;
+
+typedef struct {
+	HtmlDocument *doc;
+	HtmlStream *stream;
+} StreamData;
+
+void request_data_kill(struct request *r) {
 	GSList *connection_list;
-	xmlChar *uri;
+	StreamData *sd = (StreamData*)r->user_data;
 	
-	uri = xmlBuildURI(rel_uri, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
-	vfs_uri = gnome_vfs_uri_new(uri);
-	if (uri != NULL)
-		xmlFree(uri);
+	html_stream_close(((StreamData*)r->user_data)->stream);
+	r->callback = NULL;
 	
-	g_assert (HTML_IS_DOCUMENT(doc));
-	g_assert (stream != NULL);
-	
-	sdata = g_new0 (StreamData, 1);
-	sdata->doc = doc;
-	sdata->stream = stream;
-	
-	connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
-	connection_list = g_slist_prepend (connection_list, sdata);
-	g_object_set_data (G_OBJECT (doc), "connection_list", connection_list);
-	
-	gnome_vfs_async_open_uri (&sdata->handle, vfs_uri, GNOME_VFS_OPEN_READ,
-						 GNOME_VFS_PRIORITY_DEFAULT, vfs_open_callback, sdata);
-	
-	gnome_vfs_uri_unref (vfs_uri);
-	
-	html_stream_set_cancel_func (stream, stream_cancel, sdata);
+	connection_list = g_object_get_data (G_OBJECT (sd->doc), "connection_list");
+	connection_list = g_slist_remove (connection_list, r);
+	g_object_set_data (G_OBJECT (sd->doc), "connection_list", connection_list);
+	g_free(r->user_data);
 }
 
 static void
-on_url (HtmlView *view, const char *url, gpointer user_data)
+stream_cancel (HtmlStream *stream, gpointer user_data, gpointer cancel_data)
 {
+	struct request *r = (struct request*)cancel_data;
+
+	debug1(DEBUG_UPDATE, "GtkHTML2: Canceling stream: %s", ((struct request*)user_data)->source);
+	
+	request_data_kill(r);
+}
+
+static void gtkhtml2_url_request_received_cb(struct request *r) {
+	if (r->size != 0 && r->data != NULL) {
+		html_stream_write (((StreamData*)r->user_data)->stream, r->data, r->size); 
+	}
+	request_data_kill(r);
+}
+
+static void url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *stream, gpointer data) {
+	xmlChar *uri;
+	
+	uri = xmlBuildURI(rel_uri, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+	if (uri != NULL) {
+		struct request *r;
+		GSList *connection_list;
+		StreamData *sd = g_malloc(sizeof(StreamData));
+
+		sd->doc = doc;
+		sd->stream = stream;
+
+		r = download_request_new();
+		r->source = g_strdup(uri);
+		r->callback = gtkhtml2_url_request_received_cb;
+		r->user_data = sd;
+		r->priority = 1;
+		download_queue(r);
+		html_stream_set_cancel_func (stream, stream_cancel, r);
+		xmlFree(uri);
+
+		connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
+		connection_list = g_slist_prepend (connection_list, r);
+		g_object_set_data (G_OBJECT (doc), "connection_list", connection_list);
+	} else
+		html_stream_cancel(stream);
+}
+
+static void on_url (HtmlView *view, const char *url, gpointer user_data) {
 	xmlChar *uri;
 	
 	if(NULL != url) {
 		uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));
+		
 		if (uri != NULL) {
 			if(selectedURL)
 				g_free(selectedURL);
 			selectedURL = g_strdup(uri);
-			ui_mainwindow_set_status_bar(selectedURL);
+			ui_mainwindow_set_status_bar("%s", selectedURL);
 			xmlFree(uri);
 		}
 	} else
 		ui_mainwindow_set_status_bar("");
 }
 
-static gboolean
-request_object (HtmlView *view, GtkWidget *widget, gpointer user_data)
+static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data)
 {
 	GtkWidget *sel;
 
@@ -256,29 +215,21 @@ request_object (HtmlView *view, GtkWidget *widget, gpointer user_data)
 	return TRUE;
 }
 
-static void
-kill_old_connections (HtmlDocument *doc)
-{
+static void kill_old_connections (HtmlDocument *doc) {
 	GSList *connection_list, *tmp;
 	
-	tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
-	while(tmp) {
-		
-		StreamData *sdata = (StreamData *)tmp->data;
-		gnome_vfs_async_cancel (sdata->handle);
-		free_stream_data (sdata, FALSE);
-		
-		tmp = tmp->next;
+	
+	while((tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list")) != NULL) {
+		struct request *r = (struct request*)tmp->data;
+		request_data_kill(r);
 	}
-	g_object_set_data (G_OBJECT (doc), "connection_list", NULL);
-	g_slist_free (connection_list);
 }
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 	xmlChar *uri;
 	
 	uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
-
+	
 	if (uri != NULL) {
 		ui_htmlview_launch_URL(uri, FALSE);
 		xmlFree(uri);
