@@ -171,7 +171,7 @@ static void notifAddFeedNotif (feedNotif_t *feedNotif_p) {
 	/* Add the header label */
 	label_p = gtk_label_new (NULL);
 	gtk_label_set_use_markup (GTK_LABEL(label_p), TRUE);
-	labelText_p = g_strdup_printf ("<b><u>%s</u></b>", feedNotif_p->feed_p->title);
+	labelText_p = g_strdup_printf ("<b><u>%s</u></b>", feed_get_title(feedNotif_p->feed_p));
 	gtk_label_set_markup (GTK_LABEL(label_p), labelText_p);
 	g_free (labelText_p);
 	gtk_misc_set_alignment (GTK_MISC(label_p), 0.0, 0.5);
@@ -184,7 +184,7 @@ static void notifAddFeedNotif (feedNotif_t *feedNotif_p) {
 		item_p = list_p->data;
 		if(item_get_new_status(item_p)) {
 			item_set_new_status(item_p, FALSE);
-			labelText_p = g_strdup_printf ("%s %s", NOTIF_BULLET, item_p->title);
+			labelText_p = g_strdup_printf ("%s %s", NOTIF_BULLET, item_get_title(item_p) != NULL ? item_get_title(item_p) : _("Untitled"));
 			label_p = gtk_label_new (labelText_p);
 			g_free(labelText_p);
 			gtk_label_set_line_wrap (GTK_LABEL(label_p), TRUE);
