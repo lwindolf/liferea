@@ -325,6 +325,12 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"source"))
 			item_set_source(ip, tmp);
 			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"real_source_url"))
+			item_set_real_source_url(ip, tmp);
+			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"real_source_title"))
+			item_set_real_source_title(ip, tmp);
+			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"id"))
 			item_set_id(ip, tmp);
 			

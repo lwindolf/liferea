@@ -303,6 +303,12 @@ void feed_save(feedPtr fp) {
 					
 					if(NULL != item_get_source(ip))
 						xmlNewTextChild(itemNode, NULL, "source", item_get_source(ip));
+						
+					if(NULL != item_get_real_source_title(ip))
+						xmlNewTextChild(itemNode, NULL, "real_source_title", item_get_real_source_title(ip));
+						
+					if(NULL != item_get_real_source_url(ip))
+						xmlNewTextChild(itemNode, NULL, "real_source_url", item_get_real_source_url(ip));
 
 					if(NULL != item_get_id(ip))
 						xmlNewTextChild(itemNode, NULL, "id", item_get_id(ip));
