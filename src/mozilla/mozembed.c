@@ -162,13 +162,9 @@ static gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer 
 	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) {
 		return FALSE;
 	} else {
-		ui_htmlview_launch_in_external_browser(uri);
+		ui_htmlview_launch_URL(GTK_WIDGET(data), (gchar *)uri, FALSE);
 		return TRUE;
 	}
-}
-
-static void mozembed_destroy_brsr_cb (GtkMozEmbed *embed, gpointer data) {
-
 }
 
 /* Sets up a html view widget using GtkMozEmbed.
@@ -194,7 +190,7 @@ static GtkWidget * mozilla_create() {
 		{ "link_message",    mozembed_link_message_cb      },
 		/*{ "js_status",       mozembed_js_status_cb         },*/
 		/*{ "visibility",      mozembed_visibility_cb        },*/
-		{ "destroy_browser", mozembed_destroy_brsr_cb      },
+		/*{ "destroy_browser", mozembed_destroy_brsr_cb      },*/
 		/*{ "dom_mouse_down",  mozembed_dom_mouse_down_cb    },*/
 		{ "dom_mouse_click", mozembed_dom_mouse_click_cb   },
 		{ "dom_key_press",   mozembed_dom_key_press_cb     },

@@ -113,7 +113,12 @@ void on_toggle_item_flag(GtkMenuItem *menuitem, gpointer user_data);
 /**
  * Opens the selected item in a browser.
  */
-  void on_popup_launchitem_selected(void);
+void on_popup_launchitem_selected(void);
+
+/**
+ * Opens the selected item in a browser.
+ */
+void on_popup_launchitem_in_tab_selected(void);
 
 /**
  * Toggles the read status of right-clicked item.

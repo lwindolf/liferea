@@ -73,6 +73,7 @@ liferea_bin_SOURCES = \
 	ui_queue.c ui_queue.h \
 	ui_search.c ui_search.h \
 	ui_session.c ui_session.h \
+	ui_tabs.c ui_tabs.h \
 	ui_tray.c ui_tray.h \
 	ui_vfolder.c ui_vfolder.h \
 	update.c update.h \

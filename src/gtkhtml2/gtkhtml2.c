@@ -241,7 +241,7 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 	
 	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	if(absURL != NULL) {
-		ui_htmlview_launch_URL(absURL, FALSE);
+		ui_htmlview_launch_URL(GTK_WIDGET(data), absURL, FALSE);
 		xmlFree(absURL);
 	}
 }
@@ -295,7 +295,7 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 				   GTK_SIGNAL_FUNC (on_submit), NULL);
 	
 	g_signal_connect (G_OBJECT (doc), "link_clicked",
-				   G_CALLBACK (link_clicked), NULL);
+				   G_CALLBACK (link_clicked), htmlwidget);
 	
 	if((NULL != string) && (strlen(string) > 0))
 		html_document_write_stream(doc, string, strlen(string));

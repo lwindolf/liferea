@@ -32,6 +32,7 @@
 #include "ui_queue.h"
 #include "support.h"
 #include "ui_htmlview.h"
+#include "ui_tabs.h"
 #include "debug.h"
 
 /* function types for the imported symbols */
@@ -314,7 +315,7 @@ void ui_htmlview_clear(GtkWidget *htmlview) {
 	g_free(buffer);
 }
 
-void ui_htmlview_launch_URL(gchar *url, gboolean force_external) {
+void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gboolean force_external) {
 	
 	if(NULL == url) {
 		/* FIXME: bad because this is not only used for item links! */
@@ -328,7 +329,7 @@ void ui_htmlview_launch_URL(gchar *url, gboolean force_external) {
 	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION) &&
 	   (htmlviewInfo->launchInsidePossible)() &&
 	   !force_external) {
-		(htmlviewInfo->launch)(ui_mainwindow_get_active_htmlview(), url);
+		(htmlviewInfo->launch)(htmlview, url);
 	} else {
 		ui_htmlview_launch_in_external_browser(url);
 	}
@@ -408,7 +409,7 @@ void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *pa
 
 void on_popup_launch_link_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	ui_htmlview_launch_URL(url, TRUE);
+	ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), url, TRUE);
 }
 
 void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
@@ -433,7 +434,7 @@ void on_popup_zoomin_selected(gpointer callback_data, guint callback_action, Gtk
 	GtkWidget	*htmlview;
 	gfloat		zoom;
 	
-	htmlview = ui_mainwindow_get_active_htmlview();
+	htmlview = ui_tabs_get_active_htmlview();
 	zoom = ui_htmlview_get_zoom(htmlview);
 	zoom *= 1.2;
 	
@@ -444,7 +445,7 @@ void on_popup_zoomout_selected(gpointer callback_data, guint callback_action, Gt
 	GtkWidget	*htmlview;
 	gfloat		zoom;
 
-	htmlview = ui_mainwindow_get_active_htmlview();	
+	htmlview = ui_tabs_get_active_htmlview();	
 	zoom = ui_htmlview_get_zoom(htmlview);
 	zoom /= 1.2;
 	

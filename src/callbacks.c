@@ -51,6 +51,7 @@
 #include "ui_tray.h"
 #include "ui_queue.h"
 #include "ui_notification.h"
+#include "ui_tabs.h"
 	
 /* all used icons */
 GdkPixbuf *icons[MAX_ICONS];
@@ -86,6 +87,7 @@ void ui_init(gboolean startIconified) {
 	int		i;
 
 	mainwindow = ui_mainwindow_new();
+	ui_tabs_init();
 	
 	/* load pane proportions */
 	if(0 != getNumericConfValue(LAST_VPANE_POS))

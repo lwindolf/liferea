@@ -463,7 +463,16 @@ void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
 
 	if(NULL != (ip = ui_itemlist_get_selected()))
-		ui_htmlview_launch_URL((gchar *)item_get_source(ip), TRUE);
+		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), (gchar *)item_get_source(ip), TRUE);
+	else
+		ui_mainwindow_set_status_bar(_("No item has been selected"));
+}
+
+void on_popup_launchitem_in_tab_selected(void) {
+	itemPtr		ip;
+
+	if(NULL != (ip = ui_itemlist_get_selected()))
+		ui_tabs_new(item_get_source(ip), item_get_source(ip));
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }

@@ -103,7 +103,7 @@ struct displayset {
 
 /*@}*/
 
-#define HTMLVIEW_API_VERSION 2
+#define HTMLVIEW_API_VERSION 3
 
 typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
 
@@ -180,7 +180,7 @@ void	ui_htmlview_finish_output(gchar **buffer);
 /**
  * Method to display the passed HTML source to the HTML widget.
  *
- * @param htmlview  The htmlview widget to be set
+ * @param htmlview	The htmlview widget to be set
  * @param string	HTML source
  * @param base		base url for resolving relative links
  */
@@ -190,10 +190,11 @@ void	ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
  * Launches the specified URL in the configured browser or
  * in case of Mozilla inside the HTML widget.
  *
+ * @param htmlview		The htmlview widget to be set
  * @param url			URL to launch
  * @param force_external	to force loading in external browser
  */
-void	ui_htmlview_launch_URL(gchar *url, gboolean force_external);
+void	ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gboolean force_external);
 
 /**
  * Function to change the zoom level of the HTML widget.

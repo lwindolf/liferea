@@ -32,6 +32,7 @@
 #include "ui_dnd.h"
 #include "export.h"
 #include "ui_htmlview.h"
+#include "ui_tabs.h"
 #include "itemlist.h"
 
 /* icon constants */
