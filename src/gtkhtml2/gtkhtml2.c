@@ -275,8 +275,6 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
 
-	g_object_set_data(G_OBJECT(scrollpane), "html_request", NULL);
-	
 	/* finalizing older stuff */
 	if(NULL != doc) {
 		kill_old_connections(doc);
@@ -353,16 +351,22 @@ static void gtkhtml2_deinit() {
 }
 
 static void gtkhtml2_html_received(struct request *r) {
-	if(r->size == 0 || r->data == NULL)
+	/* Remove reference to the request structure */
+	g_object_set_data(G_OBJECT(r->user_data), "html_request", NULL);
+	
+	/* If no data was returned... */
+	if(r->size == 0 || r->data == NULL) {
+		/* Maybe an error message should be displayed.... */
 		return; /* This should nicely exit.... */
-
+	}
+	
 	write_html(GTK_WIDGET(r->user_data), r->data, r->source);
 }
 
-static void launch_url(GtkWidget *widget, const gchar *url) { 
+static void launch_url(GtkWidget *scrollpane, const gchar *url) { 
 	struct request *r;
 	
-	r = g_object_get_data(G_OBJECT(widget), "html_request");
+	r = g_object_get_data(G_OBJECT(scrollpane), "html_request");
 
 	if(r != NULL)
 		r->callback = NULL;
@@ -370,10 +374,10 @@ static void launch_url(GtkWidget *widget, const gchar *url) {
 	r = download_request_new();
 	r->source = g_strdup(url);
 	r->callback = gtkhtml2_html_received;
-	r->user_data = widget;
+	r->user_data = scrollpane;
 	r->priority = 1;
 	r->flags |= FEED_REQ_NOLOCK;
-	g_object_set_data(G_OBJECT(widget), "html_request", r);
+	g_object_set_data(G_OBJECT(scrollpane), "html_request", r);
 	download_queue(r);
 }
 
