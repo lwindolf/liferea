@@ -58,7 +58,6 @@ gboolean rule_check_item(rulePtr rp, itemPtr ip) {
 	g_assert(rp != NULL);
 	g_assert(ip != NULL);
 	
-g_print("%s %s (%s) for (%s)\n", rp->ruleInfo->title, (rp->additive)?rp->ruleInfo->positive:rp->ruleInfo->negative, rp->value, ip->title);
 	return (*((ruleCheckFuncPtr)rp->ruleInfo->ruleFunc))(rp, ip);
 }
 

@@ -636,16 +636,11 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 				new_ip->fp->needsCacheSave = TRUE;
 			}
 		
-			/* Check if feed filters allow display of this item, we don't
-			   delete the item because there can be vfolders which display
-			   it. To allow this the parent feed does store the item, but
-			   hides it. */
-			if(FALSE) { //== vfolder_check_new_item(new_ip)) {
-				item_set_hidden(new_ip, TRUE);
-				debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
-			} else {
-				debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
-			}
+			/* check if the item matches any vfolder rules */
+			vfolder_check_item(new_ip);
+			
+			debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
+			
 		} else {
 			/* if the item was found but has other contents -> update contents */
 			if(!equal) {
@@ -1007,15 +1002,15 @@ void feed_free(feedPtr fp) {
 	gchar	*filename = NULL;
 	GSList	*iter;
 	
+	if(displayed_node == (nodePtr)fp) { /* This is not strictly necessary. It just speeds deletion of an entire itemlist. */
+		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
+		ui_itemlist_clear();
+	}
+	
 	if(FST_VFOLDER == fp->type) {
 		vfolder_free(fp);	/* some special preparations for vfolders */
 	} else {
 		g_assert(FST_FEED == fp->type);
-	}
-	
-	if(displayed_node == (nodePtr)fp) { /* This is not strictly necessary. It just speeds deletion of an entire itemlist. */
-		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
-		ui_itemlist_clear();
 	}
 
 	/* free items */

@@ -78,16 +78,21 @@ void vfolder_remove_rule(feedPtr vp, rulePtr rp) {
 	debug_exit("vfolder_remove_rule");
 }
 
-/* Adds an item to this VFolder, this method is called
-   when any rule of the vfolder matched */
+/**
+ * Adds an item to this VFolder, this method is called
+ * when any rule of the vfolder matched 
+ */
 static void vfolder_add_item(feedPtr vp, itemPtr ip) {
+	GSList		*iter;
 	itemPtr		tmp;
 
-	/* a maybe paranoid consistency check (remove me) */
-	tmp = feed_lookup_item(vp, ip->nr);
-	if((NULL != tmp) && (ip->fp == tmp->sourceFeed)) {
-		g_warning("a search feed contains non-unique id's, one matching item was dropped...");
-		return;
+	/* check if the item was already added */
+	iter = vp->items;
+	while(NULL != iter) {
+		tmp = iter->data;
+		if((ip->nr == tmp->nr) && (ip->fp == tmp->sourceFeed))
+			return;
+		iter = g_slist_next(iter);
 	}
 
 	/* add an item copy to the vfolder */	
@@ -178,13 +183,13 @@ void vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
 		rp = iter->data;
 		if(rp->additive) {
 			if(!added && rule_check_item(rp, ip)) {
-				debug2(DEBUG_UPDATE, "adding matching item (%d): %s\n", ip->nr, item_get_title(ip));
+				/* debug2(DEBUG_UPDATE, "adding matching item (%d): %s\n", ip->nr, item_get_title(ip)); */
 				vfolder_add_item(vp, ip);
 				added = TRUE;
 			}
 		} else {
 			if(added && rule_check_item(rp, ip)) {
-				debug2(DEBUG_UPDATE, "deleting matching item (%d): %s\n", ip->nr, item_get_title(ip));
+				/* debug2(DEBUG_UPDATE, "deleting matching item (%d): %s\n", ip->nr, item_get_title(ip)); */
 				vfolder_remove_matching_item_copy(vp, ip);
 				added = FALSE;
 			}

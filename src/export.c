@@ -502,21 +502,14 @@ static void import_parse_OPML(xmlNodePtr n, folderPtr parent, gboolean trusted) 
 
 /**
  * Used to process feeds directly after feed list loading.
- * Loads the given feed or requests a download. If the feed could
- * be loaded its items are checked against all vfolder rules.
+ * Loads the given feed or requests a download. During feed
+ * loading its items are automatically checked against all 
+ * vfolder rules.
  */
 static void import_initial_load_feed(feedPtr fp) {
-	GSList	*items;
 
-	if(!feed_load(fp)) {
+	if(!feed_load(fp))
 		feed_schedule_update(fp, 0);
-	} else {
-		items = feed_get_item_list(fp);
-		while(NULL != items) {
-			vfolder_check_item(items->data);
-			items = g_slist_next(items);
-		}
-	}
 	feed_unload(fp);
 }
 
@@ -556,6 +549,7 @@ void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean show
 		xmlFreeDoc(doc);
 	}
 	
+	/* load all feeds and by doing so automatically load all vfolders */
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, import_initial_load_feed);
 	ui_feedlist_update();
 }
