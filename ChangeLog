@@ -8,8 +8,9 @@
 	* Added .desktop file and its install targets as 
 	  proposed by John McKnight.
 	* Added a window position save patch from pasp.
-	* Update to the japanese translation by Takeshi Aihana.
-	* Added a spanish translation from Topopardo.
+	* Update of the japanese translation from Takeshi Aihana.
+	* Added a the spanish translation from Carlos Fenollosa
+	  and José María Mateos.
 	* Added a toggle unread status of an item as proposed
 	  by Tobias C. Rittweiler.
 	* Added a remove cached items option to clear all
@@ -19,6 +20,8 @@
 	* Written some more and new text for the Liferea
 	  Online Help Feed.
 	* Many code improvements by Karl Soderstrom.
+	* Added a patch from Christophe Barbe to display
+	  the count of new item in the folder title.
 	* Fixed a bug in the syndication namespace support
 	  which caused an default update interval of one day
 	  for every feed which uses this namespace. The wrong
