@@ -111,9 +111,8 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
 //	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
-	feedPtr			fp;
+//	feedPtr			fp;
 	folderPtr			folder = NULL;
-	nodePtr			ptr;
 
 	g_assert(mainwindow != NULL);
 		

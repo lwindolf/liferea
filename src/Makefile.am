@@ -82,5 +82,3 @@ liferea_bin_SOURCES = \
 	vfolder.c vfolder.h
 
 liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ $(INTLLIBS)
-
-liferea_bin_CFLAGS = -Wall

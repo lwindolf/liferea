@@ -438,7 +438,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 }
 
 static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
-	directoryPtr	dp;
+	directoryPtr	dp = NULL;
 	dirEntryPtr	new_dep;
 	int 		error = 0;
 

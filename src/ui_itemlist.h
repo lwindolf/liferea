@@ -24,6 +24,7 @@
 #define _UI_ITEMLIST_H
 
 #include <gtk/gtk.h>
+#include <time.h>
 #include "feed.h"
 
 /** Enumeration of the columns in the itemstore. */
@@ -59,6 +60,9 @@ void ui_itemlist_init(GtkWidget *itemlist);
  * date format changes.
  */
 void ui_itemlist_reset_date_format(void);
+
+/* methods needs to but should not be exposed... */
+gchar * ui_itemlist_format_date(time_t t);
 
 /**
  * Unselect all items in the list and scroll to top. This is typically

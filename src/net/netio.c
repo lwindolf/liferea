@@ -864,7 +864,7 @@ static char* filter(gchar *cmd, gchar *data) {
 char * downloadURL(struct feed_request *request) {
 	FILE		*f;
 	gchar		*tmpurl = NULL, *tmp;
-	int 		i, n;
+	int 		i, n = 0;
 	char		*data = NULL;
 
 	request->problem = 0;

@@ -70,8 +70,8 @@ GSList	*allRules;
    this new item should be added. */
 gboolean checkNewItem(itemPtr ip) {
 	GSList		*rule;
-	ruleCheckFunc	rf;
-	rulePtr		r;
+//	ruleCheckFunc	rf;
+//	rulePtr		r;
 	
 	/* important: we assume the parent pointer of the item is set! */
 	g_assert(NULL != ip->fp);

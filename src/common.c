@@ -476,7 +476,7 @@ static gchar * byte_to_hex(unsigned char nr) {
    search feed URLs. */
 gchar * encodeURIString(gchar *uriString) {
 	gchar		*newURIString;
-	gchar		*tmp, *hex;
+	gchar		*hex, *tmp = NULL;
 	int		i, j, len, bytes;
 
 	/* the UTF-8 string is casted to ASCII to treat

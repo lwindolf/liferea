@@ -274,7 +274,7 @@ GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 }
 
 static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
-	gchar *source;
+	gchar	*source = NULL;
 
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio))) {
 		source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));

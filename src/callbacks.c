@@ -105,7 +105,7 @@ void ui_init(void) {
 			  lookup_widget(mainwindow, "itemlistview"),
 			  getNumericConfValue(LAST_ZOOMLEVEL));
 
-	if(getBooleanConfValue(LAST_ITEMLIST_MODE) != NULL)
+	if(getBooleanConfValue(LAST_ITEMLIST_MODE))
 		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
 		
 	ui_htmlview_set_mode(itemlist_mode);

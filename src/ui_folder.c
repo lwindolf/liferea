@@ -305,8 +305,8 @@ void ui_add_folder(folderPtr parent, folderPtr folder, gint position) {
 
 void ui_folder_remove_node(nodePtr ptr) {
 	GtkTreeIter	iter;
-	gboolean parentExpanded;
-	folderPtr parent;
+	gboolean 	parentExpanded = FALSE;
+	folderPtr 	parent;
 	
 	g_assert(ptr);
 	g_assert(ptr->ui_data);

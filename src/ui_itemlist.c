@@ -1,4 +1,5 @@
-/* Item list/view handling
+/**
+ * @file ui_itemlist.c Item list/view handling
  *  
  * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
  * 		      Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -19,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <time.h>
 #include <langinfo.h>
 #include <string.h>
 #include "support.h"
@@ -30,7 +30,7 @@
 #include "htmlview.h"
 #include "conf.h"
 #include "ui_itemlist.h"
-#include "ui_mainwindow.h" /* FIXME: Should switchpanemode be moved into here? */
+#include "ui_mainwindow.h"
 #include "ui_tray.h"
 
 typedef struct ui_item_data {

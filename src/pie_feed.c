@@ -23,6 +23,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include "support.h"
+#include "conf.h"
 #include "common.h"
 #include "feed.h"
 #include "pie_feed.h"
