@@ -134,6 +134,94 @@ int NetPoll (struct feed_request * cur_ptr, int * my_socket, int rw) {
  *	-1	Error occured (netio_error is set)
  */
 int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int httpproto, int suppressoutput) {
+#ifdef HAVE_GETADDRINFO
+	socklen_t len;
+	int ret;
+	struct addrinfo hints;
+	struct addrinfo *res = NULL, *ai;
+	
+	/*
+	if (!suppressoutput) {
+		if (cur_ptr->title == NULL)
+			snprintf (tmp, sizeof(tmp), _("Downloading \"%s\""), cur_ptr->feedurl);
+		else
+			snprintf (tmp, sizeof(tmp), _("Downloading \"%s\""), cur_ptr->title);
+
+			UIStatus (tmp, 0);
+			}*/
+	
+	res = 0;
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+	if (proxyport == 0) {
+		char *realhost, port_str[9];
+
+		realhost = strdup(host);
+		if (sscanf (host, "%[^:]:%8s", realhost, &port_str) != 2) {
+			strcpy(port_str, "80");
+		}
+		ret = getaddrinfo(realhost, port_str, &hints, &res);
+		free(realhost);
+	} else {
+		char port_str[6];
+
+		snprintf(port_str, sizeof(port_str), "%d", proxyport);
+		ret = getaddrinfo(proxyname, port_str, &hints, &res);
+	}
+
+	if (ret != 0)
+		return -1;
+
+	cur_ptr->netio_error = NET_ERR_OK;
+	for (ai = res; ai != NULL; ai = ai->ai_next) {
+		/* Create a socket. */
+		*my_socket = socket (ai->ai_family, ai->ai_socktype, ai->ai_protocol);
+		if (*my_socket == -1) {
+			cur_ptr->netio_error = NET_ERR_SOCK_ERR;
+			continue;
+		}
+	
+		/* Set socket to nonblock mode to make it possible to interrupt the connect. */
+		fcntl(*my_socket, F_SETFL, fcntl(*my_socket, F_GETFL, 0) | O_NONBLOCK);
+	
+		/* Connect socket. */
+		cur_ptr->connectresult = connect (*my_socket, ai->ai_addr, ai->ai_addrlen);
+		
+		/* Check if we're already connected.
+		   BSDs will return 0 on connect even in nonblock if connect was fast enough. */
+		if (cur_ptr->connectresult != 0) {
+			/* If errno is not EINPROGRESS, the connect went wrong. */
+			if (errno != EINPROGRESS) {
+				close (*my_socket);
+				cur_ptr->netio_error = NET_ERR_CONN_REFUSED;
+				continue;
+			}
+			
+			if ((NetPoll (cur_ptr, my_socket, NET_WRITE)) == -1) {
+				close (*my_socket);
+				continue;
+			}
+			
+			/* We get errno of connect back via getsockopt SO_ERROR (into connectresult). */
+			len = sizeof(cur_ptr->connectresult);
+			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, &cur_ptr->connectresult, &len);
+			
+			if (cur_ptr->connectresult != 0) {
+				close (*my_socket);
+				cur_ptr->netio_error = NET_ERR_CONN_FAILED;	/* ->strerror(cur_ptr->connectresult) */
+				continue;
+			}
+		}
+
+		break;
+	}
+
+	freeaddrinfo(res);
+	if (cur_ptr->netio_error != NET_ERR_OK)
+		return -1;
+#else
 	struct sockaddr_in address;	
 	struct hostent *remotehost;
 	socklen_t len;
@@ -257,11 +345,13 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 			}
 		}
 	}
-	
+
+	free(realhost);
+#endif /* HAVE_GETADDRINFO */
+
 	/* Set socket back to blocking mode. */
 	fcntl(*my_socket, F_SETFL, fcntl(*my_socket, F_GETFL, 0) & ~O_NONBLOCK);
 	
-	free (realhost);
 	return 0;
 }
 

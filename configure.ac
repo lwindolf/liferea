@@ -25,7 +25,7 @@ AC_PROG_MAKE_SET
 
 AC_ARG_ENABLE(sm,      [  --disable-sm            compile without X session management support],,enable_sm=yes)
 				   
-AC_CHECK_FUNCS(strsep)
+AC_CHECK_FUNCS([strsep getaddrinfo])
 
 dnl Search for X libraries
 AC_PATH_XTRA
