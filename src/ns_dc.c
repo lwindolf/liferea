@@ -28,7 +28,7 @@
 #include "support.h"
 #include "common.h"
 
-#define TABLE_START	"<div style=\"margin-top:15px;font-size:8pt;color:#C0C0C0\">additional Dublin Core information</div><table style=\"width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;\">"
+#define TABLE_START	"<div style=\"margin-top:15px;font-size:8pt;color:#C0C0C0\">additional Dublin Core information</div><table style=\"margin-bottom:10px;width:100%;border-width:1px;border-top-style:solid;border-color:#D0D0D0;\">"
 #define FIRSTTD		"<tr style=\"border-width:0;border-bottom-width:1px;border-style:dashed;border-color:#D0D0D0;\"><td width=\"30%\"><span style=\"font-size:8pt;color:#C0C0C0\">"
 #define NEXTTD		"</span></td><td><span style=\"font-size:8pt;color:#C0C0C0\">"
 #define LASTTD		"</span></td></tr>"

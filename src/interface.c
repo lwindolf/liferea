@@ -268,9 +268,6 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) Itemlist, "row_activated",
                     G_CALLBACK (on_Itemlist_row_activated),
                     NULL);
-  g_signal_connect ((gpointer) itemlistview, "button_press_event",
-                    G_CALLBACK (on_itemlist_button_press_event),
-                    NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, mainwindow, "mainwindow");

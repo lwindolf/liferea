@@ -2,7 +2,7 @@
 
 Summary: Liferea (Linux Feed Reader)
 Name: liferea
-Version: 0.3.9
+Version: 0.4.0
 Release: 1
 Group: Productivity/Networking/Web/Browsers
 Copyright: GPL

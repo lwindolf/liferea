@@ -52,6 +52,7 @@ static GtkWidget	*itemListView = NULL;
 static GtkWidget	*htmlwidget = NULL;
 
 /* some prototypes */
+static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata);
 static void url_request(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
 static void on_url (HtmlView *view, const char *url, gpointer user_data);
 static void on_submit (HtmlDocument *document, const gchar *action, const gchar *method, const gchar *encoding, gpointer data);
@@ -123,6 +124,9 @@ static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
 	g_signal_connect (G_OBJECT (htmlwidget), "request_object",
 			  G_CALLBACK (request_object), NULL);
 
+	g_signal_connect (G_OBJECT (htmlwidget), "button-press-event",
+			  G_CALLBACK (button_press_event), NULL);
+			  
 	gtk_widget_show_all(scrolledwindow);
 }
 
@@ -145,6 +149,18 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2) {
 	startHTMLOutput();
 	writeHTML(testhtml);
 	finishHTMLOutput();
+}
+
+static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {
+
+	if (event->button == 3) {
+
+		gtk_menu_popup (GTK_MENU(make_item_menu()), NULL, NULL,
+				NULL, NULL, event->button, event->time);
+ 
+	} else {
+		return FALSE;
+	}
 }
 
 /* ------------------------------------------------------------------------------- */

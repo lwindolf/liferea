@@ -83,6 +83,7 @@ GtkTreeStore * getFeedStore(void);
 GtkTreeStore * getItemStore(void);
 void searchItems(gchar *string);
 void loadItemList(feedPtr fp, gchar *searchstring);
+void displayItemList(void);
 void clearItemList(void);
 
 /*------------------------------------------------------------------------------*/
@@ -878,6 +879,8 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 
 				/* FIXME: brute force: update of all vfolders redundant */
 				loadVFolders();
+				
+				addToFeedList(fp);
 			}
 		} else {
 			print_status("could not get entry key prefix! maybe you did not select a group");
@@ -927,6 +930,7 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
         GtkTreeModel		*model;
 	gchar			*tmp_key;
 	gint			tmp_type;
+	feedPtr			fp;
 	GdkGeometry		geometry;
 
 	g_assert(mainwindow != NULL);
@@ -941,10 +945,18 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 		/* make sure thats no grouping iterator */
 		if(!IS_NODE(tmp_type) && (FST_EMPTY != tmp_type)) {
 			g_assert(NULL != tmp_key);
-
+			
+			fp = getFeed(tmp_key);
+			
 			clearItemList();
-			loadItemList(getFeed(tmp_key), NULL);
+			loadItemList(fp, NULL);
 			g_free(tmp_key);
+			
+			if(itemlist_mode) {
+				startHTMLOutput();
+				writeHTML(fp->description);
+				finishHTMLOutput();
+			}
 			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing */
@@ -1023,10 +1035,7 @@ void on_toggle_condensed_view(void) {
 	else 
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 1);
 		
-	if(NULL != (key = getMainFeedListViewSelection())) {
-		clearItemList();
-		loadItemList(getFeed(key), NULL);
-	}
+	displayItemList();
 }
 
 /*------------------------------------------------------------------------------*/
@@ -1366,7 +1375,7 @@ static GtkItemFactoryEntry itemlist_menu_items[] = {
       {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 0, NULL}
 };
 
-static GtkMenu *make_item_menu(void) {
+GtkMenu *make_item_menu(void) {
 	GtkWidget 		*menubar;
 	GtkItemFactory 		*item_factory;
 	gint 			nmenu_items;
@@ -1566,6 +1575,25 @@ void clearItemList(void) {
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
 }
 
+void displayItemList(void) {
+	GtkTreeIter	iter;
+	gboolean	valid;
+	itemPtr		ip;
+	
+	if(gnome_vfs_is_primary_thread() && !itemlist_mode) {
+		startHTMLOutput();
+		
+		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+		while(valid) {	
+			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+			writeHTML(getItemDescription(ip));
+			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+		}
+		
+		finishHTMLOutput();
+	}
+}
+
 void loadItemList(feedPtr fp, gchar *searchstring) {
 	GtkTreeIter	iter;
 	GSList		*itemlist;
@@ -1578,9 +1606,6 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 		print_status(_("internal error! item display for NULL pointer requested!"));
 		return;
 	}
-
-	if(gnome_vfs_is_primary_thread())	
-		startHTMLOutput();
 			
 	itemlist = fp->items;
 	while(NULL != itemlist) {
@@ -1621,12 +1646,7 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 		itemlist = g_slist_next(itemlist);
 	}
 	
-	if(gnome_vfs_is_primary_thread()) {
-		if(itemlist_mode)
-			writeHTML(fp->description);
-		
-		finishHTMLOutput();
-	}
+	displayItemList();
 }
 
 static void searchInFeed(gpointer key, gpointer value, gpointer userdata) {

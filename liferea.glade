@@ -414,7 +414,6 @@
 		      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
 		      <property name="shadow_type">GTK_SHADOW_NONE</property>
 		      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
-		      <signal name="button_press_event" handler="on_itemlist_button_press_event" last_modification_time="Tue, 07 Oct 2003 19:22:53 GMT"/>
 
 		      <child>
 			<placeholder/>
