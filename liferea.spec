@@ -7,6 +7,10 @@ Copyright: GPL
 Source: liferea-%{version}.tar.gz
 URL: http://liferea.sourceforge.net/
 BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires: gtk2-devel
+BuildRequires: libxml2-devel >= 2.5.10
+BuildRequires: GConf2-devel
+BuildRequires: gettext
 Requires: gtk2 libxml2 gconf2
 
 %description
@@ -17,7 +21,7 @@ is intended to be a clone of the Windows-only
 FeedReader.
 
 %prep
-%setup
+%setup -q -n %{name}-%{version}
 
 %build
 ./configure \
@@ -30,21 +34,24 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr
 make install-strip prefix=$RPM_BUILD_ROOT/usr sysconfdir=$RPM_BUILD_ROOT/etc
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root)
 %doc COPYING AUTHORS NEWS README ChangeLog
-/usr/bin/liferea
-/usr/bin/liferea-bin
-/usr/share/liferea
-/usr/share/locale
-/usr/share/applications/liferea.desktop
-/usr/lib/liferea/liblihtmlg.la
-/usr/lib/liferea/liblihtmlg.so.0.0.0
-/usr/lib/liferea/liblihtmlm.la
-/usr/lib/liferea/liblihtmlm.so.0.0.0
-/usr/lib/liferea/liblihtmlt.la
-/usr/lib/liferea/liblihtmlt.so.0.0.0
+%{_bindir}/liferea
+%{_bindir}/liferea-bin
+%{_datadir}/liferea
+%{_datadir}/applications/liferea.desktop
+%{_libdir}/*.so.*
+%exclude %{_libdir}/*.la
+
+%changelog
+
+* Fri Apr  2 2004 Brian Pepple <bdpepple@ameritech.net> 0.4.8-1
+- Added BuildRequires.
+- Added gettext support.
+- Added macros for files.
