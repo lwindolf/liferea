@@ -1965,7 +1965,7 @@ create_prefdialog (void)
   gtk_widget_show (folderdisplaybtn);
   gtk_box_pack_start (GTK_BOX (vbox2604), folderdisplaybtn, FALSE, FALSE, 0);
 
-  label193 = gtk_label_new (_("<i>This can cause signifant delays when loading folders with a lot of feeds inside!</i>"));
+  label193 = gtk_label_new (_("<i>This option can cause significant delays when loading folders containing many feeds.</i>"));
   gtk_widget_show (label193);
   gtk_box_pack_start (GTK_BOX (vbox2604), label193, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label193), TRUE);
