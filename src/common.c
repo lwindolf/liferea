@@ -19,7 +19,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERuri[i]ANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -379,7 +379,7 @@ time_t parseRFC822Date(gchar *date) {
 		date = ++pos;
 
 	/* we expect english month names, so we set the locale */
-	oldlocale = setlocale(LC_TIME, NULL);
+	oldlocale = g_strdup(setlocale(LC_TIME, NULL));
 	setlocale(LC_TIME, "C");
 	
 	/* standard format with 2 digit year */
@@ -389,7 +389,10 @@ time_t parseRFC822Date(gchar *date) {
 	else if(NULL != (pos = strptime((const char *)date, "%d %b %Y %T", &tm)))
 		success = TRUE;
 	
-	setlocale(LC_TIME, oldlocale);	/* and reset it again */
+	if(NULL != oldlocale) {
+		setlocale(LC_TIME, oldlocale);	/* and reset it again */
+		g_free(oldlocale);
+	}
 	
 	if(TRUE == success) {
 		if((time_t)(-1) != (t = mktime(&tm)))
