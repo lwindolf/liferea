@@ -334,11 +334,12 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 /* converts a ISO 8601 time string to a time_t value */
 time_t parseISO8601Date(gchar *date) {
 	struct tm	tm;
-	time_t		t;
+	time_t		t, t2, offset = 0;
 	gboolean	success = FALSE;
-		
+	gchar *pos;
+	
 	memset(&tm, 0, sizeof(struct tm));
-
+	
 	/* we expect at least something like "2003-08-07T15:28:19" and
 	   don't require the second fractions and the timezone info
 
@@ -346,15 +347,44 @@ time_t parseISO8601Date(gchar *date) {
 	 */
 	 
 	/* full specified variant */
-	if(NULL != strptime((const char *)date, "%t%Y-%m-%dT%H:%M%t", &tm))
+	if(NULL != (pos = strptime((const char *)date, "%t%Y-%m-%dT%H:%M%t", &tm))) {
+		/* Parse seconds */
+		if (*pos == ':')
+			pos++;
+		if (isdigit(pos[0]) && !isdigit(pos[1])) {
+			tm.tm_sec = pos[0] - '0';
+			pos++;
+		} else if (isdigit(pos[0]) && isdigit(pos[1])) {
+			tm.tm_sec = 10*(pos[0]-'0') + pos[0] - '0';
+			pos +=2;
+		}
+		/* Parse timezone */
+		if (*pos == 'Z')
+			offset = 0;
+		else if ((*pos == '+' || *pos == '-') && isdigit(pos[1]) && isdigit(pos[2]) && strlen(pos) >= 3) {
+			offset = (10*(pos[1] - '0') + (pos[2] - '0')) * 60 * 60;
+			
+			if (pos[3] == ':' && isdigit(pos[4]) && isdigit(pos[5]))
+				offset +=  (10*(pos[4] - '0') + (pos[5] - '0')) * 60;
+			else if (isdigit(pos[3]) && isdigit(pos[4]))
+				offset +=  (10*(pos[3] - '0') + (pos[4] - '0')) * 60;
+			
+			offset *= (pos[0] == '+') ? 1 : -1;
+
+		}
 		success = TRUE;
 	/* only date */
-	else if(NULL != strptime((const char *)date, "%t%Y-%m-%d", &tm))
+	} else if(NULL != strptime((const char *)date, "%t%Y-%m-%d", &tm))
 		success = TRUE;
 	/* there were others combinations too... */
 
 	if(TRUE == success) {
 		if((time_t)(-1) != (t = mktime(&tm))) {
+			/* Correct for the local timezone*/
+			t = t - offset;
+			t2 = mktime(gmtime(&t));
+			t = t - (t2 - t);
+			
 			return t;
 		} else {
 			g_message(_("internal error! time conversion error! mktime failed!\n"));
@@ -463,10 +493,9 @@ time_t parseRFC822Date(gchar *date) {
 			/* GMT time, with no daylight savings time
 			   correction. (Usually, there is no daylight savings
 			   time since the input is GMT.) */
-			t = t + common_parse_rfc822_tz(pos);
+			t = t - common_parse_rfc822_tz(pos);
 			t2 = mktime(gmtime(&t));
 			t = t - (t2 - t);
-			printf("%s = %ld\n", date, t);
 			return t + common_parse_rfc822_tz(pos);
 		} else
 			g_warning(_("internal error! time conversion error! mktime failed!\n"));
