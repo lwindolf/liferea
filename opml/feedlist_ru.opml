@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+  <head>
+    <title>Список лент по умолчанию</title>
+  </head>
+  <body>
+    <outline text="Помощь по Liferea">
+      <outline text="Онлайновая помощь" type="rss" htmlUrl="http://liferea.sf.net/" xmlUrl="http://liferea.sf.net/help/help0.6.0.rdf" updateInterval="1440" noIncremental="true"/>
+      <outline text="Новости Liferea на SF.net" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental="true"/>
+    </outline>	
+	
+	<outline text="Новости Lenta.ru" htmlUrl="http://www.lenta.ru/" xmlUrl="http://lenta.ru/l/r/EX/import.rss" />
+    <outline text="Новости безопасности в сети на русском ">
+	<outline text="Security.Nnov.Ru" htmlUrl="http://security.nnov.ru/" xmlUrl="http://security.nnov.ru/informer/rss.asp?l=RU" />
+    </outline>
+
+    <outline text="Свободное программное обеспечение в России">
+	<outline text="Новости от Linuxcenter.ru" htmlUrl="http://www.linuxcenter.ru/" xmlUrl="http://www.linuxcenter.ru/trans/news.rss" />
+	<outline text="О Mozilla и XUL на русском" htmlUrl="http://www.xul.ru/" xmlUrl="http://www.xul.ru/rss.php" />
+ <!-- lets keep this English block in sync over all feed lists! -->
+    <outline text="Международные ленты новостей">
+      <outline text="Свободное программное обеспечение">
+	<outline text="Distrowatch releases" htmlUrl="http://www.distrowatch.com/" xmlUrl="http://distrowatch.com/news/dw.rdf" />
+        <outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+        <outline text="Debian Planet" htmlUrl="http://www.debianplanet.net/" xmlUrl="http://www.debianplanet.net/module.php?mod=node&amp;op=feed" />
+        <outline text="Debian Package a Day" htmlUrl="http://www.livejournal.com/users/debaday/" xmlUrl="http://www.livejournal.com/users/debaday/data/atom" />
+        <outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+        <outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+        <outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+        <outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+        <outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+        <outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+        <outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+        <outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+        <outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+     </outline>	
+     <outline text="Безопасность">
+	<outline text="SecurityFocus Vulnerabilities" htmlUrl="http://www.securityfocus.com/" xmlUrl="http://www.securityfocus.com/rss/vulnerabilities.xml" />
+     </outline>	
+   </outline>
+    <outline text="Непрочитанные" title="Непрочитанные" description="Непрочитанные" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
+    </outline>
+    <outline text="Важные" title="Важные" description="Важные" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
+    </outline>
+  </body>
+</opml>
