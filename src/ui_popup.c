@@ -175,11 +175,11 @@ static GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpo
 
 GtkMenu *make_item_menu(itemPtr ip) {
 	GtkMenu 	*menu;
-	
+
 	if(TRUE == ui_itemlist_get_two_pane_mode())
-		menu = make_menu(item_menu_items, item_menu_len, ip);
-	else
 		menu = make_menu(html_menu_items, html_menu_len, ip);
+	else
+		menu = make_menu(item_menu_items, item_menu_len, ip);
 
 	return menu;
 }
@@ -241,7 +241,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 	if(event->type != GDK_BUTTON_PRESS)
 		return FALSE;
 
-	eb = (GdkEventButton*) event;
+	eb = (GdkEventButton*)event;
 
 	if(eb->button != 3)
 		return FALSE;
@@ -252,7 +252,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 		model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
 		gtk_tree_model_get_iter(model, &iter, path);
 		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);
-		if (node != NULL)
+		if(node != NULL)
 			ui_feedlist_select(node);
 		else /* This happens when an "empty" node is clicked */
 			selected=FALSE;

@@ -102,9 +102,9 @@
 		      <signal name="activate" handler="on_menu_feed_new" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2151">
+			<widget class="GtkImage" id="image2278">
 			  <property name="visible">True</property>
-			  <property name="stock">gtk-new</property>
+			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -123,7 +123,7 @@
 		      <signal name="activate" handler="on_menu_folder_new" last_modification_time="Tue, 27 Apr 2004 22:52:15 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2152">
+			<widget class="GtkImage" id="image2279">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -151,7 +151,7 @@
 		      <signal name="activate" handler="on_menu_properties" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2153">
+			<widget class="GtkImage" id="image2280">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-properties</property>
 			  <property name="icon_size">1</property>
@@ -179,7 +179,7 @@
 		      <signal name="activate" handler="on_menu_update" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2154">
+			<widget class="GtkImage" id="image2281">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -202,7 +202,7 @@
 		      <accelerator key="a" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2155">
+			<widget class="GtkImage" id="image2282">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -230,7 +230,7 @@
 		      <signal name="activate" handler="on_menu_delete" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2156">
+			<widget class="GtkImage" id="image2283">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -270,7 +270,7 @@
 		      <accelerator key="r" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2157">
+			<widget class="GtkImage" id="image2284">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
@@ -298,7 +298,7 @@
 		      <signal name="activate" handler="on_import_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2158">
+			<widget class="GtkImage" id="image2285">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-open</property>
 			  <property name="icon_size">1</property>
@@ -320,7 +320,7 @@
 		      <signal name="activate" handler="on_export_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2159">
+			<widget class="GtkImage" id="image2286">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-save-as</property>
 			  <property name="icon_size">1</property>
@@ -356,7 +356,7 @@
 		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2160">
+			<widget class="GtkImage" id="image2287">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-forward</property>
 			  <property name="icon_size">1</property>
@@ -376,13 +376,25 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="toggle_unread_status1">
+		    <widget class="GtkImageMenuItem" id="toggle_unread_status1">
 		      <property name="visible">True</property>
 		      <property name="tooltip" translatable="yes">Toggles the read status of the selected item.</property>
 		      <property name="label" translatable="yes">Toggle _Read Status</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_toggle_unread_status" last_modification_time="Fri, 27 Aug 2004 22:44:08 GMT"/>
 		      <accelerator key="u" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+
+		      <child internal-child="image">
+			<widget class="GtkImage" id="image2288">
+			  <property name="visible">True</property>
+			  <property name="stock">gtk-apply</property>
+			  <property name="icon_size">1</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 
@@ -406,7 +418,7 @@
 		      <signal name="activate" handler="on_remove_item_activate" last_modification_time="Fri, 20 Aug 2004 20:07:45 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2161">
+			<widget class="GtkImage" id="image2289">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -428,7 +440,7 @@
 		      <signal name="activate" handler="on_remove_items_activate" last_modification_time="Sun, 21 Dec 2003 23:42:23 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2162">
+			<widget class="GtkImage" id="image2290">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -481,7 +493,7 @@
 		      <accelerator key="plus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2163">
+			<widget class="GtkImage" id="image2291">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-in</property>
 			  <property name="icon_size">1</property>
@@ -504,7 +516,7 @@
 		      <accelerator key="minus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2164">
+			<widget class="GtkImage" id="image2292">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-out</property>
 			  <property name="icon_size">1</property>
@@ -556,7 +568,7 @@
 		      <signal name="activate" handler="on_searchbtn_clicked" last_modification_time="Sat, 22 Nov 2003 21:55:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2165">
+			<widget class="GtkImage" id="image2293">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -578,7 +590,7 @@
 		      <signal name="activate" handler="on_search_with_feedster_activate" last_modification_time="Sat, 22 Nov 2003 21:57:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2166">
+			<widget class="GtkImage" id="image2294">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -717,7 +729,7 @@
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
-		      <property name="invisible_char" translatable="yes">*</property>
+		      <property name="invisible_char">*</property>
 		      <property name="activates_default">False</property>
 		      <signal name="activate" handler="on_searchentry_activate" last_modification_time="Wed, 03 Sep 2003 00:21:53 GMT"/>
 		    </widget>
@@ -1226,7 +1238,7 @@
 			      <property name="max_length">0</property>
 			      <property name="text" translatable="yes"></property>
 			      <property name="has_frame">True</property>
-			      <property name="invisible_char" translatable="yes">*</property>
+			      <property name="invisible_char">*</property>
 			      <property name="activates_default">True</property>
 			    </widget>
 			    <packing>
@@ -1588,7 +1600,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">True</property>
 			</widget>
 			<packing>
@@ -1909,7 +1921,7 @@
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
 				</widget>
 				<packing>
@@ -2295,7 +2307,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 			<packing>
@@ -2316,7 +2328,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 			<packing>
@@ -2551,7 +2563,7 @@
 			  <property name="max_length">0</property>
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char" translatable="yes">*</property>
+			  <property name="invisible_char">*</property>
 			  <property name="activates_default">False</property>
 			</widget>
 			<packing>
@@ -2872,7 +2884,7 @@
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">False</property>
 				</widget>
 				<packing>
@@ -3747,7 +3759,7 @@ of feeds!</property>
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">True</property>
 				  <signal name="changed" handler="on_timeformatentry_changed" last_modification_time="Wed, 07 Jan 2004 11:19:48 GMT"/>
 				</widget>
@@ -3947,7 +3959,7 @@ of feeds!</property>
 				  <property name="max_length">0</property>
 				  <property name="text" translatable="yes"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char" translatable="yes">*</property>
+				  <property name="invisible_char">*</property>
 				  <property name="activates_default">True</property>
 				  <signal name="changed" handler="on_browsercmd_changed" last_modification_time="Thu, 24 Jun 2004 05:34:16 GMT"/>
 				</widget>
@@ -4618,7 +4630,7 @@ of feeds!</property>
 						  <property name="max_length">0</property>
 						  <property name="text" translatable="yes"></property>
 						  <property name="has_frame">True</property>
-						  <property name="invisible_char" translatable="yes">*</property>
+						  <property name="invisible_char">*</property>
 						  <property name="activates_default">True</property>
 						  <signal name="changed" handler="on_proxyhostentry_changed" last_modification_time="Sat, 24 Jan 2004 15:34:34 GMT"/>
 						</widget>
@@ -4640,7 +4652,7 @@ of feeds!</property>
 						  <property name="max_length">0</property>
 						  <property name="text" translatable="yes"></property>
 						  <property name="has_frame">True</property>
-						  <property name="invisible_char" translatable="yes">*</property>
+						  <property name="invisible_char">*</property>
 						  <property name="activates_default">True</property>
 						  <signal name="changed" handler="on_proxyportentry_changed" last_modification_time="Sat, 24 Jan 2004 15:34:44 GMT"/>
 						</widget>
@@ -4774,7 +4786,7 @@ of feeds!</property>
 						      <property name="max_length">0</property>
 						      <property name="text" translatable="yes"></property>
 						      <property name="has_frame">True</property>
-						      <property name="invisible_char" translatable="yes">*</property>
+						      <property name="invisible_char">*</property>
 						      <property name="activates_default">True</property>
 						      <signal name="changed" handler="on_proxyusernameentry_changed" last_modification_time="Thu, 29 Jul 2004 02:07:53 GMT"/>
 						    </widget>
@@ -4796,7 +4808,7 @@ of feeds!</property>
 						      <property name="max_length">0</property>
 						      <property name="text" translatable="yes"></property>
 						      <property name="has_frame">True</property>
-						      <property name="invisible_char" translatable="yes">*</property>
+						      <property name="invisible_char">*</property>
 						      <property name="activates_default">True</property>
 						      <signal name="changed" handler="on_proxypasswordentry_changed" last_modification_time="Thu, 29 Jul 2004 02:08:14 GMT"/>
 						    </widget>
@@ -5040,7 +5052,7 @@ of feeds!</property>
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
@@ -5168,7 +5180,7 @@ of feeds!</property>
 	      <property name="max_length">0</property>
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
-	      <property name="invisible_char" translatable="yes">*</property>
+	      <property name="invisible_char">*</property>
 	      <property name="activates_default">True</property>
 	    </widget>
 	    <packing>
@@ -5296,7 +5308,7 @@ of feeds!</property>
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
@@ -5873,7 +5885,7 @@ Tibor Pittich &lt;Tibor.Pittich@mandrake.org&gt;
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
@@ -5894,7 +5906,7 @@ Tibor Pittich &lt;Tibor.Pittich@mandrake.org&gt;
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
@@ -6049,7 +6061,7 @@ Tibor Pittich &lt;Tibor.Pittich@mandrake.org&gt;
 		  <property name="max_length">0</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
-		  <property name="invisible_char" translatable="yes">*</property>
+		  <property name="invisible_char">*</property>
 		  <property name="activates_default">False</property>
 		</widget>
 		<packing>

@@ -60,7 +60,7 @@ void item_copy(itemPtr from, itemPtr to) {
 	to->time = from->time;
 	to->nr = from->nr;
 	
-	/* the following line enables state propagation in item.c */
+	/* the following line allows state propagation in item.c */
 	to->sourceFeed = from->fp;	
 	
 	/* this copies metadata */

@@ -86,7 +86,9 @@ feedPtr feed_new(void) {
 	fp->type = FST_FEED;
 	fp->cacheLimit = CACHE_DEFAULT;
 	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
-	
+	fp->sortColumn = IS_TIME;
+	fp->sortReversed = TRUE;
+		
 	return fp;
 }
 

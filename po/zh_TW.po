@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-05 04:19+0200\n"
+"POT-Creation-Date: 2004-10-09 15:11+0200\n"
 "PO-Revision-Date: 2004-05-21 02:32+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -181,33 +181,33 @@ msgstr "<p>\"%s\" 是無效的快取檔案! 無法讀入檔案!</p>"
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "分析快取檔案 \"%s\" 時出現錯誤!"
 
-#: src/feed.c:503
+#: src/feed.c:509
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr ""
 
-#: src/feed.c:508
+#: src/feed.c:514
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 
-#: src/feed.c:512
+#: src/feed.c:518
 #, fuzzy, c-format
 msgid "Updating \"%s\""
 msgstr "啟動: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:983 src/item.c:268 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:986 src/item.c:203 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 #, fuzzy
 msgid "Feed:"
 msgstr "饋流(_F)"
 
-#: src/feed.c:983 src/interface.c:519
+#: src/feed.c:986 src/interface.c:519
 #, fuzzy
 msgid "VFolder"
 msgstr "目錄(_O)"
 
-#: src/feed.c:994 src/interface.c:1071 src/interface.c:1473 src/item.c:317
+#: src/feed.c:997 src/interface.c:1071 src/interface.c:1473 src/item.c:252
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "來源:"
@@ -999,12 +999,12 @@ msgstr ""
 msgid "Rules"
 msgstr ""
 
-#: src/item.c:295 src/item.c:299 src/item.c:311 src/ui_itemlist.c:234
+#: src/item.c:230 src/item.c:234 src/item.c:246 src/ui_itemlist.c:197
 #, fuzzy
 msgid "[No title]"
 msgstr "饋流標題"
 
-#: src/item.c:301 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:236 src/metadata.c:322 src/ocs_dir.c:101
 #, fuzzy
 msgid "Item:"
 msgstr "項目(_I)"
@@ -1470,41 +1470,41 @@ msgstr "您必須選擇一饋流項目!"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea 在離線模式。無法更新！"
 
-#: src/ui_feedlist.c:466
+#: src/ui_feedlist.c:455
 #, fuzzy
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "註: 使用訂閱過濾將停用拖拉功能!"
 
-#: src/ui_feedlist.c:511 src/ui_feedlist.c:514
+#: src/ui_feedlist.c:500 src/ui_feedlist.c:503
 msgid "Deleting entry"
 msgstr "刪除項目中"
 
-#: src/ui_feedlist.c:512
+#: src/ui_feedlist.c:501
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "您確定要刪除 %s 及其內容嗎？"
 
-#: src/ui_feedlist.c:515
+#: src/ui_feedlist.c:504
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "您確定要刪除 %s 嗎 ？"
 
-#: src/ui_feedlist.c:523
+#: src/ui_feedlist.c:512
 #, fuzzy
 msgid "Deletion Confirmation"
 msgstr "刪除確認"
 
-#: src/ui_feedlist.c:559
+#: src/ui_feedlist.c:548
 #, fuzzy
 msgid "You must select a feed entry"
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:560
+#: src/ui_feedlist.c:549
 #, fuzzy
 msgid "You must select a feed entry."
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:606
+#: src/ui_feedlist.c:595
 #, fuzzy
 msgid "New subscription"
 msgstr "新增訂閱"
@@ -1624,30 +1624,30 @@ msgid ""
 "anymore but you can still access the cached headlines."
 msgstr ""
 
-#: src/ui_itemlist.c:321
+#: src/ui_itemlist.c:263
 msgid "Date"
 msgstr "日期"
 
-#: src/ui_itemlist.c:332
+#: src/ui_itemlist.c:274
 msgid "Headline"
 msgstr "標題"
 
-#: src/ui_itemlist.c:658 src/ui_itemlist.c:722
+#: src/ui_itemlist.c:479 src/ui_itemlist.c:526
 #, fuzzy
 msgid "No item has been selected"
 msgstr "未選擇項目!"
 
-#: src/ui_itemlist.c:705 src/ui_itemlist.c:725
+#: src/ui_itemlist.c:513 src/ui_itemlist.c:529
 #, fuzzy
 msgid "You must select a feed to delete its items!"
 msgstr "您必須先選擇一個饋流才能刪除!"
 
-#: src/ui_itemlist.c:758
+#: src/ui_itemlist.c:560
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "內部錯誤！ could not get feed tree view selection!\n"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:786
+#: src/ui_itemlist.c:588
 #, fuzzy
 msgid "There are no unread items "
 msgstr "沒有未讀項目!"

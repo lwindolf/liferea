@@ -39,7 +39,7 @@ extern GdkPixbuf	*icons[];
 
 static GHashTable 	*iterhash = NULL;	/* hash table used for fast item->tree iter lookup */
 
-gint		itemlist_loading;	/* freaky workaround for item list focussing problem */
+gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
 
 #define	TIMESTRLEN	256
 

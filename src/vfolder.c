@@ -86,9 +86,9 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	GSList		*iter;
 	itemPtr		tmp;
 	
-	/* need to check for vfolder item because the
-	   rule checking can be called on item copies and
-	   may trigger the adding */
+	/* need to check for vfolder items because the
+	   rule checking can be called on item copies of
+	   the same vfolder, */
 	if(FST_VFOLDER == feed_get_type(ip->fp))
 		return;
 
@@ -194,18 +194,19 @@ static gboolean vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
 	gboolean	added = FALSE;
 
 	/* check against all rules */
+	/* debug2(DEBUG_UPDATE, "applying rules of (%s) to item #%d", feed_get_title(vp), ip->nr); */
 	iter = vp->rules;
 	while(NULL != iter) {
 		rp = iter->data;
 		if(rp->additive) {
 			if(!added && rule_check_item(rp, ip)) {
-				debug2(DEBUG_UPDATE, "adding matching item (%d): %s\n", ip->nr, item_get_title(ip));
+				debug3(DEBUG_UPDATE, "adding matching item #%d (%s) to (%s)", ip->nr, item_get_title(ip), feed_get_title(vp));
 				vfolder_add_item(vp, ip);
 				added = TRUE;
 			}
 		} else {
 			if(added && rule_check_item(rp, ip)) {
-				debug2(DEBUG_UPDATE, "deleting matching item (%d): %s\n", ip->nr, item_get_title(ip));
+				debug3(DEBUG_UPDATE, "deleting matching item #%d (%s) to (%s)", ip->nr, item_get_title(ip), feed_get_title(vp));
 				vfolder_remove_matching_item_copy(vp, ip);
 				added = FALSE;
 			}
@@ -364,16 +365,10 @@ gboolean vfolder_check_item(itemPtr ip) {
 
 	debug_enter("vfolder_check_item");
 
-	/* distinguish between checking vfolder items
-	   and feed items ... */
-	if(FST_VFOLDER != feed_get_type(ip->fp)) {
-		iter = vfolders;
-		while(NULL != iter) {
-			added |= vfolder_apply_rules_for_item(iter->data, ip);
-			iter = g_slist_next(iter);
-		}
-	} else {
-		added = vfolder_apply_rules_for_item(ip->fp, ip);
+	iter = vfolders;
+	while(NULL != iter) {
+		added |= vfolder_apply_rules_for_item(iter->data, ip);
+		iter = g_slist_next(iter);
 	}
 	
 	debug_exit("vfolder_check_item");

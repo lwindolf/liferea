@@ -69,12 +69,24 @@ void itemlist_load(nodePtr node) {
 	gint		sortColumn;
 	GtkSortType	sortType;
 	gboolean	isFeed;
-	gboolean	merge = FALSE;
+	gboolean	merge = (node == displayed_node);
 
-	merge = (node == displayed_node);
+	/* postprocessing for previously selected node, this is necessary
+	   to realize reliable read marking when using condensed mode */
+	isFeed = ((displayed_node != NULL) && ((FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type)));
+	if(!merge && isFeed && (TRUE == feed_get_two_pane_mode((feedPtr)displayed_node)))
+		itemlist_mark_all_read(displayed_node);
+
 	displayed_node = node;
 
 	isFeed = ((node != NULL) && ((FST_FEED == node->type) || (FST_VFOLDER == node->type)));
+	if(!isFeed) {
+		/* for now we do nothing for folders... (might be changed in future) */
+		ui_itemlist_clear();
+		displayed_node = NULL;
+		displayed_item = NULL;
+		return;
+	}
 
 	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
 	gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sortColumn, &sortType);
@@ -109,13 +121,6 @@ void itemlist_load(nodePtr node) {
 		ui_itemlist_prefocus();
 }
 
-void itemlist_load_empty(void) {
-
-	ui_itemlist_clear();
-	displayed_node = NULL;
-	displayed_item = NULL;
-}
-
 /* updating methods */
 void itemlist_update() {
 	GSList	*iter;
@@ -137,6 +142,8 @@ void itemlist_update_vfolder(nodePtr vp) {
 
 	if(displayed_node == vp)
 		itemlist_load(vp);
+	else
+		ui_feed_update(vp);
 }
 
 void itemlist_reset_date_format(void) {
@@ -151,14 +158,15 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	
 	if(newStatus != item_get_flag(ip)) {
 		item_set_flag(ip, newStatus);
-		ui_itemlist_update_item(ip);		
+		if(displayed_node == (nodePtr)ip->fp)
+			ui_itemlist_update_item(ip);		
 		
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
 			/* propagate change to source feed */
 			feed_load(ip->sourceFeed);
 			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-				item_set_flag(sourceItem, newStatus);
+				itemlist_set_flag(sourceItem, newStatus);
 			feed_unload(ip->sourceFeed);
 			
 			/* check if the new state changed the rule matching results */
@@ -182,24 +190,31 @@ void itemlist_toggle_flag(itemPtr ip) {
 
 void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 	itemPtr		sourceItem;
-
+g_print("set_read()\n");
 	if(newStatus != item_get_read_status(ip)) {
+g_print("setting read status in item struct: %s\n", newStatus?"TRUE":"FALSE");
 		item_set_read_status(ip, newStatus);
-		ui_itemlist_update_item(ip);
+		if(displayed_node == (nodePtr)ip->fp)
+			ui_itemlist_update_item(ip);
 				
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
+g_print("is a vfolder item -> process source item!\n");
 			/* propagate change to source feed */
 			feed_load(ip->sourceFeed);
 			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-				item_set_read_status(sourceItem, newStatus);
+				itemlist_set_read_status(sourceItem, newStatus);
 			feed_unload(ip->sourceFeed);
 			
 			/* check if the new state changed the rule matching results */
 			if(FALSE == vfolder_check_item(ip))
+{ g_print("new read state forces removing of this item...\n");
 				itemlist_remove_item(ip);
+}
 		} else {
+g_print("is a feed item -> update vfolder copies\n");
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
+g_print("is a feed item -> check for matching vfolder rules\n");
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
 		ui_feedlist_update();
@@ -207,6 +222,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 		if(TRUE == newStatus)
 			ui_tray_zero_new();		/* reset tray icon */
 	}
+g_print("set_read() end\n");
 }
 
 void itemlist_toggle_read_status(itemPtr ip) {
@@ -222,14 +238,15 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 	
 	if(newStatus != item_get_update_status(ip)) {
 		item_set_update_status(ip, newStatus);
-		ui_itemlist_update_item(ip);
+		if(displayed_node == (nodePtr)ip->fp)
+			ui_itemlist_update_item(ip);
 		
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
 			/* propagate change to source feed */
 			feed_load(ip->sourceFeed);
 			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-				item_set_update_status(sourceItem, newStatus);
+				itemlist_set_update_status(sourceItem, newStatus);
 			feed_unload(ip->sourceFeed);
 			
 			/* check if the new state changed the rule matching results */

@@ -31,6 +31,8 @@
 	  or selection anymore. (Lars Lindner)
 	* Applied HIG rule for "..." in menu labels.
 	  (Lars Lindner)
+	* Changed "New Subscription" menu icon to "+" sign
+	  like it is in the toolbar. (Bram Senders)
 	
 	Bugfixes:
 

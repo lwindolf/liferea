@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-05 04:19+0200\n"
+"POT-Creation-Date: 2004-10-09 15:11+0200\n"
 "PO-Revision-Date: 2004-09-08 11:13+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -193,31 +193,31 @@ msgstr "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "There were errors while parsing cache file \"%s\"!"
 
-#: src/feed.c:503
+#: src/feed.c:509
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Вестите \"%s\" веќе се ажурираат!"
 
-#: src/feed.c:508
+#: src/feed.c:514
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "Овие вести се нема повеќе да се ажуриаат!"
 
-#: src/feed.c:512
+#: src/feed.c:518
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Ажурирам \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:983 src/item.c:268 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:986 src/item.c:203 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "Вест:"
 
-#: src/feed.c:983 src/interface.c:519
+#: src/feed.c:986 src/interface.c:519
 msgid "VFolder"
 msgstr "В-папка"
 
-#: src/feed.c:994 src/interface.c:1071 src/interface.c:1473 src/item.c:317
+#: src/feed.c:997 src/interface.c:1071 src/interface.c:1473 src/item.c:252
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Извор:"
@@ -1016,11 +1016,11 @@ msgstr ""
 msgid "Rules"
 msgstr "Правила"
 
-#: src/item.c:295 src/item.c:299 src/item.c:311 src/ui_itemlist.c:234
+#: src/item.c:230 src/item.c:234 src/item.c:246 src/ui_itemlist.c:197
 msgid "[No title]"
 msgstr "[Без наслов]"
 
-#: src/item.c:301 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:236 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "Предмети:"
 
@@ -1481,38 +1481,38 @@ msgstr "Мора да одзберете вест!"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea е во офлајн режим. Нема можност за ажурирање."
 
-#: src/ui_feedlist.c:466
+#: src/ui_feedlist.c:455
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Забелешка: Користењето на филтерот ја оневозможува можноста „влечи и пушти“"
 
-#: src/ui_feedlist.c:511 src/ui_feedlist.c:514
+#: src/ui_feedlist.c:500 src/ui_feedlist.c:503
 msgid "Deleting entry"
 msgstr "Бришење на вестите"
 
-#: src/ui_feedlist.c:512
+#: src/ui_feedlist.c:501
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Дали сте сигурни дека сакате да избришете \"%s\" и целата содржина?"
 
-#: src/ui_feedlist.c:515
+#: src/ui_feedlist.c:504
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Дали сте сигурни дека саката да избришете \"%s\"?"
 
-#: src/ui_feedlist.c:523
+#: src/ui_feedlist.c:512
 msgid "Deletion Confirmation"
 msgstr "Потврда за бришење"
 
-#: src/ui_feedlist.c:559
+#: src/ui_feedlist.c:548
 msgid "You must select a feed entry"
 msgstr "Мора да одзберете вест!"
 
-#: src/ui_feedlist.c:560
+#: src/ui_feedlist.c:549
 msgid "You must select a feed entry."
 msgstr "Мора да одберете вест!"
 
-#: src/ui_feedlist.c:606
+#: src/ui_feedlist.c:595
 msgid "New subscription"
 msgstr "Нова претплата"
 
@@ -1638,28 +1638,28 @@ msgstr ""
 "Овие вести веќе нема да се ажурираат, но се уште можете да ги гледате "
 "кешираните наслови."
 
-#: src/ui_itemlist.c:321
+#: src/ui_itemlist.c:263
 msgid "Date"
 msgstr "Датум"
 
-#: src/ui_itemlist.c:332
+#: src/ui_itemlist.c:274
 msgid "Headline"
 msgstr "Наслов"
 
-#: src/ui_itemlist.c:658 src/ui_itemlist.c:722
+#: src/ui_itemlist.c:479 src/ui_itemlist.c:526
 msgid "No item has been selected"
 msgstr "Нема означени ставки!"
 
-#: src/ui_itemlist.c:705 src/ui_itemlist.c:725
+#: src/ui_itemlist.c:513 src/ui_itemlist.c:529
 msgid "You must select a feed to delete its items!"
 msgstr "Мора да одбереш вест за бришење на ставките!"
 
-#: src/ui_itemlist.c:758
+#: src/ui_itemlist.c:560
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "интерна грешка! could not get feed tree view selection!\n"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:786
+#: src/ui_itemlist.c:588
 msgid "There are no unread items "
 msgstr "Сите вести се прочитани!"
 

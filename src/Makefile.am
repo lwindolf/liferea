@@ -38,7 +38,6 @@ liferea_bin_SOURCES = \
 	export.c export.h \
 	favicon.c favicon.h \
 	feed.c feed.h \
-	feedlist.c feedlist.h \
 	folder.c folder.h \
 	guitreemodelfilter.c guitreemodelfilter.h \
 	html.c html.h \

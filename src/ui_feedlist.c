@@ -178,13 +178,10 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
 			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-			
-			/* Set up the item list */
-			itemlist_load(np);
-				
-		} else { /* Selecting a folder */
-			itemlist_load_empty();
 		}
+		
+		/* Set up the item list */
+		itemlist_load(np);
 	} else {
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
@@ -341,7 +338,9 @@ void ui_feedlist_select(nodePtr np) {
 		} else {
 			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &((ui_data*)(np->ui_data))->row);
 		}
-		gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
+	
+		if(FST_FOLDER != np->type)
+			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
 		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
 		gtk_tree_selection_select_path(selection, path);
 		gtk_tree_path_free(path);
