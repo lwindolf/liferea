@@ -44,7 +44,6 @@ GHashTable	*ns_pie_ns_uri_table = NULL;
 							"issued", <-- Not in the specs for feeds
 							"created",  <---- Not in the specs for feeds
 */
-
 gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	gchar	*mode, *type, *tmp, *ret;
 
@@ -53,6 +52,8 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	
 	/* determine encoding mode */
 	mode = utf8_fix(xmlGetProp(cur, BAD_CAST"mode"));
+	type = utf8_fix(xmlGetProp(cur, BAD_CAST"type"));
+	
 	if(NULL != mode) {
 		if(!strcmp(mode, "escaped")) {
 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
@@ -73,7 +74,6 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	} else {
 		/* some feeds don'ts specify a mode but a MIME 
 		   type in the type attribute... */
-		type = utf8_fix(xmlGetProp(cur, BAD_CAST"type"));
 		/* not sure what MIME types are necessary... */
 		if((NULL == type) ||
 		   !strcmp(type, "text/html") ||
@@ -81,8 +81,17 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 		   !strcmp(type, "application/xhtml+xml")) {
 			ret = extractHTMLNode(cur, TRUE);
 		}
-		g_free(type);
 	}
+	/* If the type was text, everything must be now escaped and
+	   wrapped in pre tags.... Also, the atom 0.3 spec says that the
+	   default type MUST be considered to be text/plain. The type tag
+	   is required in 0.2.... */
+	if (ret != NULL && (type == NULL || !strcmp(type, "text/plain"))) {
+		gchar *tmp = g_markup_printf_escaped ("<pre>%s</pre>", ret);
+		g_free(ret);
+		ret = tmp;
+	}
+	g_free(type);
 	
 	return ret;
 }
