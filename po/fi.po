@@ -1517,10 +1517,12 @@ msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 msgstr ""
+"<br>Voit tarkistaa syötteen oikeellisuuden <a href=\"http://feedvalidator."
+"org/check.cgi?url="
 
 #: src/ui_feed.c:129
 msgid "\">FeedValidator</a>."
-msgstr ""
+msgstr "\">FeedValidator</a>-palvelun avulla."
 
 #: src/ui_feed.c:136
 msgid ""
@@ -1987,6 +1989,14 @@ msgstr "/_Näytä ikkuna"
 msgid "/_Quit"
 msgstr "/_Lopeta"
 
+#: src/ui_popup.c:162
+msgid "/Open Enclosure..."
+msgstr "/Avaa liitetiedosto..."
+
+#: src/ui_popup.c:163
+msgid "/Save As..."
+msgstr "/Tallenna nimellä..."
+
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:191
 msgid "Manual"
@@ -2020,7 +2030,19 @@ msgstr "Päivitä kaikki syötteet"
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Nollaa päivitysajastimet, älä päivitä"
 
-#: src/ui_search.c:69
+#: src/ui_prefs.c:508
+msgid "Type"
+msgstr "Tyyppi"
+
+#: src/ui_prefs.c:511
+msgid "Program"
+msgstr "Ohjelma"
+
+#: src/ui_prefs.c:762
+msgid "Choose download directory"
+msgstr "Valitse tallennuskansio"
+
+#: src/ui_search.c:73
 #, c-format
 msgid "Searching for \"%s\""
 msgstr "Etsi tekstiä \"%s\""
@@ -2066,6 +2088,9 @@ msgid ""
 msgstr ""
 "Sisällytetty \"<object>\" HTML-tagi ei ole tuettu GtkHTML2:ssa.\n"
 "Sisällytetyt liitännäiset eivät välttämättä näy."
+
+#~ msgid "_Mark As Read"
+#~ msgstr "_Merkitse luetuksi"
 
 #~ msgid "Invalid RFC822 date format! Ignoring date information!\n"
 #~ msgstr "Virheellinen RFC822-aikamuoto: aikatiedot jäävät huomiotta.\n"
