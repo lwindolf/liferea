@@ -107,6 +107,14 @@ gchar * encode_uri_string(gchar *string);
  */
 gchar * encode_uri(gchar *uri_string);
 
+/**
+ * Takes an URL and returns a new string containing
+ * the escaped URL.
+ *
+ * @param url		the URL to escape
+ */
+xmlChar * common_uri_escape(const xmlChar *url);
+
 /** 
  * To correctly escape and expand URLs, does not touch the
  * passed strings.

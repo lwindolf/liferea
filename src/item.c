@@ -276,7 +276,7 @@ gchar *item_render(itemPtr ip) {
 	}
 
 	/* add technorati link */
-	tmp3 = xmlURIEscape(item_get_source(ip));
+	tmp3 = common_uri_escape(item_get_source(ip));
 	tmp2 = g_strdup("file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "technorati.png");
 	tmp = g_strdup_printf(TECHNORATI_LINK, tmp3, tmp2);
 	addToHTMLBufferFast(&buffer, tmp);
