@@ -371,6 +371,10 @@ void ui_feedlist_select(nodePtr np) {
  	} else {
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 		gtk_tree_selection_unselect_all(selection);
+		/* The code to clear the itemlist when something is
+		   unselected is disabled... so we must clear the itemlist
+		   explicitly here*/
+		itemlist_load(NULL);
 	}
 	
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
