@@ -1625,11 +1625,11 @@ create_prefdialog (void)
   GtkWidget *hbox84;
   GtkWidget *label192;
   GtkWidget *vbox2603;
-  GtkWidget *label64;
   GtkWidget *hbox28;
   GtkWidget *label65;
   GtkWidget *htmlviewoptionmenu;
   GtkWidget *menu3;
+  GtkWidget *label224;
   GtkWidget *browseinwindow;
   GtkWidget *disablejavascript;
   GtkWidget *vbox248;
@@ -1877,14 +1877,14 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox60), vbox2580, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2580), 5);
 
-  feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("_Load feeds from disk when needed. Searching can \nbe slow if you have a lot of feeds."));
+  feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Optimize for _memory usage."));
   gtk_widget_show (feedsinmemorybtn1);
   gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn1, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn1), feedsinmemorybtn1_group);
   feedsinmemorybtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feedsinmemorybtn1));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (feedsinmemorybtn1), TRUE);
 
-  feedsinmemorybtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("_Keep all feeds loaded. This may improve speed \n(especially when searching) but can cause a \nsignificant memory footprint if you have a lot \nof feeds!"));
+  feedsinmemorybtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("Optimize for _speed."));
   gtk_widget_show (feedsinmemorybtn2);
   gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn2, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn2), feedsinmemorybtn1_group);
@@ -2107,15 +2107,9 @@ create_prefdialog (void)
   gtk_widget_show (vbox2603);
   gtk_box_pack_start (GTK_BOX (hbox84), vbox2603, TRUE, TRUE, 0);
 
-  label64 = gtk_label_new (_("Liferea displays feeds' content using various HTML renderers. Depending on which renderers are installed on your computer, different options will be available. Restart Liferea for changes to take effect."));
-  gtk_widget_show (label64);
-  gtk_box_pack_start (GTK_BOX (vbox2603), label64, FALSE, FALSE, 0);
-  gtk_label_set_line_wrap (GTK_LABEL (label64), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label64), 0, 0.5);
-
   hbox28 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox28);
-  gtk_box_pack_start (GTK_BOX (vbox2603), hbox28, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2603), hbox28, FALSE, FALSE, 0);
 
   label65 = gtk_label_new (_("View Headlines With"));
   gtk_widget_show (label65);
@@ -2128,6 +2122,12 @@ create_prefdialog (void)
   menu3 = gtk_menu_new ();
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (htmlviewoptionmenu), menu3);
+
+  label224 = gtk_label_new (_("<i>Please restart Liferea for changes to take effect.</i>"));
+  gtk_widget_show (label224);
+  gtk_box_pack_start (GTK_BOX (vbox2603), label224, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label224), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label224), 0, 0.5);
 
   browseinwindow = gtk_check_button_new_with_mnemonic (_("Open links in Liferea's _window."));
   gtk_widget_show (browseinwindow);
@@ -2241,7 +2241,7 @@ create_prefdialog (void)
   gtk_widget_show (vbox22);
   gtk_box_pack_start (GTK_BOX (hbox51), vbox22, TRUE, TRUE, 0);
 
-  trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status _icon in the notification area \n(also called system tray)."));
+  trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status _icon in the notification area (system tray)."));
   gtk_widget_show (trayiconoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox22), trayiconoptionbtn, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (trayiconoptionbtn), 4);
@@ -2399,9 +2399,10 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox54), vbox228, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox228), 5);
 
-  label52 = gtk_label_new (_("Liferea reuses the GNOME proxy settings. If you use GNOME you can change these settings in the GNOME Control Center. Note: changing these settings will affect other applications! This dialog is primarily for users without GNOME to be able to use Liferea with a proxy."));
+  label52 = gtk_label_new (_("<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change these settings in the GNOME Control Center.</i>"));
   gtk_widget_show (label52);
   gtk_box_pack_start (GTK_BOX (vbox228), label52, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label52), TRUE);
   gtk_label_set_line_wrap (GTK_LABEL (label52), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label52), 0, 0.5);
 
@@ -2828,11 +2829,11 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox84, "hbox84");
   GLADE_HOOKUP_OBJECT (prefdialog, label192, "label192");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2603, "vbox2603");
-  GLADE_HOOKUP_OBJECT (prefdialog, label64, "label64");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox28, "hbox28");
   GLADE_HOOKUP_OBJECT (prefdialog, label65, "label65");
   GLADE_HOOKUP_OBJECT (prefdialog, htmlviewoptionmenu, "htmlviewoptionmenu");
   GLADE_HOOKUP_OBJECT (prefdialog, menu3, "menu3");
+  GLADE_HOOKUP_OBJECT (prefdialog, label224, "label224");
   GLADE_HOOKUP_OBJECT (prefdialog, browseinwindow, "browseinwindow");
   GLADE_HOOKUP_OBJECT (prefdialog, disablejavascript, "disablejavascript");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox248, "vbox248");
