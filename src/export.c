@@ -113,7 +113,7 @@ static int parse_integer(gchar *str, int def) {
 
 static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 	gchar		*title, *source, *typeStr, *intervalStr;
-	feedPtr		fp;
+	feedPtr		fp = NULL;
 	gint		type, interval;
 	gchar		*id;
 	
@@ -140,11 +140,14 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 
 		id = xmlGetProp(cur, BAD_CAST"id");
 		
-		fp = feed_new();
-		feed_set_id(fp, g_strdup(id));
+		fp = feed_load_from_cache(type, id);
+		if (fp == NULL)
+			fp = feed_new();
+
+		feed_set_id(fp, id);
 		feed_set_type(fp, type);
-		feed_set_source(fp, g_strdup(source));
-		feed_set_title(fp, g_strdup(title));
+		feed_set_source(fp, source);
+		feed_set_title(fp, title);
 		feed_set_update_interval(fp, interval);
 		ui_folder_add_feed(folder, fp, -1);
 

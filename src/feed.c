@@ -244,7 +244,7 @@ void feed_save(feedPtr fp) {
 }
 
 /* function which is called to load a feed's cache file */
-static feedPtr loadFeed(gint type, gchar *id) {
+feedPtr feed_load_from_cache(gint type, gchar *id) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gchar		*filename, *tmp, *data = NULL;
@@ -254,7 +254,7 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	if(NULL == id)
 		return NULL;
 	
-	filename = getCacheFileName(id, NULL);
+	filename = getCacheFileName(id, getExtension(type));
 	
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		g_message("Error while reading cache file");

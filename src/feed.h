@@ -129,20 +129,19 @@ void feed_init(void);
 feedPtr feed_new(void);
 
 /**
- * Creates a feed object with the given parameters and adds it to the
- * feedlist in the proper position.
+ * Loads a feed from a cache file.
  *
- * @param type type of feed. Use FST_AUTODETECT for auto-detection.
- * @param url source of the feed.
- * @param parent parent folder of the feed, or NULL for the root.
- * @param feedName name of the feed, or NULL when used with feed auto-detection.
- * @param id the id of the feed. If set to NULL, the feed will be auto-updated upon creation.
- * @param showPropDialog If TRUE, a propdialog will be shown once the feed downloads.
+ * @param type the type of feed being loaded. This effects the
+ * extension of the cache file.
  *
- * @returns the new feed
+ * @param id the name of the cache file used. Some types of feed have
+ * an extension, such as ocs, that is appended to the id, to generate
+ * the cache filename.
+ *
+ * @returns a newly allocated feed, or NULL if the cahe file was not
+ * located.
  */
-feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, gchar *id, gint interval, gboolean showPropDialog);
-
+feedPtr feed_load_from_cache(gint type, gchar *id);
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
 void feed_update(feedPtr fp);
