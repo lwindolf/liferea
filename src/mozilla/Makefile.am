@@ -15,5 +15,6 @@ lib_LTLIBRARIES = $(MOZILLA)
 liblihtmlm_la_SOURCES = \
 	mozembed.c \
 	mozilla.cpp mozilla.h
-	
+
 liblihtmlm_la_LIBADD = @PACKAGE_LIBS@ @MOZILLA_LIBS@ $(INTLLIBS)
+liblihtmlm_la_LDFLAGS = -avoid-version -module

@@ -14,3 +14,4 @@ lib_LTLIBRARIES = $(GTKHTML2)
 
 liblihtmlg_la_SOURCES = gtkhtml2.c
 liblihtmlg_la_LIBADD = @PACKAGE_LIBS@ @GTKHTML2_LIBS@ $(INTLLIBS)
+liblihtmlg_la_LDFLAGS = -avoid-version -module

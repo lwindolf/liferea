@@ -13,3 +13,4 @@ lib_LTLIBRARIES = $(GTKHTML3)
 
 liblihtmlh_la_SOURCES = gtkhtml3.c
 liblihtmlh_la_LIBADD = @PACKAGE_LIBS@ @GTKHTML3_LIBS@ $(INTLLIBS)
+liblihtmlh_la_LDFLAGS = -avoid-version -module

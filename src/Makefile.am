@@ -20,7 +20,6 @@ INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	@PACKAGE_CFLAGS@
 
-
 ##lib_LTLIBRARIES = liblihtmlt.la
 
 ##liblihtmlt_la_SOURCES = textview.c
