@@ -152,13 +152,13 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 	}	
 }
 
-void ui_feedlist_update_(GtkTreeIter *iter) {
+static void ui_feedlist_update_(GtkTreeIter *iter) {
 	GtkTreeModel *tree_model = GTK_TREE_MODEL(feedstore);
 	GtkTreeIter childiter;
 	gboolean valid;
 	nodePtr ptr = NULL;
 	
-	if (iter != NULL) {
+	if(iter != NULL) {
 		gtk_tree_model_get(tree_model, iter,
 					    FS_PTR, &ptr,
 					    -1);
@@ -182,8 +182,12 @@ void ui_feedlist_update_(GtkTreeIter *iter) {
 		else
 			ui_feed_update((feedPtr)ptr);
 	}
-	
-	/* FIXME: bad performance...*/
+}
+
+void ui_feedlist_update_iter(GtkTreeIter *iter) {
+
+	ui_feedlist_update_(iter);
+g_print("hhh\n");
 	gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
 	ui_redraw_widget("feedlist");
 }

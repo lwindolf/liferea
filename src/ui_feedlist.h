@@ -42,12 +42,18 @@ extern GtkTreeStore	*feedstore;
 
 /* Add/remove/update nodes */
 
-void ui_feedlist_update_(GtkTreeIter *iter);
+/**
+ * Updates all childrens of the given GtkTreeIter
+ *
+ * @param iter	a folder of the feed list
+ */
+void ui_feedlist_update_iter(GtkTreeIter *iter);
+
 /**
  * Update the labels of all of the nodes of the feedlist, and update
  * their GtkTreeIter pointers.
  */
-#define ui_feedlist_update() (ui_feedlist_update_(NULL))
+#define ui_feedlist_update() (ui_feedlist_update_iter(NULL))
 
 void ui_feed_update(feedPtr fp); 
 
