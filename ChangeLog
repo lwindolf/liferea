@@ -26,6 +26,9 @@
 	  computer administrators. (Nathan Conrad)
 	* Notification popups now show the favicon of the feeds for
 	  easier recognizing. (Lars Linder)
+	* Session manager support. This makes the lock file removed when
+	  a user logs out without first cloning Liferea. (Lots of code from
+	  gaim, but integrated into Liferea by Nathan Conrad)
 	  
 	Bugfixes:
 
