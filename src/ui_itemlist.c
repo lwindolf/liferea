@@ -514,10 +514,6 @@ void ui_itemlist_load(nodePtr node) {
 	
 	ui_itemlist_display();
 	ui_itemlist_prefocus();
-	
-	/* two pane mode post processing */
-	if((TRUE == isFeed) && (TRUE == ui_itemlist_get_two_pane_mode()))
-		feed_mark_all_items_read((feedPtr)node);
 }
 
 static itemPtr ui_itemlist_get_selected() {
