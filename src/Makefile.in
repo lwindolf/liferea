@@ -166,6 +166,7 @@ liferea_SOURCES = \
 	ns_cC.c ns_cC.h \
 	conf.c conf.h \
 	vfolder.c vfolder.h \
+	os-support.c os-support.h \
 	netio.c netio.h
 
 
@@ -186,7 +187,8 @@ am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) \
 	ns_slash.$(OBJEXT) ns_content.$(OBJEXT) ns_syn.$(OBJEXT) \
 	ns_admin.$(OBJEXT) ns_blogChannel.$(OBJEXT) ns_cC.$(OBJEXT) \
-	conf.$(OBJEXT) vfolder.$(OBJEXT) netio.$(OBJEXT)
+	conf.$(OBJEXT) vfolder.$(OBJEXT) os-support.$(OBJEXT) \
+	netio.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -206,10 +208,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/ns_fm.Po ./$(DEPDIR)/ns_ocs.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ns_slash.Po ./$(DEPDIR)/ns_syn.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/opml.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/pie_entry.Po ./$(DEPDIR)/pie_feed.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/rss_channel.Po ./$(DEPDIR)/rss_item.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/support.Po ./$(DEPDIR)/update.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/vfolder.Po
+@AMDEP_TRUE@	./$(DEPDIR)/os-support.Po ./$(DEPDIR)/pie_entry.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/pie_feed.Po ./$(DEPDIR)/rss_channel.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/rss_item.Po ./$(DEPDIR)/support.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/update.Po ./$(DEPDIR)/vfolder.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -284,6 +286,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_syn.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ocs_dir.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opml.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/os-support.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pie_entry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pie_feed.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rss_channel.Po@am__quote@

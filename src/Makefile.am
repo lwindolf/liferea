@@ -40,6 +40,7 @@ liferea_SOURCES = \
 	ns_cC.c ns_cC.h \
 	conf.c conf.h \
 	vfolder.c vfolder.h \
+	os-support.c os-support.h \
 	netio.c netio.h
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
