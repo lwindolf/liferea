@@ -853,7 +853,6 @@ void feed_free(feedPtr fp) {
 	
 	if (fp->parent) {
 		folderPtr folder = fp->parent;
-		fp->parent->children = g_slist_remove(fp->parent->children, fp);
 		ui_update_folder(folder);
 	}
 	g_free(fp->title);
@@ -866,7 +865,6 @@ void feed_free(feedPtr fp) {
 
 void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 	gboolean ui=FALSE;
-	GSList *oldNode = g_slist_find(fp->parent->children,fp), *siter;
 	g_assert(NULL != dest_folder);
 	g_assert(NULL != fp);
 	g_assert(NULL != fp->parent);
@@ -876,22 +874,6 @@ void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 		ui_folder_remove_feed(fp);
 	}
 
-	siter = fp->parent->children;
-	
-	
-	g_assert(oldNode);
-	
-	if (dest_folder == fp->parent) {
-		/* move item in slist */
-		dest_folder->children = g_slist_insert(fp->parent->children, fp, position);
-		fp->parent->children = g_slist_remove_link(fp->parent->children, oldNode);
-	} else {
-		/* remove feed from old slist */
-		fp->parent->children = g_slist_remove_link(fp->parent->children, oldNode);
-		/* add feed to new slist */
-		dest_folder->children = g_slist_insert(dest_folder->children, fp, position);
-	}
-	
 	fp->parent = dest_folder;
 	/* move key in configuration */
 	

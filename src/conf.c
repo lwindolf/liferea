@@ -175,9 +175,9 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		expanded = !getBooleanConfValue(path2);
 		g_free(path2);
 		
-		folder = restore_folder(parent, -1, name, id, FST_FOLDER);
+		folder = restore_folder(parent, name, id, FST_FOLDER);
 		
-		ui_add_folder(folder);
+		ui_add_folder(folder, -1);
 		load_folder_contents(folder, id);
 		if (expanded)
 			ui_folder_set_expansion(folder, TRUE);
@@ -265,8 +265,8 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 	static folderPtr helpFolder = NULL;
 
 	if (helpFolder == NULL) {
-		helpFolder = restore_folder(parent, -1, _("Liferea Help"), "helpFolder", FST_HELPFOLDER);
-		ui_add_folder(helpFolder);
+		helpFolder = restore_folder(parent, _("Liferea Help"), "helpFolder", FST_HELPFOLDER);
+		ui_add_folder(helpFolder, -1);
 		feed_add(FST_HELPFEED, HELP1URL, helpFolder, _("Online Help Feed"), "helpfeed1", 1440, FALSE) ;
 		feed_add(FST_HELPFEED, HELP2URL, helpFolder, _("Liferea SF News"), "helpfeed2", 1440, FALSE) ;
 	}

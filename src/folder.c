@@ -48,7 +48,7 @@ folderPtr folder_get_root() {
 }
 
 /* Used to add a folder without adding it to the config */
-folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *id, gint type) {
+folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type) {
 	folderPtr folder;
 
 	g_assert(IS_FOLDER(type));
@@ -56,7 +56,6 @@ folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *i
 	folder = g_new0(struct folder, 1);
 	folder->type = type;
 	folder->parent = parent;
-	folder->parent->children = g_slist_insert(folder->parent->children, folder, position);
 	folder->title = g_strdup(title);
 	if (id == NULL)
 		folder->id = conf_new_id();
@@ -96,14 +95,12 @@ void setFolderTitle(folderPtr folder, gchar *title) {
 }
 
 void folder_add_feed(folderPtr folder, feedPtr feed, gint position) {
-	folder->children = g_slist_insert(folder->children, feed, position);
 	conf_feedlist_schedule_save();
 }
 
 void folder_remove(folderPtr folder) {
 	if (folder->ui_data)
 		ui_remove_folder(folder);
-	folder->parent->children = g_slist_remove(folder->parent->children, folder);
 	if (folder->title)
 		g_free(folder->title);
 	if (folder->id)
@@ -122,35 +119,36 @@ void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
 	folderPtr newFolder;
 	gboolean expanded=FALSE;
 	nodePtr ptr;
-	GSList *iter;
-
+	GtkTreeIter iter;
+	
 	g_assert(NULL != folder);
 	g_assert(NULL != dest_folder);
 	g_assert(folder->ui_data);
 	g_assert(dest_folder == folder_get_root() || dest_folder->ui_data);
 
-	verify_iter((nodePtr)folder);
 	expanded = ui_is_folder_expanded(folder);
 
 	// Make new folder
-	newFolder = restore_folder(dest_folder, position, folder->title, folder->id, folder->type);
-	// FIXME: Save feedlist here
-	ui_add_folder(newFolder);
-	g_message("folder_set_pos");
-	verify_iter((nodePtr)newFolder);
+	newFolder = restore_folder(dest_folder, folder->title, folder->id, folder->type);
+
+	ui_add_folder(newFolder, position);
+
 	// Recursivly move children
-	while ((iter = folder->children)) {
-		ptr = (nodePtr)(iter->data);
-		if (IS_FOLDER(ptr->type)) {
-			g_message("5");
-			folder_set_pos((folderPtr)ptr, newFolder, -1);
-		} else if (FEED_MENU(ptr->type)) {
-			g_message("4");
-			feed_set_pos((feedPtr)ptr, newFolder, -1);
-		} else {
-			g_warning("An unknown type=%d is trying to be moved inside a folder!", ptr->type);
-			folder->children = g_slist_delete_link(folder->children, folder->children);
-		}
+	while (gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, &((ui_data*)(folder->ui_data))->row)) {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
+					    FS_PTR, &ptr,
+					    -1);
+		if (ptr) {
+			if (IS_FOLDER(ptr->type)) {
+				folder_set_pos((folderPtr)ptr, newFolder, -1);
+			} else if (FEED_MENU(ptr->type)) {
+				feed_set_pos((feedPtr)ptr, newFolder, -1);
+			} else {
+				g_warning("An unknown type=%d is trying to be moved with a folder! It is now deleted.", ptr->type);
+				gtk_tree_store_remove(feedstore, &iter); 
+			}
+		} else /* EMPTY */
+			gtk_tree_store_remove(feedstore, &iter); 
 	}
 	if (expanded)
 		ui_folder_set_expansion(newFolder, TRUE);

@@ -31,7 +31,6 @@ typedef struct folder {
 	struct folder *parent;
 	gchar *title;
 	gchar *id; /* The gconf key name of the directory, for example "dir5" */
-	GSList *children; /* These can be nodePtrs */
 } *folderPtr;
 
 struct feed;
@@ -47,7 +46,7 @@ void folder_add_feed(folderPtr foldr, struct feed *feed, gint position);
 void folder_remove(folderPtr folder);
 
 /* to create/delete folders */
-folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *id, gint type);
+folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type);
 void removeFolder(folderPtr folder);
 
 /* to read/change folder properties */

@@ -510,50 +510,6 @@ void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
 	gtk_widget_show(filedialog);
 }
 
-void verify_iter(nodePtr node) {
-	GtkTreeIter	*iter = NULL;
-	GtkTreeModel	*model;
-	nodePtr		ptr;
-	GSList		*children;
-
-	model = GTK_TREE_MODEL(feedstore);
-	g_assert(NULL != model);
-
-	if (node != (nodePtr)folder_get_root()) {
-		iter = &((ui_data*)node->ui_data)->row;
-		gtk_tree_model_get(model, iter,
-					    FS_PTR, &ptr,
-					    -1);
-		g_assert(ptr==node);
-	}
-	if (IS_FOLDER(ptr->type)) {
-		GtkTreeIter child;
-		nodePtr ptr2;
-		gint rc;
-		rc = gtk_tree_model_iter_children(model, &child, iter);
-		if (rc) {
-			g_assert(gtk_tree_store_iter_is_valid(feedstore, &child));
-			gtk_tree_model_get(model, &child,
-						    FS_PTR, &ptr2,
-						    -1);
-			if (ptr2) {
-				verify_iter((nodePtr)ptr2);
-				g_assert(gtk_tree_path_compare(
-										 gtk_tree_model_get_path(model, &((ui_data*)ptr2->ui_data)->row),
-										 gtk_tree_model_get_path(model, &child)) == 0);
-			}
-			rc = gtk_tree_model_iter_next(model, &child);
-		}
-
-		children = ((folderPtr)ptr)->children;
-		while(children) {
-			g_assert(children->data != ptr);
-			verify_iter((nodePtr)children->data);
-			children = children->next;
-		}
-	}
-}
-
 void
 on_feedlist_drag_data_get              (GtkWidget       *widget,
                                         GdkDragContext  *drag_context,
@@ -597,7 +553,7 @@ on_feedlist_drag_data_received         (GtkWidget       *widget,
 		GtkTreeIter iter;
 		GtkTreePath *dest_path = NULL;
 		GtkTreeViewDropPosition position;
-		verify_iter((nodePtr)folder_get_root());
+
 		memcpy(&iter, data->data, sizeof(iter));
 		if(gtk_tree_view_get_dest_row_at_pos(GTK_TREE_VIEW(widget), x, y, &dest_path, &position)) {
 			gint dest_index;
@@ -684,7 +640,6 @@ on_feedlist_drag_data_received         (GtkWidget       *widget,
 		}
 		gtk_tree_path_free(dest_path);
 	}
-	verify_iter((nodePtr)folder_get_root());
 }
 
 /* recursivly calls func for every feed in the feed list */

@@ -34,6 +34,24 @@ static GtkWidget	*foldernamedialog = NULL;
 /* new/change/remove folder dialog callbacks 					*/
 /*------------------------------------------------------------------------------*/
 
+static gboolean folder_is_empty(folderPtr folder) {
+	GtkTreeIter child;
+	GtkTreeIter *folderIter = &((ui_data*)(folder->ui_data))->row;
+	nodePtr ptr;
+
+	if (gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &child, folderIter)) {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &child,
+					    FS_PTR, &ptr,
+					    -1);
+		if (ptr == NULL)
+			return TRUE;
+		else
+			return FALSE;
+	} else
+		return TRUE;
+	
+}
+
 void on_popup_newfolder_selected(void) {
 	if(NULL == newfolderdialog || !G_IS_OBJECT(newfolderdialog))
 		newfolderdialog = create_newfolderdialog();
@@ -55,10 +73,10 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	foldertitleentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
-	folder = restore_folder(folder_get_root(), -1, foldertitle, NULL, FST_FOLDER);
+	folder = restore_folder(folder_get_root(), foldertitle, NULL, FST_FOLDER);
 	if(folder) {
 		/* add the new folder to the model */
-		ui_add_folder(folder);
+		ui_add_folder(folder, -1);
 	} else {
 		g_warning("internal error! could not get a new folder key!");
 	}	
@@ -116,7 +134,7 @@ void on_popup_removefolder_selected(gpointer callback_data,
 	g_assert(folder);
 	g_assert(folder->type == FST_FOLDER);
 	
-	if(folder->children == NULL)
+	if(folder_is_empty(folder))
 		folder_remove(folder);
 	else
 		ui_show_error_box(_("A folder must be empty to delete it!"));
@@ -202,9 +220,8 @@ static void ui_delete_empty_subfolders(folderPtr folder) {
 	}
 }
 
-void ui_add_folder(folderPtr folder) {
+void ui_add_folder(folderPtr folder, gint position) {
 	GtkTreeIter		*iter;
-	gint				position;
 	/* check if a folder with this keyprefix already
 	   exists to check config consistency */
 
@@ -212,8 +229,6 @@ void ui_add_folder(folderPtr folder) {
 
 	g_assert(feedstore != NULL);
 	g_assert(folder->parent);
-
-	position = g_slist_index(folder->parent->children, folder);
 
 	/* if parent is NULL we have the root folder and don't create
 	   a new row! */

@@ -25,7 +25,7 @@
 #define	ROOT_FOLDER_PREFIX	""
 
 /* Adding/removing folders & feeds*/
-void ui_add_folder(folderPtr folder);
+void ui_add_folder(folderPtr folder, gint position);
 void ui_remove_folder(folderPtr folder);
 
 void ui_folder_add_feed(feedPtr fp, gint position);
