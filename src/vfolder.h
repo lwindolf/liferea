@@ -76,15 +76,21 @@ void	vfolder_update_item(itemPtr ip);
  * against all vfolder rules. To be used upon feed list loading
  * and when new items are downloaded.
  *
+ * This method may also be used to recheck an vfolder item
+ * copy again. This may remove the item copy if it does not
+ * longer match the vfolder rules.
+ *
  * @param ip	item of a feed to check
+ * @returns TRUE if item (still) added, FALSE otherwise
  */
-void	vfolder_check_item(itemPtr ip);
+gboolean vfolder_check_item(itemPtr ip);
 
 /** 
  * Searches all vfolders for copies of the given item and
- * removes them. Used for item remove propagation.
+ * removes them. Used for item remove propagation. If a
+ * vfolder item copy is passed it is removed directly.
  *
- * @param ip	item of a feed to remove
+ * @param ip	feed item or vfolder item copy to remove
  */
 void	vfolder_remove_item(itemPtr ip);
 

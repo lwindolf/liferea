@@ -187,8 +187,8 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
 	                           "When Liferea starts for the first time it loads a localized default "
 				   "feed list. There are already default lists for English, French, German "
-				   "and Spanish. If you think you know a good set of default feeds please post "
-				   "it (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
+				   "and Spanish. If you think you know a good set of default feeds for your "
+				   "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
 				   "and it will be included in the next release!</div>"));
 				   
 	addToHTMLBuffer(&buffer, _("<h2>Welcome to Liferea</h2>"

@@ -99,6 +99,7 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	tmp = item_new();
 	item_copy(ip, tmp);
 	feed_add_item(vp, tmp);
+	ui_itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
 }
 
 /* used to remove a vfolder item copy from a vfolder */
@@ -146,7 +147,8 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 
 /** 
  * Searches all vfolders for copies of the given item and
- * removes them. Used for item remove propagation.
+ * removes them. Used for item remove propagation. If a
+ * vfolder item copy is passed it is removed directly.
  */
 void vfolder_remove_item(itemPtr ip) {
 	GSList		*iter;
@@ -154,14 +156,17 @@ void vfolder_remove_item(itemPtr ip) {
 	
 	debug_enter("vfolder_remove_item");
 
-	/* never process vfolder items! */
-	g_assert(FST_VFOLDER != feed_get_type(ip->fp));
-	
-	iter = vfolders;
-	while(NULL != iter) {
-		vp = (feedPtr)iter->data;
-		vfolder_remove_matching_item_copy(vp, ip);		
-		iter = g_slist_next(iter);
+	/* distinguish between checking vfolder items
+	   and feed items ... */
+	if(FST_VFOLDER != feed_get_type(ip->fp)) {
+		iter = vfolders;
+		while(NULL != iter) {
+			vp = (feedPtr)iter->data;
+			vfolder_remove_matching_item_copy(vp, ip);
+			iter = g_slist_next(iter);
+		}
+	} else {
+		vfolder_remove_item_copy(ip->fp, ip);
 	}
 	
 	debug_exit("vfolder_remove_item");
@@ -172,7 +177,7 @@ void vfolder_remove_item(itemPtr ip) {
  * additive rule it is added to the vfolder and when it matches an excluding 
  * rule the item is removed again from the given vfolder.
  */
-gboolean vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
+static gboolean vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
 	rulePtr		rp;
 	GSList		*iter;
 	gboolean	added = FALSE;
@@ -253,13 +258,14 @@ void vfolder_refresh(feedPtr vp) {
 
 /**
  * Method to be called when a feed item was updated. This maybe
- * after user interaction or updated item contents. For simplicity
- * we assume that an updated item still matches. 
+ * after user interaction or updated item contents.
  */
 void vfolder_update_item(itemPtr ip) {
-	GSList		*iter, *items;
+	GSList		*iter, *items, *rule;
 	itemPtr		tmp;
 	feedPtr		vp;
+	rulePtr		rp;
+	gboolean	keep, remove;
 
 	debug_enter("vfolder_update_item");
 
@@ -282,13 +288,37 @@ void vfolder_update_item(itemPtr ip) {
 				/* check if the item still matches, the item won't get added
 				   another time so this call effectivly just checks if the
 				   item is still to remain added. */
-				if(TRUE == vfolder_apply_rules_for_item(vp, ip)) {
+
+				keep = FALSE; 
+				remove = FALSE;
+
+				/* check against all rules */
+				rule = vp->rules;
+				while(NULL != rule) {
+					rp = rule->data;
+					if(TRUE == rule_check_item(rp, ip)) {
+						/* the rule we checked does apply */
+						if(TRUE == rp->additive) {
+							keep = TRUE;
+						} else {
+							remove = TRUE;
+							break;
+						}
+					}
+					rule = g_slist_next(rule);
+				}
+
+				if((TRUE == keep) && (FALSE == remove)) {
 			   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", ip->title, vp->title);
 					item_copy(ip, tmp);
 				} else {
 					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...",  ip->title, vp->title);
-					/* we need this: vfolder_remove_item(ip); but not here :-) */
-					item_copy(ip, tmp);	/* as long as we don't remove them at least update them */
+
+					/* we cannot remove the item copy just now because 
+					   there maybe other state changes be done (e.g. 
+					   ui_itemlist_selection_changed might set read 
+					   and update status */
+					tmp->hidden = TRUE;	/* just hide the item copy */
 				}
 				break;
 			}
@@ -306,6 +336,8 @@ void vfolder_update_item(itemPtr ip) {
 			items = g_slist_next(items);
 		}
 		iter = g_slist_next(iter);
+		
+		ui_itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
 	}
 	
 	debug_exit("vfolder_update_item");
@@ -315,22 +347,31 @@ void vfolder_update_item(itemPtr ip) {
  * Method to be called when a new item needs to be checked
  * against all vfolder rules. To be used upon feed list loading
  * and when new items are downloaded.
+ *
+ * This method may also be used to recheck an vfolder item
+ * copy again. This may remove the item copy if it does not
+ * longer match the vfolder rules.
  */
-void vfolder_check_item(itemPtr ip) {
+gboolean vfolder_check_item(itemPtr ip) {
 	GSList		*iter;
+	gboolean	added = FALSE;
 
 	debug_enter("vfolder_check_item");
 
-	/* never process vfolder items! */
-	g_assert(FST_VFOLDER != feed_get_type(ip->fp));
-	
-	iter = vfolders;
-	while(NULL != iter) {
-		vfolder_apply_rules_for_item(iter->data, ip);
-		iter = g_slist_next(iter);
+	/* distinguish between checking vfolder items
+	   and feed items ... */
+	if(FST_VFOLDER != feed_get_type(ip->fp)) {
+		iter = vfolders;
+		while(NULL != iter) {
+			added |= vfolder_apply_rules_for_item(iter->data, ip);
+			iter = g_slist_next(iter);
+		}
+	} else {
+		added = vfolder_apply_rules_for_item(ip->fp, ip);
 	}
 	
 	debug_exit("vfolder_check_item");
+	return added;
 }
 
 /* called when a vfolder is processed by feed_free

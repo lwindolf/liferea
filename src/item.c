@@ -112,15 +112,15 @@ void item_set_mark(itemPtr ip, gboolean flag) {
 	ip->marked = flag;
 	
 	if(ip->ui_data != NULL)
-		ui_update_item(ip);
+		ui_item_update(ip);
 	if(ip->fp != NULL)
 		ip->fp->needsCacheSave = TRUE;
 		
 	/* if this item belongs to a vfolder update the source feed */
 	if(ip->sourceFeed != NULL) {
 		feed_load(ip->sourceFeed);
-		sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr);
-		item_set_mark(sourceItem, flag);
+		if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+			item_set_mark(sourceItem, flag);
 		feed_unload(ip->sourceFeed);
 	} else {
 		vfolder_update_item(ip);	/* there might be vfolders using this item */
@@ -145,15 +145,15 @@ void item_set_update_status(itemPtr ip, const gboolean newStatus) {
 	
 	ip->updateStatus = newStatus; 
 	if(ip->ui_data != NULL)
-		ui_update_item(ip);
+		ui_item_update(ip);
 	if(ip->fp != NULL)
 		ip->fp->needsCacheSave = TRUE;
 
 	/* if this item belongs to a vfolder update the source feed */
 	if(ip->sourceFeed != NULL) {
 		feed_load(ip->sourceFeed);
-		sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr);
-		item_set_update_status(sourceItem, newStatus);
+		if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+			item_set_update_status(sourceItem, newStatus);
 		feed_unload(ip->sourceFeed);
 	} else {
 		vfolder_update_item(ip);	/* there might be vfolders using this item */
@@ -169,15 +169,15 @@ void item_set_unread(itemPtr ip) {
 		
 		ip->readStatus = FALSE;
 		if(ip->ui_data != NULL)
-			ui_update_item(ip);
+			ui_item_update(ip);
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
 						
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
 			feed_load(ip->sourceFeed);
-			sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr);
-			item_set_unread(sourceItem);
+			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+				item_set_unread(sourceItem);
 			feed_unload(ip->sourceFeed);
 		} else {
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
@@ -194,15 +194,15 @@ void item_set_read(itemPtr ip) {
 		
 		ip->readStatus = TRUE; 
 		if(ip->ui_data)
-			ui_update_item(ip);
+			ui_item_update(ip);
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
 		
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
 			feed_load(ip->sourceFeed);
-			sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr);
-			item_set_read(sourceItem);
+			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+				item_set_read(sourceItem);
 			feed_unload(ip->sourceFeed);
 		} else {
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
