@@ -5887,19 +5887,20 @@ Kristian Rietveld &lt;kris@gtk.org&gt; (GtkTreeModelFilter)</property>
 		  <child>
 		    <widget class="GtkLabel" id="label61">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Stephane Jourdan &lt;stephane.jourdan@itris.fr&gt;
-Takeshi Aihana &lt;aihana@gnome.gr.jp&gt;
-Park Ji-In &lt;mithrandir@electrang.net&gt;
-Carlos Fenollosa &lt;topopardo@humorfreak.com&gt;
-Jose Maria Mateos &lt;chema@chema.homelinux.org&gt;
-Enrico Genauck &lt;enrico@fanglomerat.de&gt;
-Vladimir Petkov &lt;vpetkov@i-space.org&gt;
-Tomislav Markovski &lt;tome@set.com.mk&gt;
+		      <property name="label" translatable="yes">Takeshi Aihana &lt;aihana@gnome.gr.jp&gt;
 Dario Conigliaro &lt;djdas@djdas.no-ip.org&gt;
+Carlos Fenollosa &lt;topopardo@humorfreak.com&gt;
+Enrico Genauck &lt;enrico@fanglomerat.de&gt;
+Park Ji-In &lt;mithrandir@electrang.net&gt;
+Stephane Jourdan &lt;stephane.jourdan@itris.fr&gt;
+Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;
+Vincent Lefèvre &lt;vincent@vinc17.org&gt;
+Tomislav Markovski &lt;tome@set.com.mk&gt;
+Jose Maria Mateos &lt;chema@chema.homelinux.org&gt;
+Vladimir Petkov &lt;vpetkov@i-space.org&gt;
 Rex Tsai &lt;chihchun@users.sourceforge.net&gt;
 Alekseev Vladimir &lt;compress@linux-online.ru&gt;
-Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;
-Martin-Eric Racine &lt;q-funk@pp.fishpool.fi&gt;</property>
+</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>

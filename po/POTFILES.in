@@ -86,7 +86,6 @@ src/rss_channel.c
 src/rss_channel.h
 src/rss_item.c
 src/rss_item.h
-src/rss_ns.h
 src/support.c
 src/support.h
 src/ui_dnd.c
