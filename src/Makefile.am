@@ -57,3 +57,4 @@ liferea_SOURCES = \
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
+liferea_CFLAGS = -Wall

@@ -33,11 +33,8 @@ extern itemPtr		selected_ip;
 extern gchar 		*selected_keyprefix;
 extern gint		selected_type;
 
-extern GSList		*allItems;
-
 extern GtkWidget 	*mainwindow;
 static GtkWidget 	*filterdialog = NULL;
-static GtkWidget	*ruledialog = NULL;
 static GtkTreeStore	*ruleStore = NULL;
 
 static void setupRuleList(GtkWidget *ruleList) {
@@ -126,8 +123,8 @@ static gboolean getSelectedRuleIter(GtkTreeIter *iter) {
 			   FS_KEY, &tmp_key, 
  			   FS_TYPE, &tmp_type,
 			   -1);
-
-	return TRUE;*/
+	*/
+	return TRUE;
 }
 
 /* adding a rule */

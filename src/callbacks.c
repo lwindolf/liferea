@@ -108,7 +108,6 @@ static gchar	*root_prefix = "";
 gchar	*selected_keyprefix = NULL;
 
 /* prototypes */
-void preFocusItemlist(void);
 void setSelectedFeed(feedPtr fp, gchar *keyprefix);
 GtkTreeStore * getFeedStore(void);
 GtkTreeStore * getItemStore(void);
@@ -169,7 +168,6 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
         GtkTreeModel		*model;
 	gchar			*tmp_key;
 	gint			tmp_type;
-	feedPtr			fp;
 	
 	if(NULL == mainwindow)
 		return FALSE;
@@ -628,12 +626,10 @@ void on_newbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
-	gchar		*key, *keyprefix, *title, *source, *tmp;
+	gchar		*source;
 	GtkWidget 	*sourceentry;	
-	GtkWidget 	*titleentry, *typeoptionmenu,
-			*updateIntervalBtn;
-	feedPtr		fp;
-	gint		type, interval;
+	GtkWidget 	*titleentry, *typeoptionmenu;
+	gint		type;
 	
 	g_assert(newdialog != NULL);
 	g_assert(propdialog != NULL);
@@ -970,7 +966,6 @@ void itemlist_selection_changed(void) {
         GtkTreeModel		*model;
 
 	gint		type;
-	gchar		*tmp_key;
 
 	undoTrayIcon();
 	
@@ -1042,7 +1037,6 @@ void on_toggle_unread_status(void) {
 
 static void toggle_condensed_view(void) {
 	GtkWidget	*w1;
-	gchar		*key;
 	
 	itemlist_mode = !itemlist_mode;
 	setHTMLViewMode(itemlist_mode);
@@ -1701,7 +1695,6 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 	GtkTreeIter	iter;
 	GSList		*itemlist;
 	itemPtr		ip;
-	gint		count = 0;
 	gchar		*title, *description;
 	gboolean	add;
 
@@ -1711,7 +1704,7 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 	}
 
 	clearItemList();	
-	itemlist = getFeedItemList(fp);		
+	itemlist = getFeedItemList(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
 		title = getItemTitle(ip);

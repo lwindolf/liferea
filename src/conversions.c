@@ -26,12 +26,14 @@
  
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
 #include <zlib.h>
 
 #include "conversions.h"
+#include "callbacks.h"
 
 void *zlib_uncompress(void *in_buf, int in_size, int *out_size, int voodoo_magic) {
 	char tmpstring[1024];

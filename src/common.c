@@ -38,6 +38,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <unistd.h>
+#include <locale.h>
 #include "support.h"
 #include "common.h"
 #include "conf.h"
@@ -49,6 +50,7 @@
 #define VFOLDER_EXTENSION	"vfolder"
 #define OCS_EXTENSION		"ocs"
 
+static gchar *standard_encoding = { "UTF-8" };
 static gchar *CACHEPATH = NULL;
 
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
@@ -149,7 +151,7 @@ static gchar* convert(unsigned char *in, gchar *encoding)
    string is returned, the original XML string is freed. */
 gchar * CONVERT(xmlChar *string) {
 
-	convert(string, "UTF-8");
+	return convert(string, "UTF-8");
 }
 
 gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string) {
@@ -158,7 +160,7 @@ gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string) {
 	
 	if((NULL == cur) || (NULL == doc)) {
 		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
+		return NULL;
 	}
 	
 	cur = cur->xmlChildrenNode;

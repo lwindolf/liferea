@@ -18,9 +18,11 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <string.h> /* For strstr() */
 #include "feed.h"
 #include "item.h"
 #include "filter.h"
+#include "vfolder.h"
 
 /* The following code implements the filtering and vfolder functionality.
    It allows each feed to define a set of filters, which can either
@@ -105,7 +107,7 @@ gboolean checkNewItem(itemPtr ip) {
 					
 		rule = g_slist_next(rule);
 	}
-
+	return TRUE;
 }
 
 /* returns a title to be displayed in the filter editing dialog,

@@ -88,7 +88,7 @@ void ns_ag_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
 gchar * ns_ag_doOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
 	gchar		*buffer = NULL;
-	gchar		*tmp, *tmp1, *tmp2, *tmp3;
+	gchar		*tmp, *tmp2, *tmp3;
 	
 	/* we print all channel infos as a (key,value) table */
 	g_assert(NULL != nsinfos);

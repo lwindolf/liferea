@@ -32,6 +32,9 @@
 #include "item.h"
 #include "ocs_ns.h"
 #include "ocs_dir.h"
+#include "callbacks.h"
+#include "ns_dc.h"
+#include "ns_ocs.h"
 
 #include "netio.h"
 #include "htmlview.h"
@@ -104,7 +107,6 @@ static void showFormatEntry(gpointer data, gpointer userdata) {
 /* display a directory entry description and its formats in the HTML widget */
 static gchar * showDirEntry(dirEntryPtr dep) {
 	directoryPtr	dp = dep->dp;
-	GSList		*iter;
 	gchar		*tmp, *buffer = NULL;
 	
 	g_assert(dep != NULL);
@@ -184,9 +186,6 @@ static gchar * showDirectoryInfo(directoryPtr dp, gchar *url) {
 /* ---------------------------------------------------------------------------- */
 
 static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
-	gchar			*tmp = NULL;
-	gchar			*encoding;
-	formatPtr		new_fp;	
 	parseOCSTagFunc		fp;
 	OCSNsHandler		*nsh;
 	int			i;
@@ -231,13 +230,10 @@ static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 
 static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	xmlNodePtr		tmpNode, formatNode;
-	gchar			*tmp = NULL;
-	gchar			*encoding;
 	formatPtr		new_fp;	
 	parseOCSTagFunc		fp;
 	OCSNsHandler		*nsh;
 	itemPtr			ip;
-	int			i;
 	gboolean		found;
 	
 	g_assert(NULL != cur);
@@ -340,13 +336,10 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 }
 
 static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
-	gchar			*tmp = NULL;
-	gchar			*encoding;
 	formatPtr		new_fp;	
 	parseOCSTagFunc		fp;
 	OCSNsHandler		*nsh;
 	itemPtr			ip;
-	int			i;
 	
 	g_assert(NULL != cur);
 	g_assert(NULL != cur->doc);
@@ -417,12 +410,10 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
  
 /* ocsVersion is 4 for 0.4, 5 for 0.5 ... */
 static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocsVersion) {
-	gchar			*encoding;
 	parseOCSTagFunc		parseFunc;
 	dirEntryPtr		new_dep;
 	OCSNsHandler		*nsh;
 	itemPtr			ip;
-	int			i;
 	
 	g_assert(NULL != cur);
 	g_assert(NULL != cur->doc);
@@ -482,7 +473,6 @@ static void readOCS(feedPtr fp) {
 	xmlNodePtr 	cur = NULL;
 	directoryPtr	dp;
 	dirEntryPtr	new_dep;
-	gchar		*encoding;
 	int 		error = 0;
 
 	while(1) {

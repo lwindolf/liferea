@@ -20,6 +20,7 @@
 
 #include <glib.h>
 #include <time.h>
+#include <string.h> /* For memset() */
 
 #include "cdf_item.h"
 #include "rss_item.h"
@@ -29,6 +30,7 @@
 #include "item.h"
 #include "support.h"
 #include "common.h"
+#include "htmlview.h"
 
 /* function to create a new feed structure */
 itemPtr getNewItemStruct(void) {
@@ -48,12 +50,12 @@ itemPtr getNewItemStruct(void) {
 	return ip;
 }
 
-gchar *	getItemTitle(itemPtr ip) { return ip->title; }
-gchar *	getItemDescription(itemPtr ip) { return ip->description; }
-gchar * getItemSource(itemPtr ip) { return ip->source; }
-time_t	getItemTime(itemPtr ip) { return ip->time; }
-gboolean getItemReadStatus(itemPtr ip) { return ip->readStatus; }
-gboolean getItemMark(itemPtr ip) { return ip->marked; }
+gchar *	getItemTitle(itemPtr ip) { return (ip != NULL ? ip->title : NULL); }
+gchar *	getItemDescription(itemPtr ip) { return (ip != NULL ? ip->description : NULL); }
+gchar * getItemSource(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
+time_t	getItemTime(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
+gboolean getItemReadStatus(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
+gboolean getItemMark(itemPtr ip) { return (ip != NULL ? ip->marked : FALSE); }
 void setItemMark(itemPtr ip, gboolean flag) { ip->marked = flag; }
 
 void markItemAsUnread(itemPtr ip) { 
@@ -133,10 +135,8 @@ itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr ip;
 	gchar	*tmp;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != doc);
+	g_assert(NULL != cur);
 	
 	ip = getNewItemStruct();
 	

@@ -30,9 +30,9 @@
 #include "common.h"
 #include "feed.h"
 #include "pie_feed.h"
-
 #include "pie_ns.h"
 #include "ns_dc.h"
+#include "callbacks.h"
 
 #include "netio.h"
 #include "htmlview.h"
@@ -201,7 +201,6 @@ static void readPIEFeed(feedPtr fp) {
 	itemPtr 		ip;
 	PIEFeedPtr 		cp;
 	gchar			*tmp2, *tmp = NULL;
-	gchar			*encoding;
 	parseFeedTagFunc	parseFunc;
 	PIENsHandler		*nsh;
 	int			i;

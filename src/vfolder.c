@@ -19,6 +19,7 @@
 */
 
 #include <sys/time.h>
+#include <string.h> /* For memset() */
 #include "conf.h"
 #include "support.h"
 #include "common.h"
@@ -78,9 +79,7 @@ void removeOldItemsFromVFolder(feedPtr vp, feedPtr ep) {
 
 /* adds an item to this VFolder, this method is called
    when a VFolder scan method of a feed found a matching item */
-void addItemToVFolder(feedPtr vp, feedPtr fp, itemPtr ip) {
-	gint	type = getFeedType(fp);
-
+void addItemToVFolder(feedPtr vp, itemPtr ip) {
 	g_assert(NULL != vp);
 	g_assert(NULL != ip);
 

@@ -18,6 +18,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <string.h> /* For strlen() */
 #include "htmlview.h"
 #include "netio.h"
 #include "ns_blogChannel.h"
@@ -55,7 +56,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	
 	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"url"))) {
 		value = CONVERT(value);
-		tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value, value);
+		tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		xmlFree(value);
@@ -63,7 +64,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 
 	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"htmlUrl"))) {
 		value = CONVERT(value);
-		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">HTML</a>)", value, value);
+		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">HTML</a>)", value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		xmlFree(value);
@@ -156,7 +157,6 @@ static void ns_bC_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 }
 
 static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
-	int 		i;
 	gchar		*output;
 
 	if(!xmlStrcmp("blogRoll", cur->name)) {	

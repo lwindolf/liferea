@@ -19,6 +19,7 @@
 */
 
 #include "feed.h"
+#include "folder.h"
 #include "conf.h"
 #include "callbacks.h"
 #include "interface.h"
@@ -46,7 +47,7 @@ static void createFeedTag(gpointer key, gpointer value, gpointer userdata) {
 
 void exportOPMLFeedList(gchar *filename) {
 	xmlDocPtr 	doc;
-	xmlNodePtr 	cur, opmlNode, itemNode;
+	xmlNodePtr 	cur, opmlNode;
 	gint		error = 0;
 	
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	

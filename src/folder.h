@@ -23,15 +23,28 @@
 
 #include <gtk/gtk.h>
 #include <string.h>
+#include "feed.h"
 
 /* ------------------------------------------------------------ */
 /* functions to create/change/remove folder			*/
 /* ------------------------------------------------------------ */
 void 	initFolders(void);
+
+/* to create/delete folders */
 void	addFolder(gchar *keyprefix, gchar *title, gint type);
+void	removeFolder(gchar *keyprefix);
+
+/* to read/change folder properties */
 gchar *	getFolderTitle(gchar *keyprefix);
 void	setFolderTitle(gchar *keyprefix, gchar *title);
 void	setFolderCollapseState(gchar *keyprefix, gboolean collapsed);
+
+/* necessary for drag&drop actions */
+void	checkForEmptyFolders(void);
+void	moveInFeedList(gchar *oldkeyprefix, gchar *oldkey);
+
+/* save functions */
+void	saveFolderFeedList(gchar *keyprefix);
 void	saveAllFolderCollapseStates(void);
 
 #endif

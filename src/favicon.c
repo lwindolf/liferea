@@ -141,10 +141,7 @@ static ICONHEADER iconheader;
 static BITMAPINFOHEADER bitmapinfoheader;
 /*static unsigned char magic_number [sizeof(ico_magic_number)];*/
 static unsigned char *magic_number;
-static unsigned char cwidth;
-static unsigned char cheight;
 static unsigned char color_level;
-static unsigned char unknown_part [53];
 static unsigned char colormap[256 * 4];
 static unsigned char image[256 * 256];
 static unsigned char mask[256 * 32];
@@ -384,6 +381,7 @@ convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen)
     /* we intentionally return after the first retrieved pixmap */       
     return TRUE;
   }
+  return FALSE;
 }
 
 /* Liferea specific wrapper functions */

@@ -19,9 +19,10 @@
    Boston, MA 02111-1307, USA.
 */
 
+#include <string.h> /* For strncmp */
 #include "support.h"
 #include "callbacks.h"
-#include "feed.h"
+#include "folder.h"
 #include "ui_dnd.h"
 
 extern gchar	*selected_keyprefix;

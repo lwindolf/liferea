@@ -48,6 +48,7 @@
 /*-----------------------------------------------------------------------*/
 /* some Liferea specific adaptions					 */
 
+#include "callbacks.h"
 #include "support.h"
 #include "netio.h"
 
@@ -72,7 +73,6 @@ int connectresult;
  *                 	-1	aborted by user
  */
 int NetConnect (int * my_socket, char * host, int httpproto) {
-	int retval;
 	struct sockaddr_in address;	
 	struct hostent *remotehost;
 	char *uistring;
@@ -212,7 +212,6 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	char *newlocation;
 	char *tmpstring;			/* Temp pointers. */
 	char *freeme;
-	char *freemetoo;
 	char *redirecttarget;
 	fd_set rfds;
 	int retval;

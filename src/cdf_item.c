@@ -43,7 +43,6 @@ gchar * showCDFItem(feedPtr fp, CDFChannelPtr cp, CDFItemPtr ip);
 /* method to parse standard tags for each item element */
 itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp = NULL;
-	gchar		*value;
 	CDFItemPtr 	i;
 	itemPtr		ip;
 	int		j;

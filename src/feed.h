@@ -109,6 +109,8 @@ typedef struct feedHandler {
 /* feed creation/modification interface				*/
 /* ------------------------------------------------------------ */
 
+void initBackend(void);
+
 void initFeedTypes(void);
 void registerFeedType(gint type, feedHandlerPtr fhp);
 
@@ -118,6 +120,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 void mergeFeed(feedPtr old_fp, feedPtr new_fp);
 void removeFeed(feedPtr fp);
 void updateFeed(feedPtr fp);
+gint saveFeed(feedPtr fp);
 void saveAllFeeds(void);
 
 void addItem(feedPtr fp, itemPtr ip);

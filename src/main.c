@@ -23,10 +23,12 @@
 #endif
 
 #include <gtk/gtk.h>
+#include <locale.h> /* For setlocale */
 #include "interface.h"
 #include "support.h"
 #include "callbacks.h"
 #include "htmlview.h"
+#include "feed.h"
 #include "conf.h"
 #include "update.h"
 #include "netio.h"

@@ -51,7 +51,6 @@ static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 }
 
 static void ns_fm_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
-	int 		i;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
 		/* maybe for just one tag this is overkill, but copy&paste is so easy! */

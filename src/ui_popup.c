@@ -54,8 +54,6 @@ static GtkItemFactoryEntry *url_menu_items;
 
 static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *path, gchar *acc, 
 			   GtkItemFactoryCallback cb, guint cb_action, gchar *item_type, gconstpointer extra_data) {
-			   
-	struct GtkItemFactoryEntry	*entry;
 	
 	(*menu_len)++;
 	*menu = (GtkItemFactoryEntry *)g_realloc(*menu, sizeof(GtkItemFactoryEntry)*(*menu_len));
@@ -213,8 +211,6 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 {
 	GdkEventButton 	*eb;
 	GtkMenu		*menu;
-	gboolean 	retval;
-	gint		type;
   
 	if (event->type != GDK_BUTTON_PRESS) return FALSE;
 	eb = (GdkEventButton*) event;
@@ -235,8 +231,6 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget,
                                             gpointer user_data)
 {
 	GdkEventButton 	*eb;
-	gboolean 	retval;
-	gint		type;
   
 	if (event->type != GDK_BUTTON_PRESS) return FALSE;
 	eb = (GdkEventButton*) event;

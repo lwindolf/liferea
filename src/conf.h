@@ -46,8 +46,12 @@
 #define PROXY_PORT			"/system/http_proxy/port"
 #define USE_PROXY			"/system/http_proxy/use_http_proxy"
 
+/* initializing methods */
 void	initConfig(void);
 void	loadConfig(void);
+
+/* config loading on startup */
+void	loadEntries(void);
 
 /* feed/directory list entry manipulation methods */
 

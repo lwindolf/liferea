@@ -62,7 +62,6 @@ extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 
 /* <content> tag support, FIXME: base64 not supported */
 static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
-	gchar	*content = NULL;
 	gchar	*mode;
 
 	g_assert(NULL != cur);
@@ -94,7 +93,6 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 
 /* method to parse standard tags for each item element */
 itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
-	gint			bw, br;
 	gchar			*tmp2, *tmp = NULL;
 	parseEntryTagFunc	fp;
 	PIENsHandler		*nsh;	

@@ -22,6 +22,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <string.h>
+#include <unistd.h> /* For unlink() */
 
 #include "conf.h"
 #include "common.h"
@@ -35,7 +36,10 @@
 #include "vfolder.h"
 #include "netio.h"
 #include "feed.h"
+#include "folder.h"
 #include "favicon.h"
+#include "callbacks.h"
+#include "filter.h"
 
 /* auto detection lookup table */
 typedef struct detectStr {
@@ -99,14 +103,14 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 		} 
 	}
 	g_free(request.feedurl);
-	//g_free(request.lastmodified);
+	g_free(request.lastmodified);
 
 	return type;
 }
 
 /* initializing function, called upon initialization and each
    preference change */
-void initBackend() {
+void initBackend(void) {
 
 	if(NULL == feeds_lock)
 		feeds_lock = g_mutex_new();
@@ -153,7 +157,7 @@ feedPtr getNewFeedStruct(void) {
 	if(NULL == fp->request) {
 		if(NULL == (request = (struct feed_request *)g_malloc(sizeof(struct feed_request)))) {
 			g_error(_("Could not allocate memory!"));
-			return;
+			return NULL;
 		} else {
 			request->feedurl = NULL;
 			request->lastmodified = NULL;
@@ -173,15 +177,14 @@ feedPtr getNewFeedStruct(void) {
 
 gint saveFeed(feedPtr fp) {
 	xmlDocPtr 	doc;
-	xmlNodePtr 	cur, feedNode, itemNode;
+	xmlNodePtr 	feedNode, itemNode;
 	GSList		*itemlist;
-	gchar		*filename, *extension;
+	gchar		*filename;
 	gchar		*tmp;
 	itemPtr		ip;
 	gint		error = 0;
 	gint		saveCount = 0;
 	gint		saveMaxCount;
-	char		*buf;
 			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
 	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
@@ -752,7 +755,6 @@ void clearFeedItemList(feedPtr fp) {
    new_fp to the structure fp points to. The feed infos
    of new_fp are freed afterwards. */
 void copyFeed(feedPtr fp, feedPtr new_fp) {
-	gchar		*tmp_key, *tmp_keyprefix, *tmp_title;
 	feedPtr		tmp_fp;
 	itemPtr		ip;
 	GSList		*item;

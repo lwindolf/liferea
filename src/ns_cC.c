@@ -18,6 +18,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <string.h> /* For strlen() */
 #include "htmlview.h"
 #include "support.h"
 #include "ns_cC.h"

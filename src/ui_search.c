@@ -21,6 +21,7 @@
 #include "callbacks.h"
 #include "interface.h"
 #include "feed.h"
+#include "folder.h"
 #include "filter.h"
 #include "support.h"
 #include "common.h"
@@ -28,12 +29,12 @@
 extern GtkWidget 	*mainwindow;
 static GtkWidget 	*feedsterdialog = NULL;
 
+extern feedPtr          allItems;
+
 extern feedPtr		selected_fp;
 extern itemPtr		selected_ip;
 extern gchar 		*selected_keyprefix;
 extern gint		selected_type;
-
-extern GSList		*allItems;
 
 /*------------------------------------------------------------------------------*/
 /* search dialog callbacks								*/
@@ -96,7 +97,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 		searchtext = (gchar *)gtk_entry_get_text(GTK_ENTRY(keywords));
 		searchtext = encodeURIString(searchtext);
 		searchtext = g_strdup_printf("http://www.feedster.com/rss.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
-					    searchtext, gtk_adjustment_get_value(resultCount));
+					    searchtext, (int)gtk_adjustment_get_value(resultCount));
 		
 		if(NULL != (fp = newFeed(FST_RSS, searchtext, g_strdup(selected_keyprefix)))) {
 			addToFeedList(fp, FALSE);
@@ -125,9 +126,8 @@ void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data)
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
-	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
+//	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
 	feedPtr			fp;
-	gchar			*key;
 	
 	g_assert(mainwindow != NULL);
 		

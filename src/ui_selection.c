@@ -21,6 +21,7 @@
 
 #include <gtk/gtk.h>
 #include <glib.h>
+#include <string.h> /* For strlen() */
 #include "htmlview.h"
 #include "support.h"
 #include "ui_selection.h"

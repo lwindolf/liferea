@@ -31,5 +31,5 @@ feedHandlerPtr	initVFolderFeedHandler(void);
 void		initVFolders(void);
 void		removeOldItemsFromVFolder(feedPtr vp, feedPtr fp);
 void		removeItemFromVFolder(feedPtr fp, itemPtr ip);
-
+void		addItemToVFolder(feedPtr vp, itemPtr ip);
 #endif

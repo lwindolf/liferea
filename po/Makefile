@@ -140,7 +140,7 @@ POTFILES = \
 	../src/update.c \
 	../src/update.h \
 	../src/vfolder.c \
-	../src/vfolder.h 
+	../src/vfolder.h
 
 CATALOGS =  fr.gmo ja.gmo ko.gmo es_ES.gmo de.gmo
 CATOBJEXT = .gmo

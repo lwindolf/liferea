@@ -483,8 +483,10 @@ static gchar * ns_dc_doPIEEntryFooterOutput(gpointer obj) {
 static gchar *	ns_dc_doPIEFeedFooterOutput(gpointer obj) {
 	
 	if(NULL != obj) {
-		ns_dc_doFooterOutput(((PIEFeedPtr)obj)->nsinfos);
+		return ns_dc_doFooterOutput(((PIEFeedPtr)obj)->nsinfos);
 	}
+	
+	return NULL;
 }
 
 RSSNsHandler *ns_dc_getRSSNsHandler(void) {

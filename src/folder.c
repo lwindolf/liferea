@@ -69,6 +69,7 @@ gchar * getFolderTitle(gchar *keyprefix) {
 		return tmp_title;
 	} else {
 		g_print(_("internal error! could not determine folder key!"));
+		return NULL;
 	}
 }
 
@@ -296,13 +297,12 @@ void saveFolderFeedList(gchar *keyprefix) {
 static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 	GtkTreeIter	iter;
 	GtkTreeIter	*topiter = (GtkTreeIter *)value;
-	GConfValue	*new_value = NULL;
 	GtkTreeStore	*feedstore;
 	gint		tmp_type;
 	feedPtr		fp;
 	gchar		*newkey, *tmp_key;
 	gchar		*newfilename, *oldfilename;
-	gboolean	valid, wasFound, found, hasCacheFile;
+	gboolean	valid, wasFound, found;
 
 	g_assert(NULL != keyprefix);
 	g_assert(NULL != key);

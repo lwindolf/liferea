@@ -33,6 +33,7 @@
 #include "conf.h"
 #include "support.h"
 #include "callbacks.h"
+#include "common.h"
 
 #define BUFFER_SIZE 8192
 
@@ -72,7 +73,7 @@ static void kill_old_connections (HtmlDocument *doc);
 /* function to write HTML source */
 void writeHTML(gchar *string) {
 
-	//kill_old_connections(doc);	/* if enabled images do not always load */
+	kill_old_connections(doc);
 	
 	html_document_clear(doc);
 	html_document_open_stream(doc, "text/html");
@@ -121,7 +122,7 @@ static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
 	
 	/* finalizing older stuff */
 	if(NULL != doc) {
-		//kill_old_connections(doc);	/* if enabled images do not always load */	
+		kill_old_connections(doc);
 		html_document_clear(doc);	/* heard rumors that this is necessary... */
 		g_object_unref(G_OBJECT(doc));
 	}
@@ -187,7 +188,7 @@ static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer u
 			gtk_menu_popup(GTK_MENU(make_url_menu()), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		}
- 
+		return TRUE; 
 	} else {
 		return FALSE;
 	}
@@ -369,8 +370,8 @@ request_object (HtmlView *view, GtkWidget *widget, gpointer user_data)
 
 static void
 kill_old_connections (HtmlDocument *doc)
-{
-	GSList *connection_list, *tmp;
+{	/* if enabled images do not always load */
+	/*GSList *connection_list, *tmp;
 
 	tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
 	while(tmp) {
@@ -382,7 +383,7 @@ kill_old_connections (HtmlDocument *doc)
 		tmp = tmp->next;
 	}
 	g_object_set_data (G_OBJECT (doc), "connection_list", NULL);
-	g_slist_free (connection_list);
+	g_slist_free (connection_list);*/
 }
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)

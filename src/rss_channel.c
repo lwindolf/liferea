@@ -33,6 +33,7 @@
 #include "support.h"
 #include "common.h"
 #include "rss_channel.h"
+#include "callbacks.h"
 
 #include "rss_ns.h"
 #include "ns_dc.h"
@@ -209,7 +210,6 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 /* method to parse standard tags for the channel element */
 static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar			*tmp = NULL;
-	gchar			*encoding;
 	parseChannelTagFunc	fp;
 	GSList			*hp;
 	RSSNsHandler		*nsh;
@@ -323,10 +323,8 @@ static void readRSSFeed(feedPtr fp) {
 	xmlNodePtr 	cur;
 	itemPtr 	ip;
 	RSSChannelPtr 	cp;
-	gchar		*encoding;
-	char		*data;
 	short 		rdf = 0;
-	int 		i, error = 0;
+	int 		error = 0;
 	
 	/* initialize channel structure */
 	if(NULL == (cp = (RSSChannelPtr) malloc(sizeof(struct RSSChannel)))) {
@@ -432,7 +430,7 @@ static void readRSSFeed(feedPtr fp) {
 /* initialization		 						*/
 /* ---------------------------------------------------------------------------- */
 
-static addNameSpaceHandler(gchar *prefix, gpointer handler) {
+static void addNameSpaceHandler(gchar *prefix, gpointer handler) {
 
 	g_assert(NULL != rss_nstable);
 	if(getNameSpaceStatus(prefix)) {

@@ -27,6 +27,7 @@
 #include "support.h"
 #include "callbacks.h"
 #include "feed.h"
+#include "folder.h"
 #include "common.h"
 #include "conf.h"
 
@@ -47,6 +48,9 @@ char 	*useragent = NULL;
 char	*proxyname = NULL;
 int	proxyport = 0;
 
+/* Function prototypes */
+int setFeedTypeInConfig(gchar *key, gint type);
+
 static gchar * build_path_str(gchar *str1, gchar *str2) {
 	gchar	*gconfpath;
 
@@ -59,7 +63,7 @@ static gchar * build_path_str(gchar *str1, gchar *str2) {
 	return gconfpath;
 }
 
-free_gconf_key(gchar *key, gchar *attribute) {
+static void free_gconf_key(gchar *key, gchar *attribute) {
 	gchar	*gconfpath;
 	
 	gconfpath = build_path_str(key, attribute);
@@ -110,7 +114,6 @@ void initConfig() {
 
 /* maybe called several times to reload configuration */
 void loadConfig() {
-	GError	*err = NULL;
 	gchar	*proxy_url;
 	gint	maxitemcount;
 	
@@ -186,13 +189,11 @@ void setFeedKeyList(gchar *keyprefix, GSList *newlist) {
 }
 
 void removeFeedFromConfig(gchar *keyprefix, gchar *key) {
-	GError		*err = NULL;
 	GConfValue	*element;
 	GSList		*list, *newlist = NULL;
 	GSList		*iter;
-	gchar		*gconfpath;
 	const char	*tmp;
-	int 		found = 0, error = 0;
+	int 		found = 0;
 
 	/* remove key from key list */
 	iter = list = getFeedKeyList(keyprefix);
@@ -270,10 +271,7 @@ gchar * getFreeFeedKey(gchar *keyprefix) {
 	GError		*err = NULL;
 	GSList		*iter = NULL;	
 	GConfValue	*element;
-	gchar		*gconfpath;
-	gchar		*url;
 	const char 	*key;
-	int 		i;
 
 	/* actually we use only numbers as feedkeys... */
 	int		nr = 1;
@@ -338,23 +336,18 @@ int setFolderTypeInConfig(gchar *keyprefix, gint type) {
    feedlisttitle, on successful execution this function
    returns the new directory key... */
 gchar * addFolderToConfig(gchar *title) {
-
 	GError		*err = NULL;
 	GSList		*list, *newlist, *iter;
-	int 		error = 0;
 	GConfValue	*value, *value2;
 	GConfValue	*element;
 	gchar		*gconfpath;
-	gchar		*url, *newdirkey;
+	gchar		*newdirkey;
 	const char 	*dirkey;
-	int 		i;
-
+	int		nr = 1;
+	
 	/* first step: find free directory key */
 
 	/* we use "dir#" were # is a number as directory keys */
-	int		nr = 1;
-	gchar		*newdir;
-
 	newdirkey = g_strdup_printf("dir%d", nr);
 				
 	gconfpath = g_strdup_printf("%s/groups", PATH);
@@ -415,7 +408,6 @@ void removeFolderFromConfig(gchar *keyprefix) {
 	GSList		*iter;
 	const char	*tmpkeyprefix;
 	gchar		*gconfpath;
-	int 		error = 0;
 
 	/* remove key from key list */
 	gconfpath = g_strdup_printf("%s/groups", PATH);
@@ -462,7 +454,6 @@ gchar * addFeedToConfig(gchar *keyprefix, gchar *url, gint type) {
 	GConfValue	*newkey = NULL;
 	GSList		*list, *newlist;
 	gchar		*key;
-	int 		error = 0;
 
 	/* get available key */
 	if(NULL == (key = getFreeFeedKey(keyprefix))) {
@@ -567,12 +558,12 @@ int setFolderCollapseStateInConfig(gchar *keyprefix, gboolean collapsed) {
 /* config loading on startup						*/
 /*----------------------------------------------------------------------*/
 
-void loadEntries() {
+void loadEntries(void) {
 	GError		*err = NULL;
 	GSList		*groupiter = NULL, *iter = NULL;
 	GConfValue	*element, *keylist, *groups;
 	gchar		*gconfpath;
-	gchar		*filename, *name, *url, *keyprefix, *keylisttitle;
+	gchar		*name, *url, *keyprefix, *keylisttitle;
 	const char	*key;
 	gchar 		*helpFolderPrefix = NULL;
 	gint		interval;

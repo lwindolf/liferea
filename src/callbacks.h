@@ -19,6 +19,7 @@
 #include <gtk/gtk.h>
 #include <libgtkhtml/gtkhtml.h>
 #include "ui_popup.h"
+#include "feed.h"
 
 /* constants for attributes in feedstore */
 #define FS_TITLE	0
@@ -43,6 +44,11 @@ void undoTrayIcon(void);
 void setTrayToolTip(gchar *string);
 void setupTrayIcon(void);
 void redrawFeedList(void);
+void preFocusItemlist(void);
+ 
+void loadItemList(feedPtr fp, gchar *searchstring);
+void loadItemListFromGSList(GSList *itemlist, gchar *searchstring, gint feedType);
+void addToFeedList(feedPtr fp, gboolean startup);
 
 gint checkForUpdateResults(gpointer data);
 

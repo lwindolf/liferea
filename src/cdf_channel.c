@@ -97,8 +97,6 @@ gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
 /* method to parse standard tags for the channel element */
 static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp = NULL;
-	gchar		*encoding;
-	gchar		*value;
 	itemPtr		ip;
 	int		i;
 	
@@ -155,7 +153,6 @@ static void readCDFFeed(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	CDFChannelPtr 	cp;
-	gchar		*encoding;
 	int 		error = 0;
 	
 	/* initialize channel structure */

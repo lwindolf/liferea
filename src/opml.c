@@ -29,6 +29,7 @@
 #include "feed.h"
 #include "item.h"
 #include "opml.h"
+#include "callbacks.h"
 
 #include "netio.h"
 #include "htmlview.h"
@@ -64,7 +65,6 @@ static gchar *opmlTagList[] = {	"title",
 static gchar * getOutlineContents(xmlNodePtr cur) {
 	gchar		*buffer = NULL;
 	gchar		*tmp, *value;
-	gboolean	link = FALSE;
 	xmlAttrPtr	attr;
 
 	attr = cur->properties;
@@ -121,7 +121,6 @@ static void readOPML(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, child;
 	itemPtr		ip;
-	gchar		*encoding;
 	gchar		*buffer, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
 	int 		i, error = 0;

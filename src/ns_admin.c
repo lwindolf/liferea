@@ -18,6 +18,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <string.h> /* For strcmp() */
 #include "htmlview.h"
 #include "support.h"
 #include "ns_admin.h"
@@ -82,7 +83,6 @@ static void ns_admin_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *ta
 }
 
 void ns_admin_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
-	int 		i;
 	
 	if(!xmlStrcmp("errorReportsTo", cur->name)) 
 		ns_admin_addInfoStruct(cp->nsinfos, "errorReportsTo", CONVERT(xmlGetProp(cur, "resource")));

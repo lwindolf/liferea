@@ -28,9 +28,6 @@
 
 #define htmlToCDATA(buffer) g_strdup_printf("<![CDATA[%s]]>", buffer)
 
-/* the encoding all item descriptions are converted to for display with libGtkHTML */
-static gchar	*standard_encoding = { "UTF-8" };
-
 /* Conversion function which should be applied to all read XML strings, 
    to ensure proper UTF8. doc points to the xml document and its encoding and
    string is a xmlChar pointer to the read string. The result gchar
