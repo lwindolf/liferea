@@ -97,14 +97,19 @@ gchar * encode_uri_string(gchar *string);
 gchar * encode_uri(gchar *uri_string);
 
 /**
- * Filter the title. Note that the string is modified. 
+ * Filter the title. Note that the string is modified and not
+ * duplicated!
  *
  * @param title		title string be be filtered
+ * @returns the result string, which is nearly always the same as the value passed to it.
  */
 gchar * filter_title(gchar * title);
 
 #ifndef HAVE_STRSEP
 char *strsep (char **stringp, const char *delim);
 #endif
+
+gchar *strreplace(const char *string, const char *delimiter,
+			   const char *replacement);
 
 #endif

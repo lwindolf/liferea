@@ -1553,12 +1553,16 @@ create_prefdialog (void)
   GtkWidget *label118;
   GtkWidget *hbox49;
   GtkWidget *label119;
-  GtkWidget *vbox14;
-  GtkWidget *browserradiobtn1;
-  GSList *browserradiobtn1_group = NULL;
-  GtkWidget *hbox14;
-  GtkWidget *browserradiobtn2;
+  GtkWidget *vbox257;
+  GtkWidget *browseinwindow;
+  GtkWidget *table6;
+  GtkWidget *label137;
+  GtkWidget *manuallabel;
   GtkWidget *browsercmd;
+  GtkWidget *label138;
+  GtkWidget *browserlocpopup;
+  GtkWidget *menu4;
+  GtkWidget *browserpopup;
   GtkWidget *vbox249;
   GtkWidget *label121;
   GtkWidget *hbox50;
@@ -1610,7 +1614,6 @@ create_prefdialog (void)
   GtkWidget *label65;
   GtkWidget *htmlviewoptionmenu;
   GtkWidget *menu3;
-  GtkWidget *openlinksinsidebtn;
   GtkWidget *label39;
   GtkWidget *vbox227;
   GtkWidget *vbox254;
@@ -1670,32 +1673,63 @@ create_prefdialog (void)
   gtk_widget_show (label119);
   gtk_box_pack_start (GTK_BOX (hbox49), label119, FALSE, FALSE, 0);
 
-  vbox14 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox14);
-  gtk_box_pack_start (GTK_BOX (hbox49), vbox14, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox14), 5);
+  vbox257 = gtk_vbox_new (FALSE, 7);
+  gtk_widget_show (vbox257);
+  gtk_box_pack_start (GTK_BOX (hbox49), vbox257, FALSE, FALSE, 0);
 
-  browserradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Use the GNOME default browser"));
-  gtk_widget_show (browserradiobtn1);
-  gtk_box_pack_start (GTK_BOX (vbox14), browserradiobtn1, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (browserradiobtn1), browserradiobtn1_group);
-  browserradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (browserradiobtn1));
+  browseinwindow = gtk_check_button_new_with_mnemonic (_("Open links in Liferea's _window (requries Mozilla)."));
+  gtk_widget_show (browseinwindow);
+  gtk_box_pack_start (GTK_BOX (vbox257), browseinwindow, FALSE, FALSE, 0);
 
-  hbox14 = gtk_hbox_new (FALSE, 5);
-  gtk_widget_show (hbox14);
-  gtk_box_pack_start (GTK_BOX (vbox14), hbox14, TRUE, TRUE, 0);
+  table6 = gtk_table_new (3, 2, FALSE);
+  gtk_widget_show (table6);
+  gtk_box_pack_start (GTK_BOX (vbox257), table6, FALSE, FALSE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (table6), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table6), 6);
 
-  browserradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("Use browser command:"));
-  gtk_widget_show (browserradiobtn2);
-  gtk_box_pack_start (GTK_BOX (hbox14), browserradiobtn2, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (browserradiobtn2), browserradiobtn1_group);
-  browserradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (browserradiobtn2));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (browserradiobtn2), TRUE);
+  label137 = gtk_label_new_with_mnemonic (_("_Browser:"));
+  gtk_widget_show (label137);
+  gtk_table_attach (GTK_TABLE (table6), label137, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label137), 1, 0.5);
+
+  manuallabel = gtk_label_new_with_mnemonic (_("_Manual:\n(%s for URL)"));
+  gtk_widget_show (manuallabel);
+  gtk_table_attach (GTK_TABLE (table6), manuallabel, 0, 1, 2, 3,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (manuallabel), 0, 0.5);
 
   browsercmd = gtk_entry_new ();
   gtk_widget_show (browsercmd);
-  gtk_box_pack_start (GTK_BOX (hbox14), browsercmd, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, browsercmd, _("specify a browser command using %s as URL placeholder"), NULL);
+  gtk_table_attach (GTK_TABLE (table6), browsercmd, 1, 2, 2, 3,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (browsercmd), TRUE);
+
+  label138 = gtk_label_new_with_mnemonic (_("_Open link in:"));
+  gtk_widget_show (label138);
+  gtk_table_attach (GTK_TABLE (table6), label138, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label138), 1, 0.5);
+
+  browserlocpopup = gtk_option_menu_new ();
+  gtk_widget_show (browserlocpopup);
+  gtk_table_attach (GTK_TABLE (table6), browserlocpopup, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  menu4 = gtk_menu_new ();
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (browserlocpopup), menu4);
+
+  browserpopup = gtk_option_menu_new ();
+  gtk_widget_show (browserpopup);
+  gtk_table_attach (GTK_TABLE (table6), browserpopup, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
 
   vbox249 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox249);
@@ -1746,6 +1780,7 @@ create_prefdialog (void)
   gtk_widget_show (timeformatentry);
   gtk_box_pack_start (GTK_BOX (hbox15), timeformatentry, TRUE, TRUE, 0);
   gtk_tooltips_set_tip (tooltips, timeformatentry, _("for expert users: specify a time format string, consult the strftime() manpage for the format codes"), NULL);
+  gtk_entry_set_activates_default (GTK_ENTRY (timeformatentry), TRUE);
 
   vbox250 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox250);
@@ -1779,11 +1814,11 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
 
-  updatealloptionbtn = gtk_check_button_new_with_mnemonic (_("Update all feeds on program startup."));
+  updatealloptionbtn = gtk_check_button_new_with_mnemonic (_("_Update all feeds on program startup."));
   gtk_widget_show (updatealloptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox20), updatealloptionbtn, FALSE, FALSE, 0);
 
-  helpoptionbtn = gtk_check_button_new_with_mnemonic (_("Add the help feeds to the feed list on startup."));
+  helpoptionbtn = gtk_check_button_new_with_mnemonic (_("Add the _help feeds to the feed list on startup."));
   gtk_widget_show (helpoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox20), helpoptionbtn, FALSE, FALSE, 0);
 
@@ -1820,7 +1855,7 @@ create_prefdialog (void)
   gtk_widget_show (vbox22);
   gtk_box_pack_start (GTK_BOX (hbox51), vbox22, TRUE, TRUE, 0);
 
-  trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status icon in the notification area \n(also called system tray)."));
+  trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status _icon in the notification area \n(also called system tray)."));
   gtk_widget_show (trayiconoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox22), trayiconoptionbtn, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (trayiconoptionbtn), 4);
@@ -1837,7 +1872,7 @@ create_prefdialog (void)
   gtk_widget_show (vbox256);
   gtk_box_pack_start (GTK_BOX (hbox55), vbox256, TRUE, TRUE, 0);
 
-  popupwindowsoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a popup window with new headlines."));
+  popupwindowsoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a _popup window with new headlines."));
   gtk_widget_show (popupwindowsoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox256), popupwindowsoptionbtn, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (popupwindowsoptionbtn), 4);
@@ -1928,10 +1963,6 @@ create_prefdialog (void)
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (htmlviewoptionmenu), menu3);
 
-  openlinksinsidebtn = gtk_check_button_new_with_mnemonic (_("If the browser module allows it open links inside Liferea."));
-  gtk_widget_show (openlinksinsidebtn);
-  gtk_box_pack_start (GTK_BOX (vbox232), openlinksinsidebtn, FALSE, FALSE, 0);
-
   label39 = gtk_label_new (_("GUI Settings"));
   gtk_widget_show (label39);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label39);
@@ -1976,7 +2007,7 @@ create_prefdialog (void)
   gtk_widget_show (vbox229);
   gtk_box_pack_start (GTK_BOX (vbox228), vbox229, TRUE, TRUE, 0);
 
-  enableproxybtn = gtk_check_button_new_with_mnemonic (_("Enable Proxy"));
+  enableproxybtn = gtk_check_button_new_with_mnemonic (_("_Enable Proxy"));
   gtk_widget_show (enableproxybtn);
   gtk_box_pack_start (GTK_BOX (vbox229), enableproxybtn, FALSE, FALSE, 0);
 
@@ -1986,7 +2017,7 @@ create_prefdialog (void)
   gtk_table_set_row_spacings (GTK_TABLE (proxytable), 5);
   gtk_table_set_col_spacings (GTK_TABLE (proxytable), 5);
 
-  label53 = gtk_label_new (_("Proxy Host"));
+  label53 = gtk_label_new_with_mnemonic (_("Proxy _Host"));
   gtk_widget_show (label53);
   gtk_table_attach (GTK_TABLE (proxytable), label53, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -2005,7 +2036,7 @@ create_prefdialog (void)
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  label54 = gtk_label_new (_("Proxy Port"));
+  label54 = gtk_label_new_with_mnemonic (_("Proxy _Port"));
   gtk_widget_show (label54);
   gtk_table_attach (GTK_TABLE (proxytable), label54, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
@@ -2028,11 +2059,8 @@ create_prefdialog (void)
   g_signal_connect_swapped ((gpointer) prefdialog, "delete_event",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (prefdialog));
-  g_signal_connect ((gpointer) browserradiobtn1, "clicked",
-                    G_CALLBACK (on_browserselection_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) browserradiobtn2, "clicked",
-                    G_CALLBACK (on_browserselection_clicked),
+  g_signal_connect ((gpointer) browseinwindow, "toggled",
+                    G_CALLBACK (on_openlinksinsidebtn_clicked),
                     NULL);
   g_signal_connect ((gpointer) browsercmd, "changed",
                     G_CALLBACK (on_browsercmd_changed),
@@ -2073,9 +2101,6 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) menuradiobtn3, "clicked",
                     G_CALLBACK (on_menuselection_clicked),
                     NULL);
-  g_signal_connect ((gpointer) openlinksinsidebtn, "clicked",
-                    G_CALLBACK (on_openlinksinsidebtn_clicked),
-                    NULL);
   g_signal_connect ((gpointer) enableproxybtn, "clicked",
                     G_CALLBACK (on_enableproxybtn_clicked),
                     NULL);
@@ -2089,6 +2114,12 @@ create_prefdialog (void)
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (prefdialog));
 
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label137), browserpopup);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (manuallabel), browsercmd);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label138), browserlocpopup);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label53), proxyhostentry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label54), proxyportentry);
+
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, prefdialog, "prefdialog");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_vbox5, "dialog_vbox5");
@@ -2098,11 +2129,16 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label118, "label118");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox49, "hbox49");
   GLADE_HOOKUP_OBJECT (prefdialog, label119, "label119");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox14, "vbox14");
-  GLADE_HOOKUP_OBJECT (prefdialog, browserradiobtn1, "browserradiobtn1");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox14, "hbox14");
-  GLADE_HOOKUP_OBJECT (prefdialog, browserradiobtn2, "browserradiobtn2");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox257, "vbox257");
+  GLADE_HOOKUP_OBJECT (prefdialog, browseinwindow, "browseinwindow");
+  GLADE_HOOKUP_OBJECT (prefdialog, table6, "table6");
+  GLADE_HOOKUP_OBJECT (prefdialog, label137, "label137");
+  GLADE_HOOKUP_OBJECT (prefdialog, manuallabel, "manuallabel");
   GLADE_HOOKUP_OBJECT (prefdialog, browsercmd, "browsercmd");
+  GLADE_HOOKUP_OBJECT (prefdialog, label138, "label138");
+  GLADE_HOOKUP_OBJECT (prefdialog, browserlocpopup, "browserlocpopup");
+  GLADE_HOOKUP_OBJECT (prefdialog, menu4, "menu4");
+  GLADE_HOOKUP_OBJECT (prefdialog, browserpopup, "browserpopup");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox249, "vbox249");
   GLADE_HOOKUP_OBJECT (prefdialog, label121, "label121");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox50, "hbox50");
@@ -2151,7 +2187,6 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label65, "label65");
   GLADE_HOOKUP_OBJECT (prefdialog, htmlviewoptionmenu, "htmlviewoptionmenu");
   GLADE_HOOKUP_OBJECT (prefdialog, menu3, "menu3");
-  GLADE_HOOKUP_OBJECT (prefdialog, openlinksinsidebtn, "openlinksinsidebtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label39, "label39");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox227, "vbox227");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox254, "vbox254");

@@ -79,5 +79,5 @@ on_proxyportentry_changed              (GtkEditable     *editable,
                                         gpointer         user_data);
 
 void
-on_openlinksinsidebtn_clicked          (GtkButton       *button,
+on_openlinksinsidebtn_clicked          (GtkToggleButton *togglebutton,
                                         gpointer         user_data);

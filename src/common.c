@@ -591,3 +591,22 @@ char* strsep (char **stringp, const char *delim) {
 	return begin;
 }
 #endif /*HAVE_STRSEP*/
+
+/* Taken from gaim 24 June 2004, copyrighted by the gaim developers
+   under the GPL, etc.... */
+gchar *strreplace(const char *string, const char *delimiter,
+			   const char *replacement) {
+	gchar **split;
+	gchar *ret;
+
+	g_return_val_if_fail(string      != NULL, NULL);
+	g_return_val_if_fail(delimiter   != NULL, NULL);
+	g_return_val_if_fail(replacement != NULL, NULL);
+
+	split = g_strsplit(string, delimiter, 0);
+	ret = g_strjoinv(replacement, split);
+	g_strfreev(split);
+
+	return ret;
+}
+

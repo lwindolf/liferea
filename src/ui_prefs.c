@@ -42,6 +42,46 @@ extern GSList *availableBrowserModules;
 static GtkWidget *prefdialog = NULL;
 
 void on_browsermodule_changed(GtkObject *object, gchar *libname);
+void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
+
+struct browser {
+	gchar *id; /**< Unique ID used in storing the prefs */
+	gchar *display; /**< Name to display in the prefs */
+	gchar *defaultloc; /**< Default command.... Use %s to specify URL */
+	gchar *existingwin;
+	gchar *newwin;
+	gchar *tab;
+};
+
+struct browser browsers[] = {
+	{"gnome", "Gnome Default Browser", "gnome-open \"%s\"", NULL, NULL, NULL},
+	{"mozilla", "Mozilla", "mozilla \"%s\"", "mozilla -remote \"openURL(\"%s\")\"",
+	 "mozilla -remote 'openURL(\"%s\",new-window)'", "mozilla -remote 'openURL(\"%s\",new-tab)'"},
+	{"firefox", "Firefox", "firefox \"%s\"", "firefox -remote \"openURL(\"%s\")\"",
+	 "firefox -remote 'openURL(\"%s\",new-window)'", "firefox -remote 'openURL(\"%s\",new-tab)'"},
+	{"netscape", "Netscape", "netscape \"%s\"", NULL, "netscape -remote \"openURL(\"%s\",new-window)\"", NULL},
+	{NULL, NULL, NULL, NULL, NULL, NULL}
+};
+
+gchar *prefs_get_browser_cmd() {
+	gchar *ret = NULL;
+	gchar *libname;
+	
+	libname = getStringConfValue(BROWSER_ID);
+	if (!strcmp(libname, "manual")) {
+		ret = g_strdup(getStringConfValue(BROWSER_COMMAND));
+	} else {
+		struct browser *iter;
+		for (iter = browsers; iter->id != NULL; iter++) {
+			if(!strcmp(libname, iter->id))
+				ret = g_strdup(iter->defaultloc);
+		}
+	}
+	g_free(libname);
+	if (ret == NULL)
+		ret = g_strdup(browsers[0].defaultloc);
+	return ret;
+}
 
 /*------------------------------------------------------------------------------*/
 /* preferences dialog callbacks 						*/
@@ -54,36 +94,61 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gchar		*widgetname, *proxyport, *libname;
 	gboolean	enabled;
 	int		tmp, i;
+	static int manual;
+	struct browser *iter;
 	
-	if(NULL == prefdialog || !G_IS_OBJECT(prefdialog))
+	if(NULL == prefdialog || !G_IS_OBJECT(prefdialog)) {
+		GtkWidget *menu;
 		prefdialog = create_prefdialog ();		
-	
-	g_assert(NULL != prefdialog);
-
-	/* ================= panel 1 "feed handling" ==================== */
-	
-	tmp = getNumericConfValue(GNOME_BROWSER_ENABLED);
-	if((tmp > 2) || (tmp < 1)) 
-		tmp = 1;	/* correct configuration if necessary */
 		
+		/* Set up browser selection popup */
+		menu = gtk_menu_new();
+		for(i=0, iter = browsers; iter->id != NULL; iter++, i++) {
+			entry = gtk_menu_item_new_with_label(iter->display);
+			gtk_widget_show(entry);
+			gtk_container_add(GTK_CONTAINER(menu), entry);
+			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
+		}
+		manual = i;
+		/* This allows the user to choose their own browser by typing in the command. */
+		entry = gtk_menu_item_new_with_label(_("Manual"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
+		
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), menu);
+	}
+	g_assert(NULL != prefdialog);
+	
+	/* ================= panel 1 "feed handling" ==================== */
+
+	/* set the inside browsing flag */
+	widget = lookup_widget(prefdialog, "browseinwindow");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
+	
+	
+	tmp = 0;
+	libname = getStringConfValue(BROWSER_ID);
+	if (libname[0] == '\0') { /* value unset */
+		tmp = getNumericConfValue(GNOME_BROWSER_ENABLED);
+		if(tmp == 2)
+			tmp = manual; /* This is the manual override */
+	}
+	
+	if (!strcmp(libname, "manual"))
+		tmp = manual;
+	else
+		for(i=0, iter = browsers; iter->id != NULL; iter++, i++)
+			if (!strcmp(libname, iter->id))
+				tmp = i;
+	
+	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), tmp);
+	g_free(libname);
+
 	entry = lookup_widget(prefdialog, "browsercmd");
 	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(BROWSER_COMMAND));
-	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==2);
-
-	/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-	for(i = 1; i <= 2; i++) {
-		widgetname = g_strdup_printf("%s%d", "browserradiobtn", i);
-		widget = lookup_widget(prefdialog, widgetname);
-		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-		gtk_object_set_data(GTK_OBJECT(widget), "entry", entry);
-		g_free(widgetname);
-	}
-
-	widgetname = g_strdup_printf("%s%d", "browserradiobtn", tmp);
-	widget = lookup_widget(prefdialog, widgetname);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-	g_free(widgetname);		
-
+	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==manual);
+	gtk_widget_set_sensitive(lookup_widget(prefdialog, "manuallabel"), tmp==manual);	
 	/* Time format */
 	tmp = getNumericConfValue(TIME_FORMAT_MODE);
 	if((tmp > 3) || (tmp < 1)) 
@@ -162,9 +227,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_menu_set_active(GTK_MENU(widget), tmp);
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
 	
-	/* set the inside browsing flag */
-	widget = lookup_widget(prefdialog, "openlinksinsidebtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
 	
 	/* ================= panel 3 "proxy settings" ======================== */
 	
@@ -219,12 +281,25 @@ void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(BROWSER_COMMAND, gtk_editable_get_chars(editable,0,-1));
 }
 
+void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
+	int num = GPOINTER_TO_INT(user_data);
+
+	gtk_widget_set_sensitive(lookup_widget(prefdialog, "browsercmd"), browsers[num].id == NULL);	
+	gtk_widget_set_sensitive(lookup_widget(prefdialog, "manuallabel"), browsers[num].id == NULL);	
+
+	if (browsers[num].id == NULL)
+		setStringConfValue(BROWSER_ID, "manual");
+	else
+		setStringConfValue(BROWSER_ID, browsers[num].id);
+}
+
+
 void on_browsermodule_changed(GtkObject *object, gchar *libname) {
 	setStringConfValue(BROWSER_MODULE, libname);
 }
 
 
-void on_openlinksinsidebtn_clicked(GtkButton *button, gpointer user_data) {
+void on_openlinksinsidebtn_clicked(GtkToggleButton *button, gpointer user_data) {
 	setBooleanConfValue(BROWSE_INSIDE_APPLICATION, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
 

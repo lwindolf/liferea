@@ -346,16 +346,13 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 	GError  *error = NULL;
 	gchar   *cmd, *tmp;
 	
-	if(2 == getNumericConfValue(GNOME_BROWSER_ENABLED))
-		cmd = getStringConfValue(BROWSER_COMMAND);
-	else
-		cmd = g_strdup(GNOME_DEFAULT_BROWSER_COMMAND);
+	cmd = prefs_get_browser_cmd();
 	
 	g_assert(NULL != cmd);
-	if(NULL == strstr(cmd, "%s")) {
-		ui_show_error_box(_("Invalid browser command! There is no %%s URL place holder in the browser command string you specified in the preferences dialog!!!"));
-	}
-	tmp = g_strdup_printf(cmd, uri);
+	if(NULL == strstr(cmd, "%s")) { /* If there is no %s, then just append the URL */
+		tmp = g_strdup_printf("%s \"%s\"", cmd, uri);
+	} else
+		tmp = strreplace(cmd, "%s", uri);
 	g_free(cmd);
 	
 	g_spawn_command_line_async(tmp, &error);
