@@ -301,10 +301,6 @@ struct fp_prop_ui_data {
 	GtkWidget *credTable;
 	GtkWidget *username;
 	GtkWidget *password;
-	GtkWidget *filter;
-	GtkWidget *filterCheckbox;
-	GtkWidget *filterbox;
-	GtkWidget *filterSelectFile;
 };
 
 /* dialog callbacks */
@@ -389,7 +385,7 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 			feed_set_source(ui_data->fp, sourceUrl);
 			xmlFree(sourceUrl);
 		}
-		/* Filter handling */
+
 		feed_schedule_update(ui_data->fp, ui_data->flags);
 		xmlFreeURI(uri);
 	}
@@ -403,7 +399,7 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 
-	if (response_id == GTK_RESPONSE_OK) {
+	if(response_id == GTK_RESPONSE_OK) {
 		gchar *source = NULL;
 		const gchar *filter = NULL;
 
@@ -411,15 +407,14 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		source = ui_feed_dialog_decode_source(ui_data);
 
 		/* Filter handling */
-		filter = gtk_entry_get_text(GTK_ENTRY(ui_data->filter));
-		if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox)) ||
-		    !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
+		filter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
+		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox"))) ||
+		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
 		ui_feedlist_new_subscription(source, filter, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER);
 		g_free(source);
 	}
-
 
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 	g_free(ui_data);
@@ -441,11 +436,11 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		newSource = ui_feed_dialog_decode_source(ui_data);
 		
 		/* Filter handling */
-		newFilter = gtk_entry_get_text(GTK_ENTRY(ui_data->filter));
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox)) &&
-		    strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
+		newFilter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox"))) &&
+		   strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
 			if(feed_get_filter(ui_data->fp) == NULL ||
-			    strcmp(newFilter, feed_get_filter(ui_data->fp))) {
+			   strcmp(newFilter, feed_get_filter(ui_data->fp))) {
 				feed_set_filter(ui_data->fp, newFilter);
 				needsUpdate = TRUE;
 			}
@@ -494,8 +489,12 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 
 static void on_feed_prop_filtercheck(GtkToggleButton *button, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
-	gboolean filter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox));
-	gtk_widget_set_sensitive(ui_data->filterbox, filter);
+	
+	gboolean filter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox")));
+	if(filter)
+		gtk_widget_show(lookup_widget(ui_data->dialog, "innerfiltervbox"));
+	else
+		gtk_widget_hide(lookup_widget(ui_data->dialog, "innerfiltervbox"));
 }
 
 static void ui_feed_prop_enable_httpauth(struct fp_prop_ui_data *ui_data, gboolean enable) {
@@ -536,7 +535,7 @@ static void on_selectfileok_clicked(const gchar *filename, gpointer user_data) {
 		if (ui_data->selector == 'u')
 			gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), utfname);
 		else
-			gtk_entry_set_text(GTK_ENTRY(ui_data->filter), utfname);
+			gtk_entry_set_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")), utfname);
 	}
 	
 	g_free(utfname);
@@ -552,7 +551,7 @@ static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
 		utfname =  gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry));
 	} else {
 		ui_data->selector = 'f';
-		utfname =  gtk_entry_get_text(GTK_ENTRY(ui_data->filter));
+		utfname =  gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
 	}
 	
 	name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
@@ -623,7 +622,7 @@ GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, feedPtr fp, gint flags) {
 	
 	g_signal_connect(G_OBJECT(authdialog), "response",
 				  G_CALLBACK (on_authdialog_response), ui_data);
-	
+
 	gtk_widget_show_all(authdialog);
 	
 	return authdialog;
@@ -659,24 +658,17 @@ GtkWidget* ui_feed_newdialog_new(GtkWindow *parent) {
 	g_signal_connect(ui_data->fileRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
 	g_signal_connect(ui_data->cmdRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
 
-	ui_data->filter = lookup_widget(newdialog, "filterEntry");
-	ui_data->filterCheckbox = lookup_widget(newdialog, "filterCheckbox");
-	ui_data->filterbox = lookup_widget(newdialog, "filterbox");
-	ui_data->filterSelectFile = lookup_widget(newdialog, "filterSelectFile");
-
-	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox), ui_data);
-	g_signal_connect(ui_data->filterCheckbox, "toggled", G_CALLBACK(on_feed_prop_filtercheck), ui_data);
-	g_signal_connect(ui_data->filterSelectFile, "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
-
-	/* Sensitivity */
-	gtk_widget_set_sensitive(ui_data->selectFile, FALSE);
+	g_signal_connect(lookup_widget(newdialog, "filterCheckbox"), "toggled", G_CALLBACK(on_feed_prop_filtercheck), ui_data);
+	g_signal_connect(lookup_widget(newdialog, "filterSelectFile"), "clicked", G_CALLBACK(on_selectfile_pressed), ui_data);
 
 	gtk_widget_grab_default(lookup_widget(newdialog, "newfeedbtn"));
-	g_signal_connect (G_OBJECT (newdialog), "response",
-				   G_CALLBACK (on_newdialog_response), ui_data);
+	g_signal_connect(G_OBJECT(newdialog), "response",
+	                 G_CALLBACK(on_newdialog_response), ui_data);
 	
 	gtk_widget_show_all(newdialog);
-
+	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(newdialog, "filterCheckbox")), ui_data);
+	on_feed_prop_url_radio(GTK_TOGGLE_BUTTON(ui_data->urlRadio), ui_data);
+	
 	return newdialog;
 }
 
@@ -794,19 +786,13 @@ GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, feedPtr fp) {
 		ui_feed_prop_enable_httpauth(ui_data, FALSE);
 		gtk_widget_set_sensitive(ui_data->selectFile, TRUE);
 	}
-	
-	ui_data->filter = lookup_widget(propdialog, "filterEntry");
-	ui_data->filterCheckbox = lookup_widget(propdialog, "filterCheckbox");
-	ui_data->filterbox = lookup_widget(propdialog, "filterbox");
-	ui_data->filterSelectFile = lookup_widget(propdialog, "filterSelectFile");
 
 	if(feed_get_filter(fp) != NULL) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox), TRUE);
-		gtk_entry_set_text(GTK_ENTRY(ui_data->filter), feed_get_filter(fp));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "filterCheckbox")), TRUE);
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(propdialog, "filterEntry")), feed_get_filter(fp));
 	}
-	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox), ui_data);
-	g_signal_connect(ui_data->filterCheckbox, "toggled", G_CALLBACK(on_feed_prop_filtercheck), ui_data);
-	g_signal_connect(ui_data->filterSelectFile, "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
+	g_signal_connect(lookup_widget(propdialog, "filterCheckbox"), "toggled", G_CALLBACK(on_feed_prop_filtercheck), ui_data);
+	g_signal_connect(lookup_widget(propdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
 
 	/***********************************************************************
 	 * Cache                                                               *
@@ -830,6 +816,7 @@ GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, feedPtr fp) {
 	g_signal_connect(G_OBJECT (propdialog), "response", G_CALLBACK (on_propdialog_response), ui_data);
 
 	gtk_widget_show_all(propdialog);
-
+	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "filterCheckbox")), ui_data);
+	
 	return propdialog;
 }

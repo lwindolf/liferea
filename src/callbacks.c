@@ -220,13 +220,3 @@ void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gtk_widget_show(dialog);
 
 }
-
-
-
-void
-on_udateallfavicons_clicked            (GtkButton       *button,
-                                        gpointer         user_data)
-{
-
-}
-

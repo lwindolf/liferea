@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.6.1-test2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-31 22:53+0100\n"
+"POT-Creation-Date: 2004-11-01 01:31+0100\n"
 "PO-Revision-Date: 2004-10-28 10:30+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -228,7 +228,7 @@ msgstr "仮想フォルダ"
 msgid "user defined command"
 msgstr "ユーザ定義のコマンド"
 
-#: src/feed.c:1019 src/interface.c:1107 src/interface.c:1511 src/item.c:254
+#: src/feed.c:1019 src/interface.c:1110 src/interface.c:1520 src/item.c:254
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "ソース:"
@@ -237,7 +237,7 @@ msgstr "ソース:"
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "配信元リンクの自動検出に失敗しました。配信元リンクが見つかりません！"
 
-#: src/interface.c:140 src/interface.c:2953
+#: src/interface.c:140
 msgid "Liferea 0.6.1"
 msgstr "Liferea 0.6.1"
 
@@ -439,7 +439,7 @@ msgstr "Feedster 検索用配信元を生成します"
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
-#: src/interface.c:453 src/interface.c:2937 src/interface.c:2969
+#: src/interface.c:453 src/interface.c:2945 src/interface.c:2977
 msgid "About"
 msgstr "情報"
 
@@ -479,91 +479,93 @@ msgstr "label133"
 msgid "Headlines"
 msgstr "ヘッドライン"
 
-#: src/interface.c:906
+#: src/interface.c:908
 msgid "Subscription Properties"
 msgstr "購読先のプロパティ"
 
-#: src/interface.c:927
+#: src/interface.c:929
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">配信元の名前</span>"
 
-#: src/interface.c:937 src/interface.c:969 src/interface.c:1043
-#: src/interface.c:1124 src/interface.c:1150 src/interface.c:1238
-#: src/interface.c:1448 src/interface.c:1528 src/interface.c:1554
-#: src/interface.c:1806 src/interface.c:1845 src/interface.c:1905
-#: src/interface.c:1941 src/interface.c:1979 src/interface.c:2056
-#: src/interface.c:2116 src/interface.c:2197 src/interface.c:2214
-#: src/interface.c:2241 src/interface.c:2295 src/interface.c:2322
-#: src/interface.c:2372
+#: src/interface.c:939 src/interface.c:971 src/interface.c:1045
+#: src/interface.c:1090 src/interface.c:1124 src/interface.c:1135
+#: src/interface.c:1153 src/interface.c:1241 src/interface.c:1455
+#: src/interface.c:1500 src/interface.c:1534 src/interface.c:1545
+#: src/interface.c:1563 src/interface.c:1817 src/interface.c:1856
+#: src/interface.c:1916 src/interface.c:1952 src/interface.c:1990
+#: src/interface.c:2067 src/interface.c:2127 src/interface.c:2208
+#: src/interface.c:2225 src/interface.c:2252 src/interface.c:2306
+#: src/interface.c:2333 src/interface.c:2383
 msgid "    "
 msgstr "    "
 
-#: src/interface.c:946
+#: src/interface.c:948
 msgid "Feed _Name:"
 msgstr "配信元の名前(_N):"
 
-#: src/interface.c:959
+#: src/interface.c:961
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">更新間隔</span>"
 
-#: src/interface.c:978
+#: src/interface.c:980
 msgid "_Use global default update interval."
 msgstr "デフォルトの更新間隔を使用する(_U)"
 
-#: src/interface.c:988
+#: src/interface.c:990
 msgid "_Feed specific update interval of"
 msgstr "配信元で指定した更新間隔にする(_F): "
 
-#: src/interface.c:1003 src/interface.c:1868
+#: src/interface.c:1005 src/interface.c:1879
 msgid "minutes."
 msgstr "分"
 
-#: src/interface.c:1007
+#: src/interface.c:1009
 msgid "_Don't update this feed automatically."
 msgstr "この配信元を自動的に更新しない(_D)"
 
-#: src/interface.c:1013
+#: src/interface.c:1015
 msgid " "
 msgstr " "
 
-#: src/interface.c:1017
+#: src/interface.c:1019
 #, c-format
 msgid "This feed provider suggests an update interval of %d seconds."
 msgstr "この配信元では更新間隔を %d 秒にすることを推奨しています。"
 
-#: src/interface.c:1024
+#: src/interface.c:1026
 msgid "General"
 msgstr "全般"
 
-#: src/interface.c:1033 src/interface.c:1438
+#: src/interface.c:1035 src/interface.c:1445
 msgid "<b>Feed Source</b>"
 msgstr "<b>配信元のソース</b>"
 
-#: src/interface.c:1059 src/interface.c:1464
-msgid "_Select File..."
-msgstr "ファイルの選択(_S)..."
-
-#: src/interface.c:1077 src/interface.c:1481
+#: src/interface.c:1068 src/interface.c:1478
 msgid "_URL"
 msgstr "URL(_U)"
 
-#: src/interface.c:1083 src/interface.c:1487
-msgid "_File"
-msgstr "ファイル(_F)"
-
-#: src/interface.c:1089 src/interface.c:1493
+#: src/interface.c:1074 src/interface.c:1484
 msgid "_Command"
 msgstr "コマンド(_C)"
 
-#: src/interface.c:1101 src/interface.c:1505
+#: src/interface.c:1084 src/interface.c:1494
+#, fuzzy
+msgid "Local _File"
+msgstr "ファイル(_F)"
+
+#: src/interface.c:1094 src/interface.c:1504
+msgid "_Select File..."
+msgstr "ファイルの選択(_S)..."
+
+#: src/interface.c:1104 src/interface.c:1514
 msgid "Source Type:"
 msgstr "ソースの種類:"
 
-#: src/interface.c:1114 src/interface.c:1518
-msgid "<b>Conversion Filter</b>"
-msgstr "<b>変換フィルタ</b>"
+#: src/interface.c:1128 src/interface.c:1538
+msgid "Use conversion filter"
+msgstr "変換フィルタを利用する"
 
-#: src/interface.c:1132 src/interface.c:1536
+#: src/interface.c:1143 src/interface.c:1553
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -573,23 +575,19 @@ msgstr ""
 "をプラグインとして利用することが可能です。詳細はドキュメントを参照して下さ"
 "い。"
 
-#: src/interface.c:1142 src/interface.c:1546
-msgid "Use conversion filter"
-msgstr "変換フィルタを利用する"
-
-#: src/interface.c:1154 src/interface.c:1558
+#: src/interface.c:1157 src/interface.c:1567
 msgid "Convert using:"
 msgstr "フィルタ名:"
 
-#: src/interface.c:1162 src/interface.c:1566
+#: src/interface.c:1165 src/interface.c:1575
 msgid "Select File..."
 msgstr "ファイルの選択..."
 
-#: src/interface.c:1166
+#: src/interface.c:1169
 msgid "Feed Source"
 msgstr "配信元のソース"
 
-#: src/interface.c:1175
+#: src/interface.c:1178
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -597,71 +595,71 @@ msgstr ""
 "キャッシュの設定では、Liferea を終了する際に配信元の内容を保存するかどうかを"
 "決定します。マークが付与されたエントリは常にキャッシュへ保存されます。"
 
-#: src/interface.c:1182
+#: src/interface.c:1185
 msgid "_Default cache settings"
 msgstr "デフォルトの設定にする(_D)"
 
-#: src/interface.c:1188
+#: src/interface.c:1191
 msgid "Di_sable cache"
 msgstr "キャッシュを無効にする(_S)"
 
-#: src/interface.c:1194
+#: src/interface.c:1197
 msgid "_Umlimited cache"
 msgstr "キャッシュを制限しない(_U)"
 
-#: src/interface.c:1204
+#: src/interface.c:1207
 msgid "_Limit cache to"
 msgstr "キャッシュを制限する(_L)"
 
-#: src/interface.c:1217
+#: src/interface.c:1220
 msgid "items."
 msgstr "個のエントリまで"
 
-#: src/interface.c:1221
+#: src/interface.c:1224
 msgid "Feed Cache"
 msgstr "配信元のキャッシュ"
 
-#: src/interface.c:1230
+#: src/interface.c:1233
 msgid "Use HTTP _authentication"
 msgstr "HTTP の認証機能を使う(_A)"
 
-#: src/interface.c:1248 src/interface.c:3091
+#: src/interface.c:1251 src/interface.c:3099
 msgid "User_name:"
 msgstr "ユーザ名(_N):"
 
-#: src/interface.c:1255 src/interface.c:3098
+#: src/interface.c:1258 src/interface.c:3106
 msgid "_Password:"
 msgstr "パスワード(_P):"
 
-#: src/interface.c:1275 src/interface.c:3068
+#: src/interface.c:1278 src/interface.c:3076
 msgid "Authentication"
 msgstr "認証"
 
-#: src/interface.c:1420
+#: src/interface.c:1427
 msgid "New Subscription"
 msgstr "新しい購読"
 
-#: src/interface.c:1772
+#: src/interface.c:1783
 msgid "Lifeera Preferences"
 msgstr "Liferea の設定"
 
-#: src/interface.c:1796
+#: src/interface.c:1807
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">配信元のキャッシュの取り扱い</span>"
 
-#: src/interface.c:1819
+#: src/interface.c:1830
 msgid "Default number of items per feed to save:"
 msgstr "保存するトピックのデフォルト数/配信元:"
 
-#: src/interface.c:1835
+#: src/interface.c:1846
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr "<span weight=\"bold\">配信元の更新設定</span>"
 
-#: src/interface.c:1858
+#: src/interface.c:1869
 msgid "Default Feed Refresh _Interval:"
 msgstr "配信元を更新する間隔(_I):"
 
-#: src/interface.c:1872
+#: src/interface.c:1883
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -671,15 +669,15 @@ msgstr ""
 "更新することは妥当ではありません。自動的に更新しない場合はこの間隔を 0にセッ"
 "トして下さい。</i>"
 
-#: src/interface.c:1883
+#: src/interface.c:1894
 msgid "At _startup:"
 msgstr "起動時の動作(_S):"
 
-#: src/interface.c:1895
+#: src/interface.c:1906
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">配信元の読み込み</span>"
 
-#: src/interface.c:1914
+#: src/interface.c:1925
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds,"
@@ -687,7 +685,7 @@ msgstr ""
 "必要であればディスクから配信元を読み込む\n"
 "(配信元がたくさんある場合は、処理が遅くなります)(_L)"
 
-#: src/interface.c:1921
+#: src/interface.c:1932
 msgid ""
 "_Keep all feeds loaded. This may improve speed \n"
 "(especially when searching) but can cause a \n"
@@ -699,41 +697,41 @@ msgstr ""
 "期待できますが、配信元がたくさんある場合は、\n"
 "メモリを多大に消費します！)(_K)"
 
-#: src/interface.c:1931
+#: src/interface.c:1942
 #, fuzzy
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">配信元の読み込み</span>"
 
-#: src/interface.c:1950
+#: src/interface.c:1961
 #, fuzzy
 msgid "Update all favicons now."
 msgstr "全ての配信元を更新する"
 
-#: src/interface.c:1954
+#: src/interface.c:1965
 msgid "Feed Handling"
 msgstr "配信元の取り扱い"
 
-#: src/interface.c:1969
+#: src/interface.c:1980
 msgid "<span weight=\"bold\">Viewing Headlines</span>"
 msgstr "<span weight=\"bold\">ヘッドラインの表示</span>"
 
-#: src/interface.c:1992
+#: src/interface.c:2003
 msgid "Skim through articles with "
 msgstr "エントリの斜め読みに使用するキー: "
 
-#: src/interface.c:2002
+#: src/interface.c:2013
 msgid "Space"
 msgstr "[SPACE]"
 
-#: src/interface.c:2006
+#: src/interface.c:2017
 msgid "<Ctrl> Space"
 msgstr "[CTRL]+[SPACE]"
 
-#: src/interface.c:2010
+#: src/interface.c:2021
 msgid "<Alt> Space"
 msgstr "[ALT]+[SPACE]"
 
-#: src/interface.c:2016
+#: src/interface.c:2027
 msgid ""
 "Liferea displays feeds' content using various HTML renderers. Depending on "
 "which renderers are installed on your computer, different options will be "
@@ -744,31 +742,31 @@ msgstr ""
 "きるオプションが異なります。設定したオプションを有効にするために Liferea を再"
 "起動して下さい。"
 
-#: src/interface.c:2026
+#: src/interface.c:2037
 msgid "View Headlines With"
 msgstr "使用するエンジン:"
 
-#: src/interface.c:2038
+#: src/interface.c:2049
 msgid "Open links in Liferea's _window."
 msgstr "リンクを Liferea のウィンドウ内で開く(_W)"
 
-#: src/interface.c:2046
+#: src/interface.c:2057
 msgid "<span weight=\"bold\">Date Column Settings</span>"
 msgstr "<span weight=\"bold\">日付の書式</span>"
 
-#: src/interface.c:2065
+#: src/interface.c:2076
 msgid "Display only time"
 msgstr "時刻だけ表示する"
 
-#: src/interface.c:2071
+#: src/interface.c:2082
 msgid "Display date and time"
 msgstr "日付と時刻を表示する"
 
-#: src/interface.c:2081
+#: src/interface.c:2092
 msgid "User defined format:"
 msgstr "ユーザ定義の書式にする"
 
-#: src/interface.c:2090
+#: src/interface.c:2101
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -776,19 +774,19 @@ msgstr ""
 "エキスパート向け: strftime() の man ページに記載されている時刻の書式文字列を"
 "指定して下さい"
 
-#: src/interface.c:2093
+#: src/interface.c:2104
 msgid "Headline Display"
 msgstr "ヘッドラインの表示"
 
-#: src/interface.c:2106
+#: src/interface.c:2117
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">外部ブラウザの設定</span>"
 
-#: src/interface.c:2130
+#: src/interface.c:2141
 msgid "_Browser:"
 msgstr "ブラウザ(_B):"
 
-#: src/interface.c:2137
+#: src/interface.c:2148
 #, c-format
 msgid ""
 "_Manual:\n"
@@ -797,19 +795,19 @@ msgstr ""
 "手動(_M):\n"
 "(URL は %s で指定する)"
 
-#: src/interface.c:2151
+#: src/interface.c:2162
 msgid "_Open link in:"
 msgstr "リンクを開く場所(_O):"
 
-#: src/interface.c:2174
+#: src/interface.c:2185
 msgid "External Browser"
 msgstr "外部ブラウザ"
 
-#: src/interface.c:2187
+#: src/interface.c:2198
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">通知の設定</span>"
 
-#: src/interface.c:2205
+#: src/interface.c:2216
 msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
@@ -817,35 +815,35 @@ msgstr ""
 "パネル通知エリアの中に\n"
 "ステータス・アイコンを表示する(_I)"
 
-#: src/interface.c:2222
+#: src/interface.c:2233
 msgid "Show a _popup window with new headlines."
 msgstr "新しいヘッドラインをポップアップ・ウィンドウで表示する(_P)"
 
-#: src/interface.c:2231
+#: src/interface.c:2242
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">メニューの設定</span>"
 
-#: src/interface.c:2250
+#: src/interface.c:2261
 msgid "Show Menu _And Toolbar"
 msgstr "メニューとツールバーを表示する(_A)"
 
-#: src/interface.c:2256
+#: src/interface.c:2267
 msgid "Show _Menu Only"
 msgstr "メニューのみ表示する(_M)"
 
-#: src/interface.c:2262
+#: src/interface.c:2273
 msgid "Show _Toolbar Only"
 msgstr "ツールバーのみ表示する(_T)"
 
-#: src/interface.c:2268
+#: src/interface.c:2279
 msgid "GUI"
 msgstr "GUI"
 
-#: src/interface.c:2285
+#: src/interface.c:2296
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">HTTP プロキシ・サーバ</span>"
 
-#: src/interface.c:2304
+#: src/interface.c:2315
 msgid ""
 "Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center. Note: changing these settings "
@@ -858,63 +856,63 @@ msgstr ""
 "スクトップを利用していないユーザがプロキシ経由で Liferea をご利用できるように"
 "するためのものです]"
 
-#: src/interface.c:2314
+#: src/interface.c:2325
 msgid "_Enable Proxy"
 msgstr "プロキシを有効にする(_E)"
 
-#: src/interface.c:2336
+#: src/interface.c:2347
 msgid "Proxy _Host:"
 msgstr "プロキシのホスト(_H):"
 
-#: src/interface.c:2357
+#: src/interface.c:2368
 msgid "Proxy _Port:"
 msgstr "プロキシのポート番号(_P):"
 
-#: src/interface.c:2364
+#: src/interface.c:2375
 msgid "Use Proxy _Authentication"
 msgstr "プロキシの認証機能を使う(_A)"
 
-#: src/interface.c:2382
+#: src/interface.c:2393
 msgid "Proxy _Username:"
 msgstr "ユーザ名(_U):"
 
-#: src/interface.c:2404
+#: src/interface.c:2415
 msgid "Proxy Pass_word:"
 msgstr "パスワード(_W):"
 
-#: src/interface.c:2411
+#: src/interface.c:2422
 msgid "Proxy"
 msgstr "プロキシ"
 
-#: src/interface.c:2663
+#: src/interface.c:2671
 msgid "New Folder"
 msgstr "新しいフォルダ"
 
-#: src/interface.c:2679 src/interface.c:2756
+#: src/interface.c:2687 src/interface.c:2764
 msgid "Folder name:"
 msgstr "フォルダ名:"
 
-#: src/interface.c:2744
+#: src/interface.c:2752
 msgid "Rename Folder"
 msgstr "フォルダ名の変更"
 
-#: src/interface.c:2825
+#: src/interface.c:2833
 msgid "Feedster Search"
 msgstr "Feedster で検索する"
 
-#: src/interface.c:2840
+#: src/interface.c:2848
 msgid "Search for:"
 msgstr "検索する単語:"
 
-#: src/interface.c:2847
+#: src/interface.c:2855
 msgid "enter any search string you want"
 msgstr "検索する文字列を入力して下さい"
 
-#: src/interface.c:2854
+#: src/interface.c:2862
 msgid "Maximal Number Of Result Items:"
 msgstr "検索結果の最大数:"
 
-#: src/interface.c:2863
+#: src/interface.c:2871
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -923,11 +921,11 @@ msgstr ""
 "注記: Liferea は指定した検索文字列に対して Feedster 検索を行うために使用する"
 "配信元を生成します。この配信元を保存し、他の配信元を更新することができます。"
 
-#: src/interface.c:2958
+#: src/interface.c:2966
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea は GTK+ 版のニュース・アグリゲータです。"
 
-#: src/interface.c:2963
+#: src/interface.c:2971
 msgid ""
 "Copyright (c) 2003-2004 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
@@ -937,7 +935,8 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> と\n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: src/interface.c:2983
+#: src/interface.c:2991
+#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -954,6 +953,11 @@ msgid ""
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
 "ahmed el-helw <ahmedre@cc.gatech.edu>\n"
+"James Bowes <bowes@cs.dal.ca>\n"
+"Marc Deslauriers\n"
+"Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
+"Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"\n"
 "\n"
 "Code from other projects\n"
 "\n"
@@ -985,54 +989,20 @@ msgstr ""
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
-#: src/interface.c:2989
+#: src/interface.c:2997
 msgid "Contributors"
 msgstr "その他の貢献者"
 
-#: src/interface.c:3003
-msgid ""
-"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Vincent Lefevre <vincent@vinc17.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev Vladimir <compress@linux-online.ru>\n"
-"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
-"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
-msgstr ""
-"相花 毅 <aihana@gnome.gr.jp>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Vincent Lefevre <vincent@vinc17.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev Vladimir <compress@linux-online.ru>\n"
-"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
-"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
-
-#: src/interface.c:3009
+#: src/interface.c:3017
 msgid "Translation"
 msgstr "翻訳者"
 
-#: src/interface.c:3079 src/ui_feed.c:617
+#: src/interface.c:3087 src/ui_feed.c:616
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "\"%s\" (%s) のユーザ名とパスワードを入力して下さい:"
 
-#: src/interface.c:3120
+#: src/interface.c:3128
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -1040,15 +1010,15 @@ msgstr ""
 "注記: <i>ユーザ名とパスワードは暗号化せずに Liferea 配信元一覧のファイルへ保"
 "存されます。</i>"
 
-#: src/interface.c:3186
+#: src/interface.c:3194
 msgid "VFolder Properties"
 msgstr "仮想フォルダのプロパティ"
 
-#: src/interface.c:3202
+#: src/interface.c:3210
 msgid "Name"
 msgstr "名前"
 
-#: src/interface.c:3231
+#: src/interface.c:3239
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
@@ -1057,7 +1027,7 @@ msgstr ""
 "そのトピックが仮想フォルダに追加されます。同様に、\n"
 "削除ルールにマッチしたトピックは削除されます。"
 
-#: src/interface.c:3244
+#: src/interface.c:3252
 msgid "Rules"
 msgstr "ルール"
 
@@ -1498,20 +1468,20 @@ msgstr "\"%s\" の更新が完了しました..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" は利用できません"
 
-#: src/ui_feed.c:559
+#: src/ui_feed.c:558
 msgid "Choose File"
 msgstr "ファイルの選択"
 
-#: src/ui_feed.c:618
+#: src/ui_feed.c:617
 msgid "Unknown source"
 msgstr "配信元ソースが不明です"
 
-#: src/ui_feed.c:727
+#: src/ui_feed.c:719
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr "この配信元では更新間隔を %d 分にすることを推奨しています。"
 
-#: src/ui_feed.c:729
+#: src/ui_feed.c:721
 msgid "This feed specifies no default update interval."
 msgstr "この配信元はデフォルトの更新間隔を指定していません。"
 
@@ -2008,3 +1978,39 @@ msgid ""
 msgstr ""
 "GtkHTML2 ではタグ <object> をサポートしていませんので、\n"
 "HTML に挿入されているプラグイン部分は表示されないでしょう。"
+
+#~ msgid "<b>Conversion Filter</b>"
+#~ msgstr "<b>変換フィルタ</b>"
+
+#~ msgid ""
+#~ "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Vincent Lefevre <vincent@vinc17.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+#~ "Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
+#~ msgstr ""
+#~ "相花 毅 <aihana@gnome.gr.jp>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Vincent Lefevre <vincent@vinc17.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+#~ "Tibor Pittich <Tibor.Pittich@mandrake.org>\n"

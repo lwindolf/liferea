@@ -847,32 +847,34 @@ create_propdialog (void)
   GtkWidget *label161;
   GtkWidget *feedUpdateInfo;
   GtkWidget *label66;
-  GtkWidget *vbox238;
-  GtkWidget *label86;
-  GtkWidget *hbox36;
-  GtkWidget *label87;
-  GtkWidget *table3;
-  GtkWidget *alignment4;
-  GtkWidget *selectSourceFileButton;
+  GtkWidget *vbox2589;
+  GtkWidget *label167;
+  GtkWidget *hbox75;
+  GtkWidget *label168;
+  GtkWidget *table7;
   GtkWidget *sourceEntry;
-  GtkWidget *vbox239;
+  GtkWidget *vbox2590;
   GtkWidget *feed_loc_url;
   GSList *feed_loc_url_group = NULL;
-  GtkWidget *feed_loc_file;
   GtkWidget *feed_loc_command;
-  GtkWidget *alignment5;
-  GtkWidget *label79;
-  GtkWidget *label78;
-  GtkWidget *label96;
-  GtkWidget *hbox37;
-  GtkWidget *label89;
-  GtkWidget *vbox241;
-  GtkWidget *label91;
-  GtkWidget *vbox243;
+  GtkWidget *hbox76;
+  GtkWidget *feed_loc_file;
+  GtkWidget *label169;
+  GtkWidget *selectSourceFileButton;
+  GtkWidget *alignment10;
+  GtkWidget *label170;
+  GtkWidget *label171;
+  GtkWidget *outerfiltervbox;
+  GtkWidget *hbox77;
+  GtkWidget *label172;
   GtkWidget *filterCheckbox;
+  GtkWidget *innerfiltervbox;
+  GtkWidget *label173;
+  GtkWidget *vbox2592;
+  GtkWidget *label174;
   GtkWidget *filterbox;
-  GtkWidget *label99;
-  GtkWidget *label100;
+  GtkWidget *label175;
+  GtkWidget *label176;
   GtkWidget *filterEntry;
   GtkWidget *filterSelectFile;
   GtkWidget *label67;
@@ -1025,135 +1027,136 @@ create_propdialog (void)
   gtk_widget_show (label66);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 0), label66);
 
-  vbox238 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox238);
-  gtk_container_add (GTK_CONTAINER (notebook3), vbox238);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox238), 12);
+  vbox2589 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2589);
+  gtk_container_add (GTK_CONTAINER (notebook3), vbox2589);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2589), 6);
 
-  label86 = gtk_label_new (_("<b>Feed Source</b>"));
-  gtk_widget_show (label86);
-  gtk_box_pack_start (GTK_BOX (vbox238), label86, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label86), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label86), 0, 0.5);
+  label167 = gtk_label_new (_("<b>Feed Source</b>"));
+  gtk_widget_show (label167);
+  gtk_box_pack_start (GTK_BOX (vbox2589), label167, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label167), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label167), 0, 0.5);
 
-  hbox36 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox36);
-  gtk_box_pack_start (GTK_BOX (vbox238), hbox36, FALSE, FALSE, 0);
+  hbox75 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox75);
+  gtk_box_pack_start (GTK_BOX (vbox2589), hbox75, FALSE, FALSE, 0);
 
-  label87 = gtk_label_new (_("    "));
-  gtk_widget_show (label87);
-  gtk_box_pack_start (GTK_BOX (hbox36), label87, FALSE, FALSE, 0);
+  label168 = gtk_label_new (_("    "));
+  gtk_widget_show (label168);
+  gtk_box_pack_start (GTK_BOX (hbox75), label168, FALSE, FALSE, 0);
 
-  table3 = gtk_table_new (3, 2, FALSE);
-  gtk_widget_show (table3);
-  gtk_box_pack_start (GTK_BOX (hbox36), table3, TRUE, TRUE, 0);
-  gtk_table_set_row_spacings (GTK_TABLE (table3), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table3), 6);
-
-  alignment4 = gtk_alignment_new (0, 0.5, 0, 0);
-  gtk_widget_show (alignment4);
-  gtk_table_attach (GTK_TABLE (table3), alignment4, 1, 2, 2, 3,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  selectSourceFileButton = gtk_button_new_with_mnemonic (_("_Select File..."));
-  gtk_widget_show (selectSourceFileButton);
-  gtk_container_add (GTK_CONTAINER (alignment4), selectSourceFileButton);
+  table7 = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (table7);
+  gtk_box_pack_start (GTK_BOX (hbox75), table7, TRUE, TRUE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (table7), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table7), 6);
 
   sourceEntry = gtk_entry_new ();
   gtk_widget_show (sourceEntry);
-  gtk_table_attach (GTK_TABLE (table3), sourceEntry, 1, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table7), sourceEntry, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_entry_set_activates_default (GTK_ENTRY (sourceEntry), TRUE);
 
-  vbox239 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox239);
-  gtk_table_attach (GTK_TABLE (table3), vbox239, 1, 2, 0, 1,
+  vbox2590 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox2590);
+  gtk_table_attach (GTK_TABLE (table7), vbox2590, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox239), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2590), 6);
 
   feed_loc_url = gtk_radio_button_new_with_mnemonic (NULL, _("_URL"));
   gtk_widget_show (feed_loc_url);
-  gtk_box_pack_start (GTK_BOX (vbox239), feed_loc_url, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2590), feed_loc_url, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feed_loc_url), feed_loc_url_group);
   feed_loc_url_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feed_loc_url));
 
-  feed_loc_file = gtk_radio_button_new_with_mnemonic (NULL, _("_File"));
-  gtk_widget_show (feed_loc_file);
-  gtk_box_pack_start (GTK_BOX (vbox239), feed_loc_file, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (feed_loc_file), feed_loc_url_group);
-  feed_loc_url_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feed_loc_file));
-
   feed_loc_command = gtk_radio_button_new_with_mnemonic (NULL, _("_Command"));
   gtk_widget_show (feed_loc_command);
-  gtk_box_pack_start (GTK_BOX (vbox239), feed_loc_command, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2590), feed_loc_command, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feed_loc_command), feed_loc_url_group);
   feed_loc_url_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feed_loc_command));
 
-  alignment5 = gtk_alignment_new (0.5, 0.5, 1, 1);
-  gtk_widget_show (alignment5);
-  gtk_table_attach (GTK_TABLE (table3), alignment5, 0, 1, 0, 1,
+  hbox76 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox76);
+  gtk_box_pack_start (GTK_BOX (vbox2590), hbox76, TRUE, FALSE, 0);
+
+  feed_loc_file = gtk_radio_button_new_with_mnemonic (NULL, _("Local _File"));
+  gtk_widget_show (feed_loc_file);
+  gtk_box_pack_start (GTK_BOX (hbox76), feed_loc_file, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (feed_loc_file), feed_loc_url_group);
+  feed_loc_url_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feed_loc_file));
+
+  label169 = gtk_label_new (_("    "));
+  gtk_widget_show (label169);
+  gtk_box_pack_start (GTK_BOX (hbox76), label169, TRUE, FALSE, 0);
+
+  selectSourceFileButton = gtk_button_new_with_mnemonic (_("_Select File..."));
+  gtk_widget_show (selectSourceFileButton);
+  gtk_box_pack_start (GTK_BOX (hbox76), selectSourceFileButton, FALSE, FALSE, 0);
+
+  alignment10 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment10);
+  gtk_table_attach (GTK_TABLE (table7), alignment10, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
 
-  label79 = gtk_label_new (_("Source Type:"));
-  gtk_widget_show (label79);
-  gtk_container_add (GTK_CONTAINER (alignment5), label79);
-  gtk_misc_set_alignment (GTK_MISC (label79), 0, 0);
-  gtk_misc_set_padding (GTK_MISC (label79), 0, 6);
+  label170 = gtk_label_new (_("Source Type:"));
+  gtk_widget_show (label170);
+  gtk_container_add (GTK_CONTAINER (alignment10), label170);
+  gtk_misc_set_alignment (GTK_MISC (label170), 0, 0);
+  gtk_misc_set_padding (GTK_MISC (label170), 0, 6);
 
-  label78 = gtk_label_new (_("Source:"));
-  gtk_widget_show (label78);
-  gtk_table_attach (GTK_TABLE (table3), label78, 0, 1, 1, 2,
+  label171 = gtk_label_new (_("Source:"));
+  gtk_widget_show (label171);
+  gtk_table_attach (GTK_TABLE (table7), label171, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_misc_set_alignment (GTK_MISC (label78), 0, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (label171), 0, 0.5);
 
-  label96 = gtk_label_new (_("<b>Conversion Filter</b>"));
-  gtk_widget_show (label96);
-  gtk_box_pack_start (GTK_BOX (vbox238), label96, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label96), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label96), 0, 0.5);
+  outerfiltervbox = gtk_vbox_new (FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (vbox2589), outerfiltervbox, FALSE, FALSE, 0);
 
-  hbox37 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox37);
-  gtk_box_pack_start (GTK_BOX (vbox238), hbox37, FALSE, FALSE, 0);
+  hbox77 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox77);
+  gtk_box_pack_start (GTK_BOX (outerfiltervbox), hbox77, FALSE, FALSE, 0);
 
-  label89 = gtk_label_new (_("    "));
-  gtk_widget_show (label89);
-  gtk_box_pack_start (GTK_BOX (hbox37), label89, FALSE, FALSE, 0);
-
-  vbox241 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox241);
-  gtk_box_pack_start (GTK_BOX (hbox37), vbox241, TRUE, TRUE, 0);
-
-  label91 = gtk_label_new (_("Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."));
-  gtk_widget_show (label91);
-  gtk_box_pack_start (GTK_BOX (vbox241), label91, FALSE, FALSE, 0);
-  gtk_label_set_line_wrap (GTK_LABEL (label91), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label91), 0, 0.5);
-
-  vbox243 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox243);
-  gtk_box_pack_start (GTK_BOX (vbox241), vbox243, FALSE, FALSE, 0);
+  label172 = gtk_label_new (_("    "));
+  gtk_widget_show (label172);
+  gtk_box_pack_start (GTK_BOX (hbox77), label172, FALSE, FALSE, 0);
 
   filterCheckbox = gtk_check_button_new_with_mnemonic (_("Use conversion filter"));
   gtk_widget_show (filterCheckbox);
-  gtk_box_pack_start (GTK_BOX (vbox243), filterCheckbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox77), filterCheckbox, FALSE, FALSE, 0);
+
+  innerfiltervbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (outerfiltervbox), innerfiltervbox, TRUE, TRUE, 0);
+
+  label173 = gtk_label_new (_("    "));
+  gtk_widget_show (label173);
+  gtk_box_pack_start (GTK_BOX (innerfiltervbox), label173, FALSE, FALSE, 0);
+
+  vbox2592 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2592);
+  gtk_box_pack_start (GTK_BOX (innerfiltervbox), vbox2592, TRUE, TRUE, 0);
+
+  label174 = gtk_label_new (_("Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."));
+  gtk_widget_show (label174);
+  gtk_box_pack_start (GTK_BOX (vbox2592), label174, FALSE, FALSE, 0);
+  gtk_label_set_line_wrap (GTK_LABEL (label174), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label174), 0, 0.5);
 
   filterbox = gtk_hbox_new (FALSE, 6);
   gtk_widget_show (filterbox);
-  gtk_box_pack_start (GTK_BOX (vbox243), filterbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2592), filterbox, FALSE, FALSE, 0);
 
-  label99 = gtk_label_new (_("    "));
-  gtk_widget_show (label99);
-  gtk_box_pack_start (GTK_BOX (filterbox), label99, FALSE, FALSE, 0);
+  label175 = gtk_label_new (_("    "));
+  gtk_widget_show (label175);
+  gtk_box_pack_start (GTK_BOX (filterbox), label175, FALSE, FALSE, 0);
 
-  label100 = gtk_label_new (_("Convert using:"));
-  gtk_widget_show (label100);
-  gtk_box_pack_start (GTK_BOX (filterbox), label100, FALSE, FALSE, 0);
+  label176 = gtk_label_new (_("Convert using:"));
+  gtk_widget_show (label176);
+  gtk_box_pack_start (GTK_BOX (filterbox), label176, FALSE, FALSE, 0);
 
   filterEntry = gtk_entry_new ();
   gtk_widget_show (filterEntry);
@@ -1321,31 +1324,33 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, label161, "label161");
   GLADE_HOOKUP_OBJECT (propdialog, feedUpdateInfo, "feedUpdateInfo");
   GLADE_HOOKUP_OBJECT (propdialog, label66, "label66");
-  GLADE_HOOKUP_OBJECT (propdialog, vbox238, "vbox238");
-  GLADE_HOOKUP_OBJECT (propdialog, label86, "label86");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox36, "hbox36");
-  GLADE_HOOKUP_OBJECT (propdialog, label87, "label87");
-  GLADE_HOOKUP_OBJECT (propdialog, table3, "table3");
-  GLADE_HOOKUP_OBJECT (propdialog, alignment4, "alignment4");
-  GLADE_HOOKUP_OBJECT (propdialog, selectSourceFileButton, "selectSourceFileButton");
+  GLADE_HOOKUP_OBJECT (propdialog, vbox2589, "vbox2589");
+  GLADE_HOOKUP_OBJECT (propdialog, label167, "label167");
+  GLADE_HOOKUP_OBJECT (propdialog, hbox75, "hbox75");
+  GLADE_HOOKUP_OBJECT (propdialog, label168, "label168");
+  GLADE_HOOKUP_OBJECT (propdialog, table7, "table7");
   GLADE_HOOKUP_OBJECT (propdialog, sourceEntry, "sourceEntry");
-  GLADE_HOOKUP_OBJECT (propdialog, vbox239, "vbox239");
+  GLADE_HOOKUP_OBJECT (propdialog, vbox2590, "vbox2590");
   GLADE_HOOKUP_OBJECT (propdialog, feed_loc_url, "feed_loc_url");
-  GLADE_HOOKUP_OBJECT (propdialog, feed_loc_file, "feed_loc_file");
   GLADE_HOOKUP_OBJECT (propdialog, feed_loc_command, "feed_loc_command");
-  GLADE_HOOKUP_OBJECT (propdialog, alignment5, "alignment5");
-  GLADE_HOOKUP_OBJECT (propdialog, label79, "label79");
-  GLADE_HOOKUP_OBJECT (propdialog, label78, "label78");
-  GLADE_HOOKUP_OBJECT (propdialog, label96, "label96");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox37, "hbox37");
-  GLADE_HOOKUP_OBJECT (propdialog, label89, "label89");
-  GLADE_HOOKUP_OBJECT (propdialog, vbox241, "vbox241");
-  GLADE_HOOKUP_OBJECT (propdialog, label91, "label91");
-  GLADE_HOOKUP_OBJECT (propdialog, vbox243, "vbox243");
+  GLADE_HOOKUP_OBJECT (propdialog, hbox76, "hbox76");
+  GLADE_HOOKUP_OBJECT (propdialog, feed_loc_file, "feed_loc_file");
+  GLADE_HOOKUP_OBJECT (propdialog, label169, "label169");
+  GLADE_HOOKUP_OBJECT (propdialog, selectSourceFileButton, "selectSourceFileButton");
+  GLADE_HOOKUP_OBJECT (propdialog, alignment10, "alignment10");
+  GLADE_HOOKUP_OBJECT (propdialog, label170, "label170");
+  GLADE_HOOKUP_OBJECT (propdialog, label171, "label171");
+  GLADE_HOOKUP_OBJECT (propdialog, outerfiltervbox, "outerfiltervbox");
+  GLADE_HOOKUP_OBJECT (propdialog, hbox77, "hbox77");
+  GLADE_HOOKUP_OBJECT (propdialog, label172, "label172");
   GLADE_HOOKUP_OBJECT (propdialog, filterCheckbox, "filterCheckbox");
+  GLADE_HOOKUP_OBJECT (propdialog, innerfiltervbox, "innerfiltervbox");
+  GLADE_HOOKUP_OBJECT (propdialog, label173, "label173");
+  GLADE_HOOKUP_OBJECT (propdialog, vbox2592, "vbox2592");
+  GLADE_HOOKUP_OBJECT (propdialog, label174, "label174");
   GLADE_HOOKUP_OBJECT (propdialog, filterbox, "filterbox");
-  GLADE_HOOKUP_OBJECT (propdialog, label99, "label99");
-  GLADE_HOOKUP_OBJECT (propdialog, label100, "label100");
+  GLADE_HOOKUP_OBJECT (propdialog, label175, "label175");
+  GLADE_HOOKUP_OBJECT (propdialog, label176, "label176");
   GLADE_HOOKUP_OBJECT (propdialog, filterEntry, "filterEntry");
   GLADE_HOOKUP_OBJECT (propdialog, filterSelectFile, "filterSelectFile");
   GLADE_HOOKUP_OBJECT (propdialog, label67, "label67");
@@ -1388,24 +1393,26 @@ create_newdialog (void)
   GtkWidget *hbox43;
   GtkWidget *label102;
   GtkWidget *table5;
-  GtkWidget *alignment6;
-  GtkWidget *selectSourceFileButton;
   GtkWidget *sourceEntry;
   GtkWidget *vbox244;
   GtkWidget *feed_loc_url;
   GSList *feed_loc_url_group = NULL;
-  GtkWidget *feed_loc_file;
   GtkWidget *feed_loc_command;
+  GtkWidget *hbox73;
+  GtkWidget *feed_loc_file;
+  GtkWidget *label165;
+  GtkWidget *selectSourceFileButton;
   GtkWidget *alignment7;
   GtkWidget *label103;
   GtkWidget *label104;
-  GtkWidget *label109;
-  GtkWidget *hbox46;
+  GtkWidget *outerfiltervbox;
+  GtkWidget *hbox74;
+  GtkWidget *label166;
+  GtkWidget *filterCheckbox;
+  GtkWidget *innerfiltervbox;
   GtkWidget *label110;
   GtkWidget *vbox246;
   GtkWidget *label111;
-  GtkWidget *vbox247;
-  GtkWidget *filterCheckbox;
   GtkWidget *filterbox;
   GtkWidget *label112;
   GtkWidget *label113;
@@ -1449,21 +1456,11 @@ create_newdialog (void)
   gtk_widget_show (label102);
   gtk_box_pack_start (GTK_BOX (hbox43), label102, FALSE, FALSE, 0);
 
-  table5 = gtk_table_new (3, 2, FALSE);
+  table5 = gtk_table_new (2, 2, FALSE);
   gtk_widget_show (table5);
   gtk_box_pack_start (GTK_BOX (hbox43), table5, TRUE, TRUE, 0);
   gtk_table_set_row_spacings (GTK_TABLE (table5), 6);
   gtk_table_set_col_spacings (GTK_TABLE (table5), 6);
-
-  alignment6 = gtk_alignment_new (0, 0.5, 0, 0);
-  gtk_widget_show (alignment6);
-  gtk_table_attach (GTK_TABLE (table5), alignment6, 1, 2, 2, 3,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  selectSourceFileButton = gtk_button_new_with_mnemonic (_("_Select File..."));
-  gtk_widget_show (selectSourceFileButton);
-  gtk_container_add (GTK_CONTAINER (alignment6), selectSourceFileButton);
 
   sourceEntry = gtk_entry_new ();
   gtk_widget_show (sourceEntry);
@@ -1484,17 +1481,29 @@ create_newdialog (void)
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feed_loc_url), feed_loc_url_group);
   feed_loc_url_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feed_loc_url));
 
-  feed_loc_file = gtk_radio_button_new_with_mnemonic (NULL, _("_File"));
-  gtk_widget_show (feed_loc_file);
-  gtk_box_pack_start (GTK_BOX (vbox244), feed_loc_file, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (feed_loc_file), feed_loc_url_group);
-  feed_loc_url_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feed_loc_file));
-
   feed_loc_command = gtk_radio_button_new_with_mnemonic (NULL, _("_Command"));
   gtk_widget_show (feed_loc_command);
   gtk_box_pack_start (GTK_BOX (vbox244), feed_loc_command, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feed_loc_command), feed_loc_url_group);
   feed_loc_url_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feed_loc_command));
+
+  hbox73 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox73);
+  gtk_box_pack_start (GTK_BOX (vbox244), hbox73, TRUE, FALSE, 0);
+
+  feed_loc_file = gtk_radio_button_new_with_mnemonic (NULL, _("Local _File"));
+  gtk_widget_show (feed_loc_file);
+  gtk_box_pack_start (GTK_BOX (hbox73), feed_loc_file, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (feed_loc_file), feed_loc_url_group);
+  feed_loc_url_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feed_loc_file));
+
+  label165 = gtk_label_new (_("    "));
+  gtk_widget_show (label165);
+  gtk_box_pack_start (GTK_BOX (hbox73), label165, TRUE, FALSE, 0);
+
+  selectSourceFileButton = gtk_button_new_with_mnemonic (_("_Select File..."));
+  gtk_widget_show (selectSourceFileButton);
+  gtk_box_pack_start (GTK_BOX (hbox73), selectSourceFileButton, FALSE, FALSE, 0);
 
   alignment7 = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_widget_show (alignment7);
@@ -1515,23 +1524,31 @@ create_newdialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label104), 0, 0.5);
 
-  label109 = gtk_label_new (_("<b>Conversion Filter</b>"));
-  gtk_widget_show (label109);
-  gtk_box_pack_start (GTK_BOX (vbox16), label109, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label109), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label109), 0, 0.5);
+  outerfiltervbox = gtk_vbox_new (FALSE, 6);
+  gtk_box_pack_start (GTK_BOX (vbox16), outerfiltervbox, FALSE, FALSE, 0);
 
-  hbox46 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox46);
-  gtk_box_pack_start (GTK_BOX (vbox16), hbox46, FALSE, FALSE, 0);
+  hbox74 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox74);
+  gtk_box_pack_start (GTK_BOX (outerfiltervbox), hbox74, FALSE, FALSE, 0);
+
+  label166 = gtk_label_new (_("    "));
+  gtk_widget_show (label166);
+  gtk_box_pack_start (GTK_BOX (hbox74), label166, FALSE, FALSE, 0);
+
+  filterCheckbox = gtk_check_button_new_with_mnemonic (_("Use conversion filter"));
+  gtk_widget_show (filterCheckbox);
+  gtk_box_pack_start (GTK_BOX (hbox74), filterCheckbox, FALSE, FALSE, 0);
+
+  innerfiltervbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (outerfiltervbox), innerfiltervbox, TRUE, TRUE, 0);
 
   label110 = gtk_label_new (_("    "));
   gtk_widget_show (label110);
-  gtk_box_pack_start (GTK_BOX (hbox46), label110, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (innerfiltervbox), label110, FALSE, FALSE, 0);
 
   vbox246 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox246);
-  gtk_box_pack_start (GTK_BOX (hbox46), vbox246, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (innerfiltervbox), vbox246, TRUE, TRUE, 0);
 
   label111 = gtk_label_new (_("Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."));
   gtk_widget_show (label111);
@@ -1539,17 +1556,9 @@ create_newdialog (void)
   gtk_label_set_line_wrap (GTK_LABEL (label111), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label111), 0, 0.5);
 
-  vbox247 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox247);
-  gtk_box_pack_start (GTK_BOX (vbox246), vbox247, FALSE, FALSE, 0);
-
-  filterCheckbox = gtk_check_button_new_with_mnemonic (_("Use conversion filter"));
-  gtk_widget_show (filterCheckbox);
-  gtk_box_pack_start (GTK_BOX (vbox247), filterCheckbox, FALSE, FALSE, 0);
-
   filterbox = gtk_hbox_new (FALSE, 6);
   gtk_widget_show (filterbox);
-  gtk_box_pack_start (GTK_BOX (vbox247), filterbox, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox246), filterbox, FALSE, FALSE, 0);
 
   label112 = gtk_label_new (_("    "));
   gtk_widget_show (label112);
@@ -1594,23 +1603,25 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, hbox43, "hbox43");
   GLADE_HOOKUP_OBJECT (newdialog, label102, "label102");
   GLADE_HOOKUP_OBJECT (newdialog, table5, "table5");
-  GLADE_HOOKUP_OBJECT (newdialog, alignment6, "alignment6");
-  GLADE_HOOKUP_OBJECT (newdialog, selectSourceFileButton, "selectSourceFileButton");
   GLADE_HOOKUP_OBJECT (newdialog, sourceEntry, "sourceEntry");
   GLADE_HOOKUP_OBJECT (newdialog, vbox244, "vbox244");
   GLADE_HOOKUP_OBJECT (newdialog, feed_loc_url, "feed_loc_url");
-  GLADE_HOOKUP_OBJECT (newdialog, feed_loc_file, "feed_loc_file");
   GLADE_HOOKUP_OBJECT (newdialog, feed_loc_command, "feed_loc_command");
+  GLADE_HOOKUP_OBJECT (newdialog, hbox73, "hbox73");
+  GLADE_HOOKUP_OBJECT (newdialog, feed_loc_file, "feed_loc_file");
+  GLADE_HOOKUP_OBJECT (newdialog, label165, "label165");
+  GLADE_HOOKUP_OBJECT (newdialog, selectSourceFileButton, "selectSourceFileButton");
   GLADE_HOOKUP_OBJECT (newdialog, alignment7, "alignment7");
   GLADE_HOOKUP_OBJECT (newdialog, label103, "label103");
   GLADE_HOOKUP_OBJECT (newdialog, label104, "label104");
-  GLADE_HOOKUP_OBJECT (newdialog, label109, "label109");
-  GLADE_HOOKUP_OBJECT (newdialog, hbox46, "hbox46");
+  GLADE_HOOKUP_OBJECT (newdialog, outerfiltervbox, "outerfiltervbox");
+  GLADE_HOOKUP_OBJECT (newdialog, hbox74, "hbox74");
+  GLADE_HOOKUP_OBJECT (newdialog, label166, "label166");
+  GLADE_HOOKUP_OBJECT (newdialog, filterCheckbox, "filterCheckbox");
+  GLADE_HOOKUP_OBJECT (newdialog, innerfiltervbox, "innerfiltervbox");
   GLADE_HOOKUP_OBJECT (newdialog, label110, "label110");
   GLADE_HOOKUP_OBJECT (newdialog, vbox246, "vbox246");
   GLADE_HOOKUP_OBJECT (newdialog, label111, "label111");
-  GLADE_HOOKUP_OBJECT (newdialog, vbox247, "vbox247");
-  GLADE_HOOKUP_OBJECT (newdialog, filterCheckbox, "filterCheckbox");
   GLADE_HOOKUP_OBJECT (newdialog, filterbox, "filterbox");
   GLADE_HOOKUP_OBJECT (newdialog, label112, "label112");
   GLADE_HOOKUP_OBJECT (newdialog, label113, "label113");
@@ -2436,9 +2447,6 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) feedsinmemorybtn2, "clicked",
                     G_CALLBACK (on_feedsinmemorybtn_clicked),
                     NULL);
-  g_signal_connect ((gpointer) button27, "clicked",
-                    G_CALLBACK (on_udateallfavicons_clicked),
-                    NULL);
   g_signal_connect ((gpointer) space, "activate",
                     G_CALLBACK (on_browsekey_space_activate),
                     NULL);
@@ -2950,7 +2958,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new (_("Liferea 0.6.1"));
+  label57 = gtk_label_new ("Liferea 0.6.1");
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);
@@ -2980,7 +2988,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow5), viewport1);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport1), GTK_SHADOW_NONE);
 
-  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@ll.pl>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\nahmed el-helw <ahmedre@cc.gatech.edu>\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)\nJonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\nKristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"));
+  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@ll.pl>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\nahmed el-helw <ahmedre@cc.gatech.edu>\nJames Bowes <bowes@cs.dal.ca>\nMarc Deslauriers\nAmit D. Chaudhary <amitc@users.sourceforge.net>\nChristoph Hohmann <reboot@users.sourceforge.net>\n\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)\nJonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\nKristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"));
   gtk_widget_show (label62);
   gtk_container_add (GTK_CONTAINER (viewport1), label62);
   gtk_misc_set_alignment (GTK_MISC (label62), 0, 0.1);
@@ -3000,7 +3008,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new (_("Takeshi AIHANA <aihana@gnome.gr.jp>\nDario Conigliaro <djdas@djdas.no-ip.org>\nCarlos Fenollosa <topopardo@humorfreak.com>\nEnrico Genauck <enrico@fanglomerat.de>\nPark Ji-In <mithrandir@electrang.net>\nStephane Jourdan <stephane.jourdan@itris.fr>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nVincent Lefevre <vincent@vinc17.org>\nTomislav Markovski <tome@set.com.mk>\nJose Maria Mateos <chema@chema.homelinux.org>\nVladimir Petkov <vpetkov@i-space.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nTibor Pittich <Tibor.Pittich@mandrake.org>\n"));
+  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);

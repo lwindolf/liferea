@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-31 22:53+0100\n"
+"POT-Creation-Date: 2004-11-01 01:31+0100\n"
 "PO-Revision-Date: 2004-10-27 03:34+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -226,7 +226,7 @@ msgstr "VFolder"
 msgid "user defined command"
 msgstr "commande définie par l'utilisateur :"
 
-#: src/feed.c:1019 src/interface.c:1107 src/interface.c:1511 src/item.c:254
+#: src/feed.c:1019 src/interface.c:1110 src/interface.c:1520 src/item.c:254
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Source :"
@@ -237,7 +237,7 @@ msgstr ""
 "La découverte automatique de lien de flux a échoué ! Aucun lien de flux n'a "
 "été trouvé !"
 
-#: src/interface.c:140 src/interface.c:2953
+#: src/interface.c:140
 msgid "Liferea 0.6.1"
 msgstr "Liferea 0.6.1"
 
@@ -443,7 +443,7 @@ msgstr "Crée un flux de recherche Feedster."
 msgid "_Help"
 msgstr "_Aide"
 
-#: src/interface.c:453 src/interface.c:2937 src/interface.c:2969
+#: src/interface.c:453 src/interface.c:2945 src/interface.c:2977
 msgid "About"
 msgstr "À propos"
 
@@ -484,94 +484,96 @@ msgstr "label133"
 msgid "Headlines"
 msgstr "Titres"
 
-#: src/interface.c:906
+#: src/interface.c:908
 msgid "Subscription Properties"
 msgstr "Propriétés des abonnements"
 
-#: src/interface.c:927
+#: src/interface.c:929
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">Nom du flux</span>"
 
-#: src/interface.c:937 src/interface.c:969 src/interface.c:1043
-#: src/interface.c:1124 src/interface.c:1150 src/interface.c:1238
-#: src/interface.c:1448 src/interface.c:1528 src/interface.c:1554
-#: src/interface.c:1806 src/interface.c:1845 src/interface.c:1905
-#: src/interface.c:1941 src/interface.c:1979 src/interface.c:2056
-#: src/interface.c:2116 src/interface.c:2197 src/interface.c:2214
-#: src/interface.c:2241 src/interface.c:2295 src/interface.c:2322
-#: src/interface.c:2372
+#: src/interface.c:939 src/interface.c:971 src/interface.c:1045
+#: src/interface.c:1090 src/interface.c:1124 src/interface.c:1135
+#: src/interface.c:1153 src/interface.c:1241 src/interface.c:1455
+#: src/interface.c:1500 src/interface.c:1534 src/interface.c:1545
+#: src/interface.c:1563 src/interface.c:1817 src/interface.c:1856
+#: src/interface.c:1916 src/interface.c:1952 src/interface.c:1990
+#: src/interface.c:2067 src/interface.c:2127 src/interface.c:2208
+#: src/interface.c:2225 src/interface.c:2252 src/interface.c:2306
+#: src/interface.c:2333 src/interface.c:2383
 msgid "    "
 msgstr "    "
 
-#: src/interface.c:946
+#: src/interface.c:948
 msgid "Feed _Name:"
 msgstr "Nom du _flux :"
 
-#: src/interface.c:959
+#: src/interface.c:961
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">Intervalle de mise à jour</span>"
 
-#: src/interface.c:978
+#: src/interface.c:980
 msgid "_Use global default update interval."
 msgstr ""
 "_Utiliser l'intervalle de mise à jour par défaut, défini de manière globale."
 
-#: src/interface.c:988
+#: src/interface.c:990
 msgid "_Feed specific update interval of"
 msgstr "_Intervalle de mise à jour spécifique au flux de"
 
-#: src/interface.c:1003 src/interface.c:1868
+#: src/interface.c:1005 src/interface.c:1879
 msgid "minutes."
 msgstr "minutes."
 
-#: src/interface.c:1007
+#: src/interface.c:1009
 msgid "_Don't update this feed automatically."
 msgstr "Ne _pas mettre à jour ce flux automatiquement."
 
-#: src/interface.c:1013
+#: src/interface.c:1015
 msgid " "
 msgstr " "
 
-#: src/interface.c:1017
+#: src/interface.c:1019
 #, c-format
 msgid "This feed provider suggests an update interval of %d seconds."
 msgstr ""
 "Le fournisseur de ce flux suggère un intervalle de rafraîchissement de %d "
 "secondes."
 
-#: src/interface.c:1024
+#: src/interface.c:1026
 msgid "General"
 msgstr "Général"
 
-#: src/interface.c:1033 src/interface.c:1438
+#: src/interface.c:1035 src/interface.c:1445
 msgid "<b>Feed Source</b>"
 msgstr "<b>Source du flux</b>"
 
-#: src/interface.c:1059 src/interface.c:1464
-msgid "_Select File..."
-msgstr "_Sélectionner un fichier..."
-
-#: src/interface.c:1077 src/interface.c:1481
+#: src/interface.c:1068 src/interface.c:1478
 msgid "_URL"
 msgstr "_URL"
 
-#: src/interface.c:1083 src/interface.c:1487
-msgid "_File"
-msgstr "_Fichier"
-
-#: src/interface.c:1089 src/interface.c:1493
+#: src/interface.c:1074 src/interface.c:1484
 msgid "_Command"
 msgstr "_Commande"
 
-#: src/interface.c:1101 src/interface.c:1505
+#: src/interface.c:1084 src/interface.c:1494
+#, fuzzy
+msgid "Local _File"
+msgstr "_Fichier"
+
+#: src/interface.c:1094 src/interface.c:1504
+msgid "_Select File..."
+msgstr "_Sélectionner un fichier..."
+
+#: src/interface.c:1104 src/interface.c:1514
 msgid "Source Type:"
 msgstr "Type de source :"
 
-#: src/interface.c:1114 src/interface.c:1518
-msgid "<b>Conversion Filter</b>"
-msgstr "<b>Filtre de conversion</b>"
+#: src/interface.c:1128 src/interface.c:1538
+msgid "Use conversion filter"
+msgstr "Utiliser un filtre de conversion"
 
-#: src/interface.c:1132 src/interface.c:1536
+#: src/interface.c:1143 src/interface.c:1553
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -581,23 +583,19 @@ msgstr ""
 "plugins pour accéder aux flux et aux répertoires qui sont dans des formats "
 "non supportés. Lisez la documentation pour de plus amples informations."
 
-#: src/interface.c:1142 src/interface.c:1546
-msgid "Use conversion filter"
-msgstr "Utiliser un filtre de conversion"
-
-#: src/interface.c:1154 src/interface.c:1558
+#: src/interface.c:1157 src/interface.c:1567
 msgid "Convert using:"
 msgstr "Convertir en utilisant :"
 
-#: src/interface.c:1162 src/interface.c:1566
+#: src/interface.c:1165 src/interface.c:1575
 msgid "Select File..."
 msgstr "Sélectionner un fichier..."
 
-#: src/interface.c:1166
+#: src/interface.c:1169
 msgid "Feed Source"
 msgstr "Source du flux"
 
-#: src/interface.c:1175
+#: src/interface.c:1178
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -606,71 +604,71 @@ msgstr ""
 "sauvegardé à la fermeture de Liferea. Les éléments marqués sont toujours "
 "sauvegardés dans le cache."
 
-#: src/interface.c:1182
+#: src/interface.c:1185
 msgid "_Default cache settings"
 msgstr "Réglage du cache par _défaut"
 
-#: src/interface.c:1188
+#: src/interface.c:1191
 msgid "Di_sable cache"
 msgstr "Dé_sactiver le cache"
 
-#: src/interface.c:1194
+#: src/interface.c:1197
 msgid "_Umlimited cache"
 msgstr "Cache _illimité"
 
-#: src/interface.c:1204
+#: src/interface.c:1207
 msgid "_Limit cache to"
 msgstr "Cache _limité à"
 
-#: src/interface.c:1217
+#: src/interface.c:1220
 msgid "items."
 msgstr "éléments."
 
-#: src/interface.c:1221
+#: src/interface.c:1224
 msgid "Feed Cache"
 msgstr "Cache du flux"
 
-#: src/interface.c:1230
+#: src/interface.c:1233
 msgid "Use HTTP _authentication"
 msgstr "Utiliser l'_authentification HTTP"
 
-#: src/interface.c:1248 src/interface.c:3091
+#: src/interface.c:1251 src/interface.c:3099
 msgid "User_name:"
 msgstr "Nom d'_utilisateur :"
 
-#: src/interface.c:1255 src/interface.c:3098
+#: src/interface.c:1258 src/interface.c:3106
 msgid "_Password:"
 msgstr "_Mot de passe :"
 
-#: src/interface.c:1275 src/interface.c:3068
+#: src/interface.c:1278 src/interface.c:3076
 msgid "Authentication"
 msgstr "Authentification"
 
-#: src/interface.c:1420
+#: src/interface.c:1427
 msgid "New Subscription"
 msgstr "Nouvel abonnement"
 
-#: src/interface.c:1772
+#: src/interface.c:1783
 msgid "Lifeera Preferences"
 msgstr "Préférences de Liferea"
 
-#: src/interface.c:1796
+#: src/interface.c:1807
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Gestion du cache des flux</span>"
 
-#: src/interface.c:1819
+#: src/interface.c:1830
 msgid "Default number of items per feed to save:"
 msgstr "Nombre d'éléments de flux par défaut à sauvegarder :"
 
-#: src/interface.c:1835
+#: src/interface.c:1846
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr "<span weight=\"bold\">Réglages de mise à jour des flux</span>"
 
-#: src/interface.c:1858
+#: src/interface.c:1869
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Intervalle de rafraîchissement des flux par défaut :"
 
-#: src/interface.c:1872
+#: src/interface.c:1883
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -681,15 +679,15 @@ msgstr ""
 "flux mis à jour quotidiennement. Pour désactiver la mise à jour automatique "
 "par défaut, réglez l'intervalle à 0 minute.</i>"
 
-#: src/interface.c:1883
+#: src/interface.c:1894
 msgid "At _startup:"
 msgstr "Au _lancement :"
 
-#: src/interface.c:1895
+#: src/interface.c:1906
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">Réglages du chargement des flux</span>"
 
-#: src/interface.c:1914
+#: src/interface.c:1925
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds,"
@@ -697,7 +695,7 @@ msgstr ""
 "_Charger les flux à partir du disque lorsque cela est nécessaire. \n"
 "La recherche peut être lente si vous avez beaucoup de flux,"
 
-#: src/interface.c:1921
+#: src/interface.c:1932
 msgid ""
 "_Keep all feeds loaded. This may improve speed \n"
 "(especially when searching) but can cause a \n"
@@ -709,41 +707,41 @@ msgstr ""
 "prendre énormément de mémoire si vous avez \n"
 "beaucoup de flux !"
 
-#: src/interface.c:1931
+#: src/interface.c:1942
 #, fuzzy
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">Réglages du chargement des flux</span>"
 
-#: src/interface.c:1950
+#: src/interface.c:1961
 #, fuzzy
 msgid "Update all favicons now."
 msgstr "Mise à jour de tous les flux"
 
-#: src/interface.c:1954
+#: src/interface.c:1965
 msgid "Feed Handling"
 msgstr "Gestion des flux"
 
-#: src/interface.c:1969
+#: src/interface.c:1980
 msgid "<span weight=\"bold\">Viewing Headlines</span>"
 msgstr "<span weight=\"bold\">Affichage des titres</span>"
 
-#: src/interface.c:1992
+#: src/interface.c:2003
 msgid "Skim through articles with "
 msgstr "Survoler les articles avec "
 
-#: src/interface.c:2002
+#: src/interface.c:2013
 msgid "Space"
 msgstr "Espace"
 
-#: src/interface.c:2006
+#: src/interface.c:2017
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Espace"
 
-#: src/interface.c:2010
+#: src/interface.c:2021
 msgid "<Alt> Space"
 msgstr "<Alt> Espace"
 
-#: src/interface.c:2016
+#: src/interface.c:2027
 msgid ""
 "Liferea displays feeds' content using various HTML renderers. Depending on "
 "which renderers are installed on your computer, different options will be "
@@ -754,31 +752,31 @@ msgstr ""
 "rendu installés sur votre ordinateur. Redémarrez Liferea pour que les "
 "changements prennent effet."
 
-#: src/interface.c:2026
+#: src/interface.c:2037
 msgid "View Headlines With"
 msgstr "Voir les titres avec"
 
-#: src/interface.c:2038
+#: src/interface.c:2049
 msgid "Open links in Liferea's _window."
 msgstr "_Ouvrir les liens dans la fenêtre de Liferea."
 
-#: src/interface.c:2046
+#: src/interface.c:2057
 msgid "<span weight=\"bold\">Date Column Settings</span>"
 msgstr "<span weight=\"bold\">Réglages de la colonne Date</span>"
 
-#: src/interface.c:2065
+#: src/interface.c:2076
 msgid "Display only time"
 msgstr "Afficher seulement l'heure"
 
-#: src/interface.c:2071
+#: src/interface.c:2082
 msgid "Display date and time"
 msgstr "Afficher la date et l'heure"
 
-#: src/interface.c:2081
+#: src/interface.c:2092
 msgid "User defined format:"
 msgstr "Format défini par l'utilisateur :"
 
-#: src/interface.c:2090
+#: src/interface.c:2101
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -786,19 +784,19 @@ msgstr ""
 "pour les utilisateurs experts : spécifier une chaîne de formatage de temps, "
 "consulter le manuel de strftime() pour les codes de format."
 
-#: src/interface.c:2093
+#: src/interface.c:2104
 msgid "Headline Display"
 msgstr "Affichage des titres"
 
-#: src/interface.c:2106
+#: src/interface.c:2117
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">Réglages du navigateur externe</span>"
 
-#: src/interface.c:2130
+#: src/interface.c:2141
 msgid "_Browser:"
 msgstr "_Navigateur :"
 
-#: src/interface.c:2137
+#: src/interface.c:2148
 #, c-format
 msgid ""
 "_Manual:\n"
@@ -807,19 +805,19 @@ msgstr ""
 "_Manuel :\n"
 "(%s pour l'URL)"
 
-#: src/interface.c:2151
+#: src/interface.c:2162
 msgid "_Open link in:"
 msgstr "_Ouvrir le lien dans :"
 
-#: src/interface.c:2174
+#: src/interface.c:2185
 msgid "External Browser"
 msgstr "Navigateur externe"
 
-#: src/interface.c:2187
+#: src/interface.c:2198
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Réglages de notification</span>"
 
-#: src/interface.c:2205
+#: src/interface.c:2216
 msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
@@ -827,35 +825,35 @@ msgstr ""
 "Afficher une _icône de statut dans la zone de notification \n"
 "(aussi appelée barre des tâches)."
 
-#: src/interface.c:2222
+#: src/interface.c:2233
 msgid "Show a _popup window with new headlines."
 msgstr "Afficher un _popup avec les nouveaux titres."
 
-#: src/interface.c:2231
+#: src/interface.c:2242
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">Réglages des menus</span>"
 
-#: src/interface.c:2250
+#: src/interface.c:2261
 msgid "Show Menu _And Toolbar"
 msgstr "Afficher le menu _et la barre d'outils"
 
-#: src/interface.c:2256
+#: src/interface.c:2267
 msgid "Show _Menu Only"
 msgstr "Afficher le _menu uniquement"
 
-#: src/interface.c:2262
+#: src/interface.c:2273
 msgid "Show _Toolbar Only"
 msgstr "Afficher la _barre d'outils uniquement"
 
-#: src/interface.c:2268
+#: src/interface.c:2279
 msgid "GUI"
 msgstr "Interface"
 
-#: src/interface.c:2285
+#: src/interface.c:2296
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">Serveur proxy HTTP</span>"
 
-#: src/interface.c:2304
+#: src/interface.c:2315
 msgid ""
 "Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center. Note: changing these settings "
@@ -868,63 +866,63 @@ msgstr ""
 "présente essentiellement pour permettre aux utilisateurs n'utilisant pas "
 "GNOME de pouvoir utiliser Liferea avec un proxy."
 
-#: src/interface.c:2314
+#: src/interface.c:2325
 msgid "_Enable Proxy"
 msgstr "_Utiliser un proxy"
 
-#: src/interface.c:2336
+#: src/interface.c:2347
 msgid "Proxy _Host:"
 msgstr "_Hôte du proxy :"
 
-#: src/interface.c:2357
+#: src/interface.c:2368
 msgid "Proxy _Port:"
 msgstr "_Port du proxy :"
 
-#: src/interface.c:2364
+#: src/interface.c:2375
 msgid "Use Proxy _Authentication"
 msgstr "Utiliser l'_authentification pour le proxy"
 
-#: src/interface.c:2382
+#: src/interface.c:2393
 msgid "Proxy _Username:"
 msgstr "_Nom d'utilisateur pour le proxy :"
 
-#: src/interface.c:2404
+#: src/interface.c:2415
 msgid "Proxy Pass_word:"
 msgstr "_Mot de passe pour le proxy :"
 
-#: src/interface.c:2411
+#: src/interface.c:2422
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/interface.c:2663
+#: src/interface.c:2671
 msgid "New Folder"
 msgstr "Nouveau dossier"
 
-#: src/interface.c:2679 src/interface.c:2756
+#: src/interface.c:2687 src/interface.c:2764
 msgid "Folder name:"
 msgstr "Nom du dossier :"
 
-#: src/interface.c:2744
+#: src/interface.c:2752
 msgid "Rename Folder"
 msgstr "Renommer le dossier"
 
-#: src/interface.c:2825
+#: src/interface.c:2833
 msgid "Feedster Search"
 msgstr "Recherche par Feedster"
 
-#: src/interface.c:2840
+#: src/interface.c:2848
 msgid "Search for:"
 msgstr "Chercher :"
 
-#: src/interface.c:2847
+#: src/interface.c:2855
 msgid "enter any search string you want"
 msgstr "entrer n'importe quelle chaîne voulue"
 
-#: src/interface.c:2854
+#: src/interface.c:2862
 msgid "Maximal Number Of Result Items:"
 msgstr "Nombre maximal de résultats :"
 
-#: src/interface.c:2863
+#: src/interface.c:2871
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -935,11 +933,11 @@ msgstr ""
 "garder ce flux définitivement et le mettre à jour comme n'importe quel autre "
 "abonnement.  "
 
-#: src/interface.c:2958
+#: src/interface.c:2966
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea est un agrégateur de news pour GTK+"
 
-#: src/interface.c:2963
+#: src/interface.c:2971
 msgid ""
 "Copyright (c) 2003-2004 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
@@ -949,7 +947,8 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> et \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: src/interface.c:2983
+#: src/interface.c:2991
+#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -966,6 +965,11 @@ msgid ""
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
 "ahmed el-helw <ahmedre@cc.gatech.edu>\n"
+"James Bowes <bowes@cs.dal.ca>\n"
+"Marc Deslauriers\n"
+"Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
+"Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"\n"
 "\n"
 "Code from other projects\n"
 "\n"
@@ -998,54 +1002,20 @@ msgstr ""
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
-#: src/interface.c:2989
+#: src/interface.c:2997
 msgid "Contributors"
 msgstr "Contributeurs"
 
-#: src/interface.c:3003
-msgid ""
-"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Vincent Lefevre <vincent@vinc17.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev Vladimir <compress@linux-online.ru>\n"
-"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
-"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
-msgstr ""
-"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
-"Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Enrico Genauck <enrico@fanglomerat.de>\n"
-"Park Ji-In <mithrandir@electrang.net>\n"
-"Stephane Jourdan <stephane.jourdan@itris.fr>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
-"Vincent Lefevre <vincent@vinc17.org>\n"
-"Tomislav Markovski <tome@set.com.mk>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Vladimir Petkov <vpetkov@i-space.org>\n"
-"Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev Vladimir <compress@linux-online.ru>\n"
-"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
-"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
-
-#: src/interface.c:3009
+#: src/interface.c:3017
 msgid "Translation"
 msgstr "Traduction"
 
-#: src/interface.c:3079 src/ui_feed.c:617
+#: src/interface.c:3087 src/ui_feed.c:616
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Entrer le nom d'utilisateur et le mot de passe pour \"%s\" (%s) :"
 
-#: src/interface.c:3120
+#: src/interface.c:3128
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -1053,15 +1023,15 @@ msgstr ""
 "Note : <i>le nom d'utilisateur et le mot de passe seront sauvés non chiffrés "
 "dans votre liste de flux Liferea.</i>"
 
-#: src/interface.c:3186
+#: src/interface.c:3194
 msgid "VFolder Properties"
 msgstr "Propriétés du VFolder"
 
-#: src/interface.c:3202
+#: src/interface.c:3210
 msgid "Name"
 msgstr "Nom"
 
-#: src/interface.c:3231
+#: src/interface.c:3239
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
@@ -1070,7 +1040,7 @@ msgstr ""
 "s'applique.\n"
 "Ils sont supprimés si au moins une règle de suppression s'applique."
 
-#: src/interface.c:3244
+#: src/interface.c:3252
 msgid "Rules"
 msgstr "Règles"
 
@@ -1519,22 +1489,22 @@ msgstr "\"%s\" mis à jour..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" n'est pas disponible"
 
-#: src/ui_feed.c:559
+#: src/ui_feed.c:558
 msgid "Choose File"
 msgstr "Choisir un fichier"
 
-#: src/ui_feed.c:618
+#: src/ui_feed.c:617
 msgid "Unknown source"
 msgstr "Source inconnue"
 
-#: src/ui_feed.c:727
+#: src/ui_feed.c:719
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Le fournisseur de ce flux suggère un intervalle de rafraîchissement de %d "
 "minutes."
 
-#: src/ui_feed.c:729
+#: src/ui_feed.c:721
 msgid "This feed specifies no default update interval."
 msgstr "Ce flux ne spécifie aucun intervalle de rafraîchissement."
 
@@ -2046,6 +2016,42 @@ msgid ""
 msgstr ""
 "La balise HTML <object> incluse n'est pas supportée par GtkHTML2.\n"
 "Les plugins inclus peuvent ne pas s'afficher."
+
+#~ msgid "<b>Conversion Filter</b>"
+#~ msgstr "<b>Filtre de conversion</b>"
+
+#~ msgid ""
+#~ "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Vincent Lefevre <vincent@vinc17.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+#~ "Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
+#~ msgstr ""
+#~ "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+#~ "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+#~ "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+#~ "Enrico Genauck <enrico@fanglomerat.de>\n"
+#~ "Park Ji-In <mithrandir@electrang.net>\n"
+#~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
+#~ "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+#~ "Vincent Lefevre <vincent@vinc17.org>\n"
+#~ "Tomislav Markovski <tome@set.com.mk>\n"
+#~ "Jose Maria Mateos <chema@chema.homelinux.org>\n"
+#~ "Vladimir Petkov <vpetkov@i-space.org>\n"
+#~ "Rex Tsai <chihchun@users.sourceforge.net>\n"
+#~ "Alekseev Vladimir <compress@linux-online.ru>\n"
+#~ "Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+#~ "Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 
 #~ msgid "internal error! could not get feed tree view selection!\n"
 #~ msgstr ""
