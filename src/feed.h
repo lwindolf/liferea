@@ -64,10 +64,10 @@ enum cache_limit {
 
 /** common structure to access feed info structures */
 typedef struct feed {
-	gint		type;			/**< feed type (position is important!!!)*/
+	gint		type;			/**< feed type (first position is important!!!) */
+	gpointer	*ui_data;		/**< per-feed UI data (second position is important!!!) */
 	
-	/* per-feed UI data */
-	gpointer	*ui_data;
+	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
 	
 	gchar		*id;			/**< unique feed identifier string */
 	gint		unreadCount;		/**< number of unread items */
@@ -80,22 +80,21 @@ typedef struct feed {
 	/* feed properties needed to be saved */
 	gchar		*title;			/**< feed/channel title */
 	gchar		*description;		/**< HTML string describing the feed */
-	gchar		*source;		/**< feed source, FIXME: needed??? */
-	gchar		*filtercmd;	/**< feed filter command */
+	gchar		*source;		/**< feed source */
+	gchar		*filtercmd;		/**< feed filter command */
 	gint		updateInterval;		/**< user defined update interval in minutes */
 
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
 	GSList		*filter;		/**< list of filters applied to this feed */
-	struct feedHandler *fhp;      /**< Feed handler saved by the ->typeStr attribute. */
-	gint			cacheLimit;  /**< Amount of cache to save: See the cache_limit enum */
 	
 	/* feed properties used for updating */
 	GTimeVal	lastPoll;	/**< time at which the feed was last updated */
 	gboolean	updateRequested;	/**< flag set when update in progress */
 	gpointer	*request;		/**< update request structure */
 
-	gboolean needsCacheSave; /**< flag set when the feed's cache needs to be resaved */
+	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
+	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
 } *feedPtr;
 
 /* ------------------------------------------------------------ */

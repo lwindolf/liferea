@@ -95,6 +95,7 @@ create_mainwindow (void)
   GtkWidget *help_menu;
   GtkWidget *about;
   GtkWidget *toolbar;
+  gint tmp_toolbar_icon_size;
   GtkWidget *leftpane;
   GtkWidget *scrolledwindow3;
   GtkWidget *feedlist;
@@ -129,7 +130,7 @@ create_mainwindow (void)
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.5.0"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
-  mainwindow_icon_pixbuf = create_pixbuf ("liferea.png");
+  mainwindow_icon_pixbuf = create_pixbuf ("news-reader-48.png");
   if (mainwindow_icon_pixbuf)
     {
       gtk_window_set_icon (GTK_WINDOW (mainwindow), mainwindow_icon_pixbuf);
@@ -439,6 +440,7 @@ create_mainwindow (void)
   gtk_widget_show (toolbar);
   gtk_box_pack_start (GTK_BOX (vbox1), toolbar, FALSE, FALSE, 0);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_TEXT);
+  tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbar));
 
   leftpane = gtk_hpaned_new ();
   gtk_widget_show (leftpane);
@@ -841,6 +843,7 @@ create_propdialog (void)
   propdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (propdialog), _("Subscription Properties"));
   gtk_window_set_position (GTK_WINDOW (propdialog), GTK_WIN_POS_CENTER);
+  gtk_window_set_type_hint (GTK_WINDOW (propdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_dialog_set_has_separator (GTK_DIALOG (propdialog), FALSE);
 
   dialog_vbox13 = GTK_DIALOG (propdialog)->vbox;
@@ -1330,6 +1333,7 @@ create_newdialog (void)
   gtk_window_set_position (GTK_WINDOW (newdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_modal (GTK_WINDOW (newdialog), TRUE);
   gtk_window_set_default_size (GTK_WINDOW (newdialog), 400, -1);
+  gtk_window_set_type_hint (GTK_WINDOW (newdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_dialog_set_has_separator (GTK_DIALOG (newdialog), FALSE);
 
   dialog_vbox2 = GTK_DIALOG (newdialog)->vbox;
@@ -1622,6 +1626,7 @@ create_prefdialog (void)
   gtk_window_set_title (GTK_WINDOW (prefdialog), _("program preferences"));
   gtk_window_set_position (GTK_WINDOW (prefdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (prefdialog), 300, -1);
+  gtk_window_set_type_hint (GTK_WINDOW (prefdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_dialog_set_has_separator (GTK_DIALOG (prefdialog), FALSE);
 
   dialog_vbox5 = GTK_DIALOG (prefdialog)->vbox;
@@ -2151,6 +2156,7 @@ create_newfolderdialog (void)
   newfolderdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (newfolderdialog), _("New Folder"));
   gtk_window_set_modal (GTK_WINDOW (newfolderdialog), TRUE);
+  gtk_window_set_type_hint (GTK_WINDOW (newfolderdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox6 = GTK_DIALOG (newfolderdialog)->vbox;
   gtk_widget_show (dialog_vbox6);
@@ -2231,6 +2237,7 @@ create_foldernamedialog (void)
   foldernamedialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (foldernamedialog), _("Rename Folder"));
   gtk_window_set_modal (GTK_WINDOW (foldernamedialog), TRUE);
+  gtk_window_set_type_hint (GTK_WINDOW (foldernamedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox7 = GTK_DIALOG (foldernamedialog)->vbox;
   gtk_widget_show (dialog_vbox7);
@@ -2298,6 +2305,7 @@ create_fileselection (void)
   gtk_container_set_border_width (GTK_CONTAINER (fileselection), 10);
   gtk_window_set_modal (GTK_WINDOW (fileselection), TRUE);
   gtk_window_set_destroy_with_parent (GTK_WINDOW (fileselection), TRUE);
+  gtk_window_set_type_hint (GTK_WINDOW (fileselection), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_file_selection_hide_fileop_buttons (GTK_FILE_SELECTION (fileselection));
 
   fileselectbtn = GTK_FILE_SELECTION (fileselection)->ok_button;
@@ -2440,6 +2448,7 @@ create_ruledialog (void)
 
   ruledialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (ruledialog), _("edit rule properties"));
+  gtk_window_set_type_hint (GTK_WINDOW (ruledialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox8 = GTK_DIALOG (ruledialog)->vbox;
   gtk_widget_show (dialog_vbox8);
@@ -2552,6 +2561,7 @@ create_feedsterdialog (void)
 
   feedsterdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (feedsterdialog), _("Search With Feedster"));
+  gtk_window_set_type_hint (GTK_WINDOW (feedsterdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox9 = GTK_DIALOG (feedsterdialog)->vbox;
   gtk_widget_show (dialog_vbox9);
@@ -2656,6 +2666,7 @@ create_importdialog (void)
 
   importdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (importdialog), _("Import Feed List"));
+  gtk_window_set_type_hint (GTK_WINDOW (importdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox10 = GTK_DIALOG (importdialog)->vbox;
   gtk_widget_show (dialog_vbox10);
@@ -2746,6 +2757,7 @@ create_exportdialog (void)
 
   exportdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (exportdialog), _("Export Feed List"));
+  gtk_window_set_type_hint (GTK_WINDOW (exportdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox11 = GTK_DIALOG (exportdialog)->vbox;
   gtk_widget_show (dialog_vbox11);
@@ -2844,6 +2856,7 @@ create_aboutdialog (void)
   aboutdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (aboutdialog), _("About"));
   gtk_window_set_default_size (GTK_WINDOW (aboutdialog), 300, 200);
+  gtk_window_set_type_hint (GTK_WINDOW (aboutdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox12 = GTK_DIALOG (aboutdialog)->vbox;
   gtk_widget_show (dialog_vbox12);
@@ -2972,6 +2985,7 @@ create_authdialog (void)
 
   authdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (authdialog), _("Authentication"));
+  gtk_window_set_type_hint (GTK_WINDOW (authdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
   dialog_vbox14 = GTK_DIALOG (authdialog)->vbox;
   gtk_widget_show (dialog_vbox14);

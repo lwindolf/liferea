@@ -660,7 +660,6 @@ gint feed_process_update_results(gpointer data) {
 		update_request_free(request);
 		return TRUE;
 	}
-
 	ui_lock();
 
 	request->fp->updateRequested = FALSE;

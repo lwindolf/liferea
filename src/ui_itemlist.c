@@ -158,7 +158,6 @@ void ui_itemlist_clear(void) {
 	displayed_fp = NULL;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
-	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 }
 
 /* sort function for the item list date column */
@@ -309,7 +308,7 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 
 /* typically called when filling the item tree view */
 void ui_itemlist_prefocus(void) {
-	GtkWidget		*itemlist;
+	GtkWidget		*itemlist, *focus_widget;
 	GtkTreeSelection	*itemselection;
 	GtkAdjustment		*adj;
 	
@@ -320,94 +319,110 @@ void ui_itemlist_prefocus(void) {
 	   generate two selection-change events (one for the clicked and
 	   one for the selected item)!!! */
 
-	if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
-		g_warning(_("item list widget lookup failed!\n"));
-		return;
-	}
+	itemlist = lookup_widget(mainwindow, "Itemlist");
+	g_assert(NULL != itemlist);
+	
+	/* we need to restore the focus after we temporarily select the itemlist */
+	focus_widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
 
-	/* prevent marking as unread before focussing, which leads 
-	   to a selection */
+	/* prevent marking as unread before focussing, which leads to a selection */
 	itemlist_loading = 1;
 	gtk_widget_grab_focus(itemlist);
 
-	if(NULL == (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
-		g_warning(_("could not retrieve selection of item list!\n"));
-		return;
-	}
-	gtk_tree_selection_unselect_all(itemselection);
+	if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist))))
+		gtk_tree_selection_unselect_all(itemselection);
 
-	gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+	gtk_widget_grab_focus(focus_widget);		
 	itemlist_loading = 0;
 	
-	/* finally reset scrolling to the first item */
+	/* Finally reset scrolling to the first item. Note: this functionality
+	   means that the current selection and the itemlist positioning is 
+	   lost when a feed is updated which items the user is currently reading.
+	   But one can say this is good because its a rare event and shows the
+	   user the most recent items at the top, while keeping the originally
+	   selected item in the html view. (Lars) */
 	adj = gtk_tree_view_get_vadjustment(GTK_TREE_VIEW(itemlist));
 	gtk_adjustment_set_value(adj, 0.0);
 	gtk_tree_view_set_vadjustment(GTK_TREE_VIEW(itemlist), adj);
 }
 
+/* Function which is called when the contents of currently
+   selected object (feed or item) is updated or if the 
+   selection has changed and initial display is requested. 
+   
+   What the function prints to the HTML view depends on the
+   focussed widget. If feedlist is selected feed info is printed.
+   If itemlist is selected the selected items content is shown. 
+   If anything other is focussed nothing is printed to avoid
+   disturbing the user. */
 void ui_itemlist_display(void) {
-	GtkTreeIter		iter;
-	gchar			*buffer = NULL;
-	gboolean		valid;
-	itemPtr			ip;
-	gchar               *tmp = NULL;
+	GtkTreeIter	iter;
+	itemPtr		ip;
+	gchar		*buffer = NULL;
+	gboolean	valid;
+	gchar		*tmp = NULL;
 
 	g_assert(NULL != mainwindow);
-	ui_htmlview_start_output(&buffer, itemlist_mode);
-	if(!itemlist_mode) {
-		/* two pane mode */
-		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-		while(valid) {	
-			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+	
+	/* we only update anything if the feedlist is focussed */
+	if(lookup_widget(mainwindow, "feedlist") == gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
+		if(!itemlist_mode) {
+			/* two pane mode */
+			ui_htmlview_start_output(&buffer, itemlist_mode);
+			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+			while(valid) {	
+				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 
-			if(item_get_read_status(ip)) 
-				addToHTMLBuffer(&buffer, UNSHADED_START);
-			else
-				addToHTMLBuffer(&buffer, SHADED_START);
+				if(item_get_read_status(ip)) 
+					addToHTMLBuffer(&buffer, UNSHADED_START);
+				else
+					addToHTMLBuffer(&buffer, SHADED_START);
 
-			addToHTMLBuffer(&buffer, item_get_description(ip));
+				addToHTMLBuffer(&buffer, item_get_description(ip));
 
-			if(item_get_read_status(ip))
-				addToHTMLBuffer(&buffer, UNSHADED_END);
-			else {
-				addToHTMLBuffer(&buffer, SHADED_END);
-				item_set_read(ip);
+				if(item_get_read_status(ip))
+					addToHTMLBuffer(&buffer, UNSHADED_END);
+				else {
+					addToHTMLBuffer(&buffer, SHADED_END);
+					item_set_read(ip);
+				}
+
+				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 			}
+			ui_htmlview_finish_output(&buffer);
+		} else {	
+			/* three pane mode */
 
-			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
-		}
-	} else {	
-		/* three pane mode */
-		itemPtr ip = ui_itemlist_get_selected();
-		if(!ip) {
 			/* display feed info */
 			if(displayed_fp) {
+				ui_htmlview_start_output(&buffer, itemlist_mode);
 				if(!feed_get_available(displayed_fp) || 
 				   (NULL != displayed_fp->parseErrors)) {
 					tmp = feed_get_error_description(displayed_fp);
 					addToHTMLBuffer(&buffer, tmp);
 					g_free(tmp);
 				}
-  				addToHTMLBuffer(&buffer, feed_get_description(displayed_fp));
+				addToHTMLBuffer(&buffer, feed_get_description(displayed_fp));
+				ui_htmlview_finish_output(&buffer);
 			}
-		} else {
-			/* display item content */
-			item_set_read(ip);
-			addToHTMLBuffer(&buffer, item_get_description(ip));
-		}
 
-		/* no scrolling reset, because this code should only be
-		   triggered for redraw purposes! */
+			/* we never overwrite the last selected items contents
+			   item reselections trigger new content printing via
+			   item selection changed callback */
+
+			/* no scrolling reset, because this code should only be
+			   triggered for redraw purposes! */
+		}
+		
+		if(displayed_fp != NULL &&
+		   displayed_fp->source != NULL &&
+		   displayed_fp->source[0] != '|' &&
+		   strstr(displayed_fp->source, "://") != NULL)
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, displayed_fp->source);
+		else
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
+		g_free(buffer);
 	}
-	ui_htmlview_finish_output(&buffer);
-	if (displayed_fp != NULL &&
-	    displayed_fp->source != NULL &&
-	    displayed_fp->source[0] != '|' &&
-	    strstr(displayed_fp->source, "://") != NULL)
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, displayed_fp->source);
-	else
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
-	g_free(buffer);
 	ui_feedlist_update();
 }
 
