@@ -23,7 +23,28 @@
 
 #include <glib.h>
 #include <libxml/tree.h>
-#include "htmlview.h"
+#include "feed.h"
+
+/* -------------------------------------------------------- */
+/* interface definitions for namespace parsing handler      */
+/* -------------------------------------------------------- */
+
+/** definition of various namespace tag handler */
+typedef void	(*parseChannelTagFunc)	(feedPtr fp, xmlNodePtr cur);
+typedef void	(*parseItemTagFunc)	(itemPtr ip, xmlNodePtr cur);
+
+/** struct used to register namespace handler */
+typedef struct NsHandler {
+	gchar			*prefix;		/**< namespace prefix */
+
+	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
+	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
+} NsHandler;
+
+/* -------------------------------------------------------- */
+/* interface definitions for namespace rendering handler    */
+/* -------------------------------------------------------- */
+
 struct displayset;
 
 typedef void (*renderHTMLFunc)(gpointer data, struct displayset *displayset, gpointer user_data);

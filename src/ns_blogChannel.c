@@ -1,22 +1,22 @@
-/*
-   blogChannel namespace support
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file ns_blogChannel.c blogChannel namespace support
+ *
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include "htmlview.h"
 #include "ns_blogChannel.h"
@@ -136,7 +136,7 @@ static gchar * getOutlineList(gchar *url) {
 	return buffer;
 }
 
-static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
+static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
 	xmlChar		*string;
 	gchar		*buffer = NULL;
 	gchar		*key, *output, *tmp;
@@ -169,47 +169,25 @@ static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	}
 
 	if(NULL != string)
-		xmlFree(string);	
-
+		xmlFree(string);
+		
 	if(NULL != buffer) {
-		key = g_strdup_printf("blogChannel:%s", cur->name);
-		g_hash_table_insert(cp->nsinfos, g_strdup(key), buffer);
+		g_hash_table_insert(fp->tmpdata, g_strdup_printf("bC:%s", cur->name), buffer);
+		buffer = NULL;
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(fp->tmpdata, "bC:blink"));
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(fp->tmpdata, "bC:blogRoll"));
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(fp->tmpdata, "bC:mySubscriptions"));
+		metadata_list_set(&(fp->metadata), "blogChannel", buffer);
+		g_free(buffer);
 	}
 }
 
-static void ns_bC_doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
-	gchar		*output;
-	gchar		*key;
+NsHandler *ns_bC_getRSSNsHandler(void) {
+	NsHandler 	*nsh;
 	
-	g_assert(NULL != nsinfos);
-	key = g_strdup_printf("blogChannel:%s", tagname);
-	
-	if(NULL != (output = g_hash_table_lookup(nsinfos, key))) {
-		addToHTMLBuffer(buffer, output);
-		g_free(output);
-		g_hash_table_remove(nsinfos, key);
-	}
-	g_free(key);
-}
-
-static gchar * ns_bC_doChannelOutput(gpointer obj) {
-	gchar	*buffer = NULL;
-	
-	if(NULL != obj) {
-		ns_bC_doOutput(((RSSChannelPtr)obj)->nsinfos, &buffer, "blink");
-		ns_bC_doOutput(((RSSChannelPtr)obj)->nsinfos, &buffer, "blogRoll");
-		ns_bC_doOutput(((RSSChannelPtr)obj)->nsinfos, &buffer, "mySubscriptions");
-	}
-	return buffer;
-}
-
-RSSNsHandler *ns_bC_getRSSNsHandler(void) {
-	RSSNsHandler 	*nsh;
-	
-	nsh = g_new0(RSSNsHandler, 1);
+	nsh = g_new0(NsHandler, 1);
 	nsh->prefix			= "blogChannel";
-	nsh->parseChannelTag		= ns_bC_parseChannelTag;
-	nsh->doChannelFooterOutput	= ns_bC_doChannelOutput;
+	nsh->parseChannelTag		= parse_channel_tag;
 
 	return nsh;
 }

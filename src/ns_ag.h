@@ -21,7 +21,7 @@
 #ifndef _NS_AG_H
 #define _NS_AG_H
 
-#include "rss_ns.h"
+#include "metadata.h"
 
 NsHandler *ns_ag_getRSSNsHandler(void);
 

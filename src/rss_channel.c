@@ -459,16 +459,16 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
 	
 		/* register RSS name space handlers */
-		//addNameSpaceHandler(ns_bC_getRSSNsHandler());
-		//addNameSpaceHandler(ns_dc_getRSSNsHandler());
-		//addNameSpaceHandler(ns_fm_getRSSNsHandler());	
+		rss_add_ns_handler(ns_bC_getRSSNsHandler());
+		rss_add_ns_handler(ns_dc_getRSSNsHandler());
+		rss_add_ns_handler(ns_fm_getRSSNsHandler());	
   		//addNameSpaceHandler(ns_slash_getRSSNsHandler());
-		//addNameSpaceHandler(ns_content_getRSSNsHandler());
+		rss_add_ns_handler(ns_content_getRSSNsHandler());
 		//addNameSpaceHandler(ns_syn_getRSSNsHandler());
 		rss_add_ns_handler(ns_admin_getRSSNsHandler());
 		rss_add_ns_handler(ns_ag_getRSSNsHandler());
-		//addNameSpaceHandler(ns_cC1_getRSSNsHandler());
-		//addNameSpaceHandler(ns_cC2_getRSSNsHandler());
+		rss_add_ns_handler(ns_cC1_getRSSNsHandler());
+		rss_add_ns_handler(ns_cC2_getRSSNsHandler());
 	}
 							
 	/* prepare feed handler structure */

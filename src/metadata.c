@@ -248,8 +248,10 @@ static void attribs_init() {
 
 	/* attributes resulting from general feed parsing */
 	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "feedTitle", _("Feed:"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "itemTitle", _("Item:"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "feedSource", _("Source:"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "itemSource", _("Source:"));
+	// FIXME: add description???
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "author", _("author"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contributor", _("contributors"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "copyright", _("copyright"));
@@ -273,7 +275,22 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agTimestamp", _("original time"));
 
 	/* types for blog channel */
-	//metadata_register_renderer("blogChannel", attribs_render_foot_text, NULL);
+	metadata_register_renderer("blogChannel", attribs_render_foot_text, NULL);
+	
+	/* types for creative commons */
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "license", _("license"));
+	
+	/* types for Dublin Core (some dc tags are mapped to feed and item metadata types) */
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "creator", _("creator"));	
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "publisher", _("publisher"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "type", _("type"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "format", _("format"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "identifier", _("identifier"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "source", _("source"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "coverage", _("coverage"));
+	
+	/* types for freshmeat */
+	metadata_register_renderer("fmScreenshot", attribs_render_image, NULL);	
 }
 
 static void attribs_register_default_renderer(const gchar *strid) {

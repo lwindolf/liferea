@@ -1,28 +1,25 @@
-/*
-   freshmeat namespace support
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file ns_fm.c freshmeat namespace support
+ *
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include "ns_fm.h"
 #include "common.h"
-
-#define FM_IMG_START	"<br><img class=\"freshmeat\" src=\""
-#define FM_IMG_END	" \">"
 
 /* you can find the fm DTD under http://freshmeat.net/backend/fm-releases-0.1.dtd
 
@@ -30,52 +27,25 @@
   output as a HTML image in the item view footer
 */
 
-static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 	gchar	*tmp;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
  		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		if(NULL != tmp) {
-			if(g_utf8_strlen(tmp, -1) > 0) {
-				g_hash_table_insert(ip->nsinfos, g_strdup("fm:screenshot_url"), tmp);
-			} else {
-				g_free(tmp);
-			}
+			if(g_utf8_strlen(tmp, -1) > 0)
+				metadata_list_set(&(ip->metadata), "fmScreenshot", tmp);
+			g_free(tmp);
 		}
 	}
 }
 
-static gchar * doOutput(GHashTable *nsinfos) {
-	gchar	*buffer = NULL;
-	gchar	*value;
+NsHandler *ns_fm_getRSSNsHandler(void) {
+	NsHandler 	*nsh;
 	
-	g_assert(NULL != nsinfos);
-	/* we print all channel infos as a (key,value) table */
-	if(NULL != (value = g_hash_table_lookup(nsinfos, "fm:screenshot_url"))) {
-		addToHTMLBuffer(&buffer, FM_IMG_START);
-		addToHTMLBuffer(&buffer, (gchar *)value);
-		addToHTMLBuffer(&buffer, FM_IMG_END);
-		g_free(value);
-		g_hash_table_remove(nsinfos, "fm:screenshot_url");
-	}	
-	return buffer;
-}
-
-static gchar * doItemOutput(gpointer obj) {
-
-	if(NULL != obj)
-		return doOutput(((RSSItemPtr)obj)->nsinfos);
-		
-	return NULL;
-}
-
-RSSNsHandler *ns_fm_getRSSNsHandler(void) {
-	RSSNsHandler 	*nsh;
-	
-	nsh = g_new0(RSSNsHandler, 1);
+	nsh = g_new0(NsHandler, 1);
 	nsh->prefix			= "fm";
-	nsh->parseItemTag		= parseItemTag;
-	nsh->doItemFooterOutput		= doItemOutput;
+	nsh->parseItemTag		= parse_item_tag;
 
 	return nsh;
 }

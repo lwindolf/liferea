@@ -229,7 +229,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 
 	item_set_title(ip, i->tags[RSS_ITEM_TITLE]);		
 	tmp = showRSSItem(fp, cp, i);
-	item_set_description(ip, tmp);
+	item_set_description(ip, tmp);	// FIXME: ensure that ns_content.c works!!!!!!
 	g_free(tmp);
 	
 	/* free RSSItem structure */

@@ -21,7 +21,7 @@
 #ifndef _NS_ADMIN_H
 #define _NS_ADMIN_H
 
-#include "rss_ns.h"
+#include "metadata.h"
 
 NsHandler *ns_admin_getRSSNsHandler(void);
 
