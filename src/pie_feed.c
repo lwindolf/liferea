@@ -231,7 +231,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					fp->metadata = metadata_list_append(fp->metadata, "pubDate", tmp);
-					feed_set_time(fp, parseRFC822Date(tmp));
+					feed_set_time(fp, parseISO8601Date(tmp));
 					g_free(tmp);
 				}
 
