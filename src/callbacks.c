@@ -501,6 +501,8 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 				interval = -1;	/* this is due to ignore this feed while updating */
 			setFeedUpdateInterval(fp, interval);
 		}
+		
+		redrawFeedList();
 	}
 }
 
@@ -561,7 +563,7 @@ void on_newbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
-	gchar		*key, *keyprefix, *title, *source;
+	gchar		*key, *keyprefix, *title, *source, *tmp;
 	GtkWidget 	*sourceentry;	
 	GtkWidget 	*titleentry, *typeoptionmenu,
 			*updateIntervalBtn;
@@ -605,18 +607,22 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 			addToFeedList(fp);
 			checkForEmptyFolders();
 			
-			if(NULL != (title = getFeedTitle(fp)))
-				gtk_entry_set_text(GTK_ENTRY(titleentry), title);
-			else		
-				gtk_entry_set_text(GTK_ENTRY(titleentry), "");
+			if(FALSE == getFeedAvailable(fp)) {
+				tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"));
+				showErrorBox(tmp);
+				g_free(tmp);
+			} else {
 			
-			new_feed = fp;
-		
-			updateIntervalBtn = lookup_widget(feednamedialog, "feedrefreshcount");
-			if(-1 != (interval = getFeedDefaultInterval(fp)))
-				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-			
-			gtk_widget_show(feednamedialog);
+				gtk_entry_set_text(GTK_ENTRY(titleentry), getFeedTitle(fp));
+				
+				new_feed = fp;
+
+				updateIntervalBtn = lookup_widget(feednamedialog, "feedrefreshcount");
+				if(-1 != (interval = getFeedDefaultInterval(fp)))
+					gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
+					
+				gtk_widget_show(feednamedialog);
+			}
 		}
 	} else {
 		print_status("could not get entry key prefix! maybe you did not select a group");
@@ -1067,7 +1073,7 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 	gtk_tree_model_get(model, iter, FS_TYPE, &type, 
 	                                FS_KEY, &key, -1);
 	
-	if(IS_FEED(type)) {
+	if(!IS_NODE(type)) {
 		g_assert(NULL != key);
 		fp = getFeed(key);
 		count = getFeedUnreadCount(fp);
@@ -1076,12 +1082,15 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 			unspecific = FALSE;
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
 			g_object_set(GTK_CELL_RENDERER(cell), "text", g_strdup_printf("%s (%d)", getFeedTitle(fp), count), NULL);
+		} else {
+			g_object_set(GTK_CELL_RENDERER(cell), "text", getFeedTitle(fp), NULL);
+			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
 		}
 	}
+	
 	g_free(key);
 	
-	if(unspecific)
-		g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
+
 }
 
 
@@ -1662,6 +1671,7 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 static void searchInFeed(gpointer key, gpointer value, gpointer userdata) {
 	
 	loadItemList((feedPtr)value, (gchar *)userdata);
+	preFocusItemlist();
 }
 
 void searchItems(gchar *string) {

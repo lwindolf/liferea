@@ -338,22 +338,21 @@ static feedPtr readRSSFeed(gchar *url) {
 			cur = cur->next;
 		}
 		xmlFreeDoc(doc);
-
-		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->type = FST_RSS;
-		fp->defaultInterval = fp->updateInterval = cp->updateInterval;
-		fp->title = cp->tags[RSS_CHANNEL_TITLE];
-
-		if(0 == error) {
-			fp->available = TRUE;
-			fp->description = showRSSFeedInfo(cp, url);
-		} else
-			fp->title = g_strdup(url);
-		
-		g_free(cp->nsinfos);
-		g_free(cp);
 		break;
 	}
+
+	/* after parsing we fill in the infos into the feedPtr structure */		
+	fp->type = FST_RSS;
+	fp->defaultInterval = fp->updateInterval = cp->updateInterval;
+	fp->title = cp->tags[RSS_CHANNEL_TITLE];
+
+	if(0 == error) {
+		fp->available = TRUE;
+		fp->description = showRSSFeedInfo(cp, url);
+	}
+		
+	g_free(cp->nsinfos);
+	g_free(cp);
 
 	return fp;
 }

@@ -210,8 +210,7 @@ feedPtr readCDFFeed(gchar *url) {
 		if(0 == error) {
 			fp->available = TRUE;
 			fp->description = showCDFFeedInfo(cp, url);
-		} else
-			fp->title = g_strdup(url);
+		}
 		
 		g_free(cp->nsinfos);
 		g_free(cp);

@@ -89,7 +89,7 @@ static void *update_mainloop(void *data) {
 static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr		fp = (feedPtr)value;
 	gint 		counter;
-g_print("update counter of %s = %d\n", (gchar *)key, getFeedUpdateCounter(fp));
+
 	if(0 < (counter = getFeedUpdateCounter(fp))) 
 		setFeedUpdateCounter(fp, counter - 1);
 }
@@ -122,7 +122,7 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		new_fp = (feedPtr)(*(fhp->readFeed))(source);
 		if(NULL == new_fp)
 			return;		/* feed reading must have failed, FIXME: should never happen (but does with OCS and local files)! */
-g_print("merging new feed %s...\n", new_fp->title);
+
 		mergeFeed(fp, new_fp);
 		
 		g_mutex_lock(feeds_lock);
@@ -138,6 +138,7 @@ g_print("merging new feed %s...\n", new_fp->title);
 			if(0 == strcmp(tmp_key, (gchar *)key)) {
 				clearItemList();
 				loadItemList(fp, NULL);
+				preFocusItemlist();
 			}
 		}
 		
