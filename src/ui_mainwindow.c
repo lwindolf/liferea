@@ -37,6 +37,7 @@
 #include "ui_folder.h"
 #include "ui_tray.h"
 #include "ui_itemlist.h"
+#include "ui_session.h"
 #include "ui_queue.h"
 #include "update.h"
 #include "htmlview.h"
@@ -77,6 +78,8 @@ GtkWidget *ui_mainwindow_get_active_htmlview() {
 	return htmlview;
 }
 
+extern htmlviewPluginInfo *htmlviewInfo;
+
 static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
 	gboolean modifier_matches = FALSE;
 	
@@ -89,6 +92,8 @@ static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventK
 			default:
 			case 1:
 				modifier_matches = (0 == event->state);
+				if (!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
+					return FALSE;
 				break;
 			case 2:
 				modifier_matches = ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK);
