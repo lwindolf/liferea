@@ -45,7 +45,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{name}-bin
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/pixmaps/%{name}.png
+%{_datadir}/pixmaps/news-reader-48.png
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/*.so
 
