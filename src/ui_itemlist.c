@@ -335,28 +335,30 @@ void ui_itemlist_display(void) {
 	g_assert(NULL != mainwindow);
 	
 	if(TRUE == ui_itemlist_get_two_pane_mode()) {
-		/* two pane mode */
-		ui_htmlview_start_output(&buffer, FALSE);
-		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-		while(valid) {	
-			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+		if(np = ui_feedlist_get_selected()) {
+			/* two pane mode */
+			ui_htmlview_start_output(&buffer, FALSE);
+			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+			while(valid) {	
+				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 
-			if(item_get_read_status(ip)) 
-				addToHTMLBuffer(&buffer, UNSHADED_START);
-			else
-				addToHTMLBuffer(&buffer, SHADED_START);
+				if(item_get_read_status(ip)) 
+					addToHTMLBuffer(&buffer, UNSHADED_START);
+				else
+					addToHTMLBuffer(&buffer, SHADED_START);
 
-			addToHTMLBuffer(&buffer, item_render(ip));
+				addToHTMLBuffer(&buffer, item_render(ip));
 
-			if(item_get_read_status(ip))
-				addToHTMLBuffer(&buffer, UNSHADED_END);
-			else {
-				addToHTMLBuffer(&buffer, SHADED_END);
+				if(item_get_read_status(ip))
+					addToHTMLBuffer(&buffer, UNSHADED_END);
+				else {
+					addToHTMLBuffer(&buffer, SHADED_END);
+				}
+
+				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 			}
-
-			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
-		}
 		ui_htmlview_finish_output(&buffer);
+		}
 	} else {
 		/* we only update anything if the feedlist is focussed */
 		if(lookup_widget(mainwindow, "feedlist") == gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
@@ -544,9 +546,9 @@ static void ui_itemlist_select(GtkTreeIter iter) {
 	treeview = lookup_widget(mainwindow, "Itemlist");
 	if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
 		path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
-		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
+		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
+		gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
 		gtk_tree_path_free(path);
-		gtk_tree_selection_select_iter(selection, &iter);
 	} else {
 		g_warning("internal error! could not get feed tree view selection!\n");
 	}

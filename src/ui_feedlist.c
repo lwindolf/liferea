@@ -93,12 +93,9 @@ nodePtr ui_feedlist_get_selected(void) {
 	nodePtr			ptr = NULL;
 
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
-	if(gtk_tree_selection_get_selected(select, &model, &iter)) {
+	if(gtk_tree_selection_get_selected(select, &model, &iter))
 		gtk_tree_model_get(model, &iter, FS_PTR, &ptr, -1);
-		return ptr;
-	}
-	
-	return NULL;
+	return ptr;
 }
 
 folderPtr ui_feedlist_get_target_folder(int *pos) {
@@ -364,7 +361,7 @@ void ui_feedlist_select(nodePtr np) {
 		if(FST_FOLDER != np->type)
 			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
 		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
-		gtk_tree_selection_select_path(selection, path);
+		gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
 		gtk_tree_path_free(path);
 
  	} else {

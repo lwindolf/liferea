@@ -13,8 +13,10 @@
 	  XML. This is to workaround the various broken feeds.
 	  Note: only very common HTML entities are supported.
 	  (Lars Lindner)
+	* Keyboard focus is adjusted on "Next Unread".
+	  (Lars Lindner)
 
-2004-11-??  Lars Lindner <lars.lindner@gmx.net>
+2004-11-14  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.6.2
 	
@@ -36,6 +38,9 @@
 	* Bugfix for a crash when double-clicking a "(empty)"
 	  entry in empty folders. Reported by Martin Sarfy.
 	  (Lars Lindner)
+	* If a feed uses HTTP authentication the user and
+	  password isn't displayed in the feed description
+	  anymore. (Lars Lindner)
 
 2004-10-31  Lars Lindner <lars.lindner@gmx.net>
 
