@@ -71,14 +71,14 @@ static GdkPixbuf	*readIcon = NULL;
 static GdkPixbuf	*unreadIcon = NULL;
 static GdkPixbuf	*flagIcon = NULL;
 /* icons for feedlist */
-GdkPixbuf	*availableIcon = NULL;
+GdkPixbuf		*availableIcon = NULL;
 static GdkPixbuf	*unavailableIcon = NULL;
 /* icons for OCS */
 static GdkPixbuf	*listIcon = NULL;
 /* icons for grouping */
 static GdkPixbuf	*directoryIcon = NULL;
 static GdkPixbuf	*helpIcon = NULL;
-GdkPixbuf	*emptyIcon = NULL;
+GdkPixbuf		*emptyIcon = NULL;
 /* VFolder */
 static GdkPixbuf	*vfolderIcon = NULL;
 
@@ -119,6 +119,7 @@ void clearItemList(void);
 /* helper functions								*/
 /*------------------------------------------------------------------------------*/
 
+/* GUI initialization, can be called again after preferences change */
 void initGUI(void) {
 	GtkWidget 	*widget;
 	
@@ -248,10 +249,7 @@ void redrawFeedList(void) { redrawWidget("feedlist"); }
 /* callbacks 									*/
 /*------------------------------------------------------------------------------*/
 
-void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
-
-	updateAllFeeds();
-}
+void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { updateAllFeeds(); }
 
 void on_popup_refresh_selected(void) { 
 

@@ -82,16 +82,16 @@ create_mainwindow (void)
   GtkWidget *search_with_feedster1;
   GtkWidget *image1063;
   GtkWidget *toolbar;
-  GtkWidget *nextbtn;
-  GtkWidget *alignment3;
-  GtkWidget *hbox27;
-  GtkWidget *image678;
-  GtkWidget *label49;
   GtkWidget *refreshbtn;
   GtkWidget *alignment1;
   GtkWidget *hbox16;
   GtkWidget *image2;
   GtkWidget *label24;
+  GtkWidget *nextbtn;
+  GtkWidget *alignment3;
+  GtkWidget *hbox27;
+  GtkWidget *image678;
+  GtkWidget *label49;
   GtkWidget *searchbtn;
   GtkWidget *alignment2;
   GtkWidget *hbox17;
@@ -366,28 +366,6 @@ create_mainwindow (void)
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 1);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_BOTH);
 
-  nextbtn = gtk_button_new ();
-  gtk_widget_show (nextbtn);
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), nextbtn, _("Jumps to the next unread item. If necessary selects the next feed with unread items."), NULL);
-  GTK_WIDGET_UNSET_FLAGS (nextbtn, GTK_CAN_FOCUS);
-  gtk_button_set_relief (GTK_BUTTON (nextbtn), GTK_RELIEF_NONE);
-
-  alignment3 = gtk_alignment_new (0.5, 0.5, 0, 0);
-  gtk_widget_show (alignment3);
-  gtk_container_add (GTK_CONTAINER (nextbtn), alignment3);
-
-  hbox27 = gtk_hbox_new (FALSE, 2);
-  gtk_widget_show (hbox27);
-  gtk_container_add (GTK_CONTAINER (alignment3), hbox27);
-
-  image678 = gtk_image_new_from_stock ("gtk-go-forward", GTK_ICON_SIZE_BUTTON);
-  gtk_widget_show (image678);
-  gtk_box_pack_start (GTK_BOX (hbox27), image678, FALSE, FALSE, 0);
-
-  label49 = gtk_label_new_with_mnemonic (_("Next Unread"));
-  gtk_widget_show (label49);
-  gtk_box_pack_start (GTK_BOX (hbox27), label49, FALSE, FALSE, 0);
-
   refreshbtn = gtk_button_new ();
   gtk_widget_show (refreshbtn);
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), refreshbtn, _("Update all feeds"), NULL);
@@ -409,6 +387,28 @@ create_mainwindow (void)
   label24 = gtk_label_new_with_mnemonic (_("Update"));
   gtk_widget_show (label24);
   gtk_box_pack_start (GTK_BOX (hbox16), label24, FALSE, FALSE, 0);
+
+  nextbtn = gtk_button_new ();
+  gtk_widget_show (nextbtn);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), nextbtn, _("Jumps to the next unread item. If necessary selects the next feed with unread items."), NULL);
+  GTK_WIDGET_UNSET_FLAGS (nextbtn, GTK_CAN_FOCUS);
+  gtk_button_set_relief (GTK_BUTTON (nextbtn), GTK_RELIEF_NONE);
+
+  alignment3 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_show (alignment3);
+  gtk_container_add (GTK_CONTAINER (nextbtn), alignment3);
+
+  hbox27 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_show (hbox27);
+  gtk_container_add (GTK_CONTAINER (alignment3), hbox27);
+
+  image678 = gtk_image_new_from_stock ("gtk-go-forward", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show (image678);
+  gtk_box_pack_start (GTK_BOX (hbox27), image678, FALSE, FALSE, 0);
+
+  label49 = gtk_label_new_with_mnemonic (_("Next Unread"));
+  gtk_widget_show (label49);
+  gtk_box_pack_start (GTK_BOX (hbox27), label49, FALSE, FALSE, 0);
 
   searchbtn = gtk_button_new ();
   gtk_widget_show (searchbtn);
@@ -601,12 +601,12 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) search_with_feedster1, "activate",
                     G_CALLBACK (on_search_with_feedster_activate),
                     NULL);
-  g_signal_connect_swapped ((gpointer) nextbtn, "clicked",
-                            G_CALLBACK (on_nextbtn_clicked),
-                            GTK_OBJECT (feedlist));
   g_signal_connect ((gpointer) refreshbtn, "clicked",
                     G_CALLBACK (on_refreshbtn_clicked),
                     NULL);
+  g_signal_connect_swapped ((gpointer) nextbtn, "clicked",
+                            G_CALLBACK (on_nextbtn_clicked),
+                            GTK_OBJECT (feedlist));
   g_signal_connect ((gpointer) searchbtn, "clicked",
                     G_CALLBACK (on_searchbtn_clicked),
                     NULL);
@@ -701,16 +701,16 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, search_with_feedster1, "search_with_feedster1");
   GLADE_HOOKUP_OBJECT (mainwindow, image1063, "image1063");
   GLADE_HOOKUP_OBJECT (mainwindow, toolbar, "toolbar");
-  GLADE_HOOKUP_OBJECT (mainwindow, nextbtn, "nextbtn");
-  GLADE_HOOKUP_OBJECT (mainwindow, alignment3, "alignment3");
-  GLADE_HOOKUP_OBJECT (mainwindow, hbox27, "hbox27");
-  GLADE_HOOKUP_OBJECT (mainwindow, image678, "image678");
-  GLADE_HOOKUP_OBJECT (mainwindow, label49, "label49");
   GLADE_HOOKUP_OBJECT (mainwindow, refreshbtn, "refreshbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, alignment1, "alignment1");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox16, "hbox16");
   GLADE_HOOKUP_OBJECT (mainwindow, image2, "image2");
   GLADE_HOOKUP_OBJECT (mainwindow, label24, "label24");
+  GLADE_HOOKUP_OBJECT (mainwindow, nextbtn, "nextbtn");
+  GLADE_HOOKUP_OBJECT (mainwindow, alignment3, "alignment3");
+  GLADE_HOOKUP_OBJECT (mainwindow, hbox27, "hbox27");
+  GLADE_HOOKUP_OBJECT (mainwindow, image678, "image678");
+  GLADE_HOOKUP_OBJECT (mainwindow, label49, "label49");
   GLADE_HOOKUP_OBJECT (mainwindow, searchbtn, "searchbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, alignment2, "alignment2");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox17, "hbox17");
