@@ -14,6 +14,8 @@
 	* Authenticated proxies are now supported via the GNOME proxy
 	  settings and http_proxy environment variable. (Nathan Conrad)
 	* Help feeds are no longer downloaded at every startup.
+	* Fix parsing of atom feeds that do not escape their content.
+	* Support for photo blog RSS modules. (Lars Lindner)
 	  
 	Bugfixes:
 

@@ -72,6 +72,8 @@ src/ns_slash.c
 src/ns_slash.h
 src/ns_syn.c
 src/ns_syn.h
+src/ns_photo.c
+src/ns_photo.h
 src/ocs_dir.c
 src/ocs_dir.h
 src/ocs_ns.h

@@ -265,3 +265,11 @@ span.slashprop {
 span.slashvalue {
 	color:white;
 }
+
+div.photoheader {
+	margin:10px 0;
+	padding-left:10px;
+	padding-right:10px;
+	background-color:#505050;
+	color:white;
+}

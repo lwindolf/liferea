@@ -25,6 +25,7 @@
 #include "metadata.h"
 #include "common.h"
 #include "ns_slash.h"
+#include "ns_photo.h"
 #include "debug.h"
 
 /* HTML definitions used for standard metadata rendering */
@@ -343,6 +344,9 @@ static void attribs_init() {
 	
 	/* types for freshmeat */
 	metadata_register_renderer("fmScreenshot", attribs_render_image, GINT_TO_POINTER(POS_BODY));
+	
+	/* types for photo blogs */
+	metadata_register_renderer("photo", ns_photo_render, NULL);
 
 	/* types for slash */
 	metadata_register_renderer("slash", ns_slash_render, NULL);	 /* This one should only be set, not appended */

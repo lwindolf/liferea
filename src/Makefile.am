@@ -56,6 +56,7 @@ liferea_bin_SOURCES = \
 	ns_blogChannel.c ns_blogChannel.h \
 	ns_cC.c ns_cC.h \
 	ns_ag.c ns_ag.h \
+	ns_photo.c ns_photo.h \
 	opml.c opml.h \
 	ocs_dir.c ocs_dir.h \
 	ocs_ns.h \
