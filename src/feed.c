@@ -137,6 +137,8 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 	} while(0);
 	
 	if(!handled) {
+		handler = NULL;
+		
 		/* test if we have a HTML page */
 		if(autodiscover && (
 		   (NULL != strstr(data, "<html>")) || (NULL != strstr(data, "<HTML>")) ||
