@@ -5,7 +5,7 @@ AC_INIT(configure.in)
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
 
-AM_INIT_AUTOMAKE(liferea, 0.5.3)
+AM_INIT_AUTOMAKE(liferea, 0.5.3b)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 

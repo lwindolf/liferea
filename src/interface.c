@@ -128,7 +128,7 @@ create_mainwindow (void)
   accel_group = gtk_accel_group_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.5.3"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.5.3b"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
   mainwindow_icon_pixbuf = create_pixbuf ("liferea.png");
   if (mainwindow_icon_pixbuf)
@@ -2766,7 +2766,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new (_("Liferea 0.5.3"));
+  label57 = gtk_label_new (_("Liferea 0.5.3b"));
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);
