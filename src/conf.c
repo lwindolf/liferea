@@ -150,12 +150,12 @@ gchar* conf_new_id() {
 /* config loading on startup						*/
 /*----------------------------------------------------------------------*/
 
-static void load_folder_contents(folderPtr folder, gchar* path, folderPtr *helpFolder);
+static void load_folder_contents(folderPtr folder, gchar* path);
 
-static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id, folderPtr *helpFolder) {
+static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
 	GError		*err = NULL;
 	int type, interval;
-	gchar *path2, *name, *url;
+	gchar *path2, *name, *url, *cachefileNew, *cachefileOld, *cacheid;
 	folderPtr folder;
 	gboolean expanded;
 
@@ -185,21 +185,19 @@ static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id, folderPtr *
 		folder = restore_folder(parent, -1, name, id, FST_FOLDER);
 		
 		ui_add_folder(folder);
-		load_folder_contents(folder, path2, helpFolder);
+		load_folder_contents(folder, path2);
 		if (expanded)
 			ui_folder_set_expansion(folder, TRUE);
 		g_free(path2);
+		g_free(name);
 		break;
 	case FST_HELPFOLDER:
-		*helpFolder = restore_folder(parent, -1, _("Liferea Help"), id, FST_HELPFOLDER);
-		ui_add_folder(*helpFolder);
-		feed_add(FST_HELPFEED, HELP1URL, *helpFolder, _("Online Help Feed"), NULL, 1440, FALSE) ;
-		feed_add(FST_HELPFEED, HELP2URL, *helpFolder, _("Liferea SF News"), NULL, 1440, FALSE) ;
+		folder = feedlist_insert_help_folder(parent);
 
 		path2 = g_strdup_printf("%s/%s/collapseState", prefix, id);
 		expanded = !getBooleanConfValue(path2);
 		if (expanded)
-			ui_folder_set_expansion(*helpFolder, TRUE);
+			ui_folder_set_expansion(folder, TRUE);
 		g_free(path2);
 		break;
 	default:
@@ -225,16 +223,31 @@ static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id, folderPtr *
 			
 		if(0 == interval)
 			interval = -1;
-		
+
+		if (strchr(id,'/')) {
+			cacheid = g_strdup(id);
+			*strchr(id,'/') = '_';
+		} else {
+			cacheid = g_strdup_printf("_%s",id);
+		}
+		cachefileOld = getCacheFileName(cacheid, NULL);
+		cachefileNew = getCacheFileName(id, "xml");
+		g_message("attempting move of %s to %s",cachefileOld, cachefileNew);
+		if (rename(cachefileOld, cachefileNew) == 0)
+			g_message("Cache file of '%s' has been moved", name);
+		g_free(cachefileOld);
+		g_free(cachefileNew);
+		g_free(cacheid);
+
 		feed_add(type, url, parent, name, id, interval, FALSE);
 		g_free(id);
 		g_free(url);
+		g_free(name);
 	}
-	g_free(name);
 	return TRUE;
 }
 
-static void load_folder_contents(folderPtr folder, gchar* path, folderPtr *helpFolder) {
+static void load_folder_contents(folderPtr folder, gchar* path) {
 	GSList *list;
 	gchar *id;
 	GError		*err = NULL;
@@ -253,9 +266,8 @@ static void load_folder_contents(folderPtr folder, gchar* path, folderPtr *helpF
 		while (list != NULL) {
 			id = (gchar*)list->data;
 			g_assert(id);
-			g_message("**found value of %s", id);
 			g_assert(NULL != id);
-			load_key(folder, path, id, helpFolder);
+			load_key(folder, PATH, id);
 			list = list->next;
 		}
 	}
@@ -269,23 +281,12 @@ static void load_folder_contents(folderPtr folder, gchar* path, folderPtr *helpF
 		while (list != NULL) {
 			id = (gchar*)list->data;
 			g_assert(id);
-			g_message("**found value of %s", id);
 			g_assert(NULL != id);
-			load_key(folder, path, id, helpFolder);
+			load_key(folder, PATH, id);
 			list = list->next;
 		}
 	}
 	g_free(name);
-	/*
-	nodes = gconf_value_new(GCONF_VALUE_LIST);
-	gconf_value_set_list_type(nodes, GCONF_VALUE_STRING);
-	gconf_value_set_list(nodes, (GSList*)NULL);
-	gconf_client_set(client, path2, nodes, &err);
-	is_gconf_error(err);
-	gconf_value_free(nodes);
-	g_free(path2);
-	*/
-	g_message("done reading %s", path);
 }
 
 folderPtr feedlist_insert_help_folder(folderPtr parent) {
@@ -300,14 +301,21 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 	return helpFolder;
 }
 
+void conf_feedlist_erase_gconf() {
+	GSList *list;
+	gchar *id;
+	GError		*err = NULL;
+	gchar *name;
+}
+
 void loadSubscriptions(void) {
 	gchar *filename;
-	//load_folder_contents(rootFolder, PATH);
 	feedlistLoading = TRUE;
+	load_folder_contents(folder_get_root(), PATH);
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
 	importOPMLFeedList(filename, folder_get_root());
 	g_free(filename);
-
+	conf_feedlist_erase_gconf();
 	/* if help folder was not yet created... */
 	feedlist_insert_help_folder(folder_get_root());
 	feedlistLoading = FALSE;

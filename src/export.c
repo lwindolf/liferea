@@ -156,6 +156,7 @@ void importOPMLFeedList(gchar *filename, folderPtr parent) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
+	g_message("Importing OPML file: %s", filename);
 	/* read the feed list */
 	doc = xmlParseFile(filename);
 
@@ -181,7 +182,6 @@ void importOPMLFeedList(gchar *filename, folderPtr parent) {
 
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
-			printf("loop start2\n");
 			/* we ignore the head */
 			if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
 				cur = cur->xmlChildrenNode;
