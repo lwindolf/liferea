@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-07 23:45-0400\n"
+"POT-Creation-Date: 2004-05-16 13:41+0200\n"
 "PO-Revision-Date: 2003-10-21 14:13+0200\n"
 "Last-Translator: Stephane Jourdanéphane Jourdan <stephane.jourdan@itris.fr>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Fichier pixmap %s introuvable."
 
-#: src/cdf_channel.c:179 src/ocs_dir.c:496 src/opml.c:232 src/pie_feed.c:318
+#: src/cdf_channel.c:179 src/ocs_dir.c:496 src/opml.c:231 src/pie_feed.c:318
 #: src/rss_channel.c:402
 msgid "There were errors while parsing this feed!"
 msgstr ""
@@ -78,68 +78,72 @@ msgstr ""
 
 #. _() for HELP1URL to allow localised help feeds
 #: src/conf.c:44
-msgid "http://liferea.sf.net/help048.rdf"
+msgid "http://liferea.sf.net/help"
 msgstr ""
 
-#: src/conf.c:333
+#: src/conf.c:44
+msgid ".rdf"
+msgstr ""
+
+#: src/conf.c:337
 #, fuzzy
 msgid "Liferea Help"
 msgstr "Liferea 0.4.3"
 
-#: src/conf.c:340
+#: src/conf.c:344
 msgid "Online Help Feed"
 msgstr ""
 
-#: src/conf.c:350
+#: src/conf.c:354
 msgid "Liferea SF News"
 msgstr ""
 
-#: src/conf.c:468
+#: src/conf.c:476
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: src/conf.c:494
+#: src/conf.c:502
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr ""
 
-#: src/export.c:271 src/export.c:273
+#: src/export.c:289 src/export.c:291
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 
-#: src/export.c:277 src/export.c:279
+#: src/export.c:295 src/export.c:297
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 
-#: src/export.c:287 src/export.c:289
+#: src/export.c:305 src/export.c:307
 #, c-format
 msgid "\"%s\" is no valid OPML document! Liferea cannot import this file!"
 msgstr ""
 
-#: src/export.c:361 src/export.c:374
+#: src/export.c:379 src/export.c:392
 #, fuzzy
 msgid "internal error! could not find file dialog select button!"
 msgstr ""
 "Erreur interne ! Impossible de trouver la vue en arborescence des canaux !\n"
 
-#: src/export.c:397
+#: src/export.c:415
 msgid "Error while exporting feed list!"
 msgstr ""
 
-#: src/export.c:399
+#: src/export.c:417
 msgid "Feed List exported!"
 msgstr ""
 
-#: src/export.c:415
+#: src/export.c:433
 #, fuzzy
 msgid "imported feed list"
 msgstr "Mise à jour"
 
-#: src/export.c:421
+#: src/export.c:439
 msgid "internal error! could not get a new folder key!"
 msgstr "Erreur interne ! Impossible d'obtenir une clé de nouveau répertoire !"
 
@@ -155,7 +159,7 @@ msgstr ""
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 
-#: src/feed.c:107 src/feed.c:332
+#: src/feed.c:107 src/feed.c:340
 msgid "<p>Empty document!</p>"
 msgstr ""
 
@@ -173,143 +177,143 @@ msgstr ""
 msgid "There were errors while parsing a feed!"
 msgstr ""
 
-#: src/feed.c:271
+#: src/feed.c:282
 msgid "could not write XML item node!\n"
 msgstr ""
 
-#: src/feed.c:280
+#: src/feed.c:288
 msgid "could not create XML feed node for feed cache document!"
 msgstr ""
 
-#: src/feed.c:285
+#: src/feed.c:293
 #, fuzzy
 msgid "could not create XML document!"
 msgstr "Imposible d'allouer de la mémoire !"
 
-#: src/feed.c:316
+#: src/feed.c:324
 #, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/feed.c:317
+#: src/feed.c:325
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/feed.c:326
+#: src/feed.c:334
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
 
-#: src/feed.c:341
+#: src/feed.c:349
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 
-#: src/feed.c:384
+#: src/feed.c:392
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr ""
 
-#: src/feed.c:520
+#: src/feed.c:528
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr ""
 
-#: src/feed.c:522
+#: src/feed.c:530
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr ""
 
-#: src/feed.c:621
+#: src/feed.c:629
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr ""
 
-#: src/feed.c:633
+#: src/feed.c:641
 msgid ""
 "Could not detect the type of this feed! Please check if the URL really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
 
-#: src/feed.c:651
+#: src/feed.c:659
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: src/feed.c:657
+#: src/feed.c:665
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 
-#: src/feed.c:668
+#: src/feed.c:676
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr ""
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:763 src/net/netio.c:478
+#: src/feed.c:771 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr ""
 
-#: src/feed.c:764
+#: src/feed.c:772
 msgid "Payment Required"
 msgstr ""
 
-#: src/feed.c:765
+#: src/feed.c:773
 msgid "Access Forbidden"
 msgstr ""
 
-#: src/feed.c:766
+#: src/feed.c:774
 msgid "Resource Not Found"
 msgstr ""
 
-#: src/feed.c:767
+#: src/feed.c:775
 msgid "Method Not Allowed"
 msgstr ""
 
-#: src/feed.c:768
+#: src/feed.c:776
 msgid "Not Acceptable"
 msgstr ""
 
-#: src/feed.c:769
+#: src/feed.c:777
 msgid "Proxy Authentication Required"
 msgstr ""
 
-#: src/feed.c:770
+#: src/feed.c:778
 msgid "Request Time-Out"
 msgstr ""
 
-#: src/feed.c:771
+#: src/feed.c:779
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 
-#: src/feed.c:777
+#: src/feed.c:785
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 
-#: src/feed.c:778
+#: src/feed.c:786
 msgid "Client Error"
 msgstr ""
 
-#: src/feed.c:779
+#: src/feed.c:787
 msgid "Server Error"
 msgstr ""
 
-#: src/feed.c:780
+#: src/feed.c:788
 msgid "(unknown error class)"
 msgstr ""
 
-#: src/feed.c:802
+#: src/feed.c:810
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
 msgstr ""
 
-#: src/feed.c:930
+#: src/feed.c:939
 #, fuzzy, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
@@ -351,7 +355,7 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr ""
 
-#: src/interface.c:150 src/interface.c:2435
+#: src/interface.c:150 src/interface.c:2789
 #, fuzzy
 msgid "Liferea 0.4.9"
 msgstr "Liferea 0.4.3"
@@ -528,7 +532,7 @@ msgstr ""
 msgid "_Help"
 msgstr ""
 
-#: src/interface.c:449 src/interface.c:2421 src/interface.c:2451
+#: src/interface.c:449 src/interface.c:2775 src/interface.c:2805
 msgid "About"
 msgstr ""
 
@@ -588,49 +592,48 @@ msgstr "Vue à simple entrée"
 msgid "condensed item list"
 msgstr "Liste des entrées compacte."
 
-#: src/interface.c:927
+#: src/interface.c:983
 msgid "Subscription Properties"
 msgstr "Propriétés des abonnements"
 
-#: src/interface.c:948
-msgid ""
-"Edit the following entries to adjust the feed source URL or\n"
-"the feed title, which is displayed in the feed list."
+#: src/interface.c:1004
+msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr ""
-"Editer les entrées suivantes pour ajuster l'adresse ou\n"
-" le titre du canal, qui est affiché dans la liste des canaux."
 
-#: src/interface.c:961
-msgid "Feed Title"
-msgstr "Titre du canal"
-
-#: src/interface.c:973
-#, fuzzy
-msgid ""
-"Either leave the name supplied by the feed or enter an alternative name "
-"which you like to be listed in the feed list."
+#: src/interface.c:1014 src/interface.c:1058 src/interface.c:1111
+#: src/interface.c:1185 src/interface.c:1201 src/interface.c:1247
+msgid "    "
 msgstr ""
-"Entrez un nom ou conservez celui apporté par le canal pour l'affichage dans "
-"la liste des canaux."
 
-#: src/interface.c:980
+#: src/interface.c:1023
+#, c-format
+msgid "This feed's name defaults to \"%s\"."
+msgstr ""
+
+#: src/interface.c:1028
+msgid "_Reset feed name to default after each update"
+msgstr ""
+
+#: src/interface.c:1036
 #, fuzzy
-msgid "Enter the URL the feed should be loaded from."
-msgstr "entrer l'adresse du canal qui doit etre chargé"
+msgid "Feed _Name:"
+msgstr "Nom du répertoire"
 
-#: src/interface.c:982 src/interface.c:1139
-msgid "Feed URL"
-msgstr "Adresse du canal"
+#: src/interface.c:1048
+msgid "<span weight=\"bold\">Refresh Interval</span>"
+msgstr ""
 
-#: src/interface.c:989
-msgid "Feed URL and Title"
-msgstr "Adresse et Titre du canal"
+#: src/interface.c:1067
+#, c-format
+msgid "This feed's refresh interval defaults to %d seconds."
+msgstr ""
 
-#: src/interface.c:1009
-msgid "Feed Refresh Interval (in minutes)"
+#: src/interface.c:1078
+#, fuzzy
+msgid "Feed Refresh _Interval:"
 msgstr "Intervalle de rafraichissement du canal (en minutes)"
 
-#: src/interface.c:1017
+#: src/interface.c:1086
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
@@ -641,15 +644,118 @@ msgstr ""
 "canal mis à jour quotidiennement. Pour désactiver la mise à jour "
 "automatique, réglez l'intervalle à 0."
 
-#: src/interface.c:1026
-msgid "Feed Update Interval"
-msgstr "Intervalle de mise à jour du canal"
+#: src/interface.c:1088
+msgid "minutes."
+msgstr ""
 
-#: src/interface.c:1106
+#: src/interface.c:1092
+msgid "General"
+msgstr ""
+
+#: src/interface.c:1101
+msgid "<b>Data Source</b>"
+msgstr ""
+
+#: src/interface.c:1127
+#, fuzzy
+msgid "_Select File..."
+msgstr "créer un VFolder"
+
+#: src/interface.c:1144
+msgid "_URL"
+msgstr ""
+
+#: src/interface.c:1150
+#, fuzzy
+msgid "_File"
+msgstr "Nom du répertoire"
+
+#: src/interface.c:1156
+msgid "_Command"
+msgstr ""
+
+#: src/interface.c:1168
+#, fuzzy
+msgid "Source Type:"
+msgstr "Type de canal"
+
+#: src/interface.c:1174
+msgid "Source:"
+msgstr ""
+
+#: src/interface.c:1193
+msgid "Use HTTP _authentication"
+msgstr ""
+
+#: src/interface.c:1211
+#, fuzzy
+msgid "User_name:"
+msgstr "Nom du répertoire"
+
+#: src/interface.c:1218
+msgid "_Password:"
+msgstr ""
+
+#: src/interface.c:1237
+msgid "<b>Conversion Filter</b>"
+msgstr ""
+
+#: src/interface.c:1255
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and "
+"directories in non-supported formats. Filters are installed by placing them "
+"in ~/.liferea/filters. See the documentation for more information."
+msgstr ""
+
+#: src/interface.c:1265
+msgid "Convert using: "
+msgstr ""
+
+#: src/interface.c:1275
+msgid "No conversion"
+msgstr ""
+
+#: src/interface.c:1281
+#, fuzzy
+msgid "Feed Source"
+msgstr "Type de canal"
+
+#: src/interface.c:1290
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea "
+"exits. Marked items are always saved to the cache."
+msgstr ""
+
+#: src/interface.c:1297
+msgid "_Default cache settings"
+msgstr ""
+
+#: src/interface.c:1303
+msgid "Di_sable cache"
+msgstr ""
+
+#: src/interface.c:1309
+msgid "_Umlimited cache"
+msgstr ""
+
+#: src/interface.c:1319
+msgid "_Limit cache to"
+msgstr ""
+
+#: src/interface.c:1332
+msgid "items."
+msgstr ""
+
+#: src/interface.c:1336
+#, fuzzy
+msgid "Feed Cache"
+msgstr "Type de canal"
+
+#: src/interface.c:1459
 msgid "New Subscription"
 msgstr "Nouvel Abonnement"
 
-#: src/interface.c:1127
+#: src/interface.c:1480
 msgid ""
 "Please enter the URL (including the http:// prefix) you want to \n"
 "subscribe to. Or enter a valid pathname if you want to load a local file."
@@ -658,51 +764,60 @@ msgstr ""
 "souhaitez vous abonner. Ou alors entrez un chemin valide si vous voulez "
 "charger un fichier local."
 
-#: src/interface.c:1149
+#: src/interface.c:1492
+msgid "Feed URL"
+msgstr "Adresse du canal"
+
+#: src/interface.c:1502
 msgid "local file"
 msgstr "fichier local"
 
-#: src/interface.c:1153
+#: src/interface.c:1506
 msgid "URL Input"
 msgstr "Entrée de l'URL"
 
-#: src/interface.c:1283
+#: src/interface.c:1636
 msgid "program preferences"
 msgstr "préférences du programme"
 
-#: src/interface.c:1309
-msgid "use the GNOME default browser"
+#: src/interface.c:1662
+#, fuzzy
+msgid "Use the GNOME default browser"
 msgstr "utiliser le navigateur par défaut de GNOME"
 
-#: src/interface.c:1319
-msgid "use browser command"
+#: src/interface.c:1672
+#, fuzzy
+msgid "Use browser command:"
 msgstr "commande du navigateur"
 
-#: src/interface.c:1329
+#: src/interface.c:1682
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr ""
 "Spécifier la commande du navigateur en utilisant %s pour l'emplacement de "
 "l'URL"
 
-#: src/interface.c:1331
+#: src/interface.c:1684
 #, fuzzy
 msgid "Browser Settings"
 msgstr "Paramètres du navigateur"
 
-#: src/interface.c:1345
-msgid "display only time"
+#: src/interface.c:1698
+#, fuzzy
+msgid "Display only time"
 msgstr "Afficher seulement l'heure"
 
-#: src/interface.c:1351
-msgid "display date and time"
+#: src/interface.c:1704
+#, fuzzy
+msgid "Display date and time"
 msgstr "Affiche la date et l'heure"
 
-#: src/interface.c:1361
-msgid "user defined format"
+#: src/interface.c:1714
+#, fuzzy
+msgid "User defined format:"
 msgstr "Format défini par l'utilisateur"
 
-#: src/interface.c:1370
+#: src/interface.c:1723
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -710,84 +825,82 @@ msgstr ""
 "pour les utilisateurs experts : spécifie une chaine de formatage de temps, "
 "consulter le manuel de strftime() pour le format des codes."
 
-#: src/interface.c:1372
+#: src/interface.c:1725
 #, fuzzy
 msgid "Date Column Settings"
 msgstr "Paramètres de la colonne de date"
 
-#: src/interface.c:1391
+#: src/interface.c:1744
 #, fuzzy
-msgid ""
-"Maximal number of items per feed \n"
-"to be saved permanently"
+msgid "Default number of items per feed to save when Liferea exits:"
 msgstr "Nombre maximum d'entrées par canaux à sauvegarder"
 
-#: src/interface.c:1402
+#: src/interface.c:1756
 msgid "Update all feeds on program startup."
 msgstr "Mettre à jour tous les canaux au démarrage"
 
-#: src/interface.c:1406
+#: src/interface.c:1760
 msgid "Don't add the help feeds to the feed list on startup."
 msgstr ""
 
-#: src/interface.c:1410
+#: src/interface.c:1764
 #, fuzzy
 msgid "Feed Handling Settings"
 msgstr "Paramètres de la gestion des canaux"
 
-#: src/interface.c:1415
+#: src/interface.c:1769
 #, fuzzy
 msgid "Feed Handling"
 msgstr "Paramètres de la gestion des canaux"
 
-#: src/interface.c:1434
+#: src/interface.c:1788
 msgid ""
 "Show a status icon in the notification area \n"
 "(also called system tray)."
 msgstr ""
 
-#: src/interface.c:1439
+#: src/interface.c:1793
 msgid "Notification Area"
 msgstr ""
 
-#: src/interface.c:1454
+#: src/interface.c:1808
 msgid "Show Menu _And Toolbar"
 msgstr ""
 
-#: src/interface.c:1460
+#: src/interface.c:1814
 msgid "Show _Menu Only"
 msgstr ""
 
-#: src/interface.c:1466
+#: src/interface.c:1820
 msgid "Show _Toolbar Only"
 msgstr ""
 
-#: src/interface.c:1472
+#: src/interface.c:1826
 #, fuzzy
 msgid "Menu Settings"
 msgstr "Paramètres du navigateur"
 
-#: src/interface.c:1487
+#: src/interface.c:1841
 msgid ""
 "Liferea displays feeds' content using various HTML renderers. Depending on "
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
 
-#: src/interface.c:1497
+#: src/interface.c:1851
 msgid "View Headlines With"
 msgstr ""
 
-#: src/interface.c:1509
+#: src/interface.c:1863
 #, fuzzy
 msgid "Viewing Headlines"
 msgstr "Gros titre"
 
-#: src/interface.c:1514
+#: src/interface.c:1868
 msgid "GUI Settings"
 msgstr ""
 
-#: src/interface.c:1534
+#: src/interface.c:1888
 msgid ""
 "Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center. Note: changing these settings "
@@ -795,139 +908,139 @@ msgid ""
 "GNOME to be able to use Liferea with a proxy."
 msgstr ""
 
-#: src/interface.c:1544
+#: src/interface.c:1898
 msgid "Enable Proxy"
 msgstr ""
 
-#: src/interface.c:1554
+#: src/interface.c:1908
 msgid "Proxy Host"
 msgstr ""
 
-#: src/interface.c:1573
+#: src/interface.c:1927
 msgid "Proxy Port"
 msgstr ""
 
-#: src/interface.c:1580
+#: src/interface.c:1934
 msgid "HTTP Proxy Server"
 msgstr ""
 
-#: src/interface.c:1584
+#: src/interface.c:1938
 #, fuzzy
 msgid "Proxy Settings"
 msgstr "Paramètres du navigateur"
 
-#: src/interface.c:1738
+#: src/interface.c:2092
 #, fuzzy
 msgid "New Folder"
 msgstr "créer un VFolder"
 
-#: src/interface.c:1753 src/interface.c:1827
+#: src/interface.c:2107 src/interface.c:2181
 #, fuzzy
 msgid "Folder name:"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:1816
+#: src/interface.c:2170
 #, fuzzy
 msgid "Rename Folder"
 msgstr "créer un VFolder"
 
-#: src/interface.c:1879
+#: src/interface.c:2233
 msgid "Select A File"
 msgstr ""
 
-#: src/interface.c:1924
+#: src/interface.c:2278
 #, fuzzy
 msgid "edit filter rules"
 msgstr "Editer le nom du répertoire"
 
-#: src/interface.c:2024
+#: src/interface.c:2378
 msgid "edit rule properties"
 msgstr ""
 
-#: src/interface.c:2038
+#: src/interface.c:2392
 msgid "rule type"
 msgstr ""
 
-#: src/interface.c:2048
+#: src/interface.c:2402
 msgid "add items with exact match"
 msgstr ""
 
-#: src/interface.c:2052
+#: src/interface.c:2406
 msgid "remove items with exact match"
 msgstr ""
 
-#: src/interface.c:2062
+#: src/interface.c:2416
 msgid "rule value"
 msgstr ""
 
-#: src/interface.c:2136
+#: src/interface.c:2490
 #, fuzzy
 msgid "Search With Feedster"
 msgstr "Chercher dans les canaux"
 
-#: src/interface.c:2150
+#: src/interface.c:2504
 #, fuzzy
 msgid "Search for "
 msgstr "Chercher"
 
-#: src/interface.c:2157
+#: src/interface.c:2511
 msgid "enter any search string you want"
 msgstr ""
 
-#: src/interface.c:2163
+#: src/interface.c:2517
 msgid "Maximal Number Of Result Items"
 msgstr ""
 
-#: src/interface.c:2172
+#: src/interface.c:2526
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
 "permanently and update it like any other subscription.  "
 msgstr ""
 
-#: src/interface.c:2238
+#: src/interface.c:2592
 msgid "Import Feed List"
 msgstr ""
 
-#: src/interface.c:2248
+#: src/interface.c:2602
 msgid ""
 "Liferea can import a list of feeds from an OPML file. This  can be used to "
 "either restore a backup feed list or import a feed list from another "
 "aggregator like that supports OPML export."
 msgstr ""
 
-#: src/interface.c:2258 src/interface.c:2346
+#: src/interface.c:2612 src/interface.c:2700
 #, fuzzy
 msgid "Filename"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:2266 src/interface.c:2354
+#: src/interface.c:2620 src/interface.c:2708
 msgid "Select File"
 msgstr ""
 
-#: src/interface.c:2326
+#: src/interface.c:2680
 msgid "Export Feed List"
 msgstr ""
 
-#: src/interface.c:2336
+#: src/interface.c:2690
 msgid ""
 "Liferea can export the list of feeds as an OPML list. You can use this "
 "feature to backup your feed list or export your feed list to another "
 "aggregator."
 msgstr ""
 
-#: src/interface.c:2440
+#: src/interface.c:2794
 msgid "Liferea is a news aggregator for GTK"
 msgstr ""
 
-#: src/interface.c:2445
+#: src/interface.c:2799
 msgid ""
 "Copyright (c) 2003-2004 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
 
-#: src/interface.c:2465
+#: src/interface.c:2819
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -950,11 +1063,11 @@ msgid ""
 "Philippe Martin, Brion Vibber (favicon support)"
 msgstr ""
 
-#: src/interface.c:2471
+#: src/interface.c:2825
 msgid "Contributors"
 msgstr ""
 
-#: src/interface.c:2485
+#: src/interface.c:2839
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -967,7 +1080,7 @@ msgid ""
 "Dario Conigliaro <djdas@djdas.no-ip.org>"
 msgstr ""
 
-#: src/interface.c:2491
+#: src/interface.c:2845
 msgid "Translation"
 msgstr ""
 
@@ -1217,49 +1330,32 @@ msgstr "commande du navigateur"
 msgid "starting: \"%s\""
 msgstr "Cherche \"%s\""
 
-#: src/ui_feedlist.c:334 src/ui_itemlist.c:607
+#: src/ui_feedlist.c:341 src/ui_itemlist.c:608
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Erreur interne ! Impossible de charger la sélection en arborescence des "
 "canaux !\n"
 
-#: src/ui_feedlist.c:347 src/ui_feedlist.c:380 src/ui_feedlist.c:423
-#: src/ui_feedlist.c:424
+#: src/ui_feedlist.c:354 src/ui_feedlist.c:387 src/ui_feedlist.c:418
+#: src/ui_feedlist.c:419
 #, fuzzy
 msgid "You have to select a feed entry!"
 msgstr "Vous ne pouvez pas effacer les canaux d'aide !"
 
-#: src/ui_feedlist.c:357
+#: src/ui_feedlist.c:364
 msgid "Liferea is in offline mode. No update possible!"
 msgstr ""
 
-#: src/ui_feedlist.c:388
+#: src/ui_feedlist.c:395
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
 
-#: src/ui_feedlist.c:392
+#: src/ui_feedlist.c:399
 msgid "Deleting entry"
 msgstr "Efface l'entrée"
 
-#: src/ui_feedlist.c:457
-#, c-format
-msgid "The provider of this feed suggests an update interval of %d minutes"
-msgstr ""
-"Le fournisseur de ce canal suggère un intervalle de mise à jour de %d "
-"minutes."
-
-#: src/ui_feedlist.c:459
-msgid "This feed specifies no default update interval."
-msgstr "Ce canal ne spécifie aucun intervalle de mise à jour."
-
-#: src/ui_feedlist.c:505
-msgid "Internal error! No feed selected, but property change requested...\n"
-msgstr ""
-"Erreur interne ! Aucun canal sélectionné, mais changement dans les "
-"propriétés demandés ... \n"
-
-#: src/ui_feedlist.c:546
+#: src/ui_feedlist.c:466
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1274,7 +1370,7 @@ msgstr ""
 "Vous pouvez retenter le téléchargement ou enlever l'abonnement au canal via "
 "le menu contextuel dans la liste des canaux.\n"
 
-#: src/ui_feedlist.c:551
+#: src/ui_feedlist.c:471
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
@@ -1308,52 +1404,52 @@ msgstr ""
 "Erreur interne ! Type d'entrée inconnu ! Impossible d'afficher l'icône "
 "appropriée !\n"
 
-#: src/ui_itemlist.c:285
+#: src/ui_itemlist.c:286
 msgid "Date"
 msgstr "Date"
 
-#: src/ui_itemlist.c:292
+#: src/ui_itemlist.c:293
 msgid "Headline"
 msgstr "Gros titre"
 
-#: src/ui_itemlist.c:322
+#: src/ui_itemlist.c:323
 msgid "item list widget lookup failed!\n"
 msgstr "Recherche du widget de la liste des entrées échouée ! \n"
 
-#: src/ui_itemlist.c:332
+#: src/ui_itemlist.c:333
 msgid "could not retrieve selection of item list!\n"
 msgstr "Impossible de rappatrier la sélection dans la liste des entrées !\n"
 
-#: src/ui_itemlist.c:414
+#: src/ui_itemlist.c:415
 #, fuzzy
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr ""
 "Erreur interne ! Requète d'affichage d'une entrée pour un pointeur NULL !"
 
-#: src/ui_itemlist.c:555
+#: src/ui_itemlist.c:556
 msgid "No item has been selected!"
 msgstr ""
 
-#: src/ui_itemlist.c:579
+#: src/ui_itemlist.c:580
 #, fuzzy
 msgid "You have to select a feed to delete its items!"
 msgstr "Vous ne pouvez pas effacer les canaux d'aide !"
 
-#: src/ui_itemlist.c:609
+#: src/ui_itemlist.c:610
 #, fuzzy
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 "Erreur interne ! Impossible de trouver la vue en arborescence des canaux !\n"
 
-#: src/ui_itemlist.c:642
+#: src/ui_itemlist.c:643
 msgid "There are no unread items!"
 msgstr ""
 
-#: src/ui_mainwindow.c:78
+#: src/ui_mainwindow.c:95
 msgid "Liferea is now online."
 msgstr ""
 
-#: src/ui_mainwindow.c:81
+#: src/ui_mainwindow.c:98
 msgid "Liferea is now offline!"
 msgstr ""
 
@@ -1480,6 +1576,47 @@ msgstr ""
 msgid "Mozilla (experimental)"
 msgstr ""
 
+#~ msgid ""
+#~ "Edit the following entries to adjust the feed source URL or\n"
+#~ "the feed title, which is displayed in the feed list."
+#~ msgstr ""
+#~ "Editer les entrées suivantes pour ajuster l'adresse ou\n"
+#~ " le titre du canal, qui est affiché dans la liste des canaux."
+
+#~ msgid "Feed Title"
+#~ msgstr "Titre du canal"
+
+#, fuzzy
+#~ msgid ""
+#~ "Either leave the name supplied by the feed or enter an alternative name "
+#~ "which you like to be listed in the feed list."
+#~ msgstr ""
+#~ "Entrez un nom ou conservez celui apporté par le canal pour l'affichage "
+#~ "dans la liste des canaux."
+
+#, fuzzy
+#~ msgid "Enter the URL the feed should be loaded from."
+#~ msgstr "entrer l'adresse du canal qui doit etre chargé"
+
+#~ msgid "Feed URL and Title"
+#~ msgstr "Adresse et Titre du canal"
+
+#~ msgid "Feed Update Interval"
+#~ msgstr "Intervalle de mise à jour du canal"
+
+#~ msgid "The provider of this feed suggests an update interval of %d minutes"
+#~ msgstr ""
+#~ "Le fournisseur de ce canal suggère un intervalle de mise à jour de %d "
+#~ "minutes."
+
+#~ msgid "This feed specifies no default update interval."
+#~ msgstr "Ce canal ne spécifie aucun intervalle de mise à jour."
+
+#~ msgid "Internal error! No feed selected, but property change requested...\n"
+#~ msgstr ""
+#~ "Erreur interne ! Aucun canal sélectionné, mais changement dans les "
+#~ "propriétés demandés ... \n"
+
 #, fuzzy
 #~ msgid "_Feed"
 #~ msgstr "Adresse du canal"
@@ -1497,10 +1634,6 @@ msgstr ""
 #~ msgstr "créer un VFolder"
 
 #, fuzzy
-#~ msgid "_Delete Folder"
-#~ msgstr "créer un VFolder"
-
-#, fuzzy
 #~ msgid "_Edit Folder Name"
 #~ msgstr "Editer le nom du répertoire"
 
@@ -1510,9 +1643,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Vous devez spécifier le type du canal auquel vous voulez vous abonner.\n"
 #~ " Si vous n'êtes pas surs, sélectionnez \"Auto-détection\"."
-
-#~ msgid "Feed Type"
-#~ msgstr "Type de canal"
 
 #~ msgid "Auto Detect"
 #~ msgstr "Auto-détéction"
