@@ -103,8 +103,8 @@ void favicon_remove(feedPtr fp) {
 
 static void favicon_download_request_cb(struct request *request) {
 	feedPtr	fp = (feedPtr)request->user_data;
-	gchar	*tmp, *baseurl;
-	
+	gchar	*tmp;
+	const gchar *baseurl;
 	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
 	fp->faviconRequest = NULL;
 	
@@ -125,24 +125,24 @@ static void favicon_download_request_cb(struct request *request) {
 		g_free(tmp);
 		ui_feed_update(fp);
 		/* FIXME: why don't we free the request structure? (Lars) */
-	} else {
-		baseurl = request->source;
+	}
+	if (request->flags == 0 && fp->icon == NULL){
+		baseurl = feed_get_source(fp);
 		if(NULL != (tmp = strstr(baseurl, "://"))) {
 			tmp += 3;
 			if(NULL != (tmp = strchr(tmp, '/'))) {
 				*tmp = 0;
-				/* if its not already a server root URL, try to download favicon.ico from server root */
-				if(NULL != (tmp = strchr(tmp + 1, '/'))) {
-					request = download_request_new(NULL);
-					request->source = g_strdup_printf("%s/favicon.ico", baseurl);
-					request->callback = &favicon_download_request_cb;
-					request->user_data = fp;
-					fp->faviconRequest = request;
-			
-					debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
-	
-					download_queue(request);
-				}
+				request = download_request_new(NULL);
+				request->source = g_strdup_printf("%s/favicon.ico", baseurl);
+				
+				request->callback = &favicon_download_request_cb;
+				request->user_data = fp;
+				request->flags = 1;
+				fp->faviconRequest = request;
+				
+				debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
+				
+				download_queue(request);
 			}
 		}
 	}
@@ -174,6 +174,7 @@ void favicon_download(feedPtr fp) {
 			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
 			request->callback = &favicon_download_request_cb;
 			request->user_data = fp;
+			request->flags = 0;
 			fp->faviconRequest = request;
 			
 			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
