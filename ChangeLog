@@ -1,4 +1,4 @@
-2004-07-24  Lars Lindner <lars.lindner@gmx.net>
+2004-08-??  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.3
 	
@@ -13,15 +13,28 @@
 	  links to the favicons). (Nathan Conrad)
 	* Authenticated proxies are now supported via the GNOME proxy
 	  settings and http_proxy environment variable. (Nathan Conrad)
+	* Help feeds are no longer downloaded at every startup.
+	* Fix parsing of atom feeds that do not escape their content.
 	  
 	Bugfixes:
 	
-	* Favicons downloaded using gzip compression are no longer
-	  corrupted. This might fix some other download problems. (Nathan
-	  Conrad)
-	* Help feeds are no longer downloaded at every startup.
-	* Fix parsing of atom feeds that do not escape their content.
+2004-08-02 Lars Linder <lars.lindner@gmx.net>
+
+	Version 0.5.2c
+
+	* Update of the Czech translation. (Juraj Kubelka)
 	
+	Bugfixes:
+	
+	* Fixes a bug reported by twentyone that hides the headers 
+	  and metadata when the two pane mode (condensed view) is 
+	  enabled. (Lars Lindner)
+	* Favicons downloaded using gzip compression are no longer
+	  corrupted. This might fix some other download problems. 
+	  (Nathan Conrad)
+	* Fixed a parsing bug that treated Atom feed modified/issued
+	  dates as RFC822 instead of ISO6801 dates. (Lars Lindner)
+
 2004-07-23 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.2b
