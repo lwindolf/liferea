@@ -37,7 +37,7 @@ typedef struct node {
 	gpointer *ui_data;
 } *nodePtr;
 
-/* Conversion function which should be applied to all read XML strings, 
+/** Conversion function which should be applied to all read XML strings, 
    to ensure proper UTF8. doc points to the xml document and its encoding and
    string is a xmlChar pointer to the read string. The result gchar
    string is returned, the original XML string is freed. */
@@ -50,15 +50,15 @@ gchar * convertToHTML(gchar * string);
 gchar * unhtmlize(gchar *string);
 
 /* parses a XML node and returns its contents as a string */
-//gchar * parseHTML(htmlNodePtr cur);
+/* gchar * parseHTML(htmlNodePtr cur); */
 
-/* to extract not escaped XHTML from a node */
+/** to extract not escaped XHTML from a node */
 gchar * extractHTMLNode(xmlNodePtr cur);
 
 void addToHTMLBufferFast(gchar **buffer, const gchar *string);
 void	addToHTMLBuffer(gchar **buffer, const gchar *string);
 
-/* Common function to create a XML DOM object from a given
+/** Common function to create a XML DOM object from a given
    XML buffer. This function sets up a parser context,
    enables recovery mode and sets up the error handler.
    
@@ -69,9 +69,9 @@ xmlDocPtr parseBuffer(gchar *data, gchar **errormsg);
 time_t 	parseISO8601Date(gchar *date);
 time_t 	parseRFC822Date(gchar *date);
 gchar *createRFC822Date(const time_t *time);
-// FIXME: formatDate used by several functions not only
-// to format date column, don't use always date column format!!!
-// maybe gchar * formatDate(time_t, gchar *format)
+/* FIXME: formatDate used by several functions not only
+   to format date column, don't use always date column format!!!
+   maybe gchar * formatDate(time_t, gchar *format) */
 gchar * formatDate(time_t t);
 
 gchar *	getCachePath(void);

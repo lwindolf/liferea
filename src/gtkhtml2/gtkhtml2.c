@@ -256,10 +256,12 @@ static gfloat get_zoom_level(GtkWidget *scrollpane) {
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
 static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *base) {
-	g_object_set_data(G_OBJECT(scrollpane), "html_request", NULL);
 	
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
+	
+	g_object_set_data(G_OBJECT(scrollpane), "html_request", NULL);
+	
 	/* finalizing older stuff */
 	if(NULL != doc) {
 		kill_old_connections(doc);

@@ -55,7 +55,7 @@ char * UIDejunk (char * feed_description) {
 	char *newtext;				/* Detag'ed *text. */
 	char *detagged;				/* Returned value from strsep. This is what we want. */
 	char *entity;				/* Which HTML crap did we hit now? */
-//	struct entity *cur_entity;
+/*	struct entity *cur_entity;*/
 	int found = 0;				/* User defined entity matched? */
 	
 	/* Make a copy and point *start to it so we can free the stuff again! */
@@ -154,29 +154,29 @@ char * UIDejunk (char * feed_description) {
 					strcat (newtext, "'");
 					continue;
 				}
-				
-//				/* Decode user defined entities. */
+				/*				
+//				/ * Decode user defined entities. * /
 //				found = 0;
 //				for (cur_entity = first_entity; cur_entity != NULL; cur_entity = cur_entity->next_ptr) {
 //					if (strcmp (entity, cur_entity->entity) == 0) {
-//						/* We have found a matching entity. */
+//						/ * We have found a matching entity. * /
 //						
-//						/* If entity_length is more than 1 char we need to realloc
-//						   more space in newtext. */
+//						/ * If entity_length is more than 1 char we need to realloc
+//						   more space in newtext. * /
 //						if (cur_entity->entity_length > 1)
 //							newtext = realloc (newtext,  strlen(newtext)+cur_entity->entity_length+1);
 //						
-//						/* Append new entity. */
+//						/* Append new entity. * /
 //						strcat (newtext, cur_entity->converted_entity);
 //						
-//						/* Set found flag. */
+//						/* Set found flag. * /
 //						found = 1;
 //						
-//						/* We can now leave the for loop. */
+//						/* We can now leave the for loop. * /
 //						break;
 //					}
 //				}
-								
+*/
 				/* If nothing matched so far, put text back in. */
 				if (!found) {
 					/* Changed into &+entity to avoid stray semicolons
@@ -302,7 +302,7 @@ char * WrapText (char * text, int width) {
 		}
 	}
 	
-	//if (line != NULL)
+	/*if (line != NULL)*/
 		free (line);
 	
 	free (start);	

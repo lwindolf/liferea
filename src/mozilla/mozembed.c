@@ -186,22 +186,22 @@ static GtkWidget * mozilla_create() {
 	}
 	signal_connections[] =
 	{
-		//{ "location",        mozembed_location_changed_cb  },
-		//{ "title",           mozembed_title_changed_cb     },
-		//{ "net_start",       mozembed_load_started_cb      },
-		//{ "net_stop",        mozembed_load_finished_cb     },
-		//{ "net_state_all",   mozembed_net_status_change_cb },
-		//{ "progress",        mozembed_progress_change_cb   },
+		/*{ "location",        mozembed_location_changed_cb  },*/
+		/*{ "title",           mozembed_title_changed_cb     },*/
+		/*{ "net_start",       mozembed_load_started_cb      },*/
+		/*{ "net_stop",        mozembed_load_finished_cb     },*/
+		/*{ "net_state_all",   mozembed_net_status_change_cb },*/
+		/*{ "progress",        mozembed_progress_change_cb   },*/
 		{ "link_message",    mozembed_link_message_cb      },
-		//{ "js_status",       mozembed_js_status_cb         },
-		//{ "visibility",      mozembed_visibility_cb        },
+		/*{ "js_status",       mozembed_js_status_cb         },*/
+		/*{ "visibility",      mozembed_visibility_cb        },*/
 		{ "destroy_browser", mozembed_destroy_brsr_cb      },
-		//{ "dom_mouse_down",  mozembed_dom_mouse_down_cb    },	
+		/*{ "dom_mouse_down",  mozembed_dom_mouse_down_cb    },*/
 		{ "dom_mouse_click", mozembed_dom_mouse_click_cb   },
 		{ "dom_key_press",   mozembed_dom_key_press_cb     },
-		//{ "size_to",         mozembed_size_to_cb           },
+		/*{ "size_to",         mozembed_size_to_cb           },*/
 		{ "new_window",      mozembed_new_window_cb        },
-		//{ "security_change", mozembed_security_change_cb   },
+		/*{ "security_change", mozembed_security_change_cb   },*/
 		{ "open_uri",		 mozembed_open_uri_cb},
 		/* terminator -- must be last in the list! */
 		{ NULL, NULL } 

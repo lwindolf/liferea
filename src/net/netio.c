@@ -38,12 +38,14 @@
 #endif
 
 #include <string.h>
+#include <strings.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <sys/time.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -497,7 +499,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 						if (cur_ptr->lasthttpstatus == 301) {
 							if (!suppressoutput)
 								UIStatus (_("URL points to permanent redirect, updating with new location..."), 2);
-							//printlog (cur_ptr, _("URL points to permanent redirect, updating with new location..."));
+							/*printlog (cur_ptr, _("URL points to permanent redirect, updating with new location..."));*/
 							free (cur_ptr->feedurl);
 							if (authdata == NULL)
 								cur_ptr->feedurl = strdup (newlocation);
@@ -596,7 +598,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 				} else {
 					/* second pass, give up on unknown error base class */
 					cur_ptr->netio_error = NET_ERR_HTTP_NON_200;
-					//printlog (cur_ptr, servreply);
+					/*printlog (cur_ptr, servreply);*/
 					fclose (stream);
 					return NULL;
 				}

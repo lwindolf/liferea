@@ -20,6 +20,7 @@
  */
 
 #include <unistd.h>
+#include <stdio.h>
 #include "support.h"
 #include "debug.h"
 #include "update.h"

@@ -128,7 +128,7 @@ void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
 /* returns RSS channel description as HTML */
 static gchar * showRSSFeedInfo(feedPtr fp, RSSChannelPtr cp, gchar *url) {
 	gchar		*buffer = NULL;
-	gchar		*tmp, *line;
+	gchar		*tmp;
 	outputRequest	request;
 
 	g_assert(cp != NULL);
@@ -218,7 +218,7 @@ static void parseChannel(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					RSSNsHandler		*nsh = (RSSNsHandler *)hp->data;;
+					RSSNsHandler		*nsh = (RSSNsHandler *)hp->data;
 					parseChannelTagFunc	fp = nsh->parseChannelTag;
 					if(NULL != fp)
 						(*fp)(cp, cur);

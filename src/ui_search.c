@@ -110,7 +110,7 @@ void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data)
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
-	/*	rulePtr			rp;	/* FIXME: this really does not belong here!!! -> vfolder.c */
+	/*	rulePtr			rp;*/	/* FIXME: this really does not belong here!!! -> vfolder.c */
 	/*	feedPtr			fp; */
 	folderPtr			folder = NULL;
 
@@ -130,7 +130,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				/* setup a rule */
 			/*			rp = g_new0(struct rule,1);
 
-				/* we set the searchstring as a default title */
+				/ * we set the searchstring as a default title */
 			/*				feed_set_title(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));*/
 				/* and set the rules... */
 /*				rp->value = g_strdup((gchar *)searchstring);

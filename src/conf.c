@@ -27,6 +27,7 @@
 #include <gconf/gconf-client.h>
 #include <libxml/nanohttp.h>
 #include <string.h>
+#include <time.h>
 #include "support.h"
 #include "callbacks.h"
 #include "update.h"

@@ -77,7 +77,7 @@ void on_popup_next_unread_item_selected(void);
 void on_popup_zoomin_selected(void);
 void on_popup_zoomout_selected(void);
 
-// FIXME: move the following to ui_filter...
+/* FIXME: move the following to ui_filter... */
 void
 on_popup_filter_selected	       (void);
 
