@@ -166,15 +166,18 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 		free(realhost);
 	} else {
 		char port_str[6];
-
+		
 		snprintf(port_str, sizeof(port_str), "%d", proxyport);
 		ret = getaddrinfo(proxyname, port_str, &hints, &res);
 	}
-
-	if (ret != 0)
+	
+	if (ret != 0 || res == NULL) {
+		if (res != NULL)
+			freeaddrinfo(res);
+		cur_ptr->netio_error = NET_ERR_HOST_NOT_FOUND;
 		return -1;
-
-	cur_ptr->netio_error = NET_ERR_OK;
+	}
+	
 	for (ai = res; ai != NULL; ai = ai->ai_next) {
 		/* Create a socket. */
 		*my_socket = socket (ai->ai_family, ai->ai_socktype, ai->ai_protocol);
@@ -211,10 +214,11 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 				continue;
 			}
 		}
-
+		
+		cur_ptr->netio_error = NET_ERR_OK;
 		break;
 	}
-
+	
 	freeaddrinfo(res);
 	if (cur_ptr->netio_error != NET_ERR_OK)
 		return -1;
