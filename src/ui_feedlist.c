@@ -96,7 +96,7 @@ static void ui_feedlist_set_selected_feed(feedPtr fp, gchar *keyprefix) {
 			selected_keyprefix = g_strdup(getFeedKeyPrefix(fp));
 		else
 			selected_keyprefix = g_strdup(keyprefix);
-	} else {
+	} else if (NULL != keyprefix){
 		/* we select a folder */
 		if(0 == strcmp(keyprefix, "empty"))
 			selected_type = FST_EMPTY;
@@ -105,7 +105,8 @@ static void ui_feedlist_set_selected_feed(feedPtr fp, gchar *keyprefix) {
 
 		g_free(selected_keyprefix);
 		selected_keyprefix = g_strdup(keyprefix);
-	}
+	} else
+		selected_type = FST_INVALID;
 }
 
 /* Calls ui_feedlist_set_selected_feed() to fill the global select_* 
@@ -322,7 +323,8 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			ui_feedlist_set_selected_feed(NULL, tmp_key);
 		}
 		g_free(tmp_key);
-	}
+	} else 
+		ui_feedlist_set_selected_feed(NULL,NULL);
 }
 
 /* sets up the entry list store and connects it to the entry list
@@ -454,7 +456,6 @@ void on_popup_delete_selected(void) {
 		ui_htmlview_clear();
 		ui_itemlist_clear();
 		removeFeed(selected_fp);
-		ui_feedlist_set_selected_feed(NULL, "");
 		gtk_tree_store_remove(feedstore, &iter);
 		checkForEmptyFolders();
 	} else {
