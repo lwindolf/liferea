@@ -164,9 +164,9 @@ void	ui_htmlview_clear(GtkWidget *htmlview);
  * Function to add HTML source header to create a valid HTML source.
  *
  * @param buffer	pointer to buffer to add the HTML to
- * @param padded	TRUE if output is for two pane mode
+ * @param twoPane	TRUE if output is for two pane mode
  */
-void	ui_htmlview_start_output(gchar **buffer, gboolean padded);
+void	ui_htmlview_start_output(gchar **buffer, gboolean twoPane);
 
 /**
  * Function to add HTML source footer to create a valid HTML source.

@@ -199,11 +199,11 @@ GtkWidget *ui_htmlview_new() {
 	return htmlview;
 }
 
-static void ui_htmlview_write_css(gchar **buffer, gboolean padded) {
+static void ui_htmlview_write_css(gchar **buffer, gboolean twoPane) {
 	gchar	*font = NULL;
 	gchar	*fontsize = NULL;
 	gchar	*tmp;
-	gchar	*styleSheetFile;
+	gchar	*styleSheetFile, *defaultStyleSheetFile;
     
 	addToHTMLBuffer(buffer,	"<style type=\"text/css\">\n"
 				 "<!--\n");
@@ -217,7 +217,7 @@ static void ui_htmlview_write_css(gchar **buffer, gboolean padded) {
 
 	if(NULL != font) {
 		fontsize = font;
-		/* the GTK/GNOME font name format is <font name>,<font size in point>
+		/* the GTK2/GNOME font name format is <font name>,<font size in point>
 		 Or it can also be "Font Name size*/
 		strsep(&fontsize, ",");
 		if (fontsize == NULL) {
@@ -242,51 +242,48 @@ static void ui_htmlview_write_css(gchar **buffer, gboolean padded) {
 		addToHTMLBuffer(buffer, "}\n");
 	}	
 
-	if(padded) 
+	if(!twoPane) {
 		addToHTMLBuffer(buffer, "body { style=\"padding:0px;\" }\n");
-
-	if(g_file_get_contents(PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea.css", &tmp, NULL, NULL)) {
+		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea2.css");
+		styleSheetFile = g_strdup_printf("%s/liferea2.css", common_get_cache_path());
+	} else {
+		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea.css");
+		styleSheetFile = g_strdup_printf("%s/liferea.css", common_get_cache_path());
+	}
+	
+	if(g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
 		addToHTMLBuffer(buffer, tmp);
 		g_free(tmp);
 	}
 
-	styleSheetFile = g_strdup_printf("%s/liferea.css", common_get_cache_path());
-
-	if (g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
+	if(g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
 		addToHTMLBuffer(buffer, tmp);
 		g_free(tmp);
 	}
 
+	g_free(defaultStyleSheetFile);
 	g_free(styleSheetFile);
 	
 	addToHTMLBuffer(buffer, "\n//-->\n</style>\n");
 }
 
-void ui_htmlview_start_output(gchar **buffer, gboolean padded) { 
+void ui_htmlview_start_output(gchar **buffer, gboolean twoPane) { 
 	
 	addToHTMLBuffer(buffer, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>\n");
 	addToHTMLBuffer(buffer, "<head>\n<title></title>");
 	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
 
-	ui_htmlview_write_css(buffer, padded);
+	ui_htmlview_write_css(buffer, twoPane);
 	
 	addToHTMLBuffer(buffer, "</head>\n<body>");
 }
 
 void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *base) { 
-	if (base == NULL)
-		base = "file:///";
-	
-	/* THIS IS A HACK! This should be a g_assert.... I know how to
-	   fix the problem that causes this, but it works well enough,
-	   and this is not much of a hack. What happens is that the focus
-	   of the itemlist changes when switching pane modes, which
-	   causes item_display to be triggered, triggering a write while
-	   a htmlview doesn't exist. Getting rid of the notebook is what
-	   should be done.... I'll do this at some point, but until then,
-	   this works. */
-	if (htmlview == NULL)
-		return;
+
+	if(base == NULL)
+		base = "file:///";	
+
+	g_assert(htmlview != NULL);
 	
 	if(!g_utf8_validate(string, -1, NULL)) {
 		gchar *buffer = g_strdup(string);

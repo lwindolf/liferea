@@ -228,7 +228,6 @@ void item_free(itemPtr ip) {
 	g_assert(NULL == ip->tmpdata);	/* should be free after rendering */
 	metadata_list_free(ip->metadata);
 
-	g_assert(ip->ui_data == NULL);
 	g_free(ip);
 }
 
@@ -255,7 +254,7 @@ gchar *item_render(itemPtr ip) {
 		addToHTMLBufferFast(&buffer, HEAD_START);
 		/*  -- Feed line */
 		if(feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed) != NULL)
-			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+			tmp = g_strdup_printf("<span class=\"feedlink\"><a href=\"%s\">%s</a></span>",
 			                      feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed),
 			                      feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
 		else
@@ -268,7 +267,7 @@ gchar *item_render(itemPtr ip) {
 
 		/*  -- Item line */
 		if(item_get_source(ip) != NULL)
-			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+			tmp = g_strdup_printf("<span class=\"itemtitle\"><a href=\"%s\">%s</a></span>",
 							  item_get_source(ip),
 							  (item_get_title(ip) != NULL)? item_get_title(ip) : _("[No title]"));
 		else

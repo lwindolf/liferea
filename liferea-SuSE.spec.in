@@ -60,7 +60,7 @@ make install-strip
 "//usr/local/share/applications/liferea.desktop"
 %dir "//usr/local/share/liferea/"
 %dir "//usr/local/share/liferea/css/"
-"//usr/local/share/liferea/css/liferea.css"
+"//usr/local/share/liferea/css/*.css"
 %dir "//usr/local/share/liferea/opml/"
 "//usr/local/share/liferea/opml/feedlist*.opml"
 %dir "//usr/local/share/liferea/pixmaps/"

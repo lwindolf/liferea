@@ -1,5 +1,5 @@
 /*
- * Liferea HTML view default stylesheet (three pane mode)
+ * Liferea HTML view default stylesheet (two pane mode)
  *
  * (C) 2004 Lars Linder <lars.lindner@gmx.net>
  * (C) 2004 delusional <delusional@dx13.co.uk>
@@ -50,24 +50,24 @@ dd {
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
-	margin-bottom:10px;
 	width:100%;
-	background-color:#DDD;
-	border: 1px solid black;
-}
-
-td.itemhead {	/* old definition replaced by td.head (for compatibilty) */
-	padding:2px 5px;
+	margin-bottom:2px;
 }
 
 td.headleft {
-	padding:2px 2px;
-	text-align:right;
-	white-space:nowrap;	/* workaround to prevent buggy gtkhtml2 word wrappings */
+	display:none;
 }
 
 td.headright {
-	padding:2px 5px;
+	border-bottom-style:solid;
+	border-bottom-color:gray;
+	border-bottom-width:1px;
+}
+td.headright a {
+	text-decoration:none;
+	text-weight:bold;
+	color:black;
+	font-size:1.3em;
 }
 
 /* styles to display generic namespace augmentation in the 
@@ -98,6 +98,10 @@ table.addfoot {	/* used for namespace additions (admin, ag,...) */
 	border-collapse:collapse;	/* needed for footer with Mozilla */
 }
 
+span.feedlink {
+	display:none;
+}
+
 tr.feedfoot {
 	border-width:0;
 	border-bottom-width:1px;
@@ -126,7 +130,7 @@ span.feedfootvalue {
 
 /* channel images */
 img.feed {
-	margin-bottom:10px;
+	display:none;
 }
 
 /* OCS specific styles */
