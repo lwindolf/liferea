@@ -58,6 +58,23 @@ void ui_mainwindow_update_toolbar(void) {
 	}
 }
 
+void ui_mainwindow_update_feed_menu(gint type) {
+	gboolean enabled = IS_FEED(type) || IS_FOLDER(type);
+	GtkWidget *item;
+	
+	item = lookup_widget(mainwindow, "properties");
+	gtk_widget_set_sensitive(item, enabled);
+
+	item = lookup_widget(mainwindow, "feed_update");
+	gtk_widget_set_sensitive(item, enabled);
+
+	item = lookup_widget(mainwindow, "delete_selected");
+	gtk_widget_set_sensitive(item, enabled);
+
+	item = lookup_widget(mainwindow, "mark_all_as_read1");
+	gtk_widget_set_sensitive(item, enabled);
+}
+
 void ui_mainwindow_update_menubar(void) {
 	GtkWidget *widget;
 	

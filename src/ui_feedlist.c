@@ -27,6 +27,7 @@
 #include "folder.h"
 #include "conf.h"
 #include "ui_feedlist.h"
+#include "ui_mainwindow.h"
 #include "ui_tray.h"
 #include "ui_feed.h"
 #include "update.h"
@@ -215,6 +216,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	GtkTreeModel		*model;
 	feedPtr			fp;
 	GdkGeometry		geometry;
+	gint				type = FST_INVALID;
 	
 	ui_tray_zero_new();
 	
@@ -222,6 +224,8 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		gtk_tree_model_get(model, &iter, 
 					    FS_PTR, &fp,
 					    -1);
+		if (fp != NULL) 
+			type = fp->type;
 		
 		/* make sure thats no grouping iterator */
 		if(fp && (IS_FEED(fp->type) || FST_VFOLDER == fp->type)) {
@@ -242,6 +246,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
 	}
+	ui_mainwindow_update_feed_menu(type);
 }
 
 static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, gpointer data) {
@@ -308,6 +313,7 @@ void ui_feedlist_init(GtkWidget *mainview) {
                 	 lookup_widget(mainwindow, "feedlist"));
 			 
 	ui_dnd_init();			
+	ui_mainwindow_update_feed_menu(FST_INVALID);
 }
 
 void ui_feedlist_select(nodePtr np) {

@@ -18,9 +18,11 @@ void switchPaneMode(gboolean new_mode);
 /** According to the preferences this function enables/disables the toolbar */
 void ui_mainwindow_update_toolbar();
 
+/** Set the sensitivity of items in the feed menu based on the type of item selected */
+void ui_mainwindow_update_feed_menu(gint type);
+
 /** According to the preferences this function enables/disables the menubar */
 void ui_mainwindow_update_menubar();
-
 /**
  * Sets the status bar text. Takes printf() like parameters 
  */
