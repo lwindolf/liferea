@@ -683,39 +683,51 @@ static void ui_itemlist_select(itemPtr ip) {
 	}
 }
 
-gboolean on_itemlist_button_press_event(GtkWidget *widget,
-								GdkEventButton *event,
-								gpointer user_data)
-{
-	GdkEventButton      *eb;
-	GtkWidget      *treeview;
-	GtkTreePath    *path;
-	GtkTreeIter    iter;
-	itemPtr		ip=NULL;
-	gboolean       selected = TRUE;
+gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
+	GdkEventButton		*eb;
+	GtkWidget		*treeview;
+	GtkTreeViewColumn	*column;
+	GtkTreePath		*path;
+	GtkTreeIter		iter;
+	itemPtr			ip = NULL;
 	
+	if(event->type != GDK_BUTTON_PRESS)
+		return FALSE;
+
 	treeview = lookup_widget(mainwindow, "Itemlist");
 	g_assert(treeview);
 
-	if (event->type != GDK_BUTTON_PRESS)
+	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(treeview), event->x, event->y, &path, NULL, NULL, NULL))
 		return FALSE;
 
-	eb = (GdkEventButton*) event;
-
-	if (eb->button != 3)
-		return FALSE;
-
-	if (!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(treeview), event->x, event->y, &path, NULL, NULL, NULL))
-		selected=FALSE;
-	else {
-		gtk_tree_model_get_iter(GTK_TREE_MODEL(getItemStore()), &iter, path);
-		gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter,
+	gtk_tree_model_get_iter(GTK_TREE_MODEL(getItemStore()), &iter, path);
+	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter,
 					    IS_PTR, &ip,
 					    -1);
-		ui_itemlist_select(ip);
-	}
-	
-	gtk_menu_popup(make_item_menu(ip), NULL, NULL, NULL, NULL, eb->button, eb->time);
-	
-	return TRUE;
+	gtk_tree_path_free(path);
+	g_assert(NULL != ip);
+					    	
+	eb = (GdkEventButton*)event; 
+	switch(eb->button) {
+		case 2:
+			/* depending on the column middle mouse click toggles flag or read status
+			   We depent on the fact that the state column is the first!!! 
+			   code inspired by the GTK+ 2.0 Tree View Tutorial at:
+			   http://scentric.net/tutorial/sec-misc-get-renderer-from-click.html */
+			if(NULL != (column = gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 0))) {
+				g_assert(NULL != column);
+				if(event->x <= column->width)
+					item_set_mark(ip, !item_get_mark(ip));				
+				else
+					(item_get_read_status(ip))?item_set_unread(ip):item_set_read(ip);
+			}
+			return TRUE;
+			break;
+		case 3:
+			ui_itemlist_select(ip);
+			gtk_menu_popup(make_item_menu(ip), NULL, NULL, NULL, NULL, eb->button, eb->time);
+			return TRUE;
+			break;
+	}	
+	return FALSE;
 }

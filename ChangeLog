@@ -1,10 +1,23 @@
-2004-??-?? ???
+2004-07-?? ???
+
+	Version 0.5.2
+	
+	* A middle mouse click on the itemlist now toggles
+	  read status or the headline flag depending on the
+	  column you click. (Lars Lindner)
+
+2004-06-30 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.1
 	
 	* Favicons are now processed with gdkpixbuf and saved
 	  to disc in PNG format. Images with 24bit colors and
 	  sizes other than 16x16 are now supported. (Nathan Conrad)
+
+	  PLEASE NOTE THAT THIS BREAKS FAVICON CACHE
+ 	  DOWNWARD COMPATIBILITY WITH OLDER RELEASES!
+	  WHEN YOU FALLBACK YOU WILL LOOSE YOUR ICONS.
+
 	* Now a short help text is displayed in the HTML view
 	  after startup. (Lars Linder)
 	* Updated networking code. Many more things, such as
@@ -12,8 +25,9 @@
 	  (Nathan Conrad)
 	* Improved preferences for selecting how to open a link
 	  in an external browser. (Nathan Conrad)
-	* Popup-window notifications of new items. 
-	  (Karl Soderstrom)
+	* Popup-window notifications of new items. This
+	  is a first implementation and we are open for your
+	  critics and suggestions! (Karl Soderstrom)
 	
 	Bugfixes:
 	  
