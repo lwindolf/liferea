@@ -82,13 +82,13 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 			else
 				xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
 			xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
-			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 			xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
 			if (cacheLimit != NULL)
 				xmlNewProp(childNode, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
 			if (feed_get_filter(fp) != NULL)
 				xmlNewProp(childNode, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
 			if(internal) {
+				xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 				if (fp->lastPoll.tv_sec > 0) {
 					gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
 					xmlNewProp(childNode, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
