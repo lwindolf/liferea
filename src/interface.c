@@ -111,7 +111,10 @@ create_mainwindow (void)
   GtkWidget *rightpane;
   GtkWidget *ilscrolledwindow;
   GtkWidget *Itemlist;
+  GtkWidget *viewportThreePaneHtml;
   GtkWidget *label30;
+  GtkWidget *viewportTwoPaneHtml;
+  GtkWidget *label133;
   GtkWidget *hbox30;
   GtkWidget *onlinebtn;
   GtkWidget *onlineimage;
@@ -517,9 +520,21 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (ilscrolledwindow), Itemlist);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (Itemlist), TRUE);
 
+  viewportThreePaneHtml = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (viewportThreePaneHtml);
+  gtk_paned_pack2 (GTK_PANED (rightpane), viewportThreePaneHtml, TRUE, TRUE);
+
   label30 = gtk_label_new (_("single item view"));
   gtk_widget_show (label30);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 0), label30);
+
+  viewportTwoPaneHtml = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (viewportTwoPaneHtml);
+  gtk_container_add (GTK_CONTAINER (itemtabs), viewportTwoPaneHtml);
+
+  label133 = gtk_label_new (_("label133"));
+  gtk_widget_show (label133);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 1), label133);
 
   hbox30 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox30);
@@ -723,7 +738,10 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, rightpane, "rightpane");
   GLADE_HOOKUP_OBJECT (mainwindow, ilscrolledwindow, "ilscrolledwindow");
   GLADE_HOOKUP_OBJECT (mainwindow, Itemlist, "Itemlist");
+  GLADE_HOOKUP_OBJECT (mainwindow, viewportThreePaneHtml, "viewportThreePaneHtml");
   GLADE_HOOKUP_OBJECT (mainwindow, label30, "label30");
+  GLADE_HOOKUP_OBJECT (mainwindow, viewportTwoPaneHtml, "viewportTwoPaneHtml");
+  GLADE_HOOKUP_OBJECT (mainwindow, label133, "label133");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox30, "hbox30");
   GLADE_HOOKUP_OBJECT (mainwindow, onlinebtn, "onlinebtn");
   GLADE_HOOKUP_OBJECT (mainwindow, onlineimage, "onlineimage");
