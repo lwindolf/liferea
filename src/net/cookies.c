@@ -30,6 +30,10 @@
    .host.com	host_match[BOOL]	/path	secure[BOOL]	expire[unix time]	NAME	VALUE
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <glib.h>
 #include <string.h>
 #include <stdio.h>

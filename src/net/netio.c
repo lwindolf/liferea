@@ -27,6 +27,10 @@
  *
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 /* OS X needs this, otherwise socklen_t is not defined. */
 #ifdef __APPLE__
 #       define _BSD_SOCKLEN_T_

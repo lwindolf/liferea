@@ -30,6 +30,10 @@
  * will fill a supplied 16-byte array with the digest.
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <string.h>		/* for memcpy() */
 #include "md5.h"
 

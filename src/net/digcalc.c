@@ -13,6 +13,10 @@
  * MD5 implementation rather than using RSA's.
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include "md5.h"
 
 #include <string.h>
