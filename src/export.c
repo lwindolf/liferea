@@ -391,10 +391,11 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			id = conf_new_id();
 			feed_set_id(fp, id);
 			debug1(DEBUG_CONF, "seems to be an import, setting new id: %s and doing first download...", id);
-			g_free(id);
-			feed_schedule_update(fp, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
-							 | FEED_REQ_DOWNLOAD_FAVICON
-							 | FEED_REQ_AUTH_DIALOG);
+			g_free(id);			
+			if(FST_FEED == fp->type)	/* don't update vfolders */
+				feed_schedule_update(fp, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+				                         | FEED_REQ_DOWNLOAD_FAVICON
+				                         | FEED_REQ_AUTH_DIALOG);
 		}
 
 		ui_feedlist_add(folder, (nodePtr)fp, -1);
