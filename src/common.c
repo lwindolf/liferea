@@ -236,3 +236,16 @@ gchar * getCachePath(void) {
 		
 	return CACHEPATH;
 }
+
+gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension) {
+	gchar	*keypos;
+	
+	/* build filename */	
+	keypos = strrchr(key, '/');
+	if(NULL == keypos)
+		keypos = key;
+	else
+		keypos++;
+		
+	return g_strdup_printf("%s/%s_%s.%s", getCachePath(), keyprefix, keypos, extension);
+}

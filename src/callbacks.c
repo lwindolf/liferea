@@ -31,6 +31,8 @@
 #include "common.h"
 #include "callbacks.h"
 
+#include "vfolder.h"	// FIXME
+
 /* list of all namespaces supported by preferences dialog (FIXME) */
 gchar	*nslist[] = { "dc", "content", "slash", "fm", "syn", "admin", NULL };
 
@@ -49,6 +51,7 @@ extern GdkPixbuf	*helpIcon;
 extern GdkPixbuf	*listIcon;
 extern GdkPixbuf	*availableIcon;
 extern GdkPixbuf	*unavailableIcon;
+extern GdkPixbuf	*vfolderIcon;
 
 extern GThread	*updateThread;
 
@@ -631,7 +634,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
 
 			gtk_widget_show(feednamedialog);
-		}
+		} // FIXME: else
 	} else {
 		print_status("could not get entry key prefix! maybe you did not select a group");
 	}
@@ -759,7 +762,7 @@ void on_popup_allunread_selected(void) {
 	GtkTreeModel 	*model;
 	GtkTreeIter	iter;
 	gpointer	tmp_ip;
-	gint		tmp_type;
+	gint		type;
 	gboolean 	valid;
 
 	model = GTK_TREE_MODEL(getItemStore());
@@ -767,10 +770,10 @@ void on_popup_allunread_selected(void) {
 
 	while(valid) {
                	gtk_tree_model_get (model, &iter, IS_PTR, &tmp_ip,
-		                                  IS_TYPE, &tmp_type, -1);
+						  IS_TYPE, &type, -1);
 		g_assert(tmp_ip != NULL);
-		if(IS_FEED(tmp_type))
-			markItemAsRead(tmp_type, tmp_ip);
+		if(IS_FEED(type))
+			markItemAsRead(type, tmp_ip);
 
 		valid = gtk_tree_model_iter_next(model, &iter);
 	}
@@ -820,8 +823,47 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		print_status(g_strdup_printf(_("searching for \"%s\""), searchstring));
+		// FIXME: use a VFolder instead of searchItems()
 		searchItems((gchar *)searchstring);
 	}
+}
+
+void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
+	GtkWidget		*searchentry;
+	G_CONST_RETURN gchar	*searchstring;
+	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
+	gchar			*key, *keyprefix;
+	
+	g_assert(mainwindow != NULL);
+	keyprefix = getEntryViewSelectionPrefix(mainwindow);
+		
+
+	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
+		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
+		print_status(g_strdup_printf(_("creating VFolder for search term \"%s\""), searchstring));
+
+		if(NULL != (keyprefix = getEntryViewSelectionPrefix(mainwindow))) {
+
+			if(NULL != (key = newEntry(FST_VFOLDER, "", keyprefix))) {
+				// FIXME: this really does not belong here!!! -> vfolder.c
+				/* setup a rule */
+				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule)))) 
+					g_error(_("could not allocate memory!"));
+
+				rp->value = (gchar *)searchstring;
+
+				/* we set the searchstring as a default title */
+				setFeedProp(key, FEED_PROP_USERTITLE, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
+
+				loadNewVFolder(key, rp);
+			} // FIXME: else
+		} else {
+			print_status("could not get entry key prefix! maybe you did not select a group");
+		}
+		
+	}
+g_print("VFolder created!\n");
+	/* don't free keyprefix and searchstring for its reused by newEntry! */
 }
 
 /*------------------------------------------------------------------------------*/
@@ -894,7 +936,7 @@ void itemlist_selection_changed(void) {
         GtkTreeModel		*model;
 
 	gpointer	tmp_ip;
-	gint		tmp_type;
+	gint		type;
 	gchar		*tmp_key;
 
 	/* do nothing upon initial focussing */
@@ -913,13 +955,12 @@ void itemlist_selection_changed(void) {
        		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 
                		gtk_tree_model_get (model, &iter, IS_PTR, &tmp_ip,
-		                                	  IS_TYPE, &tmp_type, -1);
+							  IS_TYPE, &type, -1);
 
 			g_assert(tmp_ip != NULL);
-
 			if((0 == itemlist_loading)) {
 				if(NULL != (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
-					loadItem(tmp_type, tmp_ip);
+					loadItem(type, tmp_ip);
 
 					/* redraw feed list to update unread items numbers */
 					redrawFeedList();
@@ -996,6 +1037,9 @@ static void renderEntryStatus(GtkTreeViewColumn *tree_column,
 		case FST_NODE:
 			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", directoryIcon, NULL);
 			break;
+		case FST_VFOLDER:
+			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", vfolderIcon, NULL);
+			break;
 		case FST_OCS:
 			if((gboolean)getFeedProp(tmp_key, FEED_PROP_AVAILABLE))
 				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", listIcon, NULL);
@@ -1071,14 +1115,14 @@ static void renderItemTitle(GtkTreeViewColumn *tree_column,
 	             gpointer           data)
 {
 	gpointer	*tmp_ip;
-	gint		tmp_type;
+	gint		type;
 	gboolean 	result;
 
 	gtk_tree_model_get(model, iter, IS_PTR, &tmp_ip,
-	                                IS_TYPE, &tmp_type, -1);
-	
-	if(IS_FEED(tmp_type))
-		result = getItemReadStatus(tmp_type, tmp_ip);
+					IS_TYPE, &type, -1);
+
+	if(IS_FEED(type))
+		result = getItemReadStatus(type, tmp_ip);
 	
 	if(FALSE == result) {
 		g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
@@ -1094,14 +1138,14 @@ static void renderItemStatus(GtkTreeViewColumn *tree_column,
 	             gpointer           data)
 {
 	gpointer	tmp_ip;
-	gint		tmp_type;
+	gint		type;
 	gboolean	result = TRUE;
 
 	gtk_tree_model_get(model, iter, IS_PTR, &tmp_ip,
-	                                IS_TYPE, &tmp_type, -1);
-					
-	if(IS_FEED(tmp_type))
-		result = getItemReadStatus(tmp_type, tmp_ip);
+					IS_TYPE, &type, -1);
+
+	if(IS_FEED(type))
+		result = getItemReadStatus(type, tmp_ip);
 			
 	if(FALSE == result) {
 		g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unreadIcon, NULL);
@@ -1208,6 +1252,13 @@ static GtkItemFactoryEntry node_menu_items[] = {
       {"/_Delete Folder", 	NULL, on_popup_removefolder_selected, 0, NULL}
 };
 
+static GtkItemFactoryEntry vfolder_menu_items[] = {
+      {"/_New",			NULL, 0, 0, "<Branch>" },
+      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 0, NULL},
+      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 0, NULL},      
+      {"/_Delete VFolder",	NULL, on_popup_delete_selected, 0, NULL},
+};
+
 static GtkItemFactoryEntry default_menu_items[] = {
       {"/_New Folder", 	NULL, on_popup_newfolder_selected, 0, NULL}
 };
@@ -1222,7 +1273,11 @@ static GtkMenu *make_entry_menu(gint type) {
 		case FST_NODE:
 			menu_items = node_menu_items;
 			nmenu_items = sizeof(node_menu_items)/(sizeof(node_menu_items[0]));
-			break;	
+			break;
+		case FST_VFOLDER:
+			menu_items = vfolder_menu_items;
+			nmenu_items = sizeof(vfolder_menu_items)/(sizeof(vfolder_menu_items[0]));
+			break;
 		case FST_PIE:
 		case FST_RSS:
 		case FST_CDF:
@@ -1349,7 +1404,7 @@ void showErrorBox(gchar *msg) {
 }
 
 /*------------------------------------------------------------------------------*/
-/* feed list DND handling							*/
+/* feed list DND handling (currently under construction :-)			*/
 /*------------------------------------------------------------------------------*/
 
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {

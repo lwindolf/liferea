@@ -52,7 +52,6 @@ void updateNow(void)
 {
 	g_mutex_lock(cond_mutex);
 	work_to_do = TRUE;
-g_print("updating now!\n");
 	g_cond_signal(qcond);
 	g_mutex_unlock(cond_mutex);
 }
@@ -142,10 +141,14 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 			g_assert(new_ep != NULL);
 		}
 		
-		g_mutex_lock(feeds_lock);			
-		g_hash_table_insert(feeds, key, (gpointer)new_ep);
+		g_mutex_lock(feeds_lock);
+		/* update feed key */
+		g_hash_table_insert(feeds, key, (gpointer)new_ep);	
+		/* update all vfolders */
+		g_hash_table_foreach(feeds, removeOldItemsFromVFolders, ep);
+		g_hash_table_foreach(feeds, scanFeed, new_ep);
 		g_mutex_unlock(feeds_lock);
-			
+				
 		gdk_threads_enter();
 		tmp_key = getMainFeedListViewSelection();	// FIXME: inperformant
 

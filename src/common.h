@@ -42,5 +42,7 @@ gchar * unhtmlize(gchar * from_encoding, gchar *string);
 gchar * getActualTime(void);
 time_t 	convertDate(char *date);
 gchar * formatDate(time_t t);
+
 gchar *	getCachePath(void);
+gchar * getCacheFileName(gchar *keyprefix, gchar *key, gchar *extension);
 #endif

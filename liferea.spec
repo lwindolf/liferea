@@ -43,3 +43,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/liferea/pixmaps/directory.xpm
 /usr/local/share/liferea/pixmaps/ocs.xpm
 /usr/local/share/liferea/pixmaps/help.xpm
+/usr/local/share/liferea/pixmaps/vfolder.xpm

@@ -24,6 +24,7 @@
 #include <time.h>
 #include <gconf/gconf.h>	// FIXME: remove
 #include "support.h"
+#include "common.h"
 #include "conf.h"
 
 #include "cdf_channel.h"
@@ -33,6 +34,7 @@
 #include "pie_feed.h"
 #include "pie_entry.h"
 #include "ocs_dir.h"
+#include "vfolder.h"
 
 #include "backend.h"
 #include "callbacks.h"	
@@ -94,19 +96,21 @@ void initBackend() {
 
 	feedHandler = g_hash_table_new(g_int_hash, g_int_equal);
 	
-	registerFeedType(FST_RSS, initRSSFeedHandler());
-	registerFeedType(FST_HELPFEED, initRSSFeedHandler());	
-	registerFeedType(FST_OCS, initOCSFeedHandler());
-	registerFeedType(FST_CDF, initCDFFeedHandler());
-	registerFeedType(FST_PIE, initPIEFeedHandler());
+	registerFeedType(FST_RSS,	initRSSFeedHandler());
+	registerFeedType(FST_HELPFEED,	initRSSFeedHandler());	
+	registerFeedType(FST_OCS,	initOCSFeedHandler());
+	registerFeedType(FST_CDF,	initCDFFeedHandler());
+	registerFeedType(FST_PIE,	initPIEFeedHandler());
+	registerFeedType(FST_VFOLDER,	initVFolderFeedHandler());
 	
 	itemHandler = g_hash_table_new(g_int_hash, g_int_equal);
 		
-	registerItemType(FST_RSS, initRSSItemHandler());
-	registerItemType(FST_HELPFEED, initRSSItemHandler());	
-	registerItemType(FST_OCS, initOCSItemHandler());	
-	registerItemType(FST_CDF, initCDFItemHandler());
-	registerItemType(FST_PIE, initPIEItemHandler());
+	registerItemType(FST_RSS,	initRSSItemHandler());
+	registerItemType(FST_HELPFEED,	initRSSItemHandler());	
+	registerItemType(FST_OCS,	initOCSItemHandler());	
+	registerItemType(FST_CDF, 	initCDFItemHandler());
+	registerItemType(FST_PIE, 	initPIEItemHandler());
+	registerItemType(FST_VFOLDER,	initVFolderItemHandler());
 }
 
 
@@ -186,7 +190,7 @@ void updateEntry(gchar *key) {
 gchar * newEntry(gint type, gchar *url, gchar *keyprefix) {
 	feedHandlerPtr	fhp;
 	entryPtr	new_ep = NULL;
-	gchar		*key, *keypos;
+	gchar		*key;
 	gchar		*oldfilename, *newfilename;
 	
 	if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
@@ -205,14 +209,8 @@ gchar * newEntry(gint type, gchar *url, gchar *keyprefix) {
 			if(type == FST_OCS) {
 				/* rename the temporalily saved ocs file new.ocs to
 				   <keyprefix>_<key>.ocs  */
-				keypos = strrchr(key, '/');
-				if(NULL == keypos)
-					keypos = key;
-				else
-					keypos++;
-
 				oldfilename = g_strdup_printf("%s/none_new.ocs", getCachePath());
-				newfilename = g_strdup_printf("%s/%s_%s.ocs", getCachePath(), keyprefix, keypos);
+				newfilename = getCacheFileName(keyprefix, key, "ocs");
 				if(0 != rename(oldfilename, newfilename)) {
 					g_print("error! could not move file %s to file %s\n", oldfilename, newfilename);
 				}
@@ -237,7 +235,7 @@ gchar * newEntry(gint type, gchar *url, gchar *keyprefix) {
 }
 
 /* ---------------------------------------------------------------------------- */
-/* folder handling stuff							*/
+/* folder handling stuff (thats not the VFolder handling!)			*/
 /* ---------------------------------------------------------------------------- */
 
 gchar * getFolderTitle(gchar *keyprefix) {
@@ -312,6 +310,10 @@ void removeFolder(gchar *keyprefix) {
 		g_print(_("internal error! could not determine folder key!"));
 	}
 }
+
+/* ---------------------------------------------------------------------------- */
+/* feed handling functions							*/
+/* ---------------------------------------------------------------------------- */
 
 /* method to add feeds from config */
 gchar * addEntry(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval) {
@@ -487,8 +489,7 @@ void loadItem(gint type, gpointer ip) {
 		}
 	}
 
-	if(IS_FEED(type))
-		markItemAsRead(type, ip);
+	markItemAsRead(type, ip);
 }
 
 void loadItemList(gchar *key, gchar *searchstring) {
@@ -512,7 +513,6 @@ void loadItemList(gchar *key, gchar *searchstring) {
 		itemlist = (GSList *)getFeedProp(key, FEED_PROP_ITEMLIST);
 
 		if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&(ep->type)))) {
-			
 			g_error(_("internal error! no item handler for this type!"));
 			return;			
 		}		
@@ -528,7 +528,7 @@ void loadItemList(gchar *key, gchar *searchstring) {
 		time = (gchar *)(*(ihp->getItemProp))(ip, ITEM_PROP_TIME);
 		
 		if(0 == ((++count)%100)) 
-			print_status(g_strdup_printf(_("loading directory feeds... (%d)"), count));
+			print_status(g_strdup_printf(_("loading feed... (%d)"), count));
 
 		add = TRUE;
 		if(NULL != searchstring) {
@@ -576,6 +576,114 @@ void searchItems(gchar *string) {
 	g_hash_table_foreach(feeds, searchInFeed, string);
 	//g_mutex_unlock(feeds_lock);	
 }
+
+/* ---------------------------------------------------------------------------- */
+/* vfolder handling functions							*/
+/* ---------------------------------------------------------------------------- */
+
+/* does the scanning of a feed for loadVFolder(), method is also called 
+   by the merge() functions of the feed modules */
+void scanFeed(gpointer key, gpointer value, gpointer userdata) {
+	entryPtr	ep = (entryPtr)userdata;
+	VFolderPtr	vp = (VFolderPtr)value;
+	itemHandlerPtr	ihp;
+	feedHandlerPtr	fhp;
+	GSList		*itemlist = NULL;
+	gpointer	ip;
+	gchar		*title, *description;
+	gboolean	add;
+
+	/* check the type because we are called with a g_hash_table_foreach()
+	   but only want to process vfolders ...*/
+	if(vp->type != FST_VFOLDER) 
+		return;
+	
+	if(ep->type == FST_VFOLDER)
+		return;	/* don't scan vfolders! */
+
+	if(NULL != ep) {
+		/* cannot use getFeedProp(), that would cause a deadlock! */
+		if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type)))) {
+			g_assert(NULL != fhp->getFeedProp);
+			itemlist = (GSList *)(*(fhp->getFeedProp))(ep, FEED_PROP_ITEMLIST);
+		} else {
+			g_error(_("internal error! no feed handler for this type!"));
+			return;			
+		}	
+
+		if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&(ep->type)))) {			
+			g_error(_("internal error! no item handler for this type!"));
+			return;			
+		}		
+	} else {
+		print_status(_("internal error! item scan for NULL pointer requested!"));
+		return;
+	}
+	
+	while(NULL != itemlist) {
+		ip = itemlist->data;
+		title = (gchar *)(*(ihp->getItemProp))(ip, ITEM_PROP_TITLE);
+		description = (gchar *)(*(ihp->getItemProp))(ip, ITEM_PROP_DESCRIPTION);
+		
+		add = FALSE;
+		if((NULL != title) && matchVFolderRules(vp, title))
+			add = TRUE;
+
+		if((NULL != description) && matchVFolderRules(vp, description))
+			add = TRUE;
+
+		if(add) {
+			addItemToVFolder(vp, ep, ip, ep->type);
+		}
+
+		itemlist = g_slist_next(itemlist);
+	}
+}
+
+/* g_hash_table_foreach-function to be called from update.c to 
+   remove old items of a feed from all vfolders */
+void removeOldItemsFromVFolders(gpointer key, gpointer value, gpointer userdata) {
+	VFolderPtr	vp = (VFolderPtr)value;
+	
+	if(FST_VFOLDER == vp->type)
+		removeOldItemsFromVFolder(vp, userdata);
+}
+
+/* scan all feeds for matching any vfolder rules */
+void loadVFolder(gpointer key, gpointer value, gpointer userdata) {
+	entryPtr	ep = (entryPtr)value;
+
+	/* match the feed ep against all vfolders... */
+	g_hash_table_foreach(feeds, scanFeed, ep);
+}
+
+/* called upon initialization */
+void loadVFolders(void) {
+
+	g_mutex_lock(feeds_lock);
+	/* iterate all feeds ... */
+	g_hash_table_foreach(feeds, loadVFolder, NULL);
+	g_mutex_unlock(feeds_lock);
+
+}
+
+/* called when creating a new VFolder */
+void loadNewVFolder(gchar *key, gpointer rp) {
+	gpointer	vp;
+
+	g_mutex_lock(feeds_lock);
+	vp = g_hash_table_lookup(feeds, (gpointer)key);
+	g_mutex_unlock(feeds_lock);
+
+	setVFolderRules((VFolderPtr)vp, (rulePtr)rp);
+
+	/* FIXME: brute force: update of all vfolders redundant */
+	loadVFolders();
+}
+
+/* ---------------------------------------------------------------------------- */
+/* tree store handling								*/
+/* ---------------------------------------------------------------------------- */
 
 GtkTreeStore * getItemStore(void) {
 

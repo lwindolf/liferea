@@ -63,9 +63,6 @@ typedef struct {
 				   depending on the type value */
 } outputRequest;
 
-extern GMutex * entries_lock;	// FIXME
-extern GHashTable *entries;	// FIXME
-
 /* to store the RSSNsHandler structs for all supported RDF namespace handlers */
 GHashTable	*rss_nslist = NULL;
 
@@ -396,7 +393,7 @@ gpointer mergeRSSFeed(gpointer old_fp, gpointer new_fp) {
 	new->source = old->source;
 	new->type = old->type;
 	new->keyprefix = old->keyprefix;
-	
+		
 	// FIXME: free old_cp memory
 		
 	return new_fp;

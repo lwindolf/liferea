@@ -26,7 +26,7 @@
 
 /* feed list view entry types (FS_TYPE) */
 #define FST_INVALID	0
-#define FST_NODE	1
+#define FST_NODE	1	/* the folder type */
 #define FST_RSS		3	/* thats the standard RDF Site Summary type */
 #define FST_OCS		4	/* OCS directories */
 #define FST_CDF		5	/* Microsoft CDF */
@@ -34,6 +34,8 @@
 
 #define FST_HELPNODE	7	/* special tree list types to store help feeds */	
 #define FST_HELPFEED	8
+
+#define FST_VFOLDER	9	/* sepcial type for VFolders */
 
 #define IS_FEED(type)		((FST_RSS == type) || (FST_CDF == type) || (FST_PIE == type))
 #define IS_NODE(type)		((FST_NODE == type) || (FST_HELPNODE == type))
@@ -84,6 +86,7 @@ typedef gpointer 	(*readFeedFunc)		(gchar *url);
 typedef gpointer 	(*loadFeedFunc)		(gchar *keyprefix, gchar *key);
 typedef void	 	(*removeFeedFunc)	(gchar *keyprefix, gchar *key, gpointer fp);
 typedef void		(*showFeedInfoFunc)	(gpointer fp);
+typedef void		(*doVFolderScanFunc)	(gpointer vp);
 /* methods to set/get the FEED_PROP_* properties */
 typedef void 		(*setFeedPropFunc)	(gpointer fp, gint proptype, gpointer data);
 typedef gpointer	(*getFeedPropFunc)	(gpointer fp, gint proptype);
@@ -96,6 +99,7 @@ typedef struct feedHandler {
 	mergeFeedFunc		mergeFeed;
 	removeFeedFunc		removeFeed;
 	showFeedInfoFunc	showFeedInfo;
+	doVFolderScanFunc	doVFolderScan;
 } *feedHandlerPtr;
 
 /* ------------------------------------------------------------ */
@@ -106,6 +110,7 @@ typedef struct feedHandler {
 #define ITEM_PROP_READSTATUS		1
 #define ITEM_PROP_DESCRIPTION		2
 #define ITEM_PROP_TIME			3
+#define ITEM_PROP_TYPE			4
 
 typedef void		(*showItemFunc)		(gpointer fp);
 /* methods to set/get the ITEM_PROP_* properties */
@@ -150,6 +155,12 @@ gboolean getItemReadStatus(gint type, gpointer ip);
 void	markItemAsRead(gint type, gpointer ip);
 void	searchItems(gchar *string);
 void	clearItemList();
+
+/* vfolder interface for GUI */
+void	loadNewVFolder(gchar *key, gpointer rp);
+/* vfolder interface for updating */
+void	scanFeed(gpointer key, gpointer value, gpointer userdata);
+void	removeOldItemsFromVFolders(gpointer key, gpointer value, gpointer userdata);
 
 /* -------------------------------------------------------- */
 /* feed (not directories) specific methods            	    */

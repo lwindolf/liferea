@@ -43,10 +43,14 @@ create_mainwindow (void)
   GtkWidget *searchbox;
   GtkWidget *label21;
   GtkWidget *searchentry;
+  GtkWidget *newVFolder;
   GtkWidget *hidesearch;
   GtkWidget *ilscrolledwindow;
   GtkWidget *Itemlist;
   GtkWidget *statusbar;
+  GtkTooltips *tooltips;
+
+  tooltips = gtk_tooltips_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.7"));
@@ -117,6 +121,11 @@ create_mainwindow (void)
   gtk_widget_show (searchentry);
   gtk_box_pack_start (GTK_BOX (searchbox), searchentry, TRUE, TRUE, 0);
 
+  newVFolder = gtk_button_new_with_mnemonic (_("create VFolder"));
+  gtk_widget_show (newVFolder);
+  gtk_box_pack_start (GTK_BOX (searchbox), newVFolder, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, newVFolder, _("saves this search as a VFolder, which will appear in the feed list"), NULL);
+
   hidesearch = gtk_button_new_with_mnemonic (_("X"));
   gtk_widget_show (hidesearch);
   gtk_box_pack_start (GTK_BOX (searchbox), hidesearch, FALSE, FALSE, 0);
@@ -162,6 +171,9 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) searchentry, "activate",
                     G_CALLBACK (on_searchentry_activate),
                     NULL);
+  g_signal_connect ((gpointer) newVFolder, "clicked",
+                    G_CALLBACK (on_newVFolder_clicked),
+                    NULL);
   g_signal_connect ((gpointer) hidesearch, "clicked",
                     G_CALLBACK (on_hidesearch_clicked),
                     NULL);
@@ -187,10 +199,12 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, searchbox, "searchbox");
   GLADE_HOOKUP_OBJECT (mainwindow, label21, "label21");
   GLADE_HOOKUP_OBJECT (mainwindow, searchentry, "searchentry");
+  GLADE_HOOKUP_OBJECT (mainwindow, newVFolder, "newVFolder");
   GLADE_HOOKUP_OBJECT (mainwindow, hidesearch, "hidesearch");
   GLADE_HOOKUP_OBJECT (mainwindow, ilscrolledwindow, "ilscrolledwindow");
   GLADE_HOOKUP_OBJECT (mainwindow, Itemlist, "Itemlist");
   GLADE_HOOKUP_OBJECT (mainwindow, statusbar, "statusbar");
+  GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, tooltips, "tooltips");
 
   gtk_widget_grab_focus (feedlist);
   return mainwindow;

@@ -316,18 +316,11 @@ gpointer loadOCS(gchar *keyprefix, gchar *key) {
 	xmlNodePtr 	cur;
 	directoryPtr 	dp;
 	gchar		*encoding;
-	gchar		*filename, *keypos;
+	gchar		*filename;
 	short 		rdf = 0;	
 	int 		error = 0;
 
-	/* build filename */	
-	keypos = strrchr(key, '/');
-	if(NULL == keypos)
-		keypos = key;
-	else
-		keypos++;
-
-	filename = g_strdup_printf("%s/%s_%s.ocs", getCachePath(), keyprefix, keypos);		
+	filename = getCacheFileName(keyprefix, key, "ocs");
 
 	/* initialize channel structure */
 	if(NULL == (dp = (directoryPtr) malloc(sizeof(struct directory)))) {
@@ -395,16 +388,10 @@ gpointer loadOCS(gchar *keyprefix, gchar *key) {
 }
 
 void removeOCS(gchar *keyprefix, gchar *key, gpointer dp) {
-	gchar		*filename, *keypos;
+	gchar		*filename;
 	
 	// FIXME: free ocs data structures...
-	keypos = strrchr(key, '/');
-	if(NULL == keypos)
-		keypos = key;
-	else
-		keypos++;
-
-	filename = g_strdup_printf("%s/%s_%s.ocs", getCachePath(), keyprefix, keypos);
+	filename = getCacheFileName(keyprefix, key, "ocs");
 	g_print("deleting cache file %s\n", filename);
 	if(0 != unlink(filename)) {
 		showErrorBox(_("could not remove cache file of this entry!"));
@@ -653,6 +640,7 @@ void setOCSItemProp(gpointer ip, gint proptype, gpointer data) {
 				i->tags[OCS_TITLE] = (gchar *)data;
 				break;
 			case ITEM_PROP_READSTATUS:
+				break;
 			case ITEM_PROP_DESCRIPTION:
 			case ITEM_PROP_TIME:
 				g_error("please don't do this!");

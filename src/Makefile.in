@@ -159,7 +159,8 @@ liferea_SOURCES = \
 	ns_content.c ns_content.h \
 	ns_syn.c ns_syn.h \
 	ns_admin.c ns_admin.h \
-	conf.c conf.h
+	conf.c conf.h \
+	vfolder.c vfolder.h
 
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
@@ -177,7 +178,8 @@ am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	pie_entry.$(OBJEXT) cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) \
 	ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) \
 	ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) ns_content.$(OBJEXT) \
-	ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) conf.$(OBJEXT)
+	ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) conf.$(OBJEXT) \
+	vfolder.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -196,7 +198,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/pie_entry.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/pie_feed.Po ./$(DEPDIR)/rss_channel.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/rss_item.Po ./$(DEPDIR)/support.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/update.Po
+@AMDEP_TRUE@	./$(DEPDIR)/update.Po ./$(DEPDIR)/vfolder.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -271,6 +273,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rss_item.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/support.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vfolder.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

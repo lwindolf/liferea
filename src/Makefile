@@ -35,13 +35,13 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-ACLOCAL = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run aclocal-1.7
+ACLOCAL = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run aclocal-1.7
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run tar
-AUTOCONF = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run automake-1.7
+AMTAR = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run tar
+AUTOCONF = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run automake-1.7
 AWK = gawk
 CATALOGS = 
 CATOBJEXT = .gmo
@@ -72,10 +72,10 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAINT = #
-MAINTAINER_MODE_FALSE = 
-MAINTAINER_MODE_TRUE = #
-MAKEINFO = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run makeinfo
+MAINT = 
+MAINTAINER_MODE_FALSE = #
+MAINTAINER_MODE_TRUE = 
+MAKEINFO = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 OBJEXT = o
@@ -112,7 +112,7 @@ exec_prefix = ${prefix}
 host_alias = 
 includedir = ${prefix}/include
 infodir = ${prefix}/info
-install_sh = /home/lars/tech/coding/c/liferea-cvs.2/liferea/install-sh
+install_sh = /home/lars/tech/coding/c/liferea/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localstatedir = ${prefix}/var
@@ -159,7 +159,8 @@ liferea_SOURCES = \
 	ns_content.c ns_content.h \
 	ns_syn.c ns_syn.h \
 	ns_admin.c ns_admin.h \
-	conf.c conf.h
+	conf.c conf.h \
+	vfolder.c vfolder.h
 
 
 liferea_LDADD = -Wl,--export-dynamic -pthread -L/opt/gnome2/lib -L/usr/X11R6/lib -lgconf-2 -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lpthread -lz -lgdk-x11-2.0 -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lpangoxft-1.0 -lXft -lfreetype -lXrender -lfontconfig -lpangox-1.0 -lX11 -lpango-1.0 -lgnomevfs-2 -lbonobo-activation -lORBit-2 -lm -llinc -lgmodule-2.0 -ldl -lgobject-2.0 -lgthread-2.0 -lglib-2.0   $(INTLLIBS)
@@ -177,7 +178,8 @@ am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	pie_entry.$(OBJEXT) cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) \
 	ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) \
 	ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) ns_content.$(OBJEXT) \
-	ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) conf.$(OBJEXT)
+	ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) conf.$(OBJEXT) \
+	vfolder.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -196,7 +198,7 @@ DEP_FILES = ./$(DEPDIR)/backend.Po ./$(DEPDIR)/callbacks.Po \
 	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/pie_entry.Po \
 	./$(DEPDIR)/pie_feed.Po ./$(DEPDIR)/rss_channel.Po \
 	./$(DEPDIR)/rss_item.Po ./$(DEPDIR)/support.Po \
-	./$(DEPDIR)/update.Po
+	./$(DEPDIR)/update.Po ./$(DEPDIR)/vfolder.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
@@ -209,10 +211,10 @@ all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .o .obj
-$(srcdir)/Makefile.in: # Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/Makefile
-Makefile: # $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 install-binPROGRAMS: $(bin_PROGRAMS)
@@ -271,6 +273,7 @@ include ./$(DEPDIR)/rss_channel.Po
 include ./$(DEPDIR)/rss_item.Po
 include ./$(DEPDIR)/support.Po
 include ./$(DEPDIR)/update.Po
+include ./$(DEPDIR)/vfolder.Po
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

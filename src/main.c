@@ -46,6 +46,8 @@ GdkPixbuf	*listIcon = NULL;
 /* icons for grouping */
 GdkPixbuf	*directoryIcon = NULL;
 GdkPixbuf	*helpIcon = NULL;
+/* VFolder */
+GdkPixbuf	*vfolderIcon = NULL;
 
 int main (int argc, char *argv[]) {	
 	GtkTooltips	*button_bar_tips;
@@ -72,6 +74,7 @@ int main (int argc, char *argv[]) {
 	listIcon = create_pixbuf("ocs.xpm");	
 	directoryIcon = create_pixbuf("directory.xpm");
 	helpIcon = create_pixbuf("help.xpm");
+	vfolderIcon = create_pixbuf("vfolder.xpm");
 	
 	mainwindow = create_mainwindow();
 	setupHTMLView(mainwindow);
@@ -106,6 +109,7 @@ int main (int argc, char *argv[]) {
 	loadConfig();
 	initBackend();
 	loadEntries();
+	loadVFolders();
 		
 	/* FIXME: move to somewhere else :) */
 	gtk_tree_view_expand_all(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
