@@ -439,7 +439,7 @@ void ui_itemlist_display(void) {
 	ui_feedlist_update();
 }
 
-void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
+static void ui_itemlist_load_feed(feedPtr fp, gchar *searchstring) {
 	GtkTreeIter	iter;
 	GSList		*itemlist;
 	itemPtr		ip;
@@ -455,8 +455,6 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 	   column to give a hint where the item comes from ... */
 	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (NULL != searchstring));
 
-	ui_itemlist_clear();
-	displayed_node = (nodePtr)fp;
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
@@ -478,7 +476,6 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 						    IS_TITLE, item_get_title(ip),
 						    IS_PTR, ip,
 						    IS_TIME, item_get_time(ip),
-						    IS_TYPE, feed_get_type(fp),	/* not the item type, this would fail for VFolders! */
 						    -1);
 			g_assert(ip->ui_data == NULL);
 			ip->ui_data = g_new0(ui_item_data, 1);
@@ -489,8 +486,40 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 
 		itemlist = g_slist_next(itemlist);
 	}
-	ui_itemlist_display();
-	ui_itemlist_prefocus();
+}
+
+void ui_itemlist_load(nodePtr node, gchar *searchstring) {
+       GtkTreeView *itemlist = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
+       GtkTreeModel *model = gtk_tree_view_get_model(itemlist);
+
+       gint sortColumn;
+       GtkSortType sortType;
+       gboolean sorted = gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(itemstore), &sortColumn, &sortType);
+
+	  /* free the old itemstore */
+       gtk_tree_view_set_model(itemlist, NULL);
+
+       ui_itemlist_clear();
+       ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
+       displayed_node = node;
+       g_object_unref(itemstore);
+       itemstore = NULL;
+       getItemStore();
+	  
+	  /* Add the new items */
+	  if (node == NULL || IS_FOLDER(node->type)) {
+		  ui_feedlist_do_for_all_data(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed, searchstring);
+       } else if (IS_FEED(node->type)) {
+		  ui_itemlist_load_feed((feedPtr)node, searchstring);
+       }
+	  
+	  /* Reset the sorting order of the itemstore and add it to the GtkTreeView */
+	  if (sorted)
+		  gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(itemstore), sortColumn, sortType);
+	  
+       gtk_tree_view_set_model(itemlist, model);
+	  ui_itemlist_display();
+	  ui_itemlist_prefocus();
 }
 
 static itemPtr ui_itemlist_get_selected() {

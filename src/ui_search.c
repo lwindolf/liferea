@@ -68,7 +68,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
-		ui_itemlist_load(allItems, (gchar *)searchstring);
+		ui_itemlist_load((nodePtr)allItems, (gchar *)searchstring);
 	}
 }
 

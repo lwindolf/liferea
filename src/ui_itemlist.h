@@ -83,7 +83,7 @@ void ui_itemlist_display(void);
  * @param fp The feed to display.
  * @param searchstring The string to search for, or NULL to include all of a feed's items.
  */
-void ui_itemlist_load(feedPtr fp, gchar *searchstring);
+void ui_itemlist_load(nodePtr fp, gchar *searchstring);
 
 /**
  * Remove the items from the itemlist.
