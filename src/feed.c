@@ -96,7 +96,7 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 	g_assert(NULL != pattern);
 	g_assert(NULL != url);
 	
-	request = getNewFeedRequest(NULL);
+	request = getNewRequestStruct(NULL);
 	request->feedurl = g_strdup(url);
 	request->lastmodified = NULL;
 	downloadURL(request);
