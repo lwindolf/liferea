@@ -329,7 +329,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 					   Close old connection and reconnect to server.
 					   
 					   Do not touch any of the following code! :P */
-					if (strstr (netbuf, "Location") != NULL) {
+					if (strncasecmp (netbuf, "Location", 8) == 0) {
 						//tmpstring = malloc(strlen(netbuf)+1);
 						
 						redirecttarget = strdup (netbuf);
@@ -457,7 +457,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 			return NULL;
 		}
 		/* Get last modified date. This is only relevant on HTTP 200. */
-		if ((strstr (netbuf, "Last-Modified") != NULL) &&
+		if ((strncasecmp (netbuf, "Last-Modified", 13) == 0) &&
 			(cur_ptr->lasthttpstatus == 200)) {
 			tmpstring = strdup(netbuf);
 			freeme = tmpstring;
@@ -474,7 +474,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 			free(freeme);
 		}
 		/* Check and parse Content-Encoding header. */
-		if (strstr (netbuf, "Content-Encoding") != NULL) {
+		if (strncasecmp (netbuf, "Content-Encoding", 16) == 0) {
 			if (strstr (netbuf, "deflate") != NULL)
 				inflate = 1;
 			/* Will also catch x-gzip. */
@@ -482,7 +482,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 				inflate = 2;
 		}
 		/* Check and parse Content-Length header (needed for zlib). */
-		if (strstr (netbuf, "Content-Length") != NULL) {
+		if (strncasecmp (netbuf, "Content-Length", 14) == 0) {
 	 		tmpstring = strdup (netbuf);
 			freeme = tmpstring;
 			/* Cut string at ":" sign */
