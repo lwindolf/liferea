@@ -36,6 +36,8 @@
 #define DEFAULT_BROWSER_COMMAND		"mozilla '%s'"
 #define DEFAULT_FONT			"/desktop/gnome/interface/font_name"
 #define USER_FONT			"/apps/liferea/browser-font"
+#define REFOCUS_TIMEOUT			"/apps/liferea/refocus-timeout"
+#define DISABLE_JAVASCRIPT		"/apps/liferea/disable-javascript"
 
 /* item list settings */
 #define TIME_FORMAT			"/apps/liferea/timeformat"

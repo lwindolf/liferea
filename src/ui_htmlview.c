@@ -51,6 +51,8 @@ extern char	*proxyusername;
 extern char	*proxypassword;
 extern int	proxyport;
 
+static int 	refocusTimeout;
+
 /* -------------------------------------------------------------------- */
 /* module loading and initialisation					*/
 /* -------------------------------------------------------------------- */
@@ -181,8 +183,11 @@ void ui_htmlview_init(void) {
 	if(success) {
 		htmlviewInfo->init();
 		ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
-	} else
+	} else {
 		g_error(_("Sorry, I was not able to load any installed browser modules! Try the --debug-all option to get debug information!"));
+	}
+	
+	refocusTimeout = getNumericConfValue(REFOCUS_TIMEOUT);
 }
 
 void ui_htmlview_deinit() {
@@ -280,7 +285,17 @@ void ui_htmlview_start_output(gchar **buffer, gboolean twoPane) {
 	addToHTMLBuffer(buffer, "</head>\n<body>");
 }
 
+static gboolean ui_htmlview_restore_focus_cb(gpointer userdata) {
+	
+	gtk_window_set_focus(GTK_WINDOW(mainwindow), GTK_WIDGET(userdata));
+	return FALSE;
+}
+
 void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *base) { 
+	GtkWidget	*widget;
+	
+	/* workaround for Mozilla focus stealing */
+	widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
 
 	if(base == NULL)
 		base = "file:///";	
@@ -299,7 +314,10 @@ void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *bas
 		g_free(buffer);
 	} else
 		(htmlviewInfo->write)(htmlview, string, base);
-	
+		
+	/* wait a short while and reset focus */
+	if(0 != refocusTimeout)
+		g_timeout_add(refocusTimeout, ui_htmlview_restore_focus_cb, widget);	
 }
 
 void ui_htmlview_finish_output(gchar **buffer) {

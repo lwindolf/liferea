@@ -26,7 +26,6 @@
 #include <fcntl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-/*#include "guitreemodelfilter.h"*/
 #include "support.h"
 #include "interface.h"
 #include "callbacks.h"
@@ -43,6 +42,7 @@
 #include "debug.h"
 #include "ui_tabs.h"
 #include "ui_notification.h"
+#include "ui_queue.h"
 
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
@@ -340,8 +340,6 @@ void ui_feedlist_select(nodePtr np) {
 	focused = gtk_window_get_focus(GTK_WINDOW(mainwindow));
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
 	
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-	
 	if(NULL != np) {
 		if(filter_feeds_without_unread_headlines) {
 			/* check if the node has unread items, if not it is not in 
@@ -365,6 +363,7 @@ void ui_feedlist_select(nodePtr np) {
 		gtk_tree_path_free(path);
 
  	} else {
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 		gtk_tree_selection_unselect_all(selection);
 	}
 	

@@ -38,6 +38,7 @@
 #include "../support.h"
 #include "../callbacks.h"
 #include "../update.h"
+#include "../ui_queue.h"
 #include "../debug.h"
 
 #define BUFFER_SIZE 8192
@@ -158,9 +159,11 @@ stream_cancel (HtmlStream *stream, gpointer user_data, gpointer cancel_data)
 
 static void gtkhtml2_url_request_received_cb(struct request *r) {
 
+	ui_lock();
 	if(r->size != 0 && r->data != NULL) {
 		html_stream_write(((StreamData*)r->user_data)->stream, r->data, r->size); 
 	}
+	ui_unlock();
 	request_data_kill(r);
 }
 

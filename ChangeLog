@@ -25,6 +25,8 @@
 	* Preventing password exposal in status line when	
 	  updating favicons. (reported by Ben Winslow)
 	* Fixes broken saving of sorting order.
+	* Fixes a bug that could prevent browser launching
+	  for all asynchronously called browser commands.
 
 
 2004-11-29  Lars Lindner <lars.lindner@gmx.net>
