@@ -14,6 +14,7 @@ EXTRA_DIST = \
 	.gladep \
 	liferea.glade \
 	liferea.gladep \
+	liferea.spec \
 	$(desktop_in_files) \
 	$(desktop_files)
 
