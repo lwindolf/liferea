@@ -24,6 +24,8 @@
 	* GConf schemas have been added to document the various gconf
 	  keys that Liferea uses and provide control of defaults by
 	  computer administrators. (Nathan Conrad)
+	* Notification popups now show the favicon of the feeds for
+	  easier recognizing. (Lars Linder)
 	  
 	Bugfixes:
 
@@ -35,6 +37,8 @@
 	  (Lars Lindner)
 	* Fixed bug with incorrect HTML in the condensed mode. 
 	  (Jack Lecou)
+	* Fixed the missing scrolling reset when you display items
+	  with Mozilla (Lars Lindner)
 	
 2004-08-02 Lars Linder <lars.lindner@gmx.net>
 
