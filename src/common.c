@@ -496,7 +496,7 @@ time_t parseRFC822Date(gchar *date) {
 			t = t - common_parse_rfc822_tz(pos);
 			t2 = mktime(gmtime(&t));
 			t = t - (t2 - t);
-			return t + common_parse_rfc822_tz(pos);
+			return t;
 		} else
 			g_warning(_("internal error! time conversion error! mktime failed!\n"));
 	} else {
