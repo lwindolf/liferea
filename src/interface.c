@@ -2388,6 +2388,7 @@ create_aboutdialog (void)
   GtkWidget *dialog_vbox12;
   GtkWidget *notebook2;
   GtkWidget *scrolledwindow4;
+  GtkWidget *viewport2;
   GtkWidget *vbox231;
   GtkWidget *label57;
   GtkWidget *label58;
@@ -2406,6 +2407,7 @@ create_aboutdialog (void)
 
   aboutdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (aboutdialog), _("About"));
+  gtk_window_set_default_size (GTK_WINDOW (aboutdialog), 300, 200);
 
   dialog_vbox12 = GTK_DIALOG (aboutdialog)->vbox;
   gtk_widget_show (dialog_vbox12);
@@ -2419,9 +2421,13 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow4);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
+  viewport2 = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (viewport2);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow4), viewport2);
+
   vbox231 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox231);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow4), vbox231);
+  gtk_container_add (GTK_CONTAINER (viewport2), vbox231);
 
   label57 = gtk_label_new (_("Liferea 0.4.7"));
   gtk_widget_show (label57);
@@ -2490,8 +2496,8 @@ create_aboutdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (aboutdialog), closebutton1, GTK_RESPONSE_CLOSE);
   GTK_WIDGET_SET_FLAGS (closebutton1, GTK_CAN_DEFAULT);
 
-  g_signal_connect_swapped ((gpointer) closebutton1, "destroy",
-                            G_CALLBACK (on_closebutton1_destroy),
+  g_signal_connect_swapped ((gpointer) closebutton1, "clicked",
+                            G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (aboutdialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
@@ -2499,6 +2505,7 @@ create_aboutdialog (void)
   GLADE_HOOKUP_OBJECT_NO_REF (aboutdialog, dialog_vbox12, "dialog_vbox12");
   GLADE_HOOKUP_OBJECT (aboutdialog, notebook2, "notebook2");
   GLADE_HOOKUP_OBJECT (aboutdialog, scrolledwindow4, "scrolledwindow4");
+  GLADE_HOOKUP_OBJECT (aboutdialog, viewport2, "viewport2");
   GLADE_HOOKUP_OBJECT (aboutdialog, vbox231, "vbox231");
   GLADE_HOOKUP_OBJECT (aboutdialog, label57, "label57");
   GLADE_HOOKUP_OBJECT (aboutdialog, label58, "label58");

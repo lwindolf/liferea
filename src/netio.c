@@ -236,17 +236,17 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	if (proxyport == 0) {
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s\r\n", url, useragent, host, cur_ptr->lastmodified, (authinfo ? authinfo : ""));
+			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s\r\n", url, useragent, host, cur_ptr->lastmodified, (authinfo ? authinfo : ""));
 		else
-			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s\r\n", url, useragent, host, (authinfo ? authinfo : ""));
+			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s\r\n", url, useragent, host, (authinfo ? authinfo : ""));
 
 		fflush(stream);
 	} else {
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nIf-Modified-Since: %s\r\n\r\n", host, url, useragent, cur_ptr->lastmodified);
+			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nIf-Modified-Since: %s\r\n\r\n", host, url, useragent, cur_ptr->lastmodified);
 		else
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\n\r\n", host, url, useragent);
+			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\n\r\n", host, url, useragent);
 		
 		fflush(stream);
 	}
@@ -472,8 +472,8 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		}
 		/* Check and parse Content-Encoding header. */
 		if (strncasecmp (netbuf, "Content-Encoding", 16) == 0) {
-			if (strstr (netbuf, "deflate") != NULL)
-				inflate = 1;
+			/*if (strstr (netbuf, "deflate") != NULL)
+				inflate = 1;*/
 			/* Will also catch x-gzip. */
 			if (strstr (netbuf, "gzip") != NULL)
 				inflate = 2;
@@ -490,7 +490,9 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 			free (freeme);
 	 	}
 		
-		if (strcmp(netbuf, "\r\n") == 0)
+		/* HTTP RFC 2616, Section 19.3 Tolerant Applications.
+		   Accept CRLF and LF line ends in the header field. */
+		if ((strcmp(netbuf, "\r\n") == 0) || (strcmp(netbuf, "\n") == 0))
 			break;
 	}
 	

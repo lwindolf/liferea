@@ -141,8 +141,15 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 
 	/* Label */
 	if ( title != NULL) {
-		esc_title = g_markup_escape_text(title, -1);
-		
+		/* Here we have the following problem: a title string might contain 
+		   either escaped markup (which we should not escape again) or 
+		   non-markup text (which might contain ampersands, which must be
+		   escaped). We assume no mixed case! */
+		//if(is_escaped_markup(title))
+		//	esc_title = unescape_markup(title);	// FIXME: unescaped!!!
+		//else
+			esc_title = g_markup_escape_text(title, -1);
+			
 		if(FALSE == getItemReadStatus(ip)) {
 			label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
 		} else {
@@ -156,6 +163,7 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 	/* Time */
 	if(0 != time) {
 		if(FALSE == getItemReadStatus(ip)) {
+			/* the time value is no markup, so we escape it... */
 			time_str = formatDate((time_t)time);
 			tmp = g_markup_escape_text(time_str,-1);
 			g_free(time_str);

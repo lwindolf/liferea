@@ -1,33 +1,17 @@
-2004-01-??  Lars Lindner <lars.lindner@gmx.net>
+2004-03-??  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.7
 
 	* When you change a feed URL the feed is
 	  now updated automatically after closing
 	  the properties dialog.
-	* Added a patch (883388) from Johannes
-	  Schlueter that allows to execute shell
-	  command with popen() by specifying
-	  something like "| any-command" as
-	  as a subscription URL.
-	* Added the previously remove proxy dialog
+	* Added the previously removed proxy dialog
 	  as I decided Liferea should stay a GTK
 	  application (but Søren Hansen told me he
 	  wants to do GNOME integration so this may
 	  come as a compile option). So users without
 	  GNOME (maybe KDE) can easily set a proxy.
 	* Added a patch (882761) from morberg.
-	* Update to the SnowNews 1.4.3 HTTP client
-	  which allows HTTP authentication. To use
-	  this feature simply add "user:passwd" in
-	  front of the domain name of a feeds URL
-	  like "http://user:passwd@www.myblog.com"
-	  HTTP authentication was originally proposed
-	  by Søren Hansen who also wrote a first 
-	  patch to realize it.
-	* Added support for OPML files with lowercase
-	  tags ("xmlurl" instead of "xmlUrl"). 
-	  AmphetaDesk does such exports.
 	* Added a preferences checkbox to disable the 
 	  automatical adding of the help feeds.
 	* Added a patch from Nathan J. Conrad to make
@@ -50,6 +34,39 @@
 	* Changed the menu/toolbar checkboxes to a radiobutton
 	  list with positive logic.
 
+2004-03-03  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.4.6d
+
+	* Fixes a bug concering encoding conversion which was
+	  reported by Niklas Morberg with Patch 908949.
+	* Fixes bug 908803: problems with a webserver which
+	  supports deflate compression reported by Nathan J. 
+	  Conrad and fixed by Oliver Feiler.
+	
+2004-02-28  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.4.6c
+	
+	* Fixes Bug 874799 concerning crashing after HTTP redirects.
+	  The patch was provided by Oliver Feiler who developed the
+	  networking code for his own console client SnowNews.
+	* Fixes Bug 869763 - crashing after using "copy link location"
+	  and pasting it more than once to any other application.
+	* Update to the SnowNews 1.4.3 HTTP client which allows 
+	  HTTP authentication. To use this feature simply add 
+	  "user:passwd" in front of the domain name of a feeds 
+	  URL like "http://user:passwd@www.myblog.com" HTTP 
+	  authentication was originally proposed by Søren 
+	  Hansen who also wrote a first patch to realize it.
+	* The program now supports executing commands to use their
+	  results as a feed source. This patch (883388) was proposed 
+	  by Johannes Schlueter. To use this feature enter any 
+	  shell command starting with a | as the feed URL.
+	* Added support for OPML files with lowercase tags 
+	  ("xmlurl" instead of "xmlUrl"). AmphetaDesk does 
+	  such exports.
+	  
 2004-01-07  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.6b

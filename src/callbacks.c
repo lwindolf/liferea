@@ -312,6 +312,8 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	GtkWidget	*pane;
 	gint		x,y;
 
+	gtk_widget_hide(mainwindow);
+
 	saveAllFeeds();
 	saveAllFolderCollapseStates();
 	
@@ -352,12 +354,3 @@ void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gtk_widget_show(dialog);
 
 }
-
-
-void
-on_closebutton1_destroy                (GtkObject       *object,
-                                        gpointer         user_data)
-{
-
-}
-

@@ -69,7 +69,7 @@ void	loadHTMLViewModule(gint module) {
 		g_error("Modules are not supported. Cannot load a HTML widget module!");
 	}
 	
-	filename = g_strdup_printf("%s.%s", html_modules[module].libname, G_MODULE_SUFFIX);
+	filename = g_strdup_printf("%s/%s.%s", PACKAGE_LIB_DIR, html_modules[module].libname, G_MODULE_SUFFIX);
 	g_print("loading HTML widget module \"%s\" (%s)\n", 
 		html_modules[module].description,
 		filename);
@@ -137,7 +137,13 @@ void	startHTML(gchar **buffer, gboolean padded) {
 
 void	writeHTML(gchar *string) { 
 
-	(*htmlStub.writeHTML)(string); 
+	if(!g_utf8_validate(string, -1, NULL))
+		g_warning("Invalid encoded UTF8 string passed to HTML widget!");
+
+	/* this is a dirty workaround for the GtkHTML problems with strange
+	   HTML endings with special characters (caused by bugs in Liferea 
+	   HTML generation) */
+	(*htmlStub.writeHTML)(g_strdup_printf("%s                ",string));
 }
 
 void	finishHTML(gchar **buffer) {

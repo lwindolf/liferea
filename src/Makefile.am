@@ -15,6 +15,7 @@ endif
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
+	-DPACKAGE_LIB_DIR=\""$(libdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	@PACKAGE_CFLAGS@ $(GTKHTML_CFLAGS) $(MOZILLA_CFLAGS)
 
@@ -30,9 +31,10 @@ liblihtmlg_la_LIBADD = @PACKAGE_LIBS@ @GTKHTML_LIBS@ $(INTLLIBS)
 liblihtmlm_la_SOURCES = mozilla.c
 liblihtmlm_la_LIBADD = @PACKAGE_LIBS@ @MOZILLA_LIBS@ $(INTLLIBS)
 
-bin_PROGRAMS = liferea
+bin_PROGRAMS = liferea-bin 
+bin_SCRIPTS = liferea
 
-liferea_SOURCES = \
+liferea_bin_SOURCES = \
 	callbacks.c callbacks.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
@@ -84,6 +86,6 @@ liferea_SOURCES = \
 	update.c update.h \
 	vfolder.c vfolder.h
 
-liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
+liferea_bin_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
-liferea_CFLAGS = -Wall
+liferea_bin_CFLAGS = -Wall

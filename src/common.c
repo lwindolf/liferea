@@ -79,7 +79,7 @@ gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * strin
 		from_encoding = standard_encoding;
 		
 	if(NULL != string) {		
-		new = g_convert(string, strlen(string), from_encoding, to_encoding, &br, &bw, NULL);
+		new = g_convert(string, strlen(string), to_encoding, from_encoding, &br, &bw, NULL);
 		
 		if(NULL != new)
 			g_free(string);

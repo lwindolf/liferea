@@ -1,0 +1,35 @@
+#!/bin/sh
+
+
+# This script is used to find an existing Mozilla
+# instance in your system and to supply its path
+# to Liferea. This script was originally written
+# for Galeon.
+
+dist_bin=`dirname $0`
+
+if test -n "$MOZILLA_FIVE_HOME"; then
+	MOZILLA_HOME=$MOZILLA_FIVE_HOME
+elif [ -f /usr/lib/mozilla/chrome/comm.jar ]; then
+	MOZILLA_HOME=/usr/lib/mozilla
+elif [ -f /usr/local/mozilla/chrome/comm.jar ]; then
+	MOZILLA_HOME=/usr/local/mozilla
+elif [ -f /usr/lib/mozilla/chrome/comm.jar ]; then
+	MOZILLA_HOME=/usr/lib/mozilla
+elif [ -f /opt/mozilla/chrome/comm.jar ]; then
+	MOZILLA_HOME=/opt/mozilla
+elif [ -f /usr/lib/mozilla-0.9.7/chrome/comm.jar ]; then
+	MOZILLA_HOME=/usr/lib/mozilla-0.9.7/
+elif [ -f /opt/gnome/lib/mozilla/chrome/comm.jar ]; then
+        MOZILLA_HOME=/opt/gnome/lib/mozilla/
+else
+	echo "Mozilla is not available..."
+fi
+
+LD_LIBRARY_PATH=$MOZILLA_HOME:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+
+MOZILLA_FIVE_HOME=$MOZILLA_HOME
+export MOZILLA_FIVE_HOME
+
+exec "$dist_bin/liferea-bin" "$@"
