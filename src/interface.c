@@ -2435,6 +2435,7 @@ create_newfolderdialog (void)
   GLADE_HOOKUP_OBJECT (newfolderdialog, button3, "button3");
   GLADE_HOOKUP_OBJECT (newfolderdialog, button2, "button2");
 
+  gtk_widget_grab_default (button2);
   return newfolderdialog;
 }
 
@@ -2505,6 +2506,7 @@ create_foldernamedialog (void)
   GLADE_HOOKUP_OBJECT (foldernamedialog, cancelbutton1, "cancelbutton1");
   GLADE_HOOKUP_OBJECT (foldernamedialog, foldernamechangebtn, "foldernamechangebtn");
 
+  gtk_widget_grab_default (foldernamechangebtn);
   return foldernamedialog;
 }
 
@@ -2856,6 +2858,7 @@ create_feedsterdialog (void)
   GLADE_HOOKUP_OBJECT (feedsterdialog, feedsterbtn, "feedsterbtn");
   GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, tooltips, "tooltips");
 
+  gtk_widget_grab_default (feedsterbtn);
   return feedsterdialog;
 }
 
@@ -2871,8 +2874,8 @@ create_importdialog (void)
   GtkWidget *importfileentry;
   GtkWidget *button24;
   GtkWidget *dialog_action_area10;
-  GtkWidget *button20;
   GtkWidget *button21;
+  GtkWidget *button20;
 
   importdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (importdialog), _("Import Feed List"));
@@ -2912,25 +2915,25 @@ create_importdialog (void)
   gtk_widget_show (dialog_action_area10);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area10), GTK_BUTTONBOX_END);
 
-  button20 = gtk_button_new_from_stock ("gtk-execute");
-  gtk_widget_show (button20);
-  gtk_dialog_add_action_widget (GTK_DIALOG (importdialog), button20, GTK_RESPONSE_APPLY);
-  GTK_WIDGET_SET_FLAGS (button20, GTK_CAN_DEFAULT);
-
   button21 = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (button21);
   gtk_dialog_add_action_widget (GTK_DIALOG (importdialog), button21, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (button21, GTK_CAN_DEFAULT);
 
+  button20 = gtk_button_new_from_stock ("gtk-execute");
+  gtk_widget_show (button20);
+  gtk_dialog_add_action_widget (GTK_DIALOG (importdialog), button20, GTK_RESPONSE_APPLY);
+  GTK_WIDGET_SET_FLAGS (button20, GTK_CAN_DEFAULT);
+
   g_signal_connect ((gpointer) button24, "clicked",
                     G_CALLBACK (on_importfileselect_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) button20, "clicked",
-                    G_CALLBACK (on_importfile_clicked),
                     NULL);
   g_signal_connect_swapped ((gpointer) button21, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (importdialog));
+  g_signal_connect ((gpointer) button20, "clicked",
+                    G_CALLBACK (on_importfile_clicked),
+                    NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (importdialog, importdialog, "importdialog");
@@ -2942,9 +2945,10 @@ create_importdialog (void)
   GLADE_HOOKUP_OBJECT (importdialog, importfileentry, "importfileentry");
   GLADE_HOOKUP_OBJECT (importdialog, button24, "button24");
   GLADE_HOOKUP_OBJECT_NO_REF (importdialog, dialog_action_area10, "dialog_action_area10");
-  GLADE_HOOKUP_OBJECT (importdialog, button20, "button20");
   GLADE_HOOKUP_OBJECT (importdialog, button21, "button21");
+  GLADE_HOOKUP_OBJECT (importdialog, button20, "button20");
 
+  gtk_widget_grab_default (button20);
   return importdialog;
 }
 
@@ -2960,8 +2964,8 @@ create_exportdialog (void)
   GtkWidget *exportfileentry;
   GtkWidget *button25;
   GtkWidget *dialog_action_area11;
-  GtkWidget *button22;
   GtkWidget *button23;
+  GtkWidget *button22;
 
   exportdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (exportdialog), _("Export Feed List"));
@@ -3001,25 +3005,25 @@ create_exportdialog (void)
   gtk_widget_show (dialog_action_area11);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area11), GTK_BUTTONBOX_END);
 
-  button22 = gtk_button_new_from_stock ("gtk-execute");
-  gtk_widget_show (button22);
-  gtk_dialog_add_action_widget (GTK_DIALOG (exportdialog), button22, 0);
-  GTK_WIDGET_SET_FLAGS (button22, GTK_CAN_DEFAULT);
-
   button23 = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (button23);
   gtk_dialog_add_action_widget (GTK_DIALOG (exportdialog), button23, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (button23, GTK_CAN_DEFAULT);
 
+  button22 = gtk_button_new_from_stock ("gtk-execute");
+  gtk_widget_show (button22);
+  gtk_dialog_add_action_widget (GTK_DIALOG (exportdialog), button22, 0);
+  GTK_WIDGET_SET_FLAGS (button22, GTK_CAN_DEFAULT);
+
   g_signal_connect ((gpointer) button25, "clicked",
                     G_CALLBACK (on_exportfileselect_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) button22, "clicked",
-                    G_CALLBACK (on_exportfile_clicked),
                     NULL);
   g_signal_connect_swapped ((gpointer) button23, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (exportdialog));
+  g_signal_connect ((gpointer) button22, "clicked",
+                    G_CALLBACK (on_exportfile_clicked),
+                    NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (exportdialog, exportdialog, "exportdialog");
@@ -3031,9 +3035,10 @@ create_exportdialog (void)
   GLADE_HOOKUP_OBJECT (exportdialog, exportfileentry, "exportfileentry");
   GLADE_HOOKUP_OBJECT (exportdialog, button25, "button25");
   GLADE_HOOKUP_OBJECT_NO_REF (exportdialog, dialog_action_area11, "dialog_action_area11");
-  GLADE_HOOKUP_OBJECT (exportdialog, button22, "button22");
   GLADE_HOOKUP_OBJECT (exportdialog, button23, "button23");
+  GLADE_HOOKUP_OBJECT (exportdialog, button22, "button22");
 
+  gtk_widget_grab_default (button22);
   return exportdialog;
 }
 
@@ -3167,6 +3172,7 @@ create_aboutdialog (void)
   GLADE_HOOKUP_OBJECT_NO_REF (aboutdialog, dialog_action_area12, "dialog_action_area12");
   GLADE_HOOKUP_OBJECT (aboutdialog, closebutton1, "closebutton1");
 
+  gtk_widget_grab_default (closebutton1);
   return aboutdialog;
 }
 
