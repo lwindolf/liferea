@@ -204,6 +204,8 @@ static void favicon_download_html_request_cb(struct request *request) {
 	feedPtr fp = (feedPtr)request->user_data;
 	
 	ui_lock();
+	fp->otherRequests = g_slist_remove(fp->otherRequests, request);
+	
 	if (request->size > 0 && request->data != NULL) {
 		iconUri = html_discover_favicon(request->data, request->source);
 		if (iconUri != NULL) {
