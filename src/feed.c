@@ -165,7 +165,7 @@ void feed_save(feedPtr fp) {
 	gint		saveMaxCount;
 			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
-	filename = getCacheFileName(fp->id, "xml");
+	filename = getCacheFileName(fp->id, NULL);
 
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
@@ -250,7 +250,7 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	feedPtr		fp;
 	int		error = 0;
 
-	filename = getCacheFileName(id, "xml");
+	filename = getCacheFileName(id, NULL);
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		return NULL;
@@ -808,7 +808,7 @@ void feed_free(feedPtr fp) {
 	g_assert(IS_FEED(fp->type));
 	
 	if (fp->id && fp->id[0] != '\0')
-		filename = getCacheFileName(fp->id, "xml");
+		filename = getCacheFileName(fp->id, NULL);
 	
 	/* free UI info */
 	if(fp->ui_data)

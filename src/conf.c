@@ -226,20 +226,14 @@ static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
 
 		if (strchr(id,'/')) {
 			cacheid = g_strdup(id);
-			*strchr(id,'/') = '_';
+			*(strchr(cacheid,'/')) = '_';
 		} else {
 			cacheid = g_strdup_printf("_%s",id);
 		}
-		cachefileOld = getCacheFileName(cacheid, NULL);
-		cachefileNew = getCacheFileName(id, "xml");
-		g_message("attempting move of %s to %s",cachefileOld, cachefileNew);
-		if (rename(cachefileOld, cachefileNew) == 0)
-			g_message("Cache file of '%s' has been moved", name);
-		g_free(cachefileOld);
-		g_free(cachefileNew);
-		g_free(cacheid);
 
-		feed_add(type, url, parent, name, id, interval, FALSE);
+		feed_add(type, url, parent, name, cacheid, interval, FALSE);
+
+		g_free(cacheid);
 		g_free(id);
 		g_free(url);
 		g_free(name);
