@@ -58,9 +58,6 @@ DISTFILES = ChangeLog Makefile.in.in POTFILES.in $(GETTEXT_PACKAGE).pot \
 $(POFILES) $(GMOFILES) $(SOURCES)
 
 POTFILES = \
-	../src/main.c \
-	../src/interface.c \
-	../src/callbacks.c \
 	../src/support.c \
 	../src/callbacks.c \
 	../src/callbacks.h \

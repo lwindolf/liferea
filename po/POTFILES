@@ -1,6 +1,3 @@
-	../src/main.c \
-	../src/interface.c \
-	../src/callbacks.c \
 	../src/support.c \
 	../src/callbacks.c \
 	../src/callbacks.h \

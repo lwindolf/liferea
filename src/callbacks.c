@@ -41,6 +41,17 @@
 
 #include "vfolder.h"	// FIXME
 
+/* possible selected new dialog feed types */
+static gint selectableTypes[] = {	FST_AUTODETECT,
+					FST_RSS,
+					FST_CDF,
+					FST_PIE,
+					FST_OCS,
+					FST_OPML
+				};
+				
+#define MAX_TYPE_SELECT	6
+				
 GtkWidget		*mainwindow;
 GtkWidget		*filedialog = NULL;
 static GtkWidget	*newdialog = NULL;
@@ -515,6 +526,33 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 	}
 }
 
+static void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog) {
+	GtkWidget	*updateIntervalBtn;
+	feedPtr		fp;
+	gint		interval;
+	gchar		*tmp;
+
+	if(NULL != (fp = newFeed(type, source, keyprefix))) {
+		addToFeedList(fp, FALSE);
+		checkForEmptyFolders();
+
+		if(FALSE == getFeedAvailable(fp)) {
+			tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
+			showErrorBox(tmp);
+			g_free(tmp);
+		} else {
+			if(TRUE == showPropDialog) {
+				if(-1 != (interval = getFeedDefaultInterval(fp))) {
+					updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
+					gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
+				}
+
+				on_propbtn(NULL);		/* prepare prop dialog */
+			}
+		}
+	}
+}
+
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
 	GtkWidget 	*sourceentry;	
 	
@@ -550,54 +588,17 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	g_assert(NULL != selected_keyprefix);
 	source = g_strdup(gtk_entry_get_text(GTK_ENTRY(sourceentry)));
 	type = gtk_option_menu_get_history(GTK_OPTION_MENU(typeoptionmenu));
+	
 	/* the retrieved number is not yet the real feed type! */
-	switch(type) {
-		case 0: 
-			type = FST_AUTODETECT;
-			break;
-		case 1:
-			type = FST_RSS;
-			break;
-		case 2:
-			type = FST_CDF;
-			break;
-		case 3:
-			type = FST_PIE;
-			break;
-		case 4:
-			type = FST_OCS;
-			break;
-		case 5:
-			type = FST_OPML;
-			break;
-		default:
+	if(type < MAX_TYPE_SELECT) {
 			g_error(_("internal error! invalid type selected! This should never happen!\n"));
 			return;
+	} else {
+		type = selectableTypes[type];
 	}
 
-	keyprefix = g_strdup(selected_keyprefix);
-	if(NULL != (fp = newFeed(type, source, keyprefix))) {
-		addToFeedList(fp, FALSE);
-		checkForEmptyFolders();
-
-		if(FALSE == getFeedAvailable(fp)) {
-			tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
-			showErrorBox(tmp);
-			g_free(tmp);
-		} else {
-
-			if(-1 != (interval = getFeedDefaultInterval(fp))) {
-				updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-			}
-
-			on_propbtn(NULL);		/* prepare prop dialog */
-		}
-	}
-
-	gtk_widget_hide(newdialog);
-	
-	/* don't free source/keyprefix for they are reused by newFeed! */
+	subscribeTo(type, source, g_strdup(selected_keyprefix), TRUE);	
+	/* don't free source for it is reused by newFeed! */
 }
 
 void on_localfileselect_clicked(GtkButton *button, gpointer user_data) {
@@ -1091,6 +1092,15 @@ void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NUL
 
 void on_popup_zoomin_selected(void) { changeZoomLevel(0.2); }
 void on_popup_zoomout_selected(void) { changeZoomLevel(-0.2); }
+
+void on_popup_copy_url_selected(void) {
+	// FIXME:
+}
+
+void on_popup_subscribe_url_selected(void) {
+
+	subscribeTo(FST_AUTODETECT, getSelectedURL(), g_strdup(selected_keyprefix), TRUE);
+}
 
 /*------------------------------------------------------------------------------*/
 /* treeview creation and rendering						*/

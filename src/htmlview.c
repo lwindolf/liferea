@@ -53,6 +53,13 @@ static GtkWidget	*htmlwidget = NULL;
 
 static gfloat		zoomLevel = 1.0;
 
+/* points to the URL actually under the mouse pointer or is NULL */
+static gchar		*selectedURL = NULL;
+
+/* is used to store a URL after right click till retrieval via
+   getSelectedURL() */
+static gchar		*clickedURL = NULL;
+
 /* some prototypes */
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata);
 static void url_request(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
@@ -171,9 +178,16 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2) {
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {
 
 	if (event->button == 3) {
-
-		gtk_menu_popup (GTK_MENU(make_html_menu()), NULL, NULL,
-				NULL, NULL, event->button, event->time);
+		if(NULL == selectedURL)
+			gtk_menu_popup(GTK_MENU(make_menu(HTML_MENU)), NULL, NULL,
+				       NULL, NULL, event->button, event->time);
+		else {
+			g_free(clickedURL);
+g_print("saved url: %s\n", selectedURL);			
+			clickedURL = g_strdup(selectedURL);
+			gtk_menu_popup(GTK_MENU(make_menu(URL_MENU)), NULL, NULL,
+				       NULL, NULL, event->button, event->time);
+		}
  
 	} else {
 		return FALSE;
@@ -335,8 +349,10 @@ on_url (HtmlView *view, const char *url, gpointer user_data)
 {
 	GtkWidget *statusbar = GTK_WIDGET(user_data);
 
-	gtk_label_set_text (GTK_LABEL (GTK_STATUSBAR (statusbar)->label), 
-			    url);
+	gtk_label_set_text (GTK_LABEL (GTK_STATUSBAR (statusbar)->label), url);
+	
+	g_free(selectedURL);		/* performance ? */
+	selectedURL = g_strdup(url);
 }
 
 static gboolean
@@ -417,4 +433,13 @@ void changeZoomLevel(gfloat diff) {
 gfloat getZoomLevel(void) {
 
 	return zoomLevel;
+}
+
+/* Returns the currently selected URL string. The string
+   must be freed by the caller. */
+gchar * getSelectedURL(void) {
+	gchar 	*tmp = clickedURL;
+	
+	clickedURL = NULL;
+	return tmp;
 }

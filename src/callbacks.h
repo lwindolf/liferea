@@ -18,6 +18,7 @@
 
 #include <gtk/gtk.h>
 #include <libgtkhtml/gtkhtml.h>
+#include "ui_popup.h"
 
 /* constants for attributes in feedstore */
 #define FS_TITLE	0
@@ -223,6 +224,8 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_next_unread_item_selected(void);
 void on_popup_zoomin_selected(void);
 void on_popup_zoomout_selected(void);
+void on_popup_copy_url_selected(void);
+void on_popup_subscribe_url_selected(void);
 
 /* in ui_search.c */
 
