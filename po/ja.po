@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.5.3-test\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"POT-Creation-Date: 2004-09-09 02:39+0200\n"
 "PO-Revision-Date: 2004-08-15 22:15+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -389,7 +389,7 @@ msgstr "選択した購読または選択したフォルダにある全ての購
 msgid "Update _All"
 msgstr "全て更新(_A)"
 
-#: src/interface.c:237 src/ui_mainwindow.c:188
+#: src/interface.c:237 src/ui_mainwindow.c:174
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "全ての配信元を更新します (OCS ディレクトリを除く)"
 
@@ -445,7 +445,7 @@ msgstr "トピック(_I)"
 msgid "_Next Unread Item"
 msgstr "次の未読のトピック(_N)"
 
-#: src/interface.c:315 src/ui_mainwindow.c:186
+#: src/interface.c:315 src/ui_mainwindow.c:172
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1588,57 +1588,57 @@ msgstr "この配信元はデフォルトの更新間隔を指定していませ
 msgid "Choose File"
 msgstr "ファイルの選択"
 
-#: src/ui_feedlist.c:356
+#: src/ui_feedlist.c:399
 msgid "You have to select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: src/ui_feedlist.c:366
+#: src/ui_feedlist.c:409
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (アップデートできません)"
 
-#: src/ui_feedlist.c:387
+#: src/ui_feedlist.c:430
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "ヒント: 購読フィルタを利用すると、ドラッグ＆ドロップが無効になります"
 
-#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
+#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
 msgid "Deleting entry"
 msgstr "エントリの削除"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:473
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "%s とその内容を全て削除してもよろしいですか？"
 
-#: src/ui_feedlist.c:433
+#: src/ui_feedlist.c:476
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "%s を削除してもよろしいですか？"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:484
 msgid "Deletion Confirmation"
 msgstr "削除の確認"
 
-#: src/ui_feedlist.c:478
+#: src/ui_feedlist.c:521
 msgid "You must select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: src/ui_feedlist.c:479
+#: src/ui_feedlist.c:522
 msgid "You must select a feed entry."
 msgstr "配信元エントリを一つ選択して下さい。"
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:568
 msgid "New subscription"
 msgstr "新しい購読"
 
-#: src/ui_folder.c:76 src/ui_folder.c:102
+#: src/ui_folder.c:78
 msgid "A folder must be selected."
 msgstr "フォルダを選択して下さい。"
 
-#: src/ui_folder.c:220
+#: src/ui_folder.c:178
 msgid "<i>(empty)</i>"
 msgstr "<i>(空)</i>"
 
-#: src/ui_folder.c:349
+#: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "[内部エラー] 不明なエントリの種類です！ 適切なアイコンを表示できません！\n"
@@ -1663,27 +1663,28 @@ msgstr "トピックを削除する配信元を選択して下さい！"
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
 
-#: src/ui_itemlist.c:723
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:719
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "New Feed"
 msgstr "新しい配信元"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "Add a new subscription."
 msgstr "新しい購読を追加します"
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:172
 msgid "Next Unread"
 msgstr "次の未読のトピック"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid "Mark As Read"
 msgstr "全て既読"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1691,27 +1692,27 @@ msgstr ""
 "現在選択している購読の全てのトピック、または選択したフォルダの全てのトピック"
 "に既読マークを付与します"
 
-#: src/ui_mainwindow.c:188
+#: src/ui_mainwindow.c:174
 msgid "Update All"
 msgstr "全て更新"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search"
 msgstr "検索"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search all feeds."
 msgstr "全ての配信元から検索します"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Preferences"
 msgstr "設定"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Edit preferences."
 msgstr "設定を編集します"
 
-#: src/ui_mainwindow.c:205
+#: src/ui_mainwindow.c:191
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1763,11 +1764,11 @@ msgstr ""
 "ジェクトのホームページ</a>にある <a href=\"http://liferea.sourceforge.net/"
 "faq.php\">FAQ</a> をご覧下さい。</p>"
 
-#: src/ui_mainwindow.c:290
+#: src/ui_mainwindow.c:276
 msgid "Liferea is now online"
 msgstr "Liferea は現在オンラインです"
 
-#: src/ui_mainwindow.c:293
+#: src/ui_mainwindow.c:279
 msgid "Liferea is now offline"
 msgstr "Liferea は現在オフラインです"
 

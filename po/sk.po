@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"POT-Creation-Date: 2004-09-09 02:39+0200\n"
 "PO-Revision-Date: 2004-08-14 14:00+0100\n"
 "Last-Translator: Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 "Language-Team: Slovak <i18n@lists.linux.sk>\n"
@@ -388,7 +388,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "_Aktualizovať všetky"
 
-#: src/interface.c:237 src/ui_mainwindow.c:188
+#: src/interface.c:237 src/ui_mainwindow.c:174
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Aktualizovať všetky prihlásenia. OCS priečinky nebudú aktualizované."
 
@@ -444,7 +444,7 @@ msgstr "P_ríspevky"
 msgid "_Next Unread Item"
 msgstr "Ďalší _neprečítaný príspevok"
 
-#: src/interface.c:315 src/ui_mainwindow.c:186
+#: src/interface.c:315 src/ui_mainwindow.c:172
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1597,57 +1597,57 @@ msgstr "Tento kanál nemá špecifikovaný štandardný interval pre aktualizác
 msgid "Choose File"
 msgstr "Vybrať súbor"
 
-#: src/ui_feedlist.c:356
+#: src/ui_feedlist.c:399
 msgid "You have to select a feed entry"
 msgstr "Mali by ste označiť článok v kanály"
 
-#: src/ui_feedlist.c:366
+#: src/ui_feedlist.c:409
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea je v offline režime. Nie sú možné aktualizácie."
 
-#: src/ui_feedlist.c:387
+#: src/ui_feedlist.c:430
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "Poznámka: Použitie prihlasovacích filtrov zakáže drag & drop"
 
-#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
+#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
 msgid "Deleting entry"
 msgstr "Vymazanie záznamu"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:473
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Ste si istý, že chcete odstrániť %s spolu s obsahom?"
 
-#: src/ui_feedlist.c:433
+#: src/ui_feedlist.c:476
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ste si istý, že chcete odstrániť %s?"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:484
 msgid "Deletion Confirmation"
 msgstr "Potvrdenie odstránenia"
 
-#: src/ui_feedlist.c:478
+#: src/ui_feedlist.c:521
 msgid "You must select a feed entry"
 msgstr "Musíte označiť článok v danom kanály"
 
-#: src/ui_feedlist.c:479
+#: src/ui_feedlist.c:522
 msgid "You must select a feed entry."
 msgstr "Musíte označiť článok v danom kanály."
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:568
 msgid "New subscription"
 msgstr "Nové prihlásenie"
 
-#: src/ui_folder.c:76 src/ui_folder.c:102
+#: src/ui_folder.c:78
 msgid "A folder must be selected."
 msgstr "Musíte si vybrať zložku."
 
-#: src/ui_folder.c:220
+#: src/ui_folder.c:178
 msgid "<i>(empty)</i>"
 msgstr "<i>(prázdne)</i>"
 
-#: src/ui_folder.c:349
+#: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "interná chyba! neznámy typ záznamu! nie je možné zobraziť priradenú ikonu!\n"
@@ -1672,27 +1672,28 @@ msgstr "Musíte označiť kanál pre odstránenie jeho článkov!"
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "interná chyba! nie je možné získať označené stromové zobrazenie!\n"
 
-#: src/ui_itemlist.c:723
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:719
 msgid "There are no unread items "
 msgstr "Žiadne neprečítané články"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "New Feed"
 msgstr "Nový kanál"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "Add a new subscription."
 msgstr "Pridať nové prihlásenie."
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:172
 msgid "Next Unread"
 msgstr "Nasledovný neprečítaný"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid "Mark As Read"
 msgstr "Označiť ako prečítané"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1700,27 +1701,27 @@ msgstr ""
 "Označiť všetky články v označených prihláseniach alebo všetky prihlásenia v "
 "označenom priečinku ako prečítané."
 
-#: src/ui_mainwindow.c:188
+#: src/ui_mainwindow.c:174
 msgid "Update All"
 msgstr "Aktualizovať všetky"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search"
 msgstr "Hladať"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search all feeds."
 msgstr "Vyhľadávať v kanáloch."
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Preferences"
 msgstr "Nastavenia"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Edit preferences."
 msgstr "Editovať nastavenia."
 
-#: src/ui_mainwindow.c:205
+#: src/ui_mainwindow.c:191
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1774,11 +1775,11 @@ msgstr ""
 "sourceforge.net/faq.php\">FAQ</a> dostupné na <a href=\"http://liferea.sf.net"
 "\">domovskej stránke projektu</a>.</p>"
 
-#: src/ui_mainwindow.c:290
+#: src/ui_mainwindow.c:276
 msgid "Liferea is now online"
 msgstr "Liferea je momentálne online"
 
-#: src/ui_mainwindow.c:293
+#: src/ui_mainwindow.c:279
 msgid "Liferea is now offline"
 msgstr "Liferea je momentálne offline"
 

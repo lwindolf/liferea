@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"POT-Creation-Date: 2004-09-09 02:39+0200\n"
 "PO-Revision-Date: 2004-05-21 02:32+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -367,7 +367,7 @@ msgstr "更新選擇的訂閱項目或目錄下的所有訂閱項目。"
 msgid "Update _All"
 msgstr "更新全部(_A)"
 
-#: src/interface.c:237 src/ui_mainwindow.c:188
+#: src/interface.c:237 src/ui_mainwindow.c:174
 #, fuzzy
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "立即升級所有饋流 (除了目錄)。"
@@ -423,7 +423,7 @@ msgstr "項目(_I)"
 msgid "_Next Unread Item"
 msgstr "下筆未讀項目(_N)"
 
-#: src/interface.c:315 src/ui_mainwindow.c:186
+#: src/interface.c:315 src/ui_mainwindow.c:172
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1557,64 +1557,64 @@ msgstr "此饋流未指定預設更新頻率"
 msgid "Choose File"
 msgstr ""
 
-#: src/ui_feedlist.c:356
+#: src/ui_feedlist.c:399
 #, fuzzy
 msgid "You have to select a feed entry"
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:366
+#: src/ui_feedlist.c:409
 #, fuzzy
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea 在離線模式。無法更新！"
 
-#: src/ui_feedlist.c:387
+#: src/ui_feedlist.c:430
 #, fuzzy
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "註: 使用訂閱過濾將停用拖拉功能!"
 
-#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
+#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
 msgid "Deleting entry"
 msgstr "刪除項目中"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:473
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "您確定要刪除 %s 及其內容嗎？"
 
-#: src/ui_feedlist.c:433
+#: src/ui_feedlist.c:476
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "您確定要刪除 %s 嗎 ？"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:484
 #, fuzzy
 msgid "Deletion Confirmation"
 msgstr "刪除確認"
 
-#: src/ui_feedlist.c:478
+#: src/ui_feedlist.c:521
 #, fuzzy
 msgid "You must select a feed entry"
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:479
+#: src/ui_feedlist.c:522
 #, fuzzy
 msgid "You must select a feed entry."
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:568
 #, fuzzy
 msgid "New subscription"
 msgstr "新增訂閱"
 
-#: src/ui_folder.c:76 src/ui_folder.c:102
+#: src/ui_folder.c:78
 msgid "A folder must be selected."
 msgstr "目錄必須先選擇。"
 
-#: src/ui_folder.c:220
+#: src/ui_folder.c:178
 msgid "<i>(empty)</i>"
 msgstr "<i>(空)</i>"
 
-#: src/ui_folder.c:349
+#: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "內部錯誤! unknown entry type! cannot display appropriate icon!\n"
 
@@ -1640,59 +1640,60 @@ msgstr "您必須先選擇一個饋流才能刪除!"
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "內部錯誤！ could not get feed tree view selection!\n"
 
-#: src/ui_itemlist.c:723
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:719
 #, fuzzy
 msgid "There are no unread items "
 msgstr "沒有未讀項目!"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "New Feed"
 msgstr "新增饋流"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 #, fuzzy
 msgid "Add a new subscription."
 msgstr "新增訂閱"
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:172
 msgid "Next Unread"
 msgstr "下筆未讀"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid "Mark As Read"
 msgstr "全部標示為已讀"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 #, fuzzy
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
 
-#: src/ui_mainwindow.c:188
+#: src/ui_mainwindow.c:174
 #, fuzzy
 msgid "Update All"
 msgstr "更新全部(_A)"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search"
 msgstr "搜尋"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 #, fuzzy
 msgid "Search all feeds."
 msgstr "搜尋饋流"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Preferences"
 msgstr "編輯偏好"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 #, fuzzy
 msgid "Edit preferences."
 msgstr "編輯偏好"
 
-#: src/ui_mainwindow.c:205
+#: src/ui_mainwindow.c:191
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1721,12 +1722,12 @@ msgid ""
 "p>"
 msgstr ""
 
-#: src/ui_mainwindow.c:290
+#: src/ui_mainwindow.c:276
 #, fuzzy
 msgid "Liferea is now online"
 msgstr "Liferea 現為線上模式。"
 
-#: src/ui_mainwindow.c:293
+#: src/ui_mainwindow.c:279
 #, fuzzy
 msgid "Liferea is now offline"
 msgstr "Lifeare 正在離線模式！"

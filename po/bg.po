@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISLD Localization Project 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"POT-Creation-Date: 2004-09-09 02:39+0200\n"
 "PO-Revision-Date: 2004-08-17 12:01+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
@@ -382,7 +382,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "Осъвременяване на _всички"
 
-#: src/interface.c:237 src/ui_mainwindow.c:188
+#: src/interface.c:237 src/ui_mainwindow.c:174
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 "Осъвременяване на всички абонаменти. OCS директориите не се осъвременяват."
@@ -439,7 +439,7 @@ msgstr "_Записи"
 msgid "_Next Unread Item"
 msgstr "_Следващия непрочетен запис"
 
-#: src/interface.c:315 src/ui_mainwindow.c:186
+#: src/interface.c:315 src/ui_mainwindow.c:172
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1580,58 +1580,58 @@ msgstr "Този източник няма подразбиращ се инте�
 msgid "Choose File"
 msgstr "Избор на файл"
 
-#: src/ui_feedlist.c:356
+#: src/ui_feedlist.c:399
 msgid "You have to select a feed entry"
 msgstr "Трябва да изберете адрес на източник"
 
-#: src/ui_feedlist.c:366
+#: src/ui_feedlist.c:409
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea·е в изключен режим.·Осъвременявания на абонаментите не са възможни."
 
-#: src/ui_feedlist.c:387
+#: src/ui_feedlist.c:430
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
+#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
 msgid "Deleting entry"
 msgstr "Изтриване на запис"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:473
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Сигурни ли сте, че искате да изтриете·%s·и всички записи в него?"
 
-#: src/ui_feedlist.c:433
+#: src/ui_feedlist.c:476
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Сигурни ли сте, че искате да изтриете·%s?"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:484
 msgid "Deletion Confirmation"
 msgstr "Потвърждаване при изтриване"
 
-#: src/ui_feedlist.c:478
+#: src/ui_feedlist.c:521
 msgid "You must select a feed entry"
 msgstr "Трябва да изберете запис"
 
-#: src/ui_feedlist.c:479
+#: src/ui_feedlist.c:522
 msgid "You must select a feed entry."
 msgstr "Трябва да изберете запис."
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:568
 msgid "New subscription"
 msgstr "Нов абонамент"
 
-#: src/ui_folder.c:76 src/ui_folder.c:102
+#: src/ui_folder.c:78
 msgid "A folder must be selected."
 msgstr "Папката трябва да бъде избрана."
 
-#: src/ui_folder.c:220
+#: src/ui_folder.c:178
 msgid "<i>(empty)</i>"
 msgstr "<i>(празен)</i>"
 
-#: src/ui_folder.c:349
+#: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "вътрешна грешка! непознат тип запис! не може да бъде изобразенаподходяща "
@@ -1657,27 +1657,28 @@ msgstr "Трябва да изберете абонамент, за да изт�
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:723
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:719
 msgid "There are no unread items "
 msgstr "Няма непрочетени записи "
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "New Feed"
 msgstr "Нов абонамент"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "Add a new subscription."
 msgstr "Добавяне на нов абонамент."
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:172
 msgid "Next Unread"
 msgstr "Следващ непрочетен"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid "Mark As Read"
 msgstr "Избиране като прочетен"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1685,27 +1686,27 @@ msgstr ""
 "Маркиране като прочетени на всички избрани абонаменти или на всички "
 "абонаменти в избраната папка."
 
-#: src/ui_mainwindow.c:188
+#: src/ui_mainwindow.c:174
 msgid "Update All"
 msgstr "Осъвременяване на всички"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search"
 msgstr "Търсене"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search all feeds."
 msgstr "Търсене във всички абонаменти."
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Edit preferences."
 msgstr "Промяна на настройките."
 
-#: src/ui_mainwindow.c:205
+#: src/ui_mainwindow.c:191
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1758,11 +1759,11 @@ msgstr ""
 "прочетете документацията предоставена от абонамента за помощ или секцията с "
 "Често задаваните въпроси на страницата на програмата.</p>"
 
-#: src/ui_mainwindow.c:290
+#: src/ui_mainwindow.c:276
 msgid "Liferea is now online"
 msgstr "Liferea е включена"
 
-#: src/ui_mainwindow.c:293
+#: src/ui_mainwindow.c:279
 msgid "Liferea is now offline"
 msgstr "Liferea е в режим \"изключен\""
 

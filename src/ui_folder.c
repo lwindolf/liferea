@@ -217,7 +217,7 @@ void ui_folder_remove_node(nodePtr ptr) {
 
 	iter = ((ui_data*)(ptr->ui_data))->row;
 	parent = ui_feedlist_get_parent(ptr);
-	if (parent != NULL)
+	if(parent != NULL)
 		parentExpanded = ui_is_folder_expanded(parent); /* If the folder becomes empty, the folder would collapse */
 	
 	gtk_tree_store_remove(feedstore, &iter);
@@ -271,7 +271,7 @@ static void ui_folder_update_from_iter(GtkTreeIter *iter) {
 		rc = gtk_tree_model_iter_next(model, &child);
 	}
 	
-	if (count>0) {
+	if(count>0) {
 		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", title, count);
 	} else {
 		label = g_strdup_printf("%s", title);

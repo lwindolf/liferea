@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"POT-Creation-Date: 2004-09-09 02:39+0200\n"
 "PO-Revision-Date: 2004-08-17 10:32+0200\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -383,7 +383,7 @@ msgstr "Obnovení vybraných zdrojů nebo všech vybraných adresářů."
 msgid "Update _All"
 msgstr "Obnovit _vše"
 
-#: src/interface.c:237 src/ui_mainwindow.c:188
+#: src/interface.c:237 src/ui_mainwindow.c:174
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Obnovení všech zdrojů. Neobnoví OCS adresáře."
 
@@ -437,7 +437,7 @@ msgstr "Č_lánky"
 msgid "_Next Unread Item"
 msgstr "_Další nepřečtený článek"
 
-#: src/interface.c:315 src/ui_mainwindow.c:186
+#: src/interface.c:315 src/ui_mainwindow.c:172
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1567,60 +1567,60 @@ msgstr "Tento zdroj neuvádí výchozí interval pro aktualizaci."
 msgid "Choose File"
 msgstr "Vybrat soubor"
 
-#: src/ui_feedlist.c:356
+#: src/ui_feedlist.c:399
 msgid "You have to select a feed entry"
 msgstr "Musíte vybrat zdroj"
 
-#: src/ui_feedlist.c:366
+#: src/ui_feedlist.c:409
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Program Liferea je nyní odpojen od internetu. Aktualizace nejsou umožněny."
 
-#: src/ui_feedlist.c:387
+#: src/ui_feedlist.c:430
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Poznámka: Použití filtru pro zdroj znemožní použití technologie umístění "
 "tažením (drag & drop)"
 
-#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
+#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
 msgid "Deleting entry"
 msgstr "Mažu údaj"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:473
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Jste si jist, že chcete smazat %s a jeho obsah?"
 
-#: src/ui_feedlist.c:433
+#: src/ui_feedlist.c:476
 #, fuzzy, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Jste si jist, že chcete smazat %s?"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:484
 msgid "Deletion Confirmation"
 msgstr "Potvrzení smazání"
 
-#: src/ui_feedlist.c:478
+#: src/ui_feedlist.c:521
 msgid "You must select a feed entry"
 msgstr "Musíte vybrat zdroj"
 
-#: src/ui_feedlist.c:479
+#: src/ui_feedlist.c:522
 msgid "You must select a feed entry."
 msgstr "Musíte vybrat zdroj."
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:568
 msgid "New subscription"
 msgstr "Nový zdroj"
 
-#: src/ui_folder.c:76 src/ui_folder.c:102
+#: src/ui_folder.c:78
 msgid "A folder must be selected."
 msgstr "Adresář musí být vybrán."
 
-#: src/ui_folder.c:220
+#: src/ui_folder.c:178
 msgid "<i>(empty)</i>"
 msgstr "<i>(prázdný)</i>"
 
-#: src/ui_folder.c:349
+#: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "vnitřní chyba! neznámý vstupní typ! nemohu zobrazit vhodnou ikonu!\n"
 
@@ -1644,27 +1644,28 @@ msgstr "Musíte vybrat zdroj, pokud chcete smazat jeho články!"
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "vnitřní chyba! could not get feed tree view selection!\n"
 
-#: src/ui_itemlist.c:723
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:719
 msgid "There are no unread items "
 msgstr "Zde nejsou nepřečtené články "
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "New Feed"
 msgstr "Nový zdroj"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "Add a new subscription."
 msgstr "Přidat nový zdroj."
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:172
 msgid "Next Unread"
 msgstr "Další nepřečtený"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid "Mark As Read"
 msgstr "Označit jako přečtené"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1672,28 +1673,28 @@ msgstr ""
 "Označit všechny články vybraného zdroje nebo všechny zdroje vybraného "
 "adresáře jako přečtené."
 
-#: src/ui_mainwindow.c:188
+#: src/ui_mainwindow.c:174
 msgid "Update All"
 msgstr "Obnovit vše"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search"
 msgstr "Hledat"
 
 # Chyba, divny
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search all feeds."
 msgstr "Hledat ve všech zdrojích."
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Edit preferences."
 msgstr "Změnit nastavení."
 
-#: src/ui_mainwindow.c:205
+#: src/ui_mainwindow.c:191
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1749,11 +1750,11 @@ msgstr ""
 "zdroji nápovědy nebo v&nbsp;často kladených otázkách na stránkách projektu.</"
 "p>"
 
-#: src/ui_mainwindow.c:290
+#: src/ui_mainwindow.c:276
 msgid "Liferea is now online"
 msgstr "Program Liferea je nyní připojen"
 
-#: src/ui_mainwindow.c:293
+#: src/ui_mainwindow.c:279
 msgid "Liferea is now offline"
 msgstr "Program Liferea je nyní odpojen"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"POT-Creation-Date: 2004-09-09 02:39+0200\n"
 "PO-Revision-Date: 2004-09-08 11:13+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -382,7 +382,7 @@ msgstr "Ги ажурира означените ставки или сите с
 msgid "Update _All"
 msgstr "_Ажурирај ги сите"
 
-#: src/interface.c:237 src/ui_mainwindow.c:188
+#: src/interface.c:237 src/ui_mainwindow.c:174
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Веднаш ажурирај ги сите вести (без папките)."
 
@@ -438,7 +438,7 @@ msgstr "_Предмети"
 msgid "_Next Unread Item"
 msgstr "_Следна непрочитана вест"
 
-#: src/interface.c:315 src/ui_mainwindow.c:186
+#: src/interface.c:315 src/ui_mainwindow.c:172
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1576,58 +1576,58 @@ msgstr "Овие вести немаат информација за време 
 msgid "Choose File"
 msgstr "Одберете датотека"
 
-#: src/ui_feedlist.c:356
+#: src/ui_feedlist.c:399
 msgid "You have to select a feed entry"
 msgstr "Мора да одзберете вест!"
 
-#: src/ui_feedlist.c:366
+#: src/ui_feedlist.c:409
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea е во офлајн режим. Нема можност за ажурирање."
 
-#: src/ui_feedlist.c:387
+#: src/ui_feedlist.c:430
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Забелешка: Користењето на филтерот ја оневозможува можноста „влечи и пушти“"
 
-#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
+#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
 msgid "Deleting entry"
 msgstr "Бришење на вестите"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:473
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Дали сте сигурни дека сакате да избришете \"%s\" и целата содржина?"
 
-#: src/ui_feedlist.c:433
+#: src/ui_feedlist.c:476
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Дали сте сигурни дека саката да избришете \"%s\"?"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:484
 msgid "Deletion Confirmation"
 msgstr "Потврда за бришење"
 
-#: src/ui_feedlist.c:478
+#: src/ui_feedlist.c:521
 msgid "You must select a feed entry"
 msgstr "Мора да одзберете вест!"
 
-#: src/ui_feedlist.c:479
+#: src/ui_feedlist.c:522
 msgid "You must select a feed entry."
 msgstr "Мора да одберете вест!"
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:568
 msgid "New subscription"
 msgstr "Нова претплата"
 
-#: src/ui_folder.c:76 src/ui_folder.c:102
+#: src/ui_folder.c:78
 msgid "A folder must be selected."
 msgstr "Папката мора да е празна за да ја избришете!"
 
-#: src/ui_folder.c:220
+#: src/ui_folder.c:178
 msgid "<i>(empty)</i>"
 msgstr "<i>(празно)</i>"
 
-#: src/ui_folder.c:349
+#: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "internal error! unknown entry type! cannot display appropriate icon!\n"
 
@@ -1651,27 +1651,28 @@ msgstr "Мора да одбереш вест за бришење на став�
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "интерна грешка! could not get feed tree view selection!\n"
 
-#: src/ui_itemlist.c:723
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:719
 msgid "There are no unread items "
 msgstr "Сите вести се прочитани!"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "New Feed"
 msgstr "Нова вест"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "Add a new subscription."
 msgstr "Додај нова претплата."
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:172
 msgid "Next Unread"
 msgstr "Следно непрочитано"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid "Mark As Read"
 msgstr "Обележи како прочитани"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1679,27 +1680,27 @@ msgstr ""
 "Означи ги сите вести во означената ставка како прочитани или сите вести во "
 "означената папка."
 
-#: src/ui_mainwindow.c:188
+#: src/ui_mainwindow.c:174
 msgid "Update All"
 msgstr "Ажурирај ги сите"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search"
 msgstr "Пребарувај"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search all feeds."
 msgstr "Барај во сите вести."
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Preferences"
 msgstr "Параметри"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Edit preferences."
 msgstr "Уреди ги параметрите."
 
-#: src/ui_mainwindow.c:205
+#: src/ui_mainwindow.c:191
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1750,11 +1751,11 @@ msgstr ""
 "\"http://liferea.sourceforge.net/faq.php\">ЧПП</a>, кои се достапни на веб "
 "страната на <a href=\"http://liferea.sf.net\">овој проект</a>.</p>"
 
-#: src/ui_mainwindow.c:290
+#: src/ui_mainwindow.c:276
 msgid "Liferea is now online"
 msgstr "Liferea e поврзана."
 
-#: src/ui_mainwindow.c:293
+#: src/ui_mainwindow.c:279
 msgid "Liferea is now offline"
 msgstr "Liferea е исклучена"
 

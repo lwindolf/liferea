@@ -7,13 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-08 22:14+0900\n"
+"POT-Creation-Date: 2004-09-09 02:39+0200\n"
 "PO-Revision-Date: 2004-09-08 23:07+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/common.c:277
 msgid "[Parser error output was truncated!]"
@@ -308,19 +308,6 @@ msgstr "브라우져 명령 실패: %s"
 msgid "Starting: \"%s\""
 msgstr "%s을(를) 시작함"
 
-#. *
-#. * @{ Common HTML definitions
-#. *
-#. * Used styles should be defined in the
-#. * liferea.css style sheet! For some important HTML literals
-#. * like the item and feed description headers the styles
-#. * are duplicated here just in case the style sheet is
-#. * missing.
-#.
-#. RSS feed/item output definitions (some are used by OCS too!)
-#. OCS direntry output definitions
-#. condensed mode shading
-#. HTTP and parsing error text
 #: src/htmlview.h:97
 #, c-format
 msgid ""
@@ -392,7 +379,7 @@ msgstr "선택된 구독을 혹은 모든 선택된 폴더의 구독을 새로 �
 msgid "Update _All"
 msgstr "전부 갱신(_A)"
 
-#: src/interface.c:237 src/ui_mainwindow.c:188
+#: src/interface.c:237 src/ui_mainwindow.c:174
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "즉시 모든 피드를 새로 고칩니다. OCS 디렉토리는 포함하지 않습니다."
 
@@ -448,7 +435,7 @@ msgstr "아이템들(_I)"
 msgid "_Next Unread Item"
 msgstr "다음 안 읽은 아이템(_N)"
 
-#: src/interface.c:315 src/ui_mainwindow.c:186
+#: src/interface.c:315 src/ui_mainwindow.c:172
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -758,7 +745,8 @@ msgstr "<span weight=\"bold\">피드 불러오기 설정</span>"
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds,"
-msgstr "필요하면 피드를 디스크에서 불러옵니다. 많은 피드를\n"
+msgstr ""
+"필요하면 피드를 디스크에서 불러옵니다. 많은 피드를\n"
 "가지고 있다면 찾기가 느려질 수도 있습니다.(_L)"
 
 #: src/interface.c:1818
@@ -767,9 +755,9 @@ msgid ""
 "(especially when searching) but can cause a \n"
 "significant memory footprint if you have a lot \n"
 "of feeds!"
-msgstr "모든 피드를 불러온 상태를 유지합니다(_K). 이렇게 하면 속도가 향상됩니다."
-"(특히 검색할 때) 하지만 많은 피드를 가지고 있다면"
-"메모리를 무지하게 써댑니다!"
+msgstr ""
+"모든 피드를 불러온 상태를 유지합니다(_K). 이렇게 하면 속도가 향상됩니다.(특"
+"히 검색할 때) 하지만 많은 피드를 가지고 있다면메모리를 무지하게 써댑니다!"
 
 #: src/interface.c:1824
 msgid "Feed Handling"
@@ -1094,8 +1082,8 @@ msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
-"참고: <i>사용자 이름과 열쇠글은 Liferea 피드리스트에 암호화되지 않은채로저장됩"
-"니다.</i>"
+"참고: <i>사용자 이름과 열쇠글은 Liferea 피드리스트에 암호화되지 않은채로저장"
+"됩니다.</i>"
 
 #: src/interface.c:3033
 msgid "VFolder Properties"
@@ -1176,6 +1164,7 @@ msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  자세한 디버깅 메시지를 보여줍니다."
 
 #: src/main.c:222
+#, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "--session 옵션은 반드시 인자를 가져야 합니다.\n"
 
@@ -1190,7 +1179,8 @@ msgid ""
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
 msgstr ""
-"또 다른 Liferea가 실행중입니다. 그녀석을 써주세요. 만약 Liferea가 실행중이지 않은데도 그런거라면, \"~/.liferea/lock\" 잠금 파일을 지워주세요."
+"또 다른 Liferea가 실행중입니다. 그녀석을 써주세요. 만약 Liferea가 실행중이지 "
+"않은데도 그런거라면, \"~/.liferea/lock\" 잠금 파일을 지워주세요."
 
 #: src/metadata.c:286
 msgid "comments"
@@ -1518,7 +1508,8 @@ msgstr ""
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
-"\"%s\"이(가) 연속적이지 않습니다. Liferea는 그것을 더이상 새로 고칠 수 없습니다!"
+"\"%s\"이(가) 연속적이지 않습니다. Liferea는 그것을 더이상 새로 고칠 수 없습니"
+"다!"
 
 #: src/ui_feed.c:163
 #, c-format
@@ -1536,8 +1527,9 @@ msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
 "p>%s"
-msgstr "<p>이 피드의 종류를 결정할 수 없습니다!. 소스가 지원되는 형식의 자원을 정확히 가"
-"리키는지 확인해 주세요 </p>%s"
+msgstr ""
+"<p>이 피드의 종류를 결정할 수 없습니다!. 소스가 지원되는 형식의 자원을 정확"
+"히 가리키는지 확인해 주세요 </p>%s"
 
 #: src/ui_feed.c:199
 #, c-format
@@ -1570,57 +1562,57 @@ msgstr "이 피드는 기본 갱신 주기를 정하지 않습니다."
 msgid "Choose File"
 msgstr "파일 고르기"
 
-#: src/ui_feedlist.c:356
+#: src/ui_feedlist.c:399
 msgid "You have to select a feed entry"
 msgstr "피드 엔트리를 선택해야 합니다!"
 
-#: src/ui_feedlist.c:366
+#: src/ui_feedlist.c:409
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea가 오프라인 상태로 동작중입니다. 새로고침이 불가능합니다."
 
-#: src/ui_feedlist.c:387
+#: src/ui_feedlist.c:430
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "참고: 구독에 대한 필터를 사용하는 것은 '긁어서 놓기'를 끕니다."
 
-#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
+#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
 msgid "Deleting entry"
 msgstr "엔트리 지우기"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:473
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "정말 %s을(를) 지우고 내용을 없애시겠습니까?"
 
-#: src/ui_feedlist.c:433
+#: src/ui_feedlist.c:476
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "정말 %s을(를) 지우고 싶으세요?"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:484
 msgid "Deletion Confirmation"
 msgstr "지우기 확인"
 
-#: src/ui_feedlist.c:478
+#: src/ui_feedlist.c:521
 msgid "You must select a feed entry"
 msgstr "피드 엔트리를 선택해야 합니다"
 
-#: src/ui_feedlist.c:479
+#: src/ui_feedlist.c:522
 msgid "You must select a feed entry."
 msgstr "피드 엔트리를 선택해야 합니다."
 
-#: src/ui_feedlist.c:505
+#: src/ui_feedlist.c:568
 msgid "New subscription"
 msgstr "새 서명"
 
-#: src/ui_folder.c:76 src/ui_folder.c:102
+#: src/ui_folder.c:78
 msgid "A folder must be selected."
 msgstr "풀더가 선택되어 있어야 합니다."
 
-#: src/ui_folder.c:220
+#: src/ui_folder.c:178
 msgid "<i>(empty)</i>"
 msgstr "<i>(비었음)</i>"
 
-#: src/ui_folder.c:349
+#: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "내부 에러! 알 수 없는 엔트리 종류! 적당한 아이콘을 보여줄 수 없습니다.\n"
@@ -1645,27 +1637,28 @@ msgstr "아이템을 지울 피드를 선택해야 합니다!"
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "내부 에러! 트리뷰의 선택부분을 찾을 수 없습니다!\n"
 
-#: src/ui_itemlist.c:723
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:719
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다 "
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "New Feed"
 msgstr "새 피드"
 
-#: src/ui_mainwindow.c:185
+#: src/ui_mainwindow.c:171
 msgid "Add a new subscription."
 msgstr "새 구독 더하기."
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:172
 msgid "Next Unread"
 msgstr "다음 안 읽은 것"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid "Mark As Read"
 msgstr "읽은 것으로 표시"
 
-#: src/ui_mainwindow.c:187
+#: src/ui_mainwindow.c:173
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1673,27 +1666,27 @@ msgstr ""
 "모든 선택된 구독 혹은 선택된 폴더의 구독의 아이템들을 모두 읽은 것으로 표시합"
 "니다."
 
-#: src/ui_mainwindow.c:188
+#: src/ui_mainwindow.c:174
 msgid "Update All"
 msgstr "전부 새로 고침"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search"
 msgstr "찾기"
 
-#: src/ui_mainwindow.c:189
+#: src/ui_mainwindow.c:175
 msgid "Search all feeds."
 msgstr "모든 피드에서 찾기."
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Preferences"
 msgstr "기본 설정"
 
-#: src/ui_mainwindow.c:190
+#: src/ui_mainwindow.c:176
 msgid "Edit preferences."
 msgstr "설정 고치기."
 
-#: src/ui_mainwindow.c:205
+#: src/ui_mainwindow.c:191
 #, fuzzy
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
@@ -1737,11 +1730,11 @@ msgstr ""
 "p></li></ul><p>Liferea에 대해 더 자세히 알고 싶으시면 도움말 피드에서 제공되"
 "는 문서나 프로젝트 홈페이지의 FAQ를 꼭 읽어보세요.</p>"
 
-#: src/ui_mainwindow.c:290
+#: src/ui_mainwindow.c:276
 msgid "Liferea is now online"
 msgstr "Liferea가 온라인으로 동작합니다"
 
-#: src/ui_mainwindow.c:293
+#: src/ui_mainwindow.c:279
 msgid "Liferea is now offline"
 msgstr "Liferea는 현재 오프라인입니다."
 
@@ -1896,9 +1889,11 @@ msgid "Please do a search first!"
 msgstr "찾기를 먼저 해주세요!"
 
 #: src/ui_tray.c:90
-#, c-format
+#, fuzzy, c-format
 msgid "%d new item!"
-msgstr "%d개의 새로운 아이템!"
+msgid_plural "%d new items!"
+msgstr[0] "%d개의 새로운 아이템!"
+msgstr[1] "%d개의 새로운 아이템!"
 
 #: src/ui_tray.c:103
 msgid "No new items."
