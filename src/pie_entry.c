@@ -26,6 +26,7 @@
 #include "support.h"
 #include "common.h"
 #include "pie_entry.h"
+#include "pie_feed.h"
 #include "htmlview.h"
 #include "metadata.h"
 
@@ -37,47 +38,6 @@ extern GHashTable *ns_pie_ns_uri_table;
 extern gchar * parseAuthor(xmlNodePtr cur);
 
 /* <content> tag support, FIXME: base64 not supported */
-static gchar* parseContent(xmlNodePtr cur, itemPtr ip) {
-	gchar	*mode, *type, *tmp, *ret;
-
-	g_assert(NULL != cur);
-	ret = NULL;
-	
-	/* determine encoding mode */
-	mode = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"mode"));
-	if(NULL != mode) {
-		if(!strcmp(mode, "escaped")) {
-			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if(NULL != tmp)
-				ret = tmp;
-			
-		} else if(!strcmp(mode, "xml")) {
-			ret = extractHTMLNode(cur);
-			
-		} else if(!strcmp(mode, "base64")) {
-			g_warning("Base64 encoded <content> in Atom feeds not supported!\n");
-			
-		} else if(!strcmp(mode, "multipart/alternative")) {
-			if(NULL != cur->xmlChildrenNode)
-				ret = parseContent(cur->xmlChildrenNode, ip);
-		}
-		g_free(mode);
-	} else {
-		/* some feeds don'ts specify a mode but a MIME 
-		   type in the type attribute... */
-		type = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"type"));			
-		/* not sure what MIME types are necessary... */
-		if((NULL == type) ||
-		   !strcmp(type, "text/html") ||
-		   !strcmp(type, "application/xhtml+xml")) {
-			ret = extractHTMLNode(cur);
-		}
-		g_free(type);
-	}
-	
-	return ret;
-}
-
 /* method to parse standard tags for each item element */
 itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 	xmlChar			*xtmp;
@@ -119,7 +79,7 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 		} /* explicitly no following else !!! */
 		
 		if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+			tmp = unhtmlize(utf8_fix(pie_parse_content_construct(cur)));
 			if (tmp != NULL)
 				item_set_title(ip, tmp);
 			g_free(tmp);
@@ -163,7 +123,7 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 			g_free(tmp);
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
 			/* <content> support */
-			gchar *tmp = parseContent(cur, ip);
+			gchar *tmp = utf8_fix(pie_parse_content_construct(cur));
 			if (tmp != NULL)
 				item_set_description(ip, tmp);
 			g_free(tmp);
@@ -171,7 +131,7 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 			/* <summary> can be used for short text descriptions, if there is no
 			   <content> description we show the <summary> content */
 			if (NULL == item_get_description(ip)) {
-				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tmp = utf8_fix(pie_parse_content_construct(cur));
 				if(NULL != tmp)
 					item_set_description(ip, tmp);
 				g_free(tmp);

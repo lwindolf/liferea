@@ -24,5 +24,12 @@
 #include "feed.h"
 
 feedHandlerPtr	initPIEFeedHandler(void);
+/**
+ * This parses an Atom content construct.
+ *
+ * @param cur the parent node of the elements to be parsed.
+ * @returns g_strduped string which must be freed by the caller.
+ */
+gchar* pie_parse_content_construct(xmlNodePtr cur);
 
 #endif

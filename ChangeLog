@@ -20,6 +20,7 @@
 	  corrupted. This might fix some other download problems. (Nathan
 	  Conrad)
 	* Help feeds are no longer downloaded at every startup.
+	* Fix parsing of atom feeds that do not escape their content.
 	
 2004-07-23 Lars Lindner <lars.lindner@gmx.net>
 

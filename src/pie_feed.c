@@ -46,6 +46,48 @@ GHashTable	*ns_pie_ns_uri_table = NULL;
 							"created",  <---- Not in the specs for feeds
 */
 
+gchar* pie_parse_content_construct(xmlNodePtr cur) {
+	gchar	*mode, *type, *tmp, *ret;
+
+	g_assert(NULL != cur);
+	ret = NULL;
+	
+	/* determine encoding mode */
+	mode = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"mode"));
+	if(NULL != mode) {
+		if(!strcmp(mode, "escaped")) {
+			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if(NULL != tmp)
+				ret = tmp;
+			
+		} else if(!strcmp(mode, "xml")) {
+			ret = extractHTMLNode(cur);
+			
+		} else if(!strcmp(mode, "base64")) {
+			g_warning("Base64 encoded <content> in Atom feeds not supported!\n");
+			
+		} else if(!strcmp(mode, "multipart/alternative")) {
+			if(NULL != cur->xmlChildrenNode)
+				ret = pie_parse_content_construct(cur->xmlChildrenNode);
+		}
+		g_free(mode);
+	} else {
+		/* some feeds don'ts specify a mode but a MIME 
+		   type in the type attribute... */
+		type = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"type"));			
+		/* not sure what MIME types are necessary... */
+		if((NULL == type) ||
+		   !strcmp(type, "text/html") ||
+		   !strcmp(type, "application/xhtml+xml")) {
+			ret = extractHTMLNode(cur);
+		}
+		g_free(type);
+	}
+	
+	return ret;
+}
+
+
 /* nonstatic because used by pie_entry.c too */
 gchar * parseAuthor(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
@@ -125,7 +167,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			} /* explicitly no following else !!! */
 			
 			if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-				tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+				tmp = unhtmlize(utf8_fix(pie_parse_content_construct(cur)));
 				if (tmp != NULL)
 					feed_set_title(fp, tmp);
 				g_free(tmp);
@@ -154,7 +196,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				fp->metadata = metadata_list_append(fp->metadata, "author", tmp);
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"tagline")) {
-				tmp = convertToHTML(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+				tmp = convertToHTML(utf8_fix(pie_parse_content_construct(cur)));
 				if (tmp != NULL)
 					feed_set_description(fp, tmp);
 				g_free(tmp);				
@@ -179,7 +221,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				}
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
-				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tmp = utf8_fix(pie_parse_content_construct(cur));
 				if(NULL != tmp)
 					fp->metadata = metadata_list_append(fp->metadata, "copyright", tmp);
 				g_free(tmp);
