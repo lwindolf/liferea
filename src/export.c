@@ -112,6 +112,8 @@ static int parse_integer(gchar *str, int def) {
 static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 	gchar		*title, *source;
 	feedPtr		fp;
+	gint		type, interval;
+	gchar		*id;
 	
 	/* process the outline node */	
 	title = xmlGetProp(cur, BAD_CAST"text");
@@ -119,13 +121,12 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 		
 	if(NULL != source) { /* Reading a feed */
-		gint type, interval;
-		gchar *id;
 		/* type */
 		type = parse_integer(xmlGetProp(cur, BAD_CAST"type"), FST_AUTODETECT);
 		interval = parse_integer(xmlGetProp(cur, BAD_CAST"updateInterval"), -1);
 		id = xmlGetProp(cur, BAD_CAST"id");
-		if(NULL != (fp = feed_add(type, g_strdup(source), folder, title, id, interval, FALSE))) {
+g_print("->import id %s\n", id);
+		if(NULL != (fp = feed_add(type, g_strdup(source), folder, title, g_strdup(id), interval, FALSE))) {
 			if(NULL != title)
 				feed_set_title(fp, g_strdup(title));
 		}
@@ -183,17 +184,17 @@ void importOPMLFeedList(gchar *filename, folderPtr parent) {
 	doc = xmlParseFile(filename);
 
 	if(NULL == doc) {
-		ui_mainwindow_set_status_bar(_("XML error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
+		ui_show_error_box(_("XML error while reading cache file! Could not import \"%s\"!"), filename);
 	} else {
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			ui_mainwindow_set_status_bar(_("Empty document! OPML document should not be empty..."));
+			ui_show_error_box(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 		} else {
 			while (cur != NULL) {
 				if(!xmlIsBlankNode(cur)) {
 					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
 						parseOPML(cur, parent);
 					} else {
-						ui_mainwindow_set_status_bar(_("\"%s\" is no valid cache file! Liferea can only read OPML file!"), filename);
+						ui_show_error_box(_("\"%s\" is no valid OPML document! Liferea cannot import this file!"), filename);
 					}
 				}
 				cur = cur->next;

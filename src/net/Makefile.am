@@ -8,6 +8,7 @@ INCLUDES = \
 	
 noinst_LIBRARIES = liblinet.a
 
+liblinet_a_CFLAGS = @PACKAGE_CFLAGS@ -Wall
 liblinet_a_SOURCES = \
 	conversions.c conversions.h \
 	digcalc.c digcalc.h \

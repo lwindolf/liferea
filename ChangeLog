@@ -1,16 +1,33 @@
-2004-03-30  Nathan Conrad  <conrad@bungled.net>
+2004-04-??  Lars Lindner <lars.lindner@gmx.net>
 
-	* Folders can be nested. Also, the gconf
-	  format used for storing feeds has changed.
+	Version 0.4.7b
 
-2004-03-??  Lars Lindner <lars.lindner@gmx.net>
+	* Upgrade to an improved version of the SnowNews
+	  networking code from Oliver Feiler. The new
+	  code now supports basic and digest HTTP
+	  authentication. This should satisfy change
+	  request 932183 from Eric Gregory.
+	* Fixes drag&drop crash reported with patch
+	  931558 by an anonymous guy.
+	* Fixes a thread safety problem which caused
+	  wrong download results. A patch to fix this
+	  was provided by Oliver Feiler.
+	* Fixes a double free when loading feeds.
+
+2004-04-07  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.7
 
+	* This version contains a lot of rewrites
+	  from Nathan J. Conrad and me. I expect a
+	  lot of problems to come up. Please fall
+	  back to the last version if you have
+	  serious problems! Or simply wait for the
+	  first corrections releases :)
 	* The program now loads a configured HTML
 	  view widget plugin. There is a GtkHTML
 	  plugin which should work as before. There
-	  is an experimental Mozilla plugin. To 
+	  is an experimental Mozilla plugin too. To 
 	  easily find the needed Mozilla libraries 
 	  the program binary is now called "liferea-bin" 
 	  and their is a script "liferea" which tries

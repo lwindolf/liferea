@@ -21,6 +21,7 @@
 #include "support.h"
 #include "ns_ag.h"
 #include "common.h"
+#include "ui_itemlist.h"
 
 #define TABLE_START	"<div class=\"feedfoottitle\">aggregation information</div><table class=\"addfoot\">"
 #define FIRSTTD		"<tr class=\"feedfoot\"><td class=\"feedfootname\"><span class=\"feedfootname\">"

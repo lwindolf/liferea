@@ -329,7 +329,7 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	return fp;
 }
 
-feedPtr feed_add(gint type, gchar *url, folderPtr parent, gchar *feedName, gchar *id, gint interval, gboolean showPropDialog) {
+feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, gchar *id, gint interval, gboolean showPropDialog) {
 	feedPtr fp = NULL;
 	gboolean needs_update=FALSE;
 	g_message("feed_add(type=%d,url=%s,parent=%x,name=%s,id=%s,interval=%d,propd=%d)",type,url,parent,feedName,id,interval,showPropDialog);
