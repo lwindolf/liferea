@@ -507,7 +507,7 @@ void on_propbtn(GtkWidget *feedlist) {
 }
 
 void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
-	gchar		*feedkey;
+	gchar		*feedkey, *feedurl, *feedname;
 	GtkWidget 	*feedurlentry;
 	GtkWidget 	*feednameentry;
 	GtkWidget 	*updateIntervalBtn;
@@ -523,8 +523,8 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 		feednameentry = lookup_widget(propdialog, "feednameentry");
 		feedurlentry = lookup_widget(propdialog, "feedurlentry");
 
-		gchar *feedurl = (gchar *)gtk_entry_get_text(GTK_ENTRY(feedurlentry));
-		gchar *feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
+		feedurl = (gchar *)gtk_entry_get_text(GTK_ENTRY(feedurlentry));
+		feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
 	
 		setFeedProp(feedkey, FEED_PROP_USERTITLE, (gpointer)g_strdup(feedname));  
 		setFeedProp(feedkey, FEED_PROP_SOURCE, (gpointer)g_strdup(feedurl));
