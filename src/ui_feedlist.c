@@ -356,6 +356,7 @@ void on_popup_delete_selected(gpointer callback_data,
 	
 	ui_itemlist_clear();
 	ui_htmlview_clear();
+	
 	feed_free(fp);
 }
 

@@ -598,9 +598,16 @@ gint feed_process_update_results(gpointer data) {
 
 	if(NULL == (request = update_thread_get_result()))
 		return TRUE;
+	
+	if (request->fp == NULL) { /* Feed deleted during update of feed*/
+		debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
+		g_free(request->data);
+		update_request_free(request);
+		return;
+	}
 
 	ui_lock();
-	g_assert(NULL != request->fp);
+
 	request->fp->updateRequested = FALSE;
 	feed_set_available(request->fp, TRUE);
 	
@@ -931,9 +938,10 @@ void feed_free(feedPtr fp) {
 
 	// FIXME: free filter structures too when implemented
 	
-	/* Don't free active feed requests here, because they might
-	   still be processed in the update queues! Abandoned
-	   requests are free'd in update.c. */
+	/* Don't free active feed requests here, because they might still
+	   be processed in the update queues! Abandoned requests are
+	   free'd in feed_process. They must be freed in the main thread
+	   for locking reasons. */
 	if (fp->request != NULL) {
 		if(FALSE == fp->updateRequested)
 			update_request_free(fp->request);

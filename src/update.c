@@ -81,15 +81,9 @@ static void *update_thread_main(void *data) {
 		debug1(DEBUG_UPDATE, "processing received request (%s)", request->feedurl);
 		downloadURL(request);
 
-		if(NULL == request->fp) {
-			debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
-			g_free(request->data);
-			update_request_free(request);
-		} else {
-			/* return the request so the GUI thread can merge the feeds and display the results... */
-			debug0(DEBUG_UPDATE, "request finished");
-			g_async_queue_push(results, (gpointer)request);
-		}
+		/* return the request so the GUI thread can merge the feeds and display the results... */
+		debug0(DEBUG_UPDATE, "request finished");
+		g_async_queue_push(results, (gpointer)request);
 	}
 }
 
