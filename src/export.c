@@ -181,6 +181,7 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 			g_warning("Could not export to OPML file!!");
 			error = 1;
 		}
+		xmlFreeDoc(doc);
 	} else {
 		g_warning("could not create XML document!");
 		error = 1;
