@@ -617,9 +617,13 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	old_fp->metadata = new_fp->metadata;
 	new_fp->metadata = NULL;
 
-	g_free(old_fp->htmlUri);
-	old_fp->htmlUri = new_fp->htmlUri;
-	new_fp->htmlUri = NULL;
+	g_free(old_fp->htmlUrl);
+	old_fp->htmlUrl = new_fp->htmlUrl;
+	new_fp->htmlUrl = NULL;
+	
+	g_free(old_fp->imageUrl);
+	old_fp->imageUrl = new_fp->imageUrl;
+	new_fp->imageUrl = NULL;
 
 	feed_free(new_fp);
 	
@@ -994,14 +998,24 @@ void feed_set_filter(feedPtr fp, const gchar *filter) {
 	conf_feedlist_schedule_save();
 }
 
-const gchar * feed_get_html_uri(feedPtr fp) { return fp->htmlUri; };
-void feed_set_html_uri(feedPtr fp, const gchar *htmlUri) {
-	g_free(fp->htmlUri);
-	if (htmlUri != NULL)
-		fp->htmlUri = g_strdup(htmlUri);
+const gchar * feed_get_html_url(feedPtr fp) { return fp->htmlUrl; };
+void feed_set_html_url(feedPtr fp, const gchar *htmlUrl) {
+
+	g_free(fp->htmlUrl);
+	if(htmlUrl != NULL)
+		fp->htmlUrl = g_strdup(htmlUrl);
 	else
-		fp->htmlUri = NULL;
-	conf_feedlist_schedule_save();
+		fp->htmlUrl = NULL;
+}
+
+const gchar * feed_get_image_url(feedPtr fp) { return fp->imageUrl; };
+void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
+
+	g_free(fp->imageUrl);
+	if(imageUrl != NULL)
+		fp->imageUrl = g_strdup(imageUrl);
+	else
+		fp->imageUrl = NULL;
 }
 
 GSList * feed_get_item_list(feedPtr fp) { return fp->items; }
@@ -1032,79 +1046,95 @@ void feed_mark_all_items_read(feedPtr fp) {
 }
 
 gchar *feed_render(feedPtr fp) {
-	struct displayset displayset;
-	gchar *buffer = NULL;
-	gchar *tmp, *tmp2;
+	struct displayset	displayset;
+	gchar			*buffer = NULL;
+	gchar			*tmp, *tmp2;
+	gboolean		migration = FALSE;
+	
 	displayset.headtable = NULL;
 	displayset.head = NULL;
 	displayset.body = g_strdup(feed_get_description(fp));
 	displayset.foot = NULL;
-	displayset.foottable = NULL;
-	
-	metadata_list_render(fp->metadata, &displayset);
-	
-	/* Head table */
-	addToHTMLBufferFast(&buffer, HEAD_START);
-	/*  -- Feed line */
-	if (feed_get_html_uri(fp) != NULL)
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-						  feed_get_html_uri(fp),
-						  feed_get_title(fp));
-	else
-		tmp = g_strdup(feed_get_title(fp));
-	
-	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-	g_free(tmp);
-	addToHTMLBufferFast(&buffer, tmp2);
-	g_free(tmp2);
+	displayset.foottable = NULL;	
 
-	/*  -- Source line */
-	if (feed_get_source(fp) != NULL) {
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-						  feed_get_source(fp),
-						  feed_get_source(fp));
-		
-		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
+	/* FIXME: remove with 0.9.x */
+	if(0 == strcmp(displayset.body, "class=\"itemhead\""))	/* I hope this is unique enough...*/
+		migration = TRUE;
+
+	if(FALSE == migration) {	
+		metadata_list_render(fp->metadata, &displayset);
+
+		/* Error description */
+		if(NULL != (tmp = feed_get_error_description(displayed_fp))) {
+			addToHTMLBufferFast(&buffer, tmp);
+			g_free(tmp);
+		}
+
+		/* Head table */
+		addToHTMLBufferFast(&buffer, HEAD_START);
+		/*  -- Feed line */
+		if(feed_get_html_url(fp) != NULL)
+			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+							  feed_get_html_url(fp),
+							  feed_get_title(fp));
+		else
+			tmp = g_strdup(feed_get_title(fp));
+
+		tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 		g_free(tmp);
 		addToHTMLBufferFast(&buffer, tmp2);
 		g_free(tmp2);
-	}
-	
-	addToHTMLBufferFast(&buffer, displayset.headtable);
-	g_free(displayset.headtable);
-	addToHTMLBufferFast(&buffer, HEAD_END);
-	
-	/* Error description */
-	if(NULL != (tmp = feed_get_error_description(displayed_fp))) {
-		addToHTMLBufferFast(&buffer, tmp);
-		g_free(tmp);
-	}
 
-	/* Head */
-	if (displayset.head != NULL) {
-		addToHTMLBufferFast(&buffer, displayset.head);
-		g_free(displayset.head);
+		/*  -- Source line */
+		if(feed_get_source(fp) != NULL) {
+			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+							  feed_get_source(fp),
+							  feed_get_source(fp));
+
+			tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
+			g_free(tmp);
+			addToHTMLBufferFast(&buffer, tmp2);
+			g_free(tmp2);
+		}
+
+		addToHTMLBufferFast(&buffer, displayset.headtable);
+		g_free(displayset.headtable);
+		addToHTMLBufferFast(&buffer, HEAD_END);
+
+		/* feed/channel image */
+		if(NULL != feed_get_image_url(fp)) {
+			addToHTMLBufferFast(&buffer, "<img class=\"feed\" src=\"");
+			addToHTMLBufferFast(&buffer, feed_get_image_url(fp));
+			addToHTMLBufferFast(&buffer, "\"><br>");
+		}
+
+		/* Head */
+		if(displayset.head != NULL) {
+			addToHTMLBufferFast(&buffer, displayset.head);
+			g_free(displayset.head);
+		}
 	}
 
 	/* Body */
-	if (displayset.body != NULL) {
+	if(displayset.body != NULL) {
 		addToHTMLBufferFast(&buffer, displayset.body);
 		g_free(displayset.body);
 	}
 
-	/* Body */
-	if (displayset.foot != NULL) {
-		addToHTMLBufferFast(&buffer, displayset.foot);
-		g_free(displayset.foot);
-	}
+	if(FALSE == migration) {
+		/* Foot */
+		if(displayset.foot != NULL) {
+			addToHTMLBufferFast(&buffer, displayset.foot);
+			g_free(displayset.foot);
+		}
 
-	if (displayset.foottable != NULL) {
-		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
-		addToHTMLBufferFast(&buffer, displayset.foottable);
-		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
-		g_free(displayset.foottable);
-	}
-	
+		if(displayset.foottable != NULL) {
+			addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
+			addToHTMLBufferFast(&buffer, displayset.foottable);
+			addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
+			g_free(displayset.foottable);
+		}
+	}	
 	return buffer;
 }
 
@@ -1215,7 +1245,8 @@ void feed_free(feedPtr fp) {
 	g_free(fp->source);
 	g_free(fp->parseErrors);
 	g_free(fp->filtercmd);
-	g_free(fp->htmlUri);
+	g_free(fp->htmlUrl);
+	g_free(fp->imageUrl);
 	metadata_list_free(fp->metadata);
 	g_free(fp);
 

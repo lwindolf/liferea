@@ -94,7 +94,8 @@ typedef struct feed {
 		
 	/* feed properties needed to be saved */
 	gchar		*title;			/**< feed/channel title */
-	gchar		*htmlUri;		/**< URI of HTML version of the feed */
+	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
+	gchar		*imageUrl;		/**< URL of the optional feed image */
 	gchar		*description;		/**< HTML string describing the feed */
 	gchar		*source;		/**< feed source */
 	gchar		*filtercmd;		/**< feed filter command */
@@ -256,8 +257,11 @@ void feed_set_source(feedPtr fp, const gchar * source);
 const gchar * feed_get_filter(feedPtr fp);
 void feed_set_filter(feedPtr fp, const gchar * filter);
 
-const gchar * feed_get_html_uri(feedPtr fp);
-void feed_set_html_uri(feedPtr fp, const gchar *uri);
+const gchar * feed_get_html_url(feedPtr fp);
+void feed_set_html_url(feedPtr fp, const gchar *url);
+
+const gchar * feed_get_image_url(feedPtr fp);
+void feed_set_image_url(feedPtr fp, const gchar *url);
 
 const feedHandlerPtr feed_get_fhp(feedPtr fp);
 

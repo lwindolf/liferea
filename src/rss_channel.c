@@ -116,7 +116,7 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
  			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
-				feed_set_html_uri(fp, tmp);
+				feed_set_html_url(fp, tmp);
 				g_free(tmp);
 			}
 		}
@@ -203,9 +203,10 @@ static gchar* parseImage(xmlNodePtr cur) {
 /* reads a RSS feed URL and returns a new channel structure (even if
    the feed could not be read) */
 static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
-	itemPtr 		ip;
-	short 			rdf = 0;
-	int 			error = 0;
+	itemPtr 	ip;
+	gchar		*tmp;
+	short 		rdf = 0;
+	int 		error = 0;
 	
 	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 
@@ -262,8 +263,8 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 
 			/* save link to channel image */
 			if((!xmlStrcmp(cur->name, BAD_CAST"image"))) {
-				gchar *tmp = parseImage(cur);
-				fp->metadata = metadata_list_append(fp->metadata, "feedLogoUri", tmp);
+				tmp = parseImage(cur);
+				feed_set_image_url(fp, tmp);
 				g_free(tmp);
 			}
 
@@ -272,7 +273,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			   one should not harm */
 			if((!xmlStrcmp(cur->name, BAD_CAST"textinput")) ||
 			   (!xmlStrcmp(cur->name, BAD_CAST"textInput"))) {
-				gchar *tmp = parseTextInput(cur);
+				tmp = parseTextInput(cur);
 
 				if(tmp != NULL)
 					fp->metadata = metadata_list_append(fp->metadata, "textInput", tmp);

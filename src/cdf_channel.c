@@ -63,7 +63,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 			if (tmp == NULL)
 				tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"href"));
 			if (tmp != NULL) {
-				fp->metadata = metadata_list_append(fp->metadata, "feedLogoUri", tmp);
+				feed_set_image_url(fp, tmp);
 				g_free(tmp);
 			}
 			goto next;
@@ -72,7 +72,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 		if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
 			xmlChar *value = xmlGetProp(cur, "HREF");
                if (value != NULL) {
-				feed_set_html_uri(fp, value);
+				feed_set_html_url(fp, value);
                     xmlFree(value);
                }
 			goto next;

@@ -234,7 +234,6 @@ static void attribs_render_str(gpointer data, struct displayset *displayset, gpo
 		FEED_FOOT_WRITE(displayset->foottable, props->prompt, (gchar*)data);
 		break;
 	}
-
 }
 
 static void attribs_render_image(gpointer data, struct displayset *displayset, gpointer user_data) {
@@ -290,7 +289,6 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "category", _("category"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generated with"));
 
-	metadata_register_renderer("feedLogoUri", attribs_render_image, NULL);
 	metadata_register_renderer("textInput", attribs_render_foot_text, NULL);
 	metadata_register_renderer("commentsUri", attribs_render_comments_uri, NULL);
 	metadata_register_renderer("enclosure", attribs_render_enclosure, NULL);
