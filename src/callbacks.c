@@ -89,7 +89,8 @@ void initGUI(void) {
 	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
 			 	   lookup_widget(mainwindow, "itemlistview"),
 				   getNumericConfValue(LAST_ZOOMLEVEL));
-	     			     			     	
+	setHTMLViewMode(itemlist_mode);
+	
 	setupFeedList(lookup_widget(mainwindow, "feedlist"));
 	initItemList(lookup_widget(mainwindow, "Itemlist"));
 

@@ -77,7 +77,7 @@ void switchPaneMode(gboolean new_mode) {
 static void toggle_condensed_view(void) {
 	
 	switchPaneMode(!itemlist_mode);
-	setHTMLViewMode(itemlist_mode);		
+	setHTMLViewMode(itemlist_mode);
 	displayItemList();
 }
 
