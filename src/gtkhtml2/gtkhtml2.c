@@ -167,6 +167,8 @@ static void gtkhtml2_url_request_received_cb(struct request *r) {
 
 static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream, gpointer data) {
 	xmlChar		*absURL;
+	
+	g_assert(NULL != stream);
 
 	if(NULL != strstr(url, "file://"))
 		absURL = (xmlChar *)g_strdup(url + strlen("file://"));
@@ -194,8 +196,13 @@ static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream,
 		connection_list = g_object_get_data(G_OBJECT (doc), "connection_list");
 		connection_list = g_slist_prepend(connection_list, r);
 		g_object_set_data(G_OBJECT (doc), "connection_list", connection_list);
-	} else
-		html_stream_cancel(stream);
+	} else {
+		if(stream->cancel_func != NULL) {
+			/* I think this can be removed... (Lars) */
+			g_print("The cancel function really can be != NULL at this place...\n");
+			html_stream_cancel(stream);
+		}
+	}
 }
 
 static void on_url(HtmlView *view, const char *url, gpointer user_data) {
@@ -248,14 +255,14 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer scrollpan
 	
 	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	if(absURL != NULL) {
-		kill_old_connections(scrollpane);
+		kill_old_connections(GTK_WIDGET(scrollpane));
 		ui_htmlview_launch_URL(GTK_WIDGET(scrollpane), absURL,
 						   GPOINTER_TO_INT(g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
 		xmlFree(absURL);
 	}
 }
 void gtkhtml2_destroyed_cb(GtkObject *scrollpane, gpointer user_data) {
-	kill_old_connections(scrollpane);
+	kill_old_connections(GTK_WIDGET(scrollpane));
 }
 
 /* ---------------------------------------------------------------------------- */
