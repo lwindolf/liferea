@@ -580,7 +580,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	}
 }
 
-static gboolean findUnreadItem(void) {
+static gboolean ui_itemlist_find_unread_item(void) {
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
 	GtkWidget		*treeview;
@@ -603,6 +603,7 @@ static gboolean findUnreadItem(void) {
  					gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
 					gtk_tree_path_free(path);
 					gtk_widget_grab_focus(treeview);
+					item_set_read(ip);	/* needed when no selection happens (e.g. when the item is already selected) */
 				} else
 					g_warning(_("internal error! could not get feed tree view selection!\n"));
 			} else {
@@ -622,7 +623,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
 	/* before scanning the feed list, we test if there is a unread 
 	   item in the currently selected feed! */
-	if(TRUE == findUnreadItem())
+	if(TRUE == ui_itemlist_find_unread_item())
 		return;
 	
 	/* find first feed with unread items */
@@ -637,7 +638,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		ui_feedlist_select((nodePtr)fp);
 
 		/* find first unread item */
-		findUnreadItem();
+		ui_itemlist_find_unread_item();
 	} else {
 		ui_mainwindow_set_status_bar(_("There are no unread items!"));
 	}
