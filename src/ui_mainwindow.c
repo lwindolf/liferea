@@ -41,17 +41,19 @@
 #include "update.h"
 #include "htmlview.h"
 
-/*#if GTK_CHECK_VERSION(2,4,0)
+#if GTK_CHECK_VERSION(2,4,0)
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
  do { \
 	GtkToolItem *item = gtk_tool_button_new(gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), label); \
      gtk_tool_item_set_tooltip(item, tooltips, tooltip, NULL); \
+	gtk_tool_item_set_homogeneous (item, FALSE); \
+	gtk_tool_item_set_is_important (item, TRUE); \
      g_signal_connect((gpointer) item, "clicked", G_CALLBACK(function), NULL); \
 	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), \
 				    item, \
 				    -1); \
  } while (0);
- #else*/
+#else
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function)      \
  gtk_toolbar_append_item(GTK_TOOLBAR(toolbar), \
 				    label, \
@@ -60,7 +62,7 @@
 					gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), \
 					G_CALLBACK(function), NULL)
 
-//#endif
+#endif
 GtkWidget 	*mainwindow;
 
 static GtkWidget *htmlview = NULL;
