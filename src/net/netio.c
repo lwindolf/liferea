@@ -914,6 +914,8 @@ void downloadlib_process_url(struct request *request) {
 	g_free(cur_ptr.lastmodified);
 	g_free(cur_ptr.cookies);
 	g_free(cur_ptr.servauth);
+	g_free(cur_ptr.authinfo);
+	g_free(cur_ptr.cookies);
 	debug3(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, data: %d", request->httpstatus, cur_ptr.problem, request->data);
 	return;
 }
