@@ -269,6 +269,12 @@ static void attribs_render_enclosure(gpointer data, struct displayset *displayse
 	g_free(tmp2);
 }
 
+static void attribs_render_feedgenerator_uri(gpointer data, struct displayset *displayset, gpointer user_data) {
+	gchar *tmp = g_strdup_printf("<a href=\"%s\">%s</a>", (gchar*)data, (gchar*)data);
+	FEED_FOOT_WRITE(displayset->foottable, _("feed generator"), tmp);
+	g_free(tmp);
+}
+
 #define REGISTER_SIMPLE_ATTRIBUTE(position, strid, promptStr) do { \
  struct str_attrib *props = g_new(struct str_attrib, 1); \
  props->pos = (position); \
@@ -292,15 +298,15 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "managingEditor", _("managing editor"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "webmaster", _("webmaster"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "category", _("category"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generated with"));
-
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generator"));
+	
 	metadata_register_renderer("textInput", attribs_render_foot_text, NULL);
 	metadata_register_renderer("commentsUri", attribs_render_comments_uri, NULL);
 	metadata_register_renderer("enclosure", attribs_render_enclosure, NULL);
 	
 	/* types for admin */
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "errorReportsTo", _("report errors to"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "generatorAgent", _("feed generator")); /* FIXME: Shouldn't this be "feedgenerator"? */
+	metadata_register_renderer("feedgeneratorUri", attribs_render_feedgenerator_uri, NULL);
 	
 	/* types for aggregation */
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agSource", _("original source"));

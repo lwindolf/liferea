@@ -39,15 +39,15 @@
 static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
 	gchar	*value;
 	
-	if(!xmlStrcmp("errorReportsTo", cur->name) ||
-	   !xmlStrcmp("generatorAgent", cur->name)) 
-		return;
-	
 	value = utf8_fix(xmlGetProp(cur, "resource"));	
-	if(NULL != value) {
-		metadata_list_set(&(fp->metadata), cur->name, value);
-		g_free(value);
-	}
+	
+	if(!xmlStrcmp("errorReportsTo", cur->name))
+		metadata_list_set(&(fp->metadata), "errorReportsTo", value);
+	else if (!xmlStrcmp("generatorAgent", cur->name))
+		metadata_list_set(&(fp->metadata), "feedgeneratorUri", value);
+	
+	g_free(value);
+	return;
 }
 
 NsHandler *ns_admin_getRSSNsHandler(void) {
