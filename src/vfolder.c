@@ -120,7 +120,6 @@ static void removeVFolder(gchar *keyprefix, gchar *key, gpointer fp) {
 	gchar		*filename;
 	
 	g_free(vp->key);
-	g_free(vp->keyprefix);
 	g_free(vp->usertitle);
 	// FIXME: free item list memory
 	g_slist_free(vp->items);

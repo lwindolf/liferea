@@ -156,9 +156,7 @@ GSList * getEntryKeyList(gchar *keyprefix) {
 	
 	value = gconf_client_get(client, gconfpath, &err);
 	is_gconf_error(err);
-g_print("getEntryKeyList for %s\n", keyprefix);	
 	list = gconf_value_get_list(value);
-g_print("end of getEntryKeyList for %s\n", keyprefix);	
 	g_free(value);
 	g_free(gconfpath);
 	

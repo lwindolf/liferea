@@ -435,7 +435,6 @@ void removeEntry(gchar *keyprefix, gchar *key) {
 		(*(fhp->removeFeed))(keyprefix, key, ep);
 		g_hash_table_remove(feeds, (gpointer)key);
 		g_mutex_unlock(feeds_lock);
-// FIXME: print feed list with types before and after removal...		
 	} else {
 		//g_warning(_("FIXME: no handler to remove this feed type (delete cached contents manually)!"));
 	}
