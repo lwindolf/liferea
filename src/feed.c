@@ -419,6 +419,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					g_free(old_ip->description);
 					old_ip->title = g_strdup(new_ip->title);
 					old_ip->description = g_strdup(new_ip->description);
+					old_ip->time = new_ip->time;
 					markItemAsUnread(old_ip);
 					newcount++;
 					traycount++;

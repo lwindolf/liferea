@@ -37,23 +37,21 @@
 #define ITEM_PROP_TIME			5
 #define ITEM_PROP_TYPE			6
 
-/** An item stores a particular entry in a feed or a search
- */
-
+/** An item stores a particular entry in a feed or a search */
 typedef struct item {
-	gchar	*title;		/**< item title */
+	gchar		*title;		/**< item title */
 	gboolean 	readStatus;	/**< TRUE if the item has been read */
 	gboolean 	marked;		/**< TRUE if the item has been marked */
-	gboolean	hidden;		/**< TRUE if the item should not be displayed */
-	gchar	*description;	/**< HTML string containing the item's description */
-	gchar	*source;		/**< URL to the item */
-	gchar	*id;			/**< Unique item identifier, for example <guid> in RSS */
-	time_t	time;		/**< Item's modified date */
+	gboolean	hidden;		/**< TRUE if the item should not be displayed due to filtering */
+	gchar		*description;	/**< HTML string containing the item's description */
+	gchar		*source;	/**< URL to the item */
+	gchar		*id;		/**< Unique item identifier, for example <guid> in RSS */
+	time_t		time;		/**< Item's modified date */
 	
 	gint		type;		/**< Type of item's associated feed */
-	gpointer	fp;			/**< Pointer to the feed to which this item belongs */
-	GSList	*vfolders;	/**< List of vfolders in which this item appears */
-	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */
+	gpointer	fp;		/**< Pointer to the feed to which this item belongs */
+	GSList		*vfolders;	/**< List of vfolders in which this item appears */
+	void		*ui_data;	/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
 
 /* ------------------------------------------------------------ */
