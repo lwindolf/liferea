@@ -65,12 +65,12 @@ static gchar * build_path_str(gchar *str1, gchar *str2) {
 	return gconfpath;
 }
 
-static gboolean is_gconf_error(GError *err) {
+static gboolean is_gconf_error(GError **err) {
 
-	if(err != NULL) {
-		g_print("%s\n", err->message);
-		g_error_free(err);
-		err = NULL;
+	if(*err != NULL) {
+		g_print("%s\n", (*err)->message);
+		g_error_free(*err);
+		*err = NULL;
 		return TRUE;
 	}
 	
@@ -153,35 +153,35 @@ gchar* conf_new_id() {
 static void load_folder_contents(folderPtr folder, gchar* path);
 
 static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
-	GError		*err = NULL;
 	int type, interval;
 	gchar *path2, *name, *url, *cacheid;
 	folderPtr folder;
 	gboolean expanded;
 
+	g_message("Loading key: prefix=%s, id=%s", prefix, id);
 	/* Type */
 	path2 = g_strdup_printf("%s/%s/type", prefix, id);
-	type = gconf_client_get_int(client, path2, &err);
-	
-	if (type == 0 || is_gconf_error(err))
-		return FALSE;
+
+	type = getNumericConfValue(path2);
 	g_free(path2);
+	
+	if (type == 0)
+		return FALSE;
 
 	switch(type) {
 	case FST_FOLDER:
 		path2 = g_strdup_printf("%s/%s/feedlistname", prefix, id);
-		name = gconf_client_get_string(client, path2, &err);
+		name = getStringConfValue(path2);
 		g_message("Loading feed with title %s at %s", name, path2);
-		is_gconf_error(err);
 		g_free(path2);
 
 		path2 = g_strdup_printf("%s/%s/collapseState", prefix, id);
 		expanded = !getBooleanConfValue(path2);
 		g_message("%s is expanded? %d", path2, expanded);
 		g_free(path2);
-
+		
 		path2 = g_strdup_printf("%s/%s", prefix, id);
-
+		
 		folder = restore_folder(parent, -1, name, id, FST_FOLDER);
 		
 		ui_add_folder(folder);
@@ -203,14 +203,12 @@ static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
 	default:
 		path2 = g_strdup_printf("%s/%s/name", prefix, id);
 		g_message("%s", path2);
-		name = gconf_client_get_string(client, path2, &err);
-		is_gconf_error(err);
+		name = getStringConfValue(path2);
 		g_free(path2);
 
 		path2 = g_strdup_printf("%s/%s/updateInterval", prefix, id);
 		g_message("%s", path2);
-		interval = gconf_client_get_int(client, path2, &err);
-		is_gconf_error(err);
+		interval = getNumericConfValue(path2);
 		g_free(path2);	
 		
 		path2 = g_strdup_printf("%s/%s/url", prefix, id);
@@ -221,9 +219,6 @@ static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
 		if(0 == type)
 			type = FST_FOLDER;
 			
-		if(0 == interval)
-			interval = -1;
-
 		if (strchr(id,'/')) {
 			cacheid = g_strdup(id);
 			*(strchr(cacheid,'/')) = '_';
@@ -246,18 +241,15 @@ static void load_folder_contents(folderPtr folder, gchar* path) {
 	gchar *id;
 	GError		*err = NULL;
 	gchar *name;
-	gboolean error;
 	
-	g_message("Loading from gconf: %s, path: %s", folder->title, path);
-
+	g_message("Loading folder contents: %s, path: %s", folder->title, path);
+	
 	/* First, try to look and (and migrate groups) */
-
+	
 	name = g_strdup_printf("%s/groups", path);
-
+	
 	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
-	error = is_gconf_error(err);
-	err = NULL;
-	if (list) {
+	if (!is_gconf_error(&err) && list) {
 		g_message("looking at groups");
 		while (list != NULL) {
 			id = (gchar*)list->data;
@@ -271,10 +263,8 @@ static void load_folder_contents(folderPtr folder, gchar* path) {
 	/* Then, look at the feedlist */
 	name = g_strdup_printf("%s/feedlist", path);
 	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
-	is_gconf_error(err);
-	err = NULL;
 
-	if (list) {
+	if (!is_gconf_error(&err) && list) {
 		g_message("looking at feedlist");
 		while (list != NULL) {
 			id = (gchar*)list->data;
@@ -302,7 +292,7 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 static gboolean is_number(gchar *s) {
 	while (*s != '\0') {
 		printf(".");
-		if(!isdigit(*s))
+		if(!g_ascii_isdigit(*s))
 			return FALSE;
 		s++;
 	}
@@ -314,11 +304,10 @@ static void conf_feedlist_erase_gconf() {
 	GError		*err = NULL;
 	g_message("Erasing old gconf enteries.");
 	iter = list = gconf_client_all_dirs(client, PATH, &err);
-	is_gconf_error(err);
 	err=NULL;
 
 	/* Remove all directories */
-	while(iter != NULL) {
+	while(!is_gconf_error(&err) && iter != NULL) {
 		if (strstr(iter->data,"dir") != NULL || is_number(iter->data)) {
 			g_message("Deleting %s", (gchar*)iter->data);
 			gconf_client_recursive_unset(client, (gchar*)iter->data, GCONF_UNSET_INCLUDING_SCHEMA_NAMES, &err);
@@ -329,11 +318,10 @@ static void conf_feedlist_erase_gconf() {
 	g_slist_free(list);
 
 	gconf_client_unset(client, PATH "/groups", &err);
-	is_gconf_error(err);
-	err = NULL;
+	is_gconf_error(&err);
 
 	gconf_client_unset(client, PATH "/feedlist", &err);
-	is_gconf_error(err);
+	is_gconf_error(&err);
 }
 
 void loadSubscriptions(void) {
@@ -423,7 +411,7 @@ void setBooleanConfValue(gchar *valuename, gboolean value) {
 	gconf_value_set_bool(gcv, value);
 	gconf_client_set(client, valuename, gcv, &err);
 	gconf_value_free(gcv);
-	is_gconf_error(err);
+	is_gconf_error(&err);
 }
 
 gboolean getBooleanConfValue(gchar *valuename) {
@@ -454,7 +442,7 @@ void setStringConfValue(gchar *valuename, gchar *value) {
 	gconf_value_set_string(gcv, value);
 	gconf_client_set(client, valuename, gcv, &err);
 	gconf_value_free(gcv);
-	is_gconf_error(err);
+	is_gconf_error(&err);
 }
 
 gchar * getStringConfValue(gchar *valuename) {
@@ -483,7 +471,7 @@ void setNumericConfValue(gchar *valuename, gint value) {
 	gcv = gconf_value_new(GCONF_VALUE_INT);
 	gconf_value_set_int(gcv, value);
 	gconf_client_set(client, valuename, gcv, &err);
-	is_gconf_error(err);
+	is_gconf_error(&err);
 	gconf_value_free(gcv);
 }
 
