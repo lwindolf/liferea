@@ -9,12 +9,12 @@ msgstr ""
 "Project-Id-Version: ISLD Localization Project 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-10-23 22:02+0200\n"
-"PO-Revision-Date: 2004-09-09 13:58+0300\n"
+"PO-Revision-Date: 2004-10-25 12:43+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/common.c:278
 msgid "[Parser error output was truncated!]"
@@ -219,9 +219,8 @@ msgid "VFolder"
 msgstr "Виртуална папка"
 
 #: src/feed.c:1003
-#, fuzzy
 msgid "user defined command"
-msgstr "Формат - избран от потребителя:"
+msgstr "потребителска команда"
 
 #: src/feed.c:1006 src/interface.c:1097 src/interface.c:1501 src/item.c:254
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
@@ -233,9 +232,8 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr ""
 
 #: src/interface.c:138 src/interface.c:2901
-#, fuzzy
 msgid "Liferea 0.6.1"
-msgstr "Liferea 0.6.0 - RSS агрегатор"
+msgstr "Liferea 0.6.1 - RSS агрегатор"
 
 #: src/interface.c:155
 msgid "_Program"
@@ -250,19 +248,16 @@ msgid "_Feeds"
 msgstr "_Абонаменти"
 
 #: src/interface.c:191
-#, fuzzy
 msgid "_New Subscription..."
-msgstr "_Нов абонамент"
+msgstr "_Нов абонамент..."
 
 #: src/interface.c:199
-#, fuzzy
 msgid "New _Folder..."
-msgstr "Нова _папка"
+msgstr "Нова _папка..."
 
 #: src/interface.c:212
-#, fuzzy
 msgid "_Properties..."
-msgstr "_Настройки"
+msgstr "_Настройки..."
 
 #: src/interface.c:215
 msgid "Opens the property dialog for the selected subscription."
@@ -318,18 +313,16 @@ msgstr ""
 "всички абонаменти в избраната папка."
 
 #: src/interface.c:288
-#, fuzzy
 msgid "_Import Feed List..."
-msgstr "Вмъкване на списък с абонаменти"
+msgstr "_Вмъкване на списък с абонаменти..."
 
 #: src/interface.c:291
 msgid "Imports an OPML feed list."
 msgstr "Вмъкване на списък с абонаменти в OPML формат."
 
 #: src/interface.c:297
-#, fuzzy
 msgid "_Export Feed List..."
-msgstr "_Експортиране на списък с абонаменти"
+msgstr "_Експортиране на списък с абонаменти..."
 
 #: src/interface.c:300
 msgid "Exports the feed list as OPML."
@@ -432,9 +425,8 @@ msgid "Shows or hides the search box."
 msgstr "Показване или скриване на полето за търсене."
 
 #: src/interface.c:438
-#, fuzzy
 msgid "Search with Feedster..."
-msgstr "Търсене с Feedster"
+msgstr "Търсене с Feedster..."
 
 #: src/interface.c:441
 msgid "Creates a Feedster search feed."
@@ -503,14 +495,12 @@ msgid "Feed _Name:"
 msgstr "Име на _абонамента:"
 
 #: src/interface.c:949
-#, fuzzy
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">Интервал на осъвременяване</span>"
 
 #: src/interface.c:968
-#, fuzzy
 msgid "_Use global default update interval."
-msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
+msgstr "_Използване на подразбиращ се интервал за осъвременяване."
 
 #: src/interface.c:978
 #, fuzzy
@@ -523,11 +513,11 @@ msgstr "минути."
 
 #: src/interface.c:997
 msgid "_Don't update this feed automatically."
-msgstr ""
+msgstr "_Да не се осъвременяват тези абонаменти автоматично."
 
 #: src/interface.c:1003
 msgid " "
-msgstr ""
+msgstr " "
 
 #: src/interface.c:1007
 #, fuzzy, c-format
@@ -649,16 +639,12 @@ msgid "Lifeera Preferences"
 msgstr "Настройки на Liferea"
 
 #: src/interface.c:1780
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
-msgstr "<span weight=\"bold\">Настройки по управлението на абонаментите</span>"
+msgstr "<span weight=\"bold\">Настройки по управлението на кеша</span>"
 
 #: src/interface.c:1803
-#, fuzzy
 msgid "Default number of items per feed to save:"
-msgstr ""
-"Максимален брой записи от абонамент, които да бъдат запазвани приспирането "
-"на Liferea."
+msgstr "Стандартетн брой на записи, за запазване от източник:"
 
 #: src/interface.c:1819
 #, fuzzy
@@ -1829,19 +1815,16 @@ msgid "/_New"
 msgstr "/_Нов"
 
 #: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
-#, fuzzy
 msgid "/_New/New _Subscription..."
-msgstr "/_Нов/Нов·_абонамент"
+msgstr "/_Нов/Нов·_абонамент..."
 
 #: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
-#, fuzzy
 msgid "/_New/New F_older..."
-msgstr "/_Нов/_Нова папка"
+msgstr "/_Нов/_Нова папка..."
 
 #: src/ui_popup.c:87 src/ui_popup.c:106
-#, fuzzy
 msgid "/_Properties..."
-msgstr "/_Настройки"
+msgstr "/_Настройки..."
 
 #: src/ui_popup.c:88 src/ui_popup.c:107
 msgid "/_Delete"
@@ -1852,9 +1835,8 @@ msgid "/_Update Folder"
 msgstr "/_Осъвременяване на абонамента"
 
 #: src/ui_popup.c:97
-#, fuzzy
 msgid "/_Rename Folder..."
-msgstr "/Преименуване на папката"
+msgstr "/Преименуване на папката..."
 
 #: src/ui_popup.c:98
 msgid "/_Delete Folder"
@@ -1897,9 +1879,8 @@ msgid "/_Launch Link In Browser"
 msgstr "/_Зареждане на връзката в браузър"
 
 #: src/ui_popup.c:136
-#, fuzzy
 msgid "/_Subscribe..."
-msgstr "/Абониране"
+msgstr "/Абониране..."
 
 #: src/ui_popup.c:141
 msgid "/_Work Offline"
@@ -1910,9 +1891,8 @@ msgid "/_Update All"
 msgstr "/_Осъвременяване на всички"
 
 #: src/ui_popup.c:143
-#, fuzzy
 msgid "/_Preferences..."
-msgstr "/_Настройки"
+msgstr "/_Настройки..."
 
 #: src/ui_popup.c:145
 msgid "/_Show Window"
@@ -1967,9 +1947,7 @@ msgstr "Моля, първо направете търсене!"
 #: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
-msgid_plural "%d new items!"
-msgstr[0] "%d нов запис!"
-msgstr[1] "%d нов запис!"
+msgstr "%d нов запис!"
 
 #: src/ui_tray.c:103
 msgid "No new items."
