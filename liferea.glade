@@ -2935,6 +2935,7 @@ take place after restarting the program.</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="response_id">-5</property>
 	      <signal name="clicked" handler="on_feedsterbtn_clicked" last_modification_time="Wed, 12 Nov 2003 00:23:58 GMT"/>
+	      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="feedsterdialog" last_modification_time="Sun, 23 Nov 2003 18:12:34 GMT"/>
 	    </widget>
 	  </child>
 
@@ -2947,6 +2948,7 @@ take place after restarting the program.</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="response_id">-6</property>
+	      <signal name="clicked" handler="gtk_widget_hide" object="feedsterdialog" last_modification_time="Sun, 23 Nov 2003 18:12:11 GMT"/>
 	    </widget>
 	  </child>
 	</widget>

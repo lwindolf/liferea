@@ -1850,6 +1850,13 @@ create_feedsterdialog (void)
   g_signal_connect ((gpointer) feedsterbtn, "clicked",
                     G_CALLBACK (on_feedsterbtn_clicked),
                     NULL);
+  g_signal_connect_data ((gpointer) feedsterbtn, "clicked",
+                         G_CALLBACK (gtk_widget_hide),
+                         GTK_OBJECT (feedsterdialog),
+                         NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
+  g_signal_connect_swapped ((gpointer) feedstercancelbtn, "clicked",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (feedsterdialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, feedsterdialog, "feedsterdialog");
