@@ -293,7 +293,10 @@ static void attribs_render_enclosure(gpointer data, struct displayset *displayse
 	gchar *tmp, *escaped, *filename; 
 	
 	filename = strrchr((char *)data, '/');
-	filename++;
+	if (filename != NULL)
+		filename++; /* Skip the slash to find the filename */
+	else
+		filename = data;
 	escaped = encode_uri_string(g_strdup((gchar *)data));
 	tmp = g_strdup_printf("<table class=\"enclosure\" cellspacing=\"0\"><tr><td>"
 	                      "<a href=\"liferea-enclosure://load?%s\">"
