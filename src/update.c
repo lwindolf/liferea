@@ -21,6 +21,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/wait.h>
 #include "support.h"
 #include "debug.h"
 #include "update.h"
@@ -93,9 +94,10 @@ static char* filter(gchar *cmd, gchar *data, size_t *size) {
 
 void download_process(struct request *request) {
 	FILE *f;
+	int status;
 
 	request->data = NULL;
-	
+
 	if(request->source[0] == '|') {
 		/* if the first char is a | we have a pipe else a file */
 		request->size = 0;
@@ -108,7 +110,9 @@ void download_process(struct request *request) {
 				if (len > 0)
 					request->size += len;
 			}
-			pclose(f);
+			status = pclose(f);
+			if (WIFEXITED(status) && WEXITSTATUS(status) == 0) request->httpstatus = 200;
+			else request->httpstatus = 404;
 			request->data[request->size] = '\0';
 		} else {
 			ui_mainwindow_set_status_bar(_("Error: Could not open pipe \"%s\""), &request->source[1]);

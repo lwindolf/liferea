@@ -27,6 +27,9 @@
 
 	* 0.5.1 did falsely encode HTTP URL hash marks as %23.
 	  This is fixed now. (Lars Lindner)
+	* When a feed source command is executed a useful return
+	  code is set so it won't be unavailable due to missing
+	  status information. (Christophe Barbe)
 
 2004-06-30 Lars Lindner <lars.lindner@gmx.net>
 
