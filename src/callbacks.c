@@ -1224,39 +1224,41 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 					FS_TITLE, &title,
 	                                FS_KEY, &key, -1);
 	
-	if(!IS_NODE(type) && (type != FST_EMPTY)) {
-		g_assert(NULL != key);
-		fp = getFeed(key);
-		count = getFeedUnreadCount(fp);
-		   
-		if(count > 0) {
-			tmp = g_strdup_printf("%s (%d)", getFeedTitle(fp), count);
-			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
-			g_free(tmp);
+	if(type != FST_EMPTY) {
+		if(!IS_NODE(type)) {
+			g_assert(NULL != key);
+			fp = getFeed(key);
+			count = getFeedUnreadCount(fp);
+
+			if(count > 0) {
+				tmp = g_strdup_printf("%s (%d)", getFeedTitle(fp), count);
+				g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
+				g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
+				g_free(tmp);
+			} else {
+				g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
+				g_object_set(GTK_CELL_RENDERER(cell), "text", getFeedTitle(fp), NULL);
+			}
 		} else {
-			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "text", getFeedTitle(fp), NULL);
-		}
-	} else {
-		count = 0;
-		rc = gtk_tree_model_iter_children(model, &child, iter);
-		while (rc) {
-			gtk_tree_model_get(model, &child, FS_KEY, &ckey, -1);
-			g_assert(NULL != ckey);
-			fp = getFeed(ckey);
-			g_free(ckey);
-			count += getFeedUnreadCount(fp);
-			rc = gtk_tree_model_iter_next(model, &child);
-		}
-		if (count>0) {
-			tmp = g_strdup_printf("%s (%d)", title, count);
-			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
-			g_free(tmp);
-		} else {
-			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "text", title, NULL);
+			count = 0;
+			rc = gtk_tree_model_iter_children(model, &child, iter);
+			while (rc) {
+				gtk_tree_model_get(model, &child, FS_KEY, &ckey, -1);
+				g_assert(NULL != ckey);
+				fp = getFeed(ckey);
+				g_free(ckey);
+				count += getFeedUnreadCount(fp);
+				rc = gtk_tree_model_iter_next(model, &child);
+			}
+			if (count>0) {
+				tmp = g_strdup_printf("%s (%d)", title, count);
+				g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
+				g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
+				g_free(tmp);
+			} else {
+				g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
+				g_object_set(GTK_CELL_RENDERER(cell), "text", title, NULL);
+			}
 		}
 	}
 	g_free(title);

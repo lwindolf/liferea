@@ -1,7 +1,7 @@
 /*
    folder handling
 
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>
    
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ gchar * getFolderTitle(gchar *keyprefix) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, FS_TITLE, &tmp_title, -1);	
 		return tmp_title;
 	} else {
-		g_print(_("internal error! could not determine folder key!"));
+		g_warning(_("getFolderTitle() internal error! could not determine folder iterator for keyprefix \"%s\"!\n"), keyprefix);
 		return NULL;
 	}
 }
@@ -86,7 +86,7 @@ void setFolderTitle(gchar *keyprefix, gchar *title) {
 		gtk_tree_store_set(feedstore, iter, FS_TITLE, title, -1);	
 		setFolderTitleInConfig(keyprefix, title);
 	} else {
-		g_print(_("internal error! could not determine folder key!"));
+		g_warning(_("setFolderTitle() internal error! could not determine folder iter for keyprefix \"%s\"!\n"), keyprefix);
 	}
 }
 
@@ -108,8 +108,6 @@ void setFolderCollapseState(gchar *keyprefix, gboolean collapsed) {
 				gtk_tree_view_expand_row(GTK_TREE_VIEW(treeview), path, TRUE);
 				gtk_tree_path_free(path);
 			}
-		} else {
-			g_print(_("internal error! could not determine folder key!"));
 		}
 	}
 }
@@ -183,7 +181,7 @@ void removeFolder(gchar *keyprefix) {
 		removeFolderFromConfig(keyprefix);
 		g_hash_table_remove(folders, (gpointer)keyprefix);
 	} else {
-		g_print(_("internal error! could not determine folder key!"));
+		g_warning(_("removeFolder() internal error! could not determine folder iter for keyprefix \"%s\"!\n"), keyprefix);
 	}
 }
 

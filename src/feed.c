@@ -698,7 +698,7 @@ feedPtr getFeed(gchar *feedkey) {
 	g_assert(NULL != feeds);
 	g_mutex_lock(feeds_lock);
 	if(NULL == (fp = g_hash_table_lookup(feeds, (gpointer)feedkey))) {
-		g_warning(g_strdup_printf(_("internal error! there is no feed assigned to feedkey %s!"), feedkey));
+		g_warning(g_strdup_printf(_("internal error! there is no feed assigned to feedkey \"%s\"!\n"), feedkey));
 	}
 	g_mutex_unlock(feeds_lock);	
 	
