@@ -30,6 +30,7 @@
 #include "support.h"
 #include "favicon.h"
 #include "ui_folder.h"
+#include "ui_feedlist.h"
 #include "debug.h"
 
 /* FIXME: remove this migration constants with 0.9.x */
@@ -383,9 +384,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		if(id != NULL) {
 			feed_set_id(fp, id);
 			xmlFree(id);
-			if(!feed_load(fp))
-				feed_schedule_update(fp, 0);
-			feed_unload(fp);
+			/* don't load here, because it's not sure that all vfolders are loaded */
 		} else {
 			id = conf_new_id();
 			feed_set_id(fp, id);
@@ -501,11 +500,32 @@ static void import_parse_OPML(xmlNodePtr n, folderPtr parent, gboolean trusted) 
 	}	
 }
 
+/**
+ * Used to process feeds directly after feed list loading.
+ * Loads the given feed or requests a download. If the feed could
+ * be loaded its items are checked against all vfolder rules.
+ */
+static void import_initial_load_feed(feedPtr fp) {
+	GSList	*items;
+
+	if(!feed_load(fp)) {
+		feed_schedule_update(fp, 0);
+	} else {
+		items = feed_get_item_list(fp);
+		while(NULL != items) {
+			vfolder_check_item(items->data);
+			items = g_slist_next(items);
+		}
+	}
+	feed_unload(fp);
+}
+
 void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
 	debug1(DEBUG_CONF, "Importing OPML file: %s", filename);
+	
 	/* read the feed list */
 	if(NULL == (doc = xmlParseFile(filename))) {
 		if(showErrors)
@@ -535,6 +555,9 @@ void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean show
 		}
 		xmlFreeDoc(doc);
 	}
+	
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, import_initial_load_feed);
+	ui_feedlist_update();
 }
 
 

@@ -71,6 +71,15 @@ void	vfolder_refresh(feedPtr vp);
  */
 void	vfolder_update_item(itemPtr ip);
 
+/**
+ * Method to be called when a new item needs to be checked
+ * against all vfolder rules. To be used upon feed list loading
+ * and when new items are downloaded.
+ *
+ * @param ip	item of a feed to check
+ */
+void	vfolder_check_item(itemPtr ip);
+
 /** 
  * Searches all vfolders for copies of the given item and
  * removes them. Used for item remove propagation.

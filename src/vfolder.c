@@ -163,18 +163,44 @@ void vfolder_remove_item(itemPtr ip) {
 }
 
 /**
- * Checks all items of the given feed list node against all rules 
- * of the passed vfolder. When the an item matches an additive rule 
- * it is added to the vfolder and when it matches an excluding rule
- * the item is removed again from the given vfolder.
+ * Check item against rules of a vfolder. When the an item matches an 
+ * additive rule it is added to the vfolder and when it matches an excluding 
+ * rule the item is removed again from the given vfolder.
+ */
+void vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
+	rulePtr		rp;
+	GSList		*iter;
+	gboolean	added = FALSE;
+
+	/* check against all rules */
+	iter = vp->rules;
+	while(NULL != iter) {
+		rp = iter->data;
+		if(rp->additive) {
+			if(!added && rule_check_item(rp, ip)) {
+				debug2(DEBUG_UPDATE, "adding matching item (%d): %s\n", ip->nr, item_get_title(ip));
+				vfolder_add_item(vp, ip);
+				added = TRUE;
+			}
+		} else {
+			if(added && rule_check_item(rp, ip)) {
+				debug2(DEBUG_UPDATE, "deleting matching item (%d): %s\n", ip->nr, item_get_title(ip));
+				vfolder_remove_matching_item_copy(vp, ip);
+				added = FALSE;
+			}
+		}
+		iter = g_slist_next(iter);
+	}
+}
+
+/**
+ * Checks all items of the given feed list node against a vfolder. 
+ * Used by vfolder_refresh().
  */
 static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	feedPtr		vp = (feedPtr)userdata;
 	feedPtr		fp = (feedPtr)np;
-	GSList		*iter, *items;
-	rulePtr		rp;
-	itemPtr		ip;
-	gboolean	added;
+	GSList		*items;
 
 	/* do not search in vfolders */
 	g_return_if_fail(FST_VFOLDER != feed_get_type(fp));
@@ -187,28 +213,7 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	/* check all feed items */
 	items = feed_get_item_list(fp);
 	while(NULL != items) {
-		ip = items->data;			
-		added = FALSE;
-
-		/* check against all rules */
-		iter = vp->rules;
-		while(NULL != iter) {
-			rp = iter->data;
-			if(rp->additive) {
-				if(!added && rule_check_item(rp, ip)) {
-					debug2(DEBUG_UPDATE, "adding matching item (%d): %s\n", ip->nr, item_get_title(ip));
-					vfolder_add_item(vp, ip);
-					added = TRUE;
-				}
-			} else {
-				if(added && rule_check_item(rp, ip)) {
-					debug2(DEBUG_UPDATE, "deleting matching item (%d): %s\n", ip->nr, item_get_title(ip));
-					vfolder_remove_matching_item_copy(vp, ip);
-					added = FALSE;
-				}
-			}
-			iter = g_slist_next(iter);
-		}
+		vfolder_apply_rules_for_item(vp, items->data);
 		items = g_slist_next(items);
 	}
 	
@@ -227,8 +232,11 @@ void vfolder_refresh(feedPtr vp) {
 	debug_exit("vfolder_refresh");
 }
 
-/* Method to be called when a feed item was updated. This maybe
-   after user interaction or updated item contents */
+/**
+ * Method to be called when a feed item was updated. This maybe
+ * after user interaction or updated item contents. For simplicity
+ * we assume that an updated item still matches. 
+ */
 void vfolder_update_item(itemPtr ip) {
 	GSList		*iter, *items;
 	itemPtr		tmp;
@@ -272,6 +280,28 @@ void vfolder_update_item(itemPtr ip) {
 	}
 	
 	debug_exit("vfolder_update_item");
+}
+
+/**
+ * Method to be called when a new item needs to be checked
+ * against all vfolder rules. To be used upon feed list loading
+ * and when new items are downloaded.
+ */
+void vfolder_check_item(itemPtr ip) {
+	GSList		*iter;
+
+	debug_enter("vfolder_check_item");
+
+	/* never process vfolder items! */
+	g_assert(FST_VFOLDER != feed_get_type(ip->fp));
+	
+	iter = vfolders;
+	while(NULL != iter) {
+		vfolder_apply_rules_for_item(iter->data, ip);
+		iter = g_slist_next(iter);
+	}
+	
+	debug_exit("vfolder_check_item");
 }
 
 /* called when a vfolder is processed by feed_free

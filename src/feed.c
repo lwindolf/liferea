@@ -848,7 +848,7 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 /* returns feed's list of items, if necessary loads the feed from cache */
 GSList * feed_get_item_list(feedPtr fp) { 
 
-	g_assert(0 != fp->loaded);
+	g_assert((0 != fp->loaded) || (FST_VFOLDER == fp->type));
 	return fp->items; 
 }
 
