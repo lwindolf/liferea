@@ -426,9 +426,12 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 void on_popup_allunread_selected(void) {
+	nodePtr	np;
 	
-	itemlist_mark_all_read(ui_feedlist_get_selected());
-	ui_feedlist_update();
+	if(NULL != (np = ui_feedlist_get_selected())) {
+		itemlist_mark_all_read(np);
+		ui_feedlist_update();
+	}
 }
 
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {

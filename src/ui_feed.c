@@ -487,7 +487,7 @@ GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp) {
 	ui_data->credTable = lookup_widget(propdialog, "table4");
 	g_signal_connect(ui_data->authcheckbox, "toggled", G_CALLBACK(on_feed_prop_authcheck), ui_data);
 
-	if (feed_get_source(fp)[0] == '|') {
+	if(feed_get_source(fp)[0] == '|') {
 		gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), &(feed_get_source(fp)[1]));
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio), TRUE);
 		ui_feed_prop_enable_httpauth(ui_data, FALSE);

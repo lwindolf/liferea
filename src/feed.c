@@ -992,9 +992,13 @@ gchar *feed_render(feedPtr fp) {
 
 		/*  -- Source line */
 		if((NULL != feed_get_source(fp)) && (FST_VFOLDER != feed_get_type(fp))) {
-			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-							  feed_get_source(fp),
-							  feed_get_source(fp));
+			if(feed_get_source(fp)[0] != '|') {
+				tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+				                      feed_get_source(fp),
+				                      feed_get_source(fp));
+			} else {
+				tmp = g_strdup(_("user defined command"));
+			}
 
 			tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
 			g_free(tmp);

@@ -255,7 +255,7 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 
 void itemlist_mark_all_read(nodePtr np) {
 	GSList	*item, *items;
-	
+
 	if(FST_FOLDER == np->type) {
 		/* if we have selected a folder we mark all item of all feeds as read */
 		ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)itemlist_mark_all_read);
@@ -306,7 +306,7 @@ void itemlist_remove_items(feedPtr fp) {
 
 	g_assert(displayed_node == (nodePtr)fp);
 	ui_itemlist_clear();
-	ui_htmlview_clear();
+	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	feed_remove_items(fp);
 	ui_feedlist_update();
 }
