@@ -2,6 +2,7 @@
  * @file ui_notification.c mini popup windows
  *
  * Copyright (c) 2004, Karl Soderstrom <ks@xanadunet.net>
+ * Copyright (c) 2005, Nathan Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -88,7 +89,10 @@ static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *
 static void notifUpdatePosition(GtkWindow *window_p) {
 	gint		max_x, notif_win_pos_x, w;
 	gint		max_y, notif_win_pos_y, h;
-
+	
+	if (window_p == NULL)
+		return;
+	
 	/* These two lines are necessary to get gtk_window_get_size() to
 	   return the real height (it returns only the visible window 
 	   height...) */
@@ -155,7 +159,7 @@ void ui_notification_update(const feedPtr feed_p) {
 	} else {
 		if(0 == feed_get_new_counter(feed_p))
 			return;
-
+		
 		curNotif_p = notifCreateFeedNotif (feed_p);
 		notifications_p = g_slist_append (notifications_p, (gpointer) curNotif_p);
 		g_assert (curNotif_p != NULL);
@@ -259,6 +263,9 @@ static void notifAddFeedNotif (feedNotif_t *feedNotif_p) {
 	feedNotif_p->timerTag = g_timeout_add (DISPLAY_TIME, feedNotifTimeoutCallback, (gpointer) feedNotif_p);
 }
 
+
+/** This removes all traces of a feed from the notification window,
+    but does not remove the feed from the list of notifications.... */
 static void notifRemoveFeedNotif (feedNotif_t *feedNotif_p) {
 	if (feedNotif_p->eventBox_p != NULL) {
 		gtk_widget_destroy (feedNotif_p->eventBox_p);
@@ -269,12 +276,12 @@ static void notifRemoveFeedNotif (feedNotif_t *feedNotif_p) {
 		feedNotif_p->timerTag = 0;
 	}
 	feedNotif_p->newCount = feed_get_new_counter(feedNotif_p->feed_p);
-
+	
 	notifUpdatePosition(GTK_WINDOW(notifWin_p));
 }
 
-/* to be called when a feed is removed and needs to be removed
-   from the notification window too */
+/* to be called when a feed is deleted.. when all traces of the feed
+   must be removed under penalty of segfault. */
 void ui_notification_remove_feed(feedPtr fp) {
 	feedNotif_t	*feedNotif_p;
 	GSList		*iter; 
@@ -284,6 +291,9 @@ void ui_notification_remove_feed(feedPtr fp) {
 		feedNotif_p = iter->data;
 		if(fp == feedNotif_p->feed_p) {
 			notifRemoveFeedNotif(feedNotif_p);
+			g_free(feedNotif_p);
+			notifications_p = g_slist_delete_link(notifications_p, iter);
+			notifRemoveWin();
 			return;
 		}
 		iter = g_slist_next(iter);
