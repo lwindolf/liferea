@@ -1,4 +1,4 @@
-2004-05-??  ??? <???>
+2004-05-22  ??? <???>
 
 	Version 0.4.9
 
@@ -27,6 +27,11 @@
 	* Stylesheet improvements (delusional)
 	* The Mozilla browser module now supports two and three pane
           mode. (Lars Lindner)
+	* Added a preference which determines wether a link is opened
+	  inside the applications HTML widget or with the configured
+	  external browser. Of course this is only possible if the
+	  browser module supports inside browsing. Currently only
+	  Mozilla does. GtkHTML2 will ignore the option. (Lars Lindner)
 	
 2004-05-06  Lars Lindner <lars.lindner@gmx.net>
 
