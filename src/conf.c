@@ -89,7 +89,6 @@ static gboolean is_gconf_error(GError **err) {
 
 /* called once on startup */
 void conf_init() {
-	int	ualength;
 	const char	*lang;
 	
 	/* have to be called for multithreaded programs */
@@ -102,16 +101,11 @@ void conf_init() {
 	   because we need to do it exactly once and it will never change while the program
 	   is running. */
 	if (g_getenv("LANG") != NULL) {
-		lang = g_getenv("LANG");
 		/* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
-		ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(lang) + 2 + strlen(OSNAME)+2 + strlen(HOMEPAGE) + 2;
-		useragent = g_malloc(ualength);
-		snprintf (useragent, ualength, "Liferea/%s (%s; %s; %s)", VERSION, OSNAME, lang, HOMEPAGE);
+		useragent = g_strdup_printf("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv("LANG"), HOMEPAGE);
 	} else {
 		/* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
-		ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(OSNAME) + 2 + strlen("http://liferea.sf.net/") + 2;
-		useragent = g_malloc(ualength);
-		snprintf (useragent, ualength, "Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
+		useragent = g_strdup_printf("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
 	}
 	
 	/* initialize GConf client */
