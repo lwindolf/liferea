@@ -30,9 +30,9 @@
 #include <sys/types.h>
 
 struct displayset {
-	gchar *head;
+	gchar *headtable;
 	gchar *body;
-	gchar *foot;
+	gchar *foottable;
 };
 
 /**

@@ -184,17 +184,17 @@ gchar *item_render(itemPtr ip) {
 	struct displayset displayset;
 	gchar *buffer = NULL;
 
-	displayset.head = NULL;
+	displayset.headtable = NULL;
 	displayset.body = g_strdup(ip->description);
-	displayset.foot = NULL;
+	displayset.foottable = NULL;
 	
 	metadata_list_render(ip->metadataList, &displayset);
 	
-	if (displayset.head != NULL) {
+	if (displayset.headtable != NULL) {
 		addToHTMLBufferFast(&buffer, HEAD_START);
-		addToHTMLBufferFast(&buffer, displayset.head);
+		addToHTMLBufferFast(&buffer, displayset.headtable);
 		addToHTMLBufferFast(&buffer, HEAD_END);
-		g_free(displayset.head);
+		g_free(displayset.headtable);
 	}
 
 	if (displayset.body != NULL) {
@@ -202,11 +202,11 @@ gchar *item_render(itemPtr ip) {
 		g_free(displayset.body);
 	}
 
-	if (displayset.foot != NULL) {
+	if (displayset.foottable != NULL) {
 		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
-		addToHTMLBufferFast(&buffer, displayset.foot);
+		addToHTMLBufferFast(&buffer, displayset.foottable);
 		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
-		g_free(displayset.foot);
+		g_free(displayset.foottable);
 	}
 
 	return buffer;

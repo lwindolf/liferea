@@ -1,7 +1,6 @@
 /**
  * @file metadata.h Metadata storage API
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,29 +25,15 @@
 #include "htmlview.h"
 struct displayset;
 
-/**
- * @param prevData The previous data contained by the attribute, or
- * NULL if this attribute has not been set yet. This could either
- * replace the current data, or append it to a linked list.
-
- * @param str The string representation of the attribute
- *
- * @returns the new data to use as the in-memory representation of the
- * piece of metadata.
- */
-typedef gpointer (*parserFunc)(gpointer prevData, const gchar *str, gpointer user_data);
-
 typedef void (*renderHTMLFunc)(gpointer data, struct displayset *displayset, gpointer user_data);
-
-typedef void (*freeDataFunc)(gpointer data, gpointer user_data);
 
 /** Initialize the metadata subsystem */
 void metadata_init();
 
 /** Register a new type of metadata */
-void metadata_register(const gchar *strid, parserFunc pfunc, renderHTMLFunc renderfunc, freeDataFunc freefunc, gpointer user_data);
+void metadata_register(const gchar *strid, renderHTMLFunc renderfunc, gpointer user_data);
 
-gpointer metadata_list_insert_strid(gpointer metadataList, const gchar *strid, const gchar *data);
+gpointer metadata_list_append(gpointer metadata_list, const gchar *strid, const gchar *data);
 
 void metadata_list_render(gpointer metadataList, struct displayset *displayset);
 #endif

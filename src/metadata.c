@@ -19,52 +19,39 @@
  */
 
 #include <glib.h>
+#include "support.h"
 #include "htmlview.h"
 #include "metadata.h"
-//static int next_id=1; /**< Stores the next numeric ID to be assigned*/
-
 static GHashTable *strtoattrib;
-//static GHashTable *numtoattrib;
 
 struct attribute {
-	//	gint numid;
 	gchar *strid;
 	
-	parserFunc parserfunc;
 	renderHTMLFunc renderhtmlfunc;
-	freeDataFunc freefunc;
 	
 	gpointer user_data;
 };
 
 struct pair {
 	struct attribute *attrib;
-	gpointer data;
+	GSList *data;
 };
+
+static void attribs_init();
 
 void metadata_init() {
 	strtoattrib = g_hash_table_new(g_str_hash, g_str_equal);
-	//numtoattrib = g_hash_table_new(g_int_hash, g_int_equal);
+	attribs_init();
 }
 
-void metadata_register(const gchar *strid, parserFunc pfunc, renderHTMLFunc renderfunc, freeDataFunc freefunc, gpointer user_data) {
+void metadata_register(const gchar *strid, renderHTMLFunc renderfunc, gpointer user_data) {
 	struct attribute *attrib = g_new(struct attribute, 1);
 	
-	//attrib->numid = next_id++;
 	attrib->strid = g_strdup(strid);
-	attrib->parserfunc = pfunc;
 	attrib->renderhtmlfunc = renderfunc;
-	attrib->freefunc = freefunc;
 	attrib->user_data = user_data;
 	
 	g_hash_table_insert(strtoattrib, attrib->strid, attrib);
-	//g_hash_table_insert(numtoattrib, &(attrib->numid), attrib);
-}
-
-static gpointer metadata_parse(struct attribute *attrib, gpointer prevData, const gchar *str) {
-	//struct attribute attrib = g_hash_table_lookup(numtoattrib, &numid);
-	
-	return attrib->parserfunc(prevData, str, attrib->user_data);
 }
 
 static void metadata_render(struct attribute *attrib, struct displayset *displayset, gpointer data) {
@@ -72,7 +59,8 @@ static void metadata_render(struct attribute *attrib, struct displayset *display
 	attrib->renderhtmlfunc(data, displayset, attrib->user_data);
 }
 
-static gpointer metadata_list_insert(gpointer metadata_list, struct attribute *attrib, const gchar *data) {
+gpointer metadata_list_append(gpointer metadata_list, const gchar *strid, const gchar *data) {
+	struct attribute *attrib = g_hash_table_lookup(strtoattrib, strid);
 	GSList *list = (GSList*)metadata_list;
 	GSList *iter = list;
 	struct pair *p;
@@ -80,30 +68,72 @@ static gpointer metadata_list_insert(gpointer metadata_list, struct attribute *a
 	while (iter != NULL) {
 		p = (struct pair*)iter->data; 
 		if (p->attrib == attrib) {
-			p->data = metadata_parse(attrib, p->data, data);
+			p->data = g_slist_append(p->data, g_strdup(data));
 			return list;
 		}
 		iter = iter->next;
 	}
 	p = g_new(struct pair, 1);
 	p->attrib = attrib;
-	p->data = metadata_parse(attrib, NULL, data);
-	list = g_slist_prepend(list, p);
+	p->data = g_slist_append(NULL, g_strdup(data));
+	list = g_slist_append(list, p);
 	return list;
-}
-
-gpointer metadata_list_insert_strid(gpointer metadataList, const gchar *strid, const gchar *data) {
-	struct attribute *attrib = g_hash_table_lookup(strtoattrib, strid);
-	return metadata_list_insert(metadataList, attrib, data);
 }
 
 void metadata_list_render(gpointer metadataList, struct displayset *displayset) {
 	GSList *list = (GSList*)metadataList;
-	printf("Rendering stuff\n");
+	
 	while (list != NULL) {
 		struct pair *p = (struct pair*)list->data; 
-		
-		metadata_render(p->attrib, displayset, p->data);
+		GSList *list2 = p->data;
+		while (list2 != NULL) {
+			metadata_render(p->attrib, displayset, (gchar*)list2->data);
+			list2 = list2->next;
+		}
 		list = list->next;
 	}
+}
+
+/* Now comes the stuff to define particular attributes */
+
+typedef enum {
+	POS_HEAD,
+	POS_BODY,
+	POS_FOOT
+} output_position;
+
+struct str_attrib {
+	output_position pos;
+	gchar *prompt;
+};
+
+static void str_render(gpointer data, struct displayset *displayset, gpointer user_data) {
+	struct str_attrib *props = (struct str_attrib*)user_data;
+	gchar *str;
+	switch (props->pos) {
+	case POS_HEAD:
+		str = g_strdup_printf(HEAD_LINE, props->prompt, (gchar*)data);;
+		addToHTMLBufferFast(&(displayset->headtable), str);
+		g_free(str);
+		break;
+	case POS_BODY:
+		addToHTMLBufferFast(&(displayset->body), str);
+		break;
+	case POS_FOOT:
+		FEED_FOOT_WRITE(displayset->foottable, props->prompt, (gchar*)data);
+		break;
+	}
+
+}
+
+#define REGISTER_STR_ATTRIB(position, strid, promptStr) do { \
+ struct str_attrib *props = g_new(struct str_attrib, 1); \
+ props->pos = (position); \
+ props->prompt = _(promptStr); \
+ metadata_register(strid, str_render, props); \
+} while (0);
+
+static void attribs_init() {
+	REGISTER_STR_ATTRIB(POS_FOOT, "author", "author");
+	REGISTER_STR_ATTRIB(POS_FOOT, "contributor", "contributors");
 }
