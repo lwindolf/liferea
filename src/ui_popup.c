@@ -76,7 +76,7 @@ void ui_popup_setup_menues(void) {
 	feed_menu_items = NULL;
 	feed_menu_len = 0;
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Update"), 		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
-	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Mark As Read"),			NULL, on_popup_mark_as_read, 				0, NULL, 0);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Mark As Read"),		NULL, on_popup_mark_as_read, 		0, "<StockItem>", GTK_STOCK_APPLY);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", 0);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
@@ -86,7 +86,7 @@ void ui_popup_setup_menues(void) {
 	node_menu_items = NULL;
 	node_menu_len = 0;
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_Update Folder"), 		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
-	addPopupOption(&node_menu_items, &node_menu_len, _("/_Mark As Read"), 		NULL, on_popup_mark_as_read, 		0, NULL, 0);
+	addPopupOption(&node_menu_items, &node_menu_len, _("/_Mark As Read"), 		NULL, on_popup_mark_as_read, 		0, "<StockItem>", GTK_STOCK_APPLY);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
