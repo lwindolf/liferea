@@ -519,6 +519,9 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 
 	debug1(DEBUG_CONF, "Scheduling %s to be updated", feed_get_title(fp));
 	
+	if(FST_VFOLDER == fp->type)
+		return;
+	
 	if(fp->request != NULL) {
 		ui_mainwindow_set_status_bar(_("This feed \"%s\" is already being updated!"), feed_get_title(fp));
 		return;

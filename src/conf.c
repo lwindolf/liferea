@@ -91,7 +91,7 @@ static gboolean is_gconf_error(GError **err) {
 void conf_init() {
 	const char	*lang;
 	
-	/* have to be called for multithreaded programs */
+	/* has to be called for multithreaded programs */
 	xmlInitParser();
 	
 	/* the following code was copied from SnowNews and adapted to build
