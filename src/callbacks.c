@@ -1160,10 +1160,14 @@ selected_ip = NULL;
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data) { on_next_unread_item_activate(NULL, NULL); }
 
-
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	clearItemList();		/* clear tree view */
-	clearFeedItemList(selected_fp);	/* delete items */
+
+	if(NULL != selected_fp) {
+		clearItemList();		/* clear tree view */
+		clearFeedItemList(selected_fp);	/* delete items */
+	} else {
+		showErrorBox(_("You have to select a feed to delete its items!"));
+	}
 }
 
 void on_popup_zoomin_selected(void) { changeZoomLevel(0.2); }
