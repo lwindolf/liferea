@@ -5,7 +5,15 @@ INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	@PACKAGE_CFLAGS@
 
-lib_LTLIBRARIES = liblihtmlg.la liblihtmlm.la
+if WITH_GTKHTML
+GTKHTML = liblihtmlg.la
+endif
+
+if WITH_MOZILLA
+MOZILLA = liblihtmlm.la
+endif
+
+lib_LTLIBRARIES = $(GTKHTML) $(MOZILLA)
 
 liblihtmlg_la_SOURCES = gtkhtml.c
 liblihtmlg_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)

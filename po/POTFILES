@@ -23,6 +23,7 @@
 	../src/filter.h \
 	../src/folder.c \
 	../src/folder.h \
+	../src/gtkhtml.c \
 	../src/htmlview.c \
 	../src/htmlview.h \
 	../src/interface.c \
@@ -30,6 +31,7 @@
 	../src/item.c \
 	../src/item.h \
 	../src/main.c \
+	../src/mozilla.c \
 	../src/netio.c \
 	../src/netio.h \
 	../src/ns_admin.c \
@@ -71,11 +73,20 @@
 	../src/rss_ns.h \
 	../src/support.c \
 	../src/support.h \
+	../src/ui_dnd.c \
+	../src/ui_dnd.h \
+	../src/ui_feedlist.c \
+	../src/ui_feedlist.h \
 	../src/ui_filter.c \
+	../src/ui_folder.c \
+	../src/ui_folder.h \
+	../src/ui_itemlist.c \
+	../src/ui_itemlist.h \
 	../src/ui_popup.c \
 	../src/ui_search.c \
+	../src/ui_search.h \
 	../src/ui_tray.c \
-	../src/ui_dnd.c \
+	../src/ui_tray.h \
 	../src/update.c \
 	../src/update.h \
 	../src/vfolder.c \

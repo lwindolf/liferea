@@ -15,17 +15,29 @@ AC_PROG_MAKE_SET
 AM_PROG_LIBTOOL
 libdir='${prefix}/lib/liferea'
 
+html_modules=
+
+AC_MSG_CHECKING([for GtkHTML support])
 temptest=`pkg-config --cflags libgtkhtml-2.0 2> /dev/null`
+AM_CONDITIONAL(WITH_GTKHTML, test "x$temptest" != "x")
 if test "x$temptest" != "x" ; then
    html_modules="$html_modules libgtkhtml-2.0 >= 2.0.0
 		 gnome-vfs-2.0 >= 2.0.0"
    AC_DEFINE(USE_GTKHTML, 1, [use the GtkHTML widget])
+   AC_MSG_RESULT(yes)
+else
+   AC_MSG_RESULT(no)
 fi
 
+AC_MSG_CHECKING([for Mozilla support])
 temptest=`pkg-config --cflags mozilla-gtkmozembed 2> /dev/null`
+AM_CONDITIONAL(WITH_MOZILLA, test "x$temptest" != "x")
 if test "x$temptest" != "x" ; then
    html_modules="$html_modules mozilla-gtkmozembed"
    AC_DEFINE(USE_MOZILLA, 1, [use the mozilla gtk embedded widget])
+   AC_MSG_RESULT(yes)
+else
+   AC_MSG_RESULT(no)
 fi
 
 # hmm... I really have no clue which versions are neccessary!
