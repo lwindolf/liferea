@@ -236,17 +236,15 @@ typedef struct errorCtxt {
  * @param	ctxt	error context
  * @param	msg	printf like format string 
  */
-void bufferParseError(void *ctxt, const gchar * msg, ...) {
+static void bufferParseError(void *ctxt, const gchar * msg, ...) {
 	va_list		params;
 	errorCtxtPtr	errors = (errorCtxtPtr)ctxt;
-	gchar		*oldmsg;
 	gchar		*newmsg;
 	gchar		*tmp;
 
 	g_assert(NULL != errors);
-
-	if(MAX_PARSE_ERROR_LINES + 1 >= errors->errorCount++) {
-		oldmsg = errors->buffer;
+	
+	if(MAX_PARSE_ERROR_LINES > errors->errorCount++) {
 		
 		va_start(params, msg);
 		newmsg = g_strdup_vprintf(msg, params);
@@ -256,18 +254,16 @@ void bufferParseError(void *ctxt, const gchar * msg, ...) {
 		tmp = g_markup_escape_text(newmsg, -1);
 		g_free(newmsg);
 		newmsg = tmp;
+		
+		addToHTMLBufferFast(&errors->buffer, "<pre>");
+		addToHTMLBufferFast(&errors->buffer, newmsg);
+		addToHTMLBufferFast(&errors->buffer, "</pre>");
 
-		if(NULL != oldmsg) 
-			errors->buffer = g_strdup_printf("%s<br>%s", oldmsg, newmsg);
-		else
-			errors->buffer = g_strdup(newmsg);
-
-		g_free(oldmsg);
 		g_free(newmsg);
 	}
 	
 	if(MAX_PARSE_ERROR_LINES == errors->errorCount) {
-		newmsg = g_strdup_printf("%s<br>%s", errors->buffer, _("[Parser error output was truncated!]"));
+		newmsg = g_strdup_printf("%s<br/>%s", errors->buffer, _("[Parser error output was truncated!]"));
 		g_free(errors->buffer);
 		errors->buffer = newmsg;
 	}
@@ -284,13 +280,13 @@ void bufferParseError(void *ctxt, const gchar * msg, ...) {
  * errors. 
  *
  * @param data		XML source
+ * @param dataLength the length of the data string in bytes
  * @param errormsg	error buffer
  *
  * @return XML document
  */
 xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	errorCtxtPtr		errors;
-	xmlParserCtxtPtr	parser;
 	xmlDocPtr		doc;
 	
 	g_assert(NULL != data);
@@ -302,24 +298,22 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 		return NULL;
 	}
 	
-	if(NULL != (parser = xmlCreateMemoryParserCtxt(data, dataLength))) {
-		parser->recovery = 1;
-		errors = g_new0(struct errorCtxt, 1);
-		xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)bufferParseError);
-		xmlParseDocument(parser);	/* ignore returned errors */
-		doc = parser->myDoc;
-		xmlFreeParserCtxt(parser);		
+	errors = g_new0(struct errorCtxt, 1);
+	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)bufferParseError);
+	
+	if(NULL != (doc = xmlReadMemory(data, dataLength, "xmlinput", /* encoding = */ NULL, XML_PARSE_RECOVER ))) {
 		*errormsg = errors->buffer;
-		g_free(errors);
-		/* This seems to reset the errorfunc to he default, so that the
-		   GtkHTML2 module is not unhappy because it also tries to call the
-		   errorfunc on occasion. */
-		xmlSetGenericErrorFunc(NULL, NULL);
 	} else {
 		g_warning("parseBuffer(): Could not create parsing context!\n");
-		*errormsg = g_strdup("parseBuffer(): Could not create parsing context!\n");
-		return NULL;
+		*errormsg = g_strdup_printf("parseBuffer(): Could not parse document:\n%s%s", errors->buffer != NULL ? errors->buffer : "",
+							   errors->buffer != NULL ? "\n" : "");
+		g_free(errors->buffer);
 	}
+	g_free(errors);
+	/* This seems to reset the errorfunc to its default, so that the
+	   GtkHTML2 module is not unhappy because it also tries to call the
+	   errorfunc on occasion. */
+	xmlSetGenericErrorFunc(NULL, NULL);
 	
 	return doc;
 }
