@@ -28,19 +28,19 @@ dnl Search for X libraries
 AC_PATH_XTRA
 
 dnl libcurl support
-AC_MSG_CHECKING([libcurl])
+dnl AC_MSG_CHECKING([libcurl])
 dnl if curl-config --libs > /dev/null 2>&1; then
-if false ; then
-	AC_MSG_RESULT(yes)
-	AM_CONDITIONAL(USE_LIBCURL, true)
-	CURL_CFLAGS="`curl-config --cflags`"
-	CURL_LIBS="`curl-config --libs`"
-	enable_libcurl=yes
-else
-	enable_libcurl=no
-	AC_MSG_RESULT(no)
-	AM_CONDITIONAL(USE_LIBCURL, false)
-fi
+dnl if false ; then
+dnl 	AC_MSG_RESULT(yes)
+dnl 	AM_CONDITIONAL(USE_LIBCURL, true)
+dnl	CURL_CFLAGS="`curl-config --cflags`"
+dnl	CURL_LIBS="`curl-config --libs`"
+dnl	enable_libcurl=yes
+dnl else
+dnl	enable_libcurl=no
+dnl	AC_MSG_RESULT(no)
+dnl	AM_CONDITIONAL(USE_LIBCURL, false)
+dnl fi
 
 AC_SUBST(CURL_CFLAGS)
 AC_SUBST(CURL_LIBS)
@@ -183,5 +183,5 @@ echo
 echo Build Mozilla Plugin............ : $enable_mozilla
 echo Build GtkHTML Plugin............ : $enable_gtkhtml2
 echo 
-echo Use libcurl download library.... : $enable_libcurl
-echo
+dnl echo Use libcurl download library.... : $enable_libcurl
+dnl echo
