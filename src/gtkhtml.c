@@ -90,7 +90,8 @@ void writeHTML(gchar *string) {
 			html_document_write_stream(doc, EMPTY, g_utf8_strlen(EMPTY, -1));	
 
 		html_document_close_stream(doc);
-		changeZoomLevel(0.0);
+		
+		changeZoomLevel(0.0);	/* to enforce applying of changed zoom levels */
 	}
 }
 

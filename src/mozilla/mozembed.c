@@ -2,7 +2,11 @@
    This is the html view implementation using gtkmozembed.
      
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>   
+   
+   Contains code from the Galeon sources
 
+   Copyright (C) 2000 Marco Pesenti Gritti
+ 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
@@ -27,13 +31,28 @@
 #include <errno.h>
 #include <glib.h>
 #include <gtkmozembed.h>
-#include "htmlview.h"
-#include "conf.h"
-#include "support.h"
-#include "callbacks.h"
-#include "common.h"
+#include "../htmlview.h"
+#include "../conf.h"
+#include "../support.h"
+#include "../callbacks.h"
+#include "../common.h"
+#include "mozilla.h"
 
 #define FONT_STYLE	"<style type=\"text/css\">\n<!--\nbody { font-family:Helvetica,Arial,sans-serif; }\ntable { font-family:Helvetica,Arial,sans-serif; }\n--></style>"
+
+/**
+ * ContextMenuType: various types of context menu
+ */
+typedef enum
+{
+	CONTEXT_NONE     = 0,
+	CONTEXT_DEFAULT  = (1 << 1),
+	CONTEXT_LINK     = (1 << 2),
+	CONTEXT_IMAGE    = (1 << 3),
+	CONTEXT_DOCUMENT = (1 << 4),
+	CONTEXT_INPUT    = (1 << 5),
+	CONTEXT_XUL      = (1 << 7),
+} ContextMenuType;
 
 extern GtkWidget	*mainwindow;
 
@@ -71,7 +90,7 @@ void writeHTML(gchar *string) {
  * mozembed_new_window_cb: GTKMOZEMBED SIGNAL, emitted any time a new 
  * window is requested by the document 
  */
-void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chrome_mask, gpointer embed) {
+static void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chrome_mask, gpointer embed) {
 
 	g_print("mozembed_new_window_cb\n");
 	*retval = NULL;
@@ -81,22 +100,50 @@ void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chro
  * mozembed_link_message_cb: GTKMOZEMBED SIGNAL, emitted when the 
  * link message changes
  */
-void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
+static void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
 	GtkWidget *statusbar;
 	
 	if(NULL != (statusbar = lookup_widget(mainwindow, "statusbar"))) {
 		g_free(selectedURL);
-		selectedURL = gtk_moz_embed_get_link_message(dummy);
-		gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), selectedURL);
+		if(NULL != (selectedURL = gtk_moz_embed_get_link_message(dummy))) {
+			/* overwrite or clear last status line text */
+			gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), selectedURL);
+		
+			/* mozilla gives us an empty string when no link is selected */
+			if(0 == strlen(selectedURL)) {
+				g_free(selectedURL);
+				selectedURL = NULL;
+			}
+		}
 	}
 }
 
-void mozembed_load_finished_cb(GtkMozEmbed *dummy, gpointer embed) {		
+/**
+ * mozembed_dom_mouse_click_cb: GTKMOZEMBED SIGNAL, emitted when user 
+ * clicks on the document
+ */
+static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) {
+	gint	button;
 
-	/* this is a Mozilla workaround for the Mozilla widget does 
-	   take or focus away, so key navigation would be impossible ... */
-	gtk_widget_grab_focus(GTK_WIDGET(lookup_widget(mainwindow, "itemview")));
-}			
+	if(-1 == (button = mozilla_get_mouse_event_button(dom_event))) {
+		g_warning("Cannot determine mouse button!\n");
+		return FALSE;
+	}
+
+	/* do we have a right mouse button click? */
+	if(button == 2) {
+		if(NULL == selectedURL)
+			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
+				       NULL, NULL, button, 0);
+		else
+			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
+				       NULL, NULL, button, 0);
+	
+		return TRUE;
+	} else {	
+		return FALSE;
+	}
+}
 
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
@@ -115,7 +162,7 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gi
 		//{ "location",        mozembed_location_changed_cb  },
 		//{ "title",           mozembed_title_changed_cb     },
 		//{ "net_start",       mozembed_load_started_cb      },
-		{ "net_stop",        mozembed_load_finished_cb     },
+		//{ "net_stop",        mozembed_load_finished_cb     },
 		//{ "net_state_all",   mozembed_net_status_change_cb },
 		//{ "progress",        mozembed_progress_change_cb   },
 		{ "link_message",    mozembed_link_message_cb      },
@@ -123,7 +170,7 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gi
 		//{ "visibility",      mozembed_visibility_cb        },
 		//{ "destroy_browser", mozembed_destroy_brsr_cb      },
 		//{ "dom_mouse_down",  mozembed_dom_mouse_down_cb    },	
-		//{ "dom_mouse_click", mozembed_dom_mouse_click_cb   },
+		{ "dom_mouse_click", mozembed_dom_mouse_click_cb   },
 		//{ "dom_key_press",   mozembed_dom_key_press_cb     },
 		//{ "size_to",         mozembed_size_to_cb           },
 		{ "new_window",      mozembed_new_window_cb        },
@@ -158,7 +205,7 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gi
 	GTK_WIDGET_SET_FLAGS(htmlwidget, GTK_NO_WINDOW);
 #endif	
 
-	/* connect signals */
+	/* connect to interesting Mozilla signals */
 	for(i = 0; signal_connections[i].event != NULL; i++)
 	{
 		gtk_signal_connect_while_alive (GTK_OBJECT(htmlwidget),
@@ -167,6 +214,7 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gi
 						htmlwidget,
 						GTK_OBJECT(htmlwidget));
 	}
+
 	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(pane), htmlwidget);		  
 	gtk_widget_show_all(pane);
 }
@@ -179,25 +227,6 @@ void setHTMLViewMode(gboolean threePane) {
 		setupHTMLView(mainwindow, itemView);*/
 
 }
-
-
-/*static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {
-
-	if (event->button == 3) {
-		if(NULL == selectedURL)
-			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
-				       NULL, NULL, event->button, event->time);
-		else {
-			g_free(clickedURL);
-			clickedURL = g_strdup(selectedURL);
-			gtk_menu_popup(GTK_MENU(make_url_menu()), NULL, NULL,
-				       NULL, NULL, event->button, event->time);
-		}
-		return TRUE; 
-	} else {
-		return FALSE;
-	}
-}*/
 
 /* launches the specified URL */
 void launchURL(gchar *url) {
@@ -213,12 +242,3 @@ void changeZoomLevel(gfloat diff) {
 
 /* returns the currently set zoom level */
 gfloat getZoomLevel(void) { return zoomLevel; }
-
-/* Returns the currently selected URL string. The string
-   must be freed by the caller. */
-gchar * getSelectedURL(void) {
-	gchar 	*tmp = clickedURL;
-	
-	clickedURL = NULL;
-	return tmp;
-}

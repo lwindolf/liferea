@@ -68,16 +68,16 @@ void	loadHTMLViewModule(gint module) {
 	
 	/* Check to see if gmodule is supported */
 	if(!g_module_supported()) {
-		g_error("Modules are not supported. Cannot load a HTML widget module!");
+		g_error("Modules are not supported. Cannot load HTML widget module!");
 	}
 	
-	filename = g_strdup_printf("%s/%s.%s", PACKAGE_LIB_DIR, html_modules[module].libname, G_MODULE_SUFFIX);
+	filename = g_strdup_printf("%s%s%s.%s", PACKAGE_LIB_DIR, G_DIR_SEPARATOR_S, html_modules[module].libname, G_MODULE_SUFFIX);
 	g_print("loading HTML widget module \"%s\" (%s)\n", 
 		html_modules[module].description,
 		filename);
 		
-	if((handle = g_module_open(filename, G_MODULE_BIND_LAZY)) == NULL) {
-		g_error("Could not open module (%s) specified in configuration!", filename);
+	if((handle = g_module_open(filename, 0)) == NULL) {
+		g_error("Failed to open HTML widget module (%s) specified in configuration!\n%s\n", filename, g_module_error());
 	}
 	g_free(filename);
 	

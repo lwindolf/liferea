@@ -9,27 +9,23 @@ GTKHTML_CFLAGS = @GTKHTML_CFLAGS@
 endif
 
 if WITH_MOZILLA
-MOZILLA = liblihtmlm.la
-MOZILLA_CFLAGS = @MOZILLA_CFLAGS@
+SUBDIRS = mozilla
 endif
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LIB_DIR=\""$(libdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	@PACKAGE_CFLAGS@ $(GTKHTML_CFLAGS) $(MOZILLA_CFLAGS)
+	@PACKAGE_CFLAGS@ $(GTKHTML_CFLAGS)
 
 
-lib_LTLIBRARIES = liblihtmlt.la $(GTKHTML) $(MOZILLA)
+lib_LTLIBRARIES = liblihtmlt.la $(GTKHTML)
 
 liblihtmlt_la_SOURCES = textview.c
 liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
 liblihtmlg_la_SOURCES = gtkhtml.c
 liblihtmlg_la_LIBADD = @PACKAGE_LIBS@ @GTKHTML_LIBS@ $(INTLLIBS)
-
-liblihtmlm_la_SOURCES = mozilla.c
-liblihtmlm_la_LIBADD = @PACKAGE_LIBS@ @MOZILLA_LIBS@ $(INTLLIBS)
 
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea

@@ -1,8 +1,13 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(configure.in)
+
+AC_ENABLE_SHARED(yes)
+AC_ENABLE_STATIC(no)
+
 AM_INIT_AUTOMAKE(liferea, 0.4.7)
 AM_CONFIG_HEADER(config.h)
+AM_PROG_LIBTOOL
 AM_MAINTAINER_MODE
 
 AC_ISC_POSIX
@@ -12,7 +17,7 @@ AC_HEADER_STDC
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AM_PROG_LIBTOOL
+
 libdir='${prefix}/lib/liferea'
 AC_DEFINE(MODULE_DIR, $libdir, [path of HTML widget modules])
 
@@ -34,28 +39,75 @@ AC_MSG_CHECKING([for Mozilla support])
 temptest=`pkg-config --cflags mozilla-gtkmozembed 2> /dev/null`
 AM_CONDITIONAL(WITH_MOZILLA, test "x$temptest" != "x")
 if test "x$temptest" != "x" ; then
+
+   dnl the Mozilla XPCOM access means C++
+   AC_PROG_CXX
+
    AC_MSG_RESULT(yes)
    PKG_CHECK_MODULES(MOZILLA, mozilla-gtkmozembed)
+   
+   dnl Note: with the infos from mozilla-gtkmozembed.pc
+   dnl we got all includes and libraries for the C interface
+   dnl to Mozilla, but not the XPCOM headers we also need.
+   dnl Galeon's configure.in uses several hundred lines 
+   dnl of macros to come around this. Which I would like to
+   dnl avoid. So this might be not very portable...
+   
+   MOZILLA_INCLUDE_ROOT=`pkg-config --cflags-only-I mozilla-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
+   MOZILLA_INCLUDE_ROOT=`dirname $MOZILLA_INCLUDE_ROOT`
+   
+   dnl Maybe we don't need all of this...
+   MOZILLA_CFLAGS="$MOZILLA_CFLAGS \
+-I$MOZILLA_INCLUDE_ROOT/appcomps \
+-I$MOZILLA_INCLUDE_ROOT/caps \
+-I$MOZILLA_INCLUDE_ROOT/content \
+-I$MOZILLA_INCLUDE_ROOT/cookie \
+-I$MOZILLA_INCLUDE_ROOT/docshell \
+-I$MOZILLA_INCLUDE_ROOT/dom \
+-I$MOZILLA_INCLUDE_ROOT/exthandler \
+-I$MOZILLA_INCLUDE_ROOT/find \
+-I$MOZILLA_INCLUDE_ROOT/gfx \
+-I$MOZILLA_INCLUDE_ROOT/gtkembedmoz \
+-I$MOZILLA_INCLUDE_ROOT/helperAppDlg \
+-I$MOZILLA_INCLUDE_ROOT/history \
+-I$MOZILLA_INCLUDE_ROOT/java \
+-I$MOZILLA_INCLUDE_ROOT/js \
+-I$MOZILLA_INCLUDE_ROOT/jsconsole \
+-I$MOZILLA_INCLUDE_ROOT/layout \
+-I$MOZILLA_INCLUDE_ROOT/mimetype \
+-I$MOZILLA_INCLUDE_ROOT/mozxfer \
+-I$MOZILLA_INCLUDE_ROOT/necko \
+-I$MOZILLA_INCLUDE_ROOT/necko2 \
+-I$MOZILLA_INCLUDE_ROOT/nkcache \
+-I$MOZILLA_INCLUDE_ROOT/oji \
+-I$MOZILLA_INCLUDE_ROOT/pref \
+-I$MOZILLA_INCLUDE_ROOT/progressDlg \
+-I$MOZILLA_INCLUDE_ROOT/sidebar \
+-I$MOZILLA_INCLUDE_ROOT/string \
+-I$MOZILLA_INCLUDE_ROOT/shistory \
+-I$MOZILLA_INCLUDE_ROOT/typeaheadfind \
+-I$MOZILLA_INCLUDE_ROOT/uconv \
+-I$MOZILLA_INCLUDE_ROOT/uriloader \
+-I$MOZILLA_INCLUDE_ROOT/wallet \
+-I$MOZILLA_INCLUDE_ROOT/webbrowserpersist \
+-I$MOZILLA_INCLUDE_ROOT/webbrwsr \
+-I$MOZILLA_INCLUDE_ROOT/webshell \
+-I$MOZILLA_INCLUDE_ROOT/widget \
+-I$MOZILLA_INCLUDE_ROOT/windowwatcher \
+-I$MOZILLA_INCLUDE_ROOT/xpcom \
+-I$MOZILLA_INCLUDE_ROOT/xpconnect"
+
    AC_SUBST(MOZILLA_CFLAGS)
-   AC_SUBST(MOZILLA_LIBS)
+   AC_SUBST(MOZILLA_LIBS)   
 else
    AC_MSG_RESULT(no)
 fi
 
-# hmm... I really have no clue which versions are neccessary!
+dnl hmm... I really have no clue which versions are neccessary!
 pkg_modules="	gtk+-2.0 >= 2.0.0 
 		gconf-2.0 >= 2.0.0 
 		libxml-2.0 >= 2.0.0 
 		gmodule-2.0 >= 2.0.0"
-		
-# if you want to compile on RedHat you should change the
-# dependencies to something like this
-#
-#		gtk+-2.0 >= 2.0.0 
-#		gconf2 >= 2.0.0 
-#		libxml-2.0 >= 2.0.0 
-#		gtkhtml2 >= 2.0.0
-#		gnome-vfs2 >= 2.0.0
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
@@ -77,6 +129,7 @@ AM_GLIB_GNU_GETTEXT
 AC_OUTPUT([
 Makefile
 src/Makefile
+src/mozilla/Makefile
 po/Makefile.in
 ])
 
