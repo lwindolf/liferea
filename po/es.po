@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-14 03:41+0200\n"
-"PO-Revision-Date: 2004-09-12 10:35+0100\n"
+"POT-Creation-Date: 2004-09-13 22:22-0400\n"
+"PO-Revision-Date: 2004-09-13 22:42-0400\n"
 "Last-Translator: \n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -79,60 +79,60 @@ msgid ".rdf"
 msgstr "_es.rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:415
+#: src/export.c:414
 msgid "Liferea Help"
 msgstr "Ayuda de Liferea"
 
-#: src/export.c:428
+#: src/export.c:427
 msgid "Online Help Feed"
 msgstr "Ayuda en línea"
 
-#: src/export.c:444
+#: src/export.c:443
 msgid "Liferea SF News"
 msgstr "Noticias de Liferea en SF"
 
-#: src/export.c:529 src/export.c:531
+#: src/export.c:528 src/export.c:530
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Error XML mientras se leía el caché del archivo \"%s\". No se pudo importar."
 
-#: src/export.c:535 src/export.c:537
+#: src/export.c:534 src/export.c:536
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "El documento OPML \"%s\" estaba vacío y no debería estarlo."
 
-#: src/export.c:545 src/export.c:547
+#: src/export.c:544 src/export.c:546
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" no es un documento OPML válido. No se pudo importar."
 
-#: src/export.c:569
+#: src/export.c:568
 msgid "Imported feed list"
 msgstr "Lista de fuentes importadas"
 
-#: src/export.c:580
+#: src/export.c:579
 msgid "Import Feed List"
 msgstr "Importar lista"
 
-#: src/export.c:580
+#: src/export.c:579
 msgid "Import"
 msgstr "Importar"
 
-#: src/export.c:590
+#: src/export.c:589
 msgid "Error while exporting feed list!"
 msgstr "Ocurrió un error mientras se exportaba la lista de fuentes."
 
-#: src/export.c:592
+#: src/export.c:591
 msgid "Feed List exported!"
 msgstr "La lista de fuentes se ha exportado con éxito."
 
-#: src/export.c:599
+#: src/export.c:598
 msgid "Export Feed List"
 msgstr "Exportar lista"
 
-#: src/export.c:599
+#: src/export.c:598
 msgid "Export"
 msgstr "Exportar"
 
@@ -380,7 +380,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "_Actualizar todas"
 
-#: src/interface.c:237 src/ui_mainwindow.c:180
+#: src/interface.c:237 src/ui_mainwindow.c:179
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Actualiza inmediatamente todas las fuentes, excepto directorios OCS"
 
@@ -436,7 +436,7 @@ msgstr "_Elementos"
 msgid "_Next Unread Item"
 msgstr "_Siguiente elemento nuevo"
 
-#: src/interface.c:315 src/ui_mainwindow.c:178
+#: src/interface.c:315 src/ui_mainwindow.c:177
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1085,7 +1085,7 @@ msgstr ""
 msgid "Translation"
 msgstr "Traductores"
 
-#: src/interface.c:2926 src/ui_feed.c:364
+#: src/interface.c:2926 src/ui_feed.c:367
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Escribe el nombre de usuario y la contraseña para \"%s\" (%s):"
@@ -1564,25 +1564,25 @@ msgstr "\"%s\" actualizado..."
 msgid "\"%s\" is not available"
 msgstr "Lo siento, \"%s\" no está disponible"
 
-#: src/ui_feed.c:365
+#: src/ui_feed.c:368
 msgid "Unknown source"
 msgstr "Fuente desconocida"
 
-#: src/ui_feed.c:457
+#: src/ui_feed.c:460
 msgid "Directories cannot be autoupdated."
 msgstr "Los directorios no se pueden actualizar automáticamente"
 
-#: src/ui_feed.c:460
+#: src/ui_feed.c:463
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr "Esta fuente sugiere un intervalo de actualización de %d minutos"
 
-#: src/ui_feed.c:462
+#: src/ui_feed.c:465
 msgid "This feed specifies no default update interval."
 msgstr ""
 "Esta fuente no especifica ningún intervalo de actualización por defecto"
 
-#: src/ui_feed.c:807
+#: src/ui_feed.c:810
 msgid "Choose File"
 msgstr "Elegir archivo"
 
@@ -1669,23 +1669,23 @@ msgstr ""
 msgid "There are no unread items "
 msgstr "No hay elementos nuevos"
 
-#: src/ui_mainwindow.c:177
+#: src/ui_mainwindow.c:176
 msgid "New Feed"
 msgstr "Nueva fuente"
 
-#: src/ui_mainwindow.c:177
+#: src/ui_mainwindow.c:176
 msgid "Add a new subscription."
 msgstr "Nueva subscripción."
 
-#: src/ui_mainwindow.c:178
+#: src/ui_mainwindow.c:177
 msgid "Next Unread"
 msgstr "Siguiente nuevo"
 
-#: src/ui_mainwindow.c:179
+#: src/ui_mainwindow.c:178
 msgid "Mark As Read"
 msgstr "Marcar como leídos"
 
-#: src/ui_mainwindow.c:179
+#: src/ui_mainwindow.c:178
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1693,27 +1693,27 @@ msgstr ""
 "Marca como leídos todos los elementos de la subscripción seleccionada o, en "
 "caso de una carpeta, todas sus subscripciones."
 
-#: src/ui_mainwindow.c:180
+#: src/ui_mainwindow.c:179
 msgid "Update All"
 msgstr "Actualizar todas"
 
-#: src/ui_mainwindow.c:181
+#: src/ui_mainwindow.c:180
 msgid "Search"
 msgstr "Buscar"
 
-#: src/ui_mainwindow.c:181
+#: src/ui_mainwindow.c:180
 msgid "Search all feeds."
 msgstr "Buscar en las fuentes."
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:181
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:181
 msgid "Edit preferences."
 msgstr "Cambiar preferencias."
 
-#: src/ui_mainwindow.c:197
+#: src/ui_mainwindow.c:196
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1766,11 +1766,11 @@ msgstr ""
 "\">FAQ</a> que hay disponibles en la <a href=\"http://liferea.sf.net"
 "\">página web de Liferea</a></p>"
 
-#: src/ui_mainwindow.c:282
+#: src/ui_mainwindow.c:281
 msgid "Liferea is now online"
 msgstr "Trabajando con conexión."
 
-#: src/ui_mainwindow.c:285
+#: src/ui_mainwindow.c:284
 msgid "Liferea is now offline"
 msgstr "Trabajando en modo sin conexión."
 
@@ -1926,11 +1926,11 @@ msgid "Please do a search first!"
 msgstr "Se requiere una búsqueda previa"
 
 #: src/ui_tray.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
-msgstr[0] "%d elemento(s) nuevo(s)"
-msgstr[1] "%d elemento(s) nuevo(s)"
+msgstr[0] "%d elemento nuevo."
+msgstr[1] "%d elementos nuevos."
 
 #: src/ui_tray.c:103
 msgid "No new items."
