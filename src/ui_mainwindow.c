@@ -455,6 +455,8 @@ gboolean on_close(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 		return on_quit(widget, event, user_data);
 	ui_mainwindow_save_position();
 	gtk_widget_hide(mainwindow);
+	if (!startIconified)
+		session_set_cmd(NULL, TRUE);
 	return TRUE;
 }
 

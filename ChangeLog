@@ -19,7 +19,9 @@
 	  (Nathan Conrad)
 	* Improved configure script to detect Firefox embedded
 	  HTML rendering widget (Jim Huang)
-
+	* Fix for saving iconification state between Liferea sessions.
+	  (Marc Deslauriers)
+	
 	Translations:
 
 	* Updated traditional Chinese translation. (Jim Huang)
