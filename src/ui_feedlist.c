@@ -113,8 +113,6 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 	g_assert(!IS_FOLDER(fp->type));
 	
 	switch(fp->type) {
-		case FST_EMPTY:
-			return icons[ICON_EMPTY];
 		case FST_VFOLDER:
 			return icons[ICON_VFOLDER];
 		case FST_OPML:
@@ -183,7 +181,6 @@ void ui_feed_update(feedPtr fp) {
 	model =  GTK_TREE_MODEL(feedstore);
 	
 	g_assert(!IS_FOLDER(fp->type));
-	g_assert(fp->type != FST_EMPTY);
 	
 	count = feed_get_unread_counter(fp);
 	label = unhtmlize(g_strdup(feed_get_title(fp)));

@@ -71,6 +71,24 @@ struct detectStr detectPattern[] = {
 	{ FST_INVALID,	NULL 		}
 };
 
+struct feed_type {
+	gint id_num;
+	gchar *id_str;
+};
+
+static struct feed_type type_list[] = {
+	{FST_RSS, "rss"},
+	{FST_OCS, "ocs"},
+	{FST_CDF, "cdf"},
+	{FST_PIE, "pie"},
+	{FST_OPML, "opml"},
+	{FST_VFOLDER, "vfolder"},
+	/* Folder types are never saved, nor are help feeds, so folders
+	   and feeds can be omitted. */
+	{-1, NULL}
+};
+
+
 /* hash table to look up feed type handlers */
 GHashTable	*feedHandler = NULL;
 
@@ -81,6 +99,26 @@ feedPtr		allItems = NULL;
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
 /* ------------------------------------------------------------ */
+
+gchar *feed_type_num_to_str(gint num) {
+	struct feed_type *type;
+	for(type = type_list; type->id_num != -1; type++) {
+		if (num == type->id_num)
+			return type->id_str;
+	}
+	return NULL;
+}
+
+gint feed_type_str_to_num(gchar *str) {
+	struct feed_type *type;
+	if (str == NULL)
+		return -1;
+	for(type = type_list; type->id_num != -1; type++) {
+		if (!strcmp(str, type->id_str))
+			return type->id_num;
+	}
+	return -1;
+}
 
 static void feed_register_type(gint type, feedHandlerPtr fhp) {
 	gint	*typeptr;
@@ -544,7 +582,7 @@ gint feed_process_update_results(gpointer data) {
 			type = feed_detect_type(request->data);
 			feed_set_type(request->fp, type);
 		}
-		
+
 		/* determine feed type handler */
 		g_assert(NULL != feedHandler);
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
@@ -558,9 +596,8 @@ gint feed_process_update_results(gpointer data) {
 		   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
 		new_fp = feed_new();
 		feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source*/
-		(*(fhp->readFeed))(new_fp, request->data);
-		feed_set_source(new_fp, feed_get_source(request->fp));
 		feed_set_type(new_fp, feed_get_type(request->fp));
+		(*(fhp->readFeed))(new_fp, request->data);
 
 		if(firstDownload) {
 			if (feed_get_title(new_fp) != NULL)

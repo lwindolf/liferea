@@ -200,7 +200,6 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 		case FST_OPML:
 		case FST_OCS:
 			menu = make_menu(dir_menu_items, dir_menu_len, item);
-		case FST_EMPTY:
 		case FST_INVALID:
 		default:
 			menu = make_menu(default_menu_items, default_menu_len, NULL);

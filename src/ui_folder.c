@@ -206,7 +206,7 @@ void checkForEmptyFolder(folderPtr folder) {
 		gtk_tree_store_append(feedstore, &iter, parent);
 		gtk_tree_store_set(feedstore, &iter,
 					    FS_LABEL, _("<i>(empty)</i>"), /* FIXME: Should this be italicized? */
-					    FS_ICON, icons[ICON_AVAILABLE],
+					    FS_ICON, icons[ICON_EMPTY],
 					    FS_PTR, NULL,
 					    FS_UNREAD, 0,
 					    -1);

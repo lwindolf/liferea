@@ -29,6 +29,7 @@
 /* ------------------------------------------------------------ */
 /* feed list view entry types (FS_TYPE) 			*/
 /* ------------------------------------------------------------ */
+
 #define FST_INVALID	0	/**< invalid type */
 #define FST_FOLDER	1	/**< the folder type */
 #define FST_RSS		3	/**< generic RSS */
@@ -41,8 +42,6 @@
 
 #define FST_HELPFOLDER	50	/**< special tree list types to store help feeds */	
 #define FST_HELPFEED	51	/**< special type to allow updating of help feed url */
-
-#define FST_EMPTY	100	/**< special type for "(empty)" entry */
 
 #define FST_AUTODETECT	200	/**< special type to enforce type auto detection */
 
@@ -59,9 +58,6 @@
 				 
 /** macro to test wether a type is a folder entry */
 #define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
-
-/** macro to test wether a type is only a tree list structure entry */
-#define IS_NODE(type)		(IS_FOLDER(type) ||  (FST_EMPTY == type))
 
 /** macro to test if feed menu action can be applied to this entry */
 #define FEED_MENU(type)		(IS_FEED(type) || IS_DIRECTORY(type))
@@ -178,6 +174,12 @@ gpointer feed_get_favicon(feedPtr fp);
  */
 void feed_set_type(feedPtr fp, int type);
 gint feed_get_type(feedPtr fp);
+
+/**
+ * Lookup a feed type string from the feed type number
+ */
+gchar *feed_type_num_to_str(gint num);
+gint feed_type_str_to_num(gchar *str);
 
 void feed_increase_unread_counter(feedPtr fp);
 void feed_decrease_unread_counter(feedPtr fp);

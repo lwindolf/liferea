@@ -56,28 +56,22 @@ void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpoi
 static gboolean 
 ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePath *path) {
 	GtkTreeIter	iter;
-	feedPtr		fp;
+	nodePtr		ptr;
 	
 	debug1(DEBUG_GUI, "DnD check if dragging is possible (%d)", path);
 
 	g_assert(NULL != feedstore);	
 	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, path)) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, FS_PTR, &fp, -1);
-	
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, FS_PTR, &ptr, -1);
+		
 		/* everything besides help feeds and "empty" entries may be dragged */		
-		if(IS_NODE(feed_get_type(fp))) {
-			if(FST_EMPTY != feed_get_type(fp)) 
-				return TRUE;
-			else 	
-				return FALSE;
-		}			
-		if(0 == strncmp(feed_get_id(fp), "help", 4)) 
-			return FALSE;			
+		if (ptr == NULL || ptr->type == FST_HELPFEED)
+			return FALSE;
+		return TRUE;
 	} else {
 		g_warning("fatal error! could not resolve tree path!");
 		return FALSE;
 	}
-	return TRUE;
 }
 
 /** decides wether a feed cannot be dropped onto a user selection tree position or not */

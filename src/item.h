@@ -54,23 +54,7 @@ typedef struct item {
 	void		*ui_data;	/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
 
-/* ------------------------------------------------------------ */
-/* item handler interface					*/
-/* ------------------------------------------------------------ */
-
-typedef void		(*showItemFunc)		(gpointer fp);
-/* methods to set/get the ITEM_PROP_* properties */
-typedef void 		(*setItemPropFunc)	(gpointer ip, gint proptype, gpointer data);
-typedef gpointer	(*getItemPropFunc)	(gpointer ip, gint proptype);
-
-typedef struct itemHandler {
-	getItemPropFunc		getItemProp;
-	setItemPropFunc		setItemProp;
-	showItemFunc		showItem;	// FIXME: remove
-} *itemHandlerPtr;
-
 void 	initItemTypes(void);
-void 	registerItemType(gint type, itemHandlerPtr ihp);
 
 itemPtr 	getNewItemStruct(void);
 void 		addVFolderToItem(itemPtr ip, gpointer fp);

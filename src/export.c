@@ -57,14 +57,15 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		ui_feedlist_do_for_all_data(ptr, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)childNode);
 	} else {
 		feedPtr fp = (feedPtr)ptr;
-		gchar *type = g_strdup_printf("%d",feed_get_type(fp));
+		gchar *type = feed_type_num_to_str(feed_get_type(fp));
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
-
+		
 		if (feed_get_type(fp) != FST_HELPFEED) {
 			childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 			xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
 			xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
-			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
+			if (type != NULL)
+				xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
 			xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
 			xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
 			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
@@ -74,7 +75,6 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 			debug1(DEBUG_CONF, "not adding help feed %s to feedlist", feed_get_title(fp));
 		
 		g_free(interval);
-		g_free(type);
 	}
 	
 	debug_exit("append_node_tag");
@@ -162,7 +162,9 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		
 		/* type */
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
-		type = parse_integer(typeStr, FST_AUTODETECT);
+		type = feed_type_str_to_num(typeStr);
+		if (type == -1)
+			type = FST_AUTODETECT;
 		xmlFree(typeStr);
 
 		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
