@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-26 19:57+0200\n"
+"POT-Creation-Date: 2004-09-08 01:19+0200\n"
 "PO-Revision-Date: 2004-07-18 20:03+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -15,36 +15,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common.c:275
+#: src/common.c:277
 msgid "[Parser error output was truncated!]"
 msgstr "[해석기 에러 출력이 생략되었습니다!]"
 
-#: src/common.c:315
+#: src/common.c:317
 #, c-format
 msgid ""
 "xmlReadMemory(): Could not parse document:\n"
 "%s%s"
 msgstr ""
 
-#: src/common.c:358 src/common.c:417
+#: src/common.c:390 src/common.c:501
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "내부 에러! 시간 변환 실패! mktime 실패\n"
 
-#: src/common.c:361
+#: src/common.c:393
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "잘못된 ISO8601 날짜 형식. <dc:date> 정보를 무시합니다\n"
 
-#: src/common.c:420
+#: src/common.c:504
 #, fuzzy
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "잘못된 RFC822 날짜 형식. <pubDate> 정보를 무시합니다\n"
 
-#: src/common.c:434 src/common.c:441 src/common.c:447 src/common.c:454
+#: src/common.c:518 src/common.c:525 src/common.c:531 src/common.c:538
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "캐시 디렉토리 %s을(를) 생설할 수 없습니다!"
 
-#: src/common.c:524
+#: src/common.c:608
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -52,46 +52,51 @@ msgstr ""
 "예기치 않은 end-of-character 시퀀스이거나 잘못된 UTF-8 인코딩입니다! 몇몇 문"
 "자가 버려집니다"
 
-#: src/conf.c:486
+#. "feedlist.opml" is translatable so that translators can provide a localized default feed list
+#: src/conf.c:462
+msgid "feedlist.opml"
+msgstr ""
+
+#: src/conf.c:487
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "%s을(를) %s(으)로 변환하는 중 에러발생\n"
 
-#: src/conf.c:514
+#: src/conf.c:516
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 네임스페이스 %s이(가) 아직 설정되지 않았습니다. 활성화중...\n"
 
 #. FIXME: remove this migration constants with 0.9.x
 #. _() for HELP1URL to allow localised help feeds
-#: src/export.c:35
+#: src/export.c:38
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/export.c:36
+#: src/export.c:39
 msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:323
+#: src/export.c:411
 msgid "Liferea Help"
 msgstr "Liferea 도움말"
 
-#: src/export.c:336
+#: src/export.c:424
 msgid "Online Help Feed"
 msgstr "온라인 도움말 피드"
 
-#: src/export.c:352
+#: src/export.c:440
 msgid "Liferea SF News"
 msgstr "Liferea 소스포지 뉴스"
 
-#: src/export.c:421 src/export.c:423
+#: src/export.c:525 src/export.c:527
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "캐시파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 가져올 수 없습니다!"
 
-#: src/export.c:427 src/export.c:429
+#: src/export.c:531 src/export.c:533
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -99,73 +104,73 @@ msgstr ""
 "빈 도큐먼트 입니다! OPML 도큐먼트 \"%s\"은(는) 가져오기 할 때 비어있으면 안됩"
 "니다."
 
-#: src/export.c:437 src/export.c:439
+#: src/export.c:541 src/export.c:543
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\"은(는) 올바른 OPML 파일이 아닙니다. Liferea는 이 파일을 가져올 수 없습"
 "니다."
 
-#: src/export.c:457
+#: src/export.c:565
 msgid "Imported feed list"
 msgstr "가져온 피드 리스트"
 
-#: src/export.c:468
+#: src/export.c:576
 msgid "Import Feed List"
 msgstr "피드 목록 들여오기"
 
-#: src/export.c:468
+#: src/export.c:576
 msgid "Import"
 msgstr ""
 
-#: src/export.c:478
+#: src/export.c:586
 msgid "Error while exporting feed list!"
 msgstr "피드 리스트를 내보내던 중 에러가 발생했습니다."
 
-#: src/export.c:480
+#: src/export.c:588
 msgid "Feed List exported!"
 msgstr "피드 목록이 내보내졌습니다"
 
-#: src/export.c:487
+#: src/export.c:595
 msgid "Export Feed List"
 msgstr "피드 목록 내보내기"
 
-#: src/export.c:487
+#: src/export.c:595
 msgid "Export"
 msgstr ""
 
-#: src/feed.c:149
+#: src/feed.c:141
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>피드를 읽는 도중 XML 에러가 발생!. \"%s\" 피드를 로드할 수 없습니다.</p>"
 
-#: src/feed.c:155 src/feed.c:426
+#: src/feed.c:147 src/feed.c:379
 msgid "<p>Empty document!</p>"
 msgstr "<p>빈 도큐먼트!</p>"
 
-#: src/feed.c:162
+#: src/feed.c:154
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>잘못된 XML!</p>"
 
-#: src/feed.c:229
+#: src/feed.c:221
 msgid "There were errors while parsing a feed"
 msgstr "이 피드를 해석하던 중 에러가 발생했습니다."
 
-#: src/feed.c:230
+#: src/feed.c:222
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
 msgstr ""
 
-#: src/feed.c:405 src/feed.c:406
+#: src/feed.c:358 src/feed.c:359
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "캐서파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 읽을 수 없습니다."
 
-#: src/feed.c:418
+#: src/feed.c:371
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -174,173 +179,44 @@ msgstr ""
 "<p> 피드 캐서파일을(를) 해석하던 중 XML 에러가 발생. 캐시파일 \"%s\"을(를) 읽"
 "을 수 없습니다.</p>"
 
-#: src/feed.c:437
+#: src/feed.c:390
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" 는 올바른 캐시 파일이 아닙니다. 읽을 수 없습니다!</p>"
 
-#: src/feed.c:488
+#: src/feed.c:441
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "캐시파일 \"%s\"을(를) 해석하던 중 에러가 발생했습니다!"
 
-#: src/feed.c:556
+#: src/feed.c:503
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "피드 \"%s\"는 이미 새로 고쳐졌습니다!"
 
-#: src/feed.c:561
+#: src/feed.c:508
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "피드가 연속적이지 않습니다. Liferea는 더이상 그 피드를 새로 고칠 수 없습니다."
 
-#: src/feed.c:565
+#: src/feed.c:512
 #, c-format
 msgid "Updating \"%s\""
 msgstr "%s을(를) 새로고치는 중"
 
-#: src/feed.c:622
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr ""
-"\"%s\"가 연속적이지 않습니다. Liferea는 그것을 더이상 새로 고칠 수 없습니다!"
-
-#: src/feed.c:624
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
-
-#: src/feed.c:631
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
-
-#: src/feed.c:643
-#, fuzzy, c-format
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>%s"
-msgstr ""
-"이 피드의 종류를 결정할 수 없습니다. 소스가 지원되는 형식의 자원을 정확히 가"
-"리키는지 확인해 주세요 "
-
-#: src/feed.c:660
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\"이(가) 갱신되었습니다..."
-
-#: src/feed.c:669
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
-
-#: src/feed.c:954
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr ""
-
-#: src/feed.c:956
-msgid "Payment Required"
-msgstr "(돈)지불이 필요합니다"
-
-#: src/feed.c:957
-msgid "Access Forbidden"
-msgstr "접근이 금지되었습니다"
-
-#: src/feed.c:958
-msgid "Resource Not Found"
-msgstr "자원을 찾을 수 없습니다"
-
-#: src/feed.c:959
-msgid "Method Not Allowed"
-msgstr "동작이 허용되지 않습니다"
-
-#: src/feed.c:960
-msgid "Not Acceptable"
-msgstr "받아들일 수 없습니다"
-
-#: src/feed.c:961
-msgid "Proxy Authentication Required"
-msgstr "프록시 인증이 필요합니다"
-
-#: src/feed.c:962
-msgid "Request Time-Out"
-msgstr "요청 시간이 초과되었습니다"
-
-#: src/feed.c:963
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "사라짐.자원이 더 이상 존재하지 않습니다. 해지 해 주세요."
-
-#: src/feed.c:968
-msgid "URL is invalid"
-msgstr "URL이 잘못 되었습니다"
-
-#: src/feed.c:971
-msgid "Error connecting to remote host"
-msgstr "원격 호스트로 접속하던 중 에러"
-
-#: src/feed.c:972
-msgid "Hostname could not be found"
-msgstr "호스트 이름을 찾을 수 없습니다"
-
-#: src/feed.c:973
-msgid "Network connection was refused by the remote host"
-msgstr "원격 호스트로 부터 접속이 거부되었습니다"
-
-#: src/feed.c:974
-msgid "Remote host did not finish sending data"
-msgstr "원격 호스트가 데이터를 보내다 말았습니다."
-
-#. Transfer errors
-#: src/feed.c:976
-msgid "Too many HTTP redirects were encountered"
-msgstr "너무 많은 HTTP 리다이렉션입니다! 포기할래요 엉엉."
-
-#: src/feed.c:979
-msgid "Remote host sent an invalid response"
-msgstr "웹서버가 잘못된 리다이렉트를 보내왔습니다"
-
-#: src/feed.c:986
-msgid "Authentication failed"
-msgstr "인증이 실패하였습니다!"
-
-#: src/feed.c:988
-msgid "Webserver's authentication method incompatible with Liferea"
-msgstr "웹서버의 인증 방법을 지원할 수 없습니다"
-
-#: src/feed.c:994
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "피드 사용 불가: 서버가 지원되지 않는 리다이렉션을 요청받았습니다."
-
-#: src/feed.c:995
-msgid "Client Error"
-msgstr "클라이언트 에러"
-
-#: src/feed.c:996
-msgid "Server Error"
-msgstr "서버 에러"
-
-#: src/feed.c:997
-msgid "(unknown networking error happened)"
-msgstr "(알 수 없는 네트워크 에러가 일어남)"
-
-#: src/feed.c:1019
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"이 등록피드를 읽던 중 문제가 발생했습니다. URL과 콘솔 출력을 확인하세요"
-
 #. attributes resulting from general feed parsing
-#: src/feed.c:1173 src/item.c:245 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:953 src/item.c:242 src/metadata.c:321 src/ocs_dir.c:141
 #: src/opml.c:215
 msgid "Feed:"
 msgstr "피드:"
 
-#: src/feed.c:1184 src/interface.c:1071 src/interface.c:1473 src/item.c:272
-#: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:221
+#: src/feed.c:953 src/interface.c:519
+#, fuzzy
+msgid "VFolder"
+msgstr "폴더(_O)"
+
+#: src/feed.c:964 src/interface.c:1071 src/interface.c:1473 src/item.c:269
+#: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
 msgid "Source:"
 msgstr "소스:"
 
@@ -683,11 +559,6 @@ msgstr "찾기"
 #: src/interface.c:505
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr "피드 목록에 나타나는 가상 폴더에 이 찾기를 저장합니다"
-
-#: src/interface.c:519
-#, fuzzy
-msgid "VFolder"
-msgstr "폴더(_O)"
 
 #: src/interface.c:526
 msgid "Close search"
@@ -1211,7 +1082,7 @@ msgstr ""
 msgid "Translation"
 msgstr "번역한 분들"
 
-#: src/interface.c:2926 src/ui_feed.c:114
+#: src/interface.c:2926 src/ui_feed.c:363
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "\"%s\"에 대한 사용자 이름과 패스워드를 입력하세요 (%s):"
@@ -1244,11 +1115,11 @@ msgstr ""
 msgid "Rules"
 msgstr "규칙"
 
-#: src/item.c:254 src/item.c:256 src/item.c:267
+#: src/item.c:251 src/item.c:253 src/item.c:264
 msgid "[No title]"
 msgstr "[제목 없음]"
 
-#: src/item.c:257 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:254 src/metadata.c:322 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "아이템:"
 
@@ -1319,100 +1190,100 @@ msgid ""
 "lock\" lock file."
 msgstr ""
 
-#: src/metadata.c:284
+#: src/metadata.c:286
 msgid "comments"
 msgstr "덧말"
 
-#: src/metadata.c:294
+#: src/metadata.c:296
 #, c-format
 msgid "enclosed file: <a href=\"%s\">%s</a>"
 msgstr "동봉된 파일: <a href=\"%s\">%s</a>"
 
-#: src/metadata.c:305 src/metadata.c:332
+#: src/metadata.c:307 src/metadata.c:334
 msgid "feed generator"
 msgstr "피드를 만든 사람에게."
 
-#: src/metadata.c:323
+#: src/metadata.c:325
 msgid "author"
 msgstr "저자"
 
-#: src/metadata.c:324
+#: src/metadata.c:326
 msgid "contributors"
 msgstr "도움을 주신 분들"
 
-#: src/metadata.c:325
+#: src/metadata.c:327
 msgid "copyright"
 msgstr "저작권"
 
-#: src/metadata.c:326
+#: src/metadata.c:328
 msgid "language"
 msgstr "언어"
 
-#: src/metadata.c:327
+#: src/metadata.c:329
 msgid "feed published on"
 msgstr "피드가 출판된 곳"
 
-#: src/metadata.c:328
+#: src/metadata.c:330
 msgid "content last updated"
 msgstr "마지막으로 수정된 내용"
 
-#: src/metadata.c:329
+#: src/metadata.c:331
 msgid "managing editor"
 msgstr "관리하는 사람"
 
-#: src/metadata.c:330
+#: src/metadata.c:332
 msgid "webmaster"
 msgstr "웹마스터"
 
-#: src/metadata.c:331
+#: src/metadata.c:333
 msgid "category"
 msgstr "분류"
 
 #. types for admin
-#: src/metadata.c:339
+#: src/metadata.c:341
 msgid "report errors to"
 msgstr "에러를 보내주세요."
 
 #. types for aggregation
-#: src/metadata.c:343
+#: src/metadata.c:345
 msgid "original source"
 msgstr "원래 소스"
 
-#: src/metadata.c:344
+#: src/metadata.c:346
 msgid "original time"
 msgstr "원래 시간"
 
 #. types for creative commons
-#: src/metadata.c:350
+#: src/metadata.c:352
 msgid "license"
 msgstr "라이센스"
 
 #. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
-#: src/metadata.c:353
+#: src/metadata.c:355
 msgid "creator"
 msgstr "제작자"
 
-#: src/metadata.c:354
+#: src/metadata.c:356
 msgid "publisher"
 msgstr "출판자"
 
-#: src/metadata.c:355
+#: src/metadata.c:357
 msgid "type"
 msgstr "종류"
 
-#: src/metadata.c:356
+#: src/metadata.c:358
 msgid "format"
 msgstr "형식"
 
-#: src/metadata.c:357
+#: src/metadata.c:359
 msgid "identifier"
 msgstr "구별자"
 
-#: src/metadata.c:358
+#: src/metadata.c:360
 msgid "source"
 msgstr "소스"
 
-#: src/metadata.c:359
+#: src/metadata.c:361
 msgid "coverage"
 msgstr "범위"
 
@@ -1484,59 +1355,59 @@ msgstr "<p>Atom/Echo/PIE 헤더를 찾을 수 없습니다.!</p>"
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>RDF/RSS 헤더를 찾을 수 없습니다!</p>"
 
-#: src/rule.c:134
+#: src/rule.c:132
 #, fuzzy
 msgid "Item"
 msgstr "아이템:"
 
-#: src/rule.c:134
+#: src/rule.c:132
 msgid "does contain"
 msgstr ""
 
-#: src/rule.c:134
+#: src/rule.c:132
 msgid "does not contain"
 msgstr ""
 
-#: src/rule.c:135
+#: src/rule.c:133
 #, fuzzy
 msgid "Item title"
 msgstr "[제목 없음]"
 
-#: src/rule.c:135 src/rule.c:136
+#: src/rule.c:133 src/rule.c:134
 msgid "does match"
 msgstr ""
 
-#: src/rule.c:135 src/rule.c:136
+#: src/rule.c:133 src/rule.c:134
 msgid "does not match"
 msgstr ""
 
-#: src/rule.c:136
+#: src/rule.c:134
 msgid "Item body"
 msgstr ""
 
-#: src/rule.c:137
+#: src/rule.c:135
 #, fuzzy
 msgid "Read status"
 msgstr "읽은 상태를 토글(_R)"
 
-#: src/rule.c:137
+#: src/rule.c:135
 #, fuzzy
 msgid "is unread"
 msgstr "다음 안 읽은 것"
 
-#: src/rule.c:137
+#: src/rule.c:135
 msgid "is read"
 msgstr ""
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "Flag status"
 msgstr ""
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "is flagged"
 msgstr ""
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "is unflagged"
 msgstr ""
 
@@ -1545,113 +1416,238 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "pixmap 파일 %s을(를) 찾을 수 없습니다"
 
-#: src/ui_feed.c:115
+#: src/ui_feed.c:62
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr ""
+
+#: src/ui_feed.c:64
+msgid "Payment Required"
+msgstr "(돈)지불이 필요합니다"
+
+#: src/ui_feed.c:65
+msgid "Access Forbidden"
+msgstr "접근이 금지되었습니다"
+
+#: src/ui_feed.c:66
+msgid "Resource Not Found"
+msgstr "자원을 찾을 수 없습니다"
+
+#: src/ui_feed.c:67
+msgid "Method Not Allowed"
+msgstr "동작이 허용되지 않습니다"
+
+#: src/ui_feed.c:68
+msgid "Not Acceptable"
+msgstr "받아들일 수 없습니다"
+
+#: src/ui_feed.c:69
+msgid "Proxy Authentication Required"
+msgstr "프록시 인증이 필요합니다"
+
+#: src/ui_feed.c:70
+msgid "Request Time-Out"
+msgstr "요청 시간이 초과되었습니다"
+
+#: src/ui_feed.c:71
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "사라짐.자원이 더 이상 존재하지 않습니다. 해지 해 주세요."
+
+#: src/ui_feed.c:76
+msgid "URL is invalid"
+msgstr "URL이 잘못 되었습니다"
+
+#: src/ui_feed.c:79
+msgid "Error connecting to remote host"
+msgstr "원격 호스트로 접속하던 중 에러"
+
+#: src/ui_feed.c:80
+msgid "Hostname could not be found"
+msgstr "호스트 이름을 찾을 수 없습니다"
+
+#: src/ui_feed.c:81
+msgid "Network connection was refused by the remote host"
+msgstr "원격 호스트로 부터 접속이 거부되었습니다"
+
+#: src/ui_feed.c:82
+msgid "Remote host did not finish sending data"
+msgstr "원격 호스트가 데이터를 보내다 말았습니다."
+
+#. Transfer errors
+#: src/ui_feed.c:84
+msgid "Too many HTTP redirects were encountered"
+msgstr "너무 많은 HTTP 리다이렉션입니다! 포기할래요 엉엉."
+
+#: src/ui_feed.c:87
+msgid "Remote host sent an invalid response"
+msgstr "웹서버가 잘못된 리다이렉트를 보내왔습니다"
+
+#: src/ui_feed.c:94
+msgid "Authentication failed"
+msgstr "인증이 실패하였습니다!"
+
+#: src/ui_feed.c:96
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr "웹서버의 인증 방법을 지원할 수 없습니다"
+
+#: src/ui_feed.c:102
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr "피드 사용 불가: 서버가 지원되지 않는 리다이렉션을 요청받았습니다."
+
+#: src/ui_feed.c:103
+msgid "Client Error"
+msgstr "클라이언트 에러"
+
+#: src/ui_feed.c:104
+msgid "Server Error"
+msgstr "서버 에러"
+
+#: src/ui_feed.c:105
+msgid "(unknown networking error happened)"
+msgstr "(알 수 없는 네트워크 에러가 일어남)"
+
+#: src/ui_feed.c:127
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"이 등록피드를 읽던 중 문제가 발생했습니다. URL과 콘솔 출력을 확인하세요"
+
+#: src/ui_feed.c:161
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr ""
+"\"%s\"가 연속적이지 않습니다. Liferea는 그것을 더이상 새로 고칠 수 없습니다!"
+
+#: src/ui_feed.c:163
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
+
+#: src/ui_feed.c:170
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
+
+#: src/ui_feed.c:182
+#, fuzzy, c-format
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>%s"
+msgstr ""
+"이 피드의 종류를 결정할 수 없습니다. 소스가 지원되는 형식의 자원을 정확히 가"
+"리키는지 확인해 주세요 "
+
+#: src/ui_feed.c:199
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\"이(가) 갱신되었습니다..."
+
+#: src/ui_feed.c:208
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
+
+#: src/ui_feed.c:364
 #, fuzzy
 msgid "Unknown source"
 msgstr "원래 소스"
 
-#: src/ui_feed.c:207
+#: src/ui_feed.c:456
 msgid "Directories cannot be autoupdated."
 msgstr "디렉토리는 자동으로 갱신할 수 없습니다."
 
-#: src/ui_feed.c:210
+#: src/ui_feed.c:459
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr "이 피드의 제공자는 갱신 주기를 %d분 으로 제안했습니다"
 
-#: src/ui_feed.c:212
+#: src/ui_feed.c:461
 msgid "This feed specifies no default update interval."
 msgstr "이 피드는 기본 갱신 주기를 정하지 않습니다."
 
-#: src/ui_feed.c:554
+#: src/ui_feed.c:803
 msgid "Choose File"
 msgstr ""
 
-#: src/ui_feedlist.c:414
+#: src/ui_feedlist.c:356
 msgid "You have to select a feed entry"
 msgstr "피드 엔트리를 선택해야 합니다!"
 
-#: src/ui_feedlist.c:424
+#: src/ui_feedlist.c:366
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea가 오프라인 상태로 동작중입니다. 새로고침이 불가능합니다."
 
-#: src/ui_feedlist.c:446
+#: src/ui_feedlist.c:387
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "참고: 구독에 대한 필터를 사용하는 것은 '긁어서 놓기'를 끕니다."
 
-#: src/ui_feedlist.c:486
-#, c-format
-msgid "Deleting \"%s\""
-msgstr "\"%s\"을(를) 지웁니다"
-
-#: src/ui_feedlist.c:487
-#, c-format
-msgid "Are you sure that you want to delete %s and its contents?"
-msgstr "정말 %s을(를) 지우고 내용을 없애시겠습니까?"
-
-#: src/ui_feedlist.c:489
+#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
 msgid "Deleting entry"
 msgstr "엔트리 지우기"
 
-#: src/ui_feedlist.c:490
-#, c-format
-msgid "Are you sure that you want to delete %s?"
+#: src/ui_feedlist.c:430
+#, fuzzy, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "정말 %s을(를) 지우고 내용을 없애시겠습니까?"
+
+#: src/ui_feedlist.c:433
+#, fuzzy, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "정말 %s을(를) 지우고 싶으세요?"
 
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:441
 msgid "Deletion Confirmation"
 msgstr "지우기 확인"
 
-#: src/ui_feedlist.c:536
+#: src/ui_feedlist.c:478
 msgid "You must select a feed entry"
 msgstr "피드 엔트리를 선택해야 합니다"
 
-#: src/ui_feedlist.c:537
+#: src/ui_feedlist.c:479
 msgid "You must select a feed entry."
 msgstr "피드 엔트리를 선택해야 합니다."
 
-#: src/ui_feedlist.c:558
+#: src/ui_feedlist.c:505
 msgid "New subscription"
 msgstr "새 서명"
 
-#: src/ui_folder.c:95 src/ui_folder.c:117 src/ui_folder.c:137
+#: src/ui_folder.c:76 src/ui_folder.c:102
 msgid "A folder must be selected."
 msgstr "풀더가 선택되어 있어야 합니다."
 
-#: src/ui_folder.c:144
-msgid "A folder must be empty to delete it!"
-msgstr "폴더를 지우시려면 먼저 폴더를 비우세요!"
-
-#: src/ui_folder.c:244
+#: src/ui_folder.c:220
 msgid "<i>(empty)</i>"
 msgstr "<i>(비었음)</i>"
 
-#: src/ui_folder.c:374
+#: src/ui_folder.c:349
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "내부 에러! 알 수 없는 엔트리 종류! 적당한 아이콘을 보여줄 수 없습니다.\n"
 
-#: src/ui_itemlist.c:286
+#: src/ui_itemlist.c:304
 msgid "Date"
 msgstr "날짜"
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:315
 msgid "Headline"
 msgstr "머릿글"
 
-#: src/ui_itemlist.c:599 src/ui_itemlist.c:640
+#: src/ui_itemlist.c:615 src/ui_itemlist.c:656
 msgid "No item has been selected"
 msgstr "아이템이 선택되지 않았습니다"
 
-#: src/ui_itemlist.c:623 src/ui_itemlist.c:643
+#: src/ui_itemlist.c:639 src/ui_itemlist.c:659
 msgid "You must select a feed to delete its items!"
 msgstr "아이템을 지울 피드를 선택해야 합니다!"
 
-#: src/ui_itemlist.c:675
+#: src/ui_itemlist.c:691
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "내부 에러! 트리뷰의 선택부분을 찾을 수 없습니다!\n"
 
-#: src/ui_itemlist.c:707
+#: src/ui_itemlist.c:723
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다 "
 
@@ -1764,16 +1760,17 @@ msgid "/_Update"
 msgstr "/갱신(_U)"
 
 #: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:106
-msgid "/_Mark As Read"
-msgstr "/읽은 것으로 표시(_M)"
+msgid "/_Mark All As Read"
+msgstr "/전부 읽은 것으로 표시(_M)"
 
 #: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:107 src/ui_popup.c:115
 msgid "/_New"
 msgstr "/새로 만들기(_N)"
 
 #: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:108 src/ui_popup.c:116
-msgid "/_New/New _Feed"
-msgstr "/새로 만들기(_N)/새 피드(_F)"
+#, fuzzy
+msgid "/_New/New _Subscription"
+msgstr "새 피드 등록(_N)"
 
 #: src/ui_popup.c:90 src/ui_popup.c:100 src/ui_popup.c:109 src/ui_popup.c:117
 msgid "/_New/New F_older"
@@ -1898,6 +1895,10 @@ msgstr "피드 새로 고침 타이머를 새로 맞춥니다. (피드는 업데
 msgid "Searching for \"%s\""
 msgstr "%s을(를) 찾기"
 
+#: src/ui_search.c:96
+msgid "Please do a search first!"
+msgstr ""
+
 #: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
@@ -1929,6 +1930,18 @@ msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
+
+#~ msgid "Deleting \"%s\""
+#~ msgstr "\"%s\"을(를) 지웁니다"
+
+#~ msgid "A folder must be empty to delete it!"
+#~ msgstr "폴더를 지우시려면 먼저 폴더를 비우세요!"
+
+#~ msgid "/_Mark As Read"
+#~ msgstr "/읽은 것으로 표시(_M)"
+
+#~ msgid "/_New/New _Feed"
+#~ msgstr "/새로 만들기(_N)/새 피드(_F)"
 
 #~ msgid "\"%s\" has no new items"
 #~ msgstr "\"%s\"은(는) 새로운 아이템이 없습니다."
@@ -2561,9 +2574,6 @@ msgstr ""
 
 #~ msgid "Could not find PIE header! Feed was not added!"
 #~ msgstr "PIE 헤더를 찾을 수 없습니다! 헤더가 더해지지 않았습니다!"
-
-#~ msgid "/_Mark All As Read"
-#~ msgstr "/전부 읽은 것으로 표시(_M)"
 
 #~ msgid "Feedster search request failed.\n"
 #~ msgstr "피드스터 찾기 요청이 실패하였습니다.\n"

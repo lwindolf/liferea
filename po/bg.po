@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISLD Localization Project 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-26 19:57+0200\n"
+"POT-Creation-Date: 2004-09-08 01:19+0200\n"
 "PO-Revision-Date: 2004-08-17 12:01+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
@@ -16,37 +16,37 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common.c:275
+#: src/common.c:277
 msgid "[Parser error output was truncated!]"
 msgstr "[Четенето беше прекъснато!]"
 
-#: src/common.c:315
+#: src/common.c:317
 #, c-format
 msgid ""
 "xmlReadMemory(): Could not parse document:\n"
 "%s%s"
 msgstr ""
 
-#: src/common.c:358 src/common.c:417
+#: src/common.c:390 src/common.c:501
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr ""
 "вътрешна грешка! грешка при преустройването на датата·!·mktime·неуспешно!\n"
 
-#: src/common.c:361
+#: src/common.c:393
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "Невалиден ISO8601 формат на датата.! Игнорира <dc:date> информация!\n"
 
-#: src/common.c:420
+#: src/common.c:504
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr ""
 "Невалиден RFC822 формат на датата! Игнориране на информацията за датата!\n"
 
-#: src/common.c:434 src/common.c:441 src/common.c:447 src/common.c:454
+#: src/common.c:518 src/common.c:525 src/common.c:531 src/common.c:538
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "Не може да създаде кеш директория \"%s\" !"
 
-#: src/common.c:524
+#: src/common.c:608
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -54,105 +54,110 @@ msgstr ""
 "Неочакван край на последователността на знаците или повредено UTF-8 "
 "кодиране! Някоизнаци са пропуснати!"
 
-#: src/conf.c:486
+#. "feedlist.opml" is translatable so that translators can provide a localized default feed list
+#: src/conf.c:462
+msgid "feedlist.opml"
+msgstr ""
+
+#: src/conf.c:487
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Грешка при преименуване·%s·to·%s\n"
 
-#: src/conf.c:514
+#: src/conf.c:516
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr ""
 
 #. FIXME: remove this migration constants with 0.9.x
 #. _() for HELP1URL to allow localised help feeds
-#: src/export.c:35
+#: src/export.c:38
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/export.c:36
+#: src/export.c:39
 msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:323
+#: src/export.c:411
 msgid "Liferea Help"
 msgstr "Помощ относно Liferea"
 
-#: src/export.c:336
+#: src/export.c:424
 msgid "Online Help Feed"
 msgstr "Помощ в Интернет"
 
-#: src/export.c:352
+#: src/export.c:440
 msgid "Liferea SF News"
 msgstr "Новини за Liferea в SF"
 
-#: src/export.c:421 src/export.c:423
+#: src/export.c:525 src/export.c:527
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "XML грешка по време на четенето на кеш файла! \"%s\" не може да бъде зареден!"
 
-#: src/export.c:427 src/export.c:429
+#: src/export.c:531 src/export.c:533
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Празен документ! OPML·документа·\"%s\"·не трябва да е празне при импортиране."
 
-#: src/export.c:437 src/export.c:439
+#: src/export.c:541 src/export.c:543
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" не е валиден OPML документ! Liferea не може да внесе този файл!"
 
-#: src/export.c:457
+#: src/export.c:565
 msgid "Imported feed list"
 msgstr "Списък с внесените абонаменти"
 
-#: src/export.c:468
+#: src/export.c:576
 msgid "Import Feed List"
 msgstr "Вмъкване на списък с абонаменти"
 
-#: src/export.c:468
+#: src/export.c:576
 msgid "Import"
 msgstr "Внасяне"
 
-#: src/export.c:478
+#: src/export.c:586
 msgid "Error while exporting feed list!"
 msgstr "Грешка при експортирането на списъкът с абонаменти!"
 
-#: src/export.c:480
+#: src/export.c:588
 msgid "Feed List exported!"
 msgstr "Списъкът с абонаменти е експортиран успешно!"
 
-#: src/export.c:487
+#: src/export.c:595
 msgid "Export Feed List"
 msgstr "Експортиране на списъкът на абонаментите"
 
-#: src/export.c:487
+#: src/export.c:595
 msgid "Export"
 msgstr "Изнасяне"
 
-#: src/feed.c:149
+#: src/feed.c:141
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>XML грешка по време на четенето на абонамента! Абонаментът \"%s\" не може "
 "да бъде зареден!</p>"
 
-#: src/feed.c:155 src/feed.c:426
+#: src/feed.c:147 src/feed.c:379
 msgid "<p>Empty document!</p>"
 msgstr "<p>Празен документ!</p>"
 
-#: src/feed.c:162
+#: src/feed.c:154
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Невалиден·XML!</p>"
 
-#: src/feed.c:229
+#: src/feed.c:221
 msgid "There were errors while parsing a feed"
 msgstr "Имаше грешки докато се изтегляше този абонамент"
 
-#: src/feed.c:230
+#: src/feed.c:222
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -162,14 +167,14 @@ msgstr ""
 "<a href=\"http://feedvalidator.org\">валиден</a> и <a·href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">поддържан формат</a>.</p>"
 
-#: src/feed.c:405 src/feed.c:406
+#: src/feed.c:358 src/feed.c:359
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе да "
 "бъде зареден!"
 
-#: src/feed.c:418
+#: src/feed.c:371
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -178,175 +183,44 @@ msgstr ""
 "<p>XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе "
 "да бъде зареден!</p>"
 
-#: src/feed.c:437
+#: src/feed.c:390
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" не е валиден кеш файл. Кеш файлът не може да бъде прочетен!</p>"
 
-#: src/feed.c:488
+#: src/feed.c:441
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Получиха се грешки при прегледа на кеш файла \"%s\""
 
-#: src/feed.c:556
+#: src/feed.c:503
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Абонаментът \"%s\" вече беше осъвременен!"
 
-#: src/feed.c:561
+#: src/feed.c:508
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "Абонаментът не е продължен. Liferea няма да го осъвременява повече!"
 
-#: src/feed.c:565
+#: src/feed.c:512
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Осъвременяване на \"%s\""
 
-#: src/feed.c:622
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" не е продължен. Liferea няма да го осъвременява повече!"
-
-#: src/feed.c:624
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" не се промени след последното осъвременяване"
-
-#: src/feed.c:631
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "Адресът на \"%s\" беше променен за постоянно и затова беше осъвременен"
-
-#: src/feed.c:643
-#, fuzzy, c-format
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>%s"
-msgstr ""
-"<p>Видът на абонамента не може да бъде определен.·Моля, проверете дали това "
-"е поддържан от програмата формат!</p>"
-
-#: src/feed.c:660
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" осъвременени..."
-
-#: src/feed.c:669
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" не е достъпен"
-
-#: src/feed.c:954
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr ""
-
-#: src/feed.c:956
-msgid "Payment Required"
-msgstr "Изисква се заплащане"
-
-#: src/feed.c:957
-msgid "Access Forbidden"
-msgstr "Забранен достъп"
-
-#: src/feed.c:958
-msgid "Resource Not Found"
-msgstr "Ресурсът не е намерен"
-
-#: src/feed.c:959
-msgid "Method Not Allowed"
-msgstr "Непозволен метод"
-
-#: src/feed.c:960
-msgid "Not Acceptable"
-msgstr "Неприемлив"
-
-#: src/feed.c:961
-msgid "Proxy Authentication Required"
-msgstr "Нужна е идентификация в сървъра посредник"
-
-#: src/feed.c:962
-msgid "Request Time-Out"
-msgstr "Заявката изтече"
-
-#: src/feed.c:963
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Този ресурс вече не съществува. Моля, да го изтриете!"
-
-#: src/feed.c:968
-msgid "URL is invalid"
-msgstr "URL-то е невалидно"
-
-#: src/feed.c:971
-msgid "Error connecting to remote host"
-msgstr "Грешка при свързването с отдалечения адрес"
-
-#: src/feed.c:972
-msgid "Hostname could not be found"
-msgstr "Хостът не може да бъде намерен"
-
-#: src/feed.c:973
-msgid "Network connection was refused by the remote host"
-msgstr "Мрежовата връзка беше отказана от отдалечения хост"
-
-#: src/feed.c:974
-msgid "Remote host did not finish sending data"
-msgstr "Отдалеченият хост не приключи с изпращането на данните"
-
-#. Transfer errors
-#: src/feed.c:976
-msgid "Too many HTTP redirects were encountered"
-msgstr "Твърде много HTTP пренасочвания"
-
-#: src/feed.c:979
-msgid "Remote host sent an invalid response"
-msgstr "Отдалеченият хост изпрати невалиден отговор"
-
-#: src/feed.c:986
-msgid "Authentication failed"
-msgstr "Идентифицирането е неуспешно"
-
-#: src/feed.c:988
-msgid "Webserver's authentication method incompatible with Liferea"
-msgstr ""
-
-#: src/feed.c:994
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr ""
-"Абонаментът не е на разположение:·Сървърът докладва за неподдържано "
-"пренасочване!"
-
-#: src/feed.c:995
-msgid "Client Error"
-msgstr "Грешка в клиента"
-
-#: src/feed.c:996
-msgid "Server Error"
-msgstr "Грешка в сървъра"
-
-#: src/feed.c:997
-msgid "(unknown networking error happened)"
-msgstr "(непозната мрежова грешка)"
-
-#: src/feed.c:1019
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Имаше проблем по време на четенето на абонамента. Моля, проверете адресът и "
-"изходната информация в конзолата."
-
 #. attributes resulting from general feed parsing
-#: src/feed.c:1173 src/item.c:245 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:953 src/item.c:242 src/metadata.c:321 src/ocs_dir.c:141
 #: src/opml.c:215
 msgid "Feed:"
 msgstr "Абонамент:"
 
-#: src/feed.c:1184 src/interface.c:1071 src/interface.c:1473 src/item.c:272
-#: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:221
+#: src/feed.c:953 src/interface.c:519
+#, fuzzy
+msgid "VFolder"
+msgstr "П_апка"
+
+#: src/feed.c:964 src/interface.c:1071 src/interface.c:1473 src/item.c:269
+#: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
 msgid "Source:"
 msgstr "Първичен код:"
 
@@ -685,11 +559,6 @@ msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr ""
 "запазване на резултатите от това търсене като VFolder (виртуална папка), "
 "която ще се появи в списъка на абонаментите"
-
-#: src/interface.c:519
-#, fuzzy
-msgid "VFolder"
-msgstr "П_апка"
 
 #: src/interface.c:526
 msgid "Close search"
@@ -1219,7 +1088,7 @@ msgstr ""
 msgid "Translation"
 msgstr "Превод"
 
-#: src/interface.c:2926 src/ui_feed.c:114
+#: src/interface.c:2926 src/ui_feed.c:363
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Въведете потребителското име и паролата за \"%s\" (%s):"
@@ -1249,11 +1118,11 @@ msgstr ""
 msgid "Rules"
 msgstr ""
 
-#: src/item.c:254 src/item.c:256 src/item.c:267
+#: src/item.c:251 src/item.c:253 src/item.c:264
 msgid "[No title]"
 msgstr "[Без заглавие]"
 
-#: src/item.c:257 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:254 src/metadata.c:322 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "Запис:"
 
@@ -1324,100 +1193,100 @@ msgstr ""
 "това. Ако нямате друго копие на Liferea, моля изтрийте файла \"~/.liferea/"
 "lock\"."
 
-#: src/metadata.c:284
+#: src/metadata.c:286
 msgid "comments"
 msgstr "коментари"
 
-#: src/metadata.c:294
+#: src/metadata.c:296
 #, c-format
 msgid "enclosed file: <a href=\"%s\">%s</a>"
 msgstr ""
 
-#: src/metadata.c:305 src/metadata.c:332
+#: src/metadata.c:307 src/metadata.c:334
 msgid "feed generator"
 msgstr "генератор на абонаменти"
 
-#: src/metadata.c:323
+#: src/metadata.c:325
 msgid "author"
 msgstr "автор"
 
-#: src/metadata.c:324
+#: src/metadata.c:326
 msgid "contributors"
 msgstr "сътрудници"
 
-#: src/metadata.c:325
+#: src/metadata.c:327
 msgid "copyright"
 msgstr "авторски права"
 
-#: src/metadata.c:326
+#: src/metadata.c:328
 msgid "language"
 msgstr "език"
 
-#: src/metadata.c:327
+#: src/metadata.c:329
 msgid "feed published on"
 msgstr "абонамент публикуван на"
 
-#: src/metadata.c:328
+#: src/metadata.c:330
 msgid "content last updated"
 msgstr "съдържанието е осъвременено за последно"
 
-#: src/metadata.c:329
+#: src/metadata.c:331
 msgid "managing editor"
 msgstr "отговорен редактор"
 
-#: src/metadata.c:330
+#: src/metadata.c:332
 msgid "webmaster"
 msgstr "уебмастър"
 
-#: src/metadata.c:331
+#: src/metadata.c:333
 msgid "category"
 msgstr "категория"
 
 #. types for admin
-#: src/metadata.c:339
+#: src/metadata.c:341
 msgid "report errors to"
 msgstr "докладва за грешка на"
 
 #. types for aggregation
-#: src/metadata.c:343
+#: src/metadata.c:345
 msgid "original source"
 msgstr "оригинален източник"
 
-#: src/metadata.c:344
+#: src/metadata.c:346
 msgid "original time"
 msgstr "оригинално време"
 
 #. types for creative commons
-#: src/metadata.c:350
+#: src/metadata.c:352
 msgid "license"
 msgstr "лиценз"
 
 #. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
-#: src/metadata.c:353
+#: src/metadata.c:355
 msgid "creator"
 msgstr "създател"
 
-#: src/metadata.c:354
+#: src/metadata.c:356
 msgid "publisher"
 msgstr "издател"
 
-#: src/metadata.c:355
+#: src/metadata.c:357
 msgid "type"
 msgstr "тип"
 
-#: src/metadata.c:356
+#: src/metadata.c:358
 msgid "format"
 msgstr "формат"
 
-#: src/metadata.c:357
+#: src/metadata.c:359
 msgid "identifier"
 msgstr "идентификатор"
 
-#: src/metadata.c:358
+#: src/metadata.c:360
 msgid "source"
 msgstr "първичен код"
 
-#: src/metadata.c:359
+#: src/metadata.c:361
 msgid "coverage"
 msgstr "покритие"
 
@@ -1490,59 +1359,59 @@ msgstr "<p>Не може да бъде намерено началото на OP
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>Не може да бъде намерена RDF/RSS началото!</p>"
 
-#: src/rule.c:134
+#: src/rule.c:132
 #, fuzzy
 msgid "Item"
 msgstr "Запис:"
 
-#: src/rule.c:134
+#: src/rule.c:132
 msgid "does contain"
 msgstr ""
 
-#: src/rule.c:134
+#: src/rule.c:132
 msgid "does not contain"
 msgstr ""
 
-#: src/rule.c:135
+#: src/rule.c:133
 #, fuzzy
 msgid "Item title"
 msgstr "[Без заглавие]"
 
-#: src/rule.c:135 src/rule.c:136
+#: src/rule.c:133 src/rule.c:134
 msgid "does match"
 msgstr ""
 
-#: src/rule.c:135 src/rule.c:136
+#: src/rule.c:133 src/rule.c:134
 msgid "does not match"
 msgstr ""
 
-#: src/rule.c:136
+#: src/rule.c:134
 msgid "Item body"
 msgstr ""
 
-#: src/rule.c:137
+#: src/rule.c:135
 #, fuzzy
 msgid "Read status"
 msgstr "Поставяне на статус на прочетен"
 
-#: src/rule.c:137
+#: src/rule.c:135
 #, fuzzy
 msgid "is unread"
 msgstr "Следващ непрочетен"
 
-#: src/rule.c:137
+#: src/rule.c:135
 msgid "is read"
 msgstr ""
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "Flag status"
 msgstr ""
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "is flagged"
 msgstr ""
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "is unflagged"
 msgstr ""
 
@@ -1551,117 +1420,244 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Pixmap файлът %s не може да бъде зареден."
 
-#: src/ui_feed.c:115
+#: src/ui_feed.c:62
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr ""
+
+#: src/ui_feed.c:64
+msgid "Payment Required"
+msgstr "Изисква се заплащане"
+
+#: src/ui_feed.c:65
+msgid "Access Forbidden"
+msgstr "Забранен достъп"
+
+#: src/ui_feed.c:66
+msgid "Resource Not Found"
+msgstr "Ресурсът не е намерен"
+
+#: src/ui_feed.c:67
+msgid "Method Not Allowed"
+msgstr "Непозволен метод"
+
+#: src/ui_feed.c:68
+msgid "Not Acceptable"
+msgstr "Неприемлив"
+
+#: src/ui_feed.c:69
+msgid "Proxy Authentication Required"
+msgstr "Нужна е идентификация в сървъра посредник"
+
+#: src/ui_feed.c:70
+msgid "Request Time-Out"
+msgstr "Заявката изтече"
+
+#: src/ui_feed.c:71
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "Този ресурс вече не съществува. Моля, да го изтриете!"
+
+#: src/ui_feed.c:76
+msgid "URL is invalid"
+msgstr "URL-то е невалидно"
+
+#: src/ui_feed.c:79
+msgid "Error connecting to remote host"
+msgstr "Грешка при свързването с отдалечения адрес"
+
+#: src/ui_feed.c:80
+msgid "Hostname could not be found"
+msgstr "Хостът не може да бъде намерен"
+
+#: src/ui_feed.c:81
+msgid "Network connection was refused by the remote host"
+msgstr "Мрежовата връзка беше отказана от отдалечения хост"
+
+#: src/ui_feed.c:82
+msgid "Remote host did not finish sending data"
+msgstr "Отдалеченият хост не приключи с изпращането на данните"
+
+#. Transfer errors
+#: src/ui_feed.c:84
+msgid "Too many HTTP redirects were encountered"
+msgstr "Твърде много HTTP пренасочвания"
+
+#: src/ui_feed.c:87
+msgid "Remote host sent an invalid response"
+msgstr "Отдалеченият хост изпрати невалиден отговор"
+
+#: src/ui_feed.c:94
+msgid "Authentication failed"
+msgstr "Идентифицирането е неуспешно"
+
+#: src/ui_feed.c:96
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr ""
+
+#: src/ui_feed.c:102
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr ""
+"Абонаментът не е на разположение:·Сървърът докладва за неподдържано "
+"пренасочване!"
+
+#: src/ui_feed.c:103
+msgid "Client Error"
+msgstr "Грешка в клиента"
+
+#: src/ui_feed.c:104
+msgid "Server Error"
+msgstr "Грешка в сървъра"
+
+#: src/ui_feed.c:105
+msgid "(unknown networking error happened)"
+msgstr "(непозната мрежова грешка)"
+
+#: src/ui_feed.c:127
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"Имаше проблем по време на четенето на абонамента. Моля, проверете адресът и "
+"изходната информация в конзолата."
+
+#: src/ui_feed.c:161
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" не е продължен. Liferea няма да го осъвременява повече!"
+
+#: src/ui_feed.c:163
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" не се промени след последното осъвременяване"
+
+#: src/ui_feed.c:170
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "Адресът на \"%s\" беше променен за постоянно и затова беше осъвременен"
+
+#: src/ui_feed.c:182
+#, fuzzy, c-format
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>%s"
+msgstr ""
+"<p>Видът на абонамента не може да бъде определен.·Моля, проверете дали това "
+"е поддържан от програмата формат!</p>"
+
+#: src/ui_feed.c:199
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" осъвременени..."
+
+#: src/ui_feed.c:208
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "\"%s\" не е достъпен"
+
+#: src/ui_feed.c:364
 #, fuzzy
 msgid "Unknown source"
 msgstr "оригинален източник"
 
-#: src/ui_feed.c:207
+#: src/ui_feed.c:456
 msgid "Directories cannot be autoupdated."
 msgstr "Директориите не могат да бъдат осъвременени автоматично."
 
-#: src/ui_feed.c:210
+#: src/ui_feed.c:459
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Доставчикът на този източник предлага да поставите периот за осъвременяване "
 "от %d минути."
 
-#: src/ui_feed.c:212
+#: src/ui_feed.c:461
 msgid "This feed specifies no default update interval."
 msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
 
-#: src/ui_feed.c:554
+#: src/ui_feed.c:803
 msgid "Choose File"
 msgstr "Избор на файл"
 
-#: src/ui_feedlist.c:414
+#: src/ui_feedlist.c:356
 msgid "You have to select a feed entry"
 msgstr "Трябва да изберете адрес на източник"
 
-#: src/ui_feedlist.c:424
+#: src/ui_feedlist.c:366
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea·е в изключен режим.·Осъвременявания на абонаментите не са възможни."
 
-#: src/ui_feedlist.c:446
+#: src/ui_feedlist.c:387
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:486
-#, c-format
-msgid "Deleting \"%s\""
-msgstr "Изтриване на \"%s\""
-
-#: src/ui_feedlist.c:487
-#, c-format
-msgid "Are you sure that you want to delete %s and its contents?"
-msgstr "Сигурни ли сте, че искате да изтриете·%s·и всички записи в него?"
-
-#: src/ui_feedlist.c:489
+#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
 msgid "Deleting entry"
 msgstr "Изтриване на запис"
 
-#: src/ui_feedlist.c:490
-#, c-format
-msgid "Are you sure that you want to delete %s?"
+#: src/ui_feedlist.c:430
+#, fuzzy, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "Сигурни ли сте, че искате да изтриете·%s·и всички записи в него?"
+
+#: src/ui_feedlist.c:433
+#, fuzzy, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Сигурни ли сте, че искате да изтриете·%s?"
 
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:441
 msgid "Deletion Confirmation"
 msgstr "Потвърждаване при изтриване"
 
-#: src/ui_feedlist.c:536
+#: src/ui_feedlist.c:478
 msgid "You must select a feed entry"
 msgstr "Трябва да изберете запис"
 
-#: src/ui_feedlist.c:537
+#: src/ui_feedlist.c:479
 msgid "You must select a feed entry."
 msgstr "Трябва да изберете запис."
 
-#: src/ui_feedlist.c:558
+#: src/ui_feedlist.c:505
 msgid "New subscription"
 msgstr "Нов абонамент"
 
-#: src/ui_folder.c:95 src/ui_folder.c:117 src/ui_folder.c:137
+#: src/ui_folder.c:76 src/ui_folder.c:102
 msgid "A folder must be selected."
 msgstr "Папката трябва да бъде избрана."
 
-#: src/ui_folder.c:144
-msgid "A folder must be empty to delete it!"
-msgstr "Папката трябва да бъде празна за да я изтриете!"
-
-#: src/ui_folder.c:244
+#: src/ui_folder.c:220
 msgid "<i>(empty)</i>"
 msgstr "<i>(празен)</i>"
 
-#: src/ui_folder.c:374
+#: src/ui_folder.c:349
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "вътрешна грешка! непознат тип запис! не може да бъде изобразенаподходяща "
 "икона!\n"
 
-#: src/ui_itemlist.c:286
+#: src/ui_itemlist.c:304
 msgid "Date"
 msgstr "Дата"
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:315
 msgid "Headline"
 msgstr "Заглавие"
 
-#: src/ui_itemlist.c:599 src/ui_itemlist.c:640
+#: src/ui_itemlist.c:615 src/ui_itemlist.c:656
 msgid "No item has been selected"
 msgstr "Няма избран запис"
 
-#: src/ui_itemlist.c:623 src/ui_itemlist.c:643
+#: src/ui_itemlist.c:639 src/ui_itemlist.c:659
 msgid "You must select a feed to delete its items!"
 msgstr "Трябва да изберете абонамент, за да изтриете неговите записи!"
 
-#: src/ui_itemlist.c:675
+#: src/ui_itemlist.c:691
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:707
+#: src/ui_itemlist.c:723
 msgid "There are no unread items "
 msgstr "Няма непрочетени записи "
 
@@ -1783,16 +1779,17 @@ msgid "/_Update"
 msgstr "/_Осъвременяване"
 
 #: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:106
-msgid "/_Mark As Read"
-msgstr "/_Маркиране като прочетени"
+msgid "/_Mark All As Read"
+msgstr "/Маркирай всички като прочетени"
 
 #: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:107 src/ui_popup.c:115
 msgid "/_New"
 msgstr "/_Нов"
 
 #: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:108 src/ui_popup.c:116
-msgid "/_New/New _Feed"
-msgstr "/_Нов/Нов _абонамент"
+#, fuzzy
+msgid "/_New/New _Subscription"
+msgstr "_Нов абонамент"
 
 #: src/ui_popup.c:90 src/ui_popup.c:100 src/ui_popup.c:109 src/ui_popup.c:117
 msgid "/_New/New F_older"
@@ -1917,6 +1914,10 @@ msgstr "Изчистване на таймерите за осъвременяв
 msgid "Searching for \"%s\""
 msgstr "Търсене за \"%s\""
 
+#: src/ui_search.c:96
+msgid "Please do a search first!"
+msgstr ""
+
 #: src/ui_tray.c:90
 #, fuzzy, c-format
 msgid "%d new item!"
@@ -1948,6 +1949,18 @@ msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
+
+#~ msgid "Deleting \"%s\""
+#~ msgstr "Изтриване на \"%s\""
+
+#~ msgid "A folder must be empty to delete it!"
+#~ msgstr "Папката трябва да бъде празна за да я изтриете!"
+
+#~ msgid "/_Mark As Read"
+#~ msgstr "/_Маркиране като прочетени"
+
+#~ msgid "/_New/New _Feed"
+#~ msgstr "/_Нов/Нов _абонамент"
 
 #~ msgid "\"%s\" has no new items"
 #~ msgstr "\"%s\" няма нови записи"
@@ -2482,9 +2495,6 @@ msgstr ""
 
 #~ msgid "Could not find PIE header! Feed was not added!"
 #~ msgstr "Не може да бъде намерена PIE заглавката!"
-
-#~ msgid "/_Mark All As Read"
-#~ msgstr "/Маркирай всички като прочетени"
 
 #~ msgid "Feedster search request failed.\n"
 #~ msgstr "Търсенето чрез Feedster се провали.\n"

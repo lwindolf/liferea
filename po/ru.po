@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-03 23:31+0400\n"
+"POT-Creation-Date: 2004-09-08 01:19+0200\n"
 "PO-Revision-Date: 2004-08-28 18:09+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian\n"
@@ -55,45 +55,51 @@ msgstr ""
 "Неожиданное окончание символьноц последовательности или повреждённая "
 "кодировка UTF-8! Некоторые символы опущены!"
 
-#: src/conf.c:486
+#. "feedlist.opml" is translatable so that translators can provide a localized default feed list
+#: src/conf.c:462
+msgid "feedlist.opml"
+msgstr ""
+
+#: src/conf.c:487
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Ошибка переименования %s в %s\n"
 
-#: src/conf.c:515
+#: src/conf.c:516
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "Пространство имён RSS %s ещё не сконфигурировано! Активация...\n"
 
 #. FIXME: remove this migration constants with 0.9.x
 #. _() for HELP1URL to allow localised help feeds
-#: src/export.c:36
+#: src/export.c:38
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/export.c:37
+#: src/export.c:39
 msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:370
+#: src/export.c:411
 msgid "Liferea Help"
 msgstr "Помощь по Liferea"
 
-#: src/export.c:383
+#: src/export.c:424
 msgid "Online Help Feed"
 msgstr "Лента Новостей Онлайновой помощи"
 
-#: src/export.c:399
+#: src/export.c:440
 msgid "Liferea SF News"
 msgstr "Новости Liferea на SF.net"
 
-#: src/export.c:470 src/export.c:472
+#: src/export.c:525 src/export.c:527
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
+msgstr ""
+"Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
-#: src/export.c:476 src/export.c:478
+#: src/export.c:531 src/export.c:533
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -101,61 +107,61 @@ msgstr ""
 "Пустой документ! Документ OPML \"%s\" не должен быть пустым во время "
 "импортирования."
 
-#: src/export.c:486 src/export.c:488
+#: src/export.c:541 src/export.c:543
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/export.c:506
+#: src/export.c:565
 msgid "Imported feed list"
 msgstr "Имппортированный лист лент новостей"
 
-#: src/export.c:517
+#: src/export.c:576
 msgid "Import Feed List"
 msgstr "Импортировать Список Лент Новостей"
 
-#: src/export.c:517
+#: src/export.c:576
 msgid "Import"
 msgstr "Импорт"
 
-#: src/export.c:527
+#: src/export.c:586
 msgid "Error while exporting feed list!"
 msgstr "Ошибка во время экспорта списка лент новостей!"
 
-#: src/export.c:529
+#: src/export.c:588
 msgid "Feed List exported!"
 msgstr "Список лент новостей экспортирован!"
 
-#: src/export.c:536
+#: src/export.c:595
 msgid "Export Feed List"
 msgstr "Экспортировать Список Лент Новостей"
 
-#: src/export.c:536
+#: src/export.c:595
 msgid "Export"
 msgstr "Экспорт"
 
-#: src/feed.c:143
+#: src/feed.c:141
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>Ошибка XML во время чтения ленты новостей! Лента новостей \"%s\" не может "
 "быть загружена!</p>"
 
-#: src/feed.c:149 src/feed.c:381
+#: src/feed.c:147 src/feed.c:379
 msgid "<p>Empty document!</p>"
 msgstr "<p>Пустой документ!</p>"
 
-#: src/feed.c:156
+#: src/feed.c:154
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Недопустимый XML!</p>"
 
-#: src/feed.c:223
+#: src/feed.c:221
 msgid "There were errors while parsing a feed"
 msgstr "Произошла ошибка во время парсинга ленты новостей"
 
-#: src/feed.c:224
+#: src/feed.c:222
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -166,12 +172,13 @@ msgstr ""
 "liferea.sourceforge.net/index.php#supported_formats\">является "
 "поддерживаемым</a>.</p>"
 
-#: src/feed.c:360 src/feed.c:361
+#: src/feed.c:358 src/feed.c:359
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr "Ошибка во время чтения файла кэша \"%s\" ! Файл кэша не может быть загружен!"
+msgstr ""
+"Ошибка во время чтения файла кэша \"%s\" ! Файл кэша не может быть загружен!"
 
-#: src/feed.c:373
+#: src/feed.c:371
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -180,42 +187,46 @@ msgstr ""
 "<p>Ошибка XML во время парсинга файла кэша! Файл кэша \"%s\" ленты новостей "
 "не может быть загружен!</p>"
 
-#: src/feed.c:392
+#: src/feed.c:390
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" не является допустимым файлом кэша ! Невозможно прочитать файл "
 "кеша!</p>"
 
-#: src/feed.c:443
+#: src/feed.c:441
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Произошла ошибка во время парсинга файла кэша \"%s\""
 
-#: src/feed.c:505
+#: src/feed.c:503
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Лента новостей \"%s\" уже обновляется!"
 
-#: src/feed.c:510
+#: src/feed.c:508
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Лента новостей прекратила своё существование. Liferea не будет больше "
 "обновлять её!"
 
-#: src/feed.c:514
+#: src/feed.c:512
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Обновление: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:949 src/item.c:242 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:953 src/item.c:242 src/metadata.c:321 src/ocs_dir.c:141
 #: src/opml.c:215
 msgid "Feed:"
 msgstr "Лента новостей:"
 
-#: src/feed.c:960 src/interface.c:1071 src/interface.c:1473 src/item.c:269
-#: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:221
+#: src/feed.c:953 src/interface.c:519
+msgid "VFolder"
+msgstr "VFolder"
+
+#: src/feed.c:964 src/interface.c:1071 src/interface.c:1473 src/item.c:269
+#: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
 msgid "Source:"
 msgstr "Источник:"
 
@@ -312,19 +323,6 @@ msgstr "Ошибка команды браузера: %s"
 msgid "Starting: \"%s\""
 msgstr "Запуск: \"%s\""
 
-#. *
-#. * @{ Common HTML definitions
-#. *
-#. * Used styles should be defined in the
-#. * liferea.css style sheet! For some important HTML literals
-#. * like the item and feed description headers the styles
-#. * are duplicated here just in case the style sheet is
-#. * missing.
-#.
-#. RSS feed/item output definitions (some are used by OCS too!)
-#. OCS direntry output definitions
-#. condensed mode shading
-#. HTTP and parsing error text
 #: src/htmlview.h:97
 #, c-format
 msgid ""
@@ -571,10 +569,6 @@ msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr ""
 "сохранить этот поиск в виде VFolder, которая появится в списке лент новостей"
 
-#: src/interface.c:519
-msgid "VFolder"
-msgstr "VFolder"
-
 #: src/interface.c:526
 msgid "Close search"
 msgstr "Закрыть поиск"
@@ -616,7 +610,8 @@ msgstr "<span weight=\"bold\">Интервал Обновления</span>"
 #: src/interface.c:957
 #, c-format
 msgid "This feed's refresh interval defaults to %d seconds."
-msgstr "Интервал обновления этой ленты новостей по умолчанию равен %d секундам(е)"
+msgstr ""
+"Интервал обновления этой ленты новостей по умолчанию равен %d секундам(е)"
 
 #: src/interface.c:968
 msgid "Feed Refresh _Interval:"
@@ -1109,7 +1104,7 @@ msgstr ""
 msgid "Translation"
 msgstr "Перевод"
 
-#: src/interface.c:2926 src/ui_feed.c:367
+#: src/interface.c:2926 src/ui_feed.c:363
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Введите имя пользователя и пароль для \"%s\" (%s):"
@@ -1147,7 +1142,7 @@ msgstr "Правила"
 msgid "[No title]"
 msgstr "[Без заголовка]"
 
-#: src/item.c:254 src/metadata.c:320 src/ocs_dir.c:102
+#: src/item.c:254 src/metadata.c:322 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "Новость:"
 
@@ -1205,6 +1200,7 @@ msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  Выводить подробные сообщения отладки"
 
 #: src/main.c:222
+#, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "Аргумент --session должен быть сопровождён параметром.\n"
 
@@ -1222,100 +1218,100 @@ msgstr ""
 "Другая копия Liferea была запущена. Если Liferea не была запущена, а вы всё "
 "равно видите это сообщение, то удалите файл \"~/.liferea/lock\"."
 
-#: src/metadata.c:284
+#: src/metadata.c:286
 msgid "comments"
 msgstr "комментарии"
 
-#: src/metadata.c:294
+#: src/metadata.c:296
 #, c-format
 msgid "enclosed file: <a href=\"%s\">%s</a>"
 msgstr "заключенный файл: <a href=\"%s\">%s</a>"
 
-#: src/metadata.c:305 src/metadata.c:332
+#: src/metadata.c:307 src/metadata.c:334
 msgid "feed generator"
 msgstr "генератор ленты новостей"
 
-#: src/metadata.c:323
+#: src/metadata.c:325
 msgid "author"
 msgstr "автор"
 
-#: src/metadata.c:324
+#: src/metadata.c:326
 msgid "contributors"
 msgstr "участники"
 
-#: src/metadata.c:325
+#: src/metadata.c:327
 msgid "copyright"
 msgstr "авторские права"
 
-#: src/metadata.c:326
+#: src/metadata.c:328
 msgid "language"
 msgstr "язык"
 
-#: src/metadata.c:327
+#: src/metadata.c:329
 msgid "feed published on"
 msgstr "лента запущена"
 
-#: src/metadata.c:328
+#: src/metadata.c:330
 msgid "content last updated"
 msgstr "содержимое было обновлено последний раз"
 
-#: src/metadata.c:329
+#: src/metadata.c:331
 msgid "managing editor"
 msgstr "руководящий редактор"
 
-#: src/metadata.c:330
+#: src/metadata.c:332
 msgid "webmaster"
 msgstr "вебмастер"
 
-#: src/metadata.c:331
+#: src/metadata.c:333
 msgid "category"
 msgstr "категория"
 
 #. types for admin
-#: src/metadata.c:339
+#: src/metadata.c:341
 msgid "report errors to"
 msgstr "сообщать об ошибках"
 
 #. types for aggregation
-#: src/metadata.c:343
+#: src/metadata.c:345
 msgid "original source"
 msgstr "исходныйисточник"
 
-#: src/metadata.c:344
+#: src/metadata.c:346
 msgid "original time"
 msgstr "исходное время"
 
 #. types for creative commons
-#: src/metadata.c:350
+#: src/metadata.c:352
 msgid "license"
 msgstr "лицензия"
 
 #. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
-#: src/metadata.c:353
+#: src/metadata.c:355
 msgid "creator"
 msgstr "создатель"
 
-#: src/metadata.c:354
+#: src/metadata.c:356
 msgid "publisher"
 msgstr "издатель"
 
-#: src/metadata.c:355
+#: src/metadata.c:357
 msgid "type"
 msgstr "тип"
 
-#: src/metadata.c:356
+#: src/metadata.c:358
 msgid "format"
 msgstr "формат"
 
-#: src/metadata.c:357
+#: src/metadata.c:359
 msgid "identifier"
 msgstr "идентификатор"
 
-#: src/metadata.c:358
+#: src/metadata.c:360
 msgid "source"
 msgstr "источник"
 
-#: src/metadata.c:359
+#: src/metadata.c:361
 msgid "coverage"
 msgstr "охват"
 
@@ -1388,55 +1384,55 @@ msgstr "<p>Невозможно найти заголовк Atom/Echo/PIE!</p>"
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>Невозможно найти заголовк RDF/RSS!</p>"
 
-#: src/rule.c:134
+#: src/rule.c:132
 msgid "Item"
 msgstr "Новость"
 
-#: src/rule.c:134
+#: src/rule.c:132
 msgid "does contain"
 msgstr "содержит"
 
-#: src/rule.c:134
+#: src/rule.c:132
 msgid "does not contain"
 msgstr "не содержит"
 
-#: src/rule.c:135
+#: src/rule.c:133
 msgid "Item title"
 msgstr "Заголовок новости"
 
-#: src/rule.c:135 src/rule.c:136
+#: src/rule.c:133 src/rule.c:134
 msgid "does match"
 msgstr "совпадает"
 
-#: src/rule.c:135 src/rule.c:136
+#: src/rule.c:133 src/rule.c:134
 msgid "does not match"
 msgstr "не совпадает"
 
-#: src/rule.c:136
+#: src/rule.c:134
 msgid "Item body"
 msgstr "Тело новости"
 
-#: src/rule.c:137
+#: src/rule.c:135
 msgid "Read status"
 msgstr "Статус прочтения"
 
-#: src/rule.c:137
+#: src/rule.c:135
 msgid "is unread"
 msgstr "непрочитана"
 
-#: src/rule.c:137
+#: src/rule.c:135
 msgid "is read"
 msgstr "прочитана"
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "Flag status"
 msgstr "Статус флага"
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "is flagged"
 msgstr "с флагом"
 
-#: src/rule.c:138
+#: src/rule.c:136
 msgid "is unflagged"
 msgstr "без флага"
 
@@ -1585,91 +1581,82 @@ msgstr "\"%s\" обновлён..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступен"
 
-#: src/ui_feed.c:368
+#: src/ui_feed.c:364
 msgid "Unknown source"
 msgstr "Неизвестный источник"
 
-#: src/ui_feed.c:460
+#: src/ui_feed.c:456
 msgid "Directories cannot be autoupdated."
 msgstr "Директории не могут быть автоматически обновлены."
 
-#: src/ui_feed.c:463
+#: src/ui_feed.c:459
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Создатель этой ленты новостей рекомендует интервал обновления в %d минут(у)"
 "(ы)."
 
-#: src/ui_feed.c:465
+#: src/ui_feed.c:461
 msgid "This feed specifies no default update interval."
 msgstr "Эта лента новостей не обозначает интервал обновления по умолчанию."
 
-#: src/ui_feed.c:807
+#: src/ui_feed.c:803
 msgid "Choose File"
 msgstr "Выберите файл"
 
-#: src/ui_feedlist.c:360
+#: src/ui_feedlist.c:356
 msgid "You have to select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/ui_feedlist.c:370
+#: src/ui_feedlist.c:366
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в режиме \"отключена\". Обновления невозможны."
 
-#: src/ui_feedlist.c:392
+#: src/ui_feedlist.c:387
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Заметка: Использования фильтров подписки отключает возможность использования "
 "drag & drop"
 
-#: src/ui_feedlist.c:434
-#, c-format
-msgid "Deleting \"%s\""
-msgstr "Удаление \"%s\""
-
-#: src/ui_feedlist.c:435
-#, c-format
-msgid "Are you sure that you want to delete %s and its contents?"
-msgstr "Вы действительно хотите удалить каталог %s и его содержимое"
-
-#: src/ui_feedlist.c:437
+#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
 msgid "Deleting entry"
 msgstr "Удаление записи"
 
-#: src/ui_feedlist.c:438
-#, c-format
-msgid "Are you sure that you want to delete %s?"
+#: src/ui_feedlist.c:430
+#, fuzzy, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "Вы действительно хотите удалить каталог %s и его содержимое"
+
+#: src/ui_feedlist.c:433
+#, fuzzy, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Вы действительно хотите удалить %s?"
 
-#: src/ui_feedlist.c:446
+#: src/ui_feedlist.c:441
 msgid "Deletion Confirmation"
 msgstr "Потверждение об Удалении"
 
-#: src/ui_feedlist.c:484
+#: src/ui_feedlist.c:478
 msgid "You must select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/ui_feedlist.c:485
+#: src/ui_feedlist.c:479
 msgid "You must select a feed entry."
 msgstr "Вы должны выбрать строку с лентой новостей."
 
-#: src/ui_feedlist.c:506
+#: src/ui_feedlist.c:505
 msgid "New subscription"
 msgstr "Новая подписка"
 
-#: src/ui_folder.c:95 src/ui_folder.c:117 src/ui_folder.c:137
+#: src/ui_folder.c:76 src/ui_folder.c:102
 msgid "A folder must be selected."
 msgstr "Папка должна быть выбрана."
 
-#: src/ui_folder.c:144
-msgid "A folder must be empty to delete it!"
-msgstr "Папка должна быть пуста для удаления!"
-
-#: src/ui_folder.c:244
+#: src/ui_folder.c:220
 msgid "<i>(empty)</i>"
 msgstr "<i>(пусто)</i>"
 
-#: src/ui_folder.c:374
+#: src/ui_folder.c:349
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "внутренняя ошибка! неизвестный тип записи! невозможно отобразить "
@@ -1683,21 +1670,21 @@ msgstr "Дата"
 msgid "Headline"
 msgstr "Заголовок"
 
-#: src/ui_itemlist.c:614 src/ui_itemlist.c:655
+#: src/ui_itemlist.c:615 src/ui_itemlist.c:656
 msgid "No item has been selected"
 msgstr "Ни одна новость не выбрана"
 
-#: src/ui_itemlist.c:638 src/ui_itemlist.c:658
+#: src/ui_itemlist.c:639 src/ui_itemlist.c:659
 msgid "You must select a feed to delete its items!"
 msgstr "Вы должно выбрать ленту новостей для удаления её элементов!"
 
-#: src/ui_itemlist.c:690
+#: src/ui_itemlist.c:691
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "внутренняя ошибка! невозможно получить древовидный диалог выбора ленты "
 "новостей!\n"
 
-#: src/ui_itemlist.c:722
+#: src/ui_itemlist.c:723
 msgid "There are no unread items "
 msgstr "Нет непрочитанных новостей "
 
@@ -1990,3 +1977,9 @@ msgstr ""
 "Этот элемент, содержит HTML тэг <object>, который не поддерживается в "
 "GtkHTML2.\n"
 "Плагины, содержащиеся в элементе не будут отображены."
+
+#~ msgid "Deleting \"%s\""
+#~ msgstr "Удаление \"%s\""
+
+#~ msgid "A folder must be empty to delete it!"
+#~ msgstr "Папка должна быть пуста для удаления!"

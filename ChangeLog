@@ -1,4 +1,4 @@
-2004-??-??  ??? <???>
+2004-09-??  ??? <???>
 
 	Version 0.6.0
 	
@@ -11,12 +11,26 @@
 	  difference is that the version in the URL is updated
 	  automatically and that old items are dropped. This
 	  also removes the special icon of the help folder.
-	  (Lars Linder)
+	  (Lars Lindner)
+	* Removed the ugly unavailable icon. Now the GNOME stock
+	  icon for the error dialog is used. (Lars Lindner)
+	* Added a default feed list that is installed upon the
+	  first program start. Added a Spanish localized version
+	  by Topopardo. (Lars Lindner)
 	* Added support for reading subscriptions URLs from 
 	  a named pipe (~/.liferea/new_subscription) to allow
 	  external programs to add feeds. (Lars Lindner)
 	* Itemlist sorting order is now saved on a per-feed basis.
 	  (Nathan Conrad)
+	* Experimental vfolder implementation. When you do a search
+	  you now can save the search result as a vfolder. There
+	  is still a lot to do but just play around and write us
+	  your opinion! (Lars Lindner)
+	  
+	Bugfixes:
+	
+	* Fixed a bug that caused a crash when right clicking the
+	  feed list in filtered mode. (Lars Lindner)
 
 2004-08-31  Lars Lindner <lars.lindner@gmx.de>
 
