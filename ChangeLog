@@ -1,11 +1,20 @@
-2003-10-??  Lars Lindner <lars.lindner@gmx.net>
+2003-10-12  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.4.1
 	
-	* proxy support was broken	
-	* basic OPML support (reads the compatible parts of OML too)
-	* added a file selection dialog to the new subscription dialog
-	* added a feed type autodetection function
+	* Startup output message of used proxy was broken.
+	* Fixed broken "update all" toolbar button.
+	* Fixed the 100% cpu usage when detached from console.
+	* Basic OPML support (reads the compatible parts of OML too)
+	* Added a file selection dialog to the new subscription dialog
+	  to make local file subscriptions more comfortable.
+	* Added a feed type autodetection function which can be
+	  selected in the new subscription dialog.
+	* Added a update all feeds on startup preference, the
+	  program now automatically updates all feeds on startup
+	  if this option is enabled. The option is disabled
+	  by default.
+	* Obligatory code cleanup.
 	
 2003-10-10  Lars Lindner <lars.lindner@gmx.net>
 

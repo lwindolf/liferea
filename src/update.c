@@ -31,6 +31,7 @@
 
 extern GHashTable	*feeds;
 extern GHashTable	*feedHandler;
+extern feedPtr		selected_fp;
 
 GMutex * feeds_lock = NULL;
 static GMutex * cond_mutex = NULL;
@@ -137,14 +138,11 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		g_mutex_unlock(feeds_lock);
 				
 		gdk_threads_enter();
-		tmp_key = getMainFeedListViewSelection();	// FIXME: inperformant
 
-		if(NULL != tmp_key) {
-			if(0 == strcmp(tmp_key, (gchar *)key)) {
-				clearItemList();
-				loadItemList(fp, NULL);
-				preFocusItemlist();
-			}
+		if(selected_fp == fp) {
+			clearItemList();
+			loadItemList(fp, NULL);
+			preFocusItemlist();
 		}
 		
 		g_mutex_lock(feeds_lock);

@@ -69,13 +69,21 @@ extern GMutex 		*feeds_lock; // FIXME!
 
 static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
 static gboolean	itemlist_mode = TRUE;	/* TRUE means three pane, FALSE means two panes */
-static feedPtr	new_feed;		/* used by new feed dialog */
 
-/* two globals to keep selected entry info while DND actions */
+/* flag to check if DND should be aborted (e.g. on folders and help feeds) */
 static gboolean	drag_successful = FALSE;
-static gint	drag_source_type = FST_INVALID;
-static gchar	*drag_source_key = NULL;
-static gchar	*drag_source_keyprefix = NULL;
+
+/* feedPtr which points to the last selected (and in most cases actually selected) feed */
+feedPtr	selected_fp = NULL;
+
+/* contains the type of the actually selected feedlist entry */
+gint selected_type = FST_INVALID;
+
+/* path of root folder */
+static gchar	*root_prefix = "";
+
+/* pointer to the selected directory key prefix, needed when creating new feeds */
+static gchar	*selected_keyprefix = "";
 
 /* prototypes */
 void preFocusItemlist(void);
@@ -87,133 +95,10 @@ void displayItemList(void);
 void clearItemList(void);
 
 /*------------------------------------------------------------------------------*/
-/* helper functions	FIXME: need to be cleaned up (no window/feedlist parameter	*/
+/* helper functions								*/
 /*------------------------------------------------------------------------------*/
 
-static gchar * getFeedListSelection(GtkWidget *feedlist) {
-	GtkTreeSelection	*select;
-        GtkTreeModel		*model;
-	GtkTreeIter		iter;	
-	gchar			*feedkey = NULL;
-		
-	if(NULL == feedlist) {
-		/* this is possible for the feed list editor window */
-		return NULL;
-	}
-			
-	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(feedlist)))) {
-		print_status(_("could not retrieve selection of feed list!"));
-		return NULL;
-	}
-
-        if(gtk_tree_selection_get_selected (select, &model, &iter))
-                gtk_tree_model_get(model, &iter, FS_KEY, &feedkey, -1);
-	else {
-		return NULL;
-	}
-	
-	return feedkey;
-}
-
-gchar * getMainFeedListViewSelection(void) {
-	GtkWidget	*feedlistview;
-	
-	if(NULL == mainwindow)
-		return NULL;
-	
-	if(NULL == (feedlistview = lookup_widget(mainwindow, "feedlist"))) {
-		g_warning(_("feed list widget lookup failed!\n"));
-		return NULL;
-	}
-	
-	return getFeedListSelection(feedlistview);
-}
-
-// FIXME: use something like getFeedPrefix()
-gchar * getFeedListSelectionPrefix(GtkWidget *window) {
-	GtkWidget		*treeview;
-	GtkTreeSelection	*select;
-        GtkTreeModel		*model;
-	GtkTreeIter		iter;
-	GtkTreeIter		topiter;	
-	gchar			*keyprefix = NULL;
-	gboolean		valid;
-	gint			tmp_type;
-	
-	if(NULL == window)
-		return NULL;
-
-	if(NULL == (treeview = lookup_widget(window, "feedlist"))) {
-		g_warning(_("entry list widget lookup failed!\n"));
-		return NULL;
-	}
-		
-	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-		print_status(_("could not retrieve selection of entry list!"));
-		return NULL;
-	}
-
-        if(gtk_tree_selection_get_selected(select, &model, &iter)) {
-		
-		/* the selected iter is usually not the directory iter... */
-		if(0 != gtk_tree_store_iter_depth(GTK_TREE_STORE(model), &iter)) {
-
-			/* scan through top level iterators till we find
-			   the correct ancestor */
-			valid = gtk_tree_model_get_iter_first(model, &topiter);
-			while(valid) {	
-				if(gtk_tree_store_is_ancestor(GTK_TREE_STORE(model), &topiter, &iter)) {
-			                gtk_tree_model_get(model, &topiter, FS_KEY, &keyprefix, -1);
-					return keyprefix;
-				}
-				valid = gtk_tree_model_iter_next(model, &topiter);
-			}
-			g_warning(_("internal error! could not find folder iterator of selected entry\n"));
-			return NULL;
-		} else {
-	                gtk_tree_model_get(model, &iter, FS_KEY, &keyprefix, 
-							 FS_TYPE, &tmp_type, -1);
-			if(IS_NODE(tmp_type))
-				return keyprefix;	/* selected iter is either a folder... */
-			else
-				return g_strdup("");	/* or a root folder feed entry */
-		}
-	}
-	
-	/* if nothing was selected or the tree depth is 0
-	   -> we assume the default (root) folder */
-	return g_strdup("");
-}
-
-gint getFeedListSelectionType(GtkWidget *window) {
-	GtkWidget		*treeview;
-	GtkTreeSelection	*select;
-        GtkTreeModel		*model;
-	GtkTreeIter		iter;	
-	gint			type;
-	
-	if(NULL == window)
-		return FST_INVALID;
-	
-	if(NULL == (treeview = lookup_widget(window, "feedlist"))) {
-		g_warning(_("entry list widget lookup failed!\n"));
-		return FST_INVALID;
-	}
-		
-	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-		print_status(_("could not retrieve selection of entry list!"));
-		return FST_INVALID;
-	}
-
-        if(gtk_tree_selection_get_selected (select, &model, &iter))
-                gtk_tree_model_get(model, &iter, FS_TYPE, &type, -1);
-	else {
-		return FST_INVALID;
-	}
-	
-	return type;
-}
-
+/* returns the selected feed list iterator */
 GtkTreeIter * getFeedListIter(GtkWidget *window) {
 	GtkTreeIter		*iter;
 	GtkWidget		*treeview;
@@ -272,15 +157,7 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 
-void on_popup_refresh_selected(void) {
-	gchar	*feedkey;
-	
-	if(NULL == mainwindow)
-		return;	
-	
-	if(NULL != (feedkey = getFeedListSelection(lookup_widget(mainwindow, "feedlist"))))
-		updateFeed(getFeed(feedkey));
-}
+void on_popup_refresh_selected(void) { updateFeed(selected_fp); }
 
 /*------------------------------------------------------------------------------*/
 /* preferences dialog callbacks 						*/
@@ -365,27 +242,20 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_deletebtn(GtkWidget *feedlist) {
 	GtkTreeIter	*iter;
-	gchar		*keyprefix;
-	gchar		*key;
-	feedPtr		fp;
 	
-	/* user_data has to contain the feed list widget reference */
-	key = getFeedListSelection(feedlist);
-	keyprefix = getFeedListSelectionPrefix(mainwindow);
-	iter = getFeedListIter(mainwindow);
-
 	/* make sure thats no grouping iterator */
-	if(NULL != key) {
+	if(NULL != iter) {
 		/* block deleting of help feeds */
-		if(0 == strncmp(key, "help", 4)) {
-			showErrorBox("You can't delete help feeds!");
+		if(0 == strncmp(getFeedKey(selected_fp), "help", 4)) {
+			showErrorBox(_("You can't delete help feeds!"));
 			return;
 		}
 
-		fp = getFeed(key);
-		print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(fp)));
-		gtk_tree_store_remove(getFeedStore(), iter);
-		removeFeed(fp);
+		print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp)));
+		iter = getFeedListIter(mainwindow);
+		gtk_tree_store_remove(feedstore, iter);
+		removeFeed(selected_fp);
+		selected_fp = NULL;
 		g_free(iter);
 				
 		clearItemList();
@@ -406,24 +276,16 @@ void on_popup_delete_selected(void) {
 /*------------------------------------------------------------------------------*/
 /* property dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
-// FIXME: change getFeed*Selection*() to static fp variable!!!!
-void on_propbtn(GtkWidget *feedlist) {
-	gint		type;
-	feedPtr		fp;
-	gchar		*feedkey;
+
+void on_propbtn(GtkWidget *widget) {
+	feedPtr		fp = selected_fp;
 	GtkWidget 	*feednameentry, *feedurlentry, *updateIntervalBtn;
 	GtkAdjustment	*updateInterval;
 	gint		defaultInterval;
 	gchar		*defaultIntervalStr;
 	
-	/* user_data has to contain the feed list widget reference */
-	if(NULL == (feedkey = getFeedListSelection(feedlist))) {
-		print_status(_("Internal Error! Feed pointer NULL!\n"));
-		return;
-	}
-
 	/* block changing of help feeds */
-	if(0 == strncmp(feedkey, "help", strlen("help"))) {
+	if(0 == strncmp(getFeedKey(fp), "help", strlen("help"))) {
 		showErrorBox("You can't modify help feeds!");
 		return;
 	}
@@ -439,12 +301,10 @@ void on_propbtn(GtkWidget *feedlist) {
 	updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
 	updateInterval = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(updateIntervalBtn));
 	
-	fp = getFeed(feedkey);
-	type = getFeedType(fp);
 	gtk_entry_set_text(GTK_ENTRY(feednameentry), getFeedTitle(fp));
 	gtk_entry_set_text(GTK_ENTRY(feedurlentry), getFeedSource(fp));
 
-	if(FST_OCS == type) {	
+	if(FST_OCS == getFeedType(fp)) {	
 		/* disable the update interval selector for OCS feeds */
 		gtk_widget_set_sensitive(lookup_widget(propdialog, "feedrefreshcount"), FALSE);
 	} else {
@@ -457,7 +317,7 @@ void on_propbtn(GtkWidget *feedlist) {
 		if(-1 != defaultInterval)
 			defaultIntervalStr = g_strdup_printf(_("The provider of this feed suggests an update interval of %d minutes"), defaultInterval);
 		else
-			defaultIntervalStr = g_strdup(_("This feed specifies no default interval."));
+			defaultIntervalStr = g_strdup(_("This feed specifies no default update interval."));
 		gtk_label_set_text(GTK_LABEL(lookup_widget(propdialog, "feedupdateinfo")), defaultIntervalStr);
 		g_free(defaultIntervalStr);		
 	}
@@ -467,37 +327,34 @@ void on_propbtn(GtkWidget *feedlist) {
 	   clicked... */
 
 	g_signal_connect((gpointer)lookup_widget(propdialog, "propchangebtn"), 
-			 "clicked", G_CALLBACK (on_propchangebtn_clicked), feedlist);
+			 "clicked", G_CALLBACK (on_propchangebtn_clicked), NULL);
    
 	   
 	gtk_widget_show(propdialog);
 }
 
 void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
-	gchar		*feedkey, *feedurl, *feedname;
+	gchar		*feedurl, *feedname;
 	GtkWidget 	*feedurlentry;
 	GtkWidget 	*feednameentry;
 	GtkWidget 	*updateIntervalBtn;
 	GtkAdjustment	*updateInterval;
 	gint		interval;
-	gint		type;
-	feedPtr		fp;
+	feedPtr		fp = selected_fp;
 	
 	g_assert(NULL != propdialog);
 		
-	type = getFeedListSelectionType(GTK_WIDGET(user_data));
-	if(NULL != (feedkey = getFeedListSelection(GTK_WIDGET(user_data)))) {
+	if(NULL != fp) {
 		feednameentry = lookup_widget(propdialog, "feednameentry");
 		feedurlentry = lookup_widget(propdialog, "feedurlentry");
 
 		feedurl = (gchar *)gtk_entry_get_text(GTK_ENTRY(feedurlentry));
 		feedname = (gchar *)gtk_entry_get_text(GTK_ENTRY(feednameentry));
 	
-		fp = getFeed(feedkey);
 		setFeedTitle(fp, g_strdup(feedname));  
 		setFeedSource(fp, g_strdup(feedurl));
 		
-		if(IS_FEED(type)) {
+		if(IS_FEED(getFeedType(fp))) {
 			updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
 			updateInterval = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(updateIntervalBtn));
 
@@ -510,15 +367,12 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 		}
 		
 		redrawFeedList();
+	} else {
+		g_warning(_("Internal error! No feed selected, but property change requested...\n"));
 	}
 }
 
-void on_popup_prop_selected(void) {
-
-	g_assert(NULL != mainwindow);
-	
-	on_propbtn(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")));
-}
+void on_popup_prop_selected(void) { on_propbtn(NULL); }
 
 /*------------------------------------------------------------------------------*/
 /* new entry dialog callbacks 							*/
@@ -533,7 +387,7 @@ void addToFeedList(feedPtr fp) {
 	g_assert(NULL != getFeedKey(fp));
 	g_assert(NULL != getFeedKeyPrefix(fp));
 	g_assert(NULL != feedstore);
-	// FIXME: mmaybe this should not happen here?
+	// FIXME: maybe this should not happen here?
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(getFeedKeyPrefix(fp)));
 
 	gtk_tree_store_append(feedstore, &iter, topiter);
@@ -559,15 +413,6 @@ void addToFeedList(feedPtr fp) {
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
-	GtkWidget	*feedurlentry;
-	gchar		*keyprefix;
-	
-	keyprefix = getFeedListSelectionPrefix(mainwindow);
-	/* block changing of help feeds */
-	if(0 == strncmp(keyprefix, "help", strlen("help"))) {
-		showErrorBox("You can't add feeds to the help folder!");
-		return;
-	}
 
 	if(NULL == newdialog || !G_IS_OBJECT(newdialog)) 
 		newdialog = create_newdialog();
@@ -595,9 +440,8 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	titleentry = lookup_widget(propdialog, "feednameentry");
 	typeoptionmenu = lookup_widget(newdialog, "typeoptionmenu");
 		
-	source = (gchar *)gtk_entry_get_text(GTK_ENTRY(sourceentry));
-	keyprefix = getFeedListSelectionPrefix(mainwindow);
-	
+	g_assert(NULL != selected_keyprefix);
+	source = g_strdup(gtk_entry_get_text(GTK_ENTRY(sourceentry)));
 	type = gtk_option_menu_get_history(GTK_OPTION_MENU(typeoptionmenu));
 	/* the retrieved number is not yet the real feed type! */
 	switch(type) {
@@ -626,33 +470,32 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	if(FST_INVALID == type) {
 		showErrorBox(_("Could not detect feed type! Please manually select a feed type."));
+		g_free(source);
 		return;
 	}
 
-	if(NULL != (keyprefix = getFeedListSelectionPrefix(mainwindow))) {
-		fp = newFeed(type, source, keyprefix);
-		if(NULL != fp) {
-			addToFeedList(fp);
-			checkForEmptyFolders();
-			
-			if(FALSE == getFeedAvailable(fp)) {
-				tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
-				showErrorBox(tmp);
-				g_free(tmp);
-			} else {
-			
-				if(-1 != (interval = getFeedDefaultInterval(fp))) {
-					updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-					gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-				}
-					
-				gtk_widget_show(propdialog);
+	keyprefix = g_strdup(selected_keyprefix);
+	fp = newFeed(type, source, keyprefix);
+	if(NULL != fp) {
+		addToFeedList(fp);
+		checkForEmptyFolders();
+
+		if(FALSE == getFeedAvailable(fp)) {
+			tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
+			showErrorBox(tmp);
+			g_free(tmp);
+		} else {
+
+			if(-1 != (interval = getFeedDefaultInterval(fp))) {
+				updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
+				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
 			}
+
+			on_propbtn(NULL);		/* prepare prop dialog */
+			gtk_widget_show(propdialog);	/* and popup */
 		}
-	} else {
-		print_status("internal error! could not get entry key prefix! maybe you did not select a group");
 	}
-	
+
 	gtk_widget_hide(newdialog);
 	
 	/* don't free source/keyprefix for they are reused by newFeed! */
@@ -704,14 +547,14 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_popup_foldername_selected(void) {
 	GtkWidget	*foldernameentry;
-	gchar 		*keyprefix, *title;
+	gchar 		*title;
 
 	if(NULL == foldernamedialog || !G_IS_OBJECT(foldernamedialog))
 		foldernamedialog = create_foldernamedialog();
 		
 	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-	if(NULL != (keyprefix = getMainFeedListViewSelection())) {
-		title = getFolderTitle(keyprefix);
+	if(NULL != selected_keyprefix) {
+		title = getFolderTitle(selected_keyprefix);
 		gtk_entry_set_text(GTK_ENTRY(foldernameentry), title);
 		g_free(title);
 		gtk_widget_show(foldernamedialog);
@@ -722,11 +565,10 @@ void on_popup_foldername_selected(void) {
 
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*foldernameentry;
-	gchar 		*keyprefix;
 	
-	if(NULL != (keyprefix = getMainFeedListViewSelection())) {
+	if(NULL != selected_keyprefix) {
 		foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-		setFolderTitle(keyprefix, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
+		setFolderTitle(selected_keyprefix, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
 	} else {
 		showErrorBox("internal error: could not determine folder key!");
 	}
@@ -738,17 +580,15 @@ void on_popup_removefolder_selected(void) {
 	GtkTreeStore	*feedstore;
 	GtkTreeIter	childiter;
 	GtkTreeIter	*iter;
-	gchar		*keyprefix;
 	gint		tmp_type, count;
 	
-	keyprefix = getMainFeedListViewSelection();
 	iter = getFeedListIter(mainwindow);
 	feedstore = getFeedStore();
 
 	g_assert(feedstore != NULL);
 	
 	/* make sure thats no grouping iterator */
-	if(NULL != keyprefix) {
+	if(NULL != selected_keyprefix) {
 		/* check if folder is empty */
 		count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), iter);
 		if(0 == count) 
@@ -761,8 +601,9 @@ void on_popup_removefolder_selected(void) {
 			if(FST_EMPTY == tmp_type) {
 				gtk_tree_store_remove(feedstore, &childiter);	/* remove "(empty)" iter */
 				gtk_tree_store_remove(feedstore, iter);		/* remove folder iter */
-				removeFolder(keyprefix);
-				g_free(keyprefix);
+				removeFolder(selected_keyprefix);
+				g_free(selected_keyprefix);
+				selected_keyprefix = g_strdup(root_prefix);
 			} else {
 				showErrorBox(_("A folder must be empty to delete it!"));
 			}
@@ -780,20 +621,18 @@ void on_popup_removefolder_selected(void) {
 /*------------------------------------------------------------------------------*/
 
 void on_popup_allunread_selected(void) {
-	GtkTreeModel 	*model;
 	GtkTreeIter	iter;
 	itemPtr		ip;
 	gboolean 	valid;
 
-	model = GTK_TREE_MODEL(getItemStore());
-	valid = gtk_tree_model_get_iter_first(model, &iter);
-
+	g_assert(NULL != itemstore);
+	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 	while(valid) {
-               	gtk_tree_model_get (model, &iter, IS_PTR, &ip, -1);
+               	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 		g_assert(ip != NULL);
 		markItemAsRead(ip);
 
-		valid = gtk_tree_model_iter_next(model, &iter);
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
 
 	/* redraw feed list to update unread items count */
@@ -811,9 +650,8 @@ void on_popup_launchitem_selected(void) {
 	gpointer		tmp_ip;
 	gint			tmp_type;
 
-	if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
+	if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist")))
 		return;
-	}
 
 	if(NULL == (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
 		print_status(_("could not retrieve selection of item list!"));
@@ -882,7 +720,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	G_CONST_RETURN gchar	*searchstring;
 	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
 	feedPtr			fp;
-	gchar			*key, *keyprefix;
+	gchar			*key;
 	
 	g_assert(mainwindow != NULL);
 		
@@ -890,15 +728,15 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		print_status(g_strdup_printf(_("creating VFolder for search term \"%s\""), searchstring));
 
-		if(NULL != (keyprefix = getFeedListSelectionPrefix(mainwindow))) {
+		if(NULL != selected_keyprefix) {
 
-			if(NULL != (fp = newFeed(FST_VFOLDER, "", keyprefix))) {
+			if(NULL != (fp = newFeed(FST_VFOLDER, "", g_strdup(selected_keyprefix)))) {
 				checkForEmptyFolders();
 				
 				// FIXME: this really does not belong here!!! -> vfolder.c
 				/* setup a rule */
 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule)))) 
-					g_error(_("could not allocate memory!"));
+					g_error(_("Could not allocate memory!"));
 
 				/* we set the searchstring as a default title */
 				setFeedTitle(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
@@ -912,12 +750,10 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				addToFeedList(fp);
 			}
 		} else {
-			print_status("could not get entry key prefix! maybe you did not select a group");
+			print_status(_("internal error! could not get folder key prefix!"));
 		}
 		
 	}
-
-	/* don't free keyprefix and searchstring for its reused by newFeed! */
 }
 
 /*------------------------------------------------------------------------------*/
@@ -994,7 +830,19 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 
 			preFocusItemlist();
-		}		
+			
+			/* save new selection infos */
+			selected_fp = fp;
+			selected_type = tmp_type;
+			g_free(selected_keyprefix);
+			selected_keyprefix = g_strdup(getFeedKeyPrefix(fp));
+		} else {
+			/* save new selection infos */
+			selected_fp = NULL;
+			selected_type = tmp_type;
+			g_free(selected_keyprefix);
+			selected_keyprefix = g_strdup(tmp_key);
+		}
        	}
 }
 
@@ -1449,8 +1297,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 
 	// FIXME: don't use existing selection, but determine
 	// which selection would result from the right mouse click
-	type = getFeedListSelectionType(mainwindow);
-	gtk_menu_popup(make_entry_menu(type), NULL, NULL, NULL, NULL, eb->button, eb->time);
+	gtk_menu_popup(make_entry_menu(selected_type), NULL, NULL, NULL, NULL, eb->button, eb->time);
 		
 	return TRUE;
 }
@@ -1476,7 +1323,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget,
 }
 
 /*------------------------------------------------------------------------------*/
-/* status bar callback 								*/
+/* status bar callback, error box function					*/
 /*------------------------------------------------------------------------------*/
 
 void print_status(gchar *statustext) {
@@ -1514,20 +1361,16 @@ void showErrorBox(gchar *msg) {
 }
 
 /*------------------------------------------------------------------------------*/
-/* feed list DND handling (currently under construction :-)			*/
+/* feed list DND handling							*/
 /*------------------------------------------------------------------------------*/
 
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
-	if(drag_successful) {
-		g_assert(NULL != drag_source_key);
-		g_assert(NULL != drag_source_keyprefix);
-		
-		moveInFeedList(drag_source_keyprefix, drag_source_key);
+	g_assert(NULL != selected_keyprefix);
+	
+	if(drag_successful) {	
+		moveInFeedList(selected_keyprefix, getFeedKey(selected_fp));
 		checkForEmptyFolders();	/* to add an "(empty)" entry */
-
-		g_free(drag_source_key);
-		g_free(drag_source_keyprefix);
 	}
 	
 	preFocusItemlist();
@@ -1536,29 +1379,24 @@ void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpoi
 void on_feedlist_drag_begin(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
 	drag_successful = FALSE;
-	drag_source_type = getFeedListSelectionType(mainwindow);
-	drag_source_key = getFeedListSelection(lookup_widget(mainwindow, "feedlist"));
-	drag_source_keyprefix = getFeedListSelectionPrefix(mainwindow);
 }
 
 gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, gint x, gint y, guint time, gpointer user_data) {
 	gboolean	stop = FALSE;
 
-	g_assert(drag_source_keyprefix);	
+	g_assert(NULL != selected_keyprefix);
 	
 	/* don't allow folder DND */
-	if(IS_NODE(drag_source_type)) {
+	if(IS_NODE(selected_type)) {
 		showErrorBox(_("Sorry Liferea does not yet support drag&drop of folders!"));
 		stop = TRUE;
-	}
-	
-	/* don't allow "(empty)" entry moving */
-	if(FST_EMPTY == drag_source_type) {
+	} 
+	/* also don't allow "(empty)" entry moving */
+	else if(FST_EMPTY == selected_type) {
 		stop = TRUE;
-	}
-
-	/* don't allow help feed dragging */
-	if(0 == strncmp(drag_source_key, "help", 4)) {
+	} 
+	/* also don't allow help feed dragging */
+	else if(0 == strncmp(getFeedKey(selected_fp), "help", 4)) {
 		showErrorBox(_("you cannot modify the special help folder contents!"));
 		stop = TRUE;
 	}
@@ -1567,6 +1405,10 @@ gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, 
 	
 	return stop;
 }
+
+/*------------------------------------------------------------------------------*/
+/* tree store setup								*/
+/*------------------------------------------------------------------------------*/
 
 GtkTreeStore * getItemStore(void) {
 
