@@ -5855,10 +5855,13 @@ of feeds!</property>
 		      </child>
 
 		      <child>
-			<widget class="GtkHBox" id="hbox92222">
+			<widget class="GtkTable" id="table8">
 			  <property name="visible">True</property>
+			  <property name="n_rows">2</property>
+			  <property name="n_columns">2</property>
 			  <property name="homogeneous">False</property>
-			  <property name="spacing">6</property>
+			  <property name="row_spacing">6</property>
+			  <property name="column_spacing">6</property>
 
 			  <child>
 			    <widget class="GtkLabel" id="label216">
@@ -5869,28 +5872,142 @@ of feeds!</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
 			      <property name="wrap">False</property>
 			      <property name="selectable">False</property>
-			      <property name="xalign">0.5</property>
+			      <property name="xalign">0</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
 			    </widget>
 			    <packing>
-			      <property name="padding">0</property>
-			      <property name="expand">False</property>
-			      <property name="fill">False</property>
+			      <property name="left_attach">0</property>
+			      <property name="right_attach">1</property>
+			      <property name="top_attach">0</property>
+			      <property name="bottom_attach">1</property>
+			      <property name="x_options">fill</property>
+			      <property name="y_options"></property>
 			    </packing>
 			  </child>
 
 			  <child>
-			    <widget class="GtkOptionMenu" id="enc_download_tool_option_btn">
+			    <widget class="GtkLabel" id="label219">
 			      <property name="visible">True</property>
-			      <property name="can_focus">True</property>
-			      <property name="history">-1</property>
+			      <property name="label" translatable="yes">Save downloads in</property>
+			      <property name="use_underline">False</property>
+			      <property name="use_markup">False</property>
+			      <property name="justify">GTK_JUSTIFY_LEFT</property>
+			      <property name="wrap">False</property>
+			      <property name="selectable">False</property>
+			      <property name="xalign">0</property>
+			      <property name="yalign">0.5</property>
+			      <property name="xpad">0</property>
+			      <property name="ypad">0</property>
 			    </widget>
 			    <packing>
-			      <property name="padding">0</property>
-			      <property name="expand">False</property>
-			      <property name="fill">False</property>
+			      <property name="left_attach">0</property>
+			      <property name="right_attach">1</property>
+			      <property name="top_attach">1</property>
+			      <property name="bottom_attach">2</property>
+			      <property name="x_options">fill</property>
+			      <property name="y_options"></property>
+			    </packing>
+			  </child>
+
+			  <child>
+			    <widget class="GtkHBox" id="hbox92224">
+			      <property name="visible">True</property>
+			      <property name="homogeneous">False</property>
+			      <property name="spacing">0</property>
+
+			      <child>
+				<widget class="GtkOptionMenu" id="enc_download_tool_option_btn">
+				  <property name="visible">True</property>
+				  <property name="can_focus">True</property>
+				  <property name="history">-1</property>
+				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">False</property>
+				  <property name="fill">False</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkLabel" id="label220">
+				  <property name="visible">True</property>
+				  <property name="label" translatable="yes"></property>
+				  <property name="use_underline">False</property>
+				  <property name="use_markup">False</property>
+				  <property name="justify">GTK_JUSTIFY_LEFT</property>
+				  <property name="wrap">False</property>
+				  <property name="selectable">False</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
+				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">True</property>
+				  <property name="fill">False</property>
+				</packing>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="left_attach">1</property>
+			      <property name="right_attach">2</property>
+			      <property name="top_attach">0</property>
+			      <property name="bottom_attach">1</property>
+			      <property name="x_options">fill</property>
+			      <property name="y_options">fill</property>
+			    </packing>
+			  </child>
+
+			  <child>
+			    <widget class="GtkHBox" id="hbox92225">
+			      <property name="visible">True</property>
+			      <property name="homogeneous">False</property>
+			      <property name="spacing">6</property>
+
+			      <child>
+				<widget class="GtkEntry" id="save_download_entry">
+				  <property name="visible">True</property>
+				  <property name="can_focus">True</property>
+				  <property name="editable">True</property>
+				  <property name="visibility">True</property>
+				  <property name="max_length">0</property>
+				  <property name="text" translatable="yes"></property>
+				  <property name="has_frame">True</property>
+				  <property name="invisible_char">*</property>
+				  <property name="activates_default">False</property>
+				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">True</property>
+				  <property name="fill">True</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkButton" id="save_download_select_btn">
+				  <property name="visible">True</property>
+				  <property name="can_focus">True</property>
+				  <property name="label" translatable="yes">Browse</property>
+				  <property name="use_underline">True</property>
+				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
+				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">False</property>
+				  <property name="fill">False</property>
+				</packing>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="left_attach">1</property>
+			      <property name="right_attach">2</property>
+			      <property name="top_attach">1</property>
+			      <property name="bottom_attach">2</property>
+			      <property name="y_options">fill</property>
 			    </packing>
 			  </child>
 			</widget>
@@ -5960,21 +6077,28 @@ of feeds!</property>
 			<widget class="GtkVBox" id="vbox2613">
 			  <property name="visible">True</property>
 			  <property name="homogeneous">False</property>
-			  <property name="spacing">12</property>
+			  <property name="spacing">6</property>
 
 			  <child>
-			    <widget class="GtkLabel" id="label215">
+			    <widget class="GtkScrolledWindow" id="scrolledwindow8">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">Below you find the list of all enclosure types you configured a launch program for.</property>
-			      <property name="use_underline">False</property>
-			      <property name="use_markup">False</property>
-			      <property name="justify">GTK_JUSTIFY_LEFT</property>
-			      <property name="wrap">True</property>
-			      <property name="selectable">False</property>
-			      <property name="xalign">0</property>
-			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
-			      <property name="ypad">0</property>
+			      <property name="can_focus">True</property>
+			      <property name="hscrollbar_policy">GTK_POLICY_ALWAYS</property>
+			      <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
+			      <property name="shadow_type">GTK_SHADOW_IN</property>
+			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+
+			      <child>
+				<widget class="GtkTreeView" id="enc_actions_view">
+				  <property name="height_request">100</property>
+				  <property name="visible">True</property>
+				  <property name="can_focus">True</property>
+				  <property name="headers_visible">True</property>
+				  <property name="rules_hint">True</property>
+				  <property name="reorderable">False</property>
+				  <property name="enable_search">True</property>
+				</widget>
+			      </child>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -5984,83 +6108,42 @@ of feeds!</property>
 			  </child>
 
 			  <child>
-			    <widget class="GtkHBox" id="hbox91">
+			    <widget class="GtkHBox" id="hbox92223">
 			      <property name="visible">True</property>
 			      <property name="homogeneous">False</property>
 			      <property name="spacing">6</property>
 
 			      <child>
-				<widget class="GtkScrolledWindow" id="scrolledwindow8">
+				<widget class="GtkButton" id="enc_action_change_btn">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
-				  <property name="hscrollbar_policy">GTK_POLICY_ALWAYS</property>
-				  <property name="vscrollbar_policy">GTK_POLICY_ALWAYS</property>
-				  <property name="shadow_type">GTK_SHADOW_IN</property>
-				  <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
-
-				  <child>
-				    <widget class="GtkTreeView" id="enc_actions_view">
-				      <property name="height_request">150</property>
-				      <property name="visible">True</property>
-				      <property name="can_focus">True</property>
-				      <property name="headers_visible">True</property>
-				      <property name="rules_hint">True</property>
-				      <property name="reorderable">False</property>
-				      <property name="enable_search">True</property>
-				    </widget>
-				  </child>
-				</widget>
-				<packing>
-				  <property name="padding">0</property>
-				  <property name="expand">True</property>
-				  <property name="fill">True</property>
-				</packing>
-			      </child>
-
-			      <child>
-				<widget class="GtkVBox" id="vbox2614">
-				  <property name="visible">True</property>
-				  <property name="homogeneous">False</property>
-				  <property name="spacing">6</property>
-
-				  <child>
-				    <widget class="GtkButton" id="enc_action_change_btn">
-				      <property name="visible">True</property>
-				      <property name="can_focus">True</property>
-				      <property name="label">gtk-properties</property>
-				      <property name="use_stock">True</property>
-				      <property name="relief">GTK_RELIEF_NORMAL</property>
-				      <property name="focus_on_click">True</property>
-				      <signal name="clicked" handler="on_enc_action_change_btn_clicked" last_modification_time="Sun, 16 Jan 2005 15:33:26 GMT"/>
-				    </widget>
-				    <packing>
-				      <property name="padding">0</property>
-				      <property name="expand">False</property>
-				      <property name="fill">False</property>
-				    </packing>
-				  </child>
-
-				  <child>
-				    <widget class="GtkButton" id="enc_action_remove_btn">
-				      <property name="visible">True</property>
-				      <property name="can_focus">True</property>
-				      <property name="label">gtk-delete</property>
-				      <property name="use_stock">True</property>
-				      <property name="relief">GTK_RELIEF_NORMAL</property>
-				      <property name="focus_on_click">True</property>
-				      <signal name="clicked" handler="on_enc_action_remove_btn_clicked" last_modification_time="Sun, 16 Jan 2005 15:33:41 GMT"/>
-				    </widget>
-				    <packing>
-				      <property name="padding">0</property>
-				      <property name="expand">False</property>
-				      <property name="fill">False</property>
-				    </packing>
-				  </child>
+				  <property name="label">gtk-properties</property>
+				  <property name="use_stock">True</property>
+				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
+				  <signal name="clicked" handler="on_enc_action_change_btn_clicked" last_modification_time="Sun, 16 Jan 2005 15:33:26 GMT"/>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>
 				  <property name="expand">False</property>
-				  <property name="fill">True</property>
+				  <property name="fill">False</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkButton" id="enc_action_remove_btn">
+				  <property name="visible">True</property>
+				  <property name="can_focus">True</property>
+				  <property name="label">gtk-delete</property>
+				  <property name="use_stock">True</property>
+				  <property name="relief">GTK_RELIEF_NORMAL</property>
+				  <property name="focus_on_click">True</property>
+				  <signal name="clicked" handler="on_enc_action_remove_btn_clicked" last_modification_time="Sun, 16 Jan 2005 15:33:41 GMT"/>
+				</widget>
+				<packing>
+				  <property name="padding">0</property>
+				  <property name="expand">False</property>
+				  <property name="fill">False</property>
 				</packing>
 			      </child>
 			    </widget>
@@ -7605,13 +7688,14 @@ matches. They are removed if at least one removing rule matches.</property>
 		  </child>
 
 		  <child>
-		    <widget class="GtkButton" id="button27">
+		    <widget class="GtkButton" id="enc_cmd_select_btn">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="label" translatable="yes">_Browse</property>
 		      <property name="use_underline">True</property>
 		      <property name="relief">GTK_RELIEF_NORMAL</property>
 		      <property name="focus_on_click">True</property>
+		      <signal name="clicked" handler="on_enc_cmd_select_btn_clicked" last_modification_time="Mon, 17 Jan 2005 21:23:47 GMT"/>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>

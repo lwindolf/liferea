@@ -139,3 +139,7 @@ on_homepagebtn_clicked                 (GtkButton       *button,
                                         gpointer         user_data);
 
 #endif
+
+void
+on_enc_cmd_select_btn_clicked          (GtkButton       *button,
+                                        gpointer         user_data);

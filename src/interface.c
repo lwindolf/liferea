@@ -1798,18 +1798,22 @@ create_prefdialog (void)
   GtkWidget *label217;
   GtkWidget *hbox92;
   GtkWidget *label218;
-  GtkWidget *hbox92222;
+  GtkWidget *table8;
   GtkWidget *label216;
+  GtkWidget *label219;
+  GtkWidget *hbox92224;
   GtkWidget *enc_download_tool_option_btn;
+  GtkWidget *label220;
+  GtkWidget *hbox92225;
+  GtkWidget *save_download_entry;
+  GtkWidget *save_download_select_btn;
   GtkWidget *label208;
   GtkWidget *hbox89;
   GtkWidget *label209;
   GtkWidget *vbox2613;
-  GtkWidget *label215;
-  GtkWidget *hbox91;
   GtkWidget *scrolledwindow8;
   GtkWidget *enc_actions_view;
-  GtkWidget *vbox2614;
+  GtkWidget *hbox92223;
   GtkWidget *enc_action_change_btn;
   GtkWidget *enc_action_remove_btn;
   GtkWidget *label207;
@@ -2618,17 +2622,53 @@ create_prefdialog (void)
   gtk_widget_show (label218);
   gtk_box_pack_start (GTK_BOX (hbox92), label218, FALSE, FALSE, 0);
 
-  hbox92222 = gtk_hbox_new (FALSE, 6);
-  gtk_widget_show (hbox92222);
-  gtk_box_pack_start (GTK_BOX (hbox92), hbox92222, TRUE, TRUE, 0);
+  table8 = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (table8);
+  gtk_box_pack_start (GTK_BOX (hbox92), table8, TRUE, TRUE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (table8), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table8), 6);
 
   label216 = gtk_label_new (_("Download using"));
   gtk_widget_show (label216);
-  gtk_box_pack_start (GTK_BOX (hbox92222), label216, FALSE, FALSE, 0);
+  gtk_table_attach (GTK_TABLE (table8), label216, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label216), 0, 0.5);
+
+  label219 = gtk_label_new (_("Save downloads in"));
+  gtk_widget_show (label219);
+  gtk_table_attach (GTK_TABLE (table8), label219, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label219), 0, 0.5);
+
+  hbox92224 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox92224);
+  gtk_table_attach (GTK_TABLE (table8), hbox92224, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL), 0, 0);
 
   enc_download_tool_option_btn = gtk_option_menu_new ();
   gtk_widget_show (enc_download_tool_option_btn);
-  gtk_box_pack_start (GTK_BOX (hbox92222), enc_download_tool_option_btn, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox92224), enc_download_tool_option_btn, FALSE, FALSE, 0);
+
+  label220 = gtk_label_new ("");
+  gtk_widget_show (label220);
+  gtk_box_pack_start (GTK_BOX (hbox92224), label220, TRUE, FALSE, 0);
+
+  hbox92225 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox92225);
+  gtk_table_attach (GTK_TABLE (table8), hbox92225, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+
+  save_download_entry = gtk_entry_new ();
+  gtk_widget_show (save_download_entry);
+  gtk_box_pack_start (GTK_BOX (hbox92225), save_download_entry, TRUE, TRUE, 0);
+
+  save_download_select_btn = gtk_button_new_with_mnemonic (_("Browse"));
+  gtk_widget_show (save_download_select_btn);
+  gtk_box_pack_start (GTK_BOX (hbox92225), save_download_select_btn, FALSE, FALSE, 0);
 
   label208 = gtk_label_new (_("<span weight=\"bold\">Opening Enclosures</span>"));
   gtk_widget_show (label208);
@@ -2644,42 +2684,32 @@ create_prefdialog (void)
   gtk_widget_show (label209);
   gtk_box_pack_start (GTK_BOX (hbox89), label209, FALSE, FALSE, 0);
 
-  vbox2613 = gtk_vbox_new (FALSE, 12);
+  vbox2613 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2613);
   gtk_box_pack_start (GTK_BOX (hbox89), vbox2613, TRUE, TRUE, 0);
 
-  label215 = gtk_label_new (_("Below you find the list of all enclosure types you configured a launch program for."));
-  gtk_widget_show (label215);
-  gtk_box_pack_start (GTK_BOX (vbox2613), label215, FALSE, FALSE, 0);
-  gtk_label_set_line_wrap (GTK_LABEL (label215), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label215), 0, 0.5);
-
-  hbox91 = gtk_hbox_new (FALSE, 6);
-  gtk_widget_show (hbox91);
-  gtk_box_pack_start (GTK_BOX (vbox2613), hbox91, FALSE, FALSE, 0);
-
   scrolledwindow8 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow8);
-  gtk_box_pack_start (GTK_BOX (hbox91), scrolledwindow8, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2613), scrolledwindow8, FALSE, FALSE, 0);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow8), GTK_SHADOW_IN);
 
   enc_actions_view = gtk_tree_view_new ();
   gtk_widget_show (enc_actions_view);
   gtk_container_add (GTK_CONTAINER (scrolledwindow8), enc_actions_view);
-  gtk_widget_set_size_request (enc_actions_view, -1, 150);
+  gtk_widget_set_size_request (enc_actions_view, -1, 100);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (enc_actions_view), TRUE);
 
-  vbox2614 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox2614);
-  gtk_box_pack_start (GTK_BOX (hbox91), vbox2614, FALSE, TRUE, 0);
+  hbox92223 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox92223);
+  gtk_box_pack_start (GTK_BOX (vbox2613), hbox92223, FALSE, FALSE, 0);
 
   enc_action_change_btn = gtk_button_new_from_stock ("gtk-properties");
   gtk_widget_show (enc_action_change_btn);
-  gtk_box_pack_start (GTK_BOX (vbox2614), enc_action_change_btn, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox92223), enc_action_change_btn, FALSE, FALSE, 0);
 
   enc_action_remove_btn = gtk_button_new_from_stock ("gtk-delete");
   gtk_widget_show (enc_action_remove_btn);
-  gtk_box_pack_start (GTK_BOX (vbox2614), enc_action_remove_btn, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox92223), enc_action_remove_btn, FALSE, FALSE, 0);
 
   label207 = gtk_label_new (_("Enclosures"));
   gtk_widget_show (label207);
@@ -2963,18 +2993,22 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label217, "label217");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox92, "hbox92");
   GLADE_HOOKUP_OBJECT (prefdialog, label218, "label218");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox92222, "hbox92222");
+  GLADE_HOOKUP_OBJECT (prefdialog, table8, "table8");
   GLADE_HOOKUP_OBJECT (prefdialog, label216, "label216");
+  GLADE_HOOKUP_OBJECT (prefdialog, label219, "label219");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox92224, "hbox92224");
   GLADE_HOOKUP_OBJECT (prefdialog, enc_download_tool_option_btn, "enc_download_tool_option_btn");
+  GLADE_HOOKUP_OBJECT (prefdialog, label220, "label220");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox92225, "hbox92225");
+  GLADE_HOOKUP_OBJECT (prefdialog, save_download_entry, "save_download_entry");
+  GLADE_HOOKUP_OBJECT (prefdialog, save_download_select_btn, "save_download_select_btn");
   GLADE_HOOKUP_OBJECT (prefdialog, label208, "label208");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox89, "hbox89");
   GLADE_HOOKUP_OBJECT (prefdialog, label209, "label209");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2613, "vbox2613");
-  GLADE_HOOKUP_OBJECT (prefdialog, label215, "label215");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox91, "hbox91");
   GLADE_HOOKUP_OBJECT (prefdialog, scrolledwindow8, "scrolledwindow8");
   GLADE_HOOKUP_OBJECT (prefdialog, enc_actions_view, "enc_actions_view");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox2614, "vbox2614");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox92223, "hbox92223");
   GLADE_HOOKUP_OBJECT (prefdialog, enc_action_change_btn, "enc_action_change_btn");
   GLADE_HOOKUP_OBJECT (prefdialog, enc_action_remove_btn, "enc_action_remove_btn");
   GLADE_HOOKUP_OBJECT (prefdialog, label207, "label207");
@@ -3651,7 +3685,7 @@ create_enchandlerdialog (void)
   GtkWidget *label206;
   GtkWidget *hbox88;
   GtkWidget *enc_program_entry;
-  GtkWidget *button27;
+  GtkWidget *enc_cmd_select_btn;
   GtkWidget *enc_always_btn;
   GtkWidget *dialog_action_area16;
   GtkWidget *cancelbutton4;
@@ -3698,9 +3732,9 @@ create_enchandlerdialog (void)
   gtk_widget_show (enc_program_entry);
   gtk_box_pack_start (GTK_BOX (hbox88), enc_program_entry, TRUE, TRUE, 0);
 
-  button27 = gtk_button_new_with_mnemonic (_("_Browse"));
-  gtk_widget_show (button27);
-  gtk_box_pack_start (GTK_BOX (hbox88), button27, FALSE, FALSE, 0);
+  enc_cmd_select_btn = gtk_button_new_with_mnemonic (_("_Browse"));
+  gtk_widget_show (enc_cmd_select_btn);
+  gtk_box_pack_start (GTK_BOX (hbox88), enc_cmd_select_btn, FALSE, FALSE, 0);
 
   enc_always_btn = gtk_check_button_new_with_mnemonic (_("_Do this automatically for files like this from now on."));
   gtk_widget_show (enc_always_btn);
@@ -3723,6 +3757,9 @@ create_enchandlerdialog (void)
   g_signal_connect ((gpointer) enchandlerdialog, "delete_event",
                     G_CALLBACK (gtk_widget_destroy),
                     NULL);
+  g_signal_connect ((gpointer) enc_cmd_select_btn, "clicked",
+                    G_CALLBACK (on_enc_cmd_select_btn_clicked),
+                    NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (enchandlerdialog, enchandlerdialog, "enchandlerdialog");
@@ -3734,7 +3771,7 @@ create_enchandlerdialog (void)
   GLADE_HOOKUP_OBJECT (enchandlerdialog, label206, "label206");
   GLADE_HOOKUP_OBJECT (enchandlerdialog, hbox88, "hbox88");
   GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_program_entry, "enc_program_entry");
-  GLADE_HOOKUP_OBJECT (enchandlerdialog, button27, "button27");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_cmd_select_btn, "enc_cmd_select_btn");
   GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_always_btn, "enc_always_btn");
   GLADE_HOOKUP_OBJECT_NO_REF (enchandlerdialog, dialog_action_area16, "dialog_action_area16");
   GLADE_HOOKUP_OBJECT (enchandlerdialog, cancelbutton4, "cancelbutton4");

@@ -229,3 +229,11 @@ void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
 	ui_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
 }
 
+
+void
+on_enc_cmd_select_btn_clicked          (GtkButton       *button,
+                                        gpointer         user_data)
+{
+
+}
+
