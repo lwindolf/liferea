@@ -259,10 +259,10 @@ static void favicon_download_html(feedPtr fp, int phase) {
 
 void favicon_download(feedPtr fp) {
 	debug_enter("favicon_download");
-	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", feed_get_source(fp));
+	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", feed_get_title(fp));
 	
-	ui_mainwindow_set_status_bar("Updating feed icon for \"%s\"",
-					     feed_get_source(fp));
+	ui_mainwindow_set_status_bar("Updating feed icon for \"%s\"\n",
+					     feed_get_title(fp));
 
 	g_get_current_time(&fp->lastFaviconPoll);
 	
