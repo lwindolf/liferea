@@ -18,7 +18,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <glib-2.0/glib.h>
+#include <glib.h>
 
 /**
  * Add some number of messages to the new message count in the tooltip

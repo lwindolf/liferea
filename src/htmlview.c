@@ -315,7 +315,7 @@ void ui_htmlview_clear(void) {
 	ui_htmlview_write(buffer);
 }
 
-void ui_htmlview_launch_URL(gchar *url) {
+void ui_htmlview_launch_URL(const gchar *url) {
 
 	if(NULL != url) {		
 		((launchURLFunc)methods[LAUNCHURL])(url); 

@@ -128,10 +128,10 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->time = i->time;
-	ip->source = i->tags[CDF_ITEM_LINK];
-	ip->readStatus = FALSE;
-	ip->id = NULL;
+	item_set_time(ip, i->time);
+	item_set_source(ip, i->tags[CDF_ITEM_LINK]);
+	item_set_read_status(ip, FALSE);
+	item_set_id(ip, NULL);
 
 	/* some postprocessing */
 	if(NULL != i->tags[CDF_ITEM_TITLE])
@@ -140,10 +140,13 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	if(NULL != i->tags[CDF_ITEM_DESCRIPTION])
 		i->tags[CDF_ITEM_DESCRIPTION] = convertToHTML(i->tags[CDF_ITEM_DESCRIPTION]);	
 		
-	ip->title = i->tags[CDF_ITEM_TITLE];		
-	ip->description = showCDFItem(fp, cp, i);
+	item_set_title(ip, i->tags[CDF_ITEM_TITLE]);	
+	item_set_description(ip, showCDFItem(fp, cp, i));
 
 	g_hash_table_destroy(i->nsinfos);
+	g_free(i->tags[CDF_ITEM_TITLE]);
+	g_free(i->tags[CDF_ITEM_DESCRIPTION]);
+	g_free(i->tags[CDF_ITEM_LINK]);
 	g_free(i);
 	return ip;
 }

@@ -265,10 +265,11 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->time = i->time;
-	ip->source = i->source;
-	ip->readStatus = FALSE;
-	ip->id = g_strdup(i->tags[PIE_ENTRY_ID]);
+	item_set_time(ip, i->time);
+	item_set_source(ip, i->source);
+	g_free(i->source);
+	item_set_read_status(ip, FALSE);
+	item_set_id(ip, i->tags[PIE_ENTRY_ID]);
 
 	/* some postprocessing */
 	if(NULL != i->tags[PIE_ENTRY_TITLE])
@@ -277,9 +278,12 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	if(NULL != i->tags[PIE_ENTRY_DESCRIPTION])
 		i->tags[PIE_ENTRY_DESCRIPTION] = convertToHTML(i->tags[PIE_ENTRY_DESCRIPTION]);	
 
-	ip->title = g_strdup(i->tags[PIE_ENTRY_TITLE]);
-	ip->description = showPIEEntry((PIEFeedPtr)cp, i);
-
+	item_set_title(ip, i->tags[PIE_ENTRY_TITLE]);
+	
+	tmp = showPIEEntry((PIEFeedPtr)cp, i);
+	item_set_description(ip, tmp);
+	g_free(tmp);
+	
 	/* free PIEEntry structure */
 	for(j = 0; j < PIE_ENTRY_MAX_TAG; j++)
 		g_free(i->tags[j]);

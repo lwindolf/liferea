@@ -41,6 +41,7 @@ struct feed;
 
 /** An item stores a particular entry in a feed or a search */
 typedef struct item {
+/* those fields should not be accessed directly. Accessors are provided. */
 	gchar		*title;		/**< item title */
 	gboolean 	readStatus;	/**< TRUE if the item has been read */
 	gboolean 	marked;		/**< TRUE if the item has been marked */
@@ -85,22 +86,42 @@ void item_display(itemPtr ip);
 void	item_free(itemPtr ip);
 
 /* methods to access properties */
+/** Returns the id of ip. */
+const gchar *		item_get_id(itemPtr ip);
 /** Returns the title of ip. */
-gchar *		item_get_title(itemPtr ip);
+const gchar *		item_get_title(itemPtr ip);
 /** Returns the description of ip. */
-gchar *		item_get_description(itemPtr ip);
+const gchar *		item_get_description(itemPtr ip);
 /** Returns the source of ip. */
-gchar *		item_get_source(itemPtr ip);
+const gchar *		item_get_source(itemPtr ip);
 /** Returns the modification time of ip. */
-time_t		item_get_time(itemPtr ip);
+const time_t		item_get_time(itemPtr ip);
 /** Returns the mark status of ip */
-gboolean       item_get_mark(itemPtr ip);
+const gboolean       item_get_mark(itemPtr ip);
 /** Returns the read status of ip. */
-gboolean	     item_get_read_status(itemPtr ip);
+const gboolean	     item_get_read_status(itemPtr ip);
+/** Returns the hidden flag of ip. */
+const gboolean item_get_hidden(itemPtr ip);
+
 /** Marks ip as read and updates the UI to reflect this change */
 void 		item_set_read(itemPtr ip);
 /** Marks ip as unread and updates the UI to reflect this change */
 void 		item_set_unread(itemPtr ip);
+/** Sets the ip's title */
+void		item_set_title(itemPtr ip, const gchar * title);
+/** Sets the ip's description */
+void		item_set_description(itemPtr ip, const gchar * description);
+/** Sets the ip's source */
+void		item_set_source(itemPtr ip, const gchar * source);
+/** Sets the ip's modification time */
+void		item_set_time(itemPtr ip, const time_t time);
+/** Sets the ip's read status */
+void		item_set_read_status(itemPtr ip, const gboolean readStatus);
+/** Sets the ip's id */
+void		item_set_id(itemPtr ip, const gchar * id);
+/** Sets the ip's hidden flag */
+void 		item_set_hidden(itemPtr ip, const gboolean hidden);
+
 /**
  * Marks ip as marked or unmarked and updates the UI to reflect this
  * change.
@@ -109,7 +130,7 @@ void 		item_set_unread(itemPtr ip);
  * @param flag set to TRUE if the item is to be marked, or FALSE to
  * unmark the item
  */
-void	item_set_mark(itemPtr ip, gboolean flag);
+void	item_set_mark(itemPtr ip, const gboolean flag);
 
 /** Parse an xml tree and return a new itempointer generated from the
     current node's information */

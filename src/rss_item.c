@@ -158,8 +158,10 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	ip = item_new();
 	
 	/* try to get an item about id */
-	ip->id = xmlGetProp(cur, BAD_CAST"about");
-
+	tmp =  xmlGetProp(cur, BAD_CAST"about");
+	item_set_id(ip, tmp);
+	g_free(tmp);
+	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
 		if(NULL == cur->name) {
@@ -223,12 +225,12 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->time = i->time;
-	ip->source = g_strdup(i->tags[RSS_ITEM_LINK]);
-	ip->readStatus = FALSE;
+	item_set_time(ip, i->time);
+	item_set_source(ip, i->tags[RSS_ITEM_LINK]);
+	item_set_read_status(ip, FALSE);
 
-	if(NULL == ip->id)
-		ip->id = g_strdup(i->tags[RSS_ITEM_GUID]);
+	if(NULL == item_get_id(ip))
+		item_set_id(ip, i->tags[RSS_ITEM_GUID]);
 
 	/* some postprocessing before generating HTML */
 	if(NULL != i->tags[RSS_ITEM_TITLE])
@@ -237,15 +239,18 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	if(NULL != i->tags[RSS_ITEM_DESCRIPTION])
 		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML(i->tags[RSS_ITEM_DESCRIPTION]);
 
-	ip->title = g_strdup(i->tags[RSS_ITEM_TITLE]);		
-	ip->description = showRSSItem(fp, cp, i);
-
+	item_set_title(ip, i->tags[RSS_ITEM_TITLE]);		
+	tmp = showRSSItem(fp, cp, i);
+	item_set_description(ip, tmp);
+	g_free(tmp);
+	
 	/* free RSSItem structure */
 	for(j = 0; j < RSS_ITEM_MAX_TAG; j++)
 		g_free(i->tags[j]);
+	
 	g_free(i->enclosure);
 	g_hash_table_destroy(i->nsinfos);
 	g_free(i);
-
+	
 	return ip;
 }

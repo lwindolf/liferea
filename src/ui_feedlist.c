@@ -548,7 +548,7 @@ void ui_feedlist_new_subscription(gchar *source, gchar *filter, gboolean showPro
 		ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 	} else {
 		fp->fhp = feed_parse(fp, data);
-		
+		fp->title = filter_title(fp->title);
 		if (fp->fhp == NULL)
 			ui_show_error_box(_("The newly created feed's type could not be detected. Please subscribe again and select a feed type!"));	
 		ui_feedlist_update();

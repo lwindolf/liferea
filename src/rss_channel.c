@@ -382,8 +382,8 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			/* collect channel items */
 			if((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
 				if(NULL != (ip = parseRSSItem(fp, cp, cur))) {
-					if(0 == ip->time)
-						ip->time = cp->time;
+					if(0 == item_get_time(ip))
+						item_set_time(ip, cp->time);
 					feed_add_item(fp, ip);
 				}
 			}

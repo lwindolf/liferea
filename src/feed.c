@@ -252,28 +252,28 @@ void feed_save(feedPtr fp) {
 				if(NULL != (itemNode = xmlNewChild(feedNode, NULL, "item", NULL))) {
 
 					/* should never happen... */
-					if(NULL == ip->title)
-						ip->title = g_strdup("");
-					xmlNewTextChild(itemNode, NULL, "title", ip->title);
+					if(NULL == item_get_title(ip))
+						item_set_title(ip, "");
+					xmlNewTextChild(itemNode, NULL, "title", item_get_title(ip));
 
-					if(NULL != ip->description)
-						xmlNewTextChild(itemNode, NULL, "description", ip->description);
+					if(NULL != item_get_description(ip))
+						xmlNewTextChild(itemNode, NULL, "description", item_get_description(ip));
 					
-					if(NULL != ip->source)
-						xmlNewTextChild(itemNode, NULL, "source", ip->source);
+					if(NULL != item_get_source(ip))
+						xmlNewTextChild(itemNode, NULL, "source", item_get_source(ip));
 
-					if(NULL != ip->id)
-						xmlNewTextChild(itemNode, NULL, "id", ip->id);
+					if(NULL != item_get_id(ip))
+						xmlNewTextChild(itemNode, NULL, "id", item_get_id(ip));
 
-					tmp = g_strdup_printf("%d", (TRUE == ip->readStatus)?1:0);
+					tmp = g_strdup_printf("%d", (TRUE == item_get_read_status(ip))?1:0);
 					xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
 					g_free(tmp);
 					
-					tmp = g_strdup_printf("%d", (TRUE == ip->marked)?1:0);
+					tmp = g_strdup_printf("%d", (TRUE == item_get_mark(ip))?1:0);
 					xmlNewTextChild(itemNode, NULL, "mark", tmp);
 					g_free(tmp);
 
-					tmp = g_strdup_printf("%ld", ip->time);
+					tmp = g_strdup_printf("%ld", item_get_time(ip));
 					xmlNewTextChild(itemNode, NULL, "time", tmp);
 					g_free(tmp);
 
@@ -427,7 +427,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 		new_list = new_fp->items;
 		while(new_list) {
 			new_ip = new_list->data;			
-			debug1(DEBUG_VERBOSE, "processing new item: \"%s\"", new_ip->title);
+			debug1(DEBUG_VERBOSE, "processing new item: \"%s\"", item_get_title(new_ip));
 			
 			found = FALSE;
 			/* scan the old list to see if the new_fp item does already exist */
@@ -438,8 +438,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				/* try to compare the two items */
 				
 				/* both items must have either ids or none */
-				if(((old_ip->id == NULL) && (new_ip->id != NULL)) ||
-				   ((old_ip->id != NULL) && (new_ip->id == NULL))) {	
+				if(((item_get_id(old_ip) == NULL) && (item_get_id(new_ip) != NULL)) ||
+				   ((item_get_id(old_ip) != NULL) && (item_get_id(new_ip) == NULL))) {	
 					/* cannot be equal (different ids) so compare to 
 					   next old item */
 					old_list = g_slist_next(old_list);
@@ -449,17 +449,17 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				/* compare titles and HTML descriptions */
 				equal = TRUE;
 
-				if(((old_ip->title != NULL) && (new_ip->title != NULL)) && 
-				    (0 != strcmp(old_ip->title, new_ip->title)))		
+				if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
+				    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
 			    		equal = FALSE;
 
-				if(((old_ip->description != NULL) && (new_ip->description != NULL)) && 
-				    (0 != strcmp(old_ip->description, new_ip->description)))
+				if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
+				    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
 			    		equal = FALSE;
 
-				if(NULL != old_ip->id) {			
+				if(NULL != item_get_id(old_ip)) {			
 					/* if they have ids, compare them */
-					if(0 == strcmp(old_ip->id, new_ip->id)){
+					if(0 == strcmp(item_get_id(old_ip), item_get_id(new_ip))){
 						found = TRUE;
 						break;
 					}
@@ -479,7 +479,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				   it. To allow this the parent feed does store the item, but
 				   hides it. */
 				if(FALSE == checkNewItem(new_ip)) {
-					new_ip->hidden = TRUE;
+					item_set_hidden(new_ip, TRUE);
 					debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
 				} else {
 					feed_increase_unread_counter(old_fp);
@@ -491,17 +491,15 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			} else {
 				/* if the item was found but has other contents -> update */
 				if(!equal) {
-					g_free(old_ip->title);
-					g_free(old_ip->description);
-					old_ip->title = g_strdup(new_ip->title);
-					old_ip->description = g_strdup(new_ip->description);
-					old_ip->time = new_ip->time;
+					item_set_title(old_ip, item_get_title(new_ip));
+					item_set_description(old_ip, item_get_description(new_ip));
+					item_set_time(old_ip, item_get_time(new_ip));
 					item_set_unread(old_ip);
 					debug0(DEBUG_VERBOSE, "-> item already exist but was updated");
 					newcount++;
 					traycount++;
 				} else {
-					new_ip->readStatus = TRUE;
+					item_set_read_status(new_ip, TRUE);
 					debug0(DEBUG_VERBOSE, "-> item already exist");
 				}
 

@@ -184,9 +184,11 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 						ip = item_new();
 						if(NULL == (tmp = utf8_fix(xmlGetProp(child, BAD_CAST"text"))))
 							tmp = utf8_fix(xmlGetProp(child, BAD_CAST"title"));
-						ip->title = tmp;
-						ip->description = buffer;
-						ip->readStatus = TRUE;
+						item_set_title(ip, tmp);
+						g_free(tmp);
+						item_set_description(ip, buffer);
+						g_free(buffer);
+						item_set_read_status(ip, TRUE);
 						feed_add_item(fp, ip);
 					}
 					child = child->next;

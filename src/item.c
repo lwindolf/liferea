@@ -46,12 +46,40 @@ itemPtr item_new(void) {
 	return ip;
 }
 
-gchar *	item_get_title(itemPtr ip) {return (ip != NULL ? ip->title : NULL); }
-gchar *	item_get_description(itemPtr ip) { return (ip != NULL ? ip->description : NULL); }
-gchar * item_get_source(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
-time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
-gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
-gboolean item_get_mark(itemPtr ip) { g_assert(ip != NULL); return ip->marked;}
+void item_set_title(itemPtr ip, const gchar * title) {
+	g_free(ip->title);
+	ip->title = g_strdup(title);
+}
+
+void item_set_description(itemPtr ip, const gchar * description) {
+	g_free(ip->description);
+	ip->description = g_strdup(description);
+}
+
+void item_set_source(itemPtr ip, const gchar * source) {
+	g_free(ip->source);
+	ip->source = g_strdup(source);
+}
+
+void item_set_time(itemPtr ip, const time_t t) { ip->time = t; }
+
+void item_set_read_status(itemPtr ip, const gboolean readStatus) { ip->readStatus = readStatus; }
+
+void item_set_id(itemPtr ip, const gchar * id) {
+	g_free(ip->id);
+	ip->id = g_strdup(id);
+}
+
+void item_set_hidden(itemPtr ip, const gboolean hidden) { ip->hidden = hidden; }
+
+const gchar *	item_get_id(itemPtr ip) { return (ip != NULL ? ip->id : NULL); }
+const gchar *	item_get_title(itemPtr ip) {return (ip != NULL ? ip->title : NULL); }
+const gchar *	item_get_description(itemPtr ip) { return (ip != NULL ? ip->description : NULL); }
+const gchar * item_get_source(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
+const time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
+const gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
+const gboolean item_get_mark(itemPtr ip) { g_assert(ip != NULL); return ip->marked;}
+const gboolean item_get_hidden(itemPtr ip) { g_assert(ip != NULL); return ip->hidden;}
 
 void item_set_mark(itemPtr ip, gboolean flag) {
 	ip->marked = flag;
@@ -140,7 +168,7 @@ void item_display(itemPtr ip) {
 	gchar	*buffer = NULL;
 	
 	ui_htmlview_start_output(&buffer, TRUE);
-	addToHTMLBuffer(&buffer, ip->description);
+	addToHTMLBuffer(&buffer, item_get_description(ip));
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(buffer);
 	//g_free(buffer);
@@ -165,25 +193,27 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 		}
 		
 		if(!xmlStrcmp(cur->name, BAD_CAST"title"))
-			ip->title = g_strdup(tmp);
+			item_set_title(ip, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description"))
-			ip->description = g_strdup(tmp);
+			item_set_description(ip, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"source"))
-			ip->source = g_strdup(tmp);
+			item_set_source(ip, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"id"))
-			ip->id = g_strdup(tmp);
+			item_set_id(ip, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
-			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;		
+			item_set_read_status(ip, (0 == atoi(tmp))?FALSE:TRUE);		
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"mark")) 
+			/* we don't call item_set_mark here because it would
+			 * update the UI */
 			ip->marked = (1 == atoi(tmp))?TRUE:FALSE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
-			ip->time = atol(tmp);
+			item_set_time(ip, atol(tmp));
 		
 		g_free(tmp);	
 		cur = cur->next;

@@ -161,7 +161,7 @@ void	ui_htmlview_write(gchar *string);
  *
  * @param url	URL to launch
  */
-void	ui_htmlview_launch_URL(gchar *url);
+void	ui_htmlview_launch_URL(const gchar *url);
 
 /**
  * Function to change the zoom level of the HTML widget.

@@ -518,3 +518,8 @@ gchar * encodeURIString(gchar *uriString) {
 
 	return newURIString;
 }
+
+gchar * filter_title(gchar * title) {
+	return g_strstrip(title);
+}
+

@@ -73,4 +73,7 @@ gchar *	getCachePath(void);
 gchar * common_create_cache_filename( gchar *folder, gchar *key, gchar *extension);
 
 gchar * encodeURIString(gchar *uriString);
+
+/** Filter the title. Note that the string is modified. */
+gchar * filter_title(gchar * title);
 #endif

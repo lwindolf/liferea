@@ -209,6 +209,8 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 		//else
 			esc_title = g_markup_escape_text(title, -1);
 			
+			esc_title = filter_title(esc_title);
+			
 		if(FALSE == item_get_read_status(ip)) {
 			label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
 		} else {
@@ -407,7 +409,6 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 	GtkTreeIter	iter;
 	GSList		*itemlist;
 	itemPtr		ip;
-	gchar		*title, *description;
 	gboolean	add;
 
 	if(NULL == fp) {
@@ -420,24 +421,22 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
-		title = item_get_title(ip);
-		description = item_get_description(ip);
 		
 		add = TRUE;
 		if(NULL != searchstring) {
 			add = FALSE;
 				
-			if((NULL != title) && (NULL != strstr(title, searchstring)))
+			if((NULL != item_get_title(ip)) && (NULL != strstr(item_get_title(ip), searchstring)))
 				add = TRUE;
 
-			if((NULL != description) && (NULL != strstr(description, searchstring)))
+			if((NULL != item_get_description(ip)) && (NULL != strstr(item_get_description(ip), searchstring)))
 				add = TRUE;
 		}
 
 		if(add) {
 			gtk_tree_store_append(itemstore, &iter, NULL);
 			gtk_tree_store_set(itemstore, &iter,
-						    IS_TITLE, title,
+						    IS_TITLE, item_get_title(ip),
 						    IS_PTR, ip,
 						    IS_TIME, item_get_time(ip),
 						    IS_TYPE, feed_get_type(fp),	/* not the item type, this would fail for VFolders! */

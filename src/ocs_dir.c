@@ -290,9 +290,9 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->source = dep->source;
-	ip->readStatus = TRUE;
-	ip->id = NULL;
+	item_set_source(ip, dep->source);
+	item_set_read_status(ip, TRUE);
+	item_set_id(ip, NULL);
 
 	/* some postprocessing */
 	if(NULL != dep->tags[OCS_TITLE])
@@ -301,8 +301,8 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	if(NULL != dep->tags[OCS_DESCRIPTION])
 		dep->tags[OCS_DESCRIPTION] = convertToHTML(dep->tags[OCS_DESCRIPTION]);
 
-	ip->title = dep->tags[OCS_TITLE];		
-	ip->description = showDirEntry(dep);
+	item_set_title(ip, dep->tags[OCS_TITLE]);		
+	item_set_description(ip, showDirEntry(dep));
 	// FIXME: free formats!
 	g_slist_free(dep->formats);
 	g_free(dep);
@@ -360,9 +360,9 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	}
 
 	/* after parsing we fill the infos into the itemPtr structure */
-	ip->source = dep->source;
-	ip->readStatus = TRUE;
-	ip->id = NULL;
+	item_set_source(ip, dep->source);
+	item_set_read_status(ip, TRUE);
+	item_set_id(ip, NULL);
 
 	/* some postprocessing */
 	if(NULL != dep->tags[OCS_TITLE])
@@ -371,8 +371,8 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	if(NULL != dep->tags[OCS_DESCRIPTION])
 		dep->tags[OCS_DESCRIPTION] = convertToHTML(dep->tags[OCS_DESCRIPTION]);
 
-	ip->title = dep->tags[OCS_TITLE];		
-	ip->description = showDirEntry(dep);
+	item_set_title(ip, dep->tags[OCS_TITLE]);		
+	item_set_description(ip, showDirEntry(dep));
 	// FIXME: free formats!
 	g_slist_free(dep->formats);
 	g_free(dep);
