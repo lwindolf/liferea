@@ -1,47 +1,51 @@
+# Traducción por Carlos Fenollosa <topopardo@humorfreak.com> y José María Mateos <chema@sl-form.com>José María Mateos <chema@sl-form.com>, 2004.
+# 
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 0.5.1\n"
+"Project-Id-Version: liferea 0.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-10 20:05+0200\n"
-"PO-Revision-Date: 2004-08-12 00:55+0200\n"
-"Last-Translator: José María Mateos <chema@sl-form.com>\n"
-"Language-Team: Spanish <es@li.org>\n"
+"POT-Creation-Date: 2004-09-08 01:19+0200\n"
+"PO-Revision-Date: 2004-09-10 16:11+0200\n"
+"Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
-#: src/common.c:278
+#: src/common.c:277
 msgid "[Parser error output was truncated!]"
 msgstr "[La salida de error del analizador se truncó]"
 
-#: src/common.c:318
+#: src/common.c:317
 #, c-format
 msgid ""
 "xmlReadMemory(): Could not parse document:\n"
 "%s%s"
 msgstr ""
+"xmlReadMemory(): No se pudo procesar el documento:\n"
+"%s%s"
 
-#: src/common.c:391 src/common.c:502
+#: src/common.c:390 src/common.c:501
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "Error interno: Fallo en la conversión de la fecha con 'mktime'.\n"
 
-#: src/common.c:394
+#: src/common.c:393
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr ""
 "Formato de fecha inválido según ISO8601. Ignorando la información de <dc:"
 "date>\n"
 
-#: src/common.c:505
+#: src/common.c:504
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "Formato de fecha inválido según RFC822. Se ignorará.\n"
 
-#: src/common.c:519 src/common.c:526 src/common.c:532 src/common.c:539
+#: src/common.c:518 src/common.c:525 src/common.c:531 src/common.c:538
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "No se ha podido crear el directorio de caché %s."
 
-#: src/common.c:609
+#: src/common.c:608
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -52,7 +56,7 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: src/conf.c:462
 msgid "feedlist.opml"
-msgstr ""
+msgstr "feedlist_es.opml"
 
 #: src/conf.c:487
 #, c-format
@@ -207,9 +211,8 @@ msgid "Feed:"
 msgstr "Fuente:"
 
 #: src/feed.c:953 src/interface.c:519
-#, fuzzy
 msgid "VFolder"
-msgstr "_Nueva carpeta..."
+msgstr "Carpeta Virtual"
 
 #: src/feed.c:964 src/interface.c:1071 src/interface.c:1473 src/item.c:269
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
@@ -330,9 +333,8 @@ msgstr ""
 "seguir accediendo a los elementos que contiene su caché."
 
 #: src/interface.c:137 src/interface.c:2800
-#, fuzzy
 msgid "Liferea 0.6.0"
-msgstr "Liferea 0.5.3"
+msgstr "Liferea 0.6.0"
 
 #: src/interface.c:154
 msgid "_Program"
@@ -378,7 +380,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "_Actualizar todas"
 
-#: src/interface.c:237 src/ui_mainwindow.c:174
+#: src/interface.c:237 src/ui_mainwindow.c:188
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Actualiza inmediatamente todas las fuentes, excepto directorios OCS"
 
@@ -434,7 +436,7 @@ msgstr "_Elementos"
 msgid "_Next Unread Item"
 msgstr "_Siguiente elemento nuevo"
 
-#: src/interface.c:315 src/ui_mainwindow.c:172
+#: src/interface.c:315 src/ui_mainwindow.c:186
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -452,26 +454,23 @@ msgstr "Marca o desmarca un mensaje como leído."
 
 #: src/interface.c:337
 msgid "Toggle Item _Flag"
-msgstr "Establecer _flag"
+msgstr "Establecer _bandera"
 
 #: src/interface.c:340
 msgid "Toggles the item flag."
-msgstr "Activa o desactiva el flag."
+msgstr "Activa o desactiva la bandera"
 
 #: src/interface.c:345
-#, fuzzy
 msgid "Remove Selected"
-msgstr "_Eliminar fuente"
+msgstr "Eliminar seleccionados"
 
 #: src/interface.c:348
-#, fuzzy
 msgid "Removes the selected item."
-msgstr "Elimina la subscripción seleccionada"
+msgstr "Elimina el elemento seleccionado"
 
 #: src/interface.c:354
-#, fuzzy
 msgid "Remove All"
-msgstr "_Eliminar elementos"
+msgstr "Eliminar todos"
 
 #: src/interface.c:357
 msgid "Removes all items of the currently selected feed."
@@ -946,7 +945,7 @@ msgstr "Proxy"
 
 #: src/interface.c:2510
 msgid "New Folder"
-msgstr "_Nueva carpeta..."
+msgstr "Nueva carpeta"
 
 #: src/interface.c:2526 src/interface.c:2603
 msgid "Folder name:"
@@ -1049,7 +1048,6 @@ msgid "Contributors"
 msgstr "Agradecimientos"
 
 #: src/interface.c:2850
-#, fuzzy
 msgid ""
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -1067,19 +1065,21 @@ msgid ""
 "Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
 "Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 msgstr ""
-"Takeshi Aihana <aihana@gnome.gr.jp>\n"
+"Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
+"Jose María Mateos <chema@chema.homelinux.org>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Vincent Lefevre <vincent@vinc17.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
+"Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
+"Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 
 #: src/interface.c:2856
 msgid "Translation"
@@ -1099,23 +1099,24 @@ msgstr ""
 "encriptar</i>"
 
 #: src/interface.c:3033
-#, fuzzy
 msgid "VFolder Properties"
-msgstr "_Propiedades..."
+msgstr "Propiedades de la Carpeta Virtual"
 
 #: src/interface.c:3049
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: src/interface.c:3078
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
-msgstr ""
+msgstr "Nota: Los elementos se añadirán a la Carpeta Virtual si, al menos, \n"
+"coincide una regla aditiva; y se eliminarán si coincide como mínimo \n"
+"una regla sustractiva"
 
 #: src/interface.c:3091
 msgid "Rules"
-msgstr ""
+msgstr "Reglas"
 
 #: src/item.c:251 src/item.c:253 src/item.c:264
 msgid "[No title]"
@@ -1185,12 +1186,12 @@ msgstr ""
 #: src/main.c:222
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
-msgstr ""
+msgstr "Se necesita un argumento para el parámetro --session\n"
 
 #: src/main.c:225
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
-msgstr ""
+msgstr "Se encontró un parámetro desconocido: %s\n"
 
 #: src/main.c:244
 msgid ""
@@ -1299,28 +1300,28 @@ msgstr "Fuente"
 msgid "coverage"
 msgstr "cobertura"
 
-#: src/net/conversions.c:80
+#: src/net/conversions.c:74
 msgid "No description available."
 msgstr "No hay ninguna descripción disponible"
 
-#: src/net/conversions.c:361
+#: src/net/conversions.c:355
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "Error descomprimiendo en zlib: %d %s\n"
 
-#: src/net/conversions.c:377
+#: src/net/conversions.c:371
 msgid "ERROR: No output during decompression"
 msgstr "Error: No se ha producido ninguna salida durante la descompresión."
 
-#: src/net/conversions.c:410
+#: src/net/conversions.c:404
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "Error: Datos inválidos en los bytes mágicos del GZIP."
 
-#: src/net/conversions.c:415
+#: src/net/conversions.c:409
 msgid "ERROR: Compression method is not deflate"
 msgstr "Error: El método de compresión no es 'deflate'"
 
-#: src/net/conversions.c:420
+#: src/net/conversions.c:414
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "Error: 'Flags' no soportadas: %d\n"
@@ -1369,60 +1370,56 @@ msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>No se pudo obtener la cabecera RDF/RSS.</p>"
 
 #: src/rule.c:132
-#, fuzzy
 msgid "Item"
-msgstr "Elemento:"
+msgstr "Elemento"
 
 #: src/rule.c:132
 msgid "does contain"
-msgstr ""
+msgstr "contiene"
 
 #: src/rule.c:132
 msgid "does not contain"
-msgstr ""
+msgstr "no contiene"
 
 #: src/rule.c:133
-#, fuzzy
 msgid "Item title"
-msgstr "[Sin título]"
+msgstr "Título"
 
 #: src/rule.c:133 src/rule.c:134
 msgid "does match"
-msgstr ""
+msgstr "coincide con"
 
 #: src/rule.c:133 src/rule.c:134
 msgid "does not match"
-msgstr ""
+msgstr "no coincide con"
 
 #: src/rule.c:134
 msgid "Item body"
-msgstr ""
+msgstr "Cuerpo del elemento"
 
 #: src/rule.c:135
-#, fuzzy
 msgid "Read status"
-msgstr "Marcar/Desmarcar _leído"
+msgstr "Estado de lectura"
 
 #: src/rule.c:135
-#, fuzzy
 msgid "is unread"
-msgstr "Siguiente nuevo"
+msgstr "es nuevo"
 
 #: src/rule.c:135
 msgid "is read"
-msgstr ""
+msgstr "está leído"
 
 #: src/rule.c:136
 msgid "Flag status"
-msgstr ""
+msgstr "Estado de la bandera"
 
 #: src/rule.c:136
 msgid "is flagged"
-msgstr ""
+msgstr "está marcada"
 
 #: src/rule.c:136
 msgid "is unflagged"
-msgstr ""
+msgstr "está desmarcada"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
@@ -1547,14 +1544,14 @@ msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada"
 
 #: src/ui_feed.c:182
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
 "p>%s"
 msgstr ""
 "<p>No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL "
-"apunte a un recurso con alguno de los formatos soportados.</p>"
+"apunte a un recurso con alguno de los formatos soportados.</p>%s"
 
 #: src/ui_feed.c:199
 #, c-format
@@ -1567,9 +1564,8 @@ msgid "\"%s\" is not available"
 msgstr "Lo siento, \"%s\" no está disponible"
 
 #: src/ui_feed.c:364
-#, fuzzy
 msgid "Unknown source"
-msgstr "fuente original"
+msgstr "Fuente desconocida"
 
 #: src/ui_feed.c:456
 msgid "Directories cannot be autoupdated."
@@ -1589,57 +1585,57 @@ msgstr ""
 msgid "Choose File"
 msgstr "Elegir archivo"
 
-#: src/ui_feedlist.c:399
+#: src/ui_feedlist.c:356
 msgid "You have to select a feed entry"
 msgstr "Por favor, elige una fuente de noticias"
 
-#: src/ui_feedlist.c:409
+#: src/ui_feedlist.c:366
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Se está trabajando sin conexión. No se pueden actualizar las fuentes"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:387
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "Nota: Los filtros de subscripciones desactivan el arrastrar-y-soltar"
 
-#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
+#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
 msgid "Deleting entry"
 msgstr "Borrando entrada"
 
-#: src/ui_feedlist.c:473
-#, fuzzy, c-format
+#: src/ui_feedlist.c:430
+#, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "¿Realmente desea eliminar %s y todos sus contenidos?"
+msgstr "¿Realmente desea eliminar \"%s\" y todos sus contenidos?"
 
-#: src/ui_feedlist.c:476
-#, fuzzy, c-format
+#: src/ui_feedlist.c:433
+#, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "¿Realmente desea eliminar %s?"
+msgstr "¿Realmente desea eliminar \"%s\"?"
 
-#: src/ui_feedlist.c:484
+#: src/ui_feedlist.c:441
 msgid "Deletion Confirmation"
 msgstr "Confirmación de eliminación"
 
-#: src/ui_feedlist.c:521
+#: src/ui_feedlist.c:478
 msgid "You must select a feed entry"
 msgstr "Por favor, elija una fuente de noticias"
 
-#: src/ui_feedlist.c:522
+#: src/ui_feedlist.c:479
 msgid "You must select a feed entry."
 msgstr "Por favor, elija una fuente de noticias"
 
-#: src/ui_feedlist.c:568
+#: src/ui_feedlist.c:505
 msgid "New subscription"
 msgstr "Nueva subscripción"
 
-#: src/ui_folder.c:78
+#: src/ui_folder.c:76 src/ui_folder.c:102
 msgid "A folder must be selected."
 msgstr "Se debe seleccionar una carpeta"
 
-#: src/ui_folder.c:178
+#: src/ui_folder.c:220
 msgid "<i>(empty)</i>"
 msgstr "<i>(vacío)</i>"
 
-#: src/ui_folder.c:242
+#: src/ui_folder.c:349
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "Error interno: Tipo de entrada desconocido. No se ha podido mostrar un icono "
@@ -1667,28 +1663,27 @@ msgstr ""
 "Error interno. No se pudo obtener la selección de vista en árbol de las "
 "fuentes.\n"
 
-#. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:719
+#: src/ui_itemlist.c:723
 msgid "There are no unread items "
 msgstr "No hay elementos nuevos"
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:185
 msgid "New Feed"
 msgstr "Nueva fuente"
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:185
 msgid "Add a new subscription."
 msgstr "Nueva subscripción."
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:186
 msgid "Next Unread"
 msgstr "Siguiente nuevo"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:187
 msgid "Mark As Read"
 msgstr "Marcar como leídos"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:187
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1696,27 +1691,27 @@ msgstr ""
 "Marca como leídos todos los elementos de la subscripción seleccionada o, en "
 "caso de una carpeta, todas sus subscripciones."
 
-#: src/ui_mainwindow.c:174
+#: src/ui_mainwindow.c:188
 msgid "Update All"
 msgstr "Actualizar todas"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:189
 msgid "Search"
 msgstr "Buscar"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:189
 msgid "Search all feeds."
 msgstr "Buscar en las fuentes."
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:190
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:190
 msgid "Edit preferences."
 msgstr "Cambiar preferencias."
 
-#: src/ui_mainwindow.c:191
+#: src/ui_mainwindow.c:205
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1769,11 +1764,11 @@ msgstr ""
 "\">FAQ</a> que hay disponibles en la <a href=\"http://liferea.sf.net"
 "\">página web de Liferea</a></p>"
 
-#: src/ui_mainwindow.c:276
+#: src/ui_mainwindow.c:290
 msgid "Liferea is now online"
 msgstr "Trabajando con conexión."
 
-#: src/ui_mainwindow.c:279
+#: src/ui_mainwindow.c:293
 msgid "Liferea is now offline"
 msgstr "Trabajando en modo sin conexión."
 
@@ -1787,21 +1782,19 @@ msgstr "Aviso de Liferea"
 
 #: src/ui_popup.c:86
 msgid "/_Update"
-msgstr "_Actualizar"
+msgstr "/_Actualizar"
 
 #: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:106
-#, fuzzy
 msgid "/_Mark All As Read"
-msgstr "/Marcar como _leído"
+msgstr "/Marcar fuente como _leída"
 
 #: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:107 src/ui_popup.c:115
 msgid "/_New"
 msgstr "/_Nuevo"
 
 #: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:108 src/ui_popup.c:116
-#, fuzzy
 msgid "/_New/New _Subscription"
-msgstr "_Nueva fuente..."
+msgstr "/_Nuevo/_Nueva fuente..."
 
 #: src/ui_popup.c:90 src/ui_popup.c:100 src/ui_popup.c:109 src/ui_popup.c:117
 msgid "/_New/New F_older"
@@ -1829,16 +1822,15 @@ msgstr "/_Eliminar carpeta"
 
 #: src/ui_popup.c:122
 msgid "/Toggle _Read Status"
-msgstr "/Marcar/Desmarcar _leído"
+msgstr "/Marcar o desmarcar como _nuevo"
 
 #: src/ui_popup.c:123
 msgid "/Toggle Item _Flag"
-msgstr "/Establecer _flag"
+msgstr "/Establecer _bandera"
 
 #: src/ui_popup.c:124
-#, fuzzy
 msgid "/R_emove Item"
-msgstr "_Eliminar elementos"
+msgstr "/_Eliminar elemento"
 
 #: src/ui_popup.c:126
 msgid "/_Next Unread Item"
@@ -1929,14 +1921,12 @@ msgstr "Buscando \"%s\""
 
 #: src/ui_search.c:96
 msgid "Please do a search first!"
-msgstr ""
+msgstr "Se requiere una búsqueda previa"
 
 #: src/ui_tray.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item!"
-msgid_plural "%d new items!"
-msgstr[0] "%d elemento(s) nuevo(s)"
-msgstr[1] "%d elemento(s) nuevo(s)"
+msgstr "%d elemento(s) nuevo(s)"
 
 #: src/ui_tray.c:103
 msgid "No new items."
@@ -1961,17 +1951,8 @@ msgstr "El archivo \"%s\" no existe."
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
-msgstr ""
-
-#~ msgid "Deleting \"%s\""
-#~ msgstr "Borrando entrada \"%s\""
-
-#~ msgid "A folder must be empty to delete it!"
-#~ msgstr ""
-#~ "Lo siento, para poder borrar una carpeta, ésta tiene que estar vacía."
-
-#~ msgid "/_New/New _Feed"
-#~ msgstr "/_Nuevo/Nueva _fuente"
+msgstr "GtkHTML2 no soporta la etiqueta HTML <object>.\n"
+"Puede que los plug-ins incluídos no se muestren."
 
 #~ msgid "\"%s\" has no new items"
 #~ msgstr "\"%s\" no tiene elementos nuevos"
@@ -1981,9 +1962,6 @@ msgstr ""
 
 #~ msgid "create VFolder"
 #~ msgstr "Crear carpeta virtual"
-
-#~ msgid "/_Delete VFolder"
-#~ msgstr "/Eliminar carpeta _virtual"
 
 #~ msgid "Add the _help feeds to the feed list on startup."
 #~ msgstr "Al _iniciar, añadir las fuentes de ayuda a la lista."
@@ -2014,11 +1992,24 @@ msgstr ""
 #~ "No se puede eliminar la ayuda. Desde las preferencias es posible "
 #~ "desactivarla. Después de reiniciar, se podrá borrar la carpeta de ayuda."
 
+#~ msgid "Deleting \"%s\""
+#~ msgstr "Borrando entrada \"%s\""
+
 #~ msgid "You cannot modify help feeds."
 #~ msgstr "No se pueden modificar las fuentes de ayuda"
 
 #~ msgid "Value"
 #~ msgstr "Valor"
+
+#~ msgid "A folder must be empty to delete it!"
+#~ msgstr ""
+#~ "Lo siento, para poder borrar una carpeta, ésta tiene que estar vacía."
+
+#~ msgid "/_New/New _Feed"
+#~ msgstr "/_Nuevo/Nueva _fuente"
+
+#~ msgid "/_Delete VFolder"
+#~ msgstr "/Eliminar carpeta _virtual"
 
 #~ msgid ""
 #~ "<p>Could not determine the feed type. Please check that it is in a "

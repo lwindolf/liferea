@@ -58,7 +58,7 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: src/conf.c:462
 msgid "feedlist.opml"
-msgstr "feedlist.opml"
+msgstr "feedlist_de.opml"
 
 #: src/conf.c:487
 #, c-format
