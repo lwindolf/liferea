@@ -185,7 +185,7 @@ gchar * prefs_get_download_cmd(void) {
 	struct enclosure_download_tool	*edt = enclosure_download_tools;
 
 	edt += getNumericConfValue(ENCLOSURE_DOWNLOAD_TOOL);
-	// FIXME: array boundary check
+	/* FIXME: array boundary check */
 	return edt->cmd;
 }
 
