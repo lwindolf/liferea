@@ -155,7 +155,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 		handlerIter = feedhandlers;
 		while (handlerIter != NULL) {
 			handler = (feedHandlerPtr)(handlerIter->data);
-			if ((*(handler->checkFormat))(doc, cur)) {
+			if (handler != NULL && handler->checkFormat != NULL && (*(handler->checkFormat))(doc, cur)) {
 				(*(handler->feedParser))(fp, doc, cur);
 				handled = TRUE;
 				break;
@@ -360,13 +360,13 @@ gboolean feed_load(feedPtr fp) {
 	g_assert(NULL != fp->id);
 	if(0 != (fp->loaded)++) {
 		debug0(DEBUG_CACHE, "feed already loaded!\n");
-		return;
+		return TRUE;
 	}
 
 	if(FST_VFOLDER == feed_get_type(fp)) {
 		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
 		fp->loaded++;
-		return;
+		return TRUE;
 	}
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);

@@ -165,7 +165,7 @@ feedPtr feed_new(void);
  * the cache filename.
  *
  * @returns FALSE if the feed file could not be opened and TRUE if it
- * was opened.
+ * was opened or was already loaded.
  */
 gboolean feed_load(feedPtr fp);
 
