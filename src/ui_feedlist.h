@@ -109,9 +109,9 @@ folderPtr ui_feedlist_get_target_folder(int *pos);
  *
  * @param source	feed source URL or local file name or piped command
  * @param filter    filename of the filter to use for the new feed
- * @param showPropDialog TRUE if the property dialog should popup
+ * @param flags feed request flags to pass to the update requesting subsystem
  */
-void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboolean showPropDialog);
+void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags);
 
 
 #define	ACTION_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	

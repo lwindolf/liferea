@@ -45,6 +45,7 @@
 #include "debug.h"
 
 #include "ui_queue.h"	// FIXME
+#include "ui_feed.h"
 #include "ui_feedlist.h"
 #include "ui_tray.h"
 #include "ui_notification.h"
@@ -600,7 +601,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 /**
  * method to be called to schedule a feed to be updated
  */
-void feed_schedule_update(feedPtr fp) {
+void feed_schedule_update(feedPtr fp, gint flags) {
 	const gchar		*source;
 	struct request		*request;
 	g_assert(NULL != fp);
@@ -628,9 +629,9 @@ void feed_schedule_update(feedPtr fp) {
 	request->user_data = fp;
 	request->source = g_strdup(source);
 	request->lastmodified = fp->lastModified;
+	request->flags = flags;
 	if (feed_get_filter(fp) != NULL)
 		request->filtercmd = g_strdup(feed_get_filter(fp));
-	request->flags = 0;
 	/* prepare request url (strdup because it might be
 	   changed on permanent HTTP redirection in netio.c) */
 	
@@ -645,38 +646,57 @@ void feed_process_update_result(struct request *request) {
 	feedPtr			old_fp = (feedPtr)request->user_data;
 	feedPtr			new_fp;
 	feedHandlerPtr		fhp;
-	gboolean 		firstDownload = FALSE;
 	
 	ui_lock();
 
 	feed_set_available(old_fp, TRUE);
-	
-	if(304 == request->httpstatus) {	
+
+
+	if (401 /* unauthorized */ == request->httpstatus) {
+		feed_set_available(old_fp, FALSE);
+		ui_feed_authdialog_new(GTK_WINDOW(mainwindow), old_fp, request->flags);
+	} if(304 == request->httpstatus) {	
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(old_fp));
 	} else if(NULL != request->data) {
 		do {
-			/* parse the new downloaded feed into new_fp, feed type must be 
-			   set here because the parsing implementations maybe used for
-			   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
 			old_fp->lastModified = request->lastmodified;
+			/* note this is to update the feed URL on permanent redirects */
+			if(0 != strcmp(request->source, feed_get_source(old_fp))) {
+				feed_set_source(old_fp, request->source);
+				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(old_fp));
+			}
+
+
 			new_fp = feed_new();
 			feed_set_source(new_fp, feed_get_source(old_fp)); /* Used by the parser functions to determine source */
-			fhp = feed_parse(new_fp, request->data, FALSE);
+			/* parse the new downloaded feed into new_fp */
+			fhp = feed_parse(new_fp, request->data, request->flags & FEED_REQ_AUTO_DISCOVER);
 			if (fhp == NULL) {
 				feed_set_available(old_fp, FALSE);
 				g_free(old_fp->parseErrors);
 				old_fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!"));
 				feed_free(new_fp);
 				break;
+			} else {
+				if (request->flags & FEED_REQ_AUTO_DISCOVER) {
+					printf("New source is %s\n",  feed_get_source(new_fp));
+					
+					feed_set_source(old_fp, feed_get_source(new_fp)); /* Reset autodiscovered source */
+				}
+
 			}
 			
 			old_fp->fhp = fhp;
 			
-			if(firstDownload) {
-				if (feed_get_title(new_fp) != NULL)
-					feed_set_title(old_fp, feed_get_title(new_fp));
-				feed_set_update_interval(old_fp, feed_get_default_update_interval(new_fp));
+			if (new_fp != NULL && feed_get_title(new_fp) != NULL && request->flags & FEED_REQ_RESET_TITLE) {
+				gchar *tmp = filter_title(g_strdup(feed_get_title(new_fp)));
+				feed_set_title(old_fp, tmp);
+				g_free(tmp);
+
 			}
+
+			if (new_fp != NULL && request->flags & FEED_REQ_RESET_UPDATE_INT)
+				feed_set_update_interval(old_fp, feed_get_default_update_interval(new_fp));
 
 			if(TRUE == fhp->merge)
 				/* If the feed type supports merging... */
@@ -687,11 +707,6 @@ void feed_process_update_result(struct request *request) {
 				ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(old_fp));
 			}
 
-			/* note this is to update the feed URL on permanent redirects */
-			if(0 != strcmp(request->source, feed_get_source(old_fp))) {
-				feed_set_source(old_fp, request->source);
-				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(old_fp));
-			}
 
 			/* now fp contains the actual feed infos */
 			old_fp->needsCacheSave = TRUE;

@@ -49,6 +49,15 @@ enum node_types {
 /** macro to test whether a type is a folder entry */
 #define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
 
+
+/** Flags used in the request structure */
+enum feed_request_flags {
+	FEED_REQ_SHOW_PROPDIALOG = 1,
+	FEED_REQ_RESET_TITLE = 2, /**< Feed's title should be reset to default upon update */
+	FEED_REQ_RESET_UPDATE_INT = 4, /**< Feed's title should be reset to default upon update */
+	FEED_REQ_AUTO_DISCOVER = 8 /**< Feed auto-discovery attempts should be made */
+};
+
 struct feedhandler;
 struct request;
 /* ------------------------------------------------------------ */
@@ -147,7 +156,7 @@ feedPtr feed_new(void);
 gboolean feed_load_from_cache(feedPtr fp);
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
-void feed_schedule_update(feedPtr fp);
+void feed_schedule_update(feedPtr fp, gint flags);
 void feed_save(feedPtr fp);
 
 void feed_add_item(feedPtr fp, itemPtr ip);

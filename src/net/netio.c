@@ -48,6 +48,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <sys/stat.h>
+#include <libxml/uri.h>
 
 #include "conversions.h"
 #include "net-support.h"
@@ -804,13 +805,21 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 	char *tmphost;
 	char *freeme;
 	char *returndata;
-	char *authdata = NULL;
 	char *tmpstr;
 	char tmp[1024];
 	int httpproto = 0;			/* 0: http; 1: https */
+	xmlURIPtr uri;
 	
-	/* strstr will match _any_ substring. Not good, use strncasecmp with length 5! */
-	if (strncasecmp (url, "https", 5) == 0)
+	uri = xmlParseURI(url);
+
+	if (uri == NULL) {
+		cur_ptr->problem = 12345;
+		if (!suppressoutput)
+			UIStatus (_("Aborting download because URI could not be parsed"), 2);
+		return NULL;
+	}
+	
+	if (strcasecmp (uri->scheme, "https") == 0)
 		httpproto = 1;
 	else
 		httpproto = 0;
@@ -840,7 +849,6 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 	if (strchr (tmphost, '@') != NULL) {
 		tmpstr = tmphost;
 		strsep (&tmphost, "@");
-		authdata = strdup (tmpstr);
 	}
 	
 	host = strdup (tmphost);
@@ -862,17 +870,13 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 			if (!suppressoutput)
 				UIStatus (_("Couldn't create network socket!"), 2);
 			cur_ptr->problem = 1;
-			free (freeme);
-			free (authdata);
-			return NULL;
+			break;
 		case 2:
 			snprintf (tmp, sizeof(tmp), _("Can't resolve host %s!"), host);
 			if (!suppressoutput)
 				UIStatus (tmp, 2);
 			cur_ptr->problem = 1;
-			free (freeme);
-			free (authdata);
-			return NULL;
+			break;
 		case 3:
 			/* On Solaris connect() might return -1, passing -1 to strerror()
 			   will return a NULL pointer which will segfault snprintf().
@@ -882,32 +886,24 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 			if (!suppressoutput)
 				UIStatus (tmp, 2);
 			cur_ptr->problem = 1;
-			free (freeme);
-			free (authdata);
-			return NULL;
+			break;
 		case 4:
 			if (!suppressoutput)
 				UIStatus (_("Connection timed out."), 2);
-			free (freeme);
-			free (authdata);
-			return NULL;
+			break;
 		case -1:
 			if (!suppressoutput)
 				UIStatus (_("Aborted."), 2);
-			free (freeme);
-			free (authdata);
-			return NULL;
+			break;
 		default:
+			returndata = NetIO (&my_socket, &connectresult, host, url, cur_ptr, uri->user, httpproto, suppressoutput);
 			break;
 	}
 	
-	returndata = NetIO (&my_socket, &connectresult, host, url, cur_ptr, authdata, httpproto, suppressoutput);
 	
 	/* url will be freed in the calling function. */
 	free (freeme);		/* This is *host. */
-	
-	free (authdata);
-	
+	xmlFreeURI(uri);
 	return returndata;
 }
 

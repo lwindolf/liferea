@@ -46,9 +46,8 @@ char * ConstructBasicAuth (char * username, char * password) {
 	len = strlen(username) + 1 + strlen(password) + 1;
 	authstring = malloc (len);
 	snprintf (authstring, len, "%s:%s", username, password);
-
-	tmpstr = base64encode (authstring, len);
-
+	tmpstr = base64encode (authstring, len-1);
+	
 	/* "Authorization: Basic " + base64str + \r\n\0 */
 	len = 21 + strlen(tmpstr) + 3;
 	authinfo = malloc (len);

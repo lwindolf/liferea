@@ -407,7 +407,7 @@ void on_popup_refresh_selected(gpointer callback_data,
 	
 	if(download_is_online()) {
 		if (IS_FEED(ptr->type))
-			feed_schedule_update((feedPtr)ptr);
+			feed_schedule_update((feedPtr)ptr, 0);
 		else
 			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, (gpointer)feed_schedule_update);
 	} else
@@ -551,7 +551,7 @@ void on_popup_prop_selected(gpointer callback_data,
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboolean showPropDialog) {
+void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags) {
 	struct request 	*request;
 	feedPtr			fp;
 	gchar			*tmp;
@@ -564,58 +564,30 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 	   waiting for the end of other updates and to
 	   get control back when feed is downloaded to show
 	   properties dialog) */
-	request = download_request_new(NULL);
 	request->source = g_strdup(source);
 	if (filter != NULL)
 		request->filtercmd = g_strdup(filter);
-	download_process(request);	/* FIXME: The downloading should not block? */
 	
-	/* maybe we need authentication */
-	if(403 == request->httpstatus) {		
-		authdialog = create_authdialog();
-		g_print("FIXME!!!\n");
-		/*ui_feedlist_new_subscription(source, filter, showPropDialog);*/
-	} else {
-		/* determine feed type if necessary */	
-		fp = feed_new();
-		tmp = conf_new_id();
-		feed_set_id(fp, tmp);
-		g_free(tmp);
-		feed_set_source(fp, request->source);
-		feed_set_filter(fp, filter);
-		favicon_download(fp);		// FIXME: this blocks the program!!!
-		
-		parent = ui_feedlist_get_target_folder(&pos);
-		ui_folder_add_feed(parent, fp, pos);
-		
-		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
-		if(request->data == NULL) {
-			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is "
-							"temporarily not available. You can retry downloading or remove the "
-							"feed subscription via the context menu from the feed list.\n"), source);
-		} else {
-			gchar *tmp;
-			fp->fhp = feed_parse(fp, request->data, TRUE);
-			tmp = filter_title(g_strdup(feed_get_title(fp)));
-			feed_set_title(fp, tmp);
-			g_free(tmp);
-			
-			if (fp->fhp == NULL)
-				ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));
-			ui_feedlist_update();
-			fp->needsCacheSave = TRUE;
+	fp = feed_new();
+	fp->needsCacheSave = TRUE;
 
-			if(showPropDialog) {
-				/* built, set default update interval and show properties dialog */
-				/* FIXME: propdialog = ui_feedlist_build_prop_dialog();*/
+	tmp = conf_new_id();
+	feed_set_id(fp, tmp);
+	g_free(tmp);
 
-				on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
-			}
-		}
-
-		download_request_free(request);
-		ui_feedlist_select((nodePtr)fp);
-	}
+	feed_set_source(fp, source);
+	feed_set_title(fp, _("Loading...."));
+	feed_set_filter(fp, filter);
+	parent = ui_feedlist_get_target_folder(&pos);
+	ui_folder_add_feed(parent, fp, pos);
+	ui_feedlist_update();
+	ui_feedlist_select((nodePtr)fp);
+	
+	feed_schedule_update(fp, flags);
+	favicon_download(fp);
+	
+	//ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));
+	
 	debug_exit("ui_feedlist_new_subscription");
 }
 
@@ -677,7 +649,7 @@ static void ui_feedlist_check_update_counter(feedPtr fp) {
 	
 	if (interval > 0)
 		if (fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
-			feed_schedule_update(fp);
+			feed_schedule_update(fp, 0);
 }
 
 gboolean ui_feedlist_auto_update(void *data) {

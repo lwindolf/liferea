@@ -25,6 +25,8 @@ gboolean
 on_dialog1_delete_event                (GtkWidget       *widget,
                                         GdkEvent        *event,
                                         gpointer         user_data);
+
+GtkWidget* ui_feed_authdialog_new (GtkWindow *parent, feedPtr fp, gint flags);
 GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp);
 GtkWidget* ui_feed_newdialog_new (GtkWindow *parent);
 

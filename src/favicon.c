@@ -28,16 +28,18 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef STDC_HEADERS
+#include <stdlib.h>
+#endif
+
 #include "favicon.h"
 #include "support.h"
 #include "feed.h"
 #include "common.h"
 #include "update.h"
 #include "debug.h"
+#include "ui_feedlist.h"
 
-#ifdef STDC_HEADERS
-#include <stdlib.h>
-#endif
 
 void favicon_load(feedPtr fp) {
 	gchar		*pngfilename, *xpmfilename;
@@ -93,7 +95,7 @@ void favicon_remove(feedPtr fp) {
 static void favicon_download_request_cb(struct request *request) {
 	feedPtr fp = (feedPtr)request->user_data;
 	char *tmp;
-	printf("favicon downloaded\n");
+	
 	if(NULL != request->data && request->size > 0) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
