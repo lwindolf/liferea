@@ -710,10 +710,10 @@ void on_popup_removefolder_selected(void) {
 	gchar		*keyprefix;
 	gint		tmp_type, count;
 	
-	keyprefix = getEntryViewSelectionPrefix(mainwindow);
+	keyprefix = getMainFeedListViewSelection();
 	iter = getEntryViewSelectionIter(mainwindow);
 	feedstore = getFeedStore();
-	
+
 	g_assert(feedstore != NULL);
 	
 	/* make sure thats no grouping iterator */
@@ -728,8 +728,8 @@ void on_popup_removefolder_selected(void) {
 			gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, iter);
 			gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_TYPE, &tmp_type, -1);
 			if(FST_EMPTY == tmp_type) {
-				gtk_tree_store_remove(feedstore, &childiter);
-				gtk_tree_store_remove(feedstore, iter);
+				gtk_tree_store_remove(feedstore, &childiter);	/* remove "(empty)" iter */
+				gtk_tree_store_remove(feedstore, iter);		/* remove folder iter */
 				removeFolder(keyprefix);
 				g_free(keyprefix);
 			} else {
@@ -774,8 +774,7 @@ void on_popup_allunread_selected(void) {
                	gtk_tree_model_get (model, &iter, IS_PTR, &tmp_ip,
 						  IS_TYPE, &type, -1);
 		g_assert(tmp_ip != NULL);
-		if(IS_FEED(type))
-			markItemAsRead(type, tmp_ip);
+		markItemAsRead(type, tmp_ip);
 
 		valid = gtk_tree_model_iter_next(model, &iter);
 	}
@@ -1163,9 +1162,7 @@ static void renderItemTitle(GtkTreeViewColumn *tree_column,
 	gtk_tree_model_get(model, iter, IS_PTR, &tmp_ip,
 					IS_TYPE, &type, -1);
 
-	if(IS_FEED(type))
-		result = getItemReadStatus(type, tmp_ip);
-	
+	result = getItemReadStatus(type, tmp_ip);
 	if(FALSE == result) {
 		g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
 	} else {
@@ -1186,9 +1183,7 @@ static void renderItemStatus(GtkTreeViewColumn *tree_column,
 	gtk_tree_model_get(model, iter, IS_PTR, &tmp_ip,
 					IS_TYPE, &type, -1);
 
-	if(IS_FEED(type))
-		result = getItemReadStatus(type, tmp_ip);
-			
+	result = getItemReadStatus(type, tmp_ip);		
 	if(FALSE == result) {
 		g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unreadIcon, NULL);
 	} else {

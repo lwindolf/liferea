@@ -33,7 +33,8 @@
 typedef struct VFolderItem {
 	gint		type;	/* feed type this item belongs to */
 	gpointer	ip;	/* the item pointer itself */
-	gpointer	ep;	/* the feed pointer this item belongs to */
+	gpointer	ep;	/* the feed this item belongs to */
+	gpointer	vp;	/* the vfolder this vfolder entry belongs to */
 } *VFolderItemPtr;
 
 /* we reuse the backend item handlers to redirect item handler calls
@@ -144,9 +145,9 @@ static gpointer getVFolderItemProp(gpointer ip, gint proptype) {
 	g_assert(NULL != vip);
 	if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&vip->type)))
 		g_error(g_strdup_printf(_("internal error! no item handler for this type %d!"), vip->type));	
-g_print("VFolder getItemProp() start\n");
-	(*(ihp->getItemProp))(vip->ip, proptype);
-g_print("VFolder getItemProp() end\n");
+
+	g_assert(NULL != ihp->getItemProp);
+	return (*(ihp->getItemProp))(vip->ip, proptype);
 }
 
 static void setVFolderItemProp(gpointer ip, gint proptype, gpointer data) {
@@ -156,14 +157,22 @@ static void setVFolderItemProp(gpointer ip, gint proptype, gpointer data) {
 	g_assert(NULL != vip);
 	if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&vip->type)))
 		g_error(g_strdup_printf(_("internal error! no item handler for this type %d!"), vip->type));	
-
+		
+	g_assert(NULL != ihp->setItemProp);
+	g_assert(NULL != ihp->getItemProp);
+	switch(proptype) {
+		case ITEM_PROP_READSTATUS:
+			if(FALSE == (gboolean)(*(ihp->getItemProp))(vip->ip, proptype))
+				((VFolderPtr)(vip->vp))->unreadCounter--;
+			break;
+	}
 	(*(ihp->setItemProp))(vip->ip, proptype, data);
 }
 
 static void showVFolderItem(gpointer ip) {
 	VFolderItemPtr	vip = (VFolderItemPtr)ip;
 	itemHandlerPtr	ihp;
-	
+
 	g_assert(NULL != vip);
 	if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&vip->type)))
 		g_error(g_strdup_printf(_("internal error! no item handler for this type %d!"), vip->type));	
@@ -198,14 +207,22 @@ void removeOldItemsFromVFolder(VFolderPtr vp, gpointer ep) {
    when a VFolder scan method of a feed found a matching item */
 void addItemToVFolder(VFolderPtr vp, gpointer ep, gpointer ip, gint type) {
 	VFolderItemPtr	vip = NULL;
-	
+	itemHandlerPtr	ihp;
+
 	g_assert(NULL != vp);
 	g_assert(NULL != ip);
+
+	if(NULL == (ihp = g_hash_table_lookup(itemHandler, (gpointer)&type)))
+		g_error(g_strdup_printf(_("internal error! no item handler for this type %d!"), type));	
 
 	if(NULL != (vip = g_malloc(sizeof(struct VFolderItem)))) {
 		vip->type = type;
 		vip->ip = ip;
 		vip->ep = ep;
+		vip->vp = vp;
+		g_assert(NULL != (*(ihp->getItemProp)));
+		if(FALSE == (*(ihp->getItemProp))(ip, ITEM_PROP_READSTATUS))
+			vp->unreadCounter++;
 		vp->items = g_slist_append(vp->items, vip);
 	} else {
 		g_error(_("could not allocate memory!"));
@@ -339,7 +356,7 @@ static gpointer getVFolderProp(gpointer fp, gint proptype) {
 				return (gpointer)-1;
 				break;
 			case FEED_PROP_UNREADCOUNT:
-				return (gpointer)0;
+				return (gpointer)c->unreadCounter;
 				break;
 			case FEED_PROP_AVAILABLE:
 				return (gpointer)TRUE;

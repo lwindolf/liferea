@@ -611,7 +611,7 @@ void loadItemList(gchar *key, gchar *searchstring) {
 	     		   		IS_TITLE, title,
 					IS_PTR, ip,
 					IS_TIME, (*(ihp->getItemProp))(ip, ITEM_PROP_TIME),
-					IS_TYPE, (*(ihp->getItemProp))(ip, ITEM_PROP_TYPE),
+					IS_TYPE, ep->type,	/* not the item type, this would fail for VFolders! */
 					-1);
 		}
 

@@ -43,7 +43,7 @@ typedef struct VFolder {
 	
 	rulePtr		rules;		/* the search rules of this VFolder */
 	// FIXME: still to complicated to support...
-	//gint		unreadCounter;	/* counter of unread items */
+	gint		unreadCounter;	/* counter of unread items */
 } *VFolderPtr;
 
 /* standard feed/item type interface */

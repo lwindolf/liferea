@@ -282,7 +282,7 @@ gpointer getRSSItemProp(gpointer ip, gint proptype) {
 				return (gpointer)FST_RSS;
 				break;
 			default:
-				g_error(_("intenal error! unknow item property type!\n"));
+				g_error(_("internal error! unknow item property type!\n"));
 				break;
 		}
 	} else {

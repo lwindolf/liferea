@@ -666,7 +666,7 @@ gpointer getOCSItemProp(gpointer ip, gint proptype) {
 				return (gpointer)i->tags[OCS_TITLE];
 				break;
 			case ITEM_PROP_READSTATUS:
-				return (gpointer)FALSE;
+				return (gpointer)TRUE;
 				break;
 			case ITEM_PROP_DESCRIPTION:
 				return (gpointer)i->tags[OCS_DESCRIPTION];
