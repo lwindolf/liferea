@@ -621,6 +621,23 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		}
 		
 		if(!found) {
+			/* FIXME: remove this migration code with 0.9.x */
+			if(0 == new_ip->nr) {
+				new_ip->nr = ++(fp->lastItemNr);
+				fp->needsCacheSave = TRUE;
+			}
+			
+			/* ensure that the feed last item nr is at maximum */
+			if(new_ip->nr > fp->lastItemNr)
+				fp->lastItemNr = new_ip->nr;
+
+			/* ensure that the item nr's are unique */
+			if(NULL != feed_lookup_item(fp, new_ip->nr)) {
+				g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%d)\n", fp->id, new_ip->title, new_ip->nr);
+				new_ip->nr = ++(fp->lastItemNr);
+				fp->needsCacheSave = TRUE;
+			}
+		
 			if(FALSE == item_get_read_status(new_ip))
 				feed_increase_unread_counter(fp);
 			if(TRUE == new_ip->newStatus) {
@@ -629,13 +646,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			}
 			fp->items = g_slist_prepend(fp->items, (gpointer)new_ip);
 			new_ip->fp = fp;
-			
-			/* FIXME: remove this migration code with 0.9.x */
-			if(0 == new_ip->nr) {
-				new_ip->nr = ++(fp->lastItemNr);
-				new_ip->fp->needsCacheSave = TRUE;
-			}
-		
+							
 			/* check if the item matches any vfolder rules */
 			vfolder_check_item(new_ip);
 			

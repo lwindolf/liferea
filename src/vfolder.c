@@ -183,13 +183,13 @@ void vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
 		rp = iter->data;
 		if(rp->additive) {
 			if(!added && rule_check_item(rp, ip)) {
-				/* debug2(DEBUG_UPDATE, "adding matching item (%d): %s\n", ip->nr, item_get_title(ip)); */
+				debug2(DEBUG_UPDATE, "adding matching item (%d): %s\n", ip->nr, item_get_title(ip));
 				vfolder_add_item(vp, ip);
 				added = TRUE;
 			}
 		} else {
 			if(added && rule_check_item(rp, ip)) {
-				/* debug2(DEBUG_UPDATE, "deleting matching item (%d): %s\n", ip->nr, item_get_title(ip)); */
+				debug2(DEBUG_UPDATE, "deleting matching item (%d): %s\n", ip->nr, item_get_title(ip));
 				vfolder_remove_matching_item_copy(vp, ip);
 				added = FALSE;
 			}
