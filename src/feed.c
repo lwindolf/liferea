@@ -690,7 +690,6 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 				old_ip->metadata = new_ip->metadata;
 				vfolder_update_item(old_ip);
 				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
-				ui_tray_add_new(1);
 			} else {
 				debug0(DEBUG_VERBOSE, "-> item already exists");
 			}
