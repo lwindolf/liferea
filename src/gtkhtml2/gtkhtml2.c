@@ -228,14 +228,19 @@ static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user
 	return TRUE;
 }
 
-static void kill_old_connections (HtmlDocument *doc) {
+static void kill_old_connections (GtkWidget *scrollpane) {
+	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
+	HtmlDocument *doc = HTML_VIEW(htmlwidget)->document;
 	GSList *connection_list, *tmp;
+	struct request *r;
 	
+	r = g_object_get_data(G_OBJECT(scrollpane), "html_request");
+	if (r != NULL)
+		r->callback = NULL;
+	g_object_set_data(G_OBJECT(scrollpane), "html_request", NULL);
 	
-	while((tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list")) != NULL) {
-		struct request *r = (struct request*)tmp->data;
-		request_data_kill(r);
-	}
+	while((tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list")) != NULL)
+		request_data_kill((struct request*)tmp->data);
 }
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer scrollpane) {
@@ -243,11 +248,14 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer scrollpan
 	
 	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	if(absURL != NULL) {
-		kill_old_connections(doc);
+		kill_old_connections(scrollpane);
 		ui_htmlview_launch_URL(GTK_WIDGET(scrollpane), absURL,
 						   GPOINTER_TO_INT(g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
 		xmlFree(absURL);
 	}
+}
+void gtkhtml2_destroyed_cb(GtkObject *scrollpane, gpointer user_data) {
+	kill_old_connections(scrollpane);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -277,7 +285,7 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 
 	/* finalizing older stuff */
 	if(NULL != doc) {
-		kill_old_connections(doc);
+		kill_old_connections(scrollpane);
 		html_document_clear(doc);	/* heard rumors that this is necessary... */
 		if (g_object_get_data(G_OBJECT(doc), "liferea-base-uri") != NULL)
 			g_free(g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
@@ -334,6 +342,7 @@ static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
 	if(0 == handler)
 		g_warning("Could not setup URL handler for GtkHTML2!!!\nPlease help to debug this problem and post a comment on the\nproject homepage including your GTK and GtkHTML2 library versions!\n");
 		
+	g_signal_connect(G_OBJECT(scrollpane), "destroy", G_CALLBACK(gtkhtml2_destroyed_cb), NULL);
 	g_signal_connect(G_OBJECT(htmlwidget), "button-press-event", G_CALLBACK(button_press_event), NULL);
 	g_signal_connect(G_OBJECT(htmlwidget), "request_object", G_CALLBACK(request_object), NULL);
 	
@@ -366,11 +375,8 @@ static void gtkhtml2_html_received(struct request *r) {
 static void launch_url(GtkWidget *scrollpane, const gchar *url) { 
 	struct request *r;
 	
-	r = g_object_get_data(G_OBJECT(scrollpane), "html_request");
-
-	if(r != NULL)
-		r->callback = NULL;
-
+	kill_old_connections(scrollpane);
+	
 	r = download_request_new();
 	r->source = g_strdup(url);
 	r->callback = gtkhtml2_html_received;
