@@ -29,6 +29,10 @@
 #include "interface.h"
 #include "support.h"
 #include "ui_prefs.h"
+#include "ui_mainwindow.h"
+#include "ui_tray.h"
+#include "htmlview.h"
+#include "callbacks.h"
 
 static GtkWidget *prefdialog = NULL;
 

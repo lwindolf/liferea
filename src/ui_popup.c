@@ -23,9 +23,9 @@
 #include "support.h"
 #include "callbacks.h"
 #include "ui_popup.h"
+#include "ui_mainwindow.h"
 
 /* from callbacks.c */
-extern gint selected_type;
 extern gboolean itemlist_mode;
 
 /*------------------------------------------------------------------------------*/
@@ -121,6 +121,9 @@ void setupPopupMenues(void) {
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Mark All As Read"),	NULL, on_popup_allunread_selected, 		0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),	NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
 	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),	NULL, on_popup_toggle_read, 			0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle Item _Flag"),	NULL, on_popup_toggle_flag, 			0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Launch Item In Browser"), NULL, on_popup_launchitem_selected, 		0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, "/"	,			NULL, NULL, 					0, "<Separator>", 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _(TOGGLE_CONDENSED_VIEW),	NULL, on_popup_toggle_condensed_view,		0, "<ToggleItem>", 0);
@@ -160,13 +163,13 @@ GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer c
 
 /* function to generate popup menus for the item list depending
    on the list mode given in itemlist_mode */
-GtkMenu *make_item_menu(void) {
+GtkMenu *make_item_menu(itemPtr ip) {
 	GtkMenu 	*menu;
 	
 	if(TRUE == itemlist_mode)
-		menu = make_menu(item_menu_items, item_menu_len, NULL);
+		menu = make_menu(item_menu_items, item_menu_len, ip);
 	else
-		menu = make_menu(html_menu_items, html_menu_len, NULL);
+		menu = make_menu(html_menu_items, html_menu_len, ip);
 
 	return menu;
 }
@@ -177,33 +180,34 @@ GtkMenu *make_url_menu(char* url) {
 	return make_menu(url_menu_items, url_menu_len, g_strdup(url));
 }
 
-/* function to generate popup menus for the feed list depending
-   on the type parameter. */
-static GtkMenu *make_entry_menu(gint type) {
+/* function to generate popup menus for the feed list depending on the
+   type parameter. The item will be passed as a callback_data. For
+   example, an itemPtr or feedPtr would be passed. */
+static GtkMenu *make_entry_menu(gint type, gpointer item) {
 	GtkMenu		*menu;
 	
 	switch(type) {
 		case FST_NODE:
-			menu = make_menu(node_menu_items, node_menu_len, NULL);
+			menu = make_menu(node_menu_items, node_menu_len, item);
 			break;
 		case FST_VFOLDER:
-			menu = make_menu(vfolder_menu_items, vfolder_menu_len, NULL);
+			menu = make_menu(vfolder_menu_items, vfolder_menu_len, item);
 			break;
 		case FST_PIE:
 		case FST_RSS:
 		case FST_CDF:
 		case FST_HELPFEED:
-			menu = make_menu(feed_menu_items, feed_menu_len, NULL);
+			menu = make_menu(feed_menu_items, feed_menu_len, item);
 			break;
 		case FST_OPML:
 		case FST_OCS:
-			menu = make_menu(dir_menu_items, dir_menu_len, NULL);
+			menu = make_menu(dir_menu_items, dir_menu_len, item);
 			break;
 		case FST_EMPTY:
 			menu = NULL;
 			break;
 		default:
-			menu = make_menu(default_menu_items, default_menu_len, NULL);
+			menu = make_menu(default_menu_items, default_menu_len, item);
 			break;
 	}
 	
@@ -216,8 +220,8 @@ static GtkMenu *make_entry_menu(gint type) {
 /*------------------------------------------------------------------------------*/
 
 gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
-					    GdkEventButton *event,
-                                            gpointer user_data)
+								    GdkEventButton *event,
+								    gpointer user_data)
 {
 	GdkEventButton 	*eb;
 	GtkMenu		*menu;
@@ -230,26 +234,8 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 
 	// FIXME: don't use existing selection, but determine
 	// which selection would result from the right mouse click
-	if(NULL != (menu = make_entry_menu(selected_type)))
+	if(NULL != (menu = make_entry_menu(selected_type, NULL)))
 		gtk_menu_popup(menu, NULL, NULL, NULL, NULL, eb->button, eb->time);
-		
-	return TRUE;
-}
-
-gboolean on_itemlist_button_press_event(GtkWidget *widget,
-					    GdkEventButton *event,
-                                            gpointer user_data)
-{
-	GdkEventButton 	*eb;
-  
-	if (event->type != GDK_BUTTON_PRESS) return FALSE;
-	eb = (GdkEventButton*) event;
-
-	if (eb->button != 3) 
-		return FALSE;
-
-	/* right click -> popup */
-	gtk_menu_popup(make_item_menu(), NULL, NULL, NULL, NULL, eb->button, eb->time);
 		
 	return TRUE;
 }

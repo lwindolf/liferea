@@ -22,6 +22,7 @@
 #include "netio.h"
 #include "ns_blogChannel.h"
 #include "common.h"
+#include <string.h>
 
 #define BLOGROLL_START		"<div class=\"blogchanneltitle\"><b>BlogRoll</b></div<br>"
 #define BLOGROLL_END		"<br>" 

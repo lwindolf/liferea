@@ -1,7 +1,7 @@
 /*
    VFolder functionality
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ static feedPtr readVFolder(gchar *url) {
 	feedPtr	vp;
 	
 	/* initialize channel structure */
-	if(NULL == (vp = (feedPtr) malloc(sizeof(struct feed)))) {
+	if(NULL == (vp = (feedPtr) g_malloc(sizeof(struct feed)))) {
 		g_error("not enough memory!\n");
 		return NULL;
 	}

@@ -42,7 +42,6 @@ extern GHashTable	*feeds;
 extern GtkWidget	*mainwindow;
 
 extern GtkTreeStore * getFeedStore(void);
-extern GtkTreeStore * getItemStore(void);
 
 /* ---------------------------------------------------------------------------- */
 /* folder handling stuff (thats not the VFolder handling!)			*/

@@ -493,7 +493,7 @@ static void readOCS(feedPtr fp, gchar *data) {
 			/* handling OCS 0.5 directory tag... */
 			if(0 == xmlStrcmp(cur->name, "directory")) {
 				/* initialize directory structure */
-				if(NULL == (dp = (directoryPtr) malloc(sizeof(struct directory)))) {
+				if(NULL == (dp = (directoryPtr) g_malloc(sizeof(struct directory)))) {
 					g_error("not enough memory!\n");
 					exit(1);
 				}
@@ -515,7 +515,7 @@ static void readOCS(feedPtr fp, gchar *data) {
 			else if(0 == xmlStrcmp(cur->name, (const xmlChar *) "description")) {
 
 				/* initialize directory structure */
-				if(NULL == (dp = (directoryPtr) malloc(sizeof(struct directory)))) {
+				if(NULL == (dp = (directoryPtr) g_malloc(sizeof(struct directory)))) {
 					g_error("not enough memory!\n");
 					exit(1);
 				}

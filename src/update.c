@@ -58,8 +58,10 @@ gpointer getNewRequestStruct(feedPtr fp) {
 		request->lastmodified = NULL;
 		request->lasthttpstatus = 0;
 		request->fp = fp;
-		if(NULL != fp)
+		if(NULL != fp) {
+			g_assert(fp->request == NULL);
 			fp->request = (gpointer)request;
+		}
 	}	
 	return (gpointer)request;
 }

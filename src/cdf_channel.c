@@ -151,7 +151,7 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 	int 		error = 0;
 	
 	/* initialize channel structure */
-	if(NULL == (cp = (CDFChannelPtr) malloc(sizeof(struct CDFChannel)))) {
+	if(NULL == (cp = (CDFChannelPtr) g_malloc(sizeof(struct CDFChannel)))) {
 		g_error("not enough memory!\n");
 		return;
 	}

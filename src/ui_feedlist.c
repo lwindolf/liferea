@@ -25,8 +25,8 @@
 #include "feed.h"
 #include "folder.h"
 #include "ui_feedlist.h"
-
-
+#include "ui_tray.h"
+#include "htmlview.h"
 /* possible selected new dialog feed types */
 static gint selectableTypes[] = {	FST_AUTODETECT,
 					FST_RSS,
@@ -41,8 +41,6 @@ static gint selectableTypes[] = {	FST_AUTODETECT,
 extern GHashTable	*folders; // FIXME!
 extern GtkWidget	*mainwindow;
 extern GdkPixbuf	*icons[];
-
-extern itemPtr		selected_ip;
 
 static GtkTreeStore	*feedstore = NULL;
 
@@ -107,7 +105,6 @@ static void setSelectedFeed(feedPtr fp, gchar *keyprefix) {
 		g_free(selected_keyprefix);
 		selected_keyprefix = g_strdup(keyprefix);
 	}
-	selected_ip = NULL;	
 }
 
 /* Calls setSelectedFeed to fill the global select_* variables
@@ -340,13 +337,12 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 
 	undoTrayIcon();
 	
-        if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-                gtk_tree_model_get(model, &iter, 
-				FS_KEY, &tmp_key,
-				FS_TYPE, &tmp_type,
-				-1);
-
-		selected_ip = NULL;				
+	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
+		gtk_tree_model_get(model, &iter, 
+					    FS_KEY, &tmp_key,
+					    FS_TYPE, &tmp_type,
+					    -1);
+		
 		g_assert(NULL != tmp_key);
 		/* make sure thats no grouping iterator */
 		if(!IS_NODE(tmp_type) && (FST_EMPTY != tmp_type)) {
@@ -367,7 +363,7 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 			setSelectedFeed(NULL, tmp_key);
 		}
 		g_free(tmp_key);
-       	}
+	}
 }
 
 void addToFeedList(feedPtr fp, gboolean startup) {
@@ -598,7 +594,7 @@ void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropD
 					gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
 				}
 
-				on_popup_prop_selected;		/* prepare prop dialog */
+				on_popup_prop_selected();		/* prepare prop dialog */
 			}
 		}
 	}
@@ -680,7 +676,7 @@ void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
 /* function for finding next unread item 					*/
 /*------------------------------------------------------------------------------*/
 
-feedPtr findUnreadFeed(GtkTreeIter *iter) {
+feedPtr ui_feed_find_unread(GtkTreeIter *iter) {
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
 	GtkWidget		*treeview;
@@ -724,7 +720,7 @@ feedPtr findUnreadFeed(GtkTreeIter *iter) {
 			}		
 		} else {
 			/* must be a folder, so recursivly go down... */
-			if(NULL != (fp = findUnreadFeed(&childiter)))
+			if(NULL != (fp = ui_feed_find_unread(&childiter)))
 				return fp;
 		}
 		

@@ -339,7 +339,7 @@ time_t parseRFC822Date(gchar *date) {
 
 gchar * getActualTime(void) {
 	time_t		t;
-	gchar		*timestr;
+	gchar		*timestr = NULL;
 	gchar		*timeformat;
 	
 	/* get receive time */

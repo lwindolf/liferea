@@ -31,11 +31,6 @@ static GtkWidget 	*feedsterdialog = NULL;
 
 extern feedPtr          allItems;
 
-extern feedPtr		selected_fp;
-extern itemPtr		selected_ip;
-extern gchar 		*selected_keyprefix;
-extern gint		selected_type;
-
 /*------------------------------------------------------------------------------*/
 /* search dialog callbacks								*/
 /*------------------------------------------------------------------------------*/
@@ -74,7 +69,6 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		print_status(g_strdup_printf(_("searching for \"%s\""), searchstring));
 		selected_fp = NULL;
-		selected_ip = NULL;
 		selected_type = FST_VFOLDER;
 		loadItemList(allItems, (gchar *)searchstring);
 	}
@@ -87,8 +81,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*keywords, *resultCountButton;
 	GtkAdjustment	*resultCount;
-	feedPtr		fp;
-	gchar		*tmp, *searchtext = NULL;
+	gchar		*searchtext = NULL;
 	
 	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
 	resultCountButton = lookup_widget(feedsterdialog, "feedsterresultcount");

@@ -653,9 +653,6 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) hidesearch, "clicked",
                     G_CALLBACK (on_hidesearch_clicked),
                     NULL);
-  g_signal_connect_after ((gpointer) Itemlist, "move_cursor",
-                          G_CALLBACK (on_Itemlist_move_cursor),
-                          NULL);
   g_signal_connect ((gpointer) Itemlist, "button_press_event",
                     G_CALLBACK (on_itemlist_button_press_event),
                     NULL);

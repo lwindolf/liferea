@@ -117,7 +117,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 
 	g_assert(NULL != cur);
 		
-	if(NULL == (i = (PIEEntryPtr) malloc(sizeof(struct PIEEntry)))) {
+	if(NULL == (i = (PIEEntryPtr) g_malloc(sizeof(struct PIEEntry)))) {
 		g_error("not enough memory!\n");
 		return(NULL);
 	}

@@ -935,7 +935,6 @@
 			      <property name="rules_hint">True</property>
 			      <property name="reorderable">False</property>
 			      <property name="enable_search">True</property>
-			      <signal name="move_cursor" handler="on_Itemlist_move_cursor" after="yes" last_modification_time="Sat, 13 Sep 2003 22:22:20 GMT"/>
 			      <signal name="button_press_event" handler="on_itemlist_button_press_event" last_modification_time="Sun, 14 Sep 2003 13:05:21 GMT"/>
 			      <signal name="row_activated" handler="on_Itemlist_row_activated" last_modification_time="Sun, 21 Sep 2003 12:37:35 GMT"/>
 			    </widget>

@@ -209,7 +209,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 	int 			error = 0;
 	
 	/* initialize channel structure */
-	if(NULL == (cp = (PIEFeedPtr) malloc(sizeof(struct PIEFeed)))) {
+	if(NULL == (cp = (PIEFeedPtr) g_malloc(sizeof(struct PIEFeed)))) {
 		g_error("not enough memory!\n");
 		return;
 	}

@@ -1,8 +1,9 @@
-/*
-   item list/view handling
-   
-   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+/**
+   @file ui_itemlist.h item list/view handling
 
+   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+   		      Nathan J. Conrad <t98502@users.sourceforge.net>
+		      
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
    License as published by the Free Software Foundation; either
@@ -25,20 +26,74 @@
 #include <gtk/gtk.h>
 #include "feed.h"
 
+/** Enumeration of the columns in the itemstore. */
+
+enum is_columns {
+	IS_TITLE,		/**< Name of the item */
+	IS_LABEL,		/**< Displayed name */
+	IS_ICON,		/**< Pixbuf reference to the item's icon */
+	IS_PTR,			/**< Pointer to item sturuct */
+	IS_TIME,		/**< Time of item creation */
+	IS_TIME_STR,		/**< Time of item creation as a string*/
+	IS_TYPE,		/**< Type of feed that the item came from */
+	IS_LEN			/**< Number of columns in the itemstore */
+};
+
+/**
+ * Returns the itemstore, creating it if needed.
+ *
+ * @return The Itemstore.
+ */
 GtkTreeStore * getItemStore(void);
-void setupItemList(GtkWidget *itemlist);
+
+/**
+ * Initializes the itemlist. For example, it creates the various
+ * columns and renderers needed to show the list.
+ */
+void initItemList(GtkWidget *itemlist);
+
+/**
+ * Unselect all items in the list and scroll to top. This is typically
+ * called when changing feed.
+ */
 void preFocusItemlist(void);
+
+/**
+ * Adds content to the htmlview after a new feed has been selected and
+ * sets an item as read.
+ */
+void displayItemList(void);
+
+/**
+ * Display a feed's items
+ *
+ * @param fp The feed to display.
+ * @param searchstring The string to search for, or NULL to include all of a feed's items.
+ */
 void loadItemList(feedPtr fp, gchar *searchstring);
+
+/**
+ * Remove the items from the itemlist.
+ */
 void clearItemList(void);
 
-/* mouse/keyboard interaction callbacks */
-void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
+/**
+ * Scrolls down the itemview.
+ *
+ * @return FALSE if the scrolled window vertical scroll position is at
+ * the maximum and TRUE if the vertical adjustment was increased.
+ */
+gboolean scrollItemView(GtkWidget *itemView);
 
-gboolean
-on_Itemlist_move_cursor                (GtkTreeView     *treeview,
-                                        GtkMovementStep  step,
-                                        gint             count,
-                                        gpointer         user_data);
+/**
+ * @name Callbacks used from interface.c
+ * @{
+ */
+
+/**
+ * Callback activated when an item is double-clicked. It opens the URL
+ * of the item in a web browser.
+ */
 
 void
 on_Itemlist_row_activated              (GtkTreeView     *treeview,
@@ -46,22 +101,68 @@ on_Itemlist_row_activated              (GtkTreeView     *treeview,
                                         GtkTreeViewColumn *column,
                                         gpointer         user_data);
 
-/* menu callbacks */					
-void on_toggle_item_flag(void);
+
+/* menu callbacks */
+
+/**
+ * Toggles the unread status of the selected item. This is called from
+ * a menu.
+ */
 void on_toggle_unread_status(void);
-void on_popup_launchitem_selected(void);
-void on_popup_allunread_selected(void);
-void on_remove_items_activate(GtkMenuItem *menuitem, gpointer  user_data);
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data);
-void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item);
 
-/* Resets the horizontal and vertical scrolling of the items HTML view. */
-void resetItemViewScrolling(GtkScrolledWindow *itemview);
+/**
+ * Toggles the flag of the selected item. This is called from a menu.
+ */
+void on_toggle_item_flag(void);
 
-/* Function scrolls down the item views scrolled window.
-   This function returns FALSE if the scrolled window
-   vertical scroll position is at the maximum and TRUE
-   if the vertical adjustment was increased. */
-gboolean scrollItemView(GtkWidget *itemView);
+/**
+ * Opens the selected item in a browser.
+ */
+  void on_popup_launchitem_selected(void);
+
+/**
+ * Sets all displayed items as read
+ */
+  void on_popup_allunread_selected(void);
+
+/**
+ * Toggles the read status of right-clicked item.
+ *
+ * @param callback_data An itemPtr that points to the clicked item.
+ * @param callback_action Unused.
+ * @param widget The GtkTreeView that contains the clicked item.
+ */
+void on_popup_toggle_read(gpointer callback_data,
+					 guint callback_action,
+					 GtkWidget *widget);
+/**
+ * Toggles the flag of right-clicked item.
+ *
+ * @param callback_data An itemPtr that points to the clicked item.
+ * @param callback_action Unused.
+ * @param widget The GtkTreeView that contains the clicked item.
+ */
+void on_popup_toggle_flag(gpointer callback_data,
+					 guint callback_action,
+					 GtkWidget *widget);
+
+/**
+ * Removes all items from the selected feed.
+ *
+ * @param menuitem The menuitem that was selected.
+ * @param user_data Unused.
+ */
+  void on_remove_items_activate(GtkMenuItem *menuitem, gpointer  user_data);
+  
+/**
+ * Searches the displayed feed and then all feeds for an unread
+ * item. If one it found, it is displayed.
+ *
+ * @param menuitem The menuitem that was selected.
+ * @param user_data Unused.
+ */
+void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
+  
+/*@}*/
 
 #endif

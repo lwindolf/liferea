@@ -33,13 +33,6 @@
 #define FS_KEY		2
 #define FS_TYPE		3
 
-/* constants for attributes in itemstore */
-#define IS_TITLE	0
-#define IS_STATE	1
-#define IS_PTR		2
-#define IS_TIME		3
-#define IS_TYPE		4
-
 /* icon constants */
 #define ICON_READ 		0
 #define ICON_UNREAD 		1
@@ -73,7 +66,6 @@ void on_popup_refresh_selected(void);
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 		
-void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_next_unread_item_selected(void);
 void on_popup_zoomin_selected(void);

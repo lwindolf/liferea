@@ -23,15 +23,11 @@
 #include "feed.h"
 #include "filter.h"
 #include "support.h"
+#include "ui_feedlist.h"
 
 #define RS_TITLE	0
 #define RS_VALUE	1
 #define RS_PTR		2
-
-extern feedPtr		selected_fp;
-extern itemPtr		selected_ip;
-extern gchar 		*selected_keyprefix;
-extern gint		selected_type;
 
 extern GtkWidget 	*mainwindow;
 static GtkWidget 	*filterdialog = NULL;

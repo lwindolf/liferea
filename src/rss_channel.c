@@ -329,7 +329,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 	int			i;
 	
 	/* initialize channel structure */
-	if(NULL == (cp = (RSSChannelPtr) malloc(sizeof(struct RSSChannel)))) {
+	if(NULL == (cp = (RSSChannelPtr) g_malloc(sizeof(struct RSSChannel)))) {
 		g_error("not enough memory!\n");
 		return;
 	}

@@ -41,6 +41,7 @@
 #include "common.h"
 #include "callbacks.h"
 #include "ui_mainwindow.h"
+#include "ui_tray.h"
 #include "update.h"
 
 #include "vfolder.h"	// FIXME
@@ -52,7 +53,6 @@ extern GHashTable	*feedHandler;
 
 /* selection information from ui_feedlist.c and ui_itemlist.c */
 extern gchar		*selected_keyprefix;
-extern itemPtr		selected_ip;
 extern feedPtr		selected_fp;
 
 /* 2 or 3 pane mode flag from ui_mainwindow.c */
@@ -91,7 +91,7 @@ void initGUI(void) {
 				   getNumericConfValue(LAST_ZOOMLEVEL));
 	     			     			     	
 	setupFeedList(lookup_widget(mainwindow, "feedlist"));
-	setupItemList(lookup_widget(mainwindow, "Itemlist"));
+	initItemList(lookup_widget(mainwindow, "Itemlist"));
 
 	ui_mainwindow_update_toolbar();
 	ui_mainwindow_update_menubar();
@@ -127,35 +127,6 @@ void redrawWidget(gchar *name) {
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
 	updateAllFeeds(); 
-}
-
-void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	GtkTreeStore	*feedstore;
-	feedPtr		fp;
-	
-	/* before scanning the feed list, we test if there is a unread 
-	   item in the currently selected feed! */
-	if(TRUE == findUnreadItem())
-		return;
-	
-	/* find first feed with unread items */
-	feedstore = getFeedStore();
-	fp = findUnreadFeed(NULL);
-	
-// FIXME: workaround to prevent segfaults...
-// something with the selection is buggy!
-selected_ip = NULL;
-
-	if(NULL == fp) {
-		print_status(_("There are no unread items!"));
-		return;	/* if we don't find a feed with unread items do nothing */
-	}
-
-	/* load found feed */
-	loadItemList(fp, NULL);
-	
-	/* find first unread item */
-	findUnreadItem();
 }
 
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
@@ -280,6 +251,10 @@ gint checkForUpdateResults(gpointer data) {
 		new_fp->source = g_strdup(request->fp->source);
 		(*(fhp->readFeed))(new_fp, request->data);
 
+		if(selected_fp == request->fp) {
+			clearItemList();
+		}
+		
 		if(TRUE == fhp->merge)
 			/* If the feed type supports merging... */
 			mergeFeed(request->fp, new_fp);
@@ -304,7 +279,6 @@ gint checkForUpdateResults(gpointer data) {
 			saveFeed(request->fp);
 
 			if(selected_fp == request->fp) {
-				clearItemList();
 				loadItemList(request->fp, NULL);
 				preFocusItemlist();
 			}

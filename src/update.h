@@ -40,6 +40,9 @@ struct feed_request {
 	feedPtr	fp;			/* pointer to feed structure which is to be updated */
 };
 
+gpointer getNewRequestStruct(feedPtr fp);
+void freeRequest(gpointer request);
+
 GThread * initUpdateThread(void);
 GThread * initAutoUpdateThread(void);
 void requestUpdate(feedPtr fp);

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.4.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-07 10:07+0100\n"
+"POT-Creation-Date: 2004-01-29 18:53+0100\n"
 "PO-Revision-Date: 2003-12-29 18:35+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -20,230 +20,93 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Pixmap ファイルが見つかりませんでした: %s"
 
-#: src/callbacks.c:132
-msgid ""
-"You have disabled both the menubar and the toolbar. Without one of these you "
-"won't be able to access all program functions. I'll reenable the toolbar!"
-msgstr ""
-"メニューバーとツールバーの両方を無効にしました。これらのうちのどれか一つがな"
-"いと、このプログラムの機能の全てにアクセスすることはできません。ツールバーの"
-"方を有効にしましたよ！"
-
-#: src/callbacks.c:179
-msgid "entry list widget lookup failed!\n"
-msgstr "エントリ・リスト・ウィジットの検索に失敗しました！\n"
-
-#: src/callbacks.c:184
-msgid "could not retrieve selection of entry list!"
-msgstr "エントリ・リストの選択部分を取得できませんでした！"
-
-#: src/callbacks.c:200
-msgid "fatal! selected feed entry has no key!!!"
-msgstr "致命的です！ 選択した配信元のエントリにはキーがありません！！！"
-
-#: src/callbacks.c:226
-msgid "internal error! could not reset HTML widget scrolling!"
-msgstr "内部 ERROR: HTML スクロール・ウィジットをリセットできませんでした！"
-
-#: src/callbacks.c:259 src/callbacks.c:397 src/callbacks.c:444
-msgid "You have to select a feed entry!"
-msgstr "配信元エントリを一つ選択して下さい！"
-
-#: src/callbacks.c:403
-msgid "You can't delete help feeds!"
-msgstr "ヘルプは削除できません！"
-
-#: src/callbacks.c:407
-msgid "Deleting entry"
-msgstr "エントリの削除"
-
-#: src/callbacks.c:417
-msgid "It seems like there is no selected feed entry!"
-msgstr "配信元を一つも選択していないようです！"
-
-#: src/callbacks.c:476
-#, c-format
-msgid "The provider of this feed suggests an update interval of %d minutes"
-msgstr "この配信元での更新間隔は %d 分になっています"
-
-#: src/callbacks.c:478
-msgid "This feed specifies no default update interval."
-msgstr "この配信元はデフォルトの更新間隔を指定していません"
-
-#: src/callbacks.c:521
-msgid "Internal error! No feed selected, but property change requested...\n"
-msgstr ""
-"[内部エラー] 配信元が選択されていないのに、プロパティの変更を指定しまし"
-"た...\n"
-
-#: src/callbacks.c:576
-msgid "internal error! could not select newly created treestore iter!"
-msgstr "内部 ERROR: 新規に生成したツリーのトピックを選択できませんでした！"
-
-#: src/callbacks.c:592
-#, c-format
-msgid ""
-"Could not download \"%s\"!\n"
-"\n"
-" Maybe the URL is invalid or the feed is temporarily not available. You can "
-"retry downloading or remove the feed subscription via the context menu from "
-"the feed list.\n"
-msgstr ""
-"\"%s\" をダウンロードできませんでした！\n"
-"\n"
-"URL が不正か、あるいは配信元が一時的に利用できないかもしれません。配信元一覧"
-"のコンテキスト・メニューから購読のリトライまたは削除を行うことができます。\n"
-
-#: src/callbacks.c:647
-msgid "internal error! invalid type selected! This should never happen!\n"
-msgstr ""
-"[内部エラー] 選択した種類が正しくありません！ (これは絶対に発生しえないことで"
-"す)\n"
-
-#: src/callbacks.c:677 src/export.c:221 src/export.c:234
-msgid "internal error! could not find file dialog select button!"
-msgstr "内部 ERROR: ファイル選択ダイアログの選択ボタンが見つかりません！"
-
-#: src/callbacks.c:707 src/export.c:124
-msgid "internal error! could not get a new folder key!"
-msgstr "内部 ERROR: 新しいフォルダ・キーを取得できませんでした！"
-
-#: src/callbacks.c:716 src/callbacks.c:756
-msgid "You have to select a folder entry!"
-msgstr "フォルダを一つ選択して下さい！"
-
-#: src/callbacks.c:782 src/callbacks.c:785
-msgid "A folder must be empty to delete it!"
-msgstr "削除する場合はフォルダを空にして下さい！"
-
-#: src/callbacks.c:788
-msgid "Error: Cannot determine folder key!"
-msgstr "エラー: フォルダ・キーを決定できません！"
-
-#: src/callbacks.c:830 src/callbacks.c:981
-msgid "could not retrieve selection of item list!"
-msgstr "トピックのリストの選択範囲を取得できませんでした！"
-
-#: src/callbacks.c:866
-msgid "item list widget lookup failed!\n"
-msgstr "トピックのリスト・ウィジットの検索に失敗しました！\n"
-
-#: src/callbacks.c:876
-msgid "could not retrieve selection of item list!\n"
-msgstr "トピックのリストの選択範囲を取得できませんでした！\n"
-
-#: src/callbacks.c:976
-msgid "could not find item list widget!"
-msgstr "トピックのリスト・ウィジットが見つかりませんでした！"
-
-#: src/callbacks.c:1100 src/callbacks.c:1142
-msgid "internal error! could not get feed tree view selection!\n"
-msgstr "内部 ERROR: 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
-
-#: src/callbacks.c:1102 src/callbacks.c:1144
-msgid "internal error! could not find feed tree view widget!\n"
-msgstr "内部 ERROR: 配信元ツリー・ビュー・ウィジットが見つかりませんでした！\n"
-
-#: src/callbacks.c:1171
-msgid "There are no unread items!"
-msgstr "未読のトピックはありません！"
-
-#: src/callbacks.c:1191
-msgid "You have to select a feed to delete its items!"
-msgstr "トピックを削除する配信元を一つ選択して下さい！"
-
-#: src/callbacks.c:1322
-msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr ""
-"内部 ERROR: 不明なエントリの種類です！ 適切なアイコンを表示できません！\n"
-
-#: src/callbacks.c:1465
-msgid "Date"
-msgstr "日付"
-
-#: src/callbacks.c:1473
-msgid "Headline"
-msgstr "ヘッドライン"
-
-#: src/callbacks.c:1572
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" の更新が完了しました..."
-
-#: src/callbacks.c:1580
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated."
-msgstr "\"%s\" の URL が変更されていたので更新しました。"
-
-#: src/callbacks.c:1599
+#: src/callbacks.c:234
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" は最後の更新から変更はありません。"
 
-#: src/callbacks.c:1603
+#: src/callbacks.c:242
+#, fuzzy, c-format
+msgid "internal error! unknown feed type %d while updating feeds!"
+msgstr "内部 ERROR: newFeed() に不明な配信元の種類があります！"
+
+#: src/callbacks.c:260
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" の更新が完了しました..."
+
+#: src/callbacks.c:268
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated."
+msgstr "\"%s\" の URL が変更されていたので更新しました。"
+
+#: src/callbacks.c:287
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" は利用できません！"
 
-#: src/callbacks.c:1731
-msgid "internal error! item list display for NULL pointer requested!\n"
-msgstr "内部 ERROR: トピックのリスト表示で NULL ポインタを要求しました！\n"
-
-#: src/cdf_channel.c:106 src/cdf_item.c:51
+#: src/cdf_channel.c:100 src/cdf_item.c:51
 msgid "internal error: XML document pointer NULL! This should not happen!\n"
 msgstr "内部 ERROR: 選択した種類が正しくありません！ (これは致命的です！)\n"
 
-#: src/cdf_channel.c:174 src/opml.c:138 src/pie_feed.c:217
-#: src/rss_channel.c:357
-#, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+#: src/cdf_channel.c:163 src/ocs_dir.c:466 src/opml.c:143 src/pie_feed.c:222
+#: src/rss_channel.c:343
+#, fuzzy, c-format
+msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "配信元を読み込む際に XML エラーが発生しました！ 配信元 \"%s\" を読み込めませ"
 "んでした！"
 
-#: src/cdf_channel.c:182 src/pie_feed.c:225
-msgid "Empty document! Feed was not added!"
-msgstr "ドキュメントが空です！ 配信元を追加しません！"
+#: src/cdf_channel.c:171 src/feed.c:309 src/ocs_dir.c:472 src/opml.c:149
+#: src/pie_feed.c:230 src/rss_channel.c:349
+#, fuzzy
+msgid "<p>Empty document!</p>"
+msgstr "ドキュメントが空です！"
 
-#: src/cdf_channel.c:243 src/ocs_dir.c:287 src/ocs_dir.c:351 src/ocs_dir.c:425
-#: src/ocs_dir.c:512 src/ocs_dir.c:554 src/opml.c:259 src/pie_feed.c:338
-#: src/rss_channel.c:467 src/vfolder.c:124
+#: src/cdf_channel.c:217 src/ocs_dir.c:538 src/opml.c:248 src/pie_feed.c:328
+#: src/rss_channel.c:423
+msgid "There were errors while parsing this feed!"
+msgstr ""
+
+#: src/cdf_channel.c:234 src/ocs_dir.c:288 src/ocs_dir.c:352 src/ocs_dir.c:426
+#: src/ocs_dir.c:511 src/ocs_dir.c:555 src/opml.c:263 src/pie_feed.c:345
+#: src/rss_channel.c:454 src/vfolder.c:124
 msgid "not enough memory!"
 msgstr "メモリが足りません！"
 
-#: src/common.c:127
+#: src/common.c:124
 msgid "conversion wasn't successful.\n"
 msgstr "変換に失敗しました。\n"
 
-#: src/common.c:129
+#: src/common.c:126
 #, c-format
 msgid "conversion wasn't successful. converted: %i octets.\n"
 msgstr "変換に失敗しました。変換済: %i オクテット\n"
 
-#: src/common.c:139
+#: src/common.c:136
 msgid "not enough memory\n"
 msgstr "メモリが足りません\n"
 
-#: src/common.c:252 src/common.c:297
+#: src/common.c:286 src/common.c:331
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "内部 ERROR: 時刻変換 (mktime) に失敗しました！\n"
 
-#: src/common.c:255
+#: src/common.c:289
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr ""
 "ISO8601 式の日付の書式が正しくありません！ <dc:date> 情報を無視します！\n"
 
-#: src/common.c:300
+#: src/common.c:334
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
 msgstr ""
 "RFC822 式の日付の書式が正しくありません！ <pubDate> 情報を無視します！\n"
 
-#: src/common.c:368
+#: src/common.c:398
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "キャッシュ・フォルダ %s を生成できません！"
 
-#: src/common.c:472
+#: src/common.c:501
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -252,96 +115,105 @@ msgstr ""
 "文字が除かれました！"
 
 #. sh..!
-#: src/common.c:486
+#: src/common.c:515
 msgid "Internal error while converting UTF-8 chars to HTTP URI!"
 msgstr ""
 "内部 ERROR: UTF-8 の文字を HTTP URI に変換する際にエラーが発生しました！"
 
 #. _() for HELP1URL to allow localised help feeds
 #: src/conf.c:40
-msgid "http://liferea.sf.net/help046.rdf"
+#, fuzzy
+msgid "http://liferea.sf.net/help047.rdf"
 msgstr "http://liferea.sf.net/help046.rdf"
 
-#: src/conf.c:168
+#: src/conf.c:169
 #, c-format
 msgid "internal error! could not retrieve feed list for gconf path %s\n"
 msgstr "内部 ERROR: 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
 
-#: src/conf.c:460
+#: src/conf.c:461
 msgid "error! could not get a free entry key!\n"
 msgstr "内部 ERROR: フリーなエントリ・キーを取得できませんでした！\n"
 
-#: src/conf.c:466
+#: src/conf.c:467
 msgid "error! could not set a URL for this key!\n"
 msgstr "内部 ERROR: このキーの URL をセットできませんでした！\n"
 
-#: src/conf.c:469
+#: src/conf.c:470
 msgid "error! could not set a type for this key!\n"
 msgstr "内部 ERROR: このキーの種類を設定できませんでした！\n"
 
 #. add to config and UI feed list
-#: src/conf.c:693 src/conf.c:695
+#: src/conf.c:695 src/conf.c:697
 msgid "Liferea Help"
 msgstr "Liferea ヘルプ"
 
-#: src/conf.c:699
+#: src/conf.c:701
 msgid "Online Help Feed"
 msgstr "オンライン・ヘルプの配信元"
 
-#: src/conf.c:700
+#: src/conf.c:702
 msgid "Liferea SF News"
 msgstr "Liferea SF ニュース"
 
-#: src/conf.c:715
+#: src/conf.c:717
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 名前空間 %s が未だ設定されいません！ 有効にしています...\n"
 
-#: src/conversions.c:77
+#: src/conversions.c:111 src/conversions.c:112
+msgid "No description available."
+msgstr ""
+
+#: src/conversions.c:373
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "ERROR: zlib_uncompress: %d %s\n"
 
-#: src/conversions.c:93
+#: src/conversions.c:389
 msgid "ERROR: No output during decompression"
 msgstr "ERROR: 解凍結果の出力がありません"
 
-#: src/conversions.c:123
+#: src/conversions.c:419
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "ERROR: GZIP データのマジック・バイトが正しくありません"
 
-#: src/conversions.c:128
+#: src/conversions.c:424
 msgid "ERROR: Compression method is not deflate"
 msgstr "ERROR: 圧縮方法が定義されていません"
 
-#: src/conversions.c:133
+#: src/conversions.c:429
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "ERROR: フラグ %d はサポートしていません\n"
 
-#: src/export.c:71 src/feed.c:260
+#: src/export.c:73 src/feed.c:252
 msgid "could not create XML feed node for feed cache document!"
 msgstr ""
 "配信元キャッシュ・ドキュメントの XML 配信元ノードを生成できませんでした！"
 
-#: src/export.c:75 src/feed.c:266
+#: src/export.c:77 src/feed.c:258
 msgid "could not create XML document!"
 msgstr "XML ドキュメントを生成できませんでした！"
 
-#: src/export.c:80
+#: src/export.c:82
 msgid "Error while exporting feed list!"
 msgstr "配信元一覧のエキスポート時にエラーが発生しました！"
 
-#: src/export.c:82
+#: src/export.c:84
 msgid "Feed List exported!"
 msgstr "配信元一覧をエキスポートしました！"
 
 #. create a new import folder
-#: src/export.c:119
+#: src/export.c:123
 msgid "imported feed list"
 msgstr "配信元一覧を取り込みました"
 
-#: src/export.c:133 src/feed.c:308
+#: src/export.c:128
+msgid "internal error! could not get a new folder key!"
+msgstr "内部 ERROR: 新しいフォルダ・キーを取得できませんでした！"
+
+#: src/export.c:137
 #, c-format
 msgid ""
 "XML error while reading cache file \"%s\" ! Cache file could not be loaded!"
@@ -349,179 +221,195 @@ msgstr ""
 "キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ キャッ"
 "シュ・ファイルを読み込みませんでした！"
 
-#: src/export.c:138
+#: src/export.c:142
 msgid "Empty document! OPML document should not be empty..."
 msgstr "ドキュメントが空です！ OPML ドキュメントを空にしないで下さい..."
 
-#: src/export.c:146
+#: src/export.c:150
 #, c-format
 msgid "\"%s\" is no valid cache file! Cannot read OPML file!"
 msgstr ""
 "\"%s\" は正しいキャッシュ・ファイルではありません！ OPML ファイルが読めませ"
 "ん！"
 
-#: src/favicon.c:411
+#: src/export.c:225 src/export.c:238
+msgid "internal error! could not find file dialog select button!"
+msgstr "内部 ERROR: ファイル選択ダイアログの選択ボタンが見つかりません！"
+
+#: src/favicon.c:409
 #, c-format
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr "アイコン・ファイル %s を削除できません！ 手動で削除して下さい！"
 
-#: src/feed.c:161
-msgid "Could not allocate memory!"
-msgstr "メモリを確保できませんでした！"
-
-#: src/feed.c:250
+#: src/feed.c:242
 msgid "could not write XML item node!\n"
 msgstr "XML 形式のトピックのノードを書き込めませんでした！\n"
 
 #. we must save here to save changed read flags
-#: src/feed.c:286
+#: src/feed.c:278
 msgid "saving all feeds..."
 msgstr "全ての配信元の保存中..."
 
-#: src/feed.c:313
-msgid "Empty document! Feed cache file should not be empty..."
+#: src/feed.c:296
+#, fuzzy, c-format
+msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
-"ドキュメントが空です！ 配信元キャッシュ・ファイルを空にしないで下さい..."
+"キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ キャッ"
+"シュ・ファイルを読み込みませんでした！"
 
-#: src/feed.c:321
-#, c-format
-msgid "\"%s\" is no valid cache file! Cannot read cache file!"
+#: src/feed.c:303
+#, fuzzy, c-format
+msgid ""
+"<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
+"loaded!</p>"
+msgstr ""
+"キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ キャッ"
+"シュ・ファイルを読み込みませんでした！"
+
+#: src/feed.c:319
+#, fuzzy, c-format
+msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "\"%s\" は正しいキャッシュ・ファイルではありません！ キャッシュ・ファイルが読"
 "めません！"
 
+#: src/feed.c:358
+#, c-format
+msgid "There were errors while parsing cache file \"%s\"!"
+msgstr ""
+
 #. if necessary download and detect type
 #. FIXME: pass fp to adjust URL
-#: src/feed.c:421
+#: src/feed.c:428
 #, c-format
 msgid ""
 "Could not detect feed type of \"%s\"! Please manually select a feed type."
 msgstr "配信元 \"%s\" の種類が不明です！ 手動で種類を選択して下さい。"
 
-#: src/feed.c:442
+#: src/feed.c:449
 msgid "internal error! unknown feed type in newFeed()!"
 msgstr "内部 ERROR: newFeed() に不明な配信元の種類があります！"
 
-#: src/feed.c:485
+#: src/feed.c:492
 msgid "error! could not add feed to configuration!\n"
 msgstr "内部 ERROR: 配信元を設定へ追加できませんでした！\n"
 
-#: src/feed.c:606
+#: src/feed.c:613
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" に新しいトピックはありません"
 
-#: src/feed.c:608
+#: src/feed.c:615
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" に %d 個の新しいトピックがあります"
 
-#: src/feed.c:648
+#: src/feed.c:656
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr "キャッシュ・ファイル %s を削除できません！ 手動で削除して下さい！"
 
-#: src/feed.c:676
+#: src/feed.c:679
 msgid "updating all feeds..."
 msgstr "全ての配信元の更新中..."
 
-#: src/feed.c:701
+#: src/feed.c:704
 #, fuzzy, c-format
 msgid "internal error! there is no feed assigned to feedkey \"%s\"!\n"
 msgstr "内部 ERROR: キー %s で割り当てられた配信元がありません！"
 
-#. should never happen!
-#: src/feed.c:741
-msgid ""
-"The last update of this feed failed. Please see the console output for more "
-"information!"
-msgstr ""
-
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:745 src/netio.c:416
+#: src/feed.c:756 src/netio.c:415
+#, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "この配信元はもう存在しません。購読を停止して下さい！"
 
-#: src/feed.c:746
+#: src/feed.c:757
 msgid "Payment Required"
 msgstr ""
 
-#: src/feed.c:747
+#: src/feed.c:758
 msgid "Access Forbidden"
 msgstr ""
 
-#: src/feed.c:748
+#: src/feed.c:759
 msgid "Ressource Not Found"
 msgstr ""
 
-#: src/feed.c:749
+#: src/feed.c:760
 msgid "Method Not Allowed"
 msgstr ""
 
-#: src/feed.c:750
+#: src/feed.c:761
 msgid "Not Acceptable"
 msgstr ""
 
-#: src/feed.c:751
+#: src/feed.c:762
 msgid "Proxy Authentication Required"
 msgstr ""
 
-#: src/feed.c:752
+#: src/feed.c:763
 msgid "Request Time-Out"
 msgstr ""
 
-#: src/feed.c:753
+#: src/feed.c:764
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "この配信元はもう存在しません。購読を停止して下さい！"
 
-#: src/feed.c:759
+#: src/feed.c:770
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr ""
 
-#: src/feed.c:760
+#: src/feed.c:771
 msgid "Client Error"
 msgstr ""
 
-#: src/feed.c:761
+#: src/feed.c:772
 msgid "Server Error"
 msgstr ""
 
-#: src/feed.c:762
+#: src/feed.c:773
 msgid "(unknown error class)"
 msgstr ""
 
-#: src/folder.c:71
+#: src/feed.c:795
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output!"
+msgstr ""
+
+#: src/folder.c:70
 #, fuzzy, c-format
 msgid ""
 "getFolderTitle() internal error! could not determine folder iterator for "
 "keyprefix \"%s\"!\n"
 msgstr "内部 ERROR: フォルダ・キーを取得できませんでした！"
 
-#: src/folder.c:89
+#: src/folder.c:88
 #, fuzzy, c-format
 msgid ""
 "setFolderTitle() internal error! could not determine folder iter for "
 "keyprefix \"%s\"!\n"
 msgstr "内部 ERROR: フォルダ・キーを取得できませんでした！"
 
-#: src/folder.c:184
+#: src/folder.c:183
 #, fuzzy, c-format
 msgid ""
 "removeFolder() internal error! could not determine folder iter for keyprefix "
 "\"%s\"!\n"
 msgstr "内部 ERROR: フォルダ・キーを取得できませんでした！"
 
-#: src/folder.c:215
+#: src/folder.c:214
 msgid "(empty)"
 msgstr "(空)"
 
-#: src/folder.c:348
+#: src/folder.c:347
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr "ERROR: キャッシュ・ファイル %s をファイル %s へ移動できませんでした\n"
 
-#: src/htmlview.c:425
+#: src/htmlview.c:424
 #, c-format
 msgid ""
 "There is no %%s URL place holder in the browser command string you specified "
@@ -530,95 +418,96 @@ msgstr ""
 "設定ダイアログの中で指定したブラウザのコマンド列の中に URL プレイスフォルダ %"
 "%s がありません！！！"
 
-#: src/interface.c:130
-msgid "Liferea 0.4.6"
+#: src/interface.c:132
+#, fuzzy
+msgid "Liferea 0.4.7"
 msgstr "Liferea 0.4.6"
 
-#: src/interface.c:141
+#: src/interface.c:143
 msgid "_Program"
 msgstr "プログラム(_P)"
 
-#: src/interface.c:148
+#: src/interface.c:150
 msgid "_Import Feed List"
 msgstr "配信元一覧のインポート(_I)"
 
-#: src/interface.c:151
+#: src/interface.c:153
 msgid "Imports an OPML feed list."
 msgstr "OPML 形式の配信元一覧を取り込みます"
 
-#: src/interface.c:157
+#: src/interface.c:159
 msgid "_Export Feed List"
 msgstr "配信元一覧のエキスポート(_E)"
 
-#: src/interface.c:160
+#: src/interface.c:162
 msgid "Export the feed list as OPML."
 msgstr "配信元一覧を OPML 形式で出力します"
 
-#: src/interface.c:179
+#: src/interface.c:181
 msgid "_Feeds"
 msgstr "配信元(_F)"
 
-#: src/interface.c:186
+#: src/interface.c:188
 msgid "_Feed"
 msgstr "配信元(_F)"
 
-#: src/interface.c:193
+#: src/interface.c:195
 msgid "_Update Feed"
 msgstr "配信元の更新(_U)"
 
-#: src/interface.c:201
+#: src/interface.c:203
 msgid "_New Subscription"
 msgstr "新しい購読(_N)"
 
-#: src/interface.c:209
+#: src/interface.c:211
 msgid "_Delete Feed"
 msgstr "配信元の削除(_D)"
 
-#: src/interface.c:217
+#: src/interface.c:219
 msgid "_Edit Properties"
 msgstr "プロパティの編集(_E)"
 
-#: src/interface.c:225
+#: src/interface.c:227
 msgid "F_older"
 msgstr "フォルダ(_O)"
 
-#: src/interface.c:232
+#: src/interface.c:234
 msgid "_New Folder"
 msgstr "新しいフォルダ(_N)"
 
-#: src/interface.c:240
+#: src/interface.c:242
 msgid "_Delete Folder"
 msgstr "フォルダの削除(_D)"
 
-#: src/interface.c:248
+#: src/interface.c:250
 msgid "_Edit Folder Name"
 msgstr "フォルダ名の編集(_E)"
 
-#: src/interface.c:261
+#: src/interface.c:263
 msgid "_Update All"
 msgstr "全て更新(_U)"
 
-#: src/interface.c:264
+#: src/interface.c:266
 msgid "Immediately updates all feeds (excluding directories)."
 msgstr "いま直ぐ全ての配信元を更新します (フォルダは除く)"
 
-#: src/interface.c:273
+#: src/interface.c:275
 msgid "_Items"
 msgstr "トピック(_I)"
 
-#: src/interface.c:280
+#: src/interface.c:282
 msgid "_Mark All As Read"
 msgstr "全て既読としてマーク(_M)"
 
-#: src/interface.c:283
+#: src/interface.c:285
 msgid "Marks all items of the current feed as read."
 msgstr "現在表示中の配信元を既読としてマークします"
 
-#: src/interface.c:288
+#: src/interface.c:290
 msgid "_Next Unread Item"
 msgstr "次の未読のトピック(_N)"
 
-#: src/interface.c:291 src/interface.c:393
+#: src/interface.c:293 src/interface.c:406
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -626,107 +515,112 @@ msgstr ""
 "次の未読のトピックへジャンプします (必要ならば、次の未読トピックの配信元を選"
 "択して下さい)"
 
-#: src/interface.c:300
+#: src/interface.c:302
+#, fuzzy
+msgid "_Scroll Or Next Unread"
+msgstr "次の未読のトピック"
+
+#: src/interface.c:313
 msgid "Toggle _Read Status"
 msgstr "未読/既読の切り替え(_R)"
 
-#: src/interface.c:303
+#: src/interface.c:316
 msgid "Toggles the read status of the selected item."
 msgstr "選択したトピックの未読/既読のステータスを切り替えます"
 
-#: src/interface.c:308
+#: src/interface.c:321
 msgid "Toggle Item _Flag"
 msgstr "トピック・フラグの切り替え(_F)"
 
-#: src/interface.c:311
+#: src/interface.c:324
 msgid "Toggles the item flag."
 msgstr "トピックのフラグを切り替えます"
 
-#: src/interface.c:316
+#: src/interface.c:329
 msgid "Remove Items"
 msgstr "トピックの削除"
 
-#: src/interface.c:319
+#: src/interface.c:332
 msgid "Removes all items of the currently selected feed."
 msgstr "選択している配信元の全てのトピックを削除します"
 
-#: src/interface.c:330
+#: src/interface.c:343
 msgid "_Launch In Browser"
 msgstr "ブラウザで開く(_L)"
 
-#: src/interface.c:333
+#: src/interface.c:346
 msgid "Launches the items link in the configured browser."
 msgstr "トピックのリンクをブラウザで表示します"
 
-#: src/interface.c:338 src/interface.c:431
+#: src/interface.c:351 src/interface.c:444
 msgid "Search"
 msgstr "検索"
 
-#: src/interface.c:345
+#: src/interface.c:358
 msgid "Toggle Search Box"
 msgstr "検索ボックスの切り替え"
 
-#: src/interface.c:348
+#: src/interface.c:361
 msgid "Shows or hides the search box."
 msgstr "検索ボックスの表示 ON/OFF を切り替えます"
 
-#: src/interface.c:354
+#: src/interface.c:367
 msgid "Search with Feedster"
 msgstr "Feedster で検索"
 
-#: src/interface.c:357
+#: src/interface.c:370
 msgid "Create a Feedster search feed."
 msgstr "Feedster 検索 Feed を生成します"
 
-#: src/interface.c:371
+#: src/interface.c:384
 msgid "Update all feeds"
 msgstr "全ての配信元の更新"
 
-#: src/interface.c:387
+#: src/interface.c:400
 msgid "Update"
 msgstr "更新"
 
-#: src/interface.c:409
+#: src/interface.c:422
 msgid "Next Unread"
 msgstr "次の未読のトピック"
 
-#: src/interface.c:415
+#: src/interface.c:428
 msgid "Search in feeds"
 msgstr "配信元の中から検索します"
 
-#: src/interface.c:437
+#: src/interface.c:450
 msgid "Edit preferences"
 msgstr "設定を編集します"
 
-#: src/interface.c:465
+#: src/interface.c:478
 msgid "Search for"
 msgstr "検索する単語"
 
-#: src/interface.c:482
+#: src/interface.c:495
 msgid "create VFolder"
 msgstr "仮想フォルダの生成"
 
-#: src/interface.c:485
+#: src/interface.c:498
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr "この検索を仮想フォルダとして保存して、配信元一覧の中に表示します"
 
-#: src/interface.c:490
+#: src/interface.c:503
 msgid "Close search"
 msgstr "検索ボックスを閉じます"
 
-#: src/interface.c:524
+#: src/interface.c:537
 msgid "single item view"
 msgstr "シングル・トピック表示"
 
-#: src/interface.c:533
+#: src/interface.c:546
 msgid "condensed item list"
 msgstr "簡易トピック一覧"
 
-#: src/interface.c:780
+#: src/interface.c:795
 msgid "Subscription Properties"
 msgstr "購読先のプロパティ"
 
-#: src/interface.c:801
+#: src/interface.c:816
 msgid ""
 "Edit the following entries to adjust the feed source URL or\n"
 "the feed title, which is displayed in the feed list."
@@ -735,35 +629,37 @@ msgstr ""
 "配信元の URL または配信元のタイトルを変更する際は\n"
 "次のエントリを編集して下さい。"
 
-#: src/interface.c:814
+#: src/interface.c:829
 msgid "Feed Title"
 msgstr "配信元のタイトル"
 
-#: src/interface.c:826
+#: src/interface.c:841
+#, fuzzy
 msgid ""
-"either leave the name supplied by the feed or enter an alternative name "
-"which you like to be listed in the feed list"
+"Either leave the name supplied by the feed or enter an alternative name "
+"which you like to be listed in the feed list."
 msgstr ""
 "配信元が提供した名前のままにするか、配信元一覧の中に表示したい他の名前を入力"
 "して下さい"
 
-#: src/interface.c:833
-msgid "enter the URL the feed should be loaded from"
+#: src/interface.c:848
+#, fuzzy
+msgid "Enter the URL the feed should be loaded from."
 msgstr "トピックを読み込む配信元の URL を入力して下さい"
 
-#: src/interface.c:835 src/interface.c:1007
+#: src/interface.c:850 src/interface.c:1022
 msgid "Feed URL"
 msgstr "配信元の URL"
 
-#: src/interface.c:842
+#: src/interface.c:857
 msgid "Feed URL and Title"
 msgstr "配信元 URL とタイトル"
 
-#: src/interface.c:862
+#: src/interface.c:877
 msgid "Feed Refresh Interval (in minutes)"
 msgstr "更新する間隔 (分単位)"
 
-#: src/interface.c:870
+#: src/interface.c:885
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
@@ -773,15 +669,15 @@ msgstr ""
 "ことは妥当ではないですよ！自動的に更新しない場合はこの間隔を 0にセットして下"
 "さい"
 
-#: src/interface.c:879
+#: src/interface.c:894
 msgid "Feed Update Interval"
 msgstr "配信元の更新間隔"
 
-#: src/interface.c:974
+#: src/interface.c:989
 msgid "New Subscription"
 msgstr "新しい購読"
 
-#: src/interface.c:995
+#: src/interface.c:1010
 msgid ""
 "Please enter the URL (including the http:// prefix) you want to \n"
 "subscribe to. Or enter a valid pathname if you want to load a local file."
@@ -789,15 +685,15 @@ msgstr ""
 "購読する (接頭子の http:// を含んだ) URL を入力して下さい。あるいは、ローカ"
 "ル・ファイルを読む込む場合は正しいパス名を入力して下さい。"
 
-#: src/interface.c:1017
+#: src/interface.c:1032
 msgid "local file"
 msgstr "ローカル・ファイル"
 
-#: src/interface.c:1021
+#: src/interface.c:1036
 msgid "URL Input"
 msgstr "URL の入力"
 
-#: src/interface.c:1039
+#: src/interface.c:1054
 msgid ""
 "You have to specify the type of the feed you want to subscribe \n"
 "to. If you are unsure select \"Auto Detect\"."
@@ -805,72 +701,73 @@ msgstr ""
 "購読する配信元の種類を指定して下さい。不明な場合は \"自動検出\" を選択して下"
 "さい。"
 
-#: src/interface.c:1050
+#: src/interface.c:1065
 msgid "Feed Type"
 msgstr "配信元の種類"
 
-#: src/interface.c:1061
+#: src/interface.c:1076
 msgid "Auto Detect"
 msgstr "自動検出"
 
-#: src/interface.c:1065
+#: src/interface.c:1080
 msgid "RSS"
 msgstr "RSS"
 
-#: src/interface.c:1069
+#: src/interface.c:1084
 msgid "CDF"
 msgstr "CDF"
 
-#: src/interface.c:1073
+#: src/interface.c:1088
 msgid "Atom/Echo/PIE"
 msgstr "Atom/Echo/PIE"
 
-#: src/interface.c:1077
+#: src/interface.c:1092
 msgid "OCS"
 msgstr "OCS"
 
-#: src/interface.c:1081
+#: src/interface.c:1096
 msgid "OPML"
 msgstr "OPML"
 
-#: src/interface.c:1087
+#: src/interface.c:1102
 msgid "Feed Type Selection"
 msgstr "配信元の選択"
 
-#: src/interface.c:1209
+#: src/interface.c:1239
 msgid "program preferences"
 msgstr "liferea の設定"
 
-#: src/interface.c:1234
+#: src/interface.c:1264
 msgid "use the GNOME default browser"
 msgstr "GNOME のデフォルト・ブラウザを使用する"
 
-#: src/interface.c:1244
+#: src/interface.c:1274
 msgid "use browser command"
 msgstr "使用するブラウザを指定する"
 
-#: src/interface.c:1254
+#: src/interface.c:1284
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr "URL を示す記号 %s を使ってブラウザのコマンドを指定して下さい"
 
-#: src/interface.c:1256
-msgid "browser settings"
+#: src/interface.c:1286
+#, fuzzy
+msgid "Browser Settings"
 msgstr "ブラウザの設定"
 
-#: src/interface.c:1270
+#: src/interface.c:1300
 msgid "display only time"
 msgstr "時刻だけ表示する"
 
-#: src/interface.c:1276
+#: src/interface.c:1306
 msgid "display date and time"
 msgstr "日付と時刻を表示する"
 
-#: src/interface.c:1286
+#: src/interface.c:1316
 msgid "user defined format"
 msgstr "ユーザ定義の書式にする"
 
-#: src/interface.c:1295
+#: src/interface.c:1325
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -878,117 +775,159 @@ msgstr ""
 "エキスパート向け: strftime() の man ページに記載されている時刻の書式文字列を"
 "指定して下さい"
 
-#: src/interface.c:1297
-msgid "date column settings"
+#: src/interface.c:1327
+#, fuzzy
+msgid "Date Column Settings"
 msgstr "日付の設定"
 
-#: src/interface.c:1316
+#: src/interface.c:1346
+#, fuzzy
 msgid ""
-"maximal number of items per feed \n"
+"Maximal number of items per feed \n"
 "to be saved permanently"
 msgstr ""
 "永久保存する\n"
 "配信元毎のトピック数"
 
-#: src/interface.c:1327
+#: src/interface.c:1357
 msgid "Update all feeds on program startup."
 msgstr "起動時に全ての配信元を更新する"
 
-#: src/interface.c:1331
-msgid "feed handling settings"
+#: src/interface.c:1361
+msgid "Dont add the help feeds to the feed list on startup."
+msgstr ""
+
+#: src/interface.c:1365
+#, fuzzy
+msgid "Feed Handling Settings"
 msgstr "配信元取り扱いの設定"
 
-#: src/interface.c:1336
+#: src/interface.c:1370
 msgid "Feed Handling"
 msgstr "配信元の取り扱い"
 
-#: src/interface.c:1353
+#: src/interface.c:1389
+#, fuzzy
 msgid ""
 "Show a status icon in the notification area \n"
-"(also called system tray). Changes of this setting\n"
-"take place after restarting the program."
+"(also called system tray)."
 msgstr ""
 "通知エリア (別名: システム・トレイ) の中に\n"
 "ステータス・アイコンを表示する。\n"
 "(再起動後にこの設定が適用されます)"
 
-#: src/interface.c:1358
+#: src/interface.c:1394
 msgid "Notification Area"
 msgstr "通知エリア"
 
-#: src/interface.c:1372
-msgid "Disable Tool Bar."
-msgstr "ツールバーを表示しない"
+#: src/interface.c:1409
+msgid "Show Menu _And Toolbar"
+msgstr ""
 
-#: src/interface.c:1377
-msgid "Disable Menu Bar."
-msgstr "メニューバーを表示しない"
+#: src/interface.c:1415
+msgid "Show _Menu Only"
+msgstr ""
 
-#: src/interface.c:1382
+#: src/interface.c:1421
+msgid "Show _Toolbar Only"
+msgstr ""
+
+#: src/interface.c:1427
 msgid "Menu Settings"
 msgstr "メニューの設定"
 
-#: src/interface.c:1386
+#: src/interface.c:1431
 msgid "GUI Settings"
 msgstr "GUI の設定"
 
-#: src/interface.c:1475
+#: src/interface.c:1451
+msgid ""
+"Liferea reuses the GNOME proxy settings. If you use\n"
+"GNOME you can change these settings in the GNOME\n"
+"Control Center. Note: changing these settings will\n"
+"affect other applications! This dialog is primarily for\n"
+"users without GNOME to be able to use Liferea with\n"
+"a proxy."
+msgstr ""
+
+#: src/interface.c:1461
+msgid "Enable Proxy"
+msgstr ""
+
+#: src/interface.c:1471
+msgid "Proxy Host"
+msgstr ""
+
+#: src/interface.c:1490
+msgid "Proxy Port"
+msgstr ""
+
+#: src/interface.c:1497
+msgid "HTTP Proxy Server"
+msgstr ""
+
+#: src/interface.c:1501
+#, fuzzy
+msgid "Proxy Settings"
+msgstr "GUI の設定"
+
+#: src/interface.c:1647
 msgid "add folder"
 msgstr "フォルダの追加"
 
-#: src/interface.c:1490 src/interface.c:1564
+#: src/interface.c:1662 src/interface.c:1736
 msgid "folder name"
 msgstr "フォルダ名"
 
-#: src/interface.c:1553
+#: src/interface.c:1725
 msgid "edit folder name"
 msgstr "フォルダ名の編集"
 
-#: src/interface.c:1616
+#: src/interface.c:1788
 msgid "Select A File"
 msgstr "ファイルの選択"
 
-#: src/interface.c:1661
+#: src/interface.c:1833
 msgid "edit filter rules"
 msgstr "フィルタ・ルールの編集"
 
-#: src/interface.c:1761
+#: src/interface.c:1933
 msgid "edit rule properties"
 msgstr "ルール・プロパティの編集"
 
-#: src/interface.c:1775
+#: src/interface.c:1947
 msgid "rule type"
 msgstr "ルールの種類"
 
-#: src/interface.c:1785
+#: src/interface.c:1957
 msgid "add items with exact match"
 msgstr "完全に一致するトピックの追加"
 
-#: src/interface.c:1789
+#: src/interface.c:1961
 msgid "remove items with exact match"
 msgstr "完全に一致するトピックの削除"
 
-#: src/interface.c:1799
+#: src/interface.c:1971
 msgid "rule value"
 msgstr "ルールの値"
 
-#: src/interface.c:1873
+#: src/interface.c:2045
 msgid "Search With Feedster"
 msgstr "Feedster で検索"
 
-#: src/interface.c:1887
+#: src/interface.c:2059
 msgid "Search for "
 msgstr "検索する単語 "
 
-#: src/interface.c:1894
+#: src/interface.c:2066
 msgid "enter any search string you want"
 msgstr "検索する文字列を入力して下さい"
 
-#: src/interface.c:1900
+#: src/interface.c:2072
 msgid "Maximal Number Of Result Items"
 msgstr "検索結果の表示数"
 
-#: src/interface.c:1909
+#: src/interface.c:2081
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -998,11 +937,11 @@ msgstr ""
 "配信元のサブスクリプションを生成します。この配信元を保存し、他のサブスクリプ"
 "ションを更新することができます。"
 
-#: src/interface.c:1975
+#: src/interface.c:2147
 msgid "Import Feed List"
 msgstr "配信元一覧のインポート"
 
-#: src/interface.c:1985
+#: src/interface.c:2157
 msgid ""
 "Liferea can import a list of feeds from an OPML file. This  can be used to "
 "either restore a backup feed list or import a feed list from another "
@@ -1012,19 +951,19 @@ msgstr ""
 "り、バックアップした配信元一覧をリストアしたり、OPML エキスポートをサポートす"
 "る他のアグリゲータから配信元一覧を取り込めます。"
 
-#: src/interface.c:1995 src/interface.c:2083
+#: src/interface.c:2167 src/interface.c:2255
 msgid "Filename"
 msgstr "ファイル名"
 
-#: src/interface.c:2003 src/interface.c:2091
+#: src/interface.c:2175 src/interface.c:2263
 msgid "Select File"
 msgstr "ファイルの選択"
 
-#: src/interface.c:2063
+#: src/interface.c:2235
 msgid "Export Feed List"
 msgstr "配信元一覧のエキスポート"
 
-#: src/interface.c:2073
+#: src/interface.c:2245
 msgid ""
 "Liferea can export the list of feeds as an OPML list. You can use this "
 "feature to backup your feed list or export your feed list to another "
@@ -1034,16 +973,16 @@ msgstr ""
 "り、お使いの配信元一覧をバックアップしたり、他のアグリゲータで使用するために"
 "配信元一覧をエキスポートできます。"
 
-#: src/netio.c:91
+#: src/netio.c:83
 msgid "Connecting to "
 msgstr "接続中"
 
-#: src/netio.c:93
+#: src/netio.c:85
 #, c-format
 msgid "Connecting to %s..."
 msgstr "%s へ接続中..."
 
-#: src/netio.c:226
+#: src/netio.c:215
 #, c-format
 msgid "Downloading http://%s%s..."
 msgstr "http://%s%s のダウンロード中..."
@@ -1052,139 +991,138 @@ msgstr "http://%s%s のダウンロード中..."
 #. go away if we retry.
 #.
 #. BeOS will stupidly return SUCCESS here making this code silently fail on BeOS.
-#: src/netio.c:241
+#: src/netio.c:231
 msgid "socket connect"
 msgstr "ソケット接続"
 
-#: src/netio.c:318
+#: src/netio.c:305
 msgid "Too many HTTP redirects encountered! Giving up."
 msgstr "HTTP リダイレクト先が多すぎます！ 処理を中断します。"
 
 #. Something bad happened. Server sent stupid stuff.
-#: src/netio.c:325
+#: src/netio.c:312
 msgid "Following HTTP redirects"
 msgstr "HTTP リダイレクト先"
 
-#: src/netio.c:370
+#: src/netio.c:359
 msgid "URL points to permanent redirect, updating with new location..."
 msgstr "URL は永久リダイレクトを指しているので、新しい場所で更新します..."
 
-#: src/netio.c:453
+#: src/netio.c:379
+msgid "Webserver sent an invalid redirect!"
+msgstr ""
+
+#: src/netio.c:449
 #, c-format
 msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
 msgstr ""
 "ウェブサーバ %s が不正な HTTP/1.0 リプライを送信してきました！ これを解析でき"
 "ません。"
 
-#. End of string url. Probably entered invalid stuff like
-#. http://asdf or something. Since we don't want to crash and burn
-#. return the dreaded NULL pointer.
-#: src/netio.c:602
+#: src/netio.c:601
 msgid "This URL doesn't look too valid to me, don't you think?"
 msgstr "この URL は正しくないようです。そう思いませんか？"
 
-#: src/netio.c:622
+#: src/netio.c:658
 msgid "Couldn't create network socket!"
 msgstr "ネットワーク・ソケットを生成できませんでした！"
 
-#: src/netio.c:627
+#: src/netio.c:663
 #, c-format
 msgid "Can't resolve host %s!"
 msgstr "ホスト %s を解決できません！"
 
-#: src/netio.c:633
+#: src/netio.c:670
 #, c-format
 msgid "Could not connect to server %s: %s"
 msgstr "サーバ %s へ接続できませんでした: %s"
 
-#: src/netio.c:639
+#: src/netio.c:678
 msgid "Aborted."
 msgstr "中止します。"
 
-#: src/netio.c:684
-msgid "Could not allocate memory to read file!"
-msgstr "ファイルを読むのに必要なメモリを確保できませんでした！"
+#: src/netio.c:736
+#, fuzzy, c-format
+msgid "Could not open pipe \"%s\"!"
+msgstr "ファイル \"%s\" を開けませんでした！"
 
-#: src/netio.c:691
+#: src/netio.c:742
 #, c-format
 msgid "Could not open file \"%s\"!"
 msgstr "ファイル \"%s\" を開けませんでした！"
 
-#: src/netio.c:694
+#: src/netio.c:748
 #, c-format
 msgid "There is no file \"%s\"!"
 msgstr "ファイル \"%s\" がありません！"
 
-#: src/ns_admin.c:80
+#: src/ns_admin.c:56
 msgid "report errors to"
 msgstr "エラーの報告先"
 
-#: src/ns_admin.c:82
+#: src/ns_admin.c:59
 msgid "feed generator"
 msgstr "配信元の生成者"
 
-#: src/ns_ag.c:100
+#: src/ns_ag.c:85
 msgid "source"
 msgstr "ソース"
 
-#: src/ns_ag.c:114
+#: src/ns_ag.c:104
 msgid "time"
 msgstr "時刻"
 
-#: src/ns_cC.c:91
+#: src/ns_cC.c:53
 msgid "license"
 msgstr "ライセンス"
 
-#: src/ns_dc.c:250 src/ns_ocs.c:98
+#: src/ns_dc.c:229 src/ns_ocs.c:95
 msgid "internal OCS namespace parsing error!"
 msgstr "内部的な OCS 名前空間の解析エラーです！"
 
-#: src/ocs_dir.c:200 src/ocs_dir.c:242 src/ocs_dir.c:364 src/ocs_dir.c:438
+#: src/ns_dc.c:264 src/ns_dc.c:287 src/ns_dc.c:324
+#, fuzzy
+msgid "internal error! unknown tag type while parsing Dublin Core tag!"
+msgstr "内部 ERROR: newFeed() に不明な配信元の種類があります！"
+
+#: src/ocs_dir.c:200 src/ocs_dir.c:243 src/ocs_dir.c:365 src/ocs_dir.c:439
 #, c-format
 msgid "no namespace handler for <%s:%s>!\n"
 msgstr "<%s:%s> に対する名前空間ハンドラではありません！\n"
 
-#: src/ocs_dir.c:467
-#, c-format
-msgid ""
-"XML error while reading directory! Directory \"%s\" could not be loaded!"
-msgstr ""
-"フォルダを読み込む際に XML エラーが発生しました！ フォルダ \"%s\" を読み込め"
-"ませんでした！"
-
-#: src/ocs_dir.c:473 src/opml.c:144 src/rss_channel.c:363
-msgid "Empty document!"
-msgstr "ドキュメントが空です！"
-
-#: src/ocs_dir.c:482
-msgid "Could not find RDF header!"
+#: src/ocs_dir.c:481
+#, fuzzy
+msgid "<p>Could not find RDF header!</p>"
 msgstr "RDF ヘッダが見つかりませんでした！"
 
-#: src/opml.c:155
-msgid "Could not find OPML header!!"
+#: src/opml.c:160
+#, fuzzy
+msgid "<p>Could not find OPML header!</p>"
 msgstr "OPML ヘッダが見つかりませんでした！！"
 
-#: src/pie_feed.c:96 src/rss_channel.c:118
+#: src/pie_feed.c:98 src/rss_channel.c:118
 msgid "Internal error! Invalid output request mode for namespace information!"
 msgstr "内部 ERROR: 名前空間情報に対する出力要求モードが正しくありません！"
 
-#: src/pie_feed.c:231
-msgid "Could not find PIE header! Feed was not added!"
-msgstr "PIE ヘッダが見つかりませんでした！ この配信元を追加しません！"
+#: src/pie_feed.c:236
+#, fuzzy
+msgid "<p>Could not find Atom/Echo/PIE header!</p>"
+msgstr "OPML ヘッダが見つかりませんでした！！"
 
-#: src/rss_channel.c:375
-msgid "Could not find RDF/RSS header!"
+#: src/rss_channel.c:361
+#, fuzzy
+msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "RDF/RSS ヘッダが見つかりませんでした！"
 
-#: src/rss_item.c:241
+#: src/rss_item.c:237
 msgid "comments"
 msgstr "コメント"
 
-#: src/ui_filter.c:58
+#: src/ui_filter.c:54
 msgid "Rule Type"
 msgstr "ルールの種類"
 
-#: src/ui_filter.c:61
+#: src/ui_filter.c:57
 msgid "Value"
 msgstr "値"
 
@@ -1248,59 +1186,65 @@ msgid "/_Next Unread Item"
 msgstr "/次の未読のトピック(_N)"
 
 #: src/ui_popup.c:124
+#, fuzzy
+msgid "/Toggle _Read Status"
+msgstr "未読/既読の切り替え(_R)"
+
+#: src/ui_popup.c:125
+#, fuzzy
+msgid "/Toggle Item _Flag"
+msgstr "トピック・フラグの切り替え(_F)"
+
+#: src/ui_popup.c:127
 msgid "/_Launch Item In Browser"
 msgstr "/ブラウザで開く(_L)"
 
-#: src/ui_popup.c:133
+#: src/ui_popup.c:136
 msgid "/Zoom In"
 msgstr "/拡大"
 
-#: src/ui_popup.c:134
+#: src/ui_popup.c:137
 msgid "/Zoom Out"
 msgstr "/縮小"
 
-#: src/ui_popup.c:140
+#: src/ui_popup.c:143
 msgid "/_Copy Link Location"
 msgstr "/リンク先のアドレスのコピー(_C)"
 
-#: src/ui_popup.c:141
+#: src/ui_popup.c:144
 msgid "/_Subscribe"
 msgstr "/トピックの投稿(_S)"
 
-#: src/ui_search.c:75
+#: src/ui_search.c:70
 #, c-format
 msgid "searching for \"%s\""
 msgstr "\"%s\" の検索中"
 
-#: src/ui_search.c:107
-msgid "Feedster search request failed.\n"
-msgstr "Feedster 検索要求に失敗しました。\n"
-
-#: src/ui_search.c:136
+#: src/ui_search.c:125
 #, c-format
 msgid "creating VFolder for search term \"%s\""
 msgstr "検索文字列 \"%s\" の仮想フォルダを生成します"
 
 #. FIXME: this really does not belong here!!! -> vfolder.c
 #. setup a rule
-#. 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule))))
-#. 					g_error(_("Could not allocate memory!"));
+#. if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule))))
+#. g_error(_("Could not allocate memory!"));
 #. we set the searchstring as a default title
-#: src/ui_search.c:149
+#: src/ui_search.c:138
 #, c-format
 msgid "VFolder %s"
 msgstr "仮想フォルダ %s"
 
-#: src/ui_search.c:160
+#: src/ui_search.c:149
 msgid "internal error! could not get folder key prefix!"
 msgstr "内部エラー: フォルダ・キーの接頭子 (prefix) を取得できませんでした！"
 
-#: src/ui_tray.c:82
+#: src/ui_tray.c:79
 #, c-format
 msgid "%d new items!"
 msgstr "%d 個の新しいトピックがあります！"
 
-#: src/ui_tray.c:90
+#: src/ui_tray.c:86
 msgid "No new items."
 msgstr "新しいトピックはありません。"
 
@@ -1312,6 +1256,152 @@ msgstr "Liferea はまだフォルダのドラッグ＆ドロップをサポー�
 msgid "you cannot modify the special help folder contents!"
 msgstr "特別なヘルプ・フォルダの内言おうを変更することはできません！"
 
-#: src/update.c:140
+#: src/update.c:54
+msgid "Could not allocate memory!"
+msgstr "メモリを確保できませんでした！"
+
+#: src/update.c:143
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr "配信元のソースが NULL です！ これは致命的です - 更新できません！"
+
+#~ msgid ""
+#~ "You have disabled both the menubar and the toolbar. Without one of these "
+#~ "you won't be able to access all program functions. I'll reenable the "
+#~ "toolbar!"
+#~ msgstr ""
+#~ "メニューバーとツールバーの両方を無効にしました。これらのうちのどれか一つが"
+#~ "ないと、このプログラムの機能の全てにアクセスすることはできません。ツール"
+#~ "バーの方を有効にしましたよ！"
+
+#~ msgid "entry list widget lookup failed!\n"
+#~ msgstr "エントリ・リスト・ウィジットの検索に失敗しました！\n"
+
+#~ msgid "could not retrieve selection of entry list!"
+#~ msgstr "エントリ・リストの選択部分を取得できませんでした！"
+
+#~ msgid "fatal! selected feed entry has no key!!!"
+#~ msgstr "致命的です！ 選択した配信元のエントリにはキーがありません！！！"
+
+#~ msgid "internal error! could not reset HTML widget scrolling!"
+#~ msgstr "内部 ERROR: HTML スクロール・ウィジットをリセットできませんでした！"
+
+#~ msgid "You have to select a feed entry!"
+#~ msgstr "配信元エントリを一つ選択して下さい！"
+
+#~ msgid "You can't delete help feeds!"
+#~ msgstr "ヘルプは削除できません！"
+
+#~ msgid "Deleting entry"
+#~ msgstr "エントリの削除"
+
+#~ msgid "It seems like there is no selected feed entry!"
+#~ msgstr "配信元を一つも選択していないようです！"
+
+#~ msgid "The provider of this feed suggests an update interval of %d minutes"
+#~ msgstr "この配信元での更新間隔は %d 分になっています"
+
+#~ msgid "This feed specifies no default update interval."
+#~ msgstr "この配信元はデフォルトの更新間隔を指定していません"
+
+#~ msgid "Internal error! No feed selected, but property change requested...\n"
+#~ msgstr ""
+#~ "[内部エラー] 配信元が選択されていないのに、プロパティの変更を指定しまし"
+#~ "た...\n"
+
+#~ msgid "internal error! could not select newly created treestore iter!"
+#~ msgstr "内部 ERROR: 新規に生成したツリーのトピックを選択できませんでした！"
+
+#~ msgid ""
+#~ "Could not download \"%s\"!\n"
+#~ "\n"
+#~ " Maybe the URL is invalid or the feed is temporarily not available. You "
+#~ "can retry downloading or remove the feed subscription via the context "
+#~ "menu from the feed list.\n"
+#~ msgstr ""
+#~ "\"%s\" をダウンロードできませんでした！\n"
+#~ "\n"
+#~ "URL が不正か、あるいは配信元が一時的に利用できないかもしれません。配信元一"
+#~ "覧のコンテキスト・メニューから購読のリトライまたは削除を行うことができま"
+#~ "す。\n"
+
+#~ msgid "internal error! invalid type selected! This should never happen!\n"
+#~ msgstr ""
+#~ "[内部エラー] 選択した種類が正しくありません！ (これは絶対に発生しえないこ"
+#~ "とです)\n"
+
+#~ msgid "You have to select a folder entry!"
+#~ msgstr "フォルダを一つ選択して下さい！"
+
+#~ msgid "A folder must be empty to delete it!"
+#~ msgstr "削除する場合はフォルダを空にして下さい！"
+
+#~ msgid "Error: Cannot determine folder key!"
+#~ msgstr "エラー: フォルダ・キーを決定できません！"
+
+#~ msgid "could not retrieve selection of item list!"
+#~ msgstr "トピックのリストの選択範囲を取得できませんでした！"
+
+#~ msgid "item list widget lookup failed!\n"
+#~ msgstr "トピックのリスト・ウィジットの検索に失敗しました！\n"
+
+#~ msgid "could not retrieve selection of item list!\n"
+#~ msgstr "トピックのリストの選択範囲を取得できませんでした！\n"
+
+#~ msgid "could not find item list widget!"
+#~ msgstr "トピックのリスト・ウィジットが見つかりませんでした！"
+
+#~ msgid "internal error! could not get feed tree view selection!\n"
+#~ msgstr ""
+#~ "内部 ERROR: 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
+
+#~ msgid "internal error! could not find feed tree view widget!\n"
+#~ msgstr ""
+#~ "内部 ERROR: 配信元ツリー・ビュー・ウィジットが見つかりませんでした！\n"
+
+#~ msgid "There are no unread items!"
+#~ msgstr "未読のトピックはありません！"
+
+#~ msgid "You have to select a feed to delete its items!"
+#~ msgstr "トピックを削除する配信元を一つ選択して下さい！"
+
+#~ msgid ""
+#~ "internal error! unknown entry type! cannot display appropriate icon!\n"
+#~ msgstr ""
+#~ "内部 ERROR: 不明なエントリの種類です！ 適切なアイコンを表示できません！\n"
+
+#~ msgid "Date"
+#~ msgstr "日付"
+
+#~ msgid "Headline"
+#~ msgstr "ヘッドライン"
+
+#~ msgid "internal error! item list display for NULL pointer requested!\n"
+#~ msgstr "内部 ERROR: トピックのリスト表示で NULL ポインタを要求しました！\n"
+
+#~ msgid "Empty document! Feed was not added!"
+#~ msgstr "ドキュメントが空です！ 配信元を追加しません！"
+
+#~ msgid "Empty document! Feed cache file should not be empty..."
+#~ msgstr ""
+#~ "ドキュメントが空です！ 配信元キャッシュ・ファイルを空にしないで下さい..."
+
+#~ msgid "Disable Tool Bar."
+#~ msgstr "ツールバーを表示しない"
+
+#~ msgid "Disable Menu Bar."
+#~ msgstr "メニューバーを表示しない"
+
+#~ msgid "Could not allocate memory to read file!"
+#~ msgstr "ファイルを読むのに必要なメモリを確保できませんでした！"
+
+#~ msgid ""
+#~ "XML error while reading directory! Directory \"%s\" could not be loaded!"
+#~ msgstr ""
+#~ "フォルダを読み込む際に XML エラーが発生しました！ フォルダ \"%s\" を読み込"
+#~ "めませんでした！"
+
+#~ msgid "Could not find PIE header! Feed was not added!"
+#~ msgstr "PIE ヘッダが見つかりませんでした！ この配信元を追加しません！"
+
+#~ msgid "Feedster search request failed.\n"
+#~ msgstr "Feedster 検索要求に失敗しました。\n"

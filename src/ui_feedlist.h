@@ -1,5 +1,4 @@
-/*
-   GUI feed list handling
+/* GUI feed list handling
    
    Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
    
@@ -24,6 +23,10 @@
 #include <gtk/gtk.h>
 #include "feed.h"
 
+extern gint selected_type;
+extern feedPtr		selected_fp;
+extern gchar 		*selected_keyprefix;
+
 GtkTreeStore * getFeedStore(void);
 void setupFeedList(GtkWidget *mainview);
 gboolean getFeedListIter(GtkTreeIter *iter);
@@ -45,6 +48,6 @@ void on_fileselect_clicked(GtkButton *button, gpointer user_data);
 void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);
 
 /* helper function to find next unread item */
-feedPtr findUnreadFeed(GtkTreeIter *iter);
+feedPtr ui_feed_find_unread(GtkTreeIter *iter);
 
 #endif

@@ -29,7 +29,7 @@ void setupPopupMenues(void);
 
 /* function to generate popup menus for the item list depending
    on the list mode given in itemlist_mode */
-GtkMenu *make_item_menu(void);
+GtkMenu *make_item_menu(itemPtr ip);
 
 /* popup menu generating functions for the HTML view */
 GtkMenu *make_html_menu(void);

@@ -1,8 +1,9 @@
 /*
    common item handling
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
-
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+		      
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
@@ -31,13 +32,14 @@
 #include "support.h"
 #include "common.h"
 #include "htmlview.h"
+#include "callbacks.h"
 
 /* function to create a new feed structure */
 itemPtr getNewItemStruct(void) {
 	itemPtr		ip;
 	
 	/* initialize channel structure */
-	if(NULL == (ip = (itemPtr) malloc(sizeof(struct item)))) {
+	if(NULL == (ip = (itemPtr) g_malloc(sizeof(struct item)))) {
 		g_error("not enough memory!\n");
 		exit(1);
 	}
@@ -46,7 +48,7 @@ itemPtr getNewItemStruct(void) {
 	ip->readStatus = FALSE;
 	ip->marked = FALSE;
 	ip->type = FST_INVALID;
-	
+	ip->ui_data = NULL;
 	return ip;
 }
 
@@ -55,8 +57,12 @@ gchar *	getItemDescription(itemPtr ip) { return (ip != NULL ? ip->description : 
 gchar * getItemSource(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
 time_t	getItemTime(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
 gboolean getItemReadStatus(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
-gboolean getItemMark(itemPtr ip) { return (ip != NULL ? ip->marked : FALSE); }
-void setItemMark(itemPtr ip, gboolean flag) { ip->marked = flag; }
+gboolean getItemMark(itemPtr ip) { g_assert(ip != NULL); return ip->marked;}
+
+void setItemMark(itemPtr ip, gboolean flag) {
+	ip->marked = flag;
+	ui_update_item(ip);
+}
 
 void markItemAsUnread(itemPtr ip) { 
 	GSList		*vfolders;
@@ -73,6 +79,9 @@ void markItemAsUnread(itemPtr ip) {
 		}
 		
 		ip->readStatus = FALSE;
+		if (ip->ui_data)
+			ui_update_item(ip);
+		redrawFeedList();
 	} 
 }
 
@@ -91,6 +100,9 @@ void markItemAsRead(itemPtr ip) {
 		}
 		
 		ip->readStatus = TRUE; 
+		if (ip->ui_data)
+			ui_update_item(ip);
+		redrawFeedList();
 	}
 }
 
@@ -117,6 +129,8 @@ void freeItem(itemPtr ip) {
 	g_free(ip->source);
 	g_free(ip->id);
 	// FIXME: remove item from all assigned VFolders!
+	if (ip->ui_data)
+		ui_free_item_ui_data(ip);
 	g_free(ip);
 }
 
@@ -132,7 +146,7 @@ void displayItem(itemPtr ip) {
 	markItemAsRead(ip);
 }
 
-itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur, gpointer fp) {
+itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 	ip;
 	gchar		*tmp;
 	
@@ -170,5 +184,5 @@ itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur, gpointer fp) {
 		cur = cur->next;
 	}
 		
-	addItem((feedPtr)fp, ip);
+	return ip;
 }

@@ -37,20 +37,23 @@
 #define ITEM_PROP_TIME			5
 #define ITEM_PROP_TYPE			6
 
+/** An item stores a particular entry in a feed or a search
+ */
+
 typedef struct item {
-	/* common attributes accessed by the GUI */
-	gchar		*title;		
-	gboolean 	readStatus;	/* FALSE if item was not yet read */
-	gboolean 	marked;		
-	gboolean	hidden;		/* flag to hide items when filtered */
-	gchar		*description;	/* HTML string containing the item infos */	
-	gchar		*source;	/* item link */
-	gchar		*id;		/* depending on the feed type, a unique item identifier like <guid> for RSS */
-	time_t		time;		/* item time value */
+	gchar	*title;		/**< item title */
+	gboolean 	readStatus;	/**< TRUE if the item has been read */
+	gboolean 	marked;		/**< TRUE if the item has been marked */
+	gboolean	hidden;		/**< TRUE if the item should not be displayed */
+	gchar	*description;	/**< HTML string containing the item's description */
+	gchar	*source;		/**< URL to the item */
+	gchar	*id;			/**< Unique item identifier, for example <guid> in RSS */
+	time_t	time;		/**< Item's modified date */
 	
-	gint		type;		/* type of item */
-	gpointer	fp;		/* pointer to the feed this item belongs to */
-	GSList		*vfolders;	/* list of vfolders this item appears in */
+	gint		type;		/**< Type of item's associated feed */
+	gpointer	fp;			/**< Pointer to the feed to which this item belongs */
+	GSList	*vfolders;	/**< List of vfolders in which this item appears */
+	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
 
 /* ------------------------------------------------------------ */
@@ -74,7 +77,9 @@ void 	registerItemType(gint type, itemHandlerPtr ihp);
 itemPtr 	getNewItemStruct(void);
 void 		addVFolderToItem(itemPtr ip, gpointer fp);
 void		removeVFolderFromItem(itemPtr ip, gpointer fp);
-void 		displayItem(itemPtr ip);
+void ui_free_item_ui_data(itemPtr ip); /* This is in item.c */
+void ui_update_item(itemPtr ip); /* This is in item.c */
+void displayItem(itemPtr ip);
 void		freeItem(itemPtr ip);
 
 /* methods to access properties */
@@ -89,6 +94,6 @@ void 		markItemAsRead(itemPtr ip);
 void 		markItemAsUnread(itemPtr ip);
 
 /* for cache loading */
-itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur, gpointer fp);
+itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur);
 
 #endif

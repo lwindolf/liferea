@@ -76,7 +76,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 
 	g_assert(NULL != cur);
 		
-	if(NULL == (i = (RSSItemPtr) malloc(sizeof(struct RSSItem)))) {
+	if(NULL == (i = (RSSItemPtr) g_malloc(sizeof(struct RSSItem)))) {
 		g_error("not enough memory!\n");
 		return(NULL);
 	}

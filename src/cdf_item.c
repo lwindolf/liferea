@@ -52,7 +52,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		return NULL;
 	}
 		
-	if(NULL == (i = (CDFItemPtr) malloc(sizeof(struct CDFItem)))) {
+	if(NULL == (i = (CDFItemPtr) g_malloc(sizeof(struct CDFItem)))) {
 		g_error("not enough memory!\n");
 		return(NULL);
 	}

@@ -42,6 +42,7 @@
 #include "filter.h"
 #include "update.h"
 
+#include "ui_tray.h"
 #include "htmlview.h"
 
 /* auto detection lookup table */
@@ -146,11 +147,10 @@ void initBackend(void) {
 
 /* function to create a new feed structure */
 feedPtr getNewFeedStruct(void) {
-	struct feed_request	*request;
 	feedPtr			fp;
 	
 	/* initialize channel structure */
-	if(NULL == (fp = (feedPtr) malloc(sizeof(struct feed)))) {
+	if(NULL == (fp = (feedPtr) g_malloc(sizeof(struct feed)))) {
 		g_error("not enough memory!\n");
 		exit(1);
 	}
@@ -346,7 +346,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 				((struct feed_request *)(fp->request))->lastmodified = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-				parseCacheItem(doc, cur, fp);
+				addItem((feedPtr)fp, parseCacheItem(doc, cur));
 			}			
 			g_free(tmp);	
 			cur = cur->next;
@@ -410,7 +410,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 /* function for first time loading of a newly subscribed feed */
 feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 	feedHandlerPtr		fhp;
-	struct feed_request	request;
+	struct feed_request	*request;
 	unsigned char		*icodata;
 	gchar			*baseurl;
 	gchar			*key;
@@ -433,10 +433,10 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		}
 	} else {
 		/* else only download */
-		request.feedurl = g_strdup(url);
-		data = downloadURL(&request);
-		g_free(request.feedurl);
-		g_free(request.lastmodified);
+		request = getNewRequestStruct(fp);
+		request->feedurl = g_strdup(url);
+		data = downloadURL(request);
+		/* dont't free request! */
 	}
 
 	if(NULL != data) {
@@ -467,19 +467,19 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 			tmp += 3;
 			if(NULL != (tmp = strchr(tmp, '/'))) {
 				*tmp = 0;
-				tmp = g_strdup_printf("%s/favicon.ico", baseurl);
-				request.lastmodified = NULL;
-				request.feedurl = tmp;
-				icodata = downloadURL(&request);
-				g_free(request.feedurl);
-				g_free(request.lastmodified);
 
-				tmp = getCacheFileName(keyprefix, key, "xpm");
+				request = getNewRequestStruct(NULL);
+				request->feedurl = g_strdup_printf("%s/favicon.ico", baseurl);
+				icodata = downloadURL(request);
+				freeRequest(request);
+
 				if(NULL != icodata) {
-					 convertIcoToXPM(tmp, icodata, 10000000);
-					 loadFavIcon(fp);
+					tmp = getCacheFileName(keyprefix, key, "xpm");
+					convertIcoToXPM(tmp, icodata, 10000000);
+					loadFavIcon(fp);
+					g_free(tmp);
+					g_free(icodata);
 				}
-				g_free(tmp);
 			}
 		}
 		g_free(baseurl);
