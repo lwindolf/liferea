@@ -303,6 +303,9 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, "timeformatentry");
 	gtk_entry_set_text(GTK_ENTRY(widget), getStringConfValue(TIME_FORMAT));
 
+	widget = lookup_widget(prefdialog, "updateallbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(UPDATE_ON_STARTUP));
+	
 	tmp = getNumericConfValue(TIME_FORMAT_MODE);
 	if((tmp > 3) || (tmp < 1)) 
 		tmp = 1;	/* correct configuration if necessary */
@@ -336,6 +339,9 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, "itemCountBtn");
 	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
 	setNumericConfValue(DEFAULT_MAX_ITEMS, gtk_adjustment_get_value(itemCount));
+	
+	widget = lookup_widget(prefdialog, "updateallbtn");
+	setBooleanConfValue(UPDATE_ON_STARTUP, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
 	
 	tmp = 0;
 	for(i = 1; i <= 3; i++) {

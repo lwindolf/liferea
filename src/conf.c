@@ -33,7 +33,7 @@
 #define PATH		"/apps/liferea"
 #define GROUPS		"/apps/liferea/groups"
 
-#define HELP1URL	"http://liferea.sf.net/help040.rdf"
+#define HELP1URL	"http://liferea.sf.net/help041.rdf"
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 #define HOMEPAGE	"http://liferea.sf.net/"
 

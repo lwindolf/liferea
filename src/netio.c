@@ -116,7 +116,7 @@ int NetConnect (char * host) {
 	/* stdin is read, socket is write, so we need read/write sets. */
 	FD_ZERO(&rfdsr);
 	FD_ZERO(&rfdsw);
-	FD_SET(0, &rfdsr);
+	//FD_SET(0, &rfdsr);
 	FD_SET(my_socket, &rfdsw);
 	
 	/* If proxyport is 0 we didn't execute the if http_proxy statement in main
@@ -298,7 +298,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	
 	/* Use select to make the connection interuptable if it should hang. */
 	FD_ZERO(&rfds);
-	FD_SET(0, &rfds);
+	////FD_SET(0, &rfds); 
 	FD_SET(my_socket, &rfds);
 	
 	while (1) {
@@ -457,7 +457,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	
 		/* Use select to make the connection interuptable if it should hang. */
 		FD_ZERO(&rfds);
-		FD_SET(0, &rfds);
+		//FD_SET(0, &rfds);
 		FD_SET(my_socket, &rfds);
 		
 		while (1) {
@@ -519,7 +519,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	
 		/* Use select to make the connection interuptable if it should hang. */
 		FD_ZERO(&rfds);
-		FD_SET(0, &rfds);
+		//FD_SET(0, &rfds);
 		FD_SET(my_socket, &rfds);
 		
 		while (1) {
@@ -638,41 +638,38 @@ char * downloadURL(char *url) {
 	struct stat		statinfo;
 
 	/* libxml download stuff... */
-	void *ctxt;
+/*	void *ctxt;
 	char *contentType = "text/xml; charset=\"utf-8\"";
 	int len;
 	xmlChar buffer [1024];
-	xmlBufferPtr output;
+	xmlBufferPtr output;*/
 	
 	if(NULL != strstr(url, "://")) {
 
-// the SnowNews code does not work right when detached from console
-// it 'll cause 100% cpu usage, so its disabled...
-//
-//		/* :// means it an URL */
-//		cur_ptr.feedurl = strdup(url);
-//		cur_ptr.lastmodified = NULL;
-//		
-//		data = DownloadFeed(strdup(url), &cur_ptr);
-//		free(cur_ptr.lastmodified);
-//		
-//		/* check if URL was modified */
-//		if(0 != strcmp(url, cur_ptr.feedurl)) {
-//			g_free(url);
-//			url = g_strdup(cur_ptr.feedurl);
-//		}
-//		
-//		free(cur_ptr.feedurl);
+		/* :// means it an URL */
+		cur_ptr.feedurl = strdup(url);
+		cur_ptr.lastmodified = NULL;
+		
+		data = DownloadFeed(strdup(url), &cur_ptr);
+		free(cur_ptr.lastmodified);
+		
+		/* check if URL was modified */
+		if(0 != strcmp(url, cur_ptr.feedurl)) {
+			g_free(url);
+			url = g_strdup(cur_ptr.feedurl);
+		}
+		
+		free(cur_ptr.feedurl);
 
 		/* inspired by code from http://www.gohome.org/cgi-bin/viewcvs.cgi/nd/nd.c?rev=1.18	*/
 
-		if (url == NULL) return NULL;
+/*		if (url == NULL) return NULL;
 
 		print_status(g_strdup_printf(_("connecting to %s"), url));
 		ctxt = xmlNanoHTTPMethod(url, "GET", NULL, &contentType, NULL, 0);
 
 		if (ctxt == NULL)
-			return NULL;
+			return NULL;*/
 
 		/*returnCode = xmlNanoHTTPReturnCode(ctxt);
 		if ((returnCode >= 300) || 
@@ -681,7 +678,7 @@ char * downloadURL(char *url) {
 		if (contentType != NULL) xmlFree(contentType);
 		return returnCode;
 		}*/
-		if (contentType != NULL) xmlFree(contentType);
+/*		if (contentType != NULL) xmlFree(contentType);
 
 		output = xmlBufferCreate();
 		if (output == NULL) return NULL;
@@ -691,7 +688,7 @@ char * downloadURL(char *url) {
 		}
 		xmlNanoHTTPClose(ctxt);
 		data = g_strdup(xmlBufferContent(output));
-		xmlBufferFree(output);
+		xmlBufferFree(output);*/
 
 	} else {
 		/* no :// so we assume its a local path */

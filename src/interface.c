@@ -754,7 +754,7 @@ create_prefdialog (void)
   GtkWidget *label33;
   GtkObject *itemCountBtn_adj;
   GtkWidget *itemCountBtn;
-  GtkWidget *checkbutton1;
+  GtkWidget *updateallbtn;
   GtkWidget *label32;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefsavebtn;
@@ -882,9 +882,9 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
 
-  checkbutton1 = gtk_check_button_new_with_mnemonic (_("Update all feeds on program startup."));
-  gtk_widget_show (checkbutton1);
-  gtk_box_pack_start (GTK_BOX (vbox20), checkbutton1, FALSE, FALSE, 0);
+  updateallbtn = gtk_check_button_new_with_mnemonic (_("Update all feeds on program startup."));
+  gtk_widget_show (updateallbtn);
+  gtk_box_pack_start (GTK_BOX (vbox20), updateallbtn, FALSE, FALSE, 0);
 
   label32 = gtk_label_new (_("feed handling settings"));
   gtk_widget_show (label32);
@@ -940,7 +940,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox19, "hbox19");
   GLADE_HOOKUP_OBJECT (prefdialog, label33, "label33");
   GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, checkbutton1, "checkbutton1");
+  GLADE_HOOKUP_OBJECT (prefdialog, updateallbtn, "updateallbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label32, "label32");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefsavebtn, "prefsavebtn");

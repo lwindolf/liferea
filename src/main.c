@@ -92,6 +92,11 @@ int main (int argc, char *argv[]) {
 	initBackend();
 	loadEntries();
 	loadVFolders();
+	
+	if(getBooleanConfValue(UPDATE_ON_STARTUP)) {
+		resetAllUpdateCounters();
+		updateNow();
+	}
 		
 	/* FIXME: move to somewhere else :) */
 	gtk_tree_view_expand_all(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
