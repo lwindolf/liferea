@@ -92,7 +92,6 @@ void ui_mainwindow_set_mode(gboolean threePane) {
           gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
      else {
           gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
-          ui_htmlview_write(htmlview_two, "<html><body>TEST</body></html>");
      }
 	itemlist_mode = threePane;
 }
