@@ -27,7 +27,7 @@ liblihtmlt_la_SOURCES = textview.c
 liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
 bin_PROGRAMS = liferea-bin 
-bin_SCRIPTS = liferea
+dist_bin_SCRIPTS = liferea
 
 liferea_bin_SOURCES = \
 	callbacks.c callbacks.h \

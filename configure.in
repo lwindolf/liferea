@@ -144,6 +144,7 @@ src/Makefile
 src/mozilla/Makefile
 src/gtkhtml2/Makefile
 src/gtkhtml3/Makefile
+pixmaps/Makefile
 po/Makefile.in
 ])
 
