@@ -34,6 +34,6 @@ void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data)
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data);
 
-void on_casecheckbtn_toggled(GtkToggleButton *togglebutton, gpointer user_data);
+void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data);
 
 #endif
