@@ -84,6 +84,8 @@ typedef struct feed {
 	gint		updateInterval;	/* user defined update interval */
 
 	GSList		*items;		/* list of pointers to the item structures of this channel */
+	
+	GSList		*filter;	/* list of filters applied to this feed */
 } *feedPtr;
 
 /* ------------------------------------------------------------ */

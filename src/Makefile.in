@@ -138,10 +138,14 @@ liferea_SOURCES = \
 	support.c support.h \
 	interface.c interface.h \
 	callbacks.c callbacks.h \
+	ui_filter.c \
+	ui_tray.c \
+	eggtrayicon.c \
 	common.c common.h \
 	folder.c folder.h \
 	feed.c feed.h \
 	item.c item.h \
+	filter.c filter.h \
 	update.c update.h \
 	htmlview.c htmlview.h \
 	rss_channel.c rss_channel.h \
@@ -179,16 +183,17 @@ bin_PROGRAMS = liferea$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
 
 am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
-	interface.$(OBJEXT) callbacks.$(OBJEXT) common.$(OBJEXT) \
-	folder.$(OBJEXT) feed.$(OBJEXT) item.$(OBJEXT) update.$(OBJEXT) \
-	htmlview.$(OBJEXT) rss_channel.$(OBJEXT) rss_item.$(OBJEXT) \
-	cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) pie_feed.$(OBJEXT) \
-	pie_entry.$(OBJEXT) opml.$(OBJEXT) ocs_dir.$(OBJEXT) \
-	ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) \
-	ns_slash.$(OBJEXT) ns_content.$(OBJEXT) ns_syn.$(OBJEXT) \
-	ns_admin.$(OBJEXT) ns_blogChannel.$(OBJEXT) ns_cC.$(OBJEXT) \
-	conf.$(OBJEXT) vfolder.$(OBJEXT) os-support.$(OBJEXT) \
-	netio.$(OBJEXT)
+	interface.$(OBJEXT) callbacks.$(OBJEXT) ui_filter.$(OBJEXT) \
+	ui_tray.$(OBJEXT) eggtrayicon.$(OBJEXT) common.$(OBJEXT) \
+	folder.$(OBJEXT) feed.$(OBJEXT) item.$(OBJEXT) filter.$(OBJEXT) \
+	update.$(OBJEXT) htmlview.$(OBJEXT) rss_channel.$(OBJEXT) \
+	rss_item.$(OBJEXT) cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) \
+	pie_feed.$(OBJEXT) pie_entry.$(OBJEXT) opml.$(OBJEXT) \
+	ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) \
+	ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) ns_content.$(OBJEXT) \
+	ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) ns_blogChannel.$(OBJEXT) \
+	ns_cC.$(OBJEXT) conf.$(OBJEXT) vfolder.$(OBJEXT) \
+	os-support.$(OBJEXT) netio.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -199,7 +204,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/callbacks.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/cdf_channel.Po ./$(DEPDIR)/cdf_item.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/common.Po ./$(DEPDIR)/conf.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/feed.Po ./$(DEPDIR)/folder.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/eggtrayicon.Po ./$(DEPDIR)/feed.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/filter.Po ./$(DEPDIR)/folder.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/htmlview.Po ./$(DEPDIR)/interface.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/item.Po ./$(DEPDIR)/main.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/netio.Po ./$(DEPDIR)/ns_admin.Po \
@@ -211,6 +217,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/os-support.Po ./$(DEPDIR)/pie_entry.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/pie_feed.Po ./$(DEPDIR)/rss_channel.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/rss_item.Po ./$(DEPDIR)/support.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ui_filter.Po ./$(DEPDIR)/ui_tray.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/update.Po ./$(DEPDIR)/vfolder.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -268,7 +275,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cdf_item.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/conf.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eggtrayicon.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/feed.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/filter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/folder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/htmlview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/interface.Po@am__quote@
@@ -292,6 +301,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rss_channel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rss_item.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/support.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ui_filter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ui_tray.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/update.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vfolder.Po@am__quote@
 

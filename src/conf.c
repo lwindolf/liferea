@@ -663,13 +663,7 @@ void loadEntries() {
 				
 			if(0 == interval)
 				interval = -1;
-				
-			if(FST_VFOLDER == type) {
-				g_print("Sorry, this version does not yet support VFolders, any configured VFolders are ignored!\n");
-				iter = g_slist_next(iter);
-				continue;
-			}
-			
+
 			addFeed(type, url, (gchar *)key, keyprefix, name, interval);
 
 			iter = g_slist_next(iter);

@@ -24,25 +24,12 @@
 #include "feed.h"
 #include "item.h"
 
-/* structure to store search rules of a VFolder */
-typedef struct rule {
-	//gint		type;	/* rule type: e.g. exact match, case insensitive... */
-	gchar		*value;	/* the value of the rule, e.g. a search text */
-	//rulePtr	next;	/* next rule */
-} *rulePtr;
-
 /* standard feed/item type interface */
 feedHandlerPtr	initVFolderFeedHandler(void);
 
 /* VFolder interface */
 void		initVFolders(void);
 void		removeOldItemsFromVFolder(feedPtr vp, feedPtr fp);
-void 		removeOldItemsFromVFolders(gpointer key, gpointer value, gpointer userdata);	// FIXME!
-void 		scanFeed(gpointer key, gpointer value, gpointer userdata);		// FIXME!
 void		removeItemFromVFolder(feedPtr fp, itemPtr ip);
-
-void		setVFolderRules(feedPtr vp, rulePtr rp);
-rulePtr		getVFolderRules(feedPtr vp);
-gboolean	matchVFolderRules(feedPtr vp, gchar *string);
 
 #endif

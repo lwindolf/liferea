@@ -74,19 +74,6 @@ void registerFeedType(gint type, feedHandlerPtr fhp) {
 	}
 }
 
-void initFeedTypes(void) {
-
-	feedHandler = g_hash_table_new(g_int_hash, g_int_equal);
-
-	registerFeedType(FST_RSS,	initRSSFeedHandler());
-	registerFeedType(FST_HELPFEED,	initRSSFeedHandler());
-	registerFeedType(FST_OCS,	initOCSFeedHandler());
-	registerFeedType(FST_CDF,	initCDFFeedHandler());
-	registerFeedType(FST_PIE,	initPIEFeedHandler());
-	registerFeedType(FST_OPML,	initOPMLFeedHandler());	
-	registerFeedType(FST_VFOLDER,	initVFolderFeedHandler());
-}
-
 static gint autoDetectFeedType(gchar *url, gchar **data) {
 	detectStrPtr	pattern = detectPattern;
 	gint		type = FST_INVALID;
@@ -123,9 +110,17 @@ void initBackend() {
 		allItems->type = FST_VFOLDER;
 	}
 	
-	initFeedTypes();
+	feedHandler = g_hash_table_new(g_int_hash, g_int_equal);
+
+	registerFeedType(FST_RSS,	initRSSFeedHandler());
+	registerFeedType(FST_HELPFEED,	initRSSFeedHandler());
+	registerFeedType(FST_OCS,	initOCSFeedHandler());
+	registerFeedType(FST_CDF,	initCDFFeedHandler());
+	registerFeedType(FST_PIE,	initPIEFeedHandler());
+	registerFeedType(FST_OPML,	initOPMLFeedHandler());	
+	registerFeedType(FST_VFOLDER,	initVFolderFeedHandler());
+	
 	initFolders();
-	initVFolders();
 }
 
 /* function to create a new feed structure */
@@ -239,6 +234,8 @@ gint saveFeed(feedPtr fp) {
 static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr	fp = (feedPtr)value;
 	
+	updateUI();
+		
 	if(IS_FEED(fp->type)) {
 		print_status(g_strdup_printf(_("saving \"%s\"..."), fp->title));
 		saveFeed(fp);
@@ -276,7 +273,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		}
 
 		if(!xmlStrcmp(cur->name, (const xmlChar *)"feedCache")) {
-			print_status(_("\"%s\" is no valid cache file! Cannot read cache file!"), filename);
+			print_status(g_strdup_printf(_("\"%s\" is no valid cache file! Cannot read cache file!"), filename));
 			break;		
 		}
 		
@@ -478,11 +475,21 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 			}
 
 			if(!found) {
+				/* Check if feed filters allow display of this item, we don't
+				   delete the item because there can be vfolders which display
+				   it. To allow this the parent feed does store the item, but
+				   hides it. */
+				if(FALSE == checkNewItem(new_ip)) {
+					new_ip->hidden = TRUE;
+					increaseUnreadCount(old_fp);
+				} else {
+					doTrayIcon();
+				}
 				diff_list = g_slist_append(diff_list, (gpointer)new_ip);
-				increaseUnreadCount(old_fp);
 			} else {
 				/* if the item was found but has other contents -> update */
 				if(!equal) {
+					doTrayIcon();
 					g_free(old_ip->title);
 					g_free(old_ip->description);
 					old_ip->title = g_strdup(new_ip->title);

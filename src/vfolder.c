@@ -32,15 +32,8 @@
 /* FIXME: stat() ! */
 #define MAXBUFSIZE	1024
 
-extern GMutex * feeds_lock;
+extern GMutex 		*feeds_lock;
 extern GHashTable	*feeds;
-
-static GHashTable	*vfolders = NULL;
-
-void initVFolders(void) {
-	if(NULL == vfolders)
-		vfolders =  g_hash_table_new(g_int_hash, g_int_equal);
-}
 
 /* though VFolders are treated like feeds, there 'll be a read() call
    when creating a new VFolder, we just do nothing but initializing
@@ -96,60 +89,6 @@ void addItemToVFolder(feedPtr vp, feedPtr fp, itemPtr ip) {
 	vp->items = g_slist_append(vp->items, ip);
 }
 
-void setVFolderRules(feedPtr vp, rulePtr rp) {
-	FILE	*f;
-	gchar	*filename;
-	
-	/* update rule entry in vfolder hash table */
-	// FIXME: free older one...
-	g_hash_table_insert(vfolders, (gpointer)vp, (gpointer)rp);
-	
-	/* save rule to VFolder save file */
-	filename = getCacheFileName(vp->keyprefix, vp->key, "vfolder");
-	if(NULL != (f = fopen(filename, "w"))) {	
-		fwrite(rp->value, strlen(rp->value), 1, f);
-		fclose(f);	
-	} else {
-		g_warning(_("could not open VFolder save file for writing!!!\n"));
-	}
-	
-	g_free(filename);
-}
-
-rulePtr getVFolderRules(feedPtr vp) { 
-
-	g_assert(NULL != vfolders);
-	return (rulePtr)g_hash_table_lookup(vfolders, vp); 
-}
-
-/* applies the rules of the VFolder vp to the parameter string,
-   the function returns TRUE if the rules were matched, otherwise
-   FALSE */
-gboolean matchVFolderRules(feedPtr vp, gchar *string) {
-	rulePtr		rp;
-	
-	/* do a simple strcmp() */
-	if(NULL == string) {
-		g_print("matchVFolderRules() with NULL string\n");
-		return FALSE;
-	}
-	
-	g_assert(NULL != vp);
-	g_assert(NULL != vfolders);
-	rp = (rulePtr)g_hash_table_lookup(vfolders, vp);
-	if(NULL == rp) {
-		g_warning(_("internal error! VFolder has no rules!"));
-		return FALSE;
-	}
-	
-	g_assert(NULL != rp->value);
-
-	if(NULL != strstr(string, rp->value)) {
-		return TRUE;
-	}
-	return FALSE;
-}
-
 /* ---------------------------------------------------------------------------- */
 /* HTML output stuff	 							*/
 /* ---------------------------------------------------------------------------- */
@@ -199,72 +138,8 @@ feedHandlerPtr initVFolderFeedHandler(void) {
 /* vfolder handling functions							*/
 /* ---------------------------------------------------------------------------- */
 
-/* does the scanning of a feed for loadVFolder(), method is also called 
-   by the merge() functions of the feed modules */
-void scanFeed(gpointer key, gpointer value, gpointer userdata) {
-	feedPtr		fp = (feedPtr)userdata;
-	feedPtr		vp = (feedPtr)value;
-	GSList		*itemlist = NULL;
-	gpointer	ip;
-	gchar		*title, *description;
-	gboolean	add;
-
-	/* check the type because we are called with a g_hash_table_foreach()
-	   but only want to process vfolders ...*/
-	if(getFeedType(vp) != FST_VFOLDER) 
-		return;
-	
-	if(getFeedType(fp) == FST_VFOLDER)
-		return;	/* don't scan vfolders! */
-
-	if(NULL != fp) {
-		itemlist = (GSList *)getFeedItemList(fp);
-	} else {
-		print_status(_("internal error! item scan for NULL pointer requested!"));
-		return;
-	}
-	
-	while(NULL != itemlist) {
-		ip = itemlist->data;
-		title = getItemTitle(ip);
-		description = getItemDescription(ip);
-		
-		add = FALSE;
-		if((NULL != title) && matchVFolderRules(vp, title))
-			add = TRUE;
-
-		if((NULL != description) && matchVFolderRules(vp, description))
-			add = TRUE;
-
-		if(add) {
-			addItemToVFolder(vp, fp, ip);
-		}
-
-		itemlist = g_slist_next(itemlist);
-	}
-}
-
 /* called when a feed is deleted, whose items are in a the vfolder fp */
 void removeItemFromVFolder(feedPtr fp, itemPtr ip) {
 
 	g_slist_remove(fp->items, (gpointer)ip);
-}
-
-/* scan all feeds for matching any vfolder rules */
-void loadVFolder(gpointer key, gpointer value, gpointer userdata) {
-	feedPtr	fp = (feedPtr)value;
-
-	/* match the feed ep against all vfolders... */
-	if(FST_VFOLDER != getFeedType(fp))
-		g_hash_table_foreach(feeds, scanFeed, fp);
-}
-
-/* called upon initialization */
-void loadVFolders(void) {
-
-	g_mutex_lock(feeds_lock);
-	/* iterate all feeds ... */
-	g_hash_table_foreach(feeds, loadVFolder, NULL);
-	g_mutex_unlock(feeds_lock);
-
 }

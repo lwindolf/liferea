@@ -40,13 +40,13 @@
 
 #include "vfolder.h"	// FIXME
 
-GtkWidget	*mainwindow;
-GtkWidget	*newdialog = NULL;
-GtkWidget	*propdialog = NULL;
-GtkWidget	*prefdialog = NULL;
-GtkWidget	*newfolderdialog = NULL;
-GtkWidget	*foldernamedialog = NULL;
-GtkWidget	*filedialog = NULL;
+GtkWidget		*mainwindow;
+static GtkWidget	*newdialog = NULL;
+static GtkWidget	*propdialog = NULL;
+static GtkWidget	*prefdialog = NULL;
+static GtkWidget	*newfolderdialog = NULL;
+static GtkWidget	*foldernamedialog = NULL;
+static GtkWidget	*filedialog = NULL;
 
 GtkTreeStore	*itemstore = NULL;
 GtkTreeStore	*feedstore = NULL;
@@ -88,7 +88,7 @@ gint selected_type = FST_INVALID;
 static gchar	*root_prefix = "";
 
 /* pointer to the selected directory key prefix, needed when creating new feeds */
-static gchar	*selected_keyprefix = NULL;
+gchar	*selected_keyprefix = NULL;
 
 /* prototypes */
 void preFocusItemlist(void);
@@ -687,92 +687,6 @@ void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTree
 }
 
 /*------------------------------------------------------------------------------*/
-/* search callbacks								*/
-/*------------------------------------------------------------------------------*/
-
-/* called when toolbar search button is clicked */
-void on_searchbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*searchbox;
-	gboolean	visible;
-
-	g_assert(mainwindow != NULL);
-
-	if(NULL != (searchbox = lookup_widget(mainwindow, "searchbox"))) {
-		g_object_get(searchbox, "visible", &visible, NULL);
-		g_object_set(searchbox, "visible", !visible, NULL);
-	}
-}
-
-/* called when close button in search dialog is clicked */
-void on_hidesearch_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*searchbox;
-
-	g_assert(mainwindow != NULL);
-	
-	if(NULL != (searchbox = lookup_widget(mainwindow, "searchbox"))) {
-		g_object_set(searchbox, "visible", FALSE, NULL);
-	}
-}
-
-
-void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
-	GtkWidget		*searchentry;
-	G_CONST_RETURN gchar	*searchstring;
-
-	g_assert(mainwindow != NULL);
-	
-	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
-		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		print_status(g_strdup_printf(_("searching for \"%s\""), searchstring));
-		selected_fp = NULL;
-		selected_ip = NULL;
-		selected_type = FST_VFOLDER;
-		loadItemList(allItems, (gchar *)searchstring);
-	}
-}
-
-void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget		*searchentry;
-	G_CONST_RETURN gchar	*searchstring;
-	rulePtr			rp;	// FIXME: this really does not belong here!!! -> vfolder.c
-	feedPtr			fp;
-	gchar			*key;
-	
-	g_assert(mainwindow != NULL);
-		
-	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
-		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		print_status(g_strdup_printf(_("creating VFolder for search term \"%s\""), searchstring));
-
-		if(NULL != selected_keyprefix) {
-
-			if(NULL != (fp = newFeed(FST_VFOLDER, "", g_strdup(selected_keyprefix)))) {
-				checkForEmptyFolders();
-				
-				// FIXME: this really does not belong here!!! -> vfolder.c
-				/* setup a rule */
-				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule)))) 
-					g_error(_("Could not allocate memory!"));
-
-				/* we set the searchstring as a default title */
-				setFeedTitle(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
-				/* and set the rules... */
-				rp->value = g_strdup((gchar *)searchstring);
-				setVFolderRules(fp, rp);
-
-				/* FIXME: brute force: update of all vfolders redundant */
-				loadVFolders();
-				
-				addToFeedList(fp, FALSE);
-			}
-		} else {
-			print_status(_("internal error! could not get folder key prefix!"));
-		}
-		
-	}
-}
-
-/*------------------------------------------------------------------------------*/
 /* selection change callbacks							*/
 /*------------------------------------------------------------------------------*/
 void preFocusItemlist(void) {
@@ -814,6 +728,8 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 	feedPtr			fp;
 	GdkGeometry		geometry;
 
+	undoTrayIcon();
+	
         if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
                 gtk_tree_model_get (model, &iter, 
 				FS_KEY, &tmp_key,
@@ -860,6 +776,8 @@ void itemlist_selection_changed(void) {
 	gint		type;
 	gchar		*tmp_key;
 
+	undoTrayIcon();
+	
 	/* do nothing upon initial focussing */
 	if(!itemlist_loading) {
 		g_assert(mainwindow != NULL);
@@ -1268,14 +1186,17 @@ static GtkMenu *make_entry_menu(gint type) {
 
 
 static GtkItemFactoryEntry item_menu_items[] = {
-      {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 0, NULL},
-      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 0, NULL},
-      {"/_Toggle Item Flag",	 	NULL, on_toggle_item_flag, 0, NULL},
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 0, NULL}
+      {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 	0, NULL},
+      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 	0, NULL},
+      {"/Toggle Item _Flag",	 	NULL, on_toggle_item_flag, 		0, NULL},
+      {"/sep1",				NULL, NULL, 				0, "<Separator>"},
+      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 	0, NULL},
+      {"/sep2",				NULL, NULL, 				0, "<Separator>"},
+      {"/_Edit Filters",		NULL, on_popup_filter_selected, 	0, NULL}
 };
 
 static GtkItemFactoryEntry itemlist_menu_items[] = {
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 0, NULL}
+      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 	0, NULL}
 };
 
 GtkMenu *make_item_menu(void) {
@@ -1344,8 +1265,14 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget,
 }
 
 /*------------------------------------------------------------------------------*/
-/* status bar callback, error box function					*/
+/* status bar callback, error box function, GUI update function			*/
 /*------------------------------------------------------------------------------*/
+
+void updateUI(void) {
+	
+	while (gtk_events_pending())
+		gtk_main_iteration();
+}
 
 void print_status(gchar *statustext) {
 	GtkWidget *statusbar;
@@ -1355,7 +1282,7 @@ void print_status(gchar *statustext) {
 
 	g_print("%s\n", statustext);
 	
-	/* lock handling, because this method is called from main
+	/* lock handling, because this method may be called from main
 	   and update thread */
 	if(updateThread == g_thread_self())
 		gdk_threads_enter();

@@ -82,25 +82,26 @@ int main (int argc, char *argv[]) {
 	mainwindow = create_mainwindow();
 	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
 			 	   lookup_widget(mainwindow, "itemlistview"));
-	gtk_widget_show(mainwindow);
 	     			     			     	
 	setupFeedList(lookup_widget(mainwindow, "feedlist"));
 	setupItemList(lookup_widget(mainwindow, "Itemlist"));
 		
 	/* order is important! */
-	updateThread = initUpdateThread();
 	initCallbacks();
+	setupTrayIcon();
 	initConfig();
 	loadConfig();
+	updateThread = initUpdateThread();
 	initBackend();
 	loadEntries();
-	loadVFolders();
 	
 	if(getBooleanConfValue(UPDATE_ON_STARTUP)) {
 		resetAllUpdateCounters();
 		updateNow();
 	}
-		
+
+	gtk_widget_show(mainwindow);
+			
 	/* FIXME: move to somewhere else :) */
 	gtk_tree_view_expand_all(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
 

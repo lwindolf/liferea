@@ -42,6 +42,7 @@ typedef struct item {
 	gchar		*title;		
 	gboolean 	readStatus;	/* FALSE if item was not yet read */
 	gboolean 	marked;		
+	gboolean	hidden;		/* flag to hide items when filtered */
 	gchar		*description;	/* HTML string containing the item infos */	
 	gchar		*source;	/* item link */
 	gchar		*id;		/* depending on the feed type, a unique item identifier like <guid> for RSS */
@@ -71,6 +72,12 @@ void 	initItemTypes(void);
 void 	registerItemType(gint type, itemHandlerPtr ihp);
 
 itemPtr 	getNewItemStruct(void);
+void 		addVFolderToItem(itemPtr ip, gpointer fp);
+void		removeVFolderFromItem(itemPtr ip, gpointer fp);
+void 		displayItem(itemPtr ip);
+void		freeItem(itemPtr ip);
+
+/* methods to access properties */
 gchar *		getItemTitle(itemPtr ip);
 gchar *		getItemDescription(itemPtr ip);
 gchar *		getItemSource(itemPtr ip);
@@ -80,10 +87,6 @@ void		setItemMark(itemPtr ip, gboolean flag);
 gboolean	getItemReadStatus(itemPtr ip);
 void 		markItemAsRead(itemPtr ip);
 void 		markItemAsUnread(itemPtr ip);
-void 		addVFolderToItem(itemPtr ip, gpointer fp);
-void		removeVFolderFromItem(itemPtr ip, gpointer fp);
-void 		displayItem(itemPtr ip);
-void		freeItem(itemPtr ip);
 
 /* for cache loading */
 itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur);

@@ -39,7 +39,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/liferea
 /usr/local/share/liferea/pixmaps/read.xpm
 /usr/local/share/liferea/pixmaps/unread.xpm
-/usr/local/share/liferea/pixmaps/flag.xpm
+/usr/local/share/liferea/pixmaps/flag.png
 /usr/local/share/liferea/pixmaps/unavailable.png
 /usr/local/share/liferea/pixmaps/available.png
 /usr/local/share/liferea/pixmaps/directory.png

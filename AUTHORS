@@ -2,5 +2,10 @@ Lars Lindner <lars.lindner@gmx.net>	coding
 James Doherty <...>			dialog design
 Jeremy Messenger <mezz7@cox.net>	search dialog, icons...
 
+Code included from other projects:
+
+Oliver Feiler <kiza@kcore.de>		SnowNews HTTP client
+Anders Carlsson <andersca@gnu.org>	egg tray icon support
+
 If I forgot to list you here leave me a message and I'll
 include your name and email.

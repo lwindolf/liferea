@@ -12,10 +12,14 @@ liferea_SOURCES = \
 	support.c support.h \
 	interface.c interface.h \
 	callbacks.c callbacks.h \
+	ui_filter.c \
+	ui_tray.c \
+	eggtrayicon.c \
 	common.c common.h \
 	folder.c folder.h \
 	feed.c feed.h \
 	item.c item.h \
+	filter.c filter.h \
 	update.c update.h \
 	htmlview.c htmlview.h \
 	rss_channel.c rss_channel.h \

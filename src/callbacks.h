@@ -32,20 +32,15 @@
 #define IS_TIME		3
 #define IS_TYPE		4
 
-void
-initCallbacks			       (void);
-
-void 
-print_status 			       (gchar 		*statustext);
-
-void
-showErrorBox			       (gchar 		*msg);
-
-void
-redrawFeedList			       (void);
-
-gchar *
-getMainFeedListViewSelection	       (void);
+void initCallbacks(void);
+void updateUI(void);
+void print_status(gchar *statustext);
+void showErrorBox(gchar *msg);
+void doTrayIcon(void);
+void undoTrayIcon(void);
+void setTrayToolTip(gchar *string);
+void setupTrayIcon(void);
+void redrawFeedList(void);
 
 void
 on_refreshbtn_clicked                  (GtkButton       *button,
@@ -231,4 +226,23 @@ on_fileselect_clicked                  (GtkButton       *button,
 
 void
 on_localfilebtn_pressed                (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_popup_filter_selected	       (void);
+
+void
+on_addrulebtn_clicked                  (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_rulepropbtn_clicked                 (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_ruleupbtn_clicked                   (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_ruledownbtn_clicked                 (GtkButton       *button,
                                         gpointer         user_data);
