@@ -46,7 +46,7 @@
 
 static gchar *standard_encoding = { "UTF-8" };
 
-static gchar *CACHEPATH = NULL;
+static gchar *lifereaUserPath = NULL;
 
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
 
@@ -408,21 +408,49 @@ time_t parseRFC822Date(gchar *date) {
 }
 
 void initCachePath(void) {
-	CACHEPATH = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea", g_get_home_dir());
+	gchar *cachePath;
+	gchar *feedCachePath;
+	gchar *faviconCachePath;
 
-	if(!g_file_test(CACHEPATH, G_FILE_TEST_IS_DIR)) {
-		if(0 != mkdir(CACHEPATH, S_IRUSR | S_IWUSR | S_IXUSR)) {
-			g_error(_("Cannot create cache directory %s!"), CACHEPATH);
+	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea", g_get_home_dir());
+	if(!g_file_test(lifereaUserPath, G_FILE_TEST_IS_DIR)) {
+		if(0 != mkdir(lifereaUserPath, S_IRUSR | S_IWUSR | S_IXUSR)) {
+			g_error(_("Cannot create cache directory %s!"), lifereaUserPath);
 		}
 	}
+	
+	cachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "cache", lifereaUserPath);
+	if(!g_file_test(cachePath, G_FILE_TEST_IS_DIR)) {
+		if(0 != mkdir(cachePath, S_IRUSR | S_IWUSR | S_IXUSR)) {
+			g_error(_("Cannot create cache directory %s!"), cachePath);
+		}
+	}
+	feedCachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feeds", cachePath);
+	if(!g_file_test(feedCachePath, G_FILE_TEST_IS_DIR)) {
+		if(0 != mkdir(feedCachePath, S_IRUSR | S_IWUSR | S_IXUSR)) {
+			g_error(_("Cannot create cache directory %s!"), feedCachePath);
+		}
+	}
+
+	faviconCachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "favicons", cachePath);
+	if(!g_file_test(faviconCachePath, G_FILE_TEST_IS_DIR)) {
+		if(0 != mkdir(faviconCachePath, S_IRUSR | S_IWUSR | S_IXUSR)) {
+			g_error(_("Cannot create cache directory %s!"), faviconCachePath);
+		}
+	}
+
+	g_free(cachePath);
+	g_free(feedCachePath);
+	g_free(faviconCachePath);
+
 }
 
 gchar * getCachePath(void) {
 	
-	if(NULL == CACHEPATH)
+	if(NULL == lifereaUserPath)
 		initCachePath();
 		
-	return CACHEPATH;
+	return lifereaUserPath;
 }
 
 /* returns the extension for the type type */
