@@ -155,7 +155,8 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		if (id != NULL) {
 			feed_set_id(fp, id);
 			xmlFree(id);
-			feed_load_from_cache(fp);
+			if (!feed_load_from_cache(fp))
+				feed_update(fp);
 		} else {
 			id = conf_new_id();
 			feed_set_id(fp, id);

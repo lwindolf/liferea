@@ -32,13 +32,6 @@
 
 extern GtkTreeStore *feedstore;
 
-static gboolean (*old_drag_data_delete) (GtkTreeDragSource *drag_source,
-								 GtkTreePath       *path);
-
-static gboolean (*old_drop_received)  (GtkTreeDragDest   *drag_dest,
-							    GtkTreePath       *dest,
-							    GtkSelectionData  *selection_data);
-
 static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
 							   GtkTreePath       *dest_path,
 							   GtkSelectionData  *selection_data);
@@ -47,8 +40,40 @@ static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
 /* DnD callbacks								*/
 /* ---------------------------------------------------------------------------- */
 
+static void ui_dnd_update_iters(GtkTreeModel *tree_model, GtkTreeIter *iter) {
+	GtkTreeIter childiter;
+	gboolean valid;
+	nodePtr ptr = NULL;
+	
+	if (iter != NULL) {
+		gtk_tree_model_get(tree_model, iter,
+					    FS_PTR, &ptr,
+					    -1);
+		
+		valid = gtk_tree_model_iter_children(tree_model, &childiter, iter);
+	} else {
+		valid = gtk_tree_model_get_iter_first(tree_model, &childiter);
+	}
+
+	if (ptr != NULL)
+		((ui_data*)(ptr->ui_data))->row = *iter;
+
+	while (valid) {
+		ui_dnd_update_iters(tree_model, &childiter);
+		valid = gtk_tree_model_iter_next(tree_model, &childiter);
+	}
+
+	if (ptr != NULL) {
+		if (IS_FOLDER(ptr->type))
+			ui_update_folder((folderPtr)ptr);
+		else
+			ui_update_feed((feedPtr)ptr);
+	}
+}
+
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
+	ui_dnd_update_iters(GTK_TREE_MODEL(feedstore), NULL);
 	checkForEmptyFolders();
 	conf_feedlist_save();
 	ui_itemlist_prefocus();
@@ -86,32 +111,6 @@ ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePath *path) {
 	return TRUE;
 }
 
-/* Handle removing the old iter from the list */
-static gboolean
-ui_dnd_feed_drag_data_delete (GtkTreeDragSource *drag_source,
-                                 GtkTreePath       *path)
-{
-	GtkTreeIter iter, parentIter;
-	folderPtr ptr = NULL;
-	
-	g_return_val_if_fail (GTK_IS_TREE_STORE (drag_source), FALSE);
- 
-	if (gtk_tree_model_get_iter (GTK_TREE_MODEL(drag_source), &iter, path)) {
-		if (gtk_tree_model_iter_parent(GTK_TREE_MODEL(drag_source), &parentIter, &iter))
-			gtk_tree_model_get(GTK_TREE_MODEL(drag_source), &parentIter,
-						    FS_PTR, &ptr,
-						    -1);
-	}
-
-	if(((old_drag_data_delete)(drag_source, path)) == FALSE)
-		return FALSE;
-
-	if(ptr)
-		ui_update_folder(ptr);
-	return TRUE;
-}
-
-
 /** decides wether a feed cannot be dropped onto a user selection tree position or not */
 static gboolean 
 ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, GtkSelectionData *selection_data) {
@@ -143,67 +142,6 @@ ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, Gt
 	return TRUE;
 }
 
-static void ui_dnd_update_iters(GtkTreeModel *tree_model, GtkTreeIter *iter) {
-	GtkTreeIter childiter;
-	gboolean valid;
-	nodePtr ptr;
-	
-	gtk_tree_model_get(tree_model, iter,
-				    FS_PTR, &ptr,
-				    -1);
-	
-	if (ptr)
-		((ui_data*)(ptr->ui_data))->row = *iter;
-	
-	valid = gtk_tree_model_iter_children(tree_model, &childiter, iter);
-	while (valid) {
-		ui_dnd_update_iters(tree_model, &childiter);
-		valid = gtk_tree_model_iter_next(tree_model, &childiter);
-	}
-}
-
-static gboolean
-ui_dnd_feed_drop_data_received(GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSelectionData  *selection_data) {
-	GtkTreeModel *tree_model;
-	GtkTreeStore *tree_store;
-	GtkTreeModel *src_model = NULL;
-	GtkTreePath *src_path = NULL;
-	GtkTreeIter iter;
-	nodePtr ptr = NULL;
-	
-	tree_model = GTK_TREE_MODEL (drag_dest);
-	tree_store = GTK_TREE_STORE (drag_dest);
-	
-	if (gtk_tree_get_row_drag_data (selection_data, &src_model, &src_path)
-	    && src_model == tree_model)
-		if (gtk_tree_model_get_iter (src_model, &iter, src_path))
-			gtk_tree_model_get(tree_model, &iter,
-						    FS_PTR, &ptr,
-						    -1);
-	
-	if(((old_drop_received)(drag_dest, dest, selection_data)) == FALSE)
-		return FALSE;
-         
-	if(gtk_tree_model_get_iter(tree_model, &iter, dest)) {
-		ui_dnd_update_iters(tree_model, &iter);
-		gtk_tree_model_get(tree_model, &iter,
-					    FS_PTR, &ptr,
-					    -1);
-		if (ptr) {
-			if (IS_FOLDER(ptr->type))
-				ui_update_folder((folderPtr)ptr);
-			else
-				ui_update_feed((feedPtr)ptr);
-		}
-	}
-	
-	if (src_path)
-		gtk_tree_path_free(src_path);
- 
-	return TRUE;
-}
-
-
 void ui_dnd_init(void) {
 	GtkTreeDragSourceIface	*drag_source_iface = NULL;
 	GtkTreeDragDestIface	*drag_dest_iface = NULL;
@@ -212,15 +150,11 @@ void ui_dnd_init(void) {
 	
 	if(NULL != (drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
 		drag_source_iface->row_draggable = ui_dnd_feed_draggable;
-		old_drag_data_delete = drag_source_iface->drag_data_delete;
-		drag_source_iface->drag_data_delete = ui_dnd_feed_drag_data_delete;
 	}
 
 	if(NULL != (drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
 		old_drop_possible = drag_dest_iface->row_drop_possible;
 		drag_dest_iface->row_drop_possible = ui_dnd_feed_drop_possible;
-		old_drop_received = drag_dest_iface->drag_data_received;
-		drag_dest_iface->drag_data_received  = ui_dnd_feed_drop_data_received;
 	}
 }
 
