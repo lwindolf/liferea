@@ -2,3 +2,4 @@ configure
 config.status
 config.h
 config.h.in
+aclocal.m4
