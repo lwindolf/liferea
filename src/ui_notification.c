@@ -34,8 +34,6 @@
 
 #define NOTIF_WIN_WIDTH 350
 #define NOTIF_WIN_HEIGHT -1
-#define NOTIF_WIN_POS_X 0
-#define NOTIF_WIN_POS_Y 0
 
 #define NOTIF_BULLET "\342\227\217" /* U+25CF BLACK CIRCLE */
 
@@ -87,10 +85,50 @@ static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *
 	return TRUE;
 }
 
+static void notifUpdatePosition(GtkWindow *window_p) {
+	gint		max_x, notif_win_pos_x, w;
+	gint		max_y, notif_win_pos_y, h;
+
+	/* These two lines are necessary to get gtk_window_get_size() to
+	   return the real height (it returns only the visible window 
+	   height...) */
+	gtk_widget_hide(GTK_WIDGET(window_p));	
+	gtk_window_move(window_p, 0, 0);
+	
+	max_x = gdk_screen_width();
+	max_y = gdk_screen_height();
+	gtk_window_get_size(window_p, &w, &h);
+	switch(getNumericConfValue(POPUP_PLACEMENT)) {
+		default:
+		case 1:
+			gtk_window_set_gravity(GTK_WINDOW(window_p), GDK_GRAVITY_NORTH_WEST);
+			notif_win_pos_x = 0;
+			notif_win_pos_y = 0;
+			break;
+		case 2:
+			gtk_window_set_gravity(GTK_WINDOW(window_p), GDK_GRAVITY_NORTH_WEST);
+			notif_win_pos_x = max_x - NOTIF_WIN_WIDTH;
+			notif_win_pos_y = 0;
+			break;
+		case 3:
+			gtk_window_set_gravity(GTK_WINDOW(window_p), GDK_GRAVITY_SOUTH_EAST);
+			notif_win_pos_x = max_x -  NOTIF_WIN_WIDTH;
+			notif_win_pos_y = max_y - h;
+			break;
+		case 4:
+			gtk_window_set_gravity(GTK_WINDOW(window_p), GDK_GRAVITY_SOUTH_EAST);
+			notif_win_pos_x = 0;
+			notif_win_pos_y = max_y - h;
+			break;
+	}
+	gtk_window_move(window_p, notif_win_pos_x, notif_win_pos_y);
+	gtk_widget_show(GTK_WIDGET(window_p));
+}
+
 static gint feedNotifTimeoutCallback (gpointer data) {
 	feedNotif_t *feedNotif_p = (feedNotif_t *) data;
 	notifRemoveFeedNotif (feedNotif_p);
-	notifRemoveWin();
+	notifRemoveWin();	
 	return FALSE;
 }
 
@@ -212,8 +250,10 @@ static void notifAddFeedNotif (feedNotif_t *feedNotif_p) {
 		g_assert(list_p != NULL);
 		gtk_box_pack_start(GTK_BOX(list_p->data), feedNotif_p->eventBox_p, FALSE, FALSE, 0);
 	}
-	
+
 	feedNotif_p->newCount = feed_get_new_counter(feedNotif_p->feed_p);
+	
+	notifUpdatePosition(GTK_WINDOW(notifWin_p));
 
 	/* Add timer */
 	feedNotif_p->timerTag = g_timeout_add (DISPLAY_TIME, feedNotifTimeoutCallback, (gpointer) feedNotif_p);
@@ -229,6 +269,8 @@ static void notifRemoveFeedNotif (feedNotif_t *feedNotif_p) {
 		feedNotif_p->timerTag = 0;
 	}
 	feedNotif_p->newCount = feed_get_new_counter(feedNotif_p->feed_p);
+
+	notifUpdatePosition(GTK_WINDOW(notifWin_p));
 }
 
 /* to be called when a feed is removed and needs to be removed
@@ -248,38 +290,38 @@ void ui_notification_remove_feed(feedPtr fp) {
 	}
 }
 
-static GtkWidget *notifCreateWin (void) {
-	GtkWidget *window_p = NULL;
-	GtkWidget *vbox_p = NULL;
+static GtkWidget *notifCreateWin(void) {
+	GtkWidget	*window_p = NULL;
+	GtkWidget	*vbox_p = NULL;
 
-	window_p = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title (GTK_WINDOW(window_p), _("Liferea notification"));
+	window_p = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title(GTK_WINDOW(window_p), _("Liferea notification"));
 	
 	/* Don't make any special placement */
 	gtk_window_set_position(GTK_WINDOW(window_p), GTK_WIN_POS_NONE);
 
 	/* The user shouldn't be able to resize it */
-	gtk_window_set_resizable (GTK_WINDOW(window_p), FALSE);
+	gtk_window_set_resizable(GTK_WINDOW(window_p), FALSE);
 
 	/* Stick on all desktops */
-	gtk_window_stick (GTK_WINDOW(window_p));
+	gtk_window_stick(GTK_WINDOW(window_p));
 
 	/* Not in taskbar */
-	gtk_window_set_skip_taskbar_hint (GTK_WINDOW(window_p), TRUE);
+	gtk_window_set_skip_taskbar_hint(GTK_WINDOW(window_p), TRUE);
 	
-	gtk_widget_set_size_request (window_p, NOTIF_WIN_WIDTH, NOTIF_WIN_HEIGHT);
+	gtk_widget_set_size_request(window_p, NOTIF_WIN_WIDTH, NOTIF_WIN_HEIGHT);
 	
-	vbox_p = gtk_vbox_new (FALSE, 4);
-	gtk_container_add (GTK_CONTAINER(window_p), vbox_p);
+	vbox_p = gtk_vbox_new(FALSE, 4);
+	gtk_container_add(GTK_CONTAINER(window_p), vbox_p);
 
 	gtk_widget_realize(window_p);
 	gdk_window_set_decorations(window_p->window, GDK_DECOR_BORDER);
 	
 	g_signal_connect(window_p, "destroy", G_CALLBACK(notifDeleteWinCb), NULL);
 	
-	gtk_window_move (GTK_WINDOW(window_p), NOTIF_WIN_POS_X, NOTIF_WIN_POS_Y);
+	notifUpdatePosition(GTK_WINDOW(window_p));
 
-	gtk_widget_show_all (window_p);
+	gtk_widget_show_all(window_p);
 	
 	return window_p;
 }

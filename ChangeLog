@@ -1,4 +1,11 @@
-2004-11-??  Lars Lindner <lars.lindner@gmx.net>
+2005-01-??  ??? <???>
+
+	Version 0.9.1
+
+	* New preference to allow positioning the popup
+	  window in all four desktop corners.
+
+2005-01-15  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.9.0
 	

@@ -375,7 +375,8 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	widget = lookup_widget(prefdialog, "popupwindowsoptionbtn");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_POPUP_WINDOWS));
-	
+	gtk_widget_set_sensitive(lookup_widget(prefdialog, "placement_options"), getBooleanConfValue(SHOW_POPUP_WINDOWS));
+		
 	/* menu / tool bar settings */	
 	for(i = 1; i <= 3; i++) {
 		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
@@ -384,6 +385,16 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
 		g_free(widgetname);
 	}
+	
+	/* the same for the popup placements settings */	
+	for(i = 1; i <= 4; i++) {
+		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
+		widgetname = g_strdup_printf("popup_placement%d_radiobtn", i);
+		widget = lookup_widget(prefdialog, widgetname);
+		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
+		g_free(widgetname);
+	}
+
 
 	/* select currently active menu option */
 	tmp = 1;
@@ -391,6 +402,15 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	if(getBooleanConfValue(DISABLE_MENUBAR)) tmp = 3;
 
 	widgetname = g_strdup_printf("%s%d", "menuradiobtn", tmp);
+	widget = lookup_widget(prefdialog, widgetname);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+	g_free(widgetname);
+
+	/* select currently active popup placement option */	
+	tmp = getNumericConfValue(POPUP_PLACEMENT);
+	if((tmp < 1) || (tmp > 4))
+		tmp = 1;
+	widgetname = g_strdup_printf("popup_placement%d_radiobtn", tmp);
 	widget = lookup_widget(prefdialog, widgetname);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	g_free(widgetname);
@@ -445,6 +465,7 @@ void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
 	setBooleanConfValue(SHOW_POPUP_WINDOWS, enabled);
+	gtk_widget_set_sensitive(lookup_widget(prefdialog, "placement_options"), enabled);
 }
 
 static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data) {
@@ -540,6 +561,11 @@ void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 	
 	ui_mainwindow_update_menubar();
 	ui_mainwindow_update_toolbar();
+}
+
+void on_placement_radiobtn_clicked(GtkButton *button, gpointer user_data) {
+
+	setNumericConfValue(POPUP_PLACEMENT, GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number")));
 }
 
 static void updatefavicon_cb(nodePtr ptr) {

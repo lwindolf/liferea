@@ -64,6 +64,10 @@ on_default_update_interval_value_changed
 void
 on_menuselection_clicked               (GtkButton       *button,
                                         gpointer         user_data);
+					
+void
+on_placement_radiobtn_clicked          (GtkButton       *button,
+                                        gpointer         user_data);
 
 void
 on_proxyhostentry_changed              (GtkEditable     *editable,

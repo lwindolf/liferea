@@ -1731,6 +1731,16 @@ create_prefdialog (void)
   GtkWidget *label136;
   GtkWidget *vbox256;
   GtkWidget *popupwindowsoptionbtn;
+  GtkWidget *hbox85;
+  GtkWidget *label195;
+  GtkWidget *frame1;
+  GtkWidget *placement_options;
+  GtkWidget *popup_placement3_radiobtn;
+  GSList *popup_placement3_radiobtn_group = NULL;
+  GtkWidget *popup_placement2_radiobtn;
+  GtkWidget *popup_placement1_radiobtn;
+  GtkWidget *popup_placement4_radiobtn;
+  GtkWidget *label196;
   GtkWidget *vbox252;
   GtkWidget *label126;
   GtkWidget *hbox52;
@@ -2254,7 +2264,7 @@ create_prefdialog (void)
   gtk_widget_show (label50);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 3), label50);
 
-  vbox259 = gtk_vbox_new (FALSE, 6);
+  vbox259 = gtk_vbox_new (FALSE, 12);
   gtk_widget_show (vbox259);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox259);
   gtk_container_set_border_width (GTK_CONTAINER (vbox259), 12);
@@ -2302,6 +2312,65 @@ create_prefdialog (void)
   gtk_widget_show (popupwindowsoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox256), popupwindowsoptionbtn, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (popupwindowsoptionbtn), 4);
+
+  hbox85 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox85);
+  gtk_box_pack_start (GTK_BOX (vbox256), hbox85, TRUE, TRUE, 0);
+
+  label195 = gtk_label_new (_("         "));
+  gtk_widget_show (label195);
+  gtk_box_pack_start (GTK_BOX (hbox85), label195, FALSE, FALSE, 0);
+
+  frame1 = gtk_frame_new (NULL);
+  gtk_widget_show (frame1);
+  gtk_box_pack_start (GTK_BOX (hbox85), frame1, FALSE, TRUE, 0);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame1), GTK_SHADOW_IN);
+
+  placement_options = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (placement_options);
+  gtk_container_add (GTK_CONTAINER (frame1), placement_options);
+  gtk_container_set_border_width (GTK_CONTAINER (placement_options), 6);
+  gtk_table_set_row_spacings (GTK_TABLE (placement_options), 15);
+  gtk_table_set_col_spacings (GTK_TABLE (placement_options), 30);
+
+  popup_placement3_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Lower Right"));
+  gtk_widget_show (popup_placement3_radiobtn);
+  gtk_table_attach (GTK_TABLE (placement_options), popup_placement3_radiobtn, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (popup_placement3_radiobtn), popup_placement3_radiobtn_group);
+  popup_placement3_radiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (popup_placement3_radiobtn));
+
+  popup_placement2_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Upper Right"));
+  gtk_widget_show (popup_placement2_radiobtn);
+  gtk_table_attach (GTK_TABLE (placement_options), popup_placement2_radiobtn, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (popup_placement2_radiobtn), popup_placement3_radiobtn_group);
+  popup_placement3_radiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (popup_placement2_radiobtn));
+
+  popup_placement1_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Upper Left"));
+  gtk_widget_show (popup_placement1_radiobtn);
+  gtk_table_attach (GTK_TABLE (placement_options), popup_placement1_radiobtn, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (popup_placement1_radiobtn), popup_placement3_radiobtn_group);
+  popup_placement3_radiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (popup_placement1_radiobtn));
+
+  popup_placement4_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Lower Left"));
+  gtk_widget_show (popup_placement4_radiobtn);
+  gtk_table_attach (GTK_TABLE (placement_options), popup_placement4_radiobtn, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (popup_placement4_radiobtn), popup_placement3_radiobtn_group);
+  popup_placement3_radiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (popup_placement4_radiobtn));
+
+  label196 = gtk_label_new (_("<b>Popup Placement</b>"));
+  gtk_widget_show (label196);
+  gtk_frame_set_label_widget (GTK_FRAME (frame1), label196);
+  gtk_label_set_use_markup (GTK_LABEL (label196), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label196), 0, 0.5);
+  gtk_misc_set_padding (GTK_MISC (label196), 6, 0);
 
   vbox252 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox252);
@@ -2554,6 +2623,18 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) popupwindowsoptionbtn, "clicked",
                     G_CALLBACK (on_popupwindowsoptionbtn_clicked),
                     NULL);
+  g_signal_connect ((gpointer) popup_placement3_radiobtn, "clicked",
+                    G_CALLBACK (on_placement_radiobtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) popup_placement2_radiobtn, "clicked",
+                    G_CALLBACK (on_placement_radiobtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) popup_placement1_radiobtn, "clicked",
+                    G_CALLBACK (on_placement_radiobtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) popup_placement4_radiobtn, "clicked",
+                    G_CALLBACK (on_placement_radiobtn_clicked),
+                    NULL);
   g_signal_connect ((gpointer) menuradiobtn1, "clicked",
                     G_CALLBACK (on_menuselection_clicked),
                     NULL);
@@ -2701,6 +2782,15 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label136, "label136");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox256, "vbox256");
   GLADE_HOOKUP_OBJECT (prefdialog, popupwindowsoptionbtn, "popupwindowsoptionbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox85, "hbox85");
+  GLADE_HOOKUP_OBJECT (prefdialog, label195, "label195");
+  GLADE_HOOKUP_OBJECT (prefdialog, frame1, "frame1");
+  GLADE_HOOKUP_OBJECT (prefdialog, placement_options, "placement_options");
+  GLADE_HOOKUP_OBJECT (prefdialog, popup_placement3_radiobtn, "popup_placement3_radiobtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, popup_placement2_radiobtn, "popup_placement2_radiobtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, popup_placement1_radiobtn, "popup_placement1_radiobtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, popup_placement4_radiobtn, "popup_placement4_radiobtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, label196, "label196");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox252, "vbox252");
   GLADE_HOOKUP_OBJECT (prefdialog, label126, "label126");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox52, "hbox52");
@@ -3110,7 +3200,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. J\303\263\305\272wicki <jakubj@users.sourceforge.net>");
+  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. Jóźwicki <jakubj@users.sourceforge.net>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
