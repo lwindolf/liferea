@@ -69,13 +69,6 @@ void ui_itemlist_prefocus(void);
 void ui_itemlist_display(void);
 
 /**
- * Display a feed's items
- *
- * @param fp The feed to display.
- */
-void ui_itemlist_load(nodePtr fp);
-
-/**
  * Add an item to the itemlist
  * @param merge set to true when the itemlist should be searched for
  * the particular item and the item be updated if necessary.
@@ -85,7 +78,6 @@ void ui_itemlist_add_item(itemPtr ip, gboolean merge);
 /**
  * Remove an item from the itemlist
  */
-
 void ui_itemlist_remove_item(itemPtr ip);
 
 /**

@@ -161,7 +161,10 @@ void itemlist_load(nodePtr node) {
 void itemlist_update_vfolder(nodePtr vp) {
 
 	if(displayed_node == vp)
-		itemlist_load(vp);
+		/* maybe itemlist_load(vp) would be faster, but
+		   it unloads all feeds and therefore must not be 
+		   called from here! */		
+		itemlist_reload(vp);
 	else
 		ui_feed_update(vp);
 }
@@ -199,10 +202,7 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	
 void itemlist_toggle_flag(itemPtr ip) {
 
-	if(TRUE == item_get_flag(ip))
-		itemlist_set_flag(ip, FALSE);
-	else
-		itemlist_set_flag(ip, TRUE);
+	itemlist_set_flag(ip, !item_get_flag(ip));
 }
 
 void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
@@ -234,10 +234,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 
 void itemlist_toggle_read_status(itemPtr ip) {
 
-	if(TRUE == item_get_read_status(ip))
-		itemlist_set_read_status(ip, FALSE);
-	else
-		itemlist_set_read_status(ip, TRUE);
+	itemlist_set_read_status(ip, !item_get_read_status(ip));
 }
 
 void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) { 

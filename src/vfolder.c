@@ -369,7 +369,8 @@ gboolean vfolder_check_item(itemPtr ip) {
 	gboolean	added = FALSE;
 
 	debug_enter("vfolder_check_item");
-
+g_assert(ip->fp->loaded != 0);
+g_assert(ip->fp->type != FST_VFOLDER);
 	iter = vfolders;
 	while(NULL != iter) {
 		added |= vfolder_apply_rules_for_item(iter->data, ip);
