@@ -299,7 +299,7 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "webmaster", _("webmaster"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "category", _("category"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generator"));
-	
+	metadata_register_renderer("imageUrl", attribs_render_image, NULL);	
 	metadata_register_renderer("textInput", attribs_render_foot_text, NULL);
 	metadata_register_renderer("commentsUri", attribs_render_comments_uri, NULL);
 	metadata_register_renderer("enclosure", attribs_render_enclosure, NULL);
@@ -328,7 +328,7 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "coverage", _("coverage"));
 	
 	/* types for freshmeat */
-	metadata_register_renderer("fmScreenshot", attribs_render_image, NULL);	
+	metadata_register_renderer("fmScreenshot", attribs_render_image, NULL);
 
 	/* types for slash */
 	metadata_register_renderer("slash", ns_slash_render, NULL);	

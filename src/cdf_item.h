@@ -28,17 +28,7 @@
 
 #include "cdf_channel.h"
 
-#define CDF_ITEM_TITLE		0
-#define CDF_ITEM_DESCRIPTION	1
-#define CDF_ITEM_LINK		2
-#define CDF_ITEM_AUTHOR		3
-#define CDF_ITEM_IMAGE		4
-#define CDF_ITEM_CATEGORY	5
-	
-#define CDF_ITEM_MAX_TAG	6
-
 typedef struct CDFItem {
-	gchar		*tags[CDF_ITEM_MAX_TAG];	/* standard namespace infos */
 	
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */	
