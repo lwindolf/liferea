@@ -36,7 +36,7 @@
 #include "debug.h"
 #include "net/netio.h"
 
-static GtkWidget		*filedialog = NULL;
+static GtkWidget	*filedialog = NULL;
 
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
@@ -168,8 +168,10 @@ static void ui_feedlist_update_(GtkTreeIter *iter) {
 void ui_feedlist_update_iter(GtkTreeIter *iter) {
 
 	ui_feedlist_update_(iter);
-g_print("hhh\n");
-	gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
+
+	if(filter_feeds_without_unread_headlines)
+		gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
+		
 	ui_redraw_widget("feedlist");
 }
 
@@ -263,15 +265,35 @@ static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, 
 		return FALSE;
 }
 
+/* Sets either the unread feeds filter model or the standard
+   GTK tree model. This is necessary because only the standard
+   model supports drag and drop. */
+void ui_feedlist_set_model(GtkTreeView *feedview, GtkTreeStore *feedstore, gboolean filtered) {
+
+	if(filtered) {
+		filter = gui_tree_model_filter_new(GTK_TREE_MODEL(feedstore), NULL);
+
+		gui_tree_model_filter_set_visible_func(GUI_TREE_MODEL_FILTER(filter),
+	        	                               filter_visible_function,
+	                	                       NULL,
+	                        	               NULL);
+
+		gtk_tree_view_set_model(GTK_TREE_VIEW(feedview), GTK_TREE_MODEL(filter));
+	} else {
+		gtk_tree_view_set_model(GTK_TREE_VIEW(feedview), GTK_TREE_MODEL(feedstore));
+	}
+}
+
 /* sets up the entry list store and connects it to the entry list
    view in the main window */
-void ui_feedlist_init(GtkWidget *mainview) {
+void ui_feedlist_init(GtkWidget *feedview) {
 	GtkCellRenderer		*textRenderer;
 	GtkCellRenderer		*iconRenderer;	
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;	
 	
 	g_assert(mainwindow != NULL);
+	g_assert(feedview != NULL);
 	
 	/* Set up store */
 	feedstore = gtk_tree_store_new(FS_LEN,
@@ -280,14 +302,7 @@ void ui_feedlist_init(GtkWidget *mainview) {
 	                               G_TYPE_POINTER,
 	                               G_TYPE_INT);
 
-	filter = gui_tree_model_filter_new(GTK_TREE_MODEL(feedstore), NULL);
-
-	gui_tree_model_filter_set_visible_func(GUI_TREE_MODEL_FILTER(filter),
-	                                       filter_visible_function,
-	                                       NULL,
-	                                       NULL);
-
-	gtk_tree_view_set_model(GTK_TREE_VIEW(mainview), GTK_TREE_MODEL(filter));
+	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore, FALSE);
 
 	/* we only render the state and title */
 	iconRenderer = gtk_cell_renderer_pixbuf_new();
@@ -302,10 +317,10 @@ void ui_feedlist_init(GtkWidget *mainview) {
 	gtk_tree_view_column_add_attribute(column, textRenderer, "markup", FS_LABEL);
 	
 	gtk_tree_view_column_set_resizable(column, TRUE);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(mainview), column);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(feedview), column);
 
 	/* Setup the selection handler for the main view */
-	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(mainview));
+	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(feedview));
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 	
 	g_signal_connect(G_OBJECT(select), "changed",
@@ -369,9 +384,17 @@ void on_popup_refresh_selected(gpointer callback_data,
 /*------------------------------------------------------------------------------*/
 
 void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	GtkWidget	*feedview;
 
 	filter_feeds_without_unread_headlines = GTK_CHECK_MENU_ITEM(menuitem)->active;
-	gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
+	feedview = lookup_widget(mainwindow, "feedlist");
+	g_assert(feedview != NULL);
+	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore, filter_feeds_without_unread_headlines);
+	
+	if(filter_feeds_without_unread_headlines) {
+		ui_mainwindow_set_status_bar(_("Note: Using the subscriptions filter disables drag&drop!"));
+		gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
+	}
 }
 
 /*------------------------------------------------------------------------------*/
