@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea Ver0.5.3-test\n"
+"Project-Id-Version: liferea Ver0.6.0-test1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-10 20:05+0200\n"
-"PO-Revision-Date: 2004-08-15 22:15+0900\n"
+"POT-Creation-Date: 2004-09-08 13:43+0900\n"
+"PO-Revision-Date: 2004-09-08 13:43+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -16,35 +16,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/common.c:278
+#: src/common.c:277
 msgid "[Parser error output was truncated!]"
 msgstr "[パーサのエラー出力を切りつめました]"
 
-#: src/common.c:318
+#: src/common.c:317
 #, c-format
 msgid ""
 "xmlReadMemory(): Could not parse document:\n"
 "%s%s"
 msgstr ""
+"xmlReadMemory(): ドキュメントを解析できませんでした:\n"
+"%s%s"
 
-#: src/common.c:391 src/common.c:502
+#: src/common.c:390 src/common.c:501
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "[内部エラー] 時刻変換 (mktime) に失敗しました！\n"
 
-#: src/common.c:394
+#: src/common.c:393
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "ISO8601 の日付の書式が間違っています！ (<dc:date> 情報を無視します)\n"
 
-#: src/common.c:505
+#: src/common.c:504
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "RFC822 の日付の書式が間違っています！ (日付の情報を無視します)\n"
 
-#: src/common.c:519 src/common.c:526 src/common.c:532 src/common.c:539
+#: src/common.c:518 src/common.c:525 src/common.c:531 src/common.c:538
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "キャッシュ・フォルダ %s を生成できません！"
 
-#: src/common.c:609
+#: src/common.c:608
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -55,7 +57,7 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: src/conf.c:462
 msgid "feedlist.opml"
-msgstr ""
+msgstr "feedlist.opml"
 
 #: src/conf.c:487
 #, c-format
@@ -219,9 +221,8 @@ msgid "Feed:"
 msgstr "配信元:"
 
 #: src/feed.c:953 src/interface.c:519
-#, fuzzy
 msgid "VFolder"
-msgstr "新しいフォルダ"
+msgstr "仮想フォルダ"
 
 #: src/feed.c:964 src/interface.c:1071 src/interface.c:1473 src/item.c:269
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
@@ -343,9 +344,8 @@ msgstr ""
 "りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
 
 #: src/interface.c:137 src/interface.c:2800
-#, fuzzy
 msgid "Liferea 0.6.0"
-msgstr "Liferea 0.5.3"
+msgstr "Liferea 0.6.0"
 
 #: src/interface.c:154
 msgid "_Program"
@@ -389,7 +389,7 @@ msgstr "選択した購読または選択したフォルダにある全ての購
 msgid "Update _All"
 msgstr "全て更新(_A)"
 
-#: src/interface.c:237 src/ui_mainwindow.c:174
+#: src/interface.c:237 src/ui_mainwindow.c:188
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "全ての配信元を更新します (OCS ディレクトリを除く)"
 
@@ -445,7 +445,7 @@ msgstr "トピック(_I)"
 msgid "_Next Unread Item"
 msgstr "次の未読のトピック(_N)"
 
-#: src/interface.c:315 src/ui_mainwindow.c:172
+#: src/interface.c:315 src/ui_mainwindow.c:186
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -470,19 +470,16 @@ msgid "Toggles the item flag."
 msgstr "トピックのフラグを切り替えます"
 
 #: src/interface.c:345
-#, fuzzy
 msgid "Remove Selected"
-msgstr "配信元の削除(_D)"
+msgstr "選択したトピックの削除"
 
 #: src/interface.c:348
-#, fuzzy
 msgid "Removes the selected item."
-msgstr "選択した購読を削除します"
+msgstr "現在選択しているトピックを削除します"
 
 #: src/interface.c:354
-#, fuzzy
 msgid "Remove All"
-msgstr "トピックの削除"
+msgstr "全て削除"
 
 #: src/interface.c:357
 msgid "Removes all items of the currently selected feed."
@@ -562,7 +559,7 @@ msgstr "検索する単語"
 
 #: src/interface.c:505
 msgid "saves this search as a VFolder, which will appear in the feed list"
-msgstr "この検索を仮想フォルダとして保存して、配信元一覧の中に表示します"
+msgstr "この検索結果を仮想フォルダとして保存して、配信元一覧の中に表示します"
 
 #: src/interface.c:526
 msgid "Close search"
@@ -880,7 +877,7 @@ msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
 msgstr ""
-"通知エリア (別名: システム・トレイ) の中に\n"
+"パネル通知エリアの中に\n"
 "ステータス・アイコンを表示する(_I)"
 
 #: src/interface.c:2092
@@ -1107,23 +1104,25 @@ msgstr ""
 "存されます。</i>"
 
 #: src/interface.c:3033
-#, fuzzy
 msgid "VFolder Properties"
-msgstr "プロパティ(_P)"
+msgstr "仮想フォルダのプロパティ"
 
 #: src/interface.c:3049
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: src/interface.c:3078
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
 msgstr ""
+"注記: トピックが追加ルールに一つでもマッチしたら、\n"
+"そのトピックが仮想フォルダに追加されます。同様に、\n"
+"削除ルールにマッチしたトピックは削除されます。"
 
 #: src/interface.c:3091
 msgid "Rules"
-msgstr ""
+msgstr "ルール"
 
 #: src/item.c:251 src/item.c:253 src/item.c:264
 msgid "[No title]"
@@ -1185,12 +1184,12 @@ msgstr "  --debug-verbose  デバッグ・メッセージを詳細に表示す�
 #: src/main.c:222
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
-msgstr ""
+msgstr "オプション '--session' にはパラメータが一つ必要です。\n"
 
 #: src/main.c:225
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
-msgstr ""
+msgstr "Liferea は不明なオプションを受け取りました: %s\n"
 
 #: src/main.c:244
 msgid ""
@@ -1198,7 +1197,7 @@ msgid ""
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
 msgstr ""
-"他に実行している Liferea を検出しました。その Liferea の代わりに、こちらを利"
+"他で実行している Liferea を検出しました。その Liferea の代わりに、こちらを利"
 "用して下さい。もし他に Liferea を起動していない場合は、ロック・ファイル \"~/."
 "liferea/lock\" を削除して下さい。"
 
@@ -1299,28 +1298,28 @@ msgstr "ソース"
 msgid "coverage"
 msgstr "適用範囲"
 
-#: src/net/conversions.c:80
+#: src/net/conversions.c:74
 msgid "No description available."
 msgstr "有効な説明がありません。"
 
-#: src/net/conversions.c:361
+#: src/net/conversions.c:355
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "[エラー] zlib_uncompress: %d %s\n"
 
-#: src/net/conversions.c:377
+#: src/net/conversions.c:371
 msgid "ERROR: No output during decompression"
 msgstr "[エラー] 解凍結果の出力がありません"
 
-#: src/net/conversions.c:410
+#: src/net/conversions.c:404
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "[エラー] GZIP データのマジック・バイトが正しくありません"
 
-#: src/net/conversions.c:415
+#: src/net/conversions.c:409
 msgid "ERROR: Compression method is not deflate"
 msgstr "[エラー] 圧縮方法が定義されていません"
 
-#: src/net/conversions.c:420
+#: src/net/conversions.c:414
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "[エラー] フラグ %d はサポートしていません\n"
@@ -1367,60 +1366,56 @@ msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>RDF/RSS ヘッダが見つかりませんでした！</p>"
 
 #: src/rule.c:132
-#, fuzzy
 msgid "Item"
-msgstr "トピック:"
+msgstr "トピックが"
 
 #: src/rule.c:132
 msgid "does contain"
-msgstr ""
+msgstr "次の内容を含む"
 
 #: src/rule.c:132
 msgid "does not contain"
-msgstr ""
+msgstr "次の内容を含まない"
 
 #: src/rule.c:133
-#, fuzzy
 msgid "Item title"
-msgstr "[タイトルなし]"
+msgstr "ヘッドラインが"
 
 #: src/rule.c:133 src/rule.c:134
 msgid "does match"
-msgstr ""
+msgstr "次と一致する"
 
 #: src/rule.c:133 src/rule.c:134
 msgid "does not match"
-msgstr ""
+msgstr "次と一致しない"
 
 #: src/rule.c:134
 msgid "Item body"
-msgstr ""
+msgstr "本文が"
 
 #: src/rule.c:135
-#, fuzzy
 msgid "Read status"
-msgstr "既読ステータスの切替え(_R)"
+msgstr "ステータスが"
 
 #: src/rule.c:135
-#, fuzzy
 msgid "is unread"
-msgstr "次の未読のトピック"
+msgstr "未読である"
 
 #: src/rule.c:135
 msgid "is read"
-msgstr ""
+msgstr "既読である"
 
 #: src/rule.c:136
 msgid "Flag status"
-msgstr ""
+msgstr "フラグが"
 
 #: src/rule.c:136
 msgid "is flagged"
-msgstr ""
+msgstr "セットされている"
 
 #: src/rule.c:136
 msgid "is unflagged"
-msgstr ""
+msgstr "セットされていない"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
@@ -1546,15 +1541,15 @@ msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" の URL が変更されていたので更新しました"
 
 #: src/ui_feed.c:182
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
 "p>%s"
 msgstr ""
-"<p>この配信元の種類を特定できませんでした。本当に指定した配信元ソースが、サ"
-"ポートされた syndication フォーマットの一つで提供されているリソースを指してい"
-"るかどうか確認して下さい！</p>"
+"<p>この配信元の種類を特定できませんでした。本当に指定した配信元ソースが、"
+"syndication としてサポートされているフォーマットでリソースが提供されているか"
+"どうかを確認して下さい！</p>%s"
 
 #: src/ui_feed.c:199
 #, c-format
@@ -1567,9 +1562,8 @@ msgid "\"%s\" is not available"
 msgstr "\"%s\" は利用できません"
 
 #: src/ui_feed.c:364
-#, fuzzy
 msgid "Unknown source"
-msgstr "オリジナルのソース"
+msgstr "配信元ソースが不明です"
 
 #: src/ui_feed.c:456
 msgid "Directories cannot be autoupdated."
@@ -1588,57 +1582,57 @@ msgstr "この配信元はデフォルトの更新間隔を指定していませ
 msgid "Choose File"
 msgstr "ファイルの選択"
 
-#: src/ui_feedlist.c:399
+#: src/ui_feedlist.c:356
 msgid "You have to select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: src/ui_feedlist.c:409
+#: src/ui_feedlist.c:366
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (アップデートできません)"
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:387
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "ヒント: 購読フィルタを利用すると、ドラッグ＆ドロップが無効になります"
 
-#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
+#: src/ui_feedlist.c:429 src/ui_feedlist.c:432
 msgid "Deleting entry"
 msgstr "エントリの削除"
 
-#: src/ui_feedlist.c:473
-#, fuzzy, c-format
+#: src/ui_feedlist.c:430
+#, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "%s とその内容を全て削除してもよろしいですか？"
+msgstr "本当に \"%s\" とその内容を削除してもよろしいですか？"
 
-#: src/ui_feedlist.c:476
-#, fuzzy, c-format
+#: src/ui_feedlist.c:433
+#, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "%s を削除してもよろしいですか？"
+msgstr "本当に \"%s\" を削除してもよろしいですか？"
 
-#: src/ui_feedlist.c:484
+#: src/ui_feedlist.c:441
 msgid "Deletion Confirmation"
 msgstr "削除の確認"
 
-#: src/ui_feedlist.c:521
+#: src/ui_feedlist.c:478
 msgid "You must select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: src/ui_feedlist.c:522
+#: src/ui_feedlist.c:479
 msgid "You must select a feed entry."
 msgstr "配信元エントリを一つ選択して下さい。"
 
-#: src/ui_feedlist.c:568
+#: src/ui_feedlist.c:505
 msgid "New subscription"
 msgstr "新しい購読"
 
-#: src/ui_folder.c:78
+#: src/ui_folder.c:76 src/ui_folder.c:102
 msgid "A folder must be selected."
 msgstr "フォルダを選択して下さい。"
 
-#: src/ui_folder.c:178
+#: src/ui_folder.c:220
 msgid "<i>(empty)</i>"
 msgstr "<i>(空)</i>"
 
-#: src/ui_folder.c:242
+#: src/ui_folder.c:349
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "[内部エラー] 不明なエントリの種類です！ 適切なアイコンを表示できません！\n"
@@ -1663,28 +1657,27 @@ msgstr "トピックを削除する配信元を選択して下さい！"
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
 
-#. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:719
+#: src/ui_itemlist.c:723
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:185
 msgid "New Feed"
 msgstr "新しい配信元"
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:185
 msgid "Add a new subscription."
 msgstr "新しい購読を追加します"
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:186
 msgid "Next Unread"
 msgstr "次の未読のトピック"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:187
 msgid "Mark As Read"
 msgstr "全て既読"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:187
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1692,27 +1685,27 @@ msgstr ""
 "現在選択している購読の全てのトピック、または選択したフォルダの全てのトピック"
 "に既読マークを付与します"
 
-#: src/ui_mainwindow.c:174
+#: src/ui_mainwindow.c:188
 msgid "Update All"
 msgstr "全て更新"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:189
 msgid "Search"
 msgstr "検索"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:189
 msgid "Search all feeds."
 msgstr "全ての配信元から検索します"
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:190
 msgid "Preferences"
 msgstr "設定"
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:190
 msgid "Edit preferences."
 msgstr "設定を編集します"
 
-#: src/ui_mainwindow.c:191
+#: src/ui_mainwindow.c:205
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1764,11 +1757,11 @@ msgstr ""
 "ジェクトのホームページ</a>にある <a href=\"http://liferea.sourceforge.net/"
 "faq.php\">FAQ</a> をご覧下さい。</p>"
 
-#: src/ui_mainwindow.c:276
+#: src/ui_mainwindow.c:290
 msgid "Liferea is now online"
 msgstr "Liferea は現在オンラインです"
 
-#: src/ui_mainwindow.c:279
+#: src/ui_mainwindow.c:293
 msgid "Liferea is now offline"
 msgstr "Liferea は現在オフラインです"
 
@@ -1785,18 +1778,16 @@ msgid "/_Update"
 msgstr "/更新(_U)"
 
 #: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:106
-#, fuzzy
 msgid "/_Mark All As Read"
-msgstr "既読としてマーク(_M)"
+msgstr "/全て既読にする(_M)"
 
 #: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:107 src/ui_popup.c:115
 msgid "/_New"
 msgstr "/新規(_N)"
 
 #: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:108 src/ui_popup.c:116
-#, fuzzy
 msgid "/_New/New _Subscription"
-msgstr "新しい購読(_N)"
+msgstr "/新規(_N)/新しい購読(_S)"
 
 #: src/ui_popup.c:90 src/ui_popup.c:100 src/ui_popup.c:109 src/ui_popup.c:117
 msgid "/_New/New F_older"
@@ -1831,9 +1822,8 @@ msgid "/Toggle Item _Flag"
 msgstr "/トピック・フラグの切り替え(_F)"
 
 #: src/ui_popup.c:124
-#, fuzzy
 msgid "/R_emove Item"
-msgstr "トピックの削除"
+msgstr "/トピックの削除(_E)"
 
 #: src/ui_popup.c:126
 msgid "/_Next Unread Item"
@@ -1923,7 +1913,7 @@ msgstr "\"%s\" の検索中"
 
 #: src/ui_search.c:96
 msgid "Please do a search first!"
-msgstr ""
+msgstr "まず最初に検索を実行して下さい！"
 
 #: src/ui_tray.c:90
 #, c-format
@@ -1956,60 +1946,5 @@ msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
-
-#~ msgid "Deleting \"%s\""
-#~ msgstr "\"%s\" の削除"
-
-#~ msgid "A folder must be empty to delete it!"
-#~ msgstr "削除する場合はフォルダを空にして下さい！"
-
-#~ msgid "/_New/New _Feed"
-#~ msgstr "/新規(_N)/新しい配信元(_F)"
-
-#~ msgid "\"%s\" has no new items"
-#~ msgstr "\"%s\" には新しいトピックはありません"
-
-#~ msgid "\"%s\" has %d new items"
-#~ msgstr "\"%s\" には %d 個の新しいトピックがあります"
-
-#~ msgid "create VFolder"
-#~ msgstr "仮想フォルダの生成"
-
-#~ msgid "/_Delete VFolder"
-#~ msgstr "/仮想フォルダの削除(_D)"
-
-#~ msgid "Add the _help feeds to the feed list on startup."
-#~ msgstr "起動時に Liferea ヘルプ・トピックを配信元一覧へ追加する(_H)"
-
-#~ msgid "edit filter rules"
-#~ msgstr "フィルタ・ルールの編集"
-
-#~ msgid "edit rule properties"
-#~ msgstr "ルール・プロパティの編集"
-
-#~ msgid "Rule Type"
-#~ msgstr "ルールの種類"
-
-#~ msgid "add items with exact match"
-#~ msgstr "完全に一致するトピックの追加"
-
-#~ msgid "remove items with exact match"
-#~ msgstr "完全に一致するトピックの削除"
-
-#~ msgid "Rule Value"
-#~ msgstr "ルールの値"
-
-#~ msgid ""
-#~ "You cannot delete the help! Disable loading the help by changing the "
-#~ "preferences. You will be able to delete the help folder after restarting "
-#~ "Liferea."
-#~ msgstr ""
-#~ "ヘルプは削除できません。ヘルプの読み込みを無効にする場合は設定で変更して下"
-#~ "さい。Liferea を再起動した後にヘルプ・フォルダを削除することが可能になりま"
-#~ "す。"
-
-#~ msgid "You cannot modify help feeds."
-#~ msgstr "ヘルプの配信元は変更できません。"
-
-#~ msgid "Value"
-#~ msgstr "値"
+"GtkHTML2 ではタグ <object> をサポートしていませんので、\n"
+"HTML に挿入されているプラグイン部分は表示されないでしょう。"
