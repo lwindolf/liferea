@@ -408,7 +408,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 	/* after parsing we fill in the infos into the feedPtr structure */		
 	fp->defaultInterval = cp->updateInterval;
 	feed_set_update_interval(fp,cp->updateInterval);
-	fp->title = g_strdup(cp->tags[RSS_CHANNEL_TITLE]);
+	feed_set_title(fp, cp->tags[RSS_CHANNEL_TITLE]);
 
 	if(0 == error) {
 		fp->available = TRUE;

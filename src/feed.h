@@ -51,7 +51,8 @@
 				 (FST_CDF == type) || \
 				 (FST_PIE == type) || \
 				 (FST_OPML == type) || \
-				 (FST_HELPFEED == type))
+				 (FST_HELPFEED == type) || \
+				 (FST_AUTODETECT == type))
 
 /** macro to test wether a type is a ressource which not regularily updated */				 
 #define IS_DIRECTORY(type)	(FST_OCS == type)

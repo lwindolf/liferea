@@ -409,7 +409,7 @@ void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr parent, gb
 	gchar		*tmp;
 
 	g_assert(parent != NULL);
-	if(NULL == (fp = feed_add(type, source, parent, "Unknown title", NULL, 0, showPropDialog))) {
+	if(NULL == (fp = feed_add(type, source, parent, _("New feed...."), NULL, 0, showPropDialog))) {
 		tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 		ui_show_error_box(tmp);
 		g_free(tmp);

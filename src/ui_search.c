@@ -80,7 +80,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*keywords, *resultCountButton;
 	GtkAdjustment	*resultCount;
 	feedPtr		fp;
-	nodePtr		ptr;
+	nodePtr		ptr = ui_feedlist_get_selected();
 	gchar		*tmp, *searchtext = NULL;
 	folderPtr 	folder = NULL;
 
@@ -101,7 +101,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 			folder = folder_get_root();
 		}
 		
-		if(NULL != (fp = feed_add(FST_RSS, searchtext, folder, "Searching....", NULL, 0, FALSE))) {
+		if(NULL != (fp = feed_add(FST_AUTODETECT, searchtext, folder, "Searching....", NULL, 0, FALSE))) {
 
 			/*	FIXME: This needs to be added somewhere else.		if(FALSE == feed_get_available(fp)) {
 				tmp = g_strdup_printf(_("Feedster search request failed.\n"));

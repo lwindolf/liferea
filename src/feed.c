@@ -295,7 +295,7 @@ static feedPtr loadFeed(gint type, gchar *id) {
 				fp->description = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
-				fp->title = g_strdup(tmp);
+				feed_set_title(fp, tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
 				fp->defaultInterval = atoi(tmp);
