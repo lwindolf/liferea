@@ -254,6 +254,8 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		feed_set_update_interval(fp, interval);
 		debug6(DEBUG_CONF, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
 
+		ui_folder_add_feed(folder, fp, -1);
+		
 		if(id != NULL) {
 			feed_set_id(fp, id);
 			xmlFree(id);
@@ -267,7 +269,6 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			feed_schedule_update(fp, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 			favicon_download(fp);
 		}
-		ui_folder_add_feed(folder, fp, -1);
 
 		if(source != NULL)
 			xmlFree(source);

@@ -177,6 +177,9 @@ void ui_feed_update(feedPtr fp) {
 	gchar     *label, *tmp;
 	int		count;
 	
+	if (fp->ui_data == NULL)
+		return;
+	
 	iter = &((ui_data*)fp->ui_data)->row;
 	model =  GTK_TREE_MODEL(feedstore);
 	
