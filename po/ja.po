@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea Ver0.6.0-test1\n"
+"Project-Id-Version: liferea Ver0.6.1-test2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 23:43+0200\n"
-"PO-Revision-Date: 2004-09-08 13:43+0900\n"
+"POT-Creation-Date: 2004-10-28 10:30+0900\n"
+"PO-Revision-Date: 2004-10-28 10:30+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -225,9 +225,8 @@ msgid "VFolder"
 msgstr "仮想フォルダ"
 
 #: src/feed.c:1012
-#, fuzzy
 msgid "user defined command"
-msgstr "ユーザ定義の書式にする"
+msgstr "ユーザ定義のコマンド"
 
 #: src/feed.c:1015 src/interface.c:1107 src/interface.c:1511 src/item.c:254
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
@@ -239,9 +238,8 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "配信元リンクの自動検出に失敗しました。配信元リンクが見つかりません！"
 
 #: src/interface.c:140 src/interface.c:2911
-#, fuzzy
 msgid "Liferea 0.6.1"
-msgstr "Liferea 0.6.0"
+msgstr "Liferea 0.6.1"
 
 #: src/interface.c:157
 msgid "_Program"
@@ -256,19 +254,16 @@ msgid "_Feeds"
 msgstr "配信元(_F)"
 
 #: src/interface.c:193
-#, fuzzy
 msgid "_New Subscription..."
-msgstr "新しい購読(_N)"
+msgstr "新しい購読(_N)..."
 
 #: src/interface.c:201
-#, fuzzy
 msgid "New _Folder..."
-msgstr "新しいフォルダ(_F)"
+msgstr "新しいフォルダ(_F)..."
 
 #: src/interface.c:214
-#, fuzzy
 msgid "_Properties..."
-msgstr "プロパティ(_P)"
+msgstr "プロパティ(_P)..."
 
 #: src/interface.c:217
 msgid "Opens the property dialog for the selected subscription."
@@ -321,18 +316,16 @@ msgstr ""
 "に既読マークを付与します"
 
 #: src/interface.c:290
-#, fuzzy
 msgid "_Import Feed List..."
-msgstr "配信元一覧のインポート(_I)"
+msgstr "配信元一覧のインポート(_I)..."
 
 #: src/interface.c:293
 msgid "Imports an OPML feed list."
 msgstr "OPML 配信元一覧をインポートします"
 
 #: src/interface.c:299
-#, fuzzy
 msgid "_Export Feed List..."
-msgstr "配信元一覧のエキスポート(_E)"
+msgstr "配信元一覧のエキスポート(_E)..."
 
 #: src/interface.c:302
 msgid "Exports the feed list as OPML."
@@ -435,9 +428,8 @@ msgid "Shows or hides the search box."
 msgstr "検索ボックスの表示 ON/OFF を切り替えます"
 
 #: src/interface.c:437
-#, fuzzy
 msgid "Search with Feedster..."
-msgstr "Feedster で検索"
+msgstr "Feedster で検索.."
 
 #: src/interface.c:440
 msgid "Creates a Feedster search feed."
@@ -464,6 +456,8 @@ msgid ""
 "Starts a search for all items that do match the given search string either "
 "in title or content."
 msgstr ""
+"全ての配信元に対して、指定した単語がタイトルまたは内容に一致するトピックを検"
+"索します"
 
 #: src/interface.c:515
 msgid "saves this search as a VFolder, which will appear in the feed list"
@@ -482,7 +476,6 @@ msgid "label133"
 msgstr "label133"
 
 #: src/interface.c:582
-#, fuzzy
 msgid "Headlines"
 msgstr "ヘッドライン"
 
@@ -509,19 +502,16 @@ msgid "Feed _Name:"
 msgstr "配信元の名前(_N):"
 
 #: src/interface.c:959
-#, fuzzy
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">更新間隔</span>"
 
 #: src/interface.c:978
-#, fuzzy
 msgid "_Use global default update interval."
-msgstr "この配信元はデフォルトの更新間隔を指定していません。"
+msgstr "デフォルトの更新間隔を使用する(_U)"
 
 #: src/interface.c:988
-#, fuzzy
 msgid "_Feed specific update interval of"
-msgstr "この配信元はデフォルトの更新間隔を指定していません。"
+msgstr "配信元で指定した更新間隔にする(_F): "
 
 #: src/interface.c:1003 src/interface.c:1862
 msgid "minutes."
@@ -529,16 +519,16 @@ msgstr "分"
 
 #: src/interface.c:1007
 msgid "_Don't update this feed automatically."
-msgstr ""
+msgstr "この配信元を自動的に更新しない(_D)"
 
 #: src/interface.c:1013
 msgid " "
-msgstr ""
+msgstr " "
 
 #: src/interface.c:1017
-#, fuzzy, c-format
+#, c-format
 msgid "This feed provider suggests an update interval of %d seconds."
-msgstr "この配信元では更新間隔を %d 分にすることを推奨しています。"
+msgstr "この配信元では更新間隔を %d 秒にすることを推奨しています。"
 
 #: src/interface.c:1024
 msgid "General"
@@ -655,27 +645,22 @@ msgid "Lifeera Preferences"
 msgstr "Liferea の設定"
 
 #: src/interface.c:1790
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
-msgstr "<span weight=\"bold\">配信元の取り扱い</span>"
+msgstr "<span weight=\"bold\">配信元のキャッシュの取り扱い</span>"
 
 #: src/interface.c:1813
-#, fuzzy
 msgid "Default number of items per feed to save:"
-msgstr "Liferea を終了する際に保存するトピックのデフォルト数/配信元:"
+msgstr "保存するトピックのデフォルト数/配信元:"
 
 #: src/interface.c:1829
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
-msgstr "<span weight=\"bold\">配信元の読み込み</span>"
+msgstr "<span weight=\"bold\">配信元の更新設定</span>"
 
 #: src/interface.c:1852
-#, fuzzy
 msgid "Default Feed Refresh _Interval:"
 msgstr "配信元を更新する間隔(_I):"
 
 #: src/interface.c:1866
-#, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -743,10 +728,10 @@ msgid ""
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
-"Liferea はいろいろな HTML レンダリングを用いて配信元の内容を表示します。お使"
-"いのコンピュータにインストールされているレンダリングに依存するため、利用でき"
-"るオプションが異なります。設定したオプションを有効にするために Liferea を再起"
-"動して下さい。"
+"Liferea は、いろいろな HTML レンダリングを用いて配信元の内容を表示します。お"
+"使いのコンピュータにインストールされているレンダリングに依存するため、利用で"
+"きるオプションが異なります。設定したオプションを有効にするために Liferea を再"
+"起動して下さい。"
 
 #: src/interface.c:1993
 msgid "View Headlines With"
@@ -1265,7 +1250,7 @@ msgstr "[エラー] 圧縮方法が定義されていません"
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "[エラー] フラグ %d はサポートしていません\n"
 
-#: src/net/netio.c:586
+#: src/net/netio.c:577
 msgid "URL points to permanent redirect, updating with new location..."
 msgstr "URL は永久リダイレクトを指しているので、新しい場所で更新します..."
 
@@ -1668,13 +1653,13 @@ msgstr ""
 "この購読の最後の更新が失敗しました。<br><b>HTTP エラー・コード %d: %s</b>"
 
 #: src/ui_htmlview.h:100
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occurred:"
 "<br><b>%s</b>"
 msgstr ""
 "この配信元を解析する際にエラーが発生しました。次のエラーが発生しました: "
-"<br><b>/%s</b>"
+"<br><b>%s</b>"
 
 #: src/ui_htmlview.h:101
 msgid ""
@@ -1759,9 +1744,15 @@ msgid ""
 "sourceforge.net\">mailing list</a> and it will be included in the next "
 "release!</div>"
 msgstr ""
+"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+"\">Liferea を初めて起動すると、ローカライズされたデフォルトの配信元一覧を読み"
+"込みます。既に英語版、フランス語版、ドイツ語版、そしてスペイン語版の配信元一"
+"覧が用意されています。お使いの言語でデフォルトの配信元の集まりをご存知でした"
+"ら、当プロジェクトの <a href=\"mailto:liferea-devel@lists.sourceforge.net\">"
+"メーリング・リスト</a> に投稿して下さい (おそらく OPML 形式だと思いますが)。"
+"次のリリースで取り込まれることでしょう！</div>"
 
 #: src/ui_mainwindow.c:194
-#, fuzzy
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1784,27 +1775,22 @@ msgid ""
 "liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
 "liferea.sf.net\">project homepage</a>.</p>"
 msgstr ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
-"バージョン 1.1 版の機能に対するリクエストの受け付けを開始しました。<a href="
-"\"http://liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1"
-"\">こちらの Wiki をご覧になり</a>、そしてサポートしていない機能などがありまし"
-"たら、<a href=\"mailto:liferea-devel@lists.sourceforge.net\">お寄せ下さい</"
-"a>。</div><h2>Liferea へようこそ</h2><p>左側のウィンドウには配信元一覧が表示"
-"されており、新しい購読を追加したり、お好みの購読を選択してトピックを閲覧する"
-"ことが可能です。右側のウィンドウには選択した購読のヘッドライン一覧が表示され"
-"ており、選択したヘッドラインの内容を表示したり、一度に全てのヘッドラインを表"
-"示することが可能なウィンドウがあります (これらは選択可能です)。</p><h3>基本的"
-"なアクション</h3><ul><li><p><b>購読の追加</b> - 選択したフォルダに新しい購読"
-"を作成します。新しい購読を作成する場合は、配信元の URL を入力するか、URL が不"
-"明な場合は配信しているウェブサイトの URL を入力して下さい。</p></"
-"li><li><p><b>購読の更新</b> - これは選択した購読を更新します。更新する購読を"
-"すぐにチェックする場合にこの機能を必要とするかもしれません。通常は、配信元の"
-"更新間隔に応じて自動更新するだけで十分でしょう。</p></li><li><p><b>全て更新</"
-"b> - これは一度に全ての購読を更新します。こちらも通常は自動更新を利用した方が"
-"良いでしょう。</li><li><p><b>購読プロパティの編集</b> - 更新間隔、認証あるい"
-"は購読のキャッシュ・プロパティを変更したくなる時があるかもしれません。</p></"
-"li></ul><p>Liferea についてもっと知りたい場合はオンライン・ヘルプで提供してい"
-"るドュメントをお読みになるか、あるいは<a href=\"http://liferea.sf.net\">プロ"
+"<h2>Liferea へようこそ</h2><p>左側のウィンドウには配信元一覧が表示されてお"
+"り、新しい購読を追加したり、お好みの購読を選択してトピックを閲覧することが可"
+"能です。右側のウィンドウには選択した購読のヘッドライン一覧が表示されており、"
+"選択したヘッドラインの内容を表示したり、一度に全てのヘッドラインを表示するこ"
+"とが可能なウィンドウがあります (これらは選択可能です)。</p><h3>基本的なアク"
+"ション</h3><ul><li><p><b>購読の追加</b> - 選択したフォルダに新しい購読を作成"
+"します。新しい購読を作成する場合は、配信元の URL を入力するか、URL が不明な場"
+"合は配信しているウェブサイトの URL を入力して下さい。</p></li><li><p><b>購読"
+"の更新</b> - これは選択した購読を更新します。更新する購読をすぐにチェックする"
+"場合にこの機能を必要とするかもしれません。通常は、配信元の更新間隔に応じて自"
+"動更新するだけで十分でしょう。</p></li><li><p><b>全て更新</b> - これは一度に"
+"全ての購読を更新します。こちらも通常は自動更新を利用した方が良いでしょう。</"
+"li><li><p><b>購読プロパティの編集</b> - 更新間隔、認証あるいは購読のキャッ"
+"シュ・プロパティを変更したくなる時があるかもしれません。</p></li></"
+"ul><p>Liferea についてもっと知りたい場合はオンライン・ヘルプで提供している"
+"ドュメントをお読みになるか、あるいは<a href=\"http://liferea.sf.net\">プロ"
 "ジェクトのホームページ</a>にある <a href=\"http://liferea.sourceforge.net/"
 "faq.php\">FAQ</a> をご覧下さい。</p>"
 
@@ -1837,19 +1823,16 @@ msgid "/_New"
 msgstr "/新規(_N)"
 
 #: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
-#, fuzzy
 msgid "/_New/New _Subscription..."
-msgstr "/新規(_N)/新しい購読(_S)"
+msgstr "/新規(_N)/新しい購読(_S)..."
 
 #: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
-#, fuzzy
 msgid "/_New/New F_older..."
-msgstr "/新規(_N)/新しいフォルダ(_O)"
+msgstr "/新規(_N)/新しいフォルダ(_O)..."
 
 #: src/ui_popup.c:87 src/ui_popup.c:106
-#, fuzzy
 msgid "/_Properties..."
-msgstr "/プロパティ(_P)"
+msgstr "/プロパティ(_P)..."
 
 #: src/ui_popup.c:88 src/ui_popup.c:107
 msgid "/_Delete"
@@ -1860,9 +1843,8 @@ msgid "/_Update Folder"
 msgstr "/フォルダの更新(_U)"
 
 #: src/ui_popup.c:97
-#, fuzzy
 msgid "/_Rename Folder..."
-msgstr "/フォルダ名の変更(_R)"
+msgstr "/フォルダ名の変更(_R)..."
 
 #: src/ui_popup.c:98
 msgid "/_Delete Folder"
@@ -1885,9 +1867,8 @@ msgid "/_Next Unread Item"
 msgstr "/次の未読のトピック(_N)"
 
 #: src/ui_popup.c:124
-#, fuzzy
 msgid "/Launch Item In _Tab"
-msgstr "/ブラウザで開く(_L)"
+msgstr "/タブの中に開く(_T)"
 
 #: src/ui_popup.c:125
 msgid "/_Launch Item In Browser"
@@ -1906,18 +1887,16 @@ msgid "/_Copy Link Location"
 msgstr "リンク先のアドレスのコピー(_C)"
 
 #: src/ui_popup.c:136
-#, fuzzy
 msgid "/Launch Link In _Tab"
-msgstr "/ブラウザで開く(_L)"
+msgstr "/タブの中に開く(_T)"
 
 #: src/ui_popup.c:137
 msgid "/_Launch Link In Browser"
 msgstr "/ブラウザで開く(_L)"
 
 #: src/ui_popup.c:138
-#, fuzzy
 msgid "/_Subscribe..."
-msgstr "/購読(_S)"
+msgstr "/購読(_S)..."
 
 #: src/ui_popup.c:143
 msgid "/_Work Offline"
@@ -1928,9 +1907,8 @@ msgid "/_Update All"
 msgstr "/全て更新(_U)"
 
 #: src/ui_popup.c:145
-#, fuzzy
 msgid "/_Preferences..."
-msgstr "/設定(_P)"
+msgstr "/設定(_P)..."
 
 #: src/ui_popup.c:147
 msgid "/_Show Window"
@@ -1983,9 +1961,8 @@ msgid "Please do a search first!"
 msgstr "まず最初に検索を実行して下さい！"
 
 #: src/ui_tabs.c:86
-#, fuzzy
 msgid "URL"
-msgstr "URL(_U)"
+msgstr "URL"
 
 #: src/ui_tray.c:90
 #, c-format
@@ -2020,13 +1997,3 @@ msgid ""
 msgstr ""
 "GtkHTML2 ではタグ <object> をサポートしていませんので、\n"
 "HTML に挿入されているプラグイン部分は表示されないでしょう。"
-
-#~ msgid "internal error! could not get feed tree view selection!\n"
-#~ msgstr ""
-#~ "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
-
-#~ msgid "This feed's refresh interval defaults to %d seconds."
-#~ msgstr "この配信元のデフォルトの更新間隔は %d 秒です。"
-
-#~ msgid "Directories cannot be autoupdated."
-#~ msgstr "ディレクトリは自動更新できません"
