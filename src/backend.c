@@ -20,6 +20,7 @@
 #  include <config.h>
 #endif
 
+#include <gconf/gconf.h>	// FIXME
 #include <string.h>
 #include <time.h>
 #include "support.h"
@@ -820,19 +821,21 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 	GtkTreeIter	iter;
 	GtkTreeIter	*topiter = (GtkTreeIter *)value;
 	GSList		*newkeylist = NULL;
+	GConfValue	*new_value = NULL;
 	gint		tmp_type;
 	entryPtr	ep;
-	gchar		*newkey, *tmp_key;
+	gchar		*new_key, *tmp_key;
 	gchar		*newfilename, *oldfilename;
-	gboolean	valid, found, hasCacheFile;
+	gboolean	valid, wasFound, found, hasCacheFile;
 
 	g_assert(NULL != keyprefix);
 	g_assert(NULL != key);
 	g_assert(NULL != feedstore);
-//g_print("scanning keyprefix \"%s\"\n", keyprefix);
+
 	found = FALSE;
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, keyprefix);
 	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, topiter);
+	wasFound = FALSE;
 	while(valid) {
 		found = FALSE;
 		
@@ -843,8 +846,6 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 
 		if(!IS_NODE(tmp_type)) {
 			g_assert(NULL != tmp_key);
-			newkeylist = g_slist_append(newkeylist, tmp_key);
-//g_print("appending key \"%s\"\n", tmp_key);
 			if(0 == strcmp(tmp_key, (gchar *)key)) {
 				g_assert(TRUE != found);
 				found = TRUE;
@@ -852,24 +853,24 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 		}
 
 		if(found) {
+			wasFound = TRUE;
 			ep = (entryPtr)g_hash_table_lookup(feeds, (gpointer)key);
 			g_assert(NULL != ep);
-			newkey = addEntryToConfig((gchar *)keyprefix,
-						  (gchar *)getFeedProp(key, FEED_PROP_SOURCE),
-						  tmp_type);
-			newkeylist = g_slist_append(newkeylist, newkey);
-//g_print("appending new key %s\n", newkey);
+			new_key = addEntryToConfig((gchar *)keyprefix,
+				 		   (gchar *)getFeedProp(key, FEED_PROP_SOURCE),
+						   tmp_type);
+						  
 			/* rename cache file/directory */
 			/* FIXME: maybe remove these useless extensions (but this would break compatibility */
 			hasCacheFile = TRUE;
 			switch(tmp_type) {
 				case FST_OCS:
 					oldfilename = getCacheFileName(ep->keyprefix, tmp_key, "ocs");
-					newfilename = getCacheFileName(keyprefix, newkey, "ocs");
+					newfilename = getCacheFileName(keyprefix, new_key, "ocs");
 					break;
 				case FST_VFOLDER:
 					oldfilename = getCacheFileName(ep->keyprefix, tmp_key, "vfolder");
-					newfilename = getCacheFileName(keyprefix, newkey, "vfolder");
+					newfilename = getCacheFileName(keyprefix, new_key, "vfolder");
 					break;
 				default:
 					hasCacheFile = FALSE;
@@ -891,21 +892,34 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 
 			/* move key in configuration */
 			removeEntryFromConfig(ep->keyprefix, key);	/* delete old one */
-			ep->key = newkey;				/* update feed structure key */
+			ep->key = new_key;				/* update feed structure key */
 			ep->keyprefix = keyprefix;
-			g_hash_table_insert(feeds, (gpointer)newkey, (gpointer)ep);	/* update in feed list */
+			g_hash_table_insert(feeds, (gpointer)new_key, (gpointer)ep);	/* update in feed list */
 			g_hash_table_remove(feeds, (gpointer)key);
 
 			g_mutex_unlock(feeds_lock);
 			
 			/* write feed properties to new key */
-			setEntryTitleInConfig(newkey, (gchar *)getFeedProp(newkey, FEED_PROP_USERTITLE));
+			setEntryTitleInConfig(new_key, (gchar *)getFeedProp(new_key, FEED_PROP_USERTITLE));
 			if(IS_FEED(tmp_type))
-				setFeedUpdateIntervalInConfig(newkey, (gint)getFeedProp(newkey, FEED_PROP_UPDATEINTERVAL));
+				setFeedUpdateIntervalInConfig(new_key, (gint)getFeedProp(new_key, FEED_PROP_UPDATEINTERVAL));
 
 			/* update changed row contents */
-			gtk_tree_store_set(feedstore, &iter, FS_KEY, (gpointer)newkey, -1);
+			gtk_tree_store_set(feedstore, &iter, FS_KEY, (gpointer)new_key, -1);
+			
+			/* don't break because we have to iterate the whole folder to gather the new feed key list */
 		}
+
+		/* add key to new key list */
+		if(!IS_NODE(tmp_type)) {
+			new_value = gconf_value_new(GCONF_VALUE_STRING);
+			if(found)
+				gconf_value_set_string(new_value, new_key);
+			else
+				gconf_value_set_string(new_value, tmp_key);
+			newkeylist = g_slist_append(newkeylist, new_value);
+		}
+
 		g_free(tmp_key);
 		
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
@@ -913,9 +927,10 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 
 	/* if we found the new entry, we have to save the new folder
 	   contents order */
-	if(found) {
+	if(wasFound)
 		setEntryKeyList(keyprefix, newkeylist);
-	}
+
+	// FIXME: free the gconf values first
 	g_slist_free(newkeylist);
 }
 

@@ -53,7 +53,7 @@ static gchar * build_path_str(gchar *str1, gchar *str2) {
 		gconfpath = g_strdup_printf("%s/%s", PATH, str2);
 	else
 		gconfpath = g_strdup_printf("%s/%s/%s", PATH, str1, str2);
-		
+
 	return gconfpath;
 }
 
@@ -221,7 +221,8 @@ void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
 static gint compare_func(gconstpointer a, gconstpointer b) {
 	GError		*err = NULL;
 	GConfValue	*element;
-	const char	*feedkey1, *feedkey2;	
+	const char	*feedkey1, *feedkey2;
+	char		*tmp1, *tmp2;
 	gint		result, res;
 	
 	element = (GConfValue *)a;
@@ -232,13 +233,26 @@ static gint compare_func(gconstpointer a, gconstpointer b) {
 	feedkey2 = gconf_value_get_string(element);
 	is_gconf_error(err);	
 	
-	result = atoi(feedkey1) - atoi(feedkey2);
+	/* skip the keyprefixes to get the key numbers */
+	if(NULL == (tmp1 = strrchr(feedkey1, '/'))) {
+		tmp1 = (char *)feedkey1;
+	} else {
+		tmp1++;
+	}
+
+	if(NULL == (tmp2 = strrchr(feedkey2, '/'))) {
+		tmp2 = (char *)feedkey2;
+	} else {
+		tmp2++;
+	}
+
+	result = atoi(tmp1) - atoi(tmp2);
 	res = (result)?result/abs(result):0;
 
 	return res;
 }
 
-/* this method is used to get a feedkey which is not already
+/* this method is used to get a feed key which is not already
    used for an existing feed */
 gchar * getFreeEntryKey(gchar *keyprefix) {
 	GError		*err = NULL;

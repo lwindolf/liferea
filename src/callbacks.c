@@ -1424,6 +1424,7 @@ void on_feedlist_drag_begin(GtkWidget *widget, GdkDragContext  *drag_context, gp
 	drag_source_type = getFeedListSelectionType(mainwindow);
 	drag_source_key = getFeedListSelection(lookup_widget(mainwindow, "feedlist"));
 	drag_source_keyprefix = getFeedListSelectionPrefix(mainwindow);
+	g_print("dragging %s from %s ...\n", drag_source_key, drag_source_keyprefix);
 }
 
 gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, gint x, gint y, guint time, gpointer user_data) {
