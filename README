@@ -1,29 +1,33 @@
-This documentation was last updated for Liferea version 0.4.0.
+This documentation was last updated for Liferea version 0.4.5.
 
 Installation
 ============
 
-Debian:		You have two choices: either download a package
-		from the sourceforge project page (these packages
-		are built by Joern Seemann) or you use the installation
-		sources provided by Rex Tsai. To do so add the following 
-		lines to your /etc/apt/sources.list:
-		
-			deb http://kalug.linux.org.tw/~chihchun/debian unstable liferea
-			deb-src http://kalug.linux.org.tw/~chihchun/debian unstable liferea		
-			
-		All these Debian packages are Woody packages. As far as
-		I know there are still no Sarge packages.	
+To install Liferea you can either get a package for your 
+Linux distribution or try to compile and install Liferea
+from the Source Tarball. In the following you will find
+short hints for several platforms. See below to find
+how to compile the tarball.
 
-RedHat:		Please ensure you have a libxml2 version
-		at least 2.5.10 or you will experience nasty
+Debian:		Beginning with version 0.4.3 there are officially
+		build packages maintained by Christophe Barbe.
+
+RedHat/		Please ensure you have a libxml2 version
+Fedora:		at least 2.5.10 or you will experience nasty
 		segfaults. You can download RPM packages
 		from the sourceforge project page. If you
 		have dependency problems try the "--nodeps"
 		option.
 		
-SuSE:		You can download RPM packages built on SuSE 8.1
-		from the sourceforge project page.
+		You can download Fedora packages maintained by
+		Phillip Compton from
+		
+		http://download.fedora.us/fedora/redhat/0.95/i386/RPMS.testing
+		
+SuSE:		You can download RPM packages built on SuSE 8.1/8.2
+		for all versions until 0.4.3 from the sourceforge 
+		project page. From 0.4.4 I switch to Debian so
+		I wont build any RPMs anymore. Maintainer needed!
 
 Gentoo:		There is an ebuild available at:
 
@@ -32,6 +36,23 @@ Gentoo:		There is an ebuild available at:
 FreeBSD:	There are Liferea packages (built by Hye-Shik Chang) at
 		
 		http://www.freshports.org/net/liferea/
+	
+
+Compiling from Source
+=====================
+		
+If you want you can compile Liferea. Download the tarball from 
+the SourcForge project page and extract with: 
+
+   tar zxvf liferea-0.3.8.tar.gz 
+
+Of course you should adjust the filename. After unpacking 
+run the standard autotools commands: 
+
+   ./configure
+   make
+   make install		
+
 
 Upgrading to newer versions
 ===========================
@@ -73,7 +94,7 @@ programmer, so I would appreciate any help!
 Known Problems
 ==============
 
-Please read the help feed (http://liferea.sf.net/help040.rdf) 
+Please read the help feed (http://liferea.sf.net/help045.rdf) 
 for known problems! If you don't find your problem please
 make a report (forum, bugs...) on the SourceForge project
 page (http://liferea.sf.net).
