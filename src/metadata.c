@@ -25,6 +25,7 @@
 #include "metadata.h"
 #include "common.h"
 #include "ns_slash.h"
+#include "debug.h"
 
 /* HTML definitions used for standard metadata rendering */
 #define	IMG_START	"<img class=\"feed\" src=\""
@@ -218,27 +219,40 @@ struct str_attrib {
 static void attribs_render_str(gpointer data, struct displayset *displayset, gpointer user_data) {
 	struct str_attrib *props = (struct str_attrib*)user_data;
 	gchar *str;
-	switch (props->pos) {
-	case POS_HEADTABLE:
-		str = g_strdup_printf(HEAD_LINE, props->prompt, (gchar*)data);;
-		addToHTMLBufferFast(&(displayset->headtable), str);
-		g_free(str);
-		break;
-	case POS_HEAD:
-		addToHTMLBufferFast(&(displayset->head), str);
-		break;
-	case POS_BODY:
-		addToHTMLBufferFast(&(displayset->body), str);
-		break;
-	case POS_FOOTTABLE:
-		FEED_FOOT_WRITE(displayset->foottable, props->prompt, (gchar*)data);
-		break;
+	
+	switch(props->pos) {
+		case POS_HEADTABLE:
+			str = g_strdup_printf(HEAD_LINE, props->prompt, (gchar*)data);;
+			addToHTMLBufferFast(&(displayset->headtable), str);
+			g_free(str);
+			break;
+		case POS_HEAD:
+			addToHTMLBufferFast(&(displayset->head), str);
+			break;
+		case POS_BODY:
+			addToHTMLBufferFast(&(displayset->body), str);
+			break;
+		case POS_FOOTTABLE:
+			FEED_FOOT_WRITE(displayset->foottable, props->prompt, (gchar*)data);
+			break;
 	}
 }
 
 static void attribs_render_image(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar *tmp = g_strdup_printf("<p>" IMG_START "%s" IMG_END "</p>", (gchar*)data);
-	addToHTMLBufferFast(&(displayset->body), tmp);
+	gchar *tmp;
+	
+	tmp = g_strdup_printf("<p>" IMG_START "%s" IMG_END "</p>", (gchar*)data);	
+	switch(GPOINTER_TO_INT(user_data)) {
+		case POS_HEAD:
+			addToHTMLBufferFast(&(displayset->head), tmp);
+			break;
+		case POS_BODY:
+			addToHTMLBufferFast(&(displayset->body), tmp);
+			break;
+		default:
+			debug0(DEBUG_GUI, "internal error: invalid rendering position!");
+			break;
+	}	
 	g_free(tmp);
 }
 
@@ -299,6 +313,7 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "webmaster", _("webmaster"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "category", _("category"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generator"));
+	metadata_register_renderer("imageUrl", attribs_render_image, GINT_TO_POINTER(POS_HEAD));
 	metadata_register_renderer("textInput", attribs_render_foot_text, NULL);
 	metadata_register_renderer("commentsUri", attribs_render_comments_uri, NULL);
 	metadata_register_renderer("enclosure", attribs_render_enclosure, NULL);
@@ -327,7 +342,7 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "coverage", _("coverage"));
 	
 	/* types for freshmeat */
-	metadata_register_renderer("fmScreenshot", attribs_render_image, NULL);
+	metadata_register_renderer("fmScreenshot", attribs_render_image, GINT_TO_POINTER(POS_BODY));
 
 	/* types for slash */
 	metadata_register_renderer("slash", ns_slash_render, NULL);	 /* This one should only be set, not appended */
