@@ -408,8 +408,7 @@ g_print("feed_load for %s\n", feed_get_source(fp));
 			}
 
 			if(fp->description == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
-				g_free(fp->description);
-				fp->description = g_strdup(tmp);
+				feed_set_description(fp, tmp);
 				
 			} else if(fp->title == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
 				feed_set_title(fp, tmp);
