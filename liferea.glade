@@ -509,7 +509,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkCheckMenuItem" id="toggle_condensed_view1">
+		    <widget class="GtkCheckMenuItem" id="toggle_condensed_view">
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">Toggle _Condensed View</property>
 		      <property name="use_underline">True</property>

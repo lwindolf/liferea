@@ -457,7 +457,7 @@ void on_popup_delete_selected(void) {
 		setSelectedFeed(NULL, "");
 
 		clearItemList();
-		clearHTMLView();
+		ui_html_view_clear();
 		checkForEmptyFolders();
 	} else {
 		showErrorBox(_("It seems like there is no selected feed entry!"));

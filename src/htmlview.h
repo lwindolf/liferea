@@ -106,36 +106,36 @@ struct browserModule {
 };
 
 /* function to load the module specified by libname */
-void	initHTMLViewModule(void);
+void	ui_html_view_init(void);
 
 /* creates the HTML widget */
-void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
+void	ui_html_view_setup(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 
 /* loads a emtpy HTML page */
-void	clearHTMLView(void);
+void	ui_html_view_clear(void);
 
 /* function to select either the single item view (3 pane mode)
    or the item list view (2 pane mode) */
-void	setHTMLViewMode(gboolean threePane);
+void	ui_html_view_set_mode(gboolean threePane);
 
 /* functions to output HTML to the selected HTML widget */
-void	startHTML(gchar **buffer, gboolean padded);
+void	ui_html_view_start_output(gchar **buffer, gboolean padded);
 
-void	writeHTML(gchar *string);
+void	ui_html_view_write(gchar *string);
 
-void	finishHTML(gchar **buffer);
+void	ui_html_view_finish_output(gchar **buffer);
 
 /* launches the specified URL */
-void launchURL(gchar *url);
+void	ui_html_view_launch_URL(gchar *url);
 
 /* adds a differences diff to the actual zoom level */
-void changeZoomLevel(gfloat diff);
+void	ui_html_view_change_zoom(gfloat diff);
 
 /* returns the currently set zoom level */
-gfloat getZoomLevel(void);
+gfloat	ui_html_view_get_zoom(void);
 
 /* Returns the currently selected URL string. The string
    must be freed by the caller. */
-gchar *	getSelectedURL(void);
+gchar *	ui_html_view_get_selected_URL(void);
 
 #endif

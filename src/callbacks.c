@@ -105,15 +105,19 @@ void initGUI(void) {
 	if(0 != getNumericConfValue(LAST_HPANE_POS))
 		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
 
-	switchPaneMode(!getBooleanConfValue(LAST_ITEMLIST_MODE));
-	initHTMLViewModule();
-	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
-			 	   lookup_widget(mainwindow, "itemlistview"),
-				   getNumericConfValue(LAST_ZOOMLEVEL));
-	setHTMLViewMode(itemlist_mode);
-	
+	/* order important !!! */
 	setupFeedList(lookup_widget(mainwindow, "feedlist"));
 	initItemList(lookup_widget(mainwindow, "Itemlist"));
+
+	ui_html_view_init();
+	ui_html_view_setup(mainwindow, lookup_widget(mainwindow, "itemview"),
+			   lookup_widget(mainwindow, "itemlistview"),
+			   getNumericConfValue(LAST_ZOOMLEVEL));
+
+	if(getBooleanConfValue(LAST_ITEMLIST_MODE))
+		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
+
+	ui_html_view_set_mode(itemlist_mode);
 
 	ui_mainwindow_update_toolbar();
 	ui_mainwindow_update_menubar();
@@ -161,8 +165,8 @@ void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data) { on_next_unread_item_activate(NULL, NULL); }
 
-void on_popup_zoomin_selected(void) { changeZoomLevel(0.2); }
-void on_popup_zoomout_selected(void) { changeZoomLevel(-0.2); }
+void on_popup_zoomin_selected(void) { ui_html_view_change_zoom(0.2); }
+void on_popup_zoomout_selected(void) { ui_html_view_change_zoom(-0.2); }
 
 void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 	GtkClipboard *clipboard;
@@ -366,7 +370,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	
 	/* save itemlist properties */
 	setBooleanConfValue(LAST_ITEMLIST_MODE, !itemlist_mode);
-	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100*getZoomLevel()));
+	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100*ui_html_view_get_zoom()));
 		
 	gtk_main_quit();
 	return FALSE;

@@ -63,6 +63,8 @@ static gpointer methods[MAXFUNCTIONS];
 
 GSList * availableBrowserModules = NULL;
 
+extern GtkWidget *mainwindow;
+
 /* Method which tries to load the functions listed in the array
    symbols from the specified module name libname.  If testmode
    is true no error messages are issued. The function returns
@@ -106,7 +108,7 @@ key /apps/liferea/browser-module!\n\n"));
 }
 
 /* function to load the module specified by module */
-void	initHTMLViewModule(void) {
+void ui_html_view_init(void) {
 	gboolean		success = FALSE;
 	gint			filenamelen;
 	gchar			*filename;
@@ -179,13 +181,23 @@ void	initHTMLViewModule(void) {
 	}
 }
 
-void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
+void ui_html_view_setup(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 
 	((setupHTMLViewsFunc)methods[SETUPHTMLVIEWS])(mainwindow, pane, pane2, initialZoomLevel); 
 }
 
-void setHTMLViewMode(gboolean threePane) {
+void ui_html_view_set_mode(gboolean threePane) {
+	GtkWidget	*w1;
 
+	/* switch between list and condensed notebook tabs */
+	w1 = lookup_widget(mainwindow, "itemtabs");
+	g_assert(NULL != w1);
+	if(TRUE == threePane)
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 0);
+	else 
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 1);
+
+	/* notify browser implementation */
 	((setHTMLViewModeFunc)methods[SETHTMLVIEWMODE])(threePane); 
 }
 
@@ -208,7 +220,7 @@ static void writeStyleSheetLinks(gchar **buffer) {
 	g_free(styleSheetFile);
 }
 
-void startHTML(gchar **buffer, gboolean padded) { 
+void ui_html_view_start_output(gchar **buffer, gboolean padded) { 
 	gchar	*encoding;
 
 	addToHTMLBuffer(buffer, HTML_START);
@@ -225,7 +237,7 @@ void startHTML(gchar **buffer, gboolean padded) {
 		addToHTMLBuffer(buffer, HTML_HEAD_END2);	
 }
 
-void writeHTML(gchar *string) { 
+void ui_html_view_write(gchar *string) { 
 
 	if(!g_utf8_validate(string, -1, NULL))
 		g_warning("Invalid encoded UTF8 string passed to HTML widget!");
@@ -236,20 +248,20 @@ void writeHTML(gchar *string) {
 	((writeHTMLFunc)methods[WRITEHTML])(g_strdup_printf("%s                ",string));
 }
 
-void finishHTML(gchar **buffer) {
+void ui_html_view_finish_output(gchar **buffer) {
 
 	addToHTMLBuffer(buffer, HTML_END); 
 }
 
-void clearHTMLView(void) {
+void ui_html_view_clear(void) {
 	gchar	*buffer = NULL;
 
-	startHTML(&buffer, FALSE);
-	finishHTML(&buffer); 
-	writeHTML(buffer);
+	ui_html_view_start_output(&buffer, FALSE);
+	ui_html_view_finish_output(&buffer); 
+	ui_html_view_write(buffer);
 }
 
-void launchURL(gchar *url) {
+void ui_html_view_launch_URL(gchar *url) {
 
 	if(NULL != url) {		
 		((launchURLFunc)methods[LAUNCHURL])(url); 
@@ -258,12 +270,12 @@ void launchURL(gchar *url) {
 	}
 }
 
-void changeZoomLevel(gfloat diff) {
+void ui_html_view_change_zoom(gfloat diff) {
 
 	((changeZoomLevelFunc)methods[CHANGEZOOMLEVEL])(diff); 
 }
 
-gfloat getZoomLevel(void) {
+gfloat ui_html_view_get_zoom(void) {
 
 	return ((getZoomLevelFunc)methods[GETZOOMLEVEL])(); 
 }

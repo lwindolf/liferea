@@ -1,4 +1,9 @@
 /*
+   GtkHTML browser module implementation for Liferea
+
+   Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>  
+   Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
+   
    Note large portions of this code (callbacks and html widget
    preparation) were taken from test/browser-window.c of
    libgtkhtml-2.2.0 with the following copyrights:
@@ -7,11 +12,6 @@
    Copyright (C) 2000 Jonas Borgström <jonas@codefactory.se>
    Copyright (C) 2000 Anders Carlsson <andersca@codefactory.se>
    
-   The rest (the HTML creation) is 
-   
-   Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>  
-   Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
-
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
@@ -71,7 +71,7 @@ static void on_submit (HtmlDocument *document, const gchar *action, const gchar 
 static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data);
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 static void kill_old_connections (HtmlDocument *doc);
-
+void changeZoomLevel(gfloat diff);
 
 gchar * getModuleName(void) {
 	return g_strdup(_("GtkHTML"));
@@ -81,7 +81,6 @@ gchar * getModuleName(void) {
 void writeHTML(gchar *string) {
 
 	/* HTML widget can be used only from GTK thread */	
-	
 	if(gnome_vfs_is_primary_thread()) {
 		kill_old_connections(doc);
 
@@ -156,12 +155,11 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, g
 
 	itemView = pane1;
 	itemListView = pane2;
-	setHTMLViewMode(TRUE);
-	if(0 != initialZoomLevel) {
+	setHTMLViewMode(FALSE);
+	if(0 != initialZoomLevel)
 		changeZoomLevel(((gfloat)initialZoomLevel)/100 - zoomLevel);
-	}
 
-	clearHTMLView();	
+	ui_html_view_clear();	
 }
 
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {
@@ -401,10 +399,7 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
 }
 
 /* launches the specified URL */
-void launchURL(gchar *url) {
-
-	link_clicked(NULL, url, NULL);
-}
+void launchURL(gchar *url) { link_clicked(NULL, url, NULL); }
 
 /* adds a differences diff to the actual zoom level */
 void changeZoomLevel(gfloat diff) {
@@ -414,7 +409,4 @@ void changeZoomLevel(gfloat diff) {
 }
 
 /* returns the currently set zoom level */
-gfloat getZoomLevel(void) {
-
-	return zoomLevel;
-}
+gfloat getZoomLevel(void) { return zoomLevel; }

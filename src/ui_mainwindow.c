@@ -36,7 +36,7 @@
 
 GtkWidget 	*mainwindow;
 
-gboolean	itemlist_mode;		/* TRUE means three pane, FALSE means two panes */
+gboolean	itemlist_mode = TRUE;		/* TRUE means three pane, FALSE means two panes */
 
 void ui_mainwindow_update_toolbar(void) {
 	GtkWidget *widget;
@@ -64,20 +64,10 @@ void ui_mainwindow_update_menubar(void) {
 	}
 }
 
-void switchPaneMode(gboolean new_mode) {
-	GtkWidget	*w1;
-	
-	w1 = lookup_widget(mainwindow, "itemtabs");
-	if(TRUE == (itemlist_mode = new_mode))
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 0);
-	else 
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 1);
-}
-
 static void toggle_condensed_view(void) {
 	
-	switchPaneMode(!itemlist_mode);
-	setHTMLViewMode(itemlist_mode);
+	itemlist_mode = !itemlist_mode;
+	ui_html_view_set_mode(itemlist_mode);
 	displayItemList();
 }
 

@@ -207,7 +207,6 @@ void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
 }
 
 void on_browsermodule_changed(GtkObject *object, gchar *libname) {
-g_print("setting %s\n", libname);
 	setStringConfValue(BROWSER_MODULE, libname);
 }
 

@@ -84,7 +84,7 @@ create_mainwindow (void)
   GtkWidget *zoom_out1;
   GtkWidget *image1399;
   GtkWidget *trennlinie3;
-  GtkWidget *toggle_condensed_view1;
+  GtkWidget *toggle_condensed_view;
   GtkWidget *search1;
   GtkWidget *search1_menu;
   GtkWidget *toggle_search_box1;
@@ -387,9 +387,9 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem3_menu), trennlinie3);
   gtk_widget_set_sensitive (trennlinie3, FALSE);
 
-  toggle_condensed_view1 = gtk_check_menu_item_new_with_mnemonic (_("Toggle _Condensed View"));
-  gtk_widget_show (toggle_condensed_view1);
-  gtk_container_add (GTK_CONTAINER (menuitem3_menu), toggle_condensed_view1);
+  toggle_condensed_view = gtk_check_menu_item_new_with_mnemonic (_("Toggle _Condensed View"));
+  gtk_widget_show (toggle_condensed_view);
+  gtk_container_add (GTK_CONTAINER (menuitem3_menu), toggle_condensed_view);
 
   search1 = gtk_menu_item_new_with_mnemonic (_("Search"));
   gtk_widget_show (search1);
@@ -671,7 +671,7 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) zoom_out1, "activate",
                     G_CALLBACK (on_popup_zoomout_selected),
                     NULL);
-  g_signal_connect ((gpointer) toggle_condensed_view1, "activate",
+  g_signal_connect ((gpointer) toggle_condensed_view, "activate",
                     G_CALLBACK (on_toggle_condensed_view_activate),
                     NULL);
   g_signal_connect ((gpointer) toggle_search_box1, "activate",
@@ -782,7 +782,7 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, zoom_out1, "zoom_out1");
   GLADE_HOOKUP_OBJECT (mainwindow, image1399, "image1399");
   GLADE_HOOKUP_OBJECT (mainwindow, trennlinie3, "trennlinie3");
-  GLADE_HOOKUP_OBJECT (mainwindow, toggle_condensed_view1, "toggle_condensed_view1");
+  GLADE_HOOKUP_OBJECT (mainwindow, toggle_condensed_view, "toggle_condensed_view");
   GLADE_HOOKUP_OBJECT (mainwindow, search1, "search1");
   GLADE_HOOKUP_OBJECT (mainwindow, search1_menu, "search1_menu");
   GLADE_HOOKUP_OBJECT (mainwindow, toggle_search_box1, "toggle_search_box1");

@@ -96,10 +96,11 @@ static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
 }
 
 void clearItemList(void) {
+
 	displayed_fp = NULL;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
-	clearHTMLView();
+	ui_html_view_clear();
 }
 
 /* sort function for the item list date column */
@@ -201,8 +202,6 @@ void initItemList(GtkWidget *itemlist) {
 	
 	g_assert(mainwindow != NULL);
 
-	switchPaneMode(!getBooleanConfValue(LAST_ITEMLIST_MODE));
-	
 	itemstore = getItemStore();
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist), GTK_TREE_MODEL(itemstore));
@@ -282,7 +281,7 @@ void displayItemList(void) {
 	gchar               *tmp = NULL;
 
 	g_assert(NULL != mainwindow);
-	startHTML(&buffer, itemlist_mode);
+	ui_html_view_start_output(&buffer, itemlist_mode);
 	if(!itemlist_mode) {
 		/* two pane mode */
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
@@ -331,8 +330,8 @@ void displayItemList(void) {
 		/* no scrolling reset, because this code should only be
 		   triggered for redraw purposes! */
 	}
-	finishHTML(&buffer);
-	writeHTML(buffer);
+	ui_html_view_finish_output(&buffer);
+	ui_html_view_write(buffer);
 }
 
 void loadItemList(feedPtr fp, gchar *searchstring) {
@@ -347,7 +346,7 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 		return;
 	}
 
-	clearItemList();
+	ui_html_view_clear();
 	displayed_fp = fp;
 	itemlist = getFeedItemList(fp);
 	while(NULL != itemlist) {
@@ -519,10 +518,8 @@ void on_toggle_item_flag(void) {
 void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
 
-	ip = ui_itemlist_get_selected();
-
-	if(ip)
-		launchURL(getItemSource(ip));
+	if(ip = ui_itemlist_get_selected())
+		ui_html_view_launch_URL(getItemSource(ip));
 	else
 		print_status(g_strdup(_("No item has been selected!")));
 }
@@ -540,8 +537,9 @@ void on_toggle_unread_status(void) {
 
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	feedPtr fp = displayed_fp;
+	
 	if(fp) {
-		clearItemList();		/* clear tree view */
+		clearItemList();	/* clear tree view */
 		clearFeedItemList(fp);	/* delete items */
 	} else {
 		showErrorBox(_("You have to select a feed to delete its items!"));
