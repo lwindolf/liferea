@@ -22,6 +22,8 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
+AC_CHECK_FUNCS(strsep)
+
 dnl libcurl support
 AC_MSG_CHECKING([libcurl])
 dnl if curl-config --libs > /dev/null 2>&1; then
@@ -143,7 +145,7 @@ pkg_modules="	gtk+-2.0 >= 2.0.0
 		gmodule-2.0 >= 2.0.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
-PACKAGE_CFLAGS="-Wall $PACKAGE_CFLAGS"
+dnl PACKAGE_CFLAGS="-Wall $PACKAGE_CFLAGS" <--- This is bad for some compilers
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 

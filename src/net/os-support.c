@@ -30,40 +30,7 @@
 
 #include <string.h>
 #include "os-support.h"
-
-/******************************************************************************
- * This is a replacement for strsep which is not portable (missing on Solaris).
- *
- * http://www.winehq.com/hypermail/wine-patches/2001/11/0024.html
- *
- * The following function is written by François Gouget
- */
-
-#ifdef SUN
-char* strsep(char** str, const char* delims)
-{
-    char* token;
-
-    if (*str==NULL) {
-        /* No more tokens */
-        return NULL;
-    }
-
-    token=*str;
-    while (**str!='\0') {
-        if (strchr(delims,**str)!=NULL) {
-            **str='\0';
-            (*str)++;
-            return token;
-        }
-        (*str)++;
-    }
-    /* There is no other token */
-    *str=NULL;
-   return token;
-}
-#endif
-
+#include "../common.h" /* provides strsep */
 
 /* Private malloc wrapper. Aborts program execution if malloc fails. */
 void * s_malloc (size_t size) {

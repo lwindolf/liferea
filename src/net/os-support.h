@@ -27,10 +27,6 @@
 
 #include "compat.h"
 
-#ifdef SUN
-char* strsep(char** str, const char* delims);
-#endif
-
 void * s_malloc (size_t size);
 
 #endif

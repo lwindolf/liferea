@@ -20,6 +20,7 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
+#include <config.h>
 #include <time.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -99,5 +100,9 @@ gchar * encode_uri(gchar *uri_string);
  * @param title		title string be be filtered
  */
 gchar * filter_title(gchar * title);
+
+#ifndef HAVE_STRSEP
+char *strsep (char **stringp, const char *delim);
+#endif
 
 #endif

@@ -95,7 +95,7 @@ void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
 		return;
 		
 	if(NULL == (tmp = (*fp)(request->obj)))
-		return
+		return;
 		
 	addToHTMLBuffer(request->buffer, tmp);
 }
