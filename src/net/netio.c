@@ -759,11 +759,13 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		
 	/* Close connection. */
 	fclose (stream);
-	
+
+	len = length;
+
 	/* If inflate==1 we need to decompress the content.. */
 	if (inflate == 1) {
 		/* gzipinflate */
-		inflatedbody = gzip_uncompress (body, length, NULL);
+		inflatedbody = gzip_uncompress (body, length, &len);
 		
 		if (inflatedbody == NULL) {
 			free (body);
@@ -777,7 +779,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		free (inflatedbody);
 	}
 	
-	cur_ptr->contentlength = strlen (body);
+	cur_ptr->contentlength = len;
 	
 	return body;
 }
