@@ -21,6 +21,7 @@
 #include "ns_blogChannel.h"
 #include "common.h"
 #include "update.h"
+#include "ui_queue.h"
 #include <string.h>
 
 #define BLOGROLL_START		"<p><div class=\"blogchanneltitle\"><b>BlogRoll</b></div></p>"
@@ -92,6 +93,7 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 
 	g_assert(NULL != requestData);
 	
+	ui_lock();
 	/* the following code somewhat duplicates opml.c */	
 	if(request->data != NULL) {
 		while(1) {
@@ -170,6 +172,7 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 		feed_unload(requestData->fp);
 	}
 	g_free(requestData);
+	ui_unlock();
 }
 
 static void getOutlineList(struct requestData *requestData, gchar *url) {
