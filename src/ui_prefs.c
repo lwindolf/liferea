@@ -34,9 +34,18 @@
 #include "ui_itemlist.h"
 #include "ui_prefs.h"
 #include "ui_mainwindow.h"
+#include "ui_enclosure.h"
 #include "ui_tray.h"
 #include "callbacks.h"
 #include "favicon.h"
+
+/* file type tree store column ids */
+enum fts_columns {
+	FTS_TYPE,	/* file type name */
+	FTS_CMD,	/* file cmd name */
+	FTS_PTR,	/* pointer to config entry */
+	FTS_LEN
+};
 
 extern GSList *availableBrowserModules;
 
@@ -49,6 +58,19 @@ static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user
 static void updatefavicon_cb(nodePtr ptr);
 static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data);
 static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
+static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data);
+
+struct enclosure_download_tool {
+	gchar	*name;
+	gchar	*cmd;
+};
+
+/* tool commands need to take an absolute file path as first %s and an URL as second %s */
+struct enclosure_download_tool enclosure_download_tools[] = {
+	{ "wget",	"wget -q -o %s %s" },
+	{ "curl",	"curl -s -o %s %s" },
+	{ NULL,		NULL}
+};
 
 struct browser {
 	gchar *id; /**< Unique ID used in storing the prefs */
@@ -93,7 +115,7 @@ struct browser browsers[] = {
 	{NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL}
 };
 
-gchar *prefs_get_browser_remotecmd() {
+gchar * prefs_get_browser_remotecmd(void) {
 	gchar *ret = NULL;
 	gchar *libname;
 	gint place = getNumericConfValue(BROWSER_PLACE);
@@ -124,7 +146,7 @@ gchar *prefs_get_browser_remotecmd() {
 	return ret;
 }
 
-gchar *prefs_get_browser_cmd() {
+gchar * prefs_get_browser_cmd(void) {
 	gchar *ret = NULL;
 	gchar *libname;
 	gint place = getNumericConfValue(BROWSER_PLACE);
@@ -159,89 +181,95 @@ gchar *prefs_get_browser_cmd() {
 	return ret;
 }
 
+gchar * prefs_get_download_cmd(void) {
+	struct enclosure_download_tool	*edt = enclosure_download_tools;
+
+	edt += getNumericConfValue(ENCLOSURE_DOWNLOAD_TOOL);
+	// FIXME: array boundary check
+	return edt->cmd;
+}
 
 /*------------------------------------------------------------------------------*/
 /* preferences dialog callbacks 						*/
 /*------------------------------------------------------------------------------*/
 
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*widget, *entry;
-	GtkAdjustment	*itemCount;
-	GSList		*list;
-	gchar		*widgetname, *proxyport, *libname;
-	gboolean	enabled, enabled2;
-	int		tmp, i;
-	static int	manual;
-	struct browser	*iter;
+	GtkWidget		*widget, *entry, *menu;
+	GtkAdjustment		*itemCount;
+	GtkTreeIter		*treeiter;
+	GtkTreeStore		*treestore;
+	GtkTreeViewColumn 	*column;
+	GSList			*list;
+	gchar			*widgetname, *proxyport, *libname;
+	gboolean		enabled, enabled2;
+	int			tmp, i;
+	static int		manual;
+	struct browser			*iter;
+	struct enclosure_download_tool	*edtool;
 	
-	if(NULL == prefdialog || !G_IS_OBJECT(prefdialog)) {
-		GtkWidget *menu;
-		prefdialog = create_prefdialog ();		
-		
-		/* Set up browser selection popup */
-		menu = gtk_menu_new();
-		for(i=0, iter = browsers; iter->id != NULL; iter++, i++) {
-			entry = gtk_menu_item_new_with_label(iter->display);
-			gtk_widget_show(entry);
-			gtk_container_add(GTK_CONTAINER(menu), entry);
-			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
-		}
-		manual = i;
-		/* This allows the user to choose their own browser by typing in the command. */
-		entry = gtk_menu_item_new_with_label(_("Manual"));
+	prefdialog = create_prefdialog();		
+
+	/* Set up browser selection popup */
+	menu = gtk_menu_new();
+	for(i=0, iter = browsers; iter->id != NULL; iter++, i++) {
+		entry = gtk_menu_item_new_with_label(iter->display);
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
-		
-		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), menu);
-
-		/* Create location menu */
-		menu = gtk_menu_new();
-
-		entry = gtk_menu_item_new_with_label(_("Browser default"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(0));
-
-		entry = gtk_menu_item_new_with_label(_("Existing window"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(1));
-		
-		entry = gtk_menu_item_new_with_label(_("New window"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(2));
-		
-		entry = gtk_menu_item_new_with_label(_("New tab"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(3));
-		
-		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), menu);
-		
-		/* Create the startup feed handling menu */
-		menu = gtk_menu_new();
-		
-		entry = gtk_menu_item_new_with_label(_("Update only feeds scheduled for updates"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(0));
-		
-		entry = gtk_menu_item_new_with_label(_("Update all feeds"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(1));
-		
-		entry = gtk_menu_item_new_with_label(_("Reset feed update timers (Update no feeds)"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(2));
-		
-		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), menu);
-		
 	}
-	g_assert(NULL != prefdialog);
+	manual = i;
+	/* This allows the user to choose their own browser by typing in the command. */
+	entry = gtk_menu_item_new_with_label(_("Manual"));
+	gtk_widget_show(entry);
+	gtk_container_add(GTK_CONTAINER(menu), entry);
+	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
+
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), menu);
+
+	/* Create location menu */
+	menu = gtk_menu_new();
+
+	entry = gtk_menu_item_new_with_label(_("Browser default"));
+	gtk_widget_show(entry);
+	gtk_container_add(GTK_CONTAINER(menu), entry);
+	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(0));
+
+	entry = gtk_menu_item_new_with_label(_("Existing window"));
+	gtk_widget_show(entry);
+	gtk_container_add(GTK_CONTAINER(menu), entry);
+	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(1));
+
+	entry = gtk_menu_item_new_with_label(_("New window"));
+	gtk_widget_show(entry);
+	gtk_container_add(GTK_CONTAINER(menu), entry);
+	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(2));
+
+	entry = gtk_menu_item_new_with_label(_("New tab"));
+	gtk_widget_show(entry);
+	gtk_container_add(GTK_CONTAINER(menu), entry);
+	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(3));
+
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), menu);
+
+	/* Create the startup feed handling menu */
+	menu = gtk_menu_new();
+
+	entry = gtk_menu_item_new_with_label(_("Update only feeds scheduled for updates"));
+	gtk_widget_show(entry);
+	gtk_container_add(GTK_CONTAINER(menu), entry);
+	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(0));
+
+	entry = gtk_menu_item_new_with_label(_("Update all feeds"));
+	gtk_widget_show(entry);
+	gtk_container_add(GTK_CONTAINER(menu), entry);
+	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(1));
+
+	entry = gtk_menu_item_new_with_label(_("Reset feed update timers (Update no feeds)"));
+	gtk_widget_show(entry);
+	gtk_container_add(GTK_CONTAINER(menu), entry);
+	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(2));
+
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), menu);
 	
 	/* ================== panel 1 "feeds" ==================== */
 	
@@ -442,6 +470,47 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "enableproxybtn")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
 	gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "useProxyAuth")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
 	
+	/* ================= panel 6 "enclosures" ======================== */
+	
+	/* menu for download tool */
+	menu = gtk_menu_new();
+	i = 0; edtool = enclosure_download_tools;
+	while(edtool->name != NULL) {		
+		entry = gtk_menu_item_new_with_label(edtool->name);
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_enc_download_tool_changed), GINT_TO_POINTER(i));
+		edtool++;
+		i++;
+	}		
+	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "enc_download_tool_option_btn")), menu);
+	
+	/* set up list of configured enclosure types */
+	treestore = gtk_tree_store_new(FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
+	list = ui_enclosure_get_types();
+	while(NULL != list) {
+		treeiter = g_new0(GtkTreeIter, 1);
+		gtk_tree_store_append(treestore, treeiter, NULL);
+		gtk_tree_store_set(treestore, treeiter,
+		                   FTS_TYPE, (NULL != ((encTypePtr)(list->data))->mime)?((encTypePtr)(list->data))->mime:((encTypePtr)(list->data))->extension, 
+		                   FTS_CMD, ((encTypePtr)(list->data))->cmd,
+		                   FTS_PTR, list->data, 
+				   -1);
+		list = g_slist_next(list);
+	}
+	
+	widget = lookup_widget(prefdialog, "enc_actions_view");
+	gtk_tree_view_set_model(GTK_TREE_VIEW(widget), GTK_TREE_MODEL(treestore));
+
+	column = gtk_tree_view_column_new_with_attributes(_("Type"), gtk_cell_renderer_text_new(), "text", FTS_TYPE, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
+	gtk_tree_view_column_set_sort_column_id(column, FTS_TYPE);
+	column = gtk_tree_view_column_new_with_attributes(_("Program"), gtk_cell_renderer_text_new(), "text", FTS_CMD, NULL);
+	gtk_tree_view_column_set_sort_column_id(column, FTS_CMD);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
+	
+	gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
+	
 	gtk_widget_show(prefdialog);
 }
 
@@ -628,3 +697,38 @@ void on_browsekey_alt_space_activate(GtkMenuItem *menuitem, gpointer user_data) 
 
 	setNumericConfValue(BROWSE_KEY_SETTING, 2);
 }
+
+static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data) {
+
+	setNumericConfValue(ENCLOSURE_DOWNLOAD_TOOL, GPOINTER_TO_INT(user_data));
+}
+
+void on_enc_action_change_btn_clicked(GtkButton *button, gpointer user_data) {
+	GtkTreeModel		*model;
+	GtkTreeSelection	*selection;
+	GtkTreeIter		iter;
+	gpointer		type;
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(prefdialog, "enc_actions_view")));
+	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
+		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
+		ui_enclosure_change_type(type);
+		gtk_tree_store_set(GTK_TREE_STORE(model), &iter, 
+		                   FTS_CMD, ((encTypePtr)type)->cmd, -1);
+	}
+}
+
+void on_enc_action_remove_btn_clicked(GtkButton *button, gpointer user_data) {
+	GtkTreeModel		*model;
+	GtkTreeSelection	*selection;
+	GtkTreeIter		iter;
+	gpointer		type;
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(prefdialog, "enc_actions_view")));
+	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
+		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
+		gtk_tree_store_remove(GTK_TREE_STORE(model), &iter);
+		ui_enclosure_remove_type(type);
+	}
+}
+

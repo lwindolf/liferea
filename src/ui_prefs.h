@@ -25,8 +25,9 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
-gchar *prefs_get_browser_remotecmd();
-gchar *prefs_get_browser_cmd();
+gchar * prefs_get_browser_remotecmd();
+gchar * prefs_get_browser_cmd();
+gchar * prefs_get_download_cmd();
 
 void 
 on_prefbtn_clicked                     (GtkButton       *button,
@@ -112,5 +113,15 @@ on_disablejavascript_toggled           (GtkToggleButton *togglebutton,
 void
 on_folderdisplaybtn_toggled            (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
+
+
+void
+on_enc_action_change_btn_clicked       (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_enc_action_remove_btn_clicked       (GtkButton       *button,
+                                        gpointer         user_data);
+
 
 #endif

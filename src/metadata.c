@@ -297,7 +297,7 @@ static void attribs_render_enclosure(gpointer data, struct displayset *displayse
 	escaped = encode_uri_string(g_strdup((gchar *)data));
 	tmp = g_strdup_printf("<table class=\"enclosure\" cellspacing=\"0\"><tr><td>"
 	                      "<a href=\"liferea-enclosure://load?%s\">"
-	                      "<img class=\"enclosurebtn\" src=\"file://" 
+	                      "<img border=\"0\" class=\"enclosurebtn\" src=\"file://" 
 			       PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S 
 			       "pixmaps" G_DIR_SEPARATOR_S "arrow.png\"></a></td><td>"
 			       "&nbsp;<a class=\"enclosure\" href=\"%s\">%s</a>"

@@ -39,6 +39,9 @@
 #define REFOCUS_TIMEOUT			"/apps/liferea/refocus-timeout"
 #define DISABLE_JAVASCRIPT		"/apps/liferea/disable-javascript"
 
+/* enclosure handling */
+#define ENCLOSURE_DOWNLOAD_TOOL		"/apps/liferea/enclosure-download-tool"
+
 /* item list settings */
 #define TIME_FORMAT			"/apps/liferea/timeformat"
 #define TIME_FORMAT_MODE		"/apps/liferea/timeformatmode"

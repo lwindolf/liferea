@@ -1793,6 +1793,26 @@ create_prefdialog (void)
   GtkWidget *proxypasswordentry;
   GtkWidget *label146;
   GtkWidget *label140;
+  GtkWidget *vbox2609;
+  GtkWidget *vbox2610;
+  GtkWidget *label217;
+  GtkWidget *hbox92;
+  GtkWidget *label218;
+  GtkWidget *hbox92222;
+  GtkWidget *label216;
+  GtkWidget *enc_download_tool_option_btn;
+  GtkWidget *label208;
+  GtkWidget *hbox89;
+  GtkWidget *label209;
+  GtkWidget *vbox2613;
+  GtkWidget *label215;
+  GtkWidget *hbox91;
+  GtkWidget *scrolledwindow8;
+  GtkWidget *enc_actions_view;
+  GtkWidget *vbox2614;
+  GtkWidget *enc_action_change_btn;
+  GtkWidget *enc_action_remove_btn;
+  GtkWidget *label207;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefclosebtn;
   GtkTooltips *tooltips;
@@ -1990,7 +2010,7 @@ create_prefdialog (void)
   gtk_widget_show (folderdisplaybtn);
   gtk_box_pack_start (GTK_BOX (vbox2604), folderdisplaybtn, FALSE, FALSE, 0);
 
-  label193 = gtk_label_new (_("<i>This can cause signifant delays when loading folders with a lot of feeds inside!</i>"));
+  label193 = gtk_label_new (_("<i>This option can cause significant delays when loading folders containing many feeds.</i>"));
   gtk_widget_show (label193);
   gtk_box_pack_start (GTK_BOX (vbox2604), label193, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label193), TRUE);
@@ -2575,6 +2595,96 @@ create_prefdialog (void)
   gtk_widget_show (label140);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 5), label140);
 
+  vbox2609 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2609);
+  gtk_container_add (GTK_CONTAINER (notebook1), vbox2609);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2609), 12);
+
+  vbox2610 = gtk_vbox_new (FALSE, 12);
+  gtk_widget_show (vbox2610);
+  gtk_box_pack_start (GTK_BOX (vbox2609), vbox2610, FALSE, TRUE, 0);
+
+  label217 = gtk_label_new (_("<span weight=\"bold\">Downloading Enclosures</span>"));
+  gtk_widget_show (label217);
+  gtk_box_pack_start (GTK_BOX (vbox2610), label217, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label217), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label217), 0, 0.5);
+
+  hbox92 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox92);
+  gtk_box_pack_start (GTK_BOX (vbox2610), hbox92, TRUE, TRUE, 0);
+
+  label218 = gtk_label_new (_("    "));
+  gtk_widget_show (label218);
+  gtk_box_pack_start (GTK_BOX (hbox92), label218, FALSE, FALSE, 0);
+
+  hbox92222 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox92222);
+  gtk_box_pack_start (GTK_BOX (hbox92), hbox92222, TRUE, TRUE, 0);
+
+  label216 = gtk_label_new (_("Download using"));
+  gtk_widget_show (label216);
+  gtk_box_pack_start (GTK_BOX (hbox92222), label216, FALSE, FALSE, 0);
+
+  enc_download_tool_option_btn = gtk_option_menu_new ();
+  gtk_widget_show (enc_download_tool_option_btn);
+  gtk_box_pack_start (GTK_BOX (hbox92222), enc_download_tool_option_btn, FALSE, FALSE, 0);
+
+  label208 = gtk_label_new (_("<span weight=\"bold\">Opening Enclosures</span>"));
+  gtk_widget_show (label208);
+  gtk_box_pack_start (GTK_BOX (vbox2610), label208, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label208), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label208), 0, 0.5);
+
+  hbox89 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox89);
+  gtk_box_pack_start (GTK_BOX (vbox2610), hbox89, TRUE, TRUE, 0);
+
+  label209 = gtk_label_new (_("    "));
+  gtk_widget_show (label209);
+  gtk_box_pack_start (GTK_BOX (hbox89), label209, FALSE, FALSE, 0);
+
+  vbox2613 = gtk_vbox_new (FALSE, 12);
+  gtk_widget_show (vbox2613);
+  gtk_box_pack_start (GTK_BOX (hbox89), vbox2613, TRUE, TRUE, 0);
+
+  label215 = gtk_label_new (_("Below you find the list of all enclosure types you configured a launch program for."));
+  gtk_widget_show (label215);
+  gtk_box_pack_start (GTK_BOX (vbox2613), label215, FALSE, FALSE, 0);
+  gtk_label_set_line_wrap (GTK_LABEL (label215), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label215), 0, 0.5);
+
+  hbox91 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox91);
+  gtk_box_pack_start (GTK_BOX (vbox2613), hbox91, FALSE, FALSE, 0);
+
+  scrolledwindow8 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow8);
+  gtk_box_pack_start (GTK_BOX (hbox91), scrolledwindow8, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow8), GTK_SHADOW_IN);
+
+  enc_actions_view = gtk_tree_view_new ();
+  gtk_widget_show (enc_actions_view);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow8), enc_actions_view);
+  gtk_widget_set_size_request (enc_actions_view, -1, 150);
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (enc_actions_view), TRUE);
+
+  vbox2614 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2614);
+  gtk_box_pack_start (GTK_BOX (hbox91), vbox2614, FALSE, TRUE, 0);
+
+  enc_action_change_btn = gtk_button_new_from_stock ("gtk-properties");
+  gtk_widget_show (enc_action_change_btn);
+  gtk_box_pack_start (GTK_BOX (vbox2614), enc_action_change_btn, FALSE, FALSE, 0);
+
+  enc_action_remove_btn = gtk_button_new_from_stock ("gtk-delete");
+  gtk_widget_show (enc_action_remove_btn);
+  gtk_box_pack_start (GTK_BOX (vbox2614), enc_action_remove_btn, FALSE, FALSE, 0);
+
+  label207 = gtk_label_new (_("Enclosures"));
+  gtk_widget_show (label207);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 6), label207);
+
   dialog_action_area5 = GTK_DIALOG (prefdialog)->action_area;
   gtk_widget_show (dialog_action_area5);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area5), GTK_BUTTONBOX_END);
@@ -2585,7 +2695,7 @@ create_prefdialog (void)
   GTK_WIDGET_SET_FLAGS (prefclosebtn, GTK_CAN_DEFAULT);
 
   g_signal_connect_swapped ((gpointer) prefdialog, "delete_event",
-                            G_CALLBACK (gtk_widget_hide),
+                            G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (prefdialog));
   g_signal_connect ((gpointer) itemCountBtn, "value_changed",
                     G_CALLBACK (on_itemCountBtn_value_changed),
@@ -2670,6 +2780,12 @@ create_prefdialog (void)
                     NULL);
   g_signal_connect ((gpointer) proxypasswordentry, "changed",
                     G_CALLBACK (on_proxypasswordentry_changed),
+                    NULL);
+  g_signal_connect ((gpointer) enc_action_change_btn, "clicked",
+                    G_CALLBACK (on_enc_action_change_btn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) enc_action_remove_btn, "clicked",
+                    G_CALLBACK (on_enc_action_remove_btn_clicked),
                     NULL);
   g_signal_connect_swapped ((gpointer) prefclosebtn, "clicked",
                             G_CALLBACK (gtk_widget_hide),
@@ -2842,6 +2958,26 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, proxypasswordentry, "proxypasswordentry");
   GLADE_HOOKUP_OBJECT (prefdialog, label146, "label146");
   GLADE_HOOKUP_OBJECT (prefdialog, label140, "label140");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2609, "vbox2609");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2610, "vbox2610");
+  GLADE_HOOKUP_OBJECT (prefdialog, label217, "label217");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox92, "hbox92");
+  GLADE_HOOKUP_OBJECT (prefdialog, label218, "label218");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox92222, "hbox92222");
+  GLADE_HOOKUP_OBJECT (prefdialog, label216, "label216");
+  GLADE_HOOKUP_OBJECT (prefdialog, enc_download_tool_option_btn, "enc_download_tool_option_btn");
+  GLADE_HOOKUP_OBJECT (prefdialog, label208, "label208");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox89, "hbox89");
+  GLADE_HOOKUP_OBJECT (prefdialog, label209, "label209");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2613, "vbox2613");
+  GLADE_HOOKUP_OBJECT (prefdialog, label215, "label215");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox91, "hbox91");
+  GLADE_HOOKUP_OBJECT (prefdialog, scrolledwindow8, "scrolledwindow8");
+  GLADE_HOOKUP_OBJECT (prefdialog, enc_actions_view, "enc_actions_view");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2614, "vbox2614");
+  GLADE_HOOKUP_OBJECT (prefdialog, enc_action_change_btn, "enc_action_change_btn");
+  GLADE_HOOKUP_OBJECT (prefdialog, enc_action_remove_btn, "enc_action_remove_btn");
+  GLADE_HOOKUP_OBJECT (prefdialog, label207, "label207");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefclosebtn, "prefclosebtn");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, tooltips, "tooltips");
@@ -3501,5 +3637,109 @@ create_vfolderdialog (void)
   GLADE_HOOKUP_OBJECT (vfolderdialog, okbutton2, "okbutton2");
 
   return vfolderdialog;
+}
+
+GtkWidget*
+create_enchandlerdialog (void)
+{
+  GtkWidget *enchandlerdialog;
+  GtkWidget *dialog_vbox16;
+  GtkWidget *vbox2605;
+  GtkWidget *vbox2606;
+  GtkWidget *label204;
+  GtkWidget *enc_type_label;
+  GtkWidget *label206;
+  GtkWidget *hbox88;
+  GtkWidget *enc_program_entry;
+  GtkWidget *button27;
+  GtkWidget *enc_always_btn;
+  GtkWidget *dialog_action_area16;
+  GtkWidget *cancelbutton4;
+  GtkWidget *okbutton3;
+
+  enchandlerdialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (enchandlerdialog), _("Downloading Enclosure"));
+  gtk_window_set_type_hint (GTK_WINDOW (enchandlerdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+  dialog_vbox16 = GTK_DIALOG (enchandlerdialog)->vbox;
+  gtk_widget_show (dialog_vbox16);
+
+  vbox2605 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2605);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox16), vbox2605, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2605), 12);
+
+  vbox2606 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2606);
+  gtk_box_pack_start (GTK_BOX (vbox2605), vbox2606, FALSE, TRUE, 0);
+
+  label204 = gtk_label_new (_("Downloading an enclosure of type:"));
+  gtk_widget_show (label204);
+  gtk_box_pack_start (GTK_BOX (vbox2606), label204, FALSE, FALSE, 0);
+  gtk_misc_set_alignment (GTK_MISC (label204), 0, 0.5);
+
+  enc_type_label = gtk_label_new (_("<b>text/plain</b>"));
+  gtk_widget_show (enc_type_label);
+  gtk_box_pack_start (GTK_BOX (vbox2606), enc_type_label, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (enc_type_label), TRUE);
+  gtk_misc_set_padding (GTK_MISC (enc_type_label), 0, 6);
+
+  label206 = gtk_label_new (_("What should Liferea do with this enclosure? Please enter the command you want to be executed below. The downloaded file will be supplied as an argument for this command:"));
+  gtk_widget_show (label206);
+  gtk_box_pack_start (GTK_BOX (vbox2606), label206, FALSE, FALSE, 0);
+  gtk_label_set_line_wrap (GTK_LABEL (label206), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label206), 0, 0.5);
+
+  hbox88 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox88);
+  gtk_box_pack_start (GTK_BOX (vbox2606), hbox88, TRUE, TRUE, 0);
+
+  enc_program_entry = gtk_entry_new ();
+  gtk_widget_show (enc_program_entry);
+  gtk_box_pack_start (GTK_BOX (hbox88), enc_program_entry, TRUE, TRUE, 0);
+
+  button27 = gtk_button_new_with_mnemonic (_("_Browse"));
+  gtk_widget_show (button27);
+  gtk_box_pack_start (GTK_BOX (hbox88), button27, FALSE, FALSE, 0);
+
+  enc_always_btn = gtk_check_button_new_with_mnemonic (_("_Do this automatically for files like this from now on."));
+  gtk_widget_show (enc_always_btn);
+  gtk_box_pack_start (GTK_BOX (vbox2606), enc_always_btn, FALSE, FALSE, 0);
+
+  dialog_action_area16 = GTK_DIALOG (enchandlerdialog)->action_area;
+  gtk_widget_show (dialog_action_area16);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area16), GTK_BUTTONBOX_END);
+
+  cancelbutton4 = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (cancelbutton4);
+  gtk_dialog_add_action_widget (GTK_DIALOG (enchandlerdialog), cancelbutton4, GTK_RESPONSE_CANCEL);
+  GTK_WIDGET_SET_FLAGS (cancelbutton4, GTK_CAN_DEFAULT);
+
+  okbutton3 = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (okbutton3);
+  gtk_dialog_add_action_widget (GTK_DIALOG (enchandlerdialog), okbutton3, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (okbutton3, GTK_CAN_DEFAULT);
+
+  g_signal_connect ((gpointer) enchandlerdialog, "delete_event",
+                    G_CALLBACK (gtk_widget_destroy),
+                    NULL);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (enchandlerdialog, enchandlerdialog, "enchandlerdialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (enchandlerdialog, dialog_vbox16, "dialog_vbox16");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, vbox2605, "vbox2605");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, vbox2606, "vbox2606");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, label204, "label204");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_type_label, "enc_type_label");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, label206, "label206");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, hbox88, "hbox88");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_program_entry, "enc_program_entry");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, button27, "button27");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, enc_always_btn, "enc_always_btn");
+  GLADE_HOOKUP_OBJECT_NO_REF (enchandlerdialog, dialog_action_area16, "dialog_action_area16");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, cancelbutton4, "cancelbutton4");
+  GLADE_HOOKUP_OBJECT (enchandlerdialog, okbutton3, "okbutton3");
+
+  return enchandlerdialog;
 }
 

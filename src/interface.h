@@ -12,3 +12,4 @@ GtkWidget* create_feedsterdialog (void);
 GtkWidget* create_aboutdialog (void);
 GtkWidget* create_authdialog (void);
 GtkWidget* create_vfolderdialog (void);
+GtkWidget* create_enchandlerdialog (void);

@@ -21,8 +21,22 @@
 #include <gtk/gtk.h>
  
 #define ENCLOSURE_PROTOCOL "liferea-enclosure://"
- 
-/* opens a popup menu for the given link */
+
+typedef struct encType {
+	gchar		*mime;		/* either mime or extension is set */
+	gchar		*extension;
+	gchar		*cmd;		/* the command to launch the enclosure type */
+	gboolean	permanent;	/* if TRUE definition is deleted after opening and 
+					   not added to the permanent list of type configs */
+} *encTypePtr;
+
+/** loads the enclosure type configuration */
+void ui_enclosure_init(void);
+
+/** returns all configured enclosure types */
+GSList * ui_enclosure_get_types(void);
+
+/** opens a popup menu for the given link */
 void ui_enclosure_new_popup(gchar *url);
 
 /* popup menu callbacks */

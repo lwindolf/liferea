@@ -18,9 +18,119 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <gtk/gtk.h>
 #include <libxml/uri.h>
+#include "callbacks.h"
+#include "interface.h"
+#include "support.h"
 #include "ui_popup.h"
 #include "ui_enclosure.h"
+
+static GSList *types = NULL;
+
+/* some prototypes */
+static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr);
+
+void ui_enclosure_init(void) {
+	encTypePtr	etp;
+	
+	etp = g_new0(struct encType, 1);
+	etp->mime = g_strdup("text/plain");
+	etp->cmd = g_strdup("nedit");
+	types = g_slist_append(types, etp);
+	
+	etp = g_new0(struct encType, 1);
+	etp->mime = g_strdup("audio/wav");
+	etp->cmd = g_strdup("xmms -e");
+	types = g_slist_append(types, etp);	
+	
+	etp = g_new0(struct encType, 1);
+	etp->extension = g_strdup("ogg");
+	etp->cmd = g_strdup("xmms -e");
+	types = g_slist_append(types, etp);
+	// FIXME
+}
+
+/* returns all configured enclosure types */
+GSList * ui_enclosure_get_types(void) {
+
+	return types;
+}
+
+void ui_enclosure_remove_type(gpointer type) {
+
+	types = g_slist_remove(types, type);
+	g_free(((encTypePtr)type)->cmd);
+	g_free(((encTypePtr)type)->mime);
+	g_free(((encTypePtr)type)->extension);
+	g_free(type);
+}
+
+void ui_enclosure_change_type(gpointer type) {
+
+	ui_enclosure_add((encTypePtr)type, NULL, NULL);
+}
+
+typedef struct encJob {
+	gchar	*download;	/* command to download */
+	gchar	*run;		/* command to run after download */
+	gchar	*filename;	/* filename the result is saved to */
+} *encJobPtr;
+
+static void *ui_enclosure_exec(void *data) {
+	encJobPtr	ejp = (encJobPtr)data;
+	GError		*error = NULL;
+	gint		status;
+	
+	g_print("running \"%s\"\n", ejp->download);
+	g_spawn_command_line_sync(ejp->download, NULL, NULL, &status, &error);
+	if((NULL != error) && (0 != error->code)) {
+		g_warning("command \"%s\" failed with exitcode %d!", ejp->download, status);
+	} else {
+		if(NULL != ejp->run) {
+			/* execute */
+			g_print("running \"%s\"\n", ejp->run);
+			g_spawn_command_line_async(ejp->run, &error);
+			if((NULL != error) && (0 != error->code))
+				g_warning("command \"%s\" failed!", ejp->run);
+		} else {
+			/* just saving */
+			g_print("saved as \"%s\"\n", ejp->filename);			
+		}
+	}
+	g_free(ejp->download);
+	g_free(ejp->run);
+	g_free(ejp->filename);
+	g_free(ejp);
+}
+
+/* etp is optional, if it is missing we are in save mode */
+void ui_enclosure_download(encTypePtr etp, gchar *url, gchar *path) {
+	gchar		*filename;
+	encJobPtr	ejp;
+	
+	if(NULL == (filename = strrchr(url, '/')))
+		filename = g_strdup(url + 1);
+		
+	filename = g_strdup_printf("%s%s%s", path, G_DIR_SEPARATOR_S, filename);
+	
+	/* prepare job structure */
+	ejp = g_new0(struct encJob, 1);
+	ejp->filename = filename;
+	ejp->download = g_strdup_printf(prefs_get_download_cmd(), filename, url);
+	if(NULL != etp)
+		ejp->run = g_strdup_printf("%s %s", etp->cmd, filename);
+
+	g_print("downloading %s to %s...\n", url, filename);
+
+	/* free now unnecessary stuff */
+	if(FALSE == etp->permanent)
+		ui_enclosure_remove_type(etp);
+	g_free(path);
+	g_free(url);
+	
+	g_thread_create(ui_enclosure_exec, ejp, FALSE, NULL);
+}
 
 /* opens a popup menu for the given link */
 void ui_enclosure_new_popup(gchar *url) {
@@ -32,9 +142,115 @@ void ui_enclosure_new_popup(gchar *url) {
 	}
 }
 
-void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-g_print("open: %s\n", (gchar *)callback_data);
+/* dialog used for both changing and adding new definitions */
+static void on_adddialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	gchar		*tmp, *url;
+	gboolean	new = FALSE;
+	encTypePtr	etp;
+	
+	if(response_id == GTK_RESPONSE_OK) {
+		etp = g_object_get_data(G_OBJECT(dialog), "type");
+		tmp = g_object_get_data(G_OBJECT(dialog), "typestr");
+		url = g_object_get_data(G_OBJECT(dialog), "url");
+
+		if(NULL == etp)	{
+			new = TRUE;
+			etp = g_new0(struct encType, 1);
+			if(NULL == strchr(tmp, '/'))
+				etp->extension = tmp;
+			else
+				etp->mime = tmp;
+		} else {
+			g_free(etp->cmd);
+		}
+		etp->cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "enc_program_entry"))));
+		etp->permanent = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enc_always_btn")));
+		if(TRUE == new)
+			types = g_slist_append(types, etp);
+		
+		/* now we have ensured an existing type configuration and
+		   can launch the URL for which we configured the type */
+		if(NULL != url)
+			on_popup_open_enclosure(g_strdup_printf("%s%s%s", url, (NULL == etp->mime)?"":",", (NULL == etp->mime)?"":etp->mime), 0, NULL);
+	}
+	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
+
+/* either type or url and typestr are optional */
+static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
+	GtkWidget	*dialog, *widget;
+	gchar		*tmp;
+	
+	dialog = create_enchandlerdialog();
+	
+	if(type != NULL) {
+		typestr = (NULL != type->mime)?type->mime:type->extension;
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_program_entry")), type->cmd);
+	}
+	
+	if(NULL == strchr(typestr, '/')) 
+		tmp = g_strdup_printf(_("<b>File Extension .%s</b>"), typestr);
+	else
+		tmp = g_strdup_printf(_("<b>%s</b>"), typestr);
+	gtk_label_set_markup_with_mnemonic(GTK_LABEL(lookup_widget(dialog, "enc_type_label")), tmp);
+	g_free(tmp);
+	
+	g_object_set_data(G_OBJECT(dialog), "typestr", typestr);
+	g_object_set_data(G_OBJECT(dialog), "url", url);
+	g_object_set_data(G_OBJECT(dialog), "type", type);
+	g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(on_adddialog_response), type);
+	gtk_widget_show(dialog);
+	
+}
+
+void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+	gchar		*typestr, *url = (gchar *)callback_data;
+	gboolean	found = FALSE, mime = FALSE;
+	encTypePtr	etp = NULL;
+	GSList		*iter;
+	
+	/* When opening enclosures we need the type to determine
+	   the configured launch command. The format of the enclosure
+	   info: <url>[,<mime type] */	
+	if(NULL != (typestr = strrchr(url, ','))) {
+		*typestr = 0;
+		typestr++;
+		mime = TRUE;
+	}
+	
+	/* without a type we use the file extension */
+	if(FALSE == mime) {
+		typestr = strrchr(url, '.');
+		typestr = g_strdup(typestr + 1);
+	}
+	
+	/* if we have no such thing we map to "data" */
+	if(NULL == typestr)
+		typestr = "data";
+
+	g_print("url:%s, type:%s mime:%s\n", url, typestr, mime?"TRUE":"FALSE");
+		
+	/* search for type configuration */
+	iter = types;
+	while(NULL != iter) {
+		etp = (encTypePtr)(iter->data);
+		if((NULL != ((TRUE == mime)?etp->mime:etp->extension)) &&
+		   (0 == strcmp(typestr, (TRUE == mime)?etp->mime:etp->extension))) {
+		   	found = TRUE;
+		   	break;
+		}
+		iter = g_slist_next(iter);
+	}
+	
+	if(TRUE == found)
+		ui_enclosure_download(etp, url, g_strdup(g_get_home_dir()));
+	else
+		ui_enclosure_add(NULL, url, typestr);
+}
+
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-g_print("save: %s\n", (gchar *)callback_data);
+	
+	g_print("save: %s\n", (gchar *)callback_data);
+	// FIXME: open save as dialog
+	// ui_enclose_download(NULL, url, path);
 }

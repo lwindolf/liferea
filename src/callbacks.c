@@ -51,6 +51,7 @@
 #include "ui_tray.h"
 #include "ui_queue.h"
 #include "ui_notification.h"
+#include "ui_enclosure.h"
 #include "ui_tabs.h"
 	
 /* all used icons */
@@ -114,6 +115,7 @@ void ui_init(gboolean startIconified) {
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
 	ui_popup_setup_menues();		/* create popup menues */
+	ui_enclosure_init();
 	conf_load_subscriptions();
 
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
@@ -226,3 +228,4 @@ void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
 	/* launch the homepage when button in about dialog is pressed */
 	ui_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
 }
+
