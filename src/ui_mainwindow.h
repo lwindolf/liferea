@@ -9,6 +9,11 @@ extern GtkWidget	*mainwindow;
 extern gboolean 	itemlist_mode;
 
 /**
+ * Create a new main window
+ */
+GtkWidget* ui_mainwindow_new();
+
+/**
  * Switches between two and three pane mode.
  *
  * @param new_mode	TRUE if three pane mode is requested

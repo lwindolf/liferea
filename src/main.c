@@ -118,11 +118,11 @@ int main (int argc, char *argv[]) {
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
-	mainwindow = create_mainwindow();
 	ui_queue_init();		/* set up callback queue for other threads */
 
 	/* order is important! */
 	initConfig();		/* initialize gconf */
+	mainwindow = ui_mainwindow_new();
 	loadConfig();		/* maybe this should be merged with initConfig() */
 	feed_init();
 	ui_init();		/* initialize gconf configured GUI behaviour */

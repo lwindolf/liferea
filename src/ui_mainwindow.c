@@ -27,8 +27,9 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
-#include "conf.h"
+#include "interface.h"
 #include "support.h"
+#include "conf.h"
 #include "callbacks.h"
 #include "ui_feedlist.h"
 #include "ui_mainwindow.h"
@@ -39,9 +40,58 @@
 #include "update.h"
 #include "htmlview.h"
 
+#if GTK_CHECK_VERSION(2,4,0)
+#define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
+ do { \
+	GtkToolItem *item = gtk_tool_button_new(gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), label); \
+     gtk_tool_item_set_tooltip(item, tooltips, tooltip, NULL); \
+     g_signal_connect((gpointer) item, "clicked", G_CALLBACK(function), NULL); \
+	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), \
+				    item, \
+				    -1); \
+ } while (0);
+#else
+#define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function)      \
+ gtk_toolbar_append_item(GTK_TOOLBAR(toolbar), \
+				    label, \
+					tooltip, \
+					NULL, \
+					gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), \
+					G_CALLBACK(function), NULL)
+
+#endif
 GtkWidget 	*mainwindow;
 
 gboolean	itemlist_mode = TRUE;		/* TRUE means three pane, FALSE means two panes */
+
+GtkWidget* ui_mainwindow_new() {
+	GtkWidget *window = create_mainwindow();
+	GtkWidget *toolbar = lookup_widget(window, "toolbar");
+	GtkTooltips *tooltips = gtk_tooltips_new();
+	gchar *toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style");
+
+	
+	if (!strcmp(toolbar_style, "text"))
+		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT);
+	else if (!strcmp(toolbar_style, "both"))
+		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH);
+	else if (!strcmp(toolbar_style, "both_horiz"))
+		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH_HORIZ);
+	else /* default to icons */
+		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
+
+	g_free(toolbar_style);
+
+	TOOLBAR_ADD(toolbar,  _("New Feed"), GTK_STOCK_ADD, tooltips,  _("Add a new subscription."), on_newbtn_clicked);
+	TOOLBAR_ADD(toolbar,  _("Next Unread"), GTK_STOCK_GO_FORWARD, tooltips,  _("Jumps to the next unread item. If necessary selects the next feed with unread items."), on_nextbtn_clicked);
+	TOOLBAR_ADD(toolbar,  _("Mark As Read"), GTK_STOCK_APPLY, tooltips,  _("Mark all items of the selected subscription or of all subscriptions of the selected folder as read."), on_popup_allunread_selected);
+	TOOLBAR_ADD(toolbar,  _("Update"), GTK_STOCK_REFRESH, tooltips,  _("Update all feeds."), on_refreshbtn_clicked);
+	TOOLBAR_ADD(toolbar,  _("Search"), GTK_STOCK_FIND, tooltips,  _("Search all feeds."), on_searchbtn_clicked);
+	TOOLBAR_ADD(toolbar,  _("Preferences"), GTK_STOCK_PREFERENCES, tooltips,  _("Edit preferences."), on_prefbtn_clicked);
+	gtk_widget_show_all(GTK_WIDGET(toolbar));
+
+	return window;
+}
 
 void ui_mainwindow_update_toolbar(void) {
 	GtkWidget *widget;
