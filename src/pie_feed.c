@@ -53,7 +53,9 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	/* determine encoding mode */
 	mode = utf8_fix(xmlGetProp(cur, BAD_CAST"mode"));
 	type = utf8_fix(xmlGetProp(cur, BAD_CAST"type"));
-	
+
+	/* Modes are used in older versions of ATOM, including 0.3. It
+	   does not exist in the newer IETF drafts.*/
 	if(NULL != mode) {
 		if(!strcmp(mode, "escaped")) {
 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
@@ -72,13 +74,23 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 		}
 		g_free(mode);
 	} else {
-		/* some feeds don'ts specify a mode but a MIME 
-		   type in the type attribute... */
+		/* some feeds don'ts specify a mode but a MIME type in the
+		   type attribute... */
 		/* not sure what MIME types are necessary... */
-		if((NULL == type) ||
-		   !strcmp(type, "text/html") ||
-		   !strcmp(type, "text/plain") ||
-		   !strcmp(type, "application/xhtml+xml")) {
+
+		/* This that need to be de-encoded and should not contain sub-tags.*/
+		if (NULL == type || (
+						 !strcmp(type, "TEXT") ||
+						 !strcmp(type, "text/plain") ||
+						 !strcmp(type, "HTML") ||
+						 !strcmp(type, "text/html"))) {
+			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			/* Next are things that contain subttags */
+		} else if((NULL == type) ||
+				/* HTML types */
+				!strcmp(type, "XHTML") ||
+				!strcmp(type, "application/xhtml+xml")) {
+			/* Text types */
 			ret = extractHTMLNode(cur, TRUE);
 		}
 	}
@@ -86,8 +98,8 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	   wrapped in pre tags.... Also, the atom 0.3 spec says that the
 	   default type MUST be considered to be text/plain. The type tag
 	   is required in 0.2.... */
-	//if (ret != NULL && (type == NULL || !strcmp(type, "text/plain"))) {
-	if((ret != NULL) && (type != NULL) && !strcmp(type, "text/plain")) {
+	//if (ret != NULL && (type == NULL || !strcmp(type, "text/plain") || !strcmp(type,"TEXT")))) {
+	if((ret != NULL) && (type != NULL) && (!strcmp(type, "text/plain") || !strcmp(type,"TEXT"))) {
 		gchar *tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
 		g_free(ret);
 		ret = tmp;
