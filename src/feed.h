@@ -53,9 +53,12 @@ enum node_types {
 /** Flags used in the request structure */
 enum feed_request_flags {
 	FEED_REQ_SHOW_PROPDIALOG = 1,
-	FEED_REQ_RESET_TITLE = 2, /**< Feed's title should be reset to default upon update */
-	FEED_REQ_RESET_UPDATE_INT = 4, /**< Feed's title should be reset to default upon update */
-	FEED_REQ_AUTO_DISCOVER = 8 /**< Feed auto-discovery attempts should be made */
+	FEED_REQ_RESET_TITLE = 2,	/**< Feed's title should be reset to default upon update */
+	FEED_REQ_RESET_UPDATE_INT = 4,	/**< Feed's title should be reset to default upon update */
+	FEED_REQ_AUTO_DISCOVER = 8,	/**< Feed auto-discovery attempts should be made */
+	
+	FEED_REQ_PRIORITY_HIGH = 16,	/**< for user triggered requests */
+	FEED_REQ_PRIORITY_NORMAL = 32	/**< for auto update triggered requests */
 };
 
 struct feedhandler;

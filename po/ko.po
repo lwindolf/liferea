@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 20:52-0400\n"
+"POT-Creation-Date: 2004-06-27 20:03+0200\n"
 "PO-Revision-Date: 2004-05-25 23:42+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -183,27 +183,27 @@ msgstr "<p>\"%s\" 는 올바른 캐시 파일이 아닙니다. 읽을 수 없습
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "캐시파일 \"%s\"을(를) 해석하던 중 에러가 발생했습니다!"
 
-#: src/feed.c:563
+#: src/feed.c:565
 #, fuzzy, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\"은(는) 새로운 아이템이 없습니다."
 
-#: src/feed.c:565
+#: src/feed.c:567
 #, fuzzy, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\"은(는) %d개의 새로운 아이템이 있습니다."
 
-#: src/feed.c:661
+#: src/feed.c:672
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
 
-#: src/feed.c:668
+#: src/feed.c:679
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
 
-#: src/feed.c:679
+#: src/feed.c:689
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
@@ -212,71 +212,112 @@ msgstr ""
 "이 피드의 종류를 결정할 수 없습니다. URL이 지원되는 형식의 자원을 정확히 가리"
 "키는지 확인해 주세요 "
 
-#: src/feed.c:705
+#: src/feed.c:715
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\"이(가) 갱신되었습니다..."
 
-#: src/feed.c:719
+#: src/feed.c:728
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
 
-#: src/feed.c:806
+#: src/feed.c:834
 #, fuzzy
 msgid "The feed no longer exists. Please unsubscribe."
 msgstr "피드가 더 이상 존재하지 않습니다. 해지 해 주세요."
 
-#: src/feed.c:807
+#: src/feed.c:835
 msgid "Payment Required"
 msgstr "(돈)지불이 필요합니다"
 
-#: src/feed.c:808
+#: src/feed.c:836
 msgid "Access Forbidden"
 msgstr "접근이 금지되었습니다"
 
-#: src/feed.c:809
+#: src/feed.c:837
 msgid "Resource Not Found"
 msgstr "자원을 찾을 수 없습니다"
 
-#: src/feed.c:810
+#: src/feed.c:838
 msgid "Method Not Allowed"
 msgstr "동작이 허용되지 않습니다"
 
-#: src/feed.c:811
+#: src/feed.c:839
 msgid "Not Acceptable"
 msgstr "받아들일 수 없습니다"
 
-#: src/feed.c:812
+#: src/feed.c:840
 msgid "Proxy Authentication Required"
 msgstr "프록시 인증이 필요합니다"
 
-#: src/feed.c:813
+#: src/feed.c:841
 msgid "Request Time-Out"
 msgstr "요청 시간이 초과되었습니다"
 
-#: src/feed.c:814
+#: src/feed.c:842
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
 msgstr "사라짐.자원이 더 이상 존재하지 않습니다. 해지 해 주세요."
 
-#: src/feed.c:820
+#: src/feed.c:847
+msgid "URL is invalid"
+msgstr ""
+
+#: src/feed.c:850
+msgid "Error connecting to remote host"
+msgstr ""
+
+#: src/feed.c:851
+msgid "Hostname could not be found"
+msgstr ""
+
+#: src/feed.c:852
+msgid "Network connection was refused by the remote host"
+msgstr ""
+
+#: src/feed.c:853
+msgid "Remote host did not finish sending data"
+msgstr ""
+
+#. Transfer errors
+#: src/feed.c:855
+#, fuzzy
+msgid "Too many HTTP redirects were encountered"
+msgstr "너무 많은 HTTP 리다이렉션입니다! 포기할래요 엉엉."
+
+#: src/feed.c:858
+#, fuzzy
+msgid "Remote host sent an invalid response"
+msgstr "웹서버가 잘못된 리다이렉트를 보내왔습니다"
+
+#: src/feed.c:865
+#, fuzzy
+msgid "Authentication failed"
+msgstr "프록시 인증이 실패하였습니다!"
+
+#: src/feed.c:867
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr ""
+
+#: src/feed.c:873
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "피드 사용 불가: 서버가 지원되지 않는 리다이렉션을 요청받았습니다."
 
-#: src/feed.c:821
+#: src/feed.c:874
 msgid "Client Error"
 msgstr "클라이언트 에러"
 
-#: src/feed.c:822
+#: src/feed.c:875
 msgid "Server Error"
 msgstr "서버 에러"
 
-#: src/feed.c:823
-msgid "(unknown error class)"
+#: src/feed.c:876
+#, fuzzy
+msgid "(unknown networking error happened)"
 msgstr "(알 수 없는 에러종류)"
 
-#: src/feed.c:845
+#: src/feed.c:898
 #, fuzzy
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
@@ -334,12 +375,12 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "이 아이템은 어떠한 연결도 할당되지 않았습니다."
 
-#: src/htmlview.c:360
+#: src/htmlview.c:362 src/htmlview.c:383
 #, fuzzy, c-format
 msgid "Browser command failed: %s"
 msgstr "브라우져 명령 실패: %s"
 
-#: src/htmlview.c:363
+#: src/htmlview.c:365 src/htmlview.c:386
 #, fuzzy, c-format
 msgid "Starting: \"%s\""
 msgstr "%s을(를) 시작함"
@@ -405,7 +446,7 @@ msgstr "선택된 가입을 혹은 모든 선택된 폴더의 가입을 새로 �
 msgid "Update _All"
 msgstr "전부 갱신(_A)"
 
-#: src/interface.c:231 src/ui_mainwindow.c:156
+#: src/interface.c:231 src/ui_mainwindow.c:158
 #, fuzzy
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "즉시 모든 피드를 업데이트 함 (디렉토리들을 제외하고)."
@@ -462,7 +503,7 @@ msgstr "아이템들(_I)"
 msgid "_Next Unread Item"
 msgstr "다음 안 읽은 아이템(_N)"
 
-#: src/interface.c:309 src/ui_mainwindow.c:154
+#: src/interface.c:309 src/ui_mainwindow.c:156
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1381,43 +1422,43 @@ msgstr "날짜"
 msgid "Headline"
 msgstr "머릿글"
 
-#: src/ui_itemlist.c:577
+#: src/ui_itemlist.c:573
 #, fuzzy
 msgid "No item has been selected"
 msgstr "아이템이 선택되지 않았습니다!"
 
-#: src/ui_itemlist.c:601
+#: src/ui_itemlist.c:597
 #, fuzzy
 msgid "You must select a feed to delete its items!"
 msgstr "아이템을 지울 피드 엔트리를 선택해야 합니다!"
 
-#: src/ui_itemlist.c:631
+#: src/ui_itemlist.c:627
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "내부 에러! 트리뷰의 선택부분을 찾을 수 없습니다!\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:659
 #, fuzzy
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다!"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "New Feed"
 msgstr "새 피드"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 #, fuzzy
 msgid "Add a new subscription."
 msgstr "새 서명"
 
-#: src/ui_mainwindow.c:154
+#: src/ui_mainwindow.c:156
 msgid "Next Unread"
 msgstr "다음 안 읽은 것"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid "Mark As Read"
 msgstr "읽은 것으로 표시"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1425,30 +1466,30 @@ msgstr ""
 "모든 선택된 구독 혹은 선택된 폴더의 구독의 아이템들을 모두 읽은 것으로 표시합"
 "니다."
 
-#: src/ui_mainwindow.c:156
+#: src/ui_mainwindow.c:158
 #, fuzzy
 msgid "Update All"
 msgstr "전부 갱신(_A)"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search"
 msgstr "찾기"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 #, fuzzy
 msgid "Search all feeds."
 msgstr "피드에서 찾기"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Preferences"
 msgstr "기본 설정"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 #, fuzzy
 msgid "Edit preferences."
 msgstr "설정 고치기"
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:174
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1471,17 +1512,17 @@ msgid ""
 "project homepage.</p>"
 msgstr ""
 
-#: src/ui_mainwindow.c:254
+#: src/ui_mainwindow.c:256
 #, fuzzy
 msgid "Liferea is now online"
 msgstr "Liferea가 온라인으로 동작합니다."
 
-#: src/ui_mainwindow.c:257
+#: src/ui_mainwindow.c:259
 #, fuzzy
 msgid "Liferea is now offline"
 msgstr "Liferea는 현재 오프라인입니다."
 
-#: src/ui_notification.c:241
+#: src/ui_notification.c:242
 #, fuzzy
 msgid "Liferea notification"
 msgstr "Liferea는 현재 오프라인입니다."
@@ -1569,24 +1610,24 @@ msgid "/_Subscribe"
 msgstr "/등록(_S)"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:132
+#: src/ui_prefs.c:182
 msgid "Manual"
 msgstr ""
 
-#: src/ui_prefs.c:142
+#: src/ui_prefs.c:192
 #, fuzzy
 msgid "Browser default"
 msgstr "브라우져 설정"
 
-#: src/ui_prefs.c:147
+#: src/ui_prefs.c:197
 msgid "Existing window"
 msgstr ""
 
-#: src/ui_prefs.c:152
+#: src/ui_prefs.c:202
 msgid "New window"
 msgstr ""
 
-#: src/ui_prefs.c:157
+#: src/ui_prefs.c:207
 msgid "New tab"
 msgstr ""
 
@@ -1606,17 +1647,17 @@ msgstr[1] "%d개의 새로운 아이템이 있습니다."
 msgid "No new items."
 msgstr "새로운 아이템이 없습니다."
 
-#: src/update.c:104
+#: src/update.c:110
 #, fuzzy, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "파이프 %s을(를) 열 수 없습니다"
 
-#: src/update.c:118
+#: src/update.c:124
 #, fuzzy, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "파일 %s을(를) 열 수 없습니다"
 
-#: src/update.c:124
+#: src/update.c:130
 #, fuzzy, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "\"%s\" 파일이 없습니다!"
@@ -1658,14 +1699,8 @@ msgstr "\"%s\" 파일이 없습니다!"
 #~ msgid "socket connect"
 #~ msgstr "소켓 연결"
 
-#~ msgid "Too many HTTP redirects encountered! Giving up."
-#~ msgstr "너무 많은 HTTP 리다이렉션입니다! 포기할래요 엉엉."
-
 #~ msgid "Following HTTP redirects"
 #~ msgstr "HTTP 리다이렉션을 따라갑니다."
-
-#~ msgid "Webserver sent an invalid redirect!"
-#~ msgstr "웹서버가 잘못된 리다이렉트를 보내왔습니다"
 
 #~ msgid "The feed no longer exists. Please unsubscribe!"
 #~ msgstr "피드가 더 이상 존재하지 않습니다. 해지 해 주세요."
@@ -1673,9 +1708,6 @@ msgstr "\"%s\" 파일이 없습니다!"
 #~ msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
 #~ msgstr ""
 #~ "웹서버 %s이(가) 잘못된 HTTP/1.0 응답을 보내왔습니다. 해독불가합니다."
-
-#~ msgid "Authentication failed!"
-#~ msgstr "프록시 인증이 실패하였습니다!"
 
 #~ msgid "URL does not contain authentication information!"
 #~ msgstr "URL이 인증정보를 담고 있지 않습니다."

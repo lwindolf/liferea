@@ -405,7 +405,7 @@ void on_popup_refresh_selected(gpointer callback_data,
 	
 	if(download_is_online()) {
 		if (IS_FEED(ptr->type))
-			feed_schedule_update((feedPtr)ptr, 0);
+			feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
 		else
 			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, (gpointer)feed_schedule_update);
 	} else
@@ -573,7 +573,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	ui_feedlist_update();
 	ui_feedlist_select((nodePtr)fp);
 	
-	feed_schedule_update(fp, flags);
+	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH);
 	favicon_download(fp);
 	
 	//ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));

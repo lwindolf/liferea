@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 20:52-0400\n"
+"POT-Creation-Date: 2004-06-27 20:03+0200\n"
 "PO-Revision-Date: 2004-05-20 20:40+0200\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -180,27 +180,27 @@ msgstr "<p>\"%s\" no es un archivo de caché válido. No se pudo leer.</p>"
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Se encontraron errores al procesar el archivo caché \"%s\""
 
-#: src/feed.c:563
+#: src/feed.c:565
 #, fuzzy, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" no tiene elementos nuevos."
 
-#: src/feed.c:565
+#: src/feed.c:567
 #, fuzzy, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" tiene %d elementos nuevos."
 
-#: src/feed.c:661
+#: src/feed.c:672
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "El contenido de \"%s\" no ha cambiado desde la última actualización"
 
-#: src/feed.c:668
+#: src/feed.c:679
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada."
 
-#: src/feed.c:679
+#: src/feed.c:689
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
@@ -209,71 +209,112 @@ msgstr ""
 "No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL "
 "apunte a un recurso que contenga alguno de los formatos soportados."
 
-#: src/feed.c:705
+#: src/feed.c:715
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" actualizado..."
 
-#: src/feed.c:719
+#: src/feed.c:728
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "Lo siento, \"%s\" no está disponible"
 
-#: src/feed.c:806
+#: src/feed.c:834
 #, fuzzy
 msgid "The feed no longer exists. Please unsubscribe."
 msgstr "Esta fuente ya no existe. Por favor, elimínala."
 
-#: src/feed.c:807
+#: src/feed.c:835
 msgid "Payment Required"
 msgstr "Es necesario pagar"
 
-#: src/feed.c:808
+#: src/feed.c:836
 msgid "Access Forbidden"
 msgstr "Acceso denegado"
 
-#: src/feed.c:809
+#: src/feed.c:837
 msgid "Resource Not Found"
 msgstr "Recurso no disponible"
 
-#: src/feed.c:810
+#: src/feed.c:838
 msgid "Method Not Allowed"
 msgstr "Método inválido"
 
-#: src/feed.c:811
+#: src/feed.c:839
 msgid "Not Acceptable"
 msgstr "No aceptable"
 
-#: src/feed.c:812
+#: src/feed.c:840
 msgid "Proxy Authentication Required"
 msgstr "Se necesita autentificación proxy"
 
-#: src/feed.c:813
+#: src/feed.c:841
 msgid "Request Time-Out"
 msgstr "Expiró el plazo"
 
-#: src/feed.c:814
+#: src/feed.c:842
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
 msgstr "Esta fuente ya no existe. Por favor, elimínala."
 
-#: src/feed.c:820
+#: src/feed.c:847
+msgid "URL is invalid"
+msgstr ""
+
+#: src/feed.c:850
+msgid "Error connecting to remote host"
+msgstr ""
+
+#: src/feed.c:851
+msgid "Hostname could not be found"
+msgstr ""
+
+#: src/feed.c:852
+msgid "Network connection was refused by the remote host"
+msgstr ""
+
+#: src/feed.c:853
+msgid "Remote host did not finish sending data"
+msgstr ""
+
+#. Transfer errors
+#: src/feed.c:855
+#, fuzzy
+msgid "Too many HTTP redirects were encountered"
+msgstr "Se encontraron demasiadas redirecciones HTTP. Cancelando."
+
+#: src/feed.c:858
+#, fuzzy
+msgid "Remote host sent an invalid response"
+msgstr "El servidor web envió una redirección inválida"
+
+#: src/feed.c:865
+#, fuzzy
+msgid "Authentication failed"
+msgstr "Se necesita autentificación"
+
+#: src/feed.c:867
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr ""
+
+#: src/feed.c:873
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Fuente no disponible: El servidor indicó una redirección inválida"
 
-#: src/feed.c:821
+#: src/feed.c:874
 msgid "Client Error"
 msgstr "Error del cliente"
 
-#: src/feed.c:822
+#: src/feed.c:875
 msgid "Server Error"
 msgstr "Error del servidor"
 
-#: src/feed.c:823
-msgid "(unknown error class)"
+#: src/feed.c:876
+#, fuzzy
+msgid "(unknown networking error happened)"
 msgstr "(error desconocido)"
 
-#: src/feed.c:845
+#: src/feed.c:898
 #, fuzzy
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
@@ -332,12 +373,12 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "Este elemento no tiene ningún enlace asignado"
 
-#: src/htmlview.c:360
+#: src/htmlview.c:362 src/htmlview.c:383
 #, fuzzy, c-format
 msgid "Browser command failed: %s"
 msgstr "Fallo al lanzar el navegador: %s"
 
-#: src/htmlview.c:363
+#: src/htmlview.c:365 src/htmlview.c:386
 #, fuzzy, c-format
 msgid "Starting: \"%s\""
 msgstr "Lanzando: \"%s\""
@@ -405,7 +446,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "_Actualizar todas"
 
-#: src/interface.c:231 src/ui_mainwindow.c:156
+#: src/interface.c:231 src/ui_mainwindow.c:158
 #, fuzzy
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Actualiza inmediatamente todas las fuentes, excepto directorios."
@@ -462,7 +503,7 @@ msgstr "_Elementos"
 msgid "_Next Unread Item"
 msgstr "_Siguiente elemento nuevo"
 
-#: src/interface.c:309 src/ui_mainwindow.c:154
+#: src/interface.c:309 src/ui_mainwindow.c:156
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1402,45 +1443,45 @@ msgstr "Fecha"
 msgid "Headline"
 msgstr "Titular"
 
-#: src/ui_itemlist.c:577
+#: src/ui_itemlist.c:573
 #, fuzzy
 msgid "No item has been selected"
 msgstr "No se ha seleccionado ningún elemento"
 
-#: src/ui_itemlist.c:601
+#: src/ui_itemlist.c:597
 #, fuzzy
 msgid "You must select a feed to delete its items!"
 msgstr "Por favor, elige una fuente para eliminar sus elementos"
 
-#: src/ui_itemlist.c:631
+#: src/ui_itemlist.c:627
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Error interno. No se pudo obtener la selección de vista en árbol de las "
 "fuentes.\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:659
 #, fuzzy
 msgid "There are no unread items "
 msgstr "¡Nada nuevo!"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "New Feed"
 msgstr "Nueva _fuente"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 #, fuzzy
 msgid "Add a new subscription."
 msgstr "Nueva subscripción"
 
-#: src/ui_mainwindow.c:154
+#: src/ui_mainwindow.c:156
 msgid "Next Unread"
 msgstr "_Siguiente nuevo"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid "Mark As Read"
 msgstr "Marcar como _leídos"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 #, fuzzy
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
@@ -1449,30 +1490,30 @@ msgstr ""
 "Marca todos los elementos de la subscripción seleccionada o, en caso de una "
 "carpeta, todas sus subscripciones"
 
-#: src/ui_mainwindow.c:156
+#: src/ui_mainwindow.c:158
 #, fuzzy
 msgid "Update All"
 msgstr "_Actualizar todas"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search"
 msgstr "_Buscar"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 #, fuzzy
 msgid "Search all feeds."
 msgstr "Buscar en las fuentes"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 #, fuzzy
 msgid "Edit preferences."
 msgstr "Cambiar preferencias"
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:174
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1495,17 +1536,17 @@ msgid ""
 "project homepage.</p>"
 msgstr ""
 
-#: src/ui_mainwindow.c:254
+#: src/ui_mainwindow.c:256
 #, fuzzy
 msgid "Liferea is now online"
 msgstr "Trabajando con conexión"
 
-#: src/ui_mainwindow.c:257
+#: src/ui_mainwindow.c:259
 #, fuzzy
 msgid "Liferea is now offline"
 msgstr "Trabajando en modo sin conexión"
 
-#: src/ui_notification.c:241
+#: src/ui_notification.c:242
 #, fuzzy
 msgid "Liferea notification"
 msgstr "Trabajando en modo sin conexión"
@@ -1593,23 +1634,23 @@ msgid "/_Subscribe"
 msgstr "/_Suscribirse"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:132
+#: src/ui_prefs.c:182
 msgid "Manual"
 msgstr ""
 
-#: src/ui_prefs.c:142
+#: src/ui_prefs.c:192
 msgid "Browser default"
 msgstr ""
 
-#: src/ui_prefs.c:147
+#: src/ui_prefs.c:197
 msgid "Existing window"
 msgstr ""
 
-#: src/ui_prefs.c:152
+#: src/ui_prefs.c:202
 msgid "New window"
 msgstr ""
 
-#: src/ui_prefs.c:157
+#: src/ui_prefs.c:207
 msgid "New tab"
 msgstr ""
 
@@ -1629,17 +1670,17 @@ msgstr[1] "¡%d elementos nuevos!"
 msgid "No new items."
 msgstr "No hay elementos nuevos"
 
-#: src/update.c:104
+#: src/update.c:110
 #, fuzzy, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "No se pudo abrir la tubería \"%s\""
 
-#: src/update.c:118
+#: src/update.c:124
 #, fuzzy, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "No se pudo abrir el archivo \"%s\""
 
-#: src/update.c:124
+#: src/update.c:130
 #, fuzzy, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "El archivo \"%s\" no existe."
@@ -1680,14 +1721,8 @@ msgstr "El archivo \"%s\" no existe."
 #~ msgid "socket connect"
 #~ msgstr "Conectando socket"
 
-#~ msgid "Too many HTTP redirects encountered! Giving up."
-#~ msgstr "Se encontraron demasiadas redirecciones HTTP. Cancelando."
-
 #~ msgid "Following HTTP redirects"
 #~ msgstr "Siguiendo redirecciones HTTP"
-
-#~ msgid "Webserver sent an invalid redirect!"
-#~ msgstr "El servidor web envió una redirección inválida"
 
 #~ msgid "The feed no longer exists. Please unsubscribe!"
 #~ msgstr "Esta fuente ya no existe. Por favor, elimínala."
@@ -1696,9 +1731,6 @@ msgstr "El archivo \"%s\" no existe."
 #~ msgstr ""
 #~ "El servidor web %s envió código HTTP/1.0 inválido. No se pudieron obtener "
 #~ "datos."
-
-#~ msgid "Authentication failed!"
-#~ msgstr "Se necesita autentificación"
 
 #~ msgid "URL does not contain authentication information!"
 #~ msgstr "Esta URL no contiene información de autentificación."

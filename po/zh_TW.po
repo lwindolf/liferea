@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 20:52-0400\n"
+"POT-Creation-Date: 2004-06-27 20:03+0200\n"
 "PO-Revision-Date: 2004-05-21 02:32+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -173,98 +173,139 @@ msgstr "<p>\"%s\" 是無效的快取檔案! 無法讀入檔案!</p>"
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "分析快取檔案 \"%s\" 時出現錯誤!"
 
-#: src/feed.c:563
+#: src/feed.c:565
 #, fuzzy, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" 沒有新項目"
 
-#: src/feed.c:565
+#: src/feed.c:567
 #, fuzzy, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" 有 %d 個新增項目"
 
-#: src/feed.c:661
+#: src/feed.c:672
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" 自從最後更新後沒有改變。"
 
-#: src/feed.c:668
+#: src/feed.c:679
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" 已經更新為永久網址。"
 
-#: src/feed.c:679
+#: src/feed.c:689
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr "無法偵測此饋流類型! 請確認網址指向已支援的正確餽流來源!"
 
-#: src/feed.c:705
+#: src/feed.c:715
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" 更新中"
 
-#: src/feed.c:719
+#: src/feed.c:728
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" 不可用!"
 
-#: src/feed.c:806
+#: src/feed.c:834
 #, fuzzy
 msgid "The feed no longer exists. Please unsubscribe."
 msgstr "饋流已經不存在。請取消訂閱!"
 
-#: src/feed.c:807
+#: src/feed.c:835
 msgid "Payment Required"
 msgstr "Payment Required"
 
-#: src/feed.c:808
+#: src/feed.c:836
 msgid "Access Forbidden"
 msgstr "禁用存取"
 
-#: src/feed.c:809
+#: src/feed.c:837
 msgid "Resource Not Found"
 msgstr "未找到資源"
 
-#: src/feed.c:810
+#: src/feed.c:838
 msgid "Method Not Allowed"
 msgstr "方法不允許"
 
-#: src/feed.c:811
+#: src/feed.c:839
 msgid "Not Acceptable"
 msgstr "無法接受"
 
-#: src/feed.c:812
+#: src/feed.c:840
 msgid "Proxy Authentication Required"
 msgstr "代理伺服器需要認證"
 
-#: src/feed.c:813
+#: src/feed.c:841
 msgid "Request Time-Out"
 msgstr "存取逾時"
 
-#: src/feed.c:814
+#: src/feed.c:842
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
 msgstr "完了。資源不存在。請取消訂閱!"
 
-#: src/feed.c:820
+#: src/feed.c:847
+msgid "URL is invalid"
+msgstr ""
+
+#: src/feed.c:850
+msgid "Error connecting to remote host"
+msgstr ""
+
+#: src/feed.c:851
+msgid "Hostname could not be found"
+msgstr ""
+
+#: src/feed.c:852
+msgid "Network connection was refused by the remote host"
+msgstr ""
+
+#: src/feed.c:853
+msgid "Remote host did not finish sending data"
+msgstr ""
+
+#. Transfer errors
+#: src/feed.c:855
+#, fuzzy
+msgid "Too many HTTP redirects were encountered"
+msgstr "太多 HTTP 重導! 放棄。"
+
+#: src/feed.c:858
+#, fuzzy
+msgid "Remote host sent an invalid response"
+msgstr "網站伺服器傳送了一個無效的重導!"
+
+#: src/feed.c:865
+#, fuzzy
+msgid "Authentication failed"
+msgstr "認證失敗！"
+
+#: src/feed.c:867
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr ""
+
+#: src/feed.c:873
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "饋流無法使用: 伺服器使用未支援的重導!"
 
-#: src/feed.c:821
+#: src/feed.c:874
 msgid "Client Error"
 msgstr "Client Error"
 
-#: src/feed.c:822
+#: src/feed.c:875
 msgid "Server Error"
 msgstr "Server Error"
 
-#: src/feed.c:823
-msgid "(unknown error class)"
+#: src/feed.c:876
+#, fuzzy
+msgid "(unknown networking error happened)"
 msgstr "(unknown error class)"
 
-#: src/feed.c:845
+#: src/feed.c:898
 #, fuzzy
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
@@ -318,12 +359,12 @@ msgstr "抱歉, 我無法載入任何瀏覽器模組!請藉由 --debug-all 選�
 msgid "This item does not have a link assigned!"
 msgstr "此項目沒有連結!"
 
-#: src/htmlview.c:360
+#: src/htmlview.c:362 src/htmlview.c:383
 #, fuzzy, c-format
 msgid "Browser command failed: %s"
 msgstr "瀏覽器指令失敗: %s"
 
-#: src/htmlview.c:363
+#: src/htmlview.c:365 src/htmlview.c:386
 #, fuzzy, c-format
 msgid "Starting: \"%s\""
 msgstr "啟動: \"%s\""
@@ -389,7 +430,7 @@ msgstr "更新選擇的訂閱項目或目錄下的所有訂閱項目。"
 msgid "Update _All"
 msgstr "更新全部(_A)"
 
-#: src/interface.c:231 src/ui_mainwindow.c:156
+#: src/interface.c:231 src/ui_mainwindow.c:158
 #, fuzzy
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "立即升級所有饋流 (除了目錄)。"
@@ -444,7 +485,7 @@ msgstr "項目(_I)"
 msgid "_Next Unread Item"
 msgstr "下筆未讀項目(_N)"
 
-#: src/interface.c:309 src/ui_mainwindow.c:154
+#: src/interface.c:309 src/ui_mainwindow.c:156
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1352,73 +1393,73 @@ msgstr "日期"
 msgid "Headline"
 msgstr "標題"
 
-#: src/ui_itemlist.c:577
+#: src/ui_itemlist.c:573
 #, fuzzy
 msgid "No item has been selected"
 msgstr "未選擇項目!"
 
-#: src/ui_itemlist.c:601
+#: src/ui_itemlist.c:597
 #, fuzzy
 msgid "You must select a feed to delete its items!"
 msgstr "您必須先選擇一個饋流才能刪除!"
 
-#: src/ui_itemlist.c:631
+#: src/ui_itemlist.c:627
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "內部錯誤！ could not get feed tree view selection!\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:659
 #, fuzzy
 msgid "There are no unread items "
 msgstr "沒有未讀項目!"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "New Feed"
 msgstr "新增饋流"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 #, fuzzy
 msgid "Add a new subscription."
 msgstr "新增訂閱"
 
-#: src/ui_mainwindow.c:154
+#: src/ui_mainwindow.c:156
 msgid "Next Unread"
 msgstr "下筆未讀"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid "Mark As Read"
 msgstr "全部標示為已讀"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 #, fuzzy
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
 
-#: src/ui_mainwindow.c:156
+#: src/ui_mainwindow.c:158
 #, fuzzy
 msgid "Update All"
 msgstr "更新全部(_A)"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search"
 msgstr "搜尋"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 #, fuzzy
 msgid "Search all feeds."
 msgstr "搜尋饋流"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Preferences"
 msgstr "編輯偏好"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 #, fuzzy
 msgid "Edit preferences."
 msgstr "編輯偏好"
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:174
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1441,17 +1482,17 @@ msgid ""
 "project homepage.</p>"
 msgstr ""
 
-#: src/ui_mainwindow.c:254
+#: src/ui_mainwindow.c:256
 #, fuzzy
 msgid "Liferea is now online"
 msgstr "Liferea 現為線上模式。"
 
-#: src/ui_mainwindow.c:257
+#: src/ui_mainwindow.c:259
 #, fuzzy
 msgid "Liferea is now offline"
 msgstr "Lifeare 正在離線模式！"
 
-#: src/ui_notification.c:241
+#: src/ui_notification.c:242
 #, fuzzy
 msgid "Liferea notification"
 msgstr "Lifeare 正在離線模式！"
@@ -1539,24 +1580,24 @@ msgid "/_Subscribe"
 msgstr "/訂閱(_S)"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:132
+#: src/ui_prefs.c:182
 msgid "Manual"
 msgstr ""
 
-#: src/ui_prefs.c:142
+#: src/ui_prefs.c:192
 #, fuzzy
 msgid "Browser default"
 msgstr "瀏覽器設定"
 
-#: src/ui_prefs.c:147
+#: src/ui_prefs.c:197
 msgid "Existing window"
 msgstr ""
 
-#: src/ui_prefs.c:152
+#: src/ui_prefs.c:202
 msgid "New window"
 msgstr ""
 
-#: src/ui_prefs.c:157
+#: src/ui_prefs.c:207
 msgid "New tab"
 msgstr ""
 
@@ -1576,17 +1617,17 @@ msgstr[1] "%d 個新項目"
 msgid "No new items."
 msgstr "無新項目。"
 
-#: src/update.c:104
+#: src/update.c:110
 #, fuzzy, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "無法開啟管道 \"%s\"!"
 
-#: src/update.c:118
+#: src/update.c:124
 #, fuzzy, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "無法開啟檔案 \"%s\"!"
 
-#: src/update.c:124
+#: src/update.c:130
 #, fuzzy, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "無檔案 \"%s\"!"
@@ -1624,23 +1665,14 @@ msgstr "無檔案 \"%s\"!"
 #~ msgid "socket connect"
 #~ msgstr "socket connect"
 
-#~ msgid "Too many HTTP redirects encountered! Giving up."
-#~ msgstr "太多 HTTP 重導! 放棄。"
-
 #~ msgid "Following HTTP redirects"
 #~ msgstr "跟隨 HTTP 重導中"
-
-#~ msgid "Webserver sent an invalid redirect!"
-#~ msgstr "網站伺服器傳送了一個無效的重導!"
 
 #~ msgid "The feed no longer exists. Please unsubscribe!"
 #~ msgstr "饋流已經不存在。請取消訂閱!"
 
 #~ msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
 #~ msgstr "網站伺服器回應非法的 HTTP/1.0! 我無法分析。"
-
-#~ msgid "Authentication failed!"
-#~ msgstr "認證失敗！"
 
 #~ msgid "URL does not contain authentication information!"
 #~ msgstr "URL 沒有包含認證資訊!"

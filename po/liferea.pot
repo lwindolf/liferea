@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 20:52-0400\n"
+"POT-Creation-Date: 2004-06-27 20:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -168,95 +168,132 @@ msgstr ""
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
 
-#: src/feed.c:563
+#: src/feed.c:565
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr ""
 
-#: src/feed.c:565
+#: src/feed.c:567
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr ""
 
-#: src/feed.c:661
+#: src/feed.c:672
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr ""
 
-#: src/feed.c:668
+#: src/feed.c:679
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr ""
 
-#: src/feed.c:679
+#: src/feed.c:689
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
 
-#: src/feed.c:705
+#: src/feed.c:715
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: src/feed.c:719
+#: src/feed.c:728
 #, c-format
 msgid "\"%s\" is not available"
 msgstr ""
 
-#: src/feed.c:806
+#: src/feed.c:834
 msgid "The feed no longer exists. Please unsubscribe."
 msgstr ""
 
-#: src/feed.c:807
+#: src/feed.c:835
 msgid "Payment Required"
 msgstr ""
 
-#: src/feed.c:808
+#: src/feed.c:836
 msgid "Access Forbidden"
 msgstr ""
 
-#: src/feed.c:809
+#: src/feed.c:837
 msgid "Resource Not Found"
 msgstr ""
 
-#: src/feed.c:810
+#: src/feed.c:838
 msgid "Method Not Allowed"
 msgstr ""
 
-#: src/feed.c:811
+#: src/feed.c:839
 msgid "Not Acceptable"
 msgstr ""
 
-#: src/feed.c:812
+#: src/feed.c:840
 msgid "Proxy Authentication Required"
 msgstr ""
 
-#: src/feed.c:813
+#: src/feed.c:841
 msgid "Request Time-Out"
 msgstr ""
 
-#: src/feed.c:814
+#: src/feed.c:842
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
 msgstr ""
 
-#: src/feed.c:820
+#: src/feed.c:847
+msgid "URL is invalid"
+msgstr ""
+
+#: src/feed.c:850
+msgid "Error connecting to remote host"
+msgstr ""
+
+#: src/feed.c:851
+msgid "Hostname could not be found"
+msgstr ""
+
+#: src/feed.c:852
+msgid "Network connection was refused by the remote host"
+msgstr ""
+
+#: src/feed.c:853
+msgid "Remote host did not finish sending data"
+msgstr ""
+
+#. Transfer errors
+#: src/feed.c:855
+msgid "Too many HTTP redirects were encountered"
+msgstr ""
+
+#: src/feed.c:858
+msgid "Remote host sent an invalid response"
+msgstr ""
+
+#: src/feed.c:865
+msgid "Authentication failed"
+msgstr ""
+
+#: src/feed.c:867
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr ""
+
+#: src/feed.c:873
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 
-#: src/feed.c:821
+#: src/feed.c:874
 msgid "Client Error"
 msgstr ""
 
-#: src/feed.c:822
+#: src/feed.c:875
 msgid "Server Error"
 msgstr ""
 
-#: src/feed.c:823
-msgid "(unknown error class)"
+#: src/feed.c:876
+msgid "(unknown networking error happened)"
 msgstr ""
 
-#: src/feed.c:845
+#: src/feed.c:898
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -302,12 +339,12 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr ""
 
-#: src/htmlview.c:360
+#: src/htmlview.c:362 src/htmlview.c:383
 #, c-format
 msgid "Browser command failed: %s"
 msgstr ""
 
-#: src/htmlview.c:363
+#: src/htmlview.c:365 src/htmlview.c:386
 #, c-format
 msgid "Starting: \"%s\""
 msgstr ""
@@ -371,7 +408,7 @@ msgstr ""
 msgid "Update _All"
 msgstr ""
 
-#: src/interface.c:231 src/ui_mainwindow.c:156
+#: src/interface.c:231 src/ui_mainwindow.c:158
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 
@@ -425,7 +462,7 @@ msgstr ""
 msgid "_Next Unread Item"
 msgstr ""
 
-#: src/interface.c:309 src/ui_mainwindow.c:154
+#: src/interface.c:309 src/ui_mainwindow.c:156
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1257,65 +1294,65 @@ msgstr ""
 msgid "Headline"
 msgstr ""
 
-#: src/ui_itemlist.c:577
+#: src/ui_itemlist.c:573
 msgid "No item has been selected"
 msgstr ""
 
-#: src/ui_itemlist.c:601
+#: src/ui_itemlist.c:597
 msgid "You must select a feed to delete its items!"
 msgstr ""
 
-#: src/ui_itemlist.c:631
+#: src/ui_itemlist.c:627
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:659
 msgid "There are no unread items "
 msgstr ""
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "New Feed"
 msgstr ""
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "Add a new subscription."
 msgstr ""
 
-#: src/ui_mainwindow.c:154
+#: src/ui_mainwindow.c:156
 msgid "Next Unread"
 msgstr ""
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid "Mark As Read"
 msgstr ""
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
 
-#: src/ui_mainwindow.c:156
+#: src/ui_mainwindow.c:158
 msgid "Update All"
 msgstr ""
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search"
 msgstr ""
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search all feeds."
 msgstr ""
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Preferences"
 msgstr ""
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Edit preferences."
 msgstr ""
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:174
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1338,15 +1375,15 @@ msgid ""
 "project homepage.</p>"
 msgstr ""
 
-#: src/ui_mainwindow.c:254
+#: src/ui_mainwindow.c:256
 msgid "Liferea is now online"
 msgstr ""
 
-#: src/ui_mainwindow.c:257
+#: src/ui_mainwindow.c:259
 msgid "Liferea is now offline"
 msgstr ""
 
-#: src/ui_notification.c:241
+#: src/ui_notification.c:242
 msgid "Liferea notification"
 msgstr ""
 
@@ -1431,23 +1468,23 @@ msgid "/_Subscribe"
 msgstr ""
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:132
+#: src/ui_prefs.c:182
 msgid "Manual"
 msgstr ""
 
-#: src/ui_prefs.c:142
+#: src/ui_prefs.c:192
 msgid "Browser default"
 msgstr ""
 
-#: src/ui_prefs.c:147
+#: src/ui_prefs.c:197
 msgid "Existing window"
 msgstr ""
 
-#: src/ui_prefs.c:152
+#: src/ui_prefs.c:202
 msgid "New window"
 msgstr ""
 
-#: src/ui_prefs.c:157
+#: src/ui_prefs.c:207
 msgid "New tab"
 msgstr ""
 
@@ -1467,17 +1504,17 @@ msgstr[1] ""
 msgid "No new items."
 msgstr ""
 
-#: src/update.c:104
+#: src/update.c:110
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr ""
 
-#: src/update.c:118
+#: src/update.c:124
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr ""
 
-#: src/update.c:124
+#: src/update.c:130
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr ""

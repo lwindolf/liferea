@@ -69,20 +69,21 @@ typedef void (*request_cb)(struct request *request);
 struct request {
 	
 	/* Set by requester */
-	gchar *source; /**< Location of the source. If it starts with
-				   '|', it is a command. If it contains "://",
-				   then it is parsed as a URL, otherwise it is a
-				   filename. Eventually, everything should be a
-				   URL. Use file:// and exec:// */
-	gchar *filtercmd; /**< Command will filter output of URL */
-	request_cb callback; /**< Function to be called after retreival */
-	gpointer user_data; /**< Accessed by the callback. Would contain a feedPtr for the feed_process_request_result callbacks. */
-	guint32 flags; /**< Flags to be passed to the callback */
+	gchar *source;		/**< Location of the source. If it starts with
+				     '|', it is a command. If it contains "://",
+				     then it is parsed as a URL, otherwise it is a
+				     filename. Eventually, everything should be a
+				     URL. Use file:// and exec:// */
+	gchar *filtercmd;	/**< Command will filter output of URL */
+	request_cb callback;	/**< Function to be called after retreival */
+	gpointer user_data;	/**< Accessed by the callback. Would contain a feedPtr for the feed_process_request_result callbacks. */
+	guint32 flags;		/**< Flags to be passed to the callback */
+	gint priority;		/**< priority of the request */
 	
 	/* Set by download system*/
 	int returncode;
-	int httpstatus; /**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
-	GTimeVal lastmodified; /**< Time of last modification. Stored in UTC? */
+	int httpstatus;		/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
+	GTimeVal lastmodified;	/**< Time of last modification. Stored in UTC? */
 	gchar *data;
 	size_t size;
 };

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 20:52-0400\n"
+"POT-Creation-Date: 2004-06-27 20:03+0200\n"
 "PO-Revision-Date: 2004-05-25 15:00+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian <LL@li.org>\n"
@@ -187,27 +187,27 @@ msgstr ""
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Произошла ошибка во время парсинга файла кэша \"%s\"!"
 
-#: src/feed.c:563
+#: src/feed.c:565
 #, fuzzy, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" не имеет новых новостей."
 
-#: src/feed.c:565
+#: src/feed.c:567
 #, fuzzy, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" имеет %d новость(и)(ей)."
 
-#: src/feed.c:661
+#: src/feed.c:672
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не изменился с момента последнего обновления."
 
-#: src/feed.c:668
+#: src/feed.c:679
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL для \"%s\" изменился на постоянный и был обновлён."
 
-#: src/feed.c:679
+#: src/feed.c:689
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
@@ -216,72 +216,113 @@ msgstr ""
 "Невозможно определить тип этой ленты новостей! Пожалуйста, проверьте "
 "указывает ли URL на ресурс, доступный в одном из поддерживаемых форматах!"
 
-#: src/feed.c:705
+#: src/feed.c:715
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" обновлён..."
 
-#: src/feed.c:719
+#: src/feed.c:728
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступен!"
 
-#: src/feed.c:806
+#: src/feed.c:834
 #, fuzzy
 msgid "The feed no longer exists. Please unsubscribe."
 msgstr "Лента новостей больше не существует. Пожалуйста, отмените подписку!"
 
-#: src/feed.c:807
+#: src/feed.c:835
 msgid "Payment Required"
 msgstr "Необходим Платёж"
 
-#: src/feed.c:808
+#: src/feed.c:836
 msgid "Access Forbidden"
 msgstr "Доступ Запрещён"
 
-#: src/feed.c:809
+#: src/feed.c:837
 msgid "Resource Not Found"
 msgstr "Ресурс Не Найден"
 
-#: src/feed.c:810
+#: src/feed.c:838
 msgid "Method Not Allowed"
 msgstr "Метод Не Разрешён"
 
-#: src/feed.c:811
+#: src/feed.c:839
 msgid "Not Acceptable"
 msgstr "Не Допустимо"
 
-#: src/feed.c:812
+#: src/feed.c:840
 msgid "Proxy Authentication Required"
 msgstr "Необходима Прокси-Аутентификация"
 
-#: src/feed.c:813
+#: src/feed.c:841
 msgid "Request Time-Out"
 msgstr "Запрос Превысил Время Ожидания Ответа"
 
-#: src/feed.c:814
+#: src/feed.c:842
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
 msgstr "Не найдено. Ресурс не существует. Пожалуйста, отмените подписку!"
 
-#: src/feed.c:820
+#: src/feed.c:847
+msgid "URL is invalid"
+msgstr ""
+
+#: src/feed.c:850
+msgid "Error connecting to remote host"
+msgstr ""
+
+#: src/feed.c:851
+msgid "Hostname could not be found"
+msgstr ""
+
+#: src/feed.c:852
+msgid "Network connection was refused by the remote host"
+msgstr ""
+
+#: src/feed.c:853
+msgid "Remote host did not finish sending data"
+msgstr ""
+
+#. Transfer errors
+#: src/feed.c:855
+#, fuzzy
+msgid "Too many HTTP redirects were encountered"
+msgstr "Встречено слишком много перенаправлений HTTP! Сдаюсь."
+
+#: src/feed.c:858
+#, fuzzy
+msgid "Remote host sent an invalid response"
+msgstr "Вебсервер послал неверное перенаправление!"
+
+#: src/feed.c:865
+#, fuzzy
+msgid "Authentication failed"
+msgstr "Аутентификация прошла неудачно!"
+
+#: src/feed.c:867
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr ""
+
+#: src/feed.c:873
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Лента новостей недоступна: Сервер запросил неподдерживаемое перенаправление!"
 
-#: src/feed.c:821
+#: src/feed.c:874
 msgid "Client Error"
 msgstr "Ошибка клиента"
 
-#: src/feed.c:822
+#: src/feed.c:875
 msgid "Server Error"
 msgstr "Ошибка Сервера"
 
-#: src/feed.c:823
-msgid "(unknown error class)"
+#: src/feed.c:876
+#, fuzzy
+msgid "(unknown networking error happened)"
 msgstr "(неизвестный класс ошибки)"
 
-#: src/feed.c:845
+#: src/feed.c:898
 #, fuzzy
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
@@ -341,12 +382,12 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "Этот элемент не имеет закреплённой ссылки!"
 
-#: src/htmlview.c:360
+#: src/htmlview.c:362 src/htmlview.c:383
 #, fuzzy, c-format
 msgid "Browser command failed: %s"
 msgstr "ошибка команды браузера: %s"
 
-#: src/htmlview.c:363
+#: src/htmlview.c:365 src/htmlview.c:386
 #, fuzzy, c-format
 msgid "Starting: \"%s\""
 msgstr "запуск: \"%s\""
@@ -412,7 +453,7 @@ msgstr "Обновляет выбранные подписки или все п�
 msgid "Update _All"
 msgstr "Обновить _Всё"
 
-#: src/interface.c:231 src/ui_mainwindow.c:156
+#: src/interface.c:231 src/ui_mainwindow.c:158
 #, fuzzy
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Немедленно обновляет все подписки (исключая папки)."
@@ -469,7 +510,7 @@ msgstr "_Новости"
 msgid "_Next Unread Item"
 msgstr "_Следующая Непрочитанная Новость"
 
-#: src/interface.c:309 src/ui_mainwindow.c:154
+#: src/interface.c:309 src/ui_mainwindow.c:156
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1415,45 +1456,45 @@ msgstr "Дата"
 msgid "Headline"
 msgstr "Заголовок"
 
-#: src/ui_itemlist.c:577
+#: src/ui_itemlist.c:573
 #, fuzzy
 msgid "No item has been selected"
 msgstr "Ни одна новость не выбрана!"
 
-#: src/ui_itemlist.c:601
+#: src/ui_itemlist.c:597
 #, fuzzy
 msgid "You must select a feed to delete its items!"
 msgstr "Вы должно выбрать ленту новостей, чтобы удалить её элементы!"
 
-#: src/ui_itemlist.c:631
+#: src/ui_itemlist.c:627
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "внутренняя ошибка! невозможно получить древовидный диалог выбора ленты "
 "новостей!\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:659
 #, fuzzy
 msgid "There are no unread items "
 msgstr "Нет непрочитанных новостей!"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "New Feed"
 msgstr "Новая Лента Новостей"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 #, fuzzy
 msgid "Add a new subscription."
 msgstr "Новая Подписка"
 
-#: src/ui_mainwindow.c:154
+#: src/ui_mainwindow.c:156
 msgid "Next Unread"
 msgstr "Следующая Непрочитанная Новость"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid "Mark As Read"
 msgstr "Пометить Как Прочитанные"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1461,30 +1502,30 @@ msgstr ""
 "Пометить все элементы выбранной подписки или всех подписок выбранной папки "
 "как прочитанные."
 
-#: src/ui_mainwindow.c:156
+#: src/ui_mainwindow.c:158
 #, fuzzy
 msgid "Update All"
 msgstr "Обновить _Всё"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search"
 msgstr "Поиск"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 #, fuzzy
 msgid "Search all feeds."
 msgstr "Поиск в лентах новостей"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 #, fuzzy
 msgid "Edit preferences."
 msgstr "Редактировать настройки"
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:174
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1507,17 +1548,17 @@ msgid ""
 "project homepage.</p>"
 msgstr ""
 
-#: src/ui_mainwindow.c:254
+#: src/ui_mainwindow.c:256
 #, fuzzy
 msgid "Liferea is now online"
 msgstr "Liferea подключена."
 
-#: src/ui_mainwindow.c:257
+#: src/ui_mainwindow.c:259
 #, fuzzy
 msgid "Liferea is now offline"
 msgstr "Liferea отключена!"
 
-#: src/ui_notification.c:241
+#: src/ui_notification.c:242
 #, fuzzy
 msgid "Liferea notification"
 msgstr "Liferea отключена!"
@@ -1605,23 +1646,23 @@ msgid "/_Subscribe"
 msgstr "/_Подписаться"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:132
+#: src/ui_prefs.c:182
 msgid "Manual"
 msgstr ""
 
-#: src/ui_prefs.c:142
+#: src/ui_prefs.c:192
 msgid "Browser default"
 msgstr ""
 
-#: src/ui_prefs.c:147
+#: src/ui_prefs.c:197
 msgid "Existing window"
 msgstr ""
 
-#: src/ui_prefs.c:152
+#: src/ui_prefs.c:202
 msgid "New window"
 msgstr ""
 
-#: src/ui_prefs.c:157
+#: src/ui_prefs.c:207
 msgid "New tab"
 msgstr ""
 
@@ -1641,17 +1682,17 @@ msgstr[1] "%d новый(х) элемент(ов)(а)"
 msgid "No new items."
 msgstr "Нет новостей."
 
-#: src/update.c:104
+#: src/update.c:110
 #, fuzzy, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Невозможно открыть канал \"%s\"!"
 
-#: src/update.c:118
+#: src/update.c:124
 #, fuzzy, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Невозможно открыть файл \"%s\"!"
 
-#: src/update.c:124
+#: src/update.c:130
 #, fuzzy, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Не существует файла \"%s\"!"
@@ -1693,14 +1734,8 @@ msgstr "Не существует файла \"%s\"!"
 #~ msgid "socket connect"
 #~ msgstr "соединение сокета"
 
-#~ msgid "Too many HTTP redirects encountered! Giving up."
-#~ msgstr "Встречено слишком много перенаправлений HTTP! Сдаюсь."
-
 #~ msgid "Following HTTP redirects"
 #~ msgstr "Следующие перенаправления HTTP"
-
-#~ msgid "Webserver sent an invalid redirect!"
-#~ msgstr "Вебсервер послал неверное перенаправление!"
 
 #~ msgid "The feed no longer exists. Please unsubscribe!"
 #~ msgstr "Лента новостей больше не существует. Пожалуйста, отмените подписку!"
@@ -1708,9 +1743,6 @@ msgstr "Не существует файла \"%s\"!"
 #~ msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
 #~ msgstr ""
 #~ "Вебсервер %s послал запрещённый HTTP/1.0 ответ! Я не могу парсить его."
-
-#~ msgid "Authentication failed!"
-#~ msgstr "Аутентификация прошла неудачно!"
 
 #~ msgid "URL does not contain authentication information!"
 #~ msgstr "URL не содержит информации об аутентификации!"

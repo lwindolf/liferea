@@ -28,10 +28,12 @@
 #include "ui_mainwindow.h"
 #include "net/downloadlib.h"
 
-#define DEFAULT_UPDATE_THREAD_CONCURRENCY	3
+/* must never be less than 2, because first thread works exclusivly on high prio requests */
+#define DEFAULT_UPDATE_THREAD_CONCURRENCY	4
 
 /* communication queues for requesting updates and sending the results */
-GAsyncQueue	*requests = NULL;
+GAsyncQueue	*requests_high_prio = NULL;
+GAsyncQueue	*requests_normal_prio = NULL;
 GAsyncQueue	*results = NULL;
 
 /* condition mutex for offline mode */
@@ -177,17 +179,18 @@ void download_init(void) {
 
 	downloadlib_init();
 	
-	requests = g_async_queue_new();
+	requests_high_prio = g_async_queue_new();
+	requests_normal_prio = g_async_queue_new();
 	results = g_async_queue_new();
 	
 	offline_cond = g_cond_new();
 	cond_mutex = g_mutex_new();
 		
-	if(0 == (count = getNumericConfValue(UPDATE_THREAD_CONCURRENCY)))
+	if(1 >= (count = getNumericConfValue(UPDATE_THREAD_CONCURRENCY)))
 		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
 	
 	for(i = 0; i < count; i++)
-		g_thread_create(download_thread_main, NULL, FALSE, NULL);
+		g_thread_create(download_thread_main, (void *)(i == 0), FALSE, NULL);
 
 	/* setup the processing of feed update results */
 	ui_timeout_add(100, download_dequeuer, NULL);
@@ -195,6 +198,7 @@ void download_init(void) {
 
 static void *download_thread_main(void *data) {
 	struct request	*request;
+	gboolean	high_priority = (gboolean)data;
 
 	for(;;)	{	
 		/* block updating if we are offline */
@@ -209,7 +213,12 @@ static void *download_thread_main(void *data) {
 		
 		/* do update processing */
 		debug0(DEBUG_UPDATE, "waiting for request...");
-		request = g_async_queue_pop(requests);
+		if(high_priority) {
+			request = g_async_queue_pop(requests_high_prio);
+		} else {
+			request = g_async_queue_try_pop(requests_high_prio);
+			if(NULL == request) request = g_async_queue_pop(requests_normal_prio);
+		}
 		g_assert(NULL != request);
 		debug1(DEBUG_UPDATE, "processing received request (%s)", request->source);
 		if (request->callback == NULL) {
@@ -228,7 +237,11 @@ static void *download_thread_main(void *data) {
 void download_queue(struct request *new_request) {
 
 	g_assert(NULL != new_request);
-	g_async_queue_push(requests, new_request);
+	
+	if(new_request->flags & FEED_REQ_PRIORITY_HIGH)
+		g_async_queue_push(requests_high_prio, new_request);
+	else
+		g_async_queue_push(requests_normal_prio, new_request);
 }
 
 void download_set_online(gboolean mode) {
