@@ -155,9 +155,9 @@ static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 		}
 	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
 		if(NULL != (output = getOutlineList(string))) {
-			addToHTMLBuffer(&buffer, BLOGROLL_START);
+			addToHTMLBuffer(&buffer, MYSUBSCR_START);
 			addToHTMLBuffer(&buffer, output);
-			addToHTMLBuffer(&buffer, BLOGROLL_END);
+			addToHTMLBuffer(&buffer, MYSUBSCR_END);
 			g_free(output);
 		}
 	} else if(!xmlStrcmp("blink", cur->name)) {
