@@ -169,6 +169,10 @@ static gint saveFeed(feedPtr fp) {
 			tmp = g_strdup_printf("%d", fp->defaultInterval);
 			xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
 			g_free(tmp);
+			
+			tmp = g_strdup_printf("%d", (TRUE == fp->available)?1:0);
+			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
+			g_free(tmp);
 
 			itemlist = getFeedItemList(fp);
 			while(NULL != itemlist) {
@@ -268,6 +272,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		}
 		
 		fp = getNewFeedStruct();
+		fp->available = TRUE;
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "feedDescription"))) 
@@ -279,7 +284,12 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 				fp->defaultInterval = atoi(tmp);
 				xmlFree(tmp);
 			}
-			
+			if (!xmlStrcmp(cur->name, (const xmlChar *)"feedStatus")) {
+				tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
+				xmlFree(tmp);
+			}
+
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "item"))) {
 				ip = parseCacheItem(doc, cur);
 				addItem(fp, ip);
@@ -287,7 +297,6 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 			
 			cur = cur->next;
 		}
-		fp->available = TRUE;
 
 		break;
 	}

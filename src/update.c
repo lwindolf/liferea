@@ -127,6 +127,7 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		} else {
 			print_status(g_strdup_printf(_("\"%s\" is not available!"), source));
 			freeFeed(new_fp);
+			fp->available = FALSE;
 			return;
 		}
 
