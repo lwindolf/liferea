@@ -570,6 +570,7 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDia
 		
 		parent = ui_feedlist_get_target_folder(&pos);
 		ui_folder_add_feed(parent, fp, pos);
+		ui_feedlist_select((nodePtr)fp);
 		
 		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
 		if(data == NULL) {

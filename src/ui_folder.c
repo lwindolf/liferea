@@ -78,6 +78,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* add the new folder to the model */
 		parent = ui_feedlist_get_target_folder(&pos);
 		ui_add_folder(parent, folder, pos);
+		ui_feedlist_select((nodePtr)folder);
 	} else {
 		g_warning("internal error! could not get a new folder key!");
 	}	
