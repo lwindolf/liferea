@@ -82,7 +82,7 @@ static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	}
 }
 
-static gchar * doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
+static void doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
 	gchar		*output;
 	gchar		*key;
 	

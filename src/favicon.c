@@ -26,6 +26,7 @@
 
 #include <glib.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -386,21 +387,22 @@ convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen)
 
 void loadFavIcon(feedPtr fp) {
 	gchar		*filename, *tmp;
-	struct stat	statinfo;
+	GdkPixbuf	*pixbuf;
 	
 	/* try to load a saved favicon */
 	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		/* remove path, because create_pixbuf allows no absolute pathnames */
 		tmp = strrchr(filename, '/');
-		fp->icon = gdk_pixbuf_scale_simple(create_pixbuf(++tmp), 16, 16, GDK_INTERP_BILINEAR);
+		pixbuf = create_pixbuf(++tmp);
+		fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
+		g_object_unref(pixbuf);
 	}
 	g_free(filename);
 }
 
 void removeFavIcon(feedPtr fp) {
 	gchar		*filename;
-	struct stat	statinfo;
 	
 	/* try to load a saved favicon */
 	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
