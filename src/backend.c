@@ -343,7 +343,7 @@ static void checkForEmptyFolder(gpointer key, gpointer value, gpointer user_data
 			   FS_TITLE, _("(empty)"),
 			   FS_KEY, "empty",
 			   FS_TYPE, FST_EMPTY,
-			   -1);	
+			   -1);
 		return;
 	}
 	
@@ -912,7 +912,8 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 		}
 
 		/* add key to new key list */
-		if(!IS_NODE(tmp_type) && (tmp_type != FST_EMPTY)) {
+		if(!IS_NODE(tmp_type) && (tmp_type != FST_EMPTY) &&
+		   (NULL == strstr(tmp_key, "help"))) {
 			new_value = gconf_value_new(GCONF_VALUE_STRING);
 			if(found)
 				gconf_value_set_string(new_value, new_key);
