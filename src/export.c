@@ -228,16 +228,22 @@ static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
 
 				ruleId = xmlGetProp(cur, BAD_CAST"rule");
 				value = xmlGetProp(cur, BAD_CAST"value");
-				
-				debug3(DEBUG_CACHE, "loading rule \"%s\" \"%s\" \"%s\"\n", type, ruleId, value);
-
 				additive = xmlGetProp(cur, BAD_CAST"additive");
-				if(additive != NULL && !xmlStrcmp(additive, BAD_CAST"true"))
-					vfolder_add_rule(vp, ruleId, value, TRUE);
-				else
-					vfolder_add_rule(vp, ruleId, value, FALSE);
+
+				if((NULL != ruleId) && (NULL != value)) {			
+					debug3(DEBUG_CACHE, "loading rule \"%s\" \"%s\" \"%s\"\n", type, ruleId, value);
+
+					if(additive != NULL && !xmlStrcmp(additive, BAD_CAST"true"))
+						vfolder_add_rule(vp, ruleId, value, TRUE);
+					else
+						vfolder_add_rule(vp, ruleId, value, FALSE);
+				} else {
+					g_warning("ignoring invalid rule entry in feed list...\n");
+				}
+				
 				xmlFree(ruleId);
 				xmlFree(value);
+				xmlFree(additive);
 			}
 			xmlFree(type);
 		}
@@ -306,17 +312,17 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		if(trusted)
 			id = xmlGetProp(cur, BAD_CAST"id");
 
-		fp = feed_new();
-		
 		/* get type attribute and use it to assign a value to
 		   fhp. fhp will default to NULL. */
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
-		fp->fhp = feed_type_str_to_fhp(typeStr);
 		if((NULL != typeStr) && (0 == strcmp("vfolder", typeStr))) {
 			dontParseChildren = TRUE;
-			feed_set_type(fp, FST_VFOLDER);	/* should prevent feed_load to do anything */
+			fp = vfolder_new();
 			import_parse_children_as_rules(cur, fp);
+		} else {
+			fp = feed_new();
 		}
+		fp->fhp = feed_type_str_to_fhp(typeStr);
 
 		/* Set the cache limit */
 		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
