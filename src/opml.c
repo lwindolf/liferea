@@ -66,34 +66,39 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	gchar		*buffer = NULL;
 	gchar		*tmp, *value;
 	xmlAttrPtr	attr;
+	xmlChar 	*string;
 
 	attr = cur->properties;
 	while(NULL != attr) {
 		/* get prop value */
-		value = CONVERT(xmlGetNoNsProp(cur, attr->name));
+ 		string = xmlGetNoNsProp(cur, attr->name);
+		if(NULL != string) {
+	 		value = CONVERT(string);
+ 			xmlFree(string);
 
-		if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
-			tmp = g_strdup_printf("<p>%s</p>", value);
-			addToHTMLBuffer(&buffer, tmp);
-			g_free(tmp);
-		} else if(!xmlStrcmp(attr->name, BAD_CAST"isComment")) {
-			/* don't output anything */
-			
-		} else if(!xmlStrcmp(attr->name, BAD_CAST"type")) {
-			/* don't output anything */
-			
-		} else if(!xmlStrcmp(attr->name, BAD_CAST"url")) {		
-			tmp = g_strdup_printf("<a href=\"%s\">%s</a>", value, value);
-			addToHTMLBuffer(&buffer, tmp);
-			g_free(tmp);
-			
-		} else {		
-			tmp = g_strdup_printf("<p>%s : %s\n</p>", (gchar *)attr->name, value);
-			addToHTMLBuffer(&buffer, tmp);
-			g_free(tmp);
+			if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
+				tmp = g_strdup_printf("<p>%s</p>", value);
+				addToHTMLBuffer(&buffer, tmp);
+				g_free(tmp);
+			} else if(!xmlStrcmp(attr->name, BAD_CAST"isComment")) {
+				/* don't output anything */
+
+			} else if(!xmlStrcmp(attr->name, BAD_CAST"type")) {
+				/* don't output anything */
+
+			} else if(!xmlStrcmp(attr->name, BAD_CAST"url")) {		
+				tmp = g_strdup_printf("<a href=\"%s\">%s</a>", value, value);
+				addToHTMLBuffer(&buffer, tmp);
+				g_free(tmp);
+
+			} else {		
+				tmp = g_strdup_printf("<p>%s : %s\n</p>", (gchar *)attr->name, value);
+				addToHTMLBuffer(&buffer, tmp);
+				g_free(tmp);
+			}
+
+			g_free(value);
 		}
-		
-		xmlFree(value);
 		attr = attr->next;
 	}
 	addToHTMLBuffer(&buffer, "<br><br>");
@@ -120,6 +125,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 static void readOPML(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, child;
+	xmlChar 	*string;
 	itemPtr		ip;
 	gchar		*buffer, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
@@ -165,11 +171,16 @@ static void readOPML(feedPtr fp) {
 				while(child != NULL) {
 					for(i = 0; i < OPML_MAX_TAG; i++) {
 						if (!xmlStrcmp(child->name, (const xmlChar *)opmlTagList[i])) {
-							tmp = headTags[i];
-							if(NULL == (headTags[i] = CONVERT(xmlNodeListGetString(doc, child->xmlChildrenNode, 1)))) {
-								headTags[i] = tmp;
-							} else {
-								g_free(tmp);
+							string = xmlNodeListGetString(doc, child->xmlChildrenNode, 1);
+							if(NULL != string) {
+								tmp = headTags[i];
+								
+								if(NULL == (headTags[i] = CONVERT(string))) {
+									headTags[i] = tmp;
+								} else {
+									g_free(tmp);
+								}
+								xmlFree(string);
 							}
 						}		
 					}

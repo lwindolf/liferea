@@ -127,13 +127,14 @@ void displayItem(itemPtr ip) {
 	addToHTMLBuffer(&buffer, ip->description);
 	writeHTML(buffer);
 	finishHTML(&buffer);
+	g_free(buffer);
 	
 	markItemAsRead(ip);
 }
 
 itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
-	itemPtr ip;
-	gchar	*tmp;
+	itemPtr 	ip;
+	xmlChar 	*string;
 	
 	g_assert(NULL != doc);
 	g_assert(NULL != cur);
@@ -142,33 +143,33 @@ itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
 	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
+ 		string = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);		
+		
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"title"))
-			ip->title = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"description"))
-			ip->description = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"source"))
-			ip->source = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"id"))
-			ip->id = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			ip->title = g_strdup(string);
 			
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"readStatus")) {
-			tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
-			xmlFree(tmp);
-		}
+		else if (!xmlStrcmp(cur->name, (const xmlChar *)"description"))
+			ip->description = g_strdup(string);
+			
+		else if (!xmlStrcmp(cur->name, (const xmlChar *)"source"))
+			ip->source = g_strdup(string);
+			
+		else if (!xmlStrcmp(cur->name, (const xmlChar *)"id"))
+			ip->id = g_strdup(string);
+			
+		else if (!xmlStrcmp(cur->name, (const xmlChar *)"readStatus"))
+			ip->readStatus = (0 == atoi(string))?FALSE:TRUE;		
 
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"mark")) {
-			tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-			ip->marked = (1 == atoi(tmp))?TRUE:FALSE;
-			xmlFree(tmp);
-		}
-				
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"time")) {
-			tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);			
-			ip->time = atol(tmp);
-			xmlFree(tmp);
-		}
+		else if (!xmlStrcmp(cur->name, (const xmlChar *)"mark")) 
+			ip->marked = (1 == atoi(string))?TRUE:FALSE;
 			
+		else if (!xmlStrcmp(cur->name, (const xmlChar *)"time"))
+			ip->time = atol(string);
+		
+		if (string != NULL) {
+ 			xmlFree (string);
+  		}
+		
 		cur = cur->next;
 	}
 		

@@ -92,6 +92,7 @@ void clearHTMLView(void) {
 	startHTML(&buffer, FALSE);
 	finishHTML(&buffer); 
 	writeHTML(buffer);
+	g_free(buffer);
 }
 
 /* does all preparations before outputting HTML */

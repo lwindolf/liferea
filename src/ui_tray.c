@@ -57,8 +57,9 @@ void setTrayToolTip(gchar *string) {
 		
 	   	gtk_tooltips_set_tip(GTK_TOOLTIPS(tray_icon_tips), 
 				     GTK_WIDGET(eventbox),
-				     string, g_strdup(string));
+				     string, string);
 	}
+	g_free(string);
 }
 
 static void setTrayIcon(GdkPixbuf *icon) {

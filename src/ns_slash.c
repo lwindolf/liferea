@@ -74,12 +74,18 @@ static void ns_slash_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *ta
 }
 
 static void ns_slash_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+	xmlChar		*string;
 	int 		i;
 	
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
-			ns_slash_addInfoStruct(ip->nsinfos, taglist[i], CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+ 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+ 			if(NULL != string) {
+	 			ns_slash_addInfoStruct(ip->nsinfos, taglist[i], CONVERT(string));
+ 				xmlFree(string);
+ 			}
+			return;
 		}
 	}
 }

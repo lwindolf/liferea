@@ -64,19 +64,25 @@ static void ns_ag_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 
 static void ns_ag_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	gchar	*date, *tmp;
+	xmlChar	*string;
 	
+	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 	if(!xmlStrcmp("source", cur->name)) 
-		ns_ag_addInfoStruct(ip->nsinfos, "source", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		ns_ag_addInfoStruct(ip->nsinfos, "source", CONVERT(string));
 
 	if(!xmlStrcmp("sourceURL", cur->name)) 
-		ns_ag_addInfoStruct(ip->nsinfos, "sourceURL", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		ns_ag_addInfoStruct(ip->nsinfos, "sourceURL", CONVERT(string));
 		
 	if(!xmlStrcmp("timestamp", cur->name)) {
-		tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		tmp = CONVERT(string);
 		date = formatDate(parseISO8601Date(tmp));
 		g_free(tmp);
 		ns_ag_addInfoStruct(ip->nsinfos, "timestamp", date);
 	}
+	
+	if(NULL != string) {
+ 		xmlFree(string);
+  	}
 }
 
 static gchar * ns_ag_doOutput(GHashTable *nsinfos) {

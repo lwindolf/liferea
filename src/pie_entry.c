@@ -63,16 +63,20 @@ extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 /* <content> tag support, FIXME: base64 not supported */
 static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 	gchar	*mode;
+	xmlChar *string;
 
 	g_assert(NULL != cur);
 	if((NULL == i->tags[PIE_ENTRY_DESCRIPTION]) || (TRUE == i->summary)) {
 		
 		if(NULL != (mode = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"mode")))) {
 			if(!strcmp(mode, BAD_CAST"escaped")) {
-				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
-				i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				i->summary = FALSE;
-
+ 				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				if(NULL != string) {
+					g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
+					i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(string);
+					i->summary = FALSE;
+					xmlFree(string);
+				}
 			} else if(!strcmp(mode, BAD_CAST"xml")) {
 				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
 				i->tags[PIE_ENTRY_DESCRIPTION] = extractHTMLNode(cur);
@@ -94,6 +98,7 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 /* method to parse standard tags for each item element */
 itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	gchar			*tmp2, *tmp = NULL;
+	xmlChar 		*string;
 	parseEntryTagFunc	fp;
 	PIENsHandler		*nsh;	
 	PIEEntryPtr 		i;
@@ -130,9 +135,14 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 
 		// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
 		if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
-			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			i->time = parseISO8601Date(tmp);
-			cur = cur->next;		
+ 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+ 			if(NULL != string) {
+				tmp = CONVERT(string);
+				xmlFree(string);
+				
+				i->time = parseISO8601Date(tmp);
+				cur = cur->next;
+			}
 			continue;
 		}
 		
@@ -168,10 +178,14 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 			
 		/* <summary> can be used for short text descriptions, if there is no
 		   <content> description we show the <summary> content */
-		if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {			
 			if(NULL == i->tags[PIE_ENTRY_DESCRIPTION]) {
-				i->summary = TRUE;
-				i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				if(NULL != string) {
+					i->summary = TRUE;
+					i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(string);
+					xmlFree(string);
+				}
 			}
 			cur = cur->next;		
 			continue;
@@ -181,11 +195,15 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 		for(j = 0; j < PIE_ENTRY_MAX_TAG; j++) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)entryTagList[j])) {
-				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
-					i->tags[j] = tmp;
-				} else {
-					g_free(tmp);
+				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);	
+				if(NULL != string) {
+					tmp = i->tags[j];
+					if(NULL == (i->tags[j] = CONVERT(string))) {
+						i->tags[j] = tmp;
+					} else {
+						g_free(tmp);
+					}
+					xmlFree(string);
 				}
 			}		
 		}		

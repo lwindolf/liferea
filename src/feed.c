@@ -257,9 +257,11 @@ gint saveFeed(feedPtr fp) {
 					break;
 			}
 		} else {
-			g_warning(_("could not create XML feed node for feed cache document!"));				error = 1;
+			g_warning(_("could not create XML feed node for feed cache document!"));
+			error = 1;
 		}
 		xmlSaveFormatFileEnc(filename, doc, NULL, 1);
+		g_free(filename);
 	} else {
 		g_warning(_("could not create XML document!"));
 		error = 1;
@@ -293,7 +295,8 @@ void saveAllFeeds(void) {
 static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
-	gchar		*filename, *tmp;
+	gchar		*filename;
+	xmlChar		*string;
 	feedPtr		fp = NULL;
 	itemPtr		ip;
 
@@ -325,25 +328,27 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		fp->keyprefix = keyprefix;
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
+			string = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+
 			if(!xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
-				fp->description = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+				fp->description = g_strdup(string);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
-				fp->title = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+				fp->title = g_strdup(string);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
-				tmp = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-				fp->defaultInterval = atoi(tmp);
-				xmlFree(tmp);
+				fp->defaultInterval = atoi(string);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
-				tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
-				xmlFree(tmp);
+				fp->available = (0 == atoi(string))?FALSE:TRUE;
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
-				((struct feed_request *)(fp->request))->lastmodified = 
-				g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+				((struct feed_request *)(fp->request))->lastmodified = g_strdup(string);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				ip = parseCacheItem(doc, cur);
 				addItem(fp, ip);
 			}			
+
+			if (NULL != string) {
+				xmlFree(string);
+			}
+			
 			cur = cur->next;
 		}
 		break;
@@ -490,6 +495,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 	GSList		*new_list, *old_list, *diff_list = NULL;
 	itemPtr		new_ip, old_ip;
+	gchar 		*status;
 	gboolean	found, equal;
 	gint		newcount = 0;
 	gint		traycount = 0;
@@ -597,10 +603,13 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 			g_slist_free(new_fp->items);	/* dispose new item list */
 			
 			if(NULL == diff_list)
-				print_status(g_strdup_printf(_("\"%s\" has no new items."), old_fp->title));
+				status = g_strdup_printf(_("\"%s\" has no new items."), old_fp->title);
 			else 
-				print_status(g_strdup_printf(_("\"%s\" has %d new items."), old_fp->title, newcount));
+				status = g_strdup_printf(_("\"%s\" has %d new items."), old_fp->title, newcount);
 			
+			print_status(status);
+			g_free(status);
+
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
 		} else {
@@ -625,6 +634,7 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 	old_fp->defaultInterval = new_fp->defaultInterval;
 	g_free(new_fp->source);
 	g_free(new_fp->title);
+	g_free(new_fp->data);
 	g_free(new_fp);			/* dispose new feed structure */
 	
 	doTrayIcon(traycount);		/* finally update the tray icon */
@@ -647,8 +657,9 @@ void removeFeed(feedPtr fp) {
 /* "foreground" user caused update executed in the main thread to update
    the selected and displayed feed */
 void updateFeed(feedPtr fp) {
-	
-	print_status(g_strdup_printf("updating \"%s\"", getFeedTitle(fp)));
+	gchar *string = g_strdup_printf("updating \"%s\"", getFeedTitle(fp));
+	print_status(string);
+	g_free(string);
 	requestUpdate(fp);
 }
 
@@ -662,7 +673,7 @@ static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 /* this method is called upon the refresh all button... */
 void updateAllFeeds(void) {
 
-	print_status(g_strdup(_("updating all feeds...")));
+	print_status(_("updating all feeds..."));
 	g_mutex_lock(feeds_lock);
 	g_hash_table_foreach(feeds, updateFeedHelper, NULL);
 	g_mutex_unlock(feeds_lock);
@@ -826,6 +837,7 @@ void copyFeed(feedPtr fp, feedPtr new_fp) {
 	tmp_fp->items = NULL;
 	tmp_fp->title = NULL;
 	freeFeed(tmp_fp);			/* free all infos allocated by old feed */
+	g_free(new_fp->data);
 	g_free(new_fp);
 	
 	/* adjust item parent pointer */
@@ -848,5 +860,6 @@ void freeFeed(feedPtr fp) {
 	g_free(fp->description);
 	g_free(fp->source);
 	g_free(fp->key);
+	g_free(fp->data);
 	g_free(fp);
 }

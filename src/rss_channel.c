@@ -127,6 +127,7 @@ void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
 		return;
 		
 	addToHTMLBuffer(request->buffer, tmp);
+	g_free(tmp);
 }
 
 /* writes RSS channel description as HTML into the gtkhtml widget */
@@ -209,6 +210,7 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 
 /* method to parse standard tags for the channel element */
 static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
+	xmlChar 		*string;
 	gchar			*tmp = NULL;
 	parseChannelTagFunc	fp;
 	GSList			*hp;
@@ -220,9 +222,14 @@ static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
-			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			cp->updateInterval = atoi(tmp);
-			g_free(tmp);
+ 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+ 			if(NULL != string) {
+				tmp = CONVERT(string);
+				xmlFree(string);
+				
+				cp->updateInterval = atoi(tmp);
+				g_free(tmp);
+			}
 		}
 	
 		/* check namespace of this tag */
@@ -244,12 +251,17 @@ static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 		/* check for RDF tags */
 		for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {
 			if(!xmlStrcmp(cur->name, BAD_CAST channelTagList[i])) {
-				tmp = cp->tags[i];
-				if(NULL == (cp->tags[i] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
-					cp->tags[i] = tmp;
-				} else {
-					g_free(tmp);
-					break;
+				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				if(NULL != string) {
+					tmp = cp->tags[i];
+					if(NULL == (cp->tags[i] = CONVERT(string))) {
+						cp->tags[i] = tmp;
+					} else {
+						g_free(tmp);
+						xmlFree(string);
+						break;
+					}
+					xmlFree(string);
 				}
 			}		
 		}
@@ -265,21 +277,26 @@ static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 }
 
 static void parseTextInput(RSSChannelPtr cp, xmlNodePtr cur) {
-
+	xmlChar *string;
+	
 	g_assert(NULL != cur);
 	g_assert(NULL != cp);
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
-		if(!xmlStrcmp(cur->name, BAD_CAST"title"))
-			cp->tiTitle = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(!xmlStrcmp(cur->name, BAD_CAST"description"))
-			cp->tiDescription = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(!xmlStrcmp(cur->name, BAD_CAST"name"))
-			cp->tiName = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(!xmlStrcmp(cur->name, BAD_CAST"link"))
-			cp->tiLink = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			
+ 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+		if(NULL != string) {
+			if(!xmlStrcmp(cur->name, BAD_CAST"title"))
+				cp->tiTitle = CONVERT(string);
+			else if(!xmlStrcmp(cur->name, BAD_CAST"description"))
+				cp->tiDescription = CONVERT(string);
+			else if(!xmlStrcmp(cur->name, BAD_CAST"name"))
+				cp->tiName = CONVERT(string);
+			else if(!xmlStrcmp(cur->name, BAD_CAST"link"))
+				cp->tiLink = CONVERT(string);
+				
+			xmlFree(string);
+		}
 		cur = cur->next;
 	}
 	
@@ -292,15 +309,24 @@ static void parseTextInput(RSSChannelPtr cp, xmlNodePtr cur) {
 }
 
 static void parseImage(RSSChannelPtr cp, xmlNodePtr cur) {
-
+	xmlChar *string;
+	
 	g_assert(NULL != cur);	
 	g_assert(NULL != cp);		
 
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		if (!xmlStrcmp(cur->name, BAD_CAST"url"))
-			cp->tags[RSS_CHANNEL_IMAGE] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));			
-			
+ 		if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
+ 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+			if(NULL != string) {
+ 				gchar *tmp = CONVERT(string);
+	 			if (NULL != tmp) {
+ 					g_free(cp->tags[RSS_CHANNEL_IMAGE]);
+ 					cp->tags[RSS_CHANNEL_IMAGE] = tmp;
+ 				}			
+ 				xmlFree(string);
+ 			}
+ 		}		
 		cur = cur->next;
 	}
 }
@@ -314,6 +340,7 @@ static void readRSSFeed(feedPtr fp) {
 	RSSChannelPtr 	cp;
 	short 		rdf = 0;
 	int 		error = 0;
+	int		i;
 	
 	/* initialize channel structure */
 	if(NULL == (cp = (RSSChannelPtr) malloc(sizeof(struct RSSChannel)))) {
@@ -401,14 +428,22 @@ static void readRSSFeed(feedPtr fp) {
 
 	/* after parsing we fill in the infos into the feedPtr structure */		
 	fp->defaultInterval = fp->updateInterval = cp->updateInterval;
-	fp->title = cp->tags[RSS_CHANNEL_TITLE];
+	fp->title = g_strdup(cp->tags[RSS_CHANNEL_TITLE]);
 
 	if(0 == error) {
 		fp->available = TRUE;
 		fp->description = showRSSFeedInfo(cp, fp->source);
 	}
-		
-	g_free(cp->nsinfos);
+
+	for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {
+ 		g_free(cp->tags[i]);
+ 	}
+
+	g_hash_table_destroy(cp->nsinfos);
+	g_free(cp->tiTitle);
+ 	g_free(cp->tiDescription);
+ 	g_free(cp->tiName);
+ 	g_free(cp->tiLink);
 	g_free(cp);
 }
 

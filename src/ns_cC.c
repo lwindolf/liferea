@@ -60,15 +60,27 @@ static void ns_cC_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 }
 
 void ns_cC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
+	xmlChar	*string;
 	
-	if(!xmlStrcmp("license", cur->name)) 
-		ns_cC_addInfoStruct(cp->nsinfos, "license", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+ 	if(!xmlStrcmp("license", cur->name)) {
+ 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+ 		ns_cC_addInfoStruct(cp->nsinfos, "license", CONVERT(string));
+ 		if (NULL != string) {
+ 			xmlFree(string);
+ 		}
+ 	}
 }
 
 void ns_cC_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+	xmlChar *string;
 	
-	if(!xmlStrcmp("license", cur->name)) 
-		ns_cC_addInfoStruct(ip->nsinfos, "license", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+ 	if(!xmlStrcmp("license", cur->name)) {
+ 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+ 		ns_cC_addInfoStruct(ip->nsinfos, "license", CONVERT(string));
+ 		if (NULL != string) {
+ 			xmlFree(string);
+ 		}
+ 	}
 }
 
 void ns_cC_output(gpointer key, gpointer value, gpointer userdata) {

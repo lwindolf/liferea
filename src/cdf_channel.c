@@ -98,6 +98,7 @@ gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
 /* method to parse standard tags for the channel element */
 static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp = NULL;
+	xmlChar 	*string;
 	itemPtr		ip;
 	int		i;
 	
@@ -128,11 +129,14 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 		for(i = 0; i < CDF_CHANNEL_MAX_TAG; i++) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)CDFChannelTagList[i])) {
-				tmp = cp->tags[i];
-				if(NULL == (cp->tags[i] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+				string = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+				if(NULL != (tmp = CONVERT(string))) {
+					g_free(cp->tags[i]);
 					cp->tags[i] = tmp;
-				} else {
-					g_free(tmp);
+				}
+
+				if (NULL != string) {
+					xmlFree(string);
 				}
 			}		
 		}

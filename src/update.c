@@ -142,8 +142,14 @@ static void doUpdateFeed(struct feed_request *request) {
 		}
 
 		request->new_fp = getNewFeedStruct();
+		
+		/* to reuse the prepared request structure */
+		g_free(request->new_fp->request);	
+ 		request->new_fp->request = (gpointer) request;
 		g_free(request->feedurl);
 		request->feedurl = g_strdup(source);	/* strdup because it might be changed in netio.c */
+
+		/* do the request */		
 		if(NULL != (request->new_fp->data = downloadURL(request))) {
 			request->new_fp->source = g_strdup(source);
 			g_assert(NULL != fhp->readFeed);

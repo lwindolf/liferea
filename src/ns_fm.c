@@ -52,13 +52,21 @@ static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 }
 
 static void ns_fm_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+	xmlChar *string;
 	gchar	*tmp;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
-		tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(strlen(tmp) > 0) {
-			/* maybe for just one tag this is overkill, but copy&paste is so easy! */
-			ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url", tmp);
+ 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+ 		tmp = CONVERT(string);
+		if(NULL != string) {
+ 			xmlFree(string);
+ 
+			if(strlen(tmp) > 0) {
+				/* maybe for just one tag this is overkill, but copy&paste is so easy! */
+				ns_fm_addInfoStruct(ip->nsinfos, "screenshot_url", tmp);
+			} else {
+				g_free(tmp);
+			}
 		}
 	}
 }

@@ -67,6 +67,7 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip);
 /* method to parse standard tags for each item element */
 itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar			*tmp, *link;
+	xmlChar 		*string;
 	parseItemTagFunc	parseFunc;
 	GSList			*hp;
 	RSSNsHandler		*nsh;
@@ -110,19 +111,26 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 		for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
-				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
-					i->tags[j] = tmp;
-				} else {
-					g_free(tmp);
-				}
+ 				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				if(NULL != string) {
+					tmp = i->tags[j];
+					if(NULL == (i->tags[j] = CONVERT(string))) {
+						i->tags[j] = tmp;
+					} else {
+						g_free(tmp);
+					}
+					xmlFree(string);
+				}				
 			}		
 		}
 
 		if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
-			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			i->time = parseRFC822Date(tmp);
-			g_free(tmp);
+ 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+			if(NULL != string) {
+	 			tmp = CONVERT(string);
+				i->time = parseRFC822Date(tmp);
+				g_free(tmp);
+			}
 		} else 
 		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures, so we build
@@ -163,7 +171,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	for(j = 0; j < RSS_ITEM_MAX_TAG; j++)
 		g_free(i->tags[j]);
 	g_free(i->enclosure);
-	g_free(i->nsinfos);
+	g_hash_table_destroy(i->nsinfos);
 	g_free(i);
 
 	return ip;

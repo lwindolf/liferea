@@ -1713,6 +1713,7 @@ void displayItemList(void) {
 		}
 		finishHTML(&buffer);
 		writeHTML(buffer);
+		g_free(buffer);
 	}
 }
 

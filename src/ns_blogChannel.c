@@ -158,18 +158,25 @@ static void ns_bC_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 
 static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar		*output;
-
+	xmlChar		*string;
+	
+	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+	  
 	if(!xmlStrcmp("blogRoll", cur->name)) {	
-		if(NULL != (output = getOutlineList(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
+		if(NULL != (output = getOutlineList(string)))
 			ns_bC_addInfoStruct(cp->nsinfos, "blogRoll", output);
 
 	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
-		if(NULL != (output = getOutlineList(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
+		if(NULL != (output = getOutlineList(string)))
 			ns_bC_addInfoStruct(cp->nsinfos, "mySubscriptions", output);
 
 	} else if(!xmlStrcmp("blink", cur->name)) {
-		ns_bC_addInfoStruct(cp->nsinfos, "blink", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		ns_bC_addInfoStruct(cp->nsinfos, "blink", CONVERT(string));
 	}
+	
+	if(NULL != string) {
+ 		xmlFree(string);
+  	}
 }
 
 /* maybe I should overthink method names :-) */
