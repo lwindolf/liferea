@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-10 20:05+0200\n"
+"POT-Creation-Date: 2004-09-14 03:41+0200\n"
 "PO-Revision-Date: 2004-05-21 02:32+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -77,60 +77,60 @@ msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:411
+#: src/export.c:415
 msgid "Liferea Help"
 msgstr "Liferea 求助"
 
-#: src/export.c:424
+#: src/export.c:428
 msgid "Online Help Feed"
 msgstr "線上求助饋流"
 
-#: src/export.c:440
+#: src/export.c:444
 msgid "Liferea SF News"
 msgstr "Liferea SF 新聞"
 
-#: src/export.c:525 src/export.c:527
+#: src/export.c:529 src/export.c:531
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "讀入快取檔案 \"%s\" 時發生 XML 錯誤 ! 無法讀入快取檔案!"
 
-#: src/export.c:531 src/export.c:533
+#: src/export.c:535 src/export.c:537
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "空白文件! OPML \"%s\" 檔案不該空白..."
 
-#: src/export.c:541 src/export.c:543
+#: src/export.c:545 src/export.c:547
 #, fuzzy, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" 不是有效的 OPML 檔案! 無法匯入!"
 
-#: src/export.c:565
+#: src/export.c:569
 #, fuzzy
 msgid "Imported feed list"
 msgstr "匯入饋流列表"
 
-#: src/export.c:576
+#: src/export.c:580
 msgid "Import Feed List"
 msgstr "匯入饋流列表"
 
-#: src/export.c:576
+#: src/export.c:580
 msgid "Import"
 msgstr ""
 
-#: src/export.c:586
+#: src/export.c:590
 msgid "Error while exporting feed list!"
 msgstr "在匯出饋流列表時錯誤!"
 
-#: src/export.c:588
+#: src/export.c:592
 msgid "Feed List exported!"
 msgstr "饋流列表已匯出!"
 
-#: src/export.c:595
+#: src/export.c:599
 msgid "Export Feed List"
 msgstr "匯出饋流列表"
 
-#: src/export.c:595
+#: src/export.c:599
 msgid "Export"
 msgstr ""
 
@@ -139,7 +139,7 @@ msgstr ""
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr "<p>讀入饋流時出現 XML 錯誤! 饋流 \"%s\" 無法載入!</p>"
 
-#: src/feed.c:147 src/feed.c:379
+#: src/feed.c:147 src/feed.c:378
 msgid "<p>Empty document!</p>"
 msgstr "<p>空文件!</p>"
 
@@ -159,55 +159,55 @@ msgid ""
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
 msgstr ""
 
-#: src/feed.c:358 src/feed.c:359
+#: src/feed.c:357 src/feed.c:358
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr "讀入快取檔案 \"%s\"時錯誤! 無法載入快取檔案!"
 
-#: src/feed.c:371
+#: src/feed.c:370
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr "<p>分析快取檔案時發生 XML 錯誤! 無法載入快取檔案 \"%s\"!</p>"
 
-#: src/feed.c:390
+#: src/feed.c:389
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" 是無效的快取檔案! 無法讀入檔案!</p>"
 
-#: src/feed.c:441
+#: src/feed.c:439
 #, fuzzy, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "分析快取檔案 \"%s\" 時出現錯誤!"
 
-#: src/feed.c:503
+#: src/feed.c:501
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr ""
 
-#: src/feed.c:508
+#: src/feed.c:506
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 
-#: src/feed.c:512
+#: src/feed.c:510
 #, fuzzy, c-format
 msgid "Updating \"%s\""
 msgstr "啟動: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:953 src/item.c:242 src/metadata.c:321 src/ocs_dir.c:141
+#: src/feed.c:974 src/item.c:242 src/metadata.c:321 src/ocs_dir.c:141
 #: src/opml.c:215
 #, fuzzy
 msgid "Feed:"
 msgstr "饋流(_F)"
 
-#: src/feed.c:953 src/interface.c:519
+#: src/feed.c:974 src/interface.c:519
 #, fuzzy
 msgid "VFolder"
 msgstr "目錄(_O)"
 
-#: src/feed.c:964 src/interface.c:1071 src/interface.c:1473 src/item.c:269
+#: src/feed.c:985 src/interface.c:1071 src/interface.c:1473 src/item.c:269
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
 msgid "Source:"
 msgstr "來源:"
@@ -367,7 +367,7 @@ msgstr "更新選擇的訂閱項目或目錄下的所有訂閱項目。"
 msgid "Update _All"
 msgstr "更新全部(_A)"
 
-#: src/interface.c:237 src/ui_mainwindow.c:174
+#: src/interface.c:237 src/ui_mainwindow.c:180
 #, fuzzy
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "立即升級所有饋流 (除了目錄)。"
@@ -423,7 +423,7 @@ msgstr "項目(_I)"
 msgid "_Next Unread Item"
 msgstr "下筆未讀項目(_N)"
 
-#: src/interface.c:315 src/ui_mainwindow.c:172
+#: src/interface.c:315 src/ui_mainwindow.c:178
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1066,7 +1066,7 @@ msgstr ""
 msgid "Translation"
 msgstr "翻譯"
 
-#: src/interface.c:2926 src/ui_feed.c:363
+#: src/interface.c:2926 src/ui_feed.c:364
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr ""
@@ -1399,125 +1399,125 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "無法找到圖檔: %s"
 
-#: src/ui_feed.c:62
+#: src/ui_feed.c:63
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
 
-#: src/ui_feed.c:64
+#: src/ui_feed.c:65
 msgid "Payment Required"
 msgstr "Payment Required"
 
-#: src/ui_feed.c:65
+#: src/ui_feed.c:66
 msgid "Access Forbidden"
 msgstr "禁用存取"
 
-#: src/ui_feed.c:66
+#: src/ui_feed.c:67
 msgid "Resource Not Found"
 msgstr "未找到資源"
 
-#: src/ui_feed.c:67
+#: src/ui_feed.c:68
 msgid "Method Not Allowed"
 msgstr "方法不允許"
 
-#: src/ui_feed.c:68
+#: src/ui_feed.c:69
 msgid "Not Acceptable"
 msgstr "無法接受"
 
-#: src/ui_feed.c:69
+#: src/ui_feed.c:70
 msgid "Proxy Authentication Required"
 msgstr "代理伺服器需要認證"
 
-#: src/ui_feed.c:70
+#: src/ui_feed.c:71
 msgid "Request Time-Out"
 msgstr "存取逾時"
 
-#: src/ui_feed.c:71
+#: src/ui_feed.c:72
 #, fuzzy
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了。資源不存在。請取消訂閱!"
 
-#: src/ui_feed.c:76
+#: src/ui_feed.c:77
 msgid "URL is invalid"
 msgstr ""
 
-#: src/ui_feed.c:79
+#: src/ui_feed.c:80
 msgid "Error connecting to remote host"
 msgstr ""
 
-#: src/ui_feed.c:80
+#: src/ui_feed.c:81
 msgid "Hostname could not be found"
 msgstr ""
 
-#: src/ui_feed.c:81
+#: src/ui_feed.c:82
 msgid "Network connection was refused by the remote host"
 msgstr ""
 
-#: src/ui_feed.c:82
+#: src/ui_feed.c:83
 msgid "Remote host did not finish sending data"
 msgstr ""
 
 #. Transfer errors
-#: src/ui_feed.c:84
+#: src/ui_feed.c:85
 #, fuzzy
 msgid "Too many HTTP redirects were encountered"
 msgstr "太多 HTTP 重導! 放棄。"
 
-#: src/ui_feed.c:87
+#: src/ui_feed.c:88
 #, fuzzy
 msgid "Remote host sent an invalid response"
 msgstr "網站伺服器傳送了一個無效的重導!"
 
-#: src/ui_feed.c:94
+#: src/ui_feed.c:95
 #, fuzzy
 msgid "Authentication failed"
 msgstr "認證失敗！"
 
-#: src/ui_feed.c:96
+#: src/ui_feed.c:97
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 
-#: src/ui_feed.c:102
+#: src/ui_feed.c:103
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "饋流無法使用: 伺服器使用未支援的重導!"
 
-#: src/ui_feed.c:103
+#: src/ui_feed.c:104
 msgid "Client Error"
 msgstr "Client Error"
 
-#: src/ui_feed.c:104
+#: src/ui_feed.c:105
 msgid "Server Error"
 msgstr "Server Error"
 
-#: src/ui_feed.c:105
+#: src/ui_feed.c:106
 #, fuzzy
 msgid "(unknown networking error happened)"
 msgstr "(unknown error class)"
 
-#: src/ui_feed.c:127
+#: src/ui_feed.c:128
 #, fuzzy
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr "讀取此訂閱時出現問題。請確認網址與終端機輸出！"
 
-#: src/ui_feed.c:161
+#: src/ui_feed.c:162
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 
-#: src/ui_feed.c:163
+#: src/ui_feed.c:164
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" 自從最後更新後沒有改變。"
 
-#: src/ui_feed.c:170
+#: src/ui_feed.c:172
 #, fuzzy, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" 已經更新為永久網址。"
 
-#: src/ui_feed.c:182
+#: src/ui_feed.c:184
 #, fuzzy, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -1525,35 +1525,35 @@ msgid ""
 "p>%s"
 msgstr "無法偵測此饋流類型! 請確認網址指向已支援的正確餽流來源!"
 
-#: src/ui_feed.c:199
+#: src/ui_feed.c:201
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" 更新中"
 
-#: src/ui_feed.c:208
+#: src/ui_feed.c:210
 #, fuzzy, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" 不可用!"
 
-#: src/ui_feed.c:364
+#: src/ui_feed.c:365
 #, fuzzy
 msgid "Unknown source"
 msgstr "來源"
 
-#: src/ui_feed.c:456
+#: src/ui_feed.c:457
 msgid "Directories cannot be autoupdated."
 msgstr ""
 
-#: src/ui_feed.c:459
+#: src/ui_feed.c:460
 #, fuzzy, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr "饋流供應商建議更新頻率為 60 分鐘"
 
-#: src/ui_feed.c:461
+#: src/ui_feed.c:462
 msgid "This feed specifies no default update interval."
 msgstr "此饋流未指定預設更新頻率"
 
-#: src/ui_feed.c:803
+#: src/ui_feed.c:807
 msgid "Choose File"
 msgstr ""
 
@@ -1618,82 +1618,82 @@ msgstr "<i>(空)</i>"
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "內部錯誤! unknown entry type! cannot display appropriate icon!\n"
 
-#: src/ui_itemlist.c:304
+#: src/ui_itemlist.c:302
 msgid "Date"
 msgstr "日期"
 
-#: src/ui_itemlist.c:315
+#: src/ui_itemlist.c:313
 msgid "Headline"
 msgstr "標題"
 
-#: src/ui_itemlist.c:615 src/ui_itemlist.c:656
+#: src/ui_itemlist.c:613 src/ui_itemlist.c:654
 #, fuzzy
 msgid "No item has been selected"
 msgstr "未選擇項目!"
 
-#: src/ui_itemlist.c:639 src/ui_itemlist.c:659
+#: src/ui_itemlist.c:637 src/ui_itemlist.c:657
 #, fuzzy
 msgid "You must select a feed to delete its items!"
 msgstr "您必須先選擇一個饋流才能刪除!"
 
-#: src/ui_itemlist.c:691
+#: src/ui_itemlist.c:689
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "內部錯誤！ could not get feed tree view selection!\n"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:719
+#: src/ui_itemlist.c:717
 #, fuzzy
 msgid "There are no unread items "
 msgstr "沒有未讀項目!"
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:177
 msgid "New Feed"
 msgstr "新增饋流"
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:177
 #, fuzzy
 msgid "Add a new subscription."
 msgstr "新增訂閱"
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:178
 msgid "Next Unread"
 msgstr "下筆未讀"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:179
 msgid "Mark As Read"
 msgstr "全部標示為已讀"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:179
 #, fuzzy
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
 
-#: src/ui_mainwindow.c:174
+#: src/ui_mainwindow.c:180
 #, fuzzy
 msgid "Update All"
 msgstr "更新全部(_A)"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:181
 msgid "Search"
 msgstr "搜尋"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:181
 #, fuzzy
 msgid "Search all feeds."
 msgstr "搜尋饋流"
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:182
 msgid "Preferences"
 msgstr "編輯偏好"
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:182
 #, fuzzy
 msgid "Edit preferences."
 msgstr "編輯偏好"
 
-#: src/ui_mainwindow.c:191
+#: src/ui_mainwindow.c:197
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1722,12 +1722,12 @@ msgid ""
 "p>"
 msgstr ""
 
-#: src/ui_mainwindow.c:276
+#: src/ui_mainwindow.c:282
 #, fuzzy
 msgid "Liferea is now online"
 msgstr "Liferea 現為線上模式。"
 
-#: src/ui_mainwindow.c:279
+#: src/ui_mainwindow.c:285
 #, fuzzy
 msgid "Liferea is now offline"
 msgstr "Lifeare 正在離線模式！"

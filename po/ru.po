@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-10 20:05+0200\n"
+"POT-Creation-Date: 2004-09-14 03:41+0200\n"
 "PO-Revision-Date: 2004-08-28 18:09+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian\n"
@@ -81,25 +81,25 @@ msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:411
+#: src/export.c:415
 msgid "Liferea Help"
 msgstr "Помощь по Liferea"
 
-#: src/export.c:424
+#: src/export.c:428
 msgid "Online Help Feed"
 msgstr "Лента Новостей Онлайновой помощи"
 
-#: src/export.c:440
+#: src/export.c:444
 msgid "Liferea SF News"
 msgstr "Новости Liferea на SF.net"
 
-#: src/export.c:525 src/export.c:527
+#: src/export.c:529 src/export.c:531
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
-#: src/export.c:531 src/export.c:533
+#: src/export.c:535 src/export.c:537
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -107,38 +107,38 @@ msgstr ""
 "Пустой документ! Документ OPML \"%s\" не должен быть пустым во время "
 "импортирования."
 
-#: src/export.c:541 src/export.c:543
+#: src/export.c:545 src/export.c:547
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/export.c:565
+#: src/export.c:569
 msgid "Imported feed list"
 msgstr "Имппортированный лист лент новостей"
 
-#: src/export.c:576
+#: src/export.c:580
 msgid "Import Feed List"
 msgstr "Импортировать Список Лент Новостей"
 
-#: src/export.c:576
+#: src/export.c:580
 msgid "Import"
 msgstr "Импорт"
 
-#: src/export.c:586
+#: src/export.c:590
 msgid "Error while exporting feed list!"
 msgstr "Ошибка во время экспорта списка лент новостей!"
 
-#: src/export.c:588
+#: src/export.c:592
 msgid "Feed List exported!"
 msgstr "Список лент новостей экспортирован!"
 
-#: src/export.c:595
+#: src/export.c:599
 msgid "Export Feed List"
 msgstr "Экспортировать Список Лент Новостей"
 
-#: src/export.c:595
+#: src/export.c:599
 msgid "Export"
 msgstr "Экспорт"
 
@@ -149,7 +149,7 @@ msgstr ""
 "<p>Ошибка XML во время чтения ленты новостей! Лента новостей \"%s\" не может "
 "быть загружена!</p>"
 
-#: src/feed.c:147 src/feed.c:379
+#: src/feed.c:147 src/feed.c:378
 msgid "<p>Empty document!</p>"
 msgstr "<p>Пустой документ!</p>"
 
@@ -172,13 +172,13 @@ msgstr ""
 "liferea.sourceforge.net/index.php#supported_formats\">является "
 "поддерживаемым</a>.</p>"
 
-#: src/feed.c:358 src/feed.c:359
+#: src/feed.c:357 src/feed.c:358
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Ошибка во время чтения файла кэша \"%s\" ! Файл кэша не может быть загружен!"
 
-#: src/feed.c:371
+#: src/feed.c:370
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -187,45 +187,45 @@ msgstr ""
 "<p>Ошибка XML во время парсинга файла кэша! Файл кэша \"%s\" ленты новостей "
 "не может быть загружен!</p>"
 
-#: src/feed.c:390
+#: src/feed.c:389
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" не является допустимым файлом кэша ! Невозможно прочитать файл "
 "кеша!</p>"
 
-#: src/feed.c:441
+#: src/feed.c:439
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Произошла ошибка во время парсинга файла кэша \"%s\""
 
-#: src/feed.c:503
+#: src/feed.c:501
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Лента новостей \"%s\" уже обновляется!"
 
-#: src/feed.c:508
+#: src/feed.c:506
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Лента новостей прекратила своё существование. Liferea не будет больше "
 "обновлять её!"
 
-#: src/feed.c:512
+#: src/feed.c:510
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Обновление: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:953 src/item.c:242 src/metadata.c:321 src/ocs_dir.c:141
+#: src/feed.c:974 src/item.c:242 src/metadata.c:321 src/ocs_dir.c:141
 #: src/opml.c:215
 msgid "Feed:"
 msgstr "Лента новостей:"
 
-#: src/feed.c:953 src/interface.c:519
+#: src/feed.c:974 src/interface.c:519
 msgid "VFolder"
 msgstr "VFolder"
 
-#: src/feed.c:964 src/interface.c:1071 src/interface.c:1473 src/item.c:269
+#: src/feed.c:985 src/interface.c:1071 src/interface.c:1473 src/item.c:269
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
 msgid "Source:"
 msgstr "Источник:"
@@ -394,7 +394,7 @@ msgstr "Обновляет выбранную подписку или все п�
 msgid "Update _All"
 msgstr "Обновить _Всё"
 
-#: src/interface.c:237 src/ui_mainwindow.c:174
+#: src/interface.c:237 src/ui_mainwindow.c:180
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Обновляет все подписки. Это не затрагивает директории OCS."
 
@@ -451,7 +451,7 @@ msgstr "_Новости"
 msgid "_Next Unread Item"
 msgstr "_Следующая Непрочитанная Новость"
 
-#: src/interface.c:315 src/ui_mainwindow.c:172
+#: src/interface.c:315 src/ui_mainwindow.c:178
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1104,7 +1104,7 @@ msgstr ""
 msgid "Translation"
 msgstr "Перевод"
 
-#: src/interface.c:2926 src/ui_feed.c:363
+#: src/interface.c:2926 src/ui_feed.c:364
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Введите имя пользователя и пароль для \"%s\" (%s):"
@@ -1441,7 +1441,7 @@ msgstr "без флага"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Невозможно найти файл изображения: %s"
 
-#: src/ui_feed.c:62
+#: src/ui_feed.c:63
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -1449,93 +1449,93 @@ msgstr ""
 "Вам запрещено скачивать эту ленту новостей. Пожалуйста, укажите новые имя "
 "пользователя и пароль в настройках ленты новостей."
 
-#: src/ui_feed.c:64
+#: src/ui_feed.c:65
 msgid "Payment Required"
 msgstr "Необходим Платёж"
 
-#: src/ui_feed.c:65
+#: src/ui_feed.c:66
 msgid "Access Forbidden"
 msgstr "Доступ Запрещён"
 
-#: src/ui_feed.c:66
+#: src/ui_feed.c:67
 msgid "Resource Not Found"
 msgstr "Ресурс Не Найден"
 
-#: src/ui_feed.c:67
+#: src/ui_feed.c:68
 msgid "Method Not Allowed"
 msgstr "Метод Не Разрешён"
 
-#: src/ui_feed.c:68
+#: src/ui_feed.c:69
 msgid "Not Acceptable"
 msgstr "Не Допустимо"
 
-#: src/ui_feed.c:69
+#: src/ui_feed.c:70
 msgid "Proxy Authentication Required"
 msgstr "Необходима Прокси-Аутентификация"
 
-#: src/ui_feed.c:70
+#: src/ui_feed.c:71
 msgid "Request Time-Out"
 msgstr "Запрос Превысил Время Ожидания Ответа"
 
-#: src/ui_feed.c:71
+#: src/ui_feed.c:72
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Не найдено. Ресурс не существует. Пожалуйста, отмените подписку!"
 
-#: src/ui_feed.c:76
+#: src/ui_feed.c:77
 msgid "URL is invalid"
 msgstr "URL неверен"
 
-#: src/ui_feed.c:79
+#: src/ui_feed.c:80
 msgid "Error connecting to remote host"
 msgstr "Ошибка соединения с удалённым сервером"
 
-#: src/ui_feed.c:80
+#: src/ui_feed.c:81
 msgid "Hostname could not be found"
 msgstr "Сервер не может быть найден"
 
-#: src/ui_feed.c:81
+#: src/ui_feed.c:82
 msgid "Network connection was refused by the remote host"
 msgstr "Соединения было прервано удалённым сервером"
 
-#: src/ui_feed.c:82
+#: src/ui_feed.c:83
 msgid "Remote host did not finish sending data"
 msgstr "Удалённый сервер не закончил передачу данных"
 
 #. Transfer errors
-#: src/ui_feed.c:84
+#: src/ui_feed.c:85
 msgid "Too many HTTP redirects were encountered"
 msgstr "Обнаружено слишком много перенаправлений HTTP"
 
-#: src/ui_feed.c:87
+#: src/ui_feed.c:88
 msgid "Remote host sent an invalid response"
 msgstr "Сервер послал неверный ответ"
 
-#: src/ui_feed.c:94
+#: src/ui_feed.c:95
 msgid "Authentication failed"
 msgstr "Аутентификация прошла неудачно"
 
-#: src/ui_feed.c:96
+#: src/ui_feed.c:97
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Метод аутентификации на сервере несовместим с Liferea"
 
-#: src/ui_feed.c:102
+#: src/ui_feed.c:103
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Лента новостей недоступна: Сервер запросил неподдерживаемое перенаправление!"
 
-#: src/ui_feed.c:103
+#: src/ui_feed.c:104
 msgid "Client Error"
 msgstr "Ошибка клиента"
 
-#: src/ui_feed.c:104
+#: src/ui_feed.c:105
 msgid "Server Error"
 msgstr "Ошибка Сервера"
 
-#: src/ui_feed.c:105
+#: src/ui_feed.c:106
 msgid "(unknown networking error happened)"
 msgstr "(произошла неизвестная сетевая ошибка)"
 
-#: src/ui_feed.c:127
+#: src/ui_feed.c:128
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1543,24 +1543,24 @@ msgstr ""
 "Произошла проблема во время чтения этой подписки. Пожалуйста, проверьте URL "
 "и вывод командной строки."
 
-#: src/ui_feed.c:161
+#: src/ui_feed.c:162
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "Лента \"%s\" прекратила своё существование. Liferea не будет больше "
 "обновлять её!"
 
-#: src/ui_feed.c:163
+#: src/ui_feed.c:164
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не изменился с момента последнего обновления"
 
-#: src/ui_feed.c:170
+#: src/ui_feed.c:172
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL для \"%s\" изменился на постоянный и был обновлён"
 
-#: src/ui_feed.c:182
+#: src/ui_feed.c:184
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -1571,36 +1571,36 @@ msgstr ""
 "указывает ли URL на ресурс, доступный в одном из поддерживаемых форматов!</p>"
 "%s"
 
-#: src/ui_feed.c:199
+#: src/ui_feed.c:201
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" обновлён..."
 
-#: src/ui_feed.c:208
+#: src/ui_feed.c:210
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступен"
 
-#: src/ui_feed.c:364
+#: src/ui_feed.c:365
 msgid "Unknown source"
 msgstr "Неизвестный источник"
 
-#: src/ui_feed.c:456
+#: src/ui_feed.c:457
 msgid "Directories cannot be autoupdated."
 msgstr "Директории не могут быть автоматически обновлены."
 
-#: src/ui_feed.c:459
+#: src/ui_feed.c:460
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Создатель этой ленты новостей рекомендует интервал обновления в %d минут(у)"
 "(ы)."
 
-#: src/ui_feed.c:461
+#: src/ui_feed.c:462
 msgid "This feed specifies no default update interval."
 msgstr "Эта лента новостей не обозначает интервал обновления по умолчанию."
 
-#: src/ui_feed.c:803
+#: src/ui_feed.c:807
 msgid "Choose File"
 msgstr "Выберите файл"
 
@@ -1662,50 +1662,50 @@ msgstr ""
 "внутренняя ошибка! неизвестный тип записи! невозможно отобразить "
 "соответствующую иконку!\n"
 
-#: src/ui_itemlist.c:304
+#: src/ui_itemlist.c:302
 msgid "Date"
 msgstr "Дата"
 
-#: src/ui_itemlist.c:315
+#: src/ui_itemlist.c:313
 msgid "Headline"
 msgstr "Заголовок"
 
-#: src/ui_itemlist.c:615 src/ui_itemlist.c:656
+#: src/ui_itemlist.c:613 src/ui_itemlist.c:654
 msgid "No item has been selected"
 msgstr "Ни одна новость не выбрана"
 
-#: src/ui_itemlist.c:639 src/ui_itemlist.c:659
+#: src/ui_itemlist.c:637 src/ui_itemlist.c:657
 msgid "You must select a feed to delete its items!"
 msgstr "Вы должно выбрать ленту новостей для удаления её элементов!"
 
-#: src/ui_itemlist.c:691
+#: src/ui_itemlist.c:689
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "внутренняя ошибка! невозможно получить древовидный диалог выбора ленты "
 "новостей!\n"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:719
+#: src/ui_itemlist.c:717
 msgid "There are no unread items "
 msgstr "Нет непрочитанных новостей "
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:177
 msgid "New Feed"
 msgstr "Новая Лента Новостей"
 
-#: src/ui_mainwindow.c:171
+#: src/ui_mainwindow.c:177
 msgid "Add a new subscription."
 msgstr "Добавить Новую Подписку."
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:178
 msgid "Next Unread"
 msgstr "Следующая Непрочитанная Новость"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:179
 msgid "Mark As Read"
 msgstr "Пометить Как Прочитанные"
 
-#: src/ui_mainwindow.c:173
+#: src/ui_mainwindow.c:179
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1713,27 +1713,27 @@ msgstr ""
 "Пометить все элементы выбранной подписки или всех подписок выбранной папки "
 "как прочитанные."
 
-#: src/ui_mainwindow.c:174
+#: src/ui_mainwindow.c:180
 msgid "Update All"
 msgstr "Обновить Всё"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:181
 msgid "Search"
 msgstr "Поиск"
 
-#: src/ui_mainwindow.c:175
+#: src/ui_mainwindow.c:181
 msgid "Search all feeds."
 msgstr "Поиск во всех лентах новостей."
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:182
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:176
+#: src/ui_mainwindow.c:182
 msgid "Edit preferences."
 msgstr "Редактировать настройки."
 
-#: src/ui_mainwindow.c:191
+#: src/ui_mainwindow.c:197
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1786,11 +1786,11 @@ msgstr ""
 "доступном на <a href=\"http://liferea.sf.net\">домашней странице проекта</a>."
 "</p>"
 
-#: src/ui_mainwindow.c:276
+#: src/ui_mainwindow.c:282
 msgid "Liferea is now online"
 msgstr "Liferea подключена"
 
-#: src/ui_mainwindow.c:279
+#: src/ui_mainwindow.c:285
 msgid "Liferea is now offline"
 msgstr "Liferea отключена"
 
