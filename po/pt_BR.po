@@ -7,13 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-06 02:38+0100\n"
+"POT-Creation-Date: 2005-01-16 14:31-0500\n"
 "PO-Revision-Date: 2005-02-07 22:17-0200\n"
 "Last-Translator: Fernando Ike <fernando@ikenet.com.br>\n"
 "Language-Team: Portuguese/Brazil <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:227
@@ -39,7 +39,9 @@ msgstr "erro interno! erro de conversão de tempo! falha do mktime!\n"
 
 #: src/common.c:443
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
-msgstr "Formato de data inválido segundo o padrão ISO8601! Ignorando a informação de <dc:date> !\n"
+msgstr ""
+"Formato de data inválido segundo o padrão ISO8601! Ignorando a informação de "
+"<dc:date> !\n"
 
 #: src/common.c:565 src/common.c:572 src/common.c:578 src/common.c:585
 #, c-format
@@ -51,14 +53,15 @@ msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
-"Fim inesperado da seqüência de caracteres ou da codificação UTF-8 corrompido!  Alguns caracteres foram perdidos!"
+"Fim inesperado da seqüência de caracteres ou da codificação UTF-8 "
+"corrompido!  Alguns caracteres foram perdidos!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:262
+#: src/conf.c:265
 msgid "feedlist.opml"
 msgstr "feedlist_ptBR.opml"
 
-#: src/conf.c:281
+#: src/conf.c:284
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Erro ao renomear %s para %s\n"
@@ -70,7 +73,7 @@ msgstr "http://liferea.sf.net/help/help"
 
 #: src/export.c:40
 msgid ".rdf"
-msgstr "ptBR.rdf"
+msgstr ".rdf"
 
 #: src/export.c:498 src/export.c:500
 #, c-format
@@ -87,7 +90,8 @@ msgstr ""
 #: src/export.c:514 src/export.c:516
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr "\"%s\" não é um documento OPML válido! Liferea não pode importar o arquivo!"
+msgstr ""
+"\"%s\" não é um documento OPML válido! Liferea não pode importar o arquivo!"
 
 #: src/export.c:538
 msgid "Imported feed list"
@@ -117,6 +121,11 @@ msgstr "Exportar lista de fontes"
 msgid "Export"
 msgstr "Exportar"
 
+#: src/favicon.c:265
+#, fuzzy, c-format
+msgid "Updating feed icon for \"%s\""
+msgstr "Atualizando \"%s\""
+
 #: src/feed.c:147
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
@@ -140,14 +149,16 @@ msgid ""
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
 msgstr ""
-"<p>Não pode determinar o tipo de fonte. Verifique se <a href="
-"\"http://feedvalidator.org\"> é válido</a> e em <a href=\"http://liferea."
-"sourceforge.net/index.php#supported_formats\"> formatos válidos</a></p>"
+"<p>Não pode determinar o tipo de fonte. Verifique se <a href=\"http://"
+"feedvalidator.org\"> é válido</a> e em <a href=\"http://liferea.sourceforge."
+"net/index.php#supported_formats\"> formatos válidos</a></p>"
 
 #: src/feed.c:367
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr "Erro ao ler o arquivo do cache do arquivo \"%s\"! Impossível carregar o arquivo!"
+msgstr ""
+"Erro ao ler o arquivo do cache do arquivo \"%s\"! Impossível carregar o "
+"arquivo!"
 
 #: src/feed.c:379
 #, c-format
@@ -155,14 +166,14 @@ msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
-"<p>Erro XML ao processar o arquivo do cache \"%s\"! Impossível "
-"carregar!</p>"
+"<p>Erro XML ao processar o arquivo do cache \"%s\"! Impossível carregar!</p>"
 
 #: src/feed.c:398
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-msgstr "<p>\"%s\" não é arquivo de arquivo do cache válido! Impossível ler "
-"o arquivo do cache!</p>"
+msgstr ""
+"<p>\"%s\" não é arquivo de arquivo do cache válido! Impossível ler o arquivo "
+"do cache!</p>"
 
 #: src/feed.c:451
 #, c-format
@@ -170,8 +181,8 @@ msgid "There were errors while parsing cache file \"%s\""
 msgstr "Erros encontrados ao processar o arquivo do cache do arquivo \"%s\""
 
 #: src/feed.c:519
-#, c-format
-msgid "This feed \"%s\" is already being updated!"
+#, fuzzy, c-format
+msgid "This  \"%s\" is already being updated!"
 msgstr "Este fonte \"%s\" já está sendo atualizado!"
 
 #: src/feed.c:524
@@ -184,20 +195,20 @@ msgid "Updating \"%s\""
 msgstr "Atualizando \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1011 src/item.c:196 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:1010 src/item.c:195 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "Fontes de Notícias:"
 
-#: src/feed.c:1011 src/interface.c:511
+#: src/feed.c:1010 src/interface.c:511
 msgid "VFolder"
 msgstr "Pasta Virtual"
 
-#: src/feed.c:1019
+#: src/feed.c:1018
 msgid "user defined command"
 msgstr "comando definido pelo usuário"
 
-#: src/feed.c:1042 src/interface.c:1089 src/interface.c:1499 src/item.c:245
+#: src/feed.c:1041 src/interface.c:1089 src/interface.c:1499 src/item.c:244
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Fontes:"
@@ -306,7 +317,8 @@ msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
 msgstr ""
-"Avança para próximo artigo não lido. Se for necessário, selecione um artigo não lido para avançar."
+"Avança para próximo artigo não lido. Se for necessário, selecione um artigo "
+"não lido para avançar."
 
 #: src/interface.c:314
 msgid "Toggle _Read Status"
@@ -531,9 +543,8 @@ msgid ""
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
-"Liferea pode usar filtros externos para acessar as fontess e "
-"diretórios com formatos não suportados.  Leia a documentação para maiores "
-"informações."
+"Liferea pode usar filtros externos para acessar as fontess e diretórios com "
+"formatos não suportados.  Leia a documentação para maiores informações."
 
 #: src/interface.c:1136 src/interface.c:1546
 msgid "Convert using:"
@@ -552,9 +563,9 @@ msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
 msgstr ""
-"As configurações de controle do cache se o conteúdo dos fontes de "
-"notícia estiverem salvos quando Liferea fechar. Os artigos marcados "
-"são salvos no cache."
+"As configurações de controle do cache se o conteúdo dos fontes de notícia "
+"estiverem salvos quando Liferea fechar. Os artigos marcados são salvos no "
+"cache."
 
 #: src/interface.c:1164
 msgid "_Default cache settings"
@@ -614,7 +625,9 @@ msgstr "Artigos por fonte:"
 
 #: src/interface.c:1841
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
-msgstr "<span weight=\"bold\">Configurações de Atualização dos Fontes de Notícias</span>"
+msgstr ""
+"<span weight=\"bold\">Configurações de Atualização dos Fontes de Notícias</"
+"span>"
 
 #: src/interface.c:1864
 msgid "Default Feed Refresh _Interval:"
@@ -636,7 +649,8 @@ msgstr "Ao _iniciar:"
 
 #: src/interface.c:1901
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
-msgstr "<span weight=\"bold\">Configurações para Carregar Fonte de Notícias</span>"
+msgstr ""
+"<span weight=\"bold\">Configurações para Carregar Fonte de Notícias</span>"
 
 #: src/interface.c:1920
 msgid ""
@@ -675,8 +689,8 @@ msgid ""
 "<i>This can cause signifant delays when loading folders with a lot of feeds "
 "inside!</i>"
 msgstr ""
-"<i>Isto pode atrasar o carregamento das pastas com os muitas fontes "
-"dentro!</i>"
+"<i>Isto pode atrasar o carregamento das pastas com os muitas fontes dentro!</"
+"i>"
 
 #: src/interface.c:1979
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
@@ -731,8 +745,8 @@ msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
 msgstr ""
-"para usuários avançados: especifique o formato de tempo, Maiores "
-"informações consulte a strftime() na manpage."
+"para usuários avançados: especifique o formato de tempo, Maiores informações "
+"consulte a strftime() na manpage."
 
 #: src/interface.c:2132
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
@@ -744,10 +758,9 @@ msgid ""
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
-"Liferea exibe as fontes de notícia usando vários programas "
-"renderizadores HTML. Dependendo do seu sistema, terá mais ou menos "
-"opções. Reinicie o Liferea para efetivar as mudanças."
-""
+"Liferea exibe as fontes de notícia usando vários programas renderizadores "
+"HTML. Dependendo do seu sistema, terá mais ou menos opções. Reinicie o "
+"Liferea para efetivar as mudanças."
 
 #: src/interface.c:2160
 msgid "View Headlines With"
@@ -836,8 +849,7 @@ msgid ""
 msgstr ""
 "Liferea usa as configurações de proxy do GNOME. Se o GNOME alterar as "
 "configurações do GNOME Control Center. Nota: Também afetará outras "
-"aplicações! Esta opção é para usar o Liferea com o proxy diferente do "
-"GNOME"
+"aplicações! Esta opção é para usar o Liferea com o proxy diferente do GNOME"
 
 #: src/interface.c:2393
 msgid "_Enable Proxy"
@@ -914,9 +926,10 @@ msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 msgstr "<span color=\"blue\" underline=\"single\">Sítio Liferea</span>"
 
 #: src/interface.c:3073
+#, fuzzy
 msgid ""
-"Copyright (c) 2003-2004 \n"
-"Lars Lindner <lars.lindner@gmx.net> and \n"
+"Copyright (c) 2003-2005\n"
+"Lars Lindner <lars.lindner@gmx.net> and\n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
 "Copyright (c) 2003-2004 \n"
@@ -1023,13 +1036,17 @@ msgstr ""
 msgid "Rules"
 msgstr "Regras"
 
-#: src/item.c:223 src/item.c:227 src/item.c:239 src/ui_itemlist.c:199
+#: src/item.c:222 src/item.c:226 src/item.c:238 src/ui_itemlist.c:207
 msgid "[No title]"
 msgstr "[Nenhum título]"
 
-#: src/item.c:229 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:228 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "Item:"
+
+#: src/item.c:290 src/ui_itemlist.c:286
+msgid "Date"
+msgstr "Data"
 
 #: src/main.c:68
 msgid "  --version        Print version information and exit"
@@ -1045,20 +1062,20 @@ msgstr "  --iconify        Iniciar o programa com ícone de sistema"
 
 #: src/main.c:72
 msgid "  --debug-cache    Print debugging messages for the cache handling"
-msgstr "  --debug-arquivo do cache    Exibe mensagens de depuração do arquivo do cache"
+msgstr ""
+"  --debug-arquivo do cache    Exibe mensagens de depuração do arquivo do "
+"cache"
 
 #: src/main.c:73
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
-msgstr ""
-"  --debug-conf     Exibe mensagens de depuração sobre a configuração"
+msgstr "  --debug-conf     Exibe mensagens de depuração sobre a configuração"
 
 #: src/main.c:74
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
-" --debug-update   Exibe mensagens de depuração sobre atualizações "
-"de fonte"
+" --debug-update   Exibe mensagens de depuração sobre atualizações de fonte"
 
 #: src/main.c:75
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
@@ -1066,13 +1083,16 @@ msgstr "  --debug-parsing  Exibe mensagens de depuração de todas funções"
 
 #: src/main.c:76
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
-msgstr "  --debug-gui      Exibe todas mensagens de depuração das funções da interface gráfica"
+msgstr ""
+"  --debug-gui      Exibe todas mensagens de depuração das funções da "
+"interface gráfica"
 
 #: src/main.c:77
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
-"  --debug-trace    Exibe as mensagens de depuração das funções de entrada e saída."
+"  --debug-trace    Exibe as mensagens de depuração das funções de entrada e "
+"saída."
 
 #: src/main.c:78
 msgid "  --debug-all      Print debugging messages of all types"
@@ -1226,7 +1246,7 @@ msgstr "Não há a manipulador de espaço para<%s:%s>\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Impossível localizar cabeçalho RDF!</p>"
 
-#: src/ocs_dir.c:502 src/opml.c:241 src/pie_feed.c:262 src/rss_channel.c:308
+#: src/ocs_dir.c:502 src/opml.c:241 src/pie_feed.c:271 src/rss_channel.c:308
 msgid "There were errors while parsing this feed!"
 msgstr "Encontrado erros ao processar um fonte!"
 
@@ -1234,7 +1254,7 @@ msgstr "Encontrado erros ao processar um fonte!"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>Could not find OPML header!</p>"
 
-#: src/pie_feed.c:141
+#: src/pie_feed.c:150
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Impossível localizar cabeçalho Atom/Echo/PIE!</p>"
 
@@ -1304,8 +1324,8 @@ msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
-"Impossível acessar a fonte. Especifique o usuário e "
-"senha na propriedade da fonte."
+"Impossível acessar a fonte. Especifique o usuário e senha na propriedade da "
+"fonte."
 
 #: src/ui_feed.c:64
 msgid "Payment Required"
@@ -1378,7 +1398,8 @@ msgstr "Métdodo de autentição do webserver incompatível com Liferea"
 
 #: src/ui_feed.c:102
 msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Fonte não disponível: Servidor não suporta requisição de redirecionamento!"
+msgstr ""
+"Fonte não disponível: Servidor não suporta requisição de redirecionamento!"
 
 #: src/ui_feed.c:103
 msgid "Client Error"
@@ -1396,7 +1417,9 @@ msgstr "(erro desconhecido)"
 msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
-msgstr "<br>Pode querer validar para usar a fonte <a href=\"http://ttp://feedvalidator.org/check.cgi?url="
+msgstr ""
+"<br>Pode querer validar para usar a fonte <a href=\"http://ttp://"
+"feedvalidator.org/check.cgi?url="
 
 #: src/ui_feed.c:129
 msgid "\">FeedValidator</a>."
@@ -1431,9 +1454,8 @@ msgid ""
 "points to a resource provided in one of the supported syndication formats!</"
 "p>%s"
 msgstr ""
-"<p>Impossível detectar o tipo de fonte! Verifique se o Servidor"
-"usa algum dos formatos suportados!</"
-"p>%s"
+"<p>Impossível detectar o tipo de fonte! Verifique se o Servidorusa algum dos "
+"formatos suportados!</p>%s"
 
 #: src/ui_feed.c:210
 #, c-format
@@ -1514,7 +1536,9 @@ msgstr "<i>(vazio)</i>"
 
 #: src/ui_folder.c:242
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr "erro interno! tipo desconhecido de entrada! impossível exibir ícone apropriado!\n"
+msgstr ""
+"erro interno! tipo desconhecido de entrada! impossível exibir ícone "
+"apropriado!\n"
 
 #: src/ui_htmlview.c:69
 msgid ""
@@ -1613,35 +1637,30 @@ msgstr ""
 msgid ""
 "There were errors while parsing this feed. The following error occurred:"
 "<br><b>%s</b>"
-msgstr ""
-"Encontrado os seguintes erros ao processar a fonte:"
-"<br><b>%s</b>"
+msgstr "Encontrado os seguintes erros ao processar a fonte:<br><b>%s</b>"
 
 #: src/ui_htmlview.h:101
 msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
 msgstr ""
-"O fonte foi descontinuado. Não o atualizará, mas poderá acessar os artigos no cache."
+"O fonte foi descontinuado. Não o atualizará, mas poderá acessar os artigos "
+"no cache."
 
-#: src/ui_itemlist.c:278
-msgid "Date"
-msgstr "Data"
-
-#: src/ui_itemlist.c:289
+#: src/ui_itemlist.c:297
 msgid "Headline"
 msgstr "Resumo"
 
-#: src/ui_itemlist.c:478 src/ui_itemlist.c:487 src/ui_itemlist.c:538
+#: src/ui_itemlist.c:485 src/ui_itemlist.c:494 src/ui_itemlist.c:545
 msgid "No item has been selected"
 msgstr "Nenhum artigo foi selecionado"
 
-#: src/ui_itemlist.c:521 src/ui_itemlist.c:541
+#: src/ui_itemlist.c:528 src/ui_itemlist.c:548
 msgid "You must select a feed to delete its items!"
 msgstr "Selecione um fonte para apagar seus artigos!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:608
+#: src/ui_itemlist.c:615
 msgid "There are no unread items "
 msgstr "Não há artigo não lido "
 
@@ -1666,8 +1685,8 @@ msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
-"Marca todos os artigos da assinatura selecionada ou todas as assinaturas "
-"da pasta selecionada."
+"Marca todos os artigos da assinatura selecionada ou todas as assinaturas da "
+"pasta selecionada."
 
 #: src/ui_mainwindow.c:164
 msgid "Update All"
@@ -1718,23 +1737,22 @@ msgid ""
 "liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
 "liferea.sf.net\">project homepage</a>.</p>"
 msgstr ""
-"<h2>Bem-vindo ao Liferea</h2><p>O painel contém a lista de fontes "
-"onde pode-se adicionar novas assinaturas e selecionar as assinaturas e ler os "
-"artigos. O lado direito exibe uma lista de artigos ou todas notícias de uma vez "
-"se selecionar \"exibição condensada\".</p><h3>Ações Básicas</h3><ul>"
-"<li><p><b>Adicionar Assinatura</b> - Novas assinaturas da pasta "
-"selecionada. Para novas assinaturas, inclua a URL da fonte ou se "
-"desconhecer a URL da fonte.</p></li><li><p><b>Atualizar "
-"Assinatura</b> - Atualiza a assinatura selecionada. Normalmente, as "
-"atualizações automáticas são suficientes, mas caso falhar a atualização "
-"automática, use esta opção.</p></li><li><p><b>Atualizar Todos</b> - "
-"Atualiza todos as fontes automaticamente. </li><li><p><b>"
-"Editar Propriedades da Assinatura</b> - As vezes, pôde querer mudar "
-"o intervalo de atualização, título, autenticação ou propriedades "
-"cache de uma assinatura.</p></li></ul><p>Para saber mais sobre Liferea, "
-" deve ler a documentação da ajuda ou no <a href=\"http://"
-"liferea.sourceforge.net/faq.php\">FAQ</a> disponível no <a href=\"http://"
-"liferea.sf.net\">sítio do projeto</a>.</p>"
+"<h2>Bem-vindo ao Liferea</h2><p>O painel contém a lista de fontes onde pode-"
+"se adicionar novas assinaturas e selecionar as assinaturas e ler os artigos. "
+"O lado direito exibe uma lista de artigos ou todas notícias de uma vez se "
+"selecionar \"exibição condensada\".</p><h3>Ações Básicas</"
+"h3><ul><li><p><b>Adicionar Assinatura</b> - Novas assinaturas da pasta "
+"selecionada. Para novas assinaturas, inclua a URL da fonte ou se desconhecer "
+"a URL da fonte.</p></li><li><p><b>Atualizar Assinatura</b> - Atualiza a "
+"assinatura selecionada. Normalmente, as atualizações automáticas são "
+"suficientes, mas caso falhar a atualização automática, use esta opção.</p></"
+"li><li><p><b>Atualizar Todos</b> - Atualiza todos as fontes automaticamente. "
+"</li><li><p><b>Editar Propriedades da Assinatura</b> - As vezes, pôde querer "
+"mudar o intervalo de atualização, título, autenticação ou propriedades cache "
+"de uma assinatura.</p></li></ul><p>Para saber mais sobre Liferea,  deve ler "
+"a documentação da ajuda ou no <a href=\"http://liferea.sourceforge.net/faq."
+"php\">FAQ</a> disponível no <a href=\"http://liferea.sf.net\">sítio do "
+"projeto</a>.</p>"
 
 #: src/ui_mainwindow.c:272
 msgid "Liferea is now online"
@@ -1900,16 +1918,20 @@ msgstr "Procurando por \"%s\""
 
 #: src/ui_search.c:95
 msgid "Please do a search first!"
-msgstr "Faça uma busca primeiro!Liferea·reuses·the·GNOMELiferea·reuses·the·GNOMELiferea·reuses·the·GNOME"
+msgstr ""
+"Faça uma busca primeiro!"
+"Liferea·reuses·the·GNOMELiferea·reuses·the·GNOMELiferea·reuses·the·GNOME"
 
 #: src/ui_tabs.c:103
 msgid "URL"
 msgstr "URL"
 
 #: src/ui_tray.c:93
-#, c-format
+#, fuzzy, c-format
 msgid "%d new item!"
-msgstr "%d novo item!"
+msgid_plural "%d new items!"
+msgstr[0] "%d novo item!"
+msgstr[1] "%d novo item!"
 
 #: src/ui_tray.c:106
 msgid "No new items."
@@ -1930,11 +1952,10 @@ msgstr "Erro:Impossível abrir arquivo \"%s\""
 msgid "Error: There is no file \"%s\""
 msgstr "Erro: Nâo há arquivo: \"%s\""
 
-#: src/gtkhtml2/gtkhtml2.c:231
+#: src/gtkhtml2/gtkhtml2.c:225
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
 "GtkHTML2 não suporta tag HTML <object>.\n"
 "Plugins incluídos não foram exibidos."
-
