@@ -1207,7 +1207,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	itemPtr		ip;
 	GSList		*item;
 
-	g_assert(0 != fp->loaded);
+	feed_load(fp);
 	
 	/* To prevent updating feed ptr in the tree store and
 	   feeds hashtable we reuse the old structure! */
@@ -1253,6 +1253,8 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 		ip->fp = fp;
 		item = g_slist_next(item);
 	}
+	
+	feed_unload(fp);
 }
 
 /* method to totally erase a feed, remove it from the config, etc.... */
