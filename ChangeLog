@@ -4,6 +4,8 @@
 	
 	* Finally added a menu option to remove a single item.
 	  Sorry that it took so long! (Lars Lindner)
+	* Item modification times are now correctly converted to the local
+	  timezone. (Nathan Conrad)
 	* The help feeds are now (almost) normal subscriptions 
 	  and can be removed and modified. The only remaining
 	  difference is that the version in the URL is updated
@@ -13,7 +15,9 @@
 	* Added support for reading subscriptions URLs from 
 	  a named pipe (~/.liferea/new_subscription) to allow
 	  external programs to add feeds. (Lars Lindner)
-
+	* Itemlist sorting order is now saved on a per-feed basis.
+	  (Nathan Conrad)
+	
 2004-08-21  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.3b
