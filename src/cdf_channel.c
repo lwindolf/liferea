@@ -153,8 +153,16 @@ static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 gboolean cdf_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+		
+	/* avoid mistaking RSS 1.1 which also uses "Channel" as root tag */
+	if((NULL != cur->ns) &&
+	   (NULL != cur->ns->href) &&
+	   !xmlStrcmp(cur->ns->href, BAD_CAST"http://purl.org/net/rss1.1#"))
+	   	return FALSE;
+		
 	if(!xmlStrcasecmp(cur->name, BAD_CAST"Channel"))
 		return TRUE;
+		
 	return FALSE;
 }
 

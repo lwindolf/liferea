@@ -219,6 +219,7 @@ static gchar* parseImage(xmlNodePtr cur) {
 /* reads a RSS feed URL and returns a new channel structure (even if
    the feed could not be read) */
 static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+	xmlNodePtr	item;
 	itemPtr 	ip;
 	GList		*items = NULL;
 	gchar		*tmp;
@@ -228,10 +229,15 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	feed_set_time(fp, time(NULL));
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
+		cur = cur->xmlChildrenNode;
 		rdf = 0;
 	} else if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
-			!xmlStrcmp(cur->name, BAD_CAST"RDF")) {
+	          !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
+		cur = cur->xmlChildrenNode;
 		rdf = 1;
+	} else if(!xmlStrcmp(cur->name, BAD_CAST"Channel")) {
+		/* explicitly no "cur = cur->xmlChildrenNode;" ! */
+		rdf = 0;
 	} else {
 		addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find RDF/RSS header!</p>"));
 		xmlFreeDoc(doc);
@@ -239,7 +245,6 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 
 	if(!error) {	
-		cur = cur->xmlChildrenNode;
 		while(cur && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
@@ -251,7 +256,8 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				continue;
 			}
 
-			if((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
+			if((!xmlStrcmp(cur->name, BAD_CAST"channel")) || 
+			   (!xmlStrcmp(cur->name, BAD_CAST"Channel"))) {
 				parseChannel(fp, cur);
 				g_assert(NULL != cur);
 				if(0 == rdf)
@@ -287,7 +293,17 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 					fp->metadata = metadata_list_append(fp->metadata, "textInput", tmp);
 				g_free(tmp);
 				
-			} else if((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
+			} else if((!xmlStrcmp(cur->name, BAD_CAST"items"))) { /* RSS 1.1 */
+				item = cur->xmlChildrenNode;
+				while(NULL != item) {
+					if(NULL != (ip = parseRSSItem(fp, item))) {
+						if(0 == item_get_time(ip))
+							item_set_time(ip, feed_get_time(fp));
+						items = g_list_append(items, ip);
+					}
+					item = item->next;
+				}
+			} else if((!xmlStrcmp(cur->name, BAD_CAST"item"))) { /* RSS 1.0, 2.0 */
 				/* collect channel items */
 				if(NULL != (ip = parseRSSItem(fp, cur))) {
 					if(0 == item_get_time(ip))
@@ -316,6 +332,14 @@ static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	   !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 		return TRUE;
 	}
+	
+	/* RSS 1.1 */
+	if((NULL != cur->ns) &&
+	   (NULL != cur->ns->href) &&
+	   !xmlStrcmp(cur->name, BAD_CAST"Channel") &&
+	   !xmlStrcmp(cur->ns->href, BAD_CAST"http://purl.org/net/rss1.1#"))
+	   	return TRUE;
+		
 	return FALSE;
 }
 
