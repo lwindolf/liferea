@@ -455,7 +455,8 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 	if(!startup) {
 		/* used when creating feed entries manually */
 		getFeedListIter(&selected_iter);
-		gtk_tree_store_insert_after(feedstore, &iter, topiter, &selected_iter);
+		//gtk_tree_store_insert_after(feedstore, &iter, topiter, &selected_iter);
+		gtk_tree_store_prepend(feedstore, &iter, topiter);
 	} else {
 		/* typically on startup when adding feeds from configuration */
 		gtk_tree_store_append(feedstore, &iter, topiter);
