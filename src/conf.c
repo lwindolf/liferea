@@ -714,6 +714,9 @@ gchar * getStringConfValue(gchar *valuename) {
 		
 	value = gconf_client_get_string(client, valuename, &err);	
 	is_gconf_error(err);
+	
+	if(NULL == value)
+		value = g_strdup("");
 		
 	return value;
 }
