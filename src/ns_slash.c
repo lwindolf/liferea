@@ -21,6 +21,7 @@
 
 #include "ns_slash.h"
 #include "common.h"
+#include "htmlview.h"
 
 #define SLASH_START	"<table class=\"slash\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"slash\">"
 #define KEY_START	"<span class=\"slashprop\">"
@@ -53,70 +54,58 @@ static gchar * taglist[] = {	"section",
 				NULL
 			   };
 
-static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
-	gchar		*buffer = NULL;
-	gchar		*tmp;
-	int 		i;
+static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
+	gchar	*tmp, *section, *department;
 	
-	/* compare with each possible tag name */
-	for(i = 0; taglist[i] != NULL; i++) {
-		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if(NULL != tmp) {
-				addToHTMLBuffer(&buffer, KEY_START);
-				addToHTMLBuffer(&buffer, taglist[i]);
-				addToHTMLBuffer(&buffer, KEY_END);
-				addToHTMLBuffer(&buffer, VALUE_START);	
-				addToHTMLBuffer(&buffer, tmp);
-				addToHTMLBuffer(&buffer, VALUE_END);
-				g_free(tmp);
-	 			g_hash_table_insert(ip->nsinfos, g_strdup_printf("slash:%s", cur->name), buffer);
-				return;
-			}
-		}
+	if(!xmlStrcmp(BAD_CAST"section", cur->name)) {
+		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
+ 			g_hash_table_insert(ip->tmpdata, "slash:section", tmp);
+	} else if(!xmlStrcmp(BAD_CAST"department", cur->name)) {
+		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
+ 			g_hash_table_insert(ip->tmpdata, "slash:department", tmp);
+	}
+	
+	if(NULL != tmp) {
+		g_free(tmp);
+		section = g_hash_table_lookup(ip->tmpdata, "slash:section");
+		department = g_hash_table_lookup(ip->tmpdata, "slash:department");
+		tmp = g_strdup_printf("%s,%s", section, department);
+		metadata_list_set(&(ip->metadata), "slash", tmp);
 	}
 }
-
-static void doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
-	gchar		*output;
-	gchar		*key;
+void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user_data) {
+	gchar	*section, *department;
 	
-	g_assert(NULL != nsinfos);
-	key = g_strdup_printf("slash:%s", tagname);
-	
-	if(NULL != (output = g_hash_table_lookup(nsinfos, key))) {
-		addToHTMLBuffer(buffer, output);
-		g_free(output);
-		g_hash_table_remove(nsinfos, key);
-	}
-	g_free(key);
-}
-
-static gchar * doItemOutput(gpointer obj) {
-	gchar	*buffer = NULL;
-	gchar	*output = NULL;
-	
-	if(NULL != obj) {
-		doOutput(((RSSItemPtr)obj)->nsinfos, &output, "section");
-		doOutput(((RSSItemPtr)obj)->nsinfos, &output, "department");
+	if(NULL != (department = strchr((gchar *)data, ','))) {
+		department++;
+		section = (gchar *)data;
 		
-		if(NULL != output) {
-			addToHTMLBuffer(&buffer, SLASH_START);
-			addToHTMLBuffer(&buffer, output);
-			addToHTMLBuffer(&buffer, SLASH_END);
-			g_free(output);
-		}
-	}	
-	return buffer;
+		addToHTMLBuffer(&(displayset->head), SLASH_START);		
+		
+		addToHTMLBuffer(&(displayset->head), KEY_START);
+		addToHTMLBuffer(&(displayset->head), "section");
+		addToHTMLBuffer(&(displayset->head), KEY_END);
+		addToHTMLBuffer(&(displayset->head), VALUE_START);	
+		addToHTMLBuffer(&(displayset->head), section);
+		addToHTMLBuffer(&(displayset->head), VALUE_END);
+		
+		addToHTMLBuffer(&(displayset->head), KEY_START);
+		addToHTMLBuffer(&(displayset->head), "department");
+		addToHTMLBuffer(&(displayset->head), KEY_END);
+		addToHTMLBuffer(&(displayset->head), VALUE_START);	
+		addToHTMLBuffer(&(displayset->head), department);
+		addToHTMLBuffer(&(displayset->head), VALUE_END);
+		
+		addToHTMLBuffer(&(displayset->head), SLASH_END);
+	}
 }
 
-RSSNsHandler *ns_slash_getRSSNsHandler(void) {
-	RSSNsHandler 	*nsh;
+NsHandler *ns_slash_getRSSNsHandler(void) {
+	NsHandler 	*nsh;
 	
-	nsh = g_new0(RSSNsHandler, 1);
+	nsh = g_new0(NsHandler, 1);
 	nsh->prefix			= "slash";
-	nsh->parseItemTag		= parseItemTag;
-	nsh->doItemHeaderOutput		= doItemOutput;
+	nsh->parseItemTag		= parse_item_tag;
 
 	return nsh;
 }

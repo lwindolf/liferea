@@ -1,25 +1,24 @@
-/*
-   syndication namespace support
-   
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+/**
+ * @file ns_syn.c syndication namespace support
+ * 
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-   
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-   
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.
-*/
-
-#include "rss_channel.h"
 #include "ns_syn.h"
 
 /* you can find the syn module documentation at
@@ -33,12 +32,12 @@
    -------------------------------------------------------
 */
 
-void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
+static void ns_syn_parse_tag(feedPtr fp, xmlNodePtr cur) {
 	xmlChar	*tmp;
-	int	period;
-	int	frequency = 1;
+	gint	period;
+	gint	frequency = 1;
 	
-	// FIXME!!! period = cp->updateInterval;
+	period = feed_get_update_interval(fp);
 	if(!xmlStrcmp(cur->name, BAD_CAST"updatePeriod")) {
 		if(NULL != (tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 
@@ -67,15 +66,15 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	if(0 != frequency)
 		period /= frequency;
 
-	// FIXME!!! cp->updateInterval = period;
+	feed_set_update_interval(fp, period);
 }
 
-RSSNsHandler *ns_syn_getRSSNsHandler(void) {
-	RSSNsHandler 	*nsh;
+NsHandler *ns_syn_getRSSNsHandler(void) {
+	NsHandler 	*nsh;
 	
-	nsh = g_new0(RSSNsHandler, 1);
+	nsh = g_new0(NsHandler, 1);
 	nsh->prefix			= "syn";
-	nsh->parseChannelTag		= ns_syn_parseChannelTag;
+	nsh->parseChannelTag		= ns_syn_parse_tag;
 
 	return nsh;
 }

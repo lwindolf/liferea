@@ -22,8 +22,9 @@
 #ifndef _NS_SLASH_H
 #define _NS_SLASH_H
 
-#include "rss_ns.h"
+#include "metadata.h"
 
-RSSNsHandler *ns_slash_getRSSNsHandler(void);
+NsHandler *ns_slash_getRSSNsHandler(void);
+void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user_data);
 
 #endif
