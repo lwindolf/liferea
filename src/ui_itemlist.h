@@ -40,15 +40,6 @@ enum is_columns {
 	IS_LEN			/**< Number of columns in the itemstore */
 };
 
-extern nodePtr	displayed_node;
-
-/**
- * Returns the itemstore, creating it if needed.
- *
- * @return The Itemstore.
- */
-GtkTreeStore * getItemStore(void);
-
 /**
  * Initializes the itemlist. For example, it creates the various
  * columns and renderers needed to show the list.

@@ -631,7 +631,7 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 	nodePtr		child;
 	
 	if(NULL == ptr) {
-		valid = gtk_tree_model_get_iter_root(GTK_TREE_MODEL(feedstore), &childiter);
+		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(feedstore), &childiter);
 	} else {
 		g_assert(ptr->ui_data);
 		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, &((ui_data*)ptr->ui_data)->row);

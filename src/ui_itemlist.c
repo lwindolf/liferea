@@ -40,7 +40,7 @@ typedef struct ui_item_data {
 
 extern GdkPixbuf	*icons[];
 
-static GtkTreeStore	*itemstore = NULL;
+static nodePtr		displayed_node = NULL;
 
 static gint		itemlist_loading;	/* freaky workaround for item list focussing problem */
 static gint		disableSortingSaving;
@@ -81,9 +81,12 @@ void ui_itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer 
 		feed_set_sort_column((feedPtr)np, sortColumn, sortType == GTK_SORT_DESCENDING);
 }
 
-GtkTreeStore * getItemStore(void) {
-
-	if(NULL == itemstore) {
+GtkTreeStore * ui_itemlist_get_tree_store(void) {
+	GtkTreeModel	*model;
+	GtkTreeStore	*itemstore;
+	
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
+	if(NULL == model) {
 		/* set up a store of these attributes: 
 			- item title
 			- item label
@@ -104,6 +107,8 @@ GtkTreeStore * getItemStore(void) {
 		                               GDK_TYPE_PIXBUF);
 		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
 		g_signal_connect(G_OBJECT(itemstore), "sort-column-changed", G_CALLBACK(ui_itemlist_sort_column_changed_cb), NULL);
+	} else {
+		itemstore = GTK_TREE_STORE(model);
 	}
 	
 	return itemstore;
@@ -173,13 +178,14 @@ static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
 }
 
 void ui_itemlist_clear(void) {
-
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
+	
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
-	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
+	gtk_tree_store_clear(itemstore);
 }
 
 static void ui_update_item_from_iter(GtkTreeIter *iter) {
-	GtkTreeStore	*itemstore = getItemStore();
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	gpointer	ip;
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
 	gint		time;
@@ -241,7 +247,7 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
-	gtk_tree_store_set(getItemStore(), iter,
+	gtk_tree_store_set(ui_itemlist_get_tree_store(), iter,
 				    IS_LABEL, label,
 				    IS_TIME_STR, time_str,
 				    IS_ICON, icon,
@@ -259,11 +265,13 @@ void ui_update_item(itemPtr ip) {
 }
 
 void ui_update_itemlist() {
-	GtkTreeIter iter;
-	if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter)) {
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
+	GtkTreeIter	iter;
+	
+	if(gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter)) {
 		do {
 			ui_update_item_from_iter(&iter);
-		} while (gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter));
+		} while(gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter));
 	}
          
 }
@@ -277,7 +285,7 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	g_assert(mainwindow != NULL);
 	g_assert(itemlist != NULL);
 
-	itemstore = getItemStore();
+	itemstore = ui_itemlist_get_tree_store();
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist), GTK_TREE_MODEL(itemstore));
 
@@ -365,6 +373,7 @@ void ui_itemlist_prefocus(void) {
    If anything other is focussed nothing is printed to avoid
    disturbing the user. */
 void ui_itemlist_display(void) {
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	iter;
 	nodePtr		np;
 	itemPtr		ip;
@@ -438,82 +447,117 @@ void ui_itemlist_display(void) {
 	ui_feedlist_update();
 }
 
-void ui_itemlist_load_feed(feedPtr fp) {
-	GtkTreeIter	iter;
-	GSList		*itemlist;
+GtkTreeIter * ui_itemlist_find_existing_item(itemPtr ip) {
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
+	GtkTreeIter	*iter;
+	itemPtr		tmp;
+	gboolean	valid;
+
+	iter = g_new0(GtkTreeIter, 1);
+	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), iter);
+	while(valid) {
+		gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter, IS_PTR, &tmp, -1);
+		/* g_print("-> %s %d\n", tmp->title, tmp->nr); */
+		if(tmp == ip)
+			return iter;
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), iter);
+	}
+	g_free(iter);
+	return NULL;	
+}
+
+void ui_itemlist_load_feed(feedPtr fp, gpointer data) {
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
+	GtkTreeIter	*iter;
+	GSList		*item, *itemlist;
 	itemPtr		ip;
 
 	/* we depend on the fact that the third column is the favicon column!!! 
 	   if we are in search mode (or have a vfolder) we show the favicon 
 	   column to give a hint where the item comes from ... */
 	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (FST_VFOLDER == feed_get_type(fp)));
-
-	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-		debug0(DEBUG_CACHE, "unloading everything...");
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
-	}
 	
 	feed_load(fp);
 	itemlist = feed_get_item_list(fp);
-	while(NULL != itemlist) {
-		ip = itemlist->data;
-		gtk_tree_store_append(itemstore, &iter, NULL);
-		gtk_tree_store_set(itemstore, &iter,
-					    IS_TITLE, item_get_title(ip),
-					    IS_PTR, ip,
-					    IS_TIME, item_get_time(ip),
-					    -1);
-		g_assert(ip->ui_data == NULL);
-		ip->ui_data = g_new0(ui_item_data, 1);
-		((ui_item_data*)(ip->ui_data))->row = iter;
-		ui_update_item_from_iter(&iter);
+	itemlist = g_slist_copy(itemlist);
+	itemlist = g_slist_reverse(itemlist);
+	item = itemlist;
+	while(NULL != item) {
+		ip = item->data;
+		iter = NULL;
+		g_assert(NULL != ip);
 		
-		itemlist = g_slist_next(itemlist);
+		if(TRUE == *(gboolean *)data) {
+			/* g_print("merge mode: searching for %d\n", ip->nr); */
+			iter = ui_itemlist_find_existing_item(ip);
+		} 
+				
+		if(NULL == iter) {
+			iter = g_new0(GtkTreeIter, 1);
+			gtk_tree_store_prepend(itemstore, iter, NULL);
+			g_assert(ip->ui_data == NULL);
+			ip->ui_data = g_new0(ui_item_data, 1);
+			((ui_item_data*)(ip->ui_data))->row = *iter;
+		}	
+
+		gtk_tree_store_set(itemstore, iter,
+		                              IS_TITLE, item_get_title(ip),
+		                              IS_PTR, ip,
+		                              IS_TIME, item_get_time(ip),
+		                              -1);	    
+		ui_update_item_from_iter(iter);
+		g_free(iter);
+		item = g_slist_next(item);
 	}
+	g_slist_free(itemlist);
 }
 
+/* Loads or merges the passed feeds items into the itemlist. 
+   If the selected feed is equal to the passed one we do 
+   merging. Otherwise we can just clear the list and load
+   the new items. */
 void ui_itemlist_load(nodePtr node) {
-	GtkTreeView	*itemlist;
 	GtkTreeModel	*model;
 	gint		sortColumn;
 	GtkSortType	sortType;
-	gboolean	sorted;
 	gboolean	isFeed;
-
-	itemlist = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
-	model = gtk_tree_view_get_model(itemlist);
-	sorted = gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sortColumn, &sortType);
+	gboolean	merge = FALSE;
 	
-	/* free the old itemstore and create a new one */
-	gtk_tree_view_set_model(itemlist, NULL);
-	
-	ui_itemlist_clear();
-	/* explicitly no ui_htmlview_clear() !!! */
-	g_object_unref(model);
-	itemstore = NULL;
-	model = GTK_TREE_MODEL(getItemStore());
+	merge = (node == displayed_node);
+	displayed_node = node;
 	
 	isFeed = ((node != NULL) && ((FST_FEED == node->type) || (FST_VFOLDER == node->type)));
+
+	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
+	gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sortColumn, &sortType);
 	
+	if(FALSE == merge) {
+		ui_itemlist_clear();
+		/* explicitly no ui_htmlview_clear() !!! */
+	
+		if(isFeed) {
+			disableSortingSaving++;
+			gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed);
+			disableSortingSaving--;
+		}
+		
+		if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
+			debug0(DEBUG_CACHE, "unloading everything...");
+			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
+		}
+	}	
+
 	/* Add the new items */
 	if(TRUE == isFeed) {
-		ui_itemlist_load_feed((feedPtr)node);
+		ui_itemlist_load_feed((feedPtr)node, (gpointer)&merge);
 	} else if(FST_FOLDER == node->type) {
-		ui_feedlist_do_for_all(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed);
+		ui_feedlist_do_for_all_data(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed, (gpointer)&merge);
 	}
 	
-	/* Reset the sorting order of the itemstore and add it to the GtkTreeView */
-	gtk_tree_view_set_model(itemlist, model);
-	
-
-	if(isFeed) {
-		disableSortingSaving++;
-		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed);
-		disableSortingSaving--;
+	if(FALSE == merge) {		
+		ui_itemlist_display();
+		ui_itemlist_prefocus();
 	}
-	
-	ui_itemlist_display();
-	ui_itemlist_prefocus();
 }
 
 static itemPtr ui_itemlist_get_selected() {
@@ -618,13 +662,14 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	nodePtr		np;
 	itemPtr		ip;
 	
 	np = ui_feedlist_get_selected();
 	if((NULL != np) && (FST_FEED == np->type)) {
 		if(NULL != (ip = ui_itemlist_get_selected())) {
-			gtk_tree_store_remove(GTK_TREE_STORE(itemstore), &(((ui_item_data*)ip->ui_data)->row));
+			gtk_tree_store_remove(itemstore, &(((ui_item_data*)ip->ui_data)->row));
 			g_free(ip->ui_data);
 			ip->ui_data = NULL;
 			feed_remove_item((feedPtr)np, ip);
@@ -640,6 +685,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 void on_popup_remove_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_remove_item_activate(NULL, NULL); }
 
 static gboolean ui_itemlist_find_unread_item(void) {
+	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
 	GtkWidget		*treeview;
@@ -708,6 +754,7 @@ void on_nextbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 static void ui_itemlist_select(itemPtr ip) {
+	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter		iter;
 	GtkWidget		*treeview;
 	GtkTreeSelection	*selection;
@@ -731,6 +778,7 @@ static void ui_itemlist_select(itemPtr ip) {
 }
 
 gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
+	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 	GdkEventButton		*eb;
 	GtkWidget		*treeview;
 	GtkTreeViewColumn	*column;
@@ -747,7 +795,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(treeview), event->x, event->y, &path, NULL, NULL, NULL))
 		return FALSE;
 
-	gtk_tree_model_get_iter(GTK_TREE_MODEL(getItemStore()), &iter, path);
+	gtk_tree_model_get_iter(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), &iter, path);
 	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter,
 					    IS_PTR, &ip,
 					    -1);
