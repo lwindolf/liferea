@@ -110,7 +110,9 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		return;
 	}
 
-	if(0 == getFeedUpdateCounter(fp)) {
+	if(0 == getFeedUpdateCounter(fp)) {	
+		fp->updateCounter = fp->updateInterval;
+		
 		if(NULL == (source = getFeedSource(fp))) {
 			g_warning(_("Feed source is NULL! This should never happen - cannot update!"));
 			return;
@@ -118,9 +120,9 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 
 		g_assert(NULL != fhp->readFeed);
 		new_fp = (feedPtr)(*(fhp->readFeed))(source);
-		if(NULL != new_fp)
+		if(NULL == new_fp)
 			return;		/* feed reading must have failed, FIXME: should never happen (but does with OCS and local files)! */
-		
+g_print("merging new feed %s...\n", new_fp->title);
 		mergeFeed(fp, new_fp);
 		
 		g_mutex_lock(feeds_lock);
