@@ -16,7 +16,7 @@ SUBDIRS = net $(GTKHTML2) $(GTKHTML3) $(MOZILLA)
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
-	-DPACKAGE_LIB_DIR=\""$(libdir)"\" \
+	-DPACKAGE_LIB_DIR=\""$(pkglibdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	@PACKAGE_CFLAGS@
 

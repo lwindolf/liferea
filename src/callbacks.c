@@ -105,7 +105,7 @@ void ui_init(void) {
 			  lookup_widget(mainwindow, "itemlistview"),
 			  getNumericConfValue(LAST_ZOOMLEVEL));
 
-	if(getBooleanConfValue(LAST_ITEMLIST_MODE))
+	if(getBooleanConfValue(LAST_ITEMLIST_MODE) != NULL)
 		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
 		
 	ui_htmlview_set_mode(itemlist_mode);
@@ -149,7 +149,7 @@ void ui_redraw_widget(gchar *name) {
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_schedule_update);
 }
 
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {

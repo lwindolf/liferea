@@ -1,16 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = \
-	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
-	-DPACKAGE_LIB_DIR=\""$(libdir)"\" \
-	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	@PACKAGE_CFLAGS@ $(GTKHTML3_CFLAGS)
+pkglib_LTLIBRARIES = liblihtmlg.la
 
-GTKHTML3 = liblihtmlh.la
-GTKHTML3_CFLAGS = @GTKHTML3_CFLAGS@ -Wall
-
-lib_LTLIBRARIES = $(GTKHTML3)
-
-liblihtmlh_la_SOURCES = gtkhtml3.c
-liblihtmlh_la_LIBADD = @PACKAGE_LIBS@ @GTKHTML3_LIBS@ $(INTLLIBS)
-liblihtmlh_la_LDFLAGS = -avoid-version -module
+liblihtmlg_la_SOURCES = gtkhtml3.c
+liblihtmlg_la_LIBADD = $(PACKAGE_LIBS) $(GTKHTML3_LIBS) $(INTLLIBS)
+liblihtmlg_la_CFLAGS = $(PACKAGE_CFLAGS) $(GTKHTML3_CFLAGS)
+liblihtmlg_la_LDFLAGS = -avoid-version -module

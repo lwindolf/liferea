@@ -22,9 +22,6 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-libdir='${prefix}/lib/liferea'
-AC_DEFINE(MODULE_DIR, $libdir, [path of HTML widget modules])
-
 html_modules=
 
 AC_MSG_CHECKING([for GtkHTML2 support])
