@@ -63,7 +63,7 @@ GdkPixbuf *icons[MAX_ICONS];
 
 /* icon names */
 static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
-				"unread.xpm",		/* ICON_UNREAD */
+				"unread.png",		/* ICON_UNREAD */
 				"flag.png",		/* ICON_FLAG */
 				"available.png",	/* ICON_AVAILABLE */
 				"unavailable.png",	/* ICON_UNAVAILABLE */
