@@ -537,12 +537,12 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					item_set_description(old_ip, item_get_description(new_ip));
 					item_set_time(old_ip, item_get_time(new_ip));
 					item_set_unread(old_ip);
-					debug0(DEBUG_VERBOSE, "-> item already exist but was updated");
+					debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 					newcount++;
 					traycount++;
 				} else {
 					item_set_read_status(new_ip, TRUE);
-					debug0(DEBUG_VERBOSE, "-> item already exist");
+					debug0(DEBUG_VERBOSE, "-> item already exists");
 				}
 
 				/* any found new_fp items are not needed anymore */
@@ -975,12 +975,12 @@ void feed_free(feedPtr fp) {
 	
 	g_assert(IS_FEED(fp->type));
 	
-	if (displayed_fp == fp) {
+	if(displayed_fp == fp) {
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		ui_itemlist_clear();
 	}
 	
-	if (fp->id && fp->id[0] != '\0')
+	if(fp->id && fp->id[0] != '\0')
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	
 	/* free UI info */
@@ -1003,7 +1003,7 @@ void feed_free(feedPtr fp) {
 	   be processed in the update queues! Abandoned requests are
 	   free'd in feed_process. They must be freed in the main thread
 	   for locking reasons. */
-	if (fp->request != NULL) {
+	if(fp->request != NULL) {
 		if(FALSE == fp->updateRequested)
 			update_request_free(fp->request);
 		else
@@ -1012,7 +1012,7 @@ void feed_free(feedPtr fp) {
 
 	feed_clear_item_list(fp);
 
-	if (fp->id) {
+	if(fp->id) {
 		favicon_remove(fp);
 		conf_feedlist_schedule_save();
 		g_free(fp->id);
@@ -1022,6 +1022,7 @@ void feed_free(feedPtr fp) {
 	g_free(fp->description);
 	g_free(fp->source);
 	g_free(fp->parseErrors);
+	g_free(fp->filtercmd);
 	g_free(fp);
 
 }
