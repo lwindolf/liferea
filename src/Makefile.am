@@ -64,7 +64,6 @@ liferea_bin_SOURCES = \
 	pie_ns.h \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h \
-	rss_ns.h \
 	support.c support.h \
 	ui_queue.c ui_queue.h \
 	ui_mainwindow.c ui_mainwindow.h \
