@@ -187,19 +187,20 @@ static void url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *st
 
 static void on_url (HtmlView *view, const char *url, gpointer user_data) {
 	xmlChar *uri;
-	
+
+	g_free(selectedURL);
+	selectedURL = NULL;
+
 	if(NULL != url) {
-		uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));
-		
-		if (uri != NULL) {
-			if(selectedURL)
-				g_free(selectedURL);
+		uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));	
+		if(uri != NULL) {
 			selectedURL = g_strdup(uri);
 			ui_mainwindow_set_status_bar("%s", selectedURL);
 			xmlFree(uri);
 		}
-	} else
+	} else {
 		ui_mainwindow_set_status_bar("");
+	}
 }
 
 static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data)
