@@ -107,54 +107,6 @@ void setFolderTitle(folderPtr folder, gchar *title) {
 	if (folder->ui_data)
 		ui_update_folder(folder);
 }
-/*
-void folder_free(folderPtr folder) {
-        GtkTreeStore            *feedstore;
-        gchar                   *key;
- 
-        feedstore = getFeedStore();
-        g_assert(feedstore != NULL);
- 
-        if (folder->children != NULL) {
-                g_error(_("A folder must be empty to delete it!"));
-                return;
-        }
- 
-========= folder.c
-        key = folder_get_conf_path(folder);
- 
-        if (folder->ui_data) {
-                ui_remove_folder(folder);
-=======
-        iter = g_new0(GtkTreeIter, 1);
-         
-        feedstore = getFeedStore();
-        g_assert(feedstore != NULL);
- 
-        /* if keyprefix is "" we have the root folder and don't create
-           a new iter!
-        if(0 == strlen(keyprefix)) {
-                iter = NULL;
-        } else {
-                gtk_tree_store_append(feedstore, iter, NULL);
-                gtk_tree_store_set(feedstore, iter, FS_TITLE, title,
-                                                    FS_KEY, keyprefix,
-                                                    FS_TYPE, type,
-                                                    -1);
-========== 1.15
-        }
-                                                                                                                                                                       
-        / topiter must not be NULL! because we cannot delete the root folder ! *
-        removeFolderFromConfig(folder);
-                                                                                                                                                                       
-        if (folder->title)
-                g_free(folder->title);
-        if (folder->key)
-                g_free(folder->key);
-        g_free(folder);
-
-}
-*/
 
 void folder_add_feed(folderPtr folder, feedPtr feed, gint position) {
 	folder->children = g_slist_insert(folder->children, feed, position);

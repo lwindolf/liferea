@@ -127,7 +127,7 @@ void ui_init(void) {
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
-	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (nodeActionFunc)feed_update);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_update);
 }
 
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
@@ -175,7 +175,7 @@ void on_popup_allunread_selected(void) {
 	if (np) {
 		if(IS_FOLDER(np->type)) {
 			/* if we have selected a folder we mark all item of all feeds as read */
-			ui_feedlist_do_for_all(np, FEEDLIST_FEED_ACTION, (nodeActionFunc)feed_mark_all_items_read);
+			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
 		} else {
 			/* if not we mark all items of the item list as read */
 			ui_itemlist_mark_all_as_read();
@@ -270,7 +270,8 @@ gint checkForUpdateResults(gpointer data) {
 		new_fp = feed_new();
 		new_fp->source = g_strdup(request->fp->source);
 		(*(fhp->readFeed))(new_fp, request->data);
-
+		new_fp->type = request->fp->type; /* FIXME:  This is a hack. The type should be set in the parser functions*/
+		
 		if(ui_feedlist_get_selected() == (nodePtr)request->fp)
 			ui_itemlist_clear();	// FIXME: move this down to the other ui_* stuff?
 		
@@ -324,8 +325,8 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	gtk_widget_hide(mainwindow);
 
-	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, (gpointer)feed_save);
-	ui_feedlist_do_for_all(NULL, FEEDLIST_FOLDER_ACTION, (gpointer)folder_state_save);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_save);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, (gpointer)folder_state_save);
 	
 	/* save pane proportions */
 	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {

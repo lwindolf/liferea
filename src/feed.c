@@ -82,11 +82,14 @@ GMutex * feeds_lock = NULL;
 static gboolean update_timer_main(gpointer data);
 
 gchar *feed_get_conf_path(feedPtr feed) {
-	g_assert(feed->id);
-	gchar *ppath = folder_get_conf_path(feed->parent);
-	gchar *path = g_strdup_printf("%s/%s",ppath,feed->id);
-	g_free(ppath);
-	return path;
+	if (feed->id == NULL)
+		return NULL;
+	else {
+		gchar *ppath = folder_get_conf_path(feed->parent);
+		gchar *path = g_strdup_printf("%s/%s",ppath,feed->id);
+		g_free(ppath);
+		return path;
+	}
 }
 
 /* ------------------------------------------------------------ */
@@ -771,8 +774,10 @@ void feed_set_update_interval(feedPtr fp, gint interval) {
 
 	gchar *path = feed_get_conf_path(fp);
 	fp->updateInterval = interval; 
-	setFeedUpdateIntervalInConfig(path, interval);
-	g_free(path);
+	if (path != NULL) {
+		setFeedUpdateIntervalInConfig(path, interval);
+		g_free(path);
+	}
 
 	if (interval > 0)
 		feed_reset_update_counter(fp);
@@ -869,6 +874,7 @@ gchar * feed_get_title(feedPtr fp) {
 
 void feed_set_title(feedPtr fp, gchar *title) {
 
+	printf("set_title\n");
 	gchar *path = feed_get_conf_path(fp);
 
 	g_free(fp->title);

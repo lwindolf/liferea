@@ -88,9 +88,13 @@ void ui_feedlist_load_subscription(feedPtr fp, gboolean startup);
  */
 void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr folder, gboolean showPropDialog);
 
-#define FEEDLIST_FEED_ACTION	0
-#define FEEDLIST_FOLDER_ACTION	1
-#define FEEDLIST_ALL_ACTION	2
+enum {
+	ACTION_FILTER_FEED,		/** Only matches nodes where !IS_FOLDER(node->type) */
+						/* FIXME: Should this be changed to IS_FEED(type)? */	
+	ACTION_FILTER_FOLDER,	/** Only matches nodes where IS_FOLDER(node->type) */
+	ACTION_FILTER_ANY,		/** Matches any node */
+	ACTION_FILTER_CHILDREN	/** Matches immediate children of the given node */
+};
 
 /**
  * Helper function to recursivly call feed_save() for all
@@ -100,7 +104,7 @@ void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr folder, gb
  * @param type	the element type to apply func to
  * @param func	the function to process all found elements
  */
-void ui_feedlist_do_for_all(nodePtr ptr, gint type, nodeActionFunc func);
+void ui_feedlist_do_for_all(nodePtr ptr, gint actionType, nodeActionFunc func);
 
 /**
  * helper function to find next unread item 
