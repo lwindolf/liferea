@@ -1,6 +1,6 @@
 /* Snownews - A lightweight console RSS newsreader
  * 
- * Copyright 2003 Oliver Feiler <kiza@kcore.de>
+ * Copyright 2003-2004 Oliver Feiler <kiza@kcore.de>
  * http://kiza.kcore.de/software/snownews/
  *
  * os-support.h
@@ -22,5 +22,15 @@
  *
  */
 
+#ifndef OS_SUPPORT_H
+#define OS_SUPPORT_H
 
+#include "compat.h"
+
+#ifdef SUN
 char* strsep(char** str, const char* delims);
+#endif
+
+void * s_malloc (size_t size);
+
+#endif

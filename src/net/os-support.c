@@ -1,11 +1,17 @@
-/* Snownews - A lightweight console RSS newsreader
+/* 
+ * Liferea reuses a stripped version of the SnowNews code...
+ *
+ * Snownews - A lightweight console RSS newsreader
  * 
- * Copyright 2003 Oliver Feiler <kiza@kcore.de>
+ * Copyright 2003-2004 Oliver Feiler <kiza@kcore.de>
  * http://kiza.kcore.de/software/snownews/
  *
  * os-support.c
  *
  * Library support functions.
+ *
+ * Please read the file README.patching before changing any code in this file!
+ *
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -23,6 +29,7 @@
  */
 
 #include <string.h>
+#include "os-support.h"
 
 /******************************************************************************
  * This is a replacement for strsep which is not portable (missing on Solaris).
@@ -57,3 +64,16 @@ char* strsep(char** str, const char* delims)
 }
 #endif
 
+
+/* Private malloc wrapper. Aborts program execution if malloc fails. */
+void * s_malloc (size_t size) {
+	void *newmem;
+	
+	newmem = malloc (size);
+	
+	if (newmem == NULL) {
+		MainQuit ("Allocating memory", strerror(errno));
+	}
+	
+	return newmem;
+}

@@ -4,10 +4,13 @@
  * 
  * Snownews - A lightweight console RSS newsreader
  * 
- * Copyright 2003 Oliver Feiler <kiza@kcore.de>
+ * Copyright 2003-2004 Oliver Feiler <kiza@kcore.de>
  * http://kiza.kcore.de/software/snownews/
  *
  * netio.c
+ *
+ * Please read the file README.patching before changing any code in this file!
+ *
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -46,15 +49,11 @@
 #include <netdb.h>
 #include <sys/stat.h>
 
+#include "netio.h"
 #include "conversions.h"
 #include "net-support.h"
-#include "netio.h"
 
-#ifdef SUN
-#	include "os-support.h"
-#endif
-
-#define MAX_HTTP_REDIRECTS 10		/* Maximum number of redirects we will follow. */
+#define MAX_HTTP_REDIRECTS 10	/* Maximum number of redirects we will follow. */
 
 extern char *proxyname;			/* Hostname of proxyserver. */
 extern unsigned short proxyport;	/* Port on proxyserver to use. */
@@ -210,16 +209,15 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	int handled;
 	int tmphttpstatus;
 	int inflate = 0;			/* Whether feed data needs decompressed with deflate(1), gzip(2). */
-	int contentlength = 0;		/* Content-Length of server reply. */
 	int len;
 	char * inflatedbody;
 	int quirksmode = 0;			/* IIS operation mode. */
 	int authfailed = 0;			/* Avoid repeating failed auth requests endlessly. */
 	
-	snprintf (tmp, sizeof(tmp), _("Downloading \"http://%s%s\""), host, url);
-
-	if (!suppressoutput)
+	if (!suppressoutput) {
+		snprintf (tmp, sizeof(tmp), _("Downloading \"http://%s%s\""), host, url);
 		UIStatus (tmp, 0);
+	}
 	
 	redirectcount = 0;
 	
@@ -250,17 +248,17 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	if (proxyport == 0) {
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n", url, useragent, host, cur_ptr->lastmodified, (cur_ptr->authinfo ? cur_ptr->authinfo : ""), (cur_ptr->cookies ? cur_ptr->cookies : ""));
+			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s%s\r\n", url, useragent, host, cur_ptr->lastmodified, (cur_ptr->authinfo ? cur_ptr->authinfo : ""), (cur_ptr->cookies ? cur_ptr->cookies : ""));
 		else
-			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n", url, useragent, host, (cur_ptr->authinfo ? cur_ptr->authinfo : ""), (cur_ptr->cookies ? cur_ptr->cookies : ""));
+			fprintf(stream, "GET %s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s%s\r\n", url, useragent, host, (cur_ptr->authinfo ? cur_ptr->authinfo : ""), (cur_ptr->cookies ? cur_ptr->cookies : ""));
 
 		fflush(stream);
 	} else {
 		/* Request URL from HTTP server. */
 		if (cur_ptr->lastmodified != NULL)
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\nIf-Modified-Since: %s\r\n%s\r\n", host, url, useragent, cur_ptr->lastmodified, (cur_ptr->cookies ? cur_ptr->cookies : ""));
+			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\nIf-Modified-Since: %s\r\n%s\r\n", host, url, useragent, host, cur_ptr->lastmodified, (cur_ptr->cookies ? cur_ptr->cookies : ""));
 		else
-			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip,deflate\r\nUser-Agent: %s\r\nConnection: close\r\n%s\r\n", host, url, useragent, (cur_ptr->cookies ? cur_ptr->cookies : ""));
+			fprintf(stream, "GET http://%s%s HTTP/1.0\r\nAccept-Encoding: gzip\r\nUser-Agent: %s\r\nConnection: close\r\nHost: %s\r\n%s\r\n", host, url, useragent, host, (cur_ptr->cookies ? cur_ptr->cookies : ""));
 		
 		fflush(stream);
 	}
@@ -510,24 +508,14 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		}
 		/* Check and parse Content-Encoding header. */
 		if (strncasecmp (netbuf, "Content-Encoding", 16) == 0) {
+			/* We do not support deflate. And probably never will.
 			if (strstr (netbuf, "deflate") != NULL)
 				inflate = 1;
+			*/
 			/* Will also catch x-gzip. */
 			if (strstr (netbuf, "gzip") != NULL)
 				inflate = 2;
-		}
-		/* Check and parse Content-Length header (needed for zlib). */
-		if (strncasecmp (netbuf, "Content-Length", 14) == 0) {
-	 		tmpstring = strdup (netbuf);
-			freeme = tmpstring;
-			/* Cut string at ":" sign */
-			strsep (&tmpstring, ":");
-			/* Pointer points to space after ":", advance one char */
-			tmpstring++;
-			contentlength = atoi (tmpstring);
-			free (freeme);
-	 	}
-		
+		}		
 		/* HTTP authentication
 		 *
 		 * RFC 2617 */
@@ -642,7 +630,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	/* If inflate==1 we need to decompress content with deflate.
 	   Probably not needed since every webserver seems to send gzip. */
 	if (inflate == 1) {
-		inflatedbody = zlib_uncompress (body, contentlength, NULL, 0);
+		inflatedbody = zlib_uncompress (body, length, NULL, 0);
 		
 		if (inflatedbody == NULL) {
 			free (body);
@@ -655,7 +643,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		free (inflatedbody);
 	} else if (inflate == 2) {
 		/* gzipinflate */
-		inflatedbody = gzip_uncompress (body, contentlength, NULL);
+		inflatedbody = gzip_uncompress (body, length, NULL);
 		
 		if (inflatedbody == NULL) {
 			free (body);
@@ -672,7 +660,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 }
 
 /* Returns allocated string with body of webserver reply.
-   Various status info put into struct feed * cur_ptr.
+   Various status info put into struct feed_request * cur_ptr.
    Set suppressoutput=1 to disable ncurses calls. */
 char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutput) {
 	int my_socket = 0;
@@ -751,7 +739,11 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 			free (authdata);
 			return NULL;
 		case 3:
-			snprintf (tmp, sizeof(tmp), _("Could not connect to server %s: %s"), host, strerror(connectresult));
+			/* On Solaris connect() might return -1, passing -1 to strerror()
+			   will return a NULL pointer which will segfault snprintf().
+			   This is broken IMO, but the check catches the crash. */
+			snprintf (tmp, sizeof(tmp), _("Could not connect to server %s: %s"), host,
+				(strerror(connectresult) ? strerror(connectresult) : "(null)"));
 			if (!suppressoutput)
 				UIStatus (tmp, 2);
 			cur_ptr->problem = 1;
@@ -782,7 +774,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 /* some Liferea specific code...					 */
 
 /* Downloads a feed and returns the data or NULL as return value.
-   The url of the has to be passed in the feed_request structure.
+   The url of the has to be passed in the feed structure.
    If the the webserver reports a permanent redirection, the
    feed url will be modified and the old URL 'll be freed. The
    request structure 'll also contain the HTTP status and the

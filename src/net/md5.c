@@ -5,6 +5,9 @@
  *
  * md5.c
  *
+ * Please read the file README.patching before changing any code in this file!
+ *
+ *
  * This code has been slightly modified from its original.
  * The endian check via evaluating endian.h has been
  * replaced with the code in void byteReverse().

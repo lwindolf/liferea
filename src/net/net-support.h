@@ -23,6 +23,8 @@
 #ifndef NET_SUPPORT_H
 #define NET_SUPPORT_H
 
-int NetSupportAuth (struct feed * cur_ptr, char * authdata, char * url, char * netbuf);
+#include "compat.h"
+
+int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, char * netbuf);
 
 #endif

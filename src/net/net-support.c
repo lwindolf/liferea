@@ -5,6 +5,9 @@
  *
  * net-support.c
  *
+ * Please read the file README.patching before changing any code in this file!
+ *
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
@@ -25,9 +28,8 @@
 #include <stdio.h>
 
 #include "conversions.h"
-#include "../update.h"
-
 #include "digcalc.h"
+#include "net-support.h"
 
 char * ConstructBasicAuth (char * username, char * password) {
 	int len;

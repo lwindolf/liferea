@@ -3,7 +3,7 @@
  *
  * Snownews - A lightweight console RSS newsreader
  * 
- * Copyright 2003 Oliver Feiler <kiza@kcore.de>
+ * Copyright 2003-2004 Oliver Feiler <kiza@kcore.de>
  * http://kiza.kcore.de/software/snownews/
  *
  * netio.h
@@ -26,7 +26,7 @@
 #ifndef _NETIO_H
 #define _NETIO_H
 
-#include "../update.h"
+#include "compat.h"
 
 /* returns the raw download data or NULL on error */
 char * downloadURL(struct feed_request *request);

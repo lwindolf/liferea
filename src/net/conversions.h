@@ -4,29 +4,31 @@
  *
  * Copyright 2003 Oliver Feiler <kiza@kcore.de> 
  *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
  *
- * FIXME: license
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
 
-/*-----------------------------------------------------------------------*/
-/* some Liferea specific adaptions					 */
- 
 #ifndef _CONVERSIONS_H
 #define _CONVERSIONS_H
 
-#include "../support.h"
-#include "../callbacks.h"
-
-/* we redefine some SnowNews functions */
-#define UIStatus(a, b)		ui_mainwindow_set_status_bar(a)
-#define MainQuit(str, errno)	g_error(str);
-#define	getch()			0
-/*-----------------------------------------------------------------------*/
-
+char * iconvert (char * inbuf, char * from, char * to);
+char * UIDejunk (char * feed_description);
+char * WrapText (char * text, int width);
 void *zlib_uncompress(void *in_buf, int in_size, int *out_size, int voodoo_magic);
 void *gzip_uncompress(void *in_buf, int in_size, int *out_size);
 char *base64encode(char const *inbuf, unsigned int inbuf_size);
+void CleanupString (char * string);
 
 struct gzip_header {
 	unsigned char magic[2];

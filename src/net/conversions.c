@@ -4,10 +4,13 @@
  *
  * Snownews - A lightweight console RSS newsreader
  * 
- * Copyright 2003 Oliver Feiler <kiza@kcore.de> and
- *                Rene Puls <rpuls@gmx.net>
+ * Copyright 2003-2004 Oliver Feiler <kiza@kcore.de> and
+ *                     Rene Puls <rpuls@gmx.net>
  *
  * conversions.c
+ *
+ * Please read the file README.patching before changing any code in this file!
+ *
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -33,12 +36,10 @@
 #include <errno.h>
 #include <zlib.h>
 
-#include "config.h"
+#include "compat.h"
 #include "conversions.h"
 
-#ifdef SUN
-#	include "os-support.h"
-#endif
+extern struct entity *first_entity;
 
 char * iconvert (char * inbuf, char * from, char * to) {
 	iconv_t cd;							/* Iconvs conversion descriptor. */
@@ -46,18 +47,28 @@ char * iconvert (char * inbuf, char * from, char * to) {
 	                                       the strings starting position. */
 	size_t inbytesleft, outbytesleft;
 
+	/* Take shortcut if TARGET_CHARSET is UTF-8 and avoid
+	   unneccessary conversion. */
+	/*
+	Something like:
+	if (strcasecmp (to, TARGET_CHARSET) == 0)
+		return strdup(inbuf);
+	*/
+	
 	inbytesleft = strlen(inbuf);
 	outbytesleft = strlen(inbuf);
-	
-	outbuf = malloc (outbytesleft+1);
-	outbuf_first = outbuf;
 	
 	cd = iconv_open (to, from);
 	if (cd == (iconv_t) -1) {
 		return NULL;
 	}
+	
+	outbuf = malloc (outbytesleft+1);
+	outbuf_first = outbuf;
 
 	if (iconv (cd, &inbuf, &inbytesleft, &outbuf, &outbytesleft) == -1) {
+		free(outbuf_first);
+		iconv_close(cd);
 		return NULL;
 	}
 
@@ -76,28 +87,19 @@ char * iconvert (char * inbuf, char * from, char * to) {
  * instead means "..." (3 dots, "and so on...").
  */
 char * UIDejunk (char * feed_description) {
-	char *start;			/* Points to first char everytime. Need to free this. */
-	char *text;				/* = feed_description.
-	                           Well, at least at the beginning of the func. */
-	char *newtext;			/* Detag'ed *text. */
-	char *detagged;			/* Returned value from strsep. This is what we want. */
-	char *entity;			/* Which HTML crap did we hit now? */
+	char *start;				/* Points to first char everytime. Need to free this. */
+	char *text;					/* = feed_description.
+	                               Well, at least at the beginning of the func. */
+	char *newtext;				/* Detag'ed *text. */
+	char *detagged;				/* Returned value from strsep. This is what we want. */
+	char *entity;				/* Which HTML crap did we hit now? */
+//	struct entity *cur_entity;
+	int found = 0;				/* User defined entity matched? */
 	
 	/* Make a copy and point *start to it so we can free the stuff again! */
 	text = strdup (feed_description);
 	start = text;
 	
-	/* First we remove every HTML tag and other junk from the string. */
-	
-	/* Remove spaces from beginning of string. */
-	/*
-	while (1) {
-		if (text[0] == " ")
-			strsep (&text, " ");
-		else
-			break;
-	}
-	*/
 	
 	/* If *text begins with a tag, discard all of them. */
 	while (1) {
@@ -107,8 +109,7 @@ char * UIDejunk (char * feed_description) {
 		} else
 			break;
 		if (text == NULL) {
-			newtext = malloc (strlen (_("No description available."))+1);
-			strcpy (newtext, _("No description available."));
+			newtext = strdup (_("No description available."));
 			free (start);
 			return newtext;
 		}
@@ -123,18 +124,32 @@ char * UIDejunk (char * feed_description) {
 		if (detagged == NULL)
 			break;
 		
-		/* if (*detagged != '\0') { */
-			newtext = realloc (newtext, strlen(newtext)+strlen(detagged)+1);
-		
-			/* Now append detagged to newtext. */
-			strcat (newtext, detagged);
-		/* } */
+		/* Replace <p> and <br> (in all incarnations) with newlines, but only
+		   if there isn't already a following newline. */
+		if (text != NULL) {
+			if ((strncasecmp (text, "p", 1) == 0) ||
+				(strncasecmp (text, "br", 2) == 0)) {
+				if ((strncasecmp (text, "br>\n", 4) != 0) &&
+					(strncasecmp (text, "br/>\n", 5) != 0) &&
+					(strncasecmp (text, "br />\n", 6) != 0) &&
+					(strncasecmp (text, "p>\n", 3) != 0)) {
+					newtext = realloc (newtext, strlen(newtext)+2);
+					strcat (newtext, "\n");
+				}
+			}
+		}
+		newtext = realloc (newtext, strlen(newtext)+strlen(detagged)+1);
+
+		/* Now append detagged to newtext. */
+		strcat (newtext, detagged);
 		
 		/* Advance *text to next position after the closed tag. */
 		if ((strsep (&text, ">")) == NULL)
 			break;
 	}
 	free (start);
+	
+	CleanupString (newtext);
 	
 	/* See if there are any entities in the string at all. */
 	if (strchr(newtext, '&') != NULL) {
@@ -146,20 +161,11 @@ char * UIDejunk (char * feed_description) {
 		newtext[0] = '\0';
 		
 		while (1) {
-			if (text[0] == '&') {
-				strsep (&text, "&");
-				entity = strsep (&text, ";");
-			} else
-			 break;
-		}
-	
-		while (1) {
 			/* Strip HTML entities. */
 			detagged = strsep (&text, "&");
-			if (detagged == NULL) {
+			if (detagged == NULL)
 				break;
-				/* This will indeed break if text starts with an HTML entity. */
-			}
+			
 			if (detagged != '\0') {
 				newtext = realloc (newtext, strlen(newtext)+strlen(detagged)+1);
 				strcat (newtext, detagged);
@@ -169,43 +175,53 @@ char * UIDejunk (char * feed_description) {
 			/* This might break if there is an & sign in the text. */
 			entity = strsep (&text, ";");
 			if (entity != NULL) {
-				if (strcmp(entity, "hellip") == 0) {
-					/* "..." needs 3 chars.
-					   WARNING! strlen(newtext) is the same as before!
-					   Make sure to reserve enough space. */
-					newtext = realloc (newtext, strlen(newtext)+4);
-					strcat (newtext, "...");
-				} else if (strcmp(entity, "amp") == 0) {
+				/* XML defined entities. */
+				if (strcmp(entity, "amp") == 0) {
 					strcat (newtext, "&");
-				} else if (strcmp(entity, "auml") == 0) {
-					strcat (newtext, "ä");
-				} else if (strcmp(entity, "ouml") == 0) {
-					strcat (newtext, "ö");
-				} else if (strcmp(entity, "uuml") == 0) {
-					strcat (newtext, "ü");
-				} else if (strcmp(entity, "Auml") == 0) {
-					strcat (newtext, "Ä");
-				} else if (strcmp(entity, "Ouml") == 0) {
-					strcat (newtext, "Ö");
-				} else if (strcmp(entity, "Uuml") == 0) {
-					strcat (newtext, "Ü");
-				} else if (strcmp(entity, "szlig") == 0) {
-					strcat (newtext, "ß");
+					continue;
 				} else if (strcmp(entity, "lt") == 0) {
 					strcat (newtext, "<");
+					continue;
 				} else if (strcmp(entity, "gt") == 0) {
 					strcat (newtext, ">");
-				} else if (strcmp(entity, "nbsp") == 0) {
-					strcat (newtext, " ");
-				} else {
-					/* If nothing matched, put text back in.
-					   realloc: &+entity+; */
+					continue;
+				} else if (strcmp(entity, "quot") == 0) {
+					strcat (newtext, "\"");
+					continue;
+				} else if (strcmp(entity, "apos") == 0) {
+					strcat (newtext, "'");
+					continue;
+				}
+				
+//				/* Decode user defined entities. */
+//				found = 0;
+//				for (cur_entity = first_entity; cur_entity != NULL; cur_entity = cur_entity->next_ptr) {
+//					if (strcmp (entity, cur_entity->entity) == 0) {
+//						/* We have found a matching entity. */
+//						
+//						/* If entity_length is more than 1 char we need to realloc
+//						   more space in newtext. */
+//						if (cur_entity->entity_length > 1)
+//							newtext = realloc (newtext,  strlen(newtext)+cur_entity->entity_length+1);
+//						
+//						/* Append new entity. */
+//						strcat (newtext, cur_entity->converted_entity);
+//						
+//						/* Set found flag. */
+//						found = 1;
+//						
+//						/* We can now leave the for loop. */
+//						break;
+//					}
+//				}
+								
+				/* If nothing matched so far, put text back in. */
+				if (!found) {
 					/* Changed into &+entity to avoid stray semicolons
 					   at the end of wrapped text if no entity matches. */
 					newtext = realloc (newtext, strlen(newtext)+strlen(entity)+2);
 					strcat (newtext, "&");
 					strcat (newtext, entity);
-					/* strcat (newtext, ";"); */
 				}
 			} else
 				break;
@@ -239,7 +255,6 @@ char * WrapText (char * text, int width) {
 	
 
 	line = malloc (1);
-	/* memset (line, 0, width); */	/* Nullify contents of line. */
 	line[0] = '\0';
 	
 	newtext = malloc(1);
@@ -260,7 +275,10 @@ char * WrapText (char * text, int width) {
 					newtext = realloc (newtext, strlen(newtext)+strlen(line)+2);
 					strcat (newtext, line);
 					strcat (newtext, "\n");
-					/* Faster replacement with memcpy, */
+					
+					/* Faster replacement with memcpy.
+					 * Overkill, overcomplicated and smelling of bugs all over.
+					 */
 					/*
 					lena = strlen(newtext);
 					lenb = strlen(line);
@@ -322,7 +340,7 @@ char * WrapText (char * text, int width) {
 		}
 	}
 	
-	if (line != NULL)
+	//if (line != NULL)
 		free (line);
 	
 	free (start);	
@@ -330,6 +348,9 @@ char * WrapText (char * text, int width) {
 	return newtext;
 }
 
+/* Decompresses deflate compressed data. Probably unneeded,
+ * see gzip_uncompress below.
+ */
 void *zlib_uncompress(void *in_buf, int in_size, int *out_size, int voodoo_magic) {
 	char tmpstring[1024];
 	z_stream stream;
@@ -403,6 +424,9 @@ void *zlib_uncompress(void *in_buf, int in_size, int *out_size, int voodoo_magic
 	return out_buf;
 }
 
+/* Decompressed gzip,deflate compressed data. This is what the webservers
+ * usually send.
+ */
 void *gzip_uncompress(void *in_buf, int in_size, int *out_size) {
 	char tmpstring[1024];
 	struct gzip_header *header;
@@ -501,4 +525,25 @@ char *base64encode(char const *inbuf, unsigned int inbuf_size) {
 	outbuf[outbuf_pos] = 0;
 	
 	return outbuf;
+}
+
+/* Remove leading whitspaces, newlines, tabs.
+   This function should be safe for working on UTF-8 strings. */
+void CleanupString (char * string) {
+	int len;
+	
+	/* If we are passed a NULL pointer, leave it alone and return. */
+	if (string == NULL)
+		return;
+	
+	len = strlen(string);
+	
+	while ((string[0] == '\n' || string [0] == ' ' || string [0] == '\t') &&
+			(len > 0)) {
+		/* len=strlen(string) does not include \0 of string.
+		   But since we copy from *string+1 \0 gets included.
+		   Delicate code. Think twice before it ends in buffer overflows. */
+		memmove(string, string+1, len);
+		len--;
+	}
 }

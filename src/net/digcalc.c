@@ -4,6 +4,9 @@
  * http://kiza.kcore.de/software/snownews/
  *
  * digcalc.c
+ *
+ * Please read the file README.patching before changing any code in this file!
+ *
  * 
  * This is the sample implementation from RFC 2617.
  * The code has been modified to work with Colin Plumb's

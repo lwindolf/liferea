@@ -38,7 +38,7 @@
 #define GROUPS		"/apps/liferea/groups"
 
 /* _() for HELP1URL to allow localised help feeds */
-#define HELP1URL 	_("http://liferea.sf.net/help047.rdf")
+#define HELP1URL 	_("http://liferea.sf.net/help048.rdf")
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 #define HOMEPAGE	"http://liferea.sf.net/"
 
