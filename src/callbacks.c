@@ -192,7 +192,7 @@ void on_popup_allunread_selected(void) {
 
 	if(ui_feedlist_get_iter(&iter)) {
 		gtk_tree_model_get(GTK_TREE_MODEL(getFeedStore()), &iter, FS_TYPE, &tmp_type, -1);
-		if(IS_NODE(tmp_type)) {
+		if(IS_FOLDER(tmp_type)) {
 			/* if we have selected a folder we mark all item of all feeds as read */
 			ui_folder_mark_all_as_read();
 		} else {

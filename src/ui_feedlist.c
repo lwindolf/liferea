@@ -101,7 +101,7 @@ static void ui_feedlist_set_selected_feed(feedPtr fp, gchar *keyprefix) {
 		if(0 == strcmp(keyprefix, "empty"))
 			selected_type = FST_EMPTY;
 		else
-			selected_type = FST_NODE;
+			selected_type = FST_FOLDER;
 
 		g_free(selected_keyprefix);
 		selected_keyprefix = g_strdup(keyprefix);
@@ -137,7 +137,7 @@ gboolean ui_feedlist_get_iter(GtkTreeIter *iter) {
  				   FS_TYPE, &tmp_type,
 				   -1);
 
-		if(IS_NODE(tmp_type)) {
+		if(IS_FOLDER(tmp_type)) {
 			/* its a folder */
 			ui_feedlist_set_selected_feed(NULL, tmp_key);
 		} else {
@@ -170,7 +170,7 @@ static void ui_feedlist_render_title(GtkTreeViewColumn *tree_column,
 					FS_TITLE, &title,
 	                                FS_KEY, &key, -1);	
 	
-	if(!IS_NODE(type) && (type != FST_EMPTY)) {
+	if(!IS_FOLDER(type) && (type != FST_EMPTY)) {
 		g_assert(NULL != key);
 		fp = getFeed(key);
 		count = getFeedUnreadCount(fp);
@@ -192,7 +192,7 @@ static void ui_feedlist_render_title(GtkTreeViewColumn *tree_column,
 			/* g_object_set(GTK_CELL_RENDERER(cell), "text", g_markup_escape_text(getFeedTitle(fp), -1), NULL); */
 			g_object_set(GTK_CELL_RENDERER(cell), "text", getFeedTitle(fp), NULL);
 		}
-	} else if(IS_NODE(type)) {
+	} else if(IS_FOLDER(type)) {
 		/* its a folder so count unread items of all feeds inside */
 		count = 0;		
 		rc = gtk_tree_model_iter_children(model, &child, iter);
@@ -246,10 +246,10 @@ static void ui_feedlist_render_status(GtkTreeViewColumn *tree_column,
 	g_free(tmp_key);
 	
 	switch(type) {
-		case FST_HELPNODE:
+		case FST_HELPFOLDER:
 			icon = ICON_HELP;
 			break;
-		case FST_NODE:
+		case FST_FOLDER:
 			icon = ICON_FOLDER;
 			break;
 		case FST_EMPTY:
@@ -304,7 +304,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		
 		g_assert(NULL != tmp_key);
 		/* make sure thats no grouping iterator */
-		if(!IS_NODE(tmp_type) && (FST_EMPTY != tmp_type)) {
+		if(!IS_FOLDER(tmp_type) && (FST_EMPTY != tmp_type)) {
 			fp = getFeed(tmp_key);				
 			
 			/* FIXME: another workaround to prevent strange window
@@ -746,7 +746,7 @@ void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter) {
 			   FS_KEY, &tmp_key,
 			   FS_TYPE, &tmp_type,
 			   -1);	
-	if(!IS_NODE(tmp_type)) {
+	if(!IS_FOLDER(tmp_type)) {
 		fp = getFeed(tmp_key);
 		g_assert(NULL != fp);
 		markAllItemsAsRead(fp);

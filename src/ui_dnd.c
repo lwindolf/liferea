@@ -79,7 +79,7 @@ gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, 
 	is_feedlist_drop = FALSE;
 
 	/* don't allow folder DND */
-	if(IS_NODE(selected_type)) {
+	if(IS_FOLDER(selected_type)) {
 		showErrorBox(_("Sorry Liferea does not yet support drag&drop of folders!"));
 		stop = TRUE;
 	} 

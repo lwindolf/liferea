@@ -263,7 +263,7 @@ void saveFolderFeedList(gchar *keyprefix) {
 		  	     	-1);
 
 		/* add key to new key list, if its no empty or help entry */
-		if(!IS_NODE(tmp_type) && (tmp_type != FST_EMPTY) &&
+		if(!IS_FOLDER(tmp_type) && (tmp_type != FST_EMPTY) &&
 		   (NULL == strstr(tmp_key, "help"))) {
 			new_value = gconf_value_new(GCONF_VALUE_STRING);
 			gconf_value_set_string(new_value, tmp_key);
@@ -319,7 +319,7 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 				FS_TYPE, &tmp_type,
 		  	     	-1);
 
-		if(!IS_NODE(tmp_type)) {
+		if(!IS_FOLDER(tmp_type)) {
 			g_assert(NULL != tmp_key);
 			if(0 == strcmp(tmp_key, (gchar *)key)) {
 				found = TRUE;

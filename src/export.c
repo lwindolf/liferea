@@ -123,7 +123,7 @@ void importOPMLFeedList(gchar *filename) {
 	foldertitle = g_strdup(_("imported feed list"));
 	if(NULL != (folderkey = addFolderToConfig(foldertitle))) {
 		/* add the new folder to the model */
-		addFolder(folderkey, foldertitle, FST_NODE);
+		addFolder(folderkey, foldertitle, FST_FOLDER);
 	} else {
 		print_status(g_strdup(_("internal error! could not get a new folder key!")));
 		return;

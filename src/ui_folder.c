@@ -54,7 +54,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
 	if(NULL != (folderkey = addFolderToConfig(foldertitle))) {
 		/* add the new folder to the model */
-		addFolder(folderkey, g_strdup(foldertitle), FST_NODE);
+		addFolder(folderkey, g_strdup(foldertitle), FST_FOLDER);
 		checkForEmptyFolders();
 	} else {
 		print_status(g_strdup(_("internal error! could not get a new folder key!")));
@@ -65,7 +65,7 @@ void on_popup_foldername_selected(void) {
 	GtkWidget	*foldernameentry;
 	gchar 		*title;
 
-	if(selected_type != FST_NODE) {
+	if(selected_type != FST_FOLDER) {
 		showErrorBox(_("You have to select a folder entry!"));
 		return;
 	}
@@ -105,7 +105,7 @@ void on_popup_removefolder_selected(void) {
 	GtkTreeIter	selected_iter;	
 	gint		tmp_type, count;
 	
-	if(selected_type != FST_NODE) {
+	if(selected_type != FST_FOLDER) {
 		showErrorBox(_("You have to select a folder entry!"));
 		return;
 	}
@@ -159,7 +159,7 @@ void ui_folder_mark_all_as_read(void) {
 	GtkTreeIter	selected_iter;	
 	GtkTreePath	*selected_path;
 
-	if(selected_type != FST_NODE) {
+	if(selected_type != FST_FOLDER) {
 		showErrorBox(_("You have to select a folder entry!"));
 		return;
 	}

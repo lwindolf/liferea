@@ -381,7 +381,7 @@ gchar * addFolderToConfig(gchar *title) {
 
 	/* last step: save directory title & type*/	
 	setFolderTitleInConfig(newdirkey, title);
-	setFolderTypeInConfig(newdirkey, FST_NODE);
+	setFolderTypeInConfig(newdirkey, FST_FOLDER);
 	
 	g_slist_free(newlist);
 	
@@ -618,9 +618,9 @@ void loadSubscriptions(void) {
 			keylisttitle = g_strdup("");
 
 		if(0 == type)
-			type = FST_NODE;
+			type = FST_FOLDER;
 			
-		if(FST_HELPNODE == type)
+		if(FST_HELPFOLDER == type)
 			helpFolderPrefix = keyprefix;
 			
 		addFolder(keyprefix, keylisttitle, type);
@@ -690,8 +690,8 @@ void loadSubscriptions(void) {
 		if(NULL == helpFolderPrefix) {
 			/* add to config and UI feed list*/
 			helpFolderPrefix = addFolderToConfig(_("Liferea Help"));
-			setFolderTypeInConfig(helpFolderPrefix, FST_HELPNODE);
-			addFolder(helpFolderPrefix, _("Liferea Help"), FST_HELPNODE );
+			setFolderTypeInConfig(helpFolderPrefix, FST_HELPFOLDER);
+			addFolder(helpFolderPrefix, _("Liferea Help"), FST_HELPFOLDER );
 		}
 		
 		g_assert(NULL != helpFolderPrefix);

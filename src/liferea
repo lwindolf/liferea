@@ -26,7 +26,7 @@ else
 	echo "Mozilla is not available..."
 fi
 
-LD_LIBRARY_PATH=$MOZILLA_HOME:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=$MOZILLA_HOME:$dist_bin/../lib/liferea:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH
 
 MOZILLA_FIVE_HOME=$MOZILLA_HOME

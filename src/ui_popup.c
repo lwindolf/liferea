@@ -182,7 +182,7 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 	GtkMenu		*menu;
 	
 	switch(type) {
-		case FST_NODE:
+		case FST_FOLDER:
 			menu = make_menu(node_menu_items, node_menu_len, item);
 			break;
 		case FST_VFOLDER:
