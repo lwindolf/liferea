@@ -106,12 +106,14 @@ const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp) {
 feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 	GSList *iter;
 	feedHandlerPtr fhp = NULL;
-	if (str == NULL)
+	
+	if(str == NULL)
 		return NULL;
 
 	for(iter = feedhandlers; iter != NULL; iter = iter->next) {
 		fhp = (feedHandlerPtr)iter->data;
-		if (!strcmp(str, fhp->typeStr))
+g_print("ftstf_: %s\n", fhp->typeStr);
+		if(!strcmp(str, fhp->typeStr))
 			return fhp;
 	}
 

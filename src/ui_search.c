@@ -78,6 +78,24 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	}
 }
 
+void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
+	G_CONST_RETURN gchar	*searchstring;
+	gint			pos;
+	feedPtr			fp;
+	folderPtr		folder = NULL;
+	
+	if(NULL != searchFeed) {
+		folder = ui_feedlist_get_target_folder(&pos);
+		fp = searchFeed;
+		searchFeed = NULL;
+		ui_folder_add_feed(folder, fp, pos);
+		ui_feedlist_update();
+		ui_feedlist_select((nodePtr)fp);
+	} else {
+		ui_show_info_box(_("Please do a search first!"));
+	}
+}
+
 /*------------------------------------------------------------------------------*/
 /* feedster support								*/
 /*------------------------------------------------------------------------------*/
@@ -111,25 +129,5 @@ void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data)
 	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
 	gtk_entry_set_text(GTK_ENTRY(keywords), "");
 	gtk_widget_show(feedsterdialog);
-}
-
-void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
-	G_CONST_RETURN gchar	*searchstring;
-	gint			pos;
-	feedPtr			fp;
-	folderPtr		folder = NULL;
-	
-	if(NULL != searchFeed) {
-		if(NULL != (searchstring = gtk_entry_get_text(GTK_ENTRY(lookup_widget(mainwindow, "searchentry"))))) {
-			folder = ui_feedlist_get_target_folder(&pos);
-			fp = searchFeed;
-			searchFeed = NULL;
-			ui_folder_add_feed(folder, fp, pos);
-			ui_feedlist_update();
-			ui_feedlist_select((nodePtr)fp);
-		}
-	} else {
-		ui_show_info_box(_("Please do a search first!"));
-	}
 }
 

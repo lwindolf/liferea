@@ -602,12 +602,11 @@ gboolean ui_feedlist_check_subscription_fifo(void *data) {
 	int	fd, result, count;
 	gchar	*filename, *tmp, *buffer = NULL;
 	
-	debug_enter("ui_feedlist_check_subscription_fifo");
-	
 	if(getBooleanConfValue(DISABLE_SUBSCRIPTION_PIPE))
 		return FALSE;
-	
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", common_get_cache_path(), "new_subscription");
+
+	debug_enter("ui_feedlist_check_subscription_fifo");	
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "new_subscription", common_get_cache_path());
 	result = mkfifo(filename, 0600);	
 	if((result == -1) && (errno != EEXIST)) {
 		g_warning("Error creating the named pipe \"%s\". Won't do more checks on this pipe...\n", filename);

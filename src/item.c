@@ -24,10 +24,6 @@
 #include <string.h> /* For memset() */
 #include <stdlib.h>
 
-#include "cdf_item.h"
-#include "rss_item.h"
-#include "pie_entry.h"
-#include "ocs_dir.h"
 #include "vfolder.h"
 #include "item.h"
 #include "support.h"
@@ -36,6 +32,7 @@
 #include "callbacks.h"
 #include "ui_tray.h"
 #include "metadata.h"
+#include "debug.h"
 
 /* function to create a new feed structure */
 itemPtr item_new(void) {

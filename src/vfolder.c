@@ -41,15 +41,18 @@ static feedPtr		vfolder_item_pool = NULL;
 /* sets up a vfolder feed structure */
 feedPtr vfolder_new(void) {
 	feedPtr		fp;
+	
+	debug_enter("vfolder_new");
 
-	/* .... hmmm... this is not yet correct */
-	fp = g_new0(struct feed, 1);
+	fp = feed_new();;
 	fp->type = FST_VFOLDER;
 	fp->title = g_strdup("vfolder");
 	fp->source = g_strdup("vfolder");
 	fp->id = conf_new_id();
 	fp->available = TRUE;
 	fp->fhp = feed_type_str_to_fhp("vfolder");
+	
+	debug_exit("vfolder_new");
 	
 	return fp;
 }
@@ -59,6 +62,8 @@ feedPtr vfolder_new(void) {
    not process items. Just sets up the vfolder */
 void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gboolean additive) {
 	rulePtr		rp;
+	
+	debug_enter("vfolder_add_rule");
 
 	if(NULL != (rp = rule_new(vp, ruleId, value, additive))) {
 		vfolder_rules = g_slist_append(vfolder_rules, rp);
@@ -66,6 +71,8 @@ void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gbool
 	} else {
 		g_warning("unknown rule id: \"%s\"", ruleId);
 	}
+	
+	debug_exit("vfolder_add_rule");
 }
 
 /* Method that remove a rule from a vfolder. To be used
@@ -73,7 +80,9 @@ void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gbool
    items. */
 void vfolder_remove_rule(feedPtr vp, rulePtr rp) {
 
+	debug_enter("vfolder_remove_rule");
 	vfolder_rules = g_slist_remove(vfolder_rules, rp);
+	debug_exit("vfolder_remove_rule");
 }
 
 /* Adds an item to this VFolder, this method is called
@@ -224,6 +233,8 @@ void vfolder_free(feedPtr vp) {
 	GSList		*items;
 	itemPtr		ip;
 
+	debug_enter("vfolder_free");
+
 	items = vp->items;
 	while(NULL != items) {
 		ip = items->data;
@@ -236,6 +247,8 @@ void vfolder_free(feedPtr vp) {
 	}
 	g_slist_free(vp->items);
 	vp->items = NULL;
+	
+	debug_exit("vfolder_free");
 }
 
 feedHandlerPtr vfolder_init_feed_handler(void) {

@@ -40,7 +40,7 @@ rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean a
 	
 	for(i = 0, ri = ruleFunctions; i < nrOfRuleFunctions; i++, ri++) {
 		if(0 == strcmp(ri->ruleId, ruleId)) {
-			rp = (rulePtr)g_new0(rulePtr, 1);
+			rp = (rulePtr)g_new0(struct rule, 1);
 			rp->fp = fp;
 			rp->value = g_strdup(value);
 			rp->ruleInfo = ri;

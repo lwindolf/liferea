@@ -229,7 +229,7 @@ gchar* conf_new_id() {
 			id[i] = (char)g_random_int_range('a', 'z');
 		id[7] = '\0';
 		
-		filename = g_strdup_printf("%s/.liferea/cache/feeds/%s", g_get_home_dir(), id);
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
 		already_used = g_file_test(filename, G_FILE_TEST_EXISTS);
 		g_free(filename);
 	} while(already_used);
@@ -477,7 +477,7 @@ void conf_feedlist_save() {
 	if(feedlistLoading)
 		return;
 
-	debug0(DEBUG_CONF, "Saving feedlist");
+	debug_enter("conf_feedlist_save");
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S"feedlist.opml~", common_get_cache_path());
 
 	if(0 == export_OPML_feedlist(filename, TRUE)) {
@@ -487,6 +487,7 @@ void conf_feedlist_save() {
 		g_free(filename_real);
 	}
 	g_free(filename);
+	debug_exit("conf_feedlist_save");
 }
 
 static gboolean conf_feedlist_schedule_save_cb(gpointer user_data) {

@@ -22,6 +22,7 @@
 #include <libxml/tree.h>
 #include "feed.h"
 #include "folder.h"
+#include "rule.h"
 #include "conf.h"
 #include "callbacks.h"
 #include "interface.h"
@@ -47,7 +48,9 @@ struct exportData {
 static void append_node_tag(nodePtr ptr, gpointer userdata) {
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
 	gboolean	internal = ((struct exportData*)userdata)->internal;
-	xmlNodePtr	childNode;
+	xmlNodePtr	childNode, ruleNode;
+	GSList		*iter;
+	rulePtr		rule;
 	
 	debug_enter("append_node_tag");
 	
@@ -112,6 +115,24 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				g_free(lastPoll);
 			}
 		}
+		
+		/* add vfolder rules */
+		iter = fp->rules;
+		while(NULL != iter) {
+			rule = iter->data;
+			ruleNode = xmlNewChild(childNode, NULL, BAD_CAST"outline", NULL);
+			xmlNewProp(ruleNode, BAD_CAST"type", BAD_CAST "rule");
+			xmlNewProp(ruleNode, BAD_CAST"text", BAD_CAST rule->ruleInfo->title);
+			xmlNewProp(ruleNode, BAD_CAST"rule", BAD_CAST rule->ruleInfo->ruleId);
+			xmlNewProp(ruleNode, BAD_CAST"value", BAD_CAST rule->value);
+			if(TRUE == rule->additive)
+				xmlNewProp(ruleNode, BAD_CAST"additive", BAD_CAST "true");
+			else
+				xmlNewProp(ruleNode, BAD_CAST"additive", BAD_CAST "false");
+
+			iter = g_slist_next(iter);
+		}
+		
 		debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval, cacheLimit);
 		g_free(cacheLimit);
 		g_free(interval);
@@ -249,7 +270,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		   fhp. fhp will default to NULL. */
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
 		fp->fhp = feed_type_str_to_fhp(typeStr);
-		if(0 == strcmp("vfolder", typeStr))
+		if((NULL != typeStr) && (0 == strcmp("vfolder", typeStr)))
 			feed_set_type(fp, FST_VFOLDER);	/* should prevent feed_load to do anything */
 
 		/* Set the cache limit */

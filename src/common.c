@@ -562,7 +562,7 @@ gchar * common_create_cache_filename( const gchar *folder, const gchar *key, con
 	                           key,
 	                           (extension != NULL)? "." : "",
 	                           (extension != NULL)? extension : "");
-	
+
 	return filename;
 }
 
