@@ -41,7 +41,7 @@ blockquote {
         padding: 5px;
         font-style: italic;
         margin: 5px 20px;
-	
+	clear:both;	
 }
 
 dd {
@@ -62,6 +62,11 @@ td.headleft {
 
 /*td.headright {
 }*/
+
+img {
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
 
 img.favicon {
 	height:16px;
