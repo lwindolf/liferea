@@ -1248,6 +1248,7 @@ static GtkMenu *make_entry_menu(gint type) {
 		case FST_PIE:
 		case FST_RSS:
 		case FST_CDF:
+		case FST_HELPFEED:
 			menu_items = feedentry_menu_items;
 			nmenu_items = sizeof(feedentry_menu_items)/(sizeof(feedentry_menu_items[0]));
 			break;
