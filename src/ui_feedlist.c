@@ -237,6 +237,10 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			g_assert(mainwindow != NULL);
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 			
+			/* workaround to ensure the feedlist is focussed when we click it
+			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
+			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+			
 			/* Set up the item list */
 			ui_itemlist_load(fp, NULL);
 		} else { /* Selecting a folder */

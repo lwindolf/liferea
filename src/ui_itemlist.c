@@ -364,33 +364,33 @@ void ui_itemlist_display(void) {
 
 	g_assert(NULL != mainwindow);
 	
-	/* we only update anything if the feedlist is focussed */
-	if(lookup_widget(mainwindow, "feedlist") == gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
-		if(!itemlist_mode) {
-			/* two pane mode */
-			ui_htmlview_start_output(&buffer, itemlist_mode);
-			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-			while(valid) {	
-				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+	if(!itemlist_mode) {
+		/* two pane mode */
+		ui_htmlview_start_output(&buffer, itemlist_mode);
+		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+		while(valid) {	
+			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 
-				if(item_get_read_status(ip)) 
-					addToHTMLBuffer(&buffer, UNSHADED_START);
-				else
-					addToHTMLBuffer(&buffer, SHADED_START);
+			if(item_get_read_status(ip)) 
+				addToHTMLBuffer(&buffer, UNSHADED_START);
+			else
+				addToHTMLBuffer(&buffer, SHADED_START);
 
-				addToHTMLBuffer(&buffer, item_get_description(ip));
+			addToHTMLBuffer(&buffer, item_get_description(ip));
 
-				if(item_get_read_status(ip))
-					addToHTMLBuffer(&buffer, UNSHADED_END);
-				else {
-					addToHTMLBuffer(&buffer, SHADED_END);
-					item_set_read(ip);
-				}
-
-				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+			if(item_get_read_status(ip))
+				addToHTMLBuffer(&buffer, UNSHADED_END);
+			else {
+				addToHTMLBuffer(&buffer, SHADED_END);
+				item_set_read(ip);
 			}
-			ui_htmlview_finish_output(&buffer);
-		} else {	
+
+			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+		}
+		ui_htmlview_finish_output(&buffer);
+	} else {
+		/* we only update anything if the feedlist is focussed */
+		if(lookup_widget(mainwindow, "feedlist") == gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
 			/* three pane mode */
 
 			/* display feed info */
@@ -413,16 +413,17 @@ void ui_itemlist_display(void) {
 			/* no scrolling reset, because this code should only be
 			   triggered for redraw purposes! */
 		}
-		
-		if(displayed_fp != NULL &&
-		   displayed_fp->source != NULL &&
-		   displayed_fp->source[0] != '|' &&
-		   strstr(displayed_fp->source, "://") != NULL)
-			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, displayed_fp->source);
-		else
-			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
-		g_free(buffer);
 	}
+		
+	if(displayed_fp != NULL &&
+	   displayed_fp->source != NULL &&
+	   displayed_fp->source[0] != '|' &&
+	   strstr(displayed_fp->source, "://") != NULL)
+		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, displayed_fp->source);
+	else
+		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
+	g_free(buffer);
+
 	ui_feedlist_update();
 }
 
