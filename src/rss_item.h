@@ -40,8 +40,10 @@
 #define RSS_ITEM_ENCLOSURE		5
 /* 0.92, 2.0 and <dc:subject> */
 #define RSS_ITEM_CATEGORY		6
+/* 0.92+ */
+#define RSS_ITEM_GUID			7
 	
-#define RSS_ITEM_MAX_TAG		7
+#define RSS_ITEM_MAX_TAG		8
 
 typedef struct RSSItem {
 	gchar		*tags[RSS_ITEM_MAX_TAG];	/* standard namespace infos */

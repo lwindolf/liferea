@@ -21,11 +21,15 @@
 
 #include <glib.h>
 
+#define HELP1KEY	"help/help1"
+#define HELP2KEY	"help/help2"
+
 #define BROWSER_COMMAND		"/apps/liferea/browser"
 #define GNOME_DEFAULT_BROWSER_COMMAND	"/desktop/gnome/url-handlers/unknown"
 #define DEFAULT_BROWSER_COMMAND	"mozilla %s"
 #define TIME_FORMAT		"/apps/liferea/timeformat"
 #define TIME_FORMAT_MODE	"/apps/liferea/timeformatmode"
+#define DEFAULT_MAX_ITEMS	"/apps/liferea/maxitemcount"
 	
 #define PROXY_HOST		"/system/http_proxy/host"
 #define PROXY_PORT		"/system/http_proxy/port"

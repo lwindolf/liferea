@@ -3,9 +3,17 @@
         Version 0.4.0
 	
 	* heavy rewrite
+	* <item rdf:about="..."> and <guid> support
 	* now using libxml's xmlRecover* functions to read even
 	  buggy feeds
 	* you can now switch between a two or three pane viewing mode
+	
+	* VFOLDER CACHE FILE FORMAT CHANGED!!!
+	  PLEASE DELETE EXISTING VFOLDERS!!!
+	  
+	* DIRECTORY CACHE FILE FORMAT CHANGED!!! Directory feeds will 
+	  automatically reload on first startup, please be patient.
+	  
 	* fixed some output problems for OCS directories
 	* fixed bug 819959
 

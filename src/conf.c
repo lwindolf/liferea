@@ -33,8 +33,6 @@
 #define PATH		"/apps/liferea"
 #define GROUPS		"/apps/liferea/groups"
 
-#define HELP1KEY	"help/help1"
-#define HELP2KEY	"help/help2"
 #define HELP1URL	"http://liferea.sf.net/help040.rdf"
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 #define HOMEPAGE	"http://liferea.sf.net/"
@@ -113,6 +111,7 @@ void loadConfig() {
         gchar	*proxy_url;
         gint	proxy_port;
         gchar	*proxy_host;
+	gint	maxitemcount;
 	
 	/* GConf client */
 	if (client == NULL)
@@ -121,6 +120,8 @@ void loadConfig() {
 	gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);	
 
 	/* check if several preferences exist */
+	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
+		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
 
         /* load proxy settings for libxml */
         xmlNanoHTTPInit();
@@ -632,12 +633,7 @@ void loadEntries() {
 			g_assert(NULL != key);			
 
 			gconfpath = g_strdup_printf("%s/%s/type", PATH, key);
-			type = gconf_client_get_int(client, gconfpath, &err);
-			is_gconf_error(err);
-			g_free(gconfpath);
-
-			gconfpath = g_strdup_printf("%s/%s/url", PATH, key);
-			url = gconf_client_get_string(client, gconfpath, &err);
+			type = gconf_client_get_int(client, gconfpath, &err);	/* retrieve the values manually to avoid error messages */
 			is_gconf_error(err);
 			g_free(gconfpath);
 
@@ -651,6 +647,10 @@ void loadEntries() {
 			is_gconf_error(err);
 			g_free(gconfpath);	
 
+			gconfpath = g_strdup_printf("%s/%s/url", PATH, key);
+			url = getStringConfValue(gconfpath);	/* use this function to get a "" on empty conf value */
+			g_free(gconfpath);
+
 			/* help feed extra handling */
 			if((type == FST_HELPFEED) && (0 != strcmp(url, HELP1URL))) {
 				g_print(_("updating help feed URL..."));
@@ -659,11 +659,18 @@ void loadEntries() {
 				setFeedURLInConfig((gchar *)key, url);
 			}
 
-			if(type == 0)
+			if(0 == type)
 				type = FST_RSS;
 				
-			if(interval == 0)
+			if(0 == interval)
 				interval = -1;
+				
+			if(FST_VFOLDER == type) {
+				g_print("Sorry, this version does not yet support VFolders, any configured VFolders are ignored!\n");
+				iter = g_slist_next(iter);
+				continue;
+			}
+			
 			addFeed(type, url, (gchar *)key, keyprefix, name, interval);
 
 			iter = g_slist_next(iter);
@@ -686,8 +693,8 @@ void loadEntries() {
 	}
 		
 	g_assert(NULL != helpFolderPrefix);
-	addFeed(FST_RSS, HELP1URL, HELP1KEY, helpFolderPrefix, _("Online Help Feed"), -1);
-	addFeed(FST_RSS, HELP2URL, HELP2KEY, helpFolderPrefix, _("Liferea SF News"), -1);
+	addFeed(FST_RSS, HELP1URL, HELP1KEY, helpFolderPrefix, _("Online Help Feed"), 1440);
+	addFeed(FST_RSS, HELP2URL, HELP2KEY, helpFolderPrefix, _("Liferea SF News"), 1440);
 	
 	checkForEmptyFolders();
 	

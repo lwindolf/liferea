@@ -35,7 +35,7 @@ make install-strip prefix=$RPM_BUILD_ROOT/usr/local sysconfdir=$RPM_BUILD_ROOT/e
 %else
 	desktop-file-install --vendor net                  \
 		--dir $RPM_BUILD_ROOT/usr/local/share/applications \
-		$RPM_BUILD_ROOT/usr/local/share/applications/net-liferea.desktop
+		$RPM_BUILD_ROOT/usr/local/share/applications/liferea.desktop
 %endif
 
 %clean

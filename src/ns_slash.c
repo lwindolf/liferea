@@ -49,9 +49,9 @@ static gchar ns_slash_prefix[] = "slash";
 */
 
 static gchar * taglist[] = {	"section",
-				"department",
-				"comments",
-				"hitparade",
+				"department",				
+				/* "comments",   disabled to avoid unread status after each feed update */
+				/* "hitparade",*/
 				NULL
 			   };
 

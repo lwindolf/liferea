@@ -89,7 +89,7 @@ static void *update_mainloop(void *data) {
 static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr		fp = (feedPtr)value;
 	gint 		counter;
-
+g_print("update counter of %s = %d\n", (gchar *)key, getFeedUpdateCounter(fp));
 	if(0 < (counter = getFeedUpdateCounter(fp))) 
 		setFeedUpdateCounter(fp, counter - 1);
 }
@@ -118,17 +118,15 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 
 		g_assert(NULL != fhp->readFeed);
 		new_fp = (feedPtr)(*(fhp->readFeed))(source);
-		g_assert(NULL != new_fp);
+		if(NULL != new_fp)
+			return;		/* feed reading must have failed, FIXME: should never happen (but does with OCS and local files)! */
 		
-		new_fp = mergeFeed(fp, new_fp);
-		g_assert(new_fp != NULL);
+		mergeFeed(fp, new_fp);
 		
 		g_mutex_lock(feeds_lock);
-		/* update feed key */
-		g_hash_table_insert(feeds, key, (gpointer)new_fp);	
 		/* update all vfolders */
-		g_hash_table_foreach(feeds, removeOldItemsFromVFolders, fp);
-		g_hash_table_foreach(feeds, scanFeed, new_fp);
+		// g_hash_table_foreach(feeds, removeOldItemsFromVFolders, fp); // FIXME: mergeFeed has to do this!
+		g_hash_table_foreach(feeds, scanFeed, fp);
 		g_mutex_unlock(feeds_lock);
 				
 		gdk_threads_enter();
@@ -137,10 +135,9 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		if(NULL != tmp_key) {
 			if(0 == strcmp(tmp_key, (gchar *)key)) {
 				clearItemList();
-				loadItemList(new_fp, NULL);
+				loadItemList(fp, NULL);
 			}
 		}
-		g_free(fp);
 		
 		g_mutex_lock(feeds_lock);
 		redrawFeedList();	// FIXME: maybe this is overkill ;=)

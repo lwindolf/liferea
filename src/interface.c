@@ -166,7 +166,6 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (searchbox), searchentry, TRUE, TRUE, 0);
 
   newVFolder = gtk_button_new_with_mnemonic (_("create VFolder"));
-  gtk_widget_show (newVFolder);
   gtk_box_pack_start (GTK_BOX (searchbox), newVFolder, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, newVFolder, _("saves this search as a VFolder, which will appear in the feed list"), NULL);
 
@@ -803,6 +802,12 @@ create_prefdialog (void)
   GtkWidget *timeradiobtn3;
   GtkWidget *timeformatentry;
   GtkWidget *label24;
+  GtkWidget *frame8;
+  GtkWidget *hbox19;
+  GtkWidget *label33;
+  GtkObject *itemCountBtn_adj;
+  GtkWidget *itemCountBtn;
+  GtkWidget *label32;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefsavebtn;
   GtkWidget *prefcancelbtn;
@@ -902,6 +907,33 @@ create_prefdialog (void)
   gtk_label_set_justify (GTK_LABEL (label24), GTK_JUSTIFY_LEFT);
   gtk_misc_set_padding (GTK_MISC (label24), 5, 0);
 
+  frame8 = gtk_frame_new (NULL);
+  gtk_widget_show (frame8);
+  gtk_box_pack_start (GTK_BOX (vbox3), frame8, TRUE, TRUE, 0);
+
+  hbox19 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox19);
+  gtk_container_add (GTK_CONTAINER (frame8), hbox19);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox19), 5);
+
+  label33 = gtk_label_new (_("maximal number of items per feed \nto be saved permanently"));
+  gtk_widget_show (label33);
+  gtk_box_pack_start (GTK_BOX (hbox19), label33, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (label33), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (label33), TRUE);
+
+  itemCountBtn_adj = gtk_adjustment_new (1, 1, 1e+06, 1, 10, 10);
+  itemCountBtn = gtk_spin_button_new (GTK_ADJUSTMENT (itemCountBtn_adj), 1, 0);
+  gtk_widget_show (itemCountBtn);
+  gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
+
+  label32 = gtk_label_new (_("feed storage settings"));
+  gtk_widget_show (label32);
+  gtk_frame_set_label_widget (GTK_FRAME (frame8), label32);
+  gtk_label_set_justify (GTK_LABEL (label32), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_padding (GTK_MISC (label32), 5, 0);
+
   dialog_action_area5 = GTK_DIALOG (prefdialog)->action_area;
   gtk_widget_show (dialog_action_area5);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area5), GTK_BUTTONBOX_END);
@@ -945,6 +977,11 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn3, "timeradiobtn3");
   GLADE_HOOKUP_OBJECT (prefdialog, timeformatentry, "timeformatentry");
   GLADE_HOOKUP_OBJECT (prefdialog, label24, "label24");
+  GLADE_HOOKUP_OBJECT (prefdialog, frame8, "frame8");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox19, "hbox19");
+  GLADE_HOOKUP_OBJECT (prefdialog, label33, "label33");
+  GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, label32, "label32");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefsavebtn, "prefsavebtn");
   GLADE_HOOKUP_OBJECT (prefdialog, prefcancelbtn, "prefcancelbtn");

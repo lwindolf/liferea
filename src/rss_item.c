@@ -29,6 +29,8 @@
 #include "rss_ns.h"
 #include "htmlview.h"
 
+#define RDF_NS	BAD_CAST"http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+
 /* structure for the hashtable callback which itself calls the 
    namespace output handler */
 #define OUTPUT_RSS_CHANNEL_NS_HEADER	0
@@ -52,6 +54,7 @@ static gchar *itemTagList[] = {		"title",
 					"comments",
 					"enclosure",
 					"category",
+					"guid",
 					NULL
 				  };
 				  
@@ -61,7 +64,7 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip);
 /* method to parse standard tags for each item element */
 itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gint			bw, br;
-	gchar			*tmp = NULL;
+	gchar			*tmp;
 	parseItemTagFunc	parseFunc;
 	RSSNsHandler		*nsh;	
 	RSSItemPtr 		i;
@@ -80,6 +83,9 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	memset(i, 0, sizeof(struct RSSItem));
 	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
 	ip = getNewItemStruct();
+	
+	/* try to get an item about id */
+	ip->id = xmlGetNsProp(cur, BAD_CAST"about", RDF_NS);
 
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
@@ -101,9 +107,9 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		/* check for RDF tags */
 		for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
 			g_assert(NULL != cur->name);
-			if (!xmlStrcmp(cur->name, (const xmlChar *)itemTagList[j])) {
+			if (!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
 				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+				if(NULL == (i->tags[j] = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
 					i->tags[j] = tmp;
 				} else {
 					g_free(tmp);
@@ -119,7 +125,9 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	ip->time = i->time;
 	ip->source = i->tags[RSS_ITEM_LINK];
 	ip->readStatus = FALSE;
-	ip->id = NULL;
+	
+	if(NULL == ip->id)
+		ip->id = i->tags[RSS_ITEM_GUID];
 
 	/* some postprocessing before generating HTML */
 	if(NULL != i->tags[RSS_ITEM_TITLE])
@@ -131,6 +139,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	ip->title = i->tags[RSS_ITEM_TITLE];		
 	ip->description = showRSSItem(fp, cp, i);
 
+	// FIXME: free unused RSSItem strings
 	g_free(i->nsinfos);
 	g_free(i);
 	return ip;

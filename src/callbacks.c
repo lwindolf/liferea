@@ -288,6 +288,7 @@ void on_popup_refresh_selected(void) {
 
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*widget;
+	GtkAdjustment	*itemCount;
 	gchar		*widgetname;
 	int		tmp;
 				
@@ -305,6 +306,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	tmp = getNumericConfValue(TIME_FORMAT_MODE);
 	if((tmp > 3) || (tmp < 1)) 
 		tmp = 1;	/* correct configuration if necessary */
+
+	widget = lookup_widget(prefdialog, "itemCountBtn");
+	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
+	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
 		
 	widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
 	widget = lookup_widget(prefdialog, widgetname);
@@ -316,6 +321,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*widget;
+	GtkAdjustment	*itemCount;
 	gchar		*widgetname;
 	gint		tmp, i;
 	
@@ -326,6 +332,10 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 
 	widget = lookup_widget(prefdialog, "timeformatentry");
 	setStringConfValue(TIME_FORMAT, (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)));
+
+	widget = lookup_widget(prefdialog, "itemCountBtn");
+	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
+	setNumericConfValue(DEFAULT_MAX_ITEMS, gtk_adjustment_get_value(itemCount));
 	
 	tmp = 0;
 	for(i = 1; i <= 3; i++) {
