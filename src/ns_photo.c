@@ -59,25 +59,27 @@ static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 		if(NULL != tmp) {
 			if(g_utf8_strlen(tmp, -1) > 0)
 	 			g_hash_table_insert(ip->tmpdata, "photo:thumbnail", tmp);
+			else
+				g_free(tmp);
 		}
 	} else if(!xmlStrcmp("imgsrc", cur->name)) {
  		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		if(NULL != tmp) {
 			if(g_utf8_strlen(tmp, -1) > 0)
 	 			g_hash_table_insert(ip->tmpdata, "photo:imgsrc", tmp);				
+			else
+				g_free(tmp);
 		}
 	}
 	
-	if(NULL != tmp) {
-		thumbnail = g_hash_table_lookup(ip->tmpdata, "photo:thumbnail");
-		imgsrc = g_hash_table_lookup(ip->tmpdata, "photo:imgsrc");
-		if(NULL == thumbnail) {
-			/* we do nothing */
-		} else {
-			tmp = g_strdup_printf("%s,%s", thumbnail, (NULL != imgsrc)?imgsrc:"");
-			metadata_list_set(&(ip->metadata), "photo", tmp);
-			g_free(tmp);
-		}
+	thumbnail = g_hash_table_lookup(ip->tmpdata, "photo:thumbnail");
+	imgsrc = g_hash_table_lookup(ip->tmpdata, "photo:imgsrc");
+	if(NULL == thumbnail) {
+		/* we do nothing */
+	} else {
+		tmp = g_strdup_printf("%s,%s", thumbnail, (NULL != imgsrc)?imgsrc:"");
+		metadata_list_set(&(ip->metadata), "photo", tmp);
+		g_free(tmp);
 	}
 }
 
