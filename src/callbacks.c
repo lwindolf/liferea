@@ -107,31 +107,25 @@ void initCallbacks(void) {
 }
 
 /* returns the selected feed list iterator */
-GtkTreeIter * getFeedListIter(GtkWidget *window) {
-	GtkTreeIter		*iter;
+void getFeedListIter(GtkTreeIter *iter) {
 	GtkWidget		*treeview;
 	GtkTreeSelection	*select;
         GtkTreeModel		*model;
 	
-	if(NULL == (iter = (GtkTreeIter *)g_malloc(sizeof(GtkTreeIter)))) 
-		g_error("could not allocate memory!\n");
+	if(NULL == mainwindow)
+		return;
 	
-	if(NULL == window)
-		return NULL;
-	
-	if(NULL == (treeview = lookup_widget(window, "feedlist"))) {
+	if(NULL == (treeview = lookup_widget(mainwindow, "feedlist"))) {
 		g_warning(_("entry list widget lookup failed!\n"));
-		return NULL;
+		return;
 	}
 		
 	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
 		print_status(_("could not retrieve selection of entry list!"));
-		return NULL;
+		return;
 	}
 
         gtk_tree_selection_get_selected(select, &model, iter);
-	
-	return iter;
 }
 
 void redrawFeedList(void) {
@@ -267,38 +261,27 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 /* delete entry callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void on_deletebtn(GtkWidget *feedlist) {
-	GtkTreeIter	*iter;
+void on_deletebtn(void) {
+	GtkTreeIter	iter;
 	
-	/* make sure thats no grouping iterator */
-	if(NULL != iter) {
-		/* block deleting of help feeds */
-		if(0 == strncmp(getFeedKey(selected_fp), "help", 4)) {
-			showErrorBox(_("You can't delete help feeds!"));
-			return;
-		}
-
-		print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp)));
-		iter = getFeedListIter(mainwindow);
-		gtk_tree_store_remove(feedstore, iter);
-		removeFeed(selected_fp);
-		selected_fp = NULL;
-		g_free(iter);
-				
-		clearItemList();
-		checkForEmptyFolders();
-	} else {
-		print_status(_("Error: Cannot delete this list entry!"));
-	}
-}
-
-void on_popup_delete_selected(void) {
-	
-	if(NULL == mainwindow)
+	/* block deleting of help feeds */
+	if(0 == strncmp(getFeedKey(selected_fp), "help", 4)) {
+		showErrorBox(_("You can't delete help feeds!"));
 		return;
-		
-	on_deletebtn(lookup_widget(mainwindow, "feedlist"));
+	}
+
+	print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp)));
+	getFeedListIter(&iter);
+	gtk_tree_store_remove(feedstore, &iter);
+	removeFeed(selected_fp);
+	selected_fp = NULL;
+				
+	clearItemList();
+	clearHTMLView();
+	checkForEmptyFolders();
 }
+
+void on_popup_delete_selected(void) { on_deletebtn(); }
 
 /*------------------------------------------------------------------------------*/
 /* property dialog callbacks 							*/
@@ -405,9 +388,10 @@ void on_popup_prop_selected(void) { on_propbtn(NULL); }
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void addToFeedList(feedPtr fp) {
+void addToFeedList(feedPtr fp, gboolean startup) {
 	GtkTreeSelection	*selection;
 	GtkWidget		*treeview;
+	GtkTreeIter		selected_iter;
 	GtkTreeIter		iter;
 	GtkTreeIter		*topiter;
 	
@@ -418,7 +402,14 @@ void addToFeedList(feedPtr fp) {
 	// FIXME: maybe this should not happen here?
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(getFeedKeyPrefix(fp)));
 
-	gtk_tree_store_append(feedstore, &iter, topiter);
+	if(!startup) {
+		/* used when creating feed entries manually */
+		getFeedListIter(&selected_iter);
+		gtk_tree_store_insert_after(feedstore, &iter, topiter, &selected_iter);
+	} else {
+		/* typically on startup when adding feeds from configuration */
+		gtk_tree_store_append(feedstore, &iter, topiter);
+	}
 	gtk_tree_store_set(feedstore, &iter,
 			   FS_TITLE, getFeedTitle(fp),
 			   FS_KEY, getFeedKey(fp),
@@ -505,7 +496,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	keyprefix = g_strdup(selected_keyprefix);
 	fp = newFeed(type, source, keyprefix);
 	if(NULL != fp) {
-		addToFeedList(fp);
+		addToFeedList(fp, FALSE);
 		checkForEmptyFolders();
 
 		if(FALSE == getFeedAvailable(fp)) {
@@ -607,10 +598,10 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 void on_popup_removefolder_selected(void) {
 	GtkTreeStore	*feedstore;
 	GtkTreeIter	childiter;
-	GtkTreeIter	*iter;
+	GtkTreeIter	selected_iter;	
 	gint		tmp_type, count;
 	
-	iter = getFeedListIter(mainwindow);
+	getFeedListIter(&selected_iter);
 	feedstore = getFeedStore();
 
 	g_assert(feedstore != NULL);
@@ -618,17 +609,17 @@ void on_popup_removefolder_selected(void) {
 	/* make sure thats no grouping iterator */
 	if(NULL != selected_keyprefix) {
 		/* check if folder is empty */
-		count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), iter);
+		count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), &selected_iter);
 		if(0 == count) 
 			g_error("this should not happen! A folder must have an empty entry!!!\n");
 
 		if(1 == count) {
 			/* check if the only entry is type FST_EMPTY */
-			gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, iter);
+			gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, &selected_iter);
 			gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_TYPE, &tmp_type, -1);
 			if(FST_EMPTY == tmp_type) {
-				gtk_tree_store_remove(feedstore, &childiter);	/* remove "(empty)" iter */
-				gtk_tree_store_remove(feedstore, iter);		/* remove folder iter */
+				gtk_tree_store_remove(feedstore, &childiter);		/* remove "(empty)" iter */
+				gtk_tree_store_remove(feedstore, &selected_iter);	/* remove folder iter */
 				removeFolder(selected_keyprefix);
 				g_free(selected_keyprefix);
 				selected_keyprefix = g_strdup(root_prefix);
@@ -641,7 +632,6 @@ void on_popup_removefolder_selected(void) {
 	} else {
 		print_status(_("Error: Cannot determine folder key!"));
 	}
-	g_free(iter);
 }
 
 /*------------------------------------------------------------------------------*/
@@ -775,7 +765,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				/* FIXME: brute force: update of all vfolders redundant */
 				loadVFolders();
 				
-				addToFeedList(fp);
+				addToFeedList(fp, FALSE);
 			}
 		} else {
 			print_status(_("internal error! could not get folder key prefix!"));

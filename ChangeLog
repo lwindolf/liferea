@@ -1,5 +1,14 @@
 2003-10-17  Lars Lindner <lars.lindner@gmx.net>
 
+        Version 0.4.4
+	
+	* Source now build on Solaris (added a strsep() replacement).
+	* When adding feeds, the feed is now inserted after the
+	  selected treeview entry and not at the end of the folder.
+	  
+
+2003-10-17  Lars Lindner <lars.lindner@gmx.net>
+
         Version 0.4.3
 	
 	* Several usability fixes.

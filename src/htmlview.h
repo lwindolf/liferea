@@ -78,6 +78,7 @@
 #define FORMAT_CONTENTTYPE	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Content Type: "
 #define FORMAT_END	"</td></tr></table>"
 
+#define clearHTMLView()	{ startHTMLOutput(); finishHTMLOutput(); }
 
 /* creates the HTML widget */
 void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2);
