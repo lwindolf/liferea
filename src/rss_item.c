@@ -34,19 +34,22 @@
 extern GHashTable *RssToMetadataMapping;
 
 /* uses the same namespace handler as rss_channel */
+extern GSList *rss_nslist;
+extern GHashTable *rss_nstable;
+
 extern GSList		*rss_nslist;
 extern GHashTable	*rss_nstable;
 
 /* method to parse standard tags for each item element */
 itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
-	gchar			*tmp, *tmp2, *tmp3, *link;
+	gchar			*tmp, *tmp2, *tmp3;
 	GSList			*hp;
 	NsHandler		*nsh;
 	parseItemTagFunc	pf;
 	itemPtr			ip;
-
+	
 	g_assert(NULL != cur);
-		
+
 	ip = item_new();
 	ip->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 	
@@ -90,8 +93,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 			}
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
-			/* RSS 0.93 allows multiple enclosures, so we build
-			   a simple string of HTML-links... */
+			/* RSS 0.93 allows multiple enclosures */
 			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
 			if(NULL != tmp) {
 				ip->metadata = metadata_list_append(ip->metadata, "enclosure", tmp);
@@ -105,6 +107,11 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 					item_set_id(ip, tmp);
 					xmlFree(tmp);
 				}
+				tmp2 = xmlGetProp(cur, "isPermaLink");
+				if(tmp2 == NULL || !xmlStrcmp(tmp, BAD_CAST"true"))
+					item_set_source(ip, tmp); /* Per the RSS 2.0 spec. */
+				if (tmp2 != NULL)
+					xmlFree(tmp2);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
@@ -140,10 +147,14 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 				g_free(tmp);
 			}
 		}
+		
 		cur = cur->next;
 	}
 
 	item_set_read_status(ip, FALSE);
+
+	/* free RSSItem structure */
 	g_hash_table_destroy(ip->tmpdata);
+	ip->tmpdata = NULL;
 	return ip;
 }

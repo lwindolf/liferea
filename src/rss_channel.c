@@ -46,7 +46,7 @@
 #include "ns_blogChannel.h"
 #include "ns_cC.h"
 #include "htmlview.h"
-
+#include "rss_item.h"
 /* HTML output strings */
 
 #define TEXT_INPUT_FORM_START	"<form class=\"rssform\" method=\"GET\" ACTION=\""
@@ -88,6 +88,7 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 				}
 			}
 		}
+			
 		/* Check for metadata tags */
 		else if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
 			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
@@ -205,7 +206,6 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
 	short 			rdf = 0;
 	int 			error = 0;
-	int			i;
 	
 	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
@@ -225,7 +225,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		while(cur && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
-
+		
 		while(cur != NULL) {
 			if(NULL == cur->name) {
 				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
@@ -340,7 +340,7 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		g_hash_table_insert(RssToMetadataMapping, "generator", "feedgenerator");
 		g_hash_table_insert(RssToMetadataMapping, "publisher", "webmaster");
 		g_hash_table_insert(RssToMetadataMapping, "author", "author");
-		g_hash_table_insert(RssToMetadataMapping, "comments", "comments");
+		g_hash_table_insert(RssToMetadataMapping, "comments", "commentsUri");
 	}
 	
 	/* because initRSSFeedHandler() is called twice, once for FST_RSS and again for FST_HELPFEED */	

@@ -33,7 +33,8 @@
 static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 
   	if(!xmlStrcmp(cur->name, "encoded"))
-		metadata_list_set(&(ip->metadata), "description", utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		//metadata_list_set(&(ip->metadata), "description", utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		item_set_description(ip,  utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 }
 
 NsHandler *ns_content_getRSSNsHandler(void) {

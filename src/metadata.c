@@ -26,9 +26,6 @@
 #include "common.h"
 
 /* HTML definitions used for standard metadata rendering */
-#define	START_ENCLOSURE	"<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right:5px;border-color:black;border-style:solid;border-width:1px;background-color:#E0E0E0\"> enclosed file: "
-#define	END_ENCLOSURE	"</div>"
-
 #define	IMG_START	"<img class=\"feed\" src=\""
 #define IMG_END		"\"><br>"
 
@@ -58,6 +55,11 @@ void metadata_init() {
 void metadata_register_renderer(const gchar *strid, renderHTMLFunc renderfunc, gpointer user_data) {
 	struct attribute *attrib = g_new(struct attribute, 1);
 	
+	if (g_hash_table_lookup(strtoattrib, strid) != NULL) {
+		g_warning("Duplicate attribute was attempted to be registered: %s", strid);
+		return;
+	}
+
 	attrib->strid = g_strdup(strid);
 	attrib->renderhtmlfunc = renderfunc;
 	attrib->user_data = user_data;
@@ -75,7 +77,7 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 	GSList	*iter = metadata;
 	struct pair *p;
 	
-	if(NULL != (attrib = g_hash_table_lookup(strtoattrib, strid))) {
+	if(NULL == (attrib = g_hash_table_lookup(strtoattrib, strid))) {
 		g_warning("Encountered unknown attribute type \"%s\". This is a program bug.", strid);
 		attribs_register_default_renderer(strid);
 		attrib = g_hash_table_lookup(strtoattrib, strid);
@@ -101,7 +103,7 @@ void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data)
 	GSList	*iter = *metadata;
 	struct pair *p;
 	
-	if(NULL != (attrib = g_hash_table_lookup(strtoattrib, strid))) {
+	if(NULL == (attrib = g_hash_table_lookup(strtoattrib, strid))) {
 		g_warning("Encountered unknown attribute type \"%s\". This is a program bug.", strid);
 		attribs_register_default_renderer(strid);
 		attrib = g_hash_table_lookup(strtoattrib, strid);
@@ -244,6 +246,24 @@ static void attribs_render_foot_text(gpointer data, struct displayset *displayse
 	addToHTMLBufferFast(&(displayset->foot), (gchar*)data);
 }
 
+static void attribs_render_comments_uri(gpointer data, struct displayset *displayset, gpointer user_data) {
+	gchar *tmp = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
+					  (gchar*)data, _("comments"));
+	
+	addToHTMLBufferFast(&(displayset->foot), tmp);
+	g_free(tmp);
+}
+
+static void attribs_render_enclosure(gpointer data, struct displayset *displayset, gpointer user_data) {
+	gchar *tmp = g_strdup_printf(_("enclosed file: %s"), (gchar*)data);
+	gchar *tmp2 = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right"
+							":5px;border-color:black;border-style:solid;border-width:1px;"
+							"background-color:#E0E0E0\">%s</div>", tmp);
+	addToHTMLBufferFast(&(displayset->foot), tmp2);
+	g_free(tmp);
+	g_free(tmp2);
+}
+
 #define REGISTER_SIMPLE_ATTRIBUTE(position, strid, promptStr) do { \
  struct str_attrib *props = g_new(struct str_attrib, 1); \
  props->pos = (position); \
@@ -271,10 +291,12 @@ static void attribs_init() {
 
 	metadata_register_renderer("feedLogoUri", attribs_render_image, NULL);
 	metadata_register_renderer("textInput", attribs_render_foot_text, NULL);
+	metadata_register_renderer("commentsUri", attribs_render_comments_uri, NULL);
+	metadata_register_renderer("enclosure", attribs_render_enclosure, NULL);
 	
 	/* types for admin */
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "errorReportsTo", _("report errors to"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "generatorAgent", _("feed generator"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "generatorAgent", _("feed generator")); /* FIXME: Shouldn't this be "feedgenerator"? */
 	
 	/* types for aggregation */
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agSource", _("original source"));
