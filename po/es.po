@@ -3,13 +3,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-19 22:08+0200\n"
-"PO-Revision-Date: 2004-05-19 20:45+0200\n"
+"POT-Creation-Date: 2004-05-18 23:06+0200\n"
+"PO-Revision-Date: 2004-05-20 17:46+0200\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-15\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
@@ -166,9 +166,7 @@ msgstr "<p>XML inv�lido</p>"
 msgid ""
 "<p>Could not determine the feed type! Please check that it is in a supported "
 "format!</p>"
-msgstr ""
-"<p>No se pudo determinar el tipo de fuente. Por favor, comprueba que est� en "
-"un formato soportado</p>"
+msgstr "<p>No se pudo determinar el tipo de fuente. Por favor, comprueba que est� en un formato soportado</p>"
 
 #: src/feed.c:141
 msgid "There were errors while parsing a feed!"
@@ -235,9 +233,7 @@ msgstr "La URL de \"%s\" no ha cambiado desde la �ltima actualizaci�n"
 msgid ""
 "Could not detect the type of this feed! Please check if the URL really "
 "points to a resource provided in one of the supported syndication formats!"
-msgstr ""
-"No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL "
-"apunte a un recurso que contenga alguno de los formatos soportados."
+msgstr "No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL apunte a un recurso que contenga alguno de los formatos soportados."
 
 #: src/feed.c:660
 #, c-format
@@ -358,15 +354,13 @@ msgstr "Intentando cargar el m�dulo de navegador %s (%s)\n"
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
-msgstr ""
-"Lo siento, no se pudo cargar ning�n m�dulo de navegador. Por favor, intenta "
-"usar la opci�n \"--debug\" para conseguir informaci�n de depuraci�n"
+msgstr "Lo siento, no se pudo cargar ning�n m�dulo de navegador. Por favor, intenta usar la opci�n \"--debug\" para conseguir informaci�n de depuraci�n"
 
 #: src/htmlview.c:318
 msgid "This item does not have a link assigned!"
 msgstr "Este elemento no tiene ning�n enlace asignado"
 
-#: src/interface.c:161 src/interface.c:3172
+#: src/interface.c:161 src/interface.c:3077
 msgid "Liferea 0.4.9"
 msgstr "Liferea 0.4.9"
 
@@ -406,9 +400,7 @@ msgstr "_Actualizar fuente"
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder,"
-msgstr ""
-"Actualiza la subscripci�n seleccionada o, en caso de ser una carpeta, todas "
-"las fuentes que contenga"
+msgstr "Actualiza la subscripci�n seleccionada o, en caso de ser una carpeta, todas las fuentes que contenga"
 
 #: src/interface.c:258
 msgid "Update _All"
@@ -442,9 +434,7 @@ msgstr "Marcar como _le�do"
 msgid ""
 "Marks all items of the current selected subscription or all of subscriptions "
 "of the selected folder as read."
-msgstr ""
-"Marca todos los elementos de la subscripci�n seleccionada o, en caso de una "
-"carpeta, todas sus subscripciones"
+msgstr "Marca todos los elementos de la subscripci�n seleccionada o, en caso de una carpeta, todas sus subscripciones"
 
 #: src/interface.c:311
 msgid "_Import Feed List"
@@ -484,9 +474,7 @@ msgstr "Desplazar _Abajo / Siguiente nuevo"
 
 #: src/interface.c:351
 msgid "Scrolls the item view down or jumps to the next unread item."
-msgstr ""
-"Desplaza la vista de elementos hacia adelante, o salta a la siguiente fuente "
-"sin leer"
+msgstr "Desplaza la vista de elementos hacia adelante, o salta a la siguiente fuente sin leer"
 
 #: src/interface.c:360
 msgid "Toggle _Read Status"
@@ -572,7 +560,7 @@ msgstr "Inicia una b�squeda con Feedster."
 msgid "_Help"
 msgstr "A_yuda"
 
-#: src/interface.c:471 src/interface.c:3157 src/interface.c:3188
+#: src/interface.c:471 src/interface.c:3063 src/interface.c:3093
 msgid "About"
 msgstr "Acerca de..."
 
@@ -642,7 +630,7 @@ msgstr "Vista de un s�lo elemento"
 msgid "condensed item list"
 msgstr "Vista condensada"
 
-#: src/interface.c:1067
+#: src/interface.c:1066
 msgid "Subscription Properties"
 msgstr "Propiedades"
 
@@ -650,34 +638,31 @@ msgstr "Propiedades"
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">Nombre de la fuente</span>"
 
-#: src/interface.c:1097 src/interface.c:1128 src/interface.c:1181
-#: src/interface.c:1261 src/interface.c:1277 src/interface.c:1324
-#: src/interface.c:1350 src/interface.c:1604 src/interface.c:1684
-#: src/interface.c:1700 src/interface.c:1747 src/interface.c:1773
-#: src/interface.c:1978 src/interface.c:2023 src/interface.c:2124
-#: src/interface.c:2151 src/interface.c:2192 src/interface.c:2248
+#: src/interface.c:1097 src/interface.c:1127 src/interface.c:1180
+#: src/interface.c:1254 src/interface.c:1270 src/interface.c:1317
+#: src/interface.c:1343 src/interface.c:1595 src/interface.c:1669
+#: src/interface.c:1685 src/interface.c:1732 src/interface.c:1758
 msgid "    "
 msgstr " "
 
-#: src/interface.c:1106
+#: src/interface.c:1105
 msgid "Feed _Name:"
 msgstr "_Nombre de la fuente:"
 
-#: src/interface.c:1118
+#: src/interface.c:1117
 msgid "<span weight=\"bold\">Refresh Interval</span>"
-msgstr "<span weight=\"bold>Intervalo de actualizaci�n</span>"
+msgstr "<span weight=\"bold\">Intervalo de actualizaci�n</span>"
 
-#: src/interface.c:1137
+#: src/interface.c:1136
 #, c-format
 msgid "This feed's refresh interval defaults to %d seconds."
-msgstr ""
-"El intervalo de actualizaci�n por defecto para esta fuente es de %d segundos"
+msgstr "El intervalo de actualizaci�n por defecto para esta fuente es de %d segundos"
 
-#: src/interface.c:1148
+#: src/interface.c:1147
 msgid "Feed Refresh _Interval:"
 msgstr "Tiempo de _actualizaci�n (minutos)"
 
-#: src/interface.c:1156
+#: src/interface.c:1155
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
@@ -687,168 +672,151 @@ msgstr ""
 "fuentes cada 15 minutos. Para desactivar la actualizaci�n autom�tica, pon "
 "este valor a 0."
 
-#: src/interface.c:1158
+#: src/interface.c:1157
 msgid "minutes."
 msgstr "minutos."
 
-#: src/interface.c:1162
+#: src/interface.c:1161
 msgid "General"
 msgstr "General"
 
-#: src/interface.c:1171 src/interface.c:1594
+#: src/interface.c:1170 src/interface.c:1585
 msgid "<b>Data Source</b>"
 msgstr "<b>Fuente de datos</b>"
 
-#: src/interface.c:1197 src/interface.c:1620
+#: src/interface.c:1196 src/interface.c:1611
 msgid "_Select File..."
 msgstr "_Explorar..."
 
-#: src/interface.c:1214 src/interface.c:1637
+#: src/interface.c:1213 src/interface.c:1628
 msgid "_URL"
 msgstr "_URL"
 
-#: src/interface.c:1220 src/interface.c:1643
+#: src/interface.c:1219 src/interface.c:1634
 msgid "_File"
 msgstr "_Archivo"
 
-#: src/interface.c:1226 src/interface.c:1649
+#: src/interface.c:1225 src/interface.c:1640
 msgid "_Command"
 msgstr "_Comando"
 
-#: src/interface.c:1238 src/interface.c:1661
+#: src/interface.c:1237 src/interface.c:1652
 msgid "Source Type:"
 msgstr "Tipo:"
 
-#: src/interface.c:1244 src/interface.c:1667
+#: src/interface.c:1243 src/interface.c:1658
 msgid "Source:"
 msgstr "Fuente:"
 
-#: src/interface.c:1251 src/interface.c:1674
-#, fuzzy
-msgid "<b>HTTP Authentication</b>"
-msgstr "Usar _autentificaci�n HTTP"
-
-#: src/interface.c:1269 src/interface.c:1692
+#: src/interface.c:1262 src/interface.c:1677
 msgid "Use HTTP _authentication"
-msgstr "Usar _autentificaci�n HTTP"
+msgstr "Usar a_utentificaci�n HTTP"
 
-#: src/interface.c:1287 src/interface.c:1710
+#: src/interface.c:1280 src/interface.c:1695
 msgid "User_name:"
 msgstr "Nombre de _usuario:"
 
-#: src/interface.c:1294 src/interface.c:1717
+#: src/interface.c:1287 src/interface.c:1702
 msgid "_Password:"
-msgstr "_Contrase�a:"
+msgstr "C_ontrase�a:"
 
-#: src/interface.c:1314 src/interface.c:1737
+#: src/interface.c:1307 src/interface.c:1722
 msgid "<b>Conversion Filter</b>"
 msgstr "<b>Filtro de conversi�n</b>"
 
-#: src/interface.c:1332 src/interface.c:1755
+#: src/interface.c:1325 src/interface.c:1740
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
 "information."
-msgstr ""
-"Liferea puede usar filtros externos, a modo de plug-ins, para acceder a "
-"fuentes y directorios en formatos que no est�n soportados. Por favor, lee la "
-"documentaci�n para mayor informaci�n"
+msgstr "Liferea puede usar filtros externos, a modo de plug-ins, para acceder a fuentes y directorios en formatos que no est�n soportados. Por favor, lee la documentaci�n para mayor informaci�n"
 
-#: src/interface.c:1342 src/interface.c:1765
+#: src/interface.c:1335 src/interface.c:1750
 msgid "Use conversion filter"
-msgstr "Usar filtro de conversi�n"
+msgstr "Usar _filtro de conversi�n"
 
-#: src/interface.c:1354 src/interface.c:1777
+#: src/interface.c:1347 src/interface.c:1762
 msgid "Convert using:"
 msgstr "Convertir con:"
 
-#: src/interface.c:1362 src/interface.c:1785
+#: src/interface.c:1355 src/interface.c:1770
 msgid "Select File..."
 msgstr "Explorar..."
 
-#: src/interface.c:1366
+#: src/interface.c:1359
 msgid "Feed Source"
 msgstr "Fuente"
 
-#: src/interface.c:1375
+#: src/interface.c:1368
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
-msgstr ""
-"La opci�n de cach� controla si los contenidos de las fuentes se guardan en "
-"disco cuando Liferea finaliza. Los elementos marcados siempre se guardan a "
-"la cach�."
+msgstr "La opci�n de cach� controla si los contenidos de las fuentes se guardan en disco cuando Liferea finaliza. Los elementos marcados siempre se guardan a la cach�."
 
-#: src/interface.c:1382
+#: src/interface.c:1375
 msgid "_Default cache settings"
 msgstr "Configuraci�n de _cach� por defecto"
 
-#: src/interface.c:1388
+#: src/interface.c:1381
 msgid "Di_sable cache"
 msgstr "_Desactivar cach�"
 
-#: src/interface.c:1394
+#: src/interface.c:1387
 msgid "_Umlimited cache"
 msgstr "Cach� _ilimitada"
 
-#: src/interface.c:1404
+#: src/interface.c:1397
 msgid "_Limit cache to"
 msgstr "_Limitar cach� a"
 
-#: src/interface.c:1417
+#: src/interface.c:1410
 msgid "items."
 msgstr "Elementos"
 
-#: src/interface.c:1421
+#: src/interface.c:1414
 msgid "Feed Cache"
 msgstr "Cach�"
 
-#: src/interface.c:1577
+#: src/interface.c:1568
 msgid "New Subscription"
 msgstr "Nueva subscripci�n"
 
-#: src/interface.c:1947
+#: src/interface.c:1919
 msgid "program preferences"
 msgstr "Preferencias globales"
 
-#: src/interface.c:1968
-#, fuzzy
-msgid "<span weight=\"bold\">Browser Settings</span>"
-msgstr "<span weight=\"bold\">Nombre de la fuente</span>"
-
-#: src/interface.c:1987
+#: src/interface.c:1945
 msgid "Use the GNOME default browser"
 msgstr "Usar el navegador por defecto de GNOME"
 
-#: src/interface.c:1997
+#: src/interface.c:1955
 msgid "Use browser command:"
 msgstr "Otro navegador:"
 
-#: src/interface.c:2007
+#: src/interface.c:1965
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr ""
 "Especifica el comando para ejecutar el navegador. Escribe %s, al final, que "
 "se substituir� por la URL de la fuente."
 
-#: src/interface.c:2013
-#, fuzzy
-msgid "<span weight=\"bold\">Date Column Settings</span>"
-msgstr "<span weight=\"bold\">Nombre de la fuente</span>"
+#: src/interface.c:1967
+msgid "Browser Settings"
+msgstr "Propiedades del navegador"
 
-#: src/interface.c:2032
+#: src/interface.c:1981
 msgid "Display only time"
 msgstr "Mostrar s�lo la hora"
 
-#: src/interface.c:2038
+#: src/interface.c:1987
 msgid "Display date and time"
 msgstr "Mostrar la fecha y hora"
 
-#: src/interface.c:2048
+#: src/interface.c:1997
 msgid "User defined format:"
 msgstr "Otro formato:"
 
-#: src/interface.c:2057
+#: src/interface.c:2006
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -856,33 +824,31 @@ msgstr ""
 "Para usuarios avanzados: Especifica un formato de fecha. Para m�s "
 "informaci�n consulta la p�gina de manual de 'strftime()'."
 
-#: src/interface.c:2063
-#, fuzzy
-msgid "<span weight=\"bold\">Feed Handling Settings</span>"
-msgstr "<span weight=\"bold\">Nombre de la fuente</span>"
+#: src/interface.c:2008
+msgid "Date Column Settings"
+msgstr "Opciones de fecha y hora"
 
-#: src/interface.c:2079
+#: src/interface.c:2027
 msgid "Default number of items per feed to save when Liferea exits:"
 msgstr "Elementos m�ximos por fuente que se guardar�n al salir:"
 
-#: src/interface.c:2091
+#: src/interface.c:2039
 msgid "Update all feeds on program startup."
 msgstr "Actualizar todas las fuentes al inicio del programa"
 
-#: src/interface.c:2095
+#: src/interface.c:2043
 msgid "Don't add the help feeds to the feed list on startup."
 msgstr "Al iniciar, no a�adir las fuentes de ayuda a la lista."
 
-#: src/interface.c:2099
+#: src/interface.c:2047
+msgid "Feed Handling Settings"
+msgstr "Opciones de fuentes"
+
+#: src/interface.c:2052
 msgid "Feed Handling"
 msgstr "Opciones de fuentes"
 
-#: src/interface.c:2114
-#, fuzzy
-msgid "<span weight=\"bold\">Notification Settings</span>"
-msgstr "<span weight=\"bold\">Nombre de la fuente</span>"
-
-#: src/interface.c:2132
+#: src/interface.c:2071
 msgid ""
 "Show a status icon in the notification area \n"
 "(also called system tray)."
@@ -891,29 +857,27 @@ msgstr ""
 "('system tray'). Los cambios se aplicar�n al\n"
 "reiniciar el programa."
 
-#: src/interface.c:2141
-#, fuzzy
-msgid "<span weight=\"bold\">Menu Settings</span>"
-msgstr "<span weight=\"bold\">Nombre de la fuente</span>"
+#: src/interface.c:2076
+msgid "Notification Area"
+msgstr "�rea de notificaci�n"
 
-#: src/interface.c:2160
+#: src/interface.c:2091
 msgid "Show Menu _And Toolbar"
 msgstr "Mostrar _Men� y barra de iconos"
 
-#: src/interface.c:2166
+#: src/interface.c:2097
 msgid "Show _Menu Only"
 msgstr "Mostrar _S�lo el men�"
 
-#: src/interface.c:2172
+#: src/interface.c:2103
 msgid "Show _Toolbar Only"
 msgstr "Mostrar s�lo la _Barra de ionos"
 
-#: src/interface.c:2182
-#, fuzzy
-msgid "<span weight=\"bold\">Viewing Headlines</span>"
-msgstr "<span weight=\"bold\">Nombre de la fuente</span>"
+#: src/interface.c:2109
+msgid "Menu Settings"
+msgstr "Opciones de men�"
 
-#: src/interface.c:2201
+#: src/interface.c:2124
 msgid ""
 "Liferea displays feeds' content using various HTML renderers. Depending on "
 "which renderers are installed on your computer, different options will be "
@@ -923,20 +887,19 @@ msgstr ""
 "renderizadores de HTML. Dependiendo de tu sistema, aparecer�n m�s o menos "
 "opciones. Reinicia Liferea para aplicar los cambios."
 
-#: src/interface.c:2211
+#: src/interface.c:2134
 msgid "View Headlines With"
 msgstr "Ver cabeceras con:"
 
-#: src/interface.c:2223
+#: src/interface.c:2146
+msgid "Viewing Headlines"
+msgstr "Mostrando titulares"
+
+#: src/interface.c:2151
 msgid "GUI Settings"
 msgstr "Opciones de interfaz"
 
-#: src/interface.c:2238
-#, fuzzy
-msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
-msgstr "<span weight=\"bold>Intervalo de actualizaci�n</span>"
-
-#: src/interface.c:2257
+#: src/interface.c:2171
 msgid ""
 "Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center. Note: changing these settings "
@@ -948,80 +911,83 @@ msgstr ""
 "al resto de aplicaciones. �ste cuadro es �til para usuarios que quieran usar "
 "Liferea con un proxy, pero no est�n usando GNOME."
 
-#: src/interface.c:2267
+#: src/interface.c:2181
 msgid "Enable Proxy"
 msgstr "Activar Proxy"
 
-#: src/interface.c:2277
+#: src/interface.c:2191
 msgid "Proxy Host"
 msgstr "Servidor"
 
-#: src/interface.c:2296
+#: src/interface.c:2210
 msgid "Proxy Port"
 msgstr "Puerto"
 
-#: src/interface.c:2303
+#: src/interface.c:2217
+msgid "HTTP Proxy Server"
+msgstr "Proxy HTTP"
+
+#: src/interface.c:2221
 msgid "Proxy Settings"
 msgstr "Opciones del proxy"
 
-#: src/interface.c:2469
+#: src/interface.c:2375
 msgid "New Folder"
 msgstr "_Nueva carpeta..."
 
-#: src/interface.c:2484 src/interface.c:2559
+#: src/interface.c:2390 src/interface.c:2465
 msgid "Folder name:"
 msgstr "Nombre de la carpeta:"
 
-#: src/interface.c:2548
+#: src/interface.c:2454
 msgid "Rename Folder"
 msgstr "_Renombrar carpeta"
 
-#: src/interface.c:2612
+#: src/interface.c:2518
 msgid "Select A File"
 msgstr "Elige un archivo"
 
-#: src/interface.c:2657
+#: src/interface.c:2563
 msgid "edit filter rules"
 msgstr "Editar filtros"
 
-#: src/interface.c:2757
+#: src/interface.c:2663
 msgid "edit rule properties"
 msgstr "Editar reglas"
 
-#: src/interface.c:2771 src/ui_filter.c:54
-msgid "Rule Type"
+#: src/interface.c:2677
+msgid "rule type"
 msgstr "Tipo de regla"
 
-#: src/interface.c:2781
+#: src/interface.c:2687
 msgid "add items with exact match"
 msgstr "A�adir elementos que coincidan exactamente"
 
-#: src/interface.c:2785
+#: src/interface.c:2691
 msgid "remove items with exact match"
 msgstr "Eliminar elementos que coincidan exactamente"
 
-#: src/interface.c:2795
-#, fuzzy
-msgid "Rule Value"
+#: src/interface.c:2701
+msgid "rule value"
 msgstr "Valor de la regla"
 
-#: src/interface.c:2869
+#: src/interface.c:2775
 msgid "Search With Feedster"
 msgstr "Buscar mediante Feedster"
 
-#: src/interface.c:2883
+#: src/interface.c:2789
 msgid "Search for "
 msgstr "Buscar:"
 
-#: src/interface.c:2890
+#: src/interface.c:2796
 msgid "enter any search string you want"
 msgstr "Escribe cualquier frase"
 
-#: src/interface.c:2897
+#: src/interface.c:2803
 msgid "Maximal Number Of Result Items"
 msgstr "N�mero m�ximo de resultados:"
 
-#: src/interface.c:2906
+#: src/interface.c:2812
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -1031,11 +997,11 @@ msgstr ""
 "resultados de la b�squeda con Feedster. Puedes mantener esta fuente "
 "permanentemente, y actualizarla como cualquier otra."
 
-#: src/interface.c:2972
+#: src/interface.c:2878
 msgid "Import Feed List"
 msgstr "Importar lista"
 
-#: src/interface.c:2982
+#: src/interface.c:2888
 msgid ""
 "Liferea can import a list of feeds from an OPML file. This  can be used to "
 "either restore a backup feed list or import a feed list from another "
@@ -1045,19 +1011,19 @@ msgstr ""
 "puede usar para recuperar una lista de fuentes exportada as�, o importar una "
 "lista de cualquier otro programa que soporte exportaci�n OPML."
 
-#: src/interface.c:2992 src/interface.c:3081
+#: src/interface.c:2898 src/interface.c:2987
 msgid "Filename"
 msgstr "Archivo:"
 
-#: src/interface.c:3001 src/interface.c:3090
+#: src/interface.c:2907 src/interface.c:2996
 msgid "Select File"
 msgstr "Explorar..."
 
-#: src/interface.c:3061
+#: src/interface.c:2967
 msgid "Export Feed List"
 msgstr "Exportar lista"
 
-#: src/interface.c:3071
+#: src/interface.c:2977
 msgid ""
 "Liferea can export the list of feeds as an OPML list. You can use this "
 "feature to backup your feed list or export your feed list to another "
@@ -1067,11 +1033,11 @@ msgstr ""
 "hacer una copia de seguridad de tu lista, o para abrirlo m�s tarde con otro "
 "programa."
 
-#: src/interface.c:3177
+#: src/interface.c:3082
 msgid "Liferea is a news aggregator for GTK"
 msgstr "Liferea es un lector de noticias para GTK"
 
-#: src/interface.c:3182
+#: src/interface.c:3087
 msgid ""
 "Copyright (c) 2003-2004 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
@@ -1081,7 +1047,7 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: src/interface.c:3202
+#: src/interface.c:3107
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1123,11 +1089,11 @@ msgstr ""
 "Anders Carlsson <andersca@gnu.org> (icono en bandeja de sistema)\n"
 "Philippe Martin, Brion Vibber (iconos favoritos)"
 
-#: src/interface.c:3208
+#: src/interface.c:3113
 msgid "Contributors"
 msgstr "Agradecimientos"
 
-#: src/interface.c:3222
+#: src/interface.c:3127
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -1149,7 +1115,7 @@ msgstr ""
 "Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>"
 
-#: src/interface.c:3228
+#: src/interface.c:3133
 msgid "Translation"
 msgstr "Traductores"
 
@@ -1485,6 +1451,10 @@ msgstr ""
 "No se pudo autodetectar un tipo para la fuente reci�n creada. Por favor, "
 "subscr�bete otra vez, escogiendo un tipo manualmente."
 
+#: src/ui_filter.c:54
+msgid "Rule Type"
+msgstr "Tipo de regla"
+
 #: src/ui_filter.c:57
 msgid "Value"
 msgstr "Valor"
@@ -1671,30 +1641,6 @@ msgstr "GtkHTML3 (experimental)"
 msgid "Mozilla (experimental)"
 msgstr "Mozilla (experimental)"
 
-#~ msgid "Browser Settings"
-#~ msgstr "Propiedades del navegador"
-
-#~ msgid "Date Column Settings"
-#~ msgstr "Opciones de fecha y hora"
-
-#~ msgid "Feed Handling Settings"
-#~ msgstr "Opciones de fuentes"
-
-#~ msgid "Notification Area"
-#~ msgstr "�rea de notificaci�n"
-
-#~ msgid "Menu Settings"
-#~ msgstr "Opciones de men�"
-
-#~ msgid "Viewing Headlines"
-#~ msgstr "Mostrando titulares"
-
-#~ msgid "HTTP Proxy Server"
-#~ msgstr "Proxy HTTP"
-
-#~ msgid "rule type"
-#~ msgstr "Tipo de regla"
-
 #~ msgid "_Feed"
 #~ msgstr "_Fuente de noticias"
 
@@ -1714,36 +1660,36 @@ msgstr "Mozilla (experimental)"
 #~ msgstr "_Cambiar nombre..."
 
 #~ msgid "Marks all items of the current feed as read."
-#~ msgstr "Marca como leídos todos los elementos de la fuente actual."
+#~ msgstr "Marca como leÃÂ­dos todos los elementos de la fuente actual."
 
 #~ msgid ""
 #~ "Edit the following entries to adjust the feed source URL or\n"
 #~ "the feed title, which is displayed in the feed list."
 #~ msgstr ""
 #~ "En las siguientes opciones puedes cambiar la URL de \n"
-#~ "la fuente y el título que se muestra en la lista."
+#~ "la fuente y el tÃÂ­tulo que se muestra en la lista."
 
 #~ msgid "Feed Title"
-#~ msgstr "Título:"
+#~ msgstr "TÃÂ­tulo:"
 
 #~ msgid ""
 #~ "Either leave the name supplied by the feed or enter an alternative name "
 #~ "which you like to be listed in the feed list."
 #~ msgstr ""
 #~ "Puedes dejar el nombre que establece la propia fuente o cambiarlo por "
-#~ "otro, que se mostrará en la lista."
+#~ "otro, que se mostrarÃÂ¡ en la lista."
 
 #~ msgid "Enter the URL the feed should be loaded from."
-#~ msgstr "Escribe la URL desde donde se descargará la fuente."
+#~ msgstr "Escribe la URL desde donde se descargarÃÂ¡ la fuente."
 
 #~ msgid "Feed URL"
 #~ msgstr "URL:"
 
 #~ msgid "Feed URL and Title"
-#~ msgstr "Título y URL de la fuente"
+#~ msgstr "TÃÂ­tulo y URL de la fuente"
 
 #~ msgid "Feed Update Interval"
-#~ msgstr "Intervalo de actualización"
+#~ msgstr "Intervalo de actualizaciÃÂ³n"
 
 #~ msgid ""
 #~ "Please enter the URL (including the http:// prefix) you want to \n"
@@ -1763,10 +1709,10 @@ msgstr "Mozilla (experimental)"
 #~ "to. If you are unsure select \"Auto Detect\"."
 #~ msgstr ""
 #~ "Puedes especificar el tipo de fuente al que quieres subscribirte.\n"
-#~ "Si no estás seguro, déjalo en \"Automático\"."
+#~ "Si no estÃÂ¡s seguro, dÃÂ©jalo en \"AutomÃÂ¡tico\"."
 
 #~ msgid "Auto Detect"
-#~ msgstr "Automático"
+#~ msgstr "AutomÃÂ¡tico"
 
 #~ msgid "RSS"
 #~ msgstr "RSS"
@@ -1790,16 +1736,16 @@ msgstr "Mozilla (experimental)"
 #~ msgstr "El proveedor de esta fuente sugiere actualizarla cada %d minutos"
 
 #~ msgid "This feed specifies no default update interval."
-#~ msgstr "Esta fuente no tiene definido ningún intervalo de actualización."
+#~ msgstr "Esta fuente no tiene definido ningÃÂºn intervalo de actualizaciÃÂ³n."
 
 #~ msgid "Internal error! No feed selected, but property change requested...\n"
 #~ msgstr ""
-#~ "Error interno. No se eligió ninguna fuente, pero se intentaron cambiar "
+#~ "Error interno. No se eligiÃÂ³ ninguna fuente, pero se intentaron cambiar "
 #~ "sus propiedades...\n"
 
 #~ msgid "internal error! invalid type selected! This should never happen!\n"
 #~ msgstr ""
-#~ "Error interno. Se ha seleccionado un tipo inválido. ¡Esto no debería "
+#~ "Error interno. Se ha seleccionado un tipo invÃÂ¡lido. ÃÂ¡Esto no deberÃÂ­a "
 #~ "estar pasando!\n"
 
 #~ msgid "/_Update Directory"
@@ -1813,8 +1759,8 @@ msgstr "Mozilla (experimental)"
 
 #~ msgid "internal error: XML document pointer NULL! This should not happen!\n"
 #~ msgstr ""
-#~ "Error interno: El documento XML es un puntero nulo. ÃÂÃÂ¡Esto no "
-#~ "deberÃÂÃÂ­a de estar pasando!\n"
+#~ "Error interno: El documento XML es un puntero nulo. ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡Esto no deberÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­"
+#~ "a de estar pasando!\n"
 
 #~ msgid "internal error! could not retrieve feed list for gconf path %s\n"
 #~ msgstr ""
@@ -1850,22 +1796,21 @@ msgstr "Mozilla (experimental)"
 #~ msgid ""
 #~ "Could not detect feed type of \"%s\"! Please manually select a feed type."
 #~ msgstr ""
-#~ "No se pudo detectar el tipo de fuente de \"%s\". Por favor, elÃÂÃÂ­"
-#~ "gelo manualmente."
+#~ "No se pudo detectar el tipo de fuente de \"%s\". Por favor, elÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­gelo "
+#~ "manualmente."
 
 #~ msgid "internal error! unknown feed type in newFeed()!"
 #~ msgstr "Error interno: Tipo de fuente desconocido en 'newFeed()'."
 
 #~ msgid "error! could not add feed to configuration!\n"
 #~ msgstr ""
-#~ "Lo siento, no se ha podido aÃÂÃÂ±adir la fuente a la "
-#~ "configuraciÃÂÃÂ³n.\n"
+#~ "Lo siento, no se ha podido aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±adir la fuente a la configuraciÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³n.\n"
 
 #~ msgid "updating all feeds..."
 #~ msgstr "Actualizando todas las fuentes..."
 
 #~ msgid "internal error! there is no feed assigned to feedkey \"%s\"!\n"
-#~ msgstr "Error interno: No se asignÃÂÃÂ³ ninguna fuente al ID \"%s\"\n"
+#~ msgstr "Error interno: No se asignÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³ ninguna fuente al ID \"%s\"\n"
 
 #~ msgid ""
 #~ "getFolderTitle() internal error! could not determine folder iterator for "
@@ -1889,21 +1834,20 @@ msgstr "Mozilla (experimental)"
 #~ "el prefijo \"%s\"\n"
 
 #~ msgid "error! could not move cache file %s to file %s\n"
-#~ msgstr "No se pudo mover el archivo de cachÃÂÃÂ© %s a su destino %s.\n"
+#~ msgstr "No se pudo mover el archivo de cachÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© %s a su destino %s.\n"
 
 #~ msgid ""
 #~ "Failed to open HTML widget module (%s) specified in configuration!\n"
 #~ "%s\n"
 #~ msgstr ""
-#~ "Fallo al abrir el control HTML (%s) establecido en la "
-#~ "configuraciÃÂÃÂ³n\n"
+#~ "Fallo al abrir el control HTML (%s) establecido en la configuraciÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³n\n"
 #~ "%s\n"
 
 #~ msgid "Missing symbol \"%s\" in configured HTML module!"
-#~ msgstr "Falta el sÃÂÃÂ­mbolo \"%s\" en el mÃÂÃÂ³dulo HTML"
+#~ msgstr "Falta el sÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­mbolo \"%s\" en el mÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³dulo HTML"
 
 #~ msgid "Cannot load HTML widget module (%s)!"
-#~ msgstr "No se pudo cargar el control del mÃÂÃÂ³dulo HTML (%s)"
+#~ msgstr "No se pudo cargar el control del mÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³dulo HTML (%s)"
 
 #~ msgid "Zoom _In"
 #~ msgstr "A_cercar"
@@ -1916,10 +1860,10 @@ msgstr "Mozilla (experimental)"
 #~ "installation there may be different choices presented below. Note: "
 #~ "Changes will take place after the next restart!"
 #~ msgstr ""
-#~ "LifereaÃÂÃÂ·cargaÃÂÃÂ·lasÃÂÃÂ·cabecerasÃÂÃÂ·usandoÃÂÃÂ·unÃÂÃÂ·renderizadorÃÂÃÂ·HTML."
-#~ "ÃÂÃÂ·EnÃÂÃÂ·funciÃÂÃÂ³nÃÂÃÂ·deÃÂÃÂ·tuÃÂÃÂ·sistemaÃÂÃÂ·puedenÃÂÃÂ·haberÃÂÃÂ·diferentesÃÂÃÂ·opcionesÃÂÃÂ·aÃÂÃÂ·elegir."
-#~ "ÃÂÃÂ·Nota:"
-#~ "ÃÂÃÂ·LosÃÂÃÂ·cambiosÃÂÃÂ·seÃÂÃÂ·aplicarÃÂÃÂ¡nÃÂÃÂ·trasÃÂÃÂ·reiniciarÃÂÃÂ·elÃÂÃÂ·programa"
+#~ "LifereaÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·cargaÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·lasÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·cabecerasÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·usandoÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·unÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·renderizadorÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·HTML."
+#~ "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·EnÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·funciÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³nÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·deÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·tuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·sistemaÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·puedenÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·haberÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·diferentesÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·opcionesÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·elegir."
+#~ "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·Nota:"
+#~ "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·LosÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·cambiosÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·seÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·aplicarÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡nÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·trasÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·reiniciarÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·elÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ·programa"
 
 #~ msgid "add folder"
 #~ msgstr "Nueva carpeta"
@@ -1933,12 +1877,12 @@ msgstr "Mozilla (experimental)"
 #~ msgid ""
 #~ "Internal error! Invalid output request mode for namespace information!"
 #~ msgstr ""
-#~ "Error interno. MÃÂÃÂ©todo de peticiÃÂÃÂ³n de salida "
-#~ "invÃÂÃÂ¡lido para la informaciÃÂÃÂ³n de este espacio."
+#~ "Error interno. MÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©todo de peticiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³n de salida invÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡lido para la "
+#~ "informaciÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³n de este espacio."
 
 #~ msgid "Sorry Liferea does not yet support drag&drop of folders!"
 #~ msgstr ""
-#~ "Lo siento, Liferea aÃÂÃÂºn no soporta arrastrar y soltar con carpetas."
+#~ "Lo siento, Liferea aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºn no soporta arrastrar y soltar con carpetas."
 
 #~ msgid "you cannot modify the special help folder contents!"
 #~ msgstr ""
@@ -1952,11 +1896,11 @@ msgstr "Mozilla (experimental)"
 #~ msgstr "No se ha podido obtener la entrada seleccionada."
 
 #~ msgid "fatal! selected feed entry has no key!!!"
-#~ msgstr "ÃÂÃÂ¡Error fatal! ÃÂÃÂ¡La entrada seleccionada no tiene ID!"
+#~ msgstr "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡Error fatal! ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡La entrada seleccionada no tiene ID!"
 
 #~ msgid "internal error! could not select newly created treestore iter!"
 #~ msgstr ""
-#~ "Error interno. No se pudo seleccionar el nuevo elemento de ÃÂÃÂ¡rbol"
+#~ "Error interno. No se pudo seleccionar el nuevo elemento de ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡rbol"
 
 #~ msgid "You can't delete help feeds!"
 #~ msgstr "No puedes borrar las fuentes de ayuda"
@@ -1990,11 +1934,11 @@ msgstr "Mozilla (experimental)"
 
 #~ msgid "Feed source is NULL! This should never happen - cannot update!"
 #~ msgstr ""
-#~ "La fuente es nula. Esto no deberÃÂÃÂ­a de estar pasando. No se pudo "
+#~ "La fuente es nula. Esto no deberÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­a de estar pasando. No se pudo "
 #~ "actualizar."
 
 #~ msgid "not enough memory!"
-#~ msgstr "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡No hay memoria suficiente!"
+#~ msgstr "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡No hay memoria suficiente!"
 
 #~ msgid "internal error! could not reset HTML widget scrolling!"
 #~ msgstr ""
@@ -2008,26 +1952,26 @@ msgstr "Mozilla (experimental)"
 #~ "you won't be able to access all program functions. I'll reenable the "
 #~ "toolbar!"
 #~ msgstr ""
-#~ "Has desactivado tanto la barra de menÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂº "
-#~ "como la de iconos. Sin ellas no podrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡s "
-#~ "accedar a las funciones del programa. Voy a reactivar la barra de iconos."
+#~ "Has desactivado tanto la barra de menÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂº como la de iconos. "
+#~ "Sin ellas no podrÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡s accedar a las funciones del programa. "
+#~ "Voy a reactivar la barra de iconos."
 
 #~ msgid "Empty document! Feed was not added!"
 #~ msgstr ""
-#~ "El documento estaba vacÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­o. La fuente no se "
-#~ "aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±adiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³."
+#~ "El documento estaba vacÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­o. La fuente no se "
+#~ "aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±adiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³."
 
 #~ msgid "Empty document! Feed cache file should not be empty..."
 #~ msgstr ""
-#~ "El archivo con las cachÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©s de las fuentes "
-#~ "estÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡ vacÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­o "
-#~ "y no deberÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­a estarlo."
+#~ "El archivo con las cachÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©s de las fuentes "
+#~ "estÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¡ vacÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­o y no deberÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­a "
+#~ "estarlo."
 
 #~ msgid "Disable Tool Bar."
 #~ msgstr "Desactivar barra de iconos"
 
 #~ msgid "Disable Menu Bar."
-#~ msgstr "Desactivar barra de menÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºs"
+#~ msgstr "Desactivar barra de menÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºs"
 
 #~ msgid "Could not allocate memory to read file!"
 #~ msgstr "No se pudo reservar memoria para leer el archivo."
@@ -2038,29 +1982,27 @@ msgstr "Mozilla (experimental)"
 
 #~ msgid "Could not find PIE header! Feed was not added!"
 #~ msgstr ""
-#~ "No se pudo encontrar la cabecera PIE. La fuente no se "
-#~ "aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±adiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³."
+#~ "No se pudo encontrar la cabecera PIE. La fuente no se aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ"
+#~ "ÃÂ±adiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³."
 
 #~ msgid ""
 #~ "internal error: parseTextInput without a channel! Skipping text input!\n"
 #~ msgstr ""
-#~ "Error interno: 'parseTextInput' sin "
-#~ "ningÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºn canal. Ignorando la entrada de "
-#~ "texto.\n"
+#~ "Error interno: 'parseTextInput' sin ningÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºn canal. "
+#~ "Ignorando la entrada de texto.\n"
 
 #~ msgid "internal error: parseImage without a channel! Skipping image!\n"
 #~ msgstr ""
-#~ "Error interno: 'parseImage' sin ningÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºn "
-#~ "canal. Ignorando imagen.\n"
+#~ "Error interno: 'parseImage' sin ningÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºn canal. Ignorando "
+#~ "imagen.\n"
 
 #~ msgid "/_Mark All As Read"
-#~ msgstr "/Marcar _todos como leÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­dos"
+#~ msgstr "/Marcar _todos como leÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ­dos"
 
 #~ msgid "Feedster search request failed.\n"
 #~ msgstr ""
-#~ "FallÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³ la "
-#~ "peticiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³n de "
-#~ "bÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºsqueda en Feedster\n"
+#~ "FallÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³ la peticiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³n de "
+#~ "bÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂºsqueda en Feedster\n"
 
 #~ msgid "Search In All Items"
 #~ msgstr "Buscar en todos los elementos"
@@ -2068,7 +2010,7 @@ msgstr "Mozilla (experimental)"
 #~ msgid "Could not find RDF/RSS header! Feed was not added!"
 #~ msgstr ""
 #~ "No se pudo encontrar la cabecera RDF/RSS. La fuente no se "
-#~ "aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±adiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³."
+#~ "aÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±adiÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ³."
 
 #~ msgid "Rule"
 #~ msgstr "Regla"
