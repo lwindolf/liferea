@@ -7,19 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-06 02:38+0100\n"
-"PO-Revision-Date: 2004-10-30 00:55+0900\n"
-"Last-Translator: 박지인 <mithrandir@electrang.net>\n"
-"Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
+"POT-Creation-Date: 2005-01-10 22:41+0900\n"
+"PO-Revision-Date: 2005-01-10 23:34+0900\n"
+"Last-Translator: Park Ji-In <mithrandir at electrang.net>\n"
+"Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:227
-#, fuzzy
 msgid "http://liferea.sf.net"
-msgstr "http://liferea.sf.net/help/help"
+msgstr ""
 
 #: src/common.c:279
 msgid "[Parser error output was truncated!]"
@@ -192,7 +191,7 @@ msgid "Updating \"%s\""
 msgstr "%s을(를) 새로고치는 중"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1011 src/item.c:196 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:1011 src/item.c:195 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "피드:"
@@ -205,7 +204,7 @@ msgstr "가상폴더"
 msgid "user defined command"
 msgstr "사용자가 정한 명령:"
 
-#: src/feed.c:1042 src/interface.c:1089 src/interface.c:1499 src/item.c:245
+#: src/feed.c:1042 src/interface.c:1089 src/interface.c:1499 src/item.c:244
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "소스:"
@@ -215,9 +214,8 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "피드 링크 자동 찾기가 실패하였습니다. 아무런 피드 링크도 없습니다!"
 
 #: src/interface.c:137
-#, fuzzy
 msgid "Liferea"
-msgstr "Liferea 도움말"
+msgstr ""
 
 #: src/interface.c:154
 msgid "_Program"
@@ -495,12 +493,12 @@ msgstr "이 피드를 자동으로 업데이트 하지 말것(_D)."
 
 #: src/interface.c:994
 msgid " "
-msgstr ""
+msgstr " "
 
 #: src/interface.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "This feed provider suggests an update interval of %d minutes."
-msgstr "이 피드의 제공자는 갱신 주기를 %d분 으로 제안했습니다."
+msgstr "이 피드의 제공자는 갱신 주기를 %d분으로 제안했습니다."
 
 #: src/interface.c:1005
 msgid "General"
@@ -519,9 +517,8 @@ msgid "_Command"
 msgstr "명령(_C)"
 
 #: src/interface.c:1063 src/interface.c:1473
-#, fuzzy
 msgid "Local _File"
-msgstr "로컬 파일"
+msgstr "로컬 파일(_F)"
 
 #: src/interface.c:1073 src/interface.c:1483
 msgid "_Select File..."
@@ -609,7 +606,6 @@ msgid "New Subscription"
 msgstr "새 서명"
 
 #: src/interface.c:1778
-#, fuzzy
 msgid "Liferea Preferences"
 msgstr "Liferea 기본 설정"
 
@@ -648,7 +644,6 @@ msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">피드 불러오기 설정</span>"
 
 #: src/interface.c:1920
-#, fuzzy
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds."
@@ -669,42 +664,37 @@ msgstr ""
 "메모리를 무지하게 써댑니다!"
 
 #: src/interface.c:1933
-#, fuzzy
 msgid "Feeds"
-msgstr "피드(_F)"
+msgstr "피드"
 
 #: src/interface.c:1946
-#, fuzzy
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
-msgstr "<span weight=\"bold\">피드 새로고침 설정</span>"
+msgstr "<span weight=\"bold\">폴더 표시 설정</span>"
 
 #: src/interface.c:1964
 msgid "Show the items of all child feeds when a folder is selected."
-msgstr ""
+msgstr "선택된 폴더안에 들은 모든 피드의 아이템들을 보여줍니다."
 
 #: src/interface.c:1968
 msgid ""
 "<i>This can cause signifant delays when loading folders with a lot of feeds "
 "inside!</i>"
-msgstr ""
+msgstr "<i>이것은 많은 피드가 들은 폴더를 불러올때 심각하게 느리게 될 수"
+"있습니다</i>"
 
 #: src/interface.c:1979
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
-msgstr "<span weight=\"bold\">피드 불러오기 설정</span>"
+msgstr "<span weight=\"bold\">피드 아이콘(Favicons)</span>"
 
 #: src/interface.c:1998
-#, fuzzy
 msgid "_Update all favicons now."
-msgstr "모든 피드 갱신"
+msgstr "모든 피드아이콘을 갱신합니다.(_U)"
 
 #: src/interface.c:2002
-#, fuzzy
 msgid "Folders"
-msgstr "가상폴더"
+msgstr "폴더"
 
 #: src/interface.c:2017
-#, fuzzy
 msgid "<span weight=\"bold\">Reading Headlines</span>"
 msgstr "<span weight=\"bold\">머릿글 보기</span>"
 
@@ -748,9 +738,8 @@ msgstr ""
 "숙련된 사용자에게: strftime() 맨페이지를 참고해서 시간 포맷 문자를 써주세요"
 
 #: src/interface.c:2132
-#, fuzzy
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
-msgstr "<span weight=\"bold\">외부 브라우져 설정</span>"
+msgstr "<span weight=\"bold\">내부 브라우져 설정</span>"
 
 #: src/interface.c:2150
 msgid ""
@@ -772,7 +761,7 @@ msgstr "링크를 Liferea 윈도우 안에서 엽니다(_W)."
 
 #: src/interface.c:2176
 msgid "_Disable Javascript."
-msgstr ""
+msgstr "자바스크립트 비활성화(_D)"
 
 #: src/interface.c:2184
 msgid "<span weight=\"bold\">External Browser Settings</span>"
@@ -796,9 +785,8 @@ msgid "_Open link in:"
 msgstr "링크 여는 방법(_O):"
 
 #: src/interface.c:2253
-#, fuzzy
 msgid "Browser"
-msgstr "브라우져(_B):"
+msgstr "브라우져"
 
 #: src/interface.c:2266
 msgid "<span weight=\"bold\">Notification Settings</span>"
@@ -923,7 +911,7 @@ msgstr "Liferea는 GTK+를 이용한 뉴스 수집기입니다"
 
 #: src/interface.c:3068
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
-msgstr ""
+msgstr "<span color=\"blue\" underline=\"single\">Liferea 홈페이지</span>"
 
 #: src/interface.c:3073
 msgid ""
@@ -933,7 +921,6 @@ msgid ""
 msgstr ""
 
 #: src/interface.c:3093
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -978,6 +965,11 @@ msgstr ""
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
 "ahmed el-helw <ahmedre@cc.gatech.edu>\n"
+"James Bowes <bowes@cs.dal.ca>\n"
+"Marc Deslauriers\n"
+"Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
+"Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"\n"
 "\n"
 "다른 프로젝트에서 얻어온 코드들\n"
 "\n"
@@ -1027,28 +1019,29 @@ msgstr ""
 msgid "Rules"
 msgstr "규칙"
 
-#: src/item.c:223 src/item.c:227 src/item.c:239 src/ui_itemlist.c:199
+#: src/item.c:222 src/item.c:226 src/item.c:238 src/ui_itemlist.c:207
 msgid "[No title]"
 msgstr "[제목 없음]"
 
-#: src/item.c:229 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:228 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "아이템:"
 
+#: src/item.c:290 src/ui_itemlist.c:286
+msgid "Date"
+msgstr "날짜"
+
 #: src/main.c:68
-#, fuzzy
 msgid "  --version        Print version information and exit"
-msgstr "  --version        Liferea의 버전 정보를 보여줍니다."
+msgstr "  --version        Liferea의 버전 정보를 보여주고 끝냅니다."
 
 #: src/main.c:69
-#, fuzzy
 msgid "  --help           Print this help and exit"
 msgstr "  --help           이 내용을 보여주고 끝냅니다."
 
 #: src/main.c:70
-#, fuzzy
 msgid "  --iconify        Start the program iconified"
-msgstr "  --iconift        프로그램을 아이콘화 한 채 시작합니다"
+msgstr "  --iconify        프로그램을 아이콘화 한 채 시작합니다"
 
 #: src/main.c:72
 msgid "  --debug-cache    Print debugging messages for the cache handling"
@@ -1089,7 +1082,6 @@ msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  자세한 디버깅 메시지를 보여줍니다."
 
 #: src/main.c:222
-#, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "--session 옵션은 반드시 인자를 가져야 합니다.\n"
 
@@ -1099,7 +1091,6 @@ msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea는 알 수 없는 인자: %s을(를) 겪어버렸어요!\n"
 
 #: src/main.c:244
-#, fuzzy
 msgid ""
 "Another copy of Liferea was found to be running. Please use it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
@@ -1210,7 +1201,7 @@ msgstr "범위"
 #: src/net/cookies.c:186
 #, c-format
 msgid "Cookie for %s has expired!"
-msgstr ""
+msgstr "%s에 대한 쿠키가 만료되었습니다!"
 
 #: src/ns_dc.c:189 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
@@ -1404,10 +1395,11 @@ msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 msgstr ""
+"<a href=\"http://feedvalidator.org/check.cgi?url="
 
 #: src/ui_feed.c:129
 msgid "\">FeedValidator</a>."
-msgstr ""
+msgstr "\">피드검증기</a>를 이용해서 피드를 검증할 수 있습니다."
 
 #: src/ui_feed.c:136
 msgid ""
@@ -1611,6 +1603,19 @@ msgstr "브라우져 명령 실패: %s"
 msgid "Starting: \"%s\""
 msgstr "%s을(를) 시작함"
 
+#. *
+#. * @{ Common HTML definitions
+#. *
+#. * Used styles should be defined in the
+#. * liferea.css style sheet! For some important HTML literals
+#. * like the item and feed description headers the styles
+#. * are duplicated here just in case the style sheet is
+#. * missing.
+#.
+#. RSS feed/item output definitions (some are used by OCS too!)
+#. OCS direntry output definitions
+#. condensed mode shading
+#. HTTP and parsing error text
 #: src/ui_htmlview.h:99
 #, c-format
 msgid ""
@@ -1636,24 +1641,20 @@ msgstr ""
 "이 피드는 연속적이지 않습니다. 더 이상 사용할 수 없습니다. Liferea는 더이상 "
 "그것을 새로 고치지 않지만, 캐시된 머릿글은 읽을 수 있습니다."
 
-#: src/ui_itemlist.c:278
-msgid "Date"
-msgstr "날짜"
-
-#: src/ui_itemlist.c:289
+#: src/ui_itemlist.c:297
 msgid "Headline"
 msgstr "머릿글"
 
-#: src/ui_itemlist.c:478 src/ui_itemlist.c:487 src/ui_itemlist.c:538
+#: src/ui_itemlist.c:486 src/ui_itemlist.c:495 src/ui_itemlist.c:546
 msgid "No item has been selected"
 msgstr "아이템이 선택되지 않았습니다"
 
-#: src/ui_itemlist.c:521 src/ui_itemlist.c:541
+#: src/ui_itemlist.c:529 src/ui_itemlist.c:549
 msgid "You must select a feed to delete its items!"
 msgstr "아이템을 지울 피드를 선택해야 합니다!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:608
+#: src/ui_itemlist.c:616
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다 "
 
@@ -1916,11 +1917,11 @@ msgid "URL"
 msgstr "URL"
 
 #: src/ui_tray.c:93
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
 msgstr[0] "%d개의 새로운 아이템!"
-msgstr[1] "%d개의 새로운 아이템!"
+msgstr[1] "%d개의 새로운 아이템들!"
 
 #: src/ui_tray.c:106
 msgid "No new items."
@@ -1941,7 +1942,7 @@ msgstr "에러: 파일 %s을(를) 열 수 없습니다"
 msgid "Error: There is no file \"%s\""
 msgstr "에러: \"%s\" 파일이 없습니다!"
 
-#: src/gtkhtml2/gtkhtml2.c:231
+#: src/gtkhtml2/gtkhtml2.c:225
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
@@ -2119,7 +2120,6 @@ msgstr ""
 #~ "도움말은 지울 수 없습니다! 설정 고침에서 도움말을 꺼주세요.그리고 Liferea"
 #~ "를 재시작하면 help 폴더를 지울 수 있습니다."
 
-#, fuzzy
 #~ msgid "You cannot modify help feeds."
 #~ msgstr "도움말 피드는 지울 수 없습니다"
 
@@ -2161,7 +2161,6 @@ msgstr ""
 #~ msgid "window1"
 #~ msgstr "윈도우1"
 
-#, fuzzy
 #~ msgid ""
 #~ "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 #~ "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -2187,7 +2186,6 @@ msgstr ""
 #~ "Tomislav Markovski <tome@set.com.mk>\n"
 #~ "Dario Conigliaro <djdas@djdas.no-ip.org>"
 
-#, fuzzy
 #~ msgid "_Update all feeds on program startup."
 #~ msgstr "프로그램이 시작될때 모든 피드를 갱신합니다."
 
@@ -2265,7 +2263,6 @@ msgstr ""
 #~ msgid "Could not connect to server %s: %s"
 #~ msgstr "%s에 접속할 수 없습니다. : %s"
 
-#, fuzzy
 #~ msgid "Connection timed out."
 #~ msgstr "연결 중"
 
@@ -2330,7 +2327,6 @@ msgstr ""
 #~ " URL이 잘못되었거나, 피드가 일시적으로 접근 불가능 한 것 같습니다.다시 받"
 #~ "기를 시도하시거나 피드 목록에서 피드를 지워주세요\n"
 
-#, fuzzy
 #~ msgid ""
 #~ "The newly created feed's type could not be detected! Please check if the "
 #~ "source really points to a resource provided in one of the supported "
