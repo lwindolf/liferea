@@ -96,6 +96,9 @@ GHashTable	*feedHandler = NULL;
    and searching functionality */
 feedPtr		allItems = NULL;
 
+/* prototypes */
+static gboolean feed_save_timeout(gpointer user_data);
+
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
 /* ------------------------------------------------------------ */
@@ -164,6 +167,7 @@ void feed_init(void) {
 	feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());
 	
 	update_thread_init();	/* start thread for update request processing */
+	g_timeout_add(5*60*1000, feed_save_timeout, NULL);
 
 	initFolders();
 }
@@ -276,6 +280,13 @@ void feed_save(feedPtr fp) {
 	}
 }
 
+static gboolean feed_save_timeout(gpointer user_data) {
+
+	debug0(DEBUG_CACHE, "Saving all feed caches (five minutes have expired).");
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_save);
+	return TRUE;
+}
+
 /* function which is called to load a feed's cache file */
 gboolean feed_load_from_cache(feedPtr fp) {
 	xmlDocPtr 	doc;
@@ -288,7 +299,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	g_assert(NULL != fp->id);
 	
 	filename = getCacheFileName(fp->id, NULL);
-	debug1(DEBUG_CACHE, "loading cache file \"%s\"\n", filename);
+	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		g_warning(_("Error while reading cache file\"%s\" ! Cache file could not be loaded!"), filename);
