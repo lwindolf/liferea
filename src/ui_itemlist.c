@@ -611,8 +611,9 @@ void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTree
 
 /* menu callbacks */					
 void on_toggle_item_flag(void) {
-	itemPtr ip = ui_itemlist_get_selected();
-	if(ip)
+	itemPtr		ip;
+	
+	if(NULL != (ip = ui_itemlist_get_selected()))
 		item_set_mark(ip, !item_get_mark(ip));	
 }
 
@@ -620,17 +621,16 @@ void on_toggle_item_flag(void) {
 void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
 
-	ip = ui_itemlist_get_selected();
-	if(ip != NULL)
+	if(NULL != (ip = ui_itemlist_get_selected()))
 		ui_htmlview_launch_URL((gchar *)item_get_source(ip), TRUE);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
 
 void on_toggle_unread_status(void) {
-
-	itemPtr ip = ui_itemlist_get_selected();
-	if(ip) {
+	itemPtr		ip;
+	
+	if(NULL != (ip = ui_itemlist_get_selected())) {
 		if(item_get_read_status(ip)) 
 			item_set_unread(ip);
 		else
@@ -640,14 +640,13 @@ void on_toggle_unread_status(void) {
 }
 
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	feedPtr fp;
+	feedPtr		fp;
 	
 	if(displayed_node && IS_FEED(displayed_node->type)) {
 		fp = (feedPtr)displayed_node;
 		ui_itemlist_clear();
 		feed_clear_item_list(fp);	/* delete items */
 		ui_feedlist_update();
-		fp->needsCacheSave = TRUE;
 	} else {
 		ui_show_error_box(_("You must select a feed to delete its items!"));
 	}
@@ -775,6 +774,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 					item_set_mark(ip, !item_get_mark(ip));				
 				else
 					(item_get_read_status(ip))?item_set_unread(ip):item_set_read(ip);
+				ui_feedlist_update();
 			}
 			return TRUE;
 			break;

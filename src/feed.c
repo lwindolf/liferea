@@ -62,8 +62,8 @@ struct feed_type {
 };
 
 /* prototypes */
-static gboolean feed_save_timeout(gpointer user_data);
 static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode);
+
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
 /* ------------------------------------------------------------ */
@@ -193,8 +193,6 @@ void feed_init(void) {
 	feedhandlers = g_slist_append(feedhandlers, initOPMLFeedHandler());
 	/*feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());*/
 	
-	ui_timeout_add(5*60*1000, feed_save_timeout, NULL);
-
 	initFolders();
 }
 
@@ -233,13 +231,9 @@ void feed_save(feedPtr fp) {
 	gint		saveMaxCount;
 			
 	debug_enter("feed_save");
-	
-	if (fp->needsCacheSave == FALSE) {
-		debug1(DEBUG_CACHE, "feed does not need to be saved: %s", fp->title);
-		return;
-	}
 
 	debug1(DEBUG_CACHE, "saving feed: %s", fp->title);	
+	g_assert(0 != fp->loaded);
 
 	saveMaxCount = fp->cacheLimit;
 	if (saveMaxCount == CACHE_DEFAULT)
@@ -340,18 +334,7 @@ void feed_save(feedPtr fp) {
 	} else {
 		g_warning("could not create XML document!");
 	}
-	
-	fp->needsCacheSave = FALSE;
 	debug_exit("feed_save");
-}
-
-static gboolean feed_save_timeout(gpointer user_data) {
-
-	debug0(DEBUG_CACHE, "Saving all feed caches (five minutes have expired).");
-	ui_lock();
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_save);
-	ui_unlock();
-	return TRUE;
 }
 
 /* Function which is called to load a feed's into memory. This function
@@ -379,7 +362,6 @@ g_print("feed_load for %s\n", feed_get_source(fp));
 	if((!g_file_get_contents(filename, &data, &length, NULL)) || (*data == 0)) {
 		g_warning(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
-		fp->needsCacheSave = TRUE;
 		g_free(filename);
 		return FALSE;
 	}
@@ -801,9 +783,6 @@ void feed_process_update_result(struct request *request) {
 				feed_copy(old_fp, new_fp);
 				ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(old_fp));
 			}
-
-			/* now fp contains the actual feed infos */
-			old_fp->needsCacheSave = TRUE;
 
 			if((feedPtr)ui_feedlist_get_selected() == old_fp) {
 				ui_itemlist_load((nodePtr)old_fp, NULL);

@@ -207,8 +207,7 @@ void ui_feed_update(feedPtr fp) {
 				    FS_LABEL, label,
 				    FS_UNREAD, count,
 				    FS_ICON, ui_feed_select_icon(fp),
-				    -1);
-	
+				    -1);	
 	g_free(label);
 }
 
@@ -563,8 +562,6 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	debug_enter("ui_feedlist_new_subscription");	
 	
 	fp = feed_new();
-	fp->needsCacheSave = TRUE;
-
 	tmp = conf_new_id();
 	feed_set_id(fp, tmp);
 	g_free(tmp);
