@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-14 17:33+0200\n"
+"POT-Creation-Date: 2004-08-16 22:49+0200\n"
 "PO-Revision-Date: 2004-07-18 20:03+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -15,29 +15,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common.c:267
+#: src/common.c:275
 msgid "[Parser error output was truncated!]"
 msgstr "[해석기 에러 출력이 생략되었습니다!]"
 
-#: src/common.c:348 src/common.c:407
+#: src/common.c:356 src/common.c:415
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "내부 에러! 시간 변환 실패! mktime 실패\n"
 
-#: src/common.c:351
+#: src/common.c:359
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "잘못된 ISO8601 날짜 형식. <dc:date> 정보를 무시합니다\n"
 
-#: src/common.c:410
+#: src/common.c:418
 #, fuzzy
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "잘못된 RFC822 날짜 형식. <pubDate> 정보를 무시합니다\n"
 
-#: src/common.c:424 src/common.c:431 src/common.c:437 src/common.c:444
+#: src/common.c:432 src/common.c:439 src/common.c:445 src/common.c:452
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "캐시 디렉토리 %s을(를) 생설할 수 없습니다!"
 
-#: src/common.c:514
+#: src/common.c:522
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -46,32 +46,32 @@ msgstr ""
 "자가 버려집니다"
 
 #. _() for HELP1URL to allow localised help feeds
-#: src/conf.c:45
+#: src/conf.c:48
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/conf.c:46
+#: src/conf.c:49
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/conf.c:363
+#: src/conf.c:391
 msgid "Liferea Help"
 msgstr "Liferea 도움말"
 
-#: src/conf.c:373
+#: src/conf.c:401
 msgid "Online Help Feed"
 msgstr "온라인 도움말 피드"
 
-#: src/conf.c:388
+#: src/conf.c:416
 msgid "Liferea SF News"
 msgstr "Liferea 소스포지 뉴스"
 
-#: src/conf.c:515
+#: src/conf.c:543
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "%s을(를) %s(으)로 변환하는 중 에러발생\n"
 
-#: src/conf.c:543
+#: src/conf.c:571
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 네임스페이스 %s이(가) 아직 설정되지 않았습니다. 활성화중...\n"
@@ -131,7 +131,7 @@ msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>피드를 읽는 도중 XML 에러가 발생!. \"%s\" 피드를 로드할 수 없습니다.</p>"
 
-#: src/feed.c:143 src/feed.c:397
+#: src/feed.c:143 src/feed.c:398
 msgid "<p>Empty document!</p>"
 msgstr "<p>빈 도큐먼트!</p>"
 
@@ -139,24 +139,24 @@ msgstr "<p>빈 도큐먼트!</p>"
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>잘못된 XML!</p>"
 
-#: src/feed.c:201
+#: src/feed.c:202
 msgid "There were errors while parsing a feed"
 msgstr "이 피드를 해석하던 중 에러가 발생했습니다."
 
-#: src/feed.c:202
+#: src/feed.c:203
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
 msgstr ""
 
-#: src/feed.c:376 src/feed.c:377
+#: src/feed.c:377 src/feed.c:378
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "캐서파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 읽을 수 없습니다."
 
-#: src/feed.c:389
+#: src/feed.c:390
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -165,7 +165,7 @@ msgstr ""
 "<p> 피드 캐서파일을(를) 해석하던 중 XML 에러가 발생. 캐시파일 \"%s\"을(를) 읽"
 "을 수 없습니다.</p>"
 
-#: src/feed.c:408
+#: src/feed.c:409
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" 는 올바른 캐시 파일이 아닙니다. 읽을 수 없습니다!</p>"
@@ -175,48 +175,48 @@ msgstr "<p>\"%s\" 는 올바른 캐시 파일이 아닙니다. 읽을 수 없습
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "캐시파일 \"%s\"을(를) 해석하던 중 에러가 발생했습니다!"
 
-#: src/feed.c:659
+#: src/feed.c:638
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\"은(는) 새로운 아이템이 없습니다."
 
-#: src/feed.c:661
+#: src/feed.c:640
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\"은(는) %d개의 새로운 아이템이 있습니다."
 
-#: src/feed.c:729
+#: src/feed.c:706
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "피드 \"%s\"는 이미 새로 고쳐졌습니다!"
 
-#: src/feed.c:734
+#: src/feed.c:711
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "피드가 연속적이지 않습니다. Liferea는 더이상 그 피드를 새로 고칠 수 없습니다."
 
-#: src/feed.c:738
+#: src/feed.c:715
 #, c-format
 msgid "Updating \"%s\""
 msgstr "%s을(를) 새로고치는 중"
 
-#: src/feed.c:787
+#: src/feed.c:770
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "\"%s\"가 연속적이지 않습니다. Liferea는 그것을 더이상 새로 고칠 수 없습니다!"
 
-#: src/feed.c:789
+#: src/feed.c:772
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
 
-#: src/feed.c:796
+#: src/feed.c:779
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
 
-#: src/feed.c:807
+#: src/feed.c:790
 #, fuzzy
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -226,108 +226,108 @@ msgstr ""
 "이 피드의 종류를 결정할 수 없습니다. 소스가 지원되는 형식의 자원을 정확히 가"
 "리키는지 확인해 주세요 "
 
-#: src/feed.c:833
+#: src/feed.c:816
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\"이(가) 갱신되었습니다..."
 
-#: src/feed.c:843
+#: src/feed.c:826
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
 
-#: src/feed.c:996
+#: src/feed.c:986
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
 
-#: src/feed.c:998
+#: src/feed.c:988
 msgid "Payment Required"
 msgstr "(돈)지불이 필요합니다"
 
-#: src/feed.c:999
+#: src/feed.c:989
 msgid "Access Forbidden"
 msgstr "접근이 금지되었습니다"
 
-#: src/feed.c:1000
+#: src/feed.c:990
 msgid "Resource Not Found"
 msgstr "자원을 찾을 수 없습니다"
 
-#: src/feed.c:1001
+#: src/feed.c:991
 msgid "Method Not Allowed"
 msgstr "동작이 허용되지 않습니다"
 
-#: src/feed.c:1002
+#: src/feed.c:992
 msgid "Not Acceptable"
 msgstr "받아들일 수 없습니다"
 
-#: src/feed.c:1003
+#: src/feed.c:993
 msgid "Proxy Authentication Required"
 msgstr "프록시 인증이 필요합니다"
 
-#: src/feed.c:1004
+#: src/feed.c:994
 msgid "Request Time-Out"
 msgstr "요청 시간이 초과되었습니다"
 
-#: src/feed.c:1005
+#: src/feed.c:995
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "사라짐.자원이 더 이상 존재하지 않습니다. 해지 해 주세요."
 
-#: src/feed.c:1010
+#: src/feed.c:1000
 msgid "URL is invalid"
 msgstr "URL이 잘못 되었습니다"
 
-#: src/feed.c:1013
+#: src/feed.c:1003
 msgid "Error connecting to remote host"
 msgstr "원격 호스트로 접속하던 중 에러"
 
-#: src/feed.c:1014
+#: src/feed.c:1004
 msgid "Hostname could not be found"
 msgstr "호스트 이름을 찾을 수 없습니다"
 
-#: src/feed.c:1015
+#: src/feed.c:1005
 msgid "Network connection was refused by the remote host"
 msgstr "원격 호스트로 부터 접속이 거부되었습니다"
 
-#: src/feed.c:1016
+#: src/feed.c:1006
 msgid "Remote host did not finish sending data"
 msgstr "원격 호스트가 데이터를 보내다 말았습니다."
 
 #. Transfer errors
-#: src/feed.c:1018
+#: src/feed.c:1008
 msgid "Too many HTTP redirects were encountered"
 msgstr "너무 많은 HTTP 리다이렉션입니다! 포기할래요 엉엉."
 
-#: src/feed.c:1021
+#: src/feed.c:1011
 msgid "Remote host sent an invalid response"
 msgstr "웹서버가 잘못된 리다이렉트를 보내왔습니다"
 
-#: src/feed.c:1028
+#: src/feed.c:1018
 msgid "Authentication failed"
 msgstr "인증이 실패하였습니다!"
 
-#: src/feed.c:1030
+#: src/feed.c:1020
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "웹서버의 인증 방법을 지원할 수 없습니다"
 
-#: src/feed.c:1036
+#: src/feed.c:1026
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "피드 사용 불가: 서버가 지원되지 않는 리다이렉션을 요청받았습니다."
 
-#: src/feed.c:1037
+#: src/feed.c:1027
 msgid "Client Error"
 msgstr "클라이언트 에러"
 
-#: src/feed.c:1038
+#: src/feed.c:1028
 msgid "Server Error"
 msgstr "서버 에러"
 
-#: src/feed.c:1039
+#: src/feed.c:1029
 msgid "(unknown networking error happened)"
 msgstr "(알 수 없는 네트워크 에러가 일어남)"
 
-#: src/feed.c:1061
+#: src/feed.c:1051
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -335,21 +335,21 @@ msgstr ""
 "이 등록피드를 읽던 중 문제가 발생했습니다. URL과 콘솔 출력을 확인하세요"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1208 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:1198 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 msgid "Feed:"
 msgstr "피드:"
 
-#: src/feed.c:1219 src/interface.c:1031 src/interface.c:1433 src/item.c:270
+#: src/feed.c:1209 src/interface.c:1031 src/interface.c:1433 src/item.c:270
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "소스:"
 
-#: src/html.c:160
+#: src/html.c:159
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "피드 링크 자동 찾기가 실패하였습니다. 아무런 피드 링크도 없습니다!"
 
-#: src/htmlview.c:61
+#: src/htmlview.c:66
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -367,7 +367,7 @@ msgstr ""
 "/apps/liferea/brower-module gconf 키를 지워버리세요.\n"
 "\n"
 
-#: src/htmlview.c:73
+#: src/htmlview.c:78
 #, c-format
 msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
@@ -376,15 +376,15 @@ msgstr ""
 "설정된 HTML 위젯 모듈 (%s)을(를) 여는 것을 실패했습니다!\n"
 "%s\n"
 
-#: src/htmlview.c:85
+#: src/htmlview.c:90
 msgid "Htmlview API mismatch!"
 msgstr "Htmlview API 가 맞지 않습니다!"
 
-#: src/htmlview.c:93
+#: src/htmlview.c:98
 msgid "Detected module is not a valid htmlview module!"
 msgstr "검색된 모듈이 올바른 htmlview 모듈이 아닙니다"
 
-#: src/htmlview.c:115
+#: src/htmlview.c:120
 #, c-format
 msgid "Cannot load HTML widget module (%s)!"
 msgstr "HTML 위젯 모듈 (%s)를 불러올 수 없습니다!"
@@ -393,26 +393,26 @@ msgstr "HTML 위젯 모듈 (%s)를 불러올 수 없습니다!"
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
-#: src/htmlview.c:121
+#: src/htmlview.c:126
 #, c-format
 msgid "Available browser modules (%s):\n"
 msgstr "사용 가능한 브라우져 모듈 (%s):\n"
 
-#: src/htmlview.c:156
+#: src/htmlview.c:161
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "브라우져 모듈(%s)을(를) 불러옵니다! \n"
 
-#: src/htmlview.c:159
+#: src/htmlview.c:164
 msgid "No browser module configured!\n"
 msgstr "설정된 브라우져 모듈이 없습니다!\n"
 
-#: src/htmlview.c:167
+#: src/htmlview.c:172
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "브라우져 모듈 %s (%s)을(를) 불러오는것을 시도합니다.\n"
 
-#: src/htmlview.c:177
+#: src/htmlview.c:183
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -421,16 +421,16 @@ msgstr ""
 "해서 디버깅 정보를 보세요."
 
 #. FIXME: bad because this is not only used for item links!
-#: src/htmlview.c:318
+#: src/htmlview.c:324
 msgid "This item does not have a link assigned!"
 msgstr "이 아이템은 어떠한 연결도 할당되지 않았습니다."
 
-#: src/htmlview.c:362 src/htmlview.c:383
+#: src/htmlview.c:368 src/htmlview.c:389
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "브라우져 명령 실패: %s"
 
-#: src/htmlview.c:365 src/htmlview.c:386
+#: src/htmlview.c:371 src/htmlview.c:392
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "%s을(를) 시작함"
@@ -507,7 +507,7 @@ msgstr "선택된 가입을 혹은 모든 선택된 폴더의 가입을 새로 �
 msgid "Update _All"
 msgstr "전부 갱신(_A)"
 
-#: src/interface.c:231 src/ui_mainwindow.c:181
+#: src/interface.c:231 src/ui_mainwindow.c:188
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "즉시 모든 피드를 새로 고칩니다. OCS 디렉토리는 포함하지 않습니다."
 
@@ -564,7 +564,7 @@ msgstr "아이템들(_I)"
 msgid "_Next Unread Item"
 msgstr "다음 안 읽은 아이템(_N)"
 
-#: src/interface.c:309 src/ui_mainwindow.c:179
+#: src/interface.c:309 src/ui_mainwindow.c:186
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1197,7 +1197,6 @@ msgid ""
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1251,57 +1250,67 @@ msgstr "[제목 없음]"
 msgid "Item:"
 msgstr "아이템:"
 
-#: src/main.c:66
+#: src/main.c:67
 msgid "  --version        Prints Liferea's version number"
 msgstr "  --version        Liferea의 버전 정보를 보여줍니다."
 
-#: src/main.c:67
+#: src/main.c:68
 msgid "  --help           Prints this message and exits"
 msgstr "  --help           이 내용을 보여주고 끝냅니다."
 
-#: src/main.c:68
+#: src/main.c:69
 msgid "  --iconify        Starts the program iconified"
 msgstr "  --iconift        프로그램을 아이콘화 한 채 시작합니다"
 
-#: src/main.c:70
+#: src/main.c:71
 msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr "  --debug-cache    캐시 다루기에 대한 디버깅 메시지를 보여줍니다."
 
-#: src/main.c:71
+#: src/main.c:72
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
 msgstr "  --debug-conf     설정 다루기에 대한 디버깅 메시지를 보여줍니다."
 
-#: src/main.c:72
+#: src/main.c:73
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   피드를 업데이트하는 것에 대한 디버깅 메시지를 보여줍니다."
 
-#: src/main.c:73
+#: src/main.c:74
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  모든 파싱 함수에 대한 디버깅 메시지를 보여줍니다."
 
-#: src/main.c:74
+#: src/main.c:75
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr "  --debug-gui      GUI 함수에 대한 디버깅 메시지를 보여줍니다."
 
-#: src/main.c:75
+#: src/main.c:76
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    함수를 들어가고 나오는것에 대한 디버깅 메시지를 보여줍니"
 "다."
 
-#: src/main.c:76
+#: src/main.c:77
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr "  --debug-all      모든 종류의 디버깅 메시지를 뿌립니다."
 
-#: src/main.c:77
+#: src/main.c:78
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  자세한 디버깅 메시지를 보여줍니다."
 
-#: src/main.c:233
+#: src/main.c:225
+#, c-format
+msgid "The --session argument must be given a parameter.\n"
+msgstr ""
+
+#: src/main.c:228
+#, c-format
+msgid "Liferea encountered an unknown argument: %s\n"
+msgstr ""
+
+#: src/main.c:247
 msgid ""
 "Another copy of Liferea was found to be running. Please us it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
@@ -1457,7 +1466,7 @@ msgstr "<%s:%s> 를 위한 네임스페이스 핸들러가 없습니다!\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>RDF 헤더를 찾을 수 없습니다!</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:240 src/pie_feed.c:261 src/rss_channel.c:316
+#: src/ocs_dir.c:501 src/opml.c:240 src/pie_feed.c:262 src/rss_channel.c:316
 msgid "There were errors while parsing this feed!"
 msgstr "이 피드를 해석하던 중 에러가 발생했습니다."
 
@@ -1465,7 +1474,7 @@ msgstr "이 피드를 해석하던 중 에러가 발생했습니다."
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>OPML 헤더를 찾을 수 없습니다.!</p>"
 
-#: src/pie_feed.c:140
+#: src/pie_feed.c:141
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Atom/Echo/PIE 헤더를 찾을 수 없습니다.!</p>"
 
@@ -1601,23 +1610,23 @@ msgstr "내부 에러! 트리뷰의 선택부분을 찾을 수 없습니다!\n"
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다 "
 
-#: src/ui_mainwindow.c:178
+#: src/ui_mainwindow.c:185
 msgid "New Feed"
 msgstr "새 피드"
 
-#: src/ui_mainwindow.c:178
+#: src/ui_mainwindow.c:185
 msgid "Add a new subscription."
 msgstr "새 구독 더하기"
 
-#: src/ui_mainwindow.c:179
+#: src/ui_mainwindow.c:186
 msgid "Next Unread"
 msgstr "다음 안 읽은 것"
 
-#: src/ui_mainwindow.c:180
+#: src/ui_mainwindow.c:187
 msgid "Mark As Read"
 msgstr "읽은 것으로 표시"
 
-#: src/ui_mainwindow.c:180
+#: src/ui_mainwindow.c:187
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1625,27 +1634,27 @@ msgstr ""
 "모든 선택된 구독 혹은 선택된 폴더의 구독의 아이템들을 모두 읽은 것으로 표시합"
 "니다."
 
-#: src/ui_mainwindow.c:181
+#: src/ui_mainwindow.c:188
 msgid "Update All"
 msgstr "전부 새로 고침"
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:189
 msgid "Search"
 msgstr "찾기"
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:189
 msgid "Search all feeds."
 msgstr "모든 피드에서 찾기"
 
-#: src/ui_mainwindow.c:183
+#: src/ui_mainwindow.c:190
 msgid "Preferences"
 msgstr "기본 설정"
 
-#: src/ui_mainwindow.c:183
+#: src/ui_mainwindow.c:190
 msgid "Edit preferences."
 msgstr "설정 고치기"
 
-#: src/ui_mainwindow.c:198
+#: src/ui_mainwindow.c:205
 #, fuzzy
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
@@ -1689,11 +1698,11 @@ msgstr ""
 "p></li></ul><p>Liferea에 대해 더 자세히 알고 싶으시면 도움말 피드에서 제공되"
 "는 문서나 프로젝트 홈페이지의 FAQ를 꼭 읽어보세요.</p>"
 
-#: src/ui_mainwindow.c:283
+#: src/ui_mainwindow.c:290
 msgid "Liferea is now online"
 msgstr "Liferea가 온라인으로 동작합니다"
 
-#: src/ui_mainwindow.c:286
+#: src/ui_mainwindow.c:293
 msgid "Liferea is now offline"
 msgstr "Liferea는 현재 오프라인입니다."
 

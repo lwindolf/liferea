@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.5.3-test\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 22:15+0900\n"
+"POT-Creation-Date: 2004-08-16 22:49+0200\n"
 "PO-Revision-Date: 2004-08-15 22:15+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -16,28 +16,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/common.c:267
+#: src/common.c:275
 msgid "[Parser error output was truncated!]"
 msgstr "[パーサのエラー出力を切りつめました]"
 
-#: src/common.c:348 src/common.c:407
+#: src/common.c:356 src/common.c:415
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "[内部エラー] 時刻変換 (mktime) に失敗しました！\n"
 
-#: src/common.c:351
+#: src/common.c:359
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "ISO8601 の日付の書式が間違っています！ (<dc:date> 情報を無視します)\n"
 
-#: src/common.c:410
+#: src/common.c:418
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "RFC822 の日付の書式が間違っています！ (日付の情報を無視します)\n"
 
-#: src/common.c:424 src/common.c:431 src/common.c:437 src/common.c:444
+#: src/common.c:432 src/common.c:439 src/common.c:445 src/common.c:452
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "キャッシュ・フォルダ %s を生成できません！"
 
-#: src/common.c:514
+#: src/common.c:522
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -46,32 +46,32 @@ msgstr ""
 "いくつかの文字を除きます！"
 
 #. _() for HELP1URL to allow localised help feeds
-#: src/conf.c:45
+#: src/conf.c:48
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/conf.c:46
+#: src/conf.c:49
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/conf.c:377
+#: src/conf.c:391
 msgid "Liferea Help"
 msgstr "Liferea のヘルプ"
 
-#: src/conf.c:387
+#: src/conf.c:401
 msgid "Online Help Feed"
 msgstr "オンライン・ヘルプの配信元"
 
-#: src/conf.c:402
+#: src/conf.c:416
 msgid "Liferea SF News"
 msgstr "Liferea の SF ニュース"
 
-#: src/conf.c:529
+#: src/conf.c:543
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "%s から %s へ名前を変更する際にエラー\n"
 
-#: src/conf.c:557
+#: src/conf.c:571
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 名前空間 %s が未だ設定されいません！ 有効にします...\n"
@@ -133,7 +133,7 @@ msgstr ""
 "<p>配信元を読み込む際に XML エラーが発生しました！ (配信元 \"%s\" を読み込め"
 "ませんでした)</p>"
 
-#: src/feed.c:143 src/feed.c:397
+#: src/feed.c:143 src/feed.c:398
 msgid "<p>Empty document!</p>"
 msgstr "<p>ドキュメントが空です！</p>"
 
@@ -141,11 +141,11 @@ msgstr "<p>ドキュメントが空です！</p>"
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML が間違っています！</p>"
 
-#: src/feed.c:201
+#: src/feed.c:202
 msgid "There were errors while parsing a feed"
 msgstr "配信元を解析する際に複数のエラーが発生しました"
 
-#: src/feed.c:202
+#: src/feed.c:203
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -156,14 +156,14 @@ msgstr ""
 "\"http://liferea.sourceforge.net/index.php#supported_formats\">サポートされて"
 "いるか</a>確認して下さい。</p>"
 
-#: src/feed.c:376 src/feed.c:377
+#: src/feed.c:377 src/feed.c:378
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイルを読み込めませんでした)"
 
-#: src/feed.c:389
+#: src/feed.c:390
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -172,7 +172,7 @@ msgstr ""
 "<p>キャッシュ・ファイルを読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイル \"%s\" を読み込めませんでした)</p>"
 
-#: src/feed.c:408
+#: src/feed.c:409
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
@@ -184,46 +184,46 @@ msgstr ""
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "キャッシュ・ファイル \"%s\" を解析する際にエラーが発生しました"
 
-#: src/feed.c:639
+#: src/feed.c:638
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" には新しいトピックはありません"
 
-#: src/feed.c:641
+#: src/feed.c:640
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" には %d 個の新しいトピックがあります"
 
-#: src/feed.c:709
+#: src/feed.c:706
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "この配信元 \"%s\" は既に更新済みです！"
 
-#: src/feed.c:714
+#: src/feed.c:711
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "配信元は停止しています。今後 Liferea が更新することはありません！"
 
-#: src/feed.c:718
+#: src/feed.c:715
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" の更新中"
 
-#: src/feed.c:767
+#: src/feed.c:770
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" は停止しています。今後 Liferea が更新することはありません！"
 
-#: src/feed.c:769
+#: src/feed.c:772
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" には最後の更新から変更はありません"
 
-#: src/feed.c:776
+#: src/feed.c:779
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" の URL が変更されていたので更新しました"
 
-#: src/feed.c:787
+#: src/feed.c:790
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -233,17 +233,17 @@ msgstr ""
 "ポートされた syndication フォーマットの一つで提供されているリソースを指してい"
 "るかどうか確認して下さい！</p>"
 
-#: src/feed.c:813
+#: src/feed.c:816
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" の更新が完了しました..."
 
-#: src/feed.c:823
+#: src/feed.c:826
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" は利用できません"
 
-#: src/feed.c:976
+#: src/feed.c:986
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -251,94 +251,94 @@ msgstr ""
 "この配信元をダウンロードする権限がありません。ダイアログ \"購読先のプロパティ"
 "\" にあるユーザ名とパスワードを更新してみて下さい。"
 
-#: src/feed.c:978
+#: src/feed.c:988
 msgid "Payment Required"
 msgstr "有料コンテンツの認証に失敗しました"
 
-#: src/feed.c:979
+#: src/feed.c:989
 msgid "Access Forbidden"
 msgstr "アクセス権限がありません"
 
-#: src/feed.c:980
+#: src/feed.c:990
 msgid "Resource Not Found"
 msgstr "リソースがありません"
 
-#: src/feed.c:981
+#: src/feed.c:991
 msgid "Method Not Allowed"
 msgstr "許可されていないメソッドです"
 
-#: src/feed.c:982
+#: src/feed.c:992
 msgid "Not Acceptable"
 msgstr "受け付けられないヘッダ内容です"
 
-#: src/feed.c:983
+#: src/feed.c:993
 msgid "Proxy Authentication Required"
 msgstr "プロキシの認証に失敗しました"
 
-#: src/feed.c:984
+#: src/feed.c:994
 msgid "Request Time-Out"
 msgstr "タイムアウトになりました"
 
-#: src/feed.c:985
+#: src/feed.c:995
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了ですが、この配信元はもう存在しません。購読を停止して下さい！"
 
-#: src/feed.c:990
+#: src/feed.c:1000
 msgid "URL is invalid"
 msgstr "URL が間違っています"
 
-#: src/feed.c:993
+#: src/feed.c:1003
 msgid "Error connecting to remote host"
 msgstr "リモート・ホストへ接続する際にエラー"
 
-#: src/feed.c:994
+#: src/feed.c:1004
 msgid "Hostname could not be found"
 msgstr "ホスト名を見つけられませんでした"
 
-#: src/feed.c:995
+#: src/feed.c:1005
 msgid "Network connection was refused by the remote host"
 msgstr "リモート・ホストがネットワーク接続を拒否しました"
 
-#: src/feed.c:996
+#: src/feed.c:1006
 msgid "Remote host did not finish sending data"
 msgstr "リモート・ホストからのデータ送信が完了しませんでした"
 
 #. Transfer errors
-#: src/feed.c:998
+#: src/feed.c:1008
 msgid "Too many HTTP redirects were encountered"
 msgstr "非常に多くの HTTP リダイレクトに遭遇しました"
 
-#: src/feed.c:1001
+#: src/feed.c:1011
 msgid "Remote host sent an invalid response"
 msgstr "リモート・ホストがおかしな応答を返しました"
 
-#: src/feed.c:1008
+#: src/feed.c:1018
 msgid "Authentication failed"
 msgstr "認証に失敗しました"
 
-#: src/feed.c:1010
+#: src/feed.c:1020
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "ウェブサーバの認証方法が Liferea の方法と互換性がありません"
 
-#: src/feed.c:1016
+#: src/feed.c:1026
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "配信元は利用できません: サーバがサポートしていないリダイレクションを要求しま"
 "した！"
 
-#: src/feed.c:1017
+#: src/feed.c:1027
 msgid "Client Error"
 msgstr "クライアントのエラー"
 
-#: src/feed.c:1018
+#: src/feed.c:1028
 msgid "Server Error"
 msgstr "サーバのエラー"
 
-#: src/feed.c:1019
+#: src/feed.c:1029
 msgid "(unknown networking error happened)"
 msgstr "(不明なネットワーク・エラーが発生しました)"
 
-#: src/feed.c:1041
+#: src/feed.c:1051
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -347,17 +347,17 @@ msgstr ""
 "確認して下さい。"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1188 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:1198 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 msgid "Feed:"
 msgstr "配信元:"
 
-#: src/feed.c:1199 src/interface.c:1031 src/interface.c:1433 src/item.c:270
+#: src/feed.c:1209 src/interface.c:1031 src/interface.c:1433 src/item.c:270
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "ソース:"
 
-#: src/html.c:160
+#: src/html.c:159
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "配信元リンクの自動検出に失敗しました。配信元リンクが見つかりません！"
 
@@ -517,7 +517,7 @@ msgstr "選択した購読または選択したフォルダにある全ての購
 msgid "Update _All"
 msgstr "全て更新(_A)"
 
-#: src/interface.c:231 src/ui_mainwindow.c:181
+#: src/interface.c:231 src/ui_mainwindow.c:188
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "全ての配信元を更新します (OCS ディレクトリを除く)"
 
@@ -573,7 +573,7 @@ msgstr "トピック(_I)"
 msgid "_Next Unread Item"
 msgstr "次の未読のトピック(_N)"
 
-#: src/interface.c:309 src/ui_mainwindow.c:179
+#: src/interface.c:309 src/ui_mainwindow.c:186
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1264,56 +1264,66 @@ msgstr "[タイトルなし]"
 msgid "Item:"
 msgstr "トピック:"
 
-#: src/main.c:66
+#: src/main.c:67
 msgid "  --version        Prints Liferea's version number"
 msgstr "  --version        Liferea のバージョンを表示する"
 
-#: src/main.c:67
+#: src/main.c:68
 msgid "  --help           Prints this message and exits"
 msgstr "  --help           このメッセージを表示して終了する"
 
-#: src/main.c:68
+#: src/main.c:69
 msgid "  --iconify        Starts the program iconified"
 msgstr "  --iconify        プログラムをアイコン化して起動する"
 
-#: src/main.c:70
+#: src/main.c:71
 msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr "  --debug-cache    キャッシュ操作を行うデバッグ・メッセージを表示する"
 
-#: src/main.c:71
+#: src/main.c:72
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
 msgstr "  --debug-conf     設定を操作する際のデバッグ・メッセージを表示する"
 
-#: src/main.c:72
+#: src/main.c:73
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr "  --debug-update   配信元を更新する際のデバッグ・メッセージを表示する"
 
-#: src/main.c:73
+#: src/main.c:74
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  解析関連の全ての関数のデバッグ・メッセージを表示する"
 
-#: src/main.c:74
+#: src/main.c:75
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      GUI 関連の全ての関数のデバッグ・メッセージを表示する"
 
-#: src/main.c:75
+#: src/main.c:76
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr "  --debug-trace    関数の入り口/出口のデバッグ・メッセージを表示する"
 
-#: src/main.c:76
+#: src/main.c:77
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr "  --debug-all      全ての種類のデバッグ・メッセージを表示する"
 
-#: src/main.c:77
+#: src/main.c:78
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  デバッグ・メッセージを詳細に表示する"
 
-#: src/main.c:233
+#: src/main.c:225
+#, c-format
+msgid "The --session argument must be given a parameter.\n"
+msgstr ""
+
+#: src/main.c:228
+#, c-format
+msgid "Liferea encountered an unknown argument: %s\n"
+msgstr ""
+
+#: src/main.c:247
 msgid ""
 "Another copy of Liferea was found to be running. Please us it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
@@ -1471,7 +1481,7 @@ msgstr "<%s:%s> に対する名前空間ハンドラではありません！\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>RDF ヘッダが見つかりませんでした！</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:240 src/pie_feed.c:261 src/rss_channel.c:316
+#: src/ocs_dir.c:501 src/opml.c:240 src/pie_feed.c:262 src/rss_channel.c:316
 msgid "There were errors while parsing this feed!"
 msgstr "この配信元を解析する際にエラーが発生しました！"
 
@@ -1479,7 +1489,7 @@ msgstr "この配信元を解析する際にエラーが発生しました！"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>OPML ヘッダが見つかりませんでした！！</p>"
 
-#: src/pie_feed.c:140
+#: src/pie_feed.c:141
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>OPML ヘッダが見つかりませんでした！！</p>"
 
@@ -1614,23 +1624,23 @@ msgstr "[内部エラー] 配信元ツリー・ビューの選択範囲を取得
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
-#: src/ui_mainwindow.c:178
+#: src/ui_mainwindow.c:185
 msgid "New Feed"
 msgstr "新しい配信元"
 
-#: src/ui_mainwindow.c:178
+#: src/ui_mainwindow.c:185
 msgid "Add a new subscription."
 msgstr "新しい購読を追加します"
 
-#: src/ui_mainwindow.c:179
+#: src/ui_mainwindow.c:186
 msgid "Next Unread"
 msgstr "次の未読のトピック"
 
-#: src/ui_mainwindow.c:180
+#: src/ui_mainwindow.c:187
 msgid "Mark As Read"
 msgstr "全て既読"
 
-#: src/ui_mainwindow.c:180
+#: src/ui_mainwindow.c:187
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1638,27 +1648,27 @@ msgstr ""
 "現在選択している購読の全てのトピック、または選択したフォルダの全てのトピック"
 "に既読マークを付与します"
 
-#: src/ui_mainwindow.c:181
+#: src/ui_mainwindow.c:188
 msgid "Update All"
 msgstr "全て更新"
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:189
 msgid "Search"
 msgstr "検索"
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:189
 msgid "Search all feeds."
 msgstr "全ての配信元から検索します"
 
-#: src/ui_mainwindow.c:183
+#: src/ui_mainwindow.c:190
 msgid "Preferences"
 msgstr "設定"
 
-#: src/ui_mainwindow.c:183
+#: src/ui_mainwindow.c:190
 msgid "Edit preferences."
 msgstr "設定を編集します"
 
-#: src/ui_mainwindow.c:198
+#: src/ui_mainwindow.c:205
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1710,11 +1720,11 @@ msgstr ""
 "ジェクトのホームページ</a>にある <a href=\"http://liferea.sourceforge.net/"
 "faq.php\">FAQ</a> をご覧下さい。</p>"
 
-#: src/ui_mainwindow.c:283
+#: src/ui_mainwindow.c:290
 msgid "Liferea is now online"
 msgstr "Liferea は現在オンラインです"
 
-#: src/ui_mainwindow.c:286
+#: src/ui_mainwindow.c:293
 msgid "Liferea is now offline"
 msgstr "Liferea は現在オフラインです"
 

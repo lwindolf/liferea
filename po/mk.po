@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-14 17:33+0200\n"
+"POT-Creation-Date: 2004-08-16 22:49+0200\n"
 "PO-Revision-Date: 2004-08-11 22:08+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -19,28 +19,28 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural= n%10==1 && n%100!=11 ? 0 : 1;X-Generator: "
 "KBabel 1.3.1\n"
 
-#: src/common.c:267
+#: src/common.c:275
 msgid "[Parser error output was truncated!]"
 msgstr "[Parser error output was truncated!]"
 
-#: src/common.c:348 src/common.c:407
+#: src/common.c:356 src/common.c:415
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "грешка при конверзија на времето! mktime е неуспешно!\n"
 
-#: src/common.c:351
+#: src/common.c:359
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 
-#: src/common.c:410
+#: src/common.c:418
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
 msgstr "Невалиден RFC822 формат на датумот! Игнорирам податоци <pubDate>!\n"
 
-#: src/common.c:424 src/common.c:431 src/common.c:437 src/common.c:444
+#: src/common.c:432 src/common.c:439 src/common.c:445 src/common.c:452
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "Не може да се креира папката за кеш %s!"
 
-#: src/common.c:514
+#: src/common.c:522
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -49,32 +49,32 @@ msgstr ""
 "characters were dropped!"
 
 #. _() for HELP1URL to allow localised help feeds
-#: src/conf.c:45
+#: src/conf.c:48
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help047.rdf"
 
-#: src/conf.c:46
+#: src/conf.c:49
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/conf.c:363
+#: src/conf.c:391
 msgid "Liferea Help"
 msgstr "Liferea Помош"
 
-#: src/conf.c:373
+#: src/conf.c:401
 msgid "Online Help Feed"
 msgstr "Online помош"
 
-#: src/conf.c:388
+#: src/conf.c:416
 msgid "Liferea SF News"
 msgstr "Liferea SF вести"
 
-#: src/conf.c:515
+#: src/conf.c:543
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Не можам да преименувам %s во %s\n"
 
-#: src/conf.c:543
+#: src/conf.c:571
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS namespace %s not yet configured! Activating...\n"
@@ -130,7 +130,7 @@ msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>XML грешка при читање на вестите! Веста \"%s\" не може да се вчита!</p>"
 
-#: src/feed.c:143 src/feed.c:397
+#: src/feed.c:143 src/feed.c:398
 msgid "<p>Empty document!</p>"
 msgstr "<p> Празен документ!</p>"
 
@@ -138,11 +138,11 @@ msgstr "<p> Празен документ!</p>"
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Невалиден XML!</p>"
 
-#: src/feed.c:201
+#: src/feed.c:202
 msgid "There were errors while parsing a feed"
 msgstr "Се појавивија грешки при парсирање на вестите!"
 
-#: src/feed.c:202
+#: src/feed.c:203
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -152,13 +152,13 @@ msgstr ""
 "\"http://feedvalidator.org\">правилен</a> и дали форматот е <a href=\"http://"
 "liferea.sourceforge.net/index.php#supported_formats\">поддржан</a>.</p>"
 
-#: src/feed.c:376 src/feed.c:377
+#: src/feed.c:377 src/feed.c:378
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Грешка при читање на кеш датотеката \"%s\" ! Кеш датотеката не е вчитана!"
 
-#: src/feed.c:389
+#: src/feed.c:390
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -167,7 +167,7 @@ msgstr ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 
-#: src/feed.c:408
+#: src/feed.c:409
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
@@ -177,46 +177,46 @@ msgstr "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "There were errors while parsing cache file \"%s\"!"
 
-#: src/feed.c:659
+#: src/feed.c:638
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr "\"%s\" нема нови ставки."
 
-#: src/feed.c:661
+#: src/feed.c:640
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr "\"%s\" има \"%d\" нови ставки."
 
-#: src/feed.c:729
+#: src/feed.c:706
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Вестите \"%s\" веќе се ажурираат!"
 
-#: src/feed.c:734
+#: src/feed.c:711
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "Овие вести се нема повеќе да се ажуриаат!"
 
-#: src/feed.c:738
+#: src/feed.c:715
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Ажурирам \"%s\""
 
-#: src/feed.c:787
+#: src/feed.c:770
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" нема повеќе да се ажурира!"
 
-#: src/feed.c:789
+#: src/feed.c:772
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не е променет од последеното ажурирање."
 
-#: src/feed.c:796
+#: src/feed.c:779
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL адресата на \"%s\" е перманетно променета и ажурирана."
 
-#: src/feed.c:807
+#: src/feed.c:790
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -225,17 +225,17 @@ msgstr ""
 "<p>Не можам да го одредам форматот на вестите. Ве молам проверете дали "
 "адресата покажува кон вести со поддржан формат!</p>"
 
-#: src/feed.c:833
+#: src/feed.c:816
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" ажурирано..."
 
-#: src/feed.c:843
+#: src/feed.c:826
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" е недостапно!"
 
-#: src/feed.c:996
+#: src/feed.c:986
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -243,93 +243,93 @@ msgstr ""
 "Немате дозвола за преземање на овие вести. Ве молам ажурирајте го Вашето "
 "корисничко име и лозинка во прозорецот за својства на веста."
 
-#: src/feed.c:998
+#: src/feed.c:988
 msgid "Payment Required"
 msgstr "Потребна е уплата"
 
-#: src/feed.c:999
+#: src/feed.c:989
 msgid "Access Forbidden"
 msgstr "Забранет пристап"
 
-#: src/feed.c:1000
+#: src/feed.c:990
 msgid "Resource Not Found"
 msgstr "Нема ресурси"
 
-#: src/feed.c:1001
+#: src/feed.c:991
 msgid "Method Not Allowed"
 msgstr "Методот не е дозволен"
 
-#: src/feed.c:1002
+#: src/feed.c:992
 msgid "Not Acceptable"
 msgstr "Не е прифатливо"
 
-#: src/feed.c:1003
+#: src/feed.c:993
 msgid "Proxy Authentication Required"
 msgstr "Потребна е Proxy автентикација"
 
-#: src/feed.c:1004
+#: src/feed.c:994
 msgid "Request Time-Out"
 msgstr "Барањето истече"
 
-#: src/feed.c:1005
+#: src/feed.c:995
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Напуштено. Вестите не постојат. Ве молам избришете ја ставката!"
 
-#: src/feed.c:1010
+#: src/feed.c:1000
 msgid "URL is invalid"
 msgstr "Адресата е невалидна"
 
-#: src/feed.c:1013
+#: src/feed.c:1003
 msgid "Error connecting to remote host"
 msgstr "Грешка во поврзувањето со адресата"
 
-#: src/feed.c:1014
+#: src/feed.c:1004
 msgid "Hostname could not be found"
 msgstr "Не можам да ја најдам адресата"
 
-#: src/feed.c:1015
+#: src/feed.c:1005
 msgid "Network connection was refused by the remote host"
 msgstr "Одбиена е врската со адресата"
 
-#: src/feed.c:1016
+#: src/feed.c:1006
 msgid "Remote host did not finish sending data"
 msgstr "Серверот не успеа да заврши со праќање на податоците"
 
 #. Transfer errors
-#: src/feed.c:1018
+#: src/feed.c:1008
 msgid "Too many HTTP redirects were encountered"
 msgstr "Too many HTTP redirects encountered! Giving up."
 
-#: src/feed.c:1021
+#: src/feed.c:1011
 msgid "Remote host sent an invalid response"
 msgstr "Webserver sent an invalid redirect!"
 
-#: src/feed.c:1028
+#: src/feed.c:1018
 msgid "Authentication failed"
 msgstr "Автентификацијата не упеа"
 
-#: src/feed.c:1030
+#: src/feed.c:1020
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Начинот на автентикација на серверот е некомпатибилен со Liferea"
 
-#: src/feed.c:1036
+#: src/feed.c:1026
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Вестите се недостапни: Серверот сигнализираше неподдржано пренасочување!"
 
-#: src/feed.c:1037
+#: src/feed.c:1027
 msgid "Client Error"
 msgstr "Клиентска грешка"
 
-#: src/feed.c:1038
+#: src/feed.c:1028
 msgid "Server Error"
 msgstr "Грешка на опслужувачот"
 
-#: src/feed.c:1039
+#: src/feed.c:1029
 msgid "(unknown networking error happened)"
 msgstr "(unknown error class)"
 
-#: src/feed.c:1061
+#: src/feed.c:1051
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -338,21 +338,21 @@ msgstr ""
 "and console output!"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1208 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
+#: src/feed.c:1198 src/item.c:243 src/metadata.c:319 src/ocs_dir.c:141
 #: src/opml.c:213
 msgid "Feed:"
 msgstr "Вест:"
 
-#: src/feed.c:1219 src/interface.c:1031 src/interface.c:1433 src/item.c:270
+#: src/feed.c:1209 src/interface.c:1031 src/interface.c:1433 src/item.c:270
 #: src/metadata.c:321 src/metadata.c:322 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "Извор:"
 
-#: src/html.c:160
+#: src/html.c:159
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "Автоматското откривање на вестите е неуспешно."
 
-#: src/htmlview.c:61
+#: src/htmlview.c:66
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -370,7 +370,7 @@ msgstr ""
 "key /apps/liferea/browser-module!\n"
 "\n"
 
-#: src/htmlview.c:73
+#: src/htmlview.c:78
 #, c-format
 msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
@@ -380,15 +380,15 @@ msgstr ""
 "конфигурацијата!\n"
 "%s\n"
 
-#: src/htmlview.c:85
+#: src/htmlview.c:90
 msgid "Htmlview API mismatch!"
 msgstr "Грешка во Htmlview API!"
 
-#: src/htmlview.c:93
+#: src/htmlview.c:98
 msgid "Detected module is not a valid htmlview module!"
 msgstr "Најдениот модул не е валиден htmlview модул!"
 
-#: src/htmlview.c:115
+#: src/htmlview.c:120
 #, c-format
 msgid "Cannot load HTML widget module (%s)!"
 msgstr "Не можам да го вчитам HTML модулот (%s)!"
@@ -397,26 +397,26 @@ msgstr "Не можам да го вчитам HTML модулот (%s)!"
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
-#: src/htmlview.c:121
+#: src/htmlview.c:126
 #, c-format
 msgid "Available browser modules (%s):\n"
 msgstr "Достапни модули на прелистувачи (%s):\n"
 
-#: src/htmlview.c:156
+#: src/htmlview.c:161
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Се вчитува модулот за прелистувач (%s)!\n"
 
-#: src/htmlview.c:159
+#: src/htmlview.c:164
 msgid "No browser module configured!\n"
 msgstr "Не е конфигуриран модулот за прелистувач!\n"
 
-#: src/htmlview.c:167
+#: src/htmlview.c:172
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "се вчитува модулот за прелистувач %s (%s)\n"
 
-#: src/htmlview.c:177
+#: src/htmlview.c:183
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -425,16 +425,16 @@ msgstr ""
 "all option to get debug information!"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/htmlview.c:318
+#: src/htmlview.c:324
 msgid "This item does not have a link assigned!"
 msgstr "Предметот нема означено врска!"
 
-#: src/htmlview.c:362 src/htmlview.c:383
+#: src/htmlview.c:368 src/htmlview.c:389
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "команда за прелистувач е науспешна: \"%s\""
 
-#: src/htmlview.c:365 src/htmlview.c:386
+#: src/htmlview.c:371 src/htmlview.c:392
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Отворам: \"%s\""
@@ -508,7 +508,7 @@ msgstr "Ги ажурира означените ставки или сите с
 msgid "Update _All"
 msgstr "_Ажурирај ги сите"
 
-#: src/interface.c:231 src/ui_mainwindow.c:181
+#: src/interface.c:231 src/ui_mainwindow.c:188
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Веднаш ажурирај ги сите вести (без папките)."
 
@@ -564,7 +564,7 @@ msgstr "_Предмети"
 msgid "_Next Unread Item"
 msgstr "_Следна непрочитана вест"
 
-#: src/interface.c:309 src/ui_mainwindow.c:179
+#: src/interface.c:309 src/ui_mainwindow.c:186
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1203,7 +1203,6 @@ msgid ""
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
-"Jose Maria Mateos <chema@chema.homelinux.org>\n"
 "Enrico Genauck <enrico@fanglomerat.de>\n"
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
@@ -1257,57 +1256,67 @@ msgstr "[Без наслов]"
 msgid "Item:"
 msgstr "Предмети:"
 
-#: src/main.c:66
+#: src/main.c:67
 msgid "  --version        Prints Liferea's version number"
 msgstr "  --version        Покажи ја верзијата на Liferea"
 
-#: src/main.c:67
+#: src/main.c:68
 msgid "  --help           Prints this message and exits"
 msgstr "  --help           Покажи ја оваа порака и излези"
 
-#: src/main.c:68
+#: src/main.c:69
 msgid "  --iconify        Starts the program iconified"
 msgstr "  --iconify        Отвори ја програмата минимизирана"
 
-#: src/main.c:70
+#: src/main.c:71
 msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr "  --debug-cache    Print debugging messages for the cache handling"
 
-#: src/main.c:71
-msgid ""
-"  --debug-conf     Print debugging messages of the configuration handling"
-msgstr ""
-"  --debug-conf     Print debugging messages of the configuration handling"
-
 #: src/main.c:72
 msgid ""
+"  --debug-conf     Print debugging messages of the configuration handling"
+msgstr ""
+"  --debug-conf     Print debugging messages of the configuration handling"
+
+#: src/main.c:73
+msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Print debugging messages of the feed update processing"
 
-#: src/main.c:73
+#: src/main.c:74
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  Print debugging messages of all parsing functions"
 
-#: src/main.c:74
+#: src/main.c:75
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr "  --debug-gui      Print debugging messages of all GUI functions"
 
-#: src/main.c:75
+#: src/main.c:76
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 
-#: src/main.c:76
+#: src/main.c:77
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr "  --debug-all      Print debugging messages of all types"
 
-#: src/main.c:77
+#: src/main.c:78
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  Print verbose debugging messages"
 
-#: src/main.c:233
+#: src/main.c:225
+#, c-format
+msgid "The --session argument must be given a parameter.\n"
+msgstr ""
+
+#: src/main.c:228
+#, c-format
+msgid "Liferea encountered an unknown argument: %s\n"
+msgstr ""
+
+#: src/main.c:247
 msgid ""
 "Another copy of Liferea was found to be running. Please us it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
@@ -1465,7 +1474,7 @@ msgstr "нема namespace handler за <%s:%s>!\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Не постои RDF хедер!</p>"
 
-#: src/ocs_dir.c:501 src/opml.c:240 src/pie_feed.c:261 src/rss_channel.c:316
+#: src/ocs_dir.c:501 src/opml.c:240 src/pie_feed.c:262 src/rss_channel.c:316
 msgid "There were errors while parsing this feed!"
 msgstr "Се појавивија грешки при парсирање на вестите!"
 
@@ -1473,7 +1482,7 @@ msgstr "Се појавивија грешки при парсирање на в
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>Не постои OPML хедер!</p>"
 
-#: src/pie_feed.c:140
+#: src/pie_feed.c:141
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Не можам да најдам Atom/Echo/PIE хедер!</p>"
 
@@ -1609,23 +1618,23 @@ msgstr "интерна грешка! could not get feed tree view selection!\n"
 msgid "There are no unread items "
 msgstr "Сите вести се прочитани!"
 
-#: src/ui_mainwindow.c:178
+#: src/ui_mainwindow.c:185
 msgid "New Feed"
 msgstr "Нова вест"
 
-#: src/ui_mainwindow.c:178
+#: src/ui_mainwindow.c:185
 msgid "Add a new subscription."
 msgstr "Додај нова претплата."
 
-#: src/ui_mainwindow.c:179
+#: src/ui_mainwindow.c:186
 msgid "Next Unread"
 msgstr "Следно непрочитано"
 
-#: src/ui_mainwindow.c:180
+#: src/ui_mainwindow.c:187
 msgid "Mark As Read"
 msgstr "Обележи како прочитани"
 
-#: src/ui_mainwindow.c:180
+#: src/ui_mainwindow.c:187
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1633,27 +1642,27 @@ msgstr ""
 "Означи ги сите вести во означената ставка како прочитани или сите вести во "
 "означената папка."
 
-#: src/ui_mainwindow.c:181
+#: src/ui_mainwindow.c:188
 msgid "Update All"
 msgstr "Ажурирај ги сите"
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:189
 msgid "Search"
 msgstr "Пребарувај"
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:189
 msgid "Search all feeds."
 msgstr "Барај во сите вести."
 
-#: src/ui_mainwindow.c:183
+#: src/ui_mainwindow.c:190
 msgid "Preferences"
 msgstr "Параметри"
 
-#: src/ui_mainwindow.c:183
+#: src/ui_mainwindow.c:190
 msgid "Edit preferences."
 msgstr "Уреди ги параметрите."
 
-#: src/ui_mainwindow.c:198
+#: src/ui_mainwindow.c:205
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1704,11 +1713,11 @@ msgstr ""
 "\"http://liferea.sourceforge.net/faq.php\">ЧПП</a>, кои се достапни на веб "
 "страната на <a href=\"http://liferea.sf.net\">овој проект</a>.</p>"
 
-#: src/ui_mainwindow.c:283
+#: src/ui_mainwindow.c:290
 msgid "Liferea is now online"
 msgstr "Liferea e поврзана."
 
-#: src/ui_mainwindow.c:286
+#: src/ui_mainwindow.c:293
 msgid "Liferea is now offline"
 msgstr "Liferea е исклучена"
 

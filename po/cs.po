@@ -5,17 +5,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 0.5.2b\n"
+"Project-Id-Version: liferea 0.5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-08-14 17:33+0200\n"
-"PO-Revision-Date: 2004-07-28 12:09+0200\n"
+"PO-Revision-Date: 2004-08-17 10:32+0200\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/common.c:267
 msgid "[Parser error output was truncated!]"
@@ -30,9 +29,8 @@ msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "Chybný ISO8601 formát času! Ignoruji <dc:date> informaci!\n"
 
 #: src/common.c:410
-#, fuzzy
 msgid "Invalid RFC822 date format! Ignoring date information!\n"
-msgstr "Špatný RFC822 formát času! Ignoruji <pudDate> informaci!\n"
+msgstr "Špatný RFC822 formát času! Ignoruji informaci o čase!\n"
 
 #: src/common.c:424 src/common.c:431 src/common.c:437 src/common.c:444
 #, c-format
@@ -106,7 +104,7 @@ msgstr "Importovat seznam zdrojů"
 
 #: src/export.c:438
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: src/export.c:448
 msgid "Error while exporting feed list!"
@@ -122,7 +120,7 @@ msgstr "Exportovat seznam zdrojů"
 
 #: src/export.c:457
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 #: src/feed.c:137
 #, c-format
@@ -146,7 +144,7 @@ msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
-msgstr ""
+msgstr "<p>Nemohu zjistit typ zdroje. Prosím ujistěte se, že to je <a href=\"http://feedvalidator.org\">platný</a> a <a href=\\\"http://liferea.sourceforge.net/index.php#supported_formats\">podporovaný formát</a>.</p>"
 
 #: src/feed.c:376 src/feed.c:377
 #, c-format
@@ -217,14 +215,11 @@ msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "Adresa \"%s\" byla trvale změněna a aktualizována"
 
 #: src/feed.c:807
-#, fuzzy
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
 "p>"
-msgstr ""
-"Nemohu zjistit typ tohoto zdroje! Prosím zkontrolujte, zda adresa odkazuje "
-"na některý z podporovaných formátů!"
+msgstr "<p>Nemohu zjistit typ tohoto zdroje! Prosím zkontrolujte, zda adresa odkazuje na některý z podporovaných formátů!</p>"
 
 #: src/feed.c:833
 #, c-format
@@ -240,7 +235,7 @@ msgstr "\"%s\" není dostupný"
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
-msgstr ""
+msgstr "Nemáte oprávněný přístup k stáhnutí tohoto zdroje. Prosím aktualizujte svoje jméno a heslo v dialogu nastavení zdroje."
 
 #: src/feed.c:998
 msgid "Payment Required"
@@ -462,9 +457,8 @@ msgstr ""
 "zdroj obnovit. Stále je možné si prohlížet uschované titulky."
 
 #: src/interface.c:131 src/interface.c:2975
-#, fuzzy
 msgid "Liferea 0.5.3"
-msgstr "Nápověda programu Liferea"
+msgstr "Liferea 0.5.3"
 
 #: src/interface.c:148
 msgid "_Program"
@@ -551,7 +545,6 @@ msgid "_Export Feed List"
 msgstr "_Exportovat seznam zdrojů"
 
 #: src/interface.c:293
-#, fuzzy
 msgid "Exports the feed list as OPML."
 msgstr "Exportovat seznam zdrojů jako OPML."
 
@@ -600,7 +593,6 @@ msgid "_Launch In Browser"
 msgstr "Zobrazit v _prohlížeči"
 
 #: src/interface.c:356
-#, fuzzy
 msgid "Launches the item's link in the configured browser."
 msgstr "Zobrazit článek v prohlížeči."
 
@@ -649,7 +641,6 @@ msgid "Search with Feedster"
 msgstr "Hledat pomocí vyhledávače Feedster"
 
 #: src/interface.c:421
-#, fuzzy
 msgid "Creates a Feedster search feed."
 msgstr "Vytvořit zdroj vyhledávače Feedster."
 
@@ -873,15 +864,14 @@ msgid "Add the _help feeds to the feed list on startup."
 msgstr "Přidat do seznamu zdroj s nápovědou při startu programu."
 
 #: src/interface.c:1757
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
-msgstr "<span weight=\"bold\">Nastavení zacházení se zdroji</span>"
+msgstr "<span weight=\"bold\">Nastavení nahrávání zdroje</span>"
 
 #: src/interface.c:1776
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds,"
-msgstr ""
+msgstr "_Nahrávat zdroje z disku, když je potřeba. Vyhledávání může být pomalejší, pokud máte mnoho zdrojů,"
 
 #: src/interface.c:1783
 msgid ""
@@ -889,7 +879,7 @@ msgid ""
 "(especially when searching) but can cause a \n"
 "significant memory footprint if you have a lot \n"
 "of feeds!"
-msgstr ""
+msgstr "_Udržovat všechny zdroje v paměti. Toto může zlepšit rychlost (hlavně při vyhledávání), ale významně zaplní paměť, pokud máte mnoho zdrojů!"
 
 #: src/interface.c:1789
 msgid "Feed Handling"
@@ -901,19 +891,19 @@ msgstr "<span weight=\"bold\">Zobrazení přehledu</span>"
 
 #: src/interface.c:1827
 msgid "Skim through articles with "
-msgstr ""
+msgstr "Zběžně přečíst články s "
 
 #: src/interface.c:1837
 msgid "Space"
-msgstr ""
+msgstr "Mezera"
 
 #: src/interface.c:1841
 msgid "<Ctrl> Space"
-msgstr ""
+msgstr "<Ctrl> mezera"
 
 #: src/interface.c:1845
 msgid "<Alt> Space"
-msgstr ""
+msgstr "<Alt> mezera"
 
 #: src/interface.c:1851
 msgid ""
@@ -1020,7 +1010,7 @@ msgstr "Zobrazit pouze _panel nástrojů"
 
 #: src/interface.c:2103
 msgid "GUI"
-msgstr ""
+msgstr "Uživatelské rozhraní"
 
 #: src/interface.c:2120
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
@@ -1043,29 +1033,24 @@ msgid "_Enable Proxy"
 msgstr "_Povolit proxy"
 
 #: src/interface.c:2171
-#, fuzzy
 msgid "Proxy _Host:"
-msgstr "Proxy _host"
+msgstr "Proxy _adresa:"
 
 #: src/interface.c:2192
-#, fuzzy
 msgid "Proxy _Port:"
-msgstr "Proxy _port"
+msgstr "Proxy _port:"
 
 #: src/interface.c:2199
-#, fuzzy
 msgid "Use Proxy _Authentication"
-msgstr "Použít HTTP _ověření údajů"
+msgstr "Použít _ověření údajů u proxy serveru"
 
 #: src/interface.c:2217
-#, fuzzy
 msgid "Proxy _Username:"
-msgstr "Uživatelské _jméno:"
+msgstr "Uživatelské _jméno pro proxy:"
 
 #: src/interface.c:2239
-#, fuzzy
 msgid "Proxy Pass_word:"
-msgstr "_Heslo:"
+msgstr "_Heslo pro proxy:"
 
 #: src/interface.c:2246
 msgid "Proxy"
@@ -1440,7 +1425,7 @@ msgstr "chyba při analýze vnitřního OCS jmenného prostoru!"
 
 #: src/ns_photo.c:35
 msgid "included photo"
-msgstr ""
+msgstr "vložená fotka"
 
 #: src/ocs_dir.c:97
 msgid "Feed"
@@ -1491,7 +1476,7 @@ msgstr "Tento zdroj neuvádí výchozí interval pro aktualizaci."
 
 #: src/ui_feed.c:545
 msgid "Choose File"
-msgstr ""
+msgstr "Vybrat soubor"
 
 #: src/ui_feedlist.c:408
 msgid "You have to select a feed entry"
@@ -1647,7 +1632,6 @@ msgid "Edit preferences."
 msgstr "Změnit nastavení."
 
 #: src/ui_mainwindow.c:198
-#, fuzzy
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1675,26 +1659,14 @@ msgid ""
 "a> available at the <a href=\"http://liferea.sf.net\">project homepage</a>.</"
 "p>"
 msgstr ""
-"<h2>Vítejte v programu Liferea</h2><p>Levý panel obsahuje seznam zdrojů, kde "
-"můžete přidávat nové zdroje a vybírat je pro čtení titulků článků. Pravá "
-"strana zobrazuje seznam titulků vybraného zdroje a okno zobrazuje daný "
-"článek. Pravá strana též zobrazuje, při zapnutém zhuštěném pohledu, všechny "
-"články v jednom okně.</p><h3>Základní operace</h3>\n"
-"<ul><li><p><b>Přidání zdroje</b> - Vytvoření nového zdroje ve vybraném "
-"adresáři. K vytvoření nového zdroje zapište URL zdroje nebo pokud ho "
-"neznáte, zapište URL webových stránek, které poskytují daný zdroj.</p></li>\n"
-"<li><p><b>Aktualizace zdroje<b> - Aktualizace vybraného zdroje. Tuto možnost "
-"využijete, pokud budete chtít aktualizovat pouze některé zdroje. Obvykle "
-"postačí spoléhat se na automatickou aktualizaci podle intervalu aktualizace "
-"zdroje.</p></li>\n"
-"<li><p><b>Aktualizovat vše</b> - Aktualizace všech zdrojů najednou. Opět "
-"obvykle postačí spolehnout se na automatickou aktualizaci.</li>\n"
-"<li><p><b>Upravit vlastnosti zdroje</b> - Tuto možnost využijete, pokud "
-"budete chtít změnit interval aktualizace, titul, ověřování údajů nebo "
-"vlastnosti dočasných souborů zdroje.</p></li></ul>\n"
-"<p>Více informací o programu Liferea získáte v dokumentaci poskytnuté ve "
-"zdroji nápovědy nebo v&nbsp;často kladených otázkách na stránkách projektu.</"
-"p>"
+"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">Začali jsme shromažďovat požadavky pro verzi 1.1 programu Liferea. Prosím <a href=\"http://liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">podívejte se</a> a <a href=\"mailto:liferea-devel@lists.sourceforge.net\">navrhněte</a> vlastnosti, které vám chybí.</div>\n"
+"\n"
+"<h2>Vítejte v programu Liferea</h2><p>Levý panel obsahuje seznam zdrojů, kde můžete přidávat nové zdroje a vybírat je pro čtení titulků článků. Pravá strana zobrazuje seznam titulků vybraného zdroje a okno zobrazuje daný článek. Pravá strana též zobrazuje, při zapnutém zhuštěném pohledu, všechny články v jednom okně.</p><h3>Základní operace</h3>\n"
+"<ul><li><p><b>Přidání zdroje</b> - Vytvoření nového zdroje ve vybraném adresáři. K vytvoření nového zdroje zapište URL zdroje nebo pokud ho neznáte, zapište URL webových stránek, které poskytují daný zdroj.</p></li>\n"
+"<li><p><b>Aktualizace zdroje<b> - Aktualizace vybraného zdroje. Tuto možnost využijete, pokud budete chtít aktualizovat pouze některé zdroje. Obvykle postačí spoléhat se na automatickou aktualizaci podle intervalu aktualizace zdroje.</p></li>\n"
+"<li><p><b>Aktualizovat vše</b> - Aktualizace všech zdrojů najednou. Opět obvykle postačí spolehnout se na automatickou aktualizaci.</li>\n"
+"<li><p><b>Upravit vlastnosti zdroje</b> - Tuto možnost využijete, pokud budete chtít změnit interval aktualizace, titul, ověřování údajů nebo vlastnosti dočasných souborů zdroje.</p></li></ul>\n"
+"<p>Více informací o programu Liferea získáte v dokumentaci poskytnuté ve zdroji nápovědy nebo v&nbsp;často kladených otázkách na stránkách projektu.</p>"
 
 #: src/ui_mainwindow.c:283
 msgid "Liferea is now online"
@@ -1706,7 +1678,7 @@ msgstr "Program Liferea je nyní odpojen"
 
 #: src/ui_notification.c:195
 msgid "Untitled"
-msgstr ""
+msgstr "Neoznačený"
 
 #: src/ui_notification.c:256
 msgid "Liferea notification"
