@@ -125,7 +125,7 @@ static void vfolder_remove_item_copy(feedPtr vp, itemPtr ip) {
 		item_free(ip);
 		vp->items = g_slist_remove(vp->items, ip);
 	} else {
-		g_warning("vfolder_remove_item(): item not found...");
+		g_warning("vfolder_remove_item_copy(): item not found...");
 	}
 }
 
