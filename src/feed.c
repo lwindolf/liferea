@@ -139,9 +139,8 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 	if(!handled) {
 		/* test if we have a HTML page */
 		if(autodiscover && 
-		   ((NULL != strstr(data, "<html>")) || (NULL != strstr(data, "<HTML>")) || 
-		    (NULL != strstr(data, "<html ")) || (NULL != strstr(data, "<HTML "))
-		   )) {
+		   ((NULL != strstr(data, "<html ")) || (NULL != strstr(data, "<HTML ")))
+		  ) {
 			/* if yes we should scan for links */
 			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(fp));
 			if(NULL != (source = html_auto_discover_feed(data))) {			
@@ -862,8 +861,10 @@ const gchar * feed_get_title(feedPtr fp) {
 
 	if(NULL != fp->title)
 		return fp->title; 
-	else
+	else if (NULL != fp->source)
 		return fp->source;
+	else
+		return NULL;
 }
 
 void feed_set_title(feedPtr fp, const gchar *title) {
