@@ -70,6 +70,7 @@ if test "x$temptest" != "x" ; then
    
    dnl Maybe we don't need all of this...
    MOZILLA_CFLAGS="$MOZILLA_CFLAGS \
+-I$MOZILLA_INCLUDE_ROOT \
 -I$MOZILLA_INCLUDE_ROOT/appcomps \
 -I$MOZILLA_INCLUDE_ROOT/caps \
 -I$MOZILLA_INCLUDE_ROOT/content \
