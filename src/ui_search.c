@@ -64,12 +64,11 @@ void on_hidesearch_clicked(GtkButton *button, gpointer user_data) {
 }
 
 
-void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
+void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
 
 	g_assert(mainwindow != NULL);
-	
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		print_status(g_strdup_printf(_("searching for \"%s\""), searchstring));

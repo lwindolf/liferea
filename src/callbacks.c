@@ -556,8 +556,9 @@ static void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean sh
 	gchar		*tmp;
 
 	if(NULL != (fp = newFeed(type, source, keyprefix))) {
-		addToFeedList(fp, FALSE);
-		checkForEmptyFolders();
+		addToFeedList(fp, FALSE);	/* add feed */
+		checkForEmptyFolders();		/* remove empty entry if necessary */
+		saveFolderFeedList(keyprefix);	/* save new folder contents order */
 
 		if(FALSE == getFeedAvailable(fp)) {
 			tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);

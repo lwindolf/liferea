@@ -100,7 +100,7 @@ on_hidesearch_clicked                  (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_searchentry_activate                (GtkEntry        *entry,
+on_searchentry_activate                (GtkButton        *button,
                                         gpointer         user_data);
 
 void

@@ -245,7 +245,7 @@ gint saveFeed(feedPtr fp) {
 static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr	fp = (feedPtr)value;
 	
-	if(IS_FEED(fp->type)) {
+	if(IS_FEED(fp->type)) {	
 		saveFeed(fp);
 	}
 }
@@ -388,7 +388,9 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 	if(FST_AUTODETECT == type) {
 		/* if necessary download and detect type */
 		if(FST_INVALID == (type = autoDetectFeedType(url, &(fp->data)))) {	// FIXME: pass fp to adjust URL
-			showErrorBox(_("Could not detect feed type! Please manually select a feed type."));
+			tmp = g_strdup_printf(_("Could not detect feed type of \"%s\"! Please manually select a feed type."), url);
+			showErrorBox(tmp);
+			g_free(tmp);
 			g_free(fp->data);
 			return NULL;
 		}

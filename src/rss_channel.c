@@ -349,7 +349,7 @@ static void readRSSFeed(feedPtr fp) {
 		cur = xmlDocGetRootElement(doc);
 
 		if(NULL == cur) {
-			print_status(_("Empty document! Feed was not added!"));
+			print_status(_("Empty document!"));
 			xmlFreeDoc(doc);
 			error = 1;
 			break;			
@@ -361,7 +361,7 @@ static void readRSSFeed(feedPtr fp) {
                 	  !xmlStrcmp(cur->name, (const xmlChar *)"RDF")) {
 			rdf = 1;
 		} else {
-			print_status(_("Could not find RDF/RSS header! Feed was not added!"));
+			print_status(_("Could not find RDF/RSS header!"));
 			xmlFreeDoc(doc);
 			error = 1;
 			break;			

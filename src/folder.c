@@ -242,6 +242,54 @@ void checkForEmptyFolders(void) {
 	g_hash_table_foreach(folders, checkForEmptyFolder, NULL);	
 }
 
+/* method to save the feed list of a folder specified by keyprefix */
+void saveFolderFeedList(gchar *keyprefix) {
+	GtkTreeIter	iter;
+	GtkTreeIter	*topiter;
+	GSList		*tmplist, *newkeylist = NULL;
+	GConfValue	*new_value = NULL;
+	GtkTreeStore	*feedstore;
+	gint		tmp_type;
+	gchar		*tmp_key;
+	gboolean	valid;
+
+	g_assert(NULL != folders);
+	if(NULL == (topiter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
+		g_print(_("internal error! could not determine folder key!"));
+		return;
+	}
+	
+	feedstore = getFeedStore();
+	g_assert(feedstore != NULL);
+	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, keyprefix);
+	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, topiter);
+	while(valid) {			
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
+				FS_KEY, &tmp_key,
+				FS_TYPE, &tmp_type,
+		  	     	-1);
+
+		/* add key to new key list, if its no empty or help entry */
+		if(!IS_NODE(tmp_type) && (tmp_type != FST_EMPTY) &&
+		   (NULL == strstr(tmp_key, "help"))) {
+			new_value = gconf_value_new(GCONF_VALUE_STRING);
+			gconf_value_set_string(new_value, tmp_key);
+			newkeylist = g_slist_append(newkeylist, new_value);
+		}
+		g_free(tmp_key);
+		
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
+	}	
+
+	setFeedKeyList(keyprefix, newkeylist);	
+	
+	tmplist = newkeylist;
+	while(NULL != tmplist) {
+		gconf_value_free(tmplist->data);
+		tmplist = g_slist_next(tmplist);	
+	}	
+	g_slist_free(newkeylist);
+}
 
 /* function to scan folder with keyprefix for the feed with key, if the
    feed entry is found the entries configuration 'll be removed, then a
@@ -252,7 +300,6 @@ void checkForEmptyFolders(void) {
 static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 	GtkTreeIter	iter;
 	GtkTreeIter	*topiter = (GtkTreeIter *)value;
-	GSList		*newkeylist = NULL;
 	GConfValue	*new_value = NULL;
 	GtkTreeStore	*feedstore;
 	gint		tmp_type;
@@ -267,12 +314,10 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 	feedstore = getFeedStore();
 	g_assert(feedstore != NULL);
 
-//g_print("scanning keyprefix \"%s\"\n", keyprefix);
-	found = FALSE;
-	
 	g_assert(NULL != folders);
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, keyprefix);
 	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, topiter);
+	found = FALSE;
 	wasFound = FALSE;
 	while(valid) {
 		found = FALSE;
@@ -339,18 +384,6 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 			/* update changed row contents */
 			gtk_tree_store_set(feedstore, &iter, FS_KEY, (gpointer)newkey, -1);
 		}
-		
-		/* add key to new key list */
-		if(!IS_NODE(tmp_type) && (tmp_type != FST_EMPTY) &&
-		   (NULL == strstr(tmp_key, "help"))) {
-			new_value = gconf_value_new(GCONF_VALUE_STRING);
-			if(found)
-				gconf_value_set_string(new_value, newkey);
-			else
-				gconf_value_set_string(new_value, tmp_key);
-			newkeylist = g_slist_append(newkeylist, new_value);
-		}
-
 		g_free(tmp_key);
 		
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
@@ -359,10 +392,7 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 	/* if we found the new entry, we have to save the new folder
 	   contents order */
 	if(wasFound)
-		setFeedKeyList(keyprefix, newkeylist);
-		
-	// FIXME: free the gconf values first
-	g_slist_free(newkeylist);
+		saveFolderFeedList(keyprefix);
 }
 
 /* function to reflect DND of feed entries in the configuration */
