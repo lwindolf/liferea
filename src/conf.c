@@ -25,7 +25,7 @@
 
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
-#include <libxml/nanohttp.h>
+#include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
 #include "support.h"
@@ -60,6 +60,7 @@ char *proxypassword = NULL;
 int	proxyport = 0;
 
 /* Function prototypes */
+static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
 
 static gchar * build_path_str(gchar *str1, gchar *str2) {
 	gchar	*gconfpath;
@@ -116,57 +117,77 @@ void initConfig() {
 	if (client == NULL) {
 		client = gconf_client_get_default();
 		gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
+		gconf_client_add_dir(client, "/system/http_proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
 	}
+	gconf_client_notify_add(client, "/system/http_proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
+	
+	/* Load settings into static buffers */
+	conf_proxy_reset_settings_cb(NULL, 0, NULL, NULL);
 }
 
 /* maybe called several times to reload configuration */
 void loadConfig() {
-	gchar	*freeme, *proxystring, *tmp;
 	gint	maxitemcount;
-
+	
 	/* check if important preferences exist... */
 	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
 		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
+}
 
+static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
+	gchar	*tmp;
+	xmlURIPtr uri;
+	
 	g_free(proxyname);
 	proxyname = NULL;
 	proxyport = 0;	
 	
+	g_free(proxyusername);
+	proxyusername = NULL;
+	g_free(proxypassword);
+	proxypassword = NULL;
+	
 	/* first check for a configured GNOME proxy */
 	if(getBooleanConfValue(USE_PROXY)) {
-	        proxyname = getStringConfValue(PROXY_HOST);
-        	proxyport = getNumericConfValue(PROXY_PORT);
+		proxyname = getStringConfValue(PROXY_HOST);
+		proxyport = getNumericConfValue(PROXY_PORT);
 		debug2(DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
+		if (getBooleanConfValue(PROXY_USEAUTH)) {
+			proxyusername = getStringConfValue(PROXY_USER);
+			proxypassword = getStringConfValue(PROXY_PASSWD);
+		}
 	} else {
 		/* otherwise there could be a proxy specified in the environment 
 		   the following code was derived from SnowNews' setup.c */
 		if(g_getenv("http_proxy") != NULL) {
 			/* The pointer returned by getenv must not be altered.
 			   What about mentioning this in the manpage of getenv? */
-			while(1) {
-				proxystring = g_strdup(g_getenv("http_proxy"));
-				freeme = proxystring;
-				strsep(&proxystring, "/");
-				if(proxystring == NULL)
+			debug0(DEBUG_CONF, "using proxy from environment");
+			do {
+				uri = xmlParseURI(BAD_CAST g_getenv("http_proxy"));
+				if (uri == NULL)
 					break;
-				strsep(&proxystring, "/");
-
-				if(proxystring == NULL)
+				if (uri->server == NULL) {
+					xmlFreeURI(uri);
 					break;
-				tmp = strsep(&proxystring, ":");
-				proxyname = g_strdup(tmp);
-
-				if(proxystring == NULL) 
-					break;
-				proxyport = atoi(strsep(&proxystring, "/"));
-				break;
-			}
-			g_free(freeme);
-			debug2(DEBUG_CONF, "using proxy from environment: \"%s\" port \"%d\"", proxyname, proxyport);
-		} else {
-			debug0(DEBUG_CONF, "using no proxy!");
+				}
+				proxyname = g_strdup(uri->server);
+				proxyport = (uri->port == 0) ? 3128 : uri->port;
+				if (uri->user != NULL) {
+					tmp = strtok(uri->user, ":");
+					tmp = strtok(NULL, ":");
+					if (tmp != NULL) {
+						proxyusername = g_strdup(uri->user);
+						proxypassword = g_strdup(tmp);
+					}
+				}
+				xmlFreeURI(uri);
+			} while (FALSE);
 		}
 	}
+	debug4(DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
+		  proxyusername != NULL ? proxyusername : "NULL",
+		  proxypassword != NULL ? proxypassword : "NULL");
 }
 
 /*----------------------------------------------------------------------*/

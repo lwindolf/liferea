@@ -45,6 +45,7 @@ static void on_browsermodule_changed(GtkObject *object, gchar *libname);
 static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data);
+static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
 
 struct browser {
 	gchar *id; /**< Unique ID used in storing the prefs */
@@ -161,7 +162,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkAdjustment	*itemCount;
 	GSList		*list;
 	gchar		*widgetname, *proxyport, *libname;
-	gboolean	enabled;
+	gboolean	enabled, enabled2;
 	int		tmp, i;
 	static int manual;
 	struct browser *iter;
@@ -350,7 +351,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	
 	/* ================= panel 5 "proxy" ======================== */
-	
 	enabled = getBooleanConfValue(USE_PROXY);
 	widget = lookup_widget(prefdialog, "enableproxybtn");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enabled);
@@ -363,8 +363,19 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_entry_set_text(GTK_ENTRY(entry), proxyport);
 	g_free(proxyport);
 
-	widget = lookup_widget(prefdialog, "proxytable");
-	gtk_widget_set_sensitive(GTK_WIDGET(widget), enabled);
+
+	/* Authentication */
+	enabled2 = getBooleanConfValue(PROXY_USEAUTH);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "useProxyAuth")), enabled2);
+	gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "proxyuserentry")), getStringConfValue(PROXY_USER));
+	gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "proxypasswordentry")), getStringConfValue(PROXY_PASSWD));
+	
+	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxybox")), enabled);
+	if (enabled)
+		gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxyauthbox")), enabled2);
+	
+	gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "enableproxybtn")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
+	gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "useProxyAuth")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
 	
 	gtk_widget_show(prefdialog);
 }
@@ -485,29 +496,34 @@ void on_helpoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 
-void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*widget;
+static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean	enabled;
-
-	enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
-	setBooleanConfValue(USE_PROXY, enabled);
 	
-	if(NULL != (widget = lookup_widget(prefdialog, "proxytable")))
-		gtk_widget_set_sensitive(GTK_WIDGET(widget), enabled);
-
-	loadConfig();
+	enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "useProxyAuth")));
+	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxyauthbox")), enabled);
+	setBooleanConfValue(PROXY_USEAUTH, enabled);
+	
+	enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "enableproxybtn")));
+	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxybox")), enabled);
+	setBooleanConfValue(USE_PROXY, enabled);
 }
 
 
 void on_proxyhostentry_changed(GtkEditable *editable, gpointer user_data) {
-
 	setStringConfValue(PROXY_HOST, gtk_editable_get_chars(editable,0,-1));
-	loadConfig();
 }
 
 
 void on_proxyportentry_changed(GtkEditable *editable, gpointer user_data) {
-
 	setNumericConfValue(PROXY_PORT, atoi(gtk_editable_get_chars(editable,0,-1)));
-	loadConfig();
 }
+
+void on_proxyusernameentry_changed(GtkEditable *editable, gpointer user_data) {
+	setStringConfValue(PROXY_USER, gtk_editable_get_chars(editable,0,-1));
+}
+
+
+void on_proxypasswordentry_changed(GtkEditable *editable, gpointer user_data) {
+	setStringConfValue(PROXY_PASSWD, gtk_editable_get_chars(editable,0,-1));
+}
+

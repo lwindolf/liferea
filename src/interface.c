@@ -1636,11 +1636,22 @@ create_prefdialog (void)
   GtkWidget *label52;
   GtkWidget *vbox229;
   GtkWidget *enableproxybtn;
+  GtkWidget *proxybox;
+  GtkWidget *label143;
+  GtkWidget *vbox2578;
   GtkWidget *proxytable;
   GtkWidget *label53;
   GtkWidget *proxyhostentry;
   GtkWidget *proxyportentry;
   GtkWidget *label54;
+  GtkWidget *useProxyAuth;
+  GtkWidget *hbox59;
+  GtkWidget *label144;
+  GtkWidget *proxyauthbox;
+  GtkWidget *label145;
+  GtkWidget *proxyuserentry;
+  GtkWidget *proxypasswordentry;
+  GtkWidget *label146;
   GtkWidget *label140;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefclosebtn;
@@ -2033,7 +2044,7 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label130), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label130), 0, 0.5);
 
-  hbox54 = gtk_hbox_new (FALSE, 6);
+  hbox54 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox54);
   gtk_box_pack_start (GTK_BOX (vbox254), hbox54, TRUE, TRUE, 0);
 
@@ -2060,13 +2071,25 @@ create_prefdialog (void)
   gtk_widget_show (enableproxybtn);
   gtk_box_pack_start (GTK_BOX (vbox229), enableproxybtn, FALSE, FALSE, 0);
 
+  proxybox = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (proxybox);
+  gtk_box_pack_start (GTK_BOX (vbox229), proxybox, TRUE, TRUE, 0);
+
+  label143 = gtk_label_new (_("    "));
+  gtk_widget_show (label143);
+  gtk_box_pack_start (GTK_BOX (proxybox), label143, FALSE, FALSE, 0);
+
+  vbox2578 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2578);
+  gtk_box_pack_start (GTK_BOX (proxybox), vbox2578, TRUE, TRUE, 0);
+
   proxytable = gtk_table_new (2, 2, FALSE);
   gtk_widget_show (proxytable);
-  gtk_box_pack_start (GTK_BOX (vbox229), proxytable, TRUE, TRUE, 0);
-  gtk_table_set_row_spacings (GTK_TABLE (proxytable), 5);
-  gtk_table_set_col_spacings (GTK_TABLE (proxytable), 5);
+  gtk_box_pack_start (GTK_BOX (vbox2578), proxytable, TRUE, TRUE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (proxytable), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (proxytable), 6);
 
-  label53 = gtk_label_new_with_mnemonic (_("Proxy _Host"));
+  label53 = gtk_label_new_with_mnemonic (_("Proxy _Host:"));
   gtk_widget_show (label53);
   gtk_table_attach (GTK_TABLE (proxytable), label53, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
@@ -2078,19 +2101,68 @@ create_prefdialog (void)
   gtk_table_attach (GTK_TABLE (proxytable), proxyhostentry, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (proxyhostentry), TRUE);
 
   proxyportentry = gtk_entry_new ();
   gtk_widget_show (proxyportentry);
   gtk_table_attach (GTK_TABLE (proxytable), proxyportentry, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (proxyportentry), TRUE);
 
-  label54 = gtk_label_new_with_mnemonic (_("Proxy _Port"));
+  label54 = gtk_label_new_with_mnemonic (_("Proxy _Port:"));
   gtk_widget_show (label54);
   gtk_table_attach (GTK_TABLE (proxytable), label54, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label54), 0, 0.5);
+
+  useProxyAuth = gtk_check_button_new_with_mnemonic (_("Use Proxy _Authentication"));
+  gtk_widget_show (useProxyAuth);
+  gtk_box_pack_start (GTK_BOX (vbox2578), useProxyAuth, FALSE, FALSE, 0);
+
+  hbox59 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox59);
+  gtk_box_pack_start (GTK_BOX (vbox2578), hbox59, TRUE, TRUE, 0);
+
+  label144 = gtk_label_new (_("    "));
+  gtk_widget_show (label144);
+  gtk_box_pack_start (GTK_BOX (hbox59), label144, FALSE, FALSE, 0);
+
+  proxyauthbox = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (proxyauthbox);
+  gtk_box_pack_start (GTK_BOX (hbox59), proxyauthbox, TRUE, TRUE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (proxyauthbox), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (proxyauthbox), 6);
+
+  label145 = gtk_label_new_with_mnemonic (_("Proxy _Username:"));
+  gtk_widget_show (label145);
+  gtk_table_attach (GTK_TABLE (proxyauthbox), label145, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label145), 0, 0.5);
+
+  proxyuserentry = gtk_entry_new ();
+  gtk_widget_show (proxyuserentry);
+  gtk_table_attach (GTK_TABLE (proxyauthbox), proxyuserentry, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (proxyuserentry), TRUE);
+
+  proxypasswordentry = gtk_entry_new ();
+  gtk_widget_show (proxypasswordentry);
+  gtk_table_attach (GTK_TABLE (proxyauthbox), proxypasswordentry, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_visibility (GTK_ENTRY (proxypasswordentry), FALSE);
+  gtk_entry_set_activates_default (GTK_ENTRY (proxypasswordentry), TRUE);
+
+  label146 = gtk_label_new_with_mnemonic (_("Proxy Pass_word:"));
+  gtk_widget_show (label146);
+  gtk_table_attach (GTK_TABLE (proxyauthbox), label146, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label146), 0, 0.5);
 
   label140 = gtk_label_new (_("Proxy"));
   gtk_widget_show (label140);
@@ -2147,14 +2219,17 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) menuradiobtn3, "clicked",
                     G_CALLBACK (on_menuselection_clicked),
                     NULL);
-  g_signal_connect ((gpointer) enableproxybtn, "clicked",
-                    G_CALLBACK (on_enableproxybtn_clicked),
-                    NULL);
   g_signal_connect ((gpointer) proxyhostentry, "changed",
                     G_CALLBACK (on_proxyhostentry_changed),
                     NULL);
   g_signal_connect ((gpointer) proxyportentry, "changed",
                     G_CALLBACK (on_proxyportentry_changed),
+                    NULL);
+  g_signal_connect ((gpointer) proxyuserentry, "changed",
+                    G_CALLBACK (on_proxyusernameentry_changed),
+                    NULL);
+  g_signal_connect ((gpointer) proxypasswordentry, "changed",
+                    G_CALLBACK (on_proxypasswordentry_changed),
                     NULL);
   g_signal_connect_swapped ((gpointer) prefclosebtn, "clicked",
                             G_CALLBACK (gtk_widget_hide),
@@ -2166,6 +2241,8 @@ create_prefdialog (void)
   gtk_label_set_mnemonic_widget (GTK_LABEL (label138), browserlocpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label53), proxyhostentry);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label54), proxyportentry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label145), proxyhostentry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label146), proxyportentry);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, prefdialog, "prefdialog");
@@ -2253,11 +2330,22 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label52, "label52");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox229, "vbox229");
   GLADE_HOOKUP_OBJECT (prefdialog, enableproxybtn, "enableproxybtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, proxybox, "proxybox");
+  GLADE_HOOKUP_OBJECT (prefdialog, label143, "label143");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2578, "vbox2578");
   GLADE_HOOKUP_OBJECT (prefdialog, proxytable, "proxytable");
   GLADE_HOOKUP_OBJECT (prefdialog, label53, "label53");
   GLADE_HOOKUP_OBJECT (prefdialog, proxyhostentry, "proxyhostentry");
   GLADE_HOOKUP_OBJECT (prefdialog, proxyportentry, "proxyportentry");
   GLADE_HOOKUP_OBJECT (prefdialog, label54, "label54");
+  GLADE_HOOKUP_OBJECT (prefdialog, useProxyAuth, "useProxyAuth");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox59, "hbox59");
+  GLADE_HOOKUP_OBJECT (prefdialog, label144, "label144");
+  GLADE_HOOKUP_OBJECT (prefdialog, proxyauthbox, "proxyauthbox");
+  GLADE_HOOKUP_OBJECT (prefdialog, label145, "label145");
+  GLADE_HOOKUP_OBJECT (prefdialog, proxyuserentry, "proxyuserentry");
+  GLADE_HOOKUP_OBJECT (prefdialog, proxypasswordentry, "proxypasswordentry");
+  GLADE_HOOKUP_OBJECT (prefdialog, label146, "label146");
   GLADE_HOOKUP_OBJECT (prefdialog, label140, "label140");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefclosebtn, "prefclosebtn");

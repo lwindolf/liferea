@@ -19,6 +19,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef _UI_PREFS_H
+#define _UI_PREFS_H
+
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
@@ -66,10 +69,6 @@ on_helpoptionbtn_clicked               (GtkButton       *button,
                                         gpointer         user_data);
 					
 void
-on_enableproxybtn_clicked              (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
 on_proxyhostentry_changed              (GtkEditable     *editable,
                                         gpointer         user_data);
 
@@ -78,5 +77,15 @@ on_proxyportentry_changed              (GtkEditable     *editable,
                                         gpointer         user_data);
 
 void
+on_proxyusernameentry_changed          (GtkEditable     *editable,
+                                        gpointer         user_data);
+
+void
+on_proxypasswordentry_changed          (GtkEditable     *editable,
+                                        gpointer         user_data);
+
+void
 on_openlinksinsidebtn_clicked          (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
+
+#endif

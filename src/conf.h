@@ -63,9 +63,12 @@
 #define LAST_ZOOMLEVEL			"/apps/liferea/last-zoomlevel"
 
 /* networking settings */
+#define USE_PROXY			"/system/http_proxy/use_http_proxy"
 #define PROXY_HOST			"/system/http_proxy/host"
 #define PROXY_PORT			"/system/http_proxy/port"
-#define USE_PROXY			"/system/http_proxy/use_http_proxy"
+#define PROXY_USEAUTH		"/system/http_proxy/use_authentication"
+#define PROXY_USER			"/system/http_proxy/authentication_user"
+#define PROXY_PASSWD		"/system/http_proxy/authentication_password"
 
 /* initializing methods */
 void	initConfig(void);
