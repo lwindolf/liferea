@@ -421,7 +421,8 @@ static htmlviewPluginInfo gtkhtml2Info = {
 	launch_inside_possible,
 	get_zoom_level,
 	change_zoom_level,
-	gtkhtml2_scroll_pagedown
+	gtkhtml2_scroll_pagedown,
+	/* setProxy = */ NULL
 };
 
 DECLARE_HTMLVIEW_PLUGIN(gtkhtml2Info);

@@ -197,6 +197,8 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 			} while (FALSE);
 		}
 	}
+	
+	ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
 	debug4(DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");

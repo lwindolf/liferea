@@ -44,6 +44,11 @@ static GModule *handle;
 
 extern GtkWidget *mainwindow;
 
+extern char	*proxyname;
+extern char *proxyusername;
+extern char *proxypassword;
+extern int	proxyport;
+
 /* -------------------------------------------------------------------- */
 /* module loading and initialisation					*/
 /* -------------------------------------------------------------------- */
@@ -173,6 +178,7 @@ void ui_htmlview_init(void) {
 	
 	if(success) {
 		htmlviewInfo->init();
+		ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
 	} else
 		g_error(_("Sorry, I was not able to load any installed browser modules! Try the --debug-all option to get debug information!"));
 }
@@ -393,6 +399,11 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 gboolean ui_htmlview_scroll() {
 
 	return htmlviewInfo->scrollPagedown(ui_mainwindow_get_active_htmlview());
+}
+
+void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
+	if (htmlviewInfo != NULL && htmlviewInfo->setProxy != NULL)
+		htmlviewInfo->setProxy(hostname, port, username, password);
 }
 
 /* -------------------------------------------------------------------- */

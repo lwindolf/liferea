@@ -120,6 +120,7 @@ struct htmlviewPluginInfo_ {
 	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
 	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
+	void (*setProxy) (gchar *hostname, int port, gchar *username, gchar *password);
 };
 
 
@@ -236,6 +237,17 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri);
  * the maximum and TRUE if the vertical adjustment was increased.
  */
 gboolean ui_htmlview_scroll(void);
+
+/**
+ * Function alerts the htmlview that the selected proxy has
+ * changed.
+ *
+ * @param hostname proxy hostname, or NULL to disable the proxy
+ * @param port proxy port
+ * @param username proxy authentication username
+ * @param password proxy authentication password
+ */
+void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password);
 
 void on_popup_launch_link_selected(gpointer    callback_data,
 						  guint       callback_action,

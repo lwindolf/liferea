@@ -39,10 +39,6 @@
 #include "../ui_popup.h"
 #include "mozilla.h"
 
-/* from conf.c */
-extern char	*proxyname;
-extern int	proxyport;
-
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
@@ -222,20 +218,7 @@ static GtkWidget * mozilla_create() {
 						widget);
 						
 	}
-
-	/* set proxy and other stuff (can't be in mozilla_init() because 
-	   proxy config is not yet available at this time */
-	if(NULL != proxyname) {	/* bad access to global stuff from conf.c */
-		debug0(DEBUG_GUI, "setting proxy for Mozilla");
-		mozilla_preference_set("network.proxy.http", proxyname);
-		mozilla_preference_set_int("network.proxy.http_port", proxyport);
-		mozilla_preference_set_int("network.proxy.type", 1);
-	} else {
-		mozilla_preference_set_int("network.proxy.type", 0);
-	}
-	mozilla_preference_set_boolean("mozilla.widget.raise-on-setfocus", FALSE);
-	mozilla_save_prefs();
-
+	
 	return widget;
 }
 
@@ -256,6 +239,9 @@ static void mozilla_init() {
 	
 	/* startup done */
 	gtk_moz_embed_push_startup();
+	
+	mozilla_preference_set_boolean("mozilla.widget.raise-on-setfocus", FALSE);
+	mozilla_save_prefs();
 }
 
 static void mozilla_deinit() {
@@ -270,6 +256,19 @@ static void launch_url(GtkWidget *widget, const gchar *url) {
 
 static gboolean launch_inside_possible(void) { return TRUE; }
 
+static void mozilla_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
+	if(NULL != hostname) {
+		debug0(DEBUG_GUI, "setting proxy for Mozilla");
+		mozilla_preference_set("network.proxy.http", hostname);
+		mozilla_preference_set_int("network.proxy.http_port", port);
+		mozilla_preference_set_int("network.proxy.type", 1);
+	} else {
+		mozilla_preference_set_int("network.proxy.type", 0);
+	}
+	
+	mozilla_save_prefs();
+}
+
 static htmlviewPluginInfo mozillaInfo = {
 	HTMLVIEW_API_VERSION,
 	"Mozilla",
@@ -281,7 +280,8 @@ static htmlviewPluginInfo mozillaInfo = {
 	launch_inside_possible,
 	mozilla_get_zoom,
 	mozilla_set_zoom,
-	mozilla_scroll_pagedown
+	mozilla_scroll_pagedown,
+	mozilla_set_proxy
 };
 
 DECLARE_HTMLVIEW_PLUGIN(mozillaInfo);
