@@ -184,7 +184,7 @@ static void load_folder_contents(folderPtr folder, gchar* path);
 
 static gboolean load_key(folderPtr parent, gchar *id) {
 	int		type, interval;
-	gchar		*path2, *name, *url, *cacheid;
+	gchar		*path2, *name, *url, *cacheid, *oldfilename, *newid, *newfilename;
 	folderPtr 	folder;
 	feedPtr		fp;
 	gboolean 	expanded;
@@ -248,15 +248,25 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 			cacheid = g_strdup_printf("_%s",id);
 		}
 
+		newid = conf_new_id();
+		
+		oldfilename = getCacheFileName(cacheid, getExtension(type));
+		newfilename = getCacheFileName(newid, NULL);
+		rename(oldfilename, newfilename);
+		g_free(oldfilename);
+		g_free(newfilename);
+		
 		fp = feed_new();
 		feed_set_type(fp, type);
-		feed_set_source(fp, g_strdup(url));
-		feed_set_title(fp, g_strdup(name));
-		feed_set_id(fp, g_strdup(cacheid));
+		feed_set_source(fp, url);
+		feed_set_title(fp, name);
+		feed_set_id(fp, newid);
 		feed_set_update_interval(fp, interval);
+		feed_load_from_cache(fp);
 		ui_folder_add_feed(parent, fp, -1);
-
+		
 		g_free(cacheid);
+		g_free(newid);
 		g_free(url);
 		g_free(name);
 	}

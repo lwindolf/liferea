@@ -78,9 +78,6 @@ GHashTable	*feedHandler = NULL;
    and searching functionality */
 feedPtr		allItems = NULL;
 
-/* prototypes */
-static gboolean update_timer_main(gpointer data);
-
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
 /* ------------------------------------------------------------ */
@@ -251,7 +248,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
 	
-	filename = getCacheFileName(fp->id, getExtension(fp->type));
+	filename = getCacheFileName(fp->id, NULL);
 	
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		g_warning(_("Error while reading cache file\"%s\" ! Cache file could not be loaded!"), filename);
@@ -740,8 +737,7 @@ gchar * feed_get_title(feedPtr fp) {
 }
 
 void feed_set_title(feedPtr fp, gchar *title) {
-	if (fp->title)
-		g_free(fp->title);
+	g_free(fp->title);
 	fp->title = g_strdup(title);
 	conf_feedlist_schedule_save();
 }
@@ -750,8 +746,7 @@ gchar * feed_get_description(feedPtr fp) { return fp->description; }
 gchar * feed_get_source(feedPtr fp) { return fp->source; }
 
 void feed_set_source(feedPtr fp, gchar *source) {
-	if(fp->source)
-		g_free(fp->source);
+	g_free(fp->source);
 
 	fp->source = g_strdup(source);
 	conf_feedlist_schedule_save();
