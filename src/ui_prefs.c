@@ -213,12 +213,48 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	}
 	g_assert(NULL != prefdialog);
 	
-	/* ================= panel 1 "feed handling" ==================== */
+	/* ================== panel 1 "feed handling" ==================== */
+
+	widget = lookup_widget(prefdialog, "updatealloptionbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(UPDATE_ON_STARTUP));
+	
+	widget = lookup_widget(prefdialog, "helpoptionbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), !getBooleanConfValue(DISABLE_HELPFEEDS));
+	
+	widget = lookup_widget(prefdialog, "itemCountBtn");
+	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
+	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
+
+	/* ================== panel 2 "headline display" ==================== */
 
 	/* set the inside browsing flag */
 	widget = lookup_widget(prefdialog, "browseinwindow");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
 	
+	/* Time format */
+	tmp = getNumericConfValue(TIME_FORMAT_MODE);
+	if((tmp > 3) || (tmp < 1)) 
+		tmp = 1;	/* correct configuration if necessary */
+
+	entry = lookup_widget(prefdialog, "timeformatentry");
+	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(TIME_FORMAT));
+	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==3);
+
+	/* Set fields in the radio widgets so that they know their option # and the pref dialog */
+	for(i = 1; i <= 3; i++) {
+		widgetname = g_strdup_printf("%s%d", "timeradiobtn", i);
+		widget = lookup_widget(prefdialog, widgetname);
+		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
+		gtk_object_set_data(GTK_OBJECT(widget), "entry", entry);
+		g_free(widgetname);
+	}
+
+	widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
+	widget = lookup_widget(prefdialog, widgetname);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+	g_free(widgetname);
+	
+	/* ================== panel 3 "external browser" ==================== */
 	
 	tmp = 0;
 	libname = getStringConfValue(BROWSER_ID);
@@ -242,45 +278,15 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(BROWSER_COMMAND));
 	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==manual);
 	gtk_widget_set_sensitive(lookup_widget(prefdialog, "manuallabel"), tmp==manual);	
-	/* Time format */
-	tmp = getNumericConfValue(TIME_FORMAT_MODE);
-	if((tmp > 3) || (tmp < 1)) 
-		tmp = 1;	/* correct configuration if necessary */
-
-	entry = lookup_widget(prefdialog, "timeformatentry");
-	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(TIME_FORMAT));
-	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==3);
-
-
-	/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-	for(i = 1; i <= 3; i++) {
-		widgetname = g_strdup_printf("%s%d", "timeradiobtn", i);
-		widget = lookup_widget(prefdialog, widgetname);
-		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-		gtk_object_set_data(GTK_OBJECT(widget), "entry", entry);
-		g_free(widgetname);
-	}
-
-	widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
-	widget = lookup_widget(prefdialog, widgetname);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-	g_free(widgetname);
-
-	widget = lookup_widget(prefdialog, "updatealloptionbtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(UPDATE_ON_STARTUP));
 	
-	widget = lookup_widget(prefdialog, "helpoptionbtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), !getBooleanConfValue(DISABLE_HELPFEEDS));
-	
-	widget = lookup_widget(prefdialog, "itemCountBtn");
-	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
-	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
-
-	/* ================== panel 2 "notification settings" ================ */
+	/* ================== panel 4 "GUI" ================ */
 	
 	widget = lookup_widget(prefdialog, "trayiconoptionbtn");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_TRAY_ICON));
-
+	
+	widget = lookup_widget(prefdialog, "popupwindowsoptionbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_POPUP_WINDOWS));
+	
 	/* menu / tool bar settings */	
 	for(i = 1; i <= 3; i++) {
 		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
@@ -321,7 +327,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
 	
 	
-	/* ================= panel 3 "proxy settings" ======================== */
+	/* ================= panel 5 "proxy" ======================== */
 	
 	enabled = getBooleanConfValue(USE_PROXY);
 	widget = lookup_widget(prefdialog, "enableproxybtn");
