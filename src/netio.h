@@ -27,7 +27,6 @@
 #define _NETIO_H
 
 #include "update.h"
-#include "conversions.h"
 
 /* returns the raw download data or NULL on error */
 char * downloadURL(struct feed_request *request);

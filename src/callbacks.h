@@ -74,6 +74,7 @@ void on_popup_refresh_selected(void);
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 		
 void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_next_unread_item_selected(void);
 void on_popup_zoomin_selected(void);
 void on_popup_zoomout_selected(void);

@@ -1,5 +1,5 @@
 /*
-   item list handling
+   item list/view handling
    
    Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
 
@@ -34,11 +34,11 @@ extern GdkPixbuf	*icons[];
 static GtkTreeStore	*itemstore = NULL;
 
 extern feedPtr		selected_fp;
-extern gint       selected_type;
+extern gint		selected_type;
 
 extern gboolean 	itemlist_mode;
 
-static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
+static gint		itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
 
 /* like selected_fp, to remember the last selected item */
 itemPtr	selected_ip = NULL;
@@ -256,7 +256,7 @@ void displayItemList(void) {
 			}
 			
 			/* reset HTML widget scrolling */
-			resetScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemlistview")));
+			resetItemViewScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemlistview")));
 		} else {	
 			/* three pane mode */
 			if(NULL == selected_ip) {
@@ -331,6 +331,46 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 	preFocusItemlist();
 }
 
+/* Resets the horizontal and vertical scrolling of the items HTML view. */
+void resetItemViewScrolling(GtkScrolledWindow *itemview) {
+	GtkAdjustment	*adj;
+
+	if(NULL != itemview) {
+		adj = gtk_scrolled_window_get_vadjustment(itemview);
+		gtk_adjustment_set_value(adj, 0.0);
+		gtk_scrolled_window_set_vadjustment(itemview, adj);
+		gtk_adjustment_value_changed(adj);
+
+		adj = gtk_scrolled_window_get_hadjustment(itemview);
+		gtk_adjustment_set_value(adj, 0.0);
+		gtk_scrolled_window_set_hadjustment(itemview, adj);
+		gtk_adjustment_value_changed(adj);
+	} else {
+		g_warning(_("internal error! could not reset HTML widget scrolling!"));
+	}
+}
+
+/* Function scrolls down the item views scrolled window.
+   This function returns FALSE if the scrolled window
+   vertical scroll position is at the maximum and TRUE
+   if the vertical adjustment was increased. */
+gboolean scrollItemView(GtkWidget *itemView) {
+	GtkAdjustment	*vertical_adjustment;
+	gdouble		old_value;
+	gdouble		new_value;
+	gdouble		limit;
+
+	vertical_adjustment = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(itemView));
+	old_value = gtk_adjustment_get_value(vertical_adjustment);
+	new_value = old_value + vertical_adjustment->page_increment;
+	limit = vertical_adjustment->upper - vertical_adjustment->page_size;
+	if(new_value > limit)
+		new_value = limit;
+	gtk_adjustment_set_value(vertical_adjustment, new_value);
+	gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(itemView), vertical_adjustment);
+	return (new_value > old_value);
+}
+
 /* mouse/keyboard interaction callbacks */
 void itemlist_selection_changed(void) {
 	GtkTreeSelection	*selection;
@@ -366,7 +406,7 @@ void itemlist_selection_changed(void) {
 					displayItem(selected_ip);
 
 					/* reset HTML widget scrolling */
-					resetScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemview")));
+					resetItemViewScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemview")));
 
 					/* redraw feed list to update unread items numbers */
 					redrawFeedList();
@@ -530,7 +570,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	}
 }
 
-gboolean findUnreadItem() {
+gboolean findUnreadItem(void) {
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
 	GtkWidget		*treeview;

@@ -12,6 +12,9 @@
 /*-----------------------------------------------------------------------*/
 /* some Liferea specific adaptions					 */
  
+#ifndef _CONVERSIONS_H
+#define _CONVERSIONS_H
+
 #include "support.h"
 
 /* we redefine some SnowNews functions */
@@ -22,6 +25,7 @@
 
 void *zlib_uncompress(void *in_buf, int in_size, int *out_size, int voodoo_magic);
 void *gzip_uncompress(void *in_buf, int in_size, int *out_size);
+char *base64encode(char const *inbuf, unsigned int inbuf_size);
 
 struct gzip_header {
 	unsigned char magic[2];
@@ -36,3 +40,5 @@ struct gzip_footer {
 	unsigned char crc32[4];
 	unsigned char size[4];
 };
+
+#endif

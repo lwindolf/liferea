@@ -5,6 +5,11 @@
 	* When you change a feed URL the feed is
 	  now updated automatically after closing
 	  the properties dialog.
+	* Added a patch (883388) from Johannes
+	  Schlueter that allows to execute shell
+	  command with popen() by specifying
+	  something like "| any-command" as
+	  as a subscription URL.
 	* Added the previously remove proxy dialog
 	  as I decided Liferea should stay a GTK
 	  application (but Søren Hansen told me he

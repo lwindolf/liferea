@@ -1,5 +1,5 @@
 /*
-   item list functions
+   item list/view handling
    
    Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
 
@@ -54,5 +54,14 @@ void on_popup_allunread_selected(void);
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer  user_data);
 void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item);
+
+/* Resets the horizontal and vertical scrolling of the items HTML view. */
+void resetItemViewScrolling(GtkScrolledWindow *itemview);
+
+/* Function scrolls down the item views scrolled window.
+   This function returns FALSE if the scrolled window
+   vertical scroll position is at the maximum and TRUE
+   if the vertical adjustment was increased. */
+gboolean scrollItemView(GtkWidget *itemView);
 
 #endif

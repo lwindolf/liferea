@@ -104,25 +104,6 @@ void initGUI(void) {
 	setupPopupMenues();		/* create popup menues */
 }
 
-void resetScrolling(GtkScrolledWindow *itemview) {
-	GtkAdjustment	*adj;
-
-	if(NULL != itemview) {
-		adj = gtk_scrolled_window_get_vadjustment(itemview);
-		gtk_adjustment_set_value(adj, 0.0);
-		gtk_scrolled_window_set_vadjustment(itemview, adj);
-		gtk_adjustment_value_changed(adj);
-
-		adj = gtk_scrolled_window_get_hadjustment(itemview);
-		gtk_adjustment_set_value(adj, 0.0);
-		gtk_scrolled_window_set_hadjustment(itemview, adj);
-		gtk_adjustment_value_changed(adj);
-	} else {
-		g_warning(_("internal error! could not reset HTML widget scrolling!"));
-	}
-}
-
-
 void redrawWidget(gchar *name) {
 	GtkWidget	*list;
 	gchar		*msg;
@@ -175,6 +156,12 @@ selected_ip = NULL;
 	
 	/* find first unread item */
 	findUnreadItem();
+}
+
+void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
+
+	if (scrollItemView(lookup_widget(mainwindow, "itemview")) == FALSE)
+ 		on_next_unread_item_activate(menuitem, user_data);
 }
 
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
