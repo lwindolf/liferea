@@ -59,7 +59,6 @@ typedef struct item {
 	
 	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
 	struct feed	*sourceFeed;		/**< Pointer to the source feed this item was derived from (used for searches and vfolders) */
-	GSList		*vfolders;		/**< List of vfolders in which this item appears */
 	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
 

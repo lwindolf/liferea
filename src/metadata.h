@@ -38,7 +38,7 @@ typedef void	(*parseItemTagFunc)	(itemPtr ip, xmlNodePtr cur);
 /** struct used to register namespace handler */
 typedef struct NsHandler {
 	gchar			*prefix;		/**< namespace prefix */
-	registerNsFunc	registerNs;
+	registerNsFunc		registerNs;
 	
 	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
 	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
@@ -71,6 +71,11 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data);
 
 void metadata_list_render(GSList *metadata, struct displayset *displayset);
+
+/** 
+ * Adds all elements from one metadata list to the other.
+ */
+void metadata_list_copy(GSList *from, GSList *to);
 
 void metadata_list_free(GSList *metadata);
 

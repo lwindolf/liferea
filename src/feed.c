@@ -586,7 +586,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					item_set_description(old_ip, item_get_description(new_ip));
 					item_set_time(old_ip, item_get_time(new_ip));
 					item_set_unread(old_ip);
-					vfolder_update_item(old_fp, old_ip);
+					vfolder_update_item(old_ip);
 					debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 					newcount++;
 					traycount++;
@@ -1222,8 +1222,6 @@ gchar *feed_render(feedPtr fp) {
 	}	
 	return buffer;
 }
-
-
 
 /* Method to copy the info payload of the structure given by
    new_fp to the structure fp points to. Essential model

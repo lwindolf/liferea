@@ -49,7 +49,24 @@ itemPtr item_new(void) {
 }
 
 void item_copy(itemPtr from, itemPtr to) {
-	g_warning("item_copy(): implement me!");
+g_warning("item_copy() called...");
+	item_set_title(to, from->title);
+	item_set_source(to, from->source);
+	item_set_real_source_url(to, from->real_source_url);
+	item_set_real_source_title(to, from->real_source_title);
+	item_set_description(to, from->description);
+	item_set_id(to, from->id);
+	to->readStatus = from->readStatus;
+	to->marked = from->marked;
+	to->time = from->time;
+	
+	/* the following line enables state propagation in item.c */
+	to->sourceFeed = from->fp;	
+	
+	/* this copies metadata */
+	metadata_list_free(to->metadata);
+	to->metadata = NULL;
+	metadata_list_copy(from->metadata, to->metadata);
 }
 
 void item_set_title(itemPtr ip, const gchar * title) {
@@ -92,7 +109,10 @@ void item_set_mark(itemPtr ip, gboolean flag) {
 
 	ip->marked = flag;
 
-	/* this is a user changable state and must be propagated to the source feed */
+	/* there might be vfolders using this item */
+	vfolder_update_item(ip);
+		
+	/* if this item belongs to a vfolder update the source feed */
 	if(ip->sourceFeed != NULL) {
 		feed_load(ip->sourceFeed);
 		sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
@@ -120,12 +140,10 @@ void item_set_unread(itemPtr ip) {
 	itemPtr		sourceItem;
 	
 	if(TRUE == ip->readStatus) {
-		/*vfolders = ip->vfolders;
-		while(NULL != vfolders) {
-			feed_increase_unread_counter(vfolders->data);
-			vfolders = g_slist_next(vfolders);
-		}*/
-		/* this is a user changable state and must be propagated to the source feed */
+		/* there might be vfolders using this item */
+		vfolder_update_item(ip);
+		
+		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
 			feed_load(ip->sourceFeed);
 			sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
@@ -145,13 +163,10 @@ void item_set_read(itemPtr ip) {
 	feedPtr		fp;
 
 	if(FALSE == ip->readStatus) {
-		/*vfolders = ip->vfolders;
-		while(NULL != vfolders) {
-			fp = vfolders->data;
-			feed_decrease_unread_counter(fp);
-			vfolders = g_slist_next(vfolders);
-		}*/
-		/* this is a user changable state and must be propagated to the source feed */
+		/* there might be vfolders using this item */
+		vfolder_update_item(ip);
+		
+		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
 			feed_load(ip->sourceFeed);
 			sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
@@ -179,7 +194,6 @@ void item_free(itemPtr ip) {
 	g_free(ip->description);
 	g_free(ip->id);
 	g_assert(NULL == ip->tmpdata);	/* should be free after rendering */
-	g_slist_free(ip->vfolders);
 	metadata_list_free(ip->metadata);
 	/* FIXME: remove item from all assigned VFolders! */
 	if(ip->ui_data != NULL)

@@ -70,8 +70,6 @@ void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	if(NULL == tmp) {
 		tmp = item_new();	
 		item_copy(ip, tmp);
-		/* the following line enables state propagation in item.c */
-		tmp->sourceFeed = ip->fp;	
 		feed_add_item(vfolder_item_pool, tmp);
 		feed_add_item(vp, tmp);
 	} else {
@@ -82,14 +80,16 @@ void vfolder_add_item(feedPtr vp, itemPtr ip) {
 
 /* Method to be called when a item was updated. This maybe
    after user interaction or updated item contents */
-void vfolder_update_item(feedPtr fp, itemPtr ip) {
-	GSList		*items = fp->items;
+void vfolder_update_item(itemPtr ip) {
+	GSList		*items = vfolder_item_pool->items;
 	itemPtr		tmp;
 	
 	while(NULL != items) {
 		tmp = items->data;
+		g_assert(NULL != ip->fp);
+		g_assert(NULL != tmp->fp);
 		if((0 == strcmp(ip->id, tmp->id)) &&
-		   (0 == strcmp(fp->id, (tmp->fp)->id))) {
+		   (0 == strcmp((ip->fp)->id, (tmp->fp)->id))) {
 		   	debug0(DEBUG_UPDATE, "item used in vfolder, updating vfolder copy...");
 			item_copy(ip, tmp);
 			return;
