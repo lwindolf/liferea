@@ -159,24 +159,6 @@ void on_popup_zoomout_selected(void) {
 	ui_mainwindow_zoom_out();
 }
 
-void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
-	GtkClipboard *clipboard;
-
-	clipboard = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
-	gtk_clipboard_set_text(clipboard, url, -1);
- 
-	clipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
-	gtk_clipboard_set_text(clipboard, url, -1);
-	
-	g_free(url);
-}
-
-void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
-
-	ui_feedlist_new_subscription(url, NULL, TRUE);
-	g_free(url);
-}
-
 void on_popup_allunread_selected(void) {
 	
 	nodePtr np = ui_feedlist_get_selected();

@@ -22,6 +22,7 @@
 #include "folder.h"
 #include "support.h"
 #include "callbacks.h"
+#include "htmlview.h"
 #include "ui_popup.h"
 #include "ui_mainwindow.h"
 
@@ -120,12 +121,13 @@ void setupPopupMenues(void) {
 	/* HTML view popup menues */
 	html_menu_items = NULL;
 	html_menu_len = 0;
-	addPopupOption(&html_menu_items, &html_menu_len, _("/_Increase Text Size"),			NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
-	addPopupOption(&html_menu_items, &html_menu_len, _("/_Decrease Text Size"),		NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
+	addPopupOption(&html_menu_items, &html_menu_len, _("/_Increase Text Size"),	NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
+	addPopupOption(&html_menu_items, &html_menu_len, _("/_Decrease Text Size"),	NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
 
 	url_menu_items = NULL;
 	url_menu_len = 0;
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);
+	addPopupOption(&url_menu_items, &url_menu_len, _("/_Launch Link In Browser"),	NULL, on_popup_launch_link_selected, 		0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Subscribe"),		NULL, on_popup_subscribe_url_selected, 		0, NULL, 0);
 }
 

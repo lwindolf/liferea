@@ -73,13 +73,6 @@ void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_next_unread_item_selected(void);
 void on_popup_zoomin_selected(void);
 void on_popup_zoomout_selected(void);
-void on_popup_copy_url_selected(gpointer    callback_data,
-						  guint       callback_action,
-						  GtkWidget  *widget);
-						  
-void on_popup_subscribe_url_selected(gpointer    callback_data,
-						  guint       callback_action,
-						  GtkWidget  *widget);
 
 // FIXME: move the following to ui_filter...
 void

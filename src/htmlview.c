@@ -356,3 +356,30 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 gboolean ui_htmlview_scroll() {
 	return htmlviewInfo->scrollPagedown(ui_mainwindow_get_active_htmlview());
 }
+
+/* -------------------------------------------------------------------- */
+/* htmlview callbacks 							*/
+/* -------------------------------------------------------------------- */
+
+void on_popup_launch_link_selected(gpointer url, guint callback_action, GtkWidget *widget) {
+
+	ui_htmlview_launch_URL(url, TRUE);
+}
+
+void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
+	GtkClipboard *clipboard;
+
+	clipboard = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
+	gtk_clipboard_set_text(clipboard, url, -1);
+ 
+	clipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+	gtk_clipboard_set_text(clipboard, url, -1);
+	
+	g_free(url);
+}
+
+void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
+
+	ui_feedlist_new_subscription(url, NULL, TRUE);
+	g_free(url);
+}

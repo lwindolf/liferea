@@ -221,5 +221,16 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri);
  */
 gboolean ui_htmlview_scroll(void);
 
+void on_popup_launch_link_selected(gpointer    callback_data,
+						  guint       callback_action,
+						  GtkWidget  *widget);
+
+void on_popup_copy_url_selected(gpointer    callback_data,
+						  guint       callback_action,
+						  GtkWidget  *widget);
+						  
+void on_popup_subscribe_url_selected(gpointer    callback_data,
+						  guint       callback_action,
+						  GtkWidget  *widget);
 
 #endif
