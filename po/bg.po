@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ISLD Localization Project VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-06-13 18:36+0200\n"
-"PO-Revision-Date: 2004-06-12 19:39+0300\n"
+"PO-Revision-Date: 2004-06-18 01:26-0400\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
 "MIME-Version: 1.0\n"
@@ -1295,7 +1295,7 @@ msgstr "Хостът \"%s\" не може да бъде намерен!"
 #: src/net/netio.c:772
 #, c-format
 msgid "Could not connect to server %s: %s"
-msgstr "Не може да се свърже със сървъра \"%s\" !"
+msgstr "Не може да се свърже със сървъра \"%s\": %s"
 
 #: src/net/netio.c:782
 msgid "Aborted."
