@@ -1032,6 +1032,8 @@ gchar *feed_render(feedPtr fp) {
 			addToHTMLBufferFast(&buffer, displayset.foot);
 			g_free(displayset.foot);
 		}
+		
+		addToHTMLBufferFast(&buffer, "<br/><br/>");	/* instead of the technorati link image shown for items */
 
 		if(displayset.foottable != NULL) {
 			addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);

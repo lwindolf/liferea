@@ -83,13 +83,11 @@ span.itemtitle {
    item/feed description footer */
    
 div.feedfoottitle {
-	margin-top:5px;
 	font-size:0.7em;
 	color:#888;
 }
 
 table.feedfoot {
-	margin-top:5px;
 	width:100%;
 	border-width:1px;
 	border-top-style:solid;
