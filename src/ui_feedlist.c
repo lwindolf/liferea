@@ -30,6 +30,7 @@
 #include "update.h"
 #include "htmlview.h"
 #include "favicon.h"
+#include "debug.h"
 #include "net/netio.h"
 
 /* possible selected new dialog feed types */
@@ -41,10 +42,6 @@ static gint selectableTypes[] = {	FST_AUTODETECT,
 					FST_OPML
 				};
 
-
-enum { LIFEREA_FEED_ROW};
-
-static GtkTargetEntry lte[] = {{"LIFEREA_FEED_ROW", GTK_TARGET_SAME_WIDGET, LIFEREA_FEED_ROW}};
 #define MAX_TYPE_SELECT	6
 
 extern GtkWidget	*mainwindow;
@@ -479,71 +476,62 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDia
 	struct feed_request 	*request;
 	feedPtr			fp;
 	gchar			*data;
-	gboolean			error = FALSE;
 	feedHandlerPtr		fhp;
+	
+	debug_enter("ui_feedlist_new_subscription");	
 	
 	/* directly download (do not use update queue to avoid
 	   waiting for the end of other updates and to
 	   get control back when feed is downloaded to show
 	   properties dialog) */
-	
-	/* FIXME: The downloading should not block? */
-	
 	request = update_request_new(NULL);
 	request->feedurl = g_strdup(source);
-	data = downloadURL(request);
-	
-	if (data == NULL) {
-		ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
-		error = TRUE;
-	}
-	
-	if ( data != NULL && type == FST_AUTODETECT)
+	data = downloadURL(request);	/* FIXME: The downloading should not block? */
+
+	/* determine feed type if necessary */	
+	if((data != NULL) && (type == FST_AUTODETECT))
 		type = feed_detect_type(request->data);
 	
-	if (type == FST_INVALID) {
-		ui_show_error_box(_("The newly created feed's type could not be detected. Please select a feed type."));
-		error = TRUE;
-	}
-	
-	fp = feed_new();
-	feed_set_id(fp, conf_new_id());
-	feed_set_title(fp, g_strdup("New feed"));
-	feed_set_type(fp, type);
-	feed_set_source(fp, request->feedurl);
-	favicon_download(fp);		// FIXME: this blocks the program!!!
-	
-	ui_folder_add_feed(ui_feedlist_get_target_folder(), fp, -1);
-	
-	/* determine feed type if necessary */
-	
-	if(error) {
-		feed_set_available(fp, FALSE);
+	if(type == FST_INVALID) {
+		ui_show_error_box(_("The newly created feed's type could not be detected. Please subscribe again and select a feed type!"));	
+		// FIXME: improve this by reopening a new subscription dialog and preset URL
 	} else {
-		if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			g_assert(NULL != fhp->readFeed);
-			(*(fhp->readFeed))(fp, data);
-		} else {
-			g_error(_("internal error! unknown feed type in new_subscription()!"));
-			return;
-		}
-
-		feed_set_available(fp, TRUE);
-		
-		if(showPropDialog) {
-			/* built, set default update interval and show properties dialog */
-			propdialog = ui_feedlist_build_prop_dialog();
-			
-			if(-1 != (interval = feed_get_default_update_interval(fp))) {
-				updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-			}
-			
-			on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
-		}
-	}
 	
+		fp = feed_new();
+		feed_set_id(fp, conf_new_id());
+		feed_set_type(fp, type);
+		feed_set_source(fp, request->feedurl);
+		favicon_download(fp);		// FIXME: this blocks the program!!!
+
+		ui_folder_add_feed(ui_feedlist_get_target_folder(), fp, -1);
+		
+		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
+		if(data == NULL)
+			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
+			
+		if(feed_get_available(fp)) {
+			if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
+				g_assert(NULL != fhp->readFeed);
+				(*(fhp->readFeed))(fp, data);			
+
+				if(showPropDialog) {
+					/* built, set default update interval and show properties dialog */
+					propdialog = ui_feedlist_build_prop_dialog();
+
+					if(-1 != (interval = feed_get_default_update_interval(fp))) {
+						updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
+						gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
+					}
+
+					on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
+				}
+			} else {
+				g_warning("internal error! unknown feed type!");
+			}
+		}
+	}	
 	update_request_free(request);
+	debug_exit("ui_feedlist_new_subscription");
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
