@@ -670,8 +670,6 @@ char * downloadURL(struct feed_request *request) {
 
 	if(NULL != strstr(request->feedurl, "://")) {
 		/* :// means it an URL */
-		request->lastmodified = NULL;	// FIXME
-
 		tmpurl = g_strdup(request->feedurl);	/* necessary because DownloadFeed() works on the URL string */
 		data = DownloadFeed(tmpurl, request);
 		g_free(tmpurl);

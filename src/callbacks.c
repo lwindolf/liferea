@@ -1539,6 +1539,10 @@ gint checkForUpdateResults(gpointer data) {
 			redrawFeedList();
 			updateUI();
 		}
+	} else if(304 == request->lasthttpstatus) {
+		msg = g_strdup_printf(_("\"%s\" has not changed since last update."), getFeedTitle(request->fp));
+		print_status(msg);
+		g_free(msg);
 	} else {
 		msg = g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp));
 		print_status(msg);
