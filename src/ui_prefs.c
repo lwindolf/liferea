@@ -271,6 +271,23 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, "browseinwindow");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
 	
+	/* select current browse key menu entry */
+	switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
+		case 0:
+			tmp = 1;
+			break;
+		default:
+		case 1:
+			tmp = 0;
+			break;
+		case 2:
+			tmp = 2;
+			break;
+		
+	}
+	widget = lookup_widget(prefdialog, "browsekeyoptionmenu");
+	gtk_option_menu_set_history(GTK_OPTION_MENU(widget), tmp);
+	
 	/* Time format */
 	tmp = getNumericConfValue(TIME_FORMAT_MODE);
 	if((tmp > 3) || (tmp < 1)) 
@@ -541,4 +558,19 @@ void on_feedsinmemorybtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number"));
 	setBooleanConfValue(KEEP_FEEDS_IN_MEMORY, (active_button == 2));
+}
+
+void on_browsekey_space_activate(GtkMenuItem *menuitem, gpointer user_data) {
+
+	setNumericConfValue(BROWSE_KEY_SETTING, 1);
+}
+
+void on_browsekey_ctrl_space_activate(GtkMenuItem *menuitem, gpointer user_data) {
+
+	setNumericConfValue(BROWSE_KEY_SETTING, 0);
+}
+
+void on_browsekey_alt_space_activate(GtkMenuItem *menuitem, gpointer user_data) {
+
+	setNumericConfValue(BROWSE_KEY_SETTING, 2);
 }

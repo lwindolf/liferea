@@ -15,6 +15,12 @@
 	  settings and http_proxy environment variable. (Nathan Conrad)
 	* Help feeds are no longer downloaded at every startup.
 	* Support for photo blog RSS modules. (Lars Lindner)
+	* There is a new preference option in the "Headline Display"
+	  tab to change the key binding for skimming through the
+	  articles. It now defaults to Ctrl-Space instead of simply
+	  Space. This is to allow using forms with Mozilla. If you
+	  prefer Space please set it explicitly in the preferences.
+	  (Lars Lindner)
 	  
 	Bugfixes:
 
@@ -24,6 +30,8 @@
 	  output displayed in the feed description contains invalid
 	  Unicode characters. This was reported by Yanko Kaneti.
 	  (Lars Lindner)
+	* Fixed bug with incorrect HTML in the condensed mode. 
+	  (Jack Lecou)
 	
 2004-08-02 Lars Linder <lars.lindner@gmx.net>
 

@@ -1580,21 +1580,28 @@ create_prefdialog (void)
   GtkWidget *hbox53;
   GtkWidget *label127;
   GtkWidget *vbox232;
+  GtkWidget *hbox63;
+  GtkWidget *label151;
+  GtkWidget *browsekeyoptionmenu;
+  GtkWidget *browsekeymenu;
+  GtkWidget *space;
+  GtkWidget *ctrl_space;
+  GtkWidget *alt_space;
   GtkWidget *label64;
   GtkWidget *hbox28;
   GtkWidget *label65;
   GtkWidget *htmlviewoptionmenu;
   GtkWidget *menu3;
   GtkWidget *browseinwindow;
-  GtkWidget *vbox249;
-  GtkWidget *label121;
-  GtkWidget *hbox50;
-  GtkWidget *label120;
-  GtkWidget *vbox15;
+  GtkWidget *vbox2581;
+  GtkWidget *label149;
+  GtkWidget *hbox61;
+  GtkWidget *label150;
+  GtkWidget *vbox2582;
   GtkWidget *timeradiobtn1;
   GSList *timeradiobtn1_group = NULL;
   GtkWidget *timeradiobtn2;
-  GtkWidget *hbox15;
+  GtkWidget *hbox62;
   GtkWidget *timeradiobtn3;
   GtkWidget *timeformatentry;
   GtkWidget *label39;
@@ -1813,15 +1820,43 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox53), vbox232, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox232), 5);
 
+  hbox63 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox63);
+  gtk_box_pack_start (GTK_BOX (vbox232), hbox63, FALSE, FALSE, 0);
+
+  label151 = gtk_label_new (_("Skim through articles with "));
+  gtk_widget_show (label151);
+  gtk_box_pack_start (GTK_BOX (hbox63), label151, FALSE, FALSE, 0);
+
+  browsekeyoptionmenu = gtk_option_menu_new ();
+  gtk_widget_show (browsekeyoptionmenu);
+  gtk_box_pack_start (GTK_BOX (hbox63), browsekeyoptionmenu, FALSE, FALSE, 0);
+
+  browsekeymenu = gtk_menu_new ();
+
+  space = gtk_menu_item_new_with_mnemonic (_("Space"));
+  gtk_widget_show (space);
+  gtk_container_add (GTK_CONTAINER (browsekeymenu), space);
+
+  ctrl_space = gtk_menu_item_new_with_mnemonic (_("<Ctrl> Space"));
+  gtk_widget_show (ctrl_space);
+  gtk_container_add (GTK_CONTAINER (browsekeymenu), ctrl_space);
+
+  alt_space = gtk_menu_item_new_with_mnemonic (_("<Alt> Space"));
+  gtk_widget_show (alt_space);
+  gtk_container_add (GTK_CONTAINER (browsekeymenu), alt_space);
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (browsekeyoptionmenu), browsekeymenu);
+
   label64 = gtk_label_new (_("Liferea displays feeds' content using various HTML renderers. Depending on which renderers are installed on your computer, different options will be available. Restart Liferea for changes to take effect."));
   gtk_widget_show (label64);
-  gtk_box_pack_start (GTK_BOX (vbox232), label64, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox232), label64, FALSE, FALSE, 5);
   gtk_label_set_line_wrap (GTK_LABEL (label64), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label64), 0, 0.5);
 
   hbox28 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox28);
-  gtk_box_pack_start (GTK_BOX (vbox232), hbox28, FALSE, FALSE, 5);
+  gtk_box_pack_start (GTK_BOX (vbox232), hbox28, FALSE, FALSE, 0);
 
   label65 = gtk_label_new (_("View Headlines With"));
   gtk_widget_show (label65);
@@ -1829,7 +1864,7 @@ create_prefdialog (void)
 
   htmlviewoptionmenu = gtk_option_menu_new ();
   gtk_widget_show (htmlviewoptionmenu);
-  gtk_box_pack_start (GTK_BOX (hbox28), htmlviewoptionmenu, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox28), htmlviewoptionmenu, FALSE, TRUE, 0);
 
   menu3 = gtk_menu_new ();
 
@@ -1839,54 +1874,54 @@ create_prefdialog (void)
   gtk_widget_show (browseinwindow);
   gtk_box_pack_start (GTK_BOX (vbox232), browseinwindow, FALSE, FALSE, 0);
 
-  vbox249 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox249);
-  gtk_box_pack_start (GTK_BOX (vbox222), vbox249, TRUE, TRUE, 0);
+  vbox2581 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox2581);
+  gtk_box_pack_start (GTK_BOX (vbox222), vbox2581, TRUE, TRUE, 0);
 
-  label121 = gtk_label_new (_("<span weight=\"bold\">Date Column Settings</span>"));
-  gtk_widget_show (label121);
-  gtk_box_pack_start (GTK_BOX (vbox249), label121, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label121), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label121), 0, 0.5);
+  label149 = gtk_label_new (_("<span weight=\"bold\">Date Column Settings</span>"));
+  gtk_widget_show (label149);
+  gtk_box_pack_start (GTK_BOX (vbox2581), label149, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label149), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label149), 0, 0.5);
 
-  hbox50 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox50);
-  gtk_box_pack_start (GTK_BOX (vbox249), hbox50, TRUE, TRUE, 0);
+  hbox61 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox61);
+  gtk_box_pack_start (GTK_BOX (vbox2581), hbox61, TRUE, TRUE, 0);
 
-  label120 = gtk_label_new (_("    "));
-  gtk_widget_show (label120);
-  gtk_box_pack_start (GTK_BOX (hbox50), label120, FALSE, FALSE, 0);
+  label150 = gtk_label_new (_("    "));
+  gtk_widget_show (label150);
+  gtk_box_pack_start (GTK_BOX (hbox61), label150, FALSE, FALSE, 0);
 
-  vbox15 = gtk_vbox_new (FALSE, 5);
-  gtk_widget_show (vbox15);
-  gtk_box_pack_start (GTK_BOX (hbox50), vbox15, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox15), 5);
+  vbox2582 = gtk_vbox_new (FALSE, 5);
+  gtk_widget_show (vbox2582);
+  gtk_box_pack_start (GTK_BOX (hbox61), vbox2582, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2582), 5);
 
   timeradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Display only time"));
   gtk_widget_show (timeradiobtn1);
-  gtk_box_pack_start (GTK_BOX (vbox15), timeradiobtn1, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2582), timeradiobtn1, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn1), timeradiobtn1_group);
   timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn1));
 
   timeradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("Display date and time"));
   gtk_widget_show (timeradiobtn2);
-  gtk_box_pack_start (GTK_BOX (vbox15), timeradiobtn2, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2582), timeradiobtn2, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn2), timeradiobtn1_group);
   timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn2));
 
-  hbox15 = gtk_hbox_new (FALSE, 5);
-  gtk_widget_show (hbox15);
-  gtk_box_pack_start (GTK_BOX (vbox15), hbox15, TRUE, FALSE, 0);
+  hbox62 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox62);
+  gtk_box_pack_start (GTK_BOX (vbox2582), hbox62, TRUE, FALSE, 0);
 
   timeradiobtn3 = gtk_radio_button_new_with_mnemonic (NULL, _("User defined format:"));
   gtk_widget_show (timeradiobtn3);
-  gtk_box_pack_start (GTK_BOX (hbox15), timeradiobtn3, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox62), timeradiobtn3, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn3), timeradiobtn1_group);
   timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn3));
 
   timeformatentry = gtk_entry_new ();
   gtk_widget_show (timeformatentry);
-  gtk_box_pack_start (GTK_BOX (hbox15), timeformatentry, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox62), timeformatentry, TRUE, TRUE, 0);
   gtk_tooltips_set_tip (tooltips, timeformatentry, _("for expert users: specify a time format string, consult the strftime() manpage for the format codes"), NULL);
   gtk_entry_set_activates_default (GTK_ENTRY (timeformatentry), TRUE);
 
@@ -2236,6 +2271,15 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) feedsinmemorybtn2, "clicked",
                     G_CALLBACK (on_feedsinmemorybtn_clicked),
                     NULL);
+  g_signal_connect ((gpointer) space, "activate",
+                    G_CALLBACK (on_browsekey_space_activate),
+                    NULL);
+  g_signal_connect ((gpointer) ctrl_space, "activate",
+                    G_CALLBACK (on_browsekey_ctrl_space_activate),
+                    NULL);
+  g_signal_connect ((gpointer) alt_space, "activate",
+                    G_CALLBACK (on_browsekey_alt_space_activate),
+                    NULL);
   g_signal_connect ((gpointer) browseinwindow, "toggled",
                     G_CALLBACK (on_openlinksinsidebtn_clicked),
                     NULL);
@@ -2325,20 +2369,27 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox53, "hbox53");
   GLADE_HOOKUP_OBJECT (prefdialog, label127, "label127");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox232, "vbox232");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox63, "hbox63");
+  GLADE_HOOKUP_OBJECT (prefdialog, label151, "label151");
+  GLADE_HOOKUP_OBJECT (prefdialog, browsekeyoptionmenu, "browsekeyoptionmenu");
+  GLADE_HOOKUP_OBJECT (prefdialog, browsekeymenu, "browsekeymenu");
+  GLADE_HOOKUP_OBJECT (prefdialog, space, "space");
+  GLADE_HOOKUP_OBJECT (prefdialog, ctrl_space, "ctrl_space");
+  GLADE_HOOKUP_OBJECT (prefdialog, alt_space, "alt_space");
   GLADE_HOOKUP_OBJECT (prefdialog, label64, "label64");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox28, "hbox28");
   GLADE_HOOKUP_OBJECT (prefdialog, label65, "label65");
   GLADE_HOOKUP_OBJECT (prefdialog, htmlviewoptionmenu, "htmlviewoptionmenu");
   GLADE_HOOKUP_OBJECT (prefdialog, menu3, "menu3");
   GLADE_HOOKUP_OBJECT (prefdialog, browseinwindow, "browseinwindow");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox249, "vbox249");
-  GLADE_HOOKUP_OBJECT (prefdialog, label121, "label121");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox50, "hbox50");
-  GLADE_HOOKUP_OBJECT (prefdialog, label120, "label120");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox15, "vbox15");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2581, "vbox2581");
+  GLADE_HOOKUP_OBJECT (prefdialog, label149, "label149");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox61, "hbox61");
+  GLADE_HOOKUP_OBJECT (prefdialog, label150, "label150");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2582, "vbox2582");
   GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn1, "timeradiobtn1");
   GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn2, "timeradiobtn2");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox15, "hbox15");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox62, "hbox62");
   GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn3, "timeradiobtn3");
   GLADE_HOOKUP_OBJECT (prefdialog, timeformatentry, "timeformatentry");
   GLADE_HOOKUP_OBJECT (prefdialog, label39, "label39");

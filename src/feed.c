@@ -262,7 +262,7 @@ void feed_save(feedPtr fp) {
 			xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
 			g_free(tmp);
 			
-			tmp = g_strdup_printf("%d", (TRUE == fp->available)?1:0);
+			tmp = g_strdup_printf("%d", (TRUE == feed_get_available(fp))?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 			g_free(tmp);
 			
@@ -433,7 +433,7 @@ gboolean feed_load(feedPtr fp) {
 				feed_set_image_url(fp, tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
-				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
+				feed_set_available(fp, (0 == atoi(tmp))?FALSE:TRUE);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) {
 				fp->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
@@ -525,7 +525,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 
 	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
 	feed_load(old_fp);
-	if(TRUE == new_fp->available) {
+	if(TRUE == feed_get_available(new_fp)) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
 		   in case they are reused... */
 		new_list = new_fp->items;
@@ -673,7 +673,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	old_fp->parseErrors = new_fp->parseErrors;
 	new_fp->parseErrors = NULL;
 
-	old_fp->available = new_fp->available;
+	feed_set_available(old_fp, feed_get_available(new_fp));
 	new_fp->items = NULL;
 
 	metadata_list_free(old_fp->metadata);

@@ -78,14 +78,32 @@ GtkWidget *ui_mainwindow_get_active_htmlview() {
 }
 
 static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
-	if (event->type == GDK_KEY_PRESS &&
-	    event->state == 0 &&
-	    event->keyval == GDK_space) {
-		if(ui_htmlview_scroll() == FALSE)
-			on_next_unread_item_activate(NULL, NULL);
-		return TRUE;
+	gboolean modifier_matches = FALSE;
+	
+	if((event->type == GDK_KEY_PRESS) &&
+	   (event->keyval == GDK_space)) {
+		switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
+			case 0:
+				modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
+				break;
+			default:
+			case 1:
+				modifier_matches = (0 == event->state);
+				break;
+			case 2:
+				modifier_matches = ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK);
+				break;
+		}
+		
+		if(modifier_matches) {
+			/* Note that this code is duplicated in mozilla/mozilla.cpp! */
+			if(ui_htmlview_scroll() == FALSE)
+				on_next_unread_item_activate(NULL, NULL);
+			return TRUE;
+		}
 	}
 	return FALSE;
+
 }
 
 void ui_mainwindow_set_mode(gboolean threePane) {

@@ -332,8 +332,6 @@ static void gtkhtml2_init() {
 }
 
 static void gtkhtml2_deinit() {
-	/*gnome_vfs_shutdown(); This should be done, but it locks up the
-	  process when things are still downloading */
 }
 
 static void gtkhtml2_html_received(struct request *r) {

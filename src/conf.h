@@ -27,8 +27,9 @@
 
 /* browsing settings */
 #define BROWSE_INSIDE_APPLICATION	"/apps/liferea/browse-inside-application"
+#define BROWSE_KEY_SETTING		"/apps/liferea/browse-key-setting"
 #define GNOME_BROWSER_ENABLED		"/apps/liferea/browsermode"
-#define BROWSER_ID				"/apps/liferea/browser_id"
+#define BROWSER_ID			"/apps/liferea/browser_id"
 #define BROWSER_PLACE			"/apps/liferea/browser_place"
 #define BROWSER_COMMAND			"/apps/liferea/browser"
 #define BROWSER_MODULE			"/apps/liferea/browser-module"

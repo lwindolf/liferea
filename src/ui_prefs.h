@@ -91,4 +91,17 @@ on_openlinksinsidebtn_clicked          (GtkToggleButton *togglebutton,
 void
 on_feedsinmemorybtn_clicked            (GtkButton       *button,
                                         gpointer         user_data);
+					
+void
+on_browsekey_space_activate            (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_browsekey_ctrl_space_activate       (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_browsekey_alt_space_activate        (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
 #endif

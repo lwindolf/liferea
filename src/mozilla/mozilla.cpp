@@ -45,20 +45,33 @@
 
 extern "C" {
 #include "../callbacks.h"
+#include "../conf.h"
 }
 
 extern "C" 
 gint mozilla_key_press_cb(GtkWidget *widget, gpointer ev) {
-	nsIDOMKeyEvent *event = (nsIDOMKeyEvent*)ev;
-	PRUint32 keyCode = 0;
+	nsIDOMKeyEvent	*event = (nsIDOMKeyEvent*)ev;
+	PRUint32	keyCode = 0;
+	PRBool		alt, ctrl, shift;
+	
+	/* This key interception is necessary to catch
+	   spaces which are an internal Mozilla key binding.
+	   All other combinations like Ctrl-Space, Alt-Space
+	   can be caught with the GTK code in ui_mainwindow.c.
+	   This is a bad case of code duplication... */
 	
 	event->GetCharCode(&keyCode);
-	if (keyCode == nsIDOMKeyEvent::DOM_VK_SPACE) {
-		if (mozilla_scroll_pagedown(widget) == FALSE)
-			on_next_unread_item_activate(NULL, NULL);
-		return TRUE;
-	}
-	
+	if(keyCode == nsIDOMKeyEvent::DOM_VK_SPACE) {
+     		event->GetShiftKey(&shift);
+     		event->GetCtrlKey(&ctrl);
+     		event->GetAltKey(&alt);
+		if((1 == getNumericConfValue(BROWSE_KEY_SETTING)) &&
+		   !(alt | shift | ctrl)) {
+			if(mozilla_scroll_pagedown(widget) == FALSE)
+				on_next_unread_item_activate(NULL, NULL);
+			return TRUE;
+		}
+	}	
 	return FALSE;
 }
 /**

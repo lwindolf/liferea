@@ -232,8 +232,10 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			FEED_FOOT_WRITE(buffer, "owner email",		headTags[OPML_OWNEREMAIL]);
 			addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
 			
-			fp->description = buffer;
-			fp->available = TRUE;
+			feed_set_description(fp, buffer);
+			g_free(buffer);
+			
+			feed_set_available(fp, TRUE);
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
