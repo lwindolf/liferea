@@ -639,7 +639,7 @@ gint feed_process_update_results(gpointer data) {
 					feed_set_type(request->fp, FST_AUTODETECT);
 					feed_set_available(request->fp, FALSE);
 					g_free(request->fp->parseErrors);
-					request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the URL really points to a ressource provided in one of the supported syndication formats!"));
+					request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the URL really points to a resource provided in one of the supported syndication formats!"));
 					break;
 				} else {
 					feed_set_type(request->fp, type);
@@ -789,7 +789,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 			case 401:tmp2 = g_strdup(_("The feed no longer exists. Please unsubscribe!"));break;
 			case 402:tmp2 = g_strdup(_("Payment Required"));break;
 			case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
-			case 404:tmp2 = g_strdup(_("Ressource Not Found"));break;
+			case 404:tmp2 = g_strdup(_("Resource Not Found"));break;
 			case 405:tmp2 = g_strdup(_("Method Not Allowed"));break;
 			case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
 			case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
@@ -800,7 +800,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 		/* next classes */
 		if(NULL == tmp2) {
 			switch(httpstatus / 100) {
-				case 3:tmp2 = g_strdup(_("Feed not available: Server signalized unsupported redirection!"));break;
+				case 3:tmp2 = g_strdup(_("Feed not available: Server requested unsupported redirection!"));break;
 				case 4:tmp2 = g_strdup(_("Client Error"));break;
 				case 5:tmp2 = g_strdup(_("Server Error"));break;
 				default:tmp2 = g_strdup(_("(unknown error class)"));break;

@@ -1499,7 +1499,7 @@ create_prefdialog (void)
   gtk_widget_show (updatealloptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox20), updatealloptionbtn, FALSE, FALSE, 0);
 
-  helpoptionbtn = gtk_check_button_new_with_mnemonic (_("Dont add the help feeds to the feed list on startup."));
+  helpoptionbtn = gtk_check_button_new_with_mnemonic (_("Don't add the help feeds to the feed list on startup."));
   gtk_widget_show (helpoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox20), helpoptionbtn, FALSE, FALSE, 0);
 

@@ -1,6 +1,5 @@
 [Desktop Entry]
-Encoding=UTF-8
-Name=Liferea
+Name=Liferea Feed Reader
 GenericName=Feed Reader
 Comment=Download and view feeds
 Exec=liferea
@@ -8,5 +7,6 @@ Icon=liferea.png
 StartupNotify=false
 Terminal=false
 Type=Application
+Encoding=UTF-8
 Categories=Application;Network;
 Version=0.9.4
