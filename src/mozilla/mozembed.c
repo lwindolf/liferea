@@ -116,6 +116,10 @@ static void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
 	}
 }
 
+static gint mozembed_dom_key_press_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) {
+	return mozilla_key_press_cb(embed, dom_event);
+}
+
 /**
  * mozembed_dom_mouse_click_cb: GTKMOZEMBED SIGNAL, emitted when user 
  * clicks on the document
@@ -190,7 +194,7 @@ static GtkWidget * mozilla_create() {
 		{ "destroy_browser", mozembed_destroy_brsr_cb      },
 		//{ "dom_mouse_down",  mozembed_dom_mouse_down_cb    },	
 		{ "dom_mouse_click", mozembed_dom_mouse_click_cb   },
-		//{ "dom_key_press",   mozembed_dom_key_press_cb     },
+		{ "dom_key_press",   mozembed_dom_key_press_cb     },
 		//{ "size_to",         mozembed_size_to_cb           },
 		//{ "new_window",      mozembed_new_window_cb        },
 		//{ "security_change", mozembed_security_change_cb   },

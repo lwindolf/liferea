@@ -34,8 +34,27 @@
 #include "nsIMarkupDocumentViewer.h"
 #include "nsIDOMNSEvent.h"
 #include "nsIDOMMouseEvent.h"
+#include "nsIDOMKeyEvent.h"
 #include "nsIDOMWindow.h"
 
+extern "C" {
+#include "../callbacks.h"
+}
+
+extern "C" 
+gint mozilla_key_press_cb(GtkWidget *widget, gpointer ev) {
+	nsIDOMKeyEvent *event = (nsIDOMKeyEvent*)ev;
+	PRUint32 keyCode = 0;
+	
+	event->GetCharCode(&keyCode);
+	if (keyCode == nsIDOMKeyEvent::DOM_VK_SPACE) {
+		if (mozilla_scroll_pagedown(widget) == FALSE)
+			on_next_unread_item_activate(NULL, NULL);
+		return TRUE;
+	}
+	
+	return FALSE;
+}
 /**
  * Takes a pointer to a mouse event and returns the mouse
  *  button number or -1 on error.
@@ -132,6 +151,7 @@ extern "C" gboolean mozilla_scroll_pagedown(GtkWidget *widget) {
 	DOMWindow->GetScrollY(&initial_y);
 	DOMWindow->ScrollByPages(1);
 	DOMWindow->GetScrollY(&final_y);
+	
 	return initial_y != final_y;
 }
 

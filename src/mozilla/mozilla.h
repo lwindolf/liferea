@@ -34,7 +34,7 @@ gfloat mozilla_get_zoom (GtkWidget *embed);
 
 /* Events */
 gint mozilla_get_mouse_event_button(gpointer event);
-
+gint mozilla_key_press_cb(GtkWidget *widget, gpointer ev);
 gboolean mozilla_scroll_pagedown(GtkWidget *widget);
 #ifdef __cplusplus
 }
