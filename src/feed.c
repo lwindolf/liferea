@@ -105,7 +105,6 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data) {
 	
 	if(NULL == (cur = xmlDocGetRootElement(doc))) {
 		addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-		xmlFreeDoc(doc);
 		goto error;
 	}
 	while(cur && xmlIsBlankNode(cur)) {
