@@ -103,42 +103,61 @@ gint mozilla_get_mouse_event_button(gpointer event) {
 }
 
 static nsCOMPtr<nsIMarkupDocumentViewer> mozilla_get_mdv(GtkWidget *widget) {
-	nsresult result;
-	nsCOMPtr<nsIWebBrowser>	mWebBrowser;	
+	nsresult				result;
+	nsCOMPtr<nsIMarkupDocumentViewer>	mDocViewer;
+	nsCOMPtr<nsIWebBrowser>			mWebBrowser;	
 
 	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(widget), getter_AddRefs(mWebBrowser));
 	
 	nsCOMPtr<nsIDocShellTreeItem> browserAsItem;
 	browserAsItem = do_QueryInterface(mWebBrowser);
-	if (!browserAsItem) return NULL;
+	if (!browserAsItem) {
+		g_warning("could not retrieve browser object...\n");
+		return NULL;
+	}
 	
 	// get the owner for that item
 	nsCOMPtr<nsIDocShellTreeOwner> treeOwner;
 	browserAsItem->GetTreeOwner(getter_AddRefs(treeOwner));
-	if (!treeOwner) return NULL;
+	if (!treeOwner) {
+		g_warning("could not retrieve tree owner from browser...\n");
+		return NULL;
+	}
 	
 	// get the primary content shell as an item
 	nsCOMPtr<nsIDocShellTreeItem> contentItem;
 	treeOwner->GetPrimaryContentShell(getter_AddRefs(contentItem));
-	if (!contentItem) return NULL;
+	if (!contentItem) {
+		g_warning("could not retrieve content shell from browser...\n");
+		return NULL;
+	}
 	
 	// QI that back to a docshell
 	nsCOMPtr<nsIDocShell> DocShell;
 	DocShell = do_QueryInterface(contentItem);
-	if (!DocShell) return NULL;
+	if (!DocShell) {
+		g_warning("could not retrieve document shell...\n");
+		return NULL;
+	}
 	
 	nsCOMPtr<nsIContentViewer> contentViewer;	
 	result = DocShell->GetContentViewer (getter_AddRefs(contentViewer));
-	if (!NS_SUCCEEDED (result) || !contentViewer) return NULL;
+	if (!NS_SUCCEEDED (result) || !contentViewer) {
+		g_warning("could not retrieve content viewer from doc shell...\n");
+		return NULL;
+	}
 	
-	return do_QueryInterface(contentViewer, &result);
+	if(NULL == (mDocViewer = do_QueryInterface(contentViewer, &result))) {
+		g_warning("could not retrieve mozilla document viewer object\n");
+	}
+	return mDocViewer;
 }
 
 extern "C" void
 mozilla_set_zoom (GtkWidget *embed, float aZoom) {
 	nsCOMPtr<nsIMarkupDocumentViewer> mdv;
 	
-	if ((mdv = mozilla_get_mdv(embed)) == NULL)
+	if((mdv = mozilla_get_mdv(embed)) == NULL)
 		return;
 	
 	/* Ignore return because we can't do anything if it fails.... */
@@ -149,7 +168,7 @@ extern "C" gfloat
 mozilla_get_zoom (GtkWidget *widget) {
 	nsCOMPtr<nsIMarkupDocumentViewer> mdv;
 	float zoom;
-     nsresult result;
+	nsresult result;
 	
 	if ((mdv = mozilla_get_mdv(widget)) == NULL)
 		return 1.0;
