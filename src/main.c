@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
 								  0,
 								  GTK_MESSAGE_ERROR,
 								  GTK_BUTTONS_OK,
-								  _("Another copy of Liferea was found to be running. Please us it instead. "
+								  _("Another copy of Liferea was found to be running. Please use it instead. "
 								  "If there is no other copy of Liferea running, please delete the "
 								  "\"~/.liferea/lock\" lock file."));
 		gdk_threads_enter();
