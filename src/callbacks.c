@@ -39,6 +39,7 @@
 #include "htmlview.h"
 #include "callbacks.h"
 #include "ui_selection.h"
+#include "update.h"
 
 #include "vfolder.h"	// FIXME
 
@@ -80,9 +81,11 @@ GdkPixbuf	*emptyIcon = NULL;
 /* VFolder */
 static GdkPixbuf	*vfolderIcon = NULL;
 
+extern GAsyncQueue	*results;
 extern GThread		*updateThread;
 
 extern GHashTable	*folders; // FIXME!
+extern GHashTable	*feedHandler;
 extern feedPtr		allItems;
 
 static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
@@ -203,8 +206,7 @@ void redrawItemList(void) {
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 
-	resetAllUpdateCounters();
-	updateNow();	
+	updateAllFeeds();
 }
 
 void on_popup_refresh_selected(void) { 
@@ -1378,46 +1380,93 @@ void print_status(gchar *statustext) {
 	statusbar = lookup_widget(mainwindow, "statusbar");
 
 	g_print("%s\n", statustext);
-	
+
 	/* lock handling, because this method may be called from main
 	   and update thread */
 	if(updateThread == g_thread_self())
 		gdk_threads_enter();
-	
-	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), statustext);
-	
+
+	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), statustext);	
+
 	if(updateThread == g_thread_self())
 		gdk_threads_leave();
 }
 
 void showErrorBox(gchar *msg) {
 	GtkWidget	*dialog;
-
-	if(updateThread == g_thread_self())	// FIXME: deadlock when using this function from update thread
-		return;
-			
+	
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
                   GTK_DIALOG_DESTROY_WITH_PARENT,
                   GTK_MESSAGE_ERROR,
                   GTK_BUTTONS_CLOSE,
                   msg);
-	 gtk_dialog_run (GTK_DIALOG (dialog));
-	 gtk_widget_destroy (dialog);
+	gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
 }
 
 void showInfoBox(gchar *msg) {
 	GtkWidget	*dialog;
-
-	if(updateThread == g_thread_self())	// FIXME: deadlock when using this function from update thread
-		return;
 			
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
                   GTK_DIALOG_DESTROY_WITH_PARENT,
                   GTK_MESSAGE_INFO,
                   GTK_BUTTONS_CLOSE,
                   msg);
-	 gtk_dialog_run (GTK_DIALOG (dialog));
-	 gtk_widget_destroy (dialog);
+	gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
+}
+
+/*------------------------------------------------------------------------------*/
+/* timeout callback to check for update results					*/
+/*------------------------------------------------------------------------------*/
+
+gint checkForUpdateResults(gpointer data) {
+	struct feed_request	*request = NULL;
+	feedHandlerPtr		fhp;
+	gint			type;
+
+	if(NULL == (request = g_async_queue_try_pop(results)))
+		return TRUE;
+
+	if(NULL != request->new_fp) {
+		type = getFeedType(request->fp);
+		g_assert(NULL != feedHandler);
+		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
+			/* can happen during a long update e.g. of an OCS directory, then the type is not set, FIXME ! */
+			//g_warning(g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type));
+			return TRUE;
+		}
+
+		if(TRUE == fhp->merge)
+			/* If the feed type supports merging... */
+			mergeFeed(request->fp, request->new_fp);
+		else {
+			/* Otherwise we simply use the new feed info... */
+			copyFeed(request->fp, request->new_fp);
+//			print_status(g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp)));
+		}
+		
+		/* note this is to update the feed URL on permanent redirects */
+		if(0 != strcmp(request->feedurl, getFeedSource(request->fp))) {
+			setFeedSource(request->fp, g_strdup(request->feedurl));	
+//			print_status(g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp)));
+		}
+
+		/* now fp contains the actual feed infos */
+		saveFeed(request->fp);
+
+		if((NULL != request->fp) && (selected_fp == request->fp)) {
+			clearItemList();
+			loadItemList(request->fp, NULL);
+			preFocusItemlist();
+		}
+		redrawFeedList();	// FIXME: maybe this is overkill ;=)		
+	} else {
+//		print_status(g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp)));
+		request->fp->available = FALSE;
+	}
+	
+	return TRUE;
 }
 
 /*------------------------------------------------------------------------------*/

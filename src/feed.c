@@ -70,7 +70,7 @@ GHashTable	*feeds = NULL;
    and searching functionality */
 feedPtr		allItems = NULL;
 
-extern GMutex * feeds_lock;
+GMutex * feeds_lock = NULL;
 
 void registerFeedType(gint type, feedHandlerPtr fhp) {
 	gint	*typeptr;
@@ -109,6 +109,9 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 /* initializing function, called upon initialization and each
    preference change */
 void initBackend() {
+
+	if(NULL == feeds_lock)
+		feeds_lock = g_mutex_new();
 	
 	if(NULL == feeds) {
 		g_mutex_lock(feeds_lock);		
@@ -628,28 +631,23 @@ void removeFeed(feedPtr fp) {
 void updateFeed(feedPtr fp) {
 	
 	print_status(g_strdup_printf("updating \"%s\"", getFeedTitle(fp)));
-	setFeedUpdateCounter(fp, 0);
-	updateNow();
+	requestUpdate(fp);
 }
 
-static void resetUpdateCounter(gpointer key, gpointer value, gpointer userdata) {
+static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr		fp = (feedPtr)value;
-	gint		interval;
 
 	g_assert(NULL != fp);
-
-	if(IS_FEED(getFeedType(fp)))
-		setFeedUpdateCounter(fp, 0);
+	updateFeed(fp);
 }
 
 /* this method is called upon the refresh all button... */
-void resetAllUpdateCounters(void) {
+void updateAllFeeds(void) {
 
+	print_status(g_strdup(_("updating all feeds...")));
 	g_mutex_lock(feeds_lock);
-	g_hash_table_foreach(feeds, resetUpdateCounter, NULL);
+	g_hash_table_foreach(feeds, updateFeedHelper, NULL);
 	g_mutex_unlock(feeds_lock);
-	
-	updateNow();
 }
 
 void addItem(feedPtr fp, itemPtr ip) {

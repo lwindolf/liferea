@@ -66,14 +66,14 @@ int i;
 	initConfig();		/* initialize gconf */
 	loadConfig();		/* maybe this should be merged with initConfig() */
 	initGUI();		/* initialize gconf configured GUI behaviour */
-	updateThread = initUpdateThread();	/* starts updating of feeds */
 	initBackend();
+	updateThread = initUpdateThread();	/* start thread for update processing */
+	initAutoUpdateThread();	/* start thread for automatic updating */
+
 	loadEntries();		/* load feed list from gconf */
 
-	if(getBooleanConfValue(UPDATE_ON_STARTUP)) {
-		resetAllUpdateCounters();
-		updateNow();
-	}
+	if(getBooleanConfValue(UPDATE_ON_STARTUP))
+		updateAllFeeds();
 
 	gtk_widget_show(mainwindow);
 			
@@ -90,10 +90,12 @@ int i;
 	if(0 != getNumericConfValue(LAST_HPANE_POS))
 		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
 
+	/* add timeout function to check for update results from the update thread */
+	gtk_timeout_add(100, checkForUpdateResults, NULL);
+
 	gdk_threads_enter();
 	gtk_main();
 	gdk_threads_leave();
-	
+		
 	return 0;
 }
-

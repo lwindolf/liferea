@@ -708,9 +708,6 @@ void loadEntries() {
 	addFeed(FST_HELPFEED, HELP2URL, HELP2KEY, helpFolderPrefix, g_strdup(_("Liferea SF News")), 1440);
 	
 	checkForEmptyFolders();
-	
-	/* enforce background loading */
-	updateNow();
 }
 
 /* returns true if namespace is enabled in configuration */

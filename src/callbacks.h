@@ -44,6 +44,8 @@ void setTrayToolTip(gchar *string);
 void setupTrayIcon(void);
 void redrawFeedList(void);
 
+gint checkForUpdateResults(gpointer data);
+
 void setupFeedList(GtkWidget *mainview);
 void setupItemList(GtkWidget *itemlist);
 

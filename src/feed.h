@@ -88,6 +88,9 @@ typedef struct feed {
 	GSList		*items;		/* list of pointers to the item structures of this channel */
 	
 	GSList		*filter;	/* list of filters applied to this feed */
+	
+	/* feed properties used for updating */
+	gpointer	*request;
 } *feedPtr;
 
 /* ------------------------------------------------------------ */

@@ -22,7 +22,28 @@
 #define _UPDATE_H
 
 #include <glib.h>
+#include "feed.h"
+
+/* the feed request structure is used in two places, on the one
+   hand to put update requests into the request and result queue 
+   between GUI and update thread and on the other hand to 
+   persistently store HTTP status information written by
+   the SnowNews netio.c code. */
+struct feed_request {
+
+	/* fields used by netio.c */
+        char * 	feedurl;		/* Non hashified URL */
+        char * 	lastmodified; 		/* Content of header as sent by the server. */
+	int 	lasthttpstatus;	
+	int 	problem;		/* Set if there was a problem downloading the feed. */
+
+	feedPtr	fp;			/* pointer to old feed structure */
+	feedPtr	new_fp;			/* to store newly downloaded feed structure */
+};
 
 GThread * initUpdateThread(void);
+GThread * initAutoUpdateThread(void);
+void requestUpdate(feedPtr fp);
+void updateAllFeeds(void);
 
 #endif
