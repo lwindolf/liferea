@@ -42,15 +42,19 @@ James Bowes <bowes@cs.dal.ca>			tray icon popup menu
 
 Marc Deslauriers				patch for window state saving
 
+Amit D. Chaudhary <amitc@users.sourceforge.net>	patch to update all favicons
+
 
 Packaging
 =========
 
-Christophe Barbe <christophe.barbe@ufies.org>	Debian
+Christophe Barbe <christophe.barbe@ufies.org>	Debian (until 0.6.0)
+David Moreno Garza <damog@damog.net>		Debian (currently)
 Harry Auschner					SuSE
 John McKnight					Slackware
 Dario Conigliaro <djdas@djdas.no-ip.org>	Slackware
 Phillip Compton					Fedora
+Dag Wieers					Fedora
 
 
 Documentation and Translations

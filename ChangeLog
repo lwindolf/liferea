@@ -1,4 +1,4 @@
-2004-10-??  ??? <???>
+2004-10-31  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.6.1
 	
@@ -44,6 +44,8 @@
 	  a feed specific update interval. There is also a new
 	  option in the feed properties to disable automatic
 	  updates of the feed. (Lars Lindner)
+	* Added a button in the preferences to force an update
+          of all feed favicons. (Amit D. Chaudhary)
 	
 	Bugfixes:
 

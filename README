@@ -6,12 +6,7 @@ for Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 0.5.3.
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  NOTE THAT 0.5.2 BREAKS DOWNWARD COMPATIBILITY. PLEASE READ
-        THE "UPGRADING TO NEWER VERSIONS" SECTION.
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+This documentation was last updated for Liferea version 0.6.1.
 
 Installation
 ============
@@ -23,7 +18,8 @@ short hints for several platforms. See below to find
 how to compile the tarball.
 
 Debian:		Beginning with version 0.4.3 there are officially
-		build packages maintained by Christophe Barbe.
+		build packages maintained by Christophe Barbe. With
+		0.6.1 David Moreno Garza is the new Debian maintainer.
 
 RedHat/		Please ensure you have a libxml2 version
 Fedora:		at least 2.5.10 or you will experience nasty
@@ -62,7 +58,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-0.5.2.tar.gz 
+   tar zxvf liferea-0.6.1.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
@@ -111,14 +107,13 @@ If you want to help please subscribe to the liferea-devel mailing
 list available on the SourceForge project page. After each release
 we discuss new tasks to be done. Just join the discussion!
 
-If you want to do a translation write a mail to Lars Lindner
+If you want to do a translation write a mail to the mailing list
 or just upload the translation as a patch to SourceForge.
 
 Known Problems
 ==============
 
-Please read the help feed (http://liferea.sf.net/help053.rdf) for
-known problems! If you don't find your problem please make a report
-(forum, bugs...) on the SourceForge project page
-(http://liferea.sf.net) or send emails to the project mailing list
-(liferea-devel@lists.sourceforge.net).
+Please check the bug list on SourceForge for known problems! If you 
+don't find your problem please make a report (forum, bugs...) on 
+the SourceForge project page (http://liferea.sf.net) or send emails 
+to the project mailing list (liferea-devel@lists.sourceforge.net).
