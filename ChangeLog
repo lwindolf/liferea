@@ -2,8 +2,8 @@
 
 	Version 0.5.0
 	
-	* New Russian translation from Alekseev Vladimir
-	* New Czech translation from Juraj Kubelka
+	* New Russian translation (Alekseev Vladimir)
+	* New Czech translation (Juraj Kubelka)
 	* Mozilla browser module supports zooming now. (Lars Lindner)
 	* Scroll down or next unread feature for Mozilla, and is now triggered 
 	  by space instead of shift-space.
@@ -18,6 +18,10 @@
 	  times on timeouts or slow feed sources. The default concurrency
 	  is 3. The value can be configured by setting the gconf key
 	  /apps/liferea/update-thread-concurrency
+	* Scheduled feed updates are calculated based on the time of the
+	  last poll of the feed, which is saved across restarts of
+	  Liferea. This means that feeds needing updates (based on the
+	  update interval) are automatically updated when Liferea starts.
 	
 	Bug Fixes:
 	
@@ -37,7 +41,7 @@
 	* Conversion filters are now supported. This allows web sites to
 	  be converted to feeds using special conversion scripts. (Nathan
 	  Conrad)
-	* Feed menu is re-organized. (Nathan Conrad)
+	* Feed menu is re-organised. (Nathan Conrad)
 	* Feed type autodetection has been rewritten. It should be better
 	  than the old version. Thus, the manual feed type selection has
 	  been removed. (Nathan Conrad)
@@ -49,14 +53,14 @@
 	* Recursive updating and deleting of folders has been added. These
 	  can be accessed via the "Feeds" menu and via the feedlist
 	  contextual menus. (Nathan Conrad)
-	* Toolbar items have been re-aranged, and two items have been
+	* Toolbar items have been re-arranged, and two items have been
 	  added. (Nathan Conrad)
 	* Makefile/configure changes including a patch found on the Polish
 	  Linux Distribution web page.
 	* Stylesheet improvements (delusional)
 	* The Mozilla browser module now supports two and three pane
           mode. (Lars Lindner)
-	* Added a preference which determines wether a link is opened
+	* Added a preference which determines whether a link is opened
 	  inside the applications HTML widget or with the configured
 	  external browser. Of course this is only possible if the
 	  browser module supports inside browsing. Currently only
@@ -140,7 +144,7 @@
 
 	Version 0.4.7b
 
-	* Added a macedonian translation from Tomislav Markovski.
+	* Added a Macedonian translation from Tomislav Markovski.
 	* Upgrade to an improved version of the SnowNews
 	  networking code from Oliver Feiler. The new
 	  code now supports basic and digest HTTP
@@ -219,7 +223,7 @@
 
 	Version 0.4.6d
 
-	* Fixes a bug concering encoding conversion which was
+	* Fixes a bug concerning encoding conversion which was
 	  reported by Niklas Morberg with Patch 908949.
 	* Fixes bug 908803: problems with a webserver which
 	  supports deflate compression reported by Nathan J. 
@@ -265,8 +269,8 @@
 	* Added .desktop file and its install targets as 
 	  proposed by John McKnight.
 	* Added a window position save patch from pasp.
-	* Update of the japanese translation from Takeshi Aihana.
-	* Added a the spanish translation from Carlos Fenollosa
+	* Update of the Japanese translation from Takeshi Aihana.
+	* Added a the Spanish translation from Carlos Fenollosa
 	  and José María Mateos.
 	* Added a toggle unread status of an item as proposed
 	  by Tobias C. Rittweiler.
@@ -647,3 +651,6 @@
 2003-07-28  Lars Lindner <lars.lindner@gmx.net>
 
 	* initial release
+
+	 LocalWords:  Liferea
+	
