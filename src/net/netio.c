@@ -55,6 +55,7 @@
 
 #include "conversions.h"
 #include "net-support.h"
+#include "zlib_interface.h"
 #include "../update.h"
 
 static int const MAX_HTTP_REDIRECTS = 10;	/* Maximum number of redirects we will follow. */

@@ -18,6 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include <string.h>
 #include "support.h"
 #include "ui_mainwindow.h"
 #include "ui_htmlview.h"
@@ -35,6 +36,7 @@ void ui_tabs_init(void) {
 static gboolean on_tab_url_entry_activate(GtkWidget *widget, gpointer user_data) {
 
 	ui_htmlview_launch_URL(GTK_WIDGET(user_data), (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)), FALSE);
+	return TRUE;
 }
 
 static gboolean on_tab_close_clicked(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
@@ -48,6 +50,8 @@ static gboolean on_tab_close_clicked(GtkWidget *widget, GdkEvent *event, gpointe
 		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
 		
 	g_hash_table_remove(tabHash, GINT_TO_POINTER(i));
+	
+	return TRUE;
 }
 
 void ui_tabs_new(const gchar *url, const gchar *title) {
