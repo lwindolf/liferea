@@ -166,7 +166,6 @@ void item_set_unread(itemPtr ip) {
 
 void item_set_read(itemPtr ip) { 
 	itemPtr		sourceItem;
-	feedPtr		fp;
 
 	if(FALSE == ip->readStatus) {
 		feed_decrease_unread_counter((feedPtr)(ip->fp));
@@ -178,7 +177,7 @@ void item_set_read(itemPtr ip) {
 		if(ip->sourceFeed != NULL) {
 			feed_load(ip->sourceFeed);
 			sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
-			item_set_unread(sourceItem);
+			item_set_read(sourceItem);
 			feed_unload(ip->sourceFeed);
 		}
 		

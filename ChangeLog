@@ -39,6 +39,9 @@
 	  (Jack Lecou)
 	* Fixed the missing scrolling reset when you display items
 	  with Mozilla (Lars Lindner)
+	* Fixed a popup menu problems with gtkhtml2, which did not 
+	  always show the correct menu reported by hakon_g.
+	  (Lars Lindner)
 	
 2004-08-02 Lars Linder <lars.lindner@gmx.net>
 
