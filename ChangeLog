@@ -11,7 +11,7 @@
 	* Feed menu is re-organized. (Nathan Conrad)
 	* New filter mode that hides all feeds without unread items from
 	  the feed list. This feature is an option available from "Feeds"
-	  menu. Not that using this filter disables drag&drop in the feed
+	  menu. Note that using this filter disables drag&drop in the feed
 	  list, which of course is still available when the filter is
 	  inactive. (Christophe Barbe)
 	* Feed type autodetection has been rewritten. It should be better
