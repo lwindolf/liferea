@@ -55,8 +55,8 @@
 #define	getch()			0
 
 struct feed_request {
-        char * feedurl;                                                 /* Non hashified URL */
-        char * lastmodified;                                    /* Content of header as sent by the server. */
+        char * feedurl;        /* Non hashified URL */
+        char * lastmodified;   /* Content of header as sent by the server. */
 };
 
 /*-----------------------------------------------------------------------*/
@@ -647,10 +647,10 @@ char * downloadURL(char *url) {
 		free(cur_ptr.lastmodified);
 		
 		/* check if URL was modified */
-		if(0 != strcmp(url, cur_ptr.feedurl)) {
-			g_free(url);
-			url = g_strdup(cur_ptr.feedurl);
-		}
+//		if(0 != strcmp(url, cur_ptr.feedurl)) {
+//			g_free(url);
+//			url = g_strdup(cur_ptr.feedurl);
+//		}
 		
 		free(cur_ptr.feedurl);
 		
