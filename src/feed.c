@@ -1058,7 +1058,8 @@ gchar *feed_render(feedPtr fp) {
 	displayset.foottable = NULL;	
 
 	/* FIXME: remove with 0.9.x */
-	if(0 == strcmp(displayset.body, "class=\"itemhead\""))	/* I hope this is unique enough...*/
+	if((NULL != displayset.body) &&
+	   (0 == strcmp(displayset.body, "class=\"itemhead\"")))	/* I hope this is unique enough...*/
 		migration = TRUE;
 
 	if(FALSE == migration) {	

@@ -1,23 +1,23 @@
-/*
-   common item handling
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-   Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
-		      
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file item.c common item handling
+ *
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ *	      
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <glib.h>
 #include <time.h>
@@ -58,13 +58,10 @@ void item_set_description(itemPtr ip, const gchar * description) {
 	ip->description = g_strdup(description);
 }
 
-void item_set_source(itemPtr ip, const gchar * source) {
-	g_free(ip->source);
-	ip->source = g_strdup(source);
-}
-
+void item_set_source(itemPtr ip, const gchar * source) { g_free(ip->source);ip->source = g_strdup(source); }
+void item_set_real_source_url(itemPtr ip, const gchar * source) { g_free(ip->real_source_url);ip->real_source_url = g_strdup(source); }
+void item_set_real_source_title(itemPtr ip, const gchar * source) { g_free(ip->real_source_title);ip->real_source_title = g_strdup(source); }
 void item_set_time(itemPtr ip, const time_t t) { ip->time = t; }
-
 void item_set_read_status(itemPtr ip, const gboolean readStatus) { ip->readStatus = readStatus; }
 
 void item_set_id(itemPtr ip, const gchar * id) {
@@ -78,6 +75,8 @@ const gchar *	item_get_id(itemPtr ip) { return (ip != NULL ? ip->id : NULL); }
 const gchar *	item_get_title(itemPtr ip) {return (ip != NULL ? ip->title : NULL); }
 const gchar *	item_get_description(itemPtr ip) { return (ip != NULL ? ip->description : NULL); }
 const gchar *	item_get_source(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
+const gchar *	item_get_real_source_url(itemPtr ip) { return (ip != NULL ? ip->real_source_url : NULL); }
+const gchar *	item_get_real_source_title(itemPtr ip) { return (ip != NULL ? ip->real_source_title : NULL); }
 const time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
 const gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
 const gboolean item_get_mark(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
@@ -194,7 +193,8 @@ gchar *item_render(itemPtr ip) {
 	displayset.foottable = NULL;
 	
 	/* FIXME: remove with 0.9.x */
-	if(0 == strcmp(displayset.body, "class=\"itemhead\""))	/* I hope this is unique enough...*/
+	if((NULL != displayset.body) &&
+	   (0 == strcmp(displayset.body, "class=\"itemhead\"")))	/* I hope this is unique enough...*/
 		migration = TRUE;
 
 	if(FALSE == migration) {	
@@ -215,7 +215,7 @@ gchar *item_render(itemPtr ip) {
 		g_free(tmp2);
 
 		/*  -- Item line */
-		if (item_get_source(ip) != NULL)
+		if(item_get_source(ip) != NULL)
 			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 							  item_get_source(ip),
 							  (item_get_title(ip) != NULL)? item_get_title(ip) : _("[No title]"));
@@ -225,6 +225,18 @@ gchar *item_render(itemPtr ip) {
 		g_free(tmp);
 		addToHTMLBufferFast(&buffer, tmp2);
 		g_free(tmp2);
+		
+		/*  -- real source line */
+		if(item_get_real_source_url(ip) != NULL)
+			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+							  item_get_real_source_url(ip),
+							  (item_get_real_source_title(ip) != NULL)? item_get_real_source_title(ip) : _("[No title]"));
+		else if(item_get_real_source_title(ip) != NULL)
+			tmp = g_strdup(item_get_real_source_title(ip));
+		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
+		g_free(tmp);
+		addToHTMLBufferFast(&buffer, tmp2);
+		g_free(tmp2);		
 
 		addToHTMLBufferFast(&buffer, displayset.headtable);
 		g_free(displayset.headtable);

@@ -54,9 +54,10 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 	ip->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 	
 	/* try to get an item about id */
-	tmp = xmlGetProp(cur, BAD_CAST"about");
-	item_set_id(ip, tmp);
-	g_free(tmp);
+	if(NULL != (tmp = xmlGetProp(cur, BAD_CAST"about"))) {
+		item_set_id(ip, tmp);
+		g_free(tmp);
+	}
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
@@ -118,6 +119,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
  			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
 				item_set_title(ip, tmp);
+g_print("title: %s\n", tmp);
 				g_free(tmp);
 			}
 		}
@@ -136,14 +138,14 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
-			gchar *source_url = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
-			if(NULL != source_url) {
-				gchar *source_title = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
-				gchar *tmp = g_strdup_printf("<a href=\"%s\">%s</a>", source_url, 
-									    (NULL != source_title)?source_title:source_url);
-				ip->metadata = metadata_list_append(ip->metadata, "itemSource", tmp);
-				g_free(source_url);
-				g_free(source_title);
+			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
+			if(NULL != tmp) {
+				item_set_real_source_url(ip, tmp);
+				g_free(tmp);
+			}
+			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+			if(NULL != tmp) {
+				item_set_real_source_title(ip, tmp);
 				g_free(tmp);
 			}
 		}

@@ -1,7 +1,8 @@
 /**
- * @file feed.h common item handling
+ * @file item.h common item handling
  * 
- * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,21 +43,23 @@ struct feed;
 /** An item stores a particular entry in a feed or a search */
 typedef struct item {
 /* those fields should not be accessed directly. Accessors are provided. */
-	gchar		*title;		/**< item title */
-	gboolean 	readStatus;	/**< TRUE if the item has been read */
-	gboolean	newStatus;	/**< TRUE if the item was downloaded and not yet displayed by notification features */
-	gboolean 	marked;		/**< TRUE if the item has been marked */
-	gboolean	hidden;		/**< TRUE if the item should not be displayed due to filtering */
-	gchar		*description;	/**< HTML string containing the item's description */
-	gchar		*source;	/**< URL to the item */
-	gchar		*id;		/**< Unique item identifier, for example <guid> in RSS */
-	GSList		*metadata;	/**< metadata of this item */
-	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
-	time_t		time;		/**< Item's modified date */
+	gboolean 	readStatus;		/**< TRUE if the item has been read */
+	gboolean	newStatus;		/**< TRUE if the item was downloaded and not yet displayed by notification features */
+	gboolean 	marked;			/**< TRUE if the item has been marked */
+	gboolean	hidden;			/**< TRUE if the item should not be displayed due to filtering */
+	gchar		*title;			/**< item title */
+	gchar		*source;		/**< URL to the item */
+	gchar		*real_source_url;	/**< (optional) URL of the real source */
+	gchar		*real_source_title;	/**< (optional) title of the real source */
+	gchar		*description;		/**< HTML string containing the item's description */
+	gchar		*id;			/**< Unique item identifier, for example <guid> in RSS */
+	GSList		*metadata;		/**< metadata of this item */
+	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
+	time_t		time;			/**< Item's modified date */
 	
-	struct feed	*fp;		/**< Pointer to the feed to which this item belongs */
-	GSList		*vfolders;	/**< List of vfolders in which this item appears */
-	void		*ui_data;	/**< UI specific data such as in which row an item is displayed */
+	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
+	GSList		*vfolders;		/**< List of vfolders in which this item appears */
+	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
 
 void ui_free_item_ui_data(itemPtr ip); /* This is in itemlist.c */
@@ -97,6 +100,10 @@ const gchar *	item_get_title(itemPtr ip);
 const gchar *	item_get_description(itemPtr ip);
 /** Returns the source of ip. */
 const gchar *	item_get_source(itemPtr ip);
+/** Returns the real source of ip. */
+const gchar *	item_get_real_source_url(itemPtr ip);
+/** Returns the real source title of ip. */
+const gchar *	item_get_real_source_title(itemPtr ip);
 /** Returns the modification time of ip. */
 const time_t	item_get_time(itemPtr ip);
 /** Returns the mark status of ip */
@@ -118,6 +125,10 @@ void		item_set_title(itemPtr ip, const gchar * title);
 void		item_set_description(itemPtr ip, const gchar * description);
 /** Sets the ip's source */
 void		item_set_source(itemPtr ip, const gchar * source);
+/** Sets the ip's real source */
+void		item_set_real_source_url(itemPtr ip, const gchar * source);
+/** Sets the ip's real source title */
+void		item_set_real_source_title(itemPtr ip, const gchar * source);
 /** Sets the ip's modification time */
 void		item_set_time(itemPtr ip, const time_t time);
 /** Sets the ip's read status */
