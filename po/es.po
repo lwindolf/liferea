@@ -3,15 +3,15 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 0.6.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: liferea 0.9.1\n"
+"Report-Msgid-Bugs-To: Carlos Fenollosa Bielsa\n"
 "POT-Creation-Date: 2005-03-09 23:49+0100\n"
 "PO-Revision-Date: 2005-03-05 02:04+0100\n"
 "Last-Translator: Carlos Fenollosa Bielsa <topopardo@topopardo.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:229
@@ -248,19 +248,24 @@ msgstr "_Actualizar todas"
 
 #: src/interface.c:204 src/ui_mainwindow.c:164
 msgid "Updates all subscriptions. This does not update OCS directories."
-msgstr "Actualiza inmediatamente todas las fuentes, excepto directorios OCS"
+msgstr "Actualiza todas las fuentes, excepto directorios OCS"
 
 #: src/interface.c:213
 msgid "_Mark Selected As Read"
 msgstr "Marcar seleccionados como _leídos"
 
 #: src/interface.c:216
+<<<<<<< es.po
+msgid "Marks all items of the current selected subscription or all of subscriptions of the selected folder as read."
+msgstr "Marca como leídos todos los elementos de la fuente seleccionada o, en caso de una carpeta, todas sus fuentes"
+=======
 msgid ""
 "Marks all items of the current selected subscription or all of subscriptions "
 "of the selected folder as read."
 msgstr ""
 "Marca todos los elementos de la fuente seleccionada o, en caso de una "
 "carpeta, todas sus fuentes"
+>>>>>>> 1.68
 
 #: src/interface.c:225
 msgid "Mark All As _Read"
@@ -380,7 +385,7 @@ msgstr "_Reducir tamaño de texto"
 
 #: src/interface.c:394
 msgid "Decreases the text size of the item view."
-msgstr "Decrementa el tamaño del texto de la vista de elementos"
+msgstr "Reduce el tamaño del texto de la vista de elementos"
 
 #: src/interface.c:408
 msgid "Toggle _Condensed View"
@@ -392,7 +397,7 @@ msgstr "Activa o desactiva el modo de vista condensada"
 
 #: src/interface.c:413
 msgid "_Search"
-msgstr "_Busca"
+msgstr "_Buscar"
 
 #: src/interface.c:420
 msgid "Toggle Search Box"
@@ -544,6 +549,12 @@ msgstr "Tipo:"
 msgid "Use conversion filter"
 msgstr "Usar _filtro de conversión"
 
+<<<<<<< es.po
+#: src/interface.c:1137
+#: src/interface.c:1547
+msgid "Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."
+msgstr "Liferea puede usar filtros externos, a modo de plugins, para acceder a fuentes y directorios en formatos que no estén soportados. Por favor, lea la documentación para mayor información"
+=======
 #: src/interface.c:1137 src/interface.c:1547
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
@@ -553,6 +564,7 @@ msgstr ""
 "Liferea puede usar filtros externos, a modo de plug-ins, para acceder a "
 "fuentes y directorios en formatos que no estén soportados. Por favor, lea la "
 "documentación para mayor información"
+>>>>>>> 1.68
 
 #: src/interface.c:1151 src/interface.c:1561
 msgid "Convert using:"
@@ -640,6 +652,10 @@ msgid "Default Feed Refresh _Interval:"
 msgstr "Intervalo de _actualización (en minutos)"
 
 #: src/interface.c:1927
+<<<<<<< es.po
+msgid "Note: <i>Please remember to set a reasonable refresh time. It is not desired to poll daily updated feeds every 15 minutes. To disable auto-updating per default set the interval to 0 minutes.</i>"
+msgstr "Nota: <i>Por favor, escriba un tiempo razonable. No es necesario comprobar las fuentes cada 15 minutos. Para desactivar la actualización automática, ponga este valor a 0.</i>"
+=======
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -648,6 +664,7 @@ msgstr ""
 "<i>Por favor, escriba un tiempo razonable. No es necesario comprobar las "
 "fuentes cada 15 minutos. Para desactivar la actualización automática, ponga "
 "este valor a 0.</i>"
+>>>>>>> 1.68
 
 #: src/interface.c:1938
 msgid "At _startup:"
@@ -691,12 +708,17 @@ msgstr ""
 "Mostrar los elementos de todas las fuentes hijas al seleccionar una carpeta"
 
 #: src/interface.c:2017
+<<<<<<< es.po
+msgid "<i>This option can cause significant delays when loading folders containing many feeds.</i>"
+msgstr "<i>Esta opción puede ocasionar retardos significativos al cargar carpetas que contengan muchas fuentes</i>"
+=======
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
 msgstr ""
 "<i>Esto podría tardar algo de tiempo al cargar carpetas que contengan muchas "
 "fuentes</i>"
+>>>>>>> 1.68
 
 #: src/interface.c:2028
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
@@ -823,7 +845,6 @@ msgid "Show a _popup window with new headlines."
 msgstr "Mostrar una _ventana emergente al recibir nuevos elementos"
 
 #: src/interface.c:2359
-#, fuzzy
 msgid "         "
 msgstr "    "
 
@@ -897,7 +918,7 @@ msgstr "_Puerto del proxy:"
 
 #: src/interface.c:2551
 msgid "Use Proxy _Authentication"
-msgstr "Usar a_utentificación del Proxy"
+msgstr "Usar a_utentificación del proxy"
 
 #: src/interface.c:2569
 msgid "Proxy _Username:"
@@ -1063,12 +1084,17 @@ msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Escribe el nombre de usuario y la contraseña para \"%s\" (%s):"
 
 #: src/interface.c:3516
+<<<<<<< es.po
+msgid "Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"
+msgstr "Nota: <i>El nombre de usuario y la contraseña se guardarán en el disco, sin cifrar</i>"
+=======
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
 "Nota: <i>El nombre de usuario y la contraseña se guardarán en el disco, sin "
 "encriptar</i>"
+>>>>>>> 1.68
 
 #: src/interface.c:3582
 msgid "VFolder Properties"
@@ -1193,12 +1219,12 @@ msgstr ""
 #: src/main.c:222
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
-msgstr "Se necesita un argumento para el parámetro --session\n"
+msgstr "Se necesita un parámetro para el argumento --session\n"
 
 #: src/main.c:225
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
-msgstr "Se encontró un parámetro desconocido: %s\n"
+msgstr "Se encontró un argumento desconocido: %s\n"
 
 #: src/main.c:244
 msgid ""
@@ -1307,7 +1333,7 @@ msgstr "cobertura"
 #: src/net/cookies.c:190
 #, c-format
 msgid "Cookie for %s has expired!"
-msgstr "La Cookie para %s ha caducado"
+msgstr "La cookie para %s ha caducado"
 
 #: src/ns_dc.c:193 src/ns_ocs.c:93
 msgid "internal OCS namespace parsing error!"
@@ -1495,7 +1521,7 @@ msgstr "Error del servidor"
 
 #: src/ui_feed.c:109
 msgid "(unknown networking error happened)"
-msgstr "(error desconocido)"
+msgstr "(error desconocido en la red)"
 
 #: src/ui_feed.c:128
 msgid ""
@@ -1606,7 +1632,7 @@ msgstr "Por favor, elija una fuente de noticias"
 
 #: src/ui_feedlist.c:592
 msgid "You must select a feed entry."
-msgstr "Por favor, elija una fuente de noticias"
+msgstr "Por favor, elija una fuente de noticias."
 
 #: src/ui_feedlist.c:638
 msgid "New subscription"
