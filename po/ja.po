@@ -5,15 +5,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea Ver0.4.9\n"
+"Project-Id-Version: liferea Ver0.5.0-test2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-13 18:36+0200\n"
-"PO-Revision-Date: 2004-05-22 00:33+0900\n"
+"POT-Creation-Date: 2004-06-15 02:26+0900\n"
+"PO-Revision-Date: 2004-06-15 02:25+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
@@ -23,9 +24,8 @@ msgstr "Pixmap ファイルが見つかりませんでした: %s"
 #: src/cdf_channel.c:56 src/cdf_item.c:55 src/ocs_dir.c:141 src/opml.c:211
 #: src/pie_entry.c:73 src/pie_feed.c:116 src/rss_channel.c:142
 #: src/rss_item.c:84 src/rss_item.c:87
-#, fuzzy
 msgid "Feed:"
-msgstr "配信元(_F)"
+msgstr "配信元:"
 
 #: src/cdf_channel.c:182 src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:322
 #: src/rss_channel.c:407
@@ -34,13 +34,12 @@ msgstr "この配信元を解析する際にエラーが発生しました！"
 
 #: src/cdf_item.c:63 src/cdf_item.c:66 src/ocs_dir.c:102 src/pie_entry.c:81
 #: src/pie_entry.c:84 src/rss_item.c:96 src/rss_item.c:99
-#, fuzzy
 msgid "Item:"
-msgstr "トピック(_I)"
+msgstr "トピック:"
 
 #: src/cdf_item.c:66 src/pie_entry.c:84 src/rss_item.c:99
 msgid "[No Title]"
-msgstr ""
+msgstr "[タイトルなし]"
 
 #: src/common.c:247
 msgid "[Parser error output was truncated!]"
@@ -248,13 +247,12 @@ msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" は最後の更新から変更されていません。"
 
 #: src/feed.c:681
-#, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
-"この配信元の種類を検出できませんでした。本当に URL がサポートしているフォー"
-"マットの一つであるか確認して下さい！"
+"この配信元の種類を特定できませんでした。本当に指定した配信元ソースが "
+"syndication フォーマットをサポートしているか確認して下さい！"
 
 #: src/feed.c:700
 #, c-format
@@ -404,9 +402,8 @@ msgid "starting: \"%s\""
 msgstr "起動中: \"%s\""
 
 #: src/interface.c:131 src/interface.c:2873
-#, fuzzy
 msgid "Liferea 0.5.0"
-msgstr "Liferea 0.4.9"
+msgstr "Liferea 0.5.0"
 
 #: src/interface.c:148
 msgid "_Program"
@@ -464,11 +461,11 @@ msgstr "選択した購読を削除します"
 
 #: src/interface.c:259
 msgid "Filter Feeds Without Unread Headlines"
-msgstr ""
+msgstr "未読のトピックがない配信元を隠す"
 
 #: src/interface.c:262
 msgid "If active all feeds without unread items are hidden."
-msgstr ""
+msgstr "有効にすると未読のトピックが無い全ての配信元を隠します"
 
 #: src/interface.c:264
 msgid "_Mark As Read"
@@ -628,7 +625,7 @@ msgstr "シングル・トピック表示"
 
 #: src/interface.c:537
 msgid "label133"
-msgstr ""
+msgstr "label133"
 
 #: src/interface.c:844
 msgid "Subscription Properties"
@@ -682,9 +679,8 @@ msgid "General"
 msgstr "全般"
 
 #: src/interface.c:949 src/interface.c:1350
-#, fuzzy
 msgid "<b>Feed Source</b>"
-msgstr "<b>データのソース</b>"
+msgstr "<b>配信元のソース</b>"
 
 #: src/interface.c:975 src/interface.c:1376
 msgid "_Select File..."
@@ -786,9 +782,8 @@ msgid "_Password:"
 msgstr "パスワード(_P):"
 
 #: src/interface.c:1190 src/interface.c:2987
-#, fuzzy
 msgid "Authentication"
-msgstr "認証に失敗しました！"
+msgstr "認証"
 
 #: src/interface.c:1332
 msgid "New Subscription"
@@ -799,9 +794,8 @@ msgid "program preferences"
 msgstr "liferea の設定"
 
 #: src/interface.c:1648
-#, fuzzy
 msgid "<span weight=\"bold\">Browser Settings</span>"
-msgstr "<span weight=\"bold\">配信元の名前</span>"
+msgstr "<span weight=\"bold\">ブラウザの設定</span>"
 
 #: src/interface.c:1667
 msgid "Use the GNOME default browser"
@@ -817,9 +811,8 @@ msgid "specify a browser command using %s as URL placeholder"
 msgstr "URL を示す記号 %s を使ってブラウザのコマンドを指定して下さい"
 
 #: src/interface.c:1693
-#, fuzzy
 msgid "<span weight=\"bold\">Date Column Settings</span>"
-msgstr "<span weight=\"bold\">配信元の名前</span>"
+msgstr "<span weight=\"bold\">日付の書式</span>"
 
 #: src/interface.c:1712
 msgid "Display only time"
@@ -842,9 +835,8 @@ msgstr ""
 "指定して下さい"
 
 #: src/interface.c:1743
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Handling Settings</span>"
-msgstr "<span weight=\"bold\">配信元の名前</span>"
+msgstr "<span weight=\"bold\">配信元の取り扱い</span>"
 
 #: src/interface.c:1759
 msgid "Default number of items per feed to save when Liferea exits:"
@@ -863,9 +855,8 @@ msgid "Feed Handling"
 msgstr "配信元の取り扱い"
 
 #: src/interface.c:1794
-#, fuzzy
 msgid "<span weight=\"bold\">Notification Settings</span>"
-msgstr "<span weight=\"bold\">配信元の名前</span>"
+msgstr "<span weight=\"bold\">通知の設定</span>"
 
 #: src/interface.c:1812
 msgid ""
@@ -876,9 +867,8 @@ msgstr ""
 "ステータス・アイコンを表示する"
 
 #: src/interface.c:1821
-#, fuzzy
 msgid "<span weight=\"bold\">Menu Settings</span>"
-msgstr "<span weight=\"bold\">配信元の名前</span>"
+msgstr "<span weight=\"bold\">メニューの設定</span>"
 
 #: src/interface.c:1840
 msgid "Show Menu _And Toolbar"
@@ -893,9 +883,8 @@ msgid "Show _Toolbar Only"
 msgstr "ツールバーのみ表示する(_T)"
 
 #: src/interface.c:1862
-#, fuzzy
 msgid "<span weight=\"bold\">Viewing Headlines</span>"
-msgstr "<span weight=\"bold\">配信元の名前</span>"
+msgstr "<span weight=\"bold\">ヘッドラインの表示</span>"
 
 #: src/interface.c:1881
 msgid ""
@@ -914,16 +903,15 @@ msgstr "使用するエンジン:"
 
 #: src/interface.c:1903
 msgid "If the browser module allows it open links inside Liferea."
-msgstr ""
+msgstr "可能ならば Liferea の内部でリンクを開く"
 
 #: src/interface.c:1907
 msgid "GUI Settings"
 msgstr "GUI の設定"
 
 #: src/interface.c:1922
-#, fuzzy
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
-msgstr "<span weight=\"bold\">更新間隔</span>"
+msgstr "<span weight=\"bold\">HTTP プロキシ・サーバ</span>"
 
 #: src/interface.c:1941
 msgid ""
@@ -991,7 +979,6 @@ msgid "remove items with exact match"
 msgstr "完全に一致するトピックの削除"
 
 #: src/interface.c:2489
-#, fuzzy
 msgid "Rule Value"
 msgstr "ルールの値"
 
@@ -1118,7 +1105,6 @@ msgid "Contributors"
 msgstr "その他の貢献者"
 
 #: src/interface.c:2923
-#, fuzzy
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -1140,7 +1126,9 @@ msgstr ""
 "Enrico Gernauck <enrico@fanglomerat.de>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>"
+"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Rex Tsai <chihchun@users.sourceforge.net>\n"
+"Alekseev Vladimir <compress@linux-online.ru>"
 
 #: src/interface.c:2929
 msgid "Translation"
@@ -1152,6 +1140,8 @@ msgid ""
 "authentication information. Please enter the appropriate username and "
 "password below!"
 msgstr ""
+"購読する配信元のウェブサーバが認証情報を要求しています。適切なユーザ名とパス"
+"ワードを入力して下さい！"
 
 #: src/main.c:51
 msgid "  --version        Prints Liferea's version number"
@@ -1163,7 +1153,7 @@ msgstr "  --help           このメッセージを表示して終了する"
 
 #: src/main.c:53
 msgid "  --iconify        Starts the program iconified"
-msgstr ""
+msgstr "  --iconify        プログラムをアイコン化して起動する"
 
 #: src/main.c:55
 msgid "  --debug-cache    Print debugging messages for the cache handling"
@@ -1361,9 +1351,8 @@ msgstr ""
 "[内部エラー] Dublin Core タグを解析する際に不明なタグの種類があります！"
 
 #: src/ocs_dir.c:97
-#, fuzzy
 msgid "Feed"
-msgstr "配信元(_F)"
+msgstr "配信元"
 
 #: src/ocs_dir.c:198 src/ocs_dir.c:243 src/ocs_dir.c:358 src/ocs_dir.c:428
 #, c-format
@@ -1451,14 +1440,13 @@ msgstr ""
 "のコンテキスト・メニューから購読のリトライまたは削除を行うことができます。\n"
 
 #: src/ui_feedlist.c:552
-#, fuzzy
 msgid ""
 "The newly created feed's type could not be detected! Please check if the "
 "source really points to a resource provided in one of the supported "
 "syndication formats"
 msgstr ""
-"この配信元の種類を検出できませんでした。本当に URL がサポートしているフォー"
-"マットの一つであるか確認して下さい！"
+"新らしく作成した配信元の種類を特定できませんでした。本当に指定した配信元ソー"
+"スがサポートしている syndication の一つであるか確認して下さい！"
 
 #: src/ui_filter.c:57
 msgid "Value"
@@ -1515,9 +1503,8 @@ msgid "New Feed"
 msgstr "新しい配信元"
 
 #: src/ui_mainwindow.c:123
-#, fuzzy
 msgid "Add a new subscription."
-msgstr "新しい購読"
+msgstr "新しい購読を追加します"
 
 #: src/ui_mainwindow.c:124
 msgid "Next Unread"
@@ -1528,12 +1515,11 @@ msgid "Mark As Read"
 msgstr "全て既読"
 
 #: src/ui_mainwindow.c:125
-#, fuzzy
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
-"現在選択している購読の全てのアイテム、または選択したフォルダの全てのエントリ"
+"現在選択している購読の全てのトピック、または選択したフォルダの全てのトピック"
 "に既読マークを付与します"
 
 #: src/ui_mainwindow.c:126
@@ -1541,7 +1527,6 @@ msgid "Update"
 msgstr "更新"
 
 #: src/ui_mainwindow.c:126
-#, fuzzy
 msgid "Update all feeds."
 msgstr "全ての配信元を更新します"
 
@@ -1550,16 +1535,14 @@ msgid "Search"
 msgstr "検索"
 
 #: src/ui_mainwindow.c:127
-#, fuzzy
 msgid "Search all feeds."
-msgstr "配信元の中から検索します"
+msgstr "全ての配信元から検索します"
 
 #: src/ui_mainwindow.c:128
 msgid "Preferences"
 msgstr "設定"
 
 #: src/ui_mainwindow.c:128
-#, fuzzy
 msgid "Edit preferences."
 msgstr "設定を編集します"
 
@@ -1644,9 +1627,8 @@ msgid "/_Copy Link Location"
 msgstr "リンク先のアドレスのコピー(_C)"
 
 #: src/ui_popup.c:130
-#, fuzzy
 msgid "/_Launch Link In Browser"
-msgstr "ブラウザで開く(_L)"
+msgstr "/ブラウザで開く(_L)"
 
 #: src/ui_popup.c:131
 msgid "/_Subscribe"
@@ -1663,7 +1645,7 @@ msgid "creating VFolder for search term \"%s\""
 msgstr "検索文字列 \"%s\" の仮想フォルダを生成します"
 
 #: src/ui_tray.c:89
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
 msgstr[0] "%d 個の新しいトピックがあります！"
@@ -1672,89 +1654,3 @@ msgstr[1] "%d 個の新しいトピックがあります！"
 #: src/ui_tray.c:102
 msgid "No new items."
 msgstr "新しいトピックはありません。"
-
-#~ msgid "_Scroll Or Next Unread"
-#~ msgstr "スクロール/次の未読へ(_S)"
-
-#~ msgid "Scrolls the item view down or jumps to the next unread item."
-#~ msgstr ""
-#~ "表示するエントリをスクロール・ダウンするか、または次の未読のエントリへジャ"
-#~ "ンプします"
-
-#~ msgid "condensed item list"
-#~ msgstr "簡易トピック一覧"
-
-#~ msgid "item list widget lookup failed!\n"
-#~ msgstr "トピック一覧ウィジットの検索に失敗しました！\n"
-
-#~ msgid "could not retrieve selection of item list!\n"
-#~ msgstr "トピック一覧の選択範囲を取得できませんでした！\n"
-
-#~ msgid "GtkHTML2"
-#~ msgstr "GtkHTML2"
-
-#~ msgid "Mozilla (experimental)"
-#~ msgstr "Mozilla (EXPERIMENTAL)"
-
-#, fuzzy
-#~ msgid "<b>HTTP Authentication</b>"
-#~ msgstr "HTTP の認証機能を使う(_A)"
-
-#~ msgid "Text Viewer (experimental)"
-#~ msgstr "テキスト表示 (Experimental)"
-
-#~ msgid ""
-#~ "There is no %%s URL place holder in the browser command string you "
-#~ "specified in the preferences dialog!!!"
-#~ msgstr ""
-#~ "設定ダイアログの中で指定したブラウザのコマンド列の中に URL プレイスフォル"
-#~ "ダ %%s がありません！！！"
-
-#~ msgid ""
-#~ "The newly created feed's type could not be detected. Please subscribe "
-#~ "again and select a feed type!"
-#~ msgstr ""
-#~ "新しく作成した配信元の種類を検出できませんでした。再度、購読を行い手動で配"
-#~ "信元の種類を選択して下さい！"
-
-#~ msgid "GtkHTML3 (experimental)"
-#~ msgstr "GtkHTML3 (EXPERIMENTAL)"
-
-#~ msgid "conversion wasn't successful.\n"
-#~ msgstr "変換に失敗しました。\n"
-
-#~ msgid "conversion wasn't successful. converted: %i octets.\n"
-#~ msgstr "変換に失敗しました。変換済: %i オクテット\n"
-
-#~ msgid "not enough memory\n"
-#~ msgstr "メモリが足りません\n"
-
-#~ msgid "Show Only _Unread Feeds"
-#~ msgstr "未読の配信元のみ表示する(_U)"
-
-#~ msgid "Filters all subscriptions that don't have unread items."
-#~ msgstr "全ての購読を未読のエントリでフィルタします"
-
-#~ msgid "Browser Settings"
-#~ msgstr "ブラウザの設定"
-
-#~ msgid "Date Column Settings"
-#~ msgstr "日付の設定"
-
-#~ msgid "Feed Handling Settings"
-#~ msgstr "配信元取り扱いの設定"
-
-#~ msgid "Notification Area"
-#~ msgstr "通知エリア"
-
-#~ msgid "Menu Settings"
-#~ msgstr "メニューの設定"
-
-#~ msgid "Viewing Headlines"
-#~ msgstr "ヘッドライン表示"
-
-#~ msgid "HTTP Proxy Server"
-#~ msgstr "HTTP プロキシ・サーバ"
-
-#~ msgid "rule type"
-#~ msgstr "ルールの種類"
