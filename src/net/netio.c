@@ -777,8 +777,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 		
 		/* Copy uncompressed data back to body. */
 		free (body);
-		body = strdup (inflatedbody);
-		free (inflatedbody);
+		body = inflatedbody;
 	}
 	
 	cur_ptr->contentlength = len;
