@@ -834,7 +834,7 @@ char * downloadURL(struct feed_request *request) {
 				while(!feof(f)) {
 					++i;
 					data = g_realloc(data, i*1024);
-					n = fread(&data[(i-1)*1024], 1024, 1, f);
+					n = fread(&data[(i-1)*1024], 1, 1024, f);
 				}
 				fclose(f);
 				if (n == 1024) data = g_realloc(data, (i+1)*1024);

@@ -310,7 +310,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 			cur = cur->next;
 		}
 	
-		loadFavIcon(fp);
+		favicon_load(fp);
 	} while (FALSE);
 	
 	if(0 != error) {
@@ -866,7 +866,7 @@ void feed_free(feedPtr fp) {
 	feed_clear_item_list(fp);
 
 	if (fp->id) {
-		removeFavIcon(fp);
+		favicon_remove(fp);
 		conf_feedlist_schedule_save();
 		g_free(fp->id);
 	}

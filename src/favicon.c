@@ -1,4 +1,5 @@
-/* ico2xpm.c -- Convert icons to pixmaps
+/**
+ * @file ico2xpm.c -- Convert icons to pixmaps
  * Copyright (C) 1998 Philippe Martin
  * Modified by Brion Vibber
  * 
@@ -36,6 +37,7 @@
 #include "common.h"
 #include "update.h"
 #include "net/netio.h"
+#include "debug.h"
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
@@ -166,8 +168,13 @@ static unsigned char reduced_colormap_index [256];
 /* Does the icon have transparent pixels ? */
 static int have_transparent_pixels;
 
-gboolean
-convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen)
+
+/* function reads the data of a MS Windows .ICO file referenced by 
+   icondata with length datalen, converts the image into XPM 
+   format and saves the result in the file outputfile. If the 
+   conversion is successful TRUE is returned. */
+static gboolean
+convert_favicon_to_XPM(gchar *outputfile, unsigned char *icondata, int datalen)
 {
   int offset = 0;
 
@@ -388,7 +395,7 @@ convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen)
 
 /* Liferea specific wrapper functions */
 
-void loadFavIcon(feedPtr fp) {
+void favicon_load(feedPtr fp) {
 	gchar		*filename, *tmp;
 	GdkPixbuf	*pixbuf;
 	
@@ -404,7 +411,7 @@ void loadFavIcon(feedPtr fp) {
 	g_free(filename);
 }
 
-void removeFavIcon(feedPtr fp) {
+void favicon_remove(feedPtr fp) {
 	gchar		*filename;
 	
 	/* try to load a saved favicon */
@@ -432,13 +439,14 @@ void favicon_download(feedPtr fp) {
 			
 			request = update_request_new(NULL);
 			request->feedurl = g_strdup_printf("%s/favicon.ico", baseurl);
+			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->feedurl);
 			icodata = downloadURL(request);
 			update_request_free(request);
 			
 			if(NULL != icodata) {
 				tmp = getCacheFileName(fp->id, "xpm");
-					convertIcoToXPM(tmp, icodata, 10000000);
-					loadFavIcon(fp);
+					convert_favicon_to_XPM(tmp, icodata, 10000000);
+					favicon_load(fp);
 					g_free(tmp);
 					g_free(icodata);
 			}
