@@ -44,8 +44,6 @@
 #include "ns_admin.h"
 #include "ns_blogChannel.h"
 #include "ns_cC.h"
-
-#include "net/netio.h"
 #include "htmlview.h"
 
 /* HTML output strings */

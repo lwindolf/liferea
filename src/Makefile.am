@@ -35,6 +35,7 @@ liferea_bin_SOURCES = \
 	cdf_item.c cdf_item.h \
 	common.c common.h \
 	conf.c conf.h \
+	debug.c debug.h \
 	eggtrayicon.h eggtrayicon.c \
 	export.c export.h \
 	favicon.c favicon.h \

@@ -20,6 +20,7 @@
  */
 
 #include "net/netio.h"
+#include "debug.h"
 #include "update.h"
 
 /* communication queues for requesting updates and sending the results */
@@ -31,7 +32,8 @@ static void *update_thread_main(void *data);
 
 gpointer update_request_new(feedPtr fp) {
 	struct feed_request	*request;
-	
+
+	debug_enter("update_request_new");	
 	/* we always reuse one request structure per feed, to
 	   allow to reuse the lastmodified attribute of the
 	   last request... */
@@ -45,16 +47,20 @@ gpointer update_request_new(feedPtr fp) {
 		g_assert(fp->request == NULL);
 		fp->request = (gpointer)request;
 	}
+	debug_exit("update_request_new");
+	
 	return (gpointer)request;
 }
 
 void update_request_free(gpointer request) {
 
+	debug_enter("update_request_free");
 	if(NULL != request) {
 		g_free(((struct feed_request *)request)->lastmodified);
 		g_free(((struct feed_request *)request)->feedurl);
 		g_free(request);
 	}
+	debug_exit("update_request_free");
 }
 
 GThread * update_thread_init(void) {
@@ -69,16 +75,19 @@ static void *update_thread_main(void *data) {
 	struct feed_request *request;
 	
 	for(;;)	{
+		debug0(DEBUG_UPDATE, "waiting for request...");
 		request = g_async_queue_pop(requests);
 		g_assert(NULL != request);
+		debug1(DEBUG_UPDATE, "processing received request (%s)", request->feedurl);
 		downloadURL(request);
 
 		if(NULL == request->fp) {
-			/* request was abandoned (feed deleted) */
+			debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
 			g_free(request->data);
 			update_request_free(request);
 		} else {
 			/* return the request so the GUI thread can merge the feeds and display the results... */
+			debug0(DEBUG_UPDATE, "request finished");
 			g_async_queue_push(results, (gpointer)request);
 		}
 	}

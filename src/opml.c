@@ -30,8 +30,6 @@
 #include "item.h"
 #include "opml.h"
 #include "callbacks.h"
-
-#include "net/netio.h"
 #include "htmlview.h"
 
 /* you can find the OPML specification at Userland:
