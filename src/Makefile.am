@@ -14,6 +14,7 @@ INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LIB_DIR=\""$(pkglibdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	-DBIN_DIR=\""$(bindir)"\" \
 	@PACKAGE_CFLAGS@ \
 	@X_CFLAGS@
 
