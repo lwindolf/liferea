@@ -188,7 +188,7 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 	gpointer	ip;
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
 	gint		time;
-	GdkPixbuf	*icon, *favicon = NULL;
+	GdkPixbuf	*icon = NULL, *favicon = NULL;
 
 	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter,
 				    IS_PTR, &ip,
@@ -212,37 +212,35 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 	}
 	
 	/* Label and state icon */
-	if(title != NULL) {
-		/* Here we have the following problem: a title string might contain 
-		   either escaped markup (which we should not escape again) or 
-		   non-markup text (which might contain ampersands, which must be
-		   escaped). We assume no mixed case! */
-		/*if(is_escaped_markup(title))
-		  esc_title = unescape_markup(title);	/ * FIXME: unescaped!!! * /
-			else */
-			esc_title = g_markup_escape_text(title, -1);
-			
-			esc_title = filter_title(esc_title);
-			
-		if(FALSE == item_get_read_status(ip)) {
-			time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
-			label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
-			icon = icons[ICON_UNREAD];
-		} else if(TRUE == item_get_update_status(ip)) {
-			time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
-			label = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_title);
-			icon = icons[ICON_UPDATED];
-		} else {
-			time_str = g_strdup(esc_time_str);
-			label = g_strdup(esc_title);
-			icon = icons[ICON_READ];
-		}
-		g_free(esc_title);
-		g_free(esc_time_str);
+	if(title == NULL) 
+		title = g_strdup(_("[no title]"));
+		
+	/* Here we have the following problem: a title string might contain 
+	   either escaped markup (which we should not escape again) or 
+	   non-markup text (which might contain ampersands, which must be
+	   escaped). We assume no mixed case! */
+	/*if(is_escaped_markup(title))
+	  esc_title = unescape_markup(title);	/ * FIXME: unescaped!!! * /
+		else */
+		esc_title = g_markup_escape_text(title, -1);
+
+		esc_title = filter_title(esc_title);
+
+	if(FALSE == item_get_read_status(ip)) {
+		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
+		label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
+		icon = icons[ICON_UNREAD];
+	} else if(TRUE == item_get_update_status(ip)) {
+		time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
+		label = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_title);
+		icon = icons[ICON_UPDATED];
 	} else {
-		label = g_strdup("");
-		time_str = esc_time_str;
+		time_str = g_strdup(esc_time_str);
+		label = g_strdup(esc_title);
+		icon = icons[ICON_READ];
 	}
+	g_free(esc_title);
+	g_free(esc_time_str);
 	
 	if(TRUE == item_get_mark(ip)) 
 		icon = icons[ICON_FLAG];
