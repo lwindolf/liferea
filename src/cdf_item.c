@@ -220,6 +220,7 @@ void setCDFItemProp(gpointer ip, gint proptype, gpointer data) {
 				break;
 			case ITEM_PROP_DESCRIPTION:
 			case ITEM_PROP_TIME:
+			case ITEM_PROP_SOURCE:
 				g_error("please don't do this!");
 				break;
 			default:
@@ -247,6 +248,9 @@ gpointer getCDFItemProp(gpointer ip, gint proptype) {
 				break;
 			case ITEM_PROP_TIME:
 				return (gpointer)i->time;
+				break;
+			case ITEM_PROP_SOURCE:
+				return (gpointer)getCDFItemTag(i, CDF_ITEM_LINK);
 				break;
 			default:
 				g_error(_("intenal error! unknow item property type!\n"));

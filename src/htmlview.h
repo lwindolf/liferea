@@ -89,4 +89,6 @@ void	writeHTML(gchar *string);
 
 void	finishHTMLOutput(void);
 
+/* to launch any URL */
+void 	launchURL(const gchar *url);
 #endif

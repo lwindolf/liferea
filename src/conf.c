@@ -29,6 +29,8 @@
 #define PATH		"/apps/liferea"
 #define GROUPS		"/apps/liferea/groups"
 
+#define HELP1KEY	"help/1"
+#define HELP2KEY	"help/2"
 #define HELP1URL	"http://liferea.sf.net/help038.rdf"
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 
@@ -44,6 +46,14 @@ static gchar * build_path_str(gchar *str1, gchar *str2) {
 		gconfpath = g_strdup_printf("%s/%s/%s", PATH, str1, str2);
 		
 	return gconfpath;
+}
+
+free_gconf_key(gchar *key, gchar *attribute) {
+	gchar	*gconfpath;
+	
+	gconfpath = build_path_str(key, attribute);
+	gconf_client_unset(client, gconfpath, NULL);
+	g_free(gconfpath);
 }
 
 gboolean is_gconf_error(GError *err) {
@@ -136,6 +146,7 @@ void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
 	GConfValue	*element;
 	GSList		*list, *newlist = NULL;
 	GSList		*iter;
+	gchar		*gconfpath;
 	const char	*tmp;
 	int 		found = 0, error = 0;
 
@@ -157,6 +168,12 @@ void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
 	
 	/* write new list back to gconf */
 	setEntryKeyList(keyprefix, newlist);
+	
+	/* remove entry gconf keys */
+	free_gconf_key(key, "url");
+	free_gconf_key(key, "name");
+	free_gconf_key(key, "type");
+	free_gconf_key(key, "updateInterval");
 	
 	g_slist_free(list);
 	g_slist_free(newlist);
@@ -229,6 +246,30 @@ gchar * getFreeEntryKey(gchar *keyprefix) {
 	return newkey;
 }
 
+/*----------------------------------------------------------------------*/
+/* folder entry handling							*/
+/*----------------------------------------------------------------------*/
+
+int setFolderTitleInConfig(gchar *keyprefix, gchar *title) {
+	gchar 	*gconfpath;
+	
+	gconfpath = g_strdup_printf("%s/%s/feedlistname", PATH, keyprefix);
+	setStringConfValue(gconfpath, title);
+	g_free(gconfpath);
+
+	return 0;	
+}
+
+int setFolderTypeInConfig(gchar *keyprefix, gint type) {
+	gchar 	*gconfpath;
+	
+	gconfpath = g_strdup_printf("%s/%s/type", PATH, keyprefix);
+	setNumericConfValue(gconfpath, type);
+	g_free(gconfpath);
+
+	return 0;	
+}
+
 /* adds the given keyprefix to to the list of groups
    and saves the title in the directory path as key 
    feedlisttitle, on successful execution this function
@@ -295,22 +336,13 @@ gchar * addFolderToConfig(gchar *title) {
 	g_free(value2);
 	g_free(gconfpath);
 
-	/* last step: save directory title */	
-	gconfpath = g_strdup_printf("%s/%s/feedlistname", PATH, newdirkey);
-	setStringConfValue(gconfpath, title);
-	g_free(gconfpath);
-
+	/* last step: save directory title & type*/	
+	setFolderTitleInConfig(newdirkey, title);
+	setFolderTypeInConfig(newdirkey, FST_NODE);
+	
 	g_slist_free(newlist);
 	
 	return newdirkey;
-}
-
-int setFolderTitleInConfig(gchar *keyprefix, gchar *title) {
-	gchar 	*gconfpath;
-	
-	gconfpath = g_strdup_printf("%s/%s/feedlistname", PATH, keyprefix);
-	setStringConfValue(gconfpath, title);
-	g_free(gconfpath);
 }
 
 void removeFolderFromConfig(gchar *keyprefix) {
@@ -347,10 +379,19 @@ void removeFolderFromConfig(gchar *keyprefix) {
 	is_gconf_error(err);
 	g_free(value);
 	g_free(gconfpath);
-
+	
+	/* remove entry gconf keys */
+	free_gconf_key(keyprefix, "feedlistname");
+	free_gconf_key(keyprefix, "feedlist");
+	free_gconf_key(keyprefix, "type");
+	
 	g_slist_free(list);
 	g_slist_free(newlist);
 }
+
+/*----------------------------------------------------------------------*/
+/* feed entry handling							*/
+/*----------------------------------------------------------------------*/
 
 /* adds the given URL to the list of feeds... */
 gchar * addEntryToConfig(gchar *keyprefix, gchar *url, gint type) {
@@ -450,6 +491,10 @@ int setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval) {
 	return 0;	
 }
 
+/*----------------------------------------------------------------------*/
+/* config loading on startup						*/
+/*----------------------------------------------------------------------*/
+
 void loadEntries() {
 	GError		*err = NULL;
 	GSList		*groupiter = NULL, *iter = NULL;
@@ -457,6 +502,7 @@ void loadEntries() {
 	gchar		*gconfpath;
 	gchar		*name, *url, *keyprefix, *keylisttitle;
 	const char	*key;
+	gchar 		*helpFolderPrefix = NULL;
 	gint		interval;
 	gint		type;
 
@@ -487,7 +533,8 @@ void loadEntries() {
 		/* get keyprefix, build gconf path and get key list */
 		element = groupiter->data;
 		keyprefix = (gchar *)gconf_value_get_string(element);
-
+		g_assert(NULL != keyprefix);
+		
 		gconfpath = build_path_str(keyprefix, "feedlist");		
 		keylist = gconf_client_get(client, gconfpath, &err);
 		is_gconf_error(err);
@@ -506,8 +553,18 @@ void loadEntries() {
 		gconfpath = build_path_str(keyprefix, "feedlistname");
 		keylisttitle = getStringConfValue(gconfpath);		
 		g_free(gconfpath);
-		
-		addFolder(keyprefix, keylisttitle, FST_NODE);
+
+		gconfpath = build_path_str(keyprefix, "type");
+		type = getNumericConfValue(gconfpath);		
+		g_free(gconfpath);
+
+		if(0 == type)
+			type = FST_NODE;
+			
+		if(FST_HELPNODE == type)
+			helpFolderPrefix = keyprefix;
+			
+		addFolder(keyprefix, keylisttitle, type);
 		/* don't free keyprefix because its used as hash table key in backend */
 		g_free(keylisttitle);
 
@@ -544,6 +601,13 @@ void loadEntries() {
 			is_gconf_error(err);
 			g_free(gconfpath);	
 
+			/* help feed extra handling */
+			if((type == FST_HELPFEED) && (0 != strcmp(url, HELP1URL))) {
+				g_print(_("updating help feed URL..."));
+				g_free(url);
+				url = g_strdup(HELP1URL);
+				setEntryURLInConfig((gchar *)key, url);
+			}
 
 			if(type == 0)
 				type = FST_RSS;
@@ -564,10 +628,19 @@ void loadEntries() {
 	g_slist_free(groupiter);
 	g_free(groups);
 	
-	/* create help folder and content */
-	addFolder("help", _("Liferea Help"), FST_HELPNODE);
-	addEntry(FST_RSS, HELP1URL, "help1", "help", _("Online Help Feed"), -1);
-	addEntry(FST_RSS, HELP2URL, "help2", "help", _("Liferea SF News"), -1);
+	/* if help folder was not yet created... */
+	if(NULL == helpFolderPrefix) {
+		/* add to config and UI feed list*/
+		helpFolderPrefix = addFolderToConfig(_("Liferea Help"));
+		setFolderTypeInConfig(helpFolderPrefix, FST_HELPNODE);
+		addFolder(helpFolderPrefix, _("Liferea Help"), FST_HELPNODE );
+	}
+		
+	g_assert(NULL != helpFolderPrefix);
+	addEntry(FST_RSS, HELP1URL, HELP1KEY, helpFolderPrefix, _("Online Help Feed"), -1);
+	addEntry(FST_RSS, HELP2URL, HELP2KEY, helpFolderPrefix, _("Liferea SF News"), -1);
+	
+	checkForEmptyFolders();
 	
 	/* enforce background loading */
 	updateNow();
@@ -605,7 +678,9 @@ void setNameSpaceStatus(gchar *nsname, gboolean enable) {
 	g_free(gconfpath);
 }
 
-/* generic configuration access methods used for preferences */
+/*----------------------------------------------------------------------*/
+/* generic configuration access methods					*/
+/*----------------------------------------------------------------------*/
 
 void setBooleanConfValue(gchar *valuename, gboolean value) {
 	GError		*err = NULL;

@@ -29,7 +29,7 @@ lookup_widget                          (GtkWidget       *widget,
       else
         parent = widget->parent;
       if (!parent)
-        parent = (GtkWidget*) g_object_get_data (G_OBJECT (widget), "GladeParentKey");
+        parent = g_object_get_data (G_OBJECT (widget), "GladeParentKey");
       if (parent == NULL)
         break;
       widget = parent;

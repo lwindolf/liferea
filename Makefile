@@ -35,13 +35,13 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-ACLOCAL = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run aclocal-1.7
+ACLOCAL = ${SHELL} /home/lars/tech/coding/liferea/missing --run aclocal-1.7
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run tar
-AUTOCONF = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run automake-1.7
+AMTAR = ${SHELL} /home/lars/tech/coding/liferea/missing --run tar
+AUTOCONF = ${SHELL} /home/lars/tech/coding/liferea/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/lars/tech/coding/liferea/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/lars/tech/coding/liferea/missing --run automake-1.7
 AWK = gawk
 CATALOGS = 
 CATOBJEXT = .gmo
@@ -72,10 +72,10 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAINT = 
-MAINTAINER_MODE_FALSE = #
-MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/lars/tech/coding/c/liferea/missing --run makeinfo
+MAINT = #
+MAINTAINER_MODE_FALSE = 
+MAINTAINER_MODE_TRUE = #
+MAKEINFO = ${SHELL} /home/lars/tech/coding/liferea/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 OBJEXT = o
@@ -112,7 +112,7 @@ exec_prefix = ${prefix}
 host_alias = 
 includedir = ${prefix}/include
 infodir = ${prefix}/info
-install_sh = /home/lars/tech/coding/c/liferea/install-sh
+install_sh = /home/lars/tech/coding/liferea/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localstatedir = ${prefix}/var
@@ -159,18 +159,18 @@ all: config.h
 
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno
-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: # Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  Makefile
-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile: # $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe)
 
 $(top_builddir)/config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
-$(srcdir)/configure:  $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
+$(srcdir)/configure: # $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 	cd $(srcdir) && $(AUTOCONF)
 
-$(ACLOCAL_M4):  configure.in 
+$(ACLOCAL_M4): # configure.in 
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 
 config.h: stamp-h1
@@ -183,7 +183,7 @@ stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
 	@rm -f stamp-h1
 	cd $(top_builddir) && $(SHELL) ./config.status config.h
 
-$(srcdir)/config.h.in:  $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/acconfig.h
+$(srcdir)/config.h.in: # $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/acconfig.h
 	cd $(top_srcdir) && $(AUTOHEADER)
 	touch $(srcdir)/config.h.in
 

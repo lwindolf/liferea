@@ -1,3 +1,18 @@
+2003-09-??  Lars Lindner <lars.lindner@gmx.net>
+
+        Version 0.3.8
+
+	* feed list drag and drop support
+	* you can now launch item sources by double clicking in the
+	  item list or via the item list popup menu
+	* cleaned up the debugging stuff in the preferences dialog
+	* remove user configurable time format, now using locale
+	  specific date and time format
+	* changed the toolbar to a menu bar (experimental)
+	* not configured namespaces 'll be enabled automatically
+	* experimental VFolder support (for now you can only
+	  create a VFolder with only one exactly string match rule)
+
 2003-09-14  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.3.7

@@ -52,6 +52,7 @@ extern GdkPixbuf	*listIcon;
 extern GdkPixbuf	*availableIcon;
 extern GdkPixbuf	*unavailableIcon;
 extern GdkPixbuf	*vfolderIcon;
+extern GdkPixbuf	*emptyIcon;
 
 extern GThread	*updateThread;
 
@@ -59,8 +60,12 @@ static gint	itemlist_loading = 0;	/* freaky workaround */
 static gchar	*new_key;		/* used by new feed dialog */
 
 /* two globals to keep selected entry info while DND actions */
+static gboolean	drag_successful = FALSE;
+static gint	drag_source_type = FST_INVALID;
 static gchar	*drag_source_key = NULL;
 static gchar	*drag_source_keyprefix = NULL;
+
+void preFocusItemlist(void);
 
 /*------------------------------------------------------------------------------*/
 /* helper functions	FIXME: need to be cleaned up (no window/feedlist parameter	*/
@@ -129,7 +134,7 @@ gchar * getEntryViewSelectionPrefix(GtkWidget *window) {
 		return NULL;
 	}
 
-        if(gtk_tree_selection_get_selected (select, &model, &iter)) {
+        if(gtk_tree_selection_get_selected(select, &model, &iter)) {
 		
 		/* the selected iter is usually not the directory iter... */
 		if(0 != gtk_tree_store_iter_depth(GTK_TREE_STORE(model), &iter)) {
@@ -149,12 +154,13 @@ gchar * getEntryViewSelectionPrefix(GtkWidget *window) {
 		                                 FS_KEY, &keyprefix, -1);
 
 		if(IS_FEED(tmp_type)) {
-			/* this is necessary for all feeds in the default folder */	
+			/* this is necessary for all feeds in the default (root) folder */	
 			g_free(keyprefix);
 			keyprefix = g_strdup("");
-		}		
+		}
 	} else {
-		return NULL;
+		/* nothing selected -> we assume the default (root) folder */
+		keyprefix = g_strdup("");
 	}
 	
 	return keyprefix;
@@ -272,6 +278,7 @@ void redrawFeedList(void) {
 	if(NULL != list)  {
 		gtk_widget_queue_draw(list);
 	}
+
 }
 
 void redrawItemList(void) {
@@ -285,7 +292,6 @@ void redrawItemList(void) {
 		gtk_widget_queue_draw(list);
 	}
 }
-
 
 /*------------------------------------------------------------------------------*/
 /* callbacks 									*/
@@ -313,14 +319,7 @@ void on_popup_refresh_selected(void) {
 /*------------------------------------------------------------------------------*/
 
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*browsercmdentry, 
-			*timeformatentry,
-			*proxyhostentry,
-			*proxyportentry,
-			*useproxycheck,
-			*nscheck;
-	int		i;
-	gchar		*tmp;
+	GtkWidget	*browsercmdentry;
 				
 	if(NULL == prefdialog || !G_IS_OBJECT(prefdialog))
 		prefdialog = create_prefdialog ();		
@@ -328,65 +327,21 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	g_assert(NULL != prefdialog);
 
 	browsercmdentry = lookup_widget(prefdialog, "browsercmd");
-	timeformatentry = lookup_widget(prefdialog, "timeformat");
-	proxyhostentry = lookup_widget(prefdialog, "proxyhost");
-	proxyportentry = lookup_widget(prefdialog, "proxyport");
-	useproxycheck =  lookup_widget(prefdialog, "useproxy");
 	
 	gtk_entry_set_text(GTK_ENTRY(browsercmdentry), getStringConfValue(BROWSER_COMMAND));
-	gtk_entry_set_text(GTK_ENTRY(timeformatentry), getStringConfValue(TIME_FORMAT));
-	gtk_entry_set_text(GTK_ENTRY(proxyhostentry), getStringConfValue(PROXY_HOST));
-	gtk_entry_set_text(GTK_ENTRY(proxyportentry), g_strdup_printf("%d", getNumericConfValue(PROXY_PORT)));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(useproxycheck), getBooleanConfValue(USE_PROXY));
 	
-	/* set all namespace checkboxes */
-	for(i = 0; NULL != nslist[i]; i++) {
-		tmp = g_strdup_printf("use%s", nslist[i]);
-		nscheck = lookup_widget(prefdialog, tmp);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(nscheck), 
-				             getNameSpaceStatus(nslist[i]));
-		g_free(tmp);
-	}
-				
 	gtk_widget_show(prefdialog);
 }
 
 void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*browsercmdentry, 
-			*timeformatentry,
-			*proxyhostentry,
-			*proxyportentry,
-			*useproxycheck,
-			*nscheck;
-	int		i;
-	gchar		*tmp;
+	GtkWidget	*browsercmdentry;
 	
 	g_assert(NULL != prefdialog);
 		
 	browsercmdentry = lookup_widget(prefdialog, "browsercmd");
-	timeformatentry = lookup_widget(prefdialog, "timeformat");
-	proxyhostentry = lookup_widget(prefdialog, "proxyhost");
-	proxyportentry = lookup_widget(prefdialog, "proxyport");
-	useproxycheck =  lookup_widget(prefdialog, "useproxy");
 	
 	setStringConfValue(BROWSER_COMMAND,
 			   (gchar *)gtk_entry_get_text(GTK_ENTRY(browsercmdentry)));
-	setStringConfValue(TIME_FORMAT,
-			   (gchar *)gtk_entry_get_text(GTK_ENTRY(timeformatentry)));
-	setStringConfValue(PROXY_HOST,
-			   (gchar *)gtk_entry_get_text(GTK_ENTRY(proxyhostentry)));
-	setNumericConfValue(PROXY_PORT,
-			   atoi(gtk_entry_get_text(GTK_ENTRY(proxyportentry))));
-	setBooleanConfValue(USE_PROXY,
-			   (gboolean)gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(useproxycheck)));
-			   
-	/* get and save all namespace checkboxes */
-	for(i = 0; NULL != nslist[i]; i++) {
-		tmp = g_strdup_printf("use%s", nslist[i]);
-		nscheck = lookup_widget(prefdialog, tmp);
-		setNameSpaceStatus(nslist[i], gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(nscheck)));
-		g_free(tmp);
-	}
 						     
 	/* reinitialize */
 	loadConfig();
@@ -424,6 +379,7 @@ void on_deletebtn(GtkWidget *feedlist) {
 		g_free(iter);
 				
 		clearItemList();
+		checkForEmptyFolders();
 	} else {
 		print_status(_("Error: Cannot delete this list entry!"));
 	}
@@ -623,8 +579,9 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	}
 
 	if(NULL != (keyprefix = getEntryViewSelectionPrefix(mainwindow))) {
-
-		if(NULL != (key = newEntry(type, source, keyprefix))) {
+		key = newEntry(type, source, keyprefix);
+		checkForEmptyFolders();
+		if(NULL != key) {
 
 			gtk_entry_set_text(GTK_ENTRY(titleentry), getDefaultEntryTitle(key));
 			new_key = key;
@@ -694,6 +651,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	if(NULL != (folderkey = addFolderToConfig(foldertitle))) {
 		/* add the new folder to the model */
 		addFolder(folderkey, foldertitle, FST_NODE);
+		checkForEmptyFolders();
 	} else {
 		print_status(_("internal error! could not get a new folder key!"));
 	}	
@@ -728,13 +686,15 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 		showErrorBox("internal error: could not determine folder key!");
 	}
 
-	gtk_widget_show(foldernamedialog);
+	gtk_widget_hide(foldernamedialog);
 }
 
 void on_popup_removefolder_selected(void) {
 	GtkTreeStore	*feedstore;
+	GtkTreeIter	childiter;
 	GtkTreeIter	*iter;
 	gchar		*keyprefix;
+	gint		tmp_type, count;
 	
 	keyprefix = getEntryViewSelectionPrefix(mainwindow);
 	iter = getEntryViewSelectionIter(mainwindow);
@@ -745,18 +705,46 @@ void on_popup_removefolder_selected(void) {
 	/* make sure thats no grouping iterator */
 	if(NULL != keyprefix) {
 		/* check if folder is empty */
-		if(FALSE == gtk_tree_model_iter_has_child(GTK_TREE_MODEL(feedstore), iter)) {
-			gtk_tree_store_remove(feedstore, iter);
-			removeFolder(keyprefix);
-			g_free(keyprefix);
+		count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), iter);
+		if(0 == count) 
+			g_error("this cannot happen! A folder must have an empty entry!!!\n");
+
+		if(1 == count) {
+			/* check if the only entry is type FST_EMPTY */
+			gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, iter);
+			gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_TYPE, &tmp_type, -1);
+			if(FST_EMPTY == tmp_type) {
+				gtk_tree_store_remove(feedstore, &childiter);
+				gtk_tree_store_remove(feedstore, iter);
+				removeFolder(keyprefix);
+				g_free(keyprefix);
+			} else {
+				showErrorBox(_("A folder must be empty to delete it!"));
+			}
 		} else {
 			showErrorBox(_("A folder must be empty to delete it!"));
 		}
 	} else {
 		print_status(_("Error: Cannot determine folder key!"));
 	}
-	g_free(iter);	
+	g_free(iter);
 }
+
+
+void on_toolbar_newfeed_clicked(GtkMenuItem *menuitem, gpointer user_data) {
+
+	on_newbtn_clicked(NULL, NULL);
+}
+
+
+void on_toolbar_newfolder_clicked(GtkMenuItem *menuitem, gpointer user_data) {
+
+	on_popup_newfolder_selected();	
+}
+
+/*------------------------------------------------------------------------------*/
+/* itemlist popup handler							*/
+/*------------------------------------------------------------------------------*/
 
 void on_popup_allunread_selected(void) {
 	GtkTreeModel 	*model;
@@ -785,15 +773,35 @@ void on_popup_allunread_selected(void) {
 	redrawItemList();	
 }
 
-void on_toolbar_newfeed_clicked(GtkMenuItem *menuitem, gpointer user_data) {
+void on_popup_launchitem_selected(void) {
+	GtkWidget		*itemlist;
+	GtkTreeSelection	*selection;
+	GtkTreeModel 		*model;
+	GtkTreeIter		iter;
+	gpointer		tmp_ip;
+	gint			tmp_type;
 
-	on_newbtn_clicked(NULL, NULL);
+	if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
+		return;
+	}
+
+	if(NULL == (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
+		print_status(_("could not retrieve selection of item list!"));
+		return;
+	}
+
+	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
+	       	gtk_tree_model_get(model, &iter, IS_PTR, &tmp_ip,
+						 IS_TYPE, &tmp_type, -1);
+		g_assert(tmp_ip != NULL);
+		launchURL(getItemURL(tmp_type, tmp_ip));
+	}
 }
 
 
-void on_toolbar_newfolder_clicked(GtkMenuItem *menuitem, gpointer user_data) {
+void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data) {
 
-	on_popup_newfolder_selected();	
+	on_popup_launchitem_selected();
 }
 
 /*------------------------------------------------------------------------------*/
@@ -880,10 +888,38 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 /*------------------------------------------------------------------------------*/
 /* selection change callbacks							*/
 /*------------------------------------------------------------------------------*/
-
-void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
+void preFocusItemlist(void) {
 	GtkWidget		*itemlist;
 	GtkTreeSelection	*itemselection;
+	
+	/* the following is important to prevent setting the unread
+	   flag for the first item in the item list when the user does
+	   the first click into the treeview, if we don't do a focus and
+	   unselect, GTK would always (exception: clicking on first item)
+	   generate two selection-change events (one for the clicked and
+	   one for the selected item)!!! */
+
+	if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
+		g_warning(_("item list widget lookup failed!\n"));
+		return;
+	}
+
+	/* prevent marking as unread before focussing, which leads 
+	   to a selection */
+	itemlist_loading = 1;
+	gtk_widget_grab_focus(itemlist);
+
+	if(NULL == (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
+		g_warning(_("could not retrieve selection of item list!\n"));
+		return;
+	}
+	gtk_tree_selection_unselect_all(itemselection);
+
+	gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+	itemlist_loading = 0;
+}
+
+void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeIter		iter;
         GtkTreeModel		*model;
 	gchar			*tmp_key;
@@ -900,7 +936,7 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 				-1);
 				
 		/* make sure thats no grouping iterator */
-		if(!IS_NODE(tmp_type)) {
+		if(!IS_NODE(tmp_type) && (FST_EMPTY != tmp_type)) {
 			g_assert(NULL != tmp_key);
 
 			clearItemList();
@@ -913,31 +949,7 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 			geometry.min_width=640;
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 
-			/* the following is important to prevent setting the unread
-			   flag for the first item in the item list when the user does
-			   the first click into the treeview, if we don't do a focus and
-			   unselect, GTK would always (exception: clicking on first item)
-			   generate two selection-change events (one for the clicked and
-			   one for the selected item)!!! */
-
-			if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
-				g_warning(_("item list widget lookup failed!\n"));
-				return;
-			}
-			
-			/* prevent marking as unread before focussing, which leads 
-			   to a selection */
-			itemlist_loading = 1;
-			gtk_widget_grab_focus(itemlist);
-			
-			if(NULL == (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
-				g_warning(_("could not retrieve selection of item list!\n"));
-				return;
-			}
-			gtk_tree_selection_unselect_all(itemselection);
-			
-			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-			itemlist_loading = 0;
+			preFocusItemlist();
 		}		
        	}
 }
@@ -961,7 +973,7 @@ void itemlist_selection_changed(void) {
 		}
 
 		if(NULL == (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
-			print_status(_("could not retrieve selection of feed list!"));
+			print_status(_("could not retrieve selection of item list!"));
 			return;
 		}
 
@@ -1049,6 +1061,9 @@ static void renderEntryStatus(GtkTreeViewColumn *tree_column,
 			break;
 		case FST_NODE:
 			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", directoryIcon, NULL);
+			break;
+		case FST_EMPTY:
+			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", emptyIcon, NULL);
 			break;
 		case FST_VFOLDER:
 			g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", vfolderIcon, NULL);
@@ -1220,13 +1235,15 @@ void setupItemList(GtkWidget *itemlist) {
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
 	gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
 	gtk_tree_view_column_set_cell_data_func(column, renderer, renderItemDate, NULL, NULL);
-						
+	g_object_set(column, "resizable", TRUE, NULL);
+
 	renderer = gtk_cell_renderer_text_new();						   	
 	column = gtk_tree_view_column_new_with_attributes(_("Headline"), renderer, "text", IS_TITLE, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TITLE);
 	gtk_tree_view_column_set_cell_data_func(column, renderer, renderItemTitle, NULL, NULL);
-
+	g_object_set(column, "resizable", TRUE, NULL);
+	
 	/* Setup the selection handler */
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist));
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
@@ -1273,7 +1290,9 @@ static GtkItemFactoryEntry vfolder_menu_items[] = {
 };
 
 static GtkItemFactoryEntry default_menu_items[] = {
-      {"/_New Folder", 	NULL, on_popup_newfolder_selected, 0, NULL}
+      {"/_New",			NULL, 0, 0, "<Branch>" },
+      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 0, NULL},
+      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 0, NULL}
 };
 
 static GtkMenu *make_entry_menu(gint type) {
@@ -1301,6 +1320,7 @@ static GtkMenu *make_entry_menu(gint type) {
 			menu_items = ocsentry_menu_items;
 			nmenu_items = sizeof(ocsentry_menu_items)/(sizeof(ocsentry_menu_items[0]));
 			break;
+		case FST_EMPTY:			
 		default:
 			menu_items = default_menu_items;
 			nmenu_items = sizeof(default_menu_items)/(sizeof(default_menu_items[0]));
@@ -1316,7 +1336,8 @@ static GtkMenu *make_entry_menu(gint type) {
 
 
 static GtkItemFactoryEntry item_menu_items[] = {
-      {"/_Mark all as read", 	NULL, on_popup_allunread_selected, 0, NULL}
+      {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 0, NULL},
+      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 0, NULL}
 };
 
 static GtkMenu *make_item_menu(void) {
@@ -1421,21 +1442,47 @@ void showErrorBox(gchar *msg) {
 /*------------------------------------------------------------------------------*/
 
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
-	GtkTreeStore *feedstore;
-	
-	feedstore = getFeedStore();
 
-	g_assert(NULL != drag_source_key);
-	g_assert(NULL != drag_source_keyprefix);
-	
-	moveInEntryList(drag_source_keyprefix, drag_source_key);
+	if(drag_successful) {
+		g_assert(NULL != drag_source_key);
+		g_assert(NULL != drag_source_keyprefix);
+		
+		moveInEntryList(drag_source_keyprefix, drag_source_key);
+		checkForEmptyFolders();	/* to add an "(empty)" entry */
 
-	g_free(drag_source_key);
-	g_free(drag_source_keyprefix);
+		g_free(drag_source_key);
+		g_free(drag_source_keyprefix);
+	}
+	
+	preFocusItemlist();
 }
 
 void on_feedlist_drag_begin(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
+	drag_successful = FALSE;
+	drag_source_type = getEntryViewSelectionType(mainwindow);
 	drag_source_key = getEntryViewSelection(lookup_widget(mainwindow, "feedlist"));
 	drag_source_keyprefix = getEntryViewSelectionPrefix(mainwindow);
+}
+
+gboolean on_feedlist_drag_drop(GtkWidget *widget, GdkDragContext *drag_context, gint x, gint y, guint time, gpointer user_data) {
+	gboolean	stop = FALSE;
+
+	g_assert(drag_source_keyprefix);	
+	
+	/* don't allow folder DND */
+	if(IS_NODE(drag_source_type)) {
+		showErrorBox(_("Sorry Liferea does not yet support drag&drop of folders!"));
+		stop = TRUE;
+	}
+
+	/* don't allow help feed dragging */
+	if(0 == strncmp(drag_source_key, "help", 4)) {
+		showErrorBox(_("you cannot modify the help folder contents!"));
+		stop = TRUE;
+	}
+	
+	drag_successful = !stop;
+	
+	return stop;
 }

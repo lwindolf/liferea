@@ -158,7 +158,7 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 					cur = cur->next;
 					continue;
 				} else {
-					g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
+					//g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
 				}
 			}
 		}

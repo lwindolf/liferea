@@ -46,6 +46,7 @@ GdkPixbuf	*listIcon = NULL;
 /* icons for grouping */
 GdkPixbuf	*directoryIcon = NULL;
 GdkPixbuf	*helpIcon = NULL;
+GdkPixbuf	*emptyIcon = NULL;
 /* VFolder */
 GdkPixbuf	*vfolderIcon = NULL;
 
@@ -75,6 +76,7 @@ int main (int argc, char *argv[]) {
 	directoryIcon = create_pixbuf("directory.xpm");
 	helpIcon = create_pixbuf("help.xpm");
 	vfolderIcon = create_pixbuf("vfolder.xpm");
+	emptyIcon = create_pixbuf("empty.xpm");
 	
 	mainwindow = create_mainwindow();
 	setupHTMLView(mainwindow);

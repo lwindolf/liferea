@@ -32,10 +32,12 @@
 #define FST_CDF		5	/* Microsoft CDF */
 #define FST_PIE		6	/* Echo/Atom/PIE */
 
-#define FST_HELPNODE	7	/* special tree list types to store help feeds */	
-#define FST_HELPFEED	8
-
 #define FST_VFOLDER	9	/* sepcial type for VFolders */
+
+#define FST_HELPNODE	50	/* special tree list types to store help feeds */	
+#define FST_HELPFEED	51	/* special type to allow updating of help feed url */
+
+#define FST_EMPTY	100	/* special type for "(empty)" entry */
 
 #define IS_FEED(type)		((FST_RSS == type) || (FST_CDF == type) || (FST_PIE == type))
 #define IS_NODE(type)		((FST_NODE == type) || (FST_HELPNODE == type))
@@ -111,6 +113,7 @@ typedef struct feedHandler {
 #define ITEM_PROP_DESCRIPTION		2
 #define ITEM_PROP_TIME			3
 #define ITEM_PROP_TYPE			4
+#define ITEM_PROP_SOURCE		5
 
 typedef void		(*showItemFunc)		(gpointer fp);
 /* methods to set/get the ITEM_PROP_* properties */
@@ -146,6 +149,7 @@ void		setFolderTitle(gchar *keyprefix, gchar *title);
 
 void	loadItem(gint type, gpointer ip);
 void	loadItemList(gchar *feedkey, gchar *searchstring);
+gchar	*getItemURL(gint type, gpointer ip);
 gboolean getItemReadStatus(gint type, gpointer ip);
 void	markItemAsRead(gint type, gpointer ip);
 void	searchItems(gchar *string);

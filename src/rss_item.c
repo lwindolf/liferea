@@ -111,7 +111,7 @@ RSSItemPtr parseItem(xmlDocPtr doc, xmlNodePtr cur) {
 					cur = cur->next;
 					continue;						
 				} else {
-					g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
+					//g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
 				}
 			}
 		}
@@ -246,6 +246,7 @@ void setRSSItemProp(gpointer ip, gint proptype, gpointer data) {
 				break;
 			case ITEM_PROP_DESCRIPTION:
 			case ITEM_PROP_TIME:
+			case ITEM_PROP_SOURCE:
 				g_error("please don't do this!");
 				break;
 			default:
@@ -273,6 +274,9 @@ gpointer getRSSItemProp(gpointer ip, gint proptype) {
 				break;
 			case ITEM_PROP_TIME:
 				return (gpointer)i->time;
+				break;
+			case ITEM_PROP_SOURCE:
+				return (gpointer)getRSSItemTag(i, RSS_ITEM_LINK);
 				break;
 			default:
 				g_error(_("intenal error! unknow item property type!\n"));

@@ -22,7 +22,6 @@
 #endif
 
 #include <time.h>
-#include <gconf/gconf.h>	// FIXME: remove
 #include "support.h"
 #include "common.h"
 #include "conf.h"
@@ -97,7 +96,6 @@ void initBackend() {
 	feedHandler = g_hash_table_new(g_int_hash, g_int_equal);
 	
 	registerFeedType(FST_RSS,	initRSSFeedHandler());
-	registerFeedType(FST_HELPFEED,	initRSSFeedHandler());	
 	registerFeedType(FST_OCS,	initOCSFeedHandler());
 	registerFeedType(FST_CDF,	initCDFFeedHandler());
 	registerFeedType(FST_PIE,	initPIEFeedHandler());
@@ -106,7 +104,6 @@ void initBackend() {
 	itemHandler = g_hash_table_new(g_int_hash, g_int_equal);
 		
 	registerItemType(FST_RSS,	initRSSItemHandler());
-	registerItemType(FST_HELPFEED,	initRSSItemHandler());	
 	registerItemType(FST_OCS,	initOCSItemHandler());	
 	registerItemType(FST_CDF, 	initCDFItemHandler());
 	registerItemType(FST_PIE, 	initPIEItemHandler());
@@ -212,7 +209,7 @@ gchar * newEntry(gint type, gchar *url, gchar *keyprefix) {
 				oldfilename = g_strdup_printf("%s/none_new.ocs", getCachePath());
 				newfilename = getCacheFileName(keyprefix, key, "ocs");
 				if(0 != rename(oldfilename, newfilename)) {
-					g_print("error! could not move file %s to file %s\n", oldfilename, newfilename);
+					g_print(_("error! could not move file %s to file %s\n"), oldfilename, newfilename);
 				}
 				g_free(oldfilename);
 				g_free(newfilename);
@@ -227,7 +224,7 @@ gchar * newEntry(gint type, gchar *url, gchar *keyprefix) {
 			g_print(_("error! could not add entry!\n"));
 		}
 	} else {
-		g_print("internal error while adding entry!\n");
+		g_print(_("internal error while adding entry!\n"));
 	}
 
 	return (NULL == new_ep)?NULL:new_ep->key;
@@ -309,6 +306,58 @@ void removeFolder(gchar *keyprefix) {
 	} else {
 		g_print(_("internal error! could not determine folder key!"));
 	}
+}
+
+/* this function is a workaround to the cant-drop-rows-into-emtpy-
+   folders-problem, so we simply pack an (empty) entry into each
+   empty folder like Nautilus does... */
+   
+static void checkForEmptyFolder(gpointer key, gpointer value, gpointer user_data) {
+	GtkTreeIter	iter;
+	int		count;
+	gint		tmp_type;
+	gboolean	valid;
+	
+	/* this function does two things:
+	
+	   1. add "(empty)" entry to an empty folder
+	   2. remove an "(empty)" entry from a non empty folder
+	      (this state is possible after a drag&drop action) */
+	      
+	/* key is folder keyprefix, value is folder tree iterator */
+	count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), (GtkTreeIter *)value);
+	
+	/* case 1 */
+	if(0 == count) {
+		gtk_tree_store_append(feedstore, &iter, (GtkTreeIter *)value);
+		gtk_tree_store_set(feedstore, &iter,
+			   FS_TITLE, _("(empty)"),
+			   FS_URL, NULL,
+			   FS_KEY, "empty",
+			   FS_TYPE, FST_EMPTY,
+			   -1);	
+		return;
+	}
+	
+	if(1 == count)
+		return;
+		
+	/* else we could have case 2 */
+	gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, (GtkTreeIter *)value);
+	do {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, FS_TYPE, &tmp_type, -1);
+
+		if(FST_EMPTY == tmp_type) {
+			gtk_tree_store_remove(feedstore, &iter);
+			return;
+		}
+		
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
+	} while(valid);
+}
+
+void checkForEmptyFolders(void) {
+	g_hash_table_foreach(folders, checkForEmptyFolder, NULL);	
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -411,10 +460,8 @@ static void resetUpdateCounter(gpointer key, gpointer value, gpointer userdata) 
 		g_assert(NULL != fhp->getFeedProp);
 		g_assert(NULL != fhp->setFeedProp);
 		
-		interval = (gint)(*(fhp->getFeedProp))(ep, FEED_PROP_UPDATEINTERVAL);
-g_print("update interval for %s ---- %d\n",(gchar *)(*(fhp->getFeedProp))(ep, FEED_PROP_USERTITLE) ,interval);
-		if(0 < (interval)) {
-g_print("resetting update counter\n");		
+		if(IS_FEED(ep->type)) {
+			interval = (gint)(*(fhp->getFeedProp))(ep, FEED_PROP_UPDATEINTERVAL);
 			(*(fhp->setFeedProp))(ep, FEED_PROP_UPDATECOUNTER, (gpointer)0);
 		}
 	}
@@ -455,12 +502,27 @@ void clearItemList() {
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
 }
 
+gchar * getItemURL(gint type, gpointer ip) {
+	itemHandlerPtr	ihp;
+	
+	if(NULL != ip) {
+		if(NULL != (ihp = g_hash_table_lookup(itemHandler, (gpointer)&type))) {
+			g_assert(NULL != ihp->getItemProp);
+			return (gchar *)(*(ihp->getItemProp))(ip, ITEM_PROP_SOURCE);
+		} else {
+			g_error(_("internal error! no item handler for this feed type!"));
+		}
+	}
+	
+	return NULL;	
+}
+
 gboolean getItemReadStatus(gint type, gpointer ip) {
 	itemHandlerPtr	ihp;
 	
 	if(NULL != ip) {
 		if(NULL != (ihp = g_hash_table_lookup(itemHandler, (gpointer)&type))) {
-			g_assert(NULL != ihp->setItemProp);
+			g_assert(NULL != ihp->getItemProp);
 			return (gboolean)(*(ihp->getItemProp))(ip, ITEM_PROP_READSTATUS);
 		} else {
 			g_error(_("internal error! no item handler for this feed type!"));
@@ -508,9 +570,7 @@ void loadItemList(gchar *key, gchar *searchstring) {
 	gint		count = 0;
 	gchar		*title, *description, *time;
 	gboolean	add;
-	
-	/* hmm... maybe we should store the parsed data as GtkTreeStores 
-	   and exchange them ? */
+
 	if(NULL == searchstring) g_mutex_lock(feeds_lock);
 	ep = (entryPtr)g_hash_table_lookup(feeds, (gpointer)key);
 	if(NULL == searchstring) g_mutex_unlock(feeds_lock);
@@ -732,61 +792,114 @@ GtkTreeStore * getFeedStore(void) {
 	return feedstore;
 }
 
+/* function to scan folder with keyprefix for the feed with key, if the
+   feed entry is found the entries configuration 'll be removed, then a
+   new feed key for the actual folder 'll be generated and save to 
+   tree store and configuration (this function is called after a DND
+   operation to update the DND modifieds feed key and keyprefix and
+   its old and new folders keylist) */
 static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 	GtkTreeIter	iter;
 	GtkTreeIter	*topiter = (GtkTreeIter *)value;
+	GSList		*newkeylist = NULL;
 	gint		tmp_type;
 	entryPtr	ep;
 	gchar		*newkey, *tmp_key, *tmp_url;
-	gboolean	valid, found = FALSE;
+	gchar		*newfilename, *oldfilename;
+	gboolean	valid, found, hasCacheFile;
 
 	g_assert(NULL != keyprefix);
 	g_assert(NULL != key);
 	g_assert(NULL != feedstore);
-
+//g_print("scanning keyprefix \"%s\"\n", keyprefix);
 	found = FALSE;
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, keyprefix);
-	gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, topiter);
-	do {
+	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, topiter);
+	while(valid) {
+		found = FALSE;
+		
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
 				FS_URL, &tmp_url,
 				FS_KEY, &tmp_key,
 				FS_TYPE, &tmp_type,
 		  	      -1);
 
-		g_assert(NULL != tmp_key);
-		if(0 == strcmp(tmp_key, (gchar *)key))
-			found = TRUE;
+		if(!IS_NODE(tmp_type)) {
+			g_assert(NULL != tmp_key);
+			newkeylist = g_slist_append(newkeylist, tmp_key);
+//g_print("appending key \"%s\" url \"%s\"\n", tmp_key, tmp_url);
+			if(0 == strcmp(tmp_key, (gchar *)key)) {
+				g_assert(TRUE != found);
+				found = TRUE;
+			}
+		}
 
 		if(found) {
-			newkey = addEntryToConfig((gchar *)keyprefix, tmp_url, tmp_type);
-
-			/* update the feed hashtable */
 			ep = (entryPtr)g_hash_table_lookup(feeds, (gpointer)key);
-			ep->key = newkey;
+			g_assert(NULL != ep);
+			newkey = addEntryToConfig((gchar *)keyprefix, tmp_url, tmp_type);
+			newkeylist = g_slist_append(newkeylist, newkey);
+//g_print("appending new key %s\n", newkey);
+			/* rename cache file/directory */
+			/* FIXME: maybe remove these useless extensions (but this would break compatibility */
+			hasCacheFile = TRUE;
+			switch(tmp_type) {
+				case FST_OCS:
+					oldfilename = getCacheFileName(ep->keyprefix, tmp_key, "ocs");
+					newfilename = getCacheFileName(keyprefix, newkey, "ocs");
+					break;
+				case FST_VFOLDER:
+					oldfilename = getCacheFileName(ep->keyprefix, tmp_key, "vfolder");
+					newfilename = getCacheFileName(keyprefix, newkey, "vfolder");
+					break;
+				default:
+					hasCacheFile = FALSE;
+					break;
+			}
+
+			if(hasCacheFile) {
+				g_assert(NULL != oldfilename);
+				g_assert(NULL != newfilename);
+				
+				if(0 != rename(oldfilename, newfilename)) {
+					g_print(_("error! could not move cache file %s to file %s\n"), oldfilename, newfilename);
+				}
+				g_free(oldfilename);
+				g_free(newfilename);
+			}
+		
+			/* move key in configuration */
+			removeEntryFromConfig(ep->keyprefix, key);	/* delete old one */
+			ep->key = newkey;				/* update feed structure key */
 			ep->keyprefix = keyprefix;
-			g_hash_table_insert(feeds, (gpointer)newkey, (gpointer)ep);
+			g_hash_table_insert(feeds, (gpointer)newkey, (gpointer)ep);	/* update in feed list */
 			g_hash_table_remove(feeds, (gpointer)key);
 
+			/* write feed properties to new key */
+			setEntryTitleInConfig(newkey, (gchar *)getFeedProp(newkey, FEED_PROP_USERTITLE));
+			if(IS_FEED(tmp_type))
+				setFeedUpdateIntervalInConfig(newkey, (gint)getFeedProp(newkey, FEED_PROP_UPDATEINTERVAL));
+
 			/* update changed row contents */
-			gtk_tree_store_set(feedstore, &iter,
-					   FS_KEY, (gpointer)newkey,
-					  -1);
+			gtk_tree_store_set(feedstore, &iter, FS_KEY, (gpointer)newkey, -1);
 		}
 		g_free(tmp_url);
 		g_free(tmp_key);
 		
-		if(found)
-			return;
-		
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
-	} while(valid);
+	}
+	
+	/* if we found the new entry, we have to save the new folder
+	   contents order */
+	if(found) {
+//g_print("saving keylist for prefix %s\n", keyprefix);
+		setEntryKeyList(keyprefix, newkeylist);
+	}
+	g_slist_free(newkeylist);
 }
 
 /* function to reflect DND of feed entries in the configuration */
 void moveInEntryList(gchar *oldkeyprefix, gchar *oldkey) {
-
-	removeEntryFromConfig(oldkeyprefix, oldkey);
 
 	/* find new treestore entry and keyprefix */
 	g_hash_table_foreach(folders, moveIfInFolder, (gpointer)oldkey);
@@ -809,8 +922,8 @@ void setInEntryList(entryPtr ep, gchar * title, gchar *source, gint type) {
 
 	g_assert(NULL != ep->keyprefix);
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(ep->keyprefix));
-	gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, topiter);
-	do {
+	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, topiter);
+	while(valid) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
 				FS_TITLE, &tmp_title,
 				FS_URL, &tmp_url,
@@ -842,7 +955,7 @@ void setInEntryList(entryPtr ep, gchar * title, gchar *source, gint type) {
 			return;
 		
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
-	} while(valid);
+	};
 
 	/* if we come here, this is a not yet added feed */
 	addToEntryList(ep);

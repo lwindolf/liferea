@@ -314,13 +314,11 @@ kill_old_connections (HtmlDocument *doc)
 	g_slist_free (connection_list);
 }
 
-static void
-link_clicked (HtmlDocument *doc, const gchar *url, gpointer data)
+static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data)
 {	GError	*error = NULL;
 	gchar	*cmd;
 	gchar	*statusline;
 
-	// FIXME: BROWSER_COMMAND should better contain a %s, checking this?
 	cmd = g_strdup_printf(getStringConfValue(BROWSER_COMMAND), url);
 	g_assert(NULL != cmd);
 	if(0 != strstr(cmd, "%s")) {
@@ -338,4 +336,9 @@ link_clicked (HtmlDocument *doc, const gchar *url, gpointer data)
 	g_free(cmd);
 	g_free(statusline);
 
+}
+
+void launchURL(const gchar *url) {
+
+	link_clicked(NULL, url, NULL);
 }

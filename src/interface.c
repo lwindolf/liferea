@@ -33,16 +33,16 @@ create_mainwindow (void)
   GtkWidget *vbox1;
   GtkWidget *menubar;
   GtkWidget *refreshbtn;
-  GtkWidget *image55;
+  GtkWidget *image79;
   GtkWidget *search1;
-  GtkWidget *image56;
+  GtkWidget *image80;
   GtkWidget *new1;
-  GtkWidget *image57;
+  GtkWidget *image81;
   GtkWidget *new1_menu;
   GtkWidget *new_feed2;
-  GtkWidget *image58;
+  GtkWidget *image82;
   GtkWidget *new_folder2;
-  GtkWidget *image59;
+  GtkWidget *image83;
   GtkWidget *einstellungen1;
   GtkWidget *hpaned1;
   GtkWidget *scrolledwindow3;
@@ -76,33 +76,34 @@ create_mainwindow (void)
   menubar = gtk_menu_bar_new ();
   gtk_widget_show (menubar);
   gtk_box_pack_start (GTK_BOX (vbox1), menubar, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (menubar), 1);
 
   refreshbtn = gtk_image_menu_item_new_with_mnemonic (_("_Update"));
   gtk_widget_show (refreshbtn);
   gtk_container_add (GTK_CONTAINER (menubar), refreshbtn);
   gtk_tooltips_set_tip (tooltips, refreshbtn, _("Update all feeds"), NULL);
 
-  image55 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image55);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (refreshbtn), image55);
+  image79 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image79);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (refreshbtn), image79);
 
   search1 = gtk_image_menu_item_new_with_mnemonic (_("_Search"));
   gtk_widget_show (search1);
   gtk_container_add (GTK_CONTAINER (menubar), search1);
   gtk_tooltips_set_tip (tooltips, search1, _("Search in feeds"), NULL);
 
-  image56 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image56);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (search1), image56);
+  image80 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image80);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (search1), image80);
 
   new1 = gtk_image_menu_item_new_with_mnemonic (_("_New"));
   gtk_widget_show (new1);
   gtk_container_add (GTK_CONTAINER (menubar), new1);
   gtk_tooltips_set_tip (tooltips, new1, _("create a new feed or folder"), NULL);
 
-  image57 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image57);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new1), image57);
+  image81 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image81);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new1), image81);
 
   new1_menu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (new1), new1_menu);
@@ -112,18 +113,18 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (new1_menu), new_feed2);
   gtk_tooltips_set_tip (tooltips, new_feed2, _("create new feed"), NULL);
 
-  image58 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image58);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new_feed2), image58);
+  image82 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image82);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new_feed2), image82);
 
   new_folder2 = gtk_image_menu_item_new_with_mnemonic (_("New F_older"));
   gtk_widget_show (new_folder2);
   gtk_container_add (GTK_CONTAINER (new1_menu), new_folder2);
   gtk_tooltips_set_tip (tooltips, new_folder2, _("create a new folder"), NULL);
 
-  image59 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image59);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new_folder2), image59);
+  image83 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image83);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new_folder2), image83);
 
   einstellungen1 = gtk_image_menu_item_new_from_stock ("gtk-preferences", accel_group);
   gtk_widget_show (einstellungen1);
@@ -217,11 +218,14 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) feedlist, "button_press_event",
                     G_CALLBACK (on_mainfeedlist_button_press_event),
                     NULL);
+  g_signal_connect ((gpointer) feedlist, "drag_begin",
+                    G_CALLBACK (on_feedlist_drag_begin),
+                    NULL);
   g_signal_connect ((gpointer) feedlist, "drag_end",
                     G_CALLBACK (on_feedlist_drag_end),
                     NULL);
-  g_signal_connect ((gpointer) feedlist, "drag_begin",
-                    G_CALLBACK (on_feedlist_drag_begin),
+  g_signal_connect ((gpointer) feedlist, "drag_drop",
+                    G_CALLBACK (on_feedlist_drag_drop),
                     NULL);
   g_signal_connect ((gpointer) searchentry, "activate",
                     G_CALLBACK (on_searchentry_activate),
@@ -238,22 +242,25 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) Itemlist, "button_press_event",
                     G_CALLBACK (on_itemlist_button_press_event),
                     NULL);
+  g_signal_connect ((gpointer) Itemlist, "row_activated",
+                    G_CALLBACK (on_Itemlist_row_activated),
+                    NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, mainwindow, "mainwindow");
   GLADE_HOOKUP_OBJECT (mainwindow, vbox1, "vbox1");
   GLADE_HOOKUP_OBJECT (mainwindow, menubar, "menubar");
   GLADE_HOOKUP_OBJECT (mainwindow, refreshbtn, "refreshbtn");
-  GLADE_HOOKUP_OBJECT (mainwindow, image55, "image55");
+  GLADE_HOOKUP_OBJECT (mainwindow, image79, "image79");
   GLADE_HOOKUP_OBJECT (mainwindow, search1, "search1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image56, "image56");
+  GLADE_HOOKUP_OBJECT (mainwindow, image80, "image80");
   GLADE_HOOKUP_OBJECT (mainwindow, new1, "new1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image57, "image57");
+  GLADE_HOOKUP_OBJECT (mainwindow, image81, "image81");
   GLADE_HOOKUP_OBJECT (mainwindow, new1_menu, "new1_menu");
   GLADE_HOOKUP_OBJECT (mainwindow, new_feed2, "new_feed2");
-  GLADE_HOOKUP_OBJECT (mainwindow, image58, "image58");
+  GLADE_HOOKUP_OBJECT (mainwindow, image82, "image82");
   GLADE_HOOKUP_OBJECT (mainwindow, new_folder2, "new_folder2");
-  GLADE_HOOKUP_OBJECT (mainwindow, image59, "image59");
+  GLADE_HOOKUP_OBJECT (mainwindow, image83, "image83");
   GLADE_HOOKUP_OBJECT (mainwindow, einstellungen1, "einstellungen1");
   GLADE_HOOKUP_OBJECT (mainwindow, hpaned1, "hpaned1");
   GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow3, "scrolledwindow3");
@@ -706,34 +713,13 @@ create_prefdialog (void)
   GtkWidget *dialog_vbox5;
   GtkWidget *vbox3;
   GtkWidget *frame2;
-  GtkWidget *table4;
-  GtkWidget *label7;
+  GtkWidget *vbox14;
+  GtkWidget *radiobutton1;
+  GSList *radiobutton1_group = NULL;
+  GtkWidget *hbox14;
+  GtkWidget *radiobutton2;
   GtkWidget *browsercmd;
-  GtkWidget *label8;
-  GtkWidget *timeformat;
   GtkWidget *label13;
-  GtkWidget *frame3;
-  GtkWidget *vbox5;
-  GtkWidget *hbox6;
-  GtkWidget *label15;
-  GtkWidget *usedc;
-  GtkWidget *usecontent;
-  GtkWidget *useslash;
-  GtkWidget *hbox9;
-  GtkWidget *usefm;
-  GtkWidget *usesyn;
-  GtkWidget *useadmin;
-  GtkWidget *label16;
-  GtkWidget *label14;
-  GtkWidget *frame1;
-  GtkWidget *vbox4;
-  GtkWidget *useproxy;
-  GtkWidget *table3;
-  GtkWidget *label10;
-  GtkWidget *label11;
-  GtkWidget *proxyhost;
-  GtkWidget *proxyport;
-  GtkWidget *label12;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefsavebtn;
   GtkWidget *prefcancelbtn;
@@ -757,161 +743,39 @@ create_prefdialog (void)
   gtk_widget_show (frame2);
   gtk_box_pack_start (GTK_BOX (vbox3), frame2, TRUE, TRUE, 0);
 
-  table4 = gtk_table_new (2, 2, FALSE);
-  gtk_widget_show (table4);
-  gtk_container_add (GTK_CONTAINER (frame2), table4);
-  gtk_container_set_border_width (GTK_CONTAINER (table4), 5);
-  gtk_table_set_row_spacings (GTK_TABLE (table4), 5);
-  gtk_table_set_col_spacings (GTK_TABLE (table4), 5);
+  vbox14 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox14);
+  gtk_container_add (GTK_CONTAINER (frame2), vbox14);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox14), 5);
 
-  label7 = gtk_label_new (_("browser command"));
-  gtk_widget_show (label7);
-  gtk_table_attach (GTK_TABLE (table4), label7, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
+  radiobutton1 = gtk_radio_button_new_with_mnemonic (NULL, _("use the GNOME default browser"));
+  gtk_widget_show (radiobutton1);
+  gtk_box_pack_start (GTK_BOX (vbox14), radiobutton1, FALSE, FALSE, 0);
+  gtk_widget_set_sensitive (radiobutton1, FALSE);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton1), radiobutton1_group);
+  radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton1));
+
+  hbox14 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox14);
+  gtk_box_pack_start (GTK_BOX (vbox14), hbox14, TRUE, TRUE, 0);
+
+  radiobutton2 = gtk_radio_button_new_with_mnemonic (NULL, _("use browser command"));
+  gtk_widget_show (radiobutton2);
+  gtk_box_pack_start (GTK_BOX (hbox14), radiobutton2, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton2), radiobutton1_group);
+  radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton2));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radiobutton2), TRUE);
 
   browsercmd = gtk_entry_new ();
   gtk_widget_show (browsercmd);
-  gtk_table_attach (GTK_TABLE (table4), browsercmd, 1, 2, 0, 1,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox14), browsercmd, TRUE, TRUE, 0);
   gtk_tooltips_set_tip (tooltips, browsercmd, _("specify a browser command using %s as URL placeholder"), NULL);
 
-  label8 = gtk_label_new (_("time format string\nwhich is used for\nthe date column"));
-  gtk_widget_show (label8);
-  gtk_table_attach (GTK_TABLE (table4), label8, 0, 1, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  timeformat = gtk_entry_new ();
-  gtk_widget_show (timeformat);
-  gtk_table_attach (GTK_TABLE (table4), timeformat, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, timeformat, _("specify a string with a formatstring as used with the date command (e.g. %H:%M %d.%m.)"), NULL);
-
-  label13 = gtk_label_new (_("program options"));
+  label13 = gtk_label_new (_("browser settings"));
   gtk_widget_show (label13);
   gtk_frame_set_label_widget (GTK_FRAME (frame2), label13);
   gtk_label_set_justify (GTK_LABEL (label13), GTK_JUSTIFY_LEFT);
   gtk_misc_set_padding (GTK_MISC (label13), 5, 0);
-
-  frame3 = gtk_frame_new (NULL);
-  gtk_widget_show (frame3);
-  gtk_box_pack_start (GTK_BOX (vbox3), frame3, TRUE, TRUE, 1);
-
-  vbox5 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox5);
-  gtk_container_add (GTK_CONTAINER (frame3), vbox5);
-
-  hbox6 = gtk_hbox_new (FALSE, 5);
-  gtk_widget_show (hbox6);
-  gtk_box_pack_start (GTK_BOX (vbox5), hbox6, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox6), 5);
-
-  label15 = gtk_label_new (_("enable RSS module"));
-  gtk_widget_show (label15);
-  gtk_box_pack_start (GTK_BOX (hbox6), label15, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (label15), GTK_JUSTIFY_LEFT);
-
-  usedc = gtk_check_button_new_with_mnemonic (_("dc"));
-  gtk_widget_show (usedc);
-  gtk_box_pack_start (GTK_BOX (hbox6), usedc, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, usedc, _("enable Dublin Core support"), NULL);
-
-  usecontent = gtk_check_button_new_with_mnemonic (_("content"));
-  gtk_widget_show (usecontent);
-  gtk_box_pack_start (GTK_BOX (hbox6), usecontent, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, usecontent, _("enable encoded content support"), NULL);
-
-  useslash = gtk_check_button_new_with_mnemonic (_("slash"));
-  gtk_widget_show (useslash);
-  gtk_box_pack_start (GTK_BOX (hbox6), useslash, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, useslash, _("enable slashdot support"), NULL);
-
-  hbox9 = gtk_hbox_new (FALSE, 5);
-  gtk_widget_show (hbox9);
-  gtk_box_pack_start (GTK_BOX (vbox5), hbox9, FALSE, FALSE, 0);
-
-  usefm = gtk_check_button_new_with_mnemonic (_("fm"));
-  gtk_widget_show (usefm);
-  gtk_box_pack_start (GTK_BOX (hbox9), usefm, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, usefm, _("enable the freshmeat namespace (this will enable the freshmeat screenshots)"), NULL);
-
-  usesyn = gtk_check_button_new_with_mnemonic (_("syn"));
-  gtk_widget_show (usesyn);
-  gtk_box_pack_start (GTK_BOX (hbox9), usesyn, FALSE, FALSE, 0);
-
-  useadmin = gtk_check_button_new_with_mnemonic (_("admin"));
-  gtk_widget_show (useadmin);
-  gtk_box_pack_start (GTK_BOX (hbox9), useadmin, FALSE, FALSE, 0);
-
-  label16 = gtk_label_new (_("(Note: you have to refresh feeds to load affected information after enabling a module)"));
-  gtk_widget_show (label16);
-  gtk_box_pack_start (GTK_BOX (vbox5), label16, FALSE, FALSE, 0);
-  gtk_label_set_justify (GTK_LABEL (label16), GTK_JUSTIFY_LEFT);
-  gtk_label_set_line_wrap (GTK_LABEL (label16), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label16), 0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label16), 5, 0);
-
-  label14 = gtk_label_new (_("parsing options"));
-  gtk_widget_show (label14);
-  gtk_frame_set_label_widget (GTK_FRAME (frame3), label14);
-  gtk_label_set_justify (GTK_LABEL (label14), GTK_JUSTIFY_LEFT);
-  gtk_misc_set_padding (GTK_MISC (label14), 5, 0);
-
-  frame1 = gtk_frame_new (NULL);
-  gtk_widget_show (frame1);
-  gtk_box_pack_start (GTK_BOX (vbox3), frame1, TRUE, TRUE, 0);
-
-  vbox4 = gtk_vbox_new (FALSE, 5);
-  gtk_widget_show (vbox4);
-  gtk_container_add (GTK_CONTAINER (frame1), vbox4);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox4), 5);
-
-  useproxy = gtk_check_button_new_with_mnemonic (_("use proxy"));
-  gtk_widget_show (useproxy);
-  gtk_box_pack_start (GTK_BOX (vbox4), useproxy, FALSE, FALSE, 0);
-  gtk_tooltips_set_tip (tooltips, useproxy, _("enable if you want to use a proxy (Note: by changing this setting you change the global gconf proxy setting, which might affect other programs!)"), NULL);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (useproxy), TRUE);
-
-  table3 = gtk_table_new (2, 2, FALSE);
-  gtk_widget_show (table3);
-  gtk_box_pack_start (GTK_BOX (vbox4), table3, TRUE, TRUE, 0);
-  gtk_table_set_row_spacings (GTK_TABLE (table3), 5);
-  gtk_table_set_col_spacings (GTK_TABLE (table3), 5);
-
-  label10 = gtk_label_new (_("proxy host"));
-  gtk_widget_show (label10);
-  gtk_table_attach (GTK_TABLE (table3), label10, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  label11 = gtk_label_new (_("proxy port"));
-  gtk_widget_show (label11);
-  gtk_table_attach (GTK_TABLE (table3), label11, 0, 1, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  proxyhost = gtk_entry_new ();
-  gtk_widget_show (proxyhost);
-  gtk_table_attach (GTK_TABLE (table3), proxyhost, 1, 2, 0, 1,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, proxyhost, _("enter your proxy hostname or IP (Note: by changing this setting you change the global gconf proxy setting, which might affect other programs!)"), NULL);
-
-  proxyport = gtk_entry_new ();
-  gtk_widget_show (proxyport);
-  gtk_table_attach (GTK_TABLE (table3), proxyport, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, proxyport, _("enter your proxy port number (Note: by changing this setting you change the global gconf proxy setting, which might affect other programs!)"), NULL);
-
-  label12 = gtk_label_new (_("system proxy settings"));
-  gtk_widget_show (label12);
-  gtk_frame_set_label_widget (GTK_FRAME (frame1), label12);
-  gtk_label_set_justify (GTK_LABEL (label12), GTK_JUSTIFY_LEFT);
-  gtk_misc_set_padding (GTK_MISC (label12), 5, 0);
 
   dialog_action_area5 = GTK_DIALOG (prefdialog)->action_area;
   gtk_widget_show (dialog_action_area5);
@@ -942,34 +806,12 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_vbox5, "dialog_vbox5");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox3, "vbox3");
   GLADE_HOOKUP_OBJECT (prefdialog, frame2, "frame2");
-  GLADE_HOOKUP_OBJECT (prefdialog, table4, "table4");
-  GLADE_HOOKUP_OBJECT (prefdialog, label7, "label7");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox14, "vbox14");
+  GLADE_HOOKUP_OBJECT (prefdialog, radiobutton1, "radiobutton1");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox14, "hbox14");
+  GLADE_HOOKUP_OBJECT (prefdialog, radiobutton2, "radiobutton2");
   GLADE_HOOKUP_OBJECT (prefdialog, browsercmd, "browsercmd");
-  GLADE_HOOKUP_OBJECT (prefdialog, label8, "label8");
-  GLADE_HOOKUP_OBJECT (prefdialog, timeformat, "timeformat");
   GLADE_HOOKUP_OBJECT (prefdialog, label13, "label13");
-  GLADE_HOOKUP_OBJECT (prefdialog, frame3, "frame3");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox5, "vbox5");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox6, "hbox6");
-  GLADE_HOOKUP_OBJECT (prefdialog, label15, "label15");
-  GLADE_HOOKUP_OBJECT (prefdialog, usedc, "usedc");
-  GLADE_HOOKUP_OBJECT (prefdialog, usecontent, "usecontent");
-  GLADE_HOOKUP_OBJECT (prefdialog, useslash, "useslash");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox9, "hbox9");
-  GLADE_HOOKUP_OBJECT (prefdialog, usefm, "usefm");
-  GLADE_HOOKUP_OBJECT (prefdialog, usesyn, "usesyn");
-  GLADE_HOOKUP_OBJECT (prefdialog, useadmin, "useadmin");
-  GLADE_HOOKUP_OBJECT (prefdialog, label16, "label16");
-  GLADE_HOOKUP_OBJECT (prefdialog, label14, "label14");
-  GLADE_HOOKUP_OBJECT (prefdialog, frame1, "frame1");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox4, "vbox4");
-  GLADE_HOOKUP_OBJECT (prefdialog, useproxy, "useproxy");
-  GLADE_HOOKUP_OBJECT (prefdialog, table3, "table3");
-  GLADE_HOOKUP_OBJECT (prefdialog, label10, "label10");
-  GLADE_HOOKUP_OBJECT (prefdialog, label11, "label11");
-  GLADE_HOOKUP_OBJECT (prefdialog, proxyhost, "proxyhost");
-  GLADE_HOOKUP_OBJECT (prefdialog, proxyport, "proxyport");
-  GLADE_HOOKUP_OBJECT (prefdialog, label12, "label12");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefsavebtn, "prefsavebtn");
   GLADE_HOOKUP_OBJECT (prefdialog, prefcancelbtn, "prefcancelbtn");
@@ -1126,32 +968,5 @@ create_foldernamedialog (void)
   GLADE_HOOKUP_OBJECT (foldernamedialog, cancelbutton1, "cancelbutton1");
 
   return foldernamedialog;
-}
-
-GtkWidget*
-create_window1 (void)
-{
-  GtkWidget *window1;
-  GtkWidget *vbox14;
-  GtkWidget *toolbar2;
-
-  window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window1), _("window1"));
-
-  vbox14 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox14);
-  gtk_container_add (GTK_CONTAINER (window1), vbox14);
-
-  toolbar2 = gtk_toolbar_new ();
-  gtk_widget_show (toolbar2);
-  gtk_box_pack_start (GTK_BOX (vbox14), toolbar2, FALSE, FALSE, 0);
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar2), GTK_TOOLBAR_ICONS);
-
-  /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (window1, window1, "window1");
-  GLADE_HOOKUP_OBJECT (window1, vbox14, "vbox14");
-  GLADE_HOOKUP_OBJECT (window1, toolbar2, "toolbar2");
-
-  return window1;
 }
 
