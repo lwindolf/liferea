@@ -316,15 +316,18 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		fp->defaultInterval = cp->updateInterval;
 		feed_set_update_interval(fp, cp->updateInterval);
-		fp->title = cp->tags[PIE_FEED_TITLE];
-
+		feed_set_title(fp, cp->tags[PIE_FEED_TITLE]);
+		
 		if(0 == error) {
 			fp->available = TRUE;
 			fp->description = showPIEFeedInfo(cp, fp->source);
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
-			
+
+		for(i = 0; i < PIE_FEED_MAX_TAG; i++)
+			g_free(cp->tags[i]);
+		
 		g_hash_table_destroy(cp->nsinfos);
 		g_free(cp);
 		break;

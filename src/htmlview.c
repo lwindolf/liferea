@@ -73,6 +73,7 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 			g_warning("Failed to open HTML widget module (%s) specified in configuration!\n%s\n", filename, g_module_error());
 		else
 			debug2(DEBUG_GUI, "Failed to open HTML widget module (%s) specified in configuration!\n%s\n", filename, g_module_error());
+		g_free(filename);
 		return FALSE;
 	}
 	g_free(filename);
