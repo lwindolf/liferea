@@ -59,7 +59,6 @@
 
 #define MAX_HTTP_REDIRECTS 10		/* Maximum number of redirects we will follow. */
 
-int my_socket;
 extern char *proxyname;			/* Hostname of proxyserver. */
 extern unsigned short proxyport;	/* Port on proxyserver to use. */
 extern char *useragent;
@@ -72,7 +71,7 @@ int connectresult;
  *			 3	couldn't connect
  *                 	-1	aborted by user
  */
-int NetConnect (char * host, int httpproto) {
+int NetConnect (int * my_socket, char * host, int httpproto) {
 	int retval;
 	struct sockaddr_in address;	
 	struct hostent *remotehost;
@@ -96,8 +95,8 @@ int NetConnect (char * host, int httpproto) {
 	free (uistring);
 	
 	/* Create a inet stream TCP socket. */
-	my_socket = socket (AF_INET, SOCK_STREAM, 0);
-	if (my_socket == -1) {
+	*my_socket = socket (AF_INET, SOCK_STREAM, 0);
+	if (*my_socket == -1) {
 		return 1;
 	}
 	
@@ -107,7 +106,7 @@ int NetConnect (char * host, int httpproto) {
 	/* stdin is read, socket is write, so we need read/write sets. */
 	FD_ZERO(&rfdsr);
 	FD_ZERO(&rfdsw);
-	FD_SET(my_socket, &rfdsw);
+	FD_SET(*my_socket, &rfdsw);
 	
 	/* If proxyport is 0 we didn't execute the if http_proxy statement in main
 	   so there is no proxy. On any other value of proxyport do proxyrequests instead. */
@@ -115,7 +114,7 @@ int NetConnect (char * host, int httpproto) {
 		/* Lookup remote IP. */
 		remotehost = gethostbyname (realhost);
 		if (remotehost == NULL) {
-			close (my_socket);
+			close (*my_socket);
 			free (realhost);
 			return 2;
 		}
@@ -126,24 +125,24 @@ int NetConnect (char * host, int httpproto) {
 		memcpy (&address.sin_addr.s_addr, remotehost->h_addr_list[0], remotehost->h_length);
 			
 		/* Connect socket. */
-		connectresult = connect (my_socket, (struct sockaddr *) &address, sizeof(address));
+		connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
 		
 		/* Check if we're already connected.
 		   BSDs will return 0 on connect even in nonblock if connect was fast enough. */
 		if (connectresult != 0) {
 			/* If errno is not EINPROGRESS, the connect went wrong. */
 			if (errno != EINPROGRESS) {
-				close (my_socket);
+				close (*my_socket);
 				free (realhost);
 				return 3;
 			}
 			
 			/* We get errno of connect back via getsockopt SO_ERROR (into connectresult). */
 			len = sizeof(connectresult);
-			getsockopt(my_socket, SOL_SOCKET, SO_ERROR, &connectresult, &len);
+			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, &connectresult, &len);
 			
 			if (connectresult != 0) {
-				close (my_socket);
+				close (*my_socket);
 				free (realhost);
 				return 3;
 			}
@@ -152,7 +151,7 @@ int NetConnect (char * host, int httpproto) {
 		/* Lookup proxyserver IP. */
 		remotehost = gethostbyname (proxyname);
 		if (remotehost == NULL) {
-			close (my_socket);
+			close (*my_socket);
 			free (realhost);
 			return 2;
 		}
@@ -163,22 +162,22 @@ int NetConnect (char * host, int httpproto) {
 		memcpy (&address.sin_addr.s_addr, remotehost->h_addr_list[0], remotehost->h_length);
 		
 		/* Connect socket. */
-		connectresult = connect (my_socket, (struct sockaddr *) &address, sizeof(address));
+		connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
 		
 		/* Check if we're already connected.
 		   BSDs will return 0 on connect even in nonblock if connect was fast enough. */
 		if (connectresult != 0) {
 			if (errno != EINPROGRESS) {
-				close (my_socket);
+				close (*my_socket);
 				free (realhost);
 				return 3;
 			}
 			
 			len = sizeof(connectresult);
-			getsockopt(my_socket, SOL_SOCKET, SO_ERROR, &connectresult, &len);
+			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, &connectresult, &len);
 			
 			if (connectresult != 0) {
-				close (my_socket);
+				close (*my_socket);
 				free (realhost);
 				return 3;
 			}
@@ -196,7 +195,7 @@ int NetConnect (char * host, int httpproto) {
 /*
  * Kiza's crufty HTTP client hack.
  */
-char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httpproto) {
+char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cur_ptr, int httpproto) {
 	char netbuf[4096];			/* Network read buffer. */
 	char *body;					/* XML body. */
 	int length;
@@ -210,6 +209,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	char *tmphost;				/* Pointers needed to strsep operation. */
 	char *newhost;				/* New hostname if we need to redirect. */
 	char *newurl;				/* New document name ". */
+	char *newlocation;
 	char *tmpstring;			/* Temp pointers. */
 	char *freeme;
 	char *freemetoo;
@@ -222,6 +222,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	int contentlength = 0;		/* Content-Length of server reply. */
 	int len;
 	char * inflatedbody;
+	int quirksmode = 0;
 	
 	snprintf (tmp, sizeof(tmp), _("Downloading http://%s%s..."), host, url);
 	UIStatus (tmp, 0);
@@ -232,7 +233,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	tryagain:
 	
 	/* Open socket. */	
-	stream = fdopen (my_socket, "r+");
+	stream = fdopen (*my_socket, "r+");
 	if (stream == NULL) {
 		/* This is a serious non-continueable OS error as it will probably not
 		   go away if we retry.
@@ -263,7 +264,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	
 	/* Use select to make the connection interuptable if it should hang. */
 	FD_ZERO(&rfds);
-	FD_SET(my_socket, &rfds);
+	FD_SET(*my_socket, &rfds);
 
 	if ((fgets (tmp, sizeof(tmp), stream)) == NULL) {
 		fclose (stream);
@@ -330,76 +331,68 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 					   
 					   Do not touch any of the following code! :P */
 					if (strstr (netbuf, "Location") != NULL) {
-						tmpstring = malloc(strlen(netbuf)+1);
+						//tmpstring = malloc(strlen(netbuf)+1);
 						
 						redirecttarget = strdup (netbuf);
 						freeme = redirecttarget;
+						
+						/* Remove trailing \r\n from line. */
+						redirecttarget[strlen(redirecttarget)-2] = 0;
+						
 						/* In theory pointer should now be after the space char
 						   after the word "Location:" */
 						strsep (&redirecttarget, " ");
+						
+						if (strncmp(redirecttarget, "http", 4) != 0)
+							quirksmode = 1;
+						
+						/* If the Location header is invalid we need to construct
+						   a correct one here before proceeding with the program.
+						   This makes headers like
+						   "Location: fuck-the-protocol.rdf" work.
+						   In violalation of RFC1945, RFC2616. */
+						if (quirksmode) {
+							len = 7 + strlen(host) + strlen(redirecttarget) + 3;
+							newlocation = malloc(len);
+							memset (newlocation, 0, len);
+							strcat (newlocation, "http://");
+							strcat (newlocation, host);
+							if (redirecttarget[0] != '/')
+								strcat (newlocation, "/");
+							strcat (newlocation, redirecttarget);
+						} else
+							newlocation = strdup (redirecttarget);
+						
+						/* This also frees redirecttarget. */
+						free (freeme);
 						
 						/* Change cur_ptr->feedurl on 301. */
 						if (cur_ptr->lasthttpstatus == 301) {
 							UIStatus (_("URL points to permanent redirect, updating with new location..."), 2);
 							free (cur_ptr->feedurl);
-							/* netbuf contains \r\n */
-							/* Should review this stuff! */
-							cur_ptr->feedurl = malloc (strlen(redirecttarget)-1);
-							strncpy (cur_ptr->feedurl, redirecttarget, strlen(redirecttarget)-2);
-							cur_ptr->feedurl[strlen(redirecttarget)-2] = '\0';
+							cur_ptr->feedurl = strdup (newlocation);
 						}
-						free (freeme);
+						
+						freeme = newlocation;
+						strsep (&newlocation, "/");
+						strsep (&newlocation, "/");
+						tmphost = newlocation;
+						/* The following line \0-terminates tmphost in overwriting the first
+						   / after the hostname. */
+						strsep (&newlocation, "/");
 					
-						freeme = tmpstring;
-						strcpy (tmpstring, netbuf);
-						strsep (&tmpstring, "/");
-						strsep (&tmpstring, "/");
-						tmphost = tmpstring;
-						strsep (&tmpstring, "/");
-						
-						/* Don't crash here when parsing Location header of IIS or
-						   other broken servers that don't send an absoluteURI in
-						   the header. This behaviour violates RFC1945, RFC2616. */
-						if (tmphost == NULL) {
-							/* If the server didn't sent a new hostname, just copy
-							   the original host again. MAX_HTTP_REDIRECTS will
-							   ensure we don't loop endlessly. */
-							redirecttarget = strdup (netbuf);
-							freemetoo = redirecttarget;
-							strsep (&redirecttarget, " ");
-							
-							/* Recycle old hostname. */
-							newhost = strdup (host);
-							
-							/* Add / if there is none. FUCK IIS! */
-							if (redirecttarget[0] != '/') {
-								len = strlen(redirecttarget)+2;
-								newurl = malloc (len);
-								memset (newurl, 0, len);
-								newurl[0] = '/';
-								strncat (newurl, redirecttarget, len-1);
-							} else
-								newurl = strdup (redirecttarget);
-							
-							/* Munch trailing \r\n */
-							newurl[strlen(newurl)-2] = '\0';
-							
-							free (freemetoo);
-						} else {
-							newhost = strdup (tmphost);
-						
-							tmpstring--;
-							tmpstring[0] = '/';
-							newurl = strdup (tmpstring);
-							newurl[strlen(newurl)-2] = '\0';
-						}
+						newhost = strdup (tmphost);
+						newlocation--;
+						newlocation[0] = '/';
+						newurl = strdup (newlocation);
+					
 						free (freeme);
 					
 						/* Close connection. */	
 						fclose (stream);
 					
 						/* Reconnect to server. */
-						if ((NetConnect (newhost, httpproto)) != 0) {
+						if ((NetConnect (my_socket, newhost, httpproto)) != 0) {
 							/* Add error handling/reporting. */
 							return NULL;
 						}
@@ -443,7 +436,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	
 		/* Use select to make the connection interuptable if it should hang. */
 		FD_ZERO(&rfds);
-		FD_SET(my_socket, &rfds);
+		FD_SET(*my_socket, &rfds);
 	
 		/* Max line length of sizeof(netbuf) is assumed here.
 		   If header has longer lines than 4096 bytes something may go wrong. :) */
@@ -517,7 +510,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	
 		/* Use select to make the connection interuptable if it should hang. */
 		FD_ZERO(&rfds);
-		FD_SET(my_socket, &rfds);
+		FD_SET(*my_socket, &rfds);
 
 		/* Since we handle binary data if we read compressed input we
 		   need to use fread instead of fgets after reading the header. */ 
@@ -569,6 +562,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 }
 
 char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
+	int my_socket = 0;
 	int result;
 	char *host;					/* Needs to freed. */
 	char *tmphost;
@@ -618,7 +612,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 		url[strlen(url)-1] = '\0';
 	}
 	
-	result = NetConnect (host, httpproto);
+	result = NetConnect (&my_socket, host, httpproto);
 	
 	switch (result) {
 		case 1:
@@ -646,7 +640,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 			break;
 	}
 	
-	returndata = NetIO (host, url, cur_ptr, httpproto);
+	returndata = NetIO (&my_socket, host, url, cur_ptr, httpproto);
 	
 	/* url will be freed in the calling function. */
 	free (freeme);		/* This is *host. */
