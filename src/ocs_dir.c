@@ -1,5 +1,5 @@
 /*
-   OCS 0.4 support directory tag parsing. Note: this ocs_dir.c contains
+   OCS 0.4/0.5 support directory tag parsing. Note: this ocs_dir.c contains
    only the rdf specific OCS parsing, the dc and ocs namespaces are
    processed by the specific namespace handlers!
    
@@ -183,7 +183,7 @@ static gchar * showDirectoryInfo(directoryPtr dp, gchar *url) {
 /* OCS parsing		 							*/
 /* ---------------------------------------------------------------------------- */
 
-static void parseFormatEntry(formatPtr fep, xmlDocPtr doc, xmlNodePtr cur) {
+static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 	gchar			*tmp = NULL;
 	gchar			*encoding;
 	formatPtr		new_fp;	
@@ -191,10 +191,8 @@ static void parseFormatEntry(formatPtr fep, xmlDocPtr doc, xmlNodePtr cur) {
 	OCSNsHandler		*nsh;
 	int			i;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
+	g_assert(NULL != cur->doc);
 
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
@@ -213,7 +211,7 @@ static void parseFormatEntry(formatPtr fep, xmlDocPtr doc, xmlNodePtr cur) {
 
 						fp = nsh->parseFormatTag;
 						if(NULL != fp)
-							(*fp)(fep, doc, cur);
+							(*fp)(fep, cur->doc, cur);
 						else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 					}
@@ -227,11 +225,121 @@ static void parseFormatEntry(formatPtr fep, xmlDocPtr doc, xmlNodePtr cur) {
 	/* some postprocessing, all format-infos will be displayed in the HTML view */
 	for(i = 0; i < OCS_MAX_TAG; i++)
 		if(NULL != fep->tags[i])
-			fep->tags[i] = convertToHTML((gchar *)doc->encoding, fep->tags[i]);
+			fep->tags[i] = convertToHTML("UTF-8", fep->tags[i]);
 
 }
 
-static itemPtr parseDirectoryEntry(dirEntryPtr dep, xmlDocPtr doc, xmlNodePtr cur) {
+static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
+	xmlNodePtr		tmpNode, formatNode;
+	gchar			*tmp = NULL;
+	gchar			*encoding;
+	formatPtr		new_fp;	
+	parseOCSTagFunc		fp;
+	OCSNsHandler		*nsh;
+	itemPtr			ip;
+	int			i;
+	gboolean		found;
+	
+	g_assert(NULL != cur);
+	g_assert(NULL != cur->doc);
+	ip = getNewItemStruct();
+
+	cur = cur->xmlChildrenNode;
+	while (cur != NULL) {
+		g_assert(NULL != cur->name);	
+		
+		/* check namespace of this tag */
+		if(NULL != cur->ns) {
+			if (NULL != cur->ns->prefix) {	
+				g_assert(NULL != ocs_nslist);
+				if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
+
+					fp = nsh->parseDirEntryTag;
+					if(NULL != fp) {
+						(*fp)(dep, cur->doc, cur);
+					} else
+						g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
+
+				}
+			}
+		}
+		
+		if(!xmlStrcmp(cur->name, "formats")) {
+			found = FALSE;
+			tmpNode = cur->xmlChildrenNode;
+			while(NULL != tmpNode) {
+				if(!xmlStrcmp(tmpNode->name, "formats")) {
+					found = TRUE;
+					break;
+				}
+				tmpNode = tmpNode->next;
+			}
+			
+			if(found) {
+				found = FALSE;
+				tmpNode = tmpNode->xmlChildrenNode;
+				while(NULL != tmpNode) {
+					if(!xmlStrcmp(tmpNode->name, "Alt")) {
+						found = TRUE;
+						break;
+					}
+					tmpNode = tmpNode->next;
+				}
+			}
+			
+			if(found) {
+				found = FALSE;
+				tmpNode = tmpNode->xmlChildrenNode;
+				while(NULL != tmpNode) {
+					if(!xmlStrcmp(tmpNode->name, "li")) {
+						/* now search for <format> nodes... */
+						formatNode = tmpNode->xmlChildrenNode;
+						while(NULL != formatNode) {
+							if(!xmlStrcmp(tmpNode->name, "format")) {
+								if(NULL != (new_fp = (formatPtr)g_malloc(sizeof(struct format)))) {
+									memset(new_fp, 0, sizeof(struct format));
+									new_fp->source = CONVERT(cur->doc, xmlGetNoNsProp(cur, "resource"));									
+									dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
+								} else {
+									g_error(_("not enough memory!"));
+								}
+							}
+							formatNode = formatNode->next;
+						}
+					}
+					tmpNode = tmpNode->next;
+				}
+			}
+
+
+		}
+
+		cur = cur->next;
+	}
+
+	/* after parsing we fill the infos into the itemPtr structure */
+	ip->type = FST_OCS;
+	ip->source = dep->source;
+	ip->readStatus = TRUE;
+	ip->id = NULL;
+
+	/* some postprocessing */
+	if(NULL != dep->tags[OCS_TITLE])
+		dep->tags[OCS_TITLE] = unhtmlize("UTF-8", dep->tags[OCS_TITLE]);
+		
+	if(NULL != dep->tags[OCS_DESCRIPTION])
+		dep->tags[OCS_DESCRIPTION] = convertToHTML("UTF-8", dep->tags[OCS_DESCRIPTION]);
+
+	ip->title = dep->tags[OCS_TITLE];		
+	ip->description = showDirEntry(dep);
+	// FIXME: free formats!
+	g_slist_free(dep->formats);
+	g_free(dep);
+		
+	return ip;
+}
+
+static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	gchar			*tmp = NULL;
 	gchar			*encoding;
 	formatPtr		new_fp;	
@@ -240,12 +348,10 @@ static itemPtr parseDirectoryEntry(dirEntryPtr dep, xmlDocPtr doc, xmlNodePtr cu
 	itemPtr			ip;
 	int			i;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
+	g_assert(NULL != cur->doc);
 	ip = getNewItemStruct();
-	
+
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		g_assert(NULL != cur->name);	
@@ -260,8 +366,8 @@ static itemPtr parseDirectoryEntry(dirEntryPtr dep, xmlDocPtr doc, xmlNodePtr cu
 					if (!xmlStrcmp(cur->name, "description")) {
 						if(NULL != (new_fp = (formatPtr)g_malloc(sizeof(struct format)))) {
 							memset(new_fp, 0, sizeof(struct format));
-							new_fp->source = xmlGetNoNsProp(cur, "about");
-							parseFormatEntry(new_fp, doc, cur);
+							new_fp->source = CONVERT(cur->doc, xmlGetNoNsProp(cur, "about"));
+							parseFormatEntry(new_fp, cur);
 							dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
 						} else {
 							g_error(_("not enough memory!"));
@@ -275,7 +381,7 @@ static itemPtr parseDirectoryEntry(dirEntryPtr dep, xmlDocPtr doc, xmlNodePtr cu
 
 						fp = nsh->parseDirEntryTag;
 						if(NULL != fp) {
-							(*fp)(dep, doc, cur);
+							(*fp)(dep, cur->doc, cur);
 						} else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 
@@ -295,10 +401,10 @@ static itemPtr parseDirectoryEntry(dirEntryPtr dep, xmlDocPtr doc, xmlNodePtr cu
 
 	/* some postprocessing */
 	if(NULL != dep->tags[OCS_TITLE])
-		dep->tags[OCS_TITLE] = unhtmlize((gchar *)doc->encoding, dep->tags[OCS_TITLE]);
+		dep->tags[OCS_TITLE] = unhtmlize("UTF-8", dep->tags[OCS_TITLE]);
 		
 	if(NULL != dep->tags[OCS_DESCRIPTION])
-		dep->tags[OCS_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, dep->tags[OCS_DESCRIPTION]);
+		dep->tags[OCS_DESCRIPTION] = convertToHTML("UTF-8", dep->tags[OCS_DESCRIPTION]);
 
 	ip->title = dep->tags[OCS_TITLE];		
 	ip->description = showDirEntry(dep);
@@ -309,7 +415,8 @@ static itemPtr parseDirectoryEntry(dirEntryPtr dep, xmlDocPtr doc, xmlNodePtr cu
 	return ip;
 }
  
-static void parseDirectory(feedPtr fp, directoryPtr dp, xmlDocPtr doc, xmlNodePtr cur) {
+/* ocsVersion is 4 for 0.4, 5 for 0.5 ... */
+static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocsVersion) {
 	gchar			*encoding;
 	parseOCSTagFunc		parseFunc;
 	dirEntryPtr		new_dep;
@@ -317,28 +424,26 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlDocPtr doc, xmlNodePt
 	itemPtr			ip;
 	int			i;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
+	g_assert(NULL != cur->doc);
 
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		g_assert(NULL != cur->name);	
-		
+
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
 			if (NULL != cur->ns->prefix) {	
-				if(0 == strcmp(cur->ns->prefix, "rdf")) {
+				if((0 == strcmp(cur->ns->prefix, "rdf")) && (4 >= ocsVersion)) {
 
 					/* check for <rdf:description tags, if we find one this
 					   means a new channel description */
 					if (!xmlStrcmp(cur->name, "description")) {
 						if(NULL != (new_dep = (dirEntryPtr)g_malloc(sizeof(struct dirEntry)))) {
 							memset(new_dep, 0, sizeof(struct dirEntry));						
-							new_dep->source = xmlGetNoNsProp(cur, "about");
+							new_dep->source = CONVERT(cur->doc, xmlGetNoNsProp(cur, "about"));
 							new_dep->dp = dp;
-							ip = parseDirectoryEntry(new_dep, doc, cur);
+							ip = parse04DirectoryEntry(new_dep, cur);
 							addItem(fp, ip);
 						} else {
 							g_error(_("not enough memory!"));
@@ -352,7 +457,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlDocPtr doc, xmlNodePt
 
 						parseFunc = nsh->parseDirectoryTag;
 						if(NULL != parseFunc) {
-							(*parseFunc)(dp, doc, cur);
+							(*parseFunc)(dp, cur->doc, cur);
 						} else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 
@@ -366,16 +471,17 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlDocPtr doc, xmlNodePt
 
 	/* some postprocessing */
 	if(NULL != dp->tags[OCS_TITLE])
-		dp->tags[OCS_TITLE] = unhtmlize((gchar *)doc->encoding, dp->tags[OCS_TITLE]);
+		dp->tags[OCS_TITLE] = unhtmlize("UTF-8", dp->tags[OCS_TITLE]);
 		
 	if(NULL != dp->tags[OCS_DESCRIPTION])
-		dp->tags[OCS_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, dp->tags[OCS_DESCRIPTION]);
+		dp->tags[OCS_DESCRIPTION] = convertToHTML("UTF-8", dp->tags[OCS_DESCRIPTION]);
 }
 
 static void readOCS(feedPtr fp) {
 	xmlDocPtr 	doc = NULL;
 	xmlNodePtr 	cur = NULL;
 	directoryPtr	dp;
+	dirEntryPtr	new_dep;
 	gchar		*encoding;
 	int 		error = 0;
 
@@ -409,7 +515,30 @@ static void readOCS(feedPtr fp) {
 		}
 		
 		while (cur != NULL) {
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "description"))) {
+
+			/* handling OCS 0.5 directory tag... */
+			if(0 == xmlStrcmp(cur->name, "directory")) {
+				/* initialize directory structure */
+				if(NULL == (dp = (directoryPtr) malloc(sizeof(struct directory)))) {
+					g_error("not enough memory!\n");
+					exit(1);
+				}
+				memset(dp, 0, sizeof(struct directory));
+				parseDirectory(fp, dp, cur, 5);
+			}
+			/* handling OCS 0.5 channel tag... */
+			else if(0 == xmlStrcmp(cur->name, "channel")) {
+				if(NULL != (new_dep = (dirEntryPtr)g_malloc(sizeof(struct dirEntry)))) {
+					memset(new_dep, 0, sizeof(struct dirEntry));						
+					new_dep->source = CONVERT(cur->doc, xmlGetNoNsProp(cur, "about"));
+					new_dep->dp = dp;					
+					addItem(fp, parse05DirectoryEntry(new_dep, cur));
+				} else {
+					g_error(_("not enough memory!"));
+				}
+			}
+			/* handling OCS 0.4 top level description tag... */
+			else if(0 == xmlStrcmp(cur->name, (const xmlChar *) "description")) {
 
 				/* initialize directory structure */
 				if(NULL == (dp = (directoryPtr) malloc(sizeof(struct directory)))) {
@@ -417,9 +546,10 @@ static void readOCS(feedPtr fp) {
 					exit(1);
 				}
 				memset(dp, 0, sizeof(struct directory));
-				parseDirectory(fp, dp, doc, cur);
+				parseDirectory(fp, dp, cur, 4);
 				break;
 			}
+			cur = cur->next;
 		}
 		xmlFreeDoc(doc);
 

@@ -31,7 +31,14 @@
 /* the encoding all item descriptions are converted to for display with libGtkHTML */
 static gchar	*standard_encoding = { "UTF-8" };
 
+/* Conversion function which should be applied to all read XML strings, 
+   to ensure proper UTF8. doc points to the xml document and its encoding and
+   string is a xmlChar pointer to the read string. The result gchar
+   string is returned, the original XML string is freed. */
+gchar * CONVERT(xmlDocPtr doc, xmlChar * string);
+
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
+/* converts a UTF-8 string to HTML */
 gchar * convertToUTF8(gchar * from_encoding, gchar * string);
 gchar * convertToHTML(gchar * from_encoding, gchar * string);
 gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string);
@@ -44,6 +51,9 @@ void	addToHTMLBuffer(gchar **buffer, gchar *string);
 gchar * unhtmlize(gchar * from_encoding, gchar *string);
 gchar * getActualTime(void);
 time_t 	convertDate(char *date);
+// FIXME: formatDate used by several functions not only
+// to format date column, dontt use always date column format!!!
+// maybe gchar * formatDate(time_t, gchar *format)
 gchar * formatDate(time_t t);
 
 gchar *	getExtension(gint type);

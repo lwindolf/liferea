@@ -50,9 +50,15 @@
 				 (FST_PIE == type) || \
 				 (FST_OPML == type) || \
 				 (FST_HELPFEED == type))
+
+/* macro to test wether a type is a ressource which not regularily updated */				 
+#define IS_DIRECTORY(type)	(FST_OCS == type)
 				 
 /* macro to test wether a type is only a tree list structure entry */
 #define IS_NODE(type)		((FST_NODE == type) || (FST_HELPNODE == type))
+
+/* macro to test if feed menu action can be applied to this entry */
+#define FEED_MENU(type)		(IS_FEED(type) || IS_DIRECTORY(type))
 
 /* ------------------------------------------------------------ */
 /* feed handler interface					*/

@@ -183,7 +183,7 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_popup_refresh_selected(void) { 
 
-	if(!IS_FEED(selected_type)) {
+	if(!FEED_MENU(selected_type)) {
 		showErrorBox(_("You have to select a feed entry!"));
 		return;
 	}
@@ -330,7 +330,7 @@ void on_deletebtn(void) {
 	GtkTreeIter	iter;
 
 	/* block deleting of empty entries */
-	if(!IS_FEED(selected_type)) {
+	if(!FEED_MENU(selected_type)) {
 		showErrorBox(_("You have to select a feed entry!"));
 		return;
 	}
@@ -368,7 +368,7 @@ void on_propbtn(GtkWidget *widget) {
 	gint		defaultInterval;
 	gchar		*defaultIntervalStr;
 
-	if(!IS_FEED(selected_type)) {
+	if(!FEED_MENU(selected_type)) {
 		showErrorBox(_("You have to select a feed entry!"));
 		return;
 	}
@@ -410,15 +410,7 @@ void on_propbtn(GtkWidget *widget) {
 		gtk_label_set_text(GTK_LABEL(lookup_widget(propdialog, "feedupdateinfo")), defaultIntervalStr);
 		g_free(defaultIntervalStr);		
 	}
-	
-	/* note: the OK buttons signal is connected on the fly
-	   to pass the correct dialog widget that feedlist was
-	   clicked... */
 
-	g_signal_connect((gpointer)lookup_widget(propdialog, "propchangebtn"), 
-			 "clicked", G_CALLBACK (on_propchangebtn_clicked), NULL);
-   
-	   
 	gtk_widget_show(propdialog);
 }
 
@@ -482,11 +474,10 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 	
 	// FIXME: maybe this should not happen here?
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(getFeedKeyPrefix(fp)));
-	g_assert(NULL != topiter);
 	
 	if(!startup) {
 		/* used when creating feed entries manually */
-		if(getFeedListIter(&selected_iter) && (selected_iter.user_data != topiter->user_data))
+		if(getFeedListIter(&selected_iter) && IS_FEED(selected_type))
 			/* if a feed entry is marked after which we shall insert */
 			gtk_tree_store_insert_after(feedstore, &iter, topiter, &selected_iter);
 		else
@@ -511,12 +502,16 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
-
+	GtkWidget 	*sourceentry;	
+	
 	if(NULL == newdialog || !G_IS_OBJECT(newdialog)) 
 		newdialog = create_newdialog();
 		
 	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
 		propdialog = create_propdialog();
+
+	sourceentry = lookup_widget(newdialog, "newfeedentry");
+	gtk_entry_set_text(GTK_ENTRY(sourceentry), "");
 
 	g_assert(NULL != newdialog);
 	g_assert(NULL != propdialog);

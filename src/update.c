@@ -128,9 +128,11 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 			if(TRUE == fhp->merge)
 				/* If the feed type supports merging... */
 				mergeFeed(fp, new_fp);
-			else
+			else {
 				/* Otherwise we simply use the new feed info... */
 				copyFeed(fp, new_fp);
+				print_status(g_strdup_printf(_("\"%s\" updated..."), fp->title));
+			}
 
 		} else {
 			print_status(g_strdup_printf(_("\"%s\" is not available!"), fp->title));

@@ -42,8 +42,9 @@ typedef struct detectStr {
 } *detectStrPtr;
 
 struct detectStr detectPattern[] = {
-	{ FST_OCS,	"xmlns:ocs" 	},	/* must be before RSS!!! because OCS is basically RSS */
-	{ FST_OCS,	"<ocs:" 	},	/* must be before RSS!!! because OCS is basically RSS */
+	{ FST_OCS,	"xmlns:ocs" 	},	/* must be before RSS!!! because OCS 0.4 is basically RDF */
+	{ FST_OCS,	"<ocs:" 	},	/* must be before RSS!!! because OCS 0.4 is basically RDF */
+	{ FST_OCS,	"<directory" 	},	/* OCS 0.5 */
 	{ FST_RSS,	"<rdf:RDF" 	},
 	{ FST_RSS,	"<rss" 		},
 	{ FST_CDF,	"<channel>" 	},	/* have to be after RSS!!! */
