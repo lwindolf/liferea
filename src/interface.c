@@ -1917,7 +1917,7 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox60), vbox2580, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2580), 5);
 
-  feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("_Load feeds from disk when needed. Searching can \nbe slow if you have a lot of feeds,"));
+  feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("_Load feeds from disk when needed. Searching can \nbe slow if you have a lot of feeds."));
   gtk_widget_show (feedsinmemorybtn1);
   gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn1, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn1), feedsinmemorybtn1_group);
@@ -1961,7 +1961,7 @@ create_prefdialog (void)
   gtk_widget_show (vbox2604);
   gtk_box_pack_start (GTK_BOX (hbox83), vbox2604, FALSE, FALSE, 0);
 
-  folderdisplaybtn = gtk_check_button_new_with_mnemonic (_("If a folder is selected show the items of all child feeds."));
+  folderdisplaybtn = gtk_check_button_new_with_mnemonic (_("Show the items of all child feeds when a folder is selected."));
   gtk_widget_show (folderdisplaybtn);
   gtk_box_pack_start (GTK_BOX (vbox2604), folderdisplaybtn, FALSE, FALSE, 0);
 
@@ -3098,7 +3098,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. Jóźwicki <jakubj@users.sourceforge.net>");
+  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. J\303\263\305\272wicki <jakubj@users.sourceforge.net>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);

@@ -3572,7 +3572,7 @@
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
 			      <property name="label" translatable="yes">_Load feeds from disk when needed. Searching can 
-be slow if you have a lot of feeds,</property>
+be slow if you have a lot of feeds.</property>
 			      <property name="use_underline">True</property>
 			      <property name="relief">GTK_RELIEF_NORMAL</property>
 			      <property name="focus_on_click">True</property>
@@ -3729,7 +3729,7 @@ of feeds!</property>
 			    <widget class="GtkCheckButton" id="folderdisplaybtn">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
-			      <property name="label" translatable="yes">If a folder is selected show the items of all child feeds.</property>
+			      <property name="label" translatable="yes">Show the items of all child feeds when a folder is selected.</property>
 			      <property name="use_underline">True</property>
 			      <property name="relief">GTK_RELIEF_NORMAL</property>
 			      <property name="focus_on_click">True</property>
