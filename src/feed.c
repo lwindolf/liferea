@@ -663,7 +663,6 @@ void feed_process_update_result(struct request *request) {
 	g_assert(NULL != request);
 
 	feed_set_available(old_fp, TRUE);
-	feed_set_error_description(old_fp, request->httpstatus, request->returncode);
 
 	if(401 /* unauthorized */ == request->httpstatus) {
 		feed_set_available(old_fp, FALSE);
@@ -728,6 +727,8 @@ void feed_process_update_result(struct request *request) {
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(old_fp));
 		feed_set_available(old_fp, FALSE);
 	}
+	
+	feed_set_error_description(old_fp, request->httpstatus, request->returncode);
 
 	old_fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
 	ui_feedlist_update();
@@ -825,10 +826,9 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
 	   (NULL == fp->parseErrors))
 		return;
-
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
 	
-	if((200 != httpstatus) || (fp->request->returncode != NET_ERR_OK)) {
+	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {
 		/* first specific codes */
 		switch(httpstatus) {
 			case 401:tmp2 = g_strdup(_("The feed no longer exists. Please unsubscribe."));break;
@@ -843,7 +843,7 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 		}
 		/* Then, netio errors */
 		if (tmp2 == NULL) {
-			switch(fp->request->returncode) {
+			switch(resultcode) {
 			case NET_ERR_URL_INVALID: tmp2 = g_strdup(_("URL is invalid")); break;
 			case NET_ERR_UNKNOWN:
 			case NET_ERR_CONN_FAILED:
