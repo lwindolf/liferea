@@ -55,6 +55,7 @@ void ui_enclosure_init(void) {
 								etp->mime = xmlGetProp(cur, BAD_CAST"mime");
 								etp->extension = xmlGetProp(cur, BAD_CAST"extension");
 								etp->cmd = xmlGetProp(cur, BAD_CAST"cmd");
+								etp->permanent = TRUE;
 								types = g_slist_append(types, etp);
 							}
 							cur = cur->next;
