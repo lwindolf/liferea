@@ -167,7 +167,7 @@ void feed_init(void) {
 	feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());
 	
 	update_thread_init();	/* start thread for update request processing */
-	g_timeout_add(5*60*1000, feed_save_timeout, NULL);
+	ui_timeout_add(5*60*1000, feed_save_timeout, NULL);
 
 	initFolders();
 }
@@ -297,7 +297,9 @@ void feed_save(feedPtr fp) {
 static gboolean feed_save_timeout(gpointer user_data) {
 
 	debug0(DEBUG_CACHE, "Saving all feed caches (five minutes have expired).");
+	ui_lock();
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_save);
+	ui_unlock();
 	return TRUE;
 }
 
@@ -674,7 +676,6 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 		feed_increase_unread_counter(fp);
 	fp->items = g_slist_append(fp->items, (gpointer)ip);
 	allItems->items = g_slist_append(allItems->items, (gpointer)ip);
-	fp->needsCacheSave = TRUE;
 }
 
 /* ---------------------------------------------------------------------------- */
