@@ -27,7 +27,7 @@
 #include "item.h"
 
 /* prepares the popup menues */
-void setupPopupMenues(void);
+void ui_popup_setup_menues(void);
 
 /* function to generate popup menus for the item list depending
    on the list mode given in itemlist_mode */

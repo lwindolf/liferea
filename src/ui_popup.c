@@ -70,7 +70,7 @@ static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *pa
 #define TOGGLE_CONDENSED_VIEW	"/Condensed View"
 
 /* prepares the popup menues */
-void setupPopupMenues(void) {
+void ui_popup_setup_menues(void) {
 
 	/* feed list menues */
 	feed_menu_items = NULL;

@@ -1584,6 +1584,10 @@ create_prefdialog (void)
   GtkWidget *label123;
   GtkWidget *vbox22;
   GtkWidget *trayiconoptionbtn;
+  GtkWidget *hbox55;
+  GtkWidget *label136;
+  GtkWidget *vbox256;
+  GtkWidget *popupwindowsoptionbtn;
   GtkWidget *vbox252;
   GtkWidget *label126;
   GtkWidget *hbox52;
@@ -1766,7 +1770,7 @@ create_prefdialog (void)
   gtk_widget_set_size_request (label33, 300, -1);
   gtk_label_set_line_wrap (GTK_LABEL (label33), TRUE);
 
-  itemCountBtn_adj = gtk_adjustment_new (1, 1, 1e+06, 1, 10, 10);
+  itemCountBtn_adj = gtk_adjustment_new (1, 0, 1e+06, 1, 10, 10);
   itemCountBtn = gtk_spin_button_new (GTK_ADJUSTMENT (itemCountBtn_adj), 1, 0);
   gtk_widget_show (itemCountBtn);
   gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
@@ -1817,6 +1821,23 @@ create_prefdialog (void)
   gtk_widget_show (trayiconoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox22), trayiconoptionbtn, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (trayiconoptionbtn), 4);
+
+  hbox55 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox55);
+  gtk_box_pack_start (GTK_BOX (vbox251), hbox55, TRUE, TRUE, 0);
+
+  label136 = gtk_label_new (_("    "));
+  gtk_widget_show (label136);
+  gtk_box_pack_start (GTK_BOX (hbox55), label136, FALSE, FALSE, 0);
+
+  vbox256 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox256);
+  gtk_box_pack_start (GTK_BOX (hbox55), vbox256, TRUE, TRUE, 0);
+
+  popupwindowsoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a popup window with new headlines."));
+  gtk_widget_show (popupwindowsoptionbtn);
+  gtk_box_pack_start (GTK_BOX (vbox256), popupwindowsoptionbtn, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (popupwindowsoptionbtn), 4);
 
   vbox252 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox252);
@@ -2037,6 +2058,9 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) trayiconoptionbtn, "clicked",
                     G_CALLBACK (on_trayiconoptionbtn_clicked),
                     NULL);
+  g_signal_connect ((gpointer) popupwindowsoptionbtn, "clicked",
+                    G_CALLBACK (on_popupwindowsoptionbtn_clicked),
+                    NULL);
   g_signal_connect ((gpointer) menuradiobtn1, "clicked",
                     G_CALLBACK (on_menuselection_clicked),
                     NULL);
@@ -2102,6 +2126,10 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label123, "label123");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox22, "vbox22");
   GLADE_HOOKUP_OBJECT (prefdialog, trayiconoptionbtn, "trayiconoptionbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox55, "hbox55");
+  GLADE_HOOKUP_OBJECT (prefdialog, label136, "label136");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox256, "vbox256");
+  GLADE_HOOKUP_OBJECT (prefdialog, popupwindowsoptionbtn, "popupwindowsoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox252, "vbox252");
   GLADE_HOOKUP_OBJECT (prefdialog, label126, "label126");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox52, "hbox52");

@@ -50,6 +50,7 @@
 #include "ui_itemlist.h"
 #include "ui_tray.h"
 #include "ui_queue.h"
+#include "ui_notification.h"
 	
 extern GHashTable	*feedHandler;
 
@@ -106,7 +107,8 @@ void ui_init(void) {
 	
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
-	setupPopupMenues();			/* create popup menues */
+	ui_popup_setup_menues();		/* create popup menues */
+	ui_notification_setup();		
 	loadSubscriptions();
 		
 	/* setup one minute timer for automatic updating, and try updating now */
@@ -265,4 +267,3 @@ void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gtk_widget_show(dialog);
 
 }
-

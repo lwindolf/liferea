@@ -47,6 +47,7 @@
 
 /* GUI settings and persistency values */
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
+#define SHOW_POPUP_WINDOWS		"/apps/liferea/show-popup-windows"
 #define DISABLE_MENUBAR			"/apps/liferea/disable-menubar"
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
 #define LAST_WINDOW_X			"/apps/liferea/last-window-x"

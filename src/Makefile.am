@@ -75,6 +75,7 @@ liferea_bin_SOURCES = \
 	ui_popup.c ui_popup.h \
 	ui_prefs.c ui_prefs.h \
 	ui_dnd.c ui_dnd.h \
+	ui_notification.c ui_notification.h \
 	update.c update.h \
 	vfolder.c vfolder.h
 

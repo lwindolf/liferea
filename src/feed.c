@@ -47,6 +47,7 @@
 #include "ui_queue.h"	// FIXME
 #include "ui_feedlist.h"
 #include "ui_tray.h"
+#include "ui_notification.h"
 #include "htmlview.h"
 
 /* auto detection lookup table */
@@ -593,6 +594,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	feed_free(new_fp);
 	
 	ui_tray_add_new(traycount);		/* finally update the tray icon */
+	ui_notification_update(old_fp);
 }
 
 /**

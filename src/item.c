@@ -34,6 +34,7 @@
 #include "htmlview.h"
 #include "callbacks.h"
 #include "ui_tray.h"
+#include "ui_notification.h"
 
 /* function to create a new feed structure */
 itemPtr item_new(void) {
@@ -93,15 +94,13 @@ void item_set_mark(itemPtr ip, gboolean flag) {
 
 void item_set_unread(itemPtr ip) { 
 	GSList		*vfolders;
-	feedPtr		fp;
 	
 	if(TRUE == ip->readStatus) {
 		feed_increase_unread_counter((feedPtr)(ip->fp));
 
 		vfolders = ip->vfolders;
 		while(NULL != vfolders) {
-			fp = vfolders->data;
-			feed_increase_unread_counter(fp);
+			feed_increase_unread_counter(vfolders->data);
 			vfolders = g_slist_next(vfolders);
 		}
 		
@@ -110,6 +109,7 @@ void item_set_unread(itemPtr ip) {
 			ui_update_item(ip);
 		if (ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
+		ui_notification_update(ip->fp);
 	} 
 }
 
@@ -151,8 +151,10 @@ void removeVFolderFromItem(itemPtr ip, gpointer fp) {
 
 void item_free(itemPtr ip) {
 	
-	if(FALSE == ip->readStatus)
+	if(FALSE == ip->readStatus) {
 		feed_decrease_unread_counter(ip->fp);
+		ui_notification_update(ip->fp);
+	}
 
 	g_free(ip->title);
 	g_free(ip->description);
