@@ -205,13 +205,11 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 
 	switch(type) {
 		case FST_FOLDER:
-		case FST_HELPFOLDER:
 			menu = make_menu(node_menu_items, node_menu_len, item);
 			break;
 		case FST_VFOLDER:
 			menu = make_menu(vfolder_menu_items, vfolder_menu_len, item);
 			break;
-		case FST_HELPFEED:
 		case FST_FEED:
 			menu = make_menu(feed_menu_items, feed_menu_len, item);
 			break;

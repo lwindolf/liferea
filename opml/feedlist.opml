@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+  <head>
+    <title>Liferea Default Feed List</title>
+  </head>
+  <body>
+    <outline text="Liferea Help">
+      <outline text="Online Help" type="rss" htmlUrl="http://liferea.sf.net/" xmlUrl="http://liferea.sf.net/help/help0.5.3.rdf" updateInterval="1440" noIncremental=""/>
+      <outline text="Liferea SF News" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental=""/>
+    </outline>
+    <outline text="Example Feeds">
+    </outline>
+  </body>
+</opml>

@@ -473,11 +473,11 @@ gchar * common_create_cache_filename( const gchar *folder, const gchar *key, con
 	gchar *filename;
 
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", getCachePath(),
-						  (folder != NULL) ? folder : "",
-						  (folder != NULL) ? G_DIR_SEPARATOR_S : "",
-						  key,
-						  (extension != NULL)? "." : "",
-						  (extension != NULL)? extension : "");
+	                           (folder != NULL) ? folder : "",
+	                           (folder != NULL) ? G_DIR_SEPARATOR_S : "",
+	                           key,
+	                           (extension != NULL)? "." : "",
+	                           (extension != NULL)? extension : "");
 	
 	return filename;
 }
@@ -544,28 +544,6 @@ gchar * encode_uri_string(gchar *string) {
 	g_free(string);
 
 	return newURIString;
-}
-
-/* FIXME: remove me */
-gchar * encode_uri(gchar *uri_string) {
-	gchar		*new_uri_string, *tmp;
-	guint 		i;
-
-	g_return_val_if_fail(uri_string != NULL, NULL);
-	new_uri_string = g_strdup("");
-	for(i = 0; i < strlen(uri_string); i++) {
-		if(g_ascii_isalnum(uri_string[i]) || 
-		   strchr(";/?:@&=+$,#", (int)uri_string[i]) ||	/* reserved URI chars and hash*/
-   		   strchr("-_.!~*'()", (int)uri_string[i]))	/* unreserved URI chars */
-			tmp = g_strdup_printf("%s%c", new_uri_string, (unsigned char)uri_string[i]);
-		else
-			tmp = g_strdup_printf("%s%%%02x", new_uri_string, (unsigned char)uri_string[i]);
-			
-		g_free(new_uri_string);
-		new_uri_string = tmp;
-	}
-	
-	return new_uri_string;
 }
 
 /* to correctly escape and expand URLs, does not touch the

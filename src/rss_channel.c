@@ -362,7 +362,6 @@ feedHandlerPtr rss_init_feed_handler(void) {
 		g_hash_table_insert(RssToMetadataMapping, "comments", "commentsUri");
 	}
 	
-	/* because initRSSFeedHandler() is called twice, once for FST_RSS and again for FST_HELPFEED */	
 	if(NULL == rss_nstable) {
 		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
 		ns_rss_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);

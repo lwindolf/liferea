@@ -44,10 +44,6 @@
 
 #define PATH		"/apps/liferea"
 
-/* _() for HELP1URL to allow localised help feeds */
-#define HELP1URL_1 	_("http://liferea.sf.net/help/help")
-#define HELP1URL_2	_(".rdf")
-#define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 #define HOMEPAGE	"http://liferea.sf.net/"
 
 static GConfClient	*client;
@@ -255,7 +251,6 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 
 	switch(type) {
 	case FST_FOLDER:
-	case FST_HELPFOLDER:
 		path2 = build_path_str(id, "feedlistname");
 		name = getStringConfValue(path2);
 		g_free(path2);
@@ -264,12 +259,8 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		expanded = !getBooleanConfValue(path2);
 		g_free(path2);
 		
-		if (type == FST_HELPFOLDER) {
-			folder = feedlist_insert_help_folder(parent, NULL, NULL);
-		} else {
-			folder = restore_folder(parent, name, id, FST_FOLDER);
-			ui_add_folder(parent, folder, -1);
-		}
+		folder = restore_folder(parent, name, id, FST_FOLDER);
+		ui_add_folder(parent, folder, -1);
 
 		load_folder_contents(folder, id);
 		if (expanded)
@@ -375,65 +366,6 @@ static gboolean load_folder_contents(folderPtr folder, gchar* fid) {
 	return changed;
 }
 
-folderPtr feedlist_insert_help_folder(folderPtr parent, GTimeVal *lastPoll, GTimeVal *lastFaviconPoll) {
-	static folderPtr 	helpFolder = NULL;
-	feedPtr			fp;
-
-	debug_enter("feedlist_insert_help_folder");
-	
-	/* Ok... If we are here, a help folder has been requested to be
-	 * created. The feeds are conditionally added if the
-	 * DISABLE_HELPFEED is false. This allows an empty helpfolder to
-	 * be added from the feedlist.
-	 */
-	
-	if(helpFolder == NULL) {
-		helpFolder = restore_folder(parent, _("Liferea Help"), "helpFolder", FST_HELPFOLDER);
-		ui_add_folder(parent, helpFolder, -1);
-		
-		if(!getBooleanConfValue(DISABLE_HELPFEEDS)) {
-			gchar *tmp;
-			fp = feed_new();
-			feed_set_type(fp, FST_HELPFEED);
-			tmp = g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2);
-			feed_set_source(fp, tmp);
-			g_free(tmp);
-			feed_set_title(fp, _("Online Help Feed"));
-			feed_set_id(fp, "helpfeed1");
-			if(lastPoll != NULL)
-				fp->lastPoll = *lastPoll;
-			if(lastFaviconPoll != NULL)
-				fp->lastFaviconPoll = *lastFaviconPoll;
-			feed_set_update_interval(fp, 1440);
-			if(feed_load(fp) == FALSE)
-				feed_schedule_update(fp, 0);
-			ui_folder_add_feed(helpFolder, fp, -1);
-			feed_unload(fp);
-			
-			fp = feed_new();
-			feed_set_type(fp, FST_HELPFEED);
-			feed_set_source(fp, HELP2URL);
-			feed_set_title(fp, _("Liferea SF News"));
-			feed_set_id(fp, "helpfeed2");
-			if(lastPoll != NULL)
-				fp->lastPoll = *lastPoll;
-			if(lastFaviconPoll != NULL)
-				fp->lastFaviconPoll = *lastFaviconPoll;
-			feed_set_update_interval(fp, 1440);
-			if(feed_load(fp) == FALSE)
-				feed_schedule_update(fp, 0);
-			ui_folder_add_feed( helpFolder, fp, -1);
-			feed_unload(fp);
-			
-			/* Note: help feeds are update automatically on first adding 
-			   because they miss a cache file. And of course they are
-			   updated daily because of the update interval */
-		}
-	}
-	debug_exit("feedlist_insert_help_folder");
-	return helpFolder;
-}
-
 static gboolean is_number(gchar *s) {
 	while (*s != '\0') {
 		if(!g_ascii_isdigit(*s))
@@ -513,17 +445,18 @@ void conf_load_subscriptions(void) {
 	feedlistLoading = TRUE;
 	gconf_changed = load_folder_contents(NULL, "");
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
+	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
+		/* if there is no feedlist.opml we provide a default feed list */
+		g_free(filename);
+		filename = g_strdup(PACKAGE_DATA_DIR "/" PACKAGE "/opml/feedlist.opml");
+	}
 	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
 	g_free(filename);
-	debug0(DEBUG_CONF, "Erasing old gconf enteries.");
-	
-	/* if help folder was not yet created... */
-	if(!getBooleanConfValue(DISABLE_HELPFEEDS))
-		feedlist_insert_help_folder(NULL, NULL, NULL);
 	feedlistLoading = FALSE;
 	
-	if (gconf_changed) {
+	if(gconf_changed) {
 		conf_feedlist_save();
+		debug0(DEBUG_CONF, "Erasing old gconf enteries.");
 		conf_feedlist_erase_gconf();
 	}
 }

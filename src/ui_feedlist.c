@@ -448,13 +448,6 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 
 static void ui_feedlist_delete_(nodePtr ptr) {
 
-	if(ptr->type == FST_HELPFEED) {
-		ui_show_error_box(_("You cannot delete the help! Disable loading the help by changing the "
-						"preferences. You will be able to delete the help folder after "
-						"restarting Liferea."));
-		return;
-	}
-	
 	if (IS_FEED(ptr->type)) {
 		feed_free((feedPtr)ptr);
 	} else {
@@ -483,13 +476,6 @@ void ui_feedlist_delete(nodePtr ptr) {
 	g_assert(ptr->ui_data != NULL);
 	g_assert(ptr == ui_feedlist_get_selected());
 
-	if(ptr->type == FST_HELPFEED) {
-		ui_show_error_box(_("You cannot delete the help! Disable loading the help by changing the "
-						"preferences. You will be able to delete the help folder after "
-						"restarting Liferea."));
-		return;
-	}
-	
 	if (IS_FOLDER(ptr->type)) {
 		ui_mainwindow_set_status_bar(_("Deleting \"%s\""),"Deleting entry", folder_get_title((folderPtr)ptr));
 		text = g_strdup_printf(_("Are you sure that you want to delete %s and its contents?"), folder_get_title((folderPtr)ptr));
@@ -536,11 +522,6 @@ void on_popup_prop_selected(gpointer callback_data,
 	if(!fp || !IS_FEED(feed_get_type(fp))) {
 		g_message(_("You must select a feed entry"));
 		ui_show_error_box(_("You must select a feed entry."));
-		return;
-	}
-	
-	if(fp->type == FST_HELPFEED) {
-		ui_show_error_box(_("You cannot modify help feeds."));
 		return;
 	}
 	

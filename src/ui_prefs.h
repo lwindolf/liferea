@@ -61,10 +61,6 @@ on_menuselection_clicked               (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_helpoptionbtn_clicked               (GtkButton       *button,
-                                        gpointer         user_data);
-					
-void
 on_proxyhostentry_changed              (GtkEditable     *editable,
                                         gpointer         user_data);
 

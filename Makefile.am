@@ -32,11 +32,19 @@ endif
 	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/css; \
           $(INSTALL_DATA) $(srcdir)/css/liferea.css $(DESTDIR)$(pkgdatadir)/css; \
 	fi
+	if test -d $(srcdir)/opml; then \
+	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/opml; \
+          $(INSTALL_DATA) $(srcdir)/opml/feedlist.opml $(DESTDIR)$(pkgdatadir)/opml; \
+	fi
 
 dist-hook:
 	if test -d $(srcdir)/css; then \
 	  $(mkinstalldirs) $(distdir)/css; \
           $(INSTALL_DATA) $(srcdir)/css/liferea.css $(distdir)/css; \
+	fi
+	if test -d $(srcdir)/opml; then \
+	  $(mkinstalldirs) $(distdir)/opml; \
+          $(INSTALL_DATA) $(srcdir)/opml/feedlist.opml $(distdir)/opml; \
 	fi
 
 DISTCLEANFILES = liferea-SuSE.spec liferea.spec

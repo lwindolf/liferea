@@ -1,22 +1,23 @@
-/*
-   OPML feedlist import&export
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file export.c OPML feedlist import&export
+ *
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <libxml/tree.h>
 #include "feed.h"
@@ -29,6 +30,14 @@
 #include "ui_folder.h"
 #include "debug.h"
 
+/* FIXME: remove this migration constants with 0.9.x */
+/* _() for HELP1URL to allow localised help feeds */
+#define HELP1URL_1 	_("http://liferea.sf.net/help/help")
+#define HELP1URL_2	_(".rdf")
+#define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
+#define HELP1HTMLURL	"http://liferea.sf.net"
+#define HELP2HTMLURL	"http://sourceforge.net/projects/liferea/"
+
 struct exportData {
 	gboolean internal; /**< Include all the extra Liferea-specific tags */
 	xmlNodePtr cur;
@@ -37,7 +46,7 @@ struct exportData {
 /* Used for exporting, this adds a folder or feed's node to the XML tree */
 static void append_node_tag(nodePtr ptr, gpointer userdata) {
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
-	gboolean internal = ((struct exportData*)userdata)->internal;
+	gboolean	internal = ((struct exportData*)userdata)->internal;
 	xmlNodePtr	childNode;
 	
 	debug_enter("append_node_tag");
@@ -48,10 +57,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST folder_get_title(folder));
 		
-		if (internal) {
-			if(ptr->type == FST_HELPFOLDER)
-				xmlNewProp(childNode, BAD_CAST"helpFolder", NULL);
-		
+		if(internal) {
 			if(ui_is_folder_expanded(folder))
 				xmlNewProp(childNode, BAD_CAST"expanded", NULL);
 			else
@@ -67,61 +73,47 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 		gchar *cacheLimit = NULL;
 
-		if (feed_get_type(fp) != FST_HELPFEED) {
-			childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 
-			xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp)); /* The OPML spec requires "text" */
-			xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
-			xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
-			if (type != NULL)
-				xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
-			if (feed_get_html_url(fp) != NULL)
-				xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(fp));
-			else
-				xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
-			xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
-			xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
+		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp)); /* The OPML spec requires "text" */
+		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
+		xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
+		if(type != NULL)
+			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
+		if(feed_get_html_url(fp) != NULL)
+			xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(fp));
+		else
+			xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
+		xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
+		xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
 
-			if (fp->cacheLimit >= 0)
-				cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
-			if (fp->cacheLimit == CACHE_UNLIMITED)
-				cacheLimit = g_strdup("unlimited");
-			if (cacheLimit != NULL)
-				xmlNewProp(childNode, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
+		if(fp->cacheLimit >= 0)
+			cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
+		if(fp->cacheLimit == CACHE_UNLIMITED)
+			cacheLimit = g_strdup("unlimited");
+		if(cacheLimit != NULL)
+			xmlNewProp(childNode, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
 
-			if (feed_get_filter(fp) != NULL)
-				xmlNewProp(childNode, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
+		if(feed_get_filter(fp) != NULL)
+			xmlNewProp(childNode, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
 
-			if(internal) {
-				xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
-				if (fp->lastPoll.tv_sec > 0) {
-					gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
-					xmlNewProp(childNode, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
-					g_free(lastPoll);
-				}
-				if (fp->lastFaviconPoll.tv_sec > 0) {
-					gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
-					xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
-					g_free(lastPoll);
-				}
+		if(internal) {
+			if(fp->noIncremental)
+				xmlNewProp(childNode, BAD_CAST"noIncremental", NULL);
+				
+			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
+			if(fp->lastPoll.tv_sec > 0) {
+				gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
+				xmlNewProp(childNode, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
+				g_free(lastPoll);
 			}
-			debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval, cacheLimit);
-		} else {
-			debug1(DEBUG_CONF, "not adding help feed %s to feedlist", feed_get_title(fp));
-			if (internal && !strcmp(feed_get_id(fp), "helpfeed1")) {
-				/* The favicon date has to be saved somewhere.... save it on the parent. */
-				if (fp->lastPoll.tv_sec > 0) {
-					gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
-					xmlNewProp(cur, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
-					g_free(lastPoll);
-				}
-				if (fp->lastFaviconPoll.tv_sec > 0) {
-					gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
-					xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
-					g_free(lastPoll);
-				}
+			if(fp->lastFaviconPoll.tv_sec > 0) {
+				gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
+				xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
+				g_free(lastPoll);
 			}
 		}
+		debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval, cacheLimit);
 		g_free(cacheLimit);
 		g_free(interval);
 	}
@@ -192,8 +184,8 @@ static long parse_long(gchar *str, long def) {
 	return num;
 }
 
-
 static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trusted) {
+	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr;
 	gchar		*title, *source, *typeStr, *tmp;
 	feedPtr		fp = NULL;
 	folderPtr	child;
@@ -214,9 +206,17 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) { /* Reading a feed */
-		gchar *cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr;
-		
-		filter =  xmlGetProp(cur, BAD_CAST"filtercmd");
+		/* check if source is a help feed... */
+		if(0 == strcmp(source, HELP1URL_1)) {
+			/* If it is we rebuild it with the current version 
+			   just to be sure it is up-to-date. Of course this 
+			   means there must be no other feeds under the
+			   URL given by HELP1URL!!! */
+			xmlFree(source);
+			source = g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2);
+		}
+	
+		filter = xmlGetProp(cur, BAD_CAST"filtercmd");
 
 		if(!trusted && filter != NULL) {
 			/* FIXME: Display warning dialog asking if the command
@@ -266,6 +266,9 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			feed_set_html_url(fp, htmlUrlStr);
 		xmlFree(htmlUrlStr);
 		
+		if(NULL != xmlHasProp(cur, BAD_CAST"noIncremental"))
+			fp->noIncremental = TRUE;
+		
 		/* Last poll time*/
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
 		fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
@@ -313,23 +316,48 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		
 	} else { /* It is a folder */
 		if(NULL != xmlHasProp(cur, BAD_CAST"helpFolder")) {
-			GTimeVal tv, faviconTv;
-			gchar *lastPollStr;
-			debug0(DEBUG_CONF, "adding help folder");
-
-			lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
-			tv.tv_sec = parse_long(lastPollStr, 0L);
-			tv.tv_usec = 0L;
-			if (lastPollStr != NULL)
-				xmlFree(lastPollStr);
+			/* FIXME: this is migration code, to be removed with 0.9.x */
+			debug0(DEBUG_CONF, "migrating help folder");
+			/* we create a real folder with two real subscriptions to the help feeds inside */			
+			child = restore_folder(folder, _("Liferea Help"), NULL, FST_FOLDER);
+			g_assert(NULL != child);
+			ui_add_folder(folder, child, -1);
+			folder = child;
+									
+			fp = feed_new();
+			fp->noIncremental = TRUE;
+			fp->fhp = feed_type_str_to_fhp("rss");
+			fp->cacheLimit = CACHE_UNLIMITED;
+			feed_set_html_url(fp, HELP1HTMLURL);
+			tmp = g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2);
+			feed_set_source(fp, tmp);
+			g_free(tmp);
+			feed_set_title(fp, _("Online Help Feed"));
+			id = conf_new_id();
+			feed_set_id(fp, id);
+			g_free(id);
+			feed_set_update_interval(fp, 1440);
+			if(!feed_load(fp))
+				feed_schedule_update(fp, 0);
+			feed_unload(fp);
+			ui_folder_add_feed(child, fp, -1);
 			
-			lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
-			faviconTv.tv_sec = parse_long(lastPollStr, 0L);
-			faviconTv.tv_usec = 0L;
-			if (lastPollStr != NULL)
-				xmlFree(lastPollStr);
+			fp = feed_new();
+			fp->noIncremental = TRUE;
+			fp->fhp = feed_type_str_to_fhp("rss");
+			fp->cacheLimit = CACHE_UNLIMITED;
+			feed_set_html_url(fp, HELP2HTMLURL);			
+			feed_set_source(fp, HELP2URL);
+			feed_set_title(fp, _("Liferea SF News"));
+			id = conf_new_id();
+			feed_set_id(fp, id);
+			g_free(id);
+			feed_set_update_interval(fp, 1440);
+			if(!feed_load(fp))
+				feed_schedule_update(fp, 0);
+			feed_unload(fp);
+			ui_folder_add_feed(child, fp, -1);
 			
-			folder = feedlist_insert_help_folder(folder, &tv, &faviconTv);
 		} else {
 			debug1(DEBUG_CONF, "adding folder \"%s\"", title);
 			child = restore_folder(folder, title, NULL, FST_FOLDER);

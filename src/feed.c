@@ -618,7 +618,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				}
 
 				/* any found new_fp items are not needed anymore */
-				if(old_fp->type != FST_HELPFEED) { 
+				if(FALSE == old_fp->noIncremental) { 
 					new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
 					item_free(new_ip);					
 				}
@@ -630,7 +630,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 		/* now we distinguish between incremental merging
 		   for all normal feeds, and skipping old item
 		   merging for help feeds... */
-		if(old_fp->type != FST_HELPFEED) {
+		if(FALSE == old_fp->noIncremental) {
 			debug0(DEBUG_VERBOSE, "postprocessing normal feed...");
 			g_slist_free(new_fp->items);	/* dispose new item list */
 			
@@ -650,7 +650,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
 		} else {
-			debug0(DEBUG_VERBOSE, "postprocessing help feed...");
+			debug0(DEBUG_VERBOSE, "postprocessing non incremental feed...");
 			/* free old list and items of old list */
 			old_list = old_fp->items;
 			while(NULL != old_list) {

@@ -130,7 +130,7 @@ create_mainwindow (void)
   accel_group = gtk_accel_group_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.5.3b"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.6.0"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
   mainwindow_icon_pixbuf = create_pixbuf ("liferea.png");
   if (mainwindow_icon_pixbuf)
@@ -1580,7 +1580,6 @@ create_prefdialog (void)
   GtkWidget *hbox57;
   GtkWidget *label142;
   GtkWidget *startupfeedhandler;
-  GtkWidget *helpoptionbtn;
   GtkWidget *vbox2579;
   GtkWidget *label147;
   GtkWidget *hbox60;
@@ -1761,10 +1760,6 @@ create_prefdialog (void)
   startupfeedhandler = gtk_option_menu_new ();
   gtk_widget_show (startupfeedhandler);
   gtk_box_pack_start (GTK_BOX (hbox57), startupfeedhandler, FALSE, FALSE, 0);
-
-  helpoptionbtn = gtk_check_button_new_with_mnemonic (_("Add the _help feeds to the feed list on startup."));
-  gtk_widget_show (helpoptionbtn);
-  gtk_box_pack_start (GTK_BOX (vbox20), helpoptionbtn, FALSE, FALSE, 0);
 
   vbox2579 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox2579);
@@ -2278,9 +2273,6 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) itemCountBtn, "value_changed",
                     G_CALLBACK (on_itemCountBtn_value_changed),
                     NULL);
-  g_signal_connect ((gpointer) helpoptionbtn, "clicked",
-                    G_CALLBACK (on_helpoptionbtn_clicked),
-                    NULL);
   g_signal_connect ((gpointer) feedsinmemorybtn1, "clicked",
                     G_CALLBACK (on_feedsinmemorybtn_clicked),
                     NULL);
@@ -2370,7 +2362,6 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox57, "hbox57");
   GLADE_HOOKUP_OBJECT (prefdialog, label142, "label142");
   GLADE_HOOKUP_OBJECT (prefdialog, startupfeedhandler, "startupfeedhandler");
-  GLADE_HOOKUP_OBJECT (prefdialog, helpoptionbtn, "helpoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2579, "vbox2579");
   GLADE_HOOKUP_OBJECT (prefdialog, label147, "label147");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox60, "hbox60");
@@ -2782,7 +2773,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new (_("Liferea 0.5.3b"));
+  label57 = gtk_label_new (_("Liferea 0.6.0"));
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);

@@ -44,7 +44,6 @@
 /* feed handling settings */
 #define DEFAULT_MAX_ITEMS		"/apps/liferea/maxitemcount"
 #define STARTUP_FEED_ACTION		"/apps/liferea/startup_feed_action"
-#define DISABLE_HELPFEEDS		"/apps/liferea/disable-helpfeeds"
 #define UPDATE_THREAD_CONCURRENCY	"/apps/liferea/update-thread-concurrency"
 #define KEEP_FEEDS_IN_MEMORY		"/apps/liferea/keep-feeds-in-memory"
 

@@ -1,6 +1,19 @@
-2004-08-??  ??? <???>
+2004-??-??  ??? <???>
 
-	Version 0.5.3c
+	Version 0.6.0
+	
+	* Finally added a menu option to remove a single item.
+	  Sorry that it took so long! (Lars Lindner)
+	* The help feeds are now (almost) normal subscriptions 
+	  and can be removed and modified. The only remaining
+	  difference is that the version in the URL is updated
+	  automatically and that old items are dropped. This
+	  also removes the special icon of the help folder.
+	  (Lars Linder)
+
+2004-08-21  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.5.3b
 	
 	* Update of the Czech translation (Juraj Kubelka)
 	* Updated RPM spec file. (Daniel Resare)

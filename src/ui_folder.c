@@ -365,12 +365,11 @@ void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position) {
 }
 
 static GdkPixbuf* ui_folder_select_icon(folderPtr np) {
+
 	g_assert(IS_FOLDER(np->type));
 	switch(np->type) {
 	case FST_FOLDER:
 		return icons[ICON_FOLDER];
-	case FST_HELPFOLDER:
-		return icons[ICON_HELP];
 	default:
 		g_print(_("internal error! unknown entry type! cannot display appropriate icon!\n"));
 		return icons[ICON_UNAVAILABLE];

@@ -242,9 +242,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	tmp = getNumericConfValue(STARTUP_FEED_ACTION);
 	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), tmp);
 	
-	widget = lookup_widget(prefdialog, "helpoptionbtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), !getBooleanConfValue(DISABLE_HELPFEEDS));
-	
 	widget = lookup_widget(prefdialog, "itemCountBtn");
 	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
 	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
@@ -423,7 +420,6 @@ void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 	setBooleanConfValue(SHOW_POPUP_WINDOWS, enabled);
 }
 
-
 static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data) {
 	setNumericConfValue(STARTUP_FEED_ACTION, GPOINTER_TO_INT(user_data));
 }
@@ -506,10 +502,6 @@ void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 	ui_mainwindow_update_toolbar();
 }
 
-
-void on_helpoptionbtn_clicked(GtkButton *button, gpointer user_data) {
-	setBooleanConfValue(DISABLE_HELPFEEDS, !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
-}
 
 static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean	enabled;

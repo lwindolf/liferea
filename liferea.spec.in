@@ -47,11 +47,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{name}-bin
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/pixmaps/liferea.png
+%{_datadir}/css/%{name}.css
+%{_datadir}/opml/feedlist.opml
+%{_datadir}/pixmaps/%{name}.png
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/*.so
 
 %changelog
+* Sat Aug 21 Lars Lindner <lars.lindner@gmx.net> 0.6.0
+- Added stylesheet file to %files
+- Added default feed list to %files
+
 * Sat May 8 2004 Nathan Conrad <conrad@bungled.net> 0.4.9
 - Removed *.la files
 

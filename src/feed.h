@@ -2,6 +2,7 @@
  * @file feed.h common feed handling
  * 
  * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,16 +37,13 @@ enum node_types {
 
 	FST_VFOLDER 	= 9,		/**< special type for VFolders */
 	FST_FEED	= 10,		/**< Any type of feed */
-	FST_HELPFOLDER	= 50,		/**< special tree list types to store help feeds */	
-	FST_HELPFEED	= 51,		/**< special type to allow updating of help feed url */
 };
 
 /** macro to test whether a type is a resource which is regularly updated */
-#define IS_FEED(type)		((FST_HELPFEED == type) || \
-				 (FST_FEED == type))
+#define IS_FEED(type)		(FST_FEED == type)
 
 /** macro to test whether a type is a folder entry */
-#define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
+#define IS_FOLDER(type)		(FST_FOLDER == type)
 
 
 /** Flags used in the request structure */
@@ -86,8 +84,7 @@ typedef struct feed {
 	gint		newCount;		/**< number of new items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gint		loaded;			/**< counter which is non-zero if items are to be kept in memory */
-	gboolean	available;		/**< flag to signalize loading errors */
-	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
+	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
 	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
 	
@@ -97,6 +94,9 @@ typedef struct feed {
 	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 			
 	/* feed properties needed to be saved */
+	gboolean	available;		/**< flag to signalize loading errors */
+	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
+
 	gchar		*title;			/**< feed/channel title */
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
 	gchar		*imageUrl;		/**< URL of the optional feed image */
@@ -117,7 +117,7 @@ typedef struct feed {
 	struct request	*request;		/**< update request structure used when downloading xml content */
 	struct request	*faviconRequest;	/**< update request structure used for downloading the favicon */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
-	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
+	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
 } *feedPtr;
 
 /* ------------------------------------------------------------ */
