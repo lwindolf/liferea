@@ -220,12 +220,13 @@ void on_timeformatselection_clicked(GtkButton *button, gpointer user_data) {
 
 	setNumericConfValue(TIME_FORMAT_MODE, active_button);
 	gtk_widget_set_sensitive(GTK_WIDGET(editbox), active_button == 3);
-
+	ui_itemlist_reset_date_format();
 	ui_update_itemlist();
 }
 
 void on_timeformatentry_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(TIME_FORMAT, gtk_editable_get_chars(editable,0,-1));
+	ui_itemlist_reset_date_format();
 	ui_update_itemlist();
 }
 

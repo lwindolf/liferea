@@ -308,7 +308,7 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 				switch(tagtype) {
 					case DC_RSS_CHANNEL:
 					case DC_PIE_FEED:
-						date = formatDate(i);
+						date = ui_itemlist_format_date(i);	// FIXME
 						mapping = getMapping(tagtype, 6);
 						mapTag(obj, tagtype, mapping, date);	/* !!! 6 is a hardcoded position in the taglist array */
 						break;

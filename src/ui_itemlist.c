@@ -1,24 +1,26 @@
 /* Item list/view handling
-   
-   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
-   		      Nathan J. Conrad <t98502@users.sourceforge.net>
+ *  
+ * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * 		      Nathan J. Conrad <t98502@users.sourceforge.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-   
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-   
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.
-*/
-
+#include <time.h>
+#include <langinfo.h>
 #include <string.h>
 #include "support.h"
 #include "callbacks.h"
@@ -42,6 +44,11 @@ static GtkTreeStore	*itemstore = NULL;
 extern gboolean 	itemlist_mode;
 
 static gint		itemlist_loading;	/* freaky workaround for item list focussing problem */
+
+#define	TIMESTRLEN	256
+
+static gchar 		*date_format = NULL;	/* date formatting string */
+
 
 /* displayed_fp should almost always be the same as selected_fp in ui_feedlist */
 feedPtr	displayed_fp = NULL;
@@ -72,6 +79,35 @@ GtkTreeStore * getItemStore(void) {
 	}
 	
 	return itemstore;
+}
+
+gchar * ui_itemlist_format_date(time_t t) {
+	gchar		*timestr;
+
+	if(NULL == date_format) {	
+		switch(getNumericConfValue(TIME_FORMAT_MODE)) {
+			case 1:
+				date_format = g_strdup_printf("%s", nl_langinfo(T_FMT));	
+				break;
+			case 3:
+				date_format = getStringConfValue(TIME_FORMAT);				
+				break;
+			case 2:
+			default:
+				date_format = g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));	
+				break;
+		}
+	}
+	
+	timestr = g_new0(gchar, TIMESTRLEN+1);
+	strftime(timestr, TIMESTRLEN, (char *)date_format, localtime(&t));
+	
+	return CONVERT(timestr);
+}
+
+void ui_itemlist_reset_date_format(void) {
+
+	g_free(date_format);
 }
 
 void ui_free_item_ui_data(itemPtr ip) {
@@ -162,13 +198,13 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 	if(0 != time) {
 		if(FALSE == getItemReadStatus(ip)) {
 			/* the time value is no markup, so we escape it... */
-			time_str = formatDate((time_t)time);
+			time_str = ui_itemlist_format_date((time_t)time);
 			tmp = g_markup_escape_text(time_str,-1);
 			g_free(time_str);
 			time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", tmp);
 			g_free(tmp);
 		} else {
-			time_str = formatDate((time_t)time);
+			time_str = ui_itemlist_format_date((time_t)time);
 		}
 	} else {
 		time_str = g_strdup("");
@@ -240,6 +276,8 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	g_signal_connect(G_OBJECT(select), "changed",
                   G_CALLBACK(on_itemlist_selection_changed),
                   NULL);
+		  
+	ui_itemlist_reset_date_format();
 }
 
 /* typically called when filling the item tree view */

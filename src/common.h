@@ -63,7 +63,6 @@ void	addToHTMLBuffer(gchar **buffer, gchar *string);
    occur sets the errormsg to the last error message. */
 xmlDocPtr parseBuffer(gchar *data, gchar **errormsg);
 
-gchar * getActualTime(void);
 time_t 	parseISO8601Date(gchar *date);
 time_t 	parseRFC822Date(gchar *date);
 // FIXME: formatDate used by several functions not only

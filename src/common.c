@@ -28,8 +28,6 @@
  */
 
 #define _XOPEN_SOURCE /* glibc2 needs this (man strptime) */
-#include <time.h>
-#include <langinfo.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -43,12 +41,11 @@
 #include "support.h"
 #include "feed.h"
 
-#define	TIMESTRLEN	256
-
 #define VFOLDER_EXTENSION	"vfolder"
 #define OCS_EXTENSION		"ocs"
 
 static gchar *standard_encoding = { "UTF-8" };
+
 static gchar *CACHEPATH = NULL;
 
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
@@ -407,55 +404,6 @@ time_t parseRFC822Date(gchar *date) {
 	}
 	
 	return 0;
-}
-
-gchar * getActualTime(void) {
-	time_t		t;
-	gchar		*timestr = NULL;
-	gchar		*timeformat;
-	
-	/* get receive time */
-	if((time_t)-1 != time(&t)) {
-		timestr = g_new0(gchar, TIMESTRLEN+1);
-		timeformat = getStringConfValue(TIME_FORMAT);
-
-		/* if not set conf.c delivers a "" and D_T_FMT will be used... */
-		if(0 == strlen(timeformat)) {
-			g_free(timeformat);
-			timeformat = g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));
-
-		}
-
-		if(NULL != timeformat) {
-			strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
-			g_free(timeformat);
-		}
-	}
-	
-	return timestr;
-}
-
-gchar * formatDate(time_t t) {
-	gchar		*timestr;
-	gchar		*timeformat;
-	
-	timestr = g_new0(gchar, TIMESTRLEN+1);
-	switch(getNumericConfValue(TIME_FORMAT_MODE)) {
-		case 1:
-			timeformat =  g_strdup_printf("%s", nl_langinfo(T_FMT));	
-			break;
-		case 3:
-			timeformat = getStringConfValue(TIME_FORMAT);				
-			break;
-		case 2:
-		default:
-			timeformat =  g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));	
-			break;
-	}		
-	strftime(timestr, TIMESTRLEN, (char *)timeformat, localtime(&t));
-	g_free(timeformat);
-	
-	return timestr;
 }
 
 void initCachePath(void) {

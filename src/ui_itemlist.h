@@ -1,24 +1,24 @@
 /**
-   @file ui_itemlist.h item list/view handling
-
-   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
-   		      Nathan J. Conrad <t98502@users.sourceforge.net>
-		      
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-   
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-   
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.
-*/
+ * @file ui_itemlist.h item list/view handling
+ *
+ * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * 		      Nathan J. Conrad <t98502@users.sourceforge.net>
+ *	      
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
 #ifndef _UI_ITEMLIST_H
 #define _UI_ITEMLIST_H
@@ -50,6 +50,13 @@ GtkTreeStore * getItemStore(void);
  * columns and renderers needed to show the list.
  */
 void ui_itemlist_init(GtkWidget *itemlist);
+
+/**
+ * Method to reset the format string of the date column.
+ * Should be called upon initializaton and each time the
+ * date format changes.
+ */
+void ui_itemlist_reset_date_format(void);
 
 /**
  * Unselect all items in the list and scroll to top. This is typically

@@ -55,7 +55,7 @@ static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	} else if(!xmlStrcmp("sourceURL", cur->name)) {
 		/* do nothing */
 	} else if(!xmlStrcmp("timestamp", cur->name)) {
-		date = formatDate(parseISO8601Date(tmp));
+		date = ui_itemlist_format_date(parseISO8601Date(tmp));
 		g_free(tmp);
 		tmp = date;
 	} else {
