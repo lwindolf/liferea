@@ -241,6 +241,7 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 	
 	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	if(absURL != NULL) {
+		kill_old_connections(doc);
 		ui_htmlview_launch_URL(GTK_WIDGET(data), absURL, FALSE);
 		xmlFree(absURL);
 	}
@@ -295,7 +296,7 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 				   GTK_SIGNAL_FUNC (on_submit), NULL);
 	
 	g_signal_connect (G_OBJECT (doc), "link_clicked",
-				   G_CALLBACK (link_clicked), htmlwidget);
+				   G_CALLBACK (link_clicked), scrollpane);
 	
 	if((NULL != string) && (strlen(string) > 0))
 		html_document_write_stream(doc, string, strlen(string));
@@ -350,7 +351,7 @@ static void gtkhtml2_deinit() {
 static void gtkhtml2_html_received(struct request *r) {
 	if(r->size == 0 || r->data == NULL)
 		return; /* This should nicely exit.... */
-	
+
 	write_html(GTK_WIDGET(r->user_data), r->data, r->source);
 }
 
@@ -361,7 +362,7 @@ static void launch_url(GtkWidget *widget, const gchar *url) {
 
 	if(r != NULL)
 		r->callback = NULL;
-	
+
 	r = download_request_new();
 	r->source = g_strdup(url);
 	r->callback = gtkhtml2_html_received;

@@ -242,11 +242,13 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
  * (1) Inside whe feed_set_* functions where an item is marked or made read or unread
  * (2) Inside of feed_process_result
  * (3) The callback where items are removed from the itemlist
+ *
+ * This method really save the feed to disk.
  */
 void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode;
-	GSList		*itemlist;
+	GSList		*itemlist, *iter;
 	gchar		*filename;
 	gchar		*tmp;
 	itemPtr		ip;
@@ -300,20 +302,22 @@ void feed_save(feedPtr fp) {
 			
 			metadata_add_xml_nodes(fp->metadata, feedNode);
 
-			itemlist = feed_get_item_list(fp);
-			for(itemlist = feed_get_item_list(fp); itemlist != NULL; itemlist = g_slist_next(itemlist)) {
-				ip = itemlist->data;
+			itemlist = g_slist_copy(feed_get_item_list(fp));
+			for(iter = itemlist; iter != NULL; iter = g_slist_next(iter)) {
+				ip = iter->data;
 				g_assert(NULL != ip);
 				
-				if(saveMaxCount != CACHE_UNLIMITED &&
-				   saveCount >= saveMaxCount &&
+				if((saveMaxCount != CACHE_UNLIMITED) &&
+				   (saveCount >= saveMaxCount) &&
 				   (fp->fhp == NULL || fp->fhp->directory == FALSE) &&
 				   !item_get_flag(ip)) {
-					continue;
+				   	itemlist_remove_item(ip);
+				} else {
+					item_save(ip, feedNode);
+					saveCount++;
 				}
-				item_save(ip, feedNode);
-				saveCount++;
 			}
+			g_slist_free(itemlist);
 		} else {
 			g_warning("could not create XML feed node for feed cache document!");
 		}
