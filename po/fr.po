@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-06 02:38+0100\n"
-"PO-Revision-Date: 2004-12-12 11:15+0100\n"
+"POT-Creation-Date: 2005-01-06 14:41+0100\n"
+"PO-Revision-Date: 2004-12-24 03:24+0100\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -15,9 +15,8 @@ msgstr ""
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:227
-#, fuzzy
 msgid "http://liferea.sf.net"
-msgstr "http://liferea.sf.net/help/help"
+msgstr "http://liferea.sf.net"
 
 #: src/common.c:279
 msgid "[Parser error output was truncated!]"
@@ -937,7 +936,7 @@ msgstr "Liferea est un agrégateur de news pour GTK+"
 
 #: src/interface.c:3068
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
-msgstr ""
+msgstr "<span color=\"blue\" underline=\"single\">Page de Liferea</span>"
 
 #: src/interface.c:3073
 msgid ""
@@ -1050,7 +1049,7 @@ msgstr ""
 msgid "Rules"
 msgstr "Règles"
 
-#: src/item.c:223 src/item.c:227 src/item.c:239 src/ui_itemlist.c:199
+#: src/item.c:223 src/item.c:227 src/item.c:239 src/ui_itemlist.c:207
 msgid "[No title]"
 msgstr "[Pas de titre]"
 
@@ -1059,19 +1058,16 @@ msgid "Item:"
 msgstr "Élément :"
 
 #: src/main.c:68
-#, fuzzy
 msgid "  --version        Print version information and exit"
-msgstr "  --version        Affiche le numéro de version de Liferea"
+msgstr "  --version        Affiche des informations sur la version et quitte"
 
 #: src/main.c:69
-#, fuzzy
 msgid "  --help           Print this help and exit"
-msgstr "  --help           Affiche ce message et quitte"
+msgstr "  --help           Affiche cette aide et quitte"
 
 #: src/main.c:70
-#, fuzzy
 msgid "  --iconify        Start the program iconified"
-msgstr "  --iconify        Commence avec une fenêtre iconifiée"
+msgstr "  --iconify        Lance le programme sous forme iconifiée"
 
 #: src/main.c:72
 msgid "  --debug-cache    Print debugging messages for the cache handling"
@@ -1127,7 +1123,6 @@ msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea a rencontré un argument inconnu : %s\n"
 
 #: src/main.c:244
-#, fuzzy
 msgid ""
 "Another copy of Liferea was found to be running. Please use it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
@@ -1435,10 +1430,12 @@ msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 msgstr ""
+"<br>Si vous le souhaitez, vous pouvez valider ce flux en utilisant <a href="
+"\"http://feedvalidator.org/check.cgi?url="
 
 #: src/ui_feed.c:129
 msgid "\">FeedValidator</a>."
-msgstr ""
+msgstr "\">FeedValidator</a>."
 
 #: src/ui_feed.c:136
 msgid ""
@@ -1675,24 +1672,24 @@ msgstr ""
 "plus à jour, mais vous pouvez toujours accéder aux titres situés dans le "
 "cache."
 
-#: src/ui_itemlist.c:278
+#: src/ui_itemlist.c:286
 msgid "Date"
 msgstr "Date"
 
-#: src/ui_itemlist.c:289
+#: src/ui_itemlist.c:297
 msgid "Headline"
 msgstr "Titre"
 
-#: src/ui_itemlist.c:478 src/ui_itemlist.c:487 src/ui_itemlist.c:538
+#: src/ui_itemlist.c:486 src/ui_itemlist.c:495 src/ui_itemlist.c:546
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: src/ui_itemlist.c:521 src/ui_itemlist.c:541
+#: src/ui_itemlist.c:529 src/ui_itemlist.c:549
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:608
+#: src/ui_itemlist.c:616
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 
