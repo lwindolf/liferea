@@ -3,3 +3,4 @@ liferea-bin
 .libs
 *.lo
 *.la
+.deps
