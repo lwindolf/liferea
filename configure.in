@@ -36,18 +36,6 @@ else
    AC_MSG_RESULT(no)
 fi
 
-AC_MSG_CHECKING([for GtkHTML3 support])
-gtkhtml3=`pkg-config --cflags libgtkhtml-3.0 2> /dev/null`
-AM_CONDITIONAL(WITH_GTKHTML3, test "x$gtkhtml3" != "x")
-if test "x$gtkhtml3" != "x" ; then
-    AC_MSG_RESULT(yes)
-    PKG_CHECK_MODULES(GTKHTML3, libgtkhtml-3.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
-    AC_SUBST(GTKHTML3_CFLAGS)
-    AC_SUBST(GTKHTML3_LIBS)
-else
-    AC_MSG_RESULT(no)
-fi
-
 AC_MSG_CHECKING([for Mozilla support])
 mozilla=`pkg-config --cflags mozilla-gtkmozembed 2> /dev/null`
 AM_CONDITIONAL(WITH_MOZILLA, test "x$mozilla" != "x")
@@ -154,7 +142,6 @@ Makefile
 src/Makefile
 src/mozilla/Makefile
 src/gtkhtml2/Makefile
-src/gtkhtml3/Makefile
 src/net/Makefile
 pixmaps/Makefile
 po/Makefile.in

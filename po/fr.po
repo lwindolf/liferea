@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-23 01:31+0200\n"
+"POT-Creation-Date: 2004-05-23 02:29+0200\n"
 "PO-Revision-Date: 2004-05-19 22:39-0400\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>\n"
 "Language-Team: \n"
@@ -61,28 +61,28 @@ msgstr ""
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/conf.c:44
+#: src/conf.c:45
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/conf.c:337
+#: src/conf.c:338
 msgid "Liferea Help"
 msgstr "Aide de Liferea"
 
-#: src/conf.c:344
+#: src/conf.c:345
 msgid "Online Help Feed"
 msgstr "Canal d'aide en ligne"
 
-#: src/conf.c:354
+#: src/conf.c:355
 msgid "Liferea SF News"
 msgstr "Infos Lifearea SF"
 
-#: src/conf.c:476
+#: src/conf.c:477
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Erreur lors du renommage de %s en %s\n"
 
-#: src/conf.c:504
+#: src/conf.c:505
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "Espace de nomage RSS %s non configuré ! Activation...\n"

@@ -4,15 +4,11 @@ if WITH_GTKHTML2
 GTKHTML2 = gtkhtml2
 endif
 
-if WITH_GTKHTML3
-GTKHTML3 = gtkhtml3
-endif
-
 if WITH_MOZILLA
 MOZILLA = mozilla
 endif
 
-SUBDIRS = net $(GTKHTML2) $(GTKHTML3) $(MOZILLA)
+SUBDIRS = net $(GTKHTML2) $(MOZILLA)
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \

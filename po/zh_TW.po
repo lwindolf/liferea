@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-23 01:48+0200\n"
+"POT-Creation-Date: 2004-05-23 02:29+0200\n"
 "PO-Revision-Date: 2004-05-21 02:32+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -63,28 +63,28 @@ msgstr "轉換 UTF-8 字碼到 URL 時出現內部錯誤!"
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/conf.c:44
+#: src/conf.c:45
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/conf.c:337
+#: src/conf.c:338
 msgid "Liferea Help"
 msgstr "Liferea 求助"
 
-#: src/conf.c:344
+#: src/conf.c:345
 msgid "Online Help Feed"
 msgstr "線上求助饋流"
 
-#: src/conf.c:354
+#: src/conf.c:355
 msgid "Liferea SF News"
 msgstr "Liferea SF 新聞"
 
-#: src/conf.c:476
+#: src/conf.c:477
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "無法將 %s 更名為 %s\n"
 
-#: src/conf.c:504
+#: src/conf.c:505
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 命名空間 %s 尚未設定! 啟動中...\n"

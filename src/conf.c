@@ -41,7 +41,8 @@
 #define PATH		"/apps/liferea"
 
 /* _() for HELP1URL to allow localised help feeds */
-#define HELP1URL 	_("http://liferea.sf.net/help/help" VERSION ".rdf")
+#define HELP1URL_1 	_("http://liferea.sf.net/help/help")
+#define HELP1URL_2	_(".rdf")
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 #define HOMEPAGE	"http://liferea.sf.net/"
 
@@ -340,7 +341,7 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 		if(!getBooleanConfValue(DISABLE_HELPFEEDS)) {
 			fp = feed_new();
 			feed_set_type(fp, FST_HELPFEED);
-			feed_set_source(fp, HELP1URL);
+			feed_set_source(fp, g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2));
 			feed_set_title(fp, _("Online Help Feed"));
 			feed_set_id(fp, "helpfeed1");
 			feed_set_update_interval(fp, 1440);

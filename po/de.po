@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-23 01:31+0200\n"
+"POT-Creation-Date: 2004-05-23 02:29+0200\n"
 "PO-Revision-Date: 2004-05-22 23:57+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,28 +65,28 @@ msgstr "Interner Fehler beim Konvertieren von UTF-8 nach HTTP URI!"
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help/help"
 
-#: src/conf.c:44
+#: src/conf.c:45
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/conf.c:337
+#: src/conf.c:338
 msgid "Liferea Help"
 msgstr "Liferea Hilfe"
 
-#: src/conf.c:344
+#: src/conf.c:345
 msgid "Online Help Feed"
 msgstr "Online Hilfe"
 
-#: src/conf.c:354
+#: src/conf.c:355
 msgid "Liferea SF News"
 msgstr "Liferea SF News"
 
-#: src/conf.c:476
+#: src/conf.c:477
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Fehler beim Umbenennen von %s nach %s\n"
 
-#: src/conf.c:504
+#: src/conf.c:505
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS Namespace %s noch nicht konfiguriert! Aktiviere es...\n"

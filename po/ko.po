@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-23 01:31+0200\n"
+"POT-Creation-Date: 2004-05-23 02:29+0200\n"
 "PO-Revision-Date: 2004-03-28 02:00+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -65,28 +65,28 @@ msgstr "내부에러! UTF-8 문자를 HTTP-URI로 변경하던 중 발생 "
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help047.rdf"
 
-#: src/conf.c:44
+#: src/conf.c:45
 msgid ".rdf"
 msgstr ""
 
-#: src/conf.c:337
+#: src/conf.c:338
 msgid "Liferea Help"
 msgstr "Liferea 도움말"
 
-#: src/conf.c:344
+#: src/conf.c:345
 msgid "Online Help Feed"
 msgstr "온라인 도움말 피드"
 
-#: src/conf.c:354
+#: src/conf.c:355
 msgid "Liferea SF News"
 msgstr "Liferea 소스포지 뉴스"
 
-#: src/conf.c:476
+#: src/conf.c:477
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: src/conf.c:504
+#: src/conf.c:505
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 네임스페이스 %s이(가) 아직 설정되지 않았습니다. 활성화중...\n"

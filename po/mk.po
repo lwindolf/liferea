@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-23 01:31+0200\n"
+"POT-Creation-Date: 2004-05-23 02:29+0200\n"
 "PO-Revision-Date: 2004-04-09 16:25+0200\n"
 "Last-Translator: Tomislav Markovski <tome@set.com.mk>\n"
 "Language-Team: Macedonian <mk@li.org>\n"
@@ -66,28 +66,28 @@ msgstr "Internal error while converting UTF-8 chars to HTTP URI!"
 msgid "http://liferea.sf.net/help/help"
 msgstr "http://liferea.sf.net/help047.rdf"
 
-#: src/conf.c:44
+#: src/conf.c:45
 msgid ".rdf"
 msgstr ""
 
-#: src/conf.c:337
+#: src/conf.c:338
 msgid "Liferea Help"
 msgstr "Liferea Помош"
 
-#: src/conf.c:344
+#: src/conf.c:345
 msgid "Online Help Feed"
 msgstr "Online помош"
 
-#: src/conf.c:354
+#: src/conf.c:355
 msgid "Liferea SF News"
 msgstr "Liferea SF вести"
 
-#: src/conf.c:476
+#: src/conf.c:477
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: src/conf.c:504
+#: src/conf.c:505
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS namespace %s not yet configured! Activating...\n"
