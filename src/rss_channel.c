@@ -106,6 +106,7 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
+				fp->metadata = metadata_list_append(fp->metadata, "pubDate", tmp);
 				feed_set_time(fp, parseRFC822Date(tmp));
 				g_free(tmp);
 			}
@@ -307,7 +308,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	/* after parsing we fill in the infos into the feedPtr structure */		
 	
 	if(0 == error) {
-		fp->available = TRUE;
+		feed_set_available(fp, TRUE);
 	} else {
 		ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 	}
@@ -349,7 +350,7 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		g_hash_table_insert(RssToMetadataMapping, "webMaster", "webmaster");
 		g_hash_table_insert(RssToMetadataMapping, "language", "language");
 		g_hash_table_insert(RssToMetadataMapping, "managingEditor", "managingEditor");
-		g_hash_table_insert(RssToMetadataMapping, "lastBuildDate", "feedUpdateDate");
+		g_hash_table_insert(RssToMetadataMapping, "lastBuildDate", "contentUpdateDate");
 		g_hash_table_insert(RssToMetadataMapping, "generator", "feedgenerator");
 		g_hash_table_insert(RssToMetadataMapping, "publisher", "webmaster");
 		g_hash_table_insert(RssToMetadataMapping, "author", "author");

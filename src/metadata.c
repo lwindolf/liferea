@@ -293,7 +293,7 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contributor", _("contributors"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "copyright", _("copyright"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "language", _("language"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedUpdateDate", _("feed last updated"));
+	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "pubDate", _("feed published on"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contentUpdateDate", _("content last updated"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "managingEditor", _("managing editor"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "webmaster", _("webmaster"));
