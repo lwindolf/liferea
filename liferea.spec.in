@@ -63,7 +63,7 @@ gconftool-2 --makefile-uninstall-rule \
 %dir %{_datadir}/%{name}/opml
 %dir %{_datadir}/%{name}/pixmaps
 %{_datadir}/%{name}/css/%{name}.css
-%{_datadir}/%{name}/opml/feedlist.opml
+%{_datadir}/%{name}/opml/feedlist*.opml
 %{_datadir}/%{name}/pixmaps/*
 %{_datadir}/pixmaps/%{name}.png
 %dir %{_libdir}/%{name}
@@ -73,6 +73,9 @@ gconftool-2 --makefile-uninstall-rule \
 %{_sysconfdir}/gconf/schemas/%{name}.schemas
 
 %changelog
+* Wed Sep 15 2004 Ricardo Veguilla <veguilla@hpcf.upr.edu> - 0.6.0
+- Fixed %files entry for multi-language feedlists 
+
 * Wed Sep 10 2004 Ricardo Veguilla <veguilla@hpcf.upr.edu> - 0.6.0
 - Additional fixes to %files section (thanks to Michael Schwendt)
 
