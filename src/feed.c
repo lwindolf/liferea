@@ -591,9 +591,9 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	itemPtr		old_ip = NULL;
 	gboolean	found, equal = FALSE;
 	
-	g_assert(0 != fp->loaded);
-	
 	if(FST_VFOLDER != feed_get_type(fp)) {
+		g_assert(0 != fp->loaded);
+		
 		/* determine if we should add it... */
 		debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(new_ip));
 		

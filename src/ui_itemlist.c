@@ -229,13 +229,15 @@ void ui_itemlist_update_item(itemPtr ip) {
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
-	iter = g_hash_table_lookup(iterhash, (gpointer)ip);
-	gtk_tree_store_set(ui_itemlist_get_tree_store(), iter,
-				    IS_LABEL, label,
-				    IS_TIME_STR, time_str,
-				    IS_ICON, icon,
-				    IS_ICON2, favicon,
-				    -1);
+	if(NULL != (iter = g_hash_table_lookup(iterhash, (gpointer)ip))) {
+		gtk_tree_store_set(ui_itemlist_get_tree_store(), iter,
+					    IS_LABEL, label,
+					    IS_TIME_STR, time_str,
+					    IS_ICON, icon,
+					    IS_ICON2, favicon,
+					    -1);
+	}
+	
 	g_free(time_str);
 	g_free(title);
 	g_free(label);
