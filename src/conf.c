@@ -545,7 +545,7 @@ int setFolderCollapseStateInConfig(gchar *keyprefix, gboolean collapsed) {
 	GError		*err = NULL;
 	gchar		*gconfpath;
 	
-	gconfpath = g_strdup_printf("%s/%scollapseState", PATH, keyprefix);
+	gconfpath = build_path_str(keyprefix, "collapseState");
 	gconf_client_set_bool(client, gconfpath, collapsed, &err);
 	g_free(gconfpath);	
 	if(is_gconf_error(err))
@@ -679,7 +679,7 @@ void loadEntries(void) {
 		groupiter = g_slist_next(groupiter);
 		
 		/* restore folder collapse state */
-		gconfpath = g_strdup_printf("%s/%scollapseState", PATH, keyprefix);
+		gconfpath = build_path_str(keyprefix, "collapseState");
 		setFolderCollapseState(keyprefix, getBooleanConfValue(gconfpath));
 		g_free(gconfpath);		
 	}
