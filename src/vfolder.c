@@ -95,6 +95,31 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	}
 }
 
+static void vfolder_remove_item(feedPtr vp, itemPtr ip) {
+	GSList		*items;
+	itemPtr		tmp;
+	gboolean	found = FALSE;
+
+	items = vp->items;
+	while(NULL != items) {
+		if(items->data == ip) {
+			found = TRUE;
+			ip->references--;
+			if(0 == ip->references) {
+				vfolder_item_pool->items = g_slist_remove(vfolder_item_pool->items, ip);
+				item_free(ip);
+			}
+		}
+		items = g_slist_next(items);
+	}
+	
+	if(found) {
+		vp->items = g_slist_remove(vp->items, ip);
+	} else {
+		g_warning("vfolder_remove_item(): item not found...");
+	}
+}
+
 /* Checks a new item against all additive rules of all feeds
    except the addition rules of the parent feed. In the second
    step the function checks wether there are parent feed rules,
@@ -147,7 +172,8 @@ static vfolder_apply_rules(nodePtr np, gpointer userdata) {
 			while(NULL != items) {
 				ip = items->data;			
 				if(rule_check_item(rp, ip))
-// FIXME: implement me			vfolder_remove_item(vp, ip);
+					debug1(DEBUG_UPDATE, "deleting matching item: %s\n", item_get_title(ip));
+					vfolder_remove_item(vp, ip);
 				items = g_slist_next(items);
 			}
 		}

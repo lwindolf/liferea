@@ -223,12 +223,12 @@ gchar *item_render(itemPtr ip) {
 		/* Head table */
 		addToHTMLBufferFast(&buffer, HEAD_START);
 		/*  -- Feed line */
-		if(feed_get_html_url(ip->fp) != NULL)
+		if(feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed) != NULL)
 			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-							  feed_get_html_url(ip->fp),
-							  feed_get_title(ip->fp));
+			                      feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed),
+			                      feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
 		else
-			tmp = g_strdup(feed_get_title(ip->fp));
+			tmp = g_strdup(feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
 
 		tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 		g_free(tmp);

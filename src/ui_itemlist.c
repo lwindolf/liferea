@@ -456,7 +456,6 @@ void ui_itemlist_load_feed(feedPtr fp) {
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
 		ip = itemlist->data;
-g_print("adding %d %s (%s)\n", ip, item_get_id(ip), item_get_title(ip));
 		gtk_tree_store_append(itemstore, &iter, NULL);
 		gtk_tree_store_set(itemstore, &iter,
 					    IS_TITLE, item_get_title(ip),
