@@ -1,6 +1,6 @@
-Summary: Liferea (Linux Feed Reader)
+Summary: Liferea (Linux RSS News Aggregator)
 Name: liferea
-Version: 0.4.1
+Version: 0.4.2
 Release: 1
 Group: Productivity/Networking/Web/Browsers
 Copyright: GPL

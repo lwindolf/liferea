@@ -22,6 +22,13 @@
 #include "netio.h"
 #include "ns_blogChannel.h"
 
+#define BLOGROLL_START		"<div style=\"padding-left:10px;padding-right:10px;background-color:#505050;color:white;\"><b>BlogRoll</b></div<br>"
+#define BLOGROLL_END		"<br>" 
+#define MYSUBSCR_START		"<div style=\"padding-left:10px;padding-right:10px;background-color:#505050;color:white;\"><b>Authors Subscriptions</b></div<br>"
+#define MYSUBSCR_END		"<br>"
+#define BLINK_START		"<div style=\"padding-left:10px;padding-right:10px;background-color:#505050;color:white;\"><b>Promoted Weblog</b></div><br>"
+#define BLINK_END		"<br>"
+
 static gchar ns_bC_prefix[] = "blogChannel";
 
 /* the spec at Userland http://backend.userland.com/blogChannelModule
@@ -33,9 +40,46 @@ static gchar ns_bC_prefix[] = "blogChannel";
    - changes	(ignored)
 */
 
-extern gchar * getOutlineContents(xmlNodePtr cur);	/* opml.c */
-
 gchar * ns_bC_getRSSNsPrefix(void) { return ns_bC_prefix; }
+
+/* retruns a HTML string containing the text and attributes of the outline */
+static gchar * getOutlineContents(xmlNodePtr cur) {
+	gchar		*buffer = NULL;
+	gchar		*tmp, *value;
+	gboolean	link = FALSE;
+	xmlAttrPtr	attr;
+
+	attr = cur->properties;
+	while(NULL != attr) {
+		/* get prop value */
+		value = xmlGetNoNsProp(cur, attr->name);
+
+		if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
+			tmp = g_strdup_printf("%s", value);
+			addToHTMLBuffer(&buffer, tmp);
+			g_free(tmp);
+
+		} else if(!xmlStrcmp(attr->name, BAD_CAST"url")) {		
+			tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value, value);
+			addToHTMLBuffer(&buffer, tmp);
+			g_free(tmp);
+
+		} else if(!xmlStrcmp(attr->name, BAD_CAST"htmlUrl")) {		
+			tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">HTML</a>)", value, value);
+			addToHTMLBuffer(&buffer, tmp);
+			g_free(tmp);
+			
+		} else if(!xmlStrcmp(attr->name, BAD_CAST"xmlUrl")) {		
+			tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">XML</a>)", value, value);
+			addToHTMLBuffer(&buffer, tmp);
+			g_free(tmp);
+			
+		}		
+		xmlFree(value);
+		attr = attr->next;
+	}
+	return buffer;
+}
 
 /* simple function to retrieve an OPML document and 
    parse and output all depth 1 outline tags as
@@ -74,6 +118,7 @@ static gchar * getOutlineList(gchar *url) {
 				while(cur != NULL) {
 					if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
 						addToHTMLBuffer(&buffer, tmp = getOutlineContents(cur));
+						addToHTMLBuffer(&buffer, "<br>");
 						g_free(tmp);
 					}
 					cur = cur->next;
@@ -128,16 +173,38 @@ static void ns_bC_output(gpointer key, gpointer value, gpointer userdata) {
 	gchar 	**buffer = (gchar **)userdata;
 	
 	addToHTMLBuffer(buffer, (gchar *)value);
-g_print("RSS output: %s\n", value);
 }
 
 static gchar * ns_bC_doOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
-	gchar		*buffer = NULL;
+	gchar		*output, *buffer = NULL;
 	
+	g_assert(NULL != nsinfos);
 	/* we print all channel infos as a (key,value) table */
-	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_bC_prefix))) {
+	/*if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_bC_prefix))) {
 		g_hash_table_foreach(nsvalues, ns_bC_output, (gpointer)&buffer);
+	}*/
+	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_bC_prefix))) {
+		
+		if(NULL != (output = g_hash_table_lookup(nsvalues, "blink"))) {
+			output = g_strdup_printf("<a href=\"%s\">%s</a>");
+			addToHTMLBuffer(&buffer, BLINK_START);
+			addToHTMLBuffer(&buffer, output);
+			addToHTMLBuffer(&buffer, BLINK_END);
+			g_free(output);
+		}
+		
+		if(NULL != (output = g_hash_table_lookup(nsvalues, "blogRoll"))) {
+			addToHTMLBuffer(&buffer, BLOGROLL_START);
+			addToHTMLBuffer(&buffer, output);
+			addToHTMLBuffer(&buffer, BLOGROLL_END);
+		}
+		
+		if(NULL != (output = g_hash_table_lookup(nsvalues, "mySubscriptions"))) {
+			addToHTMLBuffer(&buffer, MYSUBSCR_START);
+			addToHTMLBuffer(&buffer, output);
+			addToHTMLBuffer(&buffer, MYSUBSCR_END);
+		}
 	}
 	
 	return buffer;
@@ -146,7 +213,7 @@ static gchar * ns_bC_doOutput(GHashTable *nsinfos) {
 static gchar * ns_bC_doChannelOutput(gpointer obj) {
 
 	if(NULL != obj)
-		return ns_bC_doOutput(((RSSItemPtr)obj)->nsinfos);
+		return ns_bC_doOutput(((RSSChannelPtr)obj)->nsinfos);
 		
 	return NULL;
 }
@@ -158,9 +225,9 @@ RSSNsHandler *ns_bC_getRSSNsHandler(void) {
 		nsh->parseChannelTag		= ns_bC_parseChannelTag;
 		nsh->parseItemTag		= NULL;
 		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= NULL;
+		nsh->doChannelFooterOutput	= ns_bC_doChannelOutput;
 		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= ns_bC_doChannelOutput;
+		nsh->doItemFooterOutput		= NULL;
 	}
 
 	return nsh;

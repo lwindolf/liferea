@@ -116,7 +116,11 @@ void setVFolderRules(feedPtr vp, rulePtr rp) {
 	g_free(filename);
 }
 
-rulePtr getVFolderRules(feedPtr vp) { return (rulePtr)g_hash_table_lookup(vfolders, vp); }
+rulePtr getVFolderRules(feedPtr vp) { 
+
+	g_assert(NULL != vfolders);
+	return (rulePtr)g_hash_table_lookup(vfolders, vp); 
+}
 
 /* applies the rules of the VFolder vp to the parameter string,
    the function returns TRUE if the rules were matched, otherwise
@@ -131,6 +135,7 @@ gboolean matchVFolderRules(feedPtr vp, gchar *string) {
 	}
 	
 	g_assert(NULL != vp);
+	g_assert(NULL != vfolders);
 	rp = (rulePtr)g_hash_table_lookup(vfolders, vp);
 	if(NULL == rp) {
 		g_warning(_("internal error! VFolder has no rules!"));

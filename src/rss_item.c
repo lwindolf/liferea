@@ -93,7 +93,8 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {		
 			if (NULL != cur->ns->prefix) {
-				if(NULL != (nsh = (RSSNsHandler *)g_hash_table_lookup(rss_nslist, (gpointer)cur->ns->prefix))) {	
+				g_assert(NULL != rss_nslist);
+				if(NULL != (nsh = (RSSNsHandler *)g_hash_table_lookup(rss_nslist, (gpointer)cur->ns->prefix))) {
 					parseFunc = nsh->parseItemTag;
 					if(NULL != parseFunc)
 						(*parseFunc)(i, doc, cur);

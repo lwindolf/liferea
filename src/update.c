@@ -104,6 +104,7 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		return;
 
 	type = getFeedType(fp);
+	g_assert(NULL != feedHandler);
 	if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
 		g_warning(g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type));
 		return;
@@ -134,6 +135,7 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 		g_mutex_lock(feeds_lock);
 		/* update all vfolders */
 		// g_hash_table_foreach(feeds, removeOldItemsFromVFolders, fp); // FIXME: mergeFeed has to do this!
+		g_assert(NULL != feeds);
 		g_hash_table_foreach(feeds, scanFeed, fp);		// FIXME: this causes double items, only scan new items -> move functionality to item.c
 		g_mutex_unlock(feeds_lock);
 				

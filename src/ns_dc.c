@@ -441,6 +441,7 @@ static gchar * ns_dc_doFooterOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
 	gchar		*buffer = NULL;
 	
+	g_assert(NULL != nsinfos);
 	/* we print all channel infos as a (key,value) table */
 	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_dc_prefix))) {
 		addToHTMLBuffer(&buffer, TABLE_START);

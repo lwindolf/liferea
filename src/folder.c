@@ -63,6 +63,7 @@ gchar * getFolderTitle(gchar *keyprefix) {
 	g_assert(feedstore != NULL);
 	
 	/* topiter must not be NULL! because we cannot rename the root folder ! */
+	g_assert(NULL != folders);
 	if(NULL != (iter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, FS_TITLE, &tmp_title, -1);	
 		return tmp_title;
@@ -79,6 +80,7 @@ void setFolderTitle(gchar *keyprefix, gchar *title) {
 	g_assert(feedstore != NULL);
 	
 	/* topiter must not be NULL! because we cannot rename the root folder ! */
+	g_assert(NULL != folders);
 	if(NULL != (iter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
 		gtk_tree_store_set(feedstore, iter, FS_TITLE, title, -1);	
 		setFolderTitleInConfig(keyprefix, title);
@@ -93,6 +95,7 @@ void addFolder(gchar *keyprefix, gchar *title, gint type) {
 
 	/* check if a folder with this keyprefix already
 	   exists to check config consistency */
+	g_assert(NULL != folders);
 	if(NULL != (iter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
 		g_warning("There is already a folder with this keyprefix!\nYou may have an inconsistent configuration!\n");
 		return;
@@ -127,6 +130,7 @@ void removeFolder(gchar *keyprefix) {
 	g_assert(feedstore != NULL);
 	
 	/* topiter must not be NULL! because we cannot delete the root folder ! */
+	g_assert(NULL != folders);
 	if(NULL != (iter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
 		removeFolderFromConfig(keyprefix);
 	} else {
@@ -216,6 +220,8 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 
 //g_print("scanning keyprefix \"%s\"\n", keyprefix);
 	found = FALSE;
+	
+	g_assert(NULL != folders);
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, keyprefix);
 	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, topiter);
 	wasFound = FALSE;
@@ -236,6 +242,7 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 
 		if(found) {
 			wasFound = TRUE;
+			g_assert(NULL != feeds);
 			fp = (feedPtr)g_hash_table_lookup(feeds, (gpointer)key);
 			g_assert(NULL != fp);
 			newkey = addFeedToConfig((gchar *)keyprefix,

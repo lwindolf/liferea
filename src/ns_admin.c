@@ -115,6 +115,7 @@ gchar * ns_admin_doOutput(GHashTable *nsinfos) {
 	gchar		*buffer = NULL;
 	
 	/* we print all channel infos as a (key,value) table */
+	g_assert(NULL != nsinfos);
 	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_admin_prefix))) {
 		addToHTMLBuffer(&buffer, TABLE_START);
 		g_hash_table_foreach(nsvalues, ns_admin_output, (gpointer)&buffer);

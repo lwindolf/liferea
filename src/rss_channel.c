@@ -100,6 +100,9 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	rss_nslist = g_hash_table_new(g_str_hash, g_str_equal);
 	
 	/* register RSS name space handlers */
+	if(getNameSpaceStatus(ns_bC_getRSSNsPrefix()))
+		g_hash_table_insert(rss_nslist, (gpointer)ns_bC_getRSSNsPrefix(),
+					        (gpointer)ns_bC_getRSSNsHandler());
 	if(getNameSpaceStatus(ns_dc_getRSSNsPrefix()))
 		g_hash_table_insert(rss_nslist, (gpointer)ns_dc_getRSSNsPrefix(),
 					        (gpointer)ns_dc_getRSSNsHandler());
@@ -118,9 +121,6 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	if(getNameSpaceStatus(ns_admin_getRSSNsPrefix()))
 		g_hash_table_insert(rss_nslist, (gpointer)ns_admin_getRSSNsPrefix(),
 					        (gpointer)ns_admin_getRSSNsHandler());
-	if(getNameSpaceStatus(ns_bC_getRSSNsPrefix()))
-		g_hash_table_insert(rss_nslist, (gpointer)ns_bC_getRSSNsPrefix(),
-					        (gpointer)ns_bC_getRSSNsHandler());
 						
 	/* prepare feed handler structure */
 	fhp->readFeed		= readRSSFeed;
@@ -148,6 +148,7 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
 			if (NULL != cur->ns->prefix) {
+				g_assert(NULL != rss_nslist);
 				if(NULL != (nsh = (RSSNsHandler *)g_hash_table_lookup(rss_nslist, (gpointer)cur->ns->prefix))) {
 					fp = nsh->parseChannelTag;
 					if(NULL != fp)

@@ -117,14 +117,16 @@ static void parseFormatEntry(formatPtr fep, xmlDocPtr doc, xmlNodePtr cur) {
 				
 					g_warning("unexpected OCS hierarchy, this should never happen! ignoring third level rdf tags!\n");
 					
-				} else if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
+				} else {
+					g_assert(NULL != ocs_nslist);
+					if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
 
-					fp = nsh->parseFormatTag;
-					if(NULL != fp)
-						(*fp)(fep, doc, cur);
-					else
-						g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
-
+						fp = nsh->parseFormatTag;
+						if(NULL != fp)
+							(*fp)(fep, doc, cur);
+						else
+							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
+					}
 				}
 			}
 		}
@@ -178,6 +180,7 @@ static itemPtr parseDirectoryEntry(dirEntryPtr dep, xmlDocPtr doc, xmlNodePtr cu
 					
 		
 				} else {
+					g_assert(NULL != ocs_nslist);
 					if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
 
 						fp = nsh->parseDirEntryTag;
@@ -254,6 +257,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlDocPtr doc, xmlNodePt
 					
 		
 				} else {
+					g_assert(NULL != ocs_nslist);
 					if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
 
 						parseFunc = nsh->parseDirectoryTag;

@@ -212,6 +212,7 @@ static feedPtr readPIEFeed(gchar *url) {
 			/* check namespace and if we found one, do namespace parsing */
 			if(NULL != cur->ns) {
 				if (NULL != cur->ns->prefix) {
+					g_assert(NULL != pie_nslist);
 					if(NULL != (nsh = (PIENsHandler *)g_hash_table_lookup(pie_nslist, (gpointer)cur->ns->prefix))) {
 						parseFunc = nsh->parseChannelTag;
 						if(NULL != parseFunc)

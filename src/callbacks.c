@@ -391,6 +391,7 @@ void addToFeedList(feedPtr fp) {
 	g_assert(NULL != getFeedKey(fp));
 	g_assert(NULL != getFeedKeyPrefix(fp));
 	g_assert(NULL != feedstore);
+	g_assert(NULL != folders);
 	// FIXME: maybe this should not happen here?
 	topiter = (GtkTreeIter *)g_hash_table_lookup(folders, (gpointer)(getFeedKeyPrefix(fp)));
 

@@ -121,7 +121,8 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {		
 			if (NULL != cur->ns->prefix) {
-				if(NULL != (nsh = (PIENsHandler *)g_hash_table_lookup(pie_nslist, (gpointer)cur->ns->prefix))) {	
+				g_assert(NULL != pie_nslist);
+				if(NULL != (nsh = (PIENsHandler *)g_hash_table_lookup(pie_nslist, (gpointer)cur->ns->prefix))) {
 					fp = nsh->parseItemTag;
 					if(NULL != fp)
 						(*fp)(i, doc, cur);

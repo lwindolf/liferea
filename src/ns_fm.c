@@ -71,6 +71,7 @@ static gchar * ns_fm_doOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
 	gchar		*buffer = NULL;
 	
+	g_assert(NULL != nsinfos);
 	/* we print all channel infos as a (key,value) table */
 	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_fm_prefix))) {
 		g_hash_table_foreach(nsvalues, ns_fm_output, (gpointer)&buffer);
