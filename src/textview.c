@@ -55,6 +55,17 @@ void writeHTML(gchar *string) {
 		string, -1);
 }
 
+/* adds a differences diff to the actual zoom level */
+void changeZoomLevel(gfloat diff) {
+
+	showErrorBox(g_strdup("Sorry, not yet implemented for the Text Viewer!"));
+	zoomLevel += diff;
+	// FIXME
+}
+
+/* returns the currently set zoom level */
+gfloat getZoomLevel(void) { return zoomLevel; }
+
 static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
 	
 	if(NULL != htmlwidget) 
@@ -125,14 +136,3 @@ void launchURL(gchar *url) {
 
 	link_clicked(url);
 }
-
-/* adds a differences diff to the actual zoom level */
-void changeZoomLevel(gfloat diff) {
-
-	showErrorBox(g_strdup("Sorry, not yet implemented for the Text Viewer!"));
-	zoomLevel += diff;
-	// FIXME
-}
-
-/* returns the currently set zoom level */
-gfloat getZoomLevel(void) { return zoomLevel; }

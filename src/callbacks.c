@@ -334,9 +334,9 @@ gint checkForUpdateResults(gpointer data) {
 	updateUI();
 	ui_unlock();
 	
-	request->fp->update_requested = FALSE;
 	g_free(request->feedurl);	/* request structure cleanup... */
 	g_free(request->data);
+	request->fp->update_requested = FALSE;
 		
 	return TRUE;
 }

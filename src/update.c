@@ -135,7 +135,7 @@ void requestUpdate(feedPtr fp) {
 	g_assert(NULL != fp);
 	
 	if(TRUE == fp->update_requested) {
-		print_status(g_strdup("There is already an update of this feed!"));
+		print_status(g_strdup("There already is an update of this feed in progress!"));
 		return;
 	}
 	
