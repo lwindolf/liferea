@@ -79,7 +79,6 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 		   !strcmp(type, "text/html") ||
 		   !strcmp(type, "text/plain") ||
 		   !strcmp(type, "application/xhtml+xml")) {
-		   g_print("extracting HTML node... \n");
 			ret = extractHTMLNode(cur, TRUE);
 		}
 	}
