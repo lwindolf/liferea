@@ -102,79 +102,33 @@ gint mozilla_get_mouse_event_button(gpointer event) {
 	return button;
 }
 
-static nsCOMPtr<nsIMarkupDocumentViewer> mozilla_get_mdv(GtkWidget *widget) {
-	nsresult				result;
-	nsCOMPtr<nsIMarkupDocumentViewer>	mDocViewer;
-	nsCOMPtr<nsIWebBrowser>			mWebBrowser;	
-
-	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(widget), getter_AddRefs(mWebBrowser));
-	
-	nsCOMPtr<nsIDocShellTreeItem> browserAsItem;
-	browserAsItem = do_QueryInterface(mWebBrowser);
-	if (!browserAsItem) {
-		g_warning("could not retrieve browser object...\n");
-		return NULL;
-	}
-	
-	// get the owner for that item
-	nsCOMPtr<nsIDocShellTreeOwner> treeOwner;
-	browserAsItem->GetTreeOwner(getter_AddRefs(treeOwner));
-	if (!treeOwner) {
-		g_warning("could not retrieve tree owner from browser...\n");
-		return NULL;
-	}
-	
-	// get the primary content shell as an item
-	nsCOMPtr<nsIDocShellTreeItem> contentItem;
-	treeOwner->GetPrimaryContentShell(getter_AddRefs(contentItem));
-	if (!contentItem) {
-		g_warning("could not retrieve content shell from browser...\n");
-		return NULL;
-	}
-	
-	// QI that back to a docshell
-	nsCOMPtr<nsIDocShell> DocShell;
-	DocShell = do_QueryInterface(contentItem);
-	if (!DocShell) {
-		g_warning("could not retrieve document shell...\n");
-		return NULL;
-	}
-	
-	nsCOMPtr<nsIContentViewer> contentViewer;	
-	result = DocShell->GetContentViewer (getter_AddRefs(contentViewer));
-	if (!NS_SUCCEEDED (result) || !contentViewer) {
-		g_warning("could not retrieve content viewer from doc shell...\n");
-		return NULL;
-	}
-	
-	if(NULL == (mDocViewer = do_QueryInterface(contentViewer, &result))) {
-		g_warning("could not retrieve mozilla document viewer object\n");
-	}
-	return mDocViewer;
-}
-
 extern "C" void
 mozilla_set_zoom (GtkWidget *embed, float aZoom) {
-	nsCOMPtr<nsIMarkupDocumentViewer> mdv;
-	
-	if((mdv = mozilla_get_mdv(embed)) == NULL)
+	nsCOMPtr<nsIWebBrowser>		mWebBrowser;	
+	nsCOMPtr<nsIDOMWindow> 		mDOMWindow;
+		
+	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(mWebBrowser));
+	mWebBrowser->GetContentDOMWindow(getter_AddRefs(mDOMWindow));	
+	if(NULL == mDOMWindow) {
+		g_warning("could not retrieve DOM window...");
 		return;
-	
-	/* Ignore return because we can't do anything if it fails.... */
-	mdv->SetTextZoom (aZoom);
+	}
+	mDOMWindow->SetTextZoom (aZoom);
 }
 
 extern "C" gfloat
-mozilla_get_zoom (GtkWidget *widget) {
-	nsCOMPtr<nsIMarkupDocumentViewer> mdv;
+mozilla_get_zoom (GtkWidget *embed) {
+	nsCOMPtr<nsIWebBrowser>		mWebBrowser;	
+	nsCOMPtr<nsIDOMWindow> 		mDOMWindow;
 	float zoom;
-	nsresult result;
 	
-	if ((mdv = mozilla_get_mdv(widget)) == NULL)
-		return 1.0;
-	
-	result = mdv->GetTextZoom (&zoom);
-	
+	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(mWebBrowser));
+	mWebBrowser->GetContentDOMWindow(getter_AddRefs(mDOMWindow));	
+	if(NULL == mDOMWindow) {
+		g_warning("could not retrieve DOM window...");
+		return 1.1;
+	}
+	mDOMWindow->GetTextZoom (&zoom);	
 	return zoom;
 }
 
