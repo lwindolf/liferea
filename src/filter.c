@@ -78,7 +78,7 @@ gboolean checkNewItem(itemPtr ip) {
 	
 	/* check against all additive rules */
 	rule = allRules;
-	while(NULL != rule) {
+/*	while(NULL != rule) {
 		r = rule->data;
 		rf = ruleFunctions[r->type].ruleFunc;
 		g_assert(NULL == rf);
@@ -91,10 +91,10 @@ gboolean checkNewItem(itemPtr ip) {
 			}
 			
 		rule = g_slist_next(rule);
-	}
+	}*/
 	
 	/* check against non additive rules of parent feed */
-	rule = ((feedPtr)(ip->fp))->filter;
+/*	rule = ((feedPtr)(ip->fp))->filter;
 	while(NULL != rule) {
 		r = rule->data;
 		rf = ruleFunctions[r->type].ruleFunc;
@@ -106,7 +106,7 @@ gboolean checkNewItem(itemPtr ip) {
 				return FALSE;
 					
 		rule = g_slist_next(rule);
-	}
+	}*/
 	return TRUE;
 }
 

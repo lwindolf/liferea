@@ -245,11 +245,13 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	gchar		*filename, *tmp, *data = NULL;
 	int		error = 0;
 
+	debug_enter("feed_load_from_cache");
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
 	
 	filename = getCacheFileName(fp->id, NULL);
-	
+	debug1(DEBUG_CACHE, "loading cache file \"%s\"\n", filename);
+		
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		g_warning(_("Error while reading cache file\"%s\" ! Cache file could not be loaded!"), filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
@@ -322,6 +324,8 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	if(NULL != doc)
 		xmlFreeDoc(doc);
 	g_free(filename);
+	
+	debug_exit("feed_load_from_cache");	
 	return TRUE;
 }
 
