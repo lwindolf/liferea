@@ -68,7 +68,7 @@ static gchar * build_path_str(gchar *str1, gchar *str2) {
 static gboolean is_gconf_error(GError *err) {
 
 	if(err != NULL) {
-		g_print(err->message);
+		g_print("%s\n", err->message);
 		g_error_free(err);
 		err = NULL;
 		return TRUE;
@@ -155,7 +155,7 @@ static void load_folder_contents(folderPtr folder, gchar* path);
 static gboolean load_key(folderPtr parent, gchar *prefix, gchar *id) {
 	GError		*err = NULL;
 	int type, interval;
-	gchar *path2, *name, *url, *cachefileNew, *cachefileOld, *cacheid;
+	gchar *path2, *name, *url, *cacheid;
 	folderPtr folder;
 	gboolean expanded;
 
@@ -246,6 +246,7 @@ static void load_folder_contents(folderPtr folder, gchar* path) {
 	gchar *id;
 	GError		*err = NULL;
 	gchar *name;
+	gboolean error;
 	
 	g_message("Loading from gconf: %s, path: %s", folder->title, path);
 
@@ -254,9 +255,10 @@ static void load_folder_contents(folderPtr folder, gchar* path) {
 	name = g_strdup_printf("%s/groups", path);
 
 	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
-	is_gconf_error(err);
-
+	error = is_gconf_error(err);
+	err = NULL;
 	if (list) {
+		g_message("looking at groups");
 		while (list != NULL) {
 			id = (gchar*)list->data;
 			g_assert(id);
@@ -270,8 +272,10 @@ static void load_folder_contents(folderPtr folder, gchar* path) {
 	name = g_strdup_printf("%s/feedlist", path);
 	list = gconf_client_get_list(client, name, GCONF_VALUE_STRING, &err);
 	is_gconf_error(err);
+	err = NULL;
 
 	if (list) {
+		g_message("looking at feedlist");
 		while (list != NULL) {
 			id = (gchar*)list->data;
 			g_assert(id);
@@ -295,11 +299,41 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 	return helpFolder;
 }
 
-void conf_feedlist_erase_gconf() {
-	GSList *list;
-	gchar *id;
+static gboolean is_number(gchar *s) {
+	while (*s != '\0') {
+		printf(".");
+		if(!isdigit(*s))
+			return FALSE;
+		s++;
+	}
+	return TRUE;
+}
+
+static void conf_feedlist_erase_gconf() {
+	GSList *list, *iter;
 	GError		*err = NULL;
-	gchar *name;
+	g_message("Erasing old gconf enteries.");
+	iter = list = gconf_client_all_dirs(client, PATH, &err);
+	is_gconf_error(err);
+	err=NULL;
+
+	/* Remove all directories */
+	while(iter != NULL) {
+		if (strstr(iter->data,"dir") != NULL || is_number(iter->data)) {
+			g_message("Deleting %s", (gchar*)iter->data);
+			gconf_client_recursive_unset(client, (gchar*)iter->data, GCONF_UNSET_INCLUDING_SCHEMA_NAMES, &err);
+		}
+		g_free(iter->data);
+		iter = iter->next;
+	}
+	g_slist_free(list);
+
+	gconf_client_unset(client, PATH "/groups", &err);
+	is_gconf_error(err);
+	err = NULL;
+
+	gconf_client_unset(client, PATH "/feedlist", &err);
+	is_gconf_error(err);
 }
 
 void loadSubscriptions(void) {
