@@ -1807,7 +1807,7 @@ create_newfolderdialog (void)
   GtkWidget *button2;
 
   newfolderdialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (newfolderdialog), _("add folder"));
+  gtk_window_set_title (GTK_WINDOW (newfolderdialog), _("New Folder"));
   gtk_window_set_modal (GTK_WINDOW (newfolderdialog), TRUE);
 
   dialog_vbox6 = GTK_DIALOG (newfolderdialog)->vbox;
@@ -1822,7 +1822,7 @@ create_newfolderdialog (void)
   gtk_box_pack_start (GTK_BOX (vbox10), hbox12, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbox12), 5);
 
-  label20 = gtk_label_new (_("folder name"));
+  label20 = gtk_label_new (_("Folder name:"));
   gtk_widget_show (label20);
   gtk_box_pack_start (GTK_BOX (hbox12), label20, FALSE, FALSE, 0);
 
@@ -1885,7 +1885,7 @@ create_foldernamedialog (void)
   GtkWidget *foldernamechangebtn;
 
   foldernamedialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (foldernamedialog), _("edit folder name"));
+  gtk_window_set_title (GTK_WINDOW (foldernamedialog), _("Rename Folder"));
   gtk_window_set_modal (GTK_WINDOW (foldernamedialog), TRUE);
 
   dialog_vbox7 = GTK_DIALOG (foldernamedialog)->vbox;
@@ -1896,7 +1896,7 @@ create_foldernamedialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_vbox7), hbox13, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbox13), 5);
 
-  label23 = gtk_label_new (_("folder name"));
+  label23 = gtk_label_new (_("Folder name:"));
   gtk_widget_show (label23);
   gtk_box_pack_start (GTK_BOX (hbox13), label23, FALSE, FALSE, 0);
 

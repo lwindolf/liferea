@@ -53,17 +53,15 @@ static gboolean folder_is_empty(folderPtr folder) {
 }
 
 void on_popup_newfolder_selected(void) {
+	GtkWidget *foldernameentry;
 	if(NULL == newfolderdialog || !G_IS_OBJECT(newfolderdialog))
 		newfolderdialog = create_newfolderdialog();
+
+	foldernameentry = lookup_widget(newfolderdialog, "foldertitleentry");
+	gtk_entry_set_text(GTK_ENTRY(foldernameentry), "");
 		
 	gtk_widget_show(newfolderdialog);
 }
-
-/* This is used as a hack in order to pass a folderPtr to the save
-   button callback. This is very evil and should be changed at some
-   point. Unfortunatly, glade does not make it easy to change. */
-
-folderPtr activeFolder = NULL;
 
 void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*foldertitleentry;
@@ -100,7 +98,7 @@ void on_popup_foldername_selected(gpointer callback_data,
 	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
 	title = folder_get_title(folder);
 	gtk_entry_set_text(GTK_ENTRY(foldernameentry), title);
-	activeFolder = folder;
+	gtk_object_set_data(GTK_OBJECT(foldernamedialog), "folder", folder);
 
 	gtk_widget_show(foldernamedialog);
 }
@@ -116,14 +114,14 @@ void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
+	folderPtr folder;
 	GtkWidget	*foldernameentry;
-	g_assert(activeFolder);
 	
+	folder = gtk_object_get_data(GTK_OBJECT(foldernamedialog), "folder");
 	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-	setFolderTitle(activeFolder, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
+	setFolderTitle(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
 	ui_feedlist_update();
 	gtk_widget_hide(foldernamedialog);
-	activeFolder = NULL;
 }
 
 void on_popup_removefolder_selected(gpointer callback_data,
