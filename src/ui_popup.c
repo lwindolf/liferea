@@ -160,7 +160,7 @@ void ui_popup_setup_menues(void) {
 	enclosure_menu_items = NULL;
 	enclosure_menu_len = 0;
 	addPopupOption(&enclosure_menu_items, &enclosure_menu_len, _("/Open Enclosure..."),	NULL, on_popup_open_enclosure,		0, NULL, 0);
-	addPopupOption(&enclosure_menu_items, &enclosure_menu_len, _("/Save As..."),		NULL, on_popup_save_enclosure,		0, NULL, 0);
+	//addPopupOption(&enclosure_menu_items, &enclosure_menu_len, _("/Save As..."),		NULL, on_popup_save_enclosure,		0, NULL, 0);
 
 }
 
