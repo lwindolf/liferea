@@ -8,7 +8,12 @@
 	  than 16x16. (Nathan Conrad)
 	* Now a short help text is displayed in the HTML view
 	  after startup.
-	  
+	* Updated networking code. Many more things, such as
+	  adding a new feed, are processed in the background.
+	* Improved preferences for selecting how to open a link
+	  in an external browser.
+	* Popup-window notifications of new items.
+	
 	Bugfixes:
 	  
 	* When URLs are passed to an external browser they are
@@ -20,7 +25,10 @@
 	* Debian bug 254959 reported by Martin-Aric Racine was
 	  fixed. No Liferea recognizes RSS 1.0 Creative Commons
 	  license information.
-
+	* Better favicon detection (more coming in the next release).
+	* Feed properties (such as titles) are now saved when they
+	  change.
+	
 2004-06-19 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.0

@@ -57,10 +57,12 @@ struct browser {
 struct browser browsers[] = {
 	{"gnome", "Gnome Default Browser", "gnome-open \"%s\"", NULL, NULL, NULL},
 	{"mozilla", "Mozilla", "mozilla \"%s\"", "mozilla -remote \"openURL(%s)\"",
-	 "mozilla -remote 'openURL(%s,new-window)'", "mozilla -remote 'openURL(%s,new-tab)'"},
-	{"firefox", "Firefox", "firefox \"%s\"", "firefox -remote \"openURL(%s)\"",
-	 "firefox -remote 'openURL(%s,new-window)'", "firefox -remote 'openURL(%s,new-tab)'"},
+	 "mozillax -remote 'openURL(%s,new-window)'", "mozilla -remote 'openURL(%s,new-tab)'"},
+	{"firefox", "Firefox", "firefox \"%s\"", "firefox -a firefox -remote \"openURL(%s)\"",
+	 "firefox -a firefox -remote 'openURL(%s,new-window)'", "firefox -a firefox -remote 'openURL(%s,new-tab)'"},
 	{"netscape", "Netscape", "netscape \"%s\"", NULL, "netscape -remote \"openURL(%s,new-window)\"", NULL},
+	{"opera", "Opera", "opera \"%s\"", "opera -remote \"openurl(%s)\"", "opera -newwindow \"%s\"", "opera -newpage \"%s\""},
+	{"konqueror", "Konqueror", "kfmclient openURL \"%s\"", NULL, NULL, NULL},
 	{NULL, NULL, NULL, NULL, NULL, NULL}
 };
 
@@ -76,6 +78,7 @@ gchar *prefs_get_browser_cmd() {
 		struct browser *iter;
 		for (iter = browsers; iter->id != NULL; iter++) {
 			if(!strcmp(libname, iter->id)) {
+				printf("found browser %s\n", iter->id);
 				switch (place) {
 				case 1:
 					ret = g_strdup(iter->existingwin);
@@ -86,10 +89,9 @@ gchar *prefs_get_browser_cmd() {
 				case 3:
 					ret = g_strdup(iter->newtab);
 					break;
-				default:
-				case 0:
-					ret = g_strdup(browsers[0].defaultplace);
 				}
+				if (ret == NULL) /* Default when no special mode defined */
+					ret = g_strdup(iter->defaultplace);
 			}
 		}
 	}
