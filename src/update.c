@@ -229,8 +229,8 @@ static void *download_thread_main(void *data) {
 		g_assert(NULL != request);
 		debug1(DEBUG_UPDATE, "processing received request (%s)", request->source);
 		if (request->callback == NULL) {
-			download_request_free(request);
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
+			download_request_free(request);
 		} else {
 			download_process(request);
 			
