@@ -41,7 +41,9 @@
 	  displayed as text instead of as HTML. (Nathan Conrad)
 	* Fixed a problem with the new item counter of 
 	  the systray icon. (Lars Lindner)
-
+        * Clicking on a vfolder and then an item in the vfolder now
+	  always displays the item. (Nathan Conrad)
+	
 	Translations:
 
 	* New Finnish translation. (Pauli Virtanen)
