@@ -1,9 +1,11 @@
 [Desktop Entry]
 Name=Liferea Feed Reader
 Name[de]=Liferea Feed Reader
+Name[cs]=Liferea Feed Reader
 GenericName=Feed Reader
 Comment=Download and view feeds
 Comment[de]=Anzeigen von News-Feeds
+Comment[cs]=Stahování a čtení článků
 Exec=liferea
 Icon=liferea.png
 StartupNotify=false
