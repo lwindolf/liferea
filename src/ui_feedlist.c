@@ -253,6 +253,22 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	ui_mainwindow_update_feed_menu(type);
 }
 
+static void ui_feedlist_row_activated_cb(GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *col, gpointer data) {
+	GtkTreeIter iter;
+	nodePtr ptr;
+	
+	gtk_tree_model_get_iter(gtk_tree_view_get_model(tv), &iter, path);
+
+	gtk_tree_model_get(gtk_tree_view_get_model(tv), &iter,
+				    FS_PTR, &ptr, -1);
+	if (IS_FOLDER(ptr->type)) {
+		if (gtk_tree_view_row_expanded(tv, path))
+			gtk_tree_view_collapse_row(tv, path);
+		else
+			gtk_tree_view_expand_row(tv,path,FALSE);
+	}
+
+}
 static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, gpointer data) {
 	gint		count;
 
@@ -321,6 +337,9 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(feedview), column);
 
+	/* And connect signals */
+	g_signal_connect(G_OBJECT(feedview), "row-activated", G_CALLBACK(ui_feedlist_row_activated_cb), NULL);
+
 	/* Setup the selection handler for the main view */
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(feedview));
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
@@ -328,7 +347,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	g_signal_connect(G_OBJECT(select), "changed",
                  	 G_CALLBACK(ui_feedlist_selection_changed_cb),
                 	 lookup_widget(mainwindow, "feedlist"));
-			 
+	
 	ui_dnd_init();			
 	ui_mainwindow_update_feed_menu(FST_INVALID);
 }
