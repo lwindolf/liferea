@@ -428,6 +428,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			/* any found new_fp items are not needed anymore */
 			if(found && (old_fp->type != FST_HELPFEED)) { 
 				new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
+				allItems->items = g_slist_remove(allItems->items, new_ip);
 				freeItem(new_ip);
 			}
 		}
@@ -449,6 +450,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			/* free old list and items of old list */
 			old_list = old_fp->items;
 			while(NULL != old_list) {
+				allItems->items = g_slist_remove(allItems->items, old_list->data);
 				freeItem((itemPtr)old_list->data);
 				old_list = g_slist_next(old_list);
 			}
