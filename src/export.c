@@ -81,7 +81,10 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 			xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
 			if (type != NULL)
 				xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
-			xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
+			if (feed_get_html_url(fp) != NULL)
+				xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(fp));
+			else
+				xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
 			xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
 			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 			xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
@@ -191,7 +194,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) { /* Reading a feed */
-		gchar *cacheLimitStr, *filter, *intervalStr, *lastPollStr;
+		gchar *cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr;
 		
 		filter =  xmlGetProp(cur, BAD_CAST"filtercmd");
 
@@ -236,6 +239,12 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		} else
 			fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
 		xmlFree(cacheLimitStr);
+		
+		/* Obtain the htmlUrl */
+		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
+		if (htmlUrlStr != NULL && 0 != xmlStrcmp(htmlUrlStr, ""))
+			feed_set_html_url(fp, htmlUrlStr);
+		xmlFree(htmlUrlStr);
 		
 		/* Last poll time*/
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
