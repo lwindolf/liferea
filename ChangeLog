@@ -20,7 +20,8 @@
 	  Now the HTML rendering widget isn't destroyed each
 	  time the mode is switched but reused.
 	  (Lars Lindner)
-
+	* IPv6 Support. (Christoph Hohmann)
+	
 	Bugfixes:
 
 	* Liferea now prevents the update of vfolders when you
