@@ -129,7 +129,12 @@ msgstr "Vie syöteluettelo"
 msgid "Export"
 msgstr "Vie"
 
-#: src/feed.c:147
+#: src/favicon.c:265
+#, c-format
+msgid "Updating feed icon for \"%s\""
+msgstr "Syötteen \"%s\" kuvake päivittyy"
+
+#: src/feed.c:151
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
@@ -260,9 +265,10 @@ msgstr "Päivitä _kaikki"
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Päivittää kaikki syötteet, lukuun ottamatta OCS-kansioita."
 
-#: src/interface.c:211
-msgid "_Mark As Read"
-msgstr "_Merkitse luetuksi"
+#: src/interface.c:213
+#, fuzzy
+msgid "_Mark Selected As Read"
+msgstr "/_Merkitse kaikki luetuiksi"
 
 #: src/interface.c:214
 msgid ""
@@ -272,7 +278,11 @@ msgstr ""
 "Merkitse kaikki valitun syötteen tai kaikkien valitun kansion syötteiden "
 "otsikot luetuiksi."
 
-#: src/interface.c:228
+#: src/interface.c:225
+msgid "Mark All As _Read"
+msgstr "Merkitse kaikki _luetuiksi"
+
+#: src/interface.c:238
 msgid "_New Subscription..."
 msgstr "_Uusi syöte..."
 
@@ -665,7 +675,7 @@ msgid ""
 "be slow if you have a lot of feeds."
 msgstr ""
 "_Lataa syötteet levyltä tarvittaessa. Tämä hidastaa\n"
-"jos syötteitä on paljon."
+"etsimistä jos syötteitä on paljon."
 
 #: src/interface.c:1927
 msgid ""
@@ -681,22 +691,25 @@ msgstr ""
 #: src/interface.c:1933
 #, fuzzy
 msgid "Feeds"
-msgstr "_Syötteet"
+msgstr "Syötteet"
 
 #: src/interface.c:1946
 #, fuzzy
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
-msgstr "<span weight=\"bold\">Syötteiden päivitys</span>"
+msgstr "<span weight=\"bold\">Kansioiden näyttö</span>"
 
 #: src/interface.c:1964
 msgid "Show the items of all child feeds when a folder is selected."
 msgstr ""
+"Näytä kaikkien kansion sisältämien syötteiden otsikot, kun kansio valitaan."
 
 #: src/interface.c:1968
 msgid ""
-"<i>This can cause signifant delays when loading folders with a lot of feeds "
-"inside!</i>"
+"<i>This option can cause significant delays when loading folders containing "
+"many feeds.</i>"
 msgstr ""
+"<i>Jos kansiossa on paljon syötteitä, sen näyttäminen voi kestää kauan kun "
+"tämä valinta on käytössä.</i>"
 
 #: src/interface.c:1979
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
@@ -705,12 +718,12 @@ msgstr "<span weight=\"bold\">Syötekuvakkeet</span>"
 #: src/interface.c:1998
 #, fuzzy
 msgid "_Update all favicons now."
-msgstr "Päivitä kuvakkeet nyt"
+msgstr "_Päivitä kuvakkeet nyt."
 
 #: src/interface.c:2002
 #, fuzzy
 msgid "Folders"
-msgstr "V-Kansio"
+msgstr "Kansiot"
 
 #: src/interface.c:2017
 #, fuzzy
