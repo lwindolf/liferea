@@ -217,10 +217,10 @@ int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, 
 	   Digest auth: realm + a lot of other stuff somehow needed by digest auth. */
 	
 	/* Determine auth type the server requests. */
-	if (strncmp (authtype, "Basic", 5) == 0) {
+	if (strncasecmp (authtype, "Basic", 5) == 0) {
 		/* Basic auth. */
 		cur_ptr->authinfo = ConstructBasicAuth (username, password);
-	} else if (strncmp (authtype, "Digest", 6) == 0) {
+	} else if (strncasecmp (authtype, "Digest", 6) == 0) {
 		/* Digest auth. */
 		cur_ptr->authinfo = ConstructDigestAuth (username, password, url, header);
 	} else {
