@@ -270,7 +270,7 @@ NsHandler *ns_dc_getRSSNsHandler(void) {
 	
 	nsh = g_new0(NsHandler, 1);
 	nsh->prefix			= g_strdup("dc");
-	nsh->registerNs		= ns_dc_register_ns;
+	nsh->registerNs			= ns_dc_register_ns;
 	nsh->parseChannelTag		= parse_channel_tag;
 	nsh->parseItemTag		= parse_item_tag;
 	

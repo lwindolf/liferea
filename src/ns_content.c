@@ -23,7 +23,7 @@
 
 /* a namespace documentation can be found at 
    http://web.resource.org/rss/1.0/modules/content/
-
+   
    This namespace handler is (for now) only used to handle
    <content:encoding> tags. If such a tag appears the originial
    description will be replaced by the encoded content.
@@ -32,11 +32,11 @@
 
 static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 	gchar *tmp;
+
   	if(!xmlStrcmp(cur->name, "encoded")) {
-		//metadata_list_set(&(ip->metadata), "description", utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if (tmp != NULL)
-			item_set_description(ip,tmp);
+		if(tmp != NULL)
+			item_set_description(ip, tmp);
 		g_free(tmp);
 	}
 }
@@ -50,9 +50,9 @@ NsHandler *ns_content_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0(NsHandler, 1);
+	nsh->prefix		= g_strdup("content");
 	nsh->registerNs		= ns_content_register_ns;
-	nsh->prefix			= "content";
-	nsh->parseItemTag		= parse_item_tag;
+	nsh->parseItemTag	= parse_item_tag;
 
 	return nsh;
 }

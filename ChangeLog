@@ -16,6 +16,9 @@
 	* Removed accidental usage of libxml2 usage. Liferea should now
 	  work with libxml2 2.4.1 or newer. (Nathan Conrad)
 	* Fixed a mistake in the German translation. (Lars Lindner)
+	* Fixed a bug that prevented RSS content:encoded tags
+	  to be parsed. (Lars Lindner)
+	  
 
 2004-08-16  Lars Lindner <lars.lindner@gmx.net>
 

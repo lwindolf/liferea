@@ -69,15 +69,13 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
 			   ((cur->ns->prefix != NULL) &&
 			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
-				if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					pf = nsh->parseItemTag;
-					if(NULL != pf)
-						(*pf)(ip, cur);	
-					cur = cur->next;
-					continue;
-				} else {
-					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
-				}
+				pf = nsh->parseItemTag;
+				if(NULL != pf)
+					(*pf)(ip, cur);	
+				cur = cur->next;
+				continue;
+			} else {
+				/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 			}
 		} /* explicitly no following else!!! */
 		
