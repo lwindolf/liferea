@@ -32,6 +32,7 @@
 #include <langinfo.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 #include <pwd.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -221,6 +222,35 @@ gchar * unhtmlize(gchar *string) {
  		g_free(string);
  		return result_p;
  	}
+}
+
+/* Common function to create a XML DOM object from a given
+   XML buffer. This function sets up a parser context,
+   enables recovery mode and sets up the error handler.
+   
+   The function returns a XML document and (if errors)
+   occur sets the errormsg to the last error message. */
+xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
+	xmlParserCtxtPtr	parser;
+	xmlDocPtr		doc;
+	
+	parser = xmlCreateMemoryParserCtxt(data, strlen(data));
+	parser->recovery = 1;
+	parser->sax->fatalError = NULL; //errorFunc; 
+	parser->sax->error = NULL; //errorFunc; 
+	parser->sax->warning = NULL; //errorFunc;
+	parser->vctxt.error = NULL; //errorFunc;
+	parser->vctxt.warning = NULL; //errorFunc;
+	xmlParseDocument(parser);	// ignore returned errors
+	
+	if(*errormsg != NULL)
+		g_free(*errormsg);
+	*errormsg = g_strdup(parser->lastError.message);
+	
+	doc = parser->myDoc;
+	xmlFreeParserCtxt(parser);
+	
+	return doc;
 }
 
 /* converts a ISO 8601 time string to a time_t value */

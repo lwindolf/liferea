@@ -90,11 +90,12 @@
 #define UNSHADED_START	"<div class=\"itemunshaded\">"
 #define UNSHADED_END	"</div>"
 
-/* HTTP error */
+/* HTTP and parsing error text */
 
-#define HTTP_ERROR_START	"<table cellspacing=\"0\" class=\"httperror\"><tr><td class=\"httperror\">"
+#define UPDATE_ERROR_START	"<table cellspacing=\"0\" class=\"httperror\"><tr><td class=\"httperror\">"
 #define HTTP_ERROR_TEXT		"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
-#define HTTP_ERROR_END		"</td></tr></table>"
+#define PARSE_ERROR_TEXT	"There were errors while parsing this feed. The following error occured:<br><b>%s</b>"
+#define UPDATE_ERROR_END	"</td></tr></table>"
 
 /* creates the HTML widget */
 void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);

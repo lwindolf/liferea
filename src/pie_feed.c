@@ -1,10 +1,10 @@
 /*
-   PIE channel parsing
+   Atom/Echo/PIE 0.2 channel parsing
       
    Note: the PIE parsing is copy & paste & some changes of the RSS
    code...
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -212,9 +212,8 @@ static void readPIEFeed(feedPtr fp) {
 	
 	cp->updateInterval = -1;
 	while(1) {
-		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
-		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error while reading feed! Feed \"%s\" could not be loaded!"), fp->source));
+		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;
 		}
@@ -222,13 +221,13 @@ static void readPIEFeed(feedPtr fp) {
 		cur = xmlDocGetRootElement(doc);
 
 		if(NULL == cur) {
-			print_status(_("Empty document! Feed was not added!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			error = 1;
 			break;			
 		}
 
 		if(xmlStrcmp(cur->name, (const xmlChar *)"feed")) {
-			print_status(_("Could not find PIE header! Feed was not added!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find Atom/Echo/PIE header!</p>"));
 			error = 1;
 			break;			
 		}
@@ -319,6 +318,8 @@ static void readPIEFeed(feedPtr fp) {
 		if(0 == error) {
 			fp->available = TRUE;
 			fp->description = showPIEFeedInfo(cp, fp->source);
+		} else {
+			print_status(_("There were errors while parsing this feed!"));
 		}
 			
 		g_free(cp->nsinfos);

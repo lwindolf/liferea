@@ -262,7 +262,7 @@ void displayItemList(void) {
 			if(NULL == selected_ip) {
 				/* display feed info */
 				if(NULL != selected_fp) {
-					if(!getFeedAvailable(selected_fp)) {
+					if(!getFeedAvailable(selected_fp) || (NULL != selected_fp->parseErrors)) {
 						tmp = getFeedErrorDescription(selected_fp);
 						addToHTMLBuffer(&buffer, tmp);
 						g_free(tmp);

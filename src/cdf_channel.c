@@ -1,14 +1,9 @@
 /*
    CDF channel parsing
       
-   Note: portions of the original parser code were inspired by
-   the feed reader software Rol which is copyrighted by
-   
-   Copyright (C) 2002 Jonathan Gordon <eru@unknown-days.com>
-   
    The major part of this backend/parsing/storing code written by
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
    
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -169,9 +164,8 @@ static void readCDFFeed(feedPtr fp) {
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
 	
 	while(1) {
-		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
-		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error while reading feed! Feed \"%s\" could not be loaded!"), fp->source));
+		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;
 		}
@@ -179,7 +173,7 @@ static void readCDFFeed(feedPtr fp) {
 		cur = xmlDocGetRootElement(doc);
 
 		if(NULL == cur) {
-			print_status(_("Empty document! Feed was not added!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			xmlFreeDoc(doc);
 			error = 1;
 			break;			
@@ -224,6 +218,8 @@ static void readCDFFeed(feedPtr fp) {
 		if(0 == error) {
 			fp->available = TRUE;
 			fp->description = showCDFFeedInfo(cp, fp->source);
+		} else {
+			print_status(_("There were errors while parsing this feed!"));
 		}
 		
 		g_free(cp->nsinfos);

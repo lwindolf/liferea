@@ -3,7 +3,7 @@
    only the rdf specific OCS parsing, the dc and ocs namespaces are
    processed by the specific namespace handlers!
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -461,16 +461,14 @@ static void readOCS(feedPtr fp) {
 	int 		error = 0;
 
 	while(1) {
-		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
-		
-		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error while reading directory! Directory \"%s\" could not be loaded!"), fp->source));
+		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;
 		}
 
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			print_status(_("Empty document!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			error = 1;
 			break;			
 		}
@@ -479,7 +477,7 @@ static void readOCS(feedPtr fp) {
                     !xmlStrcmp(cur->name, (const xmlChar *)"RDF")) {
 		    	// nothing
 		} else {
-			print_status(_("Could not find RDF header!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find RDF header!</p>"));
 			error = 1;
 			break;			
 		}
@@ -535,8 +533,10 @@ static void readOCS(feedPtr fp) {
 		if(0 == error) {
 			fp->description = showDirectoryInfo(dp, fp->source);
 			fp->available = TRUE;
-		} else
+		} else {
+			print_status(_("There were errors while parsing this feed!"));
 			fp->title = g_strdup(fp->source);
+		}
 			
 		g_free(dp);
 		break;

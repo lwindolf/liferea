@@ -76,6 +76,7 @@ typedef struct feed {
 	gboolean	available;		/* flag to signalize loading errors */
 	
 	gchar		*data;		/* raw XML data, used while downloading/parsing the feed */
+	gchar		*parseErrors;	/* textual/HTML description of parsing errors */
 	
 	gpointer	icon;		/* pointer to pixmap, if theres a favicon */
 		

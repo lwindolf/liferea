@@ -1,7 +1,7 @@
 /*
    common routines
       
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -48,6 +48,13 @@ gchar * extractHTMLNode(xmlNodePtr cur);
 
 void	addToHTMLBuffer(gchar **buffer, gchar *string);
 
+/* Common function to create a XML DOM object from a given
+   XML buffer. This function sets up a parser context,
+   enables recovery mode and sets up the error handler.
+   
+   The function returns a XML document and (if errors)
+   occur sets the errormsg to the last error message. */
+xmlDocPtr parseBuffer(gchar *data, gchar **errormsg);
 
 gchar * getActualTime(void);
 time_t 	parseISO8601Date(char *date);

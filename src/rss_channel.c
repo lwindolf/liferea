@@ -8,7 +8,7 @@
    
    The major part of this backend/parsing/storing code written by
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -334,13 +334,13 @@ static void parseImage(RSSChannelPtr cp, xmlNodePtr cur) {
 /* reads a RSS feed URL and returns a new channel structure (even if
    the feed could not be read) */
 static void readRSSFeed(feedPtr fp) {
-	xmlDocPtr 	doc;
-	xmlNodePtr 	cur;
-	itemPtr 	ip;
-	RSSChannelPtr 	cp;
-	short 		rdf = 0;
-	int 		error = 0;
-	int		i;
+	xmlDocPtr 		doc;
+	xmlNodePtr 		cur;
+	itemPtr 		ip;
+	RSSChannelPtr 		cp;
+	short 			rdf = 0;
+	int 			error = 0;
+	int			i;
 	
 	/* initialize channel structure */
 	if(NULL == (cp = (RSSChannelPtr) malloc(sizeof(struct RSSChannel)))) {
@@ -353,14 +353,14 @@ static void readRSSFeed(feedPtr fp) {
 	cp->updateInterval = -1;
 
 	while(1) {
-		if(NULL == (doc = xmlRecoverMemory(fp->data, strlen(fp->data)))) {
-			print_status(g_strdup_printf(_("XML error while reading feed! Feed \"%s\" could not be loaded!"), fp->source));
+		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;
 		}
 
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			print_status(_("Empty document!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			xmlFreeDoc(doc);
 			error = 1;
 			break;			
@@ -372,7 +372,7 @@ static void readRSSFeed(feedPtr fp) {
                 	  !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 			rdf = 1;
 		} else {
-			print_status(_("Could not find RDF/RSS header!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find RDF/RSS header!</p>"));
 			xmlFreeDoc(doc);
 			error = 1;
 			break;			
@@ -433,6 +433,8 @@ static void readRSSFeed(feedPtr fp) {
 	if(0 == error) {
 		fp->available = TRUE;
 		fp->description = showRSSFeedInfo(cp, fp->source);
+	} else {
+		print_status(_("There were errors while parsing this feed!"));
 	}
 
 	for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {

@@ -1,7 +1,7 @@
 /*
    generic OPML 1.0 support
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -132,16 +132,14 @@ static void readOPML(feedPtr fp) {
 	int 		i, error = 0;
 
 	while(1) {
-		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
-		
-		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error while reading feed! Feed \"%s\" could not be loaded!"), fp->source));
+		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;
 		}
 
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			print_status(_("Empty document!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			xmlFreeDoc(doc);
 			error = 1;
 			break;			
@@ -152,7 +150,7 @@ static void readOPML(feedPtr fp) {
 		   !xmlStrcmp(cur->name, BAD_CAST"outlineDocument")) {
 		   	// nothing
 		} else {
-			print_status(_("Could not find OPML header!!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find OPML header!</p>"));
 			xmlFreeDoc(doc);
 			error = 1;
 			break;			
@@ -242,8 +240,11 @@ static void readOPML(feedPtr fp) {
 			
 			fp->description = buffer;
 			fp->available = TRUE;
-		} else
+		} else {
+			print_status(_("There were errors while parsing this feed!"));
 			fp->title = g_strdup(fp->source);
+		}
+		
 		break;
 	}
 }
