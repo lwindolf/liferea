@@ -40,10 +40,15 @@ static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 	}
 }
 
+static void ns_fm_insert_ns_uris(NsHandler *nsh, GHashTable *hash) {
+	g_hash_table_insert(hash, "http://freshmeat.net/backend/fm-releases-0.1.dtd", nsh);
+}
+
 NsHandler *ns_fm_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0(NsHandler, 1);
+	nsh->insertNsUris		= ns_fm_insert_ns_uris;
 	nsh->prefix			= "fm";
 	nsh->parseItemTag		= parse_item_tag;
 

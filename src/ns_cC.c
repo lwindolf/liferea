@@ -81,11 +81,17 @@ static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 	metadata_list_set(&(ip->metadata), "license", parse_tag(cur));
 }
 
+static void ns_cC_insert_ns_uris(NsHandler *nsh, GHashTable *hash) {
+	g_hash_table_insert(hash, "http://web.resource.org/cc/", nsh);
+	g_hash_table_insert(hash, "http://backend.userland.com/creativeCommonsRssModule", nsh);
+}
+
 NsHandler *ns_cC1_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0(NsHandler, 1);
 	nsh->prefix 			= RSS1_CC_PREFIX;
+	nsh->insertNsUris		= ns_cC_insert_ns_uris;
 	nsh->parseChannelTag		= parse_channel_tag;
 	nsh->parseItemTag		= parse_item_tag;
 

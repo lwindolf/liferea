@@ -1,3 +1,10 @@
+2004-07-24  Lars Lindner <lars.lindner@gmx.net>
+
+	* New File selectors are used when compiled with GTK+ 2.4).
+	  (Nathan Conrad)
+	* XML parsers now detect namespaces based on their URL. (Nathan
+	Conrad)
+
 2004-07-23 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.2b

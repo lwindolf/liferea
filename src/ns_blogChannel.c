@@ -182,10 +182,15 @@ static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
 	}
 }
 
+static void ns_blogChannel_insert_ns_uris(NsHandler *nsh, GHashTable *hash) {
+	g_hash_table_insert(hash, "http://backend.userland.com/blogChannelModule", nsh);
+}
+
 NsHandler *ns_bC_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0(NsHandler, 1);
+	nsh->insertNsUris = ns_blogChannel_insert_ns_uris;
 	nsh->prefix			= "blogChannel";
 	nsh->parseChannelTag		= parse_channel_tag;
 
