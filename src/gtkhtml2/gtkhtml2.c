@@ -254,14 +254,14 @@ static void
 kill_old_connections (HtmlDocument *doc)
 {
 	GSList *connection_list, *tmp;
-
+	
 	tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
 	while(tmp) {
-
+		
 		StreamData *sdata = (StreamData *)tmp->data;
 		gnome_vfs_async_cancel (sdata->handle);
 		free_stream_data (sdata, FALSE);
-
+		
 		tmp = tmp->next;
 	}
 	g_object_set_data (G_OBJECT (doc), "connection_list", NULL);
@@ -366,7 +366,7 @@ static GtkWidget* gtkhtml2_new() {
 		
 	g_signal_connect(G_OBJECT(htmlwidget), "button-press-event", G_CALLBACK(button_press_event), NULL);
 	g_signal_connect(G_OBJECT(htmlwidget), "request_object", G_CALLBACK(request_object), NULL);
-
+	
 	gtk_widget_show(htmlwidget);
 
 	return scrollpane;
@@ -379,7 +379,8 @@ static void gtkhtml2_init() {
 }
 
 static void gtkhtml2_deinit() {
-	gnome_vfs_shutdown();
+	/*gnome_vfs_shutdown(); This should be done, but it locks up the
+	  process when things are still downloading */
 }
 
 static void launch_url(GtkWidget *widget, const gchar *url) { g_warning("should never be called!"); link_clicked(NULL, url, NULL); }
