@@ -58,7 +58,6 @@ typedef struct item {
 	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 	time_t		time;			/**< Item's modified date */
 	
-	gint		references;		/**< used only with vfolders to count references */
 	gulong		nr;			/**< internal unique item number used for vfolder reference counting */
 	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
 	struct feed	*sourceFeed;		/**< Pointer to the source feed this item was derived from (used for searches and vfolders) */
