@@ -101,3 +101,7 @@ on_ruledownbtn_clicked                 (GtkButton       *button,
 void
 on_rulechangedbtn_clicked              (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_about_activate                      (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);

@@ -343,3 +343,13 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	gtk_main_quit();
 	return FALSE;
 }
+
+void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	GtkWidget	*dialog;
+
+	dialog = create_aboutdialog();
+	g_assert(NULL != dialog);
+	gtk_widget_show(dialog);
+
+}
+

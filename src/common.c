@@ -229,6 +229,27 @@ gchar * unhtmlize(gchar *string) {
  	}
 }
 
+/* error buffering function to be registered by 
+   xmlSetGenericErrorFunc() */
+void bufferParseError(void *ctxt, const gchar * msg, ...) {
+	va_list		params;
+	gchar		**errormsg = (gchar **)ctxt;
+	gchar		*tmp;
+
+
+	tmp = *errormsg;
+	
+	va_start(params, msg);
+	*errormsg = g_strdup_vprintf(msg, params);
+	va_end(params);
+	
+	if(NULL == *errormsg)
+		*errormsg = tmp;
+	else
+		g_free(tmp);
+
+}
+
 /* Common function to create a XML DOM object from a given
    XML buffer. This function sets up a parser context,
    enables recovery mode and sets up the error handler.
@@ -241,16 +262,17 @@ xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
 	
 	parser = xmlCreateMemoryParserCtxt(data, strlen(data));
 	parser->recovery = 1;
-	parser->sax->fatalError = NULL;
+/*	parser->sax->fatalError = NULL;
 	parser->sax->error = NULL;
 	parser->sax->warning = NULL;
 	parser->vctxt.error = NULL;
-	parser->vctxt.warning = NULL;
+	parser->vctxt.warning = NULL;*/
+	xmlSetGenericErrorFunc(errormsg, (xmlGenericErrorFunc)bufferParseError);
 	xmlParseDocument(parser);	// ignore returned errors
 	
-	if(*errormsg != NULL)
-		g_free(*errormsg);
-	*errormsg = g_strdup(parser->lastError.message);
+//	if(*errormsg != NULL)
+//		g_free(*errormsg);
+//	*errormsg = g_strdup(parser->lastError.message);
 
 	doc = parser->myDoc;
 	xmlFreeParserCtxt(parser);

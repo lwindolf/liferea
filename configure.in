@@ -14,6 +14,7 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AM_PROG_LIBTOOL
 libdir='${prefix}/lib/liferea'
+AC_DEFINE(MODULE_DIR, $libdir, [path of HTML widget modules])
 
 html_modules=
 

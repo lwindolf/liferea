@@ -25,7 +25,9 @@ Roshan Revankar	<roshweb@users.sourceforge.net>	patch for selection handling
 Nathan J. Conrad <t98502@users.sourceforge.net>	patch for selection handling,
 						instant applying preferences,
 						much improved GUI code
+						
 
+Niklas Morberg <morberg@users.sourceforge.net>	debugging and patching
 
 Documentation and Translations
 ==============================
@@ -36,6 +38,7 @@ Park Ji-In <mithrandir@electrang.net>		korean
 Carlos Fenollosa <topopardo@humorfreak.com>	spanish 
 Jose Maria Mateos <chema@chema.homelinux.org>	spanish  
 Lars Lindner <lars.lindner@gmx.net>		german 
+Vladimir Petkov <vpetkov@i-space.org>		bulgarian
 
 Code included from other projects
 =================================

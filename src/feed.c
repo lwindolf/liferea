@@ -292,7 +292,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	int		error = 0;
 
 	filename = getCacheFileName(keyprefix, key, getExtension(type));
-	if(!g_file_get_contents(filename, &data, NULL, NULL)) {
+	if(!g_file_get_contents(filename, &data, NULL, NULL) || (NULL == data)) {
 		print_status(g_strdup_printf(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
 		return NULL;
 	}
