@@ -1481,7 +1481,7 @@
 			    <widget class="GtkLabel" id="feedUpdateInfo">
 			      <property name="width_request">339</property>
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">This feed provider suggest a update interval of %d seconds.</property>
+			      <property name="label" translatable="yes">This feed provider suggests an update interval of %d seconds.</property>
 			      <property name="use_underline">False</property>
 			      <property name="use_markup">False</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3290,6 +3290,7 @@
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
+				  <property name="mnemonic_widget">spinbutton1</property>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>

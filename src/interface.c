@@ -1004,7 +1004,7 @@ create_propdialog (void)
   gtk_widget_show (label161);
   gtk_box_pack_start (GTK_BOX (vbox237), label161, FALSE, FALSE, 0);
 
-  feedUpdateInfo = gtk_label_new (_("This feed provider suggest a update interval of %d seconds."));
+  feedUpdateInfo = gtk_label_new (_("This feed provider suggests an update interval of %d seconds."));
   gtk_widget_show (feedUpdateInfo);
   gtk_box_pack_start (GTK_BOX (vbox237), feedUpdateInfo, FALSE, FALSE, 0);
   gtk_widget_set_size_request (feedUpdateInfo, 339, -1);

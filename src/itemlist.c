@@ -298,7 +298,6 @@ void itemlist_remove_item(itemPtr ip) {
 		ui_feedlist_update();
 	} else {
 		deferred_item_remove = TRUE;
-		g_print("deferring removal of %s\n", ip->title);
 	}
 }
 
