@@ -67,6 +67,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 		ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
+		ui_itemlist_clear();
 		if(NULL != searchFeed)
 			feed_free(searchFeed);
 		searchFeed = vfolder_new();
@@ -123,9 +124,8 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	
 		folder = ui_feedlist_get_target_folder(&pos);
 				
-		fp = vfolder_new();
-		vfolder_add_rule(fp, "exact", searchstring, TRUE);
-		vfolder_refresh(fp);
+		fp = searchFeed;
+		searchFeed = NULL;
 		title = g_strdup_printf("search for \"%s\"", searchstring);
 		feed_set_title(fp, title);
 		g_free(title);
