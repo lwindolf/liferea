@@ -50,6 +50,7 @@ static void show_help(void) {
 	g_string_append_printf(str, "Liferea %s\n\n", VERSION);
 	g_string_append_printf(str, "%s\n", _("  --version        Prints Liferea's version number"));
 	g_string_append_printf(str, "%s\n", _("  --help           Prints this message and exits"));
+	g_string_append_printf(str, "%s\n", _("  --iconify        Starts the program iconified"));
 	g_string_append_c(str, '\n');
 	g_string_append_printf(str, "%s\n", _("  --debug-cache    Print debugging messages for the cache handling"));
 	g_string_append_printf(str, "%s\n", _("  --debug-conf     Print debugging messages of the configuration handling"));
