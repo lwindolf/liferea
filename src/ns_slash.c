@@ -77,6 +77,7 @@ void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user
 	gchar	*section, *department;
 	
 	if(NULL != (department = strchr((gchar *)data, ','))) {
+		*department = 0;
 		department++;
 		section = (gchar *)data;
 		
