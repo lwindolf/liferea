@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-11 04:09+0200\n"
-"PO-Revision-Date: 2004-08-09 04:31+0200\n"
+"POT-Creation-Date: 2004-08-11 13:01+0200\n"
+"PO-Revision-Date: 2004-08-11 13:05+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -924,19 +924,19 @@ msgstr "<span weight=\"bold\">Affichage des titres</span>"
 
 #: src/interface.c:1827
 msgid "Skim through articles with "
-msgstr ""
+msgstr "Survoler les articles avec "
 
 #: src/interface.c:1837
 msgid "Space"
-msgstr ""
+msgstr "Espace"
 
 #: src/interface.c:1841
 msgid "<Ctrl> Space"
-msgstr ""
+msgstr "<Ctrl> Espace"
 
 #: src/interface.c:1845
 msgid "<Alt> Space"
-msgstr ""
+msgstr "<Alt> Espace"
 
 #: src/interface.c:1851
 msgid ""
@@ -1689,7 +1689,6 @@ msgid "Edit preferences."
 msgstr "Éditer les préférences."
 
 #: src/ui_mainwindow.c:198
-#, fuzzy
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1720,7 +1719,7 @@ msgstr ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">Nous avons commencé à rassembler des choses à faire pour la version 1.1. "
 "Veuillez y <a href=\"http://liferea.sourceforge.net/dokuwiki/doku.php?"
-"id=programrequirements1.1\">jeter un coup d'oeil</a> et <a href=\"mailto://"
+"id=programrequirements1.1\">jeter un coup d'oeil</a> et <a href=\"mailto:"
 "liferea-devel@lists.sourceforge.net\">envoyer des propositions</a> si vous "
 "trouvez des fonctionnalités manquantes.</div><h2>Bienvenue dans Liferea</"
 "h2><p>Le cadre de gauche contient la liste des flux où vous pouvez ajouter "
