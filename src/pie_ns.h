@@ -32,25 +32,25 @@
 /* -------------------------------------------------------- */
 
 /* definition of various namespace tag handlers */
-typedef void	(*parseFeedTagFunc)	(PIEFeedPtr cp, xmlNodePtr cur);
-typedef void	(*parseEntryTagFunc)	(PIEEntryPtr ip, xmlNodePtr cur);
+/*typedef void	(*parseFeedTagFunc)	(PIEFeedPtr cp, xmlNodePtr cur);
+  typedef void	(*parseEntryTagFunc)	(PIEEntryPtr ip, xmlNodePtr cur);*/
 
 /* handler called during HTML output generation to display
    namespace specific information (e.g. <dc:creator> the 
    handler could return HTML like: "<p>author: Mr. X</a>" */
-typedef gchar *	(*PIEOutputFunc)	(gpointer obj);
+/*typedef gchar *	(*PIEOutputFunc)	(gpointer obj);*/
 
 /** struct used to register RDF namespace handler */
-typedef struct PIENsHandler {
-	gchar		*prefix;			/**< namespace prefix */
+/*typedef struct PIENsHandler {
+//	gchar		*prefix;		*/	/**< namespace prefix */
 	
-	parseEntryTagFunc	parseItemTag;		/**< entry tag parsing method */
-	parseFeedTagFunc	parseChannelTag;	/**< feed tag parsing method */
-		
-	PIEOutputFunc	doItemHeaderOutput;		/**< entry header output method */
-	PIEOutputFunc	doItemFooterOutput;		/**< entry footer output method */
-	PIEOutputFunc	doChannelHeaderOutput;		/**< feed header output method */
-	PIEOutputFunc	doChannelFooterOutput;		/**< feed footer output method */
-} PIENsHandler;
+//	parseEntryTagFunc	parseItemTag;		/**< entry tag parsing method */
+//parseFeedTagFunc	parseChannelTag;	/**< feed tag parsing method */
+//	
+//PIEOutputFunc	doItemHeaderOutput;		/**< entry header output method */
+//PIEOutputFunc	doItemFooterOutput;		/**< entry footer output method */
+//PIEOutputFunc	doChannelHeaderOutput;		/**< feed header output method */
+//PIEOutputFunc	doChannelFooterOutput;		/**< feed footer output method */
+//} //PIENsHandler;
 
 #endif

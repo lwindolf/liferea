@@ -143,38 +143,6 @@ static gchar * mapToItemMetadata[] = {
 				"copyright"		/* rights */
 			  };
 			  
-static gint mapToPIECP[] = { 	PIE_FEED_TITLE,		/* title */ 
-				-1,			/* creator */
-				-1,			/* subject */
-				PIE_FEED_DESCRIPTION,	/* description */
-				-1,			/* publisher */
-						-1,			/* contributor */	/* FIXME: should be mapped, too! */
-				PIE_FEED_LASTBUILDDATE,	/* date */
-				-1,			/* type */
-				-1,			/* format */
-				-1,			/* identifier */
-				-1,			/* source */
-				-1,			/* language */
-				-1,			/* coverage */
-				PIE_FEED_COPYRIGHT	/* rights */
-			  };
-
-static gint mapToPIEIP[] = { 	PIE_ENTRY_TITLE,	/* title */ 
-				-1,			/* creator */
-				-1,			/* subject */
-				PIE_ENTRY_DESCRIPTION,	/* description */
-				-1,			/* publisher */
-				-1,			/* contributor */				
-				-1,			/* date (won't be processed...) */
-				-1,			/* type */
-				-1,			/* format */
-				-1,			/* identifier */
-				-1,			/* source */
-				-1,			/* language */
-				-1,			/* coverage */				
-				-1			/* rights */
-			  };
-
 static gint mapToDP[] = { 	OCS_TITLE,		/* title */ 
 				OCS_CREATOR,		/* creator */
 				OCS_SUBJECT,		/* subject */
@@ -190,9 +158,6 @@ static gint mapToDP[] = { 	OCS_TITLE,		/* title */
 				-1,			/* coverage */				
 				-1			/* rights */
 			  };
-
-#define DC_PIE_FEED	2
-#define DC_PIE_ENTRY	3
 
 /* common OCS parsing */
 static void parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
@@ -236,113 +201,6 @@ static void parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
 static void parseOCSDirectoryTag(gpointer dp, xmlNodePtr cur)	{ parseOCSTag(TYPE_DIRECTORY, dp, cur); }
 static void parseOCSChannelTag(gpointer cp, xmlNodePtr cur)	{ parseOCSTag(TYPE_CHANNEL, cp, cur); }
 static void parseOCSFormatTag(gpointer fp, xmlNodePtr cur)	{ parseOCSTag(TYPE_FORMAT, fp, cur); }
-
-static void mapTag(gpointer obj, int tagtype, int mapping, gchar *value) {
-
-	switch(tagtype) {
-		case DC_PIE_FEED:
-			g_assert(mapping <= PIE_FEED_MAX_TAG);
-			g_free(((PIEFeedPtr)obj)->tags[mapping]);
-			((PIEFeedPtr)obj)->tags[mapping] = value;
-			break;
-		case DC_PIE_ENTRY:
-			g_free(((PIEEntryPtr)obj)->tags[mapping]);
-			((PIEEntryPtr)obj)->tags[mapping] = value;
-			break;
-		default:
-			g_error(_("internal error! unknown tag type while parsing Dublin Core tag!"));
-			break;
-	}
-}
-
-static int getMapping(int tagtype, int tagindex) {
-	int mapping = 0;
-	
-	/* determine if there is a standard tag we should map to */
-	switch(tagtype) {
-		case DC_PIE_FEED:
-			mapping = mapToPIECP[tagindex];
-			break;
-		case DC_PIE_ENTRY:
-			mapping = mapToPIEIP[tagindex];
-			break;
-		default:
-			g_error(_("internal error! unknown tag type while parsing Dublin Core tag!"));
-			break;
-	}
-	
-	return mapping;
-}
-
-// FIXME: deprecated!!!
-/* generic PIE tag parsing (basically the same as RSS parsing) */
-static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagtype) {
-	int 		i, j, mapping;
-	gchar		*date, *buffer, *value, *tmp;
-	gboolean	isNotEmpty;
-	
-	g_assert(NULL != cur);
-
-	/* special handling for the ISO 8601 date tag */
-	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
- 		date = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
- 		if(NULL != date) {
-			i = parseISO8601Date(date);
-			switch(tagtype) {
-				case DC_PIE_FEED:
-					date = ui_itemlist_format_date(i);	/* FIXME */
-					mapping = getMapping(tagtype, 6);
-					mapTag(obj, tagtype, mapping, date);	/* !!! 6 is a hardcoded position in the taglist array */
-					break;
-				case DC_PIE_ENTRY:
-					((PIEFeedPtr)obj)->time = i;
-					break;
-				default:
-					g_error(_("internal error! unknown tag type while parsing Dublin Core tag!"));
-					break;
-			}
-			g_free(date);
-		}
-		return;
-	}
-
-	/* compare with each possible tag name */
-	for(i = 0; taglist[i] != NULL; i++) {
-		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			value = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-	 		if(NULL != value) {
-				/* check if value consist of whitespaces only */
-				isNotEmpty = FALSE;
-				for(j = 0, tmp = value; j < g_utf8_strlen(value, -1); j++) {
-					if(!g_unichar_isspace(*tmp)) {
-						isNotEmpty = TRUE;
-						break;
-					}
-					tmp = g_utf8_next_char(tmp);
-				}
-
-				if(isNotEmpty) {
-					if(-1 == (mapping = getMapping(tagtype, i))) {
-						/* append it to the common DC value output */
-						buffer = g_hash_table_lookup(nsinfos, DC_PREFIX);
-						addToHTMLBuffer(&buffer, FIRSTTD);
-						addToHTMLBuffer(&buffer, taglist[i]);
-						addToHTMLBuffer(&buffer, NEXTTD);
-						addToHTMLBuffer(&buffer, value);
-						addToHTMLBuffer(&buffer, LASTTD);
-						g_hash_table_insert(nsinfos, g_strdup(DC_PREFIX), buffer);
-						g_free(value);
-					} else {
-						mapTag(obj, tagtype, mapping, value);
-					}
-				} else {
-					g_free(value);
-				}
-			}			
-			return;
-		}
-	}
-}
 
 /* generic tag parsing (used for RSS and Atom) */
 static void parse_tag(gpointer obj, xmlNodePtr cur, gboolean isFeedTag) {
@@ -401,43 +259,8 @@ static void parse_tag(gpointer obj, xmlNodePtr cur, gboolean isFeedTag) {
 	}
 }
 
-static void parsePIEFeedTag(PIEFeedPtr cp, xmlNodePtr cur)		{ parseTag((gpointer)cp, cp->nsinfos, cur, DC_PIE_FEED); }
-static void parsePIEEntryTag(PIEEntryPtr ip, xmlNodePtr cur)		{ parseTag((gpointer)ip, ip->nsinfos, cur, DC_PIE_ENTRY); }
 static void parse_channel_tag(feedPtr fp, xmlNodePtr cur)	{ parse_tag((gpointer)fp, cur, TRUE); }
 static void parse_item_tag(itemPtr ip, xmlNodePtr cur)		{ parse_tag((gpointer)ip, cur, FALSE); }
-
-static gchar * doFooterOutput(GHashTable *nsinfos) {
-	gchar	*output, *buffer = NULL;
-	
-	g_assert(NULL != nsinfos);
-	/* the ns_dc_parse*() functions should have prepared a simple string... */
-	output = g_hash_table_lookup(nsinfos, (gpointer)DC_PREFIX);
-	if(NULL != output) {
-		addToHTMLBuffer(&buffer, TABLE_START);
-		addToHTMLBuffer(&buffer, output);
-		addToHTMLBuffer(&buffer, TABLE_END);
-		g_free(output);
-		g_hash_table_remove(nsinfos, (gpointer)DC_PREFIX);
-	}
-	return buffer;
-}
-
-static gchar * doPIEEntryFooterOutput(gpointer obj) {
-
-	if(NULL != obj)
-		return doFooterOutput(((PIEEntryPtr)obj)->nsinfos);
-
-	return NULL;
-}
-
-static gchar *	doPIEFeedFooterOutput(gpointer obj) {
-	
-	if(NULL != obj) {
-		return doFooterOutput(((PIEFeedPtr)obj)->nsinfos);
-	}
-	
-	return NULL;
-}
 
 NsHandler *ns_dc_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
@@ -446,19 +269,6 @@ NsHandler *ns_dc_getRSSNsHandler(void) {
 	nsh->prefix			= g_strdup("dc");
 	nsh->parseChannelTag		= parse_channel_tag;
 	nsh->parseItemTag		= parse_item_tag;
-
-	return nsh;
-}
-
-PIENsHandler *ns_dc_getPIENsHandler(void) {
-	PIENsHandler 	*nsh;
-	
-	nsh = g_new0(PIENsHandler, 1);
-	nsh->prefix			= g_strdup("dc");
-	nsh->parseChannelTag		= parsePIEFeedTag;
-	nsh->parseItemTag		= parsePIEEntryTag;
-	nsh->doChannelFooterOutput	= doPIEFeedFooterOutput;
-	nsh->doItemFooterOutput		= doPIEEntryFooterOutput;		
 
 	return nsh;
 }

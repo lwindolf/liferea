@@ -21,36 +21,7 @@
 #ifndef _PIE_FEED_H
 #define _PIE_FEED_H
 
-#include <time.h>
 #include "feed.h"
-#include "pie_entry.h"
-
-#define PIE_FEED_TITLE			0
-#define PIE_FEED_DESCRIPTION		1
-#define PIE_FEED_LINK			2
-#define PIE_FEED_LANGUAGE		3
-#define PIE_FEED_COPYRIGHT		4
-#define PIE_FEED_GENERATOR		5
-#define PIE_FEED_LASTBUILDDATE		6
-#define PIE_FEED_MODIFIED		7
-#define PIE_FEED_ISSUED			8
-#define PIE_FEED_CREATED		9
-
-#define PIE_FEED_MAX_TAG		10
-
-typedef struct PIEFeed {
-	/* standard namespace infos */
-	gchar		*author;	/* author of the feed */
-	gchar		*contributors;	/* list of contributors */
-	gchar		*tags[PIE_FEED_MAX_TAG];
-
-	GHashTable	*nsinfos;	/* list to store pointers to namespace
-					   specific informations */
-					   
-	/* other information */
-	time_t		time;		/* last feed build/creation time */	
-	gint		updateInterval;	/* feed refresh interval */
-} *PIEFeedPtr;
 
 feedHandlerPtr	initPIEFeedHandler(void);
 

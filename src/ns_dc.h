@@ -26,7 +26,7 @@
 #include "ocs_ns.h"
 
 NsHandler *ns_dc_getRSSNsHandler(void);
-PIENsHandler *ns_dc_getPIENsHandler(void);
+//PIENsHandler *ns_dc_getPIENsHandler(void);
 OCSNsHandler *ns_dc_getOCSNsHandler(void);
 
 #endif

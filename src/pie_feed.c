@@ -32,123 +32,17 @@
 #include "callbacks.h"
 #include "htmlview.h"
 
-/* structure for the hashtable callback which itself calls the 
-   namespace output handler */
-#define OUTPUT_PIE_FEED_NS_HEADER	0
-#define	OUTPUT_PIE_FEED_NS_FOOTER	1
-#define OUTPUT_ITEM_NS_HEADER		2
-#define OUTPUT_ITEM_NS_FOOTER		3
-typedef struct {
-	gint		type;
-	gchar		**buffer;	/* pointer to output char buffer pointer */
-	gpointer	obj;		/* thats either a PIEFeedPtr or a PIEEntryPtr 
-					   depending on the type value */
-} outputRequest;
-
 /* to store the PIENsHandler structs for all supported RDF namespace handlers */
-GHashTable	*pie_nslist = NULL;
+GHashTable	*pie_nstable = NULL;
 
 /* note: the tag order has to correspond with the PIE_FEED_* defines in the header file */
-static gchar *feedTagList[] = {	"title",
-				"tagline",
-				"link",
-				"language",
-				"copyright",
-				"generator",
-				"lastBuildDate",
-				"modified",
-				"issued",
-				"created",
-				NULL
-			  };
-
-/* method called by g_hash_table_foreach from inside the HTML
-   generator functions to output namespace specific infos 
-   
-   not static because its reused by pie_entry.c */
-void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
-	outputRequest	*request = (outputRequest *)userdata;
-	PIENsHandler	*nsh = (PIENsHandler *)value;
-	gchar		*tmp;
-	PIEOutputFunc	fp;
-
-	switch(request->type) {
-		case OUTPUT_PIE_FEED_NS_HEADER:
-			fp = nsh->doChannelHeaderOutput;
-			break;
-		case OUTPUT_PIE_FEED_NS_FOOTER:
-			fp = nsh->doChannelFooterOutput;
-			break;
-		case OUTPUT_ITEM_NS_HEADER:
-			fp = nsh->doItemHeaderOutput;
-			break;		
-		case OUTPUT_ITEM_NS_FOOTER:
-			fp = nsh->doItemFooterOutput;
-			break;			
-		default:	
-			g_warning("Internal error! Invalid output request mode for namespace information!");
-			return;
-			break;		
-	}
-	
-	if(NULL == fp)
-		return;
-		
-	if(NULL == (tmp = (*fp)(request->obj)))
-		return;
-		
-	addToHTMLBuffer(request->buffer, tmp);
-	g_free(tmp);
-}
-
-/* writes PIE channel description as HTML into the gtkhtml widget */
-static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
-	gchar		*tmp, *line, *buffer = NULL;	
-	outputRequest	request;
-
-	g_assert(NULL != cp);
-	g_assert(NULL != url);
-
-	addToHTMLBuffer(&buffer, HEAD_START);
-	
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-		cp->tags[PIE_FEED_LINK],
-		cp->tags[PIE_FEED_TITLE]);
-	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-	g_free(tmp);
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
-	
-	addToHTMLBuffer(&buffer, HEAD_END);
-		
-	/* process namespace infos */
-	request.obj = (gpointer)cp;
-	request.buffer = &buffer;
-	request.type = OUTPUT_PIE_FEED_NS_HEADER;	
-	if(NULL != pie_nslist)
-		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-
-	if(NULL != cp->tags[PIE_FEED_DESCRIPTION])
-		addToHTMLBuffer(&buffer, cp->tags[PIE_FEED_DESCRIPTION]);
-
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "author",		cp->author);
-	FEED_FOOT_WRITE(buffer, "contributors",		cp->contributors);
-	FEED_FOOT_WRITE(buffer, "language",		cp->tags[PIE_FEED_LANGUAGE]);
-	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[PIE_FEED_COPYRIGHT]);
-	FEED_FOOT_WRITE(buffer, "last build date",	cp->tags[PIE_FEED_LASTBUILDDATE]);
-	FEED_FOOT_WRITE(buffer, "last modified",	cp->tags[PIE_FEED_MODIFIED]);
-	FEED_FOOT_WRITE(buffer, "issued",		cp->tags[PIE_FEED_ISSUED]);
-	FEED_FOOT_WRITE(buffer, "created",		cp->tags[PIE_FEED_CREATED]);
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-	
-	/* process namespace infos */
-	request.type = OUTPUT_PIE_FEED_NS_FOOTER;
-	if(NULL != pie_nslist)
-		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-	
-	return buffer;
-}
+/*
+  The follow are not used, but had been recognized:
+                                   "language", <---- Not in atom 0.2 or 0.3. We should use xml:lang
+							"lastBuildDate", <--- Where is this from?
+							"issued", <-- Not in the specs for feeds
+							"created",  <---- Not in the specs for feeds
+*/
 
 /* nonstatic because used by pie_entry.c too */
 gchar * parseAuthor(xmlNodePtr cur) {
@@ -192,138 +86,131 @@ gchar * parseAuthor(xmlNodePtr cur) {
    the feed could not be read) */
 static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
-	PIEFeedPtr 		cp;
 	gchar			*tmp2, *tmp = NULL;
-	parseFeedTagFunc	parseFunc;
-	PIENsHandler		*nsh;
-	int			i;
 	int 			error = 0;
+	NsHandler		*nsh;
+	parseChannelTagFunc	pf;
 	
-	/* initialize channel structure */
-	cp = g_new0(struct PIEFeed, 1);
-	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-	
-	cp->updateInterval = -1;
-	while(1) {
+	while(TRUE) {
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find Atom/Echo/PIE header!</p>"));
 			error = 1;
 			break;			
 		}
 
-		time(&(cp->time));
-
 		/* parse feed contents */
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
-			if(NULL == cur->name) {
-				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			if(NULL == cur->name || cur->type != XML_ELEMENT_NODE) {
 				cur = cur->next;
 				continue;
 			}
 			
-			/* parse feed author */
-			if ((!xmlStrcmp(cur->name, BAD_CAST"author"))) {
-				g_free(cp->author);
-				cp->author = parseAuthor(cur);
-				cur = cur->next;		
-				continue;
-			}
-			
-			/* parse feed contributors */
-			if ((!xmlStrcmp(cur->name, BAD_CAST"contributor"))) {
-				tmp = parseAuthor(cur);				
-				if(NULL != cp->contributors) {
-					/* add another contributor */
-					tmp2 = g_strdup_printf("%s<br>%s", cp->contributors, tmp);
-					g_free(cp->contributors);
-					g_free(tmp);
-					tmp = tmp2;
-				}
-				cp->contributors = tmp;
-				cur = cur->next;		
-				continue;
-			}
-			
-			if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
-				/* 0.2 link : element content is the link
-				   0.3 link : rel, type and href attribute */
-				if(NULL != (tmp = xmlGetProp(cur, BAD_CAST"rel"))) {
-					if(!xmlStrcmp(tmp, BAD_CAST"alternate")) {
-						g_free(cp->tags[PIE_FEED_LINK]);
-						cp->tags[PIE_FEED_LINK] = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
-					}
-					xmlFree(tmp);
-					cur = cur->next;
-					continue;
-				} /* else, it is a 0.2 link, which can be processed below */
-			}
-			
-			/* check namespace and if we found one, do namespace parsing */
+			/* check namespace of this tag */
 			if(NULL != cur->ns) {
-				if (NULL != cur->ns->prefix) {
-					g_assert(NULL != pie_nslist);
-					if(NULL != (nsh = (PIENsHandler *)g_hash_table_lookup(pie_nslist, (gpointer)cur->ns->prefix))) {
-						parseFunc = nsh->parseChannelTag;
-						if(NULL != parseFunc)
-							(*parseFunc)(cp, cur);
+				if(NULL != cur->ns->prefix) {
+					if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(pie_nstable, (gpointer)cur->ns->prefix))) {
+						pf = nsh->parseChannelTag;
+						if(NULL != pf)
+							(*pf)(fp, cur);
 						cur = cur->next;
 						continue;
 					} else {
-						g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
+						/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 					}
 				}
-			}
+			} /* explicitly no following else !!! */
+			
+			
+			if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
+				tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+				if (tmp != NULL)
+					feed_set_title(fp, tmp);
+				g_free(tmp);
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
+				if(NULL != (tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href")))) {
+					/* 0.3 link : rel, type and href attribute */
+					tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"rel"));
+					if(tmp2 != NULL && !xmlStrcmp(tmp2, BAD_CAST"alternate"))
+						feed_set_html_url(fp, tmp);
+					else
+						/* FIXME: Maybe do something with other links? */;
+					g_free(tmp2);
+					g_free(tmp);
+				} else {
+					/* 0.2 link : element content is the link, or non-alternate link in 0.3 */
+					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+					if(NULL != tmp)
+						feed_set_html_url(fp, tmp);
+					g_free(tmp);
+				}
+				
+			/* parse feed author */
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
+				/* parse feed author */
+				tmp = parseAuthor(cur);
+				fp->metadata = metadata_list_append(fp->metadata, "author", tmp);
+				g_free(tmp);
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"tagline")) {
+				tmp = convertToHTML(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+				if (tmp != NULL)
+					feed_set_description(fp, tmp);
+				g_free(tmp);				
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
+				tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+				if (tmp != NULL && tmp[0] != '\0') {
+					tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"version"));
+					if (tmp2 != NULL)
+						tmp = g_strdup_printf("%s %s", tmp, tmp2);
+					g_free(tmp2);
+					tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"url"));
+					if (tmp2 != NULL)
+						tmp = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
+					g_free(tmp2);
+					fp->metadata = metadata_list_append(fp->metadata, "feedgenerator", tmp);
+				}
+				g_free(tmp);
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp)
+					ip->metadata = metadata_list_append(ip->metadata, "copyright", tmp);
+				g_free(tmp);
+				
+				
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp) {
+					fp->metadata = metadata_list_append(fp->metadata, "pubDate", tmp);
+					feed_set_time(fp, parseRFC822Date(tmp));
+					g_free(tmp);
+				}
 
-			/* now check for simple tags like <tagline>,<title>... */
-			/* check for PIE tags */
-			for(i = 0; i < PIE_FEED_MAX_TAG; i++) {
-				if (!xmlStrcmp(cur->name, BAD_CAST feedTagList[i])) {
-					tmp = cp->tags[i];
-					if(NULL == (cp->tags[i] = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
-						cp->tags[i] = tmp;
-					} else {
-						g_free(tmp);
-					}
-				}		
-			}
-
-			/* collect PIE feed entries */
-			if ((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
-				if(NULL != (ip = parseEntry(cp, cur))) {
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
+				/* parse feed contributors */
+				tmp = parseAuthor(cur);
+				fp->metadata = metadata_list_append(fp->metadata, "contributor", tmp);
+				g_free(tmp);
+				
+			} else if ((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
+				if(NULL != (ip = parseEntry(fp, cur))) {
 					if(0 == item_get_time(ip))
-						item_set_time(ip, cp->time);
+						item_set_time(ip, feed_get_time(fp));
 					feed_add_item(fp, ip);
 				}
 			}
+			
+			/* collect PIE feed entries */
 			cur = cur->next;
 		}
-
 		
-		/* some postprocessing */
-		if(NULL != cp->tags[PIE_FEED_TITLE]) 
-			cp->tags[PIE_FEED_TITLE] = unhtmlize(cp->tags[PIE_FEED_TITLE]);
-
-		if(NULL != cp->tags[PIE_FEED_DESCRIPTION])
-			cp->tags[PIE_FEED_DESCRIPTION] = convertToHTML(cp->tags[PIE_FEED_DESCRIPTION]);		
-
+		
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->defaultInterval = cp->updateInterval;
-		feed_set_update_interval(fp, cp->updateInterval);
-		feed_set_title(fp, cp->tags[PIE_FEED_TITLE]);
-		
 		if(0 == error) {
-			fp->available = TRUE;
-			fp->description = showPIEFeedInfo(cp, fp->source);
+			feed_set_available(fp, TRUE);
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
 
-		for(i = 0; i < PIE_FEED_MAX_TAG; i++)
-			g_free(cp->tags[i]);
-		
-		g_hash_table_destroy(cp->nsinfos);
-		g_free(cp);
 		break;
 	}
 }
@@ -335,19 +222,25 @@ static gboolean pie_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	return FALSE;
 }
 
+static void pie_add_ns_handler(NsHandler *handler) {
+
+	g_assert(NULL != pie_nstable);
+	if(getNameSpaceStatus(handler->prefix))
+		g_hash_table_insert(pie_nstable, handler->prefix, handler);
+}
+
 feedHandlerPtr initPIEFeedHandler(void) {
 	feedHandlerPtr	fhp;
-	PIENsHandler	*handler;
 	
 	fhp = g_new0(struct feedHandler, 1);
 	
-	g_free(pie_nslist);
-	pie_nslist = g_hash_table_new(g_str_hash, g_str_equal);
-	
-	/* register PIE name space handlers, not sure which namespaces beside DC are common */
-	handler = ns_dc_getPIENsHandler();
-	if(getNameSpaceStatus(handler->prefix))
-		g_hash_table_insert(pie_nslist, (gpointer)handler->prefix, (gpointer)handler);
+	if(NULL == pie_nstable) {
+		pie_nstable = g_hash_table_new(g_str_hash, g_str_equal);
+
+		/* register RSS name space handlers */
+		pie_add_ns_handler(ns_dc_getRSSNsHandler());
+	}	
+
 
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";

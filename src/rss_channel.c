@@ -58,13 +58,11 @@ GHashTable *RssToMetadataMapping = NULL;
 
 /* to store the NsHandler structs for all supported RDF namespace handlers */
 GHashTable	*rss_nstable = NULL;	/* duplicate storage: for quick finding... */
-GSList		*rss_nslist = NULL;	/*                    for processing order... */
 
 /* This function parses the metadata for the channel. This does not
    parse the items. The items are parsed elsewhere. */
 static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 	gchar			*tmp, *tmp2, *tmp3;
-	GSList			*hp;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
 	
@@ -80,9 +78,7 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
 			if(NULL != cur->ns->prefix) {
-				g_assert(NULL != rss_nslist);
-				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					nsh = (NsHandler *)hp->data;
+				if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
 					pf = nsh->parseChannelTag;
 					if(NULL != pf)
 						(*pf)(fp, cur);
@@ -330,8 +326,7 @@ static void rss_add_ns_handler(NsHandler *handler) {
 
 	g_assert(NULL != rss_nstable);
 	if(getNameSpaceStatus(handler->prefix)) {
-		rss_nslist = g_slist_append(rss_nslist, handler);
-		g_hash_table_insert(rss_nstable, handler->prefix, g_slist_last(rss_nslist));
+		g_hash_table_insert(rss_nstable, handler->prefix, handler);
 	}
 }
 

@@ -43,7 +43,6 @@ extern GHashTable	*rss_nstable;
 /* method to parse standard tags for each item element */
 itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 	gchar			*tmp, *tmp2, *tmp3;
-	GSList			*hp;
 	NsHandler		*nsh;
 	parseItemTagFunc	pf;
 	itemPtr			ip;
@@ -70,9 +69,8 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
 			if(NULL != cur->ns->prefix) {
-				g_assert(NULL != rss_nslist);
-				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					nsh = (NsHandler *)hp->data;
+				
+				if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
 					pf = nsh->parseItemTag;
 					if(NULL != pf)
 						(*pf)(ip, cur);	

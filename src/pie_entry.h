@@ -21,29 +21,9 @@
 #ifndef _PIE_ENTRY_H
 #define _PIE_ENTRY_H
 
-#include <time.h>
-#include <glib.h>
-#include "pie_feed.h"
+#include "feed.h"
+#include "libxml/tree.h"
 
-#define PIE_ENTRY_TITLE			0
-#define PIE_ENTRY_DESCRIPTION		1
-#define PIE_ENTRY_COPYRIGHT		2
-#define PIE_ENTRY_ID			3
-
-#define PIE_ENTRY_MAX_TAG		4
-
-typedef struct PIEEntry {
-	gchar		*tags[PIE_ENTRY_MAX_TAG];	/* standard namespace infos */
-	gboolean	summary;			/* helper flag, TRUE if PIE_ENTRY_DESCRIPTION contains a <summary> text */
-	
-	GHashTable	*nsinfos;	/* list to store pointers to namespace
-					   specific informations */	
-	gchar		*source;
-	gchar		*author;
-	gchar		*contributors;
-	time_t		time;
-} *PIEEntryPtr;
-
-itemPtr parseEntry(gpointer cp, xmlNodePtr cur);
+itemPtr parseEntry(feedPtr fp, xmlNodePtr cur);
 
 #endif
