@@ -610,6 +610,7 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 			gboolean directory = (FST_FEED == child->type) && (((feedPtr)child)->fhp != NULL) && ((feedPtr)child)->fhp->directory;
 			apply = (filter & ACTION_FILTER_CHILDREN) ||
 				((filter & ACTION_FILTER_FEED) && (FST_FEED == child->type) && !directory) ||
+				((filter & ACTION_FILTER_FEED) && (FST_VFOLDER == child->type) && !directory) ||
 				((filter & ACTION_FILTER_DIRECTORY) && (FST_FEED == child->type) && directory) ||
 				((filter & ACTION_FILTER_FOLDER) && (FST_FOLDER == child->type));
 			descend = !(filter & ACTION_FILTER_CHILDREN);
