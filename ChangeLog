@@ -15,9 +15,6 @@
 	  (Lars Lindner)
 	* GTK+ dependency raised to 2.4 to drop the included
 	  GtkTreeModelFilter source. (Lars Lindner)
-	* New Finnish translation. (Pauli Virtanen)
-	* New Romanian translation. (Spoiala Cristian)
-	* Updated Japanese translation. (Takeshi AIHANA)
 	* Filtered feed list feature removed. Did not work
 	  properly and there is no time to fix it.
 	
@@ -32,7 +29,13 @@
 	  for all asynchronously called browser commands.
 	* Fix for crash when a URL with a space character
 	  is added to the feedlist. (Nathan Conrad)
-	
+
+	Translations:
+
+	* New Finnish translation. (Pauli Virtanen)
+	* New Romanian translation. (Spoiala Cristian)
+	* Updated Japanese translation. (Takeshi AIHANA)
+	* Updated French translation. (Vincent Lefèvre)
 
 2004-11-29  Lars Lindner <lars.lindner@gmx.net>
 

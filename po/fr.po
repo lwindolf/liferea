@@ -1,10 +1,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 0.6.1\n"
+"Project-Id-Version: Liferea 0.9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-03 09:48+0100\n"
-"PO-Revision-Date: 2004-10-27 03:34+0200\n"
+"POT-Creation-Date: 2004-12-12 11:12+0100\n"
+"PO-Revision-Date: 2004-12-12 11:15+0100\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -203,11 +203,11 @@ msgstr "Flux :"
 msgid "VFolder"
 msgstr "VFolder"
 
-#: src/feed.c:1031
+#: src/feed.c:1020
 msgid "user defined command"
 msgstr "commande définie par l'utilisateur :"
 
-#: src/feed.c:1034 src/interface.c:1089 src/interface.c:1499 src/item.c:247
+#: src/feed.c:1043 src/interface.c:1089 src/interface.c:1499 src/item.c:247
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Source :"
@@ -219,9 +219,8 @@ msgstr ""
 "été trouvé !"
 
 #: src/interface.c:137
-#, fuzzy
 msgid "Liferea"
-msgstr "Aide de Liferea"
+msgstr "Liferea"
 
 #: src/interface.c:154
 msgid "_Program"
@@ -509,11 +508,10 @@ msgid " "
 msgstr " "
 
 #: src/interface.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
-"Le fournisseur de ce flux suggère un intervalle de rafraîchissement de %d "
-"secondes."
+"Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
 
 #: src/interface.c:1005
 msgid "General"
@@ -532,9 +530,8 @@ msgid "_Command"
 msgstr "_Commande"
 
 #: src/interface.c:1063 src/interface.c:1473
-#, fuzzy
 msgid "Local _File"
-msgstr "_Fichier"
+msgstr "_Fichier local"
 
 #: src/interface.c:1073 src/interface.c:1483
 msgid "_Select File..."
@@ -624,7 +621,6 @@ msgid "New Subscription"
 msgstr "Nouvel abonnement"
 
 #: src/interface.c:1778
-#, fuzzy
 msgid "Liferea Preferences"
 msgstr "Préférences de Liferea"
 
@@ -666,10 +662,10 @@ msgstr "<span weight=\"bold\">Réglages du chargement des flux</span>"
 #: src/interface.c:1920
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
-"be slow if you have a lot of feeds,"
+"be slow if you have a lot of feeds."
 msgstr ""
 "_Charger les flux à partir du disque lorsque cela est nécessaire. \n"
-"La recherche peut être lente si vous avez beaucoup de flux,"
+"La recherche peut être lente si vous avez beaucoup de flux."
 
 #: src/interface.c:1927
 msgid ""
@@ -684,44 +680,42 @@ msgstr ""
 "beaucoup de flux !"
 
 #: src/interface.c:1933
-#, fuzzy
 msgid "Feeds"
-msgstr "_Flux"
+msgstr "Flux"
 
 #: src/interface.c:1946
-#, fuzzy
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
-msgstr "<span weight=\"bold\">Réglages de mise à jour des flux</span>"
+msgstr "<span weight=\"bold\">Réglages d'affichage des dossiers</span>"
 
 #: src/interface.c:1964
-msgid "If a folder is selected show the items of all child feeds."
+msgid "Show the items of all child feeds when a folder is selected."
 msgstr ""
+"Montrer les éléments de tous les flux enfants lorsqu'un dossier est "
+"sélectionné."
 
 #: src/interface.c:1968
 msgid ""
 "<i>This can cause signifant delays when loading folders with a lot of feeds "
 "inside!</i>"
 msgstr ""
+"<i>Ceci peut causer des délais importants lors du chargement de dossiers "
+"contenant de nombreux flux !</i>"
 
 #: src/interface.c:1979
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
-msgstr "<span weight=\"bold\">Réglages du chargement des flux</span>"
+msgstr "<span weight=\"bold\">Icônes des flux (favicons)</span>"
 
 #: src/interface.c:1998
-#, fuzzy
 msgid "_Update all favicons now."
-msgstr "Mise à jour de tous les flux"
+msgstr "_Mettre à jour toutes les favicons maintenant."
 
 #: src/interface.c:2002
-#, fuzzy
 msgid "Folders"
-msgstr "VFolder"
+msgstr "Dossiers"
 
 #: src/interface.c:2017
-#, fuzzy
 msgid "<span weight=\"bold\">Reading Headlines</span>"
-msgstr "<span weight=\"bold\">Affichage des titres</span>"
+msgstr "<span weight=\"bold\">Lecture des titres</span>"
 
 #: src/interface.c:2040
 msgid "Skim through articles with "
@@ -764,9 +758,8 @@ msgstr ""
 "consulter le manuel de strftime() pour les codes de format."
 
 #: src/interface.c:2132
-#, fuzzy
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
-msgstr "<span weight=\"bold\">Réglages du navigateur externe</span>"
+msgstr "<span weight=\"bold\">Réglages du navigateur interne</span>"
 
 #: src/interface.c:2150
 msgid ""
@@ -785,11 +778,11 @@ msgstr "Voir les titres avec"
 
 #: src/interface.c:2172
 msgid "Open links in Liferea's _window."
-msgstr "_Ouvrir les liens dans la fenêtre de Liferea."
+msgstr "Ouvrir les liens dans la _fenêtre de Liferea."
 
 #: src/interface.c:2176
 msgid "_Disable Javascript."
-msgstr ""
+msgstr "Désactiver _Javascript."
 
 #: src/interface.c:2184
 msgid "<span weight=\"bold\">External Browser Settings</span>"
@@ -813,9 +806,8 @@ msgid "_Open link in:"
 msgstr "_Ouvrir le lien dans :"
 
 #: src/interface.c:2253
-#, fuzzy
 msgid "Browser"
-msgstr "_Navigateur :"
+msgstr "Navigateur"
 
 #: src/interface.c:2266
 msgid "<span weight=\"bold\">Notification Settings</span>"
@@ -952,7 +944,6 @@ msgstr ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3081
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -997,12 +988,17 @@ msgstr ""
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
 "ahmed el-helw <ahmedre@cc.gatech.edu>\n"
+"James Bowes <bowes@cs.dal.ca>\n"
+"Marc Deslauriers\n"
+"Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
+"Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"\n"
 "\n"
 "Code venant d'autres projets\n"
 "\n"
 "Anders Carlsson <andersca@gnu.org> (support de l'icône dans la barre des "
 "tâches)\n"
-"Philippe Martin, Brion Vibber (support de la favicon)\n"
+"Philippe Martin, Brion Vibber (support des favicons)\n"
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
@@ -1014,7 +1010,7 @@ msgstr "Contributeurs"
 msgid "Translation"
 msgstr "Traduction"
 
-#: src/interface.c:3177 src/ui_feed.c:614
+#: src/interface.c:3177 src/ui_feed.c:610
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Entrer le nom d'utilisateur et le mot de passe pour \"%s\" (%s) :"
@@ -1233,7 +1229,7 @@ msgstr "couverture"
 #: src/net/cookies.c:186
 #, c-format
 msgid "Cookie for %s has expired!"
-msgstr ""
+msgstr "Le cookie pour %s a expiré !"
 
 #: src/net/netio.c:606
 msgid "URL points to permanent redirect, updating with new location..."
@@ -1335,7 +1331,7 @@ msgstr "n'est pas positionné"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Fichier pixmap %s introuvable."
 
-#: src/ui_feed.c:62
+#: src/ui_feed.c:61
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -1344,93 +1340,93 @@ msgstr ""
 "nom d'utilisateur et votre mot de passe dans la boîte de dialogue des "
 "propriétés de ce flux."
 
-#: src/ui_feed.c:64
+#: src/ui_feed.c:63
 msgid "Payment Required"
 msgstr "Paiement nécessaire"
 
-#: src/ui_feed.c:65
+#: src/ui_feed.c:64
 msgid "Access Forbidden"
 msgstr "Accès interdit"
 
-#: src/ui_feed.c:66
+#: src/ui_feed.c:65
 msgid "Resource Not Found"
 msgstr "Ressource introuvable"
 
-#: src/ui_feed.c:67
+#: src/ui_feed.c:66
 msgid "Method Not Allowed"
 msgstr "Méthode interdite"
 
-#: src/ui_feed.c:68
+#: src/ui_feed.c:67
 msgid "Not Acceptable"
 msgstr "Non acceptable"
 
-#: src/ui_feed.c:69
+#: src/ui_feed.c:68
 msgid "Proxy Authentication Required"
 msgstr "Authentification par proxy exigée"
 
-#: src/ui_feed.c:70
+#: src/ui_feed.c:69
 msgid "Request Time-Out"
 msgstr "Délai de la requête expiré"
 
-#: src/ui_feed.c:71
+#: src/ui_feed.c:70
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Parti. La ressource n'existe pas. Veuillez vous désabonner !"
 
-#: src/ui_feed.c:76
+#: src/ui_feed.c:75
 msgid "URL is invalid"
 msgstr "L'URL est invalide"
 
-#: src/ui_feed.c:79
+#: src/ui_feed.c:78
 msgid "Error connecting to remote host"
 msgstr "Erreur de connexion à la machine distante"
 
-#: src/ui_feed.c:80
+#: src/ui_feed.c:79
 msgid "Hostname could not be found"
 msgstr "Le nom de la machine n'a pas pu être trouvé"
 
-#: src/ui_feed.c:81
+#: src/ui_feed.c:80
 msgid "Network connection was refused by the remote host"
 msgstr "La connexion réseau a été refusée par la machine distante"
 
-#: src/ui_feed.c:82
+#: src/ui_feed.c:81
 msgid "Remote host did not finish sending data"
 msgstr "La machine distante n'a pas fini d'envoyer ses données"
 
 #. Transfer errors
-#: src/ui_feed.c:84
+#: src/ui_feed.c:83
 msgid "Too many HTTP redirects were encountered"
 msgstr "Trop de redirections HTTP ont été rencontrées"
 
-#: src/ui_feed.c:87
+#: src/ui_feed.c:86
 msgid "Remote host sent an invalid response"
 msgstr "La machine distante a envoyé une réponse invalide"
 
-#: src/ui_feed.c:94
+#: src/ui_feed.c:93
 msgid "Authentication failed"
 msgstr "L'authentification a échoué"
 
-#: src/ui_feed.c:96
+#: src/ui_feed.c:95
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Méthode d'authentification du serveur web incompatible avec Liferea"
 
-#: src/ui_feed.c:102
+#: src/ui_feed.c:101
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Flux non disponible : le serveur a demandé une redirection non supportée !"
 
-#: src/ui_feed.c:103
+#: src/ui_feed.c:102
 msgid "Client Error"
 msgstr "Erreur du client"
 
-#: src/ui_feed.c:104
+#: src/ui_feed.c:103
 msgid "Server Error"
 msgstr "Erreur du serveur"
 
-#: src/ui_feed.c:105
+#: src/ui_feed.c:104
 msgid "(unknown networking error happened)"
 msgstr "(une erreur réseau inconnue s'est produite)"
 
-#: src/ui_feed.c:127
+#: src/ui_feed.c:126
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1438,22 +1434,22 @@ msgstr ""
 "Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
 "vérifier l'URL et la sortie sur la console."
 
-#: src/ui_feed.c:161
+#: src/ui_feed.c:159
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" a cessé d'exister. Liferea ne le mettra plus à jour !"
 
-#: src/ui_feed.c:163
+#: src/ui_feed.c:161
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour"
 
-#: src/ui_feed.c:171
+#: src/ui_feed.c:169
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "L'URL de \"%s\" a changé définitivement et a été mise à jour"
 
-#: src/ui_feed.c:183
+#: src/ui_feed.c:181
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -1464,34 +1460,33 @@ msgstr ""
 "source pointe vraiment vers une ressource fournie dans un des formats "
 "supportés !</p>%s"
 
-#: src/ui_feed.c:202
+#: src/ui_feed.c:200
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" mis à jour..."
 
-#: src/ui_feed.c:211
+#: src/ui_feed.c:209
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" n'est pas disponible"
 
-#: src/ui_feed.c:556
+#: src/ui_feed.c:552
 msgid "Choose File"
 msgstr "Choisir un fichier"
 
-#: src/ui_feed.c:615
+#: src/ui_feed.c:611
 msgid "Unknown source"
 msgstr "Source inconnue"
 
-#: src/ui_feed.c:717
+#: src/ui_feed.c:713
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
-"Le fournisseur de ce flux suggère un intervalle de rafraîchissement de %d "
-"minutes."
+"Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
 
-#: src/ui_feed.c:719
+#: src/ui_feed.c:715
 msgid "This feed specifies no default update interval."
-msgstr "Ce flux ne spécifie aucun intervalle de rafraîchissement."
+msgstr "Ce flux ne spécifie aucun intervalle de mise à jour."
 
 #: src/ui_feedlist.c:435
 msgid "You have to select a feed entry"
@@ -1626,16 +1621,16 @@ msgstr ""
 "débuggage !"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:341
+#: src/ui_htmlview.c:346
 msgid "This item does not have a link assigned!"
 msgstr "Cet élément n'a pas de lien assigné !"
 
-#: src/ui_htmlview.c:385 src/ui_htmlview.c:415
+#: src/ui_htmlview.c:390 src/ui_htmlview.c:420
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "La commande du navigateur a échoué : %s"
 
-#: src/ui_htmlview.c:387 src/ui_htmlview.c:417
+#: src/ui_htmlview.c:392 src/ui_htmlview.c:422
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Exécution de : \"%s\""
@@ -1772,17 +1767,17 @@ msgstr ""
 "li><li><p><b>Mettre à jour un abonnement</b> - Ceci mettra à jour "
 "l'abonnement sélectionné. Vous le ferez si vous voulez vérifier "
 "immédiatement les mises à jour d'un abonnement. D'habitude, il est suffisant "
-"de se baser sur la mise à jour automatique, suivant l'intervalle de "
-"rafraîchissement de l'abonnement.</p></li><li><p><b>Mettre à jour le tout</"
-"b> - Ceci mettra à jour tous vos abonnements à la fois. Encore une fois, il "
-"est généralement suffisant de se baser sur la mise à jour automatique.</p></"
+"de se baser sur la mise à jour automatique, suivant l'intervalle de mise à "
+"jour de l'abonnement.</p></li><li><p><b>Mettre à jour le tout</b> - Ceci "
+"mettra à jour tous vos abonnements à la fois. Encore une fois, il est "
+"généralement suffisant de se baser sur la mise à jour automatique.</p></"
 "li><li><p><b>Éditer les propriétés d'un abonnement</b> - Vous voudrez "
-"parfois changer l'intervalle de rafraîchissement, le titre, "
-"l'authentification ou les propriétés liées au cache d'un abonnement.</p></"
-"li></ul><p>Pour en savoir plus sur Liferea, vous pouvez lire la "
-"documentation fournie dans le flux d'aide ou dans la <a href=\"http://"
-"liferea.sourceforge.net/faq.php\">FAQ</a> disponible sur la <a href=\"http://"
-"liferea.sf.net\">page web du projet</a>.</p>"
+"parfois changer l'intervalle de mise à jour, le titre, l'authentification ou "
+"les propriétés liées au cache d'un abonnement.</p></li></ul><p>Pour en "
+"savoir plus sur Liferea, vous pouvez lire la documentation fournie dans le "
+"flux d'aide ou dans la <a href=\"http://liferea.sourceforge.net/faq.php"
+"\">FAQ</a> disponible sur la <a href=\"http://liferea.sf.net\">page web du "
+"projet</a>.</p>"
 
 #: src/ui_mainwindow.c:271
 msgid "Liferea is now online"
@@ -1939,7 +1934,7 @@ msgstr "Mise à jour de tous les flux"
 
 #: src/ui_prefs.c:236
 msgid "Reset feed update timers (Update no feeds)"
-msgstr "Mise à zéro des compteurs de rafraîchissement (pas de mise à jour)"
+msgstr "Remise à zéro des compteurs de mise à jour (pas de mise à jour)"
 
 #: src/ui_search.c:69
 #, c-format
@@ -1951,9 +1946,8 @@ msgid "Please do a search first!"
 msgstr "Veuillez d'abord faire une recherche !"
 
 #: src/ui_tabs.c:104
-#, fuzzy
 msgid "URL"
-msgstr "_URL"
+msgstr "URL"
 
 #: src/ui_tray.c:90
 #, c-format
@@ -1981,13 +1975,18 @@ msgstr "Erreur : impossible d'ouvrir le fichier \"%s\""
 msgid "Error: There is no file \"%s\""
 msgstr "Erreur : il n'y a pas de fichier \"%s\""
 
-#: src/gtkhtml2/gtkhtml2.c:225
+#: src/gtkhtml2/gtkhtml2.c:224
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
 "La balise HTML <object> incluse n'est pas supportée par GtkHTML2.\n"
 "Les plugins inclus peuvent ne pas s'afficher."
+
+#~ msgid "If a folder is selected show the items of all child feeds."
+#~ msgstr ""
+#~ "Si un dossier est sélectionné, montrer les éléments de tous les flux "
+#~ "enfants."
 
 #~ msgid "Filter Feeds Without Unread Headlines"
 #~ msgstr "Filtrer les flux sans titres non lus"
@@ -2004,45 +2003,6 @@ msgstr ""
 #~ msgid "External Browser"
 #~ msgstr "Navigateur externe"
 
-#~ msgid "ERROR: zlib_uncompress: %d %s\n"
-#~ msgstr "ERREUR : zlib_uncompress : %d %s\n"
-
-#~ msgid "ERROR: No output during decompression"
-#~ msgstr "ERREUR : Pas de sortie pendant la décompression"
-
-#~ msgid "ERROR: Invalid magic bytes for GZIP data"
-#~ msgstr "ERREUR : Octets magiques invalides pour les données GZIP"
-
-#~ msgid "ERROR: Compression method is not deflate"
-#~ msgstr "ERREUR : La méthode de compression n'est pas deflate"
-
-#~ msgid "ERROR: Unsupported flags %d\n"
-#~ msgstr "ERREUR : Marqueurs non supportés : %d\n"
-
-#~ msgid "Liferea 0.6.1"
-#~ msgstr "Liferea 0.6.1"
-
-#~ msgid "No description available."
-#~ msgstr "Aucune description disponible."
-
-#~ msgid ""
-#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-#~ "\">When Liferea starts for the first time it loads a localized default "
-#~ "feed list. There are already default lists for English, French, German "
-#~ "and Spanish. If you think you know a good set of default feeds for your "
-#~ "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-"
-#~ "devel@lists.sourceforge.net\">mailing list</a> and it will be included in "
-#~ "the next release!</div>"
-#~ msgstr ""
-#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-#~ "\">Quand Liferea est exécuté pour la première fois, il charge une liste "
-#~ "localisée de flux par défaut. Il y a déjà des listes par défaut pour "
-#~ "l'anglais, le français, l'allemand et l'espagnol. Si vous pensez "
-#~ "connaître une bonne liste de flux par défaut pour votre langue, veuillez "
-#~ "la poster (peut-être en OPML) dans la <a href=\"mailto:liferea-"
-#~ "devel@lists.sourceforge.net\">liste de diffusion</a> et elle sera incluse "
-#~ "dans la prochaine version !</div>"
-
 #~ msgid "RSS namespace %s not yet configured! Activating...\n"
 #~ msgstr "Espace de nommage RSS %s non configuré ! Activation...\n"
 
@@ -2051,6 +2011,9 @@ msgstr ""
 
 #~ msgid "Liferea SF News"
 #~ msgstr "Infos Liferea SF"
+
+#~ msgid "Liferea 0.6.1"
+#~ msgstr "Liferea 0.6.1"
 
 #~ msgid "<b>Conversion Filter</b>"
 #~ msgstr "<b>Filtre de conversion</b>"
@@ -2087,6 +2050,42 @@ msgstr ""
 #~ "Alekseev Vladimir <compress@linux-online.ru>\n"
 #~ "Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
 #~ "Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
+
+#~ msgid "No description available."
+#~ msgstr "Aucune description disponible."
+
+#~ msgid "ERROR: zlib_uncompress: %d %s\n"
+#~ msgstr "ERREUR : zlib_uncompress : %d %s\n"
+
+#~ msgid "ERROR: No output during decompression"
+#~ msgstr "ERREUR : Pas de sortie pendant la décompression"
+
+#~ msgid "ERROR: Invalid magic bytes for GZIP data"
+#~ msgstr "ERREUR : Octets magiques invalides pour les données GZIP"
+
+#~ msgid "ERROR: Compression method is not deflate"
+#~ msgstr "ERREUR : La méthode de compression n'est pas deflate"
+
+#~ msgid "ERROR: Unsupported flags %d\n"
+#~ msgstr "ERREUR : Marqueurs non supportés : %d\n"
+
+#~ msgid ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+#~ "\">When Liferea starts for the first time it loads a localized default "
+#~ "feed list. There are already default lists for English, French, German "
+#~ "and Spanish. If you think you know a good set of default feeds for your "
+#~ "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-"
+#~ "devel@lists.sourceforge.net\">mailing list</a> and it will be included in "
+#~ "the next release!</div>"
+#~ msgstr ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
+#~ "\">Quand Liferea est exécuté pour la première fois, il charge une liste "
+#~ "localisée de flux par défaut. Il y a déjà des listes par défaut pour "
+#~ "l'anglais, le français, l'allemand et l'espagnol. Si vous pensez "
+#~ "connaître une bonne liste de flux par défaut pour votre langue, veuillez "
+#~ "la poster (peut-être en OPML) dans la <a href=\"mailto:liferea-"
+#~ "devel@lists.sourceforge.net\">liste de diffusion</a> et elle sera incluse "
+#~ "dans la prochaine version !</div>"
 
 #~ msgid "internal error! could not get feed tree view selection!\n"
 #~ msgstr ""
