@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-25 01:22+0100\n"
+"POT-Creation-Date: 2003-12-25 23:55+0100\n"
 "PO-Revision-Date: 2003-12-14 09:00+0100\n"
 "Last-Translator: Lars Lindner <lars.linder@gmx.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,58 +30,56 @@ msgstr ""
 "nicht auf alle Programmfunktionen zugegriffenwerden. Deshalb werde ich die "
 "Toolbar wieder aktivieren!"
 
-#: src/callbacks.c:177
+#: src/callbacks.c:178
 msgid "entry list widget lookup failed!\n"
 msgstr "entry list widget lookup failed!\n"
 
-#: src/callbacks.c:182
+#: src/callbacks.c:183
 msgid "could not retrieve selection of entry list!"
 msgstr "could not retrieve selection of entry list!"
 
-#: src/callbacks.c:198
+#: src/callbacks.c:199
 msgid "fatal! selected feed entry has no key!!!"
 msgstr "fatal! selected feed entry has no key!!!"
 
-#: src/callbacks.c:224
-#, fuzzy
+#: src/callbacks.c:225
 msgid "internal error! could not reset HTML widget scrolling!"
-msgstr "internal error! could not find feed tree view widget!\n"
+msgstr ""
 
-#: src/callbacks.c:260 src/callbacks.c:398 src/callbacks.c:436
+#: src/callbacks.c:261 src/callbacks.c:399 src/callbacks.c:446
 msgid "You have to select a feed entry!"
 msgstr "Es muß ein Feed ausgewählt werden!"
 
-#: src/callbacks.c:404
+#: src/callbacks.c:405
 msgid "You can't delete help feeds!"
 msgstr "Hilfe Feeds können nicht gelöscht werden!"
 
-#: src/callbacks.c:408
+#: src/callbacks.c:409
 msgid "Deleting entry"
 msgstr "Lösche Feed"
 
-#: src/callbacks.c:418
+#: src/callbacks.c:419
 msgid "It seems like there is no selected feed entry!"
 msgstr "Da scheint kein Feed ausgewählt worden zu sein!"
 
-#: src/callbacks.c:471
+#: src/callbacks.c:478
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr "Der Provider dieses Feeds gibt ein Update-Interval von %d Minuten vor."
 
-#: src/callbacks.c:473
+#: src/callbacks.c:480
 msgid "This feed specifies no default update interval."
 msgstr "Diese Feed hat kein Default-Update-Intervall"
 
-#: src/callbacks.c:516
+#: src/callbacks.c:523
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr "Internal error! No feed selected, but property change requested...\n"
 
-#: src/callbacks.c:571
-#, fuzzy
+#: src/callbacks.c:578
 msgid "internal error! could not select newly created treestore iter!"
-msgstr "internal error! could not get a new folder key!"
+msgstr ""
 
-#: src/callbacks.c:588
+#: src/callbacks.c:594
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -94,100 +92,99 @@ msgstr ""
 "\n"
 " Möglicherweise ist die URL ungültig oder das Feed ist vorübergehend nicht "
 "verfügbar. Versuchen Sie entweder das Feed später zu aktualisieren oder "
-"löschen Sie das Abonnement über das Kontextmenü aus der Feed-Liste.\n"
+"löschen Sie das Feed über das Kontextmenü aus der Feed-Liste.\n"
 
-#: src/callbacks.c:642
+#: src/callbacks.c:651
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr "internal error! invalid type selected! This should never happen!\n"
 
-#: src/callbacks.c:672 src/export.c:220 src/export.c:233
+#: src/callbacks.c:681 src/export.c:220 src/export.c:233
 msgid "internal error! could not find file dialog select button!"
 msgstr "internal error! could not find file dialog select button!"
 
-#: src/callbacks.c:702 src/export.c:123
+#: src/callbacks.c:711 src/export.c:123
 msgid "internal error! could not get a new folder key!"
 msgstr "internal error! could not get a new folder key!"
 
-#: src/callbacks.c:711 src/callbacks.c:751
+#: src/callbacks.c:720 src/callbacks.c:760
 msgid "You have to select a folder entry!"
 msgstr "Sie müssen einen Ordner auswählen!"
 
-#: src/callbacks.c:777 src/callbacks.c:780
+#: src/callbacks.c:786 src/callbacks.c:789
 msgid "A folder must be empty to delete it!"
 msgstr "Ein Ordner muß leer sein um gelöscht zu werden!"
 
-#: src/callbacks.c:783
+#: src/callbacks.c:792
 msgid "Error: Cannot determine folder key!"
 msgstr "Error: Cannot determine folder key!"
 
-#: src/callbacks.c:825 src/callbacks.c:969
+#: src/callbacks.c:834 src/callbacks.c:986
 msgid "could not retrieve selection of item list!"
 msgstr "could not retrieve selection of item list!"
 
-#: src/callbacks.c:858
+#: src/callbacks.c:870
 msgid "item list widget lookup failed!\n"
 msgstr "item list widget lookup failed!\n"
 
-#: src/callbacks.c:868
+#: src/callbacks.c:880
 msgid "could not retrieve selection of item list!\n"
 msgstr "could not retrieve selection of item list!\n"
 
-#: src/callbacks.c:964
+#: src/callbacks.c:981
 msgid "could not find item list widget!"
 msgstr "could not find item list widget!"
 
-#: src/callbacks.c:1080 src/callbacks.c:1121
+#: src/callbacks.c:1097 src/callbacks.c:1138
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "internal error! could not get feed tree view selection!\n"
 
-#: src/callbacks.c:1082 src/callbacks.c:1123
+#: src/callbacks.c:1099 src/callbacks.c:1140
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr "internal error! could not find feed tree view widget!\n"
 
-#: src/callbacks.c:1150
+#: src/callbacks.c:1167
 msgid "There are no unread items!"
 msgstr "Es gibt keine ungelesenen Items!"
 
-#: src/callbacks.c:1170
-#, fuzzy
+#: src/callbacks.c:1187
 msgid "You have to select a feed to delete its items!"
-msgstr "Es muß ein Feed ausgewählt werden!"
+msgstr "Zum Löschen der Items muß ein Feed ausgewählt werden!"
 
-#: src/callbacks.c:1278
+#: src/callbacks.c:1295
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "internal error! unknown entry type! cannot display appropriate icon!\n"
 
-#: src/callbacks.c:1421
+#: src/callbacks.c:1438
 msgid "Date"
 msgstr "Datum"
 
-#: src/callbacks.c:1429
+#: src/callbacks.c:1446
 msgid "Headline"
 msgstr "Schlagzeile"
 
-#: src/callbacks.c:1528
+#: src/callbacks.c:1545
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualisiert.."
 
-#: src/callbacks.c:1536
+#: src/callbacks.c:1553
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 "Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert."
 
-#: src/callbacks.c:1555
-#, fuzzy, c-format
+#: src/callbacks.c:1572
+#, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr ""
-"Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert."
+"\"%s\" hat sich seit dem letzten Update nicht verändert."
 
-#: src/callbacks.c:1559
+#: src/callbacks.c:1576
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" ist nicht verfügbar!"
 
-#: src/callbacks.c:1683
+#: src/callbacks.c:1700
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr "internal error! item list display for NULL pointer requested!\n"
 
@@ -201,7 +198,7 @@ msgstr "internal error: XML document pointer NULL! This should not happen!\n"
 
 #: src/cdf_channel.c:172 src/opml.c:133 src/pie_feed.c:222
 #: src/rss_channel.c:344
-#, fuzzy, c-format
+#, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "XML Fehler beim Lesen des Feeds! Feed \"%s\" konnte nicht geladen werden!"
@@ -235,14 +232,13 @@ msgstr ""
 "Interner Fehler! Fehler bei Zeitkonvertierung! mktime fehlgeschlagen!\n"
 
 #: src/common.c:266
-#, fuzzy
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
-msgstr "Ungültiges Datumsformat! Ignoriere <dc:date> Informationen!\n"
+msgstr "Ungültiges ISO8601 Datumsformat! Ignoriere <dc:date> Informationen!\n"
 
 #: src/common.c:311
 #, fuzzy
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
-msgstr "Ungültiges Datumsformat! Ignoriere <dc:date> Informationen!\n"
+msgstr "Ungültiges RFC822 Datumsformat! Ignoriere <dc:date> Informationen!\n"
 
 #: src/common.c:379
 #, c-format
@@ -344,7 +340,7 @@ msgid "imported feed list"
 msgstr "importierte Feeds"
 
 #: src/export.c:132 src/feed.c:295
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "XML error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
@@ -452,7 +448,6 @@ msgstr ""
 "gefunden werden!!!"
 
 #: src/interface.c:132
-#, fuzzy
 msgid "Liferea 0.4.6"
 msgstr ""
 
@@ -465,7 +460,6 @@ msgid "_Import Feed List"
 msgstr "Feed-Liste _Importieren"
 
 #: src/interface.c:153
-#, fuzzy
 msgid "Imports an OPML feed list."
 msgstr "Importiert eine Feed-Liste aus einer OPML Datei."
 
@@ -474,7 +468,6 @@ msgid "_Export Feed List"
 msgstr "Feed-Liste _Exportieren"
 
 #: src/interface.c:162
-#, fuzzy
 msgid "Export the feed list as OPML."
 msgstr "Exportiert eine Feed-Liste als OPML Datei."
 
@@ -496,7 +489,7 @@ msgstr "_Neues Abonnement"
 
 #: src/interface.c:211
 msgid "_Delete Feed"
-msgstr "Feed _löschen"
+msgstr "Abonnement _löschen"
 
 #: src/interface.c:219
 msgid "_Edit Properties"
@@ -516,7 +509,7 @@ msgstr "Ordner _löschen"
 
 #: src/interface.c:250
 msgid "_Edit Folder Name"
-msgstr "Name des Ordners ändern"
+msgstr "N_ame des Ordners ändern"
 
 #: src/interface.c:263
 msgid "_Update All"
@@ -524,7 +517,7 @@ msgstr "_Alle aktualisieren"
 
 #: src/interface.c:266
 msgid "Immediately updates all feeds (excluding directories)."
-msgstr "Sofortiges Aktualisieren aller Feeds (ausgenommen alle Verzeichnisse)"
+msgstr "Sofortiges Aktualisieren aller Feeds (ausgenommen alle Verzeichnisse)."
 
 #: src/interface.c:275
 msgid "_Items"
@@ -539,17 +532,16 @@ msgid "Marks all items of the current feed as read."
 msgstr "Markiert alle Items des ausgewählten Feed als gelesen."
 
 #: src/interface.c:290
-#, fuzzy
 msgid "_Next Unread Item"
-msgstr "Nächstes ungelesenes Item"
+msgstr "Nächstes _ungelesenes Item"
 
 #: src/interface.c:293
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
 msgstr ""
-"Springt zum nächsten ungelesenen Item, wenn nötig wird das nächste "
-"Feed mit ungelesenen Items angewählt."
+"Springt zum nächsten ungelesenen Item, wenn nötig wird das nächste Feed mit "
+"ungelesenen Items angewählt."
 
 #: src/interface.c:302
 msgid "Toggle _Read Status"
@@ -564,7 +556,6 @@ msgid "Toggle Item _Flag"
 msgstr "Item _Flag setzen"
 
 #: src/interface.c:313
-#, fuzzy
 msgid "Toggles the item flag."
 msgstr "Item _Flag setzen"
 
@@ -593,8 +584,8 @@ msgid ""
 "Toggle the view mode from the three paned item list to the two paned "
 "condensed view."
 msgstr ""
-"Ändert den Ansichtsmodus von der dreigeteilten Ansicht zu "
-"zweigeteilten und umgekehrt."
+"Ändert den Ansichtsmodus von der dreigeteilten Ansicht zu zweigeteilten und "
+"umgekehrt."
 
 #: src/interface.c:350 src/interface.c:443
 msgid "Search"
@@ -621,7 +612,6 @@ msgid "Update feeds"
 msgstr "Aktualisieren der Feeds"
 
 #: src/interface.c:399
-#, fuzzy
 msgid "Next Unread"
 msgstr "Nächstes ungelesenes Item"
 
@@ -842,7 +832,6 @@ msgid "Feed Handling"
 msgstr "Feed Einstellungen"
 
 #: src/interface.c:1370
-#, fuzzy
 msgid ""
 "Show a status icon in the notification area \n"
 "(also called system tray). Changes of this setting\n"
@@ -1090,11 +1079,11 @@ msgid "no namespace handler for <%s:%s>!\n"
 msgstr ""
 
 #: src/ocs_dir.c:492
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "XML error while reading directory! Directory \"%s\" could not be loaded!"
 msgstr ""
-"XML Fehler beim Lesen des Feeds! Feed \"%s\" konnte nicht geladen werden!"
+"XML Fehler beim Lesen des Verzeichnisses! Das Verzeichnis \"%s\" konnte nicht geladen werden!"
 
 #: src/ocs_dir.c:498 src/opml.c:139 src/rss_channel.c:352
 msgid "Empty document!"
@@ -1134,13 +1123,95 @@ msgid "comments"
 msgstr ""
 
 #: src/ui_filter.c:61
-#, fuzzy
 msgid "Rule Type"
 msgstr "Regeltyp"
 
 #: src/ui_filter.c:64
 msgid "Value"
 msgstr ""
+
+#: src/ui_popup.c:63
+msgid "could not allocate memory!"
+msgstr "Konnte Speicher nicht allokieren!"
+
+#: src/ui_popup.c:80
+msgid "/_Update Feed"
+msgstr "/Feed _aktualisieren"
+
+#: src/ui_popup.c:81 src/ui_popup.c:89 src/ui_popup.c:96 src/ui_popup.c:103
+#: src/ui_popup.c:109
+msgid "/_New"
+msgstr "/_Neu"
+
+#: src/ui_popup.c:82 src/ui_popup.c:90 src/ui_popup.c:97 src/ui_popup.c:104
+#: src/ui_popup.c:110
+msgid "/_New/New _Feed"
+msgstr "/_Neu/Neues _Abonnement"
+
+#: src/ui_popup.c:83 src/ui_popup.c:91 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:111
+msgid "/_New/New F_older"
+msgstr "/_Neu/_Neuer Ordner"
+
+#: src/ui_popup.c:84
+msgid "/_Delete Feed"
+msgstr "/Abonnement _löschen"
+
+#: src/ui_popup.c:85 src/ui_popup.c:93
+msgid "/_Properties"
+msgstr "/_Eigenschaften"
+
+#: src/ui_popup.c:88
+msgid "/_Update Directory"
+msgstr "/Verzeichnis _aktualisieren"
+
+#: src/ui_popup.c:92
+msgid "/_Delete Directory"
+msgstr "/_Lösche Verzeichnis"
+
+#: src/ui_popup.c:99
+msgid "/_Rename Folder"
+msgstr "/N_ame des Ordners ändern"
+
+#: src/ui_popup.c:100
+msgid "/_Delete Folder"
+msgstr "/Ordner _löschen"
+
+#: src/ui_popup.c:106
+msgid "/_Delete VFolder"
+msgstr "/VFolder _löschen"
+
+#: src/ui_popup.c:115
+msgid "/_Mark All As Read"
+msgstr "/Alle als gelesen _markieren"
+
+#: src/ui_popup.c:116
+msgid "/_Next Unread Item"
+msgstr "/Nächstes ungelesenes Item"
+
+#: src/ui_popup.c:118
+msgid "/_Launch Item In Browser"
+msgstr "/Im _Browser öffnen"
+
+#: src/ui_popup.c:120 src/ui_popup.c:126
+msgid "/_Toggle Condensed View"
+msgstr "/_Zusammengefaßte Ansicht an oder aus"
+
+#: src/ui_popup.c:128
+msgid "/Zoom In"
+msgstr "/Hineinzoomen"
+
+#: src/ui_popup.c:129
+msgid "/Zoom Out"
+msgstr "/Herauszoomen"
+
+#: src/ui_popup.c:132
+msgid "/_Copy Link Location"
+msgstr "/Link kopieren"
+
+#: src/ui_popup.c:133
+msgid "/_Subscribe"
+msgstr "/Abonnieren"
 
 #: src/ui_search.c:74
 #, c-format
@@ -1179,14 +1250,15 @@ msgstr "%d neue Items!"
 msgid "No new items."
 msgstr "Keine neuen Items."
 
+#: src/ui_dnd.c:78
+msgid "Sorry Liferea does not yet support drag&drop of folders!"
+msgstr ""
+"Tut mir leid. Im Augenblick wird das Drag&Drop von Ordnern nicht unterstützt!"
+
+#: src/ui_dnd.c:87
+msgid "you cannot modify the special help folder contents!"
+msgstr "Die Eigenschaften des Hilfe-Ordners können nicht geändert werden!"
+
 #: src/update.c:140
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr ""
-
-#~ msgid "Sorry Liferea does not yet support drag&drop of folders!"
-#~ msgstr ""
-#~ "Tut mir leid. Im Augenblick wird das Drag&Drop von Ordnern nicht "
-#~ "unterstützt!"
-
-#~ msgid "you cannot modify the special help folder contents!"
-#~ msgstr "Die Eigenschaften des Hilfe-Ordners können nicht geändert werden!"

@@ -20,6 +20,7 @@
 
 #include "feed.h"
 #include "folder.h"
+#include "support.h"
 #include "callbacks.h"
 #include "ui_popup.h"
 
@@ -32,109 +33,121 @@ extern gboolean itemlist_mode;
 /*------------------------------------------------------------------------------*/
 
 /* feed list menues */
+static gint feed_menu_len = 0;
+static GtkItemFactoryEntry *feed_menu_items;
+static gint dir_menu_len = 0;
+static GtkItemFactoryEntry *dir_menu_items;
+static gint node_menu_len = 0;
+static GtkItemFactoryEntry *node_menu_items;
+static gint vfolder_menu_len = 0;
+static GtkItemFactoryEntry *vfolder_menu_items;
+static gint default_menu_len = 0;
+static GtkItemFactoryEntry *default_menu_items;
 
-static GtkItemFactoryEntry feedentry_menu_items[] = {
-      {"/_Update Feed", 	NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH },
-      {"/_New",			NULL, 0, 				0, "<Branch>" },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },
-      {"/_Delete Feed",		NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE },
-      {"/_Properties",		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES },
-      { NULL }
-};
+/* item list menues */
+static gint item_menu_len = 0;
+static GtkItemFactoryEntry *item_menu_items;
+static gint html_menu_len = 0;
+static GtkItemFactoryEntry *html_menu_items;
+static gint url_menu_len = 0;
+static GtkItemFactoryEntry *url_menu_items;
 
-static GtkItemFactoryEntry ocsentry_menu_items[] = {
-      {"/_Update Directory",	NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH },
-      {"/_New",			NULL, 0, 				0, "<Branch>",	  GTK_STOCK_NEW },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },      
-      {"/_Delete Directory",	NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE },
-      {"/_Properties",		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES },
-      { NULL }
-};
+static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *path, gchar *acc, 
+			   GtkItemFactoryCallback cb, guint cb_action, gchar *item_type, gconstpointer extra_data) {
+			   
+	struct GtkItemFactoryEntry	*entry;
+	
+	(*menu_len)++;
+	*menu = (GtkItemFactoryEntry *)g_realloc(*menu, sizeof(GtkItemFactoryEntry)*(*menu_len));
+	if(NULL == (*menu)) {
+		g_error(_("could not allocate memory!"));
+		exit(1);
+	}
+	
+	(*menu + *menu_len - 1)->path 			= path;
+	(*menu + *menu_len - 1)->accelerator		= acc;
+	(*menu + *menu_len - 1)->callback		= cb;
+	(*menu + *menu_len - 1)->callback_action	= cb_action;
+	(*menu + *menu_len - 1)->item_type		= item_type;
+	(*menu + *menu_len - 1)->extra_data		= extra_data;
+}
 
-static GtkItemFactoryEntry node_menu_items[] = {
-      {"/_New",			NULL, 0, 				0, "<Branch>",	  GTK_STOCK_NEW },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },
-      {"/_Rename Folder",	NULL, on_popup_foldername_selected, 	0, "<StockItem>", GTK_STOCK_PROPERTIES },
-      {"/_Delete Folder", 	NULL, on_popup_removefolder_selected, 	0, "<StockItem>", GTK_STOCK_DELETE },
-      { NULL }
-};
+#define TOGGLE_CONDENSED_VIEW	"/Condensed View"
 
-static GtkItemFactoryEntry vfolder_menu_items[] = {
-      {"/_New",			NULL, 0, 				0, "<Branch>",	  GTK_STOCK_NEW },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },      
-      {"/_Delete VFolder",	NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE },
-      { NULL }
-};
+/* prepares the popup menues */
+void setupPopupMenues(void) {
 
-static GtkItemFactoryEntry default_menu_items[] = {
-      {"/_New",			NULL, 0, 				0, "<Branch>",	  GTK_STOCK_NEW },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 		0 },
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 	0 },
-      { NULL }
-};
+	/* feed list menues */
+	feed_menu_items = NULL;
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Update Feed"), 		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", 0);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Delete Feed"),		NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
+	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Properties"),		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
 
-/* item list menu */
+	dir_menu_items = NULL;
+	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_Update Directory"),		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
+	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
+	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
+	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_New/New F_older"), 		NULL, on_popup_newfolder_selected, 	0, NULL, 0);
+	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_Delete Directory"),		NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
+	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_Properties"),		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES);
 
-static GtkItemFactoryEntry item_menu_items[] = {
-      {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 		0, NULL },
-      {"/_Next Unread Item",		NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD },
-      {"/sep1",				NULL, NULL, 					0, "<Separator>" },
-      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 		0, NULL },
-      {"/sep2",				NULL, NULL, 					0, "<Separator>" },
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view_selected,	0, NULL }, 
+	node_menu_items = NULL;
+	addPopupOption(&node_menu_items, &node_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
+	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
+	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
+	addPopupOption(&node_menu_items, &node_menu_len, _("/_Rename Folder"),		NULL, on_popup_foldername_selected, 	0, "<StockItem>", GTK_STOCK_PROPERTIES);
+	addPopupOption(&node_menu_items, &node_menu_len, _("/_Delete Folder"), 		NULL, on_popup_removefolder_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
 
-/*      {"/sep2",				NULL, NULL, 					0, "<Separator>" },
-      {"/_Edit Filters",		NULL, on_popup_filter_selected, 		0, NULL },*/
-      { NULL }
-};
+	vfolder_menu_items = NULL;
+	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New"),		NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
+	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New _Feed"), 	NULL, on_newbtn_clicked, 		0, NULL, 0);
+	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
+	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_Delete VFolder"),	NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
 
-/* HTML view popup menues */
+	default_menu_items = NULL;
+	addPopupOption(&default_menu_items, &default_menu_len, _("/_New"),		NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
+	addPopupOption(&default_menu_items, &default_menu_len, _("/_New/New _Feed"), 	NULL, on_newbtn_clicked, 		0, NULL, 0);
+	addPopupOption(&default_menu_items, &default_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
+	
+	/* item list menues */
+	item_menu_items = NULL;
+	addPopupOption(&item_menu_items, &item_menu_len, _("/_Mark All As Read"),	NULL, on_popup_allunread_selected, 		0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),	NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
+	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/_Launch Item In Browser"), NULL, on_popup_launchitem_selected, 		0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, "/"	,			NULL, NULL, 					0, "<Separator>", 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _(TOGGLE_CONDENSED_VIEW),	NULL, on_popup_toggle_condensed_view,		0, "<ToggleItem>", 0);
+/*      {"/sep2",			NULL, NULL, 					0, "<Separator>" },
+    	{"/_Edit Filters",		NULL, on_popup_filter_selected, 		0, NULL },*/
 
-static GtkItemFactoryEntry htmlview_menu_items[] = {
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view_selected, 	0, NULL },
-      {"/sep1",				NULL, NULL, 					0, "<Separator>"}, 
-      {"/Zoom In",			NULL, on_popup_zoomin_selected,			0, NULL },
-      {"/Zoom Out",			NULL, on_popup_zoomout_selected,		0, NULL },
-      { NULL }
-};
-
-static GtkItemFactoryEntry url_menu_items[] = {
-      {"/_Copy Link Location",		NULL, on_popup_copy_url_selected,		0, NULL },
-      {"/_Subscribe",			NULL, on_popup_subscribe_url_selected, 		0, NULL },
-      { NULL }
-};
-
-static GtkItemFactoryEntry * menues[] = {	feedentry_menu_items,
-						ocsentry_menu_items,
-						node_menu_items,
-						vfolder_menu_items,
-						default_menu_items,
-						item_menu_items,
-						htmlview_menu_items,
-						url_menu_items
-	  	    		       };
+	/* HTML view popup menues */
+	html_menu_items = NULL;
+	addPopupOption(&html_menu_items, &html_menu_len, _("/Zoom In"),			NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
+	addPopupOption(&html_menu_items, &html_menu_len, _("/Zoom Out"),		NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
+	addPopupOption(&html_menu_items, &html_menu_len, "/",				NULL, NULL, 				0, "<Separator>", 0);
+	addPopupOption(&html_menu_items, &html_menu_len, _(TOGGLE_CONDENSED_VIEW),	NULL, on_popup_toggle_condensed_view, 	0, "<ToggleItem>", 0);
+	
+	url_menu_items = NULL;
+	addPopupOption(&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);
+	addPopupOption(&url_menu_items, &url_menu_len, _("/_Subscribe"),		NULL, on_popup_subscribe_url_selected, 		0, NULL, 0);
+}
 
 /* function to generate a generic menu specified by its number */
-GtkMenu *make_menu(gint nr) {
-	GtkWidget 		*menu;
+GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items) {
+	GtkWidget 		*menu, *toggle;
 	GtkItemFactory 		*item_factory;
-	gint 			nmenu_items = 0;
-	GtkItemFactoryEntry	*menu_items, *tmp;
 	
-	tmp = menu_items = menues[nr];
-	/* find out how many menu items there are */
-	while(NULL != (tmp->path)) {
-		nmenu_items++;
-		tmp ++;
-	}
-
 	item_factory = gtk_item_factory_new(GTK_TYPE_MENU, "<popup>", NULL);
 	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, NULL);
 	menu = gtk_item_factory_get_widget(item_factory, "<popup>");
+	
+	/* check if the itemlist toogle option is in the generated menu
+	   and set it appropiately */
+	if(NULL != (toggle = gtk_item_factory_get_item(item_factory, TOGGLE_CONDENSED_VIEW)))
+		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(toggle), !itemlist_mode);
 
 	return GTK_MENU(menu);
 }
@@ -145,12 +158,16 @@ GtkMenu *make_item_menu(void) {
 	GtkMenu 	*menu;
 	
 	if(TRUE == itemlist_mode)
-		menu = make_menu(ITEM_MENU);
+		menu = make_menu(item_menu_items, item_menu_len);
 	else
-		menu = make_menu(HTML_MENU);
+		menu = make_menu(html_menu_items, html_menu_len);
 
 	return menu;
 }
+
+/* popup menu generating functions for the HTML view */
+GtkMenu *make_html_menu(void) { return make_menu(html_menu_items, html_menu_len); }
+GtkMenu *make_url_menu(void) { return make_menu(url_menu_items, url_menu_len); }
 
 /* function to generate popup menus for the feed list depending
    on the type parameter. */
@@ -159,26 +176,26 @@ static GtkMenu *make_entry_menu(gint type) {
 	
 	switch(type) {
 		case FST_NODE:
-			menu = make_menu(NODE_MENU);
+			menu = make_menu(node_menu_items, node_menu_len);
 			break;
 		case FST_VFOLDER:
-			menu = make_menu(VFOLDER_MENU);
+			menu = make_menu(vfolder_menu_items, vfolder_menu_len);
 			break;
 		case FST_PIE:
 		case FST_RSS:
 		case FST_CDF:
 		case FST_HELPFEED:
-			menu = make_menu(STDFEED_MENU);
+			menu = make_menu(feed_menu_items, feed_menu_len);
 			break;
 		case FST_OPML:
 		case FST_OCS:
-			menu = make_menu(OCS_MENU);
+			menu = make_menu(dir_menu_items, dir_menu_len);
 			break;
 		case FST_EMPTY:
 			menu = NULL;
 			break;
 		default:
-			menu = make_menu(DEFAULT_MENU);
+			menu = make_menu(default_menu_items, default_menu_len);
 			break;
 	}
 	

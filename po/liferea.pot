@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-25 01:22+0100\n"
+"POT-Creation-Date: 2003-12-25 23:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,56 +27,56 @@ msgid ""
 "won't be able to access all program functions. I'll reenable the toolbar!"
 msgstr ""
 
-#: src/callbacks.c:177
+#: src/callbacks.c:178
 msgid "entry list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:182
+#: src/callbacks.c:183
 msgid "could not retrieve selection of entry list!"
 msgstr ""
 
-#: src/callbacks.c:198
+#: src/callbacks.c:199
 msgid "fatal! selected feed entry has no key!!!"
 msgstr ""
 
-#: src/callbacks.c:224
+#: src/callbacks.c:225
 msgid "internal error! could not reset HTML widget scrolling!"
 msgstr ""
 
-#: src/callbacks.c:260 src/callbacks.c:398 src/callbacks.c:436
+#: src/callbacks.c:261 src/callbacks.c:399 src/callbacks.c:446
 msgid "You have to select a feed entry!"
 msgstr ""
 
-#: src/callbacks.c:404
+#: src/callbacks.c:405
 msgid "You can't delete help feeds!"
 msgstr ""
 
-#: src/callbacks.c:408
+#: src/callbacks.c:409
 msgid "Deleting entry"
 msgstr ""
 
-#: src/callbacks.c:418
+#: src/callbacks.c:419
 msgid "It seems like there is no selected feed entry!"
 msgstr ""
 
-#: src/callbacks.c:471
+#: src/callbacks.c:478
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr ""
 
-#: src/callbacks.c:473
+#: src/callbacks.c:480
 msgid "This feed specifies no default update interval."
 msgstr ""
 
-#: src/callbacks.c:516
+#: src/callbacks.c:523
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 
-#: src/callbacks.c:571
+#: src/callbacks.c:578
 msgid "internal error! could not select newly created treestore iter!"
 msgstr ""
 
-#: src/callbacks.c:588
+#: src/callbacks.c:594
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -86,95 +86,95 @@ msgid ""
 "the feed list.\n"
 msgstr ""
 
-#: src/callbacks.c:642
+#: src/callbacks.c:651
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 
-#: src/callbacks.c:672 src/export.c:220 src/export.c:233
+#: src/callbacks.c:681 src/export.c:220 src/export.c:233
 msgid "internal error! could not find file dialog select button!"
 msgstr ""
 
-#: src/callbacks.c:702 src/export.c:123
+#: src/callbacks.c:711 src/export.c:123
 msgid "internal error! could not get a new folder key!"
 msgstr ""
 
-#: src/callbacks.c:711 src/callbacks.c:751
+#: src/callbacks.c:720 src/callbacks.c:760
 msgid "You have to select a folder entry!"
 msgstr ""
 
-#: src/callbacks.c:777 src/callbacks.c:780
+#: src/callbacks.c:786 src/callbacks.c:789
 msgid "A folder must be empty to delete it!"
 msgstr ""
 
-#: src/callbacks.c:783
+#: src/callbacks.c:792
 msgid "Error: Cannot determine folder key!"
 msgstr ""
 
-#: src/callbacks.c:825 src/callbacks.c:969
+#: src/callbacks.c:834 src/callbacks.c:986
 msgid "could not retrieve selection of item list!"
 msgstr ""
 
-#: src/callbacks.c:858
+#: src/callbacks.c:870
 msgid "item list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:868
+#: src/callbacks.c:880
 msgid "could not retrieve selection of item list!\n"
 msgstr ""
 
-#: src/callbacks.c:964
+#: src/callbacks.c:981
 msgid "could not find item list widget!"
 msgstr ""
 
-#: src/callbacks.c:1080 src/callbacks.c:1121
+#: src/callbacks.c:1097 src/callbacks.c:1138
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/callbacks.c:1082 src/callbacks.c:1123
+#: src/callbacks.c:1099 src/callbacks.c:1140
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 
-#: src/callbacks.c:1150
+#: src/callbacks.c:1167
 msgid "There are no unread items!"
 msgstr ""
 
-#: src/callbacks.c:1170
+#: src/callbacks.c:1187
 msgid "You have to select a feed to delete its items!"
 msgstr ""
 
-#: src/callbacks.c:1278
+#: src/callbacks.c:1295
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 
-#: src/callbacks.c:1421
+#: src/callbacks.c:1438
 msgid "Date"
 msgstr ""
 
-#: src/callbacks.c:1429
+#: src/callbacks.c:1446
 msgid "Headline"
 msgstr ""
 
-#: src/callbacks.c:1528
+#: src/callbacks.c:1545
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: src/callbacks.c:1536
+#: src/callbacks.c:1553
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 
-#: src/callbacks.c:1555
+#: src/callbacks.c:1572
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr ""
 
-#: src/callbacks.c:1559
+#: src/callbacks.c:1576
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr ""
 
-#: src/callbacks.c:1683
+#: src/callbacks.c:1700
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr ""
 
@@ -1076,6 +1076,89 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
+#: src/ui_popup.c:63
+msgid "could not allocate memory!"
+msgstr ""
+
+#: src/ui_popup.c:80
+msgid "/_Update Feed"
+msgstr ""
+
+#: src/ui_popup.c:81 src/ui_popup.c:89 src/ui_popup.c:96 src/ui_popup.c:103
+#: src/ui_popup.c:109
+msgid "/_New"
+msgstr ""
+
+#: src/ui_popup.c:82 src/ui_popup.c:90 src/ui_popup.c:97 src/ui_popup.c:104
+#: src/ui_popup.c:110
+msgid "/_New/New _Feed"
+msgstr ""
+
+#: src/ui_popup.c:83 src/ui_popup.c:91 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:111
+msgid "/_New/New F_older"
+msgstr ""
+
+#: src/ui_popup.c:84
+msgid "/_Delete Feed"
+msgstr ""
+
+#: src/ui_popup.c:85 src/ui_popup.c:93
+msgid "/_Properties"
+msgstr ""
+
+#: src/ui_popup.c:88
+msgid "/_Update Directory"
+msgstr ""
+
+#: src/ui_popup.c:92
+msgid "/_Delete Directory"
+msgstr ""
+
+#: src/ui_popup.c:99
+msgid "/_Rename Folder"
+msgstr ""
+
+#: src/ui_popup.c:100
+msgid "/_Delete Folder"
+msgstr ""
+
+#: src/ui_popup.c:106
+msgid "/_Delete VFolder"
+msgstr ""
+
+#: src/ui_popup.c:115
+msgid "/_Mark All As Read"
+msgstr ""
+
+#: src/ui_popup.c:116
+msgid "/_Next Unread Item"
+msgstr ""
+
+#: src/ui_popup.c:118
+msgid "/_Launch Item In Browser"
+msgstr ""
+
+#: src/ui_popup.c:120 src/ui_popup.c:126
+msgid "/_Toggle Condensed View"
+msgstr ""
+
+#: src/ui_popup.c:128
+msgid "/Zoom In"
+msgstr ""
+
+#: src/ui_popup.c:129
+msgid "/Zoom Out"
+msgstr ""
+
+#: src/ui_popup.c:132
+msgid "/_Copy Link Location"
+msgstr ""
+
+#: src/ui_popup.c:133
+msgid "/_Subscribe"
+msgstr ""
+
 #: src/ui_search.c:74
 #, c-format
 msgid "searching for \"%s\""
@@ -1111,6 +1194,14 @@ msgstr ""
 
 #: src/ui_tray.c:89
 msgid "No new items."
+msgstr ""
+
+#: src/ui_dnd.c:78
+msgid "Sorry Liferea does not yet support drag&drop of folders!"
+msgstr ""
+
+#: src/ui_dnd.c:87
+msgid "you cannot modify the special help folder contents!"
 msgstr ""
 
 #: src/update.c:140

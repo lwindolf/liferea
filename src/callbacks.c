@@ -159,6 +159,7 @@ void initGUI(void) {
 	setupTrayIcon();
 	setupSelection(mainwindow);
 	setupURLReceiver(mainwindow);
+	setupPopupMenues();
 }
 
 /* returns the selected feed list iterator */
@@ -1039,14 +1040,13 @@ void on_toggle_unread_status(void) {
 	redrawItemList();
 }
 
-void on_toggle_condensed_view_selected(void) {
+static void toggle_condensed_view(void) {
 	GtkWidget	*w1;
 	gchar		*key;
 	
 	itemlist_mode = !itemlist_mode;
 	setHTMLViewMode(itemlist_mode);
 
-	g_assert(mainwindow);
 	w1 = lookup_widget(mainwindow, "itemtabs");
 	if(TRUE == itemlist_mode)
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(w1), 0);
@@ -1056,7 +1056,17 @@ void on_toggle_condensed_view_selected(void) {
 	displayItemList();
 }
 
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { on_toggle_condensed_view_selected(); }
+void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { 
+
+	if(!itemlist_mode != GTK_CHECK_MENU_ITEM(menuitem)->active)
+		toggle_condensed_view(); 
+}
+
+void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item) {
+
+	if(!itemlist_mode != GTK_CHECK_MENU_ITEM(item)->active)
+		toggle_condensed_view(); 
+}
 
 static feedPtr findUnreadFeed(GtkTreeIter *iter) {
 	GtkTreeSelection	*selection;

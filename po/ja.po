@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.4.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-25 01:22+0100\n"
+"POT-Creation-Date: 2003-12-25 23:55+0100\n"
 "PO-Revision-Date: 2003-12-13 13:52+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -29,60 +29,60 @@ msgstr ""
 "いと、このプログラムの機能の全てにアクセスすることはできません。ツールバーの"
 "方を有効にしましたよ！"
 
-#: src/callbacks.c:177
+#: src/callbacks.c:178
 msgid "entry list widget lookup failed!\n"
 msgstr "エントリ・リスト・ウィジットの検索に失敗しました！\n"
 
-#: src/callbacks.c:182
+#: src/callbacks.c:183
 msgid "could not retrieve selection of entry list!"
 msgstr "エントリ・リストの選択部分を取得できませんでした！"
 
-#: src/callbacks.c:198
+#: src/callbacks.c:199
 msgid "fatal! selected feed entry has no key!!!"
 msgstr "致命的です！ 選択した配信元のエントリにはキーがありません！！！"
 
-#: src/callbacks.c:224
+#: src/callbacks.c:225
 #, fuzzy
 msgid "internal error! could not reset HTML widget scrolling!"
 msgstr "内部 ERROR: 配信元ツリー・ビュー・ウィジットが見つかりませんでした！\n"
 
-#: src/callbacks.c:260 src/callbacks.c:398 src/callbacks.c:436
+#: src/callbacks.c:261 src/callbacks.c:399 src/callbacks.c:446
 msgid "You have to select a feed entry!"
 msgstr "配信元エントリを一つ選択して下さい！"
 
-#: src/callbacks.c:404
+#: src/callbacks.c:405
 msgid "You can't delete help feeds!"
 msgstr "ヘルプは削除できません！"
 
-#: src/callbacks.c:408
+#: src/callbacks.c:409
 msgid "Deleting entry"
 msgstr "エントリの削除"
 
-#: src/callbacks.c:418
+#: src/callbacks.c:419
 msgid "It seems like there is no selected feed entry!"
 msgstr "配信元を一つも選択していないようです！"
 
-#: src/callbacks.c:471
+#: src/callbacks.c:478
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr "この配信元での更新間隔は %d 分になっています"
 
-#: src/callbacks.c:473
+#: src/callbacks.c:480
 msgid "This feed specifies no default update interval."
 msgstr "この配信元はデフォルトの更新間隔を指定していません"
 
-#: src/callbacks.c:516
+#: src/callbacks.c:523
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 "[内部エラー] 配信元が選択されていないのに、プロパティの変更を指定しまし"
 "た...\n"
 
-#: src/callbacks.c:571
+#: src/callbacks.c:578
 #, fuzzy
 msgid "internal error! could not select newly created treestore iter!"
 msgstr "内部 ERROR: 新しいフォルダ・キーを取得できませんでした！"
 
-#: src/callbacks.c:588
+#: src/callbacks.c:594
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -96,99 +96,99 @@ msgstr ""
 "URL が不正か、あるいは配信元が一時的に利用できないかもしれません。配信元一覧"
 "のコンテキスト・メニューから購読のリトライまたは削除を行うことができます。\n"
 
-#: src/callbacks.c:642
+#: src/callbacks.c:651
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 "[内部エラー] 選択した種類が正しくありません！ (これは絶対に発生しえないことで"
 "す)\n"
 
-#: src/callbacks.c:672 src/export.c:220 src/export.c:233
+#: src/callbacks.c:681 src/export.c:220 src/export.c:233
 msgid "internal error! could not find file dialog select button!"
 msgstr "内部 ERROR: ファイル選択ダイアログの選択ボタンが見つかりません！"
 
-#: src/callbacks.c:702 src/export.c:123
+#: src/callbacks.c:711 src/export.c:123
 msgid "internal error! could not get a new folder key!"
 msgstr "内部 ERROR: 新しいフォルダ・キーを取得できませんでした！"
 
-#: src/callbacks.c:711 src/callbacks.c:751
+#: src/callbacks.c:720 src/callbacks.c:760
 msgid "You have to select a folder entry!"
 msgstr "フォルダを一つ選択して下さい！"
 
-#: src/callbacks.c:777 src/callbacks.c:780
+#: src/callbacks.c:786 src/callbacks.c:789
 msgid "A folder must be empty to delete it!"
 msgstr "削除する場合はフォルダを空にして下さい！"
 
-#: src/callbacks.c:783
+#: src/callbacks.c:792
 msgid "Error: Cannot determine folder key!"
 msgstr "エラー: フォルダ・キーを決定できません！"
 
-#: src/callbacks.c:825 src/callbacks.c:969
+#: src/callbacks.c:834 src/callbacks.c:986
 msgid "could not retrieve selection of item list!"
 msgstr "アイテム・リストの選択範囲を取得できませんでした！"
 
-#: src/callbacks.c:858
+#: src/callbacks.c:870
 msgid "item list widget lookup failed!\n"
 msgstr "アイテム・リスト・ウィジットの検索に失敗しました！\n"
 
-#: src/callbacks.c:868
+#: src/callbacks.c:880
 msgid "could not retrieve selection of item list!\n"
 msgstr "アイテム・リストの選択範囲を取得できませんでした！\n"
 
-#: src/callbacks.c:964
+#: src/callbacks.c:981
 msgid "could not find item list widget!"
 msgstr "アイテム・リスト・ウィジットが見つかりませんでした！"
 
-#: src/callbacks.c:1080 src/callbacks.c:1121
+#: src/callbacks.c:1097 src/callbacks.c:1138
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "内部 ERROR: 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
 
-#: src/callbacks.c:1082 src/callbacks.c:1123
+#: src/callbacks.c:1099 src/callbacks.c:1140
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr "内部 ERROR: 配信元ツリー・ビュー・ウィジットが見つかりませんでした！\n"
 
-#: src/callbacks.c:1150
+#: src/callbacks.c:1167
 msgid "There are no unread items!"
 msgstr "未読のトピックはありません！"
 
-#: src/callbacks.c:1170
+#: src/callbacks.c:1187
 #, fuzzy
 msgid "You have to select a feed to delete its items!"
 msgstr "配信元エントリを一つ選択して下さい！"
 
-#: src/callbacks.c:1278
+#: src/callbacks.c:1295
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "内部 ERROR: 不明なエントリの種類です！ 適切なアイコンを表示できません！\n"
 
-#: src/callbacks.c:1421
+#: src/callbacks.c:1438
 msgid "Date"
 msgstr "日付"
 
-#: src/callbacks.c:1429
+#: src/callbacks.c:1446
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: src/callbacks.c:1528
+#: src/callbacks.c:1545
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" の更新が完了しました..."
 
-#: src/callbacks.c:1536
+#: src/callbacks.c:1553
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "\"%s\" の URL が変更されていたので更新しました。"
 
-#: src/callbacks.c:1555
+#: src/callbacks.c:1572
 #, fuzzy, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" の URL が変更されていたので更新しました。"
 
-#: src/callbacks.c:1559
+#: src/callbacks.c:1576
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" は利用できません！"
 
-#: src/callbacks.c:1683
+#: src/callbacks.c:1700
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr "内部 ERROR: アイテム・リスト・表示に NULL ポインタを要求しました！\n"
 
@@ -1149,6 +1149,103 @@ msgstr "ルールの種類"
 msgid "Value"
 msgstr ""
 
+#: src/ui_popup.c:63
+#, fuzzy
+msgid "could not allocate memory!"
+msgstr "メモリを確保できませんでした！"
+
+#: src/ui_popup.c:80
+#, fuzzy
+msgid "/_Update Feed"
+msgstr "配信元の更新(_U)"
+
+#: src/ui_popup.c:81 src/ui_popup.c:89 src/ui_popup.c:96 src/ui_popup.c:103
+#: src/ui_popup.c:109
+msgid "/_New"
+msgstr ""
+
+#: src/ui_popup.c:82 src/ui_popup.c:90 src/ui_popup.c:97 src/ui_popup.c:104
+#: src/ui_popup.c:110
+msgid "/_New/New _Feed"
+msgstr ""
+
+#: src/ui_popup.c:83 src/ui_popup.c:91 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:111
+#, fuzzy
+msgid "/_New/New F_older"
+msgstr "新しいフォルダ(_N)"
+
+#: src/ui_popup.c:84
+#, fuzzy
+msgid "/_Delete Feed"
+msgstr "配信元の削除(_D)"
+
+#: src/ui_popup.c:85 src/ui_popup.c:93
+#, fuzzy
+msgid "/_Properties"
+msgstr "プロパティの編集(_E)"
+
+#: src/ui_popup.c:88
+#, fuzzy
+msgid "/_Update Directory"
+msgstr "配信元の更新(_U)"
+
+#: src/ui_popup.c:92
+#, fuzzy
+msgid "/_Delete Directory"
+msgstr "エントリの削除"
+
+#: src/ui_popup.c:99
+#, fuzzy
+msgid "/_Rename Folder"
+msgstr "新しいフォルダ(_N)"
+
+#: src/ui_popup.c:100
+#, fuzzy
+msgid "/_Delete Folder"
+msgstr "フォルダの削除(_D)"
+
+#: src/ui_popup.c:106
+#, fuzzy
+msgid "/_Delete VFolder"
+msgstr "フォルダの削除(_D)"
+
+#: src/ui_popup.c:115
+#, fuzzy
+msgid "/_Mark All As Read"
+msgstr "全て既読としてマーク(_M)"
+
+#: src/ui_popup.c:116
+#, fuzzy
+msgid "/_Next Unread Item"
+msgstr "次の未読のトピック"
+
+#: src/ui_popup.c:118
+#, fuzzy
+msgid "/_Launch Item In Browser"
+msgstr "ブラウザで開く(_L)"
+
+#: src/ui_popup.c:120 src/ui_popup.c:126
+#, fuzzy
+msgid "/_Toggle Condensed View"
+msgstr "表示の切り替え(_T)"
+
+#: src/ui_popup.c:128
+msgid "/Zoom In"
+msgstr ""
+
+#: src/ui_popup.c:129
+msgid "/Zoom Out"
+msgstr ""
+
+#: src/ui_popup.c:132
+msgid "/_Copy Link Location"
+msgstr ""
+
+#: src/ui_popup.c:133
+msgid "/_Subscribe"
+msgstr ""
+
 #: src/ui_search.c:74
 #, c-format
 msgid "searching for \"%s\""
@@ -1186,15 +1283,17 @@ msgstr "%d 個の新しいアイテムがあります！"
 msgid "No new items."
 msgstr "新しいアイテムはありません。"
 
+#: src/ui_dnd.c:78
+msgid "Sorry Liferea does not yet support drag&drop of folders!"
+msgstr "Liferea はまだフォルダのドラッグ＆ドロップをサポートしていません！"
+
+#: src/ui_dnd.c:87
+msgid "you cannot modify the special help folder contents!"
+msgstr "特別なヘルプ・フォルダの内言おうを変更することはできません！"
+
 #: src/update.c:140
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr "配信元のソースが NULL です！ これは致命的です - 更新できません！"
-
-#~ msgid "Sorry Liferea does not yet support drag&drop of folders!"
-#~ msgstr "Liferea はまだフォルダのドラッグ＆ドロップをサポートしていません！"
-
-#~ msgid "you cannot modify the special help folder contents!"
-#~ msgstr "特別なヘルプ・フォルダの内言おうを変更することはできません！"
 
 #~ msgid "Rule"
 #~ msgstr "ルール"

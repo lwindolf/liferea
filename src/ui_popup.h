@@ -24,21 +24,15 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
-#define STDFEED_MENU	0
-#define OCS_MENU	1
-#define NODE_MENU	2
-#define VFOLDER_MENU	3
-#define DEFAULT_MENU	4
-
-#define ITEM_MENU	5
-#define HTML_MENU	6
-#define URL_MENU	7
-
-/* function to generate a generic menu specified by its number */
-GtkMenu *make_menu(gint nr);
+/* prepares the popup menues */
+void setupPopupMenues(void);
 
 /* function to generate popup menus for the item list depending
    on the list mode given in itemlist_mode */
 GtkMenu *make_item_menu(void);
+
+/* popup menu generating functions for the HTML view */
+GtkMenu *make_html_menu(void);
+GtkMenu *make_url_menu(void);
 
 #endif

@@ -179,12 +179,12 @@ static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer u
 
 	if (event->button == 3) {
 		if(NULL == selectedURL)
-			gtk_menu_popup(GTK_MENU(make_menu(HTML_MENU)), NULL, NULL,
+			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		else {
 			g_free(clickedURL);
 			clickedURL = g_strdup(selectedURL);
-			gtk_menu_popup(GTK_MENU(make_menu(URL_MENU)), NULL, NULL,
+			gtk_menu_popup(GTK_MENU(make_url_menu()), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		}
  
