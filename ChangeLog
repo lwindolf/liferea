@@ -11,6 +11,8 @@
 	  duplicated the first time that 0.5.0 is run.
 	* Relative links in HTML plugins are now supported.
 	* HTML plugin interface has changed.
+	* Added news reader icon drawn by Jakob Steiner as recommended
+	  application launcher icon.
 	
 	Bug Fixes:
 	

@@ -71,6 +71,7 @@ make install-strip
 "//usr/local/share/liferea/pixmaps/unavailable.png"
 "//usr/local/share/liferea/pixmaps/unread.png"
 "//usr/local/share/liferea/pixmaps/vfolder.png"
+"//usr/local/share/liferea/pixmaps/news-reader-48.png"
 %dir "//usr/local/share/locale/"
 %dir "//usr/local/share/locale/bg/"
 %dir "//usr/local/share/locale/bg/LC_MESSAGES/"

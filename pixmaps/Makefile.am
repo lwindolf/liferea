@@ -11,7 +11,8 @@ EXTRA_DIST = \
 	unread.png      \
 	online.png	\
 	offline.png	\
-	vfolder.png     
+	vfolder.png     \
+	news-reader-48.png
 
 
 lifereadistpixdir = $(datadir)/liferea/pixmaps
