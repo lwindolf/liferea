@@ -53,7 +53,4 @@ gchar* folder_get_title(folderPtr folder);
 void	setFolderTitle(folderPtr folder, gchar *title);
 void	setFolderCollapseState(struct folder *folder, gboolean collapsed);
 
-/* save functions */
-void folder_state_save(nodePtr ptr);
-
 #endif

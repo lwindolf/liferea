@@ -80,9 +80,3 @@ void folder_free(folderPtr folder) {
 	g_free(folder);
 	conf_feedlist_schedule_save();
 }
-
-void folder_state_save(nodePtr ptr) {
-	folderPtr folder = (folderPtr)ptr;
-	g_assert(folder);
-	g_assert(IS_FOLDER(folder->type));
-}
