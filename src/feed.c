@@ -211,7 +211,6 @@ feedPtr feed_new(void) {
 	fp->defaultInterval = -1;
 	fp->type = FST_FEED;
 	fp->cacheLimit = CACHE_DEFAULT;
-	fp->loaded = TRUE;	/* definition: a new feed is always loaded and must explicitly be unloaded */
 	
 	return fp;
 }
@@ -355,19 +354,24 @@ static gboolean feed_save_timeout(gpointer user_data) {
 	return TRUE;
 }
 
-/* function which is called to load a feed's cache file */
+/* Function which is called to load a feed's into memory. This function
+   might be called multiple times even if the feed was already loaded.
+   Each time the method is called a reference counter is incremented. */
 gboolean feed_load(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gchar		*filename, *tmp, *data = NULL;
 	int		error = 0;
-	gsize length;
+	gsize 		length;
 	
 	debug_enter("feed_load");
-g_print("feed_load for %s\n", feed_get_source(fp));
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
-	fp->loaded = TRUE;
+	if(0 != (fp->loaded)++) {
+		g_print("feed %s already loaded!\n", feed_get_source(fp));
+		return;
+	}
+g_print("feed_load for %s\n", feed_get_source(fp));
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
@@ -464,26 +468,37 @@ g_print("feed_load for %s\n", feed_get_source(fp));
 /* Only some feed informations are kept in memory to lower memory
    usage. This method unloads everything besides necessary infos. 
    
-   If the feed parameter is NULL the function is called for all feeds. */
+   If the feed parameter is NULL the function is called for all feeds.
+   
+   Each time this function is called the reference counter of all
+   feeds is decremented and if it zero the unnecessary feed infos are 
+   free'd */
 void feed_unload(feedPtr fp) {
 	gint 	unreadCount;
 
 	if(NULL == fp) {
-		g_print("unloading everything...");
+		g_print("unloading everything...\n");
 		ui_feedlist_do_for_all((nodePtr)fp, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
 	} else {
-		if(TRUE == fp->loaded) {
-			/* save feed before unloading */
-			feed_save(fp);	
-			
-			g_print("feed_unload for %s\n", feed_get_source(fp));
-	
-			/* FIXME: free filter structures too when implemented */
-	
-			/* free items */
-			feed_clear_item_list(fp);
-			fp->loaded = FALSE;
+		debug_enter("feed_unload");
+		g_assert(0 <= fp->loaded);
+		if(0 != fp->loaded) {
+			if(1 == fp->loaded) {
+				/* save feed before unloading */
+				feed_save(fp);	
+
+				g_print("feed_unload for %s\n", feed_get_source(fp));
+
+				/* FIXME: free filter structures too when implemented */
+
+				/* free items */
+				feed_clear_item_list(fp);
+				fp->loaded--;
+			} else {
+				g_print("not unloading %s because it's used...\n", feed_get_source(fp));
+			}
 		}
+		debug_exit("feed_unload");
 	}
 }
 
@@ -498,11 +513,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	gint		traycount = 0;
 
 	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
-	
-	
-	if(!old_fp->loaded)
-		feed_load(old_fp);	/* because we access old_fp->items directly */
-	
+	feed_load(old_fp);
 	if(TRUE == new_fp->available) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
 		   in case they are reused... */
@@ -669,9 +680,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	feed_free(new_fp);
 	
 	ui_tray_add_new(traycount);		/* finally update the tray icon */
-	ui_notification_update(old_fp);
-	
-	// FIXME: unload feed if possible
+	ui_notification_update(old_fp);	
+	feed_unload(old_fp);
 }
 
 /**
@@ -756,6 +766,7 @@ void feed_process_update_result(struct request *request) {
 			}
 
 			new_fp = feed_new();
+			new_fp->loaded = 1;
 			feed_set_source(new_fp, feed_get_source(old_fp)); /* Used by the parser functions to determine source */
 			/* parse the new downloaded feed into new_fp */
 			fhp = feed_parse(new_fp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
@@ -818,7 +829,7 @@ void feed_process_update_result(struct request *request) {
 
 void feed_add_item(feedPtr fp, itemPtr ip) {
 
-	g_assert(TRUE == fp->loaded);
+	g_assert(0 != fp->loaded);
 	ip->fp = fp;
 	if(FALSE == ip->readStatus)
 		fp->unreadCount++;
@@ -848,7 +859,7 @@ gint feed_get_unread_counter(feedPtr fp) {
 	GSList	*item;
 	
 	/* if feed is in memory count items, otherwise just return last count value */
-	if(fp->loaded) {
+	if(0 != fp->loaded) {
 		fp->unreadCount = 0;
 		item = fp->items;
 		while(NULL != item) {
@@ -1080,7 +1091,7 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 /* returns feed's list of items, if necessary loads the feed from cache */
 GSList * feed_get_item_list(feedPtr fp) { 
 
-	g_assert(TRUE == fp->loaded);
+	g_assert(0 != fp->loaded);
 	return fp->items; 
 }
 
@@ -1088,7 +1099,7 @@ GSList * feed_get_item_list(feedPtr fp) {
 void feed_clear_item_list(feedPtr fp) {
 	GSList	*item;
 
-	g_assert(TRUE == fp->loaded);	
+	g_assert(0 != fp->loaded);	
 	item = fp->items;
 	while(NULL != item) {
 		item_free(item->data);
@@ -1101,13 +1112,14 @@ void feed_clear_item_list(feedPtr fp) {
 void feed_mark_all_items_read(feedPtr fp) {
 	GSList	*item;
 
-	g_assert(TRUE == fp->loaded);
+	feed_load(fp);
 	item = fp->items;
 	while(NULL != item) {
 		item_set_read((itemPtr)item->data);
 		item = g_slist_next(item);
 	}
 	ui_feedlist_update();
+	feed_unload(fp);
 }
 
 gchar *feed_render(feedPtr fp) {
@@ -1116,7 +1128,7 @@ gchar *feed_render(feedPtr fp) {
 	gchar			*tmp, *tmp2;
 	gboolean		migration = FALSE;
 
-	g_assert(TRUE == fp->loaded);	
+	g_assert(0 != fp->loaded);	
 	displayset.headtable = NULL;
 	displayset.head = NULL;
 	displayset.body = g_strdup(feed_get_description(fp));
@@ -1219,7 +1231,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	itemPtr		ip;
 	GSList		*item;
 
-	g_assert(TRUE == fp->loaded);
+	g_assert(0 != fp->loaded);
 	
 	/* To prevent updating feed ptr in the tree store and
 	   feeds hashtable we reuse the old structure! */

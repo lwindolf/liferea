@@ -85,7 +85,7 @@ typedef struct feed {
 	gint		unreadCount;		/**< number of unread items */
 	gint		newCount;		/**< number of new items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
-	gboolean	loaded;			/**< flag to signalize if items already loaded in memory */
+	gint		loaded;			/**< counter which is non-zero if items are to be kept in memory */
 	gboolean	available;		/**< flag to signalize loading errors */
 	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
