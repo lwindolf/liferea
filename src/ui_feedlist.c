@@ -546,8 +546,12 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 		if(data == NULL) {
 			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 		} else {
+			gchar *tmp;
 			fp->fhp = feed_parse(fp, data, TRUE);
-			fp->title = filter_title(feed_get_title(fp));
+			tmp = filter_title(g_strdup(feed_get_title(fp)));
+			feed_set_title(fp, tmp);
+			g_free(tmp);
+			
 			if (fp->fhp == NULL)
 				ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));	
 			ui_feedlist_update();
