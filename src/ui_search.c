@@ -70,7 +70,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 		if(NULL != searchFeed)
 			feed_free(searchFeed);
 		searchFeed = vfolder_new();
-		vfolder_add_rule(searchFeed, "add_exact", (gchar *)searchstring);
+		vfolder_add_rule(searchFeed, "exact", searchstring, TRUE);
 		vfolder_refresh(searchFeed);
 		ui_feedlist_select(NULL);
 		ui_itemlist_load((nodePtr)searchFeed);
@@ -113,42 +113,26 @@ void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
-	/*	rulePtr			rp;*/	/* FIXME: this really does not belong here!!! -> vfolder.c */
-	/*	feedPtr			fp; */
-	folderPtr			folder = NULL;
+	gchar			*title;
+	gint			pos;
+	feedPtr			fp;
+	folderPtr		folder = NULL;
 
-	g_assert(mainwindow != NULL);
-		
-	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
-		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		/*ui_mainwindow_set_status_bar(_("Creating VFolder for search term \"%s\""), searchstring); */
-
-		/*ptr = (nodePtr)ui_feedlist_get_target_folder(); */
-		
-		if(NULL != folder) {
-
-			/*			if(NULL != (fp = feed_add(FST_VFOLDER, "", folder, "untitled",NULL,0,FALSE))) {*/
+	if(NULL != (searchstring = gtk_entry_get_text(GTK_ENTRY(lookup_widget(mainwindow, "searchentry"))))) {
+	
+		folder = ui_feedlist_get_target_folder(&pos);
 				
-			/* FIXME: this really does not belong here!!! -> vfolder.c*/
-				/* setup a rule */
-			/*			rp = g_new0(struct rule,1);
-
-				/ * we set the searchstring as a default title */
-			/*				feed_set_title(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));*/
-				/* and set the rules... */
-/*				rp->value = g_strdup((gchar *)searchstring);
-				setVFolderRules(fp, rp);*/
-
-				/* FIXME: brute force: update of all vfolders redundant */
-			/*				loadVFolders();*/
-				
-			/*				ui_folder_add_feed(fp, FALSE);
-							}*/
-		} else {
-			g_warning("internal error! could not get folder key prefix!");
-		}
+		fp = vfolder_new();
+		vfolder_add_rule(fp, "exact", searchstring, TRUE);
+		vfolder_refresh(fp);
+		title = g_strdup_printf("search for \"%s\"", searchstring);
+		feed_set_title(fp, title);
+		g_free(title);
+			
+		ui_folder_add_feed(folder, fp, pos);
+		ui_feedlist_update();
+		ui_feedlist_select((nodePtr)fp);
 	}
 }
 

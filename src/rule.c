@@ -33,20 +33,20 @@ typedef gboolean (*ruleCheckFuncPtr)	(rulePtr rp, itemPtr ip);
 struct ruleInfo *ruleFunctions = NULL;
 gint nrOfRuleFunctions = 0;
 
-rulePtr rule_new(feedPtr fp, gchar *ruleId, gchar *value) {
+rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean additive) {
 	ruleInfoPtr	ri;
 	rulePtr		rp;
+	int		i;
 	
-	ri = ruleFunctions;
-	while(NULL != ri->ruleFunc) {
+	for(i = 0, ri = ruleFunctions; i < nrOfRuleFunctions; i++, ri++) {
 		if(0 == strcmp(ri->ruleId, ruleId)) {
 			rp = (rulePtr)g_new0(rulePtr, 1);
 			rp->fp = fp;
 			rp->value = g_strdup(value);
 			rp->ruleInfo = ri;
+			rp->additive = additive;
 			return rp;
 		}
-		ri++;
 	}	
 	return NULL;
 }
@@ -57,20 +57,6 @@ gboolean rule_check_item(rulePtr rp, itemPtr ip) {
 
 	ruleInfo = (struct ruleInfo *)rp->ruleInfo;
 	return (*((ruleCheckFuncPtr)ruleInfo->ruleFunc))(rp, ip);
-}
-
-/* returns a title to be displayed in the filter editing dialog,
-   the returned title must be freed */
-gchar * rule_get_title(rulePtr rp) {
-	ruleInfoPtr	ruleInfo;
-	
-	ruleInfo = ruleFunctions;
-	while(NULL != ruleInfo->ruleFunc) {
-		if(rp->ruleInfo == ruleInfo)
-			return ruleInfo->title;
-		ruleInfo++;
-	}	
-	return NULL;
 }
 
 void rule_free(rulePtr rp) {

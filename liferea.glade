@@ -757,7 +757,7 @@
 
 		  <child>
 		    <widget class="GtkButton" id="newVFolder">
-		      <property name="sensitive">False</property>
+		      <property name="visible">True</property>
 		      <property name="tooltip" translatable="yes">saves this search as a VFolder, which will appear in the feed list</property>
 		      <property name="can_focus">True</property>
 		      <property name="label" translatable="yes">create VFolder</property>

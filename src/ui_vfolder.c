@@ -105,7 +105,7 @@ static void on_ruletype_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 		rule_free(rule);
 	}
 	ruleInfo = ruleFunctions + changeRequest->rule;
-	rule = rule_new(changeRequest->ui_data->fp, ruleInfo->ruleId, "");
+	rule = rule_new(changeRequest->ui_data->fp, ruleInfo->ruleId, "", TRUE);
 	changeRequest->ui_data->fp->rules = g_slist_append(changeRequest->ui_data->fp->rules, rule);
 	g_object_set_data(G_OBJECT(changeRequest->paramHBox), "rule", rule);
 	

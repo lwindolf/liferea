@@ -31,28 +31,52 @@ feedHandlerPtr	vfolder_init_feed_handler(void);
 /* sets up a vfolder feed structure */
 feedPtr vfolder_new(void);
 
-/* Method thats adds a rule to a vfolder. To be used
-   on loading time or when creating searching. Does 
-   not process items. Just sets up the vfolder */
-void	vfolder_add_rule(feedPtr vp, gchar *ruleId, gchar *value);
+/**
+ * Method thats adds a rule to a vfolder. To be used
+ * on loading time or when creating searching. Does 
+ * not process items. Just sets up the vfolder.
+ *  
+ * @param fp		vfolder the rule belongs to
+ * @param ruleId	id string for this rule type
+ * @param value		argument string for this rule
+ * @param additive	indicates positive or negative logic
+ */
+void	vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gboolean additive);
 
-/* Method that remove a rule from a vfolder. To be used
-   when deleting or changing vfolders. Does not process
-   items. */
+/** 
+ * Method that removes a rule from a vfolder. To be used
+ * when deleting or changing vfolders. Does not process
+ * items. 
+ *
+ * @param vp	vfolder
+ * @param rp	rule to remove
+ */
 void	vfolder_remove_rule(feedPtr vp, rulePtr rp);
 
-/* Method that applies the rules of the given vfolder to 
-   all existing items. To be used for creating search
-   results or new vfolders. Not to be used when loading
-   vfolders from cache. */
+/**
+ * Method that applies the rules of the given vfolder to 
+ * all existing items. To be used for creating search
+ * results or new vfolders. Not to be used when loading
+ * vfolders from cache. 
+ *
+ * @param vp	vfolder
+ */
 void	vfolder_refresh(feedPtr vp);
 
-/* Method to be called when a item was updated. This maybe
-   after user interaction or updated item contents */
+/**
+ * Method to be called when a item was updated. This maybe
+ * after user interaction or updated item contents 
+ *
+ * @param ip	item to check
+ */
 void	vfolder_update_item(itemPtr ip);
 
-/* called when a vfolder is processed by feed_free
-   to get rid of the vfolder items */
+/**
+ * Called when a vfolder is processed by feed_free
+ * to get rid of the vfolder items.
+ *
+ * @param vp	vfolder to free
+ */
 void	vfolder_free(feedPtr vp);
 
 #endif

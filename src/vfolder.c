@@ -48,6 +48,7 @@ feedPtr vfolder_new(void) {
 	fp->title = g_strdup("vfolder");
 	fp->source = g_strdup("vfolder");
 	fp->id = conf_new_id();
+	fp->available = TRUE;
 	
 	return fp;
 }
@@ -55,10 +56,10 @@ feedPtr vfolder_new(void) {
 /* Method thats adds a rule to a vfolder. To be used
    on loading time or when creating searching. Does 
    not process items. Just sets up the vfolder */
-void vfolder_add_rule(feedPtr vp, gchar *ruleId, gchar *value) {
+void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gboolean additive) {
 	rulePtr		rp;
 
-	if(NULL != (rp = rule_new(vp, ruleId, value))) {
+	if(NULL != (rp = rule_new(vp, ruleId, value, additive))) {
 		vfolder_rules = g_slist_append(vfolder_rules, rp);
 	} else {
 		g_warning("unknown rule id: \"%s\"", ruleId);

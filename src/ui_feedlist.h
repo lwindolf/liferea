@@ -93,14 +93,14 @@ gboolean ui_feedlist_get_iter(GtkTreeIter *iter);
 
 folderPtr ui_feedlist_get_parent(nodePtr ptr);
 
-/* Selects the proper destination for a new item based on which item
- * is curretnly selected.
+/* Selects the proper destination for a new feed based on which feed
+ * is currently selected.
  *
  * @param pos a pointer to an integer that will be set to where the
  * item should be created. If it is set to -1, then it should be
  * appended. 0 means prepend.
  *
- * @returns folder into which the item should be inserted
+ * @returns folder into which the feed should be inserted
  */
 folderPtr ui_feedlist_get_target_folder(int *pos);
 

@@ -49,8 +49,13 @@ void rule_init(void);
 /** 
  * Looks up the given rule id and sets up a new rule
  * structure with for the given vfolder and rule value 
+ *
+ * @param fp		vfolder the rule belongs to
+ * @param ruleId	id string for this rule type
+ * @param value		argument string for this rule
+ * @param additive	indicates positive or negative logic
  */
-rulePtr rule_new(feedPtr fp, gchar *ruleId, gchar *value);
+rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /**
  * Checks a new item against all additive rules of all feeds
@@ -59,16 +64,17 @@ rulePtr rule_new(feedPtr fp, gchar *ruleId, gchar *value);
  * which do exclude this item. If there is such a rule the 
  * function returns FALSE, otherwise TRUE to signalize if 
  * this new item should be added. 
+ *
+ * @param rp	rule to check against
+ * @param ip	item to check
  */
 gboolean rule_check_item(rulePtr rp, itemPtr ip);
 
-/**
- * Returns a title to be displayed in the filter editing dialog,
- * the returned title must be freed 
+/** 
+ * Free's the given rule structure 
+ *
+ * @param rp	rule to free
  */
-gchar * rule_get_title(rulePtr rp);
-
-/** Free's the given rule structure */
 void rule_free(rulePtr rp);
 
 #endif
