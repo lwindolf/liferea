@@ -717,7 +717,7 @@ void feed_add_items(feedPtr fp, GList *items) {
 void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	GSList		*old_items;
 	itemPtr		old_ip;
-	gboolean	found, equal;
+	gboolean	found, equal = FALSE;
 	
 	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
 	
