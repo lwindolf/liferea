@@ -315,7 +315,6 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 		feed_set_id(fp, "helpfeed1");
 		feed_set_update_interval(fp, 1440);
 		ui_folder_add_feed(helpFolder, fp, -1);
-		feed_update(fp); /* Update help feeds on startup */
 
 		fp = feed_new();
 		feed_set_type(fp, FST_HELPFEED);
@@ -324,7 +323,10 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 		feed_set_id(fp, "helpfeed2");
 		feed_set_update_interval(fp, 1440);
 		ui_folder_add_feed( helpFolder, fp, -1);
-		feed_update(fp); /* Update help feeds on startup */
+		
+		/* Note: help feeds are update automatically on first adding 
+		   because they miss a cache file. And of course they are
+		   updated daily because of the update interval */
 	}
 	return helpFolder;
 }
