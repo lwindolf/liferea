@@ -472,7 +472,8 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 
 static void ui_feedlist_delete_(nodePtr ptr) {
 
-	if((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type)) {
+
+	if((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type)) {		
 		ui_notification_remove_feed((feedPtr)ptr);	/* removes an existing notification for this feed */
 		ui_folder_remove_node(ptr);
 		feed_free((feedPtr)ptr);
@@ -488,6 +489,8 @@ static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, 
 	
 	switch(response_id) {
 	case GTK_RESPONSE_YES:
+		ui_feedlist_select(NULL);
+		ui_itemlist_clear();
 		ui_feedlist_delete_(ptr);
 	}
 	gtk_widget_destroy(GTK_WIDGET(dialog));
@@ -530,8 +533,7 @@ void ui_feedlist_delete(nodePtr ptr) {
 void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	nodePtr ptr = (nodePtr)callback_data;
 	
-	ui_feedlist_delete(ptr);
-	
+	ui_feedlist_delete(ptr);	
 }
 
 /*------------------------------------------------------------------------------*/
