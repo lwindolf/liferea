@@ -99,7 +99,9 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data) {
 	/* initialize channel structure */
 	
 	if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
-		addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
+		gchar *msg = g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source);
+		addToHTMLBuffer(&(fp->parseErrors), msg);
+		g_free(msg);
 		goto error;
 	}
 	
@@ -638,6 +640,7 @@ gint feed_process_update_results(gpointer data) {
 				feed_set_available(request->fp, FALSE);
 				g_free(request->fp->parseErrors);
 				request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the URL really points to a resource provided in one of the supported syndication formats!"));
+				feed_free(new_fp);
 				break;
 			}
 			
@@ -952,7 +955,8 @@ void feed_free(feedPtr fp) {
 	if(filename && 0 != unlink(filename)) {
 		g_warning(_("Could not delete cache file %s! Please remove manually!"), filename);
 	}
-
+	g_free(filename);
+	
 	// FIXME: free filter structures too when implemented
 	
 	/* Don't free active feed requests here, because they might still

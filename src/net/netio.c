@@ -821,7 +821,6 @@ static char* filter(gchar *cmd, gchar *data) {
 		return NULL;
 	}
 	
-	command = g_strdup_printf ("%s < %s", cmd, tmpfilename);
 	
 	file = fdopen (fd, "w");
 	
@@ -832,7 +831,9 @@ static char* filter(gchar *cmd, gchar *data) {
      out = '\0';
 	
 	/* Pipe temp file contents to process and popen it. */
+	command = g_strdup_printf ("%s < %s", cmd, tmpfilename);
 	p = popen(command, "r");
+	g_free(command);
 
 	if(NULL != p) {
 		int i = 0, n=0;
