@@ -749,10 +749,12 @@ create_prefdialog (void)
   GtkWidget *timeformatentry;
   GtkWidget *label24;
   GtkWidget *frame8;
+  GtkWidget *vbox20;
   GtkWidget *hbox19;
   GtkWidget *label33;
   GtkObject *itemCountBtn_adj;
   GtkWidget *itemCountBtn;
+  GtkWidget *checkbutton1;
   GtkWidget *label32;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefsavebtn;
@@ -772,6 +774,7 @@ create_prefdialog (void)
   vbox3 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox3);
   gtk_box_pack_start (GTK_BOX (dialog_vbox5), vbox3, FALSE, TRUE, 2);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox3), 5);
 
   frame2 = gtk_frame_new (NULL);
   gtk_widget_show (frame2);
@@ -857,9 +860,14 @@ create_prefdialog (void)
   gtk_widget_show (frame8);
   gtk_box_pack_start (GTK_BOX (vbox3), frame8, TRUE, TRUE, 0);
 
+  vbox20 = gtk_vbox_new (FALSE, 5);
+  gtk_widget_show (vbox20);
+  gtk_container_add (GTK_CONTAINER (frame8), vbox20);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox20), 5);
+
   hbox19 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox19);
-  gtk_container_add (GTK_CONTAINER (frame8), hbox19);
+  gtk_box_pack_start (GTK_BOX (vbox20), hbox19, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbox19), 5);
 
   label33 = gtk_label_new (_("maximal number of items per feed \nto be saved permanently"));
@@ -874,7 +882,11 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
 
-  label32 = gtk_label_new (_("feed storage settings"));
+  checkbutton1 = gtk_check_button_new_with_mnemonic (_("Update all feeds on program startup."));
+  gtk_widget_show (checkbutton1);
+  gtk_box_pack_start (GTK_BOX (vbox20), checkbutton1, FALSE, FALSE, 0);
+
+  label32 = gtk_label_new (_("feed handling settings"));
   gtk_widget_show (label32);
   gtk_frame_set_label_widget (GTK_FRAME (frame8), label32);
   gtk_label_set_justify (GTK_LABEL (label32), GTK_JUSTIFY_LEFT);
@@ -924,9 +936,11 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, timeformatentry, "timeformatentry");
   GLADE_HOOKUP_OBJECT (prefdialog, label24, "label24");
   GLADE_HOOKUP_OBJECT (prefdialog, frame8, "frame8");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox20, "vbox20");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox19, "hbox19");
   GLADE_HOOKUP_OBJECT (prefdialog, label33, "label33");
   GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, checkbutton1, "checkbutton1");
   GLADE_HOOKUP_OBJECT (prefdialog, label32, "label32");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefsavebtn, "prefsavebtn");

@@ -41,6 +41,8 @@
 #include <netdb.h>
 #include <sys/stat.h>
 
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
 
 /*-----------------------------------------------------------------------*/
 /* some Liferea specific adaptions					 */
@@ -635,21 +637,62 @@ char * downloadURL(char *url) {
 	struct feed_request	cur_ptr;
 	struct stat		statinfo;
 
+	/* libxml download stuff... */
+	void *ctxt;
+	char *contentType = "text/xml; charset=\"utf-8\"";
+	int len;
+	xmlChar buffer [1024];
+	xmlBufferPtr output;
+	
 	if(NULL != strstr(url, "://")) {
-		/* :// means it an URL */
-		cur_ptr.feedurl = strdup(url);
-		cur_ptr.lastmodified = NULL;
-		
-		data = DownloadFeed(strdup(url), &cur_ptr);
-		free(cur_ptr.lastmodified);
-		
-		/* check if URL was modified */
-		if(0 != strcmp(url, cur_ptr.feedurl)) {
-			g_free(url);
-			url = g_strdup(cur_ptr.feedurl);
+
+// the SnowNews code does not work right when detached from console
+// it 'll cause 100% cpu usage, so its disabled...
+//
+//		/* :// means it an URL */
+//		cur_ptr.feedurl = strdup(url);
+//		cur_ptr.lastmodified = NULL;
+//		
+//		data = DownloadFeed(strdup(url), &cur_ptr);
+//		free(cur_ptr.lastmodified);
+//		
+//		/* check if URL was modified */
+//		if(0 != strcmp(url, cur_ptr.feedurl)) {
+//			g_free(url);
+//			url = g_strdup(cur_ptr.feedurl);
+//		}
+//		
+//		free(cur_ptr.feedurl);
+
+		/* inspired by code from http://www.gohome.org/cgi-bin/viewcvs.cgi/nd/nd.c?rev=1.18	*/
+
+		if (url == NULL) return NULL;
+
+		print_status(g_strdup_printf(_("connecting to %s"), url));
+		ctxt = xmlNanoHTTPMethod(url, "GET", NULL, &contentType, NULL, 0);
+
+		if (ctxt == NULL)
+			return NULL;
+
+		/*returnCode = xmlNanoHTTPReturnCode(ctxt);
+		if ((returnCode >= 300) || 
+		((contentType != NULL) && (strncmp(contentType, "text/xml", 8)))) {
+		xmlNanoHTTPClose(ctxt);
+		if (contentType != NULL) xmlFree(contentType);
+		return returnCode;
+		}*/
+		if (contentType != NULL) xmlFree(contentType);
+
+		output = xmlBufferCreate();
+		if (output == NULL) return NULL;
+
+		while((len = xmlNanoHTTPRead(ctxt, buffer, sizeof (buffer))) > 0) {
+      			xmlBufferAdd (output, buffer, len);
 		}
-		
-		free(cur_ptr.feedurl);
+		xmlNanoHTTPClose(ctxt);
+		data = g_strdup(xmlBufferContent(output));
+		xmlBufferFree(output);
+
 	} else {
 		/* no :// so we assume its a local path */
 		if(0 == stat(url, &statinfo)) {
