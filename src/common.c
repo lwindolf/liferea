@@ -1,5 +1,5 @@
-/*
- * common routines for Liferea
+/**
+ * @file common.c common routines for Liferea
  * 
  * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
