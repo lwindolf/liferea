@@ -12,7 +12,10 @@
 	  (Lars Lindner)
 	* The mozilla browser module now respects the configured
 	  proxy settings. (Lars Lindner)
-
+	* Feed and item information is now properly localized.
+	  (Lars Lindner and Nathan Conrad)
+	* Popup menu for the systray icon. (James Bowes)
+	
 	Bugfixes:
 
 	* 0.5.1 did falsely encode HTTP URL hash marks as %23.
