@@ -25,6 +25,8 @@
 	  contextual menus. (Nathan Conrad)
 	* Toolbar items have been re-aranged, and two items have been
 	  added. (Nathan Conrad)
+	* Makefile/configure changes including a patch found on the Polish
+	  Linux Distribution web page.
 	
 2004-05-06  Lars Lindner <lars.lindner@gmx.net>
 

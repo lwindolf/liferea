@@ -415,9 +415,10 @@ static void on_feed_prop_url_radio(GtkToggleButton *button, gpointer user_data) 
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	gboolean url = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio));
 	gboolean file = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio));
-
+	gboolean cmd = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio));
+	
 	ui_feed_prop_enable_httpauth(ui_data, url);
-	gtk_widget_set_sensitive(ui_data->selectFile, file);
+	gtk_widget_set_sensitive(ui_data->selectFile, file || cmd);
 }
 
 static void on_selectfileok_clicked(GtkButton *button, gpointer user_data) {
