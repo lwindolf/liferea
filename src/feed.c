@@ -569,6 +569,7 @@ gint feed_process_update_results(gpointer data) {
 
 	ui_lock();
 	g_assert(NULL != request->fp);
+	request->fp->updateRequested = FALSE;
 	feed_set_available(request->fp, TRUE);
 	
 	if(304 == request->lasthttpstatus) {	
@@ -633,7 +634,6 @@ gint feed_process_update_results(gpointer data) {
 	
 	g_free(request->feedurl);	/* request structure cleanup... */
 	g_free(request->data);
-	request->fp->updateRequested = FALSE;
 
 	ui_feedlist_update();
 
