@@ -344,7 +344,7 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 					return NULL;
 				}
 				
-				while (!feof(stream)) {
+				while (!feof(stream) && !ferror(stream)) {
 					if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL) {
 						/* Something bad happened. Server sent stupid stuff. */
 						MainQuit (_("Following HTTP redirects"), strerror(errno));
@@ -497,7 +497,7 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 	} while(!handled);
 	
 	/* Read rest of HTTP header and parse what we need. */
-	while (!feof(stream)) {
+	while (!feof(stream) && !ferror(stream)) {
 	
 		/* Max line length of sizeof(netbuf) is assumed here.
 		   If header has longer lines than 4096 bytes something may go wrong. :) */
@@ -634,7 +634,7 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 	length = 0;
 
 	/* Read stream until EOF and return it to parent. */
-	while (!feof(stream)) {
+	while (!feof(stream) && !ferror(stream)) {
 
 		/* Since we handle binary data if we read compressed input we
 		   need to use fread instead of fgets after reading the header. */ 
