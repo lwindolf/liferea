@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea Ver0.4.7\n"
+"Project-Id-Version: liferea Ver0.4.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-05-16 13:41+0200\n"
-"PO-Revision-Date: 2004-03-29 00:54+0900\n"
+"PO-Revision-Date: 2004-05-09 17:31+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgstr ""
 #: src/conf.c:44
 #, fuzzy
 msgid "http://liferea.sf.net/help"
-msgstr "http://liferea.sf.net/help047.rdf"
+msgstr "http://liferea.sf.net/help048.rdf"
 
 #: src/conf.c:44
 msgid ".rdf"
@@ -100,7 +100,7 @@ msgstr "Liferea の SF ニュース"
 #: src/conf.c:476
 #, c-format
 msgid "Error renaming %s to %s\n"
-msgstr ""
+msgstr "%s から %s へ名前を変更する際にエラー\n"
 
 #: src/conf.c:502
 #, c-format
@@ -108,24 +108,26 @@ msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 名前空間 %s が未だ設定されいません！ 有効にします...\n"
 
 #: src/export.c:289 src/export.c:291
-#, fuzzy, c-format
+#, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
-"キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ (キャッ"
-"シュ・ファイルを読み込めませんでした)"
+"キャッシュ・ファイルを読み込む際に XML エラーが発生しました！ (\"%s\" をイン"
+"ポートできませんでした)"
 
 #: src/export.c:295 src/export.c:297
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr "ドキュメントが空です！ OPML ドキュメントを空にしないで下さい..."
+msgstr ""
+"ドキュメントが空です！ (インポートする際にOPML ドキュメント \"%s\" は空にしな"
+"いで下さい...)"
 
 #: src/export.c:305 src/export.c:307
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is no valid OPML document! Liferea cannot import this file!"
 msgstr ""
-"\"%s\" は正しいキャッシュ・ファイルではありません！ (OPML ファイルが読めませ"
-"ん)"
+"\"%s\" は正しい OPML ドキュメントではありません！ (このファイルをインポートで"
+"きません)"
 
 #: src/export.c:379 src/export.c:392
 msgid "internal error! could not find file dialog select button!"
@@ -165,7 +167,7 @@ msgstr "<p>ドキュメントが空です！</p>"
 
 #: src/feed.c:116
 msgid "<p>Invalid XML!</p>"
-msgstr ""
+msgstr "<p>XML が間違っています！</p>"
 
 #: src/feed.c:132
 msgid ""
@@ -192,10 +194,10 @@ msgid "could not create XML document!"
 msgstr "XML ドキュメントを生成できませんでした！"
 
 #: src/feed.c:324
-#, fuzzy, c-format
+#, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
 msgstr ""
-"キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ (キャッ"
+"キャッシュ・ファイル \"%s\" を読み込む際にエラーが発生しました！ (キャッ"
 "シュ・ファイルを読み込めませんでした)"
 
 #: src/feed.c:325
@@ -380,7 +382,7 @@ msgstr "このトピックにはリンクが割り当てられていません！
 #: src/interface.c:150 src/interface.c:2789
 #, fuzzy
 msgid "Liferea 0.4.9"
-msgstr "Liferea 0.4.7"
+msgstr "Liferea 0.4.8"
 
 #: src/interface.c:167
 msgid "_Program"
@@ -401,7 +403,7 @@ msgstr "新しい購読(_N)"
 #: src/interface.c:211
 #, fuzzy
 msgid "New _Folder"
-msgstr "新しいフォルダ(_N)"
+msgstr "新しいフォルダ"
 
 #: src/interface.c:224
 #, fuzzy
@@ -513,26 +515,24 @@ msgid "Launches the items link in the configured browser."
 msgstr "設定済みのブラウザで選択したトピックを開きます"
 
 #: src/interface.c:379
-#, fuzzy
 msgid "_View"
-msgstr "トピック表示(_V)"
+msgstr "表示(_V)"
 
 #: src/interface.c:386
 msgid "_Increase Text Size"
-msgstr "テキストの拡大(_I)"
+msgstr "文字を大きくする(_I)"
 
 #: src/interface.c:397
 msgid "_Decrease Text Size"
-msgstr "テキストの縮小(_D)"
+msgstr "文字を小さくする(_D)"
 
 #: src/interface.c:413
 msgid "Toggle _Condensed View"
 msgstr "サマリ表示の切り替え(_C)"
 
 #: src/interface.c:417
-#, fuzzy
 msgid "_Search"
-msgstr "検索"
+msgstr "検索(_S)"
 
 #: src/interface.c:424
 msgid "Toggle Search Box"
@@ -551,9 +551,8 @@ msgid "Create a Feedster search feed."
 msgstr "Feedster 検索用配信元を生成します"
 
 #: src/interface.c:442
-#, fuzzy
 msgid "_Help"
-msgstr "ヘルプ"
+msgstr "ヘルプ(_H)"
 
 #: src/interface.c:449 src/interface.c:2775 src/interface.c:2805
 msgid "About"
@@ -584,9 +583,8 @@ msgid "Edit preferences"
 msgstr "設定を編集します"
 
 #: src/interface.c:543
-#, fuzzy
 msgid "Preferences"
-msgstr "設定を編集します"
+msgstr "設定"
 
 #: src/interface.c:571
 msgid "Search for"
@@ -637,7 +635,7 @@ msgstr ""
 #: src/interface.c:1036
 #, fuzzy
 msgid "Feed _Name:"
-msgstr "フォルダ名"
+msgstr "フォルダ名:"
 
 #: src/interface.c:1048
 msgid "<span weight=\"bold\">Refresh Interval</span>"
@@ -710,7 +708,7 @@ msgstr ""
 #: src/interface.c:1211
 #, fuzzy
 msgid "User_name:"
-msgstr "フォルダ名"
+msgstr "フォルダ名:"
 
 #: src/interface.c:1218
 msgid "_Password:"
@@ -905,6 +903,10 @@ msgid ""
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
+"Liferea はいろいろな HTML レンダリングを用いて配信元の内容を表示します。お使"
+"いのコンピュータにインストールされているレンダリングに依存するため、利用でき"
+"るオプションが異なります。設定したオプションを有効にするために Liferea を再起"
+"動して下さい。"
 
 #: src/interface.c:1851
 msgid "View Headlines With"
@@ -952,19 +954,16 @@ msgid "Proxy Settings"
 msgstr "プロキシの設定"
 
 #: src/interface.c:2092
-#, fuzzy
 msgid "New Folder"
-msgstr "新しいフォルダ(_N)"
+msgstr "新しいフォルダ"
 
 #: src/interface.c:2107 src/interface.c:2181
-#, fuzzy
 msgid "Folder name:"
-msgstr "フォルダ名"
+msgstr "フォルダ名:"
 
 #: src/interface.c:2170
-#, fuzzy
 msgid "Rename Folder"
-msgstr "/フォルダ名の変更(_R)"
+msgstr "フォルダ名の変更"
 
 #: src/interface.c:2233
 msgid "Select A File"
@@ -1066,9 +1065,11 @@ msgid ""
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
+"Copyright (c) 2003-2004 \n"
+"Lars Lindner <lars.lindner@gmx.net> と\n"
+"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:2819
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1090,33 +1091,31 @@ msgid ""
 "Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
 "Philippe Martin, Brion Vibber (favicon support)"
 msgstr ""
-"コード、パッチ、デバッグ:\n"
+"コード、パッチ、デバッグの協力\n"
 "\n"
 "James Doherty <...>\n"
 "Jeremy Messenger <mezz7@cox.net>\n"
 "John McKnight <...>\n"
-"Tomasz Maka <pasp@users.sourceforge.net>\n"
+"Tomasz Maka <pasp@ll.pl>\n"
 "Karl Soderstrom <ks@debian.org>\t\n"
 "Christophe Barbe <christophe.barbe@ufies.org>\n"
 "Juho Snellman <jsnell@users.sourceforge.net>\n"
 "Roshan Revankar <roshweb@users.sourceforge.net>\n"
 "Oliver Feiler <kiza@kcore.de>\n"
-"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 "Niklas Morberg <morberg@users.sourceforge.net>\n"
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
 "\n"
-"他のプロジェクトからのパッチ提供\n"
+"他のプロジェクトからのコード提供\n"
 "\n"
-"Anders Carlsson <andersca@gnu.org> (トレイ・アイコンのサポート)\n"
-"Philippe Martin, Brion Vibber (favicon のサポート)"
+"Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
+"Philippe Martin, Brion Vibber (favicon support)"
 
 #: src/interface.c:2825
 msgid "Contributors"
 msgstr "その他の貢献者"
 
 #: src/interface.c:2839
-#, fuzzy
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -1133,8 +1132,10 @@ msgstr ""
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Lars Lindner <lars.lindner@gmx.net>\n"
-"Vladimir Petkov <vpetkov@i-space.org>"
+"Enrico Gernauck <enrico@fanglomerat.de>\n"
+"Vladimir Petkov <vpetkov@i-space.org>\n"
+"Tomislav Markovski <tome@set.com.mk>\n"
+"Dario Conigliaro <djdas@djdas.no-ip.org>"
 
 #: src/interface.c:2845
 msgid "Translation"
@@ -1142,46 +1143,48 @@ msgstr "翻訳者"
 
 #: src/main.c:51
 msgid "  --version        Prints Liferea's version number"
-msgstr ""
+msgstr "  --version        Liferea のバージョンを表示する"
 
 #: src/main.c:52
 msgid "  --help           Prints this message and exits"
-msgstr ""
+msgstr "  --help           このメッセージを表示して終了する"
 
 #: src/main.c:54
 msgid "  --debug-cache    Print debugging messages for the cache handling"
-msgstr ""
+msgstr "  --debug-cache    キャッシュ操作を行うデバッグ・メッセージを表示する"
 
 #: src/main.c:55
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
-msgstr ""
+msgstr "  --debug-conf     設定を操作する際のデバッグ・メッセージを表示する"
 
 #: src/main.c:56
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
-msgstr ""
+msgstr "  --debug-update   配信元を更新する際のデバッグ・メッセージを表示する"
 
 #: src/main.c:57
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
+"  --debug-parsing  解析関連の全ての関数のデバッグ・メッセージを表示する"
 
 #: src/main.c:58
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr ""
+"  --debug-gui      GUI 関連の全ての関数のデバッグ・メッセージを表示する"
 
 #: src/main.c:59
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
-msgstr ""
+msgstr "  --debug-trace    関数の入り口/出口のデバッグ・メッセージを表示する"
 
 #: src/main.c:60
 msgid "  --debug-all      Print debugging messages of all types"
-msgstr ""
+msgstr "  --debug-all      全ての種類のデバッグ・メッセージを表示する"
 
 #: src/main.c:61
 msgid "  --debug-verbose  Print verbose debugging messages"
-msgstr ""
+msgstr "  --debug-verbose  デバッグ・メッセージを詳細に表示する"
 
 #: src/net/conversions.c:74
 msgid "No description available."
@@ -1219,9 +1222,9 @@ msgid "Connecting to %s..."
 msgstr "%s へ接続中..."
 
 #: src/net/netio.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading \"http://%s%s\""
-msgstr "http://%s%s のダウンロード中..."
+msgstr "\"http://%s%s\" のダウンロード中"
 
 #. This is a serious non-continueable OS error as it will probably not
 #. go away if we retry.
@@ -1257,21 +1260,20 @@ msgstr ""
 
 #. Don't repeat authrequest if it already failed before!
 #: src/net/netio.c:553
-#, fuzzy
 msgid "Authentication failed!"
-msgstr "プロキシの認証に失敗しました (407)"
+msgstr "認証に失敗しました！"
 
 #: src/net/netio.c:577
 msgid "URL does not contain authentication information!"
-msgstr ""
+msgstr "URL には認証情報がありません！"
 
 #: src/net/netio.c:582
 msgid "Could not generate authentication information!"
-msgstr ""
+msgstr "認証情報を生成できませんでした！"
 
 #: src/net/netio.c:587
 msgid "Unsupported authentication method requested by server!"
-msgstr ""
+msgstr "サーバからサポートしていない認証方法を要求されました！"
 
 #: src/net/netio.c:728
 msgid "This URL doesn't look too valid to me, don't you think?"
@@ -1407,6 +1409,8 @@ msgstr ""
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
+"ヘルプを削除することはできません！ (設定を変更することでヘルプの読み込みを無"
+"効にすることは可能です)"
 
 #: src/ui_feedlist.c:399
 msgid "Deleting entry"
@@ -1431,6 +1435,8 @@ msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
+"新しく作成した配信元の種類を検出できませんでした。再度、購読を行い手動で配信"
+"元の種類を選択して下さい！"
 
 #: src/ui_filter.c:54
 msgid "Rule Type"
@@ -1441,18 +1447,16 @@ msgid "Value"
 msgstr "値"
 
 #: src/ui_folder.c:95 src/ui_folder.c:117 src/ui_folder.c:137
-#, fuzzy
 msgid "A folder must be selected."
-msgstr "削除する場合はフォルダを空にして下さい！"
+msgstr "フォルダを選択して下さい。"
 
 #: src/ui_folder.c:144
 msgid "A folder must be empty to delete it!"
 msgstr "削除する場合はフォルダを空にして下さい！"
 
 #: src/ui_folder.c:244
-#, fuzzy
 msgid "<i>(empty)</i>"
-msgstr "(空)"
+msgstr "<i>(空)</i>"
 
 #: src/ui_folder.c:375
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
@@ -1570,11 +1574,11 @@ msgstr "/ブラウザで開く(_L)"
 
 #: src/ui_popup.c:123
 msgid "/_Increase Text Size"
-msgstr "/テキストの拡大(_I)"
+msgstr "/文字を大きくする(_I)"
 
 #: src/ui_popup.c:124
 msgid "/_Decrease Text Size"
-msgstr "/テキストの縮小(_D)"
+msgstr "/文字を小さくする(_D)"
 
 #: src/ui_popup.c:128
 msgid "/_Copy Link Location"
@@ -1618,11 +1622,29 @@ msgstr ""
 
 #: src/gtkhtml3/gtkhtml3.c:326
 msgid "GtkHTML3 (experimental)"
-msgstr "GtkHTML3 (Experimental)"
+msgstr "GtkHTML3 (EXPERIMENTAL)"
 
 #: src/mozilla/mozembed.c:65
 msgid "Mozilla (experimental)"
-msgstr "Mozilla (Experimental)"
+msgstr "Mozilla (EXPERIMENTAL)"
+
+#~ msgid "_Feed"
+#~ msgstr "配信元(_F)"
+
+#~ msgid "_Edit Properties"
+#~ msgstr "プロパティの編集(_E)"
+
+#~ msgid "F_older"
+#~ msgstr "フォルダ(_O)"
+
+#~ msgid "_New Folder"
+#~ msgstr "新しいフォルダ(_N)"
+
+#~ msgid "_Delete Folder"
+#~ msgstr "フォルダの削除(_D)"
+
+#~ msgid "_Edit Folder Name"
+#~ msgstr "フォルダ名の編集(_E)"
 
 #~ msgid ""
 #~ "Edit the following entries to adjust the feed source URL or\n"
@@ -1650,35 +1672,6 @@ msgstr "Mozilla (Experimental)"
 
 #~ msgid "Feed Update Interval"
 #~ msgstr "配信元の更新間隔"
-
-#~ msgid "The provider of this feed suggests an update interval of %d minutes"
-#~ msgstr "この配信元での更新間隔は %d 分になっています"
-
-#~ msgid "This feed specifies no default update interval."
-#~ msgstr "この配信元はデフォルトの更新間隔を指定していません"
-
-#~ msgid "Internal error! No feed selected, but property change requested...\n"
-#~ msgstr ""
-#~ "[内部エラー] 配信元が選択されていないのに、プロパティの変更を指定しまし"
-#~ "た...\n"
-
-#~ msgid "_Feed"
-#~ msgstr "配信元(_F)"
-
-#~ msgid "_Edit Properties"
-#~ msgstr "プロパティの編集(_E)"
-
-#~ msgid "F_older"
-#~ msgstr "フォルダ(_O)"
-
-#~ msgid "_New Folder"
-#~ msgstr "新しいフォルダ(_N)"
-
-#~ msgid "_Delete Folder"
-#~ msgstr "フォルダの削除(_D)"
-
-#~ msgid "_Edit Folder Name"
-#~ msgstr "フォルダ名の編集(_E)"
 
 #~ msgid ""
 #~ "You have to specify the type of the feed you want to subscribe \n"
@@ -1708,144 +1701,22 @@ msgstr "Mozilla (Experimental)"
 #~ msgid "Feed Type Selection"
 #~ msgstr "配信元の選択"
 
-#~ msgid "internal error! invalid type selected! This should never happen!\n"
+#~ msgid "The provider of this feed suggests an update interval of %d minutes"
+#~ msgstr "この配信元での更新間隔は %d 分になっています"
+
+#~ msgid "This feed specifies no default update interval."
+#~ msgstr "この配信元はデフォルトの更新間隔を指定していません"
+
+#~ msgid "Internal error! No feed selected, but property change requested...\n"
 #~ msgstr ""
-#~ "[内部エラー] 選択した種類が正しくありません！ (これは絶対に発生しえないこ"
-#~ "とです)\n"
+#~ "[内部エラー] 配信元が選択されていないのに、プロパティの変更を指定しまし"
+#~ "た...\n"
+
+#~ msgid "internal error! invalid type selected! This should never happen!\n"
+#~ msgstr "[内部エラー] 不正な種類を選択しました！ (これは致命的な問題です)\n"
 
 #~ msgid "/_Update Directory"
 #~ msgstr "/フォルダの更新(_U)"
 
 #~ msgid "/_Delete Directory"
 #~ msgstr "/フォルダの削除(_D)"
-
-#~ msgid "Copyright (c) 2003-2004 Lars Lindner"
-#~ msgstr "Copyright (c) 2003-2004 Lars Lindner"
-
-#~ msgid "internal error! unknown feed type %d while updating feeds!"
-#~ msgstr "[内部エラー] 配信元を更新する際に不明な配信元の種類 %d"
-
-#~ msgid "internal error: XML document pointer NULL! This should not happen!\n"
-#~ msgstr ""
-#~ "[内部エラー] 選択した種類が正しくありません！ (これは致命的です！)\n"
-
-#~ msgid "internal error! could not retrieve feed list for gconf path %s\n"
-#~ msgstr ""
-#~ "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
-
-#~ msgid "error! could not get a free entry key!\n"
-#~ msgstr "[内部エラー] フリーなエントリ・キーを取得できませんでした！\n"
-
-#~ msgid "error! could not set a URL for this key!\n"
-#~ msgstr "[内部エラー] このキーの URL をセットできませんでした！\n"
-
-#~ msgid "error! could not set a type for this key!\n"
-#~ msgstr "[内部エラー] このキーの種類を設定できませんでした！\n"
-
-#~ msgid "could not read from gconf path \"%s\"!\n"
-#~ msgstr "GConf の設定パス \"%s\" から読み込めませんでした！\n"
-
-#~ msgid "could not create empty keylist in gconf path \"%s\"!\n"
-#~ msgstr "GConf の設定パス \"%s\" に空のキー一覧を生成できませんでした！\n"
-
-#~ msgid "saving feed \"%s\""
-#~ msgstr "配信元 \"%s\" の保存"
-
-#~ msgid "saving all feeds..."
-#~ msgstr "全ての配信元の保存中..."
-
-#~ msgid "error: URL missing!"
-#~ msgstr "[エラー] URL がありません！"
-
-#~ msgid ""
-#~ "Could not detect feed type of \"%s\"! Please manually select a feed type."
-#~ msgstr "配信元 \"%s\" の種類が不明です！ 手動で種類を選択して下さい。"
-
-#~ msgid "internal error! unknown feed type in newFeed()!"
-#~ msgstr "[内部エラー] newFeed() に不明な配信元の種類があります！"
-
-#~ msgid "error! could not add feed to configuration!\n"
-#~ msgstr "[内部エラー] 配信元を設定へ追加できませんでした！\n"
-
-#~ msgid "updating all feeds..."
-#~ msgstr "全ての配信元の更新中..."
-
-#~ msgid "internal error! there is no feed assigned to feedkey \"%s\"!\n"
-#~ msgstr ""
-#~ "[内部エラー] 配信元キー \"%s\" に割り当てられた配信元がありません！\n"
-
-#~ msgid ""
-#~ "getFolderTitle() internal error! could not determine folder iterator for "
-#~ "keyprefix \"%s\"!\n"
-#~ msgstr ""
-#~ "[内部エラー] getFolderTitle() で keyprefix \"%s\" のフォルダ・イタレータを"
-#~ "決定できませんでした！\n"
-
-#~ msgid ""
-#~ "setFolderTitle() internal error! could not determine folder iter for "
-#~ "keyprefix \"%s\"!\n"
-#~ msgstr ""
-#~ "[内部エラー] setFolderTitle() で keyprefix \"%s\" のフォルダ・イタレータを"
-#~ "決定できませんでした！\n"
-
-#~ msgid ""
-#~ "removeFolder() internal error! could not determine folder iter for "
-#~ "keyprefix \"%s\"!\n"
-#~ msgstr ""
-#~ "[内部エラー] removeFolder() で keyprefix \"%s\" のフォルダ・イタレータを決"
-#~ "定できませんでした！\n"
-
-#~ msgid "error! could not move cache file %s to file %s\n"
-#~ msgstr ""
-#~ "ERROR: キャッシュ・ファイル %s をファイル %s へ移動できませんでした\n"
-
-#~ msgid ""
-#~ "Failed to open HTML widget module (%s) specified in configuration!\n"
-#~ "%s\n"
-#~ msgstr ""
-#~ "設定で指定した HTML ウィジット・モジュール (%s) のオープンに失敗しまし"
-#~ "た！\n"
-#~ "%s\n"
-
-#~ msgid "Missing symbol \"%s\" in configured HTML module!"
-#~ msgstr "設定した HTML モジュールの中にシンボル \"%s\" がありません！"
-
-#~ msgid "Cannot load HTML widget module (%s)!"
-#~ msgstr "HTML ウィジット・モジュール (%s) を読み込めません！"
-
-#~ msgid ""
-#~ "Liferea views headlines using a HTML renderer. Depending on your "
-#~ "installation there may be different choices presented below. Note: "
-#~ "Changes will take place after the next restart!"
-#~ msgstr ""
-#~ "Liferea は HTML レンダリングを用いてヘッドラインを表示します。次で選択する"
-#~ "レンダリング・エンジンのインストール状況に依存します。[注記: 変更内容は次"
-#~ "回の起動から反映されます]"
-
-#~ msgid "add folder"
-#~ msgstr "フォルダの追加"
-
-#~ msgid "edit folder name"
-#~ msgstr "フォルダ名の編集"
-
-#~ msgid ""
-#~ "Internal error! Invalid output request mode for namespace information!"
-#~ msgstr "[内部エラー] 名前空間情報に対する出力要求モードが正しくありません！"
-
-#~ msgid "Sorry Liferea does not yet support drag&drop of folders!"
-#~ msgstr "Liferea はまだフォルダのドラッグ＆ドロップをサポートしていません！"
-
-#~ msgid "you cannot modify the special help folder contents!"
-#~ msgstr "特別なヘルプ・フォルダの内言おうを変更することはできません！"
-
-#~ msgid "You can't delete help feeds!"
-#~ msgstr "ヘルプは削除できません！"
-
-#~ msgid "It seems like there is no selected feed entry!"
-#~ msgstr "配信元を一つも選択していないようです！"
-
-#~ msgid "You have to select a folder entry!"
-#~ msgstr "フォルダを一つ選択して下さい！"
-
-#~ msgid "VFolder %s"
-#~ msgstr "仮想フォルダ %s"
