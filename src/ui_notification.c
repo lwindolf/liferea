@@ -109,9 +109,9 @@ void ui_notification_update(const feedPtr feed_p) {
 	
 	if(!getBooleanConfValue(SHOW_POPUP_WINDOWS))
 		return;
-
+	
 	list_p = g_slist_find_custom (notifications_p, feed_p, notifCompare);
-
+	
 	if (list_p != NULL) {
 		curNotif_p = (feedNotif_t *) list_p->data;
 	} else {
@@ -277,9 +277,9 @@ static GtkWidget *notifCreateWin (void) {
 	
 	g_signal_connect(window_p, "destroy", G_CALLBACK(notifDeleteWinCb), NULL);
 	
-	gtk_widget_show_all (window_p);
-	
 	gtk_window_move (GTK_WINDOW(window_p), NOTIF_WIN_POS_X, NOTIF_WIN_POS_Y);
+
+	gtk_widget_show_all (window_p);
 	
 	return window_p;
 }

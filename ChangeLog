@@ -19,7 +19,7 @@
 	  properly and there is no time to fix it.
 	* Added link to FeedValidator in the feed syntax error
 	  messages. (Nathan Conrad)
-	
+	  
 	Bugfixes:
 
 	* Fix for crash when deleting feed while favicon
@@ -31,6 +31,9 @@
 	  for all asynchronously called browser commands.
 	* Fix for crash when a URL with a space character
 	  is added to the feedlist. (Nathan Conrad)
+	* The notification window is now moved to the upper left of the
+	  screen before it is shown so that the user does not see the
+	  notification window move. (Søren Hansen)
 
 	Translations:
 
