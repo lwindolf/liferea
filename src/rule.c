@@ -28,9 +28,9 @@
 #include "item.h"
 #include "rule.h"
 
-#define EXACT_MATCH_RULE_ID		"exact"
-#define EXACT_TITLE_MATCH_RULE_ID	"exact_title"
-#define EXACT_DESC_MATCH_RULE_ID	"exact_desc"
+#define ITEM_MATCH_RULE_ID		"exact"
+#define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
+#define ITEM_DESC_MATCH_RULE_ID		"exact_desc"
    
 /* rule function interface, each function requires a item
    structure which it matches somehow against its values and
@@ -55,9 +55,9 @@ rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean a
 			
 			/* if it is a text matching rule make the text
 			   matching value case insensitive */
-			if((0 == strcmp(ruleId, EXACT_MATCH_RULE_ID)) ||
-			   (0 == strcmp(ruleId, EXACT_TITLE_MATCH_RULE_ID)) ||
-			   (0 == strcmp(ruleId, EXACT_DESC_MATCH_RULE_ID))) {
+			if((0 == strcmp(ruleId, ITEM_MATCH_RULE_ID)) ||
+			   (0 == strcmp(ruleId, ITEM_TITLE_MATCH_RULE_ID)) ||
+			   (0 == strcmp(ruleId, ITEM_DESC_MATCH_RULE_ID))) {
 				rp->value = g_utf8_casefold(value, -1);
 			} else {
 				rp->value = g_strdup(value);
@@ -85,7 +85,21 @@ void rule_free(rulePtr rp) {
 /* rule checking implementations					*/
 /* -------------------------------------------------------------------- */
 
-static gboolean rule_exact_title_match(rulePtr rp, itemPtr ip) {
+static gboolean rule_feed_title_match(rulePtr rp, itemPtr ip) {
+	gboolean	result = FALSE;
+	gchar 		*title;
+	
+	if((NULL != ip->fp) && (NULL != (title = (gchar *)feed_get_title(ip->fp)))) {
+		title = g_utf8_casefold(title, -1);
+		if(NULL != strstr(title, rp->value))
+			result = TRUE;
+		g_free(title);
+	}
+	
+	return result;
+}
+
+static gboolean rule_item_title_match(rulePtr rp, itemPtr ip) {
 	gboolean	result = FALSE;
 	gchar 		*title;
 	
@@ -99,7 +113,7 @@ static gboolean rule_exact_title_match(rulePtr rp, itemPtr ip) {
 	return result;
 }
 
-static gboolean rule_exact_description_match(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_description_match(rulePtr rp, itemPtr ip) {
 	gboolean	result = FALSE;
 	gchar 		*desc;
 
@@ -113,23 +127,23 @@ static gboolean rule_exact_description_match(rulePtr rp, itemPtr ip) {
 	return result;
 }
 
-static gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_match(rulePtr rp, itemPtr ip) {
 
-	if(rule_exact_title_match(rp, ip))
+	if(rule_item_title_match(rp, ip))
 		return TRUE;
 		
-	if(rule_exact_description_match(rp, ip))
+	if(rule_item_description_match(rp, ip))
 		return TRUE;
 
 	return FALSE;
 }
 
-static gboolean rule_is_unread(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_is_unread(rulePtr rp, itemPtr ip) {
 
 	return !(item_get_read_status(ip));
 }
 
-static gboolean rule_is_flagged(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_is_flagged(rulePtr rp, itemPtr ip) {
 
 	return item_get_flag(ip);
 }
@@ -152,9 +166,10 @@ static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gchar *
 
 void rule_init(void) {
 
-	rule_add(rule_exact_match,		EXACT_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
-	rule_add(rule_exact_title_match,	EXACT_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE);
-	rule_add(rule_exact_description_match,	EXACT_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE);
-	rule_add(rule_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
-	rule_add(rule_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
+	rule_add(rule_item_match,		ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_add(rule_item_title_match,		ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE);
+	rule_add(rule_item_description_match,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE);
+	rule_add(rule_feed_title_match,		"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE);
+	rule_add(rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
+	rule_add(rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
 }
