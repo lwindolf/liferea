@@ -32,7 +32,6 @@
 #include "cdf_channel.h"
 #include "cdf_item.h"
 #include "callbacks.h"
-#include "htmlview.h"
 #include "metadata.h"
 
 /* note: the tag order has to correspond with the CHANNEL_* defines in the header file */

@@ -21,14 +21,11 @@
 
 #define _XOPEN_SOURCE 	/* glibc2 needs this (man strptime) */
 
-#include "htmlview.h"
-
 #include "ns_ocs.h"
 #include "ns_dc.h"
 #include "conf.h"
 #include "support.h"
 #include "common.h"
-#include "ui_itemlist.h"
 #include "metadata.h"
 
 #define TABLE_START	"<div class=\"feedfoottitle\">additional Dublin Core information</div><table class=\"addfoot\">"

@@ -26,8 +26,6 @@ src/guitreemodelfilter.c
 src/guitreemodelfilter.h
 src/html.c
 src/html.h
-src/htmlview.c
-src/htmlview.h
 src/interface.c
 src/interface.h
 src/item.c
@@ -97,6 +95,8 @@ src/ui_feedlist.c
 src/ui_feedlist.h
 src/ui_folder.c
 src/ui_folder.h
+src/ui_htmlview.c
+src/ui_htmlview.h
 src/ui_itemlist.c
 src/ui_itemlist.h
 src/ui_mainwindow.c

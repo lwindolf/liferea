@@ -48,7 +48,7 @@
 #include "feed.h"
 #include "conf.h"
 #include "common.h"
-#include "htmlview.h"
+#include "ui_htmlview.h"
 #include "update.h"
 #include "debug.h"
 #include "ui_queue.h"

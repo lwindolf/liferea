@@ -20,8 +20,8 @@
 
 #include "support.h"
 #include "common.h"
-#include "htmlview.h"
 #include "ns_photo.h"
+#include "ui_htmlview.h"
 
 void ns_photo_render(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar	*thumbnail, *imgsrc;

@@ -39,7 +39,6 @@
 #include "ui_feed.h"
 #include "ui_vfolder.h"
 #include "update.h"
-#include "htmlview.h"
 #include "favicon.h"
 #include "debug.h"
 #include "ui_notification.h"

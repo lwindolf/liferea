@@ -34,7 +34,7 @@
 #include <glib.h>
 #include <errno.h>
 #include "../common.h"
-#include "../htmlview.h"
+#include "../ui_htmlview.h"
 #include "../support.h"
 #include "../callbacks.h"
 #include "../update.h"

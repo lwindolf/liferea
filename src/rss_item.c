@@ -26,7 +26,6 @@
 #include "support.h"
 #include "common.h"
 #include "rss_item.h"
-#include "htmlview.h"
 #include "metadata.h"
 
 #define RDF_NS	BAD_CAST"http://www.w3.org/1999/02/22-rdf-syntax-ns#"

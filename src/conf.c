@@ -37,7 +37,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "ui_tray.h"
-#include "htmlview.h"
+#include "ui_htmlview.h"
 #include "ui_mainwindow.h"
 
 #define MAX_GCONF_PATHLEN	256

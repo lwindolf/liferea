@@ -31,7 +31,7 @@
 #include "callbacks.h"
 #include "ui_queue.h"
 #include "support.h"
-#include "htmlview.h"
+#include "ui_htmlview.h"
 #include "debug.h"
 
 /* function types for the imported symbols */

@@ -27,7 +27,6 @@
 #include "common.h"
 #include "pie_entry.h"
 #include "pie_feed.h"
-#include "htmlview.h"
 #include "metadata.h"
 
 /* uses the same namespace handler as PIE_channel */

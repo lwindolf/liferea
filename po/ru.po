@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-14 03:41+0200\n"
+"POT-Creation-Date: 2004-09-19 02:25+0200\n"
 "PO-Revision-Date: 2004-08-28 18:09+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian\n"
@@ -81,25 +81,25 @@ msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:415
+#: src/export.c:422
 msgid "Liferea Help"
 msgstr "Помощь по Liferea"
 
-#: src/export.c:428
+#: src/export.c:435
 msgid "Online Help Feed"
 msgstr "Лента Новостей Онлайновой помощи"
 
-#: src/export.c:444
+#: src/export.c:451
 msgid "Liferea SF News"
 msgstr "Новости Liferea на SF.net"
 
-#: src/export.c:529 src/export.c:531
+#: src/export.c:536 src/export.c:538
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
-#: src/export.c:535 src/export.c:537
+#: src/export.c:542 src/export.c:544
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -107,38 +107,38 @@ msgstr ""
 "Пустой документ! Документ OPML \"%s\" не должен быть пустым во время "
 "импортирования."
 
-#: src/export.c:545 src/export.c:547
+#: src/export.c:552 src/export.c:554
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/export.c:569
+#: src/export.c:576
 msgid "Imported feed list"
 msgstr "Имппортированный лист лент новостей"
 
-#: src/export.c:580
+#: src/export.c:587
 msgid "Import Feed List"
 msgstr "Импортировать Список Лент Новостей"
 
-#: src/export.c:580
+#: src/export.c:587
 msgid "Import"
 msgstr "Импорт"
 
-#: src/export.c:590
+#: src/export.c:597
 msgid "Error while exporting feed list!"
 msgstr "Ошибка во время экспорта списка лент новостей!"
 
-#: src/export.c:592
+#: src/export.c:599
 msgid "Feed List exported!"
 msgstr "Список лент новостей экспортирован!"
 
-#: src/export.c:599
+#: src/export.c:606
 msgid "Export Feed List"
 msgstr "Экспортировать Список Лент Новостей"
 
-#: src/export.c:599
+#: src/export.c:606
 msgid "Export"
 msgstr "Экспорт"
 
@@ -216,17 +216,17 @@ msgid "Updating \"%s\""
 msgstr "Обновление: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:974 src/item.c:242 src/metadata.c:321 src/ocs_dir.c:141
-#: src/opml.c:215
+#: src/feed.c:979 src/item.c:264 src/metadata.c:321 src/ocs_dir.c:140
+#: src/opml.c:214
 msgid "Feed:"
 msgstr "Лента новостей:"
 
-#: src/feed.c:974 src/interface.c:519
+#: src/feed.c:979 src/interface.c:519
 msgid "VFolder"
 msgstr "VFolder"
 
-#: src/feed.c:985 src/interface.c:1071 src/interface.c:1473 src/item.c:269
-#: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:147 src/opml.c:221
+#: src/feed.c:990 src/interface.c:1071 src/interface.c:1473 src/item.c:291
+#: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Источник:"
 
@@ -236,120 +236,9 @@ msgstr ""
 "Ошибка автоматического обнаружение ссылки ленты новостей! Ссылки ленты "
 "новостей не найдены!"
 
-#: src/htmlview.c:66
-msgid ""
-"\n"
-"Trying to load the Mozilla browser module... Note that this\n"
-"might not work with every Mozilla version. If you have problems\n"
-"and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
-"another Mozilla installation or delete the gconf configuration\n"
-"key /apps/liferea/browser-module!\n"
-"\n"
-msgstr ""
-"\n"
-"Попытка загрузить модуль браузера Mozilla... Учтите, что это\n"
-"работает не с каждой версией Mozilla. Если у вас есть проблемы\n"
-"и Liferea не запускается, попробуйте установить в качестве значения\n"
-"переменной MOZILLA_FIVE_HOME\n"
-"другой путь инсталляции Mozilla или удалите конфигурационный ключ gconf\n"
-"/apps/liferea/browser-module!\n"
-"\n"
-
-#: src/htmlview.c:78
-#, c-format
-msgid ""
-"Failed to open HTML widget module (%s) specified in configuration!\n"
-"%s\n"
-msgstr ""
-"Ошибка открытия модуля виджета HTML (%s), указанного в конфигурации!\n"
-"%s\n"
-
-#: src/htmlview.c:90
-msgid "Htmlview API mismatch!"
-msgstr "Несовпадение Htmlview API!"
-
-#: src/htmlview.c:98
-msgid "Detected module is not a valid htmlview module!"
-msgstr "Обнаружен модуль, недопустимый для модуля htmlview!"
-
-#: src/htmlview.c:120
-#, c-format
-msgid "Cannot load HTML widget module (%s)!"
-msgstr "Невозможно загрузить модуль виджета HTML (%s)!"
-
-#. now we determine a list of all available modules
-#. to present in the preferences dialog and to load
-#. one just in case there was no configured module
-#. or it did not load when trying...
-#: src/htmlview.c:126
-#, c-format
-msgid "Available browser modules (%s):\n"
-msgstr "Доступные модули браузера (%s):\n"
-
-#: src/htmlview.c:161
-#, c-format
-msgid "Loading configured browser module (%s)!\n"
-msgstr "Загрузка сконфигурированного модуля браузера (%s)!\n"
-
-#: src/htmlview.c:164
-msgid "No browser module configured!\n"
-msgstr "Ни одного модуля браузеров не определено!\n"
-
-#: src/htmlview.c:172
-#, c-format
-msgid "trying to load browser module %s (%s)\n"
-msgstr "попытка загрузить модуль браузера %s (%s)\n"
-
-#: src/htmlview.c:183
-msgid ""
-"Sorry, I was not able to load any installed browser modules! Try the --debug-"
-"all option to get debug information!"
-msgstr ""
-"Извините, я не смогла загрузить ни одного модуля установленных браузеров! "
-"Просмотрите опцию --debug-all для получения информации!"
-
-#. FIXME: bad because this is not only used for item links!
-#: src/htmlview.c:324
-msgid "This item does not have a link assigned!"
-msgstr "Этот элемент не имеет закреплённой ссылки!"
-
-#: src/htmlview.c:367 src/htmlview.c:388
-#, c-format
-msgid "Browser command failed: %s"
-msgstr "Ошибка команды браузера: %s"
-
-#: src/htmlview.c:370 src/htmlview.c:391
-#, c-format
-msgid "Starting: \"%s\""
-msgstr "Запуск: \"%s\""
-
-#: src/htmlview.h:97
-#, c-format
-msgid ""
-"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
-msgstr ""
-"Ошибка последней попытки обновления подписки!<br><b>Код ошибки HTTP %d: %s</"
-"b>"
-
-#: src/htmlview.h:98
-#, c-format
-msgid ""
-"There were errors while parsing this feed. The following error occured:"
-"<br><b>%s</b>"
-msgstr ""
-"Произошли ошибки во время парсинга ленты новостей. Произошли следующие "
-"ошибки:<br><b>%s</b>"
-
-#: src/htmlview.h:99
-msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
-msgstr ""
-"Эта лента новостей больше не существует. Liferea больше не будет её "
-"обновлять, но вы всё ещё можете читать кэшированные заголовки."
-
 #: src/interface.c:137 src/interface.c:2800
-msgid "Liferea 0.6.0"
+#, fuzzy
+msgid "Liferea 0.6.1"
 msgstr "Liferea 0.6.0"
 
 #: src/interface.c:154
@@ -394,7 +283,7 @@ msgstr "Обновляет выбранную подписку или все п�
 msgid "Update _All"
 msgstr "Обновить _Всё"
 
-#: src/interface.c:237 src/ui_mainwindow.c:180
+#: src/interface.c:237 src/ui_mainwindow.c:163
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Обновляет все подписки. Это не затрагивает директории OCS."
 
@@ -451,7 +340,7 @@ msgstr "_Новости"
 msgid "_Next Unread Item"
 msgstr "_Следующая Непрочитанная Новость"
 
-#: src/interface.c:315 src/ui_mainwindow.c:178
+#: src/interface.c:315 src/ui_mainwindow.c:161
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1104,7 +993,7 @@ msgstr ""
 msgid "Translation"
 msgstr "Перевод"
 
-#: src/interface.c:2926 src/ui_feed.c:364
+#: src/interface.c:2926 src/ui_feed.c:363
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Введите имя пользователя и пароль для \"%s\" (%s):"
@@ -1138,11 +1027,11 @@ msgstr ""
 msgid "Rules"
 msgstr "Правила"
 
-#: src/item.c:251 src/item.c:253 src/item.c:264
+#: src/item.c:273 src/item.c:275 src/item.c:286 src/ui_itemlist.c:211
 msgid "[No title]"
 msgstr "[Без заголовка]"
 
-#: src/item.c:254 src/metadata.c:322 src/ocs_dir.c:102
+#: src/item.c:276 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "Новость:"
 
@@ -1341,13 +1230,13 @@ msgstr "ОШИБКА: Метод компрессии не опровержен"
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "ОШИБКА: Неподдерживаемые флаги %d\n"
 
-#: src/net/netio.c:496
+#: src/net/netio.c:586
 msgid "URL points to permanent redirect, updating with new location..."
 msgstr ""
 "URL указывает на постоянное перенаправление, обновление с новым "
 "местонахождением..."
 
-#: src/ns_dc.c:192 src/ns_ocs.c:89
+#: src/ns_dc.c:189 src/ns_ocs.c:89
 msgid "internal OCS namespace parsing error!"
 msgstr "внутрення ошибка парсинга пространства имён OCS!"
 
@@ -1355,32 +1244,32 @@ msgstr "внутрення ошибка парсинга пространств�
 msgid "included photo"
 msgstr "вложенное фото"
 
-#: src/ocs_dir.c:97
+#: src/ocs_dir.c:96
 msgid "Feed"
 msgstr "Лента новостей"
 
-#: src/ocs_dir.c:198 src/ocs_dir.c:243 src/ocs_dir.c:358 src/ocs_dir.c:428
+#: src/ocs_dir.c:197 src/ocs_dir.c:242 src/ocs_dir.c:357 src/ocs_dir.c:427
 #, c-format
 msgid "no namespace handler for <%s:%s>!\n"
 msgstr "нет оператора пространства имён для <%s:%s>!\n"
 
-#: src/ocs_dir.c:456
+#: src/ocs_dir.c:455
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Невозможно найти заголовок RDF!</p>"
 
-#: src/ocs_dir.c:503 src/opml.c:242 src/pie_feed.c:263 src/rss_channel.c:309
+#: src/ocs_dir.c:502 src/opml.c:241 src/pie_feed.c:262 src/rss_channel.c:308
 msgid "There were errors while parsing this feed!"
 msgstr "Произошли ошибки во время парсинга ленты новостей!"
 
-#: src/opml.c:148
+#: src/opml.c:147
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>Невозможно найти заголовк OPML!</p>"
 
-#: src/pie_feed.c:142
+#: src/pie_feed.c:141
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>Невозможно найти заголовк Atom/Echo/PIE!</p>"
 
-#: src/rss_channel.c:237
+#: src/rss_channel.c:236
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>Невозможно найти заголовк RDF/RSS!</p>"
 
@@ -1441,7 +1330,7 @@ msgstr "без флага"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Невозможно найти файл изображения: %s"
 
-#: src/ui_feed.c:63
+#: src/ui_feed.c:62
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -1449,93 +1338,93 @@ msgstr ""
 "Вам запрещено скачивать эту ленту новостей. Пожалуйста, укажите новые имя "
 "пользователя и пароль в настройках ленты новостей."
 
-#: src/ui_feed.c:65
+#: src/ui_feed.c:64
 msgid "Payment Required"
 msgstr "Необходим Платёж"
 
-#: src/ui_feed.c:66
+#: src/ui_feed.c:65
 msgid "Access Forbidden"
 msgstr "Доступ Запрещён"
 
-#: src/ui_feed.c:67
+#: src/ui_feed.c:66
 msgid "Resource Not Found"
 msgstr "Ресурс Не Найден"
 
-#: src/ui_feed.c:68
+#: src/ui_feed.c:67
 msgid "Method Not Allowed"
 msgstr "Метод Не Разрешён"
 
-#: src/ui_feed.c:69
+#: src/ui_feed.c:68
 msgid "Not Acceptable"
 msgstr "Не Допустимо"
 
-#: src/ui_feed.c:70
+#: src/ui_feed.c:69
 msgid "Proxy Authentication Required"
 msgstr "Необходима Прокси-Аутентификация"
 
-#: src/ui_feed.c:71
+#: src/ui_feed.c:70
 msgid "Request Time-Out"
 msgstr "Запрос Превысил Время Ожидания Ответа"
 
-#: src/ui_feed.c:72
+#: src/ui_feed.c:71
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Не найдено. Ресурс не существует. Пожалуйста, отмените подписку!"
 
-#: src/ui_feed.c:77
+#: src/ui_feed.c:76
 msgid "URL is invalid"
 msgstr "URL неверен"
 
-#: src/ui_feed.c:80
+#: src/ui_feed.c:79
 msgid "Error connecting to remote host"
 msgstr "Ошибка соединения с удалённым сервером"
 
-#: src/ui_feed.c:81
+#: src/ui_feed.c:80
 msgid "Hostname could not be found"
 msgstr "Сервер не может быть найден"
 
-#: src/ui_feed.c:82
+#: src/ui_feed.c:81
 msgid "Network connection was refused by the remote host"
 msgstr "Соединения было прервано удалённым сервером"
 
-#: src/ui_feed.c:83
+#: src/ui_feed.c:82
 msgid "Remote host did not finish sending data"
 msgstr "Удалённый сервер не закончил передачу данных"
 
 #. Transfer errors
-#: src/ui_feed.c:85
+#: src/ui_feed.c:84
 msgid "Too many HTTP redirects were encountered"
 msgstr "Обнаружено слишком много перенаправлений HTTP"
 
-#: src/ui_feed.c:88
+#: src/ui_feed.c:87
 msgid "Remote host sent an invalid response"
 msgstr "Сервер послал неверный ответ"
 
-#: src/ui_feed.c:95
+#: src/ui_feed.c:94
 msgid "Authentication failed"
 msgstr "Аутентификация прошла неудачно"
 
-#: src/ui_feed.c:97
+#: src/ui_feed.c:96
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Метод аутентификации на сервере несовместим с Liferea"
 
-#: src/ui_feed.c:103
+#: src/ui_feed.c:102
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Лента новостей недоступна: Сервер запросил неподдерживаемое перенаправление!"
 
-#: src/ui_feed.c:104
+#: src/ui_feed.c:103
 msgid "Client Error"
 msgstr "Ошибка клиента"
 
-#: src/ui_feed.c:105
+#: src/ui_feed.c:104
 msgid "Server Error"
 msgstr "Ошибка Сервера"
 
-#: src/ui_feed.c:106
+#: src/ui_feed.c:105
 msgid "(unknown networking error happened)"
 msgstr "(произошла неизвестная сетевая ошибка)"
 
-#: src/ui_feed.c:128
+#: src/ui_feed.c:127
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1543,24 +1432,24 @@ msgstr ""
 "Произошла проблема во время чтения этой подписки. Пожалуйста, проверьте URL "
 "и вывод командной строки."
 
-#: src/ui_feed.c:162
+#: src/ui_feed.c:161
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "Лента \"%s\" прекратила своё существование. Liferea не будет больше "
 "обновлять её!"
 
-#: src/ui_feed.c:164
+#: src/ui_feed.c:163
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не изменился с момента последнего обновления"
 
-#: src/ui_feed.c:172
+#: src/ui_feed.c:171
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL для \"%s\" изменился на постоянный и был обновлён"
 
-#: src/ui_feed.c:184
+#: src/ui_feed.c:183
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -1571,80 +1460,80 @@ msgstr ""
 "указывает ли URL на ресурс, доступный в одном из поддерживаемых форматов!</p>"
 "%s"
 
-#: src/ui_feed.c:201
+#: src/ui_feed.c:200
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" обновлён..."
 
-#: src/ui_feed.c:210
+#: src/ui_feed.c:209
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступен"
 
-#: src/ui_feed.c:365
+#: src/ui_feed.c:364
 msgid "Unknown source"
 msgstr "Неизвестный источник"
 
-#: src/ui_feed.c:457
+#: src/ui_feed.c:456
 msgid "Directories cannot be autoupdated."
 msgstr "Директории не могут быть автоматически обновлены."
 
-#: src/ui_feed.c:460
+#: src/ui_feed.c:459
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Создатель этой ленты новостей рекомендует интервал обновления в %d минут(у)"
 "(ы)."
 
-#: src/ui_feed.c:462
+#: src/ui_feed.c:461
 msgid "This feed specifies no default update interval."
 msgstr "Эта лента новостей не обозначает интервал обновления по умолчанию."
 
-#: src/ui_feed.c:807
+#: src/ui_feed.c:806
 msgid "Choose File"
 msgstr "Выберите файл"
 
-#: src/ui_feedlist.c:399
+#: src/ui_feedlist.c:408
 msgid "You have to select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/ui_feedlist.c:409
+#: src/ui_feedlist.c:418
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в режиме \"отключена\". Обновления невозможны."
 
-#: src/ui_feedlist.c:430
+#: src/ui_feedlist.c:441
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Заметка: Использования фильтров подписки отключает возможность использования "
 "drag & drop"
 
-#: src/ui_feedlist.c:472 src/ui_feedlist.c:475
+#: src/ui_feedlist.c:483 src/ui_feedlist.c:486
 msgid "Deleting entry"
 msgstr "Удаление записи"
 
-#: src/ui_feedlist.c:473
+#: src/ui_feedlist.c:484
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Вы действительно хотите удалить каталог \"%s\" и его содержимое?"
 
-#: src/ui_feedlist.c:476
+#: src/ui_feedlist.c:487
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Вы действительно хотите удалить \"%s\"?"
 
-#: src/ui_feedlist.c:484
+#: src/ui_feedlist.c:495
 msgid "Deletion Confirmation"
 msgstr "Потверждение об Удалении"
 
-#: src/ui_feedlist.c:521
+#: src/ui_feedlist.c:532
 msgid "You must select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/ui_feedlist.c:522
+#: src/ui_feedlist.c:533
 msgid "You must select a feed entry."
 msgstr "Вы должны выбрать строку с лентой новостей."
 
-#: src/ui_feedlist.c:568
+#: src/ui_feedlist.c:579
 msgid "New subscription"
 msgstr "Новая подписка"
 
@@ -1662,50 +1551,162 @@ msgstr ""
 "внутренняя ошибка! неизвестный тип записи! невозможно отобразить "
 "соответствующую иконку!\n"
 
-#: src/ui_itemlist.c:302
+#: src/ui_htmlview.c:66
+msgid ""
+"\n"
+"Trying to load the Mozilla browser module... Note that this\n"
+"might not work with every Mozilla version. If you have problems\n"
+"and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
+"another Mozilla installation or delete the gconf configuration\n"
+"key /apps/liferea/browser-module!\n"
+"\n"
+msgstr ""
+"\n"
+"Попытка загрузить модуль браузера Mozilla... Учтите, что это\n"
+"работает не с каждой версией Mozilla. Если у вас есть проблемы\n"
+"и Liferea не запускается, попробуйте установить в качестве значения\n"
+"переменной MOZILLA_FIVE_HOME\n"
+"другой путь инсталляции Mozilla или удалите конфигурационный ключ gconf\n"
+"/apps/liferea/browser-module!\n"
+"\n"
+
+#: src/ui_htmlview.c:78
+#, c-format
+msgid ""
+"Failed to open HTML widget module (%s) specified in configuration!\n"
+"%s\n"
+msgstr ""
+"Ошибка открытия модуля виджета HTML (%s), указанного в конфигурации!\n"
+"%s\n"
+
+#: src/ui_htmlview.c:90
+msgid "Htmlview API mismatch!"
+msgstr "Несовпадение Htmlview API!"
+
+#: src/ui_htmlview.c:98
+msgid "Detected module is not a valid htmlview module!"
+msgstr "Обнаружен модуль, недопустимый для модуля htmlview!"
+
+#: src/ui_htmlview.c:120
+#, c-format
+msgid "Cannot load HTML widget module (%s)!"
+msgstr "Невозможно загрузить модуль виджета HTML (%s)!"
+
+#. now we determine a list of all available modules
+#. to present in the preferences dialog and to load
+#. one just in case there was no configured module
+#. or it did not load when trying...
+#: src/ui_htmlview.c:126
+#, c-format
+msgid "Available browser modules (%s):\n"
+msgstr "Доступные модули браузера (%s):\n"
+
+#: src/ui_htmlview.c:161
+#, c-format
+msgid "Loading configured browser module (%s)!\n"
+msgstr "Загрузка сконфигурированного модуля браузера (%s)!\n"
+
+#: src/ui_htmlview.c:164
+msgid "No browser module configured!\n"
+msgstr "Ни одного модуля браузеров не определено!\n"
+
+#: src/ui_htmlview.c:172
+#, c-format
+msgid "trying to load browser module %s (%s)\n"
+msgstr "попытка загрузить модуль браузера %s (%s)\n"
+
+#: src/ui_htmlview.c:183
+msgid ""
+"Sorry, I was not able to load any installed browser modules! Try the --debug-"
+"all option to get debug information!"
+msgstr ""
+"Извините, я не смогла загрузить ни одного модуля установленных браузеров! "
+"Просмотрите опцию --debug-all для получения информации!"
+
+#. FIXME: bad because this is not only used for item links!
+#: src/ui_htmlview.c:324
+msgid "This item does not have a link assigned!"
+msgstr "Этот элемент не имеет закреплённой ссылки!"
+
+#: src/ui_htmlview.c:367 src/ui_htmlview.c:388
+#, c-format
+msgid "Browser command failed: %s"
+msgstr "Ошибка команды браузера: %s"
+
+#: src/ui_htmlview.c:370 src/ui_htmlview.c:391
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "Запуск: \"%s\""
+
+#: src/ui_htmlview.h:97
+#, c-format
+msgid ""
+"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
+msgstr ""
+"Ошибка последней попытки обновления подписки!<br><b>Код ошибки HTTP %d: %s</"
+"b>"
+
+#: src/ui_htmlview.h:98
+#, c-format
+msgid ""
+"There were errors while parsing this feed. The following error occured:"
+"<br><b>%s</b>"
+msgstr ""
+"Произошли ошибки во время парсинга ленты новостей. Произошли следующие "
+"ошибки:<br><b>%s</b>"
+
+#: src/ui_htmlview.h:99
+msgid ""
+"This feed is discontinued. It's no longer available. Liferea won't update it "
+"anymore but you can still access the cached headlines."
+msgstr ""
+"Эта лента новостей больше не существует. Liferea больше не будет её "
+"обновлять, но вы всё ещё можете читать кэшированные заголовки."
+
+#: src/ui_itemlist.c:292
 msgid "Date"
 msgstr "Дата"
 
-#: src/ui_itemlist.c:313
+#: src/ui_itemlist.c:303
 msgid "Headline"
 msgstr "Заголовок"
 
-#: src/ui_itemlist.c:613 src/ui_itemlist.c:654
+#: src/ui_itemlist.c:605 src/ui_itemlist.c:646
 msgid "No item has been selected"
 msgstr "Ни одна новость не выбрана"
 
-#: src/ui_itemlist.c:637 src/ui_itemlist.c:657
+#: src/ui_itemlist.c:629 src/ui_itemlist.c:649
 msgid "You must select a feed to delete its items!"
 msgstr "Вы должно выбрать ленту новостей для удаления её элементов!"
 
-#: src/ui_itemlist.c:689
+#: src/ui_itemlist.c:681
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "внутренняя ошибка! невозможно получить древовидный диалог выбора ленты "
 "новостей!\n"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:717
+#: src/ui_itemlist.c:709
 msgid "There are no unread items "
 msgstr "Нет непрочитанных новостей "
 
-#: src/ui_mainwindow.c:177
+#: src/ui_mainwindow.c:160
 msgid "New Feed"
 msgstr "Новая Лента Новостей"
 
-#: src/ui_mainwindow.c:177
+#: src/ui_mainwindow.c:160
 msgid "Add a new subscription."
 msgstr "Добавить Новую Подписку."
 
-#: src/ui_mainwindow.c:178
+#: src/ui_mainwindow.c:161
 msgid "Next Unread"
 msgstr "Следующая Непрочитанная Новость"
 
-#: src/ui_mainwindow.c:179
+#: src/ui_mainwindow.c:162
 msgid "Mark As Read"
 msgstr "Пометить Как Прочитанные"
 
-#: src/ui_mainwindow.c:179
+#: src/ui_mainwindow.c:162
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1713,27 +1714,27 @@ msgstr ""
 "Пометить все элементы выбранной подписки или всех подписок выбранной папки "
 "как прочитанные."
 
-#: src/ui_mainwindow.c:180
+#: src/ui_mainwindow.c:163
 msgid "Update All"
 msgstr "Обновить Всё"
 
-#: src/ui_mainwindow.c:181
+#: src/ui_mainwindow.c:164
 msgid "Search"
 msgstr "Поиск"
 
-#: src/ui_mainwindow.c:181
+#: src/ui_mainwindow.c:164
 msgid "Search all feeds."
 msgstr "Поиск во всех лентах новостей."
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:165
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:182
+#: src/ui_mainwindow.c:165
 msgid "Edit preferences."
 msgstr "Редактировать настройки."
 
-#: src/ui_mainwindow.c:197
+#: src/ui_mainwindow.c:186
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
@@ -1786,11 +1787,11 @@ msgstr ""
 "доступном на <a href=\"http://liferea.sf.net\">домашней странице проекта</a>."
 "</p>"
 
-#: src/ui_mainwindow.c:282
+#: src/ui_mainwindow.c:267
 msgid "Liferea is now online"
 msgstr "Liferea подключена"
 
-#: src/ui_mainwindow.c:285
+#: src/ui_mainwindow.c:270
 msgid "Liferea is now offline"
 msgstr "Liferea отключена"
 
@@ -1802,136 +1803,136 @@ msgstr "Неозаглавленная"
 msgid "Liferea notification"
 msgstr "Уведомление Liferea "
 
-#: src/ui_popup.c:86
+#: src/ui_popup.c:82
 msgid "/_Update"
 msgstr "/_Обновить"
 
-#: src/ui_popup.c:87 src/ui_popup.c:97 src/ui_popup.c:106
+#: src/ui_popup.c:83 src/ui_popup.c:93 src/ui_popup.c:102
 msgid "/_Mark All As Read"
 msgstr "/_Пометить Все Как Прочитанные"
 
-#: src/ui_popup.c:88 src/ui_popup.c:98 src/ui_popup.c:107 src/ui_popup.c:115
+#: src/ui_popup.c:84 src/ui_popup.c:94 src/ui_popup.c:103 src/ui_popup.c:111
 msgid "/_New"
 msgstr "/_Новый элемент"
 
-#: src/ui_popup.c:89 src/ui_popup.c:99 src/ui_popup.c:108 src/ui_popup.c:116
+#: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
 msgid "/_New/New _Subscription"
 msgstr "/_Новый элемент/_Новая Подписка"
 
-#: src/ui_popup.c:90 src/ui_popup.c:100 src/ui_popup.c:109 src/ui_popup.c:117
+#: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
 msgid "/_New/New F_older"
 msgstr "/_Новый элемент/Новая _Папка"
 
-#: src/ui_popup.c:91 src/ui_popup.c:110
+#: src/ui_popup.c:87 src/ui_popup.c:106
 msgid "/_Properties"
 msgstr "/_Свойства"
 
-#: src/ui_popup.c:92 src/ui_popup.c:111
+#: src/ui_popup.c:88 src/ui_popup.c:107
 msgid "/_Delete"
 msgstr "/_Удалить"
 
-#: src/ui_popup.c:96
+#: src/ui_popup.c:92
 msgid "/_Update Folder"
 msgstr "/_Обновить Папку"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:97
 msgid "/_Rename Folder"
 msgstr "/_Переименовать папку"
 
-#: src/ui_popup.c:102
+#: src/ui_popup.c:98
 msgid "/_Delete Folder"
 msgstr "/_Удалить Папку"
 
-#: src/ui_popup.c:122
+#: src/ui_popup.c:118
 msgid "/Toggle _Read Status"
 msgstr "/Переключить Статус _Прочтения"
 
-#: src/ui_popup.c:123
+#: src/ui_popup.c:119
 msgid "/Toggle Item _Flag"
 msgstr "/Переключить _Флаг Новости"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:120
 msgid "/R_emove Item"
 msgstr "У_далить Элемент"
 
-#: src/ui_popup.c:126
+#: src/ui_popup.c:122
 msgid "/_Next Unread Item"
 msgstr "/_Следующая Непрочитанная Новость"
 
-#: src/ui_popup.c:128
+#: src/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/_Показать Новость В Браузере "
 
-#: src/ui_popup.c:135
+#: src/ui_popup.c:131
 msgid "/_Increase Text Size"
 msgstr "/_Увеличить Размер Текста"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:132
 msgid "/_Decrease Text Size"
 msgstr "/_Уменьшить Размер Текста"
 
-#: src/ui_popup.c:140
+#: src/ui_popup.c:136
 msgid "/_Copy Link Location"
 msgstr "/_Скопировать Адрес Ссылки"
 
-#: src/ui_popup.c:141
+#: src/ui_popup.c:137
 msgid "/_Launch Link In Browser"
 msgstr "/_Показать В Браузере"
 
-#: src/ui_popup.c:142
+#: src/ui_popup.c:138
 msgid "/_Subscribe"
 msgstr "/_Подписаться"
 
-#: src/ui_popup.c:147
+#: src/ui_popup.c:143
 msgid "/_Work Offline"
 msgstr "/_Работать в режиме \"Отключен\""
 
-#: src/ui_popup.c:148
+#: src/ui_popup.c:144
 msgid "/_Update All"
 msgstr "/_Обновить Всё"
 
-#: src/ui_popup.c:149
+#: src/ui_popup.c:145
 msgid "/_Preferences"
 msgstr "/_Настройки"
 
-#: src/ui_popup.c:151
+#: src/ui_popup.c:147
 msgid "/_Show Window"
 msgstr "/_Показать Окно"
 
-#: src/ui_popup.c:152
+#: src/ui_popup.c:148
 msgid "/_Quit"
 msgstr "/_Выход"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:185
+#: src/ui_prefs.c:184
 msgid "Manual"
 msgstr "Вручную"
 
-#: src/ui_prefs.c:195
+#: src/ui_prefs.c:194
 msgid "Browser default"
 msgstr "Браузер по умолчанию"
 
-#: src/ui_prefs.c:200
+#: src/ui_prefs.c:199
 msgid "Existing window"
 msgstr "Существующее окно"
 
-#: src/ui_prefs.c:205
+#: src/ui_prefs.c:204
 msgid "New window"
 msgstr "Новое окно"
 
-#: src/ui_prefs.c:210
+#: src/ui_prefs.c:209
 msgid "New tab"
 msgstr "Новая закладка"
 
-#: src/ui_prefs.c:220
+#: src/ui_prefs.c:219
 msgid "Update only feeds scheduled for updates"
 msgstr "Обновлять только ленты с запланированным обновлением"
 
-#: src/ui_prefs.c:225
+#: src/ui_prefs.c:224
 msgid "Update all feeds"
 msgstr "Обновить Все Ленты"
 
-#: src/ui_prefs.c:230
+#: src/ui_prefs.c:229
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Сбросить таймеры обновления лент (Не обновлять ленты)"
 

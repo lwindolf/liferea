@@ -49,7 +49,7 @@
 #include "ui_feed.h"	/* FIXME: Remove ui_* include from core code */
 #include "ui_feedlist.h"
 #include "ui_tray.h"
-#include "htmlview.h"
+#include "ui_htmlview.h"
 
 /* auto detection lookup table */
 static GSList *feedhandlers;

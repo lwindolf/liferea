@@ -28,7 +28,7 @@
 #include "item.h"
 #include "support.h"
 #include "common.h"
-#include "htmlview.h"
+#include "ui_htmlview.h"
 #include "callbacks.h"
 #include "ui_tray.h"
 #include "metadata.h"

@@ -31,7 +31,7 @@
 #include "ui_prefs.h"
 #include "ui_dnd.h"
 #include "export.h"
-#include "htmlview.h"
+#include "ui_htmlview.h"
 
 /* icon constants */
 enum icons {

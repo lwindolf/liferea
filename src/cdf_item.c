@@ -24,7 +24,6 @@
 #include "common.h"
 #include "cdf_channel.h"
 #include "cdf_item.h"
-#include "htmlview.h"
 #include "metadata.h"
 
 extern GHashTable *cdf_nslist;

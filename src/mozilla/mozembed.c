@@ -32,7 +32,7 @@
 #include <errno.h>
 #include <glib.h>
 #include <gtkmozembed.h>
-#include "../htmlview.h"
+#include "../ui_htmlview.h"
 #include "../conf.h"
 #include "../support.h"
 #include "../debug.h"

@@ -47,7 +47,6 @@
 #include "ns_blogChannel.h"
 #include "ns_cC.h"
 #include "ns_photo.h"
-#include "htmlview.h"
 #include "rss_item.h"
 
 /* HTML output strings */

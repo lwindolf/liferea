@@ -26,7 +26,6 @@
 #include "conf.h"
 #include "callbacks.h"
 #include "update.h"
-#include "htmlview.h"
 #include "interface.h"
 #include "ui_feed.h"
 #include "ui_queue.h"

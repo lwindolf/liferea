@@ -30,7 +30,6 @@
 #include "pie_entry.h"
 #include "ns_dc.h"
 #include "callbacks.h"
-#include "htmlview.h"
 #include "metadata.h"
 
 /* to store the PIENsHandler structs for all supported RDF namespace handlers */

@@ -36,7 +36,6 @@
 #include "callbacks.h"
 #include "ns_dc.h"
 #include "ns_ocs.h"
-#include "htmlview.h"
 
 /* you can find the OCS specification at
 

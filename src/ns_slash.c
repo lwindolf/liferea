@@ -21,7 +21,7 @@
 
 #include "ns_slash.h"
 #include "common.h"
-#include "htmlview.h"
+#include "ui_htmlview.h"
 
 #define SLASH_START	"<table class=\"slash\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"slash\">"
 #define KEY_START	"<span class=\"slashprop\">"
@@ -78,7 +78,7 @@ void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user
 		department++;
 		
 		addToHTMLBuffer(&(displayset->head), SLASH_START);		
-		if (section != NULL) {
+		if(section != NULL) {
 			addToHTMLBuffer(&(displayset->head), KEY_START);
 			addToHTMLBuffer(&(displayset->head), "section");
 			addToHTMLBuffer(&(displayset->head), KEY_END);
@@ -86,7 +86,7 @@ void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user
 			addToHTMLBuffer(&(displayset->head), section);
 			addToHTMLBuffer(&(displayset->head), VALUE_END);
 		}
-		if (department != NULL) {
+		if(department != NULL) {
 			addToHTMLBuffer(&(displayset->head), KEY_START);
 			addToHTMLBuffer(&(displayset->head), "department");
 			addToHTMLBuffer(&(displayset->head), KEY_END);

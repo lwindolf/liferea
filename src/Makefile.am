@@ -41,7 +41,6 @@ liferea_bin_SOURCES = \
 	folder.c folder.h \
 	guitreemodelfilter.c guitreemodelfilter.h \
 	html.c html.h \
-	htmlview.c htmlview.h \
 	interface.c interface.h \
 	item.c item.h \
 	main.c \
@@ -70,6 +69,7 @@ liferea_bin_SOURCES = \
 	ui_feed.c ui_feed.h \
 	ui_feedlist.c ui_feedlist.h \
 	ui_folder.c ui_folder.h \
+	ui_htmlview.c ui_htmlview.h \
 	ui_itemlist.c ui_itemlist.h \
 	ui_mainwindow.c ui_mainwindow.h \
 	ui_notification.c ui_notification.h \

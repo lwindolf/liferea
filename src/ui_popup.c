@@ -22,7 +22,6 @@
 #include "folder.h"
 #include "support.h"
 #include "callbacks.h"
-#include "htmlview.h"
 #include "ui_popup.h"
 #include "ui_mainwindow.h"
 #include "update.h"

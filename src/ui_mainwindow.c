@@ -36,11 +36,11 @@
 #include "ui_mainwindow.h"
 #include "ui_folder.h"
 #include "ui_tray.h"
+#include "ui_htmlview.h"
 #include "ui_itemlist.h"
 #include "ui_session.h"
 #include "ui_queue.h"
 #include "update.h"
-#include "htmlview.h"
 
 #if GTK_CHECK_VERSION(2,4,0)
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
