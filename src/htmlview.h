@@ -1,5 +1,5 @@
 /*
-   common interface for all HTML view implementations
+   @file htmlview.h common interface for all HTML view implementations
    
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
@@ -27,11 +27,15 @@
 #include <pwd.h>
 #include <sys/types.h>
 
-/* Common HTML definitions, style should be defined in the
-   liferea.css style sheet! For some important HTML literals
-   like the item and feed description headers the styles 
-   are duplicated here just in case the style sheet is 
-   missing. */
+/**
+ * @{ Common HTML definitions
+ *
+ * Used styles should be defined in the
+ * liferea.css style sheet! For some important HTML literals
+ * like the item and feed description headers the styles 
+ * are duplicated here just in case the style sheet is 
+ * missing. 
+ */
 
 #define EMPTY		"<html><body></body></html>"
 #define HTML_START	"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>"
@@ -98,47 +102,100 @@
 #define PARSE_ERROR_TEXT	"There were errors while parsing this feed. The following error occured:<br><b>%s</b>"
 #define UPDATE_ERROR_END	"</td></tr></table>"
 
+/*@}*/
 
-/* list type to provide a list of available modules for the preferences dialog */
+/** list type to provide a list of available modules for the preferences dialog */
 struct browserModule {
 	gchar	*description;
 	gchar	*libname;
 };
 
-/* function to load the module specified by libname */
+/** 
+ * This function searches the html browser module directory
+ * for available modules and builds a list to be displayed in
+ * the preferences dialog. Furthermore this function tries
+ * to load the configured browser module or if this fails
+ * one of the other available modules.
+ */
 void	ui_htmlview_init(void);
 
-/* creates the HTML widget */
+/** 
+ * Function to set up the html view widget for the three
+ * and two pane view. 
+ *
+ * @param pane1	scrolled window of the three pane mode
+ * @param pane2	scrolled window of the two pane mode
+ * @param initialZoomLevel	the initial zoom level of the HTML views
+ */
 void	ui_htmlview_setup(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 
-/* loads a emtpy HTML page */
+/** loads a emtpy HTML page */
 void	ui_htmlview_clear(void);
 
-/* function to select either the single item view (3 pane mode)
-   or the item list view (2 pane mode) */
+/**
+ * Function to select either the single item view (three pane mode)
+ * or the item list view (two pane mode) 
+ *
+ * @param threePane	TRUE if three pane mode
+ */
 void	ui_htmlview_set_mode(gboolean threePane);
 
-/* functions to output HTML to the selected HTML widget */
+/**
+ * Function to add HTML source header to create a valid HTML source.
+ *
+ * @param buffer	pointer to buffer to add the HTML to
+ * @param padded	TRUE if output is for two pane mode
+ */
 void	ui_htmlview_start_output(gchar **buffer, gboolean padded);
 
-void	ui_htmlview_write(gchar *string);
-
+/**
+ * Function to add HTML source footer to create a valid HTML source.
+ *
+ * @param buffer	pointer to buffer to add the HTML to
+ */
 void	ui_htmlview_finish_output(gchar **buffer);
 
-/* launches the specified URL */
+/**
+ * Method to display the passed HTML source to the HTML widget.
+ *
+ * @param string	HTML source
+ */
+void	ui_htmlview_write(gchar *string);
+
+/**
+ * Launches the specified URL in the configured browser or
+ * in case of Mozilla inside the HTML widget.
+ *
+ * @param url	URL to launch
+ */
 void	ui_htmlview_launch_URL(gchar *url);
 
-/* adds a differences diff to the actual zoom level */
+/**
+ * Function to change the zoom level of the HTML widget.
+ * Adds a difference diff to the actual zoom level 
+ *
+ * @param diff	delta value for zoom level
+ */
 void	ui_htmlview_change_zoom(gfloat diff);
 
-/* returns the currently set zoom level */
+/**
+ * Function to determine the current zoom level.
+ *
+ * @return the currently set zoom level 
+ */
 gfloat	ui_htmlview_get_zoom(void);
 
-/* Returns the currently selected URL string. The string
-   must be freed by the caller. */
+/**
+ * Function to determine the currently selected URL.
+ * The string must be freed by the caller.
+ *
+ * @return currently selected URL string.  
+ */
 gchar *	ui_htmlview_get_selected_URL(void);
 
-/* Resets the horizontal and vertical scrolling of the items HTML view. */
+/**
+ * Resets the horizontal and vertical scrolling of the items HTML view. 
+ */
 void	ui_htmlview_reset_scrolling(void);
 
 /**
