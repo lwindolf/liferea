@@ -285,7 +285,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		}
 
 		ui_folder_add_feed(folder, fp, -1);
-
+		
 		if(source != NULL)
 			xmlFree(source);
 		if (filter != NULL)

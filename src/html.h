@@ -30,8 +30,15 @@
  *
  * @parm data	HTML source
  * @param baseUri URI that relative links will be based off of
- * @returns	feed URL or NULL
+ * @returns	feed URL or NULL. Must be freed by caller.
  */
 gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
 
+/**
+ * Search for favicon links in a HTML file's head section
+ * @param data HTML source
+ * @param baseUri URI of the downloaded HTML used to resolve relative URIs
+ * @returns URL of the favicon, or NULL. Must be freed by caller.
+ */
+gchar * html_discover_favicon(const gchar* data, const gchar *baseUri);
 #endif

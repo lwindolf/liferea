@@ -9,7 +9,9 @@
 	* UTF-16 formatted documents are now supported. Please complain if
 	  you have problems! This may also help other encodings that
 	  contain NULL bytes in their datastreams.
-	
+	* More favicons are now detected (HTML pages are now searched for
+	links to the favicons). (Nathan Conrad)
+	  
 	Bugfixes:
 	
 	* Favicons downloaded using gzip compression are no longer

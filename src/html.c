@@ -53,6 +53,30 @@ static gchar *checkLinkRef(const gchar* str) {
 	return NULL;
 }
 
+static gchar *checkLinkRefForFavicon(const gchar* str) {
+	gchar	*res;
+	gchar	*tmp, *tmp2;
+
+	/*debug1(DEBUG_PARSING, "checking link %s", str); */
+	tmp = strstr(str, "href=");
+	if(NULL == tmp) tmp = strstr(str, "HREF=");
+	if(NULL == tmp) return NULL;
+	/* FIXME: single quotes support */
+	tmp2 = strchr(tmp, '\"');
+	if(NULL == tmp2) return NULL;
+	tmp = strchr(tmp2+1, '\"');
+	*tmp = '\0';
+	res = g_strdup(tmp2+1);
+	*tmp = '\"';
+
+	if((strstr(str, "shortcut icon")!=NULL ||
+		strstr(str, "icon")!=NULL) &&
+	   ((strstr(str, "image/x-icon")!=NULL)))
+		return res;
+	g_free(res);
+	return NULL;
+}
+
 static gchar *checkNormalLink(const gchar* str) {
 	gchar	*res, *tmp, *tmp2;
 
@@ -75,7 +99,7 @@ static gchar *checkNormalLink(const gchar* str) {
 	return NULL;
 }
 
-static gchar *search_links(const gchar* data, int type) {
+static gchar *search_links(const gchar* data, int type, gboolean favicon) {
 	gchar	*ptr;
 	const gchar	*tmp = data;
 	gchar	*result = NULL;
@@ -94,7 +118,9 @@ static gchar *search_links(const gchar* data, int type) {
 		*endptr = '\0';
 		tstr = g_strdup(ptr);
 		*endptr = '>';
-		res = ((type==0)? checkLinkRef(tstr) : checkNormalLink(tstr));
+		res = ((type==0)?
+			  (favicon ? checkLinkRefForFavicon(tstr) : checkLinkRef(tstr))
+			  : checkNormalLink(tstr));
 		g_free(tstr);
 		if(res != NULL){
 			result = res;
@@ -119,22 +145,18 @@ static gchar *search_links(const gchar* data, int type) {
 }
 
 gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri) {
-	int	f = 0;
 	gchar	*res;
 
 	debug0(DEBUG_UPDATE, "searching through link tags");
-	res = search_links(data, 0);
+	res = search_links(data, 0, FALSE);
 	debug1(DEBUG_UPDATE, "search result: %s", res? res : "none found");
-	f = res? 1 : 0;
-	if(!f) {
+	if(res == NULL) {
 		debug0(DEBUG_UPDATE, "searching through href tags");
-		res = search_links(data, 1);
+		res = search_links(data, 1, FALSE);
 		debug1(DEBUG_UPDATE, "search result: %s", res? res : "none found");
-		if(!f) 
-			f = res? 1 : 0;
 	}
 
-	if(!f) {
+	if(res == NULL) {
 		ui_show_error_box(_("Feed link auto discovery failed! No feed links found!"));
 	} else {
 		/* turn relative URIs into absolute URIs */
@@ -147,5 +169,26 @@ gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri) {
 		}
 	}
 
+	return res;
+}
+
+gchar * html_discover_favicon(const gchar* data, const gchar *baseUri) {
+	gchar	*res;
+
+	debug0(DEBUG_UPDATE, "searching through link tags");
+	res = search_links(data, 0, TRUE);
+	debug1(DEBUG_UPDATE, "search result: %s", res? res : "none found");
+
+	if (res != NULL) {
+		/* turn relative URIs into absolute URIs */
+		xmlChar *tmp;
+		if (baseUri != NULL) {
+			tmp = xmlBuildURI(res, baseUri);
+			g_free(res);
+			res = g_strdup(tmp);
+			xmlFree(tmp);
+		}
+	}
+	
 	return res;
 }

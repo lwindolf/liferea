@@ -36,6 +36,7 @@
 #include "common.h"
 #include "update.h"
 #include "debug.h"
+#include "html.h"
 #include "ui_feedlist.h"
 
 void favicon_load(feedPtr fp) {
@@ -101,10 +102,79 @@ void favicon_remove(feedPtr fp) {
 	g_free(filename);
 }
 
-static void favicon_download_request_cb(struct request *request) {
+/*
+ * This code tries to download a series of files. If there are no
+ * favicons, this will make four downloads, two of which will be 404
+ * errors. Hopefully this will not cause any webservers pain because
+ * this code should be run only once a month per feed.
+ *
+ * Flag states: (stored in request->flags)
+ *
+ * 0 <-- downloading HTML of the feed url
+ * 1 <-- downloading favicon from the feed url HTML
+ * 2 <-- downloading HTML of root of webserver
+ * 3 <-- downloading favicon from the root HTML
+ * 4 <-- downloading favicon from directory of RSS feed
+ * 5 <-- downloading favicon from root of webserver
+ */
+
+static void favicon_download_request_favicon_cb(struct request *request);
+static void favicon_download_html(feedPtr fp, int phase);
+
+static void favicon_download_5(feedPtr fp) {
+	gchar *baseurl, *tmp;
+	struct request *request;
+	
+	baseurl = g_strdup(feed_get_source(fp));
+	if(NULL != (tmp = strstr(baseurl, "://"))) {
+		tmp += 3;
+		if(NULL != (tmp = strchr(tmp, '/'))) {
+			*tmp = 0;
+			request = download_request_new(NULL);
+			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
+			
+			request->callback = &favicon_download_request_favicon_cb;
+			request->user_data = fp;
+			request->flags = 5;
+			fp->faviconRequest = request;
+			
+			debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
+			
+			download_queue(request);
+		}
+	}
+	g_free(baseurl);
+}
+
+static void favicon_download_4(feedPtr fp) {
+	gchar *baseurl, *tmp;
+	struct request *request;
+	
+	baseurl = g_strdup(feed_get_source(fp));
+	if(NULL != (tmp = strstr(baseurl, "://"))) {
+		tmp += 3;
+		if(NULL != (tmp = strrchr(tmp, '/'))) {
+			*tmp = 0;
+			
+			request = download_request_new(NULL);
+			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
+			request->callback = &favicon_download_request_favicon_cb;
+			request->user_data = fp;
+			request->flags = 4;
+			fp->faviconRequest = request;
+			
+			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
+			
+			download_queue(request);
+		}
+	}
+	g_free(baseurl);
+}
+
+static void favicon_download_request_favicon_cb(struct request *request) {
 	feedPtr	fp = (feedPtr)request->user_data;
 	gchar	*tmp;
-	gchar	*baseurl;
+	gboolean success = FALSE;
 	
 	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
 	fp->faviconRequest = NULL;
@@ -117,74 +187,101 @@ static void favicon_download_request_cb(struct request *request) {
 		if(gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
 			pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
 			debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
-			if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL))) 
-				g_warning("icon processing error!");
+			if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL))) {
+				g_warning("favicon saving error!");
+			}
+			success = TRUE;
 			favicon_load(fp);
 		}
 		gdk_pixbuf_loader_close(loader, NULL);
 		g_object_unref(loader);
 		g_free(tmp);
 		ui_feed_update(fp);
-		/* FIXME: why don't we free the request structure? (Lars) */
 	}
-	if (request->flags == 0 && fp->icon == NULL){
-		baseurl = g_strdup(feed_get_source(fp));
-		if(NULL != (tmp = strstr(baseurl, "://"))) {
-			tmp += 3;
-			if(NULL != (tmp = strchr(tmp, '/'))) {
-				*tmp = 0;
-				request = download_request_new(NULL);
-				request->source = g_strdup_printf("%s/favicon.ico", baseurl);
-				
-				request->callback = &favicon_download_request_cb;
-				request->user_data = fp;
-				request->flags = 1;
-				fp->faviconRequest = request;
-				
-				debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
-				
-				download_queue(request);
-			}
+	
+	if (!success) {
+		if (request->flags == 1)
+			favicon_download_html(fp, 2);
+		else if (request->flags == 3) {
+			favicon_download_4(fp);
+		} else if (request->flags == 4) {
+			favicon_download_5(fp);
 		}
-		g_free(baseurl);
 	}
 }
 
-void favicon_download(feedPtr fp) {
-	gchar			*baseurl;
+static void favicon_download_html_request_cb(struct request *request) {
+	gchar *iconUri;
+	struct request *request2 = NULL;
+	feedPtr fp = (feedPtr)request->user_data;
+	
+	if (request->size > 0 && request->data != NULL) {
+		iconUri = html_discover_favicon(request->data, request->source);
+		if (iconUri != NULL) {
+			request2 = download_request_new(NULL);
+			fp->faviconRequest = request2;
+			request2->source = iconUri;
+			request2->callback = &favicon_download_request_favicon_cb;
+			request2->user_data = fp;
+			request2->flags++;
+			download_queue(request2);
+		}
+	}
+	if (request2 == NULL) {
+		if (request->flags == 0)
+			favicon_download_html((feedPtr)request->user_data, 2);
+		else /* flags == 2 */
+			favicon_download_4((feedPtr)fp);
+	}
+}
+
+static void favicon_download_html(feedPtr fp, int phase) {
+	gchar			*htmlurl;
 	gchar			*tmp;
 	struct request	*request;
 	
+	/* try to download favicon */
+	if (phase == 0) {
+		htmlurl = g_strdup(feed_get_html_url(fp));
+	} else {
+		htmlurl = g_strdup(feed_get_source(fp));
+		if(NULL != (tmp = strstr(htmlurl, "://"))) {
+			tmp += 3;
+			/* first we try to download a favicon inside the current web path
+			   if the download fails the callback will try to strip parts of
+			   the URL to download a root favicon. */
+			if(NULL != (tmp = strrchr(tmp, '/'))) {
+				*tmp = 0;
+			}
+		}
+	}
+	
+	request = download_request_new(NULL);
+	request->source = htmlurl;
+	request->callback = &favicon_download_html_request_cb;
+	request->user_data = fp;
+	request->flags = phase;
+	fp->faviconRequest = request;
+	
+	download_queue(request);
+	
+	debug_exit("favicon_download");
+}
+
+void favicon_download(feedPtr fp) {
 	debug_enter("favicon_download");
+	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", feed_get_source(fp));
 	
 	if(fp->faviconRequest != NULL)
 		return; /* It is already being downloaded */
 
 	g_get_current_time(&fp->lastFaviconPoll);
 	
-	/* try to download favicon */
-	baseurl = g_strdup(feed_get_source(fp));
-	if(NULL != (tmp = strstr(baseurl, "://"))) {
-		tmp += 3;
-		/* first we try to download a favicon inside the current web path
-		   if the download fails the callback will try to strip parts of
-		   the URL to download a root favicon. */
-		if(NULL != (tmp = strrchr(tmp, '/'))) {
-			*tmp = 0;
-			
-			request = download_request_new(NULL);
-			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
-			request->callback = &favicon_download_request_cb;
-			request->user_data = fp;
-			request->flags = 0;
-			fp->faviconRequest = request;
-			
-			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
-			
-			download_queue(request);
-		}
+	if(feed_get_html_url(fp) != NULL) {
+		favicon_download_html(fp, 0);
+	} else {
+		favicon_download_html(fp, 2);
 	}
-	g_free(baseurl);
 	
 	debug_exit("favicon_download");
 }
