@@ -73,6 +73,15 @@ static gboolean loadSymbols(gchar *libname, gboolean testmode) {
 	gchar		*filename;
 	int		i;
 	
+	/* print some warnings concerning Mozilla */
+	if((0 == strncmp(libname, "liblihtmlm", 10)) && !testmode) {
+		g_print(_("\nTrying to load the Mozilla browser module... Note that this\n\
+might not work with every Mozilla version. If you have problems\n\
+and Liferea does not start try to set MOZILLA_FIVE_HOME to\n\
+another Mozilla installation or	delete the gconf configuration\n\
+key /apps/liferea/browser-module!\n\n"));
+	}
+	
 	filename = g_strdup_printf("%s%s%s", PACKAGE_LIB_DIR, G_DIR_SEPARATOR_S, libname);
 	/* g_print(_("loading HTML widget module (%s)\n"), filename); */
 		
