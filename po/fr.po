@@ -1,10 +1,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 0.5.0\n"
+"Project-Id-Version: Liferea 0.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-25 20:52-0400\n"
-"PO-Revision-Date: 2004-06-14 00:52+0200\n"
+"POT-Creation-Date: 2004-06-27 11:25+0200\n"
+"PO-Revision-Date: 2004-06-27 15:05+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -109,7 +109,7 @@ msgstr ""
 "l'importation."
 
 #: src/export.c:358 src/export.c:360
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" n'est pas un document OPML valide ! Liferea ne peut importer ce "
@@ -124,7 +124,6 @@ msgid "Feed List exported!"
 msgstr "Liste des canaux exportée !"
 
 #: src/export.c:486
-#, fuzzy
 msgid "Imported feed list"
 msgstr "Liste des canaux importée"
 
@@ -144,18 +143,16 @@ msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML non valide !</p>"
 
 #: src/feed.c:171
-#, fuzzy
 msgid "There were errors while parsing a feed"
-msgstr "Il y a eu des erreurs pendant l'analyse d'un canal !"
+msgstr "Il y a eu des erreurs pendant l'analyse d'un canal"
 
 #: src/feed.c:172
-#, fuzzy
 msgid ""
 "<p>Could not determine the feed type. Please check that it is in a supported "
 "format.</p>"
 msgstr ""
-"<p>Impossible de déterminer le type de canal ! Verifiez qu'il est dans un "
-"format supporté !</p>"
+"<p>Impossible de déterminer le type de canal. Veuillez vérifier qu'il est "
+"dans un format supporté.</p>"
 
 #: src/feed.c:363 src/feed.c:364
 #, c-format
@@ -181,32 +178,32 @@ msgstr ""
 "cache !</p>"
 
 #: src/feed.c:429
-#, fuzzy, c-format
+#, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
-"Des erreurs se sont produites pendant l'analyse du fichier cache \"%s\" !"
-
-#: src/feed.c:563
-#, fuzzy, c-format
-msgid "\"%s\" has no new items"
-msgstr "\"%s\" n'a pas de nouveaux éléments."
+"Des erreurs se sont produites pendant l'analyse du fichier cache \"%s\""
 
 #: src/feed.c:565
-#, fuzzy, c-format
+#, c-format
+msgid "\"%s\" has no new items"
+msgstr "\"%s\" n'a pas de nouveaux éléments"
+
+#: src/feed.c:567
+#, c-format
 msgid "\"%s\" has %d new items"
-msgstr "\"%s\" a \"%d\" nouveaux éléments."
+msgstr "\"%s\" a %d nouveaux éléments."
 
-#: src/feed.c:661
-#, fuzzy, c-format
+#: src/feed.c:672
+#, c-format
 msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour."
-
-#: src/feed.c:668
-#, fuzzy, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "L'URL de \"%s\" a changé définitivement et a été mise à jour."
+msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour"
 
 #: src/feed.c:679
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "L'URL de \"%s\" a changé définitivement et a été mise à jour"
+
+#: src/feed.c:689
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
@@ -214,86 +211,121 @@ msgstr ""
 "Impossible de détecter le type de ce canal ! Veuillez vérifier que la source "
 "pointe vraiment vers une ressource fournie dans un des formats supportés !"
 
-#: src/feed.c:705
+#: src/feed.c:715
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" mis à jour..."
 
-#: src/feed.c:719
-#, fuzzy, c-format
+#: src/feed.c:728
+#, c-format
 msgid "\"%s\" is not available"
-msgstr "\"%s\" n'est pas disponible !"
+msgstr "\"%s\" n'est pas disponible"
 
-#: src/feed.c:806
-#, fuzzy
+#: src/feed.c:834
 msgid "The feed no longer exists. Please unsubscribe."
-msgstr "Ce canal n'existe plus. Veuillez vous désabonner !"
+msgstr "Ce canal n'existe plus. Veuillez vous désabonner."
 
-#: src/feed.c:807
+#: src/feed.c:835
 msgid "Payment Required"
 msgstr "Paiement nécessaire"
 
-#: src/feed.c:808
+#: src/feed.c:836
 msgid "Access Forbidden"
 msgstr "Accès interdit"
 
-#: src/feed.c:809
+#: src/feed.c:837
 msgid "Resource Not Found"
 msgstr "Ressource introuvable"
 
-#: src/feed.c:810
+#: src/feed.c:838
 msgid "Method Not Allowed"
 msgstr "Méthode interdite"
 
-#: src/feed.c:811
+#: src/feed.c:839
 msgid "Not Acceptable"
 msgstr "Non acceptable"
 
-#: src/feed.c:812
+#: src/feed.c:840
 msgid "Proxy Authentication Required"
 msgstr "Authentification par proxy exigée"
 
-#: src/feed.c:813
+#: src/feed.c:841
 msgid "Request Time-Out"
 msgstr "Délai de la requête expiré"
 
-#: src/feed.c:814
-#, fuzzy
+#: src/feed.c:842
 msgid "Gone. Resource doesn't exist. Please unsubscribe."
-msgstr "Parti. La ressource n'existe pas. Veuillez vous désabonner !"
+msgstr "Parti. La ressource n'existe pas. Veuillez vous désabonner."
 
-#: src/feed.c:820
+#: src/feed.c:847
+msgid "URL is invalid"
+msgstr "L'URL est invalide"
+
+#: src/feed.c:850
+msgid "Error connecting to remote host"
+msgstr "Erreur de connexion à la machine distante"
+
+#: src/feed.c:851
+msgid "Hostname could not be found"
+msgstr "Le nom de la machine n'a pas pu être trouvé"
+
+#: src/feed.c:852
+msgid "Network connection was refused by the remote host"
+msgstr "La connexion réseau a été refusée par la machine distante"
+
+#: src/feed.c:853
+msgid "Remote host did not finish sending data"
+msgstr "La machine distante n'a pas fini d'envoyer ses données"
+
+#. Transfer errors
+#: src/feed.c:855
+msgid "Too many HTTP redirects were encountered"
+msgstr "Trop de redirections HTTP ont été rencontrées"
+
+#: src/feed.c:858
+msgid "Remote host sent an invalid response"
+msgstr "La machine distante a envoyé une réponse invalide"
+
+#: src/feed.c:865
+msgid "Authentication failed"
+msgstr "L'authentification a échoué"
+
+#: src/feed.c:867
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr "Méthode d'authentification du serveur web incompatible avec Liferea"
+
+#: src/feed.c:873
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Canal non disponible : le serveur a demandé une redirection non supportée !"
 
-#: src/feed.c:821
+#: src/feed.c:874
 msgid "Client Error"
 msgstr "Erreur du client"
 
-#: src/feed.c:822
+#: src/feed.c:875
 msgid "Server Error"
 msgstr "Erreur du serveur"
 
-#: src/feed.c:823
-msgid "(unknown error class)"
-msgstr "(Classe d'erreur inconnue)"
+#: src/feed.c:876
+msgid "(unknown networking error happened)"
+msgstr "(une erreur réseau inconnue s'est produite)"
 
-#: src/feed.c:845
-#, fuzzy
+#: src/feed.c:898
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
 "Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
-"vérifier l'URL et la sortie sur la console !"
+"vérifier l'URL et la sortie sur la console."
 
 #: src/html.c:138
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr ""
+"La découverte automatique de lien de canal a échoué ! Aucun lien de canal "
+"n'a été trouvé !"
 
 #: src/htmlview.c:61
-#, fuzzy
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -339,33 +371,36 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "Cet élément n'a pas de lien assigné !"
 
-#: src/htmlview.c:360
-#, fuzzy, c-format
+#: src/htmlview.c:362 src/htmlview.c:383
+#, c-format
 msgid "Browser command failed: %s"
-msgstr "Le commande du navigateur a échoué : %s"
+msgstr "La commande du navigateur a échoué : %s"
 
-#: src/htmlview.c:363
-#, fuzzy, c-format
+#: src/htmlview.c:365 src/htmlview.c:386
+#, c-format
 msgid "Starting: \"%s\""
-msgstr "exécution de : \"%s\""
+msgstr "Exécution de : \"%s\""
 
 #: src/htmlview.h:89
 #, c-format
 msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
 msgstr ""
+"La dernière mise à jour de cet abonnement a échoué !<br><b>Code d'erreur "
+"HTTP %d : %s</b>"
 
 #: src/htmlview.h:90
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occured:"
 "<br><b>%s</b>"
-msgstr "Des erreurs sont survenues pendant l'analyse de ce canal !"
+msgstr ""
+"Des erreurs sont survenues pendant l'analyse de ce canal ! L'erreur suivante "
+"s'est produite :<br><b>%s</b>"
 
 #: src/interface.c:131 src/interface.c:2987
-#, fuzzy
 msgid "Liferea 0.5.1"
-msgstr "Liferea 0.5.0"
+msgstr "Liferea 0.5.1"
 
 #: src/interface.c:148
 msgid "_Program"
@@ -400,24 +435,21 @@ msgid "Update _Selected"
 msgstr "Mettre à _jour la sélection"
 
 #: src/interface.c:222
-#, fuzzy
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
-"Mises à jour pour les abonnements sélectionnés ou tous les abonnements du "
-"dossier sélectionné,"
+"Met à jour l'abonnement sélectionné ou tous les abonnements du dossier "
+"sélectionné."
 
 #: src/interface.c:228
 msgid "Update _All"
 msgstr "Mettre à jour le _tout"
 
-#: src/interface.c:231 src/ui_mainwindow.c:156
-#, fuzzy
+#: src/interface.c:231 src/ui_mainwindow.c:158
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
-"Met à jour immédiatement tous les abonnements sélectionnés (répertoires non "
-"inclus)."
+"Met à jour tous les abonnements. Ceci ne met pas à jour les répertoires OCS."
 
 #: src/interface.c:245
 msgid "_Delete Selected"
@@ -471,7 +503,7 @@ msgstr "_Éléments"
 msgid "_Next Unread Item"
 msgstr "Élément non-lu _suivant"
 
-#: src/interface.c:309 src/ui_mainwindow.c:154
+#: src/interface.c:309 src/ui_mainwindow.c:156
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -542,7 +574,7 @@ msgstr ""
 
 #: src/interface.c:402
 msgid "_Search"
-msgstr "_Chercher"
+msgstr "_Recherche"
 
 #: src/interface.c:409
 msgid "Toggle Search Box"
@@ -638,16 +670,15 @@ msgid "minutes."
 msgstr "minutes."
 
 #: src/interface.c:938
-#, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating the "
 "feed set the interval to 0 minutes.</i>"
 msgstr ""
-"Veuillez vous souvenir de régler la vitesse de rafraîchissement "
-"raisonnablement, il est inutile de rafraîchir tous les quarts d'heure un "
-"canal mis à jour quotidiennement ! Pour désactiver la mise à jour "
-"automatique, réglez l'intervalle à 0."
+"Note : <i>Veuillez vous souvenir de régler la vitesse de rafraîchissement "
+"raisonnablement. Il est inutile de rafraîchir tous les quarts d'heure un "
+"canal mis à jour quotidiennement. Pour désactiver la mise à jour "
+"automatique, réglez l'intervalle à 0 minute.</i>"
 
 #: src/interface.c:945
 msgid "General"
@@ -744,7 +775,7 @@ msgstr "éléments."
 
 #: src/interface.c:1142
 msgid "Feed Cache"
-msgstr "Cache d'un canal"
+msgstr "Cache du canal"
 
 #: src/interface.c:1151
 msgid "Use HTTP _authentication"
@@ -767,9 +798,8 @@ msgid "New Subscription"
 msgstr "Nouvel abonnement"
 
 #: src/interface.c:1647
-#, fuzzy
 msgid "Lifeera Preferences"
-msgstr "Préférences"
+msgstr "Préférences de Liferea"
 
 #: src/interface.c:1671
 msgid "<span weight=\"bold\">Feed Handling Settings</span>"
@@ -782,14 +812,12 @@ msgstr ""
 "termine :"
 
 #: src/interface.c:1707
-#, fuzzy
 msgid "_Update all feeds on program startup."
-msgstr "Mettre à jour tous les canaux au démarrage."
+msgstr "_Mettre à jour tous les canaux au démarrage."
 
 #: src/interface.c:1711
-#, fuzzy
 msgid "Add the _help feeds to the feed list on startup."
-msgstr "Ne pas ajouter les canaux d'aide à la liste des canaux au démarrage."
+msgstr "Ajouter les canaux d'_aide à la liste des canaux au démarrage."
 
 #: src/interface.c:1715
 msgid "Feed Handling"
@@ -816,7 +844,7 @@ msgstr "Voir les titres avec"
 
 #: src/interface.c:1771
 msgid "Open links in Liferea's _window (requires Mozilla)."
-msgstr ""
+msgstr "Ouvrir les liens dans la _fenêtre de Liferea (nécessite Mozilla)."
 
 #: src/interface.c:1779
 msgid "<span weight=\"bold\">Date Column Settings</span>"
@@ -843,18 +871,16 @@ msgstr ""
 "consulter le manuel de strftime() pour les codes de format."
 
 #: src/interface.c:1826
-#, fuzzy
 msgid "Headline Display"
-msgstr "Titre"
+msgstr "Affichage des titres"
 
 #: src/interface.c:1839
-#, fuzzy
 msgid "<span weight=\"bold\">External Browser Settings</span>"
-msgstr "<span weight=\"bold\">Réglages du navigateur</span>"
+msgstr "<span weight=\"bold\">Réglages du navigateur externe</span>"
 
 #: src/interface.c:1863
 msgid "_Browser:"
-msgstr ""
+msgstr "_Navigateur :"
 
 #: src/interface.c:1870
 #, c-format
@@ -862,31 +888,32 @@ msgid ""
 "_Manual:\n"
 "(%s for URL)"
 msgstr ""
+"_Manuel :\n"
+"(%s pour l'URL)"
 
 #: src/interface.c:1884
 msgid "_Open link in:"
-msgstr ""
+msgstr "_Ouvrir le lien dans :"
 
 #: src/interface.c:1907
 msgid "External Browser"
-msgstr ""
+msgstr "Navigateur externe"
 
 #: src/interface.c:1920
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Réglages de notification</span>"
 
 #: src/interface.c:1938
-#, fuzzy
 msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
 msgstr ""
-"Afficher une icône de statut dans la zone de notification \n"
+"Afficher une _icône de statut dans la zone de notification \n"
 "(aussi appelée barre des tâches)."
 
 #: src/interface.c:1955
 msgid "Show a _popup window with new headlines."
-msgstr ""
+msgstr "Afficher un _popup avec les nouveaux titres."
 
 #: src/interface.c:1964
 msgid "<span weight=\"bold\">Menu Settings</span>"
@@ -906,7 +933,7 @@ msgstr "Afficher la _barre d'outils uniquement"
 
 #: src/interface.c:2001
 msgid "GUI"
-msgstr ""
+msgstr "Interface"
 
 #: src/interface.c:2018
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
@@ -926,24 +953,20 @@ msgstr ""
 "GNOME de pouvoir utiliser Liferea avec un proxy."
 
 #: src/interface.c:2047
-#, fuzzy
 msgid "_Enable Proxy"
-msgstr "Activer le proxy"
+msgstr "_Activer le proxy"
 
 #: src/interface.c:2057
-#, fuzzy
 msgid "Proxy _Host"
-msgstr "Hôte du proxy"
+msgstr "_Hôte du proxy"
 
 #: src/interface.c:2076
-#, fuzzy
 msgid "Proxy _Port"
-msgstr "Port du proxy"
+msgstr "_Port du proxy"
 
 #: src/interface.c:2083
-#, fuzzy
 msgid "Proxy"
-msgstr "Port du proxy"
+msgstr "Proxy"
 
 #: src/interface.c:2271
 msgid "New Folder"
@@ -986,23 +1009,20 @@ msgid "Rule Value"
 msgstr "Valeur de la règle"
 
 #: src/interface.c:2677
-#, fuzzy
 msgid "Feedster Search"
-msgstr "Cache d'un canal"
+msgstr "Recherche par Feedster"
 
 #: src/interface.c:2692
-#, fuzzy
 msgid "Search for:"
-msgstr "Chercher"
+msgstr "Chercher :"
 
 #: src/interface.c:2699
 msgid "enter any search string you want"
 msgstr "entrer n'importe quelle chaîne voulue"
 
 #: src/interface.c:2706
-#, fuzzy
 msgid "Maximal Number Of Result Items:"
-msgstr "Nombre maximal de résultats"
+msgstr "Nombre maximal de résultats :"
 
 #: src/interface.c:2715
 msgid ""
@@ -1049,9 +1069,8 @@ msgstr ""
 "de canaux ou pour exporter votre liste vers un autre agrégateur."
 
 #: src/interface.c:2992
-#, fuzzy
 msgid "Liferea is a news aggregator for GTK+"
-msgstr "Liferea est un agrégateur de news pour GTK"
+msgstr "Liferea est un agrégateur de news pour GTK+"
 
 #: src/interface.c:2997
 msgid ""
@@ -1064,7 +1083,6 @@ msgstr ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3017
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1103,19 +1121,21 @@ msgstr ""
 "Niklas Morberg <morberg@users.sourceforge.net>\n"
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
+"ahmed el-helw <ahmedre@cc.gatech.edu>\n"
 "\n"
 "Code venant d'autres projets\n"
 "\n"
 "Anders Carlsson <andersca@gnu.org> (support de l'icône dans la barre des "
 "tâches)\n"
-"Philippe Martin, Brion Vibber (support de la favicon)"
+"Philippe Martin, Brion Vibber (support de la favicon)\n"
+"Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
+"Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
 #: src/interface.c:3023
 msgid "Contributors"
 msgstr "Contributeurs"
 
 #: src/interface.c:3037
-#, fuzzy
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -1135,12 +1155,13 @@ msgstr ""
 "Park Ji-In <mithrandir@electrang.net>\n"
 "Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Jose Maria Mateos <chema@chema.homelinux.org>\n"
-"Enrico Gernauck <enrico@fanglomerat.de>\n"
+"Enrico Genauck <enrico@fanglomerat.de>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
-"Alekseev Vladimir <compress@linux-online.ru>"
+"Alekseev Vladimir <compress@linux-online.ru>\n"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>"
 
 #: src/interface.c:3043
 msgid "Translation"
@@ -1150,17 +1171,19 @@ msgstr "Traduction"
 #: src/interface.c:3113 src/ui_feed.c:90
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
-msgstr ""
+msgstr "Entrer le nom d'utilisateur et le mot de passe pour \"%s\" (%s) :"
 
 #: src/interface.c:3154
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
+"Note : <i>le nom d'utilisateur et le mot de passe seront sauvés non chiffrés "
+"dans votre liste de canaux Liferea.</i>"
 
 #: src/interface.c:3203
 msgid "window1"
-msgstr ""
+msgstr "fenetre1"
 
 #: src/main.c:51
 msgid "  --version        Prints Liferea's version number"
@@ -1316,36 +1339,33 @@ msgstr "Fichier pixmap %s introuvable."
 
 #: src/ui_feed.c:199
 msgid "Directories cannot be autoupdated."
-msgstr ""
+msgstr "Les répertoires ne peuvent pas être mis à jour automatiquement."
 
 #: src/ui_feed.c:202
-#, fuzzy, c-format
+#, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
-"Le fournisseur de ce canal suggá¨re un intervalle de mise á  jour de %d "
+"Le fournisseur de ce canal suggère un intervalle de rafraîchissement de %d "
 "minutes."
 
 #: src/ui_feed.c:204
 msgid "This feed specifies no default update interval."
-msgstr "Ce canal ne spécifie aucun intervalle de mise á  jour."
+msgstr "Ce canal ne spécifie aucun intervalle de rafraîchissement."
 
 #: src/ui_feedlist.c:402
-#, fuzzy
 msgid "You have to select a feed entry"
-msgstr "Vous devez sélectionner un canal d'entrée !"
+msgstr "Vous devez sélectionner un canal"
 
 #: src/ui_feedlist.c:412
-#, fuzzy
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
-"jour !"
+"jour."
 
 #: src/ui_feedlist.c:436
-#, fuzzy
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
-"Note : l'utilisation du filtre d'abonnements désactive le glisser-déposer !"
+"Note : l'utilisation du filtre d'abonnements désactive le glisser-déposer"
 
 #: src/ui_feedlist.c:448 src/ui_feedlist.c:483
 msgid ""
@@ -1353,6 +1373,9 @@ msgid ""
 "preferences. You will be able to delete the help folder after restarting "
 "Liferea."
 msgstr ""
+"Vous ne pouvez pas supprimer l'aide ! Désactivez le chargement de l'aide via "
+"les préférences. Vous pourrez alors supprimer le dossier d'aide après avoir "
+"relancé Liferea."
 
 #: src/ui_feedlist.c:490
 #, c-format
@@ -1374,22 +1397,18 @@ msgid "Are you sure that you want to delete %s?"
 msgstr "Êtes-vous sûr de vouloir supprimer %s ?"
 
 #: src/ui_feedlist.c:502
-#, fuzzy
 msgid "Deletion Confirmation"
 msgstr "Confirmation de la suppression"
 
 #: src/ui_feedlist.c:533
-#, fuzzy
 msgid "You must select a feed entry"
-msgstr "Vous devez sélectionner un canal d'entrée !"
+msgstr "Vous devez sélectionner un canal"
 
 #: src/ui_feedlist.c:534
-#, fuzzy
 msgid "You must select a feed entry."
-msgstr "Vous devez sélectionner un canal d'entrée !"
+msgstr "Vous devez sélectionner un canal."
 
 #: src/ui_feedlist.c:568
-#, fuzzy
 msgid "New subscription"
 msgstr "Nouvel abonnement"
 
@@ -1423,44 +1442,41 @@ msgstr "Date"
 msgid "Headline"
 msgstr "Titre"
 
-#: src/ui_itemlist.c:577
-#, fuzzy
+#: src/ui_itemlist.c:573
 msgid "No item has been selected"
-msgstr "Aucun élément n'a été sélectionné !"
+msgstr "Aucun élément n'a été sélectionné"
 
-#: src/ui_itemlist.c:601
-#, fuzzy
+#: src/ui_itemlist.c:597
 msgid "You must select a feed to delete its items!"
-msgstr "Vous devez sélectionner un canal pour effacer ses éléments !"
+msgstr "Vous devez sélectionner un canal pour effacer ses éléments !"
 
-#: src/ui_itemlist.c:631
+#: src/ui_itemlist.c:627
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Erreur interne ! Impossible de charger la sélection en arborescence des "
 "canaux !\n"
 
-#: src/ui_itemlist.c:663
-#, fuzzy
+#: src/ui_itemlist.c:659
 msgid "There are no unread items "
-msgstr "Il n'y a aucun élément non lu !"
+msgstr "Il n'y a aucun élément non lu "
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "New Feed"
 msgstr "Nouveau canal"
 
-#: src/ui_mainwindow.c:153
+#: src/ui_mainwindow.c:155
 msgid "Add a new subscription."
 msgstr "Ajouter un nouvel abonnement."
 
-#: src/ui_mainwindow.c:154
+#: src/ui_mainwindow.c:156
 msgid "Next Unread"
 msgstr "Prochain non lu"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid "Mark As Read"
 msgstr "Marquer comme lu"
 
-#: src/ui_mainwindow.c:155
+#: src/ui_mainwindow.c:157
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1468,28 +1484,27 @@ msgstr ""
 "Marquer tous les éléments de l'abonnement sélectionné ou de tous les "
 "abonnements du dossier sélectionné comme lus."
 
-#: src/ui_mainwindow.c:156
-#, fuzzy
+#: src/ui_mainwindow.c:158
 msgid "Update All"
-msgstr "Mettre à jour le _tout"
+msgstr "Mettre à jour le tout"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search"
 msgstr "Chercher"
 
-#: src/ui_mainwindow.c:157
+#: src/ui_mainwindow.c:159
 msgid "Search all feeds."
 msgstr "Chercher dans tous les canaux."
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/ui_mainwindow.c:158
+#: src/ui_mainwindow.c:160
 msgid "Edit preferences."
 msgstr "Éditer les préférences."
 
-#: src/ui_mainwindow.c:172
+#: src/ui_mainwindow.c:174
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1511,30 +1526,48 @@ msgid ""
 "the documentation provided in the help feed or in the FAQ available at the "
 "project homepage.</p>"
 msgstr ""
+"<h2>Bienvenue dans Liferea</h2><p>Le cadre de gauche contient la liste des "
+"canaux où vous pouvez ajouter de nouveaux abonnements et sélectionner des "
+"abonnements pour lire leurs titres. Le côté droit affiche soit la liste des "
+"titres de l'abonnement sélectionné et un cadre pour visualiser le titre "
+"sélectionné, soit tous les titres à la fois si le mode condensé est "
+"sélectionné.</p><h3>Opérations courantes</h3><ul><li><p><b>Ajouter un "
+"abonnement</b> - Crée un nouvel abonnement dans le dossier sélectionné. Pour "
+"créer un nouvel abonnement, entrer l'URL du canal ou, si vous ne la "
+"connaissez pas, l'URL du site web fournissant le canal.</p></"
+"li><li><p><b>Mettre à jour un abonnement</b> - Ceci mettra à jour "
+"l'abonnement sélectionné. Vous le ferez si vous voulez vérifier "
+"immédiatement les mises à jour d'un abonnement. D'habitude, il est suffisant "
+"de se baser sur la mise à jour automatique, suivant l'intervalle de "
+"rafraîchissement de l'abonnement.</p></li><li><p><b>Mettre à jour le tout</"
+"b> - Ceci mettra à jour tous vos abonnements à la fois. Encore une fois, il "
+"est généralement suffisant de se baser sur la mise à jour automatique.</p></"
+"li><li><p><b>Éditer les propriétés d'un abonnement</b> - Vous voudrez "
+"parfois changer l'intervalle de rafraîchissement, le titre, "
+"l'authentification ou les propriétés liées au cache d'un abonnement.</p></"
+"li></ul><p>Pour en savoir plus sur Liferea, vous pouvez lire la "
+"documentation fournie dans le canal d'aide ou dans la FAQ disponible sur la "
+"page web du projet.</p>"
 
-#: src/ui_mainwindow.c:254
-#, fuzzy
+#: src/ui_mainwindow.c:256
 msgid "Liferea is now online"
-msgstr "Liferea est maintenant connecté."
+msgstr "Liferea est maintenant connecté"
 
-#: src/ui_mainwindow.c:257
-#, fuzzy
+#: src/ui_mainwindow.c:259
 msgid "Liferea is now offline"
-msgstr "Liferea est maintenant déconnecté !"
+msgstr "Liferea est maintenant déconnecté"
 
-#: src/ui_notification.c:241
-#, fuzzy
+#: src/ui_notification.c:242
 msgid "Liferea notification"
-msgstr "Liferea est maintenant déconnecté !"
+msgstr "Notification Liferea"
 
 #: src/ui_popup.c:78
 msgid "/_Update"
 msgstr "/Mise à _jour"
 
 #: src/ui_popup.c:79 src/ui_popup.c:89
-#, fuzzy
 msgid "/_Mark As Read"
-msgstr "_Marquer comme lu"
+msgstr "/_Marquer comme lu"
 
 #: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
 msgid "/_New"
@@ -1609,31 +1642,30 @@ msgid "/_Subscribe"
 msgstr "/S'_abonner"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:132
+#: src/ui_prefs.c:182
 msgid "Manual"
-msgstr ""
+msgstr "Manuel"
 
-#: src/ui_prefs.c:142
-#, fuzzy
+#: src/ui_prefs.c:192
 msgid "Browser default"
-msgstr "Paramètres du navigateur"
+msgstr "Choix par défaut du navigateur"
 
-#: src/ui_prefs.c:147
+#: src/ui_prefs.c:197
 msgid "Existing window"
-msgstr ""
+msgstr "Fenêtre existante"
 
-#: src/ui_prefs.c:152
+#: src/ui_prefs.c:202
 msgid "New window"
-msgstr ""
+msgstr "Nouvelle fenêtre"
 
-#: src/ui_prefs.c:157
+#: src/ui_prefs.c:207
 msgid "New tab"
-msgstr ""
+msgstr "Nouvel onglet"
 
 #: src/ui_search.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Searching for \"%s\""
-msgstr "recherche de \"%s\""
+msgstr "Recherche de \"%s\""
 
 #: src/ui_tray.c:89
 #, c-format
@@ -1646,20 +1678,20 @@ msgstr[1] "%d nouveaux éléments !"
 msgid "No new items."
 msgstr "Pas de nouveaux éléments."
 
-#: src/update.c:104
-#, fuzzy, c-format
+#: src/update.c:110
+#, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr "Impossible d'ouvrir le tuyau \"%s\" !"
-
-#: src/update.c:118
-#, fuzzy, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "Impossible d'ouvrir le fichier \"%s\" !"
+msgstr "Erreur : impossible d'ouvrir le tuyau \"%s\""
 
 #: src/update.c:124
-#, fuzzy, c-format
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "Erreur : impossible d'ouvrir le fichier \"%s\""
+
+#: src/update.c:130
+#, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "Il n'y a pas de fichier \"%s\" !"
+msgstr "Erreur : il n'y a pas de fichier \"%s\""
 
 #~ msgid ""
 #~ "Invalid browser command! There is no %%s URL place holder in the browser "
@@ -1700,14 +1732,8 @@ msgstr "Il n'y a pas de fichier \"%s\" !"
 #~ msgid "socket connect"
 #~ msgstr "connexion au socket"
 
-#~ msgid "Too many HTTP redirects encountered! Giving up."
-#~ msgstr "Trop de redirections HTTP ont été rencontrées ! Abandon."
-
 #~ msgid "Following HTTP redirects"
 #~ msgstr "Suivi des redirections HTTP"
-
-#~ msgid "Webserver sent an invalid redirect!"
-#~ msgstr "Le serveur web a envoyé une redirection invalide !"
 
 #~ msgid "The feed no longer exists. Please unsubscribe!"
 #~ msgstr "Ce canal n'existe plus. Veuillez vous désabonner !"
@@ -1716,9 +1742,6 @@ msgstr "Il n'y a pas de fichier \"%s\" !"
 #~ msgstr ""
 #~ "Le serveur web %s a envoyé une réponse HTTP/1.0 illégale ! Impossible "
 #~ "d'analyser ceci."
-
-#~ msgid "Authentication failed!"
-#~ msgstr "L'authentification a échoué !"
 
 #~ msgid "URL does not contain authentication information!"
 #~ msgstr "L'URL ne contient pas d'information d'authentification !"
