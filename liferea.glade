@@ -5,7 +5,7 @@
 
 <widget class="GtkWindow" id="mainwindow">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Liferea 0.5.0</property>
+  <property name="title" translatable="yes">Liferea 0.5.1</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -101,7 +101,7 @@
 		      <signal name="activate" handler="on_menu_feed_new" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1943">
+			<widget class="GtkImage" id="image1957">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -122,7 +122,7 @@
 		      <signal name="activate" handler="on_menu_folder_new" last_modification_time="Tue, 27 Apr 2004 22:52:15 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1944">
+			<widget class="GtkImage" id="image1958">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -150,7 +150,7 @@
 		      <signal name="activate" handler="on_menu_properties" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1945">
+			<widget class="GtkImage" id="image1959">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-properties</property>
 			  <property name="icon_size">1</property>
@@ -172,13 +172,13 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="feed_update">
 		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Updates the selected subscription or all subscriptions of the selected folder,</property>
+		      <property name="tooltip" translatable="yes">Updates the selected subscription or all subscriptions of the selected folder.</property>
 		      <property name="label" translatable="yes">Update _Selected</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_menu_update" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1946">
+			<widget class="GtkImage" id="image1960">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -201,7 +201,7 @@
 		      <accelerator key="a" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1947">
+			<widget class="GtkImage" id="image1961">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -229,7 +229,7 @@
 		      <signal name="activate" handler="on_menu_delete" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1948">
+			<widget class="GtkImage" id="image1962">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -269,7 +269,7 @@
 		      <accelerator key="r" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1949">
+			<widget class="GtkImage" id="image1963">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
@@ -297,7 +297,7 @@
 		      <signal name="activate" handler="on_import_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1950">
+			<widget class="GtkImage" id="image1964">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-open</property>
 			  <property name="icon_size">1</property>
@@ -319,7 +319,7 @@
 		      <signal name="activate" handler="on_export_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1951">
+			<widget class="GtkImage" id="image1965">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-save-as</property>
 			  <property name="icon_size">1</property>
@@ -355,7 +355,7 @@
 		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1952">
+			<widget class="GtkImage" id="image1966">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-forward</property>
 			  <property name="icon_size">1</property>
@@ -405,7 +405,7 @@
 		      <signal name="activate" handler="on_remove_items_activate" last_modification_time="Sun, 21 Dec 2003 23:42:23 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1953">
+			<widget class="GtkImage" id="image1967">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -458,7 +458,7 @@
 		      <accelerator key="plus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1954">
+			<widget class="GtkImage" id="image1968">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-in</property>
 			  <property name="icon_size">1</property>
@@ -481,7 +481,7 @@
 		      <accelerator key="minus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1955">
+			<widget class="GtkImage" id="image1969">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-out</property>
 			  <property name="icon_size">1</property>
@@ -533,7 +533,7 @@
 		      <signal name="activate" handler="on_searchbtn_clicked" last_modification_time="Sat, 22 Nov 2003 21:55:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1956">
+			<widget class="GtkImage" id="image1970">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -555,7 +555,7 @@
 		      <signal name="activate" handler="on_search_with_feedster_activate" last_modification_time="Sat, 22 Nov 2003 21:57:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1957">
+			<widget class="GtkImage" id="image1971">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -2843,7 +2843,7 @@
 
 <widget class="GtkDialog" id="prefdialog">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">program preferences</property>
+  <property name="title" translatable="yes">Lifeera Preferences</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_CENTER</property>
   <property name="modal">False</property>
@@ -4780,7 +4780,7 @@
 
 <widget class="GtkDialog" id="feedsterdialog">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Search With Feedster</property>
+  <property name="title" translatable="yes">Feedster Search</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -4858,7 +4858,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label42">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Search for </property>
+		  <property name="label" translatable="yes">Search for:</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -4912,7 +4912,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label43">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Maximal Number Of Result Items</property>
+		  <property name="label" translatable="yes">Maximal Number Of Result Items:</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -5128,7 +5128,7 @@
 		<widget class="GtkButton" id="button24">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="label" translatable="yes">Select File</property>
+		  <property name="label" translatable="yes">Select File...</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
@@ -5299,7 +5299,7 @@
 		<widget class="GtkButton" id="button25">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="label" translatable="yes">Select File</property>
+		  <property name="label" translatable="yes">Select File...</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
@@ -5400,7 +5400,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label57">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Liferea 0.5.0</property>
+		  <property name="label" translatable="yes">Liferea 0.5.1</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -5421,7 +5421,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label58">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Liferea is a news aggregator for GTK</property>
+		  <property name="label" translatable="yes">Liferea is a news aggregator for GTK+</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -5708,9 +5708,9 @@ Alekseev Vladimir &lt;compress@linux-online.ru&gt;</property>
 	  <property name="spacing">6</property>
 
 	  <child>
-	    <widget class="GtkLabel" id="label132">
+	    <widget class="GtkLabel" id="prompt">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">The webserver of the feed you are subscribing to is requesting authentication information. Please enter the appropriate username and password below!</property>
+	      <property name="label" translatable="yes">Enter the username and password for &quot;%s&quot;:</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -5833,6 +5833,27 @@ Alekseev Vladimir &lt;compress@linux-online.ru&gt;</property>
 	      <property name="padding">0</property>
 	      <property name="expand">True</property>
 	      <property name="fill">True</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkLabel" id="label134">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">Note: &lt;i&gt;The username and password will be saved to your Liferea feedlist file without using encryption.&lt;/i&gt;</property>
+	      <property name="use_underline">False</property>
+	      <property name="use_markup">True</property>
+	      <property name="justify">GTK_JUSTIFY_LEFT</property>
+	      <property name="wrap">True</property>
+	      <property name="selectable">False</property>
+	      <property name="xalign">0</property>
+	      <property name="yalign">0.5</property>
+	      <property name="xpad">0</property>
+	      <property name="ypad">0</property>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
 	    </packing>
 	  </child>
 	</widget>

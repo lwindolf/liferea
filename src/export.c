@@ -355,9 +355,9 @@ void import_OPML_feedlist(gchar *filename, folderPtr parent, gboolean showErrors
 						import_parse_OPML(cur, parent, trusted);
 					} else {
 						if(showErrors)
-							ui_show_error_box(_("\"%s\" is no valid OPML document! Liferea cannot import this file!"), filename);
+							ui_show_error_box(_("\"%s\" is not a valid OPML document! Liferea cannot import this file!"), filename);
 						else
-							g_warning(_("\"%s\" is no valid OPML document! Liferea cannot import this file!"), filename);
+							g_warning(_("\"%s\" is not a valid OPML document! Liferea cannot import this file!"), filename);
 					}
 				}
 				cur = cur->next;
@@ -428,8 +428,8 @@ void on_exportfileselect_clicked(GtkButton *button, gpointer user_data) {
 	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
 		filedialog = create_fileselection();
 	
-	if(NULL == (okbutton = lookup_widget(filedialog, "fileselectbtn")))
-		g_error(_("internal error! could not find file dialog select button!"));
+	okbutton = lookup_widget(filedialog, "fileselectbtn");
+	g_assert(okbutton != NULL);
 		
 	g_signal_connect((gpointer)okbutton, "clicked", G_CALLBACK (on_exportfileselected_clicked), NULL);
 	gtk_widget_show(filedialog);
@@ -441,8 +441,8 @@ void on_importfileselect_clicked(GtkButton *button, gpointer user_data) {
 	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
 		filedialog = create_fileselection();
 	
-	if(NULL == (okbutton = lookup_widget(filedialog, "fileselectbtn")))
-		g_error(_("internal error! could not find file dialog select button!"));
+	okbutton = lookup_widget(filedialog, "fileselectbtn");
+	g_assert(okbutton != NULL);
 		
 	g_signal_connect((gpointer) okbutton, "clicked", G_CALLBACK (on_importfileselected_clicked), NULL);
 	gtk_widget_show(filedialog);
@@ -483,15 +483,13 @@ void on_importfile_clicked(GtkButton *button, gpointer user_data) {
 			gchar *foldertitle;
 			folderPtr folder;
 			
-			foldertitle = g_strdup(_("imported feed list"));
+			foldertitle = g_strdup(_("Imported feed list"));
 			
-			if(NULL != (folder = restore_folder(NULL, foldertitle, NULL, FST_FOLDER))) {
-				/* add the new folder to the model */
-				ui_add_folder(NULL, folder, -1);
-			} else {
-				ui_mainwindow_set_status_bar(_("internal error! could not get a new folder key!"));
-				return;
-			}
+			folder = restore_folder(NULL, foldertitle, NULL, FST_FOLDER);
+
+			/* add the new folder to the model */
+			ui_add_folder(NULL, folder, -1);
+
 			g_free(foldertitle);
 			
 			import_OPML_feedlist(name, folder, TRUE, FALSE);

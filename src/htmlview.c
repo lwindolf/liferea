@@ -61,7 +61,7 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 		g_print(_("\nTrying to load the Mozilla browser module... Note that this\n\
 might not work with every Mozilla version. If you have problems\n\
 and Liferea does not start try to set MOZILLA_FIVE_HOME to\n\
-another Mozilla installation or	delete the gconf configuration\n\
+another Mozilla installation or delete the gconf configuration\n\
 key /apps/liferea/browser-module!\n\n"));
 	}
 	
@@ -305,8 +305,9 @@ void ui_htmlview_launch_URL(const gchar *url, gboolean force_external) {
 		return;
 	}
 	
-	g_print("%s  %s %s\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
-		   (htmlviewInfo->launchInsidePossible)()?"true":"false", force_external?"true":"false");
+	debug3(DEBUG_GUI, "launch URL: %s  %s %s\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
+		  (htmlviewInfo->launchInsidePossible)()?"true":"false",
+		  force_external?"true":"false");
 	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION) &&
 	   (htmlviewInfo->launchInsidePossible)() &&
 	   !force_external) {
@@ -344,10 +345,10 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 	
 	g_spawn_command_line_async(tmp, &error);
 	if((NULL != error) && (0 != error->code)) {
-		ui_mainwindow_set_status_bar(_("browser command failed: %s"), error->message);
+		ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
 		g_error_free(error);
 	} else
-		ui_mainwindow_set_status_bar(_("starting: \"%s\""), tmp);
+		ui_mainwindow_set_status_bar(_("Starting: \"%s\""), tmp);
 	
 	g_free(tmp);
 	return TRUE;

@@ -328,10 +328,10 @@ time_t parseISO8601Date(gchar *date) {
 		if((time_t)(-1) != (t = mktime(&tm))) {
 			return t;
 		} else {
-			g_warning(_("internal error! time conversion error! mktime failed!\n"));
+			g_message(_("internal error! time conversion error! mktime failed!\n"));
 		}
 	} else {
-		g_message(_("Invalid ISO8601 date format! Ignoring <dc:date> information!\n"));				
+		g_message(_("Invalid ISO8601 date format! Ignoring <dc:date> information!\n"));
 	}
 	
 	return 0;

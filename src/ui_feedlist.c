@@ -376,25 +376,23 @@ void ui_feedlist_select(nodePtr np) {
 	GtkTreePath		*path;
 
 	/* some comfort: select the created iter */
-	if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
-		/* To work around a GTK+ bug. If the treeview is not
-		   focused, setting the selected item will always select the
-		   first item! */
-		focused = gtk_window_get_focus(GTK_WINDOW(mainwindow));
-		gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
-		
-		if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
-			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
-			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
-			gtk_tree_selection_select_path(selection, path);
-			gtk_tree_path_free(path);
-		} else
-			g_warning(_("internal error! could not get feed tree view selection!\n"));
-		gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
-	} else {
-			g_warning("internal error! could not select newly created treestore iter!");
-	}
+	treeview = lookup_widget(mainwindow, "feedlist");
+	g_assert(treeview != NULL);
+	/* To work around a GTK+ bug. If the treeview is not
+	   focused, setting the selected item will always select the
+	   first item! */
+	focused = gtk_window_get_focus(GTK_WINDOW(mainwindow));
+	gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
+	
+	if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
+		gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
+		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
+		gtk_tree_selection_select_path(selection, path);
+		gtk_tree_path_free(path);
+	} else
+		g_warning("internal error! could not get feed tree view selection!\n");
+	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
 }
 
 void on_popup_refresh_selected(gpointer callback_data,
@@ -403,7 +401,7 @@ void on_popup_refresh_selected(gpointer callback_data,
 	nodePtr ptr = (nodePtr)callback_data;
 
 	if (ptr == NULL) {
-		ui_show_error_box(_("You have to select a feed entry!"));
+		ui_show_error_box(_("You have to select a feed entry"));
 		return;
 	}
 	
@@ -413,7 +411,7 @@ void on_popup_refresh_selected(gpointer callback_data,
 		else
 			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, (gpointer)feed_schedule_update);
 	} else
-		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible!"));
+		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
 
 void on_popup_mark_as_read(gpointer callback_data,
@@ -437,7 +435,7 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore, filter_feeds_without_unread_headlines);
 	
 	if(filter_feeds_without_unread_headlines) {
-		ui_mainwindow_set_status_bar(_("Note: Using the subscriptions filter disables drag&drop!"));
+		ui_mainwindow_set_status_bar(_("Note: Using the subscriptions filter disables drag & drop"));
 		gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
 	}
 }
@@ -449,7 +447,9 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 static void ui_feedlist_delete_(nodePtr ptr) {
 
 	if(ptr->type == FST_HELPFEED) {
-		ui_show_error_box(_("You can't delete the help! Edit the preferences to disable loading the help."));
+		ui_show_error_box(_("You cannot delete the help! Disable loading the help by changing the "
+						"preferences. You will be able to delete the help folder after "
+						"restarting Liferea."));
 		return;
 	}
 	
@@ -482,7 +482,9 @@ void ui_feedlist_delete(nodePtr ptr) {
 	g_assert(ptr == ui_feedlist_get_selected());
 
 	if(ptr->type == FST_HELPFEED) {
-		ui_show_error_box(_("You can't delete the help! Edit the preferences to disable loading the help."));
+		ui_show_error_box(_("You cannot delete the help! Disable loading the help by changing the "
+						"preferences. You will be able to delete the help folder after "
+						"restarting Liferea."));
 		return;
 	}
 	
@@ -499,7 +501,7 @@ void ui_feedlist_delete(nodePtr ptr) {
 							  GTK_MESSAGE_QUESTION,
 							  GTK_BUTTONS_YES_NO,
 							  "%s", text);
-	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion confirmation"));
+	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(mainwindow));
 
@@ -530,13 +532,13 @@ void on_popup_prop_selected(gpointer callback_data,
 	feedPtr		fp = (feedPtr)callback_data;
 	
 	if(!fp || !IS_FEED(feed_get_type(fp))) {
-		g_message(_("You have to select a feed entry!"));
-		ui_show_error_box(_("You have to select a feed entry!"));
+		g_message(_("You must select a feed entry"));
+		ui_show_error_box(_("You must select a feed entry."));
 		return;
 	}
 	
 	if(fp->type == FST_HELPFEED) {
-		ui_show_error_box("You can't modify help feeds!");
+		ui_show_error_box("You cannot modify help feeds.");
 		return;
 	}
 	
@@ -588,7 +590,9 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 		
 		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
 		if(request->data == NULL) {
-			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
+			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is "
+							"temporarily not available. You can retry downloading or remove the "
+							"feed subscription via the context menu from the feed list.\n"), source);
 		} else {
 			gchar *tmp;
 			fp->fhp = feed_parse(fp, request->data, TRUE);
@@ -597,7 +601,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 			g_free(tmp);
 			
 			if (fp->fhp == NULL)
-				ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));	
+				ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));
 			ui_feedlist_update();
 			fp->needsCacheSave = TRUE;
 

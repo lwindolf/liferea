@@ -436,7 +436,7 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 	gboolean	add;
 
 	if(NULL == fp) {
-		g_warning(_("internal error! item list display for NULL pointer requested!\n"));
+		g_warning("internal error! item list display for NULL pointer requested!\n");
 		return;
 	}
 
@@ -574,7 +574,7 @@ void on_popup_launchitem_selected(void) {
 	if(ip != NULL)
 		ui_htmlview_launch_URL(item_get_source(ip), TRUE);
 	else
-		ui_mainwindow_set_status_bar(_("No item has been selected!"));
+		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
 
 void on_toggle_unread_status(void) {
@@ -598,7 +598,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		ui_feedlist_update();
 		fp->needsCacheSave = TRUE;
 	} else {
-		ui_show_error_box(_("You have to select a feed to delete its items!"));
+		ui_show_error_box(_("You must select a feed to delete its items!"));
 	}
 }
 
@@ -617,21 +617,19 @@ static gboolean ui_itemlist_find_unread_item(void) {
 		g_assert(ip != NULL);
 		if(FALSE == item_get_read_status(ip)) {
 			/* select found item and the item list... */
-			if(NULL != (treeview = lookup_widget(mainwindow, "Itemlist"))) {
-				if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-					gtk_tree_selection_select_iter(selection, &iter);
-					path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
- 					gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
- 					gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
-					gtk_tree_path_free(path);
-					item_set_read(ip);	/* needed when no selection happens (e.g. when the item is already selected) */
-					ui_feedlist_update();
-				} else
-					g_warning(_("internal error! could not get feed tree view selection!\n"));
-			} else {
-				g_warning(_("internal error! could not find feed tree view widget!\n"));
-			}
-
+			treeview = lookup_widget(mainwindow, "Itemlist");
+			g_assert(treeview != NULL);
+			if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
+				gtk_tree_selection_select_iter(selection, &iter);
+				path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
+				gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
+				gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
+				gtk_tree_path_free(path);
+				item_set_read(ip);	/* needed when no selection happens (e.g. when the item is already selected) */
+				ui_feedlist_update();
+			} else
+				g_warning(_("internal error! could not get feed tree view selection!\n"));
+			
 			return TRUE;
 		}
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
@@ -662,7 +660,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		/* find first unread item */
 		ui_itemlist_find_unread_item();
 	} else {
-		ui_mainwindow_set_status_bar(_("There are no unread items!"));
+		ui_mainwindow_set_status_bar(_("There are no unread items "));
 	}
 }
 

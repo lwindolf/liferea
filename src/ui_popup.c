@@ -56,10 +56,8 @@ static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *pa
 	
 	(*menu_len)++;
 	*menu = (GtkItemFactoryEntry *)g_realloc(*menu, sizeof(GtkItemFactoryEntry)*(*menu_len));
-	if(NULL == (*menu)) {
-		g_error(_("could not allocate memory!"));
-		exit(1);
-	}
+	if(NULL == (*menu))
+		g_error("could not allocate memory!");
 	
 	(*menu + *menu_len - 1)->path 			= path;
 	(*menu + *menu_len - 1)->accelerator		= acc;

@@ -90,9 +90,8 @@ void favicon_remove(feedPtr fp) {
 	/* try to load a saved favicon */
 	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		if(0 != unlink(filename)) {
-			g_warning(_("Could not delete icon file %s! Please remove manually!"), filename);
-		}	
+		if(0 != unlink(filename))
+			/* What can we do? The file probably doesn't exist. Or permissions are wrong. Oh well.... */;
 	}
 	g_free(filename);
 }

@@ -67,7 +67,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	g_assert(mainwindow != NULL);
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		ui_mainwindow_set_status_bar(_("searching for \"%s\""), searchstring);
+		ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
 		ui_itemlist_load(allItems, (gchar *)searchstring);
 	}
 }
@@ -118,7 +118,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		ui_mainwindow_set_status_bar(_("creating VFolder for search term \"%s\""), searchstring);
+		//ui_mainwindow_set_status_bar(_("Creating VFolder for search term \"%s\""), searchstring);
 
 		//ptr = (nodePtr)ui_feedlist_get_target_folder();
 		

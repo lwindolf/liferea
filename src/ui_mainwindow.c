@@ -210,10 +210,10 @@ void ui_mainwindow_update_onlinebtn(void) {
 	g_return_if_fail(NULL != (widget = lookup_widget(mainwindow, "onlineimage")));
 	
 	if(download_is_online()) {
-		ui_mainwindow_set_status_bar(_("Liferea is now online."));
+		ui_mainwindow_set_status_bar(_("Liferea is now online"));
 		gtk_image_set_from_pixbuf(GTK_IMAGE(widget), icons[ICON_ONLINE]);
 	} else {
-		ui_mainwindow_set_status_bar(_("Liferea is now offline!"));
+		ui_mainwindow_set_status_bar(_("Liferea is now offline"));
 		gtk_image_set_from_pixbuf(GTK_IMAGE(widget), icons[ICON_OFFLINE]);
 	}
 }

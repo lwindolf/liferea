@@ -166,8 +166,8 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 			}
 		} else {		
 			debug0(DEBUG_UPDATE, "There were errors while parsing a feed!");
-			ui_mainwindow_set_status_bar(_("There were errors while parsing a feed!"));
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type! Please check that it is in a supported format!</p>"));
+			ui_mainwindow_set_status_bar(_("There were errors while parsing a feed"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type. Please check that it is in a supported format.</p>"));
 		}
 	} else {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(handler));
@@ -316,18 +316,18 @@ void feed_save(feedPtr fp) {
 					g_free(tmp);
 
 				} else {
-					g_warning(_("could not write XML item node!\n"));
+					g_warning("could not write XML item node!\n");
 				}
 
 				saveCount++;
 			}
 		} else {
-			g_warning(_("could not create XML feed node for feed cache document!"));
+			g_warning("could not create XML feed node for feed cache document!");
 		}
 		xmlSaveFormatFileEnc(filename, doc, NULL, 1);
 		g_free(filename);
 	} else {
-		g_warning(_("could not create XML document!"));
+		g_warning("could not create XML document!");
 	}
 	
 	fp->needsCacheSave = FALSE;
@@ -423,7 +423,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	} while (FALSE);
 	
 	if(0 != error) {
-		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\"!"), filename);
+		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\""), filename);
 	}
 	
 	if (NULL != data)
@@ -557,9 +557,9 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			g_slist_free(new_fp->items);	/* dispose new item list */
 			
 			if(NULL == diff_list)
-				ui_mainwindow_set_status_bar(_("\"%s\" has no new items."), old_fp->title);
+				ui_mainwindow_set_status_bar(_("\"%s\" has no new items"), old_fp->title);
 			else 
-				ui_mainwindow_set_status_bar(_("\"%s\" has %d new items."), old_fp->title, newcount);
+				ui_mainwindow_set_status_bar(_("\"%s\" has %d new items"), old_fp->title, newcount);
 			
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
@@ -649,7 +649,7 @@ void feed_process_update_result(struct request *request) {
 	feed_set_available(old_fp, TRUE);
 	
 	if(304 == request->httpstatus) {	
-		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), feed_get_title(old_fp));
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(old_fp));
 	} else if(NULL != request->data) {
 		do {
 			/* parse the new downloaded feed into new_fp, feed type must be 
@@ -687,7 +687,7 @@ void feed_process_update_result(struct request *request) {
 			/* note this is to update the feed URL on permanent redirects */
 			if(0 != strcmp(request->source, feed_get_source(old_fp))) {
 				feed_set_source(old_fp, request->source);
-				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), feed_get_title(old_fp));
+				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(old_fp));
 			}
 
 			/* now fp contains the actual feed infos */
@@ -698,7 +698,7 @@ void feed_process_update_result(struct request *request) {
 			}
 		} while(0);
 	} else {	
-		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(old_fp));
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(old_fp));
 		feed_set_available(old_fp, FALSE);
 	}
 	
@@ -785,7 +785,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 	if((200 != httpstatus) && (0 != httpstatus)) {
 		/* first specific codes */
 		switch(httpstatus) {
-			case 401:tmp2 = g_strdup(_("The feed no longer exists. Please unsubscribe!"));break;
+			case 401:tmp2 = g_strdup(_("The feed no longer exists. Please unsubscribe."));break;
 			case 402:tmp2 = g_strdup(_("Payment Required"));break;
 			case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
 			case 404:tmp2 = g_strdup(_("Resource Not Found"));break;
@@ -793,7 +793,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 			case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
 			case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
 			case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
-			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe!"));break;
+			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe."));break;
 		}
 
 		/* next classes */
@@ -824,7 +824,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 	
 	/* if none of the above error descriptions matched... */
 	if(!errorFound) {
-		tmp1 = g_strdup_printf(_("There was a problem while reading this subscription. Please check the URL and console output!"));
+		tmp1 = g_strdup_printf(_("There was a problem while reading this subscription. Please check the URL and console output."));
 		addToHTMLBuffer(&buffer, tmp1);
 		g_free(tmp1);
 	}
@@ -971,9 +971,9 @@ void feed_free(feedPtr fp) {
 	/* FIXME: Move this to a better place. The cache file does not
 	   need to always be deleted, for example when freeing a
 	   feedstruct used for updating. */
-	if(filename && 0 != unlink(filename)) {
-		g_warning(_("Could not delete cache file %s! Please remove manually!"), filename);
-	}
+	if(filename && 0 != unlink(filename))
+		/* Oh well.... Can't do anything about it. 99% of the time,
+		   this is spam anyway. */;
 	g_free(filename);
 	
 	// FIXME: free filter structures too when implemented

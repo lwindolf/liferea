@@ -103,7 +103,7 @@ void download_process(struct request *request) {
 			pclose(f);
 			request->data[request->size] = '\0';
 		} else {
-			ui_mainwindow_set_status_bar(_("Could not open pipe \"%s\"!"), &request->source[1]);
+			ui_mainwindow_set_status_bar(_("Error: Could not open pipe \"%s\""), &request->source[1]);
 		}
 	} else if (NULL != strstr(request->source, "://")) {
 		downloadlib_process_url(request);
@@ -117,13 +117,13 @@ void download_process(struct request *request) {
 			/* we have a file... */
 			if((!g_file_get_contents(request->source, &(request->data), &(request->size), NULL)) || (request->data[0] == '\0')) {
 				request->httpstatus = 403;
-				ui_mainwindow_set_status_bar(_("Could not open file \"%s\"!"), request->source);
+				ui_mainwindow_set_status_bar(_("Error: Could not open file \"%s\""), request->source);
 			} else {
 				g_assert(NULL != request->data);
 				request->httpstatus = 200;
 			}
 		} else {
-			ui_mainwindow_set_status_bar(_("There is no file \"%s\"!"), request->source);
+			ui_mainwindow_set_status_bar(_("Error: There is no file \"%s\""), request->source);
 			request->httpstatus = 404;
 		}
 		
