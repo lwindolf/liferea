@@ -1661,6 +1661,12 @@ create_prefdialog (void)
   GtkWidget *feedsinmemorybtn1;
   GSList *feedsinmemorybtn1_group = NULL;
   GtkWidget *feedsinmemorybtn2;
+  GtkWidget *vbox2587;
+  GtkWidget *label163;
+  GtkWidget *hbox72;
+  GtkWidget *label164;
+  GtkWidget *vbox2588;
+  GtkWidget *button27;
   GtkWidget *label38;
   GtkWidget *vbox222;
   GtkWidget *vbox253;
@@ -1917,6 +1923,33 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn2, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn2), feedsinmemorybtn1_group);
   feedsinmemorybtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feedsinmemorybtn2));
+
+  vbox2587 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox2587);
+  gtk_box_pack_start (GTK_BOX (vbox3), vbox2587, TRUE, TRUE, 0);
+
+  label163 = gtk_label_new (_("<span weight=\"bold\">Feed Icons (Favicons)</span>"));
+  gtk_widget_show (label163);
+  gtk_box_pack_start (GTK_BOX (vbox2587), label163, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label163), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label163), 0, 0.5);
+
+  hbox72 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox72);
+  gtk_box_pack_start (GTK_BOX (vbox2587), hbox72, TRUE, TRUE, 0);
+
+  label164 = gtk_label_new (_("    "));
+  gtk_widget_show (label164);
+  gtk_box_pack_start (GTK_BOX (hbox72), label164, FALSE, FALSE, 0);
+
+  vbox2588 = gtk_vbox_new (FALSE, 5);
+  gtk_widget_show (vbox2588);
+  gtk_box_pack_start (GTK_BOX (hbox72), vbox2588, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2588), 5);
+
+  button27 = gtk_button_new_with_mnemonic (_("Update all favicons now."));
+  gtk_widget_show (button27);
+  gtk_box_pack_start (GTK_BOX (vbox2588), button27, FALSE, FALSE, 0);
 
   label38 = gtk_label_new (_("Feed Handling"));
   gtk_widget_show (label38);
@@ -2403,6 +2436,9 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) feedsinmemorybtn2, "clicked",
                     G_CALLBACK (on_feedsinmemorybtn_clicked),
                     NULL);
+  g_signal_connect ((gpointer) button27, "clicked",
+                    G_CALLBACK (on_udateallfavicons_clicked),
+                    NULL);
   g_signal_connect ((gpointer) space, "activate",
                     G_CALLBACK (on_browsekey_space_activate),
                     NULL);
@@ -2504,6 +2540,12 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2580, "vbox2580");
   GLADE_HOOKUP_OBJECT (prefdialog, feedsinmemorybtn1, "feedsinmemorybtn1");
   GLADE_HOOKUP_OBJECT (prefdialog, feedsinmemorybtn2, "feedsinmemorybtn2");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2587, "vbox2587");
+  GLADE_HOOKUP_OBJECT (prefdialog, label163, "label163");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox72, "hbox72");
+  GLADE_HOOKUP_OBJECT (prefdialog, label164, "label164");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2588, "vbox2588");
+  GLADE_HOOKUP_OBJECT (prefdialog, button27, "button27");
   GLADE_HOOKUP_OBJECT (prefdialog, label38, "label38");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox222, "vbox222");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox253, "vbox253");

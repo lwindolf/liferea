@@ -135,3 +135,7 @@ on_mainwindow_window_state_event       (GtkWidget       *widget,
                                         gpointer         user_data);
 
 #endif
+
+void
+on_udateallfavicons_clicked            (GtkButton       *button,
+                                        gpointer         user_data);

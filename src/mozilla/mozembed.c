@@ -93,9 +93,10 @@ static void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, gui
 	   correct (e.g. on initial webpage loading when new popups
 	   are requested and the user crosses a link)  */
 	if(NULL != selectedURL) {
-		/* FIXME: is it correct to assume that we always
-		   want to open new windows in the external browser? */
-		ui_htmlview_launch_in_external_browser(selectedURL);
+		if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION))
+			ui_tabs_new(selectedURL, selectedURL);
+		else
+			ui_htmlview_launch_in_external_browser(selectedURL);
 	}
 	*retval = NULL;
 }

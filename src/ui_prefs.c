@@ -45,6 +45,8 @@ static void on_browsermodule_changed(GtkObject *object, gchar *libname);
 static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data);
+static void updatefavicon_cb(nodePtr ptr);
+static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data);
 static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
 
 struct browser {
@@ -312,6 +314,8 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, widgetname);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 	g_free(widgetname);
+
+	g_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), NULL);
 	
 	/* ================== panel 3 "external browser" ==================== */
 	
@@ -512,6 +516,15 @@ void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 	ui_mainwindow_update_toolbar();
 }
 
+static void updatefavicon_cb(nodePtr ptr) {
+	favicon_download((feedPtr)ptr);
+}
+
+static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data)
+{
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, updatefavicon_cb);
+}
+ 
 
 static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean	enabled;

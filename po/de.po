@@ -711,7 +711,7 @@ msgstr ""
 
 #: src/interface.c:1921
 msgid "Feed Handling"
-msgstr "Feed Einstellungen"
+msgstr "Abonnements"
 
 #: src/interface.c:1936
 msgid "<span weight=\"bold\">Viewing Headlines</span>"
@@ -981,9 +981,9 @@ msgstr ""
 "\n"
 "Code von anderen Projekten\n"
 "\n"
-"Anders Carlsson <andersca@gnu.org> (Kontrollleisten-Icon Unterstützung)\n"
-"Philippe Martin, Brion Vibber (Favicon Unterstützung)Jonathan Blandford\n"
-"<jrb@redhat.com> (GtkTreeModelFilter)\n"
+"Anders Carlsson <andersca@gnu.org> (Systray-Icon Unterstützung)\n"
+"Philippe Martin, Brion Vibber (Favicon Unterstützun)g\n"
+"Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
 #: src/interface.c:2947
