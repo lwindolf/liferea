@@ -1,22 +1,22 @@
-/*
-   popup menus
-
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+/**
+ * @file ui_popup.c popup menus
+ *
+ * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 
 #include "feed.h"
 #include "folder.h"
@@ -119,6 +119,7 @@ void ui_popup_setup_menues(void) {
 	item_menu_len = 0;
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),	NULL, on_popup_toggle_read, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle Item _Flag"),	NULL, on_popup_toggle_flag, 			0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/R_emove Item"),		NULL, on_popup_remove_selected,			0, "<StockItem>", GTK_STOCK_DELETE);
 	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),	NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
 	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);

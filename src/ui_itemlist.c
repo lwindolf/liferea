@@ -144,21 +144,12 @@ void ui_itemlist_reset_date_format(void) {
 	date_format = NULL;
 }
 
-void ui_free_item_ui_data(itemPtr ip) {
-
-	g_assert(ip->ui_data);
-	gtk_tree_store_remove(GTK_TREE_STORE(itemstore), &((ui_item_data*)ip->ui_data)->row);
-	g_free(ip->ui_data);
-	ip->ui_data = NULL;
-}
-
 static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
 					  GtkTreePath *path,
 					  GtkTreeIter *iter,
 					  gpointer data) {
 	itemPtr ip;
-	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter,
-				    IS_PTR, &ip, -1);
+	gtk_tree_model_get(model, iter, IS_PTR, &ip, -1);
 	
 	/* The ui_free_item_ui_data method cannot be used because it
 	   modifies the tree store and messes up the
@@ -610,14 +601,12 @@ void on_popup_launchitem_selected(void) {
 
 void on_toggle_unread_status(void) {
 	itemPtr		ip;
-g_print("toggle read\n");
+
 	if(NULL != (ip = ui_itemlist_get_selected())) {
-g_print("toggle read2\n");
 		if(item_get_read_status(ip)) 
 			item_set_unread(ip);
 		else
 			item_set_read(ip);
-g_print("toggle read3\n");
 		ui_feedlist_update();
 	}
 }
@@ -628,12 +617,34 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	if(displayed_node && IS_FEED(displayed_node->type)) {
 		fp = (feedPtr)displayed_node;
 		ui_itemlist_clear();
-		feed_clear_item_list(fp);	/* delete items */
+		feed_remove_items(fp);
 		ui_feedlist_update();
 	} else {
 		ui_show_error_box(_("You must select a feed to delete its items!"));
 	}
 }
+
+void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	feedPtr		fp;
+	itemPtr		ip;
+	
+	if(displayed_node && IS_FEED(displayed_node->type)) {
+		if(NULL != (ip = ui_itemlist_get_selected())) {
+			fp = (feedPtr)displayed_node;
+			gtk_tree_store_remove(GTK_TREE_STORE(itemstore), &(((ui_item_data*)ip->ui_data)->row));
+			g_free(ip->ui_data);
+			ip->ui_data = NULL;
+			feed_remove_item(fp, ip);
+			ui_feedlist_update();
+		} else {
+			ui_mainwindow_set_status_bar(_("No item has been selected"));
+		}
+	} else {
+		ui_show_error_box(_("You must select a feed to delete its items!"));
+	}
+}
+
+void on_popup_remove_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_remove_item_activate(NULL, NULL); }
 
 static gboolean ui_itemlist_find_unread_item(void) {
 	GtkTreeSelection	*selection;
@@ -703,7 +714,7 @@ static void ui_itemlist_select(itemPtr ip) {
 	GtkTreeSelection	*selection;
 	GtkTreePath		*path;
 
-	g_assert(ip->ui_data);
+	g_assert(ip != NULL);
 	iter = ((ui_item_data*)(ip->ui_data))->row;
 
 	/* some comfort: select the created iter */

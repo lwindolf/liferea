@@ -283,6 +283,7 @@ const feedHandlerPtr feed_get_fhp(feedPtr fp);
 
 GSList * feed_get_item_list(feedPtr fp);
 void feed_clear_item_list(feedPtr fp);
+void feed_remove_items(feedPtr fp);
 
 void feed_mark_all_items_read(feedPtr fp);
 

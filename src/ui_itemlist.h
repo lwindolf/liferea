@@ -161,8 +161,18 @@ void on_popup_toggle_flag(gpointer callback_data,
  * @param menuitem The menuitem that was selected.
  * @param user_data Unused.
  */
-  void on_remove_items_activate(GtkMenuItem *menuitem, gpointer  user_data);
-  
+void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data);
+
+/**
+ * Removes the selected item from the selected feed.
+ *
+ * @param menuitem The menuitem that was selected.
+ * @param user_data Unused.
+ */  
+void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data);
+
+void on_popup_remove_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+
 /**
  * Searches the displayed feed and then all feeds for an unread
  * item. If one it found, it is displayed.

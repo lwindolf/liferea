@@ -209,8 +209,7 @@ void item_free(itemPtr ip) {
 	g_assert(NULL == ip->tmpdata);	/* should be free after rendering */
 	metadata_list_free(ip->metadata);
 	/* FIXME: remove item from all assigned VFolders! */
-	if(ip->ui_data != NULL)
-		ui_free_item_ui_data(ip);
+	g_assert(ip->ui_data == NULL);
 	g_free(ip);
 }
 

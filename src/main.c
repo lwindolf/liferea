@@ -295,6 +295,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	ui_mainwindow_save_position();
 	gtk_widget_hide(mainwindow);
 
+	ui_itemlist_clear();	/* to free all item list related data */
 	conf_feedlist_save();	/* should save feedlist and folder states */
 	feed_unload(NULL);	/* should save all feeds still in memory */	
 	

@@ -851,6 +851,13 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 	fp->items = g_slist_append(fp->items, (gpointer)ip);
 }
 
+void feed_remove_item(feedPtr fp, itemPtr ip) {
+
+	fp->items = g_slist_remove(fp->items, ip);
+	fp->needsCacheSave = TRUE;
+	item_free(ip);
+}
+
 itemPtr feed_lookup_item(feedPtr fp, gchar *id) {
 	GSList		*items;
 	itemPtr		ip;
@@ -1132,7 +1139,7 @@ GSList * feed_get_item_list(feedPtr fp) {
 	return fp->items; 
 }
 
-/* method to free all items of a feed */
+/* method to free all items of a feed, does not remove items from cache! */
 void feed_clear_item_list(feedPtr fp) {
 	GSList	*item;
 
@@ -1143,6 +1150,13 @@ void feed_clear_item_list(feedPtr fp) {
 	}
 	g_slist_free(fp->items);
 	fp->items = NULL;
+}
+
+/* uses feed_clear_item_list and forces saving, thus effectivly removing items */
+void feed_remove_items(feedPtr fp) {
+
+	feed_clear_item_list(fp);
+	fp->needsCacheSave = TRUE;	/* force saving */
 }
 
 void feed_mark_all_items_read(feedPtr fp) {

@@ -64,7 +64,6 @@ typedef struct item {
 	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
 
-void ui_free_item_ui_data(itemPtr ip); /* This is in itemlist.c */
 void ui_update_item(itemPtr ip); /* This is in itemlist.c */
 /* Update all items listed. Useful after a display preference change */
 void ui_update_itemlist();
