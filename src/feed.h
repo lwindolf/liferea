@@ -38,8 +38,6 @@ enum node_types {
 	FST_FEED	= 10,		/**< Any type of feed */
 	FST_HELPFOLDER	= 50,		/**< special tree list types to store help feeds */	
 	FST_HELPFEED	= 51,		/**< special type to allow updating of help feed url */
-
-	FST_AUTODETECT	= 200,		/**< special type to enforce type auto detection */
 };
 
 /** macro to test whether a type is a resource which is regularly updated */
