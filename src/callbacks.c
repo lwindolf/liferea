@@ -145,7 +145,7 @@ void initGUI(void) {
 	}
 	
 	if(NULL == readIcon)		readIcon	= create_pixbuf("read.xpm");
-	if(NULL == unreadIcon)		unreadIcon	= create_pixbuf("unread.xpm");
+	if(NULL == unreadIcon)		unreadIcon	= create_pixbuf("unread.png");
 	if(NULL == flagIcon)		flagIcon	= create_pixbuf("flag.png");
 	if(NULL == availableIcon)	availableIcon	= create_pixbuf("available.png");
 	if(NULL == unavailableIcon)	unavailableIcon	= create_pixbuf("unavailable.png");
@@ -1333,10 +1333,10 @@ void setupFeedList(GtkWidget *mainview) {
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(mainview), column);
 
-	gtk_tree_view_column_set_cell_data_func (column, iconRenderer, 
+	gtk_tree_view_column_set_cell_data_func(column, iconRenderer, 
 					   renderFeedStatus, NULL, NULL);
 					   
-	gtk_tree_view_column_set_cell_data_func (column, textRenderer,
+	gtk_tree_view_column_set_cell_data_func(column, textRenderer,
                                            renderFeedTitle, NULL, NULL);			   
 		
 	/* Setup the selection handler for the main view */
