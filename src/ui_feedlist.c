@@ -442,7 +442,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr parent, gboolean showPropDialog) {
+void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDialog) {
 	feedPtr		fp;
 
 	fp = feed_new();
@@ -454,7 +454,7 @@ void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr parent, gb
 	favicon_download(fp);
 	feed_update(fp);
 	
-	ui_folder_add_feed(parent, fp, -1);
+	ui_folder_add_feed(ui_feedlist_get_target_folder(), fp, -1);
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
@@ -497,7 +497,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	} else
 		type = selectableTypes[type];
 
-	ui_feedlist_new_subscription(type, source, ui_feedlist_get_target_folder(), TRUE);
+	ui_feedlist_new_subscription(type, source, TRUE);
 	/* don't free source for it is reused by newFeed! */
 }
 

@@ -158,7 +158,7 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	ui_feedlist_new_subscription(FST_AUTODETECT, url, ui_feedlist_get_target_folder(), TRUE);
+	ui_feedlist_new_subscription(FST_AUTODETECT, url, TRUE);
 	g_free(url);
 }
 
