@@ -18,6 +18,8 @@
 	* New Finnish translation. (Pauli Virtanen)
 	* New Romanian translation. (Spoiala Cristian)
 	* Updated Japanese translation. (Takeshi AIHANA)
+	* Filtered feed list feature removed. Did not work
+	  properly and there is no time to fix it.
 	
 	Bugfixes:
 
