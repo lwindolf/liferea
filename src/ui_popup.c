@@ -77,6 +77,7 @@ void setupPopupMenues(void) {
 
 	/* feed list menues */
 	feed_menu_items = NULL;
+	feed_menu_len = 0;
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Update Feed"), 		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", 0);
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
@@ -85,6 +86,7 @@ void setupPopupMenues(void) {
 	addPopupOption(&feed_menu_items, &feed_menu_len, _("/_Properties"),		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
 
 	dir_menu_items = NULL;
+	dir_menu_len = 0;
 	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_Update Directory"),		NULL, on_popup_refresh_selected, 	0, "<StockItem>", GTK_STOCK_REFRESH);
 	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
 	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
@@ -93,6 +95,7 @@ void setupPopupMenues(void) {
 	addPopupOption(&dir_menu_items, &dir_menu_len, _("/_Properties"),		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES);
 
 	node_menu_items = NULL;
+	node_menu_len = 0;
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New"),			NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New _Feed"), 		NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
@@ -100,18 +103,21 @@ void setupPopupMenues(void) {
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_Delete Folder"), 		NULL, on_popup_removefolder_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
 
 	vfolder_menu_items = NULL;
+	vfolder_menu_len = 0;
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New"),		NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New _Feed"), 	NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_Delete VFolder"),	NULL, on_popup_delete_selected, 	0, "<StockItem>", GTK_STOCK_DELETE);
 
 	default_menu_items = NULL;
+	default_menu_len = 0;
 	addPopupOption(&default_menu_items, &default_menu_len, _("/_New"),		NULL, 0, 				0, "<Branch>", GTK_STOCK_NEW);
 	addPopupOption(&default_menu_items, &default_menu_len, _("/_New/New _Feed"), 	NULL, on_newbtn_clicked, 		0, NULL, 0);
 	addPopupOption(&default_menu_items, &default_menu_len, _("/_New/New F_older"), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
 	
 	/* item list menues */
 	item_menu_items = NULL;
+	item_menu_len = 0;
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Mark All As Read"),	NULL, on_popup_allunread_selected, 		0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),	NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
 	addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
@@ -123,12 +129,14 @@ void setupPopupMenues(void) {
 
 	/* HTML view popup menues */
 	html_menu_items = NULL;
+	html_menu_len = 0;
 	addPopupOption(&html_menu_items, &html_menu_len, _("/Zoom In"),			NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
 	addPopupOption(&html_menu_items, &html_menu_len, _("/Zoom Out"),		NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
 	addPopupOption(&html_menu_items, &html_menu_len, "/",				NULL, NULL, 				0, "<Separator>", 0);
 	addPopupOption(&html_menu_items, &html_menu_len, _(TOGGLE_CONDENSED_VIEW),	NULL, on_popup_toggle_condensed_view, 	0, "<ToggleItem>", 0);
 	
 	url_menu_items = NULL;
+	url_menu_len = 0;
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Subscribe"),		NULL, on_popup_subscribe_url_selected, 		0, NULL, 0);
 }

@@ -11,20 +11,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-26 04:09+0100\n"
+"POT-Creation-Date: 2004-01-07 02:20+0100\n"
 "PO-Revision-Date: 2004-01-04 01:29+0100\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "No se ha podido encontrar la imagen: %s"
 
-#: src/callbacks.c:130
+#: src/callbacks.c:132
 msgid ""
 "You have disabled both the menubar and the toolbar. Without one of these you "
 "won't be able to access all program functions. I'll reenable the toolbar!"
@@ -33,57 +33,58 @@ msgstr ""
 "podrás accedar a las funciones del programa. Voy a reactivar la barra de "
 "iconos."
 
-#: src/callbacks.c:178
+#: src/callbacks.c:179
 msgid "entry list widget lookup failed!\n"
 msgstr "No se pudo encontrar el control: lista de entradas.\n"
 
-#: src/callbacks.c:183
+#: src/callbacks.c:184
 msgid "could not retrieve selection of entry list!"
 msgstr "No se ha podido obtener la entrada seleccionada."
 
-#: src/callbacks.c:199
+#: src/callbacks.c:200
 msgid "fatal! selected feed entry has no key!!!"
 msgstr "¡Error fatal! ¡La entrada seleccionada no tiene ID!"
 
-#: src/callbacks.c:225
+#: src/callbacks.c:226
 msgid "internal error! could not reset HTML widget scrolling!"
 msgstr "Error interno. No se pudo reiniciar el control de desplazamiento HTML"
 
-#: src/callbacks.c:261 src/callbacks.c:399 src/callbacks.c:446
+#: src/callbacks.c:259 src/callbacks.c:397 src/callbacks.c:444
 msgid "You have to select a feed entry!"
 msgstr "Por favor, elige una fuente de noticias."
 
-#: src/callbacks.c:405
+#: src/callbacks.c:403
 msgid "You can't delete help feeds!"
 msgstr "No puedes borrar las fuentes de ayuda"
 
-#: src/callbacks.c:409
+#: src/callbacks.c:407
 msgid "Deleting entry"
 msgstr "Borrando entrada"
 
-#: src/callbacks.c:419
+#: src/callbacks.c:417
 msgid "It seems like there is no selected feed entry!"
 msgstr "Por favor, elige alguna fuente"
 
-#: src/callbacks.c:478
+#: src/callbacks.c:476
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr "El proveedor de esta fuente sugiere actualizarla cada %d minutos"
 
-#: src/callbacks.c:480
+#: src/callbacks.c:478
 msgid "This feed specifies no default update interval."
 msgstr "Esta fuente no tiene definido ningún intervalo de actualización."
 
-#: src/callbacks.c:523
+#: src/callbacks.c:521
 msgid "Internal error! No feed selected, but property change requested...\n"
-msgstr "Error interno. No se eligió ninguna fuente, pero se intentaron cambiar sus "
+msgstr ""
+"Error interno. No se eligió ninguna fuente, pero se intentaron cambiar sus "
 "propiedades...\n"
 
-#: src/callbacks.c:578
+#: src/callbacks.c:576
 msgid "internal error! could not select newly created treestore iter!"
 msgstr "Error interno. No se pudo seleccionar el nuevo elemento de árbol"
 
-#: src/callbacks.c:594
+#: src/callbacks.c:592
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -98,160 +99,169 @@ msgstr ""
 "Puedes intentarla bajar de nuevo, o eliminarla desde el menú contextual de "
 "la lista de fuentes\n"
 
-#: src/callbacks.c:651
+#: src/callbacks.c:647
 msgid "internal error! invalid type selected! This should never happen!\n"
-msgstr "Error interno. Se ha seleccionado un tipo inválido. ¡Esto no debería estar "
+msgstr ""
+"Error interno. Se ha seleccionado un tipo inválido. ¡Esto no debería estar "
 "pasando!\n"
 
-#: src/callbacks.c:681 src/export.c:220 src/export.c:233
+#: src/callbacks.c:677 src/export.c:221 src/export.c:234
 msgid "internal error! could not find file dialog select button!"
-msgstr "Error interno. No se ha podido encontrar el botón de selección del navegador "
+msgstr ""
+"Error interno. No se ha podido encontrar el botón de selección del navegador "
 "de archivos."
 
-#: src/callbacks.c:711 src/export.c:123
+#: src/callbacks.c:707 src/export.c:124
 msgid "internal error! could not get a new folder key!"
 msgstr "Error interno. No se ha podido obtener una nueva ID de carpeta."
 
-#: src/callbacks.c:720 src/callbacks.c:760
+#: src/callbacks.c:716 src/callbacks.c:756
 msgid "You have to select a folder entry!"
 msgstr "Por favor, elige una entrada de alguna de las carpetas."
 
-#: src/callbacks.c:786 src/callbacks.c:789
+#: src/callbacks.c:782 src/callbacks.c:785
 msgid "A folder must be empty to delete it!"
 msgstr "Lo siento, para poder borrar una carpeta, ésta tiene que estar vacía."
 
-#: src/callbacks.c:792
+#: src/callbacks.c:788
 msgid "Error: Cannot determine folder key!"
 msgstr "Error: No se ha podido determinar el ID de esta carpeta."
 
-#: src/callbacks.c:834 src/callbacks.c:986
+#: src/callbacks.c:830 src/callbacks.c:981
 msgid "could not retrieve selection of item list!"
 msgstr "No se ha podido obtener la lista con los elementos seleccionados."
 
-#: src/callbacks.c:870
+#: src/callbacks.c:866
 msgid "item list widget lookup failed!\n"
 msgstr "No se ha podido encontrar el control: lista de elementos.\n"
 
-#: src/callbacks.c:880
+#: src/callbacks.c:876
 msgid "could not retrieve selection of item list!\n"
 msgstr "No se han podido obtener los elementos seleccionados\n"
 
-#: src/callbacks.c:981
+#: src/callbacks.c:976
 msgid "could not find item list widget!"
 msgstr "No se ha podido encontrar el control: lista de elementos."
 
-#: src/callbacks.c:1106 src/callbacks.c:1147
+#: src/callbacks.c:1100 src/callbacks.c:1142
 msgid "internal error! could not get feed tree view selection!\n"
-msgstr "Error interno. No se pudo obtener la selección de vista en árbol de las "
+msgstr ""
+"Error interno. No se pudo obtener la selección de vista en árbol de las "
 "fuentes.\n"
 
-#: src/callbacks.c:1108 src/callbacks.c:1149
+#: src/callbacks.c:1102 src/callbacks.c:1144
 msgid "internal error! could not find feed tree view widget!\n"
-msgstr "Error interno. No se pudo encontrar el control para la vista en árbol de "
+msgstr ""
+"Error interno. No se pudo encontrar el control para la vista en árbol de "
 "fuentes.\n"
 
-#: src/callbacks.c:1176
+#: src/callbacks.c:1171
 msgid "There are no unread items!"
 msgstr "¡Nada nuevo!"
 
-#: src/callbacks.c:1196
+#: src/callbacks.c:1191
 msgid "You have to select a feed to delete its items!"
 msgstr "Por favor, elige una fuente para eliminar sus elementos"
 
-#: src/callbacks.c:1304
+#: src/callbacks.c:1322
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr "Error interno: Tipo de entrada desconocido. No se ha podido mostrar un icono "
+msgstr ""
+"Error interno: Tipo de entrada desconocido. No se ha podido mostrar un icono "
 "apropiado.\n"
 
-#: src/callbacks.c:1447
+#: src/callbacks.c:1465
 msgid "Date"
 msgstr "Fecha"
 
-#: src/callbacks.c:1455
+#: src/callbacks.c:1473
 msgid "Headline"
 msgstr "Titular"
 
-#: src/callbacks.c:1554
+#: src/callbacks.c:1572
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" actualizado..."
 
-#: src/callbacks.c:1562
+#: src/callbacks.c:1580
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada."
 
-#: src/callbacks.c:1581
+#: src/callbacks.c:1599
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "La URL de \"%s\" no ha cambiado desde la última actualización"
 
-#: src/callbacks.c:1585
+#: src/callbacks.c:1603
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "Lo siento, \"%s\" no está disponible"
 
-#: src/callbacks.c:1709
+#: src/callbacks.c:1731
 msgid "internal error! item list display for NULL pointer requested!\n"
-msgstr "Error interno: ¡Se ha intentado representar un elemento de la lista que es "
+msgstr ""
+"Error interno: ¡Se ha intentado representar un elemento de la lista que es "
 "un puntero nulo!\n"
 
-#: src/cdf_channel.c:106 src/cdf_item.c:52 src/common.c:160 src/item.c:137
-#: src/ns_dc.c:225 src/ns_dc.c:275 src/ns_dc.c:318 src/ns_dc.c:358
-#: src/ns_dc.c:400 src/ns_ocs.c:73 src/pie_entry.c:106 src/pie_feed.c:168
-#: src/rss_channel.c:219 src/rss_channel.c:267 src/rss_channel.c:301
-#: src/rss_item.c:78
+#: src/cdf_channel.c:106 src/cdf_item.c:51
 msgid "internal error: XML document pointer NULL! This should not happen!\n"
-msgstr "Error interno: El documento XML es un puntero nulo. ¡Esto no debería de "
+msgstr ""
+"Error interno: El documento XML es un puntero nulo. ¡Esto no debería de "
 "estar pasando!\n"
 
-#: src/cdf_channel.c:172 src/opml.c:133 src/pie_feed.c:222
-#: src/rss_channel.c:344
+#: src/cdf_channel.c:174 src/opml.c:138 src/pie_feed.c:217
+#: src/rss_channel.c:357
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "Error XML mientras se leía la fuente. No se ha podido cargar la fuente \"%s\"."
+msgstr ""
+"Error XML mientras se leía la fuente. No se ha podido cargar la fuente \"%s"
+"\"."
 
-#: src/cdf_channel.c:180 src/pie_feed.c:230
+#: src/cdf_channel.c:182 src/pie_feed.c:225
 msgid "Empty document! Feed was not added!"
 msgstr "El documento estaba vacío. La fuente no se añadió."
 
-#: src/cdf_channel.c:241 src/ocs_dir.c:306 src/ocs_dir.c:373 src/ocs_dir.c:449
-#: src/ocs_dir.c:537 src/ocs_dir.c:579 src/opml.c:249 src/pie_feed.c:343
-#: src/rss_channel.c:448 src/vfolder.c:125
+#: src/cdf_channel.c:243 src/ocs_dir.c:287 src/ocs_dir.c:351 src/ocs_dir.c:425
+#: src/ocs_dir.c:512 src/ocs_dir.c:554 src/opml.c:259 src/pie_feed.c:338
+#: src/rss_channel.c:467 src/vfolder.c:124
 msgid "not enough memory!"
 msgstr "¡No hay memoria suficiente!"
 
-#: src/common.c:125
+#: src/common.c:127
 msgid "conversion wasn't successful.\n"
 msgstr "Falló la conversión.\n"
 
-#: src/common.c:127
+#: src/common.c:129
 #, c-format
 msgid "conversion wasn't successful. converted: %i octets.\n"
 msgstr "Falló la conversión. Se pudieron convertir %i bytes.\n"
 
-#: src/common.c:137
+#: src/common.c:139
 msgid "not enough memory\n"
 msgstr "Memoria insuficiente\n"
 
-#: src/common.c:263 src/common.c:308
+#: src/common.c:252 src/common.c:297
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "Error interno: Fallo en la conversión de la fecha con 'mktime'.\n"
 
-#: src/common.c:266
+#: src/common.c:255
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
-msgstr "Formato de fecha inválido según ISO8601. Ignorando la información de <dc:date>\n"
+msgstr ""
+"Formato de fecha inválido según ISO8601. Ignorando la información de <dc:"
+"date>\n"
 
-#: src/common.c:311
+#: src/common.c:300
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
-msgstr "Formato de fecha inválido según RFC822. Ignorando la información de <pubDate>\n"
+msgstr ""
+"Formato de fecha inválido según RFC822. Ignorando la información de "
+"<pubDate>\n"
 
-#: src/common.c:379
+#: src/common.c:368
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "No se ha podido crear el directorio de caché %s."
 
-#: src/common.c:483
+#: src/common.c:472
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -260,139 +270,144 @@ msgstr ""
 "¡Algunos caracteres se han perdido!"
 
 #. sh..!
-#: src/common.c:497
+#: src/common.c:486
 msgid "Internal error while converting UTF-8 chars to HTTP URI!"
-msgstr "Error interno mientras se convertían los caracteres UTF-8 a la URI HTTP."
+msgstr ""
+"Error interno mientras se convertían los caracteres UTF-8 a la URI HTTP."
 
 #. _() for HELP1URL to allow localised help feeds
-#: src/conf.c:39
+#: src/conf.c:40
 msgid "http://liferea.sf.net/help046.rdf"
 msgstr "http://liferea.sf.net/help046.rdf"
 
-#: src/conf.c:165
+#: src/conf.c:168
 #, c-format
 msgid "internal error! could not retrieve feed list for gconf path %s\n"
-msgstr "Error interno: No se pudo obtener la lista de fuentes para la ruta %s de "
+msgstr ""
+"Error interno: No se pudo obtener la lista de fuentes para la ruta %s de "
 "'gconf'.\n"
 
-#: src/conf.c:469
+#: src/conf.c:460
 msgid "error! could not get a free entry key!\n"
 msgstr "Error: No se pudo obtener una ID libre para esta entrada.\n"
 
-#: src/conf.c:475
+#: src/conf.c:466
 msgid "error! could not set a URL for this key!\n"
 msgstr "Error: No se pudo obtener una URL para esta ID.\n"
 
-#: src/conf.c:478
+#: src/conf.c:469
 msgid "error! could not set a type for this key!\n"
 msgstr "Error: No se pudo establecer un tipo para esta ID.\n"
 
 #. add to config and UI feed list
-#: src/conf.c:702 src/conf.c:704
+#: src/conf.c:693 src/conf.c:695
 msgid "Liferea Help"
 msgstr "Ayuda de Liferea"
 
-#: src/conf.c:708
+#: src/conf.c:699
 msgid "Online Help Feed"
 msgstr "Ayuda en línea"
 
-#: src/conf.c:709
+#: src/conf.c:700
 msgid "Liferea SF News"
 msgstr "Noticias de Liferea en SF"
 
-#: src/conf.c:724
+#: src/conf.c:715
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "El espacio RSS %s no estaba configurado. Voy a activarlo.\n"
 
-#: src/conversions.c:75
+#: src/conversions.c:77
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
 msgstr "Error descomprimiendo en zlib: %d %s\n"
 
-#: src/conversions.c:91
+#: src/conversions.c:93
 msgid "ERROR: No output during decompression"
 msgstr "Error: No se ha producido ninguna salida durante la descompresión."
 
-#: src/conversions.c:121
+#: src/conversions.c:123
 msgid "ERROR: Invalid magic bytes for GZIP data"
 msgstr "Error: Datos inválidos en los bytes mágicos del GZIP."
 
-#: src/conversions.c:126
+#: src/conversions.c:128
 msgid "ERROR: Compression method is not deflate"
 msgstr "Error: El método de compresión no es 'deflate'"
 
-#: src/conversions.c:131
+#: src/conversions.c:133
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "Error: 'Flags' no soportadas: %d\n"
 
-#: src/export.c:70 src/feed.c:250
+#: src/export.c:71 src/feed.c:260
 msgid "could not create XML feed node for feed cache document!"
 msgstr "No se pudo crear el nodo de la fuente XML para guardarlo en caché."
 
-#: src/export.c:74 src/feed.c:254
+#: src/export.c:75 src/feed.c:266
 msgid "could not create XML document!"
 msgstr "No se pudo crear el documento XML."
 
-#: src/export.c:79
+#: src/export.c:80
 msgid "Error while exporting feed list!"
 msgstr "Ocurrió un error mientras se exportaba la lista de fuentes."
 
-#: src/export.c:81
+#: src/export.c:82
 msgid "Feed List exported!"
 msgstr "La lista de fuentes se ha exportado con éxito."
 
 #. create a new import folder
-#: src/export.c:118
+#: src/export.c:119
 msgid "imported feed list"
 msgstr "Lista de fuentes importada."
 
-#: src/export.c:132 src/feed.c:295
+#: src/export.c:133 src/feed.c:308
 #, c-format
 msgid ""
 "XML error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr "Error XML mientras se leía el caché del archivo \"%s\". No se pudo cargar."
+msgstr ""
+"Error XML mientras se leía el caché del archivo \"%s\". No se pudo cargar."
 
-#: src/export.c:137
+#: src/export.c:138
 msgid "Empty document! OPML document should not be empty..."
 msgstr "El documento OPML estaba vacío y no debería estarlo."
 
-#: src/export.c:145
+#: src/export.c:146
 #, c-format
 msgid "\"%s\" is no valid cache file! Cannot read OPML file!"
-msgstr "\"%s\" no es un archivo de caché válido. No se pudo leer el archivo OPML."
+msgstr ""
+"\"%s\" no es un archivo de caché válido. No se pudo leer el archivo OPML."
 
-#: src/favicon.c:413
+#: src/favicon.c:411
 #, c-format
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr "No se pudo borrar el icono: %s. Por favor, bórralo manualmente."
 
-#: src/feed.c:155
+#: src/feed.c:161
 msgid "Could not allocate memory!"
 msgstr "No se ha podido asignar memoria suficiente."
 
-#: src/feed.c:240
+#: src/feed.c:250
 msgid "could not write XML item node!\n"
 msgstr "No se pudo escribir el nodo del elemento XML.\n"
 
 #. we must save here to save changed read flags
-#: src/feed.c:274
+#: src/feed.c:286
 msgid "saving all feeds..."
 msgstr "Guardando todas las fuentes..."
 
-#: src/feed.c:300
+#: src/feed.c:313
 msgid "Empty document! Feed cache file should not be empty..."
-msgstr "El archivo con las cachés de las fuentes está vacío y no debería estarlo."
+msgstr ""
+"El archivo con las cachés de las fuentes está vacío y no debería estarlo."
 
-#: src/feed.c:308
+#: src/feed.c:321
 #, c-format
 msgid "\"%s\" is no valid cache file! Cannot read cache file!"
 msgstr "\"%s\" no es un archivo de caché válido. No se pudo leer."
 
 #. if necessary download and detect type
 #. FIXME: pass fp to adjust URL
-#: src/feed.c:408
+#: src/feed.c:421
 #, c-format
 msgid ""
 "Could not detect feed type of \"%s\"! Please manually select a feed type."
@@ -400,52 +415,131 @@ msgstr ""
 "No se pudo detectar el tipo de fuente de \"%s\". Por favor, elígelo "
 "manualmente."
 
-#: src/feed.c:429
+#: src/feed.c:442
 msgid "internal error! unknown feed type in newFeed()!"
 msgstr "Error interno: Tipo de fuente desconocido en 'newFeed()'."
 
-#: src/feed.c:472
+#: src/feed.c:485
 msgid "error! could not add feed to configuration!\n"
 msgstr "Lo siento, no se ha podido añadir la fuente a la configuración.\n"
 
-#: src/feed.c:592
+#: src/feed.c:606
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" no tiene elementos nuevos."
 
-#: src/feed.c:594
+#: src/feed.c:608
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" tiene %d elementos nuevos."
 
-#: src/feed.c:629
+#: src/feed.c:648
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
-msgstr "No se pudo borrar el archivo de caché: %s. Por favor, bórralo manualmente."
+msgstr ""
+"No se pudo borrar el archivo de caché: %s. Por favor, bórralo manualmente."
 
-#: src/feed.c:656
+#: src/feed.c:676
 msgid "updating all feeds..."
 msgstr "Actualizando todas las fuentes..."
 
-#: src/feed.c:681
-#, c-format
-msgid "internal error! there is no feed assigned to feedkey %s!"
+#: src/feed.c:701
+#, fuzzy, c-format
+msgid "internal error! there is no feed assigned to feedkey \"%s\"!\n"
 msgstr "Error interno: No se asignó ninguna fuente al ID %s."
 
-#: src/folder.c:71 src/folder.c:88 src/folder.c:111 src/folder.c:185
-msgid "internal error! could not determine folder key!"
+#. should never happen!
+#: src/feed.c:741
+msgid ""
+"The last update of this feed failed. Please see the console output for more "
+"information!"
+msgstr ""
+
+#. The feed is gone. Politely remind the user to unsubscribe.
+#: src/feed.c:745 src/netio.c:416
+msgid "The feed no longer exists. Please unsubscribe!"
+msgstr "Esta fuente ya no existe. Por favor, elimínala."
+
+#: src/feed.c:746
+msgid "Payment Required"
+msgstr ""
+
+#: src/feed.c:747
+msgid "Access Forbidden"
+msgstr ""
+
+#: src/feed.c:748
+msgid "Ressource Not Found"
+msgstr ""
+
+#: src/feed.c:749
+msgid "Method Not Allowed"
+msgstr ""
+
+#: src/feed.c:750
+msgid "Not Acceptable"
+msgstr ""
+
+#: src/feed.c:751
+msgid "Proxy Authentication Required"
+msgstr ""
+
+#: src/feed.c:752
+msgid "Request Time-Out"
+msgstr ""
+
+#: src/feed.c:753
+#, fuzzy
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "Esta fuente ya no existe. Por favor, elimínala."
+
+#: src/feed.c:759
+msgid "Feed not available: Server signalized unsupported redirection!"
+msgstr ""
+
+#: src/feed.c:760
+msgid "Client Error"
+msgstr ""
+
+#: src/feed.c:761
+msgid "Server Error"
+msgstr ""
+
+#: src/feed.c:762
+msgid "(unknown error class)"
+msgstr ""
+
+#: src/folder.c:71
+#, fuzzy, c-format
+msgid ""
+"getFolderTitle() internal error! could not determine folder iterator for "
+"keyprefix \"%s\"!\n"
 msgstr "Error interno: No se pudo determinar la ID de esta carpeta."
 
-#: src/folder.c:216
+#: src/folder.c:89
+#, fuzzy, c-format
+msgid ""
+"setFolderTitle() internal error! could not determine folder iter for "
+"keyprefix \"%s\"!\n"
+msgstr "Error interno: No se pudo determinar la ID de esta carpeta."
+
+#: src/folder.c:184
+#, fuzzy, c-format
+msgid ""
+"removeFolder() internal error! could not determine folder iter for keyprefix "
+"\"%s\"!\n"
+msgstr "Error interno: No se pudo determinar la ID de esta carpeta."
+
+#: src/folder.c:215
 msgid "(empty)"
 msgstr "(vacío)"
 
-#: src/folder.c:350
+#: src/folder.c:348
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr "No se pudo mover el archivo de caché %s a su destino %s.\n"
 
-#: src/htmlview.c:400
+#: src/htmlview.c:425
 #, c-format
 msgid ""
 "There is no %%s URL place holder in the browser command string you specified "
@@ -542,12 +636,13 @@ msgstr "Marca como leídos todos los elementos de la fuente actual."
 msgid "_Next Unread Item"
 msgstr "_Siguiente elemento nuevo"
 
-#: src/interface.c:291 src/interface.c:371
+#: src/interface.c:291 src/interface.c:393
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
 msgstr ""
-"Salta al siguiente elemento nuevo. Si fuera necesario, salta a la siguiente fuente con elementos nuevos."
+"Salta al siguiente elemento nuevo. Si fuera necesario, salta a la siguiente "
+"fuente con elementos nuevos."
 
 #: src/interface.c:300
 msgid "Toggle _Read Status"
@@ -601,17 +696,17 @@ msgstr "Buscar con _Feedster..."
 msgid "Create a Feedster search feed."
 msgstr "Inicia una búsqueda con Feedster."
 
-#: src/interface.c:387
-msgid "Next Unread"
-msgstr "_Siguiente nuevo"
-
-#: src/interface.c:393
+#: src/interface.c:371
 msgid "Update all feeds"
 msgstr "Actualizar todas las fuentes"
 
-#: src/interface.c:409
+#: src/interface.c:387
 msgid "Update"
 msgstr "Actualizar"
+
+#: src/interface.c:409
+msgid "Next Unread"
+msgstr "_Siguiente nuevo"
 
 #: src/interface.c:415
 msgid "Search in feeds"
@@ -631,7 +726,8 @@ msgstr "Crear carpeta virtual"
 
 #: src/interface.c:485
 msgid "saves this search as a VFolder, which will appear in the feed list"
-msgstr "Guarda esta búsqueda como una carpeta virtual, que aparecerá en la lista de "
+msgstr ""
+"Guarda esta búsqueda como una carpeta virtual, que aparecerá en la lista de "
 "fuentes."
 
 #: src/interface.c:490
@@ -775,7 +871,8 @@ msgstr "Otro navegador:"
 #: src/interface.c:1254
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
-msgstr "Especifica el comando para ejecutar el navegador. Escribe %s, al final, que "
+msgstr ""
+"Especifica el comando para ejecutar el navegador. Escribe %s, al final, que "
 "se substituirá por la URL de la fuente."
 
 #: src/interface.c:1256
@@ -967,7 +1064,7 @@ msgstr "Conectándose a "
 msgid "Connecting to %s..."
 msgstr "Conectándose a %s..."
 
-#: src/netio.c:227
+#: src/netio.c:226
 #, c-format
 msgid "Downloading http://%s%s..."
 msgstr "Descargando http://%s%s..."
@@ -976,79 +1073,76 @@ msgstr "Descargando http://%s%s..."
 #. go away if we retry.
 #.
 #. BeOS will stupidly return SUCCESS here making this code silently fail on BeOS.
-#: src/netio.c:242
+#: src/netio.c:241
 msgid "socket connect"
 msgstr "Conectando socket"
 
-#: src/netio.c:319
+#: src/netio.c:318
 msgid "Too many HTTP redirects encountered! Giving up."
 msgstr "Se encontraron demasiadas redirecciones HTTP. Cancelando."
 
 #. Something bad happened. Server sent stupid stuff.
-#: src/netio.c:326
+#: src/netio.c:325
 msgid "Following HTTP redirects"
 msgstr "Siguiendo redirecciones HTTP"
 
-#: src/netio.c:371
+#: src/netio.c:370
 msgid "URL points to permanent redirect, updating with new location..."
-msgstr "La URL apunta a una redirección permanente, actualizando a la nueva "
+msgstr ""
+"La URL apunta a una redirección permanente, actualizando a la nueva "
 "dirección..."
 
-#. The feed is gone. Politely remind the user to unsubscribe.
-#: src/netio.c:417
-msgid "The feed no longer exists. Please unsubscribe!"
-msgstr "Esta fuente ya no existe. Por favor, elimínala."
-
-#: src/netio.c:454
+#: src/netio.c:453
 #, c-format
 msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
-msgstr "El servidor web %s envió código HTTP/1.0 inválido. No se pudieron obtener "
+msgstr ""
+"El servidor web %s envió código HTTP/1.0 inválido. No se pudieron obtener "
 "datos."
 
 #. End of string url. Probably entered invalid stuff like
 #. http://asdf or something. Since we don't want to crash and burn
 #. return the dreaded NULL pointer.
-#: src/netio.c:603
+#: src/netio.c:602
 msgid "This URL doesn't look too valid to me, don't you think?"
 msgstr "La URL es inválida. Por favor, compruébala."
 
-#: src/netio.c:623
+#: src/netio.c:622
 msgid "Couldn't create network socket!"
 msgstr "No se pudo crear el socket de red."
 
-#: src/netio.c:628
+#: src/netio.c:627
 #, c-format
 msgid "Can't resolve host %s!"
 msgstr "Imposible resolver el host %s"
 
-#: src/netio.c:634
+#: src/netio.c:633
 #, c-format
 msgid "Could not connect to server %s: %s"
 msgstr "No se pudo conectar al servidor %s: %s"
 
-#: src/netio.c:640
+#: src/netio.c:639
 msgid "Aborted."
 msgstr "Cancelado."
 
-#: src/netio.c:685
+#: src/netio.c:684
 msgid "Could not allocate memory to read file!"
 msgstr "No se pudo reservar memoria para leer el archivo."
 
-#: src/netio.c:692
+#: src/netio.c:691
 #, c-format
 msgid "Could not open file \"%s\"!"
 msgstr "No se pudo abrir el archivo \"%s\""
 
-#: src/netio.c:695
+#: src/netio.c:694
 #, c-format
 msgid "There is no file \"%s\"!"
 msgstr "El archivo \"%s\" no existe."
 
-#: src/ns_admin.c:100
+#: src/ns_admin.c:80
 msgid "report errors to"
 msgstr "Avisar de errores a"
 
-#: src/ns_admin.c:102
+#: src/ns_admin.c:82
 msgid "feed generator"
 msgstr "Generador de la fuente"
 
@@ -1060,159 +1154,148 @@ msgstr "Fuente"
 msgid "time"
 msgstr "Hora"
 
-#: src/ns_cC.c:78
+#: src/ns_cC.c:91
 msgid "license"
 msgstr "Licencia"
 
-#: src/ns_dc.c:247 src/ns_ocs.c:96
+#: src/ns_dc.c:250 src/ns_ocs.c:98
 msgid "internal OCS namespace parsing error!"
 msgstr "Error interno analizando el espacio OCS."
 
-#: src/ocs_dir.c:216 src/ocs_dir.c:261 src/ocs_dir.c:386 src/ocs_dir.c:462
+#: src/ocs_dir.c:200 src/ocs_dir.c:242 src/ocs_dir.c:364 src/ocs_dir.c:438
 #, c-format
 msgid "no namespace handler for <%s:%s>!\n"
 msgstr "No hay manejador de espacios para <%s:%s>\n"
 
-#: src/ocs_dir.c:492
+#: src/ocs_dir.c:467
 #, c-format
 msgid ""
 "XML error while reading directory! Directory \"%s\" could not be loaded!"
-msgstr ""
-"Error XML leyendo el directorio \"%s\". Imposible cargarlo."
+msgstr "Error XML leyendo el directorio \"%s\". Imposible cargarlo."
 
-#: src/ocs_dir.c:498 src/opml.c:139 src/rss_channel.c:352
+#: src/ocs_dir.c:473 src/opml.c:144 src/rss_channel.c:363
 msgid "Empty document!"
 msgstr "El documento está vacío."
 
-#: src/ocs_dir.c:507
+#: src/ocs_dir.c:482
 msgid "Could not find RDF header!"
 msgstr "No se pudo obtener la cabecera RDF."
 
-#: src/opml.c:150
+#: src/opml.c:155
 msgid "Could not find OPML header!!"
 msgstr "No se pudo obtener la cabecera OPML."
 
-#: src/pie_feed.c:96 src/rss_channel.c:117
+#: src/pie_feed.c:96 src/rss_channel.c:118
 msgid "Internal error! Invalid output request mode for namespace information!"
-msgstr "Error interno. Método de petición de salida inválido para la información de "
+msgstr ""
+"Error interno. Método de petición de salida inválido para la información de "
 "este espacio."
 
-#: src/pie_feed.c:236
+#: src/pie_feed.c:231
 msgid "Could not find PIE header! Feed was not added!"
 msgstr "No se pudo encontrar la cabecera PIE. La fuente no se añadió."
 
-#: src/rss_channel.c:272
-msgid ""
-"internal error: parseTextInput without a channel! Skipping text input!\n"
-msgstr ""
-"Error interno: 'parseTextInput' sin ningún canal. Ignorando la entrada de "
-"texto.\n"
-
-#: src/rss_channel.c:306
-msgid "internal error: parseImage without a channel! Skipping image!\n"
-msgstr "Error interno: 'parseImage' sin ningún canal. Ignorando imagen.\n"
-
-#: src/rss_channel.c:364
+#: src/rss_channel.c:375
 msgid "Could not find RDF/RSS header!"
 msgstr "No se pudo obtener la cabecera RDF/RSS."
 
-#: src/rss_item.c:236
+#: src/rss_item.c:241
 msgid "comments"
 msgstr "Comentarios"
 
-#: src/ui_filter.c:61
+#: src/ui_filter.c:58
 msgid "Rule Type"
 msgstr "Tipo de regla"
 
-#: src/ui_filter.c:64
+#: src/ui_filter.c:61
 msgid "Value"
 msgstr "Valor"
 
-#: src/ui_popup.c:63
+#: src/ui_popup.c:61
 msgid "could not allocate memory!"
 msgstr "No se ha podido asignar memoria suficiente."
 
-#: src/ui_popup.c:82
+#: src/ui_popup.c:80
 msgid "/_Update Feed"
 msgstr "/_Actualizar fuente"
 
-#: src/ui_popup.c:83 src/ui_popup.c:91 src/ui_popup.c:98 src/ui_popup.c:105
-#: src/ui_popup.c:111
+#: src/ui_popup.c:81 src/ui_popup.c:89 src/ui_popup.c:96 src/ui_popup.c:103
+#: src/ui_popup.c:109
 msgid "/_New"
 msgstr "/_Nuevo"
 
-#: src/ui_popup.c:84 src/ui_popup.c:92 src/ui_popup.c:99 src/ui_popup.c:106
-#: src/ui_popup.c:112
+#: src/ui_popup.c:82 src/ui_popup.c:90 src/ui_popup.c:97 src/ui_popup.c:104
+#: src/ui_popup.c:110
 msgid "/_New/New _Feed"
 msgstr "/_Nuevo/Nueva _fuente"
 
-#: src/ui_popup.c:85 src/ui_popup.c:93 src/ui_popup.c:100 src/ui_popup.c:107
-#: src/ui_popup.c:113
+#: src/ui_popup.c:83 src/ui_popup.c:91 src/ui_popup.c:98 src/ui_popup.c:105
+#: src/ui_popup.c:111
 msgid "/_New/New F_older"
 msgstr "/_Nuevo/Nueva _carpeta..."
 
-#: src/ui_popup.c:86
+#: src/ui_popup.c:84
 msgid "/_Delete Feed"
 msgstr "/_Eliminar fuente"
 
-#: src/ui_popup.c:87 src/ui_popup.c:95
+#: src/ui_popup.c:85 src/ui_popup.c:93
 msgid "/_Properties"
 msgstr "/_Propiedades..."
 
-#: src/ui_popup.c:90
+#: src/ui_popup.c:88
 msgid "/_Update Directory"
 msgstr "/_Actualizar directorio"
 
-#: src/ui_popup.c:94
+#: src/ui_popup.c:92
 msgid "/_Delete Directory"
 msgstr "/_Borrar directorio"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:99
 msgid "/_Rename Folder"
 msgstr "/_Renombrar carpeta"
 
-#: src/ui_popup.c:102
+#: src/ui_popup.c:100
 msgid "/_Delete Folder"
 msgstr "/_Eliminar carpeta"
 
-#: src/ui_popup.c:108
+#: src/ui_popup.c:106
 msgid "/_Delete VFolder"
 msgstr "/Eliminar carpeta _virtual"
 
-#: src/ui_popup.c:117
+#: src/ui_popup.c:115
 msgid "/_Mark All As Read"
 msgstr "/Marcar _todos como leídos"
 
-#: src/ui_popup.c:118
+#: src/ui_popup.c:116
 msgid "/_Next Unread Item"
 msgstr "/_Siguiente elemento nuevo"
 
-#: src/ui_popup.c:120
+#: src/ui_popup.c:118
 msgid "/_Launch Item In Browser"
 msgstr "/Abrir en _navegador"
 
-#: src/ui_popup.c:128
+#: src/ui_popup.c:126
 msgid "/Zoom In"
 msgstr "/A_cercar"
 
-#: src/ui_popup.c:129
+#: src/ui_popup.c:127
 msgid "/Zoom Out"
 msgstr "/A_lejar"
 
-#: src/ui_popup.c:134
+#: src/ui_popup.c:132
 msgid "/_Copy Link Location"
 msgstr "/_Copiar dirección del enlace"
 
-#: src/ui_popup.c:135
+#: src/ui_popup.c:133
 msgid "/_Subscribe"
 msgstr "/_Suscribirse"
 
-#: src/ui_search.c:74
+#: src/ui_search.c:75
 #, c-format
 msgid "searching for \"%s\""
 msgstr "Buscando \"%s\""
 
-#: src/ui_search.c:106
+#: src/ui_search.c:107
 msgid "Feedster search request failed.\n"
 msgstr "Falló la petición de búsqueda en Feedster\n"
 
@@ -1235,27 +1318,38 @@ msgstr "Carpeta virtual %s"
 msgid "internal error! could not get folder key prefix!"
 msgstr "Error interno: No se pudo obtener el prefijo de la ID de carpeta."
 
-#: src/ui_tray.c:81
+#: src/ui_tray.c:82
 #, c-format
 msgid "%d new items!"
 msgstr "¡%d elementos nuevos!"
 
-#: src/ui_tray.c:89
+#: src/ui_tray.c:90
 msgid "No new items."
 msgstr "No hay elementos nuevos"
 
-#: src/ui_dnd.c:78
+#: src/ui_dnd.c:79
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr "Lo siento, Liferea aún no soporta arrastrar y soltar con carpetas."
 
-#: src/ui_dnd.c:87
+#: src/ui_dnd.c:88
 msgid "you cannot modify the special help folder contents!"
-msgstr "Lo siento, no puedes modificar los contenidos de las carpetas especiales de "
+msgstr ""
+"Lo siento, no puedes modificar los contenidos de las carpetas especiales de "
 "ayuda."
 
 #: src/update.c:140
 msgid "Feed source is NULL! This should never happen - cannot update!"
-msgstr "La fuente es nula. Esto no debería de estar pasando. No se pudo actualizar."
+msgstr ""
+"La fuente es nula. Esto no debería de estar pasando. No se pudo actualizar."
+
+#~ msgid ""
+#~ "internal error: parseTextInput without a channel! Skipping text input!\n"
+#~ msgstr ""
+#~ "Error interno: 'parseTextInput' sin ningún canal. Ignorando la entrada de "
+#~ "texto.\n"
+
+#~ msgid "internal error: parseImage without a channel! Skipping image!\n"
+#~ msgstr "Error interno: 'parseImage' sin ningún canal. Ignorando imagen.\n"
 
 #~ msgid "_Toggle Condensed View"
 #~ msgstr "_Cambiar a vista condensada"
