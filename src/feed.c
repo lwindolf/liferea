@@ -292,13 +292,14 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	int		error = 0;
 
 	filename = getCacheFileName(keyprefix, key, getExtension(type));
-	if(!g_file_get_contents(filename, &data, NULL, NULL) || (NULL == data)) {
+	if(!g_file_get_contents(filename, &data, NULL, NULL)) {
 		print_status(g_strdup_printf(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
 		return NULL;
 	}
 
 	fp = getNewFeedStruct();		
 	while(1) {	
+		g_assert(NULL != data);
 		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
 			error = 1;

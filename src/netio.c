@@ -737,11 +737,13 @@ char * downloadURL(struct feed_request *request) {
 			}
 		} else if(g_file_test(request->feedurl, G_FILE_TEST_EXISTS)) {
 			/* we have a file... */
-			if(!g_file_get_contents(request->feedurl, &data, NULL, NULL) || (NULL == data)) {
+			if(!g_file_get_contents(request->feedurl, &data, NULL, NULL)) {
 				request->problem = 1;
 				msg = g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl);
 				print_status(msg);
 				g_free(msg);
+			} else {
+				g_assert(NULL != data);
 			}
 		} else {
 			request->problem = 1;

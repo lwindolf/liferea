@@ -2460,9 +2460,9 @@ create_aboutdialog (void)
   gtk_widget_show (textview4);
   gtk_container_add (GTK_CONTAINER (scrolledwindow8), textview4);
   gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview4)),
-	_("code contributors:\n\nLars Lindner <lars.lindner@gmx.net>\nJames Doherty\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight\npasp\t\nKarl Soderstrom\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar\t<roshweb@users.sourceforge.net>\n\nSee the AUTHORS file for more details!"), -1);
+	_("code contributors:\n\nJames Doherty\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight\npasp\t\nKarl Soderstrom\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar\t<roshweb@users.sourceforge.net>\n\nSee the AUTHORS file for more details!"), -1);
 
-  label56 = gtk_label_new (_("Development"));
+  label56 = gtk_label_new (_("Credits"));
   gtk_widget_show (label56);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 1), label56);
 
@@ -2475,7 +2475,7 @@ create_aboutdialog (void)
   gtk_widget_show (textview3);
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), textview3);
   gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview3)),
-	_("translators:\n\nStephane Jourdan <stephane.jourdan@itris.fr>\t\tfrench \nTakeshi Aihana <aihana@gnome.gr.jp>\t\t\t\tjapanese \nPark Ji-In <mithrandir@electrang.net>\t\t\t\tkorean \nCarlos Fenollosa <topopardo@humorfreak.com>\t\tspanish \nJose Maria Mateos <chema@chema.homelinux.org>\tspanish  \nLars Lindner <lars.lindner@gmx.net>\t\t\t\tgerman \n"), -1);
+	_("Stephane Jourdan <stephane.jourdan@itris.fr>\t\tfrench \nTakeshi Aihana <aihana@gnome.gr.jp>\t\t\t\tjapanese \nPark Ji-In <mithrandir@electrang.net>\t\t\t\tkorean \nCarlos Fenollosa <topopardo@humorfreak.com>\t\tspanish \nJose Maria Mateos <chema@chema.homelinux.org>\tspanish  \nLars Lindner <lars.lindner@gmx.net>\t\t\t\tgerman \n"), -1);
 
   label60 = gtk_label_new (_("Translation"));
   gtk_widget_show (label60);
@@ -2489,6 +2489,10 @@ create_aboutdialog (void)
   gtk_widget_show (closebutton1);
   gtk_dialog_add_action_widget (GTK_DIALOG (aboutdialog), closebutton1, GTK_RESPONSE_CLOSE);
   GTK_WIDGET_SET_FLAGS (closebutton1, GTK_CAN_DEFAULT);
+
+  g_signal_connect_swapped ((gpointer) closebutton1, "destroy",
+                            G_CALLBACK (on_closebutton1_destroy),
+                            GTK_OBJECT (aboutdialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (aboutdialog, aboutdialog, "aboutdialog");

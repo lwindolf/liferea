@@ -105,3 +105,7 @@ on_rulechangedbtn_clicked              (GtkButton       *button,
 void
 on_about_activate                      (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
+
+void
+on_closebutton1_destroy                (GtkObject       *object,
+                                        gpointer         user_data);
