@@ -36,7 +36,6 @@
 #include "callbacks.h"
 #include "feed.h"
 #include "metadata.h"
-#include "rss_ns.h"
 #include "ns_dc.h"
 #include "ns_fm.h"
 #include "ns_content.h"
@@ -55,7 +54,7 @@
 #define TEXT_INPUT_SUBMIT	"\"><input class=\"rssformsubmit\" type=submit value=\""
 #define TEXT_INPUT_FORM_END	"\"></form>"
 
-GHashTable *channelHash = NULL;
+GHashTable *RssToMetadataMapping = NULL;
 
 /* to store the NsHandler structs for all supported RDF namespace handlers */
 GHashTable	*rss_nstable = NULL;	/* duplicate storage: for quick finding... */
@@ -66,20 +65,22 @@ GSList		*rss_nslist = NULL;	/*                    for processing order... */
 static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 	gchar			*tmp, *tmp2, *tmp3;
 	GSList			*hp;
+	NsHandler		*nsh;
+	parseChannelTagFunc	pf;
 	
 	g_assert(NULL != cur);
 			
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		/* check namespace of this tag */
 		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL)
-			;		
+			;
+		/* check namespace of this tag */
 		else if(NULL != cur->ns) {
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					NsHandler		*nsh = (NsHandler *)hp->data;
-					parseChannelTagFunc	pf = nsh->parseChannelTag;
+					nsh = (NsHandler *)hp->data;
+					pf = nsh->parseChannelTag;
 					if(NULL != pf)
 						(*pf)(fp, cur);
 				} else {
@@ -88,13 +89,13 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 			}
 		}
 		/* Check for metadata tags */
-		else if((tmp2 = g_hash_table_lookup(channelHash, cur->name)) != NULL) {
+		else if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
 			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
-			if (tmp3 != NULL) {
+			if(tmp3 != NULL) {
 				fp->metadata = metadata_list_append(fp->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
-		} 		
+		}	
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
@@ -323,19 +324,23 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
 	fhp = g_new0(struct feedHandler, 1);
+
+	/* Note: the tag mapping definitions and namespace registration
+	   infos are shared with rss_item.c */
 	
-	if (channelHash == NULL) {
-		channelHash = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(channelHash, "copyright", "copyright");
-		g_hash_table_insert(channelHash, "category", "category");
-		g_hash_table_insert(channelHash, "webMaster", "webmaster");
-		g_hash_table_insert(channelHash, "language", "language");
-		g_hash_table_insert(channelHash, "managingEditor", "managingEditor");
-		g_hash_table_insert(channelHash, "pubDate", "contentUpdateDate");
-		g_hash_table_insert(channelHash, "lastBuildDate", "feedUpdateDate");
-		g_hash_table_insert(channelHash, "generator", "feedgenerator");
-		
-		g_hash_table_insert(channelHash, "publisher", "webmaster");
+	if(RssToMetadataMapping == NULL) {
+		RssToMetadataMapping = g_hash_table_new(g_str_hash, g_str_equal);
+		g_hash_table_insert(RssToMetadataMapping, "copyright", "copyright");
+		g_hash_table_insert(RssToMetadataMapping, "category", "category");
+		g_hash_table_insert(RssToMetadataMapping, "webMaster", "webmaster");
+		g_hash_table_insert(RssToMetadataMapping, "language", "language");
+		g_hash_table_insert(RssToMetadataMapping, "managingEditor", "managingEditor");
+		g_hash_table_insert(RssToMetadataMapping, "pubDate", "contentUpdateDate");
+		g_hash_table_insert(RssToMetadataMapping, "lastBuildDate", "feedUpdateDate");
+		g_hash_table_insert(RssToMetadataMapping, "generator", "feedgenerator");
+		g_hash_table_insert(RssToMetadataMapping, "publisher", "webmaster");
+		g_hash_table_insert(RssToMetadataMapping, "author", "author");
+		g_hash_table_insert(RssToMetadataMapping, "comments", "comments");
 	}
 	
 	/* because initRSSFeedHandler() is called twice, once for FST_RSS and again for FST_HELPFEED */	

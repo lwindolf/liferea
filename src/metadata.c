@@ -25,6 +25,13 @@
 #include "metadata.h"
 #include "common.h"
 
+/* HTML definitions used for standard metadata rendering */
+#define	START_ENCLOSURE	"<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right:5px;border-color:black;border-style:solid;border-width:1px;background-color:#E0E0E0\"> enclosed file: "
+#define	END_ENCLOSURE	"</div>"
+
+#define	IMG_START	"<img class=\"feed\" src=\""
+#define IMG_END		"\"><br>"
+
 static GHashTable *strtoattrib;
 
 struct attribute {
@@ -251,7 +258,6 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "itemTitle", _("Item:"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "feedSource", _("Source:"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_HEADTABLE, "itemSource", _("Source:"));
-	// FIXME: add description???
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "author", _("author"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contributor", _("contributors"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "copyright", _("copyright"));

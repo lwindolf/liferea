@@ -26,98 +26,109 @@
 #include "support.h"
 #include "common.h"
 #include "rss_item.h"
-#include "rss_ns.h"
 #include "htmlview.h"
 #include "metadata.h"
 
 #define RDF_NS	BAD_CAST"http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
-#define	START_ENCLOSURE	"<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right:5px;border-color:black;border-style:solid;border-width:1px;background-color:#E0E0E0\"> enclosed file: "
-#define	END_ENCLOSURE	"</div>"
+extern GHashTable *RssToMetadataMapping;
 
 /* uses the same namespace handler as rss_channel */
 extern GSList		*rss_nslist;
 extern GHashTable	*rss_nstable;
 
-static gchar *itemTagList[] = {		"title",
-					"description",
-					"link",
-					"author",
-					"comments",
-					"category",
-					"guid",
-					NULL
-				  };
-
 /* method to parse standard tags for each item element */
 itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
-	gchar			*tmp, *link;
-	parseItemTagFunc	parseFunc;
+	gchar			*tmp, *tmp2, *tmp3, *link;
 	GSList			*hp;
 	NsHandler		*nsh;
-	RSSItemPtr 		i;
+	parseItemTagFunc	pf;
 	itemPtr			ip;
-	int			j;
 
 	g_assert(NULL != cur);
 		
-	i = g_new0(struct RSSItem, 1);
 	ip = item_new();
 	ip->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 	
 	/* try to get an item about id */
-	tmp =  xmlGetProp(cur, BAD_CAST"about");
+	tmp = xmlGetProp(cur, BAD_CAST"about");
 	item_set_id(ip, tmp);
 	g_free(tmp);
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
-		if(NULL == cur->name) {
-			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
-			cur = cur->next;
-			continue;
-		}
-		
+		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL)
+			;
 		/* check namespace of this tag */
-		if(NULL != cur->ns) {		
+		else if(NULL != cur->ns) {		
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
 					nsh = (NsHandler *)hp->data;
-					parseFunc = nsh->parseItemTag;
-					if(NULL != parseFunc)
-						(*parseFunc)(ip, cur);
-					cur = cur->next;
-					continue;						
+					pf = nsh->parseItemTag;
+					if(NULL != pf)
+						(*pf)(ip, cur);				
 				} else {
 					/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 				}
 			}
 		}
-		
-		if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
+		/* check for metadata tags */
+		else if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
+			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
+			if(tmp3 != NULL) {
+				ip->metadata = metadata_list_append(ip->metadata, tmp2, tmp3);
+				g_free(tmp3);
+			}
+		}
+		/* check for specific tags */
+		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
-				i->time = parseRFC822Date(tmp);
+				item_set_time(ip, parseRFC822Date(tmp));
 				g_free(tmp);
 			}
-		} else 
-		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
+		} 
+		else if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures, so we build
 			   a simple string of HTML-links... */
 			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
 			if(NULL != tmp) {
-				link = tmp;
-				if(NULL == (tmp = i->enclosure)) {
-					i->enclosure = g_strdup_printf("<a href=\"%s\">%s</a>", link, link);					
-				} else {
-					i->enclosure = g_strdup_printf("%s<a href=\"%s\">%s</a>", tmp, link, link);
-					g_free(tmp);
-				}
-				g_free(link);
+				ip->metadata = metadata_list_append(ip->metadata, "enclosure", tmp);
+				g_free(tmp);
 			}
-		} else 
-		if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
+		} 
+		else if(!xmlStrcmp(cur->name, BAD_CAST"guid")) {
+			if(NULL == item_get_id(ip)) {
+				tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				if(NULL != tmp) {
+					item_set_id(ip, tmp);
+					xmlFree(tmp);
+				}
+			}
+		}
+		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
+ 			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
+ 			if(NULL != tmp) {
+				item_set_title(ip, tmp);
+				g_free(tmp);
+			}
+		}
+		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
+ 			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
+ 			if(NULL != tmp) {
+				item_set_source(ip, tmp);
+				g_free(tmp);
+			}
+		}
+		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
+ 			tmp = convertToHTML(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
+ 			if(NULL != tmp) {
+				item_set_description(ip, tmp);
+				g_free(tmp);
+			}
+		}
+		else if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
 			gchar *source_url = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
 			if(NULL != source_url) {
 				gchar *source_title = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
@@ -128,48 +139,11 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 				g_free(source_title);
 				g_free(tmp);
 			}
-		} else {
-			/* check for RDF tags */
-			for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
-				if(!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
- 					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-					if(NULL != tmp) {
-						g_free(i->tags[j]);
-						i->tags[j] = tmp;
-						break;
-					}				
-				}		
-			}
 		}
 		cur = cur->next;
 	}
 
-	/* after parsing we fill the infos into the itemPtr structure */
-	item_set_time(ip, i->time);
-	item_set_source(ip, i->tags[RSS_ITEM_LINK]);
 	item_set_read_status(ip, FALSE);
-
-	if(NULL == item_get_id(ip))
-		item_set_id(ip, i->tags[RSS_ITEM_GUID]);
-
-	/* some postprocessing before generating HTML */
-	if(NULL != i->tags[RSS_ITEM_TITLE])
-		i->tags[RSS_ITEM_TITLE] = unhtmlize(i->tags[RSS_ITEM_TITLE]);
-		
-	if(NULL != i->tags[RSS_ITEM_DESCRIPTION])
-		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML(i->tags[RSS_ITEM_DESCRIPTION]);
-
-	item_set_title(ip, i->tags[RSS_ITEM_TITLE]);		
-	item_set_description(ip, "");	// FIXME: fix this and ensure that ns_content.c works!!!!!!
-	g_free(tmp);
-	
-	/* free RSSItem structure */
-	for(j = 0; j < RSS_ITEM_MAX_TAG; j++)
-		g_free(i->tags[j]);
-	
-	g_free(i->enclosure);
 	g_hash_table_destroy(ip->tmpdata);
-	g_free(i);
-	
 	return ip;
 }
