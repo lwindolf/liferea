@@ -1,4 +1,7 @@
 /*
+   callbacks (most of the GUI code is distributed over the ui_*.c
+   files but what didn't fit somewhere else stayed here)
+   
    Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
    Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>	
    Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -182,7 +185,7 @@ void on_popup_zoomout_selected(void) { changeZoomLevel(-0.2); }
 
 void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 	GtkClipboard *clipboard;
-
+g_print("url:\"%s\"", url);
 	clipboard = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
 	gtk_clipboard_set_text(clipboard, url, -1);
  
@@ -193,8 +196,8 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 }
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
-
-	subscribeTo(FST_AUTODETECT, url, g_strdup(selected_keyprefix), TRUE);
+g_print("url:\"%s\"", url);
+	subscribeTo(FST_AUTODETECT, g_strdup(url), g_strdup(selected_keyprefix), TRUE);
 	g_free(url);
 }
 
