@@ -676,7 +676,11 @@ void feed_process_update_result(struct request *request) {
 	if(401 == request->httpstatus) { /* unauthorized */
 		feed_set_available(old_fp, FALSE);
 		ui_feed_authdialog_new(GTK_WINDOW(mainwindow), old_fp, request->flags);
-	} if(304 == request->httpstatus) {	
+	} else if(410 == request->httpstatus) { /* gone */
+		feed_set_available(old_fp, FALSE);
+		old_fp->discontinued = TRUE;
+		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(old_fp));
+	} else if(304 == request->httpstatus) {
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(old_fp));
 	} else if(NULL != request->data) {
 		do {
@@ -811,7 +815,17 @@ gboolean feed_get_available(feedPtr fp) { return fp->available; }
 /* Returns a HTML string describing the last retrieval error 
    of this feed. Should only be called when feed_get_available
    returns FALSE. Caller must free returned string! */
-gchar * feed_get_error_description(feedPtr fp) { return fp->errorDescription; }
+gchar * feed_get_error_description(feedPtr fp) { 
+	gchar	*tmp1 = NULL;
+
+	if(fp->discontinued) {
+		addToHTMLBuffer(&tmp1, UPDATE_ERROR_START);
+		addToHTMLBuffer(&tmp1, HTTP410_ERROR_TEXT);
+		addToHTMLBuffer(&tmp1, UPDATE_ERROR_END);
+	}
+	addToHTMLBuffer(&tmp1, fp->errorDescription);
+	return tmp1; 
+}
 
 /**
  * Creates a new error description according to the passed
@@ -848,18 +862,7 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 			case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
 			case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
 			case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
-			case 410:
-				/* we add a permanent message instead of a temporary error info */ 
-				feed_set_available(fp, FALSE);
-				tmp1 = NULL;
-				addToHTMLBuffer(&tmp1, UPDATE_ERROR_START);
-				addToHTMLBuffer(&tmp1, HTTP410_ERROR_TEXT);
-				addToHTMLBuffer(&tmp1, UPDATE_ERROR_END);
-				addToHTMLBuffer(&tmp1, fp->description);
-				g_free(fp->description);
-				fp->description = tmp1;
-				fp->discontinued = TRUE;
-				break;
+			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe!"));break;
 		}
 		/* Then, netio errors */
 		if(tmp2 == NULL) {
