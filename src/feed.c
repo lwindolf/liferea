@@ -686,7 +686,7 @@ void copyFeed(feedPtr fp, feedPtr new_fp) {
 	new_fp->title = fp->title;
 	
 	tmp_fp = getNewFeedStruct();
-	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointer... */
+	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
 	memcpy(fp, new_fp, sizeof(struct feed));
 	tmp_fp->key = NULL;			/* to prevent removal of reused attributes... */
 	tmp_fp->items = NULL;

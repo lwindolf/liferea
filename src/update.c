@@ -107,7 +107,8 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 	type = getFeedType(fp);
 	g_assert(NULL != feedHandler);
 	if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-		g_warning(g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type));
+		/* can happen during a long update e.g. of an OCS directory, then the type is not set, FIXME ! */
+		//g_warning(g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type));
 		return;
 	}
 
