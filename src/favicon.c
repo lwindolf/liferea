@@ -185,13 +185,14 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
 		
 		if(gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
-			pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
-			debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
-			if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL))) {
-				g_warning("favicon saving error!");
+			if(NULL != (pixbuf = gdk_pixbuf_loader_get_pixbuf(loader))) {
+				debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
+				if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL))) {
+					g_warning("favicon saving error!");
+				}
+				success = TRUE;
+				favicon_load(fp);
 			}
-			success = TRUE;
-			favicon_load(fp);
 		}
 		gdk_pixbuf_loader_close(loader, NULL);
 		g_object_unref(loader);
@@ -199,12 +200,12 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 		ui_feed_update(fp);
 	}
 	
-	if (!success) {
-		if (request->flags == 1)
+	if(!success) {
+		if(request->flags == 1)
 			favicon_download_html(fp, 2);
-		else if (request->flags == 3) {
+		else if(request->flags == 3) {
 			favicon_download_4(fp);
-		} else if (request->flags == 4) {
+		} else if(request->flags == 4) {
 			favicon_download_5(fp);
 		}
 	}
