@@ -126,7 +126,7 @@ mozilla_get_zoom (GtkWidget *embed) {
 	mWebBrowser->GetContentDOMWindow(getter_AddRefs(mDOMWindow));	
 	if(NULL == mDOMWindow) {
 		g_warning("could not retrieve DOM window...");
-		return 1.1;
+		return 1.0;
 	}
 	mDOMWindow->GetTextZoom (&zoom);	
 	return zoom;
