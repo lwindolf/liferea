@@ -39,7 +39,6 @@ typedef struct item {
 	gboolean	newStatus;		/**< TRUE if the item was downloaded and not yet displayed by notification features */
 	gboolean	updateStatus;		/**< TRUE if the item content was updated */
 	gboolean 	marked;			/**< TRUE if the item has been marked */
-	gboolean	hidden;			/**< TRUE if the item should not be displayed due to filtering */
 	gchar		*title;			/**< item title */
 	gchar		*source;		/**< URL to the item */
 	gchar		*real_source_url;	/**< (optional) URL of the real source */
@@ -106,8 +105,6 @@ const time_t	item_get_time(itemPtr ip);
 const gboolean	item_get_flag(itemPtr ip);
 /** Returns the read status of ip. */
 const gboolean	item_get_read_status(itemPtr ip);
-/** Returns the hidden flag of ip. */
-const gboolean	item_get_hidden(itemPtr ip);
 /** Returns the new flag of ip. */
 const gboolean	item_get_new_status(itemPtr ip);
 /** Returns the update flag of ip. */
@@ -129,8 +126,6 @@ void		item_set_time(itemPtr ip, const time_t time);
 void		item_set_id(itemPtr ip, const gchar * id);
 /** Sets the ip's read status */
 void 		item_set_read_status(itemPtr ip, gboolean newStatus);
-/** Sets the ip's hidden flag */
-void 		item_set_hidden(itemPtr ip, const gboolean hidden);
 /** Sets the ip's new flag */
 void 		item_set_new_status(itemPtr ip, const gboolean newStatus);
 /** Sets the ip's update flag */
