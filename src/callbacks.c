@@ -847,7 +847,7 @@ void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 				-1);
 				
 		/* make sure thats no grouping iterator */
-		if(FST_NODE != tmp_type) {
+		if(!IS_NODE(tmp_type)) {
 			g_assert(NULL != tmp_key);
 
 			clearItemList();

@@ -35,13 +35,13 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-ACLOCAL = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run aclocal-1.7
+ACLOCAL = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run aclocal-1.7
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run tar
-AUTOCONF = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run automake-1.7
+AMTAR = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run tar
+AUTOCONF = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run automake-1.7
 AWK = gawk
 CATALOGS = 
 CATOBJEXT = .gmo
@@ -72,10 +72,10 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAINT = 
-MAINTAINER_MODE_FALSE = #
-MAINTAINER_MODE_TRUE = 
-MAKEINFO = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run makeinfo
+MAINT = #
+MAINTAINER_MODE_FALSE = 
+MAINTAINER_MODE_TRUE = #
+MAKEINFO = ${SHELL} /home/lars/tech/coding/c/liferea-cvs.2/liferea/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 OBJEXT = o
@@ -112,7 +112,7 @@ exec_prefix = ${prefix}
 host_alias = 
 includedir = ${prefix}/include
 infodir = ${prefix}/info
-install_sh = /home/lars/tech/coding/c/liferea-cvs/liferea/install-sh
+install_sh = /home/lars/tech/coding/c/liferea-cvs.2/liferea/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localstatedir = ${prefix}/var
@@ -209,10 +209,10 @@ all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .o .obj
-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: # Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/Makefile
-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile: # $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 install-binPROGRAMS: $(bin_PROGRAMS)

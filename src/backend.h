@@ -36,6 +36,7 @@
 #define FST_HELPFEED	8
 
 #define IS_FEED(type)		((FST_RSS == type) || (FST_CDF == type) || (FST_PIE == type))
+#define IS_NODE(type)		((FST_NODE == type) || (FST_HELPNODE == type))
 
 /* constants for attributes in feedstore */
 #define FS_TITLE	0
