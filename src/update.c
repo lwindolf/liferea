@@ -44,14 +44,13 @@ static void *download_thread_main(void *data);
 static gboolean download_dequeuer(gpointer user_data);
 
 /* filter idea (and some of the code) was taken from Snownews */
-static char* filter(gchar *cmd, gchar *data) {
+static char* filter(gchar *cmd, gchar *data, size_t *size) {
 	int fd;
 	gchar *command;
 	const gchar *tmpdir = g_get_tmp_dir();
 	char *tmpfilename;
 	char		*out = NULL;
 	FILE *file, *p;
-	size_t size;
 	
 	tmpfilename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea-XXXXXX", tmpdir);
 	
@@ -68,17 +67,17 @@ static char* filter(gchar *cmd, gchar *data) {
 	fwrite (data, strlen(data), 1, file);
 	fclose (file);
 
-	size = 0;
+	*size = 0;
 	command = g_strdup_printf("%s < %s", cmd, tmpfilename);
 	p = popen(command, "r");
 	g_free(command);
 	if(NULL != p) {
 		while(!feof(p)) {
-			out = g_realloc(out, size+1025);
-			size += fread(&out[size], 1, 1024, p);
+			out = g_realloc(out, *size+1025);
+			*size += fread(&out[*size], 1, 1024, p);
 		}
 		pclose(p);
-		out[size] = '\0';
+		out[*size] = '\0';
 	}
 	/* Clean up. */
 	unlink (tmpfilename);
@@ -130,11 +129,12 @@ void download_process(struct request *request) {
 
 	/* And execute the postfilter */
 	if (request->data != NULL && request->filtercmd != NULL) {
-		gchar *tmp = filter(request->filtercmd, request->data);
+		size_t size;
+		gchar *tmp = filter(request->filtercmd, request->data, &size);
 		if (tmp != NULL) {
 			g_free(request->data);
 			request->data = tmp;
-			request->size = strlen(request->data);
+			request->size = size;
 		}
 	}
 
