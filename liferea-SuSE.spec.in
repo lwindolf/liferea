@@ -71,7 +71,6 @@ make install-strip
 "//usr/local/share/liferea/pixmaps/unavailable.png"
 "//usr/local/share/liferea/pixmaps/unread.png"
 "//usr/local/share/liferea/pixmaps/vfolder.png"
-"//usr/local/share/liferea/pixmaps/news-reader-48.png"
 %dir "//usr/local/share/locale/"
 %dir "//usr/local/share/locale/bg/"
 %dir "//usr/local/share/locale/bg/LC_MESSAGES/"
@@ -101,4 +100,4 @@ make install-strip
 %dir "//usr/local/share/locale/zh_TW/LC_MESSAGES/"
 "//usr/local/share/locale/zh_TW/LC_MESSAGES/liferea.mo"
 %dir "//usr/local/share/pixmaps/"
-"//usr/local/share/pixmaps/news-reader-48.png"
+"//usr/local/share/pixmaps/liferea.png"

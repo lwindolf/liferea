@@ -130,7 +130,7 @@ create_mainwindow (void)
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.5.0"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
-  mainwindow_icon_pixbuf = create_pixbuf ("news-reader-48.png");
+  mainwindow_icon_pixbuf = create_pixbuf ("liferea.png");
   if (mainwindow_icon_pixbuf)
     {
       gtk_window_set_icon (GTK_WINDOW (mainwindow), mainwindow_icon_pixbuf);
