@@ -506,10 +506,9 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDia
 		ui_folder_add_feed(ui_feedlist_get_target_folder(), fp, -1);
 		
 		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
-		if(data == NULL)
-			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
-			
-		if(feed_get_available(fp)) {
+		if(data == NULL) {
+			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);			
+		} else {
 			if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
 				g_assert(NULL != fhp->readFeed);
 				(*(fhp->readFeed))(fp, data);			
@@ -529,7 +528,8 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDia
 				g_warning("internal error! unknown feed type!");
 			}
 		}
-	}	
+	}
+	// FIXME: free data here?
 	update_request_free(request);
 	debug_exit("ui_feedlist_new_subscription");
 }
