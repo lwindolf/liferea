@@ -1768,7 +1768,7 @@ create_prefdialog (void)
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (htmlviewoptionmenu), menu3);
 
-  browseinwindow = gtk_check_button_new_with_mnemonic (_("Open links in Liferea's _window (requires Mozilla)."));
+  browseinwindow = gtk_check_button_new_with_mnemonic (_("Open links in Liferea's _window."));
   gtk_widget_show (browseinwindow);
   gtk_box_pack_start (GTK_BOX (vbox232), browseinwindow, FALSE, FALSE, 0);
 
@@ -3034,7 +3034,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>"));
+  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>"));
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);

@@ -70,7 +70,7 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 	
 	if((handle = g_module_open(filename, 0)) == NULL) {
 		if(!testmode)
-			g_warning("Failed to open HTML widget module (%s) specified in configuration!\n%s\n", filename, g_module_error());
+			g_warning(_("Failed to open HTML widget module (%s) specified in configuration!\n%s\n"), filename, g_module_error());
 		else
 			debug2(DEBUG_GUI, "Failed to open HTML widget module (%s) specified in configuration!\n%s\n", filename, g_module_error());
 		g_free(filename);
@@ -82,7 +82,7 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 		htmlviewInfo = (*ptr)();
 		if (htmlviewInfo->api_version != HTMLVIEW_API_VERSION) {
 			if(!testmode)
-				g_warning("Htmlview API mismatch!");
+				g_warning(_("Htmlview API mismatch!"));
 			else
 				debug0(DEBUG_GUI, "Htmlview API mismatch!");
 			g_module_close(handle);
@@ -90,7 +90,7 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 		}
 	} else {
 		if(!testmode)
-			g_warning("Detected module is not a valid htmlview module!");
+			g_warning(_("Detected module is not a valid htmlview module!"));
 		else
 			debug0(DEBUG_GUI, "Detected module is not a valid htmlview module!");
 		g_module_close(handle);
@@ -112,13 +112,13 @@ void ui_htmlview_init(void) {
 
 	/* Check to see if gmodule is supported */
 	if(!g_module_supported())
-		g_error("Cannot load HTML widget module (%s)!", g_module_error());
+		g_error(_("Cannot load HTML widget module (%s)!"), g_module_error());
 	
 	/* now we determine a list of all available modules
 	   to present in the preferences dialog and to load
 	   one just in case there was no configured module
 	   or it did not load when trying... */	
-	g_print("available browser modules (%s):\n", PACKAGE_LIB_DIR);
+	g_print(_("Available browser modules (%s):\n"), PACKAGE_LIB_DIR);
 	dir = g_dir_open(PACKAGE_LIB_DIR, 0, &error);
 	if(!error) {
 		/* maybe no good solution, library name syntax: 

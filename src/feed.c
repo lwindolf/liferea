@@ -640,6 +640,7 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 	request->source = g_strdup(source);
 	request->lastmodified = fp->lastModified;
 	request->flags = flags;
+	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
 	if (feed_get_filter(fp) != NULL)
 		request->filtercmd = g_strdup(feed_get_filter(fp));
 	/* prepare request url (strdup because it might be

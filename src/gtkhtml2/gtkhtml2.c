@@ -37,6 +37,7 @@
 #include "../htmlview.h"
 #include "../support.h"
 #include "../callbacks.h"
+#include "../update.h"
 
 #define BUFFER_SIZE 8192
 
@@ -176,7 +177,7 @@ on_submit (HtmlDocument *document, const gchar *action, const gchar *method,
 	   const gchar *encoding, gpointer data)
 {
 	SubmitContext *ctx = g_new0 (SubmitContext, 1);
-
+	
 	if (action)
 		ctx->action = g_strdup (action);
 	if (method)
@@ -184,7 +185,7 @@ on_submit (HtmlDocument *document, const gchar *action, const gchar *method,
 	if (action)
 		ctx->encoding = g_strdup (encoding);
 	ctx->window = data;
-
+	
 	/* Becase the link_clicked method will clear the document and
 	 * start loading a new one, we can't call it directly, because
 	 * gtkhtml2 will crash if the document becomes deleted before
@@ -204,23 +205,23 @@ url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *stream, gpoint
 	vfs_uri = gnome_vfs_uri_new(uri);
 	if (uri != NULL)
 		xmlFree(uri);
-
+	
 	g_assert (HTML_IS_DOCUMENT(doc));
 	g_assert (stream != NULL);
-
+	
 	sdata = g_new0 (StreamData, 1);
 	sdata->doc = doc;
 	sdata->stream = stream;
-
+	
 	connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
 	connection_list = g_slist_prepend (connection_list, sdata);
 	g_object_set_data (G_OBJECT (doc), "connection_list", connection_list);
-
+	
 	gnome_vfs_async_open_uri (&sdata->handle, vfs_uri, GNOME_VFS_OPEN_READ,
-				  GNOME_VFS_PRIORITY_DEFAULT, vfs_open_callback, sdata);
-
+						 GNOME_VFS_PRIORITY_DEFAULT, vfs_open_callback, sdata);
+	
 	gnome_vfs_uri_unref (vfs_uri);
-
+	
 	html_stream_set_cancel_func (stream, stream_cancel, sdata);
 }
 
@@ -277,11 +278,9 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 	xmlChar *uri;
 	
 	uri = xmlBuildURI(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
-	
+
 	if (uri != NULL) {
-		if (ui_htmlview_launch_in_external_browser(uri) == FALSE) {
-			launch_url(NULL, uri);
-		}
+		ui_htmlview_launch_URL(uri, FALSE);
 		xmlFree(uri);
 	}
 }
@@ -307,45 +306,46 @@ static gfloat get_zoom_level(GtkWidget *scrollpane) {
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
 static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *base) {
-
-	/* HTML widget can be used only from GTK thread */	
-	if(gnome_vfs_is_primary_thread()) {
-		GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
-		HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
-		/* finalizing older stuff */
-		if(NULL != doc) {
-			kill_old_connections(doc);
-			html_document_clear(doc);	/* heard rumors that this is necessary... */
-			if (g_object_get_data(G_OBJECT(doc), "liferea-base-uri") != NULL)
-				g_free(g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
-			g_object_unref(G_OBJECT(doc));
-		}
+	g_object_set_data(G_OBJECT(scrollpane), "html_request", NULL);
 	
-		doc = html_document_new();
-		html_view_set_document(HTML_VIEW(htmlwidget), doc);
-		g_object_set_data(G_OBJECT(doc), "liferea-base-uri", g_strdup(base));
-		html_document_clear(doc);
-		html_document_open_stream(doc, "text/html");
-		
-		g_signal_connect (G_OBJECT (doc), "request_url",
-				 GTK_SIGNAL_FUNC (url_request), htmlwidget);
+	/* HTML widget can be used only from GTK thread */	
+	g_assert(gnome_vfs_is_primary_thread());
 
-		g_signal_connect (G_OBJECT (doc), "submit",
-				  GTK_SIGNAL_FUNC (on_submit), NULL);
-
-		g_signal_connect (G_OBJECT (doc), "link_clicked",
-				  G_CALLBACK (link_clicked), NULL);
-
-		if((NULL != string) && (strlen(string) > 0))
-			html_document_write_stream(doc, string, strlen(string));
-		else
-			html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
-
-		html_document_close_stream(doc);
-		
-		change_zoom_level(scrollpane, get_zoom_level(scrollpane));	/* to enforce applying of changed zoom levels */
-		gtkhtml2_scroll_to_top(scrollpane);
+	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
+	HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
+	/* finalizing older stuff */
+	if(NULL != doc) {
+		kill_old_connections(doc);
+		html_document_clear(doc);	/* heard rumors that this is necessary... */
+		if (g_object_get_data(G_OBJECT(doc), "liferea-base-uri") != NULL)
+			g_free(g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+		g_object_unref(G_OBJECT(doc));
 	}
+	
+	doc = html_document_new();
+	html_view_set_document(HTML_VIEW(htmlwidget), doc);
+	g_object_set_data(G_OBJECT(doc), "liferea-base-uri", g_strdup(base));
+	html_document_clear(doc);
+	html_document_open_stream(doc, "text/html");
+	
+	g_signal_connect (G_OBJECT (doc), "request_url",
+				   GTK_SIGNAL_FUNC (url_request), htmlwidget);
+	
+	g_signal_connect (G_OBJECT (doc), "submit",
+				   GTK_SIGNAL_FUNC (on_submit), NULL);
+	
+	g_signal_connect (G_OBJECT (doc), "link_clicked",
+				   G_CALLBACK (link_clicked), NULL);
+	
+	if((NULL != string) && (strlen(string) > 0))
+		html_document_write_stream(doc, string, strlen(string));
+	else
+		html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
+	
+	html_document_close_stream(doc);
+	
+	change_zoom_level(scrollpane, get_zoom_level(scrollpane));	/* to enforce applying of changed zoom levels */
+	gtkhtml2_scroll_to_top(scrollpane);
 }
 
 static GtkWidget* gtkhtml2_new() {
@@ -387,9 +387,31 @@ static void gtkhtml2_deinit() {
 	  process when things are still downloading */
 }
 
-static void launch_url(GtkWidget *widget, const gchar *url) { g_warning("should never be called!"); link_clicked(NULL, url, NULL); }
+static void gtkhtml2_html_received(struct request *r) {
+	if (r->size == 0 || r->data == NULL)
+		return; /* This should nicely exit.... */
+	
+	write_html(GTK_WIDGET(r->user_data), r->data, r->source);
+}
 
-static gboolean launch_inside_possible(void) { return FALSE; }
+static void launch_url(GtkWidget *widget, const gchar *url) { 
+	struct request *r;
+	
+	r = g_object_get_data(G_OBJECT(widget), "html_request");
+
+	if (r != NULL)
+		r->callback = NULL;
+	
+	r = download_request_new();
+	r->source = g_strdup(url);
+	r->callback = gtkhtml2_html_received;
+	r->user_data = widget;
+	r->priority = 1;
+	g_object_set_data(G_OBJECT(widget), "html_request", r);
+	download_queue(r);
+}
+
+static gboolean launch_inside_possible(void) { return TRUE; }
 
 /* -------------------------------------------------------------------- */
 /* other functions... 							*/

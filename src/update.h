@@ -78,7 +78,7 @@ struct request {
 	request_cb callback;	/**< Function to be called after retreival */
 	gpointer user_data;	/**< Accessed by the callback. Would contain a feedPtr for the feed_process_request_result callbacks. */
 	guint32 flags;		/**< Flags to be passed to the callback */
-	gint priority;		/**< priority of the request */
+	gint priority;		/**< priority of the request. Set to 1 for high priority */
 	
 	/* Set by download system*/
 	int returncode;

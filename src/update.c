@@ -238,7 +238,7 @@ void download_queue(struct request *new_request) {
 
 	g_assert(NULL != new_request);
 	
-	if(new_request->flags & FEED_REQ_PRIORITY_HIGH)
+	if(new_request->priority == 1)
 		g_async_queue_push(requests_high_prio, new_request);
 	else
 		g_async_queue_push(requests_normal_prio, new_request);
