@@ -427,7 +427,7 @@ static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, 
 
 
 void ui_feedlist_delete(nodePtr ptr) {
-	GtkWidget *dialog, *widget, *action_area;
+	GtkWidget *dialog;
 	gchar *text;
 	
 	g_assert(ptr != NULL);
@@ -452,7 +452,6 @@ void ui_feedlist_delete(nodePtr ptr) {
 							  GTK_MESSAGE_QUESTION,
 							  GTK_BUTTONS_YES_NO,
 							  "%s", text);
-	gtk_dialog_set_has_separator(GTK_DIALOG(dialog), FALSE);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(mainwindow));

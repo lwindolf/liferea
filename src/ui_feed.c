@@ -306,18 +306,18 @@ static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
 		if((NULL != ui_data->authcheckbox) && 
 		   gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox))) {
 			xmlURIPtr uri = xmlParseURI(BAD_CAST str);
-			xmlChar *source;
 			if (uri != NULL) {
+				xmlChar *sourceUrl;
 				xmlFree(uri->user);
 				uri->user = g_strdup_printf("%s:%s",
 									   gtk_entry_get_text(GTK_ENTRY(ui_data->username)),
 									   gtk_entry_get_text(GTK_ENTRY(ui_data->password)));
-				source = xmlSaveUri(uri);
-				source = g_strdup(BAD_CAST source);
+				sourceUrl = xmlSaveUri(uri);
+				source = g_strdup(BAD_CAST sourceUrl);
 				g_free(uri->user);
 				uri->user = NULL;
-				xmlFree(source);
-					xmlFreeURI(uri);
+				xmlFree(sourceUrl);
+				xmlFreeURI(uri);
 			} else
 				source = g_strdup(str);
 		} else {
@@ -516,10 +516,12 @@ static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
 }
  
 static void ui_feed_prop_enable_httpauth(struct fp_prop_ui_data *ui_data, gboolean enable) {
-	gboolean on = enable && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox));
-
-	gtk_widget_set_sensitive(ui_data->authcheckbox,enable);
-	gtk_widget_set_sensitive(ui_data->credTable,on);
+	gboolean on;
+	if (ui_data->authcheckbox != NULL) {
+		on = enable && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox));
+		gtk_widget_set_sensitive(ui_data->authcheckbox,enable);
+		gtk_widget_set_sensitive(ui_data->credTable,on);
+	}
 }
 
 static void on_feed_prop_cache_radio(GtkToggleButton *button, gpointer user_data) {
