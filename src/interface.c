@@ -373,7 +373,7 @@ create_mainwindow (void)
   menuitem3_menu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem3), menuitem3_menu);
 
-  zoom_in1 = gtk_image_menu_item_new_with_mnemonic (_("Zoom _In"));
+  zoom_in1 = gtk_image_menu_item_new_with_mnemonic (_("_Increase Text Size"));
   gtk_widget_show (zoom_in1);
   gtk_container_add (GTK_CONTAINER (menuitem3_menu), zoom_in1);
   gtk_widget_add_accelerator (zoom_in1, "activate", accel_group,
@@ -384,7 +384,7 @@ create_mainwindow (void)
   gtk_widget_show (image1430);
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (zoom_in1), image1430);
 
-  zoom_out1 = gtk_image_menu_item_new_with_mnemonic (_("Zoom _Out"));
+  zoom_out1 = gtk_image_menu_item_new_with_mnemonic (_("_Decrease Text Size"));
   gtk_widget_show (zoom_out1);
   gtk_container_add (GTK_CONTAINER (menuitem3_menu), zoom_out1);
   gtk_widget_add_accelerator (zoom_out1, "activate", accel_group,

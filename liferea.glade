@@ -464,7 +464,7 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="zoom_in1">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Zoom _In</property>
+		      <property name="label" translatable="yes">_Increase Text Size</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_popup_zoomin_selected" last_modification_time="Sun, 01 Feb 2004 14:49:35 GMT"/>
 		      <accelerator key="plus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
@@ -486,7 +486,7 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="zoom_out1">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Zoom _Out</property>
+		      <property name="label" translatable="yes">_Decrease Text Size</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_popup_zoomout_selected" last_modification_time="Sun, 01 Feb 2004 14:49:18 GMT"/>
 		      <accelerator key="minus" modifiers="GDK_CONTROL_MASK" signal="activate"/>

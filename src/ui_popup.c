@@ -130,8 +130,8 @@ void setupPopupMenues(void) {
 	/* HTML view popup menues */
 	html_menu_items = NULL;
 	html_menu_len = 0;
-	addPopupOption(&html_menu_items, &html_menu_len, _("/Zoom In"),			NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
-	addPopupOption(&html_menu_items, &html_menu_len, _("/Zoom Out"),		NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
+	addPopupOption(&html_menu_items, &html_menu_len, _("/_Increase Text Size"),			NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
+	addPopupOption(&html_menu_items, &html_menu_len, _("/_Decrease Text Size"),		NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
 
 	url_menu_items = NULL;
 	url_menu_len = 0;
