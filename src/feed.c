@@ -762,6 +762,12 @@ void feed_set_update_interval(feedPtr fp, gint interval) {
 	if(FST_VFOLDER == fp->type)
 		interval = -2;	/* never update */
 		
+	if(0 == interval) {
+		interval = -1;	/* is not very logical but allows smooth migration, because 
+				   for unconfigured feeds now the global default interval
+				   becomes active */
+	}
+		
 	fp->updateInterval = interval;
 	conf_feedlist_schedule_save();
 }

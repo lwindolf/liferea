@@ -706,10 +706,14 @@ GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, feedPtr fp) {
 	
 	/* interval radio buttons */
 	interval = feed_get_update_interval(fp);
+	defaultInterval = feed_get_default_update_interval(fp);
+	
 	if(-2 >= interval) {
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "updateIntervalNever")), TRUE);
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(propdialog, "refreshIntervalSpinButton")), defaultInterval);
 	} else if(-1 == interval) {
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "updateIntervalDefault")), TRUE);
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(propdialog, "refreshIntervalSpinButton")), defaultInterval);
 	} else {
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "updateIntervalSpecific")), TRUE);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(propdialog, "refreshIntervalSpinButton")), interval);
@@ -719,8 +723,6 @@ GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, feedPtr fp) {
 	g_signal_connect(lookup_widget(propdialog, "updateIntervalSpecific"), "toggled", G_CALLBACK(on_feed_prop_update_radio), ui_data);
 	
 	/* setup info label about default update interval */
-	
-	defaultInterval = feed_get_default_update_interval(fp);
 	if(-1 != defaultInterval)
 		defaultIntervalStr = g_strdup_printf(_("The provider of this feed suggests an update interval of %d minutes."), defaultInterval);
 	else
