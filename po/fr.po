@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-22 11:28+0200\n"
+"POT-Creation-Date: 2004-07-23 20:57+0200\n"
 "PO-Revision-Date: 2004-07-22 11:33+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -319,13 +319,13 @@ msgstr ""
 "vérifier l'URL et la sortie sur la console."
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1103 src/item.c:214 src/metadata.c:288 src/ocs_dir.c:141
+#: src/feed.c:1103 src/item.c:214 src/metadata.c:302 src/ocs_dir.c:141
 #: src/opml.c:213
 msgid "Feed:"
 msgstr "Canal :"
 
 #: src/feed.c:1114 src/interface.c:1031 src/interface.c:1433 src/item.c:241
-#: src/metadata.c:290 src/metadata.c:291 src/ocs_dir.c:147 src/opml.c:219
+#: src/metadata.c:304 src/metadata.c:305 src/ocs_dir.c:147 src/opml.c:219
 msgid "Source:"
 msgstr "Source :"
 
@@ -450,7 +450,8 @@ msgstr ""
 "cache."
 
 #: src/interface.c:131 src/interface.c:2999
-msgid "Liferea 0.5.2"
+#, fuzzy
+msgid "Liferea 0.5.2b"
 msgstr "Liferea 0.5.2"
 
 #: src/interface.c:148
@@ -1237,7 +1238,7 @@ msgstr "fenetre1"
 msgid "[No title]"
 msgstr "[Pas de titre]"
 
-#: src/item.c:226 src/metadata.c:289 src/ocs_dir.c:102
+#: src/item.c:226 src/metadata.c:303 src/ocs_dir.c:102
 msgid "Item:"
 msgstr "Élément :"
 
@@ -1307,100 +1308,100 @@ msgstr ""
 "l'utiliser. S'il n'y en a pas, veuillez supprimer le fichier de verrouillage "
 "\"~/.liferea/lock\"."
 
-#: src/metadata.c:253
+#: src/metadata.c:267
 msgid "comments"
 msgstr "commentaires"
 
-#: src/metadata.c:263
+#: src/metadata.c:277
 #, c-format
 msgid "enclosed file: <a href=\"%s\">%s</a>"
 msgstr "fichier intégré : <a href=\"%s\">%s</a>"
 
-#: src/metadata.c:274 src/metadata.c:301
+#: src/metadata.c:288 src/metadata.c:315
 msgid "feed generator"
 msgstr "générateur de canal"
 
-#: src/metadata.c:292
+#: src/metadata.c:306
 msgid "author"
 msgstr "auteur"
 
-#: src/metadata.c:293
+#: src/metadata.c:307
 msgid "contributors"
 msgstr "contributeurs"
 
-#: src/metadata.c:294
+#: src/metadata.c:308
 msgid "copyright"
 msgstr "copyright"
 
-#: src/metadata.c:295
+#: src/metadata.c:309
 msgid "language"
 msgstr "langue"
 
-#: src/metadata.c:296
+#: src/metadata.c:310
 msgid "feed published on"
 msgstr "canal publié sur"
 
-#: src/metadata.c:297
+#: src/metadata.c:311
 msgid "content last updated"
 msgstr "dernière mise à jour du contenu"
 
-#: src/metadata.c:298
+#: src/metadata.c:312
 msgid "managing editor"
 msgstr "éditeur (managing editor)"
 
-#: src/metadata.c:299
+#: src/metadata.c:313
 msgid "webmaster"
 msgstr "webmaster"
 
-#: src/metadata.c:300
+#: src/metadata.c:314
 msgid "category"
 msgstr "catégorie"
 
 #. types for admin
-#: src/metadata.c:308
+#: src/metadata.c:322
 msgid "report errors to"
 msgstr "rapportez les erreurs à"
 
 #. types for aggregation
-#: src/metadata.c:312
+#: src/metadata.c:326
 msgid "original source"
 msgstr "source d'origine"
 
-#: src/metadata.c:313
+#: src/metadata.c:327
 msgid "original time"
 msgstr "heure d'origine"
 
 #. types for creative commons
-#: src/metadata.c:319
+#: src/metadata.c:333
 msgid "license"
 msgstr "licence"
 
 #. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
-#: src/metadata.c:322
+#: src/metadata.c:336
 msgid "creator"
 msgstr "créateur"
 
-#: src/metadata.c:323
+#: src/metadata.c:337
 msgid "publisher"
 msgstr "éditeur (publisher)"
 
-#: src/metadata.c:324
+#: src/metadata.c:338
 msgid "type"
 msgstr "type"
 
-#: src/metadata.c:325
+#: src/metadata.c:339
 msgid "format"
 msgstr "format"
 
-#: src/metadata.c:326
+#: src/metadata.c:340
 msgid "identifier"
 msgstr "identificateur"
 
-#: src/metadata.c:327
+#: src/metadata.c:341
 msgid "source"
 msgstr "source"
 
-#: src/metadata.c:328
+#: src/metadata.c:342
 msgid "coverage"
 msgstr "couverture"
 
@@ -1583,21 +1584,21 @@ msgstr "Date"
 msgid "Headline"
 msgstr "Titre"
 
-#: src/ui_itemlist.c:622
+#: src/ui_itemlist.c:625
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: src/ui_itemlist.c:647
+#: src/ui_itemlist.c:650
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un canal pour effacer ses éléments !"
 
-#: src/ui_itemlist.c:677
+#: src/ui_itemlist.c:680
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Erreur interne ! Impossible de charger la sélection en arborescence des "
 "canaux !\n"
 
-#: src/ui_itemlist.c:709
+#: src/ui_itemlist.c:712
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 

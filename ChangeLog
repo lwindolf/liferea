@@ -1,4 +1,12 @@
-2004-07-22 Lars Linder <lars.lindner@gmx.net>
+2004-07-23 Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.5.2b
+
+	* Fixes a bug that permanently destroys your subscription
+	  URLs when favicons are updated or initially downloaded.
+	  (Christophe Barbe)
+
+2004-07-22 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.2
 	

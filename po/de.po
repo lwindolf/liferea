@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-22 23:16+0200\n"
+"POT-Creation-Date: 2004-07-23 20:57+0200\n"
 "PO-Revision-Date: 2004-07-23 03:33+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
@@ -461,7 +461,8 @@ msgstr ""
 "verfügbar."
 
 #: src/interface.c:131 src/interface.c:2999
-msgid "Liferea 0.5.2"
+#, fuzzy
+msgid "Liferea 0.5.2b"
 msgstr "Liferea 0.5.2"
 
 #: src/interface.c:148

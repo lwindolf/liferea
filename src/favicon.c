@@ -104,7 +104,8 @@ void favicon_remove(feedPtr fp) {
 static void favicon_download_request_cb(struct request *request) {
 	feedPtr	fp = (feedPtr)request->user_data;
 	gchar	*tmp;
-	const gchar *baseurl;
+	gchar	*baseurl;
+	
 	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
 	fp->faviconRequest = NULL;
 	
@@ -127,7 +128,7 @@ static void favicon_download_request_cb(struct request *request) {
 		/* FIXME: why don't we free the request structure? (Lars) */
 	}
 	if (request->flags == 0 && fp->icon == NULL){
-		baseurl = feed_get_source(fp);
+		baseurl = g_strdup(feed_get_source(fp));
 		if(NULL != (tmp = strstr(baseurl, "://"))) {
 			tmp += 3;
 			if(NULL != (tmp = strchr(tmp, '/'))) {
@@ -145,6 +146,7 @@ static void favicon_download_request_cb(struct request *request) {
 				download_queue(request);
 			}
 		}
+		g_free(baseurl);
 	}
 }
 
