@@ -188,6 +188,8 @@ void on_fileselect_clicked(GtkButton *button, gpointer user_data);
 void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);
 void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data);
 
+void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gpointer user_data);
+
 /*@}*/
 
 /* UI folder stuff */

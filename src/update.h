@@ -75,8 +75,22 @@ void update_request_free(gpointer request);
 GThread * update_thread_init(void);
 
 /**
+ * Sets the online status according to mode.
+ *
+ * @param mode	TRUE for online, FALSE for offline
+ */ 
+void update_thread_set_online(gboolean mode);
+
+/**
+ * Queries the online status.
+ *
+ * @return TRUE if online
+ */
+gboolean update_thread_is_online(void);
+
+/**
  * Function to pass a request to the update request
- * processing thread. This request will be queued if
+ * processing thread. This request will be queued if;
  * other requests are pending. If it was processed 
  * successfully a result will be added to the result 
  * queue.

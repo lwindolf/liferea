@@ -365,8 +365,11 @@ void on_popup_refresh_selected(gpointer callback_data,
 		ui_show_error_box(_("You have to select a feed entry!"));
 		return;
 	}
-
-	feed_update(fp);
+	
+	if(update_thread_is_online()) 
+		feed_update(fp);
+	else
+		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible!"));
 }
 
 /*------------------------------------------------------------------------------*/
@@ -710,7 +713,11 @@ static void ui_feedlist_check_update_counter(feedPtr fp) {
 gboolean ui_feedlist_auto_update(void *data) {
 
 	debug_enter("ui_feedlist_auto_update");
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)ui_feedlist_check_update_counter);
+	if(update_thread_is_online()) {
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)ui_feedlist_check_update_counter);
+	} else {
+		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
+	}
 	debug_exit("ui_feedlist_auto_update");
 
 	return TRUE;

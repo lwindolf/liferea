@@ -617,7 +617,7 @@ gint feed_process_update_results(gpointer data) {
 	if (request->fp == NULL) { /* Feed deleted during update of feed*/
 		debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
 		g_free(request->data);
-		// FIXME: free request url
+		g_free(request->feedurl);
 		request->data = NULL;
 		update_request_free(request);
 		return TRUE;

@@ -41,7 +41,9 @@
 #define ICON_HELP		7
 #define ICON_VFOLDER		8
 #define ICON_EMPTY		9
-#define MAX_ICONS		10
+#define ICON_ONLINE		10
+#define ICON_OFFLINE		11
+#define MAX_ICONS		12
 
 extern GdkPixbuf *icons[MAX_ICONS];
 
@@ -145,8 +147,6 @@ void
 on_menu_folder_rename                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
-
 void
-on_filter_feeds_without_unread_headlines_activate
-                                        (GtkMenuItem     *menuitem,
+on_work_offline_activate               (GtkMenuItem     *menuitem,
                                         gpointer         user_data);

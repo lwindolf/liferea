@@ -65,6 +65,8 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 				"help.png",		/* ICON_HELP */
 				"vfolder.png",		/* ICON_VFOLDER */
 				"empty.png",		/* ICON_EMPTY */
+				"online.png",		/* ICON_ONLINE */
+				"offline.png",		/* ICON_OFFLINE */
 				NULL
 				};
 				
@@ -105,14 +107,15 @@ void ui_init(void) {
 
 	if(getBooleanConfValue(LAST_ITEMLIST_MODE))
 		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
-
+		
 	ui_htmlview_set_mode(itemlist_mode);
-
-	ui_mainwindow_update_toolbar();
-	ui_mainwindow_update_menubar();
 
 	for(i = 0; i < MAX_ICONS; i++)
 		icons[i] = create_pixbuf(iconNames[i]);
+		
+	ui_mainwindow_update_toolbar();
+	ui_mainwindow_update_menubar();
+	ui_mainwindow_update_onlinebtn();
 	
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */

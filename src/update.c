@@ -27,6 +27,11 @@
 GAsyncQueue	*requests = NULL;
 GAsyncQueue	*results = NULL;
 
+/* condition mutex for offline mode */
+static GMutex	*cond_mutex = NULL;
+static GCond	*offline_cond = NULL;
+static gboolean	online = TRUE;
+
 /* prototypes */
 static void *update_thread_main(void *data);
 
@@ -72,9 +77,21 @@ GThread * update_thread_init(void) {
 }
 
 static void *update_thread_main(void *data) {
-	struct feed_request *request;
-	
-	for(;;)	{
+	struct feed_request	*request;
+
+	offline_cond = g_cond_new();
+	cond_mutex = g_mutex_new();
+	for(;;)	{	
+		/* block updating if we are offline */
+		if(!online) {
+			debug0(DEBUG_UPDATE, "now going offline!");
+			g_mutex_lock(cond_mutex);
+			g_cond_wait(offline_cond, cond_mutex);
+	                g_mutex_unlock(cond_mutex);
+			debug0(DEBUG_UPDATE, "going online again!");
+		}
+		
+		/* do update processing */
 		debug0(DEBUG_UPDATE, "waiting for request...");
 		request = g_async_queue_pop(requests);
 		g_assert(NULL != request);
@@ -91,6 +108,20 @@ void update_thread_add_request(struct feed_request *new_request) {
 
 	g_assert(NULL != new_request);
 	g_async_queue_push(requests, new_request);
+}
+
+void update_thread_set_online(gboolean mode) {
+
+	if(online = mode) {
+		g_mutex_lock(cond_mutex);
+		g_cond_signal(offline_cond);
+                g_mutex_unlock(cond_mutex);
+	}
+}
+
+gboolean update_thread_is_online(void) {
+
+	return online;
 }
 
 struct feed_request * update_thread_get_result(void) {
