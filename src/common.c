@@ -183,9 +183,10 @@ void unhtmlizeHandleCharacters (void *userData_p, const xmlChar *string_p, int l
         result_p[curLen + len] = '\0';
 }
 
-/* converts a UTF-8 strings containing any HTML stuff to 
+/* Converts a UTF-8 strings containing any HTML stuff to 
    a string without any entities or tags containing all
-   text nodes of the given HTML string */
+   text nodes of the given HTML string. The original 
+   string will be freed. */
 gchar * unhtmlize(gchar *string) {
 	htmlDocPtr		doc_p = NULL;
 	htmlSAXHandlerPtr	sax_p = NULL;

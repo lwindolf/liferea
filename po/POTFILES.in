@@ -75,6 +75,7 @@ src/rss_item.h
 src/rss_ns.h
 src/support.c
 src/support.h
+src/textview.c
 src/ui_dnd.c
 src/ui_dnd.h
 src/ui_feedlist.c

@@ -45,9 +45,8 @@ static struct htmlStub {
 } htmlStub;
 
 struct html_module_info html_modules[] = {
-// FIXME: ifdef gtkhtml
 	{ HTML_MODULE_GTKHTML,	"liblihtmlg",	"GtkHTML" },
-// FIXME: ifdef mozilla
+	{ HTML_MODULE_TEXT,	"liblihtmlt",	"text view" },
 	{ HTML_MODULE_MOZILLA,	"liblihtmlm",	"embedded Mozilla (experimental)" },
 };
 

@@ -21,10 +21,10 @@ AC_MSG_CHECKING([for GtkHTML support])
 temptest=`pkg-config --cflags libgtkhtml-2.0 2> /dev/null`
 AM_CONDITIONAL(WITH_GTKHTML, test "x$temptest" != "x")
 if test "x$temptest" != "x" ; then
-   html_modules="$html_modules libgtkhtml-2.0 >= 2.0.0
-		 gnome-vfs-2.0 >= 2.0.0"
-   AC_DEFINE(USE_GTKHTML, 1, [use the GtkHTML widget])
    AC_MSG_RESULT(yes)
+   PKG_CHECK_MODULES(GTKHTML, libgtkhtml-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
+   AC_SUBST(GTKHTML_CFLAGS)
+   AC_SUBST(GTKHTML_LIBS)
 else
    AC_MSG_RESULT(no)
 fi
@@ -33,9 +33,10 @@ AC_MSG_CHECKING([for Mozilla support])
 temptest=`pkg-config --cflags mozilla-gtkmozembed 2> /dev/null`
 AM_CONDITIONAL(WITH_MOZILLA, test "x$temptest" != "x")
 if test "x$temptest" != "x" ; then
-   html_modules="$html_modules mozilla-gtkmozembed"
-   AC_DEFINE(USE_MOZILLA, 1, [use the mozilla gtk embedded widget])
    AC_MSG_RESULT(yes)
+   PKG_CHECK_MODULES(MOZILLA, mozilla-gtkmozembed)
+   AC_SUBST(MOZILLA_CFLAGS)
+   AC_SUBST(MOZILLA_LIBS)
 else
    AC_MSG_RESULT(no)
 fi
@@ -44,17 +45,16 @@ fi
 pkg_modules="	gtk+-2.0 >= 2.0.0 
 		gconf-2.0 >= 2.0.0 
 		libxml-2.0 >= 2.0.0 
-		gmodule-2.0 >= 2.0.0
-		$html_modules"
+		gmodule-2.0 >= 2.0.0"
 		
 # if you want to compile on RedHat you should change the
 # dependencies to something like this
 #
-#pkg_modules="	gtk+-2.0 >= 2.0.0 
+#		gtk+-2.0 >= 2.0.0 
 #		gconf2 >= 2.0.0 
 #		libxml-2.0 >= 2.0.0 
 #		gtkhtml2 >= 2.0.0
-#		gnome-vfs2 >= 2.0.0"
+#		gnome-vfs2 >= 2.0.0
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)

@@ -272,64 +272,59 @@ void displayItemList(void) {
 	gboolean		valid;
 	itemPtr			ip;
 	gchar               *tmp = NULL;
+
 	g_assert(NULL != mainwindow);
-	
-	/* HTML widget can be used only from GTK thread */	
-	
-	if(gnome_vfs_is_primary_thread()) {
-		startHTML(&buffer, itemlist_mode);
-		if(!itemlist_mode) {
-			/* two pane mode */
-			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-			while(valid) {	
-				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
-				
-				if(getItemReadStatus(ip)) 
-					addToHTMLBuffer(&buffer, UNSHADED_START);
-				else
-					addToHTMLBuffer(&buffer, SHADED_START);
-				
-				addToHTMLBuffer(&buffer, getItemDescription(ip));
-				
-				if(getItemReadStatus(ip))
-					addToHTMLBuffer(&buffer, UNSHADED_END);
-				else {
-					addToHTMLBuffer(&buffer, SHADED_END);
-					markItemAsRead(ip);
-				}
-					
-				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
-			}
-			
-			/* reset HTML widget scrolling */
-			resetItemViewScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemlistview")));
-		} else {	
-			/* three pane mode */
-			itemPtr ip = ui_itemlist_get_selected();
-			if(!ip) {
-				/* display feed info */
-				if(displayed_fp) {
-					if(!getFeedAvailable(displayed_fp) || 
-					   (NULL != displayed_fp->parseErrors)) {
-						tmp = getFeedErrorDescription(displayed_fp);
-						addToHTMLBuffer(&buffer, tmp);
-						g_free(tmp);
-					}
-  					addToHTMLBuffer(&buffer, getFeedDescription(displayed_fp));
-				}
-			} else {
-				/* display item content */
+	startHTML(&buffer, itemlist_mode);
+	if(!itemlist_mode) {
+		/* two pane mode */
+		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+		while(valid) {	
+			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+
+			if(getItemReadStatus(ip)) 
+				addToHTMLBuffer(&buffer, UNSHADED_START);
+			else
+				addToHTMLBuffer(&buffer, SHADED_START);
+
+			addToHTMLBuffer(&buffer, getItemDescription(ip));
+
+			if(getItemReadStatus(ip))
+				addToHTMLBuffer(&buffer, UNSHADED_END);
+			else {
+				addToHTMLBuffer(&buffer, SHADED_END);
 				markItemAsRead(ip);
-				addToHTMLBuffer(&buffer, getItemDescription(ip));
 			}
-			
-			/* no scrolling reset, because this code should only be
-			   triggered for redraw purposes! */
+
+			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 		}
-		finishHTML(&buffer);
-		writeHTML(buffer);
-		g_free(buffer);
+
+		/* reset HTML widget scrolling */
+		resetItemViewScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemlistview")));
+	} else {	
+		/* three pane mode */
+		itemPtr ip = ui_itemlist_get_selected();
+		if(!ip) {
+			/* display feed info */
+			if(displayed_fp) {
+				if(!getFeedAvailable(displayed_fp) || 
+				   (NULL != displayed_fp->parseErrors)) {
+					tmp = getFeedErrorDescription(displayed_fp);
+					addToHTMLBuffer(&buffer, tmp);
+					g_free(tmp);
+				}
+  				addToHTMLBuffer(&buffer, getFeedDescription(displayed_fp));
+			}
+		} else {
+			/* display item content */
+			markItemAsRead(ip);
+			addToHTMLBuffer(&buffer, getItemDescription(ip));
+		}
+
+		/* no scrolling reset, because this code should only be
+		   triggered for redraw purposes! */
 	}
+	finishHTML(&buffer);
+	writeHTML(buffer);
 }
 
 void loadItemList(feedPtr fp, gchar *searchstring) {

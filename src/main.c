@@ -51,7 +51,6 @@ int main (int argc, char *argv[]) {
 	g_thread_init(NULL);
 	gdk_threads_init();	
 	gtk_init(&argc, &argv);
-	gnome_vfs_init();
 
 	add_pixmap_directory(PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
 	add_pixmap_directory(getCachePath());

@@ -1,63 +1,55 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = \
-	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
-	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	@PACKAGE_CFLAGS@
+## I'm totally aware that the module building is 
+## not the perfect way to do so :-)
 
 if WITH_GTKHTML
 GTKHTML = liblihtmlg.la
+GTKHTML_CFLAGS = @GTKHTML_CFLAGS@
 endif
 
 if WITH_MOZILLA
 MOZILLA = liblihtmlm.la
+MOZILLA_CFLAGS = @MOZILLA_CFLAGS@
 endif
 
-lib_LTLIBRARIES = $(GTKHTML) $(MOZILLA)
+INCLUDES = \
+	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
+	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	@PACKAGE_CFLAGS@ $(GTKHTML_CFLAGS) $(MOZILLA_CFLAGS)
+
+
+lib_LTLIBRARIES = liblihtmlt.la $(GTKHTML) $(MOZILLA)
+
+liblihtmlt_la_SOURCES = textview.c
+liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
 liblihtmlg_la_SOURCES = gtkhtml.c
-liblihtmlg_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
+liblihtmlg_la_LIBADD = @PACKAGE_LIBS@ @GTKHTML_LIBS@ $(INTLLIBS)
 
 liblihtmlm_la_SOURCES = mozilla.c
-liblihtmlm_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
+liblihtmlm_la_LIBADD = @PACKAGE_LIBS@ @MOZILLA_LIBS@ $(INTLLIBS)
 
 bin_PROGRAMS = liferea
 
 liferea_SOURCES = \
-	main.c \
-	support.c support.h \
-	interface.c interface.h \
 	callbacks.c callbacks.h \
-	ui_mainwindow.c ui_mainwindow.h \
-	ui_feedlist.c ui_feedlist.h \
-	ui_itemlist.c ui_itemlist.h \
-	ui_folder.c ui_folder.h \
-	ui_search.c ui_search.h \
-	ui_filter.c \
-	ui_tray.c ui_tray.h \
-	ui_popup.c ui_popup.h \
-	ui_prefs.c ui_prefs.h \
-	ui_dnd.c ui_dnd.h \
-	eggtrayicon.h eggtrayicon.c \
-	common.c common.h \
-	folder.c folder.h \
-	feed.c feed.h \
-	item.c item.h \
-	export.c export.h \
-	filter.c filter.h \
-	update.c update.h \
-	htmlview.c htmlview.h \
-	rss_channel.c rss_channel.h \
-	rss_item.c rss_item.h \
-	rss_ns.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
-	pie_feed.c pie_feed.h \
-	pie_entry.c pie_entry.h \
-	pie_ns.h \
-	opml.c opml.h \
-	ocs_dir.c ocs_dir.h \
-	ocs_ns.h \
+	common.c common.h \
+	conversions.c conversions.h \
+	conf.c conf.h \
+	eggtrayicon.h eggtrayicon.c \
+	export.c export.h \
+	favicon.c favicon.h \
+	feed.c feed.h \
+	filter.c filter.h \
+	folder.c folder.h \
+	htmlview.c htmlview.h \
+	interface.c interface.h \
+	item.c item.h \
+	main.c \
+	netio.c netio.h \
 	ns_ocs.c ns_ocs.h \
 	ns_dc.c ns_dc.h \
 	ns_fm.c ns_fm.h \
@@ -68,12 +60,29 @@ liferea_SOURCES = \
 	ns_blogChannel.c ns_blogChannel.h \
 	ns_cC.c ns_cC.h \
 	ns_ag.c ns_ag.h \
-	conf.c conf.h \
-	vfolder.c vfolder.h \
-	favicon.c favicon.h \
+	opml.c opml.h \
+	ocs_dir.c ocs_dir.h \
+	ocs_ns.h \
 	os-support.c os-support.h \
-	netio.c netio.h \
-	conversions.c conversions.h
+	pie_feed.c pie_feed.h \
+	pie_entry.c pie_entry.h \
+	pie_ns.h \
+	rss_channel.c rss_channel.h \
+	rss_item.c rss_item.h \
+	rss_ns.h \
+	support.c support.h \
+	ui_mainwindow.c ui_mainwindow.h \
+	ui_feedlist.c ui_feedlist.h \
+	ui_itemlist.c ui_itemlist.h \
+	ui_folder.c ui_folder.h \
+	ui_search.c ui_search.h \
+	ui_filter.c \
+	ui_tray.c ui_tray.h \
+	ui_popup.c ui_popup.h \
+	ui_prefs.c ui_prefs.h \
+	ui_dnd.c ui_dnd.h \
+	update.c update.h \
+	vfolder.c vfolder.h
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
 

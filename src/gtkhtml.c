@@ -27,6 +27,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <libgtkhtml/gtkhtml.h>
+#include <libgnomevfs/gnome-vfs.h>
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
@@ -73,19 +75,23 @@ static void kill_old_connections (HtmlDocument *doc);
 /* function to write HTML source given as a UTF-8 string */
 void writeHTML(gchar *string) {
 
-	kill_old_connections(doc);
+	/* HTML widget can be used only from GTK thread */	
 	
-	html_document_clear(doc);
-	html_document_open_stream(doc, "text/html");
+	if(gnome_vfs_is_primary_thread()) {
+		kill_old_connections(doc);
 
-	
-	if((NULL != string) && (g_utf8_strlen(string, -1) > 0))
-		html_document_write_stream(doc, string, g_utf8_strlen(string, -1));
-	else
-		html_document_write_stream(doc, EMPTY, g_utf8_strlen(EMPTY, -1));	
+		html_document_clear(doc);
+		html_document_open_stream(doc, "text/html");
 
-	html_document_close_stream(doc);
-	changeZoomLevel(0.0);
+
+		if((NULL != string) && (g_utf8_strlen(string, -1) > 0))
+			html_document_write_stream(doc, string, g_utf8_strlen(string, -1));
+		else
+			html_document_write_stream(doc, EMPTY, g_utf8_strlen(EMPTY, -1));	
+
+		html_document_close_stream(doc);
+		changeZoomLevel(0.0);
+	}
 }
 
 static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
@@ -139,6 +145,8 @@ void setHTMLViewMode(gboolean threePane) {
 }
 
 void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
+
+	gnome_vfs_init();
 
 	itemView = pane1;
 	itemListView = pane2;

@@ -21,7 +21,6 @@
 #define _COMMON_H
 
 #include <time.h>
-#include <libgtkhtml/gtkhtml.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <glib.h>

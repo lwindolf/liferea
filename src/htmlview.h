@@ -21,9 +21,8 @@
 #ifndef _HTMLVIEW_H
 #define _HTMLVIEW_H
 
+#include <gtk/gtk.h>
 #include <glib.h>
-#include <libgtkhtml/gtkhtml.h>
-#include <libgnomevfs/gnome-vfs.h>
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/types.h>
@@ -36,7 +35,7 @@
 
 #define EMPTY		"<html><body></body></html>"
 #define HTML_START	"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>"
-#define HTML_HEAD_START	"<head><title>item view</title>"
+#define HTML_HEAD_START	"<head><title></title>"
 #define META_ENCODING1	"<meta http-equiv=\"Content-Type\" content=\"text/html; charset="
 #define META_ENCODING2	"\">"
 #define HTML_HEAD_END	"</head><body>"
@@ -99,8 +98,9 @@
 #define PARSE_ERROR_TEXT	"There were errors while parsing this feed. The following error occured:<br><b>%s</b>"
 #define UPDATE_ERROR_END	"</td></tr></table>"
 
-#define HTML_MODULE_GTKHTML	0
-#define HTML_MODULE_MOZILLA	1
+#define HTML_MODULE_TEXT	1
+#define HTML_MODULE_GTKHTML	0	/* 0 -> makes it default */
+#define HTML_MODULE_MOZILLA	2
 
 struct html_module_info {
 	gint	nr;

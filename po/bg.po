@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-01 10:07+0100\n"
+"POT-Creation-Date: 2004-02-01 21:53+0100\n"
 "PO-Revision-Date: 2004-02-01 09:00+0100\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
@@ -21,63 +21,1169 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr ""
 
-#: src/callbacks.c:132
-msgid ""
-"You have disabled both the menubar and the toolbar. Without one of these you "
-"won't be able to access all program functions. I'll reenable the toolbar!"
-msgstr ""
-""
+#: src/callbacks.c:236
+#, c-format
+msgid "\"%s\" has not changed since last update."
+msgstr "\"%s\" не се промениха след последното осъвременяване."
 
-#: src/callbacks.c:179
+#: src/callbacks.c:244
+#, c-format
+msgid "internal error! unknown feed type %d while updating feeds!"
+msgstr ""
+
+#: src/callbacks.c:266
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" осъвременени..."
+
+#: src/callbacks.c:274
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated."
+msgstr "Адресът на \"%s\" беше постоянно променен и осъвременен."
+
+#: src/callbacks.c:292
+#, c-format
+msgid "\"%s\" is not available!"
+msgstr "\"%s\" не е достъпен"
+
+#: src/cdf_channel.c:100 src/cdf_item.c:51
+msgid "internal error: XML document pointer NULL! This should not happen!\n"
+msgstr ""
+
+#: src/cdf_channel.c:163 src/ocs_dir.c:466 src/opml.c:143 src/pie_feed.c:222
+#: src/rss_channel.c:343
+#, fuzzy, c-format
+msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
+msgstr ""
+"XML грешка по време на четенето на абонамента! Абонаментът \"%s\" не може да "
+"бъде зареден!"
+
+#: src/cdf_channel.c:171 src/feed.c:309 src/ocs_dir.c:472 src/opml.c:149
+#: src/pie_feed.c:230 src/rss_channel.c:349
+#, fuzzy
+msgid "<p>Empty document!</p>"
+msgstr "Празен документ!"
+
+#: src/cdf_channel.c:217 src/ocs_dir.c:538 src/opml.c:248 src/pie_feed.c:328
+#: src/rss_channel.c:423
+msgid "There were errors while parsing this feed!"
+msgstr ""
+
+#: src/cdf_channel.c:234 src/ocs_dir.c:288 src/ocs_dir.c:352 src/ocs_dir.c:426
+#: src/ocs_dir.c:511 src/ocs_dir.c:555 src/opml.c:263 src/pie_feed.c:345
+#: src/rss_channel.c:454 src/vfolder.c:124
+msgid "not enough memory!"
+msgstr "няма достатъно памет"
+
+#: src/common.c:124
+msgid "conversion wasn't successful.\n"
+msgstr "конврертирането не беше успешно.\n"
+
+#: src/common.c:126
+#, c-format
+msgid "conversion wasn't successful. converted: %i octets.\n"
+msgstr "Конвертирането не беше успешно. Конвертирани: %i .\n"
+
+#: src/common.c:136
+msgid "not enough memory\n"
+msgstr "Няма достатъчно памет!\n"
+
+#: src/common.c:287 src/common.c:332
+msgid "internal error! time conversion error! mktime failed!\n"
+msgstr ""
+"Interner Fehler! Fehler bei Zeitkonvertierung! mktime() fehlgeschlagen!\n"
+
+#: src/common.c:290
+msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
+msgstr "Невалиден ISO8601 формат на датата.! Игнорира <dc:date> информация!\n"
+
+#: src/common.c:335
+msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
+msgstr "Невалиден RFC822 формат на датата! Игнорира <pubDate> информация!\n"
+
+#: src/common.c:399
+#, c-format
+msgid "Cannot create cache directory %s!"
+msgstr "Не може да създаде кеш директория \"%s\" !"
+
+#: src/common.c:502
+msgid ""
+"Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
+"characters were dropped!"
+msgstr ""
+
+#. sh..!
+#: src/common.c:516
+msgid "Internal error while converting UTF-8 chars to HTTP URI!"
+msgstr ""
+
+#. _() for HELP1URL to allow localised help feeds
+#: src/conf.c:40
+msgid "http://liferea.sf.net/help047.rdf"
+msgstr ""
+
+#: src/conf.c:169
+#, c-format
+msgid "internal error! could not retrieve feed list for gconf path %s\n"
+msgstr ""
+
+#: src/conf.c:461
+msgid "error! could not get a free entry key!\n"
+msgstr ""
+
+#: src/conf.c:467
+msgid "error! could not set a URL for this key!\n"
+msgstr ""
+
+#: src/conf.c:470
+msgid "error! could not set a type for this key!\n"
+msgstr ""
+
+#. add to config and UI feed list
+#: src/conf.c:695 src/conf.c:697
+msgid "Liferea Help"
+msgstr "Помощ относно Liferea"
+
+#: src/conf.c:701
+msgid "Online Help Feed"
+msgstr "Online помощ"
+
+#: src/conf.c:702
+msgid "Liferea SF News"
+msgstr "Новини за Liferea в SF"
+
+#: src/conf.c:717
+#, c-format
+msgid "RSS namespace %s not yet configured! Activating...\n"
+msgstr "RSS Namespace %s noch nicht konfiguriert! Aktiviere es...\n"
+
+#: src/conversions.c:111 src/conversions.c:112
+msgid "No description available."
+msgstr ""
+
+#: src/conversions.c:373
+#, c-format
+msgid "ERROR: zlib_uncompress: %d %s\n"
+msgstr "ГРЕШКА: zlib_uncompress: %d %s\n"
+
+#: src/conversions.c:389
+msgid "ERROR: No output during decompression"
+msgstr "ГРЕШКА: няма изход по време на декомпресията"
+
+#: src/conversions.c:419
+msgid "ERROR: Invalid magic bytes for GZIP data"
+msgstr "ГРЕШКА: Невалидни байтове за GZIP информация"
+
+#: src/conversions.c:424
+msgid "ERROR: Compression method is not deflate"
+msgstr "ГРЕШКА: Методът за компресия не е изпразнен!"
+
+#: src/conversions.c:429
+#, c-format
+msgid "ERROR: Unsupported flags %d\n"
+msgstr "ГРЕШКА: неподдържани флагове %d\n"
+
+#: src/export.c:73 src/feed.c:252
+msgid "could not create XML feed node for feed cache document!"
+msgstr ""
+
+#: src/export.c:77 src/feed.c:258
+msgid "could not create XML document!"
+msgstr "Не може да създаде XML документ!"
+
+#: src/export.c:82
+msgid "Error while exporting feed list!"
+msgstr "Грешка при експортирането на списъкът с абонаменти!"
+
+#: src/export.c:84
+msgid "Feed List exported!"
+msgstr "Списъкът с абонаменти е експортиран успешно!"
+
+#. create a new import folder
+#: src/export.c:123
+msgid "imported feed list"
+msgstr "Вмъкнат списък с източници"
+
+#: src/export.c:128 src/ui_folder.c:60
+msgid "internal error! could not get a new folder key!"
+msgstr ""
+
+#: src/export.c:137
+#, c-format
+msgid ""
+"XML error while reading cache file \"%s\" ! Cache file could not be loaded!"
+msgstr ""
+"XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файла неможе да "
+"бъде зареден!"
+
+#: src/export.c:142
+msgid "Empty document! OPML document should not be empty..."
+msgstr ""
+
+#: src/export.c:150
+#, c-format
+msgid "\"%s\" is no valid cache file! Cannot read OPML file!"
+msgstr "\"%s\" не е валиден кеш файл! Създаването на OPML файла е невъзможно!"
+
+#: src/export.c:225 src/export.c:238 src/ui_feedlist.c:669
+msgid "internal error! could not find file dialog select button!"
+msgstr ""
+
+#: src/favicon.c:409
+#, c-format
+msgid "Could not delete icon file %s! Please remove manually!"
+msgstr "Не може да се изтрие иконата \"%s\"! Моля, премахнете я ръчно!"
+
+#: src/feed.c:242
+msgid "could not write XML item node!\n"
+msgstr "Не може да запише XML запис\n"
+
+#. we must save here to save changed read flags
+#: src/feed.c:278
+msgid "saving all feeds..."
+msgstr "Запазва всички източници..."
+
+#: src/feed.c:296
+#, fuzzy, c-format
+msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
+msgstr ""
+"XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файла неможе да "
+"бъде зареден!"
+
+#: src/feed.c:303
+#, fuzzy, c-format
+msgid ""
+"<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
+"loaded!</p>"
+msgstr ""
+"XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файла неможе да "
+"бъде зареден!"
+
+#: src/feed.c:319
+#, fuzzy, c-format
+msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
+msgstr "\"%s\" не е валиден кеш файл. Кеш файлът не може да бъде прочетен!"
+
+#: src/feed.c:358
+#, c-format
+msgid "There were errors while parsing cache file \"%s\"!"
+msgstr ""
+
+#. if necessary download and detect type
+#. FIXME: pass fp to adjust URL
+#: src/feed.c:428
+#, c-format
+msgid ""
+"Could not detect feed type of \"%s\"! Please manually select a feed type."
+msgstr ""
+"Не може да се разбере вида на абонамента \"%s\"! Моля изберете ръчно вида на "
+"абонамента."
+
+#: src/feed.c:449
+msgid "internal error! unknown feed type in newFeed()!"
+msgstr ""
+
+#: src/feed.c:492
+msgid "error! could not add feed to configuration!\n"
+msgstr ""
+
+#: src/feed.c:613
+#, c-format
+msgid "\"%s\" has no new items."
+msgstr "\"%s\" няма нови записи."
+
+#: src/feed.c:615
+#, c-format
+msgid "\"%s\" has %d new items."
+msgstr "\"%s\" има %d нови записи."
+
+#: src/feed.c:656
+#, c-format
+msgid "Could not delete cache file %s! Please remove manually!"
+msgstr "Кеш файлът \"%s\" неможе да бъде изтрит! Моля, премахнете го ръчно!"
+
+#: src/feed.c:679
+msgid "updating all feeds..."
+msgstr "Осъвременява всички абонаменти..."
+
+#: src/feed.c:704
+#, c-format
+msgid "internal error! there is no feed assigned to feedkey \"%s\"!\n"
+msgstr ""
+
+#. The feed is gone. Politely remind the user to unsubscribe.
+#: src/feed.c:756 src/netio.c:415
+#, c-format
+msgid "The feed no longer exists. Please unsubscribe!"
+msgstr "Този абонамент вече не съществува!"
+
+#: src/feed.c:757
+msgid "Payment Required"
+msgstr ""
+
+#: src/feed.c:758
+msgid "Access Forbidden"
+msgstr ""
+
+#: src/feed.c:759
+msgid "Ressource Not Found"
+msgstr ""
+
+#: src/feed.c:760
+msgid "Method Not Allowed"
+msgstr ""
+
+#: src/feed.c:761
+msgid "Not Acceptable"
+msgstr ""
+
+#: src/feed.c:762
+msgid "Proxy Authentication Required"
+msgstr ""
+
+#: src/feed.c:763
+msgid "Request Time-Out"
+msgstr ""
+
+#: src/feed.c:764
+#, fuzzy
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "Невалиден. Този ресурс вече не съществува. Моля да се отпишете!"
+
+#: src/feed.c:770
+msgid "Feed not available: Server signalized unsupported redirection!"
+msgstr ""
+
+#: src/feed.c:771
+msgid "Client Error"
+msgstr ""
+
+#: src/feed.c:772
+msgid "Server Error"
+msgstr ""
+
+#: src/feed.c:773
+msgid "(unknown error class)"
+msgstr ""
+
+#: src/feed.c:795
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output!"
+msgstr ""
+
+#: src/folder.c:70
+#, c-format
+msgid ""
+"getFolderTitle() internal error! could not determine folder iterator for "
+"keyprefix \"%s\"!\n"
+msgstr ""
+
+#: src/folder.c:88
+#, c-format
+msgid ""
+"setFolderTitle() internal error! could not determine folder iter for "
+"keyprefix \"%s\"!\n"
+msgstr ""
+
+#: src/folder.c:183
+#, c-format
+msgid ""
+"removeFolder() internal error! could not determine folder iter for keyprefix "
+"\"%s\"!\n"
+msgstr ""
+
+#: src/folder.c:214
+msgid "(empty)"
+msgstr "(leer)"
+
+#: src/folder.c:347
+#, c-format
+msgid "error! could not move cache file %s to file %s\n"
+msgstr "Грешка! Кеш файлът \"%s\" не може да бъде преместен в \"%s\" \n"
+
+#: src/gtkhtml.c:381 src/textview.c:103
+#, c-format
+msgid ""
+"There is no %%s URL place holder in the browser command string you specified "
+"in the preferences dialog!!!"
+msgstr ""
+
+#: src/interface.c:140
+#, fuzzy
+msgid "Liferea 0.4.7"
+msgstr "Liferea 0.4.6b - четец на абонаменти"
+
+#: src/interface.c:151
+msgid "_Program"
+msgstr "Програма"
+
+#: src/interface.c:158
+msgid "_Import Feed List"
+msgstr "Вмъква списък с абонаменти"
+
+#: src/interface.c:161
+msgid "Imports an OPML feed list."
+msgstr "Вмъква списък с абонаменти в OPML формат."
+
+#: src/interface.c:167
+msgid "_Export Feed List"
+msgstr "Експортира списък с абонаменти"
+
+#: src/interface.c:170
+msgid "Export the feed list as OPML."
+msgstr "Експортира списъкът с абонаменти в OPML формат."
+
+#: src/interface.c:189
+msgid "_Feeds"
+msgstr "_Абонаменти"
+
+#: src/interface.c:196
+msgid "_Feed"
+msgstr "_Абонамент"
+
+#: src/interface.c:203
+msgid "_Update Feed"
+msgstr "Осъвремени абонамент"
+
+#: src/interface.c:211
+msgid "_New Subscription"
+msgstr "_Нов Абонамент"
+
+#: src/interface.c:219
+msgid "_Delete Feed"
+msgstr "Изтрий абонамент"
+
+#: src/interface.c:227
+msgid "_Edit Properties"
+msgstr "_Настройки на абонамента"
+
+#: src/interface.c:235
+msgid "F_older"
+msgstr "Папка"
+
+#: src/interface.c:242
+msgid "_New Folder"
+msgstr "_Нова папка"
+
+#: src/interface.c:250
+msgid "_Delete Folder"
+msgstr "Изтрива текущата папка"
+
+#: src/interface.c:258
+msgid "_Edit Folder Name"
+msgstr "Име на папката"
+
+#: src/interface.c:271
+msgid "_Update All"
+msgstr "_Осъвремени всички"
+
+#: src/interface.c:274
+msgid "Immediately updates all feeds (excluding directories)."
+msgstr "Моментално осъвремени всички абонаменти."
+
+#: src/interface.c:283
+msgid "_Items"
+msgstr "_Записи"
+
+#: src/interface.c:290
+msgid "_Mark All As Read"
+msgstr "Маркирай всички като прочетени"
+
+#: src/interface.c:293
+msgid "Marks all items of the current feed as read."
+msgstr "Маркирай всички записи в текущия абонамент като прочетени."
+
+#: src/interface.c:298
+msgid "_Next Unread Item"
+msgstr "Следващия непрочетен запис"
+
+#: src/interface.c:301 src/interface.c:446
+msgid ""
+"Jumps to the next unread item. If necessary selects the next feed with "
+"unread items."
+msgstr ""
+"Прескача до следващия непрочетен запис. Ако е необходимо избира следващия "
+"абонамен с непрочетени записи"
+
+#: src/interface.c:310
+#, fuzzy
+msgid "_Scroll Or Next Unread"
+msgstr "Следващ непрочетен"
+
+#: src/interface.c:321
+msgid "Toggle _Read Status"
+msgstr "Постави статус на прочетен"
+
+#: src/interface.c:324
+msgid "Toggles the read status of the selected item."
+msgstr ""
+
+#: src/interface.c:329
+msgid "Toggle Item _Flag"
+msgstr "Прикрепя флаг към записа"
+
+#: src/interface.c:332
+msgid "Toggles the item flag."
+msgstr "Прикрепя флаг на записа"
+
+#: src/interface.c:337
+msgid "Remove Items"
+msgstr "Премахва записи"
+
+#: src/interface.c:340
+msgid "Removes all items of the currently selected feed."
+msgstr "Премахва всички записи от текущия абонамент."
+
+#: src/interface.c:351
+msgid "_Launch In Browser"
+msgstr "Зареди в браузър"
+
+#: src/interface.c:354
+msgid "Launches the items link in the configured browser."
+msgstr "Зареди адресът на записа в избрания браузър"
+
+#: src/interface.c:359
+msgid "Item _View"
+msgstr ""
+
+#: src/interface.c:366
+#, fuzzy
+msgid "Zoom _In"
+msgstr "/Увеличение на мащаба"
+
+#: src/interface.c:374
+#, fuzzy
+msgid "Zoom _Out"
+msgstr "/Намаление на мащаба"
+
+#: src/interface.c:387
+msgid "Toggle _Condensed View"
+msgstr ""
+
+#: src/interface.c:391 src/interface.c:484
+msgid "Search"
+msgstr "Търсене"
+
+#: src/interface.c:398
+msgid "Toggle Search Box"
+msgstr "Настройва полето за търсене"
+
+#: src/interface.c:401
+msgid "Shows or hides the search box."
+msgstr "Показва или скрива полето за търсене."
+
+#: src/interface.c:407
+msgid "Search with Feedster"
+msgstr "Търси с Feedster"
+
+#: src/interface.c:410
+msgid "Create a Feedster search feed."
+msgstr "Създава поле за търсене от типа Feedster"
+
+#: src/interface.c:424
+msgid "Update all feeds"
+msgstr "Осъвремени всички абонаменти"
+
+#: src/interface.c:440
+msgid "Update"
+msgstr "Осъвремени"
+
+#: src/interface.c:462
+msgid "Next Unread"
+msgstr "Следващ непрочетен"
+
+#: src/interface.c:468
+msgid "Search in feeds"
+msgstr "Търси в абонаментите"
+
+#: src/interface.c:490
+msgid "Edit preferences"
+msgstr "Променя настройките"
+
+#: src/interface.c:518
+msgid "Search for"
+msgstr "Търси за"
+
+#: src/interface.c:535
+msgid "create VFolder"
+msgstr "създай VFolder (виртуална папка)"
+
+#: src/interface.c:538
+msgid "saves this search as a VFolder, which will appear in the feed list"
+msgstr ""
+"запазва резултатите от това търсене като VFolder (виртуална папка), която ще "
+"се появи в списъка на абонаментите"
+
+#: src/interface.c:543
+msgid "Close search"
+msgstr "Прекъсва търсенето"
+
+#: src/interface.c:577
+msgid "single item view"
+msgstr "режим за преглеждане на един запис"
+
+#: src/interface.c:586
+msgid "condensed item list"
+msgstr ""
+
+#: src/interface.c:852
+msgid "Subscription Properties"
+msgstr "Настройки на абонамента"
+
+#: src/interface.c:873
+msgid ""
+"Edit the following entries to adjust the feed source URL or\n"
+"the feed title, which is displayed in the feed list."
+msgstr ""
+"Редактирай следните записи за да се настрой адреса на източника или\n"
+"заглавието на източника, което се изписва в списъка с абонаментите."
+
+#: src/interface.c:886
+msgid "Feed Title"
+msgstr "Име на абонамента"
+
+#: src/interface.c:898
+msgid ""
+"Either leave the name supplied by the feed or enter an alternative name "
+"which you like to be listed in the feed list."
+msgstr ""
+
+#: src/interface.c:905
+#, fuzzy
+msgid "Enter the URL the feed should be loaded from."
+msgstr "напишете адреса на ибонамента, който трябва да бъде зареден"
+
+#: src/interface.c:907 src/interface.c:1079
+msgid "Feed URL"
+msgstr "Адрес на абонамента"
+
+#: src/interface.c:914
+msgid "Feed URL and Title"
+msgstr "Адрес и име на абонамента"
+
+#: src/interface.c:934
+msgid "Feed Refresh Interval (in minutes)"
+msgstr "Период за осъвременаване на абонамента (в минути)"
+
+#: src/interface.c:942
+msgid ""
+"Please remember to set a reasonable refresh time, its not useful to poll "
+"daily updated feeds every 15 minutes! To disable auto-updating the feed set "
+"the interval to 0."
+msgstr ""
+"Моля, не пропускайте да настройте разумен период на осъвременяване, не е "
+"усобно да настроите абонаментите ви да бъдат проверявани на 15 минути! За да "
+"изключите авто-осъвременяването -поставете за период на осъвременяване 0"
+
+#: src/interface.c:951
+msgid "Feed Update Interval"
+msgstr "Интервал за осъвременяване"
+
+#: src/interface.c:1046
+msgid "New Subscription"
+msgstr "Нов Абонамент"
+
+#: src/interface.c:1067
+msgid ""
+"Please enter the URL (including the http:// prefix) you want to \n"
+"subscribe to. Or enter a valid pathname if you want to load a local file."
+msgstr "Моля, въведете адресът (включващ представката http:// )"
+
+#: src/interface.c:1089
+msgid "local file"
+msgstr "локален файл"
+
+#: src/interface.c:1093
+msgid "URL Input"
+msgstr "Вмъкване на адрес"
+
+#: src/interface.c:1111
+msgid ""
+"You have to specify the type of the feed you want to subscribe \n"
+"to. If you are unsure select \"Auto Detect\"."
+msgstr ""
+"Трябва да определите вида на абонамента, за който искате да се абонирате \n"
+"Ако не знаете кой е той - изберете \"Автоматично засичане\"."
+
+#: src/interface.c:1122
+msgid "Feed Type"
+msgstr "Вид на абонамента"
+
+#: src/interface.c:1133
+msgid "Auto Detect"
+msgstr "Автоматично засичане"
+
+#: src/interface.c:1137
+msgid "RSS"
+msgstr "RSS"
+
+#: src/interface.c:1141
+msgid "CDF"
+msgstr "CDF"
+
+#: src/interface.c:1145
+msgid "Atom/Echo/PIE"
+msgstr "Atom/Echo/PIE"
+
+#: src/interface.c:1149
+msgid "OCS"
+msgstr "OCS"
+
+#: src/interface.c:1153
+msgid "OPML"
+msgstr "OPML"
+
+#: src/interface.c:1159
+msgid "Feed Type Selection"
+msgstr "Избиране на вида на абонамента"
+
+#: src/interface.c:1296
+msgid "program preferences"
+msgstr "Настройки на програмата"
+
+#: src/interface.c:1321
+msgid "use the GNOME default browser"
+msgstr "използвай по подразбиращия се браузър на GNOME"
+
+#: src/interface.c:1331
+msgid "use browser command"
+msgstr "използвай командата за браузър"
+
+#: src/interface.c:1341
+#, c-format
+msgid "specify a browser command using %s as URL placeholder"
+msgstr ""
+"определя команда за стартиране на браузър използвайки %s като място за "
+"адреса на записа"
+
+#: src/interface.c:1343
+#, fuzzy
+msgid "Browser Settings"
+msgstr "настройки на браузъра"
+
+#: src/interface.c:1357
+msgid "display only time"
+msgstr "изписвай единствено времето"
+
+#: src/interface.c:1363
+msgid "display date and time"
+msgstr "изписвай час и дата"
+
+#: src/interface.c:1373
+msgid "user defined format"
+msgstr "формат - избран от потребителя"
+
+#: src/interface.c:1382
+msgid ""
+"for expert users: specify a time format string, consult the strftime() "
+"manpage for the format codes"
+msgstr " "
+
+#: src/interface.c:1384
+#, fuzzy
+msgid "Date Column Settings"
+msgstr "настройки на колоната за датата"
+
+#: src/interface.c:1403
+#, fuzzy
+msgid ""
+"Maximal number of items per feed \n"
+"to be saved permanently"
+msgstr ""
+"Максимален брой записи от абонамент, \n"
+"които да бъдат запазвани"
+
+#: src/interface.c:1414
+msgid "Update all feeds on program startup."
+msgstr "Осъвременявай всички абонаменти при стартиране на програмата."
+
+#: src/interface.c:1418
+msgid "Dont add the help feeds to the feed list on startup."
+msgstr ""
+
+#: src/interface.c:1422
+#, fuzzy
+msgid "Feed Handling Settings"
+msgstr "Управление на абонаменти"
+
+#: src/interface.c:1427
+msgid "Feed Handling"
+msgstr "Управление на абонаменти"
+
+#: src/interface.c:1446
+#, fuzzy
+msgid ""
+"Show a status icon in the notification area \n"
+"(also called system tray)."
+msgstr ""
+"Показва икона в зоната за уведомяване \n"
+"(също наричана system tray). Промени на тази настройка\n"
+"стават валидни след рестартирането на програмата."
+
+#: src/interface.c:1451
+msgid "Notification Area"
+msgstr "Зона за уведомяване"
+
+#: src/interface.c:1466
+msgid "Show Menu _And Toolbar"
+msgstr ""
+
+#: src/interface.c:1472
+msgid "Show _Menu Only"
+msgstr ""
+
+#: src/interface.c:1478
+msgid "Show _Toolbar Only"
+msgstr ""
+
+#: src/interface.c:1484
+msgid "Menu Settings"
+msgstr "Настройки на менютата"
+
+#: src/interface.c:1488
+msgid "GUI Settings"
+msgstr "Потребителски интерфейс"
+
+#: src/interface.c:1508
+msgid ""
+"Liferea reuses the GNOME proxy settings. If you use\n"
+"GNOME you can change these settings in the GNOME\n"
+"Control Center. Note: changing these settings will\n"
+"affect other applications! This dialog is primarily for\n"
+"users without GNOME to be able to use Liferea with\n"
+"a proxy."
+msgstr ""
+
+#: src/interface.c:1518
+msgid "Enable Proxy"
+msgstr ""
+
+#: src/interface.c:1528
+msgid "Proxy Host"
+msgstr ""
+
+#: src/interface.c:1547
+msgid "Proxy Port"
+msgstr ""
+
+#: src/interface.c:1554
+msgid "HTTP Proxy Server"
+msgstr ""
+
+#: src/interface.c:1558
+#, fuzzy
+msgid "Proxy Settings"
+msgstr "Потребителски интерфейс"
+
+#: src/interface.c:1704
+msgid "add folder"
+msgstr "Добави папка"
+
+#: src/interface.c:1719 src/interface.c:1793
+msgid "folder name"
+msgstr "Име на папката"
+
+#: src/interface.c:1782
+msgid "edit folder name"
+msgstr "Редактирай името на папката"
+
+#: src/interface.c:1845
+msgid "Select A File"
+msgstr "Избери файл"
+
+#: src/interface.c:1890
+msgid "edit filter rules"
+msgstr "Редактирай правилата за филтриране"
+
+#: src/interface.c:1990
+msgid "edit rule properties"
+msgstr "Редактирай настройките на правилата"
+
+#: src/interface.c:2004
+msgid "rule type"
+msgstr "Вид на правилото"
+
+#: src/interface.c:2014
+msgid "add items with exact match"
+msgstr "Добавя записи при точно съвпадение"
+
+#: src/interface.c:2018
+msgid "remove items with exact match"
+msgstr "Премахва записи при точно съвпадение"
+
+#: src/interface.c:2028
+msgid "rule value"
+msgstr "Стойност на правилото"
+
+#: src/interface.c:2102
+msgid "Search With Feedster"
+msgstr "Търси чрез Feedster"
+
+#: src/interface.c:2116
+msgid "Search for "
+msgstr "Търсене за "
+
+#: src/interface.c:2123
+msgid "enter any search string you want"
+msgstr "въведи дума за търсене"
+
+#: src/interface.c:2129
+msgid "Maximal Number Of Result Items"
+msgstr "Максимален брой резултати"
+
+#: src/interface.c:2138
+msgid ""
+"Note: Liferea will generate a feed subscription which is used to query the "
+"Feedster results for the specified search string. You can keep this feed "
+"permanently and update it like any other subscription.  "
+msgstr ""
+"Бележка: Liferea ще генерира абонамент, който ще бъде използван в заявката "
+"за търсене във Feedster. Можете да запазите този абонамент за постоянно и да "
+"го осъвременяватекато всеки друг обикновен абонамент."
+
+#: src/interface.c:2204
+msgid "Import Feed List"
+msgstr "Вмъква списък с абонаменти"
+
+#: src/interface.c:2214
+msgid ""
+"Liferea can import a list of feeds from an OPML file. This  can be used to "
+"either restore a backup feed list or import a feed list from another "
+"aggregator like that supports OPML export."
+msgstr ""
+"Liferea може да вмъква списъци с абонаменти от OPML файл. Тази възможност "
+"може да бъде използвана за да запазване на важна информация или да се "
+"вмъкнат абонаментите от друг чете, поддръжащ експортиране в OPML формат."
+
+#: src/interface.c:2224 src/interface.c:2312
+msgid "Filename"
+msgstr "Име на файла"
+
+#: src/interface.c:2232 src/interface.c:2320
+msgid "Select File"
+msgstr "Избери Файл"
+
+#: src/interface.c:2292
+msgid "Export Feed List"
+msgstr "Експортирай списък на абонаментите"
+
+#: src/interface.c:2302
+msgid ""
+"Liferea can export the list of feeds as an OPML list. You can use this "
+"feature to backup your feed list or export your feed list to another "
+"aggregator."
+msgstr ""
+"Liferea може да генерира списък на абонаментите като OPML списък. Можете да "
+"използвате тази възможност за да запазвате важна информация или да "
+"експортирате списъкът в абонаменти към друг четец. "
+
+#: src/netio.c:83
+msgid "Connecting to "
+msgstr "Свързване към "
+
+#: src/netio.c:85
+#, c-format
+msgid "Connecting to %s..."
+msgstr "Свързване към \"%s\"..."
+
+#: src/netio.c:215
+#, c-format
+msgid "Downloading http://%s%s..."
+msgstr "Изтегляне на \"http://%s%s\"..."
+
+#. This is a serious non-continueable OS error as it will probably not
+#. go away if we retry.
+#.
+#. BeOS will stupidly return SUCCESS here making this code silently fail on BeOS.
+#: src/netio.c:231
+msgid "socket connect"
+msgstr "socket connect"
+
+#: src/netio.c:305
+msgid "Too many HTTP redirects encountered! Giving up."
+msgstr "Твърде много  HTTP пренасочвание! Командата е отказана."
+
+#. Something bad happened. Server sent stupid stuff.
+#: src/netio.c:312
+msgid "Following HTTP redirects"
+msgstr "Следи HTTP пренасочванията"
+
+#: src/netio.c:359
+msgid "URL points to permanent redirect, updating with new location..."
+msgstr ""
+"Адресът сочи към постоянно пренасочване, осъвременява източника с нов "
+"адрес... "
+
+#: src/netio.c:379
+msgid "Webserver sent an invalid redirect!"
+msgstr ""
+
+#: src/netio.c:449
+#, c-format
+msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
+msgstr ""
+"Уебсървърът %s изпрати невалиден HTTP/1.0 отговор! Не мога да направя разбор "
+"на информацията"
+
+#: src/netio.c:601
+msgid "This URL doesn't look too valid to me, don't you think?"
+msgstr "Този адрес не ми изглежда много достоверен. Какво мислиш?"
+
+#: src/netio.c:658
+msgid "Couldn't create network socket!"
+msgstr "Не може да се създаде мрежови сокет!"
+
+#: src/netio.c:663
+#, c-format
+msgid "Can't resolve host %s!"
+msgstr "Хостът \"%s\" не може да бъде намерен!"
+
+#: src/netio.c:670
+#, c-format
+msgid "Could not connect to server %s: %s"
+msgstr "Не може да се свърже със сървъра \"%s\" !"
+
+#: src/netio.c:678
+msgid "Aborted."
+msgstr "Отказано."
+
+#: src/netio.c:736
+#, fuzzy, c-format
+msgid "Could not open pipe \"%s\"!"
+msgstr "Файлът \"%s\" не може да бъде отворен!"
+
+#: src/netio.c:742
+#, c-format
+msgid "Could not open file \"%s\"!"
+msgstr "Файлът \"%s\" не може да бъде отворен!"
+
+#: src/netio.c:748
+#, c-format
+msgid "There is no file \"%s\"!"
+msgstr "Файлът \"%s\" не съществува!"
+
+#: src/ns_admin.c:56
+msgid "report errors to"
+msgstr "докладвай за грешка на"
+
+#: src/ns_admin.c:59
+msgid "feed generator"
+msgstr ""
+
+#: src/ns_ag.c:85
+msgid "source"
+msgstr ""
+
+#: src/ns_ag.c:104
+msgid "time"
+msgstr ""
+
+#: src/ns_cC.c:53
+msgid "license"
+msgstr ""
+
+#: src/ns_dc.c:229 src/ns_ocs.c:95
+msgid "internal OCS namespace parsing error!"
+msgstr ""
+
+#: src/ns_dc.c:264 src/ns_dc.c:287 src/ns_dc.c:324
+msgid "internal error! unknown tag type while parsing Dublin Core tag!"
+msgstr ""
+
+#: src/ocs_dir.c:200 src/ocs_dir.c:243 src/ocs_dir.c:365 src/ocs_dir.c:439
+#, c-format
+msgid "no namespace handler for <%s:%s>!\n"
+msgstr ""
+
+#: src/ocs_dir.c:481
+#, fuzzy
+msgid "<p>Could not find RDF header!</p>"
+msgstr "Не може да намери началото RDF заглавката!"
+
+#: src/opml.c:160
+#, fuzzy
+msgid "<p>Could not find OPML header!</p>"
+msgstr "Не може да бъде намерена OPML заглавката!"
+
+#: src/pie_feed.c:98 src/rss_channel.c:118
+msgid "Internal error! Invalid output request mode for namespace information!"
+msgstr ""
+
+#: src/pie_feed.c:236
+#, fuzzy
+msgid "<p>Could not find Atom/Echo/PIE header!</p>"
+msgstr "Не може да бъде намерена OPML заглавката!"
+
+#: src/rss_channel.c:361
+#, fuzzy
+msgid "<p>Could not find RDF/RSS header!</p>"
+msgstr "Не може да бъде намерена RDF/RSS заглавката!"
+
+#: src/rss_item.c:237
+msgid "comments"
+msgstr "коментари"
+
+#: src/ui_dnd.c:83
+msgid "Sorry Liferea does not yet support drag&drop of folders!"
+msgstr "Съжалявам, Liferea все още не поддръжа drag&drop на папки!"
+
+#: src/ui_dnd.c:92
+msgid "you cannot modify the special help folder contents!"
+msgstr "не можете да редактирате съдържанието на специалните папки за помощ!"
+
+#: src/ui_feedlist.c:124
 msgid "entry list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:184
+#: src/ui_feedlist.c:129
 msgid "could not retrieve selection of entry list!"
 msgstr ""
 
-#: src/callbacks.c:200
+#: src/ui_feedlist.c:145
 msgid "fatal! selected feed entry has no key!!!"
 msgstr ""
 
-#: src/callbacks.c:226
-msgid "internal error! could not reset HTML widget scrolling!"
+#: src/ui_feedlist.c:278
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 
-#: src/callbacks.c:259 src/callbacks.c:397 src/callbacks.c:444
-msgid "You have to select a feed entry!"
-msgstr "Трябва да изберете адрес на източник"
-
-#: src/callbacks.c:403
-msgid "You can't delete help feeds!"
-msgstr "Не можете да изтривате източниците, предоставящи ви помощ"
-
-#: src/callbacks.c:407
-msgid "Deleting entry"
-msgstr "Изтрий запис"
-
-#: src/callbacks.c:417
-msgid "It seems like there is no selected feed entry!"
-msgstr "Изглежда не сте избрали запис"
-
-#: src/callbacks.c:476
-#, c-format
-msgid "The provider of this feed suggests an update interval of %d minutes"
-msgstr "Доставчикът на този източник предлага да поставите периот за осъвременяване от %d минути"
-
-#: src/callbacks.c:478
-msgid "This feed specifies no default update interval."
-msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
-
-#: src/callbacks.c:521
-msgid "Internal error! No feed selected, but property change requested...\n"
-msgstr ""
-
-#: src/callbacks.c:576
+#: src/ui_feedlist.c:414 src/ui_itemlist.c:625
 msgid "internal error! could not select newly created treestore iter!"
 msgstr ""
 
-#: src/callbacks.c:592
+#: src/ui_feedlist.c:422 src/ui_feedlist.c:438 src/ui_feedlist.c:483
+msgid "You have to select a feed entry!"
+msgstr "Трябва да изберете адрес на източник"
+
+#: src/ui_feedlist.c:444
+msgid "You can't delete help feeds!"
+msgstr "Не можете да изтривате източниците, предоставящи ви помощ"
+
+#: src/ui_feedlist.c:448
+msgid "Deleting entry"
+msgstr "Изтрий запис"
+
+#: src/ui_feedlist.c:458
+msgid "It seems like there is no selected feed entry!"
+msgstr "Изглежда не сте избрали запис"
+
+#: src/ui_feedlist.c:515
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minutes"
+msgstr ""
+"Доставчикът на този източник предлага да поставите периот за осъвременяване "
+"от %d минути"
+
+#: src/ui_feedlist.c:517
+msgid "This feed specifies no default update interval."
+msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
+
+#: src/ui_feedlist.c:565
+msgid "Internal error! No feed selected, but property change requested...\n"
+msgstr ""
+
+#: src/ui_feedlist.c:584
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -88,1086 +1194,85 @@ msgid ""
 msgstr ""
 "Не мога да изтегля  \"%s\"!\n"
 "\n"
-"Възможно е адресът да е невалиден или абонаментът временно да не е достъпен. Можете"
-"да се опитате да изтеглите отново информацията или да премахнете абонамента, чрез контекстното меню от"
-"списъкът с абонаментите.\n"
+"Възможно е адресът да е невалиден или абонаментът временно да не е достъпен. "
+"Можетеда се опитате да изтеглите отново информацията или да премахнете "
+"абонамента, чрез контекстното меню отсписъкът с абонаментите.\n"
 
-#: src/callbacks.c:647
+#: src/ui_feedlist.c:639
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 
-#: src/callbacks.c:677 src/export.c:221 src/export.c:234
-msgid "internal error! could not find file dialog select button!"
-msgstr ""
-
-#: src/callbacks.c:707 src/export.c:124
-msgid "internal error! could not get a new folder key!"
-msgstr ""
-
-#: src/callbacks.c:716 src/callbacks.c:756
-msgid "You have to select a folder entry!"
-msgstr "Трябва да изберете запис за папка!"
-
-#: src/callbacks.c:782 src/callbacks.c:785
-msgid "A folder must be empty to delete it!"
-msgstr "Папката трябва да бъде празна за да я изтриете!"
-
-#: src/callbacks.c:788
-msgid "Error: Cannot determine folder key!"
-msgstr ""
-
-#: src/callbacks.c:830 src/callbacks.c:981
-msgid "could not retrieve selection of item list!"
-msgstr ""
-
-#: src/callbacks.c:866
-msgid "item list widget lookup failed!\n"
-msgstr ""
-
-#: src/callbacks.c:876
-msgid "could not retrieve selection of item list!\n"
-msgstr ""
-
-#: src/callbacks.c:976
-msgid "could not find item list widget!"
-msgstr ""
-
-#: src/callbacks.c:1100 src/callbacks.c:1142
+#: src/ui_feedlist.c:714 src/ui_itemlist.c:566 src/ui_itemlist.c:623
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/callbacks.c:1102 src/callbacks.c:1144
+#: src/ui_feedlist.c:716 src/ui_itemlist.c:568
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 
-#: src/callbacks.c:1171
-msgid "There are no unread items!"
-msgstr "Няма непрочетени записи"
-
-#: src/callbacks.c:1191
-msgid "You have to select a feed to delete its items!"
-msgstr "Трябва да изберете абонамент за да изтриете неговите записи!"
-
-#: src/callbacks.c:1322
-msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr ""
-
-#: src/callbacks.c:1465
-msgid "Date"
-msgstr "Дата"
-
-#: src/callbacks.c:1473
-msgid "Headline"
-msgstr "Заглавие"
-
-#: src/callbacks.c:1572
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" осъвременени..."
-
-#: src/callbacks.c:1580
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated."
-msgstr ""
-"Адресът на \"%s\" беше постоянно променен и осъвременен."
-
-#: src/callbacks.c:1599
-#, c-format
-msgid "\"%s\" has not changed since last update."
-msgstr "\"%s\" не се промениха след последното осъвременяване."
-
-#: src/callbacks.c:1603
-#, c-format
-msgid "\"%s\" is not available!"
-msgstr "\"%s\" не е достъпен"
-
-#: src/callbacks.c:1731
-msgid "internal error! item list display for NULL pointer requested!\n"
-msgstr ""
-
-#: src/cdf_channel.c:106 src/cdf_item.c:51
-msgid "internal error: XML document pointer NULL! This should not happen!\n"
-msgstr ""
-
-#: src/cdf_channel.c:174 src/opml.c:138 src/pie_feed.c:217
-#: src/rss_channel.c:357
-#, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr ""
-"XML грешка по време на четенето на абонамента! Абонаментът \"%s\" не може да бъде зареден!"
-
-#: src/cdf_channel.c:182 src/pie_feed.c:225
-msgid "Empty document! Feed was not added!"
-msgstr "Празен документ. Абонаментът не беше добавен"
-
-#: src/cdf_channel.c:243 src/ocs_dir.c:287 src/ocs_dir.c:351 src/ocs_dir.c:425
-#: src/ocs_dir.c:512 src/ocs_dir.c:554 src/opml.c:259 src/pie_feed.c:338
-#: src/rss_channel.c:467 src/vfolder.c:124
-msgid "not enough memory!"
-msgstr "няма достатъно памет"
-
-#: src/common.c:127
-msgid "conversion wasn't successful.\n"
-msgstr "конврертирането не беше успешно.\n"
-
-#: src/common.c:129
-#, c-format
-msgid "conversion wasn't successful. converted: %i octets.\n"
-msgstr "Конвертирането не беше успешно. Конвертирани: %i .\n"
-
-#: src/common.c:139
-msgid "not enough memory\n"
-msgstr "Няма достатъчно памет!\n"
-
-#: src/common.c:252 src/common.c:297
-msgid "internal error! time conversion error! mktime failed!\n"
-msgstr ""
-"Interner Fehler! Fehler bei Zeitkonvertierung! mktime() fehlgeschlagen!\n"
-
-#: src/common.c:255
-msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
-msgstr "Невалиден ISO8601 формат на датата.! Игнорира <dc:date> информация!\n"
-
-#: src/common.c:300
-msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
-msgstr "Невалиден RFC822 формат на датата! Игнорира <pubDate> информация!\n"
-
-#: src/common.c:368
-#, c-format
-msgid "Cannot create cache directory %s!"
-msgstr "Не може да създаде кеш директория \"%s\" !"
-
-#: src/common.c:472
-msgid ""
-"Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
-"characters were dropped!"
-msgstr ""
-
-#. sh..!
-#: src/common.c:486
-msgid "Internal error while converting UTF-8 chars to HTTP URI!"
-msgstr ""
-
-#. _() for HELP1URL to allow localised help feeds
-#: src/conf.c:40
-msgid "http://liferea.sf.net/help046.rdf"
-msgstr ""
-
-#: src/conf.c:168
-#, c-format
-msgid "internal error! could not retrieve feed list for gconf path %s\n"
-msgstr ""
-
-#: src/conf.c:460
-msgid "error! could not get a free entry key!\n"
-msgstr ""
-
-#: src/conf.c:466
-msgid "error! could not set a URL for this key!\n"
-msgstr ""
-
-#: src/conf.c:469
-msgid "error! could not set a type for this key!\n"
-msgstr ""
-
-#. add to config and UI feed list
-#: src/conf.c:693 src/conf.c:695
-msgid "Liferea Help"
-msgstr "Помощ относно Liferea"
-
-#: src/conf.c:699
-msgid "Online Help Feed"
-msgstr "Online помощ"
-
-#: src/conf.c:700
-msgid "Liferea SF News"
-msgstr "Новини за Liferea в SF"
-
-#: src/conf.c:715
-#, c-format
-msgid "RSS namespace %s not yet configured! Activating...\n"
-msgstr "RSS Namespace %s noch nicht konfiguriert! Aktiviere es...\n"
-
-#: src/conversions.c:77
-#, c-format
-msgid "ERROR: zlib_uncompress: %d %s\n"
-msgstr "ГРЕШКА: zlib_uncompress: %d %s\n"
-
-#: src/conversions.c:93
-msgid "ERROR: No output during decompression"
-msgstr "ГРЕШКА: няма изход по време на декомпресията"
-
-#: src/conversions.c:123
-msgid "ERROR: Invalid magic bytes for GZIP data"
-msgstr "ГРЕШКА: Невалидни байтове за GZIP информация"
-
-#: src/conversions.c:128
-msgid "ERROR: Compression method is not deflate"
-msgstr "ГРЕШКА: Методът за компресия не е изпразнен!"
-
-#: src/conversions.c:133
-#, c-format
-msgid "ERROR: Unsupported flags %d\n"
-msgstr "ГРЕШКА: неподдържани флагове %d\n"
-
-#: src/export.c:71 src/feed.c:260
-msgid "could not create XML feed node for feed cache document!"
-msgstr ""
-
-#: src/export.c:75 src/feed.c:266
-msgid "could not create XML document!"
-msgstr "Не може да създаде XML документ!"
-
-#: src/export.c:80
-msgid "Error while exporting feed list!"
-msgstr "Грешка при експортирането на списъкът с абонаменти!"
-
-#: src/export.c:82
-msgid "Feed List exported!"
-msgstr "Списъкът с абонаменти е експортиран успешно!"
-
-#. create a new import folder
-#: src/export.c:119
-msgid "imported feed list"
-msgstr "Вмъкнат списък с източници"
-
-#: src/export.c:133 src/feed.c:308
-#, c-format
-msgid ""
-"XML error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr ""
-"XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файла неможе да бъде зареден!"
-
-#: src/export.c:138
-msgid "Empty document! OPML document should not be empty..."
-msgstr ""
-
-#: src/export.c:146
-#, c-format
-msgid "\"%s\" is no valid cache file! Cannot read OPML file!"
-msgstr "\"%s\" не е валиден кеш файл! Създаването на OPML файла е невъзможно!"
-
-#: src/favicon.c:411
-#, c-format
-msgid "Could not delete icon file %s! Please remove manually!"
-msgstr "Не може да се изтрие иконата \"%s\"! Моля, премахнете я ръчно!"
-
-#: src/feed.c:161
-msgid "Could not allocate memory!"
-msgstr "Не може да намери памет!"
-
-#: src/feed.c:250
-msgid "could not write XML item node!\n"
-msgstr "Не може да запише XML запис\n"
-
-#. we must save here to save changed read flags
-#: src/feed.c:286
-msgid "saving all feeds..."
-msgstr "Запазва всички източници..."
-
-#: src/feed.c:313
-msgid "Empty document! Feed cache file should not be empty..."
-msgstr "Празен документ! Кеш файла на абонамента не би трябвало да е празен..."
-
-#: src/feed.c:321
-#, c-format
-msgid "\"%s\" is no valid cache file! Cannot read cache file!"
-msgstr "\"%s\" не е валиден кеш файл. Кеш файлът не може да бъде прочетен!"
-
-#. if necessary download and detect type
-#. FIXME: pass fp to adjust URL
-#: src/feed.c:421
-#, c-format
-msgid ""
-"Could not detect feed type of \"%s\"! Please manually select a feed type."
-msgstr ""
-"Не може да се разбере вида на абонамента \"%s\"! Моля изберете ръчно вида на абонамента."
-
-#: src/feed.c:442
-msgid "internal error! unknown feed type in newFeed()!"
-msgstr ""
-
-#: src/feed.c:485
-msgid "error! could not add feed to configuration!\n"
-msgstr ""
-
-#: src/feed.c:606
-#, c-format
-msgid "\"%s\" has no new items."
-msgstr "\"%s\" няма нови записи."
-
-#: src/feed.c:608
-#, c-format
-msgid "\"%s\" has %d new items."
-msgstr "\"%s\" има %d нови записи."
-
-#: src/feed.c:648
-#, c-format
-msgid "Could not delete cache file %s! Please remove manually!"
-msgstr ""
-"Кеш файлът \"%s\" неможе да бъде изтрит! Моля, премахнете го ръчно!"
-
-#: src/feed.c:676
-msgid "updating all feeds..."
-msgstr "Осъвременява всички абонаменти..."
-
-#: src/feed.c:701
-#, c-format
-msgid "internal error! there is no feed assigned to feedkey \"%s\"!\n"
-msgstr ""
-
-#. should never happen!
-#: src/feed.c:741
-msgid ""
-"The last update of this feed failed. Please see the console output for more "
-"information!"
-msgstr ""
-
-#. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:745 src/netio.c:416
-msgid "The feed no longer exists. Please unsubscribe!"
-msgstr "Този абонамент вече не съществува!"
-
-#: src/feed.c:746
-msgid "Payment Required"
-msgstr ""
-
-#: src/feed.c:747
-msgid "Access Forbidden"
-msgstr ""
-
-#: src/feed.c:748
-msgid "Ressource Not Found"
-msgstr ""
-
-#: src/feed.c:749
-msgid "Method Not Allowed"
-msgstr ""
-
-#: src/feed.c:750
-msgid "Not Acceptable"
-msgstr ""
-
-#: src/feed.c:751
-msgid "Proxy Authentication Required"
-msgstr ""
-
-#: src/feed.c:752
-msgid "Request Time-Out"
-msgstr ""
-
-#: src/feed.c:753
-#, fuzzy
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Невалиден. Този ресурс вече не съществува. Моля да се отпишете!"
-
-#: src/feed.c:759
-msgid "Feed not available: Server signalized unsupported redirection!"
-msgstr ""
-
-#: src/feed.c:760
-msgid "Client Error"
-msgstr ""
-
-#: src/feed.c:761
-msgid "Server Error"
-msgstr ""
-
-#: src/feed.c:762
-msgid "(unknown error class)"
-msgstr ""
-
-#: src/folder.c:71
-#, c-format
-msgid ""
-"getFolderTitle() internal error! could not determine folder iterator for "
-"keyprefix \"%s\"!\n"
-msgstr ""
-
-#: src/folder.c:89
-#, c-format
-msgid ""
-"setFolderTitle() internal error! could not determine folder iter for "
-"keyprefix \"%s\"!\n"
-msgstr ""
-
-#: src/folder.c:184
-#, c-format
-msgid ""
-"removeFolder() internal error! could not determine folder iter for keyprefix "
-"\"%s\"!\n"
-msgstr ""
-
-#: src/folder.c:215
-msgid "(empty)"
-msgstr "(leer)"
-
-#: src/folder.c:348
-#, c-format
-msgid "error! could not move cache file %s to file %s\n"
-msgstr "Грешка! Кеш файлът \"%s\" не може да бъде преместен в \"%s\" \n"
-
-#: src/htmlview.c:425
-#, c-format
-msgid ""
-"There is no %%s URL place holder in the browser command string you specified "
-"in the preferences dialog!!!"
-msgstr ""
-""
-
-#: src/interface.c:130
-msgid "Liferea 0.4.6"
-msgstr "Liferea 0.4.6b - четец на абонаменти"
-
-#: src/interface.c:141
-msgid "_Program"
-msgstr "Програма"
-
-#: src/interface.c:148
-msgid "_Import Feed List"
-msgstr "Вмъква списък с абонаменти"
-
-#: src/interface.c:151
-msgid "Imports an OPML feed list."
-msgstr "Вмъква списък с абонаменти в OPML формат."
-
-#: src/interface.c:157
-msgid "_Export Feed List"
-msgstr "Експортира списък с абонаменти"
-
-#: src/interface.c:160
-msgid "Export the feed list as OPML."
-msgstr "Експортира списъкът с абонаменти в OPML формат."
-
-#: src/interface.c:179
-msgid "_Feeds"
-msgstr "_Абонаменти"
-
-#: src/interface.c:186
-msgid "_Feed"
-msgstr "_Абонамент"
-
-#: src/interface.c:193
-msgid "_Update Feed"
-msgstr "Осъвремени абонамент"
-
-#: src/interface.c:201
-msgid "_New Subscription"
-msgstr "_Нов Абонамент"
-
-#: src/interface.c:209
-msgid "_Delete Feed"
-msgstr "Изтрий абонамент"
-
-#: src/interface.c:217
-msgid "_Edit Properties"
-msgstr "_Настройки на абонамента"
-
-#: src/interface.c:225
-msgid "F_older"
-msgstr "Папка"
-
-#: src/interface.c:232
-msgid "_New Folder"
-msgstr "_Нова папка"
-
-#: src/interface.c:240
-msgid "_Delete Folder"
-msgstr "Изтрива текущата папка"
-
-#: src/interface.c:248
-msgid "_Edit Folder Name"
-msgstr "Име на папката"
-
-#: src/interface.c:261
-msgid "_Update All"
-msgstr "_Осъвремени всички"
-
-#: src/interface.c:264
-msgid "Immediately updates all feeds (excluding directories)."
-msgstr ""
-"Моментално осъвремени всички абонаменти."
-
-#: src/interface.c:273
-msgid "_Items"
-msgstr "_Записи"
-
-#: src/interface.c:280
-msgid "_Mark All As Read"
-msgstr "Маркирай всички като прочетени"
-
-#: src/interface.c:283
-msgid "Marks all items of the current feed as read."
-msgstr "Маркирай всички записи в текущия абонамент като прочетени."
-
-#: src/interface.c:288
-msgid "_Next Unread Item"
-msgstr "Следващия непрочетен запис"
-
-#: src/interface.c:291 src/interface.c:393
-msgid ""
-"Jumps to the next unread item. If necessary selects the next feed with "
-"unread items."
-msgstr ""
-"Прескача до следващия непрочетен запис. Ако е необходимо избира следващия абонамен "
-"с непрочетени записи"
-
-#: src/interface.c:300
-msgid "Toggle _Read Status"
-msgstr "Постави статус на прочетен"
-
-#: src/interface.c:303
-msgid "Toggles the read status of the selected item."
-msgstr ""
-
-#: src/interface.c:308
-msgid "Toggle Item _Flag"
-msgstr "Прикрепя флаг към записа"
-
-#: src/interface.c:311
-msgid "Toggles the item flag."
-msgstr "Прикрепя флаг на записа"
-
-#: src/interface.c:316
-msgid "Remove Items"
-msgstr "Премахва записи"
-
-#: src/interface.c:319
-msgid "Removes all items of the currently selected feed."
-msgstr "Премахва всички записи от текущия абонамент."
-
-#: src/interface.c:330
-msgid "_Launch In Browser"
-msgstr "Зареди в браузър"
-
-#: src/interface.c:333
-msgid "Launches the items link in the configured browser."
-msgstr "Зареди адресът на записа в избрания браузър"
-
-#: src/interface.c:338 src/interface.c:431
-msgid "Search"
-msgstr "Търсене"
-
-#: src/interface.c:345
-msgid "Toggle Search Box"
-msgstr "Настройва полето за търсене"
-
-#: src/interface.c:348
-msgid "Shows or hides the search box."
-msgstr "Показва или скрива полето за търсене."
-
-#: src/interface.c:354
-msgid "Search with Feedster"
-msgstr "Търси с Feedster"
-
-#: src/interface.c:357
-msgid "Create a Feedster search feed."
-msgstr "Създава поле за търсене от типа Feedster"
-
-#: src/interface.c:371
-msgid "Update all feeds"
-msgstr "Осъвремени всички абонаменти"
-
-#: src/interface.c:387
-msgid "Update"
-msgstr "Осъвремени"
-
-#: src/interface.c:409
-msgid "Next Unread"
-msgstr "Следващ непрочетен"
-
-#: src/interface.c:415
-msgid "Search in feeds"
-msgstr "Търси в абонаментите"
-
-#: src/interface.c:437
-msgid "Edit preferences"
-msgstr "Променя настройките"
-
-#: src/interface.c:465
-msgid "Search for"
-msgstr "Търси за"
-
-#: src/interface.c:482
-msgid "create VFolder"
-msgstr "създай VFolder (виртуална папка)"
-
-#: src/interface.c:485
-msgid "saves this search as a VFolder, which will appear in the feed list"
-msgstr "запазва резултатите от това търсене като VFolder (виртуална папка), която ще се появи в списъка на абонаментите"
-
-#: src/interface.c:490
-msgid "Close search"
-msgstr "Прекъсва търсенето"
-
-#: src/interface.c:524
-msgid "single item view"
-msgstr "режим за преглеждане на един запис"
-
-#: src/interface.c:533
-msgid "condensed item list"
-msgstr ""
-
-#: src/interface.c:780
-msgid "Subscription Properties"
-msgstr "Настройки на абонамента"
-
-#: src/interface.c:801
-msgid ""
-"Edit the following entries to adjust the feed source URL or\n"
-"the feed title, which is displayed in the feed list."
-msgstr ""
-"Редактирай следните записи за да се настрой адреса на източника или\n"
-"заглавието на източника, което се изписва в списъка с абонаментите."
-
-#: src/interface.c:814
-msgid "Feed Title"
-msgstr "Име на абонамента"
-
-#: src/interface.c:826
-msgid ""
-"either leave the name supplied by the feed or enter an alternative name "
-"which you like to be listed in the feed list"
-msgstr ""
-""
-
-#: src/interface.c:833
-msgid "enter the URL the feed should be loaded from"
-msgstr "напишете адреса на ибонамента, който трябва да бъде зареден"
-
-#: src/interface.c:835 src/interface.c:1007
-msgid "Feed URL"
-msgstr "Адрес на абонамента"
-
-#: src/interface.c:842
-msgid "Feed URL and Title"
-msgstr "Адрес и име на абонамента"
-
-#: src/interface.c:862
-msgid "Feed Refresh Interval (in minutes)"
-msgstr "Период за осъвременаване на абонамента (в минути)"
-
-#: src/interface.c:870
-msgid ""
-"Please remember to set a reasonable refresh time, its not useful to poll "
-"daily updated feeds every 15 minutes! To disable auto-updating the feed set "
-"the interval to 0."
-msgstr ""
-"Моля, не пропускайте да настройте разумен период на осъвременяване, не е усобно да настроите "
-"абонаментите ви да бъдат проверявани на 15 минути! За да изключите авто-осъвременяването -"
-"поставете за период на осъвременяване 0"
-
-#: src/interface.c:879
-msgid "Feed Update Interval"
-msgstr "Интервал за осъвременяване"
-
-#: src/interface.c:974
-msgid "New Subscription"
-msgstr "Нов Абонамент"
-
-#: src/interface.c:995
-msgid ""
-"Please enter the URL (including the http:// prefix) you want to \n"
-"subscribe to. Or enter a valid pathname if you want to load a local file."
-msgstr ""
-"Моля, въведете адресът (включващ представката http:// )"
-
-#: src/interface.c:1017
-msgid "local file"
-msgstr "локален файл"
-
-#: src/interface.c:1021
-msgid "URL Input"
-msgstr "Вмъкване на адрес"
-
-#: src/interface.c:1039
-msgid ""
-"You have to specify the type of the feed you want to subscribe \n"
-"to. If you are unsure select \"Auto Detect\"."
-msgstr ""
-"Трябва да определите вида на абонамента, за който искате да се абонирате \n"
-"Ако не знаете кой е той - изберете \"Автоматично засичане\"."
-
-#: src/interface.c:1050
-msgid "Feed Type"
-msgstr "Вид на абонамента"
-
-#: src/interface.c:1061
-msgid "Auto Detect"
-msgstr "Автоматично засичане"
-
-#: src/interface.c:1065
-msgid "RSS"
-msgstr "RSS"
-
-#: src/interface.c:1069
-msgid "CDF"
-msgstr "CDF"
-
-#: src/interface.c:1073
-msgid "Atom/Echo/PIE"
-msgstr "Atom/Echo/PIE"
-
-#: src/interface.c:1077
-msgid "OCS"
-msgstr "OCS"
-
-#: src/interface.c:1081
-msgid "OPML"
-msgstr "OPML"
-
-#: src/interface.c:1087
-msgid "Feed Type Selection"
-msgstr "Избиране на вида на абонамента"
-
-#: src/interface.c:1209
-msgid "program preferences"
-msgstr "Настройки на програмата"
-
-#: src/interface.c:1234
-msgid "use the GNOME default browser"
-msgstr "използвай по подразбиращия се браузър на GNOME"
-
-#: src/interface.c:1244
-msgid "use browser command"
-msgstr "използвай командата за браузър"
-
-#: src/interface.c:1254
-#, c-format
-msgid "specify a browser command using %s as URL placeholder"
-msgstr "определя команда за стартиране на браузър използвайки %s като място за адреса на записа"
-
-#: src/interface.c:1256
-msgid "browser settings"
-msgstr "настройки на браузъра"
-
-#: src/interface.c:1270
-msgid "display only time"
-msgstr "изписвай единствено времето"
-
-#: src/interface.c:1276
-msgid "display date and time"
-msgstr "изписвай час и дата"
-
-#: src/interface.c:1286
-msgid "user defined format"
-msgstr "формат - избран от потребителя"
-
-#: src/interface.c:1295
-msgid ""
-"for expert users: specify a time format string, consult the strftime() "
-"manpage for the format codes"
-msgstr ""
-" "
-""
-
-#: src/interface.c:1297
-msgid "date column settings"
-msgstr "настройки на колоната за датата"
-
-#: src/interface.c:1316
-msgid ""
-"maximal number of items per feed \n"
-"to be saved permanently"
-msgstr ""
-"Максимален брой записи от абонамент, \n"
-"които да бъдат запазвани"
-
-#: src/interface.c:1327
-msgid "Update all feeds on program startup."
-msgstr "Осъвременявай всички абонаменти при стартиране на програмата."
-
-#: src/interface.c:1331
-msgid "feed handling settings"
-msgstr ""
-
-#: src/interface.c:1336
-msgid "Feed Handling"
-msgstr "Управление на абонаменти"
-
-#: src/interface.c:1353
-msgid ""
-"Show a status icon in the notification area \n"
-"(also called system tray). Changes of this setting\n"
-"take place after restarting the program."
-msgstr ""
-"Показва икона в зоната за уведомяване \n"
-"(също наричана system tray). Промени на тази настройка\n"
-"стават валидни след рестартирането на програмата."
-
-#: src/interface.c:1358
-msgid "Notification Area"
-msgstr "Зона за уведомяване"
-
-#: src/interface.c:1372
-msgid "Disable Tool Bar."
-msgstr "Изключи панела с инструменти."
-
-#: src/interface.c:1377
-msgid "Disable Menu Bar."
-msgstr "Изключи панела с менютата."
-
-#: src/interface.c:1382
-msgid "Menu Settings"
-msgstr "Настройки на менютата"
-
-#: src/interface.c:1386
-msgid "GUI Settings"
-msgstr "Потребителски интерфейс"
-
-#: src/interface.c:1475
-msgid "add folder"
-msgstr "Добави папка"
-
-#: src/interface.c:1490 src/interface.c:1564
-msgid "folder name"
-msgstr "Име на папката"
-
-#: src/interface.c:1553
-msgid "edit folder name"
-msgstr "Редактирай името на папката"
-
-#: src/interface.c:1616
-msgid "Select A File"
-msgstr "Избери файл"
-
-#: src/interface.c:1661
-msgid "edit filter rules"
-msgstr "Редактирай правилата за филтриране"
-
-#: src/interface.c:1761
-msgid "edit rule properties"
-msgstr "Редактирай настройките на правилата"
-
-#: src/interface.c:1775
-msgid "rule type"
-msgstr "Вид на правилото"
-
-#: src/interface.c:1785
-msgid "add items with exact match"
-msgstr "Добавя записи при точно съвпадение"
-
-#: src/interface.c:1789
-msgid "remove items with exact match"
-msgstr "Премахва записи при точно съвпадение"
-
-#: src/interface.c:1799
-msgid "rule value"
-msgstr "Стойност на правилото"
-
-#: src/interface.c:1873
-msgid "Search With Feedster"
-msgstr "Търси чрез Feedster"
-
-#: src/interface.c:1887
-msgid "Search for "
-msgstr "Търсене за "
-
-#: src/interface.c:1894
-msgid "enter any search string you want"
-msgstr "въведи дума за търсене"
-
-#: src/interface.c:1900
-msgid "Maximal Number Of Result Items"
-msgstr "Максимален брой резултати"
-
-#: src/interface.c:1909
-msgid ""
-"Note: Liferea will generate a feed subscription which is used to query the "
-"Feedster results for the specified search string. You can keep this feed "
-"permanently and update it like any other subscription.  "
-msgstr ""
-"Бележка: Liferea ще генерира абонамент, който ще бъде използван в заявката "
-"за търсене във Feedster. Можете да запазите този абонамент за постоянно и да го осъвременявате"
-"като всеки друг обикновен абонамент."
-
-#: src/interface.c:1975
-msgid "Import Feed List"
-msgstr "Вмъква списък с абонаменти"
-
-#: src/interface.c:1985
-msgid ""
-"Liferea can import a list of feeds from an OPML file. This  can be used to "
-"either restore a backup feed list or import a feed list from another "
-"aggregator like that supports OPML export."
-msgstr ""
-"Liferea може да вмъква списъци с абонаменти от OPML файл. Тази възможност "
-"може да бъде използвана за да запазване на важна информация или да се вмъкнат абонаментите "
-"от друг чете, поддръжащ експортиране в OPML формат."
-
-#: src/interface.c:1995 src/interface.c:2083
-msgid "Filename"
-msgstr "Име на файла"
-
-#: src/interface.c:2003 src/interface.c:2091
-msgid "Select File"
-msgstr "Избери Файл"
-
-#: src/interface.c:2063
-msgid "Export Feed List"
-msgstr "Експортирай списък на абонаментите"
-
-#: src/interface.c:2073
-msgid ""
-"Liferea can export the list of feeds as an OPML list. You can use this "
-"feature to backup your feed list or export your feed list to another "
-"aggregator."
-msgstr ""
-"Liferea може да генерира списък на абонаментите като OPML списък. Можете да използвате "
-"тази възможност за да запазвате важна информация или да експортирате списъкът в абонаменти "
-"към друг четец. "
-
-#: src/netio.c:91
-msgid "Connecting to "
-msgstr "Свързване към "
-
-#: src/netio.c:93
-#, c-format
-msgid "Connecting to %s..."
-msgstr "Свързване към \"%s\"..."
-
-#: src/netio.c:226
-#, c-format
-msgid "Downloading http://%s%s..."
-msgstr "Изтегляне на \"http://%s%s\"..."
-
-#. This is a serious non-continueable OS error as it will probably not
-#. go away if we retry.
-#.
-#. BeOS will stupidly return SUCCESS here making this code silently fail on BeOS.
-#: src/netio.c:241
-msgid "socket connect"
-msgstr "socket connect"
-
-#: src/netio.c:318
-msgid "Too many HTTP redirects encountered! Giving up."
-msgstr "Твърде много  HTTP пренасочвание! Командата е отказана."
-
-#. Something bad happened. Server sent stupid stuff.
-#: src/netio.c:325
-msgid "Following HTTP redirects"
-msgstr "Следи HTTP пренасочванията"
-
-#: src/netio.c:370
-msgid "URL points to permanent redirect, updating with new location..."
-msgstr "Адресът сочи към постоянно пренасочване, осъвременява източника с нов адрес... "
-
-#: src/netio.c:453
-#, c-format
-msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
-msgstr ""
-"Уебсървърът %s изпрати невалиден HTTP/1.0 отговор! Не мога да направя разбор на информацията"
-
-#. End of string url. Probably entered invalid stuff like
-#. http://asdf or something. Since we don't want to crash and burn
-#. return the dreaded NULL pointer.
-#: src/netio.c:602
-msgid "This URL doesn't look too valid to me, don't you think?"
-msgstr "Този адрес не ми изглежда много достоверен. Какво мислиш?"
-
-#: src/netio.c:622
-msgid "Couldn't create network socket!"
-msgstr "Не може да се създаде мрежови сокет!"
-
-#: src/netio.c:627
-#, c-format
-msgid "Can't resolve host %s!"
-msgstr "Хостът \"%s\" не може да бъде намерен!"
-
-#: src/netio.c:633
-#, c-format
-msgid "Could not connect to server %s: %s"
-msgstr "Не може да се свърже със сървъра \"%s\" !"
-
-#: src/netio.c:639
-msgid "Aborted."
-msgstr "Отказано."
-
-#: src/netio.c:684
-msgid "Could not allocate memory to read file!"
-msgstr "Недостатъчна памет за да се прочете файла!"
-
-#: src/netio.c:691
-#, c-format
-msgid "Could not open file \"%s\"!"
-msgstr "Файлът \"%s\" не може да бъде отворен!"
-
-#: src/netio.c:694
-#, c-format
-msgid "There is no file \"%s\"!"
-msgstr "Файлът \"%s\" не съществува!"
-
-#: src/ns_admin.c:80
-msgid "report errors to"
-msgstr "докладвай за грешка на"
-
-#: src/ns_admin.c:82
-msgid "генератор на абонамента"
-msgstr ""
-
-#: src/ns_ag.c:100
-msgid "код"
-msgstr ""
-
-#: src/ns_ag.c:114
-msgid "време"
-msgstr ""
-
-#: src/ns_cC.c:91
-msgid "лиценз"
-msgstr ""
-
-#: src/ns_dc.c:250 src/ns_ocs.c:98
-msgid "internal OCS namespace parsing error!"
-msgstr ""
-
-#: src/ocs_dir.c:200 src/ocs_dir.c:242 src/ocs_dir.c:364 src/ocs_dir.c:438
-#, c-format
-msgid "no namespace handler for <%s:%s>!\n"
-msgstr ""
-
-#: src/ocs_dir.c:467
-#, c-format
-msgid ""
-"XML error while reading directory! Directory \"%s\" could not be loaded!"
-msgstr ""
-"XML грешка докато се четеше директорията! Директорията \"%s\" не може да бъде заредена!"
-
-#: src/ocs_dir.c:473 src/opml.c:144 src/rss_channel.c:363
-msgid "Empty document!"
-msgstr "Празен документ!"
-
-#: src/ocs_dir.c:482
-msgid "Could not find RDF header!"
-msgstr "Не може да намери началото RDF заглавката!"
-
-#: src/opml.c:155
-msgid "Could not find OPML header!!"
-msgstr "Не може да бъде намерена OPML заглавката!"
-
-#: src/pie_feed.c:96 src/rss_channel.c:118
-msgid "Internal error! Invalid output request mode for namespace information!"
-msgstr ""
-
-#: src/pie_feed.c:231
-msgid "Could not find PIE header! Feed was not added!"
-msgstr "Не може да бъде намерена PIE заглавката!"
-
-#: src/rss_channel.c:375
-msgid "Could not find RDF/RSS header!"
-msgstr "Не може да бъде намерена RDF/RSS заглавката!"
-
-#: src/rss_item.c:241
-msgid "comments"
-msgstr "коментари"
-
-#: src/ui_filter.c:58
+#: src/ui_filter.c:54
 msgid "Rule Type"
 msgstr "Тип на правилото"
 
-#: src/ui_filter.c:61
+#: src/ui_filter.c:57
 msgid "Value"
 msgstr "Стойност"
+
+#: src/ui_folder.c:69 src/ui_folder.c:109
+msgid "You have to select a folder entry!"
+msgstr "Трябва да изберете запис за папка!"
+
+#: src/ui_folder.c:135 src/ui_folder.c:138
+msgid "A folder must be empty to delete it!"
+msgstr "Папката трябва да бъде празна за да я изтриете!"
+
+#: src/ui_folder.c:141
+msgid "Error: Cannot determine folder key!"
+msgstr ""
+
+#: src/ui_itemlist.c:210
+msgid "Date"
+msgstr "Дата"
+
+#: src/ui_itemlist.c:217
+msgid "Headline"
+msgstr "Заглавие"
+
+#: src/ui_itemlist.c:245
+msgid "item list widget lookup failed!\n"
+msgstr ""
+
+#: src/ui_itemlist.c:255
+msgid "could not retrieve selection of item list!\n"
+msgstr ""
+
+#: src/ui_itemlist.c:338
+msgid "internal error! item list display for NULL pointer requested!\n"
+msgstr ""
+
+#: src/ui_itemlist.c:397
+msgid "internal error! could not reset HTML widget scrolling!"
+msgstr ""
+
+#: src/ui_itemlist.c:430
+msgid "could not find item list widget!"
+msgstr ""
+
+#: src/ui_itemlist.c:435
+msgid "could not retrieve selection of item list!"
+msgstr ""
+
+#: src/ui_itemlist.c:518
+msgid "No item has been selected!"
+msgstr ""
+
+#: src/ui_itemlist.c:538
+msgid "You have to select a feed to delete its items!"
+msgstr "Трябва да изберете абонамент за да изтриете неговите записи!"
+
+#: src/ui_itemlist.c:602
+msgid "There are no unread items!"
+msgstr "Няма непрочетени записи"
 
 #: src/ui_popup.c:61
 msgid "could not allocate memory!"
@@ -1221,14 +1326,20 @@ msgid "/_Delete VFolder"
 msgstr "/Изтрий VFolder"
 
 #: src/ui_popup.c:121
-msgid "/_Mark All As Read"
-msgstr "/Маркирай всички като прочетени"
+#, fuzzy
+msgid "/Toggle _Read Status"
+msgstr "Постави статус на прочетен"
 
 #: src/ui_popup.c:122
+#, fuzzy
+msgid "/Toggle Item _Flag"
+msgstr "Прикрепя флаг към записа"
+
+#: src/ui_popup.c:124
 msgid "/_Next Unread Item"
 msgstr "/Следващ непрочетен запис"
 
-#: src/ui_popup.c:124
+#: src/ui_popup.c:126
 msgid "/_Launch Item In Browser"
 msgstr "/Стартира записа в браузър"
 
@@ -1240,61 +1351,82 @@ msgstr "/Увеличение на мащаба"
 msgid "/Zoom Out"
 msgstr "/Намаление на мащаба"
 
-#: src/ui_popup.c:140
+#: src/ui_popup.c:138
 msgid "/_Copy Link Location"
 msgstr "/Копирай адреса на записа"
 
-#: src/ui_popup.c:141
+#: src/ui_popup.c:139
 msgid "/_Subscribe"
 msgstr "/Абониране"
 
-#: src/ui_search.c:75
+#: src/ui_search.c:70
 #, c-format
 msgid "searching for \"%s\""
 msgstr "търси за \"%s\""
 
-#: src/ui_search.c:107
-msgid "Feedster search request failed.\n"
-msgstr "Търсенето чрез Feedster се провали.\n"
-
-#: src/ui_search.c:136
+#: src/ui_search.c:125
 #, c-format
 msgid "creating VFolder for search term \"%s\""
 msgstr "създава се VFolder за заявката \"%s\""
 
 #. FIXME: this really does not belong here!!! -> vfolder.c
 #. setup a rule
-#. 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule))))
-#. 					g_error(_("Could not allocate memory!"));
+#. if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule))))
+#. g_error(_("Could not allocate memory!"));
 #. we set the searchstring as a default title
-#: src/ui_search.c:149
+#: src/ui_search.c:138
 #, c-format
 msgid "VFolder %s"
 msgstr "VFolder %s"
 
-#: src/ui_search.c:160
+#: src/ui_search.c:149
 msgid "internal error! could not get folder key prefix!"
 msgstr ""
 
-#: src/ui_tray.c:82
+#: src/ui_tray.c:83
 #, c-format
 msgid "%d new items!"
 msgstr "%d нови записа!"
 
-#: src/ui_tray.c:90
+#: src/ui_tray.c:94
 msgid "No new items."
 msgstr "Няма нови записи."
 
-#: src/ui_dnd.c:79
-msgid "Sorry Liferea does not yet support drag&drop of folders!"
-msgstr ""
-"Съжалявам, Liferea все още не поддръжа drag&drop на папки!"
+#: src/update.c:54
+msgid "Could not allocate memory!"
+msgstr "Не може да намери памет!"
 
-#: src/ui_dnd.c:88
-msgid "you cannot modify the special help folder contents!"
-msgstr "не можете да редактирате съдържанието на специалните папки за помощ!"
-
-#: src/update.c:140
+#: src/update.c:143
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr ""
-	
+
+#~ msgid "Empty document! Feed was not added!"
+#~ msgstr "Празен документ. Абонаментът не беше добавен"
+
+#~ msgid "Empty document! Feed cache file should not be empty..."
+#~ msgstr ""
+#~ "Празен документ! Кеш файла на абонамента не би трябвало да е празен..."
+
+#~ msgid "Disable Tool Bar."
+#~ msgstr "Изключи панела с инструменти."
+
+#~ msgid "Disable Menu Bar."
+#~ msgstr "Изключи панела с менютата."
+
+#~ msgid "Could not allocate memory to read file!"
+#~ msgstr "Недостатъчна памет за да се прочете файла!"
+
+#~ msgid ""
+#~ "XML error while reading directory! Directory \"%s\" could not be loaded!"
+#~ msgstr ""
+#~ "XML грешка докато се четеше директорията! Директорията \"%s\" не може да "
+#~ "бъде заредена!"
+
+#~ msgid "Could not find PIE header! Feed was not added!"
+#~ msgstr "Не може да бъде намерена PIE заглавката!"
+
+#~ msgid "/_Mark All As Read"
+#~ msgstr "/Маркирай всички като прочетени"
+
+#~ msgid "Feedster search request failed.\n"
+#~ msgstr "Търсенето чрез Feedster се провали.\n"
