@@ -3303,7 +3303,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. Jóźwicki <jakubj@users.sourceforge.net>");
+  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.net>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. Jóźwicki <jakubj@users.sourceforge.net>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
@@ -3783,7 +3783,7 @@ create_searchdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (searchdialog), searchstartbtn, 0);
   gtk_widget_set_sensitive (searchstartbtn, FALSE);
   GTK_WIDGET_SET_FLAGS (searchstartbtn, GTK_CAN_DEFAULT);
-  gtk_tooltips_set_tip (tooltips, searchstartbtn, _("Starts searching the specified text in all feeds. The search result will appear in the item list."), NULL);
+  gtk_tooltips_set_tip (tooltips, searchstartbtn, _("Starts searching for the specified text in all feeds. The search result will appear in the item list."), NULL);
 
   g_signal_connect ((gpointer) searchentry, "activate",
                     G_CALLBACK (on_searchentry_activate),

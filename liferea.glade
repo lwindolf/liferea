@@ -6787,7 +6787,7 @@ Jose Maria Mateos &lt;chema@chema.homelinux.org&gt;
 Enrico Genauck &lt;enrico@fanglomerat.de&gt;
 Vladimir Petkov &lt;vpetkov@i-space.org&gt;
 Tomislav Markovski &lt;tome@set.com.mk&gt;
-Dario Conigliaro &lt;djdas@djdas.no-ip.org&gt;
+Dario Conigliaro &lt;djdas@djdas.net&gt;
 Rex Tsai &lt;chihchun@users.sourceforge.net&gt;
 Alekseev Vladimir &lt;compress@linux-online.ru&gt;
 Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;
@@ -7675,7 +7675,7 @@ matches. They are removed if at least one removing rule matches.</property>
 	    <widget class="GtkButton" id="searchstartbtn">
 	      <property name="visible">True</property>
 	      <property name="sensitive">False</property>
-	      <property name="tooltip" translatable="yes">Starts searching the specified text in all feeds. The search result will appear in the item list.</property>
+	      <property name="tooltip" translatable="yes">Starts searching for the specified text in all feeds. The search result will appear in the item list.</property>
 	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-find</property>
