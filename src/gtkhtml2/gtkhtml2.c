@@ -232,6 +232,7 @@ on_url (HtmlView *view, const char *url, gpointer user_data)
 		if(selectedURL)
 			g_free(selectedURL);
 		selectedURL = g_strdup(location);
+		ui_mainwindow_set_status_bar(selectedURL);
 	} else
 		ui_mainwindow_set_status_bar("");
 }
