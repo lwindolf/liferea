@@ -472,10 +472,10 @@ void feed_unload(feedPtr fp) {
 
 				/* free items */
 				feed_clear_item_list(fp);
-				fp->loaded--;
 			} else {
-				g_print("not unloading %s because it's used...\n", feed_get_source(fp));
+				g_print("not unloading %s because it's used (%d references)...\n", feed_get_source(fp), fp->loaded);
 			}
+			fp->loaded--;
 		}
 		debug_exit("feed_unload");
 	}
