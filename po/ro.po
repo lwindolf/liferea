@@ -1,4 +1,4 @@
-# Spoialã Cristian <s_cristian@ezrs.com>, 2005.
+# SpoialÄƒ Cristian <s_cristian@ezrs.com>, 2005.
 # 
 # 
 msgid ""
@@ -7,10 +7,10 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-03-06 09:27-0500\n"
 "PO-Revision-Date: 2005-03-04 17:29+0200\n"
-"Last-Translator: SpoialÄƒ Cristianã Cristian <scristian@gmail.com>\n"
+"Last-Translator: SpoialÃ„Âƒ CristianÄƒ Cristian <scristian@gmail.com>\n"
 "Language-Team: Romanian\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. launch the homepage when button in about dialog is pressed
@@ -20,7 +20,7 @@ msgstr "http://liferea.sf.net"
 
 #: src/common.c:283
 msgid "[Parser error output was truncated!]"
-msgstr "[Eroare la parcurgere, ieºirea a fost modificatã!]"
+msgstr "[Eroare la parcurgere, ieÅŸirea a fost modificatÄƒ!]"
 
 #: src/common.c:361
 #, c-format
@@ -33,11 +33,11 @@ msgstr ""
 
 #: src/common.c:438 src/common.c:549
 msgid "internal error! time conversion error! mktime failed!\n"
-msgstr "eroare internã! eroare la conversia timpului! mktime a eºuat!\n"
+msgstr "eroare internÄƒ! eroare la conversia timpului! mktime a eÅŸuat!\n"
 
 #: src/common.c:441
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
-msgstr "Format ISO8601 invalid! Informaşiile <dc:date> se ignorã!\n"
+msgstr "Format ISO8601 invalid! InformaÅ£iile <dc:date> se ignorÄƒ!\n"
 
 #: src/common.c:563 src/common.c:570 src/common.c:576 src/common.c:583
 #, c-format
@@ -49,8 +49,8 @@ msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
-"Sfârºit de caracter greºit sau o encodare UTF-8 greºitã! Anumite caractere "
-"nu au fost încãrcate!"
+"SfÃ¢rÅŸit de caracter greÅŸit sau o encodare UTF-8 greÅŸitÄƒ! Anumite caractere "
+"nu au fost Ã®ncÄƒrcate!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: src/conf.c:259
@@ -60,7 +60,7 @@ msgstr "feedlist.opml"
 #: src/conf.c:278
 #, c-format
 msgid "Error renaming %s to %s\n"
-msgstr "Eroare la redenumirea %s în %s\n"
+msgstr "Eroare la redenumirea %s Ã®n %s\n"
 
 #. _() for HELP1URL to allow localised help feeds
 #: src/export.c:43
@@ -75,33 +75,33 @@ msgstr ".rdf"
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
-"eroare XML în timp ce se încãrca fiºierul cache! Fiºierul %s nu a putut fi "
-"incãrcat!"
+"eroare XML Ã®n timp ce se Ã®ncÄƒrca fiÅŸierul cache! FiÅŸierul %s nu a putut fi "
+"incÄƒrcat!"
 
 #: src/export.c:508 src/export.c:510
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
-"Document gol! Documentul OPML \"%s\" nu trebuie sã fie gol când se importã."
+"Document gol! Documentul OPML \"%s\" nu trebuie sÄƒ fie gol cÃ¢nd se importÄƒ."
 
 #: src/export.c:518 src/export.c:520
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
-"\"%s\" nu este un fiºier OPML valid! Liferea nu poate importa acest fiºier!"
+"\"%s\" nu este un fiÅŸier OPML valid! Liferea nu poate importa acest fiÅŸier!"
 
 #: src/export.c:542
 msgid "Imported feed list"
-msgstr "Lista de feeduri importatã"
+msgstr "Lista de feeduri importatÄƒ"
 
 #: src/export.c:553
 msgid "Import Feed List"
-msgstr "Importã lista de feeduri"
+msgstr "ImportÄƒ lista de feeduri"
 
 #: src/export.c:553
 msgid "Import"
-msgstr "Importã"
+msgstr "ImportÄƒ"
 
 #: src/export.c:563
 msgid "Error while exporting feed list!"
@@ -109,27 +109,27 @@ msgstr "Eroare la exportarea listei!"
 
 #: src/export.c:565
 msgid "Feed List exported!"
-msgstr "Lista de feed-uri a fost exportatã!"
+msgstr "Lista de feed-uri a fost exportatÄƒ!"
 
 #: src/export.c:572
 msgid "Export Feed List"
-msgstr "Exportã lista de feed-uri"
+msgstr "ExportÄƒ lista de feed-uri"
 
 #: src/export.c:572
 msgid "Export"
-msgstr "Exportã"
+msgstr "ExportÄƒ"
 
 #: src/favicon.c:265
 #, c-format
 msgid "Updating feed icon for \"%s\""
-msgstr "Se updateazã iconul feedului pentru \"%s\""
+msgstr "Se updateazÄƒ iconul feedului pentru \"%s\""
 
 #: src/feed.c:151
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
-"<p>eroare XML în timp ce se citea feedul! Feed-ul \"%s\" nu a putut fi "
-"încãrcat!</p>"
+"<p>eroare XML Ã®n timp ce se citea feedul! Feed-ul \"%s\" nu a putut fi "
+"Ã®ncÄƒrcat!</p>"
 
 #: src/feed.c:157 src/feed.c:391
 msgid "<p>Empty document!</p>"
@@ -141,7 +141,7 @@ msgstr "<p>XML invalid!</p>"
 
 #: src/feed.c:231
 msgid "There were errors while parsing a feed"
-msgstr "Au fost erori în timp ce se parcurgea feedul"
+msgstr "Au fost erori Ã®n timp ce se parcurgea feedul"
 
 #: src/feed.c:232
 msgid ""
@@ -149,8 +149,8 @@ msgid ""
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
 msgstr ""
-"<p>Nu s-a putut determina tipul feedul. Verificaşi daca este un feed <a href="
-"\"http://feedvalidator.org\">valid</a> ºi este <a href=\"http://liferea."
+"<p>Nu s-a putut determina tipul feedul. VerificaÅ£i daca este un feed <a href="
+"\"http://feedvalidator.org\">valid</a> ÅŸi este <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">printre formatele suportate</"
 "a>.</p>"
 
@@ -158,8 +158,8 @@ msgstr ""
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
-"Eroare în timp ce se încãrca fiºierul \"%s\" ! Fiºierul nu a putut fi "
-"încãrcat!"
+"Eroare Ã®n timp ce se Ã®ncÄƒrca fiÅŸierul \"%s\" ! FiÅŸierul nu a putut fi "
+"Ã®ncÄƒrcat!"
 
 #: src/feed.c:383
 #, c-format
@@ -167,34 +167,34 @@ msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
-"<p>eroare XML în timp ce se parcurgea fiºierul cache! Feed-ul \"%s\" nu s-a "
-"putut încãrca!</p>"
+"<p>eroare XML Ã®n timp ce se parcurgea fiÅŸierul cache! Feed-ul \"%s\" nu s-a "
+"putut Ã®ncÄƒrca!</p>"
 
 #: src/feed.c:402
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
-"<p>\"%s\" nu este un fiºier cache valid! Nu s-a putut citi fiºierul cache!</"
+"<p>\"%s\" nu este un fiÅŸier cache valid! Nu s-a putut citi fiÅŸierul cache!</"
 "p>"
 
 #: src/feed.c:455
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
-msgstr "Au fost erori la parcurgerea fiºierului cache \"%s\""
+msgstr "Au fost erori la parcurgerea fiÅŸierului cache \"%s\""
 
 #: src/feed.c:526
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
-msgstr "Feedul \"%s\" se updateazã deja!"
+msgstr "Feedul \"%s\" se updateazÄƒ deja!"
 
 #: src/feed.c:531
 msgid "The feed was discontinued. Liferea won't update it anymore!"
-msgstr "Feedul a fost întrerupt. Liferea nu îl va mai updata!"
+msgstr "Feedul a fost Ã®ntrerupt. Liferea nu Ã®l va mai updata!"
 
 #: src/feed.c:535
 #, c-format
 msgid "Updating \"%s\""
-msgstr "Se updateazã \"%s\""
+msgstr "Se updateazÄƒ \"%s\""
 
 #. attributes resulting from general feed parsing
 #: src/feed.c:1017 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
@@ -208,7 +208,7 @@ msgstr "Director virtual"
 
 #: src/feed.c:1025
 msgid "user defined command"
-msgstr "comandã definitã de utilizator"
+msgstr "comandÄƒ definitÄƒ de utilizator"
 
 #: src/feed.c:1048 src/interface.c:1104 src/interface.c:1514 src/item.c:248
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
@@ -217,7 +217,7 @@ msgstr "Sursa:"
 
 #: src/html.c:166
 msgid "Feed link auto discovery failed! No feed links found!"
-msgstr "Descoperire automatã la feed eºuatã! Nu s-a putut gãsi nici un feed!"
+msgstr "Descoperire automatÄƒ la feed eÅŸuatÄƒ! Nu s-a putut gÄƒsi nici un feed!"
 
 #: src/interface.c:139
 msgid "Liferea"
@@ -229,7 +229,7 @@ msgstr "_Program"
 
 #: src/interface.c:172
 msgid "Work Offline"
-msgstr "Lucraşi offline"
+msgstr "LucraÅ£i offline"
 
 #: src/interface.c:185
 msgid "_Feeds"
@@ -237,42 +237,42 @@ msgstr "_Feeduri"
 
 #: src/interface.c:192
 msgid "Update _Selected"
-msgstr "Updateazã cele _selectate"
+msgstr "UpdateazÄƒ cele _selectate"
 
 #: src/interface.c:195
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
-"Updateazã înscrierea selectatã sau toate înscrierele din directorul selectat."
+"UpdateazÄƒ Ã®nscrierea selectatÄƒ sau toate Ã®nscrierele din directorul selectat."
 
 #: src/interface.c:201
 msgid "Update _All"
-msgstr "_Updateazã toate"
+msgstr "_UpdateazÄƒ toate"
 
 #: src/interface.c:204 src/ui_mainwindow.c:164
 msgid "Updates all subscriptions. This does not update OCS directories."
-msgstr "Updateazã toate înscrierile. Nu va updata directoarele OCS."
+msgstr "UpdateazÄƒ toate Ã®nscrierile. Nu va updata directoarele OCS."
 
 #: src/interface.c:213
 msgid "_Mark Selected As Read"
-msgstr "_Marcheazã cele selectate ca citite"
+msgstr "_MarcheazÄƒ cele selectate ca citite"
 
 #: src/interface.c:216
 msgid ""
 "Marks all items of the current selected subscription or all of subscriptions "
 "of the selected folder as read."
 msgstr ""
-"Marcheazã toate articolele înscrierii curente sau toate înscrierele din "
+"MarcheazÄƒ toate articolele Ã®nscrierii curente sau toate Ã®nscrierele din "
 "directorul selectat ca citite."
 
 #: src/interface.c:225
 msgid "Mark All As _Read"
-msgstr "Marcheazã toate ca Citite"
+msgstr "MarcheazÄƒ toate ca Citite"
 
 #: src/interface.c:238
 msgid "_New Subscription..."
-msgstr "Înscriere _Nouã..."
+msgstr "Ãnscriere _NouÄƒ..."
 
 #: src/interface.c:246
 msgid "New _Folder..."
@@ -280,35 +280,35 @@ msgstr "Director _nou..."
 
 #: src/interface.c:259
 msgid "_Properties..."
-msgstr "_Proprietãşi..."
+msgstr "_ProprietÄƒÅ£i..."
 
 #: src/interface.c:262
 msgid "Opens the property dialog for the selected subscription."
-msgstr "Deschideşi dialogul de proprietãşi pentru înscrierea selectatã."
+msgstr "DeschideÅ£i dialogul de proprietÄƒÅ£i pentru Ã®nscrierea selectatÄƒ."
 
 #: src/interface.c:268
 msgid "_Delete Selected"
-msgstr "_ªterge cel selectat"
+msgstr "_Återge cel selectat"
 
 #: src/interface.c:271
 msgid "Removes the selected subscription."
-msgstr "ªtergeşi înscrierea selectatã."
+msgstr "ÅtergeÅ£i Ã®nscrierea selectatÄƒ."
 
 #: src/interface.c:282
 msgid "_Import Feed List..."
-msgstr "_Importã lista de feed-uri..."
+msgstr "_ImportÄƒ lista de feed-uri..."
 
 #: src/interface.c:285
 msgid "Imports an OPML feed list."
-msgstr "Importã o lista OPML de feeduri."
+msgstr "ImportÄƒ o lista OPML de feeduri."
 
 #: src/interface.c:291
 msgid "_Export Feed List..."
-msgstr "_Exportã lista de feeduri..."
+msgstr "_ExportÄƒ lista de feeduri..."
 
 #: src/interface.c:294
 msgid "Exports the feed list as OPML."
-msgstr "Exportã lista de feeduri ca OPML."
+msgstr "ExportÄƒ lista de feeduri ca OPML."
 
 #: src/interface.c:300
 msgid "_Items"
@@ -316,103 +316,103 @@ msgstr "_Articole"
 
 #: src/interface.c:307
 msgid "_Next Unread Item"
-msgstr "_Urmãtorul Articol necitit"
+msgstr "_UrmÄƒtorul Articol necitit"
 
 #: src/interface.c:310 src/ui_mainwindow.c:162
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
 msgstr ""
-"Sari la urmãtorul articol necitit. Dacã este necesar selecteazã feed-ul cu "
+"Sari la urmÄƒtorul articol necitit. DacÄƒ este necesar selecteazÄƒ feed-ul cu "
 "articole necitite."
 
 #: src/interface.c:324
 msgid "Toggle _Read Status"
-msgstr "Comutã statutul de _citire"
+msgstr "ComutÄƒ statutul de _citire"
 
 #: src/interface.c:327
 msgid "Toggles the read status of the selected item."
-msgstr "Activeazã statutul de citire pentru elementele selectate."
+msgstr "ActiveazÄƒ statutul de citire pentru elementele selectate."
 
 #: src/interface.c:336
 msgid "Toggle Item _Flag"
-msgstr "Comutã _Steagul Articolului"
+msgstr "ComutÄƒ _Steagul Articolului"
 
 #: src/interface.c:339
 msgid "Toggles the item flag."
-msgstr "Comutã steagul articolului."
+msgstr "ComutÄƒ steagul articolului."
 
 #: src/interface.c:344
 msgid "Remove Selected"
-msgstr "ªterge cel selectat"
+msgstr "Återge cel selectat"
 
 #: src/interface.c:347
 msgid "Removes the selected item."
-msgstr "ªterge articolul selectat."
+msgstr "Återge articolul selectat."
 
 #: src/interface.c:353
 msgid "Remove All"
-msgstr "ªtergeşi toate"
+msgstr "ÅtergeÅ£i toate"
 
 #: src/interface.c:356
 msgid "Removes all items of the currently selected feed."
-msgstr "ªtergeşi toate elementele din feedul curent selectat."
+msgstr "ÅtergeÅ£i toate elementele din feedul curent selectat."
 
 #: src/interface.c:367
 msgid "_Launch In Browser"
-msgstr "_Lanseazã în navigator"
+msgstr "_LanseazÄƒ Ã®n navigator"
 
 #: src/interface.c:370
 msgid "Launches the item's link in the configured browser."
-msgstr "Lanseazã legãturile la articole în navigatorul configurat."
+msgstr "LanseazÄƒ legÄƒturile la articole Ã®n navigatorul configurat."
 
 #: src/interface.c:372
 msgid "_View"
-msgstr "_Vizualizeazã"
+msgstr "_VizualizeazÄƒ"
 
 #: src/interface.c:379
 msgid "_Increase Text Size"
-msgstr "_Mãrişi mãrimea textului"
+msgstr "_MÄƒriÅ£i mÄƒrimea textului"
 
 #: src/interface.c:382
 msgid "Increases the text size of the item view."
-msgstr "Mãrişi mãrimea textului a articolului vizualizat."
+msgstr "MÄƒriÅ£i mÄƒrimea textului a articolului vizualizat."
 
 #: src/interface.c:391
 msgid "_Decrease Text Size"
-msgstr "_Micºoraşi mãrimea textului"
+msgstr "_MicÅŸoraÅ£i mÄƒrimea textului"
 
 #: src/interface.c:394
 msgid "Decreases the text size of the item view."
-msgstr "Micºoarezã mãrimea textului al elementului vizualizat."
+msgstr "MicÅŸoarezÄƒ mÄƒrimea textului al elementului vizualizat."
 
 #: src/interface.c:408
 msgid "Toggle _Condensed View"
-msgstr "Comutã vederea _condensatã"
+msgstr "ComutÄƒ vederea _condensatÄƒ"
 
 #: src/interface.c:411
 msgid "Toggles the item list mode between condensed and normal mode."
-msgstr "Schimbã modurile dintre vedere condensatã si vedere normalã."
+msgstr "SchimbÄƒ modurile dintre vedere condensatÄƒ si vedere normalÄƒ."
 
 #: src/interface.c:413
 msgid "_Search"
-msgstr "_Cautã"
+msgstr "_CautÄƒ"
 
 #: src/interface.c:420
 msgid "Toggle Search Box"
-msgstr "Comutã bara de cãutare"
+msgstr "ComutÄƒ bara de cÄƒutare"
 
 #: src/interface.c:423
 msgid "Shows or hides the search box."
-msgstr "Afiºeazã sau ascunde bara de search."
+msgstr "AfiÅŸeazÄƒ sau ascunde bara de search."
 
 #: src/interface.c:429
 msgid "Search with Feedster..."
-msgstr "Cautã cu Feedster..."
+msgstr "CautÄƒ cu Feedster..."
 
 #: src/interface.c:432
 msgid "Creates a Feedster search feed."
-msgstr "Creazã un feed de cãutare Feedster."
+msgstr "CreazÄƒ un feed de cÄƒutare Feedster."
 
 #: src/interface.c:438
 msgid "_Help"
@@ -424,32 +424,32 @@ msgstr "Despre"
 
 #: src/interface.c:448
 msgid "Shows an about dialog."
-msgstr "Afiºeazã dialogul despre."
+msgstr "AfiÅŸeazÄƒ dialogul despre."
 
 #: src/interface.c:486
 msgid "Search for"
-msgstr "Cautã dupã"
+msgstr "CautÄƒ dupÄƒ"
 
 #: src/interface.c:497
 msgid ""
 "Starts a search for all items that do match the given search string either "
 "in title or content."
 msgstr ""
-"Pornişi o cãutare pentru toate articolele la care se potrivesc atât din "
-"titlu cât ºi din conşinutul articolului."
+"PorniÅ£i o cÄƒutare pentru toate articolele la care se potrivesc atÃ¢t din "
+"titlu cÃ¢t ÅŸi din conÅ£inutul articolului."
 
 #: src/interface.c:507
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr ""
-"salveazã aceastã cãutare ca un VFolder, care va apãrea în lista de feeduri"
+"salveazÄƒ aceastÄƒ cÄƒutare ca un VFolder, care va apÄƒrea Ã®n lista de feeduri"
 
 #: src/interface.c:528
 msgid "Close search"
-msgstr "Închide cãutarea"
+msgstr "Ãnchide cÄƒutarea"
 
 #: src/interface.c:562
 msgid "single item view"
-msgstr "vedere singularã a articolelor"
+msgstr "vedere singularÄƒ a articolelor"
 
 #: src/interface.c:570
 msgid "label133"
@@ -461,7 +461,7 @@ msgstr "Titluri"
 
 #: src/interface.c:902
 msgid "Subscription Properties"
-msgstr "Proprietãşile înscrierii"
+msgstr "ProprietÄƒÅ£ile Ã®nscrierii"
 
 #: src/interface.c:923
 msgid "<span weight=\"bold\">Feed Name</span>"
@@ -490,7 +490,7 @@ msgstr "<span weight=\"bold\">Intervalul de update</span>"
 
 #: src/interface.c:974
 msgid "_Use global default update interval."
-msgstr "_Foloseºte intervalul de update global."
+msgstr "_FoloseÅŸte intervalul de update global."
 
 #: src/interface.c:984
 msgid "_Feed specific update interval of"
@@ -511,7 +511,7 @@ msgstr " "
 #: src/interface.c:1013
 #, c-format
 msgid "This feed provider suggests an update interval of %d minutes."
-msgstr "Providerul acestui feed sugereazã un interval de update de %d minute."
+msgstr "Providerul acestui feed sugereazÄƒ un interval de update de %d minute."
 
 #: src/interface.c:1020
 msgid "General"
@@ -527,15 +527,15 @@ msgstr "_URL"
 
 #: src/interface.c:1068 src/interface.c:1478
 msgid "_Command"
-msgstr "_Comandã"
+msgstr "_ComandÄƒ"
 
 #: src/interface.c:1078 src/interface.c:1488
 msgid "Local _File"
-msgstr "_Fiºier Local"
+msgstr "_FiÅŸier Local"
 
 #: src/interface.c:1088 src/interface.c:1498
 msgid "_Select File..."
-msgstr "_Selectaşi fiºierul..."
+msgstr "_SelectaÅ£i fiÅŸierul..."
 
 #: src/interface.c:1098 src/interface.c:1508
 msgid "Source Type:"
@@ -543,7 +543,7 @@ msgstr "Tipul sursei:"
 
 #: src/interface.c:1122 src/interface.c:1532
 msgid "Use conversion filter"
-msgstr "Folosişi filtrul de conversie"
+msgstr "FolosiÅ£i filtrul de conversie"
 
 #: src/interface.c:1137 src/interface.c:1547
 msgid ""
@@ -552,16 +552,16 @@ msgid ""
 "information."
 msgstr ""
 "Liferea poate folosi plugin-uri externe pentru a accesa feed-urile si "
-"directoarele pentru formate nesuportate. Uitaşi-vã la documentaşie pentru "
-"mai multe informaşii."
+"directoarele pentru formate nesuportate. UitaÅ£i-vÄƒ la documentaÅ£ie pentru "
+"mai multe informaÅ£ii."
 
 #: src/interface.c:1151 src/interface.c:1561
 msgid "Convert using:"
-msgstr "Converteºte folosind:"
+msgstr "ConverteÅŸte folosind:"
 
 #: src/interface.c:1159 src/interface.c:1569
 msgid "Select File..."
-msgstr "Selectaşi fiºierul..."
+msgstr "SelectaÅ£i fiÅŸierul..."
 
 #: src/interface.c:1163
 msgid "Feed Source"
@@ -572,16 +572,16 @@ msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
 msgstr ""
-"Setãrile pentru controlul cache-ului dacã conşinutul feed-urilor sunt "
-"salvate când se închide Liferea. Elemtele marcate sunt întotdeauna salvate."
+"SetÄƒrile pentru controlul cache-ului dacÄƒ conÅ£inutul feed-urilor sunt "
+"salvate cÃ¢nd se Ã®nchide Liferea. Elemtele marcate sunt Ã®ntotdeauna salvate."
 
 #: src/interface.c:1179
 msgid "_Default cache settings"
-msgstr "Setãrile _default pentru cache"
+msgstr "SetÄƒrile _default pentru cache"
 
 #: src/interface.c:1185
 msgid "Di_sable cache"
-msgstr "De_zactivaşi cache-ul"
+msgstr "De_zactivaÅ£i cache-ul"
 
 #: src/interface.c:1191
 msgid "_Unlimited cache"
@@ -589,7 +589,7 @@ msgstr "Cache _nelimitat"
 
 #: src/interface.c:1201
 msgid "_Limit cache to"
-msgstr "_Limiteazã cache-ul la"
+msgstr "_LimiteazÄƒ cache-ul la"
 
 #: src/interface.c:1214
 msgid "items."
@@ -601,7 +601,7 @@ msgstr "Cache-ul feedului"
 
 #: src/interface.c:1227
 msgid "Use HTTP _authentication"
-msgstr "Folosişi _autenficare HTTP"
+msgstr "FolosiÅ£i _autenficare HTTP"
 
 #: src/interface.c:1245 src/interface.c:3487
 msgid "User_name:"
@@ -617,23 +617,23 @@ msgstr "Autentificare"
 
 #: src/interface.c:1421
 msgid "New Subscription"
-msgstr "Înscriere nouã"
+msgstr "Ãnscriere nouÄƒ"
 
 #: src/interface.c:1827
 msgid "Liferea Preferences"
-msgstr "Preferinşe la Liferea"
+msgstr "PreferinÅ£e la Liferea"
 
 #: src/interface.c:1851
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
-msgstr "<span weight=\"bold\">Setãrile pentru cacheul feedului</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile pentru cacheul feedului</span>"
 
 #: src/interface.c:1874
 msgid "Default number of items per feed to save:"
-msgstr "Numãrul predefinit de articole per feed sã fie salvate:"
+msgstr "NumÄƒrul predefinit de articole per feed sÄƒ fie salvate:"
 
 #: src/interface.c:1890
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
-msgstr "<span weight=\"bold\">Setãrile pentru updateurile la feed</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile pentru updateurile la feed</span>"
 
 #: src/interface.c:1913
 msgid "Default Feed Refresh _Interval:"
@@ -645,9 +645,9 @@ msgid ""
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
 "default set the interval to 0 minutes.</i>"
 msgstr ""
-"Notã: <i>Vã rugãm sã selectaşi un interval normal, nu e recomandat sã setaşi "
-"ca la  fiecare 15 minute sã fie updatat feedul! Ca sã dezactivaşi updatarea "
-"automatã setaşi intervalul la 0.</i>"
+"NotÄƒ: <i>VÄƒ rugÄƒm sÄƒ selectaÅ£i un interval normal, nu e recomandat sÄƒ setaÅ£i "
+"ca la  fiecare 15 minute sÄƒ fie updatat feedul! Ca sÄƒ dezactivaÅ£i updatarea "
+"automatÄƒ setaÅ£i intervalul la 0.</i>"
 
 #: src/interface.c:1938
 msgid "At _startup:"
@@ -655,15 +655,15 @@ msgstr "La _pornire:"
 
 #: src/interface.c:1950
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
-msgstr "<span weight=\"bold\">Setãrile pentru încãrcarea feedului</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile pentru Ã®ncÄƒrcarea feedului</span>"
 
 #: src/interface.c:1969
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds."
 msgstr ""
-"_Încãrcaşi feedurile de pe disc la nevoie. Cãutarea este \n"
-"lentã dacã aveşi multe feeduri."
+"_ÃncÄƒrcaÅ£i feedurile de pe disc la nevoie. CÄƒutarea este \n"
+"lentÄƒ dacÄƒ aveÅ£i multe feeduri."
 
 #: src/interface.c:1976
 msgid ""
@@ -672,9 +672,9 @@ msgid ""
 "significant memory footprint if you have a lot \n"
 "of feeds!"
 msgstr ""
-"_Şineşi încãrcate toate feedurile. Va îmbunãtãşi viteza \n"
-"(în special la cãutare) dar va consuma foarte multã \n"
-"memorie dacã aveşi multe feeduri!"
+"_Å¢ineÅ£i Ã®ncÄƒrcate toate feedurile. Va Ã®mbunÄƒtÄƒÅ£i viteza \n"
+"(Ã®n special la cÄƒutare) dar va consuma foarte multÄƒ \n"
+"memorie dacÄƒ aveÅ£i multe feeduri!"
 
 #: src/interface.c:1982
 msgid "Feeds"
@@ -682,18 +682,18 @@ msgstr "Feeduri"
 
 #: src/interface.c:1995
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
-msgstr "<span weight=\"bold\">Setãrile pentru afiºarea directoarelor</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile pentru afiÅŸarea directoarelor</span>"
 
 #: src/interface.c:2013
 msgid "Show the items of all child feeds when a folder is selected."
-msgstr "Aratã elementele unui feed când este selectat un director."
+msgstr "AratÄƒ elementele unui feed cÃ¢nd este selectat un director."
 
 #: src/interface.c:2017
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
 msgstr ""
-"<i>Aceasta opşiune cauzeazã importante întârzieri când sunt încãrcate "
+"<i>Aceasta opÅ£iune cauzeazÄƒ importante Ã®ntÃ¢rzieri cÃ¢nd sunt Ã®ncÄƒrcate "
 "directoare cu multe feed-uri!</i>"
 
 #: src/interface.c:2028
@@ -702,7 +702,7 @@ msgstr "<span weight=\"bold\">Iconurile pentru feed (Favicons)</span>"
 
 #: src/interface.c:2047
 msgid "_Update all favicons now."
-msgstr "_Updateazã iconurile la feeduri acum."
+msgstr "_UpdateazÄƒ iconurile la feeduri acum."
 
 #: src/interface.c:2051
 msgid "Folders"
@@ -714,47 +714,47 @@ msgstr "<span weight=\"bold\">Citind Titlurile</span>"
 
 #: src/interface.c:2089
 msgid "Skim through articles with "
-msgstr "Navighezã printre articole cu "
+msgstr "NavighezÄƒ printre articole cu "
 
 #: src/interface.c:2099
 msgid "Space"
-msgstr "Spaşiu"
+msgstr "SpaÅ£iu"
 
 #: src/interface.c:2103
 msgid "<Ctrl> Space"
-msgstr "<Ctrl> Spaşiu"
+msgstr "<Ctrl> SpaÅ£iu"
 
 #: src/interface.c:2107
 msgid "<Alt> Space"
-msgstr "<Alt> Spaşiu"
+msgstr "<Alt> SpaÅ£iu"
 
 #: src/interface.c:2117
 msgid "<span weight=\"bold\">Date Column Settings</span>"
-msgstr "<span weight=\"bold\">Setãrile columnei cu data</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile columnei cu data</span>"
 
 #: src/interface.c:2136
 msgid "Display only time"
-msgstr "Afiºeazã numai timpul"
+msgstr "AfiÅŸeazÄƒ numai timpul"
 
 #: src/interface.c:2142
 msgid "Display date and time"
-msgstr "Afiºeazã data ºi ora"
+msgstr "AfiÅŸeazÄƒ data ÅŸi ora"
 
 #: src/interface.c:2152
 msgid "User defined format:"
-msgstr "Definişi propriul format:"
+msgstr "DefiniÅ£i propriul format:"
 
 #: src/interface.c:2161
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
 msgstr ""
-"pentru utilizatorii experimentaşi: specificaşi un format de timp, consultaşi "
+"pentru utilizatorii experimentaÅ£i: specificaÅ£i un format de timp, consultaÅ£i "
 "strftime() manpage pentru codurile de format"
 
 #: src/interface.c:2181
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
-msgstr "<span weight=\"bold\">Setãrile navigatorului intern</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile navigatorului intern</span>"
 
 #: src/interface.c:2199
 msgid ""
@@ -762,25 +762,25 @@ msgid ""
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
-"Liferea afiºeazã conşinutul feedurilor folosind mai multe rendere html. "
-"Depinde de ce rendere sunt instalate în calculator, diferite opşiuni vor fi "
-"disponibile.Restartaşi Liferea ca schimbãrile sã aibã efect."
+"Liferea afiÅŸeazÄƒ conÅ£inutul feedurilor folosind mai multe rendere html. "
+"Depinde de ce rendere sunt instalate Ã®n calculator, diferite opÅ£iuni vor fi "
+"disponibile.RestartaÅ£i Liferea ca schimbÄƒrile sÄƒ aibÄƒ efect."
 
 #: src/interface.c:2209
 msgid "View Headlines With"
-msgstr "Vedeşi titlurile cu"
+msgstr "VedeÅ£i titlurile cu"
 
 #: src/interface.c:2221
 msgid "Open links in Liferea's _window."
-msgstr "Deschide legãturile în _fereastra din Liferea"
+msgstr "Deschide legÄƒturile Ã®n _fereastra din Liferea"
 
 #: src/interface.c:2225
 msgid "_Disable Javascript."
-msgstr "_Dezactiveazã Javascript."
+msgstr "_DezactiveazÄƒ Javascript."
 
 #: src/interface.c:2233
 msgid "<span weight=\"bold\">External Browser Settings</span>"
-msgstr "<span weight=\"bold\">Setãrile navigatorului extern</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile navigatorului extern</span>"
 
 #: src/interface.c:2258
 msgid "_Browser:"
@@ -797,7 +797,7 @@ msgstr ""
 
 #: src/interface.c:2279
 msgid "_Open link in:"
-msgstr "_Deschide legãturile în:"
+msgstr "_Deschide legÄƒturile Ã®n:"
 
 #: src/interface.c:2302
 msgid "Browser"
@@ -805,19 +805,19 @@ msgstr "Navigator:"
 
 #: src/interface.c:2315
 msgid "<span weight=\"bold\">Notification Settings</span>"
-msgstr "<span weight=\"bold\">Setãrile notificãrii</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile notificÄƒrii</span>"
 
 #: src/interface.c:2333
 msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
 msgstr ""
-"Afiºeazã un _icon în zona de notificare \n"
-"în systray."
+"AfiÅŸeazÄƒ un _icon Ã®n zona de notificare \n"
+"Ã®n systray."
 
 #: src/interface.c:2350
 msgid "Show a _popup window with new headlines."
-msgstr "Afiºeazã o fereastrã cu noile titluri."
+msgstr "AfiÅŸeazÄƒ o fereastrÄƒ cu noile titluri."
 
 #: src/interface.c:2359
 msgid "         "
@@ -833,11 +833,11 @@ msgstr "Sus dreapta"
 
 #: src/interface.c:2391
 msgid "Upper Left"
-msgstr "Sus stânga"
+msgstr "Sus stÃ¢nga"
 
 #: src/interface.c:2399
 msgid "Lower Left"
-msgstr "Jos stânga"
+msgstr "Jos stÃ¢nga"
 
 #: src/interface.c:2407
 msgid "<b>Popup Placement</b>"
@@ -845,19 +845,19 @@ msgstr "<b>Amplasare Popup</b>"
 
 #: src/interface.c:2418
 msgid "<span weight=\"bold\">Menu Settings</span>"
-msgstr "<span weight=\"bold\">Setãrile meniului</span>"
+msgstr "<span weight=\"bold\">SetÄƒrile meniului</span>"
 
 #: src/interface.c:2437
 msgid "Show Menu _And Toolbar"
-msgstr "Afiºeazã meniul ºi bara de unelte"
+msgstr "AfiÅŸeazÄƒ meniul ÅŸi bara de unelte"
 
 #: src/interface.c:2443
 msgid "Show _Menu Only"
-msgstr "Afiºeazã numai meniul"
+msgstr "AfiÅŸeazÄƒ numai meniul"
 
 #: src/interface.c:2449
 msgid "Show _Toolbar Only"
-msgstr "Afiºeazã numai bara de unelte"
+msgstr "AfiÅŸeazÄƒ numai bara de unelte"
 
 #: src/interface.c:2455
 msgid "GUI"
@@ -874,14 +874,14 @@ msgid ""
 "will affect other applications! This dialog is primarily for users without "
 "GNOME to be able to use Liferea with a proxy."
 msgstr ""
-"Liferea refoloseºte setãrile GNOME pentru proxy. Dacã folosişi GNOME puteşi "
-"schimba aceste setãri din GNOME Control Center. Notã: schimbând aceste "
-"setãri vor afecta ºi alte aplicaşii! Acest dialog este pentru utilizatorii "
-"care nu folosesc GNOME ºi care doresc sã foloseascã Liferea cu un proxy."
+"Liferea refoloseÅŸte setÄƒrile GNOME pentru proxy. DacÄƒ folosiÅ£i GNOME puteÅ£i "
+"schimba aceste setÄƒri din GNOME Control Center. NotÄƒ: schimbÃ¢nd aceste "
+"setÄƒri vor afecta ÅŸi alte aplicaÅ£ii! Acest dialog este pentru utilizatorii "
+"care nu folosesc GNOME ÅŸi care doresc sÄƒ foloseascÄƒ Liferea cu un proxy."
 
 #: src/interface.c:2501
 msgid "_Enable Proxy"
-msgstr "_Activaşi Proxy-ului"
+msgstr "_ActivaÅ£i Proxy-ului"
 
 #: src/interface.c:2523
 msgid "Proxy _Host:"
@@ -893,7 +893,7 @@ msgstr "Portul Proxy-ului:"
 
 #: src/interface.c:2551
 msgid "Use Proxy _Authentication"
-msgstr "Folosişi _autenficare prin Proxy"
+msgstr "FolosiÅ£i _autenficare prin Proxy"
 
 #: src/interface.c:2569
 msgid "Proxy _Username:"
@@ -909,27 +909,27 @@ msgstr "Proxy"
 
 #: src/interface.c:2611
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
-msgstr "<span weight=\"bold\">Se downloadeazã ataºamentele</span>"
+msgstr "<span weight=\"bold\">Se downloadeazÄƒ ataÅŸamentele</span>"
 
 #: src/interface.c:2631
 msgid "Download using"
-msgstr "Downloadeazã folosind"
+msgstr "DownloadeazÄƒ folosind"
 
 #: src/interface.c:2638
 msgid "Save downloads in"
-msgstr "Salveazã downloadurile în"
+msgstr "SalveazÄƒ downloadurile Ã®n"
 
 #: src/interface.c:2669
 msgid "Browse"
-msgstr "Navigheazã"
+msgstr "NavigheazÄƒ"
 
 #: src/interface.c:2673
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
-msgstr "<span weight=\"bold\">Se deschid ataºamentele</span>"
+msgstr "<span weight=\"bold\">Se deschid ataÅŸamentele</span>"
 
 #: src/interface.c:2714
 msgid "Enclosures"
-msgstr "Ataºamente"
+msgstr "AtaÅŸamente"
 
 #: src/interface.c:3042
 msgid "New Folder"
@@ -941,23 +941,23 @@ msgstr "Numele directorului:"
 
 #: src/interface.c:3123
 msgid "Rename Folder"
-msgstr "Redenumişi directorul"
+msgstr "RedenumiÅ£i directorul"
 
 #: src/interface.c:3204
 msgid "Feedster Search"
-msgstr "Cãutare cu Feedster"
+msgstr "CÄƒutare cu Feedster"
 
 #: src/interface.c:3219
 msgid "Search for:"
-msgstr "Cautã dupã:"
+msgstr "CautÄƒ dupÄƒ:"
 
 #: src/interface.c:3226
 msgid "enter any search string you want"
-msgstr "introduceşi orice ºir dorişi"
+msgstr "introduceÅ£i orice ÅŸir doriÅ£i"
 
 #: src/interface.c:3233
 msgid "Maximal Number Of Result Items:"
-msgstr "Numãrul maxim de articole rezultate:"
+msgstr "NumÄƒrul maxim de articole rezultate:"
 
 #: src/interface.c:3242
 msgid ""
@@ -965,13 +965,13 @@ msgid ""
 "Feedster results for the specified search string. You can keep this feed "
 "permanently and update it like any other subscription.  "
 msgstr ""
-"Notã: Liferea va genera un feed care va fi folosit pentru a fi salvatã "
-"cererea de cãutare cu Feedster. Puteşi pãstra acest feed permanent ºi sã îl "
-"updataşi ca orice alt feed.  "
+"NotÄƒ: Liferea va genera un feed care va fi folosit pentru a fi salvatÄƒ "
+"cererea de cÄƒutare cu Feedster. PuteÅ£i pÄƒstra acest feed permanent ÅŸi sÄƒ Ã®l "
+"updataÅ£i ca orice alt feed.  "
 
 #: src/interface.c:3339
 msgid "Liferea is a news aggregator for GTK+"
-msgstr "Liferea este un cititor de ºtiri pentru GTK+"
+msgstr "Liferea este un cititor de ÅŸtiri pentru GTK+"
 
 #: src/interface.c:3349
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
@@ -1056,19 +1056,19 @@ msgstr "Traducere"
 #: src/interface.c:3475 src/ui_feed.c:623
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "Introduceşi userul ºi parola pentru \"%s\" (%s):"
+msgstr "IntroduceÅ£i userul ÅŸi parola pentru \"%s\" (%s):"
 
 #: src/interface.c:3516
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
-"Notã:<i>Userul ºi parola vor fi salvate în lista de feeduri fãrã a se folosi "
-"vreo metodã de encriptare.</i>"
+"NotÄƒ:<i>Userul ÅŸi parola vor fi salvate Ã®n lista de feeduri fÄƒrÄƒ a se folosi "
+"vreo metodÄƒ de encriptare.</i>"
 
 #: src/interface.c:3582
 msgid "VFolder Properties"
-msgstr "Proprietãşi la directoarele virtuale"
+msgstr "ProprietÄƒÅ£i la directoarele virtuale"
 
 #: src/interface.c:3598
 msgid "Name"
@@ -1079,9 +1079,9 @@ msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
 msgstr ""
-"Notã: Articolele sunt adãugate în directorul virtual dacã cel puşin o "
-"regulã\n"
-"se potriveºte. Ele sunt ºterse dacã nu se potriveºte nici o regulã."
+"NotÄƒ: Articolele sunt adÄƒugate Ã®n directorul virtual dacÄƒ cel puÅ£in o "
+"regulÄƒ\n"
+"se potriveÅŸte. Ele sunt ÅŸterse dacÄƒ nu se potriveÅŸte nici o regulÄƒ."
 
 #: src/interface.c:3640
 msgid "Rules"
@@ -1089,11 +1089,11 @@ msgstr "Reguli"
 
 #: src/interface.c:3701
 msgid "Downloading Enclosure"
-msgstr "Downloadeazã ataºament"
+msgstr "DownloadeazÄƒ ataÅŸament"
 
 #: src/interface.c:3716
 msgid "Downloading an enclosure of type:"
-msgstr "Downloadeazã un ataºament de tipul:"
+msgstr "DownloadeazÄƒ un ataÅŸament de tipul:"
 
 #: src/interface.c:3721
 msgid "<b>text/plain</b>"
@@ -1105,21 +1105,21 @@ msgid ""
 "want to be executed below. The downloaded file will be supplied as an "
 "argument for this command:"
 msgstr ""
-"Ce dorişi sã realizeze Liferea cu ataºamentele ? Vã rog introduceşi mai jos "
-"comanda care dorişi sã fie executatã. Fiºierul de downloadat va fi adãugat "
-"ca argument la aceastã comandã:"
+"Ce doriÅ£i sÄƒ realizeze Liferea cu ataÅŸamentele ? VÄƒ rog introduceÅ£i mai jos "
+"comanda care doriÅ£i sÄƒ fie executatÄƒ. FiÅŸierul de downloadat va fi adÄƒugat "
+"ca argument la aceastÄƒ comandÄƒ:"
 
 #: src/interface.c:3741
 msgid "_Browse"
-msgstr "_Navigheazã"
+msgstr "_NavigheazÄƒ"
 
 #: src/interface.c:3745
 msgid "_Do this automatically for files like this from now on."
-msgstr "_Realizeazã de acuma automat pentru fiºierele de acelaºi tip."
+msgstr "_RealizeazÄƒ de acuma automat pentru fiÅŸierele de acelaÅŸi tip."
 
 #: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:211
 msgid "[No title]"
-msgstr "[Fãrã titlu]"
+msgstr "[FÄƒrÄƒ titlu]"
 
 #: src/item.c:232 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
@@ -1131,64 +1131,64 @@ msgstr "data"
 
 #: src/main.c:68
 msgid "  --version        Print version information and exit"
-msgstr "  --versiune        Afiºeazã versiunea ºi ieºişi"
+msgstr "  --versiune        AfiÅŸeazÄƒ versiunea ÅŸi ieÅŸiÅ£i"
 
 #: src/main.c:69
 msgid "  --help           Print this help and exit"
-msgstr "  --help           Afiºeazã acest mesaj ºi iasã"
+msgstr "  --help           AfiÅŸeazÄƒ acest mesaj ÅŸi iasÄƒ"
 
 #: src/main.c:70
 msgid "  --iconify        Start the program iconified"
-msgstr "  --iconify        Porneºte programul iconificat"
+msgstr "  --iconify        PorneÅŸte programul iconificat"
 
 #: src/main.c:72
 msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr ""
-"  --debug-cache    Afiºeazã mesaje de debug pentru manipularea cache-ului"
+"  --debug-cache    AfiÅŸeazÄƒ mesaje de debug pentru manipularea cache-ului"
 
 #: src/main.c:73
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
 msgstr ""
-"  --debug-conf     Afiºeazã mesaje de debug pentru manipularea configurãrii"
+"  --debug-conf     AfiÅŸeazÄƒ mesaje de debug pentru manipularea configurÄƒrii"
 
 #: src/main.c:74
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
-msgstr "  --debug-update   Afiºeazã debug pentru updatarea feedurilor"
+msgstr "  --debug-update   AfiÅŸeazÄƒ debug pentru updatarea feedurilor"
 
 #: src/main.c:75
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
-msgstr "  --debug-parsing  Afiºeazã debug pentru funcşiile de parcurgere"
+msgstr "  --debug-parsing  AfiÅŸeazÄƒ debug pentru funcÅ£iile de parcurgere"
 
 #: src/main.c:76
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
-msgstr "  --debug-gui      Afiºeazã debug pentru funcşiile GUI"
+msgstr "  --debug-gui      AfiÅŸeazÄƒ debug pentru funcÅ£iile GUI"
 
 #: src/main.c:77
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
-"  --debug-trace    Afiºeazã mesaje de debug când se intrã ºi se iasã din "
-"funcşii"
+"  --debug-trace    AfiÅŸeazÄƒ mesaje de debug cÃ¢nd se intrÄƒ ÅŸi se iasÄƒ din "
+"funcÅ£ii"
 
 #: src/main.c:78
 msgid "  --debug-all      Print debugging messages of all types"
-msgstr "  --debug-all      Afiºeazã toate mesajele de debug"
+msgstr "  --debug-all      AfiÅŸeazÄƒ toate mesajele de debug"
 
 #: src/main.c:79
 msgid "  --debug-verbose  Print verbose debugging messages"
-msgstr "  --debug-verbose  Afiºeazã verbal toate mesajele de debug"
+msgstr "  --debug-verbose  AfiÅŸeazÄƒ verbal toate mesajele de debug"
 
 #: src/main.c:222
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
-msgstr "Argumentul sesiunii trebuie sã aibã un paramentru.\n"
+msgstr "Argumentul sesiunii trebuie sÄƒ aibÄƒ un paramentru.\n"
 
 #: src/main.c:225
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
-msgstr "Liferea a întâlnit un argument necunoscut: %s\n"
+msgstr "Liferea a Ã®ntÃ¢lnit un argument necunoscut: %s\n"
 
 #: src/main.c:244
 msgid ""
@@ -1196,8 +1196,8 @@ msgid ""
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
 "lock\" lock file."
 msgstr ""
-"O altã copie a Liferea ruleazã în sistem. Vã rog folosişi aceastã instanşã. "
-"Dacã nu ruleazã alt Liferea vã rog sã ºtergeşi fiºierul \"~/.liferea/lock\"."
+"O altÄƒ copie a Liferea ruleazÄƒ Ã®n sistem. VÄƒ rog folosiÅ£i aceastÄƒ instanÅ£Äƒ. "
+"DacÄƒ nu ruleazÄƒ alt Liferea vÄƒ rog sÄƒ ÅŸtergeÅ£i fiÅŸierul \"~/.liferea/lock\"."
 
 #. types for slash
 #. This one should only be set, not appended
@@ -1227,11 +1227,11 @@ msgstr "limba"
 
 #: src/metadata.c:342
 msgid "feed published on"
-msgstr "feed publicat în"
+msgstr "feed publicat Ã®n"
 
 #: src/metadata.c:343
 msgid "content last updated"
-msgstr "când a fost updatat ultima oarã"
+msgstr "cÃ¢nd a fost updatat ultima oarÄƒ"
 
 #: src/metadata.c:344
 msgid "managing editor"
@@ -1248,12 +1248,12 @@ msgstr "categorie"
 #. types for admin
 #: src/metadata.c:354
 msgid "report errors to"
-msgstr "raporteazã erorile la"
+msgstr "raporteazÄƒ erorile la"
 
 #. types for aggregation
 #: src/metadata.c:358
 msgid "original source"
-msgstr "sursa originalã"
+msgstr "sursa originalÄƒ"
 
 #: src/metadata.c:359
 msgid "original time"
@@ -1262,7 +1262,7 @@ msgstr "timpul original"
 #. types for creative commons
 #: src/metadata.c:365
 msgid "license"
-msgstr "licenşã"
+msgstr "licenÅ£Äƒ"
 
 #. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
 #: src/metadata.c:368
@@ -1302,11 +1302,11 @@ msgstr "Cookie pentru %s a expirat!"
 
 #: src/ns_dc.c:193 src/ns_ocs.c:93
 msgid "internal OCS namespace parsing error!"
-msgstr "eroare internã la parcurgerea OCS!"
+msgstr "eroare internÄƒ la parcurgerea OCS!"
 
 #: src/ns_photo.c:39
 msgid "included photo"
-msgstr "fotografie inclusã"
+msgstr "fotografie inclusÄƒ"
 
 #: src/ocs_dir.c:100
 msgid "Feed"
@@ -1319,23 +1319,23 @@ msgstr "nici un namespace handler pentru <%s:%s>!\n"
 
 #: src/ocs_dir.c:459
 msgid "<p>Could not find RDF header!</p>"
-msgstr "<p>Nu s-a putut gãsi capãtul RDF-ului!</p>"
+msgstr "<p>Nu s-a putut gÄƒsi capÄƒtul RDF-ului!</p>"
 
 #: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:288 src/rss_channel.c:328
 msgid "There were errors while parsing this feed!"
-msgstr "Au fost erori în timp ce se parcurgea feed-ul!"
+msgstr "Au fost erori Ã®n timp ce se parcurgea feed-ul!"
 
 #: src/opml.c:151
 msgid "<p>Could not find OPML header!</p>"
-msgstr "<p>Nu s-a putut gãsi capãtul OPML-ului !</p>"
+msgstr "<p>Nu s-a putut gÄƒsi capÄƒtul OPML-ului !</p>"
 
 #: src/pie_feed.c:167
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
-msgstr "<p>Nu s-a putut gãsi capãtul Atom/Echo/PIE -ului!</p>"
+msgstr "<p>Nu s-a putut gÄƒsi capÄƒtul Atom/Echo/PIE -ului!</p>"
 
 #: src/rss_channel.c:246
 msgid "<p>Could not find RDF/RSS header!</p>"
-msgstr "<p>Nu s-a putut gãsi capetele RDF/RSS-urilor !</p>"
+msgstr "<p>Nu s-a putut gÄƒsi capetele RDF/RSS-urilor !</p>"
 
 #: src/rule.c:133
 msgid "Item"
@@ -1343,11 +1343,11 @@ msgstr "Articol"
 
 #: src/rule.c:133
 msgid "does contain"
-msgstr "conşine"
+msgstr "conÅ£ine"
 
 #: src/rule.c:133
 msgid "does not contain"
-msgstr "nu conşine"
+msgstr "nu conÅ£ine"
 
 #: src/rule.c:134
 msgid "Item title"
@@ -1355,11 +1355,11 @@ msgstr "Titlul articolului"
 
 #: src/rule.c:134 src/rule.c:135
 msgid "does match"
-msgstr "se potriveºte"
+msgstr "se potriveÅŸte"
 
 #: src/rule.c:134 src/rule.c:135
 msgid "does not match"
-msgstr "nu se potriveºte"
+msgstr "nu se potriveÅŸte"
 
 #: src/rule.c:135
 msgid "Item body"
@@ -1392,19 +1392,19 @@ msgstr "este nemarcat"
 #: src/support.c:90 src/support.c:114
 #, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr "Nu s-a putut gãsi fiºierul imagine: %s"
+msgstr "Nu s-a putut gÄƒsi fiÅŸierul imagine: %s"
 
 #: src/ui_feed.c:66
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
-"Nu sunteşi autorizat sã descãrcaşi acest feed. Introduceşi userul ºi parola "
-"în fereastra de proprietãşi a feedului."
+"Nu sunteÅ£i autorizat sÄƒ descÄƒrcaÅ£i acest feed. IntroduceÅ£i userul ÅŸi parola "
+"Ã®n fereastra de proprietÄƒÅ£i a feedului."
 
 #: src/ui_feed.c:68
 msgid "Payment Required"
-msgstr "Platã necesarã"
+msgstr "PlatÄƒ necesarÄƒ"
 
 #: src/ui_feed.c:69
 msgid "Access Forbidden"
@@ -1412,11 +1412,11 @@ msgstr "Acces Interzis"
 
 #: src/ui_feed.c:70
 msgid "Resource Not Found"
-msgstr "Nu au fost gãsite resursele"
+msgstr "Nu au fost gÄƒsite resursele"
 
 #: src/ui_feed.c:71
 msgid "Method Not Allowed"
-msgstr "Metoda nu este acceptatã"
+msgstr "Metoda nu este acceptatÄƒ"
 
 #: src/ui_feed.c:72
 msgid "Not Acceptable"
@@ -1424,15 +1424,15 @@ msgstr "Nu este acceptabil"
 
 #: src/ui_feed.c:73
 msgid "Proxy Authentication Required"
-msgstr "Identificare prin proxy necesarã"
+msgstr "Identificare prin proxy necesarÄƒ"
 
 #: src/ui_feed.c:74
 msgid "Request Time-Out"
-msgstr "Cerere expiratã"
+msgstr "Cerere expiratÄƒ"
 
 #: src/ui_feed.c:75
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "S-a închis, feedul nu mai existã. Vã rugãm dezabonaşivã!"
+msgstr "S-a Ã®nchis, feedul nu mai existÄƒ. VÄƒ rugÄƒm dezabonaÅ£ivÄƒ!"
 
 #: src/ui_feed.c:80
 msgid "URL is invalid"
@@ -1440,42 +1440,42 @@ msgstr "URL este invalid"
 
 #: src/ui_feed.c:83
 msgid "Error connecting to remote host"
-msgstr "Eroare la conectarea la distanşã"
+msgstr "Eroare la conectarea la distanÅ£Äƒ"
 
 #: src/ui_feed.c:84
 msgid "Hostname could not be found"
-msgstr "Nu s-a putut gãsi numele gazdei"
+msgstr "Nu s-a putut gÄƒsi numele gazdei"
 
 #: src/ui_feed.c:85
 msgid "Network connection was refused by the remote host"
-msgstr "Conexiunea a fost refuzatã de gazda de la distanşã"
+msgstr "Conexiunea a fost refuzatÄƒ de gazda de la distanÅ£Äƒ"
 
 #: src/ui_feed.c:86
 msgid "Remote host did not finish sending data"
-msgstr "Gazda de la distanşã nu a terminat de trimis date"
+msgstr "Gazda de la distanÅ£Äƒ nu a terminat de trimis date"
 
 #. Transfer errors
 #: src/ui_feed.c:88
 msgid "Too many HTTP redirects were encountered"
-msgstr "Prea multe redirectãri HTTP s-au întãmpinat"
+msgstr "Prea multe redirectÄƒri HTTP s-au Ã®ntÄƒmpinat"
 
 #: src/ui_feed.c:91
 msgid "Remote host sent an invalid response"
-msgstr "Gazda de la distanşã a trimis un rãspuns invalid"
+msgstr "Gazda de la distanÅ£Äƒ a trimis un rÄƒspuns invalid"
 
 #: src/ui_feed.c:98
 msgid "Authentication failed"
-msgstr "Autentificare eºuatã"
+msgstr "Autentificare eÅŸuatÄƒ"
 
 #: src/ui_feed.c:100
 msgid "Webserver's authentication method incompatible with Liferea"
-msgstr "Identificarea cerutã de serverul web incompatibilã cu Liferea"
+msgstr "Identificarea cerutÄƒ de serverul web incompatibilÄƒ cu Liferea"
 
 #: src/ui_feed.c:106
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
-"Feedul nu este disponibil:Redirecşionare cerutã de server care nu este "
-"suportatã!"
+"Feedul nu este disponibil:RedirecÅ£ionare cerutÄƒ de server care nu este "
+"suportatÄƒ!"
 
 #: src/ui_feed.c:107
 msgid "Client Error"
@@ -1487,14 +1487,14 @@ msgstr "Eroare la server"
 
 #: src/ui_feed.c:109
 msgid "(unknown networking error happened)"
-msgstr "(eroare necunoscutã la reşea)"
+msgstr "(eroare necunoscutÄƒ la reÅ£ea)"
 
 #: src/ui_feed.c:128
 msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 msgstr ""
-"<br>Poate dorişi sã validaşi acest feed utilizând <a href=\"http://"
+"<br>Poate doriÅ£i sÄƒ validaÅ£i acest feed utilizÃ¢nd <a href=\"http://"
 "feedvalidator.org/check.cgi?url="
 
 #: src/ui_feed.c:133
@@ -1506,13 +1506,13 @@ msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
-"A apãrut o problemã în timp ce se citea înscrierea. Verificaşi URL-ul ºi "
-"ceea ce afiºeazã la consolã."
+"A apÄƒrut o problemÄƒ Ã®n timp ce se citea Ã®nscrierea. VerificaÅ£i URL-ul ÅŸi "
+"ceea ce afiÅŸeazÄƒ la consolÄƒ."
 
 #: src/ui_feed.c:173
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" este întrerupt. Liferea nu se va mai updata!"
+msgstr "\"%s\" este Ã®ntrerupt. Liferea nu se va mai updata!"
 
 #: src/ui_feed.c:175
 #, c-format
@@ -1522,7 +1522,7 @@ msgstr "\"%s\" nu s-a modificat de la ultimul update."
 #: src/ui_feed.c:183
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "URL-ul \"%s\" s-a modificat permanent ºi a fost updatat"
+msgstr "URL-ul \"%s\" s-a modificat permanent ÅŸi a fost updatat"
 
 #: src/ui_feed.c:195
 #, c-format
@@ -1531,13 +1531,13 @@ msgid ""
 "points to a resource provided in one of the supported syndication formats!</"
 "p>%s"
 msgstr ""
-"<p>Nu s-a putut determina tipul feedului! Vã rugãm verificaşi dacã sursa "
+"<p>Nu s-a putut determina tipul feedului! VÄƒ rugÄƒm verificaÅ£i dacÄƒ sursa "
 "face parte din lista formatelor de sindicate suportate!</p>%s"
 
 #: src/ui_feed.c:214
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" update reuºit..."
+msgstr "\"%s\" update reuÅŸit..."
 
 #: src/ui_feed.c:222
 #, c-format
@@ -1546,16 +1546,16 @@ msgstr "\"%s\" nu este disponibil"
 
 #: src/ui_feed.c:565
 msgid "Choose File"
-msgstr "Selecteazã fiºier"
+msgstr "SelecteazÄƒ fiÅŸier"
 
 #: src/ui_feed.c:624
 msgid "Unknown source"
-msgstr "Sursã necunoscutã"
+msgstr "SursÄƒ necunoscutÄƒ"
 
 #: src/ui_feed.c:726
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
-msgstr "Autorul acestui feed sugereazã un interval de update de %d minute."
+msgstr "Autorul acestui feed sugereazÄƒ un interval de update de %d minute."
 
 #: src/ui_feed.c:728
 msgid "This feed specifies no default update interval."
@@ -1563,49 +1563,49 @@ msgstr "Acest feed nu are nici un interval predefinit pentru updatare."
 
 #: src/ui_feedlist.c:445
 msgid "You have to select a feed entry"
-msgstr "Selectaşi o intrare a feedului"
+msgstr "SelectaÅ£i o intrare a feedului"
 
 #: src/ui_feedlist.c:455
 msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea este în modul offline. Nu se pot face update-uri."
+msgstr "Liferea este Ã®n modul offline. Nu se pot face update-uri."
 
 #: src/ui_feedlist.c:497
 msgid "Note: Using the subscriptions filter disables drag & drop"
-msgstr "Notã: Dacã se foloseºte filtrarea se dezactiveazã drag&drop-ul"
+msgstr "NotÄƒ: DacÄƒ se foloseÅŸte filtrarea se dezactiveazÄƒ drag&drop-ul"
 
 #: src/ui_feedlist.c:543 src/ui_feedlist.c:546
 msgid "Deleting entry"
-msgstr "Se ºterge intrarea"
+msgstr "Se ÅŸterge intrarea"
 
 #: src/ui_feedlist.c:544
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "Sunteşi sigur cã dorişi sã ºtergeşi %s ºi conşinutul lui?"
+msgstr "SunteÅ£i sigur cÄƒ doriÅ£i sÄƒ ÅŸtergeÅ£i %s ÅŸi conÅ£inutul lui?"
 
 #: src/ui_feedlist.c:547
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Sunteşi sigur cã dorişi sã ºtergeşi %s?"
+msgstr "SunteÅ£i sigur cÄƒ doriÅ£i sÄƒ ÅŸtergeÅ£i %s?"
 
 #: src/ui_feedlist.c:555
 msgid "Deletion Confirmation"
-msgstr "Confirmarea ºtergerii"
+msgstr "Confirmarea ÅŸtergerii"
 
 #: src/ui_feedlist.c:591
 msgid "You must select a feed entry"
-msgstr "Trebuie sã selectaşi o intrare a feedului"
+msgstr "Trebuie sÄƒ selectaÅ£i o intrare a feedului"
 
 #: src/ui_feedlist.c:592
 msgid "You must select a feed entry."
-msgstr "Trebuie sã selectaşi o intrare a feedului"
+msgstr "Trebuie sÄƒ selectaÅ£i o intrare a feedului"
 
 #: src/ui_feedlist.c:638
 msgid "New subscription"
-msgstr "Înscriere nouã"
+msgstr "Ãnscriere nouÄƒ"
 
 #: src/ui_folder.c:82
 msgid "A folder must be selected."
-msgstr "Un director trebuie sã fie selectat."
+msgstr "Un director trebuie sÄƒ fie selectat."
 
 #: src/ui_folder.c:182
 msgid "<i>(empty)</i>"
@@ -1614,7 +1614,7 @@ msgstr "<i>(gol)</i>"
 #: src/ui_folder.c:246
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
-"eroare internã! tipul feedului necunoscut! nu se poate afiºa nici un icon!\n"
+"eroare internÄƒ! tipul feedului necunoscut! nu se poate afiÅŸa nici un icon!\n"
 
 #: src/ui_htmlview.c:70
 msgid ""
@@ -1627,10 +1627,10 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Se incearcã încãrcarea modulului Mozilla... S-ar putea sã nu\n"
-"meargã cu toate versiunile de Mozilla. Dacã aveşi probleme\n"
-"ºi Liferea nu porneºte setaşi MOZILLA_FIVE_HOME pentru\n"
-"altã instalare de Mozilla sau ºterge în configuraşia gconf\n"
+"Se incearcÄƒ Ã®ncÄƒrcarea modulului Mozilla... S-ar putea sÄƒ nu\n"
+"meargÄƒ cu toate versiunile de Mozilla. DacÄƒ aveÅ£i probleme\n"
+"ÅŸi Liferea nu porneÅŸte setaÅ£i MOZILLA_FIVE_HOME pentru\n"
+"altÄƒ instalare de Mozilla sau ÅŸterge Ã®n configuraÅ£ia gconf\n"
 "cheia /apps/liferea/browser-module!\n"
 "\n"
 
@@ -1640,12 +1640,12 @@ msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
 "%s\n"
 msgstr ""
-"Nu s-a putut deschide modulul HTML (%s) specificat în configuraşia !\n"
+"Nu s-a putut deschide modulul HTML (%s) specificat Ã®n configuraÅ£ia !\n"
 "%s\n"
 
 #: src/ui_htmlview.c:94
 msgid "Htmlview API mismatch!"
-msgstr "Htmlview API greºit!"
+msgstr "Htmlview API greÅŸit!"
 
 #: src/ui_htmlview.c:102
 msgid "Detected module is not a valid htmlview module!"
@@ -1654,7 +1654,7 @@ msgstr "Modulul detectat nu este un modul HTML valid!"
 #: src/ui_htmlview.c:124
 #, c-format
 msgid "Cannot load HTML widget module (%s)!"
-msgstr "Nu se poate încãrca modulul HTML (%s)!"
+msgstr "Nu se poate Ã®ncÄƒrca modulul HTML (%s)!"
 
 #. now we determine a list of all available modules
 #. to present in the preferences dialog and to load
@@ -1668,7 +1668,7 @@ msgstr "Modulele disponibile pentru randare (%s):\n"
 #: src/ui_htmlview.c:165
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
-msgstr "Se încarcã modulul browser configurat (%s)!\n"
+msgstr "Se Ã®ncarcÄƒ modulul browser configurat (%s)!\n"
 
 #: src/ui_htmlview.c:168
 msgid "No browser module configured!\n"
@@ -1677,36 +1677,36 @@ msgstr "Nu a fost configurat nici un modul de browser!\n"
 #: src/ui_htmlview.c:176
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
-msgstr "se incearcã încãrcarea modulului de browser %s (%s)\n"
+msgstr "se incearcÄƒ Ã®ncÄƒrcarea modulului de browser %s (%s)\n"
 
 #: src/ui_htmlview.c:187
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
 msgstr ""
-"Scuze, nu s-a putut încãrca nici un modul de browser! Incercaşi opşiunea --"
-"debug-all pentru a vedea informaşii de debug!"
+"Scuze, nu s-a putut Ã®ncÄƒrca nici un modul de browser! IncercaÅ£i opÅ£iunea --"
+"debug-all pentru a vedea informaÅ£ii de debug!"
 
 #. FIXME: bad because this is not only used for item links!
 #: src/ui_htmlview.c:355
 msgid "This item does not have a link assigned!"
-msgstr "Acest articol nu are nici o legãturã asociatã!"
+msgstr "Acest articol nu are nici o legÄƒturÄƒ asociatÄƒ!"
 
 #: src/ui_htmlview.c:406 src/ui_htmlview.c:436
 #, c-format
 msgid "Browser command failed: %s"
-msgstr "Comanda de browser a eºuat: %s"
+msgstr "Comanda de browser a eÅŸuat: %s"
 
 #: src/ui_htmlview.c:408 src/ui_htmlview.c:438
 #, c-format
 msgid "Starting: \"%s\""
-msgstr "Se porneºte: \"%s\""
+msgstr "Se porneÅŸte: \"%s\""
 
 #: src/ui_htmlview.h:99
 #, c-format
 msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
-msgstr "Ultimul update al înscrierii a eºuat!<br><b>HTTP error code %d: %s</b>"
+msgstr "Ultimul update al Ã®nscrierii a eÅŸuat!<br><b>HTTP error code %d: %s</b>"
 
 #: src/ui_htmlview.h:100
 #, c-format
@@ -1714,15 +1714,15 @@ msgid ""
 "There were errors while parsing this feed. The following error occurred:"
 "<br><b>%s</b>"
 msgstr ""
-"Au fost erori în timp ce se parcurgea feedul. Au apãrut erorile:<br><b>%s</b>"
+"Au fost erori Ã®n timp ce se parcurgea feedul. Au apÄƒrut erorile:<br><b>%s</b>"
 
 #: src/ui_htmlview.h:101
 msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
 msgstr ""
-"Feedul a fost întrerupt. Nu mai este disponibil. Liferea nu îl va mai updata "
-"dar puteşi accesa titlurile din cache."
+"Feedul a fost Ã®ntrerupt. Nu mai este disponibil. Liferea nu Ã®l va mai updata "
+"dar puteÅ£i accesa titlurile din cache."
 
 #: src/ui_itemlist.c:286
 msgid "Date"
@@ -1738,7 +1738,7 @@ msgstr "Nu a fost selectat nici un articol"
 
 #: src/ui_itemlist.c:528 src/ui_itemlist.c:548
 msgid "You must select a feed to delete its items!"
-msgstr "Trebuie sã selectaşi un feed pentru ai ºterge articolele!"
+msgstr "Trebuie sÄƒ selectaÅ£i un feed pentru ai ÅŸterge articolele!"
 
 #. if we don't find a feed with unread items do nothing
 #: src/ui_itemlist.c:615
@@ -1751,43 +1751,43 @@ msgstr "Feed Nou"
 
 #: src/ui_mainwindow.c:161
 msgid "Add a new subscription."
-msgstr "Adaugã înscriere nouã."
+msgstr "AdaugÄƒ Ã®nscriere nouÄƒ."
 
 #: src/ui_mainwindow.c:162
 msgid "Next Unread"
-msgstr "Urmãtorul necitit"
+msgstr "UrmÄƒtorul necitit"
 
 #: src/ui_mainwindow.c:163
 msgid "Mark As Read"
-msgstr "Marcheazã ca citit"
+msgstr "MarcheazÄƒ ca citit"
 
 #: src/ui_mainwindow.c:163
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
-"Marcheazã toate articolele înscrierilor selectate precum ºi toate "
-"înscrierele din directorul selectat ca citite."
+"MarcheazÄƒ toate articolele Ã®nscrierilor selectate precum ÅŸi toate "
+"Ã®nscrierele din directorul selectat ca citite."
 
 #: src/ui_mainwindow.c:164
 msgid "Update All"
-msgstr "Updateazã toate"
+msgstr "UpdateazÄƒ toate"
 
 #: src/ui_mainwindow.c:165
 msgid "Search"
-msgstr "Cautã"
+msgstr "CautÄƒ"
 
 #: src/ui_mainwindow.c:165
 msgid "Search all feeds."
-msgstr "Cautã în toate feed-urile."
+msgstr "CautÄƒ Ã®n toate feed-urile."
 
 #: src/ui_mainwindow.c:166
 msgid "Preferences"
-msgstr "Preferinşe"
+msgstr "PreferinÅ£e"
 
 #: src/ui_mainwindow.c:166
 msgid "Edit preferences."
-msgstr "Editeazã preferinşele."
+msgstr "EditeazÄƒ preferinÅ£ele."
 
 #. addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
 #. "When Liferea starts for the first time it loads a localized default "
@@ -1818,22 +1818,22 @@ msgid ""
 "liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
 "liferea.sf.net\">project homepage</a>.</p>"
 msgstr ""
-"<h2>Bine aşi venit în Liferea</h2><p>Partea din stânga conşine lista de "
-"feeduri unde puteşi adaugã înscrieri ca sã citişi titlurile. Partea din "
-"dreapta ori afiºeazã lista de titluri selectate ori toate titlurile o data "
-"dacã este selectat modul condensat.</p><h3>Acşiuni de bazã</"
-"h3><ul><li><p><b>Adaugã Înscriere</b> - Creazã o înregistrare nouã în "
-"directorul selectat. Ca sã creaşi o nouã înregistrare introduceşi adresa la "
-"feed sau adresa website-ul care furnizeazã feedul.</p></"
-"li><li><p><b>Updateazã Înscrierea</b> - Va updata înscrierea selectatã. "
-"Acest lucru îl faceşi dacã dorişi sã updataşi pe loc feedul. De obicei este "
-"indicat sã aveşi încredere în updatarea automatã care se face dupã un "
-"interval predefinit.</p></li><li><p><b>Updateazã toate</b> - Va updata toate "
-"înscrierele. De obicei ar trebui sã aveşi încredere în updatarea automatã.</"
-"li><li><p><b>Editeazã proprietãşile înscrierii</b> - Câteodatã dorişi sã "
-"setaşi intervalul de updatare, titlul, autentificarea sau setãrile la cache "
-"ale unei înscrieri.</p></li></ul><p>Pentru a afla mai mult despre Liferea ar "
-"trebui sã consultaşi documentaşia oferitã în feedul de ajutor sau <a href="
+"<h2>Bine aÅ£i venit Ã®n Liferea</h2><p>Partea din stÃ¢nga conÅ£ine lista de "
+"feeduri unde puteÅ£i adaugÄƒ Ã®nscrieri ca sÄƒ citiÅ£i titlurile. Partea din "
+"dreapta ori afiÅŸeazÄƒ lista de titluri selectate ori toate titlurile o data "
+"dacÄƒ este selectat modul condensat.</p><h3>AcÅ£iuni de bazÄƒ</"
+"h3><ul><li><p><b>AdaugÄƒ Ãnscriere</b> - CreazÄƒ o Ã®nregistrare nouÄƒ Ã®n "
+"directorul selectat. Ca sÄƒ creaÅ£i o nouÄƒ Ã®nregistrare introduceÅ£i adresa la "
+"feed sau adresa website-ul care furnizeazÄƒ feedul.</p></"
+"li><li><p><b>UpdateazÄƒ Ãnscrierea</b> - Va updata Ã®nscrierea selectatÄƒ. "
+"Acest lucru Ã®l faceÅ£i dacÄƒ doriÅ£i sÄƒ updataÅ£i pe loc feedul. De obicei este "
+"indicat sÄƒ aveÅ£i Ã®ncredere Ã®n updatarea automatÄƒ care se face dupÄƒ un "
+"interval predefinit.</p></li><li><p><b>UpdateazÄƒ toate</b> - Va updata toate "
+"Ã®nscrierele. De obicei ar trebui sÄƒ aveÅ£i Ã®ncredere Ã®n updatarea automatÄƒ.</"
+"li><li><p><b>EditeazÄƒ proprietÄƒÅ£ile Ã®nscrierii</b> - CÃ¢teodatÄƒ doriÅ£i sÄƒ "
+"setaÅ£i intervalul de updatare, titlul, autentificarea sau setÄƒrile la cache "
+"ale unei Ã®nscrieri.</p></li></ul><p>Pentru a afla mai mult despre Liferea ar "
+"trebui sÄƒ consultaÅ£i documentaÅ£ia oferitÄƒ Ã®n feedul de ajutor sau <a href="
 "\"http://liferea.sourceforge.net/faq.php\">FAQ</a> disponibil <a href="
 "\"http://liferea.sf.net\">la pagina proiectului</a>.</p>"
 
@@ -1847,7 +1847,7 @@ msgstr "Liferea este offline"
 
 #: src/ui_notification.c:237
 msgid "Untitled"
-msgstr "Fãrã titlu"
+msgstr "FÄƒrÄƒ titlu"
 
 #: src/ui_notification.c:308
 msgid "Liferea notification"
@@ -1855,11 +1855,11 @@ msgstr "Notificare pentru Liferea"
 
 #: src/ui_popup.c:91
 msgid "/_Update"
-msgstr "/_Updateazã"
+msgstr "/_UpdateazÄƒ"
 
 #: src/ui_popup.c:92 src/ui_popup.c:102 src/ui_popup.c:111
 msgid "/_Mark All As Read"
-msgstr "/_Marcheazã toate ca citite"
+msgstr "/_MarcheazÄƒ toate ca citite"
 
 #: src/ui_popup.c:93 src/ui_popup.c:103 src/ui_popup.c:112 src/ui_popup.c:120
 msgid "/_New"
@@ -1867,7 +1867,7 @@ msgstr "/_Nou"
 
 #: src/ui_popup.c:94 src/ui_popup.c:104 src/ui_popup.c:113 src/ui_popup.c:121
 msgid "/_New/New _Subscription..."
-msgstr "/_Nou/Înscriere _Nouã..."
+msgstr "/_Nou/Ãnscriere _NouÄƒ..."
 
 #: src/ui_popup.c:95 src/ui_popup.c:105 src/ui_popup.c:114 src/ui_popup.c:122
 msgid "/_New/New F_older..."
@@ -1875,95 +1875,95 @@ msgstr "/_Nou/D_irector _Nou..."
 
 #: src/ui_popup.c:96 src/ui_popup.c:115
 msgid "/_Properties..."
-msgstr "/_Proprietãşi..."
+msgstr "/_ProprietÄƒÅ£i..."
 
 #: src/ui_popup.c:97 src/ui_popup.c:116
 msgid "/_Delete"
-msgstr "/_ªtergeşi"
+msgstr "/_ÅtergeÅ£i"
 
 #: src/ui_popup.c:101
 msgid "/_Update Folder"
-msgstr "/_Updateazã directorul"
+msgstr "/_UpdateazÄƒ directorul"
 
 #: src/ui_popup.c:106
 msgid "/_Rename Folder..."
-msgstr "/_Redenumişi directorul..."
+msgstr "/_RedenumiÅ£i directorul..."
 
 #: src/ui_popup.c:107
 msgid "/_Delete Folder"
-msgstr "/_ªtergeşi directorul"
+msgstr "/_ÅtergeÅ£i directorul"
 
 #: src/ui_popup.c:127
 msgid "/Toggle _Read Status"
-msgstr "/Activeazã statutul de _citire"
+msgstr "/ActiveazÄƒ statutul de _citire"
 
 #: src/ui_popup.c:128
 msgid "/Toggle Item _Flag"
-msgstr "/Activeazã _flag-ul elementului"
+msgstr "/ActiveazÄƒ _flag-ul elementului"
 
 #: src/ui_popup.c:129
 msgid "/R_emove Item"
-msgstr "/ª_terge articolul"
+msgstr "/Å_terge articolul"
 
 #: src/ui_popup.c:131
 msgid "/_Next Unread Item"
-msgstr "/_Urmãtorul element necitit"
+msgstr "/_UrmÄƒtorul element necitit"
 
 #: src/ui_popup.c:133
 msgid "/Launch Item In _Tab"
-msgstr "/_Lanseazã articolul în _Tab"
+msgstr "/_LanseazÄƒ articolul Ã®n _Tab"
 
 #: src/ui_popup.c:134
 msgid "/_Launch Item In Browser"
-msgstr "/_Lanseazã elementul în browser"
+msgstr "/_LanseazÄƒ elementul Ã®n browser"
 
 #: src/ui_popup.c:139
 msgid "/_Increase Text Size"
-msgstr "/_Mãrişi mãrimea textului"
+msgstr "/_MÄƒriÅ£i mÄƒrimea textului"
 
 #: src/ui_popup.c:140
 msgid "/_Decrease Text Size"
-msgstr "/_Micºoraşi mãrimea textului"
+msgstr "/_MicÅŸoraÅ£i mÄƒrimea textului"
 
 #: src/ui_popup.c:144
 msgid "/_Copy Link Location"
-msgstr "/_Copiaşi locaşia linkului"
+msgstr "/_CopiaÅ£i locaÅ£ia linkului"
 
 #: src/ui_popup.c:145
 msgid "/Launch Link In _Tab"
-msgstr "/_Lanseazã link-ul în _Tab"
+msgstr "/_LanseazÄƒ link-ul Ã®n _Tab"
 
 #: src/ui_popup.c:146
 msgid "/_Launch Link In Browser"
-msgstr "/_Lanseazã legãtura în navigator"
+msgstr "/_LanseazÄƒ legÄƒtura Ã®n navigator"
 
 #: src/ui_popup.c:147
 msgid "/_Subscribe..."
-msgstr "/_Înscriere..."
+msgstr "/_Ãnscriere..."
 
 #: src/ui_popup.c:152
 msgid "/_Work Offline"
-msgstr "/_Lucraşi offline"
+msgstr "/_LucraÅ£i offline"
 
 #: src/ui_popup.c:153
 msgid "/_Update All"
-msgstr "/_Updateazã toate"
+msgstr "/_UpdateazÄƒ toate"
 
 #: src/ui_popup.c:154
 msgid "/_Preferences..."
-msgstr "/_Preferinşe..."
+msgstr "/_PreferinÅ£e..."
 
 #: src/ui_popup.c:156
 msgid "/_Show Window"
-msgstr "/_Aratã fereastra"
+msgstr "/_AratÄƒ fereastra"
 
 #: src/ui_popup.c:157
 msgid "/_Quit"
-msgstr "/_Ieºire"
+msgstr "/_IeÅŸire"
 
 #: src/ui_popup.c:162
 msgid "/Open Enclosure..."
-msgstr "/Deschideşi ataºament"
+msgstr "/DeschideÅ£i ataÅŸament"
 
 #: src/ui_popup.c:163
 msgid "/Save As..."
@@ -1980,11 +1980,11 @@ msgstr "Navigatorul predefinit"
 
 #: src/ui_prefs.c:237
 msgid "Existing window"
-msgstr "Fereastra existentã"
+msgstr "Fereastra existentÄƒ"
 
 #: src/ui_prefs.c:242
 msgid "New window"
-msgstr "Fereastrã nouã"
+msgstr "FereastrÄƒ nouÄƒ"
 
 #: src/ui_prefs.c:247
 msgid "New tab"
@@ -1992,15 +1992,15 @@ msgstr "Tab nou"
 
 #: src/ui_prefs.c:257
 msgid "Update only feeds scheduled for updates"
-msgstr "Updateazã numai feedurile programate pentru update"
+msgstr "UpdateazÄƒ numai feedurile programate pentru update"
 
 #: src/ui_prefs.c:262
 msgid "Update all feeds"
-msgstr "Updateazã toate feedurile"
+msgstr "UpdateazÄƒ toate feedurile"
 
 #: src/ui_prefs.c:267
 msgid "Reset feed update timers (Update no feeds)"
-msgstr "Reseteazã timpul updatãrii feedurilor (Nu se updateazã nici un feed)"
+msgstr "ReseteazÄƒ timpul updatÄƒrii feedurilor (Nu se updateazÄƒ nici un feed)"
 
 #: src/ui_prefs.c:508
 msgid "Type"
@@ -2012,16 +2012,16 @@ msgstr "Program"
 
 #: src/ui_prefs.c:762
 msgid "Choose download directory"
-msgstr "Alegeşi directorul pentru download"
+msgstr "AlegeÅ£i directorul pentru download"
 
 #: src/ui_search.c:73
 #, c-format
 msgid "Searching for \"%s\""
-msgstr "Cãutând pentru \"%s\""
+msgstr "CÄƒutÃ¢nd pentru \"%s\""
 
 #: src/ui_search.c:99
 msgid "Please do a search first!"
-msgstr "Efectuaşi o cãutare prima datã!"
+msgstr "EfectuaÅ£i o cÄƒutare prima datÄƒ!"
 
 #: src/ui_tabs.c:107
 msgid "URL"
@@ -2041,17 +2041,17 @@ msgstr "Nu sunt articole noi."
 #: src/update.c:122
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr "Eroare: Nu s-a putut face legãtura \"%s\""
+msgstr "Eroare: Nu s-a putut face legÄƒtura \"%s\""
 
 #: src/update.c:136
 #, c-format
 msgid "Error: Could not open file \"%s\""
-msgstr "Eroare: Nu s-a putut deschide fiºierul \"%s\"!"
+msgstr "Eroare: Nu s-a putut deschide fiÅŸierul \"%s\"!"
 
 #: src/update.c:142
 #, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "Eroare: Nu este nici un fiºier \"%s\"!"
+msgstr "Eroare: Nu este nici un fiÅŸier \"%s\"!"
 
 #: src/gtkhtml2/gtkhtml2.c:229
 msgid ""
@@ -2059,4 +2059,4 @@ msgid ""
 "Included Plugins might not be displayed."
 msgstr ""
 "Tagul HTML <object> inclus nu este suportat de GtkHTML2.\n"
-"Pluginurile incluse nu pot fi afiºate."
+"Pluginurile incluse nu pot fi afiÅŸate."
