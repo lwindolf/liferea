@@ -89,19 +89,19 @@ void registerFeedType(gint type, feedHandlerPtr fhp) {
 }
 
 static gint autoDetectFeedType(gchar *url, gchar **data) {
-	struct feed_request	request;
+	struct feed_request	*request;
 	detectStrPtr		pattern = detectPattern;
 	gint			type = FST_INVALID;
 	
 	g_assert(NULL != pattern);
 	g_assert(NULL != url);
 	
-	request.feedurl = g_strdup(url);
-	request.lastmodified = NULL;
-	downloadURL(&request);
-	if(NULL != request.data) {
+	request->feedurl = g_strdup(url);
+	request->lastmodified = NULL;
+	downloadURL(request);
+	if(NULL != request->data) {
 		while(NULL != pattern->string) {	
-			if(NULL != strstr(request.data, pattern->string)) {
+			if(NULL != strstr(request->data, pattern->string)) {
 				type = pattern->type;
 				break;
 			}
@@ -109,8 +109,8 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 			pattern++;
 		} 
 	}
-	*data = request.data;
-	freeRequest(&request);
+	*data = request->data;
+	freeRequest(request);
 		
 	return type;
 }
