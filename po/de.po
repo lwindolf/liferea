@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 19:27-0400\n"
+"POT-Creation-Date: 2004-06-13 18:36+0200\n"
 "PO-Revision-Date: 2004-06-13 00:48+0200\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
@@ -1628,7 +1628,7 @@ msgstr "/Link kopieren"
 
 #: src/ui_popup.c:130
 msgid "/_Launch Link In Browser"
-msgstr "Im _Browser öffnen"
+msgstr "/Im _Browser öffnen"
 
 #: src/ui_popup.c:131
 msgid "/_Subscribe"
