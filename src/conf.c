@@ -16,6 +16,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
 #include <libxml/nanohttp.h>
@@ -32,8 +36,14 @@
 #define HELP2KEY	"help/2"
 #define HELP1URL	"http://liferea.sf.net/help038.rdf"
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
+#define HOMEPAGE	"http://liferea.sf.net/"
 
 GConfClient	*client;
+
+/* configuration strings for the SnowNews HTTP code */
+char 	*useragent = NULL;
+char	*proxyname = NULL;
+int	proxyport = 0;
 
 static gchar * build_path_str(gchar *str1, gchar *str2) {
 	gchar	*gconfpath;
@@ -67,11 +77,36 @@ gboolean is_gconf_error(GError *err) {
 	return FALSE;
 }
 
+/* called once on startup */
 void initConfig() {
+	int	ualength;
+	char	*lang;
+	
 	/* have to be called for multithreaded programs */
 	xmlInitParser();
+	
+	/* the following code was copied from SnowNews and adapted to build
+	   a Liferea user agent... */
+	   
+        /* Constuct the User-Agent string of snownews. This is done here in program init,
+           because we need to do it exactly once and it will never change while the program
+           is running. */
+        if (getenv("LANG") != NULL) {
+                lang = getenv("LANG");
+                /* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
+                ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(lang) + 2 + strlen(OS)+2 + strlen(HOMEPAGE) + 2;
+                useragent = g_malloc(ualength);
+                snprintf (useragent, ualength, "Liferea/%s (%s; %s; %s)", VERSION, OS, lang, HOMEPAGE);
+        } else {
+                /* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
+                ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(OS) + 2 + strlen("http://liferea.sf.net/") + 2;
+                useragent = g_malloc(ualength);
+                snprintf (useragent, ualength, "Liferea/%s (%s; %s)", VERSION, OS, HOMEPAGE);
+                printf ("%s\n", useragent);
+        }
 }
 
+/* maybe called several times to reload configuration */
 void loadConfig() {
 	GError	*err = NULL;
         gchar	*proxy_url;
@@ -90,17 +125,22 @@ void loadConfig() {
         xmlNanoHTTPInit();
         
 	if(getBooleanConfValue(USE_PROXY)) {
-	        proxy_host = getStringConfValue(PROXY_HOST);
-        	proxy_port = getNumericConfValue(PROXY_PORT);
-		
+	        proxyname = getStringConfValue(PROXY_HOST);
+        	proxyport = getNumericConfValue(PROXY_PORT);
+
         	proxy_url = g_strdup_printf("http://%s:%d/", proxy_host, proxy_port);
 		g_print("using proxy: \"%s\"\n", proxy_url);
+		// FIXME: don't use NanoHTTP anymore!!!	
         	xmlNanoHTTPScanProxy(proxy_url);
-		
-		g_free(proxy_host);
 		g_free(proxy_url);
 	} else {
+		if(NULL != proxyname) {
+			g_free(proxyname);
+			proxyname = NULL;
+		}
+		
 		/* this is neccessary to reset proxy after config change */
+		// FIXME: don't use NanoHTTP anymore!!!	
         	xmlNanoHTTPScanProxy(NULL);	
 	}
 }

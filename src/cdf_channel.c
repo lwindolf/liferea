@@ -175,6 +175,7 @@ gpointer readCDFFeed(gchar *url) {
 	CDFItemPtr 	ip, lastip = NULL;
 	CDFChannelPtr 	cp;
 	gchar		*encoding;
+	char		*data;
 	int 		error = 0;
 	
 	/* initialize channel structure */
@@ -194,10 +195,12 @@ gpointer readCDFFeed(gchar *url) {
 	cp->type = FST_CDF;
 	
 	while(1) {
-		print_status(g_strdup_printf(_("reading from %s"),url));
-		
-		doc = xmlParseFile(url);
+		if(NULL == (data = downloadURL(url))) {
+			error = 1;
+			break;
+		}
 
+		doc = xmlParseMemory(data, strlen(data));
 		if(NULL == doc) {
 			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), url));
 			error = 1;

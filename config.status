@@ -491,13 +491,13 @@ s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
 s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,liferea,;t t
 s,@VERSION@,0.3.8,;t t
-s,@ACLOCAL@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run aclocal-1.7,;t t
-s,@AUTOCONF@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run autoconf,;t t
-s,@AUTOMAKE@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run automake-1.7,;t t
-s,@AUTOHEADER@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run autoheader,;t t
-s,@MAKEINFO@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run makeinfo,;t t
-s,@AMTAR@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run tar,;t t
-s,@install_sh@,/home/lars/tech/coding/t/liferea/install-sh,;t t
+s,@ACLOCAL@,${SHELL} /home/lars/tech/coding/liferea/missing --run aclocal-1.7,;t t
+s,@AUTOCONF@,${SHELL} /home/lars/tech/coding/liferea/missing --run autoconf,;t t
+s,@AUTOMAKE@,${SHELL} /home/lars/tech/coding/liferea/missing --run automake-1.7,;t t
+s,@AUTOHEADER@,${SHELL} /home/lars/tech/coding/liferea/missing --run autoheader,;t t
+s,@MAKEINFO@,${SHELL} /home/lars/tech/coding/liferea/missing --run makeinfo,;t t
+s,@AMTAR@,${SHELL} /home/lars/tech/coding/liferea/missing --run tar,;t t
+s,@install_sh@,/home/lars/tech/coding/liferea/install-sh,;t t
 s,@STRIP@,,;t t
 s,@ac_ct_STRIP@,,;t t
 s,@INSTALL_STRIP_PROGRAM@,${SHELL} $(install_sh) -c -s,;t t
@@ -828,6 +828,7 @@ ${ac_dA}PACKAGE${ac_dB}PACKAGE${ac_dC}"liferea"${ac_dD}
 ${ac_dA}VERSION${ac_dB}VERSION${ac_dC}"0.3.8"${ac_dD}
 ${ac_dA}STDC_HEADERS${ac_dB}STDC_HEADERS${ac_dC}1${ac_dD}
 ${ac_dA}GETTEXT_PACKAGE${ac_dB}GETTEXT_PACKAGE${ac_dC}"liferea"${ac_dD}
+${ac_dA}OS${ac_dB}OS${ac_dC}"Linux"${ac_dD}
 ${ac_dA}HAVE_SYS_TYPES_H${ac_dB}HAVE_SYS_TYPES_H${ac_dC}1${ac_dD}
 ${ac_dA}HAVE_SYS_STAT_H${ac_dB}HAVE_SYS_STAT_H${ac_dC}1${ac_dD}
 ${ac_dA}HAVE_STDLIB_H${ac_dB}HAVE_STDLIB_H${ac_dC}1${ac_dD}
@@ -864,6 +865,7 @@ ${ac_uA}PACKAGE${ac_uB}PACKAGE${ac_uC}"liferea"${ac_uD}
 ${ac_uA}VERSION${ac_uB}VERSION${ac_uC}"0.3.8"${ac_uD}
 ${ac_uA}STDC_HEADERS${ac_uB}STDC_HEADERS${ac_uC}1${ac_uD}
 ${ac_uA}GETTEXT_PACKAGE${ac_uB}GETTEXT_PACKAGE${ac_uC}"liferea"${ac_uD}
+${ac_uA}OS${ac_uB}OS${ac_uC}"Linux"${ac_uD}
 ${ac_uA}HAVE_SYS_TYPES_H${ac_uB}HAVE_SYS_TYPES_H${ac_uC}1${ac_uD}
 ${ac_uA}HAVE_SYS_STAT_H${ac_uB}HAVE_SYS_STAT_H${ac_uC}1${ac_uD}
 ${ac_uA}HAVE_STDLIB_H${ac_uB}HAVE_STDLIB_H${ac_uC}1${ac_uD}

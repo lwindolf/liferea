@@ -52,6 +52,9 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* defines a os version string, used for the user agent string */
+#undef OS
+
 /* Name of package */
 #undef PACKAGE
 

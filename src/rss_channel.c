@@ -42,6 +42,7 @@
 #include "ns_syn.h"
 #include "ns_admin.h"
 
+#include "netio.h"
 #include "htmlview.h"
 
 /* HTML output strings */
@@ -268,6 +269,7 @@ gpointer readRSSFeed(gchar *url) {
 	RSSItemPtr 	ip;
 	RSSChannelPtr 	cp;
 	gchar		*encoding;
+	char		*data;
 	short 		rdf = 0;
 	int 		error = 0;
 	
@@ -287,10 +289,12 @@ gpointer readRSSFeed(gchar *url) {
 	cp->type = FST_RSS;
 	
 	while(1) {
-		print_status(g_strdup_printf(_("reading from %s"),url));
-		
-		doc = xmlParseFile(url);
+		if(NULL == (data = downloadURL(url))) {
+			error = 1;
+			break;
+		}
 
+		doc = xmlParseMemory(data, strlen(data));
 		if(NULL == doc) {
 			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), url));
 			error = 1;

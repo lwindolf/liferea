@@ -162,6 +162,7 @@ gpointer readPIEFeed(gchar *url) {
 	PIEFeedPtr 		cp;
 	gchar			*tmp2, *tmp = NULL;
 	gchar			*encoding;
+	char			*data;
 	parseFeedTagFunc	fp;
 	PIENsHandler		*nsh;
 	int			i;
@@ -184,10 +185,12 @@ gpointer readPIEFeed(gchar *url) {
 	cp->type = FST_PIE;
 	
 	while(1) {
-		print_status(g_strdup_printf(_("reading from %s"),url));
-		
-		doc = xmlParseFile(url);
+		if(NULL == (data = downloadURL(url))) {
+			error = 1;
+			break;
+		}
 
+		doc = xmlParseMemory(data, strlen(data));
 		if(NULL == doc) {
 			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), url));
 			error = 1;

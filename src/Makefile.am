@@ -34,7 +34,8 @@ liferea_SOURCES = \
 	ns_syn.c ns_syn.h \
 	ns_admin.c ns_admin.h \
 	conf.c conf.h \
-	vfolder.c vfolder.h
+	vfolder.c vfolder.h \
+	netio.c netio.h
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
 

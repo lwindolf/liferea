@@ -30,6 +30,8 @@
 #include "common.h"
 #include "ocs_ns.h"
 #include "ocs_dir.h"
+
+#include "netio.h"
 #include "htmlview.h"
 
 /* you can find the OCS specification at
@@ -293,18 +295,24 @@ static void parseDirectory(directoryPtr dp, xmlDocPtr doc, xmlNodePtr cur) {
 
 gpointer readOCS(gchar *url) {
 	directoryPtr	dp;
+	FILE		*f;
 	gchar		*tmpfile;
-	gchar		*contentType;
-		
-	tmpfile = g_strdup_printf("%s/none_new.ocs", getCachePath());
+	char		*data;
 		
 	while(1) {
 		print_status(g_strdup_printf(_("reading from %s"), url));
 		
-		if(-1 == xmlNanoHTTPFetch(url, tmpfile, &contentType)) {
+		if(NULL == (data = downloadURL(url))) {
 			showErrorBox(g_strdup_printf(_("Could not fetch %s!"), url));
-			print_status(g_strdup_printf(_("HTTP GET status %d\n"), xmlNanoHTTPReturnCode()));
 			break;			
+		} else {
+			tmpfile = g_strdup_printf("%s/none_new.ocs", getCachePath());
+			if(NULL != (f = fopen(tmpfile, "w"))) {
+				fwrite(data, strlen(data), 1, f);
+				fclose(f);
+			} else {
+				showErrorBox(g_strdup_printf(_("Could not write to file %s!"), url));
+			}
 		}
 		
 		return (gpointer)loadOCS("none", "none/new");
