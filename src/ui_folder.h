@@ -31,4 +31,7 @@ void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data);
 void on_popup_removefolder_selected(void);
 
+/* function that marks all items of all feeds of the selected folder unread */
+void ui_folder_mark_all_as_read(void);
+
 #endif

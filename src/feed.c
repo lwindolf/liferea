@@ -835,6 +835,16 @@ void clearFeedItemList(feedPtr fp) {
 	fp->items = NULL;
 }
 
+void markAllItemsAsRead(feedPtr fp) {
+	GSList	*item;
+	
+	item = fp->items;
+	while(NULL != item) {
+		markItemAsRead((itemPtr)item->data);
+		item = g_slist_next(item);
+	}
+}
+
 /* Method to copy the info payload of the structure given by
    new_fp to the structure fp points to. Essential model
    specific keys of fp are kept. The feed structure of new_fp 

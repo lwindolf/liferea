@@ -171,4 +171,6 @@ void setFeedSource(feedPtr fp, gchar * source);
 GSList * getFeedItemList(feedPtr fp);
 void clearFeedItemList(feedPtr fp);
 
+void markAllItemsAsRead(feedPtr fp);
+
 #endif

@@ -41,6 +41,8 @@
 #include "common.h"
 #include "callbacks.h"
 #include "ui_mainwindow.h"
+#include "ui_folder.h"
+#include "ui_itemlist.h"
 #include "ui_tray.h"
 #include "ui_queue.h"
 #include "update.h"
@@ -178,6 +180,22 @@ void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWid
 
 	subscribeTo(FST_AUTODETECT, g_strdup(url), g_strdup(selected_keyprefix), TRUE);
 	g_free(url);
+}
+
+void on_popup_allunread_selected(void) {
+	GtkTreeIter	iter;
+	gint		tmp_type;
+
+	if(getFeedListIter(&iter)) {
+		gtk_tree_model_get(GTK_TREE_MODEL(getFeedStore()), &iter, FS_TYPE, &tmp_type, -1);
+		if(IS_NODE(tmp_type)) {
+			/* if we have selected a folder we mark all item of all feeds as read */
+			ui_folder_mark_all_as_read();
+		} else {
+			/* if not we mark all items of the item list as read */
+			ui_itemlist_mark_all_as_read();
+		}
+	}
 }
 
 /*------------------------------------------------------------------------------*/

@@ -23,6 +23,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
+#include "item.h"
 
 /* prepares the popup menues */
 void setupPopupMenues(void);

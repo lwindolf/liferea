@@ -50,4 +50,7 @@ void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);
 /* helper function to find next unread item */
 feedPtr ui_feed_find_unread(GtkTreeIter *iter);
 
+/* marks all items of the feed of the given tree iter as read */
+void ui_feed_mark_items_as_unread(GtkTreeIter *iter);
+
 #endif

@@ -85,7 +85,14 @@ src/ui_folder.c
 src/ui_folder.h
 src/ui_itemlist.c
 src/ui_itemlist.h
+src/ui_mainwindow.c
+src/ui_mainwindow.h
 src/ui_popup.c
+src/ui_popup.h
+src/ui_prefs.c
+src/ui_prefs.h
+src/ui_queue.c
+src/ui_queue.h
 src/ui_search.c
 src/ui_search.h
 src/ui_tray.c

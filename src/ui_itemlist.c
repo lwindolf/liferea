@@ -486,7 +486,7 @@ void on_popup_toggle_flag(gpointer callback_data,
 	setItemMark(ip, !getItemMark(ip));		
 }
 
-void on_popup_allunread_selected(void) {
+void ui_itemlist_mark_all_as_read(void) {
 	itemPtr		ip;
 	gboolean    valid;
 	GtkTreeIter iter;
@@ -517,7 +517,7 @@ void on_toggle_item_flag(void) {
 
 void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
-	
+
 	ip = ui_itemlist_get_selected();
 
 	if(ip)

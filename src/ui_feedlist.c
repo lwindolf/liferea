@@ -734,3 +734,24 @@ feedPtr ui_feed_find_unread(GtkTreeIter *iter) {
 
 	return NULL;	
 }
+
+void ui_feed_mark_items_as_unread(GtkTreeIter *iter) {
+	GtkTreeModel	*model;
+	gint		tmp_type;
+	gchar		*tmp_key;
+	feedPtr		fp;
+	
+	model = GTK_TREE_MODEL(getFeedStore());
+	g_assert(NULL != model);
+	
+	gtk_tree_model_get(model, iter, 
+			   FS_KEY, &tmp_key,
+			   FS_TYPE, &tmp_type,
+			   -1);	
+	if(!IS_NODE(tmp_type)) {
+		fp = getFeed(tmp_key);
+		g_assert(NULL != fp);
+		markAllItemsAsRead(fp);
+	}
+	g_free(tmp_key);
+}

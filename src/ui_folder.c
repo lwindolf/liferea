@@ -141,3 +141,35 @@ void on_popup_removefolder_selected(void) {
 		print_status(g_strdup(_("Error: Cannot determine folder key!")));
 	}
 }
+
+/* methos to mark everything in a folder as unread */
+
+static gboolean ui_folder_mark_all_as_read_foreach(GtkTreeModel *model, GtkTreePath	*child_path, GtkTreeIter *child_iter, gpointer user_data) {
+	GtkTreePath	*selected = (GtkTreePath *)user_data;
+	
+	if(gtk_tree_path_is_ancestor(selected, child_path)) {
+		ui_feed_mark_items_as_unread(child_iter);
+	}
+	
+	return FALSE;
+}
+
+void ui_folder_mark_all_as_read(void) {
+	GtkTreeModel	*model;
+	GtkTreeIter	selected_iter;	
+	GtkTreePath	*selected_path;
+
+	if(selected_type != FST_NODE) {
+		showErrorBox(_("You have to select a folder entry!"));
+		return;
+	}
+
+	model = GTK_TREE_MODEL(getFeedStore());
+	g_assert(NULL != model);
+
+	getFeedListIter(&selected_iter);
+	selected_path = gtk_tree_model_get_path(model, &selected_iter);	
+	g_assert(NULL != selected_path);
+	gtk_tree_model_foreach(model, ui_folder_mark_all_as_read_foreach, selected_path);
+}
+

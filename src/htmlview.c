@@ -24,6 +24,7 @@
 
 #include <string.h>
 #include <gmodule.h>
+#include "ui_queue.h"
 #include "support.h"
 #include "htmlview.h"
 
@@ -162,7 +163,7 @@ void	clearHTMLView(void) {
 
 void 	launchURL(gchar *url) {
 
-	if(NULL != url) {
+	if(NULL != url) {		
 		(*htmlStub.launchURL)(url); 
 	} else {
 		showErrorBox(_("This item does not have a link assigned!"));

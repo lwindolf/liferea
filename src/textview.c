@@ -21,7 +21,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <glib.h>
+#include <gtk/gtk.h>
 #include "htmlview.h"
 #include "conf.h"
 #include "support.h"
