@@ -359,6 +359,7 @@ void writeHTML(const gchar *string) {
 }
 
 static void setupHTMLView(GtkWidget *scrolledwindow) {
+	gulong	handler;
 	
 	if(NULL != htmlwidget) 
 		gtk_widget_destroy(htmlwidget);
@@ -368,8 +369,14 @@ static void setupHTMLView(GtkWidget *scrolledwindow) {
 	writeHTML(NULL);
 	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
-				  				  				  
-	g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
+		  				  				  
+	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
+	
+	/* this is to debug the rare problem reported by some users
+	   who get no mouse hovering with GtkHTML2 */
+	if(0 == handler)
+		g_warning("Could not setup URL handler for GtkHTML2!!!\nPlease help to debug this problem and post a comment on the\nproject homepage including your GTK and GtkHTML2 library versions!\n");
+		
 	g_signal_connect(G_OBJECT(htmlwidget), "button-press-event", G_CALLBACK(button_press_event), NULL);
 	g_signal_connect(G_OBJECT(htmlwidget), "request_object", G_CALLBACK(request_object), NULL);
 			  
