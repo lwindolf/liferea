@@ -392,7 +392,6 @@ void ui_itemlist_display(void) {
 				addToHTMLBuffer(&buffer, UNSHADED_END);
 			else {
 				addToHTMLBuffer(&buffer, SHADED_END);
-				item_set_read(ip);
 			}
 
 			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
@@ -479,6 +478,7 @@ void ui_itemlist_load(nodePtr node) {
 	gint		sortColumn;
 	GtkSortType	sortType;
 	gboolean	sorted;
+	gboolean	isFeed;
 
 	itemlist = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
 	model = gtk_tree_view_get_model(itemlist);
@@ -493,23 +493,31 @@ void ui_itemlist_load(nodePtr node) {
 	itemstore = NULL;
 	model = GTK_TREE_MODEL(getItemStore());
 	
+	isFeed = ((node != NULL) && ((FST_FEED == node->type) || (FST_VFOLDER == node->type)));
+	
 	/* Add the new items */
-	if((node == NULL) || (FST_FOLDER == node->type)) {
-		ui_feedlist_do_for_all(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed);
-	} else if((FST_FEED == node->type) || (FST_VFOLDER == node->type)) {
+	if(TRUE == isFeed) {
 		ui_itemlist_load_feed((feedPtr)node);
+	} else if(FST_FOLDER == node->type) {
+		ui_feedlist_do_for_all(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed);
 	}
 	
 	/* Reset the sorting order of the itemstore and add it to the GtkTreeView */
 	gtk_tree_view_set_model(itemlist, model);
 	
-	disableSortingSaving++;
-	if((FST_FEED == node->type) || (FST_VFOLDER == node->type))
+
+	if(isFeed) {
+		disableSortingSaving++;
 		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed);
-	disableSortingSaving--;
+		disableSortingSaving--;
+	}
 	
 	ui_itemlist_display();
 	ui_itemlist_prefocus();
+	
+	/* two pane mode post processing */
+	if((TRUE == isFeed) && (TRUE == ui_itemlist_get_two_pane_mode()))
+		feed_mark_all_items_read((feedPtr)node);
 }
 
 static itemPtr ui_itemlist_get_selected() {

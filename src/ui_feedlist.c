@@ -181,6 +181,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			
 			/* Set up the item list */
 			ui_itemlist_load((nodePtr)fp);
+
 		} else { /* Selecting a folder */
 			ui_itemlist_clear();
 		}
