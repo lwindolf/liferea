@@ -1,12 +1,5 @@
 /* Styles used by Liferea */
 
-body { 
-	font-family:Helvetica,Arial,sans-serif;
-}
-table {
-	font-family:Helvetica,Arial,sans-serif; 
-}
-
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
