@@ -341,7 +341,8 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	gtk_widget_hide(mainwindow);
 
-	ui_feedlist_do_for_all(NULL, feed_save);
+	ui_feedlist_do_for_all(NULL, FEEDLIST_FEED_ACTION, feed_save);
+	//ui_feedlist_do_for_all(NULL, FEEDLIST_FOLDER_ACTION, folder_save);
 	saveAllFolderCollapseStates();
 	
 	/* save pane proportions */

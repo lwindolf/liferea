@@ -115,7 +115,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
 void feed_update(feedPtr fp);
-void feed_save(feedPtr fp);
+void feed_save(gchar *key);
 
 void feed_add_item(feedPtr fp, itemPtr ip);
 

@@ -729,10 +729,9 @@ feedPtr ui_feedlist_find_unread(GtkTreeIter *iter) {
 }
 
 /* recursivly calls func for every feed in the feed list */
-void ui_feedlist_do_for_all(GtkTreeIter *iter, feedActionFunc *func) {
+void ui_feedlist_do_for_all(GtkTreeIter *iter, gint type, feedActionFunc *func) {
 	GtkTreeIter		childiter;
-	gboolean		valid;
-	feedPtr			fp;
+	gboolean		valid, apply;
 	gchar			*tmp_key;
 	gint			tmp_type;
 	
@@ -742,17 +741,34 @@ void ui_feedlist_do_for_all(GtkTreeIter *iter, feedActionFunc *func) {
 		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, iter);
 		
 	while(valid) {
-               	gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_KEY, &tmp_key, FS_TYPE, &tmp_type, -1);
-		if(!IS_FOLDER(tmp_type)) {
-			g_assert(tmp_key != NULL);
-			fp = feed_get_from_key(tmp_key);
-			g_assert(fp != NULL);
-			(*func)(fp);
-		} else {
-			/* must be a folder, so recursivly go down... */
-			ui_feedlist_do_for_all(&childiter, func);
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_KEY, &tmp_key, FS_TYPE, &tmp_type, -1);
+		
+		apply = FALSE;
+		switch(type) {
+			case FEEDLIST_FEED_ACTION:
+				apply = !IS_FOLDER(tmp_type);
+				break;
+			case FEEDLIST_FOLDER_ACTION:
+				apply = IS_FOLDER(tmp_type);
+				break;
+			case FEEDLIST_ALL_ACTION:
+				apply = TRUE;
+				break;
+			default:
+				g_error("internal error! wrong action type for feedlist processing\n");
+				break;
 		}
+		
+		if(TRUE == apply) {
+			g_assert(tmp_key != NULL);
+			(*func)(tmp_key);
+		} 
 		g_free(tmp_key);
+
+		/* if the iter is a folder recursivly go down... */		
+		if(IS_FOLDER(tmp_type))
+			ui_feedlist_do_for_all(&childiter, type, func);
+		
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 	}
 }

@@ -170,15 +170,19 @@ feedPtr feed_new(void) {
 	return fp;
 }
 
-void feed_save(feedPtr fp) {
+void feed_save(gchar *key) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode, itemNode;
 	GSList		*itemlist;
 	gchar		*filename;
 	gchar		*tmp;
 	itemPtr		ip;
+	feedPtr		fp;
 	gint		saveCount = 0;
 	gint		saveMaxCount;
+	
+	fp = feed_get_from_key(key);
+	g_assert(NULL != key);
 			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
 	filename = getCacheFileName(fp->keyprefix, fp->key, getExtension(fp->type));
@@ -442,7 +446,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		fp->key = key;
 
 		if(TRUE == fp->available)		
-			feed_save(fp);
+			feed_save(fp->key);
 
 		/* try to download favicon */
 		baseurl = g_strdup(url);

@@ -28,7 +28,7 @@ extern gint 	selected_type;
 extern feedPtr	selected_fp;
 extern gchar 	*selected_keyprefix;
 
-typedef void 	(*feedActionFunc)	(feedPtr fp);
+typedef void 	(*feedActionFunc)	(gchar *key);
 
 /**
  * Returns the feed store, creating it if needed.
@@ -68,13 +68,19 @@ void ui_feedlist_load_subscription(feedPtr fp, gboolean startup);
  */
 void ui_feedlist_new_subscription(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog);
 
+#define FEEDLIST_FEED_ACTION	0
+#define FEEDLIST_FOLDER_ACTION	1
+#define FEEDLIST_ALL_ACTION	2
+
 /**
- * helper function to recursivly call feed_save() for all
- * feeds in the feed list
+ * Helper function to recursivly call feed_save() for all
+ * elements of the given type in the feed list.
  *
  * @param iter	iterator whose children should be processed (NULL for root)
+ * @param type	the element type to apply func to
+ * @param func	the function to process all found elements
  */
-void ui_feedlist_do_for_all(GtkTreeIter *iter, feedActionFunc *func);
+void ui_feedlist_do_for_all(GtkTreeIter *iter, gint type, feedActionFunc *func);
 
 /**
  * helper function to find next unread item 
