@@ -74,7 +74,7 @@ typedef struct tagBITMAPINFOHEADER{
 /* This is the the idReserved and idType fields of the header */
 static char ico_magic_number[4] = {0, 0, 1, 0};
 
-static int do_verbose = 1;
+static int do_verbose = 0;
 
 void convert __P((void));
 

@@ -114,7 +114,9 @@ void setupTrayIcon(void) {
 			tray_icon = egg_tray_icon_new(PACKAGE);
 			eventbox = gtk_event_box_new();
 
+			/* disabled because this causes troubles when switching desktops!
 			g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);
+			*/
 			g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
 			gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
 
