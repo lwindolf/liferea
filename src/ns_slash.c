@@ -76,10 +76,10 @@ static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar	*section, *department;
 	
-	if(NULL != (department = strchr((gchar *)data, ','))) {
+	section = g_strdup((gchar *)data);
+	if(NULL != (department = strchr(section, ','))) {
 		*department = 0;
 		department++;
-		section = (gchar *)data;
 		
 		addToHTMLBuffer(&(displayset->head), SLASH_START);		
 		if (section != NULL) {
@@ -100,6 +100,7 @@ void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user
 		}
 		addToHTMLBuffer(&(displayset->head), SLASH_END);
 	}
+	g_free(section);
 }
 
 NsHandler *ns_slash_getRSSNsHandler(void) {
