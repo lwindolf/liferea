@@ -20,6 +20,10 @@ elif [ -f /opt/mozilla/chrome/comm.jar ]; then
 	MOZILLA_HOME=/opt/mozilla
 elif [ -f /usr/lib/mozilla-0.9.7/chrome/comm.jar ]; then
 	MOZILLA_HOME=/usr/lib/mozilla-0.9.7
+elif [ -f /usr/lib/mozilla-1.4.1/chrome/comm.jar ]; then
+    MOZILLA_HOME=/usr/lib/mozilla-1.4.1
+elif [ -f /usr/lib/mozilla-1.7.2/chrome/comm.jar ]; then
+    MOZILLA_HOME=/usr/lib/mozilla-1.7.2
 elif [ -f /opt/mozilla/lib/chrome/comm.jar ]; then
 	MOZILLA_HOME=/opt/mozilla/lib
 elif [ -f /opt/gnome/lib/mozilla/chrome/comm.jar ]; then
