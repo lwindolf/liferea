@@ -26,6 +26,7 @@
 #include "support.h"
 #include "favicon.h"
 #include "ui_folder.h"
+#include "debug.h"
 
 extern GtkWidget * filedialog;
 static GtkWidget * importdialog = NULL;
@@ -33,19 +34,21 @@ static GtkWidget * exportdialog = NULL;
 
 /* Used for exporting, this adds a folder or feed's node to the XML tree */
 static void append_node_tag(nodePtr ptr, gpointer userdata) {
-	folderPtr		folder = (folderPtr)folder;
+	folderPtr	folder = (folderPtr)folder;
 	xmlNodePtr 	cur = (xmlNodePtr)userdata;
 	xmlNodePtr	childNode;
 	
-	if (IS_FOLDER(ptr->type)) {
+	debug_enter("append_node_tag");
+	
+	if(IS_FOLDER(ptr->type)) {
 		folderPtr folder = (folderPtr)ptr;
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST folder_get_title(folder));
-		if (ptr->type == FST_HELPFOLDER) {
+		if(ptr->type == FST_HELPFOLDER)
 			xmlNewProp(childNode, BAD_CAST"helpFolder", NULL);
-		} else {
-			ui_feedlist_do_for_all_data(ptr,ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)childNode);
-		}
+		
+		debug1(DEBUG_CONF, "adding folder %s...", folder_get_title(folder));
+		ui_feedlist_do_for_all_data(ptr, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)childNode);
 	} else {
 		feedPtr fp = (feedPtr)ptr;
 		gchar *type = g_strdup_printf("%d",feed_get_type(fp));
@@ -59,17 +62,22 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
 		xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 		xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
+		debug5(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval);
 
 		g_free(interval);
 		g_free(type);
 	}
+	
+	debug_exit("append_node_tag");
 }
 
 
-int exportOPMLFeedList(gchar *filename) {
+int export_OPML_feedlist(gchar *filename) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
 	gint		error = 0;
+
+	debug_enter("export_OPML_feedlist");
 	
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (opmlNode = xmlNewDocNode(doc, NULL, BAD_CAST"opml", NULL))) {
@@ -87,17 +95,19 @@ int exportOPMLFeedList(gchar *filename) {
 			
 			xmlDocSetRootElement(doc, opmlNode);		
 		} else {
-			g_warning(_("could not create XML feed node for feed cache document!"));
+			g_warning("could not create XML feed node for feed cache document!");
 			error = 1;
 		}
-		if (-1 == xmlSaveFormatFileEnc(filename, doc, NULL, 1)) {
-			g_warning(_("Could not export to OPML file!!"));
+		if(-1 == xmlSaveFormatFileEnc(filename, doc, NULL, 1)) {
+			g_warning("Could not export to OPML file!!");
 			error = 1;
 		}
 	} else {
-		g_warning(_("could not create XML document!"));
+		g_warning("could not create XML document!");
 		error = 1;
 	}
+	
+	debug_exit("export_OPML_feedlist");
 	return error;
 }
 
@@ -112,16 +122,19 @@ static int parse_integer(gchar *str, int def) {
 }
 
 
-static void parseOutline(xmlNodePtr cur, folderPtr folder) {
+static void import_parse_outline(xmlNodePtr cur, folderPtr folder) {
 	gchar		*title, *source, *typeStr, *intervalStr;
 	feedPtr		fp = NULL;
+	folderPtr	child;
 	gint		type, interval;
 	gchar		*id;
-	
+
+	debug_enter("import_parse_outline");
+		
 	/* process the outline node */	
 	title = xmlGetProp(cur, BAD_CAST"title");
-	if (title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
-		if (title != NULL)
+	if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
+		if(title != NULL)
 			xmlFree(title);
 		title = xmlGetProp(cur, BAD_CAST"text");
 	}
@@ -151,8 +164,9 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		feed_set_source(fp, source);
 		feed_set_title(fp, title);
 		feed_set_update_interval(fp, interval);
+		debug5(DEBUG_CONF, "loading feed: title=%s source=%s type=%d id=%s interval=%d", title, source, type, id, interval);
 
-		if (id != NULL) {
+		if(id != NULL) {
 			feed_set_id(fp, id);
 			xmlFree(id);
 			if (!feed_load_from_cache(fp))
@@ -160,93 +174,98 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		} else {
 			id = conf_new_id();
 			feed_set_id(fp, id);
+			debug1(DEBUG_CONF, "seems to be an import, setting new id: %s and doing first download...", id);
 			g_free(id);
 			feed_update(fp);
 			favicon_download(fp);
 		}
-
 		ui_folder_add_feed(folder, fp, -1);
 
 		if (source != NULL)
 			xmlFree(source);
 	} else { /* It is a folder */
-		if (NULL != xmlHasProp(cur, BAD_CAST"helpFolder"))
-			g_assert(NULL != (folder = feedlist_insert_help_folder(folder)));
-		else {
-			folderPtr child;
-			g_assert(NULL != (child = restore_folder(folder, title, NULL, FST_FOLDER)));
+		if(NULL != xmlHasProp(cur, BAD_CAST"helpFolder")) {
+			debug0(DEBUG_CONF, "adding help folder");
+			folder = feedlist_insert_help_folder(folder);
+			g_assert(NULL != folder);
+		} else {
+			debug1(DEBUG_CONF, "adding folder \"%s\"", title);
+			child = restore_folder(folder, title, NULL, FST_FOLDER);
+			g_assert(NULL != child);
 			ui_add_folder(folder, child, -1);
 			folder = child;
 		}
-		if (NULL != xmlHasProp(cur, BAD_CAST"expanded"))
+		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
 			ui_folder_set_expansion(folder, TRUE);
-		if (NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
+		if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
 			ui_folder_set_expansion(folder, FALSE);
 	}
-	if (title != NULL)
+	if(title != NULL)
 		xmlFree(title);
 
 	/* process any children */
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			parseOutline(cur, folder);
+			import_parse_outline(cur, folder);
 		
 		cur = cur->next;
 	}
+	
+	debug_exit("import_parse_outline");
 }
 
-static void parseBODY(xmlNodePtr n, folderPtr parent) {
+static void import_parse_body(xmlNodePtr n, folderPtr parent) {
 	xmlNodePtr cur;
+	
 	cur = n->xmlChildrenNode;
 	while(cur != NULL) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			parseOutline(cur, parent);
+			import_parse_outline(cur, parent);
 		cur = cur->next;
 	}
 }
 
-static void parseOPML(xmlNodePtr n, folderPtr parent) {
+static void import_parse_OPML(xmlNodePtr n, folderPtr parent) {
 	xmlNodePtr cur;
+	
 	cur = n->xmlChildrenNode;
 	while(cur != NULL) {
 		/* we ignore the head */
 		if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
-			parseBODY(cur, parent);
+			import_parse_body(cur, parent);
 		}
 		cur = cur->next;
 	}	
 }
 
-void importOPMLFeedList(gchar *filename, folderPtr parent, gboolean showErrors) {
+void import_OPML_feedlist(gchar *filename, folderPtr parent, gboolean showErrors) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
-	g_message("Importing OPML file: %s", filename);
+	debug1(DEBUG_CONF, "Importing OPML file: %s", filename);
 	/* read the feed list */
-	doc = xmlParseFile(filename);
-
-	if(NULL == doc) {
-		if (showErrors)
+	if(NULL == (doc = xmlParseFile(filename))) {
+		if(showErrors)
 			ui_show_error_box(_("XML error while reading cache file! Could not import \"%s\"!"), filename);
 		else
-			g_message(_("XML error while reading cache file! Could not import \"%s\"!"), filename);
+			g_warning(_("XML error while reading cache file! Could not import \"%s\"!"), filename);
 	} else {
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			if (showErrors)
+			if(showErrors)
 				ui_show_error_box(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 			else
-				g_message(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
+				g_warning(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 		} else {
-			while (cur != NULL) {
+			while(cur != NULL) {
 				if(!xmlIsBlankNode(cur)) {
 					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
-						parseOPML(cur, parent);
+						import_parse_OPML(cur, parent);
 					} else {
-						if (showErrors)
+						if(showErrors)
 							ui_show_error_box(_("\"%s\" is no valid OPML document! Liferea cannot import this file!"), filename);
 						else
-							g_message(_("\"%s\" is no valid OPML document! Liferea cannot import this file!"), filename);
+							g_warning(_("\"%s\" is no valid OPML document! Liferea cannot import this file!"), filename);
 					}
 				}
 				cur = cur->next;
@@ -349,7 +368,7 @@ void on_exportfile_clicked(GtkButton *button, gpointer user_data) {
 		utfname = gtk_entry_get_text(GTK_ENTRY(source));
 		name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
 		if (name != NULL) {
-			error = exportOPMLFeedList(name);
+			error = export_OPML_feedlist(name);
 			g_free(name);
 		}
 	}
@@ -383,7 +402,7 @@ void on_importfile_clicked(GtkButton *button, gpointer user_data) {
 			}
 			g_free(foldertitle);
 			
-			importOPMLFeedList(name, folder, TRUE);
+			import_OPML_feedlist(name, folder, TRUE);
 			g_free(name);
 		}
 	}

@@ -314,6 +314,8 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 	static folderPtr 	helpFolder = NULL;
 	feedPtr			fp;
 
+	debug_enter("feedlist_insert_help_folder");
+	
 	if(helpFolder == NULL) {
 		helpFolder = restore_folder(parent, _("Liferea Help"), "helpFolder", FST_HELPFOLDER);
 		ui_add_folder(parent, helpFolder, -1);
@@ -342,6 +344,8 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 		   because they miss a cache file. And of course they are
 		   updated daily because of the update interval */
 	}
+	
+	debug_exit("feedlist_insert_help_folder");
 	return helpFolder;
 }
 
@@ -385,7 +389,7 @@ void loadSubscriptions(void) {
 	feedlistLoading = TRUE;
 	load_folder_contents(NULL, "");
 	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
-	importOPMLFeedList(filename, NULL, FALSE);
+	import_OPML_feedlist(filename, NULL, FALSE);
 	g_free(filename);
 	debug0(DEBUG_CONF, "Erasing old gconf enteries.");
 	conf_feedlist_erase_gconf();
@@ -407,7 +411,7 @@ void conf_feedlist_save() {
 	debug0(DEBUG_CONF, "Saving feedlist");
 	filename = g_strdup_printf("%s/feedlist.opml~", getCachePath());
 
-	if (0 == exportOPMLFeedList(filename)) {
+	if(0 == export_OPML_feedlist(filename)) {
 		filename_real = g_strdup_printf("%s/feedlist.opml", getCachePath());
 		if(rename(filename, filename_real) < 0)
 			g_warning(_("Error renaming %s to %s\n"), filename, filename_real);
