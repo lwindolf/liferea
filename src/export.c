@@ -191,9 +191,9 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 	folderPtr	child;
 	gint		interval;
 	gchar		*id = NULL;
-
+	
 	debug_enter("import_parse_outline");
-		
+	
 	/* process the outline node */	
 	title = xmlGetProp(cur, BAD_CAST"title");
 	if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
@@ -233,7 +233,6 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			g_free(source);
 			source = tmp;
 		}
-		
 		
 		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
 		interval = parse_integer(intervalStr, -1);
@@ -303,7 +302,9 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			feed_set_id(fp, id);
 			debug1(DEBUG_CONF, "seems to be an import, setting new id: %s and doing first download...", id);
 			g_free(id);
-			feed_schedule_update(fp, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
+			feed_schedule_update(fp, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+							 | FEED_REQ_DOWNLOAD_FAVICON
+							 | FEED_REQ_AUTH_DIALOG);
 		}
 
 		ui_folder_add_feed(folder, fp, -1);
