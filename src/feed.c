@@ -199,7 +199,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 		} else {		
 			debug0(DEBUG_UPDATE, "There were errors while parsing a feed!");
 			ui_mainwindow_set_status_bar(_("There were errors while parsing a feed"));
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type. Please check that it is in a supported format.</p>"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea.sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"));
 		}
 	} else {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(handler));
