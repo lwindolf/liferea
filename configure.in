@@ -159,6 +159,7 @@ src/net/Makefile
 pixmaps/Makefile
 po/Makefile.in
 liferea.spec
+liferea-SuSE.spec
 ])
 
 
