@@ -10,6 +10,7 @@ noinst_LIBRARIES = liblinet.a
 
 liblinet_a_CFLAGS = @PACKAGE_CFLAGS@ -Wall
 liblinet_a_SOURCES = \
+	compat.h \
 	conversions.c conversions.h \
 	digcalc.c digcalc.h \
 	md5.c md5.h \
