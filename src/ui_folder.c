@@ -170,11 +170,11 @@ void ui_folder_set_expansion(folderPtr folder, gboolean expanded) {
    folders-problem, so we simply pack an (empty) entry into each
    empty folder like Nautilus does... */
    
-void checkForEmptyFolder(folderPtr folder) {
+void ui_folder_empty_check(folderPtr folder) {
 	GtkTreeIter	*parent = &((ui_data*)(folder->ui_data))->row;
 	GtkTreeIter	iter;
-	int			count;
-	gboolean		valid;
+	int		count;
+	gboolean	valid;
 	nodePtr		ptr;
 	/* this function does two things:
 	   
@@ -214,9 +214,9 @@ void checkForEmptyFolder(folderPtr folder) {
 	} while(valid);
 }
 
-void checkForEmptyFolders(void) {
+void ui_folder_check_if_empty(void) {
 
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, checkForEmptyFolder);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, ui_folder_empty_check);
 }
 
 void ui_folder_remove_node(nodePtr ptr) {
@@ -240,7 +240,7 @@ void ui_folder_remove_node(nodePtr ptr) {
 	ptr->ui_data = NULL;
 
 	if(parent != NULL) {
-		checkForEmptyFolders();
+		ui_folder_check_if_empty();
 		if (parent != NULL && parentExpanded)
 			ui_folder_set_expansion(parent, TRUE);
 	}
