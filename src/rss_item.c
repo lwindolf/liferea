@@ -131,6 +131,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 				i->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
+			xmlFree(string);
 		} else 
 		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures, so we build

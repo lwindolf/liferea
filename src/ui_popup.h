@@ -35,4 +35,15 @@ GtkMenu *make_item_menu(void);
 GtkMenu *make_html_menu(void);
 GtkMenu *make_url_menu(char* url);
 
+/* GUI callbacks */
+gboolean
+on_mainfeedlist_button_press_event     (GtkWidget       *widget,
+                                        GdkEventButton  *event,
+                                        gpointer         user_data);
+
+gboolean
+on_itemlist_button_press_event         (GtkWidget       *widget,
+                                        GdkEventButton  *event,
+                                        gpointer         user_data);
+
 #endif

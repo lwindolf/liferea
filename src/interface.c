@@ -127,7 +127,7 @@ create_mainwindow (void)
   accel_group = gtk_accel_group_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.4.6"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.4.7"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -770,8 +770,8 @@ create_propdialog (void)
   GtkWidget *feedupdateinfo;
   GtkWidget *label19;
   GtkWidget *dialog_action_area1;
-  GtkWidget *propchangebtn;
   GtkWidget *cancelbtn;
+  GtkWidget *propchangebtn;
   GtkTooltips *tooltips;
 
   tooltips = gtk_tooltips_new ();
@@ -823,14 +823,14 @@ create_propdialog (void)
   gtk_table_attach (GTK_TABLE (table1), feednameentry, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, feednameentry, _("either leave the name supplied by the feed or enter an alternative name which you like to be listed in the feed list"), NULL);
+  gtk_tooltips_set_tip (tooltips, feednameentry, _("Either leave the name supplied by the feed or enter an alternative name which you like to be listed in the feed list."), NULL);
 
   feedurlentry = gtk_entry_new ();
   gtk_widget_show (feedurlentry);
   gtk_table_attach (GTK_TABLE (table1), feedurlentry, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_tooltips_set_tip (tooltips, feedurlentry, _("enter the URL the feed should be loaded from"), NULL);
+  gtk_tooltips_set_tip (tooltips, feedurlentry, _("Enter the URL the feed should be loaded from."), NULL);
 
   label3 = gtk_label_new (_("Feed URL"));
   gtk_widget_show (label3);
@@ -885,17 +885,20 @@ create_propdialog (void)
   gtk_widget_show (dialog_action_area1);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1), GTK_BUTTONBOX_END);
 
-  propchangebtn = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (propchangebtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (propdialog), propchangebtn, GTK_RESPONSE_OK);
-  GTK_WIDGET_SET_FLAGS (propchangebtn, GTK_CAN_DEFAULT);
-
   cancelbtn = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (cancelbtn);
   gtk_dialog_add_action_widget (GTK_DIALOG (propdialog), cancelbtn, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (cancelbtn, GTK_CAN_DEFAULT);
 
+  propchangebtn = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (propchangebtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (propdialog), propchangebtn, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (propchangebtn, GTK_CAN_DEFAULT);
+
   g_signal_connect_swapped ((gpointer) propdialog, "delete_event",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (propdialog));
+  g_signal_connect_swapped ((gpointer) cancelbtn, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (propdialog));
   g_signal_connect_data ((gpointer) propchangebtn, "clicked",
@@ -905,9 +908,6 @@ create_propdialog (void)
   g_signal_connect ((gpointer) propchangebtn, "clicked",
                     G_CALLBACK (on_propchangebtn_clicked),
                     NULL);
-  g_signal_connect_swapped ((gpointer) cancelbtn, "clicked",
-                            G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (propdialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (propdialog, propdialog, "propdialog");
@@ -930,8 +930,8 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, feedupdateinfo, "feedupdateinfo");
   GLADE_HOOKUP_OBJECT (propdialog, label19, "label19");
   GLADE_HOOKUP_OBJECT_NO_REF (propdialog, dialog_action_area1, "dialog_action_area1");
-  GLADE_HOOKUP_OBJECT (propdialog, propchangebtn, "propchangebtn");
   GLADE_HOOKUP_OBJECT (propdialog, cancelbtn, "cancelbtn");
+  GLADE_HOOKUP_OBJECT (propdialog, propchangebtn, "propchangebtn");
   GLADE_HOOKUP_OBJECT_NO_REF (propdialog, tooltips, "tooltips");
 
   return propdialog;
@@ -967,8 +967,8 @@ create_newdialog (void)
   GtkWidget *opml1;
   GtkWidget *label22;
   GtkWidget *dialog_action_area2;
-  GtkWidget *newfeedbtn;
   GtkWidget *cancelbtn;
+  GtkWidget *newfeedbtn;
 
   newdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (newdialog), _("New Subscription"));
@@ -1093,15 +1093,15 @@ create_newdialog (void)
   gtk_widget_show (dialog_action_area2);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area2), GTK_BUTTONBOX_END);
 
-  newfeedbtn = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (newfeedbtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (newdialog), newfeedbtn, GTK_RESPONSE_OK);
-  GTK_WIDGET_SET_FLAGS (newfeedbtn, GTK_CAN_DEFAULT);
-
   cancelbtn = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (cancelbtn);
   gtk_dialog_add_action_widget (GTK_DIALOG (newdialog), cancelbtn, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (cancelbtn, GTK_CAN_DEFAULT);
+
+  newfeedbtn = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (newfeedbtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (newdialog), newfeedbtn, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (newfeedbtn, GTK_CAN_DEFAULT);
 
   g_signal_connect_swapped ((gpointer) newdialog, "delete_event",
                             G_CALLBACK (gtk_widget_hide),
@@ -1109,6 +1109,9 @@ create_newdialog (void)
   g_signal_connect ((gpointer) button4, "clicked",
                     G_CALLBACK (on_localfilebtn_pressed),
                     NULL);
+  g_signal_connect_swapped ((gpointer) cancelbtn, "clicked",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (newdialog));
   g_signal_connect_swapped ((gpointer) newfeedbtn, "clicked",
                             G_CALLBACK (on_newfeedbtn_clicked),
                             GTK_OBJECT (newfeedentry));
@@ -1116,9 +1119,6 @@ create_newdialog (void)
                          G_CALLBACK (gtk_widget_hide),
                          GTK_OBJECT (newdialog),
                          NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
-  g_signal_connect_swapped ((gpointer) cancelbtn, "clicked",
-                            G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (newdialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, newdialog, "newdialog");
@@ -1148,8 +1148,8 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, opml1, "opml1");
   GLADE_HOOKUP_OBJECT (newdialog, label22, "label22");
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, dialog_action_area2, "dialog_action_area2");
-  GLADE_HOOKUP_OBJECT (newdialog, newfeedbtn, "newfeedbtn");
   GLADE_HOOKUP_OBJECT (newdialog, cancelbtn, "cancelbtn");
+  GLADE_HOOKUP_OBJECT (newdialog, newfeedbtn, "newfeedbtn");
 
   return newdialog;
 }
@@ -1184,23 +1184,24 @@ create_prefdialog (void)
   GtkWidget *label33;
   GtkObject *itemCountBtn_adj;
   GtkWidget *itemCountBtn;
-  GtkWidget *updateallbtn;
+  GtkWidget *updatealloptionbtn;
   GtkWidget *label32;
   GtkWidget *label38;
   GtkWidget *vbox222;
   GtkWidget *frame10;
   GtkWidget *vbox22;
-  GtkWidget *trayiconbtn;
+  GtkWidget *trayiconoptionbtn;
   GtkWidget *label40;
   GtkWidget *frame11;
   GtkWidget *vbox223;
-  GtkWidget *toolbarbtn;
-  GtkWidget *menubarbtn;
+  GtkWidget *menuradiobtn;
+  GSList *menuradiobtn_group = NULL;
+  GtkWidget *menuradiobtn2;
+  GtkWidget *menuradiobtn3;
   GtkWidget *label41;
   GtkWidget *label39;
   GtkWidget *dialog_action_area5;
-  GtkWidget *prefsavebtn;
-  GtkWidget *prefcancelbtn;
+  GtkWidget *prefclosebtn;
   GtkTooltips *tooltips;
 
   tooltips = gtk_tooltips_new ();
@@ -1253,7 +1254,7 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox14), browsercmd, TRUE, TRUE, 0);
   gtk_tooltips_set_tip (tooltips, browsercmd, _("specify a browser command using %s as URL placeholder"), NULL);
 
-  label13 = gtk_label_new (_("browser settings"));
+  label13 = gtk_label_new (_("Browser Settings"));
   gtk_widget_show (label13);
   gtk_frame_set_label_widget (GTK_FRAME (frame2), label13);
   gtk_misc_set_padding (GTK_MISC (label13), 5, 0);
@@ -1294,7 +1295,7 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox15), timeformatentry, TRUE, TRUE, 0);
   gtk_tooltips_set_tip (tooltips, timeformatentry, _("for expert users: specify a time format string, consult the strftime() manpage for the format codes"), NULL);
 
-  label24 = gtk_label_new (_("date column settings"));
+  label24 = gtk_label_new (_("Date Column Settings"));
   gtk_widget_show (label24);
   gtk_frame_set_label_widget (GTK_FRAME (frame6), label24);
   gtk_misc_set_padding (GTK_MISC (label24), 5, 0);
@@ -1313,7 +1314,7 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (vbox20), hbox19, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbox19), 5);
 
-  label33 = gtk_label_new (_("maximal number of items per feed \nto be saved permanently"));
+  label33 = gtk_label_new (_("Maximal number of items per feed \nto be saved permanently"));
   gtk_widget_show (label33);
   gtk_box_pack_start (GTK_BOX (hbox19), label33, FALSE, FALSE, 0);
   gtk_label_set_line_wrap (GTK_LABEL (label33), TRUE);
@@ -1324,11 +1325,11 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox19), itemCountBtn, TRUE, TRUE, 0);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
 
-  updateallbtn = gtk_check_button_new_with_mnemonic (_("Update all feeds on program startup."));
-  gtk_widget_show (updateallbtn);
-  gtk_box_pack_start (GTK_BOX (vbox20), updateallbtn, FALSE, FALSE, 0);
+  updatealloptionbtn = gtk_check_button_new_with_mnemonic (_("Update all feeds on program startup."));
+  gtk_widget_show (updatealloptionbtn);
+  gtk_box_pack_start (GTK_BOX (vbox20), updatealloptionbtn, FALSE, FALSE, 0);
 
-  label32 = gtk_label_new (_("feed handling settings"));
+  label32 = gtk_label_new (_("Feed Handling Settings"));
   gtk_widget_show (label32);
   gtk_frame_set_label_widget (GTK_FRAME (frame8), label32);
   gtk_misc_set_padding (GTK_MISC (label32), 5, 0);
@@ -1350,10 +1351,10 @@ create_prefdialog (void)
   gtk_widget_show (vbox22);
   gtk_container_add (GTK_CONTAINER (frame10), vbox22);
 
-  trayiconbtn = gtk_check_button_new_with_mnemonic (_("Show a status icon in the notification area \n(also called system tray). Changes of this setting\ntake place after restarting the program."));
-  gtk_widget_show (trayiconbtn);
-  gtk_box_pack_start (GTK_BOX (vbox22), trayiconbtn, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (trayiconbtn), 4);
+  trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status icon in the notification area \n(also called system tray)."));
+  gtk_widget_show (trayiconoptionbtn);
+  gtk_box_pack_start (GTK_BOX (vbox22), trayiconoptionbtn, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (trayiconoptionbtn), 4);
 
   label40 = gtk_label_new (_("Notification Area"));
   gtk_widget_show (label40);
@@ -1365,19 +1366,28 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (vbox222), frame11, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame11), 5);
 
-  vbox223 = gtk_vbox_new (FALSE, 0);
+  vbox223 = gtk_vbox_new (FALSE, 5);
   gtk_widget_show (vbox223);
   gtk_container_add (GTK_CONTAINER (frame11), vbox223);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox223), 5);
 
-  toolbarbtn = gtk_check_button_new_with_mnemonic (_("Disable Tool Bar."));
-  gtk_widget_show (toolbarbtn);
-  gtk_box_pack_start (GTK_BOX (vbox223), toolbarbtn, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (toolbarbtn), 5);
+  menuradiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Show Menu _And Toolbar"));
+  gtk_widget_show (menuradiobtn);
+  gtk_box_pack_start (GTK_BOX (vbox223), menuradiobtn, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn), menuradiobtn_group);
+  menuradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn));
 
-  menubarbtn = gtk_check_button_new_with_mnemonic (_("Disable Menu Bar."));
-  gtk_widget_show (menubarbtn);
-  gtk_box_pack_start (GTK_BOX (vbox223), menubarbtn, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (menubarbtn), 5);
+  menuradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("Show _Menu Only"));
+  gtk_widget_show (menuradiobtn2);
+  gtk_box_pack_start (GTK_BOX (vbox223), menuradiobtn2, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn2), menuradiobtn_group);
+  menuradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn2));
+
+  menuradiobtn3 = gtk_radio_button_new_with_mnemonic (NULL, _("Show _Toolbar Only"));
+  gtk_widget_show (menuradiobtn3);
+  gtk_box_pack_start (GTK_BOX (vbox223), menuradiobtn3, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn3), menuradiobtn_group);
+  menuradiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn3));
 
   label41 = gtk_label_new (_("Menu Settings"));
   gtk_widget_show (label41);
@@ -1391,23 +1401,54 @@ create_prefdialog (void)
   gtk_widget_show (dialog_action_area5);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area5), GTK_BUTTONBOX_END);
 
-  prefsavebtn = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (prefsavebtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (prefdialog), prefsavebtn, GTK_RESPONSE_OK);
-  GTK_WIDGET_SET_FLAGS (prefsavebtn, GTK_CAN_DEFAULT);
-
-  prefcancelbtn = gtk_button_new_from_stock ("gtk-cancel");
-  gtk_widget_show (prefcancelbtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (prefdialog), prefcancelbtn, GTK_RESPONSE_CANCEL);
-  GTK_WIDGET_SET_FLAGS (prefcancelbtn, GTK_CAN_DEFAULT);
+  prefclosebtn = gtk_button_new_from_stock ("gtk-close");
+  gtk_widget_show (prefclosebtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (prefdialog), prefclosebtn, GTK_RESPONSE_CLOSE);
+  GTK_WIDGET_SET_FLAGS (prefclosebtn, GTK_CAN_DEFAULT);
 
   g_signal_connect_swapped ((gpointer) prefdialog, "delete_event",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (prefdialog));
-  g_signal_connect ((gpointer) prefsavebtn, "clicked",
-                    G_CALLBACK (on_prefsavebtn_clicked),
+  g_signal_connect ((gpointer) browserradiobtn1, "clicked",
+                    G_CALLBACK (on_browserselection_clicked),
                     NULL);
-  g_signal_connect_swapped ((gpointer) prefcancelbtn, "clicked",
+  g_signal_connect ((gpointer) browserradiobtn2, "clicked",
+                    G_CALLBACK (on_browserselection_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) browsercmd, "changed",
+                    G_CALLBACK (on_browsercmd_changed),
+                    NULL);
+  g_signal_connect ((gpointer) timeradiobtn1, "clicked",
+                    G_CALLBACK (on_timeformatselection_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) timeradiobtn2, "clicked",
+                    G_CALLBACK (on_timeformatselection_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) timeradiobtn3, "clicked",
+                    G_CALLBACK (on_timeformatselection_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) timeformatentry, "changed",
+                    G_CALLBACK (on_timeformatentry_changed),
+                    NULL);
+  g_signal_connect ((gpointer) itemCountBtn, "value_changed",
+                    G_CALLBACK (on_itemCountBtn_value_changed),
+                    NULL);
+  g_signal_connect ((gpointer) updatealloptionbtn, "clicked",
+                    G_CALLBACK (on_updatealloptionbtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) trayiconoptionbtn, "clicked",
+                    G_CALLBACK (on_trayiconoptionbtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) menuradiobtn, "clicked",
+                    G_CALLBACK (on_menuselection_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) menuradiobtn2, "clicked",
+                    G_CALLBACK (on_menuselection_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) menuradiobtn3, "clicked",
+                    G_CALLBACK (on_menuselection_clicked),
+                    NULL);
+  g_signal_connect_swapped ((gpointer) prefclosebtn, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (prefdialog));
 
@@ -1436,23 +1477,23 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox19, "hbox19");
   GLADE_HOOKUP_OBJECT (prefdialog, label33, "label33");
   GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, updateallbtn, "updateallbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, updatealloptionbtn, "updatealloptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label32, "label32");
   GLADE_HOOKUP_OBJECT (prefdialog, label38, "label38");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox222, "vbox222");
   GLADE_HOOKUP_OBJECT (prefdialog, frame10, "frame10");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox22, "vbox22");
-  GLADE_HOOKUP_OBJECT (prefdialog, trayiconbtn, "trayiconbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, trayiconoptionbtn, "trayiconoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label40, "label40");
   GLADE_HOOKUP_OBJECT (prefdialog, frame11, "frame11");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox223, "vbox223");
-  GLADE_HOOKUP_OBJECT (prefdialog, toolbarbtn, "toolbarbtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, menubarbtn, "menubarbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn, "menuradiobtn1");
+  GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn2, "menuradiobtn2");
+  GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn3, "menuradiobtn3");
   GLADE_HOOKUP_OBJECT (prefdialog, label41, "label41");
   GLADE_HOOKUP_OBJECT (prefdialog, label39, "label39");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
-  GLADE_HOOKUP_OBJECT (prefdialog, prefsavebtn, "prefsavebtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, prefcancelbtn, "prefcancelbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, prefclosebtn, "prefclosebtn");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, tooltips, "tooltips");
 
   return prefdialog;
@@ -1468,8 +1509,8 @@ create_newfolderdialog (void)
   GtkWidget *label20;
   GtkWidget *foldertitleentry;
   GtkWidget *dialog_action_area6;
-  GtkWidget *button2;
   GtkWidget *button3;
+  GtkWidget *button2;
 
   newfolderdialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (newfolderdialog), _("add folder"));
@@ -1499,17 +1540,20 @@ create_newfolderdialog (void)
   gtk_widget_show (dialog_action_area6);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area6), GTK_BUTTONBOX_END);
 
-  button2 = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (button2);
-  gtk_dialog_add_action_widget (GTK_DIALOG (newfolderdialog), button2, GTK_RESPONSE_OK);
-  GTK_WIDGET_SET_FLAGS (button2, GTK_CAN_DEFAULT);
-
   button3 = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (button3);
   gtk_dialog_add_action_widget (GTK_DIALOG (newfolderdialog), button3, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (button3, GTK_CAN_DEFAULT);
 
+  button2 = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (button2);
+  gtk_dialog_add_action_widget (GTK_DIALOG (newfolderdialog), button2, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (button2, GTK_CAN_DEFAULT);
+
   g_signal_connect_swapped ((gpointer) newfolderdialog, "delete_event",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (newfolderdialog));
+  g_signal_connect_swapped ((gpointer) button3, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (newfolderdialog));
   g_signal_connect ((gpointer) button2, "clicked",
@@ -1519,9 +1563,6 @@ create_newfolderdialog (void)
                          G_CALLBACK (gtk_widget_hide),
                          GTK_OBJECT (newfolderdialog),
                          NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
-  g_signal_connect_swapped ((gpointer) button3, "clicked",
-                            G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (newfolderdialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (newfolderdialog, newfolderdialog, "newfolderdialog");
@@ -1531,8 +1572,8 @@ create_newfolderdialog (void)
   GLADE_HOOKUP_OBJECT (newfolderdialog, label20, "label20");
   GLADE_HOOKUP_OBJECT (newfolderdialog, foldertitleentry, "foldertitleentry");
   GLADE_HOOKUP_OBJECT_NO_REF (newfolderdialog, dialog_action_area6, "dialog_action_area6");
-  GLADE_HOOKUP_OBJECT (newfolderdialog, button2, "button2");
   GLADE_HOOKUP_OBJECT (newfolderdialog, button3, "button3");
+  GLADE_HOOKUP_OBJECT (newfolderdialog, button2, "button2");
 
   return newfolderdialog;
 }
@@ -1546,8 +1587,8 @@ create_foldernamedialog (void)
   GtkWidget *label23;
   GtkWidget *foldernameentry;
   GtkWidget *dialog_action_area7;
-  GtkWidget *foldernamechangebtn;
   GtkWidget *cancelbutton1;
+  GtkWidget *foldernamechangebtn;
 
   foldernamedialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (foldernamedialog), _("edit folder name"));
@@ -1573,25 +1614,25 @@ create_foldernamedialog (void)
   gtk_widget_show (dialog_action_area7);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area7), GTK_BUTTONBOX_END);
 
-  foldernamechangebtn = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (foldernamechangebtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (foldernamedialog), foldernamechangebtn, 0);
-  GTK_WIDGET_SET_FLAGS (foldernamechangebtn, GTK_CAN_DEFAULT);
-
   cancelbutton1 = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (cancelbutton1);
   gtk_dialog_add_action_widget (GTK_DIALOG (foldernamedialog), cancelbutton1, 0);
   GTK_WIDGET_SET_FLAGS (cancelbutton1, GTK_CAN_DEFAULT);
 
+  foldernamechangebtn = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (foldernamechangebtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (foldernamedialog), foldernamechangebtn, 0);
+  GTK_WIDGET_SET_FLAGS (foldernamechangebtn, GTK_CAN_DEFAULT);
+
   g_signal_connect_swapped ((gpointer) foldernamedialog, "delete_event",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (foldernamedialog));
+  g_signal_connect_swapped ((gpointer) cancelbutton1, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (foldernamedialog));
   g_signal_connect ((gpointer) foldernamechangebtn, "clicked",
                     G_CALLBACK (on_foldernamechangebtn_clicked),
                     NULL);
-  g_signal_connect_swapped ((gpointer) cancelbutton1, "clicked",
-                            G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (foldernamedialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, foldernamedialog, "foldernamedialog");
@@ -1600,8 +1641,8 @@ create_foldernamedialog (void)
   GLADE_HOOKUP_OBJECT (foldernamedialog, label23, "label23");
   GLADE_HOOKUP_OBJECT (foldernamedialog, foldernameentry, "foldernameentry");
   GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, dialog_action_area7, "dialog_action_area7");
-  GLADE_HOOKUP_OBJECT (foldernamedialog, foldernamechangebtn, "foldernamechangebtn");
   GLADE_HOOKUP_OBJECT (foldernamedialog, cancelbutton1, "cancelbutton1");
+  GLADE_HOOKUP_OBJECT (foldernamedialog, foldernamechangebtn, "foldernamechangebtn");
 
   return foldernamedialog;
 }
@@ -1754,8 +1795,8 @@ create_ruledialog (void)
   GtkWidget *label37;
   GtkWidget *entry1;
   GtkWidget *dialog_action_area8;
-  GtkWidget *button16;
   GtkWidget *button17;
+  GtkWidget *button16;
 
   ruledialog = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (ruledialog), _("edit rule properties"));
@@ -1808,24 +1849,24 @@ create_ruledialog (void)
   gtk_widget_show (dialog_action_area8);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area8), GTK_BUTTONBOX_END);
 
-  button16 = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (button16);
-  gtk_dialog_add_action_widget (GTK_DIALOG (ruledialog), button16, GTK_RESPONSE_OK);
-  GTK_WIDGET_SET_FLAGS (button16, GTK_CAN_DEFAULT);
-
   button17 = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (button17);
   gtk_dialog_add_action_widget (GTK_DIALOG (ruledialog), button17, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (button17, GTK_CAN_DEFAULT);
 
+  button16 = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (button16);
+  gtk_dialog_add_action_widget (GTK_DIALOG (ruledialog), button16, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (button16, GTK_CAN_DEFAULT);
+
+  g_signal_connect ((gpointer) button17, "clicked",
+                    G_CALLBACK (gtk_widget_hide),
+                    NULL);
   g_signal_connect_after ((gpointer) button16, "clicked",
                           G_CALLBACK (gtk_widget_hide),
                           NULL);
   g_signal_connect ((gpointer) button16, "clicked",
                     G_CALLBACK (on_rulechangedbtn_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) button17, "clicked",
-                    G_CALLBACK (gtk_widget_hide),
                     NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
@@ -1842,8 +1883,8 @@ create_ruledialog (void)
   GLADE_HOOKUP_OBJECT (ruledialog, label37, "label37");
   GLADE_HOOKUP_OBJECT (ruledialog, entry1, "entry1");
   GLADE_HOOKUP_OBJECT_NO_REF (ruledialog, dialog_action_area8, "dialog_action_area8");
-  GLADE_HOOKUP_OBJECT (ruledialog, button16, "button16");
   GLADE_HOOKUP_OBJECT (ruledialog, button17, "button17");
+  GLADE_HOOKUP_OBJECT (ruledialog, button16, "button16");
 
   return ruledialog;
 }
@@ -1863,8 +1904,8 @@ create_feedsterdialog (void)
   GtkWidget *feedsterresultcount;
   GtkWidget *label44;
   GtkWidget *dialog_action_area9;
-  GtkWidget *feedsterbtn;
   GtkWidget *feedstercancelbtn;
+  GtkWidget *feedsterbtn;
   GtkTooltips *tooltips;
 
   tooltips = gtk_tooltips_new ();
@@ -1916,16 +1957,19 @@ create_feedsterdialog (void)
   gtk_widget_show (dialog_action_area9);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area9), GTK_BUTTONBOX_END);
 
-  feedsterbtn = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (feedsterbtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (feedsterdialog), feedsterbtn, GTK_RESPONSE_OK);
-  GTK_WIDGET_SET_FLAGS (feedsterbtn, GTK_CAN_DEFAULT);
-
   feedstercancelbtn = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (feedstercancelbtn);
   gtk_dialog_add_action_widget (GTK_DIALOG (feedsterdialog), feedstercancelbtn, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (feedstercancelbtn, GTK_CAN_DEFAULT);
 
+  feedsterbtn = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (feedsterbtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (feedsterdialog), feedsterbtn, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (feedsterbtn, GTK_CAN_DEFAULT);
+
+  g_signal_connect_swapped ((gpointer) feedstercancelbtn, "clicked",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (feedsterdialog));
   g_signal_connect ((gpointer) feedsterbtn, "clicked",
                     G_CALLBACK (on_feedsterbtn_clicked),
                     NULL);
@@ -1933,9 +1977,6 @@ create_feedsterdialog (void)
                          G_CALLBACK (gtk_widget_hide),
                          GTK_OBJECT (feedsterdialog),
                          NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
-  g_signal_connect_swapped ((gpointer) feedstercancelbtn, "clicked",
-                            G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (feedsterdialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, feedsterdialog, "feedsterdialog");
@@ -1949,8 +1990,8 @@ create_feedsterdialog (void)
   GLADE_HOOKUP_OBJECT (feedsterdialog, feedsterresultcount, "feedsterresultcount");
   GLADE_HOOKUP_OBJECT (feedsterdialog, label44, "label44");
   GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, dialog_action_area9, "dialog_action_area9");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, feedsterbtn, "feedsterbtn");
   GLADE_HOOKUP_OBJECT (feedsterdialog, feedstercancelbtn, "feedstercancelbtn");
+  GLADE_HOOKUP_OBJECT (feedsterdialog, feedsterbtn, "feedsterbtn");
   GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, tooltips, "tooltips");
 
   return feedsterdialog;

@@ -33,8 +33,7 @@
 #define NO_NEW_ITEMS	0
 #define NEW_ITEMS	1
 
-extern GdkPixbuf	*emptyIcon;
-extern GdkPixbuf	*availableIcon;
+extern GdkPixbuf	*icons[];
 
 extern GtkWidget	*mainwindow;
 
@@ -47,46 +46,43 @@ static GtkWidget	*image = NULL;		/* the image in the notification area */
 
 void setTrayToolTip(gchar *string) {
 	GtkTooltipsData	*data = NULL;
-	
-	if(NULL != tray_icon_tips) {
-		data = gtk_tooltips_data_get(GTK_WIDGET(tray_icon));
-		if(NULL != data) {
-			g_free(data->tip_text);
-			g_free(data->tip_private);
-		}		
-		
-	   	gtk_tooltips_set_tip(GTK_TOOLTIPS(tray_icon_tips), 
-				     GTK_WIDGET(eventbox),
-				     string, string);
+	g_assert(tray_icon_tips);
+
+	data = gtk_tooltips_data_get(GTK_WIDGET(tray_icon));
+
+	if(NULL != data) {
+		g_free(data->tip_text);
+		g_free(data->tip_private);
 	}
+	
+	gtk_tooltips_set_tip(GTK_TOOLTIPS(tray_icon_tips), 
+					 GTK_WIDGET(eventbox),
+					 string, string);
 	g_free(string);
 }
 
 static void setTrayIcon(GdkPixbuf *icon) {
+	g_assert(tray_icon);
 
-	if(NULL != tray_icon) {
-		if(NULL != image)
-			gtk_widget_destroy(image);
+	if(NULL != image)
+		gtk_widget_destroy(image);
 
-		image = gtk_image_new_from_pixbuf(icon);
-		gtk_container_add(GTK_CONTAINER(eventbox), image);
-		gtk_widget_show_all(GTK_WIDGET(tray_icon));
-	}
+	image = gtk_image_new_from_pixbuf(icon);
+	gtk_container_add(GTK_CONTAINER(eventbox), image);
+	gtk_widget_show_all(GTK_WIDGET(tray_icon));
 }
 
 void doTrayIcon(gint count) { 
-
 	if(count > 0) {
-		setTrayIcon(availableIcon); 
+		setTrayIcon(icons[ICON_AVAILABLE]); 
 		newItems += count;
 		setTrayToolTip(g_strdup_printf(_("%d new items!"), newItems));
 	}
 }
 
 void undoTrayIcon(void) {
-
 	if(0 != newItems) {
-		setTrayIcon(emptyIcon);
+		setTrayIcon(icons[ICON_EMPTY]);
 		setTrayToolTip(g_strdup(_("No new items.")));
 		newItems = 0;
 	}
@@ -95,7 +91,6 @@ void undoTrayIcon(void) {
 /* a click on the systray icon should show the program window
    if invisible or hide it if visible */
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
-
 	undoTrayIcon();
 
 	/* the first case: we are iconified... */
@@ -125,20 +120,32 @@ static gboolean mainwindow_state_changed(GtkWidget *widget, GdkEvent *event, gpo
 }
 
 
-void setupTrayIcon(void) {
+static void installTrayIcon(void) {
+	g_assert(!tray_icon);
+	if(getBooleanConfValue(SHOW_TRAY_ICON)) {
+		tray_icon = egg_tray_icon_new(PACKAGE);
+		eventbox = gtk_event_box_new();
+		
+		g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);		
+		g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
+		gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
+		
+		tray_icon_tips = gtk_tooltips_new();
+		newItems = -1;
+		undoTrayIcon();
+	}
+}
 
-	if(NULL == tray_icon) {
-		if(getBooleanConfValue(SHOW_TRAY_ICON)) {
-			tray_icon = egg_tray_icon_new(PACKAGE);
-			eventbox = gtk_event_box_new();
-
-			g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);		
-			g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
-			gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
-
-			tray_icon_tips = gtk_tooltips_new();
-			newItems = -1;
-			undoTrayIcon();
+void updateTrayIcon(void) {
+	if(getBooleanConfValue(SHOW_TRAY_ICON)) {
+		if (tray_icon == NULL)
+			installTrayIcon();
+	} else {
+		if (tray_icon != NULL) {
+			gtk_widget_destroy(image);
+			image = NULL;
+			gtk_object_destroy (GTK_OBJECT (tray_icon));
+			tray_icon = NULL;
 		}
 	}
 }

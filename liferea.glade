@@ -5,7 +5,7 @@
 
 <widget class="GtkWindow" id="mainwindow">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Liferea 0.4.6</property>
+  <property name="title" translatable="yes">Liferea 0.4.7</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -1066,6 +1066,19 @@
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
+	    <widget class="GtkButton" id="cancelbtn">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	      <signal name="clicked" handler="gtk_widget_hide" object="propdialog" last_modification_time="Fri, 25 Jul 2003 20:30:50 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="GtkButton" id="propchangebtn">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
@@ -1076,19 +1089,6 @@
 	      <property name="response_id">-5</property>
 	      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="propdialog" last_modification_time="Fri, 25 Jul 2003 20:32:32 GMT"/>
 	      <signal name="clicked" handler="on_propchangebtn_clicked" last_modification_time="Fri, 25 Jul 2003 20:33:11 GMT"/>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkButton" id="cancelbtn">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-cancel</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="response_id">-6</property>
-	      <signal name="clicked" handler="gtk_widget_hide" object="propdialog" last_modification_time="Fri, 25 Jul 2003 20:30:50 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -1433,6 +1433,19 @@ the feed title, which is displayed in the feed list.</property>
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
+	    <widget class="GtkButton" id="cancelbtn">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	      <signal name="clicked" handler="gtk_widget_hide" object="newdialog" last_modification_time="Fri, 25 Jul 2003 21:51:56 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="GtkButton" id="newfeedbtn">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
@@ -1443,19 +1456,6 @@ the feed title, which is displayed in the feed list.</property>
 	      <property name="response_id">-5</property>
 	      <signal name="clicked" handler="on_newfeedbtn_clicked" object="newfeedentry" last_modification_time="Fri, 25 Jul 2003 21:56:23 GMT"/>
 	      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="newdialog" last_modification_time="Sun, 30 Nov 2003 01:35:13 GMT"/>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkButton" id="cancelbtn">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-cancel</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="response_id">-6</property>
-	      <signal name="clicked" handler="gtk_widget_hide" object="newdialog" last_modification_time="Fri, 25 Jul 2003 21:51:56 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -1819,27 +1819,14 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
-	    <widget class="GtkButton" id="prefsavebtn">
+	    <widget class="GtkButton" id="prefclosebtn">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="label">gtk-ok</property>
+	      <property name="label">gtk-close</property>
 	      <property name="use_stock">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="response_id">-5</property>
-	      <signal name="clicked" handler="on_prefsavebtn_clicked" last_modification_time="Wed, 06 Aug 2003 19:36:12 GMT"/>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkButton" id="prefcancelbtn">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-cancel</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="response_id">-6</property>
+	      <property name="response_id">-7</property>
 	      <signal name="clicked" handler="gtk_widget_hide" object="prefdialog" last_modification_time="Wed, 06 Aug 2003 19:38:42 GMT"/>
 	    </widget>
 	  </child>
@@ -1893,6 +1880,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
+			  <signal name="clicked" handler="on_browserselection_clicked" last_modification_time="Wed, 07 Jan 2004 11:09:52 GMT"/>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -1918,6 +1906,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			      <property name="inconsistent">False</property>
 			      <property name="draw_indicator">True</property>
 			      <property name="group">browserradiobtn1</property>
+			      <signal name="clicked" handler="on_browserselection_clicked" last_modification_time="Wed, 07 Jan 2004 11:10:17 GMT"/>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -1938,6 +1927,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			      <property name="has_frame">True</property>
 			      <property name="invisible_char" translatable="yes">*</property>
 			      <property name="activates_default">False</property>
+			      <signal name="changed" handler="on_browsercmd_changed" last_modification_time="Wed, 07 Jan 2004 11:11:56 GMT"/>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -1958,7 +1948,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 		  <child>
 		    <widget class="GtkLabel" id="label13">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">browser settings</property>
+		      <property name="label" translatable="yes">Browser Settings</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2005,6 +1995,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
+			  <signal name="clicked" handler="on_timeformatselection_clicked" last_modification_time="Thu, 08 Jan 2004 18:11:59 GMT"/>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -2024,6 +2015,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
 			  <property name="group">timeradiobtn1</property>
+			  <signal name="clicked" handler="on_timeformatselection_clicked" last_modification_time="Thu, 08 Jan 2004 18:12:05 GMT"/>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -2049,6 +2041,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			      <property name="inconsistent">False</property>
 			      <property name="draw_indicator">True</property>
 			      <property name="group">timeradiobtn1</property>
+			      <signal name="clicked" handler="on_timeformatselection_clicked" last_modification_time="Thu, 08 Jan 2004 18:12:13 GMT"/>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -2069,6 +2062,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			      <property name="has_frame">True</property>
 			      <property name="invisible_char" translatable="yes">*</property>
 			      <property name="activates_default">False</property>
+			      <signal name="changed" handler="on_timeformatentry_changed" last_modification_time="Wed, 07 Jan 2004 11:19:48 GMT"/>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -2089,7 +2083,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 		  <child>
 		    <widget class="GtkLabel" id="label24">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">date column settings</property>
+		      <property name="label" translatable="yes">Date Column Settings</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2136,7 +2130,7 @@ to. If you are unsure select &quot;Auto Detect&quot;.</property>
 			  <child>
 			    <widget class="GtkLabel" id="label33">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">maximal number of items per feed 
+			      <property name="label" translatable="yes">Maximal number of items per feed 
 to be saved permanently</property>
 			      <property name="use_underline">False</property>
 			      <property name="use_markup">False</property>
@@ -2166,6 +2160,7 @@ to be saved permanently</property>
 			      <property name="snap_to_ticks">False</property>
 			      <property name="wrap">False</property>
 			      <property name="adjustment">1 1 1e+06 1 10 10</property>
+			      <signal name="value_changed" handler="on_itemCountBtn_value_changed" last_modification_time="Wed, 07 Jan 2004 18:25:18 GMT"/>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -2182,7 +2177,7 @@ to be saved permanently</property>
 		      </child>
 
 		      <child>
-			<widget class="GtkCheckButton" id="updateallbtn">
+			<widget class="GtkCheckButton" id="updatealloptionbtn">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="label" translatable="yes">Update all feeds on program startup.</property>
@@ -2191,6 +2186,7 @@ to be saved permanently</property>
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
+			  <signal name="clicked" handler="on_updatealloptionbtn_clicked" last_modification_time="Thu, 08 Jan 2004 17:54:52 GMT"/>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -2204,7 +2200,7 @@ to be saved permanently</property>
 		  <child>
 		    <widget class="GtkLabel" id="label32">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">feed handling settings</property>
+		      <property name="label" translatable="yes">Feed Handling Settings</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2273,18 +2269,18 @@ to be saved permanently</property>
 		      <property name="spacing">0</property>
 
 		      <child>
-			<widget class="GtkCheckButton" id="trayiconbtn">
+			<widget class="GtkCheckButton" id="trayiconoptionbtn">
 			  <property name="border_width">4</property>
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
 			  <property name="label" translatable="yes">Show a status icon in the notification area 
-(also called system tray). Changes of this setting
-take place after restarting the program.</property>
+(also called system tray).</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
+			  <signal name="clicked" handler="on_trayiconoptionbtn_clicked" last_modification_time="Thu, 08 Jan 2004 17:55:02 GMT"/>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -2331,21 +2327,22 @@ take place after restarting the program.</property>
 
 		  <child>
 		    <widget class="GtkVBox" id="vbox223">
+		      <property name="border_width">5</property>
 		      <property name="visible">True</property>
 		      <property name="homogeneous">False</property>
-		      <property name="spacing">0</property>
+		      <property name="spacing">5</property>
 
 		      <child>
-			<widget class="GtkCheckButton" id="toolbarbtn">
-			  <property name="border_width">5</property>
+			<widget class="GtkRadioButton" id="menuradiobtn1">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">Disable Tool Bar.</property>
+			  <property name="label" translatable="yes">Show Menu _And Toolbar</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
+			  <signal name="clicked" handler="on_menuselection_clicked" last_modification_time="Thu, 08 Jan 2004 17:11:13 GMT"/>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -2355,16 +2352,37 @@ take place after restarting the program.</property>
 		      </child>
 
 		      <child>
-			<widget class="GtkCheckButton" id="menubarbtn">
-			  <property name="border_width">5</property>
+			<widget class="GtkRadioButton" id="menuradiobtn2">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">Disable Menu Bar.</property>
+			  <property name="label" translatable="yes">Show _Menu Only</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="active">False</property>
 			  <property name="inconsistent">False</property>
 			  <property name="draw_indicator">True</property>
+			  <property name="group">menuradiobtn1</property>
+			  <signal name="clicked" handler="on_menuselection_clicked" last_modification_time="Thu, 08 Jan 2004 17:11:24 GMT"/>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkRadioButton" id="menuradiobtn3">
+			  <property name="visible">True</property>
+			  <property name="can_focus">True</property>
+			  <property name="label" translatable="yes">Show _Toolbar Only</property>
+			  <property name="use_underline">True</property>
+			  <property name="relief">GTK_RELIEF_NORMAL</property>
+			  <property name="active">False</property>
+			  <property name="inconsistent">False</property>
+			  <property name="draw_indicator">True</property>
+			  <property name="group">menuradiobtn1</property>
+			  <signal name="clicked" handler="on_menuselection_clicked" last_modification_time="Thu, 08 Jan 2004 17:11:37 GMT"/>
 			</widget>
 			<packing>
 			  <property name="padding">0</property>
@@ -2463,6 +2481,19 @@ take place after restarting the program.</property>
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
+	    <widget class="GtkButton" id="button3">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	      <signal name="clicked" handler="gtk_widget_hide" object="newfolderdialog" last_modification_time="Thu, 21 Aug 2003 22:17:54 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="GtkButton" id="button2">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
@@ -2473,19 +2504,6 @@ take place after restarting the program.</property>
 	      <property name="response_id">-5</property>
 	      <signal name="clicked" handler="on_newfolderbtn_clicked" last_modification_time="Thu, 21 Aug 2003 22:54:39 GMT"/>
 	      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="newfolderdialog" last_modification_time="Fri, 22 Aug 2003 20:14:24 GMT"/>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkButton" id="button3">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-cancel</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="response_id">-6</property>
-	      <signal name="clicked" handler="gtk_widget_hide" object="newfolderdialog" last_modification_time="Thu, 21 Aug 2003 22:17:54 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -2590,19 +2608,6 @@ take place after restarting the program.</property>
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
-	    <widget class="GtkButton" id="foldernamechangebtn">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-ok</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="response_id">0</property>
-	      <signal name="clicked" handler="on_foldernamechangebtn_clicked" last_modification_time="Sun, 14 Sep 2003 17:17:32 GMT"/>
-	    </widget>
-	  </child>
-
-	  <child>
 	    <widget class="GtkButton" id="cancelbutton1">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
@@ -2612,6 +2617,19 @@ take place after restarting the program.</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="response_id">0</property>
 	      <signal name="clicked" handler="gtk_widget_hide" object="foldernamedialog" last_modification_time="Sun, 14 Sep 2003 17:16:55 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="foldernamechangebtn">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-ok</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">0</property>
+	      <signal name="clicked" handler="on_foldernamechangebtn_clicked" last_modification_time="Sun, 14 Sep 2003 17:17:32 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -2854,6 +2872,19 @@ take place after restarting the program.</property>
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
+	    <widget class="GtkButton" id="button17">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	      <signal name="clicked" handler="gtk_widget_hide" last_modification_time="Mon, 08 Dec 2003 18:53:27 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="GtkButton" id="button16">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
@@ -2864,19 +2895,6 @@ take place after restarting the program.</property>
 	      <property name="response_id">-5</property>
 	      <signal name="clicked" handler="gtk_widget_hide" after="yes" last_modification_time="Mon, 08 Dec 2003 18:53:40 GMT"/>
 	      <signal name="clicked" handler="on_rulechangedbtn_clicked" last_modification_time="Mon, 08 Dec 2003 18:55:05 GMT"/>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkButton" id="button17">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-cancel</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="response_id">-6</property>
-	      <signal name="clicked" handler="gtk_widget_hide" last_modification_time="Mon, 08 Dec 2003 18:53:27 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -3048,6 +3066,19 @@ take place after restarting the program.</property>
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
+	    <widget class="GtkButton" id="feedstercancelbtn">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-cancel</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-6</property>
+	      <signal name="clicked" handler="gtk_widget_hide" object="feedsterdialog" last_modification_time="Sun, 23 Nov 2003 18:12:11 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="GtkButton" id="feedsterbtn">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
@@ -3058,19 +3089,6 @@ take place after restarting the program.</property>
 	      <property name="response_id">-5</property>
 	      <signal name="clicked" handler="on_feedsterbtn_clicked" last_modification_time="Wed, 12 Nov 2003 00:23:58 GMT"/>
 	      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="feedsterdialog" last_modification_time="Sun, 23 Nov 2003 18:12:34 GMT"/>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkButton" id="feedstercancelbtn">
-	      <property name="visible">True</property>
-	      <property name="can_default">True</property>
-	      <property name="can_focus">True</property>
-	      <property name="label">gtk-cancel</property>
-	      <property name="use_stock">True</property>
-	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="response_id">-6</property>
-	      <signal name="clicked" handler="gtk_widget_hide" object="feedsterdialog" last_modification_time="Sun, 23 Nov 2003 18:12:11 GMT"/>
 	    </widget>
 	  </child>
 	</widget>

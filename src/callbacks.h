@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,8 +18,14 @@
 
 #include <gtk/gtk.h>
 #include <libgtkhtml/gtkhtml.h>
+#include "ui_feedlist.h"
+#include "ui_itemlist.h"
+#include "ui_folder.h"
+#include "ui_search.h"
 #include "ui_popup.h"
-#include "feed.h"
+#include "ui_prefs.h"
+#include "ui_dnd.h"
+#include "export.h"
 
 /* constants for attributes in feedstore */
 #define FS_TITLE	0
@@ -34,171 +40,52 @@
 #define IS_TIME		3
 #define IS_TYPE		4
 
+/* icon constants */
+#define ICON_READ 		0
+#define ICON_UNREAD 		1
+#define ICON_FLAG 		2
+#define ICON_AVAILABLE		3
+#define ICON_UNAVAILABLE	4
+#define ICON_OCS		5
+#define ICON_FOLDER		6
+#define ICON_HELP		7
+#define ICON_VFOLDER		8
+#define ICON_EMPTY		9
+#define MAX_ICONS		10
+
 void initGUI(void);
+
+#define redrawItemList()	redrawWidget("Itemlist");
+#define redrawFeedList()	redrawWidget("feedlist");
+
+void redrawWidget(gchar *name);
+
 void updateUI(void);
 void print_status(gchar *statustext);
 void showInfoBox(gchar *msg);
 void showErrorBox(gchar *msg);
-void doTrayIcon(gint count);
-void undoTrayIcon(void);
-void setTrayToolTip(gchar *string);
-void setupTrayIcon(void);
-void redrawFeedList(void);
-void preFocusItemlist(void);
- 
-void loadItemList(feedPtr fp, gchar *searchstring);
-void loadItemListFromGSList(GSList *itemlist, gchar *searchstring, gint feedType);
-void addToFeedList(feedPtr fp, gboolean startup);
 
 gint checkForUpdateResults(gpointer data);
 
-void setupFeedList(GtkWidget *mainview);
-void setupItemList(GtkWidget *itemlist);
-
+void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
 void on_popup_refresh_selected(void);
 
-void on_newbtn_clicked(GtkButton *button, gpointer user_data);
-void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data);
-void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropDialog);
+gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
+		
+void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_popup_next_unread_item_selected(void);
+void on_popup_zoomin_selected(void);
+void on_popup_zoomout_selected(void);
+void on_popup_copy_url_selected(gpointer    callback_data,
+						  guint       callback_action,
+						  GtkWidget  *widget);
+						  
+void on_popup_subscribe_url_selected(gpointer    callback_data,
+						  guint       callback_action,
+						  GtkWidget  *widget);
 
-void on_propchangebtn_clicked(GtkButton *button,gpointer user_data);
-void on_propbtn_clicked(GtkButton *button, gpointer user_data);
-void on_popup_prop_selected(void);
-
-void on_aboutbtn_clicked(GtkButton *button, gpointer user_data);
-
-void feedlist_selection_changed_cb(GtkTreeSelection *selection,  gpointer data);
-void itemlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data);
-
-void
-on_newfeedbutton_clicked               (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_feednamebutton_clicked              (GtkButton       *button,
-                                        gpointer         user_data);
-					
-void on_deletebtn_clicked(GtkButton *button, gpointer user_data);
-void on_popup_delete_selected(void);
-
-void on_prefbtn_clicked(GtkButton *button, gpointer user_data);
-
-void
-on_prefsavebtn_clicked                 (GtkButton       *button,
-                                        gpointer         user_data);
-
-gboolean
-on_mainfeedlist_button_press_event     (GtkWidget       *widget,
-                                        GdkEventButton  *event,
-                                        gpointer         user_data);
-
-void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data);
-void on_popup_newfolder_selected(void);
-
-gboolean
-on_itemlist_button_press_event         (GtkWidget       *widget,
-                                        GdkEventButton  *event,
-                                        gpointer         user_data);
-
-void
-on_hidesearch_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_searchentry_activate                (GtkButton        *button,
-                                        gpointer         user_data);
-
-void
-on_feedlist_drag_end                   (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gpointer         user_data);
-
-void
-on_feedlist_drag_begin                 (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gpointer         user_data);
-
-gboolean
-on_Itemlist_move_cursor                (GtkTreeView     *treeview,
-                                        GtkMovementStep  step,
-                                        gint             count,
-                                        gpointer         user_data);
-
-gboolean
-on_itemlist_button_press_event         (GtkWidget       *widget,
-                                        GdkEventButton  *event,
-                                        gpointer         user_data);
-
-void
-on_foldernamechangebtn_clicked         (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_newVFolder_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void on_popup_removefolder_selected(void);
-
-gboolean
-on_feedlist_drag_drop                  (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gint             x,
-                                        gint             y,
-                                        guint            time,
-                                        gpointer         user_data);
-
-void
-on_feedlist_drag_data_received         (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gint             x,
-                                        gint             y,
-                                        GtkSelectionData *data,
-                                        guint            info,
-                                        guint            time,
-                                        gpointer         user_data);
-
-void
-on_feedlist_drag_end                   (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gpointer         user_data);
-
-gboolean
-on_feedlist_drag_drop                  (GtkWidget       *widget,
-                                        GdkDragContext  *drag_context,
-                                        gint             x,
-                                        gint             y,
-                                        guint            time,
-                                        gpointer         user_data);
-
-void
-on_Itemlist_row_activated              (GtkTreeView     *treeview,
-                                        GtkTreePath     *path,
-                                        GtkTreeViewColumn *column,
-                                        gpointer         user_data);
-
-gboolean
-on_quit                                (GtkWidget       *widget,
-                                        GdkEvent        *event,
-                                        gpointer         user_data);
-
-gboolean
-on_itemlist_button_press_event         (GtkWidget       *widget,
-                                        GdkEventButton  *event,
-                                        gpointer         user_data);
-
-void
-on_localfilebtn_pressed                (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_fileselect_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_localfilebtn_pressed                (GtkButton       *button,
-                                        gpointer         user_data);
-
+// FIXME: move the following to ui_filter...
 void
 on_popup_filter_selected	       (void);
 
@@ -218,79 +105,6 @@ void
 on_ruledownbtn_clicked                 (GtkButton       *button,
                                         gpointer         user_data);
 
-void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data);
-void on_popup_foldername_selected(void);
-
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data);
-void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item);
-		
-void on_toggle_item_flag(void);
-void on_toggle_unread_status(void);
-void on_popup_launchitem_selected(void);
-void on_popup_allunread_selected(void);
-
-void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
-void on_popup_next_unread_item_selected(void);
-void on_popup_zoomin_selected(void);
-void on_popup_zoomout_selected(void);
-void on_popup_copy_url_selected(gpointer    callback_data,
-						  guint       callback_action,
-						  GtkWidget  *widget);
-void on_popup_subscribe_url_selected(gpointer    callback_data,
-						  guint       callback_action,
-						  GtkWidget  *widget);
-
-/* in ui_search.c */
-
-void on_searchbtn_clicked(GtkButton *button, gpointer user_data);
-void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data);
-void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data);
-
-/* in export.c */
-void
-on_import_activate                     (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_export_activate                     (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_exportfileselect_pressed            (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_importfileselect_clicked            (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_importfile_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_exportfile_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_importfileselect_pressed            (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_exportfileselect_clicked            (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_importfileselect_clicked            (GtkButton       *button,
-                                        gpointer         user_data);
-
 void
 on_rulechangedbtn_clicked              (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_remove_items_activate               (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_nextbtn_clicked                     (GtkButton       *button,
                                         gpointer         user_data);

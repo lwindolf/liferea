@@ -75,6 +75,7 @@ void writeHTML(gchar *string) {
 	
 	html_document_clear(doc);
 	html_document_open_stream(doc, "text/html");
+
 	
 	if((NULL != string) && (strlen(string) > 0))
 		html_document_write_stream(doc, string, strlen(string));
@@ -82,6 +83,7 @@ void writeHTML(gchar *string) {
 		html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
 
 	html_document_close_stream(doc);
+	changeZoomLevel(0.0);
 }
 
 void clearHTMLView(void) {
@@ -188,10 +190,14 @@ void setHTMLViewMode(gboolean threePane) {
 
 }
 
-void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2) {
+void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel) {
+
 	itemView = pane1;
 	itemListView = pane2;
 	setHTMLViewMode(TRUE);
+	if(0 != initialZoomLevel) {
+		changeZoomLevel(((gfloat)initialZoomLevel)/100 - zoomLevel);
+	}
 
 	clearHTMLView();	
 }

@@ -5,6 +5,13 @@
 	* Patch from Nathan J. Conrad and Roshan Revankar
 	  to simplify the GTK selection handling and 
 	  fix some problems with Copy URL.
+	* Changed the dialog button order to be more
+	  GNOME HIG compliant (proposed by delusional).
+	  But once again: I really don't like it that way!
+	* The program now remembers the itemlist mode.
+	* The program now remembers the HTML views zoom level.
+	* Changed the menu/toolbar checkboxes to a radiobutton
+	  list with positive logic.
 
 2004-01-07  Lars Lindner <lars.lindner@gmx.net>
 

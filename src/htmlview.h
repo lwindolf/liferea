@@ -97,7 +97,7 @@
 #define HTTP_ERROR_END		"</td></tr></table>"
 
 /* creates the HTML widget */
-void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2);
+void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 
 /* loads a emtpy HTML page */
 void clearHTMLView(void);

@@ -33,8 +33,7 @@
 #include "update.h"
 #include "netio.h"
 #include "common.h"
-
-extern GtkWidget	*mainwindow;
+#include "ui_mainwindow.h"
 
 GThread	*mainThread = NULL;
 GThread	*updateThread = NULL;
@@ -58,11 +57,6 @@ int main (int argc, char *argv[]) {
 	add_pixmap_directory(getCachePath());
 
 	mainwindow = create_mainwindow();
-	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
-			 	   lookup_widget(mainwindow, "itemlistview"));
-	     			     			     	
-	setupFeedList(lookup_widget(mainwindow, "feedlist"));
-	setupItemList(lookup_widget(mainwindow, "Itemlist"));
 
 	/* order is important! */
 	initConfig();		/* initialize gconf */

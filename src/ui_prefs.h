@@ -1,6 +1,6 @@
 /*
-   OPML feedlist import&export
-   
+   program preferences
+
    Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
@@ -18,49 +18,41 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#ifndef _EXPORT_H
-#define _EXPORT_H
-
 #include <gtk/gtk.h>
+#include <gdk/gdk.h>
 
-void exportOPMLFeedList(gchar *filename);
-void importOPMLFeedList(gchar *filename);
+void 
+on_prefbtn_clicked                     (GtkButton       *button,
+                                        gpointer user_data);
 
-/* GUI dialog callbacks */
 void
-on_import_activate                     (GtkMenuItem     *menuitem,
+on_updatealloptionbtn_clicked          (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_export_activate                     (GtkMenuItem     *menuitem,
+on_trayiconoptionbtn_clicked           (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_exportfileselect_pressed            (GtkButton       *button,
+on_browserselection_clicked            (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_importfileselect_clicked            (GtkButton       *button,
+on_browsercmd_changed                  (GtkEditable     *editable,
                                         gpointer         user_data);
 
 void
-on_importfile_clicked                  (GtkButton       *button,
+on_timeformatselection_clicked         (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_exportfile_clicked                  (GtkButton       *button,
+on_timeformatentry_changed             (GtkEditable     *editable,
                                         gpointer         user_data);
 
 void
-on_importfileselect_pressed            (GtkButton       *button,
+on_itemCountBtn_value_changed          (GtkSpinButton   *spinbutton,
                                         gpointer         user_data);
 
 void
-on_exportfileselect_clicked            (GtkButton       *button,
+on_menuselection_clicked               (GtkButton       *button,
                                         gpointer         user_data);
-
-void
-on_importfileselect_clicked            (GtkButton       *button,
-                                        gpointer         user_data);
-
-#endif
