@@ -605,7 +605,6 @@ static gboolean ui_itemlist_find_unread_item(void) {
  					gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
  					gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
 					gtk_tree_path_free(path);
-					gtk_widget_grab_focus(treeview);
 					item_set_read(ip);	/* needed when no selection happens (e.g. when the item is already selected) */
 					ui_feedlist_update();
 				} else
@@ -632,7 +631,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
 	/* find first feed with unread items */
 	fp = ui_folder_find_unread_feed(NULL);
-
+	
 	if (fp) {
 		if(NULL == fp) {
 			return;	/* if we don't find a feed with unread items do nothing */

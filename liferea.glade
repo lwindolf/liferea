@@ -45,7 +45,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="separator4">
+		    <widget class="GtkSeparatorMenuItem" id="separator4">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -61,7 +61,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="trennlinie4">
+		    <widget class="GtkSeparatorMenuItem" id="trennlinie4">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -96,7 +96,7 @@
 		      <signal name="activate" handler="on_menu_feed_new" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1928">
+			<widget class="GtkImage" id="image1943">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -117,7 +117,7 @@
 		      <signal name="activate" handler="on_menu_folder_new" last_modification_time="Tue, 27 Apr 2004 22:52:15 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1929">
+			<widget class="GtkImage" id="image1944">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -131,7 +131,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="separator8">
+		    <widget class="GtkSeparatorMenuItem" id="separator8">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -145,7 +145,7 @@
 		      <signal name="activate" handler="on_menu_properties" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1930">
+			<widget class="GtkImage" id="image1945">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-properties</property>
 			  <property name="icon_size">1</property>
@@ -159,7 +159,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="separator5">
+		    <widget class="GtkSeparatorMenuItem" id="separator5">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -173,7 +173,7 @@
 		      <signal name="activate" handler="on_menu_update" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1931">
+			<widget class="GtkImage" id="image1946">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -196,7 +196,7 @@
 		      <accelerator key="a" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1932">
+			<widget class="GtkImage" id="image1947">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -210,7 +210,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="separator6">
+		    <widget class="GtkSeparatorMenuItem" id="separator6">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -224,7 +224,7 @@
 		      <signal name="activate" handler="on_menu_delete" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1933">
+			<widget class="GtkImage" id="image1948">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -238,7 +238,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="trennlinie2">
+		    <widget class="GtkSeparatorMenuItem" id="trennlinie2">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -264,7 +264,7 @@
 		      <accelerator key="r" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1934">
+			<widget class="GtkImage" id="image1949">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
@@ -278,7 +278,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="separator7">
+		    <widget class="GtkSeparatorMenuItem" id="separator7">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -292,7 +292,7 @@
 		      <signal name="activate" handler="on_import_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1935">
+			<widget class="GtkImage" id="image1950">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-open</property>
 			  <property name="icon_size">1</property>
@@ -314,7 +314,7 @@
 		      <signal name="activate" handler="on_export_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1936">
+			<widget class="GtkImage" id="image1951">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-save-as</property>
 			  <property name="icon_size">1</property>
@@ -350,7 +350,7 @@
 		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1937">
+			<widget class="GtkImage" id="image1952">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-go-forward</property>
 			  <property name="icon_size">1</property>
@@ -364,30 +364,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkImageMenuItem" id="scroll_or_next_unread1">
-		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Scrolls the item view down or jumps to the next unread item.</property>
-		      <property name="label" translatable="yes">_Scroll Or Next Unread</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_scrolldown_activate" last_modification_time="Sat, 24 Jan 2004 22:22:04 GMT"/>
-		      <accelerator key="space" modifiers="GDK_SHIFT_MASK" signal="activate"/>
-
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image1938">
-			  <property name="visible">True</property>
-			  <property name="stock">gtk-go-forward</property>
-			  <property name="icon_size">1</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			</widget>
-		      </child>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkMenuItem" id="trennlinie5">
+		    <widget class="GtkSeparatorMenuItem" id="trennlinie5">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -423,7 +400,7 @@
 		      <signal name="activate" handler="on_remove_items_activate" last_modification_time="Sun, 21 Dec 2003 23:42:23 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1939">
+			<widget class="GtkImage" id="image1953">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -437,7 +414,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="separator3">
+		    <widget class="GtkSeparatorMenuItem" id="separator3">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -476,7 +453,7 @@
 		      <accelerator key="plus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1940">
+			<widget class="GtkImage" id="image1954">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-in</property>
 			  <property name="icon_size">1</property>
@@ -499,7 +476,7 @@
 		      <accelerator key="minus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1941">
+			<widget class="GtkImage" id="image1955">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-out</property>
 			  <property name="icon_size">1</property>
@@ -513,7 +490,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="trennlinie3">
+		    <widget class="GtkSeparatorMenuItem" id="trennlinie3">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -551,7 +528,7 @@
 		      <signal name="activate" handler="on_searchbtn_clicked" last_modification_time="Sat, 22 Nov 2003 21:55:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1942">
+			<widget class="GtkImage" id="image1956">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -573,7 +550,7 @@
 		      <signal name="activate" handler="on_search_with_feedster_activate" last_modification_time="Sat, 22 Nov 2003 21:57:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image1943">
+			<widget class="GtkImage" id="image1957">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>

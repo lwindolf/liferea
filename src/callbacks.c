@@ -147,12 +147,6 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_schedule_update);
 }
 
-void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {
-
-	if(ui_htmlview_scroll() == FALSE)
- 		on_next_unread_item_activate(menuitem, user_data);
-}
-
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data) { on_next_unread_item_activate(NULL, NULL); }
 

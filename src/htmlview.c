@@ -184,38 +184,19 @@ GtkWidget *ui_htmlview_new() {
 	GtkWidget *htmlview = htmlviewInfo->create();
 	
 	ui_htmlview_clear(htmlview);
+	
 	return htmlview;
 }
 
-static void ui_htmlview_write_css_link(gchar **buffer, gchar *styleSheetFile) {
-
-	if(g_file_test(styleSheetFile, G_FILE_TEST_EXISTS)) {
-		addToHTMLBuffer(buffer, "<link rel='stylesheet' type='text/css' href='file://");
-		addToHTMLBuffer(buffer, styleSheetFile);
-		addToHTMLBuffer(buffer, "'>");
-	}
-}
-
-static void ui_htmlview_write_css_links(gchar **buffer) {
-	gchar	*styleSheetFile;
-    
-	ui_htmlview_write_css_link(buffer, PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea.css");
-    
-	styleSheetFile = g_strdup_printf("%s/liferea.css", getCachePath());
-	ui_htmlview_write_css_link(buffer, styleSheetFile);
-	g_free(styleSheetFile);
-}
-
-void ui_htmlview_start_output(gchar **buffer, gboolean padded) { 
+static void ui_htmlview_write_css(gchar **buffer, gboolean padded) {
 	gchar	*font = NULL;
 	gchar	*fontsize = NULL;
+	gchar	*tmp;
+	gchar	*styleSheetFile;
+    
+	addToHTMLBuffer(buffer,	"<style type=\"text/css\">\n"
+				 "<!--\n");
 	
-	addToHTMLBuffer(buffer, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>");
-	addToHTMLBuffer(buffer, "<head><title></title>");
-	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-
-	ui_htmlview_write_css_links(buffer);
-
 	/* font configuration support */
 	font = getStringConfValue(USER_FONT);
 	if(0 == strlen(font)) {
@@ -224,8 +205,6 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 	}
 
 	if(NULL != font) {
-		addToHTMLBuffer(buffer, "<style type=\"text/css\">\n<!--\nbody, table, div {");
-		
 		fontsize = font;
 		/* the GTK/GNOME font name format is <font name>,<font size in point>
 		 Or it can also be "Font Name size*/
@@ -236,27 +215,51 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 				fontsize++;
 			}
 		}
+		addToHTMLBuffer(buffer, "body, table, div {");
+
 		addToHTMLBuffer(buffer, "font-family:");
 		addToHTMLBuffer(buffer, font);
-		addToHTMLBuffer(buffer, ";");
+		addToHTMLBuffer(buffer, ";\n");
 		
 		if(NULL != fontsize) {
 			addToHTMLBuffer(buffer, "font-size:");
 			addToHTMLBuffer(buffer, fontsize);
-			addToHTMLBuffer(buffer, "pt;");
+			addToHTMLBuffer(buffer, "pt;\n");
 		}		
 		
 		g_free(font);
-		
-		addToHTMLBuffer(buffer, "}\n//-->\n</style>\n");
+		addToHTMLBuffer(buffer, "}\n");
 	}	
-	
-	addToHTMLBuffer(buffer, "</head><body");
-	
+
 	if(padded) 
-		addToHTMLBuffer(buffer, " style=\"padding:0px;\"");
+		addToHTMLBuffer(buffer, "body { style=\"padding:0px;\" }\n");
+
+	if (g_file_get_contents(PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea.css", &tmp, NULL, NULL)) {
+		addToHTMLBuffer(buffer, tmp);
+		g_free(tmp);
+	}
+
+	styleSheetFile = g_strdup_printf("%s/liferea.css", getCachePath());
+
+	if (g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
+		addToHTMLBuffer(buffer, tmp);
+		g_free(tmp);
+	}
+
+	g_free(styleSheetFile);
 	
-	addToHTMLBuffer(buffer, ">");
+	addToHTMLBuffer(buffer, "\n//-->\n</style>\n");
+}
+
+void ui_htmlview_start_output(gchar **buffer, gboolean padded) { 
+	
+	addToHTMLBuffer(buffer, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>\n");
+	addToHTMLBuffer(buffer, "<head>\n<title></title>");
+	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
+
+	ui_htmlview_write_css(buffer, padded);
+	
+	addToHTMLBuffer(buffer, "</head>\n<body>");
 }
 
 void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *base) { 
@@ -275,6 +278,7 @@ void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *bas
 		g_free(buffer);
 	} else
 		(htmlviewInfo->write)(htmlview, string, base);
+	
 }
 
 void ui_htmlview_finish_output(gchar **buffer) {

@@ -26,7 +26,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
-
+#include <gdk/gdkkeysyms.h>
 #include "interface.h"
 #include "support.h"
 #include "conf.h"
@@ -131,19 +131,33 @@ GtkWidget* ui_mainwindow_new() {
 	
 	return window;
 }
+
+static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+	if (event->type == GDK_KEY_PRESS &&
+	    event->state == 0 &&
+	    event->keyval == GDK_space) {
+		if(ui_htmlview_scroll() == FALSE)
+			on_next_unread_item_activate(NULL, NULL);
+		return TRUE;
+	}
+	return FALSE;
+}
+
 void ui_mainwindow_finish(GtkWidget *window) {
 	htmlview_three = ui_htmlview_new();
 	gtk_widget_show(htmlview_three);
 	gtk_paned_pack2(GTK_PANED (lookup_widget(window, "rightpane")), GTK_WIDGET(htmlview_three), FALSE, TRUE);
 	ui_htmlview_clear(htmlview_three);
 	ui_htmlview_set_zoom(htmlview_three, getNumericConfValue(LAST_ZOOMLEVEL)/100.);
+	g_signal_connect(G_OBJECT(htmlview_three), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
+	
 
 	htmlview_two = ui_htmlview_new();
 	gtk_widget_show(htmlview_two);
 	gtk_container_add(GTK_CONTAINER(lookup_widget(window, "itemtabs")), htmlview_two);
 	ui_htmlview_clear(htmlview_two);
 	ui_htmlview_set_zoom(htmlview_two, getNumericConfValue(LAST_ZOOMLEVEL)/100.);
-
+	g_signal_connect(G_OBJECT(htmlview_two), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
 }
 
 void ui_mainwindow_update_toolbar(void) {

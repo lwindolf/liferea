@@ -155,7 +155,7 @@ void mozembed_destroy_brsr_cb (GtkMozEmbed *embed, gpointer data) {
 static GtkWidget * mozilla_create() {
 	GtkWidget	*widget;
 	int		i;
-	printf("Mozilla: Create!\n");
+	
 	/* signals to connect on each embed widget */
 	static const struct
 	{ 
@@ -203,7 +203,6 @@ static GtkWidget * mozilla_create() {
 
 static void mozilla_init() {
 	gchar	*profile;
-	printf("Mozilla: Init!\n");
 	
 	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
 	

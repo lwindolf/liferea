@@ -99,10 +99,10 @@ static nsCOMPtr<nsIMarkupDocumentViewer> mozilla_get_mdv(GtkWidget *widget) {
 extern "C" void
 mozilla_set_zoom (GtkWidget *embed, float aZoom) {
 	nsCOMPtr<nsIMarkupDocumentViewer> mdv;
-	printf("kazam\n");
+	
 	if ((mdv = mozilla_get_mdv(embed)) == NULL)
 		return;
-	printf("blamo\n");
+	
 	/* Ignore return because we can't do anything if it fails.... */
 	mdv->SetTextZoom (aZoom);
 }
@@ -112,12 +112,12 @@ mozilla_get_zoom (GtkWidget *widget) {
 	nsCOMPtr<nsIMarkupDocumentViewer> mdv;
 	float zoom;
      nsresult result;
-	printf("intro\n");
+	
 	if ((mdv = mozilla_get_mdv(widget)) == NULL)
 		return 1.0;
 	
 	result = mdv->GetTextZoom (&zoom);
-	printf("GET_ZOOM: %d\n", result);
+	
 	return zoom;
 }
 
