@@ -84,7 +84,7 @@ void ui_tray_add_new(gint count) {
 	if(count > 0) {
 		ui_tray_icon_set(icons[ICON_AVAILABLE]); 
 		newItems += count;
-		msg = g_strdup_printf(_("%d new items!"), newItems);
+		msg = g_strdup_printf((newItems > 1)?_("%d new items!"):_("%d new item!"), newItems);
 		ui_tray_tooltip_set(msg);
 		g_free(msg);
 	}
