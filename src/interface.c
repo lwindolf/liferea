@@ -886,6 +886,7 @@ create_propdialog (void)
   feedNameEntry = gtk_entry_new ();
   gtk_widget_show (feedNameEntry);
   gtk_box_pack_start (GTK_BOX (hbox35), feedNameEntry, TRUE, TRUE, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (feedNameEntry), TRUE);
 
   vbox236 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox236);
@@ -985,6 +986,7 @@ create_propdialog (void)
   gtk_table_attach (GTK_TABLE (table3), sourceEntry, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (sourceEntry), TRUE);
 
   vbox239 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox239);
@@ -1290,6 +1292,7 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, prop_cancel, "prop_cancel");
   GLADE_HOOKUP_OBJECT (propdialog, prop_ok, "prop_ok");
 
+  gtk_widget_grab_default (prop_ok);
   return propdialog;
 }
 
@@ -3028,7 +3031,7 @@ create_authdialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_vbox14), vbox255, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox255), 12);
 
-  prompt = gtk_label_new (_("Enter the username and password for \"%s\":"));
+  prompt = gtk_label_new (_("Enter the username and password for \"%s\" (%s):"));
   gtk_widget_show (prompt);
   gtk_box_pack_start (GTK_BOX (vbox255), prompt, FALSE, FALSE, 0);
   gtk_label_set_line_wrap (GTK_LABEL (prompt), TRUE);
@@ -3059,6 +3062,7 @@ create_authdialog (void)
   gtk_table_attach (GTK_TABLE (table4), usernameEntry, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (usernameEntry), TRUE);
 
   passwordEntry = gtk_entry_new ();
   gtk_widget_show (passwordEntry);
@@ -3066,6 +3070,7 @@ create_authdialog (void)
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_entry_set_visibility (GTK_ENTRY (passwordEntry), FALSE);
+  gtk_entry_set_activates_default (GTK_ENTRY (passwordEntry), TRUE);
 
   label134 = gtk_label_new (_("Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"));
   gtk_widget_show (label134);
@@ -3106,6 +3111,7 @@ create_authdialog (void)
   GLADE_HOOKUP_OBJECT (authdialog, cancelbutton2, "cancelbutton2");
   GLADE_HOOKUP_OBJECT (authdialog, okbutton1, "okbutton1");
 
+  gtk_widget_grab_default (okbutton1);
   return authdialog;
 }
 

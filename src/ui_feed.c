@@ -87,8 +87,9 @@ GtkWidget* ui_feed_authdialog_new (GtkWindow *parent, feedPtr fp, gint flags) {
 	gtk_window_set_transient_for(GTK_WINDOW(authdialog), GTK_WINDOW(parent));
 	
 	/* Auth check box */
-	promptStr = g_strdup_printf(_("Enter the username and password for \"%s\":"), feed_get_title(fp));
+	promptStr = g_strdup_printf(_("Enter the username and password for \"%s\" (%s):"), feed_get_title(fp), feed_get_source(fp));
 	gtk_label_set_text(GTK_LABEL(lookup_widget(authdialog, "prompt")), promptStr);
+	g_free(promptStr);
 	ui_data->username = lookup_widget(authdialog, "usernameEntry");
 	ui_data->password = lookup_widget(authdialog, "passwordEntry");
 	
@@ -386,11 +387,12 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		user = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->username));
 		pass = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->password));
 		uri->user = g_strdup_printf("%s:%s", user, pass);
-		printf("Setting authstring to %s = %s:%s\n", uri->user, gtk_entry_get_text(GTK_ENTRY(ui_data->username)), gtk_entry_get_text(GTK_ENTRY(ui_data->password)));
 
 		sourceUrl = xmlSaveUri(uri);
-		feed_set_source(ui_data->fp, sourceUrl);
-		
+		if (sourceUrl != NULL) {
+			feed_set_source(ui_data->fp, sourceUrl);
+			xmlFree(sourceUrl);
+		}
 		/* Filter handling */
 		feed_schedule_update(ui_data->fp, ui_data->flags);
 		xmlFreeURI(uri);

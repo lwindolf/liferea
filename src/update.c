@@ -43,16 +43,15 @@ static gboolean	online = TRUE;
 static void *download_thread_main(void *data);
 static gboolean download_dequeuer(gpointer user_data);
 
-/* filter was taken from Snownews */
+/* filter idea (and some of the code) was taken from Snownews */
 static char* filter(gchar *cmd, gchar *data) {
-	int fd, status;
+	int fd;
 	gchar *command;
 	const gchar *tmpdir = g_get_tmp_dir();
 	char *tmpfilename;
 	char		*out = NULL;
 	FILE *file, *p;
 	size_t size;
-	GError *err = NULL;
 	
 	tmpfilename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea-XXXXXX", tmpdir);
 	
@@ -72,7 +71,7 @@ static char* filter(gchar *cmd, gchar *data) {
 	size = 0;
 	command = g_strdup_printf("%s < %s", cmd, tmpfilename);
 	p = popen(command, "r");
-	g_free("command");
+	g_free(command);
 	if(NULL != p) {
 		while(!feof(p)) {
 			out = g_realloc(out, size+1025);

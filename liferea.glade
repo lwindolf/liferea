@@ -1018,6 +1018,7 @@
 	    <widget class="GtkButton" id="prop_ok">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
@@ -1145,7 +1146,7 @@
 			      <property name="text" translatable="yes"></property>
 			      <property name="has_frame">True</property>
 			      <property name="invisible_char" translatable="yes">*</property>
-			      <property name="activates_default">False</property>
+			      <property name="activates_default">True</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -1507,7 +1508,7 @@
 			  <property name="text" translatable="yes"></property>
 			  <property name="has_frame">True</property>
 			  <property name="invisible_char" translatable="yes">*</property>
-			  <property name="activates_default">False</property>
+			  <property name="activates_default">True</property>
 			</widget>
 			<packing>
 			  <property name="left_attach">1</property>
@@ -5775,6 +5776,7 @@ Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;</property>
 	    <widget class="GtkButton" id="okbutton1">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
@@ -5802,7 +5804,7 @@ Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;</property>
 	  <child>
 	    <widget class="GtkLabel" id="prompt">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Enter the username and password for &quot;%s&quot;:</property>
+	      <property name="label" translatable="yes">Enter the username and password for &quot;%s&quot; (%s):</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -5889,7 +5891,7 @@ Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
 		  <property name="invisible_char" translatable="yes">*</property>
-		  <property name="activates_default">False</property>
+		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
 		  <property name="left_attach">1</property>
@@ -5910,7 +5912,7 @@ Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
 		  <property name="invisible_char" translatable="yes">*</property>
-		  <property name="activates_default">False</property>
+		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
 		  <property name="left_attach">1</property>

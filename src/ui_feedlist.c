@@ -42,8 +42,6 @@ extern GHashTable	*feedHandler;
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
-static GtkWidget	*authdialog = NULL;
-
 /* flag to enable/disable the GtkTreeModel filter */
 gboolean filter_feeds_without_unread_headlines = FALSE;
 
@@ -552,21 +550,12 @@ void on_popup_prop_selected(gpointer callback_data,
 /*------------------------------------------------------------------------------*/
 
 void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags) {
-	struct request 	*request;
 	feedPtr			fp;
 	gchar			*tmp;
 	int			pos;
 	folderPtr		parent;
 	
 	debug_enter("ui_feedlist_new_subscription");	
-	
-	/* directly download (do not use update queue to avoid
-	   waiting for the end of other updates and to
-	   get control back when feed is downloaded to show
-	   properties dialog) */
-	request->source = g_strdup(source);
-	if (filter != NULL)
-		request->filtercmd = g_strdup(filter);
 	
 	fp = feed_new();
 	fp->needsCacheSave = TRUE;
@@ -576,7 +565,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	g_free(tmp);
 
 	feed_set_source(fp, source);
-	feed_set_title(fp, _("Loading...."));
+	feed_set_title(fp, _("New subscription"));
 	feed_set_filter(fp, filter);
 	parent = ui_feedlist_get_target_folder(&pos);
 	ui_folder_add_feed(parent, fp, pos);

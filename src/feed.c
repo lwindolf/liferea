@@ -678,12 +678,8 @@ void feed_process_update_result(struct request *request) {
 				feed_free(new_fp);
 				break;
 			} else {
-				if (request->flags & FEED_REQ_AUTO_DISCOVER) {
-					printf("New source is %s\n",  feed_get_source(new_fp));
-					
+				if (request->flags & FEED_REQ_AUTO_DISCOVER)
 					feed_set_source(old_fp, feed_get_source(new_fp)); /* Reset autodiscovered source */
-				}
-
 			}
 			
 			old_fp->fhp = fhp;
@@ -714,6 +710,8 @@ void feed_process_update_result(struct request *request) {
 			if((feedPtr)ui_feedlist_get_selected() == old_fp) {
 				ui_itemlist_load(old_fp, NULL);
 			}
+			if (request->flags & FEED_REQ_SHOW_PROPDIALOG)
+				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),old_fp);
 		} while(0);
 	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(old_fp));
