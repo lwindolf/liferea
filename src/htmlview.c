@@ -244,25 +244,22 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 	
 	addToHTMLBuffer(buffer, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>");
 	addToHTMLBuffer(buffer, "<head><title></title>");
-	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=\"UTF-8\">");
+	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
 
         writeStyleSheetLinks(buffer);
 
-	addToHTMLBuffer(buffer, "</head><body style=\"");
-
-	if(padded)
-		addToHTMLBuffer(buffer, "padding:0px;");
-		
 	/* font configuration support */
 	font = getStringConfValue(USER_FONT);
 	if(0 == strlen(font))
 		font = getStringConfValue(DEFAULT_FONT);
 		
 	if(NULL != font) {
+		addToHTMLBuffer(buffer, "<style type=\"text/css\">\n<!--\nbody {");
+		
 		fontsize = font;
 		/* the GTK/GNOME font name format is <font name>,<font size in point> */		
 		strsep(&fontsize, ",");
-		addToHTMLBuffer(buffer, "font:");
+		addToHTMLBuffer(buffer, "font-family:");
 		addToHTMLBuffer(buffer, font);
 		addToHTMLBuffer(buffer, ";");
 		
@@ -272,7 +269,15 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 			addToHTMLBuffer(buffer, "pt;");
 		}		
 		g_free(font);
-	}		
+		
+		addToHTMLBuffer(buffer, "}\n//-->\n</style>\n");
+	}	
+	
+	addToHTMLBuffer(buffer, "</head><body style=\"");
+	
+	if(padded)
+		addToHTMLBuffer(buffer, "padding:0px;");
+		
 	addToHTMLBuffer(buffer, "\">");
 }
 

@@ -61,10 +61,6 @@ static gfloat		zoomLevel = 1.0;
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
-/* is used to store a URL after right click till retrieval via
-   getSelectedURL() */
-static gchar		*clickedURL = NULL;
-
 gchar * getModuleName(void) {
 	return g_strdup(_("Mozilla (experimental)"));
 }
