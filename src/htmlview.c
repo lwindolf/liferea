@@ -61,7 +61,9 @@ static gchar *symbols[MAXFUNCTIONS] = {
 
 static gpointer methods[MAXFUNCTIONS];
 
-GSList * availableBrowserModules = NULL;
+GSList *availableBrowserModules = NULL;
+
+static GModule *handle;
 
 extern GtkWidget *mainwindow;
 
@@ -75,7 +77,6 @@ extern GtkWidget *mainwindow;
    TRUE on success. */
 static gboolean loadSymbols(gchar *libname, gboolean testmode) {
 	gpointer	ptr;
-	GModule 	*handle;
 	gchar		*filename;
 	int		i;
 	
@@ -108,9 +109,6 @@ key /apps/liferea/browser-module!\n\n"));
 			return FALSE;
 		}
 	}
-	
-	if(testmode)
-		g_module_close(handle);		
 	
 	return TRUE;
 }
@@ -152,6 +150,7 @@ void ui_htmlview_init(void) {
 						info->description = ((getModuleNameFunc)methods[GETMODULENAME])();
 						availableBrowserModules = g_slist_append(availableBrowserModules, (gpointer)info);
 						g_print("-> %s (%s)\n", info->description, info->libname);
+						g_module_close(handle);
 					}
 				}
 			}
