@@ -81,13 +81,14 @@ static GtkItemFactoryEntry default_menu_items[] = {
 
 static GtkItemFactoryEntry item_menu_items[] = {
       {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 		0, NULL },
-      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 		0, NULL },
-      {"/Toggle Item _Flag",	 	NULL, on_toggle_item_flag, 			0, NULL },
-      {"/sep1",				NULL, NULL, 					0, "<Separator>" },
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view_selected,	0, NULL }, 
       {"/_Next Unread Item",		NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD },
+      {"/sep1",				NULL, NULL, 					0, "<Separator>" },
+      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 		0, NULL },
       {"/sep2",				NULL, NULL, 					0, "<Separator>" },
-      {"/_Edit Filters",		NULL, on_popup_filter_selected, 		0, NULL },
+      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view_selected,	0, NULL }, 
+
+/*      {"/sep2",				NULL, NULL, 					0, "<Separator>" },
+      {"/_Edit Filters",		NULL, on_popup_filter_selected, 		0, NULL },*/
       { NULL }
 };
 

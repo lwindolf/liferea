@@ -35,13 +35,14 @@
 #define PATH		"/apps/liferea"
 #define GROUPS		"/apps/liferea/groups"
 
-#define HELP1URL	"http://liferea.sf.net/help045.rdf"
+/* _() for HELP1URL to allow localised help feeds */
+#define HELP1URL 	_("http://liferea.sf.net/help046.rdf")
 #define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
 #define HOMEPAGE	"http://liferea.sf.net/"
 
-GConfClient	*client;
+static GConfClient	*client;
 
-/* configuration strings for the SnowNews HTTP code */
+/* configuration strings for the SnowNews HTTP code used from within netio.c */
 char 	*useragent = NULL;
 char	*proxyname = NULL;
 int	proxyport = 0;

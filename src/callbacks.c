@@ -983,9 +983,22 @@ gboolean on_Itemlist_move_cursor(GtkTreeView *treeview, GtkMovementStep  step, g
 
 void on_toggle_item_flag(void) {
 	
-	if(NULL != selected_ip)
-		setItemMark(selected_ip, !getItemMark(selected_ip));
+	if(NULL == selected_ip)
+		return;
 		
+	setItemMark(selected_ip, !getItemMark(selected_ip));	
+	redrawItemList();
+}
+
+void on_toggle_unread_status(void) {
+
+	if(NULL == selected_ip)
+		return;	
+		
+	if(getItemReadStatus(selected_ip)) 
+		markItemAsUnread(selected_ip);
+	else
+		markItemAsRead(selected_ip);
 	redrawItemList();
 }
 
