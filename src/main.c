@@ -36,10 +36,12 @@
 
 #include <sys/types.h> /* For getpid(2) */
 
-#include <unistd.h> /* For gethostname() and symlink() */
-
+#include <unistd.h> /* For gethostname(), readlink(2) and symlink(2) */
+#include <string.h>
 #include <errno.h>
-
+#include <string.h>
+#include <stdlib.h>
+#include <signal.h>
 #include "interface.h"
 #include "support.h"
 #include "callbacks.h"
@@ -82,33 +84,69 @@ static void show_help(void) {
  * Tries to create a lock file for Liferea.
  *
  * @returns -1 if the lock failed and is locked by someone else. -2
- * for general failures. Some non-negative number means success.
+ * for general failures. -3 if there was a stale lockfile. Some
+ * non-negative number means success.
  */
 
 static gboolean main_lock() {
 	gchar *filename, *filename2;
 	gchar hostname[256];
 	gint fd;
-	int retval;
+	int retval, len;
+	pid_t pid;
+	gchar tmp[300], *host, *pidstr;
 	
 	if (gethostname(hostname, 256) == -1)
 		return -2; /* Skip locking if this happens, which it should not.... */
-	
+	hostname[255] = '\0';
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock-%s:%d", getCachePath(), hostname, getpid());
 	retval = fd = open(filename, O_CREAT|O_EXCL, S_IRUSR | S_IWUSR);
 	if (fd == -1) {
 		g_free(filename);
-		return -1;
+		return -2;
 	}
 	
 	filename2 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", getCachePath());
 	if (-1 == symlink(filename, filename2)) {
-		if (errno == EEXIST)
-			retval = -1;
-		else
+		if (errno == EEXIST) {
+			if ((len = readlink(filename2, tmp, 299)) == -1)
+				retval = -2;
+			else {
+				tmp[len] = '\0';
+				host = tmp;
+				while (*host != '\0' && *host != '-') /* Step host to point to the dash */
+					host = &(host[1]);
+				if (*host == '\0')
+					retval = -3;
+				else {
+					host = &(host[1]);
+					pidstr = host;
+					while (*pidstr != '\0' && *pidstr != ':') /* Step pidstr to point to the colon */
+						pidstr = &(pidstr[1]);
+					if (*pidstr == '\0')
+						retval = -3;
+					else {
+						*pidstr = '\0';
+						pidstr = &(pidstr[1]);
+						if (!strcmp(hostname, host)) {
+							pid = atoi(pidstr); /* get PID */
+							if (kill(pid, 0) == 0 || errno != ESRCH)
+								retval = -1;
+							else
+								retval = -3;
+						} else
+							retval = -1;
+					}
+				}
+			}
+		} else 
 			retval = -2;
 	}
-	
+
+	if (retval == -3) { /* Stale lockfile */
+		unlink(filename2);
+		symlink(filename, filename2); /* Hopefully this will work. If not, screw it. */
+	}
 	close(fd);
 	unlink(filename);
 	g_free(filename);
