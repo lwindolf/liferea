@@ -1,7 +1,8 @@
 /**
  * @file mozembed.c a browser module implementation using gtkmozembed.
  *   
- * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>   
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>   
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Contains code from the Galeon sources
  *
@@ -75,6 +76,8 @@ static void mozilla_write(GtkWidget *widget, const gchar *string, const gchar *b
 		gtk_moz_embed_close_stream(GTK_MOZ_EMBED(widget));
 	} else
 		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), EMPTY, strlen(EMPTY), base, "text/html");
+		
+	mozilla_scroll_to_top(widget);
 }
 
 /* -------------------------------------------------------------------- */

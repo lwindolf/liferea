@@ -2,6 +2,7 @@
  * @file mozilla.cpp C++ portion of GtkMozEmbed support
  *
  * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * The preference handling was taken from the Galeon source
  *
@@ -157,6 +158,16 @@ mozilla_get_zoom (GtkWidget *widget) {
 	result = mdv->GetTextZoom (&zoom);
 	
 	return zoom;
+}
+
+extern "C" void mozilla_scroll_to_top(GtkWidget *widget) {
+	nsIWebBrowser *browser;
+	nsIDOMWindow *DOMWindow;
+
+	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(widget), &browser);
+	
+	browser->GetContentDOMWindow(&DOMWindow);
+	DOMWindow->ScrollTo(0, 0);
 }
 
 extern "C" gboolean mozilla_scroll_pagedown(GtkWidget *widget) {
