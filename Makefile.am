@@ -2,13 +2,20 @@
 
 SUBDIRS = src po
 
+desktop_in_files=liferea.desktop.in
+desktop_files=$(desktop_in_files:.desktop.in=.desktop)
+
+Applicationsdir = $(datadir)/applications
+Applications_DATA = $(desktop_files)
+
 EXTRA_DIST = \
 	autogen.sh \
 	.glade \
 	.gladep \
 	liferea.glade \
 	liferea.gladep \
-	liferea.desktop
+	$(desktop_in_files) \
+	$(desktop_files)
 
 install-data-local:
 	@$(NORMAL_INSTALL)
