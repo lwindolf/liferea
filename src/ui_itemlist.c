@@ -396,12 +396,8 @@ void ui_itemlist_display(void) {
 			/* display feed info */
 			if(displayed_fp) {
 				ui_htmlview_start_output(&buffer, itemlist_mode);
-				if(!feed_get_available(displayed_fp) || 
-				   (NULL != displayed_fp->parseErrors)) {
-					tmp = feed_get_error_description(displayed_fp);
+				if(NULL != (tmp = feed_get_error_description(displayed_fp)))
 					addToHTMLBuffer(&buffer, tmp);
-					g_free(tmp);
-				}
 				addToHTMLBuffer(&buffer, feed_get_description(displayed_fp));
 				ui_htmlview_finish_output(&buffer);
 			}

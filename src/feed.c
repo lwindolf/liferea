@@ -660,11 +660,12 @@ void feed_process_update_result(struct request *request) {
 	feedHandlerPtr		fhp;
 	
 	ui_lock();
+	g_assert(NULL != request);
 
 	feed_set_available(old_fp, TRUE);
+	feed_set_error_description(old_fp, request->httpstatus);
 
-
-	if (401 /* unauthorized */ == request->httpstatus) {
+	if(401 /* unauthorized */ == request->httpstatus) {
 		feed_set_available(old_fp, FALSE);
 		ui_feed_authdialog_new(GTK_WINDOW(mainwindow), old_fp, request->flags);
 	} if(304 == request->httpstatus) {	
@@ -678,32 +679,31 @@ void feed_process_update_result(struct request *request) {
 				ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(old_fp));
 			}
 
-
 			new_fp = feed_new();
 			feed_set_source(new_fp, feed_get_source(old_fp)); /* Used by the parser functions to determine source */
 			/* parse the new downloaded feed into new_fp */
 			fhp = feed_parse(new_fp, request->data, request->flags & FEED_REQ_AUTO_DISCOVER);
-			if (fhp == NULL) {
+			if(fhp == NULL) {
 				feed_set_available(old_fp, FALSE);
 				g_free(old_fp->parseErrors);
 				old_fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!"));
 				feed_free(new_fp);
 				break;
 			} else {
-				if (request->flags & FEED_REQ_AUTO_DISCOVER)
+				if(request->flags & FEED_REQ_AUTO_DISCOVER)
 					feed_set_source(old_fp, feed_get_source(new_fp)); /* Reset autodiscovered source */
 			}
 			
 			old_fp->fhp = fhp;
 			
-			if (new_fp != NULL && feed_get_title(new_fp) != NULL && request->flags & FEED_REQ_RESET_TITLE) {
+			if(new_fp != NULL && feed_get_title(new_fp) != NULL && request->flags & FEED_REQ_RESET_TITLE) {
 				gchar *tmp = filter_title(g_strdup(feed_get_title(new_fp)));
 				feed_set_title(old_fp, tmp);
 				g_free(tmp);
 
 			}
 
-			if (new_fp != NULL && request->flags & FEED_REQ_RESET_UPDATE_INT)
+			if(new_fp != NULL && request->flags & FEED_REQ_RESET_UPDATE_INT)
 				feed_set_update_interval(old_fp, feed_get_default_update_interval(new_fp));
 
 			if(TRUE == fhp->merge)
@@ -715,14 +715,13 @@ void feed_process_update_result(struct request *request) {
 				ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(old_fp));
 			}
 
-
 			/* now fp contains the actual feed infos */
 			old_fp->needsCacheSave = TRUE;
 
 			if((feedPtr)ui_feedlist_get_selected() == old_fp) {
 				ui_itemlist_load(old_fp, NULL);
 			}
-			if (request->flags & FEED_REQ_SHOW_PROPDIALOG)
+			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),old_fp);
 		} while(0);
 	} else {	
@@ -802,21 +801,22 @@ gboolean feed_get_available(feedPtr fp) { return fp->available; }
 /* Returns a HTML string describing the last retrieval error 
    of this feed. Should only be called when feed_get_available
    returns FALSE. Caller must free returned string! */
-gchar * feed_get_error_description(feedPtr fp) {
+gchar * feed_get_error_description(feedPtr fp) { return fp->errorDescription; }
+
+void feed_set_error_description(feedPtr fp, gint httpstatus) {
 	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
-	gint 		httpstatus;
 	gboolean	errorFound = FALSE;
+
+	g_assert(NULL != fp);
+	g_free(fp->errorDescription);
+	fp->errorDescription = NULL;
 	
-	if(NULL == fp->request)
-		return NULL;
-		
-	if((fp->request->httpstatus >= 200 && fp->request->httpstatus < 400) && /* HTTP codes starting with 2 and 3 mean no error */
-	    (NULL == fp->parseErrors))
-	   return NULL;
-	
+	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
+	   (NULL == fp->parseErrors))
+		return;
+
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
 	
-	httpstatus = fp->request->httpstatus;
 	/* httpstatus is always zero for file subscriptions... */
 	if((200 != httpstatus) && (0 != httpstatus)) {
 		/* first specific codes */
@@ -866,8 +866,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 	}
 	
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_END);
-	
-	return buffer;
+	fp->errorDescription = buffer;
 }
 
 const gchar * feed_get_title(feedPtr fp) { 
@@ -1035,6 +1034,7 @@ void feed_free(feedPtr fp) {
 	
 	g_free(fp->title);
 	g_free(fp->description);
+	g_free(fp->errorDescription);
 	g_free(fp->source);
 	g_free(fp->parseErrors);
 	g_free(fp->filtercmd);

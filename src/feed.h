@@ -84,6 +84,7 @@ typedef struct feed {
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gboolean	available;		/**< flag to signalize loading errors */
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
+	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
 	
 	gpointer	icon;			/**< pointer to pixmap, if there is a favicon */
 		
@@ -224,11 +225,24 @@ void feed_set_available(feedPtr fp, gboolean available);
 /**
  * Returns a HTML string describing the last retrieval error 
  * of this feed. Should only be called when getFeedAvailable
- * returns FALSE. Caller must free returned string! 
+ * returns FALSE.
  *
+ * @param fp		feed
  * @return HTML error description
  */
 gchar * feed_get_error_description(feedPtr fp);
+
+/**
+ * Creates a new error description according to the passed
+ * HTTP status and the feeds parser errors. If the HTTP
+ * status is a success status and no parser errors occured
+ * no error messages is created. The created error message 
+ * can be queried with feed_get_error_description().
+ *
+ * @param fp		feed
+ * @param httpstatus	HTTP status
+ */
+void feed_set_error_description(feedPtr fp, gint httpstatus);
 
 const gchar *feed_get_id(feedPtr fp);
 void feed_set_id(feedPtr fp, const gchar *id);
