@@ -247,18 +247,23 @@ static void attribs_render_foot_text(gpointer data, struct displayset *displayse
 }
 
 static void attribs_render_comments_uri(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar *tmp = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
-					  (gchar*)data, _("comments"));
+	gchar *tmp;
+	
+	tmp = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
+	                      (gchar*)data, _("comments"));
 	
 	addToHTMLBufferFast(&(displayset->foot), tmp);
 	g_free(tmp);
 }
 
 static void attribs_render_enclosure(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar *tmp = g_strdup_printf(_("enclosed file: %s"), (gchar*)data);
-	gchar *tmp2 = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right"
-							":5px;border-color:black;border-style:solid;border-width:1px;"
-							"background-color:#E0E0E0\">%s</div>", tmp);
+	gchar *tmp;
+	gchar *tmp2; 
+	
+	tmp = g_strdup_printf(_("enclosed file: <a href=\"%s\">%s</a>"), (gchar *)data, (gchar *)data);
+	tmp2 = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;padding-left:5px;padding-right"
+	                       ":5px;border-color:black;border-style:solid;border-width:1px;"
+	                       "background-color:#E0E0E0\">%s</div>", tmp);
 	addToHTMLBufferFast(&(displayset->foot), tmp2);
 	g_free(tmp);
 	g_free(tmp2);
