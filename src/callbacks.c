@@ -178,9 +178,11 @@ void on_popup_allunread_selected(void) {
 		if(IS_FOLDER(np->type)) {
 			/* if we have selected a folder we mark all item of all feeds as read */
 			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
+			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)ui_update_feed);
 		} else {
 			/* if not we mark all items of the item list as read */
 			ui_itemlist_mark_all_as_read();
+			ui_update_feed((feedPtr)np);
 		}
 	}
 }
@@ -310,7 +312,6 @@ gint checkForUpdateResults(gpointer data) {
 				ui_itemlist_load(request->fp, NULL);
 				ui_itemlist_prefocus();
 			}
-			ui_update_feed(request->fp);
 		}
 		if(request->fp->displayProps) {
 			GtkWidget *updateIntervalBtn;
@@ -344,7 +345,10 @@ gint checkForUpdateResults(gpointer data) {
 	g_free(request->feedurl);	/* request structure cleanup... */
 	g_free(request->data);
 	request->fp->updateRequested = FALSE;
-		
+
+	if (request->fp->ui_data)
+		ui_update_feed(request->fp);
+
 	return TRUE;
 }
 

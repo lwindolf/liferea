@@ -372,6 +372,7 @@ feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, 
 		feed_update(fp);
 	}
 
+	ui_update_feed(fp);
 	return fp;
 }
 
@@ -521,8 +522,6 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	feed_free(new_fp);
 	
 	doTrayIcon(traycount);		/* finally update the tray icon */
-	if(old_fp->ui_data)
-		ui_update_feed(old_fp);			/* and the UI */
 }
 
 /**
@@ -601,13 +600,9 @@ gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
 
 void feed_increase_unread_counter(feedPtr fp) {
 	fp->unreadCount++;
-	if(fp->ui_data)
-		ui_update_feed(fp);
 }
 void feed_decrease_unread_counter(feedPtr fp) {
 	fp->unreadCount--;
-	if(fp->ui_data)
-		ui_update_feed(fp);
 }
 gint feed_get_unread_counter(feedPtr fp) { return fp->unreadCount; }
 
@@ -715,8 +710,6 @@ void feed_set_title(feedPtr fp, gchar *title) {
 	if (fp->title)
 		g_free(fp->title);
 	fp->title = g_strdup(title);
-	if (fp->ui_data)
-		ui_update_feed(fp);
 	conf_feedlist_schedule_save();
 }
 
@@ -805,8 +798,6 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 		ip->fp = fp;
 		item = g_slist_next(item);
 	}
-	if(fp->ui_data)
-		ui_update_feed(fp);
 }
 
 /* method to totally erase a feed, remove it from the config, etc.... */

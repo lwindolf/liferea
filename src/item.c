@@ -90,6 +90,7 @@ void markItemAsRead(itemPtr ip) {
 			fp = vfolders->data;
 			feed_decrease_unread_counter(fp);
 			vfolders = g_slist_next(vfolders);
+			ui_update_feed(fp);
 		}
 		
 		ip->readStatus = TRUE; 

@@ -464,6 +464,7 @@ static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer 
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			gtk_tree_model_get(model, &iter, IS_PTR, &ip, -1);
 			displayItem(ip);
+			ui_update_feed(displayed_fp);
 			ui_htmlview_reset_scrolling();
 		}
 	}
@@ -477,6 +478,8 @@ void on_popup_toggle_read(gpointer callback_data,
 		markItemAsUnread(ip);
 	else
 		markItemAsRead(ip);
+	if (((feedPtr)ip->fp)->ui_data != NULL)
+		ui_update_feed(ip->fp);
 }
 
 void on_popup_toggle_flag(gpointer callback_data,
@@ -533,6 +536,8 @@ void on_toggle_unread_status(void) {
 			markItemAsUnread(ip);
 		else
 			markItemAsRead(ip);
+		if (((feedPtr)ip->fp)->ui_data != NULL)
+			ui_update_feed(ip->fp);
 	}
 }
 
@@ -542,6 +547,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	if(fp) {
 		ui_itemlist_clear();
 		feed_clear_item_list(fp);	/* delete items */
+		ui_update_feed(fp);
 	} else {
 		ui_show_error_box(_("You have to select a feed to delete its items!"));
 	}

@@ -315,7 +315,7 @@ void ui_folder_add_feed(feedPtr fp, gint position) {
 				    -1);
 
 	ui_delete_empty_subfolders(fp->parent);
-	ui_update_feed(fp);
+	ui_update_folder(fp->parent);
 }
 
 void ui_folder_remove_feed(feedPtr fp) {

@@ -52,6 +52,21 @@ GtkWidget		*filedialog = NULL;
 static GtkWidget	*newdialog = NULL;
 static GtkWidget	*propdialog = NULL;
 
+nodePtr feedlist_get_parent(nodePtr ptr) {
+	GtkTreeIter *iter = &((ui_data*)(ptr->ui_data))->row;
+	GtkTreeIter parent;
+	nodePtr parentPtr;
+	
+	if (gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore), &parent, iter)) {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &parent,
+					    FS_PTR, &parentPtr,
+					    -1);
+		return parentPtr;
+	}
+	
+	return NULL;
+}
+
 nodePtr ui_feedlist_get_selected() {
 
 	GtkWidget		*treeview;
