@@ -55,8 +55,9 @@ enum feed_request_flags {
 	FEED_REQ_RESET_UPDATE_INT = 4,	/**< Feed's update interval should be reset to default upon update */
 	FEED_REQ_AUTO_DISCOVER = 8,	/**< Feed auto-discovery attempts should be made */
 	
-	FEED_REQ_PRIORITY_HIGH = 16,	/**< set to signalize that this is an important user triggered request */
-	FEED_REQ_DOWNLOAD_FAVICON = 32 /**< set to make the favicon be updated after the feed is downloaded */
+	FEED_REQ_PRIORITY_HIGH = 16,	/**< set to signal that this is an important user triggered request */
+	FEED_REQ_DOWNLOAD_FAVICON = 32, /**< set to make the favicon be updated after the feed is downloaded */
+	FEED_REQ_AUTH_DIALOG = 64     /**< set to make an auth request dialog to be created after 401 errors */
 };
 
 struct feedhandler;

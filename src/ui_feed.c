@@ -480,7 +480,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		ui_feedlist_update();
 		conf_feedlist_schedule_save();
 		if (needsUpdate)
-			feed_schedule_update(ui_data->fp, 0);
+			feed_schedule_update(ui_data->fp, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}
 
 	g_free(ui_data);

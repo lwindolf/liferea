@@ -397,7 +397,7 @@ void ui_feedlist_select(nodePtr np) {
 }
 
 static void on_popup_refresh_selected_cb(nodePtr ptr) {
-	feed_schedule_update((feedPtr)ptr, 0);
+	feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
 }
 
 void on_popup_refresh_selected(gpointer callback_data,
@@ -580,7 +580,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	ui_feedlist_update();
 	ui_feedlist_select((nodePtr)fp);
 	
-	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON);
+	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
 	
 	/*ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));*/
 	

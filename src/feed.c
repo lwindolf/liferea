@@ -710,7 +710,8 @@ void feed_process_update_result(struct request *request) {
 
 	if(401 == request->httpstatus) { /* unauthorized */
 		feed_set_available(old_fp, FALSE);
-		ui_feed_authdialog_new(GTK_WINDOW(mainwindow), old_fp, request->flags);
+		if (request->flags & FEED_REQ_AUTH_DIALOG)
+			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), old_fp, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
 		feed_set_available(old_fp, FALSE);
 		old_fp->discontinued = TRUE;
@@ -748,7 +749,6 @@ void feed_process_update_result(struct request *request) {
 				gchar *tmp = filter_title(g_strdup(feed_get_title(new_fp)));
 				feed_set_title(old_fp, tmp);
 				g_free(tmp);
-
 			}
 
 			if(new_fp != NULL && request->flags & FEED_REQ_RESET_UPDATE_INT)

@@ -163,6 +163,10 @@ static void main_unlock() {
 	g_free(filename);
 }
 
+static void main_schedule_update_default(nodePtr ptr) {
+	feed_schedule_update((feedPtr)ptr, 0);
+}
+
 int main(int argc, char *argv[]) {	
 	gulong		debug_flags = 0;
 	gboolean	start_iconified = FALSE;
@@ -255,7 +259,7 @@ int main(int argc, char *argv[]) {
 		
 		switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
-			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
+			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, main_schedule_update_default);
 			break;
 		case 2:
 			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_reset_update_counter);
