@@ -39,6 +39,8 @@
 #include <string.h>
 #include <locale.h>
 #include <time.h>
+#include <stdlib.h>
+#include <ctype.h>
 #include "support.h"
 #include "common.h"
 #include "conf.h"
@@ -375,6 +377,49 @@ gchar *createRFC822Date(const time_t *time) {
 					   months[tm->tm_mon], 1900 + tm->tm_year, tm->tm_hour, tm->tm_min, tm->tm_sec);
 }
 
+/* this table of RFC822 timezones is from gmime-utils.c of the gmime API */
+static struct {
+	char *name;
+	int offset;
+} tz_offsets [] = {
+	{ "UT", 0 },
+	{ "GMT", 0 },
+	{ "EST", -500 },        /* these are all US timezones.  bloody yanks */
+	{ "EDT", -400 },
+	{ "CST", -600 },
+	{ "CDT", -500 },
+	{ "MST", -700 },
+	{ "MDT", -600 },
+	{ "PST", -800 },
+	{ "PDT", -700 },
+	{ "Z", 0 },
+	{ "A", -100 },
+	{ "M", -1200 },
+	{ "N", 100 },
+	{ "Y", 1200 }
+};
+/** @returns timezone offset in seconds */
+static time_t common_parse_rfc822_tz(unsigned char *token) {
+	int offset = 0;
+	const unsigned char *inptr = token;
+	
+	if (*inptr == '+' || *inptr == '-') {
+		offset = atoi (inptr);
+	} else {
+		int t;
+
+		if (*inptr == '(')
+			inptr++;
+
+		for (t = 0; t < 15; t++)
+			if (!strncmp (inptr, tz_offsets[t].name, strlen (tz_offsets[t].name)))
+				offset = tz_offsets[t].offset;
+	}
+	
+	return 60 * ((offset / 100) * 60 + (offset % 100));
+}
+
+
 /* converts a RFC822 time string to a time_t value */
 time_t parseRFC822Date(gchar *date) {
 	struct tm	tm;
@@ -405,15 +450,18 @@ time_t parseRFC822Date(gchar *date) {
 	else if(NULL != (pos = strptime((const char *)date, "%d %b %Y %T", &tm)))
 		success = TRUE;
 	
+	while(pos != NULL && *pos != '\0' && isspace((int)*pos))       /* skip whitespaces before timezone */
+		pos++;
+	
 	if(NULL != oldlocale) {
 		setlocale(LC_TIME, oldlocale);	/* and reset it again */
 		g_free(oldlocale);
 	}
 	
 	if(TRUE == success) {
-		if((time_t)(-1) != (t = mktime(&tm)))
-			return t;
-		else
+		if((time_t)(-1) != (t = mktime(&tm))) {
+			return t + common_parse_rfc822_tz(pos);
+		} else
 			g_warning(_("internal error! time conversion error! mktime failed!\n"));
 	} else {
 
