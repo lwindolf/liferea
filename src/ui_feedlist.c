@@ -94,12 +94,16 @@ nodePtr ui_feedlist_get_selected() {
 
 folderPtr ui_feedlist_get_target_folder(int *pos) {
 	nodePtr ptr = ui_feedlist_get_selected();
-	GtkTreeIter *iter = &((ui_data*)(ptr->ui_data))->row;
+	GtkTreeIter *iter;
 	
 	if (ptr == NULL) {
 		*pos = -1;
 		return NULL;
-	} if(IS_FOLDER(ptr->type)) {
+	}
+
+	iter = &((ui_data*)(ptr->ui_data))->row;
+
+	if(IS_FOLDER(ptr->type)) {
 		*pos = -1;
 		return (folderPtr)ptr;
 	} else {
