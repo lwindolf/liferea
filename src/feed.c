@@ -205,6 +205,11 @@ gint saveFeed(feedPtr fp) {
 			tmp = g_strdup_printf("%d", (TRUE == fp->available)?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 			g_free(tmp);
+			
+			g_assert(NULL != fp->request);
+			if(NULL != ((struct feed_request *)(fp->request))->lastmodified)		
+				xmlNewTextChild(feedNode, NULL, "feedLastModified", 
+						((struct feed_request *)(fp->request))->lastmodified);
 
 			itemlist = getFeedItemList(fp);
 			while(NULL != itemlist) {
@@ -318,29 +323,27 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		fp->keyprefix = keyprefix;
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
-			if ((!xmlStrcmp(cur->name, BAD_CAST"feedDescription"))) 
+			if(!xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
 				fp->description = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-			if ((!xmlStrcmp(cur->name, BAD_CAST"feedTitle"))) 
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
 				fp->title = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-			if ((!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval"))) {
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
 				tmp = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 				fp->defaultInterval = atoi(tmp);
 				xmlFree(tmp);
-			}
-			if (!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
 				tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
 				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
 				xmlFree(tmp);
-			}
-
-			if ((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
+				((struct feed_request *)(fp->request))->lastmodified = 
+				g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				ip = parseCacheItem(doc, cur);
 				addItem(fp, ip);
-			}
-			
+			}			
 			cur = cur->next;
 		}
-
 		break;
 	}
 	
