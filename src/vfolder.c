@@ -320,10 +320,14 @@ void vfolder_update_item(itemPtr ip) {
 					}
 					rule = g_slist_next(rule);
 				}
+				
+				/* always copy the item... funny? Maybe, but necessary so that with 
+				   deferred removal items have correct state until really removed */				
+				item_copy(ip, tmp);	
 
 				if((TRUE == keep) && (FALSE == remove)) {
 			   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", ip->title, vp->title);
-					item_copy(ip, tmp);
+					itemlist_update_item(tmp);
 				} else {
 					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...",  ip->title, vp->title);
 					itemlist_remove_item(tmp);

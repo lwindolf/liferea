@@ -25,9 +25,11 @@
 #include "item.h"
 #include "feed.h"
 
-/* FIXME */
+/* item handling functions */
 
 void itemlist_add_item(feedPtr fp, itemPtr ip);
+
+void itemlist_update_item(itemPtr ip);
 
 void itemlist_remove_item(itemPtr ip);
 

@@ -155,24 +155,22 @@ void itemlist_reset_date_format(void) {
 /* menu commands */
 void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	itemPtr		sourceItem;
+	feedPtr		sourceFeed;
 	
 	if(newStatus != item_get_flag(ip)) {
-		item_set_flag(ip, newStatus);
-		if(displayed_node == (nodePtr)ip->fp)
-			ui_itemlist_update_item(ip);		
-		
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
-			/* propagate change to source feed */
-			feed_load(ip->sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+			/* propagate change to source feed, this indirectly updates us... */
+			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+			feed_load(sourceFeed);
+			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
 				itemlist_set_flag(sourceItem, newStatus);
-			feed_unload(ip->sourceFeed);
-			
-			/* check if the new state changed the rule matching results */
-			if(FALSE == vfolder_check_item(ip))
-				itemlist_remove_item(ip);
+			feed_unload(sourceFeed);
 		} else {
+			item_set_flag(ip, newStatus);
+			if(displayed_node == (nodePtr)ip->fp)
+				ui_itemlist_update_item(ip);	
+				
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
@@ -190,24 +188,22 @@ void itemlist_toggle_flag(itemPtr ip) {
 
 void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 	itemPtr		sourceItem;
+	feedPtr		sourceFeed;
 
-	if(newStatus != item_get_read_status(ip)) {
-		item_set_read_status(ip, newStatus);
-		if(displayed_node == (nodePtr)ip->fp)
-			ui_itemlist_update_item(ip);
-				
+	if(newStatus != item_get_read_status(ip)) {		
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
-			/* propagate change to source feed */
-			feed_load(ip->sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+			/* propagate change to source feed, this indirectly updates us... */
+			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+			feed_load(sourceFeed);
+			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
 				itemlist_set_read_status(sourceItem, newStatus);
-			feed_unload(ip->sourceFeed);
-			
-			/* check if the new state changed the rule matching results */
-			if(FALSE == vfolder_check_item(ip))
-				itemlist_remove_item(ip);
+			feed_unload(sourceFeed);
 		} else {
+			item_set_read_status(ip, newStatus);
+			if(displayed_node == (nodePtr)ip->fp)
+				ui_itemlist_update_item(ip);
+			
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
@@ -228,24 +224,22 @@ void itemlist_toggle_read_status(itemPtr ip) {
 
 void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) { 
 	itemPtr		sourceItem;
+	feedPtr		sourceFeed;
 	
-	if(newStatus != item_get_update_status(ip)) {
-		item_set_update_status(ip, newStatus);
-		if(displayed_node == (nodePtr)ip->fp)
-			ui_itemlist_update_item(ip);
-		
+	if(newStatus != item_get_update_status(ip)) {	
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
-			/* propagate change to source feed */
-			feed_load(ip->sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
+			/* propagate change to source feed, this indirectly updates us... */
+			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+			feed_load(sourceFeed);
+			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
 				itemlist_set_update_status(sourceItem, newStatus);
-			feed_unload(ip->sourceFeed);
-			
-			/* check if the new state changed the rule matching results */
-			if(FALSE == vfolder_check_item(ip))
-				itemlist_remove_item(ip);
+			feed_unload(sourceFeed);
 		} else {
+			item_set_update_status(ip, newStatus);
+			if(displayed_node == (nodePtr)ip->fp)
+				ui_itemlist_update_item(ip);
+
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
@@ -287,6 +281,12 @@ void itemlist_mark_all_read(nodePtr np) {
 	}
 }
 
+void itemlist_update_item(itemPtr ip) {
+	
+	if(displayed_node == (nodePtr)ip->fp)
+		ui_itemlist_update_item(ip);
+}
+
 void itemlist_remove_item(itemPtr ip) {
 
 	/* if the currently selected item should be removed we
@@ -298,6 +298,9 @@ void itemlist_remove_item(itemPtr ip) {
 		ui_feedlist_update();
 	} else {
 		deferred_item_remove = TRUE;
+		/* update the item to show new state that forces
+		   later removal */
+		ui_itemlist_update_item(ip);
 	}
 }
 

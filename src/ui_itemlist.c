@@ -173,7 +173,6 @@ void ui_itemlist_update_item(itemPtr ip) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	*iter;
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
-	gint		time;
 	GdkPixbuf	*icon = NULL, *favicon = NULL;
 
 	/* favicon for vfolders */
@@ -181,7 +180,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 		favicon = ip->sourceFeed->icon;
 
 	/* Time */
-	if(0 != time) {
+	if(0 != ip->time) {
 		esc_time_str = ui_itemlist_format_date((time_t)ip->time);
 		/* the time value is no markup, so we escape it... */
 		tmp = g_markup_escape_text(esc_time_str,-1);
