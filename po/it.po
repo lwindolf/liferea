@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 02:44+0200\n"
+"POT-Creation-Date: 2004-06-13 18:36+0200\n"
 "PO-Revision-Date: 2004-05-20 14:01+0100\n"
 "Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.no-ip.org>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -1422,7 +1422,7 @@ msgstr "<p>Impossibile trovare l'intestazione RDF/RSS!</p>"
 msgid "comments"
 msgstr "commenti"
 
-#: src/ui_feedlist.c:358 src/ui_itemlist.c:628
+#: src/ui_feedlist.c:358 src/ui_itemlist.c:630
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "errore interno! Impossibile ottenere la selezione dall'albero dei "
@@ -1528,27 +1528,27 @@ msgstr "Data"
 msgid "Headline"
 msgstr "Testata"
 
-#: src/ui_itemlist.c:437
+#: src/ui_itemlist.c:439
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr ""
 "errore interno! richiesta visualizzazione della lista di elementi con "
 "puntatore NULL!\n"
 
-#: src/ui_itemlist.c:575
+#: src/ui_itemlist.c:577
 msgid "No item has been selected!"
 msgstr "Nessun elemento selezionato!"
 
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:601
 msgid "You have to select a feed to delete its items!"
 msgstr "Selezionare un notiziario per eliminare i suoi elementi!"
 
-#: src/ui_itemlist.c:630
+#: src/ui_itemlist.c:632
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 "errore interno! Impossibile trovare il componente dell'albero dei "
 "notiziari!\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:665
 msgid "There are no unread items!"
 msgstr "Non ci sono elementi da leggere!"
 

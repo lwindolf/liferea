@@ -89,6 +89,7 @@ static void doOutput(GHashTable *nsinfos, gchar **buffer, gchar *tagname) {
 	
 	if(NULL != (output = g_hash_table_lookup(nsinfos, key))) {
 		addToHTMLBuffer(buffer, output);
+		g_free(output);
 		g_hash_table_remove(nsinfos, key);
 	}
 	g_free(key);

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 02:44+0200\n"
+"POT-Creation-Date: 2004-06-13 18:36+0200\n"
 "PO-Revision-Date: 2004-05-20 20:40+0200\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -1386,7 +1386,7 @@ msgstr "<p>No se pudo obtener la cabecera RDF/RSS.</p>"
 msgid "comments"
 msgstr "Comentarios"
 
-#: src/ui_feedlist.c:358 src/ui_itemlist.c:628
+#: src/ui_feedlist.c:358 src/ui_itemlist.c:630
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Error interno. No se pudo obtener la selección de vista en árbol de las "
@@ -1489,27 +1489,27 @@ msgstr "Fecha"
 msgid "Headline"
 msgstr "Titular"
 
-#: src/ui_itemlist.c:437
+#: src/ui_itemlist.c:439
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr ""
 "Error interno: ¡Se ha intentado representar un elemento de la lista que es "
 "un puntero nulo!\n"
 
-#: src/ui_itemlist.c:575
+#: src/ui_itemlist.c:577
 msgid "No item has been selected!"
 msgstr "No se ha seleccionado ningún elemento"
 
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:601
 msgid "You have to select a feed to delete its items!"
 msgstr "Por favor, elige una fuente para eliminar sus elementos"
 
-#: src/ui_itemlist.c:630
+#: src/ui_itemlist.c:632
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 "Error interno. No se pudo encontrar el control para la vista en árbol de "
 "fuentes.\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:665
 msgid "There are no unread items!"
 msgstr "¡Nada nuevo!"
 

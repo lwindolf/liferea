@@ -102,16 +102,16 @@ typedef struct feed {
 /* ------------------------------------------------------------ */
 
 /** a function which parses the feed data given with the feed ptr fp */
-typedef void 	(*feedParserFunc)		(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur);
-typedef gboolean (*checkFormatFunc) (xmlDocPtr doc, xmlNodePtr cur); /**< Returns true if correct format */
+typedef void 	(*feedParserFunc)	(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur);
+typedef gboolean (*checkFormatFunc)	(xmlDocPtr doc, xmlNodePtr cur); /**< Returns true if correct format */
 
 typedef struct feedHandler {
-	const gchar *typeStr; /**< string representation of the feed type */
-	int icon; /**< Icon number used for available feeds/directories */
-     gboolean directory; /**< Determines if a feed should be autoupdated and updated when "update all" is selected */
-	feedParserFunc	    feedParser;	/**< feed type parse function */
-	checkFormatFunc checkFormat;  /**< Parser for the feed type*/
-	gboolean		merge;		/**< flag if feed type supports merging */
+	const gchar	*typeStr;	/**< string representation of the feed type */
+	int		icon;		/**< Icon number used for available feeds/directories */
+	gboolean	directory;	/**< Determines if a feed should be autoupdated and updated when "update all" is selected */
+	feedParserFunc	feedParser;	/**< feed type parse function */
+	checkFormatFunc	checkFormat;	/**< Parser for the feed type*/
+	gboolean	merge;		/**< flag if feed type supports merging */
 	
 } *feedHandlerPtr;
 

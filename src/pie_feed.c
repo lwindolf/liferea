@@ -354,7 +354,7 @@ feedHandlerPtr initPIEFeedHandler(void) {
 	fhp->directory = FALSE;
 	fhp->feedParser	= pie_parse;
 	fhp->checkFormat = pie_format_check;
-	fhp->merge		= TRUE;
+	fhp->merge = TRUE;
 
 	return fhp;
 }

@@ -381,6 +381,7 @@ static gchar * doFooterOutput(GHashTable *nsinfos) {
 		addToHTMLBuffer(&buffer, TABLE_START);
 		addToHTMLBuffer(&buffer, output);
 		addToHTMLBuffer(&buffer, TABLE_END);
+		g_free(output);
 		g_hash_table_remove(nsinfos, (gpointer)ns_dc_prefix);
 	}
 	return buffer;

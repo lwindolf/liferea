@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 02:44+0200\n"
+"POT-Creation-Date: 2004-06-13 18:36+0200\n"
 "PO-Revision-Date: 2004-05-25 15:00+0400\n"
 "Last-Translator: Alekseev Vladimir <compress@linux-online.ru>\n"
 "Language-Team: Russian <LL@li.org>\n"
@@ -1392,7 +1392,7 @@ msgstr "<p>Невозможно найти заголовк RDF/RSS!</p>"
 msgid "comments"
 msgstr "комментарии"
 
-#: src/ui_feedlist.c:358 src/ui_itemlist.c:628
+#: src/ui_feedlist.c:358 src/ui_itemlist.c:630
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "внутренняя ошибка! невозможно получить древовидный диалог выбора ленты "
@@ -1497,25 +1497,25 @@ msgstr "Дата"
 msgid "Headline"
 msgstr "Заголовок"
 
-#: src/ui_itemlist.c:437
+#: src/ui_itemlist.c:439
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr "внутренняя ошибка! лист элементов запрошен для указателя NULL!\n"
 
-#: src/ui_itemlist.c:575
+#: src/ui_itemlist.c:577
 msgid "No item has been selected!"
 msgstr "Ни одна новость не выбрана!"
 
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:601
 msgid "You have to select a feed to delete its items!"
 msgstr "Вы должно выбрать ленту новостей, чтобы удалить её элементы!"
 
-#: src/ui_itemlist.c:630
+#: src/ui_itemlist.c:632
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 "внутренняя ошибка! невозможно найти виджет древообразного отображения лент "
 "новостей!\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:665
 msgid "There are no unread items!"
 msgstr "Нет непрочитанных новостей!"
 

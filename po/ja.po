@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 02:44+0200\n"
+"POT-Creation-Date: 2004-06-13 18:36+0200\n"
 "PO-Revision-Date: 2004-05-22 00:33+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -1390,7 +1390,7 @@ msgstr "<p>RDF/RSS ヘッダが見つかりませんでした！</p>"
 msgid "comments"
 msgstr "コメント"
 
-#: src/ui_feedlist.c:358 src/ui_itemlist.c:628
+#: src/ui_feedlist.c:358 src/ui_itemlist.c:630
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
 
@@ -1489,24 +1489,24 @@ msgstr "日付"
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: src/ui_itemlist.c:437
+#: src/ui_itemlist.c:439
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr "[内部エラー] トピックの一覧表示で NULL ポインタを要求しました！\n"
 
-#: src/ui_itemlist.c:575
+#: src/ui_itemlist.c:577
 msgid "No item has been selected!"
 msgstr "トピックが選択されていません！"
 
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:601
 msgid "You have to select a feed to delete its items!"
 msgstr "トピックを削除する配信元を選択して下さい！"
 
-#: src/ui_itemlist.c:630
+#: src/ui_itemlist.c:632
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 "[内部エラー] 配信元ツリー・ビュー・ウィジットが見つかりませんでした！\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:665
 msgid "There are no unread items!"
 msgstr "未読のトピックはありません！"
 

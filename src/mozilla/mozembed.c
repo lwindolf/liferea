@@ -235,7 +235,7 @@ static void mozilla_init() {
 	g_free(profile);
 
 	/* startup done */
-	gtk_moz_embed_push_startup();
+	//gtk_moz_embed_push_startup();
 
 }
 

@@ -463,7 +463,7 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	fhp->directory = FALSE;
 	fhp->feedParser	= rss_parse;
 	fhp->checkFormat = rss_format_check;
-	fhp->merge		= TRUE;
+	fhp->merge = TRUE;
 	
 	return fhp;
 }

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 02:44+0200\n"
+"POT-Creation-Date: 2004-06-13 18:36+0200\n"
 "PO-Revision-Date: 2004-05-25 23:42+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -1359,7 +1359,7 @@ msgstr "<p>RDF/RSS 헤더를 찾을 수 없습니다!</p>"
 msgid "comments"
 msgstr "덧말"
 
-#: src/ui_feedlist.c:358 src/ui_itemlist.c:628
+#: src/ui_feedlist.c:358 src/ui_itemlist.c:630
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "내부 에러! 트리뷰의 선택부분을 찾을 수 없습니다!\n"
 
@@ -1456,23 +1456,23 @@ msgstr "날짜"
 msgid "Headline"
 msgstr "머릿글"
 
-#: src/ui_itemlist.c:437
+#: src/ui_itemlist.c:439
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr "내부 에러! 아이템 리스트가 NULL 포인터 요청을 나타냅니다\n"
 
-#: src/ui_itemlist.c:575
+#: src/ui_itemlist.c:577
 msgid "No item has been selected!"
 msgstr "아이템이 선택되지 않았습니다!"
 
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:601
 msgid "You have to select a feed to delete its items!"
 msgstr "아이템을 지울 피드 엔트리를 선택해야 합니다!"
 
-#: src/ui_itemlist.c:630
+#: src/ui_itemlist.c:632
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr "내부 에러! 트리 뷰를 찾을 수 없습니다!\n"
 
-#: src/ui_itemlist.c:663
+#: src/ui_itemlist.c:665
 msgid "There are no unread items!"
 msgstr "읽지 않은 아이템이 없습니다!"
 

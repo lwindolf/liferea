@@ -59,6 +59,7 @@ static gchar * doOutput(GHashTable *nsinfos) {
 		addToHTMLBuffer(&buffer, FM_IMG_START);
 		addToHTMLBuffer(&buffer, (gchar *)value);
 		addToHTMLBuffer(&buffer, FM_IMG_END);
+		g_free(value);
 		g_hash_table_remove(nsinfos, "fm:screenshot_url");
 	}	
 	return buffer;

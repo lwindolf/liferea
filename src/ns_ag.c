@@ -111,13 +111,18 @@ static gchar * doOutput(GHashTable *nsinfos) {
 		addToHTMLBuffer(&buffer, TABLE_END);
 	}
 	
-	if(NULL != timestamp)
+	if(NULL != timestamp) {
+		g_free(timestamp);
 		g_hash_table_remove(nsinfos, "ag:timestamp");
-	if(NULL != source)
+	}
+	if(NULL != source) {
+		g_free(source);
 		g_hash_table_remove(nsinfos, "ag:source");
-	if(NULL != sourceURL)
+	}
+	if(NULL != sourceURL) {
+		g_free(sourceURL);
 		g_hash_table_remove(nsinfos, "ag:sourceURL");	
-		
+	}
 	return buffer;
 }
 
