@@ -96,8 +96,8 @@ gchar * convertToHTML(gchar * string) { return convertCharSet("UTF-8", "HTML", s
    to ensure proper UTF8. This is because we use libxml2 in recovery
    mode which can produce invalid UTF-8. 
    
-   The valid or a corrected string is returned, the original XML 
-   string is freed. */
+   The valid or a corrected string is returned. The original XML 
+   string is modified (FIXME: not sure if this is good). */
 gchar * utf8_fix(xmlChar *string) {
 	const gchar	*invalid_offset;
 

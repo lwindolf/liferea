@@ -159,7 +159,7 @@ static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
 /* nonstatic because used by pie_entry.c too */
 gchar * parseAuthor(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
-	gchar	*tmp2;
+	gchar	*tmp2, *tmp3;
 
 	g_assert(NULL != cur);
 	cur = cur->xmlChildrenNode;
@@ -175,16 +175,18 @@ gchar * parseAuthor(xmlNodePtr cur) {
 
 		if (!xmlStrcmp(cur->name, BAD_CAST"email")) {
 			tmp2 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			tmp2 = g_strdup_printf("%s <a href=\"mailto:%s\">%s</a>", tmp, tmp2, tmp2);
+			tmp3 = g_strdup_printf("%s <a href=\"mailto:%s\">%s</a>", tmp, tmp2, tmp2);
 			g_free(tmp);
-			tmp = tmp2;
+			g_free(tmp2);
+			tmp = tmp3;
 		}
 					
 		if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
 			tmp2 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			tmp2 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
+			tmp3 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
 			g_free(tmp);
-			tmp = tmp2;
+			g_free(tmp2);
+			tmp = tmp3;
 		}
 		cur = cur->next;
 	}

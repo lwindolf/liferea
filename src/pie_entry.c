@@ -202,6 +202,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  			if(NULL != tmp)
 				i->time = parseISO8601Date(tmp);
+			g_free(tmp);
 
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
 			/* 0.2 link : element content is the link
@@ -287,7 +288,6 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	
 	g_free(i->contributors);
 	g_free(i->author);
-	g_free(i->summary);
 	
 	/* free PIEEntry structure */
 	for(j = 0; j < PIE_ENTRY_MAX_TAG; j++)
