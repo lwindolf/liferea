@@ -66,6 +66,7 @@ static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 		tmp = g_strdup_printf("%s,%s", section != NULL ? section : "",
 						  department != NULL ? department : "" );
 		metadata_list_set(&(ip->metadata), "slash", tmp);
+		g_free(tmp);
 	}
 }
 void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user_data) {

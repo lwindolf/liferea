@@ -496,7 +496,7 @@ void ui_itemlist_load(nodePtr node, gchar *searchstring) {
        GtkSortType sortType;
        gboolean sorted = gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(itemstore), &sortColumn, &sortType);
 
-	  /* free the old itemstore */
+	  /* free the old itemstore and create a new one */
        gtk_tree_view_set_model(itemlist, NULL);
 
        ui_itemlist_clear();
@@ -504,7 +504,7 @@ void ui_itemlist_load(nodePtr node, gchar *searchstring) {
        displayed_node = node;
        g_object_unref(itemstore);
        itemstore = NULL;
-       getItemStore();
+       model = GTK_TREE_MODEL(getItemStore());
 	  
 	  /* Add the new items */
 	  if (node == NULL || IS_FOLDER(node->type)) {

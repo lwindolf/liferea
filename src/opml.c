@@ -62,7 +62,7 @@ static gchar *opmlTagList[] = {	"title",
 /* retruns a HTML string containing the text and attributes of the outline */
 static gchar * getOutlineContents(xmlNodePtr cur) {
 	gchar		*buffer = NULL;
-	gchar		*tmp, *value;
+	gchar		*tmp, *value, *tmp2;
 	xmlAttrPtr	attr;
 
 	attr = cur->properties;
@@ -72,7 +72,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 		if(NULL != value) {
 			if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
 				tmp = g_strdup_printf("<p class=\"opmltext\">%s</p>", value);
-				addToHTMLBuffer(&buffer, tmp);
+				addToHTMLBufferFast(&buffer, tmp);
 				g_free(tmp);
 
 			} else if(!xmlStrcmp(attr->name, BAD_CAST"isComment")) {
@@ -83,24 +83,24 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 
 			} else if(!xmlStrcmp(attr->name, BAD_CAST"url")) {		
 				tmp = g_strdup_printf("<p class=\"opmlurl\">URL : <a href=\"%s\">%s</a></p>", value, value);
-				addToHTMLBuffer(&buffer, tmp);
+				addToHTMLBufferFast(&buffer, tmp);
 				g_free(tmp);
 
 			} else if(!xmlStrcmp(attr->name, BAD_CAST"htmlUrl") ||
 			          !xmlStrcmp(attr->name, BAD_CAST"htmlurl")) {		
 				tmp = g_strdup_printf("<p class=\"opmlhtmlurl\">HTML : <a href=\"%s\">%s</a></p>", value, value);
-				addToHTMLBuffer(&buffer, tmp);
+				addToHTMLBufferFast(&buffer, tmp);
 				g_free(tmp);
 				
 			} else if(!xmlStrcmp(attr->name, BAD_CAST"xmlUrl") ||
 			          !xmlStrcmp(attr->name, BAD_CAST"xmlurl")) {		
 				tmp = g_strdup_printf("<p class=\"opmlxmlurl\">XML : <a href=\"%s\">%s</a></p>", value, value);
-				addToHTMLBuffer(&buffer, tmp);
+				addToHTMLBufferFast(&buffer, tmp);
 				g_free(tmp);
 
 			} else {		
 				tmp = g_strdup_printf("<p class=\"opmlanyattribute\">%s : %s\n</p>", (gchar *)attr->name, value);
-				addToHTMLBuffer(&buffer, tmp);
+				addToHTMLBufferFast(&buffer, tmp);
 				g_free(tmp);
 			}
 
@@ -111,20 +111,22 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 			
 	/* check for <outline> subtags */
 	if(NULL != cur->xmlChildrenNode) {
-		addToHTMLBuffer(&buffer, "<ul style=\"opmlchilds\">");
+		addToHTMLBufferFast(&buffer, "<ul style=\"opmlchilds\">");
 		cur = cur->xmlChildrenNode;
 		while(NULL != cur) {
 			if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
-				tmp = g_strdup_printf("<li class=\"opmllistitem\">%s</li>", getOutlineContents(cur));
-				addToHTMLBuffer(&buffer, tmp);
+				tmp = g_strdup_printf("<li class=\"opmllistitem\">%s</li>", tmp2 = getOutlineContents(cur));
+				addToHTMLBufferFast(&buffer, tmp);
 				g_free(tmp);
+				g_free(tmp2);
 			}
 
 			cur = cur->next;
 		}
-		addToHTMLBuffer(&buffer, "</ul>");
+		addToHTMLBufferFast(&buffer, "</ul>");
 	}
-
+	addToHTMLBuffer(&buffer, "");
+	
 	return buffer;
 }
 
