@@ -190,7 +190,7 @@ GSList * metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur) {
 			if (name != NULL) {
 				gchar *value = xmlNodeListGetString(doc, attribute->xmlChildrenNode, TRUE);
 				if(value != NULL) {
-					metadata_list_append(metadata, name, value);
+					metadata = metadata_list_append(metadata, name, value);
 					xmlFree(value);
 				}
 				xmlFree(name);

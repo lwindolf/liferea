@@ -344,7 +344,8 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
 			item_set_time(ip, atol(tmp));
-		else if (!xmlStrcmp(cur->name, BAD_CAST"attributes"))
+			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"attributes"))
 			ip->metadata = metadata_parse_xml_nodes(doc, cur);
 		
 		g_free(tmp);	
