@@ -147,7 +147,6 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 				addToHTMLBuffer(&tmp, MYSUBSCR_START);
 				break;
 		}
-g_print("parsing result: %s\n", buffer);
 		addToHTMLBuffer(&tmp, buffer);
 		g_free(buffer);
 		switch(requestData->tag) {
@@ -166,6 +165,7 @@ g_print("parsing result: %s\n", buffer);
 		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:blogRoll"));
 		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:mySubscriptions"));
 		metadata_list_set(&(requestData->fp->metadata), "blogChannel", buffer);
+		requestData->fp->needsCacheSave = TRUE;	/* needed because we're processing after feed parsing */
 		g_free(buffer);
 		
 		feed_unload(requestData->fp);
@@ -175,7 +175,7 @@ g_print("parsing result: %s\n", buffer);
 
 static void getOutlineList(struct requestData *requestData, gchar *url) {
 	struct request		*request;
-g_print("new blogChannel download request\n");
+
 	request = download_request_new();
 	request->source = g_strdup(url);
 	request->callback = ns_blogChannel_download_request_cb;
@@ -191,7 +191,7 @@ static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
 	struct requestData	*requestData;
 	
 	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
-g_print("parsing blogChannel\n");	  
+
 	if(!xmlStrcmp("blogRoll", cur->name)) {	
 		requestData = g_new0(struct requestData, 1);
 		requestData->fp = fp;
