@@ -159,7 +159,7 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 		char *realhost, port_str[9];
 
 		realhost = strdup(host);
-		if (sscanf (host, "%[^:]:%8s", realhost, &port_str) != 2) {
+		if (sscanf (host, "%[^:]:%8s", realhost, port_str) != 2) {
 			strcpy(port_str, "80");
 		}
 		ret = getaddrinfo(realhost, port_str, &hints, &res);
