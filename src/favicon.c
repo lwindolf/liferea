@@ -28,6 +28,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
@@ -49,8 +50,8 @@ void favicon_load(feedPtr fp) {
 	GError 		*error = NULL;
 	
 	/* try to load a saved favicon */
-	pngfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
-	xpmfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "xpm");
+	pngfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", (gchar *)feed_get_id(fp), "png");
+	xpmfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", (gchar *)feed_get_id(fp), "xpm");
 	
 	if(0 == stat((const char*)pngfilename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file (pngfilename, &error);
@@ -88,13 +89,19 @@ void favicon_load(feedPtr fp) {
 	g_free(pngfilename);
 	g_free(xpmfilename);
 	
+	/* with a low propability (1 out of 50) try again to initially download a favicon */
+	if((NULL == fp->icon) && (25 == (1 + (int)(50.0*rand()/(RAND_MAX+1.0))))) {
+		debug1(DEBUG_UPDATE, "feed \"%s\" has no favicon, trying to download one...", feed_get_title(fp));
+		favicon_download(fp);
+	}
+	
 }
 
 void favicon_remove(feedPtr fp) {
 	gchar		*filename;
 	
 	/* try to load a saved favicon */
-	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
+	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", (gchar *)feed_get_id(fp), "png");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename))
 			/* What can we do? The file probably doesn't exist. Or permissions are wrong. Oh well.... */;
@@ -103,15 +110,16 @@ void favicon_remove(feedPtr fp) {
 }
 
 static void favicon_download_request_cb(struct request *request) {
-	feedPtr fp = (feedPtr)request->user_data;
-	char *tmp;
+	feedPtr	fp = (feedPtr)request->user_data;
+	gchar	*tmp, *baseurl;
 	
-	debug1(DEBUG_UPDATE, "icon download processing (%d bytes)", request->size);
+	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
+	fp->faviconRequest = NULL;
 	
 	if(NULL != request->data && request->size > 0) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
-		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
+		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", (gchar *)feed_get_id(fp), "png");
 		
 		if(gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
 			pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
@@ -122,10 +130,28 @@ static void favicon_download_request_cb(struct request *request) {
 			g_object_unref(loader);
 		}
 		g_free(tmp);
+		ui_feed_update(fp);
+		/* FIXME: why don't we free the request structure? (Lars) */
+	} else {
+		baseurl = request->source;
+		if(NULL != (tmp = strstr(baseurl, "://"))) {
+			tmp += 3;
+			if(NULL != (tmp = strchr(tmp, '/'))) {
+				*tmp = 0;
+				/* if its not already a server root URL, try to download favicon.ico from server root */
+				if(NULL != (tmp = strchr(tmp + 1, '/'))) {
+					request = download_request_new(NULL);
+					request->source = g_strdup_printf("%s/favicon.ico", baseurl);
+					request->callback = &favicon_download_request_cb;
+					request->user_data = fp;
+			
+					debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
+	
+					download_queue(request);
+				}
+			}
+		}
 	}
-
-	fp->faviconRequest = NULL;
-	ui_feed_update(fp);
 }
 
 void favicon_download(feedPtr fp) {
@@ -142,7 +168,10 @@ void favicon_download(feedPtr fp) {
 	baseurl = g_strdup(feed_get_source(fp));
 	if(NULL != (tmp = strstr(baseurl, "://"))) {
 		tmp += 3;
-		if(NULL != (tmp = strchr(tmp, '/'))) {
+		/* first we try to download a favicon inside the current web path
+		   if the download fails the callback will try to strip parts of
+		   the URL to download a root favicon. */
+		if(NULL != (tmp = strrchr(tmp, '/'))) {
 			*tmp = 0;
 			
 			request = download_request_new(NULL);

@@ -23,6 +23,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h> /* For unlink() */
 
 #include "conf.h"
@@ -186,6 +187,8 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 
 /* initializing function, only called upon startup */
 void feed_init(void) {
+
+	srand((unsigned int)time(NULL));	/* rand() used in favicon downloading */
 
 	allItems = feed_new();
 	allItems->type = FST_VFOLDER;
