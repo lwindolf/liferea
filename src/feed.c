@@ -822,7 +822,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 			}
 		}
 		errorFound = TRUE;
-		tmp1 = g_strdup_printf(_(HTTP_ERROR_TEXT), httpstatus, tmp2);
+		tmp1 = g_strdup_printf(HTTP_ERROR_TEXT, httpstatus, tmp2);
 		addToHTMLBuffer(&buffer, tmp1);
 		g_free(tmp1);
 		g_free(tmp2);
@@ -833,7 +833,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 		if(errorFound)
 			addToHTMLBuffer(&buffer, HTML_NEWLINE);			
 		errorFound = TRUE;
-		tmp1 = g_strdup_printf(_(PARSE_ERROR_TEXT), fp->parseErrors);
+		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT, fp->parseErrors);
 		addToHTMLBuffer(&buffer, tmp1);
 		g_free(tmp1);
 	}

@@ -92,6 +92,8 @@ src/ui_search.c
 src/ui_search.h
 src/ui_tray.c
 src/ui_tray.h
+src/ui_notification.c
+src/ui_notification.h
 src/update.c
 src/update.h
 src/vfolder.c
