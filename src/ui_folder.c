@@ -308,7 +308,7 @@ void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position) {
 	g_assert(NULL != feedstore);
 	g_assert(NULL == fp->ui_data);
 	
-	if (parent == folder_get_root())
+	if (parent == folder_get_root() || parent == NULL)
 		topiter = NULL;
 	else {
 		g_assert(parent->ui_data);

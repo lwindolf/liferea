@@ -157,17 +157,8 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 }
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
-	nodePtr ptr;
 
-	ptr = ui_feedlist_get_selected();
-	
-	if(IS_FOLDER(ptr->type)) {
-		ui_feedlist_new_subscription(FST_AUTODETECT, url, (folderPtr)ptr, TRUE);
-	} else if (ptr && ptr->parent) {
-		ui_feedlist_new_subscription(FST_AUTODETECT, url, ptr->parent, TRUE);
-	} else {
-		ui_feedlist_new_subscription(FST_AUTODETECT, url, folder_get_root(), TRUE);
-	}
+	ui_feedlist_new_subscription(FST_AUTODETECT, url, ui_feedlist_get_target_folder(), TRUE);
 	g_free(url);
 }
 

@@ -70,13 +70,11 @@ void ui_feedlist_init(GtkWidget *mainview);
  */
 gboolean ui_feedlist_get_iter(GtkTreeIter *iter);
 
-/**
- * Adds a feed to the feed list.
- *
- * @param fp		the feed to add
- * @param startup	should be TRUE on initial subscriptions loading
+/* Selects the proper destination for a new item based on which item
+ * is curretnly selected.
+ * @returns folder into which the item should be inserted
  */
-void ui_feedlist_load_subscription(feedPtr fp, gboolean startup);
+folderPtr ui_feedlist_get_target_folder();
 
 /**
  * Create a new subscription.

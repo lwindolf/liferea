@@ -53,10 +53,10 @@ GtkWidget		*filedialog = NULL;
 static GtkWidget	*newdialog = NULL;
 static GtkWidget	*propdialog = NULL;
 
-nodePtr feedlist_get_parent(nodePtr ptr) {
+folderPtr feedlist_get_parent(nodePtr ptr) {
 	GtkTreeIter *iter = &((ui_data*)(ptr->ui_data))->row;
 	GtkTreeIter parent;
-	nodePtr parentPtr;
+	folderPtr parentPtr;
 	
 	if (gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore), &parent, iter)) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &parent,
@@ -67,6 +67,8 @@ nodePtr feedlist_get_parent(nodePtr ptr) {
 	
 	return NULL;
 }
+
+
 
 nodePtr ui_feedlist_get_selected() {
 
@@ -91,6 +93,22 @@ nodePtr ui_feedlist_get_selected() {
 	} else
 		return NULL;
 }
+
+/* Selects the proper destination for a new item based on which item
+ * is curretnly selected.
+ * @returns folder into which the item should be inserted
+ */
+folderPtr ui_feedlist_get_target_folder() {
+	nodePtr ptr = ui_feedlist_get_selected();
+	
+	if (ptr == NULL) {
+		return NULL;
+	} if(IS_FOLDER(ptr->type)) {
+		return (folderPtr)ptr;
+	} else
+		return feedlist_get_parent(ptr);
+}
+
 
 static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 	gpointer	favicon;
@@ -162,7 +180,7 @@ void ui_update_feed(feedPtr fp) {
 				    -1);
 
 	
-	ui_update_folder(fp->parent);
+	ui_update_folder((folderPtr)feedlist_get_parent((nodePtr)fp));
 
 	g_free(label);
 }
@@ -427,27 +445,13 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr parent, gboolean showPropDialog) {
 	GtkWidget	*updateIntervalBtn;
 	feedPtr		fp;
-	nodePtr		ptr;
 	gint		interval;
 	gchar		*tmp;
 
-	if(NULL == parent) {
-		ptr = ui_feedlist_get_selected();
-		if(ptr && IS_FOLDER(ptr->type)) {
-			parent = (folderPtr)ptr;
-		} else if (ptr && ptr->parent) {
-			parent =  ptr->parent;
-		} else {
-			/* It is possible, that there is no selected folder when we are
-			   called from the menu! In this case we default to the root folder */		
-			parent = folder_get_root();
-		}
-	}
-	
 	fp = feed_new();
 	fp->displayProps = showPropDialog; 	// FIXME!
 	feed_set_id(fp, conf_new_id());
-	feed_set_title(fp, g_strdup(""));
+	feed_set_title(fp, g_strdup("New feed...."));
 	feed_set_type(fp, type);
 	feed_set_source(fp, source);
 	favicon_download(fp);
@@ -496,7 +500,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	} else
 		type = selectableTypes[type];
 
-	ui_feedlist_new_subscription(type, source, NULL, TRUE);
+	ui_feedlist_new_subscription(type, source, ui_feedlist_get_target_folder(), TRUE);
 	/* don't free source for it is reused by newFeed! */
 }
 
