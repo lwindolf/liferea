@@ -1,4 +1,4 @@
-/* * @file ui_notification.c mini popup windows
+/** @file ui_notification.c mini popup windows
  *
  * Copyright (c) 2004, Karl Soderstrom <ks@xanadunet.net>
  *	      

@@ -72,9 +72,12 @@ static char* filter(gchar *cmd, gchar *data, size_t *size) {
 	p = popen(command, "r");
 	g_free(command);
 	if(NULL != p) {
-		while(!feof(p)) {
+		while(!feof(p) && !ferror(p)) {
+			size_t len;
 			out = g_realloc(out, *size+1025);
-			*size += fread(&out[*size], 1, 1024, p);
+			len = fread(&out[*size], 1, 1024, p);
+			if (len > 0)
+				*size += len;
 		}
 		pclose(p);
 		out[*size] = '\0';
@@ -95,8 +98,11 @@ void download_process(struct request *request) {
 		f = popen(&request->source[1], "r");
 		if(NULL != f) {
 			while(!feof(f)) {
+				size_t len;
 				request->data = g_realloc(request->data, request->size+1025);
-				request->size += fread(&request->data[request->size], 1, 1024, f);
+				len = fread(&request->data[request->size], 1, 1024, f);
+				if (len > 0)
+					request->size += len;
 			}
 			pclose(f);
 			request->data[request->size] = '\0';
