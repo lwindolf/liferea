@@ -520,7 +520,7 @@
 	  <child>
 	    <widget class="GtkButton" id="nextbtn">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Update feeds</property>
+	      <property name="tooltip" translatable="yes">Jumps to the next unread item. If necessary selects the next feed with unread items.</property>
 	      <property name="relief">GTK_RELIEF_NONE</property>
 	      <signal name="clicked" handler="on_nextbtn_clicked" object="feedlist" last_modification_time="Tue, 16 Dec 2003 20:09:00 GMT"/>
 
@@ -585,7 +585,7 @@
 	  <child>
 	    <widget class="GtkButton" id="refreshbtn">
 	      <property name="visible">True</property>
-	      <property name="tooltip" translatable="yes">Update feeds</property>
+	      <property name="tooltip" translatable="yes">Update all feeds</property>
 	      <property name="relief">GTK_RELIEF_NONE</property>
 	      <signal name="clicked" handler="on_refreshbtn_clicked" last_modification_time="Fri, 25 Jul 2003 20:26:43 GMT"/>
 

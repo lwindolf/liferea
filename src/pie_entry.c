@@ -101,7 +101,6 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 	PIEEntryPtr 		i;
 	itemPtr			ip;
 	int			j;
-	gboolean		summary = FALSE;
 
 	if((NULL == cur) || (NULL == doc)) {
 		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
@@ -173,10 +172,10 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		}
 			
 		/* <summary> can be used for short text descriptions, if there is no
-		   description we show the <summary> content */
+		   <content> description we show the <summary> content */
 		if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {
 			if(NULL == i->tags[PIE_ENTRY_DESCRIPTION]) {
-				summary = TRUE;
+				i->summary = TRUE;
 				i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 			}
 			cur = cur->next;		
