@@ -46,7 +46,7 @@ struct feed_request {
 	char *	data;			/**< newly downloaded feed data to be parsed */
 	gboolean updateRequested; 	/**< Lock used in order to insure that a feed is being updated only once */
 	feedPtr	fp;			/**< pointer to feed structure which is to be updated */
-
+	int size;				/**< length of received data*/
 };
 
 extern GAsyncQueue      *results;

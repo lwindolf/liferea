@@ -185,10 +185,10 @@ int NetConnect (int * my_socket, int * connectresult, char * host, int httpproto
  * Returns NULL pointer if no data was received. Check httpstatus == 304,
  * otherwise an error occured.
  */
-char * NetIO (int * my_socket, int * connectresult, char * host, char * url, struct feed_request * cur_ptr, char * authdata, int httpproto, int suppressoutput) {
+char * NetIO (int * my_socket, int * connectresult, char * host, char * url, struct feed_request * cur_ptr, char * authdata, int httpproto, int suppressoutput, int *size) {
 	char netbuf[4096];			/* Network read buffer. */
 	char *body;					/* XML body. */
-	int length;
+	int length, length2;
 	FILE *stream;				/* Stream socket. */
 	int chunked = 0;			/* Content-Encoding: chunked received? */
 	int redirectcount;			/* Number of HTTP redirects followed. */
@@ -655,8 +655,9 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 	
 	/* If inflate==1 we need to decompress content with deflate.
 	   Probably not needed since every webserver seems to send gzip. */
+	length2 = length;
 	if (inflate == 1) {
-		inflatedbody = zlib_uncompress (body, length, NULL, 0);
+		inflatedbody = zlib_uncompress (body, length, &length2, 0);
 		
 		if (inflatedbody == NULL) {
 			free (body);
@@ -669,7 +670,7 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 		free (inflatedbody);
 	} else if (inflate == 2) {
 		/* gzipinflate */
-		inflatedbody = gzip_uncompress (body, length, NULL);
+		inflatedbody = gzip_uncompress (body, length, &length2);
 		
 		if (inflatedbody == NULL) {
 			free (body);
@@ -681,7 +682,8 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 		body = strdup (inflatedbody);
 		free (inflatedbody);
 	}
-		
+	*size = length;
+	
 	return body;
 }
 
@@ -787,7 +789,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 			break;
 	}
 	
-	returndata = NetIO (&my_socket, &connectresult, host, url, cur_ptr, authdata, httpproto, suppressoutput);
+	returndata = NetIO (&my_socket, &connectresult, host, url, cur_ptr, authdata, httpproto, suppressoutput, &(cur_ptr->size));
 	
 	/* url will be freed in the calling function. */
 	free (freeme);		/* This is *host. */
@@ -804,12 +806,13 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 
 /* filter was taken from Snownews */
 static char* filter(gchar *cmd, gchar *data) {
-	int fd;
+	int fd, status;
 	gchar *command;
 	const gchar *tmpdir = g_get_tmp_dir();
 	char *tmpfilename;
 	char		*out = NULL;
 	FILE *file, *p;
+	GError *err = NULL;
 	
 	tmpfilename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea-XXXXXX", tmpdir);
 	
@@ -827,27 +830,19 @@ static char* filter(gchar *cmd, gchar *data) {
 	fwrite (data, strlen(data), 1, file);
 	fclose (file);
 	
-	out = malloc (1);
-     out = '\0';
-	
 	/* Pipe temp file contents to process and popen it. */
-	command = g_strdup_printf ("%s < %s", cmd, tmpfilename);
-	p = popen(command, "r");
-	g_free(command);
-
-	if(NULL != p) {
-		int i = 0, n=0;
-		while(!feof(p)) {
-			++i;
-			out = g_realloc(out, i*1024);
-			n = fread(&out[(i-1)*1024], 1, 1024, p);
-		}
-		pclose(p);
-		if (n == 1024)
-			out = g_realloc(out, (i+1)*1024);
-		out[(i-1)*1024+n] = '\0';
+	command = g_strdup_printf ("sh -c '%s < %s'", cmd, tmpfilename);
+	out = NULL;
+	if (FALSE == g_spawn_command_line_sync(command, &out, NULL, &status, &err)) {
+		g_warning("Error reading from conversion filter: %s", err->message);
+		g_error_free(err);
+		g_free(out);
+		unlink (tmpfilename);
+		g_free(tmpfilename);
+		return NULL;
 	}
-
+	
+	
 	/* Clean up. */
 	unlink (tmpfilename);
 	g_free(tmpfilename);
