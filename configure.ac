@@ -7,7 +7,7 @@ AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
 
 AM_INIT_AUTOMAKE(liferea, 0.9.0)
-AC_CONFIG_HEADERS([config.h])
+AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
 dnl Work around libtool bug (fixed in the version 1.5a?)
@@ -192,7 +192,7 @@ AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the 
 AC_MSG_RESULT(user agent OS = $uname)
 
 dnl Add the languages which your application supports here.
-ALL_LINGUAS="bg cs de es fr it ja ko mk pl ru sk zh_TW"
+ALL_LINGUAS="bg cs de es fi fr it ja ko mk pl ru sk zh_TW"
 AM_GLIB_GNU_GETTEXT
 
 GETTEXT_PACKAGE=liferea
