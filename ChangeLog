@@ -17,6 +17,12 @@
 	* ISO8601 date parsing bugfix. (Vincent Lefevre)
 	* Fix crashes associated with the notification popup window.
 	  (Nathan Conrad)
+	* Improved configure script to detect Firefox embedded
+	  HTML rendering widget (Jim Huang)
+
+	Translations:
+
+	* Updated traditional Chinese translation. (Jim Huang)
 
 2005-01-15  Lars Lindner <lars.lindner@gmx.net>
 
