@@ -162,30 +162,30 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	g_signal_connect(G_OBJECT(htmlview_two), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
 	
 	ui_htmlview_start_output(&buffer, FALSE);
-	addToHTMLBuffer(&buffer, _("<h2>Welcome to Liferea</h2>\
-<p>The left pane contains the feed list where you can add new subscriptions \
-and select subscriptions to read their headlines. The right side either \
-displays a list of the headlines of the selected subscription and a \
-pane to view the selected headline or all headlines at once if condensed \
-mode is selected.</p>\
-<h3>Basic Actions</h3>\
-<ul>\
-<li><p><b>Add Subscription</b> - Creates a new subscription in the selected \
-folder. To create a new subscription enter the feed URL or if you don't \
-know it the URL of the website which provides the feed.</p></li>\
-<li><p><b>Update Subscription</b> - This will update the subscription you selected. \
-You may want to do this if you want to immediatly check a subscription for \
-updates. Usually it is adequate to rely on the auto updating according to the \
-update interval of the subscription.</p></li>\
-<li><p><b>Update All</b> - This will update all your subscriptions at once. \
-Again usually it is adequate to rely on the auto updating.</li>\
-<li><p><b>Edit Subscription Properties</b> - Sometimes you might want to \
-change the update interval, title, authentication or caching properties \
-of a subscription.</p></li>\
-</ul>\
-<p>To learn more about Liferea you should read the documentation \
-provided in the help feed or in the FAQ available at the project \
-homepage.</p>"));
+	addToHTMLBuffer(&buffer, _("<h2>Welcome to Liferea</h2>"
+						  "<p>The left pane contains the feed list where you can add new subscriptions "
+						  "and select subscriptions to read their headlines. The right side either "
+						  "displays a list of the headlines of the selected subscription and a "
+						  "pane to view the selected headline or all headlines at once if condensed "
+						  "mode is selected.</p>"
+						  "<h3>Basic Actions</h3>"
+						  "<ul>"
+						  "<li><p><b>Add Subscription</b> - Creates a new subscription in the selected "
+						  "folder. To create a new subscription enter the feed URL or if you don't "
+						  "know it the URL of the website which provides the feed.</p></li>"
+						  "<li><p><b>Update Subscription</b> - This will update the subscription you selected. "
+						  "You may want to do this if you want to immediatly check a subscription for "
+						  "updates. Usually it is adequate to rely on the auto updating according to the "
+						  "update interval of the subscription.</p></li>"
+						  "<li><p><b>Update All</b> - This will update all your subscriptions at once. "
+						  "Again usually it is adequate to rely on the auto updating.</li>"
+						  "<li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
+						  "change the update interval, title, authentication or caching properties "
+						  "of a subscription.</p></li>"
+						  "</ul>"
+						  "<p>To learn more about Liferea you should read the documentation "
+						  "provided in the help feed or in the FAQ available at the project "
+						  "homepage.</p>"));
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 	g_free(buffer);
