@@ -300,22 +300,22 @@ void ui_remove_folder(folderPtr folder) {
 }
 
 /* If pos == -1, position == end */
-void ui_folder_add_feed(feedPtr fp, gint position) {
+void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position) {
 	GtkTreeIter		*topiter;
 
 	g_assert(NULL != fp);
+	g_assert(NULL != parent);
 	g_assert(NULL != feedstore);
-	g_assert(NULL != fp->parent);
 	g_assert(NULL == fp->ui_data);
 	
-	if (fp->parent == folder_get_root())
+	if (parent == folder_get_root())
 		topiter = NULL;
 	else {
-		g_assert(fp->parent->ui_data);
-		topiter = &((ui_data*)(fp->parent->ui_data))->row;
+		g_assert(parent->ui_data);
+		topiter = &((ui_data*)(parent->ui_data))->row;
 	}
 
-	fp->ui_data = g_malloc(sizeof(ui_data));
+	fp->ui_data = (gpointer)g_new0(ui_data, 1);
 
 	if(position >= 0) {
 		/* if a feed entry is marked after which we shall insert */
@@ -334,7 +334,7 @@ void ui_folder_add_feed(feedPtr fp, gint position) {
 }
 
 void ui_folder_remove_feed(feedPtr fp) {
-     GtkTreeIter iter;
+	GtkTreeIter iter;
 	gboolean has_parent;
 	GtkTreeIter parent;
 	folderPtr parentNode;
@@ -425,9 +425,10 @@ static void ui_update_folder_from_iter(GtkTreeIter *iter) {
 
 void ui_update_folder(folderPtr folder) {
 	nodePtr node = (nodePtr)folder;
-	g_assert(IS_FOLDER(node->type));
-	if (NULL == node->ui_data)
-		return;
-
-	ui_update_folder_from_iter(&((ui_data*)(node->ui_data))->row);
+	
+	if(NULL != node) {
+		g_assert(IS_FOLDER(node->type));
+		g_assert(NULL != node->ui_data);
+		ui_update_folder_from_iter(&((ui_data*)(node->ui_data))->row);
+	}
 }

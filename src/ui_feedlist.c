@@ -443,11 +443,16 @@ void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr parent, gb
 		}
 	}
 	
-	if(NULL == (fp = feed_add(type, source, parent, _("New feed...."), NULL, 0, showPropDialog))) {
-		tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
-		ui_show_error_box(tmp);
-		g_free(tmp);
-	}
+	fp = feed_new();
+	fp->displayProps = showPropDialog; 	// FIXME!
+	feed_set_id(fp, conf_new_id());
+	feed_set_title(fp, g_strdup(""));
+	feed_set_type(fp, type);
+	feed_set_source(fp, source);
+	favicon_download(fp);
+	feed_update(fp);
+	
+	ui_folder_add_feed(parent, fp, -1);
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	

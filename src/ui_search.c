@@ -79,10 +79,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*keywords, *resultCountButton;
 	GtkAdjustment	*resultCount;
-	feedPtr		fp;
-	nodePtr		ptr = ui_feedlist_get_selected();
-	gchar		*tmp, *searchtext = NULL;
-	folderPtr 	folder = NULL;
+	gchar		*searchtext;
 
 	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
 	resultCountButton = lookup_widget(feedsterdialog, "feedsterresultcount");
@@ -93,28 +90,9 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 		searchtext = g_strdup_printf("http://www.feedster.com/rss.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
 					    searchtext, (int)gtk_adjustment_get_value(resultCount));
 
-		if(ptr && IS_FOLDER(ptr->type)) {
-			folder = (folderPtr)ptr;
-		} else if (ptr && ptr->parent) {
-			folder = ptr->parent;
-		} else {
-			folder = folder_get_root();
-		}
-		
-		if(NULL != (fp = feed_add(FST_AUTODETECT, searchtext, folder, "Searching....", NULL, 0, FALSE))) {
+		ui_feedlist_new_subscription(FST_AUTODETECT, searchtext, NULL, FALSE);
 
-			/*	FIXME: This needs to be added somewhere else.		if(FALSE == feed_get_available(fp)) {
-				tmp = g_strdup_printf(_("Feedster search request failed.\n"));
-				ui_show_error_box(tmp);
-				g_free(tmp);
-				}*/
-		}
-
-		/* It is possible, that there is no selected folder when we are
-		   called from the menu! In this case we default to the root folder */
-		/*ui_feedlist_new_subscription(FST_RSS, searchtext, 
-			(NULL != selected_keyprefix)?g_strdup(selected_keyprefix):g_strdup(""), FALSE);	
-		*/
+		g_free(searchtext);
 	}
 }
 
@@ -153,14 +131,14 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 
 		if(NULL != folder) {
 
-			if(NULL != (fp = feed_add(FST_VFOLDER, "", folder, "untitled",NULL,0,FALSE))) {
+//			if(NULL != (fp = feed_add(FST_VFOLDER, "", folder, "untitled",NULL,0,FALSE))) {
 				
 				// FIXME: this really does not belong here!!! -> vfolder.c
 				/* setup a rule */
 //				rp = g_new0(struct rule,1);
 
 				/* we set the searchstring as a default title */
-				feed_set_title(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
+//				feed_set_title(fp, (gpointer)g_strdup_printf(_("VFolder %s"),searchstring));
 				/* and set the rules... */
 /*				rp->value = g_strdup((gchar *)searchstring);
 				setVFolderRules(fp, rp);*/
@@ -168,8 +146,8 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				/* FIXME: brute force: update of all vfolders redundant */
 //				loadVFolders();
 				
-				ui_folder_add_feed(fp, FALSE);
-			}
+//				ui_folder_add_feed(fp, FALSE);
+//			}
 		} else {
 			g_warning("internal error! could not get folder key prefix!");
 		}

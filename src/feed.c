@@ -334,50 +334,6 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	return fp;
 }
 
-feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, gchar *id, gint interval, gboolean showPropDialog) {
-	feedPtr		fp = NULL;
-	gboolean	first_download = FALSE;
-	
-	debug5(DEBUG_CACHE, "feed_add(type=%d,url=%s,parent=%x,name=%s,id=%s)",type,url,parent,feedName,id);
-
-	g_assert(url != NULL);
-	
-	if(NULL == (fp = loadFeed(type, id))) {
-		fp = feed_new();
-		if (id == NULL) {
-			fp->id = conf_new_id();
-			first_download = TRUE;
-		} else
-			fp->id = g_strdup(id);
-	}
-	
-	fp->type = type;
-	fp->parent = parent;
-	fp->displayProps = showPropDialog;
-
-	if(NULL != feedName)
-		feed_set_title(fp, feedName);
-	
-	if(NULL != url) {
-		fp->source = g_strdup(url);
-	} else if (NULL == fp->source) {
-		fp->source = g_strdup(_("http://example.com/this.url.is.invalid"));
-	}
-
-	feed_set_update_interval(fp, interval);
-
-	folder_add_feed(parent, fp, -1);
-	ui_folder_add_feed(fp, -1);
-
-	if(first_download) {
-		favicon_download(fp);
-		feed_update(fp);
-	}
-
-	ui_update_feed(fp);
-	return fp;
-}
-
 /* Merges the feeds specified by old_fp and new_fp, so that
    the resulting feed is stored in the structure old_fp points to.
    The feed structure of new_fp 'll be freed. */
@@ -592,12 +548,19 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
 
-gchar *feed_get_id(feedPtr fp) {return fp->id;};
+void feed_set_id(feedPtr fp, gchar *id) {
+	if(fp->id)
+		g_free(fp->id);
+	fp->id = g_strdup(id);
+}
+gchar *feed_get_id(feedPtr fp) { return fp->id; }
+
 void feed_set_type(feedPtr fp, gint type) {
 	fp->type = type;
 	conf_feedlist_schedule_save();
 }
 gint feed_get_type(feedPtr fp) { return fp->type; }
+
 gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
 
 void feed_increase_unread_counter(feedPtr fp) {
@@ -856,6 +819,7 @@ void feed_free(feedPtr fp) {
 
 }
 
+// FIXME: remove method
 void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 	gboolean ui=FALSE;
 	g_assert(NULL != dest_folder);
@@ -871,7 +835,7 @@ void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 	/* move key in configuration */
 	
 	if(ui) {
-		ui_folder_add_feed(fp, position);
+		ui_folder_add_feed(dest_folder, fp, position);
 	}
 	conf_feedlist_schedule_save();
 }

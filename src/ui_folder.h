@@ -28,7 +28,7 @@
 void ui_add_folder(folderPtr folder, gint position);
 void ui_remove_folder(folderPtr folder);
 
-void ui_folder_add_feed(feedPtr fp, gint position);
+void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position);
 void ui_folder_remove_feed(feedPtr fp);
 
 void ui_update_folder(folderPtr folder);

@@ -139,7 +139,14 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		xmlFree(intervalStr);
 
 		id = xmlGetProp(cur, BAD_CAST"id");
-		fp = feed_add(type, source, folder, title, id, interval, FALSE);
+		
+		fp = feed_new();
+		feed_set_id(fp, g_strdup(id));
+		feed_set_type(fp, type);
+		feed_set_source(fp, g_strdup(source));
+		feed_set_title(fp, g_strdup(title));
+		feed_set_update_interval(fp, interval);
+		ui_folder_add_feed(folder, fp, -1);
 
 		xmlFree(id);
 		xmlFree(source);

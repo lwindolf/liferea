@@ -138,7 +138,7 @@ void loadConfig() {
 
 gchar* conf_new_id() {
 	int i;
-	gchar *id = g_malloc(10);
+	gchar *id = g_new0(gchar, 10);
 	for(i=0;i<7;i++)
 		id[i] = (char)g_random_int_range('a', 'z');
 	id[7] = '\0';
@@ -152,10 +152,11 @@ gchar* conf_new_id() {
 static void load_folder_contents(folderPtr folder, gchar* path);
 
 static gboolean load_key(folderPtr parent, gchar *id) {
-	int type, interval;
-	gchar *path2, *name, *url, *cacheid;
-	folderPtr folder;
-	gboolean expanded;
+	int		type, interval;
+	gchar		*path2, *name, *url, *cacheid;
+	folderPtr 	folder;
+	feedPtr		fp;
+	gboolean 	expanded;
 
 	/* Type */
 	path2 = build_path_str(id, "type");
@@ -216,7 +217,13 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 			cacheid = g_strdup_printf("_%s",id);
 		}
 
-		feed_add(type, url, parent, name, cacheid, interval, FALSE);
+		fp = feed_new();
+		feed_set_type(fp, type);
+		feed_set_source(fp, g_strdup(url));
+		feed_set_title(fp, g_strdup(name));
+		feed_set_id(fp, g_strdup(cacheid));
+		feed_set_update_interval(fp, interval);
+		ui_folder_add_feed(parent, fp, -1);
 
 		g_free(cacheid);
 		g_free(url);
@@ -263,13 +270,28 @@ static void load_folder_contents(folderPtr folder, gchar* fid) {
 }
 
 folderPtr feedlist_insert_help_folder(folderPtr parent) {
-	static folderPtr helpFolder = NULL;
+	static folderPtr 	helpFolder = NULL;
+	feedPtr			fp;
 
-	if (helpFolder == NULL) {
+	if(helpFolder == NULL) {
 		helpFolder = restore_folder(parent, _("Liferea Help"), "helpFolder", FST_HELPFOLDER);
 		ui_add_folder(helpFolder, -1);
-		feed_add(FST_HELPFEED, HELP1URL, helpFolder, _("Online Help Feed"), "helpfeed1", 1440, FALSE) ;
-		feed_add(FST_HELPFEED, HELP2URL, helpFolder, _("Liferea SF News"), "helpfeed2", 1440, FALSE) ;
+		
+		fp = feed_new();
+		feed_set_type(fp, FST_HELPFEED);
+		feed_set_source(fp, HELP1URL);
+		feed_set_title(fp, _("Online Help Feed"));
+		feed_set_id(fp, "helpfeed1");
+		feed_set_update_interval(fp, 1440);
+		ui_folder_add_feed(helpFolder, fp, -1);
+
+		fp = feed_new();
+		feed_set_type(fp, FST_HELPFEED);
+		feed_set_source(fp, HELP2URL);
+		feed_set_title(fp, _("Liferea SF News"));
+		feed_set_id(fp, "helpfeed2");
+		feed_set_update_interval(fp, 1440);
+		ui_folder_add_feed( helpFolder, fp, -1);		
 	}
 	return helpFolder;
 }
@@ -318,8 +340,12 @@ void loadSubscriptions(void) {
 	g_free(filename);
 	debug0(DEBUG_CONF, "Erasing old gconf enteries.");
 	conf_feedlist_erase_gconf();
+	
 	/* if help folder was not yet created... */
-	feedlist_insert_help_folder(folder_get_root());
+	if(!getBooleanConfValue(DISABLE_HELPFEEDS))
+		feedlist_insert_help_folder(folder_get_root());
+	
+	
 	feedlistLoading = FALSE;
 }
 

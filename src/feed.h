@@ -194,6 +194,7 @@ gboolean feed_get_available(feedPtr fp);
 gchar * feed_get_error_description(feedPtr fp);
 
 gchar *feed_get_id(feedPtr fp);
+void feed_set_id(feedPtr fp, gchar *id);
 
 gchar * feed_get_title(feedPtr fp);
 void feed_set_title(feedPtr fp, gchar * title);
