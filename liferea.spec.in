@@ -1,0 +1,69 @@
+Summary:	Liferea (Linux RSS News Aggregator)
+Name: 		@PACKAGE@
+Version: 	@VERSION@
+Release: 	1
+Group: 		Applications/Internet
+Copyright: 	GPL
+Source: 	%{name}-%{version}.tar.gz
+URL: 		http://liferea.sourceforge.net/
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-root
+BuildRequires: 	gtk2-devel
+BuildRequires:		gtkhtml2-devel
+BuildRequires: 	libxml2-devel >= 2.5.10
+BuildRequires: 	GConf2-devel
+BuildRequires: 	gettext
+BuildRequires: 	libtool
+BuildRequires: 	pkgconfig
+Requires: 	gtk2 >= 2.0.0, libxml2, gconf2
+
+%description
+Liferea (Linux Feed Reader) is an RSS/RDF news 
+aggregator which also supports CDF channels, 
+Atom/Echo/PIE feeds and OCS directories. It 
+is intended to be a clone of the Windows-only 
+FeedReader.
+
+%prep
+%setup -q
+
+%build
+%configure
+CFLAGS="$RPM_OPT_FLAGS" make %{?_smp_mflags}
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make DESTDIR=${RPM_BUILD_ROOT} install
+%find_lang %{name}
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files -f %{name}.lang
+%defattr(-,root,root)
+%doc COPYING AUTHORS NEWS README ChangeLog
+%{_bindir}/%{name}
+%{_bindir}/%{name}-bin
+%{_datadir}/%{name}
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/%{name}.png
+%dir %{_libdir}/%{name}
+%{_libdir}/%{name}/*.so*
+%{_libdir}/%{name}/*.la
+
+%changelog
+* Tue Apr 27 2004 Brian Pepple <bdpepple@ameritech.net> 0.4.7c-1
+- Added BuildRequires: gtkhtml2-devel
+- Cleaned up %configure, since this should be handled by the build environment.
+
+* Mon Apr 26 2004 Nathan Conrad <conrad@bungled.net> 0.4.8-1
+- Changed the depends a bit, and added a few things to the file listing
+- Build should use the RPM_OPT_FLAGS
+- Build root should have the package version number
+
+* Sun Apr 25 2004 Brian Pepple <bdpepple@ameritech.net> 0.4.8-1
+- Added more name macros
+
+* Fri Apr  2 2004 Brian Pepple <bdpepple@ameritech.net> 0.4.8-1
+- Added BuildRequires.
+- Added gettext support.
+- Added macros for files.

@@ -148,5 +148,6 @@ src/gtkhtml3/Makefile
 src/net/Makefile
 pixmaps/Makefile
 po/Makefile.in
+liferea.spec
 ])
 
