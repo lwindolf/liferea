@@ -356,6 +356,7 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 		} else
 			tmp = strreplace(cmd, "%s", uri);
 		g_free(cmd);
+		debug1(DEBUG_GUI, "Running the browser-remote command '%s'", tmp);
 		g_spawn_command_line_sync(tmp, NULL, NULL, &status, &error);
 		if((NULL != error) && (0 != error->code)) {
 			ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
@@ -376,7 +377,7 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 		} else
 			tmp = strreplace(cmd, "%s", uri);
 		g_free(cmd);
-		
+		debug1(DEBUG_GUI, "Running the browser command '%s'", tmp);
 		g_spawn_command_line_async(tmp, &error);
 		if((NULL != error) && (0 != error->code)) {
 			ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
