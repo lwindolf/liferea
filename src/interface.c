@@ -3043,7 +3043,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new (_("Takeshi Aihana <aihana@gnome.gr.jp>\nDario Conigliaro <djdas@djdas.no-ip.org>\nCarlos Fenollosa <topopardo@humorfreak.com>\nEnrico Genauck <enrico@fanglomerat.de>\nPark Ji-In <mithrandir@electrang.net>\nStephane Jourdan <stephane.jourdan@itris.fr>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nVincent Lef\303\250vre <vincent@vinc17.org>\nTomislav Markovski <tome@set.com.mk>\nJose Maria Mateos <chema@chema.homelinux.org>\nVladimir Petkov <vpetkov@i-space.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\n"));
+  label61 = gtk_label_new (_("Takeshi Aihana <aihana@gnome.gr.jp>\nDario Conigliaro <djdas@djdas.no-ip.org>\nCarlos Fenollosa <topopardo@humorfreak.com>\nEnrico Genauck <enrico@fanglomerat.de>\nPark Ji-In <mithrandir@electrang.net>\nStephane Jourdan <stephane.jourdan@itris.fr>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nVincent Lefevre <vincent@vinc17.org>\nTomislav Markovski <tome@set.com.mk>\nJose Maria Mateos <chema@chema.homelinux.org>\nVladimir Petkov <vpetkov@i-space.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\n"));
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
