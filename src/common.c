@@ -158,24 +158,25 @@ gchar * CONVERT(xmlChar *string) {
 gchar * parseHTML(htmlNodePtr cur) {
 	gchar	*newstring = NULL;
 	gchar	*oldstring = NULL;
+	gchar	*tmp;
 	
 	g_assert(NULL != cur);
-	
-	cur = cur->xmlChildrenNode;
+
+	newstring = g_strdup("");
 	while (cur != NULL) {
 		if(cur->content != NULL) {
-			// g_print("%s >>>%s<<<\n", cur->name, cur->content);
 			oldstring = newstring;
-			if(NULL != newstring)
-				newstring = g_strdup_printf("%s%s", newstring, cur->content);
-			else
-				newstring = g_strdup(cur->content);
+			newstring = g_strdup_printf("%s%s", newstring, cur->content);
 			g_free(oldstring);
 		}
-		
-		if(cur->xmlChildrenNode != NULL)
-			newstring = parseHTML(cur->xmlChildrenNode);
-			
+		if(cur->xmlChildrenNode != NULL) {
+			tmp = parseHTML(cur->xmlChildrenNode);
+			if(NULL != tmp) {
+				oldstring = newstring;
+				newstring = g_strdup_printf("%s%s", newstring, tmp);
+				g_free(oldstring);
+			}
+		}
 		cur = cur->next;		
 	}	
 	return newstring;
@@ -209,16 +210,16 @@ gchar * unhtmlize(gchar *string) {
 	
 	if(NULL == string)
 		return NULL;
-g_print("unhtmlize: %s\n", string);	
+
 	/* only do something if there are any entities */
-	if(NULL == (strchr(string, '&')))
+	if(NULL == (strpbrk(string, "&<>")))
 		return string;
 
 	length = strlen(string);
 	newstring = (gchar *)g_malloc(length + 1);
 	memset(newstring, 0, length + 1);
 	
-	ctxt = htmlCreatePushParserCtxt(NULL, NULL, newstring, length, 0, (xmlCharEncoding)"UTF-8");
+	ctxt = htmlCreatePushParserCtxt(NULL, NULL, newstring, length, 0, (xmlCharEncoding)standard_encoding);
 	ctxt->sax->warning = NULL;	/* disable XML errors and warnings */
 	ctxt->sax->error = NULL;
 	
@@ -229,7 +230,6 @@ g_print("unhtmlize: %s\n", string);
         htmlFreeParserCtxt(ctxt);
 	
 	g_free(string);
-g_print("result: %s\n", newstring);	
 	return newstring;
 }
 

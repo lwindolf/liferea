@@ -1633,6 +1633,7 @@ void clearItemList(void) {
 
 	selected_ip = NULL;
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
+	clearHTMLView();
 }
 
 void displayItemList(void) {
