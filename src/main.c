@@ -70,7 +70,7 @@ int main (int argc, char *argv[]) {
 	add_pixmap_directory(PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
 	readIcon = create_pixbuf("read.xpm");
 	unreadIcon = create_pixbuf("unread.xpm");
-	flagIcon = create_pixbuf("flag.xpm");
+	flagIcon = create_pixbuf("flag.png");
 	availableIcon = create_pixbuf("available.png");
 	unavailableIcon = create_pixbuf("unavailable.png");
 	listIcon = create_pixbuf("ocs.png");
