@@ -179,7 +179,7 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	ui_htmlview_start_output(&buffer, FALSE);
 	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
 	                           "We started gathering requirements for 1.1. Please have a <a href=\"http://liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">look</a> and "
-				   "make <a href=\"mailto://liferea-devel@lists.sourceforge.net\">proposals</a> if you miss features.</div>"
+				   "make <a href=\"mailto:liferea-devel@lists.sourceforge.net\">proposals</a> if you miss features.</div>"
 	                           "<h2>Welcome to Liferea</h2>"
 	                           "<p>The left pane contains the feed list where you can add new subscriptions "
 	                           "and select subscriptions to read their headlines. The right side either "
