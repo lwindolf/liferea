@@ -41,44 +41,6 @@
 
 extern struct entity *first_entity;
 
-char * iconvert (char * inbuf, char * from, char * to) {
-	iconv_t cd;							/* Iconvs conversion descriptor. */
-	char *outbuf, *outbuf_first;		/* We need two pointers so we do not lose
-	                                       the strings starting position. */
-	size_t inbytesleft, outbytesleft;
-
-	/* Take shortcut if TARGET_CHARSET is UTF-8 and avoid
-	   unneccessary conversion. */
-	/*
-	Something like:
-	if (strcasecmp (to, TARGET_CHARSET) == 0)
-		return strdup(inbuf);
-	*/
-	
-	inbytesleft = strlen(inbuf);
-	outbytesleft = strlen(inbuf);
-	
-	cd = iconv_open (to, from);
-	if (cd == (iconv_t) -1) {
-		return NULL;
-	}
-	
-	outbuf = malloc (outbytesleft+1);
-	outbuf_first = outbuf;
-
-	if (iconv (cd, &inbuf, &inbytesleft, &outbuf, &outbytesleft) == -1) {
-		free(outbuf_first);
-		iconv_close(cd);
-		return NULL;
-	}
-
-	*outbuf = 0;
-	
-	iconv_close (cd);
-	
-	return outbuf_first;
-}
-
 
 /* UIDejunk: remove crap (=html tags) from feed description and convert
  * html entities to something useful if we hit them.

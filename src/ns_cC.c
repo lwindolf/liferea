@@ -67,16 +67,12 @@ gchar * ns_cC_parseTag(xmlNodePtr cur) {
 void ns_cC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 
 	g_assert(NULL != cp->nsinfos);
-	if(NULL != g_hash_table_lookup(cp->nsinfos, ns_cC_prefix))
-		g_hash_table_remove(cp->nsinfos, ns_cC_prefix);
 	g_hash_table_insert(cp->nsinfos, g_strdup(ns_cC_prefix), ns_cC_parseTag(cur));
 }
 
 void ns_cC_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 
 	g_assert(NULL != ip->nsinfos);
-	if(NULL != g_hash_table_lookup(ip->nsinfos, ns_cC_prefix))
-		g_hash_table_remove(ip->nsinfos, ns_cC_prefix);
 	g_hash_table_insert(ip->nsinfos, g_strdup(ns_cC_prefix), ns_cC_parseTag(cur));
 }
 

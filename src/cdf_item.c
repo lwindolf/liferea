@@ -53,7 +53,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	}
 		
 	i = g_new0(struct CDFItem, 1);
-	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
+	i->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	ip = getNewItemStruct();
 	
 	/* save the item link */
@@ -69,7 +69,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 			continue;
 		}
 		
-		/* check for RDF tags */
+		/* check for CDF tags */
 		for(j = 0; j < CDF_ITEM_MAX_TAG; j++) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)CDFItemTagList[j])) {

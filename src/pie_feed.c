@@ -208,7 +208,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 	
 	/* initialize channel structure */
 	cp = g_new0(struct PIEFeed, 1);
-	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
+	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	
 	cp->updateInterval = -1;
 	while(1) {

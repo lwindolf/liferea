@@ -149,7 +149,7 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 	int 		error = 0;
 	
 	cp = g_new0(struct CDFChannel, 1);
-	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
+	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	
 	while(1) {
 		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {

@@ -328,7 +328,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 	
 	/* initialize channel structure */
 	cp = g_new0(struct RSSChannel, 1);
-	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	cp->updateInterval = -1;
 
 	while(1) {

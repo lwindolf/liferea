@@ -22,7 +22,6 @@
 #ifndef _CONVERSIONS_H
 #define _CONVERSIONS_H
 
-char * iconvert (char * inbuf, char * from, char * to);
 char * UIDejunk (char * feed_description);
 char * WrapText (char * text, int width);
 void *zlib_uncompress(void *in_buf, int in_size, int *out_size, int voodoo_magic);

@@ -118,7 +118,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	g_assert(NULL != cur);
 		
 	i = g_new0(struct PIEEntry, 1);
-	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
+	i->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	ip = getNewItemStruct();
 	
 	cur = cur->xmlChildrenNode;

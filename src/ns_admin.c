@@ -76,9 +76,7 @@ static void parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	
 	if(NULL != buffer) {
 		key = g_strdup_printf("admin:%s", cur->name);
-		if(NULL != g_hash_table_lookup(cp->nsinfos, key)) 
-			g_hash_table_remove(cp->nsinfos, key);	
-		g_hash_table_insert(cp->nsinfos, key, buffer);
+		g_hash_table_insert(cp->nsinfos, g_strdup(key), buffer);
 	}
 }
 

@@ -77,7 +77,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	g_assert(NULL != cur);
 		
 	i = g_new0(struct RSSItem, 1);
-	i->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);
+	i->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	ip = getNewItemStruct();
 	
 	/* try to get an item about id */
