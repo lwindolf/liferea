@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 0.4.9\n"
+"Project-Id-Version: liferea 0.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-06-25 23:32+0200\n"
-"PO-Revision-Date: 2004-05-20 14:01+0100\n"
+"PO-Revision-Date: 2004-06-22 02:21+0100\n"
 "Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.no-ip.org>\n"
 "Language-Team: Italian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,9 +23,8 @@ msgstr "Non posso trovare il file delle immagini: %s"
 #: src/cdf_channel.c:56 src/cdf_item.c:55 src/ocs_dir.c:141 src/opml.c:211
 #: src/pie_entry.c:73 src/pie_feed.c:116 src/rss_channel.c:142
 #: src/rss_item.c:84 src/rss_item.c:87
-#, fuzzy
 msgid "Feed:"
-msgstr "_Notiziari"
+msgstr "Notiziario:"
 
 #: src/cdf_channel.c:182 src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:322
 #: src/rss_channel.c:407
@@ -35,13 +34,12 @@ msgstr ""
 
 #: src/cdf_item.c:63 src/cdf_item.c:66 src/ocs_dir.c:102 src/pie_entry.c:81
 #: src/pie_entry.c:84 src/rss_item.c:96 src/rss_item.c:99
-#, fuzzy
 msgid "Item:"
-msgstr "_Elementi"
+msgstr "Elemento:"
 
 #: src/cdf_item.c:66 src/pie_entry.c:84 src/rss_item.c:99
 msgid "[No Title]"
-msgstr ""
+msgstr "[Senza Titolo]"
 
 #: src/common.c:249
 msgid "[Parser error output was truncated!]"
@@ -75,6 +73,7 @@ msgstr ""
 "Sequenza di fine caratteri errata o codifica UTF-8 corrotta!Alcuni caratteri "
 "sono stati eliminati!"
 
+#  _() for HELP1URL to allow localised help feeds
 #  _() for HELP1URL to allow localised help feeds
 #  _() for HELP1URL to allow localised help feeds
 #. _() for HELP1URL to allow localised help feeds
@@ -221,13 +220,12 @@ msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "L'URL di \"%s\" è cambiato in modo permanente ed è stato aggiornato."
 
 #: src/feed.c:679
-#, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
 "Impossibile determinare il tipo di questo notiziario! Per favore verificare "
-"che l'URL realmente punti ad una risorsa fornita in uno dei formati "
+"che la sorgente punti realmente ad una risorsa fornita in uno dei formati "
 "supportati!"
 
 #: src/feed.c:705
@@ -240,6 +238,7 @@ msgstr "\"%s\" aggiornato..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" non è disponibile!"
 
+#  The feed is gone. Politely remind the user to unsubscribe.
 #  The feed is gone. Politely remind the user to unsubscribe.
 #: src/feed.c:806
 #, fuzzy
@@ -382,7 +381,7 @@ msgstr ""
 #: src/interface.c:131 src/interface.c:2987
 #, fuzzy
 msgid "Liferea 0.5.1"
-msgstr "Liferea 0.4.9"
+msgstr "Liferea 0.5.0"
 
 #: src/interface.c:148
 msgid "_Program"
@@ -402,7 +401,7 @@ msgstr "_Nuova Sottoscrizione"
 
 #: src/interface.c:192
 msgid "New _Folder"
-msgstr "_Nuova Cartella"
+msgstr "Nuova _Cartella"
 
 #: src/interface.c:205
 msgid "_Properties"
@@ -446,15 +445,16 @@ msgstr "Elimina la sottoscrizione selezionata."
 
 #: src/interface.c:259
 msgid "Filter Feeds Without Unread Headlines"
-msgstr ""
+msgstr "Filtra Notiziari Senza Testate Da Leggere"
 
 #: src/interface.c:262
 msgid "If active all feeds without unread items are hidden."
 msgstr ""
+"Se attivo, tutti i notiziari senza elementi da leggere vengono nascosti."
 
 #: src/interface.c:264
 msgid "_Mark As Read"
-msgstr "_Segna Come Letto"
+msgstr "Segna C_ome Letto"
 
 #: src/interface.c:267
 msgid ""
@@ -474,7 +474,7 @@ msgstr "Importa una lista notiziari OPML."
 
 #: src/interface.c:290
 msgid "_Export Feed List"
-msgstr "_Esporta Lista Notiziari"
+msgstr "Esporta _Lista Notiziari"
 
 #: src/interface.c:293
 msgid "Export the feed list as OPML."
@@ -612,7 +612,7 @@ msgstr "vista a singolo elemento"
 
 #: src/interface.c:537
 msgid "label133"
-msgstr ""
+msgstr "label133"
 
 #: src/interface.c:842
 msgid "Subscription Properties"
@@ -669,9 +669,8 @@ msgid "General"
 msgstr "Generale"
 
 #: src/interface.c:954 src/interface.c:1357
-#, fuzzy
 msgid "<b>Feed Source</b>"
-msgstr "<b>Sorgente Dati</b>"
+msgstr "<b>Sorgente Notiziario</b>"
 
 #: src/interface.c:980 src/interface.c:1383
 msgid "_Select File..."
@@ -740,15 +739,15 @@ msgstr ""
 
 #: src/interface.c:1103
 msgid "_Default cache settings"
-msgstr "Impostazioni cache di _default"
+msgstr "_Impostazioni cache di default"
 
 #: src/interface.c:1109
 msgid "Di_sable cache"
-msgstr "Di_sabilita cache"
+msgstr "_Disabilita cache"
 
 #: src/interface.c:1115
 msgid "_Umlimited cache"
-msgstr "Cache _illimitata"
+msgstr "_Cache illimitata"
 
 #: src/interface.c:1125
 msgid "_Limit cache to"
@@ -764,7 +763,7 @@ msgstr "Cache Notiziari"
 
 #: src/interface.c:1151
 msgid "Use HTTP _authentication"
-msgstr "Usa _autenticazione HTTP"
+msgstr "_Usa autenticazione HTTP"
 
 #: src/interface.c:1169 src/interface.c:3125
 msgid "User_name:"
@@ -776,9 +775,8 @@ msgstr "_Password:"
 
 #  Don't repeat authrequest if it already failed before!
 #: src/interface.c:1196 src/interface.c:3102
-#, fuzzy
 msgid "Authentication"
-msgstr "Autenticazione fallita!"
+msgstr "Autenticazione"
 
 #: src/interface.c:1339
 msgid "New Subscription"
@@ -1154,7 +1152,9 @@ msgstr ""
 "Enrico Gernauck <enrico@fanglomerat.de>\n"
 "Vladimir Petkov <vpetkov@i-space.org>\n"
 "Tomislav Markovski <tome@set.com.mk>\n"
-"Dario Conigliaro <djdas@djdas.no-ip.org>"
+"Dario Conigliaro <djdas@djdas.no-ip.org>\n"
+"Rex Tsai <chihchun@users.sourceforge.net>\n"
+"Alekseev Vladimir <compress@linux-online.ru>"
 
 #: src/interface.c:3043
 msgid "Translation"
@@ -1185,7 +1185,7 @@ msgstr "  --help           Stampa questo messaggio ed esce"
 
 #: src/main.c:53
 msgid "  --iconify        Starts the program iconified"
-msgstr ""
+msgstr "  --iconify        Avvia il programma iconificato"
 
 #: src/main.c:55
 msgid "  --debug-cache    Print debugging messages for the cache handling"
@@ -1296,9 +1296,8 @@ msgstr ""
 "Dublin Core!"
 
 #: src/ocs_dir.c:97
-#, fuzzy
 msgid "Feed"
-msgstr "_Notiziari"
+msgstr "Notiziario"
 
 #: src/ocs_dir.c:198 src/ocs_dir.c:243 src/ocs_dir.c:358 src/ocs_dir.c:428
 #, c-format
@@ -1444,9 +1443,8 @@ msgid "New Feed"
 msgstr "Nuovo Notiziario"
 
 #: src/ui_mainwindow.c:153
-#, fuzzy
 msgid "Add a new subscription."
-msgstr "Nuova Sottoscrizione"
+msgstr "Aggiunge una nuova sottoscrizione."
 
 #: src/ui_mainwindow.c:154
 msgid "Next Unread"
@@ -1457,7 +1455,6 @@ msgid "Mark As Read"
 msgstr "Segna Come Letto"
 
 #: src/ui_mainwindow.c:155
-#, fuzzy
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1475,18 +1472,16 @@ msgid "Search"
 msgstr "Cerca"
 
 #: src/ui_mainwindow.c:157
-#, fuzzy
 msgid "Search all feeds."
-msgstr "Cerca nei notiziari"
+msgstr "Cerca nei notiziari."
 
 #: src/ui_mainwindow.c:158
 msgid "Preferences"
 msgstr "Preferenze"
 
 #: src/ui_mainwindow.c:158
-#, fuzzy
 msgid "Edit preferences."
-msgstr "Modifica preferenze"
+msgstr "Modifica preferenze."
 
 #: src/ui_mainwindow.c:172
 msgid ""
@@ -1519,7 +1514,7 @@ msgstr "Liferea adesso è online"
 #: src/ui_mainwindow.c:257
 #, fuzzy
 msgid "Liferea is now offline"
-msgstr "Liferea adesso è offline"
+msgstr "Liferea adesso è offline!"
 
 #: src/ui_popup.c:78
 msgid "/_Update"
@@ -1528,7 +1523,7 @@ msgstr "/_Aggiorna"
 #: src/ui_popup.c:79 src/ui_popup.c:89
 #, fuzzy
 msgid "/_Mark As Read"
-msgstr "_Segna Come Letto"
+msgstr "Segna C_ome Letto"
 
 #: src/ui_popup.c:80 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
 msgid "/_New"
@@ -1536,7 +1531,7 @@ msgstr "/_Nuovo"
 
 #: src/ui_popup.c:81 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:106
 msgid "/_New/New _Feed"
-msgstr "/_Nuovo/Nuovo N_otiziario"
+msgstr "/_Nuovo/Nuovo _Notiziario"
 
 #: src/ui_popup.c:82 src/ui_popup.c:92 src/ui_popup.c:100 src/ui_popup.c:107
 msgid "/_New/New F_older"
@@ -1552,7 +1547,7 @@ msgstr "/_Elimina"
 
 #: src/ui_popup.c:88
 msgid "/_Update Folder"
-msgstr "/A_ggiorna Cartella"
+msgstr "/_Aggiorna Cartella"
 
 #: src/ui_popup.c:93
 msgid "/_Rename Folder"
@@ -1560,7 +1555,7 @@ msgstr "/_Rinomina Cartella"
 
 #: src/ui_popup.c:94
 msgid "/_Delete Folder"
-msgstr "/El_imina Cartella"
+msgstr "/_Elimina Cartella"
 
 #: src/ui_popup.c:101
 msgid "/_Delete VFolder"
@@ -1595,9 +1590,8 @@ msgid "/_Copy Link Location"
 msgstr "/_Copia Collegamento"
 
 #: src/ui_popup.c:130
-#, fuzzy
 msgid "/_Launch Link In Browser"
-msgstr "_Apri Nel Browser"
+msgstr "/_Apri Nel Browser"
 
 #: src/ui_popup.c:131
 msgid "/_Subscribe"
@@ -1633,8 +1627,8 @@ msgstr "cerco \"%s\""
 #, fuzzy, c-format
 msgid "%d new item!"
 msgid_plural "%d new items!"
-msgstr[0] "%d nuovi elementi!"
-msgstr[1] "%d nuovi elementi!"
+msgstr[0] "Nessun nuovo elemento."
+msgstr[1] "Nessun nuovo elemento."
 
 #: src/ui_tray.c:102
 msgid "No new items."
@@ -1643,7 +1637,7 @@ msgstr "Nessun nuovo elemento."
 #: src/ui_notification.c:241
 #, fuzzy
 msgid "Liferea notification"
-msgstr "Liferea adesso è offline"
+msgstr "Liferea adesso è offline!"
 
 #: src/update.c:104
 #, fuzzy, c-format
@@ -1660,93 +1654,7 @@ msgstr "Impossibile aprire il file \"%s\"!"
 msgid "Error: There is no file \"%s\""
 msgstr "Non esiste alcun file \"%s\"!"
 
-#~ msgid ""
-#~ "Invalid browser command! There is no %%s URL place holder in the browser "
-#~ "command string you specified in the preferences dialog!!!"
-#~ msgstr ""
-#~ "Comando del browser non valido! Non è presente il simbolo %%s di "
-#~ "sostituzione dell'URL nella stringa di comando del browser specificata "
-#~ "nella pagina delle preferenze!!!"
-
-#~ msgid "Use the GNOME default browser"
-#~ msgstr "usa il browser di default di GNOME"
-
-#~ msgid "Use browser command:"
-#~ msgstr "usa il comando browser:"
-
-#~ msgid "specify a browser command using %s as URL placeholder"
-#~ msgstr ""
-#~ "specifica un comando per il browser utilizzando %s al posto dell'URL"
-
-#~ msgid "GUI Settings"
-#~ msgstr "Impostazioni Interfaccia Grafica"
-
-#~ msgid "Proxy Settings"
-#~ msgstr "Impostazioni Proxy"
-
-#~ msgid "Connecting to "
-#~ msgstr "Connessione a "
-
-#~ msgid "Connecting to %s..."
-#~ msgstr "Connessione a %s..."
-
-#~ msgid "Downloading \"http://%s%s\""
-#~ msgstr "Scaricamento \"http://%s%s\""
-
-#~ msgid "socket connect"
-#~ msgstr "connessione socket"
-
-#~ msgid "Too many HTTP redirects encountered! Giving up."
-#~ msgstr "Troppe redirezioni HTTP! Abbandono."
-
-#~ msgid "Following HTTP redirects"
-#~ msgstr "Seguo le redirezioni HTTP"
-
-#~ msgid "Webserver sent an invalid redirect!"
-#~ msgstr "Il server web ha spedito una redirezione non valida!"
-
-#  The feed is gone. Politely remind the user to unsubscribe.
-#~ msgid "The feed no longer exists. Please unsubscribe!"
-#~ msgstr ""
-#~ "Il notiziario non esiste più. Per favore cancellare la sottoscrizione!"
-
-#~ msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
-#~ msgstr ""
-#~ "Il server web %s ha mandato una risposta HTTP/1.0 illegale! Non posso "
-#~ "interpretarla."
-
-#  Don't repeat authrequest if it already failed before!
-#~ msgid "Authentication failed!"
-#~ msgstr "Autenticazione fallita!"
-
-#~ msgid "URL does not contain authentication information!"
-#~ msgstr "L'URL non contiene informazioni di autenticazione!"
-
-#~ msgid "Could not generate authentication information!"
-#~ msgstr "Impossibile generare le informazioni di autenticazione!"
-
-#~ msgid "Unsupported authentication method requested by server!"
-#~ msgstr "Il server ha richiesto un metodo di autenticazione non supportato!"
-
-#~ msgid "This URL doesn't look too valid to me, don't you think?"
-#~ msgstr "Questo URL non mi sembra valido, non pensi?"
-
-#~ msgid "Couldn't create network socket!"
-#~ msgstr "Impossibile creare il socket di rete!"
-
-#~ msgid "Can't resolve host %s!"
-#~ msgstr "Impossibile risolvere l'host %s!"
-
-#~ msgid "Could not connect to server %s: %s"
-#~ msgstr "Impossibile connettersi al server %s: %s"
-
-#, fuzzy
-#~ msgid "Connection timed out."
-#~ msgstr "Connessione a "
-
-#~ msgid "Aborted."
-#~ msgstr "Abortito."
-
+#  sh..!
 #  sh..!
 #  sh..!
 #~ msgid "Internal error while converting UTF-8 chars to HTTP URI!"
@@ -1787,8 +1695,36 @@ msgstr "Non esiste alcun file \"%s\"!"
 #~ "Impossibile eliminare il file di cache %s! Per favore rimuoverlo "
 #~ "manualmente!"
 
+#~ msgid ""
+#~ "Invalid browser command! There is no %%s URL place holder in the browser "
+#~ "command string you specified in the preferences dialog!!!"
+#~ msgstr ""
+#~ "Comando del browser non valido! Non è presente il simbolo %%s di "
+#~ "sostituzione dell'URL nella stringa di comando del browser specificata "
+#~ "nella pagina delle preferenze!!!"
+
 #~ msgid "program preferences"
 #~ msgstr "preferenze programma"
+
+#~ msgid "Use the GNOME default browser"
+#~ msgstr "usa il browser di default di GNOME"
+
+#~ msgid "Use browser command:"
+#~ msgstr "usa il comando browser:"
+
+#~ msgid "specify a browser command using %s as URL placeholder"
+#~ msgstr ""
+#~ "specifica un comando per il browser utilizzando %s al posto dell'URL"
+
+#~ msgid "If the browser module allows it open links inside Liferea."
+#~ msgstr ""
+#~ "Se il modulo browser lo permette, apre i link all'interno di Liferea."
+
+#~ msgid "GUI Settings"
+#~ msgstr "Impostazioni Interfaccia Grafica"
+
+#~ msgid "Proxy Settings"
+#~ msgstr "Impostazioni Proxy"
 
 #~ msgid "Search With Feedster"
 #~ msgstr "Cerca Con Feedster"
@@ -1798,6 +1734,69 @@ msgstr "Non esiste alcun file \"%s\"!"
 
 #~ msgid "Select File"
 #~ msgstr "Scegliere File"
+
+#~ msgid ""
+#~ "The webserver of the feed you are subscribing to is requesting "
+#~ "authentication information. Please enter the appropriate username and "
+#~ "password below!"
+#~ msgstr ""
+#~ "Il server web del notiziaro a cui ci si sta sottoscrivendo richiede "
+#~ "informazioni di autenticazione. Per favore inserire nome utente e "
+#~ "password qui sotto!"
+
+#~ msgid "Connecting to "
+#~ msgstr "Connessione a "
+
+#~ msgid "Connecting to %s..."
+#~ msgstr "Connessione a %s..."
+
+#~ msgid "Downloading \"http://%s%s\""
+#~ msgstr "Scaricamento \"http://%s%s\""
+
+#~ msgid "socket connect"
+#~ msgstr "connessione socket"
+
+#~ msgid "Too many HTTP redirects encountered! Giving up."
+#~ msgstr "Troppe redirezioni HTTP! Abbandono."
+
+#~ msgid "Following HTTP redirects"
+#~ msgstr "Seguo le redirezioni HTTP"
+
+#~ msgid "Webserver sent an invalid redirect!"
+#~ msgstr "Il server web ha spedito una redirezione non valida!"
+
+#~ msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
+#~ msgstr ""
+#~ "Il server web %s ha mandato una risposta HTTP/1.0 illegale! Non posso "
+#~ "interpretarla."
+
+#  Don't repeat authrequest if it already failed before!
+#~ msgid "Authentication failed!"
+#~ msgstr "Autenticazione fallita!"
+
+#~ msgid "URL does not contain authentication information!"
+#~ msgstr "L'URL non contiene informazioni di autenticazione!"
+
+#~ msgid "Could not generate authentication information!"
+#~ msgstr "Impossibile generare le informazioni di autenticazione!"
+
+#~ msgid "Unsupported authentication method requested by server!"
+#~ msgstr "Il server ha richiesto un metodo di autenticazione non supportato!"
+
+#~ msgid "This URL doesn't look too valid to me, don't you think?"
+#~ msgstr "Questo URL non mi sembra valido, non pensi?"
+
+#~ msgid "Couldn't create network socket!"
+#~ msgstr "Impossibile creare il socket di rete!"
+
+#~ msgid "Can't resolve host %s!"
+#~ msgstr "Impossibile risolvere l'host %s!"
+
+#~ msgid "Could not connect to server %s: %s"
+#~ msgstr "Impossibile connettersi al server %s: %s"
+
+#~ msgid "Aborted."
+#~ msgstr "Abortito."
 
 #~ msgid ""
 #~ "You can't delete the help! Edit the preferences to disable loading the "
@@ -1819,15 +1818,14 @@ msgstr "Non esiste alcun file \"%s\"!"
 #~ "disponibile. Puoi riprovare a scaricarlo o a rimuovere la sottoscrizione "
 #~ "usando il menu contestuale dalla lista dei notiziari.\n"
 
-#, fuzzy
 #~ msgid ""
 #~ "The newly created feed's type could not be detected! Please check if the "
 #~ "source really points to a resource provided in one of the supported "
 #~ "syndication formats"
 #~ msgstr ""
 #~ "Impossibile determinare il tipo di questo notiziario! Per favore "
-#~ "verificare che l'URL realmente punti ad una risorsa fornita in uno dei "
-#~ "formati supportati!"
+#~ "verificare che la sorgente punti realmente ad una risorsa fornita in uno "
+#~ "dei formati supportati!"
 
 #~ msgid "internal error! item list display for NULL pointer requested!\n"
 #~ msgstr ""
@@ -1842,72 +1840,11 @@ msgstr "Non esiste alcun file \"%s\"!"
 #~ msgid "Update"
 #~ msgstr "Aggiorna"
 
-#, fuzzy
 #~ msgid "Update all feeds."
-#~ msgstr "Aggiorna tutti i notiziari"
+#~ msgstr "Aggiorna tutti i notiziari."
 
 #~ msgid "could not allocate memory!"
 #~ msgstr "impossibile allocare la memoria!"
 
 #~ msgid "creating VFolder for search term \"%s\""
 #~ msgstr "creazione cartella virtuale sulla ricerca \"%s\""
-
-#~ msgid "_Scroll Or Next Unread"
-#~ msgstr "_Scorri o Prossimo Da Leggere"
-
-#~ msgid "Scrolls the item view down or jumps to the next unread item."
-#~ msgstr ""
-#~ "Scorre la vista degli elementi o salta al prossimo elemento da leggere."
-
-#~ msgid "condensed item list"
-#~ msgstr "lista condensata"
-
-#~ msgid "item list widget lookup failed!\n"
-#~ msgstr "ricerca del componente lista di elementi fallita!\n"
-
-#~ msgid "could not retrieve selection of item list!\n"
-#~ msgstr "impossibile recuperare la selezione dalla lista di elementi!\n"
-
-#~ msgid "GtkHTML2"
-#~ msgstr "GtkHTML2"
-
-#~ msgid "Mozilla (experimental)"
-#~ msgstr "Mozilla (sperimentale)"
-
-#~ msgid "<b>HTTP Authentication</b>"
-#~ msgstr "<b>Autenticazione HTTP</b>"
-
-#~ msgid "Text Viewer (experimental)"
-#~ msgstr "Visualizzatore di testo (sperimentale)"
-
-#~ msgid ""
-#~ "There is no %%s URL place holder in the browser command string you "
-#~ "specified in the preferences dialog!!!"
-#~ msgstr ""
-#~ "Non è presente il simbolo %%s di sostituzione dell'URL nella stringa di "
-#~ "comando del browser specificata nella pagina delle preferenze!!!"
-
-#~ msgid ""
-#~ "The newly created feed's type could not be detected. Please subscribe "
-#~ "again and select a feed type!"
-#~ msgstr ""
-#~ "Impossibile determinare il tipo del notiziario appena creato. Per favore "
-#~ "effettuare di nuovo la sottoscrizione e selezionare un tipo!"
-
-#~ msgid "GtkHTML3 (experimental)"
-#~ msgstr "GtkHTML3 (sperimentale)"
-
-#~ msgid "conversion wasn't successful.\n"
-#~ msgstr "la conversione non è andata a buon fine.\n"
-
-#~ msgid "conversion wasn't successful. converted: %i octets.\n"
-#~ msgstr "la conversione non è andata a buon fine. convertiti: %i ottetti.\n"
-
-#~ msgid "not enough memory\n"
-#~ msgstr "non c'è abbastanza memoria\n"
-
-#~ msgid "Show Only _Unread Feeds"
-#~ msgstr "Mostra Solo Notiziari _Da Leggere"
-
-#~ msgid "Filters all subscriptions that don't have unread items."
-#~ msgstr "Filtra tutte le sottoscrizioni che non hanno elementi da leggere"
