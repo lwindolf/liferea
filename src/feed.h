@@ -49,7 +49,6 @@
 #define IS_FEED(type)		((FST_RSS == type) || \
 				 (FST_CDF == type) || \
 				 (FST_PIE == type) || \
-				 (FST_OPML == type) || \
 				 (FST_HELPFEED == type))
 
 /** macro to test wether a type is a ressource which not regularily updated */				 
