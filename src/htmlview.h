@@ -101,7 +101,7 @@ struct displayset {
 
 /*@}*/
 
-#define HTMLVIEW_API_VERSION 1
+#define HTMLVIEW_API_VERSION 2
 
 typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
 
