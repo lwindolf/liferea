@@ -45,6 +45,9 @@ static gint		newItems = 0;
 static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
+static gboolean	trayVisible = FALSE;
+
+static void installTrayIcon(void);
 
 void ui_tray_tooltip_set(gchar *message) {
 	GtkTooltipsData	*data = NULL;
@@ -120,19 +123,60 @@ static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayI
 						  
 	return;
 }
+static gboolean ui_tray_create_cb()
+{
+	installTrayIcon();
+	
+	return FALSE; /* for when we're called by the glib idle handler */
+}
+
+
+static void ui_tray_embedded_cb(GtkWidget *widget, void *data) {
+	trayVisible = TRUE;
+}
+
+
+static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
+	g_object_unref(G_OBJECT(tray_icon));
+
+	image = NULL;
+	tray_icon = NULL;
+	trayVisible = FALSE;
+	
+	/* And make it re-appear when the notification area reappears */
+	g_idle_add(ui_tray_create_cb, NULL);
+	
+}
 
 static void installTrayIcon(void) {
 	g_assert(!tray_icon);
-	
+	g_assert(!trayVisible);
+
 	tray_icon = egg_tray_icon_new(PACKAGE);
 	eventbox = gtk_event_box_new();
 	
 	g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
+	g_signal_connect(G_OBJECT(tray_icon), "embedded", G_CALLBACK(ui_tray_embedded_cb), NULL);
+	g_signal_connect(G_OBJECT(tray_icon), "destroy", G_CALLBACK(ui_tray_destroyed_cb), NULL);
+
 	gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
+	g_object_ref(G_OBJECT(tray_icon));
 	
 	tray_icon_tips = gtk_tooltips_new();
 	newItems = -1;
 	ui_tray_zero_new();
+}
+
+static void removeTrayIcon() {
+	g_assert(tray_icon != NULL);
+	
+	g_signal_handlers_disconnect_by_func(G_OBJECT(tray_icon), G_CALLBACK(ui_tray_destroyed_cb), NULL);
+	gtk_widget_destroy(image);
+	image = NULL;
+	g_object_unref(G_OBJECT(tray_icon));
+	gtk_object_destroy (GTK_OBJECT (tray_icon));
+	tray_icon = NULL;
+	trayVisible = FALSE;
 }
 
 void ui_tray_enable(gboolean enabled) {
@@ -141,10 +185,7 @@ void ui_tray_enable(gboolean enabled) {
 			installTrayIcon();
 	} else {
 		if (tray_icon != NULL) {
-			gtk_widget_destroy(image);
-			image = NULL;
-			gtk_object_destroy (GTK_OBJECT (tray_icon));
-			tray_icon = NULL;
+			removeTrayIcon();
 		}
 	}
 }
