@@ -81,9 +81,9 @@
 
 /* condensed mode shading */
 
-#define SHADED_START	"<div style=\"background-color:#F0F0F0;padding:5px;margin-bottom:2px;\">"
+#define SHADED_START	"<div style=\"background-color:#fffde8;border-color:#ede8a8;border-style:solid;border-width:1px;padding:5px;margin-bottom:2px;\">"
 #define SHADED_END	"</div>"
-#define UNSHADED_START	"<div style=\"background-color:white;padding:5px;\">"
+#define UNSHADED_START	"<div style=\"padding:5px;\">"
 #define UNSHADED_END	"</div>"
 
 /* creates the HTML widget */

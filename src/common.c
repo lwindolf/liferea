@@ -375,10 +375,11 @@ static gchar * byte_to_hex(gint nr) {
 gchar * encodeURIString(gchar *uriString) {
 	gchar		*newURIString;
 	gchar		*tmp, *hex;
-	int		i;
+	int		i, len;
 
 	newURIString = g_strdup("");
-	for(i = 0; i < strlen(uriString); i++) {
+	len = strlen(uriString);
+	for(i = 0; i < len; i++) {
 		if((('A' <= uriString[i]) && (uriString[i] <= 'Z')) ||
 		   (('a' <= uriString[i]) && (uriString[i] <= 'z')) ||
 		   (('0' <= uriString[i]) && (uriString[i] <= '9')) ||

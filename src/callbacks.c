@@ -1519,16 +1519,16 @@ void displayItemList(void) {
 				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
 				
 				if(getItemReadStatus(ip)) 
-					addToHTMLBuffer(&buffer, SHADED_START);
-				else
 					addToHTMLBuffer(&buffer, UNSHADED_START);
+				else
+					addToHTMLBuffer(&buffer, SHADED_START);
 				
 				addToHTMLBuffer(&buffer, getItemDescription(ip));
 				
 				if(getItemReadStatus(ip))
-					addToHTMLBuffer(&buffer, SHADED_END);
-				else {
 					addToHTMLBuffer(&buffer, UNSHADED_END);
+				else {
+					addToHTMLBuffer(&buffer, SHADED_END);
 					markItemAsRead(ip);
 				}
 					
