@@ -62,5 +62,4 @@ typedef struct RSSChannel {
 } *RSSChannelPtr;
 
 feedHandlerPtr	initRSSFeedHandler(void);
-
 #endif

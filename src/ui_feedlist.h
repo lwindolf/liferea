@@ -107,11 +107,10 @@ folderPtr ui_feedlist_get_target_folder(int *pos);
 /**
  * Create a new subscription in the currently selected folder.
  *
- * @param type		feed type
  * @param source	feed source URL or local file name or piped command
  * @param showPropDialog TRUE if the property dialog should popup
  */
-void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDialog);
+void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog);
 
 
 #define	ACTION_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	

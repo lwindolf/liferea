@@ -128,27 +128,14 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	return buffer;
 }
 
-static void readOPML(feedPtr fp, gchar *data) {
-	xmlDocPtr 	doc;
-	xmlNodePtr 	cur, child;
+static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+	xmlNodePtr 	 child;
 	itemPtr		ip;
 	gchar		*buffer, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
 	int 		i, error = 0;
 
-	while(1) {
-		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
-			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
-			error = 1;
-			break;
-		}
-
-		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-			xmlFreeDoc(doc);
-			error = 1;
-			break;			
-		}
+	do {
 
 		if(!xmlStrcmp(cur->name, BAD_CAST"opml") ||
 		   !xmlStrcmp(cur->name, BAD_CAST"oml") ||
@@ -208,7 +195,6 @@ static void readOPML(feedPtr fp, gchar *data) {
 			
 			cur = cur->next;
 		}
-		xmlFreeDoc(doc);
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		fp->type = FST_OPML;
@@ -247,9 +233,18 @@ static void readOPML(feedPtr fp, gchar *data) {
 		}
 		
 		break;
-	}
+	} while (FALSE);
 }
 
+static gboolean opml_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+	if(!xmlStrcmp(cur->name, BAD_CAST"opml") ||
+	   !xmlStrcmp(cur->name, BAD_CAST"oml") || 
+	   !xmlStrcmp(cur->name, BAD_CAST"outlineDocument")) {
+		
+		return TRUE;
+	}
+	return FALSE;
+}
 /* ---------------------------------------------------------------------------- */
 /* initialization								*/
 /* ---------------------------------------------------------------------------- */
@@ -260,7 +255,8 @@ feedHandlerPtr initOPMLFeedHandler(void) {
 	fhp = g_new0(struct feedHandler, 1);
 	
 	/* prepare feed handler structure */
-	fhp->readFeed		= readOPML;
+	fhp->feedParser	= opml_parse;
+	fhp->checkFormat = opml_format_check;
 	fhp->merge		= FALSE;
 	
 	return fhp;

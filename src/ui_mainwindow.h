@@ -31,4 +31,8 @@ void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data
 void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item);
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data);
 
+void
+on_work_offline_activate               (GtkMenuItem     *menuitem,
+								gpointer         user_data);
+
 #endif

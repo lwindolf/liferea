@@ -90,7 +90,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 		searchtext = g_strdup_printf("http://www.feedster.com/rss.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
 					    searchtext, (int)gtk_adjustment_get_value(resultCount));
 
-		ui_feedlist_new_subscription(FST_AUTODETECT, searchtext, FALSE);
+		ui_feedlist_new_subscription(searchtext, FALSE);
 
 		g_free(searchtext);
 	}

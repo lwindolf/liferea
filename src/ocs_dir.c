@@ -439,32 +439,12 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 		dp->tags[OCS_DESCRIPTION] = convertToHTML(dp->tags[OCS_DESCRIPTION]);
 }
 
-static void readOCS(feedPtr fp, gchar *data) {
-	xmlDocPtr 	doc = NULL;
-	xmlNodePtr 	cur = NULL;
+static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
 	directoryPtr	dp;
 	dirEntryPtr	new_dep;
 	int 		error = 0;
 
-	while(1) {
-		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
-			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
-			error = 1;
-			break;
-		}
-
-		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-			error = 1;
-			break;			
-		}
-		
-		if(NULL == cur->name) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
-			error = 1;
-			break;
-		}
-
+	do {
 		if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
                    !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 		    	// nothing
@@ -506,7 +486,6 @@ static void readOCS(feedPtr fp, gchar *data) {
 			}
 			cur = cur->next;
 		}
-		xmlFreeDoc(doc);
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		feed_set_update_interval(fp, -1);
@@ -521,10 +500,29 @@ static void readOCS(feedPtr fp, gchar *data) {
 		}
 			
 		g_free(dp);
-		break;
-	}
+	} while (FALSE);
 }
 
+gboolean ocs_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+	gboolean ocs = FALSE;
+
+	if(!xmlStrcmp(cur->name, BAD_CAST"rss") ||
+	   !xmlStrcmp(cur->name, BAD_CAST"rdf") || 
+	   !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
+		xmlNs * ns = cur->nsDef;
+
+		while (ns != NULL) {
+			if (!xmlStrcmp(ns->prefix, "ocs") ||
+			    !xmlStrcmp(ns->href, "http://InternetAlchemy.org/ocs/directory#") ||
+			    !xmlStrcmp(ns->href, "http://purl.org/ocs/directory/0.5/#")) {
+				ocs = TRUE;
+			}
+			ns = ns->next;
+		}
+	}
+
+	return ocs;
+}
 feedHandlerPtr initOCSFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
@@ -541,7 +539,8 @@ feedHandlerPtr initOCSFeedHandler(void) {
 				        (gpointer)ns_ocs_getOCSNsHandler());
 
 	/* prepare feed handler structure */
-	fhp->readFeed		= readOCS;
+	fhp->feedParser	= ocs_parse;
+	fhp->checkFormat = ocs_format_check;
 	fhp->merge		= FALSE;
 	
 	return fhp;

@@ -532,7 +532,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDialog) {
+void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
 	GtkWidget 		*updateIntervalBtn;
 	GtkWidget 		*propdialog;
 	gint 			interval;
@@ -552,54 +552,44 @@ void ui_feedlist_new_subscription(gint type, gchar *source, gboolean showPropDia
 	data = downloadURL(request);	/* FIXME: The downloading should not block? */
 
 	/* determine feed type if necessary */	
-	if((data != NULL) && (type == FST_AUTODETECT))
-		type = feed_detect_type(request->data);
+	int pos;
+	folderPtr parent;
 	
-	if(type == FST_INVALID) {
-		ui_show_error_box(_("The newly created feed's type could not be detected. Please subscribe again and select a feed type!"));	
-		// FIXME: improve this by reopening a new subscription dialog and preset URL
+	fp = feed_new();
+	feed_set_id(fp, conf_new_id());
+	feed_set_type(fp, FST_RSS);
+	feed_set_source(fp, request->feedurl);
+	favicon_download(fp);		// FIXME: this blocks the program!!!
+	
+	parent = ui_feedlist_get_target_folder(&pos);
+	ui_folder_add_feed(parent, fp, pos);
+	ui_feedlist_select((nodePtr)fp);
+	
+	/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
+	if(data == NULL) {
+		ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 	} else {
-		int pos;
-		folderPtr parent;
+		fhp = feed_parse(fp, data);
 		
-		fp = feed_new();
-		feed_set_id(fp, conf_new_id());
-		feed_set_type(fp, type);
-		feed_set_source(fp, request->feedurl);
-		favicon_download(fp);		// FIXME: this blocks the program!!!
+		if (fhp == NULL)
+			ui_show_error_box(_("The newly created feed's type could not be detected. Please subscribe again and select a feed type!"));	
+		ui_feedlist_update();
+		fp->needsCacheSave = TRUE;
 		
-		parent = ui_feedlist_get_target_folder(&pos);
-		ui_folder_add_feed(parent, fp, pos);
-		ui_feedlist_select((nodePtr)fp);
-		
-		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
-		if(data == NULL) {
-			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);			
-		} else {
-			if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-				g_assert(NULL != fhp->readFeed);
-				(*(fhp->readFeed))(fp, data);			
-				
-				ui_feedlist_update();
-				fp->needsCacheSave = TRUE;
-				
-				if(showPropDialog) {
-					/* built, set default update interval and show properties dialog */
-					propdialog = ui_feedlist_build_prop_dialog();
-
-					if(-1 != (interval = feed_get_default_update_interval(fp))) {
-						updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-						gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-					}
-
-					on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
-				}
-			} else {
-				g_warning("internal error! unknown feed type!");
+		if(showPropDialog) {
+			/* built, set default update interval and show properties dialog */
+			propdialog = ui_feedlist_build_prop_dialog();
+			
+			if(-1 != (interval = feed_get_default_update_interval(fp))) {
+				updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
+				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
 			}
+			
+			on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
 		}
 	}
-	// FIXME: free data here?
+
+	g_free(data);
 	update_request_free(request);
 	debug_exit("ui_feedlist_new_subscription");
 }
@@ -635,16 +625,8 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	typeoptionmenu = lookup_widget(newdialog, "typeoptionmenu");
 		
 	source = g_strdup(gtk_entry_get_text(GTK_ENTRY(sourceentry)));
-	type = gtk_option_menu_get_history(GTK_OPTION_MENU(typeoptionmenu));
 	
-	/* the retrieved number is not yet the real feed type! */
-	if(type > MAX_TYPE_SELECT) {
-		g_error(_("internal error! invalid type selected! This should never happen!\n"));
-		return;
-	} else
-		type = selectableTypes[type];
-
-	ui_feedlist_new_subscription(type, source, TRUE);
+	ui_feedlist_new_subscription(source, TRUE);
 	/* don't free source for it is reused by newFeed! */
 }
 

@@ -189,9 +189,7 @@ gchar * parseAuthor(xmlNodePtr cur) {
 
 /* reads a PIE feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void readPIEFeed(feedPtr fp, gchar *data) {
-	xmlDocPtr 		doc;
-	xmlNodePtr 		cur;
+static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
 	PIEFeedPtr 		cp;
 	gchar			*tmp2, *tmp = NULL;
@@ -206,26 +204,6 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 	
 	cp->updateInterval = -1;
 	while(1) {
-		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
-			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
-			error = 1;
-			break;
-		}
-
-		cur = xmlDocGetRootElement(doc);
-
-		if(NULL == cur) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-			error = 1;
-			break;			
-		}
-
-		if(NULL == cur->name) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
-			error = 1;
-			break;
-		}
-		
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find Atom/Echo/PIE header!</p>"));
 			error = 1;
@@ -328,8 +306,6 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 		if(NULL != cp->tags[PIE_FEED_DESCRIPTION])
 			cp->tags[PIE_FEED_DESCRIPTION] = convertToHTML(cp->tags[PIE_FEED_DESCRIPTION]);		
 
-		xmlFreeDoc(doc);			
-		
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		fp->defaultInterval = cp->updateInterval;
 		feed_set_update_interval(fp, cp->updateInterval);
@@ -348,6 +324,13 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 	}
 }
 
+static gboolean pie_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+	if(!xmlStrcmp(cur->name, BAD_CAST"feed")) {
+		return TRUE;
+	}
+	return FALSE;
+}
+
 feedHandlerPtr initPIEFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
@@ -362,7 +345,8 @@ feedHandlerPtr initPIEFeedHandler(void) {
 					        (gpointer)ns_dc_getPIENsHandler());
 
 	/* prepare feed handler structure */
-	fhp->readFeed		= readPIEFeed;
+	fhp->feedParser	= pie_parse;
+	fhp->checkFormat = pie_format_check;
 	fhp->merge		= TRUE;
 
 	return fhp;

@@ -134,35 +134,14 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 
 /* reads a CDF feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void readCDFFeed(feedPtr fp, gchar *data) {
-	xmlDocPtr 	doc;
-	xmlNodePtr 	cur;
+static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	CDFChannelPtr 	cp;
 	int 		error = 0;
 	
 	cp = g_new0(struct CDFChannel, 1);
 	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	
-	while(1) {
-		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
-			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
-			error = 1;
-			break;
-		}
-
-		cur = xmlDocGetRootElement(doc);
-
-		if(NULL == cur) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-			xmlFreeDoc(doc);
-			error = 1;
-			break;			
-		}
-
-		while(cur && xmlIsBlankNode(cur)) {
-			cur = cur->next;
-		}
-	
+	do {
 		/* note: we support only one flavour of CDF channels! We will only
 		   support the first channel of the CDF feed. */
 	
@@ -189,8 +168,6 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 			cur = cur->next;
 		}
 
-		xmlFreeDoc(doc);
-		
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		fp->defaultInterval = fp->updateInterval = -1;
 		fp->title = cp->tags[CDF_CHANNEL_TITLE];
@@ -204,8 +181,15 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 		
 		g_hash_table_destroy(cp->nsinfos);
 		g_free(cp);
-		break;
+	} while (FALSE);
+}
+
+gboolean cdf_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+	if(!xmlStrcmp(cur->name, BAD_CAST"Channel") ||
+	   !xmlStrcmp(cur->name, BAD_CAST"channel")) {
+		return TRUE;
 	}
+	return FALSE;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -220,8 +204,8 @@ feedHandlerPtr initCDFFeedHandler(void) {
 	/* there are no name space handlers! */
 
 	/* prepare feed handler structure */
-	fhp->readFeed		= readCDFFeed;
+	fhp->feedParser	= cdf_parse;
+	fhp->checkFormat = cdf_format_check;
 	fhp->merge		= TRUE;
-	
 	return fhp;
 }

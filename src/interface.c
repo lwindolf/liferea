@@ -1098,21 +1098,6 @@ create_newdialog (void)
   GtkWidget *newfeedentry;
   GtkWidget *button4;
   GtkWidget *label26;
-  GtkWidget *vbox12;
-  GtkWidget *frame5;
-  GtkWidget *vbox17;
-  GtkWidget *label28;
-  GtkWidget *hbox18;
-  GtkWidget *label29;
-  GtkWidget *typeoptionmenu;
-  GtkWidget *menu1;
-  GtkWidget *auto_detect1;
-  GtkWidget *rss1;
-  GtkWidget *cdf1;
-  GtkWidget *atom1;
-  GtkWidget *ocs1;
-  GtkWidget *opml1;
-  GtkWidget *label22;
   GtkWidget *dialog_action_area2;
   GtkWidget *cancelbtn;
   GtkWidget *newfeedbtn;
@@ -1170,72 +1155,6 @@ create_newdialog (void)
   gtk_frame_set_label_widget (GTK_FRAME (frame7), label26);
   gtk_misc_set_padding (GTK_MISC (label26), 5, 0);
 
-  vbox12 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox12);
-  gtk_box_pack_start (GTK_BOX (vbox9), vbox12, FALSE, FALSE, 5);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox12), 5);
-
-  frame5 = gtk_frame_new (NULL);
-  gtk_widget_show (frame5);
-  gtk_box_pack_start (GTK_BOX (vbox12), frame5, TRUE, TRUE, 0);
-
-  vbox17 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox17);
-  gtk_container_add (GTK_CONTAINER (frame5), vbox17);
-
-  label28 = gtk_label_new (_("You have to specify the type of the feed you want to subscribe \nto. If you are unsure select \"Auto Detect\"."));
-  gtk_widget_show (label28);
-  gtk_box_pack_start (GTK_BOX (vbox17), label28, FALSE, FALSE, 0);
-  gtk_misc_set_alignment (GTK_MISC (label28), 0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label28), 10, 5);
-
-  hbox18 = gtk_hbox_new (FALSE, 5);
-  gtk_widget_show (hbox18);
-  gtk_box_pack_start (GTK_BOX (vbox17), hbox18, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox18), 5);
-
-  label29 = gtk_label_new (_("Feed Type"));
-  gtk_widget_show (label29);
-  gtk_box_pack_start (GTK_BOX (hbox18), label29, FALSE, FALSE, 0);
-  gtk_misc_set_padding (GTK_MISC (label29), 5, 0);
-
-  typeoptionmenu = gtk_option_menu_new ();
-  gtk_widget_show (typeoptionmenu);
-  gtk_box_pack_start (GTK_BOX (hbox18), typeoptionmenu, FALSE, FALSE, 0);
-
-  menu1 = gtk_menu_new ();
-
-  auto_detect1 = gtk_menu_item_new_with_mnemonic (_("Auto Detect"));
-  gtk_widget_show (auto_detect1);
-  gtk_container_add (GTK_CONTAINER (menu1), auto_detect1);
-
-  rss1 = gtk_menu_item_new_with_mnemonic (_("RSS"));
-  gtk_widget_show (rss1);
-  gtk_container_add (GTK_CONTAINER (menu1), rss1);
-
-  cdf1 = gtk_menu_item_new_with_mnemonic (_("CDF"));
-  gtk_widget_show (cdf1);
-  gtk_container_add (GTK_CONTAINER (menu1), cdf1);
-
-  atom1 = gtk_menu_item_new_with_mnemonic (_("Atom/Echo/PIE"));
-  gtk_widget_show (atom1);
-  gtk_container_add (GTK_CONTAINER (menu1), atom1);
-
-  ocs1 = gtk_menu_item_new_with_mnemonic (_("OCS"));
-  gtk_widget_show (ocs1);
-  gtk_container_add (GTK_CONTAINER (menu1), ocs1);
-
-  opml1 = gtk_menu_item_new_with_mnemonic (_("OPML"));
-  gtk_widget_show (opml1);
-  gtk_container_add (GTK_CONTAINER (menu1), opml1);
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (typeoptionmenu), menu1);
-
-  label22 = gtk_label_new (_("Feed Type Selection"));
-  gtk_widget_show (label22);
-  gtk_frame_set_label_widget (GTK_FRAME (frame5), label22);
-  gtk_misc_set_padding (GTK_MISC (label22), 5, 0);
-
   dialog_action_area2 = GTK_DIALOG (newdialog)->action_area;
   gtk_widget_show (dialog_action_area2);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area2), GTK_BUTTONBOX_END);
@@ -1279,21 +1198,6 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, newfeedentry, "newfeedentry");
   GLADE_HOOKUP_OBJECT (newdialog, button4, "button4");
   GLADE_HOOKUP_OBJECT (newdialog, label26, "label26");
-  GLADE_HOOKUP_OBJECT (newdialog, vbox12, "vbox12");
-  GLADE_HOOKUP_OBJECT (newdialog, frame5, "frame5");
-  GLADE_HOOKUP_OBJECT (newdialog, vbox17, "vbox17");
-  GLADE_HOOKUP_OBJECT (newdialog, label28, "label28");
-  GLADE_HOOKUP_OBJECT (newdialog, hbox18, "hbox18");
-  GLADE_HOOKUP_OBJECT (newdialog, label29, "label29");
-  GLADE_HOOKUP_OBJECT (newdialog, typeoptionmenu, "typeoptionmenu");
-  GLADE_HOOKUP_OBJECT (newdialog, menu1, "menu1");
-  GLADE_HOOKUP_OBJECT (newdialog, auto_detect1, "auto_detect1");
-  GLADE_HOOKUP_OBJECT (newdialog, rss1, "rss1");
-  GLADE_HOOKUP_OBJECT (newdialog, cdf1, "cdf1");
-  GLADE_HOOKUP_OBJECT (newdialog, atom1, "atom1");
-  GLADE_HOOKUP_OBJECT (newdialog, ocs1, "ocs1");
-  GLADE_HOOKUP_OBJECT (newdialog, opml1, "opml1");
-  GLADE_HOOKUP_OBJECT (newdialog, label22, "label22");
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, dialog_action_area2, "dialog_action_area2");
   GLADE_HOOKUP_OBJECT (newdialog, cancelbtn, "cancelbtn");
   GLADE_HOOKUP_OBJECT (newdialog, newfeedbtn, "newfeedbtn");

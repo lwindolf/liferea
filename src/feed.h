@@ -39,7 +39,7 @@
 #define FST_OPML	7	/**< generic OPML */
 
 #define FST_VFOLDER	9	/**<special type for VFolders */
-
+#define FST_FEED 10      /**< Any type of feed */
 #define FST_HELPFOLDER	50	/**< special tree list types to store help feeds */	
 #define FST_HELPFEED	51	/**< special type to allow updating of help feed url */
 
@@ -51,7 +51,8 @@
 				 (FST_PIE == type) || \
 				 (FST_OPML == type) || \
 				 (FST_HELPFEED == type) || \
-				 (FST_AUTODETECT == type))
+				 (FST_AUTODETECT == type) || \
+				 (FST_FEED == type))
 
 /** macro to test whether a type is a resource which not regularly updated */				 
 #define IS_DIRECTORY(type)	(FST_OCS == type)
@@ -73,7 +74,6 @@ typedef struct feed {
 	gint		unreadCount;		/**< number of unread items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gboolean	available;		/**< flag to signalize loading errors */
-	
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
 	
 	gpointer	icon;			/**< pointer to pixmap, if there is a favicon */
@@ -101,12 +101,15 @@ typedef struct feed {
 /* ------------------------------------------------------------ */
 
 /** a function which parses the feed data given with the feed ptr fp */
-typedef void 	(*readFeedFunc)		(feedPtr fp, gchar *data);
+typedef void 	(*feedParserFunc)		(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur);
+typedef gboolean (*checkFormatFunc) (xmlDocPtr doc, xmlNodePtr cur); /**< Returns true if correct format */
 
 // FIXME: remove this structure...
 typedef struct feedHandler {
-	readFeedFunc		readFeed;	/**< feed type parse function */
+	feedParserFunc	    feedParser;	/**< feed type parse function */
+	checkFormatFunc checkFormat;  /**< Parser for the feed type*/
 	gboolean		merge;		/**< flag if feed type supports merging */
+	
 } *feedHandlerPtr;
 
 /* ------------------------------------------------------------ */
@@ -148,14 +151,7 @@ void feed_add_item(feedPtr fp, itemPtr ip);
 
 void feed_copy(feedPtr fp, feedPtr new_fp);
 void feed_free(feedPtr fp);
-
-/**
- * Detects the the format of data
- * @param the content of the feed
- * @returns the type of string, or FST_INVALID if detection fails
- */
-gint feed_detect_type(gchar *data);
-
+feedHandlerPtr feed_parse(feedPtr fp, gchar *data);
 /**
  * This is a timeout callback to check for feed update results.
  * If there is a result pending its data is parsed and merged

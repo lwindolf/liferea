@@ -50,26 +50,7 @@
 #include "htmlview.h"
 
 /* auto detection lookup table */
-typedef struct detectStr {
-	gint	type;
-	gchar	*string;
-} *detectStrPtr;
-
-struct detectStr detectPattern[] = {
-	{ FST_OCS,	"xmlns:ocs" 	},	/* must be before RSS!!! because OCS 0.4 is basically RDF */
-	{ FST_OCS,	"<ocs:" 	},	/* must be before RSS!!! because OCS 0.4 is basically RDF */
-	{ FST_OCS,	"<directory" 	},	/* OCS 0.5 */
-	{ FST_RSS,	"<rdf:RDF" 	},
-	{ FST_RSS,	"<rss" 		},
-	{ FST_CDF,	"<channel>" 	},	/* has to be after RSS!!! */
-	{ FST_PIE,	"<feed" 	},
-	{ FST_OPML,	"<opml" 	},
-	{ FST_OPML,	"<outlineDocument" },	/* outlineDocument for older OPML */
-	{ FST_OPML,	"<oml" 		},	/* OML is parsed as OPML */
-	/* { FST_HTML	"<html"		},*/	/* HTML with link discovery */
-	/* { FST_HTML	"<HTML"		},*/	/* HTML with link discovery */
-	{ FST_INVALID,	NULL 		}
-};
+static GSList *feedhandlers;
 
 struct feed_type {
 	gint id_num;
@@ -88,9 +69,6 @@ static struct feed_type type_list[] = {
 	{-1, NULL}
 };
 
-
-/* hash table to look up feed type handlers */
-GHashTable	*feedHandler = NULL;
 
 /* a list containing all items of all feeds, used for VFolder
    and searching functionality */
@@ -123,31 +101,58 @@ gint feed_type_str_to_num(gchar *str) {
 	return -1;
 }
 
-static void feed_register_type(gint type, feedHandlerPtr fhp) {
-	gint	*typeptr;
-		
-	typeptr = g_new0(gint, 1);
-	*typeptr = type;
-	g_hash_table_insert(feedHandler, (gpointer)typeptr, (gpointer)fhp);
-}
+feedHandlerPtr feed_parse(feedPtr fp, gchar *data) {
+	xmlDocPtr 		doc;
+	xmlNodePtr 		cur;
+	GSList			*handlerIter;
+	gboolean			handled = FALSE;
+	feedHandlerPtr		handler;
 
-gint feed_detect_type(gchar *data) {
-	detectStrPtr		pattern = detectPattern;
-	gint			type = FST_INVALID;
+	/* initialize channel structure */
 	
-	g_assert(NULL != pattern);
-	g_assert(NULL != data);
+	if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
+		addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
+		goto error;
+	}
 	
-	while(NULL != pattern->string) {	
-		if(NULL != strstr(data, pattern->string)) {
-			type = pattern->type;
+	if(NULL == (cur = xmlDocGetRootElement(doc))) {
+		addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
+		xmlFreeDoc(doc);
+		goto error;
+	}
+	while(cur && xmlIsBlankNode(cur)) {
+		cur = cur->next;
+	}
+	
+	if(NULL == cur->name) {
+		addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
+		goto error;
+	}
+	
+	handlerIter = feedhandlers;
+	while (handlerIter != NULL) {
+		handler = (feedHandlerPtr)(handlerIter->data);
+		if ((*(handler->checkFormat))(doc, cur)) {
+			(*(handler->feedParser))(fp, doc, cur);
+			handled = TRUE;
 			break;
 		}
-		
-		pattern++;
-	} 
-		
-	return type;
+		handlerIter = handlerIter->next;
+	}
+	
+	if (!handled) {
+		addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type! Please check that it is in a supported format!</p>"));
+		goto error;
+	}
+	
+	xmlFreeDoc(doc);
+	return handler;
+	
+ error:
+	if (doc != NULL)
+		xmlFreeDoc(doc);
+	ui_mainwindow_set_status_bar(_("There were errors while parsing a feed!"));
+	return NULL;
 }
 
 /* initializing function, only called upon startup */
@@ -156,15 +161,12 @@ void feed_init(void) {
 	allItems = feed_new();
 	allItems->type = FST_VFOLDER;
 	
-	feedHandler = g_hash_table_new(g_int_hash, g_int_equal);
-
-	feed_register_type(FST_RSS,		initRSSFeedHandler());
-	feed_register_type(FST_HELPFEED,	initRSSFeedHandler());
-	feed_register_type(FST_OCS,		initOCSFeedHandler());
-	feed_register_type(FST_CDF,		initCDFFeedHandler());
-	feed_register_type(FST_PIE,		initPIEFeedHandler());
-	feed_register_type(FST_OPML,		initOPMLFeedHandler());
-	feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());
+	feedhandlers = g_slist_append(feedhandlers, initOCSFeedHandler()); /* Must come before RSS/RDF */
+	feedhandlers = g_slist_append(feedhandlers, initRSSFeedHandler());
+	feedhandlers = g_slist_append(feedhandlers, initCDFFeedHandler());
+	feedhandlers = g_slist_append(feedhandlers, initPIEFeedHandler());
+	feedhandlers = g_slist_append(feedhandlers, initOPMLFeedHandler());
+	/*feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());*/
 	
 	update_thread_init();	/* start thread for update request processing */
 	ui_timeout_add(5*60*1000, feed_save_timeout, NULL);
@@ -184,7 +186,7 @@ feedPtr feed_new(void) {
 	fp->updateInterval = -1;
 	fp->defaultInterval = -1;
 	fp->available = FALSE;
-	fp->type = FST_INVALID;
+	fp->type = FST_FEED;
 	fp->parseErrors = NULL;
 	fp->ui_data = NULL;
 	fp->updateRequested = FALSE;
@@ -608,7 +610,6 @@ gint feed_process_update_results(gpointer data) {
 	struct feed_request	*request = NULL;
 	feedPtr			new_fp;
 	feedHandlerPtr		fhp;
-	gint			type;
 	gboolean 		firstDownload = FALSE;
 
 	if(NULL == (request = update_thread_get_result()))
@@ -632,36 +633,19 @@ gint feed_process_update_results(gpointer data) {
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), feed_get_title(request->fp));
 	} else if(NULL != request->data) {
 		do {
-			/* determine feed type if necessary (e.g. when importing) */
-			if(FST_AUTODETECT == (type = feed_get_type(request->fp))) {
-				/* maybe we cannot determine the feed type, but we have to keep trying... */
-				if(FST_INVALID == (type = feed_detect_type(request->data))) {
-					feed_set_type(request->fp, FST_AUTODETECT);
-					feed_set_available(request->fp, FALSE);
-					g_free(request->fp->parseErrors);
-					request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the URL really points to a resource provided in one of the supported syndication formats!"));
-					break;
-				} else {
-					feed_set_type(request->fp, type);
-				}
-				firstDownload = TRUE;
-			}
-
-			/* determine feed type handler */
-			g_assert(NULL != feedHandler);
-			if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-				g_warning("internal error! %s has unknown feed type %d while updating feeds!", request->fp->title, type);
-				break;
-			}
-
 			/* parse the new downloaded feed into new_fp, feed type must be 
 			   set here because the parsing implementations maybe used for
 			   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
 			new_fp = feed_new();
 			feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source */
-			feed_set_type(new_fp, feed_get_type(request->fp));
-			(*(fhp->readFeed))(new_fp, request->data);
-
+			fhp = feed_parse(new_fp, request->data);
+			if (fhp == NULL) {
+				feed_set_available(request->fp, FALSE);
+				g_free(request->fp->parseErrors);
+				request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the URL really points to a resource provided in one of the supported syndication formats!"));
+				break;
+			}
+			
 			if(firstDownload) {
 				if (feed_get_title(new_fp) != NULL)
 					feed_set_title(request->fp, feed_get_title(new_fp));

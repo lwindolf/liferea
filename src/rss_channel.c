@@ -308,9 +308,7 @@ static void parseImage(RSSChannelPtr cp, xmlNodePtr cur) {
 
 /* reads a RSS feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void readRSSFeed(feedPtr fp, gchar *data) {
-	xmlDocPtr 		doc;
-	xmlNodePtr 		cur;
+static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
 	RSSChannelPtr 		cp;
 	short 			rdf = 0;
@@ -322,26 +320,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	cp->updateInterval = -1;
 
-	while(1) {
-		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
-			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
-			error = 1;
-			break;
-		}
-
-		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-			xmlFreeDoc(doc);
-			error = 1;
-			break;			
-		}
-
-		if(NULL == cur->name) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
-			error = 1;
-			break;
-		}
-
+	do {
 		if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 			rdf = 0;
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
@@ -409,9 +388,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 			}
 			cur = cur->next;
 		}
-		xmlFreeDoc(doc);
-		break;
-	}
+	} while (FALSE);
 
 	/* after parsing we fill in the infos into the feedPtr structure */		
 	fp->defaultInterval = cp->updateInterval;
@@ -435,6 +412,15 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
  	g_free(cp->tiName);
  	g_free(cp->tiLink);
 	g_free(cp);
+}
+
+static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+	if(!xmlStrcmp(cur->name, BAD_CAST"rss") ||
+	   !xmlStrcmp(cur->name, BAD_CAST"rdf") || 
+	   !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
+		return TRUE;
+	}
+	return FALSE;
 }
 
 static void addNameSpaceHandler(gchar *prefix, gpointer handler) {
@@ -467,7 +453,8 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	}
 							
 	/* prepare feed handler structure */
-	fhp->readFeed		= readRSSFeed;
+	fhp->feedParser	= rss_parse;
+	fhp->checkFormat = rss_format_check;
 	fhp->merge		= TRUE;
 	
 	return fhp;
