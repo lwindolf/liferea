@@ -7,12 +7,14 @@
 	  and now supports image with 24bit colors and sizes other
 	  than 16x16. (Nathan Conrad)
 	* Now a short help text is displayed in the HTML view
-	  after startup.
+	  after startup. (Lars Linder)
 	* Updated networking code. Many more things, such as
 	  adding a new feed, are processed in the background.
+	  (Nathan Conrad)
 	* Improved preferences for selecting how to open a link
-	  in an external browser.
-	* Popup-window notifications of new items.
+	  in an external browser. (Nathan Conrad)
+	* Popup-window notifications of new items. 
+	  (Karl Soderstrom)
 	
 	Bugfixes:
 	  
@@ -24,10 +26,10 @@
 	  is fixed now. (Lars Lindner)
 	* Debian bug 254959 reported by Martin-Aric Racine was
 	  fixed. No Liferea recognizes RSS 1.0 Creative Commons
-	  license information.
+	  license information. (Lars Lindner)
 	* Better favicon detection (more coming in the next release).
 	* Feed properties (such as titles) are now saved when they
-	  change.
+	  change. (Nathan Conrad)
 	
 2004-06-19 Lars Lindner <lars.lindner@gmx.net>
 
