@@ -212,11 +212,8 @@ feedPtr feed_new(void) {
 	
 	fp->updateInterval = -1;
 	fp->defaultInterval = -1;
-	fp->available = FALSE;
 	fp->type = FST_FEED;
 	fp->cacheLimit = CACHE_DEFAULT;
-	fp->parseErrors = NULL;
-	fp->ui_data = NULL;
 	
 	return fp;
 }
@@ -227,7 +224,6 @@ feedPtr feed_new(void) {
  * (2) Inside of feed_process_result
  * (3) The callback where items are removed from the itemlist
  */
-
 
 void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
@@ -270,6 +266,10 @@ void feed_save(feedPtr fp) {
 			
 			tmp = g_strdup_printf("%d", (TRUE == fp->available)?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
+			g_free(tmp);
+			
+			tmp = g_strdup_printf("%d", (TRUE == fp->discontinued)?1:0);
+			xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 			g_free(tmp);
 			
 			if(NULL != fp->request && 0 != (fp->request->lastmodified.tv_sec)) {
@@ -410,6 +410,9 @@ gboolean feed_load_from_cache(feedPtr fp) {
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
 				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
+				
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) {
+				fp->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
 				fp->lastModified.tv_sec = atol(tmp);
@@ -619,11 +622,16 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 	debug1(DEBUG_CONF, "Scheduling %s to be updated", feed_get_title(fp));
 	
 	if(fp->request != NULL) {
-		ui_mainwindow_set_status_bar("This feed \"%s\" is already being updated!", feed_get_title(fp));
+		ui_mainwindow_set_status_bar(_("This feed \"%s\" is already being updated!"), feed_get_title(fp));
 		return;
 	}
 	
-	ui_mainwindow_set_status_bar("Updating \"%s\"", feed_get_title(fp));
+	if(fp->discontinued) {
+		ui_mainwindow_set_status_bar(_("The feed was discontinued. Liferea won't update it anymore!"));
+		return;
+	}
+	
+	ui_mainwindow_set_status_bar(_("Updating \"%s\""), feed_get_title(fp));
 	
 	if(NULL == (source = feed_get_source(fp))) {
 		g_warning("Feed source is NULL! This should never happen - cannot update!");
@@ -665,7 +673,7 @@ void feed_process_update_result(struct request *request) {
 
 	feed_set_available(old_fp, TRUE);
 
-	if(401 /* unauthorized */ == request->httpstatus) {
+	if(401 == request->httpstatus) { /* unauthorized */
 		feed_set_available(old_fp, FALSE);
 		ui_feed_authdialog_new(GTK_WINDOW(mainwindow), old_fp, request->flags);
 	} if(304 == request->httpstatus) {	
@@ -840,15 +848,26 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 			case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
 			case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
 			case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
-			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe."));break;
+			case 410:
+				/* we add a permanent message instead of a temporary error info */ 
+				feed_set_available(fp, FALSE);
+				tmp1 = NULL;
+				addToHTMLBuffer(&tmp1, UPDATE_ERROR_START);
+				addToHTMLBuffer(&tmp1, HTTP410_ERROR_TEXT);
+				addToHTMLBuffer(&tmp1, UPDATE_ERROR_END);
+				addToHTMLBuffer(&tmp1, fp->description);
+				g_free(fp->description);
+				fp->description = tmp1;
+				fp->discontinued = TRUE;
+				break;
 		}
 		/* Then, netio errors */
-		if (tmp2 == NULL) {
+		if(tmp2 == NULL) {
 			switch(resultcode) {
-			case NET_ERR_URL_INVALID: tmp2 = g_strdup(_("URL is invalid")); break;
+			case NET_ERR_URL_INVALID:    tmp2 = g_strdup(_("URL is invalid")); break;
 			case NET_ERR_UNKNOWN:
 			case NET_ERR_CONN_FAILED:
-			case NET_ERR_SOCK_ERR:    tmp2 = g_strdup(_("Error connecting to remote host")); break;
+			case NET_ERR_SOCK_ERR:       tmp2 = g_strdup(_("Error connecting to remote host")); break;
 			case NET_ERR_HOST_NOT_FOUND: tmp2 = g_strdup(_("Hostname could not be found")); break;
 			case NET_ERR_CONN_REFUSED:   tmp2 = g_strdup(_("Network connection was refused by the remote host")); break;
 			case NET_ERR_TIMEOUT:        tmp2 = g_strdup(_("Remote host did not finish sending data")); break;

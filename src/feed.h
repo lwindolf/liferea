@@ -34,12 +34,12 @@ enum node_types {
 	FST_INVALID 	= 0,		/**< invalid type */
 	FST_FOLDER 	= 1,		/**< the folder type */
 
-	FST_VFOLDER 	= 9,		/**<special type for VFolders */
-	FST_FEED		= 10,     /**< Any type of feed */
-	FST_HELPFOLDER	= 50,	/**< special tree list types to store help feeds */	
+	FST_VFOLDER 	= 9,		/**< special type for VFolders */
+	FST_FEED	= 10,		/**< Any type of feed */
+	FST_HELPFOLDER	= 50,		/**< special tree list types to store help feeds */	
 	FST_HELPFEED	= 51,		/**< special type to allow updating of help feed url */
 
-	FST_AUTODETECT	= 200,	/**< special type to enforce type auto detection */
+	FST_AUTODETECT	= 200,		/**< special type to enforce type auto detection */
 };
 
 /** macro to test whether a type is a resource which is regularly updated */
@@ -85,6 +85,7 @@ typedef struct feed {
 	gint		newCount;		/**< number of new items */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gboolean	available;		/**< flag to signalize loading errors */
+	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
 	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
 	
