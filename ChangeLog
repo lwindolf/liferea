@@ -10,10 +10,12 @@
 	  in the HTTP headers. (Nathan Conrad)
 	* Fixed gaim strings in the configure output reported by 
 	  Russell Kaiser. (Nathan Conrad)
-	* Corrected dependency for libxml2 from 2.0 to 2.6 for
-	  the configure script. (Nathan Conrad)
+	* Corrected dependency for libxml2 from 2.0 to 2.4.1 for the
+	  configure script and allow older versions of gconf. (Nathan
+	  Conrad)
+	* Removed accidental usage of libxml2 usage. Liferea should now
+	  work with libxml2 2.4.1 or newer. (Nathan Conrad)
 	* Fixed a mistake in the German translation. (Lars Lindner)
-	
 
 2004-08-16  Lars Lindner <lars.lindner@gmx.net>
 

@@ -32,9 +32,8 @@
 
 #include <libxml/xmlerror.h>
 #include <libxml/uri.h>
-#include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-#include <libxml/parserInternals.h>
+#include <libxml/HTMLparser.h>
 #include <glib.h>
 #include <sys/stat.h>
 #include <string.h>
@@ -297,9 +296,6 @@ static void bufferParseError(void *ctxt, const gchar * msg, ...) {
  */
 xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	errorCtxtPtr		errors;
-#if (LIBXML_VERSION < 20600)
-	xmlParserCtxtPtr        parser;
-#endif
 	xmlDocPtr               doc;
 	
 	g_assert(NULL != data);
@@ -313,8 +309,7 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	
 	errors = g_new0(struct errorCtxt, 1);
 	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)bufferParseError);
-#if (LIBXML_VERSION >= 20600)
-	doc = xmlReadMemory(data, dataLength, "xmlinput", /* encoding = */ NULL, XML_PARSE_RECOVER );
+	doc = xmlSAXParseMemory(/* Sax = */ NULL, data, dataLength, /* recovery = */ TRUE);
 	if (doc == NULL) {
 		g_warning("xmlReadMemory: Could not parse document!\n");
 		*errormsg = g_strdup_printf(_("xmlReadMemory(): Could not parse document:\n%s%s"), errors->buffer != NULL ? errors->buffer : "",
@@ -322,24 +317,7 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 		g_free(errors->buffer);
 		errors->buffer = *errormsg;
 	}
-#else
-	parser = xmlCreateMemoryParserCtxt(data, dataLength);
-
-	if(parser == NULL) {
-		g_warning("parseBuffer(): Could not create parsing context!\n");  
-		*errormsg = g_strdup("parseBuffer(): Could not create parsing context!\n");
-		xmlSetGenericErrorFunc(NULL, NULL);
-		g_free(errors->buffer);
-		g_free(errors);
-		return NULL;
-	}
 	
-#if (LIBXML_VERSION >= 20427)
-	parser->recovery = 1;
-#endif
-	xmlParseDocument(parser);       /* ignore returned errors */
-	doc = parser->myDoc;
-#endif
 	/* This seems to reset the errorfunc to its default, so that the
 	   GtkHTML2 module is not unhappy because it also tries to call the
 	   errorfunc on occasion. */
