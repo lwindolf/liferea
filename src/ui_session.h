@@ -22,6 +22,7 @@
 #ifndef _UI_SESSION_H
 #define _UI_SESSION_H
 
-void session_init(gchar *argv0, gchar *previous_id, gchar *config_dir);
+void session_init(gchar *argv0, gchar *previous_id);
+void session_set_cmd(gchar *config_dir, gboolean iconified);
 void session_end();
 #endif

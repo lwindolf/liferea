@@ -1,5 +1,5 @@
 /*
- * session management for Gaim
+ * session management for Gaim (from revision 1.16 of gaim's CVS tree)
  *
  * Gaim is the legal property of its developers, whose names are too
  * numerous to list here.  Please refer to the COPYRIGHT file
@@ -137,6 +137,7 @@ static gboolean gaim_input_remove(guint tag) {
 static IceIOErrorHandler ice_installed_io_error_handler;
 static SmcConn session = NULL;
 static gchar *myself = NULL;
+static gchar *client_id = NULL;
 static gboolean had_first_save = FALSE;
 gboolean session_managed = FALSE;
 
@@ -235,14 +236,14 @@ static void ice_init() {
 
 /* my magic utility function */
 
-static gchar **session_make_command(gchar *client_id, gchar *config_dir) {
+static gchar **session_make_command(gchar *client_id, gchar *config_dir, gboolean iconified) {
 	gint i = 2;
 	gint j = 0;
 	gchar **ret;
 
 	if (client_id) i += 2;
 	if (config_dir)	i += 2; /* we will specify gaim's user dir */
-
+	if (iconified) i += 1;
 	ret = g_new(gchar *, i);
 	ret[j++] = g_strdup(myself);
 
@@ -255,9 +256,12 @@ static gchar **session_make_command(gchar *client_id, gchar *config_dir) {
 		ret[j++] = g_strdup("--config");
 		ret[j++] = g_strdup(config_dir);
 	}
-
+	
+	if (iconified)
+		ret[j++] = g_strdup("--iconify");
+	
 	ret[j++] = NULL;
-
+	
 	return ret;
 }
 
@@ -374,14 +378,30 @@ static void session_set_array(SmcConn conn, gchar *name, gchar *array[]) {
 
 /* setup functions */
 
-void session_init(gchar *argv0, gchar *previous_id, gchar *config_dir) {
+void session_set_cmd(gchar *config_dir, gboolean iconified) {
+#ifdef USE_SM
+	gchar **cmd = NULL;
+	
+	if (client_id == NULL)
+		return;
+	
+	cmd = session_make_command(NULL, config_dir, iconified);
+	session_set_array(session, SmCloneCommand, cmd);
+	g_strfreev(cmd);
+	
+	cmd = session_make_command(client_id, config_dir, iconified);
+	session_set_array(session, SmRestartCommand, cmd);
+	g_strfreev(cmd);
+#endif
+}
+
+void session_init(gchar *argv0, gchar *previous_id) {
 #ifdef USE_SM
 	SmcCallbacks callbacks;
-	gchar *client_id = NULL;
 	gchar error[ERROR_LENGTH] = "";
 	gchar *tmp = NULL;
 	gchar **cmd = NULL;
-
+	
 	if (session != NULL) {
 		/* session is already established, what the hell is going on? */
 		gaim_debug(GAIM_DEBUG_WARNING, "Session Management",
@@ -458,10 +478,6 @@ void session_init(gchar *argv0, gchar *previous_id, gchar *config_dir) {
 	gaim_debug(GAIM_DEBUG_MISC, "Session Management",
 			   "Using %s as command\n", myself);
 
-	cmd = session_make_command(NULL, config_dir);
-	session_set_array(session, SmCloneCommand, cmd);
-	g_strfreev(cmd);
-
 	/* this is currently useless, but gnome-session warns 'the following applications will not
 	   save their current status' bla bla if we don't have it and the user checks 'Save Session'
 	   when they log out */
@@ -470,12 +486,7 @@ void session_init(gchar *argv0, gchar *previous_id, gchar *config_dir) {
 	cmd[1] = NULL;
 	session_set_array(session, SmDiscardCommand, cmd);
 	g_strfreev(cmd);
-
-	cmd = session_make_command(client_id, config_dir);
-	session_set_array(session, SmRestartCommand, cmd);
-	g_strfreev(cmd);
-
-	g_free(client_id);
+	
 #endif /* USE_SM */
 }
 

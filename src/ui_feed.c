@@ -583,14 +583,17 @@ static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
 	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio))) {
 		source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
 	} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio))) {
-		/* Add http:// if needed: */
-		const gchar *tmp = gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry));
 		gchar *str, *tmp2;
-		if (strstr(tmp, "://") == NULL)
-			str = g_strdup_printf("http://%s",tmp);
-		else
-			str = g_strdup(tmp);
-
+		/* First, strip leading and trailing whitespace */
+		str = g_strstrip(g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry))));
+		
+		/* Add http:// if needed */
+		if (strstr(str, "://") == NULL) {
+			tmp2 = g_strdup_printf("http://%s",tmp2);
+			g_free(str);
+			str = tmp2;
+		}
+		
 		/* Add trailing / if needed */
 		if (strstr(strstr(str, "://") + 3, "/") == NULL) {
 			tmp2 = g_strdup_printf("%s/", str);

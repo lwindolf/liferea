@@ -255,7 +255,8 @@ int main(int argc, char *argv[]) {
 		/* order is important! */
 		conf_init();			/* initialize gconf */
 #ifdef USE_SM
-		session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg, opt_config_dir_arg);
+		session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
+		session_set_cmd(NULL, startIconified);
 #endif
 		ui_htmlview_init();		/* setup HTML widgets */
 		download_init();		/* Initialize the download subsystem */
