@@ -5,7 +5,8 @@
 	* New Russian translation from Alekseev Vladimir
 	* New Czech translation from Juraj Kubelka
 	* Mozilla browser module supports zooming now. (Lars Lindner)
-	* Mozilla browser module supports scrolling down using shift-space.
+	* Scroll down or next unread feature for Mozilla, and is now triggered 
+	  by space instead of shift-space.
 	* Improved HTML stylesheet. This will cause current items to be
 	  duplicated the first time that 0.5.0 is run.
 	* Relative links in HTML plugins are now supported.
