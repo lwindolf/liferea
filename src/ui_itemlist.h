@@ -36,6 +36,7 @@ enum is_columns {
 	IS_TIME,		/**< Time of item creation */
 	IS_TIME_STR,		/**< Time of item creation as a string*/
 	IS_TYPE,		/**< Type of feed that the item came from */
+	IS_ICON2,		/**< Pixbuf reference to the item's feed's icon */
 	IS_LEN			/**< Number of columns in the itemstore */
 };
 

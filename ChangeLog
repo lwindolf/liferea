@@ -7,6 +7,9 @@
 	  column you click. (Lars Lindner)
 	* Now favicons that are older than one month are
 	  automatically updated (Lars Lindner)
+	* The search result now provides an extra column with
+	  the favicon of the feed the found headline belongs to.
+	  (Lars Lindner)
 
 	Bugfixes:
 

@@ -67,15 +67,17 @@ GtkTreeStore * getItemStore(void) {
 			- pointer to item data
 			- date time_t value
 			- the type of the feed the item belongs to
+			- feed icon
 		 */
 		itemstore = gtk_tree_store_new(IS_LEN,
 						 G_TYPE_STRING, 
 						 G_TYPE_STRING,
-						 GDK_TYPE_PIXBUF, 
+						 GDK_TYPE_PIXBUF,
 						 G_TYPE_POINTER, 
 						 G_TYPE_INT,
 						 G_TYPE_STRING,
-						 G_TYPE_INT);
+						 G_TYPE_INT,
+ 						 GDK_TYPE_PIXBUF);
 	}
 	
 	return itemstore;
@@ -174,11 +176,11 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 }
 
 static void ui_update_item_from_iter(GtkTreeIter *iter) {
-	GtkTreeStore *itemstore = getItemStore();
+	GtkTreeStore	*itemstore = getItemStore();
 	gpointer	ip;
-	gchar *title, *label, *time_str, *esc_title, *tmp;
-	gint	time;
-	GdkPixbuf *pixbuf;
+	gchar		*title, *label, *time_str, *esc_title, *tmp;
+	gint		time;
+	GdkPixbuf	*pixbuf, *pixbuf2;
 
 	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter,
 				    IS_PTR, &ip,
@@ -196,6 +198,8 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 	} else {
 		pixbuf = icons[ICON_FLAG];
 	}
+	g_assert(NULL != ((itemPtr)ip)->fp);
+	pixbuf2 = ((itemPtr)ip)->fp->icon;
 
 	/* Label */
 	if ( title != NULL) {
@@ -241,6 +245,7 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 				    IS_LABEL, label,
 				    IS_TIME_STR, time_str,
 				    IS_ICON, pixbuf,
+				    IS_ICON2, pixbuf2,
 				    -1);
 	g_free(time_str);
 	g_free(title);
@@ -270,6 +275,7 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	GtkTreeStore		*itemstore;	
 	
 	g_assert(mainwindow != NULL);
+	g_assert(itemlist != NULL);
 
 	itemstore = getItemStore();
 
@@ -289,7 +295,12 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
 	g_object_set(column, "resizable", TRUE, NULL);
 
-	renderer = gtk_cell_renderer_text_new();						   	
+
+	renderer = gtk_cell_renderer_pixbuf_new();
+	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ICON2, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
+	
+	renderer = gtk_cell_renderer_text_new();	
 	column = gtk_tree_view_column_new_with_attributes(_("Headline"), renderer, "markup", IS_LABEL, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TITLE);
@@ -435,6 +446,11 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 		g_warning("internal error! item list display for NULL pointer requested!\n");
 		return;
 	}
+	
+	/* we depend on the fact that the third column is the favicon column!!! 
+	   if we are in search mode (or have a vfolder) we show the favicon 
+	   column to give a hint where the item comes from ... */
+	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), (NULL != searchstring));
 
 	ui_itemlist_clear();
 	displayed_fp = fp;
