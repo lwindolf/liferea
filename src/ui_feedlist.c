@@ -243,7 +243,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
 			
 			/* Set up the item list */
-			ui_itemlist_load((feedPtr)fp, NULL);
+			ui_itemlist_load((nodePtr)fp, NULL);
 		} else { /* Selecting a folder */
 			ui_itemlist_clear();
 		}
@@ -539,7 +539,7 @@ void on_popup_prop_selected(gpointer callback_data,
 	}
 	
 	if(fp->type == FST_HELPFEED) {
-		ui_show_error_box("You cannot modify help feeds.");
+		ui_show_error_box(_("You cannot modify help feeds."));
 		return;
 	}
 	
