@@ -423,7 +423,7 @@ static time_t common_parse_rfc822_tz(unsigned char *token) {
 /* converts a RFC822 time string to a time_t value */
 time_t parseRFC822Date(gchar *date) {
 	struct tm	tm;
-	time_t		t;
+	time_t		t, t2;
 	char 		*oldlocale;
 	char		*pos;
 	gboolean	success = FALSE;
@@ -460,6 +460,13 @@ time_t parseRFC822Date(gchar *date) {
 	
 	if(TRUE == success) {
 		if((time_t)(-1) != (t = mktime(&tm))) {
+			/* GMT time, with no daylight savings time
+			   correction. (Usually, there is no daylight savings
+			   time since the input is GMT.) */
+			t = t + common_parse_rfc822_tz(pos);
+			t2 = mktime(gmtime(&t));
+			t = t - (t2 - t);
+			printf("%s = %ld\n", date, t);
 			return t + common_parse_rfc822_tz(pos);
 		} else
 			g_warning(_("internal error! time conversion error! mktime failed!\n"));

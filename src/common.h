@@ -70,6 +70,13 @@ void	addToHTMLBuffer(gchar **buffer, const gchar *string);
 xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg);
 
 time_t 	parseISO8601Date(gchar *date);
+/**
+ * Parses a RFC822 format date. This FAILS if a timezone string is
+ * specified such as EDT or EST and that timezone is in daylight
+ * savings time.
+ *
+ * @returns UNIX time (GMT, no daylight savings time)
+ */
 time_t 	parseRFC822Date(gchar *date);
 gchar *createRFC822Date(const time_t *time);
 /* FIXME: formatDate used by several functions not only
