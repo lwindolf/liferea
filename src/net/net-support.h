@@ -24,7 +24,7 @@
 #define NET_SUPPORT_H
 
 #include "compat.h"
-
+#include "netio.h"
 int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, char * netbuf);
 
 #endif

@@ -240,6 +240,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		/* Last poll time*/
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
 		fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
+		fp->lastPoll.tv_usec = 0L;
 		if (lastPollStr != NULL)
 			xmlFree(lastPollStr);
 		

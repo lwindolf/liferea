@@ -49,7 +49,6 @@
 #include <netdb.h>
 #include <sys/stat.h>
 
-#include "netio.h"
 #include "conversions.h"
 #include "net-support.h"
 
@@ -58,6 +57,8 @@
 extern char *proxyname;			/* Hostname of proxyserver. */
 extern unsigned short proxyport;	/* Port on proxyserver to use. */
 extern char *useragent;
+
+
 
 /* Connect network sockets.
  *
@@ -185,7 +186,7 @@ int NetConnect (int * my_socket, int * connectresult, char * host, int httpproto
  * Returns NULL pointer if no data was received. Check httpstatus == 304,
  * otherwise an error occured.
  */
-char * NetIO (int * my_socket, int * connectresult, char * host, char * url, struct feed_request * cur_ptr, char * authdata, int httpproto, int suppressoutput, int *size) {
+char * NetIO (int * my_socket, int * connectresult, char * host, char * url, struct feed_request * cur_ptr, char * authdata, int httpproto, int suppressoutput) {
 	char netbuf[4096];			/* Network read buffer. */
 	char *body;					/* XML body. */
 	int length, length2;
@@ -682,7 +683,7 @@ char * NetIO (int * my_socket, int * connectresult, char * host, char * url, str
 		body = strdup (inflatedbody);
 		free (inflatedbody);
 	}
-	*size = length;
+	cur_ptr->contentlength = length;
 	
 	return body;
 }
@@ -789,7 +790,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 			break;
 	}
 	
-	returndata = NetIO (&my_socket, &connectresult, host, url, cur_ptr, authdata, httpproto, suppressoutput, &(cur_ptr->size));
+	returndata = NetIO (&my_socket, &connectresult, host, url, cur_ptr, authdata, httpproto, suppressoutput);
 	
 	/* url will be freed in the calling function. */
 	free (freeme);		/* This is *host. */
@@ -803,6 +804,8 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 /* some Liferea specific code...					 */
 
 #include "../debug.h"
+#include "../update.h"
+#include "downloadlib.h"
 
 /* Downloads a feed and returns the data or NULL as return value.
    The url of the has to be passed in the feed structure.
@@ -812,31 +815,44 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
    last modified string.
  */
 
-char * downloadURL(struct feed_request *request) {
-	FILE		*f;
-	gchar		*tmpurl = NULL, *tmp;
-	int 		i, n = 0;
-	char		*data = NULL;
+void downloadlib_init() {
+}
 
-	debug1(DEBUG_UPDATE, "downloading %s", request->feedurl);
-	request->problem = 0;
+void downloadlib_process_url(struct request *request) {
+	struct feed_request cur_ptr;
+	gchar *oldurl = g_strdup(request->source);
+	debug1(DEBUG_UPDATE, "downloading %s", request->source);
 
-	if(NULL != strstr(request->feedurl, "://")) {
-		/* :// means it an URL */
-		tmpurl = g_strdup(request->feedurl);	/* necessary because DownloadFeed() works on the URL string */
-		if(NULL == (data = DownloadFeed(tmpurl, request, 0)))
-			request->problem = 1;
-		g_free(tmpurl);
-	} else {
-		/* no :// so we assume its a local path or command */
-		
- else 		
-		/* fake a status */
-		request->lasthttpstatus = 0;
-		request->lastmodified = NULL;
-	}
+	cur_ptr.feedurl = request->source;
+	cur_ptr.problem = 0;
+	if (request->lastmodified.tv_sec > 0)
+		cur_ptr.lastmodified = createRFC822Date(&(request->lastmodified.tv_sec));
+	else
+		cur_ptr.lastmodified = NULL;
 	
-	request->data = data;
-	debug3(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, data: %d", request->lasthttpstatus, request->problem, request->data);
-	return data;
+	cur_ptr.contentlength = 0;
+	cur_ptr.cookies = NULL;
+	cur_ptr.authinfo = NULL;
+	cur_ptr.servauth = NULL;
+	/* Fixme: assert that it is a http:// URL */
+
+	request->data = DownloadFeed (oldurl, &cur_ptr, 0);
+
+	g_free(oldurl);
+	if (request->data == NULL)
+		cur_ptr.problem = 1;
+	request->size = cur_ptr.contentlength;
+	request->httpstatus = cur_ptr.lasthttpstatus == 0 ? 404 : cur_ptr.lasthttpstatus;
+	request->source = cur_ptr.feedurl;
+	if (cur_ptr.lastmodified != NULL)
+		request->lastmodified.tv_sec = parseRFC822Date(cur_ptr.lastmodified);
+	else
+		request->lastmodified.tv_sec = 0L;
+	
+	request->lastmodified.tv_usec = 0L;
+	g_free(cur_ptr.lastmodified);
+	g_free(cur_ptr.cookies);
+	g_free(cur_ptr.servauth);
+	debug3(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, data: %d", request->httpstatus, cur_ptr.problem, request->data);
+	return;
 }

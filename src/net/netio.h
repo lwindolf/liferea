@@ -28,7 +28,18 @@
 
 #include "compat.h"
 
-/* returns the raw download data or NULL on error */
-char * downloadURL(struct feed_request *request);
+struct feed_request {
+	/* Supplied and overwritten/freed */
+	char *feedurl;                                                  /* Non hashified URL */
+	char *lastmodified;                                             /* Content of header as sent by the server. */
+	
+	/* Set by netio code */
+	size_t contentlength;
+	int lasthttpstatus;
+	char *cookies;                                                  /* Login cookies for this feed. */
+	char *authinfo;                                                 /* HTTP authinfo string. */
+	char *servauth;                                                 /* Server supplied authorization header. */
+	int problem;                                                    /* Set if there was a problem downloading the feed. */
+};
 
 #endif

@@ -24,7 +24,8 @@ AC_PROG_MAKE_SET
 
 dnl libcurl support
 AC_MSG_CHECKING([libcurl])
-if curl-config --libs > /dev/null 2>&1; then
+dnl if curl-config --libs > /dev/null 2>&1; then
+if false ; then
 	AC_MSG_RESULT(yes)
 	AM_CONDITIONAL(USE_LIBCURL, true)
 	CURL_CFLAGS="`curl-config --cflags`"

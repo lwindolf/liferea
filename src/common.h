@@ -64,6 +64,7 @@ xmlDocPtr parseBuffer(gchar *data, gchar **errormsg);
 
 time_t 	parseISO8601Date(gchar *date);
 time_t 	parseRFC822Date(gchar *date);
+gchar *createRFC822Date(const time_t *time);
 // FIXME: formatDate used by several functions not only
 // to format date column, dontt use always date column format!!!
 // maybe gchar * formatDate(time_t, gchar *format)

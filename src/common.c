@@ -337,6 +337,17 @@ time_t parseISO8601Date(gchar *date) {
 	return 0;
 }
 
+gchar *dayofweek[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+gchar *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug" "Sep", "Oct", "Nov", "Dec"};
+
+gchar *createRFC822Date(const time_t *time) {
+	struct tm *tm;
+
+	tm = gmtime(time); /* No need to free because it is statically allocated */
+	return g_strdup_printf("%s, %2d %s %4d %02d:%02d:%02d GMT", dayofweek[tm->tm_wday], tm->tm_mday,
+					   months[tm->tm_mon], 1900 + tm->tm_year, tm->tm_hour, tm->tm_min, tm->tm_sec);
+}
+
 /* converts a RFC822 time string to a time_t value */
 time_t parseRFC822Date(gchar *date) {
 	struct tm	tm;

@@ -1088,7 +1088,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label70">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">    </property>
+			  <property name="label" translatable="no">    </property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1211,7 +1211,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label74">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">    </property>
+			  <property name="label" translatable="no">    </property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1417,7 +1417,7 @@
 		  <child>
 		    <widget class="GtkLabel" id="label87">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">    </property>
+		      <property name="label" translatable="no">    </property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1680,7 +1680,7 @@
 		  <child>
 		    <widget class="GtkLabel" id="label89">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">    </property>
+		      <property name="label" translatable="no">    </property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1759,7 +1759,7 @@
 			      <child>
 				<widget class="GtkLabel" id="label99">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">    </property>
+				  <property name="label" translatable="no">    </property>
 				  <property name="use_underline">False</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2107,7 +2107,7 @@
 		  <child>
 		    <widget class="GtkLabel" id="label98">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">    </property>
+		      <property name="label" translatable="no">    </property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2380,7 +2380,7 @@
 		  <child>
 		    <widget class="GtkLabel" id="label102">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">    </property>
+		      <property name="label" translatable="no">    </property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2643,7 +2643,7 @@
 		  <child>
 		    <widget class="GtkLabel" id="label110">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">    </property>
+		      <property name="label" translatable="no">    </property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2722,7 +2722,7 @@
 			      <child>
 				<widget class="GtkLabel" id="label112">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">    </property>
+				  <property name="label" translatable="no">    </property>
 				  <property name="use_underline">False</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -2944,7 +2944,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label119">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">    </property>
+			  <property name="label" translatable="no">    </property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3101,7 +3101,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label120">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">    </property>
+			  <property name="label" translatable="no">    </property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3455,7 +3455,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label123">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">    </property>
+			  <property name="label" translatable="no">    </property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3558,7 +3558,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label125">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">    </property>
+			  <property name="label" translatable="no">    </property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3702,7 +3702,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label127">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">    </property>
+			  <property name="label" translatable="no">    </property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -3909,7 +3909,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label129">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">    </property>
+			  <property name="label" translatable="no">    </property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>

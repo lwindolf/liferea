@@ -23,7 +23,6 @@
 
 #include "../support.h"
 #include "../callbacks.h"
-#include "../update.h"
 
 /* we redefine some SnowNews functions */
 #define UIStatus(a, b)		ui_mainwindow_set_status_bar("%s", a)
