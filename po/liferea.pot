@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-19 02:25+0200\n"
+"POT-Creation-Date: 2004-10-05 04:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,133 +77,133 @@ msgid ".rdf"
 msgstr ""
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:422
+#: src/export.c:421
 msgid "Liferea Help"
 msgstr ""
 
-#: src/export.c:435
+#: src/export.c:434
 msgid "Online Help Feed"
 msgstr ""
 
-#: src/export.c:451
+#: src/export.c:450
 msgid "Liferea SF News"
 msgstr ""
 
-#: src/export.c:536 src/export.c:538
+#: src/export.c:535 src/export.c:537
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 
-#: src/export.c:542 src/export.c:544
+#: src/export.c:541 src/export.c:543
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 
-#: src/export.c:552 src/export.c:554
+#: src/export.c:551 src/export.c:553
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 
-#: src/export.c:576
+#: src/export.c:575
 msgid "Imported feed list"
 msgstr ""
 
-#: src/export.c:587
+#: src/export.c:586
 msgid "Import Feed List"
 msgstr ""
 
-#: src/export.c:587
+#: src/export.c:586
 msgid "Import"
 msgstr ""
 
-#: src/export.c:597
+#: src/export.c:596
 msgid "Error while exporting feed list!"
 msgstr ""
 
-#: src/export.c:599
+#: src/export.c:598
 msgid "Feed List exported!"
 msgstr ""
 
-#: src/export.c:606
+#: src/export.c:605
 msgid "Export Feed List"
 msgstr ""
 
-#: src/export.c:606
+#: src/export.c:605
 msgid "Export"
 msgstr ""
 
-#: src/feed.c:141
+#: src/feed.c:143
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 
-#: src/feed.c:147 src/feed.c:378
+#: src/feed.c:149 src/feed.c:380
 msgid "<p>Empty document!</p>"
 msgstr ""
 
-#: src/feed.c:154
+#: src/feed.c:156
 msgid "<p>Invalid XML!</p>"
 msgstr ""
 
-#: src/feed.c:221
+#: src/feed.c:223
 msgid "There were errors while parsing a feed"
 msgstr ""
 
-#: src/feed.c:222
+#: src/feed.c:224
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
 msgstr ""
 
-#: src/feed.c:357 src/feed.c:358
+#: src/feed.c:359 src/feed.c:360
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/feed.c:370
+#: src/feed.c:372
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
 
-#: src/feed.c:389
+#: src/feed.c:391
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 
-#: src/feed.c:439
+#: src/feed.c:441
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
 
-#: src/feed.c:501
+#: src/feed.c:503
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr ""
 
-#: src/feed.c:506
+#: src/feed.c:508
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 
-#: src/feed.c:510
+#: src/feed.c:512
 #, c-format
 msgid "Updating \"%s\""
 msgstr ""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:979 src/item.c:264 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:983 src/item.c:268 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr ""
 
-#: src/feed.c:979 src/interface.c:519
+#: src/feed.c:983 src/interface.c:519
 msgid "VFolder"
 msgstr ""
 
-#: src/feed.c:990 src/interface.c:1071 src/interface.c:1473 src/item.c:291
+#: src/feed.c:994 src/interface.c:1071 src/interface.c:1473 src/item.c:317
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr ""
@@ -229,15 +229,15 @@ msgid "_Feeds"
 msgstr ""
 
 #: src/interface.c:190
-msgid "_New Subscription"
+msgid "_New Subscription..."
 msgstr ""
 
 #: src/interface.c:198
-msgid "New _Folder"
+msgid "New _Folder..."
 msgstr ""
 
 #: src/interface.c:211
-msgid "_Properties"
+msgid "_Properties..."
 msgstr ""
 
 #: src/interface.c:214
@@ -258,7 +258,7 @@ msgstr ""
 msgid "Update _All"
 msgstr ""
 
-#: src/interface.c:237 src/ui_mainwindow.c:163
+#: src/interface.c:237 src/ui_mainwindow.c:164
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 
@@ -289,7 +289,7 @@ msgid ""
 msgstr ""
 
 #: src/interface.c:287
-msgid "_Import Feed List"
+msgid "_Import Feed List..."
 msgstr ""
 
 #: src/interface.c:290
@@ -297,7 +297,7 @@ msgid "Imports an OPML feed list."
 msgstr ""
 
 #: src/interface.c:296
-msgid "_Export Feed List"
+msgid "_Export Feed List..."
 msgstr ""
 
 #: src/interface.c:299
@@ -312,7 +312,7 @@ msgstr ""
 msgid "_Next Unread Item"
 msgstr ""
 
-#: src/interface.c:315 src/ui_mainwindow.c:161
+#: src/interface.c:315 src/ui_mainwindow.c:162
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -399,7 +399,7 @@ msgid "Shows or hides the search box."
 msgstr ""
 
 #: src/interface.c:433
-msgid "Search with Feedster"
+msgid "Search with Feedster..."
 msgstr ""
 
 #: src/interface.c:436
@@ -913,58 +913,58 @@ msgstr ""
 msgid "Rules"
 msgstr ""
 
-#: src/item.c:273 src/item.c:275 src/item.c:286 src/ui_itemlist.c:211
+#: src/item.c:295 src/item.c:299 src/item.c:311 src/ui_itemlist.c:234
 msgid "[No title]"
 msgstr ""
 
-#: src/item.c:276 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:301 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr ""
 
-#: src/main.c:67
+#: src/main.c:68
 msgid "  --version        Prints Liferea's version number"
 msgstr ""
 
-#: src/main.c:68
+#: src/main.c:69
 msgid "  --help           Prints this message and exits"
 msgstr ""
 
-#: src/main.c:69
+#: src/main.c:70
 msgid "  --iconify        Starts the program iconified"
 msgstr ""
 
-#: src/main.c:71
-msgid "  --debug-cache    Print debugging messages for the cache handling"
-msgstr ""
-
 #: src/main.c:72
-msgid ""
-"  --debug-conf     Print debugging messages of the configuration handling"
+msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr ""
 
 #: src/main.c:73
 msgid ""
-"  --debug-update   Print debugging messages of the feed update processing"
+"  --debug-conf     Print debugging messages of the configuration handling"
 msgstr ""
 
 #: src/main.c:74
-msgid "  --debug-parsing  Print debugging messages of all parsing functions"
+msgid ""
+"  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 
 #: src/main.c:75
-msgid "  --debug-gui      Print debugging messages of all GUI functions"
+msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 
 #: src/main.c:76
+msgid "  --debug-gui      Print debugging messages of all GUI functions"
+msgstr ""
+
+#: src/main.c:77
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 
-#: src/main.c:77
+#: src/main.c:78
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr ""
 
-#: src/main.c:78
+#: src/main.c:79
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr ""
 
@@ -1149,55 +1149,55 @@ msgstr ""
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr ""
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "Item"
 msgstr ""
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "does contain"
 msgstr ""
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "does not contain"
 msgstr ""
 
-#: src/rule.c:133
+#: src/rule.c:130
 msgid "Item title"
 msgstr ""
 
-#: src/rule.c:133 src/rule.c:134
+#: src/rule.c:130 src/rule.c:131
 msgid "does match"
 msgstr ""
 
-#: src/rule.c:133 src/rule.c:134
+#: src/rule.c:130 src/rule.c:131
 msgid "does not match"
 msgstr ""
 
-#: src/rule.c:134
+#: src/rule.c:131
 msgid "Item body"
 msgstr ""
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "Read status"
 msgstr ""
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "is unread"
 msgstr ""
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "is read"
 msgstr ""
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "Flag status"
 msgstr ""
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "is flagged"
 msgstr ""
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "is unflagged"
 msgstr ""
 
@@ -1357,45 +1357,45 @@ msgstr ""
 msgid "Choose File"
 msgstr ""
 
-#: src/ui_feedlist.c:408
+#: src/ui_feedlist.c:411
 msgid "You have to select a feed entry"
 msgstr ""
 
-#: src/ui_feedlist.c:418
+#: src/ui_feedlist.c:421
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:466
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:483 src/ui_feedlist.c:486
+#: src/ui_feedlist.c:511 src/ui_feedlist.c:514
 msgid "Deleting entry"
 msgstr ""
 
-#: src/ui_feedlist.c:484
+#: src/ui_feedlist.c:512
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr ""
 
-#: src/ui_feedlist.c:487
+#: src/ui_feedlist.c:515
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr ""
 
-#: src/ui_feedlist.c:495
+#: src/ui_feedlist.c:523
 msgid "Deletion Confirmation"
 msgstr ""
 
-#: src/ui_feedlist.c:532
+#: src/ui_feedlist.c:559
 msgid "You must select a feed entry"
 msgstr ""
 
-#: src/ui_feedlist.c:533
+#: src/ui_feedlist.c:560
 msgid "You must select a feed entry."
 msgstr ""
 
-#: src/ui_feedlist.c:579
+#: src/ui_feedlist.c:606
 msgid "New subscription"
 msgstr ""
 
@@ -1472,16 +1472,16 @@ msgid ""
 msgstr ""
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:324
+#: src/ui_htmlview.c:321
 msgid "This item does not have a link assigned!"
 msgstr ""
 
-#: src/ui_htmlview.c:367 src/ui_htmlview.c:388
+#: src/ui_htmlview.c:364 src/ui_htmlview.c:385
 #, c-format
 msgid "Browser command failed: %s"
 msgstr ""
 
-#: src/ui_htmlview.c:370 src/ui_htmlview.c:391
+#: src/ui_htmlview.c:367 src/ui_htmlview.c:388
 #, c-format
 msgid "Starting: \"%s\""
 msgstr ""
@@ -1495,7 +1495,7 @@ msgstr ""
 #: src/ui_htmlview.h:98
 #, c-format
 msgid ""
-"There were errors while parsing this feed. The following error occured:"
+"There were errors while parsing this feed. The following error occurred:"
 "<br><b>%s</b>"
 msgstr ""
 
@@ -1505,107 +1505,113 @@ msgid ""
 "anymore but you can still access the cached headlines."
 msgstr ""
 
-#: src/ui_itemlist.c:292
+#: src/ui_itemlist.c:321
 msgid "Date"
 msgstr ""
 
-#: src/ui_itemlist.c:303
+#: src/ui_itemlist.c:332
 msgid "Headline"
 msgstr ""
 
-#: src/ui_itemlist.c:605 src/ui_itemlist.c:646
+#: src/ui_itemlist.c:658 src/ui_itemlist.c:722
 msgid "No item has been selected"
 msgstr ""
 
-#: src/ui_itemlist.c:629 src/ui_itemlist.c:649
+#: src/ui_itemlist.c:705 src/ui_itemlist.c:725
 msgid "You must select a feed to delete its items!"
 msgstr ""
 
-#: src/ui_itemlist.c:681
+#: src/ui_itemlist.c:758
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:709
+#: src/ui_itemlist.c:786
 msgid "There are no unread items "
 msgstr ""
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:161
 msgid "New Feed"
 msgstr ""
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:161
 msgid "Add a new subscription."
 msgstr ""
 
-#: src/ui_mainwindow.c:161
+#: src/ui_mainwindow.c:162
 msgid "Next Unread"
 msgstr ""
 
-#: src/ui_mainwindow.c:162
+#: src/ui_mainwindow.c:163
 msgid "Mark As Read"
 msgstr ""
 
-#: src/ui_mainwindow.c:162
+#: src/ui_mainwindow.c:163
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
 
-#: src/ui_mainwindow.c:163
+#: src/ui_mainwindow.c:164
 msgid "Update All"
 msgstr ""
 
-#: src/ui_mainwindow.c:164
+#: src/ui_mainwindow.c:165
 msgid "Search"
 msgstr ""
 
-#: src/ui_mainwindow.c:164
+#: src/ui_mainwindow.c:165
 msgid "Search all feeds."
 msgstr ""
 
-#: src/ui_mainwindow.c:165
+#: src/ui_mainwindow.c:166
 msgid "Preferences"
 msgstr ""
 
-#: src/ui_mainwindow.c:165
+#: src/ui_mainwindow.c:166
 msgid "Edit preferences."
 msgstr ""
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:187
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
-"liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">look</"
-"a> and make <a href=\"mailto:liferea-devel@lists.sourceforge.net"
-"\">proposals</a> if you miss features.</div><h2>Welcome to Liferea</"
-"h2><p>The left pane contains the feed list where you can add new "
-"subscriptions and select subscriptions to read their headlines. The right "
-"side either displays a list of the headlines of the selected subscription "
-"and a pane to view the selected headline or all headlines at once if "
-"condensed mode is selected.</p><h3>Basic Actions</h3><ul><li><p><b>Add "
-"Subscription</b> - Creates a new subscription in the selected folder. To "
-"create a new subscription enter the feed URL or if you don't know it the URL "
-"of the website which provides the feed.</p></li><li><p><b>Update "
-"Subscription</b> - This will update the subscription you selected. You may "
-"want to do this if you want to immediatly check a subscription for updates. "
-"Usually it is adequate to rely on the auto updating according to the update "
-"interval of the subscription.</p></li><li><p><b>Update All</b> - This will "
-"update all your subscriptions at once. Again usually it is adequate to rely "
-"on the auto updating.</li><li><p><b>Edit Subscription Properties</b> - "
-"Sometimes you might want to change the update interval, title, "
-"authentication or caching properties of a subscription.</p></li></ul><p>To "
-"learn more about Liferea you should read the documentation provided in the "
-"help feed or in the <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</"
-"a> available at the <a href=\"http://liferea.sf.net\">project homepage</a>.</"
-"p>"
+"\">When Liferea starts for the first time it loads a localized default feed "
+"list. There are already default lists for English, French, German and "
+"Spanish. If you think you know a good set of default feeds for your language "
+"please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists."
+"sourceforge.net\">mailing list</a> and it will be included in the next "
+"release!</div>"
 msgstr ""
 
-#: src/ui_mainwindow.c:267
+#: src/ui_mainwindow.c:194
+msgid ""
+"<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
+"can add new subscriptions and select subscriptions to read their headlines. "
+"The right side either displays a list of the headlines of the selected "
+"subscription and a pane to view the selected headline or all headlines at "
+"once if condensed mode is selected.</p><h3>Basic Actions</"
+"h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the "
+"selected folder. To create a new subscription enter the feed URL or if you "
+"don't know it the URL of the website which provides the feed.</p></"
+"li><li><p><b>Update Subscription</b> - This will update the subscription you "
+"selected. You may want to do this if you want to immediatly check a "
+"subscription for updates. Usually it is adequate to rely on the auto "
+"updating according to the update interval of the subscription.</p></"
+"li><li><p><b>Update All</b> - This will update all your subscriptions at "
+"once. Again usually it is adequate to rely on the auto updating.</"
+"li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
+"change the update interval, title, authentication or caching properties of a "
+"subscription.</p></li></ul><p>To learn more about Liferea you should read "
+"the documentation provided in the help feed or in the <a href=\"http://"
+"liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
+"liferea.sf.net\">project homepage</a>.</p>"
+msgstr ""
+
+#: src/ui_mainwindow.c:272
 msgid "Liferea is now online"
 msgstr ""
 
-#: src/ui_mainwindow.c:270
+#: src/ui_mainwindow.c:275
 msgid "Liferea is now offline"
 msgstr ""
 
@@ -1630,15 +1636,15 @@ msgid "/_New"
 msgstr ""
 
 #: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
-msgid "/_New/New _Subscription"
+msgid "/_New/New _Subscription..."
 msgstr ""
 
 #: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
-msgid "/_New/New F_older"
+msgid "/_New/New F_older..."
 msgstr ""
 
 #: src/ui_popup.c:87 src/ui_popup.c:106
-msgid "/_Properties"
+msgid "/_Properties..."
 msgstr ""
 
 #: src/ui_popup.c:88 src/ui_popup.c:107
@@ -1650,7 +1656,7 @@ msgid "/_Update Folder"
 msgstr ""
 
 #: src/ui_popup.c:97
-msgid "/_Rename Folder"
+msgid "/_Rename Folder..."
 msgstr ""
 
 #: src/ui_popup.c:98
@@ -1677,43 +1683,43 @@ msgstr ""
 msgid "/_Launch Item In Browser"
 msgstr ""
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:129
 msgid "/_Increase Text Size"
 msgstr ""
 
-#: src/ui_popup.c:132
+#: src/ui_popup.c:130
 msgid "/_Decrease Text Size"
 msgstr ""
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:134
 msgid "/_Copy Link Location"
 msgstr ""
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:135
 msgid "/_Launch Link In Browser"
 msgstr ""
 
-#: src/ui_popup.c:138
-msgid "/_Subscribe"
+#: src/ui_popup.c:136
+msgid "/_Subscribe..."
 msgstr ""
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:141
 msgid "/_Work Offline"
 msgstr ""
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:142
 msgid "/_Update All"
 msgstr ""
 
-#: src/ui_popup.c:145
-msgid "/_Preferences"
+#: src/ui_popup.c:143
+msgid "/_Preferences..."
 msgstr ""
 
-#: src/ui_popup.c:147
+#: src/ui_popup.c:145
 msgid "/_Show Window"
 msgstr ""
 
-#: src/ui_popup.c:148
+#: src/ui_popup.c:146
 msgid "/_Quit"
 msgstr ""
 
@@ -1755,7 +1761,7 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr ""
 
-#: src/ui_search.c:96
+#: src/ui_search.c:95
 msgid "Please do a search first!"
 msgstr ""
 

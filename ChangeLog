@@ -29,6 +29,8 @@
 	  chunked encoding. (Alex Myltsev)
 	* A feed update now does not reset the item list focus
 	  or selection anymore. (Lars Lindner)
+	* Applied HIG rule for "..." in menu labels.
+	  (Lars Lindner)
 	
 	Bugfixes:
 

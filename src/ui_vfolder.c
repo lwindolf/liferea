@@ -67,7 +67,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		/* update vfolder */
 		ui_itemlist_clear();
 		vfolder_refresh(ui_data->fp);
-		ui_itemlist_load((nodePtr)ui_data->fp);
+		itemlist_load((nodePtr)ui_data->fp);
 	}
 	
 	g_free(ui_data);

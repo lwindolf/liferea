@@ -306,7 +306,7 @@ void feed_save(feedPtr fp) {
 				if(saveMaxCount != CACHE_UNLIMITED &&
 				   saveCount >= saveMaxCount &&
 				   (fp->fhp == NULL || fp->fhp->directory == FALSE) &&
-				   !item_get_mark(ip)) {
+				   !item_get_flag(ip)) {
 					continue;
 				}
 				item_save(ip, feedNode);
@@ -341,17 +341,17 @@ gboolean feed_load(feedPtr fp) {
 	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(fp));
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
+	
+	if(FST_VFOLDER == feed_get_type(fp)) {
+		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
+		return TRUE;
+	}
+	
 	if(0 != (fp->loaded)++) {
 		debug0(DEBUG_CACHE, "feed already loaded!\n");
 		return TRUE;
 	}
 
-	if(FST_VFOLDER == feed_get_type(fp)) {
-		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
-		fp->loaded++;
-		return TRUE;
-	}
-	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
@@ -464,6 +464,12 @@ void feed_unload(feedPtr fp) {
 
 	g_assert(NULL != fp);
 	g_assert(0 <= fp->loaded);	/* could indicate bad loaded reference counting */
+		
+	if(FST_VFOLDER == feed_get_type(fp)) {
+		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
+		return;
+	}
+	
 	if(0 != fp->loaded) {
 		feed_save(fp);		/* save feed before unloading */
 
@@ -573,7 +579,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	itemPtr		old_ip = NULL;
 	gboolean	found, equal = FALSE;
 	
-	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
+	g_assert(0 != fp->loaded);
 	
 	if(FST_VFOLDER != feed_get_type(fp)) {
 		/* determine if we should add it... */
@@ -684,19 +690,11 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	}
 }
 
-void feed_remove_item(feedPtr fp, itemPtr ip) {
-
-	fp->items = g_slist_remove(fp->items, ip);	
-	vfolder_remove_item(ip);			/* remove item copies */
-	item_free(ip);					/* remove the item */
-	fp->needsCacheSave = TRUE;
-}
-
 itemPtr feed_lookup_item(feedPtr fp, gulong nr) {
 	GSList		*items;
 	itemPtr		ip;
-	
-	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
+		
+	g_assert(0 != fp->loaded);
 	items = fp->items;
 	while(NULL != items) {
 		ip = (itemPtr)(items->data);
@@ -720,9 +718,15 @@ void feed_set_id(feedPtr fp, const gchar *id) {
 const gchar *feed_get_id(feedPtr fp) { return fp->id; }
 
 void feed_set_type(feedPtr fp, gint type) {
+
 	fp->type = type;
 	conf_feedlist_schedule_save();
+	
+	/* vfolder extra handling */
+	if(FST_VFOLDER == type)
+		fp->loaded = 1;
 }
+
 gint feed_get_type(feedPtr fp) { return fp->type; }
 
 gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
@@ -879,7 +883,7 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 /* returns feed's list of items, if necessary loads the feed from cache */
 GSList * feed_get_item_list(feedPtr fp) { 
 
-	g_assert((0 != fp->loaded) || (FST_VFOLDER == fp->type));
+	g_assert(0 != fp->loaded);
 	return fp->items; 
 }
 
@@ -912,6 +916,18 @@ void feed_clear_item_list(feedPtr fp) {
 	/* explicitly not forcing feed saving to allow feed unloading */
 }
 
+/**
+ * Method to permanently remove a single item from the given feed 
+ */
+void feed_remove_item(feedPtr fp, itemPtr ip) {
+
+	fp->items = g_slist_remove(fp->items, ip);	
+	if(FST_FEED == fp->type)
+		vfolder_remove_item(ip);		/* remove item copies */
+	item_free(ip);					/* remove the item */
+	fp->needsCacheSave = TRUE;
+}
+
 /** 
  * Method to permanently removing all items from the given feed
  */
@@ -928,19 +944,6 @@ void feed_remove_items(feedPtr fp) {
 	g_slist_free(fp->items);
 	fp->items = NULL;
 	fp->needsCacheSave = TRUE;	/* force feed saving to make it permanent */
-}
-
-void feed_mark_all_items_read(feedPtr fp) {
-	GSList	*item;
-
-	feed_load(fp);
-	item = fp->items;
-	while(NULL != item) {
-		item_set_read((itemPtr)item->data);
-		item_set_update_status((itemPtr)item->data, FALSE);
-		item = g_slist_next(item);
-	}
-	feed_unload(fp);
 }
 
 gchar *feed_render(feedPtr fp) {

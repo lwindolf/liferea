@@ -30,6 +30,8 @@ src/interface.c
 src/interface.h
 src/item.c
 src/item.h
+src/itemlist.c
+src/itemlist.h
 src/main.c
 src/metadata.c
 src/metadata.h

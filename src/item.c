@@ -101,119 +101,54 @@ const gchar *	item_get_real_source_url(itemPtr ip) { return (ip != NULL ? ip->re
 const gchar *	item_get_real_source_title(itemPtr ip) { return (ip != NULL ? ip->real_source_title : NULL); }
 const time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
 const gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
-const gboolean item_get_mark(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
+const gboolean item_get_flag(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
 const gboolean item_get_hidden(itemPtr ip) { g_assert(ip != NULL); return ip->hidden; }
 const gboolean item_get_new_status(itemPtr ip) { g_assert(ip != NULL); return ip->newStatus; }
 const gboolean item_get_update_status(itemPtr ip) { g_assert(ip != NULL); return ip->updateStatus; }
 
-void item_set_mark(itemPtr ip, gboolean flag) {
-	itemPtr		sourceItem;
+void item_set_flag(itemPtr ip, gboolean newStatus) {
 
-	if(ip->marked != flag) {
-		ip->marked = flag;
-
-		if(ip->ui_data != NULL)
-			ui_item_update(ip);
+	if(newStatus != ip->marked) {
+		ip->marked = newStatus;
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
-
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			feed_load(ip->sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-				item_set_mark(sourceItem, flag);
-			feed_unload(ip->sourceFeed);
-		} else {
-			vfolder_update_item(ip);	/* there might be vfolders using this item */
-			vfolder_check_item(ip);		/* and check if now a rule matches */
-		}
 	}
 }
 
 void item_set_new_status(itemPtr ip, const gboolean newStatus) { 
 
 	if(newStatus != ip->newStatus) {
-		ip->newStatus = newStatus; 
-		
 		if(TRUE == newStatus)
 			feed_increase_new_counter((feedPtr)(ip->fp));
 		else
 			feed_decrease_new_counter((feedPtr)(ip->fp));
+			
+		ip->newStatus = newStatus; 
+		/* no need to save feed */
 	}
 }
 
 void item_set_update_status(itemPtr ip, const gboolean newStatus) { 
-	itemPtr		sourceItem;
 	
-	if(ip->updateStatus != newStatus) {
+	if(newStatus != ip->updateStatus) {
 		ip->updateStatus = newStatus; 
-		if(ip->ui_data != NULL)
-			ui_item_update(ip);
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
-
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			feed_load(ip->sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-				item_set_update_status(sourceItem, newStatus);
-			feed_unload(ip->sourceFeed);
-		} else {
-			vfolder_update_item(ip);	/* there might be vfolders using this item */
-			vfolder_check_item(ip);		/* and check if now a rule matches */
-		}
 	}
 }
 
-void item_set_unread(itemPtr ip) { 
-	itemPtr		sourceItem;
+void item_set_read_status(itemPtr ip, gboolean newStatus) { 
 	
-	if(TRUE == ip->readStatus) {
-		feed_increase_unread_counter((feedPtr)(ip->fp));
-		
-		ip->readStatus = FALSE;
-		if(ip->ui_data != NULL)
-			ui_item_update(ip);
+	if(newStatus != ip->readStatus) {
+		if(FALSE == newStatus)
+			feed_increase_unread_counter((feedPtr)(ip->fp));
+		else
+			feed_decrease_unread_counter((feedPtr)(ip->fp));
+
+		ip->readStatus = newStatus;
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
-						
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			feed_load(ip->sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-				item_set_unread(sourceItem);
-			feed_unload(ip->sourceFeed);
-		} else {
-			vfolder_update_item(ip);	/* there might be vfolders using this item */
-			vfolder_check_item(ip);		/* and check if now a rule matches */
-		}
-	} 
-}
-
-void item_set_read(itemPtr ip) { 
-	itemPtr		sourceItem;
-
-	if(FALSE == ip->readStatus) {
-		feed_decrease_unread_counter((feedPtr)(ip->fp));
-		
-		ip->readStatus = TRUE; 
-		if(ip->ui_data)
-			ui_item_update(ip);
-		if(ip->fp != NULL)
-			ip->fp->needsCacheSave = TRUE;
-		
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			feed_load(ip->sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
-				item_set_read(sourceItem);
-			feed_unload(ip->sourceFeed);
-		} else {
-			vfolder_update_item(ip);	/* there might be vfolders using this item */
-			vfolder_check_item(ip);		/* and check if now a rule matches */
-		}
 	}
-	ui_tray_zero_new();
 }
 
 void item_free(itemPtr ip) {
@@ -478,7 +413,7 @@ void item_save(itemPtr ip, xmlNodePtr feedNode) {
 		xmlNewTextChild(itemNode, NULL, "updateStatus", tmp);
 		g_free(tmp);
 
-		tmp = g_strdup_printf("%d", (TRUE == item_get_mark(ip))?1:0);
+		tmp = g_strdup_printf("%d", (TRUE == item_get_flag(ip))?1:0);
 		xmlNewTextChild(itemNode, NULL, "mark", tmp);
 		g_free(tmp);
 

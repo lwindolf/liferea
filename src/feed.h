@@ -312,12 +312,6 @@ void feed_remove_items(feedPtr fp);
 void feed_set_two_pane_mode(feedPtr fp, gboolean newMode);
 gboolean feed_get_two_pane_mode(feedPtr fp);
 
-/**
- * Unsets bot the unread and update flag for all items
- * of the given feed.
- */
-void feed_mark_all_items_read(feedPtr fp);
-
 /** 
  * Returns a HTML rendering of a feed. The returned string must be
  *  freed

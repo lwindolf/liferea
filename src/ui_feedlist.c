@@ -152,17 +152,17 @@ void ui_feedlist_update_iter(GtkTreeIter *iter) {
 static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeIter		iter;
 	GtkTreeModel		*model;
-	feedPtr			fp;
+	nodePtr			np;
 	GdkGeometry		geometry;
 	gint			type = FST_INVALID;
 
 	ui_tray_zero_new();
-	
+
 	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		gtk_tree_model_get(model, &iter, FS_PTR, &fp, -1);
-		if(fp != NULL) 
-			type = fp->type;
-		
+		gtk_tree_model_get(model, &iter, FS_PTR, &np, -1);
+		if(np != NULL) 
+			type = np->type;
+
 		/* make sure thats no grouping iterator */
 		if((FST_FEED == type) || (FST_VFOLDER == type)) {
 			
@@ -173,17 +173,17 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			g_assert(mainwindow != NULL);
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 		
-			ui_itemlist_set_two_pane_mode(feed_get_two_pane_mode(fp));
+			ui_itemlist_set_two_pane_mode(feed_get_two_pane_mode((feedPtr)np));
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
 			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
 			
 			/* Set up the item list */
-			ui_itemlist_load((nodePtr)fp);
+			itemlist_load(np);
 				
 		} else { /* Selecting a folder */
-			ui_itemlist_clear();
+			itemlist_load_empty();
 		}
 	} else {
 		/* If we cannot get the new selection we keep the old one
@@ -427,18 +427,9 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 void on_popup_allunread_selected(void) {
-	nodePtr		np;
 	
-	if(np = ui_feedlist_get_selected()) {
-		if(FST_FOLDER == np->type)
-			/* if we have selected a folder we mark all item of all feeds as read */
-			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
-		else
-			/* if not we mark all items of the item list as read */
-			feed_mark_all_items_read((feedPtr)np);
-
-		ui_feedlist_update();
-	}
+	itemlist_mark_all_read(ui_feedlist_get_selected());
+	ui_feedlist_update();
 }
 
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.6.0-test1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-19 02:25+0200\n"
+"POT-Creation-Date: 2004-10-05 04:19+0200\n"
 "PO-Revision-Date: 2004-09-08 13:43+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -80,26 +80,26 @@ msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:422
+#: src/export.c:421
 msgid "Liferea Help"
 msgstr "Liferea のヘルプ"
 
-#: src/export.c:435
+#: src/export.c:434
 msgid "Online Help Feed"
 msgstr "オンライン・ヘルプの配信元"
 
-#: src/export.c:451
+#: src/export.c:450
 msgid "Liferea SF News"
 msgstr "Liferea の SF ニュース"
 
-#: src/export.c:536 src/export.c:538
+#: src/export.c:535 src/export.c:537
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "キャッシュ・ファイルを読み込む際に XML エラーが発生しました！ (\"%s\" をイン"
 "ポートできませんでした)"
 
-#: src/export.c:542 src/export.c:544
+#: src/export.c:541 src/export.c:543
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -107,61 +107,61 @@ msgstr ""
 "ドキュメントが空です！ (インポートする際にOPML ドキュメント \"%s\" は空にしな"
 "いで下さい...)"
 
-#: src/export.c:552 src/export.c:554
+#: src/export.c:551 src/export.c:553
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" は正しい OPML ドキュメントではありません！ (このファイルをインポートで"
 "きません)"
 
-#: src/export.c:576
+#: src/export.c:575
 msgid "Imported feed list"
 msgstr "配信元一覧を取り込みました"
 
-#: src/export.c:587
+#: src/export.c:586
 msgid "Import Feed List"
 msgstr "配信元一覧のインポート"
 
-#: src/export.c:587
+#: src/export.c:586
 msgid "Import"
 msgstr "インポート"
 
-#: src/export.c:597
+#: src/export.c:596
 msgid "Error while exporting feed list!"
 msgstr "配信元一覧のエキスポート時にエラーが発生しました！"
 
-#: src/export.c:599
+#: src/export.c:598
 msgid "Feed List exported!"
 msgstr "配信元一覧をエキスポートしました！"
 
-#: src/export.c:606
+#: src/export.c:605
 msgid "Export Feed List"
 msgstr "配信元一覧のエキスポート"
 
-#: src/export.c:606
+#: src/export.c:605
 msgid "Export"
 msgstr "エキスポート"
 
-#: src/feed.c:141
+#: src/feed.c:143
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>配信元を読み込む際に XML エラーが発生しました！ (配信元 \"%s\" を読み込め"
 "ませんでした)</p>"
 
-#: src/feed.c:147 src/feed.c:378
+#: src/feed.c:149 src/feed.c:380
 msgid "<p>Empty document!</p>"
 msgstr "<p>ドキュメントが空です！</p>"
 
-#: src/feed.c:154
+#: src/feed.c:156
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML が間違っています！</p>"
 
-#: src/feed.c:221
+#: src/feed.c:223
 msgid "There were errors while parsing a feed"
 msgstr "配信元を解析する際に複数のエラーが発生しました"
 
-#: src/feed.c:222
+#: src/feed.c:224
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -172,14 +172,14 @@ msgstr ""
 "\"http://liferea.sourceforge.net/index.php#supported_formats\">サポートされて"
 "いるか</a>確認して下さい。</p>"
 
-#: src/feed.c:357 src/feed.c:358
+#: src/feed.c:359 src/feed.c:360
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイルを読み込めませんでした)"
 
-#: src/feed.c:370
+#: src/feed.c:372
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -188,43 +188,43 @@ msgstr ""
 "<p>キャッシュ・ファイルを読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイル \"%s\" を読み込めませんでした)</p>"
 
-#: src/feed.c:389
+#: src/feed.c:391
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" は正しいキャッシュ・ファイルではありません！ キャッシュ・ファイルが"
 "読めません！</p>"
 
-#: src/feed.c:439
+#: src/feed.c:441
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "キャッシュ・ファイル \"%s\" を解析する際にエラーが発生しました"
 
-#: src/feed.c:501
+#: src/feed.c:503
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "この配信元 \"%s\" は既に更新済みです！"
 
-#: src/feed.c:506
+#: src/feed.c:508
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "配信元は停止しています。今後 Liferea が更新することはありません！"
 
-#: src/feed.c:510
+#: src/feed.c:512
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" の更新中"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:979 src/item.c:264 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:983 src/item.c:268 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "配信元:"
 
-#: src/feed.c:979 src/interface.c:519
+#: src/feed.c:983 src/interface.c:519
 msgid "VFolder"
 msgstr "仮想フォルダ"
 
-#: src/feed.c:990 src/interface.c:1071 src/interface.c:1473 src/item.c:291
+#: src/feed.c:994 src/interface.c:1071 src/interface.c:1473 src/item.c:317
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "ソース:"
@@ -251,15 +251,18 @@ msgid "_Feeds"
 msgstr "配信元(_F)"
 
 #: src/interface.c:190
-msgid "_New Subscription"
+#, fuzzy
+msgid "_New Subscription..."
 msgstr "新しい購読(_N)"
 
 #: src/interface.c:198
-msgid "New _Folder"
+#, fuzzy
+msgid "New _Folder..."
 msgstr "新しいフォルダ(_F)"
 
 #: src/interface.c:211
-msgid "_Properties"
+#, fuzzy
+msgid "_Properties..."
 msgstr "プロパティ(_P)"
 
 #: src/interface.c:214
@@ -280,7 +283,7 @@ msgstr "選択した購読または選択したフォルダにある全ての購
 msgid "Update _All"
 msgstr "全て更新(_A)"
 
-#: src/interface.c:237 src/ui_mainwindow.c:163
+#: src/interface.c:237 src/ui_mainwindow.c:164
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "全ての配信元を更新します (OCS ディレクトリを除く)"
 
@@ -313,7 +316,8 @@ msgstr ""
 "に既読マークを付与します"
 
 #: src/interface.c:287
-msgid "_Import Feed List"
+#, fuzzy
+msgid "_Import Feed List..."
 msgstr "配信元一覧のインポート(_I)"
 
 #: src/interface.c:290
@@ -321,7 +325,8 @@ msgid "Imports an OPML feed list."
 msgstr "OPML 配信元一覧をインポートします"
 
 #: src/interface.c:296
-msgid "_Export Feed List"
+#, fuzzy
+msgid "_Export Feed List..."
 msgstr "配信元一覧のエキスポート(_E)"
 
 #: src/interface.c:299
@@ -336,7 +341,7 @@ msgstr "トピック(_I)"
 msgid "_Next Unread Item"
 msgstr "次の未読のトピック(_N)"
 
-#: src/interface.c:315 src/ui_mainwindow.c:161
+#: src/interface.c:315 src/ui_mainwindow.c:162
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -425,7 +430,8 @@ msgid "Shows or hides the search box."
 msgstr "検索ボックスの表示 ON/OFF を切り替えます"
 
 #: src/interface.c:433
-msgid "Search with Feedster"
+#, fuzzy
+msgid "Search with Feedster..."
 msgstr "Feedster で検索"
 
 #: src/interface.c:436
@@ -1015,60 +1021,60 @@ msgstr ""
 msgid "Rules"
 msgstr "ルール"
 
-#: src/item.c:273 src/item.c:275 src/item.c:286 src/ui_itemlist.c:211
+#: src/item.c:295 src/item.c:299 src/item.c:311 src/ui_itemlist.c:234
 msgid "[No title]"
 msgstr "[タイトルなし]"
 
-#: src/item.c:276 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:301 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "トピック:"
 
-#: src/main.c:67
+#: src/main.c:68
 msgid "  --version        Prints Liferea's version number"
 msgstr "  --version        Liferea のバージョンを表示する"
 
-#: src/main.c:68
+#: src/main.c:69
 msgid "  --help           Prints this message and exits"
 msgstr "  --help           このメッセージを表示して終了する"
 
-#: src/main.c:69
+#: src/main.c:70
 msgid "  --iconify        Starts the program iconified"
 msgstr "  --iconify        プログラムをアイコン化して起動する"
 
-#: src/main.c:71
+#: src/main.c:72
 msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr "  --debug-cache    キャッシュ操作を行うデバッグ・メッセージを表示する"
 
-#: src/main.c:72
+#: src/main.c:73
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
 msgstr "  --debug-conf     設定を操作する際のデバッグ・メッセージを表示する"
 
-#: src/main.c:73
+#: src/main.c:74
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr "  --debug-update   配信元を更新する際のデバッグ・メッセージを表示する"
 
-#: src/main.c:74
+#: src/main.c:75
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  解析関連の全ての関数のデバッグ・メッセージを表示する"
 
-#: src/main.c:75
+#: src/main.c:76
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      GUI 関連の全ての関数のデバッグ・メッセージを表示する"
 
-#: src/main.c:76
+#: src/main.c:77
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr "  --debug-trace    関数の入り口/出口のデバッグ・メッセージを表示する"
 
-#: src/main.c:77
+#: src/main.c:78
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr "  --debug-all      全ての種類のデバッグ・メッセージを表示する"
 
-#: src/main.c:78
+#: src/main.c:79
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  デバッグ・メッセージを詳細に表示する"
 
@@ -1256,55 +1262,55 @@ msgstr "<p>OPML ヘッダが見つかりませんでした！！</p>"
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>RDF/RSS ヘッダが見つかりませんでした！</p>"
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "Item"
 msgstr "トピックが"
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "does contain"
 msgstr "次の内容を含む"
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "does not contain"
 msgstr "次の内容を含まない"
 
-#: src/rule.c:133
+#: src/rule.c:130
 msgid "Item title"
 msgstr "ヘッドラインが"
 
-#: src/rule.c:133 src/rule.c:134
+#: src/rule.c:130 src/rule.c:131
 msgid "does match"
 msgstr "次と一致する"
 
-#: src/rule.c:133 src/rule.c:134
+#: src/rule.c:130 src/rule.c:131
 msgid "does not match"
 msgstr "次と一致しない"
 
-#: src/rule.c:134
+#: src/rule.c:131
 msgid "Item body"
 msgstr "本文が"
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "Read status"
 msgstr "ステータスが"
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "is unread"
 msgstr "未読である"
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "is read"
 msgstr "既読である"
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "Flag status"
 msgstr "フラグが"
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "is flagged"
 msgstr "セットされている"
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "is unflagged"
 msgstr "セットされていない"
 
@@ -1473,45 +1479,45 @@ msgstr "この配信元はデフォルトの更新間隔を指定していませ
 msgid "Choose File"
 msgstr "ファイルの選択"
 
-#: src/ui_feedlist.c:408
+#: src/ui_feedlist.c:411
 msgid "You have to select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: src/ui_feedlist.c:418
+#: src/ui_feedlist.c:421
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (アップデートできません)"
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:466
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "ヒント: 購読フィルタを利用すると、ドラッグ＆ドロップが無効になります"
 
-#: src/ui_feedlist.c:483 src/ui_feedlist.c:486
+#: src/ui_feedlist.c:511 src/ui_feedlist.c:514
 msgid "Deleting entry"
 msgstr "エントリの削除"
 
-#: src/ui_feedlist.c:484
+#: src/ui_feedlist.c:512
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "本当に \"%s\" とその内容を削除してもよろしいですか？"
 
-#: src/ui_feedlist.c:487
+#: src/ui_feedlist.c:515
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "本当に \"%s\" を削除してもよろしいですか？"
 
-#: src/ui_feedlist.c:495
+#: src/ui_feedlist.c:523
 msgid "Deletion Confirmation"
 msgstr "削除の確認"
 
-#: src/ui_feedlist.c:532
+#: src/ui_feedlist.c:559
 msgid "You must select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: src/ui_feedlist.c:533
+#: src/ui_feedlist.c:560
 msgid "You must select a feed entry."
 msgstr "配信元エントリを一つ選択して下さい。"
 
-#: src/ui_feedlist.c:579
+#: src/ui_feedlist.c:606
 msgid "New subscription"
 msgstr "新しい購読"
 
@@ -1600,16 +1606,16 @@ msgstr ""
 "て下さい)"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:324
+#: src/ui_htmlview.c:321
 msgid "This item does not have a link assigned!"
 msgstr "このトピックにはリンクが割り当てられていません！"
 
-#: src/ui_htmlview.c:367 src/ui_htmlview.c:388
+#: src/ui_htmlview.c:364 src/ui_htmlview.c:385
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "ブラウザの起動に失敗しました: %s"
 
-#: src/ui_htmlview.c:370 src/ui_htmlview.c:391
+#: src/ui_htmlview.c:367 src/ui_htmlview.c:388
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "起動中: \"%s\""
@@ -1622,9 +1628,9 @@ msgstr ""
 "この購読の最後の更新が失敗しました。<br><b>HTTP エラー・コード %d: %s</b>"
 
 #: src/ui_htmlview.h:98
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"There were errors while parsing this feed. The following error occured:"
+"There were errors while parsing this feed. The following error occurred:"
 "<br><b>%s</b>"
 msgstr ""
 "この配信元を解析する際にエラーが発生しました。次のエラーが発生しました: "
@@ -1638,48 +1644,48 @@ msgstr ""
 "この配信元は停止しているので、利用できません。今後 Liferea が更新することはあ"
 "りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
 
-#: src/ui_itemlist.c:292
+#: src/ui_itemlist.c:321
 msgid "Date"
 msgstr "日付"
 
-#: src/ui_itemlist.c:303
+#: src/ui_itemlist.c:332
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: src/ui_itemlist.c:605 src/ui_itemlist.c:646
+#: src/ui_itemlist.c:658 src/ui_itemlist.c:722
 msgid "No item has been selected"
 msgstr "トピックが選択されていません"
 
-#: src/ui_itemlist.c:629 src/ui_itemlist.c:649
+#: src/ui_itemlist.c:705 src/ui_itemlist.c:725
 msgid "You must select a feed to delete its items!"
 msgstr "トピックを削除する配信元を選択して下さい！"
 
-#: src/ui_itemlist.c:681
+#: src/ui_itemlist.c:758
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:709
+#: src/ui_itemlist.c:786
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:161
 msgid "New Feed"
 msgstr "新しい配信元"
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:161
 msgid "Add a new subscription."
 msgstr "新しい購読を追加します"
 
-#: src/ui_mainwindow.c:161
+#: src/ui_mainwindow.c:162
 msgid "Next Unread"
 msgstr "次の未読のトピック"
 
-#: src/ui_mainwindow.c:162
+#: src/ui_mainwindow.c:163
 msgid "Mark As Read"
 msgstr "全て既読"
 
-#: src/ui_mainwindow.c:162
+#: src/ui_mainwindow.c:163
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1687,53 +1693,60 @@ msgstr ""
 "現在選択している購読の全てのトピック、または選択したフォルダの全てのトピック"
 "に既読マークを付与します"
 
-#: src/ui_mainwindow.c:163
+#: src/ui_mainwindow.c:164
 msgid "Update All"
 msgstr "全て更新"
 
-#: src/ui_mainwindow.c:164
+#: src/ui_mainwindow.c:165
 msgid "Search"
 msgstr "検索"
 
-#: src/ui_mainwindow.c:164
+#: src/ui_mainwindow.c:165
 msgid "Search all feeds."
 msgstr "全ての配信元から検索します"
 
-#: src/ui_mainwindow.c:165
+#: src/ui_mainwindow.c:166
 msgid "Preferences"
 msgstr "設定"
 
-#: src/ui_mainwindow.c:165
+#: src/ui_mainwindow.c:166
 msgid "Edit preferences."
 msgstr "設定を編集します"
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:187
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
-"liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">look</"
-"a> and make <a href=\"mailto:liferea-devel@lists.sourceforge.net"
-"\">proposals</a> if you miss features.</div><h2>Welcome to Liferea</"
-"h2><p>The left pane contains the feed list where you can add new "
-"subscriptions and select subscriptions to read their headlines. The right "
-"side either displays a list of the headlines of the selected subscription "
-"and a pane to view the selected headline or all headlines at once if "
-"condensed mode is selected.</p><h3>Basic Actions</h3><ul><li><p><b>Add "
-"Subscription</b> - Creates a new subscription in the selected folder. To "
-"create a new subscription enter the feed URL or if you don't know it the URL "
-"of the website which provides the feed.</p></li><li><p><b>Update "
-"Subscription</b> - This will update the subscription you selected. You may "
-"want to do this if you want to immediatly check a subscription for updates. "
-"Usually it is adequate to rely on the auto updating according to the update "
-"interval of the subscription.</p></li><li><p><b>Update All</b> - This will "
-"update all your subscriptions at once. Again usually it is adequate to rely "
-"on the auto updating.</li><li><p><b>Edit Subscription Properties</b> - "
-"Sometimes you might want to change the update interval, title, "
-"authentication or caching properties of a subscription.</p></li></ul><p>To "
-"learn more about Liferea you should read the documentation provided in the "
-"help feed or in the <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</"
-"a> available at the <a href=\"http://liferea.sf.net\">project homepage</a>.</"
-"p>"
+"\">When Liferea starts for the first time it loads a localized default feed "
+"list. There are already default lists for English, French, German and "
+"Spanish. If you think you know a good set of default feeds for your language "
+"please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists."
+"sourceforge.net\">mailing list</a> and it will be included in the next "
+"release!</div>"
+msgstr ""
+
+#: src/ui_mainwindow.c:194
+#, fuzzy
+msgid ""
+"<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
+"can add new subscriptions and select subscriptions to read their headlines. "
+"The right side either displays a list of the headlines of the selected "
+"subscription and a pane to view the selected headline or all headlines at "
+"once if condensed mode is selected.</p><h3>Basic Actions</"
+"h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the "
+"selected folder. To create a new subscription enter the feed URL or if you "
+"don't know it the URL of the website which provides the feed.</p></"
+"li><li><p><b>Update Subscription</b> - This will update the subscription you "
+"selected. You may want to do this if you want to immediatly check a "
+"subscription for updates. Usually it is adequate to rely on the auto "
+"updating according to the update interval of the subscription.</p></"
+"li><li><p><b>Update All</b> - This will update all your subscriptions at "
+"once. Again usually it is adequate to rely on the auto updating.</"
+"li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
+"change the update interval, title, authentication or caching properties of a "
+"subscription.</p></li></ul><p>To learn more about Liferea you should read "
+"the documentation provided in the help feed or in the <a href=\"http://"
+"liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
+"liferea.sf.net\">project homepage</a>.</p>"
 msgstr ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
 "バージョン 1.1 版の機能に対するリクエストの受け付けを開始しました。<a href="
@@ -1759,11 +1772,11 @@ msgstr ""
 "ジェクトのホームページ</a>にある <a href=\"http://liferea.sourceforge.net/"
 "faq.php\">FAQ</a> をご覧下さい。</p>"
 
-#: src/ui_mainwindow.c:267
+#: src/ui_mainwindow.c:272
 msgid "Liferea is now online"
 msgstr "Liferea は現在オンラインです"
 
-#: src/ui_mainwindow.c:270
+#: src/ui_mainwindow.c:275
 msgid "Liferea is now offline"
 msgstr "Liferea は現在オフラインです"
 
@@ -1788,15 +1801,18 @@ msgid "/_New"
 msgstr "/新規(_N)"
 
 #: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
-msgid "/_New/New _Subscription"
+#, fuzzy
+msgid "/_New/New _Subscription..."
 msgstr "/新規(_N)/新しい購読(_S)"
 
 #: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
-msgid "/_New/New F_older"
+#, fuzzy
+msgid "/_New/New F_older..."
 msgstr "/新規(_N)/新しいフォルダ(_O)"
 
 #: src/ui_popup.c:87 src/ui_popup.c:106
-msgid "/_Properties"
+#, fuzzy
+msgid "/_Properties..."
 msgstr "/プロパティ(_P)"
 
 #: src/ui_popup.c:88 src/ui_popup.c:107
@@ -1808,7 +1824,8 @@ msgid "/_Update Folder"
 msgstr "/フォルダの更新(_U)"
 
 #: src/ui_popup.c:97
-msgid "/_Rename Folder"
+#, fuzzy
+msgid "/_Rename Folder..."
 msgstr "/フォルダ名の変更(_R)"
 
 #: src/ui_popup.c:98
@@ -1835,43 +1852,45 @@ msgstr "/次の未読のトピック(_N)"
 msgid "/_Launch Item In Browser"
 msgstr "/ブラウザで開く(_L)"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:129
 msgid "/_Increase Text Size"
 msgstr "/文字を大きくする(_I)"
 
-#: src/ui_popup.c:132
+#: src/ui_popup.c:130
 msgid "/_Decrease Text Size"
 msgstr "/文字を小さくする(_D)"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:134
 msgid "/_Copy Link Location"
 msgstr "リンク先のアドレスのコピー(_C)"
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:135
 msgid "/_Launch Link In Browser"
 msgstr "/ブラウザで開く(_L)"
 
-#: src/ui_popup.c:138
-msgid "/_Subscribe"
+#: src/ui_popup.c:136
+#, fuzzy
+msgid "/_Subscribe..."
 msgstr "/購読(_S)"
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:141
 msgid "/_Work Offline"
 msgstr "/オフラインにする(_W)"
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:142
 msgid "/_Update All"
 msgstr "/全て更新(_U)"
 
-#: src/ui_popup.c:145
-msgid "/_Preferences"
+#: src/ui_popup.c:143
+#, fuzzy
+msgid "/_Preferences..."
 msgstr "/設定(_P)"
 
-#: src/ui_popup.c:147
+#: src/ui_popup.c:145
 msgid "/_Show Window"
 msgstr "/ウィンドウの表示(_S)"
 
-#: src/ui_popup.c:148
+#: src/ui_popup.c:146
 msgid "/_Quit"
 msgstr "/終了(_Q)"
 
@@ -1913,7 +1932,7 @@ msgstr "更新せずに更新用タイマーをクリアする"
 msgid "Searching for \"%s\""
 msgstr "\"%s\" の検索中"
 
-#: src/ui_search.c:96
+#: src/ui_search.c:95
 msgid "Please do a search first!"
 msgstr "まず最初に検索を実行して下さい！"
 

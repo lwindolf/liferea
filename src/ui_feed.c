@@ -200,7 +200,7 @@ void ui_feed_process_update_result(struct request *request) {
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
 
 			if((feedPtr)ui_feedlist_get_selected() == fp)
-				ui_itemlist_load((nodePtr)fp);
+				itemlist_load((nodePtr)fp);
 			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);

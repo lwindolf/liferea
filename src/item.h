@@ -62,7 +62,6 @@ typedef struct item {
 	gulong		nr;			/**< internal unique item number used for vfolder reference counting */
 	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
 	struct feed	*sourceFeed;		/**< Pointer to the source feed this item was derived from (used for searches and vfolders) */
-	void		*ui_data;		/**< UI specific data such as in which row an item is displayed */
 } *itemPtr;
 
 void ui_item_update(itemPtr ip); /* This is in itemlist.c */
@@ -115,8 +114,8 @@ const gchar *	item_get_real_source_url(itemPtr ip);
 const gchar *	item_get_real_source_title(itemPtr ip);
 /** Returns the modification time of ip. */
 const time_t	item_get_time(itemPtr ip);
-/** Returns the mark status of ip */
-const gboolean	item_get_mark(itemPtr ip);
+/** Returns the flag status of ip */
+const gboolean	item_get_flag(itemPtr ip);
 /** Returns the read status of ip. */
 const gboolean	item_get_read_status(itemPtr ip);
 /** Returns the hidden flag of ip. */
@@ -126,10 +125,6 @@ const gboolean	item_get_new_status(itemPtr ip);
 /** Returns the update flag of ip. */
 const gboolean	item_get_update_status(itemPtr ip);
 
-/** Marks ip as read and updates the UI to reflect this change */
-void 		item_set_read(itemPtr ip);
-/** Marks ip as unread and updates the UI to reflect this change */
-void 		item_set_unread(itemPtr ip);
 /** Sets the ip's title */
 void		item_set_title(itemPtr ip, const gchar * title);
 /** Sets the ip's description */
@@ -144,6 +139,8 @@ void		item_set_real_source_title(itemPtr ip, const gchar * source);
 void		item_set_time(itemPtr ip, const time_t time);
 /** Sets the ip's id */
 void		item_set_id(itemPtr ip, const gchar * id);
+/** Sets the ip's read status */
+void 		item_set_read_status(itemPtr ip, gboolean newStatus);
 /** Sets the ip's hidden flag */
 void 		item_set_hidden(itemPtr ip, const gboolean hidden);
 /** Sets the ip's new flag */
@@ -156,10 +153,10 @@ void 		item_set_update_status(itemPtr ip, const gboolean newStatus);
  * change.
  *
  * @param ip item to be marked or unmarked
- * @param flag set to TRUE if the item is to be marked, or FALSE to
+ * @param newStatus set to TRUE if the item is to be marked, or FALSE to
  * unmark the item
  */
-void	item_set_mark(itemPtr ip, const gboolean flag);
+void	item_set_flag(itemPtr ip, const gboolean newStatus);
 
 /**
  * Parse an xml tree and return a new itempointer generated 

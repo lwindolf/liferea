@@ -38,11 +38,13 @@ liferea_bin_SOURCES = \
 	export.c export.h \
 	favicon.c favicon.h \
 	feed.c feed.h \
+	feedlist.c feedlist.h \
 	folder.c folder.h \
 	guitreemodelfilter.c guitreemodelfilter.h \
 	html.c html.h \
 	interface.c interface.h \
 	item.c item.h \
+	itemlist.c itemlist.h \
 	main.c \
 	metadata.c metadata.h \
 	ns_ocs.c ns_ocs.h \

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISLD Localization Project 0.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-19 02:25+0200\n"
+"POT-Creation-Date: 2004-10-05 04:19+0200\n"
 "PO-Revision-Date: 2004-09-09 13:58+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
@@ -80,84 +80,84 @@ msgid ".rdf"
 msgstr ".rdf"
 
 #. we create a real folder with two real subscriptions to the help feeds inside
-#: src/export.c:422
+#: src/export.c:421
 msgid "Liferea Help"
 msgstr "Помощ относно Liferea"
 
-#: src/export.c:435
+#: src/export.c:434
 msgid "Online Help Feed"
 msgstr "Помощ в Интернет"
 
-#: src/export.c:451
+#: src/export.c:450
 msgid "Liferea SF News"
 msgstr "Новини за Liferea в SF"
 
-#: src/export.c:536 src/export.c:538
+#: src/export.c:535 src/export.c:537
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "XML грешка по време на четенето на кеш файла! \"%s\" не може да бъде зареден!"
 
-#: src/export.c:542 src/export.c:544
+#: src/export.c:541 src/export.c:543
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Празен документ! OPML·документа·\"%s\"·не трябва да е празне при импортиране."
 
-#: src/export.c:552 src/export.c:554
+#: src/export.c:551 src/export.c:553
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" не е валиден OPML документ! Liferea не може да внесе този файл!"
 
-#: src/export.c:576
+#: src/export.c:575
 msgid "Imported feed list"
 msgstr "Списък с внесените абонаменти"
 
-#: src/export.c:587
+#: src/export.c:586
 msgid "Import Feed List"
 msgstr "Вмъкване на списък с абонаменти"
 
-#: src/export.c:587
+#: src/export.c:586
 msgid "Import"
 msgstr "Внасяне"
 
-#: src/export.c:597
+#: src/export.c:596
 msgid "Error while exporting feed list!"
 msgstr "Грешка при експортирането на списъкът с абонаменти!"
 
-#: src/export.c:599
+#: src/export.c:598
 msgid "Feed List exported!"
 msgstr "Списъкът с абонаменти е експортиран успешно!"
 
-#: src/export.c:606
+#: src/export.c:605
 msgid "Export Feed List"
 msgstr "Експортиране на списъкът на абонаментите"
 
-#: src/export.c:606
+#: src/export.c:605
 msgid "Export"
 msgstr "Изнасяне"
 
-#: src/feed.c:141
+#: src/feed.c:143
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>XML грешка по време на четенето на абонамента! Абонаментът \"%s\" не може "
 "да бъде зареден!</p>"
 
-#: src/feed.c:147 src/feed.c:378
+#: src/feed.c:149 src/feed.c:380
 msgid "<p>Empty document!</p>"
 msgstr "<p>Празен документ!</p>"
 
-#: src/feed.c:154
+#: src/feed.c:156
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Невалиден·XML!</p>"
 
-#: src/feed.c:221
+#: src/feed.c:223
 msgid "There were errors while parsing a feed"
 msgstr "Имаше грешки докато се изтегляше този абонамент"
 
-#: src/feed.c:222
+#: src/feed.c:224
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -167,14 +167,14 @@ msgstr ""
 "<a href=\"http://feedvalidator.org\">валиден</a> и <a·href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">поддържан формат</a>.</p>"
 
-#: src/feed.c:357 src/feed.c:358
+#: src/feed.c:359 src/feed.c:360
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе да "
 "бъде зареден!"
 
-#: src/feed.c:370
+#: src/feed.c:372
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -183,42 +183,42 @@ msgstr ""
 "<p>XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе "
 "да бъде зареден!</p>"
 
-#: src/feed.c:389
+#: src/feed.c:391
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" не е валиден кеш файл. Кеш файлът не може да бъде прочетен!</p>"
 
-#: src/feed.c:439
+#: src/feed.c:441
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Получиха се грешки при прегледа на кеш файла \"%s\""
 
-#: src/feed.c:501
+#: src/feed.c:503
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Абонаментът \"%s\" вече беше осъвременен!"
 
-#: src/feed.c:506
+#: src/feed.c:508
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "Абонаментът не е продължен. Liferea няма да го осъвременява повече!"
 
-#: src/feed.c:510
+#: src/feed.c:512
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Осъвременяване на \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:979 src/item.c:264 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:983 src/item.c:268 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "Абонамент:"
 
-#: src/feed.c:979 src/interface.c:519
+#: src/feed.c:983 src/interface.c:519
 msgid "VFolder"
 msgstr "Виртуална папка"
 
-#: src/feed.c:990 src/interface.c:1071 src/interface.c:1473 src/item.c:291
+#: src/feed.c:994 src/interface.c:1071 src/interface.c:1473 src/item.c:317
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Първичен код:"
@@ -245,15 +245,18 @@ msgid "_Feeds"
 msgstr "_Абонаменти"
 
 #: src/interface.c:190
-msgid "_New Subscription"
+#, fuzzy
+msgid "_New Subscription..."
 msgstr "_Нов абонамент"
 
 #: src/interface.c:198
-msgid "New _Folder"
+#, fuzzy
+msgid "New _Folder..."
 msgstr "Нова _папка"
 
 #: src/interface.c:211
-msgid "_Properties"
+#, fuzzy
+msgid "_Properties..."
 msgstr "_Настройки"
 
 #: src/interface.c:214
@@ -276,7 +279,7 @@ msgstr ""
 msgid "Update _All"
 msgstr "Осъвременяване на _всички"
 
-#: src/interface.c:237 src/ui_mainwindow.c:163
+#: src/interface.c:237 src/ui_mainwindow.c:164
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 "Осъвременяване на всички абонаменти. OCS директориите не се осъвременяват."
@@ -310,7 +313,8 @@ msgstr ""
 "всички абонаменти в избраната папка."
 
 #: src/interface.c:287
-msgid "_Import Feed List"
+#, fuzzy
+msgid "_Import Feed List..."
 msgstr "Вмъкване на списък с абонаменти"
 
 #: src/interface.c:290
@@ -318,7 +322,8 @@ msgid "Imports an OPML feed list."
 msgstr "Вмъкване на списък с абонаменти в OPML формат."
 
 #: src/interface.c:296
-msgid "_Export Feed List"
+#, fuzzy
+msgid "_Export Feed List..."
 msgstr "_Експортиране на списък с абонаменти"
 
 #: src/interface.c:299
@@ -333,7 +338,7 @@ msgstr "_Записи"
 msgid "_Next Unread Item"
 msgstr "_Следващия непрочетен запис"
 
-#: src/interface.c:315 src/ui_mainwindow.c:161
+#: src/interface.c:315 src/ui_mainwindow.c:162
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -422,7 +427,8 @@ msgid "Shows or hides the search box."
 msgstr "Показване или скриване на полето за търсене."
 
 #: src/interface.c:433
-msgid "Search with Feedster"
+#, fuzzy
+msgid "Search with Feedster..."
 msgstr "Търсене с Feedster"
 
 #: src/interface.c:436
@@ -1009,58 +1015,58 @@ msgstr ""
 msgid "Rules"
 msgstr "Правила"
 
-#: src/item.c:273 src/item.c:275 src/item.c:286 src/ui_itemlist.c:211
+#: src/item.c:295 src/item.c:299 src/item.c:311 src/ui_itemlist.c:234
 msgid "[No title]"
 msgstr "[Без заглавие]"
 
-#: src/item.c:276 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:301 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "Запис:"
 
-#: src/main.c:67
+#: src/main.c:68
 msgid "  --version        Prints Liferea's version number"
 msgstr "  --version         Изписване версията на Liferea"
 
-#: src/main.c:68
+#: src/main.c:69
 msgid "  --help           Prints this message and exits"
 msgstr "  --help            Показване на това съобщение и напуска"
 
-#: src/main.c:69
+#: src/main.c:70
 msgid "  --iconify        Starts the program iconified"
 msgstr "  --iconify        Стартира програмата иконизирана"
 
-#: src/main.c:71
-msgid "  --debug-cache    Print debugging messages for the cache handling"
-msgstr ""
-
 #: src/main.c:72
-msgid ""
-"  --debug-conf     Print debugging messages of the configuration handling"
+msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr ""
 
 #: src/main.c:73
 msgid ""
-"  --debug-update   Print debugging messages of the feed update processing"
+"  --debug-conf     Print debugging messages of the configuration handling"
 msgstr ""
 
 #: src/main.c:74
-msgid "  --debug-parsing  Print debugging messages of all parsing functions"
+msgid ""
+"  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 
 #: src/main.c:75
-msgid "  --debug-gui      Print debugging messages of all GUI functions"
+msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 
 #: src/main.c:76
+msgid "  --debug-gui      Print debugging messages of all GUI functions"
+msgstr ""
+
+#: src/main.c:77
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 
-#: src/main.c:77
+#: src/main.c:78
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr ""
 
-#: src/main.c:78
+#: src/main.c:79
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr ""
 
@@ -1250,55 +1256,55 @@ msgstr "<p>Не може да бъде намерено началото на OP
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>Не може да бъде намерена RDF/RSS началото!</p>"
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "Item"
 msgstr "Запис"
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "does contain"
 msgstr "съдържа"
 
-#: src/rule.c:132
+#: src/rule.c:129
 msgid "does not contain"
 msgstr "не съдържа"
 
-#: src/rule.c:133
+#: src/rule.c:130
 msgid "Item title"
 msgstr "Заглавие на записа"
 
-#: src/rule.c:133 src/rule.c:134
+#: src/rule.c:130 src/rule.c:131
 msgid "does match"
 msgstr "съвпада"
 
-#: src/rule.c:133 src/rule.c:134
+#: src/rule.c:130 src/rule.c:131
 msgid "does not match"
 msgstr "не съвпада"
 
-#: src/rule.c:134
+#: src/rule.c:131
 msgid "Item body"
 msgstr ""
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "Read status"
 msgstr "Поставяне на статус на прочетен"
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "is unread"
 msgstr "е непрочетен"
 
-#: src/rule.c:135
+#: src/rule.c:132
 msgid "is read"
 msgstr "е прочетен"
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "Flag status"
 msgstr ""
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "is flagged"
 msgstr "е с флаг"
 
-#: src/rule.c:136
+#: src/rule.c:133
 msgid "is unflagged"
 msgstr "е без флаг"
 
@@ -1466,46 +1472,46 @@ msgstr "Този източник няма подразбиращ се инте�
 msgid "Choose File"
 msgstr "Избор на файл"
 
-#: src/ui_feedlist.c:408
+#: src/ui_feedlist.c:411
 msgid "You have to select a feed entry"
 msgstr "Трябва да изберете адрес на източник"
 
-#: src/ui_feedlist.c:418
+#: src/ui_feedlist.c:421
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea·е в изключен режим.·Осъвременявания на абонаментите не са възможни."
 
-#: src/ui_feedlist.c:441
+#: src/ui_feedlist.c:466
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 
-#: src/ui_feedlist.c:483 src/ui_feedlist.c:486
+#: src/ui_feedlist.c:511 src/ui_feedlist.c:514
 msgid "Deleting entry"
 msgstr "Изтриване на запис"
 
-#: src/ui_feedlist.c:484
+#: src/ui_feedlist.c:512
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Сигурни ли сте, че искате да изтриете·\"%s\"·и всички записи в него?"
 
-#: src/ui_feedlist.c:487
+#: src/ui_feedlist.c:515
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Сигурни ли сте, че искате да изтриете·\"%s\"?"
 
-#: src/ui_feedlist.c:495
+#: src/ui_feedlist.c:523
 msgid "Deletion Confirmation"
 msgstr "Потвърждаване при изтриване"
 
-#: src/ui_feedlist.c:532
+#: src/ui_feedlist.c:559
 msgid "You must select a feed entry"
 msgstr "Трябва да изберете запис"
 
-#: src/ui_feedlist.c:533
+#: src/ui_feedlist.c:560
 msgid "You must select a feed entry."
 msgstr "Трябва да изберете запис."
 
-#: src/ui_feedlist.c:579
+#: src/ui_feedlist.c:606
 msgid "New subscription"
 msgstr "Нов абонамент"
 
@@ -1591,16 +1597,16 @@ msgid ""
 msgstr ""
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:324
+#: src/ui_htmlview.c:321
 msgid "This item does not have a link assigned!"
 msgstr "Този запис няма хипервързка в себе си!"
 
-#: src/ui_htmlview.c:367 src/ui_htmlview.c:388
+#: src/ui_htmlview.c:364 src/ui_htmlview.c:385
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Командата за стартиране на браузъра е неуспешна: %s"
 
-#: src/ui_htmlview.c:370 src/ui_htmlview.c:391
+#: src/ui_htmlview.c:367 src/ui_htmlview.c:388
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Стартиране: \"%s\""
@@ -1614,9 +1620,9 @@ msgstr ""
 "d: %s</b>"
 
 #: src/ui_htmlview.h:98
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"There were errors while parsing this feed. The following error occured:"
+"There were errors while parsing this feed. The following error occurred:"
 "<br><b>%s</b>"
 msgstr ""
 "Имаше грешки докато се изтегляше този абонамент! Получиха се следните "
@@ -1628,48 +1634,48 @@ msgid ""
 "anymore but you can still access the cached headlines."
 msgstr ""
 
-#: src/ui_itemlist.c:292
+#: src/ui_itemlist.c:321
 msgid "Date"
 msgstr "Дата"
 
-#: src/ui_itemlist.c:303
+#: src/ui_itemlist.c:332
 msgid "Headline"
 msgstr "Заглавие"
 
-#: src/ui_itemlist.c:605 src/ui_itemlist.c:646
+#: src/ui_itemlist.c:658 src/ui_itemlist.c:722
 msgid "No item has been selected"
 msgstr "Няма избран запис"
 
-#: src/ui_itemlist.c:629 src/ui_itemlist.c:649
+#: src/ui_itemlist.c:705 src/ui_itemlist.c:725
 msgid "You must select a feed to delete its items!"
 msgstr "Трябва да изберете абонамент, за да изтриете неговите записи!"
 
-#: src/ui_itemlist.c:681
+#: src/ui_itemlist.c:758
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:709
+#: src/ui_itemlist.c:786
 msgid "There are no unread items "
 msgstr "Няма непрочетени записи "
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:161
 msgid "New Feed"
 msgstr "Нов абонамент"
 
-#: src/ui_mainwindow.c:160
+#: src/ui_mainwindow.c:161
 msgid "Add a new subscription."
 msgstr "Добавяне на нов абонамент."
 
-#: src/ui_mainwindow.c:161
+#: src/ui_mainwindow.c:162
 msgid "Next Unread"
 msgstr "Следващ непрочетен"
 
-#: src/ui_mainwindow.c:162
+#: src/ui_mainwindow.c:163
 msgid "Mark As Read"
 msgstr "Избиране като прочетен"
 
-#: src/ui_mainwindow.c:162
+#: src/ui_mainwindow.c:163
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1677,53 +1683,60 @@ msgstr ""
 "Маркиране като прочетени на всички избрани абонаменти или на всички "
 "абонаменти в избраната папка."
 
-#: src/ui_mainwindow.c:163
+#: src/ui_mainwindow.c:164
 msgid "Update All"
 msgstr "Осъвременяване на всички"
 
-#: src/ui_mainwindow.c:164
+#: src/ui_mainwindow.c:165
 msgid "Search"
 msgstr "Търсене"
 
-#: src/ui_mainwindow.c:164
+#: src/ui_mainwindow.c:165
 msgid "Search all feeds."
 msgstr "Търсене във всички абонаменти."
 
-#: src/ui_mainwindow.c:165
+#: src/ui_mainwindow.c:166
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:165
+#: src/ui_mainwindow.c:166
 msgid "Edit preferences."
 msgstr "Промяна на настройките."
 
-#: src/ui_mainwindow.c:186
+#: src/ui_mainwindow.c:187
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
-"\">We started gathering requirements for 1.1. Please have a <a href=\"http://"
-"liferea.sourceforge.net/dokuwiki/doku.php?id=programrequirements1.1\">look</"
-"a> and make <a href=\"mailto:liferea-devel@lists.sourceforge.net"
-"\">proposals</a> if you miss features.</div><h2>Welcome to Liferea</"
-"h2><p>The left pane contains the feed list where you can add new "
-"subscriptions and select subscriptions to read their headlines. The right "
-"side either displays a list of the headlines of the selected subscription "
-"and a pane to view the selected headline or all headlines at once if "
-"condensed mode is selected.</p><h3>Basic Actions</h3><ul><li><p><b>Add "
-"Subscription</b> - Creates a new subscription in the selected folder. To "
-"create a new subscription enter the feed URL or if you don't know it the URL "
-"of the website which provides the feed.</p></li><li><p><b>Update "
-"Subscription</b> - This will update the subscription you selected. You may "
-"want to do this if you want to immediatly check a subscription for updates. "
-"Usually it is adequate to rely on the auto updating according to the update "
-"interval of the subscription.</p></li><li><p><b>Update All</b> - This will "
-"update all your subscriptions at once. Again usually it is adequate to rely "
-"on the auto updating.</li><li><p><b>Edit Subscription Properties</b> - "
-"Sometimes you might want to change the update interval, title, "
-"authentication or caching properties of a subscription.</p></li></ul><p>To "
-"learn more about Liferea you should read the documentation provided in the "
-"help feed or in the <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</"
-"a> available at the <a href=\"http://liferea.sf.net\">project homepage</a>.</"
-"p>"
+"\">When Liferea starts for the first time it loads a localized default feed "
+"list. There are already default lists for English, French, German and "
+"Spanish. If you think you know a good set of default feeds for your language "
+"please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists."
+"sourceforge.net\">mailing list</a> and it will be included in the next "
+"release!</div>"
+msgstr ""
+
+#: src/ui_mainwindow.c:194
+#, fuzzy
+msgid ""
+"<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
+"can add new subscriptions and select subscriptions to read their headlines. "
+"The right side either displays a list of the headlines of the selected "
+"subscription and a pane to view the selected headline or all headlines at "
+"once if condensed mode is selected.</p><h3>Basic Actions</"
+"h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the "
+"selected folder. To create a new subscription enter the feed URL or if you "
+"don't know it the URL of the website which provides the feed.</p></"
+"li><li><p><b>Update Subscription</b> - This will update the subscription you "
+"selected. You may want to do this if you want to immediatly check a "
+"subscription for updates. Usually it is adequate to rely on the auto "
+"updating according to the update interval of the subscription.</p></"
+"li><li><p><b>Update All</b> - This will update all your subscriptions at "
+"once. Again usually it is adequate to rely on the auto updating.</"
+"li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
+"change the update interval, title, authentication or caching properties of a "
+"subscription.</p></li></ul><p>To learn more about Liferea you should read "
+"the documentation provided in the help feed or in the <a href=\"http://"
+"liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://"
+"liferea.sf.net\">project homepage</a>.</p>"
 msgstr ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black"
 "\">Започнахме да събираме желания за 1.1. Моля, <a href=\"http://liferea."
@@ -1750,11 +1763,11 @@ msgstr ""
 "прочетете документацията предоставена от абонамента за помощ или секцията с "
 "Често задаваните въпроси на страницата на програмата.</p>"
 
-#: src/ui_mainwindow.c:267
+#: src/ui_mainwindow.c:272
 msgid "Liferea is now online"
 msgstr "Liferea е включена"
 
-#: src/ui_mainwindow.c:270
+#: src/ui_mainwindow.c:275
 msgid "Liferea is now offline"
 msgstr "Liferea е в режим \"изключен\""
 
@@ -1779,15 +1792,18 @@ msgid "/_New"
 msgstr "/_Нов"
 
 #: src/ui_popup.c:85 src/ui_popup.c:95 src/ui_popup.c:104 src/ui_popup.c:112
-msgid "/_New/New _Subscription"
+#, fuzzy
+msgid "/_New/New _Subscription..."
 msgstr "/_Нов/Нов·_абонамент"
 
 #: src/ui_popup.c:86 src/ui_popup.c:96 src/ui_popup.c:105 src/ui_popup.c:113
-msgid "/_New/New F_older"
+#, fuzzy
+msgid "/_New/New F_older..."
 msgstr "/_Нов/_Нова папка"
 
 #: src/ui_popup.c:87 src/ui_popup.c:106
-msgid "/_Properties"
+#, fuzzy
+msgid "/_Properties..."
 msgstr "/_Настройки"
 
 #: src/ui_popup.c:88 src/ui_popup.c:107
@@ -1799,7 +1815,8 @@ msgid "/_Update Folder"
 msgstr "/_Осъвременяване на абонамента"
 
 #: src/ui_popup.c:97
-msgid "/_Rename Folder"
+#, fuzzy
+msgid "/_Rename Folder..."
 msgstr "/Преименуване на папката"
 
 #: src/ui_popup.c:98
@@ -1826,43 +1843,45 @@ msgstr "/Следващ непрочетен запис"
 msgid "/_Launch Item In Browser"
 msgstr "/Стартиране на записа в браузър"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:129
 msgid "/_Increase Text Size"
 msgstr "/_Увеличаване размера на текста"
 
-#: src/ui_popup.c:132
+#: src/ui_popup.c:130
 msgid "/_Decrease Text Size"
 msgstr "/_Намаляване размера на текста"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:134
 msgid "/_Copy Link Location"
 msgstr "/_Копиране адресът на записа"
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:135
 msgid "/_Launch Link In Browser"
 msgstr "/_Зареждане на връзката в браузър"
 
-#: src/ui_popup.c:138
-msgid "/_Subscribe"
+#: src/ui_popup.c:136
+#, fuzzy
+msgid "/_Subscribe..."
 msgstr "/Абониране"
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:141
 msgid "/_Work Offline"
 msgstr "/_Режим \"Изключен\""
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:142
 msgid "/_Update All"
 msgstr "/_Осъвременяване на всички"
 
-#: src/ui_popup.c:145
-msgid "/_Preferences"
+#: src/ui_popup.c:143
+#, fuzzy
+msgid "/_Preferences..."
 msgstr "/_Настройки"
 
-#: src/ui_popup.c:147
+#: src/ui_popup.c:145
 msgid "/_Show Window"
 msgstr "/_Показване на прозорец"
 
-#: src/ui_popup.c:148
+#: src/ui_popup.c:146
 msgid "/_Quit"
 msgstr "/_Спиране на програмата"
 
@@ -1904,7 +1923,7 @@ msgstr "Изчистване на таймерите за осъвременяв
 msgid "Searching for \"%s\""
 msgstr "Търсене за \"%s\""
 
-#: src/ui_search.c:96
+#: src/ui_search.c:95
 msgid "Please do a search first!"
 msgstr "Моля, първо направете търсене!"
 

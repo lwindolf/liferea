@@ -105,7 +105,7 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	tmp = item_new();
 	item_copy(ip, tmp);
 	feed_add_item(vp, tmp);
-	ui_itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
+	itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
 }
 
 /* used to remove a vfolder item copy from a vfolder */
@@ -134,6 +134,7 @@ static void vfolder_remove_item_copy(feedPtr vp, itemPtr ip) {
  * processing of removing vfolder rules.
  */
 static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
+	gboolean	found = FALSE;
 	GSList		*items;
 	itemPtr		tmp;
 
@@ -144,11 +145,15 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 		g_assert(NULL != tmp->fp);
 		if((ip->nr == tmp->nr) &&
 		   (ip->fp == tmp->sourceFeed)) {
-			vfolder_remove_item_copy(vp, tmp);
+			found = TRUE;
 			break;
 		}
+
 		items = g_slist_next(items);
 	}
+
+	if(found)	
+		vfolder_remove_item_copy(vp, tmp);
 }
 
 /** 
@@ -319,12 +324,7 @@ void vfolder_update_item(itemPtr ip) {
 					item_copy(ip, tmp);
 				} else {
 					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...",  ip->title, vp->title);
-
-					/* we cannot remove the item copy just now because 
-					   there maybe other state changes be done (e.g. 
-					   ui_itemlist_selection_changed might set read 
-					   and update status */
-					tmp->hidden = TRUE;	/* just hide the item copy */
+					itemlist_remove_item(tmp);
 				}
 				break;
 			}
@@ -343,7 +343,7 @@ void vfolder_update_item(itemPtr ip) {
 		}
 		iter = g_slist_next(iter);
 		
-		ui_itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
+		itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
 	}
 	
 	debug_exit("vfolder_update_item");

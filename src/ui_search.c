@@ -75,7 +75,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 		vfolder_add_rule(searchFeed, "exact", searchstring, TRUE);
 		vfolder_refresh(searchFeed);
 		ui_feedlist_select(NULL);
-		ui_itemlist_load((nodePtr)searchFeed);
+		itemlist_load((nodePtr)searchFeed);
 	}
 }
 
