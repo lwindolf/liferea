@@ -1,20 +1,38 @@
 <?xml version="1.0"?>
 <opml version="1.0">
   <head>
-    <title>Liferea Default Feed List (es)</title>
+    <title>Fuentes por defecto</title>
   </head>
   <body>
-    <outline text="Liferea Help">
-      <outline text="Online Help" type="rss" htmlUrl="http://liferea.sf.net/" xmlUrl="http://liferea.sf.net/help/help0.5.3_es.rdf" updateInterval="1440" noIncremental=""/>
-      <outline text="Liferea SF News" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental=""/>
+    <outline text="Ayuda de Liferea">
+      <outline text="Ayuda en línea" type="rss" htmlUrl="http://liferea.sf.net/" xmlUrl="http://liferea.sf.net/help/help0.5.3.rdf" updateInterval="1440" noIncremental=""/>
+      <outline text="Noticias de Liferea en SF.net" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental=""/>
     </outline>
-    <outline text="Example Feeds">
+    
+     <outline text="Fuentes de ejemplo (castellano)">
       <outline text="OSS">
         <outline text="Hispalinux" htmlUrl="http://www.hispalinux.es/" xmlUrl="http://www.hispalinux.es/rss" />
 	<outline text="Libertonia" htmlUrl="http://libertonia.escomposlinux.org/" xmlUrl="http://libertonia.escomposlinux.org/backend.rdf" />
 	<outline text="Diarios de Libertonia" htmlUrl="http://libertonia.escomposlinux.org//section/Diary" xmlUrl="http://libertonia.escomposlinux.org/diary.rdf" />
 	<outline text="Barrapunto" htmlUrl="http://barrapunto.com/" xmlUrl="http://backends.barrapunto.com/barrapunto.rss" />
 	<outline text="BulmaLUG" htmlUrl="http://bulma.net/" xmlUrl="http://bulma.net/xml.php" />
+      </outline>	
+    </outline>
+    
+    <outline text="Fuentes de ejemplo (inglés)">
+      <outline text="OSS">
+        <outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+        <outline text="Debian Planet" htmlUrl="http://www.debianplanet.net/" xmlUrl="http://www.debianplanet.net/module.php?mod=node&op=feed" />
+        <outline text="Debian Package a Day" htmlUrl="http://www.livejournal.com/users/debaday/" xmlUrl="http://www.livejournal.com/users/debaday/data/atom" />
+        <outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+        <outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+        <outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+        <outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+        <outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+        <outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+        <outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+        <outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+        <outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
       </outline>	
     </outline>
     <outline text="Unread" title="Unread" description="Unread" type="vfolder" htmlUrl="" xmlUrl="vfolder">

@@ -94,8 +94,10 @@ nodePtr ui_feedlist_get_selected() {
 folderPtr ui_feedlist_get_target_folder(int *pos) {
 	nodePtr		ptr = ui_feedlist_get_selected();
 	GtkTreeIter	*iter;
+	GtkTreePath 	*path;
+	gint		*indices;
 	
-	if (ptr == NULL) {
+	if(ptr == NULL) {
 		*pos = -1;
 		return NULL;
 	}
@@ -106,8 +108,8 @@ folderPtr ui_feedlist_get_target_folder(int *pos) {
 		*pos = -1;
 		return (folderPtr)ptr;
 	} else {
-		GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
-		gint *indices = gtk_tree_path_get_indices(path);
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
+		indices = gtk_tree_path_get_indices(path);
 		*pos = indices[gtk_tree_path_get_depth(path)-1] + 1;
 		gtk_tree_path_free(path);
 		return ui_feedlist_get_parent(ptr);
@@ -486,10 +488,10 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	int			pos;
 	folderPtr		parent;
 
-	if(filter_feeds_without_unread_headlines) {
+/*	if(filter_feeds_without_unread_headlines) {
 		ui_show_info_box(_("Please change back to unfiltered feed list mode to add subscriptions!"));
 		return;
-	}
+	}*/
 	
 	debug_enter("ui_feedlist_new_subscription");	
 	
