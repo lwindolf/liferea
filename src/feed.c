@@ -174,7 +174,7 @@ feedPtr feed_new(void) {
 	
 	fp = g_new0(struct feed, 1);
 
-	/* we dont allocate a request structure this is done
+	/* we don't allocate a request structure this is done
 	   during cache loading or first update! */
 	
 	fp->updateInterval = -1;

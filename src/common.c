@@ -378,7 +378,7 @@ time_t parseRFC822Date(gchar *date) {
 	if(NULL != (pos = g_utf8_strchr(date, -1, ',')))
 		date = ++pos;
 
-	/* we expect english month names, so we set the locale */
+	/* we expect English month names, so we set the locale */
 	oldlocale = g_strdup(setlocale(LC_TIME, NULL));
 	setlocale(LC_TIME, "C");
 	

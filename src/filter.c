@@ -31,7 +31,7 @@
    
 /* filter check function interface, the function require a item
    structure which it matches somehow against its values and
-   returns TRUE if the rule was fullfilled and FALSE if not.*/
+   returns TRUE if the rule was fulfilled and FALSE if not.*/
 typedef gboolean (*ruleCheckFunc)	(rulePtr rp, itemPtr ip);
 
 struct ruleCheckFunctionInfo {

@@ -92,7 +92,7 @@ void initConfig() {
 	/* the following code was copied from SnowNews and adapted to build
 	   a Liferea user agent... */
 	
-	/* Constuct the User-Agent string of Liferea. This is done here in program init,
+	/* Construct the User-Agent string of Liferea. This is done here in program init,
 	   because we need to do it exactly once and it will never change while the program
 	   is running. */
 	if (getenv("LANG") != NULL) {

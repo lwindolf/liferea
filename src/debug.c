@@ -5,7 +5,7 @@
  * Pan - A Newsreader for Gtk+
  * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
  *
- * Liferea specific adaptions
+ * Liferea specific adaptations
  * Copyright (C) 2004  Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify

@@ -38,14 +38,14 @@
 #define FST_PIE		6	/**< Atom/Echo/PIE */
 #define FST_OPML	7	/**< generic OPML */
 
-#define FST_VFOLDER	9	/**<sepcial type for VFolders */
+#define FST_VFOLDER	9	/**<special type for VFolders */
 
 #define FST_HELPFOLDER	50	/**< special tree list types to store help feeds */	
 #define FST_HELPFEED	51	/**< special type to allow updating of help feed url */
 
 #define FST_AUTODETECT	200	/**< special type to enforce type auto detection */
 
-/** macro to test wether a type is a ressource which is regularily updated */
+/** macro to test whether a type is a resource which is regularly updated */
 #define IS_FEED(type)		((FST_RSS == type) || \
 				 (FST_CDF == type) || \
 				 (FST_PIE == type) || \
@@ -53,10 +53,10 @@
 				 (FST_HELPFEED == type) || \
 				 (FST_AUTODETECT == type))
 
-/** macro to test wether a type is a ressource which not regularily updated */				 
+/** macro to test whether a type is a resource which not regularly updated */				 
 #define IS_DIRECTORY(type)	(FST_OCS == type)
 				 
-/** macro to test wether a type is a folder entry */
+/** macro to test whether a type is a folder entry */
 #define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
 
 /** macro to test if feed menu action can be applied to this entry */
@@ -76,7 +76,7 @@ typedef struct feed {
 	
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
 	
-	gpointer	icon;			/**< pointer to pixmap, if theres a favicon */
+	gpointer	icon;			/**< pointer to pixmap, if there is a favicon */
 		
 	/* feed properties needed to be saved */
 	gchar		*title;			/**< feed/channel title */
