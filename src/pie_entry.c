@@ -269,7 +269,6 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	/* after parsing we fill the infos into the itemPtr structure */
 	item_set_time(ip, i->time);
 	item_set_source(ip, i->source);
-	g_free(i->source);
 	item_set_read_status(ip, FALSE);
 	item_set_id(ip, i->tags[PIE_ENTRY_ID]);
 
