@@ -187,8 +187,11 @@ void download_init(void) {
 static void *download_thread_main(void *data) {
 	struct request	*request;
 
-	offline_cond = g_cond_new();
-	cond_mutex = g_mutex_new();
+	if(NULL == offline_cond)
+		offline_cond = g_cond_new();
+	if(NULL == cond_mutex)
+		cond_mutex = g_mutex_new();
+		
 	for(;;)	{	
 		/* block updating if we are offline */
 		if(!online) {
