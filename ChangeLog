@@ -15,7 +15,9 @@
 	* Fix crash when searching for favicons and autodetecting feeds
 	  using web sites with invalid HTML markup. (Nathan Conrad)
 	* ISO8601 date parsing bugfix. (Vincent Lefevre)
-	
+	* Fix crashes associated with the notification popup window.
+	  (Nathan Conrad)
+
 2005-01-15  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.9.0
