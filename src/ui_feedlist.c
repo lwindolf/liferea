@@ -122,23 +122,13 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 		return favicon;
 	}
 	
-	switch(fp->type) {
-		case FST_VFOLDER:
-			return icons[ICON_VFOLDER];
-		case FST_OPML:
-		case FST_OCS:
-				return icons[ICON_OCS];
-		case FST_AUTODETECT:
-		case FST_HELPFEED:
-		case FST_PIE:
-		case FST_RSS:			
-		case FST_CDF:
-		case FST_FEED:
-			return icons[ICON_AVAILABLE];
-		default:
-			debug0(DEBUG_GUI, "internal error! unknown entry type! cannot display appropriate icon!\n");
-			return icons[ICON_UNAVAILABLE];
-	}	
+	if (fp->fhp != NULL && fp->fhp->icon < MAX_ICONS) {
+		return icons[fp->fhp->icon];
+	}
+
+	debug0(DEBUG_GUI, "internal error! unknown entry type! cannot display appropriate icon!\n");
+	/* And default to the available icon.... */
+	return icons[ICON_AVAILABLE];
 }
 
 static void ui_feedlist_update_(GtkTreeIter *iter) {
@@ -602,14 +592,13 @@ void on_newbtn_clicked(GtkButton *button, gpointer user_data) {
 void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	gchar		*source;
 	GtkWidget 	*sourceentry;	
-	GtkWidget 	*titleentry, *typeoptionmenu;
+	GtkWidget 	*titleentry;
 	
 	g_assert(newdialog != NULL);
 	g_assert(propdialog != NULL);
 
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
 	titleentry = lookup_widget(propdialog, "feednameentry");
-	typeoptionmenu = lookup_widget(newdialog, "typeoptionmenu");
 		
 	source = g_strdup(gtk_entry_get_text(GTK_ENTRY(sourceentry)));
 	

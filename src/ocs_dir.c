@@ -547,6 +547,7 @@ feedHandlerPtr initOCSFeedHandler(void) {
 
 	/* prepare feed handler structure */
 	fhp->typeStr = "ocs";
+	fhp->icon = ICON_OCS;
 	fhp->feedParser	= ocs_parse;
 	fhp->checkFormat = ocs_format_check;
 	fhp->merge		= FALSE;

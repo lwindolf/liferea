@@ -107,9 +107,9 @@ typedef struct feed {
 typedef void 	(*feedParserFunc)		(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur);
 typedef gboolean (*checkFormatFunc) (xmlDocPtr doc, xmlNodePtr cur); /**< Returns true if correct format */
 
-// FIXME: remove this structure...
 typedef struct feedHandler {
 	const gchar *typeStr; /**< string representation of the feed type */
+	int icon; /**< Icon number used for available feeds/directories */
 	feedParserFunc	    feedParser;	/**< feed type parse function */
 	checkFormatFunc checkFormat;  /**< Parser for the feed type*/
 	gboolean		merge;		/**< flag if feed type supports merging */
