@@ -145,7 +145,15 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
 				       NULL, NULL, button, 0);
 	
 		return TRUE;
-	} else {	
+	/* or a middle button click */
+	} else if(button == 1) {
+		if(NULL != selectedURL) {	
+			ui_tabs_new(selectedURL, selectedURL);
+			return TRUE;
+		} else {
+			return FALSE;
+		}			
+	} else {
 		return FALSE;
 	}
 }
