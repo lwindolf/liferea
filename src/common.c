@@ -461,7 +461,7 @@ void initCachePath(void) {
 
 }
 
-gchar * getCachePath(void) {
+gchar * common_get_cache_path(void) {
 	
 	if(NULL == lifereaUserPath)
 		initCachePath();
@@ -472,7 +472,7 @@ gchar * getCachePath(void) {
 gchar * common_create_cache_filename( const gchar *folder, const gchar *key, const gchar *extension) {
 	gchar *filename;
 
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", getCachePath(),
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", common_get_cache_path(),
 	                           (folder != NULL) ? folder : "",
 	                           (folder != NULL) ? G_DIR_SEPARATOR_S : "",
 	                           key,

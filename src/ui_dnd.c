@@ -132,7 +132,7 @@ static void ui_dnd_URL_received(GtkWidget *mainwindow, GdkDragContext *context, 
 	g_return_if_fail (data->data != NULL);
 		
 	if((data->length >= 0) && (data->format == 8)) {
-		/* extra handling to accept multiple drops */	
+		/* extra handling to accept multiple drops (same code in ui_feedlist.c) */	
 		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(0 != strlen(tmp2))

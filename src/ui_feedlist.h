@@ -174,6 +174,12 @@ void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
 gboolean ui_feedlist_auto_update(void *data);
 
 /**
+ * timeout callback to trigger the new subscription fifo
+ * checking 
+ */
+gboolean ui_feedlist_check_subscription_fifo(void *data);
+
+/**
  * Prompt the user for confirmation of a folder or feed, and
  * recursively remove the feed or folder if the user accepts. This
  * function blocks does not block, so the folder/feeds will not have

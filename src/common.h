@@ -77,7 +77,7 @@ gchar *createRFC822Date(const time_t *time);
    maybe gchar * formatDate(time_t, gchar *format) */
 gchar * formatDate(time_t t);
 
-gchar *	getCachePath(void);
+gchar *	common_get_cache_path(void);
 gchar * common_create_cache_filename( const gchar *folder, const gchar *key, const gchar *extension);
 
 /**

@@ -28,7 +28,6 @@
 #define _UI_QUEUE_H
  
 #include <glib.h>
-#include <gtk/gtk.h>
 
 /* GUI callback queue methods */
 void	ui_queue_init(void);

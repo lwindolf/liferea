@@ -126,6 +126,8 @@ void ui_init(gboolean startIconified) {
 		/* default, which is to use the lastPoll times, does not need any actions here. */;
 	}
 	
+	/* setup 5 second timer for external subscription FIFO checking */
+	g_timeout_add(5*1000, ui_feedlist_check_subscription_fifo, NULL);
 	/* setup one minute timer for automatic updating, and try updating now */
  	g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
 	ui_feedlist_auto_update(NULL);

@@ -100,14 +100,14 @@ static gboolean main_lock() {
 	if (gethostname(hostname, 256) == -1)
 		return -2; /* Skip locking if this happens, which it should not.... */
 	hostname[255] = '\0';
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock-%s:%d", getCachePath(), hostname, getpid());
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock-%s:%d", common_get_cache_path(), hostname, getpid());
 	retval = fd = open(filename, O_CREAT|O_EXCL, S_IRUSR | S_IWUSR);
 	if (fd == -1) {
 		g_free(filename);
 		return -2;
 	}
 	
-	filename2 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", getCachePath());
+	filename2 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", common_get_cache_path());
 	if (-1 == symlink(filename, filename2)) {
 		if (errno == EEXIST) {
 			if ((len = readlink(filename2, tmp, 299)) == -1)
@@ -159,7 +159,7 @@ static gboolean main_lock() {
 static void main_unlock() {
 	gchar *filename;
 	
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", getCachePath());
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", common_get_cache_path());
 	unlink(filename);
 	g_free(filename);
 }
@@ -171,8 +171,9 @@ int main(int argc, char *argv[]) {
 	gint		i;
 	GtkWidget	*dialog;
 #ifdef USE_SM
-     gchar *opt_session_arg = NULL, *opt_config_dir_arg = NULL;
+	gchar *opt_session_arg = NULL, *opt_config_dir_arg = NULL;
 #endif
+
 #ifdef ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");

@@ -478,10 +478,10 @@ void conf_feedlist_save() {
 		return;
 
 	debug0(DEBUG_CONF, "Saving feedlist");
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S"feedlist.opml~", getCachePath());
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S"feedlist.opml~", common_get_cache_path());
 
 	if(0 == export_OPML_feedlist(filename, TRUE)) {
-		filename_real = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml", getCachePath());
+		filename_real = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml", common_get_cache_path());
 		if(rename(filename, filename_real) < 0)
 			g_warning(_("Error renaming %s to %s\n"), filename, filename_real);
 		g_free(filename_real);

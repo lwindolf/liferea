@@ -45,8 +45,8 @@ static GModule *handle;
 extern GtkWidget *mainwindow;
 
 extern char	*proxyname;
-extern char *proxyusername;
-extern char *proxypassword;
+extern char	*proxyusername;
+extern char	*proxypassword;
 extern int	proxyport;
 
 /* -------------------------------------------------------------------- */
@@ -250,7 +250,7 @@ static void ui_htmlview_write_css(gchar **buffer, gboolean padded) {
 		g_free(tmp);
 	}
 
-	styleSheetFile = g_strdup_printf("%s/liferea.css", getCachePath());
+	styleSheetFile = g_strdup_printf("%s/liferea.css", common_get_cache_path());
 
 	if (g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
 		addToHTMLBuffer(buffer, tmp);
@@ -348,18 +348,17 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 }
 
 gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
-	GError  *error = NULL;
-	gchar   *cmd, *tmp;
-	gint status;
-	gboolean done = FALSE;
-	
+	GError		*error = NULL;
+	gchar		*cmd, *tmp;
+	gint		status;
+	gboolean	done = FALSE;	
 	
 	cmd = prefs_get_browser_remotecmd();
 
-	if (cmd != NULL) {
-		if(NULL == strstr(cmd, "%s")) { /* If there is no %s, then just append the URL */
-			tmp = g_strdup_printf("%s \"%s\"", cmd, uri);
-		} else
+	if(cmd != NULL) {
+		if(NULL == strstr(cmd, "%s")) /* If there is no %s, then just append the URL */
+			tmp = g_strdup_printf("%s %s", cmd, uri);
+		else
 			tmp = strreplace(cmd, "%s", uri);
 		g_free(cmd);
 		debug1(DEBUG_GUI, "Running the browser-remote command '%s'", tmp);
@@ -375,12 +374,12 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 		g_free(tmp);
 	}
 	
-	if (!done) {
+	if(!done) {
 		cmd = prefs_get_browser_cmd();
 		g_assert(cmd != NULL);
-		if(NULL == strstr(cmd, "%s")) { /* If there is no %s, then just append the URL */
+		if(NULL == strstr(cmd, "%s")) /* If there is no %s, then just append the URL */
 			tmp = g_strdup_printf("%s \"%s\"", cmd, uri);
-		} else
+		else
 			tmp = strreplace(cmd, "%s", uri);
 		g_free(cmd);
 		debug1(DEBUG_GUI, "Running the browser command '%s'", tmp);

@@ -18,6 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include <errno.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include "guitreemodelfilter.h"
@@ -631,8 +636,8 @@ static void ui_feedlist_check_update_counter(feedPtr fp) {
 }
 
 gboolean ui_feedlist_auto_update(void *data) {
-	debug_enter("ui_feedlist_auto_update");
 
+	debug_enter("ui_feedlist_auto_update");
 	if(download_is_online()) {
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)ui_feedlist_check_update_counter);
 	} else {
@@ -640,5 +645,54 @@ gboolean ui_feedlist_auto_update(void *data) {
 	}
 	debug_exit("ui_feedlist_auto_update");
 
+	return TRUE;
+}
+
+#define	BUFSIZE		256
+
+gboolean ui_feedlist_check_subscription_fifo(void *data) {
+	int	fd, result, count;
+	gchar	*filename, *tmp, *buffer = NULL;
+	
+	debug_enter("ui_feedlist_check_subscription_fifo");
+	
+	if(getBooleanConfValue(DISABLE_SUBSCRIPTION_PIPE))
+		return FALSE;
+	
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", common_get_cache_path(), "new_subscription");
+	result = mkfifo(filename, 0666);	
+	if((result == -1) && (errno != EEXIST)) {
+		g_warning("Error creating the named pipe \"%s\". Won't do more checks on this pipe...\n", filename);
+		g_free(filename);
+		return FALSE;
+	}
+
+	if(-1 != (fd = open(filename, O_RDONLY | O_NONBLOCK))) {
+		tmp = g_new0(gchar, BUFSIZE + 1);
+		/* read everything available */
+		while(0 != (count = read(fd, tmp, BUFSIZE))) {
+
+			tmp[count] = 0;
+			addToHTMLBuffer(&buffer, tmp);
+		}
+		close(fd);
+		g_free(tmp);
+		
+		if(NULL != buffer) {
+			/* (duplicate to the code in ui_dnd.c) */
+			while((tmp = strsep(&buffer, "\n\r"))) {
+				if(0 != strlen(tmp))
+					ui_feedlist_new_subscription(g_strdup(tmp), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+			}
+			g_free(buffer);
+		}
+	} else {
+		g_warning("Error opening the named pipe \"%s\" for reading. Won't do more checks on this pipe...\n", filename);
+		g_free(filename);
+		return FALSE;
+	}
+	g_free(filename);
+	debug_exit("ui_feedlist_check_subscription_fifo");	
+	
 	return TRUE;
 }

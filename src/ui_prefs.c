@@ -61,11 +61,11 @@ struct browser {
 };
 
 struct browser browsers[] = {
-	{"gnome", "Gnome Default Browser", "gnome-open \"%s\"", NULL, NULL,
+	{"gnome", "Gnome Default Browser", "gnome-open %s", NULL, NULL,
 	 NULL, NULL,
 	 NULL, NULL},
-	{"mozilla", "Mozilla", "mozilla \"%s\"",
-	 NULL, "mozilla -remote \"openURL(%s)\"",
+	{"mozilla", "Mozilla", "mozilla %s",
+	 NULL, "mozilla -remote openURL(%s)",
 	 NULL, "mozillax -remote 'openURL(%s,new-window)'",
 	 NULL, "mozilla -remote 'openURL(%s,new-tab)'"},
 	{"firefox", "Firefox","firefox \"%s\"",
