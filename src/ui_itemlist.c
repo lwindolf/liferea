@@ -670,10 +670,6 @@ void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
 	old_mode = ui_itemlist_get_two_pane_mode();
 	ui_mainwindow_set_three_pane_mode(!new_mode);
 
-	/* needed because switching does sometimes returns to the tree 
-	   view with a very disturbing horizontal scrolling state */
-	gtk_tree_view_scroll_to_point(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 0, 0);
-
 	if(new_mode != old_mode)
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")), new_mode);
 }

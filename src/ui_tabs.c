@@ -27,12 +27,6 @@
 extern GtkWidget	*mainwindow;
 static GHashTable	*tabHash = NULL;
 
-void ui_tabs_init(void) {
-
-	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
-	tabHash = g_hash_table_new(g_direct_hash, g_direct_equal);
-}
-
 static gboolean on_tab_url_entry_activate(GtkWidget *widget, gpointer user_data) {
 
 	ui_htmlview_launch_URL(GTK_WIDGET(user_data), (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)), FALSE);
@@ -52,6 +46,26 @@ static gboolean on_tab_close_clicked(GtkWidget *widget, GdkEvent *event, gpointe
 	g_hash_table_remove(tabHash, GINT_TO_POINTER(i));
 	
 	return TRUE;
+}
+
+static void on_tab_switched(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer user_data) {
+	GtkTreeViewColumn 	*column;
+	GtkTreePath		*path;
+		
+	/* needed because switching does sometimes returns to the tree 
+	   view with a very disturbing horizontal scrolling state */
+	if(0 == page_num) {
+		gtk_tree_view_get_cursor(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), &path, &column);
+		column = gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 1);
+		gtk_tree_view_set_cursor(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), path, column, FALSE);
+	}
+}
+
+void ui_tabs_init(void) {
+
+	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
+	g_signal_connect((gpointer)lookup_widget(mainwindow, "browsertabs"), "switch-page", G_CALLBACK(on_tab_switched), NULL);
+	tabHash = g_hash_table_new(g_direct_hash, g_direct_equal);
 }
 
 void ui_tabs_new(const gchar *url, const gchar *title) {
