@@ -1,7 +1,9 @@
 [Desktop Entry]
 Name=Liferea Feed Reader
+Name[de]=Liferea Feed Reader
 GenericName=Feed Reader
 Comment=Download and view feeds
+Comment[de]=Anzeigen von News-Feeds
 Exec=liferea
 Icon=liferea.png
 StartupNotify=false
@@ -9,4 +11,4 @@ Terminal=false
 Type=Application
 Encoding=UTF-8
 Categories=Application;Network;
-Version=0.9.4
+Version=0.5.1
