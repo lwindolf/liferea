@@ -1723,6 +1723,11 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 		setNumericConfValue(LAST_HPANE_POS, y);
 	}
 	
+	/* save window position */
+	gtk_window_get_position(GTK_WINDOW(mainwindow), &x, &y);
+	setNumericConfValue(LAST_WINDOW_X, x);
+	setNumericConfValue(LAST_WINDOW_Y, y);	
+
 	/* save window size */
 	gtk_window_get_size(GTK_WINDOW(mainwindow), &x, &y);
 	setNumericConfValue(LAST_WINDOW_WIDTH, x);

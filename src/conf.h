@@ -35,6 +35,8 @@
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
 #define DISABLE_MENUBAR			"/apps/liferea/disable-menubar"
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
+#define LAST_WINDOW_X			"/apps/liferea/last-window-x"
+#define LAST_WINDOW_Y			"/apps/liferea/last-window-y"
 #define LAST_WINDOW_WIDTH		"/apps/liferea/last-window-width"
 #define LAST_WINDOW_HEIGHT		"/apps/liferea/last-window-height"
 #define LAST_VPANE_POS			"/apps/liferea/last-vpane-pos"

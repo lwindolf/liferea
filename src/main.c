@@ -77,7 +77,12 @@ int i;
 
 	gtk_widget_show(mainwindow);
 			
-	/* FIXME: move to somewhere else :) */
+	/* load window position */
+	if((0 != getNumericConfValue(LAST_WINDOW_X)) && 
+	   (0 != getNumericConfValue(LAST_WINDOW_Y)))
+	   	gtk_window_move(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_X),
+					 		  getNumericConfValue(LAST_WINDOW_Y));
+
 	/* load window size */
 	if((0 != getNumericConfValue(LAST_WINDOW_WIDTH)) && 
 	   (0 != getNumericConfValue(LAST_WINDOW_HEIGHT)))
