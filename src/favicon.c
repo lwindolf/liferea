@@ -51,7 +51,7 @@ void favicon_load(feedPtr fp) {
 	
 	if(0 == stat((const char*)pngfilename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file (pngfilename, &error);
-		if (pixbuf) {
+		if (pixbuf != NULL) {
 			fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
 			g_object_unref(pixbuf);
 		} else { /* Error */

@@ -170,8 +170,10 @@ void item_free(itemPtr ip) {
 	}
 
 	g_free(ip->title);
-	g_free(ip->description);
 	g_free(ip->source);
+	g_free(ip->real_source_url);
+	g_free(ip->real_source_title);
+	g_free(ip->description);
 	g_free(ip->id);
 	metadata_list_free(ip->metadata);
 	/* FIXME: remove item from all assigned VFolders! */

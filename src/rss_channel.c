@@ -186,6 +186,10 @@ static gchar* parseTextInput(xmlNodePtr cur) {
 		addToHTMLBufferFast(&buffer, TEXT_INPUT_FORM_END);
 		addToHTMLBufferFast(&buffer, "</p>");
 	}
+	g_free(tiTitle);
+	g_free(tiDescription);
+	g_free(tiName);
+	g_free(tiLink);
 	return buffer;
 }
 

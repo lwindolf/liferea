@@ -160,6 +160,7 @@ static void main_unlock() {
 	
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", getCachePath());
 	unlink(filename);
+	g_free(filename);
 }
 
 int main(int argc, char *argv[]) {	
