@@ -108,6 +108,10 @@ key /apps/liferea/browser-module!\n\n"));
 			return FALSE;
 		}
 	}
+	
+	if(testmode)
+		g_module_close(handle);		
+	
 	return TRUE;
 }
 
