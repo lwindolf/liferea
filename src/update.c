@@ -153,7 +153,7 @@ gpointer download_request_new() {
 }
 
 void download_request_free(struct request *request) {
-
+	
 	debug_enter("update_request_free");
 	if(NULL != request) {
 		g_free(((struct request *)request)->source);
@@ -174,6 +174,9 @@ void download_init(void) {
 	requests = g_async_queue_new();
 	results = g_async_queue_new();
 	
+	offline_cond = g_cond_new();
+	cond_mutex = g_mutex_new();
+		
 	if(0 == (count = getNumericConfValue(UPDATE_THREAD_CONCURRENCY)))
 		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
 	
@@ -187,11 +190,6 @@ void download_init(void) {
 static void *download_thread_main(void *data) {
 	struct request	*request;
 
-	if(NULL == offline_cond)
-		offline_cond = g_cond_new();
-	if(NULL == cond_mutex)
-		cond_mutex = g_mutex_new();
-		
 	for(;;)	{	
 		/* block updating if we are offline */
 		if(!online) {
@@ -232,7 +230,7 @@ void download_set_online(gboolean mode) {
 	if((online = mode)) {
 		g_mutex_lock(cond_mutex);
 		g_cond_signal(offline_cond);
-                g_mutex_unlock(cond_mutex);
+		g_mutex_unlock(cond_mutex);
 	}
 }
 

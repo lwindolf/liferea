@@ -63,43 +63,65 @@
 #endif
 GtkWidget 	*mainwindow;
 
-static GtkWidget *htmlview_two;
-static GtkWidget *htmlview_three;
+static GtkWidget *htmlview = NULL;
+gfloat zoom;
 
 gboolean	itemlist_mode = TRUE;		/* TRUE means three pane, FALSE means two panes */
 
 GtkWidget *ui_mainwindow_get_active_htmlview() {
-     if (itemlist_mode == TRUE)
-          return htmlview_three;
-     else
-          return htmlview_two;
+	return htmlview;
+}
+
+static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+	if (event->type == GDK_KEY_PRESS &&
+	    event->state == 0 &&
+	    event->keyval == GDK_space) {
+		if(ui_htmlview_scroll() == FALSE)
+			on_next_unread_item_activate(NULL, NULL);
+		return TRUE;
+	}
+	return FALSE;
 }
 
 void ui_mainwindow_set_mode(gboolean threePane) {
      debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
-
-     if (threePane == TRUE)
-          gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
-     else {
+	
+     if (threePane == TRUE && (itemlist_mode == FALSE || htmlview == NULL)) {
+		if (htmlview != NULL)
+			gtk_widget_destroy(htmlview);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
+		htmlview = ui_htmlview_new();
+		gtk_widget_show(htmlview);
+		gtk_container_add(GTK_CONTAINER (lookup_widget(mainwindow, "viewportThreePaneHtml")), GTK_WIDGET(htmlview));
+		ui_htmlview_clear(htmlview);
+		ui_htmlview_set_zoom(htmlview, zoom);
+		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
+     } else if (threePane == FALSE && (itemlist_mode == TRUE || htmlview == NULL)) {
+		if (htmlview != NULL)
+			gtk_widget_destroy(htmlview);
           gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
+		htmlview = ui_htmlview_new();
+		gtk_widget_show(htmlview);
+		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "viewportTwoPaneHtml")), htmlview);
+		ui_htmlview_clear(htmlview);
+		ui_htmlview_set_zoom(htmlview, zoom);
+		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
      }
 	itemlist_mode = threePane;
 }
 
 void ui_mainwindow_zoom_in() {
-	gfloat zoom = ui_htmlview_get_zoom(htmlview_three);
+	gfloat zoom = ui_htmlview_get_zoom(htmlview);
 	zoom *= 1.2;
 	
-	ui_htmlview_set_zoom(htmlview_two, zoom);
-	ui_htmlview_set_zoom(htmlview_three, zoom);
+	ui_htmlview_set_zoom(htmlview, zoom);
 }
 
 void ui_mainwindow_zoom_out() {
-	gfloat zoom = ui_htmlview_get_zoom(htmlview_three);
+	gfloat zoom = ui_htmlview_get_zoom(htmlview);
 	zoom /= 1.2;
 	
-	ui_htmlview_set_zoom(htmlview_two, zoom);
-	ui_htmlview_set_zoom(htmlview_three, zoom);
+	ui_htmlview_set_zoom(htmlview, zoom);
 }
 
 GtkWidget* ui_mainwindow_new() {
@@ -132,34 +154,11 @@ GtkWidget* ui_mainwindow_new() {
 	return window;
 }
 
-static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
-	if (event->type == GDK_KEY_PRESS &&
-	    event->state == 0 &&
-	    event->keyval == GDK_space) {
-		if(ui_htmlview_scroll() == FALSE)
-			on_next_unread_item_activate(NULL, NULL);
-		return TRUE;
-	}
-	return FALSE;
-}
-
 void ui_mainwindow_finish(GtkWidget *window) {
 	gchar	*buffer = NULL;
 	
-	htmlview_three = ui_htmlview_new();
-	gtk_widget_show(htmlview_three);
-	gtk_container_add(GTK_CONTAINER (lookup_widget(window, "viewportThreePaneHtml")), GTK_WIDGET(htmlview_three));
-	ui_htmlview_clear(htmlview_three);
-	ui_htmlview_set_zoom(htmlview_three, getNumericConfValue(LAST_ZOOMLEVEL)/100.);
-	g_signal_connect(G_OBJECT(htmlview_three), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
-	
-
-	htmlview_two = ui_htmlview_new();
-	gtk_widget_show(htmlview_two);
-	gtk_container_add(GTK_CONTAINER(lookup_widget(window, "viewportTwoPaneHtml")), htmlview_two);
-	ui_htmlview_clear(htmlview_two);
-	ui_htmlview_set_zoom(htmlview_two, getNumericConfValue(LAST_ZOOMLEVEL)/100.);
-	g_signal_connect(G_OBJECT(htmlview_two), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
+	zoom = getNumericConfValue(LAST_ZOOMLEVEL)/100.;
+	ui_htmlview_set_zoom(htmlview, zoom);
 	
 	ui_htmlview_start_output(&buffer, FALSE);
 	addToHTMLBuffer(&buffer, _("<h2>Welcome to Liferea</h2>"
@@ -188,6 +187,10 @@ void ui_mainwindow_finish(GtkWidget *window) {
 						  "homepage.</p>"));
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
+	
+	zoom = getNumericConfValue(LAST_ZOOMLEVEL)/100.;
+	ui_htmlview_set_zoom(htmlview, zoom);
+	
 	g_free(buffer);
 }
 
@@ -264,8 +267,7 @@ void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 static void ui_mainwindow_toggle_condensed_view(void) {
 	
-	itemlist_mode = !itemlist_mode;
-	ui_mainwindow_set_mode(itemlist_mode);
+	ui_mainwindow_set_mode(!itemlist_mode);
 	ui_itemlist_display();
 }
 
@@ -367,7 +369,6 @@ void ui_mainwindow_restore_position() {
  */
 
 void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
-	ui_htmlview_set_zoom(htmlview_three, getNumericConfValue(LAST_ZOOMLEVEL)/100.);
 	on_newbtn_clicked(NULL, NULL);
 }
 

@@ -251,11 +251,13 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	/* save itemlist properties */
 	setBooleanConfValue(LAST_ITEMLIST_MODE, !itemlist_mode);
 	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100.*ui_htmlview_get_zoom(ui_mainwindow_get_active_htmlview())));
-		
+
+	gtk_widget_destroy(mainwindow);
+	ui_htmlview_deinit();
+
 	gtk_main_quit();
 	debug_exit("on_quit");
 	
-	exit(0);	/* temporary workaround for exit problem, it just works :-) */
 	return FALSE;
 }
 

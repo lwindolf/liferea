@@ -287,13 +287,13 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
 /* ---------------------------------------------------------------------------- */
 
 /* adds a differences diff to the actual zoom level */
-void change_zoom_level(GtkWidget *scrollpane, gfloat zoomLevel) {
+static void change_zoom_level(GtkWidget *scrollpane, gfloat zoomLevel) {
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 }
 
 /* returns the currently set zoom level */
-gfloat get_zoom_level(GtkWidget *scrollpane) {
+static gfloat get_zoom_level(GtkWidget *scrollpane) {
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	
 	return html_view_get_magnification(HTML_VIEW(htmlwidget));
@@ -302,7 +302,7 @@ gfloat get_zoom_level(GtkWidget *scrollpane) {
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *base) {
+static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *base) {
 
 	/* HTML widget can be used only from GTK thread */	
 	if(gnome_vfs_is_primary_thread()) {
@@ -378,9 +378,13 @@ static void gtkhtml2_init() {
 	gnome_vfs_init();
 }
 
-void launch_url(GtkWidget *widget, const gchar *url) { g_warning("should never be called!"); link_clicked(NULL, url, NULL); }
+static void gtkhtml2_deinit() {
+	gnome_vfs_shutdown();
+}
 
-gboolean launch_inside_possible(void) { return FALSE; }
+static void launch_url(GtkWidget *widget, const gchar *url) { g_warning("should never be called!"); link_clicked(NULL, url, NULL); }
+
+static gboolean launch_inside_possible(void) { return FALSE; }
 
 /* -------------------------------------------------------------------- */
 /* other functions... 							*/
@@ -433,6 +437,7 @@ static htmlviewPluginInfo gtkhtml2Info = {
 	HTMLVIEW_API_VERSION,
 	"GtkHTML2",
 	gtkhtml2_init,
+	gtkhtml2_deinit,
 	gtkhtml2_new,
 	write_html,
 	launch_url,

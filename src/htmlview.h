@@ -92,7 +92,7 @@
 
 /*@}*/
 
-#define HTMLVIEW_API_VERSION 0
+#define HTMLVIEW_API_VERSION 1
 
 typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
 
@@ -101,7 +101,8 @@ struct htmlviewPluginInfo_ {
 	char 		*name;
 	
 	void 		(*init)			(void);
-	
+	void 		(*deinit) 		(void);
+
 	GtkWidget*	(*create)		();
 	//void		(*destroy)		(GtkWidget *widget);
 	void		(*write)		(GtkWidget *widget, const gchar *string, const gchar *base);
@@ -133,6 +134,12 @@ struct browserModule {
  * one of the other available modules.
  */
 void	ui_htmlview_init(void);
+
+/**
+ * Close/free any resources that were allocated when ui_htmlview_init
+ * was called.
+ */
+void ui_htmlview_deinit();
 
 /** 
  * Function to set up the html view widget for the three

@@ -154,7 +154,7 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
  * to keep the new document from being loaded. The uri argument is the
  * uri that's going to be loaded.
  */
-gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
+static gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
 
 	if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) {
 		return FALSE;
@@ -164,7 +164,7 @@ gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
 	}
 }
 
-void mozembed_destroy_brsr_cb (GtkMozEmbed *embed, gpointer data) {
+static void mozembed_destroy_brsr_cb (GtkMozEmbed *embed, gpointer data) {
 
 }
 
@@ -238,6 +238,10 @@ static void mozilla_init() {
 	gtk_moz_embed_push_startup();
 }
 
+static void mozilla_deinit() {
+	gtk_moz_embed_pop_startup();
+}
+
 /* launches the specified URL */
 static void launch_url(GtkWidget *widget, const gchar *url) {
 
@@ -250,6 +254,7 @@ static htmlviewPluginInfo mozillaInfo = {
 	HTMLVIEW_API_VERSION,
 	"Mozilla",
 	mozilla_init,
+	mozilla_deinit,
 	mozilla_create,
 	mozilla_write,
 	launch_url,

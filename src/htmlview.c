@@ -176,6 +176,10 @@ void ui_htmlview_init(void) {
 		g_error(_("Sorry, I was not able to load any installed browser modules! Try the --debug-all option to get debug information!"));
 }
 
+void ui_htmlview_deinit() {
+	(htmlviewInfo->deinit)();
+}
+
 /* -------------------------------------------------------------------- */
 /* browser module interface functions					*/
 /* -------------------------------------------------------------------- */
