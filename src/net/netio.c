@@ -58,7 +58,6 @@
 extern char *proxyname;			/* Hostname of proxyserver. */
 extern unsigned short proxyport;	/* Port on proxyserver to use. */
 extern char *useragent;
-int connectresult;
 
 /* Connect network sockets.
  *
@@ -67,7 +66,7 @@ int connectresult;
  *			 3	couldn't connect
  *                 	-1	aborted by user
  */
-int NetConnect (int * my_socket, char * host, int httpproto, int suppressoutput) {
+int NetConnect (int * my_socket, int * connectresult, char * host, int httpproto, int suppressoutput) {
 	int retval;
 	struct sockaddr_in address;	
 	struct hostent *remotehost;
@@ -112,11 +111,11 @@ int NetConnect (int * my_socket, char * host, int httpproto, int suppressoutput)
 		memcpy (&address.sin_addr.s_addr, remotehost->h_addr_list[0], remotehost->h_length);
 			
 		/* Connect socket. */
-		connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
+		*connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
 		
 		/* Check if we're already connected.
 		   BSDs will return 0 on connect even in nonblock if connect was fast enough. */
-		if (connectresult != 0) {
+		if (*connectresult != 0) {
 			/* If errno is not EINPROGRESS, the connect went wrong. */
 			if (errno != EINPROGRESS) {
 				close (*my_socket);
@@ -125,10 +124,10 @@ int NetConnect (int * my_socket, char * host, int httpproto, int suppressoutput)
 			}
 			
 			/* We get errno of connect back via getsockopt SO_ERROR (into connectresult). */
-			len = sizeof(connectresult);
-			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, &connectresult, &len);
+			len = sizeof(*connectresult);
+			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, connectresult, &len);
 			
-			if (connectresult != 0) {
+			if (*connectresult != 0) {
 				close (*my_socket);
 				free (realhost);
 				return 3;
@@ -149,21 +148,21 @@ int NetConnect (int * my_socket, char * host, int httpproto, int suppressoutput)
 		memcpy (&address.sin_addr.s_addr, remotehost->h_addr_list[0], remotehost->h_length);
 		
 		/* Connect socket. */
-		connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
+		*connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
 		
 		/* Check if we're already connected.
 		   BSDs will return 0 on connect even in nonblock if connect was fast enough. */
-		if (connectresult != 0) {
+		if (*connectresult != 0) {
 			if (errno != EINPROGRESS) {
 				close (*my_socket);
 				free (realhost);
 				return 3;
 			}
 			
-			len = sizeof(connectresult);
-			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, &connectresult, &len);
+			len = sizeof(*connectresult);
+			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, connectresult, &len);
 			
-			if (connectresult != 0) {
+			if (*connectresult != 0) {
 				close (*my_socket);
 				free (realhost);
 				return 3;
@@ -187,7 +186,7 @@ int NetConnect (int * my_socket, char * host, int httpproto, int suppressoutput)
  * Returns NULL pointer if no data was received. Check httpstatus == 304,
  * otherwise an error occured.
  */
-char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cur_ptr, char * authdata, int httpproto, int suppressoutput) {
+char * NetIO (int * my_socket, int * connectresult, char * host, char * url, struct feed_request * cur_ptr, char * authdata, int httpproto, int suppressoutput) {
 	char netbuf[4096];			/* Network read buffer. */
 	char *body;					/* XML body. */
 	int length;
@@ -444,7 +443,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 						fclose (stream);
 						
 						/* Reconnect to server. */
-						if ((NetConnect (my_socket, newhost, httpproto, suppressoutput)) != 0) {
+						if ((NetConnect (my_socket, connectresult, newhost, httpproto, suppressoutput)) != 0) {
 							/* Add error handling/reporting. */
 							return NULL;
 						}
@@ -595,7 +594,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 			
 			/* Close current connection and reconnect to server. */
 			fclose (stream);
-			if ((NetConnect (my_socket, host, httpproto, suppressoutput)) != 0) {
+			if ((NetConnect (my_socket, connectresult, host, httpproto, suppressoutput)) != 0) {
 				/* Add error handling/reporting. */
 				return NULL;
 			}
@@ -692,6 +691,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
    Set suppressoutput=1 to disable ncurses calls. */
 char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutput) {
 	int my_socket = 0;
+	int connectresult = 0;
 	int result;
 	char *host;					/* Needs to freed. */
 	char *tmphost;
@@ -748,7 +748,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 		url[strlen(url)-1] = '\0';
 	}
 	
-	result = NetConnect (&my_socket, host, httpproto, suppressoutput);
+	result = NetConnect (&my_socket, &connectresult, host, httpproto, suppressoutput);
 	
 	switch (result) {
 		case 1:
@@ -788,7 +788,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 			break;
 	}
 	
-	returndata = NetIO (&my_socket, host, url, cur_ptr, authdata, httpproto, suppressoutput);
+	returndata = NetIO (&my_socket, &connectresult, host, url, cur_ptr, authdata, httpproto, suppressoutput);
 	
 	/* url will be freed in the calling function. */
 	free (freeme);		/* This is *host. */
