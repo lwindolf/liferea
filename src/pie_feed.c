@@ -231,7 +231,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 			error = 1;
 			break;			
 		}
-
+		
 		time(&(cp->time));
 
 		/* parse feed contents */
@@ -259,7 +259,21 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 				cur = cur->next;		
 				continue;
 			}
-
+			
+			if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
+				/* 0.2 link : element content is the link
+				   0.3 link : rel, type and href attribute */
+				if(NULL != (tmp = xmlGetProp(cur, BAD_CAST"rel"))) {
+					if(!xmlStrcmp(tmp, BAD_CAST"alternate")) {
+						g_free(cp->tags[PIE_FEED_LINK]);
+						cp->tags[PIE_FEED_LINK] = CONVERT(xmlGetProp(cur, BAD_CAST"href"));
+					}
+					xmlFree(tmp);
+					cur = cur->next;
+					continue;
+				} /* else, it is a 0.2 link, which can be processed below */
+			}
+			
 			/* check namespace and if we found one, do namespace parsing */
 			if(NULL != cur->ns) {
 				if (NULL != cur->ns->prefix) {
