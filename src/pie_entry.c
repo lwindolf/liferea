@@ -269,7 +269,7 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	ip->time = i->time;
 	ip->source = i->source;
 	ip->readStatus = FALSE;
-	ip->id = i->tags[PIE_ENTRY_ID];
+	ip->id = g_strdup(i->tags[PIE_ENTRY_ID]);
 
 	/* some postprocessing */
 	if(NULL != i->tags[PIE_ENTRY_TITLE])

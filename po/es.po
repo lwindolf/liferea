@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-03 01:45+0200\n"
+"POT-Creation-Date: 2004-05-04 19:15+0200\n"
 "PO-Revision-Date: 2004-04-28 12:14+0200\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -121,43 +121,43 @@ msgstr ""
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "El espacio RSS %s no estaba configurado. Voy a activarlo.\n"
 
-#: src/export.c:273 src/export.c:275
+#: src/export.c:275 src/export.c:277
 #, fuzzy, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Error XML mientras se leía el caché del archivo \"%s\". No se pudo cargar."
 
-#: src/export.c:279 src/export.c:281
+#: src/export.c:281 src/export.c:283
 #, fuzzy, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "El documento OPML estaba vacío y no debería estarlo."
 
-#: src/export.c:289 src/export.c:291
+#: src/export.c:291 src/export.c:293
 #, fuzzy, c-format
 msgid "\"%s\" is no valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" no es un archivo de caché válido. No se pudo leer el archivo OPML."
 
-#: src/export.c:363 src/export.c:376
+#: src/export.c:365 src/export.c:378
 msgid "internal error! could not find file dialog select button!"
 msgstr ""
 "Error interno. No se ha podido encontrar el botón de selección del navegador "
 "de archivos."
 
-#: src/export.c:399
+#: src/export.c:401
 msgid "Error while exporting feed list!"
 msgstr "Ocurrió un error mientras se exportaba la lista de fuentes."
 
-#: src/export.c:401
+#: src/export.c:403
 msgid "Feed List exported!"
 msgstr "La lista de fuentes se ha exportado con éxito."
 
-#: src/export.c:417
+#: src/export.c:419
 msgid "imported feed list"
 msgstr "Lista de fuentes importada."
 
-#: src/export.c:423
+#: src/export.c:425
 msgid "internal error! could not get a new folder key!"
 msgstr "Error interno. No se ha podido obtener una nueva ID de carpeta."
 
@@ -224,76 +224,82 @@ msgstr "\"%s\" tiene %d elementos nuevos."
 msgid "\"%s\" has not changed since last update."
 msgstr "La URL de \"%s\" no ha cambiado desde la última actualización"
 
-#: src/feed.c:654
+#: src/feed.c:627
+msgid ""
+"Could not detect the type of this feed! Please check if the URL really "
+"points to a ressource provided in one of the supported syndication formats!"
+msgstr ""
+
+#: src/feed.c:662
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" actualizado..."
 
-#: src/feed.c:660
+#: src/feed.c:668
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada."
 
-#: src/feed.c:670
+#: src/feed.c:680
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "Lo siento, \"%s\" no está disponible"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:763 src/net/netio.c:478
+#: src/feed.c:773 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "Esta fuente ya no existe. Por favor, elimínala."
 
-#: src/feed.c:764
+#: src/feed.c:774
 msgid "Payment Required"
 msgstr "Es necesario pagar"
 
-#: src/feed.c:765
+#: src/feed.c:775
 msgid "Access Forbidden"
 msgstr "Acceso denegado"
 
-#: src/feed.c:766
+#: src/feed.c:776
 msgid "Ressource Not Found"
 msgstr "Recurso no disponible"
 
-#: src/feed.c:767
+#: src/feed.c:777
 msgid "Method Not Allowed"
 msgstr "Método inválido"
 
-#: src/feed.c:768
+#: src/feed.c:778
 msgid "Not Acceptable"
 msgstr "No aceptable"
 
-#: src/feed.c:769
+#: src/feed.c:779
 msgid "Proxy Authentication Required"
 msgstr "Se necesita autentificación proxy"
 
-#: src/feed.c:770
+#: src/feed.c:780
 msgid "Request Time-Out"
 msgstr "Expiró el plazo"
 
-#: src/feed.c:771
+#: src/feed.c:781
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Esta fuente ya no existe. Por favor, elimínala."
 
-#: src/feed.c:777
+#: src/feed.c:787
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr "Fuente no disponible: El servidor indicó una redirección inválida"
 
-#: src/feed.c:778
+#: src/feed.c:788
 msgid "Client Error"
 msgstr "Error del cliente"
 
-#: src/feed.c:779
+#: src/feed.c:789
 msgid "Server Error"
 msgstr "Error del servidor"
 
-#: src/feed.c:780
+#: src/feed.c:790
 msgid "(unknown error class)"
 msgstr "(error desconocido)"
 
-#: src/feed.c:802
+#: src/feed.c:812
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
@@ -301,7 +307,7 @@ msgstr ""
 "Se encontró un problema al leer la suscripción. Por favor, comprueba la URL "
 "y la salida por consola"
 
-#: src/feed.c:930
+#: src/feed.c:940
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
@@ -340,7 +346,10 @@ msgid "trying to load browser module %s (%s)\n"
 msgstr "Intentando cargar el módulo de navegador %s (%s)\n"
 
 #: src/htmlview.c:195
-msgid "Sorry, I was not able to load any installed browser modules!"
+#, fuzzy
+msgid ""
+"Sorry, I was not able to load any installed browser modules! Try the --debug-"
+"all option to get debug information!"
 msgstr "Lo siento, no se pudo cargar ningún módulo de navegador"
 
 #: src/htmlview.c:318
@@ -1292,54 +1301,48 @@ msgstr "Fallo al lanzar el navegador: %s"
 msgid "starting: \"%s\""
 msgstr "Lanzando: \"%s\""
 
-#: src/ui_feedlist.c:141 src/ui_folder.c:374
-msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr ""
-"Error interno: Tipo de entrada desconocido. No se ha podido mostrar un icono "
-"apropiado.\n"
-
-#: src/ui_feedlist.c:318 src/ui_itemlist.c:607
+#: src/ui_feedlist.c:317 src/ui_itemlist.c:607
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Error interno. No se pudo obtener la selección de vista en árbol de las "
 "fuentes.\n"
 
-#: src/ui_feedlist.c:330 src/ui_feedlist.c:347 src/ui_feedlist.c:390
-#: src/ui_feedlist.c:391
+#: src/ui_feedlist.c:329 src/ui_feedlist.c:346 src/ui_feedlist.c:389
+#: src/ui_feedlist.c:390
 msgid "You have to select a feed entry!"
 msgstr "Por favor, elige una fuente de noticias."
 
-#: src/ui_feedlist.c:355
+#: src/ui_feedlist.c:354
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
 
-#: src/ui_feedlist.c:359
+#: src/ui_feedlist.c:358
 msgid "Deleting entry"
 msgstr "Borrando entrada"
 
-#: src/ui_feedlist.c:424
+#: src/ui_feedlist.c:423
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr "El proveedor de esta fuente sugiere actualizarla cada %d minutos"
 
-#: src/ui_feedlist.c:426
+#: src/ui_feedlist.c:425
 msgid "This feed specifies no default update interval."
 msgstr "Esta fuente no tiene definido ningún intervalo de actualización."
 
-#: src/ui_feedlist.c:472
+#: src/ui_feedlist.c:471
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 "Error interno. No se eligió ninguna fuente, pero se intentaron cambiar sus "
 "propiedades...\n"
 
-#: src/ui_feedlist.c:504
+#: src/ui_feedlist.c:503
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
 
-#: src/ui_feedlist.c:521
+#: src/ui_feedlist.c:520
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1354,7 +1357,7 @@ msgstr ""
 "Puedes intentarla bajar de nuevo, o eliminarla desde el menú contextual de "
 "la lista de fuentes\n"
 
-#: src/ui_feedlist.c:586
+#: src/ui_feedlist.c:585
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 "Error interno. Se ha seleccionado un tipo inválido. ¡Esto no debería estar "
@@ -1381,6 +1384,12 @@ msgstr "Lo siento, para poder borrar una carpeta, ésta tiene que estar vacía."
 #, fuzzy
 msgid "<i>(empty)</i>"
 msgstr "(vacío)"
+
+#: src/ui_folder.c:374
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr ""
+"Error interno: Tipo de entrada desconocido. No se ha podido mostrar un icono "
+"apropiado.\n"
 
 #: src/ui_itemlist.c:285
 msgid "Date"

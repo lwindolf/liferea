@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.7d\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-03 01:45+0200\n"
+"POT-Creation-Date: 2004-05-04 19:15+0200\n"
 "PO-Revision-Date: 2004-04-30 20:53-0400\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -110,39 +110,39 @@ msgstr ""
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS 命名空間 %s 尚未設定! 啟動中...\n"
 
-#: src/export.c:273 src/export.c:275
+#: src/export.c:275 src/export.c:277
 #, fuzzy, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "讀入快取檔案 \"%s\" 時發生 XML 錯誤 ! 無法讀入快取檔案!"
 
-#: src/export.c:279 src/export.c:281
+#: src/export.c:281 src/export.c:283
 #, fuzzy, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "空白文件! OPML 檔案不該空白..."
 
-#: src/export.c:289 src/export.c:291
+#: src/export.c:291 src/export.c:293
 #, fuzzy, c-format
 msgid "\"%s\" is no valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" 不是有效的快取檔! 無法讀入 OPML 檔案!"
 
-#: src/export.c:363 src/export.c:376
+#: src/export.c:365 src/export.c:378
 msgid "internal error! could not find file dialog select button!"
 msgstr "內部若物! 無法找到選擇對話視窗按鈕 ！"
 
-#: src/export.c:399
+#: src/export.c:401
 msgid "Error while exporting feed list!"
 msgstr "在匯出饋流列表時錯誤!"
 
-#: src/export.c:401
+#: src/export.c:403
 msgid "Feed List exported!"
 msgstr "饋流列表已匯出!"
 
-#: src/export.c:417
+#: src/export.c:419
 msgid "imported feed list"
 msgstr "匯入饋流列表"
 
-#: src/export.c:423
+#: src/export.c:425
 msgid "internal error! could not get a new folder key!"
 msgstr "內部錯誤!無法取得新的目錄碼!"
 
@@ -205,82 +205,88 @@ msgstr "\"%s\" 有 %d 個新增項目"
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" 自從最後更新後沒有改變。"
 
-#: src/feed.c:654
+#: src/feed.c:627
+msgid ""
+"Could not detect the type of this feed! Please check if the URL really "
+"points to a ressource provided in one of the supported syndication formats!"
+msgstr ""
+
+#: src/feed.c:662
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" 更新中"
 
-#: src/feed.c:660
+#: src/feed.c:668
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "\"%s\" 已經更新為永久網址。"
 
-#: src/feed.c:670
+#: src/feed.c:680
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" 不可用!"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:763 src/net/netio.c:478
+#: src/feed.c:773 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "饋流已經不存在。請取消訂閱!"
 
-#: src/feed.c:764
+#: src/feed.c:774
 msgid "Payment Required"
 msgstr "Payment Required"
 
-#: src/feed.c:765
+#: src/feed.c:775
 msgid "Access Forbidden"
 msgstr "禁用存取"
 
-#: src/feed.c:766
+#: src/feed.c:776
 msgid "Ressource Not Found"
 msgstr "未找到資源"
 
-#: src/feed.c:767
+#: src/feed.c:777
 msgid "Method Not Allowed"
 msgstr "方法不允許"
 
-#: src/feed.c:768
+#: src/feed.c:778
 msgid "Not Acceptable"
 msgstr "無法接受"
 
-#: src/feed.c:769
+#: src/feed.c:779
 msgid "Proxy Authentication Required"
 msgstr "代理伺服器需要認證"
 
-#: src/feed.c:770
+#: src/feed.c:780
 msgid "Request Time-Out"
 msgstr "存取逾時"
 
-#: src/feed.c:771
+#: src/feed.c:781
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了。資源不存在。請取消訂閱!"
 
-#: src/feed.c:777
+#: src/feed.c:787
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr "饋流無法使用: 伺服器使用未支援的重導!"
 
-#: src/feed.c:778
+#: src/feed.c:788
 msgid "Client Error"
 msgstr "Client Error"
 
-#: src/feed.c:779
+#: src/feed.c:789
 msgid "Server Error"
 msgstr "Server Error"
 
-#: src/feed.c:780
+#: src/feed.c:790
 msgid "(unknown error class)"
 msgstr "(unknown error class)"
 
-#: src/feed.c:802
+#: src/feed.c:812
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
 msgstr "讀取此訂閱時出現問題。請確認網址與終端機輸出！"
 
-#: src/feed.c:930
+#: src/feed.c:940
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr "無法刪除快取檔案 %s! 請手動移除!"
@@ -317,7 +323,10 @@ msgid "trying to load browser module %s (%s)\n"
 msgstr "試著載入瀏覽器模組 %s (%s)\n"
 
 #: src/htmlview.c:195
-msgid "Sorry, I was not able to load any installed browser modules!"
+#, fuzzy
+msgid ""
+"Sorry, I was not able to load any installed browser modules! Try the --debug-"
+"all option to get debug information!"
 msgstr "抱歉, 我無法載入任何瀏覽器模組!"
 
 #: src/htmlview.c:318
@@ -1241,48 +1250,44 @@ msgstr "瀏覽器指令失敗: %s"
 msgid "starting: \"%s\""
 msgstr "開始: \"%s\""
 
-#: src/ui_feedlist.c:141 src/ui_folder.c:374
-msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr "內部錯誤! unknown entry type! cannot display appropriate icon!\n"
-
-#: src/ui_feedlist.c:318 src/ui_itemlist.c:607
+#: src/ui_feedlist.c:317 src/ui_itemlist.c:607
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "內部錯誤！ could not get feed tree view selection!\n"
 
-#: src/ui_feedlist.c:330 src/ui_feedlist.c:347 src/ui_feedlist.c:390
-#: src/ui_feedlist.c:391
+#: src/ui_feedlist.c:329 src/ui_feedlist.c:346 src/ui_feedlist.c:389
+#: src/ui_feedlist.c:390
 msgid "You have to select a feed entry!"
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:355
+#: src/ui_feedlist.c:354
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
 
-#: src/ui_feedlist.c:359
+#: src/ui_feedlist.c:358
 msgid "Deleting entry"
 msgstr "刪除項目中"
 
-#: src/ui_feedlist.c:424
+#: src/ui_feedlist.c:423
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr "饋流供應商建議更新頻率為 60 分鐘"
 
-#: src/ui_feedlist.c:426
+#: src/ui_feedlist.c:425
 msgid "This feed specifies no default update interval."
 msgstr "此饋流未指定預設更新頻率"
 
-#: src/ui_feedlist.c:472
+#: src/ui_feedlist.c:471
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr "內部錯誤! 未選擇饋流，但卻要求更改屬性...\n"
 
-#: src/ui_feedlist.c:504
+#: src/ui_feedlist.c:503
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
 
-#: src/ui_feedlist.c:521
+#: src/ui_feedlist.c:520
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1296,7 +1301,7 @@ msgstr ""
 " 網址可能錯誤或是饋流暫時無法使用。\n"
 "您可以重試下載或利用選單從列表中將訂閱移除。\n"
 
-#: src/ui_feedlist.c:586
+#: src/ui_feedlist.c:585
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 
@@ -1321,6 +1326,10 @@ msgstr "目錄必須清空才可刪除!"
 #, fuzzy
 msgid "<i>(empty)</i>"
 msgstr "(empty)"
+
+#: src/ui_folder.c:374
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr "內部錯誤! unknown entry type! cannot display appropriate icon!\n"
 
 #: src/ui_itemlist.c:285
 msgid "Date"

@@ -38,6 +38,7 @@
 	* Improved OPML support. Redundant attributes when
 	  exporting to provide wider compatibility with
 	  other aggregators. More information is now exported.
+	* The broken searching was fixed by Nathan Conrad.
 	* Added Italian translation done by Dario Conigliaro.
 	* Added Traditional Chinese translation by Rex Tsai.
 	* Updated RPM spec file from Brian Pepple.

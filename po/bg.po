@@ -10,12 +10,12 @@ msgstr ""
 "Project-Id-Version: ISLD Localization Project VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-05-03 01:45+0200\n"
-"PO-Revision-Date: 2004-03-30 11:40+0300\n"
+"PO-Revision-Date: 2004-05-05 10:53+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
@@ -59,7 +59,7 @@ msgstr "[Четенето беше прекъснато!]"
 
 #: src/common.c:353 src/common.c:401
 msgid "internal error! time conversion error! mktime failed!\n"
-msgstr ""
+msgstr "вътрешна грешка! грешка при преустройването на датата·!·mktime·неуспешно!\n"
 
 #: src/common.c:356
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
@@ -90,9 +90,8 @@ msgstr ""
 
 #. _() for HELP1URL to allow localised help feeds
 #: src/conf.c:44
-#, fuzzy
 msgid "http://liferea.sf.net/help048.rdf"
-msgstr "http://liferea.sf.net/help047.rdf"
+msgstr "http://liferea.sf.net/help048.rdf"
 
 #: src/conf.c:329
 msgid "Liferea Help"
@@ -109,7 +108,7 @@ msgstr "Новини за Liferea в SF"
 #: src/conf.c:426
 #, c-format
 msgid "Error renaming %s to %s\n"
-msgstr ""
+msgstr "Грешка при преименуване·%s·to·%s\n"
 
 #: src/conf.c:452
 #, c-format
@@ -117,22 +116,20 @@ msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr ""
 
 #: src/export.c:273 src/export.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr ""
-"XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе да "
-"бъде зареден!"
+msgstr "XML грешка по време на четенето на кеш файла! \"%s\" не може да бъде зареден!"
 
 #: src/export.c:279 src/export.c:281
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr "Празен документ! Кеш файла на абонамента не би трябвало да е празен..."
+msgstr "Празен документ! OPML·документа·\"%s\"·не трябва да е празне при импортиране."
 
 #: src/export.c:289 src/export.c:291
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is no valid OPML document! Liferea cannot import this file!"
-msgstr "\"%s\" не е валиден кеш файл! Създаването на OPML файла е невъзможно!"
+msgstr "\"%s\" не е валиден OPML документ! Liferea не може да импортира този файл!"
 
 #: src/export.c:363 src/export.c:376
 msgid "internal error! could not find file dialog select button!"
@@ -172,11 +169,9 @@ msgid "could not create XML document!"
 msgstr "Не може да създаде XML документ!"
 
 #: src/feed.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
-msgstr ""
-"XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе да "
-"бъде зареден!"
+msgstr "Грешка по време на четенето на кеш файла \"%s\"·!·Кеш файлът не може да бъде зареден!"
 
 #: src/feed.c:322
 #, c-format
@@ -263,7 +258,7 @@ msgstr "Неприемлив"
 
 #: src/feed.c:769
 msgid "Proxy Authentication Required"
-msgstr ""
+msgstr "Нужна е идентификация в Proxy сървъра"
 
 #: src/feed.c:770
 msgid "Request Time-Out"
@@ -345,9 +340,8 @@ msgid "This item does not have a link assigned!"
 msgstr ""
 
 #: src/interface.c:148 src/interface.c:2507
-#, fuzzy
 msgid "Liferea 0.4.8"
-msgstr "Liferea 0.4.7 - RSS агрегатор"
+msgstr "Liferea 0.4.8 - RSS агрегатор"
 
 #: src/interface.c:165
 msgid "_Program"
@@ -478,26 +472,24 @@ msgid "Launches the items link in the configured browser."
 msgstr "Зарежда адресът на записа в избрания браузър"
 
 #: src/interface.c:373
-#, fuzzy
 msgid "_View"
-msgstr "_Преглед на Записите"
+msgstr "_Преглед"
 
 #: src/interface.c:380
 msgid "_Increase Text Size"
-msgstr ""
+msgstr "_Увеличава Големината на Шрифта"
 
 #: src/interface.c:391
 msgid "_Decrease Text Size"
-msgstr ""
+msgstr "_Намалява Големината на Шрифта"
 
 #: src/interface.c:407
 msgid "Toggle _Condensed View"
 msgstr ""
 
 #: src/interface.c:411
-#, fuzzy
 msgid "_Search"
-msgstr "Търсене"
+msgstr "_Търсене"
 
 #: src/interface.c:418
 msgid "Toggle Search Box"
@@ -516,9 +508,8 @@ msgid "Create a Feedster search feed."
 msgstr "Създава поле за търсене от типа Feedster"
 
 #: src/interface.c:436
-#, fuzzy
 msgid "_Help"
-msgstr "Помощ"
+msgstr "_Помощ"
 
 #: src/interface.c:443 src/interface.c:2493 src/interface.c:2523
 msgid "About"
@@ -549,9 +540,8 @@ msgid "Edit preferences"
 msgstr "Променя настройките"
 
 #: src/interface.c:537
-#, fuzzy
 msgid "Preferences"
-msgstr "Променя настройките"
+msgstr "Настройки"
 
 #: src/interface.c:565
 msgid "Search for"
@@ -793,6 +783,9 @@ msgid ""
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
+"Liferea показва съдържанието на RSS източници, използвайки различни HTML двигатели."
+"В зависимост, кой двигател е инсталиран на вашия компютър, ще имате различни"
+"възможности. Рестартирайте Liferea за да се задействат направените от вас промени."
 
 #: src/interface.c:1569
 msgid "View Headlines With"
@@ -839,19 +832,16 @@ msgid "Proxy Settings"
 msgstr "Настройки на Прокси"
 
 #: src/interface.c:1810
-#, fuzzy
 msgid "New Folder"
-msgstr "_Нова папка"
+msgstr "Нова папка"
 
 #: src/interface.c:1825 src/interface.c:1899
-#, fuzzy
 msgid "Folder name:"
-msgstr "Име на папката"
+msgstr "Име на папката:"
 
 #: src/interface.c:1888
-#, fuzzy
 msgid "Rename Folder"
-msgstr "/Преименува папката"
+msgstr "Преименува папката"
 
 #: src/interface.c:1951
 msgid "Select A File"
@@ -953,9 +943,11 @@ msgid ""
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
+"Авторски права·(c)·2003-2004·\n"
+"Lars·Lindner·<lars.lindner@gmx.net>·and·\n"
+"Nathan·J.·Conrad·<t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:2537
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -977,7 +969,7 @@ msgid ""
 "Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
 "Philippe Martin, Brion Vibber (favicon support)"
 msgstr ""
-"Code,·Patches,·Debugging\n"
+"Код,·Поправки,·Дебъгване\n"
 "\n"
 "James·Doherty·<...>\n"
 "Jeremy·Messenger·<mezz7@cox.net>\n"
@@ -993,7 +985,7 @@ msgstr ""
 "Johannes·Schlueter·<joscherl@users.sourceforge.net>\n"
 "Pierre·Phaneuf·<pp@ludusdesign.com>\n"
 "\n"
-"Code·from·other·projects\n"
+"Код от други проекти\n"
 "\n"
 "Anders·Carlsson·<andersca@gnu.org>·(tray·icon·support)\n"
 "Philippe·Martin,·Brion·Vibber·(favicon·support)"
@@ -1003,7 +995,6 @@ msgid "Contributors"
 msgstr "Сътрудници"
 
 #: src/interface.c:2557
-#, fuzzy
 msgid ""
 "Stephane Jourdan <stephane.jourdan@itris.fr>\n"
 "Takeshi Aihana <aihana@gnome.gr.jp>\n"
@@ -1020,8 +1011,10 @@ msgstr ""
 "Park·Ji-In·<mithrandir@electrang.net>\n"
 "Carlos·Fenollosa·<topopardo@humorfreak.com>\n"
 "Jose·Maria·Mateos·<chema@chema.homelinux.org>\n"
-"Lars·Lindner·<lars.lindner@gmx.net>\n"
-"Владимир \"Kaladan\" Петков·<vpetkov@i-space.org>"
+"Enrico·Gernauck·<enrico@fanglomerat.de>\n"
+"Vladimir·Petkov·<vpetkov@i-space.org>\n"
+"Tomislav·Markovski·<tome@set.com.mk>\n"
+"Dario·Conigliaro·<djdas@djdas.no-ip.org>"
 
 #: src/interface.c:2563
 msgid "Translation"
@@ -1029,11 +1022,11 @@ msgstr "Превод"
 
 #: src/main.c:51
 msgid "  --version        Prints Liferea's version number"
-msgstr ""
+msgstr "··--version········Изписва версията на Liferea"
 
 #: src/main.c:52
 msgid "  --help           Prints this message and exits"
-msgstr ""
+msgstr "··--help···········Показва това съобщение и напуска"
 
 #: src/main.c:54
 msgid "  --debug-cache    Print debugging messages for the cache handling"
@@ -1106,9 +1099,9 @@ msgid "Connecting to %s..."
 msgstr "Свързване към \"%s\"..."
 
 #: src/net/netio.c:217
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading \"http://%s%s\""
-msgstr "Изтегляне на \"http://%s%s\"..."
+msgstr "Изтегляне на \"http://%s%s\""
 
 #. This is a serious non-continueable OS error as it will probably not
 #. go away if we retry.
@@ -1147,7 +1140,7 @@ msgstr ""
 #. Don't repeat authrequest if it already failed before!
 #: src/net/netio.c:553
 msgid "Authentication failed!"
-msgstr ""
+msgstr "Идентифицирането е неуспешно!"
 
 #: src/net/netio.c:577
 msgid "URL does not contain authentication information!"
@@ -1236,7 +1229,7 @@ msgstr ""
 
 #: src/ocs_dir.c:463 src/pie_feed.c:224 src/rss_channel.c:340
 msgid "<p>Invalid XML!</p>"
-msgstr ""
+msgstr "<p>Невалиден·XML!</p>"
 
 #: src/ocs_dir.c:472
 msgid "<p>Could not find RDF header!</p>"
@@ -1296,6 +1289,8 @@ msgstr "Трябва да изберете адрес на източник"
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
+"Не можете да изтриете помощта!·Редактирайте настройките на програмата за да спрете зареждането"
+"на помощта."
 
 #: src/ui_feedlist.c:359
 msgid "Deleting entry"
@@ -1350,18 +1345,16 @@ msgid "Value"
 msgstr "Стойност"
 
 #: src/ui_folder.c:94 src/ui_folder.c:116 src/ui_folder.c:136
-#, fuzzy
 msgid "A folder must be selected."
-msgstr "Папката трябва да бъде празна за да я изтриете!"
+msgstr "Папката трябва да бъде избрана."
 
 #: src/ui_folder.c:143
 msgid "A folder must be empty to delete it!"
 msgstr "Папката трябва да бъде празна за да я изтриете!"
 
 #: src/ui_folder.c:243
-#, fuzzy
 msgid "<i>(empty)</i>"
-msgstr "(празен)"
+msgstr "<i>(празен)</i>"
 
 #: src/ui_itemlist.c:285
 msgid "Date"
@@ -1468,11 +1461,11 @@ msgstr "/Стартира записа в браузър"
 
 #: src/ui_popup.c:133
 msgid "/_Increase Text Size"
-msgstr ""
+msgstr "/_Увеличава Размера на Текста"
 
 #: src/ui_popup.c:134
 msgid "/_Decrease Text Size"
-msgstr ""
+msgstr "/_Намалява Размера на Текста"
 
 #: src/ui_popup.c:138
 msgid "/_Copy Link Location"
@@ -1515,9 +1508,8 @@ msgstr ""
 "s·URL·place·holder·in·the·browser·command·string·you·specified·in·the·preferences·dialog!!!"
 
 #: src/gtkhtml3/gtkhtml3.c:326
-#, fuzzy
 msgid "GtkHTML3 (experimental)"
-msgstr "Mozilla·(експериментално)"
+msgstr "GtkHTML3 (експериментално)"
 
 #: src/mozilla/mozembed.c:65
 msgid "Mozilla (experimental)"

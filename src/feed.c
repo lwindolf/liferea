@@ -210,10 +210,14 @@ void feed_save(feedPtr fp) {
 	gint		saveCount = 0;
 	gint		saveMaxCount;
 			
+	debug_enter("feed_save");
 	
-	if (fp->needsCacheSave == FALSE)
+	if (fp->needsCacheSave == FALSE) {
+		debug1(DEBUG_CACHE, "feed does not need to be saved: %s", fp->title);
 		return;
-	
+	}
+
+	debug1(DEBUG_CACHE, "saving feed: %s", fp->title);	
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 
@@ -292,6 +296,7 @@ void feed_save(feedPtr fp) {
 	}
 	
 	fp->needsCacheSave = FALSE;
+	debug_exit("feed_save");
 }
 
 static gboolean feed_save_timeout(gpointer user_data) {
@@ -409,6 +414,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	gint		newcount = 0;
 	gint		traycount = 0;
 
+	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
+	
 	if(TRUE == new_fp->available) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
 		   in case they are reused... */
@@ -422,7 +429,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 		/* merge item lists ... */
 		new_list = new_fp->items;
 		while(new_list) {
-			new_ip = new_list->data;
+			new_ip = new_list->data;			
+			debug1(DEBUG_VERBOSE, "processing new item: \"%s\"", new_ip->title);
 			
 			found = FALSE;
 			/* scan the old list to see if the new_fp item does already exist */
@@ -475,8 +483,10 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 				   hides it. */
 				if(FALSE == checkNewItem(new_ip)) {
 					new_ip->hidden = TRUE;
+					debug0(DEBUG_VERBOSE, "-> item found but hidden due to filter rule!");
 				} else {
 					feed_increase_unread_counter(old_fp);
+					debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
 					traycount++;
 				}
 				newcount++;
@@ -490,17 +500,19 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 					old_ip->description = g_strdup(new_ip->description);
 					old_ip->time = new_ip->time;
 					item_set_unread(old_ip);
+					debug0(DEBUG_VERBOSE, "-> item already exist but was updated");
 					newcount++;
 					traycount++;
 				} else {
 					new_ip->readStatus = TRUE;
+					debug0(DEBUG_VERBOSE, "-> item already exist");
 				}
 
 				/* any found new_fp items are not needed anymore */
 				if(old_fp->type != FST_HELPFEED) { 
 					new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
 					allItems->items = g_slist_remove(allItems->items, new_ip);
-					item_free(new_ip);
+					item_free(new_ip);					
 				}
 			}
 			
@@ -511,6 +523,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 		   for all normal feeds, and skipping old item
 		   merging for help feeds... */
 		if(old_fp->type != FST_HELPFEED) {
+			debug0(DEBUG_VERBOSE, "postprocessing normal feed...");
 			g_slist_free(new_fp->items);	/* dispose new item list */
 			
 			if(NULL == diff_list)
@@ -521,6 +534,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
 		} else {
+			debug0(DEBUG_VERBOSE, "postprocessing help feed...");
 			/* free old list and items of old list */
 			old_list = old_fp->items;
 			while(NULL != old_list) {
@@ -603,6 +617,7 @@ gint feed_process_update_results(gpointer data) {
 	if (request->fp == NULL) { /* Feed deleted during update of feed*/
 		debug0(DEBUG_UPDATE, "request abandoned (maybe feed was deleted)");
 		g_free(request->data);
+		// FIXME: free request url
 		request->data = NULL;
 		update_request_free(request);
 		return TRUE;
@@ -615,10 +630,8 @@ gint feed_process_update_results(gpointer data) {
 	
 	if(304 == request->lasthttpstatus) {	
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), feed_get_title(request->fp));
-		ui_unlock();
-		return TRUE;
 	} else if(NULL != request->data) {
-		while(1) {
+		do {
 			/* determine feed type if necessary (e.g. when importing) */
 			if(FST_AUTODETECT == (type = feed_get_type(request->fp))) {
 				/* maybe we cannot determine the feed type, but we have to keep trying... */
@@ -676,8 +689,7 @@ gint feed_process_update_results(gpointer data) {
 			if((feedPtr)ui_feedlist_get_selected() == request->fp) {
 				ui_itemlist_load(request->fp, NULL);
 			}
-			break;
-		}
+		} while(0);
 	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(request->fp));
 		feed_set_available(request->fp, FALSE);
