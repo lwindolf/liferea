@@ -268,15 +268,15 @@ gboolean download_is_online(void) {
 static gboolean download_dequeuer(gpointer user_data) {
 	struct request *request;
 	
-	while ((request = g_async_queue_try_pop(results)) != NULL) {
+	while((request = g_async_queue_try_pop(results)) != NULL) {
 
 		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
 		} else
 			(request->callback)(request);
-
 		download_request_free(request);
 	}
 	return TRUE;
+
 }
 

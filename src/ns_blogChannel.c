@@ -134,12 +134,11 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 		if(NULL != doc)
 			xmlFreeDoc(doc);
 	}
-g_print("parsing blogChannel references\n");
+
 	if(NULL != buffer) {
 		feed_load(requestData->fp);
 		
 		tmp = NULL;		
-g_print("generating blogChannel output\n");
 		switch(requestData->tag) {
 			case TAG_BLOGROLL:
 				addToHTMLBuffer(&tmp, BLOGROLL_START);
@@ -147,7 +146,8 @@ g_print("generating blogChannel output\n");
 			case TAG_MYSUBSCRIPTIONS:
 				addToHTMLBuffer(&tmp, MYSUBSCR_START);
 				break;
-		}	
+		}
+g_print("parsing result: %s\n", buffer);
 		addToHTMLBuffer(&tmp, buffer);
 		g_free(buffer);
 		switch(requestData->tag) {
@@ -170,7 +170,6 @@ g_print("generating blogChannel output\n");
 		
 		feed_unload(requestData->fp);
 	}
-	download_request_free(request);
 	g_free(requestData);
 }
 
