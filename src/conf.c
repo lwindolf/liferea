@@ -106,7 +106,6 @@ void initConfig() {
 		ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(OSNAME) + 2 + strlen("http://liferea.sf.net/") + 2;
 		useragent = g_malloc(ualength);
 		snprintf (useragent, ualength, "Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
-		printf ("%s\n", useragent);
 	}
 	
 	/* initialize GConf client */
@@ -374,18 +373,54 @@ static gboolean is_number(gchar *s) {
 	return TRUE;
 }
 
+/* Older versions of GConf do not provide this function, thus we must
+   emulate it */
+
+static void conf_recursive_unset(gchar *path) {
+	GSList *list, *iter;
+	GError		*err = NULL;
+	
+	iter = list = gconf_client_all_dirs(client, path, &err);
+
+	if(is_gconf_error(&err))
+		return;
+
+	while(!is_gconf_error(&err) && iter != NULL) {
+		conf_recursive_unset(iter->data);
+		is_gconf_error(&err);
+		g_free(iter->data);
+		iter = iter->next;
+	}
+	g_slist_free(list);
+
+
+	iter = list = gconf_client_all_entries(client, path, &err);
+
+	if(is_gconf_error(&err))
+		return;
+	
+	while(!is_gconf_error(&err) && iter != NULL) {
+		gconf_client_unset(client, ((GConfEntry*)iter->data)->key, &err);
+		is_gconf_error(&err);
+		gconf_entry_free(iter->data);
+		iter = iter->next;
+	}
+	g_slist_free(list);
+
+	gconf_client_unset(client, path, &err);
+	is_gconf_error(&err);
+}
+
 static void conf_feedlist_erase_gconf() {
 	GSList *list, *iter;
 	GError		*err = NULL;
-
+	
 	iter = list = gconf_client_all_dirs(client, PATH, &err);
-	err=NULL;
-
+	
 	/* Remove all directories */
 	while(!is_gconf_error(&err) && iter != NULL) {
 		if (strstr(iter->data,"dir") != NULL || is_number(iter->data)) {
-			debug1(DEBUG_CONF, "Deleting %s", (gchar*)iter->data);
-			gconf_client_recursive_unset(client, (gchar*)iter->data, GCONF_UNSET_INCLUDING_SCHEMA_NAMES, &err);
+			conf_recursive_unset(iter->data);
 		}
 		g_free(iter->data);
 		iter = iter->next;
@@ -397,6 +432,7 @@ static void conf_feedlist_erase_gconf() {
 
 	gconf_client_unset(client, PATH "/feedlist", &err);
 	is_gconf_error(&err);
+	gconf_client_suggest_sync(client, NULL);
 }
 
 void loadSubscriptions(void) {
