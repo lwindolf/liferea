@@ -51,6 +51,10 @@ static GtkItemFactoryEntry *html_menu_items;
 static gint url_menu_len = 0;
 static GtkItemFactoryEntry *url_menu_items;
 
+/* tray menu */
+static gint tray_menu_len = 0;
+static GtkItemFactoryEntry *tray_menu_items;
+
 static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *path, gchar *acc, 
 			   GtkItemFactoryCallback cb, guint cb_action, gchar *item_type, gconstpointer extra_data) {
 	
@@ -68,6 +72,9 @@ static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *pa
 }
 
 #define TOGGLE_CONDENSED_VIEW	"/Condensed View"
+
+#define TOGGLE_WORK_OFFLINE     "/Work Offline"
+#define TOGGLE_SHOW_WINDOW      "/Show Window"
 
 /* prepares the popup menues */
 void ui_popup_setup_menues(void) {
@@ -129,6 +136,16 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Launch Link In Browser"),	NULL, on_popup_launch_link_selected, 		0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Subscribe"),		NULL, on_popup_subscribe_url_selected, 		0, NULL, 0);
+
+	/* System tray popup menu */
+	tray_menu_items = NULL;
+	tray_menu_len = 0;
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Work Offline"),	NULL, on_onlinebtn_clicked,		0, "<CheckItem>", 0);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Update All"),	NULL, on_refreshbtn_clicked,		0, "<StockItem>", GTK_STOCK_REFRESH);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Preferences"),	NULL, on_prefbtn_clicked,		0, "<StockItem>", GTK_STOCK_PREFERENCES);
+	addPopupOption(&tray_menu_items, &tray_menu_len, "/",	                NULL, NULL,		                0, "<Separator>", 0);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Show Window"),	NULL, ui_mainwindow_toggle_visibility,		0, "<CheckItem>", 0);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Quit"),	        NULL, on_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
 }
 
 /* function to generate a generic menu specified by its number */
@@ -145,6 +162,13 @@ static GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpo
 	if(NULL != (toggle = gtk_item_factory_get_item(item_factory, TOGGLE_CONDENSED_VIEW)))
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(toggle), !itemlist_mode);
 
+	/* set toggled state for work offline and show window buttons in 
+	   the tray popup menu */
+	if(NULL != (toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_WORK_OFFLINE)))
+		GTK_CHECK_MENU_ITEM(toggle)->active = !download_is_online();
+	if(NULL != (toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_SHOW_WINDOW)))
+		GTK_CHECK_MENU_ITEM(toggle)->active = 
+			!(gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE(mainwindow);
 	return GTK_MENU(menu);
 }
 
@@ -167,6 +191,9 @@ GtkMenu *make_html_menu(void) { return make_menu(html_menu_items, html_menu_len,
 GtkMenu *make_url_menu(char* url) {
 	return make_menu(url_menu_items, url_menu_len, g_strdup(url));
 }
+
+/* popup menu generation for the tray icon */
+GtkMenu *ui_popup_make_systray_menu(void) { return make_menu(tray_menu_items, tray_menu_len, NULL); }
 
 /* function to generate popup menus for the feed list depending on the
    type parameter. The item will be passed as a callback_data. For

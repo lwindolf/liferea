@@ -31,6 +31,7 @@
 #include "eggtrayicon.h"
 #include "support.h"
 #include "ui_tray.h"
+#include "ui_popup.h"
 
 #define NO_NEW_ITEMS	0
 #define NEW_ITEMS	1
@@ -108,15 +109,15 @@ void ui_tray_zero_new(void) {
    if invisible or hide it if visible */
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
 	
-	if((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
-		ui_tray_zero_new();
-		ui_mainwindow_restore_position();
-		gtk_window_present(GTK_WINDOW(mainwindow));
-	} else {
-		ui_mainwindow_save_position();
-		gtk_widget_hide(mainwindow);
+	switch(event->button) {
+	case 1:
+		ui_mainwindow_toggle_visibility(NULL, NULL);
+		break;
+	case 3:
+		gtk_menu_popup(ui_popup_make_systray_menu(), NULL, NULL, NULL, NULL, event->button, event->time);
+		break;
 	}
-
+						  
 	return;
 }
 

@@ -37,6 +37,9 @@ GtkMenu *make_item_menu(itemPtr ip);
 GtkMenu *make_html_menu(void);
 GtkMenu *make_url_menu(char* url);
 
+/** Create the popup menu for the systray icon */
+GtkMenu *ui_popup_make_systray_menu(void);
+
 /* GUI callbacks */
 gboolean
 on_mainfeedlist_button_press_event     (GtkWidget       *widget,

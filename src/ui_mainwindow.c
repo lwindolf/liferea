@@ -434,3 +434,12 @@ gboolean on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	return TRUE;
 }
 
+void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data) {
+	if((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
+		ui_mainwindow_restore_position();
+		gtk_window_present(GTK_WINDOW(mainwindow));
+	} else {
+		ui_mainwindow_save_position();
+		gtk_widget_hide(mainwindow);
+	}
+}

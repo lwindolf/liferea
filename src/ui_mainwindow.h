@@ -59,4 +59,5 @@ void
 on_work_offline_activate               (GtkMenuItem     *menuitem,
 								gpointer         user_data);
 
+void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data);
 #endif
