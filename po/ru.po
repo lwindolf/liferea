@@ -58,7 +58,7 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: src/conf.c:462
 msgid "feedlist.opml"
-msgstr ""
+msgstr "feedlist.opml"
 
 #: src/conf.c:487
 #, c-format
@@ -1623,14 +1623,14 @@ msgid "Deleting entry"
 msgstr "Удаление записи"
 
 #: src/ui_feedlist.c:473
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "Вы действительно хотите удалить каталог %s и его содержимое"
+msgstr "Вы действительно хотите удалить каталог \"%s\" и его содержимое?"
 
 #: src/ui_feedlist.c:476
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Вы действительно хотите удалить %s?"
+msgstr "Вы действительно хотите удалить \"%s\"?"
 
 #: src/ui_feedlist.c:484
 msgid "Deletion Confirmation"
@@ -1978,9 +1978,3 @@ msgstr ""
 "Этот элемент, содержит HTML тэг <object>, который не поддерживается в "
 "GtkHTML2.\n"
 "Плагины, содержащиеся в элементе не будут отображены."
-
-#~ msgid "Deleting \"%s\""
-#~ msgstr "Удаление \"%s\""
-
-#~ msgid "A folder must be empty to delete it!"
-#~ msgstr "Папка должна быть пуста для удаления!"
