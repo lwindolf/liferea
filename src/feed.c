@@ -20,6 +20,7 @@
 
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <string.h>
 
 #include "conf.h"
 #include "common.h"
@@ -234,10 +235,7 @@ gint saveFeed(feedPtr fp) {
 static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr	fp = (feedPtr)value;
 	
-	updateUI();
-		
 	if(IS_FEED(fp->type)) {
-		print_status(g_strdup_printf(_("saving \"%s\"..."), fp->title));
 		saveFeed(fp);
 	}
 }
@@ -245,6 +243,9 @@ static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 /* function to be called on program shutdown to save read stati */
 void saveAllFeeds(void) {
 
+	print_status(_("saving all feeds..."));
+	updateUI();
+	
 	g_mutex_lock(feeds_lock);
 	g_hash_table_foreach(feeds, saveFeedFunc, NULL);
 	g_mutex_unlock(feeds_lock);

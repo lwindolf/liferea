@@ -23,6 +23,7 @@
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
 #include <libxml/nanohttp.h>
+#include <string.h>
 #include "support.h"
 #include "callbacks.h"
 #include "feed.h"
@@ -748,7 +749,7 @@ gboolean getBooleanConfValue(gchar *valuename) {
 	gboolean	value;
 
 	g_assert(valuename != NULL);
-		
+
 	value = gconf_client_get_bool(client, valuename, &err);	
 	is_gconf_error(err);
 		

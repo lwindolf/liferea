@@ -22,6 +22,7 @@
 #  include <config.h>
 #endif
 
+#include "conf.h"
 #include "callbacks.h"
 #include "eggtrayicon.h"
 #include "support.h"
@@ -44,19 +45,23 @@ static GtkWidget	*image = NULL;		/* the image in the notification area */
 
 void setTrayToolTip(gchar *string) {
 
-   	gtk_tooltips_set_tip(GTK_TOOLTIPS(tray_icon_tips), 
-			     GTK_WIDGET(eventbox),
-			     string, string);
+	if(NULL != tray_icon_tips) {
+	   	gtk_tooltips_set_tip(GTK_TOOLTIPS(tray_icon_tips), 
+				     GTK_WIDGET(eventbox),
+				     string, string);
+	}
 }
 
 static void setTrayIcon(GdkPixbuf *icon) {
 
-	if(NULL != image)
-		gtk_widget_destroy(image);
+	if(NULL != tray_icon) {
+		if(NULL != image)
+			gtk_widget_destroy(image);
 
-	image = gtk_image_new_from_pixbuf(icon);
-	gtk_container_add(GTK_CONTAINER(eventbox), image);
-	gtk_widget_show_all(GTK_WIDGET(tray_icon));
+		image = gtk_image_new_from_pixbuf(icon);
+		gtk_container_add(GTK_CONTAINER(eventbox), image);
+		gtk_widget_show_all(GTK_WIDGET(tray_icon));
+	}
 }
 
 void doTrayIcon(void) { 
@@ -83,15 +88,19 @@ static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayI
 
 void setupTrayIcon(void) {
 
-  	tray_icon = egg_tray_icon_new(PACKAGE);
-	eventbox = gtk_event_box_new();
-	
-  	g_signal_connect(eventbox, "button_press_event",
-			 G_CALLBACK (tray_icon_pressed), tray_icon);
-  	gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
-	
-	setTrayIcon(emptyIcon);
-	
-   	tray_icon_tips = gtk_tooltips_new();
-	setTrayToolTip(_(NO_NEW_MESSAGES));	
+	if(getBooleanConfValue(SHOW_TRAY_ICON)) {
+		tray_icon = egg_tray_icon_new(PACKAGE);
+		eventbox = gtk_event_box_new();
+
+		g_signal_connect(eventbox, "button_press_event",
+				 G_CALLBACK (tray_icon_pressed), tray_icon);
+		gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
+
+		setTrayIcon(emptyIcon);
+
+		tray_icon_tips = gtk_tooltips_new();
+		setTrayToolTip(_(NO_NEW_MESSAGES));	
+	} else {
+		tray_icon = NULL;
+	}
 }

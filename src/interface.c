@@ -166,8 +166,8 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (searchbox), searchentry, TRUE, TRUE, 0);
 
   newVFolder = gtk_button_new_with_mnemonic (_("create VFolder"));
-  gtk_widget_show (newVFolder);
   gtk_box_pack_start (GTK_BOX (searchbox), newVFolder, FALSE, FALSE, 0);
+  gtk_widget_set_sensitive (newVFolder, FALSE);
   gtk_tooltips_set_tip (tooltips, newVFolder, _("saves this search as a VFolder, which will appear in the feed list"), NULL);
 
   hidesearch = gtk_button_new ();
@@ -731,6 +731,7 @@ create_prefdialog (void)
 {
   GtkWidget *prefdialog;
   GtkWidget *dialog_vbox5;
+  GtkWidget *notebook1;
   GtkWidget *vbox3;
   GtkWidget *frame2;
   GtkWidget *vbox14;
@@ -757,6 +758,13 @@ create_prefdialog (void)
   GtkWidget *itemCountBtn;
   GtkWidget *updateallbtn;
   GtkWidget *label32;
+  GtkWidget *label38;
+  GtkWidget *vbox222;
+  GtkWidget *frame10;
+  GtkWidget *vbox22;
+  GtkWidget *trayiconbtn;
+  GtkWidget *label40;
+  GtkWidget *label39;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefsavebtn;
   GtkWidget *prefcancelbtn;
@@ -772,9 +780,13 @@ create_prefdialog (void)
   dialog_vbox5 = GTK_DIALOG (prefdialog)->vbox;
   gtk_widget_show (dialog_vbox5);
 
+  notebook1 = gtk_notebook_new ();
+  gtk_widget_show (notebook1);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox5), notebook1, FALSE, TRUE, 2);
+
   vbox3 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox3);
-  gtk_box_pack_start (GTK_BOX (dialog_vbox5), vbox3, FALSE, TRUE, 2);
+  gtk_container_add (GTK_CONTAINER (notebook1), vbox3);
   gtk_container_set_border_width (GTK_CONTAINER (vbox3), 5);
 
   frame2 = gtk_frame_new (NULL);
@@ -892,6 +904,38 @@ create_prefdialog (void)
   gtk_label_set_justify (GTK_LABEL (label32), GTK_JUSTIFY_LEFT);
   gtk_misc_set_padding (GTK_MISC (label32), 5, 0);
 
+  label38 = gtk_label_new (_("Feed Handling"));
+  gtk_widget_show (label38);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label38);
+  gtk_label_set_justify (GTK_LABEL (label38), GTK_JUSTIFY_LEFT);
+
+  vbox222 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox222);
+  gtk_container_add (GTK_CONTAINER (notebook1), vbox222);
+
+  frame10 = gtk_frame_new (NULL);
+  gtk_widget_show (frame10);
+  gtk_box_pack_start (GTK_BOX (vbox222), frame10, FALSE, TRUE, 0);
+
+  vbox22 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox22);
+  gtk_container_add (GTK_CONTAINER (frame10), vbox22);
+
+  trayiconbtn = gtk_check_button_new_with_mnemonic (_("Show a status icon in the notification area \n(also called system tray). Changes of this setting\ntake place after restarting the program."));
+  gtk_widget_show (trayiconbtn);
+  gtk_box_pack_start (GTK_BOX (vbox22), trayiconbtn, FALSE, FALSE, 0);
+
+  label40 = gtk_label_new (_("Notification Area"));
+  gtk_widget_show (label40);
+  gtk_frame_set_label_widget (GTK_FRAME (frame10), label40);
+  gtk_label_set_justify (GTK_LABEL (label40), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_padding (GTK_MISC (label40), 5, 0);
+
+  label39 = gtk_label_new (_("Notification Settings"));
+  gtk_widget_show (label39);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label39);
+  gtk_label_set_justify (GTK_LABEL (label39), GTK_JUSTIFY_LEFT);
+
   dialog_action_area5 = GTK_DIALOG (prefdialog)->action_area;
   gtk_widget_show (dialog_action_area5);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area5), GTK_BUTTONBOX_END);
@@ -919,6 +963,7 @@ create_prefdialog (void)
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, prefdialog, "prefdialog");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_vbox5, "dialog_vbox5");
+  GLADE_HOOKUP_OBJECT (prefdialog, notebook1, "notebook1");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox3, "vbox3");
   GLADE_HOOKUP_OBJECT (prefdialog, frame2, "frame2");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox14, "vbox14");
@@ -942,6 +987,13 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
   GLADE_HOOKUP_OBJECT (prefdialog, updateallbtn, "updateallbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label32, "label32");
+  GLADE_HOOKUP_OBJECT (prefdialog, label38, "label38");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox222, "vbox222");
+  GLADE_HOOKUP_OBJECT (prefdialog, frame10, "frame10");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox22, "vbox22");
+  GLADE_HOOKUP_OBJECT (prefdialog, trayiconbtn, "trayiconbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, label40, "label40");
+  GLADE_HOOKUP_OBJECT (prefdialog, label39, "label39");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefsavebtn, "prefsavebtn");
   GLADE_HOOKUP_OBJECT (prefdialog, prefcancelbtn, "prefcancelbtn");
@@ -1107,7 +1159,7 @@ create_fileselection (void)
   GtkWidget *ok_button1;
   GtkWidget *cancel_button1;
 
-  fileselection = gtk_file_selection_new (_("Datei auswählen"));
+  fileselection = gtk_file_selection_new (_("Datei ausw\303\244hlen"));
   gtk_container_set_border_width (GTK_CONTAINER (fileselection), 10);
   gtk_window_set_modal (GTK_WINDOW (fileselection), TRUE);
   gtk_window_set_destroy_with_parent (GTK_WINDOW (fileselection), TRUE);
@@ -1169,7 +1221,7 @@ create_filterdialog (void)
   rulelist = gtk_tree_view_new ();
   gtk_widget_show (rulelist);
   gtk_container_add (GTK_CONTAINER (filterview), rulelist);
-  gtk_widget_set_size_request (rulelist, 150, -2);
+  gtk_widget_set_size_request (rulelist, 150, -1);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (rulelist), FALSE);
 
   vbuttonbox1 = gtk_vbutton_box_new ();

@@ -88,9 +88,9 @@ int main (int argc, char *argv[]) {
 		
 	/* order is important! */
 	initCallbacks();
-	setupTrayIcon();
 	initConfig();
 	loadConfig();
+	setupTrayIcon();
 	updateThread = initUpdateThread();
 	initBackend();
 	loadEntries();

@@ -32,6 +32,7 @@
 #define TIME_FORMAT_MODE		"/apps/liferea/timeformatmode"
 #define DEFAULT_MAX_ITEMS		"/apps/liferea/maxitemcount"
 #define UPDATE_ON_STARTUP		"/apps/liferea/updateonstartup"
+#define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
 	
 #define PROXY_HOST			"/system/http_proxy/host"
 #define PROXY_PORT			"/system/http_proxy/port"

@@ -176,6 +176,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	g_assert(NULL != prefdialog);
 
+	/* panel 1 "feed handling" */	
 	widget = lookup_widget(prefdialog, "browsercmd");
 	tmp = getNumericConfValue(GNOME_BROWSER_ENABLED);
 	if((tmp > 2) || (tmp < 1)) 
@@ -206,6 +207,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, "itemCountBtn");
 	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
 	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
+
+	/* panel 2 "notification settings" */	
+	widget = lookup_widget(prefdialog, "trayiconbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_TRAY_ICON));
 		
 	gtk_widget_show(prefdialog);
 }
@@ -217,7 +222,8 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 	gint		tmp, i;
 	
 	g_assert(NULL != prefdialog);
-		
+
+	/* panel 1 "feed handling" */			
 	widget = lookup_widget(prefdialog, "browsercmd");
 	setStringConfValue(BROWSER_COMMAND, (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)));
 
@@ -250,7 +256,11 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 		g_free(widgetname);	
 	}
 	setNumericConfValue(TIME_FORMAT_MODE, tmp);
-
+	
+	/* panel 2 "notification settings" */	
+	widget = lookup_widget(prefdialog, "trayiconbtn");
+	setBooleanConfValue(SHOW_TRAY_ICON, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
+	
 	/* refresh item list (in case date format was changed) */
 	redrawItemList();
 			

@@ -271,7 +271,7 @@ echo "on `(hostname || uname -n) 2>/dev/null | sed 1q`" >&5
 echo >&5
 config_files=" Makefile src/Makefile po/Makefile.in"
 config_headers=" config.h"
-config_commands=" depfiles default-1"
+config_commands=" default-1 default-2"
 
 ac_cs_usage="\
 \`$as_me' instantiates files from templates according to the
@@ -390,7 +390,8 @@ fi
 # INIT-COMMANDS section.
 #
 
-AMDEP_TRUE="" ac_aux_dir="."
+AMDEP_TRUE=""
+ac_aux_dir="."
 
 
 for ac_config_target in $ac_config_targets
@@ -400,8 +401,8 @@ do
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
   "src/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
   "po/Makefile.in" ) CONFIG_FILES="$CONFIG_FILES po/Makefile.in" ;;
-  "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
   "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
+  "default-2" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-2" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -488,21 +489,24 @@ s,@LIBS@,,;t t
 s,@INSTALL_PROGRAM@,${INSTALL},;t t
 s,@INSTALL_SCRIPT@,${INSTALL},;t t
 s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
-s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,liferea,;t t
 s,@VERSION@,0.4.3,;t t
-s,@ACLOCAL@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run aclocal-1.7,;t t
-s,@AUTOCONF@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run autoconf,;t t
-s,@AUTOMAKE@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run automake-1.7,;t t
-s,@AUTOHEADER@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run autoheader,;t t
-s,@MAKEINFO@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run makeinfo,;t t
-s,@AMTAR@,${SHELL} /home/lars/tech/coding/t/liferea/missing --run tar,;t t
-s,@install_sh@,/home/lars/tech/coding/t/liferea/install-sh,;t t
-s,@STRIP@,,;t t
-s,@ac_ct_STRIP@,,;t t
+s,@EXEEXT@,,;t t
+s,@OBJEXT@,o,;t t
+s,@ACLOCAL@,${SHELL} /home/lars/tech/coding/t-044/liferea/missing --run aclocal,;t t
+s,@AUTOCONF@,${SHELL} /home/lars/tech/coding/t-044/liferea/missing --run autoconf,;t t
+s,@AUTOMAKE@,${SHELL} /home/lars/tech/coding/t-044/liferea/missing --run automake,;t t
+s,@AUTOHEADER@,${SHELL} /home/lars/tech/coding/t-044/liferea/missing --run autoheader,;t t
+s,@MAKEINFO@,${SHELL} /home/lars/tech/coding/t-044/liferea/missing --run makeinfo,;t t
+s,@AMTAR@,${SHELL} /home/lars/tech/coding/t-044/liferea/missing --run tar,;t t
+s,@install_sh@,/home/lars/tech/coding/t-044/liferea/install-sh,;t t
 s,@INSTALL_STRIP_PROGRAM@,${SHELL} $(install_sh) -c -s,;t t
-s,@AWK@,gawk,;t t
+s,@AWK@,mawk,;t t
 s,@SET_MAKE@,,;t t
+s,@AMDEP_TRUE@,,;t t
+s,@AMDEP_FALSE@,#,;t t
+s,@AMDEPBACKSLASH@,\,;t t
+s,@DEPDIR@,.deps,;t t
 s,@MAINTAINER_MODE_TRUE@,,;t t
 s,@MAINTAINER_MODE_FALSE@,#,;t t
 s,@MAINT@,,;t t
@@ -511,22 +515,14 @@ s,@CFLAGS@,-g -O2,;t t
 s,@LDFLAGS@,,;t t
 s,@CPPFLAGS@,,;t t
 s,@ac_ct_CC@,gcc,;t t
-s,@EXEEXT@,,;t t
-s,@OBJEXT@,o,;t t
-s,@DEPDIR@,.deps,;t t
 s,@am__include@,include,;t t
 s,@am__quote@,,;t t
-s,@AMDEP_TRUE@,,;t t
-s,@AMDEP_FALSE@,#,;t t
-s,@AMDEPBACKSLASH@,\,;t t
-s,@CCDEPMODE@,depmode=gcc3,;t t
-s,@am__fastdepCC_TRUE@,,;t t
-s,@am__fastdepCC_FALSE@,#,;t t
+s,@CCDEPMODE@,depmode=gcc,;t t
 s,@CPP@,gcc -E,;t t
 s,@EGREP@,grep -E,;t t
 s,@PKG_CONFIG@,/usr/bin/pkg-config,;t t
-s,@PACKAGE_CFLAGS@,-DORBIT2=1 -pthread -I/opt/gnome2/include/gconf/2 -I/opt/gnome2/include/gtkhtml-2.0 -I/opt/gnome2/include/gnome-vfs-2.0 -I/opt/gnome2/lib/gnome-vfs-2.0/include -I/opt/gnome2/include/bonobo-activation-2.0 -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/X11R6/include -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/orbit-2.0 -I/usr/include/libxml2  ,;t t
-s,@PACKAGE_LIBS@,-Wl,--export-dynamic -pthread -L/opt/gnome2/lib -L/usr/X11R6/lib -lgconf-2 -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lpthread -lz -lgdk-x11-2.0 -lXrandr -lXi -lXinerama -lXext -latk-1.0 -lgdk_pixbuf-2.0 -lpangoxft-1.0 -lXft -lfreetype -lXrender -lfontconfig -lpangox-1.0 -lX11 -lpango-1.0 -lgnomevfs-2 -lbonobo-activation -lORBit-2 -lgobject-2.0 -lgthread-2.0 -lm -lgmodule-2.0 -ldl -lglib-2.0  ,;t t
+s,@PACKAGE_CFLAGS@,-DORBIT2=1 -pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/X11R6/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/gconf/2 -I/usr/include/orbit-2.0 -I/usr/include/libxml2 -I/usr/include/gtkhtml-2.0 -I/usr/include/gnome-vfs-2.0 -I/usr/lib/gnome-vfs-2.0/include -I/usr/include/bonobo-activation-2.0  ,;t t
+s,@PACKAGE_LIBS@,-Wl,--export-dynamic -pthread -lgconf-2 -lgtkhtml-2 -lgtk-x11-2.0 -lxml2 -lpthread -lz -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lpangoxft-1.0 -lpangox-1.0 -lpango-1.0 -lgnomevfs-2 -lbonobo-activation -lORBit-2 -lgobject-2.0 -lgthread-2.0 -lm -lgmodule-2.0 -ldl -lglib-2.0  ,;t t
 s,@GETTEXT_PACKAGE@,liferea,;t t
 s,@USE_NLS@,yes,;t t
 s,@MSGFMT@,/usr/bin/msgfmt,;t t
@@ -948,19 +944,12 @@ echo "$as_me: error: cannot create directory \"$ac_dir\"" >&2;}
     cat $tmp/config.h
     rm -f $tmp/config.h
   fi
-_am_stamp_count=`expr ${_am_stamp_count-0} + 1`
-echo "timestamp for $ac_file" >`(dirname $ac_file) 2>/dev/null ||
-$as_expr X$ac_file : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-         X$ac_file : 'X\(//\)[^/]' \| \
-         X$ac_file : 'X\(//\)$' \| \
-         X$ac_file : 'X\(/\)' \| \
-         .     : '\(.\)' 2>/dev/null ||
-echo X$ac_file |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`/stamp-h$_am_stamp_count
+  # Run the commands associated with the file.
+  case $ac_file in
+    config.h ) # update the timestamp
+echo timestamp >"./stamp-h1"
+ ;;
+  esac
 done
 
 #
@@ -1017,31 +1006,14 @@ ac_abs_top_srcdir=`cd "$ac_dir" && cd $ac_top_srcdir && pwd`
   { echo "$as_me:$LINENO: executing $ac_dest commands" >&5
 echo "$as_me: executing $ac_dest commands" >&6;}
   case $ac_dest in
-    depfiles ) test x"$AMDEP_TRUE" != x"" || for mf in $CONFIG_FILES; do
-  # Strip MF so we end up with the name of the file.
-  mf=`echo "$mf" | sed -e 's/:.*$//'`
-  # Check whether this is an Automake generated Makefile or not.
-  # We used to match only the files named `Makefile.in', but
-  # some people rename them; so instead we look at the file content.
-  # Grep'ing the first line is not enough: some people post-process
-  # each Makefile.in and add a new line on top of each file to say so.
-  # So let's grep whole file.
-  if grep '^#.*generated by automake' $mf > /dev/null 2>&1; then
-    dirpart=`(dirname "$mf") 2>/dev/null ||
-$as_expr X"$mf" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-         X"$mf" : 'X\(//\)[^/]' \| \
-         X"$mf" : 'X\(//\)$' \| \
-         X"$mf" : 'X\(/\)' \| \
-         .     : '\(.\)' 2>/dev/null ||
-echo X"$mf" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
-  else
-    continue
-  fi
+    default-1 )
+test x"$AMDEP_TRUE" != x"" ||
+for mf in $CONFIG_FILES; do
+  case "$mf" in
+  Makefile) dirpart=.;;
+  */Makefile) dirpart=`echo "$mf" | sed -e 's|/[^/]*$||'`;;
+  *) continue;;
+  esac
   grep '^DEP_FILES *= *[^ #]' < "$mf" > /dev/null || continue
   # Extract the definition of DEP_FILES from the Makefile without
   # running `make'.
@@ -1066,49 +1038,14 @@ echo X"$mf" |
        sed -e 's/\$(DEPDIR)/'"$DEPDIR"'/g' -e 's/\$U/'"$U"'/g'`; do
     # Make sure the directory exists.
     test -f "$dirpart/$file" && continue
-    fdir=`(dirname "$file") 2>/dev/null ||
-$as_expr X"$file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-         X"$file" : 'X\(//\)[^/]' \| \
-         X"$file" : 'X\(//\)$' \| \
-         X"$file" : 'X\(/\)' \| \
-         .     : '\(.\)' 2>/dev/null ||
-echo X"$file" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
-    { if $as_mkdir_p; then
-    mkdir -p $dirpart/$fdir
-  else
-    as_dir=$dirpart/$fdir
-    as_dirs=
-    while test ! -d "$as_dir"; do
-      as_dirs="$as_dir $as_dirs"
-      as_dir=`(dirname "$as_dir") 2>/dev/null ||
-$as_expr X"$as_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-         X"$as_dir" : 'X\(//\)[^/]' \| \
-         X"$as_dir" : 'X\(//\)$' \| \
-         X"$as_dir" : 'X\(/\)' \| \
-         .     : '\(.\)' 2>/dev/null ||
-echo X"$as_dir" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
-    done
-    test ! -n "$as_dirs" || mkdir $as_dirs
-  fi || { { echo "$as_me:$LINENO: error: cannot create directory $dirpart/$fdir" >&5
-echo "$as_me: error: cannot create directory $dirpart/$fdir" >&2;}
-   { (exit 1); exit 1; }; }; }
-
+    fdir=`echo "$file" | sed -e 's|/[^/]*$||'`
+    $ac_aux_dir/mkinstalldirs "$dirpart/$fdir" > /dev/null 2>&1
     # echo "creating $dirpart/$file"
     echo '# dummy' > "$dirpart/$file"
   done
 done
  ;;
-    default-1 ) case "$CONFIG_FILES" in *po/Makefile.in*)
+    default-2 ) case "$CONFIG_FILES" in *po/Makefile.in*)
         sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile
       esac ;;
   esac
