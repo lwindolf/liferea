@@ -480,7 +480,7 @@ static void ui_choose_file_save_cb(GtkDialog *dialog, gint response_id, gpointer
 	
 	if (response_id == GTK_RESPONSE_ACCEPT) {
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		tuple->func(filename, user_data);
+		tuple->func(filename, tuple->user_data);
 		g_free(filename);
 	} else {
 		tuple->func(NULL, user_data);
@@ -497,7 +497,7 @@ static void ui_choose_file_cb(GtkButton *button, gpointer user_data) {
 	const gchar *filename;
 	
 	filename = gtk_file_selection_get_filename(GTK_FILE_SELECTION(tuple->dialog));
-	tuple->func(filename, user_data);
+	tuple->func(filename, tuple->user_data);
 	gtk_widget_destroy(GTK_WIDGET(tuple->dialog));
 	g_free(tuple);
 }
@@ -512,7 +512,7 @@ static void ui_choose_file_cb_canceled(GtkButton *button, gpointer user_data) {
 }
 #endif
 
-void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, gpointer user_data) {
+void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *filename, gpointer user_data) {
 	GtkWidget *dialog;
 	struct file_chooser_tuple *tuple;
 #if GTK_CHECK_VERSION(2,4,0)
@@ -536,7 +536,8 @@ void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean
 	
 	g_signal_connect(G_OBJECT(dialog), "response",
 				  G_CALLBACK (ui_choose_file_save_cb), tuple);
-	
+	if (filename != NULL && g_file_test(filename, G_FILE_TEST_EXISTS))
+		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
 	gtk_widget_show_all(dialog);
 #else
 	dialog = gtk_file_selection_new (title);
@@ -548,10 +549,9 @@ void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean
 	tuple->func = callback;
 	tuple->user_data = user_data;
 
-	/*if (name != NULL)
-	  gtk_file_selection_set_filename(GTK_FILE_SELECTION(dialog), name);
-	  g_free(name);*/
-
+	if (filename != NULL)
+		gtk_file_selection_set_filename(GTK_FILE_SELECTION(dialog), filename);
+	
 	g_signal_connect (GTK_FILE_SELECTION (dialog)->ok_button,
 				   "clicked",
 				   G_CALLBACK (ui_choose_file_cb),

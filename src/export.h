@@ -49,28 +49,4 @@ void
 on_export_activate                     (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
-void
-on_exportfileselect_pressed            (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_importfileselect_clicked            (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_importfile_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_exportfile_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_importfileselect_pressed            (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_exportfileselect_clicked            (GtkButton       *button,
-                                        gpointer         user_data);
-
 #endif

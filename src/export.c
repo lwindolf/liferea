@@ -404,7 +404,7 @@ void on_import_activate_cb(const gchar *filename, gpointer user_data) {
 
 void on_import_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	ui_choose_file(_("Import Feed List"), GTK_WINDOW(mainwindow), _("Import"), FALSE, on_import_activate_cb, NULL);
+	ui_choose_file(_("Import Feed List"), GTK_WINDOW(mainwindow), _("Import"), FALSE, on_import_activate_cb, NULL, NULL);
 }
 
 static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
@@ -423,6 +423,6 @@ static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
 
 void on_export_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
-	ui_choose_file(_("Export Feed List"), GTK_WINDOW(mainwindow), _("Export"), TRUE, on_export_activate_cb, NULL);
+	ui_choose_file(_("Export Feed List"), GTK_WINDOW(mainwindow), _("Export"), TRUE, on_export_activate_cb, NULL, NULL);
 }
 

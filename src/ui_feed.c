@@ -63,7 +63,6 @@ struct fp_prop_ui_data {
 
 static void on_feed_prop_url_radio(GtkToggleButton *button, gpointer user_data);
 static void on_selectfile_pressed(GtkButton *button, gpointer user_data);
-static void on_selectfileok_clicked(GtkButton *button, gpointer user_data);
 static void ui_feed_prop_enable_httpauth(struct fp_prop_ui_data *ui_data, gboolean enable);
 static void on_feed_prop_cache_radio(GtkToggleButton *button, gpointer user_data);
 static void on_feed_prop_authcheck(GtkToggleButton *button, gpointer user_data);
@@ -510,14 +509,14 @@ static void on_feed_prop_url_radio(GtkToggleButton *button, gpointer user_data) 
 	gtk_widget_set_sensitive(ui_data->selectFile, file || cmd);
 }
 
-static void on_selectfileok_clicked(GtkButton *button, gpointer user_data) {
+static void on_selectfileok_clicked(const gchar *filename, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
-	GtkWidget *filedialog = g_object_get_data(G_OBJECT(button), "dialog");
-	const gchar *name;
 	gchar *utfname;
-
-	name = gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog));
-	utfname = g_filename_to_utf8(name, -1, NULL, NULL, NULL);
+	
+	if (filename == NULL)
+		return;
+	
+	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
 
 	if (utfname != NULL) {
 		if (ui_data->selector == 'u')
@@ -526,15 +525,10 @@ static void on_selectfileok_clicked(GtkButton *button, gpointer user_data) {
 			gtk_entry_set_text(GTK_ENTRY(ui_data->filter), utfname);
 	}
 	
-	gtk_widget_destroy(filedialog);
-
 	g_free(utfname);
 }
 
 static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
-	GtkWidget *filedialog;
-	GtkWidget	*okbutton;
-	
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	const gchar *utfname;
 	gchar *name;
@@ -548,18 +542,7 @@ static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
 	}
 	
 	name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
-	
-	filedialog = create_fileselection();
-	gtk_window_set_transient_for(GTK_WINDOW(filedialog), GTK_WINDOW(ui_data->dialog));
-	
-	okbutton = lookup_widget(filedialog, "fileselectbtn");
-	
-	if (name != NULL)
-		gtk_file_selection_set_filename(GTK_FILE_SELECTION(filedialog), name);
-	
-	gtk_object_set_data(GTK_OBJECT(okbutton), "dialog", filedialog);
-	g_signal_connect((gpointer) okbutton, "clicked", G_CALLBACK (on_selectfileok_clicked), user_data);
-	gtk_widget_show(filedialog);
+	ui_choose_file(_("Choose File"), GTK_WINDOW(ui_data->dialog), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, ui_data);
 	g_free(name);
 }
  

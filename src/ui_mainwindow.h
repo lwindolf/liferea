@@ -72,5 +72,5 @@ typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
  * @param callback that will be passed the filename (in the system's locale (NOT UTF-8), and some user data
  * @param user data passed to the callback
  */
-void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean savinng, fileChoosenCallback callback, gpointer user_data);
+void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean savinng, fileChoosenCallback callback, const gchar *filename, gpointer user_data);
 #endif

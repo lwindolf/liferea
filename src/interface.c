@@ -2421,44 +2421,6 @@ create_foldernamedialog (void)
 }
 
 GtkWidget*
-create_fileselection (void)
-{
-  GtkWidget *fileselection;
-  GtkWidget *fileselectbtn;
-  GtkWidget *cancel_button1;
-
-  fileselection = gtk_file_selection_new (_("Select A File"));
-  gtk_container_set_border_width (GTK_CONTAINER (fileselection), 10);
-  gtk_window_set_modal (GTK_WINDOW (fileselection), TRUE);
-  gtk_window_set_destroy_with_parent (GTK_WINDOW (fileselection), TRUE);
-  gtk_window_set_type_hint (GTK_WINDOW (fileselection), GDK_WINDOW_TYPE_HINT_DIALOG);
-  gtk_file_selection_hide_fileop_buttons (GTK_FILE_SELECTION (fileselection));
-
-  fileselectbtn = GTK_FILE_SELECTION (fileselection)->ok_button;
-  gtk_widget_show (fileselectbtn);
-  GTK_WIDGET_SET_FLAGS (fileselectbtn, GTK_CAN_DEFAULT);
-
-  cancel_button1 = GTK_FILE_SELECTION (fileselection)->cancel_button;
-  gtk_widget_show (cancel_button1);
-  GTK_WIDGET_SET_FLAGS (cancel_button1, GTK_CAN_DEFAULT);
-
-  g_signal_connect_data ((gpointer) fileselectbtn, "clicked",
-                         G_CALLBACK (gtk_widget_hide),
-                         GTK_OBJECT (fileselection),
-                         NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
-  g_signal_connect_swapped ((gpointer) cancel_button1, "clicked",
-                            G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (fileselection));
-
-  /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (fileselection, fileselection, "fileselection");
-  GLADE_HOOKUP_OBJECT_NO_REF (fileselection, fileselectbtn, "fileselectbtn");
-  GLADE_HOOKUP_OBJECT_NO_REF (fileselection, cancel_button1, "cancel_button1");
-
-  return fileselection;
-}
-
-GtkWidget*
 create_filterdialog (void)
 {
   GtkWidget *filterdialog;

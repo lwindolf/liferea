@@ -4713,45 +4713,6 @@
   </child>
 </widget>
 
-<widget class="GtkFileSelection" id="fileselection">
-  <property name="border_width">10</property>
-  <property name="visible">True</property>
-  <property name="title" translatable="yes">Select A File</property>
-  <property name="type">GTK_WINDOW_TOPLEVEL</property>
-  <property name="window_position">GTK_WIN_POS_NONE</property>
-  <property name="modal">True</property>
-  <property name="resizable">True</property>
-  <property name="destroy_with_parent">True</property>
-  <property name="decorated">True</property>
-  <property name="skip_taskbar_hint">False</property>
-  <property name="skip_pager_hint">False</property>
-  <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-  <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
-  <property name="show_fileops">False</property>
-
-  <child internal-child="cancel_button">
-    <widget class="GtkButton" id="cancel_button1">
-      <property name="visible">True</property>
-      <property name="can_default">True</property>
-      <property name="can_focus">True</property>
-      <property name="relief">GTK_RELIEF_NORMAL</property>
-      <property name="focus_on_click">True</property>
-      <signal name="clicked" handler="gtk_widget_hide" object="fileselection" last_modification_time="Sun, 12 Oct 2003 01:03:15 GMT"/>
-    </widget>
-  </child>
-
-  <child internal-child="ok_button">
-    <widget class="GtkButton" id="fileselectbtn">
-      <property name="visible">True</property>
-      <property name="can_default">True</property>
-      <property name="can_focus">True</property>
-      <property name="relief">GTK_RELIEF_NORMAL</property>
-      <property name="focus_on_click">True</property>
-      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="fileselection" last_modification_time="Sun, 12 Oct 2003 01:02:46 GMT"/>
-    </widget>
-  </child>
-</widget>
-
 <widget class="GtkWindow" id="filterdialog">
   <property name="visible">True</property>
   <property name="title" translatable="yes">edit filter rules</property>
