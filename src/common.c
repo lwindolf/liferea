@@ -19,6 +19,7 @@
    Boston, MA 02111-1307, USA.
 */
 
+#include <langinfo.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
@@ -185,7 +186,18 @@ gchar * getActualTime(void) {
 	/* get receive time */
 	if((time_t)-1 != time(&t)) {
 		if(NULL != (timestr = (gchar *)g_malloc(TIMESTRLEN+1))) {
-			if(NULL != (timeformat = getStringConfValue(TIME_FORMAT))) {
+			timeformat = getStringConfValue(TIME_FORMAT);
+			
+			/* if not set conf.c delivers a "", from version 0.3.8
+			   there is no more time format setting and D_T_FMT
+			   'll always be used... */
+			if(0 == strlen(timeformat)) {
+				g_free(timeformat);
+				timeformat =  g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));
+				
+			}
+			
+			if(NULL != timeformat) {
 				strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
 				g_free(timeformat);
 			}
@@ -204,8 +216,9 @@ gchar * formatDate(time_t t) {
 			if(0 == strlen(timeformat)) {
 				/* if not configured use default format */
 				g_free(timeformat);
-				timeformat = g_strdup("%H:%M");
+				timeformat =  g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));
 			}
+			
 			strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
 			g_free(timeformat);
 		}
