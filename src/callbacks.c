@@ -52,16 +52,21 @@ static GtkWidget	*foldernamedialog = NULL;
 GtkTreeStore	*itemstore = NULL;
 GtkTreeStore	*feedstore = NULL;
 
-extern GdkPixbuf	*unreadIcon;
-extern GdkPixbuf	*readIcon;
-extern GdkPixbuf	*flagIcon;
-extern GdkPixbuf	*directoryIcon;
-extern GdkPixbuf	*helpIcon;
-extern GdkPixbuf	*listIcon;
-extern GdkPixbuf	*availableIcon;
-extern GdkPixbuf	*unavailableIcon;
-extern GdkPixbuf	*vfolderIcon;
-extern GdkPixbuf	*emptyIcon;
+/* icons for itemlist */
+static GdkPixbuf	*readIcon = NULL;
+static GdkPixbuf	*unreadIcon = NULL;
+static GdkPixbuf	*flagIcon = NULL;
+/* icons for feedlist */
+GdkPixbuf	*availableIcon = NULL;
+static GdkPixbuf	*unavailableIcon = NULL;
+/* icons for OCS */
+static GdkPixbuf	*listIcon = NULL;
+/* icons for grouping */
+static GdkPixbuf	*directoryIcon = NULL;
+static GdkPixbuf	*helpIcon = NULL;
+GdkPixbuf	*emptyIcon = NULL;
+/* VFolder */
+static GdkPixbuf	*vfolderIcon = NULL;
 
 extern GThread		*updateThread;
 
@@ -121,6 +126,17 @@ void initGUI(void) {
 		else
 			gtk_widget_show(widget);
 	}
+	
+	if(NULL == readIcon)		readIcon	= create_pixbuf("read.xpm");
+	if(NULL == unreadIcon)		unreadIcon	= create_pixbuf("unread.xpm");
+	if(NULL == flagIcon)		flagIcon	= create_pixbuf("flag.png");
+	if(NULL == availableIcon)	availableIcon	= create_pixbuf("available.png");
+	if(NULL == unavailableIcon)	unavailableIcon	= create_pixbuf("unavailable.png");
+	if(NULL == listIcon)		listIcon	= create_pixbuf("ocs.png");
+	if(NULL == directoryIcon)	directoryIcon	= create_pixbuf("directory.png");
+	if(NULL == helpIcon)		helpIcon	= create_pixbuf("help.png");
+	if(NULL == vfolderIcon)		vfolderIcon	= create_pixbuf("vfolder.png");
+	if(NULL == emptyIcon)		emptyIcon	= create_pixbuf("empty.png");
 	
 	setupTrayIcon();	
 }
@@ -484,6 +500,7 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 		/* typically on startup when adding feeds from configuration */
 		gtk_tree_store_append(feedstore, &iter, topiter);
 	}
+
 	gtk_tree_store_set(feedstore, &iter,
 			   FS_TITLE, getFeedTitle(fp),
 			   FS_KEY, getFeedKey(fp),
@@ -1123,6 +1140,7 @@ static void renderFeedStatus(GtkTreeViewColumn *tree_column,
 	gchar		*tmp_key;
 	gint		type;
 	feedPtr		fp;
+	gpointer	icon;
 	
 	gtk_tree_model_get(model, iter,	FS_KEY, &tmp_key, 
 					FS_TYPE, &type, -1);
@@ -1156,9 +1174,12 @@ static void renderFeedStatus(GtkTreeViewColumn *tree_column,
 		case FST_PIE:
 		case FST_RSS:			
 		case FST_CDF:
-			if(getFeedAvailable(fp))
-				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", availableIcon, NULL);
-			else
+			if(getFeedAvailable(fp)) {
+				if(NULL != (icon = getFeedIcon(fp)))
+					g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", icon, NULL);					
+				else
+					g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", availableIcon, NULL);
+			} else
 				g_object_set(GTK_CELL_RENDERER(cell), "pixbuf", unavailableIcon, NULL);
 			break;
 		default:

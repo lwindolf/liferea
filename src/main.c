@@ -23,37 +23,22 @@
 #include <gtk/gtk.h>
 #include "interface.h"
 #include "support.h"
-#include "feed.h"
 #include "callbacks.h"
 #include "htmlview.h"
 #include "conf.h"
 #include "update.h"
+#include "netio.h"
+#include "common.h"
 
 extern GtkWidget	*mainwindow;
 
 GThread	*mainThread = NULL;
 GThread	*updateThread = NULL;
 
-/* icons for itemlist */
-GdkPixbuf	*readIcon = NULL;
-GdkPixbuf	*unreadIcon = NULL;
-GdkPixbuf	*flagIcon = NULL;
-/* icons for feedlist */
-GdkPixbuf	*availableIcon = NULL;
-GdkPixbuf	*unavailableIcon = NULL;
-/* icons for OCS */
-GdkPixbuf	*listIcon = NULL;
-/* icons for grouping */
-GdkPixbuf	*directoryIcon = NULL;
-GdkPixbuf	*helpIcon = NULL;
-GdkPixbuf	*emptyIcon = NULL;
-/* VFolder */
-GdkPixbuf	*vfolderIcon = NULL;
-
 int main (int argc, char *argv[]) {	
-	GtkTooltips	*button_bar_tips;
-   	GtkWidget	*viewport;
-	
+gchar *icosource;
+gchar *icodata;
+int i;
 #ifdef ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
@@ -68,24 +53,15 @@ int main (int argc, char *argv[]) {
 	gnome_vfs_init();
 
 	add_pixmap_directory(PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
-	readIcon = create_pixbuf("read.xpm");
-	unreadIcon = create_pixbuf("unread.xpm");
-	flagIcon = create_pixbuf("flag.png");
-	availableIcon = create_pixbuf("available.png");
-	unavailableIcon = create_pixbuf("unavailable.png");
-	listIcon = create_pixbuf("ocs.png");
-	directoryIcon = create_pixbuf("directory.png");
-	helpIcon = create_pixbuf("help.png");
-	vfolderIcon = create_pixbuf("vfolder.png");
-	emptyIcon = create_pixbuf("empty.png");
-	
+	add_pixmap_directory(getCachePath());
+
 	mainwindow = create_mainwindow();
 	setupHTMLViews(mainwindow, lookup_widget(mainwindow, "itemview"),
 			 	   lookup_widget(mainwindow, "itemlistview"));
 	     			     			     	
 	setupFeedList(lookup_widget(mainwindow, "feedlist"));
 	setupItemList(lookup_widget(mainwindow, "Itemlist"));
-		
+
 	/* order is important! */
 	initConfig();		/* initialize gconf */
 	loadConfig();		/* maybe this should be merged with initConfig() */
@@ -93,7 +69,7 @@ int main (int argc, char *argv[]) {
 	updateThread = initUpdateThread();	/* starts updating of feeds */
 	initBackend();
 	loadEntries();		/* load feed list from gconf */
-	
+
 	if(getBooleanConfValue(UPDATE_ON_STARTUP)) {
 		resetAllUpdateCounters();
 		updateNow();

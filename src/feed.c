@@ -18,9 +18,13 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <glib.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "conf.h"
 #include "common.h"
@@ -34,6 +38,7 @@
 #include "vfolder.h"
 #include "netio.h"
 #include "feed.h"
+#include "favicon.h"
 
 /* auto detection lookup table */
 typedef struct detectStr {
@@ -253,6 +258,20 @@ void saveAllFeeds(void) {
 	g_mutex_unlock(feeds_lock);
 }
 
+void loadFavIcon(feedPtr fp) {
+	gchar		*filename, *tmp;
+	struct stat	statinfo;
+	
+	/* try to load a saved favicon */
+	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
+	if(0 == stat(filename, &statinfo)) {
+		/* remove path, because create_pixbuf allows no absolute pathnames */
+		tmp = strrchr(filename, '/');
+		fp->icon = gdk_pixbuf_scale_simple(create_pixbuf(++tmp), 16, 16, GDK_INTERP_BILINEAR);
+	}
+	g_free(filename);
+}
+
 /* function which is called to load a feed's cache file */
 static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	xmlDocPtr 	doc;
@@ -285,6 +304,8 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		
 		fp = getNewFeedStruct();
 		fp->available = TRUE;
+		fp->key = key;
+		fp->keyprefix = keyprefix;
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
 			if ((!xmlStrcmp(cur->name, BAD_CAST"feedDescription"))) 
@@ -317,6 +338,8 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		xmlFreeDoc(doc);
 	g_free(filename);
 	
+	loadFavIcon(fp);
+		
 	return fp;
 }
 
@@ -360,6 +383,8 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 /* function for first time loading of a newly subscribed feed */
 feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 	feedHandlerPtr	fhp;
+	unsigned char	*icodata;
+	gchar		*baseurl;
 	gchar		*key;
 	gchar		*tmp;
 	feedPtr		fp;
@@ -402,6 +427,27 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		if(TRUE == fp->available)		
 			saveFeed(fp);
 
+		/* try to download favicon */
+		baseurl = g_strdup(url);
+		if(NULL != (tmp = strstr(baseurl, "://"))) {
+			tmp += 3;
+			if(NULL != (tmp = strchr(tmp, '/'))) {
+				*tmp = 0;
+				tmp = g_strdup_printf("%s/favicon.ico", baseurl);
+				icodata = downloadURL(tmp);
+				g_free(tmp);
+
+				tmp = getCacheFileName(keyprefix, key, "xpm");
+				if(NULL != icodata) {
+					 convertIcoToXPM(tmp, icodata, 10000000);
+					 loadFavIcon(fp);
+				}
+				g_free(tmp);
+			}
+		}
+		g_free(baseurl);
+	
+		/* and finally add the feed to the feed list */
 		g_mutex_lock(feeds_lock);
 		g_hash_table_insert(feeds, (gpointer)getFeedKey(fp), (gpointer)fp);
 		g_mutex_unlock(feeds_lock);
@@ -621,6 +667,7 @@ feedPtr getFeed(gchar *feedkey) {
 }
 
 gint getFeedType(feedPtr fp) { return fp->type; }
+gpointer getFeedIcon(feedPtr fp) { return fp->icon; }
 gchar * getFeedKey(feedPtr fp) { return fp->key; }
 gchar * getFeedKeyPrefix(feedPtr fp) { return fp->keyprefix; }
 

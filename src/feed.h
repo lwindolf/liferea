@@ -21,6 +21,7 @@
 #ifndef _FEED_H
 #define _FEED_H
 
+#include <glib.h>
 #include <gtk/gtk.h>
 #include "item.h"
 
@@ -75,6 +76,8 @@ typedef struct feed {
 	gboolean	available;		/* flag to signalize loading errors */
 	
 	gchar		*data;		/* raw XML data, used while downloading/parsing the feed */
+	
+	gpointer	icon;		/* pointer to pixmap, if theres a favicon */
 		
 	/* feed properties needed to be saved */
 	gchar		*title;		/* feed/channel title */
@@ -125,6 +128,7 @@ void freeFeed(feedPtr fp);
 
 feedPtr getFeed(gchar *key);
 
+gpointer getFeedIcon(feedPtr fp);
 gint getFeedType(feedPtr fp);
 gchar * getFeedKey(feedPtr fp);
 gchar * getFeedKeyPrefix(feedPtr fp);

@@ -261,6 +261,15 @@ static void moveIfInFolder(gpointer keyprefix, gpointer value, gpointer key) {
 				g_print(_("error! could not move cache file %s to file %s\n"), oldfilename, newfilename);
 			}
 			g_free(oldfilename);
+			g_free(newfilename);		
+
+			/* rename cache favicon */
+			oldfilename = getCacheFileName(fp->keyprefix, tmp_key, "xpm");
+			newfilename = getCacheFileName(keyprefix, newkey, "xpm");
+			
+			rename(oldfilename, newfilename);
+			
+			g_free(oldfilename);
 			g_free(newfilename);
 		
 			g_mutex_lock(feeds_lock);	/* prevent any access during the feed structure modifications */

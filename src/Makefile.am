@@ -47,6 +47,7 @@ liferea_SOURCES = \
 	ns_ag.c ns_ag.h \
 	conf.c conf.h \
 	vfolder.c vfolder.h \
+	favicon.c favicon.h \
 	os-support.c os-support.h \
 	netio.c netio.h
 

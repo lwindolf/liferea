@@ -257,7 +257,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 	int retval;
 	int handled;
 	int tmphttpstatus;
-
+int tmplen;
 	lasthttpstatus = 0;
 	
 	snprintf (tmp, sizeof(tmp), _("Downloading http://%s%s..."), host, url);
@@ -537,14 +537,19 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr) {
 		}
 		/* END new select stuff. */
 	
-		if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL)
+		/*if ((fgets (netbuf, sizeof(netbuf), stream)) == NULL)
 			break;
 		length += strlen(netbuf);
 		body = realloc(body, length+1);
-		strncat (body, netbuf, strlen(netbuf));
+		strncat (body, netbuf, strlen(netbuf));*/
+		if(0 >= (tmplen = fread(netbuf, 1, sizeof(netbuf), stream)))
+			break;
+		length += tmplen;
+		body = realloc(body, length);
+		memcpy(body + length - tmplen, netbuf, tmplen);
 	}
 	body = realloc(body, length+1);
-	body[strlen(body)] = '\0';
+	body[length] = '\0';
 	
 	/* Close connection. */
 	fclose (stream);
@@ -559,7 +564,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 	char *freeme;
 	char *returndata;
 	char tmp[1024];
-	
+int i;
 	/* hahteeteepeh://foo.bar/jaaaaaguar.html. */
 	/*              00^      0^*/
 	
@@ -620,9 +625,8 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 	
 	/* Return allocated pointer with XML data. */
 	/* return NetIO (host, url, cur_ptr); */
-	
 	returndata = NetIO (host, url, cur_ptr);
-	
+
 	/* url will be freed in the calling function. */
 	free (freeme);		/* This is *host. */
 	
@@ -642,18 +646,18 @@ char * downloadURL(char *url) {
 		/* :// means it an URL */
 		cur_ptr.feedurl = strdup(url);
 		cur_ptr.lastmodified = NULL;
-		
+
 		data = DownloadFeed(strdup(url), &cur_ptr);
 		free(cur_ptr.lastmodified);
-		
+
 		/* check if URL was modified */
 //		if(0 != strcmp(url, cur_ptr.feedurl)) {
 //			g_free(url);
 //			url = g_strdup(cur_ptr.feedurl);
 //		}
-		
+
 		free(cur_ptr.feedurl);
-		
+
 	} else {
 		/* no :// so we assume its a local path */
 		if(0 == stat(url, &statinfo)) {
@@ -672,6 +676,6 @@ char * downloadURL(char *url) {
 			print_status(g_strdup_printf(_("There is no file \"%s\"!"), url));
 		}
 	}
-	
+
 	return data;
 }
