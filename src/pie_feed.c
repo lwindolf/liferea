@@ -1,31 +1,27 @@
-/*
-   Atom/Echo/PIE 0.2/0.3 channel parsing
-      
-   Note: the PIE parsing is copy & paste & some changes of the RSS
-   code...
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file pie_feed.c Atom/Echo/PIE 0.2/0.3 channel parsing
+ * 
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <sys/time.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-#include "conf.h"
 #include "support.h"
 #include "common.h"
 #include "feed.h"
@@ -65,10 +61,6 @@ static gchar *feedTagList[] = {	"title",
 				NULL
 			  };
 
-/* ---------------------------------------------------------------------------- */
-/* HTML output		 							*/
-/* ---------------------------------------------------------------------------- */
-
 /* method called by g_hash_table_foreach from inside the HTML
    generator functions to output namespace specific infos 
    
@@ -93,7 +85,7 @@ void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
 			fp = nsh->doItemFooterOutput;
 			break;			
 		default:	
-			g_warning(_("Internal error! Invalid output request mode for namespace information!"));
+			g_warning("Internal error! Invalid output request mode for namespace information!");
 			return;
 			break;		
 	}
@@ -159,10 +151,6 @@ static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
 	return buffer;
 }
 
-/* ---------------------------------------------------------------------------- */
-/* PIE parsing		 							*/
-/* ---------------------------------------------------------------------------- */
-
 /* nonstatic because used by pie_entry.c too */
 gchar * parseAuthor(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
@@ -171,17 +159,23 @@ gchar * parseAuthor(xmlNodePtr cur) {
 	g_assert(NULL != cur);
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"name"))
+		if(NULL == cur->name) {
+			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			cur = cur->next;
+			continue;
+		}
+		
+		if (!xmlStrcmp(cur->name, BAD_CAST"name"))
 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"email")) {
+		if (!xmlStrcmp(cur->name, BAD_CAST"email")) {
 			tmp2 = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp2 = g_strdup_printf("%s <a href=\"mailto:%s\">%s</a>", tmp, tmp2, tmp2);
 			g_free(tmp);
 			tmp = tmp2;
 		}
 					
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"url")) {
+		if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
 			tmp2 = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp2 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
 			g_free(tmp);
@@ -226,19 +220,31 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 			break;			
 		}
 
-		if(xmlStrcmp(cur->name, (const xmlChar *)"feed")) {
+		if(NULL == cur->name) {
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
+			error = 1;
+			break;
+		}
+		
+		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find Atom/Echo/PIE header!</p>"));
 			error = 1;
 			break;			
 		}
-		
+
 		time(&(cp->time));
 
 		/* parse feed contents */
 		cur = cur->xmlChildrenNode;
-		while (cur != NULL) {
+		while(cur != NULL) {
+			if(NULL == cur->name) {
+				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+				cur = cur->next;
+				continue;
+			}
+			
 			/* parse feed author */
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "author"))) {
+			if ((!xmlStrcmp(cur->name, BAD_CAST"author"))) {
 				g_free(cp->author);
 				cp->author = parseAuthor(cur);
 				cur = cur->next;		
@@ -246,7 +252,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 			}
 			
 			/* parse feed contributors */
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "contributor"))) {
+			if ((!xmlStrcmp(cur->name, BAD_CAST"contributor"))) {
 				tmp = parseAuthor(cur);				
 				if(NULL != cp->contributors) {
 					/* add another contributor */
@@ -285,7 +291,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 						cur = cur->next;
 						continue;
 					} else {
-							g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
+						g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
 					}
 				}
 			}
@@ -293,8 +299,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 			/* now check for simple tags like <tagline>,<title>... */
 			/* check for PIE tags */
 			for(i = 0; i < PIE_FEED_MAX_TAG; i++) {
-				g_assert(NULL != cur->name);
-				if (!xmlStrcmp(cur->name, (const xmlChar *)feedTagList[i])) {
+				if (!xmlStrcmp(cur->name, BAD_CAST feedTagList[i])) {
 					tmp = cp->tags[i];
 					if(NULL == (cp->tags[i] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
 						cp->tags[i] = tmp;
@@ -305,7 +310,7 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 			}
 
 			/* collect PIE feed entries */
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "entry"))) {
+			if ((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = parseEntry(cp, cur))) {
 					if(0 == ip->time)
 						ip->time = cp->time;
@@ -342,10 +347,6 @@ static void readPIEFeed(feedPtr fp, gchar *data) {
 		break;
 	}
 }
-
-/* ---------------------------------------------------------------------------- */
-/* initialization		 						*/
-/* ---------------------------------------------------------------------------- */
 
 feedHandlerPtr initPIEFeedHandler(void) {
 	feedHandlerPtr	fhp;

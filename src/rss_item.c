@@ -1,22 +1,22 @@
-/*
-   RSS/RDF item parsing 
-      
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file rss_item.c RSS/RDF item parsing 
+ *
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <string.h>
 
@@ -60,118 +60,6 @@ static gchar *itemTagList[] = {		"title",
 					"guid",
 					NULL
 				  };
-				  
-/* prototypes */
-static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip);
-
-/* method to parse standard tags for each item element */
-itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
-	gchar			*tmp, *link;
-	parseItemTagFunc	parseFunc;
-	GSList			*hp;
-	RSSNsHandler		*nsh;
-	RSSItemPtr 		i;
-	itemPtr			ip;
-	int			j;
-
-	g_assert(NULL != cur);
-		
-	i = g_new0(struct RSSItem, 1);
-	i->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-	ip = getNewItemStruct();
-	
-	/* try to get an item about id */
-	ip->id = xmlGetProp(cur, BAD_CAST"about");
-
-	cur = cur->xmlChildrenNode;
-	while (cur != NULL) {
-		/* check namespace of this tag */
-		if(NULL != cur->ns) {		
-			if (NULL != cur->ns->prefix) {
-				g_assert(NULL != rss_nslist);
-				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					nsh = (RSSNsHandler *)hp->data;
-					parseFunc = nsh->parseItemTag;
-					if(NULL != parseFunc)
-						(*parseFunc)(i, cur);
-					cur = cur->next;
-					continue;						
-				} else {
-					//g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
-				}
-			}
-		}
-		
-		/* check for RDF tags */
-		for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
-			g_assert(NULL != cur->name);
-			if (!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
- 				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				if(NULL != tmp) {
-					g_free(i->tags[j]);
-					i->tags[j] = tmp;
-					break;
-				}				
-			}		
-		}
-
-		if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if(NULL != tmp) {
-				i->time = parseRFC822Date(tmp);
-				g_free(tmp);
-			}
-		} else 
-		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
-			/* RSS 0.93 allows multiple enclosures, so we build
-			   a simple string of HTML-links... */
-			tmp = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"url"));
-			if(NULL != tmp) {
-				link = tmp;
-				if(NULL == (tmp = i->enclosure)) {
-					i->enclosure = g_strdup_printf("<a href=\"%s\">%s</a>", link, link);					
-				} else {
-					i->enclosure = g_strdup_printf("%s<a href=\"%s\">%s</a>", tmp, link, link);
-					g_free(tmp);
-				}
-				g_free(link);
-			}
-		}
-		cur = cur->next;
-	}
-
-	/* after parsing we fill the infos into the itemPtr structure */
-	ip->type = FST_RSS;
-	ip->time = i->time;
-	ip->source = g_strdup(i->tags[RSS_ITEM_LINK]);
-	ip->readStatus = FALSE;
-
-	if(NULL == ip->id)
-		ip->id = g_strdup(i->tags[RSS_ITEM_GUID]);
-
-	/* some postprocessing before generating HTML */
-	if(NULL != i->tags[RSS_ITEM_TITLE])
-		i->tags[RSS_ITEM_TITLE] = unhtmlize(i->tags[RSS_ITEM_TITLE]);
-		
-	if(NULL != i->tags[RSS_ITEM_DESCRIPTION])
-		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML(i->tags[RSS_ITEM_DESCRIPTION]);
-
-	ip->title = g_strdup(i->tags[RSS_ITEM_TITLE]);		
-	ip->description = showRSSItem(fp, cp, i);
-
-	/* free RSSItem structure */
-	for(j = 0; j < RSS_ITEM_MAX_TAG; j++)
-		g_free(i->tags[j]);
-	g_free(i->enclosure);
-	g_hash_table_destroy(i->nsinfos);
-	g_free(i);
-
-	return ip;
-}
-
-/* ---------------------------------------------------------------------------- */
-/* HTML output stuff	 							*/
-/* ---------------------------------------------------------------------------- */
 
 extern void showRSSFeedNSInfo(gpointer value, gpointer userdata);
 
@@ -184,8 +72,7 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 
 	g_assert(NULL != ip);
 	g_assert(NULL != cp);
-	g_assert(NULL != fp);
-	
+	g_assert(NULL != fp);	
 
 	addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
 	addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
@@ -252,4 +139,114 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
 
 	return buffer;
+}
+
+/* method to parse standard tags for each item element */
+itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
+	gchar			*tmp, *link;
+	parseItemTagFunc	parseFunc;
+	GSList			*hp;
+	RSSNsHandler		*nsh;
+	RSSItemPtr 		i;
+	itemPtr			ip;
+	int			j;
+
+	g_assert(NULL != cur);
+		
+	i = g_new0(struct RSSItem, 1);
+	i->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+	ip = getNewItemStruct();
+	
+	/* try to get an item about id */
+	ip->id = xmlGetProp(cur, BAD_CAST"about");
+
+	cur = cur->xmlChildrenNode;
+	while(cur != NULL) {
+		if(NULL == cur->name) {
+			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			cur = cur->next;
+			continue;
+		}
+		
+		/* check namespace of this tag */
+		if(NULL != cur->ns) {		
+			if(NULL != cur->ns->prefix) {
+				g_assert(NULL != rss_nslist);
+				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
+					nsh = (RSSNsHandler *)hp->data;
+					parseFunc = nsh->parseItemTag;
+					if(NULL != parseFunc)
+						(*parseFunc)(i, cur);
+					cur = cur->next;
+					continue;						
+				} else {
+					//g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
+				}
+			}
+		}
+		
+		/* check for RDF tags */
+		for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
+			if(!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
+ 				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp) {
+					g_free(i->tags[j]);
+					i->tags[j] = tmp;
+					break;
+				}				
+			}		
+		}
+
+		if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
+ 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if(NULL != tmp) {
+				i->time = parseRFC822Date(tmp);
+				g_free(tmp);
+			}
+		} else 
+		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
+			/* RSS 0.93 allows multiple enclosures, so we build
+			   a simple string of HTML-links... */
+			tmp = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"url"));
+			if(NULL != tmp) {
+				link = tmp;
+				if(NULL == (tmp = i->enclosure)) {
+					i->enclosure = g_strdup_printf("<a href=\"%s\">%s</a>", link, link);					
+				} else {
+					i->enclosure = g_strdup_printf("%s<a href=\"%s\">%s</a>", tmp, link, link);
+					g_free(tmp);
+				}
+				g_free(link);
+			}
+		}
+		cur = cur->next;
+	}
+
+	/* after parsing we fill the infos into the itemPtr structure */
+	ip->type = FST_RSS;
+	ip->time = i->time;
+	ip->source = g_strdup(i->tags[RSS_ITEM_LINK]);
+	ip->readStatus = FALSE;
+
+	if(NULL == ip->id)
+		ip->id = g_strdup(i->tags[RSS_ITEM_GUID]);
+
+	/* some postprocessing before generating HTML */
+	if(NULL != i->tags[RSS_ITEM_TITLE])
+		i->tags[RSS_ITEM_TITLE] = unhtmlize(i->tags[RSS_ITEM_TITLE]);
+		
+	if(NULL != i->tags[RSS_ITEM_DESCRIPTION])
+		i->tags[RSS_ITEM_DESCRIPTION] = convertToHTML(i->tags[RSS_ITEM_DESCRIPTION]);
+
+	ip->title = g_strdup(i->tags[RSS_ITEM_TITLE]);		
+	ip->description = showRSSItem(fp, cp, i);
+
+	/* free RSSItem structure */
+	for(j = 0; j < RSS_ITEM_MAX_TAG; j++)
+		g_free(i->tags[j]);
+	g_free(i->enclosure);
+	g_hash_table_destroy(i->nsinfos);
+	g_free(i);
+
+	return ip;
 }

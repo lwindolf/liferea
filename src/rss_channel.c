@@ -1,35 +1,34 @@
-/*
-   some tolerant and generic RSS/RDF channel parsing
-      
-   Note: portions of the original parser code were inspired by
-   the feed reader software Rol which is copyrighted by
-   
-   Copyright (C) 2002 Jonathan Gordon <eru@unknown-days.com>
-   
-   The major part of this backend/parsing/storing code written by
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file rss_channel.c some tolerant and generic RSS/RDF channel parsing
+ *
+ * Note: portions of the original parser code were inspired by
+ * the feed reader software Rol which is copyrighted by
+ * 
+ * Copyright (C) 2002 Jonathan Gordon <eru@unknown-days.com>
+ * 
+ * The major part of this parsing code written by
+ * 
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <sys/time.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-#include "conf.h"
 #include "support.h"
 #include "common.h"
 #include "rss_channel.h"
@@ -85,10 +84,6 @@ static gchar *channelTagList[] = {	"title",
 					NULL
 				  };
 
-/* ---------------------------------------------------------------------------- */
-/* HTML output 		 							*/
-/* ---------------------------------------------------------------------------- */
-
 /* method called by g_slist_foreach for thee HTML
    generation functions to output namespace specific infos 
    
@@ -113,7 +108,7 @@ void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
 			fp = nsh->doItemFooterOutput;
 			break;			
 		default:	
-			g_warning(_("Internal error! Invalid output request mode for namespace information!"));
+			g_warning("Internal error! Invalid output request mode for namespace information!");
 			return;
 			break;	
 	}
@@ -128,7 +123,7 @@ void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
 	g_free(tmp);
 }
 
-/* writes RSS channel description as HTML into the gtkhtml widget */
+/* returns RSS channel description as HTML */
 static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 	gchar		*buffer = NULL;
 	gchar		*tmp;
@@ -201,10 +196,6 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 		
 	return buffer;
 }
-
-/* ---------------------------------------------------------------------------- */
-/* RSS parsing		 							*/
-/* ---------------------------------------------------------------------------- */
 
 /* method to parse standard tags for the channel element */
 static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
@@ -345,6 +336,12 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 			break;			
 		}
 
+		if(NULL == cur->name) {
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
+			error = 1;
+			break;
+		}
+
 		if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 			rdf = 0;
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
@@ -362,15 +359,20 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 			cur = cur->next;
 		}
 	
-		while (cur != NULL) {
-			if ((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
+		while(cur != NULL) {
+			if(NULL == cur->name) {
+				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+				cur = cur->next;
+				continue;
+			}
+			
+			if((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
 				parseChannel(cp, cur);
 				g_assert(NULL != cur);
 				if(0 == rdf)
 					cur = cur->xmlChildrenNode;
 				break;
 			}
-			g_assert(NULL != cur);
 			cur = cur->next;
 		}
 
@@ -378,6 +380,12 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
 
 		/* parse channel contents */
 		while(cur != NULL) {
+			if(NULL == cur->name) {
+				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+				cur = cur->next;
+				continue;
+			}
+			
 			/* save link to channel image */
 			if((!xmlStrcmp(cur->name, BAD_CAST"image"))) {
 				parseImage(cp, cur);
@@ -428,10 +436,6 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
  	g_free(cp->tiLink);
 	g_free(cp);
 }
-
-/* ---------------------------------------------------------------------------- */
-/* initialization		 						*/
-/* ---------------------------------------------------------------------------- */
 
 static void addNameSpaceHandler(gchar *prefix, gpointer handler) {
 

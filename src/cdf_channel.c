@@ -1,30 +1,27 @@
-/*
-   CDF channel parsing
-      
-   The major part of this backend/parsing/storing code written by
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-   
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file cdf_channel.c CDF channel parsing
+ *
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <sys/time.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-#include "conf.h"
 #include "support.h"
 #include "common.h"
 #include "cdf_channel.h"
@@ -43,12 +40,7 @@ static gchar *CDFChannelTagList[] = {	"title",
 					NULL
 				  };
 
-
-/* ---------------------------------------------------------------------------- */
-/* HTML output		 							*/
-/* ---------------------------------------------------------------------------- */
-
-/* writes CDF channel description as HTML into the gtkhtml widget */
+/* returns CDF channel description as HTML */
 gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
 	gchar		*buffer = NULL;
 	gchar		*tmp;
@@ -84,10 +76,6 @@ gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
 	return buffer;
 }
 
-/* ---------------------------------------------------------------------------- */
-/* CDF parsing		 							*/
-/* ---------------------------------------------------------------------------- */
-
 /* method to parse standard tags for the channel element */
 static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp = NULL;
@@ -95,22 +83,27 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 	int		i;
 	
 	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
+		g_warning("internal error: XML document pointer NULL! This should not happen!\n");
 		return;
 	}
 		
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
+		if(NULL == cur->name) {
+			g_warning("invalid XML, parser returns NULL value!");
+			cur = cur->next;
+			continue;
+		}
 
 		/* save first link to a channel image */
-		if((!xmlStrcmp(cur->name, (const xmlChar *) "logo"))) {
+		if((!xmlStrcmp(cur->name, BAD_CAST"logo"))) {
 			if(NULL != cp->tags[CDF_CHANNEL_IMAGE])				
-				cp->tags[CDF_CHANNEL_IMAGE] = CONVERT(xmlGetNoNsProp(cur, (const xmlChar *)"href"));
+				cp->tags[CDF_CHANNEL_IMAGE] = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"href"));
 			cur = cur->next;			
 			continue;
 		}
 		
-		if((!xmlStrcmp(cur->name, (const xmlChar *) "item"))) {
+		if((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
 			if(NULL != (ip = parseCDFItem(fp, cp, doc, cur))) {
 				if(0 == ip->time)
 					ip->time = cp->time;
@@ -119,8 +112,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 		}
 
 		for(i = 0; i < CDF_CHANNEL_MAX_TAG; i++) {
-			g_assert(NULL != cur->name);
-			if (!xmlStrcmp(cur->name, (const xmlChar *)CDFChannelTagList[i])) {			
+			if (!xmlStrcmp(cur->name, BAD_CAST CDFChannelTagList[i])) {			
 				tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					g_free(cp->tags[i]);
@@ -175,8 +167,8 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 		   support the first channel of the CDF feed. */
 	
 		/* find outer channel tag */
-		while (cur != NULL) {
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "channel"))) {
+		while(cur != NULL) {
+			if((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
 				cur = cur->xmlChildrenNode;
 				break;
 			}
@@ -186,9 +178,9 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 		time(&(cp->time));
 		
 		/* find first "real" channel tag */
-		while (cur != NULL) {
+		while(cur != NULL) {
 		
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "channel"))) {
+			if((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
 				parseCDFChannel(fp, cp, doc, cur);			
 				g_assert(NULL != cur);
 				break;

@@ -1,32 +1,33 @@
-/*
-   OCS 0.4/0.5 support directory tag parsing. Note: this ocs_dir.c contains
-   only the rdf specific OCS parsing, the dc and ocs namespaces are
-   processed by the specific namespace handlers!
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-   
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-   
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.
-*/
+/**
+ * @file ocs_dir.c OCS 0.4/0.5 support 
+ *
+ * Note: this module contains only the rdf specific OCS parsing, 
+ * the dc and ocs namespaces are processed by the specific namespace 
+ * handlers!
+ * 
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
 #include <string.h>
 
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include "support.h"
-#include "conf.h"
 #include "common.h"
 #include "feed.h"
 #include "item.h"
@@ -44,10 +45,6 @@
  
 /* to store the nsHandler structs for all supported RDF namespace handlers */
 GHashTable	*ocs_nslist = NULL;
-
-/* ---------------------------------------------------------------------------- */
-/* HTML output		 							*/
-/* ---------------------------------------------------------------------------- */
 
 /* print information of a format entry in the HTML */
 static void showFormatEntry(gpointer data, gpointer userdata) {
@@ -164,10 +161,6 @@ static gchar * showDirectoryInfo(directoryPtr dp, gchar *url) {
 	return buffer;
 }
 
-/* ---------------------------------------------------------------------------- */
-/* OCS parsing		 							*/
-/* ---------------------------------------------------------------------------- */
-
 static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 	parseOCSTagFunc		fp;
 	OCSNsHandler		*nsh;
@@ -177,20 +170,22 @@ static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 	g_assert(NULL != cur->doc);
 
 	cur = cur->xmlChildrenNode;
-	while (cur != NULL) {
-		g_assert(NULL != cur->name);	
+	while(cur != NULL) {
+		if(NULL == cur->name) {
+			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			cur = cur->next;
+			continue;
+		}
 		
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
-			if (NULL != cur->ns->prefix) {	
-				if(0 == strcmp(cur->ns->prefix, "rdf")) {
-				
+			if(NULL != cur->ns->prefix) {	
+				if(!xmlStrcmp(cur->ns->prefix, BAD_CAST"rdf")) {				
 					g_warning("unexpected OCS hierarchy, this should never happen! ignoring third level rdf tags!\n");
 					
 				} else {
 					g_assert(NULL != ocs_nslist);
 					if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
-
 						fp = nsh->parseFormatTag;
 						if(NULL != fp)
 							(*fp)(fep, cur);
@@ -200,7 +195,6 @@ static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 				}
 			}
 		}
-
 		cur = cur->next;
 	}
 
@@ -224,12 +218,16 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	ip = getNewItemStruct();
 
 	cur = cur->xmlChildrenNode;
-	while (cur != NULL) {
-		g_assert(NULL != cur->name);	
-		
+	while(cur != NULL) {
+		if(NULL == cur->name) {
+			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			cur = cur->next;
+			continue;
+		}
+				
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
-			if (NULL != cur->ns->prefix) {	
+			if(NULL != cur->ns->prefix) {	
 				g_assert(NULL != ocs_nslist);
 				if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
 
@@ -243,11 +241,11 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 			}
 		}
 
-		if(!xmlStrcmp(cur->name, "formats")) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"formats")) {
 			found = FALSE;
 			tmpNode = cur->xmlChildrenNode;
 			while(NULL != tmpNode) {
-				if(!xmlStrcmp(tmpNode->name, "Alt")) {
+				if(!xmlStrcmp(tmpNode->name, BAD_CAST"Alt")) {
 					found = TRUE;
 					break;
 				}
@@ -258,7 +256,7 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 				found = FALSE;
 				tmpNode = tmpNode->xmlChildrenNode;
 				while(NULL != tmpNode) {
-					if(!xmlStrcmp(tmpNode->name, "li")) {
+					if(!xmlStrcmp(tmpNode->name, BAD_CAST"li")) {
 						found = TRUE;
 						break;
 					}
@@ -271,14 +269,14 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 				found = FALSE;
 				tmpNode = tmpNode->xmlChildrenNode;
 				while(NULL != tmpNode) {
-					if(!xmlStrcmp(tmpNode->name, "Description")) {
+					if(!xmlStrcmp(tmpNode->name, BAD_CAST"Description")) {
 						/* now search for <format> nodes... */
 						formatNode = tmpNode->xmlChildrenNode;
 						while(NULL != formatNode) {
-							if(!xmlStrcmp(formatNode->name, "format")) {
+							if(!xmlStrcmp(formatNode->name, BAD_CAST"format")) {
 								new_fp = g_new0(struct format, 1);
-								new_fp->source = CONVERT(xmlGetProp(tmpNode, "about"));
-								new_fp->tags[OCS_CONTENTTYPE] = CONVERT(xmlGetProp(formatNode, "resource"));
+								new_fp->source = CONVERT(xmlGetProp(tmpNode, BAD_CAST"about"));
+								new_fp->tags[OCS_CONTENTTYPE] = CONVERT(xmlGetProp(formatNode, BAD_CAST"resource"));
 								dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
 							}
 							formatNode = formatNode->next;
@@ -288,7 +286,6 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 				}
 			}
 		}
-
 		cur = cur->next;
 	}
 
@@ -325,19 +322,23 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	ip = getNewItemStruct();
 
 	cur = cur->xmlChildrenNode;
-	while (cur != NULL) {
-		g_assert(NULL != cur->name);	
-		
+	while(cur != NULL) {
+		if(NULL == cur->name) {
+			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			cur = cur->next;
+			continue;
+		}
+				
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
-			if (NULL != cur->ns->prefix) {	
-				if(0 == strcmp(cur->ns->prefix, "rdf")) {
+			if(NULL != cur->ns->prefix) {	
+				if(!xmlStrcmp(cur->ns->prefix, BAD_CAST"rdf")) {
 
 					/* check for <rdf:description> tags, if we find one, this means
 					   a new format for the actual channel */
-					if (!xmlStrcmp(cur->name, "description")) {
+					if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 						new_fp = g_new0(struct format, 1);
-						new_fp->source = CONVERT(xmlGetNoNsProp(cur, "about"));
+						new_fp->source = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"about"));
 						parseFormatEntry(new_fp, cur);
 						dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
 					}		
@@ -346,18 +347,16 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 				} else {
 					g_assert(NULL != ocs_nslist);
 					if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
-
 						fp = nsh->parseDirEntryTag;
-						if(NULL != fp) {
+						if(NULL != fp)
 							(*fp)(dep, cur);
-						} else
+						else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 
 					}
 				}
 			}
 		}
-
 		cur = cur->next;
 	}
 
@@ -394,19 +393,23 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 	g_assert(NULL != cur->doc);
 
 	cur = cur->xmlChildrenNode;
-	while (cur != NULL) {
-		g_assert(NULL != cur->name);	
+	while(cur != NULL) {
+		if(NULL == cur->name) {
+			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			cur = cur->next;
+			continue;
+		}
 
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
-			if (NULL != cur->ns->prefix) {	
-				if((0 == strcmp(cur->ns->prefix, "rdf")) && (4 >= ocsVersion)) {
+			if(NULL != cur->ns->prefix) {	
+				if((0 == xmlStrcmp(cur->ns->prefix, BAD_CAST"rdf")) && (4 >= ocsVersion)) {
 
 					/* check for <rdf:description tags, if we find one this
 					   means a new channel description */
-					if (!xmlStrcmp(cur->name, "description")) {
+					if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 						new_dep = g_new0(struct dirEntry, 1);
-						new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
+						new_dep->source = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"about"));
 						new_dep->dp = dp;
 						ip = parse04DirectoryEntry(new_dep, cur);
 						feed_add_item(fp, ip);
@@ -415,18 +418,16 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 				} else {
 					g_assert(NULL != ocs_nslist);
 					if(NULL != (nsh = (OCSNsHandler *)g_hash_table_lookup(ocs_nslist, (gpointer)cur->ns->prefix))) {
-
 						parseFunc = nsh->parseDirectoryTag;
-						if(NULL != parseFunc) {
+						if(NULL != parseFunc)
 							(*parseFunc)(dp, cur);
-						} else
+						else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 
 					}
 				}
 			}
 		}
-
 		cur = cur->next;
 	}
 
@@ -457,9 +458,15 @@ static void readOCS(feedPtr fp, gchar *data) {
 			error = 1;
 			break;			
 		}
+		
+		if(NULL == cur->name) {
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
+			error = 1;
+			break;
+		}
 
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"rdf") || 
-                    !xmlStrcmp(cur->name, (const xmlChar *)"RDF")) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
+                   !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 		    	// nothing
 		} else {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find RDF header!</p>"));
@@ -468,26 +475,31 @@ static void readOCS(feedPtr fp, gchar *data) {
 		}
 
 		cur = cur->xmlChildrenNode;
-		while (cur && xmlIsBlankNode(cur)) {
+		while(cur && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
 		
-		while (cur != NULL) {
+		while(cur != NULL) {
+			if(NULL == cur->name) {
+				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+				cur = cur->next;
+				continue;
+			}
 
 			/* handling OCS 0.5 directory tag... */
-			if(0 == xmlStrcmp(cur->name, "directory")) {
+			if(!xmlStrcmp(cur->name, BAD_CAST"directory")) {
 				dp = g_new0(struct directory, 1);
 				parseDirectory(fp, dp, cur, 5);
 			}
 			/* handling OCS 0.5 channel tag... */
-			else if(0 == xmlStrcmp(cur->name, "channel")) {
+			else if(!xmlStrcmp(cur->name, BAD_CAST"channel")) {
 				new_dep = g_new0(struct dirEntry, 1);
 				new_dep->source = CONVERT(xmlGetNoNsProp(cur, "about"));
 				new_dep->dp = dp;					
 				feed_add_item(fp, parse05DirectoryEntry(new_dep, cur));
 			}
 			/* handling OCS 0.4 top level description tag... */
-			else if(0 == xmlStrcmp(cur->name, (const xmlChar *) "description")) {
+			else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 				dp = g_new0(struct directory, 1);
 				parseDirectory(fp, dp, cur, 4);
 				break;
@@ -512,10 +524,6 @@ static void readOCS(feedPtr fp, gchar *data) {
 		break;
 	}
 }
-
-/* ---------------------------------------------------------------------------- */
-/* initialization	 							*/
-/* ---------------------------------------------------------------------------- */
 
 feedHandlerPtr initOCSFeedHandler(void) {
 	feedHandlerPtr	fhp;

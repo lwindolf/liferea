@@ -1,22 +1,22 @@
-/*
-   Atom/Echo/PIE 0.2/0.3 entry parsing 
-      
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file pie_entry.c Atom/Echo/PIE 0.2/0.3 entry parsing 
+ *
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <string.h>
 
@@ -52,12 +52,62 @@ static gchar *entryTagList[] = {	"title",
 					NULL
 				  };
 				  
-/* prototypes */
-static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip);
-
 /* we reuse some pie_feed.c function */
 extern gchar * parseAuthor(xmlNodePtr cur);
 extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
+
+/* writes item description as HTML into the gtkhtml widget */
+static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
+	gchar		*tmp, *buffer = NULL;	
+	outputRequest	request;
+
+	g_assert(NULL != ip);	
+	g_assert(NULL != cp);
+	
+	if(NULL != ip->source) {
+		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
+		
+		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
+			cp->tags[PIE_FEED_LINK],
+			cp->tags[PIE_FEED_TITLE]);
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+		
+		addToHTMLBuffer(&buffer, HTML_NEWLINE);
+		
+		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+			ip->source,
+			ip->tags[PIE_ENTRY_TITLE]);
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+		
+		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
+	}	
+
+	/* process namespace infos */
+	request.obj = ip;
+	request.buffer = &buffer;
+	request.type = OUTPUT_ITEM_NS_HEADER;	
+	if(NULL != pie_nslist)
+		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
+
+	if(NULL != ip->tags[PIE_ENTRY_DESCRIPTION])
+		addToHTMLBuffer(&buffer, ip->tags[PIE_ENTRY_DESCRIPTION]);
+
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
+	FEED_FOOT_WRITE(buffer, "author",		ip->author);
+	FEED_FOOT_WRITE(buffer, "contributors",		ip->contributors);
+	FEED_FOOT_WRITE(buffer, "copyright",		ip->tags[PIE_ENTRY_COPYRIGHT]);
+	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
+
+	request.type = OUTPUT_ITEM_NS_FOOTER;
+	if(NULL != pie_nslist)
+		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
+	
+	return buffer;
+}
 
 /* <content> tag support, FIXME: base64 not supported */
 static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
@@ -68,22 +118,22 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 		/* determine encoding mode */
 		mode = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"mode"));
 		if(NULL != mode) {
-			if(!strcmp(mode, BAD_CAST"escaped")) {
+			if(!strcmp(mode, "escaped")) {
  				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
 					i->tags[PIE_ENTRY_DESCRIPTION] = tmp;
 					i->summary = FALSE;
 				}
-			} else if(!strcmp(mode, BAD_CAST"xml")) {
+			} else if(!strcmp(mode, "xml")) {
 				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
 				i->tags[PIE_ENTRY_DESCRIPTION] = extractHTMLNode(cur);
 				i->summary = FALSE;
 
-			} else if(!strcmp(mode, BAD_CAST"base64")) {
-				g_warning("Base64 encoded <content> not supported!\n");
+			} else if(!strcmp(mode, "base64")) {
+				g_warning("Base64 encoded <content> in Atom feeds not supported!\n");
 
-			} else if(!strcmp(mode, BAD_CAST"multipart/alternative")) {
+			} else if(!strcmp(mode, "multipart/alternative")) {
 				if(NULL != cur->xmlChildrenNode)
 					parseContent(cur->xmlChildrenNode, i);
 			}
@@ -123,6 +173,12 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
+		if(NULL == cur->name) {
+			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			cur = cur->next;
+			continue;
+		}
+		
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {		
 			if (NULL != cur->ns->prefix) {
@@ -196,7 +252,6 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 		} else {				
 			/* check for PIE tags */
 			for(j = 0; j < PIE_ENTRY_MAX_TAG; j++) {
-				g_assert(NULL != cur->name);
 				if (!xmlStrcmp(cur->name, (const xmlChar *)entryTagList[j])) {
 					tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 					if(NULL != tmp) {
@@ -229,63 +284,4 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	g_hash_table_destroy(i->nsinfos);
 	g_free(i);
 	return ip;
-}
-
-/* ---------------------------------------------------------------------------- */
-/* HTML output stuff	 							*/
-/* ---------------------------------------------------------------------------- */
-
-extern void showFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
-
-/* writes item description as HTML into the gtkhtml widget */
-static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
-	gchar		*tmp, *buffer = NULL;	
-	outputRequest	request;
-
-	g_assert(NULL != ip);	
-	g_assert(NULL != cp);
-	
-	if(NULL != ip->source) {
-		addToHTMLBuffer(&buffer, ITEM_HEAD_START);
-		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-			cp->tags[PIE_FEED_LINK],
-			cp->tags[PIE_FEED_TITLE]);
-		addToHTMLBuffer(&buffer, tmp);
-		g_free(tmp);
-		
-		addToHTMLBuffer(&buffer, HTML_NEWLINE);
-		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-			ip->source,
-			ip->tags[PIE_ENTRY_TITLE]);
-		addToHTMLBuffer(&buffer, tmp);
-		g_free(tmp);
-		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
-	}	
-
-	/* process namespace infos */
-	request.obj = ip;
-	request.buffer = &buffer;
-	request.type = OUTPUT_ITEM_NS_HEADER;	
-	if(NULL != pie_nslist)
-		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-
-	if(NULL != ip->tags[PIE_ENTRY_DESCRIPTION])
-		addToHTMLBuffer(&buffer, ip->tags[PIE_ENTRY_DESCRIPTION]);
-
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "author",		ip->author);
-	FEED_FOOT_WRITE(buffer, "contributors",		ip->contributors);
-	FEED_FOOT_WRITE(buffer, "copyright",		ip->tags[PIE_ENTRY_COPYRIGHT]);
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-
-	request.type = OUTPUT_ITEM_NS_FOOTER;
-	if(NULL != pie_nslist)
-		g_hash_table_foreach(pie_nslist, showPIEFeedNSInfo, (gpointer)&request);
-	
-	return buffer;
 }
