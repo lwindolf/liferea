@@ -242,6 +242,9 @@ void feed_reset_update_counter(feedPtr fp);
 gboolean feed_get_available(feedPtr fp);
 void feed_set_available(feedPtr fp, gboolean available);
 
+gboolean feed_get_discontinued(feedPtr fp);
+void feed_set_discontinued(feedPtr fp, gboolean discontinued);
+
 /**
  * Returns a HTML string describing the last retrieval error 
  * of this feed. Should only be called when getFeedAvailable

@@ -196,7 +196,8 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 			} else {
 				debug0(DEBUG_UPDATE, "no feed link found!");
 			}
-		} else {		
+		} else {
+			feed_set_available(fp, FALSE);
 			debug0(DEBUG_UPDATE, "There were errors while parsing a feed!");
 			ui_mainwindow_set_status_bar(_("There were errors while parsing a feed"));
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea.sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"));
@@ -266,7 +267,7 @@ void feed_save(feedPtr fp) {
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 			g_free(tmp);
 			
-			tmp = g_strdup_printf("%d", (TRUE == fp->discontinued)?1:0);
+			tmp = g_strdup_printf("%d", (TRUE == feed_get_discontinued(fp))?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 			g_free(tmp);
 			
@@ -436,7 +437,7 @@ gboolean feed_load(feedPtr fp) {
 				feed_set_available(fp, (0 == atoi(tmp))?FALSE:TRUE);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) {
-				fp->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
+				feed_set_discontinued(fp, (0 == atoi(tmp))?FALSE:TRUE);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
 				fp->lastModified.tv_sec = atol(tmp);
@@ -450,8 +451,7 @@ gboolean feed_load(feedPtr fp) {
 			}
 			g_free(tmp);	
 			cur = cur->next;
-		}
-	
+		}		
 		favicon_load(fp);
 	} while (FALSE);
 	
@@ -524,7 +524,6 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	gint		traycount = 0;
 
 	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
-	feed_load(old_fp);
 	if(TRUE == feed_get_available(new_fp)) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
 		   in case they are reused... */
@@ -691,8 +690,6 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	feed_free(new_fp);
 	
 	ui_tray_add_new(traycount);		/* finally update the tray icon */
-	old_fp->needsCacheSave = TRUE;
-	feed_unload(old_fp);
 }
 
 /**
@@ -710,7 +707,7 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 		return;
 	}
 	
-	if(fp->discontinued) {
+	if(feed_get_discontinued(fp)) {
 		ui_mainwindow_set_status_bar(_("The feed was discontinued. Liferea won't update it anymore!"));
 		return;
 	}
@@ -755,6 +752,12 @@ void feed_process_update_result(struct request *request) {
 	ui_lock();
 	g_assert(NULL != request);
 
+	feed_load(old_fp);
+
+	/* no matter what the result of the update is we need to save update
+	   status and the last update time to cache */
+	old_fp->needsCacheSave = TRUE;
+	
 	feed_set_available(old_fp, TRUE);
 
 	if(401 == request->httpstatus) { /* unauthorized */
@@ -763,7 +766,7 @@ void feed_process_update_result(struct request *request) {
 			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), old_fp, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
 		feed_set_available(old_fp, FALSE);
-		old_fp->discontinued = TRUE;
+		feed_set_discontinued(old_fp, TRUE);
 		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(old_fp));
 	} else if(304 == request->httpstatus) {
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(old_fp));
@@ -833,6 +836,8 @@ void feed_process_update_result(struct request *request) {
 	
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		favicon_download(old_fp);
+		
+	feed_unload(old_fp);
 	
 	ui_unlock();
 }
@@ -929,7 +934,12 @@ void feed_reset_update_counter(feedPtr fp) {
 }
 
 void feed_set_available(feedPtr fp, gboolean available) { fp->available = available; }
+
 gboolean feed_get_available(feedPtr fp) { return fp->available; }
+
+void feed_set_discontinued(feedPtr fp, gboolean discontinued) { fp->discontinued = discontinued; }
+
+gboolean feed_get_discontinued(feedPtr fp) { return fp->discontinued; }
 
 /* Returns a HTML string describing the last retrieval error 
    of this feed. Should only be called when feed_get_available
@@ -937,7 +947,7 @@ gboolean feed_get_available(feedPtr fp) { return fp->available; }
 gchar * feed_get_error_description(feedPtr fp) { 
 	gchar	*tmp1 = NULL;
 
-	if(fp->discontinued) {
+	if(feed_get_discontinued(fp)) {
 		addToHTMLBufferFast(&tmp1, UPDATE_ERROR_START);
 		addToHTMLBufferFast(&tmp1, HTTP410_ERROR_TEXT);
 		addToHTMLBufferFast(&tmp1, UPDATE_ERROR_END);
@@ -1255,8 +1265,6 @@ static void feed_replace(feedPtr fp, feedPtr new_fp) {
 	itemPtr		ip;
 	GSList		*item;
 
-	feed_load(fp);
-	
 	/* To prevent updating feed ptr in the tree store and
 	   feeds hashtable we reuse the old structure! */
 	
@@ -1301,9 +1309,6 @@ static void feed_replace(feedPtr fp, feedPtr new_fp) {
 		ip->fp = fp;
 		item = g_slist_next(item);
 	}
-
-	fp->needsCacheSave = TRUE;
-	feed_unload(fp);
 }
 
 /* method to totally erase a feed, remove it from the config, etc.... */
