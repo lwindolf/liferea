@@ -2,6 +2,7 @@
  * common routines for Liferea
  * 
  * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ *                    Karl Soderstrom <ks@xanadunet.net>
  *
  * parts of the RFC822 timezone decoding were taken from the gmime 
  * source written by 
@@ -31,7 +32,6 @@
 #include <langinfo.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-
 #include <pwd.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -154,34 +154,6 @@ gchar * CONVERT(xmlChar *string) {
 	return convert(string, "UTF-8");
 }
 
-/* parses a XML node and returns its contents as a string */
-gchar * parseHTML(htmlNodePtr cur) {
-	gchar	*newstring = NULL;
-	gchar	*oldstring = NULL;
-	gchar	*tmp;
-	
-	g_assert(NULL != cur);
-
-	newstring = g_strdup("");
-	while (cur != NULL) {
-		if(cur->content != NULL) {
-			oldstring = newstring;
-			newstring = g_strdup_printf("%s%s", newstring, cur->content);
-			g_free(oldstring);
-		}
-		if(cur->xmlChildrenNode != NULL) {
-			tmp = parseHTML(cur->xmlChildrenNode);
-			if(NULL != tmp) {
-				oldstring = newstring;
-				newstring = g_strdup_printf("%s%s", newstring, tmp);
-				g_free(oldstring);
-			}
-		}
-		cur = cur->next;		
-	}	
-	return newstring;
-}
-
 gchar * extractHTMLNode(xmlNodePtr cur) {
 	xmlBufferPtr	buf = NULL;
 	gchar		*result = NULL;
@@ -196,41 +168,59 @@ gchar * extractHTMLNode(xmlNodePtr cur) {
 	return result;
 }
 
-/* converts a UTF-8 strings containing any HTML stuff to proper HTML
+void unhtmlizeHandleCharacters (void *userData_p, const xmlChar *string_p, int len)
+{
+        gchar *result_p = (gchar *) userData_p;
+        int curLen = strlen(result_p);
+                                                                                
+        strncpy (&result_p[curLen], (char *) string_p, len);
+	// Make sure it's null-terminated
+        result_p[curLen + len] = '\0';
+}
 
-   FIXME: still buggy, correctly converts entities and
-   preserves encodings, but does loose text inside enclosing
-   formatting tags like "<b>Hallo</b>" 
- */
+/* converts a UTF-8 strings containing any HTML stuff to 
+   a string without any entities or tags containing all
+   text nodes of the given HTML string */
 gchar * unhtmlize(gchar *string) {
-	htmlParserCtxtPtr	ctxt; 
-	xmlDocPtr		pDoc;
+	htmlDocPtr		doc_p = NULL;
+	htmlSAXHandlerPtr	sax_p = NULL;
 	int			length;
-	gchar			*newstring = NULL;
+	gchar			*result_p = NULL;
 	
 	if(NULL == string)
 		return NULL;
 
-	/* only do something if there are any entities */
+	/* only do something if there are any entities or tags */
 	if(NULL == (strpbrk(string, "&<>")))
 		return string;
-
-	length = strlen(string);
-	newstring = (gchar *)g_malloc(length + 1);
-	memset(newstring, 0, length + 1);
 	
-	ctxt = htmlCreatePushParserCtxt(NULL, NULL, newstring, length, 0, (xmlCharEncoding)standard_encoding);
-	ctxt->sax->warning = NULL;	/* disable XML errors and warnings */
-	ctxt->sax->error = NULL;
+	sax_p = g_new0(xmlSAXHandler, 1);
+ 	if (sax_p != NULL) {
+ 		sax_p->characters = unhtmlizeHandleCharacters;
 	
-        htmlParseChunk(ctxt, string, length, 0);
-        htmlParseChunk(ctxt, string, 0, 1);
-        pDoc = ctxt->myDoc;
-	newstring = parseHTML(xmlDocGetRootElement(pDoc));	
-        htmlFreeParserCtxt(ctxt);
-	
-	g_free(string);
-	return newstring;
+		length = strlen(string); 
+ 		result_p = g_new(gchar, length + 1);
+ 		if (result_p != NULL) {
+ 			result_p[0] = '\0';
+ 
+ 			doc_p = htmlSAXParseDoc(string, standard_encoding, sax_p, result_p);
+ 			if (doc_p != NULL) {
+ 				xmlFreeDoc(doc_p);
+ 			}
+ 		}
+ 
+ 		g_free(sax_p);
+ 	}
+ 
+ 	if (result_p == NULL || !strlen(result_p)) {
+ 		/* Something went wrong in the parsing.
+ 		 * Use original string instead */
+ 		g_free(result_p);
+ 		return string;
+ 	} else {
+ 		g_free(string);
+ 		return result_p;
+ 	}
 }
 
 /* converts a ISO 8601 time string to a time_t value */

@@ -41,7 +41,7 @@ gchar * convertToHTML(gchar * string);
 gchar * unhtmlize(gchar *string);
 
 /* parses a XML node and returns its contents as a string */
-gchar * parseHTML(htmlNodePtr cur);
+//gchar * parseHTML(htmlNodePtr cur);
 
 /* to extract not escaped XHTML from a node */
 gchar * extractHTMLNode(xmlNodePtr cur);
