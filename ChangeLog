@@ -21,6 +21,9 @@
 	  Space. This is to allow using forms with Mozilla. If you
 	  prefer Space please set it explicitly in the preferences.
 	  (Lars Lindner)
+	* GConf schemas have been added to document the various gconf
+	  keys that Liferea uses and provide control of defaults by
+	  computer administrators. (Nathan Conrad)
 	  
 	Bugfixes:
 
