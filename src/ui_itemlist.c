@@ -553,11 +553,11 @@ void ui_itemlist_load(nodePtr node) {
 	} else if(FST_FOLDER == node->type) {
 		ui_feedlist_do_for_all_data(node, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, ui_itemlist_load_feed, (gpointer)&merge);
 	}
+
+	ui_itemlist_display();
 	
-	if(FALSE == merge) {		
-		ui_itemlist_display();
+	if(FALSE == merge)
 		ui_itemlist_prefocus();
-	}
 }
 
 static itemPtr ui_itemlist_get_selected() {
