@@ -46,6 +46,7 @@ table.itemhead {
 	width:100%;
 	background-color:#DDD;
 	border: 1px solid black;
+	padding-right: 5px;
 }
 
 td.itemhead {
