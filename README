@@ -20,6 +20,9 @@ Debian:		Beginning with version 0.4.3 there are officially
 RedHat/		Please ensure you have a libxml2 version
 Fedora:		at least 2.5.10 or you will experience nasty
 		segfaults. 
+
+		Fedora Core 1 packages for 0.4.7 and 0.4.8 are available from
+		http://download.fedora.us/fedora/fedora/1/i386/RPMS.testing/.
 		
 		Dag Wieers provides 0.4.8 packages for both 
                 Fedora Core 1 and 2 which can be found at 
