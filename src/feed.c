@@ -244,26 +244,24 @@ void feed_save(feedPtr fp) {
 }
 
 /* function which is called to load a feed's cache file */
-feedPtr feed_load_from_cache(gint type, gchar *id) {
+void feed_load_from_cache(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gchar		*filename, *tmp, *data = NULL;
-	feedPtr		fp;
 	int		error = 0;
+
+	g_assert(NULL != fp);	
+	g_assert(NULL != fp->id);
 	
-	if(NULL == id)
-		return NULL;
-	
-	filename = getCacheFileName(id, getExtension(type));
+	filename = getCacheFileName(fp->id, getExtension(fp->type));
 	
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
-		g_message("Error while reading cache file");
+		g_warning(_("Error while reading cache file\"%s\" ! Cache file could not be loaded!"), filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		g_free(filename);
-		return NULL;
+		return;
 	}
 
-	fp = feed_new();		
 	do {
 		g_assert(NULL != data);
 
@@ -289,7 +287,6 @@ feedPtr feed_load_from_cache(gint type, gchar *id) {
 		}
 
 		fp->available = TRUE;		
-		fp->id = g_strdup(id);
 
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
@@ -330,8 +327,6 @@ feedPtr feed_load_from_cache(gint type, gchar *id) {
 	if(NULL != doc)
 		xmlFreeDoc(doc);
 	g_free(filename);
-		
-	return fp;
 }
 
 /* Merges the feeds specified by old_fp and new_fp, so that

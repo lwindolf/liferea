@@ -139,16 +139,20 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		xmlFree(intervalStr);
 
 		id = xmlGetProp(cur, BAD_CAST"id");
-		
-		fp = feed_load_from_cache(type, id);
-		if (fp == NULL)
-			fp = feed_new();
 
+		fp = feed_new();
+		
+		/* set feed properties available from the OPML feed list 
+		   they may be overwritten by the values of the cache file
+		   but we need them in case the cache file loading fails */
 		feed_set_id(fp, id);
 		feed_set_type(fp, type);
 		feed_set_source(fp, source);
 		feed_set_title(fp, title);
 		feed_set_update_interval(fp, interval);
+		
+		feed_load_from_cache(fp);
+		
 		ui_folder_add_feed(folder, fp, -1);
 
 		xmlFree(id);

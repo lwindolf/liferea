@@ -141,7 +141,7 @@ feedPtr feed_new(void);
  * @returns a newly allocated feed, or NULL if the cahe file was not
  * located.
  */
-feedPtr feed_load_from_cache(gint type, gchar *id);
+void feed_load_from_cache(feedPtr fp);
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
 void feed_update(feedPtr fp);
