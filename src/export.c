@@ -39,7 +39,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 	if (IS_FOLDER(ptr->type)) {
 		folderPtr folder = (folderPtr)ptr;
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST folder_get_title(folder));
+		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST folder_get_title(folder));
 		if (ptr->type == FST_HELPFOLDER) {
 			xmlNewProp(childNode, BAD_CAST"helpFolder", NULL);
 		} else {
@@ -51,7 +51,8 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp));
+		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
+		xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
 		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
 		xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
 		xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
@@ -117,8 +118,13 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 	gchar		*id;
 	
 	/* process the outline node */	
-	title = xmlGetProp(cur, BAD_CAST"text");
-
+	title = xmlGetProp(cur, BAD_CAST"title");
+	if (title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
+		if (title != NULL)
+			xmlFree(title);
+		title = xmlGetProp(cur, BAD_CAST"text");
+	}
+	
 	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
@@ -133,10 +139,8 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		xmlFree(intervalStr);
 
 		id = xmlGetProp(cur, BAD_CAST"id");
-		if(NULL != (fp = feed_add(type, source, folder, title, id, interval, FALSE))) {
-			if(NULL != title)
-				feed_set_title(fp, title);
-		}
+		fp = feed_add(type, source, folder, title, id, interval, FALSE);
+
 		xmlFree(id);
 		xmlFree(source);
 	} else { /* It is a folder */
@@ -151,7 +155,8 @@ static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 		if (NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
 			ui_folder_set_expansion(folder, FALSE);
 	}
-	xmlFree(title);
+	if (title != NULL)
+		xmlFree(title);
 
 	/* process any children */
 	cur = cur->xmlChildrenNode;
