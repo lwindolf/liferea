@@ -24,12 +24,12 @@
 #include "common.h"
 #include <string.h>
 
-#define BLOGROLL_START		"<div class=\"blogchanneltitle\"><b>BlogRoll</b></div<br>"
-#define BLOGROLL_END		"<br>" 
-#define MYSUBSCR_START		"<div class=\"blogchanneltitle\"><b>Authors Subscriptions</b></div<br>"
-#define MYSUBSCR_END		"<br>"
-#define BLINK_START		"<div class=\"blogchanneltitle\"><b>Promoted Weblog</b></div><br>"
-#define BLINK_END		"<br>"
+#define BLOGROLL_START		"<p><div class=\"blogchanneltitle\"><b>BlogRoll</b></div></p>"
+#define BLOGROLL_END		"" 
+#define MYSUBSCR_START		"<p><div class=\"blogchanneltitle\"><b>Authors Subscriptions</b></div></p>"
+#define MYSUBSCR_END		""
+#define BLINK_START		"<p><div class=\"blogchanneltitle\"><b>Promoted Weblog</b></div></p>"
+#define BLINK_END		""
 
 static gchar ns_bC_prefix[] = "blogChannel";
 
