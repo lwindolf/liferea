@@ -54,8 +54,9 @@ gchar * unhtmlize(gchar *string);
 /* parses a XML node and returns its contents as a string */
 /* gchar * parseHTML(htmlNodePtr cur); */
 
-/** to extract not escaped XHTML from a node */
-gchar * extractHTMLNode(xmlNodePtr cur);
+/** to extract not escaped XHTML from a node
+ * @param only extract the children of the passed node */
+gchar * extractHTMLNode(xmlNodePtr cur, gboolean children);
 
 void	addToHTMLBufferFast(gchar **buffer, const gchar *string);
 void	addToHTMLBuffer(gchar **buffer, const gchar *string);

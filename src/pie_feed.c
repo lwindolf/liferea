@@ -61,7 +61,7 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 				ret = tmp;
 			
 		} else if(!strcmp(mode, "xml")) {
-			ret = extractHTMLNode(cur);
+			ret = extractHTMLNode(cur, TRUE);
 			
 		} else if(!strcmp(mode, "base64")) {
 			g_warning("Base64 encoded <content> in Atom feeds not supported!\n");
@@ -79,8 +79,9 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 		if((NULL == type) ||
 		   !strcmp(type, "text/html") ||
 		   !strcmp(type, "text/plain") ||
+		   !strcmp(type, "application/xhtml+xml") ||
 		   !strcmp(type, "application/xhtml+xml")) {
-			ret = extractHTMLNode(cur->xmlChildrenNode);
+			ret = extractHTMLNode(cur, TRUE);
 		}
 		g_free(type);
 	}

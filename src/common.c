@@ -145,13 +145,20 @@ gchar * utf8_fix(xmlChar *string) {
 	return string;
 }
 
-gchar * extractHTMLNode(xmlNodePtr cur) {
-	xmlBufferPtr	buf = NULL;
+gchar * extractHTMLNode(xmlNodePtr cur, gboolean children) {
+	xmlBufferPtr	buf;
 	gchar		*result = NULL;
-	
+
 	buf = xmlBufferCreate();
-	
-	if(-1 != xmlNodeDump(buf, cur->doc, cur, 0, 0))
+	if (children) {
+		cur = cur->xmlChildrenNode;
+		while (cur != NULL) {
+			xmlNodeDump(buf, cur->doc, cur, 0, 0);
+			cur = cur->next;
+		}
+	} else
+		xmlNodeDump(buf, cur->doc, cur, 0, 0);
+	if (xmlBufferLength(buf) > 0)
 		result = xmlCharStrdup(xmlBufferContent(buf));
 
 	xmlBufferFree(buf);
