@@ -313,7 +313,25 @@ cdf_item.o cdf_item.o: cdf_item.c /usr/include/libxml2/libxml/xmlmemory.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/html/htmlboxform.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmlboxblock.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h \
-  cdf_channel.h cdf_item.h
+  cdf_channel.h backend.h cdf_item.h htmlview.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-async-ops.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-info.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-size.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-result.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-uri.h \
+  /usr/include/sys/stat.h /usr/include/bits/stat.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-find-directory.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-handle.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-context.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-cancellation.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-xfer.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-directory.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-init.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h
 
 /usr/include/libxml2/libxml/xmlmemory.h:
 
@@ -1053,4 +1071,46 @@ common.h:
 
 cdf_channel.h:
 
+backend.h:
+
 cdf_item.h:
+
+htmlview.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-async-ops.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-info.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-size.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-result.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-uri.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/bits/stat.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-find-directory.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-handle.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-context.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-cancellation.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-xfer.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-directory.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-init.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h:

@@ -22,7 +22,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#include <time.h>
 #include <pwd.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -146,15 +145,11 @@ gchar * unhtmlize(gchar * from_encoding, gchar *string) {
 	return newstring;
 }
 
-/* converts a ISO 8601 time string to an user defined format */
-char * convertDate(char *date) {
+/* converts a ISO 8601 time string to a time_t value */
+time_t convertDate(char *date) {
 	struct tm	tm;
 	time_t		t;
-	int		sign;
 	char		*pos;
-	char		*result = NULL;
-	gchar		*timestr;
-	gchar		*timeformat;
 	
 	memset(&tm, 0, sizeof(struct tm));
 
@@ -167,24 +162,16 @@ char * convertDate(char *date) {
 	g_free(date);
 
 	if(pos != NULL) {
-		if(NULL != (timestr = (gchar *)g_malloc(TIMESTRLEN+1))) {
-			if(NULL != (timeformat = getStringConfValue(TIME_FORMAT))) {
-				if((time_t)(-1) != (t = mktime(&tm))) {
-					strftime(timestr, TIMESTRLEN, (char *)timeformat, localtime_r(&t, &tm));
-					result = timestr;
-				} else {
-					g_warning(_("time conversion error! mktime failed!\n"));
-					result = g_strdup(_("error"));
-					g_free(timestr);
-				}
-				g_free(timeformat);
-			}
+		if((time_t)(-1) != (t = mktime(&tm))) {
+			return t;
+		} else {
+			g_warning(_("time conversion error! mktime failed!\n"));
 		}
 	} else {
 		g_print(_("Invalid date format! Ignoring <dc:date> information!\n"));				
 	}
 	
-	return result;
+	return 0;
 }
 
 gchar * getActualTime(void) {
@@ -199,6 +186,25 @@ gchar * getActualTime(void) {
 				strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
 				g_free(timeformat);
 			}
+		}
+	}
+	
+	return timestr;
+}
+
+gchar * formatDate(time_t t) {
+	gchar		*timestr;
+	gchar		*timeformat;
+	
+	if(NULL != (timestr = (gchar *)g_malloc(TIMESTRLEN+1))) {
+		if(NULL != (timeformat = getStringConfValue(TIME_FORMAT))) {
+			if(0 == strlen(timeformat)) {
+				/* if not configured use default format */
+				g_free(timeformat);
+				timeformat = g_strdup("%H:%M");
+			}
+			strftime(timestr, TIMESTRLEN, (char *)timeformat, gmtime(&t));
+			g_free(timeformat);
 		}
 	}
 	

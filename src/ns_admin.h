@@ -1,6 +1,6 @@
 /*
-   CDF item tag parsing 
-      
+   admin namespace support
+   
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
    This library is free software; you can redistribute it and/or
@@ -19,33 +19,12 @@
    Boston, MA 02111-1307, USA.
 */
 
-#ifndef _CDF_CDF_ITEM_H
-#define _CDF_CDF_ITEM_H
+#ifndef _NS_ADMIN_H
+#define _NS_ADMIN_H
 
-#include <glib.h>
+#include "rss_ns.h"
 
-#define CDF_ITEM_TITLE		0
-#define CDF_ITEM_DESCRIPTION	1
-#define CDF_ITEM_LINK		2
-#define CDF_ITEM_AUTHOR		3
-#define CDF_ITEM_IMAGE		4
-#define CDF_ITEM_CATEGORY	5
-	
-#define CDF_ITEM_MAX_TAG	6
-
-typedef struct CDFItem {
-	gpointer	cp;		/* the channel structure this CDF_ITEM belongs to,
-					   must be the first element of the structure! */
-	
-	gchar		*tags[CDF_ITEM_MAX_TAG];	/* standard namespace infos */
-	
-	GHashTable	*nsinfos;	/* list to store pointers to namespace
-					   specific informations */	
-	gboolean	read;
-	time_t		time;
-	struct CDFItem	*next;
-} *CDFItemPtr;
-
-itemHandlerPtr initCDFItemHandler(void);
+gchar	*ns_admin_getRSSNsPrefix(void);
+RSSNsHandler *ns_admin_getRSSNsHandler(void);
 
 #endif

@@ -29,6 +29,9 @@
 #define PATH		"/apps/liferea"
 #define GROUPS		"/apps/liferea/groups"
 
+#define HELP1URL	"http://liferea.sf.net/help037.rdf"
+#define HELP2URL	"http://sourceforge.net/export/rss2_projnews.php?group_id=87005&rss_fulltext=1"
+
 GConfClient	*client;
 
 static gchar * build_path_str(gchar *str1, gchar *str2) {
@@ -93,7 +96,7 @@ void loadConfig() {
 	}
 }
 
-/* return the entry list of a given type */
+/* return the entry list of a given key prefix */
 GSList * getEntryKeyList(gchar *keyprefix) {
 	GSList		*list = NULL;
 	GError		*err = NULL;
@@ -112,7 +115,7 @@ GSList * getEntryKeyList(gchar *keyprefix) {
 	return list;
 }
 
-static void setEntryKeyList(gchar *keyprefix, GSList *newlist) {
+void setEntryKeyList(gchar *keyprefix, GSList *newlist) {
 	GConfValue	*value;
 	GError		*err = NULL;
 	gchar		*gconfpath;	
@@ -134,7 +137,7 @@ void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
 	GSList		*list, *newlist = NULL;
 	GSList		*iter;
 	const char	*tmp;
-	int 		error = 0;
+	int 		found = 0, error = 0;
 
 	/* remove key from key list */
 	iter = list = getEntryKeyList(keyprefix);
@@ -143,9 +146,14 @@ void removeEntryFromConfig(gchar *keyprefix, gchar *key) {
 		tmp = gconf_value_get_string(element);
 		if(0 != strcmp(tmp, key)) {
 			newlist = g_slist_append(newlist, element);
+		} else {
+			found = 1;
 		}
 		iter = g_slist_next(iter);		
 	}
+	
+	if(!found)
+		g_warning("internal error: could not find key in configuration!");
 	
 	/* write new list back to gconf */
 	setEntryKeyList(keyprefix, newlist);
@@ -297,6 +305,14 @@ gchar * addFolderToConfig(gchar *title) {
 	return newdirkey;
 }
 
+int setFolderTitleInConfig(gchar *keyprefix, gchar *title) {
+	gchar 	*gconfpath;
+	
+	gconfpath = g_strdup_printf("%s/%s/feedlistname", PATH, keyprefix);
+	setStringConfValue(gconfpath, title);
+	g_free(gconfpath);
+}
+
 void removeFolderFromConfig(gchar *keyprefix) {
 	GError		*err = NULL;
 	GConfValue	*element, *value;
@@ -434,96 +450,6 @@ int setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval) {
 	return 0;	
 }
 
-void moveUpEntryPositionInConfig(gchar *keyprefix, gchar *key) {
-	GError		*err = NULL;
-	GSList		*iter, *list;
-	GConfValue	*element;
-	const char	*actualkey;
-	gboolean	found = FALSE;
-	gint 		pos = 0;
-	
-	list = iter = getEntryKeyList(keyprefix);
-	/* scan the list for the element to move and unlink it */
-	while(iter != NULL) {
-		element = iter->data;
-		actualkey = gconf_value_get_string(element);
-		is_gconf_error(err);		
-	
-		g_assert(NULL != actualkey);
-		if(0 == strcmp(key, actualkey)) {
-			list = g_slist_remove_link(list, iter);
-			found = 1;
-			break;
-		}
-
-		iter = g_slist_next(iter);
-		pos ++;
-	}
-	
-	if(found) {
-		/* reinsert at next position */
-		element = gconf_value_new(GCONF_VALUE_STRING);
-		gconf_value_set_string(element, key);
-		is_gconf_error(err);
-		
-		list = g_slist_insert(list, element, pos - 1);
-
-		/* save it back to gconf */
-		setEntryKeyList(keyprefix, list);
-	} else {
-		g_error("internal error, element should be moved but was not found in list!\n");
-	}
-	
-	g_slist_free(list);
-	
-}
-
-void moveDownEntryPositionInConfig(gchar *keyprefix, gchar *key) {
-	GError		*err = NULL;
-	GSList		*iter, *list;
-	GConfValue	*element;
-	const char	*actualkey;
-	gboolean	found = FALSE;
-	gint 		pos = 0;
-	
-	list = iter = getEntryKeyList(keyprefix);
-	/* scan the list for the element to move and unlink it */
-	while(iter != NULL) {
-		element = iter->data;
-		actualkey = gconf_value_get_string(element);
-		is_gconf_error(err);		
-	
-		g_assert(NULL != actualkey);
-		if(0 == strcmp(key, actualkey)) {
-			list = g_slist_remove_link(list, iter);
-			found = 1;
-			break;
-		}
-
-		iter = g_slist_next(iter);
-		pos ++;
-	}
-	
-	if(found) {
-		/* reinsert at next position */
-		element = gconf_value_new(GCONF_VALUE_STRING);
-		gconf_value_set_string(element, key);
-		is_gconf_error(err);
-		
-		list = g_slist_insert(list, element, pos + 1);
-
-		/* save it back to gconf */
-		setEntryKeyList(keyprefix, list);
-	} else {
-		g_error("internal error, element should be moved but was not found in list!\n");
-	}
-
-	g_slist_free(list);	
-}
-
-void sortEntryKeyList(gchar *keyprefix) {
-}
-
 void loadEntries() {
 	GError		*err = NULL;
 	GSList		*groupiter = NULL, *iter = NULL;
@@ -561,7 +487,7 @@ void loadEntries() {
 		/* get keyprefix, build gconf path and get key list */
 		element = groupiter->data;
 		keyprefix = (gchar *)gconf_value_get_string(element);
-		
+
 		gconfpath = build_path_str(keyprefix, "feedlist");		
 		keylist = gconf_client_get(client, gconfpath, &err);
 		is_gconf_error(err);
@@ -578,12 +504,10 @@ void loadEntries() {
 		g_free(gconfpath);
 		
 		gconfpath = build_path_str(keyprefix, "feedlistname");
-		if(NULL == (keylisttitle = getStringConfValue(gconfpath)))
-			keylisttitle = g_strdup(_("my feeds"));	 /* to avoid migration problems */
-			
+		keylisttitle = getStringConfValue(gconfpath);		
 		g_free(gconfpath);
 		
-		addFolder(keyprefix, keylisttitle);
+		addFolder(keyprefix, keylisttitle, FST_NODE);
 		/* don't free keyprefix because its used as hash table key in backend */
 		g_free(keylisttitle);
 
@@ -639,7 +563,12 @@ void loadEntries() {
 	
 	g_slist_free(groupiter);
 	g_free(groups);
-		
+	
+	/* create help folder and content */
+	addFolder("help", _("Liferea Help"), FST_HELPNODE);
+	addEntry(FST_RSS, HELP1URL, "help1", "help", _("Online Help Feed"), -1);
+	addEntry(FST_RSS, HELP2URL, "help2", "help", _("Liferea SF News"), -1);
+	
 	/* enforce background loading */
 	updateNow();
 }

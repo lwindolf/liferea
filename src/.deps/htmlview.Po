@@ -330,10 +330,9 @@ htmlview.o htmlview.o: htmlview.c /usr/include/stdlib.h \
   /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h \
   /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h \
   /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h \
-  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h \
-  backend.h rss_channel.h rss_item.h rss_ns.h cdf_channel.h cdf_item.h \
-  ocs_dir.h ocs_ns.h conf.h support.h ../config.h /usr/include/libintl.h \
-  /usr/include/locale.h /usr/include/bits/locale.h
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h conf.h \
+  support.h ../config.h /usr/include/libintl.h /usr/include/locale.h \
+  /usr/include/bits/locale.h callbacks.h backend.h
 
 /usr/include/stdlib.h:
 
@@ -1107,22 +1106,6 @@ htmlview.h:
 
 /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h:
 
-backend.h:
-
-rss_channel.h:
-
-rss_item.h:
-
-rss_ns.h:
-
-cdf_channel.h:
-
-cdf_item.h:
-
-ocs_dir.h:
-
-ocs_ns.h:
-
 conf.h:
 
 support.h:
@@ -1134,3 +1117,7 @@ support.h:
 /usr/include/locale.h:
 
 /usr/include/bits/locale.h:
+
+callbacks.h:
+
+backend.h:

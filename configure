@@ -1528,7 +1528,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=liferea
- VERSION=0.3.5
+ VERSION=0.3.7
 
 
 cat >>confdefs.h <<_ACEOF
@@ -4030,6 +4030,16 @@ pkg_modules="	gtk+-2.0 >= 2.0.0
 		libxml-2.0 >= 2.0.0
 		libgtkhtml-2.0 >= 2.0.0
 		gnome-vfs-2.0 >= 2.0.0"
+
+# if you want to compile on RedHat you should change the
+# dependencies to something like this
+#
+#pkg_modules="	gtk+-2.0 >= 2.0.0
+#		gconf2 >= 2.0.0
+#		libxml-2.0 >= 2.0.0
+#		gtkhtml2 >= 2.0.0
+#		gnome-vfs2 >= 2.0.0"
+
 
   succeeded=no
 

@@ -277,7 +277,7 @@ ocs_dir.o ocs_dir.o: ocs_dir.c /usr/include/libxml2/libxml/xmlmemory.h \
   /usr/include/gtk-2.0/gtk/gtkvruler.h \
   /usr/include/gtk-2.0/gtk/gtkvscale.h \
   /usr/include/gtk-2.0/gtk/gtkvseparator.h /usr/include/libintl.h \
-  /usr/include/locale.h /usr/include/bits/locale.h common.h \
+  /usr/include/locale.h /usr/include/bits/locale.h conf.h common.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtmlcontext.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/util/htmlatomlist.h \
@@ -313,7 +313,25 @@ ocs_dir.o ocs_dir.o: ocs_dir.c /usr/include/libxml2/libxml/xmlmemory.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/html/htmlboxform.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmlboxblock.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h \
-  ocs_ns.h ocs_dir.h
+  ocs_ns.h ocs_dir.h backend.h htmlview.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-async-ops.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-info.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-size.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-result.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-uri.h \
+  /usr/include/sys/stat.h /usr/include/bits/stat.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-find-directory.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-handle.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-context.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-cancellation.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-xfer.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-directory.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-init.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h
 
 /usr/include/libxml2/libxml/xmlmemory.h:
 
@@ -979,6 +997,8 @@ support.h:
 
 /usr/include/bits/locale.h:
 
+conf.h:
+
 common.h:
 
 /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h:
@@ -1054,3 +1074,45 @@ common.h:
 ocs_ns.h:
 
 ocs_dir.h:
+
+backend.h:
+
+htmlview.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-async-ops.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-info.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-size.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-result.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-uri.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/bits/stat.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-find-directory.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-handle.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-context.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-cancellation.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-xfer.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-directory.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-init.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h:

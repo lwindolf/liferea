@@ -52,6 +52,7 @@ void updateNow(void)
 {
 	g_mutex_lock(cond_mutex);
 	work_to_do = TRUE;
+g_print("updating now!\n");
 	g_cond_signal(qcond);
 	g_mutex_unlock(cond_mutex);
 }
@@ -85,7 +86,6 @@ static void *update_mainloop(void *data) {
 		}
 		work_to_do = FALSE;
                 g_mutex_unlock (cond_mutex);
-
 		updateFeeds(was_timeout);		
 	}
 }

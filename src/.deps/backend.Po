@@ -261,8 +261,10 @@ backend.o backend.o: backend.c ../config.h /usr/include/time.h \
   /usr/include/gtk-2.0/gtk/gtkvruler.h \
   /usr/include/gtk-2.0/gtk/gtkvscale.h \
   /usr/include/gtk-2.0/gtk/gtkvseparator.h /usr/include/libintl.h \
-  /usr/include/locale.h /usr/include/bits/locale.h conf.h ns_dc.h \
-  rss_ns.h /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h \
+  /usr/include/locale.h /usr/include/bits/locale.h conf.h cdf_channel.h \
+  backend.h cdf_item.h rss_channel.h rss_item.h pie_feed.h pie_entry.h \
+  ocs_dir.h callbacks.h \
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtmlcontext.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/util/htmlatomlist.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/view/htmlview.h \
@@ -318,9 +320,7 @@ backend.o backend.o: backend.c ../config.h /usr/include/time.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/html/htmlboxembedded.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/html/htmlboxform.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmlboxblock.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h \
-  rss_channel.h rss_item.h ocs_ns.h ocs_dir.h ns_fm.h ns_slash.h \
-  ns_content.h ns_ocs.h cdf_channel.h cdf_item.h backend.h callbacks.h
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h
 
 ../config.h:
 
@@ -926,9 +926,23 @@ support.h:
 
 conf.h:
 
-ns_dc.h:
+cdf_channel.h:
 
-rss_ns.h:
+backend.h:
+
+cdf_item.h:
+
+rss_channel.h:
+
+rss_item.h:
+
+pie_feed.h:
+
+pie_entry.h:
+
+ocs_dir.h:
+
+callbacks.h:
 
 /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h:
 
@@ -1073,27 +1087,3 @@ rss_ns.h:
 /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmlboxblock.h:
 
 /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h:
-
-rss_channel.h:
-
-rss_item.h:
-
-ocs_ns.h:
-
-ocs_dir.h:
-
-ns_fm.h:
-
-ns_slash.h:
-
-ns_content.h:
-
-ns_ocs.h:
-
-cdf_channel.h:
-
-cdf_item.h:
-
-backend.h:
-
-callbacks.h:

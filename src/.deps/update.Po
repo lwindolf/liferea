@@ -251,8 +251,10 @@ update.o update.o: update.c backend.h /usr/include/gtk-2.0/gtk/gtk.h \
   /usr/include/gtk-2.0/gtk/gtkvpaned.h \
   /usr/include/gtk-2.0/gtk/gtkvruler.h \
   /usr/include/gtk-2.0/gtk/gtkvscale.h \
-  /usr/include/gtk-2.0/gtk/gtkvseparator.h rss_channel.h rss_item.h \
-  cdf_channel.h cdf_item.h ocs_dir.h update.h callbacks.h \
+  /usr/include/gtk-2.0/gtk/gtkvseparator.h rss_channel.h \
+  /usr/include/time.h /usr/include/bits/time.h /usr/include/bits/types.h \
+  /usr/include/bits/wordsize.h /usr/include/bits/typesizes.h rss_item.h \
+  cdf_channel.h ocs_dir.h update.h callbacks.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtmlcontext.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/util/htmlatomlist.h \
@@ -261,10 +263,8 @@ update.o update.o: update.c backend.h /usr/include/gtk-2.0/gtk/gtk.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/dom/dom-types.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmlparser.h \
   /usr/include/libxml2/libxml/parser.h /usr/include/libxml2/libxml/tree.h \
-  /usr/include/stdio.h /usr/include/bits/types.h \
-  /usr/include/bits/wordsize.h /usr/include/bits/typesizes.h \
-  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
-  /usr/include/bits/wchar.h /usr/include/gconv.h \
+  /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+  /usr/include/wchar.h /usr/include/bits/wchar.h /usr/include/gconv.h \
   /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
   /usr/include/bits/stdio.h /usr/include/libxml2/libxml/xmlversion.h \
   /usr/include/libxml2/libxml/xmlregexp.h \
@@ -276,12 +276,12 @@ update.o update.o: update.c backend.h /usr/include/gtk-2.0/gtk/gtk.h \
   /usr/include/libxml2/libxml/globals.h \
   /usr/include/libxml2/libxml/xmlerror.h \
   /usr/include/libxml2/libxml/SAX.h /usr/include/stdlib.h \
-  /usr/include/sys/types.h /usr/include/time.h /usr/include/endian.h \
+  /usr/include/sys/types.h /usr/include/endian.h \
   /usr/include/bits/endian.h /usr/include/sys/select.h \
   /usr/include/bits/select.h /usr/include/bits/sigset.h \
-  /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
-  /usr/include/bits/pthreadtypes.h /usr/include/bits/sched.h \
-  /usr/include/alloca.h /usr/include/libxml2/libxml/xlink.h \
+  /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
+  /usr/include/bits/sched.h /usr/include/alloca.h \
+  /usr/include/libxml2/libxml/xlink.h \
   /usr/include/libxml2/libxml/xmlmemory.h \
   /usr/include/libxml2/libxml/threads.h \
   /usr/include/libxml2/libxml/HTMLparser.h \
@@ -889,11 +889,19 @@ backend.h:
 
 rss_channel.h:
 
+/usr/include/time.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/bits/typesizes.h:
+
 rss_item.h:
 
 cdf_channel.h:
-
-cdf_item.h:
 
 ocs_dir.h:
 
@@ -920,12 +928,6 @@ callbacks.h:
 /usr/include/libxml2/libxml/tree.h:
 
 /usr/include/stdio.h:
-
-/usr/include/bits/types.h:
-
-/usr/include/bits/wordsize.h:
-
-/usr/include/bits/typesizes.h:
 
 /usr/include/libio.h:
 
@@ -971,8 +973,6 @@ callbacks.h:
 
 /usr/include/sys/types.h:
 
-/usr/include/time.h:
-
 /usr/include/endian.h:
 
 /usr/include/bits/endian.h:
@@ -982,8 +982,6 @@ callbacks.h:
 /usr/include/bits/select.h:
 
 /usr/include/bits/sigset.h:
-
-/usr/include/bits/time.h:
 
 /usr/include/sys/sysmacros.h:
 

@@ -22,6 +22,7 @@
 #ifndef _PIE_ENTRY_H
 #define _PIE_ENTRY_H
 
+#include <time.h>
 #include <glib.h>
 #include "pie_feed.h"
 
@@ -44,7 +45,7 @@ typedef struct PIEEntry {
 	gboolean	read;
 	gchar		*author;
 	gchar		*contributors;
-	gchar		*time;
+	time_t		time;
 	struct PIEItem	*next;
 } *PIEEntryPtr;
 

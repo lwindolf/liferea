@@ -145,6 +145,9 @@ liferea_SOURCES = \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h \
 	rss_ns.h \
+	pie_feed.c pie_feed.h \
+	pie_entry.c pie_entry.h \
+	pie_ns.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
 	ocs_dir.c ocs_dir.h \
@@ -154,6 +157,8 @@ liferea_SOURCES = \
 	ns_fm.c ns_fm.h \
 	ns_slash.c ns_slash.h \
 	ns_content.c ns_content.h \
+	ns_syn.c ns_syn.h \
+	ns_admin.c ns_admin.h \
 	conf.c conf.h
 
 
@@ -168,10 +173,11 @@ PROGRAMS = $(bin_PROGRAMS)
 am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	interface.$(OBJEXT) callbacks.$(OBJEXT) common.$(OBJEXT) \
 	backend.$(OBJEXT) update.$(OBJEXT) htmlview.$(OBJEXT) \
-	rss_channel.$(OBJEXT) rss_item.$(OBJEXT) cdf_channel.$(OBJEXT) \
-	cdf_item.$(OBJEXT) ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) \
-	ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) \
-	ns_content.$(OBJEXT) conf.$(OBJEXT)
+	rss_channel.$(OBJEXT) rss_item.$(OBJEXT) pie_feed.$(OBJEXT) \
+	pie_entry.$(OBJEXT) cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) \
+	ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) \
+	ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) ns_content.$(OBJEXT) \
+	ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) conf.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -183,10 +189,12 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/cdf_channel.Po ./$(DEPDIR)/cdf_item.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/common.Po ./$(DEPDIR)/conf.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/htmlview.Po ./$(DEPDIR)/interface.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/main.Po ./$(DEPDIR)/ns_content.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ns_dc.Po ./$(DEPDIR)/ns_fm.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ns_ocs.Po ./$(DEPDIR)/ns_slash.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/rss_channel.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/main.Po ./$(DEPDIR)/ns_admin.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ns_content.Po ./$(DEPDIR)/ns_dc.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ns_fm.Po ./$(DEPDIR)/ns_ocs.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ns_slash.Po ./$(DEPDIR)/ns_syn.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/pie_entry.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/pie_feed.Po ./$(DEPDIR)/rss_channel.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/rss_item.Po ./$(DEPDIR)/support.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/update.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -249,12 +257,16 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/htmlview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/interface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_admin.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_content.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_dc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_fm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_ocs.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_slash.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_syn.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ocs_dir.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pie_entry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pie_feed.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rss_channel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rss_item.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/support.Po@am__quote@

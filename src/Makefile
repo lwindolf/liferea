@@ -35,13 +35,13 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-ACLOCAL = ${SHELL} /home/lars/tech/coding/c/liferea/t/liferea-0.3.5/missing --run aclocal-1.7
+ACLOCAL = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run aclocal-1.7
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/lars/tech/coding/c/liferea/t/liferea-0.3.5/missing --run tar
-AUTOCONF = ${SHELL} /home/lars/tech/coding/c/liferea/t/liferea-0.3.5/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/lars/tech/coding/c/liferea/t/liferea-0.3.5/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/lars/tech/coding/c/liferea/t/liferea-0.3.5/missing --run automake-1.7
+AMTAR = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run tar
+AUTOCONF = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run automake-1.7
 AWK = gawk
 CATALOGS = 
 CATOBJEXT = .gmo
@@ -72,10 +72,10 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = 
 LTLIBOBJS = 
-MAINT = #
-MAINTAINER_MODE_FALSE = 
-MAINTAINER_MODE_TRUE = #
-MAKEINFO = ${SHELL} /home/lars/tech/coding/c/liferea/t/liferea-0.3.5/missing --run makeinfo
+MAINT = 
+MAINTAINER_MODE_FALSE = #
+MAINTAINER_MODE_TRUE = 
+MAKEINFO = ${SHELL} /home/lars/tech/coding/c/liferea-cvs/liferea/missing --run makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 MSGFMT = /usr/bin/msgfmt
 OBJEXT = o
@@ -97,7 +97,7 @@ SET_MAKE =
 SHELL = /bin/sh
 STRIP = 
 USE_NLS = yes
-VERSION = 0.3.5
+VERSION = 0.3.7
 XGETTEXT = /usr/bin/xgettext
 ac_ct_CC = gcc
 ac_ct_STRIP = 
@@ -112,7 +112,7 @@ exec_prefix = ${prefix}
 host_alias = 
 includedir = ${prefix}/include
 infodir = ${prefix}/info
-install_sh = /home/lars/tech/coding/c/liferea/t/liferea-0.3.5/install-sh
+install_sh = /home/lars/tech/coding/c/liferea-cvs/liferea/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localstatedir = ${prefix}/var
@@ -145,6 +145,9 @@ liferea_SOURCES = \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h \
 	rss_ns.h \
+	pie_feed.c pie_feed.h \
+	pie_entry.c pie_entry.h \
+	pie_ns.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
 	ocs_dir.c ocs_dir.h \
@@ -154,6 +157,8 @@ liferea_SOURCES = \
 	ns_fm.c ns_fm.h \
 	ns_slash.c ns_slash.h \
 	ns_content.c ns_content.h \
+	ns_syn.c ns_syn.h \
+	ns_admin.c ns_admin.h \
 	conf.c conf.h
 
 
@@ -168,10 +173,11 @@ PROGRAMS = $(bin_PROGRAMS)
 am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	interface.$(OBJEXT) callbacks.$(OBJEXT) common.$(OBJEXT) \
 	backend.$(OBJEXT) update.$(OBJEXT) htmlview.$(OBJEXT) \
-	rss_channel.$(OBJEXT) rss_item.$(OBJEXT) cdf_channel.$(OBJEXT) \
-	cdf_item.$(OBJEXT) ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) \
-	ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) \
-	ns_content.$(OBJEXT) conf.$(OBJEXT)
+	rss_channel.$(OBJEXT) rss_item.$(OBJEXT) pie_feed.$(OBJEXT) \
+	pie_entry.$(OBJEXT) cdf_channel.$(OBJEXT) cdf_item.$(OBJEXT) \
+	ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) \
+	ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) ns_content.$(OBJEXT) \
+	ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) conf.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -183,10 +189,12 @@ DEP_FILES = ./$(DEPDIR)/backend.Po ./$(DEPDIR)/callbacks.Po \
 	./$(DEPDIR)/cdf_channel.Po ./$(DEPDIR)/cdf_item.Po \
 	./$(DEPDIR)/common.Po ./$(DEPDIR)/conf.Po \
 	./$(DEPDIR)/htmlview.Po ./$(DEPDIR)/interface.Po \
-	./$(DEPDIR)/main.Po ./$(DEPDIR)/ns_content.Po \
-	./$(DEPDIR)/ns_dc.Po ./$(DEPDIR)/ns_fm.Po \
-	./$(DEPDIR)/ns_ocs.Po ./$(DEPDIR)/ns_slash.Po \
-	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/rss_channel.Po \
+	./$(DEPDIR)/main.Po ./$(DEPDIR)/ns_admin.Po \
+	./$(DEPDIR)/ns_content.Po ./$(DEPDIR)/ns_dc.Po \
+	./$(DEPDIR)/ns_fm.Po ./$(DEPDIR)/ns_ocs.Po \
+	./$(DEPDIR)/ns_slash.Po ./$(DEPDIR)/ns_syn.Po \
+	./$(DEPDIR)/ocs_dir.Po ./$(DEPDIR)/pie_entry.Po \
+	./$(DEPDIR)/pie_feed.Po ./$(DEPDIR)/rss_channel.Po \
 	./$(DEPDIR)/rss_item.Po ./$(DEPDIR)/support.Po \
 	./$(DEPDIR)/update.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -201,10 +209,10 @@ all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .o .obj
-$(srcdir)/Makefile.in: # Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/Makefile
-Makefile: # $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 install-binPROGRAMS: $(bin_PROGRAMS)
@@ -249,12 +257,16 @@ include ./$(DEPDIR)/conf.Po
 include ./$(DEPDIR)/htmlview.Po
 include ./$(DEPDIR)/interface.Po
 include ./$(DEPDIR)/main.Po
+include ./$(DEPDIR)/ns_admin.Po
 include ./$(DEPDIR)/ns_content.Po
 include ./$(DEPDIR)/ns_dc.Po
 include ./$(DEPDIR)/ns_fm.Po
 include ./$(DEPDIR)/ns_ocs.Po
 include ./$(DEPDIR)/ns_slash.Po
+include ./$(DEPDIR)/ns_syn.Po
 include ./$(DEPDIR)/ocs_dir.Po
+include ./$(DEPDIR)/pie_entry.Po
+include ./$(DEPDIR)/pie_feed.Po
 include ./$(DEPDIR)/rss_channel.Po
 include ./$(DEPDIR)/rss_item.Po
 include ./$(DEPDIR)/support.Po

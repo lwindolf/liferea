@@ -21,6 +21,7 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
+#include <time.h>
 #include <libgtkhtml/gtkhtml.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -39,6 +40,7 @@ gchar * extractHTMLNode(xmlNodePtr cur);
 
 gchar * unhtmlize(gchar * from_encoding, gchar *string);
 gchar * getActualTime(void);
-char * 	convertDate(char *date);
+time_t 	convertDate(char *date);
+gchar * formatDate(time_t t);
 gchar *	getCachePath(void);
 #endif

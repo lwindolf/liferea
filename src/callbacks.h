@@ -94,23 +94,7 @@ on_prefbtn_clicked                     (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_flupbtn_clicked                     (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_fldownbtn_clicked                   (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_flsortbtn_clicked                   (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
 on_prefsavebtn_clicked                 (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_prefcancelbtn_clicked               (GtkButton       *button,
                                         gpointer         user_data);
 
 gboolean
@@ -119,15 +103,7 @@ on_mainfeedlist_button_press_event     (GtkWidget       *widget,
                                         gpointer         user_data);
 
 void
-on_deletebtn_clicked                   (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
 on_newfolderbtn_clicked                (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_helpbtn_clicked                     (GtkButton       *button,
                                         gpointer         user_data);
 
 gboolean
@@ -145,4 +121,39 @@ on_hidesearch_clicked                  (GtkButton       *button,
 
 void
 on_searchentry_activate                (GtkEntry        *entry,
+                                        gpointer         user_data);
+
+void
+on_feedlist_drag_end                   (GtkWidget       *widget,
+                                        GdkDragContext  *drag_context,
+                                        gpointer         user_data);
+
+void
+on_feedlist_drag_begin                 (GtkWidget       *widget,
+                                        GdkDragContext  *drag_context,
+                                        gpointer         user_data);
+
+void
+on_feedlist_drag_data_received         (GtkWidget       *widget,
+                                        GdkDragContext  *drag_context,
+                                        gint             x,
+                                        gint             y,
+                                        GtkSelectionData *data,
+                                        guint            info,
+                                        guint            time,
+                                        gpointer         user_data);
+
+gboolean
+on_Itemlist_move_cursor                (GtkTreeView     *treeview,
+                                        GtkMovementStep  step,
+                                        gint             count,
+                                        gpointer         user_data);
+
+gboolean
+on_itemlist_button_press_event         (GtkWidget       *widget,
+                                        GdkEventButton  *event,
+                                        gpointer         user_data);
+
+void
+on_foldernamechangebtn_clicked         (GtkButton       *button,
                                         gpointer         user_data);

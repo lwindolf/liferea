@@ -122,10 +122,7 @@ PIEEntryPtr parseEntry(xmlDocPtr doc, xmlNodePtr cur) {
 		// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
 		if(!xmlStrcmp(cur->name, "modified")) {
 			tmp = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-			tmp = convertDate(tmp);
-			if(NULL != tmp) {
-				i->time = tmp;
-			}						
+			i->time = convertDate(tmp);
 			cur = cur->next;		
 			continue;
 		}

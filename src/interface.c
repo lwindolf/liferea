@@ -35,8 +35,6 @@ create_mainwindow (void)
   GtkWidget *refreshbtn;
   GtkWidget *prefbtn;
   GtkWidget *searchbtn;
-  GtkWidget *helpbtn;
-  GtkWidget *exitbtn;
   GtkWidget *hpaned1;
   GtkWidget *scrolledwindow3;
   GtkWidget *feedlist;
@@ -51,7 +49,7 @@ create_mainwindow (void)
   GtkWidget *statusbar;
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.6"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.7"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
 
   vbox1 = gtk_vbox_new (FALSE, 0);
@@ -81,18 +79,6 @@ create_mainwindow (void)
                                 NULL, NULL, NULL, -1);
   gtk_widget_show (searchbtn);
 
-  helpbtn = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
-                                "gtk-help",
-                                "gtk-help",
-                                NULL, NULL, NULL, -1);
-  gtk_widget_show (helpbtn);
-
-  exitbtn = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
-                                "gtk-quit",
-                                "gtk-quit",
-                                NULL, NULL, NULL, -1);
-  gtk_widget_show (exitbtn);
-
   hpaned1 = gtk_hpaned_new ();
   gtk_widget_show (hpaned1);
   gtk_box_pack_start (GTK_BOX (vbox1), hpaned1, TRUE, TRUE, 0);
@@ -106,9 +92,8 @@ create_mainwindow (void)
   feedlist = gtk_tree_view_new ();
   gtk_widget_show (feedlist);
   gtk_container_add (GTK_CONTAINER (scrolledwindow3), feedlist);
-  gtk_widget_set_size_request (feedlist, 150, -1);
+  gtk_widget_set_size_request (feedlist, 150, -2);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (feedlist), FALSE);
-  gtk_tree_view_set_reorderable (GTK_TREE_VIEW (feedlist), TRUE);
 
   rightpane = gtk_vpaned_new ();
   gtk_widget_show (rightpane);
@@ -162,14 +147,17 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) searchbtn, "clicked",
                     G_CALLBACK (on_searchbtn_clicked),
                     NULL);
-  g_signal_connect ((gpointer) helpbtn, "clicked",
-                    G_CALLBACK (on_helpbtn_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) exitbtn, "clicked",
-                    G_CALLBACK (gtk_main_quit),
-                    NULL);
   g_signal_connect ((gpointer) feedlist, "button_press_event",
                     G_CALLBACK (on_mainfeedlist_button_press_event),
+                    NULL);
+  g_signal_connect ((gpointer) feedlist, "drag_end",
+                    G_CALLBACK (on_feedlist_drag_end),
+                    NULL);
+  g_signal_connect ((gpointer) feedlist, "drag_begin",
+                    G_CALLBACK (on_feedlist_drag_begin),
+                    NULL);
+  g_signal_connect ((gpointer) feedlist, "drag_data_received",
+                    G_CALLBACK (on_feedlist_drag_data_received),
                     NULL);
   g_signal_connect ((gpointer) searchentry, "activate",
                     G_CALLBACK (on_searchentry_activate),
@@ -177,6 +165,9 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) hidesearch, "clicked",
                     G_CALLBACK (on_hidesearch_clicked),
                     NULL);
+  g_signal_connect_after ((gpointer) Itemlist, "move_cursor",
+                          G_CALLBACK (on_Itemlist_move_cursor),
+                          NULL);
   g_signal_connect ((gpointer) Itemlist, "button_press_event",
                     G_CALLBACK (on_itemlist_button_press_event),
                     NULL);
@@ -188,8 +179,6 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, refreshbtn, "refreshbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, prefbtn, "prefbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, searchbtn, "searchbtn");
-  GLADE_HOOKUP_OBJECT (mainwindow, helpbtn, "helpbtn");
-  GLADE_HOOKUP_OBJECT (mainwindow, exitbtn, "exitbtn");
   GLADE_HOOKUP_OBJECT (mainwindow, hpaned1, "hpaned1");
   GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow3, "scrolledwindow3");
   GLADE_HOOKUP_OBJECT (mainwindow, feedlist, "feedlist");
@@ -337,7 +326,7 @@ create_propdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (propdialog), cancelbtn, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (cancelbtn, GTK_CAN_DEFAULT);
 
-  g_signal_connect_swapped ((gpointer) propdialog, "close",
+  g_signal_connect_swapped ((gpointer) propdialog, "delete_event",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (propdialog));
   g_signal_connect_data ((gpointer) propchangebtn, "clicked",
@@ -491,6 +480,9 @@ create_newdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (newdialog), cancelbtn, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (cancelbtn, GTK_CAN_DEFAULT);
 
+  g_signal_connect_swapped ((gpointer) newdialog, "delete_event",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (newdialog));
   g_signal_connect_swapped ((gpointer) newfeedbtn, "clicked",
                             G_CALLBACK (on_newfeedbtn_clicked),
                             GTK_OBJECT (newfeedentry));
@@ -598,6 +590,9 @@ create_feednamedialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (feednamedialog), okbutton4, GTK_RESPONSE_OK);
   GTK_WIDGET_SET_FLAGS (okbutton4, GTK_CAN_DEFAULT);
 
+  g_signal_connect_swapped ((gpointer) feednamedialog, "delete_event",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (feednamedialog));
   g_signal_connect_swapped ((gpointer) okbutton4, "clicked",
                             G_CALLBACK (on_feednamebutton_clicked),
                             GTK_OBJECT (feednameentry));
@@ -646,7 +641,6 @@ create_prefdialog (void)
   GtkWidget *hbox9;
   GtkWidget *usefm;
   GtkWidget *usesyn;
-  GtkWidget *usesy;
   GtkWidget *useadmin;
   GtkWidget *label16;
   GtkWidget *label14;
@@ -701,7 +695,6 @@ create_prefdialog (void)
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_tooltips_set_tip (tooltips, browsercmd, _("specify a browser command using %s as URL placeholder"), NULL);
-  gtk_entry_set_text (GTK_ENTRY (browsercmd), _("http://news.synearth.net/xml/scriptingnews2.xml"));
 
   label8 = gtk_label_new (_("time format string\nwhich is used for\nthe date column"));
   gtk_widget_show (label8);
@@ -767,11 +760,6 @@ create_prefdialog (void)
   usesyn = gtk_check_button_new_with_mnemonic (_("syn"));
   gtk_widget_show (usesyn);
   gtk_box_pack_start (GTK_BOX (hbox9), usesyn, FALSE, FALSE, 0);
-
-  usesy = gtk_check_button_new_with_mnemonic (_("sy"));
-  gtk_widget_show (usesy);
-  gtk_box_pack_start (GTK_BOX (hbox9), usesy, FALSE, FALSE, 0);
-  gtk_widget_set_sensitive (usesy, FALSE);
 
   useadmin = gtk_check_button_new_with_mnemonic (_("admin"));
   gtk_widget_show (useadmin);
@@ -858,6 +846,9 @@ create_prefdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (prefdialog), prefcancelbtn, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (prefcancelbtn, GTK_CAN_DEFAULT);
 
+  g_signal_connect_swapped ((gpointer) prefdialog, "delete_event",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (prefdialog));
   g_signal_connect ((gpointer) prefsavebtn, "clicked",
                     G_CALLBACK (on_prefsavebtn_clicked),
                     NULL);
@@ -886,7 +877,6 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox9, "hbox9");
   GLADE_HOOKUP_OBJECT (prefdialog, usefm, "usefm");
   GLADE_HOOKUP_OBJECT (prefdialog, usesyn, "usesyn");
-  GLADE_HOOKUP_OBJECT (prefdialog, usesy, "usesy");
   GLADE_HOOKUP_OBJECT (prefdialog, useadmin, "useadmin");
   GLADE_HOOKUP_OBJECT (prefdialog, label16, "label16");
   GLADE_HOOKUP_OBJECT (prefdialog, label14, "label14");
@@ -959,6 +949,9 @@ create_newfolderdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (newfolderdialog), button3, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (button3, GTK_CAN_DEFAULT);
 
+  g_signal_connect_swapped ((gpointer) newfolderdialog, "delete_event",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (newfolderdialog));
   g_signal_connect ((gpointer) button2, "clicked",
                     G_CALLBACK (on_newfolderbtn_clicked),
                     NULL);
@@ -982,5 +975,75 @@ create_newfolderdialog (void)
   GLADE_HOOKUP_OBJECT (newfolderdialog, button3, "button3");
 
   return newfolderdialog;
+}
+
+GtkWidget*
+create_foldernamedialog (void)
+{
+  GtkWidget *foldernamedialog;
+  GtkWidget *dialog_vbox7;
+  GtkWidget *hbox13;
+  GtkWidget *label23;
+  GtkWidget *foldernameentry;
+  GtkWidget *dialog_action_area7;
+  GtkWidget *foldernamechangebtn;
+  GtkWidget *cancelbutton1;
+
+  foldernamedialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (foldernamedialog), _("edit folder name"));
+  gtk_window_set_modal (GTK_WINDOW (foldernamedialog), TRUE);
+
+  dialog_vbox7 = GTK_DIALOG (foldernamedialog)->vbox;
+  gtk_widget_show (dialog_vbox7);
+
+  hbox13 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox13);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox7), hbox13, FALSE, FALSE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox13), 5);
+
+  label23 = gtk_label_new (_("folder name"));
+  gtk_widget_show (label23);
+  gtk_box_pack_start (GTK_BOX (hbox13), label23, FALSE, FALSE, 0);
+  gtk_label_set_justify (GTK_LABEL (label23), GTK_JUSTIFY_LEFT);
+
+  foldernameentry = gtk_entry_new ();
+  gtk_widget_show (foldernameentry);
+  gtk_box_pack_start (GTK_BOX (hbox13), foldernameentry, TRUE, TRUE, 0);
+
+  dialog_action_area7 = GTK_DIALOG (foldernamedialog)->action_area;
+  gtk_widget_show (dialog_action_area7);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area7), GTK_BUTTONBOX_END);
+
+  foldernamechangebtn = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (foldernamechangebtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (foldernamedialog), foldernamechangebtn, 0);
+  GTK_WIDGET_SET_FLAGS (foldernamechangebtn, GTK_CAN_DEFAULT);
+
+  cancelbutton1 = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (cancelbutton1);
+  gtk_dialog_add_action_widget (GTK_DIALOG (foldernamedialog), cancelbutton1, 0);
+  GTK_WIDGET_SET_FLAGS (cancelbutton1, GTK_CAN_DEFAULT);
+
+  g_signal_connect_swapped ((gpointer) foldernamedialog, "delete_event",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (foldernamedialog));
+  g_signal_connect ((gpointer) foldernamechangebtn, "clicked",
+                    G_CALLBACK (on_foldernamechangebtn_clicked),
+                    NULL);
+  g_signal_connect_swapped ((gpointer) cancelbutton1, "clicked",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (foldernamedialog));
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, foldernamedialog, "foldernamedialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, dialog_vbox7, "dialog_vbox7");
+  GLADE_HOOKUP_OBJECT (foldernamedialog, hbox13, "hbox13");
+  GLADE_HOOKUP_OBJECT (foldernamedialog, label23, "label23");
+  GLADE_HOOKUP_OBJECT (foldernamedialog, foldernameentry, "foldernameentry");
+  GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, dialog_action_area7, "dialog_action_area7");
+  GLADE_HOOKUP_OBJECT (foldernamedialog, foldernamechangebtn, "foldernamechangebtn");
+  GLADE_HOOKUP_OBJECT (foldernamedialog, cancelbutton1, "cancelbutton1");
+
+  return foldernamedialog;
 }
 

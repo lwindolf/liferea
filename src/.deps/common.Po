@@ -1,16 +1,34 @@
-common.o common.o: common.c /usr/include/time.h /usr/include/features.h \
-  /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h \
+common.o common.o: common.c /usr/include/libxml2/libxml/xmlmemory.h \
+  /usr/include/stdio.h /usr/include/features.h /usr/include/sys/cdefs.h \
+  /usr/include/gnu/stubs.h \
   /usr/lib/gcc-lib/i486-suse-linux/3.3/include/stddef.h \
-  /usr/include/bits/time.h /usr/include/bits/types.h \
-  /usr/include/bits/wordsize.h /usr/include/bits/typesizes.h \
-  /usr/include/pwd.h /usr/include/stdio.h /usr/include/errno.h \
-  /usr/include/bits/errno.h /usr/include/linux/errno.h \
-  /usr/include/asm/errno.h /usr/include/sys/types.h /usr/include/endian.h \
+  /usr/include/bits/types.h /usr/include/bits/wordsize.h \
+  /usr/include/bits/typesizes.h /usr/include/libio.h \
+  /usr/include/_G_config.h /usr/include/wchar.h /usr/include/bits/wchar.h \
+  /usr/include/gconv.h \
+  /usr/lib/gcc-lib/i486-suse-linux/3.3/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h /usr/include/libxml2/libxml/xmlversion.h \
+  /usr/include/libxml2/libxml/threads.h \
+  /usr/include/libxml2/libxml/globals.h \
+  /usr/include/libxml2/libxml/parser.h /usr/include/libxml2/libxml/tree.h \
+  /usr/include/libxml2/libxml/xmlregexp.h \
+  /usr/include/libxml2/libxml/valid.h /usr/include/libxml2/libxml/list.h \
+  /usr/include/libxml2/libxml/xmlautomata.h \
+  /usr/include/libxml2/libxml/entities.h \
+  /usr/include/libxml2/libxml/encoding.h /usr/include/iconv.h \
+  /usr/include/libxml2/libxml/xmlIO.h \
+  /usr/include/libxml2/libxml/xmlerror.h \
+  /usr/include/libxml2/libxml/SAX.h /usr/include/stdlib.h \
+  /usr/include/sys/types.h /usr/include/time.h /usr/include/endian.h \
   /usr/include/bits/endian.h /usr/include/sys/select.h \
   /usr/include/bits/select.h /usr/include/bits/sigset.h \
-  /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
-  /usr/include/bits/sched.h /usr/include/sys/stat.h \
-  /usr/include/bits/stat.h /usr/include/unistd.h \
+  /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
+  /usr/include/bits/pthreadtypes.h /usr/include/bits/sched.h \
+  /usr/include/alloca.h /usr/include/libxml2/libxml/xlink.h \
+  /usr/include/pwd.h /usr/include/errno.h /usr/include/bits/errno.h \
+  /usr/include/linux/errno.h /usr/include/asm/errno.h \
+  /usr/include/sys/stat.h /usr/include/bits/stat.h /usr/include/unistd.h \
   /usr/include/bits/posix_opt.h /usr/include/bits/confname.h \
   /usr/include/getopt.h support.h ../config.h \
   /usr/include/gtk-2.0/gtk/gtk.h /usr/include/gtk-2.0/gdk/gdk.h \
@@ -44,7 +62,6 @@ common.o common.o: common.c /usr/include/time.h /usr/include/features.h \
   /usr/include/glib-2.0/glib/gunicode.h \
   /usr/include/glib-2.0/glib/gmarkup.h \
   /usr/include/glib-2.0/glib/gmessages.h \
-  /usr/lib/gcc-lib/i486-suse-linux/3.3/include/stdarg.h \
   /usr/include/glib-2.0/glib/gnode.h \
   /usr/include/glib-2.0/glib/gpattern.h \
   /usr/include/glib-2.0/glib/gprimes.h \
@@ -272,23 +289,6 @@ common.o common.o: common.c /usr/include/time.h /usr/include/features.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmldocument.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/dom/dom-types.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmlparser.h \
-  /usr/include/libxml2/libxml/parser.h /usr/include/libxml2/libxml/tree.h \
-  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
-  /usr/include/bits/wchar.h /usr/include/gconv.h \
-  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
-  /usr/include/bits/stdio.h /usr/include/libxml2/libxml/xmlversion.h \
-  /usr/include/libxml2/libxml/xmlregexp.h \
-  /usr/include/libxml2/libxml/valid.h /usr/include/libxml2/libxml/list.h \
-  /usr/include/libxml2/libxml/xmlautomata.h \
-  /usr/include/libxml2/libxml/entities.h \
-  /usr/include/libxml2/libxml/encoding.h /usr/include/iconv.h \
-  /usr/include/libxml2/libxml/xmlIO.h \
-  /usr/include/libxml2/libxml/globals.h \
-  /usr/include/libxml2/libxml/xmlerror.h \
-  /usr/include/libxml2/libxml/SAX.h /usr/include/stdlib.h \
-  /usr/include/alloca.h /usr/include/libxml2/libxml/xlink.h \
-  /usr/include/libxml2/libxml/xmlmemory.h \
-  /usr/include/libxml2/libxml/threads.h \
   /usr/include/libxml2/libxml/HTMLparser.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/css/cssparser.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/css/cssstylesheet.h \
@@ -318,7 +318,9 @@ common.o common.o: common.c /usr/include/time.h /usr/include/features.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmlboxblock.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h conf.h
 
-/usr/include/time.h:
+/usr/include/libxml2/libxml/xmlmemory.h:
+
+/usr/include/stdio.h:
 
 /usr/include/features.h:
 
@@ -328,27 +330,65 @@ common.o common.o: common.c /usr/include/time.h /usr/include/features.h \
 
 /usr/lib/gcc-lib/i486-suse-linux/3.3/include/stddef.h:
 
-/usr/include/bits/time.h:
-
 /usr/include/bits/types.h:
 
 /usr/include/bits/wordsize.h:
 
 /usr/include/bits/typesizes.h:
 
-/usr/include/pwd.h:
+/usr/include/libio.h:
 
-/usr/include/stdio.h:
+/usr/include/_G_config.h:
 
-/usr/include/errno.h:
+/usr/include/wchar.h:
 
-/usr/include/bits/errno.h:
+/usr/include/bits/wchar.h:
 
-/usr/include/linux/errno.h:
+/usr/include/gconv.h:
 
-/usr/include/asm/errno.h:
+/usr/lib/gcc-lib/i486-suse-linux/3.3/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/usr/include/libxml2/libxml/xmlversion.h:
+
+/usr/include/libxml2/libxml/threads.h:
+
+/usr/include/libxml2/libxml/globals.h:
+
+/usr/include/libxml2/libxml/parser.h:
+
+/usr/include/libxml2/libxml/tree.h:
+
+/usr/include/libxml2/libxml/xmlregexp.h:
+
+/usr/include/libxml2/libxml/valid.h:
+
+/usr/include/libxml2/libxml/list.h:
+
+/usr/include/libxml2/libxml/xmlautomata.h:
+
+/usr/include/libxml2/libxml/entities.h:
+
+/usr/include/libxml2/libxml/encoding.h:
+
+/usr/include/iconv.h:
+
+/usr/include/libxml2/libxml/xmlIO.h:
+
+/usr/include/libxml2/libxml/xmlerror.h:
+
+/usr/include/libxml2/libxml/SAX.h:
+
+/usr/include/stdlib.h:
 
 /usr/include/sys/types.h:
+
+/usr/include/time.h:
 
 /usr/include/endian.h:
 
@@ -360,11 +400,27 @@ common.o common.o: common.c /usr/include/time.h /usr/include/features.h \
 
 /usr/include/bits/sigset.h:
 
+/usr/include/bits/time.h:
+
 /usr/include/sys/sysmacros.h:
 
 /usr/include/bits/pthreadtypes.h:
 
 /usr/include/bits/sched.h:
+
+/usr/include/alloca.h:
+
+/usr/include/libxml2/libxml/xlink.h:
+
+/usr/include/pwd.h:
+
+/usr/include/errno.h:
+
+/usr/include/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/asm/errno.h:
 
 /usr/include/sys/stat.h:
 
@@ -463,8 +519,6 @@ support.h:
 /usr/include/glib-2.0/glib/gmarkup.h:
 
 /usr/include/glib-2.0/glib/gmessages.h:
-
-/usr/lib/gcc-lib/i486-suse-linux/3.3/include/stdarg.h:
 
 /usr/include/glib-2.0/glib/gnode.h:
 
@@ -965,60 +1019,6 @@ common.h:
 /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/dom/dom-types.h:
 
 /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmlparser.h:
-
-/usr/include/libxml2/libxml/parser.h:
-
-/usr/include/libxml2/libxml/tree.h:
-
-/usr/include/libio.h:
-
-/usr/include/_G_config.h:
-
-/usr/include/wchar.h:
-
-/usr/include/bits/wchar.h:
-
-/usr/include/gconv.h:
-
-/usr/include/bits/stdio_lim.h:
-
-/usr/include/bits/sys_errlist.h:
-
-/usr/include/bits/stdio.h:
-
-/usr/include/libxml2/libxml/xmlversion.h:
-
-/usr/include/libxml2/libxml/xmlregexp.h:
-
-/usr/include/libxml2/libxml/valid.h:
-
-/usr/include/libxml2/libxml/list.h:
-
-/usr/include/libxml2/libxml/xmlautomata.h:
-
-/usr/include/libxml2/libxml/entities.h:
-
-/usr/include/libxml2/libxml/encoding.h:
-
-/usr/include/iconv.h:
-
-/usr/include/libxml2/libxml/xmlIO.h:
-
-/usr/include/libxml2/libxml/globals.h:
-
-/usr/include/libxml2/libxml/xmlerror.h:
-
-/usr/include/libxml2/libxml/SAX.h:
-
-/usr/include/stdlib.h:
-
-/usr/include/alloca.h:
-
-/usr/include/libxml2/libxml/xlink.h:
-
-/usr/include/libxml2/libxml/xmlmemory.h:
-
-/usr/include/libxml2/libxml/threads.h:
 
 /usr/include/libxml2/libxml/HTMLparser.h:
 

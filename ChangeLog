@@ -1,3 +1,26 @@
+2003-09-14  Lars Lindner <lars.lindner@gmx.net>
+
+        Version 0.3.7
+	
+	* changed toolbar to conform to GNOME HIG
+	  (removed exit and help button, Feature Request 802304)
+	* added a dialog to edit folder names (Feature Request 802305)	
+	* fixed the behaviour that always marked the first
+	  item as unread
+	* new support for text[iI]nput formulars in RSS feeds
+	* fixed strange date column sorting behaviour, now no 
+	  matter what time format string is used, the column is 
+	  always sorted chronological, a default format 'll
+	  now override empty time format strings. This should
+	  fix the bugs 796923, 800113 and 802220.
+	* changed the item list column headers (Feature Request
+	  802301)
+	* Changed the displaying of the default folder ("my feeds").
+	  In preparation for the DND folder sorting feature in the
+	  next version all default folder contents can now be found 
+	  in the root node.
+	  
+
 2003-09-07  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.3.6

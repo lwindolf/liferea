@@ -22,6 +22,7 @@
 #ifndef _PIE_FEED_H
 #define _PIE_FEED_H
 
+#include <time.h>
 #include "backend.h"
 #include "pie_entry.h"
 
@@ -55,7 +56,7 @@ typedef struct PIEFeed {
 	gchar		*usertitle;	/* feed title may be modified by user */	
 	gchar 		*source;	/* source url */
 	gboolean	available;	/* flag to signalize load/update errors */
-	gchar		*time;		/* last feed build/creation time */	
+	time_t		time;		/* last feed build/creation time */	
 	gchar 		*encoding;	/* xml encoding */
 	gint		updateInterval;	/* feed refresh interval */
 	gint		updateCounter;	/* counter of minutes till next feed refresh */	

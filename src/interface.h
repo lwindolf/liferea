@@ -8,3 +8,4 @@ GtkWidget* create_newdialog (void);
 GtkWidget* create_feednamedialog (void);
 GtkWidget* create_prefdialog (void);
 GtkWidget* create_newfolderdialog (void);
+GtkWidget* create_foldernamedialog (void);

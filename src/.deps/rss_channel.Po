@@ -313,7 +313,27 @@ rss_channel.o rss_channel.o: rss_channel.c /usr/include/sys/time.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/html/htmlboxform.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmlboxblock.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h \
-  rss_channel.h rss_item.h rss_ns.h backend.h
+  rss_channel.h backend.h rss_item.h rss_ns.h ns_dc.h pie_ns.h pie_feed.h \
+  pie_entry.h ocs_ns.h ocs_dir.h ns_fm.h ns_content.h ns_slash.h ns_syn.h \
+  ns_admin.h htmlview.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-async-ops.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-info.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-size.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-result.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-uri.h \
+  /usr/include/sys/stat.h /usr/include/bits/stat.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-find-directory.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-handle.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-context.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-cancellation.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-xfer.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-directory.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-init.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h \
+  /opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h
 
 /usr/include/sys/time.h:
 
@@ -1057,8 +1077,70 @@ common.h:
 
 rss_channel.h:
 
+backend.h:
+
 rss_item.h:
 
 rss_ns.h:
 
-backend.h:
+ns_dc.h:
+
+pie_ns.h:
+
+pie_feed.h:
+
+pie_entry.h:
+
+ocs_ns.h:
+
+ocs_dir.h:
+
+ns_fm.h:
+
+ns_content.h:
+
+ns_slash.h:
+
+ns_syn.h:
+
+ns_admin.h:
+
+htmlview.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-async-ops.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-info.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-file-size.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-result.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-uri.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/bits/stat.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-find-directory.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-handle.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-context.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-cancellation.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-xfer.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-directory.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-init.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-module-callback.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-monitor.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-ops.h:
+
+/opt/gnome2/include/gnome-vfs-2.0/libgnomevfs/gnome-vfs-utils.h:

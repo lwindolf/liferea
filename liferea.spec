@@ -1,6 +1,6 @@
 Summary: Liferea (Linux Feed Reader)
 Name: liferea
-Version: 0.3.6
+Version: 0.3.7
 Release: 1
 Group: Productivity/Networking/Web/Browsers
 Copyright: GPL
@@ -42,3 +42,4 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/liferea/pixmaps/available.xpm
 /usr/local/share/liferea/pixmaps/directory.xpm
 /usr/local/share/liferea/pixmaps/ocs.xpm
+/usr/local/share/liferea/pixmaps/help.xpm

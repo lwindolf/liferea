@@ -119,7 +119,7 @@ static void parseCDFChannel(CDFChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 			if(NULL != (ip = (CDFItemPtr) parseCDFItem(doc, cur))) {
 				c->unreadCounter++;
 				ip->cp = c;
-				if(NULL == ip->time)
+				if(0 == ip->time)
 					ip->time = c->time;
 
 				c->items = g_slist_append(c->items, ip);
@@ -229,7 +229,7 @@ gpointer readCDFFeed(gchar *url) {
 			cur = cur->next;
 		}
 
-		cp->time = getActualTime();
+		time(&(cp->time));
 		cp->encoding = g_strdup(doc->encoding);
 		cp->available = TRUE;		
 		

@@ -22,6 +22,7 @@
 #ifndef _RSS_ITEM_H
 #define _RSS_ITEM_H
 
+#include <time.h>
 #include <glib.h>
 #include "rss_channel.h"
 
@@ -49,7 +50,7 @@ typedef struct RSSItem {
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */	
 	gboolean	read;
-	gchar		*time;
+	time_t		time;
 	struct RSSItem	*next;
 } *RSSItemPtr;
 

@@ -27,11 +27,13 @@
 /* feed list view entry types (FS_TYPE) */
 #define FST_INVALID	0
 #define FST_NODE	1
-#define FST_HELPFEED	2
 #define FST_RSS		3	/* thats the standard RDF Site Summary type */
 #define FST_OCS		4	/* OCS directories */
 #define FST_CDF		5	/* Microsoft CDF */
 #define FST_PIE		6	/* Echo/Atom/PIE */
+
+#define FST_HELPNODE	7	/* special tree list types to store help feeds */	
+#define FST_HELPFEED	8
 
 #define IS_FEED(type)		((FST_RSS == type) || (FST_CDF == type) || (FST_PIE == type))
 
@@ -121,7 +123,7 @@ typedef struct itemHandler {
 
 gchar * newEntry(gint type, gchar *url, gchar *keyprefix);
 gchar * addEntry(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval);
-void	addFolder(gchar *keyprefix, gchar *title);
+void	addFolder(gchar *keyprefix, gchar *title, gint type);
 void 	removeEntry(gchar *keyprefix, gchar *key);
 
 void	moveUpEntryPosition(gchar *keyprefix, gchar *key);
@@ -133,6 +135,9 @@ gchar *		getDefaultEntryTitle(gchar *key);	/* returns the title defined by the f
 gint		getEntryType(gchar *key);
 
 GtkTreeStore * 	getEntryStore(void);
+
+gchar *		getFolderTitle(gchar *keyprefix);
+void		setFolderTitle(gchar *keyprefix, gchar *title);
 
 /* -------------------------------------------------------- */
 /* callback interface to access items and the item list	    */

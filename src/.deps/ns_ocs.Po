@@ -1,5 +1,4 @@
-ns_ocs.o ns_ocs.o: ns_ocs.c ns_ocs.h ocs_ns.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h \
+ns_ocs.o ns_ocs.o: ns_ocs.c ns_ocs.h ocs_ns.h ocs_dir.h backend.h \
   /usr/include/gtk-2.0/gtk/gtk.h /usr/include/gtk-2.0/gdk/gdk.h \
   /usr/include/gtk-2.0/gdk/gdkcolor.h /usr/include/gtk-2.0/gdk/gdktypes.h \
   /usr/include/glib-2.0/glib.h /usr/include/glib-2.0/glib/galloca.h \
@@ -253,26 +252,22 @@ ns_ocs.o ns_ocs.o: ns_ocs.c ns_ocs.h ocs_ns.h \
   /usr/include/gtk-2.0/gtk/gtkvruler.h \
   /usr/include/gtk-2.0/gtk/gtkvscale.h \
   /usr/include/gtk-2.0/gtk/gtkvseparator.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtmlcontext.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/util/htmlatomlist.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/view/htmlview.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmldocument.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/dom/dom-types.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmlparser.h \
+  /usr/include/libxml2/libxml/xmlmemory.h /usr/include/stdio.h \
+  /usr/include/bits/types.h /usr/include/bits/wordsize.h \
+  /usr/include/bits/typesizes.h /usr/include/libio.h \
+  /usr/include/_G_config.h /usr/include/wchar.h /usr/include/bits/wchar.h \
+  /usr/include/gconv.h /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/sys_errlist.h /usr/include/bits/stdio.h \
+  /usr/include/libxml2/libxml/xmlversion.h \
+  /usr/include/libxml2/libxml/threads.h \
+  /usr/include/libxml2/libxml/globals.h \
   /usr/include/libxml2/libxml/parser.h /usr/include/libxml2/libxml/tree.h \
-  /usr/include/stdio.h /usr/include/bits/types.h \
-  /usr/include/bits/wordsize.h /usr/include/bits/typesizes.h \
-  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
-  /usr/include/bits/wchar.h /usr/include/gconv.h \
-  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
-  /usr/include/bits/stdio.h /usr/include/libxml2/libxml/xmlversion.h \
   /usr/include/libxml2/libxml/xmlregexp.h \
   /usr/include/libxml2/libxml/valid.h /usr/include/libxml2/libxml/list.h \
   /usr/include/libxml2/libxml/xmlautomata.h \
   /usr/include/libxml2/libxml/entities.h \
   /usr/include/libxml2/libxml/encoding.h /usr/include/iconv.h \
   /usr/include/libxml2/libxml/xmlIO.h \
-  /usr/include/libxml2/libxml/globals.h \
   /usr/include/libxml2/libxml/xmlerror.h \
   /usr/include/libxml2/libxml/SAX.h /usr/include/stdlib.h \
   /usr/include/sys/types.h /usr/include/time.h /usr/include/endian.h \
@@ -280,9 +275,16 @@ ns_ocs.o ns_ocs.o: ns_ocs.c ns_ocs.h ocs_ns.h \
   /usr/include/bits/select.h /usr/include/bits/sigset.h \
   /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
   /usr/include/bits/pthreadtypes.h /usr/include/bits/sched.h \
-  /usr/include/alloca.h /usr/include/libxml2/libxml/xlink.h \
-  /usr/include/libxml2/libxml/xmlmemory.h \
-  /usr/include/libxml2/libxml/threads.h \
+  /usr/include/alloca.h /usr/include/libxml2/libxml/xlink.h support.h \
+  ../config.h /usr/include/libintl.h /usr/include/locale.h \
+  /usr/include/bits/locale.h common.h \
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h \
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtmlcontext.h \
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/util/htmlatomlist.h \
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/view/htmlview.h \
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmldocument.h \
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/dom/dom-types.h \
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmlparser.h \
   /usr/include/libxml2/libxml/HTMLparser.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/css/cssparser.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/css/cssstylesheet.h \
@@ -310,15 +312,15 @@ ns_ocs.o ns_ocs.o: ns_ocs.c ns_ocs.h ocs_ns.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/html/htmlboxembedded.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/html/htmlboxform.h \
   /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmlboxblock.h \
-  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h \
-  ocs_dir.h support.h ../config.h /usr/include/libintl.h \
-  /usr/include/locale.h /usr/include/bits/locale.h common.h
+  /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h
 
 ns_ocs.h:
 
 ocs_ns.h:
 
-/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h:
+ocs_dir.h:
+
+backend.h:
 
 /usr/include/gtk-2.0/gtk/gtk.h:
 
@@ -890,21 +892,7 @@ ocs_ns.h:
 
 /usr/include/gtk-2.0/gtk/gtkvseparator.h:
 
-/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtmlcontext.h:
-
-/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/util/htmlatomlist.h:
-
-/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/view/htmlview.h:
-
-/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmldocument.h:
-
-/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/dom/dom-types.h:
-
-/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmlparser.h:
-
-/usr/include/libxml2/libxml/parser.h:
-
-/usr/include/libxml2/libxml/tree.h:
+/usr/include/libxml2/libxml/xmlmemory.h:
 
 /usr/include/stdio.h:
 
@@ -932,6 +920,14 @@ ocs_ns.h:
 
 /usr/include/libxml2/libxml/xmlversion.h:
 
+/usr/include/libxml2/libxml/threads.h:
+
+/usr/include/libxml2/libxml/globals.h:
+
+/usr/include/libxml2/libxml/parser.h:
+
+/usr/include/libxml2/libxml/tree.h:
+
 /usr/include/libxml2/libxml/xmlregexp.h:
 
 /usr/include/libxml2/libxml/valid.h:
@@ -947,8 +943,6 @@ ocs_ns.h:
 /usr/include/iconv.h:
 
 /usr/include/libxml2/libxml/xmlIO.h:
-
-/usr/include/libxml2/libxml/globals.h:
 
 /usr/include/libxml2/libxml/xmlerror.h:
 
@@ -982,9 +976,31 @@ ocs_ns.h:
 
 /usr/include/libxml2/libxml/xlink.h:
 
-/usr/include/libxml2/libxml/xmlmemory.h:
+support.h:
 
-/usr/include/libxml2/libxml/threads.h:
+../config.h:
+
+/usr/include/libintl.h:
+
+/usr/include/locale.h:
+
+/usr/include/bits/locale.h:
+
+common.h:
+
+/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtml.h:
+
+/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/gtkhtmlcontext.h:
+
+/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/util/htmlatomlist.h:
+
+/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/view/htmlview.h:
+
+/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmldocument.h:
+
+/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/dom/dom-types.h:
+
+/opt/gnome2/include/gtkhtml-2.0/libgtkhtml/document/htmlparser.h:
 
 /usr/include/libxml2/libxml/HTMLparser.h:
 
@@ -1041,17 +1057,3 @@ ocs_ns.h:
 /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmlboxblock.h:
 
 /opt/gnome2/include/gtkhtml-2.0/libgtkhtml/layout/htmllinebox.h:
-
-ocs_dir.h:
-
-support.h:
-
-../config.h:
-
-/usr/include/libintl.h:
-
-/usr/include/locale.h:
-
-/usr/include/bits/locale.h:
-
-common.h:

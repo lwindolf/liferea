@@ -50,12 +50,17 @@ static GnomeVFSURI 	*baseURI = NULL;
 /* some prototypes */
 static void url_requested(HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data);
 static void on_url (HtmlView *view, const char *url, gpointer user_data);
+static void on_submit (HtmlDocument *document, const gchar *action, const gchar *method, const gchar *encoding, gpointer data);
+static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data);
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
+static void kill_old_connections (HtmlDocument *doc);
 
 /* does all preparations before outputting HTML */
 void startHTMLOutput(void) {
 
 	g_assert(doc != NULL);
+	kill_old_connections(doc);
+	html_document_clear(doc);
 	html_document_open_stream(doc, "text/html");
 }
 
@@ -101,22 +106,28 @@ void setupHTMLView(GtkWidget *mainwindow) {
 	html_view_set_magnification(HTML_VIEW (htmlwidget), 1.0);	
 	gtk_container_add(GTK_CONTAINER(scrolledwindow), htmlwidget);
 	
-	g_signal_connect(G_OBJECT (doc), "request_url",
+	g_signal_connect (G_OBJECT (doc), "request_url",
 			 GTK_SIGNAL_FUNC (url_requested), htmlwidget);	
 			 
+	g_signal_connect (G_OBJECT (doc), "submit",
+			  GTK_SIGNAL_FUNC (on_submit), mainwindow);
+
+	g_signal_connect (G_OBJECT (doc), "link_clicked",
+			  G_CALLBACK (link_clicked), mainwindow);
+			  				  
 	g_signal_connect (G_OBJECT (htmlwidget), "on_url",
 			  G_CALLBACK (on_url), lookup_widget(mainwindow, "statusbar"));
 
-	g_signal_connect (G_OBJECT (doc), "link_clicked",
-			  G_CALLBACK (link_clicked), NULL);
+	g_signal_connect (G_OBJECT (htmlwidget), "request_object",
+			  G_CALLBACK (request_object), NULL);
 
 	gtk_widget_show_all(scrolledwindow);
 }
 
 /* ------------------------------------------------------------------------------- */
 /* GtkHTML Callbacks taken from browser-window.c of libgtkhtml-2.2.0 
-   these are needed to automatically resolve links in the HTML
-   written by showItem() */ 
+   these are needed to automatically resolve links and support formulars
+   in the displayed HTML */ 
 
 static void
 free_stream_data (StreamData *sdata, gboolean remove)
@@ -185,6 +196,53 @@ vfs_open_callback  (GnomeVFSAsyncHandle *handle, GnomeVFSResult result, gpointer
 	}
 }
 
+typedef struct {
+	gpointer window;
+	gchar *action;
+	gchar *method;
+	gchar *encoding;
+} SubmitContext;
+
+static int
+on_submit_idle (gpointer data)
+{
+	SubmitContext *ctx = (SubmitContext *)data;
+
+	g_print ("action = '%s', method = '%s', encoding = '%s'\n", 
+		 ctx->action, ctx->method, ctx->encoding);
+
+	if (ctx->method == NULL || strcasecmp (ctx->method, "get") == 0) {
+		gchar *url;
+
+		url = g_strdup_printf ("%s?%s", ctx->action, ctx->encoding);
+		link_clicked (NULL, url, ctx->window);
+		g_free (url);
+	}
+	g_free (ctx);
+	return 0;
+}
+
+static void
+on_submit (HtmlDocument *document, const gchar *action, const gchar *method, 
+	   const gchar *encoding, gpointer data)
+{
+	SubmitContext *ctx = g_new0 (SubmitContext, 1);
+
+	if (action)
+		ctx->action = g_strdup (action);
+	if (method)
+		ctx->method = g_strdup (method);
+	if (action)
+		ctx->encoding = g_strdup (encoding);
+	ctx->window = data;
+
+	/* Becase the link_clicked method will clear the document and
+	 * start loading a new one, we can't call it directly, because
+	 * gtkhtml2 will crash if the document becomes deleted before
+	 * this signal handler finish */
+	gtk_idle_add (on_submit_idle, ctx);
+}
+
 static void
 url_requested (HtmlDocument *doc, const gchar *uri, HtmlStream *stream, gpointer data)
 {
@@ -223,6 +281,37 @@ on_url (HtmlView *view, const char *url, gpointer user_data)
 
 	gtk_label_set_text (GTK_LABEL (GTK_STATUSBAR (statusbar)->label), 
 			    url);
+}
+
+static gboolean
+request_object (HtmlView *view, GtkWidget *widget, gpointer user_data)
+{
+	GtkWidget *sel;
+
+	sel = gtk_color_selection_new ();
+	gtk_widget_show (sel);
+
+	gtk_container_add (GTK_CONTAINER (widget), sel);
+
+	return TRUE;
+}
+
+static void
+kill_old_connections (HtmlDocument *doc)
+{
+	GSList *connection_list, *tmp;
+
+	tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
+	while(tmp) {
+
+		StreamData *sdata = (StreamData *)tmp->data;
+		gnome_vfs_async_cancel (sdata->handle);
+		free_stream_data (sdata, FALSE);
+
+		tmp = tmp->next;
+	}
+	g_object_set_data (G_OBJECT (doc), "connection_list", NULL);
+	g_slist_free (connection_list);
 }
 
 static void

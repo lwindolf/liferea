@@ -45,6 +45,7 @@ GdkPixbuf	*unavailableIcon = NULL;
 GdkPixbuf	*listIcon = NULL;
 /* icons for grouping */
 GdkPixbuf	*directoryIcon = NULL;
+GdkPixbuf	*helpIcon = NULL;
 
 int main (int argc, char *argv[]) {	
 	GtkTooltips	*button_bar_tips;
@@ -70,6 +71,7 @@ int main (int argc, char *argv[]) {
 	unavailableIcon = create_pixbuf("unavailable.xpm");
 	listIcon = create_pixbuf("ocs.xpm");	
 	directoryIcon = create_pixbuf("directory.xpm");
+	helpIcon = create_pixbuf("help.xpm");
 	
 	mainwindow = create_mainwindow();
 	setupHTMLView(mainwindow);
@@ -94,14 +96,6 @@ int main (int argc, char *argv[]) {
 			     lookup_widget(mainwindow, "refreshbtn"),
 			     _("refresh feeds"),
 			     _("refresh feeds"));
-	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
-			     lookup_widget(mainwindow, "helpbtn"),
-			     _("load the online help feed"),
-			     _("load the online help feed"));
-	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
-			     lookup_widget(mainwindow, "exitbtn"),
-			     _("exit"),
-			     _("exit"));
 			     			     			     	
 	setupEntryList(lookup_widget(mainwindow, "feedlist"));
 	setupItemList(lookup_widget(mainwindow, "Itemlist"));

@@ -22,6 +22,7 @@
 #ifndef _RSS_CHANNEL_H
 #define _RSS_CHANNEL_H
 
+#include <time.h>
 #include "backend.h"
 #include "rss_item.h"
 
@@ -61,11 +62,16 @@ typedef struct RSSChannel {
 					   
 	GSList		*items;		/* the item list */
 	
+	gchar		*tiTitle;	/* text input title */
+	gchar		*tiDescription;	/* text input description */
+	gchar		*tiName;	/* text input object name */
+	gchar		*tiLink;	/* text input HTTP GET destination URL */
+	
 	/* other information */
 	gchar		*usertitle;	/* feed title may be modified by user */	
 	gchar 		*source;	/* source url */
 	gboolean	available;	/* flag to signalize load/update errors */
-	gchar		*time;		/* last feed build/creation time */	
+	time_t		time;		/* last feed build/creation time */	
 	gchar 		*encoding;	/* xml encoding */
 	gint		updateInterval;	/* user defined feed refresh interval */
 	gint		defaultUpdateInterval;	/* feed defined refresh interval */

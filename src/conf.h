@@ -37,7 +37,10 @@ void	loadConfig(void);
 /* feed/directory list entry manipulation methods */
 
 void	loadEntries();
+
+/* methods to modify folder contents */
 GSList * getEntryKeyList(gchar *keyprefix);
+void 	setEntryKeyList(gchar *keyprefix, GSList *newlist);
 
 gchar *	addFolderToConfig(gchar *title);
 void	removeFolderFromConfig(gchar *keyprefix);
@@ -48,11 +51,7 @@ gchar * getFreeEntryKey(gchar *keyprefix);
 int	setEntryTitleInConfig(gchar *feedkey, gchar *feedname);
 int	setEntryURLInConfig(gchar *feedkey, gchar *feedurl);
 int	setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval);
-
-/*void	moveUpEntryPositionInConfig(gchar *keyprefix, gchar *key);
-void	moveDownEntryPositionInConfig(gchar *keyprefix, gchar *key);
-void	sortEntryKeyList(gchar *keyprefix);
-*/
+int	setFolderTitleInConfig(gchar *keyprefix, gchar *title);
 
 /* returns true if namespace is enabled in configuration */
 gboolean	getNameSpaceStatus(gchar *nsname);

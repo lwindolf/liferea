@@ -44,6 +44,13 @@
 
 #include "htmlview.h"
 
+/* HTML output strings */
+
+#define TEXT_INPUT_FORM_START	"<form method=\"GET\" ACTION=\""
+#define TEXT_INPUT_TEXT_FIELD	"\"><input type=text value=\"\" name=\""
+#define TEXT_INPUT_SUBMIT	"\"><input type=submit value=\""
+#define TEXT_INPUT_FORM_END	"\"></form>"
+
 /* structure for the hashtable callback which itself calls the 
    namespace output handler */
 #define OUTPUT_RSS_CHANNEL_NS_HEADER	0
@@ -183,6 +190,40 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 	
 }
 
+static void parseTextInput(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
+
+	if((NULL == cur) || (NULL == doc)) {
+		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
+		return;
+	}
+	
+	if(NULL == cp) {
+		g_warning(_("internal error: parseTextInput without a channel! Skipping text input!\n"));
+		return;
+	}
+	
+	cur = cur->xmlChildrenNode;
+	while (cur != NULL) {
+		if (!xmlStrcmp(cur->name, (const xmlChar *)"title"))
+			cp->tiTitle = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+		if (!xmlStrcmp(cur->name, (const xmlChar *)"description"))
+			cp->tiDescription = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+		if (!xmlStrcmp(cur->name, (const xmlChar *)"name"))
+			cp->tiName = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+		if (!xmlStrcmp(cur->name, (const xmlChar *)"link"))
+			cp->tiLink = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			
+		cur = cur->next;
+	}
+	
+	/* some postprocessing */
+	if(NULL != cp->tiTitle)
+		cp->tiTitle = unhtmlize((gchar *)doc->encoding, cp->tiTitle);
+		
+	if(NULL != cp->tiDescription)
+		cp->tiDescription = unhtmlize((gchar *)doc->encoding, cp->tiDescription);
+}
+
 static void parseImage(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
 
 	if((NULL == cur) || (NULL == doc)) {
@@ -297,23 +338,31 @@ gpointer readRSSFeed(gchar *url) {
 			cur = cur->next;
 		}
 
-		cp->time = getActualTime();
+		time(&(cp->time));
 		cp->encoding = g_strdup(doc->encoding);
 		cp->available = TRUE;
 
 		/* parse channel contents */
-		while (cur != NULL) {
+		while(cur != NULL) {
 			/* save link to channel image */
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "image"))) {
+			if((!xmlStrcmp(cur->name, (const xmlChar *) "image"))) {
 				parseImage(doc, cur, cp);
 			}
 
+			/* no matter if we parse Userland or Netscape, there should be
+			   only one text[iI]nput per channel and parsing the rdf:ressource
+			   one should not harm */
+			if((!xmlStrcmp(cur->name, (const xmlChar *) "textinput")) ||
+			   (!xmlStrcmp(cur->name, (const xmlChar *) "textInput"))) {
+				parseTextInput(doc, cur, cp);
+			}
+			
 			/* collect channel items */
-			if ((!xmlStrcmp(cur->name, (const xmlChar *) "item"))) {
+			if((!xmlStrcmp(cur->name, (const xmlChar *) "item"))) {
 				if(NULL != (ip = (RSSItemPtr)parseItem(doc, cur))) {
 					cp->unreadCounter++;
 					ip->cp = cp;
-					if(NULL == ip->time)
+					if(0 == ip->time)
 						ip->time = cp->time;
 					ip->next = NULL;
 					cp->items = g_slist_append(cp->items, ip);
@@ -444,6 +493,21 @@ void showRSSFeedInfo(gpointer fp) {
 
 	if(NULL != (feeddescription = cp->tags[RSS_CHANNEL_DESCRIPTION]))
 		writeHTML(feeddescription);
+
+	/* if available output text[iI]nput formular */
+	if((NULL != cp->tiLink) && (NULL != cp->tiName) && 
+	   (NULL != cp->tiDescription) && (NULL != cp->tiTitle)) {
+	   
+		writeHTML("<br><br>");
+		writeHTML(cp->tiDescription);
+		writeHTML(TEXT_INPUT_FORM_START);
+		writeHTML(cp->tiLink);
+		writeHTML(TEXT_INPUT_TEXT_FIELD);
+		writeHTML(cp->tiName);
+		writeHTML(TEXT_INPUT_SUBMIT);
+		writeHTML(cp->tiTitle);
+		writeHTML(TEXT_INPUT_FORM_END);
+	}
 
 	writeHTML(FEED_FOOT_TABLE_START);
 	FEED_FOOT_WRITE(doc, "language",		cp->tags[RSS_CHANNEL_LANGUAGE]);

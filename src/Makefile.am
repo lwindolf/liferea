@@ -19,6 +19,9 @@ liferea_SOURCES = \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h \
 	rss_ns.h \
+	pie_feed.c pie_feed.h \
+	pie_entry.c pie_entry.h \
+	pie_ns.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
 	ocs_dir.c ocs_dir.h \
@@ -28,6 +31,8 @@ liferea_SOURCES = \
 	ns_fm.c ns_fm.h \
 	ns_slash.c ns_slash.h \
 	ns_content.c ns_content.h \
+	ns_syn.c ns_syn.h \
+	ns_admin.c ns_admin.h \
 	conf.c conf.h
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)

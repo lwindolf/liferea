@@ -210,7 +210,7 @@ gpointer readPIEFeed(gchar *url) {
 			break;			
 		}
 
-		cp->time = getActualTime();
+		time(&(cp->time));
 		cp->encoding = g_strdup(doc->encoding);
 		cp->available = TRUE;
 
@@ -274,7 +274,7 @@ gpointer readPIEFeed(gchar *url) {
 				if(NULL != (ip = (PIEEntryPtr)parseEntry(doc, cur))) {
 					cp->unreadCounter++;
 					ip->cp = cp;
-					if(NULL == ip->time)
+					if(0 == ip->time)
 						ip->time = cp->time;
 					ip->next = NULL;
 					cp->items = g_slist_append(cp->items, ip);
