@@ -9,6 +9,26 @@
       <outline text="Liferea SF News" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental=""/>
     </outline>
     <outline text="Example Feeds">
+      <outline text="OSS">
+        <outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+        <outline text="Debian Planet" htmlUrl="http://www.debianplanet.net/" xmlUrl="http://www.debianplanet.net/module.php?mod=node&amp;op=feed" />
+        <outline text="Debian Package a Day" htmlUrl="http://www.livejournal.com/users/debaday/" xmlUrl="http://www.livejournal.com/users/debaday/data/atom" />
+        <outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+        <outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+        <outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+        <outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+        <outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+        <outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+        <outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+        <outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+        <outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+      </outline>	
+    </outline>
+    <outline text="Unread" title="Unread" description="Unread" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
+    </outline>
+    <outline text="Important" title="Important" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
     </outline>
   </body>
 </opml>
