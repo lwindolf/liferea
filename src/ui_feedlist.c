@@ -674,9 +674,9 @@ on_feedlist_drag_data_received         (GtkWidget       *widget,
 
 /* recursivly calls func for every feed in the feed list */
 void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint params, gpointer user_data) {
-	GtkTreeIter childiter;
-	gboolean valid, apply, descend;
-	nodePtr child;
+	GtkTreeIter	childiter;
+	gboolean	valid, apply, descend;
+	nodePtr		child;
 	
 	if(NULL == ptr)
 		valid = gtk_tree_model_get_iter_root(GTK_TREE_MODEL(feedstore), &childiter);
@@ -692,26 +692,12 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 					    FS_PTR, &child, -1);
 		/* If child == NULL, this is an empty node. */
 		if (child != NULL) {
-			apply = FALSE;
-			descend = TRUE;
-			switch(filter) {
-			case ACTION_FILTER_FEED:
-				apply = !IS_FOLDER(child->type);
-				break;
-			case ACTION_FILTER_FOLDER:
-				apply = IS_FOLDER(child->type);
-				break;
-			case ACTION_FILTER_ANY:
-				apply = TRUE;
-				break;
-			case ACTION_FILTER_CHILDREN:
-				apply = TRUE;
-				descend = FALSE;
-				break;
-			default:
-				g_error("internal error! wrong action type for feedlist processing\n");
-				break;
-			}
+			apply = (filter & ACTION_FILTER_ANY) ||
+				(filter & ACTION_FILTER_CHILDREN) ||
+				((filter & ACTION_FILTER_FEED) && IS_FEED(child->type)) ||
+				((filter & ACTION_FILTER_DIRECTORY) && IS_DIRECTORY(child->type)) ||
+				((filter & ACTION_FILTER_FOLDER) && IS_FOLDER(child->type));
+			descend = !(filter & ACTION_FILTER_CHILDREN);
 			
 			if(TRUE == apply) {
 				if (params==0)

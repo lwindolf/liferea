@@ -360,7 +360,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	conf_feedlist_save();
 	g_free(filename);
 	
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_save);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_save);
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, (gpointer)folder_state_save);
 	
 	/* save pane proportions */

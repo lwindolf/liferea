@@ -88,13 +88,12 @@ void ui_feedlist_load_subscription(feedPtr fp, gboolean startup);
  */
 void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr folder, gboolean showPropDialog);
 
-enum {
-	ACTION_FILTER_FEED,		/** Only matches nodes where !IS_FOLDER(node->type) */
-						/* FIXME: Should this be changed to IS_FEED(type)? */	
-	ACTION_FILTER_FOLDER,	/** Only matches nodes where IS_FOLDER(node->type) */
-	ACTION_FILTER_ANY,		/** Matches any node */
-	ACTION_FILTER_CHILDREN	/** Matches immediate children of the given node */
-};
+
+#define	ACTION_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	
+#define	ACTION_FILTER_DIRECTORY	2	/** Only matches nodes where IS_DIRECTORY(node->type) */	
+#define	ACTION_FILTER_FOLDER	4	/** Only matches nodes where IS_FOLDER(node->type) */
+#define	ACTION_FILTER_CHILDREN	8	/** Matches immediate children of the given node */
+#define	ACTION_FILTER_ANY	15	/** Matches any node */
 
 /**
  * Helper function to recursivly call feed_save() for all
