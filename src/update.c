@@ -101,11 +101,11 @@ void download_process(struct request *request) {
 	int status;
 
 	request->data = NULL;
-
-	if(request->source[0] == '|') {
+	if(*(request->source) == '|') {
 		/* if the first char is a | we have a pipe else a file */
 		request->size = 0;
-		f = popen(&request->source[1], "r");
+		debug1(DEBUG_UPDATE, "executing command \"%s\"...\n", (request->source) + 1);
+		f = popen((request->source) + 1, "r");
 		if(NULL != f) {
 			while(!feof(f)) {
 				size_t len;
