@@ -221,7 +221,7 @@ gchar *item_render(itemPtr ip) {
 			g_free(tmp2);
 		} else {
 			tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
-			tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"%s\"></a>", feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed), tmp2);
+			tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed), tmp2);
 			g_free(tmp2);
 		}
 		
