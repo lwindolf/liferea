@@ -10,7 +10,9 @@
 	  you have problems! This may also help other encodings that
 	  contain NULL bytes in their datastreams.
 	* More favicons are now detected (HTML pages are now searched for
-	links to the favicons). (Nathan Conrad)
+	  links to the favicons). (Nathan Conrad)
+	* Authenticated proxies are now supported via the GNOME proxy
+	  settings and http_proxy environment variable. (Nathan Conrad)
 	  
 	Bugfixes:
 	
