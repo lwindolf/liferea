@@ -522,7 +522,7 @@ gboolean ocs_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 			while (child != NULL) {
 				if (child->type == XML_ELEMENT_NODE &&
 				    child->name != NULL &&
-				    !xmlStrCmp(child->name, "directory"))
+				    !xmlStrcmp(child->name, "directory"))
 					ocs = TRUE;
 				child = child->next;
 			}
