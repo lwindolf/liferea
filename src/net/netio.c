@@ -890,7 +890,7 @@ void downloadlib_process_url(struct request *request) {
 	cur_ptr.cookies = NULL;
 	cur_ptr.authinfo = NULL;
 	cur_ptr.servauth = NULL;
-	cur_ptr.lasthttpstatus = 450; /* made up code */
+	cur_ptr.lasthttpstatus = 0; /* This might, or might not mean something to someone */
 	
 	/* Fixme: assert that it is a http:// URL */
 
@@ -901,6 +901,7 @@ void downloadlib_process_url(struct request *request) {
 		cur_ptr.problem = 1;
 	request->size = cur_ptr.contentlength;
 	request->httpstatus = cur_ptr.lasthttpstatus == 0 ? 404 : cur_ptr.lasthttpstatus;
+	request->returncode = cur_ptr.netio_error;
 	request->source = cur_ptr.feedurl;
 	if (cur_ptr.lastmodified != NULL)
 		request->lastmodified.tv_sec = parseRFC822Date(cur_ptr.lastmodified);

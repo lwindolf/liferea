@@ -232,18 +232,6 @@ void feed_set_available(feedPtr fp, gboolean available);
  */
 gchar * feed_get_error_description(feedPtr fp);
 
-/**
- * Creates a new error description according to the passed
- * HTTP status and the feeds parser errors. If the HTTP
- * status is a success status and no parser errors occured
- * no error messages is created. The created error message 
- * can be queried with feed_get_error_description().
- *
- * @param fp		feed
- * @param httpstatus	HTTP status
- */
-void feed_set_error_description(feedPtr fp, gint httpstatus);
-
 const gchar *feed_get_id(feedPtr fp);
 void feed_set_id(feedPtr fp, const gchar *id);
 

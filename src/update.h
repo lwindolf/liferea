@@ -26,7 +26,7 @@
 #include <glib.h>
 
 typedef enum {
-	NET_ERR_OK,
+	NET_ERR_OK = 0,
 	/* Init errors */
 	NET_ERR_URL_INVALID,
 	/* Connect errors */

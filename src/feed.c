@@ -65,7 +65,7 @@ feedPtr		allItems = NULL;
 
 /* prototypes */
 static gboolean feed_save_timeout(gpointer user_data);
-
+static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode);
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
 /* ------------------------------------------------------------ */
@@ -663,7 +663,7 @@ void feed_process_update_result(struct request *request) {
 	g_assert(NULL != request);
 
 	feed_set_available(old_fp, TRUE);
-	feed_set_error_description(old_fp, request->httpstatus);
+	feed_set_error_description(old_fp, request->httpstatus, request->returncode);
 
 	if(401 /* unauthorized */ == request->httpstatus) {
 		feed_set_available(old_fp, FALSE);
@@ -803,7 +803,18 @@ gboolean feed_get_available(feedPtr fp) { return fp->available; }
    returns FALSE. Caller must free returned string! */
 gchar * feed_get_error_description(feedPtr fp) { return fp->errorDescription; }
 
-void feed_set_error_description(feedPtr fp, gint httpstatus) {
+/**
+ * Creates a new error description according to the passed
+ * HTTP status and the feeds parser errors. If the HTTP
+ * status is a success status and no parser errors occured
+ * no error messages is created. The created error message 
+ * can be queried with feed_get_error_description().
+ *
+ * @param fp		feed
+ * @param httpstatus	HTTP status
+ * @param resultcode the update code's return code (see update.h)
+ */
+static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode) {
 	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
 	gboolean	errorFound = FALSE;
 
@@ -817,8 +828,7 @@ void feed_set_error_description(feedPtr fp, gint httpstatus) {
 
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
 	
-	/* httpstatus is always zero for file subscriptions... */
-	if((200 != httpstatus) && (0 != httpstatus)) {
+	if((200 != httpstatus) || (fp->request->returncode != NET_ERR_OK)) {
 		/* first specific codes */
 		switch(httpstatus) {
 			case 401:tmp2 = g_strdup(_("The feed no longer exists. Please unsubscribe."));break;
@@ -831,14 +841,39 @@ void feed_set_error_description(feedPtr fp, gint httpstatus) {
 			case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
 			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe."));break;
 		}
-
-		/* next classes */
+		/* Then, netio errors */
+		if (tmp2 == NULL) {
+			switch(fp->request->returncode) {
+			case NET_ERR_URL_INVALID: tmp2 = g_strdup(_("URL is invalid")); break;
+			case NET_ERR_UNKNOWN:
+			case NET_ERR_CONN_FAILED:
+			case NET_ERR_SOCK_ERR:    tmp2 = g_strdup(_("Error connecting to remote host")); break;
+			case NET_ERR_HOST_NOT_FOUND: tmp2 = g_strdup(_("Hostname could not be found")); break;
+			case NET_ERR_CONN_REFUSED:   tmp2 = g_strdup(_("Network connection was refused by the remote host")); break;
+			case NET_ERR_TIMEOUT:        tmp2 = g_strdup(_("Remote host did not finish sending data")); break;
+				/* Transfer errors */
+			case NET_ERR_REDIRECT_COUNT_ERR: tmp2 = g_strdup(_("Too many HTTP redirects were encountered")); break;
+			case NET_ERR_REDIRECT_ERR:
+			case NET_ERR_HTTP_PROTO_ERR: 
+			case NET_ERR_GZIP_ERR:           tmp2 = g_strdup(_("Remote host sent an invalid response")); break;
+				/* These are handled above	
+				   case NET_ERR_HTTP_410:
+				   case NET_ERR_HTTP_404:
+				   case NET_ERR_HTTP_NON_200:
+				*/
+			case NET_ERR_AUTH_FAILED:
+			case NET_ERR_AUTH_NO_AUTHINFO: tmp2 = g_strdup(_("Authentication failed")); break;
+			case NET_ERR_AUTH_GEN_AUTH_ERR:
+			case NET_ERR_AUTH_UNSUPPORTED: tmp2 = g_strdup(_("Webserver's authentication method incompatible with Liferea")); break;
+			}
+		}
+		/* And generic messages in the unlikely event that the above didn't work */
 		if(NULL == tmp2) {
 			switch(httpstatus / 100) {
-				case 3:tmp2 = g_strdup(_("Feed not available: Server requested unsupported redirection!"));break;
-				case 4:tmp2 = g_strdup(_("Client Error"));break;
-				case 5:tmp2 = g_strdup(_("Server Error"));break;
-				default:tmp2 = g_strdup(_("(unknown error class)"));break;
+			case 3:tmp2 = g_strdup(_("Feed not available: Server requested unsupported redirection!"));break;
+			case 4:tmp2 = g_strdup(_("Client Error"));break;
+			case 5:tmp2 = g_strdup(_("Server Error"));break;
+			default:tmp2 = g_strdup(_("(unknown networking error happened)"));break;
 			}
 		}
 		errorFound = TRUE;
