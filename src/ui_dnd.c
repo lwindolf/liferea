@@ -31,6 +31,17 @@
 extern GtkTreeStore *feedstore;
 
 /* ---------------------------------------------------------------------------- */
+/* DnD callbacks								*/
+/* ---------------------------------------------------------------------------- */
+
+void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
+
+	// FIXME: checkForEmptyFolders()
+	conf_feedlist_save();
+	ui_itemlist_prefocus();
+}
+
+/* ---------------------------------------------------------------------------- */
 /* GtkTreeDragSource/GtkTreeDragDest implementation				*/
 /* ---------------------------------------------------------------------------- */
 

@@ -340,9 +340,9 @@ feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, 
 	g_assert(url != NULL);
 
 	if (id != NULL && type != FST_HELPFEED)
-		fp = loadFeed(type, id);
+	;
 	
-	if (fp == NULL) {
+	if (fp = loadFeed(type, id)) {
 		fp = feed_new();
 		if (id == NULL) {
 			fp->id = conf_new_id();

@@ -28,4 +28,7 @@ void ui_dnd_init(void);
 /** sets up URL DnD support */
 void ui_dnd_setup_URL_receiver(GtkWidget *mainwindow);
 
+/** to catch drag end events and to do some postprocessing in the feedlist */
+void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data);
+
 #endif
