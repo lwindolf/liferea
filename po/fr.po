@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-09 15:11+0200\n"
+"POT-Creation-Date: 2004-10-23 22:02+0200\n"
 "PO-Revision-Date: 2004-09-05 18:25+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -139,26 +139,26 @@ msgstr "Exporter la liste des flux"
 msgid "Export"
 msgstr "Exporter"
 
-#: src/feed.c:143
+#: src/feed.c:145
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>Erreur XML lors de la lecture des flux ! Le flux \"%s\" ne peut être "
 "chargé !</p>"
 
-#: src/feed.c:149 src/feed.c:380
+#: src/feed.c:151 src/feed.c:382
 msgid "<p>Empty document!</p>"
 msgstr "<p>Document vide !</p>"
 
-#: src/feed.c:156
+#: src/feed.c:158
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML non valide !</p>"
 
-#: src/feed.c:223
+#: src/feed.c:225
 msgid "There were errors while parsing a feed"
 msgstr "Il y a eu des erreurs pendant l'analyse d'un flux"
 
-#: src/feed.c:224
+#: src/feed.c:226
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -169,14 +169,14 @@ msgstr ""
 "liferea.sourceforge.net/index.php#supported_formats\">format supporté</a>.</"
 "p>"
 
-#: src/feed.c:359 src/feed.c:360
+#: src/feed.c:361 src/feed.c:362
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Erreur lors de la lecture du fichier cache \"%s\" ! Le fichier cache n'a pas "
 "pu être chargé !"
 
-#: src/feed.c:372
+#: src/feed.c:374
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -185,44 +185,49 @@ msgstr ""
 "<p>Erreur XML pendant l'analyse du fichier cache ! Le fichier cache du flux "
 "\"%s\" n'a pas pu être chargé !</p>"
 
-#: src/feed.c:391
+#: src/feed.c:393
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" n'est pas un fichier cache valide ! Impossible de lire le fichier "
 "cache !</p>"
 
-#: src/feed.c:441
+#: src/feed.c:446
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
 "Des erreurs se sont produites pendant l'analyse du fichier cache \"%s\""
 
-#: src/feed.c:509
+#: src/feed.c:514
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Une mise à jour de ce flux \"%s\" est déjà en cours !"
 
-#: src/feed.c:514
+#: src/feed.c:519
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "Le flux avait cessé d'exister. Liferea ne le mettra plus à jour !"
 
-#: src/feed.c:518
+#: src/feed.c:523
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Mise à jour de \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:986 src/item.c:203 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:991 src/item.c:205 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "Flux :"
 
-#: src/feed.c:986 src/interface.c:519
+#: src/feed.c:991 src/interface.c:525
 msgid "VFolder"
 msgstr "VFolder"
 
-#: src/feed.c:997 src/interface.c:1071 src/interface.c:1473 src/item.c:252
+#: src/feed.c:1003
+#, fuzzy
+msgid "user defined command"
+msgstr "Format défini par l'utilisateur :"
+
+#: src/feed.c:1006 src/interface.c:1097 src/interface.c:1501 src/item.c:254
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "Source :"
@@ -233,47 +238,47 @@ msgstr ""
 "La découverte automatique de lien de flux a échoué ! Aucun lien de flux n'a "
 "été trouvé !"
 
-#: src/interface.c:137 src/interface.c:2800
+#: src/interface.c:138 src/interface.c:2901
 #, fuzzy
 msgid "Liferea 0.6.1"
 msgstr "Liferea 0.6.0"
 
-#: src/interface.c:154
+#: src/interface.c:155
 msgid "_Program"
 msgstr "_Programme"
 
-#: src/interface.c:170
+#: src/interface.c:171
 msgid "Work Offline"
 msgstr "Travailler déconnecté"
 
-#: src/interface.c:183
+#: src/interface.c:184
 msgid "_Feeds"
 msgstr "_Flux"
 
-#: src/interface.c:190
+#: src/interface.c:191
 #, fuzzy
 msgid "_New Subscription..."
 msgstr "_Nouvel abonnement"
 
-#: src/interface.c:198
+#: src/interface.c:199
 #, fuzzy
 msgid "New _Folder..."
 msgstr "Nouveau _Dossier"
 
-#: src/interface.c:211
+#: src/interface.c:212
 #, fuzzy
 msgid "_Properties..."
 msgstr "_Propriétés"
 
-#: src/interface.c:214
+#: src/interface.c:215
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Ouvre la fenêtre des propriétés pour l'abonnement sélectionné."
 
-#: src/interface.c:225
+#: src/interface.c:226
 msgid "Update _Selected"
 msgstr "Mettre à _jour la sélection"
 
-#: src/interface.c:228
+#: src/interface.c:229
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -281,36 +286,36 @@ msgstr ""
 "Met à jour l'abonnement sélectionné ou tous les abonnements du dossier "
 "sélectionné."
 
-#: src/interface.c:234
+#: src/interface.c:235
 msgid "Update _All"
 msgstr "Mettre à jour le _tout"
 
-#: src/interface.c:237 src/ui_mainwindow.c:164
+#: src/interface.c:238 src/ui_mainwindow.c:164
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 "Met à jour tous les abonnements. Ceci ne met pas à jour les répertoires OCS."
 
-#: src/interface.c:251
+#: src/interface.c:252
 msgid "_Delete Selected"
 msgstr "_Supprimer la sélection"
 
-#: src/interface.c:254
+#: src/interface.c:255
 msgid "Removes the selected subscription."
 msgstr "Supprime l'abonnement sélectionné."
 
-#: src/interface.c:265
+#: src/interface.c:266
 msgid "Filter Feeds Without Unread Headlines"
 msgstr "Filtrer les flux sans titres non lus"
 
-#: src/interface.c:268
+#: src/interface.c:269
 msgid "If active all feeds without unread items are hidden."
 msgstr "Si actif, tous les flux sans éléments non lus seront cachés."
 
-#: src/interface.c:270
+#: src/interface.c:271
 msgid "_Mark As Read"
 msgstr "_Marquer comme lu"
 
-#: src/interface.c:273
+#: src/interface.c:274
 msgid ""
 "Marks all items of the current selected subscription or all of subscriptions "
 "of the selected folder as read."
@@ -318,33 +323,33 @@ msgstr ""
 "Marque tous les éléments de l'abonnement sélectionné ou tous les abonnements "
 "du dossier sélectionné comme lus."
 
-#: src/interface.c:287
+#: src/interface.c:288
 #, fuzzy
 msgid "_Import Feed List..."
 msgstr "_Importer une liste de flux"
 
-#: src/interface.c:290
+#: src/interface.c:291
 msgid "Imports an OPML feed list."
 msgstr "Importe une liste de flux OPML."
 
-#: src/interface.c:296
+#: src/interface.c:297
 #, fuzzy
 msgid "_Export Feed List..."
 msgstr "_Exporter la liste des flux"
 
-#: src/interface.c:299
+#: src/interface.c:300
 msgid "Exports the feed list as OPML."
 msgstr "Exporte la liste des flux en OPML."
 
-#: src/interface.c:305
+#: src/interface.c:306
 msgid "_Items"
 msgstr "_Éléments"
 
-#: src/interface.c:312
+#: src/interface.c:313
 msgid "_Next Unread Item"
 msgstr "Élément _non lu suivant"
 
-#: src/interface.c:315 src/ui_mainwindow.c:162
+#: src/interface.c:316 src/ui_mainwindow.c:162
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -352,213 +357,224 @@ msgstr ""
 "Va au prochain élément non lu. Si nécessaire, sélectionne le prochain flux "
 "ayant des éléments non lus."
 
-#: src/interface.c:329
+#: src/interface.c:330
 msgid "Toggle _Read Status"
 msgstr "Change le statut _lu"
 
-#: src/interface.c:332
+#: src/interface.c:333
 msgid "Toggles the read status of the selected item."
 msgstr "Change le statut lu de l'élément sélectionné."
 
-#: src/interface.c:337
+#: src/interface.c:342
 msgid "Toggle Item _Flag"
 msgstr "Changer le _marqueur de l'élément"
 
-#: src/interface.c:340
+#: src/interface.c:345
 msgid "Toggles the item flag."
 msgstr "Change le marqueur de l'élément."
 
-#: src/interface.c:345
+#: src/interface.c:350
 msgid "Remove Selected"
 msgstr "Supprimer la sélection"
 
-#: src/interface.c:348
+#: src/interface.c:353
 msgid "Removes the selected item."
 msgstr "Supprime l'élément sélectionné."
 
-#: src/interface.c:354
+#: src/interface.c:359
 msgid "Remove All"
 msgstr "Supprimer tous les éléments"
 
-#: src/interface.c:357
+#: src/interface.c:362
 msgid "Removes all items of the currently selected feed."
 msgstr "Supprime tous les éléments du flux sélectionné."
 
-#: src/interface.c:368
+#: src/interface.c:373
 msgid "_Launch In Browser"
 msgstr "_Ouvrir dans le navigateur"
 
-#: src/interface.c:371
+#: src/interface.c:376
 msgid "Launches the item's link in the configured browser."
 msgstr "Ouvre le lien de l'élément dans le navigateur configuré."
 
-#: src/interface.c:376
+#: src/interface.c:381
 msgid "_View"
 msgstr "_Vue"
 
-#: src/interface.c:383
+#: src/interface.c:388
 msgid "_Increase Text Size"
 msgstr "_Augmenter la taille du texte"
 
-#: src/interface.c:386
+#: src/interface.c:391
 msgid "Increases the text size of the item view."
 msgstr "Augmente la taille du texte dans la vue de l'élément."
 
-#: src/interface.c:395
+#: src/interface.c:400
 msgid "_Decrease Text Size"
 msgstr "_Réduire la taille du texte"
 
-#: src/interface.c:398
+#: src/interface.c:403
 msgid "Decreases the text size of the item view."
 msgstr "Réduit la taille du texte dans la vue de l'élément."
 
-#: src/interface.c:412
+#: src/interface.c:417
 msgid "Toggle _Condensed View"
 msgstr "Changer la vue _condensée"
 
-#: src/interface.c:415
+#: src/interface.c:420
 msgid "Toggles the item list mode between condensed and normal mode."
 msgstr ""
 "Change le mode de la liste d'éléments entre mode consensé et mode normal."
 
-#: src/interface.c:417
+#: src/interface.c:422
 msgid "_Search"
 msgstr "_Recherche"
 
-#: src/interface.c:424
+#: src/interface.c:429
 msgid "Toggle Search Box"
 msgstr "Changer la boîte de recherche"
 
-#: src/interface.c:427
+#: src/interface.c:432
 msgid "Shows or hides the search box."
 msgstr "Affiche ou masque la boîte de recherche."
 
-#: src/interface.c:433
+#: src/interface.c:438
 #, fuzzy
 msgid "Search with Feedster..."
 msgstr "Chercher avec Feedster"
 
-#: src/interface.c:436
+#: src/interface.c:441
 msgid "Creates a Feedster search feed."
 msgstr "Crée un flux de recherche Feedster."
 
-#: src/interface.c:442
+#: src/interface.c:447
 msgid "_Help"
 msgstr "_Aide"
 
-#: src/interface.c:449 src/interface.c:2784 src/interface.c:2816
+#: src/interface.c:454 src/interface.c:2885 src/interface.c:2917
 msgid "About"
 msgstr "À propos"
 
-#: src/interface.c:452
+#: src/interface.c:457
 msgid "Shows an about dialog."
 msgstr "Affiche une fenêtre \"À propos\"."
 
-#: src/interface.c:485
+#: src/interface.c:490
 msgid "Search for"
 msgstr "Chercher"
 
-#: src/interface.c:505
+#: src/interface.c:501
+msgid ""
+"Starts a search for all items that do match the given search string either "
+"in title or content."
+msgstr ""
+
+#: src/interface.c:511
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr ""
 "sauve cette recherche comme un VFolder, qui apparaîtra dans la liste des flux"
 
-#: src/interface.c:526
+#: src/interface.c:532
 msgid "Close search"
 msgstr "Fermer la recherche"
 
-#: src/interface.c:560
+#: src/interface.c:566
 msgid "single item view"
 msgstr "vue à un seul élément"
 
-#: src/interface.c:568
+#: src/interface.c:574
 msgid "label133"
 msgstr "label133"
 
-#: src/interface.c:885
+#: src/interface.c:896
 msgid "Subscription Properties"
 msgstr "Propriétés des abonnements"
 
-#: src/interface.c:906
+#: src/interface.c:917
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">Nom du flux</span>"
 
-#: src/interface.c:916 src/interface.c:948 src/interface.c:1007
-#: src/interface.c:1088 src/interface.c:1114 src/interface.c:1202
-#: src/interface.c:1410 src/interface.c:1490 src/interface.c:1516
-#: src/interface.c:1751 src/interface.c:1802 src/interface.c:1849
-#: src/interface.c:1926 src/interface.c:1986 src/interface.c:2067
-#: src/interface.c:2084 src/interface.c:2111 src/interface.c:2165
-#: src/interface.c:2192 src/interface.c:2242
+#: src/interface.c:927 src/interface.c:959 src/interface.c:1033
+#: src/interface.c:1114 src/interface.c:1140 src/interface.c:1228
+#: src/interface.c:1438 src/interface.c:1518 src/interface.c:1544
+#: src/interface.c:1790 src/interface.c:1829 src/interface.c:1889
+#: src/interface.c:1936 src/interface.c:2013 src/interface.c:2073
+#: src/interface.c:2154 src/interface.c:2171 src/interface.c:2198
+#: src/interface.c:2252 src/interface.c:2279 src/interface.c:2329
 msgid "    "
 msgstr "    "
 
-#: src/interface.c:925
+#: src/interface.c:936
 msgid "Feed _Name:"
 msgstr "Nom du _flux :"
 
-#: src/interface.c:938
-msgid "<span weight=\"bold\">Refresh Interval</span>"
+#: src/interface.c:949
+#, fuzzy
+msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">Intervalle de rafraîchissement</span>"
 
-#: src/interface.c:957
-#, c-format
-msgid "This feed's refresh interval defaults to %d seconds."
-msgstr ""
-"L'intervalle de rafraîchissement de ce flux est de %d secondes par défaut."
-
 #: src/interface.c:968
-msgid "Feed Refresh _Interval:"
-msgstr "_Intervalle de rafraîchissement du flux :"
+#, fuzzy
+msgid "_Use global default update interval."
+msgstr "Ce flux ne spécifie aucun intervalle de rafraîchissement."
 
-#: src/interface.c:977
+#: src/interface.c:978
+#, fuzzy
+msgid "_Feed specific update interval of"
+msgstr "Ce flux ne spécifie aucun intervalle de rafraîchissement."
+
+#: src/interface.c:993 src/interface.c:1852
 msgid "minutes."
 msgstr "minutes."
 
-#: src/interface.c:981
-msgid ""
-"Note: <i>Please remember to set a reasonable refresh time. It is not desired "
-"to poll daily updated feeds every 15 minutes. To disable auto-updating the "
-"feed set the interval to 0 minutes.</i>"
+#: src/interface.c:997
+msgid "_Don't update this feed automatically."
 msgstr ""
-"Note : <i>Veuillez vous souvenir de régler la vitesse de rafraîchissement "
-"raisonnablement. Il est inutile de rafraîchir tous les quarts d'heure un "
-"flux mis à jour quotidiennement. Pour désactiver la mise à jour automatique, "
-"réglez l'intervalle à 0 minute.</i>"
 
-#: src/interface.c:988
+#: src/interface.c:1003
+msgid " "
+msgstr ""
+
+#: src/interface.c:1007
+#, fuzzy, c-format
+msgid "This feed provider suggests an update interval of %d seconds."
+msgstr ""
+"Le fournisseur de ce flux suggère un intervalle de rafraîchissement de %d "
+"minutes."
+
+#: src/interface.c:1014
 msgid "General"
 msgstr "Général"
 
-#: src/interface.c:997 src/interface.c:1400
+#: src/interface.c:1023 src/interface.c:1428
 msgid "<b>Feed Source</b>"
 msgstr "<b>Source du flux</b>"
 
-#: src/interface.c:1023 src/interface.c:1426
+#: src/interface.c:1049 src/interface.c:1454
 msgid "_Select File..."
 msgstr "_Sélectionner un fichier..."
 
-#: src/interface.c:1041 src/interface.c:1443
+#: src/interface.c:1067 src/interface.c:1471
 msgid "_URL"
 msgstr "_URL"
 
-#: src/interface.c:1047 src/interface.c:1449
+#: src/interface.c:1073 src/interface.c:1477
 msgid "_File"
 msgstr "_Fichier"
 
-#: src/interface.c:1053 src/interface.c:1455
+#: src/interface.c:1079 src/interface.c:1483
 msgid "_Command"
 msgstr "_Commande"
 
-#: src/interface.c:1065 src/interface.c:1467
+#: src/interface.c:1091 src/interface.c:1495
 msgid "Source Type:"
 msgstr "Type de source :"
 
-#: src/interface.c:1078 src/interface.c:1480
+#: src/interface.c:1104 src/interface.c:1508
 msgid "<b>Conversion Filter</b>"
 msgstr "<b>Filtre de conversion</b>"
 
-#: src/interface.c:1096 src/interface.c:1498
+#: src/interface.c:1122 src/interface.c:1526
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -568,23 +584,23 @@ msgstr ""
 "plugins pour accéder aux flux et aux répertoires qui sont dans des formats "
 "non supportés. Lisez la documentation pour de plus amples informations."
 
-#: src/interface.c:1106 src/interface.c:1508
+#: src/interface.c:1132 src/interface.c:1536
 msgid "Use conversion filter"
 msgstr "Utiliser un filtre de conversion"
 
-#: src/interface.c:1118 src/interface.c:1520
+#: src/interface.c:1144 src/interface.c:1548
 msgid "Convert using:"
 msgstr "Convertir en utilisant :"
 
-#: src/interface.c:1126 src/interface.c:1528
+#: src/interface.c:1152 src/interface.c:1556
 msgid "Select File..."
 msgstr "Sélectionner un fichier..."
 
-#: src/interface.c:1130
+#: src/interface.c:1156
 msgid "Feed Source"
 msgstr "Source du flux"
 
-#: src/interface.c:1139
+#: src/interface.c:1165
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -593,73 +609,97 @@ msgstr ""
 "sauvegardé à la fermeture de Liferea. Les éléments marqués sont toujours "
 "sauvegardés dans le cache."
 
-#: src/interface.c:1146
+#: src/interface.c:1172
 msgid "_Default cache settings"
 msgstr "Réglage du cache par _défaut"
 
-#: src/interface.c:1152
+#: src/interface.c:1178
 msgid "Di_sable cache"
 msgstr "Dé_sactiver le cache"
 
-#: src/interface.c:1158
+#: src/interface.c:1184
 msgid "_Umlimited cache"
 msgstr "Cache _illimité"
 
-#: src/interface.c:1168
+#: src/interface.c:1194
 msgid "_Limit cache to"
 msgstr "Cache _limité à"
 
-#: src/interface.c:1181
+#: src/interface.c:1207
 msgid "items."
 msgstr "éléments."
 
-#: src/interface.c:1185
+#: src/interface.c:1211
 msgid "Feed Cache"
 msgstr "Cache du flux"
 
-#: src/interface.c:1194
+#: src/interface.c:1220
 msgid "Use HTTP _authentication"
 msgstr "Utiliser l'_authentification HTTP"
 
-#: src/interface.c:1212 src/interface.c:2938
+#: src/interface.c:1238 src/interface.c:3039
 msgid "User_name:"
 msgstr "Nom d'_utilisateur :"
 
-#: src/interface.c:1219 src/interface.c:2945
+#: src/interface.c:1245 src/interface.c:3046
 msgid "_Password:"
 msgstr "_Mot de passe :"
 
-#: src/interface.c:1239 src/interface.c:2915
+#: src/interface.c:1265 src/interface.c:3016
 msgid "Authentication"
 msgstr "Authentification"
 
-#: src/interface.c:1382
+#: src/interface.c:1410
 msgid "New Subscription"
 msgstr "Nouvel abonnement"
 
-#: src/interface.c:1717
+#: src/interface.c:1756
 msgid "Lifeera Preferences"
 msgstr "Préférences de Liferea"
 
-#: src/interface.c:1741
-msgid "<span weight=\"bold\">Feed Handling Settings</span>"
+#: src/interface.c:1780
+#, fuzzy
+msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Réglages de la gestion des flux</span>"
 
-#: src/interface.c:1764
-msgid "Default number of items per feed to save when Liferea exits:"
+#: src/interface.c:1803
+#, fuzzy
+msgid "Default number of items per feed to save:"
 msgstr ""
 "Nombre d'éléments par flux à sauvegarder par défaut quand Liferea se "
 "termine :"
 
-#: src/interface.c:1780
+#: src/interface.c:1819
+#, fuzzy
+msgid "<span weight=\"bold\">Feed Update Settings</span>"
+msgstr "<span weight=\"bold\">Réglages du chargement des flux</span>"
+
+#: src/interface.c:1842
+#, fuzzy
+msgid "Default Feed Refresh _Interval:"
+msgstr "_Intervalle de rafraîchissement du flux :"
+
+#: src/interface.c:1856
+#, fuzzy
+msgid ""
+"Note: <i>Please remember to set a reasonable refresh time. It is not desired "
+"to poll daily updated feeds every 15 minutes. To disable auto-updating per "
+"default set the interval to 0 minutes.</i>"
+msgstr ""
+"Note : <i>Veuillez vous souvenir de régler la vitesse de rafraîchissement "
+"raisonnablement. Il est inutile de rafraîchir tous les quarts d'heure un "
+"flux mis à jour quotidiennement. Pour désactiver la mise à jour automatique, "
+"réglez l'intervalle à 0 minute.</i>"
+
+#: src/interface.c:1867
 msgid "At _startup:"
 msgstr "Au _lancement :"
 
-#: src/interface.c:1792
+#: src/interface.c:1879
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">Réglages du chargement des flux</span>"
 
-#: src/interface.c:1811
+#: src/interface.c:1898
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds,"
@@ -667,7 +707,7 @@ msgstr ""
 "_Charger les flux à partir du disque lorsque cela est nécessaire. \n"
 "La recherche peut être lente si vous avez beaucoup de flux,"
 
-#: src/interface.c:1818
+#: src/interface.c:1905
 msgid ""
 "_Keep all feeds loaded. This may improve speed \n"
 "(especially when searching) but can cause a \n"
@@ -679,31 +719,31 @@ msgstr ""
 "prendre énormément de mémoire si vous avez \n"
 "beaucoup de flux !"
 
-#: src/interface.c:1824
+#: src/interface.c:1911
 msgid "Feed Handling"
 msgstr "Gestion des flux"
 
-#: src/interface.c:1839
+#: src/interface.c:1926
 msgid "<span weight=\"bold\">Viewing Headlines</span>"
 msgstr "<span weight=\"bold\">Affichage des titres</span>"
 
-#: src/interface.c:1862
+#: src/interface.c:1949
 msgid "Skim through articles with "
 msgstr "Survoler les articles avec "
 
-#: src/interface.c:1872
+#: src/interface.c:1959
 msgid "Space"
 msgstr "Espace"
 
-#: src/interface.c:1876
+#: src/interface.c:1963
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Espace"
 
-#: src/interface.c:1880
+#: src/interface.c:1967
 msgid "<Alt> Space"
 msgstr "<Alt> Espace"
 
-#: src/interface.c:1886
+#: src/interface.c:1973
 msgid ""
 "Liferea displays feeds' content using various HTML renderers. Depending on "
 "which renderers are installed on your computer, different options will be "
@@ -714,31 +754,31 @@ msgstr ""
 "rendu installés sur votre ordinateur. Redémarrez Liferea pour que les "
 "changements prennent effet."
 
-#: src/interface.c:1896
+#: src/interface.c:1983
 msgid "View Headlines With"
 msgstr "Voir les titres avec"
 
-#: src/interface.c:1908
+#: src/interface.c:1995
 msgid "Open links in Liferea's _window."
 msgstr "_Ouvrir les liens dans la fenêtre de Liferea."
 
-#: src/interface.c:1916
+#: src/interface.c:2003
 msgid "<span weight=\"bold\">Date Column Settings</span>"
 msgstr "<span weight=\"bold\">Réglages de la colonne Date</span>"
 
-#: src/interface.c:1935
+#: src/interface.c:2022
 msgid "Display only time"
 msgstr "Afficher seulement l'heure"
 
-#: src/interface.c:1941
+#: src/interface.c:2028
 msgid "Display date and time"
 msgstr "Afficher la date et l'heure"
 
-#: src/interface.c:1951
+#: src/interface.c:2038
 msgid "User defined format:"
 msgstr "Format défini par l'utilisateur :"
 
-#: src/interface.c:1960
+#: src/interface.c:2047
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -746,19 +786,19 @@ msgstr ""
 "pour les utilisateurs experts : spécifier une chaîne de formatage de temps, "
 "consulter le manuel de strftime() pour les codes de format."
 
-#: src/interface.c:1963
+#: src/interface.c:2050
 msgid "Headline Display"
 msgstr "Affichage des titres"
 
-#: src/interface.c:1976
+#: src/interface.c:2063
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">Réglages du navigateur externe</span>"
 
-#: src/interface.c:2000
+#: src/interface.c:2087
 msgid "_Browser:"
 msgstr "_Navigateur :"
 
-#: src/interface.c:2007
+#: src/interface.c:2094
 #, c-format
 msgid ""
 "_Manual:\n"
@@ -767,19 +807,19 @@ msgstr ""
 "_Manuel :\n"
 "(%s pour l'URL)"
 
-#: src/interface.c:2021
+#: src/interface.c:2108
 msgid "_Open link in:"
 msgstr "_Ouvrir le lien dans :"
 
-#: src/interface.c:2044
+#: src/interface.c:2131
 msgid "External Browser"
 msgstr "Navigateur externe"
 
-#: src/interface.c:2057
+#: src/interface.c:2144
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Réglages de notification</span>"
 
-#: src/interface.c:2075
+#: src/interface.c:2162
 msgid ""
 "Show a status _icon in the notification area \n"
 "(also called system tray)."
@@ -787,35 +827,35 @@ msgstr ""
 "Afficher une _icône de statut dans la zone de notification \n"
 "(aussi appelée barre des tâches)."
 
-#: src/interface.c:2092
+#: src/interface.c:2179
 msgid "Show a _popup window with new headlines."
 msgstr "Afficher un _popup avec les nouveaux titres."
 
-#: src/interface.c:2101
+#: src/interface.c:2188
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">Réglages des menus</span>"
 
-#: src/interface.c:2120
+#: src/interface.c:2207
 msgid "Show Menu _And Toolbar"
 msgstr "Afficher le menu _et la barre d'outils"
 
-#: src/interface.c:2126
+#: src/interface.c:2213
 msgid "Show _Menu Only"
 msgstr "Afficher le _menu uniquement"
 
-#: src/interface.c:2132
+#: src/interface.c:2219
 msgid "Show _Toolbar Only"
 msgstr "Afficher la _barre d'outils uniquement"
 
-#: src/interface.c:2138
+#: src/interface.c:2225
 msgid "GUI"
 msgstr "Interface"
 
-#: src/interface.c:2155
+#: src/interface.c:2242
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">Serveur proxy HTTP</span>"
 
-#: src/interface.c:2174
+#: src/interface.c:2261
 msgid ""
 "Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center. Note: changing these settings "
@@ -828,63 +868,63 @@ msgstr ""
 "présente essentiellement pour permettre aux utilisateurs n'utilisant pas "
 "GNOME de pouvoir utiliser Liferea avec un proxy."
 
-#: src/interface.c:2184
+#: src/interface.c:2271
 msgid "_Enable Proxy"
 msgstr "_Utiliser un proxy"
 
-#: src/interface.c:2206
+#: src/interface.c:2293
 msgid "Proxy _Host:"
 msgstr "_Hôte du proxy :"
 
-#: src/interface.c:2227
+#: src/interface.c:2314
 msgid "Proxy _Port:"
 msgstr "_Port du proxy :"
 
-#: src/interface.c:2234
+#: src/interface.c:2321
 msgid "Use Proxy _Authentication"
 msgstr "Utiliser l'_authentification pour le proxy"
 
-#: src/interface.c:2252
+#: src/interface.c:2339
 msgid "Proxy _Username:"
 msgstr "_Nom d'utilisateur pour le proxy :"
 
-#: src/interface.c:2274
+#: src/interface.c:2361
 msgid "Proxy Pass_word:"
 msgstr "_Mot de passe pour le proxy :"
 
-#: src/interface.c:2281
+#: src/interface.c:2368
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/interface.c:2510
+#: src/interface.c:2611
 msgid "New Folder"
 msgstr "Nouveau dossier"
 
-#: src/interface.c:2526 src/interface.c:2603
+#: src/interface.c:2627 src/interface.c:2704
 msgid "Folder name:"
 msgstr "Nom du dossier :"
 
-#: src/interface.c:2591
+#: src/interface.c:2692
 msgid "Rename Folder"
 msgstr "Renommer le dossier"
 
-#: src/interface.c:2672
+#: src/interface.c:2773
 msgid "Feedster Search"
 msgstr "Recherche par Feedster"
 
-#: src/interface.c:2687
+#: src/interface.c:2788
 msgid "Search for:"
 msgstr "Chercher :"
 
-#: src/interface.c:2694
+#: src/interface.c:2795
 msgid "enter any search string you want"
 msgstr "entrer n'importe quelle chaîne voulue"
 
-#: src/interface.c:2701
+#: src/interface.c:2802
 msgid "Maximal Number Of Result Items:"
 msgstr "Nombre maximal de résultats :"
 
-#: src/interface.c:2710
+#: src/interface.c:2811
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -895,11 +935,11 @@ msgstr ""
 "garder ce flux définitivement et le mettre à jour comme n'importe quel autre "
 "abonnement.  "
 
-#: src/interface.c:2805
+#: src/interface.c:2906
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea est un agrégateur de news pour GTK+"
 
-#: src/interface.c:2810
+#: src/interface.c:2911
 msgid ""
 "Copyright (c) 2003-2004 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
@@ -909,7 +949,7 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> et \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: src/interface.c:2830
+#: src/interface.c:2931
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -958,11 +998,11 @@ msgstr ""
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
-#: src/interface.c:2836
+#: src/interface.c:2937
 msgid "Contributors"
 msgstr "Contributeurs"
 
-#: src/interface.c:2850
+#: src/interface.c:2951
 msgid ""
 "Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
@@ -996,16 +1036,16 @@ msgstr ""
 "Antoine REVERSAT <areversat@TUXFAMILY.ORG>\n"
 "Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 
-#: src/interface.c:2856
+#: src/interface.c:2957
 msgid "Translation"
 msgstr "Traduction"
 
-#: src/interface.c:2926 src/ui_feed.c:363
+#: src/interface.c:3027 src/ui_feed.c:617
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Entrer le nom d'utilisateur et le mot de passe pour \"%s\" (%s) :"
 
-#: src/interface.c:2967
+#: src/interface.c:3068
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -1013,15 +1053,15 @@ msgstr ""
 "Note : <i>le nom d'utilisateur et le mot de passe seront sauvés non chiffrés "
 "dans votre liste de flux Liferea.</i>"
 
-#: src/interface.c:3033
+#: src/interface.c:3134
 msgid "VFolder Properties"
 msgstr "Propriétés du VFolder"
 
-#: src/interface.c:3049
+#: src/interface.c:3150
 msgid "Name"
 msgstr "Nom"
 
-#: src/interface.c:3078
+#: src/interface.c:3179
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
@@ -1030,15 +1070,15 @@ msgstr ""
 "s'applique.\n"
 "Ils sont supprimés si au moins une règle de suppression s'applique."
 
-#: src/interface.c:3091
+#: src/interface.c:3192
 msgid "Rules"
 msgstr "Règles"
 
-#: src/item.c:230 src/item.c:234 src/item.c:246 src/ui_itemlist.c:197
+#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:197
 msgid "[No title]"
 msgstr "[Pas de titre]"
 
-#: src/item.c:236 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:238 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "Élément :"
 
@@ -1469,81 +1509,77 @@ msgstr ""
 "source pointe vraiment vers une ressource fournie dans un des formats "
 "supportés !</p>%s"
 
-#: src/ui_feed.c:200
+#: src/ui_feed.c:202
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" mis à jour..."
 
-#: src/ui_feed.c:209
+#: src/ui_feed.c:211
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" n'est pas disponible"
 
-#: src/ui_feed.c:364
+#: src/ui_feed.c:559
+msgid "Choose File"
+msgstr "Choisir un fichier"
+
+#: src/ui_feed.c:618
 msgid "Unknown source"
 msgstr "Source inconnue"
 
-#: src/ui_feed.c:456
-msgid "Directories cannot be autoupdated."
-msgstr "Les répertoires ne peuvent pas être mis à jour automatiquement."
-
-#: src/ui_feed.c:459
+#: src/ui_feed.c:725
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Le fournisseur de ce flux suggère un intervalle de rafraîchissement de %d "
 "minutes."
 
-#: src/ui_feed.c:461
+#: src/ui_feed.c:727
 msgid "This feed specifies no default update interval."
 msgstr "Ce flux ne spécifie aucun intervalle de rafraîchissement."
 
-#: src/ui_feed.c:806
-msgid "Choose File"
-msgstr "Choisir un fichier"
-
-#: src/ui_feedlist.c:411
+#: src/ui_feedlist.c:410
 msgid "You have to select a feed entry"
 msgstr "Vous devez sélectionner un flux"
 
-#: src/ui_feedlist.c:421
+#: src/ui_feedlist.c:420
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
 "jour."
 
-#: src/ui_feedlist.c:455
+#: src/ui_feedlist.c:457
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Note : l'utilisation du filtre d'abonnements désactive le glisser-déposer"
 
-#: src/ui_feedlist.c:500 src/ui_feedlist.c:503
+#: src/ui_feedlist.c:502 src/ui_feedlist.c:505
 msgid "Deleting entry"
 msgstr "Suppression de l'entrée"
 
-#: src/ui_feedlist.c:501
+#: src/ui_feedlist.c:503
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Êtes-vous sûr de vouloir supprimer \"%s\" et son contenu ?"
 
-#: src/ui_feedlist.c:504
+#: src/ui_feedlist.c:506
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Êtes-vous sûr de vouloir supprimer \"%s\" ?"
 
-#: src/ui_feedlist.c:512
+#: src/ui_feedlist.c:514
 msgid "Deletion Confirmation"
 msgstr "Confirmation de la suppression"
 
-#: src/ui_feedlist.c:548
+#: src/ui_feedlist.c:550
 msgid "You must select a feed entry"
 msgstr "Vous devez sélectionner un flux"
 
-#: src/ui_feedlist.c:549
+#: src/ui_feedlist.c:551
 msgid "You must select a feed entry."
 msgstr "Vous devez sélectionner un flux."
 
-#: src/ui_feedlist.c:595
+#: src/ui_feedlist.c:597
 msgid "New subscription"
 msgstr "Nouvel abonnement"
 
@@ -1649,7 +1685,7 @@ msgstr "La commande du navigateur a échoué : %s"
 msgid "Starting: \"%s\""
 msgstr "Exécution de : \"%s\""
 
-#: src/ui_htmlview.h:97
+#: src/ui_htmlview.h:99
 #, c-format
 msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
@@ -1657,7 +1693,7 @@ msgstr ""
 "La dernière mise à jour de cet abonnement a échoué !<br><b>Code d'erreur "
 "HTTP %d : %s</b>"
 
-#: src/ui_htmlview.h:98
+#: src/ui_htmlview.h:100
 #, fuzzy, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occurred:"
@@ -1666,7 +1702,7 @@ msgstr ""
 "Des erreurs sont survenues pendant l'analyse de ce flux ! L'erreur suivante "
 "s'est produite :<br><b>%s</b>"
 
-#: src/ui_htmlview.h:99
+#: src/ui_htmlview.h:101
 msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
@@ -1683,22 +1719,22 @@ msgstr "Date"
 msgid "Headline"
 msgstr "Titre"
 
-#: src/ui_itemlist.c:479 src/ui_itemlist.c:526
+#: src/ui_itemlist.c:468 src/ui_itemlist.c:520
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: src/ui_itemlist.c:513 src/ui_itemlist.c:529
+#: src/ui_itemlist.c:502 src/ui_itemlist.c:523
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
-#: src/ui_itemlist.c:560
+#: src/ui_itemlist.c:554
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Erreur interne ! Impossible de charger la sélection en arborescence des "
 "flux !\n"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:588
+#: src/ui_itemlist.c:582
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 
@@ -2000,13 +2036,20 @@ msgstr "Erreur : impossible d'ouvrir le fichier \"%s\""
 msgid "Error: There is no file \"%s\""
 msgstr "Erreur : il n'y a pas de fichier \"%s\""
 
-#: src/gtkhtml2/gtkhtml2.c:217
+#: src/gtkhtml2/gtkhtml2.c:222
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
 "La balise HTML <object> incluse n'est pas supportée par GtkHTML2.\n"
 "Les plugins inclus peuvent ne pas s'afficher."
+
+#~ msgid "This feed's refresh interval defaults to %d seconds."
+#~ msgstr ""
+#~ "L'intervalle de rafraîchissement de ce flux est de %d secondes par défaut."
+
+#~ msgid "Directories cannot be autoupdated."
+#~ msgstr "Les répertoires ne peuvent pas être mis à jour automatiquement."
 
 #~ msgid "Deleting \"%s\""
 #~ msgstr "Suppresion de \"%s\""
