@@ -3,7 +3,7 @@
 	Version 0.5.3
 	
 	* New File selectors are used when compiled with GTK+ 2.4 or
-	  later). (Nathan Conrad)
+	  later. (Nathan Conrad)
 	* XML parsers now detect namespaces based on their URL. (Nathan
 	  Conrad)
 	* UTF-16 formatted documents are now supported. Please complain if
@@ -20,7 +20,7 @@
 
 	* Fixed bug where some invalid feeds were causing their item lists
 	  to be erased when they were updated. (Nathan Conrad)
-	* Fixed bug that may crash the program when the libxml2 erro
+	* Fixed bug that may crash the program when the libxml2 error
 	  output displayed in the feed description contains invalid
 	  Unicode characters. This was reported by Yanko Kaneti.
 	  (Lars Lindner)
