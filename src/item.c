@@ -34,19 +34,12 @@
 #include "metadata.h"
 #include "debug.h"
 
-/** 
- * This is an internal counter used to uniqely assign item id's.
- * Do not  
- */
-static	gulong	lastItemNr = 0;
-
 /* function to create a new feed structure */
 itemPtr item_new(void) {
 	itemPtr		ip;
 	
 	ip = g_new0(struct item, 1);
 	ip->newStatus = TRUE;
-	ip->nr = ++lastItemNr;
 
 	return ip;
 }
@@ -59,8 +52,9 @@ void item_copy(itemPtr from, itemPtr to) {
 	item_set_real_source_title(to, from->real_source_title);
 	item_set_description(to, from->description);
 	item_set_id(to, from->id);
-	to->newStatus = FALSE;
+	
 	to->readStatus = from->readStatus;
+	to->newStatus = FALSE;
 	to->marked = from->marked;
 	to->time = from->time;
 	to->nr = from->nr;
@@ -115,22 +109,22 @@ void item_set_mark(itemPtr ip, gboolean flag) {
 	itemPtr		sourceItem;
 
 	ip->marked = flag;
-
-	/* there might be vfolders using this item */
-	vfolder_update_item(ip);
-		
-	/* if this item belongs to a vfolder update the source feed */
-	if(ip->sourceFeed != NULL) {
-		feed_load(ip->sourceFeed);
-		sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
-		item_set_mark(sourceItem, flag);
-		feed_unload(ip->sourceFeed);
-	}
 	
 	if(ip->ui_data != NULL)
 		ui_update_item(ip);
 	if(ip->fp != NULL)
 		ip->fp->needsCacheSave = TRUE;
+		
+	/* if this item belongs to a vfolder update the source feed */
+	if(ip->sourceFeed != NULL) {
+		feed_load(ip->sourceFeed);
+		sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr);
+		item_set_mark(sourceItem, flag);
+		feed_unload(ip->sourceFeed);
+	} else {
+		/* there might be vfolders using this item */
+		vfolder_update_item(ip);
+	}
 }
 
 void item_set_new_status(itemPtr ip, const gboolean newStatus) { 
@@ -151,22 +145,22 @@ void item_set_unread(itemPtr ip) {
 	if(TRUE == ip->readStatus) {
 		feed_increase_unread_counter((feedPtr)(ip->fp));
 		
-		/* there might be vfolders using this item */
-		vfolder_update_item(ip);
-		
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			feed_load(ip->sourceFeed);
-			sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
-			item_set_unread(sourceItem);
-			feed_unload(ip->sourceFeed);
-		}
-		
 		ip->readStatus = FALSE;
 		if(ip->ui_data != NULL)
 			ui_update_item(ip);
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
+						
+		/* if this item belongs to a vfolder update the source feed */
+		if(ip->sourceFeed != NULL) {
+			feed_load(ip->sourceFeed);
+			sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr);
+			item_set_unread(sourceItem);
+			feed_unload(ip->sourceFeed);
+		} else {
+			/* there might be vfolders using this item */
+			vfolder_update_item(ip);
+		}
 	} 
 }
 
@@ -176,22 +170,22 @@ void item_set_read(itemPtr ip) {
 	if(FALSE == ip->readStatus) {
 		feed_decrease_unread_counter((feedPtr)(ip->fp));
 		
-		/* there might be vfolders using this item */
-		vfolder_update_item(ip);
-		
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			feed_load(ip->sourceFeed);
-			sourceItem = feed_lookup_item(ip->sourceFeed, ip->id);
-			item_set_read(sourceItem);
-			feed_unload(ip->sourceFeed);
-		}
-		
 		ip->readStatus = TRUE; 
 		if(ip->ui_data)
 			ui_update_item(ip);
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
+		
+		/* if this item belongs to a vfolder update the source feed */
+		if(ip->sourceFeed != NULL) {
+			feed_load(ip->sourceFeed);
+			sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr);
+			item_set_read(sourceItem);
+			feed_unload(ip->sourceFeed);
+		} else {
+			/* there might be vfolders using this item */
+			vfolder_update_item(ip);
+		}
 	}
 	ui_tray_zero_new();
 }
@@ -371,6 +365,9 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"id"))
 			item_set_id(ip, tmp);
 			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"nr"))
+			ip->nr = atol(tmp);
+
 		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
 			item_set_read_status(ip, (0 == atoi(tmp))?FALSE:TRUE);		
 
@@ -388,6 +385,55 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 		g_free(tmp);	
 		cur = cur->next;
 	}
-		
+
 	return ip;
+}
+
+void item_save(itemPtr ip, xmlNodePtr feedNode) {
+	xmlNodePtr	itemNode;
+	gchar		*tmp;
+	
+	if(NULL != (itemNode = xmlNewChild(feedNode, NULL, "item", NULL))) {
+
+		/* should never happen... */
+		if(NULL == item_get_title(ip))
+			item_set_title(ip, "");
+		xmlNewTextChild(itemNode, NULL, "title", item_get_title(ip));
+
+		if(NULL != item_get_description(ip))
+			xmlNewTextChild(itemNode, NULL, "description", item_get_description(ip));
+
+		if(NULL != item_get_source(ip))
+			xmlNewTextChild(itemNode, NULL, "source", item_get_source(ip));
+
+		if(NULL != item_get_real_source_title(ip))
+			xmlNewTextChild(itemNode, NULL, "real_source_title", item_get_real_source_title(ip));
+
+		if(NULL != item_get_real_source_url(ip))
+			xmlNewTextChild(itemNode, NULL, "real_source_url", item_get_real_source_url(ip));
+
+		if(NULL != item_get_id(ip))
+			xmlNewTextChild(itemNode, NULL, "id", item_get_id(ip));
+
+		tmp = g_strdup_printf("%ld", ip->nr);
+		xmlNewTextChild(itemNode, NULL, "nr", tmp);
+		g_free(tmp);
+
+		tmp = g_strdup_printf("%d", (TRUE == item_get_read_status(ip))?1:0);
+		xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
+		g_free(tmp);
+
+		tmp = g_strdup_printf("%d", (TRUE == item_get_mark(ip))?1:0);
+		xmlNewTextChild(itemNode, NULL, "mark", tmp);
+		g_free(tmp);
+
+		tmp = g_strdup_printf("%ld", item_get_time(ip));
+		xmlNewTextChild(itemNode, NULL, "time", tmp);
+		g_free(tmp);
+
+		metadata_add_xml_nodes(ip->metadata, itemNode);
+
+	} else {
+		g_warning("could not write XML item node!\n");
+	}
 }

@@ -159,8 +159,16 @@ void 		item_set_new_status(itemPtr ip, const gboolean newStatus);
  */
 void	item_set_mark(itemPtr ip, const gboolean flag);
 
-/** Parse an xml tree and return a new itempointer generated from the
-    current node's information */
+/**
+ * Parse an xml tree and return a new itempointer generated 
+ * from the current node's information.
+ */
 itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur);
+
+/**
+ * Does the opposite of item_parse_cache. Generates a XML node
+ * to be saved into the feeds cache document. 
+ */
+void item_save(itemPtr ip, xmlNodePtr feedNode);
 
 #endif

@@ -215,6 +215,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 	gchar		*title, *source, *typeStr, *tmp;
 	feedPtr		fp = NULL;
 	folderPtr	child;
+	gboolean	dontParseChildren = FALSE;
 	gint		interval;
 	gchar		*id = NULL;
 	
@@ -276,8 +277,10 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		   fhp. fhp will default to NULL. */
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
 		fp->fhp = feed_type_str_to_fhp(typeStr);
-		if((NULL != typeStr) && (0 == strcmp("vfolder", typeStr)))
+		if((NULL != typeStr) && (0 == strcmp("vfolder", typeStr))) {
+			dontParseChildren = TRUE;
 			feed_set_type(fp, FST_VFOLDER);	/* should prevent feed_load to do anything */
+		}
 
 		/* Set the cache limit */
 		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
@@ -414,13 +417,15 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 	if(title != NULL)
 		xmlFree(title);
 
-	/* process any children */
-	cur = cur->xmlChildrenNode;
-	while(cur != NULL) {
-		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			import_parse_outline(cur, folder, trusted);
+	if(!dontParseChildren) {
+		/* process any children */
+		cur = cur->xmlChildrenNode;
+		while(cur != NULL) {
+			if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
+				import_parse_outline(cur, folder, trusted);
 		
-		cur = cur->next;
+				cur = cur->next;				
+		}
 	}
 	
 	debug_exit("import_parse_outline");

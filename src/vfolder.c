@@ -25,18 +25,11 @@
 #include "debug.h"
 #include "vfolder.h"
 
-/** 
- * The list of the rules of all vfolders, used to check new or
- * updated items against these rules.
- */
-static GSList		*vfolder_rules = NULL;
-
 /**
- * This pseudo feed is used to keep all items in memory that belong
- * to a vfolder. This is necessary because the source feed may not
- * not be kept in memory.
+ * The list of all existing vfolders. Used for updating vfolder
+ * information upon item changes
  */
-static feedPtr		vfolder_item_pool = NULL;
+static GSList		*vfolders = NULL;
 
 /* sets up a vfolder feed structure */
 feedPtr vfolder_new(void) {
@@ -51,6 +44,7 @@ feedPtr vfolder_new(void) {
 	fp->id = conf_new_id();
 	fp->available = TRUE;
 	fp->fhp = feed_type_str_to_fhp("vfolder");
+	vfolders = g_slist_append(vfolders, fp);
 	
 	debug_exit("vfolder_new");
 	
@@ -66,7 +60,6 @@ void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gbool
 	debug_enter("vfolder_add_rule");
 
 	if(NULL != (rp = rule_new(vp, ruleId, value, additive))) {
-		vfolder_rules = g_slist_append(vfolder_rules, rp);
 		vp->rules = g_slist_append(vp->rules, rp);
 	} else {
 		g_warning("unknown rule id: \"%s\"", ruleId);
@@ -81,7 +74,7 @@ void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gbool
 void vfolder_remove_rule(feedPtr vp, rulePtr rp) {
 
 	debug_enter("vfolder_remove_rule");
-	vfolder_rules = g_slist_remove(vfolder_rules, rp);
+	vp->rules = g_slist_remove(vp->rules, rp);
 	debug_exit("vfolder_remove_rule");
 }
 
@@ -90,27 +83,17 @@ void vfolder_remove_rule(feedPtr vp, rulePtr rp) {
 static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	itemPtr		tmp;
 
-	/* We internally create a item copy which is added
-	   to the vfolder item pool and referenced by the 
-	   vfolders. When the item is already in the pool
-	   we only reference it. */	
-	tmp = feed_lookup_item(vfolder_item_pool, ip->nr);
-	if(NULL == tmp) {
-		tmp = item_new();
-		item_copy(ip, tmp);
-		tmp->references = 1;
-		tmp->sourceFeed = ip->fp;
-		feed_add_item(vfolder_item_pool, tmp);
-		feed_add_item(vp, tmp);
-	} else {
-		/* do we need reference counting? */
-		if(tmp->fp != vp) {
-			tmp->references++;
-			feed_add_item(vp, tmp);
-		} else {
-			g_warning("a search feed contains non-unique id's, one matching item was dropped...");
-		}
+	/* a maybe paranoid consistency check (remove me) */
+	tmp = feed_lookup_item(vp, ip->nr);
+	if((NULL != tmp) && (ip->fp == tmp->sourceFeed)) {
+		g_warning("a search feed contains non-unique id's, one matching item was dropped...");
+		return;
 	}
+
+	/* add an item copy to the vfolder */	
+	tmp = item_new();
+	item_copy(ip, tmp);
+	feed_add_item(vp, tmp);
 }
 
 static void vfolder_remove_item(feedPtr vp, itemPtr ip) {
@@ -119,18 +102,13 @@ static void vfolder_remove_item(feedPtr vp, itemPtr ip) {
 
 	items = vp->items;
 	while(NULL != items) {
-		if(items->data == ip) {
+		if(items->data == ip)
 			found = TRUE;
-			ip->references--;
-			if(0 == ip->references) {
-				vfolder_item_pool->items = g_slist_remove(vfolder_item_pool->items, ip);
-				item_free(ip);
-			}
-		}
 		items = g_slist_next(items);
 	}
 	
 	if(found) {
+		item_free(ip);
 		vp->items = g_slist_remove(vp->items, ip);
 	} else {
 		g_warning("vfolder_remove_item(): item not found...");
@@ -149,20 +127,21 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	GSList		*iter, *items;
 	rulePtr		rp;
 	itemPtr		ip;
-	gboolean	added = FALSE;
+	gboolean	added;
+
+	/* do not search in vfolders */
+	g_return_if_fail(FST_VFOLDER != feed_get_type(fp));
 
 	debug_enter("vfolder_apply_rules");
-	debug1(DEBUG_UPDATE, "applying rules for %s", feed_get_source(fp));
+
+	debug1(DEBUG_UPDATE, "applying rules for (%s)", feed_get_source(fp));
 	feed_load(fp);
-	
-	/* do not recursivly search ourselves!!! */
-	if(vp == fp)
-		return;
 
 	/* check all feed items */
 	items = feed_get_item_list(fp);
 	while(NULL != items) {
 		ip = items->data;			
+		added = FALSE;
 
 		/* check against all rules */
 		iter = vp->rules;
@@ -170,13 +149,13 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 			rp = iter->data;
 			if(rp->additive) {
 				if(!added && rule_check_item(rp, ip)) {
-					debug1(DEBUG_UPDATE, "adding matching item: %s\n", item_get_title(ip));
+					debug2(DEBUG_UPDATE, "adding matching item (%d): %s\n", ip->nr, item_get_title(ip));
 					vfolder_add_item(vp, ip);
 					added = TRUE;
 				}
 			} else {
 				if(added && rule_check_item(rp, ip)) {
-					debug1(DEBUG_UPDATE, "deleting matching item: %s\n", item_get_title(ip));
+					debug2(DEBUG_UPDATE, "deleting matching item (%d): %s\n", ip->nr, item_get_title(ip));
 					vfolder_remove_item(vp, ip);
 					added = FALSE;
 				}
@@ -204,26 +183,45 @@ void vfolder_refresh(feedPtr vp) {
 /* Method to be called when a feed item was updated. This maybe
    after user interaction or updated item contents */
 void vfolder_update_item(itemPtr ip) {
-	GSList		*items = vfolder_item_pool->items;
+	GSList		*iter, *items;
 	itemPtr		tmp;
+	feedPtr		vp;
 
 	debug_enter("vfolder_update_item");
 
 	/* never process vfolder items! */
-	if(FST_VFOLDER == feed_get_type(ip->fp))
-		return;
+	g_assert(FST_VFOLDER != feed_get_type(ip->fp));
 	
-	while(NULL != items) {
-		tmp = items->data;
-		g_assert(NULL != ip->fp);
-		g_assert(NULL != tmp->fp);
-		if((0 == strcmp(ip->id, tmp->id)) &&
-		   (0 == strcmp((ip->fp)->id, (tmp->fp)->id))) {
-		   	debug0(DEBUG_UPDATE, "item used in vfolder, updating vfolder copy...");
-			item_copy(ip, tmp);
-			return;
+	iter = vfolders;
+	while(NULL != iter) {
+		vp = (feedPtr)iter->data;
+		
+		/* first step: update item copy if found */
+		items = feed_get_item_list(vp);
+		while(NULL != items) {
+			tmp = items->data;
+			g_assert(NULL != ip->fp);
+			g_assert(NULL != tmp->fp);
+			if((ip->nr == tmp->nr) &&
+			   (ip->fp == tmp->sourceFeed)) {
+		   		debug0(DEBUG_UPDATE, "item used in vfolder, updating vfolder copy...");
+				item_copy(ip, tmp);
+				break;
+			}
+			items = g_slist_next(items);
 		}
-		items = g_slist_next(items);
+		
+		/* second step: update vfolder unread count */
+		vp->unreadCount = 0;
+		items = feed_get_item_list(vp);
+		while(NULL != items) {
+			tmp = items->data;
+			if(FALSE == item_get_read_status(tmp)) 
+				feed_increase_unread_counter(vp);
+
+			items = g_slist_next(items);
+		}
+		iter = g_slist_next(iter);
 	}
 	
 	debug_exit("vfolder_update_item");
@@ -238,15 +236,13 @@ void vfolder_free(feedPtr vp) {
 
 	debug_enter("vfolder_free");
 
+	vfolders = g_slist_remove(vfolders, vp);
+
 	/* free vfolder items */
 	iter = vp->items;
 	while(NULL != iter) {
 		ip = iter->data;
-		ip->references--;
-		if(0 == ip->references) {
-			vfolder_item_pool->items = g_slist_remove(vfolder_item_pool->items, ip);
-			item_free(ip);
-		}
+		item_free(ip);
 		iter = g_slist_next(iter);
 	}
 	g_slist_free(vp->items);
@@ -267,9 +263,6 @@ void vfolder_free(feedPtr vp) {
 
 feedHandlerPtr vfolder_init_feed_handler(void) {
 	feedHandlerPtr	fhp;
-	
-	vfolder_item_pool = feed_new();
-	vfolder_item_pool->type = FST_VFOLDER;
 	
 	fhp = g_new0(struct feedHandler, 1);
 

@@ -243,7 +243,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
  */
 void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
-	xmlNodePtr 	feedNode, itemNode;
+	xmlNodePtr 	feedNode;
 	GSList		*itemlist;
 	gchar		*filename;
 	gchar		*tmp;
@@ -253,7 +253,7 @@ void feed_save(feedPtr fp) {
 			
 	debug_enter("feed_save");
 	
-	if (fp->needsCacheSave == FALSE) {
+	if(fp->needsCacheSave == FALSE) {
 		debug1(DEBUG_CACHE, "feed does not need to be saved: %s", fp->title);
 		return;
 	}
@@ -262,7 +262,7 @@ void feed_save(feedPtr fp) {
 	g_assert(0 != fp->loaded);
 
 	saveMaxCount = fp->cacheLimit;
-	if (saveMaxCount == CACHE_DEFAULT)
+	if(saveMaxCount == CACHE_DEFAULT)
 		saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
@@ -310,46 +310,7 @@ void feed_save(feedPtr fp) {
 				   !item_get_mark(ip)) {
 					continue;
 				}
-				if(NULL != (itemNode = xmlNewChild(feedNode, NULL, "item", NULL))) {
-					
-					/* should never happen... */
-					if(NULL == item_get_title(ip))
-						item_set_title(ip, "");
-					xmlNewTextChild(itemNode, NULL, "title", item_get_title(ip));
-					
-					if(NULL != item_get_description(ip))
-						xmlNewTextChild(itemNode, NULL, "description", item_get_description(ip));
-					
-					if(NULL != item_get_source(ip))
-						xmlNewTextChild(itemNode, NULL, "source", item_get_source(ip));
-						
-					if(NULL != item_get_real_source_title(ip))
-						xmlNewTextChild(itemNode, NULL, "real_source_title", item_get_real_source_title(ip));
-						
-					if(NULL != item_get_real_source_url(ip))
-						xmlNewTextChild(itemNode, NULL, "real_source_url", item_get_real_source_url(ip));
-
-					if(NULL != item_get_id(ip))
-						xmlNewTextChild(itemNode, NULL, "id", item_get_id(ip));
-
-					tmp = g_strdup_printf("%d", (TRUE == item_get_read_status(ip))?1:0);
-					xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
-					g_free(tmp);
-					
-					tmp = g_strdup_printf("%d", (TRUE == item_get_mark(ip))?1:0);
-					xmlNewTextChild(itemNode, NULL, "mark", tmp);
-					g_free(tmp);
-
-					tmp = g_strdup_printf("%ld", item_get_time(ip));
-					xmlNewTextChild(itemNode, NULL, "time", tmp);
-					g_free(tmp);
-					
-					metadata_add_xml_nodes(ip->metadata, itemNode);
-					
-				} else {
-					g_warning("could not write XML item node!\n");
-				}
-
+				item_save(ip, feedNode);
 				saveCount++;
 			}
 		} else {
@@ -662,14 +623,20 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		}
 		
 		if(!found) {
-			if(FALSE == new_ip->readStatus)
-				fp->unreadCount++;
+			if(FALSE == item_get_read_status(new_ip))
+				feed_increase_unread_counter(fp);
 			if(TRUE == new_ip->newStatus) {
 				fp->newCount++;
 				ui_tray_add_new(1);
 			}
 			fp->items = g_slist_prepend(fp->items, (gpointer)new_ip);
 			new_ip->fp = fp;
+			
+			/* FIXME: remove this migration code with 0.9.x */
+			if(0 == new_ip->nr) {
+				new_ip->nr = ++(fp->lastItemNr);
+				new_ip->fp->needsCacheSave = TRUE;
+			}
 		
 			/* Check if feed filters allow display of this item, we don't
 			   delete the item because there can be vfolders which display
@@ -700,10 +667,11 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		}
 	} else {
 		/* just add the item */
-		if(FALSE == new_ip->readStatus)
-			fp->unreadCount++;
+		if(FALSE == item_get_read_status(new_ip))
+			feed_increase_unread_counter(fp);
 		fp->items = g_slist_append(fp->items, (gpointer)new_ip);
 		new_ip->fp = fp;
+		/* item number should already be set by item_copy() */
 	}
 }
 
@@ -719,7 +687,6 @@ itemPtr feed_lookup_item(feedPtr fp, gulong nr) {
 	itemPtr		ip;
 	
 	g_assert((0 != fp->loaded) || (FST_VFOLDER == feed_get_type(fp)));
-
 	items = fp->items;
 	while(NULL != items) {
 		ip = (itemPtr)(items->data);

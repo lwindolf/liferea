@@ -106,6 +106,7 @@ typedef struct feed {
 	gint		updateInterval;		/**< user defined update interval in minutes */
 	GSList		*metadata;		/**< metadata of this feed */
 	
+	gulong		lastItemNr;		/**< internal counter used to uniqely assign item id's. */
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
 	GSList		*rules;			/**< list of rules if this is a vfolder */
