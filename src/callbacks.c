@@ -55,7 +55,7 @@ static gint selectableTypes[] = {	FST_AUTODETECT,
 				
 GtkWidget		*mainwindow;
 GtkWidget		*filedialog = NULL;
-static GtkWidget	*newdialog = NULL;
+GtkWidget		*newdialog = NULL;
 static GtkWidget	*propdialog = NULL;
 static GtkWidget	*prefdialog = NULL;
 static GtkWidget	*newfolderdialog = NULL;
@@ -151,7 +151,7 @@ void initGUI(void) {
 	if(NULL == emptyIcon)		emptyIcon	= create_pixbuf("empty.png");
 	
 	setupTrayIcon();
-	setupSelection();
+	setupSelection(mainwindow);
 }
 
 /* returns the selected feed list iterator */
@@ -582,6 +582,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	g_assert(newdialog != NULL);
 	g_assert(propdialog != NULL);
+g_print("get selection\n");
 getSelection(mainwindow);
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
 	titleentry = lookup_widget(propdialog, "feednameentry");
@@ -595,9 +596,8 @@ getSelection(mainwindow);
 	if(type > MAX_TYPE_SELECT) {
 			g_error(_("internal error! invalid type selected! This should never happen!\n"));
 			return;
-	} else {
+	} else
 		type = selectableTypes[type];
-	}
 
 	subscribeTo(type, source, g_strdup(selected_keyprefix), TRUE);	
 	/* don't free source for it is reused by newFeed! */

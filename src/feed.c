@@ -342,7 +342,8 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		xmlFreeDoc(doc);
 	g_free(filename);
 	
-	loadFavIcon(fp);
+	if(NULL != fp)
+		loadFavIcon(fp);
 		
 	return fp;
 }

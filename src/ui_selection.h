@@ -22,7 +22,7 @@
 #define _UI_SELECTION_H
 
 /* sets up the selection widget and its handlers */
-void setupSelection(void);
+void setupSelection(GtkWidget *window);
 
 /* method to set selection */
 void supplySelection(void);
