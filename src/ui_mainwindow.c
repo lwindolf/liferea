@@ -68,6 +68,7 @@ GtkWidget 	*mainwindow;
 
 static GtkWidget *htmlview = NULL;		/* HTML rendering widget */
 static gfloat 	zoom;				/* HTML rendering widget zoom level */
+extern gboolean	startIconified = FALSE; /* From main.c */
 
 /* some prototypes */
 static void ui_mainwindow_restore_position(GtkWidget *window);
@@ -442,11 +443,13 @@ void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data) {
 	if((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
 		ui_mainwindow_restore_position(mainwindow);
 		gtk_window_present(GTK_WINDOW(mainwindow));
-		session_set_cmd(NULL, FALSE);
+		if (!startIconified)
+			session_set_cmd(NULL, FALSE);
 	} else {
 		ui_mainwindow_save_position();
 		gtk_widget_hide(mainwindow);
-		session_set_cmd(NULL, TRUE);
+		if (!startIconified)
+			session_set_cmd(NULL, TRUE);
 	}
 }
 

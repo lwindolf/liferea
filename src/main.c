@@ -58,6 +58,7 @@
 
 GThread	*mainThread = NULL;
 gboolean lifereaStarted = FALSE;
+gboolean	startIconified = FALSE;
 
 static void show_help(void) {
 	GString	*str = g_string_new(NULL);
@@ -166,7 +167,6 @@ static void main_unlock() {
 
 int main(int argc, char *argv[]) {	
 	gulong		debug_flags = 0;
-	gboolean	startIconified = FALSE;
 	const char 	*arg;
 	gint		i;
 	GtkWidget	*dialog;
