@@ -1,7 +1,7 @@
 /**
  * @file itemlist.c itemlist handling
  *
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,13 +78,18 @@ void itemlist_reload(nodePtr node) {
 	g_assert(isFeed || isFolder);
 
 	if(TRUE == isFolder) {
-		if((FST_FOLDER != node->type) && (node != displayed_node)) {
+		if((FST_FOLDER != node->type) && (node != displayed_node) && 
+		   (TRUE == getBooleanConfValue(FOLDER_DISPLAY_MODE))) {
 			/* There are two cases: the updated feed is a child of
 			   the displayed folder or not. If it is we want to update the
 			   item list of this folder. */
 			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_check_if_child, (gpointer)node);
 			ui_itemlist_display();
 			return;
+		} else {
+			/* and the user might get click directly on a folder, then we
+			   can unconditionally load all child feeds into the itemlist */
+			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_load_feed, (gpointer)node);
 		}
 	}
 
@@ -92,8 +97,9 @@ void itemlist_reload(nodePtr node) {
 		if(node != displayed_node)
 			return;
 		itemlist_load_feed((feedPtr)node, (gpointer)TRUE);
-		ui_itemlist_display();
 	}
+
+	ui_itemlist_display();
 }
 
 /** 
