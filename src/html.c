@@ -30,30 +30,42 @@ static gchar *checkLinkRef(gchar* str) {
 	gchar	*res;
 	gchar	*tmp, *tmp2;
 
+	//debug1(DEBUG_PARSING, "checking link %s", str);
 	tmp = strstr(str, "href=");
 	if(NULL == tmp) tmp = strstr(str, "HREF=");
 	if(NULL == tmp) return NULL;
+	// FIXME: single quotes support
 	tmp2 = strchr(tmp, '\"');
+	if(NULL == tmp2) return NULL;
 	tmp = strchr(tmp2+1, '\"');
 	*tmp = '\0';
 	res = g_strdup(tmp2+1);
 	*tmp = '\"';
 
 	if((strstr(str, "alternate")!=NULL) &&
-	   ((strstr(str, "text/xml")!=NULL) || strstr(str, "atom+xml")!=NULL))
+	   ((strstr(str, "text/xml")!=NULL) || 
+	    (strstr(str, "rss+xml")!=NULL) ||
+	    (strstr(str, "rdf+xml")!=NULL) ||
+	    (strstr(str, "atom+xml")!=NULL)))
 		return res;
 	g_free(res);
 	return NULL;
 }
 
-static gchar *checkNormalLink(gchar* link) {
+static gchar *checkNormalLink(gchar* str) {
 	gchar	*res, *tmp, *tmp2;
-	
-	tmp = strchr(link, '\"');
-	tmp2 = strchr(tmp+1, '\"');
-	*tmp2 = '\0';
-	res = g_strdup(tmp+1);
-	*tmp2 = '\"';
+
+	debug1(DEBUG_PARSING, "checking link %s", str);
+	tmp = strstr(str, "href=");
+	if(NULL == tmp) tmp = strstr(str, "HREF=");
+	if(NULL == tmp) return NULL;
+	// FIXME: single quotes support
+	tmp2 = strchr(tmp, '\"');
+	if(NULL == tmp2) return NULL;
+	tmp = strchr(tmp2+1, '\"');
+	*tmp = '\0';
+	res = g_strdup(tmp2+1);
+	*tmp = '\"';
 
 	if((strstr(res, "rdf")) || (strstr(res, "xml")) ||
 	   (strstr(res, "rss")))
@@ -71,9 +83,9 @@ static gchar *search_links(gchar* data, int type) {
 	gchar	*endptr;
 	
 	while(1) {
-		ptr = strstr(tmp, ((type == 0)? "<link" : "<a href"));
+		ptr = strstr(tmp, ((type == 0)? "<link " : "<a "));
 		if(NULL == ptr)
-			ptr = strstr(tmp, ((type == 0)? "<LINK" : "<A HREF"));
+			ptr = strstr(tmp, ((type == 0)? "<LINK " : "<A "));
 		if(NULL == ptr)
 			break;
 		
@@ -84,6 +96,12 @@ static gchar *search_links(gchar* data, int type) {
 		res = ((type==0)? checkLinkRef(tstr) : checkNormalLink(tstr));
 		g_free(tstr);
 		if(res != NULL){
+			result = res;
+			break;
+/*		deactivated as long as we support only subscribing 
+		to the first found link (BTW this code crashes on
+		sites like Groklaw!)
+		
 			gchar* t;
 			if(result == NULL)
 				result = res;
@@ -92,7 +110,7 @@ static gchar *search_links(gchar* data, int type) {
 				g_free(res);
 				g_free(result);
 				result = t;
-			}
+			}*/
 		}
 		tmp = endptr;
 	}
@@ -107,11 +125,13 @@ gchar * html_auto_discover_feed(gchar* data) {
 	res = search_links(data, 0);
 	debug1(DEBUG_UPDATE, "search result: %s", res? res : "none found");
 	f = res? 1 : 0;
-	debug0(DEBUG_UPDATE, "searching through href tags");
-	res = search_links(data, 1);
-	debug1(DEBUG_UPDATE, "search result: %s", res? res : "none found");
-	if(!f) 
-		f = res? 1 : 0;
+	if(!f) {
+		debug0(DEBUG_UPDATE, "searching through href tags");
+		res = search_links(data, 1);
+		debug1(DEBUG_UPDATE, "search result: %s", res? res : "none found");
+		if(!f) 
+			f = res? 1 : 0;
+	}
 
 	if(!f) {
 		ui_show_error_box(_("Feed link auto discovery failed! No feed links found!"));

@@ -99,6 +99,8 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 	gboolean		handled = FALSE;
 	feedHandlerPtr		handler = NULL;
 
+	debug_enter("feed_parse");
+	
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
 		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
@@ -136,7 +138,10 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 	
 	if(!handled) {
 		/* test if we have a HTML page */
-		if(autodiscover && ((NULL != strstr(data, "<html>")) || (NULL != strstr(data, "<HTML>")))) {
+		if(autodiscover && 
+		   ((NULL != strstr(data, "<html>")) || (NULL != strstr(data, "<HTML>")) || 
+		    (NULL != strstr(data, "<html ")) || (NULL != strstr(data, "<HTML "))
+		   )) {
 			/* if yes we should scan for links */
 			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(fp));
 			if(NULL != (source = html_auto_discover_feed(data))) {			
@@ -146,6 +151,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 				request->feedurl = g_strdup(source);				
 				if(NULL != (data = downloadURL(request))) {
 					debug0(DEBUG_UPDATE, "feed link download successful!");
+					feed_set_source(fp, source);
 					handler = feed_parse(fp, data, FALSE);
 					g_free(data);
 				} else {
@@ -161,13 +167,18 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 				debug0(DEBUG_UPDATE, "no feed link found!");
 			}
 		} else {		
+			debug0(DEBUG_UPDATE, "There were errors while parsing a feed!");
 			ui_mainwindow_set_status_bar(_("There were errors while parsing a feed!"));
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type! Please check that it is in a supported format!</p>"));
 		}
+	} else {
+		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(handler));
 	}
 	
 	if(doc != NULL)
 		xmlFreeDoc(doc);
+		
+	debug_exit("feed_parse");
 
 	return handler;
 }

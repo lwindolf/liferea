@@ -868,6 +868,7 @@ char * downloadURL(struct feed_request *request) {
 	int 		i, n = 0;
 	char		*data = NULL;
 
+	debug1(DEBUG_UPDATE, "downloading %s", request->feedurl);
 	request->problem = 0;
 
 	if(NULL != strstr(request->feedurl, "://")) {
@@ -922,6 +923,6 @@ char * downloadURL(struct feed_request *request) {
 		}
 	}
 	request->data = data;
-
+	debug3(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, data: %d", request->lasthttpstatus, request->problem, request->data);
 	return data;
 }
