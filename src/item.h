@@ -30,14 +30,6 @@
 /* item interface						*/
 /* ------------------------------------------------------------ */
 
-#define ITEM_PROP_TITLE			0
-#define ITEM_PROP_READSTATUS		1
-#define ITEM_PROP_DESCRIPTION		2
-#define ITEM_PROP_SOURCE		3
-#define ITEM_PROP_ID			4
-#define ITEM_PROP_TIME			5
-#define ITEM_PROP_TYPE			6
-
 struct feed;
 
 /** An item stores a particular entry in a feed or a search */
@@ -63,10 +55,6 @@ typedef struct item {
 	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
 	struct feed	*sourceFeed;		/**< Pointer to the source feed this item was derived from (used for searches and vfolders) */
 } *itemPtr;
-
-void ui_item_update(itemPtr ip); /* This is in itemlist.c */
-/* Update all items listed. Useful after a display preference change */
-void ui_itemlist_update();
 
 /**
  * Allocates a new item structure.
