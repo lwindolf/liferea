@@ -245,7 +245,7 @@ void feed_save(feedPtr fp) {
 				
 				if(saveMaxCount != CACHE_UNLIMITED &&
 				   saveCount >= saveMaxCount &&
-				   IS_FEED(feed_get_type(fp)) && /* FIXME: Why is this here? Are VFolders going to be saved to the cache? */
+				   fp->fhp != NULL && fp->fhp->directory == FALSE &&
 				   !item_get_mark(ip)) {
 					continue;
 				}
