@@ -1,8 +1,8 @@
 /**
  * @file common.c common routines for Liferea
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004       Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2005  Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004,2005  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
  * parts of the RFC822 timezone decoding were taken from the gmime 
@@ -608,7 +608,7 @@ gchar * common_create_cache_filename( const gchar *folder, const gchar *key, con
 
 static gchar * byte_to_hex(unsigned char nr) {
 	gchar *result = NULL;
-	
+
 	result = g_strdup_printf("%%%x%x", nr / 0x10, nr % 0x10);
 	return result;
 }
@@ -629,7 +629,7 @@ gchar * encode_uri_string(gchar *string) {
 		else if(string[i] == ' ')
 			tmp = g_strdup_printf("%s%%20", newURIString);
 		else if((unsigned char)string[i] <= 127) {
-			tmp = g_strdup_printf(newURIString, hex = byte_to_hex(string[i]));g_free(hex);
+			tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex(string[i]));g_free(hex);
 		} else {
 			bytes = 0;
 			if(((unsigned char)string[i] >= 192) && ((unsigned char)string[i] <= 223))
