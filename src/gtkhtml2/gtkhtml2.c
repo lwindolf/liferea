@@ -51,7 +51,7 @@ static gchar		*selectedURL = NULL;
 
 /* prototypes */
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
-void launch_url(GtkWidget *widget, const gchar *url);
+static void launch_url(GtkWidget *widget, const gchar *url);
 static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane);
 
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {

@@ -172,7 +172,8 @@ void on_popup_allunread_selected(void) {
 /*------------------------------------------------------------------------------*/
 
 void ui_update(void) {
-	
+	if (!lifereaStarted)
+		return;
 	while(gtk_events_pending())
 		gtk_main_iteration();
 }

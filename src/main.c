@@ -42,7 +42,7 @@
 #include "ui_mainwindow.h"
 
 GThread	*mainThread = NULL;
-
+gboolean lifereaStarted = FALSE;
 static void show_help(void) {
 	GString	*str = g_string_new(NULL);
 	
@@ -144,6 +144,7 @@ int main(int argc, char *argv[]) {
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
 
 	gdk_threads_enter();
+	lifereaStarted = TRUE;
 	gtk_main();
 	gdk_threads_leave();
 	

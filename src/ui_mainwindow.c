@@ -87,8 +87,12 @@ void ui_mainwindow_set_mode(gboolean threePane) {
      debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
 	
      if (threePane == TRUE && (itemlist_mode == FALSE || htmlview == NULL)) {
+		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+		ui_update();
 		if (htmlview != NULL)
 			gtk_widget_destroy(htmlview);
+		htmlview = NULL;
+		ui_update();
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
 		htmlview = ui_htmlview_new();
 		gtk_widget_show(htmlview);
@@ -97,8 +101,12 @@ void ui_mainwindow_set_mode(gboolean threePane) {
 		ui_htmlview_set_zoom(htmlview, zoom);
 		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
      } else if (threePane == FALSE && (itemlist_mode == TRUE || htmlview == NULL)) {
+		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+		ui_update();
 		if (htmlview != NULL)
 			gtk_widget_destroy(htmlview);
+		htmlview = NULL;
+		ui_update();
           gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
 		htmlview = ui_htmlview_new();
 		gtk_widget_show(htmlview);

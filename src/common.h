@@ -28,6 +28,8 @@
 
 #define htmlToCDATA(buffer) g_strdup_printf("<![CDATA[%s]]>", buffer)
 
+extern gboolean lifereaStarted;
+
 struct folder;
 
 typedef struct node {
