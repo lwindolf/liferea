@@ -495,10 +495,10 @@ void ui_itemlist_load(nodePtr node, gchar *searchstring) {
        gint sortColumn;
        GtkSortType sortType;
        gboolean sorted = gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(itemstore), &sortColumn, &sortType);
-
+	  
 	  /* free the old itemstore and create a new one */
        gtk_tree_view_set_model(itemlist, NULL);
-
+	  
        ui_itemlist_clear();
        ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
        displayed_node = node;
@@ -518,6 +518,7 @@ void ui_itemlist_load(nodePtr node, gchar *searchstring) {
 		  gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(itemstore), sortColumn, sortType);
 	  
        gtk_tree_view_set_model(itemlist, model);
+	  
 	  ui_itemlist_display();
 	  ui_itemlist_prefocus();
 }

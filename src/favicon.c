@@ -52,6 +52,8 @@ void favicon_load(feedPtr fp) {
 	if(0 == stat((const char*)pngfilename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file (pngfilename, &error);
 		if (pixbuf != NULL) {
+			if (fp->icon != NULL)
+				g_object_unref(fp->icon);
 			fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
 			g_object_unref(pixbuf);
 		} else { /* Error */
@@ -118,8 +120,8 @@ static void favicon_download_request_cb(struct request *request) {
 				g_warning("icon processing error!");
 			favicon_load(fp);
 			gdk_pixbuf_loader_close(loader, NULL);
-			g_object_unref(loader);
 		}
+		g_object_unref(loader);
 		g_free(tmp);
 		ui_feed_update(fp);
 		/* FIXME: why don't we free the request structure? (Lars) */

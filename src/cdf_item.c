@@ -58,6 +58,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
 	if (tmp != NULL)
 		item_set_source(ip, tmp);
+	g_free(tmp);
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {

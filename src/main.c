@@ -229,7 +229,9 @@ int main(int argc, char *argv[]) {
 								  _("Another copy of Liferea was found to be running. Please us it instead. "
 								  "If there is no other copy of Liferea running, please delete the "
 								  "\"~/.liferea/lock\" lock file."));
+		gdk_threads_enter();
 		gtk_dialog_run(GTK_DIALOG (dialog));
+		gdk_threads_leave();
 		gtk_widget_destroy(dialog);
 
 	} else {

@@ -815,6 +815,8 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 		   return the dreaded NULL pointer. */
 		cur_ptr->problem = 1;
 		cur_ptr->netio_error = NET_ERR_URL_INVALID;
+		if (uri != NULL)
+			xmlFreeURI(uri);
 		return NULL;
 	}
 	
@@ -845,6 +847,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 	if ((NetConnect (&my_socket, host, cur_ptr, httpproto, suppressoutput)) != 0) {
 		free (freeme);
 		cur_ptr->problem = 1;
+		xmlFreeURI(uri);
 		return NULL;
 	}
 		
