@@ -75,6 +75,7 @@ GtkWidget* ui_feed_authdialog_new (GtkWindow *parent, feedPtr fp, gint flags) {
 	GtkWidget		*authdialog;
 	struct fp_prop_ui_data	*ui_data;
 	gchar *promptStr;
+	gchar *source = NULL;
 	xmlURIPtr uri;	
 	
 	ui_data = g_new0(struct fp_prop_ui_data, 1);
@@ -86,9 +87,6 @@ GtkWidget* ui_feed_authdialog_new (GtkWindow *parent, feedPtr fp, gint flags) {
 	gtk_window_set_transient_for(GTK_WINDOW(authdialog), GTK_WINDOW(parent));
 	
 	/* Auth check box */
-	promptStr = g_strdup_printf(_("Enter the username and password for \"%s\" (%s):"), feed_get_title(fp), feed_get_source(fp));
-	gtk_label_set_text(GTK_LABEL(lookup_widget(authdialog, "prompt")), promptStr);
-	g_free(promptStr);
 	ui_data->username = lookup_widget(authdialog, "usernameEntry");
 	ui_data->password = lookup_widget(authdialog, "passwordEntry");
 	
@@ -107,14 +105,24 @@ GtkWidget* ui_feed_authdialog_new (GtkWindow *parent, feedPtr fp, gint flags) {
 			xmlFree(uri->user);
 			uri->user = NULL;
 		}
+		xmlFree(uri->user);
+		uri->user = NULL;
+		source = xmlSaveUri(uri);
 		xmlFreeURI(uri);
 	}
+	
+	promptStr = g_strdup_printf(_("Enter the username and password for \"%s\" (%s):"),
+						   feed_get_title(fp), (source != NULL) ? source : _("Unknown source"));
+	gtk_label_set_text(GTK_LABEL(lookup_widget(authdialog, "prompt")), promptStr);
+	g_free(promptStr);
+	if (source != NULL)
+		xmlFree(source);
 	
 	g_signal_connect(G_OBJECT(authdialog), "response",
 				  G_CALLBACK (on_authdialog_response), ui_data);
 	
 	gtk_widget_show_all(authdialog);
-
+	
 	return authdialog;
 }
 
