@@ -563,7 +563,7 @@ void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean
 								   NULL);
 	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
 
-	tuple = (struct file_chooser_tuple*)malloc(sizeof(struct file_chooser_tuple));
+	tuple = (struct file_chooser_tuple*)g_malloc(sizeof(struct file_chooser_tuple));
 	tuple->dialog = dialog;
 	tuple->func = callback;
 	tuple->user_data = user_data;

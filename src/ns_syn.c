@@ -19,6 +19,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <stdlib.h>
 #include "ns_syn.h"
 
 /* you can find the syn module documentation at

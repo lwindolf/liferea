@@ -99,7 +99,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures */
-			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
+			tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"url"));
 			if(NULL != tmp) {
 				ip->metadata = metadata_list_append(ip->metadata, "enclosure", tmp);
 				g_free(tmp);
@@ -141,7 +141,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
-			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
+			tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"url"));
 			if(NULL != tmp) {
 				item_set_real_source_url(ip, tmp);
 				g_free(tmp);

@@ -59,9 +59,9 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 		}
 		
 		if((!xmlStrcasecmp(cur->name, BAD_CAST"logo"))) {
-			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"HREF"));
+			tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
 			if (tmp == NULL)
-				tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"href"));
+				tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
 			if (tmp != NULL) {
 				feed_set_image_url(fp, tmp);
 				g_free(tmp);

@@ -29,6 +29,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 #include "os-support.h"
 #include "../common.h" /* provides strsep */
 

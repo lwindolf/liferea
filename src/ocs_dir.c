@@ -342,7 +342,7 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 					   a new format for the actual channel */
 					if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 						new_fp = g_new0(struct format, 1);
-						new_fp->source = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"about"));
+						new_fp->source = utf8_fix(xmlGetProp(cur, BAD_CAST"about"));
 						parseFormatEntry(new_fp, cur);
 						dep->formats = g_slist_append(dep->formats, (gpointer)new_fp);
 					}		
@@ -412,7 +412,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 					   means a new channel description */
 					if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 						new_dep = g_new0(struct dirEntry, 1);
-						new_dep->source = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"about"));
+						new_dep->source = utf8_fix(xmlGetProp(cur, BAD_CAST"about"));
 						new_dep->dp = dp;
 						ip = parse04DirectoryEntry(new_dep, cur);
 						feed_add_item(fp, ip);
@@ -477,7 +477,7 @@ static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
 			/* handling OCS 0.5 channel tag... */
 			else if(!xmlStrcmp(cur->name, BAD_CAST"channel")) {
 				new_dep = g_new0(struct dirEntry, 1);
-				new_dep->source = utf8_fix(xmlGetNoNsProp(cur, "about"));
+				new_dep->source = utf8_fix(xmlGetProp(cur, "about"));
 				new_dep->dp = dp;					
 				feed_add_item(fp, parse05DirectoryEntry(new_dep, cur));
 			}

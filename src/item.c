@@ -22,6 +22,7 @@
 #include <glib.h>
 #include <time.h>
 #include <string.h> /* For memset() */
+#include <stdlib.h>
 
 #include "cdf_item.h"
 #include "rss_item.h"

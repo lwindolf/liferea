@@ -30,6 +30,7 @@
 #define _XOPEN_SOURCE /* glibc2 needs this (man strptime) */
 #include <config.h>
 
+#include <libxml/xmlerror.h>
 #include <libxml/uri.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>

@@ -94,7 +94,7 @@ static gboolean is_gconf_error(GError **err) {
 /* called once on startup */
 void conf_init() {
 	int	ualength;
-	char	*lang;
+	const char	*lang;
 	
 	/* have to be called for multithreaded programs */
 	xmlInitParser();
@@ -105,8 +105,8 @@ void conf_init() {
 	/* Construct the User-Agent string of Liferea. This is done here in program init,
 	   because we need to do it exactly once and it will never change while the program
 	   is running. */
-	if (getenv("LANG") != NULL) {
-		lang = getenv("LANG");
+	if (g_getenv("LANG") != NULL) {
+		lang = g_getenv("LANG");
 		/* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
 		ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(lang) + 2 + strlen(OSNAME)+2 + strlen(HOMEPAGE) + 2;
 		useragent = g_malloc(ualength);

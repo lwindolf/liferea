@@ -25,6 +25,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h> /* For unlink() */
+#include <stdlib.h>
 
 #include "conf.h"
 #include "common.h"

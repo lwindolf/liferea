@@ -53,7 +53,7 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	ret = NULL;
 	
 	/* determine encoding mode */
-	mode = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"mode"));
+	mode = utf8_fix(xmlGetProp(cur, BAD_CAST"mode"));
 	if(NULL != mode) {
 		if(!strcmp(mode, "escaped")) {
 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
@@ -74,7 +74,7 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	} else {
 		/* some feeds don'ts specify a mode but a MIME 
 		   type in the type attribute... */
-		type = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"type"));			
+		type = utf8_fix(xmlGetProp(cur, BAD_CAST"type"));
 		/* not sure what MIME types are necessary... */
 		if((NULL == type) ||
 		   !strcmp(type, "text/html") ||
