@@ -88,10 +88,9 @@ void on_popup_foldername_selected(gpointer callback_data,
 	folderPtr folder = (folderPtr)callback_data;
 	GtkWidget	*foldernameentry;
 	gchar 		*title;
-	GtkTreeIter	*iter;
 	
 	g_assert(folder);
-	g_assert(folder->type == FST_FOLDER);
+	g_assert(IS_FOLDER(folder->type));
 	
 	if(NULL == foldernamedialog || !G_IS_OBJECT(foldernamedialog))
 		foldernamedialog = create_foldernamedialog();
@@ -102,7 +101,6 @@ void on_popup_foldername_selected(gpointer callback_data,
 	activeFolder = folder;
 
 	gtk_widget_show(foldernamedialog);
-	g_free(iter);
 }
 
 void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data) {
@@ -132,7 +130,7 @@ void on_popup_removefolder_selected(gpointer callback_data,
 	folderPtr		folder = (folderPtr)callback_data;
 	
 	g_assert(folder);
-	g_assert(folder->type == FST_FOLDER);
+	g_assert(IS_FOLDER(folder->type));
 	
 	if(folder_is_empty(folder))
 		folder_free(folder);
