@@ -589,7 +589,7 @@ static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
 		
 		/* Add http:// if needed */
 		if (strstr(str, "://") == NULL) {
-			tmp2 = g_strdup_printf("http://%s",tmp2);
+			tmp2 = g_strdup_printf("http://%s",str);
 			g_free(str);
 			str = tmp2;
 		}
