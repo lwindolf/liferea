@@ -95,7 +95,7 @@ struct displayset {
 
 #define UPDATE_ERROR_START	"<table cellspacing=\"0\" class=\"httperror\"><tr><td class=\"httperror\">"
 #define HTTP_ERROR_TEXT		_("The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>")
-#define PARSE_ERROR_TEXT	_("There were errors while parsing this feed. The following error occured:<br><b>%s</b>")
+#define PARSE_ERROR_TEXT	_("There were errors while parsing this feed. The following error occurred:<br><b>%s</b>")
 #define HTTP410_ERROR_TEXT	_("This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.")
 #define UPDATE_ERROR_END	"</td></tr></table>"
 

@@ -35,7 +35,7 @@
 /**
  * Creates a new error description according to the passed
  * HTTP status and the feeds parser errors. If the HTTP
- * status is a success status and no parser errors occured
+ * status is a success status and no parser errors occurred
  * no error messages is created. The created error message 
  * can be queried with feed_get_error_description().
  *

@@ -74,7 +74,7 @@ extern char *useragent;
  * Returns
  *
  *	0	Socket is ready
- *	-1	Error occured (netio_error is set)
+ *	-1	Error occurred (netio_error is set)
  */
 int NetPoll (struct feed_request * cur_ptr, int * my_socket, int rw) {
 	fd_set rfdsr;
