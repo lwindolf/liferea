@@ -14,7 +14,7 @@ BuildRequires: 	GConf2-devel
 BuildRequires: 	gettext
 BuildRequires: 	libtool
 BuildRequires: 	pkgconfig
-Requires: 	gtk2 >= 2.0.0, libxml2
+Requires: 	gtk2 >= 2.4.0, libxml2
 Prereq:		GConf2
 
 %description

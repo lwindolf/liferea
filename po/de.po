@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-11-01 02:08+0100\n"
-"PO-Revision-Date: 2004-11-03 02:12+0100\n"
+"PO-Revision-Date: 2004-11-14 23:38+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -1533,7 +1533,6 @@ msgid "Cannot load HTML widget module (%s)!"
 msgstr "Kann HTML-Widget Modul (%s) nicht laden!"
 
 #. now we determine a list of all available modules
-#. one just in case there was no configured module
 #: src/ui_htmlview.c:127
 #, c-format
 msgid "Available browser modules (%s):\n"
@@ -1653,11 +1652,10 @@ msgid "Edit preferences."
 msgstr "Einstellungen ändern"
 
 #. addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
-#. "feed list. There are already default lists for English, French, German "
 #. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
 #: src/ui_mainwindow.c:194
 msgid "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you can add new subscriptions and select subscriptions to read their headlines. The right side either displays a list of the headlines of the selected subscription and a pane to view the selected headline or all headlines at once if condensed mode is selected.</p><h3>Basic Actions</h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the selected folder. To create a new subscription enter the feed URL or if you don't know it the URL of the website which provides the feed.</p></li><li><p><b>Update Subscription</b> - This will update the subscription you selected. You may want to do this if you want to immediatly check a subscription for updates. Usually it is adequate to rely on the auto updating according to the update interval of the subscription.</p></li><li><p><b>Update All</b> - This will update all your subscriptions at once. Again usually it is adequate to rely on the auto updating.</li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to change the update interval, title, authentication or caching properties of a subscription.</p></li></ul><p>To learn more about Liferea you should read the documentation provided in the help feed or in the <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</a> available at the <a href=\"http://liferea.sf.net\">project homepage</a>.</p>"
-msgstr "<h2>Willkommen bei Liferea</h2><p>Im linken Fensterbereich findet sich die Liste der abonnierten Feeds. Auf der rechten Seite wird entweder eine Liste von Schlagzeilen zusammen mit der Ansicht der gerade in dieser Liste ausgewählten Schlagzeile oder alle Schlagzeilen auf einmal dargestellt.</p><h3>grundlegende Aktionen</h3><ul><li><p><b>Neues Abonnement</b> - Erzeugen ein neues Abonnement im ausgewählten Ordner. Für ein neues Abonnement muß nur die URL des Feeds bekannt sein. Alternativ kann bei Angabe der Webseite des Feeds automatisch nach dem Feed gesucht werden.</p></li><li><p><b>Abonnement aktualisieren</b> - Aktualisieren des ausgewählten Abonnements. Dies kann sinnvoll sein wenn man sofort auf neue Schlagzeilen prüfen möchte. Ansonsten ist es ausreichend sich auf das automatische Aktualisieren des Abonnements zu verlassen. Dabei wird gemäß des konfigurierten Update-Intervalls aktualisiert.</p></li><li><p><b>Alle aktualisieren</b> - Es ist auch möglich alle Feeds auf einmal zu aktualisieren. Normalerweise ist es allerdings ausreichend sich auf das automatische Aktualisieren zu verlassen.</p></li></ul><p>Um mehr über Liferea zu lernen sollte man die Dokumentation in den Hilfe-Feeds oder auch die FAQ auf der Projekt-Homepage lesen.</p>"
+msgstr "<h2>Willkommen bei Liferea</h2><p>Im linken Fensterbereich findet sich die Liste der abonnierten Feeds. Auf der rechten Seite wird entweder eine Liste von Schlagzeilen zusammen mit der Ansicht der gerade in dieser Liste ausgewählten Schlagzeile oder alle Schlagzeilen auf einmal dargestellt.</p><h3>grundlegende Aktionen</h3><ul><li><p><b>Neues Abonnement</b> - Erzeugt ein neues Abonnement im ausgewählten Ordner. Für ein neues Abonnement muß nur die URL des Feeds bekannt sein. Alternativ kann bei Angabe der Webseite des Feeds automatisch nach dem Feed gesucht werden.</p></li><li><p><b>Abonnement aktualisieren</b> - Aktualisieren des ausgewählten Abonnements. Dies kann sinnvoll sein wenn man sofort auf neue Schlagzeilen prüfen möchte. Ansonsten ist es ausreichend sich auf das automatische Aktualisieren des Abonnements zu verlassen. Dabei wird gemäß des konfigurierten Update-Intervalls aktualisiert.</p></li><li><p><b>Alle aktualisieren</b> - Es ist auch möglich alle Feeds auf einmal zu aktualisieren. Normalerweise ist es allerdings ausreichend sich auf das automatische Aktualisieren zu verlassen.</p></li></ul><p>Um mehr über Liferea zu lernen sollte man die Dokumentation in den Hilfe-Feeds oder auch die <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</a> auf der <a href=\"http://liferea.sf.net\">Projekt-Homepage</a> lesen.</p>"
 
 #: src/ui_mainwindow.c:272
 msgid "Liferea is now online"

@@ -15,6 +15,8 @@
 	  (Lars Lindner)
 	* Keyboard focus is adjusted on "Next Unread".
 	  (Lars Lindner)
+	* GTK+ dependency raised to 2.4 to drop the included
+	  GtkTreeModelFilter source. (Lars Lindner)
 	
 	Bugfixes:
 

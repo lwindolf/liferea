@@ -331,11 +331,9 @@ void ui_itemlist_display(void) {
 	gchar		*buffer = NULL;
 	gboolean	valid;
 	gchar		*tmp = NULL;
-
-	g_assert(NULL != mainwindow);
 	
-	if(TRUE == ui_itemlist_get_two_pane_mode()) {
-		if(np = ui_feedlist_get_selected()) {
+	if(np = ui_feedlist_get_selected()) {
+		if(TRUE == ui_itemlist_get_two_pane_mode()) {
 			/* two pane mode */
 			ui_htmlview_start_output(&buffer, FALSE);
 			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
@@ -357,15 +355,13 @@ void ui_itemlist_display(void) {
 
 				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 			}
-		ui_htmlview_finish_output(&buffer);
-		}
-	} else {
-		/* we only update anything if the feedlist is focussed */
-		if(lookup_widget(mainwindow, "feedlist") == gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
-			/* three pane mode */
+			ui_htmlview_finish_output(&buffer);
+		} else {
+			/* we only update anything if the feedlist is focussed */
+			if(lookup_widget(mainwindow, "feedlist") == gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
+				/* three pane mode */
 
-			/* display feed info */
-			if(np = ui_feedlist_get_selected()) {
+				/* display feed info */
 				ui_htmlview_start_output(&buffer, TRUE);
 				if((FST_FEED == np->type) || 
 				   (FST_VFOLDER == np->type)) {
@@ -374,17 +370,17 @@ void ui_itemlist_display(void) {
 					g_free(tmp);
 				}
 				ui_htmlview_finish_output(&buffer);
+
+				/* we never overwrite the last selected items contents
+				   item reselections trigger new content printing via
+				   item selection changed callback */
+
+				/* no scrolling reset, because this code should only be
+				   triggered for redraw purposes! */
 			}
-
-			/* we never overwrite the last selected items contents
-			   item reselections trigger new content printing via
-			   item selection changed callback */
-
-			/* no scrolling reset, because this code should only be
-			   triggered for redraw purposes! */
 		}
 	}
-		
+	
 	if(buffer) {
 		if(np != NULL &&
 		   (FST_FEED == np->type) &&

@@ -176,7 +176,7 @@ fi
 AM_GCONF_SOURCE_2
 
 dnl hmm... I really have no clue which versions are neccessary!
-pkg_modules="	gtk+-2.0 >= 2.0.0 
+pkg_modules="	gtk+-2.0 >= 2.4.0 
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.4.1 
 		gmodule-2.0 >= 2.0.0"

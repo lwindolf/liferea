@@ -26,7 +26,7 @@
 #include <fcntl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include "guitreemodelfilter.h"
+/*#include "guitreemodelfilter.h"*/
 #include "support.h"
 #include "interface.h"
 #include "callbacks.h"
@@ -110,7 +110,7 @@ folderPtr ui_feedlist_get_target_folder(int *pos) {
 	}
 
 	if(filter_feeds_without_unread_headlines) {
-		gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &iter, &((ui_data*)(ptr->ui_data))->row);
+		gtk_tree_model_filter_convert_child_iter_to_iter(GTK_TREE_MODEL_FILTER(filter), &iter, &((ui_data*)(ptr->ui_data))->row);
 	} else {
 		iter = ((ui_data*)(ptr->ui_data))->row;
 	}
@@ -160,7 +160,7 @@ void ui_feedlist_update_iter(GtkTreeIter *iter) {
 	ui_feedlist_update_(iter);
 
 	if(filter_feeds_without_unread_headlines)
-		gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
+		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(filter));
 		
 	ui_redraw_widget("feedlist");
 }
@@ -257,9 +257,9 @@ void ui_feedlist_set_model(GtkTreeView *feedview, GtkTreeStore *feedstore, gbool
 	GtkTreeModel	*model;
 		
 	if(filtered) {
-		filter = gui_tree_model_filter_new(GTK_TREE_MODEL(feedstore), NULL);
+		filter = gtk_tree_model_filter_new(GTK_TREE_MODEL(feedstore), NULL);
 
-		gui_tree_model_filter_set_visible_func(GUI_TREE_MODEL_FILTER(filter),
+		gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(filter),
 	        	                               filter_visible_function,
 	                	                       NULL,
 	                        	               NULL);
@@ -352,7 +352,7 @@ void ui_feedlist_select(nodePtr np) {
 		}
 		
 		if(filter_feeds_without_unread_headlines) {
-			gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &iter, &((ui_data*)(np->ui_data))->row);
+			gtk_tree_model_filter_convert_child_iter_to_iter(GTK_TREE_MODEL_FILTER(filter), &iter, &((ui_data*)(np->ui_data))->row);
 			path = gtk_tree_model_get_path(GTK_TREE_MODEL(filter), &iter);
 		} else {
 			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &((ui_data*)(np->ui_data))->row);
@@ -390,7 +390,7 @@ feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
 			return NULL;	/* avoid unneccessary traversals */
 
 		if(filter_feeds_without_unread_headlines) {
-			gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &iter2, &((ui_data*)(folder->ui_data))->row);
+			gtk_tree_model_filter_convert_child_iter_to_iter(GTK_TREE_MODEL_FILTER(filter), &iter2, &((ui_data*)(folder->ui_data))->row);
 		} else {
 			iter2 = ((ui_data*)(folder->ui_data))->row;
 		}
@@ -481,7 +481,7 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 	
 	if(filter_feeds_without_unread_headlines) {
 		ui_mainwindow_set_status_bar(_("Note: Using the subscriptions filter disables drag & drop"));
-		gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
+		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(filter));
 	}
 }
 
