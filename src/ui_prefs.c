@@ -415,7 +415,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 void on_trayiconoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
 	setBooleanConfValue(SHOW_TRAY_ICON, enabled);
-	ui_tray_enable(enabled);
 }
 
 void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {

@@ -61,6 +61,7 @@ int	proxyport = 0;
 
 /* Function prototypes */
 static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
+static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
 
 static gchar * build_path_str(gchar *str1, gchar *str2) {
 	gchar	*gconfpath;
@@ -120,6 +121,7 @@ void conf_init() {
 		gconf_client_add_dir(client, "/system/http_proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
 	}
 	gconf_client_notify_add(client, "/system/http_proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
+	gconf_client_notify_add(client, SHOW_TRAY_ICON, conf_tray_settings_cb, NULL, NULL, NULL);
 	
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb(NULL, 0, NULL, NULL);
@@ -133,6 +135,16 @@ void conf_load() {
 	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
 		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
 }
+
+static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
+	GConfValue *value;
+	if (entry != NULL) {
+		value = gconf_entry_get_value(entry);
+		if (value->type == GCONF_VALUE_BOOL)
+			ui_tray_enable(gconf_value_get_bool(value));
+	}
+}
+
 
 static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
 	gchar	*tmp;

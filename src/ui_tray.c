@@ -123,17 +123,16 @@ static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayI
 
 static void installTrayIcon(void) {
 	g_assert(!tray_icon);
-	if(getBooleanConfValue(SHOW_TRAY_ICON)) {
-		tray_icon = egg_tray_icon_new(PACKAGE);
-		eventbox = gtk_event_box_new();
-		
-		g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
-		gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
-		
-		tray_icon_tips = gtk_tooltips_new();
-		newItems = -1;
-		ui_tray_zero_new();
-	}
+	
+	tray_icon = egg_tray_icon_new(PACKAGE);
+	eventbox = gtk_event_box_new();
+	
+	g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
+	gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
+	
+	tray_icon_tips = gtk_tooltips_new();
+	newItems = -1;
+	ui_tray_zero_new();
 }
 
 void ui_tray_enable(gboolean enabled) {
