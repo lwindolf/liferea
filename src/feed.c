@@ -275,7 +275,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	
 	while(1) {	
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error wile reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
+			print_status(g_strdup_printf(_("XML error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
 			break;
 		} 
 

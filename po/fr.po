@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-05 00:04+0100\n"
+"POT-Creation-Date: 2003-12-12 15:58+0100\n"
 "PO-Revision-Date: 2003-10-21 14:13+0200\n"
 "Last-Translator: Stephane Jourdanéphane Jourdan <stephane.jourdan@itris.fr>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
@@ -24,55 +24,59 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Fichier pixmap %s introuvable."
 
-#: src/callbacks.c:170
-msgid "entry list widget lookup failed!\n"
-msgstr "Recherche du widget de la liste d'entrées echouée !\n"
-
-#: src/callbacks.c:175
-msgid "could not retrieve selection of entry list!"
-msgstr "Impossible de rappatrier la sélection de la liste des entrées !"
-
-#: src/callbacks.c:215 src/callbacks.c:362 src/callbacks.c:400
-#, fuzzy
-msgid "You have to select a feed entry!"
-msgstr "Vous ne pouvez pas effacer les canaux d'aide !"
-
-#: src/callbacks.c:338
+#: src/callbacks.c:132
 msgid ""
 "You have disabled both the menubar and the toolbar. Without one of these you "
 "won't be able to access all program functions. I'll reenable the toolbar!"
 msgstr ""
 
-#: src/callbacks.c:368
+#: src/callbacks.c:178
+msgid "entry list widget lookup failed!\n"
+msgstr "Recherche du widget de la liste d'entrées echouée !\n"
+
+#: src/callbacks.c:183
+msgid "could not retrieve selection of entry list!"
+msgstr "Impossible de rappatrier la sélection de la liste des entrées !"
+
+#: src/callbacks.c:199
+msgid "fatal! selected feed entry has no key!!!"
+msgstr ""
+
+#: src/callbacks.c:239 src/callbacks.c:377 src/callbacks.c:415
+#, fuzzy
+msgid "You have to select a feed entry!"
+msgstr "Vous ne pouvez pas effacer les canaux d'aide !"
+
+#: src/callbacks.c:383
 msgid "You can't delete help feeds!"
 msgstr "Vous ne pouvez pas effacer les canaux d'aide !"
 
-#: src/callbacks.c:372
+#: src/callbacks.c:387
 msgid "Deleting entry"
 msgstr "Efface l'entrée"
 
-#: src/callbacks.c:382
+#: src/callbacks.c:397
 msgid "It seems like there is no selected feed entry!"
 msgstr ""
 
-#: src/callbacks.c:435
+#: src/callbacks.c:450
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr ""
 "Le fournisseur de ce canal suggère un intervalle de mise à jour de %d "
 "minutes."
 
-#: src/callbacks.c:437
+#: src/callbacks.c:452
 msgid "This feed specifies no default update interval."
 msgstr "Ce canal ne spécifie aucun intervalle de mise à jour."
 
-#: src/callbacks.c:480
+#: src/callbacks.c:495
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 "Erreur interne ! Aucun canal sélectionné, mais changement dans les "
 "propriétés demandés ... \n"
 
-#: src/callbacks.c:544
+#: src/callbacks.c:559
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -87,97 +91,112 @@ msgstr ""
 "Vous pouvez retenter le téléchargement ou enlever l'abonnement au canal via "
 "le menu contextuel dans la liste des canaux.\n"
 
-#: src/callbacks.c:599
+#: src/callbacks.c:613
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 "Erreur interne ! Type sélectionné invalide ! Cela ne devrait jamais "
 "arriver !\n"
 
-#: src/callbacks.c:624 src/export.c:205 src/export.c:218
+#: src/callbacks.c:638 src/export.c:220 src/export.c:233
 #, fuzzy
 msgid "internal error! could not find file dialog select button!"
 msgstr ""
 "Erreur interne ! Impossible de trouver la vue en arborescence des canaux !\n"
 
-#: src/callbacks.c:654 src/export.c:98
+#: src/callbacks.c:668 src/export.c:123
 msgid "internal error! could not get a new folder key!"
 msgstr "Erreur interne ! Impossible d'obtenir une clé de nouveau répertoire !"
 
-#: src/callbacks.c:663 src/callbacks.c:703
+#: src/callbacks.c:677 src/callbacks.c:717
 msgid "You have to select a folder entry!"
 msgstr ""
 
-#: src/callbacks.c:729 src/callbacks.c:732
+#: src/callbacks.c:743 src/callbacks.c:746
 msgid "A folder must be empty to delete it!"
 msgstr "Un répertoire doit être vide pour être effacé !"
 
-#: src/callbacks.c:735
+#: src/callbacks.c:749
 msgid "Error: Cannot determine folder key!"
 msgstr "Erreur : Impossible de déterminer la clé du répertoire !"
 
-#: src/callbacks.c:777 src/callbacks.c:921
+#: src/callbacks.c:791 src/callbacks.c:935
 msgid "could not retrieve selection of item list!"
 msgstr "Impossible de rappatrier la sélection de la liste des entrées."
 
-#: src/callbacks.c:810
+#: src/callbacks.c:824
 msgid "item list widget lookup failed!\n"
 msgstr "Recherche du widget de la liste des entrées échouée ! \n"
 
-#: src/callbacks.c:820
+#: src/callbacks.c:834
 msgid "could not retrieve selection of item list!\n"
 msgstr "Impossible de rappatrier la sélection dans la liste des entrées !\n"
 
-#: src/callbacks.c:916
+#: src/callbacks.c:930
 #, fuzzy
 msgid "could not find item list widget!"
 msgstr "Impossible de rappatrier la sélection de la liste des entrées."
 
-#: src/callbacks.c:1014 src/callbacks.c:1055
+#: src/callbacks.c:1028 src/callbacks.c:1069
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Erreur interne ! Impossible de charger la sélection en arborescence des "
 "canaux !\n"
 
-#: src/callbacks.c:1016 src/callbacks.c:1057
+#: src/callbacks.c:1030 src/callbacks.c:1071
 #, fuzzy
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr ""
 "Erreur interne ! Impossible de trouver la vue en arborescence des canaux !\n"
 
-#: src/callbacks.c:1084
+#: src/callbacks.c:1098
 msgid "There are no unread items!"
 msgstr ""
 
-#: src/callbacks.c:1201
+#: src/callbacks.c:1215
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "Erreur interne ! Type d'entrée inconnu ! Impossible d'afficher l'icône "
 "appropriée !\n"
 
-#: src/callbacks.c:1344
+#: src/callbacks.c:1358
 msgid "Date"
 msgstr "Date"
 
-#: src/callbacks.c:1352
+#: src/callbacks.c:1366
 msgid "Headline"
 msgstr "Gros titre"
 
-#: src/callbacks.c:1500
+#: src/callbacks.c:1465
+#, c-format
+msgid "\"%s\" updated..."
+msgstr ""
+
+#: src/callbacks.c:1473
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated."
+msgstr ""
+
+#: src/callbacks.c:1492
+#, c-format
+msgid "\"%s\" is not available!"
+msgstr ""
+
+#: src/callbacks.c:1530
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr ""
 "Désolé, Liferea ne supporte pas encore le glisser-déposer des répertoires !"
 
-#: src/callbacks.c:1509
+#: src/callbacks.c:1539
 msgid "you cannot modify the special help folder contents!"
 msgstr "Vous ne pouvez pas modifier le contenu du répertoire spécial d'aide !"
 
-#: src/callbacks.c:1622
+#: src/callbacks.c:1654
 #, fuzzy
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr ""
 "Erreur interne ! Requète d'affichage d'une entrée pour un pointeur NULL !"
 
-#: src/cdf_channel.c:106 src/cdf_item.c:52 src/common.c:150 src/item.c:137
+#: src/cdf_channel.c:106 src/cdf_item.c:52 src/common.c:152 src/item.c:137
 #: src/ns_dc.c:225 src/ns_dc.c:275 src/ns_dc.c:318 src/ns_dc.c:358
 #: src/ns_dc.c:400 src/ns_ocs.c:73 src/pie_entry.c:107 src/pie_feed.c:168
 #: src/rss_channel.c:219 src/rss_channel.c:267 src/rss_channel.c:301
@@ -194,7 +213,7 @@ msgstr ""
 msgid "XML error wile reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 
-#: src/cdf_channel.c:180 src/pie_feed.c:230 src/rss_channel.c:352
+#: src/cdf_channel.c:180 src/pie_feed.c:230
 msgid "Empty document! Feed was not added!"
 msgstr ""
 
@@ -204,32 +223,43 @@ msgstr ""
 msgid "not enough memory!"
 msgstr ""
 
-#: src/common.c:115
+#: src/common.c:117
 msgid "conversion wasn't successful.\n"
 msgstr ""
 
-#: src/common.c:117
+#: src/common.c:119
 #, c-format
 msgid "conversion wasn't successful. converted: %i octets.\n"
 msgstr ""
 
-#: src/common.c:127
+#: src/common.c:129
 msgid "not enough memory\n"
 msgstr ""
 
-#: src/common.c:245
+#: src/common.c:255 src/common.c:309
 #, fuzzy
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr ""
 "Erreur interne ! Impossible de trouver la vue en arborescence des canaux !\n"
 
-#: src/common.c:248
-msgid "Invalid date format! Ignoring <dc:date> information!\n"
+#: src/common.c:258
+msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr ""
 
-#: src/common.c:316
+#: src/common.c:313
+msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
+msgstr ""
+
+#: src/common.c:381
 #, c-format
 msgid "Cannot create cache directory %s!"
+msgstr ""
+
+#: src/common.c:470 src/common.c:477 src/common.c:486 src/common.c:495
+#: src/common.c:504
+msgid ""
+"Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
+"characters were dropped!"
 msgstr ""
 
 #: src/conf.c:164
@@ -295,11 +325,11 @@ msgstr ""
 msgid "ERROR: Unsupported flags %d\n"
 msgstr ""
 
-#: src/export.c:70 src/feed.c:236
+#: src/export.c:70 src/feed.c:233
 msgid "could not create XML feed node for feed cache document!"
 msgstr ""
 
-#: src/export.c:74 src/feed.c:240
+#: src/export.c:74 src/feed.c:237
 #, fuzzy
 msgid "could not create XML document!"
 msgstr "Imposible d'allouer de la mémoire !"
@@ -313,93 +343,103 @@ msgid "Feed List exported!"
 msgstr ""
 
 #. create a new import folder
-#: src/export.c:93
+#: src/export.c:118
 #, fuzzy
 msgid "imported feed list"
 msgstr "Mise à jour"
 
-#: src/export.c:107 src/feed.c:295
+#: src/export.c:132 src/feed.c:278
 #, c-format
 msgid ""
 "XML error wile reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/export.c:112
+#: src/export.c:137
 msgid "Empty document! OPML document should not be empty..."
 msgstr ""
 
-#: src/export.c:120
+#: src/export.c:145
 #, c-format
 msgid "\"%s\" is no valid cache file! Cannot read OPML file!"
 msgstr ""
 
-#: src/feed.c:226
+#: src/favicon.c:413
+#, fuzzy, c-format
+msgid "Could not delete icon file %s! Please remove manually!"
+msgstr ""
+"Impossible de détecter le type de canal ! Veuillez sélectionner manuellement "
+"le type du canal."
+
+#: src/feed.c:223
 msgid "could not write XML item node!\n"
 msgstr ""
 
 #. we must save here to save changed read flags
-#: src/feed.c:260
+#: src/feed.c:257
 msgid "saving all feeds..."
 msgstr ""
 
-#: src/feed.c:300
+#: src/feed.c:283
 msgid "Empty document! Feed cache file should not be empty..."
 msgstr ""
 
-#: src/feed.c:308
+#: src/feed.c:291
 #, c-format
 msgid "\"%s\" is no valid cache file! Cannot read cache file!"
 msgstr ""
 
 #. if necessary download and detect type
 #. FIXME: pass fp to adjust URL
-#: src/feed.c:408
-msgid "Could not detect feed type! Please manually select a feed type."
+#: src/feed.c:391
+#, fuzzy, c-format
+msgid ""
+"Could not detect feed type of \"%s\"! Please manually select a feed type."
 msgstr ""
 "Impossible de détecter le type de canal ! Veuillez sélectionner manuellement "
 "le type du canal."
 
-#: src/feed.c:427
+#: src/feed.c:412
 #, fuzzy
 msgid "internal error! unknown feed type in newFeed()!"
 msgstr ""
 "Erreur interne ! Impossible de trouver la vue en arborescence des canaux !\n"
 
-#: src/feed.c:470
+#: src/feed.c:455
 #, fuzzy
 msgid "error! could not add feed to configuration!\n"
 msgstr ""
 "Erreur interne ! Impossible de charger la sélection en arborescence des "
 "canaux !\n"
 
-#: src/feed.c:589
+#: src/feed.c:575
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr ""
 
-#: src/feed.c:591
+#: src/feed.c:577
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr ""
 
-#: src/feed.c:623
+#: src/feed.c:612
 #, fuzzy, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
 "Impossible de détecter le type de canal ! Veuillez sélectionner manuellement "
 "le type du canal."
 
-#: src/feed.c:647
+#: src/feed.c:639
 #, fuzzy
 msgid "updating all feeds..."
 msgstr "Mise à jour"
 
-#: src/feed.c:672
+#: src/feed.c:664
 #, fuzzy, c-format
 msgid "internal error! there is no feed assigned to feedkey %s!"
 msgstr "Erreur interne ! Impossible d'obtenir une clé de nouveau répertoire !"
 
 #: src/folder.c:72 src/folder.c:89 src/folder.c:112 src/folder.c:186
+#: src/folder.c:258
 #, fuzzy
 msgid "internal error! could not determine folder key!"
 msgstr "Erreur interne ! Impossible d'obtenir une clé de nouveau répertoire !"
@@ -408,12 +448,12 @@ msgstr "Erreur interne ! Impossible d'obtenir une clé de nouveau répertoire !"
 msgid "(empty)"
 msgstr ""
 
-#: src/folder.c:309
+#: src/folder.c:354
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr ""
 
-#: src/htmlview.c:401
+#: src/htmlview.c:400
 #, c-format
 msgid ""
 "There is no %%s URL place holder in the browser command string you specified "
@@ -511,82 +551,77 @@ msgid "_Toggle Condensed View"
 msgstr ""
 
 #: src/interface.c:296
-#, fuzzy
-msgid "Search In All Items"
-msgstr "Chercher dans les canaux"
-
-#: src/interface.c:307
 msgid "Next Unread Item"
 msgstr ""
 
-#: src/interface.c:318 src/interface.c:389
+#: src/interface.c:307 src/interface.c:378
 msgid "Search"
 msgstr "Chercher"
 
-#: src/interface.c:325
+#: src/interface.c:314
 msgid "Toggle Search Box"
 msgstr ""
 
-#: src/interface.c:328
+#: src/interface.c:317
 msgid "Shows or hides the search box."
 msgstr ""
 
-#: src/interface.c:334
+#: src/interface.c:323
 #, fuzzy
 msgid "Search with Feedster"
 msgstr "Chercher dans les canaux"
 
-#: src/interface.c:337
+#: src/interface.c:326
 msgid "Create a Feedster search feed."
 msgstr ""
 
-#: src/interface.c:351
+#: src/interface.c:340
 msgid "Update feeds"
 msgstr "Mise à jour"
 
-#: src/interface.c:367
+#: src/interface.c:356
 msgid "Update"
 msgstr "Mise à jour"
 
-#: src/interface.c:373
+#: src/interface.c:362
 msgid "Search in feeds"
 msgstr "Chercher dans les canaux"
 
-#: src/interface.c:395
+#: src/interface.c:384
 msgid "Edit preferences"
 msgstr "Editer les préférences"
 
-#: src/interface.c:423
+#: src/interface.c:412
 msgid "Search for"
 msgstr "Chercher"
 
-#: src/interface.c:431
+#: src/interface.c:429
 msgid "create VFolder"
 msgstr "créer un VFolder"
 
-#: src/interface.c:434
+#: src/interface.c:432
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr ""
 "sauver cette recherche comme un VFolder, qui apparaitra dans la liste des "
 "canaux"
 
-#: src/interface.c:439
+#: src/interface.c:437
 msgid "Close search"
 msgstr "Fermer la recherche"
 
-#: src/interface.c:473
+#: src/interface.c:471
 msgid "single item view"
 msgstr "Vue à simple entrée"
 
-#: src/interface.c:482
+#: src/interface.c:480
 msgid "condensed item list"
 msgstr "Liste des entrées compacte."
 
-#: src/interface.c:715
+#: src/interface.c:713
 msgid "Subscription Properties"
 msgstr "Propriétés des abonnements"
 
-#: src/interface.c:736
+#: src/interface.c:734
 msgid ""
 "Edit the following entries to adjust the feed source URL or\n"
 "the feed title, which is displayed in the feed list."
@@ -594,11 +629,11 @@ msgstr ""
 "Editer les entrées suivantes pour ajuster l'adresse ou\n"
 " le titre du canal, qui est affiché dans la liste des canaux."
 
-#: src/interface.c:749
+#: src/interface.c:747
 msgid "Feed Title"
 msgstr "Titre du canal"
 
-#: src/interface.c:761
+#: src/interface.c:759
 msgid ""
 "either leave the name supplied by the feed or enter an alternative name "
 "which you like to be listed in the feed list"
@@ -606,23 +641,23 @@ msgstr ""
 "Entrez un nom ou conservez celui apporté par le canal pour l'affichage dans "
 "la liste des canaux."
 
-#: src/interface.c:768
+#: src/interface.c:766
 msgid "enter the URL the feed should be loaded from"
 msgstr "entrer l'adresse du canal qui doit etre chargé"
 
-#: src/interface.c:770 src/interface.c:942
+#: src/interface.c:768 src/interface.c:940
 msgid "Feed URL"
 msgstr "Adresse du canal"
 
-#: src/interface.c:777
+#: src/interface.c:775
 msgid "Feed URL and Title"
 msgstr "Adresse et Titre du canal"
 
-#: src/interface.c:797
+#: src/interface.c:795
 msgid "Feed Refresh Interval (in minutes)"
 msgstr "Intervalle de rafraichissement du canal (en minutes)"
 
-#: src/interface.c:805
+#: src/interface.c:803
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
@@ -633,15 +668,15 @@ msgstr ""
 "canal mis à jour quotidiennement. Pour désactiver la mise à jour "
 "automatique, réglez l'intervalle à 0."
 
-#: src/interface.c:814
+#: src/interface.c:812
 msgid "Feed Update Interval"
 msgstr "Intervalle de mise à jour du canal"
 
-#: src/interface.c:909
+#: src/interface.c:907
 msgid "New Subscription"
 msgstr "Nouvel Abonnement"
 
-#: src/interface.c:930
+#: src/interface.c:928
 msgid ""
 "Please enter the URL (including the http:// prefix) you want to \n"
 "subscribe to. Or enter a valid pathname if you want to load a local file."
@@ -650,15 +685,15 @@ msgstr ""
 "souhaitez vous abonner. Ou alors entrez un chemin valide si vous voulez "
 "charger un fichier local."
 
-#: src/interface.c:952
+#: src/interface.c:950
 msgid "local file"
 msgstr "fichier local"
 
-#: src/interface.c:956
+#: src/interface.c:954
 msgid "URL Input"
 msgstr "Entrée de l'URL"
 
-#: src/interface.c:974
+#: src/interface.c:972
 msgid ""
 "You have to specify the type of the feed you want to subscribe \n"
 "to. If you are unsure select \"Auto Detect\"."
@@ -666,74 +701,74 @@ msgstr ""
 "Vous devez spécifier le type du canal auquel vous voulez vous abonner.\n"
 " Si vous n'êtes pas surs, sélectionnez \"Auto-détection\"."
 
-#: src/interface.c:985
+#: src/interface.c:983
 msgid "Feed Type"
 msgstr "Type de canal"
 
-#: src/interface.c:996
+#: src/interface.c:994
 msgid "Auto Detect"
 msgstr "Auto-détéction"
 
-#: src/interface.c:1000
+#: src/interface.c:998
 msgid "RSS"
 msgstr "RSS"
 
-#: src/interface.c:1004
+#: src/interface.c:1002
 msgid "CDF"
 msgstr "CDF"
 
-#: src/interface.c:1008
+#: src/interface.c:1006
 msgid "Atom/Echo/PIE"
 msgstr "Atom/Echo/PIE"
 
-#: src/interface.c:1012
+#: src/interface.c:1010
 msgid "OCS"
 msgstr "OCS"
 
-#: src/interface.c:1016
+#: src/interface.c:1014
 msgid "OPML"
 msgstr "OPML"
 
-#: src/interface.c:1022
+#: src/interface.c:1020
 msgid "Feed Type Selection"
 msgstr "Séléction du type de canal"
 
-#: src/interface.c:1144
+#: src/interface.c:1142
 msgid "program preferences"
 msgstr "préférences du programme"
 
-#: src/interface.c:1169
+#: src/interface.c:1167
 msgid "use the GNOME default browser"
 msgstr "utiliser le navigateur par défaut de GNOME"
 
-#: src/interface.c:1179
+#: src/interface.c:1177
 msgid "use browser command"
 msgstr "commande du navigateur"
 
-#: src/interface.c:1189
+#: src/interface.c:1187
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr ""
 "Spécifier la commande du navigateur en utilisant %s pour l'emplacement de "
 "l'URL"
 
-#: src/interface.c:1191
+#: src/interface.c:1189
 msgid "browser settings"
 msgstr "Paramètres du navigateur"
 
-#: src/interface.c:1205
+#: src/interface.c:1203
 msgid "display only time"
 msgstr "Afficher seulement l'heure"
 
-#: src/interface.c:1211
+#: src/interface.c:1209
 msgid "display date and time"
 msgstr "Affiche la date et l'heure"
 
-#: src/interface.c:1221
+#: src/interface.c:1219
 msgid "user defined format"
 msgstr "Format défini par l'utilisateur"
 
-#: src/interface.c:1230
+#: src/interface.c:1228
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -741,148 +776,148 @@ msgstr ""
 "pour les utilisateurs experts : spécifie une chaine de formatage de temps, "
 "consulter le manuel de strftime() pour le format des codes."
 
-#: src/interface.c:1232
+#: src/interface.c:1230
 msgid "date column settings"
 msgstr "Paramètres de la colonne de date"
 
-#: src/interface.c:1251
+#: src/interface.c:1249
 msgid ""
 "maximal number of items per feed \n"
 "to be saved permanently"
 msgstr "Nombre maximum d'entrées par canaux à sauvegarder"
 
-#: src/interface.c:1262
+#: src/interface.c:1260
 msgid "Update all feeds on program startup."
 msgstr "Mettre à jour tous les canaux au démarrage"
 
-#: src/interface.c:1266
+#: src/interface.c:1264
 msgid "feed handling settings"
 msgstr "Paramètres de la gestion des canaux"
 
-#: src/interface.c:1271
+#: src/interface.c:1269
 #, fuzzy
 msgid "Feed Handling"
 msgstr "Paramètres de la gestion des canaux"
 
-#: src/interface.c:1288
+#: src/interface.c:1286
 msgid ""
 "Show a status icon in the notification area \n"
 "(also called system tray). Changes of this setting\n"
 "take place after restarting the program."
 msgstr ""
 
-#: src/interface.c:1293
+#: src/interface.c:1291
 msgid "Notification Area"
 msgstr ""
 
-#: src/interface.c:1307
+#: src/interface.c:1305
 msgid "Disable Tool Bar."
 msgstr ""
 
-#: src/interface.c:1312
+#: src/interface.c:1310
 msgid "Disable Menu Bar."
 msgstr ""
 
-#: src/interface.c:1317
+#: src/interface.c:1315
 #, fuzzy
 msgid "Menu Settings"
 msgstr "Paramètres du navigateur"
 
-#: src/interface.c:1321
+#: src/interface.c:1319
 msgid "GUI Settings"
 msgstr ""
 
-#: src/interface.c:1410
+#: src/interface.c:1408
 msgid "add folder"
 msgstr "Ajouter un répertoire"
 
-#: src/interface.c:1425 src/interface.c:1499
+#: src/interface.c:1423 src/interface.c:1497
 msgid "folder name"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:1488
+#: src/interface.c:1486
 msgid "edit folder name"
 msgstr "Editer le nom du répertoire"
 
-#: src/interface.c:1551
+#: src/interface.c:1549
 msgid "Select A File"
 msgstr ""
 
-#: src/interface.c:1596
+#: src/interface.c:1594
 #, fuzzy
 msgid "edit filter rules"
 msgstr "Editer le nom du répertoire"
 
-#: src/interface.c:1696
+#: src/interface.c:1694
 msgid "edit rule properties"
 msgstr ""
 
-#: src/interface.c:1710
+#: src/interface.c:1708
 msgid "rule type"
 msgstr ""
 
-#: src/interface.c:1720
+#: src/interface.c:1718
 msgid "add items with exact match"
 msgstr ""
 
-#: src/interface.c:1724
+#: src/interface.c:1722
 msgid "remove items with exact match"
 msgstr ""
 
-#: src/interface.c:1734
+#: src/interface.c:1732
 msgid "rule value"
 msgstr ""
 
-#: src/interface.c:1798
+#: src/interface.c:1806
 #, fuzzy
 msgid "Search With Feedster"
 msgstr "Chercher dans les canaux"
 
-#: src/interface.c:1812
+#: src/interface.c:1820
 #, fuzzy
 msgid "Search for "
 msgstr "Chercher"
 
-#: src/interface.c:1819
+#: src/interface.c:1827
 msgid "enter any search string you want"
 msgstr ""
 
-#: src/interface.c:1825
+#: src/interface.c:1833
 msgid "Maximal Number Of Result Items"
 msgstr ""
 
-#: src/interface.c:1834
+#: src/interface.c:1842
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
 "permanently and update it like any other subscription.  "
 msgstr ""
 
-#: src/interface.c:1900
+#: src/interface.c:1908
 msgid "Export Feed List"
 msgstr ""
 
-#: src/interface.c:1910
+#: src/interface.c:1918
 msgid ""
 "Liferea can import a list of feeds from an OPML file. This  can be used to "
 "either restore a backup feed list or import a feed list from another "
 "aggregator like that supports OPML export."
 msgstr ""
 
-#: src/interface.c:1920 src/interface.c:2008
+#: src/interface.c:1928 src/interface.c:2016
 #, fuzzy
 msgid "Filename"
 msgstr "Nom du répertoire"
 
-#: src/interface.c:1928 src/interface.c:2016
+#: src/interface.c:1936 src/interface.c:2024
 msgid "Select File"
 msgstr ""
 
-#: src/interface.c:1988
+#: src/interface.c:1996
 msgid "Import Feed List"
 msgstr ""
 
-#: src/interface.c:1998
+#: src/interface.c:2006
 msgid ""
 "Liferea can export the list of feeds as an OPML list. You can use this "
 "feature to backup your feed list or export your feed list to another "
@@ -925,11 +960,11 @@ msgid "URL points to permanent redirect, updating with new location..."
 msgstr ""
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/netio.c:413
+#: src/netio.c:417
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr ""
 
-#: src/netio.c:450
+#: src/netio.c:454
 #, c-format
 msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
 msgstr ""
@@ -937,39 +972,39 @@ msgstr ""
 #. End of string url. Probably entered invalid stuff like
 #. http://asdf or something. Since we don't want to crash and burn
 #. return the dreaded NULL pointer.
-#: src/netio.c:599
+#: src/netio.c:603
 msgid "This URL doesn't look too valid to me, don't you think?"
 msgstr ""
 
-#: src/netio.c:619
+#: src/netio.c:623
 msgid "Couldn't create network socket!"
 msgstr ""
 
-#: src/netio.c:624
+#: src/netio.c:628
 #, c-format
 msgid "Can't resolve host %s!"
 msgstr ""
 
-#: src/netio.c:630
+#: src/netio.c:634
 #, c-format
 msgid "Could not connect to server %s: %s"
 msgstr ""
 
-#: src/netio.c:636
+#: src/netio.c:640
 msgid "Aborted."
 msgstr ""
 
-#: src/netio.c:683
+#: src/netio.c:687
 #, fuzzy
 msgid "Could not allocate memory to read file!"
 msgstr "Imposible d'allouer de la mémoire !"
 
-#: src/netio.c:690
+#: src/netio.c:694
 #, fuzzy, c-format
 msgid "Could not open file \"%s\"!"
 msgstr "Fichier pixmap %s introuvable."
 
-#: src/netio.c:693
+#: src/netio.c:697
 #, c-format
 msgid "There is no file \"%s\"!"
 msgstr ""
@@ -1008,7 +1043,7 @@ msgstr ""
 msgid "XML error wile reading directory! Directory \"%s\" could not be loaded!"
 msgstr ""
 
-#: src/ocs_dir.c:498 src/opml.c:139
+#: src/ocs_dir.c:498 src/opml.c:139 src/rss_channel.c:352
 msgid "Empty document!"
 msgstr ""
 
@@ -1038,27 +1073,32 @@ msgid "internal error: parseImage without a channel! Skipping image!\n"
 msgstr ""
 
 #: src/rss_channel.c:364
-msgid "Could not find RDF/RSS header! Feed was not added!"
+msgid "Could not find RDF/RSS header!"
 msgstr ""
 
-#: src/rss_item.c:231
+#: src/rss_item.c:236
 msgid "comments"
 msgstr ""
 
-#: src/ui_filter.c:58
-msgid "Rule"
+#: src/ui_filter.c:61
+#, fuzzy
+msgid "Rule Type"
+msgstr "Type de canal"
+
+#: src/ui_filter.c:64
+msgid "Value"
 msgstr ""
 
-#: src/ui_search.c:75
+#: src/ui_search.c:74
 #, c-format
 msgid "searching for \"%s\""
 msgstr "Cherche \"%s\""
 
-#: src/ui_search.c:107
+#: src/ui_search.c:106
 msgid "Feedster search request failed.\n"
 msgstr ""
 
-#: src/ui_search.c:137
+#: src/ui_search.c:136
 #, c-format
 msgid "creating VFolder for search term \"%s\""
 msgstr "création d'un VFolder pour la recherche \"%s\""
@@ -1068,15 +1108,24 @@ msgstr "création d'un VFolder pour la recherche \"%s\""
 #. 				if(NULL == (rp = (rulePtr)g_malloc(sizeof(struct rule))))
 #. 					g_error(_("Could not allocate memory!"));
 #. we set the searchstring as a default title
-#: src/ui_search.c:150
+#: src/ui_search.c:149
 #, c-format
 msgid "VFolder %s"
 msgstr "VFolder %s"
 
-#: src/ui_search.c:161
+#: src/ui_search.c:160
 msgid "internal error! could not get folder key prefix!"
 msgstr ""
 "Erreur interne ! Impossible d'obtenir le prefixe de la clé du répertoire !"
+
+#: src/ui_tray.c:79
+#, c-format
+msgid "%d new items!"
+msgstr ""
+
+#: src/ui_tray.c:86
+msgid "No new items."
+msgstr ""
 
 #: src/update.c:108
 msgid "Could not allocate memory!"
@@ -1085,6 +1134,10 @@ msgstr "Imposible d'allouer de la mémoire !"
 #: src/update.c:156
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Search In All Items"
+#~ msgstr "Chercher dans les canaux"
 
 #~ msgid "Error: Cannot delete this list entry!"
 #~ msgstr "Erreur : Impossible d'effacer cette entrée de liste !"

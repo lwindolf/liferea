@@ -79,7 +79,7 @@ void ns_ag_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
 		
 	if(!xmlStrcmp("timestamp", cur->name)) {
 		tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		date = formatDate(convertDate(tmp));
+		date = formatDate(parseISO8601Date(tmp));
 		g_free(tmp);
 		ns_ag_addInfoStruct(ip->nsinfos, "timestamp", date);
 	}

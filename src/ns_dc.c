@@ -279,7 +279,7 @@ static void ns_dc_parsePIEFeedTag(PIEFeedPtr cp, xmlDocPtr doc, xmlNodePtr cur) 
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
 		date = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		i = convertDate(date);
+		i = parseISO8601Date(date);
 		g_free(date);
 		
 		date = formatDate(i);
@@ -322,7 +322,7 @@ static void ns_dc_parsePIEEntryTag(PIEEntryPtr ip,xmlDocPtr doc, xmlNodePtr cur)
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
 		date = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		ip->time = convertDate(date);
+		ip->time = parseISO8601Date(date);
 		g_free(date);
 
 		cur = cur->next;		
@@ -362,7 +362,7 @@ static void ns_dc_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cu
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp(cur->name, BAD_CAST"date")) {
 		date = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		i = convertDate(date);
+		i = parseISO8601Date(date);
 		xmlFree(date);
 		date = formatDate(i);
 		if(NULL != date)
@@ -404,7 +404,7 @@ static void ns_dc_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
 		date = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		ip->time = convertDate(date);
+		ip->time = parseISO8601Date(date);
 
 		cur = cur->next;
 		return;

@@ -1,23 +1,33 @@
 /*
-   common routines for Liferea
-   
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ * common routines for Liferea
+ * 
+ * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * parts of the RFC822 timezone decoding were taken from the gmime 
+ * source written by 
+ *
+ * Authors: Michael Zucchi <notzed@helixcode.com>
+ *          Jeffrey Stedfast <fejj@helixcode.com>
+ *
+ * Copyright 2000 Helix Code, Inc. (www.helixcode.com)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERuri[i]ANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERuri[i]ANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-
+#define _XOPEN_SOURCE /* glibc2 needs this (man strptime) */
+#include <time.h>
 #include <langinfo.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -225,11 +235,11 @@ gchar * unhtmlize(gchar *string) {
 }
 
 /* converts a ISO 8601 time string to a time_t value */
-time_t convertDate(char *date) {
+time_t parseISO8601Date(char *date) {
 	struct tm	tm;
 	time_t		t;
-	char		*pos;
-	
+	gboolean	success = FALSE;
+		
 	memset(&tm, 0, sizeof(struct tm));
 
 	/* we expect at least something like "2003-08-07T15:28:19" and
@@ -237,15 +247,161 @@ time_t convertDate(char *date) {
 
 	   the most specific format:   YYYY-MM-DDThh:mm:ss.sTZD
 	 */
-	pos = (char *)strptime((const char *)date, "%Y-%m-%dT%H:%M", &tm);
-	if(pos != NULL) {
+	 
+	/* full specified variant */
+	if(NULL != strptime((const char *)date, "%t%Y-%m-%dT%H:%M%t", &tm))
+		success = TRUE;
+	/* only date */
+	else if(NULL != strptime((const char *)date, "%t%Y-%m-%d", &tm))
+		success = TRUE;
+	/* there were others combinations too... */
+
+	if(TRUE == success) {
 		if((time_t)(-1) != (t = mktime(&tm))) {
 			return t;
 		} else {
 			g_warning(_("internal error! time conversion error! mktime failed!\n"));
 		}
 	} else {
-		g_print(_("Invalid date format! Ignoring <dc:date> information!\n"));				
+		g_print(_("Invalid ISO8601 date format! Ignoring <dc:date> information!\n"));				
+	}
+	
+	return 0;
+}
+
+/* this table is from gmime-utils.c from the gmime API */
+static struct {
+	char *name;
+	int offset;
+} tz_offsets [] = {
+	{ "UT", 0 },
+	{ "GMT", 0 },
+	{ "EST", -500 },	/* these are all US timezones.  bloody yanks */
+	{ "EDT", -400 },
+	{ "CST", -600 },
+	{ "CDT", -500 },
+	{ "MST", -700 },
+	{ "MDT", -600 },
+	{ "PST", -800 },
+	{ "PDT", -700 },
+	{ "Z", 0 },
+	{ "A", -100 },
+	{ "M", -1200 },
+	{ "N", 100 },
+	{ "Y", 1200 },
+};
+
+/* this function is a taken from gmime-utils.c from the gmime API */
+static int
+decode_int (const unsigned char *in, unsigned int inlen)
+{
+	register const unsigned char *inptr;
+	const unsigned char *inend;
+	int sign = 1, val = 0;
+	
+	inptr = in;
+	inend = in + inlen;
+	
+	if (*inptr == '-') {
+		sign = -1;
+		inptr++;
+	} else if (*inptr == '+')
+		inptr++;
+	
+	for ( ; inptr < inend; inptr++) {
+		if (!isdigit ((int) *inptr))
+			return  -1;
+		else
+			val = (val * 10) + (*inptr - '0');
+	}
+	
+	val *= sign;
+	
+	return val;
+}
+
+/* this function is a modified form of get_tzone() from 
+   gmime-utils.c from the gmime API */
+static int parseRFC822TimeZone(unsigned char *token) {
+	int i;
+	
+	const unsigned char *inptr = token;
+	unsigned int inlen = strlen(token);
+		
+	if (*inptr == '+' || *inptr == '-') {
+		return decode_int (inptr, inlen);
+	} else {
+		int t;
+		
+		if (*inptr == '(')
+			inptr++;
+			
+		for (t = 0; t < 15; t++) {
+			unsigned int len = MIN (strlen (tz_offsets[t].name), inlen - 1);
+			
+			if (!strncmp (inptr, tz_offsets[t].name, len))
+				return tz_offsets[t].offset;
+		}
+	}
+	
+	return 0;
+}
+
+/* converts a RFC822 time string to a time_t value */
+time_t parseRFC822Date(char *date) {
+	struct tm	tm;
+	time_t		t;
+	int		offset;
+	char 		*oldlocale;
+	char		*pos;
+	gboolean	success = FALSE;
+
+	memset(&tm, 0, sizeof(struct tm));
+
+	/* we expect at least something like "03 Dec 12 01:38:34 CET" 
+	   and don't require a day of week 
+
+	   the most specific format we expect:  Fri, 03 Dec 12 01:38:34 CET 
+	 */
+	/* skip day of week */
+	if(NULL == (pos = strchr(date, ',')))
+		pos = date;
+	else
+		pos++;
+
+	/* we expect english month names, so we set the locale */
+	oldlocale = setlocale(LC_TIME, NULL);
+	setlocale(LC_TIME, "C");
+	
+	/* problem with using strptime(): we cannot use %z to decode
+	   the included timezone, because its only consistently
+	   available for strftime(), so we use strptime() to
+	   decode date and time and try to read the timezone ourself! */
+	   
+	/* standard format with 2 digit year */
+	if(NULL != (pos = strptime((const char *)pos, "%d %b %y %T", &tm)))
+		success = TRUE;
+	/* non-standard format with 4 digit year */
+	else if(NULL != (pos = strptime((const char *)pos, "%d %b %Y %T", &tm)))
+		success = TRUE;
+	
+	while(*pos && isspace((int)*pos))	/* skip whitespaces before timezone */
+		pos++;	
+	if(*pos)
+		offset = parseRFC822TimeZone(pos);	/* now retrieve the offset */
+	
+	setlocale(LC_TIME, oldlocale);	/* and reset it again */
+	
+	if(TRUE == success) {
+		if((time_t)(-1) != (t = mktime(&tm))) {
+			t -= ((offset / 100) * 60 * 60) + (offset % 100) * 60;
+			return t;
+		} else {
+			g_warning(_("internal error! time conversion error! mktime failed!\n"));
+		}
+	} else {
+
+		g_print(_("Invalid RFC822 date format! Ignoring <pubDate> information!\n"));
 	}
 	
 	return 0;

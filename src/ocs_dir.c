@@ -489,7 +489,7 @@ static void readOCS(feedPtr fp) {
 		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
 		
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error wile reading directory! Directory \"%s\" could not be loaded!"), fp->source));
+			print_status(g_strdup_printf(_("XML error while reading directory! Directory \"%s\" could not be loaded!"), fp->source));
 			error = 1;
 			break;
 		}

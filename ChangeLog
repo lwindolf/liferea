@@ -1,11 +1,11 @@
-2003-11-??  Lars Lindner <lars.lindner@gmx.net>
+2003-12-07  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.5
 
 	* favicon.ico support, feeds whose webserver provides
 	  a favicon.ico have the standard icon replaced by the
 	  favicon.
-	* Added the new SnowNews 1.4.0 HTTP client code, which
+	* Added the new SnowNews 1.4.1 HTTP client code, which
 	  now supports gzip/deflate compression, so Liferea helps
 	  saving some bandwidth.
 	* Disabled the behaviour of hiding the program window
@@ -18,11 +18,11 @@
 	* Added to options to zoom in and out of the HTML view.
 	* Added a french (from Stephane Jourdan), a japanase 
 	  (from Takeshi Aihana) and a korean (from Park Ji-In)
-	  translation. Note that while Liferea is still changing 
+	  translation. I've also added a german translation
+	  by myself. Note that while Liferea is still changing 
 	  not all text literals may be covered!
 	* Added a dialog to create search feeds using
-	  the Feedster (http://www.feedster.com) search
-	  engine.
+	  the Feedster (http://www.feedster.com) search engine.
 	* Added a possibility to subscribe to a HTML link
 	  and to copy this link URL to the X selection.
 	* Folders now remember their collapse state.

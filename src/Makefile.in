@@ -1,7 +1,6 @@
-# Makefile.in generated automatically by automake 1.5 from Makefile.am.
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
 
-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
-# Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -11,7 +10,6 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-@SET_MAKE@
 
 SHELL = @SHELL@
 
@@ -33,9 +31,13 @@ infodir = @infodir@
 mandir = @mandir@
 includedir = @includedir@
 oldincludedir = /usr/include
+
+DESTDIR =
+
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
+
 top_builddir = ..
 
 ACLOCAL = @ACLOCAL@
@@ -44,11 +46,11 @@ AUTOMAKE = @AUTOMAKE@
 AUTOHEADER = @AUTOHEADER@
 
 INSTALL = @INSTALL@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
-INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
+
 NORMAL_INSTALL = :
 PRE_INSTALL = :
 POST_INSTALL = :
@@ -70,6 +72,7 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
 MAINT = @MAINT@
+MAKEINFO = @MAKEINFO@
 MKINSTALLDIRS = @MKINSTALLDIRS@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
@@ -86,358 +89,268 @@ am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
 
-INCLUDES = \
-	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
-	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	@PACKAGE_CFLAGS@
+INCLUDES =  	-DPACKAGE_DATA_DIR=\""$(datadir)"\" 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" 	@PACKAGE_CFLAGS@
 
 
 bin_PROGRAMS = liferea
 
-liferea_SOURCES = \
-	main.c \
-	support.c support.h \
-	interface.c interface.h \
-	callbacks.c callbacks.h \
-	ui_search.c \
-	ui_filter.c \
-	ui_tray.c \
-	ui_popup.c ui_popup.h \
-	ui_selection.c ui_selection.h \
-	eggtrayicon.h eggtrayicon.c \
-	common.c common.h \
-	folder.c folder.h \
-	feed.c feed.h \
-	item.c item.h \
-	export.c export.h \
-	filter.c filter.h \
-	update.c update.h \
-	htmlview.c htmlview.h \
-	rss_channel.c rss_channel.h \
-	rss_item.c rss_item.h \
-	rss_ns.h \
-	cdf_channel.c cdf_channel.h \
-	cdf_item.c cdf_item.h \
-	pie_feed.c pie_feed.h \
-	pie_entry.c pie_entry.h \
-	pie_ns.h \
-	opml.c opml.h \
-	ocs_dir.c ocs_dir.h \
-	ocs_ns.h \
-	ns_ocs.c ns_ocs.h \
-	ns_dc.c ns_dc.h \
-	ns_fm.c ns_fm.h \
-	ns_slash.c ns_slash.h \
-	ns_content.c ns_content.h \
-	ns_syn.c ns_syn.h \
-	ns_admin.c ns_admin.h \
-	ns_blogChannel.c ns_blogChannel.h \
-	ns_cC.c ns_cC.h \
-	ns_ag.c ns_ag.h \
-	conf.c conf.h \
-	vfolder.c vfolder.h \
-	favicon.c favicon.h \
-	os-support.c os-support.h \
-	netio.c netio.h \
-	conversions.c conversions.h
+liferea_SOURCES =  	main.c 	support.c support.h 	interface.c interface.h 	callbacks.c callbacks.h 	ui_search.c 	ui_filter.c 	ui_tray.c 	ui_popup.c ui_popup.h 	ui_selection.c ui_selection.h 	eggtrayicon.h eggtrayicon.c 	common.c common.h 	folder.c folder.h 	feed.c feed.h 	item.c item.h 	export.c export.h 	filter.c filter.h 	update.c update.h 	htmlview.c htmlview.h 	rss_channel.c rss_channel.h 	rss_item.c rss_item.h 	rss_ns.h 	cdf_channel.c cdf_channel.h 	cdf_item.c cdf_item.h 	pie_feed.c pie_feed.h 	pie_entry.c pie_entry.h 	pie_ns.h 	opml.c opml.h 	ocs_dir.c ocs_dir.h 	ocs_ns.h 	ns_ocs.c ns_ocs.h 	ns_dc.c ns_dc.h 	ns_fm.c ns_fm.h 	ns_slash.c ns_slash.h 	ns_content.c ns_content.h 	ns_syn.c ns_syn.h 	ns_admin.c ns_admin.h 	ns_blogChannel.c ns_blogChannel.h 	ns_cC.c ns_cC.h 	ns_ag.c ns_ag.h 	conf.c conf.h 	vfolder.c vfolder.h 	favicon.c favicon.h 	os-support.c os-support.h 	netio.c netio.h 	conversions.c conversions.h
 
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
-subdir = src
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES =
-bin_PROGRAMS = liferea$(EXEEXT)
-PROGRAMS = $(bin_PROGRAMS)
+CONFIG_HEADER = ../config.h
+CONFIG_CLEAN_FILES = 
+PROGRAMS =  $(bin_PROGRAMS)
 
-am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
-	interface.$(OBJEXT) callbacks.$(OBJEXT) ui_search.$(OBJEXT) \
-	ui_filter.$(OBJEXT) ui_tray.$(OBJEXT) ui_popup.$(OBJEXT) \
-	ui_selection.$(OBJEXT) eggtrayicon.$(OBJEXT) common.$(OBJEXT) \
-	folder.$(OBJEXT) feed.$(OBJEXT) item.$(OBJEXT) export.$(OBJEXT) \
-	filter.$(OBJEXT) update.$(OBJEXT) htmlview.$(OBJEXT) \
-	rss_channel.$(OBJEXT) rss_item.$(OBJEXT) cdf_channel.$(OBJEXT) \
-	cdf_item.$(OBJEXT) pie_feed.$(OBJEXT) pie_entry.$(OBJEXT) \
-	opml.$(OBJEXT) ocs_dir.$(OBJEXT) ns_ocs.$(OBJEXT) \
-	ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) ns_slash.$(OBJEXT) \
-	ns_content.$(OBJEXT) ns_syn.$(OBJEXT) ns_admin.$(OBJEXT) \
-	ns_blogChannel.$(OBJEXT) ns_cC.$(OBJEXT) ns_ag.$(OBJEXT) \
-	conf.$(OBJEXT) vfolder.$(OBJEXT) favicon.$(OBJEXT) \
-	os-support.$(OBJEXT) netio.$(OBJEXT) conversions.$(OBJEXT)
-liferea_OBJECTS = $(am_liferea_OBJECTS)
-liferea_DEPENDENCIES =
-liferea_LDFLAGS =
 
-DEFS = @DEFS@
-DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
+DEFS = @DEFS@ -I. -I$(srcdir) -I..
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-depcomp = $(SHELL) $(top_srcdir)/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/callbacks.Po $(DEPDIR)/cdf_channel.Po \
-@AMDEP_TRUE@	$(DEPDIR)/cdf_item.Po $(DEPDIR)/common.Po \
-@AMDEP_TRUE@	$(DEPDIR)/conf.Po $(DEPDIR)/conversions.Po \
-@AMDEP_TRUE@	$(DEPDIR)/eggtrayicon.Po $(DEPDIR)/export.Po \
-@AMDEP_TRUE@	$(DEPDIR)/favicon.Po $(DEPDIR)/feed.Po \
-@AMDEP_TRUE@	$(DEPDIR)/filter.Po $(DEPDIR)/folder.Po \
-@AMDEP_TRUE@	$(DEPDIR)/htmlview.Po $(DEPDIR)/interface.Po \
-@AMDEP_TRUE@	$(DEPDIR)/item.Po $(DEPDIR)/main.Po \
-@AMDEP_TRUE@	$(DEPDIR)/netio.Po $(DEPDIR)/ns_admin.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_ag.Po $(DEPDIR)/ns_blogChannel.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_cC.Po $(DEPDIR)/ns_content.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_dc.Po $(DEPDIR)/ns_fm.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_ocs.Po $(DEPDIR)/ns_slash.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ns_syn.Po $(DEPDIR)/ocs_dir.Po \
-@AMDEP_TRUE@	$(DEPDIR)/opml.Po $(DEPDIR)/os-support.Po \
-@AMDEP_TRUE@	$(DEPDIR)/pie_entry.Po $(DEPDIR)/pie_feed.Po \
-@AMDEP_TRUE@	$(DEPDIR)/rss_channel.Po $(DEPDIR)/rss_item.Po \
-@AMDEP_TRUE@	$(DEPDIR)/support.Po $(DEPDIR)/ui_filter.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ui_popup.Po $(DEPDIR)/ui_search.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ui_selection.Po $(DEPDIR)/ui_tray.Po \
-@AMDEP_TRUE@	$(DEPDIR)/update.Po $(DEPDIR)/vfolder.Po
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+liferea_OBJECTS =  main.o support.o interface.o callbacks.o ui_search.o \
+ui_filter.o ui_tray.o ui_popup.o ui_selection.o eggtrayicon.o common.o \
+folder.o feed.o item.o export.o filter.o update.o htmlview.o \
+rss_channel.o rss_item.o cdf_channel.o cdf_item.o pie_feed.o \
+pie_entry.o opml.o ocs_dir.o ns_ocs.o ns_dc.o ns_fm.o ns_slash.o \
+ns_content.o ns_syn.o ns_admin.o ns_blogChannel.o ns_cC.o ns_ag.o \
+conf.o vfolder.o favicon.o os-support.o netio.o conversions.o
+liferea_DEPENDENCIES = 
+liferea_LDFLAGS = 
 CFLAGS = @CFLAGS@
-DIST_SOURCES = $(liferea_SOURCES)
-DIST_COMMON = Makefile.am Makefile.in
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+DEP_FILES =  .deps/callbacks.P .deps/cdf_channel.P .deps/cdf_item.P \
+.deps/common.P .deps/conf.P .deps/conversions.P .deps/eggtrayicon.P \
+.deps/export.P .deps/favicon.P .deps/feed.P .deps/filter.P \
+.deps/folder.P .deps/htmlview.P .deps/interface.P .deps/item.P \
+.deps/main.P .deps/netio.P .deps/ns_admin.P .deps/ns_ag.P \
+.deps/ns_blogChannel.P .deps/ns_cC.P .deps/ns_content.P .deps/ns_dc.P \
+.deps/ns_fm.P .deps/ns_ocs.P .deps/ns_slash.P .deps/ns_syn.P \
+.deps/ocs_dir.P .deps/opml.P .deps/os-support.P .deps/pie_entry.P \
+.deps/pie_feed.P .deps/rss_channel.P .deps/rss_item.P .deps/support.P \
+.deps/ui_filter.P .deps/ui_popup.P .deps/ui_search.P \
+.deps/ui_selection.P .deps/ui_tray.P .deps/update.P .deps/vfolder.P
 SOURCES = $(liferea_SOURCES)
+OBJECTS = $(liferea_OBJECTS)
 
-all: all-am
-
+all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .c .o .obj
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
-	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  src/Makefile
-Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) && \
-	  CONFIG_HEADERS= CONFIG_LINKS= \
-	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-binPROGRAMS:
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+
+distclean-binPROGRAMS:
+
+maintainer-clean-binPROGRAMS:
+
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	@list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
-	  if test -f $$p \
-	  ; then \
-	    f=`echo $$p1|sed '$(transform);s/$$/$(EXEEXT)/'`; \
-	   echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/$$f"; \
-	   $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/$$f; \
+	  if test -f $$p; then \
+	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
+	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
 	  else :; fi; \
 	done
 
 uninstall-binPROGRAMS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  f=`echo $$p|sed 's/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
-	  echo " rm -f $(DESTDIR)$(bindir)/$$f"; \
-	  rm -f $(DESTDIR)$(bindir)/$$f; \
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
 	done
 
-clean-binPROGRAMS:
-	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-liferea$(EXEEXT): $(liferea_OBJECTS) $(liferea_DEPENDENCIES) 
-	@rm -f liferea$(EXEEXT)
-	$(LINK) $(liferea_LDFLAGS) $(liferea_OBJECTS) $(liferea_LDADD) $(LIBS)
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
 
 mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
+	-rm -f *.o core *.core
+
+clean-compile:
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/callbacks.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/cdf_channel.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/cdf_item.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/common.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/conf.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/conversions.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/eggtrayicon.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/export.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/favicon.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/feed.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/filter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/folder.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/htmlview.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/interface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/item.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/netio.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_admin.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_ag.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_blogChannel.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_cC.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_content.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_dc.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_fm.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_ocs.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_slash.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ns_syn.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ocs_dir.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/opml.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/os-support.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/pie_entry.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/pie_feed.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/rss_channel.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/rss_item.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/support.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ui_filter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ui_popup.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ui_search.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ui_selection.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ui_tray.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/update.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/vfolder.Po@am__quote@
+maintainer-clean-compile:
 
-distclean-depend:
-	-rm -rf $(DEPDIR)
-
-.c.o:
-@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(COMPILE) -c `test -f $< || echo '$(srcdir)/'`$<
-
-.c.obj:
-@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(COMPILE) -c `cygpath -w $<`
-CCDEPMODE = @CCDEPMODE@
-uninstall-info-am:
+liferea: $(liferea_OBJECTS) $(liferea_DEPENDENCIES)
+	@rm -f liferea
+	$(LINK) $(liferea_LDFLAGS) $(liferea_OBJECTS) $(liferea_LDADD) $(LIBS)
 
 tags: TAGS
 
-ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
-	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '    { files[$$0] = 1; } \
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	mkid -fID $$unique $(LISP)
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-		$(TAGS_FILES) $(LISP)
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
 	tags=; \
 	here=`pwd`; \
-	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
-	unique=`for i in $$list; do \
-	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-	  done | \
-	  $(AWK) '    { files[$$0] = 1; } \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
+	  || (cd $(srcdir) && etags -o $$here/TAGS $(ETAGS_ARGS) $$tags  $$unique $(LISP))
 
-GTAGS:
-	here=`CDPATH=: && cd $(top_builddir) && pwd` \
-	  && cd $(top_srcdir) \
-	  && gtags -i $(GTAGS_ARGS) $$here
+mostlyclean-tags:
+
+clean-tags:
 
 distclean-tags:
-	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
+	-rm -f TAGS ID
 
-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+maintainer-clean-tags:
 
-top_distdir = ..
-distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src
 
 distdir: $(DISTFILES)
+	here=`cd $(top_builddir) && pwd`; \
+	top_distdir=`cd $(top_distdir) && pwd`; \
+	distdir=`cd $(distdir) && pwd`; \
+	cd $(top_srcdir) \
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu src/Makefile
 	@for file in $(DISTFILES); do \
-	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
-	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
-	  if test "$$dir" != "$$file" && test "$$dir" != "."; then \
-	    $(mkinstalldirs) "$(distdir)/$$dir"; \
-	  fi; \
+	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pR $$d/$$file $(distdir) \
-	    || exit 1; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
-	    || cp -p $$d/$$file $(distdir)/$$file \
-	    || exit 1; \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
+
+DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
+
+-include $(DEP_FILES)
+
+mostlyclean-depend:
+
+clean-depend:
+
+distclean-depend:
+	-rm -rf .deps
+
+maintainer-clean-depend:
+
+%.o: %.c
+	@echo '$(COMPILE) -c $<'; \
+	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-cp .deps/$(*F).pp .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm .deps/$(*F).pp
+
+%.lo: %.c
+	@echo '$(LTCOMPILE) -c $<'; \
+	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
+	  < .deps/$(*F).pp > .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm -f .deps/$(*F).pp
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
-
-installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(bindir)
-
-install: install-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am: install-binPROGRAMS
 install-exec: install-exec-am
+
+install-data-am:
 install-data: install-data-am
-uninstall: uninstall-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-
-installcheck: installcheck-am
+install: install-am
+uninstall-am: uninstall-binPROGRAMS
+uninstall: uninstall-am
+all-am: Makefile $(PROGRAMS)
+all-redirect: all-am
 install-strip:
-	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
-	  `test -z '$(STRIP)' || \
-	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+	$(mkinstalldirs)  $(DESTDIR)$(bindir)
+
+
 mostlyclean-generic:
 
 clean-generic:
 
 distclean-generic:
-	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-	@echo "This command is intended for maintainers to use"
-	@echo "it deletes files that may require special tools to rebuild."
-clean: clean-am
-
-clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
-
-distclean: distclean-am
-
-distclean-am: clean-am distclean-compile distclean-depend \
-	distclean-generic distclean-tags
-
-dvi: dvi-am
-
-dvi-am:
-
-info: info-am
-
-info-am:
-
-install-data-am:
-
-install-exec-am: install-binPROGRAMS
-
-install-info: install-info-am
-
-install-man:
-
-installcheck-am:
-
-maintainer-clean: maintainer-clean-am
-
-maintainer-clean-am: distclean-am maintainer-clean-generic
+mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \
+		mostlyclean-tags mostlyclean-depend mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic
+clean-am:  clean-binPROGRAMS clean-compile clean-tags clean-depend \
+		clean-generic mostlyclean-am
 
-uninstall-am: uninstall-binPROGRAMS uninstall-info-am
+clean: clean-am
 
-.PHONY: GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic distclean distclean-compile distclean-depend \
-	distclean-generic distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-binPROGRAMS install-data \
-	install-data-am install-exec install-exec-am install-info \
-	install-info-am install-man install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic tags uninstall uninstall-am \
-	uninstall-binPROGRAMS uninstall-info-am
+distclean-am:  distclean-binPROGRAMS distclean-compile distclean-tags \
+		distclean-depend distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-binPROGRAMS \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-depend maintainer-clean-generic \
+		distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
+maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir mostlyclean-depend \
+distclean-depend clean-depend maintainer-clean-depend info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-redirect all-am all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

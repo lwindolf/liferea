@@ -851,13 +851,18 @@ Optional Features:
                           (and sometimes confusing) to the casual installer
 
 Some influential environment variables:
-  CC          C compiler command
-  CFLAGS      C compiler flags
-  LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
-              nonstandard directory <lib dir>
-  CPPFLAGS    C/C++ preprocessor flags, e.g. -I<include dir> if you have
-              headers in a nonstandard directory <include dir>
-  CPP         C preprocessor
+  CC
+              C compiler command
+  CFLAGS
+              C compiler flags
+  LDFLAGS
+              linker flags, e.g. -L<lib dir> if you have
+              libraries in a nonstandard directory <lib dir>
+  CPPFLAGS
+              C/C++ preprocessor flags, e.g. -I<include dir> if you
+              have headers in a nonstandard directory <include dir>
+  CPP
+              C preprocessor
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -4226,7 +4231,7 @@ _ACEOF
 echo "$as_me:$LINENO: result: user agent OS = $uname" >&5
 echo "${ECHO_T}user agent OS = $uname" >&6
 
-ALL_LINGUAS="fr ja ko"
+ALL_LINGUAS="fr ja ko de"
 # On IRIX 5.3, sys/types and inttypes.h are conflicting.
 
 

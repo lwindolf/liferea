@@ -53,7 +53,8 @@ void	addToHTMLBuffer(gchar **buffer, gchar *string);
 
 
 gchar * getActualTime(void);
-time_t 	convertDate(char *date);
+time_t 	parseISO8601Date(char *date);
+time_t 	parseRFC822Date(char *date);
 // FIXME: formatDate used by several functions not only
 // to format date column, dontt use always date column format!!!
 // maybe gchar * formatDate(time_t, gchar *format)

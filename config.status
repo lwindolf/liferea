@@ -529,15 +529,15 @@ s,@USE_NLS@,yes,;t t
 s,@MSGFMT@,/usr/bin/msgfmt,;t t
 s,@GMSGFMT@,/usr/bin/msgfmt,;t t
 s,@XGETTEXT@,/usr/bin/xgettext,;t t
-s,@CATALOGS@, fr.gmo ja.gmo ko.gmo,;t t
+s,@CATALOGS@, fr.gmo ja.gmo ko.gmo de.gmo,;t t
 s,@CATOBJEXT@,.gmo,;t t
 s,@DATADIRNAME@,share,;t t
-s,@GMOFILES@, fr.gmo ja.gmo ko.gmo,;t t
+s,@GMOFILES@, fr.gmo ja.gmo ko.gmo de.gmo,;t t
 s,@INSTOBJEXT@,.mo,;t t
 s,@INTLLIBS@,,;t t
 s,@PO_IN_DATADIR_TRUE@,,;t t
 s,@PO_IN_DATADIR_FALSE@,,;t t
-s,@POFILES@, fr.po ja.po ko.po,;t t
+s,@POFILES@, fr.po ja.po ko.po de.po,;t t
 s,@POSUB@,po,;t t
 s,@MKINSTALLDIRS@,./mkinstalldirs,;t t
 s,@LIBOBJS@,,;t t

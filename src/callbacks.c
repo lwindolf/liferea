@@ -127,6 +127,11 @@ void initGUI(void) {
 	
 	if(NULL == selected_keyprefix)
 		selected_keyprefix = g_strdup(root_prefix);
+	
+	if(getBooleanConfValue(DISABLE_MENUBAR) && getBooleanConfValue(DISABLE_TOOLBAR)) {
+		showErrorBox(_("You have disabled both the menubar and the toolbar. Without one of these you won't be able to access all program functions. I'll reenable the toolbar!"));
+		setBooleanConfValue(DISABLE_TOOLBAR, FALSE);	
+	}
 		
 	if(NULL != (widget = lookup_widget(mainwindow, "toolbar"))) {
 		if(getBooleanConfValue(DISABLE_TOOLBAR))
@@ -200,25 +205,24 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
 	return TRUE;
 }
 
-void redrawFeedList(void) {
+void redrawWidget(gchar *name) {
 	GtkWidget	*list;
+	gchar		*msg;
 	
 	if(NULL == mainwindow)
 		return;
 	
-	if(NULL != (list = lookup_widget(mainwindow, "feedlist")))
+	if(NULL != (list = lookup_widget(mainwindow, name)))
 		gtk_widget_queue_draw(list);
+	else {
+		msg = g_strdup_printf("Fatal! Could not lookup widget \"%s\"!", name);
+		g_warning(msg);
+		g_free(msg);
+	}
 }
 
-void redrawItemList(void) {
-	GtkWidget	*list;
-	
-	if(NULL == mainwindow)
-		return;
-	
-	if(NULL != (list = lookup_widget(mainwindow, "Itemlist")))
-		gtk_widget_queue_draw(list);
-}
+void redrawItemList(void) { redrawWidget("Itemlist"); }
+void redrawFeedList(void) { redrawWidget("feedlist"); }
 
 /*------------------------------------------------------------------------------*/
 /* callbacks 									*/
@@ -236,7 +240,7 @@ void on_popup_refresh_selected(void) {
 		return;
 	}
 
-	updateFeed(selected_fp); 
+	updateFeed(selected_fp);
 }
 
 /*------------------------------------------------------------------------------*/
@@ -354,20 +358,11 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 	widget = lookup_widget(prefdialog, "toolbarbtn");
 	setBooleanConfValue(DISABLE_TOOLBAR, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));	
 	
-	if(getBooleanConfValue(DISABLE_MENUBAR) && getBooleanConfValue(DISABLE_TOOLBAR)) {
-		showErrorBox(_("You have disabled both the menubar and the toolbar. Without one of these you won't be able to access all program functions. I'll reenable the toolbar!"));
-		setBooleanConfValue(DISABLE_TOOLBAR, FALSE);	
-	}
-	
-	/* refresh item list (in case date format was changed) */
-	redrawItemList();
-	
 	/* reinit GUI for the case menubar or toolbar options changed */
 	initGUI();
-	
-	updateUI();
-			
-	gtk_widget_hide(prefdialog);
+
+	gtk_widget_hide(prefdialog);	
+	redrawWidget("mainwindow");
 }
 
 /*------------------------------------------------------------------------------*/
@@ -975,7 +970,7 @@ void on_toggle_item_flag(void) {
 	if(NULL != selected_ip)
 		setItemMark(selected_ip, !getItemMark(selected_ip));
 		
-	updateUI();
+	redrawItemList();
 }
 
 void on_toggle_condensed_view_selected(void) {
@@ -1134,10 +1129,9 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 	             gpointer           data)
 {
 	gint		type;
-	gchar		*key, *title;
+	gchar		*key, *title, *tmp;
 	feedPtr		fp;
 	int		count;
-	gboolean	unspecific = TRUE;
 
 	gtk_tree_model_get(model, iter, FS_TYPE, &type,
 					FS_TITLE, &title,
@@ -1149,16 +1143,17 @@ static void renderFeedTitle(GtkTreeViewColumn *tree_column,
 		count = getFeedUnreadCount(fp);
 		   
 		if(count > 0) {
-			unspecific = FALSE;
+			tmp = g_strdup_printf("%s (%d)", getFeedTitle(fp), count);
 			g_object_set(GTK_CELL_RENDERER(cell), "font", "bold", NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "text", g_strdup_printf("%s (%d)", getFeedTitle(fp), count), NULL);
+			g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
+			g_free(tmp);
 		} else {
+			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);
 			g_object_set(GTK_CELL_RENDERER(cell), "text", getFeedTitle(fp), NULL);
-			g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);	
 		}
 	} else {
-		g_object_set(GTK_CELL_RENDERER(cell), "text", title, NULL);
 		g_object_set(GTK_CELL_RENDERER(cell), "font", "normal", NULL);	
+		g_object_set(GTK_CELL_RENDERER(cell), "text", title, NULL);
 	}
 	g_free(title);
 	g_free(key);
@@ -1443,6 +1438,7 @@ gint checkForUpdateResults(gpointer data) {
 	struct feed_request	*request = NULL;
 	feedHandlerPtr		fhp;
 	gint			type;
+	gchar			*msg;
 
 	if(NULL == (request = g_async_queue_try_pop(results)))
 		return TRUE;
@@ -1453,7 +1449,9 @@ gint checkForUpdateResults(gpointer data) {
 		g_assert(NULL != feedHandler);
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
 			/* can happen during a long update e.g. of an OCS directory, then the type is not set, FIXME ! */
-			//g_warning(g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type));
+			//msg = g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type)
+			//g_warning(msg);
+			//g_free(msg);
 			gdk_threads_leave();
 			return TRUE;
 		}
@@ -1464,13 +1462,17 @@ gint checkForUpdateResults(gpointer data) {
 		else {
 			/* Otherwise we simply use the new feed info... */
 			copyFeed(request->fp, request->new_fp);
-			print_status(g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp)));
+			msg = g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp));
+			print_status(msg);
+			g_free(msg);
 		}
 		
 		/* note this is to update the feed URL on permanent redirects */
 		if(0 != strcmp(request->feedurl, getFeedSource(request->fp))) {
 			setFeedSource(request->fp, g_strdup(request->feedurl));	
-			print_status(g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp)));
+			msg = g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp));
+			print_status(msg);
+			g_free(msg);
 		}
 
 		if(NULL != request->fp) {
@@ -1483,14 +1485,17 @@ gint checkForUpdateResults(gpointer data) {
 				preFocusItemlist();
 			}
 			
-			redrawFeedList();	// FIXME: maybe this is overkill ;=)
+			redrawFeedList();
+			updateUI();
 		}
 	} else {
-		print_status(g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp)));
+		msg = g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp));
+		print_status(msg);
+		g_free(msg);
 		request->fp->available = FALSE;
 	}
 	gdk_threads_leave();
-	
+		
 	return TRUE;
 }
 

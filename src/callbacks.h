@@ -271,3 +271,7 @@ on_exportfileselect_clicked            (GtkButton       *button,
 void
 on_importfileselect_clicked            (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_rulechangedbtn_clicked              (GtkButton       *button,
+                                        gpointer         user_data);

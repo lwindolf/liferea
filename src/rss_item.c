@@ -121,7 +121,12 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 				}
 			}		
 		}
-		
+
+		if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
+			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			i->time = parseRFC822Date(tmp);
+			g_free(tmp);
+		} else 
 		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures, so we build
 			   a simple string of HTML-links... */

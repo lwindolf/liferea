@@ -137,7 +137,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
 		if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
 			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-			i->time = convertDate(tmp);
+			i->time = parseISO8601Date(tmp);
 			cur = cur->next;		
 			continue;
 		}

@@ -40,7 +40,7 @@ AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the 
 AC_MSG_RESULT(user agent OS = $uname)
 
 dnl Add the languages which your application supports here.
-ALL_LINGUAS="fr ja ko"
+ALL_LINGUAS="fr ja ko de"
 AM_GLIB_GNU_GETTEXT
 
 AC_OUTPUT([

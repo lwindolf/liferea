@@ -169,7 +169,7 @@ static void readCDFFeed(feedPtr fp) {
 	while(1) {
 		doc = xmlRecoverMemory(fp->data, strlen(fp->data));
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error wile reading feed! Feed \"%s\" could not be loaded!"), fp->source));
+			print_status(g_strdup_printf(_("XML error while reading feed! Feed \"%s\" could not be loaded!"), fp->source));
 			error = 1;
 			break;
 		}

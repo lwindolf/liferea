@@ -1751,6 +1751,16 @@ create_ruledialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (ruledialog), button17, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (button17, GTK_CAN_DEFAULT);
 
+  g_signal_connect_after ((gpointer) button16, "clicked",
+                          G_CALLBACK (gtk_widget_hide),
+                          NULL);
+  g_signal_connect ((gpointer) button16, "clicked",
+                    G_CALLBACK (on_rulechangedbtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) button17, "clicked",
+                    G_CALLBACK (gtk_widget_hide),
+                    NULL);
+
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (ruledialog, ruledialog, "ruledialog");
   GLADE_HOOKUP_OBJECT_NO_REF (ruledialog, dialog_vbox8, "dialog_vbox8");

@@ -25,7 +25,8 @@
 #include "support.h"
 
 #define RS_TITLE	0
-#define RS_PTR		1
+#define RS_VALUE	1
+#define RS_PTR		2
 
 extern feedPtr		selected_fp;
 extern itemPtr		selected_ip;
@@ -45,17 +46,22 @@ static void setupRuleList(GtkWidget *ruleList) {
 
 	if(NULL == ruleStore) {
 		/* set up a store of these attributes: 
-			- rule title
+			- rule type title
+			- rule value
 			- rule ptr
 		 */
-		ruleStore = gtk_tree_store_new(2, G_TYPE_STRING, 
+		ruleStore = gtk_tree_store_new(3, G_TYPE_STRING,
+						  G_TYPE_STRING,
 						  G_TYPE_POINTER);
 	}
 	
 	gtk_tree_view_set_model(GTK_TREE_VIEW(ruleList), GTK_TREE_MODEL(ruleStore));
 
 	renderer = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Rule"), renderer, "text", RS_TITLE, NULL);
+	column = gtk_tree_view_column_new_with_attributes(_("Rule Type"), renderer, "text", RS_TITLE, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(ruleList), column);
+	
+	column = gtk_tree_view_column_new_with_attributes(_("Value"), renderer, "text", RS_VALUE, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(ruleList), column);
 }
 
@@ -94,34 +100,68 @@ void on_popup_filter_selected(void) {
 /* filter edit dialog callbacks							*/
 /*------------------------------------------------------------------------------*/
 
-void
-on_addrulebtn_clicked                  (GtkButton       *button,
-                                        gpointer         user_data)
-{
-	showErrorBox("not yet implemented!");
+static gboolean getSelectedRuleIter(GtkTreeIter *iter) {
+/*	GtkWidget		*treeview;
+	GtkTreeSelection	*select;
+        GtkTreeModel		*model;
+	gchar			*tmp_key;
+	gint			tmp_type;
+	feedPtr			fp;
+	
+	if(NULL == filterdialog)
+		return FALSE;
+	
+	if(NULL == (treeview = lookup_widget(mainwindow, "rulelist"))) {
+		g_warning("rule list widget lookup failed!\n");
+		return FALSE;
+	}
+		
+	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
+		print_status("could not retrieve selection of entry list!");
+		return FALSE;
+	}
+
+        gtk_tree_selection_get_selected(select, &model, iter);
+	gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, 
+			   FS_KEY, &tmp_key, 
+ 			   FS_TYPE, &tmp_type,
+			   -1);
+
+	return TRUE;*/
+}
+
+/* adding a rule */
+void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
+	
+/*	if(NULL == ruledialog || !G_IS_OBJECT(ruledialog))
+		ruledialog = create_ruledialog();
+	
+	g_assert(NULL != ruledialog);
+	editedRule = NULL;
+	gtk_widget_show(ruledialog);*/
 }
 
 
-void
-on_rulepropbtn_clicked                 (GtkButton       *button,
-                                        gpointer         user_data)
-{
-	showErrorBox("not yet implemented!");
+/* editing a rule */
+void on_rulepropbtn_clicked(GtkButton *button, gpointer user_data) {
+
+/*	if(NULL == ruledialog || !G_IS_OBJECT(ruledialog))
+		ruledialog = create_ruledialog();
+	
+	g_assert(NULL != ruledialog);
+	editedRule = ...;
+	gtk_widget_show(ruledialog);*/
+}
+
+/* called after finishing a add rule or edit rule dialog */
+void on_rulechangedbtn_clicked(GtkButton *button, gpointer user_data) {
+}
+
+void on_ruleupbtn_clicked(GtkButton *button, gpointer user_data) {
+
 }
 
 
-void
-on_ruleupbtn_clicked                   (GtkButton       *button,
-                                        gpointer         user_data)
-{
-	showErrorBox("not yet implemented!");
+void on_ruledownbtn_clicked(GtkButton *button, gpointer user_data) {
+
 }
-
-
-void
-on_ruledownbtn_clicked                 (GtkButton       *button,
-                                        gpointer         user_data)
-{
-	showErrorBox("not yet implemented!");
-}
-
