@@ -19,9 +19,11 @@ elif [ -f /usr/lib/mozilla/chrome/comm.jar ]; then
 elif [ -f /opt/mozilla/chrome/comm.jar ]; then
 	MOZILLA_HOME=/opt/mozilla
 elif [ -f /usr/lib/mozilla-0.9.7/chrome/comm.jar ]; then
-	MOZILLA_HOME=/usr/lib/mozilla-0.9.7/
+	MOZILLA_HOME=/usr/lib/mozilla-0.9.7
+elif [ -f /opt/mozilla/lib/chrome/comm.jar ]; then
+	MOZILLA_HOME=/opt/mozilla/lib
 elif [ -f /opt/gnome/lib/mozilla/chrome/comm.jar ]; then
-        MOZILLA_HOME=/opt/gnome/lib/mozilla/
+     MOZILLA_HOME=/opt/gnome/lib/mozilla
 else
 	echo "Mozilla is not available..."
 fi
