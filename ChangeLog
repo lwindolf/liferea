@@ -10,10 +10,21 @@
 	* Added a spanish translation from Topopardo.
 	* Added a toggle unread status of an item as proposed
 	  by Tobias C. Rittweiler.
-	* Fixed some memory leaks.
+	* Added a remove cached items option to clear all
+	  cached items of a feed.
+	* Added the ability to accept URL drops into the
+	  program window and subscribe to the dropped URL.
+	* Written some more and new text for the Liferea
+	  Online Help Feed.
+	* Fixes the priority of <summary> vs. <content> tag
+	  handling for Atom/Echo/PIE feeds.
 	* Fixed the broken tray icon logic.
+	* Fixed the loading of non wellformed cache files
+	  (this should fix bug 865421 and 861588).
 	* Fixed incorrect UTF-8 HTTP URL encoding for Feedster 
 	  search feed subscriptions.
+	* Fixed bug 858750 (cannot type 't' in search entry
+	  reported by José María Mateos)
 	* Fixed bug 857386 (crash on subscription without
 	  selected folder reported by Jeremy Messenger)
 	* Fixed bug 861688 (broken support for lastmodified

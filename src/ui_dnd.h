@@ -1,5 +1,5 @@
 /*
-   everything concerning Liferea and DnD
+   everything concerning DnD
    
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 

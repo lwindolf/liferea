@@ -1,5 +1,5 @@
 /*
-   everything concerning Liferea and DnD
+   everything concerning DnD
    
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
@@ -111,7 +111,7 @@ static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint
 				tmp1++;
 			*(tmp1 - 1) = 0;
 			
-			subscribeTo(FST_AUTODETECT, tmp2, g_strdup(selected_keyprefix), TRUE);			
+			subscribeTo(FST_AUTODETECT, g_strdup(tmp2), g_strdup(selected_keyprefix), TRUE);			
 			tmp2 = ++tmp1;
 		}
 		g_free(tmp3);

@@ -425,6 +425,15 @@ void on_popup_delete_selected(void) { on_deletebtn(); }
 /* property dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
+static void build_prop_dialog(void) {
+
+	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
+		propdialog = create_propdialog();
+
+	if(NULL == propdialog)
+		return;	
+}
+
 void on_propbtn(GtkWidget *widget) {
 	feedPtr		fp = selected_fp;
 	GtkWidget 	*feednameentry, *feedurlentry, *updateIntervalBtn;
@@ -442,12 +451,9 @@ void on_propbtn(GtkWidget *widget) {
 		showErrorBox("You can't modify help feeds!");
 		return;
 	}
-	
-	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
-		propdialog = create_propdialog();
-	
-	if(NULL == propdialog)
-		return;
+
+	/* prop dialog may not yet exist */
+	build_prop_dialog();
 		
 	feednameentry = lookup_widget(propdialog, "feednameentry");
 	feedurlentry = lookup_widget(propdialog, "feedurlentry");
@@ -583,13 +589,15 @@ void subscribeTo(gint type, gchar *source, gchar * keyprefix, gboolean showPropD
 		addToFeedList(fp, FALSE);	/* add feed */
 		checkForEmptyFolders();		/* remove empty entry if necessary */
 		saveFolderFeedList(keyprefix);	/* save new folder contents order */
-
 		if(FALSE == getFeedAvailable(fp)) {
 			tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 			showErrorBox(tmp);
 			g_free(tmp);
 		} else {
 			if(TRUE == showPropDialog) {
+				/* prop dialog may not yet exist */
+				build_prop_dialog();
+				
 				if(-1 != (interval = getFeedDefaultInterval(fp))) {
 					updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
 					gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
