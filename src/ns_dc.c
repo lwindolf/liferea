@@ -1,7 +1,7 @@
 /*
    Dublin Core support for RSS, Echo/Atom/PIE and OCS
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -211,11 +211,7 @@ static void parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(-1 != mapToDP[i]) {
 			if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 				value = CONVERT(string);
- 				if (NULL != string) {
- 					xmlFree(string);
- 				}
+ 				value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 
 				g_assert(mapToDP[i] < OCS_MAX_TAG);
 				/* map the value to one of the RSS fields */
@@ -306,11 +302,8 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
- 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 		if(NULL != string) {
-	 		date = CONVERT(string);
- 			xmlFree(string);
-
+ 		date = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 		if(NULL != date) {
 			i = parseISO8601Date(date);
 			g_free(date);
 			if(NULL != date) {
@@ -339,38 +332,35 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 			if(NULL != string) {
-	 			if(NULL != (value = CONVERT(string))) {					
-					/* check if value consist of whitespaces only */
-					isNotEmpty = FALSE;
-					for(j = 0, tmp = value; j < g_utf8_strlen(value, -1); j++) {
-						if(!g_unichar_isspace(*tmp)) {
-							isNotEmpty = TRUE;
-							break;
-						}
-						tmp = g_utf8_next_char(tmp);
+ 			value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+	 		if(NULL != value) {
+				/* check if value consist of whitespaces only */
+				isNotEmpty = FALSE;
+				for(j = 0, tmp = value; j < g_utf8_strlen(value, -1); j++) {
+					if(!g_unichar_isspace(*tmp)) {
+						isNotEmpty = TRUE;
+						break;
 					}
-					
-					if(isNotEmpty) {
-						if(-1 == (mapping = getMapping(tagtype, i))) {
-							/* append it to the common DC value output */
-							buffer = g_hash_table_lookup(nsinfos, ns_dc_prefix);
-							addToHTMLBuffer(&buffer, FIRSTTD);
-							addToHTMLBuffer(&buffer, taglist[i]);
-							addToHTMLBuffer(&buffer, NEXTTD);
-							addToHTMLBuffer(&buffer, value);
-							addToHTMLBuffer(&buffer, LASTTD);
-							g_hash_table_insert(nsinfos, g_strdup(ns_dc_prefix), buffer);
-							g_free(value);
-						} else {
-							mapTag(obj, tagtype, mapping, value);
-						}
-					} else {
-						g_free(value);
-					}
+					tmp = g_utf8_next_char(tmp);
 				}
- 				xmlFree(string);
+
+				if(isNotEmpty) {
+					if(-1 == (mapping = getMapping(tagtype, i))) {
+						/* append it to the common DC value output */
+						buffer = g_hash_table_lookup(nsinfos, ns_dc_prefix);
+						addToHTMLBuffer(&buffer, FIRSTTD);
+						addToHTMLBuffer(&buffer, taglist[i]);
+						addToHTMLBuffer(&buffer, NEXTTD);
+						addToHTMLBuffer(&buffer, value);
+						addToHTMLBuffer(&buffer, LASTTD);
+						g_hash_table_insert(nsinfos, g_strdup(ns_dc_prefix), buffer);
+						g_free(value);
+					} else {
+						mapTag(obj, tagtype, mapping, value);
+					}
+				} else {
+					g_free(value);
+				}
 			}			
 			return;
 		}

@@ -34,15 +34,10 @@ static gchar ns_content_prefix[] = "content";
 */
 
 static void ns_content_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
-	xmlChar *string;
-	
-  	if(!xmlStrcmp(cur->name, "encoded")) {
- 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+
+  	if(!xmlStrcmp(cur->name, "encoded")) { 		
   		g_free(ip->tags[RSS_ITEM_DESCRIPTION]);
- 		ip->tags[RSS_ITEM_DESCRIPTION] = CONVERT(string);
- 		if(NULL != string) {
- 			xmlFree(string);
- 		}
+ 		ip->tags[RSS_ITEM_DESCRIPTION] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
   	}
 }
 

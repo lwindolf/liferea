@@ -1,7 +1,7 @@
 /*
    PIE entry parsing 
       
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -62,20 +62,19 @@ extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 
 /* <content> tag support, FIXME: base64 not supported */
 static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
-	gchar	*mode;
-	xmlChar *string;
+	gchar	*mode, *tmp;
 
 	g_assert(NULL != cur);
-	if((NULL == i->tags[PIE_ENTRY_DESCRIPTION]) || (TRUE == i->summary)) {
-		
-		if(NULL != (mode = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"mode")))) {
+	if((NULL == i->tags[PIE_ENTRY_DESCRIPTION]) || (TRUE == i->summary)) {	
+		/* determine encoding mode */
+		mode = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"mode"));
+		if(NULL != mode) {
 			if(!strcmp(mode, BAD_CAST"escaped")) {
- 				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
-				if(NULL != string) {
+ 				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp) {
 					g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
-					i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(string);
+					i->tags[PIE_ENTRY_DESCRIPTION] = tmp;
 					i->summary = FALSE;
-					xmlFree(string);
 				}
 			} else if(!strcmp(mode, BAD_CAST"xml")) {
 				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
@@ -89,7 +88,7 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 				if(NULL != cur->xmlChildrenNode)
 					parseContent(cur->xmlChildrenNode, i);
 			}
-			
+
 			g_free(mode);
 		}
 	}
@@ -98,7 +97,6 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 /* method to parse standard tags for each item element */
 itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	gchar			*tmp2, *tmp = NULL;
-	xmlChar 		*string;
 	parseEntryTagFunc	fp;
 	PIENsHandler		*nsh;	
 	PIEEntryPtr 		i;
@@ -135,11 +133,8 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 
 		// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
 		if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
- 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 			if(NULL != string) {
-				tmp = CONVERT(string);
-				xmlFree(string);
-				
+ 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			if(NULL != tmp) {				
 				i->time = parseISO8601Date(tmp);
 				cur = cur->next;
 			}
@@ -180,11 +175,10 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 		   <content> description we show the <summary> content */
 		if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {			
 			if(NULL == i->tags[PIE_ENTRY_DESCRIPTION]) {
-				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
-				if(NULL != string) {
+				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp) {
 					i->summary = TRUE;
-					i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(string);
-					xmlFree(string);
+					i->tags[PIE_ENTRY_DESCRIPTION] = tmp;
 				}
 			}
 			cur = cur->next;		
@@ -195,15 +189,10 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 		for(j = 0; j < PIE_ENTRY_MAX_TAG; j++) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)entryTagList[j])) {
-				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);	
-				if(NULL != string) {
-					tmp = i->tags[j];
-					if(NULL == (i->tags[j] = CONVERT(string))) {
-						i->tags[j] = tmp;
-					} else {
-						g_free(tmp);
-					}
-					xmlFree(string);
+				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp) {
+					g_free(i->tags[j]);
+					i->tags[j] = tmp;
 				}
 			}		
 		}		

@@ -44,14 +44,11 @@ static gchar ns_cC_prefix[] = "creativeCommons";
 gchar * ns_cC_getRSSNsPrefix(void) { return ns_cC_prefix; }
 
 gchar * ns_cC_parseTag(xmlNodePtr cur) {
-	xmlChar	*string;
 	gchar	*buffer = NULL;
 	gchar	*tmp;
 	
  	if(!xmlStrcmp("license", cur->name)) {
- 		if(NULL != (string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
-			tmp = CONVERT(string);
- 			xmlFree(string);
+ 		if(NULL != (tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			addToHTMLBuffer(&buffer, FIRSTTD);
 			addToHTMLBuffer(&buffer, (gchar *)_("license"));
 			addToHTMLBuffer(&buffer, NEXTTD);

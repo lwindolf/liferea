@@ -35,12 +35,10 @@ static gchar ns_fm_prefix[] = "fm";
 gchar * ns_fm_getRSSNsPrefix(void) { return ns_fm_prefix; }
 
 static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
-	xmlChar *string;
 	gchar	*tmp;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
- 		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 		tmp = CONVERT(string);	
+ 		tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		if(NULL != tmp) {
 			if(g_utf8_strlen(tmp, -1) > 0) {
 				g_hash_table_insert(ip->nsinfos, g_strdup("fm:screenshot_url"), tmp);
@@ -48,9 +46,6 @@ static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 				g_free(tmp);
 			}
 		}
-		
-		if(NULL != string)
- 			xmlFree(string);
 	}
 }
 

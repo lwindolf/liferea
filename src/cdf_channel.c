@@ -93,7 +93,6 @@ gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
 /* method to parse standard tags for the channel element */
 static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp = NULL;
-	xmlChar 	*string;
 	itemPtr		ip;
 	int		i;
 	
@@ -107,7 +106,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 
 		/* save first link to a channel image */
 		if((!xmlStrcmp(cur->name, (const xmlChar *) "logo"))) {
-			if(NULL != cp->tags[CDF_CHANNEL_IMAGE])
+			if(NULL != cp->tags[CDF_CHANNEL_IMAGE])				
 				cp->tags[CDF_CHANNEL_IMAGE] = CONVERT(xmlGetNoNsProp(cur, (const xmlChar *)"href"));
 			cur = cur->next;			
 			continue;
@@ -123,15 +122,11 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 
 		for(i = 0; i < CDF_CHANNEL_MAX_TAG; i++) {
 			g_assert(NULL != cur->name);
-			if (!xmlStrcmp(cur->name, (const xmlChar *)CDFChannelTagList[i])) {
-				string = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-				if(NULL != (tmp = CONVERT(string))) {
+			if (!xmlStrcmp(cur->name, (const xmlChar *)CDFChannelTagList[i])) {			
+				tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp) {
 					g_free(cp->tags[i]);
 					cp->tags[i] = tmp;
-				}
-
-				if (NULL != string) {
-					xmlFree(string);
 				}
 			}		
 		}

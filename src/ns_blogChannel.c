@@ -48,33 +48,30 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	gchar		*buffer = NULL;
 	gchar		*tmp, *value;
 
-	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"text"))) {
-		addToHTMLBuffer(&buffer, CONVERT(value));
-		xmlFree(value);
+	if(NULL != (value = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"text")))) {
+		addToHTMLBuffer(&buffer, value);
+		g_free(value);
 	}
 	
-	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"url"))) {
-		value = CONVERT(value);
+	if(NULL != (value = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"url")))) {
 		tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value, value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
-		xmlFree(value);
+		g_free(value);
 	}
 
-	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"htmlUrl"))) {
-		value = CONVERT(value);
+	if(NULL != (value = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"htmlUrl")))) {
 		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">HTML</a>)", value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
-		xmlFree(value);
+		g_free(value);
 	}
 			
-	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"xmlUrl"))) {
-		value = CONVERT(value);
+	if(NULL != (value = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"xmlUrl")))) {
 		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">XML</a>)", value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
-		xmlFree(value);
+		g_free(value);
 	}		
 
 	return buffer;
@@ -163,6 +160,7 @@ static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 		}
 	} else if(!xmlStrcmp("blink", cur->name)) {
 		tmp = CONVERT(string);
+		string = NULL;
 		output = g_strdup_printf("<p><a href=\"%s\">%s</a></p>", tmp, tmp);
 		g_free(tmp);
 		addToHTMLBuffer(&buffer, BLINK_START);

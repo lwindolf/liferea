@@ -47,26 +47,24 @@ static gchar ns_ag_prefix[] = "ag";
 gchar * ns_ag_getRSSNsPrefix(void) { return ns_ag_prefix; }
 
 static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
-	gchar	*date, *tmp = NULL;
-	xmlChar	*string;
+	gchar	*date, *tmp;
 	
-	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+	tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 	if(!xmlStrcmp("source", cur->name))  {
-		tmp = CONVERT(string);
+		/* do nothing */
 	} else if(!xmlStrcmp("sourceURL", cur->name)) {
-		tmp = CONVERT(string);
+		/* do nothing */
 	} else if(!xmlStrcmp("timestamp", cur->name)) {
-		tmp = CONVERT(string);
 		date = formatDate(parseISO8601Date(tmp));
 		g_free(tmp);
 		tmp = date;
-	}	
+	} else {
+		g_free(tmp);
+		tmp = NULL;
+	}
 	
 	if(NULL != tmp)
 		g_hash_table_insert(ip->nsinfos, g_strdup_printf("ag:%s", cur->name), tmp);
-	
-	if(NULL != string)
- 		xmlFree(string);
 }
 
 static gchar * doOutput(GHashTable *nsinfos) {

@@ -66,16 +66,12 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	gchar		*buffer = NULL;
 	gchar		*tmp, *value;
 	xmlAttrPtr	attr;
-	xmlChar 	*string;
 
 	attr = cur->properties;
 	while(NULL != attr) {
 		/* get prop value */
- 		string = xmlGetProp(cur, attr->name);
-		if(NULL != string) {
-	 		value = CONVERT(string);
- 			xmlFree(string);
-
+ 		value = CONVERT(xmlGetProp(cur, attr->name));
+		if(NULL != value) {
 			if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
 				tmp = g_strdup_printf("<p class=\"opmltext\">%s</p>", value);
 				addToHTMLBuffer(&buffer, tmp);
@@ -137,7 +133,6 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 static void readOPML(feedPtr fp, gchar *data) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, child;
-	xmlChar 	*string;
 	itemPtr		ip;
 	gchar		*buffer, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
@@ -181,16 +176,10 @@ static void readOPML(feedPtr fp, gchar *data) {
 				while(child != NULL) {
 					for(i = 0; i < OPML_MAX_TAG; i++) {
 						if (!xmlStrcmp(child->name, (const xmlChar *)opmlTagList[i])) {
-							string = xmlNodeListGetString(doc, child->xmlChildrenNode, 1);
-							if(NULL != string) {
-								tmp = headTags[i];
-								
-								if(NULL == (headTags[i] = CONVERT(string))) {
-									headTags[i] = tmp;
-								} else {
-									g_free(tmp);
-								}
-								xmlFree(string);
+							tmp = CONVERT(xmlNodeListGetString(doc, child->xmlChildrenNode, 1));						
+							if(NULL != tmp) {
+								g_free(headTags[i]);
+								headTags[i] = tmp;
 							}
 						}		
 					}
@@ -208,13 +197,12 @@ static void readOPML(feedPtr fp, gchar *data) {
 						g_free(tmp);
 						
 						ip = getNewItemStruct();
-						if(NULL == (string = xmlGetProp(child, BAD_CAST"text")))
-							string = xmlGetProp(child, BAD_CAST"title");
-						ip->title = CONVERT(string);
+						if(NULL == (tmp = CONVERT(xmlGetProp(child, BAD_CAST"text"))))
+							tmp = CONVERT(xmlGetProp(child, BAD_CAST"title"));
+						ip->title = tmp;
 						ip->description = buffer;
 						ip->readStatus = TRUE;
 						addItem(fp, ip);
-						xmlFree(string);
 					}
 					child = child->next;
 				}

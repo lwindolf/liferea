@@ -48,7 +48,6 @@ static gchar ns_admin_prefix[] = "admin";
 gchar * ns_admin_getRSSNsPrefix(void) { return ns_admin_prefix; }
 
 static void parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
-	xmlChar		*string;
 	gchar		*buffer = NULL;
 	gchar		*name = NULL;
 	gchar		*key, *value;
@@ -60,10 +59,7 @@ static void parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 		name = g_strdup(_("feed generator"));
 	
 	if(NULL != name) {
-		string = xmlGetProp(cur, "resource");
-		value = CONVERT(string);
-		xmlFree(string);
-		
+		value = CONVERT(xmlGetProp(cur, "resource"));	
 		if(NULL != value) {
 			addToHTMLBuffer(&buffer, FIRSTTD);
 			addToHTMLBuffer(&buffer, name);

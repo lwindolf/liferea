@@ -1,7 +1,7 @@
 /*
    OCS namespace support
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -76,11 +76,8 @@ void ns_ocs_parseTag(gint type, gpointer p, xmlNodePtr cur) {
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(-1 != mapTo[i]) {			
 			if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 				if(NULL != string) {
-	 				value = CONVERT(string);
- 					xmlFree(string);
-
+ 				value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 				if(NULL != value) {
 					g_assert(mapTo[i] < OCS_MAX_TAG);
 					/* map the value to one of the RSS fields */
 					switch(type) {

@@ -105,7 +105,7 @@ static gchar* convert(unsigned char *in, gchar *encoding)
         xmlCharEncodingHandlerPtr handler;
 
 	if(NULL == in)
-		return g_strdup("");
+		return NULL;
 	
         size = (int)strlen(in)+1; 
         out_size = size*2-1; 
@@ -138,9 +138,6 @@ static gchar* convert(unsigned char *in, gchar *encoding)
         } else {
                 g_error(_("not enough memory\n"));
         }
-	
-	if(NULL == out)
-		out = g_strdup("");
 		
         return out;
 }
@@ -150,8 +147,11 @@ static gchar* convert(unsigned char *in, gchar *encoding)
    string is a xmlchar pointer to the read string. The result gchar
    string is returned, the original XML string is freed. */
 gchar * CONVERT(xmlChar *string) {
-
-	return convert(string, "UTF-8");
+	gchar	*result;
+	
+	result = convert(string, "UTF-8");
+	xmlFree(string);
+	return result;
 }
 
 gchar * extractHTMLNode(xmlNodePtr cur) {

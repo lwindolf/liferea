@@ -66,23 +66,18 @@ static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
- 			if(NULL != string) {
-				tmp = CONVERT(string);
- 				xmlFree(string);
-				
-				if(NULL != tmp) {
-					addToHTMLBuffer(&buffer, KEY_START);
-					addToHTMLBuffer(&buffer, taglist[i]);
-					addToHTMLBuffer(&buffer, KEY_END);
-					addToHTMLBuffer(&buffer, VALUE_START);	
-					addToHTMLBuffer(&buffer, tmp);
-					addToHTMLBuffer(&buffer, VALUE_END);
-					g_free(tmp);
-	 				g_hash_table_insert(ip->nsinfos, g_strdup_printf("slash:%s", cur->name), buffer);
-				}
- 			}
-			return;
+ 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if(NULL != tmp) {
+				addToHTMLBuffer(&buffer, KEY_START);
+				addToHTMLBuffer(&buffer, taglist[i]);
+				addToHTMLBuffer(&buffer, KEY_END);
+				addToHTMLBuffer(&buffer, VALUE_START);	
+				addToHTMLBuffer(&buffer, tmp);
+				addToHTMLBuffer(&buffer, VALUE_END);
+				g_free(tmp);
+	 			g_hash_table_insert(ip->nsinfos, g_strdup_printf("slash:%s", cur->name), buffer);
+				return;
+			}
 		}
 	}
 }

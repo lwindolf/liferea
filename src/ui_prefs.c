@@ -134,7 +134,8 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	/* panel 1 "proxy settings" */
 	enabled = getBooleanConfValue(USE_PROXY);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), enabled);
+	widget = lookup_widget(prefdialog, "enableproxybtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enabled);
 	
 	entry = lookup_widget(prefdialog, "proxyhostentry");
 	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(PROXY_HOST));

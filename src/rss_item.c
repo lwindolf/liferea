@@ -1,7 +1,7 @@
 /*
    RSS/RDF item parsing 
       
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -67,7 +67,6 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip);
 /* method to parse standard tags for each item element */
 itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar			*tmp, *link;
-	xmlChar 		*string;
 	parseItemTagFunc	parseFunc;
 	GSList			*hp;
 	RSSNsHandler		*nsh;
@@ -111,41 +110,37 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 		for(j = 0; j < RSS_ITEM_MAX_TAG; j++) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
- 				string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
-				if(NULL != string) {
-					tmp = i->tags[j];
-					if(NULL == (i->tags[j] = CONVERT(string))) {
-						i->tags[j] = tmp;
-					} else {
-						g_free(tmp);
-					}
-					xmlFree(string);
+ 				tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp) {
+					g_free(i->tags[j]);
+					i->tags[j] = tmp;
+					break;
 				}				
 			}		
 		}
 
 		if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
-			if(NULL != string) {
-	 			tmp = CONVERT(string);
+ 			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if(NULL != tmp) {
 				i->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
-			xmlFree(string);
 		} else 
 		if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures, so we build
 			   a simple string of HTML-links... */
-			link = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"url"));
-			
-			if(NULL == (tmp = i->enclosure))
-				tmp = g_strdup("");
-			else
-				tmp = g_strdup_printf("%s,", tmp);
-				
-			i->enclosure = g_strdup_printf("%s<a href=\"%s\">%s</a>", tmp, link, link);
+			tmp = CONVERT(xmlGetNoNsProp(cur, BAD_CAST"url"));
+			if(NULL != tmp) {
+				link = tmp;
+				if(NULL == (tmp = i->enclosure)) {
+					i->enclosure = g_strdup_printf("<a href=\"%s\">%s</a>", link, link);					
+				} else {
+					i->enclosure = g_strdup_printf("%s<a href=\"%s\">%s</a>", tmp, link, link);
+					g_free(tmp);
+				}
+				g_free(link);
+			}
 		}
-
 		cur = cur->next;
 	}
 

@@ -1,7 +1,7 @@
 /*
    CDF item parsing 
       
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -78,7 +78,8 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)CDFItemTagList[j])) {
 				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+				i->tags[j] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL == i->tags[j]) {
 					i->tags[j] = tmp;
 				} else {
 					g_free(tmp);
