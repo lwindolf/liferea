@@ -43,6 +43,7 @@
 #include "filter.h"
 #include "update.h"
 #include "debug.h"
+#include "metadata.h"
 
 #include "ui_queue.h"	// FIXME
 #include "ui_feed.h"
@@ -277,6 +278,7 @@ void feed_save(feedPtr fp) {
 				xmlNewTextChild(feedNode, NULL, "feedLastModified", tmp);
 				g_free(tmp);
 			}
+			metadata_add_xml_nodes(fp->metadataList, feedNode);
 
 			itemlist = feed_get_item_list(fp);
 			for(itemlist = feed_get_item_list(fp); itemlist != NULL; itemlist = g_slist_next(itemlist)) {
@@ -290,12 +292,12 @@ void feed_save(feedPtr fp) {
 					continue;
 				}
 				if(NULL != (itemNode = xmlNewChild(feedNode, NULL, "item", NULL))) {
-
+					
 					/* should never happen... */
 					if(NULL == item_get_title(ip))
 						item_set_title(ip, "");
 					xmlNewTextChild(itemNode, NULL, "title", item_get_title(ip));
-
+					
 					if(NULL != item_get_description(ip))
 						xmlNewTextChild(itemNode, NULL, "description", item_get_description(ip));
 					
@@ -316,7 +318,9 @@ void feed_save(feedPtr fp) {
 					tmp = g_strdup_printf("%ld", item_get_time(ip));
 					xmlNewTextChild(itemNode, NULL, "time", tmp);
 					g_free(tmp);
-
+					
+					metadata_add_xml_nodes(ip->metadataList, itemNode);
+					
 				} else {
 					g_warning("could not write XML item node!\n");
 				}
@@ -420,7 +424,9 @@ gboolean feed_load_from_cache(feedPtr fp) {
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				feed_add_item((feedPtr)fp, item_parse_cache(doc, cur));
-			}			
+			} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
+				fp->metadataList = metadata_parse_xml_nodes(doc, cur);
+			}
 			g_free(tmp);	
 			cur = cur->next;
 		}
@@ -453,7 +459,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	gint		traycount = 0;
 
 	debug1(DEBUG_VERBOSE, "merging feed: \"%s\"", old_fp->title);
-		
+	
 	if(TRUE == new_fp->available) {
 		/* adjust the new_fp's items parent feed pointer to old_fp, just
 		   in case they are reused... */
@@ -505,7 +511,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 						break;
 					}
 				} 
-
+				
 				if(equal) {
 					found = TRUE;
 					break;
@@ -605,6 +611,9 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	new_fp->parseErrors = NULL;
 	old_fp->available = new_fp->available;
 	new_fp->items = NULL;
+	metadata_list_free(old_fp->metadataList);
+	old_fp->metadataList = new_fp->metadataList;
+	new_fp->metadataList = NULL;
 	feed_free(new_fp);
 	
 	ui_tray_add_new(traycount);		/* finally update the tray icon */
@@ -819,9 +828,9 @@ gchar * feed_get_error_description(feedPtr fp) {
 	gchar	*tmp1 = NULL;
 
 	if(fp->discontinued) {
-		addToHTMLBuffer(&tmp1, UPDATE_ERROR_START);
-		addToHTMLBuffer(&tmp1, HTTP410_ERROR_TEXT);
-		addToHTMLBuffer(&tmp1, UPDATE_ERROR_END);
+		addToHTMLBufferFast(&tmp1, UPDATE_ERROR_START);
+		addToHTMLBufferFast(&tmp1, HTTP410_ERROR_TEXT);
+		addToHTMLBufferFast(&tmp1, UPDATE_ERROR_END);
 	}
 	addToHTMLBuffer(&tmp1, fp->errorDescription);
 	return tmp1; 
@@ -991,6 +1000,45 @@ void feed_mark_all_items_read(feedPtr fp) {
 	ui_feedlist_update();
 }
 
+gchar *feed_render(feedPtr fp) {
+	struct displayset displayset;
+	gchar *buffer = NULL;
+	gchar *tmp;
+	displayset.headtable = NULL;
+	displayset.body = g_strdup(feed_get_description(fp));
+	displayset.foottable = NULL;
+	
+	metadata_list_render(fp->metadataList, &displayset);
+	
+	if (displayset.headtable != NULL) {
+		addToHTMLBufferFast(&buffer, HEAD_START);
+		addToHTMLBufferFast(&buffer, displayset.headtable);
+		addToHTMLBufferFast(&buffer, HEAD_END);
+		g_free(displayset.headtable);
+	}
+
+	if(NULL != (tmp = feed_get_error_description(displayed_fp))) {
+		addToHTMLBufferFast(&buffer, tmp);
+		g_free(tmp);
+	}
+	
+	if (displayset.body != NULL) {
+		addToHTMLBufferFast(&buffer, displayset.body);
+		g_free(displayset.body);
+	}
+
+	if (displayset.foottable != NULL) {
+		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
+		addToHTMLBufferFast(&buffer, displayset.foottable);
+		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
+		g_free(displayset.foottable);
+	}
+	
+	return buffer;
+}
+
+
+
 /* Method to copy the info payload of the structure given by
    new_fp to the structure fp points to. Essential model
    specific keys of fp are kept. The feed structure of new_fp 
@@ -1096,6 +1144,7 @@ void feed_free(feedPtr fp) {
 	g_free(fp->source);
 	g_free(fp->parseErrors);
 	g_free(fp->filtercmd);
+	metadata_list_free(fp->metadataList);
 	g_free(fp);
 
 }

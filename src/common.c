@@ -37,6 +37,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <locale.h>
+#include <time.h>
 #include "support.h"
 #include "common.h"
 #include "conf.h"

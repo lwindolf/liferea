@@ -22,6 +22,7 @@
 #define _METADATA_H
 
 #include <glib.h>
+#include <libxml/tree.h>
 #include "htmlview.h"
 struct displayset;
 
@@ -36,4 +37,11 @@ void metadata_register(const gchar *strid, renderHTMLFunc renderfunc, gpointer u
 gpointer metadata_list_append(gpointer metadata_list, const gchar *strid, const gchar *data);
 
 void metadata_list_render(gpointer metadataList, struct displayset *displayset);
+
+void metadata_list_free(gpointer metadataList);
+
+void metadata_add_xml_nodes(gpointer metadataList, xmlNodePtr parentNode);
+
+gpointer metadata_parse_xml_nodes(xmlDocPtr, xmlNodePtr cur);
+
 #endif

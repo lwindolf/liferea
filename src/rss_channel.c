@@ -34,7 +34,8 @@
 #include "common.h"
 #include "rss_channel.h"
 #include "callbacks.h"
-
+#include "feed.h"
+#include "metadata.h"
 #include "rss_ns.h"
 #include "ns_dc.h"
 #include "ns_fm.h"
@@ -125,7 +126,7 @@ void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
 }
 
 /* returns RSS channel description as HTML */
-static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
+static gchar * showRSSFeedInfo(feedPtr fp, RSSChannelPtr cp, gchar *url) {
 	gchar		*buffer = NULL;
 	gchar		*tmp, *line;
 	outputRequest	request;
@@ -133,26 +134,18 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 	g_assert(cp != NULL);
 	g_assert(url != NULL);
 
-	addToHTMLBuffer(&buffer, HEAD_START);
-
 	/* output feed title with feed link */
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 		cp->tags[RSS_CHANNEL_LINK],
 		cp->tags[RSS_CHANNEL_TITLE]);
-	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
+	fp->metadataList = metadata_list_append(fp->metadataList, "feedTitle", tmp);
 	g_free(tmp);
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
 	
 	/* output feed source link */
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-	line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
+	fp->metadataList = metadata_list_append(fp->metadataList, "feedSource", tmp);
 	g_free(tmp);
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
 
-	addToHTMLBuffer(&buffer, HEAD_END);
-				
 	/* process namespace infos */
 	request.obj = (gpointer)cp;
 	request.type = OUTPUT_RSS_CHANNEL_NS_HEADER;
@@ -203,11 +196,9 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 }
 
 /* method to parse standard tags for the channel element */
-static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
+static void parseChannel(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar			*tmp;
-	parseChannelTagFunc	fp;
 	GSList			*hp;
-	RSSNsHandler		*nsh;
 	int			i;
 	
 	g_assert(NULL != cur);
@@ -221,18 +212,17 @@ static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 				g_free(tmp);
 			}
 		}
-	
+		
 		/* check namespace of this tag */
 		if(NULL != cur->ns) {
 			if(NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
 				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
-					nsh = (RSSNsHandler *)hp->data;
-					fp = nsh->parseChannelTag;
+					RSSNsHandler		*nsh = (RSSNsHandler *)hp->data;;
+					parseChannelTagFunc	fp = nsh->parseChannelTag;
 					if(NULL != fp)
 						(*fp)(cp, cur);
-					cur = cur->next;
-					continue;
+					goto next;
 				} else {
 					//g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);
 				}
@@ -243,12 +233,16 @@ static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 			if(!xmlStrcmp(cur->name, BAD_CAST channelTagList[i])) {
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
-					g_free(cp->tags[i]);
-					cp->tags[i] = tmp;
-					break;
+					if (i >= 4) {
+						fp->metadataList = metadata_list_append(fp->metadataList, cur->name, tmp);
+						xmlFree(tmp);
+					} else
+						cp->tags[i] = tmp;
 				}
+				goto next;
 			}		
 		}
+	next:
 		cur = cur->next;
 	}
 
@@ -351,7 +345,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			}
 			
 			if((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
-				parseChannel(cp, cur);
+				parseChannel(fp, cp, cur);
 				g_assert(NULL != cur);
 				if(0 == rdf)
 					cur = cur->xmlChildrenNode;
@@ -402,7 +396,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 
 	if(0 == error) {
 		fp->available = TRUE;
-		fp->description = showRSSFeedInfo(cp, fp->source);
+		fp->description = showRSSFeedInfo(fp, cp, fp->source);
 	} else {
 		ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 	}

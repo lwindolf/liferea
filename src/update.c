@@ -91,8 +91,9 @@ static char* filter(gchar *cmd, gchar *data, size_t *size) {
 }
 
 void download_process(struct request *request) {
-	request->data = NULL;
 	FILE *f;
+
+	request->data = NULL;
 	
 	if(request->source[0] == '|') {
 		/* if the first char is a | we have a pipe else a file */

@@ -174,6 +174,7 @@ void item_free(itemPtr ip) {
 	g_free(ip->description);
 	g_free(ip->source);
 	g_free(ip->id);
+	metadata_list_free(ip->metadataList);
 	// FIXME: remove item from all assigned VFolders!
 	if (ip->ui_data != NULL)
 		ui_free_item_ui_data(ip);
@@ -269,6 +270,8 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
 			item_set_time(ip, atol(tmp));
+		else if (!xmlStrcmp(cur->name, BAD_CAST"attributes"))
+			ip->metadataList = metadata_parse_xml_nodes(doc, cur);
 		
 		g_free(tmp);	
 		cur = cur->next;
