@@ -495,6 +495,7 @@ static void ui_feedlist_delete_(nodePtr ptr) {
 	if((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type)) {		
 		ui_notification_remove_feed((feedPtr)ptr);	/* removes an existing notification for this feed */
 		ui_folder_remove_node(ptr);
+		feed_load((feedPtr)ptr);
 		feed_free((feedPtr)ptr);
 	} else {
 		ui_feedlist_do_for_all(ptr, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, ui_feedlist_delete_);

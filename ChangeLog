@@ -20,6 +20,11 @@
 	* Article skimming keybinding is now global. 
           (Lars Lindner)
 
+	Bugfixes:
+
+	* Fixes a bug that caused the items of a deleted feed 
+	  not to be removed from all vfolders. (Jakub W. Jozwicki)
+
 
 2004-11-25  Lars Lindner <lars.lindner@gmx.net>
 
