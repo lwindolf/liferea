@@ -8,8 +8,8 @@ Lars Lindner <lars.lindner@gmx.net>
 Nathan J. Conrad <t98502@users.sourceforge.net>
 
 
-Contributors
-============
+Code Contributors
+=================
 
 James Doherty 					dialog design
 
@@ -37,6 +37,11 @@ Niklas Morberg <morberg@users.sourceforge.net>	debugging and patching
 Pierre Phaneuf <pp@ludusdesign.com>		RPM spec update
 
 ahmed el-helw <ahmedre@cc.gatech.edu>		feed link autodiscovery
+
+James Bowes <bowes@cs.dal.ca>			tray icon popup menu
+
+Marc Deslauriers				patch for window state saving
+
 
 Packaging
 =========

@@ -1,4 +1,4 @@
-2004-07-?? ???
+2004-07-22 Lars Linder <lars.lindner@gmx.net>
 
 	Version 0.5.2
 	
@@ -14,6 +14,14 @@
 	  proxy settings. (Lars Lindner)
 	* Feed and item information is now properly localized.
 	  (Lars Lindner and Nathan Conrad)
+	  
+	  PLEASE NOTE THAT THIS BREAKS FEED CACHE
+ 	  DOWNWARD COMPATIBILITY WITH OLDER RELEASES!
+	  WHEN YOU FALLBACK YOU WON'T SEE THE METADATA
+	  OF ALL NEWLY AQUIRED HEADLINES. ALSO USING
+	  OLDER VERSIONS OF LIFEREA WILL STRIP THE
+	  METADATA INFORMATION FROM THE FEED CACHE!
+	  
 	* Popup menu for the systray icon. (James Bowes)
 	* Improvements for the favicon handling. favicon.ico files are now
 	  retrieved from the webserver path where the feed is
@@ -22,7 +30,9 @@
 	  days. (Lars Lindner & Nathan Conrad)
 	* Liferea now saves when the mainwindow is maximized.
 	  (Marc Deslauriers)
-	
+	* The gnomevfs2 dependency from GtkHTML2 was removed. 
+	  (Nathan Conrad)
+	  
 	Bugfixes:
 
 	* 0.5.1 did falsely encode HTTP URL hash marks as %23.
