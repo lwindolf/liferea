@@ -28,6 +28,7 @@
 #include "rss_item.h"
 #include "rss_ns.h"
 #include "htmlview.h"
+#include "metadata.h"
 
 #define RDF_NS	BAD_CAST"http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
@@ -67,35 +68,12 @@ extern void showRSSFeedNSInfo(gpointer value, gpointer userdata);
   a pointer to it */
 static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 	gchar		*buffer = NULL;
-	gchar		*tmp, *line;	
+	gchar		*tmp;
 	outputRequest	request;
 
 	g_assert(NULL != ip);
 	g_assert(NULL != cp);
 	g_assert(NULL != fp);	
-
-	/* output item link and title */
-	if(NULL != ip->tags[RSS_ITEM_LINK]) {
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->tags[RSS_ITEM_LINK], 
-					(NULL != ip->tags[RSS_ITEM_TITLE])?ip->tags[RSS_ITEM_TITLE]:ip->tags[RSS_ITEM_LINK]);
-		line = g_strdup_printf(HEAD_LINE, _("Item:"), tmp);
-		g_free(tmp);
-	} else {
-		line = g_strdup_printf(HEAD_LINE, _("Item:"), (NULL != ip->tags[RSS_ITEM_TITLE])?ip->tags[RSS_ITEM_TITLE]:_("[No Title]"));
-	}
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
-
-	if(NULL != ip->real_source_url)	{
-		/* if available output item source and title */
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->real_source_url, 
-					(NULL != ip->real_source_title)?ip->real_source_title:ip->real_source_url);
-		line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
-		g_free(tmp);
-		addToHTMLBuffer(&buffer, line);
-		g_free(line);
-	}
-	addToHTMLBuffer(&buffer, HEAD_END);
 
 	/* process namespace infos */
 	request.obj = ip;
@@ -208,12 +186,15 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 			}
 		} else 
 		if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
-			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
-			if(NULL != tmp) {
-				g_free(i->real_source_url);
-				g_free(i->real_source_title);
-				i->real_source_url = tmp;
-				i->real_source_title = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			gchar *source_url = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"url"));
+			if(NULL != source_url) {
+				gchar *source_title = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+				gchar *tmp = g_strdup_printf("<a href=\"%s\">%s</a>", source_url, 
+									    (NULL != source_title)?source_title:source_url);
+				ip->metadataList = metadata_list_append(ip->metadataList, "itemSource", tmp);
+				g_free(source_url);
+				g_free(source_title);
+				g_free(tmp);
 			}
 		} else {
 			/* check for RDF tags */

@@ -59,35 +59,12 @@ extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 
 /* writes item description as HTML into the gtkhtml widget */
 static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
-	gchar		*tmp, *line, *buffer = NULL;	
+	gchar		*buffer = NULL;	
 	outputRequest	request;
 
 	g_assert(NULL != ip);	
 	g_assert(NULL != cp);
 
-	addToHTMLBuffer(&buffer, HEAD_START);	
-	
-	/* output feed title and website */
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-		cp->tags[PIE_FEED_LINK],
-		cp->tags[PIE_FEED_TITLE]);
-	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-	g_free(tmp);
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
-
-	/* output item title and link */	
-	if(NULL != ip->source) {
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->source, ip->tags[PIE_ENTRY_TITLE]);
-		line = g_strdup_printf(HEAD_LINE, _("Item:"), tmp);
-		g_free(tmp);
-	} else {
-		line = g_strdup_printf(HEAD_LINE, _("Item:"), (NULL != ip->tags[PIE_ENTRY_TITLE])?ip->tags[PIE_ENTRY_TITLE]:_("[No Title]"));
-	}
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
-	
-	addToHTMLBuffer(&buffer, HEAD_END);
 
 	/* process namespace infos */
 	request.obj = ip;

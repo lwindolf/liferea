@@ -217,6 +217,7 @@ static void attribs_render_foot_text(gpointer data, struct displayset *displayse
 static void attribs_init() {
 	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedTitle", _("Feed:"));
 	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedSource", _("Source:"));
+	REGISTER_STR_ATTRIB(POS_HEADTABLE, "itemSource", _("Source:"));
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "author", _("author"));
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "contributor", _("contributors"));
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "copyright", _("copyright"));

@@ -184,7 +184,8 @@ void item_free(itemPtr ip) {
 gchar *item_render(itemPtr ip) {
 	struct displayset displayset;
 	gchar *buffer = NULL;
-
+	gchar *tmp, *tmp2;
+	
 	displayset.headtable = NULL;
 	displayset.head = NULL;
 	displayset.body = g_strdup(ip->description);
@@ -193,13 +194,37 @@ gchar *item_render(itemPtr ip) {
 	
 	metadata_list_render(ip->metadataList, &displayset);
 	
-	if (displayset.headtable != NULL) {
-		addToHTMLBufferFast(&buffer, HEAD_START);
-		addToHTMLBufferFast(&buffer, displayset.headtable);
-		addToHTMLBufferFast(&buffer, HEAD_END);
-		g_free(displayset.headtable);
-	}
+	/* Head table */
+	addToHTMLBufferFast(&buffer, HEAD_START);
+	/*  -- Feed line */
+	if (feed_get_html_uri(ip->fp) != NULL)
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+						  feed_get_html_uri(ip->fp),
+						  feed_get_title(ip->fp));
+	else
+		tmp = g_strdup(feed_get_title(ip->fp));
+	
+	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
+	g_free(tmp);
+	addToHTMLBufferFast(&buffer, tmp2);
+	g_free(tmp2);
 
+	/*  -- Item line */
+	if (item_get_source(ip) != NULL)
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+						  item_get_source(ip),
+						  (item_get_title(ip) != NULL)? item_get_title(ip) : _("[No title]"));
+	else
+		tmp = g_strdup((item_get_title(ip) != NULL) ? item_get_title(ip) : _("[No title]"));
+	tmp2 = g_strdup_printf(HEAD_LINE, _("Item:"), tmp);
+	g_free(tmp);
+	addToHTMLBufferFast(&buffer, tmp2);
+	g_free(tmp2);
+	
+	addToHTMLBufferFast(&buffer, displayset.headtable);
+	g_free(displayset.headtable);
+	addToHTMLBufferFast(&buffer, HEAD_END);
+	
 	if (displayset.head != NULL) {
 		addToHTMLBufferFast(&buffer, displayset.head);
 		g_free(displayset.head);
