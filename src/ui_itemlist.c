@@ -390,9 +390,8 @@ void ui_itemlist_display(void) {
 		} else {
 			/* three pane mode */
 			
-			/* we only update anything if the feedlist is focussed */
-			if(lookup_widget(mainwindow, "feedlist") == gtk_window_get_focus(GTK_WINDOW(mainwindow))) {
-			
+			/* The feed info is displayed only if there is not a currently displayed item */
+			if(displayed_item == NULL) {			
 				/* display feed info */
 				ui_htmlview_start_output(&buffer, base, TRUE);
 				if((FST_FEED == np->type) || 
