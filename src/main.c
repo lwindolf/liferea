@@ -87,6 +87,7 @@ int main (int argc, char *argv[]) {
 		
 	/* order is important! */
 	updateThread = initUpdateThread();
+	initCallbacks();
 	initConfig();
 	loadConfig();
 	initBackend();

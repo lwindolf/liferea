@@ -32,6 +32,9 @@
 #define IS_TIME		3
 #define IS_TYPE		4
 
+void
+initCallbacks			       (void);
+
 void 
 print_status 			       (gchar 		*statustext);
 

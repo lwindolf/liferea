@@ -36,6 +36,7 @@ liferea_SOURCES = \
 	ns_content.c ns_content.h \
 	ns_syn.c ns_syn.h \
 	ns_admin.c ns_admin.h \
+	ns_blogChannel.c ns_blogChannel.h \
 	conf.c conf.h \
 	vfolder.c vfolder.h \
 	netio.c netio.h

@@ -77,7 +77,6 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 			} else if(!strcmp(mode, BAD_CAST"xml")) {
 				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
 				i->tags[PIE_ENTRY_DESCRIPTION] = extractHTMLNode(cur);
-g_print("xml-content:%s\n", i->tags[PIE_ENTRY_DESCRIPTION]);
 				i->summary = FALSE;
 
 			} else if(!strcmp(mode, BAD_CAST"base64"))
@@ -212,7 +211,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		
 	if(NULL != i->tags[PIE_ENTRY_DESCRIPTION])
 		i->tags[PIE_ENTRY_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[PIE_ENTRY_DESCRIPTION]);	
-g_print("html-content:%s\n", i->tags[PIE_ENTRY_DESCRIPTION]);
+
 	ip->title = i->tags[PIE_ENTRY_TITLE];		
 	ip->description = showPIEEntry((PIEFeedPtr)cp, i);
 

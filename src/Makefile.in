@@ -162,6 +162,7 @@ liferea_SOURCES = \
 	ns_content.c ns_content.h \
 	ns_syn.c ns_syn.h \
 	ns_admin.c ns_admin.h \
+	ns_blogChannel.c ns_blogChannel.h \
 	conf.c conf.h \
 	vfolder.c vfolder.h \
 	netio.c netio.h
@@ -183,8 +184,8 @@ am_liferea_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) \
 	pie_entry.$(OBJEXT) opml.$(OBJEXT) ocs_dir.$(OBJEXT) \
 	ns_ocs.$(OBJEXT) ns_dc.$(OBJEXT) ns_fm.$(OBJEXT) \
 	ns_slash.$(OBJEXT) ns_content.$(OBJEXT) ns_syn.$(OBJEXT) \
-	ns_admin.$(OBJEXT) conf.$(OBJEXT) vfolder.$(OBJEXT) \
-	netio.$(OBJEXT)
+	ns_admin.$(OBJEXT) ns_blogChannel.$(OBJEXT) conf.$(OBJEXT) \
+	vfolder.$(OBJEXT) netio.$(OBJEXT)
 liferea_OBJECTS = $(am_liferea_OBJECTS)
 liferea_DEPENDENCIES =
 liferea_LDFLAGS =
@@ -199,6 +200,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/htmlview.Po ./$(DEPDIR)/interface.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/item.Po ./$(DEPDIR)/main.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/netio.Po ./$(DEPDIR)/ns_admin.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ns_blogChannel.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ns_content.Po ./$(DEPDIR)/ns_dc.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ns_fm.Po ./$(DEPDIR)/ns_ocs.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ns_slash.Po ./$(DEPDIR)/ns_syn.Po \
@@ -271,6 +273,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/netio.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_admin.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_blogChannel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_content.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_dc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ns_fm.Po@am__quote@

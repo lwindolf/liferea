@@ -41,6 +41,7 @@
 #include "ns_slash.h"
 #include "ns_syn.h"
 #include "ns_admin.h"
+#include "ns_blogChannel.h"
 
 #include "netio.h"
 #include "htmlview.h"
@@ -117,7 +118,10 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	if(getNameSpaceStatus(ns_admin_getRSSNsPrefix()))
 		g_hash_table_insert(rss_nslist, (gpointer)ns_admin_getRSSNsPrefix(),
 					        (gpointer)ns_admin_getRSSNsHandler());
-
+	if(getNameSpaceStatus(ns_bC_getRSSNsPrefix()))
+		g_hash_table_insert(rss_nslist, (gpointer)ns_bC_getRSSNsPrefix(),
+					        (gpointer)ns_bC_getRSSNsHandler());
+						
 	/* prepare feed handler structure */
 	fhp->readFeed		= readRSSFeed;
 	fhp->merge		= TRUE;

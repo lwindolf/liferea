@@ -56,7 +56,6 @@ void ns_content_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp(cur->name, "encoded")) {
 		g_free(ip->tags[RSS_ITEM_DESCRIPTION]);
-		ip->tags[RSS_ITEM_DESCRIPTION] = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		// FIXME: may we need some conversion functionality?
+		ip->tags[RSS_ITEM_DESCRIPTION] = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
 	}
 }

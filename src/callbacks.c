@@ -83,7 +83,7 @@ gint selected_type = FST_INVALID;
 static gchar	*root_prefix = "";
 
 /* pointer to the selected directory key prefix, needed when creating new feeds */
-static gchar	*selected_keyprefix = "";
+static gchar	*selected_keyprefix = NULL;
 
 /* prototypes */
 void preFocusItemlist(void);
@@ -97,6 +97,10 @@ void clearItemList(void);
 /*------------------------------------------------------------------------------*/
 /* helper functions								*/
 /*------------------------------------------------------------------------------*/
+
+void initCallbacks(void) {
+	selected_keyprefix = g_strdup(root_prefix);
+}
 
 /* returns the selected feed list iterator */
 GtkTreeIter * getFeedListIter(GtkWidget *window) {
