@@ -103,7 +103,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 
 		if(internal) {
 			if(fp->noIncremental)
-				xmlNewProp(childNode, BAD_CAST"noIncremental", NULL);
+				xmlNewProp(childNode, BAD_CAST"noIncremental", BAD_CAST"true");
 				
 			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 			if(fp->lastPoll.tv_sec > 0) {
@@ -328,7 +328,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 
 		/* Set the cache limit */
 		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
-		if (cacheLimitStr != NULL && !xmlStrcmp(cacheLimitStr, "unlimited")) {
+		if(cacheLimitStr != NULL && !xmlStrcmp(cacheLimitStr, "unlimited")) {
 			fp->cacheLimit = CACHE_UNLIMITED;
 		} else
 			fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
@@ -336,39 +336,41 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		
 		/* Obtain the htmlUrl */
 		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
-		if (htmlUrlStr != NULL && 0 != xmlStrcmp(htmlUrlStr, ""))
+		if(htmlUrlStr != NULL && 0 != xmlStrcmp(htmlUrlStr, ""))
 			feed_set_html_url(fp, htmlUrlStr);
 		xmlFree(htmlUrlStr);
 		
-		if(NULL != xmlHasProp(cur, BAD_CAST"noIncremental"))
+		tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
+		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 			fp->noIncremental = TRUE;
+		xmlFree(tmp);
 		
 		/* Last poll time*/
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
 		fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
 		fp->lastPoll.tv_usec = 0L;
-		if (lastPollStr != NULL)
+		if(lastPollStr != NULL)
 			xmlFree(lastPollStr);
 		
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
 		fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
 		fp->lastFaviconPoll.tv_usec = 0L;
-		if (lastPollStr != NULL)
+		if(lastPollStr != NULL)
 			xmlFree(lastPollStr);
 
 		/* sorting order */
 		sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
-		if (sortStr != NULL) {
-			if (!xmlStrcmp(sortStr, "title"))
+		if(sortStr != NULL) {
+			if(!xmlStrcmp(sortStr, "title"))
 				fp->sortColumn = IS_TITLE;
-			else if (!xmlStrcmp(sortStr, "time"))
+			else if(!xmlStrcmp(sortStr, "time"))
 				fp->sortColumn = IS_TIME;
 			xmlFree(sortStr);
 		}
 		sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
 		if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"true"))
 			fp->sortReversed = TRUE;
-		if (sortStr != NULL)
+		if(sortStr != NULL)
 			xmlFree(sortStr);
 		
 		/* set feed properties available from the OPML feed list 
