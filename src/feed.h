@@ -307,9 +307,14 @@ void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed);
 void feed_clear_item_list(feedPtr fp);
 void feed_remove_items(feedPtr fp);
 
+/**
+ * Unsets bot the unread and update flag for all items
+ * of the given feed.
+ */
 void feed_mark_all_items_read(feedPtr fp);
 
-/** Returns a HTML rendering of a feed. The returned string must be
+/** 
+ * Returns a HTML rendering of a feed. The returned string must be
  *  freed
  */
 gchar *feed_render(feedPtr fp);

@@ -929,6 +929,7 @@ void feed_mark_all_items_read(feedPtr fp) {
 	item = fp->items;
 	while(NULL != item) {
 		item_set_read((itemPtr)item->data);
+		item_set_update_status((itemPtr)item->data, FALSE);
 		item = g_slist_next(item);
 	}
 	feed_unload(fp);

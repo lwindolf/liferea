@@ -186,9 +186,9 @@ void ui_itemlist_clear(void) {
 static void ui_update_item_from_iter(GtkTreeIter *iter) {
 	GtkTreeStore	*itemstore = getItemStore();
 	gpointer	ip;
-	gchar		*title, *label, *time_str, *esc_title, *tmp;
+	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
 	gint		time;
-	GdkPixbuf	*pixbuf, *pixbuf2;
+	GdkPixbuf	*icon, *favicon = NULL;
 
 	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter,
 				    IS_PTR, &ip,
@@ -196,22 +196,22 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 				    IS_TIME, &time,
 				    -1);
 
-	/* Icon */
-	if(FALSE == item_get_mark(ip)) {
-		if(FALSE == item_get_read_status(ip)) {
-			pixbuf = icons[ICON_UNREAD];
-		} else {
-			pixbuf = icons[ICON_READ];
-		}
-	} else {
-		pixbuf = icons[ICON_FLAG];
-	}
+	/* favicon for vfolders */
 	if(NULL != ((itemPtr)ip)->sourceFeed)
-		pixbuf2 = ((itemPtr)ip)->sourceFeed->icon;
-	else
-		pixbuf2 = NULL;
+		favicon = ((itemPtr)ip)->sourceFeed->icon;
 
-	/* Label */
+	/* Time */
+	if(0 != time) {
+		esc_time_str = ui_itemlist_format_date((time_t)time);
+		/* the time value is no markup, so we escape it... */
+		tmp = g_markup_escape_text(esc_time_str,-1);
+		g_free(esc_time_str);
+		esc_time_str = tmp;
+	} else {
+		esc_time_str = g_strdup("");
+	}
+	
+	/* Label and state icon */
 	if(title != NULL) {
 		/* Here we have the following problem: a title string might contain 
 		   either escaped markup (which we should not escape again) or 
@@ -225,39 +225,34 @@ static void ui_update_item_from_iter(GtkTreeIter *iter) {
 			esc_title = filter_title(esc_title);
 			
 		if(FALSE == item_get_read_status(ip)) {
+			time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
 			label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
+			icon = icons[ICON_UNREAD];
 		} else if(TRUE == item_get_update_status(ip)) {
+			time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
 			label = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_title);
+			icon = icons[ICON_UPDATED];
 		} else {
-			label = g_strdup_printf("%s", esc_title);
+			time_str = g_strdup(esc_time_str);
+			label = g_strdup(esc_title);
+			icon = icons[ICON_READ];
 		}
 		g_free(esc_title);
+		g_free(esc_time_str);
 	} else {
 		label = g_strdup("");
+		time_str = esc_time_str;
 	}
-
-	/* Time */
-	if(0 != time) {
-		if(FALSE == item_get_read_status(ip)) {
-			/* the time value is no markup, so we escape it... */
-			time_str = ui_itemlist_format_date((time_t)time);
-			tmp = g_markup_escape_text(time_str,-1);
-			g_free(time_str);
-			time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", tmp);
-			g_free(tmp);
-		} else {
-			time_str = ui_itemlist_format_date((time_t)time);
-		}
-	} else {
-		time_str = g_strdup("");
-	}
+	
+	if(TRUE == item_get_mark(ip)) 
+		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
 	gtk_tree_store_set(getItemStore(), iter,
 				    IS_LABEL, label,
 				    IS_TIME_STR, time_str,
-				    IS_ICON, pixbuf,
-				    IS_ICON2, pixbuf2,
+				    IS_ICON, icon,
+				    IS_ICON2, favicon,
 				    -1);
 	g_free(time_str);
 	g_free(title);
