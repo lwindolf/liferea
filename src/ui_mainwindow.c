@@ -68,6 +68,7 @@ GtkWidget 	*mainwindow;
 
 static GtkWidget *htmlview = NULL;		/* HTML rendering widget */
 static gfloat 	zoom;				/* HTML rendering widget zoom level */
+static int trayCount = 0;
 extern gboolean	startIconified; /* From main.c */
 
 /* some prototypes */
@@ -344,6 +345,22 @@ void ui_mainwindow_save_position(void) {
 	setNumericConfValue(LAST_WINDOW_HEIGHT, h);
 }
 
+void ui_mainwindow_tray_add() {
+	trayCount++;
+}
+
+void ui_mainwindow_tray_remove() {
+	trayCount--;
+	
+	if (trayCount == 0)
+		if (!GTK_WIDGET_VISIBLE(mainwindow)) {
+			ui_mainwindow_restore_position(mainwindow);
+			gtk_window_present(GTK_WINDOW(mainwindow));
+			if (!startIconified)
+				session_set_cmd(NULL, FALSE);
+		}
+}
+
 /**
  * Restore the window position from the values saved into gconf. Note
  * that this does not display/present/show the mainwindow.
@@ -434,7 +451,7 @@ void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
 
 gboolean on_close(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
-	if(getBooleanConfValue(SHOW_TRAY_ICON) == FALSE)
+	if(trayCount == 0)
 		return on_quit(widget, event, user_data);
 	ui_mainwindow_save_position();
 	gtk_widget_hide(mainwindow);

@@ -32,6 +32,7 @@
 #include "support.h"
 #include "ui_tray.h"
 #include "ui_popup.h"
+#include "ui_mainwindow.h"
 
 #define NO_NEW_ITEMS	0
 #define NEW_ITEMS	1
@@ -45,7 +46,6 @@ static gint		newItems = 0;
 static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
-static gboolean	trayVisible = FALSE;
 
 static void installTrayIcon(void);
 
@@ -132,7 +132,7 @@ static gboolean ui_tray_create_cb()
 
 
 static void ui_tray_embedded_cb(GtkWidget *widget, void *data) {
-	trayVisible = TRUE;
+	ui_mainwindow_tray_add();
 }
 
 
@@ -141,7 +141,7 @@ static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
 
 	image = NULL;
 	tray_icon = NULL;
-	trayVisible = FALSE;
+	ui_mainwindow_tray_remove();
 	
 	/* And make it re-appear when the notification area reappears */
 	g_idle_add(ui_tray_create_cb, NULL);
@@ -150,7 +150,6 @@ static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
 
 static void installTrayIcon(void) {
 	g_assert(!tray_icon);
-	g_assert(!trayVisible);
 
 	tray_icon = egg_tray_icon_new(PACKAGE);
 	eventbox = gtk_event_box_new();
@@ -176,7 +175,7 @@ static void removeTrayIcon() {
 	g_object_unref(G_OBJECT(tray_icon));
 	gtk_object_destroy (GTK_OBJECT (tray_icon));
 	tray_icon = NULL;
-	trayVisible = FALSE;
+	ui_mainwindow_tray_remove();
 }
 
 void ui_tray_enable(gboolean enabled) {

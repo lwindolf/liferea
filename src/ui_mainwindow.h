@@ -70,6 +70,11 @@ void ui_mainwindow_update_onlinebtn(void);
  */
 void ui_mainwindow_save_position();
 
+
+void ui_mainwindow_tray_add();
+
+void ui_mainwindow_tray_remove();
+
 /* GUI callbacks */
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data);
 void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data);
