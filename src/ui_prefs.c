@@ -41,45 +41,61 @@ extern GSList *availableBrowserModules;
 
 static GtkWidget *prefdialog = NULL;
 
-void on_browsermodule_changed(GtkObject *object, gchar *libname);
-void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
+static void on_browsermodule_changed(GtkObject *object, gchar *libname);
+static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
+static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 
 struct browser {
 	gchar *id; /**< Unique ID used in storing the prefs */
 	gchar *display; /**< Name to display in the prefs */
-	gchar *defaultloc; /**< Default command.... Use %s to specify URL */
+	gchar *defaultplace; /**< Default command.... Use %s to specify URL */
 	gchar *existingwin;
 	gchar *newwin;
-	gchar *tab;
+	gchar *newtab;
 };
 
 struct browser browsers[] = {
 	{"gnome", "Gnome Default Browser", "gnome-open \"%s\"", NULL, NULL, NULL},
-	{"mozilla", "Mozilla", "mozilla \"%s\"", "mozilla -remote \"openURL(\"%s\")\"",
-	 "mozilla -remote 'openURL(\"%s\",new-window)'", "mozilla -remote 'openURL(\"%s\",new-tab)'"},
-	{"firefox", "Firefox", "firefox \"%s\"", "firefox -remote \"openURL(\"%s\")\"",
-	 "firefox -remote 'openURL(\"%s\",new-window)'", "firefox -remote 'openURL(\"%s\",new-tab)'"},
-	{"netscape", "Netscape", "netscape \"%s\"", NULL, "netscape -remote \"openURL(\"%s\",new-window)\"", NULL},
+	{"mozilla", "Mozilla", "mozilla \"%s\"", "mozilla -remote \"openURL(%s)\"",
+	 "mozilla -remote 'openURL(%s,new-window)'", "mozilla -remote 'openURL(%s,new-tab)'"},
+	{"firefox", "Firefox", "firefox \"%s\"", "firefox -remote \"openURL(%s)\"",
+	 "firefox -remote 'openURL(%s,new-window)'", "firefox -remote 'openURL(%s,new-tab)'"},
+	{"netscape", "Netscape", "netscape \"%s\"", NULL, "netscape -remote \"openURL(%s,new-window)\"", NULL},
 	{NULL, NULL, NULL, NULL, NULL, NULL}
 };
 
 gchar *prefs_get_browser_cmd() {
 	gchar *ret = NULL;
 	gchar *libname;
-	
+	gint place = getNumericConfValue(BROWSER_PLACE);
+
 	libname = getStringConfValue(BROWSER_ID);
 	if (!strcmp(libname, "manual")) {
 		ret = g_strdup(getStringConfValue(BROWSER_COMMAND));
 	} else {
 		struct browser *iter;
 		for (iter = browsers; iter->id != NULL; iter++) {
-			if(!strcmp(libname, iter->id))
-				ret = g_strdup(iter->defaultloc);
+			if(!strcmp(libname, iter->id)) {
+				switch (place) {
+				case 1:
+					ret = g_strdup(iter->existingwin);
+					break;
+				case 2:
+					ret = g_strdup(iter->newwin);
+					break;
+				case 3:
+					ret = g_strdup(iter->newtab);
+					break;
+				default:
+				case 0:
+					ret = g_strdup(browsers[0].defaultplace);
+				}
+			}
 		}
 	}
 	g_free(libname);
 	if (ret == NULL)
-		ret = g_strdup(browsers[0].defaultloc);
+		ret = g_strdup(browsers[0].defaultplace);
 	return ret;
 }
 
@@ -117,6 +133,31 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
 		
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), menu);
+
+		/* Create location menu */
+		menu = gtk_menu_new();
+
+		entry = gtk_menu_item_new_with_label(_("Browser default"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(0));
+
+		entry = gtk_menu_item_new_with_label(_("Existing window"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(1));
+
+		entry = gtk_menu_item_new_with_label(_("New window"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(2));
+
+		entry = gtk_menu_item_new_with_label(_("New tab"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(3));
+
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), menu);
 	}
 	g_assert(NULL != prefdialog);
 	
@@ -281,7 +322,7 @@ void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(BROWSER_COMMAND, gtk_editable_get_chars(editable,0,-1));
 }
 
-void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
+static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 	int num = GPOINTER_TO_INT(user_data);
 
 	gtk_widget_set_sensitive(lookup_widget(prefdialog, "browsercmd"), browsers[num].id == NULL);	
@@ -293,8 +334,13 @@ void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 		setStringConfValue(BROWSER_ID, browsers[num].id);
 }
 
+static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
+	int num = GPOINTER_TO_INT(user_data);
+	
+	setNumericConfValue(BROWSER_PLACE, num);
+}
 
-void on_browsermodule_changed(GtkObject *object, gchar *libname) {
+static void on_browsermodule_changed(GtkObject *object, gchar *libname) {
 	setStringConfValue(BROWSER_MODULE, libname);
 }
 

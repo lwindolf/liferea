@@ -29,6 +29,7 @@
 #define BROWSE_INSIDE_APPLICATION	"/apps/liferea/browse-inside-application"
 #define GNOME_BROWSER_ENABLED		"/apps/liferea/browsermode"
 #define BROWSER_ID				"/apps/liferea/browser_id"
+#define BROWSER_PLACE			"/apps/liferea/browser_place"
 #define BROWSER_COMMAND			"/apps/liferea/browser"
 #define BROWSER_MODULE			"/apps/liferea/browser-module"
 #define GNOME_DEFAULT_BROWSER_COMMAND	"gnome-open '%s'"
