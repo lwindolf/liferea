@@ -706,13 +706,8 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	if(TRUE == ui_itemlist_find_unread_item())
 		return;
 	
-	/* find first feed with unread items */
-	fp = ui_folder_find_unread_feed(NULL);
-	
-	if (fp) {
-		if(NULL == fp) {
-			return;	/* if we don't find a feed with unread items do nothing */
-		}
+	/* scan feed list and find first feed with unread items */
+	if(NULL != (fp = ui_feedlist_find_unread_feed(NULL))) {
 		
 		/* load found feed */
 		ui_feedlist_select((nodePtr)fp);
@@ -720,8 +715,14 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		/* find first unread item */
 		ui_itemlist_find_unread_item();
 	} else {
+		/* if we don't find a feed with unread items do nothing */
 		ui_mainwindow_set_status_bar(_("There are no unread items "));
 	}
+}
+
+void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) { 
+
+	on_next_unread_item_activate(NULL, NULL); 
 }
 
 static void ui_itemlist_select(itemPtr ip) {

@@ -431,3 +431,25 @@ void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWid
 	ui_feedlist_new_subscription(url, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	g_free(url);
 }
+
+void on_popup_zoomin_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+	GtkWidget	*htmlview;
+	gfloat		zoom;
+	
+	htmlview = ui_mainwindow_get_active_htmlview();
+	zoom = ui_htmlview_get_zoom(htmlview);
+	zoom *= 1.2;
+	
+	ui_htmlview_set_zoom(htmlview, zoom);
+}
+
+void on_popup_zoomout_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+	GtkWidget	*htmlview;
+	gfloat		zoom;
+
+	htmlview = ui_mainwindow_get_active_htmlview();	
+	zoom = ui_htmlview_get_zoom(htmlview);
+	zoom /= 1.2;
+	
+	ui_htmlview_set_zoom(htmlview, zoom);
+}

@@ -142,20 +142,6 @@ void ui_mainwindow_set_mode(gboolean threePane) {
 	itemlist_mode = threePane;
 }
 
-void ui_mainwindow_zoom_in() {
-	gfloat zoom = ui_htmlview_get_zoom(htmlview);
-	zoom *= 1.2;
-	
-	ui_htmlview_set_zoom(htmlview, zoom);
-}
-
-void ui_mainwindow_zoom_out() {
-	gfloat zoom = ui_htmlview_get_zoom(htmlview);
-	zoom /= 1.2;
-	
-	ui_htmlview_set_zoom(htmlview, zoom);
-}
-
 void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_style) {
 	GtkWidget *toolbar = lookup_widget(GTK_WIDGET(window), "toolbar");
 	
@@ -514,7 +500,7 @@ static void ui_choose_file_save_cb(GtkDialog *dialog, gint response_id, gpointer
 	struct file_chooser_tuple *tuple = (struct file_chooser_tuple*)user_data;
 	gchar *filename;
 	
-	if (response_id == GTK_RESPONSE_ACCEPT) {
+	if(response_id == GTK_RESPONSE_ACCEPT) {
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		tuple->func(filename, tuple->user_data);
 		g_free(filename);
@@ -549,54 +535,54 @@ static void ui_choose_file_cb_canceled(GtkButton *button, gpointer user_data) {
 #endif
 
 void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *filename, gpointer user_data) {
-	GtkWidget *dialog;
-	struct file_chooser_tuple *tuple;
+	GtkWidget			*dialog;
+	struct file_chooser_tuple	*tuple;
 #if GTK_CHECK_VERSION(2,4,0)
-	GtkWidget *button;
+	GtkWidget			*button;
 	
-	dialog = gtk_file_chooser_dialog_new (title,
-								   parent,
-								   saving ? GTK_FILE_CHOOSER_ACTION_SAVE : GTK_FILE_CHOOSER_ACTION_OPEN,
-								   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-								   NULL);
+	dialog = gtk_file_chooser_dialog_new(title,
+	                                     parent,
+	                                     saving ? GTK_FILE_CHOOSER_ACTION_SAVE : GTK_FILE_CHOOSER_ACTION_OPEN,
+	                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+	                                     NULL);
 	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
 
-	tuple = (struct file_chooser_tuple*)g_malloc(sizeof(struct file_chooser_tuple));
+	tuple = g_new0(struct file_chooser_tuple, 1);
 	tuple->dialog = dialog;
 	tuple->func = callback;
 	tuple->user_data = user_data;
 
 	button = gtk_dialog_add_button(GTK_DIALOG(dialog), buttonName, GTK_RESPONSE_ACCEPT);
-	GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	
 	g_signal_connect(G_OBJECT(dialog), "response",
-				  G_CALLBACK (ui_choose_file_save_cb), tuple);
-	if (filename != NULL && g_file_test(filename, G_FILE_TEST_EXISTS))
+	                 G_CALLBACK(ui_choose_file_save_cb), tuple);
+	if(filename != NULL && g_file_test(filename, G_FILE_TEST_EXISTS))
 		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
 	gtk_widget_show_all(dialog);
 #else
-	dialog = gtk_file_selection_new (title);
+	dialog = gtk_file_selection_new(title);
 	gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(parent));
-	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
 
-	tuple = (struct file_chooser_tuple*)malloc(sizeof(struct file_chooser_tuple));
+	tuple = g_new0(struct file_chooser_tuple, 1);
 	tuple->dialog = dialog;
 	tuple->func = callback;
 	tuple->user_data = user_data;
 
-	if (filename != NULL)
+	if(filename != NULL)
 		gtk_file_selection_set_filename(GTK_FILE_SELECTION(dialog), filename);
 	
-	g_signal_connect (GTK_FILE_SELECTION (dialog)->ok_button,
-				   "clicked",
-				   G_CALLBACK (ui_choose_file_cb),
-				   tuple);
+	g_signal_connect(GTK_FILE_SELECTION(dialog)->ok_button,
+	                 "clicked",
+	                 G_CALLBACK(ui_choose_file_cb),
+	                 tuple);
 
-	g_signal_connect (GTK_FILE_SELECTION (dialog)->cancel_button,
-				   "clicked",
-				   G_CALLBACK (ui_choose_file_cb_canceled),
-				   tuple);
+	g_signal_connect(GTK_FILE_SELECTION(dialog)->cancel_button,
+	                 "clicked",
+	                 G_CALLBACK(ui_choose_file_cb_canceled),
+	                 tuple);
 	
 	gtk_widget_show_all(dialog);
 #endif

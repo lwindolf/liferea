@@ -249,16 +249,11 @@ gboolean ui_htmlview_scroll(void);
  */
 void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password);
 
-void on_popup_launch_link_selected(gpointer    callback_data,
-						  guint       callback_action,
-						  GtkWidget  *widget);
-
-void on_popup_copy_url_selected(gpointer    callback_data,
-						  guint       callback_action,
-						  GtkWidget  *widget);
-						  
-void on_popup_subscribe_url_selected(gpointer    callback_data,
-						  guint       callback_action,
-						  GtkWidget  *widget);
+/* interface.c callbacks */
+void on_popup_launch_link_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_copy_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_subscribe_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_zoomin_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_zoomout_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 #endif

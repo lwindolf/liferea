@@ -53,51 +53,42 @@ GtkTreeStore		*feedstore = NULL;
 gboolean filter_feeds_without_unread_headlines = FALSE;
 
 folderPtr ui_feedlist_get_parent(nodePtr ptr) {
-	GtkTreeIter *iter = &((ui_data*)(ptr->ui_data))->row;
-	GtkTreeIter parent;
-	folderPtr parentPtr;
+	GtkTreeIter	*iter = &((ui_data*)(ptr->ui_data))->row;
+	GtkTreeIter	parent;
+	folderPtr	parentPtr;
 	
-	if (gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore), &parent, iter)) {
+	if(gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore), &parent, iter)) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &parent,
-					    FS_PTR, &parentPtr,
-					    -1);
+		                                              FS_PTR, &parentPtr,
+		                                              -1);
 		return parentPtr;
 	}
 	
 	return NULL;
 }
 
-nodePtr ui_feedlist_get_selected() {
-
-	GtkWidget		*treeview;
+nodePtr ui_feedlist_get_selected(void) {
 	GtkTreeSelection	*select;
-	GtkTreeModel		*model = GTK_TREE_MODEL(feedstore);
-	GtkTreeIter	iter;
-	nodePtr		ptr;
+	GtkTreeModel		*model;
+	GtkTreeIter		iter;
+	nodePtr			ptr = NULL;
 
-	g_assert(mainwindow);
-	treeview = lookup_widget(mainwindow, "feedlist");
-	g_assert(treeview);
-	
-	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-	g_assert(select);
-	
+	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
 	if(gtk_tree_selection_get_selected(select, &model, &iter)) {
-		gtk_tree_model_get(model, &iter, 
-					    FS_PTR, &ptr, 
-					    -1);
+		gtk_tree_model_get(model, &iter, FS_PTR, &ptr, -1);
 		return ptr;
-	} else
-		return NULL;
+	}
+	
+	return NULL;
 }
 
 folderPtr ui_feedlist_get_target_folder(int *pos) {
-	nodePtr		ptr = ui_feedlist_get_selected();
+	nodePtr		ptr;
 	GtkTreeIter	*iter;
 	GtkTreePath 	*path;
 	gint		*indices;
 	
-	if(ptr == NULL) {
+	if(NULL == (ptr = ui_feedlist_get_selected())) {
 		*pos = -1;
 		return NULL;
 	}
@@ -241,11 +232,28 @@ static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, 
 		return FALSE;
 }
 
+/* workaround to adjust the row pointers in the node structures
+   after changing the tree model */
+static void ui_feedlist_update_model_iter(nodePtr np) {
+	ui_data 	*new;
+
+	new = g_new0(struct ui_data, 1);
+	if(filter_feeds_without_unread_headlines)
+		gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &(((ui_data *)np->ui_data)->row), &(new->row));
+	else
+		gui_tree_model_filter_convert_iter_to_child_iter(GUI_TREE_MODEL_FILTER(filter), &(((ui_data *)np->ui_data)->row), &(new->row));
+		
+	g_free(np->ui_data);
+	np->ui_data = (gpointer)new;
+	g_print("finished\n");
+}
+
 /* Sets either the unread feeds filter model or the standard
    GTK tree model. This is necessary because only the standard
    model supports drag and drop. */
 void ui_feedlist_set_model(GtkTreeView *feedview, GtkTreeStore *feedstore, gboolean filtered) {
-
+	GtkTreeModel	*model;
+		
 	if(filtered) {
 		filter = gui_tree_model_filter_new(GTK_TREE_MODEL(feedstore), NULL);
 
@@ -253,11 +261,12 @@ void ui_feedlist_set_model(GtkTreeView *feedview, GtkTreeStore *feedstore, gbool
 	        	                               filter_visible_function,
 	                	                       NULL,
 	                        	               NULL);
-
-		gtk_tree_view_set_model(GTK_TREE_VIEW(feedview), GTK_TREE_MODEL(filter));
+		model = GTK_TREE_MODEL(filter);
 	} else {
-		gtk_tree_view_set_model(GTK_TREE_VIEW(feedview), GTK_TREE_MODEL(feedstore));
+		model = GTK_TREE_MODEL(feedstore);
 	}
+	
+	gtk_tree_view_set_model(GTK_TREE_VIEW(feedview), model);
 }
 
 /* sets up the entry list store and connects it to the entry list
@@ -331,18 +340,60 @@ void ui_feedlist_select(nodePtr np) {
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 	
 	if(NULL != np) {
-		g_assert(NULL != np->ui_data);
-		iter = ((ui_data*)(np->ui_data))->row;
-		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
+		if(filter_feeds_without_unread_headlines) {
+			gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &iter, &((ui_data*)(np->ui_data))->row);
+			path = gtk_tree_model_get_path(GTK_TREE_MODEL(filter), &iter);
+		} else {
+			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &((ui_data*)(np->ui_data))->row);
+		}
 		gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
 		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
 		gtk_tree_selection_select_path(selection, path);
 		gtk_tree_path_free(path);
-	} else {
+
+ 	} else {
 		gtk_tree_selection_unselect_all(selection);
 	}
 	
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
+}
+
+/* function for finding next unread item */
+feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
+	feedPtr			fp;
+	nodePtr			ptr;
+	GtkTreeModel		*model;
+	GtkTreeIter		iter, iter2, *parent = NULL;
+	gboolean		valid;
+	gint			count;
+
+	if(folder != NULL) {
+		if(filter_feeds_without_unread_headlines) {
+			gui_tree_model_filter_convert_child_iter_to_iter(GUI_TREE_MODEL_FILTER(filter), &iter2, &((ui_data*)(folder->ui_data))->row);
+		} else {
+			iter2 = ((ui_data*)(folder->ui_data))->row;
+		}
+		parent = &iter2;
+	}
+	
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
+	valid = gtk_tree_model_iter_children(model, &iter, parent);
+	while(valid) {
+		gtk_tree_model_get(model, &iter,
+		                   FS_PTR, &ptr,
+		                   FS_UNREAD, &count,
+		                   -1);
+		if(count > 0) {
+			if((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type)) {
+				return (feedPtr)ptr;
+			} else if(FST_FOLDER == ptr->type) {
+				if(NULL != (fp = ui_feedlist_find_unread_feed(ptr)))
+					return fp;
+			} /* Directories are never checked */
+		}
+		valid = gtk_tree_model_iter_next(model, &iter);
+	}
+	return NULL;
 }
 
 static void on_popup_refresh_selected_cb(nodePtr ptr) {
@@ -539,8 +590,7 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 	}
 	
 	while(valid) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter,
-					    FS_PTR, &child, -1);
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_PTR, &child, -1);
 		/* Must update counter here because the current node may be deleted! */
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 		/* If child == NULL, this is an empty node. */

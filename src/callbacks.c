@@ -174,15 +174,7 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, on_refreshbtn_clicked_cb);
 }
 
-void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data) { on_next_unread_item_activate(NULL, NULL); }
-
-void on_popup_zoomin_selected(void) {
-	ui_mainwindow_zoom_in();
-}
-void on_popup_zoomout_selected(void) {
-	ui_mainwindow_zoom_out();
-}
 
 void on_popup_allunread_selected(void) {
 	nodePtr		np;

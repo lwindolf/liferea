@@ -152,12 +152,12 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
  */
 #define ui_feedlist_do_for_all_data(ptr, filter, func, user_data) ui_feedlist_do_for_all_full(ptr,filter,func,1,user_data)
 
-/**
- * helper function to find next unread item 
- *
- * @param iter	an iterator of the feed list to be processed
+/** 
+ * Tries to find the first unread feed in the given folder.
+ * 
+ * @return feed pointer or NULL
  */
-feedPtr ui_feedlist_find_unread(GtkTreeIter *iter);
+feedPtr	ui_feedlist_find_unread_feed(nodePtr folder);
 
 /**
  * marks all items of the feed of the given tree iter as read 

@@ -1,22 +1,23 @@
-/*
-   GUI folder handling
-   
-   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
-   
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+/**
+ * @file ui_folder.c GUI folder handling
+ * 
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 
 #include <gtk/gtk.h>
 #include "support.h"
@@ -162,36 +163,6 @@ void ui_folder_set_expansion(folderPtr folder, gboolean expanded) {
 	}
 }
 
-/* function for finding next unread item */
-feedPtr ui_folder_find_unread_feed(folderPtr folder) {
-	feedPtr			fp;
-	nodePtr			ptr;
-	GtkTreeIter		iter, *parent = NULL;
-	gboolean valid;
-	gint count;
-
-	if(folder != NULL)
-		parent = &((ui_data*)(folder->ui_data))->row;
-	
-	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, parent);
-	while(valid) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
-		                   FS_PTR, &ptr,
-		                   FS_UNREAD, &count,
-		                   -1);
-		if(count > 0) {
-			if((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type)) {
-				return (feedPtr)ptr;
-			} else if(FST_FOLDER == ptr->type) {
-				if((fp = ui_folder_find_unread_feed((folderPtr)ptr)))
-					return fp;
-			} /* Directories are never checked */
-		}
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
-	}
-	return NULL;	
-}
-
 /* Subfolders */
 
 /* this function is a workaround to the cant-drop-rows-into-emtpy-
@@ -243,7 +214,8 @@ void checkForEmptyFolder(folderPtr folder) {
 }
 
 void checkForEmptyFolders(void) {
-     ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, checkForEmptyFolder);
+
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, checkForEmptyFolder);
 }
 
 void ui_add_folder(folderPtr parent, folderPtr folder, gint position) {
@@ -257,7 +229,7 @@ void ui_add_folder(folderPtr parent, folderPtr folder, gint position) {
 	
 	/* if parent is NULL we have the root folder and don't create
 	   a new row! */
-	folder->ui_data = g_malloc(sizeof(ui_data));
+	folder->ui_data = (gpointer)g_new0(struct ui_data, 1);
 	iter = &(((ui_data*)(folder->ui_data))->row);
 	if (parent == NULL) {
 		if (position < 0)
@@ -270,9 +242,7 @@ void ui_add_folder(folderPtr parent, folderPtr folder, gint position) {
 		else
 			gtk_tree_store_insert(feedstore, iter, &((ui_data*)parent->ui_data)->row,position);
 	}
-	gtk_tree_store_set(feedstore, iter,
-				    FS_PTR, folder,
-				    -1);
+	gtk_tree_store_set(feedstore, iter, FS_PTR, folder, -1);
 
 	checkForEmptyFolders();
 
@@ -352,14 +322,14 @@ static GdkPixbuf* ui_folder_select_icon(folderPtr np) {
 }
 
 static void ui_folder_update_from_iter(GtkTreeIter *iter) {
-	gboolean			rc;
+	gboolean		rc;
 	GtkTreeIter		child;
 	gint 			count, ccount;
 	gchar			*title, *label;
 	GtkTreeModel		*model;
-	folderPtr			ptr;
+	folderPtr		ptr;
 	
-	model =  GTK_TREE_MODEL(feedstore);
+	model = GTK_TREE_MODEL(feedstore);
 
 	gtk_tree_model_get(model, iter, FS_PTR, &ptr, -1);
 	
@@ -385,10 +355,10 @@ static void ui_folder_update_from_iter(GtkTreeIter *iter) {
 	}
 
 	gtk_tree_store_set(feedstore, iter,
-				    FS_LABEL, label,
-				    FS_ICON, ui_folder_select_icon(ptr),
-				    FS_UNREAD, count,
-				    -1);
+	                              FS_LABEL, label,
+	                              FS_ICON, ui_folder_select_icon(ptr),
+	                              FS_UNREAD, count,
+	                              -1);
 	g_free(title);
 	g_free(label);
 }
