@@ -62,7 +62,7 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 				"unread.png",		/* ICON_UNREAD */
 				"flag.png",		/* ICON_FLAG */
 				"available.png",	/* ICON_AVAILABLE */
-				"unavailable.png",	/* ICON_UNAVAILABLE */
+				NULL,			/* ICON_UNAVAILABLE */
 				"ocs.png",		/* ICON_OCS */
 				"directory.png",	/* ICON_FOLDER */
 				"vfolder.png",		/* ICON_VFOLDER */
@@ -84,7 +84,8 @@ static void callbacks_schedule_update_default_cb(nodePtr ptr) {
 }
 
 void ui_init(gboolean startIconified) {
-	int i;
+	GtkWidget	*widget;
+	int		i;
 
 	mainwindow = ui_mainwindow_new();
 	
@@ -106,6 +107,11 @@ void ui_init(gboolean startIconified) {
 	for(i = 0;  i < MAX_ICONS; i++)
 		icons[i] = create_pixbuf(iconNames[i]);
 
+	/* set up icons that are build from stock */
+	widget = gtk_button_new();
+	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon(widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
+	gtk_widget_destroy(widget);
+	
 	ui_mainwindow_update_toolbar();
 	ui_mainwindow_update_menubar();
 	ui_mainwindow_update_onlinebtn();

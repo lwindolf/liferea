@@ -108,6 +108,10 @@ create_mainwindow (void)
   GtkWidget *button26;
   GtkWidget *image390;
   GtkWidget *newVFolder;
+  GtkWidget *alignment9;
+  GtkWidget *hbox66;
+  GtkWidget *image2090;
+  GtkWidget *label155;
   GtkWidget *hidesearch;
   GtkWidget *image1;
   GtkWidget *itemtabs;
@@ -495,10 +499,26 @@ create_mainwindow (void)
   gtk_widget_show (image390);
   gtk_container_add (GTK_CONTAINER (button26), image390);
 
-  newVFolder = gtk_button_new_with_mnemonic (_("create VFolder"));
+  newVFolder = gtk_button_new ();
   gtk_widget_show (newVFolder);
   gtk_box_pack_start (GTK_BOX (searchbox), newVFolder, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, newVFolder, _("saves this search as a VFolder, which will appear in the feed list"), NULL);
+
+  alignment9 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_show (alignment9);
+  gtk_container_add (GTK_CONTAINER (newVFolder), alignment9);
+
+  hbox66 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_show (hbox66);
+  gtk_container_add (GTK_CONTAINER (alignment9), hbox66);
+
+  image2090 = gtk_image_new_from_stock ("gtk-add", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show (image2090);
+  gtk_box_pack_start (GTK_BOX (hbox66), image2090, FALSE, FALSE, 0);
+
+  label155 = gtk_label_new_with_mnemonic (_("VFolder"));
+  gtk_widget_show (label155);
+  gtk_box_pack_start (GTK_BOX (hbox66), label155, FALSE, FALSE, 0);
 
   hidesearch = gtk_button_new ();
   gtk_widget_show (hidesearch);
@@ -753,6 +773,10 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, button26, "button26");
   GLADE_HOOKUP_OBJECT (mainwindow, image390, "image390");
   GLADE_HOOKUP_OBJECT (mainwindow, newVFolder, "newVFolder");
+  GLADE_HOOKUP_OBJECT (mainwindow, alignment9, "alignment9");
+  GLADE_HOOKUP_OBJECT (mainwindow, hbox66, "hbox66");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2090, "image2090");
+  GLADE_HOOKUP_OBJECT (mainwindow, label155, "label155");
   GLADE_HOOKUP_OBJECT (mainwindow, hidesearch, "hidesearch");
   GLADE_HOOKUP_OBJECT (mainwindow, image1, "image1");
   GLADE_HOOKUP_OBJECT (mainwindow, itemtabs, "itemtabs");

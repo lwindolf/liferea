@@ -67,7 +67,6 @@ make install-strip
 "//usr/local/share/liferea/pixmaps/directory.png"
 "//usr/local/share/liferea/pixmaps/empty.png"
 "//usr/local/share/liferea/pixmaps/flag.png"
-"//usr/local/share/liferea/pixmaps/help.png"
 "//usr/local/share/liferea/pixmaps/liferea.png"
 "//usr/local/share/liferea/pixmaps/ocs.png"
 "//usr/local/share/liferea/pixmaps/offline.png"
