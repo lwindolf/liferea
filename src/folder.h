@@ -47,8 +47,7 @@ void folder_add_feed(folderPtr foldr, struct feed *feed, gint position);
 void folder_remove(folderPtr folder);
 
 /* to create/delete folders */
-folderPtr get_new_folder(folderPtr parent, gint position, gchar *title, gint type);
-folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *key, gint type);
+folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *id, gint type);
 void removeFolder(folderPtr folder);
 
 /* to read/change folder properties */

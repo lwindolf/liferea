@@ -90,6 +90,7 @@ typedef struct feed {
 	/* feed properties used for updating */
 	GTimeVal	scheduledUpdate;	/**< time at which the feed needs to be updated */
 	gboolean	updateRequested;	/**< flag set when update in progress */
+	gboolean displayProps; /**< flag set when property dialog should be shown after updating */
 	gpointer	*request;		/**< update request structure */
 } *feedPtr;
 
@@ -113,11 +114,27 @@ typedef struct feedHandler {
 void saveAllFeeds(void);
 void feed_init(void);
 
+/**
+ * Create a new feed structure.
+ * @returns the new, empty feed
+ */
 feedPtr feed_new(void);
-feedPtr newFeed(gint type, gchar *url, struct folder *parent);
-feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feedname, gint interval);
-feedPtr feed_add_from_config(gint type, gchar *url, struct folder *parent, gchar *feedname, gchar *id, gint interval);
-gchar* feed_get_conf_path(struct feed *fp);
+
+/**
+ * Creates a feed object with the given parameters and adds it to the
+ * feedlist in the proper position.
+ *
+ * @param type type of feed. Use FST_AUTODETECT for auto-detection.
+ * @param url source of the feed.
+ * @param parent parent folder of the feed, or NULL for the root.
+ * @param feedName name of the feed, or NULL when used with feed auto-detection.
+ * @param id the id of the feed. If set to NULL, the feed will be auto-updated upon creation.
+ * @param showPropDialog If TRUE, a propdialog will be shown once the feed downloads.
+ *
+ * @returns the new feed
+ */
+feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, gchar *id, gint interval, gboolean showPropDialog);
+
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
 void feed_update(feedPtr fp);
@@ -128,11 +145,24 @@ void feed_add_item(feedPtr fp, itemPtr ip);
 void feed_copy(feedPtr fp, feedPtr new_fp);
 void feed_free(feedPtr fp);
 
+/**
+ * Detects the the format of data
+ * @param the content of the feed
+ * @returns the type of string, or FST_INVALID if detection fails
+ */
+gint feed_detect_type(gchar *data);
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */
 
 gpointer feed_get_favicon(feedPtr fp);
+
+/**
+ * Sets the type of feed
+ * @param fp feed to modify
+ * @param type type to set
+ */
+void feed_set_type(feedPtr fp, int type);
 gint feed_get_type(feedPtr fp);
 
 void feed_increase_unread_counter(feedPtr fp);
@@ -153,6 +183,8 @@ gboolean feed_get_available(feedPtr fp);
  * @return HTML error description
  */
 gchar * feed_get_error_description(feedPtr fp);
+
+gchar *feed_get_id(feedPtr fp);
 
 gchar * feed_get_title(feedPtr fp);
 void feed_set_title(feedPtr fp, gchar * title);

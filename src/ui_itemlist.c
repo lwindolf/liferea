@@ -518,7 +518,8 @@ void on_toggle_item_flag(void) {
 void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
 
-	if(ip = ui_itemlist_get_selected())
+	ip = ui_itemlist_get_selected();
+	if(ip != NULL)
 		ui_htmlview_launch_URL(getItemSource(ip));
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected!"));

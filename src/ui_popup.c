@@ -192,6 +192,7 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 		case FST_PIE:
 		case FST_RSS:
 		case FST_CDF:
+		case FST_AUTODETECT:
 			menu = make_menu(feed_menu_items, feed_menu_len, item);
 			break;
 		case FST_OPML:

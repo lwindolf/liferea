@@ -37,6 +37,7 @@
 #include "feed.h"
 #include "item.h"
 #include "conf.h"
+#include "export.h"
 #include "htmlview.h"
 #include "common.h"
 #include "callbacks.h"
@@ -118,7 +119,6 @@ void ui_init(void) {
 	updateTrayIcon();		/* init tray icon */
 	setupURLReceiver(mainwindow);	/* setup URL dropping support */
 	setupPopupMenues();		/* create popup menues */
-	ui_queue_init();		/* set up callback queue for other threads */
 }
 
 /*------------------------------------------------------------------------------*/
@@ -244,14 +244,14 @@ gint checkForUpdateResults(gpointer data) {
 	feedPtr			new_fp;
 	feedHandlerPtr		fhp;
 	gint			type;
+	gboolean autodetectPhase = FALSE;
 
 	request = update_thread_get_result();
-	
+
 	if(request == NULL)
 		return TRUE;
 
 	ui_lock();
-	
 	request->fp->available = TRUE;
 	
 	if(304 == request->lasthttpstatus) {	
@@ -260,9 +260,14 @@ gint checkForUpdateResults(gpointer data) {
 		/* determine feed type handler */
 		type = feed_get_type(request->fp);
 		g_assert(NULL != feedHandler);
+		if (type == FST_AUTODETECT) {
+			autodetectPhase = TRUE;
+			type = feed_detect_type(request->data);
+			feed_set_type(request->fp,type);
+		}
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
 			g_warning("internal error! unknown feed type %d while updating feeds!", type);
-			gdk_threads_leave();
+			ui_unlock();
 			return TRUE;
 		}
 		
@@ -271,7 +276,12 @@ gint checkForUpdateResults(gpointer data) {
 		new_fp->source = g_strdup(request->fp->source);
 		(*(fhp->readFeed))(new_fp, request->data);
 		new_fp->type = request->fp->type; /* FIXME:  This is a hack. The type should be set in the parser functions*/
-		
+
+		if (autodetectPhase) {
+			if (feed_get_title(new_fp) != NULL)
+				feed_set_title(request->fp, feed_get_title(new_fp));
+			feed_set_update_interval(request->fp, feed_get_default_update_interval(new_fp));
+		}
 		if(ui_feedlist_get_selected() == (nodePtr)request->fp)
 			ui_itemlist_clear();	// FIXME: move this down to the other ui_* stuff?
 		
@@ -286,7 +296,7 @@ gint checkForUpdateResults(gpointer data) {
 
 		/* note this is to update the feed URL on permanent redirects */
 		if(0 != strcmp(request->feedurl, feed_get_source(request->fp))) {
-			feed_set_source(request->fp, g_strdup(request->feedurl));				
+			feed_set_source(request->fp, request->feedurl);
 			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), feed_get_title(request->fp));
 		}
 
@@ -300,7 +310,28 @@ gint checkForUpdateResults(gpointer data) {
 			}
 			ui_update_feed(request->fp);
 		}
+		if(request->fp->displayProps) {
+			GtkWidget *updateIntervalBtn;
+			GtkWidget *propdialog;
+			gint interval;
+			request->fp->displayProps = FALSE;
+
+			propdialog = ui_feedlist_build_prop_dialog();
+			
+			if(-1 != (interval = feed_get_default_update_interval(request->fp))) {
+				updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
+				gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
+			}
+			
+			on_popup_prop_selected(request->fp, 0, NULL);		/* prepare prop dialog */
+		}
 	} else {
+		if(request->fp->displayProps) {
+			request->fp->displayProps = FALSE;
+			gchar *tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), feed_get_source(request->fp));
+			ui_show_error_box(tmp);
+			g_free(tmp);
+		}
 		
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), feed_get_title(request->fp));
 		request->fp->available = FALSE;
@@ -322,9 +353,13 @@ gint checkForUpdateResults(gpointer data) {
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	GtkWidget	*pane;
 	gint		x,y;
-
+	gchar *filename;
 	gtk_widget_hide(mainwindow);
 
+	filename = g_strdup_printf("%s/.liferea/feedlist.opml", g_get_home_dir());
+	conf_feedlist_save();
+	g_free(filename);
+	
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_save);
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, (gpointer)folder_state_save);
 	

@@ -91,6 +91,7 @@ static GdkPixbuf* ui_feed_select_icon(feedPtr fp) {
 				return icons[ICON_OCS];
 			else
 				return icons[ICON_UNAVAILABLE];
+		case FST_AUTODETECT:
 		case FST_HELPFEED:
 		case FST_PIE:
 		case FST_RSS:			
@@ -119,15 +120,18 @@ void ui_update_feed(feedPtr fp) {
 	
 	g_assert(!IS_FOLDER(fp->type));
 	g_assert(fp->type != FST_EMPTY);
-
+	
 	count = feed_get_unread_counter(fp);
-
+	label = unhtmlize(g_strdup(feed_get_title(fp)));
+	/* FIXME: Unescape text here! */
+	tmp = g_markup_escape_text(label,-1);
 	if(count > 0) {
-		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", feed_get_title(fp), count);
+		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, count);
 	} else {
-		label = g_strdup_printf("%s", feed_get_title(fp));
+		label = g_strdup_printf("%s", tmp);
 	}
-
+	g_free(tmp);
+	
 	if(NULL != fp->parseErrors) {
 		tmp = g_strdup_printf("<span foreground=\"red\">%s</span>", label);
 		g_free(label);
@@ -268,10 +272,9 @@ void on_popup_delete_selected(gpointer callback_data,
 	
 	/* block deleting of empty entries */
 
-	/* FIXME: reimpliment this help detection */
 	/* block deleting of help feeds */
-	if(fp->type == FST_HELPFEED) {
-		ui_show_error_box(_("You can't delete help feeds!"));
+	if(fp->type == FST_HELPFEED || fp->type == FST_HELPFOLDER) {
+		ui_show_error_box(_("You can't delete the help! Edit the preferences to disable loading the help."));
 		return;
 	}
 	
@@ -287,13 +290,12 @@ void on_popup_delete_selected(gpointer callback_data,
 /* property dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-static void ui_feedlist_build_prop_dialog(void) {
+GtkWidget *ui_feedlist_build_prop_dialog(void) {
 
 	if(NULL == propdialog || !G_IS_OBJECT(propdialog))
 		propdialog = create_propdialog();
 
-	if(NULL == propdialog)
-		return;	
+	return propdialog;
 }
 
 void on_popup_prop_selected(gpointer callback_data,
@@ -372,7 +374,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 
 		/* if URL has changed... */
 		if(strcmp(feedurl, feed_get_source(fp))) {
-			feed_set_source(fp, g_strdup(feedurl));
+			feed_set_source(fp, feedurl);
 			feed_update(fp);
 		}
 		
@@ -403,26 +405,10 @@ void ui_feedlist_new_subscription(gint type, gchar *source, folderPtr parent, gb
 	gchar		*tmp;
 
 	g_assert(parent != NULL);
-	if(NULL != (fp = newFeed(type, source, parent))) {
-		if(FALSE == feed_get_available(fp)) {
-			tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
-			ui_show_error_box(tmp);
-			g_free(tmp);
-		} else {
-			if(TRUE == showPropDialog) {
-				/* prop dialog may not yet exist */
-				ui_feedlist_build_prop_dialog();
-				
-				if(-1 != (interval = feed_get_default_update_interval(fp))) {
-					updateIntervalBtn = lookup_widget(propdialog, "feedrefreshcount");
-					gtk_spin_button_set_value(GTK_SPIN_BUTTON(updateIntervalBtn), (gfloat)interval);
-				}
-
-				/* FIXME: This is brain-damaged... The thing should be selected from the prop dialog. */
-				ui_feedlist_select((nodePtr)fp);
-				on_popup_prop_selected(fp, 0, NULL);		/* prepare prop dialog */
-			}
-		}
+	if(NULL == (fp = feed_add(type, source, parent, "Unknown title", NULL, 0, showPropDialog))) {
+		tmp = g_strdup_printf(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
+		ui_show_error_box(tmp);
+		g_free(tmp);
 	}
 }
 

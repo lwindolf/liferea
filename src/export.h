@@ -23,8 +23,20 @@
 
 #include <gtk/gtk.h>
 
-void exportOPMLFeedList(gchar *filename);
-void importOPMLFeedList(gchar *filename);
+/**
+ * Exports the current feedlist.
+ * @param filename filename of export file
+ * @returns 0 if no errors were detected
+ */
+int exportOPMLFeedList(gchar *filename);
+
+/**
+ * Reads an OPML file and inserts it into the feedlist.
+ * @param filename path to file that will be read for importing
+ * @param parent folder
+ */
+void importOPMLFeedList(gchar *filename, folderPtr parent);
+
 
 /* GUI dialog callbacks */
 void

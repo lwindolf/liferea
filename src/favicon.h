@@ -21,12 +21,15 @@
 #ifndef _FAVICON_H
 #define _FAVICON_H
 
+#include "feed.h"
+
 /* function reads the data of a MS Windows .ICO file referenced by 
    icondata with length datalen, converts the image into XPM 
    format and saves the result in the file outputfile. If the 
    conversion is successful TRUE is returned. */
 gboolean convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen);
 
+void favicon_download(feedPtr fp);
 void loadFavIcon(feedPtr fp);
 void removeFavIcon(feedPtr fp);
 

@@ -30,9 +30,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "favicon.h"
 #include "support.h"
 #include "feed.h"
 #include "common.h"
+#include "update.h"
+#include "net/netio.h"
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
@@ -413,3 +416,34 @@ void removeFavIcon(feedPtr fp) {
 	}
 	g_free(filename);
 }
+
+void favicon_download(feedPtr fp) {
+	unsigned char		*icodata;
+	gchar			*baseurl;
+	gchar			*tmp;
+	struct feed_request	*request;
+	
+	/* try to download favicon */
+	baseurl = g_strdup(fp->source);
+	if(NULL != (tmp = strstr(baseurl, "://"))) {
+		tmp += 3;
+		if(NULL != (tmp = strchr(tmp, '/'))) {
+			*tmp = 0;
+			
+			request = update_request_new(NULL);
+			request->feedurl = g_strdup_printf("%s/favicon.ico", baseurl);
+			icodata = downloadURL(request);
+			update_request_free(request);
+			
+			if(NULL != icodata) {
+				tmp = getCacheFileName(fp->id, "xpm");
+					convertIcoToXPM(tmp, icodata, 10000000);
+					loadFavIcon(fp);
+					g_free(tmp);
+					g_free(icodata);
+			}
+		}
+	}
+	g_free(baseurl);
+}
+

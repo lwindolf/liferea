@@ -308,7 +308,6 @@ ui_lock_from (const gchar * file, const gchar * func, int line)
 	static const gchar * last_func = NULL;
 	static int last_line = -1;
 	const GThread * thr = g_thread_self ();
-
 	/**
 	 * If pan_lock() is called from the main thread while it has a GUI lock
 	 * (typically from a gtk signals, like a button press signal etc.)

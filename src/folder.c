@@ -31,9 +31,6 @@
 
 folderPtr rootFolder = NULL;
 
-/* used to lookup a feed/folders pointer specified by a key */
-extern GHashTable	*feeds;
-
 /* ---------------------------------------------------------------------------- */
 /* folder handling stuff (thats not the VFolder handling!)			*/
 /* ---------------------------------------------------------------------------- */
@@ -51,30 +48,22 @@ folderPtr folder_get_root() {
 }
 
 /* Used to add a folder without adding it to the config */
-folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *key, gint type) {
-	folderPtr folder = g_new0(struct folder, 1);
-	folder->type = type;
-	folder->parent = parent;
-	folder->parent->children = g_slist_insert(folder->parent->children, folder, position);
-	folder->title = g_strdup(title);
-	
-	folder->id = g_strdup(key);
+folderPtr restore_folder(folderPtr parent, gint position, gchar *title, gchar *id, gint type) {
+	folderPtr folder;
 
-	return folder;
-}
-
-/* Inserts a folder, and adds it to the config */
-folderPtr get_new_folder(folderPtr parent, gint position, gchar *title, gint type) {
-	folderPtr folder = g_new0(struct folder, 1);
 	g_assert(IS_FOLDER(type));
+
+	folder = g_new0(struct folder, 1);
 	folder->type = type;
 	folder->parent = parent;
 	folder->parent->children = g_slist_insert(folder->parent->children, folder, position);
 	folder->title = g_strdup(title);
-	folder->id = conf_new_id();
-	g_message("New folder title is %s", title);
-	addEmptyFolderToConfig(folder, type);
-	setFolderTitleInConfig(folder, title);
+	if (id == NULL)
+		folder->id = conf_new_id();
+	else
+		folder->id = g_strdup(id);
+
+	conf_feedlist_schedule_save();
 	return folder;
 }
 
@@ -103,35 +92,33 @@ void setFolderTitle(folderPtr folder, gchar *title) {
 	folder->title = g_strdup(title);
 
 	/* topiter must not be NULL! because we cannot rename the root folder ! */
-	setFolderTitleInConfig(folder, title);
+	conf_feedlist_schedule_save();
 	if (folder->ui_data)
 		ui_update_folder(folder);
+	conf_feedlist_schedule_save();
 }
 
 void folder_add_feed(folderPtr folder, feedPtr feed, gint position) {
 	folder->children = g_slist_insert(folder->children, feed, position);
+	conf_feedlist_schedule_save();
 }
 
 void folder_remove(folderPtr folder) {
-	g_message("1");
 	if (folder->ui_data)
 		ui_remove_folder(folder);
-	g_message("2");
-	removeFolderFromConfig(folder);
 	folder->parent->children = g_slist_remove(folder->parent->children, folder);
-	g_message("3");
 	if (folder->title)
 		g_free(folder->title);
 	if (folder->id)
 		g_free(folder->id);
 	g_free(folder);
+	conf_feedlist_schedule_save();
 }
 
 void folder_state_save(nodePtr ptr) {
 	folderPtr folder = (folderPtr)ptr;
 	g_assert(folder);
 	g_assert(IS_FOLDER(folder->type));
-	setFolderCollapseStateInConfig(folder, !ui_is_folder_expanded(folder));
 }
 
 void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
@@ -149,8 +136,8 @@ void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
 	expanded = ui_is_folder_expanded(folder);
 
 	// Make new folder
-	newFolder = get_new_folder(dest_folder, position, folder->title, folder->type);
-	setFolderTitleInConfig(newFolder, folder->title);
+	newFolder = restore_folder(dest_folder, position, folder->title, folder->id, folder->type);
+	// FIXME: Save feedlist here
 	ui_add_folder(newFolder);
 	g_message("folder_set_pos");
 	verify_iter((nodePtr)newFolder);
@@ -175,6 +162,7 @@ void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
 	ui_remove_folder(folder);
 	g_assert(folder->ui_data == NULL);
 	folder_remove(folder);
+	conf_feedlist_schedule_save();
 }
 
 /*------------------------------------------------------------------------------*/

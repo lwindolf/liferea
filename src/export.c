@@ -25,11 +25,12 @@
 #include "interface.h"
 #include "support.h"
 
+#include "ui_folder.h"
 extern GtkWidget * filedialog;
 static GtkWidget * importdialog = NULL;
 static GtkWidget * exportdialog = NULL;
 
-/* the real import/export functions */
+/* Used for exporting, this adds a folder or feed's node to the XML tree */
 static void append_node_tag(nodePtr ptr, gpointer userdata) {
 	folderPtr		folder = (folderPtr)folder;
 	xmlNodePtr 	cur = (xmlNodePtr)userdata;
@@ -40,9 +41,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST folder_get_title(folder));
 		if (ptr->type == FST_HELPFOLDER) {
-			gchar *type = g_strdup_printf("%d", folder->type);
-			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
-			g_free(type);
+			xmlNewProp(childNode, BAD_CAST"helpFolder", NULL);
 		} else {
 			ui_feedlist_do_for_all_data(ptr,ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)childNode);
 		}
@@ -55,6 +54,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp));
 		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
 		xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
+		xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
 		xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
 
 		g_free(interval);
@@ -63,7 +63,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 }
 
 
-void exportOPMLFeedList(gchar *filename) {
+int exportOPMLFeedList(gchar *filename) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
 	gint		error = 0;
@@ -84,71 +84,83 @@ void exportOPMLFeedList(gchar *filename) {
 			
 			xmlDocSetRootElement(doc, opmlNode);		
 		} else {
-			g_warning(_("could not create XML feed node for feed cache document!"));				error = 1;
+			g_warning(_("could not create XML feed node for feed cache document!"));
+			error = 1;
 		}
-		xmlSaveFormatFileEnc(filename, doc, NULL, 1);
+		if (-1 == xmlSaveFormatFileEnc(filename, doc, NULL, 1)) {
+			g_warning(_("Could not export to OPML file!!"));
+			error = 1;
+		}
 	} else {
 		g_warning(_("could not create XML document!"));
 		error = 1;
 	}
-	
-	if(0 != error)
-		ui_show_error_box(_("Error while exporting feed list!"));
-	else 
-		ui_show_info_box(_("Feed List exported!"));
-
+	return error;
 }
+
+static int parse_integer(gchar *str, int def) {
+	int num;
+	if (str == NULL)
+		return def;
+	if (0==(sscanf(str,"%d",&num)))
+		num = def;
+	
+	return num;
+}
+
 
 static void parseOutline(xmlNodePtr cur, folderPtr folder) {
 	gchar		*title, *source;
 	feedPtr		fp;
 	
 	/* process the outline node */	
-	title = xmlGetProp(cur, BAD_CAST"title");
+	title = xmlGetProp(cur, BAD_CAST"text");
 	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 		
-	if(NULL != source) {
-		if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), folder))) {
-			ui_folder_add_feed(fp, -1);
-
+	if(NULL != source) { /* Reading a feed */
+		gint type, interval;
+		gchar *id;
+		/* type */
+		type = parse_integer(xmlGetProp(cur, BAD_CAST"type"), FST_AUTODETECT);
+		interval = parse_integer(xmlGetProp(cur, BAD_CAST"updateInterval"), -1);
+		id = xmlGetProp(cur, BAD_CAST"id");
+		if(NULL != (fp = feed_add(type, g_strdup(source), folder, title, id, interval, FALSE))) {
 			if(NULL != title)
-				feed_set_title(fp, g_strdup(title)); 
+				feed_set_title(fp, g_strdup(title));
 		}
-		ui_update();
+	} else { /* It is a folder */
+		if (NULL != xmlHasProp(cur, BAD_CAST"helpFolder"))
+			g_assert(NULL != (folder = feedlist_insert_help_folder(folder)));
+		else {
+			g_assert(NULL != (folder = restore_folder(folder, -1, title, NULL, FST_FOLDER)));
+			ui_add_folder(folder);
+		}
+		if (NULL != xmlHasProp(cur, BAD_CAST"expanded"))
+			ui_folder_set_expansion(folder, TRUE);
+		if (NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
+			ui_folder_set_expansion(folder, FALSE);
 	}
-	
+
 	/* process any children */
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
 			parseOutline(cur, folder);
-
+		
 		cur = cur->next;
 	}
 }
 
-void importOPMLFeedList(gchar *filename) {
+void importOPMLFeedList(gchar *filename, folderPtr parent) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
-	gchar	     *foldertitle;
-	folderPtr		folder;
-	/* create a new import folder */	
-	foldertitle = g_strdup(_("imported feed list"));
-	
-	
-	if(NULL != (folder = get_new_folder(folder_get_root(), -1, foldertitle, FST_FOLDER))) {
-		/* add the new folder to the model */
-		ui_add_folder(folder);
-	} else {
-		ui_mainwindow_set_status_bar(_("internal error! could not get a new folder key!"));
-		return;
-	}
 	
 	/* read the feed list */
 	doc = xmlParseFile(filename);
-	
+
 	while(1) {	
+
 		if(NULL == doc) {
 			ui_mainwindow_set_status_bar(_("XML error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 			break;
@@ -161,7 +173,7 @@ void importOPMLFeedList(gchar *filename) {
 
 		while(cur && xmlIsBlankNode(cur))
 			cur = cur->next;
-
+		
 		if(xmlStrcmp(cur->name, BAD_CAST"opml")) {
 			ui_mainwindow_set_status_bar(_("\"%s\" is no valid cache file! Cannot read OPML file!"), filename);
 			break;		
@@ -169,20 +181,21 @@ void importOPMLFeedList(gchar *filename) {
 
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
+			printf("loop start2\n");
 			/* we ignore the head */
 			if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
 				cur = cur->xmlChildrenNode;
 				while(cur != NULL) {
 					if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-						parseOutline(cur, folder);
-
+						parseOutline(cur, parent);
+					
 					cur = cur->next;
 				}
 				break;
 			}
 			cur = cur->next;
 		}
-
+		
 		break;
 	}
 	
@@ -275,16 +288,22 @@ void on_exportfile_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*source;
 	const gchar *utfname;
 	gchar *name;
+	gint error;
+
 	gtk_widget_hide(exportdialog);
 
 	if(NULL != (source = lookup_widget(exportdialog, "exportfileentry"))) {
 		utfname = gtk_entry_get_text(GTK_ENTRY(source));
 		name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
 		if (name != NULL) {
-			exportOPMLFeedList(name);
+			error = exportOPMLFeedList(name);
 			g_free(name);
 		}
 	}
+	if(0 != error)
+		ui_show_error_box(_("Error while exporting feed list!"));
+	else 
+		ui_show_info_box(_("Feed List exported!"));
 }
 
 void on_importfile_clicked(GtkButton *button, gpointer user_data) {
@@ -297,7 +316,21 @@ void on_importfile_clicked(GtkButton *button, gpointer user_data) {
 		utfname = gtk_entry_get_text(GTK_ENTRY(source));
 		name = g_filename_from_utf8(utfname,-1,NULL, NULL, &err);
 		if (name != NULL) {
-			importOPMLFeedList(name);
+			gchar *foldertitle;
+			folderPtr folder;
+			
+			foldertitle = g_strdup(_("imported feed list"));
+			
+			if(NULL != (folder = restore_folder(folder_get_root(), -1, foldertitle, NULL, FST_FOLDER))) {
+				/* add the new folder to the model */
+				ui_add_folder(folder);
+			} else {
+				ui_mainwindow_set_status_bar(_("internal error! could not get a new folder key!"));
+				return;
+			}
+			g_free(foldertitle);
+			
+			importOPMLFeedList(name, folder);
 			g_free(name);
 		}
 	}

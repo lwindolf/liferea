@@ -59,8 +59,8 @@ struct detectStr detectPattern[] = {
 	{ FST_OCS,	"<directory" 	},	/* OCS 0.5 */
 	{ FST_RSS,	"<rdf:RDF" 	},
 	{ FST_RSS,	"<rss" 		},
-	{ FST_CDF,	"<channel>" 	},	/* have to be after RSS!!! */
-	{ FST_PIE,	"<feed" 	},	
+	{ FST_CDF,	"<channel>" 	},	/* has to be after RSS!!! */
+	{ FST_PIE,	"<feed" 	},
 	{ FST_OPML,	"<opml" 	},
 	{ FST_OPML,	"<outlineDocument" },	/* outlineDocument for older OPML */
 	{ FST_OPML,	"<oml" 		},	/* OML is parsed as OPML */
@@ -79,17 +79,6 @@ feedPtr		allItems = NULL;
 /* prototypes */
 static gboolean update_timer_main(gpointer data);
 
-gchar *feed_get_conf_path(feedPtr feed) {
-	if (feed->id == NULL)
-		return NULL;
-	else {
-		gchar *ppath = folder_get_conf_path(feed->parent);
-		gchar *path = g_strdup_printf("%s/%s",ppath,feed->id);
-		g_free(ppath);
-		return path;
-	}
-}
-
 /* ------------------------------------------------------------ */
 /* feed type registration					*/
 /* ------------------------------------------------------------ */
@@ -102,37 +91,27 @@ static void feed_register_type(gint type, feedHandlerPtr fhp) {
 	g_hash_table_insert(feedHandler, (gpointer)typeptr, (gpointer)fhp);
 }
 
-static gint feed_auto_detect_type(gchar *url, gchar **data) {
-	struct feed_request	*request;
+gint feed_detect_type(gchar *data) {
 	detectStrPtr		pattern = detectPattern;
 	gint			type = FST_INVALID;
 	
 	g_assert(NULL != pattern);
-	g_assert(NULL != url);
+	g_assert(NULL != data);
 	
-	request = update_request_new(NULL);
-	request->feedurl = g_strdup(url);
-	request->lastmodified = NULL;
-	downloadURL(request);
-	if(NULL != request->data) {
-		while(NULL != pattern->string) {	
-			if(NULL != strstr(request->data, pattern->string)) {
-				type = pattern->type;
-				break;
-			}
-			
-			pattern++;
-		} 
-	}
-	*data = request->data;
-	update_request_free(request);
+	while(NULL != pattern->string) {	
+		if(NULL != strstr(data, pattern->string)) {
+			type = pattern->type;
+			break;
+		}
+		
+		pattern++;
+	} 
 		
 	return type;
 }
 
 /* initializing function, only called upon startup */
 void feed_init(void) {
-
 	allItems = feed_new();
 	allItems->type = FST_VFOLDER;
 	
@@ -143,13 +122,13 @@ void feed_init(void) {
 	feed_register_type(FST_OCS,		initOCSFeedHandler());
 	feed_register_type(FST_CDF,		initCDFFeedHandler());
 	feed_register_type(FST_PIE,		initPIEFeedHandler());
-	feed_register_type(FST_OPML,		initOPMLFeedHandler());	
+	feed_register_type(FST_OPML,		initOPMLFeedHandler());
 	feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());
 	
 	update_thread_init();	/* start thread for update request processing */
 	
 	/* setup one minute timer for automatic updating */
- 	g_timeout_add(60*1000, update_timer_main, NULL);	
+ 	g_timeout_add(60*1000, update_timer_main, NULL);
 
 	initFolders();
 	loadSubscriptions();
@@ -162,7 +141,7 @@ feedPtr feed_new(void) {
 	fp = g_new0(struct feed, 1);
 
 	/* we dont allocate a request structure this is done
-	   during cache loading or first update! */		
+	   during cache loading or first update! */
 	
 	fp->updateInterval = -1;
 	fp->defaultInterval = -1;
@@ -186,7 +165,7 @@ void feed_save(feedPtr fp) {
 	gint		saveMaxCount;
 			
 	saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);	
-	filename = getCacheFileName(fp->id, getExtension(fp->type));
+	filename = getCacheFileName(fp->id, "xml");
 
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
@@ -271,7 +250,7 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	feedPtr		fp;
 	int		error = 0;
 
-	filename = getCacheFileName(id, getExtension(type));
+	filename = getCacheFileName(id, "xml");
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		return NULL;
@@ -349,134 +328,46 @@ static feedPtr loadFeed(gint type, gchar *id) {
 	return fp;
 }
 
-/* Function to add a feed to the feed list in memory. Url and feedname
-   may be NULL. Called only from loadSubscriptions(). Used when
-   reading gconf information at startup. */
-feedPtr feed_add_from_config(gint type, gchar *url, folderPtr parent, gchar *feedname, gchar *id, gint interval) {
-	feedPtr		new_fp;
+feedPtr feed_add(gint type, gchar *url, folderPtr parent, gchar *feedName, gchar *id, gint interval, gboolean showPropDialog) {
+	feedPtr fp = NULL;
+	gboolean needs_update=FALSE;
+
+	g_assert(url != NULL);
+
+	if (id != NULL)
+		fp = loadFeed(type, id);
 	
-	g_assert(NULL != id);
-	if(NULL == (new_fp = loadFeed(type, id))) {
-		/* maybe cache file was deleted or entry has no cache (like
-		   help entries) or feed was just created from new feed
-		   dialog, therefore we create a new feed structure for it
-		   and reload the entry from its URL */
-		new_fp = feed_new();
-		new_fp->id = g_strdup(id);
+	if (fp == NULL) {
+		fp = feed_new();
+		if (id == NULL) {
+			fp->id = conf_new_id();
+			needs_update=TRUE;
+		} else
+			fp->id = g_strdup(id);
 	}
 	
-	new_fp->type = type;
-	new_fp->parent = parent;
-	parent->children = g_slist_append(parent->children, new_fp);
-
-	/* user defined feed name from gconf is stronger */
-	if(NULL != feedname) {
-		new_fp->title = g_strdup(feedname);
-	}
-
-	if(NULL != url) {
-		new_fp->source = g_strdup(url);
-	} else if (NULL == new_fp->source) {
-		/* bad, that means there is no URL in gconf and
-		   in the cache file, looks like a huge mess to me... */
-		new_fp->source = g_strdup(_("error: URL missing!"));
-	}
-
-	feed_set_update_interval(new_fp, interval);
-	
-	if(FALSE == feed_get_available(new_fp))
-		feed_update(new_fp);
-
-	ui_folder_add_feed(new_fp, -1);
-	
-	if(getBooleanConfValue(UPDATE_ON_STARTUP))
-		feed_update(new_fp);
-	
-	return new_fp;
-}
-
-/* Used to create a newly subscribed feed. This function is used by
-   the new subscription dialog and the import module */
-feedPtr newFeed(gint type, gchar *url, folderPtr parent) {
-	feedHandlerPtr		fhp;
-	struct feed_request	*request;
-	unsigned char		*icodata;
-	gchar			*baseurl;
-	gchar			*tmp;
-	gchar			*data;
-	feedPtr			fp;
-
-	fp = feed_new();
-	fp->source = g_strdup(url);
+	fp->type = type;
 	fp->parent = parent;
-	fp->parent->children = g_slist_insert(fp->parent->children, fp, -1);
-	fp->type = type;
+	fp->displayProps = showPropDialog;
+
+	if(NULL != feedName)
+		feed_set_title(fp, g_strdup(feedName));
+	
+	if(NULL != url) {
+		fp->source = g_strdup(url);
+	} else if (NULL == fp->source) {
+		fp->source = g_strdup(_("http://example.com/this.url.is.invalid"));
+	}
+
+	feed_set_update_interval(fp, interval);
+
 	folder_add_feed(parent, fp, -1);
-
-	g_assert(NULL != fp);
-	g_message("feed_new A");
-	if(FST_AUTODETECT == type) {
-		/* if necessary download and detect type */
-		if(FST_INVALID == (type = feed_auto_detect_type(url, &data))) {	// FIXME: pass fp to adjust URL
-			ui_show_error_box("Could not detect feed type of \"%s\"! Please manually select a feed type.", url);
-			g_free(data);
-			return NULL;
-		}
-	} else {
-		/* else only download */
-		request = update_request_new(fp);
-		request->feedurl = g_strdup(url);
-		data = downloadURL(request);
-		/* don't free request! */
-	}
-	g_message("feed_new B");
-	if(NULL != data) {
-		/* parse data */
-		g_assert(NULL != feedHandler);
-		if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			g_assert(NULL != fhp->readFeed);
-			(*(fhp->readFeed))(fp, data);
-		} else {
-			g_error(_("internal error! unknown feed type in newFeed()!"));
-			return NULL;
-		}
-	}
-
-	/* postprocess read feed */
-	fp->type = type;
-	fp->id = conf_new_id();
-	if(NULL != (addFeedToConfig(fp))) {
-		if(TRUE == fp->available)		
-			feed_save(fp);
-
-		/* try to download favicon */
-		baseurl = g_strdup(url);
-		if(NULL != (tmp = strstr(baseurl, "://"))) {
-			tmp += 3;
-			if(NULL != (tmp = strchr(tmp, '/'))) {
-				*tmp = 0;
-
-				request = update_request_new(NULL);
-				request->feedurl = g_strdup_printf("%s/favicon.ico", baseurl);
-				icodata = downloadURL(request);
-				update_request_free(request);
-
-				if(NULL != icodata) {
-					tmp = getCacheFileName(fp->id, "xpm");
-					convertIcoToXPM(tmp, icodata, 10000000);
-					loadFavIcon(fp);
-					g_free(tmp);
-					g_free(icodata);
-				}
-			}
-		}
-		g_free(baseurl);
-	} else {
-		g_print(_("error! could not add feed to configuration!\n"));
-		return NULL;
-	}
-
 	ui_folder_add_feed(fp, -1);
+
+	if(needs_update) {
+		favicon_download(fp);
+		feed_update(fp);
+	}
 
 	return fp;
 }
@@ -487,7 +378,6 @@ feedPtr newFeed(gint type, gchar *url, folderPtr parent) {
 void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	GSList		*new_list, *old_list, *diff_list = NULL;
 	itemPtr		new_ip, old_ip;
-	gchar 		*status;
 	gboolean	found, equal=FALSE;
 	gint		newcount = 0;
 	gint		traycount = 0;
@@ -639,6 +529,8 @@ void feed_update(feedPtr fp) {
 	gchar		*source;
 	
 	g_assert(NULL != fp);
+
+	g_print("Queueing update of %s\n", feed_get_title(fp));
 	
 	if(TRUE == fp->updateRequested) {
 		ui_mainwindow_set_status_bar("This feed \"%s\" is already being updated!", feed_get_title(fp));
@@ -667,14 +559,14 @@ void feed_update(feedPtr fp) {
 
 static void feed_check_update_counter(feedPtr fp) {
 	GTimeVal	now;
-
+	
 	g_get_current_time(&now);
-	g_print("update counter for %s is %ld\n", feed_get_title(fp),  fp->scheduledUpdate.tv_sec - now.tv_sec);
-	if(feed_get_update_interval > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
-		update_thread_add_request((struct feed_request *)fp->request);
+
+	if(feed_get_update_interval(fp) > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
+		feed_update(fp);
 }
 
-// FIXME: does this function belong here?
+// FIXME: does this function belong here? I think that it belongs in update.c -Nathan
 static gboolean update_timer_main(void *data) {
 
 	g_message("Checking to see if feeds need to be updated");
@@ -696,6 +588,11 @@ void feed_add_item(feedPtr fp, itemPtr ip) {
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
 
+gchar *feed_get_id(feedPtr fp) {return fp->id;};
+void feed_set_type(feedPtr fp, gint type) {
+	fp->type = type;
+	conf_feedlist_schedule_save();
+}
 gint feed_get_type(feedPtr fp) { return fp->type; }
 gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
 
@@ -715,16 +612,11 @@ gint feed_get_default_update_interval(feedPtr fp) { return fp->defaultInterval; 
 gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 
 void feed_set_update_interval(feedPtr fp, gint interval) {
-
-	gchar *path = feed_get_conf_path(fp);
 	fp->updateInterval = interval; 
-	if (path != NULL) {
-		setFeedUpdateIntervalInConfig(path, interval);
-		g_free(path);
-	}
 
 	if (interval > 0)
 		feed_reset_update_counter(fp);
+	conf_feedlist_schedule_save();
 }
 
 void feed_reset_update_counter(feedPtr fp) {
@@ -732,7 +624,7 @@ void feed_reset_update_counter(feedPtr fp) {
 	g_get_current_time(&fp->scheduledUpdate);
 	printf("%ld: ", fp->scheduledUpdate.tv_sec);
 	fp->scheduledUpdate.tv_sec += fp->updateInterval*60;
-	printf("HHHHHHHHH  UPDATING %s at %ld\n", fp->title, fp->scheduledUpdate.tv_sec);
+	printf("Reseting update counter for %s to %ld.\n", fp->title, fp->scheduledUpdate.tv_sec);
 }
 
 gboolean feed_get_available(feedPtr fp) { return fp->available; }
@@ -817,27 +709,23 @@ gchar * feed_get_title(feedPtr fp) {
 }
 
 void feed_set_title(feedPtr fp, gchar *title) {
-
-	printf("set_title\n");
-	gchar *path = feed_get_conf_path(fp);
-
-	g_free(fp->title);
-	fp->title = title;
-	setFeedTitleInConfig(path, title);
-	ui_update_feed(fp);
-	g_free(path);
+	if (fp->title)
+		g_free(fp->title);
+	fp->title = g_strdup(title);
+	if (fp->ui_data)
+		ui_update_feed(fp);
+	conf_feedlist_schedule_save();
 }
 
 gchar * feed_get_description(feedPtr fp) { return fp->description; }
 gchar * feed_get_source(feedPtr fp) { return fp->source; }
 
 void feed_set_source(feedPtr fp, gchar *source) {
-
 	if(fp->source)
 		g_free(fp->source);
 
-	fp->source = source;
-	setFeedURLInConfig(fp, source);
+	fp->source = g_strdup(source);
+	conf_feedlist_schedule_save();
 }
 
 GSList * feed_get_item_list(feedPtr fp) { return fp->items; }
@@ -876,7 +764,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	feedPtr		tmp_fp;
 	itemPtr		ip;
 	GSList		*item;
-	g_message("copyFeed");
+
 	/* To prevent updating feed ptr in the tree store and
 	   feeds hashtable we reuse the old structure! */
 	
@@ -920,7 +808,7 @@ void feed_free(feedPtr fp) {
 	g_assert(IS_FEED(fp->type));
 	
 	if (fp->id && fp->id[0] != '\0')
-		filename = getCacheFileName(fp->id, getExtension(fp->type));
+		filename = getCacheFileName(fp->id, "xml");
 	
 	/* free UI info */
 	if(fp->ui_data)
@@ -948,8 +836,8 @@ void feed_free(feedPtr fp) {
 	feed_clear_item_list(fp);
 
 	if (fp->id) {
-		removeFeedFromConfig(fp);
 		removeFavIcon(fp);
+		conf_feedlist_schedule_save();
 		g_free(fp->id);
 	}
 	
@@ -963,11 +851,11 @@ void feed_free(feedPtr fp) {
 	g_free(fp->source);
 	g_free(fp->parseErrors);
 	g_free(fp);
+
 }
 
 void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 	gboolean ui=FALSE;
-	gchar *oldPath, *newPath;
 	GSList *oldNode = g_slist_find(fp->parent->children,fp), *siter;
 	g_assert(NULL != dest_folder);
 	g_assert(NULL != fp);
@@ -981,9 +869,8 @@ void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 	siter = fp->parent->children;
 	
 	
-	oldPath = feed_get_conf_path(fp);
 	g_assert(oldNode);
-
+	
 	if (dest_folder == fp->parent) {
 		/* move item in slist */
 		dest_folder->children = g_slist_insert(fp->parent->children, fp, position);
@@ -995,19 +882,11 @@ void feed_set_pos(feedPtr fp, folderPtr dest_folder, int position) {
 		dest_folder->children = g_slist_insert(dest_folder->children, fp, position);
 	}
 	
-	removeFeedFromConfig(fp);	/* delete old one */
 	fp->parent = dest_folder;
-	newPath = feed_get_conf_path(fp);
 	/* move key in configuration */
-	addFeedToConfig(fp);
-	/* write feed properties to new key */
-	setFeedTitleInConfig(newPath, feed_get_title(fp));
-	if(IS_FEED(fp->type))
-		setFeedUpdateIntervalInConfig(newPath, feed_get_update_interval(fp));
-
-	g_free(oldPath);
 	
 	if(ui) {
 		ui_folder_add_feed(fp, position);
 	}
+	conf_feedlist_schedule_save();
 }

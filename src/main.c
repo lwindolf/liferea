@@ -49,11 +49,13 @@ int main (int argc, char *argv[]) {
 	g_thread_init(NULL);
 	gdk_threads_init();	
 	gtk_init(&argc, &argv);
+	mainThread = g_thread_self();		/* we need to now this when locking in ui_queue.c */
 
 	add_pixmap_directory(PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
 	add_pixmap_directory(getCachePath());
 
 	mainwindow = create_mainwindow();
+	ui_queue_init();		/* set up callback queue for other threads */
 
 	/* order is important! */
 	initConfig();		/* initialize gconf */
@@ -61,13 +63,13 @@ int main (int argc, char *argv[]) {
 	ui_init();		/* initialize gconf configured GUI behaviour */
 	feed_init();
 
-	/* we need to now this when locking in ui_queue.c */
-	mainThread = g_thread_self();	
-
 	/* setup the processing of feed update results */
 	ui_timeout_add(100, checkForUpdateResults, NULL);
 
 	gtk_widget_show(mainwindow);
+	
+	if(getBooleanConfValue(UPDATE_ON_STARTUP))
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_update);
 
 	gdk_threads_enter();
 	gtk_main();

@@ -48,6 +48,7 @@
 #define PROXY_PORT			"/system/http_proxy/port"
 #define USE_PROXY			"/system/http_proxy/use_http_proxy"
 
+
 /* initializing methods */
 void	initConfig(void);
 void	loadConfig(void);
@@ -58,22 +59,16 @@ void	loadEntries(void);
 /* feed/directory list entry manipulation methods */
 gchar* conf_new_id();
 void	loadSubscriptions();
+void conf_feedlist_schedule_save();
+void conf_feedlist_save();
 
 /* methods to modify folder contents */
 GSList * getFeedKeyList(gchar *keyprefix);
 void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
 
-void	addEmptyFolderToConfig(folderPtr dest_folder, gint type);
-void	removeFolderFromConfig(struct folder *folder);
-gchar *	addFeedToConfig(struct feed *folder);
-void	removeFeedFromConfig(struct feed *folder);
-gchar * getFreeFeedKey(gchar *keyprefix);
+folderPtr feedlist_insert_help_folder(folderPtr parent);
 
-int	setFeedTitleInConfig(gchar *feedkey, gchar *feedname);
-int	setFeedURLInConfig(feedPtr fp, gchar *feedurl);
-int	setFeedUpdateIntervalInConfig(gchar *feedkey, gint interval);
-int	setFolderTitleInConfig(folderPtr folder, gchar *title);
-int	setFolderCollapseStateInConfig(folderPtr folder, gboolean collapsed);
+gchar * getFreeFeedKey(gchar *keyprefix);
 
 /* returns true if namespace is enabled in configuration */
 gboolean	getNameSpaceStatus(gchar *nsname);

@@ -81,7 +81,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkAdjustment	*resultCount;
 	feedPtr		fp;
 	nodePtr		ptr;
-	gchar		*tmp, *searchtext = NULL, *keyprefix = NULL;
+	gchar		*tmp, *searchtext = NULL;
 	folderPtr 	folder = NULL;
 
 	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
@@ -101,16 +101,14 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 			folder = folder_get_root();
 		}
 		
-		if(NULL != (fp = newFeed(FST_RSS, searchtext, folder))) {
-			ui_folder_add_feed(fp, -1);
+		if(NULL != (fp = feed_add(FST_RSS, searchtext, folder, "Searching....", NULL, 0, FALSE))) {
 
-			if(FALSE == feed_get_available(fp)) {
+			/*	FIXME: This needs to be added somewhere else.		if(FALSE == feed_get_available(fp)) {
 				tmp = g_strdup_printf(_("Feedster search request failed.\n"));
 				ui_show_error_box(tmp);
 				g_free(tmp);
-			}
+				}*/
 		}
-		g_free(keyprefix);
 
 		/* It is possible, that there is no selected folder when we are
 		   called from the menu! In this case we default to the root folder */
@@ -155,7 +153,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 
 		if(NULL != folder) {
 
-			if(NULL != (fp = newFeed(FST_VFOLDER, "", folder))) {
+			if(NULL != (fp = feed_add(FST_VFOLDER, "", folder, "untitled",NULL,0,FALSE))) {
 				
 				// FIXME: this really does not belong here!!! -> vfolder.c
 				/* setup a rule */
