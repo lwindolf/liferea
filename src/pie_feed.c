@@ -98,6 +98,7 @@ void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
 		return;
 		
 	addToHTMLBuffer(request->buffer, tmp);
+	g_free(tmp);
 }
 
 /* writes PIE channel description as HTML into the gtkhtml widget */
