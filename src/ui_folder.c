@@ -34,7 +34,7 @@ static GtkWidget	*foldernamedialog = NULL;
 /* new/change/remove folder dialog callbacks 					*/
 /*------------------------------------------------------------------------------*/
 
-static gboolean folder_is_empty(folderPtr folder) {
+gboolean ui_folder_is_empty(folderPtr folder) {
 	GtkTreeIter child;
 	GtkTreeIter *folderIter = &((ui_data*)(folder->ui_data))->row;
 	nodePtr ptr;
@@ -128,9 +128,9 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_widget_hide(foldernamedialog);
 }
 
-void on_popup_removefolder_selected(gpointer callback_data,
-							 guint callback_action,
-							 GtkWidget *widget) {
+void ui_folder_remove(gpointer callback_data,
+				  guint callback_action,
+				  GtkWidget *widget) {
 	folderPtr		folder = (folderPtr)callback_data;
 	
 	if (!folder || !IS_FOLDER(folder->type)) {
@@ -138,7 +138,7 @@ void on_popup_removefolder_selected(gpointer callback_data,
 		return;
 	}
 	
-	if(folder_is_empty(folder))
+	if(ui_folder_is_empty(folder))
 		folder_free(folder);
 	else
 		ui_show_error_box(_("A folder must be empty to delete it!"));

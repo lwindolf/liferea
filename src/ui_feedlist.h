@@ -117,8 +117,8 @@ void ui_feedlist_new_subscription(gchar *source, gchar *filter, gboolean showPro
 #define	ACTION_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	
 #define	ACTION_FILTER_DIRECTORY	2	/** Only matches nodes where IS_DIRECTORY(node->type) */	
 #define	ACTION_FILTER_FOLDER	4	/** Only matches nodes where IS_FOLDER(node->type) */
+#define	ACTION_FILTER_ANY	7	/** Matches any node */
 #define	ACTION_FILTER_CHILDREN	8	/** Matches immediate children of the given node */
-#define	ACTION_FILTER_ANY	15	/** Matches any node */
 
 /**
  * Helper function to recursivly call feed_save() for all
@@ -173,6 +173,16 @@ void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
  */
 gboolean ui_feedlist_auto_update(void *data);
 
+/**
+ * Prompt the user for confirmation of a folder or feed, and
+ * recursively remove the feed or folder if the user accepts. This
+ * function blocks does not block, so the folder/feeds will not have
+ * been deleted when this function returns.
+ *
+ * @param ptr the node to delete
+ */
+void ui_feedlist_delete(nodePtr ptr);
+
 /** 
  * @name menu and dialog callbacks 
  * @{
@@ -180,7 +190,7 @@ gboolean ui_feedlist_auto_update(void *data);
 void on_popup_refresh_selected(gpointer callback_data,
 						 guint callback_action,
 						 GtkWidget *widget);
-void on_popup_delete_selected(gpointer callback_data,
+void on_popup_delete(gpointer callback_data,
 						guint callback_action,
 						GtkWidget *widget);
 void on_popup_prop_selected(gpointer callback_data,

@@ -48,6 +48,7 @@ void ui_folder_remove_node(nodePtr ptr);
 
 void ui_folder_update(folderPtr folder);
 gboolean ui_is_folder_expanded(folderPtr folder);
+gboolean ui_folder_is_empty(folderPtr folder);
 void checkForEmptyFolders(void);
 /* expansion/collapsing */
 void ui_folder_set_expansion(folderPtr folder, gboolean expanded);

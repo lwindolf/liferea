@@ -245,7 +245,7 @@ void feed_save(feedPtr fp) {
 				
 				if(saveMaxCount != CACHE_UNLIMITED &&
 				   saveCount >= saveMaxCount &&
-				   fp->fhp != NULL && fp->fhp->directory == FALSE &&
+				   (fp->fhp == NULL || fp->fhp->directory == FALSE) &&
 				   !item_get_mark(ip)) {
 					continue;
 				}
@@ -933,6 +933,11 @@ void feed_free(feedPtr fp) {
 	gchar *filename = NULL;
 	
 	g_assert(IS_FEED(fp->type));
+	
+	if (displayed_fp == fp) {
+		ui_htmlview_clear();
+		ui_itemlist_clear();
+	}
 	
 	if (fp->id && fp->id[0] != '\0')
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);

@@ -38,6 +38,8 @@ enum is_columns {
 	IS_LEN			/**< Number of columns in the itemstore */
 };
 
+extern feedPtr	displayed_fp;
+
 /**
  * Returns the itemstore, creating it if needed.
  *

@@ -378,31 +378,88 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 /* delete entry callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void on_popup_delete_selected(gpointer callback_data,
-                                             guint callback_action,
-                                             GtkWidget *widget) {
-	feedPtr fp = (feedPtr)callback_data;
-	
-	if (!fp || !IS_FEED(fp->type)) {
-		ui_show_error_box(_("You have to select a feed entry!"));
-		return;
-	}
-	
-	/* block deleting of empty entries */
-	
-	/* block deleting of help feeds */
-	if(fp->type == FST_HELPFEED || fp->type == FST_HELPFOLDER) {
+static void ui_feedlist_delete_(nodePtr ptr) {
+
+	if(ptr->type == FST_HELPFEED || ptr->type == FST_HELPFOLDER) {
 		ui_show_error_box(_("You can't delete the help! Edit the preferences to disable loading the help."));
 		return;
 	}
 	
-	ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), feed_get_title(fp));
-	g_assert((nodePtr)fp == ui_feedlist_get_selected());
+	if (IS_FEED(ptr->type)) {
+		feed_free((feedPtr)ptr);
+	} else {
+		ui_feedlist_do_for_all(ptr, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, ui_feedlist_delete_);
+		if(ui_folder_is_empty((folderPtr)ptr))
+			folder_free((folderPtr)ptr);
+	}
+}
+
+static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	nodePtr ptr = (nodePtr)user_data;
 	
-	ui_itemlist_clear();
-	ui_htmlview_clear();
+	switch(response_id) {
+	case GTK_RESPONSE_YES:
+		ui_feedlist_delete_(ptr);
+	}
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+}
+
+
+void ui_feedlist_delete(nodePtr ptr) {
+	GtkWidget *dialog, *widget, *action_area;
+	gchar *text;
 	
-	feed_free(fp);
+	g_assert(ptr != NULL);
+	g_assert(ptr->ui_data != NULL);
+	g_assert(ptr == ui_feedlist_get_selected());
+
+	if(ptr->type == FST_HELPFEED || ptr->type == FST_HELPFOLDER) {
+		ui_show_error_box(_("You can't delete the help! Edit the preferences to disable loading the help."));
+		return;
+	}
+	
+	if (IS_FOLDER(ptr->type)) {
+		ui_mainwindow_set_status_bar(_("Deleting \"%s\""),"Deleting entry", folder_get_title((folderPtr)ptr));
+		text = g_strdup_printf(_("Are you sure that you want to delete %s and its contents?"), folder_get_title((folderPtr)ptr));
+	} else {
+		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), feed_get_title((feedPtr)ptr));
+		text = g_strdup_printf(_("Are you sure that you want to delete %s?"), feed_get_title((feedPtr)ptr));
+	}
+
+	dialog = gtk_dialog_new();
+	gtk_dialog_set_has_separator(GTK_DIALOG(dialog), FALSE);
+	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion confirmation"));
+	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+	gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(mainwindow));
+
+	widget = gtk_label_new(text);
+	g_free(text);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), widget, TRUE, TRUE, 0);
+	
+	action_area = GTK_DIALOG (dialog)->action_area;
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (action_area), GTK_BUTTONBOX_END);
+	
+	widget = gtk_button_new_from_stock ("gtk-no");
+	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), widget, GTK_RESPONSE_NO);
+	GTK_WIDGET_SET_FLAGS (widget, GTK_CAN_DEFAULT);
+	
+	widget = gtk_button_new_from_stock ("gtk-yes");
+	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), widget, GTK_RESPONSE_YES);
+	GTK_WIDGET_SET_FLAGS (widget, GTK_CAN_DEFAULT);
+	
+	gtk_widget_show_all(dialog);
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+				   G_CALLBACK (ui_feedlist_delete_response_cb), ptr);
+}
+
+void on_popup_delete(gpointer callback_data,
+                                             guint callback_action,
+                                             GtkWidget *widget) {
+	nodePtr ptr = (nodePtr)callback_data;
+	
+	ui_feedlist_delete(ptr);
+	
 }
 
 /*------------------------------------------------------------------------------*/
@@ -440,7 +497,7 @@ void ui_feedlist_new_subscription(gchar *source, gchar *filter, gboolean showPro
 	gchar			*data;
 	
 	debug_enter("ui_feedlist_new_subscription");	
-	printf("%s XXX %s\n", source, filter);
+	
 	/* directly download (do not use update queue to avoid
 	   waiting for the end of other updates and to
 	   get control back when feed is downloaded to show
@@ -533,6 +590,8 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 	while(valid) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter,
 					    FS_PTR, &child, -1);
+		/* Must update counter here because the current node may be deleted! */
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 		/* If child == NULL, this is an empty node. */
 		if (child != NULL) {
 			gboolean directory = IS_FEED(child->type) && (((feedPtr)child)->fhp != NULL) && ((feedPtr)child)->fhp->directory;
@@ -553,7 +612,6 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 			if(descend && (gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), &childiter) > 0))
 				ui_feedlist_do_for_all_data(child, filter, func, user_data);
 		}
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 	}
 }
 
