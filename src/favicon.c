@@ -119,8 +119,8 @@ static void favicon_download_request_cb(struct request *request) {
 			if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL))) 
 				g_warning("icon processing error!");
 			favicon_load(fp);
-			gdk_pixbuf_loader_close(loader, NULL);
 		}
+		gdk_pixbuf_loader_close(loader, NULL);
 		g_object_unref(loader);
 		g_free(tmp);
 		ui_feed_update(fp);
