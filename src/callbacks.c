@@ -110,7 +110,7 @@ void initGUI(void) {
 	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
 
 	ui_htmlview_init();
-	ui_htmlview_setup(mainwindow, lookup_widget(mainwindow, "itemview"),
+	ui_htmlview_setup(lookup_widget(mainwindow, "itemview"),
 			  lookup_widget(mainwindow, "itemlistview"),
 			  getNumericConfValue(LAST_ZOOMLEVEL));
 
@@ -220,12 +220,22 @@ static int print_status_idle(gpointer data) {
 	statusbar = lookup_widget(mainwindow, "statusbar");
 	g_assert(NULL != statusbar);
 
-	g_print("%s\n", statustext);
 	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), statustext);	
 	return 0;
 }
 
-void print_status(gchar *statustext) { ui_queue_add(print_status_idle, (gpointer)statustext); }
+void print_status(gchar *statustext) { 
+
+	g_print("%s\n", statustext);
+	ui_queue_add(print_status_idle, (gpointer)statustext); 
+}
+
+/* Set the main window status bar to the text given as 
+   statustext. statustext is freed afterwards. */
+void ui_mainwindow_set_status_bar(gchar *statustext) {
+
+	ui_queue_add(print_status_idle, (gpointer)statustext); 
+}
 
 void showErrorBox(gchar *msg) {
 	GtkWidget	*dialog;
@@ -288,9 +298,8 @@ gint checkForUpdateResults(gpointer data) {
 		new_fp->source = g_strdup(request->fp->source);
 		(*(fhp->readFeed))(new_fp, request->data);
 
-		if(selected_fp == request->fp) {
-			ui_itemlist_clear();
-		}
+		if(selected_fp == request->fp)
+			ui_itemlist_clear();	// FIXME: move this down to the other ui_* stuff?
 		
 		if(TRUE == fhp->merge)
 			/* If the feed type supports merging... */
@@ -315,20 +324,18 @@ gint checkForUpdateResults(gpointer data) {
 				ui_itemlist_load(request->fp, NULL);
 				ui_itemlist_prefocus();
 			}
-			
-			redrawFeedList();
-			updateUI();
 		}
 	} else {
 		
 		print_status(g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp)));
 		request->fp->available = FALSE;
 	}
-
+	redrawFeedList();
+	updateUI();
 	ui_unlock();
 	
-	/* request structure cleanup... */
-	g_free(request->feedurl);
+	request->fp->update_requested = FALSE;
+	g_free(request->feedurl);	/* request structure cleanup... */
 	g_free(request->data);
 		
 	return TRUE;

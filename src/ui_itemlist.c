@@ -341,7 +341,7 @@ void ui_itemlist_load(feedPtr fp, gchar *searchstring) {
 		return;
 	}
 
-	ui_htmlview_clear();
+	ui_itemlist_clear();
 	displayed_fp = fp;
 	itemlist = getFeedItemList(fp);
 	while(NULL != itemlist) {

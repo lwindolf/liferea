@@ -1,31 +1,30 @@
 ## Process this file with automake to produce Makefile.in
 
-## I'm totally aware that the module building is 
-## not the perfect way to do so :-)
+if WITH_GTKHTML2
+GTKHTML2 = gtkhtml2
+endif
 
-if WITH_GTKHTML
-GTKHTML = liblihtmlg.la
-GTKHTML_CFLAGS = @GTKHTML_CFLAGS@
+if WITH_GTKHTML3
+GTKHTML3 = gtkhtml3
 endif
 
 if WITH_MOZILLA
-SUBDIRS = mozilla
+MOZILLA = mozilla
 endif
+
+SUBDIRS = $(GTKHTML2) $(GTKHTML3) $(MOZILLA)
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LIB_DIR=\""$(libdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	@PACKAGE_CFLAGS@ $(GTKHTML_CFLAGS)
+	@PACKAGE_CFLAGS@
 
 
-lib_LTLIBRARIES = liblihtmlt.la $(GTKHTML)
+lib_LTLIBRARIES = liblihtmlt.la
 
 liblihtmlt_la_SOURCES = textview.c
 liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
-
-liblihtmlg_la_SOURCES = gtkhtml.c
-liblihtmlg_la_LIBADD = @PACKAGE_LIBS@ @GTKHTML_LIBS@ $(INTLLIBS)
 
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea

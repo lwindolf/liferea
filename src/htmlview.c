@@ -33,7 +33,7 @@
 
 /* function types for the imported symbols */
 typedef gchar *	(*getModuleNameFunc)	(void);
-typedef void	(*setupHTMLViewsFunc)	(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
+typedef void	(*setupHTMLViewsFunc)	(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 typedef void	(*setHTMLViewModeFunc)	(gboolean threePane);
 typedef void	(*writeHTMLFunc)	(gchar *string);
 typedef void	(*launchURLFunc)	(gchar *url);
@@ -166,6 +166,7 @@ void ui_htmlview_init(void) {
 	/* load configured module, we get a empty string if nothing is configured */
 	filename = getStringConfValue(BROWSER_MODULE);
 	if(0 != strlen(filename)) {
+		g_print(_("Loading configured browser module (%s)!\n"), filename);
 		success = loadSymbols(filename, FALSE);
 	} else {
 		g_print(_("No browser module configured!\n"));
@@ -192,9 +193,9 @@ void ui_htmlview_init(void) {
 /* browser module interface functions					*/
 /* -------------------------------------------------------------------- */
 
-void ui_htmlview_setup(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
+void ui_htmlview_setup(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 
-	((setupHTMLViewsFunc)methods[SETUPHTMLVIEWS])(mainwindow, pane, pane2, initialZoomLevel); 
+	((setupHTMLViewsFunc)methods[SETUPHTMLVIEWS])(pane, pane2, initialZoomLevel); 
 }
 
 void ui_htmlview_set_mode(gboolean threePane) {

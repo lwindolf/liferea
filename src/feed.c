@@ -1,5 +1,5 @@
 /*
-   common feed handling
+   @file feed.c common feed handling
    
    Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
@@ -162,6 +162,7 @@ feedPtr getNewFeedStruct(void) {
 	fp->available = FALSE;
 	fp->type = FST_INVALID;
 	fp->parseErrors = NULL;
+	fp->update_requested = FALSE;
 	
 	return fp;
 }

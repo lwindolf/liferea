@@ -134,6 +134,11 @@ void requestUpdate(feedPtr fp) {
 	
 	g_assert(NULL != fp);
 	
+	if(TRUE == fp->update_requested) {
+		print_status(g_strdup("There is already an update of this feed!"));
+		return;
+	}
+	
 	print_status(g_strdup_printf("updating \"%s\"", getFeedTitle(fp)));
 	
 	if(NULL == (source = getFeedSource(fp))) {
@@ -143,6 +148,7 @@ void requestUpdate(feedPtr fp) {
 
 	/* reset feed update counter */
 	fp->updateCounter = fp->updateInterval;
+	fp->update_requested = TRUE;
 
 	if(NULL == fp->request)
 		getNewRequestStruct(fp);

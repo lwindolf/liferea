@@ -109,7 +109,7 @@ struct browserModule {
 void	ui_htmlview_init(void);
 
 /* creates the HTML widget */
-void	ui_htmlview_setup(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
+void	ui_htmlview_setup(GtkWidget *pane1, GtkWidget *pane2, gint initialZoomLevel);
 
 /* loads a emtpy HTML page */
 void	ui_htmlview_clear(void);

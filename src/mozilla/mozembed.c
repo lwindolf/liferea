@@ -1,5 +1,5 @@
 /*
-   This is the html view implementation using gtkmozembed.
+   This is a browser module implementation using gtkmozembed.
      
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>   
    
@@ -54,8 +54,6 @@ typedef enum
 	CONTEXT_XUL      = (1 << 7),
 } ContextMenuType;
 
-extern GtkWidget	*mainwindow;
-
 static GtkWidget	*htmlwidget = NULL;
 
 static gfloat		zoomLevel = 1.0;
@@ -107,17 +105,15 @@ static void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, gui
 static void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
 	GtkWidget *statusbar;
 	
-	if(NULL != (statusbar = lookup_widget(mainwindow, "statusbar"))) {
-		g_free(selectedURL);
-		if(NULL != (selectedURL = gtk_moz_embed_get_link_message(dummy))) {
-			/* overwrite or clear last status line text */
-			gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), selectedURL);
+	g_free(selectedURL);
+	if(NULL != (selectedURL = gtk_moz_embed_get_link_message(dummy))) {
+		/* overwrite or clear last status line text */
+		print_status(g_strdup(selectedURL));
 		
-			/* mozilla gives us an empty string when no link is selected */
-			if(0 == strlen(selectedURL)) {
-				g_free(selectedURL);
-				selectedURL = NULL;
-			}
+		/* mozilla gives us an empty string when no link is selected */
+		if(0 == strlen(selectedURL)) {
+			g_free(selectedURL);
+			selectedURL = NULL;
 		}
 	}
 }
@@ -151,7 +147,7 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
 
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
-void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
+void setupHTMLViews(GtkWidget *pane, GtkWidget *pane2, gint initialZoomLevel) {
 	gchar	*profile;
 	int	i;
 	
@@ -204,11 +200,6 @@ void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane, GtkWidget *pane2, gi
 	/* create html widget and pack it into the scrolled window */
 	htmlwidget = gtk_moz_embed_new();
 	
-	/* voodoo that prevents random crashes on embed close with moz 1.3b+ */
-#if (MOZILLA_SNAPSHOT > 4) && (MOZILLA_SNAPSHOT < 8)
-	GTK_WIDGET_SET_FLAGS(htmlwidget, GTK_NO_WINDOW);
-#endif	
-
 	/* connect to interesting Mozilla signals */
 	for(i = 0; signal_connections[i].event != NULL; i++)
 	{
@@ -229,9 +220,9 @@ void setHTMLViewMode(gboolean threePane) {
 		showErrorBox(g_strdup("Sorry, condensed view not yet implemented for Mozilla!"));
 		
 /*	if(FALSE == threePane)
-		setupHTMLView(mainwindow, itemListView);
+		setupHTMLView(itemListView);
 	else
-		setupHTMLView(mainwindow, itemView);*/
+		setupHTMLView(itemView);*/
 
 }
 

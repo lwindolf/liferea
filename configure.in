@@ -23,14 +23,26 @@ AC_DEFINE(MODULE_DIR, $libdir, [path of HTML widget modules])
 
 html_modules=
 
-AC_MSG_CHECKING([for GtkHTML support])
+AC_MSG_CHECKING([for GtkHTML2 support])
 temptest=`pkg-config --cflags libgtkhtml-2.0 2> /dev/null`
-AM_CONDITIONAL(WITH_GTKHTML, test "x$temptest" != "x")
+AM_CONDITIONAL(WITH_GTKHTML2, test "x$temptest" != "x")
 if test "x$temptest" != "x" ; then
    AC_MSG_RESULT(yes)
-   PKG_CHECK_MODULES(GTKHTML, libgtkhtml-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
-   AC_SUBST(GTKHTML_CFLAGS)
-   AC_SUBST(GTKHTML_LIBS)
+   PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
+   AC_SUBST(GTKHTML2_CFLAGS)
+   AC_SUBST(GTKHTML2_LIBS)
+else
+   AC_MSG_RESULT(no)
+fi
+
+AC_MSG_CHECKING([for GtkHTML3 support])
+temptest=`pkg-config --cflags libgtkhtml-3.0 2> /dev/null`
+AM_CONDITIONAL(WITH_GTKHTML3, test "x$temptest" != "x")
+if test "x$temptest" != "x" ; then
+   AC_MSG_RESULT(yes)
+   PKG_CHECK_MODULES(GTKHTML3, libgtkhtml-3.0 >= 2.0.0 gnome-vfs-2.0 >= 2.0.0)
+   AC_SUBST(GTKHTML3_CFLAGS)
+   AC_SUBST(GTKHTML3_LIBS)
 else
    AC_MSG_RESULT(no)
 fi
@@ -130,6 +142,8 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 src/mozilla/Makefile
+src/gtkhtml2/Makefile
+src/gtkhtml3/Makefile
 po/Makefile.in
 ])
 
