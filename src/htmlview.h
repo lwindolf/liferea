@@ -45,7 +45,7 @@
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
 #define HEAD_START		"<table cellspacing=\"0\" class=\"itemhead\">"
-#define HEAD_LINE		"<tr><td class=\"itemhead\"><b>%s</b></td><td width=\"100%%\">%s</td></tr>"
+#define HEAD_LINE		"<tr><td class=\"head_left\"><b>%s</b></td><td class=\"head_right\" width=\"100%%\">%s</td></tr>"
 #define HEAD_END		"</table>"
 
 #define FEED_FOOT_TABLE_START	"<table class=\"feedfoot\">"

@@ -46,12 +46,19 @@ table.itemhead {
 	width:100%;
 	background-color:#DDD;
 	border: 1px solid black;
-	padding-right: 5px;
 }
 
-td.itemhead {
+td.itemhead {	/* old definition replaced by td.head (for compatibilty) */
 	padding:2px 5px;
+}
+
+td.head_left {
+	padding:2px 2px;
 	text-align:right;
+}
+
+td.head_right {
+	padding:2px 5px;
 }
 
 /* styles to display generic namespace augmentation in the 
