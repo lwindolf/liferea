@@ -162,7 +162,10 @@ void ui_feed_process_update_result(struct request *request) {
 	} else if(304 == request->httpstatus) {
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(fp));
 	} else if(NULL != request->data) {
-		fp->lastModified = request->lastmodified;
+		g_free(fp->lastModified);
+		fp->lastModified = NULL;
+		if (request->lastmodified != NULL)
+			fp->lastModified = g_strdup(request->lastmodified);
 		
 		/* note this is to update the feed URL on permanent redirects */
 		if(0 != strcmp(request->source, feed_get_source(fp))) {
@@ -211,14 +214,16 @@ void ui_feed_process_update_result(struct request *request) {
 	
 	ui_feed_set_error_description(fp, request->httpstatus, request->returncode);
 
-	// FIXME: do we need the following line? (Lars)
-	fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
+	/* FIXME: do we need the following line? (Lars) */
+	/* At some place? Yes. This is the locking mechanism used to
+	   prevent multiple updates for one feed. */
+	fp->request = NULL; 
 	ui_notification_update(fp);	
 	ui_feedlist_update();
 	
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		favicon_download(fp);
-		
+	
 	feed_unload(fp);
 	
 	ui_unlock();

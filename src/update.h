@@ -83,7 +83,7 @@ struct request {
 	/* Set by download system*/
 	int returncode;
 	int httpstatus;		/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
-	GTimeVal lastmodified;	/**< Time of last modification. Stored in UTC. */
+	gchar *lastmodified;	/**< Time of last modification. Stored in UTC. */
 	gchar *etag;		/**< E-Tag value for download. Set by both requestor and download subsystem */
 	gchar *data;
 	size_t size;

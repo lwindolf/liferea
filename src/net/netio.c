@@ -898,11 +898,8 @@ void downloadlib_process_url(struct request *request) {
 	debug1(DEBUG_UPDATE, "downloading %s", request->source);
 
 	cur_ptr.feedurl = request->source;
-	if (request->lastmodified.tv_sec > 0)
-		cur_ptr.lastmodified = createRFC822Date(&(request->lastmodified.tv_sec));
-	else
-		cur_ptr.lastmodified = NULL;
-	
+
+	cur_ptr.lastmodified = request->lastmodified;
 	cur_ptr.etag = request->etag;
 		
 	cur_ptr.problem = 0;
@@ -923,13 +920,8 @@ void downloadlib_process_url(struct request *request) {
 	request->httpstatus = cur_ptr.lasthttpstatus == 0 ? 404 : cur_ptr.lasthttpstatus;
 	request->returncode = cur_ptr.netio_error;
 	request->source = cur_ptr.feedurl;
-	if (cur_ptr.lastmodified != NULL)
-		request->lastmodified.tv_sec = parseRFC822Date(cur_ptr.lastmodified);
-	else
-		request->lastmodified.tv_sec = 0L;
-	request->lastmodified.tv_usec = 0L;
+	request->lastmodified = cur_ptr.lastmodified;
 	request->etag = cur_ptr.etag;
-	g_free(cur_ptr.lastmodified);
 	g_free(cur_ptr.cookies);
 	g_free(cur_ptr.servauth);
 	g_free(cur_ptr.authinfo);

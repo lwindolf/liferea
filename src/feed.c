@@ -290,11 +290,10 @@ void feed_save(feedPtr fp) {
 			xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 			g_free(tmp);
 			
-			if(NULL != fp->request && 0 != (fp->request->lastmodified.tv_sec)) {
-				tmp = g_strdup_printf("%ld", fp->request->lastmodified.tv_sec);
-				xmlNewTextChild(feedNode, NULL, "feedLastModified", tmp);
-				g_free(tmp);
+			if(fp->lastModified != NULL) {
+				xmlNewTextChild(feedNode, NULL, "feedLastModified", fp->lastModified);
 			}
+			
 			metadata_add_xml_nodes(fp->metadata, feedNode);
 
 			itemlist = feed_get_item_list(fp);
@@ -421,8 +420,7 @@ gboolean feed_load(feedPtr fp) {
 				feed_set_discontinued(fp, (0 == atoi(tmp))?FALSE:TRUE);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
-				fp->lastModified.tv_sec = atol(tmp);
-				fp->lastModified.tv_usec = 0L;
+				fp->lastModified = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				items = g_list_append(items, item_parse_cache(doc, cur));
@@ -526,7 +524,8 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 	/* prepare request url (strdup because it might be
 	   changed on permanent HTTP redirection in netio.c) */
 	request->source = g_strdup(source);
-	request->lastmodified = fp->lastModified;
+	if (fp->lastModified != NULL)
+		request->lastmodified = g_strdup(fp->lastModified);
 	request->flags = flags;
 	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
 	if(feed_get_filter(fp) != NULL)
@@ -633,7 +632,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 
 			/* ensure that the item nr's are unique */
 			if(NULL != feed_lookup_item(fp, new_ip->nr)) {
-				g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%d)\n", fp->id, new_ip->title, new_ip->nr);
+				g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%ud)\n", fp->id, new_ip->title, new_ip->nr);
 				new_ip->nr = ++(fp->lastItemNr);
 				fp->needsCacheSave = TRUE;
 			}

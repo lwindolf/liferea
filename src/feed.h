@@ -105,7 +105,8 @@ typedef struct feed {
 	GSList		*rules;			/**< list of rules if this is a vfolder */
 	
 	/* feed properties used for updating */
-	GTimeVal	lastModified;		/**< Date at which the feed last changed */
+	gchar	*lastModified;		/**< Last modified string as sent by the server */
+	gchar	*etag;			/**< E-Tag sent by the server */
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	GTimeVal	lastFaviconPoll;	/**< time at which the feed was last updated */
 	struct request	*request;		/**< update request structure used when downloading xml content */

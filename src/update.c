@@ -172,6 +172,7 @@ void download_request_free(struct request *request) {
 	if(NULL != request) {
 		g_free(request->source);
 		g_free(request->filtercmd);
+		g_free(request->lastmodified);
 		g_free(request->etag);
 		g_free(request->data);
 		g_free(request);
