@@ -630,6 +630,10 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 				if(0 == strcmp(item_get_id(old_ip), item_get_id(new_ip))){
 					found = TRUE;
 					break;
+				} else {
+					/* different ids, but the content might be still equal (e.g. empty)
+					   so we need to explicitly unset the equal flag !!!  */
+					equal = FALSE;
 				}
 			}
 			
