@@ -137,10 +137,10 @@ feedPtr feed_new(void);
  * an extension, such as ocs, that is appended to the id, to generate
  * the cache filename.
  *
- * @returns a newly allocated feed, or NULL if the cahe file was not
- * located.
+ * @returns FALSE if the feed file could not be opened and TRUE if it
+ * was opened.
  */
-void feed_load_from_cache(feedPtr fp);
+gboolean feed_load_from_cache(feedPtr fp);
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
 void feed_update(feedPtr fp);

@@ -244,7 +244,7 @@ void feed_save(feedPtr fp) {
 }
 
 /* function which is called to load a feed's cache file */
-void feed_load_from_cache(feedPtr fp) {
+gboolean feed_load_from_cache(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gchar		*filename, *tmp, *data = NULL;
@@ -259,7 +259,7 @@ void feed_load_from_cache(feedPtr fp) {
 		g_warning(_("Error while reading cache file\"%s\" ! Cache file could not be loaded!"), filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		g_free(filename);
-		return;
+		return FALSE;
 	}
 
 	do {
@@ -327,6 +327,7 @@ void feed_load_from_cache(feedPtr fp) {
 	if(NULL != doc)
 		xmlFreeDoc(doc);
 	g_free(filename);
+	return TRUE;
 }
 
 /* Merges the feeds specified by old_fp and new_fp, so that

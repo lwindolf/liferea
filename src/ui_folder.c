@@ -302,7 +302,6 @@ void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position) {
 	GtkTreeIter		*topiter;
 
 	g_assert(NULL != fp);
-	g_assert(NULL != parent);
 	g_assert(NULL != feedstore);
 	g_assert(NULL == fp->ui_data);
 	
