@@ -297,10 +297,13 @@ static void bufferParseError(void *ctxt, const gchar * msg, ...) {
  */
 xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	errorCtxtPtr		errors;
-	xmlDocPtr		doc;
+#if (LIBXML_VERSION < 20600)
+	xmlParserCtxtPtr        parser;
+#endif
+	xmlDocPtr               doc;
 	
 	g_assert(NULL != data);
-
+	
 	/* xmlCreateMemoryParserCtxt() doesn't like no data */
 	if(0 == dataLength) {
 		g_warning("parseBuffer(): Empty input!\n");
@@ -310,20 +313,40 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	
 	errors = g_new0(struct errorCtxt, 1);
 	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)bufferParseError);
-	
-	if(NULL != (doc = xmlReadMemory(data, dataLength, "xmlinput", /* encoding = */ NULL, XML_PARSE_RECOVER ))) {
-		*errormsg = errors->buffer;
-	} else {
-		g_warning("parseBuffer(): Could not create parsing context!\n");
-		*errormsg = g_strdup_printf("parseBuffer(): Could not parse document:\n%s%s", errors->buffer != NULL ? errors->buffer : "",
+#if (LIBXML_VERSION >= 20600)
+	doc = xmlReadMemory(data, dataLength, "xmlinput", /* encoding = */ NULL, XML_PARSE_RECOVER );
+	if (doc == NULL) {
+		g_warning("xmlReadMemory: Could not parse document!\n");
+		*errormsg = g_strdup_printf(_("xmlReadMemory(): Could not parse document:\n%s%s"), errors->buffer != NULL ? errors->buffer : "",
 							   errors->buffer != NULL ? "\n" : "");
 		g_free(errors->buffer);
+		errors->buffer = *errormsg;
 	}
-	g_free(errors);
+#else
+	parser = xmlCreateMemoryParserCtxt(data, dataLength);
+
+	if(parser == NULL) {
+		g_warning("parseBuffer(): Could not create parsing context!\n");  
+		*errormsg = g_strdup("parseBuffer(): Could not create parsing context!\n");
+		xmlSetGenericErrorFunc(NULL, NULL);
+		g_free(errors->buffer);
+		g_free(errors);
+		return NULL;
+	}
+	
+#if (LIBXML_VERSION >= 20427)
+	parser->recovery = 1;
+#endif
+	xmlParseDocument(parser);       /* ignore returned errors */
+	doc = parser->myDoc;
+#endif
 	/* This seems to reset the errorfunc to its default, so that the
 	   GtkHTML2 module is not unhappy because it also tries to call the
 	   errorfunc on occasion. */
 	xmlSetGenericErrorFunc(NULL, NULL);
+
+	*errormsg = errors->buffer;
+	g_free(errors);
 	
 	return doc;
 }
