@@ -44,7 +44,7 @@ XGETTEXT = /usr/bin/xgettext
 MSGMERGE = msgmerge
 
 DEFS = -DHAVE_CONFIG_H
-CFLAGS = -g -O2
+CFLAGS = -Wall
 CPPFLAGS = 
 
 INCLUDES = -I.. -I$(top_srcdir)/intl

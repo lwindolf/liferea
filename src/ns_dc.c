@@ -214,18 +214,15 @@ static void ns_dc_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 // FIXME: the parsing is stupid overkill! unify feed parsing by using setFeedTag callbacks !!!!
 
 /* common OCS parsing */
-static void ns_dc_parseOCSTag(gint type, gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_dc_parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
 	directoryPtr	dp = (directoryPtr)p;
 	dirEntryPtr	dep = (dirEntryPtr)p;
 	formatPtr	fp = (formatPtr)p;
 	int 		i;
 	gchar		*value;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
-
+	g_assert(NULL != cur);
+	
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(-1 != mapToDP[i]) {
@@ -253,28 +250,25 @@ static void ns_dc_parseOCSTag(gint type, gpointer p, xmlDocPtr doc, xmlNodePtr c
 	}
 }
 
-static void ns_dc_parseOCSDirectoryTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_dc_parseOCSTag(TYPE_DIRECTORY, p, doc, cur);
+static void ns_dc_parseOCSDirectoryTag(gpointer dp, xmlNodePtr cur) {
+	ns_dc_parseOCSTag(TYPE_DIRECTORY, dp, cur);
 }
 
-static void ns_dc_parseOCSChannelTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_dc_parseOCSTag(TYPE_CHANNEL, p, doc, cur);
+static void ns_dc_parseOCSChannelTag(gpointer cp, xmlNodePtr cur) {
+	ns_dc_parseOCSTag(TYPE_CHANNEL, cp, cur);
 }
 
-static void ns_dc_parseOCSFormatTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_dc_parseOCSTag(TYPE_FORMAT, p, doc, cur);
+static void ns_dc_parseOCSFormatTag(gpointer fp, xmlNodePtr cur) {
+	ns_dc_parseOCSTag(TYPE_FORMAT, fp, cur);
 }
 
 /* PIE channel parsing (basically the same as RSS parsing) */
-static void ns_dc_parsePIEFeedTag(PIEFeedPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_dc_parsePIEFeedTag(PIEFeedPtr cp, xmlNodePtr cur) {
 	int 		i;
 	char		*date;
 	gchar		*value;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
 
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
@@ -309,15 +303,12 @@ static void ns_dc_parsePIEFeedTag(PIEFeedPtr cp, xmlDocPtr doc, xmlNodePtr cur) 
 	}
 }
 
-static void ns_dc_parsePIEEntryTag(PIEEntryPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_dc_parsePIEEntryTag(PIEEntryPtr ip, xmlNodePtr cur) {
 	int 		i;
 	gchar		*value;
 	gchar		*date;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
 						
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
@@ -332,7 +323,7 @@ static void ns_dc_parsePIEEntryTag(PIEEntryPtr ip,xmlDocPtr doc, xmlNodePtr cur)
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
-			value = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(-1 == mapToPIEIP[i]) {
 				/* add it to the common DC value list, which is processed
 				   by by ns_dc_output() */
@@ -349,15 +340,12 @@ static void ns_dc_parsePIEEntryTag(PIEEntryPtr ip,xmlDocPtr doc, xmlNodePtr cur)
 
 
 /* RSS channel parsing */
-static void ns_dc_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_dc_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	int 		i;
 	char		*date;
 	gchar		*value;
 
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
 
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp(cur->name, BAD_CAST"date")) {
@@ -375,7 +363,7 @@ static void ns_dc_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cu
 	for(i = 0; NULL != taglist[i]; i++) {
 
 		if(!xmlStrcmp(cur->name, BAD_CAST taglist[i])) {
-			value = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(-1 == mapToCP[i]) {
 				/* add it to the common DC value list, which is processed
 				   by by ns_dc_output() */
@@ -391,19 +379,16 @@ static void ns_dc_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cu
 	}
 }
 
-static void ns_dc_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_dc_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	int 		i;
 	gchar		*value;
 	gchar		*date;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
 							
 	/* special handling for the ISO 8601 date tag */
 	if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
-		date = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+		date = g_strdup(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		ip->time = parseISO8601Date(date);
 
 		cur = cur->next;
@@ -412,9 +397,8 @@ static void ns_dc_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
 
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
-
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
-			value = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			value = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(-1 == mapToIP[i]) {
 				/* add it to the common DC value list, which is processed
 				   by by ns_dc_output() */
@@ -449,8 +433,7 @@ static gchar * ns_dc_doFooterOutput(GHashTable *nsinfos) {
 		addToHTMLBuffer(&buffer, TABLE_START);
 		g_hash_table_foreach(nsvalues, ns_dc_output, (gpointer)&buffer);
 		addToHTMLBuffer(&buffer, TABLE_END);			
-	}
-	
+	}	
 	return buffer;
 }
 
@@ -478,7 +461,6 @@ static gchar * ns_dc_doPIEEntryFooterOutput(gpointer obj) {
 
 	return NULL;
 }
-
 
 static gchar *	ns_dc_doPIEFeedFooterOutput(gpointer obj) {
 	

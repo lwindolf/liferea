@@ -154,14 +154,12 @@ gchar * CONVERT(xmlChar *string) {
 	return convert(string, "UTF-8");
 }
 
-gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string) {
+/* parses a XML node and returns its contents as a string */
+gchar * parseHTML(htmlNodePtr cur) {
 	gchar	*newstring = NULL;
 	gchar	*oldstring = NULL;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return NULL;
-	}
+	g_assert(NULL != cur);
 	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
@@ -176,11 +174,10 @@ gchar * parseHTML(htmlDocPtr doc, htmlNodePtr cur, gchar *string) {
 		}
 		
 		if(cur->xmlChildrenNode != NULL)
-			newstring = parseHTML(doc, cur->xmlChildrenNode, newstring);
+			newstring = parseHTML(cur->xmlChildrenNode);
 			
 		cur = cur->next;		
-	}
-	
+	}	
 	return newstring;
 }
 
@@ -209,10 +206,10 @@ gchar * unhtmlize(gchar *string) {
 	xmlDocPtr		pDoc;
 	int			length;
 	gchar			*newstring = NULL;
-
+	
 	if(NULL == string)
 		return NULL;
-	
+g_print("unhtmlize: %s\n", string);	
 	/* only do something if there are any entities */
 	if(NULL == (strchr(string, '&')))
 		return string;
@@ -228,11 +225,11 @@ gchar * unhtmlize(gchar *string) {
         htmlParseChunk(ctxt, string, length, 0);
         htmlParseChunk(ctxt, string, 0, 1);
         pDoc = ctxt->myDoc;
-	newstring = parseHTML(pDoc, xmlDocGetRootElement(pDoc), "");	
+	newstring = parseHTML(xmlDocGetRootElement(pDoc));	
         htmlFreeParserCtxt(ctxt);
 	
 	g_free(string);
-	
+g_print("result: %s\n", newstring);	
 	return newstring;
 }
 

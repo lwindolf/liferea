@@ -56,7 +56,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	
 	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"url"))) {
 		value = CONVERT(value);
-		tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value);
+		tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value, value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		xmlFree(value);
@@ -72,7 +72,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 			
 	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"xmlUrl"))) {
 		value = CONVERT(value);
-		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">XML</a>)", value, value);
+		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">XML</a>)", value);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 		xmlFree(value);
@@ -156,15 +156,15 @@ static void ns_bC_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar		*output;
 
 	if(!xmlStrcmp("blogRoll", cur->name)) {	
-		if(NULL != (output = getOutlineList(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))))
+		if(NULL != (output = getOutlineList(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
 			ns_bC_addInfoStruct(cp->nsinfos, "blogRoll", output);
 
 	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
-		if(NULL != (output = getOutlineList(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))))
+		if(NULL != (output = getOutlineList(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
 			ns_bC_addInfoStruct(cp->nsinfos, "mySubscriptions", output);
 
 	} else if(!xmlStrcmp("blink", cur->name)) {
@@ -173,11 +173,11 @@ static void ns_bC_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cu
 }
 
 /* maybe I should overthink method names :-) */
-static void ns_bC_output(gpointer key, gpointer value, gpointer userdata) {
+/*static void ns_bC_output(gpointer key, gpointer value, gpointer userdata) {
 	gchar 	**buffer = (gchar **)userdata;
 	
 	addToHTMLBuffer(buffer, (gchar *)value);
-}
+}*/
 
 static gchar * ns_bC_doOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;

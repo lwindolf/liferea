@@ -65,7 +65,7 @@ static gchar *itemTagList[] = {		"title",
 static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip);
 
 /* method to parse standard tags for each item element */
-itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar			*tmp, *link;
 	parseItemTagFunc	parseFunc;
 	GSList			*hp;
@@ -74,10 +74,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	itemPtr			ip;
 	int			j;
 
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return NULL;
-	}
+	g_assert(NULL != cur);
 		
 	if(NULL == (i = (RSSItemPtr) malloc(sizeof(struct RSSItem)))) {
 		g_error("not enough memory!\n");
@@ -100,7 +97,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 					nsh = (RSSNsHandler *)hp->data;
 					parseFunc = nsh->parseItemTag;
 					if(NULL != parseFunc)
-						(*parseFunc)(i, doc, cur);
+						(*parseFunc)(i, cur);
 					cur = cur->next;
 					continue;						
 				} else {
@@ -114,7 +111,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, BAD_CAST itemTagList[j])) {
 				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 					i->tags[j] = tmp;
 				} else {
 					g_free(tmp);

@@ -62,17 +62,14 @@ gchar * ns_ocs_getOCSNsPrefix(void) { return ns_ocs_prefix; }
 
    Note: this demands that each element types tags array has to be
          the same structure and content order... */
-void ns_ocs_parseTag(gint type, gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
+void ns_ocs_parseTag(gint type, gpointer p, xmlNodePtr cur) {
 	directoryPtr	dp = (directoryPtr)p;
 	dirEntryPtr	dep = (dirEntryPtr)p;
 	formatPtr	fp = (formatPtr)p;
 	int 		i;
 	gchar		*value;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
 
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
@@ -101,16 +98,16 @@ void ns_ocs_parseTag(gint type, gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 }
 
-void ns_ocs_parseDirectoryTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_ocs_parseTag(TYPE_DIRECTORY, p, doc, cur);
+void ns_ocs_parseDirectoryTag(gpointer dp, xmlNodePtr cur) {
+	ns_ocs_parseTag(TYPE_DIRECTORY, dp, cur);
 }
 
-void ns_ocs_parseChannelTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_ocs_parseTag(TYPE_CHANNEL, p, doc, cur);
+void ns_ocs_parseChannelTag(gpointer cp, xmlNodePtr cur) {
+	ns_ocs_parseTag(TYPE_CHANNEL, cp, cur);
 }
 
-void ns_ocs_parseFormatTag(gpointer p, xmlDocPtr doc, xmlNodePtr cur) {
-	ns_ocs_parseTag(TYPE_FORMAT, p, doc, cur);
+void ns_ocs_parseFormatTag(gpointer fp, xmlNodePtr cur) {
+	ns_ocs_parseTag(TYPE_FORMAT, fp, cur);
 }
 
 OCSNsHandler *ns_ocs_getOCSNsHandler(void) {

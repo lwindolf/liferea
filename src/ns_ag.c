@@ -31,11 +31,6 @@
 
 static gchar ns_ag_prefix[] = "ag";
 
-/* some prototypes */
-void ns_ag_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur);
-
-gchar * ns_ag_doChannelOutput(gpointer obj);
-
 /* you can find an aggregation namespace spec at:
    http://web.resource.org/rss/1.0/modules/aggregation/
  
@@ -52,7 +47,6 @@ gchar * ns_ag_doChannelOutput(gpointer obj);
 
 gchar * ns_ag_getRSSNsPrefix(void) { return ns_ag_prefix; }
 
-
 static void ns_ag_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
 	GHashTable	*nsvalues;
 	
@@ -68,7 +62,7 @@ static void ns_ag_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-void ns_ag_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_ag_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	gchar	*date, *tmp;
 	
 	if(!xmlStrcmp("source", cur->name)) 
@@ -85,7 +79,7 @@ void ns_ag_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 }
 
-gchar * ns_ag_doOutput(GHashTable *nsinfos) {
+static gchar * ns_ag_doOutput(GHashTable *nsinfos) {
 	GHashTable	*nsvalues;
 	gchar		*buffer = NULL;
 	gchar		*tmp, *tmp2, *tmp3;
@@ -123,7 +117,7 @@ gchar * ns_ag_doOutput(GHashTable *nsinfos) {
 	return buffer;
 }
 
-gchar * ns_ag_doItemOutput(gpointer obj) {
+static gchar * ns_ag_doItemOutput(gpointer obj) {
 
 	if(NULL != obj)
 		return ns_ag_doOutput(((RSSItemPtr)obj)->nsinfos);
@@ -142,6 +136,5 @@ RSSNsHandler *ns_ag_getRSSNsHandler(void) {
 		nsh->doItemHeaderOutput		= NULL;
 		nsh->doItemFooterOutput		= ns_ag_doItemOutput;
 	}
-
 	return nsh;
 }

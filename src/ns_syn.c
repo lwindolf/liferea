@@ -37,7 +37,7 @@ static gchar ns_syn_prefix[] = "syn";
 
 gchar * ns_syn_getRSSNsPrefix(void) { return ns_syn_prefix; }
 
-void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	xmlChar	*tmp;
 	int	period = 60*24;	/* daily is default */
 	int	frequency = 1;
@@ -60,7 +60,7 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 			xmlFree(tmp);
 		}
 	} else if(!xmlStrcmp(cur->name, BAD_CAST"updateFrequency")) {
-		if(NULL != (tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1))) {
+		if(NULL != (tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			frequency = atoi(tmp);
 			xmlFree(tmp);
 		}

@@ -23,8 +23,6 @@
 
 static gchar ns_content_prefix[] = "content";
 
-/* some prototypes */
-void ns_content_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur);
 
 /* a namespace documentation can be found at 
    http://web.resource.org/rss/1.0/modules/content/
@@ -35,6 +33,13 @@ void ns_content_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur);
    
 */
 
+static void ns_content_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
+	
+	if(!xmlStrcmp(cur->name, "encoded")) {
+		g_free(ip->tags[RSS_ITEM_DESCRIPTION]);
+		ip->tags[RSS_ITEM_DESCRIPTION] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+	}
+}
 
 gchar * ns_content_getRSSNsPrefix(void) { return ns_content_prefix; }
 
@@ -51,12 +56,4 @@ RSSNsHandler *ns_content_getRSSNsHandler(void) {
 	}
 
 	return nsh;
-}
-
-void ns_content_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
-	
-	if(!xmlStrcmp(cur->name, "encoded")) {
-		g_free(ip->tags[RSS_ITEM_DESCRIPTION]);
-		ip->tags[RSS_ITEM_DESCRIPTION] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-	}
 }

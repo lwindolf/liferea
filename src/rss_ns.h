@@ -32,8 +32,8 @@
 /* -------------------------------------------------------- */
 
 /* definition of various namespace tag handlers */
-typedef void	(*parseChannelTagFunc)	(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur);
-typedef void	(*parseItemTagFunc)	(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur);
+typedef void	(*parseChannelTagFunc)	(RSSChannelPtr cp, xmlNodePtr cur);
+typedef void	(*parseItemTagFunc)	(RSSItemPtr ip, xmlNodePtr cur);
 
 /* handler called during HTML output generation to display
    namespace specific information (e.g. <dc:creator> the 

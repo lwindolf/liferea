@@ -160,29 +160,25 @@ static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
 /* ---------------------------------------------------------------------------- */
 
 /* nonstatic because used by pie_entry.c too */
-gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur) {
+gchar * parseAuthor(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
 	gchar	*tmp2;
 
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return NULL;
-	}
-
+	g_assert(NULL != cur);
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"name"))
-			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"email")) {
-			tmp2 = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			tmp2 = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp2 = g_strdup_printf("%s <a href=\"mailto:%s\">%s</a>", tmp, tmp2, tmp2);
 			g_free(tmp);
 			tmp = tmp2;
 		}
 					
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"url")) {
-			tmp2 = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			tmp2 = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp2 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
 			g_free(tmp);
 			tmp = tmp2;
@@ -245,14 +241,14 @@ static void readPIEFeed(feedPtr fp) {
 			/* parse feed author */
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "author"))) {
 				g_free(cp->author);
-				cp->author = parseAuthor(doc, cur);
+				cp->author = parseAuthor(cur);
 				cur = cur->next;		
 				continue;
 			}
 			
 			/* parse feed contributors */
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "contributor"))) {
-				tmp = parseAuthor(doc, cur);				
+				tmp = parseAuthor(cur);				
 				if(NULL != cp->contributors) {
 					/* add another contributor */
 					tmp2 = g_strdup_printf("%s<br>%s", cp->contributors, tmp);
@@ -272,7 +268,7 @@ static void readPIEFeed(feedPtr fp) {
 					if(NULL != (nsh = (PIENsHandler *)g_hash_table_lookup(pie_nslist, (gpointer)cur->ns->prefix))) {
 						parseFunc = nsh->parseChannelTag;
 						if(NULL != parseFunc)
-							(*parseFunc)(cp, doc, cur);
+							(*parseFunc)(cp, cur);
 						cur = cur->next;
 						continue;
 					} else {
@@ -297,7 +293,7 @@ static void readPIEFeed(feedPtr fp) {
 
 			/* collect PIE feed entries */
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "entry"))) {
-				if(NULL != (ip = parseEntry(cp, doc, cur))) {
+				if(NULL != (ip = parseEntry(cp, cur))) {
 					if(0 == ip->time)
 						ip->time = cp->time;
 					addItem(fp, ip);

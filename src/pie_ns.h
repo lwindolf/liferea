@@ -32,8 +32,8 @@
 /* -------------------------------------------------------- */
 
 /* definition of various namespace tag handlers */
-typedef void	(*parseFeedTagFunc)	(PIEFeedPtr cp, xmlDocPtr doc, xmlNodePtr cur);
-typedef void	(*parseEntryTagFunc)	(PIEEntryPtr ip, xmlDocPtr doc, xmlNodePtr cur);
+typedef void	(*parseFeedTagFunc)	(PIEFeedPtr cp, xmlNodePtr cur);
+typedef void	(*parseEntryTagFunc)	(PIEEntryPtr ip, xmlNodePtr cur);
 
 /* handler called during HTML output generation to display
    namespace specific information (e.g. <dc:creator> the 

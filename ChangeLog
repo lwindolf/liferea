@@ -16,6 +16,7 @@
 	  program window and subscribe to the dropped URL.
 	* Written some more and new text for the Liferea
 	  Online Help Feed.
+	* Many code improvements by Karl Soderstrom.
 	* Fixes the priority of <summary> vs. <content> tag
 	  handling for Atom/Echo/PIE feeds.
 	* Fixed the broken tray icon logic.

@@ -34,6 +34,7 @@
 #include "common.h"
 #include "cdf_channel.h"
 #include "cdf_item.h"
+#include "callbacks.h"
 
 #include "netio.h"
 #include "htmlview.h"

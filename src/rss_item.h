@@ -52,6 +52,6 @@ typedef struct RSSItem {
 	time_t		time;
 } *RSSItemPtr;
 
-itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur);
+itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlNodePtr cur);
 
 #endif

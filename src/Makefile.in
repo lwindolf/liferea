@@ -94,6 +94,8 @@ liferea_SOURCES =  	main.c 	support.c support.h 	interface.c interface.h 	callba
 
 
 liferea_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
+
+liferea_CFLAGS = -Wall
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
 CONFIG_CLEAN_FILES = 

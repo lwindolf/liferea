@@ -31,7 +31,7 @@
 /* -------------------------------------------------------- */
 
 /* definition of various namespace tag handlers */
-typedef void	(*parseOCSTagFunc)	(gpointer p, xmlDocPtr doc, xmlNodePtr cur);
+typedef void	(*parseOCSTagFunc)	(gpointer p, xmlNodePtr cur);
 
 /* struct used to register RDF namespace handler */
 typedef struct OCSNsHandler {

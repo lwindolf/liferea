@@ -57,7 +57,7 @@ static gchar *entryTagList[] = {	"title",
 static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip);
 
 /* we reuse some pie_feed.c function */
-extern gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur);
+extern gchar * parseAuthor(xmlNodePtr cur);
 extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
 
 /* <content> tag support, FIXME: base64 not supported */
@@ -92,7 +92,7 @@ static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
 }
 
 /* method to parse standard tags for each item element */
-itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
+itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 	gchar			*tmp2, *tmp = NULL;
 	parseEntryTagFunc	fp;
 	PIENsHandler		*nsh;	
@@ -100,10 +100,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr			ip;
 	int			j;
 
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return NULL;
-	}
+	g_assert(NULL != cur);
 		
 	if(NULL == (i = (PIEEntryPtr) malloc(sizeof(struct PIEEntry)))) {
 		g_error("not enough memory!\n");
@@ -122,7 +119,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 				if(NULL != (nsh = (PIENsHandler *)g_hash_table_lookup(pie_nslist, (gpointer)cur->ns->prefix))) {
 					fp = nsh->parseItemTag;
 					if(NULL != fp)
-						(*fp)(i, doc, cur);
+						(*fp)(i, cur);
 					cur = cur->next;
 					continue;						
 				} else {
@@ -133,7 +130,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 
 		// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
 		if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
-			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			tmp = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			i->time = parseISO8601Date(tmp);
 			cur = cur->next;		
 			continue;
@@ -142,14 +139,14 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		/* parse feed author */
 		if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 			g_free(i->author);
-			i->author = parseAuthor(doc, cur);
+			i->author = parseAuthor(cur);
 			cur = cur->next;		
 			continue;
 		}
 
 		/* parse feed contributors */
 		if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
-			tmp = parseAuthor(doc, cur);				
+			tmp = parseAuthor(cur);				
 			if(NULL != i->contributors) {
 				/* add another contributor */
 				tmp2 = g_strdup_printf("%s<br>%s", i->contributors, tmp);
@@ -174,7 +171,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {
 			if(NULL == i->tags[PIE_ENTRY_DESCRIPTION]) {
 				i->summary = TRUE;
-				i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+				i->tags[PIE_ENTRY_DESCRIPTION] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			}
 			cur = cur->next;		
 			continue;
@@ -185,7 +182,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 			g_assert(NULL != cur->name);
 			if (!xmlStrcmp(cur->name, (const xmlChar *)entryTagList[j])) {
 				tmp = i->tags[j];
-				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+				if(NULL == (i->tags[j] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 					i->tags[j] = tmp;
 				} else {
 					g_free(tmp);

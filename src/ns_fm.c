@@ -50,7 +50,7 @@ static void ns_fm_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-static void ns_fm_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_fm_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
 		/* maybe for just one tag this is overkill, but copy&paste is so easy! */

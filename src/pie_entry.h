@@ -44,6 +44,6 @@ typedef struct PIEEntry {
 	time_t		time;
 } *PIEEntryPtr;
 
-itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur);
+itemPtr parseEntry(gpointer cp, xmlNodePtr cur);
 
 #endif

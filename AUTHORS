@@ -1,15 +1,16 @@
-Lars Lindner <lars.lindner@gmx.net>	some of the coding
+Lars Lindner <lars.lindner@gmx.net>	some of the coding...
 James Doherty 				dialog design
 Jeremy Messenger <mezz7@cox.net>	search dialog, icons...
 John McKnight 				Makefile help
 pasp					window position saving
+Karl Soderstrom				heavy debugging and patching
 
 Documenation and Translations
 
-Stephane Jourdan			french translation
-Takeshi Aihana				japanese translation
-Park Ji-In				korean translation
-Lars Lindner <lars.lindner@gmx.net>	german translation
+Stephane Jourdan <stephane.jourdan@itris.fr>	french translation
+Takeshi Aihana <aihana@gnome.gr.jp>		japanese translation
+Park Ji-In <mithrandir@electrang.net>		korean translation
+Lars Lindner <lars.lindner@gmx.net>		german translation
 
 Code included from other projects:
 

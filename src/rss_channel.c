@@ -208,18 +208,15 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 /* ---------------------------------------------------------------------------- */
 
 /* method to parse standard tags for the channel element */
-static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
+static void parseChannel(RSSChannelPtr cp, xmlNodePtr cur) {
 	gchar			*tmp = NULL;
 	parseChannelTagFunc	fp;
 	GSList			*hp;
 	RSSNsHandler		*nsh;
 	int			i;
 	
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
-		
+	g_assert(NULL != cur);
+			
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		/* check namespace of this tag */
@@ -230,7 +227,7 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 					nsh = (RSSNsHandler *)hp->data;
 					fp = nsh->parseChannelTag;
 					if(NULL != fp)
-						(*fp)(c, doc, cur);
+						(*fp)(cp, cur);
 					cur = cur->next;
 					continue;
 				} else {
@@ -241,9 +238,9 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 		/* check for RDF tags */
 		for(i = 0; i < RSS_CHANNEL_MAX_TAG; i++) {
 			if(!xmlStrcmp(cur->name, BAD_CAST channelTagList[i])) {
-				tmp = c->tags[i];
-				if(NULL == (c->tags[i] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
-					c->tags[i] = tmp;
+				tmp = cp->tags[i];
+				if(NULL == (cp->tags[i] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+					cp->tags[i] = tmp;
 				} else {
 					g_free(tmp);
 					break;
@@ -254,35 +251,28 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 
 	/* some postprocessing */
-	if(NULL != c->tags[RSS_CHANNEL_TITLE])
-		c->tags[RSS_CHANNEL_TITLE] = unhtmlize(c->tags[RSS_CHANNEL_TITLE]);
+	if(NULL != cp->tags[RSS_CHANNEL_TITLE])
+		cp->tags[RSS_CHANNEL_TITLE] = unhtmlize(cp->tags[RSS_CHANNEL_TITLE]);
 
-	if(NULL != c->tags[RSS_CHANNEL_DESCRIPTION])
-		c->tags[RSS_CHANNEL_DESCRIPTION] = convertToHTML(c->tags[RSS_CHANNEL_DESCRIPTION]);
+	if(NULL != cp->tags[RSS_CHANNEL_DESCRIPTION])
+		cp->tags[RSS_CHANNEL_DESCRIPTION] = convertToHTML(cp->tags[RSS_CHANNEL_DESCRIPTION]);
 }
 
-static void parseTextInput(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
+static void parseTextInput(RSSChannelPtr cp, xmlNodePtr cur) {
 
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
-	
-	if(NULL == cp) {
-		g_warning(_("internal error: parseTextInput without a channel! Skipping text input!\n"));
-		return;
-	}
+	g_assert(NULL != cur);
+	g_assert(NULL != cp);
 	
 	cur = cur->xmlChildrenNode;
-	while (cur != NULL) {
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"title"))
-			cp->tiTitle = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"description"))
-			cp->tiDescription = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"name"))
-			cp->tiName = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"link"))
-			cp->tiLink = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+	while(cur != NULL) {
+		if(!xmlStrcmp(cur->name, (const xmlChar *)"title"))
+			cp->tiTitle = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if(!xmlStrcmp(cur->name, (const xmlChar *)"description"))
+			cp->tiDescription = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if(!xmlStrcmp(cur->name, (const xmlChar *)"name"))
+			cp->tiName = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if(!xmlStrcmp(cur->name, (const xmlChar *)"link"))
+			cp->tiLink = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			
 		cur = cur->next;
 	}
@@ -295,22 +285,15 @@ static void parseTextInput(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
 		cp->tiDescription = unhtmlize(cp->tiDescription);
 }
 
-static void parseImage(xmlDocPtr doc, xmlNodePtr cur, RSSChannelPtr cp) {
+static void parseImage(RSSChannelPtr cp, xmlNodePtr cur) {
 
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning(_("internal error: XML document pointer NULL! This should not happen!\n"));
-		return;
-	}
-	
-	if(NULL == cp) {
-		g_warning(_("internal error: parseImage without a channel! Skipping image!\n"));
-		return;
-	}
-		
+	g_assert(NULL != cur);	
+	g_assert(NULL != cp);		
+
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"url"))
-			cp->tags[RSS_CHANNEL_IMAGE] = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+			cp->tags[RSS_CHANNEL_IMAGE] = CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));			
 			
 		cur = cur->next;
 	}
@@ -372,7 +355,7 @@ static void readRSSFeed(feedPtr fp) {
 	
 		while (cur != NULL) {
 			if ((!xmlStrcmp(cur->name, (const xmlChar *) "channel"))) {
-				parseChannel(cp, doc, cur);
+				parseChannel(cp, cur);
 				g_assert(NULL != cur);
 				if(0 == rdf)
 					cur = cur->xmlChildrenNode;
@@ -388,7 +371,7 @@ static void readRSSFeed(feedPtr fp) {
 		while(cur != NULL) {
 			/* save link to channel image */
 			if((!xmlStrcmp(cur->name, (const xmlChar *) "image"))) {
-				parseImage(doc, cur, cp);
+				parseImage(cp, cur);
 			}
 
 			/* no matter if we parse Userland or Netscape, there should be
@@ -396,12 +379,12 @@ static void readRSSFeed(feedPtr fp) {
 			   one should not harm */
 			if((!xmlStrcmp(cur->name, (const xmlChar *) "textinput")) ||
 			   (!xmlStrcmp(cur->name, (const xmlChar *) "textInput"))) {
-				parseTextInput(doc, cur, cp);
+				parseTextInput(cp, cur);
 			}
 			
 			/* collect channel items */
 			if((!xmlStrcmp(cur->name, (const xmlChar *) "item"))) {
-				if(NULL != (ip = parseRSSItem(fp, cp, doc, cur))) {
+				if(NULL != (ip = parseRSSItem(fp, cp, cur))) {
 					if(0 == ip->time)
 						ip->time = cp->time;
 					addItem(fp, ip);

@@ -210,7 +210,7 @@ static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 
 						fp = nsh->parseFormatTag;
 						if(NULL != fp)
-							(*fp)(fep, cur->doc, cur);
+							(*fp)(fep, cur);
 						else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 					}
@@ -252,7 +252,7 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 
 					fp = nsh->parseDirEntryTag;
 					if(NULL != fp) {
-						(*fp)(dep, cur->doc, cur);
+						(*fp)(dep, cur);
 					} else
 						g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 
@@ -374,7 +374,7 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 
 						fp = nsh->parseDirEntryTag;
 						if(NULL != fp) {
-							(*fp)(dep, cur->doc, cur);
+							(*fp)(dep, cur);
 						} else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 
@@ -448,7 +448,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 
 						parseFunc = nsh->parseDirectoryTag;
 						if(NULL != parseFunc) {
-							(*parseFunc)(dp, cur->doc, cur);
+							(*parseFunc)(dp, cur);
 						} else
 							g_print(_("no namespace handler for <%s:%s>!\n"), cur->ns->prefix, cur->name);
 

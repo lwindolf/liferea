@@ -73,7 +73,7 @@ static void ns_slash_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *ta
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-static void ns_slash_parseItemTag(RSSItemPtr ip,xmlDocPtr doc, xmlNodePtr cur) {
+static void ns_slash_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	int 		i;
 	
 	/* compare with each possible tag name */

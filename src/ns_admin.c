@@ -32,11 +32,6 @@
 
 static gchar ns_admin_prefix[] = "admin";
 
-/* some prototypes */
-void ns_admin_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur);
-
-gchar * ns_admin_doChannelOutput(gpointer obj);
-
 /* you can find an admin namespace spec at:
    http://web.resource.org/rss/1.0/modules/admin/
  
@@ -51,21 +46,6 @@ gchar * ns_admin_doChannelOutput(gpointer obj);
 */
 
 gchar * ns_admin_getRSSNsPrefix(void) { return ns_admin_prefix; }
-
-RSSNsHandler *ns_admin_getRSSNsHandler(void) {
-	RSSNsHandler 	*nsh;
-	
-	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
-		nsh->parseChannelTag		= ns_admin_parseChannelTag;;
-		nsh->parseItemTag		= NULL;
-		nsh->doChannelHeaderOutput	= NULL;
-		nsh->doChannelFooterOutput	= ns_admin_doChannelOutput;
-		nsh->doItemHeaderOutput		= NULL;
-		nsh->doItemFooterOutput		= NULL;
-	}
-
-	return nsh;
-}
 
 static void ns_admin_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagvalue) {
 	GHashTable	*nsvalues;
@@ -82,7 +62,7 @@ static void ns_admin_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *ta
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-void ns_admin_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+void ns_admin_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp("errorReportsTo", cur->name)) 
 		ns_admin_addInfoStruct(cp->nsinfos, "errorReportsTo", CONVERT(xmlGetProp(cur, "resource")));
@@ -121,8 +101,7 @@ gchar * ns_admin_doOutput(GHashTable *nsinfos) {
 		addToHTMLBuffer(&buffer, TABLE_START);
 		g_hash_table_foreach(nsvalues, ns_admin_output, (gpointer)&buffer);
 		addToHTMLBuffer(&buffer, TABLE_END);
-	}
-	
+	}	
 	return buffer;
 }
 
@@ -132,4 +111,18 @@ gchar * ns_admin_doChannelOutput(gpointer obj) {
 		return ns_admin_doOutput(((RSSChannelPtr)obj)->nsinfos);
 	
 	return NULL;
+}
+
+RSSNsHandler *ns_admin_getRSSNsHandler(void) {
+	RSSNsHandler 	*nsh;
+	
+	if(NULL != (nsh = (RSSNsHandler *)g_malloc(sizeof(RSSNsHandler)))) {
+		nsh->parseChannelTag		= ns_admin_parseChannelTag;;
+		nsh->parseItemTag		= NULL;
+		nsh->doChannelHeaderOutput	= NULL;
+		nsh->doChannelFooterOutput	= ns_admin_doChannelOutput;
+		nsh->doItemHeaderOutput		= NULL;
+		nsh->doItemFooterOutput		= NULL;
+	}
+	return nsh;
 }

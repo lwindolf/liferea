@@ -59,13 +59,13 @@ static void ns_cC_addInfoStruct(GHashTable *nslist, gchar *tagname, gchar *tagva
 	g_hash_table_insert(nsvalues, (gpointer)tagname, (gpointer)tagvalue);
 }
 
-void ns_cC_parseChannelTag(RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+void ns_cC_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp("license", cur->name)) 
 		ns_cC_addInfoStruct(cp->nsinfos, "license", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 }
 
-void ns_cC_parseItemTag(RSSItemPtr ip, xmlDocPtr doc, xmlNodePtr cur) {
+void ns_cC_parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp("license", cur->name)) 
 		ns_cC_addInfoStruct(ip->nsinfos, "license", CONVERT(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
