@@ -1193,15 +1193,15 @@ msgstr "Es gibt keine Datei \"%s\"!"
 
 #: src/ns_admin.c:56
 msgid "report errors to"
-msgstr "Melden Sie Fehler an"
+msgstr ""
 
 #: src/ns_admin.c:59
 msgid "feed generator"
-msgstr "Feed generiert von"
+msgstr ""
 
 #: src/ns_ag.c:85
 msgid "source"
-msgstr "Quelle"
+msgstr ""
 
 #: src/ns_ag.c:104
 msgid "time"
@@ -1209,7 +1209,7 @@ msgstr ""
 
 #: src/ns_cC.c:53
 msgid "license"
-msgstr "Lizenz"
+msgstr ""
 
 #: src/ns_dc.c:229 src/ns_ocs.c:95
 msgid "internal OCS namespace parsing error!"
@@ -1352,7 +1352,7 @@ msgstr "Regeltyp"
 
 #: src/ui_filter.c:57
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
 #: src/ui_folder.c:69 src/ui_folder.c:109 src/ui_folder.c:163
 msgid "You have to select a folder entry!"
@@ -1396,7 +1396,7 @@ msgstr ""
 
 #: src/ui_itemlist.c:476
 msgid "No item has been selected!"
-msgstr ""
+msgstr "Es wurde keine Schlagzeile ausgewählt!"
 
 #: src/ui_itemlist.c:497
 msgid "You have to select a feed to delete its items!"
@@ -1459,11 +1459,11 @@ msgstr "/VFolder _löschen"
 
 #: src/ui_popup.c:121
 msgid "/Toggle _Read Status"
-msgstr "Lesestatus ändern"
+msgstr "/Lesestatus ändern"
 
 #: src/ui_popup.c:122
 msgid "/Toggle Item _Flag"
-msgstr "_Flagge setzen/löschen"
+msgstr "/_Flagge setzen\/löschen"
 
 #: src/ui_popup.c:124
 msgid "/_Next Unread Item"
