@@ -230,6 +230,11 @@ void feed_save(feedPtr fp) {
 	gint		saveMaxCount;
 			
 	debug_enter("feed_save");
+	
+	if (fp->needsCacheSave == FALSE) {
+		debug1(DEBUG_CACHE, "feed does not need to be saved: %s", fp->title);
+		return;
+	}
 
 	debug1(DEBUG_CACHE, "saving feed: %s", fp->title);	
 	g_assert(0 != fp->loaded);
@@ -334,6 +339,8 @@ void feed_save(feedPtr fp) {
 	} else {
 		g_warning("could not create XML document!");
 	}
+	
+	fp->needsCacheSave = FALSE;
 	debug_exit("feed_save");
 }
 
@@ -368,6 +375,7 @@ gboolean feed_load(feedPtr fp) {
 	if((!g_file_get_contents(filename, &data, &length, NULL)) || (*data == 0)) {
 		g_warning(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
+		fp->needsCacheSave = TRUE;
 		g_free(filename);
 		return FALSE;
 	}
@@ -489,7 +497,9 @@ void feed_unload(feedPtr fp) {
 						debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
 
 						/* free items */
-						feed_clear_item_list(fp);
+						unreadCount = fp->unreadCount;
+						feed_clear_item_list(fp);						
+						fp->unreadCount = unreadCount;
 					} else {
 						debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
 					}
@@ -682,7 +692,7 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	feed_free(new_fp);
 	
 	ui_tray_add_new(traycount);		/* finally update the tray icon */
-	ui_notification_update(old_fp);	
+	old_fp->needsCacheSave = TRUE;
 	feed_unload(old_fp);
 }
 
@@ -728,7 +738,7 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 		request->filtercmd = g_strdup(feed_get_filter(fp));
 	/* prepare request url (strdup because it might be
 	   changed on permanent HTTP redirection in netio.c) */
-	ui_feed_update(fp); /* Change icon to arrows */
+	ui_feed_update(fp); /* Change icon to arrows <- FIXME still needed? */
 	
 	download_queue(request);
 	
@@ -818,9 +828,11 @@ void feed_process_update_result(struct request *request) {
 	feed_set_error_description(old_fp, request->httpstatus, request->returncode);
 
 	old_fp->request = NULL; /* Done before updating the UI so that the icon can be properly reset */
+	ui_feed_update(old_fp);
+	ui_notification_update(old_fp);	
 	ui_feedlist_update();
 	
-	if (request->flags & FEED_REQ_DOWNLOAD_FAVICON)
+	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		favicon_download(old_fp);
 	
 	ui_unlock();
@@ -879,21 +891,13 @@ gint feed_get_type(feedPtr fp) { return fp->type; }
 
 gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
 
-gint feed_get_unread_counter(feedPtr fp) { 
-	GSList	*item;
-	
-	/* if feed is in memory count items, otherwise just return last count value */
-	if(0 != fp->loaded) {
-		fp->unreadCount = 0;
-		item = fp->items;
-		while(NULL != item) {
-			if(!item_get_read_status((itemPtr)(item->data)))
-				fp->unreadCount++;
-			item = g_slist_next(item);
-		}
-	}
-	return fp->unreadCount; 
+void feed_increase_unread_counter(feedPtr fp) {
+	fp->unreadCount++;
 }
+void feed_decrease_unread_counter(feedPtr fp) {
+	fp->unreadCount--;
+}
+gint feed_get_unread_counter(feedPtr fp) { return fp->unreadCount; }
 
 void feed_increase_new_counter(feedPtr fp) {
 	fp->newCount++;
@@ -1299,7 +1303,8 @@ static void feed_replace(feedPtr fp, feedPtr new_fp) {
 		ip->fp = fp;
 		item = g_slist_next(item);
 	}
-	
+
+	fp->needsCacheSave = TRUE;
 	feed_unload(fp);
 }
 

@@ -202,7 +202,7 @@ void vfolder_update_item(itemPtr ip) {
 	itemPtr		tmp;
 
 	debug_enter("vfolder_update_item");
-	
+
 	/* never process vfolder items! */
 	if(FST_VFOLDER == feed_get_type(ip->fp))
 		return;

@@ -122,6 +122,8 @@ void item_set_mark(itemPtr ip, gboolean flag) {
 	
 	if(ip->ui_data != NULL)
 		ui_update_item(ip);
+	if(ip->fp != NULL)
+		ip->fp->needsCacheSave = TRUE;
 }
 
 void item_set_new_status(itemPtr ip, const gboolean newStatus) { 
@@ -140,6 +142,8 @@ void item_set_unread(itemPtr ip) {
 	itemPtr		sourceItem;
 	
 	if(TRUE == ip->readStatus) {
+		feed_increase_unread_counter((feedPtr)(ip->fp));
+		
 		/* there might be vfolders using this item */
 		vfolder_update_item(ip);
 		
@@ -154,6 +158,8 @@ void item_set_unread(itemPtr ip) {
 		ip->readStatus = FALSE;
 		if(ip->ui_data != NULL)
 			ui_update_item(ip);
+		if(ip->fp != NULL)
+			ip->fp->needsCacheSave = TRUE;
 		ui_notification_update(ip->fp);
 	} 
 }
@@ -163,6 +169,8 @@ void item_set_read(itemPtr ip) {
 	feedPtr		fp;
 
 	if(FALSE == ip->readStatus) {
+		feed_decrease_unread_counter((feedPtr)(ip->fp));
+		
 		/* there might be vfolders using this item */
 		vfolder_update_item(ip);
 		
@@ -177,6 +185,8 @@ void item_set_read(itemPtr ip) {
 		ip->readStatus = TRUE; 
 		if(ip->ui_data)
 			ui_update_item(ip);
+		if(ip->fp != NULL)
+			ip->fp->needsCacheSave = TRUE;
 	}
 	ui_tray_zero_new();
 }
@@ -184,6 +194,7 @@ void item_set_read(itemPtr ip) {
 void item_free(itemPtr ip) {
 	
 	if(FALSE == ip->readStatus) {
+		feed_decrease_unread_counter(ip->fp);
 		ui_notification_update(ip->fp);
 	}
 
