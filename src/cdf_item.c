@@ -103,7 +103,7 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 	ip->title = i->tags[CDF_ITEM_TITLE];		
 	ip->description = showCDFItem(fp, cp, i);
 
-	g_free(i->nsinfos);
+	g_hash_table_destroy(i->nsinfos);
 	g_free(i);
 	return ip;
 }

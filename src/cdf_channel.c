@@ -210,7 +210,7 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
 		
-		g_free(cp->nsinfos);
+		g_hash_table_destroy(cp->nsinfos);
 		g_free(cp);
 		break;
 	}

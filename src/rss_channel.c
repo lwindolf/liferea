@@ -421,6 +421,7 @@ static void readRSSFeed(feedPtr fp, gchar *data) {
  		g_free(cp->tags[i]);
  	}
 
+	g_hash_table_destroy(cp->nsinfos);
 	g_free(cp->tiTitle);
  	g_free(cp->tiDescription);
  	g_free(cp->tiName);
