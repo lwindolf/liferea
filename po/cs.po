@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-06-25 20:52-0400\n"
-"PO-Revision-Date: 2004-07-01 16:31+0200\n"
+"PO-Revision-Date: 2004-07-01 20:56+0200\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -47,11 +47,11 @@ msgstr "Vnitřní chyba! Chyba při překladu času! mktime vrátil chybu!\n"
 
 #: src/common.c:336
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
-msgstr "Chybný ISO8601 formát času! Ignoruji <dc:date> informaci!"
+msgstr "Chybný ISO8601 formát času! Ignoruji <dc:date> informaci!\n"
 
 #: src/common.c:395
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
-msgstr "Špatný RFC822 formát času! Ignoruji <pudDate> informaci!"
+msgstr "Špatný RFC822 formát času! Ignoruji <pudDate> informaci!\n"
 
 #: src/common.c:409 src/common.c:416 src/common.c:422 src/common.c:429
 #, c-format
@@ -292,7 +292,7 @@ msgstr "Nahrávám zkonfigurovaný modul prohlížeče (%s)!\n"
 
 #: src/htmlview.c:158
 msgid "No browser module configured!\n"
-msgstr "Modul prohlížeče není zkonfigurován!"
+msgstr "Modul prohlížeče není zkonfigurován!\n"
 
 #: src/htmlview.c:166
 #, c-format
