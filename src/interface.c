@@ -1990,7 +1990,7 @@ create_prefdialog (void)
   gtk_widget_show (folderdisplaybtn);
   gtk_box_pack_start (GTK_BOX (vbox2604), folderdisplaybtn, FALSE, FALSE, 0);
 
-  label193 = gtk_label_new (_("<i>This option can cause significant delays when loading folders containing many feeds.</i>"));
+  label193 = gtk_label_new (_("<i>This can cause signifant delays when loading folders with a lot of feeds inside!</i>"));
   gtk_widget_show (label193);
   gtk_box_pack_start (GTK_BOX (vbox2604), label193, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label193), TRUE);
@@ -3175,7 +3175,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (homepagebtn), label194);
   gtk_label_set_use_markup (GTK_LABEL (label194), TRUE);
 
-  label59 = gtk_label_new (_("Copyright (c) 2003-2004 \nLars Lindner <lars.lindner@gmx.net> and \nNathan J. Conrad <t98502@users.sourceforge.net>\n"));
+  label59 = gtk_label_new (_("Copyright (c) 2003-2005\nLars Lindner <lars.lindner@gmx.net> and \nNathan J. Conrad <t98502@users.sourceforge.net>\n"));
   gtk_widget_show (label59);
   gtk_box_pack_start (GTK_BOX (vbox231), label59, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (label59), GTK_JUSTIFY_CENTER);
