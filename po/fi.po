@@ -593,8 +593,8 @@ msgstr "O_letusarvot"
 msgid "Di_sable cache"
 msgstr "_Poista välivarasto käytöstä"
 
-#: src/interface.c:1176
-msgid "_Umlimited cache"
+#: src/interface.c:1191
+msgid "_Unlimited cache"
 msgstr "_Rajoittamaton välivarasto"
 
 #: src/interface.c:1186
@@ -773,7 +773,7 @@ msgstr ""
 #: src/interface.c:2132
 #, fuzzy
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
-msgstr "<span weight=\"bold\">Ulkoisen selaimen asetukset</span>"
+msgstr "<span weight=\"bold\">Sisäisen selaimen asetukset</span>"
 
 #: src/interface.c:2150
 msgid ""
@@ -795,7 +795,7 @@ msgstr "Avaa linkit Liferean _ikkunassa."
 
 #: src/interface.c:2176
 msgid "_Disable Javascript."
-msgstr ""
+msgstr "Poista _Javascript käytöstä."
 
 #: src/interface.c:2184
 msgid "<span weight=\"bold\">External Browser Settings</span>"
@@ -821,7 +821,7 @@ msgstr "_Linkkien avaus:"
 #: src/interface.c:2253
 #, fuzzy
 msgid "Browser"
-msgstr "_Selain:"
+msgstr "Selain"
 
 #: src/interface.c:2266
 msgid "<span weight=\"bold\">Notification Settings</span>"
@@ -837,7 +837,31 @@ msgstr "Näytä _ilmaisin paneelin ilmoitusalueessa."
 msgid "Show a _popup window with new headlines."
 msgstr "Näytä uudet otsikot sisältävä _ponnahdusikkuna."
 
-#: src/interface.c:2310
+#: src/interface.c:2359
+msgid "         "
+msgstr "         "
+
+#: src/interface.c:2375
+msgid "Lower Right"
+msgstr "Alaoikea"
+
+#: src/interface.c:2383
+msgid "Upper Right"
+msgstr "Yläoikea"
+
+#: src/interface.c:2391
+msgid "Upper Left"
+msgstr "Ylävasen"
+
+#: src/interface.c:2399
+msgid "Lower Left"
+msgstr "Alavasen"
+
+#: src/interface.c:2407
+msgid "<b>Popup Placement</b>"
+msgstr "<b>Ponnahdusikkunan sijainti</b>"
+
+#: src/interface.c:2418
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">Valikko</span>"
 
@@ -901,7 +925,31 @@ msgstr "S_alasana:"
 msgid "Proxy"
 msgstr "Välityspalvelin"
 
-#: src/interface.c:2761
+#: src/interface.c:2611
+msgid "<span weight=\"bold\">Downloading Enclosures</span>"
+msgstr "<span weight=\"bold\">Liitetiedostojen tallennus</span>"
+
+#: src/interface.c:2631
+msgid "Download using"
+msgstr "Tallenna verkosta ohjelmalla"
+
+#: src/interface.c:2638
+msgid "Save downloads in"
+msgstr "Tallenna kansioon"
+
+#: src/interface.c:2669
+msgid "Browse"
+msgstr "Selaa"
+
+#: src/interface.c:2673
+msgid "<span weight=\"bold\">Opening Enclosures</span>"
+msgstr "<span weight=\"bold\">Liitetiedostojen avaaminen</span>"
+
+#: src/interface.c:2714
+msgid "Enclosures"
+msgstr "Liitetiedostot"
+
+#: src/interface.c:3042
 msgid "New Folder"
 msgstr "Uusi kansio"
 
@@ -945,15 +993,15 @@ msgstr "Liferea on GTK+-pohjainen uutissyötteiden lukuohjelma"
 
 #: src/interface.c:3068
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
-msgstr ""
+msgstr "<span color=\"blue\" underline=\"single\">Liferean kotisivu</span>"
 
 #: src/interface.c:3073
 msgid ""
-"Copyright (c) 2003-2004 \n"
+"Copyright (c) 2003-2005\n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
-"Copyright © 2003-2004 \n"
+"Copyright © 2003-2005\n"
 "Lars Lindner <lars.lindner@gmx.net> ja\n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
@@ -1056,7 +1104,37 @@ msgstr ""
 msgid "Rules"
 msgstr "Säännöt"
 
-#: src/item.c:223 src/item.c:227 src/item.c:239 src/ui_itemlist.c:199
+#: src/interface.c:3701
+msgid "Downloading Enclosure"
+msgstr "Liitetiedostojen tallennus"
+
+#: src/interface.c:3716
+msgid "Downloading an enclosure of type:"
+msgstr "Tallennetaan liitetiedostoa. Tyyppi:"
+
+#: src/interface.c:3721
+msgid "<b>text/plain</b>"
+msgstr "<b>text/plain</b>"
+
+#: src/interface.c:3727
+msgid ""
+"What should Liferea do with this enclosure? Please enter the command you "
+"want to be executed below. The downloaded file will be supplied as an "
+"argument for this command:"
+msgstr ""
+"Mitä Liferean tulisi tehdä tälle liitetiedostolle? Kirjoita alle "
+"suoritettava komento, jonka parametriksi tallentuneen tiedoston nimi "
+"annetaan:"
+
+#: src/interface.c:3741
+msgid "_Browse"
+msgstr "_Selaa"
+
+#: src/interface.c:3745
+msgid "_Do this automatically for files like this from now on."
+msgstr "_Tee näin aina jatkossa tämäntyyppisille tiedostoille."
+
+#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:211
 msgid "[No title]"
 msgstr "[Ei nimeä]"
 
@@ -1064,10 +1142,14 @@ msgstr "[Ei nimeä]"
 msgid "Item:"
 msgstr "Otsikko:"
 
+#: src/item.c:294
+msgid "date"
+msgstr "päiväys"
+
 #: src/main.c:68
 #, fuzzy
 msgid "  --version        Print version information and exit"
-msgstr "  --version        Näytä Liferean versionumero"
+msgstr "  --version        Näytä Liferean versionumero ja lopeta"
 
 #: src/main.c:69
 #, fuzzy
