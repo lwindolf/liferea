@@ -159,7 +159,7 @@ create_mainwindow (void)
   accel_group = gtk_accel_group_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.4.9"));
+  gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.5.0"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
   mainwindow_icon_pixbuf = create_pixbuf ("liferea.png");
   if (mainwindow_icon_pixbuf)
@@ -486,7 +486,7 @@ create_mainwindow (void)
 
   New_Feed = gtk_button_new ();
   gtk_widget_show (New_Feed);
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), New_Feed, _("Edit preferences"), NULL);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), New_Feed, _("Add a new subscription."), NULL);
   GTK_WIDGET_UNSET_FLAGS (New_Feed, GTK_CAN_FOCUS);
   gtk_button_set_relief (GTK_BUTTON (New_Feed), GTK_RELIEF_NONE);
 
@@ -1029,18 +1029,6 @@ create_propdialog (void)
   GtkWidget *alignment5;
   GtkWidget *label79;
   GtkWidget *label78;
-  GtkWidget *label116;
-  GtkWidget *hbox41;
-  GtkWidget *label97;
-  GtkWidget *vbox242;
-  GtkWidget *HTTPauthCheck;
-  GtkWidget *hbox42;
-  GtkWidget *label98;
-  GtkWidget *table4;
-  GtkWidget *label93;
-  GtkWidget *label94;
-  GtkWidget *usernameEntry;
-  GtkWidget *passwordEntry;
   GtkWidget *label96;
   GtkWidget *hbox37;
   GtkWidget *label89;
@@ -1066,6 +1054,16 @@ create_propdialog (void)
   GtkWidget *cacheItemLimit;
   GtkWidget *label84;
   GtkWidget *label68;
+  GtkWidget *vbox242;
+  GtkWidget *HTTPauthCheck;
+  GtkWidget *hbox42;
+  GtkWidget *label98;
+  GtkWidget *table4;
+  GtkWidget *label93;
+  GtkWidget *label94;
+  GtkWidget *usernameEntry;
+  GtkWidget *passwordEntry;
+  GtkWidget *label131;
   GtkWidget *dialog_action_area13;
   GtkWidget *prop_cancel;
   GtkWidget *prop_ok;
@@ -1178,7 +1176,7 @@ create_propdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook3), vbox238);
   gtk_container_set_border_width (GTK_CONTAINER (vbox238), 12);
 
-  label86 = gtk_label_new (_("<b>Data Source</b>"));
+  label86 = gtk_label_new (_("<b>Feed Source</b>"));
   gtk_widget_show (label86);
   gtk_box_pack_start (GTK_BOX (vbox238), label86, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label86), TRUE);
@@ -1258,69 +1256,6 @@ create_propdialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label78), 0, 0.5);
 
-  label116 = gtk_label_new (_("<b>HTTP Authentication</b>"));
-  gtk_widget_show (label116);
-  gtk_box_pack_start (GTK_BOX (vbox238), label116, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label116), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label116), 0, 0.5);
-
-  hbox41 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox41);
-  gtk_box_pack_start (GTK_BOX (vbox238), hbox41, FALSE, FALSE, 0);
-
-  label97 = gtk_label_new (_("    "));
-  gtk_widget_show (label97);
-  gtk_box_pack_start (GTK_BOX (hbox41), label97, FALSE, FALSE, 0);
-
-  vbox242 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox242);
-  gtk_box_pack_start (GTK_BOX (hbox41), vbox242, TRUE, TRUE, 0);
-
-  HTTPauthCheck = gtk_check_button_new_with_mnemonic (_("Use HTTP _authentication"));
-  gtk_widget_show (HTTPauthCheck);
-  gtk_box_pack_start (GTK_BOX (vbox242), HTTPauthCheck, FALSE, FALSE, 0);
-
-  hbox42 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox42);
-  gtk_box_pack_start (GTK_BOX (vbox242), hbox42, TRUE, TRUE, 0);
-
-  label98 = gtk_label_new (_("    "));
-  gtk_widget_show (label98);
-  gtk_box_pack_start (GTK_BOX (hbox42), label98, FALSE, FALSE, 0);
-
-  table4 = gtk_table_new (2, 2, FALSE);
-  gtk_widget_show (table4);
-  gtk_box_pack_start (GTK_BOX (hbox42), table4, TRUE, TRUE, 0);
-  gtk_table_set_row_spacings (GTK_TABLE (table4), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table4), 6);
-
-  label93 = gtk_label_new_with_mnemonic (_("User_name:"));
-  gtk_widget_show (label93);
-  gtk_table_attach (GTK_TABLE (table4), label93, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_misc_set_alignment (GTK_MISC (label93), 0, 0.5);
-
-  label94 = gtk_label_new_with_mnemonic (_("_Password:"));
-  gtk_widget_show (label94);
-  gtk_table_attach (GTK_TABLE (table4), label94, 0, 1, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_misc_set_alignment (GTK_MISC (label94), 0, 0.5);
-
-  usernameEntry = gtk_entry_new ();
-  gtk_widget_show (usernameEntry);
-  gtk_table_attach (GTK_TABLE (table4), usernameEntry, 1, 2, 0, 1,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  passwordEntry = gtk_entry_new ();
-  gtk_widget_show (passwordEntry);
-  gtk_table_attach (GTK_TABLE (table4), passwordEntry, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_entry_set_visibility (GTK_ENTRY (passwordEntry), FALSE);
-
   label96 = gtk_label_new (_("<b>Conversion Filter</b>"));
   gtk_widget_show (label96);
   gtk_box_pack_start (GTK_BOX (vbox238), label96, FALSE, FALSE, 0);
@@ -1329,7 +1264,7 @@ create_propdialog (void)
 
   hbox37 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox37);
-  gtk_box_pack_start (GTK_BOX (vbox238), hbox37, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox238), hbox37, FALSE, FALSE, 0);
 
   label89 = gtk_label_new (_("    "));
   gtk_widget_show (label89);
@@ -1432,6 +1367,60 @@ create_propdialog (void)
   gtk_widget_show (label68);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 2), label68);
 
+  vbox242 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox242);
+  gtk_container_add (GTK_CONTAINER (notebook3), vbox242);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox242), 12);
+
+  HTTPauthCheck = gtk_check_button_new_with_mnemonic (_("Use HTTP _authentication"));
+  gtk_widget_show (HTTPauthCheck);
+  gtk_box_pack_start (GTK_BOX (vbox242), HTTPauthCheck, FALSE, FALSE, 0);
+
+  hbox42 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox42);
+  gtk_box_pack_start (GTK_BOX (vbox242), hbox42, TRUE, TRUE, 0);
+
+  label98 = gtk_label_new (_("    "));
+  gtk_widget_show (label98);
+  gtk_box_pack_start (GTK_BOX (hbox42), label98, FALSE, FALSE, 0);
+
+  table4 = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (table4);
+  gtk_box_pack_start (GTK_BOX (hbox42), table4, TRUE, TRUE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (table4), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table4), 6);
+
+  label93 = gtk_label_new_with_mnemonic (_("User_name:"));
+  gtk_widget_show (label93);
+  gtk_table_attach (GTK_TABLE (table4), label93, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label93), 0, 0.5);
+
+  label94 = gtk_label_new_with_mnemonic (_("_Password:"));
+  gtk_widget_show (label94);
+  gtk_table_attach (GTK_TABLE (table4), label94, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label94), 0, 0.5);
+
+  usernameEntry = gtk_entry_new ();
+  gtk_widget_show (usernameEntry);
+  gtk_table_attach (GTK_TABLE (table4), usernameEntry, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  passwordEntry = gtk_entry_new ();
+  gtk_widget_show (passwordEntry);
+  gtk_table_attach (GTK_TABLE (table4), passwordEntry, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_visibility (GTK_ENTRY (passwordEntry), FALSE);
+
+  label131 = gtk_label_new (_("Authentication"));
+  gtk_widget_show (label131);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 3), label131);
+
   dialog_action_area13 = GTK_DIALOG (propdialog)->action_area;
   gtk_widget_show (dialog_action_area13);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area13), GTK_BUTTONBOX_END);
@@ -1489,18 +1478,6 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, alignment5, "alignment5");
   GLADE_HOOKUP_OBJECT (propdialog, label79, "label79");
   GLADE_HOOKUP_OBJECT (propdialog, label78, "label78");
-  GLADE_HOOKUP_OBJECT (propdialog, label116, "label116");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox41, "hbox41");
-  GLADE_HOOKUP_OBJECT (propdialog, label97, "label97");
-  GLADE_HOOKUP_OBJECT (propdialog, vbox242, "vbox242");
-  GLADE_HOOKUP_OBJECT (propdialog, HTTPauthCheck, "HTTPauthCheck");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox42, "hbox42");
-  GLADE_HOOKUP_OBJECT (propdialog, label98, "label98");
-  GLADE_HOOKUP_OBJECT (propdialog, table4, "table4");
-  GLADE_HOOKUP_OBJECT (propdialog, label93, "label93");
-  GLADE_HOOKUP_OBJECT (propdialog, label94, "label94");
-  GLADE_HOOKUP_OBJECT (propdialog, usernameEntry, "usernameEntry");
-  GLADE_HOOKUP_OBJECT (propdialog, passwordEntry, "passwordEntry");
   GLADE_HOOKUP_OBJECT (propdialog, label96, "label96");
   GLADE_HOOKUP_OBJECT (propdialog, hbox37, "hbox37");
   GLADE_HOOKUP_OBJECT (propdialog, label89, "label89");
@@ -1524,6 +1501,16 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, cacheItemLimit, "cacheItemLimit");
   GLADE_HOOKUP_OBJECT (propdialog, label84, "label84");
   GLADE_HOOKUP_OBJECT (propdialog, label68, "label68");
+  GLADE_HOOKUP_OBJECT (propdialog, vbox242, "vbox242");
+  GLADE_HOOKUP_OBJECT (propdialog, HTTPauthCheck, "HTTPauthCheck");
+  GLADE_HOOKUP_OBJECT (propdialog, hbox42, "hbox42");
+  GLADE_HOOKUP_OBJECT (propdialog, label98, "label98");
+  GLADE_HOOKUP_OBJECT (propdialog, table4, "table4");
+  GLADE_HOOKUP_OBJECT (propdialog, label93, "label93");
+  GLADE_HOOKUP_OBJECT (propdialog, label94, "label94");
+  GLADE_HOOKUP_OBJECT (propdialog, usernameEntry, "usernameEntry");
+  GLADE_HOOKUP_OBJECT (propdialog, passwordEntry, "passwordEntry");
+  GLADE_HOOKUP_OBJECT (propdialog, label131, "label131");
   GLADE_HOOKUP_OBJECT_NO_REF (propdialog, dialog_action_area13, "dialog_action_area13");
   GLADE_HOOKUP_OBJECT (propdialog, prop_cancel, "prop_cancel");
   GLADE_HOOKUP_OBJECT (propdialog, prop_ok, "prop_ok");
@@ -1554,18 +1541,6 @@ create_newdialog (void)
   GtkWidget *alignment7;
   GtkWidget *label103;
   GtkWidget *label104;
-  GtkWidget *label117;
-  GtkWidget *hbox44;
-  GtkWidget *label105;
-  GtkWidget *vbox245;
-  GtkWidget *HTTPauthCheck;
-  GtkWidget *hbox45;
-  GtkWidget *label106;
-  GtkWidget *table4;
-  GtkWidget *label107;
-  GtkWidget *label108;
-  GtkWidget *usernameEntry;
-  GtkWidget *passwordEntry;
   GtkWidget *label109;
   GtkWidget *hbox46;
   GtkWidget *label110;
@@ -1601,7 +1576,7 @@ create_newdialog (void)
   gtk_widget_show (vbox16);
   gtk_box_pack_start (GTK_BOX (vbox9), vbox16, TRUE, TRUE, 0);
 
-  label101 = gtk_label_new (_("<b>Data Source</b>"));
+  label101 = gtk_label_new (_("<b>Feed Source</b>"));
   gtk_widget_show (label101);
   gtk_box_pack_start (GTK_BOX (vbox16), label101, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label101), TRUE);
@@ -1681,69 +1656,6 @@ create_newdialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label104), 0, 0.5);
 
-  label117 = gtk_label_new (_("<b>HTTP Authentication</b>"));
-  gtk_widget_show (label117);
-  gtk_box_pack_start (GTK_BOX (vbox16), label117, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label117), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label117), 0, 0.5);
-
-  hbox44 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox44);
-  gtk_box_pack_start (GTK_BOX (vbox16), hbox44, FALSE, FALSE, 0);
-
-  label105 = gtk_label_new (_("    "));
-  gtk_widget_show (label105);
-  gtk_box_pack_start (GTK_BOX (hbox44), label105, FALSE, FALSE, 0);
-
-  vbox245 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox245);
-  gtk_box_pack_start (GTK_BOX (hbox44), vbox245, TRUE, TRUE, 0);
-
-  HTTPauthCheck = gtk_check_button_new_with_mnemonic (_("Use HTTP _authentication"));
-  gtk_widget_show (HTTPauthCheck);
-  gtk_box_pack_start (GTK_BOX (vbox245), HTTPauthCheck, FALSE, FALSE, 0);
-
-  hbox45 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox45);
-  gtk_box_pack_start (GTK_BOX (vbox245), hbox45, TRUE, TRUE, 0);
-
-  label106 = gtk_label_new (_("    "));
-  gtk_widget_show (label106);
-  gtk_box_pack_start (GTK_BOX (hbox45), label106, FALSE, FALSE, 0);
-
-  table4 = gtk_table_new (2, 2, FALSE);
-  gtk_widget_show (table4);
-  gtk_box_pack_start (GTK_BOX (hbox45), table4, TRUE, TRUE, 0);
-  gtk_table_set_row_spacings (GTK_TABLE (table4), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table4), 6);
-
-  label107 = gtk_label_new_with_mnemonic (_("User_name:"));
-  gtk_widget_show (label107);
-  gtk_table_attach (GTK_TABLE (table4), label107, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_misc_set_alignment (GTK_MISC (label107), 0, 0.5);
-
-  label108 = gtk_label_new_with_mnemonic (_("_Password:"));
-  gtk_widget_show (label108);
-  gtk_table_attach (GTK_TABLE (table4), label108, 0, 1, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_misc_set_alignment (GTK_MISC (label108), 0, 0.5);
-
-  usernameEntry = gtk_entry_new ();
-  gtk_widget_show (usernameEntry);
-  gtk_table_attach (GTK_TABLE (table4), usernameEntry, 1, 2, 0, 1,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-
-  passwordEntry = gtk_entry_new ();
-  gtk_widget_show (passwordEntry);
-  gtk_table_attach (GTK_TABLE (table4), passwordEntry, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_entry_set_visibility (GTK_ENTRY (passwordEntry), FALSE);
-
   label109 = gtk_label_new (_("<b>Conversion Filter</b>"));
   gtk_widget_show (label109);
   gtk_box_pack_start (GTK_BOX (vbox16), label109, FALSE, FALSE, 0);
@@ -1752,7 +1664,7 @@ create_newdialog (void)
 
   hbox46 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox46);
-  gtk_box_pack_start (GTK_BOX (vbox16), hbox46, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox16), hbox46, FALSE, FALSE, 0);
 
   label110 = gtk_label_new (_("    "));
   gtk_widget_show (label110);
@@ -1814,9 +1726,6 @@ create_newdialog (void)
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (newdialog));
 
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label107), usernameEntry);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label108), passwordEntry);
-
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, newdialog, "newdialog");
   GLADE_HOOKUP_OBJECT_NO_REF (newdialog, dialog_vbox2, "dialog_vbox2");
@@ -1836,18 +1745,6 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, alignment7, "alignment7");
   GLADE_HOOKUP_OBJECT (newdialog, label103, "label103");
   GLADE_HOOKUP_OBJECT (newdialog, label104, "label104");
-  GLADE_HOOKUP_OBJECT (newdialog, label117, "label117");
-  GLADE_HOOKUP_OBJECT (newdialog, hbox44, "hbox44");
-  GLADE_HOOKUP_OBJECT (newdialog, label105, "label105");
-  GLADE_HOOKUP_OBJECT (newdialog, vbox245, "vbox245");
-  GLADE_HOOKUP_OBJECT (newdialog, HTTPauthCheck, "HTTPauthCheck");
-  GLADE_HOOKUP_OBJECT (newdialog, hbox45, "hbox45");
-  GLADE_HOOKUP_OBJECT (newdialog, label106, "label106");
-  GLADE_HOOKUP_OBJECT (newdialog, table4, "table4");
-  GLADE_HOOKUP_OBJECT (newdialog, label107, "label107");
-  GLADE_HOOKUP_OBJECT (newdialog, label108, "label108");
-  GLADE_HOOKUP_OBJECT (newdialog, usernameEntry, "usernameEntry");
-  GLADE_HOOKUP_OBJECT (newdialog, passwordEntry, "passwordEntry");
   GLADE_HOOKUP_OBJECT (newdialog, label109, "label109");
   GLADE_HOOKUP_OBJECT (newdialog, hbox46, "hbox46");
   GLADE_HOOKUP_OBJECT (newdialog, label110, "label110");
@@ -3193,7 +3090,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new (_("Liferea 0.4.9"));
+  label57 = gtk_label_new (_("Liferea 0.5.0"));
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);
@@ -3243,7 +3140,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Gernauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>"));
+  label61 = gtk_label_new (_("Stephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi Aihana <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Gernauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.no-ip.org>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>"));
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
@@ -3288,5 +3185,105 @@ create_aboutdialog (void)
 
   gtk_widget_grab_default (closebutton1);
   return aboutdialog;
+}
+
+GtkWidget*
+create_authdialog (void)
+{
+  GtkWidget *authdialog;
+  GtkWidget *dialog_vbox14;
+  GtkWidget *vbox255;
+  GtkWidget *label132;
+  GtkWidget *table4;
+  GtkWidget *label107;
+  GtkWidget *label108;
+  GtkWidget *usernameEntry;
+  GtkWidget *passwordEntry;
+  GtkWidget *dialog_action_area14;
+  GtkWidget *cancelbutton2;
+  GtkWidget *okbutton1;
+
+  authdialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (authdialog), _("Authentication"));
+
+  dialog_vbox14 = GTK_DIALOG (authdialog)->vbox;
+  gtk_widget_show (dialog_vbox14);
+
+  vbox255 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox255);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox14), vbox255, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox255), 12);
+
+  label132 = gtk_label_new (_("The webserver of the feed you are subscribing to is requesting authentication information. Please enter the appropriate username and password below!"));
+  gtk_widget_show (label132);
+  gtk_box_pack_start (GTK_BOX (vbox255), label132, FALSE, FALSE, 0);
+  gtk_label_set_line_wrap (GTK_LABEL (label132), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label132), 0, 0.5);
+
+  table4 = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (table4);
+  gtk_box_pack_start (GTK_BOX (vbox255), table4, TRUE, TRUE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (table4), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table4), 6);
+
+  label107 = gtk_label_new_with_mnemonic (_("User_name:"));
+  gtk_widget_show (label107);
+  gtk_table_attach (GTK_TABLE (table4), label107, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label107), 0, 0.5);
+
+  label108 = gtk_label_new_with_mnemonic (_("_Password:"));
+  gtk_widget_show (label108);
+  gtk_table_attach (GTK_TABLE (table4), label108, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label108), 0, 0.5);
+
+  usernameEntry = gtk_entry_new ();
+  gtk_widget_show (usernameEntry);
+  gtk_table_attach (GTK_TABLE (table4), usernameEntry, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  passwordEntry = gtk_entry_new ();
+  gtk_widget_show (passwordEntry);
+  gtk_table_attach (GTK_TABLE (table4), passwordEntry, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_visibility (GTK_ENTRY (passwordEntry), FALSE);
+
+  dialog_action_area14 = GTK_DIALOG (authdialog)->action_area;
+  gtk_widget_show (dialog_action_area14);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area14), GTK_BUTTONBOX_END);
+
+  cancelbutton2 = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (cancelbutton2);
+  gtk_dialog_add_action_widget (GTK_DIALOG (authdialog), cancelbutton2, GTK_RESPONSE_CANCEL);
+  GTK_WIDGET_SET_FLAGS (cancelbutton2, GTK_CAN_DEFAULT);
+
+  okbutton1 = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (okbutton1);
+  gtk_dialog_add_action_widget (GTK_DIALOG (authdialog), okbutton1, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (okbutton1, GTK_CAN_DEFAULT);
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label107), usernameEntry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label108), passwordEntry);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (authdialog, authdialog, "authdialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (authdialog, dialog_vbox14, "dialog_vbox14");
+  GLADE_HOOKUP_OBJECT (authdialog, vbox255, "vbox255");
+  GLADE_HOOKUP_OBJECT (authdialog, label132, "label132");
+  GLADE_HOOKUP_OBJECT (authdialog, table4, "table4");
+  GLADE_HOOKUP_OBJECT (authdialog, label107, "label107");
+  GLADE_HOOKUP_OBJECT (authdialog, label108, "label108");
+  GLADE_HOOKUP_OBJECT (authdialog, usernameEntry, "usernameEntry");
+  GLADE_HOOKUP_OBJECT (authdialog, passwordEntry, "passwordEntry");
+  GLADE_HOOKUP_OBJECT_NO_REF (authdialog, dialog_action_area14, "dialog_action_area14");
+  GLADE_HOOKUP_OBJECT (authdialog, cancelbutton2, "cancelbutton2");
+  GLADE_HOOKUP_OBJECT (authdialog, okbutton1, "okbutton1");
+
+  return authdialog;
 }
 

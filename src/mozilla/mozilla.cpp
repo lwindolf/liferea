@@ -19,6 +19,18 @@
  */
 
 #include "mozilla.h"
+#include <gtkmozembed.h>
+#include <gtkmozembed_internal.h>
+#include "nsIDocument.h"
+#include "nsIDocShell.h"
+#include "nsIDocShellTreeItem.h"
+#include "nsIDocShellTreeNode.h"
+#include "nsIDocShellTreeOwner.h"
+#include "nsIWebBrowser.h"
+#include "nsIDeviceContext.h"
+#include "nsIPresContext.h"
+#include "nsIContentViewer.h"
+#include "nsIMarkupDocumentViewer.h"
 #include "nsIDOMNSEvent.h"
 #include "nsIDOMMouseEvent.h"
 
@@ -48,4 +60,41 @@ gint mozilla_get_mouse_event_button(gpointer event) {
 	}
 
 	return button;
+}
+
+extern "C" gboolean
+mozilla_set_zoom (gpointer embed, float aZoom) {
+	nsresult result;
+	
+	nsCOMPtr<nsIWebBrowser>	mWebBrowser;	
+	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(mWebBrowser));
+	
+        nsCOMPtr<nsIDocShellTreeItem> browserAsItem;
+        browserAsItem = do_QueryInterface(mWebBrowser);
+	if (!browserAsItem) return FALSE;
+	
+	// get the owner for that item
+        nsCOMPtr<nsIDocShellTreeOwner> treeOwner;
+        browserAsItem->GetTreeOwner(getter_AddRefs(treeOwner));
+        if (!treeOwner) return NS_ERROR_FAILURE;
+
+        // get the primary content shell as an item
+        nsCOMPtr<nsIDocShellTreeItem> contentItem;
+        treeOwner->GetPrimaryContentShell(getter_AddRefs(contentItem));
+        if (!contentItem) return NS_ERROR_FAILURE;
+
+        // QI that back to a docshell
+        nsCOMPtr<nsIDocShell> DocShell;
+        DocShell = do_QueryInterface(contentItem);
+        if (!DocShell) return NS_ERROR_FAILURE;
+
+	nsCOMPtr<nsIContentViewer> contentViewer;	
+	result = DocShell->GetContentViewer (getter_AddRefs(contentViewer));
+	if (!NS_SUCCEEDED (result) || !contentViewer) return NS_ERROR_FAILURE;
+
+	nsCOMPtr<nsIMarkupDocumentViewer> mdv = do_QueryInterface(contentViewer,
+								  &result);
+	if (NS_FAILED(result) || !mdv) return NS_ERROR_FAILURE;
+
+	return mdv->SetTextZoom (aZoom);	
 }

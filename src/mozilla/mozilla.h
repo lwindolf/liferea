@@ -29,8 +29,7 @@ extern "C"
 #endif
 
 /* Zoom */
-/*gboolean mozilla_set_zoom (gpointer embed, float f, gboolean reflow);
-gboolean mozilla_get_zoom (gpointer embed, float *f);*/
+gboolean mozilla_set_zoom (gpointer embed, float f);
 
 /* Events */
 gint mozilla_get_mouse_event_button(gpointer event);

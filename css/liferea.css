@@ -39,7 +39,8 @@ blockquote {
         background: #EEE;
         padding: 5px;
         font-style: italic;
-        margin: 0 20px;
+        margin: 5px 20px;
+	
 }
 
 dd {

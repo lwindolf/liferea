@@ -518,6 +518,9 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 	struct feed_request 	*request;
 	feedPtr			fp;
 	gchar			*data, *tmp;
+	int			pos;
+	folderPtr		parent;
+
 	
 	debug_enter("ui_feedlist_new_subscription");	
 	
@@ -531,9 +534,6 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 	data = downloadURL(request);	/* FIXME: The downloading should not block? */
 
 	/* determine feed type if necessary */	
-	int pos;
-	folderPtr parent;
-	
 	fp = feed_new();
 	tmp = conf_new_id();
 	feed_set_id(fp, tmp);

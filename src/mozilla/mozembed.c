@@ -1,26 +1,26 @@
-/*
-   This is a browser module implementation using gtkmozembed.
-     
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>   
-   
-   Contains code from the Galeon sources
-
-   Copyright (C) 2000 Marco Pesenti Gritti
- 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file mozembed.c a browser module implementation using gtkmozembed.
+ *   
+ * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>   
+ *
+ * Contains code from the Galeon sources
+ *
+ * Copyright (C) 2000 Marco Pesenti Gritti
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -80,7 +80,16 @@ void write_html(const gchar *string) {
  */
 static void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chrome_mask, gpointer embed) {
 
-	g_print("mozembed_new_window_cb\n");
+	/* The only time we want to react on new window requests
+	   is when the user clicks a link that wants to open in
+	   a new window. The following check might not be fully
+	   correct (e.g. on initial webpage loading when new popups
+	   are requested and the user crosses a link)  */
+	if(NULL != selectedURL) {
+		/* FIXME: is it correct to assume that we always
+		   want to open new windows in the external browser? */
+		ui_htmlview_launch_in_external_browser(selectedURL);
+	}
 	*retval = NULL;
 }
 
@@ -245,8 +254,8 @@ gboolean launch_inside_possible(void) { return TRUE; }
 /* adds a differences diff to the actual zoom level */
 void change_zoom_level(gfloat diff) {
 
-	ui_show_error_box("Sorry, not yet implemented for Mozilla!");
 	zoomLevel += diff;
+	mozilla_set_zoom(GTK_MOZ_EMBED(active_widget), zoomLevel);
 }
 
 /* returns the currently set zoom level */

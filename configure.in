@@ -5,7 +5,7 @@ AC_INIT(configure.in)
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
 
-AM_INIT_AUTOMAKE(liferea, 0.4.9)
+AM_INIT_AUTOMAKE(liferea, 0.5.0)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
@@ -134,7 +134,7 @@ AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the 
 AC_MSG_RESULT(user agent OS = $uname)
 
 dnl Add the languages which your application supports here.
-ALL_LINGUAS="bg de es fr it ja ko mk zh_TW"
+ALL_LINGUAS="bg de es fr it ja ko mk ru zh_TW"
 AM_GLIB_GNU_GETTEXT
 
 AC_OUTPUT([
