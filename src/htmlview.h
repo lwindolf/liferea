@@ -46,7 +46,7 @@
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
 #define HEAD_START		"<table cellspacing=\"0\" class=\"itemhead\">"
-#define HEAD_LINE		"<tr><td class=\"head_left\"><b>%s</b></td><td class=\"head_right\" width=\"100%%\">%s</td></tr>"
+#define HEAD_LINE		"<tr><td class=\"headleft\"><b>%s</b></td><td class=\"headright\" width=\"100%%\">%s</td></tr>"
 #define HEAD_END		"</table>"
 
 #define FEED_FOOT_TABLE_START	"<table class=\"feedfoot\">"
@@ -97,19 +97,19 @@
 typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
 
 struct htmlviewPluginInfo_ {
-	unsigned int api_version;
-	char *name;
+	unsigned int 	api_version;
+	char 		*name;
 	
-	void (*init)(void);
+	void 		(*init)			(void);
 	
-	GtkWidget* (*create)	();
-	//void (*destroy)    (GtkWidget *widget);
+	GtkWidget*	(*create)		();
+	//void		(*destroy)		(GtkWidget *widget);
 	void		(*write)		(GtkWidget *widget, const gchar *string, const gchar *base);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gboolean	(*launchInsidePossible)	(void);
-	gfloat	(*zoomLevelGet)		(GtkWidget *widget);
-	void		(*zoomLevelSet)	(GtkWidget *widget, gfloat zoom);
-	gboolean      (*scrollPagedown)(GtkWidget *widget);
+	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
+	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
+	gboolean	(*scrollPagedown)	(GtkWidget *widget);
 };
 
 
@@ -137,8 +137,6 @@ void	ui_htmlview_init(void);
 /** 
  * Function to set up the html view widget for the three
  * and two pane view. 
- *
- * @param initialZoomLevel	the initial zoom level of the HTML views
  */
 GtkWidget *ui_htmlview_new();
 

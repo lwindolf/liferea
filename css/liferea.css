@@ -60,12 +60,12 @@ td.itemhead {	/* old definition replaced by td.head (for compatibilty) */
 	padding:2px 5px;
 }
 
-td.head_left {
+td.headleft {
 	padding:2px 2px;
 	text-align:right;
 }
 
-td.head_right {
+td.headright {
 	padding:2px 5px;
 }
 
