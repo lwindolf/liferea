@@ -199,6 +199,11 @@ void ui_feedlist_add(folderPtr parent, nodePtr node, gint position);
  */
 void ui_feedlist_delete(nodePtr ptr);
 
+/**
+ * Sets all displayed items as read
+ */
+  void on_popup_allunread_selected(void);
+
 /** 
  * @name menu and dialog callbacks 
  * @{

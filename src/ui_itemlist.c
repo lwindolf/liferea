@@ -570,23 +570,6 @@ void on_popup_toggle_flag(gpointer callback_data, guint callback_action, GtkWidg
 	item_set_mark(ip, !item_get_mark(ip));		
 }
 
-void ui_itemlist_mark_all_as_read(void) {
-	itemPtr		ip;
-	gboolean    valid;
-	GtkTreeIter iter;
-	g_assert(NULL != itemstore);
-
-	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-	while(valid) {
-		gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter,
-					    IS_PTR, &ip, -1);
-		g_assert(ip != NULL);
-		item_set_read(ip);
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
-	}
-	ui_feedlist_update();
-}
-
 void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data) {
 
 	on_popup_launchitem_selected();

@@ -90,11 +90,6 @@ void ui_itemlist_load(nodePtr fp);
 void ui_itemlist_clear(void);
 
 /**
- * Mark all items in the displayed itemlist as read.
- */
-void ui_itemlist_mark_all_as_read(void);
-
-/**
  * @name Callbacks used from interface.c
  * @{
  */
@@ -128,11 +123,6 @@ void on_toggle_item_flag(GtkMenuItem *menuitem, gpointer user_data);
  * Opens the selected item in a browser.
  */
   void on_popup_launchitem_selected(void);
-
-/**
- * Sets all displayed items as read
- */
-  void on_popup_allunread_selected(void);
 
 /**
  * Toggles the read status of right-clicked item.

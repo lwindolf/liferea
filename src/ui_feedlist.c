@@ -435,7 +435,7 @@ void on_popup_allunread_selected(void) {
 			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feed_mark_all_items_read);
 		else
 			/* if not we mark all items of the item list as read */
-			ui_itemlist_mark_all_as_read();
+			feed_mark_all_items_read((feedPtr)np);
 
 		ui_feedlist_update();
 	}
