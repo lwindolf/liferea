@@ -57,17 +57,17 @@ typedef struct ICONDIR {
 
 /* Bitmap header - this is on the images themselves */
 typedef struct tagBITMAPINFOHEADER{
-        unsigned long      biSize;
-        long       biWidth;
-        long       biHeight;
-        unsigned short       biPlanes;
-        unsigned short       biBitCount;
-        unsigned long      biCompression;
-        unsigned long      biSizeImage;
-        long       biXPelsPerMeter;
-        long       biYPelsPerMeter;
-        unsigned long      biClrUsed;
-        unsigned long      biClrImportant;
+        unsigned long	biSize;
+        long		biWidth;
+        long		biHeight;
+        unsigned short	biPlanes;
+        unsigned short	biBitCount;
+        unsigned long	biCompression;
+        unsigned long	biSizeImage;
+        long		biXPelsPerMeter;
+        long		biYPelsPerMeter;
+        unsigned long	biClrUsed;
+        unsigned long	biClrImportant;
 } BITMAPINFOHEADER;
 
 /* Magic number for an icon file */
@@ -79,7 +79,7 @@ static int do_verbose = 0;
 void convert __P((void));
 
 /* For keeping track of which icon image we're on */
-static int whichimage = 0;
+static unsigned short whichimage = 0;
 
 /*
  * Conversion
@@ -142,9 +142,9 @@ static unsigned char image[256 * 256];
 static unsigned char mask[256 * 32];
 
 /* Different variables computed from the read ones */
-static int ncolors;
-static int width;
-static int height;
+static unsigned ncolors;
+static unsigned char width;
+static unsigned char height;
 static unsigned char bytes_per_line;
 static unsigned char bytes_per_mask_line;
 static int image_length;
@@ -181,16 +181,16 @@ convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen)
   
   /* Output some stats */
   if (do_verbose)
-    g_print("favicon.ico data contains %d icon images\n", iconheader.idCount);
+    g_print("favicon.ico data contains %d icon images\n", GUINT16_FROM_LE(iconheader.idCount));
 
   /* Read in the rest of the icon directory entries */
   //fread(&iconheader.idEntries[0],iconheader.idCount,
   //  /*sizeof(ICONDIRENTRY)*/16,ico_stream);
-  memcpy(&iconheader.idEntries[0], icondata + offset, iconheader.idCount*16);
-  offset += iconheader.idCount*16;
+  memcpy(&iconheader.idEntries[0], icondata + offset, GUINT16_FROM_LE(iconheader.idCount)*16);
+  offset += GUINT16_FROM_LE(iconheader.idCount)*16;
   
   /* Cycle through each icon image */
-  for(whichimage = 0; whichimage < iconheader.idCount; whichimage++) {
+  for(whichimage = 0; whichimage < GUINT16_FROM_LE(iconheader.idCount); whichimage++) {
     // * For debugging
     if(do_verbose) {
       g_print("(%d) identry: %d %d %d %d %d %d %d %d\n",
@@ -199,10 +199,10 @@ convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen)
         (int)iconheader.idEntries[whichimage].bHeight,
         (int)iconheader.idEntries[whichimage].bColorCount,
         (int)iconheader.idEntries[whichimage].bReserved,
-        (int)iconheader.idEntries[whichimage].wPlanes,
-        (int)iconheader.idEntries[whichimage].wBitCount,
-        (int)iconheader.idEntries[whichimage].dwBytesInRes,
-        (int)iconheader.idEntries[whichimage].dwImageOffset);
+        (int)GUINT16_FROM_LE(iconheader.idEntries[whichimage].wPlanes),
+        (int)GUINT16_FROM_LE(iconheader.idEntries[whichimage].wBitCount),
+        (int)GULONG_FROM_LE(iconheader.idEntries[whichimage].dwBytesInRes),
+        (int)GULONG_FROM_LE(iconheader.idEntries[whichimage].dwImageOffset));
     }
     //*/
     
@@ -218,54 +218,54 @@ convertIcoToXPM(gchar *outputfile, unsigned char *icondata, int datalen)
     bytes_per_mask_line = 4 * DWORD_ALIGN_BITS (width);
 
     /* Let's surf on over to the bitmap image & read the BMIH. */
-    //fseek (ico_stream, iconheader.idEntries[whichimage].dwImageOffset,SEEK_SET);
+    //fseek (ico_stream, GULONG_FROM_LEiconheader.idEntries[whichimage].dwImageOffset),SEEK_SET);
     //fread (&bitmapinfoheader, 1, sizeof(bitmapinfoheader), ico_stream);
-    offset = iconheader.idEntries[whichimage].dwImageOffset;
+    offset = GULONG_FROM_LE(iconheader.idEntries[whichimage].dwImageOffset);
     memcpy(&bitmapinfoheader, icondata + offset, sizeof(bitmapinfoheader));
 
     // * For debugging
     if(do_verbose) {
       g_print("(%d) bmih: %d %d %d %d %d %d %d %d %d %d %d\n",
         whichimage,
-        (int)bitmapinfoheader.biSize,
-        (int)bitmapinfoheader.biWidth,
-        (int)bitmapinfoheader.biHeight,
-        (int)bitmapinfoheader.biPlanes,
-        (int)bitmapinfoheader.biBitCount,
-        (int)bitmapinfoheader.biCompression,
-        (int)bitmapinfoheader.biSizeImage,
-        (int)bitmapinfoheader.biXPelsPerMeter,
-        (int)bitmapinfoheader.biYPelsPerMeter,
-        (int)bitmapinfoheader.biClrUsed,
-        (int)bitmapinfoheader.biClrImportant);
+        (int)GULONG_FROM_LE(bitmapinfoheader.biSize),
+        (int)GLONG_FROM_LE(bitmapinfoheader.biWidth),
+        (int)GLONG_FROM_LE(bitmapinfoheader.biHeight),
+        (int)GUINT16_FROM_LE(bitmapinfoheader.biPlanes),
+        (int)GUINT16_FROM_LE(bitmapinfoheader.biBitCount),
+        (int)GULONG_FROM_LE(bitmapinfoheader.biCompression),
+        (int)GULONG_FROM_LE(bitmapinfoheader.biSizeImage),
+        (int)GLONG_FROM_LE(bitmapinfoheader.biXPelsPerMeter),
+        (int)GLONG_FROM_LE(bitmapinfoheader.biYPelsPerMeter),
+        (int)GULONG_FROM_LE(bitmapinfoheader.biClrUsed),
+        (int)GULONG_FROM_LE(bitmapinfoheader.biClrImportant));
     }//*/
     
     /* Read the number of colors.
      * TODO: add support for monochrome, 24-bit icons
      */
-    switch(bitmapinfoheader.biPlanes
-        * bitmapinfoheader.biBitCount) {
+    switch(GUINT16_FROM_LE(bitmapinfoheader.biPlanes)
+         * GUINT16_FROM_LE(bitmapinfoheader.biBitCount)) {
       case 4: /* 2^4 = 14 */ color_level = LOW_COLOR; break;
       case 8: /* 2^8 = 256 */ color_level = HIGH_COLOR; break;
       default:
         g_warning("Unsupported number of colors in favicon.ico image! Skipping. (%d planes, %d bpp)\n",
-          (int)bitmapinfoheader.biPlanes,
-          (int)bitmapinfoheader.biBitCount);
+          (int)GUINT16_FROM_LE(bitmapinfoheader.biPlanes),
+          (int)GUINT16_FROM_LE(bitmapinfoheader.biBitCount));
         continue;
     }
     
     /* Read the colormap */
-    if (bitmapinfoheader.biClrImportant != 0)
-      ncolors = bitmapinfoheader.biClrImportant;
-    else if (bitmapinfoheader.biClrUsed != 0)
-      ncolors = bitmapinfoheader.biClrUsed;
+    if(GULONG_FROM_LE(bitmapinfoheader.biClrImportant) != 0)
+      ncolors = GULONG_FROM_LE(bitmapinfoheader.biClrImportant);
+    else if(GULONG_FROM_LE(bitmapinfoheader.biClrUsed) != 0)
+      ncolors = GULONG_FROM_LE(bitmapinfoheader.biClrUsed);
     else
-      ncolors = 1 << (bitmapinfoheader.biPlanes*bitmapinfoheader.biBitCount);
+      ncolors = 1 << (GUINT16_FROM_LE(bitmapinfoheader.biPlanes)*GUINT16_FROM_LE(bitmapinfoheader.biBitCount));
 
     /*fseek (ico_stream, iconheader.idEntries[whichimage].dwImageOffset
       + bitmapinfoheader.biSize, SEEK_SET);
     fread (colormap, 1,ncolors * 4, ico_stream);*/
-    offset += bitmapinfoheader.biSize;
+    offset += GULONG_FROM_LE(bitmapinfoheader.biSize);
     memcpy(&colormap, icondata + offset, ncolors*4);
     offset += ncolors*4;
 
