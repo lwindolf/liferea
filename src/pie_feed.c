@@ -173,7 +173,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp)
-					ip->metadata = metadata_list_append(ip->metadata, "copyright", tmp);
+					fp->metadata = metadata_list_append(fp->metadata, "copyright", tmp);
 				g_free(tmp);
 				
 				
