@@ -155,13 +155,21 @@ void ui_itemlist_remove_item(itemPtr ip) {
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
 void ui_itemlist_clear(void) {
+	GtkAdjustment		*adj;
+	GtkTreeView		*treeview;
 	GtkTreeSelection	*itemselection;
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 
+	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
+
 	/* unselecting all items is important for to remove items
 	   from vfolders whose removal is deferred until unselecting */
-	if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")))))
+	if(NULL != (itemselection = gtk_tree_view_get_selection(treeview)))
 		gtk_tree_selection_unselect_all(itemselection);
+	
+	adj = gtk_tree_view_get_vadjustment(treeview);
+	gtk_adjustment_set_value(adj, 0.0);
+	gtk_tree_view_set_vadjustment(treeview, adj);
 
 	if(NULL != iterhash) {		
 		g_hash_table_destroy(iterhash);
@@ -347,7 +355,7 @@ void ui_itemlist_display(void) {
 	gchar		*buffer = NULL;
 	gboolean	valid;
 	gchar		*tmp = NULL;
-	gchar		*base = NULL;
+	const gchar	*base = NULL;
 	
 	np = ui_feedlist_get_selected();
 	
