@@ -3,7 +3,14 @@
 	Version 0.4.6
 	
 	* Added missing pubDate support for RSS 2.0 items.
+	* Added .desktop file and its install targets as 
+	  proposed by John McKnight.
 	* Update to the japanese translation by Takeshi Aihana.
+	* Fixed some memory leaks.
+	* Fixed the broken tray icon logic.
+	* Fixed bug 857386 (crash on subscription without
+	  selected folder reported by Jeremy Messenger)
+
 
 2003-12-07  Lars Lindner <lars.lindner@gmx.net>
 
@@ -138,7 +145,6 @@
 	  to prevent marking items unread each time the numbers change
 	* added new icons provided by mezz7
 
-
 2003-09-26  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.3.8
@@ -181,7 +187,6 @@
 	  In preparation for the DND folder sorting feature in the
 	  next version all default folder contents can now be found 
 	  in the root node.
-	  
 
 2003-09-07  Lars Lindner <lars.lindner@gmx.net>
 
@@ -197,8 +202,6 @@
 	  subscribing to new feeds and displays the feed default
 	  interval in the property dialog
 	
-
-
 2003-09-03  Lars Lindner <lars.lindner@gmx.net>
 
         Version 0.3.5

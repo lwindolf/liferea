@@ -40,6 +40,7 @@ extern GtkWidget	*mainwindow;
 
 static GtkWidget	*eventbox = NULL;
 static gint		newItems = 0;
+static gboolean		iconified = FALSE;
 static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
@@ -74,9 +75,11 @@ static void setTrayIcon(GdkPixbuf *icon) {
 
 void doTrayIcon(gint count) { 
 
-	setTrayIcon(availableIcon); 
-	newItems += count;
-	setTrayToolTip(g_strdup_printf(_("%d new items!"), newItems));
+	if(count > 0) {
+		setTrayIcon(availableIcon); 
+		newItems += count;
+		setTrayToolTip(g_strdup_printf(_("%d new items!"), newItems));
+	}
 }
 
 void undoTrayIcon(void) {
@@ -88,25 +91,34 @@ void undoTrayIcon(void) {
 	}
 }
 
+/* a click on the systray icon should show the program window
+   if invisible or hide it if visible */
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
 
 	undoTrayIcon();
-	
-	/* a click on the systray icon should show the program window
-	   if invisible or hide it if visible */
+
+	/* the first case: we are iconified... */
+	if(iconified) {
+		gtk_widget_show(GTK_WIDGET(mainwindow));
+		gtk_window_deiconify(GTK_WINDOW(mainwindow));
+		return;
+	}
+
+	/* if the window isn't iconified their are only two cases left:
+	   its either visible and should be hidden or vica versa */			
 	if(GTK_WIDGET_VISIBLE(GTK_WIDGET(mainwindow)))
 		gtk_widget_hide(GTK_WIDGET(mainwindow));
 	else
-		gtk_window_present(GTK_WINDOW(mainwindow));
+		gtk_widget_show(GTK_WIDGET(mainwindow));
+
 }
 
 static gboolean mainwindow_state_changed(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	GdkEventWindowState	*state;
 	
-	/* to hide the window when iconified ... */
+	/* to track the window iconification state ... */
 	state = ((GdkEventWindowState *)event);
-	if(GDK_WINDOW_STATE_ICONIFIED == state->new_window_state)
-		gtk_widget_hide(GTK_WIDGET(mainwindow));
+	iconified = (GDK_WINDOW_STATE_ICONIFIED == state->new_window_state);
 	
 	return TRUE;
 }
@@ -119,9 +131,7 @@ void setupTrayIcon(void) {
 			tray_icon = egg_tray_icon_new(PACKAGE);
 			eventbox = gtk_event_box_new();
 
-			/* disabled because this causes troubles when switching desktops!
-			g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);
-			*/
+			g_signal_connect(mainwindow, "window-state-event", G_CALLBACK(mainwindow_state_changed), mainwindow);		
 			g_signal_connect(eventbox, "button_press_event", G_CALLBACK(tray_icon_pressed), tray_icon);
 			gtk_container_add(GTK_CONTAINER(tray_icon), eventbox);
 

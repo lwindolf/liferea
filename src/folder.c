@@ -51,8 +51,7 @@ extern GtkTreeStore * getItemStore(void);
 void initFolders(void) {
 			
 	if(NULL == folders)
-		folders =  g_hash_table_new(g_str_hash, g_str_equal);
-		
+		folders =  g_hash_table_new(g_str_hash, g_str_equal);	
 }
 
 gchar * getFolderTitle(gchar *keyprefix) {
@@ -254,10 +253,7 @@ void saveFolderFeedList(gchar *keyprefix) {
 	gboolean	valid;
 
 	g_assert(NULL != folders);
-	if(NULL == (topiter = g_hash_table_lookup(folders, (gpointer)keyprefix))) {
-		g_print(_("internal error! could not determine folder key!"));
-		return;
-	}
+	topiter = g_hash_table_lookup(folders, (gpointer)keyprefix);
 	
 	feedstore = getFeedStore();
 	g_assert(feedstore != NULL);

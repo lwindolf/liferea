@@ -184,25 +184,28 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
 		return FALSE;
 	}
 
-        gtk_tree_selection_get_selected(select, &model, iter);
-	gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, 
-			   FS_KEY, &tmp_key, 
- 			   FS_TYPE, &tmp_type,
-			   -1);
+        if(gtk_tree_selection_get_selected(select, &model, iter)) {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, 
+				   FS_KEY, &tmp_key, 
+ 				   FS_TYPE, &tmp_type,
+				   -1);
 
-	if(IS_NODE(tmp_type)) {
-		/* its a folder */
-		setSelectedFeed(NULL, tmp_key);
-	} else {
-		/* its a feed */
-		if(NULL == tmp_key) {
-			g_warning(_("fatal! selected feed entry has no key!!!"));
-			return FALSE;
+		if(IS_NODE(tmp_type)) {
+			/* its a folder */
+			setSelectedFeed(NULL, tmp_key);
+		} else {
+			/* its a feed */
+			if(NULL == tmp_key) {
+				g_warning(_("fatal! selected feed entry has no key!!!"));
+				return FALSE;
+			}
+			setSelectedFeed(getFeed(tmp_key), NULL);
 		}
-		setSelectedFeed(getFeed(tmp_key), NULL);
+	
+		return TRUE;
 	}
-		
-	return TRUE;
+	
+	return FALSE;	
 }
 
 void redrawWidget(gchar *name) {
@@ -505,6 +508,7 @@ void on_popup_prop_selected(void) { on_propbtn(NULL); }
 void addToFeedList(feedPtr fp, gboolean startup) {
 	GtkTreeSelection	*selection;
 	GtkWidget		*treeview;
+	GtkTreePath		*path;
 	GtkTreeIter		selected_iter;
 	GtkTreeIter		iter;
 	GtkTreeIter		*topiter;
@@ -525,6 +529,7 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 		else
 			/* if no feed entry is marked (e.g. on empty folders) */		
 			gtk_tree_store_prepend(feedstore, &iter, topiter);
+
 	} else {
 		/* typically on startup when adding feeds from configuration */
 		gtk_tree_store_append(feedstore, &iter, topiter);
@@ -536,11 +541,17 @@ void addToFeedList(feedPtr fp, gboolean startup) {
 			   FS_TYPE, getFeedType(fp),
 			   -1);
 
-	if(!startup) {			   
-		/* this selection fake is necessary for the property dialog, which is
-		   opened after feed subscription and depends on the correctly
-		   selected feed */
-		setSelectedFeed(fp, NULL);
+	if(!startup) {			
+		/* some comfort: select the created iter */
+		if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
+			if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
+				gtk_tree_selection_select_iter(selection, &iter);
+			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &iter);
+			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, FALSE, FALSE);	
+			gtk_tree_path_free(path);
+		} else {
+			print_status(_("internal error! could not select newly created treestore iter!"));
+		}
 	}
 }
 
@@ -615,7 +626,12 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	} else
 		type = selectableTypes[type];
 
-	subscribeTo(type, source, g_strdup(selected_keyprefix), TRUE);	
+	/* It is possible, that there is no selected folder when we are
+	   called from the menu! In this case we default to the root folder */
+	if(NULL != selected_keyprefix) 
+		subscribeTo(type, source, g_strdup(selected_keyprefix), TRUE);	
+	else
+		subscribeTo(type, source, g_strdup(""), TRUE);	
 	/* don't free source for it is reused by newFeed! */
 }
 
