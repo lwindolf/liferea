@@ -30,6 +30,7 @@ GtkWidget*
 create_mainwindow (void)
 {
   GtkWidget *mainwindow;
+  GdkPixbuf *mainwindow_icon_pixbuf;
   GtkWidget *vbox1;
   GtkWidget *menubar;
   GtkWidget *menuitem1;
@@ -142,6 +143,12 @@ create_mainwindow (void)
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.4.7"));
   gtk_window_set_default_size (GTK_WINDOW (mainwindow), 640, 480);
+  mainwindow_icon_pixbuf = create_pixbuf ("liferea.png");
+  if (mainwindow_icon_pixbuf)
+    {
+      gtk_window_set_icon (GTK_WINDOW (mainwindow), mainwindow_icon_pixbuf);
+      gdk_pixbuf_unref (mainwindow_icon_pixbuf);
+    }
 
   vbox1 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox1);

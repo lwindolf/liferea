@@ -1,2 +1,5 @@
 liferea-bin
 .deps
+.libs
+*.lo
+*.la

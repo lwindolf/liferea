@@ -13,6 +13,7 @@
   <property name="default_height">480</property>
   <property name="resizable">True</property>
   <property name="destroy_with_parent">False</property>
+  <property name="icon">liferea.png</property>
   <signal name="delete_event" handler="on_quit" last_modification_time="Mon, 06 Oct 2003 21:02:01 GMT"/>
 
   <child>
