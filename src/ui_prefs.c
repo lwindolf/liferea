@@ -316,11 +316,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	tmp = 0;
 	libname = getStringConfValue(BROWSER_ID);
-	if (libname[0] == '\0') { /* value unset */
-		tmp = getNumericConfValue(GNOME_BROWSER_ENABLED);
-		if(tmp == 2)
-			tmp = manual; /* This is the manual override */
-	}
 	
 	if (!strcmp(libname, "manual"))
 		tmp = manual;
@@ -428,14 +423,6 @@ void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 	setBooleanConfValue(SHOW_POPUP_WINDOWS, enabled);
 }
 
-
-void on_browserselection_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget *editbox = gtk_object_get_data(GTK_OBJECT(button), "entry");
-	int active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button),"option_number"));
-
-	setNumericConfValue(GNOME_BROWSER_ENABLED, active_button);
-	gtk_widget_set_sensitive(GTK_WIDGET(editbox), active_button == 2);
-}
 
 static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data) {
 	setNumericConfValue(STARTUP_FEED_ACTION, GPOINTER_TO_INT(user_data));
