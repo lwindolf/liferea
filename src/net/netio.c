@@ -382,9 +382,12 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 					(cur_ptr->authinfo ? cur_ptr->authinfo : ""),
 					(cur_ptr->cookies ? cur_ptr->cookies : ""));
 		}
-		if (proxyusername != NULL && proxypassword != NULL && ((proxyusername[0] != '\0') || (proxypassword[0] != '\0')))
+		if (proxyusername != NULL && proxypassword != NULL && ((proxyusername[0] != '\0') || (proxypassword[0] != '\0'))) {
 			/* construct auth function appends \r\n to string */
-			fprintf(stream, "Proxy-%s", ConstructBasicAuth(proxyusername,proxypassword));
+			tmpstring = ConstructBasicAuth(proxyusername,proxypassword);
+			fprintf(stream, "Proxy-%s", tmpstring);
+			free(tmpstring);
+		}
 		fprintf(stream, "\r\n");
 		fflush(stream);		/* We love Solaris, don't we? */
 	}
