@@ -99,6 +99,16 @@ gchar * encode_uri_string(gchar *string);
  */
 gchar * encode_uri(gchar *uri_string);
 
+/** 
+ * To correctly escape and expand URLs, does not touch the
+ * passed strings.
+ *
+ * @param url		relative URL
+ * @param baseURL	base URL
+ * @returns resulting absolute URL
+ */
+xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
+
 /**
  * Filter the title. Note that the string is modified and not
  * duplicated!

@@ -33,7 +33,7 @@
 #include <string.h>
 #include <glib.h>
 #include <errno.h>
-#include <libxml/uri.h>
+#include "../common.h"
 #include "../htmlview.h"
 #include "../support.h"
 #include "../callbacks.h"
@@ -160,11 +160,11 @@ static void gtkhtml2_url_request_received_cb(struct request *r) {
 	request_data_kill(r);
 }
 
-static void url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *stream, gpointer data) {
-	xmlChar *uri;
+static void url_request (HtmlDocument *doc, const gchar *url, HtmlStream *stream, gpointer data) {
+	xmlChar		*absURL;
 	
-	uri = xmlBuildURI(xmlURIEscape(rel_uri), g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
-	if (uri != NULL) {
+	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+	if(absURL != NULL) {
 		struct request *r;
 		GSList *connection_list;
 		StreamData *sd = g_malloc(sizeof(StreamData));
@@ -173,13 +173,13 @@ static void url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *st
 		sd->stream = stream;
 
 		r = download_request_new();
-		r->source = g_strdup(uri);
+		r->source = g_strdup(absURL);
 		r->callback = gtkhtml2_url_request_received_cb;
 		r->user_data = sd;
 		r->priority = 1;
 		download_queue(r);
 		html_stream_set_cancel_func (stream, stream_cancel, r);
-		xmlFree(uri);
+		xmlFree(absURL);
 
 		connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
 		connection_list = g_slist_prepend (connection_list, r);
@@ -189,17 +189,17 @@ static void url_request (HtmlDocument *doc, const gchar *rel_uri, HtmlStream *st
 }
 
 static void on_url (HtmlView *view, const char *url, gpointer user_data) {
-	xmlChar *uri;
+	xmlChar		*absURL;
 
 	g_free(selectedURL);
 	selectedURL = NULL;
 
 	if(NULL != url) {
-		uri = xmlBuildURI(xmlURIEscape(url), g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));	
-		if(uri != NULL) {
-			selectedURL = g_strdup(uri);
+		absURL = common_build_url(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));
+		if(absURL != NULL) {
+			selectedURL = g_strdup(absURL);
 			ui_mainwindow_set_status_bar("%s", selectedURL);
-			xmlFree(uri);
+			xmlFree(absURL);
 		}
 	} else {
 		ui_mainwindow_set_status_bar("");
@@ -229,13 +229,12 @@ static void kill_old_connections (HtmlDocument *doc) {
 }
 
 static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer data) {
-	xmlChar *uri;
+	xmlChar		*absURL;
 	
-	uri = xmlBuildURI(xmlURIEscape(url), g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
-	
-	if (uri != NULL) {
-		ui_htmlview_launch_URL(uri, FALSE);
-		xmlFree(uri);
+	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+	if(absURL != NULL) {
+		ui_htmlview_launch_URL(absURL, FALSE);
+		xmlFree(absURL);
 	}
 }
 

@@ -145,7 +145,7 @@ static gchar *search_links(const gchar* data, int type, gboolean favicon) {
 }
 
 gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri) {
-	gchar	*res;
+	gchar	*res, *tmp;
 
 	debug0(DEBUG_UPDATE, "searching through link tags");
 	res = search_links(data, 0, FALSE);
@@ -160,20 +160,16 @@ gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri) {
 		ui_show_error_box(_("Feed link auto discovery failed! No feed links found!"));
 	} else {
 		/* turn relative URIs into absolute URIs */
-		xmlChar *tmp;
-		if (baseUri != NULL) {
-			tmp = xmlBuildURI(res, baseUri);
-			g_free(res);
-			res = g_strdup(tmp);
-			xmlFree(tmp);
-		}
+		tmp = res;
+		res = common_build_url(res, baseUri);
+		g_free(tmp);
 	}
 
 	return res;
 }
 
 gchar * html_discover_favicon(const gchar* data, const gchar *baseUri) {
-	gchar	*res;
+	gchar	*res, *tmp;
 
 	debug0(DEBUG_UPDATE, "searching through link tags");
 	res = search_links(data, 0, TRUE);
@@ -181,13 +177,9 @@ gchar * html_discover_favicon(const gchar* data, const gchar *baseUri) {
 
 	if (res != NULL) {
 		/* turn relative URIs into absolute URIs */
-		xmlChar *tmp;
-		if (baseUri != NULL) {
-			tmp = xmlBuildURI(res, baseUri);
-			g_free(res);
-			res = g_strdup(tmp);
-			xmlFree(tmp);
-		}
+		tmp = res;
+		res = common_build_url(res, baseUri);
+		g_free(tmp);
 	}
 	
 	return res;

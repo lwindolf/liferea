@@ -30,6 +30,7 @@
 #define _XOPEN_SOURCE /* glibc2 needs this (man strptime) */
 #include <config.h>
 
+#include <libxml/uri.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -536,6 +537,7 @@ gchar * encode_uri_string(gchar *string) {
 	return newURIString;
 }
 
+/* FIXME: remove me */
 gchar * encode_uri(gchar *uri_string) {
 	gchar		*new_uri_string, *tmp;
 	guint 		i;
@@ -555,6 +557,22 @@ gchar * encode_uri(gchar *uri_string) {
 	}
 	
 	return new_uri_string;
+}
+
+/* to correctly escape and expand URLs, does not touch the
+   passed strings */
+xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
+	xmlChar	*escapedURL, *absURL;
+	
+	escapedURL = xmlURIEscape(url);
+	if(NULL != baseURL) {
+		absURL = xmlBuildURI(escapedURL, baseURL);
+		xmlFree(escapedURL);
+	} else {
+		absURL = escapedURL;
+	}
+	
+	return absURL;
 }
 
 gchar * filter_title(gchar * title) {
