@@ -354,6 +354,11 @@ gboolean feed_load_from_cache(feedPtr fp) {
 		while(cur != NULL) {
 			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 
+			if(tmp == NULL) {
+				cur = cur->next;
+				continue;
+			}
+
 			if(!xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
 				fp->description = g_strdup(tmp);
 				

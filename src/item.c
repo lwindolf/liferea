@@ -157,28 +157,33 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 	ip = item_new();
 	
 	cur = cur->xmlChildrenNode;
-	while (cur != NULL) {
+	while(cur != NULL) {
  		tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		
-		if (!xmlStrcmp(cur->name, (const xmlChar *)"title"))
+		if(tmp == NULL) {
+			cur = cur->next;
+			continue;
+		}
+		
+		if(!xmlStrcmp(cur->name, BAD_CAST"title"))
 			ip->title = g_strdup(tmp);
 			
-		else if (!xmlStrcmp(cur->name, (const xmlChar *)"description"))
+		else if(!xmlStrcmp(cur->name, BAD_CAST"description"))
 			ip->description = g_strdup(tmp);
 			
-		else if (!xmlStrcmp(cur->name, (const xmlChar *)"source"))
+		else if(!xmlStrcmp(cur->name, BAD_CAST"source"))
 			ip->source = g_strdup(tmp);
 			
-		else if (!xmlStrcmp(cur->name, (const xmlChar *)"id"))
+		else if(!xmlStrcmp(cur->name, BAD_CAST"id"))
 			ip->id = g_strdup(tmp);
 			
-		else if (!xmlStrcmp(cur->name, (const xmlChar *)"readStatus"))
+		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
 			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;		
 
-		else if (!xmlStrcmp(cur->name, (const xmlChar *)"mark")) 
+		else if(!xmlStrcmp(cur->name, BAD_CAST"mark")) 
 			ip->marked = (1 == atoi(tmp))?TRUE:FALSE;
 			
-		else if (!xmlStrcmp(cur->name, (const xmlChar *)"time"))
+		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
 			ip->time = atol(tmp);
 		
 		g_free(tmp);	
