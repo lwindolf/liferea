@@ -246,39 +246,6 @@ void ui_folder_remove_node(nodePtr ptr) {
 	}
 }
 
-/* If pos == -1, position == end */
-void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position) {
-	GtkTreeIter		*topiter;
-
-	g_assert(NULL != fp);
-	g_assert(NULL != feedstore);
-	g_assert(NULL == fp->ui_data);
-	
-	if(parent == NULL)
-		topiter = NULL;
-	else {
-		g_assert(parent->ui_data);
-		topiter = &((ui_data*)(parent->ui_data))->row;
-	}
-
-	fp->ui_data = (gpointer)g_new0(ui_data, 1);
-
-	if(position >= 0) {
-		/* if a feed entry is marked after which we shall insert */
-		gtk_tree_store_insert(feedstore, &((ui_data*)(fp->ui_data))->row, topiter, position);
-	} else {
-		/* typically on startup when adding feeds from configuration */
-		gtk_tree_store_append(feedstore, &((ui_data*)(fp->ui_data))->row, topiter);
-	}
-	
-	gtk_tree_store_set(feedstore, &((ui_data*)(fp->ui_data))->row,
-				    FS_PTR, fp,
-				    -1);
-
-	checkForEmptyFolders();
-	ui_feedlist_update();
-}
-
 static GdkPixbuf* ui_folder_select_icon(folderPtr np) {
 
 	g_assert(FST_FOLDER == np->type);

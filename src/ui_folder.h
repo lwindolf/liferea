@@ -26,8 +26,6 @@
 
 #define	ROOT_FOLDER_PREFIX	""
 
-void ui_folder_add_feed(folderPtr parent, feedPtr fp, gint position);
-
 /**
  * Remove a node from the feedlist and free its ui_data.
  *

@@ -395,7 +395,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 							 | FEED_REQ_AUTH_DIALOG);
 		}
 
-		ui_folder_add_feed(folder, fp, -1);
+		ui_feedlist_add(folder, (nodePtr)fp, -1);
 		
 		if(source != NULL)
 			xmlFree(source);
@@ -429,7 +429,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			if(!feed_load(fp))
 				feed_schedule_update(fp, 0);
 			feed_unload(fp);
-			ui_folder_add_feed(child, fp, -1);
+			ui_feedlist_add(child, (nodePtr)fp, -1);
 			
 			fp = feed_new();
 			fp->noIncremental = TRUE;
@@ -445,7 +445,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			if(!feed_load(fp))
 				feed_schedule_update(fp, 0);
 			feed_unload(fp);
-			ui_folder_add_feed(child, fp, -1);
+			ui_feedlist_add(child, (nodePtr)fp, -1);
 			
 		} else {
 			debug1(DEBUG_CONF, "adding folder \"%s\"", title);

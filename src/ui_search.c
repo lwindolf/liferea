@@ -89,7 +89,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		folder = ui_feedlist_get_target_folder(&pos);
 		fp = searchFeed;
 		searchFeed = NULL;
-		ui_folder_add_feed(folder, fp, pos);
+		ui_feedlist_add(folder, (nodePtr)fp, pos);
 		ui_feedlist_update();
 		ui_feedlist_select((nodePtr)fp);
 	} else {

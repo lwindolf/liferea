@@ -531,24 +531,19 @@ void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWi
 /*------------------------------------------------------------------------------*/
 
 void ui_feedlist_add(folderPtr parent, nodePtr node, gint position) {
-	GtkTreeIter	*iter, iter2, *parentIter = NULL;
-	
-	/* check if a folder with this keyprefix already
-	   exists to check config consistency */
+	GtkTreeIter	*iter, *parentIter = NULL;
 
 	g_assert(node->ui_data == NULL);
-	g_assert(parent == NULL || parent->ui_data != NULL);
-	g_assert(feedstore != NULL);
 
-	/* if parent is NULL we have the root folder and don't create
-	   a new row! */
+	/* if parent is NULL we have the root folder and don't create a new row! */
 	node->ui_data = (gpointer)g_new0(struct ui_data, 1);
 	iter = &(((ui_data*)(node->ui_data))->row);
 	
 	if(parent != NULL) {
+		g_assert(parent->ui_data != NULL);
 		parentIter = &(((ui_data*)(parent->ui_data))->row);
 	}
-
+	
 	if(position < 0)
 		gtk_tree_store_append(feedstore, iter, parentIter);
 	else
@@ -578,7 +573,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	feed_set_filter(fp, filter);
 	parent = ui_feedlist_get_target_folder(&pos);
 	feed_set_available(fp, TRUE); /* To prevent the big red X from being next to the new feed */
-	ui_folder_add_feed(parent, fp, pos);
+	ui_feedlist_add(parent, (nodePtr)fp, pos);
 	ui_feedlist_update();
 	ui_feedlist_select((nodePtr)fp);
 	
