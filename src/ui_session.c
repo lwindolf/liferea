@@ -53,6 +53,7 @@ void gaim_debug_vargs(int level, const char *category,
 	g_return_if_fail(format != NULL);
 	str = g_strdup_vprintf(format, args);
 	debug2(DEBUG_GUI, "%s: %s", category, str);
+	g_free(str);
 }
 
 
