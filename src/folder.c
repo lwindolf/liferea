@@ -169,22 +169,28 @@ void folder_set_pos(folderPtr folder, folderPtr dest_folder, int position) {
 feedPtr folder_find_unread_feed(folderPtr folder) {
 	feedPtr			fp;
 	nodePtr			ptr;
+	GtkTreeIter		iter, *parent = NULL;
+	gboolean valid;
+	gint count;
 
-	GSList *iter;
-	if (folder == NULL)
-		folder = folder_get_root();
-
-	iter = folder->children;
-	while(iter) {
-		ptr = (nodePtr)iter->data;
-		if (IS_FEED(ptr->type)) {
-			if (feed_get_unread_counter((feedPtr)ptr) > 0)
+	if (folder != NULL)
+		parent = &((ui_data*)(folder->ui_data))->row;
+	
+	valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, parent);
+	while(valid) {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
+				   FS_PTR, &ptr,
+				   FS_UNREAD, &count,
+				   -1);
+		if (count > 0) {
+			if (IS_FEED(ptr->type)) {
 				return (feedPtr)ptr;
-		} else if (IS_FOLDER(ptr->type)) {
-			if ((fp = folder_find_unread_feed((folderPtr)ptr)))
-				return fp;
+			} else if (IS_FOLDER(ptr->type)) {
+				if ((fp = folder_find_unread_feed((folderPtr)ptr)))
+					return fp;
+			} /* Directories are never checked */
 		}
-		iter = g_slist_next(iter);
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
 	}
 	return NULL;	
 }
