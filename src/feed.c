@@ -784,7 +784,8 @@ gint getFeedUpdateInterval(feedPtr fp) { return fp->updateInterval; }
 void setFeedUpdateInterval(feedPtr fp, gint interval) { 
 
 	fp->updateInterval = interval; 
-	setFeedUpdateIntervalInConfig(fp->key, interval);
+	if (fp->key)
+		setFeedUpdateIntervalInConfig(fp->key, interval);
 	if (interval > 0)
 		feed_reset_update_counter(fp);
 }
