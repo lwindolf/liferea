@@ -13,4 +13,3 @@ GtkWidget* create_ruledialog (void);
 GtkWidget* create_feedsterdialog (void);
 GtkWidget* create_aboutdialog (void);
 GtkWidget* create_authdialog (void);
-GtkWidget* create_window1 (void);

@@ -3074,17 +3074,3 @@ create_authdialog (void)
   return authdialog;
 }
 
-GtkWidget*
-create_window1 (void)
-{
-  GtkWidget *window1;
-
-  window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window1), _("window1"));
-
-  /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (window1, window1, "window1");
-
-  return window1;
-}
-
