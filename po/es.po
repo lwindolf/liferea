@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-13 18:36+0200\n"
+"POT-Creation-Date: 2004-06-15 23:57+0200\n"
 "PO-Revision-Date: 2004-05-20 20:40+0200\n"
 "Last-Translator: Carlos Fenollosa <topopardo@humorfreak.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -215,27 +215,27 @@ msgstr ""
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" no es un archivo de caché válido. No se pudo leer.</p>"
 
-#: src/feed.c:433
+#: src/feed.c:430
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr "Se encontraron errores al procesar el archivo caché \"%s\""
 
-#: src/feed.c:567
+#: src/feed.c:564
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" no tiene elementos nuevos."
 
-#: src/feed.c:569
+#: src/feed.c:566
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" tiene %d elementos nuevos."
 
-#: src/feed.c:669
+#: src/feed.c:666
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "El contenido de \"%s\" no ha cambiado desde la última actualización"
 
-#: src/feed.c:681
+#: src/feed.c:678
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
@@ -244,76 +244,76 @@ msgstr ""
 "No se pudo detectar el tipo de fuente. Por favor, comprueba que la URL "
 "apunte a un recurso que contenga alguno de los formatos soportados."
 
-#: src/feed.c:700
+#: src/feed.c:697
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" actualizado..."
 
-#: src/feed.c:706
+#: src/feed.c:703
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "La URL de \"%s\" ha cambiado permanentemente y ha sido actualizada."
 
-#: src/feed.c:717
+#: src/feed.c:714
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "Lo siento, \"%s\" no está disponible"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:812 src/net/netio.c:477
+#: src/feed.c:809 src/net/netio.c:477
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "Esta fuente ya no existe. Por favor, elimínala."
 
-#: src/feed.c:813
+#: src/feed.c:810
 msgid "Payment Required"
 msgstr "Es necesario pagar"
 
-#: src/feed.c:814
+#: src/feed.c:811
 msgid "Access Forbidden"
 msgstr "Acceso denegado"
 
-#: src/feed.c:815
+#: src/feed.c:812
 msgid "Resource Not Found"
 msgstr "Recurso no disponible"
 
-#: src/feed.c:816
+#: src/feed.c:813
 msgid "Method Not Allowed"
 msgstr "Método inválido"
 
-#: src/feed.c:817
+#: src/feed.c:814
 msgid "Not Acceptable"
 msgstr "No aceptable"
 
-#: src/feed.c:818
+#: src/feed.c:815
 msgid "Proxy Authentication Required"
 msgstr "Se necesita autentificación proxy"
 
-#: src/feed.c:819
+#: src/feed.c:816
 msgid "Request Time-Out"
 msgstr "Expiró el plazo"
 
-#: src/feed.c:820
+#: src/feed.c:817
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Esta fuente ya no existe. Por favor, elimínala."
 
-#: src/feed.c:826
+#: src/feed.c:823
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Fuente no disponible: El servidor indicó una redirección inválida"
 
-#: src/feed.c:827
+#: src/feed.c:824
 msgid "Client Error"
 msgstr "Error del cliente"
 
-#: src/feed.c:828
+#: src/feed.c:825
 msgid "Server Error"
 msgstr "Error del servidor"
 
-#: src/feed.c:829
+#: src/feed.c:826
 msgid "(unknown error class)"
 msgstr "(error desconocido)"
 
-#: src/feed.c:851
+#: src/feed.c:848
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
@@ -321,7 +321,7 @@ msgstr ""
 "Se encontró un problema al leer la suscripción. Por favor, comprueba la URL "
 "y la salida por consola"
 
-#: src/feed.c:993
+#: src/feed.c:995
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
@@ -1449,7 +1449,7 @@ msgstr ""
 "Puedes intentarla bajar de nuevo, o eliminarla desde el menú contextual de "
 "la lista de fuentes\n"
 
-#: src/ui_feedlist.c:552
+#: src/ui_feedlist.c:556
 #, fuzzy
 msgid ""
 "The newly created feed's type could not be detected! Please check if the "

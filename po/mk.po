@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-13 18:36+0200\n"
+"POT-Creation-Date: 2004-06-15 23:57+0200\n"
 "PO-Revision-Date: 2004-04-09 16:25+0200\n"
 "Last-Translator: Tomislav Markovski <tome@set.com.mk>\n"
 "Language-Team: Macedonian <mk@li.org>\n"
@@ -215,104 +215,104 @@ msgstr ""
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 
-#: src/feed.c:433
+#: src/feed.c:430
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr "There were errors while parsing cache file \"%s\"!"
 
-#: src/feed.c:567
+#: src/feed.c:564
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" нема нови ставки."
 
-#: src/feed.c:569
+#: src/feed.c:566
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" има \"%d\" нови ставки."
 
-#: src/feed.c:669
+#: src/feed.c:666
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" не е променет од последеното ажурирање."
 
-#: src/feed.c:681
+#: src/feed.c:678
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
 
-#: src/feed.c:700
+#: src/feed.c:697
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" ажурирано..."
 
-#: src/feed.c:706
+#: src/feed.c:703
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "URL адресата на \"%s\" е перманетно променета и ажурирана."
 
-#: src/feed.c:717
+#: src/feed.c:714
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" е недостапно!"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:812 src/net/netio.c:477
+#: src/feed.c:809 src/net/netio.c:477
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "The feed no longer exists. Please unsubscribe!"
 
-#: src/feed.c:813
+#: src/feed.c:810
 msgid "Payment Required"
 msgstr "Потребна е уплата"
 
-#: src/feed.c:814
+#: src/feed.c:811
 msgid "Access Forbidden"
 msgstr "Забранет пристап"
 
-#: src/feed.c:815
+#: src/feed.c:812
 #, fuzzy
 msgid "Resource Not Found"
 msgstr "Ressource Not Found"
 
-#: src/feed.c:816
+#: src/feed.c:813
 msgid "Method Not Allowed"
 msgstr "Методот не е дозволен"
 
-#: src/feed.c:817
+#: src/feed.c:814
 msgid "Not Acceptable"
 msgstr "Не е прифатливо"
 
-#: src/feed.c:818
+#: src/feed.c:815
 msgid "Proxy Authentication Required"
 msgstr "Потребна е Proxy автентикација"
 
-#: src/feed.c:819
+#: src/feed.c:816
 msgid "Request Time-Out"
 msgstr "Барањето истече"
 
-#: src/feed.c:820
+#: src/feed.c:817
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Gone. Resource doesn't exist. Please unsubscribe!"
 
-#: src/feed.c:826
+#: src/feed.c:823
 #, fuzzy
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Feed not available: Server signalized unsupported redirection!"
 
-#: src/feed.c:827
+#: src/feed.c:824
 msgid "Client Error"
 msgstr "Клиентска грешка"
 
-#: src/feed.c:828
+#: src/feed.c:825
 msgid "Server Error"
 msgstr "Грешка на опслужувачот"
 
-#: src/feed.c:829
+#: src/feed.c:826
 msgid "(unknown error class)"
 msgstr "(unknown error class)"
 
-#: src/feed.c:851
+#: src/feed.c:848
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
@@ -320,7 +320,7 @@ msgstr ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
 
-#: src/feed.c:993
+#: src/feed.c:995
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr "Could not delete cache file %s! Please remove manually!"
@@ -1443,7 +1443,7 @@ msgstr ""
 "retry downloading or remove the feed subscription via the context menu from "
 "the feed list.\n"
 
-#: src/ui_feedlist.c:552
+#: src/ui_feedlist.c:556
 msgid ""
 "The newly created feed's type could not be detected! Please check if the "
 "source really points to a resource provided in one of the supported "

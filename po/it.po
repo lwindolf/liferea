@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-13 18:36+0200\n"
+"POT-Creation-Date: 2004-06-15 23:57+0200\n"
 "PO-Revision-Date: 2004-05-20 14:01+0100\n"
 "Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.no-ip.org>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -233,29 +233,29 @@ msgstr ""
 "<p>\"%s\" non è un file di cache valido! Impossibile leggere il file di "
 "cache!</p>"
 
-#: src/feed.c:433
+#: src/feed.c:430
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr ""
 "Si sono verificati degli errori durante l'interpretazione del file di cache "
 "\"%s\"!"
 
-#: src/feed.c:567
+#: src/feed.c:564
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" non ha nuovi elementi."
 
-#: src/feed.c:569
+#: src/feed.c:566
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" ha %d nuovi elementi."
 
-#: src/feed.c:669
+#: src/feed.c:666
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" non è cambiato dopo l'ultimo aggiornamento."
 
-#: src/feed.c:681
+#: src/feed.c:678
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
@@ -265,80 +265,80 @@ msgstr ""
 "che l'URL realmente punti ad una risorsa fornita in uno dei formati "
 "supportati!"
 
-#: src/feed.c:700
+#: src/feed.c:697
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aggiornato..."
 
-#: src/feed.c:706
+#: src/feed.c:703
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "L'URL di \"%s\" è cambiato in modo permanente ed è stato aggiornato."
 
-#: src/feed.c:717
+#: src/feed.c:714
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" non è disponibile!"
 
 #  The feed is gone. Politely remind the user to unsubscribe.
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:812 src/net/netio.c:477
+#: src/feed.c:809 src/net/netio.c:477
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "Il notiziario non esiste più. Per favore cancellare la sottoscrizione!"
 
-#: src/feed.c:813
+#: src/feed.c:810
 msgid "Payment Required"
 msgstr "E' richiesto un pagamento"
 
-#: src/feed.c:814
+#: src/feed.c:811
 msgid "Access Forbidden"
 msgstr "Accesso Vietato"
 
-#: src/feed.c:815
+#: src/feed.c:812
 msgid "Resource Not Found"
 msgstr "Risorsa Non Trovata"
 
-#: src/feed.c:816
+#: src/feed.c:813
 msgid "Method Not Allowed"
 msgstr "Metodo Non Consentito"
 
-#: src/feed.c:817
+#: src/feed.c:814
 msgid "Not Acceptable"
 msgstr "Non Accettabile"
 
-#: src/feed.c:818
+#: src/feed.c:815
 msgid "Proxy Authentication Required"
 msgstr "E' richiesta l'autenticazione sul proxy"
 
-#: src/feed.c:819
+#: src/feed.c:816
 msgid "Request Time-Out"
 msgstr "Timeout della richiesta"
 
-#: src/feed.c:820
+#: src/feed.c:817
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 "Andata. La risorsa non esiste. Per favore cancellare la sottoscrizione!"
 
-#: src/feed.c:826
+#: src/feed.c:823
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Notiziario non disponibile: il server ha richiesto una redirezione non "
 "supportata!"
 
-#: src/feed.c:827
+#: src/feed.c:824
 msgid "Client Error"
 msgstr "Errore del client"
 
-#: src/feed.c:828
+#: src/feed.c:825
 msgid "Server Error"
 msgstr "Errore del server"
 
-#: src/feed.c:829
+#: src/feed.c:826
 msgid "(unknown error class)"
 msgstr "(classe di errore sconosciuta)"
 
-#: src/feed.c:851
+#: src/feed.c:848
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
@@ -346,7 +346,7 @@ msgstr ""
 "C'è stato un problema durante la lettura di questa sottoscrizione. Per "
 "favore verificare l'URL e l'output in console!"
 
-#: src/feed.c:993
+#: src/feed.c:995
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
@@ -1487,7 +1487,7 @@ msgstr ""
 "Puoi riprovare a scaricarlo o a rimuovere la sottoscrizione usando il menu "
 "contestuale dalla lista dei notiziari.\n"
 
-#: src/ui_feedlist.c:552
+#: src/ui_feedlist.c:556
 #, fuzzy
 msgid ""
 "The newly created feed's type could not be detected! Please check if the "

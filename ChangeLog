@@ -1,9 +1,17 @@
-2004-06-?? ????
+2004-??-?? ???
+
+	Version 0.5.1
+
+
+2004-06-19 Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.5.0
 	
 	* New Russian translation (Alekseev Vladimir)
 	* New Czech translation (Juraj Kubelka)
+	* Feed Link Autodiscovery, this means you can subscribe
+	  to any website's and the feed link is determined 
+	  automatically. (ahmed el-helw)
 	* Mozilla browser module supports zooming now. (Lars Lindner)
 	* Scroll down or next unread feature for Mozilla, and is now triggered 
 	  by space instead of shift-space.

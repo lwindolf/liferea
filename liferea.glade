@@ -5539,11 +5539,14 @@ Oliver Feiler &lt;kiza@kcore.de&gt;
 Niklas Morberg &lt;morberg@users.sourceforge.net&gt;
 Johannes Schlueter &lt;joscherl@users.sourceforge.net&gt;
 Pierre Phaneuf &lt;pp@ludusdesign.com&gt;
+ahmed el-helw &lt;ahmedre@cc.gatech.edu&gt;
 
 Code from other projects
 
 Anders Carlsson &lt;andersca@gnu.org&gt; (tray icon support)
-Philippe Martin, Brion Vibber (favicon support)</property>
+Philippe Martin, Brion Vibber (favicon support)
+Jonathan Blandford &lt;jrb@redhat.com&gt; (GtkTreeModelFilter)
+Kristian Rietveld &lt;kris@gtk.org&gt; (GtkTreeModelFilter)</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -5610,7 +5613,8 @@ Vladimir Petkov &lt;vpetkov@i-space.org&gt;
 Tomislav Markovski &lt;tome@set.com.mk&gt;
 Dario Conigliaro &lt;djdas@djdas.no-ip.org&gt;
 Rex Tsai &lt;chihchun@users.sourceforge.net&gt;
-Alekseev Vladimir &lt;compress@linux-online.ru&gt;</property>
+Alekseev Vladimir &lt;compress@linux-online.ru&gt;
+Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>

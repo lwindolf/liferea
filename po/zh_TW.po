@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-13 18:36+0200\n"
+"POT-Creation-Date: 2004-06-15 23:57+0200\n"
 "PO-Revision-Date: 2004-05-21 02:32+0800\n"
 "Last-Translator: Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -205,109 +205,109 @@ msgstr "<p>分析快取檔案時發生 XML 錯誤! 無法載入快取檔案 \"%s
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" 是無效的快取檔案! 無法讀入檔案!</p>"
 
-#: src/feed.c:433
+#: src/feed.c:430
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr "分析快取檔案 \"%s\" 時出現錯誤!"
 
-#: src/feed.c:567
+#: src/feed.c:564
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" 沒有新項目"
 
-#: src/feed.c:569
+#: src/feed.c:566
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" 有 %d 個新增項目"
 
-#: src/feed.c:669
+#: src/feed.c:666
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" 自從最後更新後沒有改變。"
 
-#: src/feed.c:681
+#: src/feed.c:678
 #, fuzzy
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr "無法偵測此饋流類型! 請確認網址指向已支援的正確餽流來源!"
 
-#: src/feed.c:700
+#: src/feed.c:697
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" 更新中"
 
-#: src/feed.c:706
+#: src/feed.c:703
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "\"%s\" 已經更新為永久網址。"
 
-#: src/feed.c:717
+#: src/feed.c:714
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" 不可用!"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:812 src/net/netio.c:477
+#: src/feed.c:809 src/net/netio.c:477
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "饋流已經不存在。請取消訂閱!"
 
-#: src/feed.c:813
+#: src/feed.c:810
 msgid "Payment Required"
 msgstr "Payment Required"
 
-#: src/feed.c:814
+#: src/feed.c:811
 msgid "Access Forbidden"
 msgstr "禁用存取"
 
-#: src/feed.c:815
+#: src/feed.c:812
 msgid "Resource Not Found"
 msgstr "未找到資源"
 
-#: src/feed.c:816
+#: src/feed.c:813
 msgid "Method Not Allowed"
 msgstr "方法不允許"
 
-#: src/feed.c:817
+#: src/feed.c:814
 msgid "Not Acceptable"
 msgstr "無法接受"
 
-#: src/feed.c:818
+#: src/feed.c:815
 msgid "Proxy Authentication Required"
 msgstr "代理伺服器需要認證"
 
-#: src/feed.c:819
+#: src/feed.c:816
 msgid "Request Time-Out"
 msgstr "存取逾時"
 
-#: src/feed.c:820
+#: src/feed.c:817
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了。資源不存在。請取消訂閱!"
 
-#: src/feed.c:826
+#: src/feed.c:823
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "饋流無法使用: 伺服器使用未支援的重導!"
 
-#: src/feed.c:827
+#: src/feed.c:824
 msgid "Client Error"
 msgstr "Client Error"
 
-#: src/feed.c:828
+#: src/feed.c:825
 msgid "Server Error"
 msgstr "Server Error"
 
-#: src/feed.c:829
+#: src/feed.c:826
 msgid "(unknown error class)"
 msgstr "(unknown error class)"
 
-#: src/feed.c:851
+#: src/feed.c:848
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
 msgstr "讀取此訂閱時出現問題。請確認網址與終端機輸出！"
 
-#: src/feed.c:993
+#: src/feed.c:995
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr "無法刪除快取檔案 %s! 請手動移除!"
@@ -1386,7 +1386,7 @@ msgstr ""
 " 網址可能錯誤或是饋流暫時無法使用。\n"
 "您可以重試下載或利用選單從列表中將訂閱移除。\n"
 
-#: src/ui_feedlist.c:552
+#: src/ui_feedlist.c:556
 #, fuzzy
 msgid ""
 "The newly created feed's type could not be detected! Please check if the "

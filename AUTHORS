@@ -36,6 +36,7 @@ Niklas Morberg <morberg@users.sourceforge.net>	debugging and patching
 
 Pierre Phaneuf <pp@ludusdesign.com>		RPM spec update
 
+ahmed el-helw <ahmedre@cc.gatech.edu>		feed link autodiscovery
 
 Packaging
 =========
@@ -61,6 +62,7 @@ Tomislav Markovski <tome@set.com.mk>		Macedonian
 Dario Conigliaro <djdas@djdas.no-ip.org>	Italian
 Rex Tsai <chihchun@users.sourceforge.net>	Traditional Chinese
 Alekseev Vladimir <compress@linux-online.ru>	Russian
+Juraj Kubelka <Juraj.Kubelka@email.cz>		Czech
 
 Code included from other projects
 =================================
@@ -71,5 +73,5 @@ Philippe Martin, Brion Vibber			favicon to XPM conversion
 Jonathan Blandford <jrb@redhat.com>		GtkTreeModelFilter (GTK+ project)
 Kristian Rietveld <kris@gtk.org>		GtkTreeModelFilter (GTK+ project)
 
-If I forgot to list you here leave me a message and I'll
-include your name and email!
+If I forgot to list you here leave me a message on
+the mailing list and we'll include your name and email!
