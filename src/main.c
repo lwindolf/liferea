@@ -40,6 +40,8 @@
 #include "debug.h"
 #include "ui_queue.h"
 #include "ui_mainwindow.h"
+#include "metadata.h"
+#include "attribs.h"
 
 GThread	*mainThread = NULL;
 gboolean lifereaStarted = FALSE;
@@ -129,8 +131,10 @@ int main(int argc, char *argv[]) {
 	initConfig();			/* initialize gconf */
 	ui_htmlview_init();		/* setup HTML widgets */
 	download_init();		/* Initialize the download subsystem */
+	metadata_init();
+	attribs_init();       /* Requires metadata_init to be done! */
 	mainwindow = ui_mainwindow_new();
-	loadConfig();			/* maybe this should be merged with initConfig() */
+	loadConfig();			/* Load feeds from cache */
 	feed_init();			/* register feed types */
 	ui_init();			/* initialize gconf configured GUI behaviour */
 

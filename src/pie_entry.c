@@ -28,6 +28,7 @@
 #include "pie_entry.h"
 #include "pie_ns.h"
 #include "htmlview.h"
+#include "metadata.h"
 
 /* structure for the hashtable callback which itself calls the 
    namespace output handler */
@@ -99,7 +100,6 @@ static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip) {
 		addToHTMLBuffer(&buffer, ip->tags[PIE_ENTRY_DESCRIPTION]);
 
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "author",		ip->author);
 	FEED_FOOT_WRITE(buffer, "contributors",		ip->contributors);
 	FEED_FOOT_WRITE(buffer, "copyright",		ip->tags[PIE_ENTRY_COPYRIGHT]);
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
@@ -223,9 +223,9 @@ itemPtr parseEntry(gpointer cp, xmlNodePtr cur) {
 		
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 			/* parse feed author */
-			g_free(i->author);
-			i->author = parseAuthor(cur);
-
+			gchar *author =  parseAuthor(cur);
+			ip->metadataList = metadata_list_insert_strid(ip->metadataList, "author", author);
+			g_free(author);
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
 			/* parse feed contributors */
 			tmp = parseAuthor(cur);				

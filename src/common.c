@@ -50,7 +50,7 @@ static gchar *lifereaUserPath = NULL;
 
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
 
-void addToHTMLBuffer(gchar **buffer, const gchar *string) {
+void addToHTMLBufferFast(gchar **buffer, const gchar *string) {
 	
 	if(NULL == string)
 		return;
@@ -59,6 +59,22 @@ void addToHTMLBuffer(gchar **buffer, const gchar *string) {
 		int oldlength = strlen(*buffer);
 		int newlength = strlen(string);
 		int allocsize = (((oldlength+newlength+1)/512)+1)*512; // Round up to nearest 512 KB
+		*buffer = g_realloc(*buffer, allocsize);
+		g_memmove(&((*buffer)[oldlength]), string, newlength+1 );
+	} else {
+		*buffer = g_strdup(string);
+	}
+}
+
+void addToHTMLBuffer(gchar **buffer, const gchar *string) {
+	
+	if(NULL == string)
+		return;
+	
+	if(NULL != *buffer) {
+		int oldlength = strlen(*buffer);
+		int newlength = strlen(string);
+		int allocsize = (oldlength+newlength+1); // Round up to nearest 512 KB
 		*buffer = g_realloc(*buffer, allocsize);
 		g_memmove(&((*buffer)[oldlength]), string, newlength+1 );
 	} else {

@@ -35,6 +35,7 @@
 #include "callbacks.h"
 #include "ui_tray.h"
 #include "ui_notification.h"
+#include "metadata.h"
 
 /* function to create a new feed structure */
 itemPtr item_new(void) {
@@ -179,11 +180,45 @@ void item_free(itemPtr ip) {
 	g_free(ip);
 }
 
+gchar *item_render(itemPtr ip) {
+	struct displayset displayset;
+	gchar *buffer = NULL;
+
+	displayset.head = NULL;
+	displayset.body = g_strdup(ip->description);
+	displayset.foot = NULL;
+	
+	metadata_list_render(ip->metadataList, &displayset);
+	
+	if (displayset.head != NULL) {
+		addToHTMLBufferFast(&buffer, HEAD_START);
+		addToHTMLBufferFast(&buffer, displayset.head);
+		addToHTMLBufferFast(&buffer, HEAD_END);
+		g_free(displayset.head);
+	}
+
+	if (displayset.body != NULL) {
+		addToHTMLBufferFast(&buffer, displayset.body);
+		g_free(displayset.body);
+	}
+
+	if (displayset.foot != NULL) {
+		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
+		addToHTMLBufferFast(&buffer, displayset.foot);
+		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
+		g_free(displayset.foot);
+	}
+
+	return buffer;
+}
+
 void item_display(itemPtr ip) {
-	gchar	*buffer = NULL;
+	gchar	*buffer = NULL, *tmp;
 	
 	ui_htmlview_start_output(&buffer, TRUE);
-	addToHTMLBuffer(&buffer, item_get_description(ip));
+	tmp = item_render(ip);
+	addToHTMLBufferFast(&buffer, tmp);
+	g_free(tmp);
 	ui_htmlview_finish_output(&buffer);
 	if (ip->fp->source != NULL &&
 	    ip->fp->source[0] != '|' &&

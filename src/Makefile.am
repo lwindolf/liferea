@@ -27,6 +27,7 @@ bin_PROGRAMS = liferea-bin
 bin_SCRIPTS = liferea
 
 liferea_bin_SOURCES = \
+	attribs.c attribs.h \
 	callbacks.c callbacks.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
@@ -45,6 +46,7 @@ liferea_bin_SOURCES = \
 	interface.c interface.h \
 	item.c item.h \
 	main.c \
+	metadata.c metadata.h \
 	ns_ocs.c ns_ocs.h \
 	ns_dc.c ns_dc.h \
 	ns_fm.c ns_fm.h \

@@ -96,7 +96,8 @@ typedef struct feed {
 	gchar		*source;		/**< feed source */
 	gchar		*filtercmd;		/**< feed filter command */
 	gint		updateInterval;		/**< user defined update interval in minutes */
-
+	gpointer metadataList;
+	
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
 	
 	GSList		*filter;		/**< list of filters applied to this feed */

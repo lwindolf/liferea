@@ -29,6 +29,12 @@
 #include <pwd.h>
 #include <sys/types.h>
 
+struct displayset {
+	gchar *head;
+	gchar *body;
+	gchar *foot;
+};
+
 /**
  * @{ Common HTML definitions
  *

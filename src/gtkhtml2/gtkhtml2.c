@@ -29,7 +29,6 @@
 */
 
 #include <libgtkhtml/gtkhtml.h>
-#include <libgnomevfs/gnome-vfs.h>
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
@@ -259,9 +258,6 @@ static gfloat get_zoom_level(GtkWidget *scrollpane) {
 static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *base) {
 	g_object_set_data(G_OBJECT(scrollpane), "html_request", NULL);
 	
-	/* HTML widget can be used only from GTK thread */	
-	g_assert(gnome_vfs_is_primary_thread());
-
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
 	/* finalizing older stuff */
@@ -330,7 +326,6 @@ static GtkWidget* gtkhtml2_new() {
 
 
 static void gtkhtml2_init() {
-	gnome_vfs_init();
 }
 
 static void gtkhtml2_deinit() {
