@@ -25,6 +25,31 @@
 #include <time.h>
 #include <glib.h>
 
+typedef enum {
+	NET_ERR_OK,
+	/* Init errors */
+	NET_ERR_URL_INVALID,
+	/* Connect errors */
+	NET_ERR_SOCK_ERR,
+	NET_ERR_HOST_NOT_FOUND,
+	NET_ERR_CONN_REFUSED,
+	NET_ERR_CONN_FAILED,
+	NET_ERR_TIMEOUT,
+	NET_ERR_UNKNOWN,
+	/* Transfer errors */
+	NET_ERR_REDIRECT_COUNT_ERR,
+	NET_ERR_REDIRECT_ERR,
+	NET_ERR_HTTP_410,
+	NET_ERR_HTTP_404,
+	NET_ERR_HTTP_NON_200,
+	NET_ERR_HTTP_PROTO_ERR,
+	NET_ERR_AUTH_FAILED,
+	NET_ERR_AUTH_NO_AUTHINFO,
+	NET_ERR_AUTH_GEN_AUTH_ERR,
+	NET_ERR_AUTH_UNSUPPORTED,
+	NET_ERR_GZIP_ERR
+} netio_error_type;
+
 struct request;
 
 /**
@@ -55,7 +80,8 @@ struct request {
 	guint32 flags; /**< Flags to be passed to the callback */
 	
 	/* Set by download system*/
-	int httpstatus; /**< last HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
+	int returncode;
+	int httpstatus; /**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
 	GTimeVal lastmodified; /**< Time of last modification. Stored in UTC? */
 	gchar *data;
 	size_t size;

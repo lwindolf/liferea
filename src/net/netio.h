@@ -32,7 +32,7 @@ struct feed_request {
 	/* Supplied and overwritten/freed */
 	char *feedurl;                                                  /* Non hashified URL */
 	char *lastmodified;                                             /* Content of header as sent by the server. */
-	
+
 	/* Set by netio code */
 	size_t contentlength;
 	int lasthttpstatus;
@@ -40,6 +40,8 @@ struct feed_request {
 	char *authinfo;                                                 /* HTTP authinfo string. */
 	char *servauth;                                                 /* Server supplied authorization header. */
 	int problem;                                                    /* Set if there was a problem downloading the feed. */
+	int netio_error;
+	int connectresult;
 };
 
 #endif
