@@ -119,7 +119,7 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 			/* FIXME: is <modified> or <issued> or <created> the time tag we want to display? */
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  			if(NULL != tmp)
-				item_set_time(ip, parseISO8601Date(tmp));
+				item_set_time(ip, parseRFC822Date(tmp));
 			g_free(tmp);
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
 			/* <content> support */
