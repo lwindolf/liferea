@@ -168,11 +168,11 @@ void vfolder_remove_item(itemPtr ip) {
 }
 
 /**
- * Check item against rules of a vfolder. When the an item matches an 
+ * Check item against rules of a vfolder. When the item matches an 
  * additive rule it is added to the vfolder and when it matches an excluding 
  * rule the item is removed again from the given vfolder.
  */
-void vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
+gboolean vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
 	rulePtr		rp;
 	GSList		*iter;
 	gboolean	added = FALSE;
@@ -196,6 +196,8 @@ void vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
 		}
 		iter = g_slist_next(iter);
 	}
+	
+	return added;
 }
 
 /**
@@ -274,10 +276,19 @@ void vfolder_update_item(itemPtr ip) {
 			tmp = items->data;
 			g_assert(NULL != ip->fp);
 			g_assert(NULL != tmp->fp);
+			/* find the item copies */
 			if((ip->nr == tmp->nr) &&
 			   (ip->fp == tmp->sourceFeed)) {
-		   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", ip->title, vp->title);
-				item_copy(ip, tmp);
+				/* check if the item still matches, the item won't get added
+				   another time so this call effectivly just checks if the
+				   item is still to remain added. */
+				if(TRUE == vfolder_apply_rules_for_item(vp, ip)) {
+			   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", ip->title, vp->title);
+					item_copy(ip, tmp);
+				} else {
+					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...",  ip->title, vp->title);
+					//vfolder_remove_item(ip);
+				}
 				break;
 			}
 			items = g_slist_next(items);

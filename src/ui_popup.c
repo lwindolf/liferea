@@ -230,46 +230,46 @@ static GtkMenu *make_entry_menu(gint type, gpointer item) {
 /*------------------------------------------------------------------------------*/
 
 gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
-								    GdkEventButton *event,
-								    gpointer user_data)
-{
+                                            GdkEventButton *event,
+                                            gpointer user_data) {
 	GdkEventButton 	*eb;
 	GtkMenu		*menu;
-	GtkWidget		*treeview;
+	GtkWidget	*treeview;
+	GtkTreeModel	*model;
 	GtkTreePath	*path;
-	gboolean		selected = TRUE;
+	GtkTreeIter	iter;
+	gboolean	selected = TRUE;
 	nodePtr		node = NULL;
 
 	treeview = lookup_widget(mainwindow, "feedlist");
 	g_assert(treeview);
 
-	if (event->type != GDK_BUTTON_PRESS)
+	if(event->type != GDK_BUTTON_PRESS)
 		return FALSE;
 
 	eb = (GdkEventButton*) event;
 
-	if (eb->button != 3)
+	if(eb->button != 3)
 		return FALSE;
 
-	if (!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), event->x, event->y, &path, NULL, NULL, NULL))
+	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), event->x, event->y, &path, NULL, NULL, NULL)) {
 		selected=FALSE;
-	else {
-		GtkTreeIter iter;
-		gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, path);
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter,
-					    FS_PTR, &node, -1);
+	} else {
+		model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
+		gtk_tree_model_get_iter(model, &iter, path);
+		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);
 		if (node != NULL)
 			ui_feedlist_select(node);
 		else /* This happens when an "empty" node is clicked */
 			selected=FALSE;
 		gtk_tree_path_free(path);
 	}
-	if (selected && node)
+	if(selected && node)
 		menu = make_entry_menu(node->type, node);
 	else
 		menu = make_entry_menu(FST_INVALID, NULL);
 
-	if (menu)
+	if(menu)
 		gtk_menu_popup(menu, NULL, NULL, NULL, NULL, eb->button, eb->time);
 		
 	return TRUE;
