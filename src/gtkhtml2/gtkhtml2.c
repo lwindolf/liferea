@@ -196,12 +196,6 @@ static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream,
 		connection_list = g_object_get_data(G_OBJECT (doc), "connection_list");
 		connection_list = g_slist_prepend(connection_list, r);
 		g_object_set_data(G_OBJECT (doc), "connection_list", connection_list);
-	} else {
-		if(stream->cancel_func != NULL) {
-			/* I think this can be removed... (Lars) */
-			g_print("The cancel function really can be != NULL at this place...\n");
-			html_stream_cancel(stream);
-		}
 	}
 }
 

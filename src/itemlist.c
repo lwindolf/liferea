@@ -92,9 +92,8 @@ void itemlist_reload(nodePtr node) {
 		if(node != displayed_node)
 			return;
 		itemlist_load_feed((feedPtr)node, (gpointer)TRUE);
+		ui_itemlist_display();
 	}
-
-	ui_itemlist_display();
 }
 
 /** 
