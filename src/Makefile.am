@@ -14,6 +14,7 @@ liferea_SOURCES = \
 	callbacks.c callbacks.h \
 	ui_filter.c \
 	ui_tray.c \
+	ui_popup.c \
 	eggtrayicon.h eggtrayicon.c \
 	common.c common.h \
 	folder.c folder.h \

@@ -155,7 +155,7 @@ static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer u
 
 	if (event->button == 3) {
 
-		gtk_menu_popup (GTK_MENU(make_item_menu()), NULL, NULL,
+		gtk_menu_popup (GTK_MENU(make_html_menu()), NULL, NULL,
 				NULL, NULL, event->button, event->time);
  
 	} else {

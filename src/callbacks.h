@@ -212,18 +212,15 @@ void
 on_ruledownbtn_clicked                 (GtkButton       *button,
                                         gpointer         user_data);
 
-void
-on_foldername_activate                 (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
+void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_popup_foldername_selected(void);
 
-void
-on_toggle_condensed_view_activate      (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-					
+void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_condensed_view_selected(void);
+			
 void on_toggle_item_flag(void);
 void on_popup_launchitem_selected(void);
 void on_popup_allunread_selected(void);
 
-void
-on_next_unread_item_activate           (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
+void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_popup_next_unread_item_selected(void);

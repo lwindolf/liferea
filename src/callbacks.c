@@ -65,13 +65,11 @@ extern GdkPixbuf	*emptyIcon;
 
 extern GThread		*updateThread;
 
-extern GHashTable	*feeds; // FIXME!
 extern GHashTable	*folders; // FIXME!
-extern GMutex 		*feeds_lock; // FIXME!
 extern feedPtr		allItems;
 
 static gint	itemlist_loading = 0;	/* freaky workaround for item list focussing problem */
-static gboolean	itemlist_mode = TRUE;	/* TRUE means three pane, FALSE means two panes */
+gboolean	itemlist_mode = TRUE;	/* TRUE means three pane, FALSE means two panes */
 
 /* flag to check if DND should be aborted (e.g. on folders and help feeds) */
 static gboolean	drag_successful = FALSE;
@@ -935,7 +933,7 @@ void on_toggle_item_flag(void) {
 	updateUI();
 }
 
-void on_toggle_condensed_view(void) {
+void on_toggle_condensed_view_selected(void) {
 	GtkWidget	*w1;
 	gchar		*key;
 	
@@ -952,7 +950,7 @@ void on_toggle_condensed_view(void) {
 	displayItemList();
 }
 
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { on_toggle_condensed_view(); }
+void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { on_toggle_condensed_view_selected(); }
 
 static feedPtr findUnreadFeed(GtkTreeIter *iter) {
 	GtkTreeSelection	*selection;
@@ -1323,173 +1321,6 @@ void setupItemList(GtkWidget *itemlist) {
 	g_signal_connect(G_OBJECT(select), "changed",
                   G_CALLBACK(on_itemlist_selection_changed),
                   NULL);
-}
-
-/*------------------------------------------------------------------------------*/
-/* popup menu callbacks 							*/
-/*------------------------------------------------------------------------------*/
-
-static GtkItemFactoryEntry feedentry_menu_items[] = {
-      {"/_Update Feed", 	NULL, on_popup_refresh_selected, 0, NULL},
-      {"/_New",			NULL, 0, 0, "<Branch>" },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 0, NULL},
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 0, NULL},
-      {"/_Delete Feed",		NULL, on_popup_delete_selected, 0, NULL},
-      {"/_Properties",		NULL, on_popup_prop_selected, 0, NULL}
-};
-
-static GtkItemFactoryEntry ocsentry_menu_items[] = {
-      {"/_Update Directory",	NULL, on_popup_refresh_selected, 0, NULL},
-      {"/_New",			NULL, 0, 0, "<Branch>" },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 0, NULL},
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 0, NULL},      
-      {"/_Delete Directory",	NULL, on_popup_delete_selected, 0, NULL},
-      {"/_Properties",		NULL, on_popup_prop_selected, 0, NULL}
-};
-
-static GtkItemFactoryEntry node_menu_items[] = {
-      {"/_New",			NULL, 0, 0, "<Branch>" },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 0, NULL},
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 0, NULL},
-      {"/_Rename Folder",	NULL, on_popup_foldername_selected, 0 , NULL},
-      {"/_Delete Folder", 	NULL, on_popup_removefolder_selected, 0, NULL}
-};
-
-static GtkItemFactoryEntry vfolder_menu_items[] = {
-      {"/_New",			NULL, 0, 0, "<Branch>" },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 0, NULL},
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 0, NULL},      
-      {"/_Delete VFolder",	NULL, on_popup_delete_selected, 0, NULL},
-};
-
-static GtkItemFactoryEntry default_menu_items[] = {
-      {"/_New",			NULL, 0, 0, "<Branch>" },
-      {"/_New/New _Feed", 	NULL, on_newbtn_clicked, 0, NULL},
-      {"/_New/New F_older", 	NULL, on_popup_newfolder_selected, 0, NULL}
-};
-
-static GtkMenu *make_entry_menu(gint type) {
-	GtkWidget 		*menubar;
-	GtkItemFactory 		*item_factory;
-	gint 			nmenu_items;
-	GtkItemFactoryEntry	*menu_items;
-	
-	switch(type) {
-		case FST_NODE:
-			menu_items = node_menu_items;
-			nmenu_items = sizeof(node_menu_items)/(sizeof(node_menu_items[0]));
-			break;
-		case FST_VFOLDER:
-			menu_items = vfolder_menu_items;
-			nmenu_items = sizeof(vfolder_menu_items)/(sizeof(vfolder_menu_items[0]));
-			break;
-		case FST_PIE:
-		case FST_RSS:
-		case FST_CDF:
-		case FST_HELPFEED:
-			menu_items = feedentry_menu_items;
-			nmenu_items = sizeof(feedentry_menu_items)/(sizeof(feedentry_menu_items[0]));
-			break;
-		case FST_OPML:
-		case FST_OCS:
-			menu_items = ocsentry_menu_items;
-			nmenu_items = sizeof(ocsentry_menu_items)/(sizeof(ocsentry_menu_items[0]));
-			break;
-		case FST_EMPTY:
-			return NULL;
-			break;
-		default:
-			menu_items = default_menu_items;
-			nmenu_items = sizeof(default_menu_items)/(sizeof(default_menu_items[0]));
-			break;
-	}
-
-	item_factory = gtk_item_factory_new(GTK_TYPE_MENU, "<feedentrypopup>", NULL);
-	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, NULL);
-	menubar = gtk_item_factory_get_widget(item_factory, "<feedentrypopup>");
-
-	return GTK_MENU(menubar);
-}
-
-
-static GtkItemFactoryEntry item_menu_items[] = {
-      {"/_Mark All As Read", 		NULL, on_popup_allunread_selected, 		0, NULL},
-      {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 		0, NULL},
-      {"/Toggle Item _Flag",	 	NULL, on_toggle_item_flag, 			0, NULL},
-      {"/sep1",				NULL, NULL, 					0, "<Separator>"},
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 		0, NULL},
-      {"/_Next Unread Item",		NULL, on_popup_next_unread_item_selected,	0, NULL}
-/*      {"/sep2",				NULL, NULL, 				0, "<Separator>"},
-      {"/_Edit Filters",		NULL, on_popup_filter_selected, 		0, NULL}*/
-};
-
-static GtkItemFactoryEntry itemlist_menu_items[] = {
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 	0, NULL}
-};
-
-GtkMenu *make_item_menu(void) {
-	GtkWidget 		*menubar;
-	GtkItemFactory 		*item_factory;
-	gint 			nmenu_items;
-	GtkItemFactoryEntry	*menu_items;
-	
-	if(TRUE == itemlist_mode) {
-		menu_items = item_menu_items;
-		nmenu_items = sizeof(item_menu_items)/(sizeof(item_menu_items[0]));
-	} else {
-		menu_items = itemlist_menu_items;
-		nmenu_items = sizeof(itemlist_menu_items)/(sizeof(itemlist_menu_items[0]));
-	}
-
-	item_factory = gtk_item_factory_new(GTK_TYPE_MENU, "<itempopup>", NULL);
-	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, NULL);
-	menubar = gtk_item_factory_get_widget(item_factory, "<itempopup>");
-
-	return GTK_MENU(menubar);
-}
-
-
-gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
-					    GdkEventButton *event,
-                                            gpointer user_data)
-{
-	GdkEventButton 	*eb;
-	GtkMenu		*menu;
-	gboolean 	retval;
-	gint		type;
-  
-	if (event->type != GDK_BUTTON_PRESS) return FALSE;
-	eb = (GdkEventButton*) event;
-
-	if (eb->button != 3)
-		return FALSE;
-
-	// FIXME: don't use existing selection, but determine
-	// which selection would result from the right mouse click
-	if(NULL != (menu = make_entry_menu(selected_type)))
-		gtk_menu_popup(menu, NULL, NULL, NULL, NULL, eb->button, eb->time);
-		
-	return TRUE;
-}
-
-gboolean on_itemlist_button_press_event(GtkWidget *widget,
-					    GdkEventButton *event,
-                                            gpointer user_data)
-{
-	GdkEventButton 	*eb;
-	gboolean 	retval;
-	gint		type;
-  
-	if (event->type != GDK_BUTTON_PRESS) return FALSE;
-	eb = (GdkEventButton*) event;
-
-	if (eb->button != 3) 
-		return FALSE;
-
-	/* right click -> popup */
-	gtk_menu_popup(make_item_menu(), NULL, NULL, NULL, NULL, eb->button, eb->time);
-		
-	return TRUE;
 }
 
 /*------------------------------------------------------------------------------*/
