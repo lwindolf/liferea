@@ -369,7 +369,7 @@ gchar * addFolderToConfig(gchar *title) {
 		element = iter->data;
 		dirkey = gconf_value_get_string(element);
 		is_gconf_error(err);	
-g_print("checking against %s\n", dirkey);
+
 		g_assert(NULL != dirkey);
 		if(0 == strcmp(dirkey, newdirkey)) {
 			nr++;

@@ -961,6 +961,7 @@ void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data
 
 static feedPtr findUnreadFeed(GtkTreeIter *iter) {
 	GtkTreeSelection	*selection;
+	GtkTreePath		*path;
 	GtkWidget		*treeview;
 	GtkTreeIter		childiter;
 	gboolean		valid;
@@ -985,9 +986,12 @@ static feedPtr findUnreadFeed(GtkTreeIter *iter) {
 			if(getFeedUnreadCount(fp) > 0) {
 				/* select the feed entry... */
 				if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
-					if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
+					if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
 						gtk_tree_selection_select_iter(selection, &childiter);
-					else
+						path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), &childiter);
+						gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, FALSE, FALSE);
+						gtk_tree_path_free(path);
+					} else
 						g_warning(_("internal error! could not get feed tree view selection!\n"));
 				} else {
 					g_warning(_("internal error! could not find feed tree view widget!\n"));
@@ -1007,13 +1011,47 @@ static feedPtr findUnreadFeed(GtkTreeIter *iter) {
 	return NULL;	
 }
 
-void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
+static gboolean findUnreadItem() {
 	GtkTreeSelection	*selection;
+	GtkTreePath		*path;
 	GtkWidget		*treeview;
 	GtkTreeIter		iter;
 	gboolean		valid;
+	itemPtr			ip;
+		
+	g_assert(NULL != itemstore);
+	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+	while(valid) {
+               	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
+		g_assert(ip != NULL);
+		if(FALSE == getItemReadStatus(ip)) {
+			/* select found item... */
+			if(NULL != (treeview = lookup_widget(mainwindow, "Itemlist"))) {
+				if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
+					gtk_tree_selection_select_iter(selection, &iter);
+					path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
+					gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, FALSE, FALSE);
+					gtk_tree_path_free(path);
+				} else
+					g_warning(_("internal error! could not get feed tree view selection!\n"));
+			} else {
+				g_warning(_("internal error! could not find feed tree view widget!\n"));
+			}			
+			return TRUE;
+		}
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+	}
+	
+	return FALSE;
+}
+
+void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	feedPtr			fp;
-	itemPtr			ip;	
+	
+	/* before scanning the feed list, we test if there is a unread 
+	   item in the currently selected feed! */
+	if(TRUE == findUnreadItem())
+		return;
 	
 	/* find first feed with unread items */
 	g_assert(NULL != feedstore);
@@ -1032,25 +1070,7 @@ selected_ip = NULL;
 	loadItemList(fp, NULL);
 	
 	/* find first unread item */
-	g_assert(NULL != itemstore);
-	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-	while(valid) {
-               	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
-		g_assert(ip != NULL);
-		if(FALSE == getItemReadStatus(ip)) {
-			/* select found item... */
-			if(NULL != (treeview = lookup_widget(mainwindow, "Itemlist"))) {
-				if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview))))
-					gtk_tree_selection_select_iter(selection, &iter);
-				else
-					g_warning(_("internal error! could not get feed tree view selection!\n"));
-			} else {
-				g_warning(_("internal error! could not find feed tree view widget!\n"));
-			}			
-			return;
-		}
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
-	}
+	findUnreadItem();
 }
 
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
@@ -1700,7 +1720,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	saveAllFeeds();
 	
 	/* save window size */
-	gtk_window_get_size(mainwindow, &x, &y);
+	gtk_window_get_size(GTK_WINDOW(mainwindow), &x, &y);
 	setNumericConfValue(LAST_WINDOW_WIDTH, x);
 	setNumericConfValue(LAST_WINDOW_HEIGHT, y);	
 	
