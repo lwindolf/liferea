@@ -5,6 +5,12 @@
 	* When you change a feed URL the feed is
 	  now updated automatically after closing
 	  the properties dialog.
+	* Added the previously remove proxy dialog
+	  as I decided Liferea should stay a GTK
+	  application (but Søren Hansen told me he
+	  wants to do GNOME integration so this may
+	  come as a compile option). So users without
+	  GNOME (maybe KDE) can easily set a proxy.
 	* Added a patch (882761) from morberg.
 	* Update to the SnowNews 1.4.3 HTTP client
 	  which allows HTTP authentication. To use

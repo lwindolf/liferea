@@ -706,6 +706,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 char * downloadURL(struct feed_request *request) {
 	FILE		*f;
 	gchar		*msg, *tmpurl = NULL;
+	int 		i;
 	char		*data = NULL;
 	struct stat	statinfo;
 
@@ -718,12 +719,24 @@ char * downloadURL(struct feed_request *request) {
 			request->problem = 1;
 		g_free(tmpurl);
 	} else {
-		/* fake a status */
-		request->lasthttpstatus = 0;
-		request->lastmodified = NULL;
+		/* no :// so we assume its a local path or command */
 		
-		/* no :// so we assume its a local path */
-		if(0 == stat(request->feedurl, &statinfo)) {
+		if(request->feedurl[0] == '|') {
+			/* if the first char is a | we have a pipe else a file */
+			f = popen(&request->feedurl[1], "r");
+			if(NULL != f) {
+				i = 0;
+				while(!feof(f)) {
+					++i;
+					data = g_realloc(data, i*1024);
+					fread(&data[(i-1)*1024], 1024, 1, f);
+				}
+				fclose(f);
+			} else {
+				print_status(g_strdup_printf(_("Could not open pipe \"%s\"!"), request->feedurl));
+			}
+		} else if(0 == stat(request->feedurl, &statinfo)) {
+			/* we have a file... */
 			if(NULL != (f = fopen(request->feedurl, "r"))) {
 				if(NULL == (data = g_malloc(statinfo.st_size + 1))) {
 					g_error(_("Could not allocate memory to read file!"));
@@ -744,6 +757,10 @@ char * downloadURL(struct feed_request *request) {
 			print_status(msg);
 			g_free(msg);
 		}
+		
+		/* fake a status */
+		request->lasthttpstatus = 0;
+		request->lastmodified = NULL;
 	}
 
 	return data;
