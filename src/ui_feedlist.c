@@ -215,7 +215,7 @@ static void ui_feedlist_row_activated_cb(GtkTreeView *tv, GtkTreePath *path, Gtk
 	
 	gtk_tree_model_get_iter(gtk_tree_view_get_model(tv), &iter, path);
 	gtk_tree_model_get(gtk_tree_view_get_model(tv), &iter, FS_PTR, &ptr, -1);
-	if(FST_FOLDER == ptr->type) {
+	if((NULL != ptr) && (FST_FOLDER == ptr->type)) {
 		if (gtk_tree_view_row_expanded(tv, path))
 			gtk_tree_view_collapse_row(tv, path);
 		else
