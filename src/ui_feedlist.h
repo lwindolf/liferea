@@ -156,6 +156,12 @@ feedPtr ui_feedlist_find_unread(GtkTreeIter *iter);
  */
 void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
 
+/**
+ * timeout callback to trigger the auto update handling
+ * for the feed list
+ */
+gboolean ui_feedlist_auto_update(void *data);
+
 /** 
  * @name menu and dialog callbacks 
  * @{

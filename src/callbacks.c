@@ -47,10 +47,7 @@
 #include "ui_itemlist.h"
 #include "ui_tray.h"
 #include "ui_queue.h"
-#include "update.h"
-
-#include "vfolder.h"	// FIXME
-				
+	
 extern GHashTable	*feedHandler;
 
 /* all used icons */
@@ -121,6 +118,9 @@ void ui_init(void) {
 	setupPopupMenues();			/* create popup menues */
 	
 	loadSubscriptions();
+		
+	/* setup one minute timer for automatic updating */
+ 	g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
 }
 
 /*------------------------------------------------------------------------------*/

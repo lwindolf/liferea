@@ -129,7 +129,7 @@ int main (int argc, char *argv[]) {
 	ui_init();		/* initialize gconf configured GUI behaviour */
 
 	/* setup the processing of feed update results */
-	ui_timeout_add(100, checkForUpdateResults, NULL);
+	ui_timeout_add(100, feed_process_update_results, NULL);
 
 	gtk_widget_show(mainwindow);
 

@@ -44,6 +44,7 @@
 #include "update.h"
 #include "debug.h"
 
+#include "ui_queue.h"	// FIXME
 #include "ui_feedlist.h"
 #include "ui_tray.h"
 #include "htmlview.h"
@@ -128,9 +129,6 @@ void feed_init(void) {
 	feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());
 	
 	update_thread_init();	/* start thread for update request processing */
-	
-	/* setup one minute timer for automatic updating */
- 	g_timeout_add(60*1000, update_timer_main, NULL);
 
 	initFolders();
 }
@@ -601,24 +599,6 @@ gint feed_process_update_results(gpointer data) {
 
 	ui_feedlist_update();
 
-	return TRUE;
-}
-
-static void feed_check_update_counter(feedPtr fp) {
-	GTimeVal	now;
-	
-	g_get_current_time(&now);
-
-	if(feed_get_update_interval(fp) > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
-		feed_update(fp);
-}
-
-// FIXME: does this function belong here? I think that it belongs in update.c -Nathan
-static gboolean update_timer_main(void *data) {
-
-	g_message("Checking to see if feeds need to be updated");
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_check_update_counter);
- 
 	return TRUE;
 }
 

@@ -69,8 +69,6 @@ folderPtr ui_feedlist_get_parent(nodePtr ptr) {
 	return NULL;
 }
 
-
-
 nodePtr ui_feedlist_get_selected() {
 
 	GtkWidget		*treeview;
@@ -624,4 +622,21 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 		}
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 	}
+}
+
+static void ui_feedlist_check_update_counter(feedPtr fp) {
+	GTimeVal	now;
+	
+	g_get_current_time(&now);
+
+	if(feed_get_update_interval(fp) > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
+		feed_update(fp);
+}
+
+gboolean ui_feedlist_auto_update(void *data) {
+
+	g_message("Checking to see if feeds need to be updated");
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)ui_feedlist_check_update_counter);
+ 
+	return TRUE;
 }
