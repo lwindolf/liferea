@@ -672,10 +672,10 @@ char * downloadURL(char *url) {
 				fread(data, statinfo.st_size, 1, f);
 				fclose(f);
 			} else {
-				print_status(g_strdup(_("Could not open file \"%s\"!")), url);
+				print_status(g_strdup_printf(_("Could not open file \"%s\"!"), url));
 			}
 		} else {
-			print_status(g_strdup(_("There is no file \"%s\"!")), url);
+			print_status(g_strdup_printf(_("There is no file \"%s\"!"), url));
 		}
 	}
 	

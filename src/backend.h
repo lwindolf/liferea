@@ -43,10 +43,9 @@
 
 /* constants for attributes in feedstore */
 #define FS_TITLE	0
-#define FS_URL		1
-#define FS_STATE	2
-#define FS_KEY		3
-#define FS_TYPE		4
+#define FS_STATE	1
+#define FS_KEY		2
+#define FS_TYPE		3
 
 /* constants for attributes in itemstore */
 #define IS_TITLE	0

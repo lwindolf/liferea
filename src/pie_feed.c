@@ -33,6 +33,7 @@
 #include "pie_ns.h"
 #include "ns_dc.h"
 
+#include "netio.h"
 #include "htmlview.h"
 
 /* structure for the hashtable callback which itself calls the 
