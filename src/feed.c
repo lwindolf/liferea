@@ -29,6 +29,7 @@
 #include "common.h"
 
 #include "support.h"
+#include "html.h"
 #include "cdf_channel.h"
 #include "rss_channel.h"
 #include "pie_feed.h"
@@ -89,59 +90,86 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 	return NULL;
 }
 
-feedHandlerPtr feed_parse(feedPtr fp, gchar *data) {
+feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
+	struct feed_request 	*request;
+	gchar			*source;
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
 	GSList			*handlerIter;
-	gboolean			handled = FALSE;
-	feedHandlerPtr		handler;
+	gboolean		handled = FALSE;
+	feedHandlerPtr		handler = NULL;
 
-	/* initialize channel structure */
-	
-	if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
-		gchar *msg = g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source);
-		addToHTMLBuffer(&(fp->parseErrors), msg);
-		g_free(msg);
-		goto error;
-	}
-	
-	if(NULL == (cur = xmlDocGetRootElement(doc))) {
-		addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-		goto error;
-	}
-	while(cur && xmlIsBlankNode(cur)) {
-		cur = cur->next;
-	}
-	
-	if(NULL == cur->name) {
-		addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
-		goto error;
-	}
-	
-	handlerIter = feedhandlers;
-	while (handlerIter != NULL) {
-		handler = (feedHandlerPtr)(handlerIter->data);
-		if ((*(handler->checkFormat))(doc, cur)) {
-			(*(handler->feedParser))(fp, doc, cur);
-			handled = TRUE;
+	/* try to parse buffer with XML and to create a DOM tree */	
+	do {
+		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
+			gchar *msg = g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source);
+			addToHTMLBuffer(&(fp->parseErrors), msg);
+			g_free(msg);
 			break;
 		}
-		handlerIter = handlerIter->next;
+	
+		if(NULL == (cur = xmlDocGetRootElement(doc))) {
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
+			break;
+		}
+		while(cur && xmlIsBlankNode(cur)) {
+			cur = cur->next;
+		}
+	
+		if(NULL == cur->name) {
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
+			break;
+		}
+	
+		/* determine the syndication format */
+		handlerIter = feedhandlers;
+		while (handlerIter != NULL) {
+			handler = (feedHandlerPtr)(handlerIter->data);
+			if ((*(handler->checkFormat))(doc, cur)) {
+				(*(handler->feedParser))(fp, doc, cur);
+				handled = TRUE;
+				break;
+			}
+			handlerIter = handlerIter->next;
+		}
+	} while(0);
+	
+	if(!handled) {
+		/* test if we have a HTML page */
+		if(autodiscover && ((NULL != strstr(data, "<html>")) || (NULL != strstr(data, "<HTML>")))) {
+			/* if yes we should scan for links */
+			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(fp));
+			if(NULL != (source = html_auto_discover_feed(data))) {			
+				/* now download the first feed link found */
+				debug1(DEBUG_UPDATE, "feed link found: %s", source);
+				request = update_request_new(NULL);
+				request->feedurl = g_strdup(source);				
+				if(NULL != (data = downloadURL(request))) {
+					debug0(DEBUG_UPDATE, "feed link download successful!");
+					handler = feed_parse(fp, data, FALSE);
+					g_free(data);
+				} else {
+					/* if the download fails we do nothing except
+					   unsetting the handler so the original source
+					   will get a "unsupported type" error */
+					handler = NULL;
+					debug0(DEBUG_UPDATE, "feed link download failed!");
+				}
+				g_free(source);
+				update_request_free(request);
+			} else {
+				debug0(DEBUG_UPDATE, "no feed link found!");
+			}
+		} else {		
+			ui_mainwindow_set_status_bar(_("There were errors while parsing a feed!"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type! Please check that it is in a supported format!</p>"));
+		}
 	}
 	
-	if (!handled) {
-		addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type! Please check that it is in a supported format!</p>"));
-		goto error;
-	}
-	
-	xmlFreeDoc(doc);
-	return handler;
-	
- error:
-	if (doc != NULL)
+	if(doc != NULL)
 		xmlFreeDoc(doc);
-	ui_mainwindow_set_status_bar(_("There were errors while parsing a feed!"));
-	return NULL;
+
+	return handler;
 }
 
 /* initializing function, only called upon startup */
@@ -636,11 +664,11 @@ gint feed_process_update_results(gpointer data) {
 			   several feed types (e.g. RSS for FST_RSS and FST_HELPFEED) */
 			new_fp = feed_new();
 			feed_set_source(new_fp, feed_get_source(request->fp)); /* Used by the parser functions to determine source */
-			fhp = feed_parse(new_fp, request->data);
+			fhp = feed_parse(new_fp, request->data, FALSE);
 			if (fhp == NULL) {
 				feed_set_available(request->fp, FALSE);
 				g_free(request->fp->parseErrors);
-				request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the URL really points to a resource provided in one of the supported syndication formats!"));
+				request->fp->parseErrors = g_strdup(_("Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!"));
 				feed_free(new_fp);
 				break;
 			}

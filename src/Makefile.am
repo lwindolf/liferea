@@ -38,6 +38,7 @@ liferea_bin_SOURCES = \
 	filter.c filter.h \
 	folder.c folder.h \
 	guitreemodelfilter.c guitreemodelfilter.h \
+	html.c html.h \
 	htmlview.c htmlview.h \
 	interface.c interface.h \
 	item.c item.h \

@@ -1,22 +1,22 @@
-/*
-   GUI feed list handling
-   
-   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
-   
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-   
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-*/
+/**
+ * @file ui_feedlist.c GUI feed list handling
+ *
+ * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ */
 
 #include <gtk/gtk.h>
 #include "guitreemodelfilter.h"
@@ -36,15 +36,13 @@
 #include "debug.h"
 #include "net/netio.h"
 
-static GtkWidget	*filedialog = NULL;
-
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
 
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
-static GtkWidget	*newdialog = NULL;
+static GtkWidget	*authdialog = NULL;
 
 /* flag to enable/disable the GtkTreeModel filter */
 gboolean filter_feeds_without_unread_headlines = FALSE;
@@ -520,7 +518,6 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 	gchar			*data, *tmp;
 	int			pos;
 	folderPtr		parent;
-
 	
 	debug_enter("ui_feedlist_new_subscription");	
 	
@@ -532,71 +529,57 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gboo
 	request->feedurl = g_strdup(source);
 	request->filtercmd = g_strdup(filter);
 	data = downloadURL(request);	/* FIXME: The downloading should not block? */
-
-	/* determine feed type if necessary */	
-	fp = feed_new();
-	tmp = conf_new_id();
-	feed_set_id(fp, tmp);
-	g_free(tmp);
-	feed_set_source(fp, request->feedurl);
-	feed_set_filter(fp, filter);
-	favicon_download(fp);		// FIXME: this blocks the program!!!
 	
-	parent = ui_feedlist_get_target_folder(&pos);
-	ui_folder_add_feed(parent, fp, pos);
-	
-	/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
-	if(data == NULL) {
-		ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
+	/* maybe we need authentication */
+	if(403 == request->lasthttpstatus) {		
+		authdialog = create_authdialog();
+		g_print("FIXME!!!\n");
+		/*ui_feedlist_new_subscription(source, filter, showPropDialog);*/
 	} else {
-		fp->fhp = feed_parse(fp, data);
-		fp->title = filter_title(fp->title);
-		if (fp->fhp == NULL)
-			ui_show_error_box(_("The newly created feed's type could not be detected. Please subscribe again and select a feed type!"));	
-		ui_feedlist_update();
-		fp->needsCacheSave = TRUE;
-		
-		if(showPropDialog) {
-			/* built, set default update interval and show properties dialog */
-			/* FIXME: propdialog = ui_feedlist_build_prop_dialog();*/
-			
-			on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
-		}
-	}
+		/* determine feed type if necessary */	
+		fp = feed_new();
+		tmp = conf_new_id();
+		feed_set_id(fp, tmp);
+		g_free(tmp);
+		feed_set_source(fp, request->feedurl);
+		feed_set_filter(fp, filter);
+		favicon_download(fp);		// FIXME: this blocks the program!!!
 
-	g_free(data);
-	update_request_free(request);
-	ui_feedlist_select((nodePtr)fp);
+		parent = ui_feedlist_get_target_folder(&pos);
+		ui_folder_add_feed(parent, fp, pos);
+
+		/* Note: this error box might be displayed earlier, but its odd to have it without an added feed, so it should remain here! */
+		if(data == NULL) {
+			ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
+		} else {
+			fp->fhp = feed_parse(fp, data, TRUE);
+			fp->title = filter_title(fp->title);
+			if (fp->fhp == NULL)
+				ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));	
+			ui_feedlist_update();
+			fp->needsCacheSave = TRUE;
+
+			if(showPropDialog) {
+				/* built, set default update interval and show properties dialog */
+				/* FIXME: propdialog = ui_feedlist_build_prop_dialog();*/
+
+				on_popup_prop_selected(fp, 0, NULL);		/* show prop dialog */
+			}
+		}
+
+		g_free(data);
+		update_request_free(request);
+		ui_feedlist_select((nodePtr)fp);
+	}
 	debug_exit("ui_feedlist_new_subscription");
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
+	GtkWidget	*newdialog;
 	
 	newdialog = ui_feed_newdialog_new(GTK_WINDOW(mainwindow));
 	
 	gtk_widget_show(newdialog);
-}
-
-void on_localfileselect_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget       *source;
-         
-	gtk_widget_hide(filedialog);
-	g_assert(NULL != newdialog);
-	if(NULL != (source = lookup_widget(newdialog, "newfeedentry")))
-		gtk_entry_set_text(GTK_ENTRY(source), gtk_file_selection_get_filename(GTK_FILE_SELECTION(filedialog)));
-}
- 
-void on_localfilebtn_pressed(GtkButton *button, gpointer user_data) {
-	GtkWidget       *okbutton;
-         
-	if(NULL == filedialog || !G_IS_OBJECT(filedialog))
-		filedialog = create_fileselection();
-                 
-	if(NULL == (okbutton = lookup_widget(filedialog, "fileselectbtn")))
-		g_warning("internal error! could not find file dialog select button!");
-
-	g_signal_connect((gpointer) okbutton, "clicked", G_CALLBACK (on_localfileselect_clicked), NULL);
-	gtk_widget_show(filedialog);
 }
 
 /* recursivly calls func for every feed in the feed list */

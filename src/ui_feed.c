@@ -67,14 +67,38 @@ static void ui_feed_prop_enable_httpauth(struct fp_prop_ui_data *ui_data, gboole
 static void on_feed_prop_cache_radio(GtkToggleButton *button, gpointer user_data);
 static void on_feed_prop_authcheck(GtkToggleButton *button, gpointer user_data);
 static void on_feed_prop_filtercheck(GtkToggleButton *button, gpointer user_data);
-static void on_propdialog_response(GtkDialog       *dialog,
-							gint             response_id,
-							gpointer         user_data);
+static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data);
 static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data);
+static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data);
+
+GtkWidget* ui_feed_authdialog_new (GtkWindow *parent) {
+	GtkWidget		*authdialog;
+	struct fp_prop_ui_data	*ui_data;
+	
+	ui_data = g_new0(struct fp_prop_ui_data, 1);
+	
+	/* Create the dialog */
+	ui_data->dialog = authdialog = create_authdialog();
+	gtk_window_set_transient_for(GTK_WINDOW(authdialog), GTK_WINDOW(parent));
+	
+	/* Auth check box */
+	ui_data->authcheckbox = lookup_widget(authdialog, "HTTPauthCheck");
+	ui_data->username = lookup_widget(authdialog, "usernameEntry");
+	ui_data->password = lookup_widget(authdialog, "passwordEntry");
+	
+	g_signal_connect(G_OBJECT(authdialog), "response",
+				   G_CALLBACK (on_authdialog_response), ui_data);
+
+	gtk_widget_show_all(authdialog);
+
+	return authdialog;
+}
 
 GtkWidget* ui_feed_newdialog_new (GtkWindow *parent) {
 	GtkWidget *newdialog;
-	struct fp_prop_ui_data *ui_data = g_new0(struct fp_prop_ui_data, 1);
+	struct fp_prop_ui_data *ui_data;
+	
+	ui_data = g_new0(struct fp_prop_ui_data, 1);
 
 	/* Create the dialog */
 	ui_data->dialog = newdialog = create_newdialog();
@@ -98,15 +122,6 @@ GtkWidget* ui_feed_newdialog_new (GtkWindow *parent) {
 	g_signal_connect(ui_data->fileRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
 	g_signal_connect(ui_data->cmdRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
 
-	/* Auth check box */
-	ui_data->authcheckbox = lookup_widget(newdialog, "HTTPauthCheck");
-	ui_data->username = lookup_widget(newdialog, "usernameEntry");
-	ui_data->password = lookup_widget(newdialog, "passwordEntry");
-	ui_data->credTable = lookup_widget(newdialog, "table4");
-	g_signal_connect(ui_data->authcheckbox, "toggled", G_CALLBACK(on_feed_prop_authcheck), ui_data);
-
-	ui_feed_prop_enable_httpauth(ui_data, TRUE);
-	
 	ui_data->filter = lookup_widget(newdialog, "filterEntry");
 	ui_data->filterCheckbox = lookup_widget(newdialog, "filterCheckbox");
 	ui_data->filterbox = lookup_widget(newdialog, "filterbox");
@@ -288,7 +303,8 @@ static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
 			str = g_strdup(tmp);
 		
 		/* Use the values in the textboxes if also specified in the URL! */
-		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox))) {
+		if((NULL != ui_data->authcheckbox) && 
+		   gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox))) {
 			xmlURIPtr uri = xmlParseURI(BAD_CAST str);
 			xmlChar *source;
 			if (uri != NULL) {
@@ -313,6 +329,31 @@ static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
 	}
 
 	return source;
+}
+
+static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+
+	if (response_id == GTK_RESPONSE_OK) {
+		gchar *source = NULL;
+		const gchar *filter = NULL;
+
+		/* Source */
+		source = ui_feed_dialog_decode_source(ui_data);
+
+		/* Filter handling */
+		filter = gtk_entry_get_text(GTK_ENTRY(ui_data->filter));
+		if (!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->filterCheckbox)) ||
+		    !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
+			filter = NULL;
+		} 
+		ui_feedlist_new_subscription(source, filter, TRUE);
+		g_free(source);
+	}
+
+
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+	g_free(ui_data);
 }
 
 static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {

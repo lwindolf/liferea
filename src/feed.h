@@ -155,7 +155,19 @@ void feed_add_item(feedPtr fp, itemPtr ip);
 
 void feed_copy(feedPtr fp, feedPtr new_fp);
 void feed_free(feedPtr fp);
-feedHandlerPtr feed_parse(feedPtr fp, gchar *data);
+
+/**
+ * General feed source parsing function. Parses the passed feed source
+ * and tries to determine the source type. If the type is HTML and 
+ * autodiscover is TRUE the function tries to find a feed, tries to
+ * download it and parse the feed's source instead of the passed source.
+ *
+ * @param fp		the feed structure to be filled
+ * @param data		the feed source
+ * @param autodiscover	TRUE if auto discovery should be possible
+ */
+feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover);
+
 /**
  * This is a timeout callback to check for feed update results.
  * If there is a result pending its data is parsed and merged
