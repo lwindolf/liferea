@@ -89,8 +89,10 @@ void on_popup_foldername_selected(gpointer callback_data,
 	GtkWidget	*foldernameentry;
 	gchar 		*title;
 	
-	g_assert(folder);
-	g_assert(IS_FOLDER(folder->type));
+	if (!folder || !IS_FOLDER(folder->type)) {
+		ui_show_error_box(_("A folder must be selected."));
+		return;
+	}
 	
 	if(NULL == foldernamedialog || !G_IS_OBJECT(foldernamedialog))
 		foldernamedialog = create_foldernamedialog();
@@ -110,7 +112,7 @@ void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		*iter = ((ui_data*)(folder->ui_data))->row;
 		on_popup_foldername_selected(iter, 0, NULL);
 	} else
-		g_message(_("A folder must be selected."));
+		ui_show_error_box(_("A folder must be selected."));
 }
 
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
@@ -129,8 +131,10 @@ void on_popup_removefolder_selected(gpointer callback_data,
 							 GtkWidget *widget) {
 	folderPtr		folder = (folderPtr)callback_data;
 	
-	g_assert(folder);
-	g_assert(IS_FOLDER(folder->type));
+	if (!folder || !IS_FOLDER(folder->type)) {
+		ui_show_error_box(_("A folder must be selected."));
+		return;
+	}
 	
 	if(folder_is_empty(folder))
 		folder_free(folder);
