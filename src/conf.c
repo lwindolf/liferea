@@ -314,9 +314,9 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 		feed_set_title(fp, _("Online Help Feed"));
 		feed_set_id(fp, "helpfeed1");
 		feed_set_update_interval(fp, 1440);
-		ui_folder_add_feed(helpFolder, fp, -1);
 		if (feed_load_from_cache(fp) == FALSE)
 			feed_update(fp);
+		ui_folder_add_feed(helpFolder, fp, -1);
 
 		fp = feed_new();
 		feed_set_type(fp, FST_HELPFEED);
@@ -324,9 +324,9 @@ folderPtr feedlist_insert_help_folder(folderPtr parent) {
 		feed_set_title(fp, _("Liferea SF News"));
 		feed_set_id(fp, "helpfeed2");
 		feed_set_update_interval(fp, 1440);
-		ui_folder_add_feed( helpFolder, fp, -1);
 		if (feed_load_from_cache(fp) == FALSE)
 			feed_update(fp);
+		ui_folder_add_feed( helpFolder, fp, -1);
 		
 		/* Note: help feeds are update automatically on first adding 
 		   because they miss a cache file. And of course they are

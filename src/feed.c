@@ -261,7 +261,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 		g_free(filename);
 		return FALSE;
 	}
-
+	
 	do {
 		g_assert(NULL != data);
 
