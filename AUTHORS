@@ -1,22 +1,30 @@
-Lars Lindner <lars.lindner@gmx.net>	some of the coding...
-James Doherty 				dialog design
-Jeremy Messenger <mezz7@cox.net>	search dialog, icons...
-John McKnight 				Makefile help
-pasp					window position saving
-Karl Soderstrom				heavy debugging and patching
+Coding
+======
 
-Documenation and Translations
+Lars Lindner <lars.lindner@gmx.net>		some of the coding...
+James Doherty 					dialog design
+Jeremy Messenger <mezz7@cox.net>		search dialog, icons...
+John McKnight 					Makefile help
+pasp						window position saving
+Karl Soderstrom					heavy debugging and patching
+Christophe Barbe <christophe.barbe@ufies.org>	patch to count folder items
+
+Documentation and Translations
+==============================
 
 Stephane Jourdan <stephane.jourdan@itris.fr>	french translation
 Takeshi Aihana <aihana@gnome.gr.jp>		japanese translation
 Park Ji-In <mithrandir@electrang.net>		korean translation
+Carlos Fenollosa <topopardo@humorfreak.com>	spanish translation
+Jose Maria Mateos <chema@chema.homelinux.org>	spanish translation 
 Lars Lindner <lars.lindner@gmx.net>		german translation
 
-Code included from other projects:
+Code included from other projects
+=================================
 
-Oliver Feiler <kiza@kcore.de>		SnowNews HTTP client
-Anders Carlsson <andersca@gnu.org>	egg tray icon support
-Philippe Martin, Brion Vibber		favicon to XPM conversion
+Oliver Feiler <kiza@kcore.de>			SnowNews HTTP client
+Anders Carlsson <andersca@gnu.org>		egg tray icon support
+Philippe Martin, Brion Vibber			favicon to XPM conversion
 
 If I forgot to list you here leave me a message and I'll
 include your name and email!
