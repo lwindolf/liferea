@@ -36,6 +36,8 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "ui_tray.h"
+#include "htmlview.h"
 
 #define MAX_GCONF_PATHLEN	256
 

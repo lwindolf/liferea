@@ -38,6 +38,7 @@
 #include <string.h>
 
 #include "callbacks.h"
+#include "debug.h"
 
 #define GAIM_DEBUG_ALL 0
 #define GAIM_DEBUG_INFO 1
@@ -48,8 +49,10 @@
 void gaim_debug_vargs(int level, const char *category,
 			  const char *format, va_list args)
 {
+	gchar *str;
 	g_return_if_fail(format != NULL);
-	vprintf(format, args);
+	str = g_strdup_vprintf(format, args);
+	debug2(DEBUG_GUI, "%s: %s", category, str);
 }
 
 

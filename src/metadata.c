@@ -244,10 +244,10 @@ static void attribs_render_str(gpointer data, struct displayset *displayset, gpo
 			g_free(str);
 			break;
 		case POS_HEAD:
-			addToHTMLBufferFast(&(displayset->head), str);
+			addToHTMLBufferFast(&(displayset->head), (gchar*)data);
 			break;
 		case POS_BODY:
-			addToHTMLBufferFast(&(displayset->body), str);
+			addToHTMLBufferFast(&(displayset->body), (gchar*)data);
 			break;
 		case POS_FOOTTABLE:
 			FEED_FOOT_WRITE(displayset->foottable, props->prompt, (gchar*)data);

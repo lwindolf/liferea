@@ -97,7 +97,6 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 
 static void vfolder_remove_item(feedPtr vp, itemPtr ip) {
 	GSList		*items;
-	itemPtr		tmp;
 	gboolean	found = FALSE;
 
 	items = vp->items;
@@ -126,7 +125,7 @@ static void vfolder_remove_item(feedPtr vp, itemPtr ip) {
    which do exclude this item. If there is such a rule the 
    function returns FALSE, otherwise TRUE to signalize if 
    this new item should be added. */
-static vfolder_apply_rules(nodePtr np, gpointer userdata) {
+static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	feedPtr		vp = (feedPtr)userdata;
 	feedPtr		fp = (feedPtr)np;
 	GSList		*iter, *items;
