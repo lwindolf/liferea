@@ -297,8 +297,9 @@ static int getMapping(int tagtype, int tagindex) {
 
 /* generic RSS,PIE tag parsing (basically the same as RSS parsing) */
 static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagtype) {
-	int 		i, mapping;
-	gchar		*date, *buffer, *value;
+	int 		i, j, mapping;
+	gchar		*date, *buffer, *value, *tmp;
+	gboolean	isNotEmpty;
 	xmlChar 	*string;
 	
 	g_assert(NULL != cur);
@@ -340,23 +341,37 @@ static void parseTag(gpointer obj, GHashTable *nsinfos, xmlNodePtr cur, int tagt
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
  			string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
  			if(NULL != string) {
-	 			value = CONVERT(string);
- 				xmlFree(string);
-
-				if(-1 == (mapping = getMapping(tagtype, i))) {
-					/* append it to the common DC value output */
-					buffer = g_hash_table_lookup(nsinfos, ns_dc_prefix);
-					addToHTMLBuffer(&buffer, FIRSTTD);
-					addToHTMLBuffer(&buffer, taglist[i]);
-					addToHTMLBuffer(&buffer, NEXTTD);
-					addToHTMLBuffer(&buffer, value);
-					addToHTMLBuffer(&buffer, LASTTD);
-					g_hash_table_insert(nsinfos, g_strdup(ns_dc_prefix), buffer);
-					g_free(value);
-				} else {
-					mapTag(obj, tagtype, mapping, value);
+	 			if(NULL != (value = CONVERT(string))) {					
+					/* check if value consist of whitespaces only */
+					isNotEmpty = FALSE;
+					for(j = 0, tmp = value; j < g_utf8_strlen(value, -1); j++) {
+						if(!g_unichar_isspace(*tmp)) {
+							isNotEmpty = TRUE;
+							break;
+						}
+						tmp = g_utf8_next_char(tmp);
+					}
+					
+					if(isNotEmpty) {
+						if(-1 == (mapping = getMapping(tagtype, i))) {
+							/* append it to the common DC value output */
+							buffer = g_hash_table_lookup(nsinfos, ns_dc_prefix);
+							addToHTMLBuffer(&buffer, FIRSTTD);
+							addToHTMLBuffer(&buffer, taglist[i]);
+							addToHTMLBuffer(&buffer, NEXTTD);
+							addToHTMLBuffer(&buffer, value);
+							addToHTMLBuffer(&buffer, LASTTD);
+							g_hash_table_insert(nsinfos, g_strdup(ns_dc_prefix), buffer);
+							g_free(value);
+						} else {
+							mapTag(obj, tagtype, mapping, value);
+						}
+					} else {
+						g_free(value);
+					}
 				}
-			}
+ 				xmlFree(string);
+			}			
 			return;
 		}
 	}

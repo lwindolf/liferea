@@ -185,7 +185,7 @@ void on_popup_zoomout_selected(void) { changeZoomLevel(-0.2); }
 
 void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 	GtkClipboard *clipboard;
-g_print("url:\"%s\"", url);
+
 	clipboard = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
 	gtk_clipboard_set_text(clipboard, url, -1);
  
@@ -196,7 +196,7 @@ g_print("url:\"%s\"", url);
 }
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
-g_print("url:\"%s\"", url);
+
 	subscribeTo(FST_AUTODETECT, g_strdup(url), g_strdup(selected_keyprefix), TRUE);
 	g_free(url);
 }
@@ -260,6 +260,7 @@ void showInfoBox(gchar *msg) {
 
 gint checkForUpdateResults(gpointer data) {
 	struct feed_request	*request = NULL;
+	feedPtr			new_fp;
 	feedHandlerPtr		fhp;
 	gint			type;
 	gchar			*msg;
@@ -268,29 +269,41 @@ gint checkForUpdateResults(gpointer data) {
 		return TRUE;
 
 	gdk_threads_enter();
-	if(NULL != request->new_fp) {
+	
+	request->fp->available = TRUE;
+	
+	if(304 == request->lasthttpstatus) {
+		msg = g_strdup_printf(_("\"%s\" has not changed since last update."), getFeedTitle(request->fp));
+		print_status(msg);
+		g_free(msg);
+	} else if(NULL != request->data) {
+		/* determine feed type handler */
 		type = getFeedType(request->fp);
 		g_assert(NULL != feedHandler);
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			/* can happen during a long update e.g. of an OCS directory, then the type is not set, FIXME ! */
-			//msg = g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type)
-			//g_warning(msg);
-			//g_free(msg);
+			msg = g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type);
+			g_warning(msg);
+			g_free(msg);
 			gdk_threads_leave();
 			return TRUE;
 		}
+		
+		/* parse the new downloaded feed into new_fp */
+		new_fp = getNewFeedStruct();
+		new_fp->source = g_strdup(request->fp->source);
+		(*(fhp->readFeed))(new_fp, request->data);
 
 		if(TRUE == fhp->merge)
 			/* If the feed type supports merging... */
-			mergeFeed(request->fp, request->new_fp);
+			mergeFeed(request->fp, new_fp);
 		else {
 			/* Otherwise we simply use the new feed info... */
-			copyFeed(request->fp, request->new_fp);
+			copyFeed(request->fp, new_fp);
 			msg = g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp));
 			print_status(msg);
 			g_free(msg);
 		}
-		
+
 		/* note this is to update the feed URL on permanent redirects */
 		if(0 != strcmp(request->feedurl, getFeedSource(request->fp))) {
 			setFeedSource(request->fp, g_strdup(request->feedurl));	
@@ -312,16 +325,17 @@ gint checkForUpdateResults(gpointer data) {
 			redrawFeedList();
 			updateUI();
 		}
-	} else if(304 == request->lasthttpstatus) {
-		msg = g_strdup_printf(_("\"%s\" has not changed since last update."), getFeedTitle(request->fp));
-		print_status(msg);
-		g_free(msg);
 	} else {
 		msg = g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp));
 		print_status(msg);
 		g_free(msg);
 		request->fp->available = FALSE;
 	}
+	
+	/* request structure cleanup... */
+	g_free(request->feedurl);
+	g_free(request->data);
+	
 	gdk_threads_leave();
 		
 	return TRUE;

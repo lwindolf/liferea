@@ -1,7 +1,7 @@
 /*
-   common feed (channel) handling
+   common feed handling
    
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@
 #include "favicon.h"
 #include "callbacks.h"
 #include "filter.h"
+#include "update.h"
 
 #include "htmlview.h"
 
@@ -60,6 +61,8 @@ struct detectStr detectPattern[] = {
 	{ FST_OPML,	"<opml" 	},
 	{ FST_OPML,	"<outlineDocument" },	/* outlineDocument for older OPML */
 	{ FST_OPML,	"<oml" 		},	/* OML is parsed as OPML */
+	/* { FST_HTML	"<html"		},*/	/* HTML with link discovery */
+	/* { FST_HTML	"<HTML"		},*/	/* HTML with link discovery */
 	{ FST_INVALID,	NULL 		}
 };
 
@@ -152,21 +155,9 @@ feedPtr getNewFeedStruct(void) {
 		exit(1);
 	}
 	memset(fp, 0, sizeof(struct feed));
-		
-	/* we always reuse one request structure per feed, to
-	   allow to reuse the lastmodified attribute of the
-	   last request... */
-	if(NULL == fp->request) {
-		if(NULL == (request = (struct feed_request *)g_malloc(sizeof(struct feed_request)))) {
-			g_error(_("Could not allocate memory!"));
-			return NULL;
-		} else {
-			request->feedurl = NULL;
-			request->lastmodified = NULL;
-			request->fp = fp;
-			fp->request = (gpointer)request;
-		}
-	}
+
+	/* we dont allocate a request structure this is done
+	   during cache loading or first update! */		
 	
 	fp->updateCounter = -1;
 	fp->updateInterval = -1;
@@ -208,10 +199,11 @@ gint saveFeed(feedPtr fp) {
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 			g_free(tmp);
 			
-			g_assert(NULL != fp->request);
-			if(NULL != ((struct feed_request *)(fp->request))->lastmodified)		
-				xmlNewTextChild(feedNode, NULL, "feedLastModified", 
-						((struct feed_request *)(fp->request))->lastmodified);
+			if(NULL != fp->request) {
+				if(NULL != ((struct feed_request *)(fp->request))->lastmodified)
+					xmlNewTextChild(feedNode, NULL, "feedLastModified", 
+							((struct feed_request *)(fp->request))->lastmodified);
+			}
 
 			itemlist = getFeedItemList(fp);
 			while(NULL != itemlist) {
@@ -332,14 +324,20 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 
 			if(!xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
 				fp->description = g_strdup(string);
+				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
 				fp->title = g_strdup(string);
+				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
 				fp->defaultInterval = atoi(string);
+				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
 				fp->available = (0 == atoi(string))?FALSE:TRUE;
+				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
+				getNewRequestStruct(fp);
 				((struct feed_request *)(fp->request))->lastmodified = g_strdup(string);
+				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
 				ip = parseCacheItem(doc, cur);
 				addItem(fp, ip);
@@ -347,8 +345,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 
 			if (NULL != string) {
 				xmlFree(string);
-			}
-			
+			}			
 			cur = cur->next;
 		}
 		break;
@@ -409,6 +406,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 	gchar			*baseurl;
 	gchar			*key;
 	gchar			*tmp;
+	gchar			*data;
 	feedPtr			fp;
 
 	fp = getNewFeedStruct();
@@ -417,27 +415,27 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 	g_assert(NULL != fp);
 	if(FST_AUTODETECT == type) {
 		/* if necessary download and detect type */
-		if(FST_INVALID == (type = autoDetectFeedType(url, &(fp->data)))) {	// FIXME: pass fp to adjust URL
+		if(FST_INVALID == (type = autoDetectFeedType(url, &data))) {	// FIXME: pass fp to adjust URL
 			tmp = g_strdup_printf(_("Could not detect feed type of \"%s\"! Please manually select a feed type."), url);
 			showErrorBox(tmp);
 			g_free(tmp);
-			g_free(fp->data);
+			g_free(data);
 			return NULL;
 		}
 	} else {
 		/* else only download */
 		request.feedurl = g_strdup(url);
-		fp->data = downloadURL(&request);
+		data = downloadURL(&request);
 		g_free(request.feedurl);
 		g_free(request.lastmodified);
 	}
 
-	if(NULL != fp->data) {
+	if(NULL != data) {
 		/* parse data */
 		g_assert(NULL != feedHandler);
 		if(NULL != (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
 			g_assert(NULL != fhp->readFeed);
-			(*(fhp->readFeed))(fp);
+			(*(fhp->readFeed))(fp, data);
 		} else {
 			g_error(_("internal error! unknown feed type in newFeed()!"));
 			return NULL;
@@ -516,7 +514,7 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 			new_ip = new_list->data;
 
 			found = FALSE;
-			/* scan the old list to see if the new list item did already exist */
+			/* scan the old list to see if the new_fp item does already exist */
 			old_list = old_fp->items;
 			while(old_list) {
 				old_ip = old_list->data;
@@ -589,9 +587,9 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 
 			new_list = g_slist_next(new_list);
 
-			/* any found new item list items are not needed anymore */
+			/* any found new_fp items are not needed anymore */
 			if(found && (old_fp->type != FST_HELPFEED)) { 
-				new_ip->fp = new_fp;	/* because freeItem() would decrease the unread counter of old_fp */
+				new_ip->fp = new_fp;	/* else freeItem() would decrease the unread counter of old_fp */
 				freeItem(new_ip);
 			}
 		}
@@ -625,19 +623,17 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 			old_fp->items = new_fp->items;
 		}		
 
-		/* copy description */
+		/* copy description and default update interval */
 		g_free(old_fp->description);
-		old_fp->description = new_fp->description;
+		old_fp->description = g_strdup(new_fp->description);
+		old_fp->defaultInterval = new_fp->defaultInterval;
 	}
-	
-	old_fp->available = new_fp->available;
-	old_fp->defaultInterval = new_fp->defaultInterval;
+
 	g_free(old_fp->parseErrors);
 	old_fp->parseErrors = new_fp->parseErrors;
-	g_free(new_fp->source);
-	g_free(new_fp->title);
-	g_free(new_fp->data);
-	g_free(new_fp);			/* dispose new feed structure */
+	old_fp->available = new_fp->available;
+	new_fp->items = NULL;
+	freeFeed(new_fp);
 	
 	doTrayIcon(traycount);		/* finally update the tray icon */
 }
@@ -658,12 +654,7 @@ void removeFeed(feedPtr fp) {
 
 /* "foreground" user caused update executed in the main thread to update
    the selected and displayed feed */
-void updateFeed(feedPtr fp) {
-	gchar *string = g_strdup_printf("updating \"%s\"", getFeedTitle(fp));
-	print_status(string);
-	g_free(string);
-	requestUpdate(fp);
-}
+void updateFeed(feedPtr fp) { requestUpdate(fp); }
 
 static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr		fp = (feedPtr)value;
@@ -734,18 +725,22 @@ gboolean getFeedAvailable(feedPtr fp) { return fp->available; }
    of this feed. Should only be called when getFeedAvailable
    returns FALSE. Caller must free returned string! */
 gchar * getFeedErrorDescription(feedPtr fp) {
-	gchar	*tmp1, *tmp2 = NULL, *buffer = NULL;
-	gint 	httpstatus;
+	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
+	gint 		httpstatus;
+	gboolean	errorFound = FALSE;
 	
-	g_assert(NULL != fp->request);
+	if(NULL == fp->request)
+		return NULL;
+		
+	if((0 == ((struct feed_request *)fp->request)->problem) &&
+	   (NULL == fp->parseErrors))
+		return NULL;
 	
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
 	
 	httpstatus = ((struct feed_request *)fp->request)->lasthttpstatus;
-	if(200 != httpstatus) {
-		if((httpstatus < 300) || (httpstatus > 599))	/* should never happen! */
-			tmp2 = g_strdup(_("The last update of this feed failed. Please see the console output for more information!"));
-
+	/* httpstatus is always zero for file subscriptions... */
+	if((200 != httpstatus) && (0 != httpstatus)) {
 		/* first specific codes */
 		switch(httpstatus) {
 			case 401:tmp2 = g_strdup(_("The feed no longer exists. Please unsubscribe!"));break;
@@ -768,16 +763,26 @@ gchar * getFeedErrorDescription(feedPtr fp) {
 				default:tmp2 = g_strdup(_("(unknown error class)"));break;
 			}
 		}
+		errorFound = TRUE;
 		tmp1 = g_strdup_printf(_(HTTP_ERROR_TEXT), httpstatus, tmp2);
 		addToHTMLBuffer(&buffer, tmp1);
 		g_free(tmp1);
 		g_free(tmp2);
 	}
 	
+	/* add parsing error messages */
 	if(NULL != fp->parseErrors) {
-		if(NULL != buffer)
+		if(errorFound)
 			addToHTMLBuffer(&buffer, HTML_NEWLINE);			
+		errorFound = TRUE;
 		tmp1 = g_strdup_printf(_(PARSE_ERROR_TEXT), fp->parseErrors);
+		addToHTMLBuffer(&buffer, tmp1);
+		g_free(tmp1);
+	}
+	
+	/* if none of the above error descriptions matched... */
+	if(!errorFound) {
+		tmp1 = g_strdup_printf(_("There was a problem while reading this subscription. Please check the URL and console output!"));
 		addToHTMLBuffer(&buffer, tmp1);
 		g_free(tmp1);
 	}
@@ -827,9 +832,13 @@ void clearFeedItemList(feedPtr fp) {
 	fp->items = NULL;
 }
 
-/* Method to copy the infos of the structure given by
-   new_fp to the structure fp points to. The feed infos
-   of new_fp are freed afterwards. */
+/* Method to copy the info payload of the structure given by
+   new_fp to the structure fp points to. Essential model
+   specific keys of fp are kept. The feed structure of new_fp 
+   is freed afterwards. 
+   
+   This method is primarily used for feeds which do not want
+   to incrementally update items like directories. */
 void copyFeed(feedPtr fp, feedPtr new_fp) {
 	feedPtr		tmp_fp;
 	itemPtr		ip;
@@ -837,23 +846,32 @@ void copyFeed(feedPtr fp, feedPtr new_fp) {
 	
 	/* To prevent updating feed ptr in the tree store and
 	   feeds hashtable we reuse the old structure! */
-	g_free(new_fp->title),
-	new_fp->key = fp->key;			/* reuse some attributes */
+
+	/* in the next step we will copy the new_fp structure
+	   to fp, but we need to keep some fp attributes... */
+	g_free(new_fp->title);
+	g_free(new_fp->source);
+	new_fp->key = fp->key;			
 	new_fp->keyprefix = fp->keyprefix;
 	new_fp->title = fp->title;
+	new_fp->source = fp->source;
 	new_fp->type = fp->type;
+	new_fp->request = fp->request;
 	
 	tmp_fp = getNewFeedStruct();
 	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
 	memcpy(fp, new_fp, sizeof(struct feed));
-	tmp_fp->key = NULL;			/* to prevent removal of reused attributes... */
+	
+	tmp_fp->key = NULL;				/* to prevent removal of reused attributes... */
 	tmp_fp->items = NULL;
 	tmp_fp->title = NULL;
-	freeFeed(tmp_fp);			/* free all infos allocated by old feed */
-	g_free(new_fp->data);
+	tmp_fp->source = NULL;
+	tmp_fp->request = NULL;
+	freeFeed(tmp_fp);				/* we use tmp_fp to free almost all infos
+							   allocated by old feed structure */
 	g_free(new_fp);
 	
-	/* adjust item parent pointer */
+	/* adjust item parent pointer of new items from new_fp to fp */
 	item = getFeedItemList(fp);
 	while(NULL != item) {
 		ip = item->data;
@@ -867,12 +885,16 @@ void freeFeed(feedPtr fp) {
 
 	/* free items */
 	clearFeedItemList(fp);
+	
+	// FIXME: free filter structures too as soon as implemented
+
+	freeRequest(fp->request);
 
 	/* free feed info */
 	g_free(fp->title);
 	g_free(fp->description);
 	g_free(fp->source);
 	g_free(fp->key);
-	g_free(fp->data);
+	g_free(fp->parseErrors);
 	g_free(fp);
 }

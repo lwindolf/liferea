@@ -191,7 +191,7 @@ gchar * parseAuthor(xmlNodePtr cur) {
 
 /* reads a PIE feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void readPIEFeed(feedPtr fp) {
+static void readPIEFeed(feedPtr fp, gchar *data) {
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
 	itemPtr 		ip;
@@ -212,7 +212,7 @@ static void readPIEFeed(feedPtr fp) {
 	
 	cp->updateInterval = -1;
 	while(1) {
-		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;

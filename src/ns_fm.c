@@ -18,7 +18,6 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <string.h>
 #include "ns_fm.h"
 #include "common.h"
 
@@ -43,7 +42,7 @@ static void parseItemTag(RSSItemPtr ip, xmlNodePtr cur) {
  		string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
  		tmp = CONVERT(string);	
 		if(NULL != tmp) {
-			if(strlen(tmp) > 0) {
+			if(g_utf8_strlen(tmp, -1) > 0) {
 				g_hash_table_insert(ip->nsinfos, g_strdup("fm:screenshot_url"), tmp);
 			} else {
 				g_free(tmp);

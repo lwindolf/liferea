@@ -1,12 +1,15 @@
 2004-01-??  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.7
-	
+
 	* Update to the SnowNews 1.4.3 HTTP client
-	  which allows HTTP authentification. To use 
+	  which allows HTTP authentication. To use
 	  this feature simply add "user:passwd" in
 	  front of the domain name of a feeds URL
 	  like "http://user:passwd@www.myblog.com"
+	  HTTP authentication was originally proposed
+	  by Søren Hansen who also wrote a first 
+	  patch to realize it.
 	* Added support for OPML files with lowercase
 	  tags ("xmlurl" instead of "xmlUrl"). 
 	  AmphetaDesk does such exports.

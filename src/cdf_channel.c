@@ -149,7 +149,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 
 /* reads a CDF feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void readCDFFeed(feedPtr fp) {
+static void readCDFFeed(feedPtr fp, gchar *data) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	CDFChannelPtr 	cp;
@@ -164,7 +164,7 @@ static void readCDFFeed(feedPtr fp) {
 	cp->nsinfos = g_hash_table_new(g_str_hash, g_str_equal);		
 	
 	while(1) {
-		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;

@@ -29,6 +29,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <glib.h>
 #include <unistd.h>	/* access() */
 #include <errno.h>
 #include "htmlview.h"
@@ -68,7 +69,7 @@ static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 static void kill_old_connections (HtmlDocument *doc);
 
-/* function to write HTML source */
+/* function to write HTML source given as a UTF-8 string */
 void writeHTML(gchar *string) {
 
 	kill_old_connections(doc);
@@ -77,10 +78,10 @@ void writeHTML(gchar *string) {
 	html_document_open_stream(doc, "text/html");
 
 	
-	if((NULL != string) && (strlen(string) > 0))
-		html_document_write_stream(doc, string, strlen(string));
+	if((NULL != string) && (g_utf8_strlen(string, -1) > 0))
+		html_document_write_stream(doc, string, g_utf8_strlen(string, -1));
 	else
-		html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
+		html_document_write_stream(doc, EMPTY, g_utf8_strlen(EMPTY, -1));	
 
 	html_document_close_stream(doc);
 	changeZoomLevel(0.0);

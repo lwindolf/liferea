@@ -57,8 +57,8 @@ void	addToHTMLBuffer(gchar **buffer, gchar *string);
 xmlDocPtr parseBuffer(gchar *data, gchar **errormsg);
 
 gchar * getActualTime(void);
-time_t 	parseISO8601Date(char *date);
-time_t 	parseRFC822Date(char *date);
+time_t 	parseISO8601Date(gchar *date);
+time_t 	parseRFC822Date(gchar *date);
 // FIXME: formatDate used by several functions not only
 // to format date column, dontt use always date column format!!!
 // maybe gchar * formatDate(time_t, gchar *format)

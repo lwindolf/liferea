@@ -1,8 +1,8 @@
 /*
  * common routines for Liferea
  * 
- * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
- *                    Karl Soderstrom <ks@xanadunet.net>
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
  * parts of the RFC822 timezone decoding were taken from the gmime 
  * source written by 
@@ -82,7 +82,6 @@ gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * strin
 		from_encoding = standard_encoding;
 		
 	if(NULL != string) {		
-		// FIXME: is this thread safe?	
 		new = g_convert(string, strlen(string), from_encoding, to_encoding, &br, &bw, NULL);
 		
 		if(NULL != new)
@@ -171,12 +170,21 @@ gchar * extractHTMLNode(xmlNodePtr cur) {
 
 void unhtmlizeHandleCharacters (void *userData_p, const xmlChar *string_p, int len)
 {
+/*        gchar *result_p = (gchar *) userData_p;
+        int curLen = g_utf8_strlen(result_p, -1);
+
+	result_p = g_utf8_offset_to_pointer(result_p, curLen);                                                                                
+        g_utf8_strncpy(result_p, (gchar *)string_p, len);
+	/ Make sure it's null-terminated
+	result_p = g_utf8_offset_to_pointer(result_p, curLen + len + 1);
+	*result_p = '\0';*/
         gchar *result_p = (gchar *) userData_p;
         int curLen = strlen(result_p);
                                                                                 
         strncpy (&result_p[curLen], (char *) string_p, len);
 	// Make sure it's null-terminated
         result_p[curLen + len] = '\0';
+	
 }
 
 /* converts a UTF-8 strings containing any HTML stuff to 
@@ -199,7 +207,7 @@ gchar * unhtmlize(gchar *string) {
  	if (sax_p != NULL) {
  		sax_p->characters = unhtmlizeHandleCharacters;
 	
-		length = strlen(string); 
+		length = strlen(string);	/* the result should not get bigger than the original string... (is this correct?) */
  		result_p = g_new(gchar, length + 1);
  		if (result_p != NULL) {
  			result_p[0] = '\0';
@@ -213,7 +221,7 @@ gchar * unhtmlize(gchar *string) {
  		g_free(sax_p);
  	}
  
- 	if (result_p == NULL || !strlen(result_p)) {
+ 	if (result_p == NULL || !g_utf8_strlen(result_p, -1)) {
  		/* Something went wrong in the parsing.
  		 * Use original string instead */
  		g_free(result_p);
@@ -236,11 +244,11 @@ xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
 	
 	parser = xmlCreateMemoryParserCtxt(data, strlen(data));
 	parser->recovery = 1;
-	parser->sax->fatalError = NULL; //errorFunc; 
-	parser->sax->error = NULL; //errorFunc; 
-	parser->sax->warning = NULL; //errorFunc;
-	parser->vctxt.error = NULL; //errorFunc;
-	parser->vctxt.warning = NULL; //errorFunc;
+	parser->sax->fatalError = NULL;
+	parser->sax->error = NULL;
+	parser->sax->warning = NULL;
+	parser->vctxt.error = NULL;
+	parser->vctxt.warning = NULL;
 	xmlParseDocument(parser);	// ignore returned errors
 	
 	if(*errormsg != NULL)
@@ -254,7 +262,7 @@ xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
 }
 
 /* converts a ISO 8601 time string to a time_t value */
-time_t parseISO8601Date(char *date) {
+time_t parseISO8601Date(gchar *date) {
 	struct tm	tm;
 	time_t		t;
 	gboolean	success = FALSE;
@@ -289,7 +297,7 @@ time_t parseISO8601Date(char *date) {
 }
 
 /* converts a RFC822 time string to a time_t value */
-time_t parseRFC822Date(char *date) {
+time_t parseRFC822Date(gchar *date) {
 	struct tm	tm;
 	time_t		t;
 	char 		*oldlocale;
@@ -304,7 +312,7 @@ time_t parseRFC822Date(char *date) {
 	   the most specific format we expect:  "Fri, 03 Dec 12 01:38:34 CET"
 	 */
 	/* skip day of week */
-	if(NULL != (pos = strchr(date, ',')))
+	if(NULL != (pos = g_utf8_strchr(date, -1, ',')))
 		date = ++pos;
 
 	/* we expect english month names, so we set the locale */
@@ -388,19 +396,13 @@ gchar * formatDate(time_t t) {
 
 void initCachePath(void) {
 	struct stat	statinfo;
-	struct passwd	*pwent;
 
-	if(NULL != (pwent = getpwuid(getuid()))) {
-		CACHEPATH = g_strdup_printf("%s/.liferea", pwent->pw_dir);
-	
-		if(0 != stat(CACHEPATH, &statinfo)) {
-			if(0 != mkdir(CACHEPATH, S_IRUSR | S_IWUSR | S_IXUSR)) {
-				g_error(g_strdup_printf(_("Cannot create cache directory %s!"), CACHEPATH));
-			}
+	CACHEPATH = g_strdup_printf("%s/.liferea", g_get_home_dir());
+
+	if(0 != stat(CACHEPATH, &statinfo)) {
+		if(0 != mkdir(CACHEPATH, S_IRUSR | S_IWUSR | S_IXUSR)) {
+			g_error(g_strdup_printf(_("Cannot create cache directory %s!"), CACHEPATH));
 		}
-		//free(pwent);	crashes???
-	} else {
-		g_error(g_strerror(errno));
 	}
 }
 
@@ -463,6 +465,9 @@ gchar * encodeURIString(gchar *uriString) {
 	gchar		*tmp, *hex;
 	int		i, j, len, bytes;
 
+	/* the UTF-8 string is casted to ASCII to treat
+	   the characters bytewise and convert non-ASCII
+	   compatible chars to URI hexcodes */
 	newURIString = g_strdup("");
 	len = strlen(uriString);
 	for(i = 0; i < len; i++) {

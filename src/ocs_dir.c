@@ -453,7 +453,7 @@ static void parseDirectory(feedPtr fp, directoryPtr dp, xmlNodePtr cur, gint ocs
 		dp->tags[OCS_DESCRIPTION] = convertToHTML(dp->tags[OCS_DESCRIPTION]);
 }
 
-static void readOCS(feedPtr fp) {
+static void readOCS(feedPtr fp, gchar *data) {
 	xmlDocPtr 	doc = NULL;
 	xmlNodePtr 	cur = NULL;
 	directoryPtr	dp;
@@ -461,7 +461,7 @@ static void readOCS(feedPtr fp) {
 	int 		error = 0;
 
 	while(1) {
-		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;

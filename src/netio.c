@@ -705,14 +705,17 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
  */
 char * downloadURL(struct feed_request *request) {
 	FILE		*f;
-	gchar		*tmpurl = NULL;
+	gchar		*msg, *tmpurl = NULL;
 	char		*data = NULL;
 	struct stat	statinfo;
+
+	request->problem = 0;
 
 	if(NULL != strstr(request->feedurl, "://")) {
 		/* :// means it an URL */
 		tmpurl = g_strdup(request->feedurl);	/* necessary because DownloadFeed() works on the URL string */
-		data = DownloadFeed(tmpurl, request, 0);
+		if(NULL == (data = DownloadFeed(tmpurl, request, 0)))
+			request->problem = 1;
 		g_free(tmpurl);
 	} else {
 		/* fake a status */
@@ -730,10 +733,16 @@ char * downloadURL(struct feed_request *request) {
 				fread(data, statinfo.st_size, 1, f);
 				fclose(f);
 			} else {
-				print_status(g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl));
+				request->problem = 1;
+				msg = g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl);
+				print_status(msg);
+				g_free(msg);
 			}
 		} else {
-			print_status(g_strdup_printf(_("There is no file \"%s\"!"), request->feedurl));
+			request->problem = 1;
+			msg = g_strdup_printf(_("There is no file \"%s\"!"), request->feedurl);
+			print_status(msg);
+			g_free(msg);
 		}
 	}
 

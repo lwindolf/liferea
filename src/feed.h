@@ -1,5 +1,5 @@
 /*
-   common feed (channel) handling
+   common feed handling
    
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
@@ -69,13 +69,12 @@
 typedef struct feed {
 	gint		type;			/* feed type */
 	gchar		*key;
-	gchar		*keyprefix;
+	gchar		*keyprefix;		// FIXME: remove this, bad design
 	gint		unreadCount;		/* number of unread items */
 	gint		defaultInterval;	/* update interval as specified by the feed */
 	gint		updateCounter;		/* minutes till next auto-update */
 	gboolean	available;		/* flag to signalize loading errors */
 	
-	gchar		*data;		/* raw XML data, used while downloading/parsing the feed */
 	gchar		*parseErrors;	/* textual/HTML description of parsing errors */
 	
 	gpointer	icon;		/* pointer to pixmap, if theres a favicon */
@@ -99,7 +98,7 @@ typedef struct feed {
 /* ------------------------------------------------------------ */
 
 /* a function which parses the feed data given with the feed ptr fp */
-typedef void 	(*readFeedFunc)		(feedPtr fp);
+typedef void 	(*readFeedFunc)		(feedPtr fp, gchar *data);
 
 typedef struct feedHandler {
 	readFeedFunc		readFeed;

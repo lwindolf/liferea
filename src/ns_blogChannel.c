@@ -18,7 +18,6 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <string.h> /* For strlen() */
 #include "htmlview.h"
 #include "netio.h"
 #include "ns_blogChannel.h"
@@ -44,7 +43,7 @@ static gchar ns_bC_prefix[] = "blogChannel";
 
 gchar * ns_bC_getRSSNsPrefix(void) { return ns_bC_prefix; }
 
-/* retruns a HTML string containing the text and attributes of the outline */
+/* returns a HTML string containing the text and attributes of the outline */
 static gchar * getOutlineContents(xmlNodePtr cur) {
 	gchar		*buffer = NULL;
 	gchar		*tmp, *value;

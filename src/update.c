@@ -1,7 +1,7 @@
 /*
    feed updating functionality
       
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -40,6 +40,38 @@ static void *updateMainLoop(void *data);
 static void *autoUpdateMainLoop(void *data);
 static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata);
 static void doUpdateFeed(struct feed_request *request);
+
+/* Function to set up a new feed request structure.
+   If fp is not NULL the request and the fp cross
+   pointers are set electrically! */
+gpointer getNewRequestStruct(feedPtr fp) {
+	struct feed_request	*request;
+	
+	/* we always reuse one request structure per feed, to
+	   allow to reuse the lastmodified attribute of the
+	   last request... */
+	if(NULL == (request = (struct feed_request *)g_malloc(sizeof(struct feed_request)))) {
+		g_error(_("Could not allocate memory!"));
+		exit(1);
+	} else {
+		request->feedurl = NULL;
+		request->lastmodified = NULL;
+		request->lasthttpstatus = 0;
+		request->fp = fp;
+		if(NULL != fp)
+			fp->request = (gpointer)request;
+	}	
+	return (gpointer)request;
+}
+
+void freeRequest(gpointer request) {
+
+	if(NULL != request) {
+		g_free(((struct feed_request *)request)->lastmodified);
+		g_free(((struct feed_request *)request)->feedurl);
+		g_free(request);
+	}
+}
 
 /* sets up a thread which minutly does update
    the feed update counter values and adds
@@ -96,9 +128,31 @@ static void *updateMainLoop(void *data) {
 
 /* method to be called by other threads to create requests */
 void requestUpdate(feedPtr fp) {
-
+	gchar			*source;
+	gchar			*msg;
+	
 	g_assert(NULL != fp);
-	g_assert(NULL != fp->request);	
+	
+	msg = g_strdup_printf("updating \"%s\"", getFeedTitle(fp));
+	print_status(msg);
+	g_free(msg);
+	
+	if(NULL == (source = getFeedSource(fp))) {
+		g_warning(_("Feed source is NULL! This should never happen - cannot update!"));
+		return;
+	}
+
+	/* reset feed update counter */
+	fp->updateCounter = fp->updateInterval;
+
+	if(NULL == fp->request)
+		getNewRequestStruct(fp);
+	
+	/* prepare request url (strdup because it might be
+	   changed on permanent HTTP redirection in netio.c) */
+	((struct feed_request *)fp->request)->feedurl = g_strdup(source);
+
+	/* FIXME: check if feed is already in the queue! */
 	g_async_queue_push(requests, (gpointer)fp->request);
 }
 
@@ -116,55 +170,13 @@ static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata)
 }
 
 static void doUpdateFeed(struct feed_request *request) {
-	feedHandlerPtr		fhp;
-	gint			type;
-	gchar			*source;
-	gint			error = 1;
 	
 	g_assert(NULL != request);
-	g_assert(NULL != request->fp);
-	
-	while(1) {
-		type = getFeedType(request->fp);
-		g_assert(NULL != feedHandler);
-		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			/* can happen during a long update e.g. of an OCS directory, then the type is not set, FIXME ! */
-			//g_warning(g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type));
-			break;
-		}
 
-		/* reset feed update counter */
-		request->fp->updateCounter = request->fp->updateInterval;
+	/* do the request */		
+	request->data = downloadURL(request);
 
-		if(NULL == (source = getFeedSource(request->fp))) {
-			g_warning(_("Feed source is NULL! This should never happen - cannot update!"));
-			break;
-		}
-
-		request->new_fp = getNewFeedStruct();
-		
-		/* to reuse the prepared request structure */
-		g_free(request->new_fp->request);	
- 		request->new_fp->request = (gpointer) request;
-		g_free(request->feedurl);
-		request->feedurl = g_strdup(source);	/* strdup because it might be changed in netio.c */
-
-		/* do the request */		
-		if(NULL != (request->new_fp->data = downloadURL(request))) {
-			request->new_fp->source = g_strdup(source);
-			g_assert(NULL != fhp->readFeed);
-			(*(fhp->readFeed))(request->new_fp);	/* parse the XML data ... */
-			error = 0;
-		} else {
-			freeFeed(request->new_fp);
-		}
-		
-		break;
-	}
-	
-	if(0 != error)
-		request->new_fp = NULL;
-	
-	/* finally return the request */
+	/* finally we return the request so the GUI can merge the feeds
+	   and display the results... */
 	g_async_queue_push(results, (gpointer)request);
 }

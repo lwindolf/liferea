@@ -71,15 +71,16 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	attr = cur->properties;
 	while(NULL != attr) {
 		/* get prop value */
- 		string = xmlGetNoNsProp(cur, attr->name);
+ 		string = xmlGetProp(cur, attr->name);
 		if(NULL != string) {
 	 		value = CONVERT(string);
  			xmlFree(string);
 
 			if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
-				tmp = g_strdup_printf("<p>%s</p>", value);
+				tmp = g_strdup_printf("<p class=\"opmltext\">%s</p>", value);
 				addToHTMLBuffer(&buffer, tmp);
 				g_free(tmp);
+
 			} else if(!xmlStrcmp(attr->name, BAD_CAST"isComment")) {
 				/* don't output anything */
 
@@ -87,12 +88,24 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 				/* don't output anything */
 
 			} else if(!xmlStrcmp(attr->name, BAD_CAST"url")) {		
-				tmp = g_strdup_printf("<a href=\"%s\">%s</a>", value, value);
+				tmp = g_strdup_printf("<p class=\"opmlurl\">URL : <a href=\"%s\">%s</a></p>", value, value);
+				addToHTMLBuffer(&buffer, tmp);
+				g_free(tmp);
+
+			} else if(!xmlStrcmp(attr->name, BAD_CAST"htmlUrl") ||
+			          !xmlStrcmp(attr->name, BAD_CAST"htmlurl")) {		
+				tmp = g_strdup_printf("<p class=\"opmlhtmlurl\">HTML : <a href=\"%s\">%s</a></p>", value, value);
+				addToHTMLBuffer(&buffer, tmp);
+				g_free(tmp);
+				
+			} else if(!xmlStrcmp(attr->name, BAD_CAST"xmlUrl") ||
+			          !xmlStrcmp(attr->name, BAD_CAST"xmlurl")) {		
+				tmp = g_strdup_printf("<p class=\"opmlxmlurl\">XML : <a href=\"%s\">%s</a></p>", value, value);
 				addToHTMLBuffer(&buffer, tmp);
 				g_free(tmp);
 
 			} else {		
-				tmp = g_strdup_printf("<p>%s : %s\n</p>", (gchar *)attr->name, value);
+				tmp = g_strdup_printf("<p class=\"opmlanyattribute\">%s : %s\n</p>", (gchar *)attr->name, value);
 				addToHTMLBuffer(&buffer, tmp);
 				g_free(tmp);
 			}
@@ -101,15 +114,14 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 		}
 		attr = attr->next;
 	}
-	addToHTMLBuffer(&buffer, "<br><br>");
 			
 	/* check for <outline> subtags */
 	if(NULL != cur->xmlChildrenNode) {
-		addToHTMLBuffer(&buffer, "<ul>");
+		addToHTMLBuffer(&buffer, "<ul style=\"opmlchilds\">");
 		cur = cur->xmlChildrenNode;
 		while(NULL != cur) {
 			if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
-				tmp = g_strdup_printf("<li style=\"padding-left:15px;\">%s</li>", getOutlineContents(cur));
+				tmp = g_strdup_printf("<li class=\"opmllistitem\">%s</li>", getOutlineContents(cur));
 				addToHTMLBuffer(&buffer, tmp);
 				g_free(tmp);
 			}
@@ -122,7 +134,7 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	return buffer;
 }
 
-static void readOPML(feedPtr fp) {
+static void readOPML(feedPtr fp, gchar *data) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, child;
 	xmlChar 	*string;
@@ -132,7 +144,7 @@ static void readOPML(feedPtr fp) {
 	int 		i, error = 0;
 
 	while(1) {
-		if(NULL == (doc = parseBuffer(fp->data, &(fp->parseErrors)))) {
+		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source));
 			error = 1;
 			break;
@@ -196,10 +208,13 @@ static void readOPML(feedPtr fp) {
 						g_free(tmp);
 						
 						ip = getNewItemStruct();
-						ip->title = CONVERT(xmlGetNoNsProp(child, BAD_CAST"text"));
+						if(NULL == (string = xmlGetProp(child, BAD_CAST"text")))
+							string = xmlGetProp(child, BAD_CAST"title");
+						ip->title = CONVERT(string);
 						ip->description = buffer;
 						ip->readStatus = TRUE;
 						addItem(fp, ip);
+						xmlFree(string);
 					}
 					child = child->next;
 				}
@@ -212,14 +227,15 @@ static void readOPML(feedPtr fp) {
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		fp->type = FST_OPML;
 		fp->updateInterval = fp->updateCounter = -1;
-		fp->title = headTags[OPML_TITLE];
+		if(NULL == (fp->title = headTags[OPML_TITLE]))
+			fp->title = g_strdup(fp->source);
 		
 		if(0 == error) {
 			/* prepare HTML output */
 			buffer = NULL;
 			addToHTMLBuffer(&buffer, FEED_HEAD_START);	
 			addToHTMLBuffer(&buffer, FEED_HEAD_CHANNEL);
-			addToHTMLBuffer(&buffer, headTags[OPML_TITLE]);
+			addToHTMLBuffer(&buffer, fp->title);
 			addToHTMLBuffer(&buffer, HTML_NEWLINE);	
 			addToHTMLBuffer(&buffer, FEED_HEAD_SOURCE);	
 			if(NULL != fp->source) {
@@ -242,7 +258,6 @@ static void readOPML(feedPtr fp) {
 			fp->available = TRUE;
 		} else {
 			print_status(_("There were errors while parsing this feed!"));
-			fp->title = g_strdup(fp->source);
 		}
 		
 		break;

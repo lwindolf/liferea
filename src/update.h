@@ -1,7 +1,7 @@
 /*
    auto update functionality
      
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,17 +28,16 @@
    hand to put update requests into the request and result queue 
    between GUI and update thread and on the other hand to 
    persistently store HTTP status information written by
-   the SnowNews netio.c code. */
+   the SnowNews netio.c code which is displayed in the GUI. */
 struct feed_request {
 
-	/* fields used by netio.c */
-        char * 	feedurl;		/* Non hashified URL */
+        char * 	feedurl;		/* Non hashified URL set from the requestion function */
         char * 	lastmodified; 		/* Content of header as sent by the server. */
 	int 	lasthttpstatus;	
 	int 	problem;		/* Set if there was a problem downloading the feed. */
+	char *	data;			/* newly downloaded feed data to be parsed */
 
-	feedPtr	fp;			/* pointer to old feed structure */
-	feedPtr	new_fp;			/* to store newly downloaded feed structure */
+	feedPtr	fp;			/* pointer to feed structure which is to be updated */
 };
 
 GThread * initUpdateThread(void);

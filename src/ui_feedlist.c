@@ -505,8 +505,8 @@ void on_popup_prop_selected(void) {
 	gtk_entry_set_text(GTK_ENTRY(feednameentry), getFeedTitle(fp));
 	gtk_entry_set_text(GTK_ENTRY(feedurlentry), getFeedSource(fp));
 
-	if(FST_OCS == getFeedType(fp)) {	
-		/* disable the update interval selector for OCS feeds */
+	if(IS_DIRECTORY(getFeedType(fp))) {	
+		/* disable the update interval selector for directories (should this be the case for OPML?) */
 		gtk_widget_set_sensitive(lookup_widget(propdialog, "feedrefreshcount"), FALSE);
 	} else {
 		/* enable and adjust values otherwise */
