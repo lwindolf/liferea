@@ -609,11 +609,18 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	g_free(old_fp->parseErrors);
 	old_fp->parseErrors = new_fp->parseErrors;
 	new_fp->parseErrors = NULL;
+
 	old_fp->available = new_fp->available;
 	new_fp->items = NULL;
+
 	metadata_list_free(old_fp->metadataList);
 	old_fp->metadataList = new_fp->metadataList;
 	new_fp->metadataList = NULL;
+
+	g_free(old_fp->htmlUri);
+	old_fp->htmlUri = new_fp->htmlUri;
+	new_fp->htmlUri = NULL;
+
 	feed_free(new_fp);
 	
 	ui_tray_add_new(traycount);		/* finally update the tray icon */
@@ -803,12 +810,18 @@ void feed_decrease_new_counter(feedPtr fp) {
 gint feed_get_new_counter(feedPtr fp) { return fp->newCount; }
 
 gint feed_get_default_update_interval(feedPtr fp) { return fp->defaultInterval; }
+void feed_set_default_update_interval(feedPtr fp, gint interval) { fp->defaultInterval = interval; }
+
 gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 
 void feed_set_update_interval(feedPtr fp, gint interval) {
 	fp->updateInterval = interval; 
 
 	conf_feedlist_schedule_save();
+}
+
+const feedHandlerPtr feed_get_fhp(feedPtr fp) {
+	return fp->fhp;
 }
 
 void feed_reset_update_counter(feedPtr fp) {
@@ -956,6 +969,14 @@ void feed_set_title(feedPtr fp, const gchar *title) {
 }
 
 const gchar * feed_get_description(feedPtr fp) { return fp->description; }
+void feed_set_description(feedPtr fp, const gchar *description) {
+	g_free(fp->description);
+	if (description != NULL)
+		fp->description = g_strdup(description);
+	else
+		fp->description = NULL;
+}
+
 const gchar * feed_get_source(feedPtr fp) { return fp->source; }
 const gchar * feed_get_filter(feedPtr fp) { return fp->filtercmd; }
 
@@ -970,6 +991,16 @@ void feed_set_filter(feedPtr fp, const gchar *filter) {
 	g_free(fp->filtercmd);
 
 	fp->filtercmd = g_strdup(filter);
+	conf_feedlist_schedule_save();
+}
+
+const gchar * feed_get_html_uri(feedPtr fp) { return fp->htmlUri; };
+void feed_set_html_uri(feedPtr fp, const gchar *htmlUri) {
+	g_free(fp->htmlUri);
+	if (htmlUri != NULL)
+		fp->htmlUri = g_strdup(htmlUri);
+	else
+		fp->htmlUri = NULL;
 	conf_feedlist_schedule_save();
 }
 
@@ -1003,25 +1034,58 @@ void feed_mark_all_items_read(feedPtr fp) {
 gchar *feed_render(feedPtr fp) {
 	struct displayset displayset;
 	gchar *buffer = NULL;
-	gchar *tmp;
+	gchar *tmp, *tmp2;
 	displayset.headtable = NULL;
+	displayset.head = NULL;
 	displayset.body = g_strdup(feed_get_description(fp));
 	displayset.foottable = NULL;
 	
 	metadata_list_render(fp->metadataList, &displayset);
 	
-	if (displayset.headtable != NULL) {
-		addToHTMLBufferFast(&buffer, HEAD_START);
-		addToHTMLBufferFast(&buffer, displayset.headtable);
-		addToHTMLBufferFast(&buffer, HEAD_END);
-		g_free(displayset.headtable);
-	}
+	/* Head table */
+	addToHTMLBufferFast(&buffer, HEAD_START);
+	/*  -- Feed line */
+	if (feed_get_html_uri(fp) != NULL)
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+						  feed_get_html_uri(fp),
+						  feed_get_title(fp));
+	else
+		tmp = g_strdup(feed_get_title(fp));
+	
+	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
+	g_free(tmp);
+	addToHTMLBufferFast(&buffer, tmp2);
+	g_free(tmp2);
 
+	/*  -- Source line */
+	if (feed_get_source(fp) != NULL) {
+		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+						  feed_get_source(fp),
+						  feed_get_source(fp));
+		
+		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
+		g_free(tmp);
+		addToHTMLBufferFast(&buffer, tmp2);
+		g_free(tmp2);
+	}
+	
+	addToHTMLBufferFast(&buffer, displayset.headtable);
+	g_free(displayset.headtable);
+	addToHTMLBufferFast(&buffer, HEAD_END);
+	
+	/* Error description */
 	if(NULL != (tmp = feed_get_error_description(displayed_fp))) {
 		addToHTMLBufferFast(&buffer, tmp);
 		g_free(tmp);
 	}
-	
+
+	/* Head */
+	if (displayset.head != NULL) {
+		addToHTMLBufferFast(&buffer, displayset.head);
+		g_free(displayset.head);
+	}
+
+	/* Body */
 	if (displayset.body != NULL) {
 		addToHTMLBufferFast(&buffer, displayset.body);
 		g_free(displayset.body);
@@ -1144,6 +1208,7 @@ void feed_free(feedPtr fp) {
 	g_free(fp->source);
 	g_free(fp->parseErrors);
 	g_free(fp->filtercmd);
+	g_free(fp->htmlUri);
 	metadata_list_free(fp->metadataList);
 	g_free(fp);
 

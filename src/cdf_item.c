@@ -50,8 +50,8 @@ gchar * showCDFItem(feedPtr fp, CDFChannelPtr cp, CDFItemPtr ip) {
 	
 	/* output feed title and website */
 	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-		fp->source,
-		cp->tags[CDF_CHANNEL_TITLE]);
+					  feed_get_source(fp),
+					  feed_get_title(fp));
 	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
 	addToHTMLBuffer(&buffer,line);

@@ -166,13 +166,13 @@ char * UIDejunk (char * feed_description) {
 //						if (cur_entity->entity_length > 1)
 //							newtext = realloc (newtext,  strlen(newtext)+cur_entity->entity_length+1);
 //						
-//						/* Append new entity. * /
+//						/ * Append new entity. * /
 //						strcat (newtext, cur_entity->converted_entity);
 //						
-//						/* Set found flag. * /
+//						/ * Set found flag. * /
 //						found = 1;
 //						
-//						/* We can now leave the for loop. * /
+//						/ * We can now leave the for loop. * /
 //						break;
 //					}
 //				}

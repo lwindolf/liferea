@@ -186,6 +186,7 @@ gchar *item_render(itemPtr ip) {
 	gchar *buffer = NULL;
 
 	displayset.headtable = NULL;
+	displayset.head = NULL;
 	displayset.body = g_strdup(ip->description);
 	displayset.foottable = NULL;
 	
@@ -196,6 +197,11 @@ gchar *item_render(itemPtr ip) {
 		addToHTMLBufferFast(&buffer, displayset.headtable);
 		addToHTMLBufferFast(&buffer, HEAD_END);
 		g_free(displayset.headtable);
+	}
+
+	if (displayset.head != NULL) {
+		addToHTMLBufferFast(&buffer, displayset.head);
+		g_free(displayset.head);
 	}
 
 	if (displayset.body != NULL) {
@@ -221,10 +227,10 @@ void item_display(itemPtr ip) {
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 	ui_htmlview_finish_output(&buffer);
-	if (ip->fp->source != NULL &&
+	if (feed_get_source(ip->fp) != NULL &&
 	    ip->fp->source[0] != '|' &&
-	    strstr(ip->fp->source, "://") != NULL)
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ip->fp->source);
+	    strstr(feed_get_source(ip->fp), "://") != NULL)
+		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, feed_get_source(ip->fp));
 	else
 		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 	g_free(buffer);

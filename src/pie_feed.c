@@ -119,12 +119,6 @@ static gchar * showPIEFeedInfo(PIEFeedPtr cp, gchar *url) {
 	addToHTMLBuffer(&buffer, line);
 	g_free(line);
 	
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-	line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
-	g_free(tmp);
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
-	
 	addToHTMLBuffer(&buffer, HEAD_END);
 		
 	/* process namespace infos */

@@ -66,7 +66,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		ui_feedlist_do_for_all_data(ptr, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
 	} else {
 		feedPtr fp = (feedPtr)ptr;
-		const gchar *type = feed_type_fhp_to_str(fp->fhp);
+		const gchar *type = feed_type_fhp_to_str(feed_get_fhp(fp));
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 		gchar *cacheLimit = NULL;
 		if (fp->cacheLimit >= 0)

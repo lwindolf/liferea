@@ -74,6 +74,7 @@ enum cache_limit {
 };
 
 /** common structure to access feed info structures */
+
 typedef struct feed {
 	gint		type;			/**< feed type (first position is important!!!) */
 	gpointer	*ui_data;		/**< per-feed UI data (second position is important!!!) */
@@ -93,6 +94,7 @@ typedef struct feed {
 		
 	/* feed properties needed to be saved */
 	gchar		*title;			/**< feed/channel title */
+	gchar		*htmlUri;			/**< URI of HTML version of the feed */
 	gchar		*description;		/**< HTML string describing the feed */
 	gchar		*source;		/**< feed source */
 	gchar		*filtercmd;		/**< feed filter command */
@@ -218,6 +220,8 @@ void feed_decrease_new_counter(feedPtr fp);
 gint feed_get_new_counter(feedPtr fp);
 
 gint feed_get_default_update_interval(feedPtr fp);
+void feed_set_default_update_interval(feedPtr fp, gint interval);
+
 gint feed_get_update_interval(feedPtr fp);
 void feed_set_update_interval(feedPtr fp, gint interval);
 
@@ -243,11 +247,18 @@ const gchar * feed_get_title(feedPtr fp);
 void feed_set_title(feedPtr fp, const gchar * title);
 
 const gchar * feed_get_description(feedPtr fp);
+void feed_set_description(feedPtr fp, const gchar *description);
 
 const gchar * feed_get_source(feedPtr fp);
 void feed_set_source(feedPtr fp, const gchar * source);
+
 const gchar * feed_get_filter(feedPtr fp);
 void feed_set_filter(feedPtr fp, const gchar * filter);
+
+const gchar * feed_get_html_uri(feedPtr fp);
+void feed_set_html_uri(feedPtr fp, const gchar *uri);
+
+const feedHandlerPtr feed_get_fhp(feedPtr fp);
 
 GSList * feed_get_item_list(feedPtr fp);
 void feed_clear_item_list(feedPtr fp);

@@ -18,6 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/* CDF is evil. There is only one outdated specification of it and its
+   example is not even well-formed XML! Also, it seems to rely on
+   things being case insensitive. Some people seem to make the tags
+   capitalized, while others are like "Channel". */
+
 #include <sys/time.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
@@ -28,129 +33,113 @@
 #include "cdf_item.h"
 #include "callbacks.h"
 #include "htmlview.h"
+#include "metadata.h"
 
 /* note: the tag order has to correspond with the CHANNEL_* defines in the header file */
-static gchar *CDFChannelTagList[] = {	"title",
-					"abstract",
-					"logo",
-					"copyright",
-					"publicationdate",
-					"publisher",
-					"category",
-					NULL
-				  };
-
-/* returns CDF channel description as HTML */
-gchar * showCDFFeedInfo(CDFChannelPtr cp, gchar *url) {
-	gchar		*buffer = NULL;
-	gchar		*tmp, *line;
-
-	g_assert(NULL != cp);
-	g_assert(NULL != url);
-
-	addToHTMLBuffer(&buffer, HEAD_START);
-
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-		url, 
-		cp->tags[CDF_CHANNEL_TITLE]);	
-	line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-	g_free(tmp);
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
-	
-	addToHTMLBuffer(&buffer, HEAD_END);	
-
-	if(NULL != cp->tags[CDF_CHANNEL_IMAGE]) {
-		addToHTMLBuffer(&buffer, IMG_START);
-		addToHTMLBuffer(&buffer, cp->tags[CDF_CHANNEL_IMAGE]);
-		addToHTMLBuffer(&buffer, IMG_END);	
-	}
-
-	if(NULL != cp->tags[CDF_CHANNEL_DESCRIPTION])
-		addToHTMLBuffer(&buffer, cp->tags[CDF_CHANNEL_DESCRIPTION]);
-
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
-	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[CDF_CHANNEL_COPYRIGHT]);
-	FEED_FOOT_WRITE(buffer, "publication date",	cp->tags[CDF_CHANNEL_PUBDATE]);
-	FEED_FOOT_WRITE(buffer, "webmaster",		cp->tags[CDF_CHANNEL_WEBMASTER]);
-	FEED_FOOT_WRITE(buffer, "category",		cp->tags[CDF_CHANNEL_CATEGORY]);
-	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-
-	return buffer;
-}
+static GHashTable *channelHash = NULL;
 
 /* method to parse standard tags for the channel element */
 static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
-	gchar		*tmp = NULL;
+	gchar		*tmp, *tmp2, *tmp3;
 	itemPtr		ip;
-	int		i;
 	
 	if((NULL == cur) || (NULL == doc)) {
 		g_warning("internal error: XML document pointer NULL! This should not happen!\n");
 		return;
 	}
-		
+	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
+		if (cur->type != XML_ELEMENT_NODE)
+			goto next;
+		
 		if(NULL == cur->name) {
 			g_warning("invalid XML, parser returns NULL value!");
-			cur = cur->next;
-			continue;
-		}
-
-		/* save first link to a channel image */
-		if((!xmlStrcmp(cur->name, BAD_CAST"logo"))) {
-			if(NULL != cp->tags[CDF_CHANNEL_IMAGE])				
-				cp->tags[CDF_CHANNEL_IMAGE] = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"href"));
-			cur = cur->next;			
-			continue;
+			goto next;
 		}
 		
-		if((!xmlStrcmp(cur->name, BAD_CAST"item"))) {
+		if((!xmlStrcasecmp(cur->name, BAD_CAST"logo"))) {
+			tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"HREF"));
+			if (tmp == NULL)
+				tmp = utf8_fix(xmlGetNoNsProp(cur, BAD_CAST"href"));
+			if (tmp != NULL) {
+				fp->metadataList = metadata_list_append(fp->metadataList, "feedLogoUri", tmp);
+				g_free(tmp);
+			}
+			goto next;
+		}
+		
+		if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
+			xmlChar *value = xmlGetProp(cur, "HREF");
+               if (value != NULL) {
+				feed_set_html_uri(fp, value);
+                    xmlFree(value);
+               }
+			goto next;
+		}
+		
+		if((!xmlStrcasecmp(cur->name, BAD_CAST"item"))) {
 			if(NULL != (ip = parseCDFItem(fp, cp, doc, cur))) {
 				if(0 == item_get_time(ip))
 					item_set_time(ip, cp->time);
 				feed_add_item(fp, ip);
-			}	
+			}
+			goto next;
 		}
-
-		for(i = 0; i < CDF_CHANNEL_MAX_TAG; i++) {
-			if (!xmlStrcmp(cur->name, BAD_CAST CDFChannelTagList[i])) {			
-				tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-				if(NULL != tmp) {
-					g_free(cp->tags[i]);
-					cp->tags[i] = tmp;
-				}
-			}		
+		
+		if (!xmlStrcasecmp(cur->name, BAD_CAST "title")) {
+			tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, TRUE));
+			if(NULL != tmp) {
+				tmp = unhtmlize(tmp);
+				feed_set_title(fp, tmp);
+				g_free(tmp);
+			}
+			goto next;
+		}		
+		
+		if (!xmlStrcasecmp(cur->name, BAD_CAST "abstract")) {
+			tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, TRUE));
+			if(NULL != tmp) {
+				tmp =  convertToHTML(tmp);
+				feed_set_description(fp, tmp);
+				xmlFree(tmp);
+			}
+			goto next;
+		}	
+		
+		tmp = g_ascii_strdown(cur->name, -1);
+		if ((tmp2 = g_hash_table_lookup(channelHash, tmp)) != NULL) {
+			tmp3 = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, TRUE));
+			if (tmp3 != NULL) {
+				fp->metadataList = metadata_list_append(fp->metadataList, tmp2, tmp3);
+				g_free(tmp3);
+			}
 		}
+		g_free(tmp);
+		
+	next:
 		cur = cur->next;
 	}
 
 	/* some postprocessing */
-	if(NULL != cp->tags[CDF_CHANNEL_TITLE])
-		cp->tags[CDF_CHANNEL_TITLE] = unhtmlize(cp->tags[CDF_CHANNEL_TITLE]);
 		
-	if(NULL != cp->tags[CDF_CHANNEL_DESCRIPTION])
-		cp->tags[CDF_CHANNEL_DESCRIPTION] = convertToHTML(cp->tags[CDF_CHANNEL_DESCRIPTION]);		
-	
 }
 
 /* reads a CDF feed URL and returns a new channel structure (even if
    the feed could not be read) */
 static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	CDFChannelPtr 	cp;
-	int 		error = 0;
 	
 	cp = g_new0(struct CDFChannel, 1);
 	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	
 	do {
 		/* note: we support only one flavour of CDF channels! We will only
-		   support the first channel of the CDF feed. */
-	
+		   support the outer channel of the CDF feed. */
+		
 		/* find outer channel tag */
 		while(cur != NULL) {
-			if((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
+			if(cur->type == XML_ELEMENT_NODE && (!xmlStrcasecmp(cur->name, BAD_CAST"channel"))) {
 				cur = cur->xmlChildrenNode;
 				break;
 			}
@@ -161,9 +150,8 @@ static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		
 		/* find first "real" channel tag */
 		while(cur != NULL) {
-		
-			if((!xmlStrcmp(cur->name, BAD_CAST"channel"))) {
-				parseCDFChannel(fp, cp, doc, cur);			
+			if((!xmlStrcasecmp(cur->name, BAD_CAST"channel"))) {
+				parseCDFChannel(fp, cp, doc, cur);
 				g_assert(NULL != cur);
 				break;
 			}
@@ -172,26 +160,20 @@ static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		fp->defaultInterval = fp->updateInterval = -1;
-		fp->title = cp->tags[CDF_CHANNEL_TITLE];
+		feed_set_default_update_interval(fp, -1);
 
-		if(0 == error) {
-			fp->available = TRUE;
-			fp->description = showCDFFeedInfo(cp, fp->source);
-		} else {
-			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
-		}
+		if (cur != NULL)
+			feed_set_available(fp, TRUE);
 		
 		g_hash_table_destroy(cp->nsinfos);
+
 		g_free(cp);
 	} while (FALSE);
 }
 
 gboolean cdf_format_check(xmlDocPtr doc, xmlNodePtr cur) {
-	if(!xmlStrcmp(cur->name, BAD_CAST"Channel") ||
-	   !xmlStrcmp(cur->name, BAD_CAST"channel")) {
+	if(!xmlStrcasecmp(cur->name, BAD_CAST"Channel"))
 		return TRUE;
-	}
 	return FALSE;
 }
 
@@ -199,13 +181,24 @@ gboolean cdf_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 /* initialization		 						*/
 /* ---------------------------------------------------------------------------- */
 
+#define CDF_CHANNEL_PUBDATE		4
+#define CDF_CHANNEL_WEBMASTER		5
+#define CDF_CHANNEL_CATEGORY		6
+
 feedHandlerPtr initCDFFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
 	fhp = g_new0(struct feedHandler, 1);
 	
 	/* there are no name space handlers! */
-
+	if (channelHash == NULL) {
+		channelHash = g_hash_table_new(g_str_hash, g_str_equal);
+		g_hash_table_insert(channelHash, "copyright", "copyright");
+		g_hash_table_insert(channelHash, "publicationdate", "lastBuildDate");
+		g_hash_table_insert(channelHash, "publisher", "webmaster");
+		g_hash_table_insert(channelHash, "category", "category");
+	}
+	
 	/* prepare feed handler structure */
 	fhp->typeStr = "cdf";
 	fhp->icon = ICON_AVAILABLE;

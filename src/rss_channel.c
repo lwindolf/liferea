@@ -126,25 +126,11 @@ void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
 }
 
 /* returns RSS channel description as HTML */
-static gchar * showRSSFeedInfo(feedPtr fp, RSSChannelPtr cp, gchar *url) {
+static gchar * showRSSFeedInfo(feedPtr fp, RSSChannelPtr cp) {
 	gchar		*buffer = NULL;
-	gchar		*tmp;
 	outputRequest	request;
 
 	g_assert(cp != NULL);
-	g_assert(url != NULL);
-
-	/* output feed title with feed link */
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-		cp->tags[RSS_CHANNEL_LINK],
-		cp->tags[RSS_CHANNEL_TITLE]);
-	fp->metadataList = metadata_list_append(fp->metadataList, "feedTitle", tmp);
-	g_free(tmp);
-	
-	/* output feed source link */
-	tmp = g_strdup_printf("<a href=\"%s\">%s</a>", url, url);
-	fp->metadataList = metadata_list_append(fp->metadataList, "feedSource", tmp);
-	g_free(tmp);
 
 	/* process namespace infos */
 	request.obj = (gpointer)cp;
@@ -393,10 +379,11 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	fp->defaultInterval = cp->updateInterval;
 	feed_set_update_interval(fp,cp->updateInterval);
 	feed_set_title(fp, cp->tags[RSS_CHANNEL_TITLE]);
-
+	feed_set_html_uri(fp, cp->tags[RSS_CHANNEL_LINK]);
+	
 	if(0 == error) {
 		fp->available = TRUE;
-		fp->description = showRSSFeedInfo(fp, cp, fp->source);
+		fp->description = showRSSFeedInfo(fp, cp);
 	} else {
 		ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 	}

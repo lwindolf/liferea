@@ -49,8 +49,8 @@ void favicon_load(feedPtr fp) {
 	GError 		*error = NULL;
 	
 	/* try to load a saved favicon */
-	pngfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
-	xpmfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "xpm");
+	pngfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
+	xpmfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "xpm");
 	
 	if(0 == stat((const char*)pngfilename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file (pngfilename, &error);
@@ -94,7 +94,7 @@ void favicon_remove(feedPtr fp) {
 	gchar		*filename;
 	
 	/* try to load a saved favicon */
-	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
+	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename))
 			/* What can we do? The file probably doesn't exist. Or permissions are wrong. Oh well.... */;
@@ -111,7 +111,7 @@ static void favicon_download_request_cb(struct request *request) {
 	if(NULL != request->data && request->size > 0) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
-		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", fp->id, "png");
+		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
 		
 		if(gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
 			pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
@@ -139,7 +139,7 @@ void favicon_download(feedPtr fp) {
 		return; /* It is already being downloaded */
 
 	/* try to download favicon */
-	baseurl = g_strdup(fp->source);
+	baseurl = g_strdup(feed_get_source(fp));
 	if(NULL != (tmp = strstr(baseurl, "://"))) {
 		tmp += 3;
 		if(NULL != (tmp = strchr(tmp, '/'))) {

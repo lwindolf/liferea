@@ -164,9 +164,10 @@ gpointer metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur) {
 /* Now comes the stuff to define particular attributes */
 
 typedef enum {
+	POS_HEADTABLE,
 	POS_HEAD,
 	POS_BODY,
-	POS_FOOT
+	POS_FOOTTABLE
 } output_position;
 
 struct str_attrib {
@@ -174,46 +175,58 @@ struct str_attrib {
 	gchar *prompt;
 };
 
-static void str_render(gpointer data, struct displayset *displayset, gpointer user_data) {
+static void attribs_render_str(gpointer data, struct displayset *displayset, gpointer user_data) {
 	struct str_attrib *props = (struct str_attrib*)user_data;
 	gchar *str;
 	switch (props->pos) {
-	case POS_HEAD:
+	case POS_HEADTABLE:
 		str = g_strdup_printf(HEAD_LINE, props->prompt, (gchar*)data);;
 		addToHTMLBufferFast(&(displayset->headtable), str);
 		g_free(str);
 		break;
+	case POS_HEAD:
+		addToHTMLBufferFast(&(displayset->head), str);
+		break;
 	case POS_BODY:
 		addToHTMLBufferFast(&(displayset->body), str);
 		break;
-	case POS_FOOT:
+	case POS_FOOTTABLE:
 		FEED_FOOT_WRITE(displayset->foottable, props->prompt, (gchar*)data);
 		break;
 	}
 
 }
 
+static void attribs_render_image(gpointer data, struct displayset *displayset, gpointer user_data) {
+	gchar *tmp = g_strdup_printf("<p><img class=\"feed\" src=\"%s\" /></p>", (gchar*)data);
+	addToHTMLBufferFast(&(displayset->head), tmp);
+	g_free(tmp);
+}
+
 #define REGISTER_STR_ATTRIB(position, strid, promptStr) do { \
  struct str_attrib *props = g_new(struct str_attrib, 1); \
  props->pos = (position); \
  props->prompt = _(promptStr); \
- metadata_register(strid, str_render, props); \
+ metadata_register(strid, attribs_render_str, props); \
 } while (0);
 
 static void attribs_init() {
-	REGISTER_STR_ATTRIB(POS_HEAD, "feedTitle", "Feed:");
-	REGISTER_STR_ATTRIB(POS_HEAD, "feedSource", "Source:");
-	REGISTER_STR_ATTRIB(POS_FOOT, "author", "author");
-	REGISTER_STR_ATTRIB(POS_FOOT, "contributor", "contributors");
-	REGISTER_STR_ATTRIB(POS_FOOT, "image", "image");
-	REGISTER_STR_ATTRIB(POS_FOOT, "copyright", "copyright");
-	REGISTER_STR_ATTRIB(POS_FOOT, "language", "language");
-	REGISTER_STR_ATTRIB(POS_FOOT, "language", "language");
-	REGISTER_STR_ATTRIB(POS_FOOT, "lastBuildDate", "last build date");
-	REGISTER_STR_ATTRIB(POS_FOOT, "managingEditor", "managing editor");
+	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedTitle", "Feed:");
+	REGISTER_STR_ATTRIB(POS_HEADTABLE, "feedSource", "Source:");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "author", "author");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "contributor", "contributors");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "copyright", "copyright");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", "language");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", "language");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "lastBuildDate", "last build date");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "managingEditor", "managing editor");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "webmaster", "webmaster");
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "category", "category");
+
+	metadata_register("feedLogoUri", attribs_render_image, NULL);
 }
 
 static void attribs_register_default_renderer(const gchar *strid) {
 	gchar *str = g_strdup(strid);
-	REGISTER_STR_ATTRIB(POS_FOOT, str, str);
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, str, str);
 }

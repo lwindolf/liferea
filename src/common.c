@@ -89,13 +89,17 @@ void addToHTMLBuffer(gchar **buffer, const gchar *string) {
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string) {
 	gint	bw, br;
 	gchar	*new = NULL;
-	
+	GError *err = NULL;
+
 	if(NULL == from_encoding)
 		from_encoding = standard_encoding;
 		
 	if(NULL != string) {		
-		new = g_convert(string, strlen(string), to_encoding, from_encoding, &br, &bw, NULL);
-		
+		new = g_convert(string, strlen(string), to_encoding, from_encoding, &br, &bw, &err);
+		if (err != NULL) {
+			g_warning("error converting character set: %s\n", err->message);
+			g_error_free (err);
+		}
 		if(NULL != new)
 			g_free(string);
 		else

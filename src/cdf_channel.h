@@ -23,22 +23,10 @@
 
 #include "feed.h"
 
-#define CDF_CHANNEL_TITLE		0
-#define CDF_CHANNEL_DESCRIPTION		1
-#define CDF_CHANNEL_IMAGE		2
-#define CDF_CHANNEL_COPYRIGHT		3
-#define CDF_CHANNEL_PUBDATE		4
-#define CDF_CHANNEL_WEBMASTER		5
-#define CDF_CHANNEL_CATEGORY		6
-
-#define CDF_CHANNEL_MAX_TAG		7
-
 typedef struct CDFChannel {
 	/* standard namespace infos */
-	gchar		*tags[CDF_CHANNEL_MAX_TAG];
-
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
-					   specific informations */
+						   specific informations */
 	
 	/* other information */
 	time_t		time;		/* last feed build/creation time */	
