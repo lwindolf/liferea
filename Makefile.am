@@ -35,6 +35,10 @@ endif
 	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/css; \
           $(INSTALL_DATA) $(srcdir)/css/liferea2.css $(DESTDIR)$(pkgdatadir)/css; \
 	fi
+	if test -d $(srcdir)/dtd; then \
+	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/dtd; \
+          $(INSTALL_DATA) $(srcdir)/dtd/html.ent $(DESTDIR)$(pkgdatadir)/dtd; \
+	fi
 
 dist-hook:
 	if test -d $(srcdir)/css; then \
@@ -44,6 +48,10 @@ dist-hook:
 	if test -d $(srcdir)/css; then \
 	  $(mkinstalldirs) $(distdir)/css; \
           $(INSTALL_DATA) $(srcdir)/css/liferea2.css $(distdir)/css; \
+	fi
+	if test -d $(srcdir)/dtd; then \
+	  $(mkinstalldirs) $(distdir)/dtd; \
+          $(INSTALL_DATA) $(srcdir)/dtd/html.ent $(distdir)/dtd; \
 	fi
 
 DISTCLEANFILES = liferea-SuSE.spec liferea.spec

@@ -79,6 +79,7 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 		   !strcmp(type, "text/html") ||
 		   !strcmp(type, "text/plain") ||
 		   !strcmp(type, "application/xhtml+xml")) {
+		   g_print("extracting HTML node... \n");
 			ret = extractHTMLNode(cur, TRUE);
 		}
 	}
@@ -86,8 +87,9 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	   wrapped in pre tags.... Also, the atom 0.3 spec says that the
 	   default type MUST be considered to be text/plain. The type tag
 	   is required in 0.2.... */
-	if (ret != NULL && (type == NULL || !strcmp(type, "text/plain"))) {
-		gchar *tmp = g_markup_printf_escaped ("<pre>%s</pre>", ret);
+	//if (ret != NULL && (type == NULL || !strcmp(type, "text/plain"))) {
+	if((ret != NULL) && (type != NULL) && !strcmp(type, "text/plain")) {
+		gchar *tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
 		g_free(ret);
 		ret = tmp;
 	}

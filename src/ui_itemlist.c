@@ -206,17 +206,11 @@ void ui_itemlist_update_item(itemPtr ip) {
 	if(title == NULL) 
 		title = g_strdup(_("[No title]"));
 		
-	/* Here we have the following problem: a title string might contain 
-	   either escaped markup (which we should not escape again) or 
-	   non-markup text (which might contain ampersands, which must be
-	   escaped). We assume no mixed case! */
-	/*if(is_escaped_markup(title))
-	  esc_title = unescape_markup(title);	/ * FIXME: unescaped!!! * /
-		else */
+	/* we escape here to use Pango markup (the parsing ensures that
+	   titles never contain escaped HTML) */
 	esc_title = g_markup_escape_text(title, -1);
-
-	esc_title = filter_title(esc_title);
-
+	esc_title = g_strstrip(esc_title);
+	
 	if(FALSE == item_get_read_status(ip)) {
 		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
 		label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);

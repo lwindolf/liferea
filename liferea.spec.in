@@ -60,9 +60,11 @@ gconftool-2 --makefile-uninstall-rule \
 %{_datadir}/applications/%{name}.desktop
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/css
+%dir %{_datadir}/%{name}/dtd
 %dir %{_datadir}/%{name}/opml
 %dir %{_datadir}/%{name}/pixmaps
 %{_datadir}/%{name}/css/*.css
+%{_datadir}/%{name}/dtd/html.ent
 %{_datadir}/%{name}/opml/feedlist*.opml
 %{_datadir}/%{name}/pixmaps/*
 %{_datadir}/pixmaps/%{name}.png

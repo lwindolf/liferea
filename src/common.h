@@ -125,15 +125,6 @@ xmlChar * common_uri_escape(const xmlChar *url);
  */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
 
-/**
- * Filter the title. Note that the string is modified and not
- * duplicated!
- *
- * @param title		title string be be filtered
- * @returns the result string, which is nearly always the same as the value passed to it.
- */
-gchar * filter_title(gchar * title);
-
 #ifndef HAVE_STRSEP
 char *strsep (char **stringp, const char *delim);
 #endif

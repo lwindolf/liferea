@@ -6,6 +6,7 @@
 	  window in all four desktop corners.
 	* New option in the "Feeds" menu to mark all items
 	  of all your feeds read at once.
+	* Full HTML4 entities support.
 	  
 
 2005-01-15  Lars Lindner <lars.lindner@gmx.net>

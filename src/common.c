@@ -34,6 +34,7 @@
 #include <libxml/xmlerror.h>
 #include <libxml/uri.h>
 #include <libxml/parser.h>
+#include <libxml/entities.h>
 #include <libxml/HTMLparser.h>
 #include <glib.h>
 #include <sys/stat.h>
@@ -282,41 +283,32 @@ static void bufferParseError(void *ctxt, const gchar * msg, ...) {
 	}
 }
 
-static GHashTable *extra_entities = NULL;
+static xmlDocPtr entities = NULL;
 
 /* and I thought writing such functions is evil... */
 xmlEntityPtr common_process_entities(void *ctxt, const xmlChar *name) {
-	xmlEntityPtr	entity;
-	gchar		*text;
+	xmlEntityPtr	entity, found;
+	xmlChar		*tmp;
 	
 	entity = xmlGetPredefinedEntity(name);
 	if(NULL == entity) {
-		if(NULL == extra_entities) {
-			extra_entities = g_hash_table_new(g_str_hash, g_str_equal);
-			/* attention! ensure UTF-8 for the following definitions! */
-			g_hash_table_insert(extra_entities, "nbsp", " ");
-			g_hash_table_insert(extra_entities, "auml", "ä");
-			g_hash_table_insert(extra_entities, "Auml", "Ä");
-			g_hash_table_insert(extra_entities, "uuml", "ü");
-			g_hash_table_insert(extra_entities, "Uuml", "Ü");
-			g_hash_table_insert(extra_entities, "ouml", "ö");
-			g_hash_table_insert(extra_entities, "Ouml", "Ö");
-			g_hash_table_insert(extra_entities, "szlig", "ß");
-			g_hash_table_insert(extra_entities, "copy", "©");
-			g_hash_table_insert(extra_entities, "hellip", "…");
-			g_hash_table_insert(extra_entities, "laquo", "«");
-			g_hash_table_insert(extra_entities, "raquo", "»");
-			// FIXME: someone who want's to add all other HTML entity definitions?
-			// or better somehow load a DTD and serve entities when necessary...
+		if(NULL == entities) {
+			/* loading HTML entities */
+			entities = xmlNewDoc(BAD_CAST "1.0");
+			xmlCreateIntSubset(entities, BAD_CAST "HTML entities", NULL, PACKAGE_DATA_DIR "/" PACKAGE "/dtd/html.ent");
+			entities->extSubset = xmlParseDTD(entities->intSubset->ExternalID, entities->intSubset->SystemID);
 		}
-		if(NULL != (text = g_hash_table_lookup(extra_entities, name))) {
+		
+		if(NULL != (found = xmlGetDocEntity(entities, name))) {
 			/* returning as faked predefined entity... */
+			tmp = xmlStrdup(found->content);
+			tmp = unhtmlize(tmp);	/* arghh ... slow... */
 			entity = (xmlEntityPtr)g_new0(xmlEntity, 1);
 			entity->type = XML_ENTITY_DECL;
 			entity->name = name;
-			entity->orig = text;	/* ??? */
-			entity->content = text;
-			entity->length = g_utf8_strlen(text, -1);
+			entity->orig = tmp;	/* ??? */
+			entity->content = tmp;
+			entity->length = g_utf8_strlen(tmp, -1);
 			entity->etype = XML_INTERNAL_PREDEFINED_ENTITY;
 		}
 	}
@@ -707,11 +699,6 @@ xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
 	}
 	
 	return absURL;
-}
-
-gchar * filter_title(gchar * title) {
-
-	return g_strstrip(title);
 }
 
 #ifndef HAVE_STRSEP
