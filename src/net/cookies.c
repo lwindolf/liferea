@@ -225,10 +225,6 @@ gchar * cookies_find_matching(const gchar *url) {
 		result = CookieCutter (url, cookies);
 	}
 	fclose (cookies);
-if(NULL != result) {
-g_print("found cookies for %s: %s\n", url , result);
-} else {
-g_print("no cookies found for %s\n", url);
-}
+
 	return result;
 }

@@ -22,6 +22,7 @@
 #include <glib.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h> /* For unlink() */
@@ -977,6 +978,7 @@ gchar *feed_render(feedPtr fp) {
 	struct displayset	displayset;
 	gchar			*buffer = NULL;
 	gchar			*tmp, *tmp2;
+	xmlURIPtr		uri;
 
 	g_assert(0 != fp->loaded);	
 	displayset.headtable = NULL;
@@ -1011,9 +1013,16 @@ gchar *feed_render(feedPtr fp) {
 	/*  -- Source line */
 	if((NULL != feed_get_source(fp)) && (FST_VFOLDER != feed_get_type(fp))) {
 		if(feed_get_source(fp)[0] != '|') {
+			/* remove user and password from URL ... */
+			uri = xmlParseURI(feed_get_source(fp));
+			g_free(uri->user);
+			uri->user = NULL;
+			tmp2 = xmlSaveUri(uri);
 			tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-				              feed_get_source(fp),
-				              feed_get_source(fp));
+				              tmp2,
+				              tmp2);
+			xmlFree(tmp2);
+			xmlFreeURI(uri);
 		} else {
 			tmp = g_strdup(_("user defined command"));
 		}

@@ -33,6 +33,9 @@
 	  versions (0.6.x) create the directory only with
 	  user priviledges. Thanks to the reporters Nick Rout 
 	  and Eric Gregory! (Lars Lindner)
+	* Bugfix for a crash when double-clicking a "(empty)"
+	  entry in empty folders. Reported by Martin Sarfy.
+	  (Lars Lindner)
 
 2004-10-31  Lars Lindner <lars.lindner@gmx.net>
 
