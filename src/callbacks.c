@@ -1686,7 +1686,7 @@ void loadItemList(feedPtr fp, gchar *searchstring) {
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	GtkWidget	*pane;
 	gint		x,y;
-	
+
 	saveAllFeeds();
 	saveAllFolderCollapseStates();
 	
@@ -1705,7 +1705,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	gtk_window_get_size(GTK_WINDOW(mainwindow), &x, &y);
 	setNumericConfValue(LAST_WINDOW_WIDTH, x);
 	setNumericConfValue(LAST_WINDOW_HEIGHT, y);	
-	
+		
 	gtk_main_quit();
 	return FALSE;
 }

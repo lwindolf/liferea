@@ -379,11 +379,15 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 						tmphost = newlocation;
 						/* The following line \0-terminates tmphost in overwriting the first
 						   / after the hostname. */
-						strsep (&newlocation, "/");
+						if(strchr(newlocation, '/')) {
+							strsep (&newlocation, "/");
 					
-						newhost = strdup (tmphost);
-						newlocation--;
-						newlocation[0] = '/';
+							newhost = strdup (tmphost);
+							newlocation--;
+							newlocation[0] = '/';
+						} else {
+							newhost = strdup (tmphost);
+						}
 						newurl = strdup (newlocation);
 					
 						free (freeme);
@@ -571,7 +575,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr) {
 	char tmp[1024];
 	char httpprotostr[6];		/* http or https */
 	int httpproto = 0;			/* 0: http; 1: https */
-	
+
 	strncpy (httpprotostr, url, 5);
 	httpprotostr[5] = 0;
 	if (strstr (httpprotostr, "https") != NULL)

@@ -183,7 +183,6 @@ static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer u
 				       NULL, NULL, event->button, event->time);
 		else {
 			g_free(clickedURL);
-g_print("saved url: %s\n", selectedURL);			
 			clickedURL = g_strdup(selectedURL);
 			gtk_menu_popup(GTK_MENU(make_menu(URL_MENU)), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
