@@ -1,23 +1,23 @@
-/*
-   common interface for browser module implementations
-   and module loading functions
-
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file htmlview.c common interface for browser module implementations
+ * and module loading functions
+ *
+ * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -97,9 +97,9 @@ key /apps/liferea/browser-module!\n\n"));
 		
 	if((handle = g_module_open(filename, 0)) == NULL) {
 		if(!testmode)
-			g_warning(_("Failed to open HTML widget module (%s) specified in configuration!\n%s\n"), filename, g_module_error());
+			g_warning("Failed to open HTML widget module (%s) specified in configuration!\n%s\n", filename, g_module_error());
 		else
-			debug2(DEBUG_GUI, _("Failed to open HTML widget module (%s) specified in configuration!\n%s\n"), filename, g_module_error());
+			debug2(DEBUG_GUI, "Failed to open HTML widget module (%s) specified in configuration!\n%s\n", filename, g_module_error());
 		return FALSE;
 	}
 	g_free(filename);
@@ -109,9 +109,9 @@ key /apps/liferea/browser-module!\n\n"));
 			methods[i] = ptr;
 		} else {
 			if(!testmode)
-				g_warning(_("Missing symbol \"%s\" in configured HTML module!"), symbols[i]);
+				g_warning("Missing symbol \"%s\" in configured HTML module!", symbols[i]);
 			else
-				debug1(DEBUG_GUI, _("Missing symbol \"%s\" in configured HTML module!"), symbols[i]);
+				debug1(DEBUG_GUI, "Missing symbol \"%s\" in configured HTML module!", symbols[i]);
 			g_module_close(handle);
 			return FALSE;
 		}
@@ -132,7 +132,7 @@ void ui_htmlview_init(void) {
 
 	/* Check to see if gmodule is supported */
 	if(!g_module_supported())
-		g_error(_("Cannot load HTML widget module (%s)!"), g_module_error());
+		g_error("Cannot load HTML widget module (%s)!", g_module_error());
 	
 	/* now we determine a list of all available modules
 	   to present in the preferences dialog and to load
@@ -239,20 +239,41 @@ static void writeStyleSheetLinks(gchar **buffer) {
 }
 
 void ui_htmlview_start_output(gchar **buffer, gboolean padded) { 
-	gchar	*encoding;
-
-	addToHTMLBuffer(buffer, HTML_START);
-	addToHTMLBuffer(buffer, HTML_HEAD_START);
+	gchar	*font = NULL;
+	gchar	*fontsize = NULL;
 	
-	encoding = g_strdup_printf("%s%s%s", META_ENCODING1, "UTF-8", META_ENCODING2);	// FIXME
-	addToHTMLBuffer(buffer, encoding);
-	g_free(encoding);
+	addToHTMLBuffer(buffer, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>");
+	addToHTMLBuffer(buffer, "<head><title></title>");
+	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=\"UTF-8\">");
+
         writeStyleSheetLinks(buffer);
 
+	addToHTMLBuffer(buffer, "</head><body style=\"");
+
 	if(padded)
-		addToHTMLBuffer(buffer, HTML_HEAD_END);
-	else
-		addToHTMLBuffer(buffer, HTML_HEAD_END2);	
+		addToHTMLBuffer(buffer, "padding:0px;");
+		
+	/* font configuration support */
+	font = getStringConfValue(USER_FONT);
+	if(0 == strlen(font))
+		font = getStringConfValue(DEFAULT_FONT);
+		
+	if(NULL != font) {
+		fontsize = font;
+		/* the GTK/GNOME font name format is <font name>,<font size in point> */		
+		strsep(&fontsize, ",");
+		addToHTMLBuffer(buffer, "font:");
+		addToHTMLBuffer(buffer, font);
+		addToHTMLBuffer(buffer, ";");
+		
+		if(NULL != fontsize) {
+			addToHTMLBuffer(buffer, "font-size:");
+			addToHTMLBuffer(buffer, fontsize);
+			addToHTMLBuffer(buffer, "pt;");
+		}		
+		g_free(font);
+	}		
+	addToHTMLBuffer(buffer, "\">");
 }
 
 void ui_htmlview_write(gchar *string) { 
@@ -268,7 +289,7 @@ void ui_htmlview_write(gchar *string) {
 
 void ui_htmlview_finish_output(gchar **buffer) {
 
-	addToHTMLBuffer(buffer, HTML_END); 
+	addToHTMLBuffer(buffer, "</body></html>"); 
 }
 
 void ui_htmlview_clear(void) {

@@ -1,22 +1,23 @@
-/*
-   @file htmlview.h common interface for all HTML view implementations
-   
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file htmlview.h common interface for browser module implementations
+ * and module loading functions
+ *
+ * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #ifndef _HTMLVIEW_H
 #define _HTMLVIEW_H
@@ -38,16 +39,8 @@
  */
 
 #define EMPTY		"<html><body></body></html>"
-#define HTML_START	"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>"
-#define HTML_HEAD_START	"<head><title></title>"
-#define META_ENCODING1	"<meta http-equiv=\"Content-Type\" content=\"text/html; charset="
-#define META_ENCODING2	"\">"
-#define HTML_HEAD_END	"</head><body>"
-#define HTML_HEAD_END2	"</head><body style=\"padding:0px;\">"
 
 #define HTML_NEWLINE	"<br>"
-
-#define HTML_END	"</body></html>"
 
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
