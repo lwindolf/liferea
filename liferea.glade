@@ -19,7 +19,7 @@
   <property name="skip_pager_hint">False</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
-  <signal name="delete_event" handler="on_quit" last_modification_time="Mon, 06 Oct 2003 21:02:01 GMT"/>
+  <signal name="delete_event" handler="on_close" last_modification_time="Tue, 15 Jun 2004 04:16:40 GMT"/>
 
   <child>
     <widget class="GtkVBox" id="vbox1">
