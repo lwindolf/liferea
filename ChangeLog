@@ -17,6 +17,8 @@
 	  GtkTreeModelFilter source. (Lars Lindner)
 	* Filtered feed list feature removed. Did not work
 	  properly and there is no time to fix it.
+	* Added link to FeedValidator in the feed syntax error
+	  messages. (Nathan Conrad)
 	
 	Bugfixes:
 

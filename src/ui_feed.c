@@ -114,10 +114,19 @@ static void ui_feed_set_error_description(feedPtr fp, gint httpstatus, gint resu
 	/* add parsing error messages */
 	if(NULL != fp->parseErrors) {
 		if(errorFound)
-			addToHTMLBuffer(&buffer, HTML_NEWLINE);			
+			addToHTMLBuffer(&buffer, HTML_NEWLINE);	
 		errorFound = TRUE;
 		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT, fp->parseErrors);
 		addToHTMLBuffer(&buffer, tmp1);
+		if (feed_get_source(fp) != NULL && (NULL != strstr(feed_get_source(fp), "://"))) {
+			xmlChar *escsource;
+			addToHTMLBufferFast(&buffer,_("<br>You may want to validate the feed using "
+									"<a href=\"http://feedvalidator.org/check.cgi?url="));
+			escsource = xmlURIEscapeStr(feed_get_source(fp),NULL);
+			addToHTMLBufferFast(&buffer,escsource);
+			xmlFree(escsource);
+			addToHTMLBuffer(&buffer,_("\">FeedValidator</a>."));
+		}
 		g_free(tmp1);
 	}
 	
