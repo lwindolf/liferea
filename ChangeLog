@@ -1,3 +1,10 @@
+2003-12-??  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.4.6
+	
+	* Added missing pubDate support for RSS 2.0 items.
+	* Update to the japanese translation by Takeshi Aihana.
+
 2003-12-07  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.5
