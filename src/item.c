@@ -41,7 +41,6 @@ itemPtr item_new(void) {
 	
 	ip = g_new0(struct item, 1);
 	ip->newStatus = TRUE;
-	ip->fp=5;
 
 	return ip;
 }
@@ -284,12 +283,20 @@ gchar *item_render(itemPtr ip) {
 	g_free(tmp2);
 	g_free(tmp);
 
-	if(displayset.foottable != NULL) {
-		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
-		addToHTMLBufferFast(&buffer, displayset.foottable);
-		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_END);
-		g_free(displayset.foottable);
-	}
+	addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
+		
+	/* add the date before the other meta-data */
+	addToHTMLBufferFast(&buffer, FEED_FOOT_FIRSTTD);
+	addToHTMLBufferFast(&buffer, _("Date"));
+	addToHTMLBufferFast(&buffer, FEED_FOOT_NEXTTD);
+	tmp = ui_itemlist_format_date(ip->time);
+	addToHTMLBufferFast(&buffer, tmp);
+	g_free(tmp);
+	addToHTMLBufferFast(&buffer, FEED_FOOT_LASTTD);
+		
+	addToHTMLBufferFast(&buffer, displayset.foottable);
+	addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_END);
+	g_free(displayset.foottable);
 
 	return buffer;
 }

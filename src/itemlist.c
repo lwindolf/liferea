@@ -88,7 +88,7 @@ void itemlist_reload(nodePtr node) {
 		} else {
 			/* and the user might get click directly on a folder, then we
 			   can unconditionally load all child feeds into the itemlist */
-			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_load_feed, (gpointer)node);
+			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_load_feed, (gpointer)TRUE);
 		}
 	}
 

@@ -109,10 +109,10 @@ static gchar * taglist[] = {	"title",
    be registered explicitly! */
 static gchar * mapToFeedMetadata[] = {
 			 	"feedTitle",		/* title */ 
-				"creator",			/* creator */
+				"creator",		/* creator */
 				"category",		/* subject */
 				"description",		/* description */
-				"publisher",			/* publisher */
+				"publisher",		/* publisher */
 				"contributor",		/* contributor */
 				NULL,			/* date (seldom used, e.g. slashdot) */
 				NULL,			/* type */
