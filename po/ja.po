@@ -1,14 +1,14 @@
 # liferea ja.po.
-# Copyright (C) 2003-2004 Free Software Foundation, Inc.
+# Copyright (C) 2003-2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the liferea package.
-# Takeshi AIHANA <aihana@gnome.gr.jp>, 2003-2004.
+# Takeshi AIHANA <aihana@gnome.gr.jp>, 2003-2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea Ver0.6.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-06 02:38+0100\n"
-"PO-Revision-Date: 2004-11-30 11:13+0900\n"
+"POT-Creation-Date: 2005-01-08 11:31+0900\n"
+"PO-Revision-Date: 2005-01-08 11:31+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -18,9 +18,8 @@ msgstr ""
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:227
-#, fuzzy
 msgid "http://liferea.sf.net"
-msgstr "http://liferea.sf.net/help/help"
+msgstr "http://liferea.sf.net"
 
 #: src/common.c:279
 msgid "[Parser error output was truncated!]"
@@ -198,7 +197,7 @@ msgid "Updating \"%s\""
 msgstr "\"%s\" の更新中"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1011 src/item.c:196 src/metadata.c:321 src/ocs_dir.c:140
+#: src/feed.c:1011 src/item.c:195 src/metadata.c:321 src/ocs_dir.c:140
 #: src/opml.c:214
 msgid "Feed:"
 msgstr "配信元:"
@@ -211,7 +210,7 @@ msgstr "仮想フォルダ"
 msgid "user defined command"
 msgstr "ユーザ定義のコマンド"
 
-#: src/feed.c:1042 src/interface.c:1089 src/interface.c:1499 src/item.c:245
+#: src/feed.c:1042 src/interface.c:1089 src/interface.c:1499 src/item.c:244
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
 msgid "Source:"
 msgstr "ソース:"
@@ -653,13 +652,12 @@ msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">配信元の読み込み</span>"
 
 #: src/interface.c:1920
-#, fuzzy
 msgid ""
 "_Load feeds from disk when needed. Searching can \n"
 "be slow if you have a lot of feeds."
 msgstr ""
 "必要であればディスクから配信元を読み込む\n"
-"(配信元がたくさんある場合は、処理が遅くなります)(_L)"
+"(配信元がたくさんある場合は、検索に時間がかかります)(_L)"
 
 #: src/interface.c:1927
 msgid ""
@@ -674,43 +672,40 @@ msgstr ""
 "メモリを多大に消費します！)(_K)"
 
 #: src/interface.c:1933
-#, fuzzy
 msgid "Feeds"
-msgstr "配信元(_F)"
+msgstr "配信元"
 
 #: src/interface.c:1946
-#, fuzzy
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
-msgstr "<span weight=\"bold\">配信元の更新設定</span>"
+msgstr "<span weight=\"bold\">フォルダ表示の設定</span>"
 
 #: src/interface.c:1964
 msgid "Show the items of all child feeds when a folder is selected."
-msgstr ""
+msgstr "フォルダが選択されたら、その配下にある配信元を全て表示する"
 
 #: src/interface.c:1968
 msgid ""
 "<i>This can cause signifant delays when loading folders with a lot of feeds "
 "inside!</i>"
 msgstr ""
+"注記: <i>配信元がたくさんある場合、読み込む時間が極端に遅くなるおそれがありま"
+"す！</i>"
 
 #: src/interface.c:1979
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">配信元のアイコン (Favicons)</span>"
 
 #: src/interface.c:1998
-#, fuzzy
 msgid "_Update all favicons now."
-msgstr "全てのアイコンを更新する"
+msgstr "今すぐ全てのアイコンを更新する(_U)"
 
 #: src/interface.c:2002
-#, fuzzy
 msgid "Folders"
-msgstr "仮想フォルダ"
+msgstr "フォルダ"
 
 #: src/interface.c:2017
-#, fuzzy
 msgid "<span weight=\"bold\">Reading Headlines</span>"
-msgstr "<span weight=\"bold\">ヘッドラインの表示</span>"
+msgstr "<span weight=\"bold\">ヘッドラインの読み込み</span>"
 
 #: src/interface.c:2040
 msgid "Skim through articles with "
@@ -753,9 +748,8 @@ msgstr ""
 "指定して下さい"
 
 #: src/interface.c:2132
-#, fuzzy
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
-msgstr "<span weight=\"bold\">外部ブラウザの設定</span>"
+msgstr "<span weight=\"bold\">内部ブラウザの設定</span>"
 
 #: src/interface.c:2150
 msgid ""
@@ -778,7 +772,7 @@ msgstr "リンクを Liferea のウィンドウ内で開く(_W)"
 
 #: src/interface.c:2176
 msgid "_Disable Javascript."
-msgstr ""
+msgstr "JavaScript を無効にする(_D)"
 
 #: src/interface.c:2184
 msgid "<span weight=\"bold\">External Browser Settings</span>"
@@ -802,9 +796,8 @@ msgid "_Open link in:"
 msgstr "リンクを開く場所(_O):"
 
 #: src/interface.c:2253
-#, fuzzy
 msgid "Browser"
-msgstr "ブラウザ(_B):"
+msgstr "ブラウザ"
 
 #: src/interface.c:2266
 msgid "<span weight=\"bold\">Notification Settings</span>"
@@ -931,6 +924,7 @@ msgstr "Liferea は GTK+ 版のニュース・アグリゲータです。"
 #: src/interface.c:3068
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 msgstr ""
+"<span color=\"blue\" underline=\"single\">Liferea のホームページ</span>"
 
 #: src/interface.c:3073
 msgid ""
@@ -1042,26 +1036,27 @@ msgstr ""
 msgid "Rules"
 msgstr "ルール"
 
-#: src/item.c:223 src/item.c:227 src/item.c:239 src/ui_itemlist.c:199
+#: src/item.c:222 src/item.c:226 src/item.c:238 src/ui_itemlist.c:207
 msgid "[No title]"
 msgstr "[タイトルなし]"
 
-#: src/item.c:229 src/metadata.c:322 src/ocs_dir.c:101
+#: src/item.c:228 src/metadata.c:322 src/ocs_dir.c:101
 msgid "Item:"
 msgstr "トピック:"
 
+#: src/item.c:290 src/ui_itemlist.c:286
+msgid "Date"
+msgstr "日付"
+
 #: src/main.c:68
-#, fuzzy
 msgid "  --version        Print version information and exit"
-msgstr "  --version        Liferea のバージョンを表示する"
+msgstr "  --version        バージョン情報を表示して終了する"
 
 #: src/main.c:69
-#, fuzzy
 msgid "  --help           Print this help and exit"
-msgstr "  --help           このメッセージを表示して終了する"
+msgstr "  --help           このヘルプを表示して終了する"
 
 #: src/main.c:70
-#, fuzzy
 msgid "  --iconify        Start the program iconified"
 msgstr "  --iconify        プログラムをアイコン化して起動する"
 
@@ -1113,7 +1108,6 @@ msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea は不明なオプションを受け取りました: %s\n"
 
 #: src/main.c:244
-#, fuzzy
 msgid ""
 "Another copy of Liferea was found to be running. Please use it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
@@ -1248,7 +1242,7 @@ msgstr "<%s:%s> に対する名前空間ハンドラではありません！\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>RDF ヘッダが見つかりませんでした！</p>"
 
-#: src/ocs_dir.c:502 src/opml.c:241 src/pie_feed.c:262 src/rss_channel.c:308
+#: src/ocs_dir.c:502 src/opml.c:241 src/pie_feed.c:271 src/rss_channel.c:308
 msgid "There were errors while parsing this feed!"
 msgstr "この配信元を解析する際にエラーが発生しました！"
 
@@ -1256,7 +1250,7 @@ msgstr "この配信元を解析する際にエラーが発生しました！"
 msgid "<p>Could not find OPML header!</p>"
 msgstr "<p>OPML ヘッダが見つかりませんでした！！</p>"
 
-#: src/pie_feed.c:141
+#: src/pie_feed.c:150
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr "<p>OPML ヘッダが見つかりませんでした！！</p>"
 
@@ -1421,10 +1415,12 @@ msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 msgstr ""
+"<br>次のサイトを利用して配信元の妥当性を検証してみて下さい: <a href=\"http://"
+"feedvalidator.org/check.cgi?url="
 
 #: src/ui_feed.c:129
 msgid "\">FeedValidator</a>."
-msgstr ""
+msgstr "\">FeedValidator</a>"
 
 #: src/ui_feed.c:136
 msgid ""
@@ -1652,24 +1648,20 @@ msgstr ""
 "この配信元は停止しているので、利用できません。今後 Liferea が更新することはあ"
 "りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
 
-#: src/ui_itemlist.c:278
-msgid "Date"
-msgstr "日付"
-
-#: src/ui_itemlist.c:289
+#: src/ui_itemlist.c:297
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: src/ui_itemlist.c:478 src/ui_itemlist.c:487 src/ui_itemlist.c:538
+#: src/ui_itemlist.c:486 src/ui_itemlist.c:495 src/ui_itemlist.c:546
 msgid "No item has been selected"
 msgstr "トピックが選択されていません"
 
-#: src/ui_itemlist.c:521 src/ui_itemlist.c:541
+#: src/ui_itemlist.c:529 src/ui_itemlist.c:549
 msgid "You must select a feed to delete its items!"
 msgstr "トピックを削除する配信元を選択して下さい！"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:608
+#: src/ui_itemlist.c:616
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
@@ -1961,31 +1953,10 @@ msgstr "エラー: ファイル \"%s\" を開けませんでした"
 msgid "Error: There is no file \"%s\""
 msgstr "エラー: ファイル \"%s\" がありません"
 
-#: src/gtkhtml2/gtkhtml2.c:231
+#: src/gtkhtml2/gtkhtml2.c:225
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
 "GtkHTML2 ではタグ <object> をサポートしていませんので、\n"
 "HTML に挿入されているプラグイン部分は表示されないでしょう。"
-
-#~ msgid "Invalid RFC822 date format! Ignoring date information!\n"
-#~ msgstr "RFC822 の日付の書式が間違っています！ (日付の情報を無視します)\n"
-
-#~ msgid "URL points to permanent redirect, updating with new location..."
-#~ msgstr "URL は永久リダイレクトを指しているので、新しい場所で更新します..."
-
-#~ msgid "Filter Feeds Without Unread Headlines"
-#~ msgstr "未読のトピックがない配信元を隠す"
-
-#~ msgid "If active all feeds without unread items are hidden."
-#~ msgstr "有効にすると未読のトピックが無い全ての配信元を隠します"
-
-#~ msgid "Feed Handling"
-#~ msgstr "配信元の取り扱い"
-
-#~ msgid "Headline Display"
-#~ msgstr "ヘッドラインの表示"
-
-#~ msgid "External Browser"
-#~ msgstr "外部ブラウザ"
