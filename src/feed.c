@@ -899,7 +899,8 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {
 		/* first specific codes */
 		switch(httpstatus) {
-			case 401:tmp2 = g_strdup(_("The feed no longer exists. Please unsubscribe."));break;
+			case 401:tmp2 = g_strdup(_("You are unauthorized to download this feed. Please update your username and "
+								  "password in the feed properties dialog box."));break;
 			case 402:tmp2 = g_strdup(_("Payment Required"));break;
 			case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
 			case 404:tmp2 = g_strdup(_("Resource Not Found"));break;
