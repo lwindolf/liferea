@@ -80,7 +80,7 @@ GtkWidget *ui_mainwindow_get_active_htmlview(void) {
 
 extern htmlviewPluginInfo *htmlviewInfo;
 
-static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer data) {
 	gboolean modifier_matches = FALSE;
 
 	if((event->type == GDK_KEY_PRESS) &&
@@ -116,7 +116,6 @@ void ui_mainwindow_set_three_pane_mode(gboolean threePane) {
 	if(NULL == htmlview) {
 		htmlview = ui_htmlview_new();
 		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "viewportThreePaneHtml")), GTK_WIDGET(htmlview));
-		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
 		gtk_widget_show(htmlview);
 	}
 	

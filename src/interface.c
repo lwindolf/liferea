@@ -606,6 +606,9 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) mainwindow, "window_state_event",
                     G_CALLBACK (on_mainwindow_window_state_event),
                     NULL);
+  g_signal_connect ((gpointer) mainwindow, "key_press_event",
+                    G_CALLBACK (on_mainwindow_key_press_event),
+                    NULL);
   g_signal_connect ((gpointer) preferences1, "activate",
                     G_CALLBACK (on_prefbtn_clicked),
                     NULL);

@@ -15,7 +15,10 @@
 	  (Lars Lindner)
 	* GTK+ dependency raised to 2.4 to drop the included
 	  GtkTreeModelFilter source. (Lars Lindner)
-	* Added Polish translation. (Jakub W. Jozwicki)
+	* Added Polish translation and default feed list. 
+          (Jakub W. Jozwicki)
+	* Article skimming keybinding is now global. 
+          (Lars Lindner)
 
 
 2004-11-25  Lars Lindner <lars.lindner@gmx.net>
