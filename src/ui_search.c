@@ -115,7 +115,6 @@ void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data)
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	G_CONST_RETURN gchar	*searchstring;
-	gchar			*title;
 	gint			pos;
 	feedPtr			fp;
 	folderPtr		folder = NULL;
@@ -123,11 +122,8 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	if(NULL != searchFeed) {
 		if(NULL != (searchstring = gtk_entry_get_text(GTK_ENTRY(lookup_widget(mainwindow, "searchentry"))))) {
 			folder = ui_feedlist_get_target_folder(&pos);
-			
 			fp = searchFeed;
 			searchFeed = NULL;
-			g_free(title);
-
 			ui_folder_add_feed(folder, fp, pos);
 			ui_feedlist_update();
 			ui_feedlist_select((nodePtr)fp);
