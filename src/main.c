@@ -1,4 +1,6 @@
 /*
+   Liferea main program
+
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
@@ -36,9 +38,7 @@ GThread	*mainThread = NULL;
 GThread	*updateThread = NULL;
 
 int main (int argc, char *argv[]) {	
-gchar *icosource;
-gchar *icodata;
-int i;
+
 #ifdef ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
@@ -81,7 +81,7 @@ int i;
 	if((0 != getNumericConfValue(LAST_WINDOW_X)) && 
 	   (0 != getNumericConfValue(LAST_WINDOW_Y)))
 	   	gtk_window_move(GTK_WINDOW(mainwindow), getNumericConfValue(LAST_WINDOW_X),
-					 		  getNumericConfValue(LAST_WINDOW_Y));
+					 		getNumericConfValue(LAST_WINDOW_Y));
 
 	/* load window size */
 	if((0 != getNumericConfValue(LAST_WINDOW_WIDTH)) && 

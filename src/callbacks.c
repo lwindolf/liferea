@@ -208,6 +208,25 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
 	return FALSE;	
 }
 
+void resetScrolling(GtkScrolledWindow *itemview) {
+	GtkAdjustment	*adj;
+
+	if(NULL != itemview) {
+		adj = gtk_scrolled_window_get_vadjustment(itemview);
+		gtk_adjustment_set_value(adj, 0.0);
+		gtk_scrolled_window_set_vadjustment(itemview, adj);
+		gtk_adjustment_value_changed(adj);
+
+		adj = gtk_scrolled_window_get_hadjustment(itemview);
+		gtk_adjustment_set_value(adj, 0.0);
+		gtk_scrolled_window_set_hadjustment(itemview, adj);
+		gtk_adjustment_value_changed(adj);
+	} else {
+		g_warning(_("internal error! could not reset HTML widget scrolling!"));
+	}
+}
+
+
 void redrawWidget(gchar *name) {
 	GtkWidget	*list;
 	gchar		*msg;
@@ -958,9 +977,12 @@ void itemlist_selection_changed(void) {
 							 IS_TYPE, &type, -1);
 
 			g_assert(selected_ip != NULL);
-			if((0 == itemlist_loading)) {
+			if(!itemlist_loading) {
 				if(NULL != (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
 					displayItem(selected_ip);
+
+					/* reset HTML widget scrolling */
+					resetScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemview")));
 
 					/* redraw feed list to update unread items numbers */
 					redrawFeedList();
@@ -1624,11 +1646,13 @@ void clearItemList(void) {
 }
 
 void displayItemList(void) {
-	GtkTreeIter	iter;
-	gchar		*buffer = NULL;
-	gboolean	valid;
-	itemPtr		ip;
+	GtkTreeIter		iter;
+	gchar			*buffer = NULL;
+	gboolean		valid;
+	itemPtr			ip;
 
+	g_assert(NULL != mainwindow);
+	
 	/* HTML widget can be used only from GTK thread */	
 	if(gnome_vfs_is_primary_thread()) {
 		startHTML(&buffer, itemlist_mode);
@@ -1654,7 +1678,10 @@ void displayItemList(void) {
 					
 				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 			}
-		} else {
+			
+			/* reset HTML widget scrolling */
+			resetScrolling(GTK_SCROLLED_WINDOW(lookup_widget(mainwindow, "itemlistview")));
+		} else {	
 			/* three pane mode */
 			if(NULL == selected_ip) {
 				/* display feed info */
@@ -1665,6 +1692,9 @@ void displayItemList(void) {
 				markItemAsRead(ip);
 				addToHTMLBuffer(&buffer, getItemDescription(selected_ip));
 			}
+			
+			/* no scrolling reset, because this code should only be
+			   triggered for redraw purposes! */
 		}
 		finishHTML(&buffer);
 		writeHTML(buffer);
