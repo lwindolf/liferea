@@ -31,10 +31,19 @@ create_mainwindow (void)
 {
   GtkWidget *mainwindow;
   GtkWidget *vbox1;
-  GtkWidget *toolbar1;
+  GtkWidget *menubar;
   GtkWidget *refreshbtn;
-  GtkWidget *prefbtn;
-  GtkWidget *searchbtn;
+  GtkWidget *image55;
+  GtkWidget *search1;
+  GtkWidget *image56;
+  GtkWidget *new1;
+  GtkWidget *image57;
+  GtkWidget *new1_menu;
+  GtkWidget *new_feed2;
+  GtkWidget *image58;
+  GtkWidget *new_folder2;
+  GtkWidget *image59;
+  GtkWidget *einstellungen1;
   GtkWidget *hpaned1;
   GtkWidget *scrolledwindow3;
   GtkWidget *feedlist;
@@ -45,12 +54,16 @@ create_mainwindow (void)
   GtkWidget *searchentry;
   GtkWidget *newVFolder;
   GtkWidget *hidesearch;
+  GtkWidget *image1;
   GtkWidget *ilscrolledwindow;
   GtkWidget *Itemlist;
   GtkWidget *statusbar;
+  GtkAccelGroup *accel_group;
   GtkTooltips *tooltips;
 
   tooltips = gtk_tooltips_new ();
+
+  accel_group = gtk_accel_group_new ();
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (mainwindow), _("Liferea 0.3.7"));
@@ -60,28 +73,61 @@ create_mainwindow (void)
   gtk_widget_show (vbox1);
   gtk_container_add (GTK_CONTAINER (mainwindow), vbox1);
 
-  toolbar1 = gtk_toolbar_new ();
-  gtk_widget_show (toolbar1);
-  gtk_box_pack_start (GTK_BOX (vbox1), toolbar1, FALSE, FALSE, 0);
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar1), GTK_TOOLBAR_ICONS);
+  menubar = gtk_menu_bar_new ();
+  gtk_widget_show (menubar);
+  gtk_box_pack_start (GTK_BOX (vbox1), menubar, FALSE, FALSE, 0);
 
-  refreshbtn = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
-                                "gtk-refresh",
-                                "gtk-refresh",
-                                NULL, NULL, NULL, -1);
+  refreshbtn = gtk_image_menu_item_new_with_mnemonic (_("_Update"));
   gtk_widget_show (refreshbtn);
+  gtk_container_add (GTK_CONTAINER (menubar), refreshbtn);
+  gtk_tooltips_set_tip (tooltips, refreshbtn, _("Update all feeds"), NULL);
 
-  prefbtn = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
-                                "gtk-preferences",
-                                "gtk-preferences",
-                                NULL, NULL, NULL, -1);
-  gtk_widget_show (prefbtn);
+  image55 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image55);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (refreshbtn), image55);
 
-  searchbtn = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
-                                "gtk-find",
-                                NULL,
-                                NULL, NULL, NULL, -1);
-  gtk_widget_show (searchbtn);
+  search1 = gtk_image_menu_item_new_with_mnemonic (_("_Search"));
+  gtk_widget_show (search1);
+  gtk_container_add (GTK_CONTAINER (menubar), search1);
+  gtk_tooltips_set_tip (tooltips, search1, _("Search in feeds"), NULL);
+
+  image56 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image56);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (search1), image56);
+
+  new1 = gtk_image_menu_item_new_with_mnemonic (_("_New"));
+  gtk_widget_show (new1);
+  gtk_container_add (GTK_CONTAINER (menubar), new1);
+  gtk_tooltips_set_tip (tooltips, new1, _("create a new feed or folder"), NULL);
+
+  image57 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image57);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new1), image57);
+
+  new1_menu = gtk_menu_new ();
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM (new1), new1_menu);
+
+  new_feed2 = gtk_image_menu_item_new_with_mnemonic (_("New _Feed"));
+  gtk_widget_show (new_feed2);
+  gtk_container_add (GTK_CONTAINER (new1_menu), new_feed2);
+  gtk_tooltips_set_tip (tooltips, new_feed2, _("create new feed"), NULL);
+
+  image58 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image58);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new_feed2), image58);
+
+  new_folder2 = gtk_image_menu_item_new_with_mnemonic (_("New F_older"));
+  gtk_widget_show (new_folder2);
+  gtk_container_add (GTK_CONTAINER (new1_menu), new_folder2);
+  gtk_tooltips_set_tip (tooltips, new_folder2, _("create a new folder"), NULL);
+
+  image59 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image59);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (new_folder2), image59);
+
+  einstellungen1 = gtk_image_menu_item_new_from_stock ("gtk-preferences", accel_group);
+  gtk_widget_show (einstellungen1);
+  gtk_container_add (GTK_CONTAINER (menubar), einstellungen1);
 
   hpaned1 = gtk_hpaned_new ();
   gtk_widget_show (hpaned1);
@@ -96,8 +142,8 @@ create_mainwindow (void)
   feedlist = gtk_tree_view_new ();
   gtk_widget_show (feedlist);
   gtk_container_add (GTK_CONTAINER (scrolledwindow3), feedlist);
-  gtk_widget_set_size_request (feedlist, 150, -2);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (feedlist), FALSE);
+  gtk_tree_view_set_reorderable (GTK_TREE_VIEW (feedlist), TRUE);
 
   rightpane = gtk_vpaned_new ();
   gtk_widget_show (rightpane);
@@ -112,7 +158,7 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (vbox13), searchbox, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (searchbox), 5);
 
-  label21 = gtk_label_new (_("search for"));
+  label21 = gtk_label_new (_("Search for"));
   gtk_widget_show (label21);
   gtk_box_pack_start (GTK_BOX (searchbox), label21, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (label21), GTK_JUSTIFY_LEFT);
@@ -126,9 +172,15 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (searchbox), newVFolder, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, newVFolder, _("saves this search as a VFolder, which will appear in the feed list"), NULL);
 
-  hidesearch = gtk_button_new_with_mnemonic (_("X"));
+  hidesearch = gtk_button_new ();
   gtk_widget_show (hidesearch);
   gtk_box_pack_start (GTK_BOX (searchbox), hidesearch, FALSE, FALSE, 0);
+  gtk_tooltips_set_tip (tooltips, hidesearch, _("Close search"), NULL);
+  gtk_button_set_relief (GTK_BUTTON (hidesearch), GTK_RELIEF_NONE);
+
+  image1 = gtk_image_new_from_stock ("gtk-close", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show (image1);
+  gtk_container_add (GTK_CONTAINER (hidesearch), image1);
 
   ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (ilscrolledwindow);
@@ -147,14 +199,20 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) mainwindow, "delete_event",
                     G_CALLBACK (gtk_main_quit),
                     NULL);
-  g_signal_connect_swapped ((gpointer) refreshbtn, "clicked",
-                            G_CALLBACK (on_refreshbtn_clicked),
-                            GTK_OBJECT (feedlist));
-  g_signal_connect ((gpointer) prefbtn, "clicked",
-                    G_CALLBACK (on_prefbtn_clicked),
+  g_signal_connect ((gpointer) refreshbtn, "activate",
+                    G_CALLBACK (on_refreshbtn_clicked),
                     NULL);
-  g_signal_connect ((gpointer) searchbtn, "clicked",
+  g_signal_connect ((gpointer) search1, "activate",
                     G_CALLBACK (on_searchbtn_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) new_feed2, "activate",
+                    G_CALLBACK (on_toolbar_newfeed_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) new_folder2, "activate",
+                    G_CALLBACK (on_toolbar_newfolder_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) einstellungen1, "activate",
+                    G_CALLBACK (on_prefbtn_clicked),
                     NULL);
   g_signal_connect ((gpointer) feedlist, "button_press_event",
                     G_CALLBACK (on_mainfeedlist_button_press_event),
@@ -187,10 +245,19 @@ create_mainwindow (void)
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, mainwindow, "mainwindow");
   GLADE_HOOKUP_OBJECT (mainwindow, vbox1, "vbox1");
-  GLADE_HOOKUP_OBJECT (mainwindow, toolbar1, "toolbar1");
+  GLADE_HOOKUP_OBJECT (mainwindow, menubar, "menubar");
   GLADE_HOOKUP_OBJECT (mainwindow, refreshbtn, "refreshbtn");
-  GLADE_HOOKUP_OBJECT (mainwindow, prefbtn, "prefbtn");
-  GLADE_HOOKUP_OBJECT (mainwindow, searchbtn, "searchbtn");
+  GLADE_HOOKUP_OBJECT (mainwindow, image55, "image55");
+  GLADE_HOOKUP_OBJECT (mainwindow, search1, "search1");
+  GLADE_HOOKUP_OBJECT (mainwindow, image56, "image56");
+  GLADE_HOOKUP_OBJECT (mainwindow, new1, "new1");
+  GLADE_HOOKUP_OBJECT (mainwindow, image57, "image57");
+  GLADE_HOOKUP_OBJECT (mainwindow, new1_menu, "new1_menu");
+  GLADE_HOOKUP_OBJECT (mainwindow, new_feed2, "new_feed2");
+  GLADE_HOOKUP_OBJECT (mainwindow, image58, "image58");
+  GLADE_HOOKUP_OBJECT (mainwindow, new_folder2, "new_folder2");
+  GLADE_HOOKUP_OBJECT (mainwindow, image59, "image59");
+  GLADE_HOOKUP_OBJECT (mainwindow, einstellungen1, "einstellungen1");
   GLADE_HOOKUP_OBJECT (mainwindow, hpaned1, "hpaned1");
   GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow3, "scrolledwindow3");
   GLADE_HOOKUP_OBJECT (mainwindow, feedlist, "feedlist");
@@ -201,12 +268,15 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, searchentry, "searchentry");
   GLADE_HOOKUP_OBJECT (mainwindow, newVFolder, "newVFolder");
   GLADE_HOOKUP_OBJECT (mainwindow, hidesearch, "hidesearch");
+  GLADE_HOOKUP_OBJECT (mainwindow, image1, "image1");
   GLADE_HOOKUP_OBJECT (mainwindow, ilscrolledwindow, "ilscrolledwindow");
   GLADE_HOOKUP_OBJECT (mainwindow, Itemlist, "Itemlist");
   GLADE_HOOKUP_OBJECT (mainwindow, statusbar, "statusbar");
   GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, tooltips, "tooltips");
 
   gtk_widget_grab_focus (feedlist);
+  gtk_window_add_accel_group (GTK_WINDOW (mainwindow), accel_group);
+
   return mainwindow;
 }
 
@@ -1059,5 +1129,32 @@ create_foldernamedialog (void)
   GLADE_HOOKUP_OBJECT (foldernamedialog, cancelbutton1, "cancelbutton1");
 
   return foldernamedialog;
+}
+
+GtkWidget*
+create_window1 (void)
+{
+  GtkWidget *window1;
+  GtkWidget *vbox14;
+  GtkWidget *toolbar2;
+
+  window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window1), _("window1"));
+
+  vbox14 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox14);
+  gtk_container_add (GTK_CONTAINER (window1), vbox14);
+
+  toolbar2 = gtk_toolbar_new ();
+  gtk_widget_show (toolbar2);
+  gtk_box_pack_start (GTK_BOX (vbox14), toolbar2, FALSE, FALSE, 0);
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar2), GTK_TOOLBAR_ICONS);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (window1, window1, "window1");
+  GLADE_HOOKUP_OBJECT (window1, vbox14, "vbox14");
+  GLADE_HOOKUP_OBJECT (window1, toolbar2, "toolbar2");
+
+  return window1;
 }
 

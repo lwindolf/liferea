@@ -161,3 +161,11 @@ on_foldernamechangebtn_clicked         (GtkButton       *button,
 void
 on_newVFolder_clicked                  (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_toolbar_newfeed_clicked             (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_toolbar_newfolder_clicked           (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);

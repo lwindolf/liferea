@@ -785,6 +785,17 @@ void on_popup_allunread_selected(void) {
 	redrawItemList();	
 }
 
+void on_toolbar_newfeed_clicked(GtkMenuItem *menuitem, gpointer user_data) {
+
+	on_newbtn_clicked(NULL, NULL);
+}
+
+
+void on_toolbar_newfolder_clicked(GtkMenuItem *menuitem, gpointer user_data) {
+
+	on_popup_newfolder_selected();	
+}
+
 /*------------------------------------------------------------------------------*/
 /* search callbacks								*/
 /*------------------------------------------------------------------------------*/
@@ -1441,3 +1452,4 @@ on_feedlist_drag_data_received         (GtkWidget       *widget,
 {
 	//g_print("DND received %s %d %d\n", data->data, x, y);
 }
+

@@ -82,7 +82,7 @@ int main (int argc, char *argv[]) {
 	
 	/* workaround to correct tooltips on stockbuttons
 	   which are not generated properly by Glade2 1.1.2/2.0.0 */
-	button_bar_tips = gtk_tooltips_new();	   
+/*	button_bar_tips = gtk_tooltips_new();	   
 	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
 			     lookup_widget(mainwindow, "refreshbtn"),
 			     _("refresh feeds"),
@@ -98,8 +98,8 @@ int main (int argc, char *argv[]) {
 	gtk_tooltips_set_tip(GTK_TOOLTIPS(button_bar_tips),
 			     lookup_widget(mainwindow, "refreshbtn"),
 			     _("refresh feeds"),
-			     _("refresh feeds"));
-			     			     			     	
+			     _("refresh feeds"));*/
+	     			     			     	
 	setupEntryList(lookup_widget(mainwindow, "feedlist"));
 	setupItemList(lookup_widget(mainwindow, "Itemlist"));
 		
