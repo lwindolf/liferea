@@ -13,6 +13,7 @@
 	* HTML plugin interface has changed.
 	* Added news reader icon drawn by Jakob Steiner as recommended
 	  application launcher icon.
+	* Added a simple manual page.
 	* The feed downloading now is concurrent to avoid long waiting
 	  times on timeouts or slow feed sources. The default concurrency
 	  is 3. The value can be configured by setting the gconf key
