@@ -256,7 +256,6 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	gtk_widget_destroy(mainwindow);
 	ui_htmlview_deinit();
-
 	gtk_main_quit();
 	debug_exit("on_quit");
 	

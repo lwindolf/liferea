@@ -53,7 +53,7 @@ Documentation and Translations
 
 Tibor Pittich <Tibor.Pittich@phuture.sk>	Slovak
 Antoine REVERSAT <areversat@TUXFAMILY.ORG>   	French
-Vincent Lefèvre <vinc17@users.sourceforge.net>	French
+Vincent Lefèvre <vinc17@users.sourceforge.net	French
 Stephane Jourdan <stephane.jourdan@itris.fr>	French
 Takeshi AIHANA <aihana@gnome.gr.jp>		Japanese 
 Park Ji-In <mithrandir@electrang.net>		Korean 
@@ -66,6 +66,7 @@ Dario Conigliaro <djdas@djdas.no-ip.org>	Italian
 Rex Tsai <chihchun@users.sourceforge.net>	Traditional Chinese
 Alekseev Vladimir <compress@linux-online.ru>	Russian
 Juraj Kubelka <Juraj.Kubelka@email.cz>		Czech
+Martin-Eric Racine <q-funk@pp.fishpool.fi>	Finnish
 
 Code included from other projects
 =================================
@@ -76,5 +77,5 @@ Philippe Martin, Brion Vibber			favicon to XPM conversion (used until 0.5.0)
 Jonathan Blandford <jrb@redhat.com>		GtkTreeModelFilter (GTK+ project)
 Kristian Rietveld <kris@gtk.org>		GtkTreeModelFilter (GTK+ project)
 
-If I forgot to list you here leave me a message on
+If we forgot to list you here leave us a message on
 the mailing list and we'll include your name and email!

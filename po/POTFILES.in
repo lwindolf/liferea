@@ -1,6 +1,5 @@
 # List of source files containing translatable strings.
 
-src/support.c
 src/callbacks.c
 src/callbacks.h
 src/cdf_channel.c
@@ -11,6 +10,8 @@ src/common.c
 src/common.h
 src/conf.c
 src/conf.h
+src/debug.c
+src/debug.h
 src/eggtrayicon.c
 src/eggtrayicon.h
 src/export.c
@@ -23,6 +24,10 @@ src/filter.c
 src/filter.h
 src/folder.c
 src/folder.h
+src/guitreemodelfilter.c
+src/guitreemodelfilter.h
+src/html.c
+src/html.h
 src/htmlview.c
 src/htmlview.h
 src/interface.c
@@ -30,10 +35,21 @@ src/interface.h
 src/item.c
 src/item.h
 src/main.c
+src/net/curl.c
+src/net/compat.h
 src/net/conversions.c
 src/net/conversions.h
+src/net/digcalc.c
+src/net/digcalc.h
+src/net/downloadlib.h
+src/net/md5.c
+src/net/md5.h
 src/net/netio.c
 src/net/netio.h
+src/net/net-support.c
+src/net/net-support.h
+src/net/os-support.c
+src/net/os-support.h
 src/ns_admin.c
 src/ns_admin.h
 src/ns_ag.c
@@ -73,6 +89,8 @@ src/support.c
 src/support.h
 src/ui_dnd.c
 src/ui_dnd.h
+src/ui_feed.c
+src/ui_feed.h
 src/ui_feedlist.c
 src/ui_feedlist.h
 src/ui_filter.c
@@ -82,6 +100,8 @@ src/ui_itemlist.c
 src/ui_itemlist.h
 src/ui_mainwindow.c
 src/ui_mainwindow.h
+src/ui_notification.c
+src/ui_notification.h
 src/ui_popup.c
 src/ui_popup.h
 src/ui_prefs.c
@@ -92,11 +112,11 @@ src/ui_search.c
 src/ui_search.h
 src/ui_tray.c
 src/ui_tray.h
-src/ui_notification.c
-src/ui_notification.h
 src/update.c
 src/update.h
 src/vfolder.c
 src/vfolder.h
 src/gtkhtml2/gtkhtml2.c
 src/mozilla/mozembed.c
+src/mozilla/mozilla.cpp
+src/mozilla/mozilla.h
