@@ -200,31 +200,28 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 
 	switch(type) {
 	case FST_FOLDER:
+	case FST_HELPFOLDER:
 		path2 = build_path_str(id, "feedlistname");
 		name = getStringConfValue(path2);
 		g_free(path2);
-
+		
 		path2 = build_path_str(id, "collapseState");
 		expanded = !getBooleanConfValue(path2);
 		g_free(path2);
 		
-		folder = restore_folder(parent, name, id, FST_FOLDER);
-		
-		ui_add_folder(parent, folder, -1);
+		if (type == FST_HELPFOLDER) {
+			folder = feedlist_insert_help_folder(parent);
+		} else {
+			folder = restore_folder(parent, name, id, FST_FOLDER);
+			ui_add_folder(parent, folder, -1);
+		}
+
 		load_folder_contents(folder, id);
 		if (expanded)
 			ui_folder_set_expansion(folder, TRUE);
 		g_free(name);
 		break;
-	case FST_HELPFOLDER:
-		folder = feedlist_insert_help_folder(parent);
 
-		path2 = build_path_str(id, "collapseState");
-		expanded = !getBooleanConfValue(path2);
-		if (expanded)
-			ui_folder_set_expansion(folder, TRUE);
-		g_free(path2);
-		break;
 	default:
 		path2 = build_path_str(id, "name");
 		name = getStringConfValue(path2);
