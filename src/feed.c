@@ -222,6 +222,7 @@ void feed_save(feedPtr fp) {
 			xmlDocSetRootElement(doc, feedNode);
 
 			xmlNewTextChild(feedNode, NULL, "feedTitle", feed_get_title(fp));
+			xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(fp));
 			
 			if(NULL != fp->description)
 				xmlNewTextChild(feedNode, NULL, "feedDescription", fp->description);

@@ -256,7 +256,7 @@ void ui_htmlview_start_output(gchar **buffer, gboolean padded) {
 	}
 
 	if(NULL != font) {
-		addToHTMLBuffer(buffer, "<style type=\"text/css\">\n<!--\nbody {");
+		addToHTMLBuffer(buffer, "<style type=\"text/css\">\n<!--\nbody, table, div {");
 		
 		fontsize = font;
 		/* the GTK/GNOME font name format is <font name>,<font size in point>

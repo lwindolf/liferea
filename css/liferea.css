@@ -222,16 +222,16 @@ img.freshmeat {
 
 table.slash {
 	width:100%;
+	margin-bottom:5px;
 }
 
 td.slash {
-	margin-bottom:5px;
 	border-width:1px;
 	border-style:solid;
 	border-color:black;
 	background:#408060;
 	width:100%;
-	font-size:9pt;
+	font-size:x-small;
 	color:black;
 	padding-left:5px;
 	padding-right:5px;
