@@ -1,22 +1,23 @@
-/*
-   @file feed.c common feed handling
-   
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file feed.c common feed handling
+ * 
+ * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version. 
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <glib.h>
 #include <libxml/xmlmemory.h>
@@ -82,7 +83,11 @@ GMutex * feeds_lock = NULL;
 /* prototypes */
 static gboolean update_timer_main(gpointer data);
 
-void registerFeedType(gint type, feedHandlerPtr fhp) {
+/* ------------------------------------------------------------ */
+/* feed type registration					*/
+/* ------------------------------------------------------------ */
+
+static void feed_register_type(gint type, feedHandlerPtr fhp) {
 	gint	*typeptr;
 		
 	typeptr = g_new0(gint, 1);
@@ -90,7 +95,7 @@ void registerFeedType(gint type, feedHandlerPtr fhp) {
 	g_hash_table_insert(feedHandler, (gpointer)typeptr, (gpointer)fhp);
 }
 
-static gint autoDetectFeedType(gchar *url, gchar **data) {
+static gint feed_auto_detect_type(gchar *url, gchar **data) {
 	struct feed_request	*request;
 	detectStrPtr		pattern = detectPattern;
 	gint			type = FST_INVALID;
@@ -119,23 +124,23 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 }
 
 /* initializing function, only called upon startup */
-void initBackend(void) {
+void feed_init(void) {
 
 	feeds_lock = g_mutex_new();
 	feeds = g_hash_table_new(g_str_hash, g_str_equal);
 
-	allItems = getNewFeedStruct();
+	allItems = feed_new();
 	allItems->type = FST_VFOLDER;
 	
 	feedHandler = g_hash_table_new(g_int_hash, g_int_equal);
 
-	registerFeedType(FST_RSS,	initRSSFeedHandler());
-	registerFeedType(FST_HELPFEED,	initRSSFeedHandler());
-	registerFeedType(FST_OCS,	initOCSFeedHandler());
-	registerFeedType(FST_CDF,	initCDFFeedHandler());
-	registerFeedType(FST_PIE,	initPIEFeedHandler());
-	registerFeedType(FST_OPML,	initOPMLFeedHandler());	
-	registerFeedType(FST_VFOLDER,	initVFolderFeedHandler());
+	feed_register_type(FST_RSS,		initRSSFeedHandler());
+	feed_register_type(FST_HELPFEED,	initRSSFeedHandler());
+	feed_register_type(FST_OCS,		initOCSFeedHandler());
+	feed_register_type(FST_CDF,		initCDFFeedHandler());
+	feed_register_type(FST_PIE,		initPIEFeedHandler());
+	feed_register_type(FST_OPML,		initOPMLFeedHandler());	
+	feed_register_type(FST_VFOLDER,		initVFolderFeedHandler());
 	
 	update_thread_init();	/* start thread for update request processing */
 	
@@ -147,8 +152,8 @@ void initBackend(void) {
 }
 
 /* function to create a new feed structure */
-feedPtr getNewFeedStruct(void) {
-	feedPtr			fp;
+feedPtr feed_new(void) {
+	feedPtr		fp;
 	
 	fp = g_new0(struct feed, 1);
 
@@ -165,14 +170,13 @@ feedPtr getNewFeedStruct(void) {
 	return fp;
 }
 
-gint saveFeed(feedPtr fp) {
+void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode, itemNode;
 	GSList		*itemlist;
 	gchar		*filename;
 	gchar		*tmp;
 	itemPtr		ip;
-	gint		error = 0;
 	gint		saveCount = 0;
 	gint		saveMaxCount;
 			
@@ -183,7 +187,7 @@ gint saveFeed(feedPtr fp) {
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
 			xmlDocSetRootElement(doc, feedNode);		
 
-			xmlNewTextChild(feedNode, NULL, "feedTitle", getFeedTitle(fp));
+			xmlNewTextChild(feedNode, NULL, "feedTitle", feed_get_title(fp));
 			
 			if(NULL != fp->description)
 				xmlNewTextChild(feedNode, NULL, "feedDescription", fp->description);
@@ -202,7 +206,7 @@ gint saveFeed(feedPtr fp) {
 							((struct feed_request *)(fp->request))->lastmodified);
 			}
 
-			itemlist = getFeedItemList(fp);
+			itemlist = feed_get_item_list(fp);
 			while(NULL != itemlist) {
 				saveCount ++;
 				ip = itemlist->data;
@@ -237,47 +241,21 @@ gint saveFeed(feedPtr fp) {
 
 				} else {
 					g_warning(_("could not write XML item node!\n"));
-					error = 1;
 				}
 
 				itemlist = g_slist_next(itemlist);
 				
-				if((saveCount >= saveMaxCount) && (IS_FEED(getFeedType(fp))))
+				if((saveCount >= saveMaxCount) && (IS_FEED(feed_get_type(fp))))
 					break;
 			}
 		} else {
 			g_warning(_("could not create XML feed node for feed cache document!"));
-			error = 1;
 		}
 		xmlSaveFormatFileEnc(filename, doc, NULL, 1);
 		g_free(filename);
 	} else {
 		g_warning(_("could not create XML document!"));
-		error = 1;
 	}
-	
-	return error;
-}
-
-/* hash table foreach wrapper function */
-static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
-	feedPtr	fp = (feedPtr)value;
-	
-	if(IS_FEED(fp->type)) {
-		ui_mainwindow_set_status_bar(_("saving feed \"%s\""), getFeedTitle(fp));
-		saveFeed(fp);
-	}
-}
-
-/* function to be called on program shutdown to save read stati */
-void saveAllFeeds(void) {
-
-	/* we must save here to save changed read flags */	
-	ui_mainwindow_set_status_bar(_("saving all feeds..."));
-	
-	g_mutex_lock(feeds_lock);
-	g_hash_table_foreach(feeds, saveFeedFunc, NULL);
-	g_mutex_unlock(feeds_lock);
 }
 
 /* function which is called to load a feed's cache file */
@@ -294,7 +272,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 		return NULL;
 	}
 
-	fp = getNewFeedStruct();		
+	fp = feed_new();		
 	while(1) {	
 		g_assert(NULL != data);
 		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
@@ -344,7 +322,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 				((struct feed_request *)(fp->request))->lastmodified = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-				addItem((feedPtr)fp, parseCacheItem(doc, cur));
+				feed_add_item((feedPtr)fp, parseCacheItem(doc, cur));
 			}			
 			g_free(tmp);	
 			cur = cur->next;
@@ -377,7 +355,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 	if(NULL == (new_fp = loadFeed(type, key, keyprefix)))
 		/* maybe cache file was deleted or entry has no cache 
 		   (like help entries) so we reload the entry from its URL */
-		new_fp = getNewFeedStruct();
+		new_fp = feed_new();
 	
 	new_fp->type = type;
 	new_fp->key = key;	
@@ -400,10 +378,10 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 		new_fp->source = g_strdup(_("error: URL missing!"));
 	}
 
-	setFeedUpdateInterval(new_fp, interval);
+	feed_set_update_interval(new_fp, interval);
 	
-	if(FALSE == getFeedAvailable(new_fp))
-		updateFeed(new_fp);
+	if(FALSE == feed_get_available(new_fp))
+		feed_update(new_fp);
 
 	g_mutex_lock(feeds_lock);
 	g_hash_table_insert(feeds, (gpointer)key, (gpointer)new_fp);
@@ -425,16 +403,14 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 	gchar			*data;
 	feedPtr			fp;
 
-	fp = getNewFeedStruct();
+	fp = feed_new();
 	fp->source = url;
 	
 	g_assert(NULL != fp);
 	if(FST_AUTODETECT == type) {
 		/* if necessary download and detect type */
-		if(FST_INVALID == (type = autoDetectFeedType(url, &data))) {	// FIXME: pass fp to adjust URL
-			tmp = g_strdup_printf(_("Could not detect feed type of \"%s\"! Please manually select a feed type."), url);
-			showErrorBox(tmp);
-			g_free(tmp);
+		if(FST_INVALID == (type = feed_auto_detect_type(url, &data))) {	// FIXME: pass fp to adjust URL
+			ui_show_error_box("Could not detect feed type of \"%s\"! Please manually select a feed type.", url);
 			g_free(data);
 			return NULL;
 		}
@@ -466,7 +442,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		fp->key = key;
 
 		if(TRUE == fp->available)		
-			saveFeed(fp);
+			feed_save(fp);
 
 		/* try to download favicon */
 		baseurl = g_strdup(url);
@@ -493,7 +469,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 	
 		/* and finally add the feed to the feed list */
 		g_mutex_lock(feeds_lock);
-		g_hash_table_insert(feeds, (gpointer)getFeedKey(fp), (gpointer)fp);
+		g_hash_table_insert(feeds, (gpointer)feed_get_key(fp), (gpointer)fp);
 		g_mutex_unlock(feeds_lock);
 	} else {
 		g_print(_("error! could not add feed to configuration!\n"));
@@ -506,7 +482,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 /* Merges the feeds specified by old_fp and new_fp, so that
    the resulting feed is stored in the structure old_fp points to.
    The feed structure of new_fp 'll be freed. */
-void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
+void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 	GSList		*new_list, *old_list, *diff_list = NULL;
 	itemPtr		new_ip, old_ip;
 	gchar 		*status;
@@ -581,7 +557,7 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 				if(FALSE == checkNewItem(new_ip)) {
 					new_ip->hidden = TRUE;
 				} else {
-					increaseUnreadCount(old_fp);
+					feed_increase_unread_counter(old_fp);
 					traycount++;
 				}			
 				newcount++;
@@ -647,12 +623,12 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 	new_fp->parseErrors = NULL;
 	old_fp->available = new_fp->available;
 	new_fp->items = NULL;
-	freeFeed(new_fp);
+	feed_free(new_fp);
 	
 	doTrayIcon(traycount);		/* finally update the tray icon */
 }
 
-void removeFeed(feedPtr fp) {
+void feed_remove(feedPtr fp) {
 	gchar	*filename;
 	
 	/* there may be an update request for this feed, 
@@ -669,25 +645,25 @@ void removeFeed(feedPtr fp) {
 
 	g_hash_table_remove(feeds, (gpointer)fp);
 	removeFeedFromConfig(fp->keyprefix, fp->key);	
-	freeFeed(fp);
+	feed_free(fp);
 }
 
 /**
  * method to be called by other threads to update feeds
  */
-void updateFeed(feedPtr fp) { 
+void feed_update(feedPtr fp) { 
 	gchar		*source;
 	
 	g_assert(NULL != fp);
 	
 	if(TRUE == fp->updateRequested) {
-		ui_mainwindow_set_status_bar("This feed \"%s\" is already being updated!", getFeedTitle(fp));
+		ui_mainwindow_set_status_bar("This feed \"%s\" is already being updated!", feed_get_title(fp));
 		return;
 	}
 
-	ui_mainwindow_set_status_bar("updating \"%s\"", getFeedTitle(fp));
+	ui_mainwindow_set_status_bar("updating \"%s\"", feed_get_title(fp));
 	
-	if(NULL == (source = getFeedSource(fp))) {
+	if(NULL == (source = feed_get_source(fp))) {
 		g_warning("Feed source is NULL! This should never happen - cannot update!");
 		return;
 	}
@@ -710,8 +686,8 @@ static void feed_check_update_counter(gpointer key, gpointer value, gpointer use
 	feedPtr		fp = (feedPtr)value;
 
 	g_get_current_time(&now);
-	g_print("update counter for %s is %ld\n", getFeedTitle(fp),  fp->scheduledUpdate.tv_sec - now.tv_sec);
-	if(getFeedUpdateInterval > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
+	g_print("update counter for %s is %ld\n", feed_get_title(fp),  fp->scheduledUpdate.tv_sec - now.tv_sec);
+	if(feed_get_update_interval > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
 		update_thread_add_request((struct feed_request *)fp->request);
 }
 
@@ -731,7 +707,7 @@ static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 	g_message("update_feed_helper");
 	
 	g_assert(NULL != fp);
-	updateFeed(fp);
+	feed_update(fp);
 }
 
 /* this method is called upon the refresh all button... */
@@ -743,11 +719,11 @@ void updateAllFeeds(void) {
 	g_mutex_unlock(feeds_lock);
 }
 
-void addItem(feedPtr fp, itemPtr ip) {
+void feed_add_item(feedPtr fp, itemPtr ip) {
 
 	ip->fp = fp;
 	if(FALSE == ip->readStatus)
-		increaseUnreadCount(fp);
+		feed_increase_unread_counter(fp);
 	fp->items = g_slist_append(fp->items, (gpointer)ip);
 	allItems->items = g_slist_append(allItems->items, (gpointer)ip);
 }
@@ -756,7 +732,7 @@ void addItem(feedPtr fp, itemPtr ip) {
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
 
-feedPtr getFeed(gchar *feedkey) {
+feedPtr feed_get_from_key(gchar *feedkey) {
 	feedPtr	fp;
 
 	g_assert(NULL != feeds);
@@ -769,23 +745,22 @@ feedPtr getFeed(gchar *feedkey) {
 	return fp;
 }
 
-gint getFeedType(feedPtr fp) { return fp->type; }
-gpointer getFeedIcon(feedPtr fp) { return fp->icon; }
-gchar * getFeedKey(feedPtr fp) { return fp->key; }
-gchar * getFeedKeyPrefix(feedPtr fp) { return fp->keyprefix; }
+gint feed_get_type(feedPtr fp) { return fp->type; }
+gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
+gchar * feed_get_key(feedPtr fp) { return fp->key; }
+gchar * feed_get_keyprefix(feedPtr fp) { return fp->keyprefix; }
 
-void increaseUnreadCount(feedPtr fp) { fp->unreadCount++; }
-void decreaseUnreadCount(feedPtr fp) { fp->unreadCount--; }
-gint getFeedUnreadCount(feedPtr fp) { return fp->unreadCount; }
+void feed_increase_unread_counter(feedPtr fp) { fp->unreadCount++; }
+void feed_decrease_unread_counter(feedPtr fp) { fp->unreadCount--; }
+gint feed_get_unread_counter(feedPtr fp) { return fp->unreadCount; }
 
-gint getFeedDefaultInterval(feedPtr fp) { return fp->defaultInterval; }
-gint getFeedUpdateInterval(feedPtr fp) { return fp->updateInterval; }
+gint feed_get_default_update_interval(feedPtr fp) { return fp->defaultInterval; }
+gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 
-void setFeedUpdateInterval(feedPtr fp, gint interval) { 
+void feed_set_update_interval(feedPtr fp, gint interval) { 
 
 	fp->updateInterval = interval; 
-	if (fp->key)
-		setFeedUpdateIntervalInConfig(fp->key, interval);
+	setFeedUpdateIntervalInConfig(fp->key, interval);
 	if (interval > 0)
 		feed_reset_update_counter(fp);
 }
@@ -798,12 +773,12 @@ void feed_reset_update_counter(feedPtr fp) {
 	printf("HHHHHHHHH  UPDATING %s at %ld\n", fp->title, fp->scheduledUpdate.tv_sec);
 }
 
-gboolean getFeedAvailable(feedPtr fp) { return fp->available; }
+gboolean feed_get_available(feedPtr fp) { return fp->available; }
 
 /* Returns a HTML string describing the last retrieval error 
-   of this feed. Should only be called when getFeedAvailable
+   of this feed. Should only be called when feed_get_available
    returns FALSE. Caller must free returned string! */
-gchar * getFeedErrorDescription(feedPtr fp) {
+gchar * feed_get_error_description(feedPtr fp) {
 	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
 	gint 		httpstatus;
 	gboolean	errorFound = FALSE;
@@ -871,7 +846,7 @@ gchar * getFeedErrorDescription(feedPtr fp) {
 	return buffer;
 }
 
-gchar * getFeedTitle(feedPtr fp) { 
+gchar * feed_get_title(feedPtr fp) { 
 
 	if(NULL != fp->title)
 		return fp->title; 
@@ -879,27 +854,27 @@ gchar * getFeedTitle(feedPtr fp) {
 		return fp->source;
 }
 
-void setFeedTitle(feedPtr fp, gchar *title) {
+void feed_set_title(feedPtr fp, gchar *title) {
 
 	g_free(fp->title);
 	fp->title = title;
 	setFeedTitleInConfig(fp->key, title);
 }
 
-gchar * getFeedDescription(feedPtr fp) { return fp->description; }
-gchar * getFeedSource(feedPtr fp) { return fp->source; }
+gchar * feed_get_description(feedPtr fp) { return fp->description; }
+gchar * feed_get_source(feedPtr fp) { return fp->source; }
 
-void setFeedSource(feedPtr fp, gchar *source) {
+void feed_set_source(feedPtr fp, gchar *source) {
 
 	g_free(fp->source);
 	fp->source = source;
 	setFeedURLInConfig(fp->key, source);
 }
 
-GSList * getFeedItemList(feedPtr fp) { return fp->items; }
+GSList * feed_get_item_list(feedPtr fp) { return fp->items; }
 
 /* method to free all items of a feed */
-void clearFeedItemList(feedPtr fp) {
+void feed_clear_item_list(feedPtr fp) {
 	GSList	*item;
 	
 	item = fp->items;
@@ -911,7 +886,7 @@ void clearFeedItemList(feedPtr fp) {
 	fp->items = NULL;
 }
 
-void markAllItemsAsRead(feedPtr fp) {
+void feed_mark_all_items_read(feedPtr fp) {
 	GSList	*item;
 	
 	item = fp->items;
@@ -928,7 +903,7 @@ void markAllItemsAsRead(feedPtr fp) {
    
    This method is primarily used for feeds which do not want
    to incrementally update items like directories. */
-void copyFeed(feedPtr fp, feedPtr new_fp) {
+void feed_copy(feedPtr fp, feedPtr new_fp) {
 	feedPtr		tmp_fp;
 	itemPtr		ip;
 	GSList		*item;
@@ -947,7 +922,7 @@ void copyFeed(feedPtr fp, feedPtr new_fp) {
 	new_fp->type = fp->type;
 	new_fp->request = fp->request;
 	
-	tmp_fp = getNewFeedStruct();
+	tmp_fp = feed_new();
 	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
 	memcpy(fp, new_fp, sizeof(struct feed));
 	
@@ -956,12 +931,12 @@ void copyFeed(feedPtr fp, feedPtr new_fp) {
 	tmp_fp->title = NULL;
 	tmp_fp->source = NULL;
 	tmp_fp->request = NULL;
-	freeFeed(tmp_fp);				/* we use tmp_fp to free almost all infos
+	feed_free(tmp_fp);				/* we use tmp_fp to free almost all infos
 							   allocated by old feed structure */
 	g_free(new_fp);
 	
 	/* adjust item parent pointer of new items from new_fp to fp */
-	item = getFeedItemList(fp);
+	item = feed_get_item_list(fp);
 	while(NULL != item) {
 		ip = item->data;
 		ip->fp = fp;
@@ -970,18 +945,20 @@ void copyFeed(feedPtr fp, feedPtr new_fp) {
 }
 
 /* method to free all memory allocated by a feed */
-void freeFeed(feedPtr fp) {
+void feed_free(feedPtr fp) {
 
 	/* free items */
-	clearFeedItemList(fp);
+	feed_clear_item_list(fp);
 	
-	// FIXME: free filter structures too as soon as implemented
+	// FIXME: free filter structures too when implemented
 
 	/* Don't free active feed requests here, because they might
 	   still be processed in the update queues! Abandoned
 	   requests are free'd in update.c. */
 	if(FALSE == fp->updateRequested)
 		update_request_free(fp->request);
+	else
+		((struct feed_request *)fp->request)->fp = NULL;
 
 	/* free feed info */
 	g_free(fp->title);
