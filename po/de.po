@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-12 15:58+0100\n"
+"POT-Creation-Date: 2003-12-25 01:22+0100\n"
 "PO-Revision-Date: 2003-12-14 09:00+0100\n"
 "Last-Translator: Lars Lindner <lars.linder@gmx.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Konnte pixmap Datei nicht finden: %"
 
-#: src/callbacks.c:132
+#: src/callbacks.c:130
 msgid ""
 "You have disabled both the menubar and the toolbar. Without one of these you "
 "won't be able to access all program functions. I'll reenable the toolbar!"
@@ -30,48 +30,58 @@ msgstr ""
 "nicht auf alle Programmfunktionen zugegriffenwerden. Deshalb werde ich die "
 "Toolbar wieder aktivieren!"
 
-#: src/callbacks.c:178
+#: src/callbacks.c:177
 msgid "entry list widget lookup failed!\n"
 msgstr "entry list widget lookup failed!\n"
 
-#: src/callbacks.c:183
+#: src/callbacks.c:182
 msgid "could not retrieve selection of entry list!"
 msgstr "could not retrieve selection of entry list!"
 
-#: src/callbacks.c:199
+#: src/callbacks.c:198
 msgid "fatal! selected feed entry has no key!!!"
 msgstr "fatal! selected feed entry has no key!!!"
 
-#: src/callbacks.c:239 src/callbacks.c:377 src/callbacks.c:415
+#: src/callbacks.c:224
+#, fuzzy
+msgid "internal error! could not reset HTML widget scrolling!"
+msgstr "internal error! could not find feed tree view widget!\n"
+
+#: src/callbacks.c:260 src/callbacks.c:398 src/callbacks.c:436
 msgid "You have to select a feed entry!"
 msgstr "Es muß ein Feed ausgewählt werden!"
 
-#: src/callbacks.c:383
+#: src/callbacks.c:404
 msgid "You can't delete help feeds!"
 msgstr "Hilfe Feeds können nicht gelöscht werden!"
 
-#: src/callbacks.c:387
+#: src/callbacks.c:408
 msgid "Deleting entry"
 msgstr "Lösche Feed"
 
-#: src/callbacks.c:397
+#: src/callbacks.c:418
 msgid "It seems like there is no selected feed entry!"
 msgstr "Da scheint kein Feed ausgewählt worden zu sein!"
 
-#: src/callbacks.c:450
+#: src/callbacks.c:471
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr "Der Provider dieses Feeds gibt ein Update-Interval von %d Minuten vor."
 
-#: src/callbacks.c:452
+#: src/callbacks.c:473
 msgid "This feed specifies no default update interval."
 msgstr "Diese Feed hat kein Default-Update-Intervall"
 
-#: src/callbacks.c:495
+#: src/callbacks.c:516
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr "Internal error! No feed selected, but property change requested...\n"
 
-#: src/callbacks.c:559
+#: src/callbacks.c:571
+#, fuzzy
+msgid "internal error! could not select newly created treestore iter!"
+msgstr "internal error! could not get a new folder key!"
+
+#: src/callbacks.c:588
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -82,106 +92,108 @@ msgid ""
 msgstr ""
 "Konnte \"%s\" nicht downloaden!\n"
 "\n"
-" Möglicherweise ist die URL ungültig oder das Feed ist vorübergehend "
-"nicht verfügbar. Versuchen Sie entweder das Feed später zu aktualisieren "
-"oder löschen Sie das Abonnement über das Kontextmenü aus der Feed-Liste.\n"
+" Möglicherweise ist die URL ungültig oder das Feed ist vorübergehend nicht "
+"verfügbar. Versuchen Sie entweder das Feed später zu aktualisieren oder "
+"löschen Sie das Abonnement über das Kontextmenü aus der Feed-Liste.\n"
 
-#: src/callbacks.c:613
+#: src/callbacks.c:642
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr "internal error! invalid type selected! This should never happen!\n"
 
-#: src/callbacks.c:638 src/export.c:220 src/export.c:233
+#: src/callbacks.c:672 src/export.c:220 src/export.c:233
 msgid "internal error! could not find file dialog select button!"
 msgstr "internal error! could not find file dialog select button!"
 
-#: src/callbacks.c:668 src/export.c:123
+#: src/callbacks.c:702 src/export.c:123
 msgid "internal error! could not get a new folder key!"
 msgstr "internal error! could not get a new folder key!"
 
-#: src/callbacks.c:677 src/callbacks.c:717
+#: src/callbacks.c:711 src/callbacks.c:751
 msgid "You have to select a folder entry!"
 msgstr "Sie müssen einen Ordner auswählen!"
 
-#: src/callbacks.c:743 src/callbacks.c:746
+#: src/callbacks.c:777 src/callbacks.c:780
 msgid "A folder must be empty to delete it!"
 msgstr "Ein Ordner muß leer sein um gelöscht zu werden!"
 
-#: src/callbacks.c:749
+#: src/callbacks.c:783
 msgid "Error: Cannot determine folder key!"
 msgstr "Error: Cannot determine folder key!"
 
-#: src/callbacks.c:791 src/callbacks.c:935
+#: src/callbacks.c:825 src/callbacks.c:969
 msgid "could not retrieve selection of item list!"
 msgstr "could not retrieve selection of item list!"
 
-#: src/callbacks.c:824
+#: src/callbacks.c:858
 msgid "item list widget lookup failed!\n"
 msgstr "item list widget lookup failed!\n"
 
-#: src/callbacks.c:834
+#: src/callbacks.c:868
 msgid "could not retrieve selection of item list!\n"
 msgstr "could not retrieve selection of item list!\n"
 
-#: src/callbacks.c:930
+#: src/callbacks.c:964
 msgid "could not find item list widget!"
 msgstr "could not find item list widget!"
 
-#: src/callbacks.c:1028 src/callbacks.c:1069
+#: src/callbacks.c:1080 src/callbacks.c:1121
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr "internal error! could not get feed tree view selection!\n"
 
-#: src/callbacks.c:1030 src/callbacks.c:1071
+#: src/callbacks.c:1082 src/callbacks.c:1123
 msgid "internal error! could not find feed tree view widget!\n"
 msgstr "internal error! could not find feed tree view widget!\n"
 
-#: src/callbacks.c:1098
+#: src/callbacks.c:1150
 msgid "There are no unread items!"
 msgstr "Es gibt keine ungelesenen Items!"
 
-#: src/callbacks.c:1215
+#: src/callbacks.c:1170
+#, fuzzy
+msgid "You have to select a feed to delete its items!"
+msgstr "Es muß ein Feed ausgewählt werden!"
+
+#: src/callbacks.c:1278
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "internal error! unknown entry type! cannot display appropriate icon!\n"
 
-#: src/callbacks.c:1358
+#: src/callbacks.c:1421
 msgid "Date"
 msgstr "Datum"
 
-#: src/callbacks.c:1366
+#: src/callbacks.c:1429
 msgid "Headline"
 msgstr "Schlagzeile"
 
-#: src/callbacks.c:1465
+#: src/callbacks.c:1528
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualisiert.."
 
-#: src/callbacks.c:1473
+#: src/callbacks.c:1536
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 "Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert."
 
-#: src/callbacks.c:1492
+#: src/callbacks.c:1555
+#, fuzzy, c-format
+msgid "\"%s\" has not changed since last update."
+msgstr ""
+"Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert."
+
+#: src/callbacks.c:1559
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" ist nicht verfügbar!"
 
-#: src/callbacks.c:1530
-msgid "Sorry Liferea does not yet support drag&drop of folders!"
-msgstr ""
-"Tut mir leid. Im Augenblick wird das Drag&Drop von Ordnern nicht unterstützt!"
-
-#: src/callbacks.c:1539
-msgid "you cannot modify the special help folder contents!"
-msgstr "Die Eigenschaften des Hilfe-Ordners können nicht geändert werden!"
-
-#: src/callbacks.c:1654
+#: src/callbacks.c:1683
 msgid "internal error! item list display for NULL pointer requested!\n"
 msgstr "internal error! item list display for NULL pointer requested!\n"
 
-#: src/cdf_channel.c:106 src/cdf_item.c:52 src/common.c:152 src/item.c:137
+#: src/cdf_channel.c:106 src/cdf_item.c:52 src/common.c:160 src/item.c:137
 #: src/ns_dc.c:225 src/ns_dc.c:275 src/ns_dc.c:318 src/ns_dc.c:358
-#: src/ns_dc.c:400 src/ns_ocs.c:73 src/pie_entry.c:107 src/pie_feed.c:168
+#: src/ns_dc.c:400 src/ns_ocs.c:73 src/pie_entry.c:106 src/pie_feed.c:168
 #: src/rss_channel.c:219 src/rss_channel.c:267 src/rss_channel.c:301
 #: src/rss_item.c:78
 msgid "internal error: XML document pointer NULL! This should not happen!\n"
@@ -189,8 +201,8 @@ msgstr "internal error: XML document pointer NULL! This should not happen!\n"
 
 #: src/cdf_channel.c:172 src/opml.c:133 src/pie_feed.c:222
 #: src/rss_channel.c:344
-#, c-format
-msgid "XML error wile reading feed! Feed \"%s\" could not be loaded!"
+#, fuzzy, c-format
+msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "XML Fehler beim Lesen des Feeds! Feed \"%s\" konnte nicht geladen werden!"
 
@@ -204,77 +216,86 @@ msgstr "Leeres Dokument!"
 msgid "not enough memory!"
 msgstr "Nicht genug Speicher!"
 
-#: src/common.c:117
+#: src/common.c:125
 msgid "conversion wasn't successful.\n"
 msgstr "Konvertierung fehlgeschlagen.\n"
 
-#: src/common.c:119
+#: src/common.c:127
 #, c-format
 msgid "conversion wasn't successful. converted: %i octets.\n"
 msgstr "Konvertierung fehlgeschlagen. %i Oktetts konvertiert.\n"
 
-#: src/common.c:129
+#: src/common.c:137
 msgid "not enough memory\n"
 msgstr "Nicht genug Speicher!\n"
 
-#: src/common.c:255 src/common.c:309
+#: src/common.c:263 src/common.c:308
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr ""
 "Interner Fehler! Fehler bei Zeitkonvertierung! mktime fehlgeschlagen!\n"
 
-#: src/common.c:258
+#: src/common.c:266
 #, fuzzy
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "Ungültiges Datumsformat! Ignoriere <dc:date> Informationen!\n"
 
-#: src/common.c:313
+#: src/common.c:311
 #, fuzzy
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
 msgstr "Ungültiges Datumsformat! Ignoriere <dc:date> Informationen!\n"
 
-#: src/common.c:381
+#: src/common.c:379
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "Kann Cache-Verzeichnis \"%s\" nicht anlegen!"
 
-#: src/common.c:470 src/common.c:477 src/common.c:486 src/common.c:495
-#: src/common.c:504
+#: src/common.c:483
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
 
-#: src/conf.c:164
+#. sh..!
+#: src/common.c:497
+msgid "Internal error while converting UTF-8 chars to HTTP URI!"
+msgstr ""
+
+#. _() for HELP1URL to allow localised help feeds
+#: src/conf.c:39
+msgid "http://liferea.sf.net/help046.rdf"
+msgstr ""
+
+#: src/conf.c:165
 #, c-format
 msgid "internal error! could not retrieve feed list for gconf path %s\n"
 msgstr "internal error! could not retrieve feed list for gconf path %s\n"
 
-#: src/conf.c:468
+#: src/conf.c:469
 msgid "error! could not get a free entry key!\n"
 msgstr "Fehler! Konnte keinen freien Key für neuen Eintrag ermitteln!\n"
 
-#: src/conf.c:474
+#: src/conf.c:475
 msgid "error! could not set a URL for this key!\n"
 msgstr "Fehler! Konnte URL für diesen Key nicht ermitteln!\n"
 
-#: src/conf.c:477
+#: src/conf.c:478
 msgid "error! could not set a type for this key!\n"
 msgstr "Fehler! Konnte Typ für diesen Key nicht ermitteln!\n"
 
 #. add to config and UI feed list
-#: src/conf.c:701 src/conf.c:703
+#: src/conf.c:702 src/conf.c:704
 msgid "Liferea Help"
 msgstr "Liferea Hilfe"
 
-#: src/conf.c:707
+#: src/conf.c:708
 msgid "Online Help Feed"
 msgstr "Online Hilfe Feed"
 
-#: src/conf.c:708
+#: src/conf.c:709
 msgid "Liferea SF News"
 msgstr "Liferea SF News"
 
-#: src/conf.c:723
+#: src/conf.c:724
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr "RSS Namespace %s noch nicht konfiguriert! Aktiviere es...\n"
@@ -301,11 +322,11 @@ msgstr "Fehler: Kompressionsmethode ist nicht deflate!"
 msgid "ERROR: Unsupported flags %d\n"
 msgstr "Fehler: Nicht unterstützte Flags %d\n"
 
-#: src/export.c:70 src/feed.c:233
+#: src/export.c:70 src/feed.c:250
 msgid "could not create XML feed node for feed cache document!"
 msgstr "Konnte XML Feed Node für Cache-Datei nicht erzeugen!"
 
-#: src/export.c:74 src/feed.c:237
+#: src/export.c:74 src/feed.c:254
 msgid "could not create XML document!"
 msgstr "Konnte XML Datei nicht anlegen!"
 
@@ -322,10 +343,10 @@ msgstr "Feed-Liste exportiert!"
 msgid "imported feed list"
 msgstr "importierte Feeds"
 
-#: src/export.c:132 src/feed.c:278
-#, c-format
+#: src/export.c:132 src/feed.c:295
+#, fuzzy, c-format
 msgid ""
-"XML error wile reading cache file \"%s\" ! Cache file could not be loaded!"
+"XML error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "XML Fehler beim Lesen der Cache-Datei \"%s\" ! Cache-Datei nicht geladen!"
 
@@ -343,27 +364,31 @@ msgstr "\"%s\" ist keine gültige OPML-Datei! Konnte OPML-Datei nicht lesen!"
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr "Konnte Icon-Datei \"%s\" nicht löschen! Bitte löschen Sie sie manuell!"
 
-#: src/feed.c:223
+#: src/feed.c:155
+msgid "Could not allocate memory!"
+msgstr "Konnte Speicher nicht allokieren!"
+
+#: src/feed.c:240
 msgid "could not write XML item node!\n"
 msgstr "Konnte XML Item-Knoten nicht schreiben!\n"
 
 #. we must save here to save changed read flags
-#: src/feed.c:257
+#: src/feed.c:274
 msgid "saving all feeds..."
 msgstr "Sichere alle Feeds..."
 
-#: src/feed.c:283
+#: src/feed.c:300
 msgid "Empty document! Feed cache file should not be empty..."
 msgstr "Leeres Dokument! Feed Cache-Datei sollte nicht leer sein..."
 
-#: src/feed.c:291
+#: src/feed.c:308
 #, c-format
 msgid "\"%s\" is no valid cache file! Cannot read cache file!"
 msgstr "\"%s\" ist keine gültige Cache-Datei! Konnte Cache-Datei nicht lesen!"
 
 #. if necessary download and detect type
 #. FIXME: pass fp to adjust URL
-#: src/feed.c:391
+#: src/feed.c:408
 #, c-format
 msgid ""
 "Could not detect feed type of \"%s\"! Please manually select a feed type."
@@ -371,49 +396,48 @@ msgstr ""
 "Konnte Feed-Typ von \"%s\" nicht ermitteln! Bitte geben Sie selbst einen Typ "
 "an.."
 
-#: src/feed.c:412
+#: src/feed.c:429
 msgid "internal error! unknown feed type in newFeed()!"
 msgstr "Interner Fehler! Unbekannter Feed-Typ in newFeed()!"
 
-#: src/feed.c:455
+#: src/feed.c:472
 msgid "error! could not add feed to configuration!\n"
 msgstr "Fehler! Konnte Feed nicht der Konfiguration hinzufügen!\n"
 
-#: src/feed.c:575
+#: src/feed.c:592
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" hat keine neuen Items."
 
-#: src/feed.c:577
+#: src/feed.c:594
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" hat %d neue Items."
 
-#: src/feed.c:612
+#: src/feed.c:629
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
 "Konnte Cache-Datei \"%s\" nicht löschen! Bitte entfernen Sie diese manuell!"
 
-#: src/feed.c:639
+#: src/feed.c:656
 msgid "updating all feeds..."
 msgstr "Aktualisiere alle Feeds..."
 
-#: src/feed.c:664
+#: src/feed.c:681
 #, c-format
 msgid "internal error! there is no feed assigned to feedkey %s!"
 msgstr "internal error! there is no feed assigned to feedkey %s!"
 
-#: src/folder.c:72 src/folder.c:89 src/folder.c:112 src/folder.c:186
-#: src/folder.c:258
+#: src/folder.c:71 src/folder.c:88 src/folder.c:111 src/folder.c:185
 msgid "internal error! could not determine folder key!"
 msgstr "internal error! could not determine folder key!"
 
-#: src/folder.c:217
+#: src/folder.c:216
 msgid "(empty)"
 msgstr "(leer)"
 
-#: src/folder.c:354
+#: src/folder.c:350
 #, c-format
 msgid "error! could not move cache file %s to file %s\n"
 msgstr "Fehler! Konnte Cache-File \"%s\" nicht nach \"%s\" verschieben!\n"
@@ -427,155 +451,221 @@ msgstr ""
 "Es gibt keinen %%s URL Platzhalter im String der Browserkommando Einstellung "
 "gefunden werden!!!"
 
-#: src/interface.c:122
-msgid "Liferea 0.4.5"
-msgstr "Liferea 0.4.5"
+#: src/interface.c:132
+#, fuzzy
+msgid "Liferea 0.4.6"
+msgstr ""
 
-#: src/interface.c:133
+#: src/interface.c:143
 msgid "_Program"
 msgstr "Programm"
 
-#: src/interface.c:140
+#: src/interface.c:150
 msgid "_Import Feed List"
 msgstr "Feed-Liste _Importieren"
 
-#: src/interface.c:144
+#: src/interface.c:153
+#, fuzzy
+msgid "Imports an OPML feed list."
+msgstr "Importiert eine Feed-Liste aus einer OPML Datei."
+
+#: src/interface.c:159
 msgid "_Export Feed List"
 msgstr "Feed-Liste _Exportieren"
 
-#: src/interface.c:161
+#: src/interface.c:162
+#, fuzzy
+msgid "Export the feed list as OPML."
+msgstr "Exportiert eine Feed-Liste als OPML Datei."
+
+#: src/interface.c:181
 msgid "_Feeds"
 msgstr "_Feeds"
 
-#: src/interface.c:168
+#: src/interface.c:188
 msgid "_Feed"
 msgstr "_Feed"
 
-#: src/interface.c:175
+#: src/interface.c:195
 msgid "_Update Feed"
 msgstr "Feed _aktualisieren"
 
-#: src/interface.c:183
+#: src/interface.c:203
 msgid "_New Subscription"
 msgstr "_Neues Abonnement"
 
-#: src/interface.c:191
+#: src/interface.c:211
 msgid "_Delete Feed"
 msgstr "Feed _löschen"
 
-#: src/interface.c:199
+#: src/interface.c:219
 msgid "_Edit Properties"
 msgstr "_Eigenschaften"
 
-#: src/interface.c:207
+#: src/interface.c:227
 msgid "F_older"
 msgstr "_Ordner"
 
-#: src/interface.c:214
+#: src/interface.c:234
 msgid "_New Folder"
 msgstr "_Neuer Ordner"
 
-#: src/interface.c:222
+#: src/interface.c:242
 msgid "_Delete Folder"
 msgstr "Ordner _löschen"
 
-#: src/interface.c:230
+#: src/interface.c:250
 msgid "_Edit Folder Name"
 msgstr "Name des Ordners ändern"
 
-#: src/interface.c:243
+#: src/interface.c:263
 msgid "_Update All"
 msgstr "_Alle aktualisieren"
 
-#: src/interface.c:254
+#: src/interface.c:266
+msgid "Immediately updates all feeds (excluding directories)."
+msgstr "Sofortiges Aktualisieren aller Feeds (ausgenommen alle Verzeichnisse)"
+
+#: src/interface.c:275
 msgid "_Items"
 msgstr "_Items"
 
-#: src/interface.c:261
+#: src/interface.c:282
 msgid "_Mark All As Read"
 msgstr "Alle als gelesen _markieren"
 
-#: src/interface.c:268
-msgid "_Launch In Browser"
-msgstr "Im _Browser öffnen"
+#: src/interface.c:285
+msgid "Marks all items of the current feed as read."
+msgstr "Markiert alle Items des ausgewählten Feed als gelesen."
 
-#: src/interface.c:275
+#: src/interface.c:290
+#, fuzzy
+msgid "_Next Unread Item"
+msgstr "Nächstes ungelesenes Item"
+
+#: src/interface.c:293
+msgid ""
+"Jumps to the next unread item. If necessary selects the next feed with "
+"unread items."
+msgstr ""
+"Springt zum nächsten ungelesenen Item, wenn nötig wird das nächste "
+"Feed mit ungelesenen Items angewählt."
+
+#: src/interface.c:302
+msgid "Toggle _Read Status"
+msgstr "Lesestatus ändern"
+
+#: src/interface.c:305
+msgid "Toggles the read status of the selected item."
+msgstr "Ändert den Lesestatus des gewählten Items."
+
+#: src/interface.c:310
 msgid "Toggle Item _Flag"
 msgstr "Item _Flag setzen"
 
-#: src/interface.c:287
+#: src/interface.c:313
+#, fuzzy
+msgid "Toggles the item flag."
+msgstr "Item _Flag setzen"
+
+#: src/interface.c:318
+msgid "Remove Items"
+msgstr "Lösche Items"
+
+#: src/interface.c:321
+msgid "Removes all items of the currently selected feed."
+msgstr "Löscht alle Items des ausgewählten Feeds."
+
+#: src/interface.c:332
+msgid "_Launch In Browser"
+msgstr "Im _Browser öffnen"
+
+#: src/interface.c:335
+msgid "Launches the items link in the configured browser."
+msgstr "Öffnet den Link des Items im konfigurierten Browser."
+
+#: src/interface.c:345
 msgid "_Toggle Condensed View"
 msgstr "_Zusammengefaßte Ansicht an/aus"
 
-#: src/interface.c:296
-msgid "Next Unread Item"
-msgstr "Nächstes ungelesenes Item"
+#: src/interface.c:348
+msgid ""
+"Toggle the view mode from the three paned item list to the two paned "
+"condensed view."
+msgstr ""
+"Ändert den Ansichtsmodus von der dreigeteilten Ansicht zu "
+"zweigeteilten und umgekehrt."
 
-#: src/interface.c:307 src/interface.c:378
+#: src/interface.c:350 src/interface.c:443
 msgid "Search"
 msgstr "Suche"
 
-#: src/interface.c:314
+#: src/interface.c:357
 msgid "Toggle Search Box"
 msgstr "Suchbox an/aus"
 
-#: src/interface.c:317
+#: src/interface.c:360
 msgid "Shows or hides the search box."
 msgstr "Zeigt oder versteckt die Suchbox."
 
-#: src/interface.c:323
+#: src/interface.c:366
 msgid "Search with Feedster"
 msgstr "Suche mit Feedster"
 
-#: src/interface.c:326
+#: src/interface.c:369
 msgid "Create a Feedster search feed."
 msgstr "Anlegen einer Feedster Suche."
 
-#: src/interface.c:340
+#: src/interface.c:383 src/interface.c:405
 msgid "Update feeds"
 msgstr "Aktualisieren der Feeds"
 
-#: src/interface.c:356
+#: src/interface.c:399
+#, fuzzy
+msgid "Next Unread"
+msgstr "Nächstes ungelesenes Item"
+
+#: src/interface.c:421
 msgid "Update"
 msgstr "Aktualisieren"
 
-#: src/interface.c:362
+#: src/interface.c:427
 msgid "Search in feeds"
 msgstr "Feeds durchsuchen"
 
-#: src/interface.c:384
+#: src/interface.c:449
 msgid "Edit preferences"
 msgstr "Vorlieben verändern"
 
-#: src/interface.c:412
+#: src/interface.c:477
 msgid "Search for"
 msgstr "Suche nach"
 
-#: src/interface.c:429
+#: src/interface.c:494
 msgid "create VFolder"
 msgstr "erzeuge VFolder"
 
-#: src/interface.c:432
+#: src/interface.c:497
 msgid "saves this search as a VFolder, which will appear in the feed list"
 msgstr "sichert die Suche als VFolder, der dann in der Feed-Liste auftaucht"
 
-#: src/interface.c:437
+#: src/interface.c:502
 msgid "Close search"
 msgstr "Suchbox schließen"
 
-#: src/interface.c:471
+#: src/interface.c:536
 msgid "single item view"
 msgstr "Ansicht als Item-Liste"
 
-#: src/interface.c:480
+#: src/interface.c:545
 msgid "condensed item list"
 msgstr "zusammengefaßte Ansicht"
 
-#: src/interface.c:713
+#: src/interface.c:797
 msgid "Subscription Properties"
 msgstr "Eigenschaften des Abonnements"
 
-#: src/interface.c:734
+#: src/interface.c:818
 msgid ""
 "Edit the following entries to adjust the feed source URL or\n"
 "the feed title, which is displayed in the feed list."
@@ -583,11 +673,11 @@ msgstr ""
 "Editieren Sie die folgendes Felder um die Feed URL oder\n"
 "angezeigten den Feed-Titel anzupassen."
 
-#: src/interface.c:747
+#: src/interface.c:831
 msgid "Feed Title"
 msgstr "Feed-Titel"
 
-#: src/interface.c:759
+#: src/interface.c:843
 msgid ""
 "either leave the name supplied by the feed or enter an alternative name "
 "which you like to be listed in the feed list"
@@ -595,23 +685,23 @@ msgstr ""
 "Behalten Sie den Default-Titel des Feed bei oder geben Sie einen "
 "alternativen Titel an, der in der Feed-Liste erscheinen soll."
 
-#: src/interface.c:766
+#: src/interface.c:850
 msgid "enter the URL the feed should be loaded from"
 msgstr "Geben Sie die URL des Feed an"
 
-#: src/interface.c:768 src/interface.c:940
+#: src/interface.c:852 src/interface.c:1024
 msgid "Feed URL"
 msgstr "Feed URL"
 
-#: src/interface.c:775
+#: src/interface.c:859
 msgid "Feed URL and Title"
 msgstr "Feed URL und Titel"
 
-#: src/interface.c:795
+#: src/interface.c:879
 msgid "Feed Refresh Interval (in minutes)"
 msgstr "Feed-Aktualisierungs-Intevall (in Minuten)"
 
-#: src/interface.c:803
+#: src/interface.c:887
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
@@ -621,15 +711,15 @@ msgstr ""
 "täglich aktualisierte Feeds alle 15 Minuten zu pollen! Um das Auto-"
 "Aktualisieren abzuschalten setzen Sie das Intervall auf 0."
 
-#: src/interface.c:812
+#: src/interface.c:896
 msgid "Feed Update Interval"
 msgstr "Update Intervall"
 
-#: src/interface.c:907
+#: src/interface.c:991
 msgid "New Subscription"
 msgstr "Neues Abonnement"
 
-#: src/interface.c:928
+#: src/interface.c:1012
 msgid ""
 "Please enter the URL (including the http:// prefix) you want to \n"
 "subscribe to. Or enter a valid pathname if you want to load a local file."
@@ -638,15 +728,15 @@ msgstr ""
 "Sie abonnieren wollen. Oder geben Sie einen gültigen Pfad einer lokalen "
 "Datei an."
 
-#: src/interface.c:950
+#: src/interface.c:1034
 msgid "local file"
 msgstr "lokale Datei"
 
-#: src/interface.c:954
+#: src/interface.c:1038
 msgid "URL Input"
 msgstr "URL Eingabe"
 
-#: src/interface.c:972
+#: src/interface.c:1056
 msgid ""
 "You have to specify the type of the feed you want to subscribe \n"
 "to. If you are unsure select \"Auto Detect\"."
@@ -654,72 +744,72 @@ msgstr ""
 "Geben Sie den Typ des Feeds an das sie abonnieren wollen. \n"
 "Wenn Sie unsicher sind wählen Sie \"Auto Erkennung\"."
 
-#: src/interface.c:983
+#: src/interface.c:1067
 msgid "Feed Type"
 msgstr "Feed-Typ"
 
-#: src/interface.c:994
+#: src/interface.c:1078
 msgid "Auto Detect"
 msgstr "Auto Erkennung"
 
-#: src/interface.c:998
+#: src/interface.c:1082
 msgid "RSS"
 msgstr "RSS"
 
-#: src/interface.c:1002
+#: src/interface.c:1086
 msgid "CDF"
 msgstr "CDF"
 
-#: src/interface.c:1006
+#: src/interface.c:1090
 msgid "Atom/Echo/PIE"
 msgstr "Atom/Echo/PIE"
 
-#: src/interface.c:1010
+#: src/interface.c:1094
 msgid "OCS"
 msgstr "OCS"
 
-#: src/interface.c:1014
+#: src/interface.c:1098
 msgid "OPML"
 msgstr "OPML"
 
-#: src/interface.c:1020
+#: src/interface.c:1104
 msgid "Feed Type Selection"
 msgstr "Feed Typ Auswahl"
 
-#: src/interface.c:1142
+#: src/interface.c:1226
 msgid "program preferences"
 msgstr "Programm-Vorlieben"
 
-#: src/interface.c:1167
+#: src/interface.c:1251
 msgid "use the GNOME default browser"
 msgstr "den GNOME Defaultbrowser verwenden"
 
-#: src/interface.c:1177
+#: src/interface.c:1261
 msgid "use browser command"
 msgstr "benutze Kommando"
 
-#: src/interface.c:1187
+#: src/interface.c:1271
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr "geben Sie ein Browserkommando mit einem %s Platzhalter an"
 
-#: src/interface.c:1189
+#: src/interface.c:1273
 msgid "browser settings"
 msgstr "Browser Einstellungen"
 
-#: src/interface.c:1203
+#: src/interface.c:1287
 msgid "display only time"
 msgstr "nur die Zeit anzeigen"
 
-#: src/interface.c:1209
+#: src/interface.c:1293
 msgid "display date and time"
 msgstr "Zeit und Datum anzeigen"
 
-#: src/interface.c:1219
+#: src/interface.c:1303
 msgid "user defined format"
 msgstr "benutzerdefiniertes Format"
 
-#: src/interface.c:1228
+#: src/interface.c:1312
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -727,11 +817,11 @@ msgstr ""
 "für Experten: geben Sie einen Formatstring an, Hilfe zu den Formatcodes "
 "finden Sie in der strftime() Manpage"
 
-#: src/interface.c:1230
+#: src/interface.c:1314
 msgid "date column settings"
 msgstr "Einstellungen der Datum-Spalte"
 
-#: src/interface.c:1249
+#: src/interface.c:1333
 msgid ""
 "maximal number of items per feed \n"
 "to be saved permanently"
@@ -739,19 +829,19 @@ msgstr ""
 "Maximale Zahl von Items pro Feed \n"
 "die im Cache gesichert werden"
 
-#: src/interface.c:1260
+#: src/interface.c:1344
 msgid "Update all feeds on program startup."
 msgstr "Aktualisieren aller Feeds beim Start."
 
-#: src/interface.c:1264
+#: src/interface.c:1348
 msgid "feed handling settings"
 msgstr "Feed Einstellungen"
 
-#: src/interface.c:1269
+#: src/interface.c:1353
 msgid "Feed Handling"
 msgstr "Feed Einstellungen"
 
-#: src/interface.c:1286
+#: src/interface.c:1370
 #, fuzzy
 msgid ""
 "Show a status icon in the notification area \n"
@@ -762,83 +852,83 @@ msgstr ""
 "(auch System Tray). Änderungen dieser Einstellung\n"
 "werden erst nach dem nächsten Start wirksam."
 
-#: src/interface.c:1291
+#: src/interface.c:1375
 msgid "Notification Area"
 msgstr "Notification Area"
 
-#: src/interface.c:1305
+#: src/interface.c:1389
 msgid "Disable Tool Bar."
 msgstr "Toolbar deaktivieren"
 
-#: src/interface.c:1310
+#: src/interface.c:1394
 msgid "Disable Menu Bar."
 msgstr "Menü deaktivieren"
 
-#: src/interface.c:1315
+#: src/interface.c:1399
 msgid "Menu Settings"
 msgstr "Menü Einstellungen"
 
-#: src/interface.c:1319
+#: src/interface.c:1403
 msgid "GUI Settings"
 msgstr "GUI Einstellungen"
 
-#: src/interface.c:1408
+#: src/interface.c:1492
 msgid "add folder"
 msgstr "Ordner hinzufügen"
 
-#: src/interface.c:1423 src/interface.c:1497
+#: src/interface.c:1507 src/interface.c:1581
 msgid "folder name"
 msgstr "Ordner Titel"
 
-#: src/interface.c:1486
+#: src/interface.c:1570
 msgid "edit folder name"
 msgstr "Ändern des Ordner-Titels"
 
-#: src/interface.c:1549
+#: src/interface.c:1633
 msgid "Select A File"
 msgstr "Auswählen einer Datei"
 
-#: src/interface.c:1594
+#: src/interface.c:1678
 msgid "edit filter rules"
 msgstr "Filterregeln ändern"
 
-#: src/interface.c:1694
+#: src/interface.c:1778
 msgid "edit rule properties"
 msgstr "Regel ändern"
 
-#: src/interface.c:1708
+#: src/interface.c:1792
 msgid "rule type"
 msgstr "Regeltyp"
 
-#: src/interface.c:1718
+#: src/interface.c:1802
 msgid "add items with exact match"
 msgstr "Items mit exaktem Treffer hinzufügen"
 
-#: src/interface.c:1722
+#: src/interface.c:1806
 msgid "remove items with exact match"
 msgstr "Items mit exaktem Treffer entfernen"
 
-#: src/interface.c:1732
+#: src/interface.c:1816
 msgid "rule value"
 msgstr "Regelwert"
 
-#: src/interface.c:1806
+#: src/interface.c:1890
 msgid "Search With Feedster"
 msgstr "Suche mit Feedster"
 
-#: src/interface.c:1820
+#: src/interface.c:1904
 msgid "Search for "
 msgstr "Suche nach "
 
-#: src/interface.c:1827
+#: src/interface.c:1911
 msgid "enter any search string you want"
 msgstr "beliebigen Suchstring eingeben"
 
-#: src/interface.c:1833
+#: src/interface.c:1917
 msgid "Maximal Number Of Result Items"
 msgstr "Maximale Anzahl von Resultaten"
 
-#: src/interface.c:1842
+#: src/interface.c:1926
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -848,11 +938,11 @@ msgstr ""
 "Feedster Resultate für den angegebenen Suchstring abzufragen. Sie können "
 "dieses Abonnement dauerhaft behalten und wie jedes andere Feed akualisieren. "
 
-#: src/interface.c:1908
-msgid "Export Feed List"
-msgstr "Feed-Liste exportieren"
+#: src/interface.c:1992
+msgid "Import Feed List"
+msgstr "Feed-Liste importieren"
 
-#: src/interface.c:1918
+#: src/interface.c:2002
 msgid ""
 "Liferea can import a list of feeds from an OPML file. This  can be used to "
 "either restore a backup feed list or import a feed list from another "
@@ -862,19 +952,19 @@ msgstr ""
 "z.B. ein Backup der abonnierten Feeds angelegt werden oder eine Liste von "
 "Feeds eines anderen Programmes, daß OPML unterstützt, importiert werden."
 
-#: src/interface.c:1928 src/interface.c:2016
+#: src/interface.c:2012 src/interface.c:2100
 msgid "Filename"
 msgstr "Dateiname"
 
-#: src/interface.c:1936 src/interface.c:2024
+#: src/interface.c:2020 src/interface.c:2108
 msgid "Select File"
 msgstr "Datei auswählen"
 
-#: src/interface.c:1996
-msgid "Import Feed List"
-msgstr "Feed-Liste importieren"
+#: src/interface.c:2080
+msgid "Export Feed List"
+msgstr "Feed-Liste exportieren"
 
-#: src/interface.c:2006
+#: src/interface.c:2090
 msgid ""
 "Liferea can export the list of feeds as an OPML list. You can use this "
 "feature to backup your feed list or export your feed list to another "
@@ -956,16 +1046,16 @@ msgstr "Konnte nicht zu Server \"%s\" verbinden!"
 msgid "Aborted."
 msgstr "Abgebrochen."
 
-#: src/netio.c:687
+#: src/netio.c:685
 msgid "Could not allocate memory to read file!"
 msgstr "Konnte Speicher zum Lesen der Datei nicht allokieren!"
 
-#: src/netio.c:694
+#: src/netio.c:692
 #, c-format
 msgid "Could not open file \"%s\"!"
 msgstr "Konnte Datei \"%s\" nicht öffnen!"
 
-#: src/netio.c:697
+#: src/netio.c:695
 #, c-format
 msgid "There is no file \"%s\"!"
 msgstr "Es gibt keine Datei \"%s\"!"
@@ -1000,9 +1090,11 @@ msgid "no namespace handler for <%s:%s>!\n"
 msgstr ""
 
 #: src/ocs_dir.c:492
-#, c-format
-msgid "XML error wile reading directory! Directory \"%s\" could not be loaded!"
+#, fuzzy, c-format
+msgid ""
+"XML error while reading directory! Directory \"%s\" could not be loaded!"
 msgstr ""
+"XML Fehler beim Lesen des Feeds! Feed \"%s\" konnte nicht geladen werden!"
 
 #: src/ocs_dir.c:498 src/opml.c:139 src/rss_channel.c:352
 msgid "Empty document!"
@@ -1078,19 +1170,23 @@ msgstr "VFolder %s"
 msgid "internal error! could not get folder key prefix!"
 msgstr ""
 
-#: src/ui_tray.c:79
+#: src/ui_tray.c:81
 #, c-format
 msgid "%d new items!"
 msgstr "%d neue Items!"
 
-#: src/ui_tray.c:86
+#: src/ui_tray.c:89
 msgid "No new items."
 msgstr "Keine neuen Items."
 
-#: src/update.c:108
-msgid "Could not allocate memory!"
-msgstr "Konnte Speicher nicht allokieren!"
-
-#: src/update.c:156
+#: src/update.c:140
 msgid "Feed source is NULL! This should never happen - cannot update!"
 msgstr ""
+
+#~ msgid "Sorry Liferea does not yet support drag&drop of folders!"
+#~ msgstr ""
+#~ "Tut mir leid. Im Augenblick wird das Drag&Drop von Ordnern nicht "
+#~ "unterstützt!"
+
+#~ msgid "you cannot modify the special help folder contents!"
+#~ msgstr "Die Eigenschaften des Hilfe-Ordners können nicht geändert werden!"

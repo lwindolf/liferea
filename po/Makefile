@@ -135,10 +135,12 @@ POTFILES = \
 	../src/ui_popup.c \
 	../src/ui_search.c \
 	../src/ui_tray.c \
+	../src/ui_selection.c \
+	../src/ui_dnd.c \
 	../src/update.c \
 	../src/update.h \
 	../src/vfolder.c \
-	../src/vfolder.h
+	../src/vfolder.h 
 
 CATALOGS =  fr.gmo ja.gmo ko.gmo es_ES.gmo de.gmo
 CATOBJEXT = .gmo
