@@ -69,7 +69,7 @@ Code included from other projects
 
 Oliver Feiler <kiza@kcore.de>			SnowNews HTTP client
 Anders Carlsson <andersca@gnu.org>		egg tray icon support
-Philippe Martin, Brion Vibber			favicon to XPM conversion
+Philippe Martin, Brion Vibber			favicon to XPM conversion (used until 0.5.0)
 Jonathan Blandford <jrb@redhat.com>		GtkTreeModelFilter (GTK+ project)
 Kristian Rietveld <kris@gtk.org>		GtkTreeModelFilter (GTK+ project)
 

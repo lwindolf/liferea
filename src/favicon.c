@@ -1,10 +1,7 @@
 /**
- * @file ico2xpm.c -- Convert icons to pixmaps
- * Copyright (C) 1998 Philippe Martin
- * Modified by Brion Vibber
+ * @file favicon.c Liferea favicon handling
  * 
- * Modified to be suitable for Liferea
- * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,14 +33,11 @@
 #include "feed.h"
 #include "common.h"
 #include "update.h"
-#include "update.h"
 #include "debug.h"
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
 #endif
-
-/* Liferea specific wrapper functions */
 
 void favicon_load(feedPtr fp) {
 	gchar		*pngfilename, *xpmfilename;
