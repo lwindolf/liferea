@@ -1,3 +1,8 @@
+2004-03-30  Nathan Conrad  <conrad@bungled.net>
+
+	* Folders can be nested. Also, the gconf
+	  format used for storing feeds has changed.
+
 2004-03-??  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.7
