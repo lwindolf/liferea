@@ -377,6 +377,7 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 
 	*errormsg = errors->buffer;
 	g_free(errors);
+	xmlFreeParserCtxt(ctxt);
 	
 	return doc;
 }
