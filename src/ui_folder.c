@@ -90,20 +90,6 @@ void on_popup_foldername_selected(gpointer callback_data, guint callback_action,
 	gtk_widget_show(foldernamedialog);
 }
 
-void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	GtkTreeIter	*iter;
-	folderPtr	folder;	
-	
-	folder = (folderPtr)ui_feedlist_get_selected();
-	
-	if((NULL != folder) && (FST_FOLDER == folder->type)) {
-		iter = g_new0(GtkTreeIter, 1);
-		*iter = ((ui_data*)(folder->ui_data))->row;
-		on_popup_foldername_selected(iter, 0, NULL);
-	} else
-		ui_show_error_box(_("A folder must be selected."));
-}
-
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	folderPtr folder;
 	GtkWidget	*foldernameentry;

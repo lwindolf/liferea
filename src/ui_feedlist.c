@@ -112,19 +112,15 @@ folderPtr ui_feedlist_get_target_folder(int *pos) {
 }
 
 static void ui_feedlist_update_(GtkTreeIter *iter) {
-	GtkTreeModel *tree_model = GTK_TREE_MODEL(feedstore);
-	GtkTreeIter childiter;
-	gboolean valid;
-	nodePtr ptr = NULL;
+	GtkTreeIter	childiter;
+	gboolean	valid;
+	nodePtr		ptr = NULL;
 	
 	if(iter != NULL) {
-		gtk_tree_model_get(tree_model, iter,
-					    FS_PTR, &ptr,
-					    -1);
-		
-		valid = gtk_tree_model_iter_children(tree_model, &childiter, iter);
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, FS_PTR, &ptr, -1);		
+		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, iter);
 	} else {
-		valid = gtk_tree_model_get_iter_first(tree_model, &childiter);
+		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(feedstore), &childiter);
 	}
 
 	if(ptr != NULL)
@@ -132,7 +128,7 @@ static void ui_feedlist_update_(GtkTreeIter *iter) {
 
 	while(valid) {
 		ui_feedlist_update_(&childiter);
-		valid = gtk_tree_model_iter_next(tree_model, &childiter);
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 	}
 
 	if(ptr != NULL) {
@@ -598,9 +594,9 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 	gboolean	valid, apply, descend;
 	nodePtr		child;
 	
-	if(NULL == ptr)
+	if(NULL == ptr) {
 		valid = gtk_tree_model_get_iter_root(GTK_TREE_MODEL(feedstore), &childiter);
-	else {
+	} else {
 		g_assert(ptr->ui_data);
 		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, &((ui_data*)ptr->ui_data)->row);
 	}
