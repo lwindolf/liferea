@@ -23,7 +23,6 @@
 
 #include "metadata.h"
 
-NsHandler *ns_cC1_getRSSNsHandler(void);
-NsHandler *ns_cC2_getRSSNsHandler(void);
+NsHandler *ns_cC_getRSSNsHandler(void);
 
 #endif

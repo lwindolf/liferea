@@ -99,15 +99,16 @@ void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user
 	g_free(section);
 }
 
-static void ns_slash_insert_ns_uris(NsHandler *nsh, GHashTable *hash) {
-	g_hash_table_insert(hash, "http://purl.org/rss/1.0/modules/slash/", nsh);
+static void ns_slash_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
+	g_hash_table_insert(prefixhash, "slash", nsh);
+	g_hash_table_insert(urihash, "http://purl.org/rss/1.0/modules/slash/", nsh);
 }
 
 NsHandler *ns_slash_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0(NsHandler, 1);
-	nsh->insertNsUris		= ns_slash_insert_ns_uris;
+	nsh->registerNs		= ns_slash_register_ns;
 	nsh->prefix			= "slash";
 	nsh->parseItemTag		= parse_item_tag;
 

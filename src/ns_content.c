@@ -41,15 +41,16 @@ static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 	}
 }
 
-static void ns_content_insert_ns_uris(NsHandler *nsh, GHashTable *hash) {
-	g_hash_table_insert(hash, "http://purl.org/rss/1.0/modules/content/", nsh);
+static void ns_content_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
+	g_hash_table_insert(prefixhash, "content", nsh);
+	g_hash_table_insert(urihash, "http://purl.org/rss/1.0/modules/content/", nsh);
 }
 
 NsHandler *ns_content_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0(NsHandler, 1);
-	nsh->insertNsUris		= ns_content_insert_ns_uris;
+	nsh->registerNs		= ns_content_register_ns;
 	nsh->prefix			= "content";
 	nsh->parseItemTag		= parse_item_tag;
 

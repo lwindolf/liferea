@@ -31,14 +31,14 @@
 struct NsHandler;
 
 /** definition of various namespace tag handler */
-typedef void	(*insertNsUrisFunc) (struct NsHandler *nsh, GHashTable *hash);
+typedef void	(*registerNsFunc) (struct NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash);
 typedef void	(*parseChannelTagFunc)	(feedPtr fp, xmlNodePtr cur);
 typedef void	(*parseItemTagFunc)	(itemPtr ip, xmlNodePtr cur);
 
 /** struct used to register namespace handler */
 typedef struct NsHandler {
 	gchar			*prefix;		/**< namespace prefix */
-	insertNsUrisFunc	insertNsUris;
+	registerNsFunc	registerNs;
 	
 	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
 	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */

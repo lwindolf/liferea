@@ -333,8 +333,8 @@ static void rss_add_ns_handler(NsHandler *handler) {
 	g_assert(NULL != rss_nstable);
 	if(getNameSpaceStatus(handler->prefix)) {
 		g_hash_table_insert(rss_nstable, handler->prefix, handler);
-		if (handler->insertNsUris != NULL)
-			handler->insertNsUris(handler, ns_rss_ns_uri_table);
+		g_assert(handler->registerNs != NULL);
+		handler->registerNs(handler, rss_nstable, ns_rss_ns_uri_table);
 	}
 }
 
@@ -374,8 +374,7 @@ feedHandlerPtr initRSSFeedHandler(void) {
 		rss_add_ns_handler(ns_syn_getRSSNsHandler());
 		rss_add_ns_handler(ns_admin_getRSSNsHandler());
 		rss_add_ns_handler(ns_ag_getRSSNsHandler());
-		rss_add_ns_handler(ns_cC1_getRSSNsHandler());
-		rss_add_ns_handler(ns_cC2_getRSSNsHandler());
+		rss_add_ns_handler(ns_cC_getRSSNsHandler());
 	}
 							
 	/* prepare feed handler structure */

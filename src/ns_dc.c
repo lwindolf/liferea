@@ -259,9 +259,10 @@ static void parse_tag(gpointer obj, xmlNodePtr cur, gboolean isFeedTag) {
 static void parse_channel_tag(feedPtr fp, xmlNodePtr cur)	{ parse_tag((gpointer)fp, cur, TRUE); }
 static void parse_item_tag(itemPtr ip, xmlNodePtr cur)		{ parse_tag((gpointer)ip, cur, FALSE); }
 
-static void ns_dc_insert_ns_uris(NsHandler *nsh, GHashTable *hash) {
-	g_hash_table_insert(hash, "http://purl.org/dc/elements/1.1/", nsh);
-	g_hash_table_insert(hash, "http://purl.org/dc/elements/1.0/", nsh);
+static void ns_dc_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
+	g_hash_table_insert(prefixhash, "dc", nsh);
+	g_hash_table_insert(urihash, "http://purl.org/dc/elements/1.1/", nsh);
+	g_hash_table_insert(urihash, "http://purl.org/dc/elements/1.0/", nsh);
 }
 
 NsHandler *ns_dc_getRSSNsHandler(void) {
@@ -269,7 +270,7 @@ NsHandler *ns_dc_getRSSNsHandler(void) {
 	
 	nsh = g_new0(NsHandler, 1);
 	nsh->prefix			= g_strdup("dc");
-	nsh->insertNsUris		= ns_dc_insert_ns_uris;
+	nsh->registerNs		= ns_dc_register_ns;
 	nsh->parseChannelTag		= parse_channel_tag;
 	nsh->parseItemTag		= parse_item_tag;
 	
@@ -280,7 +281,7 @@ OCSNsHandler *ns_dc_getOCSNsHandler(void) {
 	OCSNsHandler 	*nsh;
 	
 	nsh = g_new0(OCSNsHandler, 1);
-	nsh->prefix			= g_strdup("dc");
+	nsh->prefix			= "dc";
 	nsh->parseDirectoryTag		= parseOCSDirectoryTag;
 	nsh->parseDirEntryTag		= parseOCSChannelTag;
 	nsh->parseFormatTag		= parseOCSFormatTag;				

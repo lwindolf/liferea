@@ -69,15 +69,16 @@ static void ns_syn_parse_tag(feedPtr fp, xmlNodePtr cur) {
 	feed_set_default_update_interval(fp, period);
 }
 
-static void ns_syn_insert_ns_uris(NsHandler *nsh, GHashTable *hash) {
-	g_hash_table_insert(hash, "http://purl.org/rss/1.0/modules/syndication/", nsh);
+static void ns_syn_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
+	g_hash_table_insert(prefixhash, "syn", nsh);
+	g_hash_table_insert(urihash, "http://purl.org/rss/1.0/modules/syndication/", nsh);
 }
 
 NsHandler *ns_syn_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0(NsHandler, 1);
-	nsh->insertNsUris		= ns_syn_insert_ns_uris;
+	nsh->registerNs		= ns_syn_register_ns;
 	nsh->prefix			= "syn";
 	nsh->parseChannelTag		= ns_syn_parse_tag;
 
