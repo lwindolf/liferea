@@ -108,6 +108,7 @@ gchar * ui_itemlist_format_date(time_t t) {
 void ui_itemlist_reset_date_format(void) {
 
 	g_free(date_format);
+	date_format = NULL;
 }
 
 void ui_free_item_ui_data(itemPtr ip) {
