@@ -644,6 +644,7 @@ void setOCSItemProp(gpointer ip, gint proptype, gpointer data) {
 			case ITEM_PROP_DESCRIPTION:
 			case ITEM_PROP_TIME:
 			case ITEM_PROP_SOURCE:
+			case ITEM_PROP_TYPE:
 				g_error("please don't do this!");
 				break;
 			default:
@@ -675,6 +676,9 @@ gpointer getOCSItemProp(gpointer ip, gint proptype) {
 				break;
 			case ITEM_PROP_SOURCE:
 				return (gpointer)i->source;
+				break;
+			case ITEM_PROP_TYPE:
+				return (gpointer)FST_OCS;
 				break;
 			default:
 				g_error(g_strdup_printf(_("internal error! unknow item property type %d!\n"), proptype));

@@ -1,20 +1,19 @@
 /*
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
    
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-   
-   This library is distributed in the hope that it will be useful,
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-   
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 #ifdef HAVE_CONFIG_H
@@ -568,7 +567,7 @@ void loadItemList(gchar *key, gchar *searchstring) {
 	gpointer	ip;
 	entryPtr	ep;
 	gint		count = 0;
-	gchar		*title, *description, *time;
+	gchar		*title, *description;
 	gboolean	add;
 
 	if(NULL == searchstring) g_mutex_lock(feeds_lock);
@@ -591,7 +590,6 @@ void loadItemList(gchar *key, gchar *searchstring) {
 		ip = itemlist->data;
 		title = (gchar *)(*(ihp->getItemProp))(ip, ITEM_PROP_TITLE);
 		description = (gchar *)(*(ihp->getItemProp))(ip, ITEM_PROP_DESCRIPTION);
-		time = (gchar *)(*(ihp->getItemProp))(ip, ITEM_PROP_TIME);
 		
 		if(0 == ((++count)%100)) 
 			print_status(g_strdup_printf(_("loading feed... (%d)"), count));
@@ -612,8 +610,8 @@ void loadItemList(gchar *key, gchar *searchstring) {
 			gtk_tree_store_set(itemstore, &iter,
 	     		   		IS_TITLE, title,
 					IS_PTR, ip,
-					IS_TIME, time,
-					IS_TYPE, ep->type,
+					IS_TIME, (*(ihp->getItemProp))(ip, ITEM_PROP_TIME),
+					IS_TYPE, (*(ihp->getItemProp))(ip, ITEM_PROP_TYPE),
 					-1);
 		}
 

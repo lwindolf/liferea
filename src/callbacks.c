@@ -1,20 +1,19 @@
 /*
    Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
 
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-   
-   This library is distributed in the hope that it will be useful,
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-   
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 */
 
 #ifdef HAVE_CONFIG_H
@@ -117,7 +116,7 @@ gchar * getEntryViewSelectionPrefix(GtkWidget *window) {
         GtkTreeModel		*model;
 	GtkTreeIter		iter;
 	GtkTreeIter		topiter;	
-	gchar			*keyprefix;
+	gchar			*keyprefix = NULL;
 	gboolean		valid;
 	gint			tmp_type;
 	
@@ -149,19 +148,14 @@ gchar * getEntryViewSelectionPrefix(GtkWidget *window) {
 				}
 				valid = gtk_tree_model_iter_next(model, &topiter);
 			}
+			g_warning(_("internal error! could not find folder iterator of selected entry\n"));
+			return NULL;
 		}
-                gtk_tree_model_get(model, &iter, FS_TYPE, &tmp_type, 
-		                                 FS_KEY, &keyprefix, -1);
-
-		if(IS_FEED(tmp_type)) {
-			/* this is necessary for all feeds in the default (root) folder */	
-			g_free(keyprefix);
-			keyprefix = g_strdup("");
-		}
-	} else {
-		/* nothing selected -> we assume the default (root) folder */
-		keyprefix = g_strdup("");
-	}
+	} 
+	
+	/* if nothing was selected or the tree depth is 0
+	   -> we assume the default (root) folder */
+	keyprefix = g_strdup("");
 	
 	return keyprefix;
 }
@@ -274,11 +268,8 @@ void redrawFeedList(void) {
 	if(NULL == mainwindow)
 		return;
 	
-	list = lookup_widget(mainwindow, "feedlist");
-	if(NULL != list)  {
+	if(NULL != (list = lookup_widget(mainwindow, "feedlist")))
 		gtk_widget_queue_draw(list);
-	}
-
 }
 
 void redrawItemList(void) {
@@ -287,10 +278,8 @@ void redrawItemList(void) {
 	if(NULL == mainwindow)
 		return;
 	
-	list = lookup_widget(mainwindow, "Itemlist");
-	if(NULL != list)  {
+	if(NULL != (list = lookup_widget(mainwindow, "Itemlist")))
 		gtk_widget_queue_draw(list);
-	}
 }
 
 /*------------------------------------------------------------------------------*/
@@ -319,33 +308,58 @@ void on_popup_refresh_selected(void) {
 /*------------------------------------------------------------------------------*/
 
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*browsercmdentry;
+	GtkWidget	*widget;
+	gchar		*widgetname;
+	int		tmp;
 				
 	if(NULL == prefdialog || !G_IS_OBJECT(prefdialog))
 		prefdialog = create_prefdialog ();		
 	
 	g_assert(NULL != prefdialog);
 
-	browsercmdentry = lookup_widget(prefdialog, "browsercmd");
-	
-	gtk_entry_set_text(GTK_ENTRY(browsercmdentry), getStringConfValue(BROWSER_COMMAND));
-	
+	widget = lookup_widget(prefdialog, "browsercmd");
+	gtk_entry_set_text(GTK_ENTRY(widget), getStringConfValue(BROWSER_COMMAND));
+
+	widget = lookup_widget(prefdialog, "timeformatentry");
+	gtk_entry_set_text(GTK_ENTRY(widget), getStringConfValue(TIME_FORMAT));
+
+	tmp = getNumericConfValue(TIME_FORMAT_MODE);
+	if((tmp > 3) || (tmp < 1)) 
+		tmp = 1;	/* correct configuration if necessary */
+		
+	widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
+	widget = lookup_widget(prefdialog, widgetname);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+	g_free(widgetname);	
+		
 	gtk_widget_show(prefdialog);
 }
 
 void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*browsercmdentry;
+	GtkWidget	*widget;
+	gchar		*widgetname;
+	gint		tmp, i;
 	
 	g_assert(NULL != prefdialog);
 		
-	browsercmdentry = lookup_widget(prefdialog, "browsercmd");
+	widget = lookup_widget(prefdialog, "browsercmd");
+	setStringConfValue(BROWSER_COMMAND, (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)));
+
+	widget = lookup_widget(prefdialog, "timeformatentry");
+	setStringConfValue(TIME_FORMAT, (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)));
 	
-	setStringConfValue(BROWSER_COMMAND,
-			   (gchar *)gtk_entry_get_text(GTK_ENTRY(browsercmdentry)));
-						     
-	/* reinitialize */
-	loadConfig();
-	initBackend();
+	tmp = 0;
+	for(i = 1; i <= 3; i++) {
+		widgetname = g_strdup_printf("%s%d", "timeradiobtn", i);
+		widget = lookup_widget(prefdialog, widgetname);
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)))
+			tmp = i;
+		g_free(widgetname);	
+	}
+	setNumericConfValue(TIME_FORMAT_MODE, tmp);
+
+	/* refresh item list (in case date format was changed) */
+	redrawItemList();
 			
 	gtk_widget_hide(prefdialog);
 }
@@ -367,7 +381,7 @@ void on_deletebtn(GtkWidget *feedlist) {
 	/* make sure thats no grouping iterator */
 	if(NULL != key) {
 		/* block deleting of help feeds */
-		if(0 == strncmp(key, "help", strlen("help"))) {
+		if(0 == strncmp(key, "help", 4)) {
 			showErrorBox("You can't delete help feeds!");
 			return;
 		}
@@ -1192,9 +1206,13 @@ static void renderItemDate(GtkTreeViewColumn *tree_column,
 	gchar		*tmp;
 
 	gtk_tree_model_get(model, iter, IS_TIME, &tmp_time, -1);
-	tmp = formatDate((time_t)tmp_time);	// FIXME: sloooowwwwww...
-	g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
-	g_free(tmp);
+	if(0 != tmp_time) {
+		tmp = formatDate((time_t)tmp_time);	// FIXME: sloooowwwwww...
+		g_object_set(GTK_CELL_RENDERER(cell), "text", tmp, NULL);
+		g_free(tmp);
+	} else {
+		g_object_set(GTK_CELL_RENDERER(cell), "text", "", NULL);
+	}
 }
 
 /* sort function for the item list date column */

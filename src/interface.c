@@ -720,6 +720,15 @@ create_prefdialog (void)
   GtkWidget *radiobutton2;
   GtkWidget *browsercmd;
   GtkWidget *label13;
+  GtkWidget *frame6;
+  GtkWidget *vbox15;
+  GtkWidget *timeradiobtn1;
+  GSList *timeradiobtn1_group = NULL;
+  GtkWidget *timeradiobtn2;
+  GtkWidget *hbox15;
+  GtkWidget *timeradiobtn3;
+  GtkWidget *timeformatentry;
+  GtkWidget *label24;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefsavebtn;
   GtkWidget *prefcancelbtn;
@@ -777,6 +786,48 @@ create_prefdialog (void)
   gtk_label_set_justify (GTK_LABEL (label13), GTK_JUSTIFY_LEFT);
   gtk_misc_set_padding (GTK_MISC (label13), 5, 0);
 
+  frame6 = gtk_frame_new (NULL);
+  gtk_widget_show (frame6);
+  gtk_box_pack_start (GTK_BOX (vbox3), frame6, TRUE, TRUE, 0);
+
+  vbox15 = gtk_vbox_new (FALSE, 5);
+  gtk_widget_show (vbox15);
+  gtk_container_add (GTK_CONTAINER (frame6), vbox15);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox15), 5);
+
+  timeradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("display only time"));
+  gtk_widget_show (timeradiobtn1);
+  gtk_box_pack_start (GTK_BOX (vbox15), timeradiobtn1, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn1), timeradiobtn1_group);
+  timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn1));
+
+  timeradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("display date and time"));
+  gtk_widget_show (timeradiobtn2);
+  gtk_box_pack_start (GTK_BOX (vbox15), timeradiobtn2, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn2), timeradiobtn1_group);
+  timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn2));
+
+  hbox15 = gtk_hbox_new (FALSE, 5);
+  gtk_widget_show (hbox15);
+  gtk_box_pack_start (GTK_BOX (vbox15), hbox15, TRUE, TRUE, 0);
+
+  timeradiobtn3 = gtk_radio_button_new_with_mnemonic (NULL, _("user defined format"));
+  gtk_widget_show (timeradiobtn3);
+  gtk_box_pack_start (GTK_BOX (hbox15), timeradiobtn3, FALSE, FALSE, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn3), timeradiobtn1_group);
+  timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn3));
+
+  timeformatentry = gtk_entry_new ();
+  gtk_widget_show (timeformatentry);
+  gtk_box_pack_start (GTK_BOX (hbox15), timeformatentry, TRUE, TRUE, 0);
+  gtk_tooltips_set_tip (tooltips, timeformatentry, _("for expert users: specify a time format string, consult the strftime() manpage for the format codes"), NULL);
+
+  label24 = gtk_label_new (_("date column settings"));
+  gtk_widget_show (label24);
+  gtk_frame_set_label_widget (GTK_FRAME (frame6), label24);
+  gtk_label_set_justify (GTK_LABEL (label24), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_padding (GTK_MISC (label24), 5, 0);
+
   dialog_action_area5 = GTK_DIALOG (prefdialog)->action_area;
   gtk_widget_show (dialog_action_area5);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area5), GTK_BUTTONBOX_END);
@@ -812,6 +863,14 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, radiobutton2, "radiobutton2");
   GLADE_HOOKUP_OBJECT (prefdialog, browsercmd, "browsercmd");
   GLADE_HOOKUP_OBJECT (prefdialog, label13, "label13");
+  GLADE_HOOKUP_OBJECT (prefdialog, frame6, "frame6");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox15, "vbox15");
+  GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn1, "timeradiobtn1");
+  GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn2, "timeradiobtn2");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox15, "hbox15");
+  GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn3, "timeradiobtn3");
+  GLADE_HOOKUP_OBJECT (prefdialog, timeformatentry, "timeformatentry");
+  GLADE_HOOKUP_OBJECT (prefdialog, label24, "label24");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefsavebtn, "prefsavebtn");
   GLADE_HOOKUP_OBJECT (prefdialog, prefcancelbtn, "prefcancelbtn");
