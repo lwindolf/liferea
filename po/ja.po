@@ -1,0 +1,533 @@
+# liferea ja.po.
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This file is distributed under the same license as the liferea package.
+# Takeshi AIHANA <aihana@gnome.gr.jp>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: liferea Ver0.4.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-11-15 21:18+0900\n"
+"PO-Revision-Date: 2003-11-15 21:17+0900\n"
+"Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/interface.c:114
+msgid "Liferea 0.4.5"
+msgstr "Liferea 0.4.5"
+
+#: src/interface.c:125
+msgid "_Program"
+msgstr "プログラム(_P)"
+
+#: src/interface.c:145
+msgid "_Feed List"
+msgstr "配信元一覧(_F)"
+
+#: src/interface.c:152
+msgid "_Feed"
+msgstr "配信元(_F)"
+
+#: src/interface.c:159
+msgid "_Update Feed"
+msgstr "配信元の更新(_U)"
+
+#: src/interface.c:167
+msgid "_New Subscription"
+msgstr "新しい購読(_N)"
+
+#: src/interface.c:175
+msgid "_Delete Feed"
+msgstr "配信元の削除(_D)"
+
+#: src/interface.c:183
+msgid "_Edit Properties"
+msgstr "プロパティの編集(_E)"
+
+#: src/interface.c:191
+msgid "F_older"
+msgstr "フォルダ(_O)"
+
+#: src/interface.c:198
+msgid "_New Folder"
+msgstr "新しいフォルダ(_N)"
+
+#: src/interface.c:206
+msgid "_Delete Folder"
+msgstr "フォルダの削除(_D)"
+
+#: src/interface.c:214
+msgid "_Edit Folder Name"
+msgstr "フォルダ名の編集(_E)"
+
+#: src/interface.c:227
+msgid "_Update All"
+msgstr "全て更新(_U)"
+
+#: src/interface.c:238
+msgid "_Item List"
+msgstr "トピックの一覧(_I)"
+
+#: src/interface.c:245
+msgid "_Mark All As Read"
+msgstr "全て既読としてマーク(_M)"
+
+#: src/interface.c:252
+msgid "_Launch In Browser"
+msgstr "ブラウザで開く(_L)"
+
+#: src/interface.c:259
+msgid "Toggle Item _Flag"
+msgstr "トピック・フラグの切り替え(_F)"
+
+#: src/interface.c:271
+msgid "_Toggle Condensed View"
+msgstr "表示の切り替え(_T)"
+
+#: src/interface.c:280
+msgid "Search In All Items"
+msgstr "全てのトピックから検索"
+
+#: src/interface.c:291
+msgid "Next Unread Item"
+msgstr "次の未読のトピック"
+
+#: src/interface.c:310
+msgid "Update feeds"
+msgstr "配信元を更新します"
+
+#: src/interface.c:326
+msgid "Update"
+msgstr "更新"
+
+#: src/interface.c:333
+msgid "Search in feeds"
+msgstr "配信元の中から検索します"
+
+#: src/interface.c:349
+msgid "Search"
+msgstr "検索"
+
+#: src/interface.c:356
+msgid "Edit preferences"
+msgstr "設定を編集します"
+
+#: src/interface.c:384
+msgid "Search for"
+msgstr "検索する単語"
+
+#: src/interface.c:393
+msgid "create VFolder"
+msgstr "仮想フォルダの生成"
+
+#: src/interface.c:396
+msgid "saves this search as a VFolder, which will appear in the feed list"
+msgstr "この検索を仮想フォルダとして保存して、配信元一覧の中に表示します"
+
+#: src/interface.c:401
+msgid "Close search"
+msgstr "検索ペインを閉じます"
+
+#: src/interface.c:435
+msgid "single item view"
+msgstr "シングル・トピック表示"
+
+#: src/interface.c:445
+msgid "condensed item list"
+msgstr "簡易トピック一覧"
+
+#: src/interface.c:659
+msgid "Subscription Properties"
+msgstr "購読先のプロパティ"
+
+#: src/interface.c:680
+msgid ""
+"Edit the following entries to adjust the feed source URL or\n"
+"the feed title, which is displayed in the feed list."
+msgstr ""
+"配信元一覧の中に表示される、\n"
+"配信元の URL または配信元のタイトルを変更する際は\n"
+"次のエントリを編集して下さい。"
+
+#: src/interface.c:694
+msgid "Feed Title"
+msgstr "配信元のタイトル"
+
+#: src/interface.c:707
+msgid ""
+"either leave the name supplied by the feed or enter an alternative name "
+"which you like to be listed in the feed list"
+msgstr ""
+"配信元が提供した名前のままにするか、配信元一覧の中に表示したい他の名前を入力"
+"して下さい"
+
+#: src/interface.c:714
+msgid "enter the URL the feed should be loaded from"
+msgstr "トピックを読み込む配信元の URL を入力して下さい"
+
+#: src/interface.c:716 src/interface.c:894
+msgid "Feed URL"
+msgstr "配信元の URL"
+
+#: src/interface.c:724
+msgid "Feed URL and Title"
+msgstr "配信元 URL とタイトル"
+
+#: src/interface.c:745
+msgid "Feed Refresh Interval (in minutes)"
+msgstr "更新する間隔 (分単位)"
+
+#: src/interface.c:754
+msgid ""
+"Please remember to set a reasonable refresh time, its not useful to poll "
+"daily updated feeds every 15 minutes! To disable auto-updating the feed set "
+"the interval to 0."
+msgstr ""
+"妥当な更新時間をセットするようにして下さい。毎日 15 分単位に配信元を更新する"
+"ことは妥当ではないですよ！自動的に更新しない場合はこの間隔を 0にセットして下"
+"さい"
+
+#: src/interface.c:764
+msgid "Feed Update Interval"
+msgstr "配信元の更新間隔"
+
+#: src/interface.c:860
+msgid "New Subscription"
+msgstr "新しい購読"
+
+#: src/interface.c:881
+msgid ""
+"Please enter the URL (including the http:// prefix) you want to \n"
+"subscribe to. Or enter a valid pathname if you want to load a local file."
+msgstr ""
+"購読する (接頭子の http:// を含んだ) URL を入力して下さい。あるいは、ローカ"
+"ル・ファイルを読む込む場合は正しいパス名を入力して下さい。"
+
+#: src/interface.c:905
+msgid "local file"
+msgstr "ローカル・ファイル"
+
+#: src/interface.c:909
+msgid "URL Input"
+msgstr "URL の入力"
+
+#: src/interface.c:928
+msgid ""
+"You have to specify the type of the feed you want to subscribe \n"
+"to. If you are unsure select \"Auto Detect\"."
+msgstr ""
+"購読する配信元の種類を指定して下さい。不明な場合は \"自動検出\" を選択して下"
+"さい。"
+
+#: src/interface.c:940
+msgid "Feed Type"
+msgstr "配信元の種類"
+
+#: src/interface.c:952
+msgid "Auto Detect"
+msgstr "自動検出"
+
+#: src/interface.c:956
+msgid "RSS"
+msgstr "RSS"
+
+#: src/interface.c:960
+msgid "CDF"
+msgstr "CDF"
+
+#: src/interface.c:964
+msgid "Atom/Echo/PIE"
+msgstr "Atom/Echo/PIE"
+
+#: src/interface.c:968
+msgid "OCS"
+msgstr "OCS"
+
+#: src/interface.c:972
+msgid "OPML"
+msgstr "OPML"
+
+#: src/interface.c:978
+msgid "Feed Type Selection"
+msgstr "配信元の選択"
+
+#: src/interface.c:1097
+msgid "program preferences"
+msgstr "liferea の設定"
+
+#: src/interface.c:1122
+msgid "use the GNOME default browser"
+msgstr "GNOME のデフォルト・ブラウザを使用する"
+
+#: src/interface.c:1132
+msgid "use browser command"
+msgstr "使用するブラウザを指定する"
+
+#: src/interface.c:1142
+#, c-format
+msgid "specify a browser command using %s as URL placeholder"
+msgstr "URL を示す記号 %s を使ってブラウザのコマンドを指定して下さい"
+
+#: src/interface.c:1144
+msgid "browser settings"
+msgstr "ブラウザの設定"
+
+#: src/interface.c:1159
+msgid "display only time"
+msgstr "時刻だけ表示する"
+
+#: src/interface.c:1165
+msgid "display date and time"
+msgstr "日付と時刻を表示する"
+
+#: src/interface.c:1175
+msgid "user defined format"
+msgstr "ユーザ定義の書式にする"
+
+#: src/interface.c:1184
+msgid ""
+"for expert users: specify a time format string, consult the strftime() "
+"manpage for the format codes"
+msgstr ""
+"エキスパート向け: strftime() の man ページに記載されている時刻の書式文字列を"
+"指定して下さい"
+
+#: src/interface.c:1186
+msgid "date column settings"
+msgstr "日付の設定"
+
+#: src/interface.c:1206
+msgid ""
+"maximal number of items per feed \n"
+"to be saved permanently"
+msgstr ""
+"配信元毎の永久保存する\n"
+"トピックの最大数"
+
+#: src/interface.c:1218
+msgid "Update all feeds on program startup."
+msgstr "起動時に全ての配信元を更新する"
+
+#: src/interface.c:1222
+msgid "feed handling settings"
+msgstr "配信元取り扱いの設定"
+
+#: src/interface.c:1228
+msgid "Feed Handling"
+msgstr "配信元の取り扱い"
+
+#: src/interface.c:1246
+msgid ""
+"Show a status icon in the notification area \n"
+"(also called system tray). Changes of this setting\n"
+"take place after restarting the program."
+msgstr ""
+"通知エリア (別名: システム・トレイ) の中に\n"
+"ステータス・アイコンを表示する。\n"
+"(再起動後にこの設定が適用されます)"
+
+#: src/interface.c:1251
+msgid "Notification Area"
+msgstr "通知エリア"
+
+#: src/interface.c:1266
+msgid "Disable Tool Bar."
+msgstr "ツールバーを表示しない"
+
+#: src/interface.c:1271
+msgid "Disable Menu Bar."
+msgstr "メニューバーを表示しない"
+
+#: src/interface.c:1276
+msgid "Menu Settings"
+msgstr "メニューの設定"
+
+#: src/interface.c:1281
+msgid "GUI Settings"
+msgstr "GUI の設定"
+
+#: src/interface.c:1371
+msgid "add folder"
+msgstr "フォルダの追加"
+
+#: src/interface.c:1386 src/interface.c:1461
+msgid "folder name"
+msgstr "フォルダ名"
+
+#: src/interface.c:1450
+msgid "edit folder name"
+msgstr "フォルダ名の編集"
+
+#: src/interface.c:1514
+msgid "Select Local File"
+msgstr "ローカル・ファイルの選択"
+
+#: src/interface.c:1562
+msgid "edit filter rules"
+msgstr "フィルタ・ルールの編集"
+
+#: src/interface.c:1662
+msgid "edit rule properties"
+msgstr "ルール・プロパティの編集"
+
+#: src/interface.c:1676
+msgid "rule type"
+msgstr "ルールの種類"
+
+#: src/interface.c:1687
+msgid "add items with exact match"
+msgstr "完全に一致するトピックの追加"
+
+#: src/interface.c:1691
+msgid "remove items with exact match"
+msgstr "完全に一致するトピックの削除"
+
+#: src/interface.c:1701
+msgid "rule value"
+msgstr "ルールの値"
+
+#: src/callbacks.c:138
+msgid "entry list widget lookup failed!\n"
+msgstr "エントリ・リスト・ウィジットの検索に失敗！\n"
+
+#: src/callbacks.c:143
+msgid "could not retrieve selection of entry list!"
+msgstr "エントリ・リストの選択部分を取得できませんでした！"
+
+#: src/callbacks.c:184 src/callbacks.c:331 src/callbacks.c:369
+msgid "You have to select a feed entry!"
+msgstr "配信元エントリを一つ選択して下さい！"
+
+#: src/callbacks.c:307
+msgid ""
+"You have disabled both the menubar and the toolbar. Without one of these you "
+"won't be able to access all program functions. I'll reenable the toolbar!"
+msgstr ""
+"メニューバーとツールバーの両方を無効にしました。これらのうちのどれか一つがな"
+"いと、このプログラムの機能の全てにアクセスすることはできません。ツールバーの"
+"方を有効にしましたよ！"
+
+#: src/callbacks.c:337
+msgid "You can't delete help feeds!"
+msgstr "ヘルプは削除できません！"
+
+#: src/callbacks.c:341
+msgid "Deleting entry"
+msgstr "エントリの削除"
+
+#: src/callbacks.c:351
+msgid "It seems like there is no selected feed entry!"
+msgstr "配信元を一つも選択していないようです！"
+
+#: src/callbacks.c:404
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minutes"
+msgstr "この配信元での更新間隔は %d 分になっています"
+
+#: src/callbacks.c:406
+msgid "This feed specifies no default update interval."
+msgstr "この配信元はデフォルトの更新間隔を指定していません"
+
+#: src/callbacks.c:449
+msgid "Internal error! No feed selected, but property change requested...\n"
+msgstr ""
+"[内部エラー] 配信元が選択されていないのに、プロパティの変更を指定しまし"
+"た...\n"
+
+#: src/callbacks.c:557
+msgid "internal error! invalid type selected! This should never happen!\n"
+msgstr ""
+"[内部エラー] 選択した種類が正しくありません！ (これは絶対に発生しえないことで"
+"す)\n"
+
+#: src/callbacks.c:568
+#, c-format
+msgid ""
+"Could not download \"%s\"!\n"
+"\n"
+" Maybe the URL is invalid or the feed is temporarily not available. You can "
+"retry downloading or remove the feed subscription via the context menu from "
+"the feed list.\n"
+msgstr ""
+"\"%s\" をダウンロードできませんでした！\n"
+"\n"
+"URL が不正か、あるいは配信元が一時的に利用できないかもしれません。配信元一覧"
+"のコンテキスト・メニューから購読のリトライまたは削除を行うことができます。\n"
+
+#: src/callbacks.c:627
+msgid "internal error! could not get a new folder key!"
+msgstr "[内部エラー] 新しいフォルダ・キーを取得できませんでした！"
+
+#: src/callbacks.c:636 src/callbacks.c:676
+msgid "You have to select a folder entry!"
+msgstr "フォルダを一つ選択して下さい！"
+
+#: src/callbacks.c:702 src/callbacks.c:705
+msgid "A folder must be empty to delete it!"
+msgstr "削除する場合はフォルダを空にして下さい！"
+
+#: src/callbacks.c:708
+msgid "Error: Cannot determine folder key!"
+msgstr "エラー: フォルダ・キーを決定できません！"
+
+#: src/callbacks.c:750 src/callbacks.c:894
+msgid "could not retrieve selection of item list!"
+msgstr "アイテム・リストの選択範囲を取得できませんでした！"
+
+#: src/callbacks.c:783
+msgid "item list widget lookup failed!\n"
+msgstr "アイテム・リスト・ウィジットの検索に失敗しました！\n"
+
+#: src/callbacks.c:793
+msgid "could not retrieve selection of item list!\n"
+msgstr "アイテム・リストの選択範囲を取得できませんでした！\n"
+
+#: src/callbacks.c:889
+msgid "could not find item list widget!"
+msgstr "アイテム・リスト・ウィジットが見つかりませんでした！"
+
+#: src/callbacks.c:987 src/callbacks.c:1028
+msgid "internal error! could not get feed tree view selection!\n"
+msgstr "[内部エラー] 配信元ツリー・ビューの選択範囲を取得できませんでした！\n"
+
+#: src/callbacks.c:989 src/callbacks.c:1030
+msgid "internal error! could not find feed tree view widget!\n"
+msgstr ""
+"[内部エラー] 配信元ツリー・ビュー・ウィジットが見つかりませんでした！\n"
+
+#: src/callbacks.c:1057
+msgid "There are no unread items!"
+msgstr "未読のトピックはありません！"
+
+#: src/callbacks.c:1160
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr ""
+"[内部エラー] 不明なエントリの種類です！ 適切なアイコンを表示できません！\n"
+
+#: src/callbacks.c:1303
+msgid "Date"
+msgstr "日付"
+
+#: src/callbacks.c:1311
+msgid "Headline"
+msgstr "ヘッドライン"
+
+#: src/callbacks.c:1397
+msgid "Sorry Liferea does not yet support drag&drop of folders!"
+msgstr "Liferea はまだフォルダのドラッグ＆ドロップをサポートしていません！"
+
+#: src/callbacks.c:1406
+msgid "you cannot modify the special help folder contents!"
+msgstr "特別なヘルプ・フォルダの内言おうを変更することはできません！"
+
+#: src/callbacks.c:1504
+msgid "internal error! item list display for NULL pointer requested!\n"
+msgstr "[内部エラー] アイテム・リスト・表示に NULL ポインタを要求しました！\n"
+
+#: src/support.c:90 src/support.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Pixmap ファイルが見つかりませんでした: %s"

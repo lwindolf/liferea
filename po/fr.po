@@ -1,0 +1,383 @@
+# translation of PACKAGE.
+# Copyright (C) 2003 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# <>, 2003.
+# , fuzzy
+# <>, 2003.
+# Stéphane Jourdan <stephane.jourdan@itris.fr>, 2003.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-10-17 03:46+0200\n"
+"PO-Revision-Date: 2003-10-21 14:13+0200\n"
+"Last-Translator: Stephane Jourdanéphane Jourdan <stephane.jourdan@itris.fr>\n"
+"Language-Team: French <gnomefr@traduc.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: src/interface.c:70
+msgid "Liferea 0.4.3"
+msgstr "Liferea 0.4.3"
+
+#: src/interface.c:85
+msgid "Update feeds"
+msgstr "Mise à jour"
+
+#: src/interface.c:101
+msgid "Update"
+msgstr "Mise à jour"
+
+#: src/interface.c:108
+msgid "Search in feeds"
+msgstr "Chercher dans les canaux"
+
+#: src/interface.c:124
+msgid "Search"
+msgstr "Chercher"
+
+#: src/interface.c:131
+msgid "Edit preferences"
+msgstr "Editer les préférences"
+
+#: src/interface.c:159
+msgid "Search for"
+msgstr "Chercher"
+
+#: src/interface.c:168
+msgid "create VFolder"
+msgstr "créer un VFolder"
+
+#: src/interface.c:170
+msgid "saves this search as a VFolder, which will appear in the feed list"
+msgstr "sauver cette recherche comme un VFolder, qui apparaitra dans la liste des canaux"
+
+#: src/interface.c:175
+msgid "Close search"
+msgstr "Fermer la recherche"
+
+#: src/interface.c:209
+msgid "single item view"
+msgstr "Vue à simple entrée"
+
+#: src/interface.c:219
+msgid "condensed item list"
+msgstr "Liste des entrées compacte."
+
+#: src/interface.c:342
+msgid "Subscription Properties"
+msgstr "Propriétés des abonnements"
+
+#: src/interface.c:363
+msgid ""
+"Edit the following entries to adjust the feed source URL or\n"
+"the feed title, which is displayed in the feed list."
+msgstr "Editer les entrées suivantes pour ajuster l'adresse ou\n le titre du canal, qui est affiché dans la liste des canaux."
+
+#: src/interface.c:377
+msgid "Feed Title"
+msgstr "Titre du canal"
+
+#: src/interface.c:390
+msgid ""
+"either leave the name supplied by the feed or enter an alternative name "
+"which you like to be listed in the feed list"
+msgstr "Entrez un nom ou conservez celui apporté par le canal pour l'affichage dans la liste des canaux."
+
+#: src/interface.c:397
+msgid "enter the URL the feed should be loaded from"
+msgstr "entrer l'adresse du canal qui doit etre chargé"
+
+#: src/interface.c:399 src/interface.c:577
+msgid "Feed URL"
+msgstr "Adresse du canal"
+
+#: src/interface.c:407
+msgid "Feed URL and Title"
+msgstr "Adresse et Titre du canal"
+
+#: src/interface.c:428
+msgid "Feed Refresh Interval (in minutes)"
+msgstr "Intervalle de rafraichissement du canal (en minutes)"
+
+#: src/interface.c:437
+msgid ""
+"Please remember to set a reasonable refresh time, its not useful to poll "
+"daily updated feeds every 15 minutes! To disable auto-updating the feed set "
+"the interval to 0."
+msgstr "Veuillez vous rappeler de régler la vitesse de raffraichissement raisonnablement, il est inutile de raffraichir tous les quarts d'heures un canal mis à jour quotidiennement. Pour désactiver la mise à jour automatique, réglez l'intervalle à 0."
+
+#: src/interface.c:447
+msgid "Feed Update Interval"
+msgstr "Intervalle de mise à jour du canal"
+
+#: src/interface.c:543
+msgid "New Subscription"
+msgstr "Nouvel Abonnement"
+
+#: src/interface.c:564
+msgid ""
+"Please enter the URL (including the http:// prefix) you want to \n"
+"subscribe to. Or enter a valid pathname if you want to load a local file."
+msgstr "Veuillez entrer l'URL (y compris le préfixe http://) à laquelle vous souhaitez vous abonner. Ou alors entrez un chemin valide si vous voulez charger un fichier local."
+
+#: src/interface.c:588
+msgid "local file"
+msgstr "fichier local"
+
+#: src/interface.c:592
+msgid "URL Input"
+msgstr "Entrée de l'URL"
+
+#: src/interface.c:611
+msgid ""
+"You have to specify the type of the feed you want to subscribe \n"
+"to. If you are unsure select \"Auto Detect\"."
+msgstr "Vous devez spécifier le type du canal auquel vous voulez vous abonner.\n Si vous n'êtes pas surs, sélectionnez \"Auto-détection\"."
+
+#: src/interface.c:623
+msgid "Feed Type"
+msgstr "Type de canal"
+
+#: src/interface.c:635
+msgid "Auto Detect"
+msgstr "Auto-détéction"
+
+#: src/interface.c:639
+msgid "RSS"
+msgstr "RSS"
+
+#: src/interface.c:643
+msgid "CDF"
+msgstr "CDF"
+
+#: src/interface.c:647
+msgid "Atom/Echo/PIE"
+msgstr "Atom/Echo/PIE"
+
+#: src/interface.c:651
+msgid "OCS"
+msgstr "OCS"
+
+#: src/interface.c:655
+msgid "OPML"
+msgstr "OPML"
+
+#: src/interface.c:661
+msgid "Feed Type Selection"
+msgstr "Séléction du type de canal"
+
+#: src/interface.c:767
+msgid "program preferences"
+msgstr "préférences du programme"
+
+#: src/interface.c:788
+msgid "use the GNOME default browser"
+msgstr "utiliser le navigateur par défaut de GNOME"
+
+#: src/interface.c:798
+msgid "use browser command"
+msgstr "commande du navigateur"
+
+#: src/interface.c:808
+#, c-format
+msgid "specify a browser command using %s as URL placeholder"
+msgstr "Spécifier la commande du navigateur en utilisant %s pour l'emplacement de l'URL"
+
+#: src/interface.c:810
+msgid "browser settings"
+msgstr "Paramètres du navigateur"
+
+#: src/interface.c:825
+msgid "display only time"
+msgstr "Afficher seulement l'heure"
+
+#: src/interface.c:831
+msgid "display date and time"
+msgstr "Affiche la date et l'heure"
+
+#: src/interface.c:841
+msgid "user defined format"
+msgstr "Format défini par l'utilisateur"
+
+#: src/interface.c:850
+msgid ""
+"for expert users: specify a time format string, consult the strftime() "
+"manpage for the format codes"
+msgstr "pour les utilisateurs experts : spécifie une chaine de formatage de temps, consulter le manuel de strftime() pour le format des codes."
+
+#: src/interface.c:852
+msgid "date column settings"
+msgstr "Paramètres de la colonne de date"
+
+#: src/interface.c:872
+msgid ""
+"maximal number of items per feed \n"
+"to be saved permanently"
+msgstr "Nombre maximum d'entrées par canaux à sauvegarder"
+
+#: src/interface.c:884
+msgid "Update all feeds on program startup."
+msgstr "Mettre à jour tous les canaux au démarrage"
+
+#: src/interface.c:888
+msgid "feed handling settings"
+msgstr "Paramètres de la gestion des canaux"
+
+#: src/interface.c:966
+msgid "add folder"
+msgstr "Ajouter un répertoire"
+
+#: src/interface.c:981 src/interface.c:1056
+msgid "folder name"
+msgstr "Nom du répertoire"
+
+#: src/interface.c:1045
+msgid "edit folder name"
+msgstr "Editer le nom du répertoire"
+
+#: src/interface.c:1109
+msgid "Datei auswhlen"
+msgstr ""
+
+#: src/callbacks.c:123
+msgid "entry list widget lookup failed!\n"
+msgstr "Recherche du widget de la liste d'entrées echouée !\n"
+
+#: src/callbacks.c:128
+msgid "could not retrieve selection of entry list!"
+msgstr "Impossible de rappatrier la sélection de la liste des entrées !"
+
+#: src/callbacks.c:277
+msgid "You can't delete help feeds!"
+msgstr "Vous ne pouvez pas effacer les canaux d'aide !"
+
+#: src/callbacks.c:281
+msgid "Deleting entry"
+msgstr "Efface l'entrée"
+
+#: src/callbacks.c:291
+msgid "Error: Cannot delete this list entry!"
+msgstr "Erreur : Impossible d'effacer cette entrée de liste !"
+
+#: src/callbacks.c:345
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minutes"
+msgstr "Le fournisseur de ce canal suggère un intervalle de mise à jour de %d minutes."
+
+#: src/callbacks.c:347
+msgid "This feed specifies no default update interval."
+msgstr "Ce canal ne spécifie aucun intervalle de mise à jour."
+
+#: src/callbacks.c:398
+msgid "Internal error! No feed selected, but property change requested...\n"
+msgstr "Erreur interne ! Aucun canal sélectionné, mais changement dans les propriétés demandés ... \n"
+
+#: src/callbacks.c:429
+msgid "internal error! could not find feed tree view!\n"
+msgstr "Erreur interne ! Impossible de trouver la vue en arborescence des canaux !\n"
+
+#: src/callbacks.c:440
+msgid "internal error! could not get feed tree view selection!\n"
+msgstr "Erreur interne ! Impossible de charger la sélection en arborescence des canaux !\n"
+
+#: src/callbacks.c:495
+msgid "internal error! invalid type selected! This should never happen!\n"
+msgstr "Erreur interne ! Type sélectionné invalide ! Cela ne devrait jamais arriver !\n"
+
+#: src/callbacks.c:500
+msgid "Could not detect feed type! Please manually select a feed type."
+msgstr "Impossible de détecter le type de canal ! Veuillez sélectionner manuellement le type du canal."
+
+#: src/callbacks.c:512
+#, c-format
+msgid ""
+"Could not download \"%s\"!\n"
+"\n"
+" Maybe the URL is invalid or the feed is temporarily not available. You can "
+"retry downloading or remove the feed subscription via the context menu from "
+"the feed list.\n"
+msgstr "Impossible de téléharger \"%s\" !\n"
+"\n"
+"Soit l'adresse est invalide, soit le canal est temporairement indisponible. Vous pouvez retenter le téléchargement ou enlever l'abonnement au canal via le menu contextuel dans la liste des canaux.\n"
+
+#: src/callbacks.c:572
+msgid "internal error! could not get a new folder key!"
+msgstr "Erreur interne ! Impossible d'obtenir une clé de nouveau répertoire !"
+
+#: src/callbacks.c:636 src/callbacks.c:639
+msgid "A folder must be empty to delete it!"
+msgstr "Un répertoire doit être vide pour être effacé !"
+
+#: src/callbacks.c:642
+msgid "Error: Cannot determine folder key!"
+msgstr "Erreur : Impossible de déterminer la clé du répertoire !"
+
+#: src/callbacks.c:685 src/callbacks.c:895
+msgid "could not retrieve selection of item list!"
+msgstr "Impossible de rappatrier la sélection de la liste des entrées."
+
+#: src/callbacks.c:740
+#, c-format
+msgid "searching for \"%s\""
+msgstr "Cherche \"%s\""
+
+#: src/callbacks.c:757
+#, c-format
+msgid "creating VFolder for search term \"%s\""
+msgstr "création d'un VFolder pour la recherche \"%s\""
+
+#: src/callbacks.c:767
+msgid "Could not allocate memory!"
+msgstr "Imposible d'allouer de la mémoire !"
+
+#. we set the searchstring as a default title
+#: src/callbacks.c:770
+#, c-format
+msgid "VFolder %s"
+msgstr "VFolder %s"
+
+#: src/callbacks.c:781
+msgid "internal error! could not get folder key prefix!"
+msgstr "Erreur interne ! Impossible d'obtenir le prefixe de la clé du répertoire !"
+
+#: src/callbacks.c:802
+msgid "item list widget lookup failed!\n"
+msgstr "Recherche du widget de la liste des entrées échouée ! \n"
+
+#: src/callbacks.c:812
+msgid "could not retrieve selection of item list!\n"
+msgstr "Impossible de rappatrier la sélection dans la liste des entrées !\n"
+
+#: src/callbacks.c:1041
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr "Erreur interne ! Type d'entrée inconnu ! Impossible d'afficher l'icône appropriée !\n"
+
+#: src/callbacks.c:1184
+msgid "Date"
+msgstr "Date"
+
+#: src/callbacks.c:1192
+msgid "Headline"
+msgstr "Gros titre"
+
+#: src/callbacks.c:1434
+msgid "Sorry Liferea does not yet support drag&drop of folders!"
+msgstr "Désolé, Liferea ne supporte pas encore le glisser-déposer des répertoires !"
+
+#: src/callbacks.c:1443
+msgid "you cannot modify the special help folder contents!"
+msgstr "Vous ne pouvez pas modifier le contenu du répertoire spécial d'aide !"
+
+#: src/callbacks.c:1527
+msgid "internal error! item display for NULL pointer requested!"
+msgstr "Erreur interne ! Requète d'affichage d'une entrée pour un pointeur NULL !"
+
+#: src/support.c:90 src/support.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Fichier pixmap %s introuvable."
+

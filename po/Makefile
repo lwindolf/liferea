@@ -52,8 +52,8 @@ INCLUDES = -I.. -I$(top_srcdir)/intl
 COMPILE = $(CC) -c $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS) $(XCFLAGS)
 
 SOURCES = 
-POFILES = 
-GMOFILES = 
+POFILES =  fr.po ja.po
+GMOFILES =  fr.gmo ja.gmo
 DISTFILES = ChangeLog Makefile.in.in POTFILES.in $(GETTEXT_PACKAGE).pot \
 $(POFILES) $(GMOFILES) $(SOURCES)
 
@@ -61,9 +61,89 @@ POTFILES = \
 	../src/main.c \
 	../src/interface.c \
 	../src/callbacks.c \
-	../src/support.c
+	../src/support.c \
+	../src/callbacks.c \
+	../src/callbacks.h \
+	../src/cdf_channel.c \
+	../src/cdf_channel.h \
+	../src/cdf_item.c \
+	../src/cdf_item.h \
+	../src/common.c \
+	../src/common.h \
+	../src/conf.c \
+	../src/conf.h \
+	../src/conversions.c \
+	../src/conversions.h \
+	../src/eggtrayicon.c \
+	../src/eggtrayicon.h \
+	../src/export.c \
+	../src/export.h \
+	../src/favicon.c \
+	../src/favicon.h \
+	../src/feed.c \
+	../src/feed.h \
+	../src/filter.c \
+	../src/filter.h \
+	../src/folder.c \
+	../src/folder.h \
+	../src/htmlview.c \
+	../src/htmlview.h \
+	../src/interface.c \
+	../src/interface.h \
+	../src/item.c \
+	../src/item.h \
+	../src/main.c \
+	../src/netio.c \
+	../src/netio.h \
+	../src/ns_admin.c \
+	../src/ns_admin.h \
+	../src/ns_ag.c \
+	../src/ns_ag.h \
+	../src/ns_blogChannel.c \
+	../src/ns_blogChannel.h \
+	../src/ns_cC.c \
+	../src/ns_cC.h \
+	../src/ns_content.c \
+	../src/ns_content.h \
+	../src/ns_dc.c \
+	../src/ns_dc.h \
+	../src/ns_fm.c \
+	../src/ns_fm.h \
+	../src/ns_ocs.c \
+	../src/ns_ocs.h \
+	../src/ns_slash.c \
+	../src/ns_slash.h \
+	../src/ns_syn.c \
+	../src/ns_syn.h \
+	../src/ocs_dir.c \
+	../src/ocs_dir.h \
+	../src/ocs_ns.h \
+	../src/opml.c \
+	../src/opml.h \
+	../src/os-support.c \
+	../src/os-support.h \
+	../src/pie_entry.c \
+	../src/pie_entry.h \
+	../src/pie_feed.c \
+	../src/pie_feed.h \
+	../src/pie_ns.h \
+	../src/rss_channel.c \
+	../src/rss_channel.h \
+	../src/rss_item.c \
+	../src/rss_item.h \
+	../src/rss_ns.h \
+	../src/support.c \
+	../src/support.h \
+	../src/ui_filter.c \
+	../src/ui_popup.c \
+	../src/ui_search.c \
+	../src/ui_tray.c \
+	../src/update.c \
+	../src/update.h \
+	../src/vfolder.c \
+	../src/vfolder.h
 
-CATALOGS = 
+CATALOGS =  fr.gmo ja.gmo
 CATOBJEXT = .gmo
 INSTOBJEXT = .mo
 

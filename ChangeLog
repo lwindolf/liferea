@@ -2,11 +2,11 @@
 
 	Version 0.4.5
 
-	* favicon.ico support, feeds which webserver provides
+	* favicon.ico support, feeds whose webserver provides
 	  a favicon.ico have the standard icon replaced by the
 	  favicon.
-	* Added the new SnowNews HTTP client code, which now
-	  supports gzip/deflate compression, so Liferea helps
+	* Added the new SnowNews 1.4.0 HTTP client code, which
+	  now supports gzip/deflate compression, so Liferea helps
 	  saving some bandwidth.
 	* Disabled the behaviour of hiding the program window
 	  when clicking the tray icon or minimizing, because
@@ -14,7 +14,7 @@
 	  was switched (reported by Dale K. Dicks, Christophe
 	  Barbe, Mike Rhodes and others).
 	* Added a background shading of read items in the
-	  condensed item view.
+	  condensed item view as proposed by Mike Rhodes.
 	* Added to options to zoom in and out of the HTML view.
 	* Fixed a bug with permanent URL redirection reported
 	  by Christophe Barbe.

@@ -94,7 +94,6 @@ void importOPMLFeedList(gchar *filename) {
 	if(NULL != (folderkey = addFolderToConfig(foldertitle))) {
 		/* add the new folder to the model */
 		addFolder(folderkey, foldertitle, FST_NODE);
-		checkForEmptyFolders();
 	} else {
 		print_status(_("internal error! could not get a new folder key!"));
 		return;
@@ -132,13 +131,12 @@ void importOPMLFeedList(gchar *filename) {
 						title = xmlGetProp(cur, BAD_CAST"title");
 						source = xmlGetProp(cur, BAD_CAST"xmlUrl");
 						if(NULL != source) {
-							if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), folderkey))) {
+							if(NULL != (fp = newFeed(FST_AUTODETECT, g_strdup(source), g_strdup(folderkey)))) {
 								addToFeedList(fp, FALSE);
-								checkForEmptyFolders();
-							}
 								
-							if(NULL != title)
-								setFeedTitle(fp, g_strdup(title)); 
+								if(NULL != title)
+									setFeedTitle(fp, g_strdup(title)); 
+							}
 							updateUI();
 						}
 					}
@@ -154,6 +152,8 @@ void importOPMLFeedList(gchar *filename) {
 	
 	if(NULL != doc)
 		xmlFreeDoc(doc);
+
+	checkForEmptyFolders();
 }
 
 
