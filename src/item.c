@@ -287,7 +287,7 @@ gchar *item_render(itemPtr ip) {
 		
 	/* add the date before the other meta-data */
 	addToHTMLBufferFast(&buffer, FEED_FOOT_FIRSTTD);
-	addToHTMLBufferFast(&buffer, _("Date"));
+	addToHTMLBufferFast(&buffer, _("date"));
 	addToHTMLBufferFast(&buffer, FEED_FOOT_NEXTTD);
 	tmp = ui_itemlist_format_date(ip->time);
 	addToHTMLBufferFast(&buffer, tmp);
