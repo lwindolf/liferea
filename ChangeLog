@@ -30,7 +30,9 @@
 	* Fixes broken saving of sorting order.
 	* Fixes a bug that could prevent browser launching
 	  for all asynchronously called browser commands.
-
+	* Fix for crash when a URL with a space character
+	  is added to the feedlist. (Nathan Conrad)
+	
 
 2004-11-29  Lars Lindner <lars.lindner@gmx.net>
 
