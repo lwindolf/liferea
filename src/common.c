@@ -288,22 +288,21 @@ void bufferParseError(void *ctxt, const gchar * msg, ...) {
  *
  * @return XML document
  */
-xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
+xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	errorCtxtPtr		errors;
 	xmlParserCtxtPtr	parser;
 	xmlDocPtr		doc;
-	gint			length;
 	
 	g_assert(NULL != data);
 
 	/* xmlCreateMemoryParserCtxt() doesn't like no data */
-	if(0 == (length = strlen(data))) {
+	if(0 == dataLength) {
 		g_warning("parseBuffer(): Empty input!\n");
 		*errormsg = g_strdup("parseBuffer(): Empty input!\n");
 		return NULL;
 	}
 	
-	if(NULL != (parser = xmlCreateMemoryParserCtxt(data, length))) {
+	if(NULL != (parser = xmlCreateMemoryParserCtxt(data, dataLength))) {
 		parser->recovery = 1;
 		errors = g_new0(struct errorCtxt, 1);
 		xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)bufferParseError);

@@ -6,7 +6,10 @@
 	  (Nathan Conrad)
 	* XML parsers now detect namespaces based on their URL. (Nathan
 	  Conrad)
-
+	* UTF-16 formatted documents are now supported. Please complain if
+	  you have problems! This may also help other encodings that
+	  contain NULL bytes in their datastreams.
+	
 	Bugfixes:
 	
 	* Favicons downloaded using gzip compression are no longer

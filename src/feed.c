@@ -93,7 +93,7 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 	return NULL;
 }
 
-feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
+feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover) {
 	gchar			*source;
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
@@ -105,7 +105,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 	
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
-		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
+		if(NULL == (doc = parseBuffer(data, dataLength, &(fp->parseErrors)))) {
 			gchar *msg = g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source);
 			addToHTMLBuffer(&(fp->parseErrors), msg);
 			g_free(msg);
@@ -155,7 +155,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover) {
 				if(NULL != request->data) {
 					debug0(DEBUG_UPDATE, "feed link download successful!");
 					feed_set_source(fp, source);
-					handler = feed_parse(fp, request->data, FALSE);
+					handler = feed_parse(fp, request->data, request->size, FALSE);
 				} else {
 					/* if the download fails we do nothing except
 					   unsetting the handler so the original source
@@ -367,7 +367,8 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	xmlNodePtr 	cur;
 	gchar		*filename, *tmp, *data = NULL;
 	int		error = 0;
-
+	gsize length;
+	
 	debug_enter("feed_load_from_cache");
 	g_assert(NULL != fp);	
 	g_assert(NULL != fp->id);
@@ -375,7 +376,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
-	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
+	if((!g_file_get_contents(filename, &data, &length, NULL)) || (*data == 0)) {
 		g_warning(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		fp->needsCacheSave = TRUE;
@@ -386,7 +387,7 @@ gboolean feed_load_from_cache(feedPtr fp) {
 	do {
 		g_assert(NULL != data);
 
-		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
+		if(NULL == (doc = parseBuffer(data, length, &(fp->parseErrors)))) {
 			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
 			error = 1;
 			break;
@@ -730,7 +731,7 @@ void feed_process_update_result(struct request *request) {
 			new_fp = feed_new();
 			feed_set_source(new_fp, feed_get_source(old_fp)); /* Used by the parser functions to determine source */
 			/* parse the new downloaded feed into new_fp */
-			fhp = feed_parse(new_fp, request->data, request->flags & FEED_REQ_AUTO_DISCOVER);
+			fhp = feed_parse(new_fp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
 			if(fhp == NULL) {
 				feed_set_available(old_fp, FALSE);
 				g_free(old_fp->parseErrors);

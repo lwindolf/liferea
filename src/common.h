@@ -66,7 +66,7 @@ void	addToHTMLBuffer(gchar **buffer, const gchar *string);
    
    The function returns a XML document and (if errors)
    occur sets the errormsg to the last error message. */
-xmlDocPtr parseBuffer(gchar *data, gchar **errormsg);
+xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg);
 
 time_t 	parseISO8601Date(gchar *date);
 time_t 	parseRFC822Date(gchar *date);

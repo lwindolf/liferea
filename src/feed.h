@@ -183,9 +183,10 @@ void feed_free(feedPtr fp);
  *
  * @param fp		the feed structure to be filled
  * @param data		the feed source
+ * @param dataLength the length of the 'data' string
  * @param autodiscover	TRUE if auto discovery should be possible
  */
-feedHandlerPtr feed_parse(feedPtr fp, gchar *data, gboolean autodiscover);
+feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover);
 
 /**
  * This is a timeout callback to check for feed update results.
