@@ -117,8 +117,10 @@ static void doUpdateFeeds(gpointer key, gpointer value, gpointer userdata) {
 	if(ep == NULL)
 		return;
 
-	if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type)))) 
-		g_error(_("internal error! unknown feed type while updating feeds!"));	
+	if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&(ep->type)))) {
+		g_warning(g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), ep->type));
+		return;
+	}
 
 	g_assert(NULL != fhp->getFeedProp);
 	if(0 == (*(fhp->getFeedProp))(ep, FEED_PROP_UPDATECOUNTER)) {

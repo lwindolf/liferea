@@ -118,8 +118,8 @@ static gpointer mergeVFolder(gpointer old_fp, gpointer new_fp) {
 static void removeVFolder(gchar *keyprefix, gchar *key, gpointer fp) {
 	VFolderPtr	vp = (VFolderPtr)fp;
 	gchar		*filename;
-	
-	g_free(vp->key);
+
+	/* never free key and keyprefix, this is done by backend! */	
 	g_free(vp->usertitle);
 	// FIXME: free item list memory
 	g_slist_free(vp->items);

@@ -438,9 +438,9 @@ void removeEntry(gchar *keyprefix, gchar *key) {
 	} else {
 		//g_warning(_("FIXME: no handler to remove this feed type (delete cached contents manually)!"));
 	}
-	
-	
+		
 	removeEntryFromConfig(keyprefix, key);
+	g_free(key);
 }
 
 /* shows entry after loading on startup or creations of a new entry */
