@@ -1,4 +1,4 @@
-This documentation was last updated for Liferea version 0.3.7.
+This documentation was last updated for Liferea version 0.4.0.
 
 Installation
 ============
@@ -11,6 +11,9 @@ Debian:		You have two choices: either download a package
 		
 			deb http://kalug.linux.org.tw/~chihchun/debian unstable liferea
 			deb-src http://kalug.linux.org.tw/~chihchun/debian unstable liferea		
+			
+		All these Debian packages are Woody packages. As far as
+		I know there are still no Sarge packages.	
 
 RedHat:		Please ensure you have a libxml2 version
 		at least 2.5.10 or you will experience nasty
@@ -21,6 +24,10 @@ RedHat:		Please ensure you have a libxml2 version
 		
 SuSE:		You can download RPM packages built on SuSE 8.1
 		from the sourceforge project page.
+
+Gentoo:		There is an ebuild available at:
+
+		http://www.breakmygentoo.net/ebuilds/
 
 FreeBSD:	There are Liferea packages (built by Hye-Shik Chang) at
 		
@@ -43,6 +50,10 @@ Upgrading from 0.3.0 or below to 0.3.1 which introduces folder should
 be possible without problems. All subscribed feeds will appear in the
 folder "my feeds".
 
+When upgrading to 0.4.0 the OCS directory cache format changes. The
+program 'll automatically update all OCS directories. Please be
+patient while downloading.
+
 Dependencies
 ============
 
@@ -62,7 +73,7 @@ programmer, so I would appreciate any help!
 Known Problems
 ==============
 
-Please read the help feed (http://liferea.sf.net/help036.rdf) 
+Please read the help feed (http://liferea.sf.net/help040.rdf) 
 for known problems! If you don't find your problem please
 make a report (forum, bugs...) on the SourceForge project
 page (http://liferea.sf.net).

@@ -1,11 +1,15 @@
 2003-10-??  Lars Lindner <lars.lindner@gmx.net>
 
+        Version 0.4.1
+	
+2003-10-10  Lars Lindner <lars.lindner@gmx.net>
+
         Version 0.4.0
 	
-	* heavy rewrite
+	* heavy rewrite, please expect problems!
 	* <item rdf:about="..."> and <guid> support
-	* now using libxml's xmlRecover* functions to read even
-	  buggy feeds
+	* now using libxml's xmlRecover* functions to read even buggy feeds
+	* fixed broken feed title displaying
 	* you can now switch between a two or three pane viewing mode
 	
 	* VFOLDER CACHE FILE FORMAT CHANGED!!!
@@ -16,6 +20,9 @@
 	  
 	* fixed some output problems for OCS directories
 	* fixed bug 819959
+	* removed support for slash namespace tags comments and hitparade
+	  to prevent marking items unread each time the numbers change
+	* added new items provided by mezz7
 
 
 2003-09-26  Lars Lindner <lars.lindner@gmx.net>

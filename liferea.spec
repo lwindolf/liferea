@@ -1,5 +1,3 @@
-%define dfi %(which desktop-file-install &>/dev/null; echo $?)
-
 Summary: Liferea (Linux Feed Reader)
 Name: liferea
 Version: 0.4.0
@@ -31,12 +29,6 @@ make
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local
 make install-strip prefix=$RPM_BUILD_ROOT/usr/local sysconfdir=$RPM_BUILD_ROOT/etc
-%if %{dfi}
-%else
-	desktop-file-install --vendor net                  \
-		--dir $RPM_BUILD_ROOT/usr/local/share/applications \
-		$RPM_BUILD_ROOT/usr/local/share/applications/liferea.desktop
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -54,4 +46,3 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/liferea/pixmaps/help.xpm
 /usr/local/share/liferea/pixmaps/vfolder.xpm
 /usr/local/share/liferea/pixmaps/empty.xpm
-/usr/local/share/pixmaps/liferea.xpm
