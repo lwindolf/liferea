@@ -71,22 +71,15 @@ void item_copy(itemPtr from, itemPtr to) {
 }
 
 void item_set_title(itemPtr ip, const gchar * title) {
+
 	g_free(ip->title);
 	ip->title = g_strdup(title);
 }
 
-/* Note: this function can be used to set the item description 
-   for the first time and also to overwrite it with a more 
-   detailed description (e.g. from content:encoded). It cannot
-   not be used to overwrite the description with an arbitrary
-   value. */
 void item_set_description(itemPtr ip, const gchar * description) {
 
-	g_return_if_fail(NULL != description);
-	if((NULL == ip->description) || (strlen(description) > strlen(ip->description))) {
-		g_free(ip->description);
-		ip->description = g_strdup(description);
-	}
+	g_free(ip->description);
+	ip->description = g_strdup(description);
 }
 
 void item_set_source(itemPtr ip, const gchar * source) { g_free(ip->source);ip->source = g_strdup(source); }

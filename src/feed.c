@@ -603,10 +603,8 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 			} else {
 				/* if the item was found but has other contents -> update */
 				if(!equal) {
-					/* explicitly not using item_set_description! */
-					g_free(old_ip->description);
-					old_ip->description = g_strdup(item_get_description(new_ip));
 					item_set_title(old_ip, item_get_title(new_ip));
+					item_set_description(old_ip, item_get_description(new_ip));
 					item_set_time(old_ip, item_get_time(new_ip));
 					item_set_unread(old_ip);
 					vfolder_update_item(old_ip);
