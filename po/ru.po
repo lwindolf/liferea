@@ -18,45 +18,45 @@ msgstr ""
 #: src/support.c:90 src/support.c:114
 #, c-format
 msgid "Couldn't find pixmap file: %s"
-msgstr "Невозможно найти файл изображения: %s"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё С„Р°Р№Р» РёР·РѕР±СЂР°Р¶РµРЅРёСЏ: %s"
 
 #: src/cdf_channel.c:179 src/ocs_dir.c:496 src/opml.c:233 src/pie_feed.c:319
 #: src/rss_channel.c:403
 msgid "There were errors while parsing this feed!"
-msgstr "Произошли ошибки во время парсинга ленты новостей!"
+msgstr "РџСЂРѕРёР·РѕС€Р»Рё РѕС€РёР±РєРё РІРѕ РІСЂРµРјСЏ РїР°СЂСЃРёРЅРіР° Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№!"
 
 #: src/common.c:246
 msgid "[Parser error output was truncated!]"
-msgstr "[Вывод ошибки парсинга усечён]"
+msgstr "[Р’С‹РІРѕРґ РѕС€РёР±РєРё РїР°СЂСЃРёРЅРіР° СѓСЃРµС‡С‘РЅ]"
 
 #: src/common.c:326 src/common.c:374
 msgid "internal error! time conversion error! mktime failed!\n"
-msgstr "внутренняя ошибка! ошибка конвертирования времени! ошибка mktime!\n"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°! РѕС€РёР±РєР° РєРѕРЅРІРµСЂС‚РёСЂРѕРІР°РЅРёСЏ РІСЂРµРјРµРЅРё! РѕС€РёР±РєР° mktime!\n"
 
 #: src/common.c:329
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
-msgstr "Неверный ISO8601 формат даты! Игнорирую информацию <dc:date>!\n"
+msgstr "РќРµРІРµСЂРЅС‹Р№ ISO8601 С„РѕСЂРјР°С‚ РґР°С‚С‹! РРіРЅРѕСЂРёСЂСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ <dc:date>!\n"
 
 #: src/common.c:377
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
-msgstr "Неверный RFC822 формат даты! Игнорирую информацию <pubDate>\n"
+msgstr "РќРµРІРµСЂРЅС‹Р№ RFC822 С„РѕСЂРјР°С‚ РґР°С‚С‹! РРіРЅРѕСЂРёСЂСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ <pubDate>\n"
 
 #: src/common.c:391 src/common.c:398 src/common.c:404 src/common.c:411
 #, c-format
 msgid "Cannot create cache directory %s!"
-msgstr "Невозможно создать каталог кэша %s!"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ РєР°С‚Р°Р»РѕРі РєСЌС€Р° %s!"
 
 #: src/common.c:497
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
-"Неожиданное окончание символьноц последовательности или повреждённая кодировка UTF-8! Некоторые символы опущены!"
+"РќРµРѕР¶РёРґР°РЅРЅРѕРµ РѕРєРѕРЅС‡Р°РЅРёРµ СЃРёРјРІРѕР»СЊРЅРѕС† РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё РёР»Рё РїРѕРІСЂРµР¶РґС‘РЅРЅР°СЏ РєРѕРґРёСЂРѕРІРєР° UTF-8! РќРµРєРѕС‚РѕСЂС‹Рµ СЃРёРјРІРѕР»С‹ РѕРїСѓС‰РµРЅС‹!"
 
 #. sh..!
 #: src/common.c:511
 msgid "Internal error while converting UTF-8 chars to HTTP URI!"
-msgstr "Внутренняя ошибка во время конвертации символов UTF-8 в HTTP URI!"
+msgstr "Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР° РІРѕ РІСЂРµРјСЏ РєРѕРЅРІРµСЂС‚Р°С†РёРё СЃРёРјРІРѕР»РѕРІ UTF-8 РІ HTTP URI!"
 
 #. _() for HELP1URL to allow localised help feeds
 #: src/conf.c:44
@@ -69,114 +69,114 @@ msgstr ".rdf"
 
 #: src/conf.c:338
 msgid "Liferea Help"
-msgstr "Помощь по Liferea"
+msgstr "РџРѕРјРѕС‰СЊ РїРѕ Liferea"
 
 #: src/conf.c:345
 msgid "Online Help Feed"
-msgstr "Лента Новостей Онлайновой помощи"
+msgstr "Р›РµРЅС‚Р° РќРѕРІРѕСЃС‚РµР№ РћРЅР»Р°Р№РЅРѕРІРѕР№ РїРѕРјРѕС‰Рё"
 
 #: src/conf.c:355
 msgid "Liferea SF News"
-msgstr "Новости Liferea на SF.net"
+msgstr "РќРѕРІРѕСЃС‚Рё Liferea РЅР° SF.net"
 
 #: src/conf.c:477
 #, c-format
 msgid "Error renaming %s to %s\n"
-msgstr "Ошибка переименования %s в %s\n"
+msgstr "РћС€РёР±РєР° РїРµСЂРµРёРјРµРЅРѕРІР°РЅРёСЏ %s РІ %s\n"
 
 #: src/conf.c:505
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
-msgstr "Пространство имён RSS %s ещё не сконфигурировано! Активация...\n"
+msgstr "РџСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјС‘РЅ RSS %s РµС‰С‘ РЅРµ СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅРѕ! РђРєС‚РёРІР°С†РёСЏ...\n"
 
 #: src/export.c:305 src/export.c:307
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
+msgstr "РћС€РёР±РєР° XML РІРѕ РІСЂРµРјСЏ С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р° РєСЌС€Р°! РќРµРІРѕР·РјРѕР¶РЅРѕ РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ \"%s\"!"
 
 #: src/export.c:311 src/export.c:313
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
-"Пустой документ! Документ OPML \"%s\" не должен быть пустым во время импортирования."
+"РџСѓСЃС‚РѕР№ РґРѕРєСѓРјРµРЅС‚! Р”РѕРєСѓРјРµРЅС‚ OPML \"%s\" РЅРµ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј РІРѕ РІСЂРµРјСЏ РёРјРїРѕСЂС‚РёСЂРѕРІР°РЅРёСЏ."
 
 #: src/export.c:321 src/export.c:323
 #, c-format
 msgid "\"%s\" is no valid OPML document! Liferea cannot import this file!"
-msgstr "\"%s\" не является допустимым документом OPML! Liferea не сможет импортировать этот файл!"
+msgstr "\"%s\" РЅРµ СЏРІР»СЏРµС‚СЃСЏ РґРѕРїСѓСЃС‚РёРјС‹Рј РґРѕРєСѓРјРµРЅС‚РѕРј OPML! Liferea РЅРµ СЃРјРѕР¶РµС‚ РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЌС‚РѕС‚ С„Р°Р№Р»!"
 
 #: src/export.c:395 src/export.c:408
 msgid "internal error! could not find file dialog select button!"
-msgstr "внутренняя ошибка! невозможно найти кнопку выбора диалога файла!"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°! РЅРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё РєРЅРѕРїРєСѓ РІС‹Р±РѕСЂР° РґРёР°Р»РѕРіР° С„Р°Р№Р»Р°!"
 
 #: src/export.c:431
 msgid "Error while exporting feed list!"
-msgstr "Ошибка во время экспорта списка лент новостей!"
+msgstr "РћС€РёР±РєР° РІРѕ РІСЂРµРјСЏ СЌРєСЃРїРѕСЂС‚Р° СЃРїРёСЃРєР° Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№!"
 
 #: src/export.c:433
 msgid "Feed List exported!"
-msgstr "Список лент новостей экспортирован!"
+msgstr "РЎРїРёСЃРѕРє Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°РЅ!"
 
 #: src/export.c:449
 msgid "imported feed list"
-msgstr "экспортированный(ых) лист(а)(ов) лент новостей"
+msgstr "СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№(С‹С…) Р»РёСЃС‚(Р°)(РѕРІ) Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№"
 
 #: src/export.c:455
 msgid "internal error! could not get a new folder key!"
-msgstr "внутренняя ошибка! невозможно получить ключ нового каталога!"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°! РЅРµРІРѕР·РјРѕР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ РєР»СЋС‡ РЅРѕРІРѕРіРѕ РєР°С‚Р°Р»РѕРіР°!"
 
 #: src/favicon.c:429
 #, c-format
 msgid "Could not delete icon file %s! Please remove manually!"
-msgstr "Невозможно удалить файл иконки %s! Пожалуйста, удалите его вручную!"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ СѓРґР°Р»РёС‚СЊ С„Р°Р№Р» РёРєРѕРЅРєРё %s! РџРѕР¶Р°Р»СѓР№СЃС‚Р°, СѓРґР°Р»РёС‚Рµ РµРіРѕ РІСЂСѓС‡РЅСѓСЋ!"
 
 #: src/feed.c:102
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
-msgstr "<p>Ошибка XML во время чтения ленты новостей! Лента новостей \"%s\" не может быть загружена!</p>"
+msgstr "<p>РћС€РёР±РєР° XML РІРѕ РІСЂРµРјСЏ С‡С‚РµРЅРёСЏ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№! Р›РµРЅС‚Р° РЅРѕРІРѕСЃС‚РµР№ \"%s\" РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р·Р°РіСЂСѓР¶РµРЅР°!</p>"
 
 #: src/feed.c:109 src/feed.c:342
 msgid "<p>Empty document!</p>"
-msgstr "<p>Пустой документ!</p>"
+msgstr "<p>РџСѓСЃС‚РѕР№ РґРѕРєСѓРјРµРЅС‚!</p>"
 
 #: src/feed.c:117
 msgid "<p>Invalid XML!</p>"
-msgstr "<p>Недопустимый XML!</p>"
+msgstr "<p>РќРµРґРѕРїСѓСЃС‚РёРјС‹Р№ XML!</p>"
 
 #: src/feed.c:133
 msgid ""
 "<p>Could not determine the feed type! Please check that it is in a supported "
 "format!</p>"
 msgstr ""
-"<p>Невозможно определить тип ленты новостей! Проверьте, что его формат "
-"поддерживается!</p>"
+"<p>РќРµРІРѕР·РјРѕР¶РЅРѕ РѕРїСЂРµРґРµР»РёС‚СЊ С‚РёРї Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№! РџСЂРѕРІРµСЂСЊС‚Рµ, С‡С‚Рѕ РµРіРѕ С„РѕСЂРјР°С‚ "
+"РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ!</p>"
 
 #: src/feed.c:143
 msgid "There were errors while parsing a feed!"
-msgstr "Произошла ошибка во время парсинга ленты новостей!"
+msgstr "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РІРѕ РІСЂРµРјСЏ РїР°СЂСЃРёРЅРіР° Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№!"
 
 #: src/feed.c:284
 msgid "could not write XML item node!\n"
-msgstr "невозможно записать XML ветвь новостей!\n"
+msgstr "РЅРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РїРёСЃР°С‚СЊ XML РІРµС‚РІСЊ РЅРѕРІРѕСЃС‚РµР№!\n"
 
 #: src/feed.c:290
 msgid "could not create XML feed node for feed cache document!"
-msgstr "невозможно создать XML-ветвь лент новостей для документа кэша этой ленты новостей!"
+msgstr "РЅРµРІРѕР·РјРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ XML-РІРµС‚РІСЊ Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ РґР»СЏ РґРѕРєСѓРјРµРЅС‚Р° РєСЌС€Р° СЌС‚РѕР№ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№!"
 
 #: src/feed.c:295
 msgid "could not create XML document!"
-msgstr "невозможно создать XML документ!"
+msgstr "РЅРµРІРѕР·РјРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ XML РґРѕРєСѓРјРµРЅС‚!"
 
 #: src/feed.c:326
 #, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
-msgstr "Ошибка во время чтения файла кэша\"%s\" ! Файл кэша не может быть загружен!"
+msgstr "РћС€РёР±РєР° РІРѕ РІСЂРµРјСЏ С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р° РєСЌС€Р°\"%s\" ! Р¤Р°Р№Р» РєСЌС€Р° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р·Р°РіСЂСѓР¶РµРЅ!"
 
 #: src/feed.c:327
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr "Ошибка во время чтения файла кэша \"%s\" ! Файл кэша не может быть загружен!"
+msgstr "РћС€РёР±РєР° РІРѕ РІСЂРµРјСЏ С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р° РєСЌС€Р° \"%s\" ! Р¤Р°Р№Р» РєСЌС€Р° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р·Р°РіСЂСѓР¶РµРЅ!"
 
 #: src/feed.c:336
 #, c-format
@@ -184,123 +184,123 @@ msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
-"<p>Ошибка XML во время парсинга файла кэша! Файл кэша \"%s\" ленты новостей не может быть "
-"загружен!</p>"
+"<p>РћС€РёР±РєР° XML РІРѕ РІСЂРµРјСЏ РїР°СЂСЃРёРЅРіР° С„Р°Р№Р»Р° РєСЌС€Р°! Р¤Р°Р№Р» РєСЌС€Р° \"%s\" Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ "
+"Р·Р°РіСЂСѓР¶РµРЅ!</p>"
 
 #: src/feed.c:351
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-msgstr "<p>\"%s\" не является допустимым файлом кэша ! Невозможно прочитать файл кеша!</p>"
+msgstr "<p>\"%s\" РЅРµ СЏРІР»СЏРµС‚СЃСЏ РґРѕРїСѓСЃС‚РёРјС‹Рј С„Р°Р№Р»РѕРј РєСЌС€Р° ! РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р» РєРµС€Р°!</p>"
 
 #: src/feed.c:394
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
-msgstr "Произошла ошибка во время парсинга файла кэша \"%s\"!"
+msgstr "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РІРѕ РІСЂРµРјСЏ РїР°СЂСЃРёРЅРіР° С„Р°Р№Р»Р° РєСЌС€Р° \"%s\"!"
 
 #: src/feed.c:528
 #, c-format
 msgid "\"%s\" has no new items."
-msgstr "\"%s\" не имеет новых новостей."
+msgstr "\"%s\" РЅРµ РёРјРµРµС‚ РЅРѕРІС‹С… РЅРѕРІРѕСЃС‚РµР№."
 
 #: src/feed.c:530
 #, c-format
 msgid "\"%s\" has %d new items."
-msgstr "\"%s\" имеет %d новость(и)(ей)."
+msgstr "\"%s\" РёРјРµРµС‚ %d РЅРѕРІРѕСЃС‚СЊ(Рё)(РµР№)."
 
 #: src/feed.c:631
 #, c-format
 msgid "\"%s\" has not changed since last update."
-msgstr "\"%s\" не изменился с момента последнего обновления."
+msgstr "\"%s\" РЅРµ РёР·РјРµРЅРёР»СЃСЏ СЃ РјРѕРјРµРЅС‚Р° РїРѕСЃР»РµРґРЅРµРіРѕ РѕР±РЅРѕРІР»РµРЅРёСЏ."
 
 #: src/feed.c:643
 msgid ""
 "Could not detect the type of this feed! Please check if the URL really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
-"Невозможно определить тип этой ленты новостей! Пожалуйста, проверьте указывает ли URL "
-"на ресурс, доступный в одном из поддерживаемых форматах!"
+"РќРµРІРѕР·РјРѕР¶РЅРѕ РѕРїСЂРµРґРµР»РёС‚СЊ С‚РёРї СЌС‚РѕР№ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№! РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїСЂРѕРІРµСЂСЊС‚Рµ СѓРєР°Р·С‹РІР°РµС‚ Р»Рё URL "
+"РЅР° СЂРµСЃСѓСЂСЃ, РґРѕСЃС‚СѓРїРЅС‹Р№ РІ РѕРґРЅРѕРј РёР· РїРѕРґРґРµСЂР¶РёРІР°РµРјС‹С… С„РѕСЂРјР°С‚Р°С…!"
 
 #: src/feed.c:662
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" обновлён..."
+msgstr "\"%s\" РѕР±РЅРѕРІР»С‘РЅ..."
 
 #: src/feed.c:668
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
-msgstr "URL для \"%s\" изменился на постоянный и был обновлён."
+msgstr "URL РґР»СЏ \"%s\" РёР·РјРµРЅРёР»СЃСЏ РЅР° РїРѕСЃС‚РѕСЏРЅРЅС‹Р№ Рё Р±С‹Р» РѕР±РЅРѕРІР»С‘РЅ."
 
 #: src/feed.c:679
 #, c-format
 msgid "\"%s\" is not available!"
-msgstr "\"%s\" не доступен!"
+msgstr "\"%s\" РЅРµ РґРѕСЃС‚СѓРїРµРЅ!"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
 #: src/feed.c:776 src/net/netio.c:477
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
-msgstr "Лента новостей больше не существует. Пожалуйста, отмените подписку!"
+msgstr "Р›РµРЅС‚Р° РЅРѕРІРѕСЃС‚РµР№ Р±РѕР»СЊС€Рµ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РѕС‚РјРµРЅРёС‚Рµ РїРѕРґРїРёСЃРєСѓ!"
 
 #: src/feed.c:777
 msgid "Payment Required"
-msgstr "Необходим Платёж"
+msgstr "РќРµРѕР±С…РѕРґРёРј РџР»Р°С‚С‘Р¶"
 
 #: src/feed.c:778
 msgid "Access Forbidden"
-msgstr "Доступ Запрещён"
+msgstr "Р”РѕСЃС‚СѓРї Р—Р°РїСЂРµС‰С‘РЅ"
 
 #: src/feed.c:779
 msgid "Resource Not Found"
-msgstr "Ресурс Не Найден"
+msgstr "Р РµСЃСѓСЂСЃ РќРµ РќР°Р№РґРµРЅ"
 
 #: src/feed.c:780
 msgid "Method Not Allowed"
-msgstr "Метод Не Разрешён"
+msgstr "РњРµС‚РѕРґ РќРµ Р Р°Р·СЂРµС€С‘РЅ"
 
 #: src/feed.c:781
 msgid "Not Acceptable"
-msgstr "Не Допустимо"
+msgstr "РќРµ Р”РѕРїСѓСЃС‚РёРјРѕ"
 
 #: src/feed.c:782
 msgid "Proxy Authentication Required"
-msgstr "Необходима Прокси-Аутентификация"
+msgstr "РќРµРѕР±С…РѕРґРёРјР° РџСЂРѕРєСЃРё-РђСѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ"
 
 #: src/feed.c:783
 msgid "Request Time-Out"
-msgstr "Запрос Превысил Время Ожидания Ответа"
+msgstr "Р—Р°РїСЂРѕСЃ РџСЂРµРІС‹СЃРёР» Р’СЂРµРјСЏ РћР¶РёРґР°РЅРёСЏ РћС‚РІРµС‚Р°"
 
 #: src/feed.c:784
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Не найдено. Ресурс не существует. Пожалуйста, отмените подписку!"
+msgstr "РќРµ РЅР°Р№РґРµРЅРѕ. Р РµСЃСѓСЂСЃ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РѕС‚РјРµРЅРёС‚Рµ РїРѕРґРїРёСЃРєСѓ!"
 
 #: src/feed.c:790
 msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Лента новостей недоступна: Сервер запросил неподдерживаемое перенаправление!"
+msgstr "Р›РµРЅС‚Р° РЅРѕРІРѕСЃС‚РµР№ РЅРµРґРѕСЃС‚СѓРїРЅР°: РЎРµСЂРІРµСЂ Р·Р°РїСЂРѕСЃРёР» РЅРµРїРѕРґРґРµСЂР¶РёРІР°РµРјРѕРµ РїРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёРµ!"
 
 #: src/feed.c:791
 msgid "Client Error"
-msgstr "Ошибка клиента"
+msgstr "РћС€РёР±РєР° РєР»РёРµРЅС‚Р°"
 
 #: src/feed.c:792
 msgid "Server Error"
-msgstr "Ошибка Сервера"
+msgstr "РћС€РёР±РєР° РЎРµСЂРІРµСЂР°"
 
 #: src/feed.c:793
 msgid "(unknown error class)"
-msgstr "(неизвестный класс ошибки)"
+msgstr "(РЅРµРёР·РІРµСЃС‚РЅС‹Р№ РєР»Р°СЃСЃ РѕС€РёР±РєРё)"
 
 #: src/feed.c:815
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
 msgstr ""
-"Произошла проблема во время чтения подписки. Пожалуйста, проверьте URL "
-"и вывод командной строки!"
+"РџСЂРѕРёР·РѕС€Р»Р° РїСЂРѕР±Р»РµРјР° РІРѕ РІСЂРµРјСЏ С‡С‚РµРЅРёСЏ РїРѕРґРїРёСЃРєРё. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїСЂРѕРІРµСЂСЊС‚Рµ URL "
+"Рё РІС‹РІРѕРґ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё!"
 
 #: src/feed.c:957
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
-msgstr "Невозможно удалить файл кэша %s! Удалите его вручную!"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ СѓРґР°Р»РёС‚СЊ С„Р°Р№Р» РєСЌС€Р° %s! РЈРґР°Р»РёС‚Рµ РµРіРѕ РІСЂСѓС‡РЅСѓСЋ!"
 
 #: src/htmlview.c:91
 msgid ""
@@ -313,38 +313,38 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Попытка загрузить моудль браузера Mozilla... Учтите, что это\n"
-"работает не с каждой версией Mozilla. Если у вас есть проблемы\n"
-"и Liferea не запускается, попробуйте установить в качестве значения переменной MOZILLA_FIVE_HOME\n"
-"другую инсталляцию Mozilla или\tудалите конфигурационный ключ gconf\n"
+"РџРѕРїС‹С‚РєР° Р·Р°РіСЂСѓР·РёС‚СЊ РјРѕСѓРґР»СЊ Р±СЂР°СѓР·РµСЂР° Mozilla... РЈС‡С‚РёС‚Рµ, С‡С‚Рѕ СЌС‚Рѕ\n"
+"СЂР°Р±РѕС‚Р°РµС‚ РЅРµ СЃ РєР°Р¶РґРѕР№ РІРµСЂСЃРёРµР№ Mozilla. Р•СЃР»Рё Сѓ РІР°СЃ РµСЃС‚СЊ РїСЂРѕР±Р»РµРјС‹\n"
+"Рё Liferea РЅРµ Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ, РїРѕРїСЂРѕР±СѓР№С‚Рµ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РІ РєР°С‡РµСЃС‚РІРµ Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРµРјРµРЅРЅРѕР№ MOZILLA_FIVE_HOME\n"
+"РґСЂСѓРіСѓСЋ РёРЅСЃС‚Р°Р»Р»СЏС†РёСЋ Mozilla РёР»Рё\tСѓРґР°Р»РёС‚Рµ РєРѕРЅС„РёРіСѓСЂР°С†РёРѕРЅРЅС‹Р№ РєР»СЋС‡ gconf\n"
 "/apps/liferea/browser-module!\n"
 "\n"
 
 #: src/htmlview.c:179
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
-msgstr "Загрузка сконфигурированного модуля браузера (%s)!\n"
+msgstr "Р—Р°РіСЂСѓР·РєР° СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅРЅРѕРіРѕ РјРѕРґСѓР»СЏ Р±СЂР°СѓР·РµСЂР° (%s)!\n"
 
 #: src/htmlview.c:182
 msgid "No browser module configured!\n"
-msgstr "Ни одного модуля браузеров не определено!\n"
+msgstr "РќРё РѕРґРЅРѕРіРѕ РјРѕРґСѓР»СЏ Р±СЂР°СѓР·РµСЂРѕРІ РЅРµ РѕРїСЂРµРґРµР»РµРЅРѕ!\n"
 
 #: src/htmlview.c:190
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
-msgstr "попытка загрузить модуль браузера %s (%s)\n"
+msgstr "РїРѕРїС‹С‚РєР° Р·Р°РіСЂСѓР·РёС‚СЊ РјРѕРґСѓР»СЊ Р±СЂР°СѓР·РµСЂР° %s (%s)\n"
 
 #: src/htmlview.c:198
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
 msgstr ""
-"Извините, я не смогла загрузить ни одного модуля установленных браузеров! Просмотрите опцию --debug-"
-"all для получения информации!"
+"РР·РІРёРЅРёС‚Рµ, СЏ РЅРµ СЃРјРѕРіР»Р° Р·Р°РіСЂСѓР·РёС‚СЊ РЅРё РѕРґРЅРѕРіРѕ РјРѕРґСѓР»СЏ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹С… Р±СЂР°СѓР·РµСЂРѕРІ! РџСЂРѕСЃРјРѕС‚СЂРёС‚Рµ РѕРїС†РёСЋ --debug-"
+"all РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РёРЅС„РѕСЂРјР°С†РёРё!"
 
 #: src/htmlview.c:331
 msgid "This item does not have a link assigned!"
-msgstr "Этот элемент не имеет закреплённой ссылки!"
+msgstr "Р­С‚РѕС‚ СЌР»РµРјРµРЅС‚ РЅРµ РёРјРµРµС‚ Р·Р°РєСЂРµРїР»С‘РЅРЅРѕР№ СЃСЃС‹Р»РєРё!"
 
 #: src/htmlview.c:366
 #, c-format
@@ -352,18 +352,18 @@ msgid ""
 "Invalid browser command! There is no %%s URL place holder in the browser "
 "command string you specified in the preferences dialog!!!"
 msgstr ""
-"Неверная команда браузера! Отсуствует %%s заменитель URL в строке команды "
-"браузера, которую вы указали в диалоге настройки!!!"
+"РќРµРІРµСЂРЅР°СЏ РєРѕРјР°РЅРґР° Р±СЂР°СѓР·РµСЂР°! РћС‚СЃСѓСЃС‚РІСѓРµС‚ %%s Р·Р°РјРµРЅРёС‚РµР»СЊ URL РІ СЃС‚СЂРѕРєРµ РєРѕРјР°РЅРґС‹ "
+"Р±СЂР°СѓР·РµСЂР°, РєРѕС‚РѕСЂСѓСЋ РІС‹ СѓРєР°Р·Р°Р»Рё РІ РґРёР°Р»РѕРіРµ РЅР°СЃС‚СЂРѕР№РєРё!!!"
 
 #: src/htmlview.c:373 src/textview.c:123
 #, c-format
 msgid "browser command failed: %s"
-msgstr "ошибка команды браузера: %s"
+msgstr "РѕС€РёР±РєР° РєРѕРјР°РЅРґС‹ Р±СЂР°СѓР·РµСЂР°: %s"
 
 #: src/htmlview.c:376 src/textview.c:126
 #, c-format
 msgid "starting: \"%s\""
-msgstr "запуск: \"%s\""
+msgstr "Р·Р°РїСѓСЃРє: \"%s\""
 
 #: src/interface.c:161 src/interface.c:3186
 msgid "Liferea 0.4.9"
@@ -371,279 +371,279 @@ msgstr "Liferea 0.4.9"
 
 #: src/interface.c:178
 msgid "_Program"
-msgstr "_Программа"
+msgstr "_РџСЂРѕРіСЂР°РјРјР°"
 
 #: src/interface.c:194
 msgid "Work Offline"
-msgstr "Работать в режиме \"Отключен\""
+msgstr "Р Р°Р±РѕС‚Р°С‚СЊ РІ СЂРµР¶РёРјРµ \"РћС‚РєР»СЋС‡РµРЅ\""
 
 #: src/interface.c:207
 msgid "_Feeds"
-msgstr "_Ленты новостей"
+msgstr "_Р›РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:214
 msgid "_New Subscription"
-msgstr "_Новая Подписка"
+msgstr "_РќРѕРІР°СЏ РџРѕРґРїРёСЃРєР°"
 
 #: src/interface.c:222
 msgid "New _Folder"
-msgstr "Новая _папка"
+msgstr "РќРѕРІР°СЏ _РїР°РїРєР°"
 
 #: src/interface.c:235
 msgid "_Properties"
-msgstr "_Свойства"
+msgstr "_РЎРІРѕР№СЃС‚РІР°"
 
 #: src/interface.c:238
 msgid "Opens the property dialog for the selected subscription."
-msgstr "Открывает диалог настроек для выбранной подписки."
+msgstr "РћС‚РєСЂС‹РІР°РµС‚ РґРёР°Р»РѕРі РЅР°СЃС‚СЂРѕРµРє РґР»СЏ РІС‹Р±СЂР°РЅРЅРѕР№ РїРѕРґРїРёСЃРєРё."
 
 #: src/interface.c:249
 msgid "Update _Selected"
-msgstr "Обновить _Выбранные"
+msgstr "РћР±РЅРѕРІРёС‚СЊ _Р’С‹Р±СЂР°РЅРЅС‹Рµ"
 
 #: src/interface.c:252
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder,"
 msgstr ""
-"Обновляет выбранные подписки или все подписки выбранной "
-"папки."
+"РћР±РЅРѕРІР»СЏРµС‚ РІС‹Р±СЂР°РЅРЅС‹Рµ РїРѕРґРїРёСЃРєРё РёР»Рё РІСЃРµ РїРѕРґРїРёСЃРєРё РІС‹Р±СЂР°РЅРЅРѕР№ "
+"РїР°РїРєРё."
 
 #: src/interface.c:258
 msgid "Update _All"
-msgstr "Обновить _Всё"
+msgstr "РћР±РЅРѕРІРёС‚СЊ _Р’СЃС‘"
 
 #: src/interface.c:261
 msgid "Immediately updates all subscriptions (excluding directories)."
-msgstr "Немедленно обновляет все подписки (исключая папки)."
+msgstr "РќРµРјРµРґР»РµРЅРЅРѕ РѕР±РЅРѕРІР»СЏРµС‚ РІСЃРµ РїРѕРґРїРёСЃРєРё (РёСЃРєР»СЋС‡Р°СЏ РїР°РїРєРё)."
 
 #: src/interface.c:275
 msgid "_Delete Selected"
-msgstr "_Удалить Выбранные."
+msgstr "_РЈРґР°Р»РёС‚СЊ Р’С‹Р±СЂР°РЅРЅС‹Рµ."
 
 #: src/interface.c:278
 msgid "Removes the selected subscription."
-msgstr "Удаляет выбранную подписку."
+msgstr "РЈРґР°Р»СЏРµС‚ РІС‹Р±СЂР°РЅРЅСѓСЋ РїРѕРґРїРёСЃРєСѓ."
 
 #: src/interface.c:289
 msgid "_Mark As Read"
-msgstr "_Пометить Как Прочитанные"
+msgstr "_РџРѕРјРµС‚РёС‚СЊ РљР°Рє РџСЂРѕС‡РёС‚Р°РЅРЅС‹Рµ"
 
 #: src/interface.c:292
 msgid ""
 "Marks all items of the current selected subscription or all of subscriptions "
 "of the selected folder as read."
 msgstr ""
-"Помечает все элементы выбранной подписки или всех подписок "
-"выбранной папки как прочитанные."
+"РџРѕРјРµС‡Р°РµС‚ РІСЃРµ СЌР»РµРјРµРЅС‚С‹ РІС‹Р±СЂР°РЅРЅРѕР№ РїРѕРґРїРёСЃРєРё РёР»Рё РІСЃРµС… РїРѕРґРїРёСЃРѕРє "
+"РІС‹Р±СЂР°РЅРЅРѕР№ РїР°РїРєРё РєР°Рє РїСЂРѕС‡РёС‚Р°РЅРЅС‹Рµ."
 
 #: src/interface.c:306
 msgid "_Import Feed List"
-msgstr "_Импортировать Список Лент Новостей"
+msgstr "_РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РЎРїРёСЃРѕРє Р›РµРЅС‚ РќРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:309
 msgid "Imports an OPML feed list."
-msgstr "Имортирует OPML список лент новостей."
+msgstr "РРјРѕСЂС‚РёСЂСѓРµС‚ OPML СЃРїРёСЃРѕРє Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№."
 
 #: src/interface.c:315
 msgid "_Export Feed List"
-msgstr "_Экспортировать Список Лент Новостей"
+msgstr "_Р­РєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РЎРїРёСЃРѕРє Р›РµРЅС‚ РќРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:318
 msgid "Export the feed list as OPML."
-msgstr "Экспортирует список лент новостей в формате OPML."
+msgstr "Р­РєСЃРїРѕСЂС‚РёСЂСѓРµС‚ СЃРїРёСЃРѕРє Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ РІ С„РѕСЂРјР°С‚Рµ OPML."
 
 #: src/interface.c:324
 msgid "_Items"
-msgstr "_Новости"
+msgstr "_РќРѕРІРѕСЃС‚Рё"
 
 #: src/interface.c:331
 msgid "_Next Unread Item"
-msgstr "_Следующая Непрочитанная Новость"
+msgstr "_РЎР»РµРґСѓСЋС‰Р°СЏ РќРµРїСЂРѕС‡РёС‚Р°РЅРЅР°СЏ РќРѕРІРѕСЃС‚СЊ"
 
 #: src/interface.c:334 src/interface.c:505
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
 msgstr ""
-"Переходит к следующей непрочитанной новости. Если необходимо, выбирает следующую ленту новостей с "
-"непрочитанными новостями."
+"РџРµСЂРµС…РѕРґРёС‚ Рє СЃР»РµРґСѓСЋС‰РµР№ РЅРµРїСЂРѕС‡РёС‚Р°РЅРЅРѕР№ РЅРѕРІРѕСЃС‚Рё. Р•СЃР»Рё РЅРµРѕР±С…РѕРґРёРјРѕ, РІС‹Р±РёСЂР°РµС‚ СЃР»РµРґСѓСЋС‰СѓСЋ Р»РµРЅС‚Сѓ РЅРѕРІРѕСЃС‚РµР№ СЃ "
+"РЅРµРїСЂРѕС‡РёС‚Р°РЅРЅС‹РјРё РЅРѕРІРѕСЃС‚СЏРјРё."
 
 #: src/interface.c:343
 msgid "_Scroll Or Next Unread"
-msgstr "Про_крутить Или Перейти К Следующей Непрочитанной Новости"
+msgstr "РџСЂРѕ_РєСЂСѓС‚РёС‚СЊ РР»Рё РџРµСЂРµР№С‚Рё Рљ РЎР»РµРґСѓСЋС‰РµР№ РќРµРїСЂРѕС‡РёС‚Р°РЅРЅРѕР№ РќРѕРІРѕСЃС‚Рё"
 
 #: src/interface.c:346
 msgid "Scrolls the item view down or jumps to the next unread item."
-msgstr "Прокручивает список элементов вниз или перескакивает на следующую непрочитанную новость."
+msgstr "РџСЂРѕРєСЂСѓС‡РёРІР°РµС‚ СЃРїРёСЃРѕРє СЌР»РµРјРµРЅС‚РѕРІ РІРЅРёР· РёР»Рё РїРµСЂРµСЃРєР°РєРёРІР°РµС‚ РЅР° СЃР»РµРґСѓСЋС‰СѓСЋ РЅРµРїСЂРѕС‡РёС‚Р°РЅРЅСѓСЋ РЅРѕРІРѕСЃС‚СЊ."
 
 #: src/interface.c:360
 msgid "Toggle _Read Status"
-msgstr "Переключить _Статус Прочтения"
+msgstr "РџРµСЂРµРєР»СЋС‡РёС‚СЊ _РЎС‚Р°С‚СѓСЃ РџСЂРѕС‡С‚РµРЅРёСЏ"
 
 #: src/interface.c:363
 msgid "Toggles the read status of the selected item."
-msgstr "Переключает статус прочтения выбранного элемента"
+msgstr "РџРµСЂРµРєР»СЋС‡Р°РµС‚ СЃС‚Р°С‚СѓСЃ РїСЂРѕС‡С‚РµРЅРёСЏ РІС‹Р±СЂР°РЅРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°"
 
 #: src/interface.c:368
 msgid "Toggle Item _Flag"
-msgstr "Переключить _Флаг Элемента"
+msgstr "РџРµСЂРµРєР»СЋС‡РёС‚СЊ _Р¤Р»Р°Рі Р­Р»РµРјРµРЅС‚Р°"
 
 #: src/interface.c:371
 msgid "Toggles the item flag."
-msgstr "Переключает флаг элемента."
+msgstr "РџРµСЂРµРєР»СЋС‡Р°РµС‚ С„Р»Р°Рі СЌР»РµРјРµРЅС‚Р°."
 
 #: src/interface.c:376
 msgid "Remove Items"
-msgstr "Удалить Элементы"
+msgstr "РЈРґР°Р»РёС‚СЊ Р­Р»РµРјРµРЅС‚С‹"
 
 #: src/interface.c:379
 msgid "Removes all items of the currently selected feed."
-msgstr "Удалить все элементы выбранной ленты новостей."
+msgstr "РЈРґР°Р»РёС‚СЊ РІСЃРµ СЌР»РµРјРµРЅС‚С‹ РІС‹Р±СЂР°РЅРЅРѕР№ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№."
 
 #: src/interface.c:390
 msgid "_Launch In Browser"
-msgstr "_Показать В Браузере"
+msgstr "_РџРѕРєР°Р·Р°С‚СЊ Р’ Р‘СЂР°СѓР·РµСЂРµ"
 
 #: src/interface.c:393
 msgid "Launches the items link in the configured browser."
-msgstr "Запускает ссылку элемента в сконфигурированном браузере."
+msgstr "Р—Р°РїСѓСЃРєР°РµС‚ СЃСЃС‹Р»РєСѓ СЌР»РµРјРµРЅС‚Р° РІ СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅРЅРѕРј Р±СЂР°СѓР·РµСЂРµ."
 
 #: src/interface.c:398
 msgid "_View"
-msgstr "_Вид"
+msgstr "_Р’РёРґ"
 
 #: src/interface.c:405
 msgid "_Increase Text Size"
-msgstr "У_величить Размер Текста"
+msgstr "РЈ_РІРµР»РёС‡РёС‚СЊ Р Р°Р·РјРµСЂ РўРµРєСЃС‚Р°"
 
 #: src/interface.c:408
 msgid "Increases the text size of the item view."
-msgstr "Увеличить размер текста при просмотре элементов"
+msgstr "РЈРІРµР»РёС‡РёС‚СЊ СЂР°Р·РјРµСЂ С‚РµРєСЃС‚Р° РїСЂРё РїСЂРѕСЃРјРѕС‚СЂРµ СЌР»РµРјРµРЅС‚РѕРІ"
 
 #: src/interface.c:417
 msgid "_Decrease Text Size"
-msgstr "_Уменьшить Размер Текста"
+msgstr "_РЈРјРµРЅСЊС€РёС‚СЊ Р Р°Р·РјРµСЂ РўРµРєСЃС‚Р°"
 
 #: src/interface.c:420
 msgid "Decreases the text size of the item view."
-msgstr "Уменьшить размер текста при просмотре элементов."
+msgstr "РЈРјРµРЅСЊС€РёС‚СЊ СЂР°Р·РјРµСЂ С‚РµРєСЃС‚Р° РїСЂРё РїСЂРѕСЃРјРѕС‚СЂРµ СЌР»РµРјРµРЅС‚РѕРІ."
 
 #: src/interface.c:434
 msgid "Toggle _Condensed View"
-msgstr "Использовать _Сокращённый Вид"
+msgstr "РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ _РЎРѕРєСЂР°С‰С‘РЅРЅС‹Р№ Р’РёРґ"
 
 #: src/interface.c:437
 msgid "Toggles the item list mode between condensed and normal mode."
-msgstr "Переключает вид списка элементов между сокращённым и нормальным режимом."
+msgstr "РџРµСЂРµРєР»СЋС‡Р°РµС‚ РІРёРґ СЃРїРёСЃРєР° СЌР»РµРјРµРЅС‚РѕРІ РјРµР¶РґСѓ СЃРѕРєСЂР°С‰С‘РЅРЅС‹Рј Рё РЅРѕСЂРјР°Р»СЊРЅС‹Рј СЂРµР¶РёРјРѕРј."
 
 #: src/interface.c:439
 msgid "_Search"
-msgstr "_Поиск"
+msgstr "_РџРѕРёСЃРє"
 
 #: src/interface.c:446
 msgid "Toggle Search Box"
-msgstr "Показать Поле Поиска"
+msgstr "РџРѕРєР°Р·Р°С‚СЊ РџРѕР»Рµ РџРѕРёСЃРєР°"
 
 #: src/interface.c:449
 msgid "Shows or hides the search box."
-msgstr "Показывает или скрывает поле поиска"
+msgstr "РџРѕРєР°Р·С‹РІР°РµС‚ РёР»Рё СЃРєСЂС‹РІР°РµС‚ РїРѕР»Рµ РїРѕРёСЃРєР°"
 
 #: src/interface.c:455
 msgid "Search with Feedster"
-msgstr "Искать через Feedster"
+msgstr "РСЃРєР°С‚СЊ С‡РµСЂРµР· Feedster"
 
 #: src/interface.c:458
 msgid "Create a Feedster search feed."
-msgstr "Создать ленту поиска Feedster"
+msgstr "РЎРѕР·РґР°С‚СЊ Р»РµРЅС‚Сѓ РїРѕРёСЃРєР° Feedster"
 
 #: src/interface.c:464
 msgid "_Help"
-msgstr "_Помощь"
+msgstr "_РџРѕРјРѕС‰СЊ"
 
 #: src/interface.c:471 src/interface.c:3171 src/interface.c:3202
 msgid "About"
-msgstr "О программе"
+msgstr "Рћ РїСЂРѕРіСЂР°РјРјРµ"
 
 #: src/interface.c:474
 msgid "Shows an about dialog."
-msgstr "Показывает диалог \"О программе\""
+msgstr "РџРѕРєР°Р·С‹РІР°РµС‚ РґРёР°Р»РѕРі \"Рћ РїСЂРѕРіСЂР°РјРјРµ\""
 
 #: src/interface.c:483 src/interface.c:593
 msgid "Edit preferences"
-msgstr "Редактировать настройки"
+msgstr "Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РЅР°СЃС‚СЂРѕР№РєРё"
 
 #: src/interface.c:499
 msgid "New Feed"
-msgstr "Новая Лента Новостей"
+msgstr "РќРѕРІР°СЏ Р›РµРЅС‚Р° РќРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:521
 msgid "Next Unread"
-msgstr "Следующая Непрочитанная Новость"
+msgstr "РЎР»РµРґСѓСЋС‰Р°СЏ РќРµРїСЂРѕС‡РёС‚Р°РЅРЅР°СЏ РќРѕРІРѕСЃС‚СЊ"
 
 #: src/interface.c:527
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
-"Пометить все элементы выбранной подписки или всех подписок "
-"выбранной папки как прочитанные."
+"РџРѕРјРµС‚РёС‚СЊ РІСЃРµ СЌР»РµРјРµРЅС‚С‹ РІС‹Р±СЂР°РЅРЅРѕР№ РїРѕРґРїРёСЃРєРё РёР»Рё РІСЃРµС… РїРѕРґРїРёСЃРѕРє "
+"РІС‹Р±СЂР°РЅРЅРѕР№ РїР°РїРєРё РєР°Рє РїСЂРѕС‡РёС‚Р°РЅРЅС‹Рµ."
 
 #: src/interface.c:543
 msgid "Mark As Read"
-msgstr "Пометить Как Прочитанные"
+msgstr "РџРѕРјРµС‚РёС‚СЊ РљР°Рє РџСЂРѕС‡РёС‚Р°РЅРЅС‹Рµ"
 
 #: src/interface.c:549
 msgid "Update all feeds"
-msgstr "Обновить все ленты новостей"
+msgstr "РћР±РЅРѕРІРёС‚СЊ РІСЃРµ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:565
 msgid "Update"
-msgstr "Обновить"
+msgstr "РћР±РЅРѕРІРёС‚СЊ"
 
 #: src/interface.c:571
 msgid "Search in feeds"
-msgstr "Поиск в лентах новостей"
+msgstr "РџРѕРёСЃРє РІ Р»РµРЅС‚Р°С… РЅРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:587
 msgid "Search"
-msgstr "Поиск"
+msgstr "РџРѕРёСЃРє"
 
 #: src/interface.c:609
 msgid "Preferences"
-msgstr "Настройки"
+msgstr "РќР°СЃС‚СЂРѕР№РєРё"
 
 #: src/interface.c:638
 msgid "Search for"
-msgstr "Искать"
+msgstr "РСЃРєР°С‚СЊ"
 
 #: src/interface.c:655
 msgid "create VFolder"
-msgstr "создать VFolder"
+msgstr "СЃРѕР·РґР°С‚СЊ VFolder"
 
 #: src/interface.c:658
 msgid "saves this search as a VFolder, which will appear in the feed list"
-msgstr "сохранить этот поиск в виде VFolder, которая появится в списке лент новостей"
+msgstr "СЃРѕС…СЂР°РЅРёС‚СЊ СЌС‚РѕС‚ РїРѕРёСЃРє РІ РІРёРґРµ VFolder, РєРѕС‚РѕСЂР°СЏ РїРѕСЏРІРёС‚СЃСЏ РІ СЃРїРёСЃРєРµ Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:663
 msgid "Close search"
-msgstr "Закрыть поиск"
+msgstr "Р—Р°РєСЂС‹С‚СЊ РїРѕРёСЃРє"
 
 #: src/interface.c:699
 msgid "single item view"
-msgstr "одиночный просмотр элементов"
+msgstr "РѕРґРёРЅРѕС‡РЅС‹Р№ РїСЂРѕСЃРјРѕС‚СЂ СЌР»РµРјРµРЅС‚РѕРІ"
 
 #: src/interface.c:709
 msgid "condensed item list"
-msgstr "сокращённый список элементов"
+msgstr "СЃРѕРєСЂР°С‰С‘РЅРЅС‹Р№ СЃРїРёСЃРѕРє СЌР»РµРјРµРЅС‚РѕРІ"
 
 #: src/interface.c:1067
 msgid "Subscription Properties"
-msgstr "Свойства Подписки"
+msgstr "РЎРІРѕР№СЃС‚РІР° РџРѕРґРїРёСЃРєРё"
 
 #: src/interface.c:1087
 msgid "<span weight=\"bold\">Feed Name</span>"
-msgstr "<span weight=\"bold\">Название Ленты Новостей</span>"
+msgstr "<span weight=\"bold\">РќР°Р·РІР°РЅРёРµ Р›РµРЅС‚С‹ РќРѕРІРѕСЃС‚РµР№</span>"
 
 #: src/interface.c:1097 src/interface.c:1128 src/interface.c:1181
 #: src/interface.c:1261 src/interface.c:1277 src/interface.c:1324
@@ -656,20 +656,20 @@ msgstr "    "
 
 #: src/interface.c:1106
 msgid "Feed _Name:"
-msgstr "_Название Ленты Новостей:"
+msgstr "_РќР°Р·РІР°РЅРёРµ Р›РµРЅС‚С‹ РќРѕРІРѕСЃС‚РµР№:"
 
 #: src/interface.c:1118
 msgid "<span weight=\"bold\">Refresh Interval</span>"
-msgstr "<span weight=\"bold\">Интервал Обновления</span>"
+msgstr "<span weight=\"bold\">РРЅС‚РµСЂРІР°Р» РћР±РЅРѕРІР»РµРЅРёСЏ</span>"
 
 #: src/interface.c:1137
 #, c-format
 msgid "This feed's refresh interval defaults to %d seconds."
-msgstr "Интервал обновления этой ленты новостей по умолчанию равен %d секундам(е)"
+msgstr "РРЅС‚РµСЂРІР°Р» РѕР±РЅРѕРІР»РµРЅРёСЏ СЌС‚РѕР№ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ СЂР°РІРµРЅ %d СЃРµРєСѓРЅРґР°Рј(Рµ)"
 
 #: src/interface.c:1148
 msgid "Feed Refresh _Interval:"
-msgstr "_Интервал Обновления Ленты Новостей:"
+msgstr "_РРЅС‚РµСЂРІР°Р» РћР±РЅРѕРІР»РµРЅРёСЏ Р›РµРЅС‚С‹ РќРѕРІРѕСЃС‚РµР№:"
 
 #: src/interface.c:1156
 msgid ""
@@ -677,25 +677,25 @@ msgid ""
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
 "the interval to 0."
 msgstr ""
-"Пожалуйста, постарайтесь ставить разумное время обновления. Не совсем рационально обновлять "
-"ленту новостей, обновляемую раз в день, каждые 15 минут! Для отключения авто-обновления ленты новостей поставьте "
-"интервал равным 0."
+"РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕСЃС‚Р°СЂР°Р№С‚РµСЃСЊ СЃС‚Р°РІРёС‚СЊ СЂР°Р·СѓРјРЅРѕРµ РІСЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ. РќРµ СЃРѕРІСЃРµРј СЂР°С†РёРѕРЅР°Р»СЊРЅРѕ РѕР±РЅРѕРІР»СЏС‚СЊ "
+"Р»РµРЅС‚Сѓ РЅРѕРІРѕСЃС‚РµР№, РѕР±РЅРѕРІР»СЏРµРјСѓСЋ СЂР°Р· РІ РґРµРЅСЊ, РєР°Р¶РґС‹Рµ 15 РјРёРЅСѓС‚! Р”Р»СЏ РѕС‚РєР»СЋС‡РµРЅРёСЏ Р°РІС‚Рѕ-РѕР±РЅРѕРІР»РµРЅРёСЏ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№ РїРѕСЃС‚Р°РІСЊС‚Рµ "
+"РёРЅС‚РµСЂРІР°Р» СЂР°РІРЅС‹Рј 0."
 
 #: src/interface.c:1158
 msgid "minutes."
-msgstr "минут(а)(ы)."
+msgstr "РјРёРЅСѓС‚(Р°)(С‹)."
 
 #: src/interface.c:1162
 msgid "General"
-msgstr "Общие"
+msgstr "РћР±С‰РёРµ"
 
 #: src/interface.c:1171 src/interface.c:1594
 msgid "<b>Data Source</b>"
-msgstr "<b>Источник Данных</b>"
+msgstr "<b>РСЃС‚РѕС‡РЅРёРє Р”Р°РЅРЅС‹С…</b>"
 
 #: src/interface.c:1197 src/interface.c:1620
 msgid "_Select File..."
-msgstr "_Выберите Файл..."
+msgstr "_Р’С‹Р±РµСЂРёС‚Рµ Р¤Р°Р№Р»..."
 
 #: src/interface.c:1214 src/interface.c:1637
 msgid "_URL"
@@ -703,39 +703,39 @@ msgstr "_URL"
 
 #: src/interface.c:1220 src/interface.c:1643
 msgid "_File"
-msgstr "_Файл"
+msgstr "_Р¤Р°Р№Р»"
 
 #: src/interface.c:1226 src/interface.c:1649
 msgid "_Command"
-msgstr "_Команда"
+msgstr "_РљРѕРјР°РЅРґР°"
 
 #: src/interface.c:1238 src/interface.c:1661
 msgid "Source Type:"
-msgstr "Тип Источника:"
+msgstr "РўРёРї РСЃС‚РѕС‡РЅРёРєР°:"
 
 #: src/interface.c:1244 src/interface.c:1667
 msgid "Source:"
-msgstr "Источник:"
+msgstr "РСЃС‚РѕС‡РЅРёРє:"
 
 #: src/interface.c:1251 src/interface.c:1674
 msgid "<b>HTTP Authentication</b>"
-msgstr "<b>HTTP Аутентификации</b>"
+msgstr "<b>HTTP РђСѓС‚РµРЅС‚РёС„РёРєР°С†РёРё</b>"
 
 #: src/interface.c:1269 src/interface.c:1692
 msgid "Use HTTP _authentication"
-msgstr "Использовать HTTP _аутентификации"
+msgstr "РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ HTTP _Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё"
 
 #: src/interface.c:1287 src/interface.c:1710
 msgid "User_name:"
-msgstr "_Имя пользователя:"
+msgstr "_РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:"
 
 #: src/interface.c:1294 src/interface.c:1717
 msgid "_Password:"
-msgstr "_Пароль:"
+msgstr "_РџР°СЂРѕР»СЊ:"
 
 #: src/interface.c:1314 src/interface.c:1737
 msgid "<b>Conversion Filter</b>"
-msgstr "<b>Фильтр Конвертации</b>"
+msgstr "<b>Р¤РёР»СЊС‚СЂ РљРѕРЅРІРµСЂС‚Р°С†РёРё</b>"
 
 #: src/interface.c:1332 src/interface.c:1755
 msgid ""
@@ -743,158 +743,158 @@ msgid ""
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
-"Liferea может использовать фильтровальные плагины для доступа к лентам новостей и "
-"каталогам, хранящимся в неподдерживаемом формате.  Подробности можно узнать в "
-"документации."
+"Liferea РјРѕР¶РµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ С„РёР»СЊС‚СЂРѕРІР°Р»СЊРЅС‹Рµ РїР»Р°РіРёРЅС‹ РґР»СЏ РґРѕСЃС‚СѓРїР° Рє Р»РµРЅС‚Р°Рј РЅРѕРІРѕСЃС‚РµР№ Рё "
+"РєР°С‚Р°Р»РѕРіР°Рј, С…СЂР°РЅСЏС‰РёРјСЃСЏ РІ РЅРµРїРѕРґРґРµСЂР¶РёРІР°РµРјРѕРј С„РѕСЂРјР°С‚Рµ.  РџРѕРґСЂРѕР±РЅРѕСЃС‚Рё РјРѕР¶РЅРѕ СѓР·РЅР°С‚СЊ РІ "
+"РґРѕРєСѓРјРµРЅС‚Р°С†РёРё."
 
 #: src/interface.c:1342 src/interface.c:1765
 msgid "Use conversion filter"
-msgstr "Использовать фильтр конвертации"
+msgstr "РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ С„РёР»СЊС‚СЂ РєРѕРЅРІРµСЂС‚Р°С†РёРё"
 
 #: src/interface.c:1354 src/interface.c:1777
 msgid "Convert using:"
-msgstr "Конвертировать используя:"
+msgstr "РљРѕРЅРІРµСЂС‚РёСЂРѕРІР°С‚СЊ РёСЃРїРѕР»СЊР·СѓСЏ:"
 
 #: src/interface.c:1362 src/interface.c:1785
 msgid "Select File..."
-msgstr "Выберите Файл..."
+msgstr "Р’С‹Р±РµСЂРёС‚Рµ Р¤Р°Р№Р»..."
 
 #: src/interface.c:1366
 msgid "Feed Source"
-msgstr "Источник Feed"
+msgstr "РСЃС‚РѕС‡РЅРёРє Feed"
 
 #: src/interface.c:1375
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
 msgstr ""
-"Настройки кэша определяют, сохраняются ли содержимое ленты новостей, когда Liferea "
-"завершает работу. Помеченные элементы всегда сохраняются в кэш."
+"РќР°СЃС‚СЂРѕР№РєРё РєСЌС€Р° РѕРїСЂРµРґРµР»СЏСЋС‚, СЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ Р»Рё СЃРѕРґРµСЂР¶РёРјРѕРµ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№, РєРѕРіРґР° Liferea "
+"Р·Р°РІРµСЂС€Р°РµС‚ СЂР°Р±РѕС‚Сѓ. РџРѕРјРµС‡РµРЅРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ РІСЃРµРіРґР° СЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ РІ РєСЌС€."
 
 #: src/interface.c:1382
 msgid "_Default cache settings"
-msgstr "Настройки кэша _по умолчанию"
+msgstr "РќР°СЃС‚СЂРѕР№РєРё РєСЌС€Р° _РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ"
 
 #: src/interface.c:1388
 msgid "Di_sable cache"
-msgstr "_Отключить кэш"
+msgstr "_РћС‚РєР»СЋС‡РёС‚СЊ РєСЌС€"
 
 #: src/interface.c:1394
 msgid "_Umlimited cache"
-msgstr "_Неограниченный кэш"
+msgstr "_РќРµРѕРіСЂР°РЅРёС‡РµРЅРЅС‹Р№ РєСЌС€"
 
 #: src/interface.c:1404
 msgid "_Limit cache to"
-msgstr "О_граничить кэш до"
+msgstr "Рћ_РіСЂР°РЅРёС‡РёС‚СЊ РєСЌС€ РґРѕ"
 
 #: src/interface.c:1417
 msgid "items."
-msgstr "элемента(ов)."
+msgstr "СЌР»РµРјРµРЅС‚Р°(РѕРІ)."
 
 #: src/interface.c:1421
 msgid "Feed Cache"
-msgstr "Кэш Ленты Новостей"
+msgstr "РљСЌС€ Р›РµРЅС‚С‹ РќРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:1577
 msgid "New Subscription"
-msgstr "Новая Подписка"
+msgstr "РќРѕРІР°СЏ РџРѕРґРїРёСЃРєР°"
 
 #: src/interface.c:1948
 msgid "program preferences"
-msgstr "Настройки программы"
+msgstr "РќР°СЃС‚СЂРѕР№РєРё РїСЂРѕРіСЂР°РјРјС‹"
 
 #: src/interface.c:1969
 msgid "<span weight=\"bold\">Browser Settings</span>"
-msgstr "<span weight=\"bold\">Настройки Браузера</span>"
+msgstr "<span weight=\"bold\">РќР°СЃС‚СЂРѕР№РєРё Р‘СЂР°СѓР·РµСЂР°</span>"
 
 #: src/interface.c:1988
 msgid "Use the GNOME default browser"
-msgstr "Использовать браузер рабочей среды GNOME"
+msgstr "РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Р±СЂР°СѓР·РµСЂ СЂР°Р±РѕС‡РµР№ СЃСЂРµРґС‹ GNOME"
 
 #: src/interface.c:1998
 msgid "Use browser command:"
-msgstr "Использовать команду браузера:"
+msgstr "РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РєРѕРјР°РЅРґСѓ Р±СЂР°СѓР·РµСЂР°:"
 
 #: src/interface.c:2008
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
-msgstr "укажите команду браузера, используя %s вместо URL"
+msgstr "СѓРєР°Р¶РёС‚Рµ РєРѕРјР°РЅРґСѓ Р±СЂР°СѓР·РµСЂР°, РёСЃРїРѕР»СЊР·СѓСЏ %s РІРјРµСЃС‚Рѕ URL"
 
 #: src/interface.c:2014
 msgid "<span weight=\"bold\">Date Column Settings</span>"
-msgstr "<span weight=\"bold\">Настройки Колонки \"Дата\"</span>"
+msgstr "<span weight=\"bold\">РќР°СЃС‚СЂРѕР№РєРё РљРѕР»РѕРЅРєРё \"Р”Р°С‚Р°\"</span>"
 
 #: src/interface.c:2033
 msgid "Display only time"
-msgstr "Отображать только время"
+msgstr "РћС‚РѕР±СЂР°Р¶Р°С‚СЊ С‚РѕР»СЊРєРѕ РІСЂРµРјСЏ"
 
 #: src/interface.c:2039
 msgid "Display date and time"
-msgstr "Отображать дату и время"
+msgstr "РћС‚РѕР±СЂР°Р¶Р°С‚СЊ РґР°С‚Сѓ Рё РІСЂРµРјСЏ"
 
 #: src/interface.c:2049
 msgid "User defined format:"
-msgstr "Определённый пользователем формат:"
+msgstr "РћРїСЂРµРґРµР»С‘РЅРЅС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј С„РѕСЂРјР°С‚:"
 
 #: src/interface.c:2058
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
 msgstr ""
-"для продвинутых пользователей: укажите строку формата времени. Дополнительную информацию можно "
-"получить на man-странице strftime()"
+"РґР»СЏ РїСЂРѕРґРІРёРЅСѓС‚С‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№: СѓРєР°Р¶РёС‚Рµ СЃС‚СЂРѕРєСѓ С„РѕСЂРјР°С‚Р° РІСЂРµРјРµРЅРё. Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ РјРѕР¶РЅРѕ "
+"РїРѕР»СѓС‡РёС‚СЊ РЅР° man-СЃС‚СЂР°РЅРёС†Рµ strftime()"
 
 #: src/interface.c:2064
 msgid "<span weight=\"bold\">Feed Handling Settings</span>"
-msgstr "<span weight=\"bold\">Настройки Управления Лентами Новостей</span>"
+msgstr "<span weight=\"bold\">РќР°СЃС‚СЂРѕР№РєРё РЈРїСЂР°РІР»РµРЅРёСЏ Р›РµРЅС‚Р°РјРё РќРѕРІРѕСЃС‚РµР№</span>"
 
 #: src/interface.c:2080
 msgid "Default number of items per feed to save when Liferea exits:"
-msgstr "Число элементов по умолчанию на одну ленту новостей для сохранения при выходе Liferea:"
+msgstr "Р§РёСЃР»Рѕ СЌР»РµРјРµРЅС‚РѕРІ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РЅР° РѕРґРЅСѓ Р»РµРЅС‚Сѓ РЅРѕРІРѕСЃС‚РµР№ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ РїСЂРё РІС‹С…РѕРґРµ Liferea:"
 
 #: src/interface.c:2092
 msgid "Update all feeds on program startup."
-msgstr "Обновлять все ленты новостей при запуске программы."
+msgstr "РћР±РЅРѕРІР»СЏС‚СЊ РІСЃРµ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№ РїСЂРё Р·Р°РїСѓСЃРєРµ РїСЂРѕРіСЂР°РјРјС‹."
 
 #: src/interface.c:2096
 msgid "Don't add the help feeds to the feed list on startup."
-msgstr "Не добавлять ленты онлайновой помощи в список лент новостей при запуске."
+msgstr "РќРµ РґРѕР±Р°РІР»СЏС‚СЊ Р»РµРЅС‚С‹ РѕРЅР»Р°Р№РЅРѕРІРѕР№ РїРѕРјРѕС‰Рё РІ СЃРїРёСЃРѕРє Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ РїСЂРё Р·Р°РїСѓСЃРєРµ."
 
 #: src/interface.c:2100
 msgid "Feed Handling"
-msgstr "Управление Лентами Новостей"
+msgstr "РЈРїСЂР°РІР»РµРЅРёРµ Р›РµРЅС‚Р°РјРё РќРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:2115
 msgid "<span weight=\"bold\">Notification Settings</span>"
-msgstr "<span weight=\"bold\">Настройки Уведомления</span>"
+msgstr "<span weight=\"bold\">РќР°СЃС‚СЂРѕР№РєРё РЈРІРµРґРѕРјР»РµРЅРёСЏ</span>"
 
 #: src/interface.c:2133
 msgid ""
 "Show a status icon in the notification area \n"
 "(also called system tray)."
 msgstr ""
-"Показывать иконку статуса в области уведомления \n"
-"(системный трей)."
+"РџРѕРєР°Р·С‹РІР°С‚СЊ РёРєРѕРЅРєСѓ СЃС‚Р°С‚СѓСЃР° РІ РѕР±Р»Р°СЃС‚Рё СѓРІРµРґРѕРјР»РµРЅРёСЏ \n"
+"(СЃРёСЃС‚РµРјРЅС‹Р№ С‚СЂРµР№)."
 
 #: src/interface.c:2142
 msgid "<span weight=\"bold\">Menu Settings</span>"
-msgstr "<span weight=\"bold\">Настройки меню</span>"
+msgstr "<span weight=\"bold\">РќР°СЃС‚СЂРѕР№РєРё РјРµРЅСЋ</span>"
 
 #: src/interface.c:2161
 msgid "Show Menu _And Toolbar"
-msgstr "Показывать Меню _И Панель Инструментов"
+msgstr "РџРѕРєР°Р·С‹РІР°С‚СЊ РњРµРЅСЋ _Р РџР°РЅРµР»СЊ РРЅСЃС‚СЂСѓРјРµРЅС‚РѕРІ"
 
 #: src/interface.c:2167
 msgid "Show _Menu Only"
-msgstr "Показывать Только _Меню"
+msgstr "РџРѕРєР°Р·С‹РІР°С‚СЊ РўРѕР»СЊРєРѕ _РњРµРЅСЋ"
 
 #: src/interface.c:2173
 msgid "Show _Toolbar Only"
-msgstr "Показывать Только _Панель Инструментов"
+msgstr "РџРѕРєР°Р·С‹РІР°С‚СЊ РўРѕР»СЊРєРѕ _РџР°РЅРµР»СЊ РРЅСЃС‚СЂСѓРјРµРЅС‚РѕРІ"
 
 #: src/interface.c:2183
 msgid "<span weight=\"bold\">Viewing Headlines</span>"
-msgstr "<span weight=\"bold\">Просмотр Заголовков</span>"
+msgstr "<span weight=\"bold\">РџСЂРѕСЃРјРѕС‚СЂ Р—Р°РіРѕР»РѕРІРєРѕРІ</span>"
 
 #: src/interface.c:2202
 msgid ""
@@ -902,25 +902,25 @@ msgid ""
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
-"Liferea отображает содержимое лент новостей используя разнообразные отображатели HTML. В зависимости от "
-"того, какие отображатели будут установлены на вашем компьютере, будут доступны разные "
-"настройки. Перезапустите Liferea, чтобы изменения вступили в силу."
+"Liferea РѕС‚РѕР±СЂР°Р¶Р°РµС‚ СЃРѕРґРµСЂР¶РёРјРѕРµ Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ РёСЃРїРѕР»СЊР·СѓСЏ СЂР°Р·РЅРѕРѕР±СЂР°Р·РЅС‹Рµ РѕС‚РѕР±СЂР°Р¶Р°С‚РµР»Рё HTML. Р’ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ "
+"С‚РѕРіРѕ, РєР°РєРёРµ РѕС‚РѕР±СЂР°Р¶Р°С‚РµР»Рё Р±СѓРґСѓС‚ СѓСЃС‚Р°РЅРѕРІР»РµРЅС‹ РЅР° РІР°С€РµРј РєРѕРјРїСЊСЋС‚РµСЂРµ, Р±СѓРґСѓС‚ РґРѕСЃС‚СѓРїРЅС‹ СЂР°Р·РЅС‹Рµ "
+"РЅР°СЃС‚СЂРѕР№РєРё. РџРµСЂРµР·Р°РїСѓСЃС‚РёС‚Рµ Liferea, С‡С‚РѕР±С‹ РёР·РјРµРЅРµРЅРёСЏ РІСЃС‚СѓРїРёР»Рё РІ СЃРёР»Сѓ."
 
 #: src/interface.c:2212
 msgid "View Headlines With"
-msgstr "Просматривать Заголовки с Помощью"
+msgstr "РџСЂРѕСЃРјР°С‚СЂРёРІР°С‚СЊ Р—Р°РіРѕР»РѕРІРєРё СЃ РџРѕРјРѕС‰СЊСЋ"
 
 #: src/interface.c:2224
 msgid "If the browser module allows it open links inside Liferea."
-msgstr "Если модуль браузера позволяет, открывать ссылки в Liferea."
+msgstr "Р•СЃР»Рё РјРѕРґСѓР»СЊ Р±СЂР°СѓР·РµСЂР° РїРѕР·РІРѕР»СЏРµС‚, РѕС‚РєСЂС‹РІР°С‚СЊ СЃСЃС‹Р»РєРё РІ Liferea."
 
 #: src/interface.c:2228
 msgid "GUI Settings"
-msgstr "Настройки GUI"
+msgstr "РќР°СЃС‚СЂРѕР№РєРё GUI"
 
 #: src/interface.c:2243
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
-msgstr "<span weight=\"bold\">HTTP Прокси Сервер</span>"
+msgstr "<span weight=\"bold\">HTTP РџСЂРѕРєСЃРё РЎРµСЂРІРµСЂ</span>"
 
 #: src/interface.c:2262
 msgid ""
@@ -929,82 +929,82 @@ msgid ""
 "will affect other applications! This dialog is primarily for users without "
 "GNOME to be able to use Liferea with a proxy."
 msgstr ""
-"Liferea использует настройки прокси рабочей среды GNOME. Если вы используете GNOME, вы можете изменить "
-"эти настройки в Настройках рабочего стола. Заметка: смена этих настроек "
-"повлияет на другие приложения! Этот диалог, в основном, для пользователей без "
-"GNOME, чтобы они смогли использовать Liferea через прокси."
+"Liferea РёСЃРїРѕР»СЊР·СѓРµС‚ РЅР°СЃС‚СЂРѕР№РєРё РїСЂРѕРєСЃРё СЂР°Р±РѕС‡РµР№ СЃСЂРµРґС‹ GNOME. Р•СЃР»Рё РІС‹ РёСЃРїРѕР»СЊР·СѓРµС‚Рµ GNOME, РІС‹ РјРѕР¶РµС‚Рµ РёР·РјРµРЅРёС‚СЊ "
+"СЌС‚Рё РЅР°СЃС‚СЂРѕР№РєРё РІ РќР°СЃС‚СЂРѕР№РєР°С… СЂР°Р±РѕС‡РµРіРѕ СЃС‚РѕР»Р°. Р—Р°РјРµС‚РєР°: СЃРјРµРЅР° СЌС‚РёС… РЅР°СЃС‚СЂРѕРµРє "
+"РїРѕРІР»РёСЏРµС‚ РЅР° РґСЂСѓРіРёРµ РїСЂРёР»РѕР¶РµРЅРёСЏ! Р­С‚РѕС‚ РґРёР°Р»РѕРі, РІ РѕСЃРЅРѕРІРЅРѕРј, РґР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Р±РµР· "
+"GNOME, С‡С‚РѕР±С‹ РѕРЅРё СЃРјРѕРіР»Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Liferea С‡РµСЂРµР· РїСЂРѕРєСЃРё."
 
 #: src/interface.c:2272
 msgid "Enable Proxy"
-msgstr "Включить Прокси"
+msgstr "Р’РєР»СЋС‡РёС‚СЊ РџСЂРѕРєСЃРё"
 
 #: src/interface.c:2282
 msgid "Proxy Host"
-msgstr "Сервер Прокси"
+msgstr "РЎРµСЂРІРµСЂ РџСЂРѕРєСЃРё"
 
 #: src/interface.c:2301
 msgid "Proxy Port"
-msgstr "Порт прокси"
+msgstr "РџРѕСЂС‚ РїСЂРѕРєСЃРё"
 
 #: src/interface.c:2308
 msgid "Proxy Settings"
-msgstr "Настройки Прокси"
+msgstr "РќР°СЃС‚СЂРѕР№РєРё РџСЂРѕРєСЃРё"
 
 #: src/interface.c:2478
 msgid "New Folder"
-msgstr "Новая папка"
+msgstr "РќРѕРІР°СЏ РїР°РїРєР°"
 
 #: src/interface.c:2493 src/interface.c:2569
 msgid "Folder name:"
-msgstr "Имя папки:"
+msgstr "РРјСЏ РїР°РїРєРё:"
 
 #: src/interface.c:2558
 msgid "Rename Folder"
-msgstr "Переименовать папку"
+msgstr "РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ РїР°РїРєСѓ"
 
 #: src/interface.c:2623
 msgid "Select A File"
-msgstr "Выберите Файл"
+msgstr "Р’С‹Р±РµСЂРёС‚Рµ Р¤Р°Р№Р»"
 
 #: src/interface.c:2668
 msgid "edit filter rules"
-msgstr "редактировать правила фильтров"
+msgstr "СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РїСЂР°РІРёР»Р° С„РёР»СЊС‚СЂРѕРІ"
 
 #: src/interface.c:2768
 msgid "edit rule properties"
-msgstr "редактировать настройки правил"
+msgstr "СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РЅР°СЃС‚СЂРѕР№РєРё РїСЂР°РІРёР»"
 
 #: src/interface.c:2782 src/ui_filter.c:54
 msgid "Rule Type"
-msgstr "Тип Правила"
+msgstr "РўРёРї РџСЂР°РІРёР»Р°"
 
 #: src/interface.c:2792
 msgid "add items with exact match"
-msgstr "добавить элементы с точным совпадением"
+msgstr "РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚С‹ СЃ С‚РѕС‡РЅС‹Рј СЃРѕРІРїР°РґРµРЅРёРµРј"
 
 #: src/interface.c:2796
 msgid "remove items with exact match"
-msgstr "убрать элементы с точным совпадением"
+msgstr "СѓР±СЂР°С‚СЊ СЌР»РµРјРµРЅС‚С‹ СЃ С‚РѕС‡РЅС‹Рј СЃРѕРІРїР°РґРµРЅРёРµРј"
 
 #: src/interface.c:2806
 msgid "Rule Value"
-msgstr "Значение Правила"
+msgstr "Р—РЅР°С‡РµРЅРёРµ РџСЂР°РІРёР»Р°"
 
 #: src/interface.c:2880
 msgid "Search With Feedster"
-msgstr "Искать Через Feedster"
+msgstr "РСЃРєР°С‚СЊ Р§РµСЂРµР· Feedster"
 
 #: src/interface.c:2894
 msgid "Search for "
-msgstr "Искать"
+msgstr "РСЃРєР°С‚СЊ"
 
 #: src/interface.c:2901
 msgid "enter any search string you want"
-msgstr "введите любую строку поиска"
+msgstr "РІРІРµРґРёС‚Рµ Р»СЋР±СѓСЋ СЃС‚СЂРѕРєСѓ РїРѕРёСЃРєР°"
 
 #: src/interface.c:2908
 msgid "Maximal Number Of Result Items"
-msgstr "Максимальное Число Элементов Результатов"
+msgstr "РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р§РёСЃР»Рѕ Р­Р»РµРјРµРЅС‚РѕРІ Р РµР·СѓР»СЊС‚Р°С‚РѕРІ"
 
 #: src/interface.c:2917
 msgid ""
@@ -1012,13 +1012,13 @@ msgid ""
 "Feedster results for the specified search string. You can keep this feed "
 "permanently and update it like any other subscription.  "
 msgstr ""
-"Заметка: Liferea сгенерирует подписку на ленту новостей, которая используется для запросов "
-"результатов Feedster для определённой строки поиска. Вы можете оставить эту ленту новостей "
-"и обновлять её как и любую другую ленту.  "
+"Р—Р°РјРµС‚РєР°: Liferea СЃРіРµРЅРµСЂРёСЂСѓРµС‚ РїРѕРґРїРёСЃРєСѓ РЅР° Р»РµРЅС‚Сѓ РЅРѕРІРѕСЃС‚РµР№, РєРѕС‚РѕСЂР°СЏ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ Р·Р°РїСЂРѕСЃРѕРІ "
+"СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ Feedster РґР»СЏ РѕРїСЂРµРґРµР»С‘РЅРЅРѕР№ СЃС‚СЂРѕРєРё РїРѕРёСЃРєР°. Р’С‹ РјРѕР¶РµС‚Рµ РѕСЃС‚Р°РІРёС‚СЊ СЌС‚Сѓ Р»РµРЅС‚Сѓ РЅРѕРІРѕСЃС‚РµР№ "
+"Рё РѕР±РЅРѕРІР»СЏС‚СЊ РµС‘ РєР°Рє Рё Р»СЋР±СѓСЋ РґСЂСѓРіСѓСЋ Р»РµРЅС‚Сѓ.  "
 
 #: src/interface.c:2984
 msgid "Import Feed List"
-msgstr "Импортировать Список Лент Новостей"
+msgstr "РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РЎРїРёСЃРѕРє Р›РµРЅС‚ РќРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:2994
 msgid ""
@@ -1026,21 +1026,21 @@ msgid ""
 "either restore a backup feed list or import a feed list from another "
 "aggregator like that supports OPML export."
 msgstr ""
-"Liferea может импортировать список лент новостей из OPML-файла. Вы можете использовать эту "
-"возможность для резервного копирования и восстановления своего списка лент новостей или импорта из другой программы для просмотра "
-"новостей в формате RSS, поддерживающей экспорт OPML."
+"Liferea РјРѕР¶РµС‚ РёРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ РёР· OPML-С„Р°Р№Р»Р°. Р’С‹ РјРѕР¶РµС‚Рµ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЌС‚Сѓ "
+"РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РґР»СЏ СЂРµР·РµСЂРІРЅРѕРіРѕ РєРѕРїРёСЂРѕРІР°РЅРёСЏ Рё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ СЃРІРѕРµРіРѕ СЃРїРёСЃРєР° Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ РёР»Рё РёРјРїРѕСЂС‚Р° РёР· РґСЂСѓРіРѕР№ РїСЂРѕРіСЂР°РјРјС‹ РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° "
+"РЅРѕРІРѕСЃС‚РµР№ РІ С„РѕСЂРјР°С‚Рµ RSS, РїРѕРґРґРµСЂР¶РёРІР°СЋС‰РµР№ СЌРєСЃРїРѕСЂС‚ OPML."
 
 #: src/interface.c:3004 src/interface.c:3094
 msgid "Filename"
-msgstr "Имя файла"
+msgstr "РРјСЏ С„Р°Р№Р»Р°"
 
 #: src/interface.c:3013 src/interface.c:3103
 msgid "Select File"
-msgstr "Выбрать файл"
+msgstr "Р’С‹Р±СЂР°С‚СЊ С„Р°Р№Р»"
 
 #: src/interface.c:3074
 msgid "Export Feed List"
-msgstr "Экспортировать Список Лент Новостей"
+msgstr "Р­РєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РЎРїРёСЃРѕРє Р›РµРЅС‚ РќРѕРІРѕСЃС‚РµР№"
 
 #: src/interface.c:3084
 msgid ""
@@ -1048,13 +1048,13 @@ msgid ""
 "feature to backup your feed list or export your feed list to another "
 "aggregator."
 msgstr ""
-"Liferea может экспортировать список лент новостей в виде OPML-списка. Вы можете использовать эту "
-"возможность для резервного копирования своего списка лент новостей или экспорта в другую программу для просмотра "
-"новостей в формате RSS."
+"Liferea РјРѕР¶РµС‚ СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ РІ РІРёРґРµ OPML-СЃРїРёСЃРєР°. Р’С‹ РјРѕР¶РµС‚Рµ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЌС‚Сѓ "
+"РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РґР»СЏ СЂРµР·РµСЂРІРЅРѕРіРѕ РєРѕРїРёСЂРѕРІР°РЅРёСЏ СЃРІРѕРµРіРѕ СЃРїРёСЃРєР° Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№ РёР»Рё СЌРєСЃРїРѕСЂС‚Р° РІ РґСЂСѓРіСѓСЋ РїСЂРѕРіСЂР°РјРјСѓ РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° "
+"РЅРѕРІРѕСЃС‚РµР№ РІ С„РѕСЂРјР°С‚Рµ RSS."
 
 #: src/interface.c:3191
 msgid "Liferea is a news aggregator for GTK"
-msgstr "Liferea - программа просмотра новостей в формате RSS для GTK"
+msgstr "Liferea - РїСЂРѕРіСЂР°РјРјР° РїСЂРѕСЃРјРѕС‚СЂР° РЅРѕРІРѕСЃС‚РµР№ РІ С„РѕСЂРјР°С‚Рµ RSS РґР»СЏ GTK"
 
 #: src/interface.c:3196
 msgid ""
@@ -1063,7 +1063,7 @@ msgid ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
 "Copyright (c) 2003-2004 \n"
-"Lars Lindner <lars.lindner@gmx.net> и \n"
+"Lars Lindner <lars.lindner@gmx.net> Рё \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3216
@@ -1088,7 +1088,7 @@ msgid ""
 "Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
 "Philippe Martin, Brion Vibber (favicon support)"
 msgstr ""
-"Код, патчи, отладка\n"
+"РљРѕРґ, РїР°С‚С‡Рё, РѕС‚Р»Р°РґРєР°\n"
 "\n"
 "James Doherty <...>\n"
 "Jeremy Messenger <mezz7@cox.net>\n"
@@ -1103,14 +1103,14 @@ msgstr ""
 "Johannes Schlueter <joscherl@users.sourceforge.net>\n"
 "Pierre Phaneuf <pp@ludusdesign.com>\n"
 "\n"
-"Код из других проектов\n"
+"РљРѕРґ РёР· РґСЂСѓРіРёС… РїСЂРѕРµРєС‚РѕРІ\n"
 "\n"
-"Anders Carlsson <andersca@gnu.org> (поддержка иконки в трее)\n"
-"Philippe Martin, Brion Vibber (поддержка favicon)"
+"Anders Carlsson <andersca@gnu.org> (РїРѕРґРґРµСЂР¶РєР° РёРєРѕРЅРєРё РІ С‚СЂРµРµ)\n"
+"Philippe Martin, Brion Vibber (РїРѕРґРґРµСЂР¶РєР° favicon)"
 
 #: src/interface.c:3222
 msgid "Contributors"
-msgstr "Участники"
+msgstr "РЈС‡Р°СЃС‚РЅРёРєРё"
 
 #: src/interface.c:3236
 msgid ""
@@ -1137,93 +1137,93 @@ msgstr ""
 
 #: src/interface.c:3242
 msgid "Translation"
-msgstr "Перевод"
+msgstr "РџРµСЂРµРІРѕРґ"
 
 #: src/main.c:51
 msgid "  --version        Prints Liferea's version number"
-msgstr "  --version        Выводит версию Liferea"
+msgstr "  --version        Р’С‹РІРѕРґРёС‚ РІРµСЂСЃРёСЋ Liferea"
 
 #: src/main.c:52
 msgid "  --help           Prints this message and exits"
-msgstr "  --help           Выводит это сообщение"
+msgstr "  --help           Р’С‹РІРѕРґРёС‚ СЌС‚Рѕ СЃРѕРѕР±С‰РµРЅРёРµ"
 
 #: src/main.c:54
 msgid "  --debug-cache    Print debugging messages for the cache handling"
-msgstr "  --debug-cache    Выводит сообщения отладки  об обращении к кэшу"
+msgstr "  --debug-cache    Р’С‹РІРѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚Р»Р°РґРєРё  РѕР± РѕР±СЂР°С‰РµРЅРёРё Рє РєСЌС€Сѓ"
 
 #: src/main.c:55
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
 msgstr ""
-"  --debug-conf     Выводит сообщения отладки об обращениях к конфигурации"
+"  --debug-conf     Р’С‹РІРѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚Р»Р°РґРєРё РѕР± РѕР±СЂР°С‰РµРЅРёСЏС… Рє РєРѕРЅС„РёРіСѓСЂР°С†РёРё"
 
 #: src/main.c:56
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
-"  --debug-update   Выводит сообщения отладки о процессе обновления ленты новостей"
+"  --debug-update   Р’С‹РІРѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚Р»Р°РґРєРё Рѕ РїСЂРѕС†РµСЃСЃРµ РѕР±РЅРѕРІР»РµРЅРёСЏ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№"
 
 #: src/main.c:57
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
-msgstr "  --debug-parsing  Выводит сообщения отладки обо всех функциях парсинга"
+msgstr "  --debug-parsing  Р’С‹РІРѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚Р»Р°РґРєРё РѕР±Рѕ РІСЃРµС… С„СѓРЅРєС†РёСЏС… РїР°СЂСЃРёРЅРіР°"
 
 #: src/main.c:58
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
-msgstr "  --debug-gui      Выводит сообщения отладки обо всех функциях GUI"
+msgstr "  --debug-gui      Р’С‹РІРѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚Р»Р°РґРєРё РѕР±Рѕ РІСЃРµС… С„СѓРЅРєС†РёСЏС… GUI"
 
 #: src/main.c:59
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
-"  --debug-trace    Выводит сообщения отладки во время входа в функцию/выхода из функции"
+"  --debug-trace    Р’С‹РІРѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚Р»Р°РґРєРё РІРѕ РІСЂРµРјСЏ РІС…РѕРґР° РІ С„СѓРЅРєС†РёСЋ/РІС‹С…РѕРґР° РёР· С„СѓРЅРєС†РёРё"
 
 #: src/main.c:60
 msgid "  --debug-all      Print debugging messages of all types"
-msgstr "  --debug-all      Выводит сообщения отладки всех типов"
+msgstr "  --debug-all      Р’С‹РІРѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚Р»Р°РґРєРё РІСЃРµС… С‚РёРїРѕРІ"
 
 #: src/main.c:61
 msgid "  --debug-verbose  Print verbose debugging messages"
-msgstr "  --debug-verbose  Выводить подробные сообщения отладки"
+msgstr "  --debug-verbose  Р’С‹РІРѕРґРёС‚СЊ РїРѕРґСЂРѕР±РЅС‹Рµ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚Р»Р°РґРєРё"
 
 #: src/net/conversions.c:74
 msgid "No description available."
-msgstr "Описание не доступно."
+msgstr "РћРїРёСЃР°РЅРёРµ РЅРµ РґРѕСЃС‚СѓРїРЅРѕ."
 
 #: src/net/conversions.c:355
 #, c-format
 msgid "ERROR: zlib_uncompress: %d %s\n"
-msgstr "ОШИБКА: zlib_compress: %d %s\n"
+msgstr "РћРЁРР‘РљРђ: zlib_compress: %d %s\n"
 
 #: src/net/conversions.c:371
 msgid "ERROR: No output during decompression"
-msgstr "ОШИБКА: Не было вывода во время декомпрессии"
+msgstr "РћРЁРР‘РљРђ: РќРµ Р±С‹Р»Рѕ РІС‹РІРѕРґР° РІРѕ РІСЂРµРјСЏ РґРµРєРѕРјРїСЂРµСЃСЃРёРё"
 
 #: src/net/conversions.c:404
 msgid "ERROR: Invalid magic bytes for GZIP data"
-msgstr "ОШИБКА: Недопустимые \"магические байты\" для GZIP информации"
+msgstr "РћРЁРР‘РљРђ: РќРµРґРѕРїСѓСЃС‚РёРјС‹Рµ \"РјР°РіРёС‡РµСЃРєРёРµ Р±Р°Р№С‚С‹\" РґР»СЏ GZIP РёРЅС„РѕСЂРјР°С†РёРё"
 
 #: src/net/conversions.c:409
 msgid "ERROR: Compression method is not deflate"
-msgstr "ОШИБКА: Метод компрессии не опровержен"
+msgstr "РћРЁРР‘РљРђ: РњРµС‚РѕРґ РєРѕРјРїСЂРµСЃСЃРёРё РЅРµ РѕРїСЂРѕРІРµСЂР¶РµРЅ"
 
 #: src/net/conversions.c:414
 #, c-format
 msgid "ERROR: Unsupported flags %d\n"
-msgstr "ОШИБКА: Неподдерживаемые флаги %d\n"
+msgstr "РћРЁРР‘РљРђ: РќРµРїРѕРґРґРµСЂР¶РёРІР°РµРјС‹Рµ С„Р»Р°РіРё %d\n"
 
 #: src/net/netio.c:83
 msgid "Connecting to "
-msgstr "Соединение с "
+msgstr "РЎРѕРµРґРёРЅРµРЅРёРµ СЃ "
 
 #: src/net/netio.c:85
 #, c-format
 msgid "Connecting to %s..."
-msgstr "Соединение с %s..."
+msgstr "РЎРѕРµРґРёРЅРµРЅРёРµ СЃ %s..."
 
 #: src/net/netio.c:216
 #, c-format
 msgid "Downloading \"http://%s%s\""
-msgstr "Загрузка \"http://%s%s\""
+msgstr "Р—Р°РіСЂСѓР·РєР° \"http://%s%s\""
 
 #. This is a serious non-continueable OS error as it will probably not
 #. go away if we retry.
@@ -1231,59 +1231,59 @@ msgstr "Загрузка \"http://%s%s\""
 #. BeOS will stupidly return SUCCESS here making this code silently fail on BeOS.
 #: src/net/netio.c:241
 msgid "socket connect"
-msgstr "соединение сокета"
+msgstr "СЃРѕРµРґРёРЅРµРЅРёРµ СЃРѕРєРµС‚Р°"
 
 #: src/net/netio.c:343
 msgid "Too many HTTP redirects encountered! Giving up."
-msgstr "Встречено слишком много перенаправлений HTTP! Сдаюсь."
+msgstr "Р’СЃС‚СЂРµС‡РµРЅРѕ СЃР»РёС€РєРѕРј РјРЅРѕРіРѕ РїРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёР№ HTTP! РЎРґР°СЋСЃСЊ."
 
 #. Something bad happened. Server sent stupid stuff.
 #: src/net/netio.c:350
 msgid "Following HTTP redirects"
-msgstr "Следующие перенаправления HTTP"
+msgstr "РЎР»РµРґСѓСЋС‰РёРµ РїРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёСЏ HTTP"
 
 #: src/net/netio.c:397
 msgid "URL points to permanent redirect, updating with new location..."
-msgstr "URL указывает на постоянное перенаправление, обновление с новым местонахождением..."
+msgstr "URL СѓРєР°Р·С‹РІР°РµС‚ РЅР° РїРѕСЃС‚РѕСЏРЅРЅРѕРµ РїРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёРµ, РѕР±РЅРѕРІР»РµРЅРёРµ СЃ РЅРѕРІС‹Рј РјРµСЃС‚РѕРЅР°С…РѕР¶РґРµРЅРёРµРј..."
 
 #: src/net/netio.c:429
 msgid "Webserver sent an invalid redirect!"
-msgstr "Вебсервер послал неверное перенаправление!"
+msgstr "Р’РµР±СЃРµСЂРІРµСЂ РїРѕСЃР»Р°Р» РЅРµРІРµСЂРЅРѕРµ РїРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёРµ!"
 
 #: src/net/netio.c:512
 #, c-format
 msgid "The webserver %s sent illegal HTTP/1.0 reply! I cannot parse this."
-msgstr "Вебсервер %s послал запрещённый HTTP/1.0 ответ! Я не могу парсить его."
+msgstr "Р’РµР±СЃРµСЂРІРµСЂ %s РїРѕСЃР»Р°Р» Р·Р°РїСЂРµС‰С‘РЅРЅС‹Р№ HTTP/1.0 РѕС‚РІРµС‚! РЇ РЅРµ РјРѕРіСѓ РїР°СЂСЃРёС‚СЊ РµРіРѕ."
 
 #. Don't repeat authrequest if it already failed before!
 #: src/net/netio.c:552
 msgid "Authentication failed!"
-msgstr "Аутентификация прошла неудачно!"
+msgstr "РђСѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ РїСЂРѕС€Р»Р° РЅРµСѓРґР°С‡РЅРѕ!"
 
 #: src/net/netio.c:576
 msgid "URL does not contain authentication information!"
-msgstr "URL не содержит информации об аутентификации!"
+msgstr "URL РЅРµ СЃРѕРґРµСЂР¶РёС‚ РёРЅС„РѕСЂРјР°С†РёРё РѕР± Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё!"
 
 #: src/net/netio.c:581
 msgid "Could not generate authentication information!"
-msgstr "Невозможно сгенерировать информацию об аутентификации!"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ СЃРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ РѕР± Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё!"
 
 #: src/net/netio.c:586
 msgid "Unsupported authentication method requested by server!"
-msgstr "Неподдерживаемый метод аутентификации запрошен сервером!"
+msgstr "РќРµРїРѕРґРґРµСЂР¶РёРІР°РµРјС‹Р№ РјРµС‚РѕРґ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё Р·Р°РїСЂРѕС€РµРЅ СЃРµСЂРІРµСЂРѕРј!"
 
 #: src/net/netio.c:727
 msgid "This URL doesn't look too valid to me, don't you think?"
-msgstr "Этот URL не выглядит допустимым для меня, ты так не думаешь?"
+msgstr "Р­С‚РѕС‚ URL РЅРµ РІС‹РіР»СЏРґРёС‚ РґРѕРїСѓСЃС‚РёРјС‹Рј РґР»СЏ РјРµРЅСЏ, С‚С‹ С‚Р°Рє РЅРµ РґСѓРјР°РµС€СЊ?"
 
 #: src/net/netio.c:755
 msgid "Couldn't create network socket!"
-msgstr "Невозможно создать сетевой сокет!"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ СЃРµС‚РµРІРѕР№ СЃРѕРєРµС‚!"
 
 #: src/net/netio.c:761
 #, c-format
 msgid "Can't resolve host %s!"
-msgstr "Невозможно найти сервер %s!"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё СЃРµСЂРІРµСЂ %s!"
 
 #. On Solaris connect() might return -1, passing -1 to strerror()
 #. will return a NULL pointer which will segfault snprintf().
@@ -1291,83 +1291,83 @@ msgstr "Невозможно найти сервер %s!"
 #: src/net/netio.c:772
 #, c-format
 msgid "Could not connect to server %s: %s"
-msgstr "Невозможно соединиться с сервером %s: %s"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ СЃРѕРµРґРёРЅРёС‚СЊСЃСЏ СЃ СЃРµСЂРІРµСЂРѕРј %s: %s"
 
 #: src/net/netio.c:782
 msgid "Aborted."
-msgstr "Прервано."
+msgstr "РџСЂРµСЂРІР°РЅРѕ."
 
 #: src/net/netio.c:896
 #, c-format
 msgid "Could not open pipe \"%s\"!"
-msgstr "Невозможно открыть канал \"%s\"!"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ РєР°РЅР°Р» \"%s\"!"
 
 #: src/net/netio.c:902
 #, c-format
 msgid "Could not open file \"%s\"!"
-msgstr "Невозможно открыть файл \"%s\"!"
+msgstr "РќРµРІРѕР·РјРѕР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» \"%s\"!"
 
 #: src/net/netio.c:908
 #, c-format
 msgid "There is no file \"%s\"!"
-msgstr "Не существует файла \"%s\"!"
+msgstr "РќРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ С„Р°Р№Р»Р° \"%s\"!"
 
 #: src/ns_admin.c:56
 msgid "report errors to"
-msgstr "сообщать об ошибках"
+msgstr "СЃРѕРѕР±С‰Р°С‚СЊ РѕР± РѕС€РёР±РєР°С…"
 
 #: src/ns_admin.c:59
 msgid "feed generator"
-msgstr "генератор ленты новостей"
+msgstr "РіРµРЅРµСЂР°С‚РѕСЂ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№"
 
 #: src/ns_ag.c:86
 msgid "source"
-msgstr "источник"
+msgstr "РёСЃС‚РѕС‡РЅРёРє"
 
 #: src/ns_ag.c:105
 msgid "time"
-msgstr "время"
+msgstr "РІСЂРµРјСЏ"
 
 #: src/ns_cC.c:53
 msgid "license"
-msgstr "лицензия"
+msgstr "Р»РёС†РµРЅР·РёСЏ"
 
 #: src/ns_dc.c:229 src/ns_ocs.c:94
 msgid "internal OCS namespace parsing error!"
-msgstr "внутрення ошибка парсинга пространства имён OCS!"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏ РѕС€РёР±РєР° РїР°СЂСЃРёРЅРіР° РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІР° РёРјС‘РЅ OCS!"
 
 #: src/ns_dc.c:264 src/ns_dc.c:287 src/ns_dc.c:323
 msgid "internal error! unknown tag type while parsing Dublin Core tag!"
-msgstr "внутренняя ошибка! неизвестный тип тэга во время парсинга тэга Dublin Core!"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°! РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї С‚СЌРіР° РІРѕ РІСЂРµРјСЏ РїР°СЂСЃРёРЅРіР° С‚СЌРіР° Dublin Core!"
 
 #: src/ocs_dir.c:193 src/ocs_dir.c:238 src/ocs_dir.c:353 src/ocs_dir.c:423
 #, c-format
 msgid "no namespace handler for <%s:%s>!\n"
-msgstr "нет оператора пространства имён для <%s:%s>!\n"
+msgstr "РЅРµС‚ РѕРїРµСЂР°С‚РѕСЂР° РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІР° РёРјС‘РЅ РґР»СЏ <%s:%s>!\n"
 
 #: src/ocs_dir.c:450
 msgid "<p>Could not find RDF header!</p>"
-msgstr "<p>Невозможно найти заголовок RDF!</p>"
+msgstr "<p>РќРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё Р·Р°РіРѕР»РѕРІРѕРє RDF!</p>"
 
 #: src/opml.c:145
 msgid "<p>Could not find OPML header!</p>"
-msgstr "<p>Невозможно найти заголовк OPML!</p>"
+msgstr "<p>РќРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё Р·Р°РіРѕР»РѕРІРє OPML!</p>"
 
 #: src/pie_feed.c:209
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
-msgstr "<p>Невозможно найти заголовк Atom/Echo/PIE!</p>"
+msgstr "<p>РќРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё Р·Р°РіРѕР»РѕРІРє Atom/Echo/PIE!</p>"
 
 #: src/rss_channel.c:331
 msgid "<p>Could not find RDF/RSS header!</p>"
-msgstr "<p>Невозможно найти заголовк RDF/RSS!</p>"
+msgstr "<p>РќРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё Р·Р°РіРѕР»РѕРІРє RDF/RSS!</p>"
 
 #: src/rss_item.c:120
 msgid "comments"
-msgstr "комментарии"
+msgstr "РєРѕРјРјРµРЅС‚Р°СЂРёРё"
 
 #: src/textview.c:40
 msgid "Text Viewer (experimental)"
-msgstr "Просмотровщик Текста (экспериментально)"
+msgstr "РџСЂРѕСЃРјРѕС‚СЂРѕРІС‰РёРє РўРµРєСЃС‚Р° (СЌРєСЃРїРµСЂРёРјРµРЅС‚Р°Р»СЊРЅРѕ)"
 
 #: src/textview.c:117
 #, c-format
@@ -1375,53 +1375,53 @@ msgid ""
 "There is no %%s URL place holder in the browser command string you specified "
 "in the preferences dialog!!!"
 msgstr ""
-"Не существует %%s URL place holder в командной строке браузера, который вы указали "
-"в диалоге \"Настройки\"!!!"
+"РќРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ %%s URL place holder РІ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРµ Р±СЂР°СѓР·РµСЂР°, РєРѕС‚РѕСЂС‹Р№ РІС‹ СѓРєР°Р·Р°Р»Рё "
+"РІ РґРёР°Р»РѕРіРµ \"РќР°СЃС‚СЂРѕР№РєРё\"!!!"
 
 #: src/ui_feedlist.c:356 src/ui_itemlist.c:609
 msgid "internal error! could not get feed tree view selection!\n"
-msgstr "внутренняя ошибка! невозможно получить древовидный диалог выбора ленты новостей!\n"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°! РЅРµРІРѕР·РјРѕР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ РґСЂРµРІРѕРІРёРґРЅС‹Р№ РґРёР°Р»РѕРі РІС‹Р±РѕСЂР° Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№!\n"
 
 #: src/ui_feedlist.c:369 src/ui_feedlist.c:498 src/ui_feedlist.c:499
 msgid "You have to select a feed entry!"
-msgstr "Вы должны выбрать строку с лентой новостей!"
+msgstr "Р’С‹ РґРѕР»Р¶РЅС‹ РІС‹Р±СЂР°С‚СЊ СЃС‚СЂРѕРєСѓ СЃ Р»РµРЅС‚РѕР№ РЅРѕРІРѕСЃС‚РµР№!"
 
 #: src/ui_feedlist.c:379
 msgid "Liferea is in offline mode. No update possible!"
-msgstr "Liferea в режиме \"отключена\". Обновления невозможны!"
+msgstr "Liferea РІ СЂРµР¶РёРјРµ \"РѕС‚РєР»СЋС‡РµРЅР°\". РћР±РЅРѕРІР»РµРЅРёСЏ РЅРµРІРѕР·РјРѕР¶РЅС‹!"
 
 #: src/ui_feedlist.c:395
 msgid "Note: Using the subscriptions filter disables drag&drop!"
-msgstr "Заметка: Использования фильтров подписки отключает возможность использования drag&drop!"
+msgstr "Р—Р°РјРµС‚РєР°: РСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ С„РёР»СЊС‚СЂРѕРІ РїРѕРґРїРёСЃРєРё РѕС‚РєР»СЋС‡Р°РµС‚ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ drag&drop!"
 
 #: src/ui_feedlist.c:407 src/ui_feedlist.c:440
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
-"Вы не можете удалить помощь! Отредактируйте настройки, чтобы отключить загрузку помощи."
+"Р’С‹ РЅРµ РјРѕР¶РµС‚Рµ СѓРґР°Р»РёС‚СЊ РїРѕРјРѕС‰СЊ! РћС‚СЂРµРґР°РєС‚РёСЂСѓР№С‚Рµ РЅР°СЃС‚СЂРѕР№РєРё, С‡С‚РѕР±С‹ РѕС‚РєР»СЋС‡РёС‚СЊ Р·Р°РіСЂСѓР·РєСѓ РїРѕРјРѕС‰Рё."
 
 #: src/ui_feedlist.c:445
 #, c-format
 msgid "Deleting \"%s\""
-msgstr "Удаление \"%s\""
+msgstr "РЈРґР°Р»РµРЅРёРµ \"%s\""
 
 #: src/ui_feedlist.c:446
 #, c-format
 msgid "Are you sure that you want to delete %s and its contents?"
-msgstr "Вы действительно хотите удалить каталог %s и его содержимое"
+msgstr "Р’С‹ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ РєР°С‚Р°Р»РѕРі %s Рё РµРіРѕ СЃРѕРґРµСЂР¶РёРјРѕРµ"
 
 #: src/ui_feedlist.c:448
 msgid "Deleting entry"
-msgstr "Удаление записи"
+msgstr "РЈРґР°Р»РµРЅРёРµ Р·Р°РїРёСЃРё"
 
 #: src/ui_feedlist.c:449
 #, c-format
 msgid "Are you sure that you want to delete %s?"
-msgstr "Вы действительно хотите удалить %s?"
+msgstr "Р’С‹ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ %s?"
 
 #: src/ui_feedlist.c:454
 msgid "Deletion confirmation"
-msgstr "Потверждение об удалении"
+msgstr "РџРѕС‚РІРµСЂР¶РґРµРЅРёРµ РѕР± СѓРґР°Р»РµРЅРёРё"
 
 #: src/ui_feedlist.c:550
 #, c-format
@@ -1432,178 +1432,178 @@ msgid ""
 "retry downloading or remove the feed subscription via the context menu from "
 "the feed list.\n"
 msgstr ""
-"Невозможно скачать \"%s\"!\n"
+"РќРµРІРѕР·РјРѕР¶РЅРѕ СЃРєР°С‡Р°С‚СЊ \"%s\"!\n"
 "\n"
-" Возможно, URL неверен или лента новостей временно недоступна. Вы можете "
-"попытаться скачать ещё раз или удалить подписку на ленту новостей через контекстное меню в "
-"списке лент новостей.\n"
+" Р’РѕР·РјРѕР¶РЅРѕ, URL РЅРµРІРµСЂРµРЅ РёР»Рё Р»РµРЅС‚Р° РЅРѕРІРѕСЃС‚РµР№ РІСЂРµРјРµРЅРЅРѕ РЅРµРґРѕСЃС‚СѓРїРЅР°. Р’С‹ РјРѕР¶РµС‚Рµ "
+"РїРѕРїС‹С‚Р°С‚СЊСЃСЏ СЃРєР°С‡Р°С‚СЊ РµС‰С‘ СЂР°Р· РёР»Рё СѓРґР°Р»РёС‚СЊ РїРѕРґРїРёСЃРєСѓ РЅР° Р»РµРЅС‚Сѓ РЅРѕРІРѕСЃС‚РµР№ С‡РµСЂРµР· РєРѕРЅС‚РµРєСЃС‚РЅРѕРµ РјРµРЅСЋ РІ "
+"СЃРїРёСЃРєРµ Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№.\n"
 
 #: src/ui_feedlist.c:555
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
-"Тип только что созданной ленты новостей не может быть определён. Пожалуйста, подпишитесь ещё раз "
-"и выберите тип!"
+"РўРёРї С‚РѕР»СЊРєРѕ С‡С‚Рѕ СЃРѕР·РґР°РЅРЅРѕР№ Р»РµРЅС‚С‹ РЅРѕРІРѕСЃС‚РµР№ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕРїСЂРµРґРµР»С‘РЅ. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРґРїРёС€РёС‚РµСЃСЊ РµС‰С‘ СЂР°Р· "
+"Рё РІС‹Р±РµСЂРёС‚Рµ С‚РёРї!"
 
 #: src/ui_filter.c:57
 msgid "Value"
-msgstr "Значение"
+msgstr "Р—РЅР°С‡РµРЅРёРµ"
 
 #: src/ui_folder.c:95 src/ui_folder.c:117 src/ui_folder.c:137
 msgid "A folder must be selected."
-msgstr "Папка должна быть выбрана."
+msgstr "РџР°РїРєР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РІС‹Р±СЂР°РЅР°."
 
 #: src/ui_folder.c:144
 msgid "A folder must be empty to delete it!"
-msgstr "Папка должна быть пуста для удаления!"
+msgstr "РџР°РїРєР° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РїСѓСЃС‚Р° РґР»СЏ СѓРґР°Р»РµРЅРёСЏ!"
 
 #: src/ui_folder.c:244
 msgid "<i>(empty)</i>"
-msgstr "<i>(пусто)</i>"
+msgstr "<i>(РїСѓСЃС‚Рѕ)</i>"
 
 #: src/ui_folder.c:375
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr "внутренняя ошибка! неизвестный тип записи! невозможно отобразить соответствующую иконку!\n"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°! РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї Р·Р°РїРёСЃРё! РЅРµРІРѕР·РјРѕР¶РЅРѕ РѕС‚РѕР±СЂР°Р·РёС‚СЊ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰СѓСЋ РёРєРѕРЅРєСѓ!\n"
 
 #: src/ui_itemlist.c:287
 msgid "Date"
-msgstr "Дата"
+msgstr "Р”Р°С‚Р°"
 
 #: src/ui_itemlist.c:294
 msgid "Headline"
-msgstr "Заголовок"
+msgstr "Р—Р°РіРѕР»РѕРІРѕРє"
 
 #: src/ui_itemlist.c:324
 msgid "item list widget lookup failed!\n"
-msgstr "не найден виджет отображения листа элементов!\n"
+msgstr "РЅРµ РЅР°Р№РґРµРЅ РІРёРґР¶РµС‚ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ Р»РёСЃС‚Р° СЌР»РµРјРµРЅС‚РѕРІ!\n"
 
 #: src/ui_itemlist.c:334
 msgid "could not retrieve selection of item list!\n"
-msgstr "невозможно получить выбор пользователся из листа элементов!\n"
+msgstr "РЅРµРІРѕР·РјРѕР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ РІС‹Р±РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЃСЏ РёР· Р»РёСЃС‚Р° СЌР»РµРјРµРЅС‚РѕРІ!\n"
 
 #: src/ui_itemlist.c:416
 msgid "internal error! item list display for NULL pointer requested!\n"
-msgstr "внутренняя ошибка! лист элементов запрошен для указателя NULL!\n"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°! Р»РёСЃС‚ СЌР»РµРјРµРЅС‚РѕРІ Р·Р°РїСЂРѕС€РµРЅ РґР»СЏ СѓРєР°Р·Р°С‚РµР»СЏ NULL!\n"
 
 #: src/ui_itemlist.c:555
 msgid "No item has been selected!"
-msgstr "Ни одна новость не выбрана!"
+msgstr "РќРё РѕРґРЅР° РЅРѕРІРѕСЃС‚СЊ РЅРµ РІС‹Р±СЂР°РЅР°!"
 
 #: src/ui_itemlist.c:579
 msgid "You have to select a feed to delete its items!"
-msgstr "Вы должно выбрать ленту новостей, чтобы удалить её элементы!"
+msgstr "Р’С‹ РґРѕР»Р¶РЅРѕ РІС‹Р±СЂР°С‚СЊ Р»РµРЅС‚Сѓ РЅРѕРІРѕСЃС‚РµР№, С‡С‚РѕР±С‹ СѓРґР°Р»РёС‚СЊ РµС‘ СЌР»РµРјРµРЅС‚С‹!"
 
 #: src/ui_itemlist.c:611
 msgid "internal error! could not find feed tree view widget!\n"
-msgstr "внутренняя ошибка! невозможно найти виджет древообразного отображения лент новостей!\n"
+msgstr "РІРЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°! РЅРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё РІРёРґР¶РµС‚ РґСЂРµРІРѕРѕР±СЂР°Р·РЅРѕРіРѕ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ Р»РµРЅС‚ РЅРѕРІРѕСЃС‚РµР№!\n"
 
 #: src/ui_itemlist.c:644
 msgid "There are no unread items!"
-msgstr "Нет непрочитанных новостей!"
+msgstr "РќРµС‚ РЅРµРїСЂРѕС‡РёС‚Р°РЅРЅС‹С… РЅРѕРІРѕСЃС‚РµР№!"
 
 #: src/ui_mainwindow.c:95
 msgid "Liferea is now online."
-msgstr "Liferea подключена."
+msgstr "Liferea РїРѕРґРєР»СЋС‡РµРЅР°."
 
 #: src/ui_mainwindow.c:98
 msgid "Liferea is now offline!"
-msgstr "Liferea отключена!"
+msgstr "Liferea РѕС‚РєР»СЋС‡РµРЅР°!"
 
 #: src/ui_popup.c:59
 msgid "could not allocate memory!"
-msgstr "невозможно распределить память!"
+msgstr "РЅРµРІРѕР·РјРѕР¶РЅРѕ СЂР°СЃРїСЂРµРґРµР»РёС‚СЊ РїР°РјСЏС‚СЊ!"
 
 #: src/ui_popup.c:79
 msgid "/_Update"
-msgstr "/_Обновить"
+msgstr "/_РћР±РЅРѕРІРёС‚СЊ"
 
 #: src/ui_popup.c:80 src/ui_popup.c:89 src/ui_popup.c:97 src/ui_popup.c:104
 msgid "/_New"
-msgstr "/_Новый элемент"
+msgstr "/_РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚"
 
 #: src/ui_popup.c:81 src/ui_popup.c:90 src/ui_popup.c:98 src/ui_popup.c:105
 msgid "/_New/New _Feed"
-msgstr "/_Новый элемент/Новая _Лента Новостей"
+msgstr "/_РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚/РќРѕРІР°СЏ _Р›РµРЅС‚Р° РќРѕРІРѕСЃС‚РµР№"
 
 #: src/ui_popup.c:82 src/ui_popup.c:91 src/ui_popup.c:99 src/ui_popup.c:106
 msgid "/_New/New F_older"
-msgstr "/_Новый элемент/Новая _Папка"
+msgstr "/_РќРѕРІС‹Р№ СЌР»РµРјРµРЅС‚/РќРѕРІР°СЏ _РџР°РїРєР°"
 
 #: src/ui_popup.c:83
 msgid "/_Delete"
-msgstr "/_Удалить"
+msgstr "/_РЈРґР°Р»РёС‚СЊ"
 
 #: src/ui_popup.c:84
 msgid "/_Properties"
-msgstr "/_Свойства"
+msgstr "/_РЎРІРѕР№СЃС‚РІР°"
 
 #: src/ui_popup.c:88
 msgid "/_Update Folder"
-msgstr "/_Обновить Папку"
+msgstr "/_РћР±РЅРѕРІРёС‚СЊ РџР°РїРєСѓ"
 
 #: src/ui_popup.c:92
 msgid "/_Rename Folder"
-msgstr "/_Переименовать папку"
+msgstr "/_РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ РїР°РїРєСѓ"
 
 #: src/ui_popup.c:93
 msgid "/_Delete Folder"
-msgstr "/_Удалить Папку"
+msgstr "/_РЈРґР°Р»РёС‚СЊ РџР°РїРєСѓ"
 
 #: src/ui_popup.c:100
 msgid "/_Delete VFolder"
-msgstr "/_Удалить VFolder"
+msgstr "/_РЈРґР°Р»РёС‚СЊ VFolder"
 
 #: src/ui_popup.c:111
 msgid "/Toggle _Read Status"
-msgstr "/Переключить Статус _Прочтения"
+msgstr "/РџРµСЂРµРєР»СЋС‡РёС‚СЊ РЎС‚Р°С‚СѓСЃ _РџСЂРѕС‡С‚РµРЅРёСЏ"
 
 #: src/ui_popup.c:112
 msgid "/Toggle Item _Flag"
-msgstr "/Переключить _Флаг Новости"
+msgstr "/РџРµСЂРµРєР»СЋС‡РёС‚СЊ _Р¤Р»Р°Рі РќРѕРІРѕСЃС‚Рё"
 
 #: src/ui_popup.c:114
 msgid "/_Next Unread Item"
-msgstr "/_Следующая Непрочитанная Новость"
+msgstr "/_РЎР»РµРґСѓСЋС‰Р°СЏ РќРµРїСЂРѕС‡РёС‚Р°РЅРЅР°СЏ РќРѕРІРѕСЃС‚СЊ"
 
 #: src/ui_popup.c:116
 msgid "/_Launch Item In Browser"
-msgstr "/_Показать Новость В Браузере "
+msgstr "/_РџРѕРєР°Р·Р°С‚СЊ РќРѕРІРѕСЃС‚СЊ Р’ Р‘СЂР°СѓР·РµСЂРµ "
 
 #: src/ui_popup.c:123
 msgid "/_Increase Text Size"
-msgstr "/_Увеличить Размер Текста"
+msgstr "/_РЈРІРµР»РёС‡РёС‚СЊ Р Р°Р·РјРµСЂ РўРµРєСЃС‚Р°"
 
 #: src/ui_popup.c:124
 msgid "/_Decrease Text Size"
-msgstr "/_Уменьшить Размер Текста"
+msgstr "/_РЈРјРµРЅСЊС€РёС‚СЊ Р Р°Р·РјРµСЂ РўРµРєСЃС‚Р°"
 
 #: src/ui_popup.c:128
 msgid "/_Copy Link Location"
-msgstr "/_Скопировать Адрес Ссылки"
+msgstr "/_РЎРєРѕРїРёСЂРѕРІР°С‚СЊ РђРґСЂРµСЃ РЎСЃС‹Р»РєРё"
 
 #: src/ui_popup.c:129
 msgid "/_Subscribe"
-msgstr "/_Подписаться"
+msgstr "/_РџРѕРґРїРёСЃР°С‚СЊСЃСЏ"
 
 #: src/ui_search.c:70
 #, c-format
 msgid "searching for \"%s\""
-msgstr "поиск \"%s\""
+msgstr "РїРѕРёСЃРє \"%s\""
 
 #: src/ui_search.c:121
 #, c-format
 msgid "creating VFolder for search term \"%s\""
-msgstr "создание VFolder для строки поиска \"%s\""
+msgstr "СЃРѕР·РґР°РЅРёРµ VFolder РґР»СЏ СЃС‚СЂРѕРєРё РїРѕРёСЃРєР° \"%s\""
 
 #: src/ui_tray.c:87
 #, c-format
 msgid "%d new items!"
-msgstr "%d новый(х) элемент(ов)(а)"
+msgstr "%d РЅРѕРІС‹Р№(С…) СЌР»РµРјРµРЅС‚(РѕРІ)(Р°)"
 
 #: src/ui_tray.c:100
 msgid "No new items."
-msgstr "Нет новостей."
+msgstr "РќРµС‚ РЅРѕРІРѕСЃС‚РµР№."
 
 #: src/gtkhtml2/gtkhtml2.c:66
 msgid "GtkHTML2"
@@ -1611,9 +1611,9 @@ msgstr "GtkHTML2"
 
 #: src/gtkhtml3/gtkhtml3.c:309
 msgid "GtkHTML3 (experimental)"
-msgstr "GtkHTML3 (экспериментально!)"
+msgstr "GtkHTML3 (СЌРєСЃРїРµСЂРёРјРµРЅС‚Р°Р»СЊРЅРѕ!)"
 
 #. --------------------------------------------------------------------
 #: src/mozilla/mozembed.c:52
 msgid "Mozilla (experimental)"
-msgstr "Mozilla (экспериментально!)"
+msgstr "Mozilla (СЌРєСЃРїРµСЂРёРјРµРЅС‚Р°Р»СЊРЅРѕ!)"
