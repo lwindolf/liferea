@@ -42,6 +42,7 @@
 #include "callbacks.h"
 #include "filter.h"
 #include "update.h"
+#include "debug.h"
 
 #include "ui_feedlist.h"
 #include "ui_tray.h"
@@ -331,9 +332,10 @@ static feedPtr loadFeed(gint type, gchar *id) {
 }
 
 feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, gchar *id, gint interval, gboolean showPropDialog) {
-	feedPtr fp = NULL;
-	gboolean needs_update=FALSE;
-	g_message("feed_add(type=%d,url=%s,parent=%x,name=%s,id=%s,interval=%d,propd=%d)",type,url,parent,feedName,id,interval,showPropDialog);
+	feedPtr		fp = NULL;
+	gboolean	first_download = FALSE;
+	
+	debug5(DEBUG_CACHE, "feed_add(type=%d,url=%s,parent=%x,name=%s,id=%s)",type,url,parent,feedName,id);
 
 	g_assert(url != NULL);
 
@@ -344,7 +346,7 @@ feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, 
 		fp = feed_new();
 		if (id == NULL) {
 			fp->id = conf_new_id();
-			needs_update=TRUE;
+			first_download = TRUE;
 		} else
 			fp->id = g_strdup(id);
 	}
@@ -367,8 +369,8 @@ feedPtr feed_add(gint type, gchar *url, struct folder *parent, gchar *feedName, 
 	folder_add_feed(parent, fp, -1);
 	ui_folder_add_feed(fp, -1);
 
-	if(needs_update) {
-		favicon_download(fp);	/* FIXME: I think thats evil, should be done only on first download!!! (09.04.04, Lars)*/
+	if(first_download) {
+		favicon_download(fp);
 		feed_update(fp);
 	}
 
