@@ -70,6 +70,8 @@ void ui_show_error_box(const char *format, ...);
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
 
+void on_popup_quit(gpointer callback_data, guint callback_action, GtkWidget *widget);
+
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 		
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data);

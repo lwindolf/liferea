@@ -225,6 +225,12 @@ void ui_show_info_box(const char *format, ...) {
 /* exit handler									*/
 /*------------------------------------------------------------------------------*/
 
+void on_popup_quit(gpointer callback_data,
+			    guint callback_action,
+			    GtkWidget *widget) {
+	on_quit(NULL, NULL, NULL);
+}
+
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	GtkWidget	*pane;
 	gint x, y;

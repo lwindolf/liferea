@@ -77,7 +77,7 @@ gchar *createRFC822Date(const time_t *time);
 gchar * formatDate(time_t t);
 
 gchar *	getCachePath(void);
-gchar * common_create_cache_filename( gchar *folder, gchar *key, gchar *extension);
+gchar * common_create_cache_filename( const gchar *folder, const gchar *key, const gchar *extension);
 
 /**
  * Encodes all non URI conformant characters in the passed

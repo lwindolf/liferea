@@ -25,6 +25,7 @@
 #include "htmlview.h"
 #include "ui_popup.h"
 #include "ui_mainwindow.h"
+#include "update.h"
 
 /* from callbacks.c */
 extern gboolean itemlist_mode;
@@ -145,7 +146,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Preferences"),	NULL, on_prefbtn_clicked,		0, "<StockItem>", GTK_STOCK_PREFERENCES);
 	addPopupOption(&tray_menu_items, &tray_menu_len, "/",	                NULL, NULL,		                0, "<Separator>", 0);
 	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Show Window"),	NULL, ui_mainwindow_toggle_visibility,		0, "<CheckItem>", 0);
-	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Quit"),	        NULL, on_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Quit"),	        NULL, on_popup_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
 }
 
 /* function to generate a generic menu specified by its number */
