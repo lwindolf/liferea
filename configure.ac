@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(configure.in)
+AC_INIT(configure.ac)
 
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
