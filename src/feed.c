@@ -51,6 +51,8 @@
 #include "ui_tray.h"
 #include "ui_htmlview.h"
 
+extern gboolean feedlistLoading;	/* flag in conf.c that is set upon initial feed list loading */
+
 /* auto detection lookup table */
 static GSList *feedhandlers;
 
@@ -647,9 +649,11 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			}
 			fp->items = g_slist_prepend(fp->items, (gpointer)new_ip);
 			new_ip->fp = fp;
-							
-			/* check if the item matches any vfolder rules */
-			vfolder_check_item(new_ip);
+	
+			if((TRUE == new_ip->newStatus) || (feedlistLoading)) {
+				/* check if the item matches any vfolder rules */
+				vfolder_check_item(new_ip);
+			}
 			
 			debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
 			
