@@ -79,7 +79,7 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 	struct pair *p;
 	
 	if(NULL == (attrib = g_hash_table_lookup(strtoattrib, strid))) {
-		g_warning("Encountered unknown attribute type \"%s\". This is a program bug.", strid);
+		g_warning("Encountered unknown attribute type \"%s\".", strid);
 		attribs_register_default_renderer(strid);
 		attrib = g_hash_table_lookup(strtoattrib, strid);
 	}
