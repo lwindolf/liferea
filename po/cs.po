@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 02:54+0200\n"
+"POT-Creation-Date: 2004-10-27 23:43+0200\n"
 "PO-Revision-Date: 2004-09-12 11:01+0200\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -1042,7 +1042,7 @@ msgstr ""
 msgid "Rules"
 msgstr "Pravidla"
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:197
+#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
 msgid "[No title]"
 msgstr "[Žádný název]"
 
@@ -1664,24 +1664,24 @@ msgstr ""
 "Tento zdroj je přerušen. Už není dostupný. Program Liferea již nemůže tento "
 "zdroj obnovit. Stále je možné si prohlížet uschované titulky."
 
-#: src/ui_itemlist.c:263
+#: src/ui_itemlist.c:262
 msgid "Date"
 msgstr "Datum"
 
-#: src/ui_itemlist.c:274
+#: src/ui_itemlist.c:273
 msgid "Headline"
 msgstr "Titulek"
 
-#: src/ui_itemlist.c:468 src/ui_itemlist.c:477 src/ui_itemlist.c:529
+#: src/ui_itemlist.c:467 src/ui_itemlist.c:476 src/ui_itemlist.c:528
 msgid "No item has been selected"
 msgstr "Článek nebyl vybrán"
 
-#: src/ui_itemlist.c:511 src/ui_itemlist.c:532
+#: src/ui_itemlist.c:510 src/ui_itemlist.c:531
 msgid "You must select a feed to delete its items!"
 msgstr "Musíte vybrat zdroj, pokud chcete smazat jeho články!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:598
 msgid "There are no unread items "
 msgstr "Zde nejsou nepřečtené články "
 

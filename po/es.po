@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 02:54+0200\n"
+"POT-Creation-Date: 2004-10-27 23:43+0200\n"
 "PO-Revision-Date: 2004-10-26 17:34+0100\n"
 "Last-Translator: Carlos Fenollosa Bielsa <topopardo@topopardo.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
@@ -1046,7 +1046,7 @@ msgstr ""
 msgid "Rules"
 msgstr "Reglas"
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:197
+#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
 msgid "[No title]"
 msgstr "[Sin título]"
 
@@ -1674,24 +1674,24 @@ msgstr ""
 "Esta fuente ha sido abandonada. Liferea no la actualizará, pero se puede "
 "seguir accediendo a los elementos que contiene su caché."
 
-#: src/ui_itemlist.c:263
+#: src/ui_itemlist.c:262
 msgid "Date"
 msgstr "Fecha"
 
-#: src/ui_itemlist.c:274
+#: src/ui_itemlist.c:273
 msgid "Headline"
 msgstr "Titular"
 
-#: src/ui_itemlist.c:468 src/ui_itemlist.c:477 src/ui_itemlist.c:529
+#: src/ui_itemlist.c:467 src/ui_itemlist.c:476 src/ui_itemlist.c:528
 msgid "No item has been selected"
 msgstr "No se ha seleccionado ningún elemento"
 
-#: src/ui_itemlist.c:511 src/ui_itemlist.c:532
+#: src/ui_itemlist.c:510 src/ui_itemlist.c:531
 msgid "You must select a feed to delete its items!"
 msgstr "Por favor, elija una fuente para eliminar sus elementos"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:598
 msgid "There are no unread items "
 msgstr "No hay elementos nuevos"
 

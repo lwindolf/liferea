@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 02:54+0200\n"
+"POT-Creation-Date: 2004-10-27 23:43+0200\n"
 "PO-Revision-Date: 2004-09-08 23:07+0900\n"
 "Last-Translator: 박지인 <mithrandir@electrang.net>\n"
 "Language-Team: GTP Korean <gnome-kr-translation@gnome.or.kr>\n"
@@ -1047,7 +1047,7 @@ msgstr ""
 msgid "Rules"
 msgstr "규칙"
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:197
+#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
 msgid "[No title]"
 msgstr "[제목 없음]"
 
@@ -1666,24 +1666,24 @@ msgstr ""
 "이 피드는 연속적이지 않습니다. 더 이상 사용할 수 없습니다. Liferea는 더이상 "
 "그것을 새로 고치지 않지만, 캐시된 머릿글은 읽을 수 있습니다."
 
-#: src/ui_itemlist.c:263
+#: src/ui_itemlist.c:262
 msgid "Date"
 msgstr "날짜"
 
-#: src/ui_itemlist.c:274
+#: src/ui_itemlist.c:273
 msgid "Headline"
 msgstr "머릿글"
 
-#: src/ui_itemlist.c:468 src/ui_itemlist.c:477 src/ui_itemlist.c:529
+#: src/ui_itemlist.c:467 src/ui_itemlist.c:476 src/ui_itemlist.c:528
 msgid "No item has been selected"
 msgstr "아이템이 선택되지 않았습니다"
 
-#: src/ui_itemlist.c:511 src/ui_itemlist.c:532
+#: src/ui_itemlist.c:510 src/ui_itemlist.c:531
 msgid "You must select a feed to delete its items!"
 msgstr "아이템을 지울 피드를 선택해야 합니다!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:598
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다 "
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 02:54+0200\n"
+"POT-Creation-Date: 2004-10-27 23:43+0200\n"
 "PO-Revision-Date: 2004-10-23 20:36+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -1073,7 +1073,7 @@ msgstr ""
 msgid "Rules"
 msgstr "Règles"
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:197
+#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
 msgid "[No title]"
 msgstr "[Pas de titre]"
 
@@ -1710,24 +1710,24 @@ msgstr ""
 "plus à jour, mais vous pouvez toujours accéder aux titres situés dans le "
 "cache."
 
-#: src/ui_itemlist.c:263
+#: src/ui_itemlist.c:262
 msgid "Date"
 msgstr "Date"
 
-#: src/ui_itemlist.c:274
+#: src/ui_itemlist.c:273
 msgid "Headline"
 msgstr "Titre"
 
-#: src/ui_itemlist.c:468 src/ui_itemlist.c:477 src/ui_itemlist.c:529
+#: src/ui_itemlist.c:467 src/ui_itemlist.c:476 src/ui_itemlist.c:528
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: src/ui_itemlist.c:511 src/ui_itemlist.c:532
+#: src/ui_itemlist.c:510 src/ui_itemlist.c:531
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:598
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 

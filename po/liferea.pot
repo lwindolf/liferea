@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 02:54+0200\n"
+"POT-Creation-Date: 2004-10-27 23:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -947,7 +947,7 @@ msgstr ""
 msgid "Rules"
 msgstr ""
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:197
+#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
 msgid "[No title]"
 msgstr ""
 
@@ -1535,24 +1535,24 @@ msgid ""
 "anymore but you can still access the cached headlines."
 msgstr ""
 
-#: src/ui_itemlist.c:263
+#: src/ui_itemlist.c:262
 msgid "Date"
 msgstr ""
 
-#: src/ui_itemlist.c:274
+#: src/ui_itemlist.c:273
 msgid "Headline"
 msgstr ""
 
-#: src/ui_itemlist.c:468 src/ui_itemlist.c:477 src/ui_itemlist.c:529
+#: src/ui_itemlist.c:467 src/ui_itemlist.c:476 src/ui_itemlist.c:528
 msgid "No item has been selected"
 msgstr ""
 
-#: src/ui_itemlist.c:511 src/ui_itemlist.c:532
+#: src/ui_itemlist.c:510 src/ui_itemlist.c:531
 msgid "You must select a feed to delete its items!"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:599
+#: src/ui_itemlist.c:598
 msgid "There are no unread items "
 msgstr ""
 

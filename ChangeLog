@@ -60,6 +60,8 @@
 	* The handling of the default update interval information
 	  of feeds was broken so the properties dialog never 
 	  showed the value. This is fixed now. (Lars Lindner)
+	* Fixed a bug on with non-blocking sockets and Solaris8.
+	  (pkeusem)
 
 2004-09-15  Lars Lindner <lars.lindner@gmx.net>
 

@@ -183,9 +183,6 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 			continue;
 		}
 	
-		/* Set socket to nonblock mode to make it possible to interrupt the connect. */
-		fcntl(*my_socket, F_SETFL, fcntl(*my_socket, F_GETFL, 0) | O_NONBLOCK);
-	
 		/* Connect socket. */
 		cur_ptr->connectresult = connect (*my_socket, ai->ai_addr, ai->ai_addrlen);
 		
@@ -248,9 +245,6 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 		cur_ptr->netio_error = NET_ERR_SOCK_ERR;
 		return -1;
 	}
-	
-	/* Set socket to nonblock mode to make it possible to interrupt the connect. */
-	fcntl(*my_socket, F_SETFL, fcntl(*my_socket, F_GETFL, 0) | O_NONBLOCK);
 	
 	/* If proxyport is 0 we didn't execute the if http_proxy statement in main
 	   so there is no proxy. On any other value of proxyport do proxyrequests instead. */
@@ -348,9 +342,6 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 
 	free(realhost);
 #endif /* HAVE_GETADDRINFO */
-
-	/* Set socket back to blocking mode. */
-	fcntl(*my_socket, F_SETFL, fcntl(*my_socket, F_GETFL, 0) & ~O_NONBLOCK);
 	
 	return 0;
 }
