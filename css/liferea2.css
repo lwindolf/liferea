@@ -290,3 +290,8 @@ div.photoheader {
 	background-color:#505050;
 	color:white;
 }
+
+div.technorati {
+	display:none;
+	text-align:right;
+}

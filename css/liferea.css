@@ -83,13 +83,13 @@ span.itemtitle {
    item/feed description footer */
    
 div.feedfoottitle {
-	margin-top:15px;
+	margin-top:5px;
 	font-size:0.7em;
 	color:#888;
 }
 
 table.feedfoot {
-	margin-top:15px;
+	margin-top:5px;
 	width:100%;
 	border-width:1px;
 	border-top-style:solid;
@@ -283,4 +283,8 @@ div.photoheader {
 	padding-right:10px;
 	background-color:#505050;
 	color:white;
+}
+
+div.technorati {
+	text-align:right;
 }

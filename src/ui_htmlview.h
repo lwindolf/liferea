@@ -74,6 +74,8 @@ struct displayset {
 #define	IMG_START	"<img class=\"feed\" src=\""
 #define IMG_END		"\"><br>"
 
+#define TECHNORATI_LINK	"<div class=\"technorati\"><a href=\"http://www.technorati.com/cosmos/search.html?url=%s\"><img src=\"%s\" border=0></a></div>"
+
 /* OCS direntry output definitions */
 
 #define FORMAT_START	"<table cellspacing=\"0\" class=\"ocsformats\"><tr><td class=\"ocslink\">"

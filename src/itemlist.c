@@ -190,16 +190,14 @@ void itemlist_toggle_flag(itemPtr ip) {
 
 void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 	itemPtr		sourceItem;
-g_print("set_read()\n");
+
 	if(newStatus != item_get_read_status(ip)) {
-g_print("setting read status in item struct: %s\n", newStatus?"TRUE":"FALSE");
 		item_set_read_status(ip, newStatus);
 		if(displayed_node == (nodePtr)ip->fp)
 			ui_itemlist_update_item(ip);
 				
 		/* if this item belongs to a vfolder update the source feed */
 		if(ip->sourceFeed != NULL) {
-g_print("is a vfolder item -> process source item!\n");
 			/* propagate change to source feed */
 			feed_load(ip->sourceFeed);
 			if(NULL != (sourceItem = feed_lookup_item(ip->sourceFeed, ip->nr)))
@@ -208,13 +206,9 @@ g_print("is a vfolder item -> process source item!\n");
 			
 			/* check if the new state changed the rule matching results */
 			if(FALSE == vfolder_check_item(ip))
-{ g_print("new read state forces removing of this item...\n");
 				itemlist_remove_item(ip);
-}
 		} else {
-g_print("is a feed item -> update vfolder copies\n");
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
-g_print("is a feed item -> check for matching vfolder rules\n");
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
 		ui_feedlist_update();
@@ -222,7 +216,6 @@ g_print("is a feed item -> check for matching vfolder rules\n");
 		if(TRUE == newStatus)
 			ui_tray_zero_new();		/* reset tray icon */
 	}
-g_print("set_read() end\n");
 }
 
 void itemlist_toggle_read_status(itemPtr ip) {
@@ -304,7 +297,6 @@ void itemlist_remove_item(itemPtr ip) {
 		feed_remove_item(ip->fp, ip);
 		ui_feedlist_update();
 	} else {
-		g_assert(FALSE == deferred_item_remove);
 		deferred_item_remove = TRUE;
 		g_print("deferring removal of %s\n", ip->title);
 	}

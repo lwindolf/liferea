@@ -173,7 +173,7 @@ void item_free(itemPtr ip) {
 gchar *item_render(itemPtr ip) {
 	struct displayset	displayset;
 	gchar			*buffer = NULL;
-	gchar			*tmp, *tmp2;
+	gchar			*tmp, *tmp2, *tmp3;
 	gboolean		migration = FALSE;
 	
 	displayset.headtable = NULL;
@@ -283,8 +283,17 @@ gchar *item_render(itemPtr ip) {
 			addToHTMLBufferFast(&buffer, displayset.foot);
 			g_free(displayset.foot);
 		}
+		
+		/* add technorati link */
+		tmp3 = xmlURIEscape(item_get_source(ip));
+		tmp2 = g_strdup("file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "technorati.png");
+		tmp = g_strdup_printf(TECHNORATI_LINK, tmp3, tmp2);
+		addToHTMLBufferFast(&buffer, tmp);
+		xmlFree(tmp3);
+		g_free(tmp2);
+		g_free(tmp);
 
-		if (displayset.foottable != NULL) {
+		if(displayset.foottable != NULL) {
 			addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
 			addToHTMLBufferFast(&buffer, displayset.foottable);
 			addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_END);
