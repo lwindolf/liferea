@@ -584,8 +584,7 @@ void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	g_assert(newdialog != NULL);
 	g_assert(propdialog != NULL);
-g_print("get selection\n");
-getSelection(mainwindow);
+
 	sourceentry = lookup_widget(newdialog, "newfeedentry");
 	titleentry = lookup_widget(propdialog, "feednameentry");
 	typeoptionmenu = lookup_widget(newdialog, "typeoptionmenu");

@@ -61,7 +61,7 @@ static void selection_handle(GtkWidget *widget, GtkSelectionData *selection_data
 }
 
 /* ----------------------------------------------------------------------------	*/
-/*  methods to get the selection 						*/
+/*  methods to get the selection (currently unused)				*/
 /* ----------------------------------------------------------------------------	*/   
 
 /* method to request the selection */
@@ -100,8 +100,9 @@ static void selection_received(GtkWidget        *widget,
 		
 	if(NULL == (sourceentry = lookup_widget(newdialog, "newfeedentry")))
 		return;
-		
-	gtk_entry_set_text(GTK_ENTRY(sourceentry), (gchar *)selection_data->data);
+	
+	if(NULL != selection_data->data)
+		gtk_entry_set_text(GTK_ENTRY(sourceentry), (gchar *)selection_data->data);
 
 }
 
@@ -119,7 +120,5 @@ void setupSelection(GtkWidget *window) {
 				 G_CALLBACK(selection_clear), NULL);
 		g_signal_connect(G_OBJECT(selection_widget), "selection_get",
 				 G_CALLBACK(selection_handle), NULL);
-		g_signal_connect(G_OBJECT(window), "selection_received",
-				 G_CALLBACK(selection_received), NULL);
 	}
 }

@@ -4226,7 +4226,7 @@ _ACEOF
 echo "$as_me:$LINENO: result: user agent OS = $uname" >&5
 echo "${ECHO_T}user agent OS = $uname" >&6
 
-ALL_LINGUAS="fr ja"
+ALL_LINGUAS="fr ja ko"
 # On IRIX 5.3, sys/types and inttypes.h are conflicting.
 
 
