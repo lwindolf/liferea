@@ -42,18 +42,12 @@ extern GdkPixbuf	*icons[];
 
 static GtkTreeStore	*itemstore = NULL;
 
-extern gboolean 	itemlist_mode;
-
 static gint		itemlist_loading;	/* freaky workaround for item list focussing problem */
 static gint		disableSortingSaving;
 
 #define	TIMESTRLEN	256
 
 static gchar 		*date_format = NULL;	/* date formatting string */
-
-
-/* displayed_fp should almost always be the same as selected_fp in ui_feedlist */
-nodePtr	displayed_node = NULL;
 
 /* mouse/keyboard interaction callbacks */
 static void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
@@ -76,13 +70,15 @@ void ui_itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer 
 	gint		sortColumn;
 	GtkSortType	sortType;
 	gboolean	sorted;
+	nodePtr		np;
 	
-	if(displayed_node == NULL || disableSortingSaving != 0)
+	np = ui_feedlist_get_selected();	
+	if(np == NULL || disableSortingSaving != 0)
 		return;
 	
 	sorted = gtk_tree_sortable_get_sort_column_id(treesortable, &sortColumn, &sortType);
-	if((FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type))
-		feed_set_sort_column((feedPtr)displayed_node, sortColumn, sortType == GTK_SORT_DESCENDING);
+	if((FST_FEED == np->type) || (FST_VFOLDER == np->type))
+		feed_set_sort_column((feedPtr)np, sortColumn, sortType == GTK_SORT_DESCENDING);
 }
 
 GtkTreeStore * getItemStore(void) {
@@ -178,7 +174,6 @@ static gboolean ui_free_item_ui_data_foreach(GtkTreeModel *model,
 
 void ui_itemlist_clear(void) {
 
-	displayed_node = NULL;
 	gtk_tree_model_foreach(GTK_TREE_MODEL(itemstore), &ui_free_item_ui_data_foreach, NULL);
 	gtk_tree_store_clear(GTK_TREE_STORE(itemstore));
 }
@@ -335,7 +330,6 @@ void ui_itemlist_prefocus(void) {
 	   one for the selected item)!!! */
 
 	itemlist = lookup_widget(mainwindow, "Itemlist");
-	g_assert(NULL != itemlist);
 	
 	/* we need to restore the focus after we temporarily select the itemlist */
 	focus_widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
@@ -372,6 +366,7 @@ void ui_itemlist_prefocus(void) {
    disturbing the user. */
 void ui_itemlist_display(void) {
 	GtkTreeIter	iter;
+	nodePtr		np;
 	itemPtr		ip;
 	gchar		*buffer = NULL;
 	gboolean	valid;
@@ -379,9 +374,9 @@ void ui_itemlist_display(void) {
 
 	g_assert(NULL != mainwindow);
 	
-	if(!itemlist_mode) {
+	if(TRUE == ui_itemlist_get_two_pane_mode()) {
 		/* two pane mode */
-		ui_htmlview_start_output(&buffer, itemlist_mode);
+		ui_htmlview_start_output(&buffer, FALSE);
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 		while(valid) {	
 			gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
@@ -409,11 +404,11 @@ void ui_itemlist_display(void) {
 			/* three pane mode */
 
 			/* display feed info */
-			if(displayed_node) {
-				ui_htmlview_start_output(&buffer, itemlist_mode);
-				if((FST_FEED == displayed_node->type) || 
-				   (FST_VFOLDER == displayed_node->type)) {
-					tmp = feed_render((feedPtr)displayed_node);
+			if(np = ui_feedlist_get_selected()) {
+				ui_htmlview_start_output(&buffer, TRUE);
+				if((FST_FEED == np->type) || 
+				   (FST_VFOLDER == np->type)) {
+					tmp = feed_render((feedPtr)np);
 					addToHTMLBufferFast(&buffer, tmp);
 					g_free(tmp);
 				}
@@ -430,12 +425,12 @@ void ui_itemlist_display(void) {
 	}
 		
 	if(buffer) {
-		if(displayed_node != NULL &&
-		   (FST_FEED == displayed_node->type) &&
-		   ((feedPtr)displayed_node)->source != NULL &&
-		   ((feedPtr)displayed_node)->source[0] != '|' &&
-		   strstr(((feedPtr)displayed_node)->source, "://") != NULL)
-			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)displayed_node)->source);
+		if(np != NULL &&
+		   (FST_FEED == np->type) &&
+		   ((feedPtr)np)->source != NULL &&
+		   ((feedPtr)np)->source[0] != '|' &&
+		   strstr(((feedPtr)np)->source, "://") != NULL)
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)np)->source);
 		else
 			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 		g_free(buffer);
@@ -449,9 +444,6 @@ void ui_itemlist_load_feed(feedPtr fp) {
 	GSList		*itemlist;
 	itemPtr		ip;
 
-	if(itemlist_mode != !feed_get_two_pane_mode(fp))
-		gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));
-
 	/* we depend on the fact that the third column is the favicon column!!! 
 	   if we are in search mode (or have a vfolder) we show the favicon 
 	   column to give a hint where the item comes from ... */
@@ -461,6 +453,7 @@ void ui_itemlist_load_feed(feedPtr fp) {
 		debug0(DEBUG_CACHE, "unloading everything...");
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
 	}
+	
 	feed_load(fp);
 	itemlist = feed_get_item_list(fp);
 	while(NULL != itemlist) {
@@ -486,7 +479,7 @@ void ui_itemlist_load(nodePtr node) {
 	gint		sortColumn;
 	GtkSortType	sortType;
 	gboolean	sorted;
-	  
+
 	itemlist = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
 	model = gtk_tree_view_get_model(itemlist);
 	sorted = gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sortColumn, &sortType);
@@ -496,7 +489,6 @@ void ui_itemlist_load(nodePtr node) {
 	
 	ui_itemlist_clear();
 	/* explicitly no ui_htmlview_clear() !!! */
-	displayed_node = node;
 	g_object_unref(model);
 	itemstore = NULL;
 	model = GTK_TREE_MODEL(getItemStore());
@@ -626,12 +618,12 @@ void on_toggle_unread_status(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	feedPtr		fp;
+	nodePtr		np;
 	
-	if((NULL != displayed_node) && (FST_FEED == displayed_node->type)) {
-		fp = (feedPtr)displayed_node;
+	np = ui_feedlist_get_selected();
+	if((NULL != np) && (FST_FEED == np->type)) {
 		ui_itemlist_clear();
-		feed_remove_items(fp);
+		feed_remove_items((feedPtr)np);
 		ui_feedlist_update();
 	} else {
 		ui_show_error_box(_("You must select a feed to delete its items!"));
@@ -639,16 +631,16 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	feedPtr		fp;
+	nodePtr		np;
 	itemPtr		ip;
 	
-	if((NULL != displayed_node) && (FST_FEED == displayed_node->type)) {
+	np = ui_feedlist_get_selected();
+	if((NULL != np) && (FST_FEED == np->type)) {
 		if(NULL != (ip = ui_itemlist_get_selected())) {
-			fp = (feedPtr)displayed_node;
 			gtk_tree_store_remove(GTK_TREE_STORE(itemstore), &(((ui_item_data*)ip->ui_data)->row));
 			g_free(ip->ui_data);
 			ip->ui_data = NULL;
-			feed_remove_item(fp, ip);
+			feed_remove_item((feedPtr)np, ip);
 			ui_feedlist_update();
 		} else {
 			ui_mainwindow_set_status_bar(_("No item has been selected"));
@@ -796,4 +788,43 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 			break;
 	}	
 	return FALSE;
+}
+
+/*------------------------------------------------------------------------------*/
+/* two/three pane mode callback							*/
+/*------------------------------------------------------------------------------*/
+
+gboolean ui_itemlist_get_two_pane_mode(void) {
+
+	return gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")));
+}
+
+void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
+	gboolean	old_mode;
+	nodePtr		np;
+
+	old_mode = ui_itemlist_get_two_pane_mode();
+	
+	if((NULL != (np = ui_feedlist_get_selected())) &&
+	   ((FST_FEED == np->type) || (FST_VFOLDER == np->type))) 
+		feed_set_two_pane_mode((feedPtr)np, new_mode);
+
+	ui_mainwindow_set_three_pane_mode(!new_mode);
+
+	if(old_mode != new_mode)
+		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")), new_mode);
+}
+
+void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { 
+	nodePtr		np;
+	
+	ui_itemlist_set_two_pane_mode(GTK_CHECK_MENU_ITEM(menuitem)->active);
+
+	if(NULL != (np = ui_feedlist_get_selected())) {
+		/* grab necessary to force HTML widget update (display must
+		   change from feed description to list of items and vica 
+		   versa */
+		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+		ui_itemlist_load(np);
+	}
 }

@@ -156,6 +156,25 @@ void on_popup_toggle_flag(gpointer callback_data,
 					 GtkWidget *widget);
 
 /**
+ * Toggles the two pane mode
+ *
+ * @param meunitem	the clicked menu item
+ * @param user_data	unused
+ */
+void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, 
+					gpointer user_data);
+
+/**
+ * Returns the two pane mode flag (TRUE if active) 
+ */
+gboolean ui_itemlist_get_two_pane_mode(void);
+
+/**
+ * Sets the two pane mode.
+ */
+void ui_itemlist_set_two_pane_mode(gboolean new_mode);
+
+/**
  * Removes all items from the selected feed.
  *
  * @param menuitem The menuitem that was selected.

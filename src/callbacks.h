@@ -63,7 +63,6 @@ void ui_init(gboolean startIconified);
 
 void ui_redraw_widget(gchar *name);
 
-void ui_update(void);
 void ui_show_info_box(const char *format, ...);
 void ui_show_error_box(const char *format, ...);
 

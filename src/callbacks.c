@@ -187,15 +187,8 @@ void on_popup_allunread_selected(void) {
 }
 
 /*------------------------------------------------------------------------------*/
-/* status bar callback, error box function, GUI update function			*/
+/* status bar callback, error box function					*/
 /*------------------------------------------------------------------------------*/
-
-void ui_update(void) {
-	if (!lifereaStarted)
-		return;
-	while(gtk_events_pending())
-		gtk_main_iteration();
-}
 
 void ui_show_error_box(const char *format, ...) {
 	GtkWidget	*dialog;

@@ -66,15 +66,14 @@
 #endif
 GtkWidget 	*mainwindow;
 
-static GtkWidget *htmlview = NULL;
-gfloat zoom;
-
-gboolean	itemlist_mode = TRUE;		/* TRUE means three pane, FALSE means two panes */
+static GtkWidget *htmlview = NULL;		/* HTML rendering widget */
+static gfloat 	zoom;				/* HTML rendering widget zoom level */
 
 /* some prototypes */
 static void ui_mainwindow_restore_position(GtkWidget *window);
 
-GtkWidget *ui_mainwindow_get_active_htmlview() {
+GtkWidget *ui_mainwindow_get_active_htmlview(void) {
+
 	return htmlview;
 }
 
@@ -93,7 +92,7 @@ static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventK
 			default:
 			case 1:
 				modifier_matches = (0 == event->state);
-				if (!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
+				if(!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
 					return FALSE;
 				break;
 			case 2:
@@ -109,36 +108,27 @@ static gboolean ui_mainwindow_htmlview_key_press_cb(GtkWidget *widget, GdkEventK
 		}
 	}
 	return FALSE;
-
 }
 
-void ui_mainwindow_set_mode(gboolean threePane) {
-	
-	if((threePane == itemlist_mode) && (NULL != htmlview))
-		return;
+void ui_mainwindow_set_three_pane_mode(gboolean threePane) {
 		
-	debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
-	gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));	
-	ui_update();
-	if(htmlview != NULL)
-		gtk_widget_destroy(htmlview);
-	htmlview = NULL;
-	ui_update();	
-	htmlview = ui_htmlview_new();
-	gtk_widget_show(htmlview);
-
-	if(threePane == TRUE) {
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
-		gtk_container_add(GTK_CONTAINER (lookup_widget(mainwindow, "viewportThreePaneHtml")), GTK_WIDGET(htmlview));
-	} else {
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
-		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "viewportTwoPaneHtml")), htmlview);
+	if(NULL == htmlview) {
+		htmlview = ui_htmlview_new();
+		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "viewportThreePaneHtml")), GTK_WIDGET(htmlview));
+		g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
+		gtk_widget_show(htmlview);
 	}
 	
 	ui_htmlview_clear(htmlview);
-	ui_htmlview_set_zoom(htmlview, zoom);
-	g_signal_connect(G_OBJECT(htmlview), "key_press_event", GTK_SIGNAL_FUNC(ui_mainwindow_htmlview_key_press_cb), NULL);
-	itemlist_mode = threePane;
+
+	debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
+	if(threePane == TRUE) {
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
+		gtk_widget_reparent(GTK_WIDGET(htmlview), lookup_widget(mainwindow, "viewportThreePaneHtml"));
+	} else {
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
+		gtk_widget_reparent(GTK_WIDGET(htmlview), lookup_widget(mainwindow, "viewportTwoPaneHtml"));
+	}
 }
 
 void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_style) {
@@ -157,7 +147,7 @@ void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_sty
 	
 }
 
-GtkWidget* ui_mainwindow_new() {
+GtkWidget* ui_mainwindow_new(void) {
 
 	GtkWidget *window = create_mainwindow();
 	GtkWidget *toolbar = lookup_widget(window, "toolbar");
@@ -184,7 +174,8 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	gchar	*buffer = NULL;
 
 	/* force two pane mode */
-	gtk_widget_activate(lookup_widget(mainwindow, "toggle_condensed_view"));	
+	ui_feedlist_select(NULL);
+	ui_itemlist_set_two_pane_mode(TRUE);
 	
 	/* set zooming properties */	
 	zoom = getNumericConfValue(LAST_ZOOMLEVEL)/100.;
@@ -295,28 +286,6 @@ void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	ui_mainwindow_update_onlinebtn();
 }
 
-static void ui_mainwindow_toggle_condensed_view(void) {
-	feedPtr		fp;
-	
-	if((NULL != (fp = (feedPtr)ui_feedlist_get_selected())) &&
-	   ((FST_FEED == feed_get_type(fp) || (FST_VFOLDER == feed_get_type(fp)))))
-		feed_set_two_pane_mode(fp, itemlist_mode);	
-	ui_mainwindow_set_mode(!itemlist_mode);
-	ui_itemlist_display();
-}
-
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { 
-
-	if(!itemlist_mode != GTK_CHECK_MENU_ITEM(menuitem)->active)
-		ui_mainwindow_toggle_condensed_view();
-}
-
-void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item) {
-
-	if(!itemlist_mode != GTK_CHECK_MENU_ITEM(item)->active)
-		ui_mainwindow_toggle_condensed_view();
-}
-
 static int ui_mainwindow_set_status_idle(gpointer data) {
 	gchar		*statustext = (gchar *)data;
 	GtkWidget	*statusbar;
@@ -345,7 +314,7 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
 	ui_queue_add(ui_mainwindow_set_status_idle, (gpointer)str); 
 }
 
-void ui_mainwindow_save_position() {
+void ui_mainwindow_save_position(void) {
 	gint x, y, w, h;
 
 	if(!GTK_WIDGET_VISIBLE(mainwindow))

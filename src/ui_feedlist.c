@@ -43,6 +43,7 @@
 #include "favicon.h"
 #include "debug.h"
 #include "ui_notification.h"
+
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
 
@@ -158,7 +159,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 
 	ui_tray_zero_new();
 	
-	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
+	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 		gtk_tree_model_get(model, &iter, FS_PTR, &fp, -1);
 		if(fp != NULL) 
 			type = fp->type;
@@ -172,6 +173,8 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			geometry.min_width=640;
 			g_assert(mainwindow != NULL);
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
+		
+			ui_itemlist_set_two_pane_mode(feed_get_two_pane_mode(fp));
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
@@ -350,7 +353,10 @@ void ui_feedlist_select(nodePtr np) {
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
 }
 
-/* function for finding next unread item */
+/*------------------------------------------------------------------------------*/
+/* next unread callback								*/
+/*------------------------------------------------------------------------------*/
+
 feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
 	feedPtr			fp;
 	nodePtr			ptr;
@@ -387,6 +393,10 @@ feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
 	}
 	return NULL;
 }
+
+/*------------------------------------------------------------------------------*/
+/* refresh feed callback							*/
+/*------------------------------------------------------------------------------*/
 
 static void on_popup_refresh_selected_cb(nodePtr ptr) {
 	feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);

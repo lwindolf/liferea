@@ -1039,7 +1039,7 @@ void feed_free(feedPtr fp) {
 	gchar	*filename = NULL;
 	GSList	*iter;
 	
-	if(displayed_node == (nodePtr)fp) { /* This is not strictly necessary. It just speeds deletion of an entire itemlist. */
+	if(ui_feedlist_get_selected() == (nodePtr)fp) { /* This is not strictly necessary. It just speeds deletion of an entire itemlist. */
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		ui_itemlist_clear();
 	}

@@ -37,7 +37,7 @@ GtkWidget* ui_mainwindow_new();
 
 void ui_mainwindow_finish(GtkWidget *window);
 
-void ui_mainwindow_set_mode(gboolean threePane);
+void ui_mainwindow_set_three_pane_mode(gboolean threePane);
 
 GtkWidget *ui_mainwindow_get_active_htmlview();
 
@@ -71,8 +71,6 @@ void ui_mainwindow_update_onlinebtn(void);
 void ui_mainwindow_save_position();
 
 /* GUI callbacks */
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data);
-void on_popup_toggle_condensed_view(gpointer cb_data, guint cb_action, GtkWidget *item);
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data);
 void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data);
 
