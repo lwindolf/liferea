@@ -42,6 +42,18 @@
 	* Changed the menu/toolbar checkboxes to a radiobutton
 	  list with positive logic.
 
+2004-03-12  Lars Lindner <lars.lindner@gmx.net>
+
+	Version 0.4.6e
+
+	* Fixes a crash when parsing feeds using the
+	  blogChannel RSS module reported on the Debian
+	  bug tracker (237306).
+	* Includes a UTF-8 version of the bulgarian 
+	  translation created by Vladimir Petkov. The
+	  last version contained one in ISO-8859
+	  which is not supported by GTK.
+	  
 2004-03-03  Lars Lindner <lars.lindner@gmx.net>
 
 	Version 0.4.6d

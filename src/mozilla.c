@@ -84,13 +84,11 @@ void mozembed_new_window_cb (GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chr
 void mozembed_link_message_cb (GtkMozEmbed *dummy, gpointer embed) {
 	GtkWidget *statusbar;
 	
-	ui_lock();
 	if(NULL != (statusbar = lookup_widget(mainwindow, "statusbar"))) {
 		g_free(selectedURL);
 		selectedURL = gtk_moz_embed_get_link_message(dummy);
 		gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), selectedURL);
 	}
-	ui_unlock();
 }
 
 /* Sets up a html view widget using GtkMozEmbed.
