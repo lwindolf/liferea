@@ -243,10 +243,8 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	ui_mainwindow_save_position();
 	gtk_widget_hide(mainwindow);
 
-	conf_feedlist_save();
-	
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_save);
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, (gpointer)folder_state_save);
+	conf_feedlist_save();	/* should save feedlist and folder states */
+	feed_unload(NULL);	/* should save all feeds still in memory */	
 	
 	/* save pane proportions */
 	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {
