@@ -49,10 +49,11 @@
 #define IS_FEED(type)		((FST_RSS == type) || \
 				 (FST_CDF == type) || \
 				 (FST_PIE == type) || \
+				 (FST_OPML == type) || \
 				 (FST_HELPFEED == type))
 
 /** macro to test wether a type is a ressource which not regularily updated */				 
-#define IS_DIRECTORY(type)	(FST_OCS == type || FST_OPML == type)
+#define IS_DIRECTORY(type)	(FST_OCS == type)
 				 
 /** macro to test wether a type is only a tree list structure entry */
 #define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
