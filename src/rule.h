@@ -21,14 +21,6 @@
 #ifndef _RULE_H
 #define _RULE_H
 
-/** structure to store a rule instance */
-typedef struct rule {
-	feedPtr		fp;		/* the feed the filter is applied to */
-	gchar		*value;		/* the value of the rule, e.g. a search text */
-	gpointer	ruleInfo;	/* info structure about rule check function */
-	gboolean	additive;	/* is the rule positive logic */
-} *rulePtr;
-
 /** rule info structure */
 typedef struct ruleInfo {
 	gpointer		ruleFunc;	/* the rules test function */
@@ -38,6 +30,14 @@ typedef struct ruleInfo {
 	gchar			*negative;	/* text for negative logic selection */
 	gboolean		needsParameter;	/* some rules may require no parameter... */
 } *ruleInfoPtr;
+
+/** structure to store a rule instance */
+typedef struct rule {
+	feedPtr		fp;		/* the feed the filter is applied to */
+	gchar		*value;		/* the value of the rule, e.g. a search text */
+	ruleInfoPtr	ruleInfo;	/* info structure about rule check function */
+	gboolean	additive;	/* is the rule positive logic */
+} *rulePtr;
 
 /** the list of implemented rules */
 extern struct ruleInfo *ruleFunctions;

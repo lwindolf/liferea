@@ -54,9 +54,12 @@ rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean a
 gboolean rule_check_item(rulePtr rp, itemPtr ip) {
 	ruleInfoPtr	ruleInfo;
 	gboolean	matches = FALSE;
-
-	ruleInfo = (struct ruleInfo *)rp->ruleInfo;
-	return (*((ruleCheckFuncPtr)ruleInfo->ruleFunc))(rp, ip);
+	
+	g_assert(rp != NULL);
+	g_assert(ip != NULL);
+	
+//g_print("%s %s (%s) for (%s)\n", rp->ruleInfo->title, (rp->additive)?rp->ruleInfo->positive:rp->ruleInfo->negative, rp->value, ip->title);
+	return (*((ruleCheckFuncPtr)rp->ruleInfo->ruleFunc))(rp, ip);
 }
 
 void rule_free(rulePtr rp) {
@@ -71,9 +74,6 @@ void rule_free(rulePtr rp) {
 
 static gboolean rule_exact_title_match(rulePtr rp, itemPtr ip) {
 
-	g_assert(rp != NULL);
-	g_assert(ip != NULL);
-
 	if(NULL != item_get_title(ip)) {
 		if(NULL != strstr(item_get_title(ip), rp->value))
 			return TRUE;
@@ -84,9 +84,6 @@ static gboolean rule_exact_title_match(rulePtr rp, itemPtr ip) {
 
 static gboolean rule_exact_description_match(rulePtr rp, itemPtr ip) {
 
-	g_assert(rp != NULL);
-	g_assert(ip != NULL);
-
 	if(NULL != item_get_description(ip)) {
 		if(NULL != strstr(item_get_description(ip), rp->value))
 			return TRUE;
@@ -96,9 +93,6 @@ static gboolean rule_exact_description_match(rulePtr rp, itemPtr ip) {
 }
 
 static gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
-
-	g_assert(rp != NULL);
-	g_assert(ip != NULL);
 
 	if(rule_exact_title_match(rp, ip))
 		return TRUE;
@@ -111,22 +105,12 @@ static gboolean rule_exact_match(rulePtr rp, itemPtr ip) {
 
 static gboolean rule_is_unread(rulePtr rp, itemPtr ip) {
 
-	g_assert(ip != NULL);
-
-	if(item_get_read_status(ip)) 
-		return TRUE;
-		
-	return FALSE;
+	return item_get_read_status(ip);
 }
 
 static gboolean rule_is_flagged(rulePtr rp, itemPtr ip) {
 
-	g_assert(ip != NULL);
-
-	if(item_get_mark(ip)) 
-		return TRUE;
-		
-	return FALSE;
+	return item_get_mark(ip);
 }
 
 /* rule initialization */
