@@ -108,7 +108,7 @@ gchar * extractHTMLNode(xmlNodePtr cur) {
 	return result;
 }
 
-/* converts strings containing any HTML stuff
+/* converts strings containing any HTML stuff to proper HTML
 
    FIXME: still buggy, correctly converts entities and
    preserves encodings, but does loose text inside enclosing
@@ -123,17 +123,20 @@ gchar * unhtmlize(gchar * from_encoding, gchar *string) {
 	if(NULL == string)
 		return NULL;
 	
-	/* only do something if there are entities */
+	/* only do something if there are any entities */
 	if(NULL == (strchr(string, '&')))
 		return string;
-	
+g_print("before:%s\n", string);
 	string = convertToUTF8(from_encoding, string);
-		
+g_print("after:%s\n", string);		
 	length = strlen(string);
 	newstring = (gchar *)g_malloc(length + 1);
 	memset(newstring, 0, length + 1);
+	
 	ctxt = htmlCreatePushParserCtxt(NULL, NULL, newstring, length, 0, (xmlCharEncoding)from_encoding);
-
+	ctxt->sax->warning = NULL;	/* disable XML errors and warnings */
+	ctxt->sax->error = NULL;
+	
         htmlParseChunk(ctxt, string, length, 0);
         htmlParseChunk(ctxt, string, 0, 1);
         pDoc = ctxt->myDoc;
