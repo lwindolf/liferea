@@ -53,12 +53,12 @@ static gboolean download_dequeuer(gpointer user_data);
 
 /* filter idea (and some of the code) was taken from Snownews */
 static char* filter(gchar *cmd, gchar *data, size_t *size) {
-	int fd;
-	gchar *command;
-	const gchar *tmpdir = g_get_tmp_dir();
-	char *tmpfilename;
+	int		fd;
+	gchar		*command;
+	const gchar	*tmpdir = g_get_tmp_dir();
+	char		*tmpfilename;
 	char		*out = NULL;
-	FILE *file, *p;
+	FILE		*file, *p;
 	
 	tmpfilename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea-XXXXXX", tmpdir);
 	
@@ -89,6 +89,8 @@ static char* filter(gchar *cmd, gchar *data, size_t *size) {
 		}
 		pclose(p);
 		out[*size] = '\0';
+	} else {
+		g_warning(_("Error: Could not open pipe \"%s\""), command);
 	}
 	/* Clean up. */
 	unlink (tmpfilename);
@@ -97,33 +99,39 @@ static char* filter(gchar *cmd, gchar *data, size_t *size) {
 }
 
 void download_process(struct request *request) {
-	FILE *f;
-	int status;
+	FILE	*f;
+	size_t	len;
+	int	status;
 
 	request->data = NULL;
+	request->size = 0;
 	if(*(request->source) == '|') {
 		/* if the first char is a | we have a pipe else a file */
-		request->size = 0;
 		debug1(DEBUG_UPDATE, "executing command \"%s\"...\n", (request->source) + 1);
 		f = popen((request->source) + 1, "r");
 		if(NULL != f) {
-			while(!feof(f)) {
-				size_t len;
-				request->data = g_realloc(request->data, request->size+1025);
+			while(!feof(f) && !ferror(f)) {
+				request->data = g_realloc(request->data, request->size + 1025);
 				len = fread(&request->data[request->size], 1, 1024, f);
-				if (len > 0)
+				if(len > 0)
 					request->size += len;
 			}
 			status = pclose(f);
-			if (WIFEXITED(status) && WEXITSTATUS(status) == 0) request->httpstatus = 200;
-			else request->httpstatus = 404;
-			request->data[request->size] = '\0';
+			if(WIFEXITED(status) && WEXITSTATUS(status) == 0)
+				request->httpstatus = 200;
+			else 
+				request->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+			
+			if(NULL != request->data)
+				request->data[request->size] = '\0';
 		} else {
-			ui_mainwindow_set_status_bar(_("Error: Could not open pipe \"%s\""), &request->source[1]);
+			ui_mainwindow_set_status_bar(_("Error: Could not open pipe \"%s\""), (request->source) + 1);
+			request->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 		}
-	} else if (NULL != strstr(request->source, "://")) {
+	} else if(NULL != strstr(request->source, "://")) {
+		/* just a web URL */
 		downloadlib_process_url(request);
-		if (request->httpstatus >= 400) {
+		if(request->httpstatus >= 400) {
 			g_free(request->data);
 			request->data = NULL;
 			request->size = 0;
@@ -132,7 +140,7 @@ void download_process(struct request *request) {
 		if(g_file_test(request->source, G_FILE_TEST_EXISTS)) {
 			/* we have a file... */
 			if((!g_file_get_contents(request->source, &(request->data), &(request->size), NULL)) || (request->data[0] == '\0')) {
-				request->httpstatus = 403;
+				request->httpstatus = 403;	/* FIXME: maybe setting request->returncode would be better */
 				ui_mainwindow_set_status_bar(_("Error: Could not open file \"%s\""), request->source);
 			} else {
 				g_assert(NULL != request->data);
@@ -140,13 +148,12 @@ void download_process(struct request *request) {
 			}
 		} else {
 			ui_mainwindow_set_status_bar(_("Error: There is no file \"%s\""), request->source);
-			request->httpstatus = 404;
-		}
-		
+			request->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+		}		
 	}
 
 	/* And execute the postfilter */
-	if (request->data != NULL && request->filtercmd != NULL) {
+	if(request->data != NULL && request->filtercmd != NULL) {
 		size_t size;
 		gchar *tmp = filter(request->filtercmd, request->data, &size);
 		if (tmp != NULL) {
@@ -155,7 +162,6 @@ void download_process(struct request *request) {
 			request->size = size;
 		}
 	}
-
 }
 
 gpointer download_request_new() {
