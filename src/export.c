@@ -233,7 +233,7 @@ static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
 
 				additive = xmlGetProp(cur, BAD_CAST"additive");
 				if(additive != NULL && !xmlStrcmp(additive, BAD_CAST"true"))
-					vfolder_add_rule(vp, ruleId, value, FALSE);
+					vfolder_add_rule(vp, ruleId, value, TRUE);
 				else
 					vfolder_add_rule(vp, ruleId, value, FALSE);
 				xmlFree(ruleId);
