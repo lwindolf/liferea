@@ -41,7 +41,7 @@
 
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
-#define ITEM_HEAD_START	"<table cellspacing=\"0\" style=\"margin-bottom:5px;width:100%;background:#D5C5B5;border-width:1px;border-style:solid;\"><tr><td style=\"padding:2px;padding-left:5px;padding-right:5px;\">"
+#define ITEM_HEAD_START	"<table cellspacing=\"0\" style=\"margin-bottom:5px;width:100%;background:#D0D0D0;border-width:1px;border-style:solid;\"><tr><td style=\"padding:2px;padding-left:5px;padding-right:5px;\">"
 #define ITEM_HEAD_CHANNEL	"<b>Feed: </b>"
 #define ITEM_HEAD_ITEM		"<b>Item: </b>"
 #define ITEM_HEAD_END	"</td></tr></table>"

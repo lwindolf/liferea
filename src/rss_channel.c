@@ -67,7 +67,8 @@ typedef struct {
 } outputRequest;
 
 /* to store the RSSNsHandler structs for all supported RDF namespace handlers */
-GHashTable	*rss_nslist = NULL;
+GHashTable	*rss_nstable = NULL;	/* duplicate storage: for quick finding... */
+GSList		*rss_nslist = NULL;	/*                    for processing order... */
 
 /* note: the tag order has to correspond with the RSS_CHANNEL_* defines in the header file */
 static gchar *channelTagList[] = {	"title",
@@ -88,6 +89,15 @@ static gchar *channelTagList[] = {	"title",
 static feedPtr 	readRSSFeed(gchar *url);
 static gchar * 	showRSSFeedInfo(RSSChannelPtr cp, gchar *url);
 
+static addNameSpaceHandler(gchar *prefix, gpointer handler) {
+
+	g_assert(NULL != rss_nstable);
+	if(getNameSpaceStatus(prefix)) {
+		rss_nslist = g_slist_append(rss_nslist, handler);
+		g_hash_table_insert(rss_nstable, (gpointer)prefix, g_slist_last(rss_nslist));
+	}
+}
+
 feedHandlerPtr initRSSFeedHandler(void) {
 	feedHandlerPtr	fhp;
 	
@@ -97,30 +107,16 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	memset(fhp, 0, sizeof(struct feedHandler));
 	
 	g_free(rss_nslist);
-	rss_nslist = g_hash_table_new(g_str_hash, g_str_equal);
+	rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
 	
 	/* register RSS name space handlers */
-	if(getNameSpaceStatus(ns_bC_getRSSNsPrefix()))
-		g_hash_table_insert(rss_nslist, (gpointer)ns_bC_getRSSNsPrefix(),
-					        (gpointer)ns_bC_getRSSNsHandler());
-	if(getNameSpaceStatus(ns_dc_getRSSNsPrefix()))
-		g_hash_table_insert(rss_nslist, (gpointer)ns_dc_getRSSNsPrefix(),
-					        (gpointer)ns_dc_getRSSNsHandler());
-	if(getNameSpaceStatus(ns_fm_getRSSNsPrefix()))
-		g_hash_table_insert(rss_nslist, (gpointer)ns_fm_getRSSNsPrefix(),
-					        (gpointer)ns_fm_getRSSNsHandler());					    
-	if(getNameSpaceStatus(ns_slash_getRSSNsPrefix()))
-		g_hash_table_insert(rss_nslist, (gpointer)ns_slash_getRSSNsPrefix(), 
-					        (gpointer)ns_slash_getRSSNsHandler());
-	if(getNameSpaceStatus(ns_content_getRSSNsPrefix()))
-		g_hash_table_insert(rss_nslist, (gpointer)ns_content_getRSSNsPrefix(),
-					        (gpointer)ns_content_getRSSNsHandler());
-	if(getNameSpaceStatus(ns_syn_getRSSNsPrefix()))
-		g_hash_table_insert(rss_nslist, (gpointer)ns_syn_getRSSNsPrefix(),
-					        (gpointer)ns_syn_getRSSNsHandler());
-	if(getNameSpaceStatus(ns_admin_getRSSNsPrefix()))
-		g_hash_table_insert(rss_nslist, (gpointer)ns_admin_getRSSNsPrefix(),
-					        (gpointer)ns_admin_getRSSNsHandler());
+	addNameSpaceHandler(ns_bC_getRSSNsPrefix(), (gpointer)ns_bC_getRSSNsHandler());
+	addNameSpaceHandler(ns_dc_getRSSNsPrefix(), (gpointer)ns_dc_getRSSNsHandler());
+	addNameSpaceHandler(ns_fm_getRSSNsPrefix(), (gpointer)ns_fm_getRSSNsHandler());					    
+	addNameSpaceHandler(ns_slash_getRSSNsPrefix(), (gpointer)ns_slash_getRSSNsHandler());
+	addNameSpaceHandler(ns_content_getRSSNsPrefix(), (gpointer)ns_content_getRSSNsHandler());
+	addNameSpaceHandler(ns_syn_getRSSNsPrefix(), (gpointer)ns_syn_getRSSNsHandler());
+	addNameSpaceHandler(ns_admin_getRSSNsPrefix(), (gpointer)ns_admin_getRSSNsHandler());
 						
 	/* prepare feed handler structure */
 	fhp->readFeed		= readRSSFeed;
@@ -134,6 +130,7 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar			*tmp = NULL;
 	gchar			*encoding;
 	parseChannelTagFunc	fp;
+	GSList			*hp;
 	RSSNsHandler		*nsh;
 	int			i;
 	
@@ -149,7 +146,8 @@ static void parseChannel(RSSChannelPtr c, xmlDocPtr doc, xmlNodePtr cur) {
 		if(NULL != cur->ns) {
 			if (NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
-				if(NULL != (nsh = (RSSNsHandler *)g_hash_table_lookup(rss_nslist, (gpointer)cur->ns->prefix))) {
+				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
+					nsh = (RSSNsHandler *)hp->data;
 					fp = nsh->parseChannelTag;
 					if(NULL != fp)
 						(*fp)(c, doc, cur);
@@ -366,11 +364,11 @@ static feedPtr readRSSFeed(gchar *url) {
 /* HTML output stuff	 							*/
 /* ---------------------------------------------------------------------------- */
 
-/* method called by g_hash_table_foreach from inside the HTML
-   generator functions to output namespace specific infos 
+/* method called by g_slist_foreach for thee HTML
+   generation functions to output namespace specific infos 
    
    not static because its reused by rss_item.c */
-void showRSSFeedNSInfo(gpointer key, gpointer value, gpointer userdata) {
+void showRSSFeedNSInfo(gpointer value, gpointer userdata) {
 	outputRequest	*request = (outputRequest *)userdata;
 	RSSNsHandler	*nsh = (RSSNsHandler *)value;
 	outputFunc	fp;
@@ -434,7 +432,7 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 	request.type = OUTPUT_RSS_CHANNEL_NS_HEADER;
 	request.buffer = &buffer;
 	if(NULL != rss_nslist)
-		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
+		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
 
 	if(NULL != cp->tags[RSS_CHANNEL_IMAGE]) {
 		addToHTMLBuffer(&buffer, IMG_START);
@@ -460,6 +458,11 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 		addToHTMLBuffer(&buffer, TEXT_INPUT_FORM_END);
 	}
 
+	/* process namespace infos */
+	request.type = OUTPUT_RSS_CHANNEL_NS_FOOTER;
+	if(NULL != rss_nslist)
+		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
+
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_START);
 	FEED_FOOT_WRITE(buffer, "language",		cp->tags[RSS_CHANNEL_LANGUAGE]);
 	FEED_FOOT_WRITE(buffer, "copyright",		cp->tags[RSS_CHANNEL_COPYRIGHT]);
@@ -469,11 +472,6 @@ static gchar * showRSSFeedInfo(RSSChannelPtr cp, gchar *url) {
 	FEED_FOOT_WRITE(buffer, "managing editor",	cp->tags[RSS_CHANNEL_MANAGINGEDITOR]);
 	FEED_FOOT_WRITE(buffer, "category",		cp->tags[RSS_CHANNEL_CATEGORY]);
 	addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
-	
-	/* process namespace infos */
-	request.type = OUTPUT_RSS_CHANNEL_NS_FOOTER;
-	if(NULL != rss_nslist)
-		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
-	
+		
 	return buffer;
 }

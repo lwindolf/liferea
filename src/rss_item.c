@@ -48,7 +48,8 @@ typedef struct {
 } outputRequest;
 
 /* uses the same namespace handler as rss_channel */
-extern GHashTable *rss_nslist;
+extern GSList *rss_nslist;
+extern GHashTable *rss_nstable;
 
 static gchar *itemTagList[] = {		"title",
 					"description",
@@ -67,7 +68,8 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip);
 itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar			*tmp, *link;
 	parseItemTagFunc	parseFunc;
-	RSSNsHandler		*nsh;	
+	GSList			*hp;
+	RSSNsHandler		*nsh;
 	RSSItemPtr 		i;
 	itemPtr			ip;
 	int			j;
@@ -94,7 +96,8 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		if(NULL != cur->ns) {		
 			if (NULL != cur->ns->prefix) {
 				g_assert(NULL != rss_nslist);
-				if(NULL != (nsh = (RSSNsHandler *)g_hash_table_lookup(rss_nslist, (gpointer)cur->ns->prefix))) {
+				if(NULL != (hp = (GSList *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix))) {
+					nsh = (RSSNsHandler *)hp->data;
 					parseFunc = nsh->parseItemTag;
 					if(NULL != parseFunc)
 						(*parseFunc)(i, doc, cur);
@@ -167,7 +170,7 @@ itemPtr parseRSSItem(feedPtr fp, RSSChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 /* HTML output stuff	 							*/
 /* ---------------------------------------------------------------------------- */
 
-extern void showRSSFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
+extern void showRSSFeedNSInfo(gpointer value, gpointer userdata);
 
 /* writes item description as HTML into a buffer and returns
   a pointer to it */
@@ -180,31 +183,38 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 	g_assert(NULL != cp);
 	g_assert(NULL != fp);
 	
-	if(NULL != ip->tags[RSS_ITEM_LINK]) {
-		addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
+
+	addToHTMLBuffer(&buffer, ITEM_HEAD_START);		
+	addToHTMLBuffer(&buffer, ITEM_HEAD_CHANNEL);
+	if(NULL != cp->tags[RSS_CHANNEL_LINK]) {
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
 			cp->tags[RSS_CHANNEL_LINK],
 			cp->tags[RSS_CHANNEL_TITLE]);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
-		
-		addToHTMLBuffer(&buffer, HTML_NEWLINE);		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
+	} else {
+		addToHTMLBuffer(&buffer, cp->tags[RSS_CHANNEL_TITLE]);
+	
+	}
+
+	addToHTMLBuffer(&buffer, HTML_NEWLINE);		
+	addToHTMLBuffer(&buffer, ITEM_HEAD_ITEM);
+	if(NULL != ip->tags[RSS_ITEM_LINK]) {
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->tags[RSS_ITEM_LINK], 
 					(NULL != ip->tags[RSS_ITEM_TITLE])?ip->tags[RSS_ITEM_TITLE]:ip->tags[RSS_ITEM_LINK]);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
-		
-		addToHTMLBuffer(&buffer, ITEM_HEAD_END);	
-	}	
+	} else {
+		addToHTMLBuffer(&buffer, (NULL != ip->tags[RSS_ITEM_TITLE])?ip->tags[RSS_ITEM_TITLE]:ip->tags[RSS_ITEM_LINK]);
+	}
+	addToHTMLBuffer(&buffer, ITEM_HEAD_END);
 
 	/* process namespace infos */
 	request.obj = ip;
 	request.buffer = &buffer;
 	request.type = OUTPUT_ITEM_NS_HEADER;	
 	if(NULL != rss_nslist)
-		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
+		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
 
 	if(NULL != cp->tags[RSS_CHANNEL_IMAGE]) {
 		addToHTMLBuffer(&buffer, IMG_START);
@@ -236,7 +246,7 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 	
 	request.type = OUTPUT_ITEM_NS_FOOTER;
 	if(NULL != rss_nslist)
-		g_hash_table_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
+		g_slist_foreach(rss_nslist, showRSSFeedNSInfo, (gpointer)&request);
 
 	return buffer;
 }

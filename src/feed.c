@@ -41,8 +41,8 @@ typedef struct detectStr {
 } *detectStrPtr;
 
 struct detectStr detectPattern[] = {
-	{ FST_OCS,	"xmlns:ocs" 	},	/* must be before RSS!!! because its OCS basically RSS */
-	{ FST_OCS,	"<ocs:" 	},	/* must be before RSS!!! because its OCS basically RSS */
+	{ FST_OCS,	"xmlns:ocs" 	},	/* must be before RSS!!! because OCS is basically RSS */
+	{ FST_OCS,	"<ocs:" 	},	/* must be before RSS!!! because OCS is basically RSS */
 	{ FST_RSS,	"<rdf:RDF" 	},
 	{ FST_RSS,	"<rss" 		},
 	{ FST_CDF,	"<channel>" 	},	/* have to be after RSS!!! */
@@ -489,6 +489,8 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 		g_free(old_fp->description);
 		old_fp->description = new_fp->description;
 		new_fp->description = NULL;
+		
+		saveFeed(old_fp);
 	}
 	
 	old_fp->available = new_fp->available;

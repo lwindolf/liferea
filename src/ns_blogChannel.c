@@ -46,38 +46,33 @@ gchar * ns_bC_getRSSNsPrefix(void) { return ns_bC_prefix; }
 static gchar * getOutlineContents(xmlNodePtr cur) {
 	gchar		*buffer = NULL;
 	gchar		*tmp, *value;
-	gboolean	link = FALSE;
-	xmlAttrPtr	attr;
 
-	attr = cur->properties;
-	while(NULL != attr) {
-		/* get prop value */
-		value = xmlGetNoNsProp(cur, attr->name);
-
-		if(!xmlStrcmp(attr->name, BAD_CAST"text")) {		
-			tmp = g_strdup_printf("%s", value);
-			addToHTMLBuffer(&buffer, tmp);
-			g_free(tmp);
-
-		} else if(!xmlStrcmp(attr->name, BAD_CAST"url")) {		
-			tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value, value);
-			addToHTMLBuffer(&buffer, tmp);
-			g_free(tmp);
-
-		} else if(!xmlStrcmp(attr->name, BAD_CAST"htmlUrl")) {		
-			tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">HTML</a>)", value, value);
-			addToHTMLBuffer(&buffer, tmp);
-			g_free(tmp);
-			
-		} else if(!xmlStrcmp(attr->name, BAD_CAST"xmlUrl")) {		
-			tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">XML</a>)", value, value);
-			addToHTMLBuffer(&buffer, tmp);
-			g_free(tmp);
-			
-		}		
+	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"text"))) {
+		addToHTMLBuffer(&buffer, (gchar *)value);
 		xmlFree(value);
-		attr = attr->next;
 	}
+	
+	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"url"))) {
+		tmp = g_strdup_printf("&nbsp;<a href=\"%s\">%s</a>", value, value);
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+		xmlFree(value);
+	}
+
+	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"htmlUrl"))) {
+		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">HTML</a>)", value, value);
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+		xmlFree(value);
+	}
+			
+	if(NULL != (value = xmlGetNoNsProp(cur, BAD_CAST"htmlUrl"))) {
+		tmp = g_strdup_printf("&nbsp;(<a href=\"%s\">XML</a>)", value, value);
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+		xmlFree(value);
+	}		
+
 	return buffer;
 }
 
@@ -187,7 +182,7 @@ static gchar * ns_bC_doOutput(GHashTable *nsinfos) {
 	if(NULL != (nsvalues = g_hash_table_lookup(nsinfos, (gpointer)ns_bC_prefix))) {
 		
 		if(NULL != (output = g_hash_table_lookup(nsvalues, "blink"))) {
-			output = g_strdup_printf("<a href=\"%s\">%s</a>");
+			output = g_strdup_printf("<p><a href=\"%s\">%s</a></p>", output,output);
 			addToHTMLBuffer(&buffer, BLINK_START);
 			addToHTMLBuffer(&buffer, output);
 			addToHTMLBuffer(&buffer, BLINK_END);

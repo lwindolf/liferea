@@ -154,10 +154,13 @@ GSList * getFeedKeyList(gchar *keyprefix) {
 
 	gconfpath = build_path_str(keyprefix, "feedlist");
 	
-	value = gconf_client_get(client, gconfpath, &err);
-	is_gconf_error(err);
-	list = gconf_value_get_list(value);
-	g_free(value);
+	if(NULL != (value = gconf_client_get(client, gconfpath, &err))) {
+		is_gconf_error(err);
+		list = gconf_value_get_list(value);
+		g_free(value);
+	} else {
+		g_warning(g_strdup_printf(_("internal error! could not retrieve feed list for gconf path %s\n"), gconfpath));
+	}
 	g_free(gconfpath);
 	
 	return list;
