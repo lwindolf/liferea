@@ -48,25 +48,43 @@ static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_da
 struct browser {
 	gchar *id; /**< Unique ID used in storing the prefs */
 	gchar *display; /**< Name to display in the prefs */
-	gchar *defaultplace; /**< Default command.... Use %s to specify URL */
+	gchar *defaultplace; /**< Default command.... Use %s to specify URL. This command is called in the background. */
 	gchar *existingwin;
+	gchar *existingwinremote;
 	gchar *newwin;
+	gchar *newwinremote;
 	gchar *newtab;
+	gchar *newtabremote;
 };
 
 struct browser browsers[] = {
-	{"gnome", "Gnome Default Browser", "gnome-open \"%s\"", NULL, NULL, NULL},
-	{"mozilla", "Mozilla", "mozilla \"%s\"", "mozilla -remote \"openURL(%s)\"",
-	 "mozillax -remote 'openURL(%s,new-window)'", "mozilla -remote 'openURL(%s,new-tab)'"},
-	{"firefox", "Firefox", "firefox \"%s\"", "firefox -a firefox -remote \"openURL(%s)\"",
-	 "firefox -a firefox -remote 'openURL(%s,new-window)'", "firefox -a firefox -remote 'openURL(%s,new-tab)'"},
-	{"netscape", "Netscape", "netscape \"%s\"", NULL, "netscape -remote \"openURL(%s,new-window)\"", NULL},
-	{"opera", "Opera", "opera \"%s\"", "opera -remote \"openurl(%s)\"", "opera -newwindow \"%s\"", "opera -newpage \"%s\""},
-	{"konqueror", "Konqueror", "kfmclient openURL \"%s\"", NULL, NULL, NULL},
-	{NULL, NULL, NULL, NULL, NULL, NULL}
+	{"gnome", "Gnome Default Browser", "gnome-open \"%s\"", NULL, NULL,
+	 NULL, NULL,
+	 NULL, NULL},
+	{"mozilla", "Mozilla", "mozilla \"%s\"",
+	 NULL, "mozilla -remote \"openURL(%s)\"",
+	 NULL, "mozillax -remote 'openURL(%s,new-window)'",
+	 NULL, "mozilla -remote 'openURL(%s,new-tab)'"},
+	{"firefox", "Firefox","firefox \"%s\"",
+	 NULL, "firefox -a firefox -remote \"openURL(%s)\"",
+	 NULL, "firefox -a firefox -remote 'openURL(%s,new-window)'",
+	 NULL, "firefox -a firefox -remote 'openURL(%s,new-tab)'"},
+	{"netscape", "Netscape", "netscape \"%s\"",
+	 NULL, "netscape -remote \"openURL(%s)\"",
+	 NULL, "netscape -remote \"openURL(%s,new-window)\"",
+	 NULL, NULL},
+	{"opera", "Opera","opera \"%s\"",
+	 "opera \"%s\"", "opera -remote \"openURL(%s)\"",
+	 "opera -newwindow \"%s\"", NULL,
+	 "opera -newpage \"%s\"", NULL},
+	{"konqueror", "Konqueror", "kfmclient openURL \"%s\"",
+		 NULL, NULL,
+		 NULL, NULL,
+		 NULL, NULL},
+	{NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL}
 };
 
-gchar *prefs_get_browser_cmd() {
+gchar *prefs_get_browser_remotecmd() {
 	gchar *ret = NULL;
 	gchar *libname;
 	gint place = getNumericConfValue(BROWSER_PLACE);
@@ -78,7 +96,38 @@ gchar *prefs_get_browser_cmd() {
 		struct browser *iter;
 		for (iter = browsers; iter->id != NULL; iter++) {
 			if(!strcmp(libname, iter->id)) {
-				printf("found browser %s\n", iter->id);
+				
+				switch (place) {
+				case 1:
+					ret = g_strdup(iter->existingwinremote);
+					break;
+				case 2:
+					ret = g_strdup(iter->newwinremote);
+					break;
+				case 3:
+					ret = g_strdup(iter->newtabremote);
+					break;
+				}
+			}
+		}
+	}
+	g_free(libname);
+	return ret;
+}
+
+gchar *prefs_get_browser_cmd() {
+	gchar *ret = NULL;
+	gchar *libname;
+	gint place = getNumericConfValue(BROWSER_PLACE);
+	
+	libname = getStringConfValue(BROWSER_ID);
+	if (!strcmp(libname, "manual")) {
+		ret = g_strdup(getStringConfValue(BROWSER_COMMAND));
+	} else {
+		struct browser *iter;
+		for (iter = browsers; iter->id != NULL; iter++) {
+			if(!strcmp(libname, iter->id)) {
+				
 				switch (place) {
 				case 1:
 					ret = g_strdup(iter->existingwin);
@@ -100,6 +149,7 @@ gchar *prefs_get_browser_cmd() {
 		ret = g_strdup(browsers[0].defaultplace);
 	return ret;
 }
+
 
 /*------------------------------------------------------------------------------*/
 /* preferences dialog callbacks 						*/

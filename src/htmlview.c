@@ -345,24 +345,48 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 	GError  *error = NULL;
 	gchar   *cmd, *tmp;
+	gint status;
+	gboolean done = FALSE;
 	
-	cmd = prefs_get_browser_cmd();
 	
-	g_assert(NULL != cmd);
-	if(NULL == strstr(cmd, "%s")) { /* If there is no %s, then just append the URL */
-		tmp = g_strdup_printf("%s \"%s\"", cmd, uri);
-	} else
-		tmp = strreplace(cmd, "%s", uri);
-	g_free(cmd);
+	cmd = prefs_get_browser_remotecmd();
+
+	if (cmd != NULL) {
+		if(NULL == strstr(cmd, "%s")) { /* If there is no %s, then just append the URL */
+			tmp = g_strdup_printf("%s \"%s\"", cmd, uri);
+		} else
+			tmp = strreplace(cmd, "%s", uri);
+		g_free(cmd);
+		g_spawn_command_line_sync(tmp, NULL, NULL, &status, &error);
+		if((NULL != error) && (0 != error->code)) {
+			ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
+			g_error_free(error);
+		} else if (status == 0) {
+			ui_mainwindow_set_status_bar(_("Starting: \"%s\""), tmp);
+			done = TRUE;
+		}
+		
+		g_free(tmp);
+	}
 	
-	g_spawn_command_line_async(tmp, &error);
-	if((NULL != error) && (0 != error->code)) {
-		ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
-		g_error_free(error);
-	} else
-		ui_mainwindow_set_status_bar(_("Starting: \"%s\""), tmp);
+	if (!done) {
+		cmd = prefs_get_browser_cmd();
+		g_assert(cmd != NULL);
+		if(NULL == strstr(cmd, "%s")) { /* If there is no %s, then just append the URL */
+			tmp = g_strdup_printf("%s \"%s\"", cmd, uri);
+		} else
+			tmp = strreplace(cmd, "%s", uri);
+		g_free(cmd);
+		
+		g_spawn_command_line_async(tmp, &error);
+		if((NULL != error) && (0 != error->code)) {
+			ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
+			g_error_free(error);
+		} else
+			ui_mainwindow_set_status_bar(_("Starting: \"%s\""), tmp);
+		g_free(tmp);
+	}
 	
-	g_free(tmp);
 	return TRUE;
 }
 

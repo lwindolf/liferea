@@ -22,6 +22,9 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
+gchar *prefs_get_browser_remotecmd();
+gchar *prefs_get_browser_cmd();
+
 void 
 on_prefbtn_clicked                     (GtkButton       *button,
                                         gpointer user_data);

@@ -41,7 +41,7 @@
 #include "update.h"
 #include "htmlview.h"
 
-#if GTK_CHECK_VERSION(2,4,0)
+/*#if GTK_CHECK_VERSION(2,4,0)
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
  do { \
 	GtkToolItem *item = gtk_tool_button_new(gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), label); \
@@ -51,7 +51,7 @@
 				    item, \
 				    -1); \
  } while (0);
-#else
+ #else*/
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function)      \
  gtk_toolbar_append_item(GTK_TOOLBAR(toolbar), \
 				    label, \
@@ -60,7 +60,7 @@
 					gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), \
 					G_CALLBACK(function), NULL)
 
-#endif
+//#endif
 GtkWidget 	*mainwindow;
 
 static GtkWidget *htmlview = NULL;
@@ -143,7 +143,7 @@ GtkWidget* ui_mainwindow_new() {
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT);
 	else if (!strcmp(toolbar_style, "both"))
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH);
-	else if (!strcmp(toolbar_style, "both_horiz"))
+	else if (!strcmp(toolbar_style, "both_horiz") || !strcmp(toolbar_style, "both-horiz") )
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH_HORIZ);
 	else /* default to icons */
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
