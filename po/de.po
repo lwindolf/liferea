@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-04 19:15+0200\n"
+"POT-Creation-Date: 2004-05-05 16:54+0200\n"
 "PO-Revision-Date: 2003-12-28 09:00+0100\n"
 "Last-Translator: Lars Lindner <lars.linder@gmx.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 "<p>XML Fehler beim Lesen des Feeds! Feed \"%s\" konnte nicht geladen werden!"
 "</p>"
 
-#: src/cdf_channel.c:156 src/feed.c:337 src/ocs_dir.c:457 src/opml.c:147
+#: src/cdf_channel.c:156 src/feed.c:342 src/ocs_dir.c:457 src/opml.c:147
 #: src/pie_feed.c:218 src/rss_channel.c:333
 msgid "<p>Empty document!</p>"
 msgstr "<p>Leeres Dokument!</p>"
@@ -154,33 +154,33 @@ msgstr ""
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr "Konnte Icon-Datei \"%s\" nicht löschen! Bitte löschen Sie sie manuell!"
 
-#: src/feed.c:277
+#: src/feed.c:281
 msgid "could not write XML item node!\n"
 msgstr ""
 
-#: src/feed.c:286
+#: src/feed.c:290
 msgid "could not create XML feed node for feed cache document!"
 msgstr "Konnte XML Feed Node für Cache-Datei nicht erzeugen!"
 
-#: src/feed.c:291
+#: src/feed.c:295
 msgid "could not create XML document!"
 msgstr "Konnte XML Datei nicht anlegen!"
 
-#: src/feed.c:321
+#: src/feed.c:326
 #, fuzzy, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Fehler beim Lesen der Cache-Datei \"%s\" ! Cache-Datei konnte nicht geladen "
 "werden!"
 
-#: src/feed.c:322
+#: src/feed.c:327
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Fehler beim Lesen der Cache-Datei \"%s\" ! Cache-Datei konnte nicht geladen "
 "werden!"
 
-#: src/feed.c:331
+#: src/feed.c:336
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -189,112 +189,112 @@ msgstr ""
 "<p>XML Fehler beim Lesen der Cache-Datei \"%s\" ! Cache-Datei konnte nicht "
 "geladen werden!</p>"
 
-#: src/feed.c:346
+#: src/feed.c:351
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" ist keine gültige Cache-Datei! Konnte Cache-Datei nicht lesen!</p>"
 
-#: src/feed.c:389
+#: src/feed.c:394
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr ""
 
-#: src/feed.c:517
+#: src/feed.c:530
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" hat keine neuen Schlagzeilen."
 
-#: src/feed.c:519
+#: src/feed.c:532
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" hat %d neue Schlagzeilen."
 
-#: src/feed.c:615
+#: src/feed.c:632
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" hat sich seit dem letzten Update nicht verändert."
 
-#: src/feed.c:627
+#: src/feed.c:642
 msgid ""
 "Could not detect the type of this feed! Please check if the URL really "
 "points to a ressource provided in one of the supported syndication formats!"
 msgstr ""
 
-#: src/feed.c:662
+#: src/feed.c:677
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualisiert.."
 
-#: src/feed.c:668
+#: src/feed.c:683
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 "Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert."
 
-#: src/feed.c:680
+#: src/feed.c:694
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" ist nicht verfügbar!"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:773 src/net/netio.c:478
+#: src/feed.c:789 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "Dieses Feed existiert nicht mehr. Bitte entfernen Sie das Abonnement!"
 
-#: src/feed.c:774
+#: src/feed.c:790
 msgid "Payment Required"
 msgstr "Bezahlung erforderlich"
 
-#: src/feed.c:775
+#: src/feed.c:791
 msgid "Access Forbidden"
 msgstr "Zugriff verweigert"
 
-#: src/feed.c:776
+#: src/feed.c:792
 msgid "Ressource Not Found"
 msgstr "Ressource nicht gefunden"
 
-#: src/feed.c:777
+#: src/feed.c:793
 msgid "Method Not Allowed"
 msgstr "Methode nicht erlaubt"
 
-#: src/feed.c:778
+#: src/feed.c:794
 msgid "Not Acceptable"
 msgstr "Ungültig"
 
-#: src/feed.c:779
+#: src/feed.c:795
 msgid "Proxy Authentication Required"
 msgstr "Proxy Authentifizierung nötig"
 
-#: src/feed.c:780
+#: src/feed.c:796
 msgid "Request Time-Out"
 msgstr "Antwortzeit überschritten"
 
-#: src/feed.c:781
+#: src/feed.c:797
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 "Dieser Feed existiert nicht (mehr). Bitte entfernen Sie das Abonnement!"
 
-#: src/feed.c:787
+#: src/feed.c:803
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr ""
 "Auf den Feed kann nicht zugegriffen werden: Der Server gab eine nicht "
 "unterstützte Weiterleitung zurück"
 
-#: src/feed.c:788
+#: src/feed.c:804
 msgid "Client Error"
 msgstr ""
 
-#: src/feed.c:789
+#: src/feed.c:805
 msgid "Server Error"
 msgstr ""
 
-#: src/feed.c:790
+#: src/feed.c:806
 msgid "(unknown error class)"
 msgstr ""
 
-#: src/feed.c:812
+#: src/feed.c:828
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
@@ -302,7 +302,7 @@ msgstr ""
 "Es trat ein Fehler beim Einlesen des Abonnements auf. Bitte überfrüfen Sie "
 "die URL und die Ausgabe auf der Konsole."
 
-#: src/feed.c:940
+#: src/feed.c:956
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
@@ -1284,42 +1284,42 @@ msgstr "Browser Befehl gescheitert: %s"
 msgid "starting: \"%s\""
 msgstr "Suche nach \"%s\""
 
-#: src/ui_feedlist.c:317 src/ui_itemlist.c:607
+#: src/ui_feedlist.c:321 src/ui_itemlist.c:607
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_feedlist.c:329 src/ui_feedlist.c:346 src/ui_feedlist.c:389
-#: src/ui_feedlist.c:390
+#: src/ui_feedlist.c:333 src/ui_feedlist.c:350 src/ui_feedlist.c:393
+#: src/ui_feedlist.c:394
 msgid "You have to select a feed entry!"
 msgstr "Es muß ein Abonnement ausgewählt werden!"
 
-#: src/ui_feedlist.c:354
+#: src/ui_feedlist.c:358
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
 "Sie können die Hilfe nicht löschen! Schalten Sie die Anzeige der Hilfe in "
 "den Programm-Einstellungen ab."
 
-#: src/ui_feedlist.c:358
+#: src/ui_feedlist.c:362
 msgid "Deleting entry"
 msgstr "Lösche Feed"
 
-#: src/ui_feedlist.c:423
+#: src/ui_feedlist.c:427
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr ""
 "Der Anbieter dieses Feeds gibt ein Aktualisierungsinterval von %d Minuten "
 "vor."
 
-#: src/ui_feedlist.c:425
+#: src/ui_feedlist.c:429
 msgid "This feed specifies no default update interval."
 msgstr "Dieser Feed hat kein Default-Update-Intervall"
 
-#: src/ui_feedlist.c:471
+#: src/ui_feedlist.c:475
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 
-#: src/ui_feedlist.c:503
+#: src/ui_feedlist.c:507
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
@@ -1327,7 +1327,7 @@ msgstr ""
 "Der Typ des abonnierten Feeds konnte nicht ermittelt werden. Bitte "
 "abonnieren Sie ihn erneut und wählen den Typ des Feeds selbst."
 
-#: src/ui_feedlist.c:520
+#: src/ui_feedlist.c:524
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1342,7 +1342,7 @@ msgstr ""
 "verfügbar. Versuchen Sie entweder den Feed später zu aktualisieren oder "
 "löschen Sie ihn über das Kontextmenü aus der Feed-Liste.\n"
 
-#: src/ui_feedlist.c:585
+#: src/ui_feedlist.c:589
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 

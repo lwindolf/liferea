@@ -9,13 +9,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISLD Localization Project VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-03 01:45+0200\n"
+"POT-Creation-Date: 2004-05-05 16:54+0200\n"
 "PO-Revision-Date: 2004-05-05 10:53+0300\n"
 "Last-Translator: Vladimir Petkov<vpetkov@i-space.org> <vpetkov@i-space.org>\n"
 "Language-Team: InterSpace Media Art Center <vpetkov@i-space.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/support.c:90 src/support.c:114
 #, c-format
@@ -30,7 +30,7 @@ msgstr ""
 "<p>XML грешка по време на четенето на абонамента! Абонаментът \"%s\" не може "
 "да бъде зареден!</p>"
 
-#: src/cdf_channel.c:156 src/feed.c:337 src/ocs_dir.c:457 src/opml.c:147
+#: src/cdf_channel.c:156 src/feed.c:342 src/ocs_dir.c:457 src/opml.c:147
 #: src/pie_feed.c:218 src/rss_channel.c:333
 msgid "<p>Empty document!</p>"
 msgstr "<p>Празен документ!</p>"
@@ -59,7 +59,8 @@ msgstr "[Четенето беше прекъснато!]"
 
 #: src/common.c:353 src/common.c:401
 msgid "internal error! time conversion error! mktime failed!\n"
-msgstr "вътрешна грешка! грешка при преустройването на датата·!·mktime·неуспешно!\n"
+msgstr ""
+"вътрешна грешка! грешка при преустройването на датата·!·mktime·неуспешно!\n"
 
 #: src/common.c:356
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
@@ -115,39 +116,42 @@ msgstr "Грешка при преименуване·%s·to·%s\n"
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr ""
 
-#: src/export.c:273 src/export.c:275
+#: src/export.c:275 src/export.c:277
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr "XML грешка по време на четенето на кеш файла! \"%s\" не може да бъде зареден!"
+msgstr ""
+"XML грешка по време на четенето на кеш файла! \"%s\" не може да бъде зареден!"
 
-#: src/export.c:279 src/export.c:281
+#: src/export.c:281 src/export.c:283
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr "Празен документ! OPML·документа·\"%s\"·не трябва да е празне при импортиране."
+msgstr ""
+"Празен документ! OPML·документа·\"%s\"·не трябва да е празне при импортиране."
 
-#: src/export.c:289 src/export.c:291
+#: src/export.c:291 src/export.c:293
 #, c-format
 msgid "\"%s\" is no valid OPML document! Liferea cannot import this file!"
-msgstr "\"%s\" не е валиден OPML документ! Liferea не може да импортира този файл!"
+msgstr ""
+"\"%s\" не е валиден OPML документ! Liferea не може да импортира този файл!"
 
-#: src/export.c:363 src/export.c:376
+#: src/export.c:365 src/export.c:378
 msgid "internal error! could not find file dialog select button!"
 msgstr ""
 
-#: src/export.c:399
+#: src/export.c:401
 msgid "Error while exporting feed list!"
 msgstr "Грешка при експортирането на списъкът с абонаменти!"
 
-#: src/export.c:401
+#: src/export.c:403
 msgid "Feed List exported!"
 msgstr "Списъкът с абонаменти е експортиран успешно!"
 
-#: src/export.c:417
+#: src/export.c:419
 msgid "imported feed list"
 msgstr "Вмъкнат списък с абонаменти"
 
-#: src/export.c:423
+#: src/export.c:425
 msgid "internal error! could not get a new folder key!"
 msgstr ""
 
@@ -156,31 +160,33 @@ msgstr ""
 msgid "Could not delete icon file %s! Please remove manually!"
 msgstr "Не може да се изтрие иконата \"%s\"! Моля, премахнете я ръчно!"
 
-#: src/feed.c:277
+#: src/feed.c:281
 msgid "could not write XML item node!\n"
 msgstr "Не може да запише XML запис\n"
 
-#: src/feed.c:286
+#: src/feed.c:290
 msgid "could not create XML feed node for feed cache document!"
 msgstr ""
 
-#: src/feed.c:291
+#: src/feed.c:295
 msgid "could not create XML document!"
 msgstr "Не може да създаде XML документ!"
 
-#: src/feed.c:321
+#: src/feed.c:326
 #, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
-msgstr "Грешка по време на четенето на кеш файла \"%s\"·!·Кеш файлът не може да бъде зареден!"
+msgstr ""
+"Грешка по време на четенето на кеш файла \"%s\"·!·Кеш файлът не може да бъде "
+"зареден!"
 
-#: src/feed.c:322
+#: src/feed.c:327
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе да "
 "бъде зареден!"
 
-#: src/feed.c:331
+#: src/feed.c:336
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -189,104 +195,110 @@ msgstr ""
 "<p>XML грешка по време на четенето на кеш файла \"%s\" ! Кеш файлът неможе "
 "да бъде зареден!</p>"
 
-#: src/feed.c:346
+#: src/feed.c:351
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" не е валиден кеш файл. Кеш файлът не може да бъде прочетен!</p>"
 
-#: src/feed.c:389
+#: src/feed.c:394
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr ""
 
-#: src/feed.c:517
+#: src/feed.c:530
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr "\"%s\" няма нови записи."
 
-#: src/feed.c:519
+#: src/feed.c:532
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr "\"%s\" има %d нови записи."
 
-#: src/feed.c:615
+#: src/feed.c:632
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr "\"%s\" не се промениха след последното осъвременяване."
 
-#: src/feed.c:654
+#: src/feed.c:642
+msgid ""
+"Could not detect the type of this feed! Please check if the URL really "
+"points to a ressource provided in one of the supported syndication formats!"
+msgstr ""
+
+#: src/feed.c:677
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" осъвременени..."
 
-#: src/feed.c:660
+#: src/feed.c:683
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr "Адресът на \"%s\" беше постоянно променен и осъвременен."
 
-#: src/feed.c:670
+#: src/feed.c:694
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr "\"%s\" не е достъпен"
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:763 src/net/netio.c:478
+#: src/feed.c:789 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr "Този абонамент вече не съществува!"
 
-#: src/feed.c:764
+#: src/feed.c:790
 msgid "Payment Required"
 msgstr "Изисква се разплащане"
 
-#: src/feed.c:765
+#: src/feed.c:791
 msgid "Access Forbidden"
 msgstr "Забранен Достъп"
 
-#: src/feed.c:766
+#: src/feed.c:792
 msgid "Ressource Not Found"
 msgstr "Ресурсът не е намерен"
 
-#: src/feed.c:767
+#: src/feed.c:793
 msgid "Method Not Allowed"
 msgstr "Непозволен метод"
 
-#: src/feed.c:768
+#: src/feed.c:794
 msgid "Not Acceptable"
 msgstr "Неприемлив"
 
-#: src/feed.c:769
+#: src/feed.c:795
 msgid "Proxy Authentication Required"
 msgstr "Нужна е идентификация в Proxy сървъра"
 
-#: src/feed.c:770
+#: src/feed.c:796
 msgid "Request Time-Out"
 msgstr "Заявката изтече"
 
-#: src/feed.c:771
+#: src/feed.c:797
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Този ресурс вече не съществува. Моля да се отпишете!"
 
-#: src/feed.c:777
+#: src/feed.c:803
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr ""
 "Абонаментът не е на разположение:·Сървърът докладва занеподдържано "
 "пренасочване!"
 
-#: src/feed.c:778
+#: src/feed.c:804
 msgid "Client Error"
 msgstr "Грешка в клиента"
 
-#: src/feed.c:779
+#: src/feed.c:805
 msgid "Server Error"
 msgstr "Грешка в Сървъра"
 
-#: src/feed.c:780
+#: src/feed.c:806
 msgid "(unknown error class)"
 msgstr "(непознат клас за грешка)"
 
-#: src/feed.c:802
+#: src/feed.c:828
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
@@ -294,7 +306,7 @@ msgstr ""
 "Имаше проблем по време на четенето на абонамента. Моля проверете адресът и "
 "изходната информация в конзолата!"
 
-#: src/feed.c:930
+#: src/feed.c:956
 #, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr "Кеш файлът \"%s\" неможе да бъде изтрит! Моля, премахнете го ръчно!"
@@ -332,7 +344,9 @@ msgid "trying to load browser module %s (%s)\n"
 msgstr ""
 
 #: src/htmlview.c:195
-msgid "Sorry, I was not able to load any installed browser modules!"
+msgid ""
+"Sorry, I was not able to load any installed browser modules! Try the --debug-"
+"all option to get debug information!"
 msgstr ""
 
 #: src/htmlview.c:318
@@ -783,9 +797,10 @@ msgid ""
 "which renderers are installed on your computer, different options will be "
 "available. Restart Liferea for changes to take effect."
 msgstr ""
-"Liferea показва съдържанието на RSS източници, използвайки различни HTML двигатели."
-"В зависимост, кой двигател е инсталиран на вашия компютър, ще имате различни"
-"възможности. Рестартирайте Liferea за да се задействат направените от вас промени."
+"Liferea показва съдържанието на RSS източници, използвайки различни HTML "
+"двигатели.В зависимост, кой двигател е инсталиран на вашия компютър, ще "
+"имате различнивъзможности. Рестартирайте Liferea за да се задействат "
+"направените от вас промени."
 
 #: src/interface.c:1569
 msgid "View Headlines With"
@@ -1272,52 +1287,48 @@ msgstr "Командата за стартиране на браузър е не
 msgid "starting: \"%s\""
 msgstr "стартира: \"%s\""
 
-#: src/ui_feedlist.c:141 src/ui_folder.c:374
-msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
-msgstr ""
-
-#: src/ui_feedlist.c:318 src/ui_itemlist.c:607
+#: src/ui_feedlist.c:321 src/ui_itemlist.c:607
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_feedlist.c:330 src/ui_feedlist.c:347 src/ui_feedlist.c:390
-#: src/ui_feedlist.c:391
+#: src/ui_feedlist.c:333 src/ui_feedlist.c:350 src/ui_feedlist.c:393
+#: src/ui_feedlist.c:394
 msgid "You have to select a feed entry!"
 msgstr "Трябва да изберете адрес на източник"
 
-#: src/ui_feedlist.c:355
+#: src/ui_feedlist.c:358
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
-"Не можете да изтриете помощта!·Редактирайте настройките на програмата за да спрете зареждането"
-"на помощта."
+"Не можете да изтриете помощта!·Редактирайте настройките на програмата за да "
+"спрете зарежданетона помощта."
 
-#: src/ui_feedlist.c:359
+#: src/ui_feedlist.c:362
 msgid "Deleting entry"
 msgstr "Изтрива запис"
 
-#: src/ui_feedlist.c:424
+#: src/ui_feedlist.c:427
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr ""
 "Доставчикът на този източник предлага да поставите периот за осъвременяване "
 "от %d минути"
 
-#: src/ui_feedlist.c:426
+#: src/ui_feedlist.c:429
 msgid "This feed specifies no default update interval."
 msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
 
-#: src/ui_feedlist.c:472
+#: src/ui_feedlist.c:475
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 
-#: src/ui_feedlist.c:504
+#: src/ui_feedlist.c:507
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
 
-#: src/ui_feedlist.c:521
+#: src/ui_feedlist.c:524
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1332,7 +1343,7 @@ msgstr ""
 "Можете да се опитате да изтеглите отново информацията или да премахнете "
 "абонамента, чрез контекстното меню от списъкът с абонаментите.\n"
 
-#: src/ui_feedlist.c:586
+#: src/ui_feedlist.c:589
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 
@@ -1355,6 +1366,10 @@ msgstr "Папката трябва да бъде празна за да я из
 #: src/ui_folder.c:243
 msgid "<i>(empty)</i>"
 msgstr "<i>(празен)</i>"
+
+#: src/ui_folder.c:374
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr ""
 
 #: src/ui_itemlist.c:285
 msgid "Date"

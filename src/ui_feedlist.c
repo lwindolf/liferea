@@ -19,6 +19,7 @@
 */
 
 #include <gtk/gtk.h>
+#include "guitreemodelfilter.h"
 #include "support.h"
 #include "interface.h"
 #include "callbacks.h"
@@ -45,13 +46,17 @@ static gint selectableTypes[] = {	FST_AUTODETECT,
 #define MAX_TYPE_SELECT	6
 
 extern GtkWidget	*mainwindow;
-extern GHashTable   *feedHandler;
+extern GHashTable	*feedHandler;
 
-GtkTreeStore	*feedstore = NULL;
+GtkTreeModel		*filter;
+GtkTreeStore		*feedstore = NULL;
 
 GtkWidget		*filedialog = NULL;
 static GtkWidget	*newdialog = NULL;
 static GtkWidget	*propdialog = NULL;
+
+/* flag to enable/disable the GtkTreeModel filter */
+gboolean filter_feeds_without_unread_headlines = FALSE;
 
 folderPtr ui_feedlist_get_parent(nodePtr ptr) {
 	GtkTreeIter *iter = &((ui_data*)(ptr->ui_data))->row;
@@ -166,8 +171,8 @@ void ui_feedlist_update_(GtkTreeIter *iter) {
 	if (ptr != NULL)
 		((ui_data*)(ptr->ui_data))->row = *iter;
 
-	while (valid) {
-	ui_feedlist_update_(&childiter);
+	while(valid) {
+		ui_feedlist_update_(&childiter);
 		valid = gtk_tree_model_iter_next(tree_model, &childiter);
 	}
 
@@ -177,6 +182,10 @@ void ui_feedlist_update_(GtkTreeIter *iter) {
 		else
 			ui_feed_update((feedPtr)ptr);
 	}
+	
+	/* FIXME: bad performance...*/
+	gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
+	ui_redraw_widget("feedlist");
 }
 
 void ui_feed_update(feedPtr fp) {
@@ -251,6 +260,21 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	}
 }
 
+static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, gpointer data) {
+	gint		count;
+	gchar		*key;
+
+	if(!filter_feeds_without_unread_headlines)
+		return TRUE;
+		
+	gtk_tree_model_get(model, iter, FS_UNREAD, &count, -1);
+
+	if(0 != count) 
+		return TRUE;
+	else 
+		return FALSE;
+}
+
 /* sets up the entry list store and connects it to the entry list
    view in the main window */
 void ui_feedlist_init(GtkWidget *mainview) {
@@ -267,7 +291,15 @@ void ui_feedlist_init(GtkWidget *mainview) {
 	                               GDK_TYPE_PIXBUF,
 	                               G_TYPE_POINTER,
 	                               G_TYPE_INT);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(mainview), GTK_TREE_MODEL(feedstore));
+
+	filter = gui_tree_model_filter_new(GTK_TREE_MODEL(feedstore), NULL);
+
+	gui_tree_model_filter_set_visible_func(GUI_TREE_MODEL_FILTER(filter),
+	                                       filter_visible_function,
+	                                       NULL,
+	                                       NULL);
+
+	gtk_tree_view_set_model(GTK_TREE_VIEW(mainview), GTK_TREE_MODEL(filter));
 
 	/* we only render the state and title */
 	iconRenderer = gtk_cell_renderer_pixbuf_new();
@@ -338,6 +370,16 @@ void on_popup_refresh_selected(gpointer callback_data,
 }
 
 /*------------------------------------------------------------------------------*/
+/* feedlist filter [de]activation callback					*/
+/*------------------------------------------------------------------------------*/
+
+void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gpointer user_data) {
+
+	filter_feeds_without_unread_headlines = GTK_CHECK_MENU_ITEM(menuitem)->active;
+	gui_tree_model_filter_refilter(GUI_TREE_MODEL_FILTER(filter));
+}
+
+/*------------------------------------------------------------------------------*/
 /* delete entry callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
@@ -387,7 +429,7 @@ void on_popup_prop_selected(gpointer callback_data,
 	GtkAdjustment	*updateInterval;
 	gint		defaultInterval;
 	gchar		*defaultIntervalStr;
-     feedPtr fp = (feedPtr)callback_data;
+	feedPtr		fp = (feedPtr)callback_data;
 	
 	if(!fp || !FEED_MENU(feed_get_type(fp))) {
 		g_message(_("You have to select a feed entry!"));

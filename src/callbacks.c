@@ -124,6 +124,22 @@ void ui_init(void) {
  	g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
 }
 
+void ui_redraw_widget(gchar *name) {
+	GtkWidget	*list;
+	gchar		*msg;
+	
+	if(NULL == mainwindow)
+		return;
+	
+	if(NULL != (list = lookup_widget(mainwindow, name)))
+		gtk_widget_queue_draw(list);
+	else {
+		msg = g_strdup_printf("Fatal! Could not lookup widget \"%s\"!", name);
+		g_warning(msg);
+		g_free(msg);
+	}
+}
+	
 /*------------------------------------------------------------------------------*/
 /* simple callbacks which don't belong to item or feed list 			*/
 /*------------------------------------------------------------------------------*/
@@ -284,4 +300,3 @@ void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gtk_widget_show(dialog);
 
 }
-

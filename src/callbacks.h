@@ -145,3 +145,8 @@ void
 on_menu_folder_rename                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
+
+void
+on_filter_feeds_without_unread_headlines_activate
+                                        (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);

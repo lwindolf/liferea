@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-04 19:15+0200\n"
+"POT-Creation-Date: 2004-05-05 16:54+0200\n"
 "PO-Revision-Date: 2003-10-21 14:13+0200\n"
 "Last-Translator: Stephane Jourdanéphane Jourdan <stephane.jourdan@itris.fr>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
@@ -30,7 +30,7 @@ msgstr "Fichier pixmap %s introuvable."
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 
-#: src/cdf_channel.c:156 src/feed.c:337 src/ocs_dir.c:457 src/opml.c:147
+#: src/cdf_channel.c:156 src/feed.c:342 src/ocs_dir.c:457 src/opml.c:147
 #: src/pie_feed.c:218 src/rss_channel.c:333
 msgid "<p>Empty document!</p>"
 msgstr ""
@@ -161,143 +161,143 @@ msgstr ""
 "Impossible de détecter le type de canal ! Veuillez sélectionner manuellement "
 "le type du canal."
 
-#: src/feed.c:277
+#: src/feed.c:281
 msgid "could not write XML item node!\n"
 msgstr ""
 
-#: src/feed.c:286
+#: src/feed.c:290
 msgid "could not create XML feed node for feed cache document!"
 msgstr ""
 
-#: src/feed.c:291
+#: src/feed.c:295
 #, fuzzy
 msgid "could not create XML document!"
 msgstr "Imposible d'allouer de la mémoire !"
 
-#: src/feed.c:321
+#: src/feed.c:326
 #, c-format
 msgid "Error while reading cache file\"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/feed.c:322
+#: src/feed.c:327
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/feed.c:331
+#: src/feed.c:336
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
 
-#: src/feed.c:346
+#: src/feed.c:351
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 
-#: src/feed.c:389
+#: src/feed.c:394
 #, c-format
 msgid "There were errors while parsing cache file \"%s\"!"
 msgstr ""
 
-#: src/feed.c:517
+#: src/feed.c:530
 #, c-format
 msgid "\"%s\" has no new items."
 msgstr ""
 
-#: src/feed.c:519
+#: src/feed.c:532
 #, c-format
 msgid "\"%s\" has %d new items."
 msgstr ""
 
-#: src/feed.c:615
+#: src/feed.c:632
 #, c-format
 msgid "\"%s\" has not changed since last update."
 msgstr ""
 
-#: src/feed.c:627
+#: src/feed.c:642
 msgid ""
 "Could not detect the type of this feed! Please check if the URL really "
 "points to a ressource provided in one of the supported syndication formats!"
 msgstr ""
 
-#: src/feed.c:662
+#: src/feed.c:677
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: src/feed.c:668
+#: src/feed.c:683
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated."
 msgstr ""
 
-#: src/feed.c:680
+#: src/feed.c:694
 #, c-format
 msgid "\"%s\" is not available!"
 msgstr ""
 
 #. The feed is gone. Politely remind the user to unsubscribe.
-#: src/feed.c:773 src/net/netio.c:478
+#: src/feed.c:789 src/net/netio.c:478
 #, c-format
 msgid "The feed no longer exists. Please unsubscribe!"
 msgstr ""
 
-#: src/feed.c:774
+#: src/feed.c:790
 msgid "Payment Required"
 msgstr ""
 
-#: src/feed.c:775
+#: src/feed.c:791
 msgid "Access Forbidden"
 msgstr ""
 
-#: src/feed.c:776
+#: src/feed.c:792
 msgid "Ressource Not Found"
 msgstr ""
 
-#: src/feed.c:777
+#: src/feed.c:793
 msgid "Method Not Allowed"
 msgstr ""
 
-#: src/feed.c:778
+#: src/feed.c:794
 msgid "Not Acceptable"
 msgstr ""
 
-#: src/feed.c:779
+#: src/feed.c:795
 msgid "Proxy Authentication Required"
 msgstr ""
 
-#: src/feed.c:780
+#: src/feed.c:796
 msgid "Request Time-Out"
 msgstr ""
 
-#: src/feed.c:781
+#: src/feed.c:797
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 
-#: src/feed.c:787
+#: src/feed.c:803
 msgid "Feed not available: Server signalized unsupported redirection!"
 msgstr ""
 
-#: src/feed.c:788
+#: src/feed.c:804
 msgid "Client Error"
 msgstr ""
 
-#: src/feed.c:789
+#: src/feed.c:805
 msgid "Server Error"
 msgstr ""
 
-#: src/feed.c:790
+#: src/feed.c:806
 msgid "(unknown error class)"
 msgstr ""
 
-#: src/feed.c:812
+#: src/feed.c:828
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output!"
 msgstr ""
 
-#: src/feed.c:940
+#: src/feed.c:956
 #, fuzzy, c-format
 msgid "Could not delete cache file %s! Please remove manually!"
 msgstr ""
@@ -1256,51 +1256,51 @@ msgstr "commande du navigateur"
 msgid "starting: \"%s\""
 msgstr "Cherche \"%s\""
 
-#: src/ui_feedlist.c:317 src/ui_itemlist.c:607
+#: src/ui_feedlist.c:321 src/ui_itemlist.c:607
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 "Erreur interne ! Impossible de charger la sélection en arborescence des "
 "canaux !\n"
 
-#: src/ui_feedlist.c:329 src/ui_feedlist.c:346 src/ui_feedlist.c:389
-#: src/ui_feedlist.c:390
+#: src/ui_feedlist.c:333 src/ui_feedlist.c:350 src/ui_feedlist.c:393
+#: src/ui_feedlist.c:394
 #, fuzzy
 msgid "You have to select a feed entry!"
 msgstr "Vous ne pouvez pas effacer les canaux d'aide !"
 
-#: src/ui_feedlist.c:354
+#: src/ui_feedlist.c:358
 msgid ""
 "You can't delete the help! Edit the preferences to disable loading the help."
 msgstr ""
 
-#: src/ui_feedlist.c:358
+#: src/ui_feedlist.c:362
 msgid "Deleting entry"
 msgstr "Efface l'entrée"
 
-#: src/ui_feedlist.c:423
+#: src/ui_feedlist.c:427
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr ""
 "Le fournisseur de ce canal suggère un intervalle de mise à jour de %d "
 "minutes."
 
-#: src/ui_feedlist.c:425
+#: src/ui_feedlist.c:429
 msgid "This feed specifies no default update interval."
 msgstr "Ce canal ne spécifie aucun intervalle de mise à jour."
 
-#: src/ui_feedlist.c:471
+#: src/ui_feedlist.c:475
 msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 "Erreur interne ! Aucun canal sélectionné, mais changement dans les "
 "propriétés demandés ... \n"
 
-#: src/ui_feedlist.c:503
+#: src/ui_feedlist.c:507
 msgid ""
 "The newly created feed's type could not be detected. Please subscribe again "
 "and select a feed type!"
 msgstr ""
 
-#: src/ui_feedlist.c:520
+#: src/ui_feedlist.c:524
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -1315,7 +1315,7 @@ msgstr ""
 "Vous pouvez retenter le téléchargement ou enlever l'abonnement au canal via "
 "le menu contextuel dans la liste des canaux.\n"
 
-#: src/ui_feedlist.c:585
+#: src/ui_feedlist.c:589
 msgid "internal error! invalid type selected! This should never happen!\n"
 msgstr ""
 "Erreur interne ! Type sélectionné invalide ! Cela ne devrait jamais "

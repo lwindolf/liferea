@@ -1,5 +1,10 @@
 This documentation was last updated for Liferea version 0.4.8.
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  NOTE THAT 0.4.8 BREAKS DOWNWARD COMPATIBILITY. PLEASE READ
+        THE "UPGRADING TO NEWER VERSIONS" SECTION.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 Installation
 ============
 
@@ -21,8 +26,8 @@ Fedora:		at least 2.5.10 or you will experience nasty
 		
 		You can download Fedora packages maintained by
 		Phillip Compton from
-		
-		http://download.fedora.us/fedora/redhat/0.95/i386/RPMS.testing
+
+		http://download.fedora.us/fedora/fedora/1/i386/RPMS.testing/
 		
 SuSE:		Since 0.4.6 Harry Auschner builds packages for
 		SuSE i586 which are available from the SourceForge
@@ -39,6 +44,10 @@ FreeBSD:	There are Liferea packages (built by Hye-Shik Chang) at
 Fink		The Fink project also supports Liferea:
 
 		http://fink.sourceforge.net/pdb/package.php/liferea
+		
+Slackware	Since 0.4.7 Dario Coniglario builds Slackwares
+		tarballs. These are available from the SourceForge
+		project page.
 	
 
 Compiling from Source
@@ -47,7 +56,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-0.3.8.tar.gz 
+   tar zxvf liferea-0.4.8.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
@@ -78,6 +87,14 @@ When upgrading to 0.4.0 the OCS directory cache format changes. The
 program 'll automatically update all OCS directories. Please be
 patient while downloading.
 
+When upgrading to 0.4.8 the cache directory structure and the save 
+mechanism of the feed list will be changed. After the automatic
+conversion older versions of Liferea cannot read the cache anymore
+and the won't see the converted feed list anymore. To be prepared
+for problems please export the feed list using the older version
+of Liferea! In case of problems you can reinstall the older version
+and import the backup feed list.
+
 Dependencies
 ============
 
@@ -91,13 +108,17 @@ random segfaults.
 Help Wanted
 ===========
 
-As you can see in the code I'm not that experienced
-programmer, so I would appreciate any help!
+If you want to help please subscribe to the liferea-devel mailing 
+list available on the SourceForge project page. After each release
+we discuss new tasks to be done. Just join the discussion!
+
+If you want to do a translation write a mail to Lars Lindner
+or just upload the translation as a patch to SourceForge.
 
 Known Problems
 ==============
 
-Please read the help feed (http://liferea.sf.net/help045.rdf) 
+Please read the help feed (http://liferea.sf.net/help048.rdf) 
 for known problems! If you don't find your problem please
 make a report (forum, bugs...) on the SourceForge project
 page (http://liferea.sf.net).

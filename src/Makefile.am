@@ -21,10 +21,10 @@ INCLUDES = \
 	@PACKAGE_CFLAGS@
 
 
-lib_LTLIBRARIES = liblihtmlt.la
+##lib_LTLIBRARIES = liblihtmlt.la
 
-liblihtmlt_la_SOURCES = textview.c
-liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
+##liblihtmlt_la_SOURCES = textview.c
+##liblihtmlt_la_LIBADD = @PACKAGE_LIBS@ $(INTLLIBS)
 
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea
@@ -42,6 +42,7 @@ liferea_bin_SOURCES = \
 	feed.c feed.h \
 	filter.c filter.h \
 	folder.c folder.h \
+	guitreemodelfilter.c guitreemodelfilter.h \
 	htmlview.c htmlview.h \
 	interface.c interface.h \
 	item.c item.h \
