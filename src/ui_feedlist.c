@@ -683,12 +683,8 @@ on_feedlist_drag_data_received         (GtkWidget       *widget,
 	verify_iter((nodePtr)folder_get_root());
 }
 
-/* There are two versions of this function. One has user_data while
-   the other does not. When changing one, please also change the
-   other! */
-
 /* recursivly calls func for every feed in the feed list */
-void ui_feedlist_do_for_all(nodePtr ptr, gint filter, nodeActionFunc func) {
+void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint params, gpointer user_data) {
 	GtkTreeIter childiter;
 	gboolean valid, apply, descend;
 	nodePtr child;
@@ -729,60 +725,10 @@ void ui_feedlist_do_for_all(nodePtr ptr, gint filter, nodeActionFunc func) {
 			}
 			
 			if(TRUE == apply) {
-				(func)(child);
-			}
-			
-			/* if the iter has children and we are descending, iterate over the children. */
-			if((gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), &childiter) > 0) && descend)
-				ui_feedlist_do_for_all(child, filter, func);
-		}
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
-	}
-}
-
-/* recursivly calls func for every feed in the feed list */
-void ui_feedlist_do_for_all_data(nodePtr ptr, gint filter, nodeActionDataFunc func, gpointer user_data) {
-	GtkTreeIter childiter;
-	gboolean valid, apply, descend;
-	nodePtr child;
-	
-	if(NULL == ptr)
-		valid = gtk_tree_model_get_iter_root(GTK_TREE_MODEL(feedstore), &childiter);
-	else {
-		g_assert(ptr->ui_data);
-		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, &((ui_data*)ptr->ui_data)->row);
-	}
-	
-	while(valid) {
-		gchar *name;
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter,
-					    FS_LABEL, &name,
-					    FS_PTR, &child, -1);
-		/* If child == NULL, this is an empty node. */
-		if (child != NULL) {
-			apply = FALSE;
-			descend = TRUE;
-			switch(filter) {
-			case ACTION_FILTER_FEED:
-				apply = !IS_FOLDER(child->type);
-				break;
-			case ACTION_FILTER_FOLDER:
-				apply = IS_FOLDER(child->type);
-				break;
-			case ACTION_FILTER_ANY:
-				apply = TRUE;
-				break;
-			case ACTION_FILTER_CHILDREN:
-				apply = TRUE;
-				descend = FALSE;
-				break;
-			default:
-				g_error("internal error! wrong action type for feedlist processing\n");
-				break;
-			}
-			
-			if(TRUE == apply) {
-				(func)(child, user_data);
+				if (params==0)
+					((nodeActionFunc)func)(child);
+				else 
+					((nodeActionDataFunc)func)(child, user_data);
 			}
 			
 			/* if the iter has children and we are descending, iterate over the children. */

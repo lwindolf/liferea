@@ -47,7 +47,6 @@ void ui_update_feed(feedPtr fp);
 nodePtr ui_feedlist_get_selected();
 void ui_feedlist_select(nodePtr fp);
 
-
 typedef void 	(*nodeActionFunc)		(nodePtr fp);
 typedef void 	(*nodeActionDataFunc)	(nodePtr fp, gpointer user_data);
 
@@ -104,8 +103,20 @@ enum {
  * @param ptr	node pointer whose children should be processed (NULL defaults to root)
  * @param filter specifies the types of nodes for which func should be called
  * @param func	the function to process all found elements
+ * @param params Set to 1 if there will be user_data. Set to 0 for no user data
+ * @param user_data specifies the second argument that func should be passed
  */
-void ui_feedlist_do_for_all(nodePtr ptr, gint filter, nodeActionFunc func);
+void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint params, gpointer user_data);
+
+/**
+ * Helper function to recursivly call feed_save() for all
+ * elements of the given type in the feed list.
+ *
+ * @param ptr	node pointer whose children should be processed (NULL defaults to root)
+ * @param filter specifies the types of nodes for which func should be called
+ * @param func	the function to process all found elements
+ */
+#define ui_feedlist_do_for_all(ptr, filter, func) ui_feedlist_do_for_all_full(ptr,filter,func,0,NULL)
 
 /**
  * Helper function to recursivly call feed_save() for all
@@ -116,7 +127,7 @@ void ui_feedlist_do_for_all(nodePtr ptr, gint filter, nodeActionFunc func);
  * @param func	the function to process all found elements
  * @param user_data specifies the second argument that func should be passed
  */
-void ui_feedlist_do_for_all_data(nodePtr ptr, gint filter, nodeActionDataFunc func, gpointer user_data);
+#define ui_feedlist_do_for_all_data(ptr, filter, func, user_data) ui_feedlist_do_for_all_full(ptr,filter,func,1,user_data)
 /**
  * helper function to find next unread item 
  *
