@@ -89,6 +89,6 @@ void 		markItemAsRead(itemPtr ip);
 void 		markItemAsUnread(itemPtr ip);
 
 /* for cache loading */
-itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur);
+itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur, gpointer fp);
 
 #endif

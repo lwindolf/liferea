@@ -287,22 +287,28 @@ void saveAllFeeds(void) {
 static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
-	gchar		*filename;
-	xmlChar		*string;
-	feedPtr		fp = NULL;
-	itemPtr		ip;
+	gchar		*filename, *tmp, *data = NULL;
+	feedPtr		fp;
+	int		error = 0;
 
 	filename = getCacheFileName(keyprefix, key, getExtension(type));
-	doc = xmlRecoverFile(filename);
-	
+	if(!g_file_get_contents(filename, &data, NULL, NULL)) {
+		print_status(g_strdup_printf(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
+		return NULL;
+	}
+
+	fp = getNewFeedStruct();		
 	while(1) {	
-		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
+		if(NULL == (doc = parseBuffer(data, &(fp->parseErrors)))) {
+			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
+			error = 1;
 			break;
 		} 
 
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			print_status(_("Empty document! Feed cache file should not be empty..."));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
+			xmlFreeDoc(doc);
+			error = 1;
 			break;
 		}
 		
@@ -310,45 +316,48 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 			cur = cur->next;
 
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
-			print_status(g_strdup_printf(_("\"%s\" is no valid cache file! Cannot read cache file!"), filename));
+			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
+			xmlFreeDoc(doc);
+			error = 1;
 			break;		
 		}
-		
-		fp = getNewFeedStruct();
-		fp->available = TRUE;
+
+		fp->available = TRUE;		
 		fp->key = key;
 		fp->keyprefix = keyprefix;
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
-			string = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+			tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 
 			if(!xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
-				fp->description = g_strdup(string);
+				fp->description = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
-				fp->title = g_strdup(string);
+				fp->title = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
-				fp->defaultInterval = atoi(string);
+				fp->defaultInterval = atoi(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
-				fp->available = (0 == atoi(string))?FALSE:TRUE;
+				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
 				getNewRequestStruct(fp);
-				((struct feed_request *)(fp->request))->lastmodified = g_strdup(string);
+				((struct feed_request *)(fp->request))->lastmodified = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-				ip = parseCacheItem(doc, cur);
-				addItem(fp, ip);
+				parseCacheItem(doc, cur, fp);
 			}			
-
-			if (NULL != string) {
-				xmlFree(string);
-			}			
+			g_free(tmp);	
 			cur = cur->next;
 		}
 		break;
+	}
+	
+	if(0 != error) {
+		tmp = g_strdup_printf(_("There were errors while parsing cache file \"%s\"!"), filename);
+		print_status(tmp);
+		g_free(tmp);
 	}
 	
 	if(NULL != doc)
@@ -631,6 +640,7 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 
 	g_free(old_fp->parseErrors);
 	old_fp->parseErrors = new_fp->parseErrors;
+	new_fp->parseErrors = NULL;
 	old_fp->available = new_fp->available;
 	new_fp->items = NULL;
 	freeFeed(new_fp);

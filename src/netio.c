@@ -735,17 +735,9 @@ char * downloadURL(struct feed_request *request) {
 			} else {
 				print_status(g_strdup_printf(_("Could not open pipe \"%s\"!"), request->feedurl));
 			}
-		} else if(0 == stat(request->feedurl, &statinfo)) {
+		} else if(g_file_test(request->feedurl, G_FILE_TEST_EXISTS)) {
 			/* we have a file... */
-			if(NULL != (f = fopen(request->feedurl, "r"))) {
-				if(NULL == (data = g_malloc(statinfo.st_size + 1))) {
-					g_error(_("Could not allocate memory to read file!"));
-					exit(1);
-				}
-				memset(data, 0, statinfo.st_size + 1);
-				fread(data, statinfo.st_size, 1, f);
-				fclose(f);
-			} else {
+			if(!g_file_get_contents(request->feedurl, &data, NULL, NULL)) {
 				request->problem = 1;
 				msg = g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl);
 				print_status(msg);

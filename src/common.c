@@ -33,12 +33,9 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
-#include <pwd.h>
-#include <errno.h>
-#include <sys/types.h>
+#include <glib.h>
 #include <sys/stat.h>
 #include <string.h>
-#include <unistd.h>
 #include <locale.h>
 #include "support.h"
 #include "common.h"
@@ -180,11 +177,10 @@ void unhtmlizeHandleCharacters (void *userData_p, const xmlChar *string_p, int l
 	*result_p = '\0';*/
         gchar *result_p = (gchar *) userData_p;
         int curLen = strlen(result_p);
-                                                                                
+
         strncpy (&result_p[curLen], (char *) string_p, len);
 	// Make sure it's null-terminated
         result_p[curLen + len] = '\0';
-	
 }
 
 /* converts a UTF-8 strings containing any HTML stuff to 
@@ -254,7 +250,7 @@ xmlDocPtr parseBuffer(gchar *data, gchar **errormsg) {
 	if(*errormsg != NULL)
 		g_free(*errormsg);
 	*errormsg = g_strdup(parser->lastError.message);
-	
+
 	doc = parser->myDoc;
 	xmlFreeParserCtxt(parser);
 	
@@ -351,9 +347,7 @@ gchar * getActualTime(void) {
 		if(NULL != (timestr = (gchar *)g_malloc(TIMESTRLEN+1))) {
 			timeformat = getStringConfValue(TIME_FORMAT);
 			
-			/* if not set conf.c delivers a "", from version 0.3.8
-			   there is no more time format setting and D_T_FMT
-			   'll always be used... */
+			/* if not set conf.c delivers a "" and D_T_FMT will be used... */
 			if(0 == strlen(timeformat)) {
 				g_free(timeformat);
 				timeformat =  g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));
@@ -399,7 +393,7 @@ void initCachePath(void) {
 
 	CACHEPATH = g_strdup_printf("%s/.liferea", g_get_home_dir());
 
-	if(0 != stat(CACHEPATH, &statinfo)) {
+	if(!g_file_test(CACHEPATH, G_FILE_TEST_IS_DIR)) {
 		if(0 != mkdir(CACHEPATH, S_IRUSR | S_IWUSR | S_IXUSR)) {
 			g_error(g_strdup_printf(_("Cannot create cache directory %s!"), CACHEPATH));
 		}

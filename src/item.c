@@ -132,9 +132,9 @@ void displayItem(itemPtr ip) {
 	markItemAsRead(ip);
 }
 
-itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
+itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur, gpointer fp) {
 	itemPtr 	ip;
-	xmlChar 	*string;
+	gchar		*tmp;
 	
 	g_assert(NULL != doc);
 	g_assert(NULL != cur);
@@ -143,35 +143,32 @@ itemPtr parseCacheItem(xmlDocPtr doc, xmlNodePtr cur) {
 	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
- 		string = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);		
+ 		tmp = CONVERT(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 		
 		if (!xmlStrcmp(cur->name, (const xmlChar *)"title"))
-			ip->title = g_strdup(string);
+			ip->title = g_strdup(tmp);
 			
 		else if (!xmlStrcmp(cur->name, (const xmlChar *)"description"))
-			ip->description = g_strdup(string);
+			ip->description = g_strdup(tmp);
 			
 		else if (!xmlStrcmp(cur->name, (const xmlChar *)"source"))
-			ip->source = g_strdup(string);
+			ip->source = g_strdup(tmp);
 			
 		else if (!xmlStrcmp(cur->name, (const xmlChar *)"id"))
-			ip->id = g_strdup(string);
+			ip->id = g_strdup(tmp);
 			
 		else if (!xmlStrcmp(cur->name, (const xmlChar *)"readStatus"))
-			ip->readStatus = (0 == atoi(string))?FALSE:TRUE;		
+			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;		
 
 		else if (!xmlStrcmp(cur->name, (const xmlChar *)"mark")) 
-			ip->marked = (1 == atoi(string))?TRUE:FALSE;
+			ip->marked = (1 == atoi(tmp))?TRUE:FALSE;
 			
 		else if (!xmlStrcmp(cur->name, (const xmlChar *)"time"))
-			ip->time = atol(string);
+			ip->time = atol(tmp);
 		
-		if (string != NULL) {
- 			xmlFree (string);
-  		}
-		
+		g_free(tmp);	
 		cur = cur->next;
 	}
 		
-	return ip;
+	addItem((feedPtr)fp, ip);
 }

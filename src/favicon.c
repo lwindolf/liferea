@@ -25,11 +25,9 @@
 #endif
 
 #include <glib.h>
+#include <sys/stat.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 #include "support.h"
 #include "feed.h"
@@ -392,7 +390,7 @@ void loadFavIcon(feedPtr fp) {
 	
 	/* try to load a saved favicon */
 	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
-	if(0 == stat(filename, &statinfo)) {
+	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		/* remove path, because create_pixbuf allows no absolute pathnames */
 		tmp = strrchr(filename, '/');
 		fp->icon = gdk_pixbuf_scale_simple(create_pixbuf(++tmp), 16, 16, GDK_INTERP_BILINEAR);
@@ -406,7 +404,7 @@ void removeFavIcon(feedPtr fp) {
 	
 	/* try to load a saved favicon */
 	filename = getCacheFileName(fp->keyprefix, fp->key, "xpm");
-	if(0 == stat(filename, &statinfo)) {
+	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename)) {
 			g_warning(g_strdup_printf(_("Could not delete icon file %s! Please remove manually!"), filename));
 		}	

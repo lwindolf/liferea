@@ -30,7 +30,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
-#include <unistd.h>	/* access() */
 #include <errno.h>
 #include "htmlview.h"
 #include "conf.h"
@@ -118,12 +117,11 @@ void startHTML(gchar **buffer, gboolean padded) {
 void finishHTML(gchar **buffer) {
 
 	addToHTMLBuffer(buffer, HTML_END);
-
 }
 
 void writeStyleSheetLink(gchar **buffer, gchar *styleSheetFile) {
 
-	if (access(styleSheetFile, R_OK) == 0) {
+	if(g_file_test(styleSheetFile, G_FILE_TEST_EXISTS)) {
 		addToHTMLBuffer(buffer, "<link rel='stylesheet' type='text/css' href='file://");
 		addToHTMLBuffer(buffer, styleSheetFile);
 		addToHTMLBuffer(buffer, "'>");
