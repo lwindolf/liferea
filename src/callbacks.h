@@ -276,3 +276,11 @@ on_importfileselect_clicked            (GtkButton       *button,
 void
 on_rulechangedbtn_clicked              (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_remove_items_activate               (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_nextbtn_clicked                     (GtkButton       *button,
+                                        gpointer         user_data);

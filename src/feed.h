@@ -156,5 +156,6 @@ gchar * getFeedSource(feedPtr fp);
 void setFeedSource(feedPtr fp, gchar * source);
 
 GSList * getFeedItemList(feedPtr fp);
+void clearFeedItemList(feedPtr fp);
 
 #endif

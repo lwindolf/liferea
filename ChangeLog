@@ -12,8 +12,12 @@
 	  by Tobias C. Rittweiler.
 	* Fixed some memory leaks.
 	* Fixed the broken tray icon logic.
+	* Fixed incorrect UTF-8 HTTP URL encoding for Feedster 
+	  search feed subscriptions.
 	* Fixed bug 857386 (crash on subscription without
 	  selected folder reported by Jeremy Messenger)
+	* Fixed bug 861688 (broken support for lastmodified
+	  HTTP header)
 
 
 2003-12-07  Lars Lindner <lars.lindner@gmx.net>

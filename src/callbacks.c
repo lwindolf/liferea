@@ -185,7 +185,7 @@ gboolean getFeedListIter(GtkTreeIter *iter) {
 	}
 
         if(gtk_tree_selection_get_selected(select, &model, iter)) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, 
+		gtk_tree_model_get(model, iter, 
 				   FS_KEY, &tmp_key, 
  				   FS_TYPE, &tmp_type,
 				   -1);
@@ -1158,6 +1158,13 @@ selected_ip = NULL;
 }
 
 void on_popup_next_unread_item_selected(void) { on_next_unread_item_activate(NULL, NULL); }
+void on_nextbtn_clicked(GtkButton *button, gpointer user_data) { on_next_unread_item_activate(NULL, NULL); }
+
+
+void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	clearItemList();		/* clear tree view */
+	clearFeedItemList(selected_fp);	/* delete items */
+}
 
 void on_popup_zoomin_selected(void) { changeZoomLevel(0.2); }
 void on_popup_zoomout_selected(void) { changeZoomLevel(-0.2); }

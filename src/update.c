@@ -96,25 +96,9 @@ static void *updateMainLoop(void *data) {
 
 /* method to be called by other threads to create requests */
 void requestUpdate(feedPtr fp) {
-	struct feed_request	*request;
 
 	g_assert(NULL != fp);
-	
-	/* we always reuse one request structure per feed, to
-	   allow to reuse the lastmodified attribute of the
-	   last request... */
-	if(NULL == fp->request) {
-		if(NULL == (request = (struct feed_request *)g_malloc(sizeof(struct feed_request)))) {
-			g_error(_("Could not allocate memory!"));
-			return;
-		} else {
-			request->feedurl = NULL;
-			request->lastmodified = NULL;
-			request->fp = fp;
-			fp->request = (gpointer)request;
-		}
-	}
-
+	g_assert(NULL != fp->request);	
 	g_async_queue_push(requests, (gpointer)fp->request);
 }
 

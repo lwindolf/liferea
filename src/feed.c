@@ -87,6 +87,7 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 	g_assert(NULL != url);
 	
 	request.feedurl = g_strdup(url);
+	request.lastmodified = NULL;
 	if(NULL != (*data = downloadURL(&request))) {
 		while(NULL != pattern->string) {	
 			if(NULL != strstr(*data, pattern->string)) {
@@ -98,7 +99,7 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 		} 
 	}
 	g_free(request.feedurl);
-	g_free(request.lastmodified);
+	//g_free(request.lastmodified);
 
 	return type;
 }
@@ -136,15 +137,31 @@ void initBackend() {
 
 /* function to create a new feed structure */
 feedPtr getNewFeedStruct(void) {
-	feedPtr		fp;
+	struct feed_request	*request;
+	feedPtr			fp;
 	
 	/* initialize channel structure */
 	if(NULL == (fp = (feedPtr) malloc(sizeof(struct feed)))) {
 		g_error("not enough memory!\n");
 		exit(1);
 	}
-	
 	memset(fp, 0, sizeof(struct feed));
+		
+	/* we always reuse one request structure per feed, to
+	   allow to reuse the lastmodified attribute of the
+	   last request... */
+	if(NULL == fp->request) {
+		if(NULL == (request = (struct feed_request *)g_malloc(sizeof(struct feed_request)))) {
+			g_error(_("Could not allocate memory!"));
+			return;
+		} else {
+			request->feedurl = NULL;
+			request->lastmodified = NULL;
+			request->fp = fp;
+			fp->request = (gpointer)request;
+		}
+	}
+	
 	fp->updateCounter = -1;
 	fp->updateInterval = -1;
 	fp->defaultInterval = -1;
@@ -271,7 +288,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	itemPtr		ip;
 
 	filename = getCacheFileName(keyprefix, key, getExtension(type));
-	doc = xmlParseFile(filename);
+	doc = xmlRecoverFile(filename);
 	
 	while(1) {	
 		if(NULL == doc) {
@@ -718,6 +735,19 @@ void setFeedSource(feedPtr fp, gchar *source) {
 
 GSList * getFeedItemList(feedPtr fp) { return fp->items; }
 
+/* method to free all items of a feed */
+void clearFeedItemList(feedPtr fp) {
+	GSList	*item;
+	
+	item = fp->items;
+	while(NULL != item) {
+		allItems->items = g_slist_remove(allItems->items, item->data);
+		freeItem(item->data);
+		item = g_slist_next(item);
+	}
+	fp->items = NULL;
+}
+
 /* Method to copy the infos of the structure given by
    new_fp to the structure fp points to. The feed infos
    of new_fp are freed afterwards. */
@@ -755,15 +785,10 @@ void copyFeed(feedPtr fp, feedPtr new_fp) {
 
 /* method to free all memory allocated by a feed */
 void freeFeed(feedPtr fp) {
-	GSList	*item;
 
 	/* free items */
-	item = getFeedItemList(fp);
-	while(NULL != item) {
-		allItems->items = g_slist_remove(allItems->items, item->data);
-		freeItem(item->data);
-		item = g_slist_next(item);
-	}
+	clearFeedItemList(fp);
+
 	/* free feed info */
 	g_free(fp->title);
 	g_free(fp->description);
