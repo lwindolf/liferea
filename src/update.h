@@ -1,5 +1,5 @@
 /*
-   auto update functionality
+   update request handling
      
    Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
 
@@ -40,12 +40,11 @@ struct feed_request {
 	feedPtr	fp;			/* pointer to feed structure which is to be updated */
 };
 
-gpointer getNewRequestStruct(feedPtr fp);
-void freeRequest(gpointer request);
+gpointer update_request_new(feedPtr fp);
+void update_request_free(gpointer request);
 
-GThread * initUpdateThread(void);
+GThread * update_thread_init(void);
 GThread * initAutoUpdateThread(void);
-void requestUpdate(feedPtr fp);
-void updateAllFeeds(void);
+void update_thread_add_request(struct feed_request *new_request);
 
 #endif

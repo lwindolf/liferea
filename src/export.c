@@ -125,7 +125,7 @@ void importOPMLFeedList(gchar *filename) {
 		/* add the new folder to the model */
 		addFolder(folderkey, foldertitle, FST_FOLDER);
 	} else {
-		print_status(g_strdup(_("internal error! could not get a new folder key!")));
+		ui_mainwindow_set_status_bar(_("internal error! could not get a new folder key!"));
 		return;
 	}
 	
@@ -134,12 +134,12 @@ void importOPMLFeedList(gchar *filename) {
 	
 	while(1) {	
 		if(NULL == doc) {
-			print_status(g_strdup_printf(_("XML error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
+			ui_mainwindow_set_status_bar(_("XML error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 			break;
 		} 
 
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			print_status(g_strdup(_("Empty document! OPML document should not be empty...")));
+			ui_mainwindow_set_status_bar(_("Empty document! OPML document should not be empty..."));
 			break;
 		}
 
@@ -147,7 +147,7 @@ void importOPMLFeedList(gchar *filename) {
 			cur = cur->next;
 
 		if(xmlStrcmp(cur->name, BAD_CAST"opml")) {
-			print_status(g_strdup_printf(_("\"%s\" is no valid cache file! Cannot read OPML file!"), filename));
+			ui_mainwindow_set_status_bar(_("\"%s\" is no valid cache file! Cannot read OPML file!"), filename);
 			break;		
 		}
 

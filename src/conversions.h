@@ -18,7 +18,7 @@
 #include "support.h"
 
 /* we redefine some SnowNews functions */
-#define UIStatus(a, b)		print_status(g_strdup(a))
+#define UIStatus(a, b)		ui_mainwindow_set_status_bar(a)
 #define MainQuit(str, errno)	g_error(str);
 #define	getch()			0
 /*-----------------------------------------------------------------------*/

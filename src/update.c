@@ -23,28 +23,24 @@
 #include "callbacks.h"
 #include "support.h"
 
-extern GHashTable	*feeds;
-extern GHashTable	*feedHandler;
-
 /* communication queues for requesting updates and sending the results */
 GAsyncQueue	*requests = NULL;
 GAsyncQueue	*results = NULL;
 
-static GMutex * cond_mutex = NULL;
-static GCond * qcond = NULL;
+static GMutex * cond_mutex = NULL;	// FIXME: 0.4.8 remove me
+static GCond * qcond = NULL;		// FIXME: 0.4.8 remove me
 
-extern GMutex * feeds_lock;
-
+extern GMutex * feeds_lock;		// FIXME: 0.4.8 remove me
+extern GHashTable *feeds;		// FIXME: 0.4.8 remove me
 /* prototypes */
-static void *updateMainLoop(void *data);
-static void *autoUpdateMainLoop(void *data);
-static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata);
-static void doUpdateFeed(struct feed_request *request);
+static void *update_thread_main(void *data);
+static void *autoUpdateMainLoop(void *data);	// FIXME: 0.4.8 remove me
+static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata);	// FIXME: 0.4.8 remove me
 
 /* Function to set up a new feed request structure.
    If fp is not NULL the request and the fp cross
    pointers are set electrically! */
-gpointer getNewRequestStruct(feedPtr fp) {
+gpointer update_request_new(feedPtr fp) {
 	struct feed_request	*request;
 	
 	/* we always reuse one request structure per feed, to
@@ -63,7 +59,7 @@ gpointer getNewRequestStruct(feedPtr fp) {
 	return (gpointer)request;
 }
 
-void freeRequest(gpointer request) {
+void update_request_free(gpointer request) {
 
 	if(NULL != request) {
 		g_free(((struct feed_request *)request)->lastmodified);
@@ -76,7 +72,7 @@ void freeRequest(gpointer request) {
    the feed update counter values and adds
    feed update requests to the update queue
    if necessary */
-GThread * initAutoUpdateThread(void) {
+GThread * initAutoUpdateThread(void) {	// FIXME: 0.4.8 timeout!!!
 
 	cond_mutex = g_mutex_new();
 	qcond = g_cond_new();
@@ -86,15 +82,15 @@ GThread * initAutoUpdateThread(void) {
 
 /* sets up a thread to process the update
    request queue */
-GThread * initUpdateThread(void) {
+GThread * update_thread_init(void) {
 
 	requests = g_async_queue_new();
 	results = g_async_queue_new();
 		
-	return g_thread_create(updateMainLoop, NULL, FALSE, NULL);
+	return g_thread_create(update_thread_main, NULL, FALSE, NULL);
 }
 
-static void *autoUpdateMainLoop(void *data) {
+static void *autoUpdateMainLoop(void *data) {	// FIXME: 0.4.8 timeout!!!
 	const int	TIMEOUT_SECS = 60;
 	GTimeVal 	sleep_until;
 	gboolean	was_timeout;
@@ -118,45 +114,32 @@ static void *autoUpdateMainLoop(void *data) {
 	}
 }
 
-static void *updateMainLoop(void *data) {
-
+static void *update_thread_main(void *data) {
+	struct feed_request *request;
+	
 	for(;;)	{
-		doUpdateFeed(g_async_queue_pop(requests));
+		request = g_async_queue_pop(requests);
+		g_assert(NULL != request);
+		downloadURL(request);
+
+		if(NULL == request->fp) {
+			/* request was abandoned (feed deleted) */
+			g_free(request->data);
+			update_request_free(request);
+		} else {
+			/* return the request so the GUI can merge the feeds and display the results... */
+			g_async_queue_push(results, (gpointer)request);
+		}
 	}
 }
 
-/* method to be called by other threads to create requests */
-void requestUpdate(feedPtr fp) {
-	gchar			*source;
-	
-	g_assert(NULL != fp);
-	
-	if(TRUE == fp->updateRequested) {
-		print_status(g_strdup("There already is an update of this feed in progress!"));
-		return;
-	}
-	
-	print_status(g_strdup_printf("updating \"%s\"", getFeedTitle(fp)));
-	
-	if(NULL == (source = getFeedSource(fp))) {
-		g_warning(_("Feed source is NULL! This should never happen - cannot update!"));
-		return;
-	}
+/** adds another download request to the request queue */
+void update_thread_add_request(struct feed_request *new_request) {
 
-	/* reset feed update counter */
-	fp->updateCounter = fp->updateInterval;
-	fp->updateRequested = TRUE;
-
-	if(NULL == fp->request)
-		getNewRequestStruct(fp);
-	
-	/* prepare request url (strdup because it might be
-	   changed on permanent HTTP redirection in netio.c) */
-	((struct feed_request *)fp->request)->feedurl = g_strdup(source);
-
-	g_async_queue_push(requests, (gpointer)fp->request);
+	g_async_queue_push(requests, new_request);
 }
 
+// FIXME: 0.4.8 move this to feed.c
 static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr		fp = (feedPtr)value;
 	gint 		counter;
@@ -166,21 +149,6 @@ static void doUpdateFeedCounter(gpointer key, gpointer value, gpointer userdata)
 	
 	if(0 == counter) {
 		setFeedUpdateCounter(fp, getFeedUpdateInterval(fp));
-		requestUpdate(fp);
-	}
-}
-
-static void doUpdateFeed(struct feed_request *request) {
-	
-	g_assert(NULL != request);
-	downloadURL(request);
-
-	if(NULL == request->fp) {
-		/* request was abandoned (feed deleted) */
-		g_free(request->data);
-		freeRequest(request);
-	} else {
-		/* return the request so the GUI can merge the feeds and display the results... */
-		g_async_queue_push(results, (gpointer)request);
+		update_thread_add_request((struct feed_request *)fp->request);
 	}
 }

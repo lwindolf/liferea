@@ -87,10 +87,10 @@ static gchar * getOutlineList(gchar *url) {
 	xmlNodePtr 		cur;
 	gchar			*data, *tmp, *buffer;
 	
-	request = getNewRequestStruct(NULL);
+	request = update_request_new(NULL);
 	request->feedurl = g_strdup(url);
 	data = downloadURL(request);
-	freeRequest(request);
+	update_request_free(request);
 
 	if(NULL == data)
 		return NULL;

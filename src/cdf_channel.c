@@ -209,7 +209,7 @@ static void readCDFFeed(feedPtr fp, gchar *data) {
 			fp->available = TRUE;
 			fp->description = showCDFFeedInfo(cp, fp->source);
 		} else {
-			print_status(g_strdup(_("There were errors while parsing this feed!")));
+			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
 		
 		g_free(cp->nsinfos);

@@ -57,7 +57,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 		addFolder(folderkey, g_strdup(foldertitle), FST_FOLDER);
 		checkForEmptyFolders();
 	} else {
-		print_status(g_strdup(_("internal error! could not get a new folder key!")));
+		g_warning("internal error! could not get a new folder key!");
 	}	
 }
 
@@ -80,7 +80,7 @@ void on_popup_foldername_selected(void) {
 		g_free(title);
 		gtk_widget_show(foldernamedialog);
 	} else {
-		showErrorBox("internal error: could not determine folder key!");
+		g_warning("internal error: could not determine folder key!");
 	}
 }
 
@@ -119,7 +119,7 @@ void on_popup_removefolder_selected(void) {
 		/* check if folder is empty */
 		count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), &selected_iter);
 		if(0 == count) 
-			g_error("this should not happen! A folder must have an empty entry!!!\n");
+			g_warning("this should not happen! A folder must have an empty entry!!!\n");
 
 		if(1 == count) {
 			/* check if the only entry is type FST_EMPTY */
@@ -138,7 +138,7 @@ void on_popup_removefolder_selected(void) {
 			showErrorBox(_("A folder must be empty to delete it!"));
 		}
 	} else {
-		print_status(g_strdup(_("Error: Cannot determine folder key!")));
+		g_warning("internal error: Cannot determine folder key!");
 	}
 }
 

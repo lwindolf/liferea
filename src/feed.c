@@ -95,7 +95,7 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 	g_assert(NULL != pattern);
 	g_assert(NULL != url);
 	
-	request = getNewRequestStruct(NULL);
+	request = update_request_new(NULL);
 	request->feedurl = g_strdup(url);
 	request->lastmodified = NULL;
 	downloadURL(request);
@@ -110,7 +110,7 @@ static gint autoDetectFeedType(gchar *url, gchar **data) {
 		} 
 	}
 	*data = request->data;
-	freeRequest(request);
+	update_request_free(request);
 		
 	return type;
 }
@@ -134,8 +134,8 @@ void initBackend(void) {
 	registerFeedType(FST_OPML,	initOPMLFeedHandler());	
 	registerFeedType(FST_VFOLDER,	initVFolderFeedHandler());
 	
-	initUpdateThread();	/* start thread for update processing */
-	initAutoUpdateThread();	/* start thread for automatic updating */
+	update_thread_init();	/* start thread for update processing */
+	initAutoUpdateThread();	/* start thread for automatic updating */	// FIXME: 0.4.8 remove me
 	
 	initFolders();
 	loadSubscriptions();
@@ -260,7 +260,7 @@ static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr	fp = (feedPtr)value;
 	
 	if(IS_FEED(fp->type)) {
-		print_status(g_strdup_printf(_("saving feed \"%s\""), getFeedTitle(fp)));
+		ui_mainwindow_set_status_bar(_("saving feed \"%s\""), getFeedTitle(fp));
 		saveFeed(fp);
 	}
 }
@@ -269,7 +269,7 @@ static void saveFeedFunc(gpointer key, gpointer value, gpointer userdata) {
 void saveAllFeeds(void) {
 
 	/* we must save here to save changed read flags */	
-	print_status(g_strdup(_("saving all feeds...")));
+	ui_mainwindow_set_status_bar(_("saving all feeds..."));
 	
 	g_mutex_lock(feeds_lock);
 	g_hash_table_foreach(feeds, saveFeedFunc, NULL);
@@ -286,7 +286,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 
 	filename = getCacheFileName(keyprefix, key, getExtension(type));
 	if((!g_file_get_contents(filename, &data, NULL, NULL)) || (*data == 0)) {
-		print_status(g_strdup_printf(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename));
+		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		return NULL;
 	}
 
@@ -336,7 +336,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 				fp->available = (0 == atoi(tmp))?FALSE:TRUE;
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
-				getNewRequestStruct(fp);
+				update_request_new(fp);
 				((struct feed_request *)(fp->request))->lastmodified = g_strdup(tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
@@ -352,7 +352,7 @@ static feedPtr loadFeed(gint type, gchar *key, gchar *keyprefix) {
 	}
 	
 	if(0 != error) {
-		print_status(g_strdup_printf(_("There were errors while parsing cache file \"%s\"!"), filename));
+		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\"!"), filename);
 	}
 	
 	if(NULL != doc)
@@ -400,7 +400,7 @@ feedPtr addFeed(gint type, gchar *url, gchar *key, gchar *keyprefix, gchar *feed
 		new_fp->updateCounter = new_fp->updateInterval = interval;
 	
 	if(FALSE == getFeedAvailable(new_fp))
-		requestUpdate(new_fp);
+		updateFeed(new_fp);
 
 	g_mutex_lock(feeds_lock);
 	g_hash_table_insert(feeds, (gpointer)key, (gpointer)new_fp);
@@ -437,7 +437,7 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 		}
 	} else {
 		/* else only download */
-		request = getNewRequestStruct(fp);
+		request = update_request_new(fp);
 		request->feedurl = g_strdup(url);
 		data = downloadURL(request);
 		/* don't free request! */
@@ -472,10 +472,10 @@ feedPtr newFeed(gint type, gchar *url, gchar *keyprefix) {
 			if(NULL != (tmp = strchr(tmp, '/'))) {
 				*tmp = 0;
 
-				request = getNewRequestStruct(NULL);
+				request = update_request_new(NULL);
 				request->feedurl = g_strdup_printf("%s/favicon.ico", baseurl);
 				icodata = downloadURL(request);
-				freeRequest(request);
+				update_request_free(request);
 
 				if(NULL != icodata) {
 					tmp = getCacheFileName(keyprefix, key, "xpm");
@@ -614,12 +614,10 @@ void mergeFeed(feedPtr old_fp, feedPtr new_fp) {
 			g_slist_free(new_fp->items);	/* dispose new item list */
 			
 			if(NULL == diff_list)
-				status = g_strdup_printf(_("\"%s\" has no new items."), old_fp->title);
+				ui_mainwindow_set_status_bar(_("\"%s\" has no new items."), old_fp->title);
 			else 
-				status = g_strdup_printf(_("\"%s\" has %d new items."), old_fp->title, newcount);
+				ui_mainwindow_set_status_bar(_("\"%s\" has %d new items."), old_fp->title, newcount);
 			
-			print_status(status);
-
 			old_list = g_slist_concat(diff_list, old_fp->items);
 			old_fp->items = old_list;
 		} else {
@@ -671,9 +669,39 @@ void removeFeed(feedPtr fp) {
 	freeFeed(fp);
 }
 
-/* "foreground" user caused update executed in the main thread to update
-   the selected and displayed feed */
-void updateFeed(feedPtr fp) { requestUpdate(fp); }
+/**
+ * method to be called by other threads to update feeds
+ */
+void updateFeed(feedPtr fp) { 
+	gchar		*source;
+	
+	g_assert(NULL != fp);
+	
+	if(TRUE == fp->updateRequested) {
+		ui_mainwindow_set_status_bar("There is already an update in progress for \"%s\"", getFeedTitle(fp));
+		return;
+	}
+
+	ui_mainwindow_set_status_bar("updating \"%s\"", getFeedTitle(fp));
+	
+	if(NULL == (source = getFeedSource(fp))) {
+		g_warning("Feed source is NULL! This should never happen - cannot update!");
+		return;
+	}
+	
+	/* reset feed update counter */
+	fp->updateCounter = fp->updateInterval;
+	fp->updateRequested = TRUE;
+
+	if(NULL == fp->request)
+		update_request_new(fp);
+
+	/* prepare request url (strdup because it might be
+	   changed on permanent HTTP redirection in netio.c) */
+	((struct feed_request *)fp->request)->feedurl = g_strdup(source);
+
+	update_thread_add_request((struct feed_request *)fp->request);
+}
 
 static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 	feedPtr		fp = (feedPtr)value;
@@ -685,7 +713,7 @@ static void updateFeedHelper(gpointer key, gpointer value, gpointer userdata) {
 /* this method is called upon the refresh all button... */
 void updateAllFeeds(void) {
 
-	print_status(g_strdup(_("updating all feeds...")));
+	ui_mainwindow_set_status_bar(_("updating all feeds..."));
 	g_mutex_lock(feeds_lock);
 	g_hash_table_foreach(feeds, updateFeedHelper, NULL);
 	g_mutex_unlock(feeds_lock);
@@ -921,7 +949,7 @@ void freeFeed(feedPtr fp) {
 	   still be processed in the update queues! Abandoned
 	   requests are free'd in update.c. */
 	if(FALSE == fp->updateRequested)
-		freeRequest(fp->request);
+		update_request_free(fp->request);
 
 	/* free feed info */
 	g_free(fp->title);

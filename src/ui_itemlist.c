@@ -389,12 +389,12 @@ static itemPtr ui_itemlist_get_selected() {
 	GtkTreeSelection	*selection;
 
 	if(NULL == (itemlist = lookup_widget(mainwindow, "Itemlist"))) {
-		print_status(g_strdup(_("could not find item list widget!")));
+		g_warning("could not find item list widget!");
 		return NULL;
 	}
 	
 	if(NULL == (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))) {
-		print_status(g_strdup(_("could not retrieve selection of item list!")));
+		g_warning("could not retrieve selection of item list!");
 		return NULL;
 	}
 	
@@ -468,12 +468,12 @@ void on_toggle_item_flag(void) {
 
 
 void on_popup_launchitem_selected(void) {
-	itemPtr		ip = ui_itemlist_get_selected();
+	itemPtr		ip;
 
-	if(ip != NULL)
+	if(ip = ui_itemlist_get_selected())
 		ui_htmlview_launch_URL(getItemSource(ip));
 	else
-		print_status(g_strdup(_("No item has been selected!")));
+		ui_mainwindow_set_status_bar(_("No item has been selected!"));
 }
 
 void on_toggle_unread_status(void) {
@@ -558,7 +558,7 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		/* find first unread item */
 		findUnreadItem();
 	} else {
-		print_status(g_strdup(_("There are no unread items!")));
+		ui_mainwindow_set_status_bar(_("There are no unread items!"));
 	}
 }
 
@@ -579,9 +579,9 @@ static void ui_itemlist_select(itemPtr ip) {
 			gtk_tree_path_free(path);
 			gtk_tree_selection_select_iter(selection, &iter);
 		} else
-			g_warning(_("internal error! could not get feed tree view selection!\n"));
+			g_warning("internal error! could not get feed tree view selection!\n");
 	} else {
-		print_status(g_strdup(_("internal error! could not select newly created treestore iter!")));
+		g_warning("internal error! could not select newly created treestore iter!");
 	}
 }
 

@@ -254,7 +254,6 @@ static void kill_old_connections(GtkHTML *html) {
 static void on_link_clicked(GtkHTML *html, const gchar *url, gpointer data) {
 	GError	*error = NULL;
 	gchar	*cmd, *tmp;
-	gchar	*statusline;
 
 	if(2 == getNumericConfValue(GNOME_BROWSER_ENABLED))
 		cmd = getStringConfValue(BROWSER_COMMAND);
@@ -270,12 +269,11 @@ static void on_link_clicked(GtkHTML *html, const gchar *url, gpointer data) {
 		
 	g_spawn_command_line_async(tmp, &error);
 	if((NULL != error) && (0 != error->code)) {
-		statusline = g_strdup_printf("browser command failed: %s", error->message);
+		ui_mainwindow_set_status_bar("browser command failed: %s", error->message);
 		g_error_free(error);
 	} else	
-		statusline = g_strdup_printf("starting: \"%s\"", tmp);
+		ui_mainwindow_set_status_bar("starting: \"%s\"", tmp);
 		
-	print_status(statusline);
 	g_free(tmp);
 }
 

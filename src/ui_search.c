@@ -67,7 +67,7 @@ void on_searchentry_activate(GtkButton *button, gpointer user_data) {
 	g_assert(mainwindow != NULL);
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		print_status(g_strdup_printf(_("searching for \"%s\""), searchstring));
+		ui_mainwindow_set_status_bar(_("searching for \"%s\""), searchstring);
 		selected_fp = NULL;
 		selected_type = FST_VFOLDER;
 		ui_itemlist_load(allItems, (gchar *)searchstring);
@@ -120,7 +120,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		
 	if(NULL != (searchentry = lookup_widget(mainwindow, "searchentry"))) {
 		searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-		print_status(g_strdup_printf(_("creating VFolder for search term \"%s\""), searchstring));
+		ui_mainwindow_set_status_bar(_("creating VFolder for search term \"%s\""), searchstring);
 
 		if(NULL != selected_keyprefix) {
 
@@ -143,7 +143,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 				ui_feedlist_load_subscription(fp, FALSE);
 			}
 		} else {
-			print_status(g_strdup(_("internal error! could not get folder key prefix!")));
+			g_warning("internal error! could not get folder key prefix!");
 		}
 		
 	}

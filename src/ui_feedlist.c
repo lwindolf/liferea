@@ -123,12 +123,12 @@ gboolean ui_feedlist_get_iter(GtkTreeIter *iter) {
 		return FALSE;
 	
 	if(NULL == (treeview = lookup_widget(mainwindow, "feedlist"))) {
-		g_warning(_("entry list widget lookup failed!\n"));
+		g_warning("entry list widget lookup failed!\n");
 		return FALSE;
 	}
 		
 	if(NULL == (select = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-		print_status(g_strdup(_("could not retrieve selection of entry list!")));
+		g_warning("could not retrieve selection of entry list!");
 		return FALSE;
 	}
 
@@ -144,7 +144,7 @@ gboolean ui_feedlist_get_iter(GtkTreeIter *iter) {
 		} else {
 			/* its a feed */
 			if(NULL == tmp_key) {
-				g_warning(_("fatal! selected feed entry has no key!!!"));
+				g_warning("fatal! selected feed entry has no key!!!");
 				return FALSE;
 			}
 			ui_feedlist_set_selected_feed(getFeed(tmp_key), NULL);
@@ -417,7 +417,7 @@ void ui_feedlist_load_subscription(feedPtr fp, gboolean startup) {
 			gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);	
 			gtk_tree_path_free(path);
 		} else {
-			print_status(g_strdup(_("internal error! could not select newly created treestore iter!")));
+			g_warning("internal error! could not select newly created treestore iter!");
 		}
 	}
 }
@@ -451,7 +451,7 @@ void on_popup_delete_selected(void) {
 		return;
 	}
 	
-	print_status(g_strdup_printf("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp)));
+	ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), getFeedTitle(selected_fp));
 	if(ui_feedlist_get_iter(&iter)) {
 		ui_htmlview_clear();
 		ui_itemlist_clear();

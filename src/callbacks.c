@@ -212,31 +212,6 @@ void updateUI(void) {
 		gtk_main_iteration();
 }
 
-static int print_status_idle(gpointer data) {
-	gchar *statustext = (gchar *)data;
-	GtkWidget *statusbar;
-	
-	g_assert(NULL != mainwindow);
-	statusbar = lookup_widget(mainwindow, "statusbar");
-	g_assert(NULL != statusbar);
-
-	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), statustext);	
-	return 0;
-}
-
-void print_status(gchar *statustext) { 
-
-	g_print("%s\n", statustext);
-	ui_queue_add(print_status_idle, (gpointer)statustext); 
-}
-
-/* Set the main window status bar to the text given as 
-   statustext. statustext is freed afterwards. */
-void ui_mainwindow_set_status_bar(gchar *statustext) {
-
-	ui_queue_add(print_status_idle, (gpointer)statustext); 
-}
-
 void showErrorBox(gchar *msg) {
 	GtkWidget	*dialog;
 	
@@ -280,15 +255,13 @@ gint checkForUpdateResults(gpointer data) {
 	request->fp->available = TRUE;
 	
 	if(304 == request->lasthttpstatus) {	
-		print_status(g_strdup_printf(_("\"%s\" has not changed since last update."), getFeedTitle(request->fp)));
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update."), getFeedTitle(request->fp));
 	} else if(NULL != request->data) {
 		/* determine feed type handler */
 		type = getFeedType(request->fp);
 		g_assert(NULL != feedHandler);
 		if(NULL == (fhp = g_hash_table_lookup(feedHandler, (gpointer)&type))) {
-			msg = g_strdup_printf(_("internal error! unknown feed type %d while updating feeds!"), type);
-			g_warning(msg);
-			g_free(msg);
+			g_warning(_("internal error! unknown feed type %d while updating feeds!"), type);
 			gdk_threads_leave();
 			return TRUE;
 		}
@@ -307,13 +280,13 @@ gint checkForUpdateResults(gpointer data) {
 		else {
 			/* Otherwise we simply use the new feed info... */
 			copyFeed(request->fp, new_fp);
-			print_status(g_strdup_printf(_("\"%s\" updated..."), getFeedTitle(request->fp)));
+			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), getFeedTitle(request->fp));
 		}
 
 		/* note this is to update the feed URL on permanent redirects */
 		if(0 != strcmp(request->feedurl, getFeedSource(request->fp))) {
 			setFeedSource(request->fp, g_strdup(request->feedurl));				
-			print_status(g_strdup_printf(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp)));
+			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated."), getFeedTitle(request->fp));
 		}
 
 		if(NULL != request->fp) {
@@ -327,7 +300,7 @@ gint checkForUpdateResults(gpointer data) {
 		}
 	} else {
 		
-		print_status(g_strdup_printf(_("\"%s\" is not available!"), getFeedTitle(request->fp)));
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available!"), getFeedTitle(request->fp));
 		request->fp->available = FALSE;
 	}
 	redrawFeedList();

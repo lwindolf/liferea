@@ -735,19 +735,19 @@ char * downloadURL(struct feed_request *request) {
 				}
 				fclose(f);
 			} else {
-				print_status(g_strdup_printf(_("Could not open pipe \"%s\"!"), request->feedurl));
+				ui_mainwindow_set_status_bar(_("Could not open pipe \"%s\"!"), request->feedurl);
 			}
 		} else if(g_file_test(request->feedurl, G_FILE_TEST_EXISTS)) {
 			/* we have a file... */
 			if((!g_file_get_contents(request->feedurl, &data, NULL, NULL)) || (*data == 0)) {
 				request->problem = 1;				
-				print_status(g_strdup_printf(_("Could not open file \"%s\"!"), request->feedurl));
+				ui_mainwindow_set_status_bar(_("Could not open file \"%s\"!"), request->feedurl);
 			} else {
 				g_assert(NULL != data);
 			}
 		} else {
 			request->problem = 1;
-			print_status(g_strdup_printf(_("There is no file \"%s\"!"), request->feedurl));
+			ui_mainwindow_set_status_bar(_("There is no file \"%s\"!"), request->feedurl);
 		}
 		
 		/* fake a status */
