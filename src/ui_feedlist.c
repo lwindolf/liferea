@@ -181,10 +181,6 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			
 			/* Set up the item list */
 			ui_itemlist_load((nodePtr)fp);
-	
-			/* two pane mode post processing */
-			if(TRUE == ui_itemlist_get_two_pane_mode())
-				feed_mark_all_items_read(fp);
 				
 		} else { /* Selecting a folder */
 			ui_itemlist_clear();

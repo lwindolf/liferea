@@ -21,6 +21,10 @@
 	  time the mode is switched but reused.
 	  (Lars Lindner)
 	* IPv6 Support. (Christoph Hohmann)
+	* Changed the behaviour of how items are marked read in
+	  condensed mode. Now the read state of items is not
+	  set automatically anymore. You can use the mark all
+	  unread feature. (Lars Linder)
 	
 	Bugfixes:
 
