@@ -26,6 +26,8 @@
 #include "feed.h"
 #include "folder.h"
 #include "debug.h"
+#include "conf.h"
+#include "ui_folder.h"
 #include "ui_dnd.h"
 
 extern GtkTreeStore *feedstore;
@@ -36,7 +38,7 @@ extern GtkTreeStore *feedstore;
 
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
-	// FIXME: checkForEmptyFolders()
+	checkForEmptyFolders();
 	conf_feedlist_save();
 	ui_itemlist_prefocus();
 }

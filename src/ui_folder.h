@@ -33,7 +33,7 @@ void ui_folder_remove_feed(feedPtr fp);
 
 void ui_update_folder(folderPtr folder);
 gboolean ui_is_folder_expanded(folderPtr folder);
-
+void checkForEmptyFolders(void);
 /* expansion/collapsing */
 void ui_folder_set_expansion(folderPtr folder, gboolean expanded);
 

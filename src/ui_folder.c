@@ -183,41 +183,57 @@ void ui_folder_set_expansion(folderPtr folder, gboolean expanded) {
 }
 
 /* Subfolders */
-static void ui_add_empty_subfolder(folderPtr folder) {
-	GtkTreeIter *iter;
-	GtkTreeIter child;
-	gint count;
 
-	if (folder == folder_get_root())
+/* this function is a workaround to the cant-drop-rows-into-emtpy-
+   folders-problem, so we simply pack an (empty) entry into each
+   empty folder like Nautilus does... */
+   
+void checkForEmptyFolder(folderPtr folder) {
+	GtkTreeIter	*parent = &((ui_data*)(folder->ui_data))->row;
+	GtkTreeIter	iter;
+	int			count;
+	gboolean		valid;
+	nodePtr		ptr;
+	/* this function does two things:
+	   
+	1. add "(empty)" entry to an empty folder
+	2. remove an "(empty)" entry from a non empty folder
+	(this state is possible after a drag&drop action) */
+
+	/* key is folder keyprefix, value is folder tree iterator */
+	count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), parent);
+	
+	/* case 1 */
+	if(0 == count) {
+		gtk_tree_store_append(feedstore, &iter, parent);
+		gtk_tree_store_set(feedstore, &iter,
+					    FS_LABEL, _("<i>(empty)</i>"), /* FIXME: Should this be italicized? */
+					    FS_ICON, icons[ICON_AVAILABLE],
+					    FS_PTR, NULL,
+					    FS_UNREAD, 0,
+					    -1);
 		return;
-
-	iter = &((ui_data*)(folder->ui_data))->row;
-	count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), iter);
-	if (count == 0) {
-		gtk_tree_store_append(feedstore, &child, iter);
-		gtk_tree_store_set(feedstore, &child,
-			   FS_PTR, NULL,
-			   -1);	
 	}
+	
+	if(1 == count)
+		return;
+	
+	/* else we could have case 2 */
+	gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &iter, parent);
+	do {
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, FS_PTR, &ptr, -1);
+
+		if(ptr == NULL) {
+			gtk_tree_store_remove(feedstore, &iter);
+			return;
+		}
+		
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &iter);
+	} while(valid);
 }
 
-static void ui_delete_empty_subfolders(folderPtr folder) {
-	GtkTreeIter *iter = &((ui_data*)(folder->ui_data))->row;
-	GtkTreeIter child;
-	nodePtr ptr;
-	if (folder == folder_get_root())
-		return;
-
-	if (gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &child, iter)) {
-		do {
-			gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &child,
-						    FS_PTR, &ptr, -1);
-			if (ptr == NULL) {
-				gtk_tree_store_remove(feedstore, &child);
-				return;
-			}
-		} while (gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &child));
-	}
+void checkForEmptyFolders(void) {
+     ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, checkForEmptyFolder);
 }
 
 void ui_add_folder(folderPtr folder, gint position) {
@@ -250,9 +266,8 @@ void ui_add_folder(folderPtr folder, gint position) {
 				    FS_PTR, folder,
 				    -1);
 	g_free(path);
-	if(folder->parent)
-		ui_delete_empty_subfolders(folder->parent);
-	ui_add_empty_subfolder(folder);
+
+	checkForEmptyFolders();
 
 	ui_update_folder(folder);
 }
@@ -278,7 +293,7 @@ void ui_remove_folder(folderPtr folder) {
 
 	if(has_parent) {
 		ui_update_folder(parentNode);
-		ui_add_empty_subfolder(parentNode);
+		checkForEmptyFolders();
 		if (parentExpanded)
 			ui_folder_set_expansion(parentNode, TRUE);
 	}
@@ -314,8 +329,8 @@ void ui_folder_add_feed(feedPtr fp, gint position) {
 				    FS_PTR, fp,
 				    -1);
 
-	ui_delete_empty_subfolders(fp->parent);
-	ui_update_folder(fp->parent);
+	checkForEmptyFolders();
+	ui_update_feed(fp);
 }
 
 void ui_folder_remove_feed(feedPtr fp) {
@@ -339,7 +354,7 @@ void ui_folder_remove_feed(feedPtr fp) {
 
 	if(has_parent) {
 		ui_update_folder(parentNode);
-		ui_add_empty_subfolder(parentNode);
+		checkForEmptyFolders();
 		if (parentExpanded)
 			ui_folder_set_expansion(parentNode, TRUE);
 	}
