@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-27 23:43+0200\n"
-"PO-Revision-Date: 2004-10-23 20:36+0200\n"
+"POT-Creation-Date: 2004-10-27 10:53+0200\n"
+"PO-Revision-Date: 2004-10-27 03:34+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -223,9 +223,8 @@ msgid "VFolder"
 msgstr "VFolder"
 
 #: src/feed.c:1012
-#, fuzzy
 msgid "user defined command"
-msgstr "Format défini par l'utilisateur :"
+msgstr "commande définie par l'utilisateur :"
 
 #: src/feed.c:1015 src/interface.c:1107 src/interface.c:1511 src/item.c:254
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
@@ -239,7 +238,6 @@ msgstr ""
 "été trouvé !"
 
 #: src/interface.c:140 src/interface.c:2911
-#, fuzzy
 msgid "Liferea 0.6.1"
 msgstr "Liferea 0.6.1"
 
@@ -256,17 +254,14 @@ msgid "_Feeds"
 msgstr "_Flux"
 
 #: src/interface.c:193
-#, fuzzy
 msgid "_New Subscription..."
 msgstr "_Nouvel abonnement..."
 
 #: src/interface.c:201
-#, fuzzy
 msgid "New _Folder..."
 msgstr "Nouveau _Dossier..."
 
 #: src/interface.c:214
-#, fuzzy
 msgid "_Properties..."
 msgstr "_Propriétés..."
 
@@ -324,7 +319,6 @@ msgstr ""
 "du dossier sélectionné comme lus."
 
 #: src/interface.c:290
-#, fuzzy
 msgid "_Import Feed List..."
 msgstr "_Importer une liste de flux..."
 
@@ -333,7 +327,6 @@ msgid "Imports an OPML feed list."
 msgstr "Importe une liste de flux OPML."
 
 #: src/interface.c:299
-#, fuzzy
 msgid "_Export Feed List..."
 msgstr "_Exporter la liste des flux..."
 
@@ -439,9 +432,8 @@ msgid "Shows or hides the search box."
 msgstr "Affiche ou masque la boîte de recherche."
 
 #: src/interface.c:437
-#, fuzzy
 msgid "Search with Feedster..."
-msgstr "Chercher avec Feedster"
+msgstr "Chercher avec Feedster..."
 
 #: src/interface.c:440
 msgid "Creates a Feedster search feed."
@@ -489,9 +481,8 @@ msgid "label133"
 msgstr "label133"
 
 #: src/interface.c:582
-#, fuzzy
 msgid "Headlines"
-msgstr "Titre"
+msgstr "Titres"
 
 #: src/interface.c:906
 msgid "Subscription Properties"
@@ -538,10 +529,10 @@ msgstr "Ne _pas mettre à jour ce flux automatiquement."
 
 #: src/interface.c:1013
 msgid " "
-msgstr ""
+msgstr " "
 
 #: src/interface.c:1017
-#, fuzzy, c-format
+#, c-format
 msgid "This feed provider suggests an update interval of %d seconds."
 msgstr ""
 "Le fournisseur de ce flux suggère un intervalle de rafraîchissement de %d "
@@ -667,9 +658,8 @@ msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Gestion du cache des flux</span>"
 
 #: src/interface.c:1813
-#, fuzzy
 msgid "Default number of items per feed to save:"
-msgstr "Nombre d'éléments de flux par défaut à sauvegarder par flux :"
+msgstr "Nombre d'éléments de flux par défaut à sauvegarder :"
 
 #: src/interface.c:1829
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
@@ -1073,7 +1063,7 @@ msgstr ""
 msgid "Rules"
 msgstr "Règles"
 
-#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:196
+#: src/item.c:232 src/item.c:236 src/item.c:248 src/ui_itemlist.c:197
 msgid "[No title]"
 msgstr "[Pas de titre]"
 
@@ -1693,7 +1683,7 @@ msgstr ""
 "HTTP %d : %s</b>"
 
 #: src/ui_htmlview.h:100
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occurred:"
 "<br><b>%s</b>"
@@ -1710,24 +1700,24 @@ msgstr ""
 "plus à jour, mais vous pouvez toujours accéder aux titres situés dans le "
 "cache."
 
-#: src/ui_itemlist.c:262
+#: src/ui_itemlist.c:263
 msgid "Date"
 msgstr "Date"
 
-#: src/ui_itemlist.c:273
+#: src/ui_itemlist.c:274
 msgid "Headline"
 msgstr "Titre"
 
-#: src/ui_itemlist.c:467 src/ui_itemlist.c:476 src/ui_itemlist.c:528
+#: src/ui_itemlist.c:468 src/ui_itemlist.c:477 src/ui_itemlist.c:529
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: src/ui_itemlist.c:510 src/ui_itemlist.c:531
+#: src/ui_itemlist.c:511 src/ui_itemlist.c:532
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:598
+#: src/ui_itemlist.c:599
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 
@@ -1914,9 +1904,8 @@ msgid "/_Next Unread Item"
 msgstr "/Élément _non lu suivant"
 
 #: src/ui_popup.c:124
-#, fuzzy
 msgid "/Launch Item In _Tab"
-msgstr "/_Ouvrir l'élément dans le navigateur"
+msgstr "/Ouvrir l'élément dans un onglet (_tab)"
 
 #: src/ui_popup.c:125
 msgid "/_Launch Item In Browser"
@@ -1935,13 +1924,12 @@ msgid "/_Copy Link Location"
 msgstr "/_Copier l'emplacement du lien"
 
 #: src/ui_popup.c:136
-#, fuzzy
 msgid "/Launch Link In _Tab"
-msgstr "/_Ouvrir dans le navigateur"
+msgstr "/_Ouvrir le lien dans un onglet (_tab)"
 
 #: src/ui_popup.c:137
 msgid "/_Launch Link In Browser"
-msgstr "/_Ouvrir dans le navigateur"
+msgstr "/_Ouvrir le lien dans le navigateur"
 
 #: src/ui_popup.c:138
 msgid "/_Subscribe..."
@@ -2008,11 +1996,6 @@ msgstr "Recherche de \"%s\""
 #: src/ui_search.c:95
 msgid "Please do a search first!"
 msgstr "Veuillez d'abord faire une recherche !"
-
-#: src/ui_tabs.c:86
-#, fuzzy
-msgid "URL"
-msgstr "_URL"
 
 #: src/ui_tray.c:90
 #, c-format
