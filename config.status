@@ -828,7 +828,8 @@ ${ac_dA}PACKAGE${ac_dB}PACKAGE${ac_dC}"liferea"${ac_dD}
 ${ac_dA}VERSION${ac_dB}VERSION${ac_dC}"0.4.3"${ac_dD}
 ${ac_dA}STDC_HEADERS${ac_dB}STDC_HEADERS${ac_dC}1${ac_dD}
 ${ac_dA}GETTEXT_PACKAGE${ac_dB}GETTEXT_PACKAGE${ac_dC}"liferea"${ac_dD}
-${ac_dA}OS${ac_dB}OS${ac_dC}"Linux"${ac_dD}
+${ac_dA}OS${ac_dB}OS${ac_dC}Linux${ac_dD}
+${ac_dA}OSNAME${ac_dB}OSNAME${ac_dC}"Linux"${ac_dD}
 ${ac_dA}HAVE_SYS_TYPES_H${ac_dB}HAVE_SYS_TYPES_H${ac_dC}1${ac_dD}
 ${ac_dA}HAVE_SYS_STAT_H${ac_dB}HAVE_SYS_STAT_H${ac_dC}1${ac_dD}
 ${ac_dA}HAVE_STDLIB_H${ac_dB}HAVE_STDLIB_H${ac_dC}1${ac_dD}
@@ -865,7 +866,8 @@ ${ac_uA}PACKAGE${ac_uB}PACKAGE${ac_uC}"liferea"${ac_uD}
 ${ac_uA}VERSION${ac_uB}VERSION${ac_uC}"0.4.3"${ac_uD}
 ${ac_uA}STDC_HEADERS${ac_uB}STDC_HEADERS${ac_uC}1${ac_uD}
 ${ac_uA}GETTEXT_PACKAGE${ac_uB}GETTEXT_PACKAGE${ac_uC}"liferea"${ac_uD}
-${ac_uA}OS${ac_uB}OS${ac_uC}"Linux"${ac_uD}
+${ac_uA}OS${ac_uB}OS${ac_uC}Linux${ac_uD}
+${ac_uA}OSNAME${ac_uB}OSNAME${ac_uC}"Linux"${ac_uD}
 ${ac_uA}HAVE_SYS_TYPES_H${ac_uB}HAVE_SYS_TYPES_H${ac_uC}1${ac_uD}
 ${ac_uA}HAVE_SYS_STAT_H${ac_uB}HAVE_SYS_STAT_H${ac_uC}1${ac_uD}
 ${ac_uA}HAVE_STDLIB_H${ac_uB}HAVE_STDLIB_H${ac_uC}1${ac_uD}

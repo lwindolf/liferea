@@ -94,14 +94,14 @@ void initConfig() {
         if (getenv("LANG") != NULL) {
                 lang = getenv("LANG");
                 /* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
-                ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(lang) + 2 + strlen(OS)+2 + strlen(HOMEPAGE) + 2;
+                ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(lang) + 2 + strlen(OSNAME)+2 + strlen(HOMEPAGE) + 2;
                 useragent = g_malloc(ualength);
-                snprintf (useragent, ualength, "Liferea/%s (%s; %s; %s)", VERSION, OS, lang, HOMEPAGE);
+                snprintf (useragent, ualength, "Liferea/%s (%s; %s; %s)", VERSION, OSNAME, lang, HOMEPAGE);
         } else {
                 /* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
-                ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(OS) + 2 + strlen("http://liferea.sf.net/") + 2;
+                ualength = strlen("Liferea/") + strlen(VERSION) + 2 + strlen(OSNAME) + 2 + strlen("http://liferea.sf.net/") + 2;
                 useragent = g_malloc(ualength);
-                snprintf (useragent, ualength, "Liferea/%s (%s; %s)", VERSION, OS, HOMEPAGE);
+                snprintf (useragent, ualength, "Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
                 printf ("%s\n", useragent);
         }
 }

@@ -4151,7 +4151,12 @@ _ACEOF
 uname=`uname`
 
 cat >>confdefs.h <<_ACEOF
-#define OS "$uname"
+#define OS $uname
+_ACEOF
+
+
+cat >>confdefs.h <<_ACEOF
+#define OSNAME "$uname"
 _ACEOF
 
 echo "$as_me:$LINENO: result: user agent OS = $uname" >&5

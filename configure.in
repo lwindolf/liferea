@@ -35,7 +35,8 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
 
 uname=`uname`
-AC_DEFINE_UNQUOTED(OS, "$uname", [defines a os version string, used for the user agent string])
+AC_DEFINE_UNQUOTED(OS, $uname, [defines a OS version string, used for OS specific code])
+AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the user agent string])
 AC_MSG_RESULT(user agent OS = $uname)
 
 dnl Add the languages which your application supports here.
