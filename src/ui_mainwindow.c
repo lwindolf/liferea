@@ -68,7 +68,7 @@ GtkWidget 	*mainwindow;
 
 static GtkWidget *htmlview = NULL;		/* HTML rendering widget */
 static gfloat 	zoom;				/* HTML rendering widget zoom level */
-extern gboolean	startIconified = FALSE; /* From main.c */
+extern gboolean	startIconified; /* From main.c */
 
 /* some prototypes */
 static void ui_mainwindow_restore_position(GtkWidget *window);
