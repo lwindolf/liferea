@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-01 01:09+0200\n"
+"POT-Creation-Date: 2004-07-09 01:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,80 +17,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: src/cdf_channel.c:56 src/cdf_item.c:55 src/ocs_dir.c:141 src/opml.c:211
-#: src/pie_entry.c:73 src/pie_feed.c:117 src/rss_channel.c:142
-#: src/rss_item.c:84 src/rss_item.c:87
+#: src/cdf_item.c:55 src/feed.c:1056 src/metadata.c:218 src/ocs_dir.c:141
+#: src/opml.c:211 src/pie_entry.c:74 src/pie_feed.c:117
 msgid "Feed:"
 msgstr ""
 
-#: src/cdf_channel.c:182 src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:325
-#: src/rss_channel.c:407
-msgid "There were errors while parsing this feed!"
-msgstr ""
-
-#: src/cdf_item.c:63 src/cdf_item.c:66 src/ocs_dir.c:102 src/pie_entry.c:81
-#: src/pie_entry.c:84 src/rss_item.c:96 src/rss_item.c:99
+#: src/cdf_item.c:63 src/cdf_item.c:66 src/ocs_dir.c:102 src/pie_entry.c:82
+#: src/pie_entry.c:85 src/rss_item.c:81 src/rss_item.c:84
 msgid "Item:"
 msgstr ""
 
-#: src/cdf_item.c:66 src/pie_entry.c:84 src/rss_item.c:99
+#: src/cdf_item.c:66 src/pie_entry.c:85 src/rss_item.c:84
 msgid "[No Title]"
 msgstr ""
 
-#: src/common.c:249
+#: src/common.c:270
 msgid "[Parser error output was truncated!]"
 msgstr ""
 
-#: src/common.c:333 src/common.c:392
+#: src/common.c:354 src/common.c:413
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr ""
 
-#: src/common.c:336
+#: src/common.c:357
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr ""
 
-#: src/common.c:395
+#: src/common.c:416
 msgid "Invalid RFC822 date format! Ignoring <pubDate> information!\n"
 msgstr ""
 
-#: src/common.c:409 src/common.c:416 src/common.c:422 src/common.c:429
+#: src/common.c:430 src/common.c:437 src/common.c:443 src/common.c:450
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr ""
 
-#: src/common.c:499
+#: src/common.c:520
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
 
 #. _() for HELP1URL to allow localised help feeds
-#: src/conf.c:44
+#: src/conf.c:45
 msgid "http://liferea.sf.net/help/help"
 msgstr ""
 
-#: src/conf.c:45
+#: src/conf.c:46
 msgid ".rdf"
 msgstr ""
 
-#: src/conf.c:338
+#: src/conf.c:339
 msgid "Liferea Help"
 msgstr ""
 
-#: src/conf.c:348
+#: src/conf.c:349
 msgid "Online Help Feed"
 msgstr ""
 
-#: src/conf.c:358
+#: src/conf.c:359
 msgid "Liferea SF News"
 msgstr ""
 
-#: src/conf.c:480
+#: src/conf.c:481
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: src/conf.c:508
+#: src/conf.c:509
 #, c-format
 msgid "RSS namespace %s not yet configured! Activating...\n"
 msgstr ""
@@ -123,180 +117,204 @@ msgstr ""
 msgid "Imported feed list"
 msgstr ""
 
-#: src/feed.c:107
+#: src/feed.c:108
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 
-#: src/feed.c:114 src/feed.c:380
+#: src/feed.c:115 src/feed.c:384
 msgid "<p>Empty document!</p>"
 msgstr ""
 
-#: src/feed.c:122
+#: src/feed.c:123
 msgid "<p>Invalid XML!</p>"
 msgstr ""
 
-#: src/feed.c:171
+#: src/feed.c:172
 msgid "There were errors while parsing a feed"
 msgstr ""
 
-#: src/feed.c:172
+#: src/feed.c:173
 msgid ""
 "<p>Could not determine the feed type. Please check that it is in a supported "
 "format.</p>"
 msgstr ""
 
-#: src/feed.c:363 src/feed.c:364
+#: src/feed.c:367 src/feed.c:368
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 
-#: src/feed.c:374
+#: src/feed.c:378
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
 
-#: src/feed.c:389
+#: src/feed.c:393
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 
-#: src/feed.c:429
+#: src/feed.c:438
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
 
-#: src/feed.c:565
+#: src/feed.c:574
 #, c-format
 msgid "\"%s\" has no new items"
 msgstr ""
 
-#: src/feed.c:567
+#: src/feed.c:576
 #, c-format
 msgid "\"%s\" has %d new items"
 msgstr ""
 
-#: src/feed.c:671
+#: src/feed.c:641
+#, c-format
+msgid "This feed \"%s\" is already being updated!"
+msgstr ""
+
+#: src/feed.c:646
+msgid "The feed was discontinued. Liferea won't update it anymore!"
+msgstr ""
+
+#: src/feed.c:650
+#, c-format
+msgid "Updating \"%s\""
+msgstr ""
+
+#: src/feed.c:698
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr ""
+
+#: src/feed.c:700
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr ""
 
-#: src/feed.c:678
+#: src/feed.c:707
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr ""
 
-#: src/feed.c:688
+#: src/feed.c:717
 msgid ""
 "Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!"
 msgstr ""
 
-#: src/feed.c:714
+#: src/feed.c:743
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: src/feed.c:727
+#: src/feed.c:756
 #, c-format
 msgid "\"%s\" is not available"
 msgstr ""
 
-#: src/feed.c:834
+#: src/feed.c:879
 msgid "The feed no longer exists. Please unsubscribe."
 msgstr ""
 
-#: src/feed.c:835
+#: src/feed.c:880
 msgid "Payment Required"
 msgstr ""
 
-#: src/feed.c:836
+#: src/feed.c:881
 msgid "Access Forbidden"
 msgstr ""
 
-#: src/feed.c:837
+#: src/feed.c:882
 msgid "Resource Not Found"
 msgstr ""
 
-#: src/feed.c:838
+#: src/feed.c:883
 msgid "Method Not Allowed"
 msgstr ""
 
-#: src/feed.c:839
+#: src/feed.c:884
 msgid "Not Acceptable"
 msgstr ""
 
-#: src/feed.c:840
+#: src/feed.c:885
 msgid "Proxy Authentication Required"
 msgstr ""
 
-#: src/feed.c:841
+#: src/feed.c:886
 msgid "Request Time-Out"
 msgstr ""
 
-#: src/feed.c:842
-msgid "Gone. Resource doesn't exist. Please unsubscribe."
+#: src/feed.c:887
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 
-#: src/feed.c:847
+#: src/feed.c:892
 msgid "URL is invalid"
 msgstr ""
 
-#: src/feed.c:850
+#: src/feed.c:895
 msgid "Error connecting to remote host"
 msgstr ""
 
-#: src/feed.c:851
+#: src/feed.c:896
 msgid "Hostname could not be found"
 msgstr ""
 
-#: src/feed.c:852
+#: src/feed.c:897
 msgid "Network connection was refused by the remote host"
 msgstr ""
 
-#: src/feed.c:853
+#: src/feed.c:898
 msgid "Remote host did not finish sending data"
 msgstr ""
 
 #. Transfer errors
-#: src/feed.c:855
+#: src/feed.c:900
 msgid "Too many HTTP redirects were encountered"
 msgstr ""
 
-#: src/feed.c:858
+#: src/feed.c:903
 msgid "Remote host sent an invalid response"
 msgstr ""
 
-#: src/feed.c:865
+#: src/feed.c:910
 msgid "Authentication failed"
 msgstr ""
 
-#: src/feed.c:867
+#: src/feed.c:912
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 
-#: src/feed.c:873
+#: src/feed.c:918
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 
-#: src/feed.c:874
+#: src/feed.c:919
 msgid "Client Error"
 msgstr ""
 
-#: src/feed.c:875
+#: src/feed.c:920
 msgid "Server Error"
 msgstr ""
 
-#: src/feed.c:876
+#: src/feed.c:921
 msgid "(unknown networking error happened)"
 msgstr ""
 
-#: src/feed.c:898
+#: src/feed.c:943
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
+msgstr ""
+
+#: src/feed.c:1067 src/interface.c:1028 src/interface.c:1430
+#: src/metadata.c:219 src/ocs_dir.c:147 src/opml.c:217 src/rss_item.c:93
+msgid "Source:"
 msgstr ""
 
 #: src/html.c:138
@@ -312,6 +330,35 @@ msgid ""
 "another Mozilla installation or delete the gconf configuration\n"
 "key /apps/liferea/browser-module!\n"
 "\n"
+msgstr ""
+
+#: src/htmlview.c:73
+#, c-format
+msgid ""
+"Failed to open HTML widget module (%s) specified in configuration!\n"
+"%s\n"
+msgstr ""
+
+#: src/htmlview.c:85
+msgid "Htmlview API mismatch!"
+msgstr ""
+
+#: src/htmlview.c:93
+msgid "Detected module is not a valid htmlview module!"
+msgstr ""
+
+#: src/htmlview.c:115
+#, c-format
+msgid "Cannot load HTML widget module (%s)!"
+msgstr ""
+
+#. now we determine a list of all available modules
+#. to present in the preferences dialog and to load
+#. one just in case there was no configured module
+#. or it did not load when trying...
+#: src/htmlview.c:121
+#, c-format
+msgid "Available browser modules (%s):\n"
 msgstr ""
 
 #: src/htmlview.c:156
@@ -339,31 +386,37 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr ""
 
-#: src/htmlview.c:363 src/htmlview.c:384
+#: src/htmlview.c:361 src/htmlview.c:382
 #, c-format
 msgid "Browser command failed: %s"
 msgstr ""
 
-#: src/htmlview.c:366 src/htmlview.c:387
+#: src/htmlview.c:364 src/htmlview.c:385
 #, c-format
 msgid "Starting: \"%s\""
 msgstr ""
 
-#: src/htmlview.h:89
+#: src/htmlview.h:97
 #, c-format
 msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
 msgstr ""
 
-#: src/htmlview.h:90
+#: src/htmlview.h:98
 #, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occured:"
 "<br><b>%s</b>"
 msgstr ""
 
+#: src/htmlview.h:99
+msgid ""
+"This feed is discontinued. It's no longer available. Liferea won't update it "
+"anymore but you can still access the cached headlines."
+msgstr ""
+
 #: src/interface.c:131 src/interface.c:2987
-msgid "Liferea 0.5.1"
+msgid "Liferea 0.5.2"
 msgstr ""
 
 #: src/interface.c:148
@@ -657,11 +710,6 @@ msgstr ""
 msgid "Source Type:"
 msgstr ""
 
-#: src/interface.c:1028 src/interface.c:1430 src/ocs_dir.c:147 src/opml.c:217
-#: src/pie_feed.c:123 src/rss_channel.c:149 src/rss_item.c:108
-msgid "Source:"
-msgstr ""
-
 #: src/interface.c:1035 src/interface.c:1437
 msgid "<b>Conversion Filter</b>"
 msgstr ""
@@ -780,7 +828,7 @@ msgid "View Headlines With"
 msgstr ""
 
 #: src/interface.c:1771
-msgid "Open links in Liferea's _window (requires Mozilla)."
+msgid "Open links in Liferea's _window."
 msgstr ""
 
 #: src/interface.c:1779
@@ -1037,7 +1085,8 @@ msgid ""
 "Dario Conigliaro <djdas@djdas.no-ip.org>\n"
 "Rex Tsai <chihchun@users.sourceforge.net>\n"
 "Alekseev Vladimir <compress@linux-online.ru>\n"
-"Juraj Kubelka <Juraj.Kubelka@email.cz>"
+"Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
+"Martin-Eric Racine <q-funk@pp.fishpool.fi>"
 msgstr ""
 
 #: src/interface.c:3043
@@ -1060,51 +1109,91 @@ msgstr ""
 msgid "window1"
 msgstr ""
 
-#: src/main.c:51
+#: src/main.c:52
 msgid "  --version        Prints Liferea's version number"
 msgstr ""
 
-#: src/main.c:52
+#: src/main.c:53
 msgid "  --help           Prints this message and exits"
 msgstr ""
 
-#: src/main.c:53
+#: src/main.c:54
 msgid "  --iconify        Starts the program iconified"
 msgstr ""
 
-#: src/main.c:55
-msgid "  --debug-cache    Print debugging messages for the cache handling"
-msgstr ""
-
 #: src/main.c:56
-msgid ""
-"  --debug-conf     Print debugging messages of the configuration handling"
+msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr ""
 
 #: src/main.c:57
 msgid ""
-"  --debug-update   Print debugging messages of the feed update processing"
+"  --debug-conf     Print debugging messages of the configuration handling"
 msgstr ""
 
 #: src/main.c:58
-msgid "  --debug-parsing  Print debugging messages of all parsing functions"
+msgid ""
+"  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 
 #: src/main.c:59
-msgid "  --debug-gui      Print debugging messages of all GUI functions"
+msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 
 #: src/main.c:60
+msgid "  --debug-gui      Print debugging messages of all GUI functions"
+msgstr ""
+
+#: src/main.c:61
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 
-#: src/main.c:61
+#: src/main.c:62
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr ""
 
-#: src/main.c:62
+#: src/main.c:63
 msgid "  --debug-verbose  Print verbose debugging messages"
+msgstr ""
+
+#: src/metadata.c:220
+msgid "author"
+msgstr ""
+
+#: src/metadata.c:221
+msgid "contributors"
+msgstr ""
+
+#: src/metadata.c:222
+msgid "copyright"
+msgstr ""
+
+#: src/metadata.c:223 src/metadata.c:224
+msgid "language"
+msgstr ""
+
+#: src/metadata.c:225
+msgid "feed last updated"
+msgstr ""
+
+#: src/metadata.c:226
+msgid "content last updated"
+msgstr ""
+
+#: src/metadata.c:227
+msgid "managing editor"
+msgstr ""
+
+#: src/metadata.c:228
+msgid "webmaster"
+msgstr ""
+
+#: src/metadata.c:229
+msgid "category"
+msgstr ""
+
+#: src/metadata.c:230
+msgid "feed generated with"
 msgstr ""
 
 #: src/net/conversions.c:74
@@ -1133,7 +1222,7 @@ msgstr ""
 msgid "ERROR: Unsupported flags %d\n"
 msgstr ""
 
-#: src/net/netio.c:499
+#: src/net/netio.c:501
 msgid "URL points to permanent redirect, updating with new location..."
 msgstr ""
 
@@ -1178,19 +1267,23 @@ msgstr ""
 msgid "<p>Could not find RDF header!</p>"
 msgstr ""
 
+#: src/ocs_dir.c:501 src/opml.c:236 src/pie_feed.c:319 src/rss_channel.c:404
+msgid "There were errors while parsing this feed!"
+msgstr ""
+
 #: src/opml.c:145
 msgid "<p>Could not find OPML header!</p>"
 msgstr ""
 
-#: src/pie_feed.c:215
+#: src/pie_feed.c:209
 msgid "<p>Could not find Atom/Echo/PIE header!</p>"
 msgstr ""
 
-#: src/rss_channel.c:335
+#: src/rss_channel.c:320
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr ""
 
-#: src/rss_item.c:133
+#: src/rss_item.c:118
 msgid "comments"
 msgstr ""
 
@@ -1286,27 +1379,27 @@ msgstr ""
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:286
+#: src/ui_itemlist.c:292
 msgid "Date"
 msgstr ""
 
-#: src/ui_itemlist.c:293
+#: src/ui_itemlist.c:304
 msgid "Headline"
 msgstr ""
 
-#: src/ui_itemlist.c:573
+#: src/ui_itemlist.c:591
 msgid "No item has been selected"
 msgstr ""
 
-#: src/ui_itemlist.c:597
+#: src/ui_itemlist.c:615
 msgid "You must select a feed to delete its items!"
 msgstr ""
 
-#: src/ui_itemlist.c:627
+#: src/ui_itemlist.c:645
 msgid "internal error! could not get feed tree view selection!\n"
 msgstr ""
 
-#: src/ui_itemlist.c:659
+#: src/ui_itemlist.c:677
 msgid "There are no unread items "
 msgstr ""
 
@@ -1504,17 +1597,17 @@ msgstr[1] ""
 msgid "No new items."
 msgstr ""
 
-#: src/update.c:112
+#: src/update.c:114
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr ""
 
-#: src/update.c:126
+#: src/update.c:128
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr ""
 
-#: src/update.c:132
+#: src/update.c:134
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr ""

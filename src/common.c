@@ -111,7 +111,7 @@ gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * strin
 	return new;
 }
 
-gchar * convertToHTML(gchar * string) { return convertCharSet("UTF-8", "HTML", string); }
+gchar * convertToHTML(gchar * string) { return string; } /* FIXME: BROKEN! return convertCharSet("UTF-8", "HTML", string); } */
 
 /* Conversion function which should be applied to all read XML strings, 
    to ensure proper UTF8. This is because we use libxml2 in recovery

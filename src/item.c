@@ -188,6 +188,7 @@ gchar *item_render(itemPtr ip) {
 	displayset.headtable = NULL;
 	displayset.head = NULL;
 	displayset.body = g_strdup(ip->description);
+	displayset.foot = NULL;
 	displayset.foottable = NULL;
 	
 	metadata_list_render(ip->metadataList, &displayset);
@@ -207,6 +208,11 @@ gchar *item_render(itemPtr ip) {
 	if (displayset.body != NULL) {
 		addToHTMLBufferFast(&buffer, displayset.body);
 		g_free(displayset.body);
+	}
+
+	if (displayset.foot != NULL) {
+		addToHTMLBufferFast(&buffer, displayset.foot);
+		g_free(displayset.foot);
 	}
 
 	if (displayset.foottable != NULL) {

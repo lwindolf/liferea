@@ -74,21 +74,6 @@ static gchar * showRSSItem(feedPtr fp, RSSChannelPtr cp, RSSItemPtr ip) {
 	g_assert(NULL != cp);
 	g_assert(NULL != fp);	
 
-	addToHTMLBuffer(&buffer, HEAD_START);		
-
-	/* output feed link and title */
-	if(NULL != cp->tags[RSS_CHANNEL_LINK]) {
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", 
-			cp->tags[RSS_CHANNEL_LINK],
-			cp->tags[RSS_CHANNEL_TITLE]);
-		line = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-		g_free(tmp);
-	} else {
-		line = g_strdup_printf(HEAD_LINE, _("Feed:"), cp->tags[RSS_CHANNEL_TITLE]);
-	}
-	addToHTMLBuffer(&buffer, line);
-	g_free(line);
-
 	/* output item link and title */
 	if(NULL != ip->tags[RSS_ITEM_LINK]) {
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ip->tags[RSS_ITEM_LINK], 

@@ -198,9 +198,13 @@ static void attribs_render_str(gpointer data, struct displayset *displayset, gpo
 }
 
 static void attribs_render_image(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar *tmp = g_strdup_printf("<p><img class=\"feed\" src=\"%s\" /></p>", (gchar*)data);
+	gchar *tmp = g_strdup_printf("<p>" IMG_START "%s" IMG_END "</p>", (gchar*)data);
 	addToHTMLBufferFast(&(displayset->head), tmp);
 	g_free(tmp);
+}
+
+static void attribs_render_foot_text(gpointer data, struct displayset *displayset, gpointer user_data) {
+	addToHTMLBufferFast(&(displayset->foot), (gchar*)data);
 }
 
 #define REGISTER_STR_ATTRIB(position, strid, promptStr) do { \
@@ -218,12 +222,15 @@ static void attribs_init() {
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "copyright", _("copyright"));
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", _("language"));
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "language", _("language"));
-	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "lastBuildDate", _("last build date"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "feedUpdateDate", _("feed last updated"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "contentUpdateDate", _("content last updated"));
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "managingEditor", _("managing editor"));
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "webmaster", _("webmaster"));
 	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "category", _("category"));
+	REGISTER_STR_ATTRIB(POS_FOOTTABLE, "feedgenerator", _("feed generated with"));
 
 	metadata_register("feedLogoUri", attribs_render_image, NULL);
+	metadata_register("textInput", attribs_render_foot_text, NULL);
 }
 
 static void attribs_register_default_renderer(const gchar *strid) {

@@ -1038,6 +1038,7 @@ gchar *feed_render(feedPtr fp) {
 	displayset.headtable = NULL;
 	displayset.head = NULL;
 	displayset.body = g_strdup(feed_get_description(fp));
+	displayset.foot = NULL;
 	displayset.foottable = NULL;
 	
 	metadata_list_render(fp->metadataList, &displayset);
@@ -1089,6 +1090,12 @@ gchar *feed_render(feedPtr fp) {
 	if (displayset.body != NULL) {
 		addToHTMLBufferFast(&buffer, displayset.body);
 		g_free(displayset.body);
+	}
+
+	/* Body */
+	if (displayset.foot != NULL) {
+		addToHTMLBufferFast(&buffer, displayset.foot);
+		g_free(displayset.foot);
 	}
 
 	if (displayset.foottable != NULL) {

@@ -33,6 +33,7 @@ struct displayset {
 	gchar *headtable;
 	gchar *head;
 	gchar *body;
+	gchar *foot;
 	gchar *foottable;
 };
 

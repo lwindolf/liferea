@@ -38,7 +38,7 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	int	period;
 	int	frequency = 1;
 	
-	period = cp->updateInterval;
+	// FIXME!!! period = cp->updateInterval;
 	if(!xmlStrcmp(cur->name, BAD_CAST"updatePeriod")) {
 		if(NULL != (tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 
@@ -67,7 +67,7 @@ void ns_syn_parseChannelTag(RSSChannelPtr cp, xmlNodePtr cur) {
 	if(0 != frequency)
 		period /= frequency;
 
-	cp->updateInterval = period;
+	// FIXME!!! cp->updateInterval = period;
 }
 
 RSSNsHandler *ns_syn_getRSSNsHandler(void) {

@@ -195,7 +195,7 @@ feedHandlerPtr initCDFFeedHandler(void) {
 		channelHash = g_hash_table_new(g_str_hash, g_str_equal);
 		g_hash_table_insert(channelHash, "copyright", "copyright");
 		g_hash_table_insert(channelHash, "publicationdate", "lastBuildDate");
-		g_hash_table_insert(channelHash, "publisher", "webmaster");
+		g_hash_table_insert(channelHash, "publisher", "managingEditor");
 		g_hash_table_insert(channelHash, "category", "category");
 	}
 	

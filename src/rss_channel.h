@@ -58,7 +58,6 @@ typedef struct RSSChannel {
 	gchar		*tiLink;	/* text input HTTP GET destination URL */
 	
 	time_t		time;		/* last feed build/creation time */	
-	gint		updateInterval;	/* channel defined feed refresh interval */
 } *RSSChannelPtr;
 
 feedHandlerPtr	initRSSFeedHandler(void);
