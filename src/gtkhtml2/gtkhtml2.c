@@ -1,32 +1,32 @@
-/*
-   GtkHTML2 browser module implementation for Liferea
-
-   Copyright (C) 2004 Nathan Conrad <conrad@bungled.net>
-   Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>  
-   Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
-   
-   Note large portions of this code (callbacks and html widget
-   preparation) were taken from test/browser-window.c of
-   libgtkhtml-2.2.0 with the following copyrights:
-
-   Copyright (C) 2000 CodeFactory AB
-   Copyright (C) 2000 Jonas Borgström <jonas@codefactory.se>
-   Copyright (C) 2000 Anders Carlsson <andersca@codefactory.se>
-   
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * @file gtkhtml2.c GtkHTML2 browser module implementation for Liferea
+ *
+ * Copyright (C) 2004 Nathan Conrad <conrad@bungled.net>
+ * Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>  
+ * Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
+ * 
+ * Note large portions of this code (callbacks and html widget
+ * preparation) were taken from test/browser-window.c of
+ * libgtkhtml-2.2.0 with the following copyrights:
+ *
+ * Copyright (C) 2000 CodeFactory AB
+ * Copyright (C) 2000 Jonas Borgström <jonas@codefactory.se>
+ * Copyright (C) 2000 Anders Carlsson <andersca@codefactory.se>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include <libgtkhtml/gtkhtml.h>
 #include <stdlib.h>
@@ -63,6 +63,9 @@ static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer u
 			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		}
+		g_free(selectedURL);
+		selectedURL = NULL;
+
 		return TRUE; 
 	} else {
 		return FALSE;
