@@ -196,7 +196,7 @@ static GtkWidget * mozilla_create() {
 		{ "dom_mouse_click", mozembed_dom_mouse_click_cb   },
 		{ "dom_key_press",   mozembed_dom_key_press_cb     },
 		//{ "size_to",         mozembed_size_to_cb           },
-		//{ "new_window",      mozembed_new_window_cb        },
+		{ "new_window",      mozembed_new_window_cb        },
 		//{ "security_change", mozembed_security_change_cb   },
 		{ "open_uri",		 mozembed_open_uri_cb},
 		/* terminator -- must be last in the list! */

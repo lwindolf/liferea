@@ -1,5 +1,5 @@
-/*
- *  Liferea GtkMozEmbed support
+/**
+ * @file mozilla.cpp C++ portion of GtkMozEmbed support
  *
  *  Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
  *

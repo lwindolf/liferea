@@ -1,5 +1,5 @@
 /**
- * Liferea main program
+ * @file main.c Liferea main program
  *
  * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
  * 
@@ -43,32 +43,33 @@
 
 GThread	*mainThread = NULL;
 
-static void
-show_help (void)
-{
-	GString * str = g_string_new (NULL);
-	g_string_append_c (str, '\n');
-	g_string_append_printf (str, "Liferea %s\n\n", VERSION);
-	g_string_append_printf (str, "%s\n", _("  --version        Prints Liferea's version number"));
-	g_string_append_printf (str, "%s\n", _("  --help           Prints this message and exits"));
-	g_string_append_c (str, '\n');
-	g_string_append_printf (str, "%s\n", _("  --debug-cache    Print debugging messages for the cache handling"));
-	g_string_append_printf (str, "%s\n", _("  --debug-conf     Print debugging messages of the configuration handling"));
-	g_string_append_printf (str, "%s\n", _("  --debug-update   Print debugging messages of the feed update processing"));
-	g_string_append_printf (str, "%s\n", _("  --debug-parsing  Print debugging messages of all parsing functions"));
-	g_string_append_printf (str, "%s\n", _("  --debug-gui      Print debugging messages of all GUI functions"));
-	g_string_append_printf (str, "%s\n", _("  --debug-trace    Print debugging messages when entering/leaving functions"));
-	g_string_append_printf (str, "%s\n", _("  --debug-all      Print debugging messages of all types"));
-	g_string_append_printf (str, "%s\n", _("  --debug-verbose  Print verbose debugging messages"));
+static void show_help(void) {
+	GString	*str = g_string_new(NULL);
+	
+	g_string_append_c(str, '\n');
+	g_string_append_printf(str, "Liferea %s\n\n", VERSION);
+	g_string_append_printf(str, "%s\n", _("  --version        Prints Liferea's version number"));
+	g_string_append_printf(str, "%s\n", _("  --help           Prints this message and exits"));
+	g_string_append_c(str, '\n');
+	g_string_append_printf(str, "%s\n", _("  --debug-cache    Print debugging messages for the cache handling"));
+	g_string_append_printf(str, "%s\n", _("  --debug-conf     Print debugging messages of the configuration handling"));
+	g_string_append_printf(str, "%s\n", _("  --debug-update   Print debugging messages of the feed update processing"));
+	g_string_append_printf(str, "%s\n", _("  --debug-parsing  Print debugging messages of all parsing functions"));
+	g_string_append_printf(str, "%s\n", _("  --debug-gui      Print debugging messages of all GUI functions"));
+	g_string_append_printf(str, "%s\n", _("  --debug-trace    Print debugging messages when entering/leaving functions"));
+	g_string_append_printf(str, "%s\n", _("  --debug-all      Print debugging messages of all types"));
+	g_string_append_printf(str, "%s\n", _("  --debug-verbose  Print verbose debugging messages"));
 
-	g_string_append_c (str, '\n');
+	g_string_append_c(str, '\n');
 	g_print("%s", str->str);
-	g_string_free (str, TRUE);
+	g_string_free(str, TRUE);
 }
 
-int main (int argc, char *argv[]) {	
-	gulong	debug_flags = 0;
-	gint	i;
+int main(int argc, char *argv[]) {	
+	gulong		debug_flags = 0;
+	gboolean	start_iconified = FALSE;
+	const char 	*arg;
+	gint		i;
 	
 #ifdef ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -79,61 +80,66 @@ int main (int argc, char *argv[]) {
 
 	/* parse arguments  */
 	debug_flags = 0;
-	for (i=0; i<argc; ++i)
-	{
-		const char * arg = argv[i];
+	for(i = 0; i < argc; ++i) {		
+		arg = argv[i];
 
-		if (!strcmp (arg, "--debug-cache"))
+		if(!strcmp(arg, "--debug-cache"))
 			debug_flags |= DEBUG_CACHE;
-		else if (!strcmp (arg, "--debug-conf"))
+		else if(!strcmp(arg, "--debug-conf"))
 			debug_flags |= DEBUG_CONF;
-		else if (!strcmp (arg, "--debug-update"))
+		else if(!strcmp(arg, "--debug-update"))
 			debug_flags |= DEBUG_UPDATE;
-		else if (!strcmp (arg, "--debug-parsing"))
+		else if(!strcmp(arg, "--debug-parsing"))
 			debug_flags |= DEBUG_PARSING;
-		else if (!strcmp (arg, "--debug-gui"))
+		else if(!strcmp(arg, "--debug-gui"))
 			debug_flags |= DEBUG_GUI;
-		else if (!strcmp (arg, "--debug-trace"))
+		else if(!strcmp(arg, "--debug-trace"))
 			debug_flags |= DEBUG_TRACE;
-		else if (!strcmp (arg, "--debug-all"))
+		else if(!strcmp(arg, "--debug-all"))
 			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI;
-		else if (!strcmp (arg, "--debug-verbose"))
+		else if(!strcmp(arg, "--debug-verbose"))
 			debug_flags |= DEBUG_VERBOSE;		
-		else if (!strcmp (arg, "--version")) {
-			printf ("Liferea %s\n", VERSION);
+		else if(!strcmp(arg, "--version") || !strcmp(arg, "-v")) {
+			g_print("Liferea %s\n", VERSION);
 			return 0;
 		}
-		else if (!strcmp (arg, "--help") || !strcmp(arg, "-help")) {
-			show_help ();
+		else if(!strcmp(arg, "--help") || !strcmp(arg, "-h")) {
+			show_help();
 			return 0;
+		}
+		else if(!strcmp(arg, "--iconify")) {
+			start_iconified = TRUE;
 		}
 	}
-	set_debug_level (debug_flags);
+	set_debug_level(debug_flags);
 
 	g_set_prgname("liferea");
 	gtk_set_locale();
 	g_thread_init(NULL);
 	gdk_threads_init();	
 	gtk_init(&argc, &argv);
-	mainThread = g_thread_self();		/* we need to now this when locking in ui_queue.c */
+	mainThread = g_thread_self();	/* we need to now this when locking in ui_queue.c */
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
 	ui_queue_init();		/* set up callback queue for other threads */
 
 	/* order is important! */
-	initConfig();		/* initialize gconf */
-	ui_htmlview_init();
+	initConfig();			/* initialize gconf */
+	ui_htmlview_init();		/* setup HTML widgets */
 	mainwindow = ui_mainwindow_new();
-	loadConfig();		/* maybe this should be merged with initConfig() */
-	feed_init();
-	ui_init();		/* initialize gconf configured GUI behaviour */
+	loadConfig();			/* maybe this should be merged with initConfig() */
+	feed_init();			/* register feed types */
+	ui_init();			/* initialize gconf configured GUI behaviour */
 
 	/* setup the processing of feed update results */
 	ui_timeout_add(100, feed_process_update_results, NULL);
 	
 	gtk_widget_show(mainwindow);
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
+	
+	if(start_iconified)
+		gtk_widget_hide(mainwindow);
 	
 	if(getBooleanConfValue(UPDATE_ON_STARTUP))
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
