@@ -148,24 +148,14 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
  * Feed menu callbacks
  */
 
+void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
+	on_newbtn_clicked(NULL, NULL);
+}
+
 void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
 	feedPtr fp = (feedPtr)ui_feedlist_get_selected();
 
 	on_popup_refresh_selected((gpointer)fp, 0, NULL);
-}
-
-
-void on_menu_feed_delete(GtkMenuItem *menuitem, gpointer user_data) {
-	feedPtr fp = (feedPtr)ui_feedlist_get_selected();
-	
-	on_popup_delete_selected((gpointer)fp, 0, NULL);
-}
-
-
-void on_menu_feed_prop(GtkMenuItem *menuitem, gpointer user_data) {
-	feedPtr fp = (feedPtr)ui_feedlist_get_selected();
-	
-	on_popup_prop_selected((gpointer)fp, 0, NULL);
 }
 
 
@@ -174,17 +164,38 @@ void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 
-void on_menu_folder_delete(GtkMenuItem *menuitem, gpointer user_data) {
-	folderPtr folder = (folderPtr)ui_feedlist_get_selected();
-	
-	on_popup_removefolder_selected((gpointer)folder, 0, NULL);
-	
+void on_menu_delete (GtkMenuItem     *menuitem, gpointer         user_data) {
+	folderPtr ptr = (folderPtr)ui_feedlist_get_selected();
+
+	if (ptr != NULL && IS_FOLDER(ptr->type)) {
+		on_popup_removefolder_selected((gpointer)ptr, 0, NULL);
+	} else if (ptr != NULL && FEED_MENU(ptr->type)) {
+		on_popup_delete_selected((gpointer)ptr, 0, NULL);
+	} else {
+		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
+	}
 }
 
 
-void on_menu_folder_rename (GtkMenuItem *menuitem, gpointer user_data) {
-	folderPtr folder = (folderPtr)ui_feedlist_get_selected();
+void on_menu_properties (GtkMenuItem *menuitem, gpointer user_data) {
+	nodePtr ptr = ui_feedlist_get_selected();
+	if (ptr != NULL && IS_FOLDER(ptr->type)) {
+		on_popup_foldername_selected((gpointer)ptr, 0, NULL);
+	} else if (ptr != NULL && FEED_MENU(ptr->type)) {
+		on_popup_prop_selected((gpointer)ptr, 0, NULL);
+	} else {
+		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
+	}
+}
+
+
+void on_menu_update (GtkMenuItem     *menuitem, gpointer         user_data) {
+	nodePtr ptr = ui_feedlist_get_selected();
 	
-	on_popup_foldername_selected((gpointer)folder, 0, NULL);	
+	if (ptr != NULL) {
+		on_popup_refresh_selected((gpointer)ptr, 0, NULL);
+	} else {
+		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
+	}
 }
 

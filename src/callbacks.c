@@ -149,7 +149,7 @@ void ui_redraw_widget(gchar *name) {
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_update);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_schedule_update);
 }
 
 void on_scrolldown_activate(GtkMenuItem *menuitem, gpointer user_data) {

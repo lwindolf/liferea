@@ -363,16 +363,19 @@ void ui_feedlist_select(nodePtr np) {
 void on_popup_refresh_selected(gpointer callback_data,
 						 guint callback_action,
 						 GtkWidget *widget) {
-	feedPtr fp = (feedPtr)callback_data;
+	nodePtr ptr = (nodePtr)callback_data;
 
-	if (!fp || !FEED_MENU(fp->type)) {
+	if (ptr == NULL) {
 		ui_show_error_box(_("You have to select a feed entry!"));
 		return;
 	}
 	
-	if(update_thread_is_online()) 
-		feed_update(fp);
-	else
+	if(update_thread_is_online()) {
+		if (FEED_MENU(ptr->type))
+			feed_schedule_update((feedPtr)ptr);
+		else
+			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_schedule_update);
+	} else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible!"));
 }
 
@@ -506,7 +509,7 @@ void on_propchangebtn_clicked(GtkButton *button, gpointer user_data) {
 		/* if URL has changed... */
 		if(strcmp(feedurl, feed_get_source(fp))) {
 			feed_set_source(fp, feedurl);
-			feed_update(fp);
+			feed_schedule_update(fp);
 		}
 		
 		if(IS_FEED(feed_get_type(fp))) {
@@ -711,7 +714,7 @@ static void ui_feedlist_check_update_counter(feedPtr fp) {
 	g_get_current_time(&now);
 
 	if(feed_get_update_interval(fp) > 0 && fp->scheduledUpdate.tv_sec <= now.tv_sec)
-		feed_update(fp);
+		feed_schedule_update(fp);
 }
 
 gboolean ui_feedlist_auto_update(void *data) {

@@ -121,22 +121,24 @@ void
 on_about_activate                      (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
-#endif
-
-void
-on_menu_feed_update                    (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_feed_delete                    (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_feed_prop                      (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
 void
 on_menu_folder_new                     (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_menu_feed_new                     (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_menu_delete                         (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_menu_properties                     (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_menu_update                         (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
 void
@@ -150,3 +152,4 @@ on_menu_folder_rename                  (GtkMenuItem     *menuitem,
 void
 on_work_offline_activate               (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
+#endif

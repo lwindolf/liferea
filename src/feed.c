@@ -565,9 +565,9 @@ void feed_merge(feedPtr old_fp, feedPtr new_fp) {
 }
 
 /**
- * method to be called by other threads to update feeds
+ * method to be called to schedule a feed to be updated
  */
-void feed_update(feedPtr fp) { 
+void feed_schedule_update(feedPtr fp) {
 	gchar		*source;
 	
 	g_assert(NULL != fp);

@@ -334,9 +334,9 @@ void writeHTML(gchar *string) {
 	html_stream_handle = gtk_html_begin_content(html, "text/html; charset=utf-8");
 	
 	if((NULL != string) && (g_utf8_strlen(string, -1) > 0))
-		gtk_html_write(html, html_stream_handle, string, g_utf8_strlen(string, -1));
+		gtk_html_write(html, html_stream_handle, string, strlen(string));
 	else
-		gtk_html_write(html, html_stream_handle, EMPTY, g_utf8_strlen(EMPTY, -1));	
+		gtk_html_write(html, html_stream_handle, EMPTY, strlen(EMPTY));	
 
 	gtk_html_end(html, html_stream_handle, GTK_HTML_STREAM_OK);
 
