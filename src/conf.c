@@ -745,16 +745,22 @@ void setBooleanConfValue(gchar *valuename, gboolean value) {
 }
 
 gboolean getBooleanConfValue(gchar *valuename) {
-	GError		*err = NULL;
-	gboolean	value;
+	GConfValue	*value = NULL;
+	gboolean	result;
 
 	g_assert(valuename != NULL);
 
-	value = gconf_client_get_bool(client, valuename, &err);	
-	is_gconf_error(err);
+	value = gconf_client_get_without_default(client, valuename, NULL);
+	if(NULL == value) {
+		setBooleanConfValue(valuename, FALSE);
+		result = FALSE;
+	} else {
+		result = gconf_value_get_bool(value);
+	}
 		
-	return value;
+	return result;
 }
+
 void setStringConfValue(gchar *valuename, gchar *value) {
 	GError		*err = NULL;
 	GConfValue	*gcv;
@@ -768,18 +774,19 @@ void setStringConfValue(gchar *valuename, gchar *value) {
 }
 
 gchar * getStringConfValue(gchar *valuename) {
-	GError		*err = NULL;
-	gchar		*value;
+	GConfValue	*value = NULL;
+	gchar		*result;
 
 	g_assert(valuename != NULL);
 		
-	value = gconf_client_get_string(client, valuename, &err);	
-	is_gconf_error(err);
-	
-	if(NULL == value)
-		value = g_strdup("");
+	value = gconf_client_get_without_default(client, valuename, NULL);
+	if(NULL == value) {
+		result = g_strdup("");
+	} else {
+		result = gconf_value_get_string(value);
+	}
 		
-	return value;
+	return result;
 }
 
 void setNumericConfValue(gchar *valuename, gint value) {
@@ -795,13 +802,15 @@ void setNumericConfValue(gchar *valuename, gint value) {
 }
 
 gint getNumericConfValue(gchar *valuename) {
-	GError		*err = NULL;
-	gint		value;
+	GConfValue	*value;
+	gint		result = 0;
 
 	g_assert(valuename != NULL);
 		
-	value = gconf_client_get_int(client, valuename, &err);	
-	is_gconf_error(err);
-		
-	return value;
+	value = gconf_client_get_without_default(client, valuename, NULL);
+	if(NULL != value) {
+		result = gconf_value_get_int(value);
+	}
+			
+	return result;
 }

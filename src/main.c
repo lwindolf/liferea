@@ -87,13 +87,12 @@ int main (int argc, char *argv[]) {
 	setupItemList(lookup_widget(mainwindow, "Itemlist"));
 		
 	/* order is important! */
-	initCallbacks();
-	initConfig();
-	loadConfig();
-	setupTrayIcon();
-	updateThread = initUpdateThread();
+	initConfig();		/* initialize gconf */
+	loadConfig();		/* maybe this should be merged with initConfig() */
+	initGUI();		/* initialize gconf configured GUI behaviour */
+	updateThread = initUpdateThread();	/* starts updating of feeds */
 	initBackend();
-	loadEntries();
+	loadEntries();		/* load feed list from gconf */
 	
 	if(getBooleanConfValue(UPDATE_ON_STARTUP)) {
 		resetAllUpdateCounters();

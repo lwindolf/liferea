@@ -32,7 +32,7 @@
 #define IS_TIME		3
 #define IS_TYPE		4
 
-void initCallbacks(void);
+void initGUI(void);
 void updateUI(void);
 void print_status(gchar *statustext);
 void showErrorBox(gchar *msg);
@@ -42,21 +42,21 @@ void setTrayToolTip(gchar *string);
 void setupTrayIcon(void);
 void redrawFeedList(void);
 
-void
-on_refreshbtn_clicked                  (GtkButton       *button,
-                                        gpointer         user_data);
+void setupFeedList(GtkWidget *mainview);
+void setupItemList(GtkWidget *itemlist);
 
-void
-on_propchangebtn_clicked               (GtkButton       *button,
-                                        gpointer         user_data);
+void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
+void on_popup_refresh_selected(void);
+
+void on_propchangebtn_clicked(GtkButton *button,gpointer user_data);
+
 
 void
 on_newbtn_clicked                      (GtkButton       *button,
                                         gpointer         user_data);
 
-void
-on_propbtn_clicked                     (GtkButton       *button,
-                                        gpointer         user_data);
+void on_propbtn_clicked(GtkButton *button, gpointer user_data);
+void on_popup_prop_selected(void);
 
 void
 on_aboutbtn_clicked                    (GtkButton       *button,
@@ -88,19 +88,10 @@ void
 on_feednamebutton_clicked              (GtkButton       *button,
                                         gpointer         user_data);
 					
-void	
-setupFeedList			       (GtkWidget 	*mainview);
+void on_deletebtn_clicked(GtkButton *button, gpointer user_data);
+void on_popup_delete_selected(void);
 
-void
-setupItemList			       (GtkWidget 	*itemlist);
-
-void
-on_deletebtn_clicked                   (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_prefbtn_clicked                     (GtkButton       *button,
-                                        gpointer         user_data);
+void on_prefbtn_clicked(GtkButton *button, gpointer user_data);
 
 void
 on_prefsavebtn_clicked                 (GtkButton       *button,
@@ -111,9 +102,8 @@ on_mainfeedlist_button_press_event     (GtkWidget       *widget,
                                         GdkEventButton  *event,
                                         gpointer         user_data);
 
-void
-on_newfolderbtn_clicked                (GtkButton       *button,
-                                        gpointer         user_data);
+void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data);
+void on_popup_newfolder_selected(void);
 
 gboolean
 on_itemlist_button_press_event         (GtkWidget       *widget,
@@ -161,13 +151,7 @@ void
 on_newVFolder_clicked                  (GtkButton       *button,
                                         gpointer         user_data);
 
-void
-on_toolbar_newfeed_clicked             (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_toolbar_newfolder_clicked           (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
+void on_popup_removefolder_selected(void);
 
 gboolean
 on_feedlist_drag_drop                  (GtkWidget       *widget,
@@ -246,3 +230,15 @@ on_ruleupbtn_clicked                   (GtkButton       *button,
 void
 on_ruledownbtn_clicked                 (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_foldername_activate                 (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_toggle_condensed_view_activate      (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+					
+void on_toggle_item_flag(void);
+void on_popup_launchitem_selected(void);
+void on_popup_allunread_selected(void);

@@ -17,6 +17,7 @@
 */
 
 // FIXME: maybe split callbacks.c in several files...
+// FIXME: improve method names...
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -102,8 +103,27 @@ void clearItemList(void);
 /* helper functions								*/
 /*------------------------------------------------------------------------------*/
 
-void initCallbacks(void) {
-	selected_keyprefix = g_strdup(root_prefix);
+void initGUI(void) {
+	GtkWidget 	*widget;
+	
+	if(NULL == selected_keyprefix)
+		selected_keyprefix = g_strdup(root_prefix);
+		
+	if(NULL != (widget = lookup_widget(mainwindow, "toolbar"))) {
+		if(getBooleanConfValue(DISABLE_TOOLBAR))
+			gtk_widget_hide(widget);
+		else
+			gtk_widget_show(widget);
+	}
+
+	if(NULL != (widget = lookup_widget(mainwindow, "menubar"))) {
+		if(getBooleanConfValue(DISABLE_MENUBAR))
+			gtk_widget_hide(widget);
+		else
+			gtk_widget_show(widget);
+	}
+	
+	setupTrayIcon();	
 }
 
 /* returns the selected feed list iterator */
@@ -211,7 +231,15 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	/* panel 2 "notification settings" */	
 	widget = lookup_widget(prefdialog, "trayiconbtn");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_TRAY_ICON));
-		
+
+
+	/* menu / tool bar settings */		
+	widget = lookup_widget(prefdialog, "menubarbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(DISABLE_MENUBAR));
+	
+	widget = lookup_widget(prefdialog, "toolbarbtn");
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(DISABLE_TOOLBAR));
+	
 	gtk_widget_show(prefdialog);
 }
 
@@ -260,9 +288,21 @@ void on_prefsavebtn_clicked(GtkButton *button, gpointer user_data) {
 	/* panel 2 "notification settings" */	
 	widget = lookup_widget(prefdialog, "trayiconbtn");
 	setBooleanConfValue(SHOW_TRAY_ICON, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
+
+	/* menu / tool bar settings */		
+	widget = lookup_widget(prefdialog, "menubarbtn");
+	setBooleanConfValue(DISABLE_MENUBAR, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));
+	
+	widget = lookup_widget(prefdialog, "toolbarbtn");
+	setBooleanConfValue(DISABLE_TOOLBAR, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget)));	
 	
 	/* refresh item list (in case date format was changed) */
 	redrawItemList();
+	
+	/* reinit GUI for the case menubar or toolbar options changed */
+	initGUI();
+	
+	updateUI();
 			
 	gtk_widget_hide(prefdialog);
 }
@@ -588,6 +628,8 @@ void on_popup_foldername_selected(void) {
 	}
 }
 
+void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data) { on_popup_foldername_selected(); }
+
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*foldernameentry;
 	
@@ -852,6 +894,8 @@ void on_toggle_condensed_view(void) {
 		
 	displayItemList();
 }
+
+void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { on_toggle_condensed_view(); }
 
 /*------------------------------------------------------------------------------*/
 /* treeview creation and rendering						*/
@@ -1200,9 +1244,9 @@ static GtkItemFactoryEntry item_menu_items[] = {
       {"/_Launch Item In Browser", 	NULL, on_popup_launchitem_selected, 	0, NULL},
       {"/Toggle Item _Flag",	 	NULL, on_toggle_item_flag, 		0, NULL},
       {"/sep1",				NULL, NULL, 				0, "<Separator>"},
-      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 	0, NULL},
-      {"/sep2",				NULL, NULL, 				0, "<Separator>"},
-      {"/_Edit Filters",		NULL, on_popup_filter_selected, 	0, NULL}
+      {"/_Toggle Condensed View",	NULL, on_toggle_condensed_view, 	0, NULL}
+/*      {"/sep2",				NULL, NULL, 				0, "<Separator>"},
+      {"/_Edit Filters",		NULL, on_popup_filter_selected, 	0, NULL}*/
 };
 
 static GtkItemFactoryEntry itemlist_menu_items[] = {
