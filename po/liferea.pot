@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-10-10 22:10+0200\n"
+"POT-Creation-Date: 2003-10-12 17:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/interface.c:70
-msgid "Liferea 0.4.0"
+msgid "Liferea 0.4.1"
 msgstr ""
 
 #: src/interface.c:85
@@ -63,213 +63,232 @@ msgstr ""
 msgid "condensed item list"
 msgstr ""
 
-#: src/interface.c:338
-msgid "Properties"
+#: src/interface.c:342
+msgid "Subscription Properties"
 msgstr ""
 
-#: src/interface.c:356 src/interface.c:718
-msgid "feed name"
+#: src/interface.c:363
+msgid ""
+"Edit the following entries to adjust the feed source URL or\n"
+"the feed title, which is displayed in the feed list."
 msgstr ""
 
-#: src/interface.c:369 src/interface.c:726
+#: src/interface.c:377
+msgid "Feed Title"
+msgstr ""
+
+#: src/interface.c:390
 msgid ""
 "either leave the name supplied by the feed or enter an alternative name "
 "which you like to be listed in the feed list"
 msgstr ""
 
-#: src/interface.c:370
-msgid ""
-"\t\tif(0 == interval)\n"
-"\t\t\tinterval = -1;\t/* this is due to ignore this feed while updating */"
-msgstr ""
-
-#: src/interface.c:377
+#: src/interface.c:397
 msgid "enter the URL the feed should be loaded from"
 msgstr ""
 
-#: src/interface.c:379
-msgid "feed URL"
+#: src/interface.c:399 src/interface.c:577
+msgid "Feed URL"
 msgstr ""
 
-#: src/interface.c:402 src/interface.c:733
-msgid "feed refresh interval (in minutes)"
+#: src/interface.c:407
+msgid "Feed URL and Title"
 msgstr ""
 
-#: src/interface.c:411 src/interface.c:742
+#: src/interface.c:428
+msgid "Feed Refresh Interval (in minutes)"
+msgstr ""
+
+#: src/interface.c:437
 msgid ""
 "Please remember to set a reasonable refresh time, its not useful to poll "
 "daily updated feeds every 15 minutes! To disable auto-updating the feed set "
 "the interval to 0."
 msgstr ""
 
-#: src/interface.c:421
-msgid "update interval"
+#: src/interface.c:447
+msgid "Feed Update Interval"
 msgstr ""
 
-#: src/interface.c:510
-msgid "Subscribe To A New Feed"
+#: src/interface.c:543
+msgid "New Subscription"
 msgstr ""
 
-#: src/interface.c:531
+#: src/interface.c:564
 msgid ""
-"Please enter the URL (including the http:// prefix) you want \n"
-"to subscribe. Enter a valid pathname if you want to load\n"
-"a local file."
+"Please enter the URL (including the http:// prefix) you want to \n"
+"subscribe to. Or enter a valid pathname if you want to load a local file."
 msgstr ""
 
-#: src/interface.c:544
-msgid "Feed URL"
+#: src/interface.c:588
+msgid "local file"
 msgstr ""
 
-#: src/interface.c:555
+#: src/interface.c:592
 msgid "URL Input"
 msgstr ""
 
-#: src/interface.c:574
+#: src/interface.c:611
 msgid ""
-"You have to specify the type of the feed you want to\n"
-"subscribe to."
+"You have to specify the type of the feed you want to subscribe \n"
+"to. If you are unsure select \"Auto Detect\"."
 msgstr ""
 
-#: src/interface.c:586
+#: src/interface.c:623
 msgid "Feed Type"
 msgstr ""
 
-#: src/interface.c:598
+#: src/interface.c:635
+msgid "Auto Detect"
+msgstr ""
+
+#: src/interface.c:639
 msgid "RSS"
 msgstr ""
 
-#: src/interface.c:602
+#: src/interface.c:643
 msgid "CDF"
 msgstr ""
 
-#: src/interface.c:606
+#: src/interface.c:647
 msgid "Atom/Echo/PIE"
 msgstr ""
 
-#: src/interface.c:610
+#: src/interface.c:651
 msgid "OCS"
 msgstr ""
 
-#: src/interface.c:616
+#: src/interface.c:655
+msgid "OPML"
+msgstr ""
+
+#: src/interface.c:661
 msgid "Feed Type Selection"
 msgstr ""
 
-#: src/interface.c:701
-msgid "Entry Name"
-msgstr ""
-
-#: src/interface.c:819
+#: src/interface.c:767
 msgid "program preferences"
 msgstr ""
 
-#: src/interface.c:839
+#: src/interface.c:788
 msgid "use the GNOME default browser"
 msgstr ""
 
-#: src/interface.c:850
+#: src/interface.c:799
 msgid "use browser command"
 msgstr ""
 
-#: src/interface.c:860
+#: src/interface.c:809
 #, c-format
 msgid "specify a browser command using %s as URL placeholder"
 msgstr ""
 
-#: src/interface.c:862
+#: src/interface.c:811
 msgid "browser settings"
 msgstr ""
 
-#: src/interface.c:877
+#: src/interface.c:826
 msgid "display only time"
 msgstr ""
 
-#: src/interface.c:883
+#: src/interface.c:832
 msgid "display date and time"
 msgstr ""
 
-#: src/interface.c:893
+#: src/interface.c:842
 msgid "user defined format"
 msgstr ""
 
-#: src/interface.c:902
+#: src/interface.c:851
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
 msgstr ""
 
-#: src/interface.c:904
+#: src/interface.c:853
 msgid "date column settings"
 msgstr ""
 
-#: src/interface.c:919
+#: src/interface.c:873
 msgid ""
 "maximal number of items per feed \n"
 "to be saved permanently"
 msgstr ""
 
-#: src/interface.c:931
-msgid "feed storage settings"
+#: src/interface.c:885
+msgid "Update all feeds on program startup."
 msgstr ""
 
-#: src/interface.c:1007
+#: src/interface.c:889
+msgid "feed handling settings"
+msgstr ""
+
+#: src/interface.c:967
 msgid "add folder"
 msgstr ""
 
-#: src/interface.c:1022 src/interface.c:1097
+#: src/interface.c:982 src/interface.c:1057
 msgid "folder name"
 msgstr ""
 
-#: src/interface.c:1086
+#: src/interface.c:1046
 msgid "edit folder name"
 msgstr ""
 
-#: src/callbacks.c:105
-msgid "could not retrieve selection of feed list!"
+#: src/interface.c:1110
+msgid "Datei auswhlen"
 msgstr ""
 
-#: src/callbacks.c:125
-msgid "feed list widget lookup failed!\n"
-msgstr ""
-
-#: src/callbacks.c:147 src/callbacks.c:199 src/callbacks.c:230
+#: src/callbacks.c:115
 msgid "entry list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:152 src/callbacks.c:204 src/callbacks.c:235
+#: src/callbacks.c:120
 msgid "could not retrieve selection of entry list!"
 msgstr ""
 
-#: src/callbacks.c:171
-msgid "internal error! could not find folder iterator of selected entry\n"
+#: src/callbacks.c:250
+msgid "You can't delete help feeds!"
 msgstr ""
 
-#: src/callbacks.c:380
+#: src/callbacks.c:254
 msgid "Deleting entry"
 msgstr ""
 
-#: src/callbacks.c:388
+#: src/callbacks.c:264
 msgid "Error: Cannot delete this list entry!"
 msgstr ""
 
-#: src/callbacks.c:415
-msgid "Internal Error! Feed pointer NULL!\n"
-msgstr ""
-
-#: src/callbacks.c:452
+#: src/callbacks.c:318
 #, c-format
-msgid "The feed specifies an update interval of %d minutes"
+msgid "The provider of this feed suggests an update interval of %d minutes"
 msgstr ""
 
-#: src/callbacks.c:454
-msgid "This feed specifies no default interval."
+#: src/callbacks.c:320
+msgid "This feed specifies no default update interval."
 msgstr ""
 
-#: src/callbacks.c:601
-msgid "internal error! invalid type selected!\n"
+#: src/callbacks.c:371
+msgid "Internal error! No feed selected, but property change requested...\n"
 msgstr ""
 
-#: src/callbacks.c:612
+#: src/callbacks.c:401
+msgid "internal error! could not find feed tree view!\n"
+msgstr ""
+
+#: src/callbacks.c:412
+msgid "internal error! could not get feed tree view selection!\n"
+msgstr ""
+
+#: src/callbacks.c:467
+msgid "internal error! invalid type selected! This should never happen!\n"
+msgstr ""
+
+#: src/callbacks.c:472
+msgid "Could not detect feed type! Please manually select a feed type."
+msgstr ""
+
+#: src/callbacks.c:484
 #, c-format
 msgid ""
 "Could not download \"%s\"!\n"
@@ -279,75 +298,79 @@ msgid ""
 "the feed list.\n"
 msgstr ""
 
-#: src/callbacks.c:689
+#: src/callbacks.c:544
 msgid "internal error! could not get a new folder key!"
 msgstr ""
 
-#: src/callbacks.c:755 src/callbacks.c:758
+#: src/callbacks.c:608 src/callbacks.c:611
 msgid "A folder must be empty to delete it!"
 msgstr ""
 
-#: src/callbacks.c:761
+#: src/callbacks.c:614
 msgid "Error: Cannot determine folder key!"
 msgstr ""
 
-#: src/callbacks.c:807 src/callbacks.c:1008
+#: src/callbacks.c:657 src/callbacks.c:868
 msgid "could not retrieve selection of item list!"
 msgstr ""
 
-#: src/callbacks.c:862
+#: src/callbacks.c:712
 #, c-format
 msgid "searching for \"%s\""
 msgstr ""
 
-#: src/callbacks.c:879
+#: src/callbacks.c:729
 #, c-format
 msgid "creating VFolder for search term \"%s\""
 msgstr ""
 
-#: src/callbacks.c:889
-msgid "could not allocate memory!"
+#: src/callbacks.c:739
+msgid "Could not allocate memory!"
 msgstr ""
 
 #. we set the searchstring as a default title
-#: src/callbacks.c:892
+#: src/callbacks.c:742
 #, c-format
 msgid "VFolder %s"
 msgstr ""
 
-#: src/callbacks.c:926
+#: src/callbacks.c:753
+msgid "internal error! could not get folder key prefix!"
+msgstr ""
+
+#: src/callbacks.c:774
 msgid "item list widget lookup failed!\n"
 msgstr ""
 
-#: src/callbacks.c:936
+#: src/callbacks.c:784
 msgid "could not retrieve selection of item list!\n"
 msgstr ""
 
-#: src/callbacks.c:1146
+#: src/callbacks.c:1007
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 
-#: src/callbacks.c:1285
+#: src/callbacks.c:1146
 msgid "Date"
 msgstr ""
 
-#: src/callbacks.c:1293
+#: src/callbacks.c:1154
 msgid "Headline"
 msgstr ""
 
-#: src/callbacks.c:1537
+#: src/callbacks.c:1391
 msgid "Sorry Liferea does not yet support drag&drop of folders!"
 msgstr ""
 
-#: src/callbacks.c:1548
+#: src/callbacks.c:1400
 msgid "you cannot modify the special help folder contents!"
 msgstr ""
 
-#: src/callbacks.c:1628
+#: src/callbacks.c:1484
 msgid "internal error! item display for NULL pointer requested!"
 msgstr ""
 
-#: src/callbacks.c:1639
+#: src/callbacks.c:1495
 #, c-format
 msgid "loading feed... (%d items)"
 msgstr ""

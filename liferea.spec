@@ -1,6 +1,6 @@
 Summary: Liferea (Linux Feed Reader)
 Name: liferea
-Version: 0.4.0
+Version: 0.4.1
 Release: 1
 Group: Productivity/Networking/Web/Browsers
 Copyright: GPL
@@ -11,11 +11,11 @@ BuildRoot: %{_tmppath}/%{name}-root
 Requires: gtk2 libxml2 libgtkhtml
 
 %description
-Liferea (Linux Feed Reader) is an RSS/RDF feed reader. 
-It's intended to be a clone of the Windows-only FeedReader. 
-It can be used to maintain a list of subscribed feeds, 
-browse through their items, and show their contents 
-using GtkHTML.
+Liferea (Linux Feed Reader) is an RSS/RDF news 
+aggregator which also supports CDF channels, 
+Atom/Echo/PIE feeds and OCS directories. It 
+is intended to be a clone of the Windows-only 
+FeedReader.
 
 %prep
 %setup

@@ -35,6 +35,7 @@
 
 typedef struct PIEEntry {
 	gchar		*tags[PIE_ENTRY_MAX_TAG];	/* standard namespace infos */
+	gboolean	summary;			/* helper flag, TRUE if PIE_ENTRY_DESCRIPTION contains a <summary> text */
 	
 	GHashTable	*nsinfos;	/* list to store pointers to namespace
 					   specific informations */	

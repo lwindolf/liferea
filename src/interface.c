@@ -166,7 +166,6 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (searchbox), searchentry, TRUE, TRUE, 0);
 
   newVFolder = gtk_button_new_with_mnemonic (_("create VFolder"));
-  gtk_widget_show (newVFolder);
   gtk_box_pack_start (GTK_BOX (searchbox), newVFolder, FALSE, FALSE, 0);
   gtk_tooltips_set_tip (tooltips, newVFolder, _("saves this search as a VFolder, which will appear in the feed list"), NULL);
 

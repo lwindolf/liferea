@@ -56,8 +56,42 @@ static gchar *entryTagList[] = {	"title",
 /* prototypes */
 static gchar * showPIEEntry(PIEFeedPtr cp, PIEEntryPtr ip);
 
+/* we reuse some pie_feed.c function */
 extern gchar * parseAuthor(xmlDocPtr doc, xmlNodePtr cur);
 extern void showPIEFeedNSInfo(gpointer key, gpointer value, gpointer userdata);
+
+/* <content> tag support, FIXME: base64 not supported */
+static void parseContent(xmlNodePtr cur, PIEEntryPtr i) {
+	gchar	*content = NULL;
+	gchar	*mode;
+
+	g_assert(NULL != cur);
+	if((NULL == i->tags[PIE_ENTRY_DESCRIPTION]) || (TRUE == i->summary)) {
+		
+		if(NULL != (mode = xmlGetNoNsProp(cur, BAD_CAST"mode"))) {
+			if(!strcmp(mode, BAD_CAST"escaped")) {
+				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
+				i->tags[PIE_ENTRY_DESCRIPTION] = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				i->summary = FALSE;
+
+			} else if(!strcmp(mode, BAD_CAST"xml")) {
+				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
+				i->tags[PIE_ENTRY_DESCRIPTION] = extractHTMLNode(cur);
+g_print("xml-content:%s\n", i->tags[PIE_ENTRY_DESCRIPTION]);
+				i->summary = FALSE;
+
+			} else if(!strcmp(mode, BAD_CAST"base64"))
+				g_warning("Base64 encoded <content> not supported!\n");
+
+			else if(!strcmp(mode, BAD_CAST"multipart/alternative")) {
+				if(NULL != cur->xmlChildrenNode)
+					parseContent(cur->xmlChildrenNode, i);
+			}
+			
+			g_free(mode);
+		}
+	}
+}
 
 /* method to parse standard tags for each item element */
 itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
@@ -99,17 +133,17 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 				}
 			}
 		}
-		
+
 		// FIXME: is <modified> or <issued> or <created> the time tag we want to display?
-		if(!xmlStrcmp(cur->name, "modified")) {
-			tmp = g_strdup(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+		if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
+			tmp = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
 			i->time = convertDate(tmp);
 			cur = cur->next;		
 			continue;
 		}
 		
 		/* parse feed author */
-		if ((!xmlStrcmp(cur->name, (const xmlChar *) "author"))) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 			g_free(i->author);
 			i->author = parseAuthor(doc, cur);
 			cur = cur->next;		
@@ -117,7 +151,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		}
 
 		/* parse feed contributors */
-		if ((!xmlStrcmp(cur->name, (const xmlChar *) "contributor"))) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
 			tmp = parseAuthor(doc, cur);				
 			if(NULL != i->contributors) {
 				/* add another contributor */
@@ -131,22 +165,16 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 			continue;
 		}
 		
-		/* <content> support, we simple take the first content tag 
-		   found.... FIXME: select HTML-<content> tag if available
-		   and support multipart tags!!!! */
-		if(!xmlStrcmp(cur->name, "content")) {
-			if((NULL == i->tags[PIE_ENTRY_DESCRIPTION]) || (TRUE == summary)) {
-				g_free(i->tags[PIE_ENTRY_DESCRIPTION]);
-				summary = FALSE;
-				i->tags[PIE_ENTRY_DESCRIPTION] = extractHTMLNode(cur);
-			}
-			cur = cur->next;		
+		/* <content> support */
+		if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
+			parseContent(cur, i);
+			cur = cur->next;
 			continue;
 		}
-				
+			
 		/* <summary> can be used for short text descriptions, if there is no
 		   description we show the <summary> content */
-		if(!xmlStrcmp(cur->name, "summary")) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {
 			if(NULL == i->tags[PIE_ENTRY_DESCRIPTION]) {
 				summary = TRUE;
 				i->tags[PIE_ENTRY_DESCRIPTION] = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
@@ -184,7 +212,7 @@ itemPtr parseEntry(gpointer cp, xmlDocPtr doc, xmlNodePtr cur) {
 		
 	if(NULL != i->tags[PIE_ENTRY_DESCRIPTION])
 		i->tags[PIE_ENTRY_DESCRIPTION] = convertToHTML((gchar *)doc->encoding, i->tags[PIE_ENTRY_DESCRIPTION]);	
-
+g_print("html-content:%s\n", i->tags[PIE_ENTRY_DESCRIPTION]);
 	ip->title = i->tags[PIE_ENTRY_TITLE];		
 	ip->description = showPIEEntry((PIEFeedPtr)cp, i);
 
