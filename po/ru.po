@@ -226,9 +226,8 @@ msgid "VFolder"
 msgstr "VFolder"
 
 #: src/feed.c:1003
-#, fuzzy
 msgid "user defined command"
-msgstr "Определённый пользователем формат:"
+msgstr "определённая пользователем команда"
 
 #: src/feed.c:1006 src/interface.c:1097 src/interface.c:1501 src/item.c:254
 #: src/metadata.c:323 src/metadata.c:324 src/ocs_dir.c:146 src/opml.c:220
@@ -462,6 +461,8 @@ msgid ""
 "Starts a search for all items that do match the given search string either "
 "in title or content."
 msgstr ""
+"Запускает посик для всех элементов, которые совпадают с заданной строкой поиска либо "
+"в заголовке, либо в теле новости."
 
 #: src/interface.c:511
 msgid "saves this search as a VFolder, which will appear in the feed list"
@@ -503,19 +504,16 @@ msgid "Feed _Name:"
 msgstr "_Название Ленты Новостей:"
 
 #: src/interface.c:949
-#, fuzzy
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">Интервал Обновления</span>"
 
 #: src/interface.c:968
-#, fuzzy
 msgid "_Use global default update interval."
-msgstr "Эта лента новостей не обозначает интервал обновления по умолчанию."
+msgstr "_Использовать общий интервал обновления по умолчанию."
 
 #: src/interface.c:978
-#, fuzzy
 msgid "_Feed specific update interval of"
-msgstr "Эта лента новостей не обозначает интервал обновления по умолчанию."
+msgstr "_Специфичный для ленты интервал обновления в"
 
 #: src/interface.c:993 src/interface.c:1852
 msgid "minutes."
@@ -523,17 +521,15 @@ msgstr "минут(а)(ы)."
 
 #: src/interface.c:997
 msgid "_Don't update this feed automatically."
-msgstr ""
+msgstr "_Не обновлять ленту автоматически."
 
 #: src/interface.c:1003
 msgid " "
-msgstr ""
+msgstr " "
 
 #: src/interface.c:1007
-#, fuzzy, c-format
 msgid "This feed provider suggests an update interval of %d seconds."
-msgstr ""
-"Создатель этой ленты новостей рекомендует интервал обновления в %d минут(у)"
+msgstr "Создатель этой ленты новостей рекомендует интервал обновления в %d секунд(у)"
 "(ы)."
 
 #: src/interface.c:1014
@@ -651,29 +647,22 @@ msgid "Lifeera Preferences"
 msgstr "Настройки Liferea"
 
 #: src/interface.c:1780
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
-msgstr "<span weight=\"bold\">Настройки Управления Лентами Новостей</span>"
+msgstr "<span weight=\"bold\">Обработка Кэша Ленты Новостей</span>"
 
 #: src/interface.c:1803
-#, fuzzy
 msgid "Default number of items per feed to save:"
-msgstr ""
-"Число элементов по умолчанию на одну ленту новостей для сохранения при "
-"выходе Liferea:"
+msgstr "Число элементов по умолчанию на одну ленту новостей для сохранения:"
 
 #: src/interface.c:1819
-#, fuzzy
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
-msgstr "<span weight=\"bold\">Настройки Загрузки Лент Новостей</span>"
+msgstr "<span weight=\"bold\">Настройки Обновления Ленты Новостей</span>"
 
 #: src/interface.c:1842
-#, fuzzy
 msgid "Default Feed Refresh _Interval:"
-msgstr "_Интервал Обновления Ленты Новостей:"
+msgstr "_Интервал Обновления Ленты Новостей По Умолчанию:"
 
 #: src/interface.c:1856
-#, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -681,7 +670,7 @@ msgid ""
 msgstr ""
 "Внимание: <i>Пожалуйста, постарайтесь ставить разумное время обновления. Не "
 "совсем рационально обновлять ленту новостей, обновляемую раз в день, каждые "
-"15 минут. Для отключения авто-обновления ленты новостей поставьте интервал "
+"15 минут. Для отключения авто-обновления ленты новостей по умолчанию поставьте интервал "
 "равным 0.</i>"
 
 #: src/interface.c:1867
@@ -2024,10 +2013,3 @@ msgstr ""
 "Этот элемент, содержит HTML тэг <object>, который не поддерживается в "
 "GtkHTML2.\n"
 "Плагины, содержащиеся в элементе не будут отображены."
-
-#~ msgid "This feed's refresh interval defaults to %d seconds."
-#~ msgstr ""
-#~ "Интервал обновления этой ленты новостей по умолчанию равен %d секундам(е)"
-
-#~ msgid "Directories cannot be autoupdated."
-#~ msgstr "Директории не могут быть автоматически обновлены."
