@@ -780,6 +780,9 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	new_fp->source = fp->source;
 	new_fp->type = fp->type;
 	new_fp->request = fp->request;
+	new_fp->ui_data = fp->ui_data;
+	new_fp->ui_data = fp->ui_data;
+	new_fp->parent = fp->parent;
 	
 	tmp_fp = feed_new();
 	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
@@ -789,6 +792,8 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	tmp_fp->title = NULL;
 	tmp_fp->source = NULL;
 	tmp_fp->request = NULL;
+	tmp_fp->ui_data = NULL;
+	tmp_fp->parent = NULL;
 	feed_free(tmp_fp);				/* we use tmp_fp to free almost all infos
 							   allocated by old feed structure */
 	g_free(new_fp);
@@ -808,7 +813,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 void feed_free(feedPtr fp) {
 	gchar *filename = NULL;
 	
-	g_assert(IS_FEED(fp->type));
+	g_assert(IS_FEED(fp->type) || IS_DIRECTORY(fp->type));
 	
 	if (fp->id && fp->id[0] != '\0')
 		filename = getCacheFileName(fp->id, NULL);
@@ -827,14 +832,16 @@ void feed_free(feedPtr fp) {
 	}
 
 	// FIXME: free filter structures too when implemented
-
+	
 	/* Don't free active feed requests here, because they might
 	   still be processed in the update queues! Abandoned
 	   requests are free'd in update.c. */
-	if(FALSE == fp->updateRequested)
-		update_request_free(fp->request);
-	else
-		((struct feed_request *)fp->request)->fp = NULL;
+	if (fp->request != NULL) {
+		if(FALSE == fp->updateRequested)
+			update_request_free(fp->request);
+		else
+			((struct feed_request *)fp->request)->fp = NULL;
+	}
 
 	feed_clear_item_list(fp);
 

@@ -40,6 +40,8 @@ static void feedURLReceived(GtkWidget *mainwindow, GdkDragContext *context, gint
 	
 	if((data->length >= 0) && (data->format == 8)) {
 		/* extra handling to accept multiple drops */	
+		ptr = ui_feedlist_get_selected();
+		
 
 		if(ptr && IS_FOLDER(ptr->type)) {
 			parent = (folderPtr)ptr;
