@@ -145,20 +145,20 @@ static void *ui_enclosure_exec(void *data) {
 	GError		*error = NULL;
 	gint		status;
 	
-	g_print("running \"%s\"\n", ejp->download);
+	debug1(DEBUG_UPDATE, "running \"%s\"\n", ejp->download);
 	g_spawn_command_line_sync(ejp->download, NULL, NULL, &status, &error);
 	if((NULL != error) && (0 != error->code)) {
 		g_warning("command \"%s\" failed with exitcode %d!", ejp->download, status);
 	} else {
 		if(NULL != ejp->run) {
 			/* execute */
-			g_print("running \"%s\"\n", ejp->run);
+			debug1(DEBUG_UPDATE, "running \"%s\"\n", ejp->run);
 			g_spawn_command_line_async(ejp->run, &error);
 			if((NULL != error) && (0 != error->code))
 				g_warning("command \"%s\" failed!", ejp->run);
 		} else {
 			/* just saving */
-			g_print("saved as \"%s\"\n", ejp->filename);			
+			/* FIXME: give some user feedback */
 		}
 	}
 	g_free(ejp->download);
@@ -168,14 +168,8 @@ static void *ui_enclosure_exec(void *data) {
 }
 
 /* etp is optional, if it is missing we are in save mode */
-void ui_enclosure_download(encTypePtr etp, gchar *url, gchar *path) {
-	gchar		*filename;
+void ui_enclosure_download(encTypePtr etp, gchar *url, gchar *filename) {
 	encJobPtr	ejp;
-	
-	if(NULL == (filename = strrchr(url, '/')))
-		filename = g_strdup(url + 1);
-		
-	filename = g_strdup_printf("%s%s%s", path, G_DIR_SEPARATOR_S, filename);
 	
 	/* prepare job structure */
 	ejp = g_new0(struct encJob, 1);
@@ -184,12 +178,11 @@ void ui_enclosure_download(encTypePtr etp, gchar *url, gchar *path) {
 	if(NULL != etp)
 		ejp->run = g_strdup_printf("%s %s", etp->cmd, filename);
 
-	g_print("downloading %s to %s...\n", url, filename);
+	debug2(DEBUG_UPDATE, "downloading %s to %s...\n", url, filename);
 
 	/* free now unnecessary stuff */
-	if(FALSE == etp->permanent)
+	if((NULL != etp) && (FALSE == etp->permanent))
 		ui_enclosure_remove_type(etp);
-	g_free(path);
 	g_free(url);
 	
 	g_thread_create(ui_enclosure_exec, ejp, FALSE, NULL);
@@ -212,24 +205,22 @@ static void on_selectcmdok_clicked(const gchar *filename, gpointer user_data) {
 	if(filename == NULL)
 		return;
 	
-	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-
-	if(utfname != NULL)
-		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_cmd_entry")), utfname);
-
-	
-	g_free(utfname);
+	if(NULL != (utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL))) {
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_cmd_entry")), utfname);	
+		g_free(utfname);
+	}
 }
 
 static void on_selectcmd_pressed(GtkButton *button, gpointer user_data) {
 	GtkWidget	*dialog = (GtkWidget *)user_data;
 	const gchar	*utfname;
-	gchar *name;
+	gchar 		*name;
 	
 	utfname =  gtk_entry_get_text(GTK_ENTRY(lookup_widget(dialog,"enc_cmd_entry")));
-	name = g_filename_from_utf8(utfname, -1, NULL, NULL, NULL);
-	ui_choose_file(_("Choose File"), GTK_WINDOW(dialog), GTK_STOCK_OPEN, FALSE, on_selectcmdok_clicked, name, dialog);
-	g_free(name);
+	if(NULL != (name = g_filename_from_utf8(utfname, -1, NULL, NULL, NULL))) {
+		ui_choose_file(_("Choose File"), GTK_WINDOW(dialog), GTK_STOCK_OPEN, FALSE, on_selectcmdok_clicked, NULL, name, dialog);
+		g_free(name);
+	}
 }
 
 /* dialog used for both changing and adding new definitions */
@@ -298,7 +289,7 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
 }
 
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	gchar		*typestr, *url = (gchar *)callback_data;
+	gchar		*typestr, *filename, *url = (gchar *)callback_data;
 	gboolean	found = FALSE, mime = FALSE;
 	encTypePtr	etp = NULL;
 	GSList		*iter;
@@ -308,21 +299,22 @@ void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkW
 	   info: <url>[,<mime type] */	
 	if(NULL != (typestr = strrchr(url, ','))) {
 		*typestr = 0;
-		typestr++;
+		typestr = g_strdup(typestr++);
 		mime = TRUE;
 	}
 	
 	/* without a type we use the file extension */
 	if(FALSE == mime) {
 		typestr = strrchr(url, '.');
-		typestr = g_strdup(typestr + 1);
+		if(NULL != typestr)
+			typestr = g_strdup(typestr + 1);
 	}
 	
 	/* if we have no such thing we map to "data" */
 	if(NULL == typestr)
-		typestr = "data";
+		typestr = g_strdup("data");
 
-	g_print("url:%s, type:%s mime:%s\n", url, typestr, mime?"TRUE":"FALSE");
+	debug3(DEBUG_CACHE, "url:%s, type:%s mime:%s\n", url, typestr, mime?"TRUE":"FALSE");
 		
 	/* search for type configuration */
 	iter = types;
@@ -336,15 +328,39 @@ void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkW
 		iter = g_slist_next(iter);
 	}
 	
-	if(TRUE == found)
-		ui_enclosure_download(etp, url, g_strdup(getStringConfValue(ENCLOSURE_DOWNLOAD_PATH)));
-	else
+	if(TRUE == found) {
+		if(NULL == (filename = strrchr(url, '/')))
+			filename = g_strdup(url + 1);
+
+		filename = g_strdup_printf("%s%s%s", getStringConfValue(ENCLOSURE_DOWNLOAD_PATH), G_DIR_SEPARATOR_S, filename);
+		ui_enclosure_download(etp, url, filename);
+	} else {
 		ui_enclosure_add(NULL, url, typestr);
+	}
+		
+	g_free(typestr);
+}
+
+static void on_encsave_clicked(const gchar *filename, gpointer user_data) {
+	GtkWidget	*dialog = (GtkWidget *)user_data;
+	gchar		*url = (gchar *)user_data;
+	gchar		*utfname;
+	
+	if(filename == NULL)
+		return;
+
+	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+	ui_enclosure_download(NULL, url, utfname);
 }
 
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	
-	g_print("save: %s\n", (gchar *)callback_data);
-	// FIXME: open save as dialog
-	// ui_enclose_download(NULL, url, path);
+	gchar	*filename = (gchar *)callback_data;
+
+	filename = strrchr((char *)callback_data, '/');
+	if(filename != NULL)
+		filename++; /* Skip the slash to find the filename */
+	else
+		filename = callback_data;
+		
+	ui_choose_file(_("Choose File"), GTK_WINDOW(mainwindow), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, filename, NULL, callback_data);
 }

@@ -759,7 +759,7 @@ static void on_save_download_finished(const gchar *filename, gpointer user_data)
 
 void on_save_download_select_btn_clicked(GtkButton *button, gpointer user_data) {
 	
-	ui_choose_directory(_("Choose download directory"), GTK_WINDOW(prefdialog), GTK_STOCK_OPEN, on_save_download_finished, "", prefdialog);
+	ui_choose_directory(_("Choose download directory"), GTK_WINDOW(prefdialog), GTK_STOCK_OPEN, on_save_download_finished, "", "", prefdialog);
 }
 
 

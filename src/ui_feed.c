@@ -562,7 +562,7 @@ static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
 	}
 	
 	name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
-	ui_choose_file(_("Choose File"), GTK_WINDOW(ui_data->dialog), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, ui_data);
+	ui_choose_file(_("Choose File"), GTK_WINDOW(ui_data->dialog), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, name, ui_data);
 	g_free(name);
 }
  

@@ -297,7 +297,7 @@ static void attribs_render_enclosure(gpointer data, struct displayset *displayse
 	gchar *tmp, *escaped, *filename; 
 	
 	filename = strrchr((char *)data, '/');
-	if (filename != NULL)
+	if(filename != NULL)
 		filename++; /* Skip the slash to find the filename */
 	else
 		filename = data;
