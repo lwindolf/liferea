@@ -455,6 +455,7 @@ feedHandlerPtr initRSSFeedHandler(void) {
 	/* prepare feed handler structure */
 	fhp->typeStr = "rss";
 	fhp->icon = ICON_AVAILABLE;
+	fhp->directory = FALSE;
 	fhp->feedParser	= rss_parse;
 	fhp->checkFormat = rss_format_check;
 	fhp->merge		= TRUE;

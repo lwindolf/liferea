@@ -634,6 +634,8 @@ gint feed_process_update_results(gpointer data) {
 				break;
 			}
 			
+			request->fp->fhp = fhp;
+			printf("parsed and fhp = %x\n", fhp);
 			if(firstDownload) {
 				if (feed_get_title(new_fp) != NULL)
 					feed_set_title(request->fp, feed_get_title(new_fp));
@@ -883,7 +885,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 	new_fp->request = fp->request;
 	new_fp->ui_data = fp->ui_data;
 	new_fp->ui_data = fp->ui_data;
-	
+	new_fp->fhp = fp->fhp;	
 	tmp_fp = feed_new();
 	memcpy(tmp_fp, fp, sizeof(struct feed));	/* make a copy of the old fp pointers... */
 	memcpy(fp, new_fp, sizeof(struct feed));
@@ -910,7 +912,7 @@ void feed_copy(feedPtr fp, feedPtr new_fp) {
 void feed_free(feedPtr fp) {
 	gchar *filename = NULL;
 	
-	g_assert(IS_FEED(fp->type) || IS_DIRECTORY(fp->type));
+	g_assert(IS_FEED(fp->type));
 	
 	if (fp->id && fp->id[0] != '\0')
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);

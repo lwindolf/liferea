@@ -223,7 +223,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 					    -1);
 		
 		/* make sure thats no grouping iterator */
-		if(fp && (IS_FEED(fp->type) || IS_DIRECTORY(fp->type) || FST_VFOLDER == fp->type)) {
+		if(fp && (IS_FEED(fp->type) || FST_VFOLDER == fp->type)) {
 			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing */
@@ -349,10 +349,10 @@ void on_popup_refresh_selected(gpointer callback_data,
 	}
 	
 	if(update_thread_is_online()) {
-		if (FEED_MENU(ptr->type))
+		if (IS_FEED(ptr->type))
 			feed_schedule_update((feedPtr)ptr);
 		else
-			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, (gpointer)feed_schedule_update);
+			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, (gpointer)feed_schedule_update);
 	} else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible!"));
 }
@@ -376,7 +376,7 @@ void on_popup_delete_selected(gpointer callback_data,
                                              GtkWidget *widget) {
 	feedPtr fp = (feedPtr)callback_data;
 	
-	if (!fp || !FEED_MENU(fp->type)) {
+	if (!fp || !IS_FEED(fp->type)) {
 		ui_show_error_box(_("You have to select a feed entry!"));
 		return;
 	}
@@ -419,7 +419,7 @@ void on_popup_prop_selected(gpointer callback_data,
 	gchar		*defaultIntervalStr;
 	feedPtr		fp = (feedPtr)callback_data;
 	
-	if(!fp || !FEED_MENU(feed_get_type(fp))) {
+	if(!fp || !IS_FEED(feed_get_type(fp))) {
 		g_message(_("You have to select a feed entry!"));
 		ui_show_error_box(_("You have to select a feed entry!"));
 		return;
@@ -443,7 +443,7 @@ void on_popup_prop_selected(gpointer callback_data,
 	gtk_entry_set_text(GTK_ENTRY(feednameentry), feed_get_title(fp));
 	gtk_entry_set_text(GTK_ENTRY(feedurlentry), feed_get_source(fp));
 
-	if(IS_DIRECTORY(feed_get_type(fp))) {	
+	if(fp->fhp && fp->fhp->directory) {	
 		/* disable the update interval selector for directories (should this be the case for OPML?) */
 		gtk_widget_set_sensitive(lookup_widget(propdialog, "feedrefreshcount"), FALSE);
 	} else {
@@ -517,7 +517,6 @@ void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
 	struct feed_request 	*request;
 	feedPtr			fp;
 	gchar			*data;
-	feedHandlerPtr		fhp;
 	
 	debug_enter("ui_feedlist_new_subscription");	
 	
@@ -535,7 +534,6 @@ void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
 	
 	fp = feed_new();
 	feed_set_id(fp, conf_new_id());
-	feed_set_type(fp, FST_RSS);
 	feed_set_source(fp, request->feedurl);
 	favicon_download(fp);		// FIXME: this blocks the program!!!
 	
@@ -547,9 +545,9 @@ void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
 	if(data == NULL) {
 		ui_show_error_box(_("Could not download \"%s\"!\n\n Maybe the URL is invalid or the feed is temporarily not available. You can retry downloading or remove the feed subscription via the context menu from the feed list.\n"), source);
 	} else {
-		fhp = feed_parse(fp, data);
+		fp->fhp = feed_parse(fp, data);
 		
-		if (fhp == NULL)
+		if (fp->fhp == NULL)
 			ui_show_error_box(_("The newly created feed's type could not be detected. Please subscribe again and select a feed type!"));	
 		ui_feedlist_update();
 		fp->needsCacheSave = TRUE;
@@ -646,9 +644,10 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 					    FS_PTR, &child, -1);
 		/* If child == NULL, this is an empty node. */
 		if (child != NULL) {
+			gboolean directory = IS_FEED(child->type) && (((feedPtr)child)->fhp != NULL) && ((feedPtr)child)->fhp->directory;
 			apply = (filter & ACTION_FILTER_CHILDREN) ||
-				((filter & ACTION_FILTER_FEED) && IS_FEED(child->type)) ||
-				((filter & ACTION_FILTER_DIRECTORY) && IS_DIRECTORY(child->type)) ||
+				((filter & ACTION_FILTER_FEED) && IS_FEED(child->type) && !directory) ||
+				((filter & ACTION_FILTER_DIRECTORY) && IS_FEED(child->type) && directory) ||
 				((filter & ACTION_FILTER_FOLDER) && IS_FOLDER(child->type));
 			descend = !(filter & ACTION_FILTER_CHILDREN);
 			

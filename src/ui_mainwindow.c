@@ -169,7 +169,7 @@ void on_menu_delete (GtkMenuItem     *menuitem, gpointer         user_data) {
 
 	if (ptr != NULL && IS_FOLDER(ptr->type)) {
 		on_popup_removefolder_selected((gpointer)ptr, 0, NULL);
-	} else if (ptr != NULL && FEED_MENU(ptr->type)) {
+	} else if (ptr != NULL && IS_FEED(ptr->type)) {
 		on_popup_delete_selected((gpointer)ptr, 0, NULL);
 	} else {
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
@@ -181,7 +181,7 @@ void on_menu_properties (GtkMenuItem *menuitem, gpointer user_data) {
 	nodePtr ptr = ui_feedlist_get_selected();
 	if (ptr != NULL && IS_FOLDER(ptr->type)) {
 		on_popup_foldername_selected((gpointer)ptr, 0, NULL);
-	} else if (ptr != NULL && FEED_MENU(ptr->type)) {
+	} else if (ptr != NULL && IS_FEED(ptr->type)) {
 		on_popup_prop_selected((gpointer)ptr, 0, NULL);
 	} else {
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");

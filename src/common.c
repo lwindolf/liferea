@@ -41,9 +41,6 @@
 #include "support.h"
 #include "feed.h"
 
-#define VFOLDER_EXTENSION	"vfolder"
-#define OCS_EXTENSION		"ocs"
-
 static gchar *standard_encoding = { "UTF-8" };
 
 static gchar *lifereaUserPath = NULL;
@@ -451,25 +448,6 @@ gchar * getCachePath(void) {
 		initCachePath();
 		
 	return lifereaUserPath;
-}
-
-/* returns the extension for the type type */
-gchar *getExtension(gint type) {
-	gchar	*extension;
-	
-	switch(type) {
-		case FST_VFOLDER:
-			extension = VFOLDER_EXTENSION;
-			break;
-		case FST_OCS:
-			extension = OCS_EXTENSION;
-			break;
-		default:
-			extension = NULL;
-			break;
-	}
-	
-	return extension;
 }
 
 gchar * common_create_cache_filename( gchar *folder, gchar *key, gchar *extension) {

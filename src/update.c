@@ -112,7 +112,7 @@ void update_thread_add_request(struct feed_request *new_request) {
 
 void update_thread_set_online(gboolean mode) {
 
-	if(online = mode) {
+	if((online = mode)) {
 		g_mutex_lock(cond_mutex);
 		g_cond_signal(offline_cond);
                 g_mutex_unlock(cond_mutex);

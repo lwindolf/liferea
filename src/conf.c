@@ -250,7 +250,7 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 		newid = conf_new_id();
 
 		/* Move feed cache file */
-		oldfilename = common_create_cache_filename(NULL, cacheid, getExtension(type));
+		oldfilename = common_create_cache_filename(NULL, cacheid, (type == 4) ? "ocs" : NULL);
 		newfilename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", newid, NULL);
 		rename(oldfilename, newfilename);
 		g_free(oldfilename);
@@ -265,7 +265,6 @@ static gboolean load_key(folderPtr parent, gchar *id) {
 
 		/* FIXME: Move XPM also! */
 		fp = feed_new();
-		feed_set_type(fp, type);
 		feed_set_source(fp, url);
 		feed_set_title(fp, name);
 		feed_set_id(fp, newid);

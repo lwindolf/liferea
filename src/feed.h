@@ -54,14 +54,8 @@
 				 (FST_AUTODETECT == type) || \
 				 (FST_FEED == type))
 
-/** macro to test whether a type is a resource which not regularly updated */				 
-#define IS_DIRECTORY(type)	(FST_OCS == type)
-				 
 /** macro to test whether a type is a folder entry */
 #define IS_FOLDER(type)		((FST_FOLDER == type) || (FST_HELPFOLDER == type))
-
-/** macro to test if feed menu action can be applied to this entry */
-#define FEED_MENU(type)		(IS_FEED(type) || IS_DIRECTORY(type))
 
 struct feedhandler;
 
@@ -110,6 +104,7 @@ typedef gboolean (*checkFormatFunc) (xmlDocPtr doc, xmlNodePtr cur); /**< Return
 typedef struct feedHandler {
 	const gchar *typeStr; /**< string representation of the feed type */
 	int icon; /**< Icon number used for available feeds/directories */
+     gboolean directory; /**< Determines if a feed should be autoupdated and updated when "update all" is selected */
 	feedParserFunc	    feedParser;	/**< feed type parse function */
 	checkFormatFunc checkFormat;  /**< Parser for the feed type*/
 	gboolean		merge;		/**< flag if feed type supports merging */

@@ -69,7 +69,6 @@ time_t 	parseRFC822Date(gchar *date);
 // maybe gchar * formatDate(time_t, gchar *format)
 gchar * formatDate(time_t t);
 
-gchar *	getExtension(gint type);
 gchar *	getCachePath(void);
 gchar * common_create_cache_filename( gchar *folder, gchar *key, gchar *extension);
 

@@ -257,6 +257,7 @@ feedHandlerPtr initOPMLFeedHandler(void) {
 	/* prepare feed handler structure */
 	fhp->typeStr = "opml";
 	fhp->icon = ICON_OCS;
+	fhp->directory = FALSE;
 	fhp->feedParser	= opml_parse;
 	fhp->checkFormat = opml_format_check;
 	fhp->merge		= FALSE;
