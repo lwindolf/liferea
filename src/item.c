@@ -119,10 +119,12 @@ void freeItem(itemPtr ip) {
 }
 
 void displayItem(itemPtr ip) {
-
-	startHTMLOutput();
-	writeHTML(ip->description);
-	finishHTMLOutput();
+	gchar	*buffer = NULL;
+	
+	startHTML(&buffer, TRUE);
+	addToHTMLBuffer(&buffer, ip->description);
+	writeHTML(buffer);
+	finishHTML(&buffer);
 	
 	markItemAsRead(ip);
 }

@@ -1502,19 +1502,33 @@ void clearItemList(void) {
 
 void displayItemList(void) {
 	GtkTreeIter	iter;
+	gchar		*buffer = NULL;
 	gboolean	valid;
 	itemPtr		ip;
 
 	/* HTML widget can be used only from GTK thread */	
 	if(gnome_vfs_is_primary_thread()) {
-		startHTMLOutput();
+		startHTML(&buffer, itemlist_mode);
 		if(!itemlist_mode) {
 			/* two pane mode */
 			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 			while(valid) {	
 				gtk_tree_model_get(GTK_TREE_MODEL(itemstore), &iter, IS_PTR, &ip, -1);
-				writeHTML(getItemDescription(ip));
-				markItemAsRead(ip);
+				
+				if(getItemReadStatus(ip)) 
+					addToHTMLBuffer(&buffer, SHADED_START);
+				else
+					addToHTMLBuffer(&buffer, UNSHADED_START);
+				
+				addToHTMLBuffer(&buffer, getItemDescription(ip));
+				
+				if(getItemReadStatus(ip))
+					addToHTMLBuffer(&buffer, SHADED_END);
+				else {
+					addToHTMLBuffer(&buffer, UNSHADED_END);
+					markItemAsRead(ip);
+				}
+					
 				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 			}
 		} else {
@@ -1522,14 +1536,15 @@ void displayItemList(void) {
 			if(NULL == selected_ip) {
 				/* display feed info */
 				if(NULL != selected_fp)
-					writeHTML(getFeedDescription(selected_fp));
+					addToHTMLBuffer(&buffer, getFeedDescription(selected_fp));
 			} else {
 				/* display item content */
 				markItemAsRead(ip);
-				writeHTML(getItemDescription(selected_ip));
+				addToHTMLBuffer(&buffer, getItemDescription(selected_ip));
 			}
 		}
-		finishHTMLOutput();
+		finishHTML(&buffer);
+		writeHTML(buffer);
 	}
 }
 

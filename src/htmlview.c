@@ -63,30 +63,49 @@ static void kill_old_connections (HtmlDocument *doc);
 /* function to write HTML source */
 void writeHTML(gchar *string) {
 
-	if((NULL != string) && (strlen(string) > 0)) 
-		html_document_write_stream(doc, string, strlen(string));
-}
-
-/* does all preparations before outputting HTML */
-void startHTMLOutput(void) {
-
 	//kill_old_connections(doc);	/* if enabled images do not always load */
 	
 	html_document_clear(doc);
 	html_document_open_stream(doc, "text/html");
-	writeHTML(HTML_START);
-	writeHTML(HTML_HEAD_START);
-	writeHTML(META_ENCODING1);
-	writeHTML("UTF-8");
-	writeHTML(META_ENCODING2);
-	writeHTML(HTML_HEAD_END);
+	
+	if((NULL != string) && (strlen(string) > 0))
+		html_document_write_stream(doc, string, strlen(string));
+	else
+		html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
+
+	html_document_close_stream(doc);
+}
+
+void clearHTMLView(void) {
+	gchar	*buffer = NULL;
+	
+	startHTML(&buffer, FALSE);
+	finishHTML(&buffer); 
+	writeHTML(buffer);
+}
+
+/* does all preparations before outputting HTML */
+void startHTML(gchar **buffer, gboolean padded) {
+	gchar	*encoding;
+	
+	addToHTMLBuffer(buffer, HTML_START);
+	addToHTMLBuffer(buffer, HTML_HEAD_START);
+	
+	encoding = g_strdup_printf("%s%s%s", META_ENCODING1, "UTF-8", META_ENCODING2);
+	addToHTMLBuffer(buffer, encoding);
+	g_free(encoding);
+	
+	if(padded)
+		addToHTMLBuffer(buffer, HTML_HEAD_END);
+	else
+		addToHTMLBuffer(buffer, HTML_HEAD_END2);
 }
 
 /* does all postprocessing after HTML output */
-void finishHTMLOutput(void) {
+void finishHTML(gchar **buffer) {
 
-	writeHTML(HTML_END);
-	html_document_close_stream(doc);
+	addToHTMLBuffer(buffer, HTML_END);
+
 }
 
 static void setupHTMLView(GtkWidget *mainwindow, GtkWidget *scrolledwindow) {
@@ -140,15 +159,11 @@ void setHTMLViewMode(gboolean threePane) {
 }
 
 void setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2) {
-	char testhtml[] = "<html><body></body></html>";
-	
 	itemView = pane1;
 	itemListView = pane2;
 	setHTMLViewMode(TRUE);
-	
-	startHTMLOutput();
-	writeHTML(testhtml);
-	finishHTMLOutput();
+
+	clearHTMLView();	
 }
 
 static int button_press_event (HtmlView *html, GdkEventButton *event, gpointer userdata) {

@@ -95,10 +95,9 @@ void addItemToVFolder(feedPtr vp, feedPtr fp, itemPtr ip) {
 
 /* writes VFolder HTML description */
 static void showVFolderInfo(feedPtr vp) {
-
-	g_assert(vp != NULL);	
+/*	g_assert(vp != NULL);	
 	
-	startHTMLOutput();
+	startHTMLOutput(TRUE);
 	writeHTML(HTML_HEAD_START);
 
 	writeHTML(META_ENCODING1);
@@ -112,7 +111,7 @@ static void showVFolderInfo(feedPtr vp) {
 	writeHTML(getFeedTitle(vp));
 	writeHTML(FEED_HEAD_END);	
 
-	finishHTMLOutput();
+	finishHTMLOutput();*/
 }
 
 /* ---------------------------------------------------------------------------- */

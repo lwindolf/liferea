@@ -5,6 +5,14 @@
 	* favicon.ico support, feeds which webserver provides
 	  a favicon.ico have the standard icon replaced by the
 	  favicon.
+	* Added the new SnowNews HTTP client code, which now
+	  supports gzip/deflate compression, so Liferea helps
+	  saving some bandwidth.
+	* Disabled the behaviour of hiding the program window
+	  when clicking the tray icon or minimizing, because
+	  this caused the window to hide each time the desktop
+	  was switched (reported by Dale K. Dicks, Christophe
+	  Barbe and others).
 
 2003-11-10  Lars Lindner <lars.lindner@gmx.net>
 

@@ -34,6 +34,7 @@
 #define META_ENCODING1	"<meta http-equiv=\"Content-Type\" content=\"text/html; charset="
 #define META_ENCODING2	"\">"
 #define HTML_HEAD_END	"</head><body>"
+#define HTML_HEAD_END2	"</head><body style=\"padding:0px;\">"
 
 #define HTML_NEWLINE	"<br>"
 
@@ -78,21 +79,29 @@
 #define FORMAT_CONTENTTYPE	"</td></tr><tr><td style=\"padding:2px;border-color:#D0D0D0;border-width:0;border-top-width:1px;border-style:solid;\">Content Type: "
 #define FORMAT_END	"</td></tr></table>"
 
-#define clearHTMLView()	{ startHTMLOutput(); finishHTMLOutput(); }
+/* condensed mode shading */
+
+#define SHADED_START	"<div style=\"background-color:#F0F0F0;padding:5px;margin-bottom:2px;\">"
+#define SHADED_END	"</div>"
+#define UNSHADED_START	"<div style=\"background-color:white;padding:5px;\">"
+#define UNSHADED_END	"</div>"
 
 /* creates the HTML widget */
 void	setupHTMLViews(GtkWidget *mainwindow, GtkWidget *pane1, GtkWidget *pane2);
+
+/* loads a emtpy HTML page */
+void clearHTMLView(void);
 
 /* function to select either the single item view (3 pane mode)
    or the item list view (2 pane mode) */
 void	setHTMLViewMode(gboolean threePane);
 
 /* functions to output HTML to the selected HTML widget */
-void	startHTMLOutput(void);
+void	startHTML(gchar **buffer, gboolean padded);
 
 void	writeHTML(gchar *string);
 
-void	finishHTMLOutput(void);
+void	finishHTML(gchar **buffer);
 
 /* to launch any URL */
 void 	launchURL(const gchar *url);

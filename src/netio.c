@@ -52,9 +52,10 @@
 #include "support.h"
 
 struct feed_request {
-        char * feedurl;		/* Non hashified URL */
-        char * lastmodified; 	/* Content of header as sent by the server. */
-	int problem;		/* Set if there was a problem downloading the feed. */
+        char * 	feedurl;		/* Non hashified URL */
+        char * 	lastmodified; 		/* Content of header as sent by the server. */
+	int 	lasthttpstatus;	
+	int 	problem;		/* Set if there was a problem downloading the feed. */
 };
 
 /*-----------------------------------------------------------------------*/
@@ -63,21 +64,20 @@ struct feed_request {
 #	include "os-support.h"
 #endif
 
-#define MAX_HTTP_REDIRECTS 10	/* Maximum number of redirects we will follow. */
+#define MAX_HTTP_REDIRECTS 10		/* Maximum number of redirects we will follow. */
 
 int my_socket;
-int lasthttpstatus;					/* Last HTTP server status code. */
-extern char *proxyname;				/* Hostname of proxyserver. */
+extern char *proxyname;			/* Hostname of proxyserver. */
 extern unsigned short proxyport;	/* Port on proxyserver to use. */
 extern char *useragent;
 int connectresult;
 
 /* Connect network sockets.
  *
- * Return codes:	1	socket creation error
- *					2	hostname resolve error
- *					3	couldn't connect
- *                  -1  aborted by user
+ * Return codes:	 1	socket creation error
+ *			 2	hostname resolve error
+ *			 3	couldn't connect
+ *                 	-1	aborted by user
  */
 int NetConnect (char * host, int httpproto) {
 	int retval;
@@ -109,12 +109,11 @@ int NetConnect (char * host, int httpproto) {
 	}
 	
 	/* Set socket to nonblock mode to make it possible to interrupt the connect. */
-	fcntl(my_socket, F_SETFL, fcntl(my_socket, F_GETFL, 0) | O_NONBLOCK);
+	//fcntl(my_socket, F_SETFL, fcntl(my_socket, F_GETFL, 0) | O_NONBLOCK);
 	
 	/* stdin is read, socket is write, so we need read/write sets. */
 	FD_ZERO(&rfdsr);
 	FD_ZERO(&rfdsw);
-	//FD_SET(0, &rfdsr);
 	FD_SET(my_socket, &rfdsw);
 	
 	/* If proxyport is 0 we didn't execute the if http_proxy statement in main
@@ -144,21 +143,6 @@ int NetConnect (char * host, int httpproto) {
 				close (my_socket);
 				free (realhost);
 				return 3;
-			}
-		
-			while (1) {
-				retval = select (my_socket+1, &rfdsr, &rfdsw, NULL, NULL);
-				
-				if (FD_ISSET (0, &rfdsr)) {
-					if (getch() == 'z') {
-						close (my_socket);
-						free (realhost);
-						return -1;
-					}
-				}
-		
-				if (FD_ISSET (my_socket, &rfdsw))
-					break;
 			}
 			
 			/* We get errno of connect back via getsockopt SO_ERROR (into connectresult). */
@@ -196,21 +180,6 @@ int NetConnect (char * host, int httpproto) {
 				free (realhost);
 				return 3;
 			}
-		
-			while (1) {
-				retval = select (my_socket+1, &rfdsr, &rfdsw, NULL, NULL);
-			
-				if (FD_ISSET (0, &rfdsr)) {
-					if (getch() == 'z') {
-						close (my_socket);
-						free (realhost);
-						return -1;
-					}
-				}
-			
-				if (FD_ISSET (my_socket, &rfdsw))
-					break;
-			}
 			
 			len = sizeof(connectresult);
 			getsockopt(my_socket, SOL_SOCKET, SO_ERROR, &connectresult, &len);
@@ -224,7 +193,7 @@ int NetConnect (char * host, int httpproto) {
 	}
 	
 	/* Set socket back to blocking mode. */
-	fcntl(my_socket, F_SETFL, fcntl(my_socket, F_GETFL, 0) & ~O_NONBLOCK);
+	//fcntl(my_socket, F_SETFL, fcntl(my_socket, F_GETFL, 0) & ~O_NONBLOCK);
 	
 	free (realhost);
 	return 0;
@@ -260,8 +229,6 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	int contentlength = 0;		/* Content-Length of server reply. */
 	int len;
 	char * inflatedbody;
-
-	lasthttpstatus = 0;
 	
 	snprintf (tmp, sizeof(tmp), _("Downloading http://%s%s..."), host, url);
 	UIStatus (tmp, 0);
@@ -303,22 +270,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	
 	/* Use select to make the connection interuptable if it should hang. */
 	FD_ZERO(&rfds);
-	////FD_SET(0, &rfds); 
 	FD_SET(my_socket, &rfds);
-	
-	while (1) {
-		retval = select (my_socket+1, &rfds, NULL, NULL, NULL);
-		
-		if (FD_ISSET (0, &rfds)) {
-			if (getch() == 'z') {
-				fclose (stream);
-				return NULL;
-			}
-		}
-		
-		if (FD_ISSET (my_socket, &rfds))
-			break;
-	}
 
 	if ((fgets (tmp, sizeof(tmp), stream)) == NULL) {
 		fclose (stream);
@@ -337,7 +289,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	strncpy (httpstatus, tmpstatus, 3);
 	free (savestart);
 	
-	lasthttpstatus = atoi (httpstatus);
+	cur_ptr->lasthttpstatus = atoi (httpstatus);
 	
 	/* If the redirectloop was run newhost and newurl were allocated.
 	   We need to free them here. */
@@ -346,7 +298,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 		free (url);
 	}
 
-	tmphttpstatus = lasthttpstatus;
+	tmphttpstatus = cur_ptr->lasthttpstatus;
 	handled = 1;
 	/* Check HTTP server response and handle redirects. */
 	do {
@@ -394,7 +346,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 						strsep (&redirecttarget, " ");
 						
 						/* Change cur_ptr->feedurl on 301. */
-						if (lasthttpstatus == 301) {
+						if (cur_ptr->lasthttpstatus == 301) {
 							UIStatus (_("URL points to permanent redirect, updating with new location..."), 2);
 							free (cur_ptr->feedurl);
 							/* netbuf contains \r\n */
@@ -455,7 +407,8 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 					
 						/* Reconnect to server. */
 						if ((NetConnect (newhost, httpproto)) != 0) {
-							MainQuit (_("Reconnecting for redirect"), strerror(errno));
+							/* Add error handling/reporting. */
+							return NULL;
 						}
 					
 						host = newhost;
@@ -497,22 +450,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	
 		/* Use select to make the connection interuptable if it should hang. */
 		FD_ZERO(&rfds);
-		//FD_SET(0, &rfds);
 		FD_SET(my_socket, &rfds);
-		
-		while (1) {
-			retval = select (my_socket+1, &rfds, NULL, NULL, NULL);
-			
-			if (FD_ISSET (0, &rfds)) {
-				if (getch() == 'z') {
-					fclose (stream);
-					return NULL;
-				}
-			}
-			
-			if (FD_ISSET (my_socket, &rfds))
-				break;
-		}
 	
 		/* Max line length of sizeof(netbuf) is assumed here.
 		   If header has longer lines than 4096 bytes something may go wrong. :) */
@@ -531,7 +469,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 		}
 		/* Get last modified date. This is only relevant on HTTP 200. */
 		if ((strstr (netbuf, "Last-Modified") != NULL) &&
-			(lasthttpstatus == 200)) {
+			(cur_ptr->lasthttpstatus == 200)) {
 			tmpstring = strdup(netbuf);
 			freeme = tmpstring;
 			strsep (&tmpstring, ":");
@@ -586,23 +524,8 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, int httppr
 	
 		/* Use select to make the connection interuptable if it should hang. */
 		FD_ZERO(&rfds);
-		//FD_SET(0, &rfds);
 		FD_SET(my_socket, &rfds);
-		
-		while (1) {
-			retval = select (my_socket+1, &rfds, NULL, NULL, NULL);
-			
-			if (FD_ISSET (0, &rfds)) {
-				if (getch() == 'z') {
-					fclose (stream);
-					return NULL;
-				}
-			}
-			
-			if (FD_ISSET (my_socket, &rfds))
-				break;
-		}
-		
+
 		/* Since we handle binary data if we read compressed input we
 		   need to use fread instead of fgets after reading the header. */ 
 		retval = fread (netbuf, 1, sizeof(netbuf), stream);
@@ -753,7 +676,8 @@ char * downloadURL(char *url) {
 		cur_ptr.lastmodified = NULL;
 
 		data = DownloadFeed(strdup(url), &cur_ptr);
-		free(cur_ptr.lastmodified);
+		if(NULL != cur_ptr.lastmodified)
+			free(cur_ptr.lastmodified);
 
 		/* check if URL was modified */
 //		if(0 != strcmp(url, cur_ptr.feedurl)) {
