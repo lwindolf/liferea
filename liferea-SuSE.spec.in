@@ -72,7 +72,6 @@ make install-strip
 "//usr/local/share/liferea/pixmaps/offline.png"
 "//usr/local/share/liferea/pixmaps/online.png"
 "//usr/local/share/liferea/pixmaps/read.xpm"
-"//usr/local/share/liferea/pixmaps/unavailable.png"
 "//usr/local/share/liferea/pixmaps/unread.png"
 "//usr/local/share/liferea/pixmaps/vfolder.png"
 %dir "//usr/local/share/locale/"
