@@ -136,7 +136,7 @@ static void ui_dnd_URL_received(GtkWidget *mainwindow, GdkDragContext *context, 
 		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(0 != strlen(tmp2))
-				ui_feedlist_new_subscription(g_strdup(tmp2), TRUE);
+				ui_feedlist_new_subscription(g_strdup(tmp2), NULL, TRUE);
 		}
 		g_free(freeme);
 		gtk_drag_finish(context, TRUE, FALSE, time);		

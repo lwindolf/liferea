@@ -178,7 +178,7 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	ui_feedlist_new_subscription(url, TRUE);
+	ui_feedlist_new_subscription(url, NULL, TRUE);
 	g_free(url);
 }
 

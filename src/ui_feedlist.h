@@ -108,9 +108,10 @@ folderPtr ui_feedlist_get_target_folder(int *pos);
  * Create a new subscription in the currently selected folder.
  *
  * @param source	feed source URL or local file name or piped command
+ * @param filter    filename of the filter to use for the new feed
  * @param showPropDialog TRUE if the property dialog should popup
  */
-void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog);
+void ui_feedlist_new_subscription(gchar *source, gchar *filter, gboolean showPropDialog);
 
 
 #define	ACTION_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	
@@ -187,7 +188,6 @@ void on_popup_prop_selected(gpointer callback_data,
 					   GtkWidget *widget);
 void on_propchangebtn_clicked(GtkButton *button, gpointer user_data);
 void on_newbtn_clicked(GtkButton *button, gpointer user_data);
-void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data);
 
 void on_fileselect_clicked(GtkButton *button, gpointer user_data);
 void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);

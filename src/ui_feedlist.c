@@ -434,19 +434,20 @@ void on_popup_prop_selected(gpointer callback_data,
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
+void ui_feedlist_new_subscription(gchar *source, gchar *filter, gboolean showPropDialog) {
 	struct feed_request 	*request;
 	feedPtr			fp;
 	gchar			*data;
 	
 	debug_enter("ui_feedlist_new_subscription");	
-	
+	printf("%s XXX %s\n", source, filter);
 	/* directly download (do not use update queue to avoid
 	   waiting for the end of other updates and to
 	   get control back when feed is downloaded to show
 	   properties dialog) */
 	request = update_request_new(NULL);
 	request->feedurl = g_strdup(source);
+	request->filtercmd = g_strdup(filter);
 	data = downloadURL(request);	/* FIXME: The downloading should not block? */
 
 	/* determine feed type if necessary */	
@@ -456,6 +457,7 @@ void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
 	fp = feed_new();
 	feed_set_id(fp, conf_new_id());
 	feed_set_source(fp, request->feedurl);
+	feed_set_filter(fp, filter);
 	favicon_download(fp);		// FIXME: this blocks the program!!!
 	
 	parent = ui_feedlist_get_target_folder(&pos);
@@ -487,30 +489,10 @@ void ui_feedlist_new_subscription(gchar *source, gboolean showPropDialog) {
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
-	GtkWidget 	*sourceentry;	
 	
-	if(NULL == newdialog || !G_IS_OBJECT(newdialog)) 
-		newdialog = create_newdialog();
-		
-	sourceentry = lookup_widget(newdialog, "newfeedentry");
-	gtk_entry_set_text(GTK_ENTRY(sourceentry), "");
-
-	g_assert(NULL != newdialog);
+	newdialog = ui_feed_newdialog_new(GTK_WINDOW(mainwindow));
+	
 	gtk_widget_show(newdialog);
-}
-
-void on_newfeedbtn_clicked(GtkButton *button, gpointer user_data) {
-	gchar		*source;
-	GtkWidget 	*sourceentry;	
-	
-	g_assert(newdialog != NULL);
-
-	sourceentry = lookup_widget(newdialog, "newfeedentry");
-		
-	source = g_strdup(gtk_entry_get_text(GTK_ENTRY(sourceentry)));
-	
-	ui_feedlist_new_subscription(source, TRUE);
-	/* don't free source for it is internal to the textbox! */
 }
 
 void on_localfileselect_clicked(GtkButton *button, gpointer user_data) {

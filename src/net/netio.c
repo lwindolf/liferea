@@ -800,6 +800,59 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 /*-----------------------------------------------------------------------*/
 /* some Liferea specific code...					 */
 
+#include "../debug.h"
+
+/* filter was taken from Snownews */
+static char* filter(gchar *cmd, gchar *data) {
+	int fd;
+	gchar *command;
+	const gchar *tmpdir = g_get_tmp_dir();
+	char *tmpfilename;
+	char		*out = NULL;
+	FILE *file, *p;
+	
+	tmpfilename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea-XXXXXX", tmpdir);
+	
+	fd = g_mkstemp(tmpfilename);
+	
+	if (fd == -1) {
+		odebug1("Error opening temp file %s to use for filtering!", tmpfilename);
+		g_free(tmpfilename);
+		return NULL;
+	}
+	
+	command = g_strdup_printf ("%s < %s", cmd, tmpfilename);
+	
+	file = fdopen (fd, "w");
+	
+	fwrite (data, strlen(data), 1, file);
+	fclose (file);
+	
+	out = malloc (1);
+     out = '\0';
+	
+	/* Pipe temp file contents to process and popen it. */
+	p = popen(command, "r");
+
+	if(NULL != p) {
+		int i = 0, n=0;
+		while(!feof(p)) {
+			++i;
+			out = g_realloc(out, i*1024);
+			n = fread(&out[(i-1)*1024], 1, 1024, p);
+		}
+		pclose(p);
+		if (n == 1024)
+			out = g_realloc(out, (i+1)*1024);
+		out[(i-1)*1024+n] = '\0';
+	}
+
+	/* Clean up. */
+	unlink (tmpfilename);
+	g_free(tmpfilename);
+	return out;
+}
+
 /* Downloads a feed and returns the data or NULL as return value.
    The url of the has to be passed in the feed structure.
    If the the webserver reports a permanent redirection, the
@@ -810,7 +863,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 
 char * downloadURL(struct feed_request *request) {
 	FILE		*f;
-	gchar		*tmpurl = NULL;
+	gchar		*tmpurl = NULL, *tmp;
 	int 		i, n;
 	char		*data = NULL;
 
@@ -858,7 +911,16 @@ char * downloadURL(struct feed_request *request) {
 		request->lasthttpstatus = 0;
 		request->lastmodified = NULL;
 	}
-
+	
+	/* And execute the postfilter */
+	if (data != NULL && request->filtercmd != NULL) {
+		tmp = filter(request->filtercmd, data);
+		if (tmp != NULL) {
+			g_free(data);
+			data = tmp;
+		}
+	}
 	request->data = data;
+
 	return data;
 }
