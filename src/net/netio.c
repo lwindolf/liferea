@@ -1065,5 +1065,6 @@ void downloadlib_process_url(struct request *request) {
 	g_free(cur_ptr.authinfo);
 	g_free(cur_ptr.cookies);
 	debug4(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d", request->httpstatus, cur_ptr.problem, cur_ptr.netio_error, request->data);
+	g_free(cur_ptr.content_type);
 	return;
 }
