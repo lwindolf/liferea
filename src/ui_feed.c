@@ -47,7 +47,7 @@
  * @param httpstatus	HTTP status
  * @param resultcode the update code's return code (see update.h)
  */
-static void ui_feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode) {
+static void ui_feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gchar *filterErrors) {
 	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
 	gboolean	errorFound = FALSE;
 
@@ -56,7 +56,7 @@ static void ui_feed_set_error_description(feedPtr fp, gint httpstatus, gint resu
 	fp->errorDescription = NULL;
 	
 	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	   (NULL == fp->parseErrors))
+	   (NULL == filterErrors) && (NULL == fp->parseErrors))
 		return;
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
 	
@@ -114,6 +114,16 @@ static void ui_feed_set_error_description(feedPtr fp, gint httpstatus, gint resu
 		addToHTMLBuffer(&buffer, tmp1);
 		g_free(tmp1);
 		g_free(tmp2);
+	}
+	
+	/* add filtering error messages */
+	if(NULL != filterErrors) {
+		if(errorFound)
+			addToHTMLBuffer(&buffer, HTML_NEWLINE);	
+		errorFound = TRUE;
+		tmp1 = g_markup_printf_escaped(FILTER_ERROR_TEXT, filterErrors);
+		addToHTMLBuffer(&buffer, tmp1);
+		g_free(tmp1);
 	}
 	
 	/* add parsing error messages */
@@ -223,7 +233,7 @@ void ui_feed_process_update_result(struct request *request) {
 		feed_set_available(fp, FALSE);
 	}
 	
-	ui_feed_set_error_description(fp, request->httpstatus, request->returncode);
+	ui_feed_set_error_description(fp, request->httpstatus, request->returncode, request->filterErrors);
 
 	fp->request = NULL; 
 	ui_notification_update(fp);	

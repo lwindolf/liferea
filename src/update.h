@@ -88,6 +88,8 @@ struct request {
 	gchar *etag;		/**< E-Tag value for download. Set by both requestor and download subsystem */
 	gchar *data;
 	size_t size;
+	
+	gchar *filterErrors;	/**< Error messages from filter execution */
 };
 
 /** Initialises the download subsystem, including its thread(s). */

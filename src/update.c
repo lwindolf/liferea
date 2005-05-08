@@ -52,24 +52,25 @@ static void *download_thread_main(void *data);
 static gboolean download_dequeuer(gpointer user_data);
 
 /* filter idea (and some of the code) was taken from Snownews */
-static char* filter(gchar *cmd, gchar *data, size_t *size) {
-	int		fd;
+static char* filter(gchar *cmd, gchar *data, gchar **errorOutput, size_t *size) {
+	int		fd, status;
 	gchar		*command;
 	const gchar	*tmpdir = g_get_tmp_dir();
 	char		*tmpfilename;
 	char		*out = NULL;
 	FILE		*file, *p;
 	
+	*errorOutput = NULL;
 	tmpfilename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea-XXXXXX", tmpdir);
 	
 	fd = g_mkstemp(tmpfilename);
 	
 	if (fd == -1) {
 		odebug1("Error opening temp file %s to use for filtering!", tmpfilename);
+		*errorOutput = g_strdup_printf("Error opening temp file %s to use for filtering!", tmpfilename);
 		g_free(tmpfilename);
 		return NULL;
-	}
-	
+	}	
 		
 	file = fdopen (fd, "w");
 	fwrite (data, strlen(data), 1, file);
@@ -87,10 +88,16 @@ static char* filter(gchar *cmd, gchar *data, size_t *size) {
 			if (len > 0)
 				*size += len;
 		}
-		pclose(p);
+		status = pclose(p);
+		if(!(WIFEXITED(status) && WEXITSTATUS(status) == 0)) {
+			*errorOutput = g_strdup_printf(_("%s exited with status %d"),
+			                              cmd, WEXITSTATUS(status));
+			*size = 0;
+		}
 		out[*size] = '\0';
 	} else {
 		g_warning(_("Error: Could not open pipe \"%s\""), command);
+		*errorOutput = g_strdup_printf(_("Error: Could not open pipe \"%s\""), command);
 	}
 	/* Clean up. */
 	unlink (tmpfilename);
@@ -102,6 +109,7 @@ void download_process(struct request *request) {
 	FILE	*f;
 	size_t	len;
 	int	status;
+	gchar	*tmp, *errorOutput;
 
 	request->data = NULL;
 	request->size = 0;
@@ -154,12 +162,14 @@ void download_process(struct request *request) {
 
 	/* And execute the postfilter */
 	if(request->data != NULL && request->filtercmd != NULL) {
-		size_t size;
-		gchar *tmp = filter(request->filtercmd, request->data, &size);
-		if (tmp != NULL) {
+		errorOutput = NULL;
+		tmp = filter(request->filtercmd, request->data, &errorOutput, &len);
+		g_free(request->filterErrors);
+		request->filterErrors = errorOutput;
+		if(tmp != NULL) {
 			g_free(request->data);
 			request->data = tmp;
-			request->size = size;
+			request->size = len;
 		}
 	}
 }
@@ -182,6 +192,7 @@ void download_request_free(struct request *request) {
 	if(NULL != request) {
 		g_free(request->source);
 		g_free(request->filtercmd);
+		g_free(request->filterErrors);
 		g_free(request->lastmodified);
 		g_free(request->etag);
 		g_free(request->data);
