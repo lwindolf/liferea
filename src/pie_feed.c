@@ -254,7 +254,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				g_free(tmp);
 				
 				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"modified")) {
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"modified")) { /* Modified was last used in IETF draft 02) */
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					fp->metadata = metadata_list_append(fp->metadata, "pubDate", tmp);
@@ -262,7 +262,15 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 					g_free(tmp);
 				}
 
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) { /* Updated was added in IETF draft 03 */
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp) {
+					fp->metadata = metadata_list_append(fp->metadata, "pubDate", tmp);
+					feed_set_time(fp, parseISO8601Date(tmp));
+					g_free(tmp);
+				}
+
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
 				/* parse feed contributors */
 				tmp = parseAuthor(cur);
 				fp->metadata = metadata_list_append(fp->metadata, "contributor", tmp);
