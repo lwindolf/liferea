@@ -191,18 +191,20 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	feedPtr		sourceFeed;
 	
 	if(newStatus != item_get_flag(ip)) {
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			/* propagate change to source feed, this indirectly updates us... */
-			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-			feed_load(sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
-				itemlist_set_flag(sourceItem, newStatus);
-			feed_unload(sourceFeed);
+		item_set_flag(ip, newStatus);
+		ui_itemlist_update_item(ip);
+
+		if(FST_FEED != ip->fp->type) {
+			/* if this item belongs to a vfolder update the source feed */
+			if(ip->sourceFeed != NULL) {
+				/* propagate change to source feed, this indirectly updates us... */
+				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+				feed_load(sourceFeed);
+				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
+					itemlist_set_flag(sourceItem, newStatus);
+				feed_unload(sourceFeed);
+			}
 		} else {
-			item_set_flag(ip, newStatus);
-			ui_itemlist_update_item(ip);	
-				
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
@@ -220,18 +222,20 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 	feedPtr		sourceFeed;
 
 	if(newStatus != item_get_read_status(ip)) {		
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			/* propagate change to source feed, this indirectly updates us... */
-			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-			feed_load(sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
-				itemlist_set_read_status(sourceItem, newStatus);
-			feed_unload(sourceFeed);
-		} else {
-			item_set_read_status(ip, newStatus);
-			ui_itemlist_update_item(ip);
-			
+		item_set_read_status(ip, newStatus);
+		ui_itemlist_update_item(ip);
+
+		if(FST_FEED != ip->fp->type) {
+			/* if this item belongs to a vfolder update the source feed */
+			if(ip->sourceFeed != NULL) {
+				/* propagate change to source feed, this indirectly updates us... */
+				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+				feed_load(sourceFeed);
+				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
+					itemlist_set_read_status(sourceItem, newStatus);
+				feed_unload(sourceFeed);
+			}
+		} else {		
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
@@ -252,18 +256,20 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 	feedPtr		sourceFeed;
 	
 	if(newStatus != item_get_update_status(ip)) {	
-		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceFeed != NULL) {
-			/* propagate change to source feed, this indirectly updates us... */
-			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-			feed_load(sourceFeed);
-			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
-				itemlist_set_update_status(sourceItem, newStatus);
-			feed_unload(sourceFeed);
-		} else {
-			item_set_update_status(ip, newStatus);
-			ui_itemlist_update_item(ip);
+		item_set_update_status(ip, newStatus);
+		ui_itemlist_update_item(ip);	
 
+		if(FST_FEED != ip->fp->type) {	
+			/* if this item belongs to a vfolder update the source feed */
+			if(ip->sourceFeed != NULL) {
+				/* propagate change to source feed, this indirectly updates us... */
+				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+				feed_load(sourceFeed);
+				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
+					itemlist_set_update_status(sourceItem, newStatus);
+				feed_unload(sourceFeed);
+			}
+		} else {
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
@@ -316,7 +322,10 @@ void itemlist_remove_item(itemPtr ip) {
 	   don't do it and set a flag to do it when unselecting */
 	if(displayed_item != ip) {
 		ui_itemlist_remove_item(ip);
-		feed_remove_item(ip->fp, ip);
+		if(FST_FEED == ip->fp->type)
+			feed_remove_item(ip->fp, ip);
+		else
+			vfolder_remove_item_copy(ip->fp, ip);
 		ui_feedlist_update();
 	} else {
 		deferred_item_remove = TRUE;

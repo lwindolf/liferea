@@ -114,7 +114,7 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 }
 
 /* used to remove a vfolder item copy from a vfolder */
-static void vfolder_remove_item_copy(feedPtr vp, itemPtr ip) {
+void vfolder_remove_item_copy(feedPtr vp, itemPtr ip) {
 	GSList		*items;
 	gboolean	found = FALSE;
 
@@ -157,8 +157,18 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 		items = g_slist_next(items);
 	}
 
-	if(found)	
-		vfolder_remove_item_copy(vp, tmp);
+	if(found) {
+		/* we call itemlist_remove_item to prevent removing
+		   a item selected in the GUI... */
+		itemlist_remove_item(tmp);
+		
+		/* because itemlist_remove_item might delay the removal
+		   the original item may not exist anymore when the 
+		   removal is executed, so we need to remove the
+		   pointer to the original item */
+		tmp->sourceFeed = NULL;
+		tmp->nr = -1;
+	}
 }
 
 /** 
@@ -169,7 +179,7 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 void vfolder_remove_item(itemPtr ip) {
 	GSList		*iter;
 	feedPtr		vp;
-	
+
 	debug_enter("vfolder_remove_item");
 
 	/* distinguish between checking vfolder items
