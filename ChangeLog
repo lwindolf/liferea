@@ -19,7 +19,8 @@
 	  was removed and now there is optional compile time support
 	  for DBUS. If enabled Liferea subscribes upon an appropriate
 	  DBUS message. (patch from Raphaël Slinckx)
-	
+	* Improved error handling for feed post processing filters.
+	  (patch from dwpoon)
 
 2005-03-12  Lars Lindner <lars.lindner@gmx.net>
 

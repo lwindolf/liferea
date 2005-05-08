@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-09 23:49+0100\n"
+"POT-Creation-Date: 2005-05-08 21:16+0200\n"
 "PO-Revision-Date: 2005-03-12 20:00+0100\n"
 "Last-Translator: Tibor Pittich <Tibor.Pittich@mandrake.org>\n"
 "Language-Team: Slovak <i18n@lists.linux.sk>\n"
@@ -13,7 +13,7 @@ msgstr ""
 
 #  _() for HELP1URL to allow localised help feeds
 #. launch the homepage when button in about dialog is pressed
-#: src/callbacks.c:229
+#: src/callbacks.c:230
 msgid "http://liferea.sf.net"
 msgstr "http://liferea.sf.net/help/help"
 
@@ -201,7 +201,7 @@ msgstr "Aktualizácia: \"%s\""
 msgid "Feed:"
 msgstr "Kanál:"
 
-#: src/feed.c:1017 src/interface.c:521
+#: src/feed.c:1017 src/interface.c:3781
 msgid "VFolder"
 msgstr "VPriečinok"
 
@@ -209,7 +209,7 @@ msgstr "VPriečinok"
 msgid "user defined command"
 msgstr "Používateľom definovaný príkaz"
 
-#: src/feed.c:1048 src/interface.c:1104 src/interface.c:1514 src/item.c:248
+#: src/feed.c:1048 src/interface.c:1024 src/interface.c:1434 src/item.c:248
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Zdroj:"
@@ -218,27 +218,27 @@ msgstr "Zdroj:"
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "Načítavanie odkazov v kanály zlyhalo! Neboli nájdené žiadne odkazy!"
 
-#: src/interface.c:139
+#: src/interface.c:128
 msgid "Liferea"
 msgstr "Liferea"
 
-#: src/interface.c:156
+#: src/interface.c:145
 msgid "_Program"
 msgstr "_Program"
 
-#: src/interface.c:172
+#: src/interface.c:161
 msgid "Work Offline"
 msgstr "Pracovať Offline"
 
-#: src/interface.c:185
+#: src/interface.c:174
 msgid "_Feeds"
 msgstr "_Kanály"
 
-#: src/interface.c:192
+#: src/interface.c:181
 msgid "Update _Selected"
 msgstr "Aktualizovať _Označené"
 
-#: src/interface.c:195
+#: src/interface.c:184
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -246,20 +246,20 @@ msgstr ""
 "Aktualizovať označené prihlásenia pre všetky prihlásenia z vybraného "
 "priečinka,"
 
-#: src/interface.c:201
+#: src/interface.c:190
 msgid "Update _All"
 msgstr "_Aktualizovať všetky"
 
-#: src/interface.c:204 src/ui_mainwindow.c:164
+#: src/interface.c:193 src/ui_mainwindow.c:164
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Aktualizovať všetky prihlásenia. OCS priečinky nebudú aktualizované."
 
-#: src/interface.c:213
+#: src/interface.c:202
 #, fuzzy
 msgid "_Mark Selected As Read"
 msgstr "/Označiť všetky ako p_rečítané"
 
-#: src/interface.c:216
+#: src/interface.c:205
 msgid ""
 "Marks all items of the current selected subscription or all of subscriptions "
 "of the selected folder as read."
@@ -267,60 +267,65 @@ msgstr ""
 "Označiť všetky články v aktuálnom označenom prihlásení alebo všetky "
 "prihlásenia z vybraného priečinku ako prečítané."
 
-#: src/interface.c:225
+#: src/interface.c:214
 #, fuzzy
 msgid "Mark All As _Read"
 msgstr "/Označiť všetky ako p_rečítané"
 
-#: src/interface.c:238
+#: src/interface.c:227
 msgid "_New Subscription..."
 msgstr "_Nové prihlásenie..."
 
-#: src/interface.c:246
+#: src/interface.c:235
 msgid "New _Folder..."
 msgstr "Nový _Priečinok..."
 
-#: src/interface.c:259
+#: src/interface.c:243
+#, fuzzy
+msgid "New _VFolder..."
+msgstr "Nový _Priečinok..."
+
+#: src/interface.c:252
 msgid "_Properties..."
 msgstr "_Nastavenia..."
 
-#: src/interface.c:262
+#: src/interface.c:255
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Otvoriť dialóg s nastaveniami pre označené prihlásenia."
 
-#: src/interface.c:268
+#: src/interface.c:261
 msgid "_Delete Selected"
 msgstr "_Odstrániť označené"
 
-#: src/interface.c:271
+#: src/interface.c:264
 msgid "Removes the selected subscription."
 msgstr "Odstrániť označené prihlásenie."
 
-#: src/interface.c:282
+#: src/interface.c:275
 msgid "_Import Feed List..."
 msgstr "_Importovať zoznam kanálov..."
 
-#: src/interface.c:285
+#: src/interface.c:278
 msgid "Imports an OPML feed list."
 msgstr "Import OPML zoznamu kanálov."
 
-#: src/interface.c:291
+#: src/interface.c:284
 msgid "_Export Feed List..."
 msgstr "_Exportovať zoznam kanálov..."
 
-#: src/interface.c:294
+#: src/interface.c:287
 msgid "Exports the feed list as OPML."
 msgstr "Export zoznamu kanálov ako OPML."
 
-#: src/interface.c:300
+#: src/interface.c:293
 msgid "_Items"
 msgstr "P_ríspevky"
 
-#: src/interface.c:307
+#: src/interface.c:300
 msgid "_Next Unread Item"
 msgstr "Ďalší _neprečítaný príspevok"
 
-#: src/interface.c:310 src/ui_mainwindow.c:162
+#: src/interface.c:303 src/ui_mainwindow.c:162
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -328,229 +333,207 @@ msgstr ""
 "Preskočiť na nasledujúci neprečítaný článok. Ak je to možné, označí sa "
 "nasledovný kanál s neprečítanými príspevkami."
 
-#: src/interface.c:324
+#: src/interface.c:317
 msgid "Toggle _Read Status"
 msgstr "Nastaviť príznak _prečítania"
 
-#: src/interface.c:327
+#: src/interface.c:320
 msgid "Toggles the read status of the selected item."
 msgstr "Nastaviť príznak prečítania pre všetky označené príspevky."
 
-#: src/interface.c:336
+#: src/interface.c:329
 msgid "Toggle Item _Flag"
 msgstr "Prepnúť _označenie správy"
 
-#: src/interface.c:339
+#: src/interface.c:332
 msgid "Toggles the item flag."
 msgstr "Označiť príspevok."
 
-#: src/interface.c:344
+#: src/interface.c:337
 msgid "Remove Selected"
 msgstr "Odstrániť označené"
 
-#: src/interface.c:347
+#: src/interface.c:340
 msgid "Removes the selected item."
 msgstr "Odstrániť označené príspevky."
 
-#: src/interface.c:353
+#: src/interface.c:346
 msgid "Remove All"
 msgstr "Odstrániť všetky"
 
-#: src/interface.c:356
+#: src/interface.c:349
 msgid "Removes all items of the currently selected feed."
 msgstr "Odstrániť všetky články z označeného kanálu."
 
-#: src/interface.c:367
+#: src/interface.c:360
 msgid "_Launch In Browser"
 msgstr "_Zobraziť článok v prehliadači"
 
-#: src/interface.c:370
+#: src/interface.c:363
 msgid "Launches the item's link in the configured browser."
 msgstr "Zobraziť odkazy z článkov v nastavenom prehliadači."
 
-#: src/interface.c:372
+#: src/interface.c:365
 msgid "_View"
 msgstr "_Zobrazenie"
 
-#: src/interface.c:379
+#: src/interface.c:372
 msgid "_Increase Text Size"
 msgstr "Z_väčšiť veľkosť písma"
 
-#: src/interface.c:382
+#: src/interface.c:375
 msgid "Increases the text size of the item view."
 msgstr "Zväčšiť veľkosť textu pri prezeraní článku."
 
-#: src/interface.c:391
+#: src/interface.c:384
 msgid "_Decrease Text Size"
 msgstr "Z_menšiť veľkosť písma"
 
-#: src/interface.c:394
+#: src/interface.c:387
 msgid "Decreases the text size of the item view."
 msgstr "Zmenšiť veľkosť textu pri prezeraní článku."
 
-#: src/interface.c:408
+#: src/interface.c:401
 msgid "Toggle _Condensed View"
 msgstr "Prepnúť _Skoncentrovaný náhľad"
 
-#: src/interface.c:411
+#: src/interface.c:404
 msgid "Toggles the item list mode between condensed and normal mode."
 msgstr "Prepnúť zobrazovanie zoznamu medzi skoncentrovaným a normálnym."
 
-#: src/interface.c:413
+#: src/interface.c:406
 msgid "_Search"
 msgstr "_Hľadať"
 
-#: src/interface.c:420
+#: src/interface.c:413
 msgid "Toggle Search Box"
 msgstr "Prepnúť zobrazenie vyhľadávania"
 
-#: src/interface.c:423
+#: src/interface.c:416
 msgid "Shows or hides the search box."
 msgstr "Zobraziť alebo schovať vyhľadávanie."
 
-#: src/interface.c:429
+#: src/interface.c:422
 msgid "Search with Feedster..."
 msgstr "Vyhľadávať pomocou Feedster..."
 
-#: src/interface.c:432
+#: src/interface.c:425
 msgid "Creates a Feedster search feed."
 msgstr "Vytvoriť vyhľadávací kanál Feedster."
 
-#: src/interface.c:438
+#: src/interface.c:431
 msgid "_Help"
 msgstr "P_omoc"
 
-#: src/interface.c:445 src/interface.c:3318 src/interface.c:3360
+#: src/interface.c:438 src/interface.c:3239 src/interface.c:3281
 msgid "About"
 msgstr "O..."
 
-#: src/interface.c:448
+#: src/interface.c:441
 msgid "Shows an about dialog."
 msgstr "Zobraziť dialóg O..."
 
-#: src/interface.c:486
-msgid "Search for"
-msgstr "Hľadať"
-
-#: src/interface.c:497
-msgid ""
-"Starts a search for all items that do match the given search string either "
-"in title or content."
-msgstr ""
-"Spustiť vyhľadávanie vo všetkých príspevkoch na výskyt reťazca v titulku "
-"alebo obsahu článkov."
-
-#: src/interface.c:507
-msgid "saves this search as a VFolder, which will appear in the feed list"
-msgstr ""
-"uložiť toto vyhľadávanie ako VPriečinok, ktorý môže byť pridaný do zoznamu "
-"kanáov"
-
-#: src/interface.c:528
-msgid "Close search"
-msgstr "Ukončiť hľadanie"
-
-#: src/interface.c:562
+#: src/interface.c:502
 msgid "single item view"
 msgstr "prezeranie jednotlivých príspevkov"
 
-#: src/interface.c:570
+#: src/interface.c:510
 msgid "label133"
 msgstr "label133"
 
-#: src/interface.c:574 src/interface.c:2164
+#: src/interface.c:514 src/interface.c:2084
 msgid "Headlines"
 msgstr "Nadpisy"
 
-#: src/interface.c:902
+#: src/interface.c:822
 msgid "Subscription Properties"
 msgstr "Nastavenia prihlásenia"
 
-#: src/interface.c:923
+#: src/interface.c:843
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">Meno kanálu</span>"
 
-#: src/interface.c:933 src/interface.c:965 src/interface.c:1039
-#: src/interface.c:1084 src/interface.c:1118 src/interface.c:1129
-#: src/interface.c:1147 src/interface.c:1235 src/interface.c:1449
-#: src/interface.c:1494 src/interface.c:1528 src/interface.c:1539
-#: src/interface.c:1557 src/interface.c:1861 src/interface.c:1900
-#: src/interface.c:1960 src/interface.c:2005 src/interface.c:2038
-#: src/interface.c:2076 src/interface.c:2127 src/interface.c:2191
-#: src/interface.c:2244 src/interface.c:2325 src/interface.c:2342
-#: src/interface.c:2428 src/interface.c:2482 src/interface.c:2509
-#: src/interface.c:2559 src/interface.c:2621 src/interface.c:2683
+#: src/interface.c:853 src/interface.c:885 src/interface.c:959
+#: src/interface.c:1004 src/interface.c:1038 src/interface.c:1049
+#: src/interface.c:1067 src/interface.c:1155 src/interface.c:1369
+#: src/interface.c:1414 src/interface.c:1448 src/interface.c:1459
+#: src/interface.c:1477 src/interface.c:1781 src/interface.c:1820
+#: src/interface.c:1880 src/interface.c:1925 src/interface.c:1958
+#: src/interface.c:1996 src/interface.c:2047 src/interface.c:2111
+#: src/interface.c:2164 src/interface.c:2245 src/interface.c:2262
+#: src/interface.c:2348 src/interface.c:2402 src/interface.c:2430
+#: src/interface.c:2480 src/interface.c:2542 src/interface.c:2604
 msgid "    "
 msgstr "    "
 
-#: src/interface.c:942
+#: src/interface.c:862
 msgid "Feed _Name:"
 msgstr "_Meno kanálu:"
 
-#: src/interface.c:955
+#: src/interface.c:875
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">Interval aktualizovania</span>"
 
-#: src/interface.c:974
+#: src/interface.c:894
 msgid "_Use global default update interval."
 msgstr "_Použiť predvolený interval aktualizácie."
 
-#: src/interface.c:984
+#: src/interface.c:904
 msgid "_Feed specific update interval of"
 msgstr "Špecifický interval pre _kanál"
 
-#: src/interface.c:999 src/interface.c:1923
+#: src/interface.c:919 src/interface.c:1843
 msgid "minutes."
 msgstr "minút."
 
-#: src/interface.c:1003
+#: src/interface.c:923
 msgid "_Don't update this feed automatically."
 msgstr "_Neaktualizovať tento kanál automaticky."
 
-#: src/interface.c:1009
+#: src/interface.c:929
 msgid " "
 msgstr " "
 
-#: src/interface.c:1013
+#: src/interface.c:933
 #, c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
 "Poskytovateľ tohto kanálu odporúča nastaviť interval aktualizácie na %d "
 "minút."
 
-#: src/interface.c:1020
+#: src/interface.c:940
 msgid "General"
 msgstr "Všeobecné"
 
-#: src/interface.c:1029 src/interface.c:1439
+#: src/interface.c:949 src/interface.c:1359
 msgid "<b>Feed Source</b>"
 msgstr "<b>Zdroj pre kanál</b>"
 
-#: src/interface.c:1062 src/interface.c:1472
+#: src/interface.c:982 src/interface.c:1392
 msgid "_URL"
 msgstr "_URL"
 
-#: src/interface.c:1068 src/interface.c:1478
+#: src/interface.c:988 src/interface.c:1398
 msgid "_Command"
 msgstr "_Príkaz"
 
-#: src/interface.c:1078 src/interface.c:1488
+#: src/interface.c:998 src/interface.c:1408
 msgid "Local _File"
 msgstr "Lokálny _súbor"
 
-#: src/interface.c:1088 src/interface.c:1498
+#: src/interface.c:1008 src/interface.c:1418
 msgid "_Select File..."
 msgstr "Vybrať _Súbor..."
 
-#: src/interface.c:1098 src/interface.c:1508
+#: src/interface.c:1018 src/interface.c:1428
 msgid "Source Type:"
 msgstr "Typ zdroja:"
 
-#: src/interface.c:1122 src/interface.c:1532
+#: src/interface.c:1042 src/interface.c:1452
 msgid "Use conversion filter"
 msgstr "Použiť konverzný filter"
 
-#: src/interface.c:1137 src/interface.c:1547
+#: src/interface.c:1057 src/interface.c:1467
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -559,19 +542,19 @@ msgstr ""
 "Liferea dokáže použiť externé zásuvné moduly pre prístup ku kanálom v "
 "nepodporovanom formáte. Pozrite dokumentáciu pre bližšie informácie."
 
-#: src/interface.c:1151 src/interface.c:1561
+#: src/interface.c:1071 src/interface.c:1481
 msgid "Convert using:"
 msgstr "Konverzia pomocou:"
 
-#: src/interface.c:1159 src/interface.c:1569
+#: src/interface.c:1079 src/interface.c:1489
 msgid "Select File..."
 msgstr "Vybrať súbor..."
 
-#: src/interface.c:1163
+#: src/interface.c:1083
 msgid "Feed Source"
 msgstr "Zdroj kanálu"
 
-#: src/interface.c:1172
+#: src/interface.c:1092
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -579,73 +562,73 @@ msgstr ""
 "Nastavenie vyrovnávacej pamäte kontroluje či bol obsah kanálu uložený pred "
 "ukončení Liferea. Označené články budú vždy uložené v dočasnej pamäti."
 
-#: src/interface.c:1179
+#: src/interface.c:1099
 msgid "_Default cache settings"
 msgstr "_Predvolené nastavenie vyrovnávacej pamäti"
 
-#: src/interface.c:1185
+#: src/interface.c:1105
 msgid "Di_sable cache"
 msgstr "_Zakázať vyrovnávaciu pamäť"
 
-#: src/interface.c:1191
+#: src/interface.c:1111
 #, fuzzy
 msgid "_Unlimited cache"
 msgstr "_Neobmedzená vyrovnávacia pamäť"
 
-#: src/interface.c:1201
+#: src/interface.c:1121
 msgid "_Limit cache to"
 msgstr "_Limitovať vyrovnávaciu pamäť na"
 
-#: src/interface.c:1214
+#: src/interface.c:1134
 msgid "items."
 msgstr "článkov."
 
-#: src/interface.c:1218
+#: src/interface.c:1138
 msgid "Feed Cache"
 msgstr "Vyrovnávacia pamäť pre kanál"
 
-#: src/interface.c:1227
+#: src/interface.c:1147
 msgid "Use HTTP _authentication"
 msgstr "Použiť HTTP autorizáciu"
 
-#: src/interface.c:1245 src/interface.c:3487
+#: src/interface.c:1165 src/interface.c:3408
 msgid "User_name:"
 msgstr "Používateľské _meno:"
 
-#: src/interface.c:1252 src/interface.c:3494
+#: src/interface.c:1172 src/interface.c:3415
 msgid "_Password:"
 msgstr "_Heslo:"
 
 #  Don't repeat authrequest if it already failed before!
-#: src/interface.c:1272 src/interface.c:3464
+#: src/interface.c:1192 src/interface.c:3385
 msgid "Authentication"
 msgstr "Autorizácia"
 
-#: src/interface.c:1421
+#: src/interface.c:1341
 msgid "New Subscription"
 msgstr "Nové prihlásenie"
 
-#: src/interface.c:1827
+#: src/interface.c:1747
 msgid "Liferea Preferences"
 msgstr "Nastavenia Liferea"
 
-#: src/interface.c:1851
+#: src/interface.c:1771
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Nastavenia preberania kanálov</span>"
 
-#: src/interface.c:1874
+#: src/interface.c:1794
 msgid "Default number of items per feed to save:"
 msgstr "Predvolený počet článkov na kanál pre uloženie:"
 
-#: src/interface.c:1890
+#: src/interface.c:1810
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr "<span weight=\"bold\">Nastavenia aktualizácie kanálov</span>"
 
-#: src/interface.c:1913
+#: src/interface.c:1833
 msgid "Default Feed Refresh _Interval:"
 msgstr "Prednastavený _Interval aktualizácie kanálu:"
 
-#: src/interface.c:1927
+#: src/interface.c:1847
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -656,47 +639,35 @@ msgstr ""
 "obnovovať každých 15 minút! Pre zakázanie automatickej aktualizácie nastavte "
 "interval na 0 minút.</i>"
 
-#: src/interface.c:1938
+#: src/interface.c:1858
 msgid "At _startup:"
 msgstr "Pri _spustení:"
 
-#: src/interface.c:1950
+#: src/interface.c:1870
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">Nastavenia preberania kanálov</span>"
 
-#: src/interface.c:1969
-msgid ""
-"_Load feeds from disk when needed. Searching can \n"
-"be slow if you have a lot of feeds."
+#: src/interface.c:1889
+msgid "Optimize for _memory usage."
 msgstr ""
-"_Načítať kanály z disku ak je to potrebné. Vyhľadávanie\n"
-"môže byť pomalé, ak máte veľa kanálov."
 
-#: src/interface.c:1976
-msgid ""
-"_Keep all feeds loaded. This may improve speed \n"
-"(especially when searching) but can cause a \n"
-"significant memory footprint if you have a lot \n"
-"of feeds!"
+#: src/interface.c:1896
+msgid "Optimize for _speed."
 msgstr ""
-"_Ponechať všetky kanály načítané. Toto môže zvýšiť\n"
-"rýchlosť (hlavne pri prehľadávaní) ale samozrejme\n"
-"kanály zaberú nezanedbateľné miesto v pamäti, hlavne\n"
-"ak máte veľké množstvo kanálov!"
 
-#: src/interface.c:1982
+#: src/interface.c:1902
 msgid "Feeds"
 msgstr "Kanály"
 
-#: src/interface.c:1995
+#: src/interface.c:1915
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
 msgstr "<span weight=\"bold\">Nastavenia zobrazenia priečinka</span>"
 
-#: src/interface.c:2013
+#: src/interface.c:1933
 msgid "Show the items of all child feeds when a folder is selected."
 msgstr "Zobraziť príspevky vo všetkých kanáloch pre zvolený priečinok."
 
-#: src/interface.c:2017
+#: src/interface.c:1937
 #, fuzzy
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
@@ -705,55 +676,55 @@ msgstr ""
 "<i>Toto môže spôsobiť dlhú odozvu ak načítavaný priečinok obsahuje veľké "
 "množstvo kanálov!</i>"
 
-#: src/interface.c:2028
+#: src/interface.c:1948
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">Ikonky kanálov (favicons)</span>"
 
-#: src/interface.c:2047
+#: src/interface.c:1967
 msgid "_Update all favicons now."
 msgstr "_Aktualizovať všetky ikonky."
 
-#: src/interface.c:2051
+#: src/interface.c:1971
 msgid "Folders"
 msgstr "Priečinky"
 
-#: src/interface.c:2066
+#: src/interface.c:1986
 msgid "<span weight=\"bold\">Reading Headlines</span>"
 msgstr "<span weight=\"bold\">Čítanie titulkov</span>"
 
-#: src/interface.c:2089
+#: src/interface.c:2009
 msgid "Skim through articles with "
 msgstr "Preskakovať medzi článkami pomocou"
 
-#: src/interface.c:2099
+#: src/interface.c:2019
 msgid "Space"
 msgstr "Medzerník"
 
-#: src/interface.c:2103
+#: src/interface.c:2023
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Medzerník"
 
-#: src/interface.c:2107
+#: src/interface.c:2027
 msgid "<Alt> Space"
 msgstr "<Alt> Medzerník"
 
-#: src/interface.c:2117
+#: src/interface.c:2037
 msgid "<span weight=\"bold\">Date Column Settings</span>"
 msgstr "<span weight=\"bold\">Nastavenia stĺpca s dátumom</span>"
 
-#: src/interface.c:2136
+#: src/interface.c:2056
 msgid "Display only time"
 msgstr "Zobraziť iba čas"
 
-#: src/interface.c:2142
+#: src/interface.c:2062
 msgid "Display date and time"
 msgstr "Zobraziť dátum a čas"
 
-#: src/interface.c:2152
+#: src/interface.c:2072
 msgid "User defined format:"
 msgstr "Používateľom definovaný formát:"
 
-#: src/interface.c:2161
+#: src/interface.c:2081
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -761,41 +732,35 @@ msgstr ""
 "pre skúsených používateľov: špecifikácia formátovacieho reťazca pre dátum, "
 "prezrite si manuálovú stránku pre strftime()"
 
-#: src/interface.c:2181
+#: src/interface.c:2101
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
 msgstr "<span weight=\"bold\">Nastavenia interného prehliadača</span>"
 
-#: src/interface.c:2199
-msgid ""
-"Liferea displays feeds' content using various HTML renderers. Depending on "
-"which renderers are installed on your computer, different options will be "
-"available. Restart Liferea for changes to take effect."
-msgstr ""
-"Liferea zobrazuje obsah kanálov pomocou rôznych HTML zobrazovačov. V "
-"závislosti od toho aký máte nainštalovaný, vám budú k dispozícii rôzne "
-"nastavenia. Reštartujte Liferea aby zmeny nadobudli platnosť."
-
-#: src/interface.c:2209
+#: src/interface.c:2123
 msgid "View Headlines With"
 msgstr "Zobraziť titulky pomocou"
 
-#: src/interface.c:2221
+#: src/interface.c:2135
+msgid "<i>Please restart Liferea for changes to take effect.</i>"
+msgstr ""
+
+#: src/interface.c:2141
 msgid "Open links in Liferea's _window."
 msgstr "Otvoriť odkaz v Liferea o_kne."
 
-#: src/interface.c:2225
+#: src/interface.c:2145
 msgid "_Disable Javascript."
 msgstr "_Zakázať Javascript."
 
-#: src/interface.c:2233
+#: src/interface.c:2153
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">Nastavenia externého prehliadača</span>"
 
-#: src/interface.c:2258
+#: src/interface.c:2178
 msgid "_Browser:"
 msgstr "_Prehliadač:"
 
-#: src/interface.c:2265
+#: src/interface.c:2185
 #, c-format
 msgid ""
 "_Manual:\n"
@@ -804,88 +769,86 @@ msgstr ""
 "_Manuálne:\n"
 "(%s pre URL)"
 
-#: src/interface.c:2279
+#: src/interface.c:2199
 msgid "_Open link in:"
 msgstr "_Otvoriť odkaz v:"
 
-#: src/interface.c:2302
+#: src/interface.c:2222
 msgid "Browser"
 msgstr "Prehliadač"
 
-#: src/interface.c:2315
+#: src/interface.c:2235
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Nastavenia notifikáicí</span>"
 
-#: src/interface.c:2333
-msgid ""
-"Show a status _icon in the notification area \n"
-"(also called system tray)."
+#: src/interface.c:2253
+#, fuzzy
+msgid "Show a status _icon in the notification area (system tray)."
 msgstr ""
 "Zobraziť stavovú ikonu v paneli\n"
 "(nazývané ako system tray)."
 
-#: src/interface.c:2350
+#: src/interface.c:2270
 msgid "Show a _popup window with new headlines."
 msgstr "Zozbraziť _vyskakovacie okno s novým článkom."
 
-#: src/interface.c:2359
+#: src/interface.c:2279
 #, fuzzy
 msgid "         "
 msgstr "    "
 
-#: src/interface.c:2375
+#: src/interface.c:2295
 #, fuzzy
 msgid "Lower Right"
 msgstr "copyright"
 
-#: src/interface.c:2383
+#: src/interface.c:2303
 #, fuzzy
 msgid "Upper Right"
 msgstr "copyright"
 
-#: src/interface.c:2391
+#: src/interface.c:2311
 msgid "Upper Left"
 msgstr "Hore vľavo"
 
-#: src/interface.c:2399
+#: src/interface.c:2319
 #, fuzzy
 msgid "Lower Left"
 msgstr "Predvolený prehliadač"
 
-#: src/interface.c:2407
+#: src/interface.c:2327
 msgid "<b>Popup Placement</b>"
 msgstr "<p>Umiestnenie vyskakovacích okien</b>"
 
-#: src/interface.c:2418
+#: src/interface.c:2338
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">Nastavenia menu</span>"
 
-#: src/interface.c:2437
+#: src/interface.c:2357
 msgid "Show Menu _And Toolbar"
 msgstr "Zobraziť Menu _A Panel nástrojov"
 
-#: src/interface.c:2443
+#: src/interface.c:2363
 msgid "Show _Menu Only"
 msgstr "Zobraziť iba _Menu"
 
-#: src/interface.c:2449
+#: src/interface.c:2369
 msgid "Show _Toolbar Only"
 msgstr "Zobraziť iba _Panel nástrojov"
 
-#: src/interface.c:2455
+#: src/interface.c:2375
 msgid "GUI"
 msgstr "GUI"
 
-#: src/interface.c:2472
+#: src/interface.c:2392
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">HTTP Proxy Server</span>"
 
-#: src/interface.c:2491
+#: src/interface.c:2411
+#, fuzzy
 msgid ""
-"Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
-"these settings in the GNOME Control Center. Note: changing these settings "
-"will affect other applications! This dialog is primarily for users without "
-"GNOME to be able to use Liferea with a proxy."
+"<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
+"these settings in the GNOME Control Center.</i>"
 msgstr ""
 "Liferea používa prevzaté nastavenia ohľadom proxy z GNOME. Ak používate "
 "GNOME môžete zmeniť toto nastavenie v GNOME Kontrolnom centre. Poznámka: "
@@ -893,90 +856,90 @@ msgstr ""
 "primárne pre používateľov nepoužívajúcich GNOME, pričom chcú používať "
 "Liferea spolu s proxy."
 
-#: src/interface.c:2501
+#: src/interface.c:2422
 msgid "_Enable Proxy"
 msgstr "_Povoliť proxy"
 
-#: src/interface.c:2523
+#: src/interface.c:2444
 msgid "Proxy _Host:"
 msgstr "Proxy _hostiteľ:"
 
-#: src/interface.c:2544
+#: src/interface.c:2465
 msgid "Proxy _Port:"
 msgstr "Proxy p_ort:"
 
-#: src/interface.c:2551
+#: src/interface.c:2472
 msgid "Use Proxy _Authentication"
 msgstr "Použiť proxy _autorizáciu"
 
-#: src/interface.c:2569
+#: src/interface.c:2490
 msgid "Proxy _Username:"
 msgstr "Používateľské _meno pre proxy:"
 
-#: src/interface.c:2591
+#: src/interface.c:2512
 msgid "Proxy Pass_word:"
 msgstr "_Heslo pre proxy:"
 
-#: src/interface.c:2598
+#: src/interface.c:2519
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/interface.c:2611
+#: src/interface.c:2532
 #, fuzzy
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
 msgstr "<span weight=\"bold\">Čítanie titulkov</span>"
 
-#: src/interface.c:2631
+#: src/interface.c:2552
 msgid "Download using"
 msgstr "Získať pomocou"
 
-#: src/interface.c:2638
+#: src/interface.c:2559
 msgid "Save downloads in"
 msgstr "Uložiť získané súbory do"
 
-#: src/interface.c:2669
+#: src/interface.c:2590
 #, fuzzy
 msgid "Browse"
 msgstr "Prehliadač"
 
-#: src/interface.c:2673
+#: src/interface.c:2594
 #, fuzzy
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
 msgstr "<span weight=\"bold\">Čítanie titulkov</span>"
 
-#: src/interface.c:2714
+#: src/interface.c:2635
 msgid "Enclosures"
 msgstr "Prílohy"
 
-#: src/interface.c:3042
+#: src/interface.c:2963
 msgid "New Folder"
 msgstr "Nový priečinok"
 
-#: src/interface.c:3058 src/interface.c:3135
+#: src/interface.c:2979 src/interface.c:3056
 msgid "Folder name:"
 msgstr "Názov zložky:"
 
-#: src/interface.c:3123
+#: src/interface.c:3044
 msgid "Rename Folder"
 msgstr "Premenovať zložku"
 
-#: src/interface.c:3204
+#: src/interface.c:3125
 msgid "Feedster Search"
 msgstr "Feedster vyhľadávanie"
 
-#: src/interface.c:3219
+#: src/interface.c:3140
 msgid "Search for:"
 msgstr "Vyhľadávať:"
 
-#: src/interface.c:3226
+#: src/interface.c:3147
 msgid "enter any search string you want"
 msgstr "vložte reťazec ktorý chcete vyhľadať"
 
-#: src/interface.c:3233
+#: src/interface.c:3154
 msgid "Maximal Number Of Result Items:"
 msgstr "Maximálny počet položiek výsledku:"
 
-#: src/interface.c:3242
+#: src/interface.c:3163
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -986,16 +949,16 @@ msgstr ""
 "ako dotaz pre Feedster pre zobrazenie špecifikovaného vyhľadávania. Môžete "
 "potom tento kanál používať tak ako iné."
 
-#: src/interface.c:3339
+#: src/interface.c:3260
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea je agregátor správ pre GTK+"
 
-#: src/interface.c:3349
+#: src/interface.c:3270
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 msgstr ""
 "<span color=\"blue\" underline=\"single\">Domovská stránka Liferea</span>"
 
-#: src/interface.c:3354
+#: src/interface.c:3275
 #, fuzzy
 msgid ""
 "Copyright (c) 2003-2005\n"
@@ -1006,7 +969,8 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> a \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: src/interface.c:3374
+#: src/interface.c:3295
+#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1027,6 +991,7 @@ msgid ""
 "Marc Deslauriers\n"
 "Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
 "Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"Raphael Slinckx <raphael@slinckx.net>\n"
 "\n"
 "\n"
 "Code from other projects\n"
@@ -1064,20 +1029,20 @@ msgstr ""
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
-#: src/interface.c:3380
+#: src/interface.c:3301
 msgid "Contributors"
 msgstr "Prispievatelia"
 
-#: src/interface.c:3400
+#: src/interface.c:3321
 msgid "Translation"
 msgstr "Preklady"
 
-#: src/interface.c:3475 src/ui_feed.c:623
+#: src/interface.c:3396 src/ui_feed.c:633
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Zadajte používateľské meno a heslo pre \"%s\" (%s):"
 
-#: src/interface.c:3516
+#: src/interface.c:3437
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -1085,15 +1050,15 @@ msgstr ""
 "Poznámka: <i>Používateľské meno a heslo budú uložené zo zoznamu kanálov bez "
 "zašifrovania.</i>"
 
-#: src/interface.c:3582
+#: src/interface.c:3503
 msgid "VFolder Properties"
 msgstr "Nastavenia VPriečinka"
 
-#: src/interface.c:3598
+#: src/interface.c:3519
 msgid "Name"
 msgstr "Meno"
 
-#: src/interface.c:3627
+#: src/interface.c:3548
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
@@ -1102,23 +1067,23 @@ msgstr ""
 "podmienka bude vyhovovať. Budú odstránené ak najmenej jedna\n"
 "podmienka pre odstránenie bude splnená."
 
-#: src/interface.c:3640
+#: src/interface.c:3561
 msgid "Rules"
 msgstr "Pravidlá"
 
-#: src/interface.c:3701
+#: src/interface.c:3622
 msgid "Downloading Enclosure"
 msgstr "Získať prílohy"
 
-#: src/interface.c:3716
+#: src/interface.c:3637
 msgid "Downloading an enclosure of type:"
 msgstr "Získať prílohy typu:"
 
-#: src/interface.c:3721
+#: src/interface.c:3642
 msgid "<b>text/plain</b>"
 msgstr "<b>text/plain</b>"
 
-#: src/interface.c:3727
+#: src/interface.c:3648
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The downloaded file will be supplied as an "
@@ -1127,14 +1092,42 @@ msgstr ""
 "Čo má Liferea vykonať s touto prílohou? Vložte príkaz ktorý bude spustený. "
 "Názov získaného súboru bude predaný ako argument pre tento príkaz:"
 
-#: src/interface.c:3741
+#: src/interface.c:3662
 #, fuzzy
 msgid "_Browse"
 msgstr "_Prehliadač:"
 
-#: src/interface.c:3745
+#: src/interface.c:3666
 msgid "_Do this automatically for files like this from now on."
 msgstr "_Vykonať automaticky pre súbory ako je tento odteraz."
+
+#: src/interface.c:3729
+#, fuzzy
+msgid "Search All Feeds"
+msgstr "Vyhľadávať v kanáloch."
+
+#: src/interface.c:3744
+msgid "Search for"
+msgstr "Hľadať"
+
+#: src/interface.c:3751
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr ""
+
+#: src/interface.c:3767
+#, fuzzy
+msgid "Saves this search as a VFolder, which will appear in the feed list."
+msgstr ""
+"uložiť toto vyhľadávanie ako VPriečinok, ktorý môže byť pridaný do zoznamu "
+"kanáov"
+
+#: src/interface.c:3790
+msgid ""
+"Starts searching for the specified text in all feeds. The search result will "
+"appear in the item list."
+msgstr ""
 
 #: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:211
 msgid "[No title]"
@@ -1362,55 +1355,60 @@ msgstr "<p>Nie je možné nájsť Atom/Echo/PIE hlavičku!</p>"
 msgid "<p>Could not find RDF/RSS header!</p>"
 msgstr "<p>Nie je možné nájsť RDF/RSS hlavičku!</p>"
 
-#: src/rule.c:133
+#: src/rule.c:169
 msgid "Item"
 msgstr "Príspevok"
 
-#: src/rule.c:133
+#: src/rule.c:169
 msgid "does contain"
 msgstr "obsahuje"
 
-#: src/rule.c:133
+#: src/rule.c:169
 msgid "does not contain"
 msgstr "neobsahuje"
 
-#: src/rule.c:134
+#: src/rule.c:170
 msgid "Item title"
 msgstr "Titulok príspevku"
 
-#: src/rule.c:134 src/rule.c:135
+#: src/rule.c:170 src/rule.c:171 src/rule.c:172
 msgid "does match"
 msgstr "nájdené"
 
-#: src/rule.c:134 src/rule.c:135
+#: src/rule.c:170 src/rule.c:171 src/rule.c:172
 msgid "does not match"
 msgstr "nenájdené"
 
-#: src/rule.c:135
+#: src/rule.c:171
 msgid "Item body"
 msgstr "Telo správy"
 
-#: src/rule.c:136
+#: src/rule.c:172
+#, fuzzy
+msgid "Feed title"
+msgstr "Titulok príspevku"
+
+#: src/rule.c:173
 msgid "Read status"
 msgstr "Príznak _prečítania"
 
-#: src/rule.c:136
+#: src/rule.c:173
 msgid "is unread"
 msgstr "je neprečítaný"
 
-#: src/rule.c:136
+#: src/rule.c:173
 msgid "is read"
 msgstr "prečítané"
 
-#: src/rule.c:137
+#: src/rule.c:174
 msgid "Flag status"
 msgstr "Stav značky"
 
-#: src/rule.c:137
+#: src/rule.c:174
 msgid "is flagged"
 msgstr "je označené"
 
-#: src/rule.c:137
+#: src/rule.c:174
 msgid "is unflagged"
 msgstr "je neoznačené"
 
@@ -1514,7 +1512,7 @@ msgstr "Chyba servera"
 msgid "(unknown networking error happened)"
 msgstr "(neznáma sieťová chyba)"
 
-#: src/ui_feed.c:128
+#: src/ui_feed.c:138
 msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
@@ -1522,11 +1520,11 @@ msgstr ""
 "<br>Možno budete chcieť skontrolovať kanál pomocou <a href=\"http://"
 "feedvalidator.org/check.cgi?url="
 
-#: src/ui_feed.c:133
+#: src/ui_feed.c:143
 msgid "\">FeedValidator</a>."
 msgstr "\">FeedValidator</a>."
 
-#: src/ui_feed.c:140
+#: src/ui_feed.c:150
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1534,22 +1532,22 @@ msgstr ""
 "Vyskytol sa problém počas načítavania vrámci tohto prihlásenia. Skontrolujte "
 "prosím URL a výstup do prehliadača."
 
-#: src/ui_feed.c:173
+#: src/ui_feed.c:183
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" je ukončený. Liferea ho viac nebude aktualizovať!"
 
-#: src/ui_feed.c:175
+#: src/ui_feed.c:185
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" nebolo zmenené od poslednej aktualizácie"
 
-#: src/ui_feed.c:183
+#: src/ui_feed.c:193
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL pre \"%s\" sa natrvalo zmenila a bude aktualizovaná"
 
-#: src/ui_feed.c:195
+#: src/ui_feed.c:205
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -1559,75 +1557,75 @@ msgstr ""
 "<p>Nie je možné zistiť typ kanálu! Skontrolujte prosím, či smeruje k zdroju "
 "ktorý poskytuje niektorý z podporovaných formátov!</p>%s"
 
-#: src/ui_feed.c:214
+#: src/ui_feed.c:224
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualizované..."
 
-#: src/ui_feed.c:222
+#: src/ui_feed.c:232
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" nie je dostupné"
 
-#: src/ui_feed.c:565
+#: src/ui_feed.c:575
 msgid "Choose File"
 msgstr "Vybrať súbor"
 
 #  types for aggregation
-#: src/ui_feed.c:624
+#: src/ui_feed.c:634
 msgid "Unknown source"
 msgstr "Neznámy zdroj"
 
-#: src/ui_feed.c:726
+#: src/ui_feed.c:736
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Poskytovateľ tohto kanálu odporúča nastaviť interval aktualizácie na %d "
 "minút."
 
-#: src/ui_feed.c:728
+#: src/ui_feed.c:738
 msgid "This feed specifies no default update interval."
 msgstr "Tento kanál nemá špecifikovaný štandardný interval pre aktualizáciu."
 
-#: src/ui_feedlist.c:445
+#: src/ui_feedlist.c:446
 msgid "You have to select a feed entry"
 msgstr "Mali by ste označiť článok v kanály"
 
-#: src/ui_feedlist.c:455
+#: src/ui_feedlist.c:456
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea je v offline režime. Nie sú možné aktualizácie."
 
-#: src/ui_feedlist.c:497
+#: src/ui_feedlist.c:498
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "Poznámka: Použitie prihlasovacích filtrov zakáže drag & drop"
 
-#: src/ui_feedlist.c:543 src/ui_feedlist.c:546
+#: src/ui_feedlist.c:544 src/ui_feedlist.c:547
 msgid "Deleting entry"
 msgstr "Vymazanie záznamu"
 
-#: src/ui_feedlist.c:544
+#: src/ui_feedlist.c:545
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Ste si istý, že chcete odstrániť %s vrátane obsahu?"
 
-#: src/ui_feedlist.c:547
+#: src/ui_feedlist.c:548
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ste si istý, že chcete odstrániť %s?"
 
-#: src/ui_feedlist.c:555
+#: src/ui_feedlist.c:556
 msgid "Deletion Confirmation"
 msgstr "Potvrdenie odstránenia"
 
-#: src/ui_feedlist.c:591
+#: src/ui_feedlist.c:592
 msgid "You must select a feed entry"
 msgstr "Musíte označiť článok v danom kanály"
 
-#: src/ui_feedlist.c:592
+#: src/ui_feedlist.c:593
 msgid "You must select a feed entry."
 msgstr "Musíte označiť článok v danom kanály."
 
-#: src/ui_feedlist.c:638
+#: src/ui_feedlist.c:639
 msgid "New subscription"
 msgstr "Nové prihlásenie"
 
@@ -1720,28 +1718,28 @@ msgstr ""
 "all "
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:355
+#: src/ui_htmlview.c:356
 msgid "This item does not have a link assigned!"
 msgstr "Tento článok neobsahuje žiaden priradený odkaz!"
 
-#: src/ui_htmlview.c:406 src/ui_htmlview.c:436
+#: src/ui_htmlview.c:407 src/ui_htmlview.c:437
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Príkaz pre prehliadač zlyhal: %s"
 
-#: src/ui_htmlview.c:408 src/ui_htmlview.c:438
+#: src/ui_htmlview.c:409 src/ui_htmlview.c:439
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Spúšťanie: \"%s\""
 
-#: src/ui_htmlview.h:99
+#: src/ui_htmlview.h:96
 #, c-format
 msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
 msgstr ""
 "Posledná aktualizácia tohto kanálu zlyhala!<br><b>HTTP chybový kód %d: %s</b>"
 
-#: src/ui_htmlview.h:100
+#: src/ui_htmlview.h:97
 #, c-format
 msgid ""
 "There were errors while parsing this feed. The following error occurred:"
@@ -1750,7 +1748,16 @@ msgstr ""
 "Chyba pri analyzovaní tohto kanálu. Vyskytla sa nasledovná chyba:<br><b>%s</"
 "b>"
 
-#: src/ui_htmlview.h:101
+#: src/ui_htmlview.h:98
+#, fuzzy, c-format
+msgid ""
+"There were errors while filtering this feed. The following error occurred:"
+"<br><b><pre>%s</pre></b>"
+msgstr ""
+"Chyba pri analyzovaní tohto kanálu. Vyskytla sa nasledovná chyba:<br><b>%s</"
+"b>"
+
+#: src/ui_htmlview.h:99
 msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
@@ -1893,115 +1900,120 @@ msgstr "Liferea notifikácia"
 msgid "/_Update"
 msgstr "/_Aktualizácia"
 
-#: src/ui_popup.c:92 src/ui_popup.c:102 src/ui_popup.c:111
+#: src/ui_popup.c:92 src/ui_popup.c:103 src/ui_popup.c:113
 msgid "/_Mark All As Read"
 msgstr "/Označiť všetky ako p_rečítané"
 
-#: src/ui_popup.c:93 src/ui_popup.c:103 src/ui_popup.c:112 src/ui_popup.c:120
+#: src/ui_popup.c:93 src/ui_popup.c:104 src/ui_popup.c:114 src/ui_popup.c:123
 msgid "/_New"
 msgstr "/_Nový"
 
-#: src/ui_popup.c:94 src/ui_popup.c:104 src/ui_popup.c:113 src/ui_popup.c:121
+#: src/ui_popup.c:94 src/ui_popup.c:105 src/ui_popup.c:115 src/ui_popup.c:124
 msgid "/_New/New _Subscription..."
 msgstr "/_Nový/_Nové prihlásenie..."
 
-#: src/ui_popup.c:95 src/ui_popup.c:105 src/ui_popup.c:114 src/ui_popup.c:122
+#: src/ui_popup.c:95 src/ui_popup.c:106 src/ui_popup.c:116 src/ui_popup.c:125
 msgid "/_New/New F_older..."
 msgstr "/_Nový/Nový _priečinok..."
 
-#: src/ui_popup.c:96 src/ui_popup.c:115
+#: src/ui_popup.c:96 src/ui_popup.c:107 src/ui_popup.c:117
+#, fuzzy
+msgid "/_New/New _VFolder..."
+msgstr "/_Nový/Nový _priečinok..."
+
+#: src/ui_popup.c:97 src/ui_popup.c:118
 msgid "/_Properties..."
 msgstr "/_Nastavenia..."
 
-#: src/ui_popup.c:97 src/ui_popup.c:116
+#: src/ui_popup.c:98 src/ui_popup.c:119
 msgid "/_Delete"
 msgstr "/O_dstrániť"
 
-#: src/ui_popup.c:101
+#: src/ui_popup.c:102
 msgid "/_Update Folder"
 msgstr "/_Aktualizovať priečinok"
 
-#: src/ui_popup.c:106
+#: src/ui_popup.c:108
 msgid "/_Rename Folder..."
 msgstr "/_Premenovať priečinok..."
 
-#: src/ui_popup.c:107
+#: src/ui_popup.c:109
 msgid "/_Delete Folder"
 msgstr "/O_dstrániť priečinok"
 
-#: src/ui_popup.c:127
+#: src/ui_popup.c:130
 msgid "/Toggle _Read Status"
 msgstr "/Nastaviť príznak _prečítania"
 
-#: src/ui_popup.c:128
+#: src/ui_popup.c:131
 msgid "/Toggle Item _Flag"
 msgstr "/_Označiť článok"
 
-#: src/ui_popup.c:129
+#: src/ui_popup.c:132
 msgid "/R_emove Item"
 msgstr "/_Odstrániť príspevok"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:134
 msgid "/_Next Unread Item"
 msgstr "/Nasledovný _neprečítaný článok"
 
-#: src/ui_popup.c:133
+#: src/ui_popup.c:136
 msgid "/Launch Item In _Tab"
 msgstr "/Zobraziť článok na _záložke"
 
-#: src/ui_popup.c:134
+#: src/ui_popup.c:137
 msgid "/_Launch Item In Browser"
 msgstr "/_Zobraziť článok v prehliadači"
 
-#: src/ui_popup.c:139
+#: src/ui_popup.c:142
 msgid "/_Increase Text Size"
 msgstr "/Z_väčšiť veľkosť písma"
 
-#: src/ui_popup.c:140
+#: src/ui_popup.c:143
 msgid "/_Decrease Text Size"
 msgstr "/Z_menšiť veľkosť písma"
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:147
 msgid "/_Copy Link Location"
 msgstr "/S_kopírovať smerovanie odkazu"
 
-#: src/ui_popup.c:145
+#: src/ui_popup.c:148
 msgid "/Launch Link In _Tab"
 msgstr "/Zobraziť odkaz na _záložke"
 
-#: src/ui_popup.c:146
+#: src/ui_popup.c:149
 msgid "/_Launch Link In Browser"
 msgstr "/_Zobraziť článok v prehliadači"
 
-#: src/ui_popup.c:147
+#: src/ui_popup.c:150
 msgid "/_Subscribe..."
 msgstr "/_Prihlásenie..."
 
-#: src/ui_popup.c:152
+#: src/ui_popup.c:155
 msgid "/_Work Offline"
 msgstr "/Pracovať _Offline"
 
-#: src/ui_popup.c:153
+#: src/ui_popup.c:156
 msgid "/_Update All"
 msgstr "/_Aktualizovať všetky"
 
-#: src/ui_popup.c:154
+#: src/ui_popup.c:157
 msgid "/_Preferences..."
 msgstr "/_Nastavenia..."
 
-#: src/ui_popup.c:156
+#: src/ui_popup.c:159
 msgid "/_Show Window"
 msgstr "/_Zobraziť okno"
 
-#: src/ui_popup.c:157
+#: src/ui_popup.c:160
 msgid "/_Quit"
 msgstr "/_Koniec"
 
-#: src/ui_popup.c:162
+#: src/ui_popup.c:165
 msgid "/Open Enclosure..."
 msgstr "/Otvoriť prílohu..."
 
-#: src/ui_popup.c:163
+#: src/ui_popup.c:166
 msgid "/Save As..."
 msgstr "/Uložiť ako..."
 
@@ -2053,14 +2065,19 @@ msgstr "_Program"
 msgid "Choose download directory"
 msgstr "Vyberte si adresár pre uloženie získaných súborov"
 
-#: src/ui_search.c:73
+#: src/ui_search.c:66
 #, c-format
 msgid "Searching for \"%s\""
 msgstr "Vyhľadávanie \"%s\""
 
-#: src/ui_search.c:99
+#: src/ui_search.c:115
 msgid "Please do a search first!"
 msgstr "Najprv uskutočnite vyhľadávanie!"
+
+#: src/ui_search.c:125
+#, fuzzy
+msgid "New VFolder"
+msgstr "Nový priečinok"
 
 #: src/ui_tabs.c:107
 msgid "URL"
@@ -2078,18 +2095,23 @@ msgstr[2] "%d nových článkov!"
 msgid "No new items."
 msgstr "Žiadne nové články."
 
-#: src/update.c:93 src/update.c:128
+#: src/update.c:93
+#, c-format
+msgid "%s exited with status %d"
+msgstr ""
+
+#: src/update.c:99 src/update.c:100 src/update.c:136
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Chyba: Nie je možné otvoriť rúru \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: src/update.c:144
+#: src/update.c:152
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Chyba: Nie je možné otvoriť súbor \"%s\""
 
-#: src/update.c:150
+#: src/update.c:158
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Chyba: Neexistujúci súbor \"%s\""
@@ -2101,3 +2123,40 @@ msgid ""
 msgstr ""
 "Vložené HTML <object> tagy nie sú podporované GtkHTML2.\n"
 "Odkaz na modul nebude zobrazený."
+
+#~ msgid ""
+#~ "Starts a search for all items that do match the given search string "
+#~ "either in title or content."
+#~ msgstr ""
+#~ "Spustiť vyhľadávanie vo všetkých príspevkoch na výskyt reťazca v titulku "
+#~ "alebo obsahu článkov."
+
+#~ msgid "Close search"
+#~ msgstr "Ukončiť hľadanie"
+
+#~ msgid ""
+#~ "_Load feeds from disk when needed. Searching can \n"
+#~ "be slow if you have a lot of feeds."
+#~ msgstr ""
+#~ "_Načítať kanály z disku ak je to potrebné. Vyhľadávanie\n"
+#~ "môže byť pomalé, ak máte veľa kanálov."
+
+#~ msgid ""
+#~ "_Keep all feeds loaded. This may improve speed \n"
+#~ "(especially when searching) but can cause a \n"
+#~ "significant memory footprint if you have a lot \n"
+#~ "of feeds!"
+#~ msgstr ""
+#~ "_Ponechať všetky kanály načítané. Toto môže zvýšiť\n"
+#~ "rýchlosť (hlavne pri prehľadávaní) ale samozrejme\n"
+#~ "kanály zaberú nezanedbateľné miesto v pamäti, hlavne\n"
+#~ "ak máte veľké množstvo kanálov!"
+
+#~ msgid ""
+#~ "Liferea displays feeds' content using various HTML renderers. Depending "
+#~ "on which renderers are installed on your computer, different options will "
+#~ "be available. Restart Liferea for changes to take effect."
+#~ msgstr ""
+#~ "Liferea zobrazuje obsah kanálov pomocou rôznych HTML zobrazovačov. V "
+#~ "závislosti od toho aký máte nainštalovaný, vám budú k dispozícii rôzne "
+#~ "nastavenia. Reštartujte Liferea aby zmeny nadobudli platnosť."
