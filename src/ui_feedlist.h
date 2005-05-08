@@ -1,8 +1,9 @@
 /**
  * @file ui_feedlist.h GUI feed list handling
  * 
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,18 @@
 #include <gtk/gtk.h>
 #include "feed.h"
 #include "folder.h"
+
+#ifdef USE_DBUS
+
+/* Yes, we know that DBUS API isn't stable yet */
+#define DBUS_API_SUBJECT_TO_CHANGE
+#include <dbus/dbus.h>
+
+#define DBUS_RSS_SERVICE "org.gnome.rss.FeedReader"
+#define DBUS_RSS_OBJECT  "/org/gnome/rss/FeedReader"
+#define DBUS_RSS_METHOD  "Subscribe"
+
+#endif
 
 /* constants for attributes in feedstore */
 enum {
@@ -173,10 +186,9 @@ void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
 gboolean ui_feedlist_auto_update(void *data);
 
 /**
- * timeout callback to trigger the new subscription fifo
- * checking 
+ * Start listening on dbus for new subscriptions
  */
-gboolean ui_feedlist_check_subscription_fifo(void *data);
+void ui_feedlist_dbus_connect(void);
 
 /**
  * Add a node to the feedlist

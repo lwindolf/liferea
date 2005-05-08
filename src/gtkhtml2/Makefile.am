@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = @PACKAGE_CFLAGS@ @GTKHTML2_CFLAGS@
+INCLUDES = @PACKAGE_CFLAGS@ @GTKHTML2_CFLAGS@ $(DBUS_CFLAGS)
 
 pkglib_LTLIBRARIES = liblihtmlg.la
 

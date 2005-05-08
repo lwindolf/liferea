@@ -1,8 +1,9 @@
 /**
  * @file ui_feedlist.c GUI feed list handling
  *
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -735,50 +736,108 @@ gboolean ui_feedlist_auto_update(void *data) {
 	return TRUE;
 }
 
-#define	BUFSIZE		256
+/*------------------------------------------------------------------------------*/
+/* DBUS support for new subscriptions                                           */
+/*------------------------------------------------------------------------------*/
 
-gboolean ui_feedlist_check_subscription_fifo(void *data) {
-	int	fd, result, count;
-	gchar	*filename, *tmp, *buffer = NULL;
+#ifdef USE_DBUS
+
+static DBusHandlerResult
+ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
+{
+	DBusError error;
+	DBusMessage *reply;
+	char *s;
+	gboolean done = TRUE;
 	
-	if(getBooleanConfValue(DISABLE_SUBSCRIPTION_PIPE))
-		return FALSE;
-
-	debug_enter("ui_feedlist_check_subscription_fifo");	
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "new_subscription", common_get_cache_path());
-	result = mkfifo(filename, 0600);	
-	if((result == -1) && (errno != EEXIST)) {
-		g_warning("Error creating the named pipe \"%s\". Won't do more checks on this pipe...\n", filename);
-		g_free(filename);
-		return FALSE;
+	/* Retreive the dbus message arguments (the new feed url) */	
+	dbus_error_init (&error);
+	if (!dbus_message_get_args (message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID))
+	{
+		fprintf (stderr, "*** ui_feedlist.c: Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
+	    reply = dbus_message_new_error (message, error.name, error.message);
+	    dbus_connection_send (connection, reply, NULL);
+	    dbus_message_unref (reply);
+		dbus_error_free(&error);
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 	}
+	dbus_error_free(&error);
 
-	if(-1 != (fd = open(filename, O_RDONLY | O_NONBLOCK))) {
-		tmp = g_new0(gchar, BUFSIZE + 1);
-		/* read everything available */
-		while(0 != (count = read(fd, tmp, BUFSIZE))) {
 
-			tmp[count] = 0;
-			addToHTMLBuffer(&buffer, tmp);
-		}
-		close(fd);
-		g_free(tmp);
-		
-		if(NULL != buffer) {
-			/* (duplicate to the code in ui_dnd.c) */
-			while((tmp = strsep(&buffer, "\n\r"))) {
-				if(0 != strlen(tmp))
-					ui_feedlist_new_subscription(g_strdup(tmp), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
-			}
-			g_free(buffer);
-		}
-	} else {
-		g_warning("Error opening the named pipe \"%s\" for reading. Won't do more checks on this pipe...\n", filename);
-		g_free(filename);
-		return FALSE;
+	/* Subscribe the feed */
+	ui_feedlist_new_subscription(s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+
+	/* Acknowledge the new feed by returning true */
+	reply = dbus_message_new_method_return (message);
+	if (reply != NULL)
+	{
+		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, &done,DBUS_TYPE_INVALID);
+		dbus_connection_send (connection, reply, NULL);
+		dbus_message_unref (reply);
+		return DBUS_HANDLER_RESULT_HANDLED;
 	}
-	g_free(filename);
-	debug_exit("ui_feedlist_check_subscription_fifo");	
-	
-	return TRUE;
+	else
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
+
+
+static DBusHandlerResult
+ui_feedlist_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data)
+{
+	const char  *method;
+	
+	if (connection == NULL)
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	if (message == NULL)
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	
+	method = dbus_message_get_member (message);
+	if (strcmp (DBUS_RSS_METHOD, method) == 0)
+		return ui_feedlist_dbus_subscribe (connection, message);
+	else
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+}
+
+void
+ui_feedlist_dbus_connect ()
+{
+	DBusError       error;
+	DBusConnection *connection;
+	DBusObjectPathVTable feedreader_vtable = { NULL, ui_feedlist_dbus_message_handler, NULL};
+
+	/* Get the Session bus */
+	dbus_error_init (&error);
+	connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
+	if (connection == NULL || dbus_error_is_set (&error))
+    {
+     	fprintf (stderr, "*** ui_feedlist.c: Failed get session dbus: %s | %s\n", error.name,  error.message);
+		dbus_error_free (&error);
+     	return;
+    }
+    dbus_error_free (&error);
+    
+    /* Various inits */
+    dbus_connection_set_exit_on_disconnect (connection, FALSE);
+	dbus_connection_setup_with_g_main (connection, NULL);
+	    
+	/* Register for the FeedReader service on the bus, so we get method calls */
+    dbus_bus_acquire_service (connection, DBUS_RSS_SERVICE, 0, &error);
+	if (dbus_error_is_set (&error))
+	{
+		fprintf (stderr, "*** ui_feedlist.c: Failed to get dbus service: %s | %s\n", error.name, error.message);
+		dbus_error_free (&error);
+		return;
+	}
+	dbus_error_free (&error);
+	
+	/* Register the object path so we can receive method calls for that object */
+	if (!dbus_connection_register_object_path (connection, DBUS_RSS_OBJECT, &feedreader_vtable, &error))
+ 	{
+ 		fprintf (stderr, "*** ui_feedlist.c:Failed to register dbus object path: %s | %s\n", error.name, error.message);
+ 		dbus_error_free (&error);
+    	return;
+    }
+    dbus_error_free (&error);
+}
+
+#endif /* USE_DBUS */

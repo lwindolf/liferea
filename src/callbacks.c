@@ -4,9 +4,9 @@
  * Most of the GUI code is distributed over the ui_*.c
  * files but what didn't fit somewhere else stayed here.
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>	
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -128,9 +128,15 @@ void ui_init(gboolean startIconified) {
 	default:
 		/* default, which is to use the lastPoll times, does not need any actions here. */;
 	}
-	
-	/* setup 5 second timer for external subscription FIFO checking */
-	(void)g_timeout_add(5*1000, ui_feedlist_check_subscription_fifo, NULL);
+
+#ifdef USE_DBUS
+	/* Start listening on the dbus for new subscriptions */
+	debug0(DEBUG_GUI, "Registering with DBUS...");
+	ui_feedlist_dbus_connect();
+#else
+	debug0(DEBUG_GUI, "No DBUS support active.");
+#endif
+
 	/* setup one minute timer for automatic updating, and try updating now */
  	(void)g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
 	ui_feedlist_auto_update(NULL);

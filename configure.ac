@@ -25,6 +25,7 @@ AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
 
 AC_ARG_ENABLE(sm,      [  --disable-sm            compile without X session management support],,enable_sm=yes)
+AC_ARG_ENABLE(dbus,    [  --disable-dbus          compile without DBUS support],,enable_dbus=yes)
 				   
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
@@ -208,6 +209,36 @@ GETTEXT_PACKAGE=liferea
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["${GETTEXT_PACKAGE}"], [gettext domain])
 
+
+dnl ****
+dnl DBUS
+dnl ****
+
+if test "x$enable_dbus" = "xyes"; then
+   DBUS_REQUIRED=0.23
+   DBUS_GLIB_REQUIRED=0.23
+
+   AC_MSG_CHECKING([for DBUS support])
+   dbusglib=`pkg-config --cflags dbus-glib-1 2> /dev/null`
+   AM_CONDITIONAL(WITH_DBUS, test "x$dbusglib" != "x")
+   if test "x$dbusglib" != "x" ; then
+      AC_MSG_RESULT(yes)
+      PKG_CHECK_MODULES([DBUS], [dbus-1 >= $DBUS_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED])
+      AC_SUBST(DBUS_CFLAGS)
+      AC_SUBST(DBUS_LIBS)
+      enable_dbus=yes
+   else
+      AC_MSG_RESULT(no)
+      enable_dbus=no
+   fi
+fi
+
+if test "x$enable_dbus" = "xyes"; then
+   AC_DEFINE(USE_DBUS, 1, [Define if we're using DBUS.])
+fi
+
+
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
@@ -229,6 +260,7 @@ echo "Build Mozilla Plugin............ : $enable_mozilla ($gecko_provider)"
 echo Build GtkHTML Plugin............ : $enable_gtkhtml2
 echo 
 echo Use X Session Management........ : $enable_sm
+echo Use DBUS........................ : $enable_dbus
 echo
 dnl echo Use libcurl download library.... : $enable_libcurl
 dnl echo

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = @PACKAGE_CFLAGS@ @MOZILLA_CFLAGS@
+INCLUDES = @PACKAGE_CFLAGS@ @MOZILLA_CFLAGS@ $(DBUS_CFLAGS)
 
 pkglib_LTLIBRARIES = liblihtmlm.la
 

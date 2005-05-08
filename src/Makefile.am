@@ -18,6 +18,11 @@ INCLUDES = \
 	@PACKAGE_CFLAGS@ \
 	@X_CFLAGS@
 
+if ENABLE_DBUS
+INCLUDES += $(DBUS_CFLAGS)
+endif
+ 
+
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea
 
@@ -80,3 +85,8 @@ liferea_bin_SOURCES = \
 	vfolder.c vfolder.h
 
 liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@ $(INTLLIBS)
+
+if ENABLE_DBUS
+liferea_bin_LDADD += $(DBUS_LIBS)
+endif
+
