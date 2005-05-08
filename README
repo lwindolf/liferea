@@ -31,9 +31,14 @@ Fedora:		at least 2.5.10 or you will experience nasty
 		Dag Wieers provides packages for both Fedora Core 1 and 2 
 		which can be found at http://dag.wieers.com/packages/liferea/.
 		
-SuSE:		Since 0.4.6 Harry Auschner builds packages for
-		SuSE i586 which are available from the SourceForge
-		project page.
+SuSE:		Until 0.6.0 Harry Auschner built SuSE RPMs available at the 
+                SourceForge project page. For newer releases please visit this 
+		package repository maintained by Pascal Bleser. There you will 
+		find packages for SuSE 9.2, 9.1, 9.0 and 8.2. It is also 
+		available via APT. The packages can be found at:
+		
+		http://ftp.gwdg.de/pub/linux/misc/suser-guru/rpm/packages/Network/liferea/
+		
 
 Gentoo:		There is an ebuild available at:
 

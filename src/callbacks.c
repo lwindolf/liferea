@@ -120,19 +120,19 @@ void ui_init(gboolean startIconified) {
 
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 	case 1: /* Update all feeds */
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, callbacks_schedule_update_default_cb);
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)callbacks_schedule_update_default_cb);
 		break;
 	case 2:
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (nodeActionFunc)feed_reset_update_counter);
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_reset_update_counter);
 		break;
 	default:
 		/* default, which is to use the lastPoll times, does not need any actions here. */;
 	}
 	
 	/* setup 5 second timer for external subscription FIFO checking */
-	g_timeout_add(5*1000, ui_feedlist_check_subscription_fifo, NULL);
+	(void)g_timeout_add(5*1000, ui_feedlist_check_subscription_fifo, NULL);
 	/* setup one minute timer for automatic updating, and try updating now */
- 	g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
+ 	(void)g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
 	ui_feedlist_auto_update(NULL);
 	
 	if(startIconified)
@@ -178,7 +178,7 @@ void ui_show_error_box(const char *format, ...) {
                   GTK_MESSAGE_ERROR,
                   GTK_BUTTONS_CLOSE,
                   "%s", msg);
-	gtk_dialog_run(GTK_DIALOG (dialog));
+	(void)gtk_dialog_run(GTK_DIALOG (dialog));
 	gtk_widget_destroy(dialog);
 	g_free(msg);
 }
@@ -199,7 +199,7 @@ void ui_show_info_box(const char *format, ...) {
                   GTK_MESSAGE_INFO,
                   GTK_BUTTONS_CLOSE,
                   "%s", msg);
-	gtk_dialog_run(GTK_DIALOG (dialog));
+	(void)gtk_dialog_run(GTK_DIALOG (dialog));
 	gtk_widget_destroy(dialog);
 	g_free(msg);
 }
@@ -208,19 +208,14 @@ void ui_show_info_box(const char *format, ...) {
 /* exit handler									*/
 /*------------------------------------------------------------------------------*/
 
-void on_popup_quit(gpointer callback_data,
-			    guint callback_action,
-			    GtkWidget *widget) {
-	on_quit(NULL, NULL, NULL);
+void on_popup_quit(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+
+	(void)on_quit(NULL, NULL, NULL);
 }
 
 void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	GtkWidget	*dialog;
-
-	dialog = create_aboutdialog();
-	g_assert(NULL != dialog);
-	gtk_widget_show(dialog);
-
+	
+	gtk_widget_show(create_aboutdialog());
 }
 
 void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
@@ -228,3 +223,4 @@ void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
 	/* launch the homepage when button in about dialog is pressed */
 	ui_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
 }
+

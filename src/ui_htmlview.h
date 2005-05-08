@@ -25,9 +25,6 @@
 #include <glib.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <sys/types.h>
 
 struct displayset {
 	gchar *headtable;
@@ -218,7 +215,7 @@ void	ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType);
  *
  * @param diff	New zoom
  */
-void	ui_htmlview_set_zoom(GtkWidget *htmlvew, gfloat zoom);
+void	ui_htmlview_set_zoom(GtkWidget *htmlview, gfloat zoom);
 
 /**
  * Function to determine the current zoom level.

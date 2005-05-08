@@ -64,9 +64,9 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 			}
 
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
-			xmlChar *value = xmlGetProp(cur, "HREF");
+			xmlChar *value = xmlGetProp(cur, BAD_CAST"HREF");
 			if(value != NULL) {
-				feed_set_html_url(fp, value);
+				feed_set_html_url(fp, (gchar *)value);
 				xmlFree(value);
 			}
 
@@ -94,7 +94,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 			}
 			
 		} else {		
-			tmp = g_ascii_strdown(cur->name, -1);
+			tmp = g_ascii_strdown((gchar *)cur->name, -1);
 			if((tmp2 = g_hash_table_lookup(channelHash, tmp)) != NULL) {
 				tmp3 = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, TRUE));
 				if (tmp3 != NULL) {
@@ -198,6 +198,6 @@ feedHandlerPtr cdf_init_feed_handler(void) {
 	fhp->directory = FALSE;
 	fhp->feedParser	= cdf_parse;
 	fhp->checkFormat = cdf_format_check;
-	fhp->merge		= TRUE;
+	fhp->merge = TRUE;
 	return fhp;
 }

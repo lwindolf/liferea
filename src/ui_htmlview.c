@@ -51,7 +51,7 @@ extern char	*proxyusername;
 extern char	*proxypassword;
 extern int	proxyport;
 
-static int 	refocusTimeout;
+static guint 	refocusTimeout;
 
 /* -------------------------------------------------------------------- */
 /* module loading and initialisation					*/
@@ -112,7 +112,7 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 /* function to load the module specified by module */
 void ui_htmlview_init(void) {
 	gboolean		success = FALSE;
-	gint			filenamelen;
+	guint			filenamelen;
 	gchar			*filename;
 	struct browserModule	*info;
 	GSList			*tmp;
@@ -296,14 +296,15 @@ static gboolean ui_htmlview_restore_focus_cb(gpointer userdata) {
 	return FALSE;
 }
 
-void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *base) { 
+void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *base) { 
 	GtkWidget	*widget;
+	gchar		*baseURL = base;
 	
 	/* workaround for Mozilla focus stealing */
 	widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
 
-	if(base == NULL)
-		base = "file:///";
+	if(baseURL == NULL)
+		baseURL = "file:///";
 
 	g_assert(htmlview != NULL);
 	
@@ -315,14 +316,14 @@ void ui_htmlview_write(GtkWidget *htmlview,const gchar *string, const gchar *bas
 		
 		/* to prevent crashes inside the browser */
 		buffer = utf8_fix(buffer);
-		(htmlviewInfo->write)(htmlview, buffer, base);
+		(htmlviewInfo->write)(htmlview, buffer, baseURL);
 		g_free(buffer);
 	} else
-		(htmlviewInfo->write)(htmlview, string, base);
+		(htmlviewInfo->write)(htmlview, string, baseURL);
 		
 	/* wait a short while and reset focus */
 	if(0 != refocusTimeout)
-		g_timeout_add(refocusTimeout, ui_htmlview_restore_focus_cb, widget);	
+		(void)g_timeout_add(refocusTimeout, ui_htmlview_restore_focus_cb, widget);
 }
 
 void ui_htmlview_finish_output(gchar **buffer) {
@@ -371,7 +372,7 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType) {
 	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {
 		(htmlviewInfo->launch)(htmlview, url);
 	} else {
-		ui_htmlview_launch_in_external_browser(url);
+		(void)ui_htmlview_launch_in_external_browser(url);
 	}
 }
 
