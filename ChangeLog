@@ -11,6 +11,14 @@
 	* Added search paths for Firefox to the start script, so
 	  Liferea can run with Firefox instead of Mozilla. 
 	  (Marc Deslauriers)
+	* Fixes bug 1169518, which crashed when a vfolder item
+	  the user has selected was dropped from the source
+	  feeds cache.
+	* The interface to add subscriptions from external programs
+	  was changed. The old pipe in ~/.liferea/new-subscription
+	  was removed and now there is optional compile time support
+	  for DBUS. If enabled Liferea subscribes upon an appropriate
+	  DBUS message. (patch from Raphaël Slinckx)
 	
 
 2005-03-12  Lars Lindner <lars.lindner@gmx.net>

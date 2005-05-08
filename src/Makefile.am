@@ -19,7 +19,7 @@ INCLUDES = \
 	@X_CFLAGS@
 
 if ENABLE_DBUS
-INCLUDES += $(DBUS_CFLAGS)
+INCLUDES += @DBUS_CFLAGS@
 endif
  
 
@@ -87,6 +87,6 @@ liferea_bin_SOURCES = \
 liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@ $(INTLLIBS)
 
 if ENABLE_DBUS
-liferea_bin_LDADD += $(DBUS_LIBS)
+liferea_bin_LDADD += @DBUS_LIBS@
 endif
 

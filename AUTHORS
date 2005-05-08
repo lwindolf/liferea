@@ -46,6 +46,8 @@ Amit D. Chaudhary <amitc@users.sourceforge.net>	patch to update all favicons
 
 Christoph Hohmann <reboot@users.sourceforge.net>	patch for IPv6
 
+Raphaël Slinckx <raphael@slinckx.net>		new subscriptions over DBUS
+
 
 Packaging
 =========
