@@ -1948,8 +1948,9 @@ msgstr "URL"
 #: src/ui_tray.c:93
 #, c-format
 msgid "%d new item!"
-msgid "%d elemento nuevo"
-msgid_plural "%d elementos nuevos"
+msgid_plural "%d new items!"
+msgstr[0] "%d elemento nuevo"
+msgstr[1] "%d elementos nuevos"
 
 #: src/ui_tray.c:106
 msgid "No new items."
