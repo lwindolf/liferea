@@ -15,13 +15,10 @@ INCLUDES = \
 	-DPACKAGE_LIB_DIR=\""$(pkglibdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DBIN_DIR=\""$(bindir)"\" \
-	@PACKAGE_CFLAGS@ \
-	@X_CFLAGS@
+	$(PACKAGE_CFLAGS) \
+	$(X_CFLAGS) \
+	$(DBUS_CFLAGS)
 
-if ENABLE_DBUS
-INCLUDES += @DBUS_CFLAGS@
-endif
- 
 
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea
@@ -84,9 +81,5 @@ liferea_bin_SOURCES = \
 	update.c update.h \
 	vfolder.c vfolder.h
 
-liferea_bin_LDADD = net/liblinet.a @PACKAGE_LIBS@ @X_LIBS@ @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@ $(INTLLIBS)
-
-if ENABLE_DBUS
-liferea_bin_LDADD += @DBUS_LIBS@
-endif
+liferea_bin_LDADD = net/liblinet.a $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) 
 

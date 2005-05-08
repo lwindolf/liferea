@@ -4,7 +4,7 @@ INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LIB_DIR=\""$(libdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	@PACKAGE_CFLAGS@ \
+	$(PACKAGE_CFLAGS) \
 	$(DBUS_CFLAGS)
 
 noinst_LIBRARIES = liblinet.a
@@ -15,7 +15,7 @@ noinst_LIBRARIES = liblinet.a
 # 	@CURL_CFLAGS@
 # liblinet_a_SOURCES = curl.c downloadlib.h
 # else
-liblinet_a_CFLAGS = @PACKAGE_CFLAGS@
+liblinet_a_CFLAGS = $(PACKAGE_CFLAGS)
 liblinet_a_SOURCES = \
 	compat.h \
 	conversions.c conversions.h \
