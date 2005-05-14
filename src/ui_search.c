@@ -77,12 +77,12 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	/* switch to item list view and inform user in HTML view */
 	ui_itemlist_set_two_pane_mode(FALSE);
 	ui_htmlview_start_output(&buffer, NULL, TRUE);
-	buffer = g_strdup_printf("%s<h2>%d Search Results for \"%s\"</h2>"
+	buffer = g_strdup_printf(_("%s<h2>%d Search Results for \"%s\"</h2>"
 	                         "<p>The item list now contains all items matching the "
 	                         "specified search pattern. If you want to save this search "
 	                         "result permanently you can click the VFolder button in "
 	                         "the search dialog and Liferea will add a VFolder to your "
-	                         "feed list.</h2>", buffer, g_slist_length(feed_get_item_list(searchFeed)), searchstring);
+	                         "feed list.</h2>"), buffer, g_slist_length(feed_get_item_list(searchFeed)), searchstring);
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 
