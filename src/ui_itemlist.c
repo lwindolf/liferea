@@ -156,6 +156,7 @@ void ui_itemlist_remove_item(itemPtr ip) {
 		itemstore = ui_itemlist_get_tree_store();
 		gtk_tree_store_remove(itemstore, iter);
 		g_hash_table_remove(iterhash, (gpointer)ip);
+		g_free(iter);
 	}
 }
 
