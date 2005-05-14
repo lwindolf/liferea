@@ -954,15 +954,25 @@ void feed_clear_item_list(feedPtr fp) {
 }
 
 /**
- * Method to permanently remove a single item from the given feed 
+ * Method to permanently remove a single item from the given feed.
+ * Used to remove items from everything that has items... 
  */
 void feed_remove_item(feedPtr fp, itemPtr ip) {
 
-	fp->items = g_slist_remove(fp->items, ip);	
-	if(FST_FEED == fp->type)
-		vfolder_remove_item(ip);		/* remove item copies */
-	item_free(ip);					/* remove the item */
-	fp->needsCacheSave = TRUE;
+	/*g_print("removing item %d from feed %d\n", ip, fp);
+	g_print("   feed:%s\n", fp->title);
+	g_print("   item:%s\n", ip->title);*/
+	if(NULL != g_slist_find(fp->items, ip)) {
+		fp->items = g_slist_remove(fp->items, ip);	
+		if(FST_FEED == fp->type) {
+			vfolder_remove_item(ip);		/* remove item copies */
+			fp->needsCacheSave = TRUE;
+		}
+		/*g_print("freeing item structure %d\n", ip);*/
+		item_free(ip);					/* remove the item */
+	} else {
+		g_warning("feed_remove_item(): item (%s) to be removed not found...", ip->title);
+	}
 }
 
 /** 

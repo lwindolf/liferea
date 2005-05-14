@@ -113,26 +113,6 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
 }
 
-/* used to remove a vfolder item copy from a vfolder */
-void vfolder_remove_item_copy(feedPtr vp, itemPtr ip) {
-	GSList		*items;
-	gboolean	found = FALSE;
-
-	items = vp->items;
-	while(NULL != items) {
-		if(items->data == ip)
-			found = TRUE;
-		items = g_slist_next(items);
-	}
-	
-	if(found) {
-		item_free(ip);
-		vp->items = g_slist_remove(vp->items, ip);
-	} else {
-		g_warning("vfolder_remove_item_copy(): item not found...");
-	}
-}
-
 /** 
  * Searches a given vfolder for a copy of the passed item and
  * removes them. Used for item remove propagation and for 
@@ -158,43 +138,38 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 	}
 
 	if(found) {
-		/* we call itemlist_remove_item to prevent removing
-		   a item selected in the GUI... */
-		itemlist_remove_item(tmp);
-		
+		/*g_print("  removing item copy %d from vfolder %d\n", ip, vp);*/
+
 		/* because itemlist_remove_item might delay the removal
 		   the original item may not exist anymore when the 
 		   removal is executed, so we need to remove the
 		   pointer to the original item */
 		tmp->sourceFeed = NULL;
 		tmp->nr = -1;
+		
+		/* we call itemlist_remove_item to prevent removing
+		   an item copy selected in the GUI... */
+		itemlist_remove_item(tmp);
 	}
 }
 
 /** 
  * Searches all vfolders for copies of the given item and
- * removes them. Used for item remove propagation. If a
- * vfolder item copy is passed it is removed directly.
+ * removes them. Used for item remove propagation. 
  */
 void vfolder_remove_item(itemPtr ip) {
 	GSList		*iter;
-	feedPtr		vp;
+
+	g_assert(FST_VFOLDER != feed_get_type(ip->fp));
 
 	debug_enter("vfolder_remove_item");
 
-	/* distinguish between checking vfolder items
-	   and feed items ... */
-	if(FST_VFOLDER != feed_get_type(ip->fp)) {
-		iter = vfolders;
-		while(NULL != iter) {
-			vp = (feedPtr)iter->data;
-			vfolder_remove_matching_item_copy(vp, ip);
-			iter = g_slist_next(iter);
-		}
-	} else {
-		vfolder_remove_item_copy(ip->fp, ip);
+	iter = vfolders;
+	while(NULL != iter) {
+		vfolder_remove_matching_item_copy((feedPtr)iter->data, ip);
+		iter = g_slist_next(iter);
 	}
-	
+
 	debug_exit("vfolder_remove_item");
 }
 
@@ -309,6 +284,13 @@ void vfolder_update_item(itemPtr ip) {
 			tmp = items->data;
 			g_assert(NULL != ip->fp);
 			g_assert(NULL != tmp->fp);
+			
+			/* avoid processing items that are in deletion state */
+			if(-1 == tmp->nr) {
+				items = g_slist_next(items);
+				continue;
+			}
+			
 			/* find the item copies */
 			if((ip->nr == tmp->nr) &&
 			   (ip->fp == tmp->sourceFeed)) {

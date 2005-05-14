@@ -147,14 +147,16 @@ void ui_itemlist_reset_date_format(void) {
 	date_format = NULL;
 }
 
-/* don't forget to remove the iterhash entry after calling this method! */
 void ui_itemlist_remove_item(itemPtr ip) {
-	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
+	GtkTreeStore	*itemstore;
 	GtkTreeIter	*iter;
 
 	g_assert(NULL != ip);
-	if(NULL != (iter = g_hash_table_lookup(iterhash, (gpointer)ip)))
+	if(NULL != (iter = g_hash_table_lookup(iterhash, (gpointer)ip))) {
+		itemstore = ui_itemlist_get_tree_store();
 		gtk_tree_store_remove(itemstore, iter);
+		g_hash_table_remove(iterhash, (gpointer)ip);
+	}
 }
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
@@ -188,7 +190,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
 	GdkPixbuf	*icon = NULL, *favicon;
 
-	/* favicon for vfolders */
+	/* favicon for feed icon column (visible in folders/vfolders/searches) */
 	if(NULL != ip->sourceFeed)
 		favicon = ip->sourceFeed->icon;
 	else

@@ -316,16 +316,14 @@ void itemlist_update_item(itemPtr ip) {
 	ui_itemlist_update_item(ip);
 }
 
-void itemlist_remove_item(itemPtr ip) {
+static void itemlist_remove_item_idle(gpointer data) {
+	itemPtr		ip = (itemPtr)data;
 
 	/* if the currently selected item should be removed we
 	   don't do it and set a flag to do it when unselecting */
 	if(displayed_item != ip) {
 		ui_itemlist_remove_item(ip);
-		if(FST_FEED == ip->fp->type)
-			feed_remove_item(ip->fp, ip);
-		else
-			vfolder_remove_item_copy(ip->fp, ip);
+		feed_remove_item(ip->fp, ip);
 		ui_feedlist_update();
 	} else {
 		deferred_item_remove = TRUE;
@@ -333,6 +331,11 @@ void itemlist_remove_item(itemPtr ip) {
 		   later removal */
 		ui_itemlist_update_item(ip);
 	}
+}
+
+void itemlist_remove_item(itemPtr ip) {
+
+	ui_queue_add(itemlist_remove_item_idle, (gpointer)ip);
 }
 
 void itemlist_remove_items(feedPtr fp) {
