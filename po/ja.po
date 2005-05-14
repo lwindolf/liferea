@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea Ver0.9.1\n"
+"Project-Id-Version: liferea-0_9_0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-08 21:16+0200\n"
-"PO-Revision-Date: 2005-03-12 12:28+0900\n"
+"POT-Creation-Date: 2005-05-14 19:26+0200\n"
+"PO-Revision-Date: 2005-05-10 21:55+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgstr "エキスポート"
 #: src/favicon.c:265
 #, c-format
 msgid "Updating feed icon for \"%s\""
-msgstr "\"%s\" に対する favicon の更新中"
+msgstr "\"%s\" の favicon の更新中"
 
 #: src/feed.c:151
 #, c-format
@@ -202,20 +202,20 @@ msgid "Updating \"%s\""
 msgstr "\"%s\" の更新中"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1017 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1027 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "配信元:"
 
-#: src/feed.c:1017 src/interface.c:3781
+#: src/feed.c:1027 src/interface.c:3781
 msgid "VFolder"
 msgstr "仮想フォルダ"
 
-#: src/feed.c:1025
+#: src/feed.c:1035
 msgid "user defined command"
 msgstr "ユーザ定義のコマンド"
 
-#: src/feed.c:1048 src/interface.c:1024 src/interface.c:1434 src/item.c:248
+#: src/feed.c:1058 src/interface.c:1024 src/interface.c:1434 src/item.c:248
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "ソース:"
@@ -259,8 +259,9 @@ msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "全ての配信元を更新します (OCS ディレクトリを除く)"
 
 #: src/interface.c:202
+#, fuzzy
 msgid "_Mark Selected As Read"
-msgstr "既読にする(_M)"
+msgstr "/全て既読にする(_M)"
 
 #: src/interface.c:205
 msgid ""
@@ -271,8 +272,9 @@ msgstr ""
 "に既読マークを付与します"
 
 #: src/interface.c:214
+#, fuzzy
 msgid "Mark All As _Read"
-msgstr "全て既読にする(_R)"
+msgstr "/全て既読にする(_M)"
 
 #: src/interface.c:227
 msgid "_New Subscription..."
@@ -572,6 +574,7 @@ msgid "Di_sable cache"
 msgstr "キャッシュを無効にする(_S)"
 
 #: src/interface.c:1111
+#, fuzzy
 msgid "_Unlimited cache"
 msgstr "キャッシュを制限しない(_U)"
 
@@ -666,11 +669,13 @@ msgid "Show the items of all child feeds when a folder is selected."
 msgstr "フォルダが選択されたら、その配下にある配信元を全て表示する"
 
 #: src/interface.c:1937
+#, fuzzy
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
 msgstr ""
-"<i>配信元がたくさんあると読み込む時間が極端に遅くなる場合があります</i>"
+"注記: <i>配信元がたくさんある場合、読み込む時間が極端に遅くなるおそれがありま"
+"す！</i>"
 
 #: src/interface.c:1948
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
@@ -789,28 +794,32 @@ msgid "Show a _popup window with new headlines."
 msgstr "新しいヘッドラインをポップアップ・ウィンドウで表示する(_P)"
 
 #: src/interface.c:2279
+#, fuzzy
 msgid "         "
-msgstr "         "
+msgstr "    "
 
 #: src/interface.c:2295
+#, fuzzy
 msgid "Lower Right"
-msgstr "右下"
+msgstr "コピーライト"
 
 #: src/interface.c:2303
+#, fuzzy
 msgid "Upper Right"
-msgstr "右上"
+msgstr "コピーライト"
 
 #: src/interface.c:2311
 msgid "Upper Left"
-msgstr "左上"
+msgstr ""
 
 #: src/interface.c:2319
+#, fuzzy
 msgid "Lower Left"
-msgstr "左下"
+msgstr "デフォルト"
 
 #: src/interface.c:2327
 msgid "<b>Popup Placement</b>"
-msgstr "<b>ポップアップさせる場所</b>"
+msgstr ""
 
 #: src/interface.c:2338
 msgid "<span weight=\"bold\">Menu Settings</span>"
@@ -877,28 +886,31 @@ msgid "Proxy"
 msgstr "プロキシ"
 
 #: src/interface.c:2532
+#, fuzzy
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
-msgstr "<span weight=\"bold\">RSS エンクロージャのダウンロード</span>"
+msgstr "<span weight=\"bold\">ヘッドラインの読み込み</span>"
 
 #: src/interface.c:2552
 msgid "Download using"
-msgstr "コマンド: "
+msgstr ""
 
 #: src/interface.c:2559
 msgid "Save downloads in"
-msgstr "保存場所: "
+msgstr ""
 
 #: src/interface.c:2590
+#, fuzzy
 msgid "Browse"
-msgstr "参照"
+msgstr "ブラウザ"
 
 #: src/interface.c:2594
+#, fuzzy
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
-msgstr "<span weight=\"bold\">RSS エンクロージャの開き方</span>"
+msgstr "<span weight=\"bold\">ヘッドラインの読み込み</span>"
 
 #: src/interface.c:2635
 msgid "Enclosures"
-msgstr "エンクロージャ"
+msgstr ""
 
 #: src/interface.c:2963
 msgid "New Folder"
@@ -947,6 +959,7 @@ msgstr ""
 "<span color=\"blue\" underline=\"single\">Liferea のホームページ</span>"
 
 #: src/interface.c:3275
+#, fuzzy
 msgid ""
 "Copyright (c) 2003-2005\n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
@@ -1060,15 +1073,15 @@ msgstr "ルール"
 
 #: src/interface.c:3622
 msgid "Downloading Enclosure"
-msgstr "RSS エンクロージャのダウンロード"
+msgstr ""
 
 #: src/interface.c:3637
 msgid "Downloading an enclosure of type:"
-msgstr "エンクロージャの種類:"
+msgstr ""
 
 #: src/interface.c:3642
 msgid "<b>text/plain</b>"
-msgstr "<b>text/plain</b>"
+msgstr ""
 
 #: src/interface.c:3648
 msgid ""
@@ -1076,16 +1089,15 @@ msgid ""
 "want to be executed below. The downloaded file will be supplied as an "
 "argument for this command:"
 msgstr ""
-"このエンクロージャを使って実行することです。実行するコマンドを下に入力して下"
-"さい。ダウンロードした RSS エンクロージャはその実行コマンドの引数になります:"
 
 #: src/interface.c:3662
+#, fuzzy
 msgid "_Browse"
-msgstr "参照(_B):"
+msgstr "ブラウザ(_B):"
 
 #: src/interface.c:3666
 msgid "_Do this automatically for files like this from now on."
-msgstr "次回からこの種類のエンクロージャに対して自動的に実行する(_D)"
+msgstr ""
 
 #: src/interface.c:3729
 #, fuzzy
@@ -1113,7 +1125,7 @@ msgid ""
 "appear in the item list."
 msgstr ""
 
-#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:211
+#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:213
 msgid "[No title]"
 msgstr "[タイトルなし]"
 
@@ -1122,6 +1134,7 @@ msgid "Item:"
 msgstr "トピック:"
 
 #: src/item.c:294
+#, fuzzy
 msgid "date"
 msgstr "日付"
 
@@ -1314,7 +1327,7 @@ msgstr "<%s:%s> に対する名前空間ハンドラではありません！\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>RDF ヘッダが見つかりませんでした！</p>"
 
-#: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:288 src/rss_channel.c:328
+#: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:296 src/rss_channel.c:328
 msgid "There were errors while parsing this feed!"
 msgstr "この配信元を解析する際にエラーが発生しました！"
 
@@ -1734,24 +1747,24 @@ msgstr ""
 "この配信元は停止しているので、利用できません。今後 Liferea が更新することはあ"
 "りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
 
-#: src/ui_itemlist.c:286
+#: src/ui_itemlist.c:288
 msgid "Date"
 msgstr "日付"
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:299
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: src/ui_itemlist.c:485 src/ui_itemlist.c:494 src/ui_itemlist.c:545
+#: src/ui_itemlist.c:487 src/ui_itemlist.c:496 src/ui_itemlist.c:547
 msgid "No item has been selected"
 msgstr "トピックが選択されていません"
 
-#: src/ui_itemlist.c:528 src/ui_itemlist.c:548
+#: src/ui_itemlist.c:530 src/ui_itemlist.c:550
 msgid "You must select a feed to delete its items!"
 msgstr "トピックを削除する配信元を選択して下さい！"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:615
+#: src/ui_itemlist.c:617
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
@@ -1978,11 +1991,11 @@ msgstr "/終了(_Q)"
 
 #: src/ui_popup.c:165
 msgid "/Open Enclosure..."
-msgstr "/エンクロージャを開く..."
+msgstr ""
 
 #: src/ui_popup.c:166
 msgid "/Save As..."
-msgstr "/別名で保存..."
+msgstr ""
 
 #. This allows the user to choose their own browser by typing in the command.
 #: src/ui_prefs.c:222
@@ -2018,16 +2031,18 @@ msgid "Reset feed update timers (Update no feeds)"
 msgstr "更新せずに更新用タイマーをクリアする"
 
 #: src/ui_prefs.c:508
+#, fuzzy
 msgid "Type"
 msgstr "種類"
 
 #: src/ui_prefs.c:511
+#, fuzzy
 msgid "Program"
-msgstr "プログラム"
+msgstr "プログラム(_P)"
 
 #: src/ui_prefs.c:762
 msgid "Choose download directory"
-msgstr "フォルダの選択"
+msgstr ""
 
 #: src/ui_search.c:66
 #, c-format
@@ -2087,6 +2102,9 @@ msgstr ""
 "GtkHTML2 ではタグ <object> をサポートしていませんので、\n"
 "HTML に挿入されているプラグイン部分は表示されないでしょう。"
 
+#~ msgid "_Mark As Read"
+#~ msgstr "既読としてマーク(_M)"
+
 #~ msgid ""
 #~ "Starts a search for all items that do match the given search string "
 #~ "either in title or content."
@@ -2124,3 +2142,6 @@ msgstr ""
 #~ "お使いのコンピュータにインストールされているレンダリングに依存するため、利"
 #~ "用できるオプションが異なります。設定したオプションを有効にするために "
 #~ "Liferea を再起動して下さい。"
+
+#~ msgid "enclosed file: <a href=\"%s\">%s</a>"
+#~ msgstr "添付ファイル: <a href=\"%s\">%s</a>"

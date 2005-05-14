@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 0.9.1\n"
+"Project-Id-Version: liferea 0.9.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-08 21:16+0200\n"
-"PO-Revision-Date: 2005-03-12 00:58+0100\n"
-"Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.no-ip.org>\n"
+"POT-Creation-Date: 2005-05-14 19:26+0200\n"
+"PO-Revision-Date: 2005-05-14 15:33+0100\n"
+"Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.net>\n"
 "Language-Team: Italian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
@@ -215,20 +215,20 @@ msgid "Updating \"%s\""
 msgstr "Aggiorno \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1017 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1027 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Notiziario:"
 
-#: src/feed.c:1017 src/interface.c:3781
+#: src/feed.c:1027 src/interface.c:3781
 msgid "VFolder"
 msgstr "Cartella Virtuale"
 
-#: src/feed.c:1025
+#: src/feed.c:1035
 msgid "user defined command"
 msgstr "comando definito dall'utente"
 
-#: src/feed.c:1048 src/interface.c:1024 src/interface.c:1434 src/item.c:248
+#: src/feed.c:1058 src/interface.c:1024 src/interface.c:1434 src/item.c:248
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Sorgente:"
@@ -300,9 +300,8 @@ msgid "New _Folder..."
 msgstr "Nuova _Cartella..."
 
 #: src/interface.c:243
-#, fuzzy
 msgid "New _VFolder..."
-msgstr "Nuova _Cartella..."
+msgstr "Nuova _Cartella virtuale..."
 
 #: src/interface.c:252
 msgid "_Properties..."
@@ -669,11 +668,11 @@ msgstr "<span weight=\"bold\">Impostazioni Caricamento Notiziari</span>"
 
 #: src/interface.c:1889
 msgid "Optimize for _memory usage."
-msgstr ""
+msgstr "Ottimizza per uso di _memoria."
 
 #: src/interface.c:1896
 msgid "Optimize for _speed."
-msgstr ""
+msgstr "Ottimizza per _velocità."
 
 #: src/interface.c:1902
 msgid "Feeds"
@@ -765,6 +764,7 @@ msgstr "Mostra Intestazioni Con"
 #: src/interface.c:2135
 msgid "<i>Please restart Liferea for changes to take effect.</i>"
 msgstr ""
+"<i>Per favore riavviare Liferea per rendere effettive le modifiche.</i>"
 
 #: src/interface.c:2141
 msgid "Open links in Liferea's _window."
@@ -804,11 +804,9 @@ msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Impostazioni Notifica</span>"
 
 #: src/interface.c:2253
-#, fuzzy
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr ""
-"Mostra un'_icona di stato nell'area di notifica \n"
-"(chiamata anche system tray)."
+"Mostra un'_icona di stato nell'area di notifica (chiamata anche system tray)."
 
 #: src/interface.c:2270
 msgid "Show a _popup window with new headlines."
@@ -863,16 +861,13 @@ msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">Server Proxy HTTP</span>"
 
 #: src/interface.c:2411
-#, fuzzy
 msgid ""
 "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center.</i>"
 msgstr ""
-"Liferea utilizza la configurazione del proxy di GNOME. Se utilizzi GNOME, "
-"puoi modificare queste impostazioni dal centro di controllo GNOME. Nota: la "
-"modifica di tali impostazioni influirà su tutte le altre applicazioni! "
-"Questa pagina è pensata per tutti gli utenti che, non utilizzando GNOME, "
-"vogliono usare Liferea con un proxy."
+"<i>Liferea utilizza la configurazione del proxy di GNOME. Se si utilizza "
+"GNOME, si possono modificare queste impostazioni dal centro di controllo "
+"GNOME.</i>"
 
 #: src/interface.c:2422
 msgid "_Enable Proxy"
@@ -984,7 +979,6 @@ msgstr ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3295
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1034,6 +1028,7 @@ msgstr ""
 "Marc Deslauriers\n"
 "Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
 "Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"Raphael Slinckx <raphael@slinckx.net>\n"
 "\n"
 "\n"
 "Codice da altri progetti\n"
@@ -1117,9 +1112,8 @@ msgid "_Do this automatically for files like this from now on."
 msgstr "_Fai questo automaticamente per file come questo da adesso in poi."
 
 #: src/interface.c:3729
-#, fuzzy
 msgid "Search All Feeds"
-msgstr "Cerca nei notiziari."
+msgstr "Cerca in tutti i notiziari"
 
 #: src/interface.c:3744
 msgid "Search for"
@@ -1130,21 +1124,24 @@ msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
 msgstr ""
+"Inserire la stringa che Liferea deve trovare all'interno del titolo o del "
+"contenuto di un elemento."
 
 #: src/interface.c:3767
-#, fuzzy
 msgid "Saves this search as a VFolder, which will appear in the feed list."
 msgstr ""
-"salva questa ricerca come cartella virtuale, che apparirà nella lista dei "
-"notiziari"
+"Salva questa ricerca come cartella virtuale, che apparirà nella lista dei "
+"notiziari."
 
 #: src/interface.c:3790
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr ""
+"Inizia la ricerca del testo specificato in tutti i notiziari. Il risultato "
+"apparirà nella lista degli elementi."
 
-#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:211
+#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:213
 msgid "[No title]"
 msgstr "[Senza Titolo]"
 
@@ -1357,7 +1354,7 @@ msgstr "nessun gestore di spazio dei nomi per <%s:%s>!\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Impossibile trovare l'intestazione RDF!</p>"
 
-#: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:288 src/rss_channel.c:328
+#: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:296 src/rss_channel.c:328
 msgid "There were errors while parsing this feed!"
 msgstr ""
 "Si sono verificati degli errori durante l'interpretazione del notiziario!"
@@ -1403,9 +1400,8 @@ msgid "Item body"
 msgstr "Corpo dell'elemento"
 
 #: src/rule.c:172
-#, fuzzy
 msgid "Feed title"
-msgstr "Titolo elemento"
+msgstr "Titolo notiziario"
 
 #: src/rule.c:173
 msgid "Read status"
@@ -1780,13 +1776,13 @@ msgstr ""
 "è presentato il seguente errore:<br><b>%s</b>"
 
 #: src/ui_htmlview.h:98
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There were errors while filtering this feed. The following error occurred:"
 "<br><b><pre>%s</pre></b>"
 msgstr ""
 "Si sono verificati degli errori durante l'interpretazione del notiziario. Si "
-"è presentato il seguente errore:<br><b>%s</b>"
+"è presentato il seguente errore:<br><b><pre>%s</pre></b>"
 
 #: src/ui_htmlview.h:99
 msgid ""
@@ -1796,24 +1792,24 @@ msgstr ""
 "Questo notiziario è stato rimosso. Non è più disponibile. Liferea non lo "
 "aggiornerà più ma si può ancora accedere alle intestazioni nella cache."
 
-#: src/ui_itemlist.c:286
+#: src/ui_itemlist.c:288
 msgid "Date"
 msgstr "Data"
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:299
 msgid "Headline"
 msgstr "Testata"
 
-#: src/ui_itemlist.c:485 src/ui_itemlist.c:494 src/ui_itemlist.c:545
+#: src/ui_itemlist.c:487 src/ui_itemlist.c:496 src/ui_itemlist.c:547
 msgid "No item has been selected"
 msgstr "Nessun elemento selezionato"
 
-#: src/ui_itemlist.c:528 src/ui_itemlist.c:548
+#: src/ui_itemlist.c:530 src/ui_itemlist.c:550
 msgid "You must select a feed to delete its items!"
 msgstr "SI deve selezionare un notiziario per eliminare i suoi elementi!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:615
+#: src/ui_itemlist.c:617
 msgid "There are no unread items "
 msgstr "Non ci sono elementi da leggere"
 
@@ -1951,9 +1947,8 @@ msgid "/_New/New F_older..."
 msgstr "/_Nuovo/Nuova _Cartella..."
 
 #: src/ui_popup.c:96 src/ui_popup.c:107 src/ui_popup.c:117
-#, fuzzy
 msgid "/_New/New _VFolder..."
-msgstr "/_Nuovo/Nuova _Cartella..."
+msgstr "/_Nuovo/Nuova _Cartella virtuale..."
 
 #: src/ui_popup.c:97 src/ui_popup.c:118
 msgid "/_Properties..."
@@ -2108,9 +2103,8 @@ msgid "Please do a search first!"
 msgstr "Per favore effettuare prima una ricerca!"
 
 #: src/ui_search.c:125
-#, fuzzy
 msgid "New VFolder"
-msgstr "Nuova Cartella"
+msgstr "Nuova Cartella virtuale"
 
 #: src/ui_tabs.c:107
 msgid "URL"
@@ -2130,7 +2124,7 @@ msgstr "Nessun nuovo elemento."
 #: src/update.c:93
 #, c-format
 msgid "%s exited with status %d"
-msgstr ""
+msgstr "%s terminato con status %d"
 
 #: src/update.c:99 src/update.c:100 src/update.c:136
 #, c-format
@@ -2155,41 +2149,3 @@ msgid ""
 msgstr ""
 "Il tag HTML <object> incluso non è supportato da GtkHTML2.\n"
 "I plugins inclusi potrebbero non essere visualizzati."
-
-#~ msgid ""
-#~ "Starts a search for all items that do match the given search string "
-#~ "either in title or content."
-#~ msgstr ""
-#~ "Inizia una ricerca di tutti gli elementi il cui titolo o il contenuto "
-#~ "corrispondono alla stringa di ricerca inserita."
-
-#~ msgid "Close search"
-#~ msgstr "Chiudi ricerca"
-
-#~ msgid ""
-#~ "_Load feeds from disk when needed. Searching can \n"
-#~ "be slow if you have a lot of feeds."
-#~ msgstr ""
-#~ "_Carica notiziari dal disco quando necessario. La ricerca può \n"
-#~ "essere lenta se ci sono molti notiziari."
-
-#~ msgid ""
-#~ "_Keep all feeds loaded. This may improve speed \n"
-#~ "(especially when searching) but can cause a \n"
-#~ "significant memory footprint if you have a lot \n"
-#~ "of feeds!"
-#~ msgstr ""
-#~ "_Tiene tutti i notiziari caricati. Questo aumenta la velocità \n"
-#~ "(specialmente durante le ricerche) ma può causare un \n"
-#~ "eccessivo consumo di memoria se ci sono molti \n"
-#~ "notiziari!"
-
-#~ msgid ""
-#~ "Liferea displays feeds' content using various HTML renderers. Depending "
-#~ "on which renderers are installed on your computer, different options will "
-#~ "be available. Restart Liferea for changes to take effect."
-#~ msgstr ""
-#~ "Liferea mostra il contenuto dei notiziari utilizzando un motore di "
-#~ "rendering HTML. In base all'installazione del tuo sistema, di seguito si "
-#~ "possono presentare scelte diverse. Nota: le modifiche saranno applicate "
-#~ "al prossimo riavvio!"

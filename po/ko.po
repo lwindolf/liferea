@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-08 21:16+0200\n"
+"POT-Creation-Date: 2005-05-14 19:26+0200\n"
 "PO-Revision-Date: 2005-01-10 23:34+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at electrang.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -196,20 +196,20 @@ msgid "Updating \"%s\""
 msgstr "%s을(를) 새로고치는 중"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1017 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1027 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "피드:"
 
-#: src/feed.c:1017 src/interface.c:3781
+#: src/feed.c:1027 src/interface.c:3781
 msgid "VFolder"
 msgstr "가상폴더"
 
-#: src/feed.c:1025
+#: src/feed.c:1035
 msgid "user defined command"
 msgstr "사용자가 정한 명령:"
 
-#: src/feed.c:1048 src/interface.c:1024 src/interface.c:1434 src/item.c:248
+#: src/feed.c:1058 src/interface.c:1024 src/interface.c:1434 src/item.c:248
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "소스:"
@@ -1110,7 +1110,7 @@ msgid ""
 "appear in the item list."
 msgstr ""
 
-#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:211
+#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:213
 msgid "[No title]"
 msgstr "[제목 없음]"
 
@@ -1312,7 +1312,7 @@ msgstr "<%s:%s> 를 위한 네임스페이스 핸들러가 없습니다!\n"
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>RDF 헤더를 찾을 수 없습니다!</p>"
 
-#: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:288 src/rss_channel.c:328
+#: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:296 src/rss_channel.c:328
 msgid "There were errors while parsing this feed!"
 msgstr "이 피드를 해석하던 중 에러가 발생했습니다."
 
@@ -1729,24 +1729,24 @@ msgstr ""
 "이 피드는 연속적이지 않습니다. 더 이상 사용할 수 없습니다. Liferea는 더이상 "
 "그것을 새로 고치지 않지만, 캐시된 머릿글은 읽을 수 있습니다."
 
-#: src/ui_itemlist.c:286
+#: src/ui_itemlist.c:288
 msgid "Date"
 msgstr "날짜"
 
-#: src/ui_itemlist.c:297
+#: src/ui_itemlist.c:299
 msgid "Headline"
 msgstr "머릿글"
 
-#: src/ui_itemlist.c:485 src/ui_itemlist.c:494 src/ui_itemlist.c:545
+#: src/ui_itemlist.c:487 src/ui_itemlist.c:496 src/ui_itemlist.c:547
 msgid "No item has been selected"
 msgstr "아이템이 선택되지 않았습니다"
 
-#: src/ui_itemlist.c:528 src/ui_itemlist.c:548
+#: src/ui_itemlist.c:530 src/ui_itemlist.c:550
 msgid "You must select a feed to delete its items!"
 msgstr "아이템을 지울 피드를 선택해야 합니다!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:615
+#: src/ui_itemlist.c:617
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다 "
 
