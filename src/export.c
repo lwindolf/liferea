@@ -118,7 +118,7 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
 				g_free(lastPoll);
 			}
-			if(fp->sortColumn == IS_TITLE)
+			if(fp->sortColumn == IS_LABEL)
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
 			else if(fp->sortColumn == IS_TIME)
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
@@ -375,7 +375,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
 		if(sortStr != NULL) {
 			if(!xmlStrcmp(sortStr, "title"))
-				fp->sortColumn = IS_TITLE;
+				fp->sortColumn = IS_LABEL;
 			else if(!xmlStrcmp(sortStr, "time"))
 				fp->sortColumn = IS_TIME;
 			xmlFree(sortStr);

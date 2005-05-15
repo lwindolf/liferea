@@ -63,10 +63,10 @@ void item_copy(itemPtr from, itemPtr to) {
 	to->newStatus = FALSE;
 	to->marked = from->marked;
 	to->time = from->time;
-	to->nr = from->nr;
 	
 	/* the following line allows state propagation in item.c */
-	to->sourceFeed = from->fp;	
+	to->sourceFeed = from->fp;
+	to->sourceNr = from->nr;
 	
 	/* this copies metadata */
 	metadata_list_free(to->metadata);

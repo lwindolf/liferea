@@ -200,7 +200,7 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 				/* propagate change to source feed, this indirectly updates us... */
 				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
 				feed_load(sourceFeed);
-				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
+				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
 					itemlist_set_flag(sourceItem, newStatus);
 				feed_unload(sourceFeed);
 			}
@@ -231,7 +231,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 				/* propagate change to source feed, this indirectly updates us... */
 				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
 				feed_load(sourceFeed);
-				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
+				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
 					itemlist_set_read_status(sourceItem, newStatus);
 				feed_unload(sourceFeed);
 			}
@@ -265,7 +265,7 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 				/* propagate change to source feed, this indirectly updates us... */
 				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
 				feed_load(sourceFeed);
-				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->nr)))
+				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
 					itemlist_set_update_status(sourceItem, newStatus);
 				feed_unload(sourceFeed);
 			}
@@ -316,26 +316,42 @@ void itemlist_update_item(itemPtr ip) {
 	ui_itemlist_update_item(ip);
 }
 
-static void itemlist_remove_item_idle(gpointer data) {
-	itemPtr		ip = (itemPtr)data;
+typedef struct removeRequest {
+	gulong nr;
+	feedPtr fp;
+} * removeRequestPtr;
 
-	/* if the currently selected item should be removed we
-	   don't do it and set a flag to do it when unselecting */
-	if(displayed_item != ip) {
-		ui_itemlist_remove_item(ip);
-		feed_remove_item(ip->fp, ip);
-		ui_feedlist_update();
-	} else {
-		deferred_item_remove = TRUE;
-		/* update the item to show new state that forces
-		   later removal */
-		ui_itemlist_update_item(ip);
+static void itemlist_remove_item_idle(gpointer data) {
+	removeRequestPtr	rrp = (removeRequestPtr)data;
+	itemPtr			ip;
+	
+	if(NULL != (ip = feed_lookup_item(rrp->fp, rrp->nr))) {
+		/* if the currently selected item should be removed we
+		   don't do it and set a flag to do it when unselecting */
+		if(displayed_item != ip) {
+			ui_itemlist_remove_item(ip);
+			feed_remove_item(ip->fp, ip);
+			ui_feedlist_update();
+		} else {
+			deferred_item_remove = TRUE;
+			/* update the item to show new state that forces
+			   later removal */
+			ui_itemlist_update_item(ip);
+		}
 	}
+	g_free(rrp);
 }
 
 void itemlist_remove_item(itemPtr ip) {
+	removeRequestPtr	rrp;
 
-	ui_queue_add(itemlist_remove_item_idle, (gpointer)ip);
+	/* The following synchronisation is necessary because
+	   item removals are requested by both the GUI thread
+	   and also different update threads. */
+	rrp = g_new0(struct removeRequest, 1);
+	rrp->fp = ip->fp;
+	rrp->nr = ip->nr;
+	ui_queue_add(itemlist_remove_item_idle, (gpointer)rrp);
 }
 
 void itemlist_remove_items(feedPtr fp) {
@@ -365,8 +381,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 		}
 	
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
-			gtk_tree_model_get(model, &iter, IS_PTR, &ip, -1);			
-			displayed_item = ip;
+			displayed_item = ip = ui_itemlist_get_item_from_iter(&iter);
 			item_display(ip);
 			/* set read and unset update status done when unselecting */
 			itemlist_set_read_status(ip, TRUE);

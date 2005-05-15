@@ -101,7 +101,7 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	iter = vp->items;
 	while(NULL != iter) {
 		tmp = iter->data;
-		if((ip->nr == tmp->nr) && (ip->fp == tmp->sourceFeed))
+		if((ip->nr == tmp->sourceNr) && (ip->fp == tmp->sourceFeed))
 			return;
 		iter = g_slist_next(iter);
 	}
@@ -128,7 +128,7 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 		tmp = items->data;
 		g_assert(NULL != ip->fp);
 		g_assert(NULL != tmp->fp);
-		if((ip->nr == tmp->nr) &&
+		if((ip->nr == tmp->sourceNr) &&
 		   (ip->fp == tmp->sourceFeed)) {
 			found = TRUE;
 			break;
@@ -145,7 +145,7 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 		   removal is executed, so we need to remove the
 		   pointer to the original item */
 		tmp->sourceFeed = NULL;
-		tmp->nr = -1;
+		tmp->sourceNr = -1;
 		
 		/* we call itemlist_remove_item to prevent removing
 		   an item copy selected in the GUI... */
@@ -286,13 +286,13 @@ void vfolder_update_item(itemPtr ip) {
 			g_assert(NULL != tmp->fp);
 			
 			/* avoid processing items that are in deletion state */
-			if(-1 == tmp->nr) {
+			if(-1 == tmp->sourceNr) {
 				items = g_slist_next(items);
 				continue;
 			}
 			
 			/* find the item copies */
-			if((ip->nr == tmp->nr) &&
+			if((ip->nr == tmp->sourceNr) &&
 			   (ip->fp == tmp->sourceFeed)) {
 				/* check if the item still matches, the item won't get added
 				   another time so this call effectivly just checks if the

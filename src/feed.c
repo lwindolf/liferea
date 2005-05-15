@@ -249,7 +249,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
  * (2) Inside of feed_process_result
  * (3) The callback where items are removed from the itemlist
  *
- * This method really save the feed to disk.
+ * This method really saves the feed to disk.
  */
 void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
@@ -707,7 +707,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			feed_increase_unread_counter(fp);
 		fp->items = g_slist_append(fp->items, (gpointer)new_ip);
 		new_ip->fp = fp;
-		/* item number should already be set by item_copy() */
+		new_ip->nr = ++(fp->lastItemNr);
 	}
 }
 
@@ -959,6 +959,9 @@ void feed_clear_item_list(feedPtr fp) {
  */
 void feed_remove_item(feedPtr fp, itemPtr ip) {
 
+	if(NULL == fp)
+		return;
+		
 	/*g_print("removing item %d from feed %d\n", ip, fp);
 	g_print("   feed:%s\n", fp->title);
 	g_print("   item:%s\n", ip->title);*/

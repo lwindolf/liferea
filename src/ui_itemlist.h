@@ -31,11 +31,10 @@
 enum is_columns {
 	IS_TIME,		/**< Time of item creation */ /* This is set to the first item so that default sorting is by time */
 	IS_TIME_STR,		/**< Time of item creation as a string*/
-	IS_TITLE,		/**< Name of the item */
 	IS_LABEL,		/**< Displayed name */
+	IS_FEED,		/**< Parent feed */
 	IS_ICON,		/**< Pixbuf reference to the item's icon */
-	IS_PTR,			/**< Pointer to item sturuct */
-	IS_TYPE,		/**< Type of feed that the item came from */
+	IS_NR,			/**< Item id, to lookup item ptr from parent feed */
 	IS_ICON2,		/**< Pixbuf reference to the item's feed's icon */
 	IS_LEN			/**< Number of columns in the itemstore */
 };
@@ -212,6 +211,11 @@ void ui_itemlist_update_item(itemPtr ip);
  * Update all item list entries of the currently displayed item list.
  */
 void ui_itemlist_update(void);
+
+/**
+ * Resolves a tree iter into the item it represents.
+ */
+itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter);
 
 /*@}*/
 
