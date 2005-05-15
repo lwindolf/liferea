@@ -316,16 +316,9 @@ void itemlist_update_item(itemPtr ip) {
 	ui_itemlist_update_item(ip);
 }
 
-typedef struct removeRequest {
-	gulong nr;
-	feedPtr fp;
-} * removeRequestPtr;
-
-static void itemlist_remove_item_idle(gpointer data) {
-	removeRequestPtr	rrp = (removeRequestPtr)data;
-	itemPtr			ip;
+void itemlist_remove_item(itemPtr ip) {
 	
-	if(NULL != (ip = feed_lookup_item(rrp->fp, rrp->nr))) {
+	if(NULL != (ip = feed_lookup_item(ip->fp, ip->nr))) {
 		/* if the currently selected item should be removed we
 		   don't do it and set a flag to do it when unselecting */
 		if(displayed_item != ip) {
@@ -339,19 +332,6 @@ static void itemlist_remove_item_idle(gpointer data) {
 			ui_itemlist_update_item(ip);
 		}
 	}
-	g_free(rrp);
-}
-
-void itemlist_remove_item(itemPtr ip) {
-	removeRequestPtr	rrp;
-
-	/* The following synchronisation is necessary because
-	   item removals are requested by both the GUI thread
-	   and also different update threads. */
-	rrp = g_new0(struct removeRequest, 1);
-	rrp->fp = ip->fp;
-	rrp->nr = ip->nr;
-	ui_queue_add(itemlist_remove_item_idle, (gpointer)rrp);
 }
 
 void itemlist_remove_items(feedPtr fp) {
