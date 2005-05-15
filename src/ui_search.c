@@ -76,6 +76,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	
 	/* switch to item list view and inform user in HTML view */
 	ui_itemlist_set_two_pane_mode(FALSE);
+
 	ui_htmlview_start_output(&buffer, NULL, TRUE);
 	buffer = g_strdup_printf(_("%s<h2>%d Search Results for \"%s\"</h2>"
 	                         "<p>The item list now contains all items matching the "
@@ -85,6 +86,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	                         "feed list.</h2>"), buffer, g_slist_length(feed_get_item_list(searchFeed)), searchstring);
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
+	g_free(buffer);
 
 	/* enable vfolder add button */	
 	gtk_widget_set_sensitive(lookup_widget(searchdialog, "vfolderaddbtn"), TRUE);
