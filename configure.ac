@@ -220,7 +220,7 @@ if test "x$enable_dbus" = "xyes"; then
 
    AC_MSG_CHECKING([for DBUS support])
    dbusglib=`pkg-config --cflags dbus-glib-1 2> /dev/null`
-   AM_CONDITIONAL(WITH_DBUS, test "x$dbusglib" != "x")
+   #AM_CONDITIONAL(WITH_DBUS, test "x$dbusglib" != "x")
    if test "x$dbusglib" != "x" ; then
       AC_MSG_RESULT(yes)
       PKG_CHECK_MODULES([DBUS], [dbus-1 >= $DBUS_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED])
