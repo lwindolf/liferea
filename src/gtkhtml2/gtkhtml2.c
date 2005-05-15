@@ -192,7 +192,6 @@ static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream,
 		r->callback = gtkhtml2_url_request_received_cb;
 		r->user_data = sd;
 		r->priority = 1;
-		r->flags |= FEED_REQ_NOLOCK;
 		download_queue(r);
 		html_stream_set_cancel_func (stream, stream_cancel, r);
 		xmlFree(absURL);
@@ -387,7 +386,6 @@ static void launch_url(GtkWidget *scrollpane, const gchar *url) {
 	r->callback = gtkhtml2_html_received;
 	r->user_data = scrollpane;
 	r->priority = 1;
-	r->flags |= FEED_REQ_NOLOCK;
 	g_object_set_data(G_OBJECT(scrollpane), "html_request", r);
 	download_queue(r);
 }
