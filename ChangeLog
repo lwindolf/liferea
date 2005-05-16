@@ -1,4 +1,4 @@
-2005-03-??  ???  <???>
+2005-03-16  Lars Lindner  <lars.lindner@gmx.net>
 
         Version 0.9.2
 	
@@ -21,6 +21,15 @@
 	  DBUS message. (patch from Raphaël Slinckx)
 	* Improved error handling for feed post processing filters.
 	  (patch from dwpoon)
+	  
+	Translations:
+
+	* Updated Spanish translation. (Carlos Fenellosa Biesla)
+	* Updated Finnish translation. (Pauli Virtanen)
+	* Updated Czech translation (Juraj Kubelka)
+	* Updated Japanese translation (Takeshi Aihana)
+	* Updated Italian translation (Dario Conigliaro)
+	  
 
 2005-03-12  Lars Lindner <lars.lindner@gmx.net>
 
