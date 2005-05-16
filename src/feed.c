@@ -255,7 +255,7 @@ void feed_save(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode;
 	GSList		*itemlist, *iter;
-	gchar		*filename;
+	gchar		*filename, *tmpfilename;
 	gchar		*tmp;
 	itemPtr		ip;
 	gint		saveCount = 0;
@@ -276,6 +276,7 @@ void feed_save(feedPtr fp) {
 		saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
+	tmpfilename = g_strdup_printf("%s~", filename);
 	
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
@@ -327,8 +328,14 @@ void feed_save(feedPtr fp) {
 		} else {
 			g_warning("could not create XML feed node for feed cache document!");
 		}
-		xmlSaveFormatFileEnc(filename, doc, NULL, 1);
+		if (xmlSaveFormatFile(tmpfilename, doc,1) == -1) {
+			g_warning("Error attempting to save feed cache file \"%s\"!", tmpfilename);
+		} else {
+			if (rename(tmpfilename, filename) == -1)
+				perror("Error overwriting old cache file"); /* Nothing else can be done... probably the disk is going bad */
+		}
 		xmlFreeDoc(doc);
+		g_free(tmpfilename);
 		g_free(filename);
 	} else {
 		g_warning("could not create XML document!");
