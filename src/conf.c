@@ -128,13 +128,16 @@ void conf_init() {
 /* maybe called several times to reload configuration */
 void conf_load() {
 	gint	maxitemcount;
+	gchar *downloadPath;
 	
 	/* check if important preferences exist... */
 	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
 		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
-		
-	if(0 == strcmp("", getStringConfValue(ENCLOSURE_DOWNLOAD_PATH)))
+	
+	downloadPath = getStringConfValue(ENCLOSURE_DOWNLOAD_PATH);
+	if(0 == strcmp("", downloadPath))
 		setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, g_getenv("HOME"));
+	g_free(downloadPath);
 }
 
 static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {

@@ -1154,15 +1154,18 @@ void feed_free(feedPtr fp) {
 		g_free(fp->id);
 	}
 	
-	g_free(fp->title);
-	g_free(fp->description);
+	g_free(fp->parseErrors);
 	g_free(fp->errorDescription);
-	g_free(fp->source);
-	g_free(fp->filtercmd);
+	g_free(fp->title);
 	g_free(fp->htmlUrl);
 	g_free(fp->imageUrl);
-	g_free(fp->parseErrors);
+	g_free(fp->description);
+	g_free(fp->source);
+	g_free(fp->filtercmd);
+	g_free(fp->lastModified);
+	g_free(fp->etag);
 	g_free(fp->cookies);
+	
 	metadata_list_free(fp->metadata);
 	g_hash_table_destroy(fp->tmpdata);
 	g_free(fp);

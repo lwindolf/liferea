@@ -391,9 +391,11 @@ void ui_itemlist_display(void) {
 					addToHTMLBuffer(&buffer, UNSHADED_START);
 				else
 					addToHTMLBuffer(&buffer, SHADED_START);
-
-				addToHTMLBuffer(&buffer, item_render(ip));
-
+				
+				tmp = item_render(ip);
+				addToHTMLBuffer(&buffer, tmp);
+				g_free(tmp);
+				
 				if(item_get_read_status(ip))
 					addToHTMLBuffer(&buffer, UNSHADED_END);
 				else {

@@ -390,7 +390,8 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		tmp = xmlGetProp(cur, BAD_CAST"twoPane");
 		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 			feed_set_two_pane_mode(fp, TRUE);
-			
+		if (tmp != NULL)
+			xmlFree(tmp);
 		/* set feed properties available from the OPML feed list 
 		   they may be overwritten by the values of the cache file
 		   but we need them in case the cache file loading fails */
