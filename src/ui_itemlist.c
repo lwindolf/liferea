@@ -167,7 +167,6 @@ void ui_itemlist_remove_item(itemPtr ip) {
 		itemstore = ui_itemlist_get_tree_store();
 		gtk_tree_store_remove(itemstore, iter);
 		g_hash_table_remove(iterhash, (gpointer)ip);
-		g_free(iter);
 	} else {
 		/*g_warning("item to be removed not found in tree iter lookup hash!");*/
 	}
@@ -195,7 +194,7 @@ void ui_itemlist_clear(void) {
 		g_hash_table_destroy(iterhash);
 		gtk_tree_store_clear(itemstore);
 	}		
-	iterhash = g_hash_table_new(g_direct_hash, g_direct_equal);
+	iterhash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
 void ui_itemlist_update_item(itemPtr ip) {
@@ -285,7 +284,7 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	g_assert(mainwindow != NULL);
 	g_assert(itemlist != NULL);
 
-	iterhash = g_hash_table_new(g_direct_hash, g_direct_equal);
+	iterhash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 
 	itemstore = ui_itemlist_get_tree_store();
 
