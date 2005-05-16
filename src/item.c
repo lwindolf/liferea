@@ -218,21 +218,22 @@ gchar *item_render(itemPtr ip) {
 		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed), tmp2);
 		g_free(tmp2);
 	}
-
+	
 	if(item_get_source(ip) != NULL)
-		tmp = g_strdup_printf("<span class=\"itemtitle\">%s<a href=\"%s\">%s</a></span>",
+		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s<a href=\"%s\">%s</a></span>",
 			              tmp,
 			              item_get_source(ip),
 			              (item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"));
 	else
-		tmp = g_strdup_printf("<span class=\"itemtitle\">%s%s</span>",
+		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s%s</span>",
 			              tmp,
 			              (item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"));
-
-	tmp2 = g_strdup_printf(HEAD_LINE, _("Item:"), tmp);
+	
 	g_free(tmp);
-	addToHTMLBufferFast(&buffer, tmp2);
+	tmp = g_strdup_printf(HEAD_LINE, _("Item:"), tmp2);
 	g_free(tmp2);
+	addToHTMLBufferFast(&buffer, tmp);
+	g_free(tmp);
 
 	/*  -- real source line */
 	tmp = NULL;

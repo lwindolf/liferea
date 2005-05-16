@@ -38,14 +38,16 @@ static GSList		*vfolders = NULL;
 /* sets up a vfolder feed structure */
 feedPtr vfolder_new(void) {
 	feedPtr		fp;
-	
+	gchar *id;
 	debug_enter("vfolder_new");
 
 	fp = feed_new();;
 	feed_set_type(fp, FST_VFOLDER);
 	feed_set_title(fp, "vfolder");
 	feed_set_source(fp, "vfolder");
-	feed_set_id(fp, conf_new_id());
+	id = conf_new_id();
+	feed_set_id(fp, id);
+	g_free(id);
 	feed_set_available(fp, TRUE);
 	feed_set_update_interval(fp, -2);	/* never update */
 	fp->fhp = feed_type_str_to_fhp("vfolder");
