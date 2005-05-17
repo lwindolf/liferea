@@ -33,8 +33,8 @@
 #define DBUS_API_SUBJECT_TO_CHANGE
 #include <dbus/dbus.h>
 
-#define DBUS_RSS_SERVICE "org.gnome.rss.FeedReader"
-#define DBUS_RSS_OBJECT  "/org/gnome/rss/FeedReader"
+#define DBUS_RSS_SERVICE "org.gnome.feed.Reader"
+#define DBUS_RSS_OBJECT  "/org/gnome/feed/Reader"
 #define DBUS_RSS_METHOD  "Subscribe"
 
 #endif
