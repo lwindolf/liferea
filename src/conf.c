@@ -63,18 +63,6 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
 static void conf_toolbar_style_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
 
-static gchar * build_path_str(gchar *str1, gchar *str2) {
-	gchar	*gconfpath;
-
-	g_assert(NULL != str1);
-	if(0 == strcmp(str1, "")) 
-		gconfpath = g_strdup_printf("%s/%s", PATH, str2);
-	else
-		gconfpath = g_strdup_printf("%s/%s/%s", PATH, str1, str2);
-		
-	return gconfpath;
-}
-
 static gboolean is_gconf_error(GError **err) {
 
 	if(*err != NULL) {
@@ -89,7 +77,6 @@ static gboolean is_gconf_error(GError **err) {
 
 /* called once on startup */
 void conf_init() {
-	const char	*lang;
 	
 	/* has to be called for multithreaded programs */
 	xmlInitParser();

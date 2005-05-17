@@ -377,7 +377,7 @@ char * NetIO (int * my_socket, char * host, char * url, struct feed_request * cu
 	int tmphttpstatus;
 	int inflate = 0;			/* Whether feed data needs decompressed with zlib. */
 	int len;
-	char * inflatedbody;
+	void * inflatedbody;
 	int quirksmode = 0;			/* IIS operation mode. */
 	int authfailed = 0;			/* Avoid repeating failed auth requests endlessly. */
 

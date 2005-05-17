@@ -46,6 +46,13 @@ enum is_columns {
 void ui_itemlist_init(GtkWidget *itemlist);
 
 /**
+ * This returns the GtkTreeStore that is internal to the
+ * ui_itemlist. This is currently used for setting and getting the
+ * sort column.
+ */
+GtkTreeStore * ui_itemlist_get_tree_store(void);
+
+/**
  * Method to reset the format string of the date column.
  * Should be called upon initializaton and each time the
  * date format changes.

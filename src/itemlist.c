@@ -27,8 +27,13 @@
 #include "debug.h"
 #include "feed.h"
 #include "support.h"
+#include "vfolder.h"
 #include "ui_itemlist.h"
 #include "ui_feedlist.h"
+#include "ui_feed.h"
+#include "ui_tray.h"
+#include "ui_htmlview.h"
+#include "ui_mainwindow.h"
 
 /* controller implementation for itemlist handling, bypass only for read-only feed/item access! */
 
@@ -83,7 +88,7 @@ void itemlist_reload(nodePtr node) {
 	isFeed = (FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type);
 	isFolder = FST_FOLDER == displayed_node->type;
 	g_assert(isFeed || isFolder);
-
+	
 	if((TRUE == isFolder) && (1 == getNumericConfValue(FOLDER_DISPLAY_MODE))) {
 		if((FST_FOLDER != node->type) && (node != displayed_node)) {
 			/* There are two cases: the updated feed is a child of
@@ -114,7 +119,6 @@ void itemlist_reload(nodePtr node) {
  */
 void itemlist_load(nodePtr node) {
 	GtkTreeModel	*model;
-	gint		sortColumn;
 	gboolean	isFeed;
 	gboolean	isFolder;
 
@@ -167,13 +171,13 @@ void itemlist_load(nodePtr node) {
 	ui_itemlist_prefocus();
 }
 
-void itemlist_update_vfolder(nodePtr vp) {
+void itemlist_update_vfolder(feedPtr vp) {
 
-	if(displayed_node == vp)
+	if(displayed_node == (nodePtr)vp)
 		/* maybe itemlist_load(vp) would be faster, but
 		   it unloads all feeds and therefore must not be 
 		   called from here! */		
-		itemlist_reload(vp);
+		itemlist_reload((nodePtr)vp);
 	else
 		ui_feed_update(vp);
 }

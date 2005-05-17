@@ -38,6 +38,7 @@
 #include "ui_tray.h"
 #include "callbacks.h"
 #include "favicon.h"
+#include "itemlist.h"
 
 /* file type tree store column ids */
 enum fts_columns {

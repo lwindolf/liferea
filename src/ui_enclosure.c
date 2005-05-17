@@ -140,7 +140,7 @@ typedef struct encJob {
 	gchar	*filename;	/* filename the result is saved to */
 } *encJobPtr;
 
-static void *ui_enclosure_exec(void *data) {
+static gpointer ui_enclosure_exec(gpointer data) {
 	encJobPtr	ejp = (encJobPtr)data;
 	GError		*error = NULL;
 	gint		status;
@@ -165,6 +165,8 @@ static void *ui_enclosure_exec(void *data) {
 	g_free(ejp->run);
 	g_free(ejp->filename);
 	g_free(ejp);
+
+	return NULL;
 }
 
 /* etp is optional, if it is missing we are in save mode */
@@ -261,7 +263,7 @@ static void on_adddialog_response(GtkDialog *dialog, gint response_id, gpointer 
 
 /* either type or url and typestr are optional */
 static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
-	GtkWidget	*dialog, *widget;
+	GtkWidget	*dialog;
 	gchar		*tmp;
 	
 	dialog = create_enchandlerdialog();

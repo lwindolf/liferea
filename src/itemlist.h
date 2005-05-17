@@ -32,6 +32,7 @@
  */
 void itemlist_load(nodePtr node);
 
+void itemlist_set_two_pane_mode(gboolean new_mode);
 
 /* item handling functions */
 
@@ -44,13 +45,36 @@ void itemlist_remove_item(itemPtr ip);
 void itemlist_remove_items(feedPtr fp);
 
 /**
+ * To be called whenever a feed was updated. If it is a somehow
+ * displayed feed it is loaded this method decides if the
+ * and how the item list GUI needs to be updated.
+ */
+void itemlist_reload(nodePtr node);
+
+/**
+ * Toggle the flag of the item currently selected in the itemlist
+ */
+void itemlist_toggle_flag(itemPtr ip);
+
+void itemlist_toggle_read_status(itemPtr ip);
+
+void itemlist_set_read_status(itemPtr ip, gboolean newStatus);
+
+/**
  * Unsets bot the unread and update flag for all items
  * of the given feed.
  */
 void itemlist_mark_all_read(nodePtr fp);
 
+void itemlist_update_vfolder(feedPtr vp);
+
 void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data);
 
 void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
+
+/** Force the itemlist to re-create the displayed dates based on the
+ *  current date format setting 
+ */
+void itemlist_reset_date_format(void);
 
 #endif

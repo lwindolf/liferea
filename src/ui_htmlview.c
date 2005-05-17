@@ -298,7 +298,7 @@ static gboolean ui_htmlview_restore_focus_cb(gpointer userdata) {
 
 void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *base) { 
 	GtkWidget	*widget;
-	gchar		*baseURL = base;
+	const gchar	*baseURL = base;
 	
 	/* workaround for Mozilla focus stealing */
 	widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));

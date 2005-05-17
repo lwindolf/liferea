@@ -112,7 +112,7 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	tmp = item_new();
 	item_copy(ip, tmp);
 	feed_add_item(vp, tmp);
-	itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
+	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
 }
 
 /** 
@@ -347,7 +347,7 @@ void vfolder_update_item(itemPtr ip) {
 		}
 		iter = g_slist_next(iter);
 		
-		itemlist_update_vfolder((nodePtr)vp);		/* update the itemlist if this vfolder is selected */
+		itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
 	}
 	
 	debug_exit("vfolder_update_item");

@@ -540,7 +540,7 @@ static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *button
 	GtkWidget			*button;
 
 	g_assert(TRUE != (saving & directory));
-g_print("file/dir chooser: saving=%s directory=%s currentFile=%s file=%s data=%d\n", saving?"TRUE":"FALSE", directory?"TRUE":"FALSE", currentFilename, filename, user_data);
+g_print("file/dir chooser: saving=%s directory=%s currentFile=%s file=%s data=%p\n", saving?"TRUE":"FALSE", directory?"TRUE":"FALSE", currentFilename, filename, user_data);
 #if GTK_CHECK_VERSION(2,4,0)
 	dialog = gtk_file_chooser_dialog_new(title,
 	                                     parent,

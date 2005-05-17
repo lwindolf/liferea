@@ -28,6 +28,7 @@
 #include "vfolder.h"
 #include "ui_itemlist.h"
 #include "interface.h"
+#include "itemlist.h"
 #include "support.h"
 
 struct fp_vfolder_ui_data {

@@ -198,7 +198,6 @@ void ui_itemlist_clear(void) {
 }
 
 void ui_itemlist_update_item(itemPtr ip) {
-	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	*iter;
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
 	GdkPixbuf	*icon = NULL, *favicon;
@@ -641,7 +640,6 @@ void on_nextbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
-	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 	GdkEventButton		*eb;
 	GtkWidget		*treeview;
 	GtkTreeViewColumn	*column;
