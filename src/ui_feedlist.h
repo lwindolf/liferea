@@ -32,6 +32,8 @@
 /* Yes, we know that DBUS API isn't stable yet */
 #define DBUS_API_SUBJECT_TO_CHANGE
 #include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-lowlevel.h>
 
 #define DBUS_RSS_SERVICE "org.gnome.feed.Reader"
 #define DBUS_RSS_OBJECT  "/org/gnome/feed/Reader"
