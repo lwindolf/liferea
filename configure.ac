@@ -77,38 +77,35 @@ AC_SUBST(CURL_LIBS)
 html_modules=
 
 AC_MSG_CHECKING([for GtkHTML2 support])
-PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0,gtkhtml2found=yes,gtkhtml2found=no)
-if test "x$gtkhtml2found" = "xyes" ; then
-   AC_SUBST(GTKHTML2_CFLAGS)
-   AC_SUBST(GTKHTML2_LIBS)
-   enable_gtkhtml2=yes
-else
-   enable_gtkhtml2=no
-fi
-AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
+
+PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
+
+AC_SUBST(GTKHTML2_CFLAGS)
+AC_SUBST(GTKHTML2_LIBS)AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
 
 dnl *******
 dnl Mozilla
 dnl *******
 
-AC_MSG_CHECKING([for Mozilla support])
 gecko_provider=mozilla
-mozilla=`pkg-config --cflags $gecko_provider-gtkmozembed 2> /dev/null`
-# Check Firefox-mozilla
-if test x"$mozilla" = "x"; then
-    gecko_provider=firefox
-    mozilla=`pkg-config --cflags firefox-gtkmozembed 2> /dev/null`
-fi
-AM_CONDITIONAL(WITH_MOZILLA, test "x$mozilla" != "x")
-if test "x$mozilla" != "x" ; then
 
-   echo $gecko_provider found!
+PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
+
+# Check Firefox-mozilla
+if test "x$enable_mozilla" = "xno"; then
+   gecko_provider=firefox
+   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
+fi
+
+AM_CONDITIONAL(WITH_MOZILLA, test "x$enable_mozilla" = "xyes")
+
+if test "x$enable_mozilla" = "xyes" ; then
+   AC_MSG_CHECKING([for Mozilla support])
+
+   AC_MSG_RESULT([$gecko_provider found!])
 
    dnl the Mozilla XPCOM access means C++
    AC_PROG_CXX
-
-   AC_MSG_RESULT(yes)
-   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed)
    
    dnl Note: with the infos from mozilla-gtkmozembed.pc
    dnl we got all includes and libraries for the C interface
@@ -117,7 +114,7 @@ if test "x$mozilla" != "x" ; then
    dnl of macros to come around this. Which I would like to
    dnl avoid. So this might be not very portable...
    
-   MOZILLA_INCLUDE_ROOT=`pkg-config --cflags-only-I $gecko_provider-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
+   MOZILLA_INCLUDE_ROOT=`$PKG_CONFIG --cflags-only-I $gecko_provider-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
    MOZILLA_INCLUDE_ROOT=`dirname $MOZILLA_INCLUDE_ROOT`
    
    dnl Maybe we don't need all of this...
@@ -164,14 +161,10 @@ if test "x$mozilla" != "x" ; then
 
    AC_SUBST(MOZILLA_CFLAGS)
    AC_SUBST(MOZILLA_LIBS)   
-   enable_mozilla=yes
-else
-   AC_MSG_RESULT(no)
-   enable_mozilla=no
 fi
 
 dnl For now, require GtkHTML2 or Mozilla. GtkHTML3 should not be used!
-if test "x$mozilla" = "x" -a "x$gtkhtml2" = "x" ; then
+if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" ; then
 	AC_MSG_ERROR([
 *** You must have either the GtkHTML2 or the Mozilla development
 *** libraries installed in order to build Liferea!
@@ -253,13 +246,17 @@ liferea-SuSE.spec
 AC_OUTPUT
 
 echo
-echo $PACKAGE $VERSION
+echo "$PACKAGE $VERSION"
 echo
-echo "Build Mozilla Plugin............ : $enable_mozilla ($gecko_provider)"
-echo Build GtkHTML Plugin............ : $enable_gtkhtml2
+if test "x$enable_mozilla" = "xyes"; then
+   echo "Build Mozilla Plugin............ : $enable_mozilla ($gecko_provider)"
+else
+   echo "Build Mozilla Plugin............ : $enable_mozilla"
+fi
+echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
-echo Use X Session Management........ : $enable_sm
-echo Use DBUS........................ : $enable_dbus
+echo "Use X Session Management........ : $enable_sm"
+echo "Use DBUS........................ : $enable_dbus"
 echo
 dnl echo Use libcurl download library.... : $enable_libcurl
 dnl echo
