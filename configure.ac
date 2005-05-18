@@ -24,8 +24,8 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
 
-AC_ARG_ENABLE(sm,      [  --disable-sm            compile without X session management support],,enable_sm=yes)
-AC_ARG_ENABLE(dbus,    [  --disable-dbus          compile without DBUS support],,enable_dbus=yes)
+AC_ARG_ENABLE(sm,      AC_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
+AC_ARG_ENABLE(dbus,    AC_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
 				   
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
@@ -47,6 +47,7 @@ if test "x$enable_sm" = "xyes"; then
 else
      enable_sm=no
 fi
+
 if test "x$enable_sm" = "xyes"; then
    AC_DEFINE(USE_SM, 1, [Define if we're using X Session Management.])
    AC_MSG_RESULT(yes)
@@ -76,18 +77,19 @@ AC_SUBST(CURL_LIBS)
 html_modules=
 
 AC_MSG_CHECKING([for GtkHTML2 support])
-gtkhtml2=`pkg-config --cflags libgtkhtml-2.0 2> /dev/null`
-AM_CONDITIONAL(WITH_GTKHTML2, test "x$gtkhtml2" != "x")
-if test "x$gtkhtml2" != "x" ; then
-   AC_MSG_RESULT(yes)
-   PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0)
+PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0,gtkhtml2found=yes,gtkhtml2found=no)
+if test "x$gtkhtml2found" = "xyes" ; then
    AC_SUBST(GTKHTML2_CFLAGS)
    AC_SUBST(GTKHTML2_LIBS)
    enable_gtkhtml2=yes
 else
-   AC_MSG_RESULT(no)
    enable_gtkhtml2=no
 fi
+AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
+
+dnl *******
+dnl Mozilla
+dnl *******
 
 AC_MSG_CHECKING([for Mozilla support])
 gecko_provider=mozilla
@@ -217,21 +219,18 @@ dnl ****
 if test "x$enable_dbus" = "xyes"; then
    DBUS_REQUIRED=0.23
    DBUS_GLIB_REQUIRED=0.23
-
-   AC_MSG_CHECKING([for DBUS support])
-   dbusglib=`pkg-config --cflags dbus-glib-1 2> /dev/null`
-   #AM_CONDITIONAL(WITH_DBUS, test "x$dbusglib" != "x")
-   if test "x$dbusglib" != "x" ; then
-      AC_MSG_RESULT(yes)
-      PKG_CHECK_MODULES([DBUS], [dbus-1 >= $DBUS_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED])
+   
+   PKG_CHECK_MODULES([DBUS], [dbus-1 >= $DBUS_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED],dbusfound=yes,dbusfound=no)
+   if test "x$dbusfound" = "xyes" ; then
       AC_SUBST(DBUS_CFLAGS)
       AC_SUBST(DBUS_LIBS)
       enable_dbus=yes
    else
-      AC_MSG_RESULT(no)
       enable_dbus=no
    fi
 fi
+
+dnl AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" != "xyes")
 
 if test "x$enable_dbus" = "xyes"; then
    AC_DEFINE(USE_DBUS, 1, [Define if we're using DBUS.])
