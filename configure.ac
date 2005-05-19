@@ -24,8 +24,8 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
 
-AC_ARG_ENABLE(sm,      AC_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
-AC_ARG_ENABLE(dbus,    AC_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
+AC_ARG_ENABLE(sm,      AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
+AC_ARG_ENABLE(dbus,    AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
 				   
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
@@ -209,27 +209,28 @@ dnl ****
 dnl DBUS
 dnl ****
 
+dbusversion = 0
+
 if test "x$enable_dbus" = "xyes"; then
-   DBUS_REQUIRED=0.23
-   DBUS_GLIB_REQUIRED=0.23
-   
-   PKG_CHECK_MODULES([DBUS], [dbus-1 >= $DBUS_REQUIRED dbus-glib-1 >= $DBUS_GLIB_REQUIRED],dbusfound=yes,dbusfound=no)
-   if test "x$dbusfound" = "xyes" ; then
-      AC_SUBST(DBUS_CFLAGS)
-      AC_SUBST(DBUS_LIBS)
+   AC_MSG_NOTICE([checking for DBUS >= 0.30])
+   PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.30 dbus-glib-1 >= 0.30],dbusversion=2,dbusversion=0)
+   if test "x$dbusversion" = "x0"; then
+      AC_MSG_NOTICE([checking for DBUS >= 0.23])
+      PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.23 dbus-glib-1 >= 0.23],dbusversion=1,dbusversion=0)
+   fi
+   if test "x$dbusversion" != "x0" ; then
+	  AC_DEFINE(USE_DBUS, 1, [Define if we're using DBUS.])
       enable_dbus=yes
    else
       enable_dbus=no
    fi
 fi
 
+AC_DEFINE_UNQUOTED(DBUS_VERSION, [[$dbusversion]], [Version of the DBUS API being used. See configure file for details])
+
+AC_SUBST(DBUS_CFLAGS)
+AC_SUBST(DBUS_LIBS)
 dnl AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" != "xyes")
-
-if test "x$enable_dbus" = "xyes"; then
-   AC_DEFINE(USE_DBUS, 1, [Define if we're using DBUS.])
-fi
-
-
 
 AC_CONFIG_FILES([
 Makefile

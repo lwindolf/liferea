@@ -821,7 +821,13 @@ ui_feedlist_dbus_connect ()
 	dbus_connection_setup_with_g_main (connection, NULL);
 	    
 	/* Register for the FeedReader service on the bus, so we get method calls */
+#if (DBUS_VERSION == 1)
     dbus_bus_acquire_service (connection, DBUS_RSS_SERVICE, 0, &error);
+#elif (DBUS_VERSION == 2)
+	dbus_bus_request_name (connection, DBUS_RSS_SERVICE, 0, &error);
+#else
+#error Unknown DBUS version passed to ui_feedlist
+#endif
 	if (dbus_error_is_set (&error))
 	{
 		fprintf (stderr, "*** ui_feedlist.c: Failed to get dbus service: %s | %s\n", error.name, error.message);
