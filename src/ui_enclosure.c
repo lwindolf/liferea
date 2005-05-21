@@ -172,11 +172,17 @@ static gpointer ui_enclosure_exec(gpointer data) {
 /* etp is optional, if it is missing we are in save mode */
 void ui_enclosure_download(encTypePtr etp, gchar *url, gchar *filename) {
 	encJobPtr	ejp;
-	
+	gchar *filenameQ, *urlQ;
 	/* prepare job structure */
 	ejp = g_new0(struct encJob, 1);
 	ejp->filename = filename;
-	ejp->download = g_strdup_printf(prefs_get_download_cmd(), g_shell_quote(filename), g_shell_quote(url));
+
+	filenameQ = g_shell_quote(filename);
+	urlQ = g_shell_quote(url);
+	ejp->download = g_strdup_printf(prefs_get_download_cmd(), filenameQ, urlQ);
+	g_free(filenameQ);
+	g_free(urlQ);
+	
 	if(NULL != etp)
 		ejp->run = g_strdup_printf("%s %s", etp->cmd, filename);
 
