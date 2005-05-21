@@ -176,7 +176,7 @@ void ui_enclosure_download(encTypePtr etp, gchar *url, gchar *filename) {
 	/* prepare job structure */
 	ejp = g_new0(struct encJob, 1);
 	ejp->filename = filename;
-	ejp->download = g_strdup_printf(prefs_get_download_cmd(), filename, url);
+	ejp->download = g_strdup_printf(prefs_get_download_cmd(), g_shell_quote(filename), g_shell_quote(url));
 	if(NULL != etp)
 		ejp->run = g_strdup_printf("%s %s", etp->cmd, filename);
 

@@ -7,6 +7,8 @@
 	* Fix for possible feed cache corruption when a disk becomes
 	  full. (Nathan Conrad)
 	* Update the DBUS RSS subscription interface. (Raphaël Slinckx)
+	* Saving enclosures with destination filenames including spaces
+	  is fixed. (Andreas Kohn)
 	
 2005-03-16  Lars Lindner  <lars.lindner@gmx.net>
 
