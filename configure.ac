@@ -98,6 +98,7 @@ if test "x$enable_mozilla" = "xno"; then
 fi
 
 AM_CONDITIONAL(WITH_MOZILLA, test "x$enable_mozilla" = "xyes")
+MOZILLA_LIB_DIR_SEARCH=
 
 if test "x$enable_mozilla" = "xyes" ; then
    AC_MSG_CHECKING([for Mozilla support])
@@ -116,6 +117,8 @@ if test "x$enable_mozilla" = "xyes" ; then
    
    MOZILLA_INCLUDE_ROOT=`$PKG_CONFIG --cflags-only-I $gecko_provider-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
    MOZILLA_INCLUDE_ROOT=`dirname $MOZILLA_INCLUDE_ROOT`
+   MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L $gecko_provider-gtkmozembed | awk '{print $1}' |  cut -c 3-`
+   MOZILLA_LIB_DIR_SEARCH="look_for_mozilla \"$MOZILLA_LIB_ROOT\""
    
    dnl Maybe we don't need all of this...
    MOZILLA_CFLAGS="$MOZILLA_CFLAGS \
@@ -161,6 +164,7 @@ if test "x$enable_mozilla" = "xyes" ; then
 
    AC_SUBST(MOZILLA_CFLAGS)
    AC_SUBST(MOZILLA_LIBS)   
+   AC_SUBST(MOZILLA_LIB_DIR_SEARCH)
 fi
 
 dnl For now, require GtkHTML2 or Mozilla. GtkHTML3 should not be used!
@@ -209,7 +213,7 @@ dnl ****
 dnl DBUS
 dnl ****
 
-dbusversion = 0
+dbusversion=0
 
 if test "x$enable_dbus" = "xyes"; then
    AC_MSG_NOTICE([checking for DBUS >= 0.30])
@@ -243,6 +247,7 @@ opml/Makefile
 po/Makefile.in
 liferea.spec
 liferea-SuSE.spec
+src/liferea
 ])
 AC_OUTPUT
 

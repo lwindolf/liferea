@@ -4,3 +4,4 @@ liferea-bin
 *.lo
 *.la
 .deps/*
+liferea

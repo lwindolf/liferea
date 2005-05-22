@@ -40,6 +40,7 @@ if [ -n "$MOZILLA_FIVE_HOME" ]; then
 	run_with_mozilla $MOZILLA_FIVE_HOME
 fi
 
+@MOZILLA_LIB_DIR_SEARCH@
 look_for_mozilla "/usr/lib/mozilla*/chrome/comm.jar"
 look_for_mozilla "/usr/local/mozilla*/chrome/comm.jar"
 look_for_mozilla "/opt/mozilla/chrome/comm.jar"
