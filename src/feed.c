@@ -157,7 +157,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
 			break;
 		}
-		while(cur && xmlIsBlankNode(cur)) {
+		while(cur != NULL && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
 		if(NULL == cur->name) {
@@ -335,12 +335,13 @@ void feed_save(feedPtr fp) {
 				perror("Error overwriting old cache file"); /* Nothing else can be done... probably the disk is going bad */
 		}
 		xmlFreeDoc(doc);
-		g_free(tmpfilename);
-		g_free(filename);
 	} else {
 		g_warning("could not create XML document!");
 	}
 	
+	g_free(tmpfilename);
+	g_free(filename);
+
 	fp->needsCacheSave = FALSE;
 	debug_exit("feed_save");
 }
