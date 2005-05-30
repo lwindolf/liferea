@@ -1,7 +1,7 @@
 /*
  * Liferea HTML view default stylesheet (two pane mode)
  *
- * (C) 2004 Lars Linder <lars.lindner@gmx.net>
+ * (C) 2004,2005 Lars Linder <lars.lindner@gmx.net>
  * (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -320,3 +320,7 @@ img.enclosurebtn {
 	padding:2px;
 	margin-left:2px;
 }
+
+/* preventing freezes due to any plugins */
+embed { display:none !important }
+
