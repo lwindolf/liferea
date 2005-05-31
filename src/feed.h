@@ -68,13 +68,13 @@ enum cache_limit {
 
 typedef struct feed {
 	gint		type;			/**< feed type (first position is important!!!) */
-	gpointer	*ui_data;		/**< per-feed UI data (second position is important!!!) */
+	gpointer	ui_data;		/**< per-feed UI data (second position is important!!!) */
 	
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
 	
 	gchar		*id;			/**< unique feed identifier string */
 	gint		unreadCount;		/**< number of unread items */
-	gint		newCount;		/**< number of new items */
+	gint		popupCount;		/**< number of items to be displayed with popup notification feature */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gint		loaded;			/**< counter which is non-zero if items are to be kept in memory */
 	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
@@ -248,9 +248,9 @@ void feed_increase_unread_counter(feedPtr fp);
 void feed_decrease_unread_counter(feedPtr fp);
 gint feed_get_unread_counter(feedPtr fp);
 
-void feed_increase_new_counter(feedPtr fp);
-void feed_decrease_new_counter(feedPtr fp);
-gint feed_get_new_counter(feedPtr fp);
+void feed_increase_popup_counter(feedPtr fp);
+void feed_decrease_popup_counter(feedPtr fp);
+gint feed_get_popup_counter(feedPtr fp);
 
 gint feed_get_default_update_interval(feedPtr fp);
 void feed_set_default_update_interval(feedPtr fp, gint interval);

@@ -36,7 +36,7 @@ struct folder;
 
 typedef struct node {
 	gint type;
-	gpointer *ui_data;
+	gpointer ui_data;
 } *nodePtr;
 
 /** Conversion function which should be applied to all read XML strings, 
