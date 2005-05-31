@@ -679,8 +679,10 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		
 			if(FALSE == item_get_read_status(new_ip))
 				feed_increase_unread_counter(fp);
+			if(TRUE == new_ip->popupStatus) {
+				feed_increase_popup_counter(fp);
+			}
 			if(TRUE == new_ip->newStatus) {
-				fp->newCount++;
 				ui_tray_add_new(1);
 			}
 			fp->items = g_slist_prepend(fp->items, (gpointer)new_ip);
@@ -768,13 +770,13 @@ void feed_decrease_unread_counter(feedPtr fp) {
 }
 gint feed_get_unread_counter(feedPtr fp) { return fp->unreadCount; }
 
-void feed_increase_new_counter(feedPtr fp) {
-	fp->newCount++;
+void feed_increase_popup_counter(feedPtr fp) {
+	fp->popupCount++;
 }
-void feed_decrease_new_counter(feedPtr fp) {
-	fp->newCount--;
+void feed_decrease_popup_counter(feedPtr fp) {
+	fp->popupCount--;
 }
-gint feed_get_new_counter(feedPtr fp) { return fp->newCount; }
+gint feed_get_popup_counter(feedPtr fp) { return fp->popupCount; }
 
 gint feed_get_default_update_interval(feedPtr fp) { return fp->defaultInterval; }
 void feed_set_default_update_interval(feedPtr fp, gint interval) { fp->defaultInterval = interval; }

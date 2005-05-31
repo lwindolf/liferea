@@ -1,23 +1,23 @@
-/*
-   tray icon handling
-   
-   Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
-   Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * tray icon handling
+ * 
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -51,6 +51,7 @@ static void installTrayIcon(void);
 
 void ui_tray_tooltip_set(gchar *message) {
 	GtkTooltipsData	*data = NULL;
+	
 	g_assert(tray_icon_tips);
 
 	data = gtk_tooltips_data_get(GTK_WIDGET(tray_icon));
@@ -72,6 +73,7 @@ void ui_tray_tooltip_set(gchar *message) {
 }
 
 static void ui_tray_icon_set(GdkPixbuf *icon) {
+
 	g_assert(tray_icon);
 
 	if(NULL != image)
@@ -84,16 +86,41 @@ static void ui_tray_icon_set(GdkPixbuf *icon) {
 
 void ui_tray_add_new(gint count) {
 	gchar *msg;
+	
 	if(!tray_icon)
 		return;
+
+	newItems += count;
 		
-	if(count > 0) {
+	if(newItems != 0) {
 		ui_tray_icon_set(icons[ICON_AVAILABLE]); 
-		newItems += count;
 		msg = g_strdup_printf(ngettext("%d new item!", "%d new items!", newItems), newItems);
 		ui_tray_tooltip_set(msg);
 		g_free(msg);
+	} else {
+		ui_tray_icon_set(icons[ICON_EMPTY]);
+		ui_tray_tooltip_set(_("No new items."));
 	}
+}
+
+void ui_tray_remove_old(gint count) {
+
+	ui_tray_add_new(-1 * count);
+}
+
+static void feed_reset_new_counter_cb(nodePtr np) {
+	itemPtr	ip;
+	GSList	*iter;
+	
+	feed_load((feedPtr)np);
+	iter = feed_get_item_list((feedPtr)np);
+	while(NULL != iter) {
+		ip = (itemPtr)iter->data;
+		if(TRUE == item_get_new_status(ip))
+			item_set_new_status(ip, FALSE);
+		iter = g_slist_next(iter);
+	}	
+	feed_unload((feedPtr)np);
 }
 
 void ui_tray_zero_new(void) {
@@ -102,6 +129,7 @@ void ui_tray_zero_new(void) {
 		return;
 		
 	if(0 != newItems) {
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feed_reset_new_counter_cb);
 		ui_tray_icon_set(icons[ICON_EMPTY]);
 		ui_tray_tooltip_set(_("No new items."));
 		newItems = 0;
@@ -123,8 +151,9 @@ static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayI
 						  
 	return;
 }
-static gboolean ui_tray_create_cb()
-{
+
+static gboolean ui_tray_create_cb() {
+
 	installTrayIcon();
 	
 	return FALSE; /* for when we're called by the glib idle handler */
@@ -132,11 +161,13 @@ static gboolean ui_tray_create_cb()
 
 
 static void ui_tray_embedded_cb(GtkWidget *widget, void *data) {
+
 	ui_mainwindow_tray_add();
 }
 
 
 static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
+
 	g_object_unref(G_OBJECT(tray_icon));
 
 	image = NULL;
@@ -149,6 +180,7 @@ static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
 }
 
 static void installTrayIcon(void) {
+
 	g_assert(!tray_icon);
 
 	tray_icon = egg_tray_icon_new(PACKAGE);
@@ -169,23 +201,25 @@ static void installTrayIcon(void) {
 }
 
 static void removeTrayIcon() {
+
 	g_assert(tray_icon != NULL);
 	
 	g_signal_handlers_disconnect_by_func(G_OBJECT(tray_icon), G_CALLBACK(ui_tray_destroyed_cb), NULL);
 	gtk_widget_destroy(image);
 	image = NULL;
 	g_object_unref(G_OBJECT(tray_icon));
-	gtk_object_destroy (GTK_OBJECT (tray_icon));
+	gtk_object_destroy(GTK_OBJECT (tray_icon));
 	tray_icon = NULL;
 	ui_mainwindow_tray_remove();
 }
 
 void ui_tray_enable(gboolean enabled) {
+
 	if(enabled) {
-		if (tray_icon == NULL)
+		if(tray_icon == NULL)
 			installTrayIcon();
 	} else {
-		if (tray_icon != NULL) {
+		if(tray_icon != NULL) {
 			removeTrayIcon();
 		}
 	}

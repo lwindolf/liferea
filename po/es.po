@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-14 19:26+0200\n"
+"POT-Creation-Date: 2005-05-16 22:35+0200\n"
 "PO-Revision-Date: 2005-05-08 22:06+0100\n"
 "Last-Translator: Carlos Fenollosa Bielsa <topopardo@topopardo.com>\n"
 "Language-Team: Spanish/Spain <es@li.org>\n"
@@ -55,11 +55,11 @@ msgstr ""
 "Algunos caracteres se han perdido"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:262
+#: src/conf.c:265
 msgid "feedlist.opml"
 msgstr "feedlist_es.opml"
 
-#: src/conf.c:281
+#: src/conf.c:284
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Error al renombrar %s a %s\n"
@@ -73,48 +73,48 @@ msgstr "http://liferea.sf.net/help/help"
 msgid ".rdf"
 msgstr "_es.rdf"
 
-#: src/export.c:502 src/export.c:504
+#: src/export.c:503 src/export.c:505
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Error XML mientras se leía el caché del archivo \"%s\". No se pudo importar."
 
-#: src/export.c:508 src/export.c:510
+#: src/export.c:509 src/export.c:511
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "El documento OPML \"%s\" estaba vacío y no debería estarlo."
 
-#: src/export.c:518 src/export.c:520
+#: src/export.c:519 src/export.c:521
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" no es un documento OPML válido. No se pudo importar."
 
-#: src/export.c:542
+#: src/export.c:543
 msgid "Imported feed list"
 msgstr "Lista de fuentes importadas"
 
-#: src/export.c:553
+#: src/export.c:554
 msgid "Import Feed List"
 msgstr "Importar lista"
 
-#: src/export.c:553
+#: src/export.c:554
 msgid "Import"
 msgstr "Importar"
 
-#: src/export.c:563
+#: src/export.c:564
 msgid "Error while exporting feed list!"
 msgstr "Ocurrió un error mientras se exportaba la lista de fuentes."
 
-#: src/export.c:565
+#: src/export.c:566
 msgid "Feed List exported!"
 msgstr "La lista de fuentes se ha exportado con éxito."
 
-#: src/export.c:572
+#: src/export.c:573
 msgid "Export Feed List"
 msgstr "Exportar lista"
 
-#: src/export.c:572
+#: src/export.c:573
 msgid "Export"
 msgstr "Exportar"
 
@@ -192,20 +192,20 @@ msgid "Updating \"%s\""
 msgstr "Actualizando: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1027 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1030 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Fuente:"
 
-#: src/feed.c:1027 src/interface.c:3781
+#: src/feed.c:1030 src/interface.c:3781
 msgid "VFolder"
 msgstr "Carpeta Virtual"
 
-#: src/feed.c:1035
+#: src/feed.c:1038
 msgid "user defined command"
 msgstr "Comando personalizado"
 
-#: src/feed.c:1058 src/interface.c:1024 src/interface.c:1434 src/item.c:248
+#: src/feed.c:1061 src/interface.c:1024 src/interface.c:1434 src/item.c:249
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Fuente:"
@@ -1107,15 +1107,15 @@ msgstr ""
 "Busca el texto especificado en todas las fuentes. El resultado aparecerá en "
 "la lista de elementos."
 
-#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:213
+#: src/item.c:226 src/item.c:230 src/item.c:243 src/ui_itemlist.c:226
 msgid "[No title]"
 msgstr "[Sin título]"
 
-#: src/item.c:232 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:233 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Elemento:"
 
-#: src/item.c:294
+#: src/item.c:295
 msgid "date"
 msgstr "fecha"
 
@@ -1734,24 +1734,24 @@ msgstr ""
 "Esta fuente ha sido abandonada. Liferea no la actualizará, pero se puede "
 "seguir accediendo a los elementos que contiene su caché."
 
-#: src/ui_itemlist.c:288
+#: src/ui_itemlist.c:301
 msgid "Date"
 msgstr "Fecha"
 
-#: src/ui_itemlist.c:299
+#: src/ui_itemlist.c:312
 msgid "Headline"
 msgstr "Titular"
 
-#: src/ui_itemlist.c:487 src/ui_itemlist.c:496 src/ui_itemlist.c:547
+#: src/ui_itemlist.c:500 src/ui_itemlist.c:509 src/ui_itemlist.c:560
 msgid "No item has been selected"
 msgstr "No se ha seleccionado ningún elemento"
 
-#: src/ui_itemlist.c:530 src/ui_itemlist.c:550
+#: src/ui_itemlist.c:543 src/ui_itemlist.c:563
 msgid "You must select a feed to delete its items!"
 msgstr "Por favor, elija una fuente para eliminar sus elementos"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:617
+#: src/ui_itemlist.c:629
 msgid "There are no unread items "
 msgstr "No hay elementos nuevos"
 
@@ -2034,11 +2034,20 @@ msgstr "Selecciona el directorio para guardar la descarga"
 msgid "Searching for \"%s\""
 msgstr "Buscando \"%s\""
 
-#: src/ui_search.c:115
+#: src/ui_search.c:81
+#, c-format
+msgid ""
+"%s<h2>%d Search Results for \"%s\"</h2><p>The item list now contains all "
+"items matching the specified search pattern. If you want to save this search "
+"result permanently you can click the VFolder button in the search dialog and "
+"Liferea will add a VFolder to your feed list.</h2>"
+msgstr ""
+
+#: src/ui_search.c:119
 msgid "Please do a search first!"
 msgstr "Se requiere una búsqueda previa"
 
-#: src/ui_search.c:125
+#: src/ui_search.c:129
 msgid "New VFolder"
 msgstr "Nueva carpeta virtual"
 
@@ -2078,7 +2087,7 @@ msgstr "No se pudo abrir el archivo \"%s\""
 msgid "Error: There is no file \"%s\""
 msgstr "El archivo \"%s\" no existe."
 
-#: src/gtkhtml2/gtkhtml2.c:229
+#: src/gtkhtml2/gtkhtml2.c:228
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."

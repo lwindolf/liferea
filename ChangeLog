@@ -9,6 +9,10 @@
 	* Update the DBUS RSS subscription interface. (Raphaël Slinckx)
 	* Saving enclosures with destination filenames including spaces
 	  is fixed. (Andreas Kohn)
+	* Workaround for the freezing problem when Mozilla browser
+	  plugins like Flash or Java are loaded. All plugins are now
+	  suppressed using CSS.
+
 	
 2005-03-16  Lars Lindner  <lars.lindner@gmx.net>
 

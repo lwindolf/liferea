@@ -36,7 +36,8 @@ struct feed;
 typedef struct item {
 	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/**< TRUE if the item has been read */
-	gboolean	newStatus;		/**< TRUE if the item was downloaded and not yet displayed by notification features */
+	gboolean	newStatus;		/**< TRUE if the item was downloaded and is to be counted by the tray icon */
+	gboolean	popupStatus;		/**< TRUE if the item was downloaded and is yet to be displayed by the popup notification feature */
 	gboolean	updateStatus;		/**< TRUE if the item content was updated */
 	gboolean 	marked;			/**< TRUE if the item has been marked */
 	gchar		*title;			/**< item title */
@@ -108,6 +109,8 @@ const gboolean	item_get_flag(itemPtr ip);
 const gboolean	item_get_read_status(itemPtr ip);
 /** Returns the new flag of ip. */
 const gboolean	item_get_new_status(itemPtr ip);
+/** Returns the popup flag of ip. */
+const gboolean	item_get_popup_status(itemPtr ip);
 /** Returns the update flag of ip. */
 const gboolean	item_get_update_status(itemPtr ip);
 
@@ -129,6 +132,8 @@ void		item_set_id(itemPtr ip, const gchar * id);
 void 		item_set_read_status(itemPtr ip, gboolean newStatus);
 /** Sets the ip's new flag */
 void 		item_set_new_status(itemPtr ip, const gboolean newStatus);
+/** Sets the ip's popup flag */
+void 		item_set_popupp_status(itemPtr ip, const gboolean newPopupStatus);
 /** Sets the ip's update flag */
 void 		item_set_update_status(itemPtr ip, const gboolean newStatus);
 

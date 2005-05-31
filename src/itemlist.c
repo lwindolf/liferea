@@ -246,7 +246,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 		ui_feedlist_update();
 		
 		if(TRUE == newStatus)
-			ui_tray_zero_new();		/* reset tray icon */
+			ui_tray_zero_new();		/* reset tray icon (including all new states) */
 	}
 }
 

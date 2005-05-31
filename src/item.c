@@ -45,7 +45,8 @@ itemPtr item_new(void) {
 	
 	ip = g_new0(struct item, 1);
 	ip->newStatus = TRUE;
-
+	ip->popupStatus = TRUE;
+	
 	return ip;
 }
 
@@ -61,6 +62,7 @@ void item_copy(itemPtr from, itemPtr to) {
 	to->updateStatus = from->updateStatus;
 	to->readStatus = from->readStatus;
 	to->newStatus = FALSE;
+	to->popupStatus = FALSE;
 	to->marked = from->marked;
 	to->time = from->time;
 	
@@ -106,6 +108,7 @@ const time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
 const gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
 const gboolean item_get_flag(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
 const gboolean item_get_new_status(itemPtr ip) { g_assert(ip != NULL); return ip->newStatus; }
+const gboolean item_get_popup_status(itemPtr ip) { g_assert(ip != NULL); return ip->popupStatus; }
 const gboolean item_get_update_status(itemPtr ip) { g_assert(ip != NULL); return ip->updateStatus; }
 
 void item_set_flag(itemPtr ip, gboolean newStatus) {
@@ -119,13 +122,18 @@ void item_set_flag(itemPtr ip, gboolean newStatus) {
 
 void item_set_new_status(itemPtr ip, const gboolean newStatus) { 
 
-	if(newStatus != ip->newStatus) {
-		if(TRUE == newStatus)
-			feed_increase_new_counter((feedPtr)(ip->fp));
+	ip->newStatus = newStatus; 
+}
+
+void item_set_popup_status(itemPtr ip, const gboolean newPopupStatus) { 
+
+	if(newPopupStatus != ip->popupStatus) {
+		if(TRUE == newPopupStatus)
+			feed_increase_popup_counter((feedPtr)(ip->fp));
 		else
-			feed_decrease_new_counter((feedPtr)(ip->fp));
+			feed_decrease_popup_counter((feedPtr)(ip->fp));
 			
-		ip->newStatus = newStatus; 
+		ip->popupStatus = newPopupStatus; 
 		/* no need to save feed */
 	}
 }
@@ -157,8 +165,10 @@ void item_free(itemPtr ip) {
 	
 	if(FALSE == ip->readStatus)
 		feed_decrease_unread_counter(ip->fp);
+	if(TRUE == ip->popupStatus)
+		feed_decrease_popup_counter(ip->fp);
 	if(TRUE == ip->newStatus)
-		feed_decrease_new_counter(ip->fp);
+		ui_tray_remove_old(1);
 
 	g_free(ip->title);
 	g_free(ip->source);
@@ -334,6 +344,7 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 	
 	ip = item_new();
 	ip->newStatus = FALSE;
+	ip->popupStatus = FALSE;
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {

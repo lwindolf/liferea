@@ -1,7 +1,7 @@
 /*
    tray icon handling
    
-   Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2004,2005 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,6 +25,12 @@
  * @param count number of messages.
  */
 void ui_tray_add_new(gint count);
+
+/**
+ * Remove some number of messages from the new message count in the tooltip
+ * @param count number of messages.
+ */
+void ui_tray_remove_old(gint count);
 
 /**
  * Set the tooltip to display zero new messages.

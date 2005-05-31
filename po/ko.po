@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-14 19:26+0200\n"
+"POT-Creation-Date: 2005-05-16 22:35+0200\n"
 "PO-Revision-Date: 2005-01-10 23:34+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at electrang.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -55,11 +55,11 @@ msgstr ""
 "자가 버려집니다"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:262
+#: src/conf.c:265
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
-#: src/conf.c:281
+#: src/conf.c:284
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "%s을(를) %s(으)로 변환하는 중 에러발생\n"
@@ -73,13 +73,13 @@ msgstr "http://liferea.sf.net/help/help"
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/export.c:502 src/export.c:504
+#: src/export.c:503 src/export.c:505
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "캐시파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 가져올 수 없습니다!"
 
-#: src/export.c:508 src/export.c:510
+#: src/export.c:509 src/export.c:511
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -87,38 +87,38 @@ msgstr ""
 "빈 도큐먼트 입니다! OPML 도큐먼트 \"%s\"은(는) 가져오기 할 때 비어있으면 안됩"
 "니다."
 
-#: src/export.c:518 src/export.c:520
+#: src/export.c:519 src/export.c:521
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\"은(는) 올바른 OPML 파일이 아닙니다. Liferea는 이 파일을 가져올 수 없습"
 "니다."
 
-#: src/export.c:542
+#: src/export.c:543
 msgid "Imported feed list"
 msgstr "가져온 피드 리스트"
 
-#: src/export.c:553
+#: src/export.c:554
 msgid "Import Feed List"
 msgstr "피드 목록 들여오기"
 
-#: src/export.c:553
+#: src/export.c:554
 msgid "Import"
 msgstr "가져오기"
 
-#: src/export.c:563
+#: src/export.c:564
 msgid "Error while exporting feed list!"
 msgstr "피드 리스트를 내보내던 중 에러가 발생했습니다."
 
-#: src/export.c:565
+#: src/export.c:566
 msgid "Feed List exported!"
 msgstr "피드 목록이 내보내졌습니다"
 
-#: src/export.c:572
+#: src/export.c:573
 msgid "Export Feed List"
 msgstr "피드 목록 내보내기"
 
-#: src/export.c:572
+#: src/export.c:573
 msgid "Export"
 msgstr "내보내기"
 
@@ -196,20 +196,20 @@ msgid "Updating \"%s\""
 msgstr "%s을(를) 새로고치는 중"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1027 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1030 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "피드:"
 
-#: src/feed.c:1027 src/interface.c:3781
+#: src/feed.c:1030 src/interface.c:3781
 msgid "VFolder"
 msgstr "가상폴더"
 
-#: src/feed.c:1035
+#: src/feed.c:1038
 msgid "user defined command"
 msgstr "사용자가 정한 명령:"
 
-#: src/feed.c:1058 src/interface.c:1024 src/interface.c:1434 src/item.c:248
+#: src/feed.c:1061 src/interface.c:1024 src/interface.c:1434 src/item.c:249
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "소스:"
@@ -1110,15 +1110,15 @@ msgid ""
 "appear in the item list."
 msgstr ""
 
-#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:213
+#: src/item.c:226 src/item.c:230 src/item.c:243 src/ui_itemlist.c:226
 msgid "[No title]"
 msgstr "[제목 없음]"
 
-#: src/item.c:232 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:233 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "아이템:"
 
-#: src/item.c:294
+#: src/item.c:295
 #, fuzzy
 msgid "date"
 msgstr "갱신"
@@ -1729,24 +1729,24 @@ msgstr ""
 "이 피드는 연속적이지 않습니다. 더 이상 사용할 수 없습니다. Liferea는 더이상 "
 "그것을 새로 고치지 않지만, 캐시된 머릿글은 읽을 수 있습니다."
 
-#: src/ui_itemlist.c:288
+#: src/ui_itemlist.c:301
 msgid "Date"
 msgstr "날짜"
 
-#: src/ui_itemlist.c:299
+#: src/ui_itemlist.c:312
 msgid "Headline"
 msgstr "머릿글"
 
-#: src/ui_itemlist.c:487 src/ui_itemlist.c:496 src/ui_itemlist.c:547
+#: src/ui_itemlist.c:500 src/ui_itemlist.c:509 src/ui_itemlist.c:560
 msgid "No item has been selected"
 msgstr "아이템이 선택되지 않았습니다"
 
-#: src/ui_itemlist.c:530 src/ui_itemlist.c:550
+#: src/ui_itemlist.c:543 src/ui_itemlist.c:563
 msgid "You must select a feed to delete its items!"
 msgstr "아이템을 지울 피드를 선택해야 합니다!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:617
+#: src/ui_itemlist.c:629
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다 "
 
@@ -2027,11 +2027,20 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr "%s을(를) 찾기"
 
-#: src/ui_search.c:115
+#: src/ui_search.c:81
+#, c-format
+msgid ""
+"%s<h2>%d Search Results for \"%s\"</h2><p>The item list now contains all "
+"items matching the specified search pattern. If you want to save this search "
+"result permanently you can click the VFolder button in the search dialog and "
+"Liferea will add a VFolder to your feed list.</h2>"
+msgstr ""
+
+#: src/ui_search.c:119
 msgid "Please do a search first!"
 msgstr "찾기를 먼저 해주세요!"
 
-#: src/ui_search.c:125
+#: src/ui_search.c:129
 #, fuzzy
 msgid "New VFolder"
 msgstr "폴더 만들기"
@@ -2072,7 +2081,7 @@ msgstr "에러: 파일 %s을(를) 열 수 없습니다"
 msgid "Error: There is no file \"%s\""
 msgstr "에러: \"%s\" 파일이 없습니다!"
 
-#: src/gtkhtml2/gtkhtml2.c:229
+#: src/gtkhtml2/gtkhtml2.c:228
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."

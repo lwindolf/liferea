@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-14 19:26+0200\n"
+"POT-Creation-Date: 2005-05-16 22:35+0200\n"
 "PO-Revision-Date: 2005-05-14 19:17+0300\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <lokalisointi-laatu@linux-aktivaattori.org>\n"
@@ -63,11 +63,11 @@ msgstr ""
 "merkeistä jää pois."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:262
+#: src/conf.c:265
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
-#: src/conf.c:281
+#: src/conf.c:284
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Tiedoston \"%s\" nimen vaihtaminen tiedostoksi \"%s\" ei onnistunut.\n"
@@ -81,51 +81,51 @@ msgstr "http://liferea.sf.net/help/help"
 msgid ".rdf"
 msgstr ".rdf"
 
-#: src/export.c:502 src/export.c:504
+#: src/export.c:503 src/export.c:505
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "XML-virhe välivarastotiedoston lukemisessa. \"%s\":n tuonti ei onnistunut."
 
-#: src/export.c:508 src/export.c:510
+#: src/export.c:509 src/export.c:511
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Tyhjä asiakirja. OPML-asiakirjan \"%s\" ei tulisi olla tyhjä, kun se tuodaan."
 
-#: src/export.c:518 src/export.c:520
+#: src/export.c:519 src/export.c:521
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" ei ole kelvollinen OPML-asiakirja. Liferea ei voi käsitellä tätä "
 "tiedostoa."
 
-#: src/export.c:542
+#: src/export.c:543
 msgid "Imported feed list"
 msgstr "Tuotu syöteluettelo"
 
-#: src/export.c:553
+#: src/export.c:554
 msgid "Import Feed List"
 msgstr "Tuotu syöteluettelo"
 
-#: src/export.c:553
+#: src/export.c:554
 msgid "Import"
 msgstr "Tuo"
 
-#: src/export.c:563
+#: src/export.c:564
 msgid "Error while exporting feed list!"
 msgstr "Virhe syöteluettelon viemisessä."
 
-#: src/export.c:565
+#: src/export.c:566
 msgid "Feed List exported!"
 msgstr "Syöteluettelo viety."
 
-#: src/export.c:572
+#: src/export.c:573
 msgid "Export Feed List"
 msgstr "Vie syöteluettelo"
 
-#: src/export.c:572
+#: src/export.c:573
 msgid "Export"
 msgstr "Vie"
 
@@ -206,20 +206,20 @@ msgid "Updating \"%s\""
 msgstr "\"%s\" päivittyy"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1027 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1030 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Syöte:"
 
-#: src/feed.c:1027 src/interface.c:3781
+#: src/feed.c:1030 src/interface.c:3781
 msgid "VFolder"
 msgstr "V-Kansio"
 
-#: src/feed.c:1035
+#: src/feed.c:1038
 msgid "user defined command"
 msgstr "muu komento"
 
-#: src/feed.c:1058 src/interface.c:1024 src/interface.c:1434 src/item.c:248
+#: src/feed.c:1061 src/interface.c:1024 src/interface.c:1434 src/item.c:249
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Lähde:"
@@ -1115,15 +1115,15 @@ msgstr ""
 "Etsii annettua tekstiä kaikista syötteistä. Etsinnän tulokset näkyvät "
 "otsikkoluettelossa."
 
-#: src/item.c:226 src/item.c:230 src/item.c:242 src/ui_itemlist.c:213
+#: src/item.c:226 src/item.c:230 src/item.c:243 src/ui_itemlist.c:226
 msgid "[No title]"
 msgstr "[Ei nimeä]"
 
-#: src/item.c:232 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:233 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Otsikko:"
 
-#: src/item.c:294
+#: src/item.c:295
 msgid "date"
 msgstr "päiväys"
 
@@ -1737,24 +1737,24 @@ msgstr ""
 "Tämä syöte on lakkautettu, ja ei enää saatavilla. Liferea ei enää päivitä "
 "sitä, mutta voit lukea välivarastoituja otsikoita."
 
-#: src/ui_itemlist.c:288
+#: src/ui_itemlist.c:301
 msgid "Date"
 msgstr "Aika"
 
-#: src/ui_itemlist.c:299
+#: src/ui_itemlist.c:312
 msgid "Headline"
 msgstr "Otsikko"
 
-#: src/ui_itemlist.c:487 src/ui_itemlist.c:496 src/ui_itemlist.c:547
+#: src/ui_itemlist.c:500 src/ui_itemlist.c:509 src/ui_itemlist.c:560
 msgid "No item has been selected"
 msgstr "Otsikkoja ei ole valittu."
 
-#: src/ui_itemlist.c:530 src/ui_itemlist.c:550
+#: src/ui_itemlist.c:543 src/ui_itemlist.c:563
 msgid "You must select a feed to delete its items!"
 msgstr "Syöte, jonka otsikot poistetaan, täytyy valita."
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:617
+#: src/ui_itemlist.c:629
 msgid "There are no unread items "
 msgstr "Lukemattomia otsikkoja ei ole"
 
@@ -2036,11 +2036,20 @@ msgstr "Valitse tallennuskansio"
 msgid "Searching for \"%s\""
 msgstr "Etsi tekstiä \"%s\""
 
-#: src/ui_search.c:115
+#: src/ui_search.c:81
+#, c-format
+msgid ""
+"%s<h2>%d Search Results for \"%s\"</h2><p>The item list now contains all "
+"items matching the specified search pattern. If you want to save this search "
+"result permanently you can click the VFolder button in the search dialog and "
+"Liferea will add a VFolder to your feed list.</h2>"
+msgstr ""
+
+#: src/ui_search.c:119
 msgid "Please do a search first!"
 msgstr "Etsi ensin tekstiä."
 
-#: src/ui_search.c:125
+#: src/ui_search.c:129
 msgid "New VFolder"
 msgstr "Uusi v-kansio"
 
@@ -2080,7 +2089,7 @@ msgstr "Virhe: tiedoston \"%s\" avaaminen ei onnistunut"
 msgid "Error: There is no file \"%s\""
 msgstr "Virhe: Tiedosto \"%s\" ei ole olemassa"
 
-#: src/gtkhtml2/gtkhtml2.c:229
+#: src/gtkhtml2/gtkhtml2.c:228
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
