@@ -75,6 +75,7 @@ typedef struct feed {
 	gchar		*id;			/**< unique feed identifier string */
 	gint		unreadCount;		/**< number of unread items */
 	gint		popupCount;		/**< number of items to be displayed with popup notification feature */
+	gint		newCount;		/**< number of items to be counted by the tray icon */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gint		loaded;			/**< counter which is non-zero if items are to be kept in memory */
 	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
@@ -251,6 +252,11 @@ gint feed_get_unread_counter(feedPtr fp);
 void feed_increase_popup_counter(feedPtr fp);
 void feed_decrease_popup_counter(feedPtr fp);
 gint feed_get_popup_counter(feedPtr fp);
+
+void feed_increase_new_counter(feedPtr fp);
+void feed_decrease_new_counter(feedPtr fp);
+gint feed_get_new_counter(feedPtr fp);
+
 
 gint feed_get_default_update_interval(feedPtr fp);
 void feed_set_default_update_interval(feedPtr fp, gint interval);

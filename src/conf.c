@@ -49,7 +49,7 @@
 static GConfClient	*client;
 
 static guint feedlist_save_timer;
-gboolean feedlistLoading = FALSE;	/* flag set during initial feed list loading */
+static gboolean feedlistLoading = FALSE;	/* flag set during initial feed list loading */
 
 /* configuration strings for the SnowNews HTTP code used from within netio.c */
 char 	*useragent = NULL;

@@ -165,10 +165,14 @@ void item_free(itemPtr ip) {
 	
 	if(FALSE == ip->readStatus)
 		feed_decrease_unread_counter(ip->fp);
-	if(TRUE == ip->popupStatus)
+		
+	if(TRUE == ip->popupStatus)	
 		feed_decrease_popup_counter(ip->fp);
-	if(TRUE == ip->newStatus)
+		
+	if(TRUE == ip->newStatus) {
+		feed_decrease_unread_counter(ip->fp);
 		ui_tray_remove_old(1);
+	}
 
 	g_free(ip->title);
 	g_free(ip->source);
