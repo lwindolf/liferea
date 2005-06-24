@@ -1244,7 +1244,7 @@ msgstr "zuletzt aktualisiert"
 
 #: src/metadata.c:344
 msgid "managing editor"
-msgstr "Leidender Redakteur"
+msgstr "Leitender Redakteur"
 
 #: src/metadata.c:345
 msgid "webmaster"
