@@ -783,7 +783,7 @@ msgstr "Mostrar una _ventana emergente al recibir nuevos elementos"
 
 #: src/interface.c:2279
 msgid "         "
-msgstr "    "
+msgstr "         "
 
 #: src/interface.c:2295
 msgid "Lower Right"
@@ -1839,7 +1839,7 @@ msgstr ""
 "li><li><p><b>Actualizar fuente</b> - Actualiza los contenidos de la fuente "
 "seleccionada. Normalmente, las actualizaciones automáticas son suficientes, "
 "pero en caso de desearse una actualización automática, usa esta opción</p></"
-"li><li><p><b>Actualizar todos</b> - Actualiza todas las fuentes de golpe. </"
+"li><li><p><b>Actualizar todas</b> - Actualiza todas las fuentes de golpe. </"
 "li><li><p><b>Propiedades de la fuente</b> - Desde aquí se pueden cambiar el "
 "intervalo de actualización, el título y otras propiedades de cada elemento</"
 "p></li></ul><p>Para más información sobre el uso de Liferea, por favor, mira "
