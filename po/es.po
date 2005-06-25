@@ -1535,7 +1535,7 @@ msgstr ""
 #: src/ui_feed.c:224
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" actualizado..."
+msgstr "actualizando \"%s\..."
 
 #: src/ui_feed.c:232
 #, c-format
