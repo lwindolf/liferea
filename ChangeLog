@@ -13,6 +13,12 @@
 	  plugins like Flash or Java are loaded. All plugins are now
 	  suppressed using CSS.
 
+	Translations:
+
+	* Updated Polish translation (Wit Wilinski)
+	* Updated traditional Chinese translation (Jim Huang)
+	* Updated Russian translation (Maxim Britov)
+
 	
 2005-03-16  Lars Lindner  <lars.lindner@gmx.net>
 
