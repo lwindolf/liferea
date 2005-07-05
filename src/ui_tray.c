@@ -1,5 +1,5 @@
 /**
- * tray icon handling
+ * @file ui_tray.c tray icon handling
  * 
  * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>
@@ -30,6 +30,7 @@
 #include "callbacks.h"
 #include "eggtrayicon.h"
 #include "support.h"
+#include "feedlist.h"
 #include "ui_tray.h"
 #include "ui_popup.h"
 #include "ui_mainwindow.h"
@@ -42,7 +43,6 @@ extern GdkPixbuf	*icons[];
 extern GtkWidget	*mainwindow;
 
 static GtkWidget	*eventbox = NULL;
-static gint		newItems = 0;
 static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
@@ -84,35 +84,35 @@ static void ui_tray_icon_set(GdkPixbuf *icon) {
 	gtk_widget_show_all(GTK_WIDGET(tray_icon));
 }
 
-void ui_tray_add_new(gint count) {
-	gchar *msg;
+void ui_tray_update(void) {
+	gint	newItems, unreadItems;
+	gchar	*msg, *tmp;
 	
 	if(!tray_icon)
 		return;
 
-	newItems += count;
+	newItems = feedlist_get_new_item_count();
+	unreadItems = feedlist_get_unread_item_count();
 		
 	if(newItems != 0) {
 		ui_tray_icon_set(icons[ICON_AVAILABLE]); 
-		msg = g_strdup_printf(ngettext("%d new item!", "%d new items!", newItems), newItems);
-		ui_tray_tooltip_set(msg);
-		g_free(msg);
+		tmp = g_strdup_printf(ngettext("%d new item", "%d new items", newItems), newItems);
+		msg = g_strdup_printf(ngettext("%s\n%d unread item", "%s\n%d unread items", unreadItems), tmp, unreadItems);
 	} else {
 		ui_tray_icon_set(icons[ICON_EMPTY]);
-		ui_tray_tooltip_set(_("No new items."));
+		tmp = g_strdup(_("No new items"));
+		msg = g_strdup_printf(ngettext("%s\n%d unread item", "%s\n%d unread items", unreadItems), tmp, unreadItems);
 	}
-}
-
-void ui_tray_remove_old(gint count) {
-
-	ui_tray_add_new(-1 * count);
+	ui_tray_tooltip_set(msg);
+	g_free(tmp);
+	g_free(msg);
 }
 
 static void feed_reset_new_counter_cb(nodePtr np) {
 	itemPtr	ip;
 	GSList	*iter;
 	
-	feed_load((feedPtr)np);
+	feedlist_load_feed((feedPtr)np);
 	iter = feed_get_item_list((feedPtr)np);
 	while(NULL != iter) {
 		ip = (itemPtr)iter->data;
@@ -120,20 +120,7 @@ static void feed_reset_new_counter_cb(nodePtr np) {
 			item_set_new_status(ip, FALSE);
 		iter = g_slist_next(iter);
 	}	
-	feed_unload((feedPtr)np);
-}
-
-void ui_tray_zero_new(void) {
-
-	if(!tray_icon)
-		return;
-		
-	if(0 != newItems) {
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feed_reset_new_counter_cb);
-		ui_tray_icon_set(icons[ICON_EMPTY]);
-		ui_tray_tooltip_set(_("No new items."));
-		newItems = 0;
-	}
+	feedlist_unload_feed((feedPtr)np);
 }
 
 /* a click on the systray icon should show the program window
@@ -196,8 +183,7 @@ static void installTrayIcon(void) {
 	g_object_ref(G_OBJECT(tray_icon));
 	
 	tray_icon_tips = gtk_tooltips_new();
-	newItems = -1;
-	ui_tray_zero_new();
+	ui_tray_update();
 }
 
 static void removeTrayIcon() {

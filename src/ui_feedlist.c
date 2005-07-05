@@ -34,19 +34,17 @@
 #include "support.h"
 #include "interface.h"
 #include "callbacks.h"
-#include "feed.h"
+#include "feedlist.h"
 #include "folder.h"
 #include "conf.h"
 #include "ui_feedlist.h"
 #include "ui_mainwindow.h"
-#include "ui_tray.h"
 #include "ui_feed.h"
 #include "ui_vfolder.h"
 #include "update.h"
 #include "favicon.h"
 #include "debug.h"
 #include "ui_tabs.h"
-#include "ui_notification.h"
 #include "ui_queue.h"
 
 extern GtkWidget	*mainwindow;
@@ -179,8 +177,6 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	GdkGeometry		geometry;
 	gint			type = FST_INVALID;
 
-	ui_tray_zero_new();
-
 	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 		gtk_tree_model_get(model, &iter, FS_PTR, &np, -1);
 		if(np != NULL) 
@@ -204,7 +200,8 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
 		}
 		
-		/* Set up the item list */
+		/* update feed list and item list states */
+		feedlist_selection_changed(np);
 		itemlist_load(np);
 	} else {
 		/* If we cannot get the new selection we keep the old one
@@ -430,57 +427,6 @@ feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
 }
 
 /*------------------------------------------------------------------------------*/
-/* refresh feed callback							*/
-/*------------------------------------------------------------------------------*/
-
-static void ui_feedlist_refresh_node(nodePtr ptr) {
-
-	if(FST_FEED == ptr->type)	/* don't process vfolders */
-		feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
-}
-
-void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	nodePtr ptr = (nodePtr)callback_data;
-
-	if(ptr == NULL) {
-		ui_show_error_box(_("You have to select a feed entry"));
-		return;
-	}
-
-	if(download_is_online()) {
-		if(FST_FEED == ptr->type)
-			feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
-		else
-			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, ui_feedlist_refresh_node);
-	} else
-		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
-}
-
-void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
-
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, ui_feedlist_refresh_node);
-}
-
-void on_popup_allunread_selected(void) {
-	nodePtr	np;
-	
-	if(NULL != (np = ui_feedlist_get_selected())) {
-		itemlist_mark_all_read(np);
-		ui_feedlist_update();
-	}
-}
-
-void on_popup_allfeedsunread_selected(void) {
-
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, itemlist_mark_all_read);
-}
-
-void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-
-	on_popup_allunread_selected();
-}
-
-/*------------------------------------------------------------------------------*/
 /* feedlist filter [de]activation callback					*/
 /*------------------------------------------------------------------------------*/
 
@@ -504,48 +450,32 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 /* delete entry callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-static void ui_feedlist_delete_(nodePtr ptr) {
-
-
-	if((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type)) {		
-		ui_notification_remove_feed((feedPtr)ptr);	/* removes an existing notification for this feed */
-		ui_folder_remove_node(ptr);
-		feed_load((feedPtr)ptr);
-		feed_free((feedPtr)ptr);
-	} else {
-		ui_feedlist_do_for_all(ptr, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, ui_feedlist_delete_);
-		folder_free((folderPtr)ptr);
-	}
-	ui_feedlist_update();	/* because vfolder unread counts may have changed */
-}
-
 static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	nodePtr ptr = (nodePtr)user_data;
 	
 	switch(response_id) {
-	case GTK_RESPONSE_YES:
-		ui_feedlist_select(NULL);
-		itemlist_load(NULL);
-		ui_feedlist_delete_(ptr);
+		case GTK_RESPONSE_YES:
+			ui_feedlist_select(NULL);
+			itemlist_load(NULL);
+			feedlist_remove_node((nodePtr)user_data);
+			break;
 	}
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-
-void ui_feedlist_delete(nodePtr ptr) {
+void ui_feedlist_delete(nodePtr np) {
 	GtkWidget *dialog;
 	gchar *text;
 	
-	g_assert(ptr != NULL);
-	g_assert(ptr->ui_data != NULL);
-	g_assert(ptr == ui_feedlist_get_selected());
+	g_assert(np != NULL);
+	g_assert(np->ui_data != NULL);
+	g_assert(np == ui_feedlist_get_selected());
 
-	if(FST_FOLDER == ptr->type) {
-		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), folder_get_title((folderPtr)ptr));
-		text = g_strdup_printf(_("Are you sure that you want to delete \"%s\" and its contents?"), folder_get_title((folderPtr)ptr));
+	if(FST_FOLDER == np->type) {
+		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), folder_get_title((folderPtr)np));
+		text = g_strdup_printf(_("Are you sure that you want to delete \"%s\" and its contents?"), folder_get_title((folderPtr)np));
 	} else {
-		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), feed_get_title((feedPtr)ptr));
-		text = g_strdup_printf(_("Are you sure that you want to delete \"%s\"?"), feed_get_title((feedPtr)ptr));
+		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), feed_get_title((feedPtr)np));
+		text = g_strdup_printf(_("Are you sure that you want to delete \"%s\"?"), feed_get_title((feedPtr)np));
 	}
 
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
@@ -562,13 +492,7 @@ void ui_feedlist_delete(nodePtr ptr) {
 	gtk_widget_show_all(dialog);
 
 	g_signal_connect(G_OBJECT(dialog), "response",
-	                 G_CALLBACK(ui_feedlist_delete_response_cb), ptr);
-}
-
-void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	nodePtr ptr = (nodePtr)callback_data;
-	
-	ui_feedlist_delete(ptr);	
+	                 G_CALLBACK(ui_feedlist_delete_response_cb), np);
 }
 
 /*------------------------------------------------------------------------------*/
@@ -591,6 +515,18 @@ void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWi
 	}
 	g_message(_("You must select a feed entry"));
 	ui_show_error_box(_("You must select a feed entry."));
+}
+
+void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data) {
+	nodePtr ptr = ui_feedlist_get_selected();
+	
+	if((ptr != NULL) && (FST_FOLDER == ptr->type)) {
+		on_popup_foldername_selected((gpointer)ptr, 0, NULL);
+	} else if((ptr != NULL) && (FST_FEED == ptr->type)) {
+		on_popup_prop_selected((gpointer)ptr, 0, NULL);
+	} else {
+		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
+	}
 }
 
 /*------------------------------------------------------------------------------*/
@@ -640,7 +576,7 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 	feed_set_filter(fp, filter);
 	parent = ui_feedlist_get_target_folder(&pos);
 	feed_set_available(fp, TRUE); /* To prevent the big red X from being next to the new feed */
-	ui_feedlist_add(parent, (nodePtr)fp, pos);
+	feedlist_add_feed(parent, fp, pos);
 	ui_feedlist_update();
 	ui_feedlist_select((nodePtr)fp);
 	
@@ -657,6 +593,11 @@ void on_newbtn_clicked(GtkButton *button, gpointer user_data) {
 	newdialog = ui_feed_newdialog_new(GTK_WINDOW(mainwindow));
 	
 	gtk_widget_show(newdialog);
+}
+
+void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
+
+	on_newbtn_clicked(NULL, NULL);
 }
 
 /* recursivly calls func for every feed in the feed list */
@@ -700,150 +641,3 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 		}
 	}
 }
-
-static void ui_feedlist_check_update_counter(feedPtr fp) {
-	GTimeVal	now;
-	gint		interval;
-
-	g_get_current_time(&now);
-	interval = feed_get_update_interval(fp);
-	
-	if(-2 >= interval)
-		return;		/* don't update this feed */
-		
-	if(-1 == interval)
-		interval = getNumericConfValue(DEFAULT_UPDATE_INTERVAL);
-	
-	if(interval > 0)
-		if(fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
-			feed_schedule_update(fp, 0);
-
-	/* And check for favicon updating */
-	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
-		favicon_download(fp);
-}
-
-gboolean ui_feedlist_auto_update(void *data) {
-
-	debug_enter("ui_feedlist_auto_update");
-	if(download_is_online()) {
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)ui_feedlist_check_update_counter);
-	} else {
-		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
-	}
-	debug_exit("ui_feedlist_auto_update");
-
-	return TRUE;
-}
-
-/*------------------------------------------------------------------------------*/
-/* DBUS support for new subscriptions                                           */
-/*------------------------------------------------------------------------------*/
-
-#ifdef USE_DBUS
-
-static DBusHandlerResult
-ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
-{
-	DBusError error;
-	DBusMessage *reply;
-	char *s;
-	gboolean done = TRUE;
-	
-	/* Retreive the dbus message arguments (the new feed url) */	
-	dbus_error_init (&error);
-	if (!dbus_message_get_args (message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
-	    reply = dbus_message_new_error (message, error.name, error.message);
-	    dbus_connection_send (connection, reply, NULL);
-	    dbus_message_unref (reply);
-		dbus_error_free(&error);
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_error_free(&error);
-
-
-	/* Subscribe the feed */
-	ui_feedlist_new_subscription(s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
-
-	/* Acknowledge the new feed by returning true */
-	reply = dbus_message_new_method_return (message);
-	if (reply != NULL)
-	{
-		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, &done,DBUS_TYPE_INVALID);
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	else
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-}
-
-
-static DBusHandlerResult
-ui_feedlist_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data)
-{
-	const char  *method;
-	
-	if (connection == NULL)
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	if (message == NULL)
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	
-	method = dbus_message_get_member (message);
-	if (strcmp (DBUS_RSS_METHOD, method) == 0)
-		return ui_feedlist_dbus_subscribe (connection, message);
-	else
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-}
-
-void
-ui_feedlist_dbus_connect ()
-{
-	DBusError       error;
-	DBusConnection *connection;
-	DBusObjectPathVTable feedreader_vtable = { NULL, ui_feedlist_dbus_message_handler, NULL};
-
-	/* Get the Session bus */
-	dbus_error_init (&error);
-	connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
-	if (connection == NULL || dbus_error_is_set (&error))
-    {
-     	fprintf (stderr, "*** ui_feedlist.c: Failed get session dbus: %s | %s\n", error.name,  error.message);
-		dbus_error_free (&error);
-     	return;
-    }
-    dbus_error_free (&error);
-    
-    /* Various inits */
-    dbus_connection_set_exit_on_disconnect (connection, FALSE);
-	dbus_connection_setup_with_g_main (connection, NULL);
-	    
-	/* Register for the FeedReader service on the bus, so we get method calls */
-#if (DBUS_VERSION == 1)
-    dbus_bus_acquire_service (connection, DBUS_RSS_SERVICE, 0, &error);
-#elif (DBUS_VERSION == 2)
-	dbus_bus_request_name (connection, DBUS_RSS_SERVICE, 0, &error);
-#else
-#error Unknown DBUS version passed to ui_feedlist
-#endif
-	if (dbus_error_is_set (&error))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Failed to get dbus service: %s | %s\n", error.name, error.message);
-		dbus_error_free (&error);
-		return;
-	}
-	dbus_error_free (&error);
-	
-	/* Register the object path so we can receive method calls for that object */
-	if (!dbus_connection_register_object_path (connection, DBUS_RSS_OBJECT, &feedreader_vtable, &error))
- 	{
- 		fprintf (stderr, "*** ui_feedlist.c:Failed to register dbus object path: %s | %s\n", error.name, error.message);
- 		dbus_error_free (&error);
-    	return;
-    }
-    dbus_error_free (&error);
-}
-
-#endif /* USE_DBUS */

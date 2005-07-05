@@ -27,20 +27,6 @@
 #include "feed.h"
 #include "folder.h"
 
-#ifdef USE_DBUS
-
-/* Yes, we know that DBUS API isn't stable yet */
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-lowlevel.h>
-
-#define DBUS_RSS_SERVICE "org.gnome.feed.Reader"
-#define DBUS_RSS_OBJECT  "/org/gnome/feed/Reader"
-#define DBUS_RSS_METHOD  "Subscribe"
-
-#endif
-
 /* constants for attributes in feedstore */
 enum {
 	FS_LABEL, /* Displayed name */
@@ -77,13 +63,6 @@ void ui_feedlist_select(nodePtr fp);
 
 typedef void 	(*nodeActionFunc)	(nodePtr fp);
 typedef void 	(*nodeActionDataFunc)	(nodePtr fp, gpointer user_data);
-
-/**
- * Returns the feed store, creating it if needed.
- *
- * @return feed store pointer.
- */
-GtkTreeStore * getFeedStore(void);
 
 /**
  * Initializes the feed list. For example, it creates the various
@@ -182,12 +161,6 @@ feedPtr	ui_feedlist_find_unread_feed(nodePtr folder);
 void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
 
 /**
- * timeout callback to trigger the auto update handling
- * for the feed list
- */
-gboolean ui_feedlist_auto_update(void *data);
-
-/**
  * Start listening on dbus for new subscriptions
  */
 void ui_feedlist_dbus_connect(void);
@@ -213,12 +186,6 @@ void ui_feedlist_add(folderPtr parent, nodePtr node, gint position);
  */
 void ui_feedlist_delete(nodePtr ptr);
 
-/**
- * Sets all displayed items as read
- */
-void on_popup_allunread_selected(void);
-void on_popup_allfeedsunread_selected(void);
-
 /** 
  * @name menu and dialog callbacks 
  * @{
@@ -226,14 +193,7 @@ void on_popup_allfeedsunread_selected(void);
 void on_popup_mark_as_read(gpointer callback_data,
                            guint callback_action,
                            GtkWidget *widget);
-void on_popup_refresh_selected(gpointer callback_data,
-						 guint callback_action,
-						 GtkWidget *widget);
-void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
 
-void on_popup_delete(gpointer callback_data,
-						guint callback_action,
-						GtkWidget *widget);
 void on_popup_prop_selected(gpointer callback_data,
 					   guint callback_action,
 					   GtkWidget *widget);
@@ -242,9 +202,12 @@ void on_newbtn_clicked(GtkButton *button, gpointer user_data);
 
 void on_fileselect_clicked(GtkButton *button, gpointer user_data);
 void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);
-void feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data);
 
 void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gpointer user_data);
+
+void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data);
+void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data);
+void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data);
 
 /*@}*/
 

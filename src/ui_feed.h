@@ -23,13 +23,6 @@
 #define _UI_FEED_H
 #include "feed.h"
 
-/** 
- * Handles completed feed update requests.
- *
- * @param request	the completed request
- */
-void ui_feed_process_update_result(struct request *request);
-
 /**
  * Updates the feed list entry of the given feed.
  *

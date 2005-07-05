@@ -245,7 +245,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 	g_free(esc_title);
 	g_free(esc_time_str);
 	
-	if(TRUE == item_get_flag(ip)) 
+	if(TRUE == item_get_flag_status(ip)) 
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */

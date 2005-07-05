@@ -1,7 +1,7 @@
 /**
  * @file feed.c common feed handling
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -181,7 +181,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 				fp->metadata = NULL;
 				
 				if(FALSE == handler->merge)
-					feed_clear_item_list(fp);	/* for directories */
+					feed_remove_items(fp);	/* for directories */
 				
 				(*(handler->feedParser))(fp, doc, cur);		/* parse it */
 				handled = TRUE;				
@@ -315,7 +315,7 @@ void feed_save(feedPtr fp) {
 				if((saveMaxCount != CACHE_UNLIMITED) &&
 				   (saveCount >= saveMaxCount) &&
 				   (fp->fhp == NULL || fp->fhp->directory == FALSE) &&
-				   !item_get_flag(ip)) {
+				   ! item_get_flag_status(ip)) {
 				   	itemlist_remove_item(ip);
 				} else {
 					item_save(ip, feedNode);
@@ -346,7 +346,8 @@ void feed_save(feedPtr fp) {
 
 /* Function which is called to load a feed's into memory. This function
    might be called multiple times even if the feed was already loaded.
-   Each time the method is called a reference counter is incremented. */
+   Each time the method is called a reference counter is incremented. 
+   Only to be called by feedlist_load_feed(). */
 gboolean feed_load(feedPtr fp) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
@@ -354,22 +355,12 @@ gboolean feed_load(feedPtr fp) {
 	gchar		*filename, *tmp, *data = NULL;
 	int		error = 0;
 	gsize 		length;
-	
+
 	debug_enter("feed_load");
 	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(fp));
-	g_assert(NULL != fp);	
+	g_assert(NULL != fp);
 	g_assert(NULL != fp->id);
 	
-	if(FST_VFOLDER == feed_get_type(fp)) {
-		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
-		return TRUE;
-	}
-	
-	if(0 != (fp->loaded)++) {
-		debug0(DEBUG_CACHE, "feed already loaded!\n");
-		return TRUE;
-	}
-
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
@@ -410,9 +401,10 @@ gboolean feed_load(feedPtr fp) {
 			break;		
 		}
 
-		fp->unreadCount = 0;
 		metadata_list_free(fp->metadata);
 		fp->metadata = NULL;
+		fp->unreadCount = 0;
+		fp->newCount = 0;
 
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
@@ -478,40 +470,29 @@ gboolean feed_load(feedPtr fp) {
    
    Each time this function is called the reference counter of all
    feeds is decremented and if it zero the unnecessary feed infos are 
-   free'd */
+   free'd. Only to be called by feedlist_unload_feed(). */
 void feed_unload(feedPtr fp) {
-	gint 	unreadCount;
+	gint 	unreadCount, newCount;
 
 	g_assert(NULL != fp);
-	g_assert(0 <= fp->loaded);	/* could indicate bad loaded reference counting */
-		
-	if(FST_VFOLDER == feed_get_type(fp)) {
-		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
-		return;
-	}
+	g_assert(0 != fp->loaded);
 	
-	if(0 != fp->loaded) {
-		feed_save(fp);		/* save feed before unloading */
+	feed_save(fp);		/* save feed before unloading */
 
-		if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-			debug_enter("feed_unload");
-			if(1 == fp->loaded) {
-				if(FST_FEED == feed_get_type(fp)) {
-					debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
-
-					/* free items */
-					unreadCount = fp->unreadCount;
-					feed_clear_item_list(fp);						
-					fp->unreadCount = unreadCount;
-				} else {
-					debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
-				}
+	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
+		debug_enter("feed_unload");
+		if(1 == fp->loaded) {
+			if(FST_FEED == feed_get_type(fp)) {
+				debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
+				feed_clear_item_list(fp);						
 			} else {
-				debug2(DEBUG_CACHE, "not unloading (%s) because it's used (%d references)...", feed_get_source(fp), fp->loaded);
+				debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
 			}
-			fp->loaded--;
-			debug_exit("feed_unload");
+		} else {
+			debug2(DEBUG_CACHE, "not unloading (%s) because it's used (%d references)...", feed_get_source(fp), fp->loaded);
 		}
+		fp->loaded--;
+		debug_exit("feed_unload");
 	}
 }
 
@@ -681,10 +662,11 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			if(TRUE == item_get_popup_status(new_ip))
 				feed_increase_popup_counter(fp);
 				
-			if(TRUE == item_get_new_status(new_ip)) {
+			if(TRUE == item_get_new_status(new_ip))
 				feed_increase_new_counter(fp);
-				ui_tray_add_new(1);
-			}
+				
+			feedlist_update_counters(item_get_read_status(new_ip)?0:1,
+						 item_get_new_status(new_ip)?1:0);
 
 			fp->items = g_slist_prepend(fp->items, (gpointer)new_ip);
 			new_ip->fp = fp;
@@ -711,7 +693,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			}
 		}
 	} else {
-		/* just add the item */
+		/* in case of vfolder just add the item */
 		if(FALSE == item_get_read_status(new_ip))
 			feed_increase_unread_counter(fp);
 		fp->items = g_slist_append(fp->items, (gpointer)new_ip);
@@ -964,6 +946,7 @@ void feed_clear_item_list(feedPtr fp) {
 	while(NULL != item) {
 		item_free(item->data);
 		item = g_slist_next(item);
+		/* explicitly not changing the item state counters */
 	}
 	g_slist_free(fp->items);
 	fp->items = NULL;
@@ -976,20 +959,30 @@ void feed_clear_item_list(feedPtr fp) {
  */
 void feed_remove_item(feedPtr fp, itemPtr ip) {
 
-	if(NULL == fp)
-		return;
+	g_assert(NULL != fp);
 		
-	/*g_print("removing item %d from feed %d\n", ip, fp);
-	g_print("   feed:%s\n", fp->title);
-	g_print("   item:%s\n", ip->title);*/
-	if(NULL != g_slist_find(fp->items, ip)) {
+	if(NULL != g_slist_find(fp->items, ip)) {	
 		fp->items = g_slist_remove(fp->items, ip);	
-		if(FST_FEED == fp->type) {
+		
+		if(FST_VFOLDER != fp->type) {
 			vfolder_remove_item(ip);		/* remove item copies */
 			fp->needsCacheSave = TRUE;
+			
+			feedlist_update_counters(item_get_read_status(ip)?0:-1,
+						 item_get_new_status(ip)?-1:0);
 		}
-		/*g_print("freeing item structure %d\n", ip);*/
-		item_free(ip);					/* remove the item */
+ 
+		if(FALSE == item_get_read_status(ip))
+			feed_decrease_unread_counter(fp);
+		
+		if(TRUE == item_get_popup_status(ip))
+			feed_decrease_popup_counter(fp);
+		
+		if(TRUE == item_get_new_status(ip))
+			feed_decrease_new_counter(fp);
+		
+		item_free(ip);
+
 	} else {
 		g_warning("feed_remove_item(): item (%s) to be removed not found...", ip->title);
 	}
@@ -1009,6 +1002,10 @@ void feed_remove_items(feedPtr fp) {
 		item = g_slist_next(item);
 	}
 	g_slist_free(fp->items);
+	feedlist_update_counters((-1)*fp->unreadCount, (-1)*fp->newCount);
+	fp->unreadCount = 0;
+	fp->popupCount = 0;
+	fp->newCount = 0;
 	fp->items = NULL;
 	fp->needsCacheSave = TRUE;	/* force feed saving to make it permanent */
 }

@@ -104,7 +104,7 @@ const gchar *	item_get_real_source_title(itemPtr ip);
 /** Returns the modification time of ip. */
 const time_t	item_get_time(itemPtr ip);
 /** Returns the flag status of ip */
-const gboolean	item_get_flag(itemPtr ip);
+const gboolean	item_get_flag_status(itemPtr ip);
 /** Returns the read status of ip. */
 const gboolean	item_get_read_status(itemPtr ip);
 /** Returns the new flag of ip. */
@@ -142,10 +142,10 @@ void 		item_set_update_status(itemPtr ip, const gboolean newStatus);
  * change.
  *
  * @param ip item to be marked or unmarked
- * @param newStatus set to TRUE if the item is to be marked, or FALSE to
+ * @param newFlagStatus set to TRUE if the item is to be marked, or FALSE to
  * unmark the item
  */
-void	item_set_flag(itemPtr ip, const gboolean newStatus);
+void	item_set_flag_status(itemPtr ip, const gboolean newFlagStatus);
 
 /**
  * Parse an xml tree and return a new itempointer generated 

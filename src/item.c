@@ -106,73 +106,79 @@ const gchar *	item_get_real_source_url(itemPtr ip) { return (ip != NULL ? ip->re
 const gchar *	item_get_real_source_title(itemPtr ip) { return (ip != NULL ? ip->real_source_title : NULL); }
 const time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
 const gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
-const gboolean item_get_flag(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
+const gboolean item_get_flag_status(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
 const gboolean item_get_new_status(itemPtr ip) { g_assert(ip != NULL); return ip->newStatus; }
 const gboolean item_get_popup_status(itemPtr ip) { g_assert(ip != NULL); return ip->popupStatus; }
 const gboolean item_get_update_status(itemPtr ip) { g_assert(ip != NULL); return ip->updateStatus; }
 
-void item_set_flag(itemPtr ip, gboolean newStatus) {
+void item_set_flag_status(itemPtr ip, gboolean newFlagStatus) {
 
-	if(newStatus != ip->marked) {
-		ip->marked = newStatus;
+	if(newFlagStatus != ip->marked) {
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
+			
+		ip->marked = newFlagStatus;
 	}
 }
 
-void item_set_new_status(itemPtr ip, const gboolean newStatus) { 
+void item_set_new_status(itemPtr ip, const gboolean newNewStatus) { 
 
-	ip->newStatus = newStatus; 
+	if(newNewStatus != ip->newStatus) {
+		if(ip->fp != NULL) {
+			if(TRUE == newNewStatus)
+				feed_increase_new_counter((feedPtr)(ip->fp));
+			else
+				feed_decrease_new_counter((feedPtr)(ip->fp));
+				
+			ip->fp->needsCacheSave = TRUE;
+		}	
+		ip->newStatus = newNewStatus; 
+	}
 }
 
 void item_set_popup_status(itemPtr ip, const gboolean newPopupStatus) { 
 
 	if(newPopupStatus != ip->popupStatus) {
-		if(TRUE == newPopupStatus)
-			feed_increase_popup_counter((feedPtr)(ip->fp));
-		else
-			feed_decrease_popup_counter((feedPtr)(ip->fp));
+		if(ip->fp != NULL) {
+			if(TRUE == newPopupStatus)
+				feed_increase_popup_counter((feedPtr)(ip->fp));
+			else
+				feed_decrease_popup_counter((feedPtr)(ip->fp));
+
+			/* no need to save feed */
+		}
 			
 		ip->popupStatus = newPopupStatus; 
-		/* no need to save feed */
 	}
 }
 
 void item_set_update_status(itemPtr ip, const gboolean newStatus) { 
 	
 	if(newStatus != ip->updateStatus) {
-		ip->updateStatus = newStatus; 
 		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
+			
+		ip->updateStatus = newStatus; 
 	}
 }
 
 void item_set_read_status(itemPtr ip, gboolean newStatus) { 
 	
 	if(newStatus != ip->readStatus) {
-		if(FALSE == newStatus)
-			feed_increase_unread_counter((feedPtr)(ip->fp));
-		else
-			feed_decrease_unread_counter((feedPtr)(ip->fp));
+		if(ip->fp != NULL) {
+			if(FALSE == newStatus)
+				feed_increase_unread_counter((feedPtr)(ip->fp));
+			else
+				feed_decrease_unread_counter((feedPtr)(ip->fp));
 
-		ip->readStatus = newStatus;
-		if(ip->fp != NULL)
 			ip->fp->needsCacheSave = TRUE;
+		}
+		
+		ip->readStatus = newStatus;
 	}
 }
 
 void item_free(itemPtr ip) {
-	
-	if(FALSE == ip->readStatus)
-		feed_decrease_unread_counter(ip->fp);
-		
-	if(TRUE == ip->popupStatus)	
-		feed_decrease_popup_counter(ip->fp);
-		
-	if(TRUE == ip->newStatus) {
-		feed_decrease_unread_counter(ip->fp);
-		ui_tray_remove_old(1);
-	}
 
 	g_free(ip->title);
 	g_free(ip->source);
@@ -347,8 +353,8 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 	g_assert(NULL != cur);
 	
 	ip = item_new();
-	ip->newStatus = FALSE;
 	ip->popupStatus = FALSE;
+	ip->newStatus = FALSE;
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {
@@ -380,16 +386,17 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"nr"))
 			ip->nr = atol(tmp);
 
+		else if(!xmlStrcmp(cur->name, BAD_CAST"newStatus"))
+			item_set_new_status(ip, (0 == atoi(tmp))?FALSE:TRUE);
+			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
-			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
+			item_set_read_status(ip, (0 == atoi(tmp))?FALSE:TRUE);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"updateStatus"))
-			ip->updateStatus = (0 == atoi(tmp))?FALSE:TRUE;
+			item_set_update_status(ip, (0 == atoi(tmp))?FALSE:TRUE);
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"mark")) 
-			/* we don't call item_set_mark here because it would
-			 * update the UI */
-			ip->marked = (1 == atoi(tmp))?TRUE:FALSE;
+			item_set_flag_status(ip, (1 == atoi(tmp))?TRUE:FALSE);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
 			item_set_time(ip, atol(tmp));
@@ -434,6 +441,10 @@ void item_save(itemPtr ip, xmlNodePtr feedNode) {
 		xmlNewTextChild(itemNode, NULL, "nr", tmp);
 		g_free(tmp);
 
+		tmp = g_strdup_printf("%d", (TRUE == item_get_new_status(ip))?1:0);
+		xmlNewTextChild(itemNode, NULL, "newStatus", tmp);
+		g_free(tmp);
+
 		tmp = g_strdup_printf("%d", (TRUE == item_get_read_status(ip))?1:0);
 		xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
 		g_free(tmp);
@@ -442,7 +453,7 @@ void item_save(itemPtr ip, xmlNodePtr feedNode) {
 		xmlNewTextChild(itemNode, NULL, "updateStatus", tmp);
 		g_free(tmp);
 
-		tmp = g_strdup_printf("%d", (TRUE == item_get_flag(ip))?1:0);
+		tmp = g_strdup_printf("%d", (TRUE == item_get_flag_status(ip))?1:0);
 		xmlNewTextChild(itemNode, NULL, "mark", tmp);
 		g_free(tmp);
 

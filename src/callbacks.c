@@ -37,7 +37,7 @@
 #include "interface.h"
 #include "support.h"
 #include "folder.h"
-#include "feed.h"
+#include "feedlist.h"
 #include "item.h"
 #include "conf.h"
 #include "export.h"
@@ -138,8 +138,8 @@ void ui_init(gboolean startIconified) {
 #endif
 
 	/* setup one minute timer for automatic updating, and try updating now */
- 	(void)g_timeout_add(60*1000, ui_feedlist_auto_update, NULL);
-	ui_feedlist_auto_update(NULL);
+ 	(void)g_timeout_add(60*1000, feedlist_auto_update, NULL);
+	feedlist_auto_update(NULL);
 	
 	if(startIconified)
 		gtk_window_iconify(GTK_WINDOW(mainwindow));

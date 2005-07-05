@@ -405,50 +405,6 @@ static void ui_mainwindow_restore_position(GtkWidget *window) {
  * Feed menu callbacks
  */
 
-void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
-	on_newbtn_clicked(NULL, NULL);
-}
-
-void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
-	feedPtr fp = (feedPtr)ui_feedlist_get_selected();
-
-	on_popup_refresh_selected((gpointer)fp, 0, NULL);
-}
-
-void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
-
-	on_popup_newfolder_selected();
-}
-
-void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
-	nodePtr ptr = (nodePtr)ui_feedlist_get_selected();
-
-	ui_feedlist_delete(ptr);
-}
-
-void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data) {
-	nodePtr ptr = ui_feedlist_get_selected();
-	
-	if((ptr != NULL) && (FST_FOLDER == ptr->type)) {
-		on_popup_foldername_selected((gpointer)ptr, 0, NULL);
-	} else if((ptr != NULL) && (FST_FEED == ptr->type)) {
-		on_popup_prop_selected((gpointer)ptr, 0, NULL);
-	} else {
-		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
-	}
-}
-
-
-void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
-	nodePtr ptr = ui_feedlist_get_selected();
-	
-	if (ptr != NULL) {
-		on_popup_refresh_selected((gpointer)ptr, 0, NULL);
-	} else {
-		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
-	}
-}
-
 gboolean on_close(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	if(trayCount == 0)
@@ -540,7 +496,7 @@ static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *button
 	GtkWidget			*button;
 
 	g_assert(TRUE != (saving & directory));
-g_print("file/dir chooser: saving=%s directory=%s currentFile=%s file=%s data=%p\n", saving?"TRUE":"FALSE", directory?"TRUE":"FALSE", currentFilename, filename, user_data);
+
 #if GTK_CHECK_VERSION(2,4,0)
 	dialog = gtk_file_chooser_dialog_new(title,
 	                                     parent,

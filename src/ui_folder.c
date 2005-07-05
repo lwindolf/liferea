@@ -51,6 +51,11 @@ void on_popup_newfolder_selected(void) {
 	gtk_widget_show(newfolderdialog);
 }
 
+void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
+
+	on_popup_newfolder_selected();
+}
+
 void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*foldertitleentry;
 	gchar		*foldertitle;

@@ -145,7 +145,7 @@ static gboolean rule_item_is_unread(rulePtr rp, itemPtr ip) {
 
 static gboolean rule_item_is_flagged(rulePtr rp, itemPtr ip) {
 
-	return item_get_flag(ip);
+	return item_get_flag_status(ip);
 }
 
 /* rule initialization */

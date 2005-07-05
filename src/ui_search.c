@@ -112,7 +112,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		folder = ui_feedlist_get_target_folder(&pos);
 		fp = searchFeed;
 		searchFeed = NULL;
-		ui_feedlist_add(folder, (nodePtr)fp, pos);
+		feedlist_add_feed(folder, (nodePtr)fp, pos);
 		ui_feedlist_update();
 		ui_feedlist_select((nodePtr)fp);
 	} else {
@@ -128,7 +128,7 @@ void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	fp = vfolder_new();
 	feed_set_title(fp, _("New VFolder"));
 	folder = ui_feedlist_get_target_folder(&pos);
-	ui_feedlist_add(folder, (nodePtr)fp, pos);
+	feedlist_add_feed(folder, (nodePtr)fp, pos);
 	ui_feedlist_update();
 	ui_feedlist_select((nodePtr)fp);
 }

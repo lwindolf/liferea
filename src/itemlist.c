@@ -26,6 +26,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "support.h"
 #include "vfolder.h"
 #include "ui_itemlist.h"
@@ -51,7 +52,7 @@ static void itemlist_load_feed(feedPtr fp, gpointer data) {
 	itemPtr		ip;
 	
 	/* load model */
-	feed_load(fp);
+	feedlist_load_feed(fp);
 	/* update itemlist in view */	
 	itemlist = feed_get_item_list(fp);
 	itemlist = g_slist_copy(itemlist);
@@ -163,7 +164,7 @@ void itemlist_load(nodePtr node) {
 
 	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 		debug0(DEBUG_CACHE, "unloading everything...");
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feed_unload);
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feedlist_unload_feed);
 	}
 	
 	itemlist_reload(node);
@@ -194,8 +195,8 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	itemPtr		sourceItem;
 	feedPtr		sourceFeed;
 	
-	if(newStatus != item_get_flag(ip)) {
-		item_set_flag(ip, newStatus);
+	if(newStatus != item_get_flag_status(ip)) {
+		item_set_flag_status(ip, newStatus);
 		ui_itemlist_update_item(ip);
 
 		if(FST_FEED != ip->fp->type) {
@@ -203,22 +204,24 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 			if(ip->sourceFeed != NULL) {
 				/* propagate change to source feed, this indirectly updates us... */
 				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-				feed_load(sourceFeed);
+				feedlist_load_feed(sourceFeed);
 				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
 					itemlist_set_flag(sourceItem, newStatus);
-				feed_unload(sourceFeed);
+				feedlist_unload_feed(sourceFeed);
 			}
 		} else {
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
 		ui_feedlist_update();
+
+		feedlist_reset_new_item_count();		
 	}
 }
 	
 void itemlist_toggle_flag(itemPtr ip) {
 
-	itemlist_set_flag(ip, !item_get_flag(ip));
+	itemlist_set_flag(ip, !item_get_flag_status(ip));
 }
 
 void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
@@ -234,19 +237,19 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 			if(ip->sourceFeed != NULL) {
 				/* propagate change to source feed, this indirectly updates us... */
 				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-				feed_load(sourceFeed);
+				feedlist_load_feed(sourceFeed);
 				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
 					itemlist_set_read_status(sourceItem, newStatus);
-				feed_unload(sourceFeed);
+				feedlist_unload_feed(sourceFeed);
 			}
 		} else {		
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
+			feedlist_update_counters(newStatus?-1:1, 0);
 		}
 		ui_feedlist_update();
-		
-		if(TRUE == newStatus)
-			ui_tray_zero_new();		/* reset tray icon (including all new states) */
+
+		feedlist_reset_new_item_count();
 	}
 }
 
@@ -268,16 +271,18 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 			if(ip->sourceFeed != NULL) {
 				/* propagate change to source feed, this indirectly updates us... */
 				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-				feed_load(sourceFeed);
+				feedlist_load_feed(sourceFeed);
 				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
 					itemlist_set_update_status(sourceItem, newStatus);
-				feed_unload(sourceFeed);
+				feedlist_unload_feed(sourceFeed);
 			}
 		} else {
 			vfolder_update_item(ip);	/* there might be vfolders using this item */
 			vfolder_check_item(ip);		/* and check if now a rule matches */
 		}
 		ui_feedlist_update();
+
+		feedlist_reset_new_item_count();
 	}
 }
 
@@ -290,7 +295,7 @@ void itemlist_mark_all_read(nodePtr np) {
 	} else {
 		/* if not we mark all items of the item list as read */
 		
-		feed_load((feedPtr)np);
+		feedlist_load_feed((feedPtr)np);
 
 		/* two loops on list copies because the itemlist_set_* 
 		   methods may modify the feeds original item list */
@@ -311,7 +316,7 @@ void itemlist_mark_all_read(nodePtr np) {
 		}
 		g_slist_free(items);
 
-		feed_unload((feedPtr)np);
+		feedlist_unload_feed((feedPtr)np);
 	}
 }
 
@@ -374,6 +379,8 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 		} else {
 			displayed_item = NULL;
 		}
+
+		feedlist_reset_new_item_count();
 	}
 }
 

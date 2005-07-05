@@ -34,6 +34,7 @@
 #include "ui_htmlview.h"
 #include "ui_tabs.h"
 #include "itemlist.h"
+#include "feedlist.h"
 
 /* icon constants */
 enum icons {
@@ -94,34 +95,6 @@ on_feedlist_drag_data_received         (GtkWidget       *widget,
 
 void
 on_about_activate                      (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_folder_new                     (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_feed_new                     (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_delete                         (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_properties                     (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_update                         (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_folder_delete                  (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
-void
-on_menu_folder_rename                  (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
 gboolean
