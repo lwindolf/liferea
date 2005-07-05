@@ -108,21 +108,6 @@ void ui_tray_update(void) {
 	g_free(msg);
 }
 
-static void feed_reset_new_counter_cb(nodePtr np) {
-	itemPtr	ip;
-	GSList	*iter;
-	
-	feedlist_load_feed((feedPtr)np);
-	iter = feed_get_item_list((feedPtr)np);
-	while(NULL != iter) {
-		ip = (itemPtr)iter->data;
-		if(TRUE == item_get_new_status(ip))
-			item_set_new_status(ip, FALSE);
-		iter = g_slist_next(iter);
-	}	
-	feedlist_unload_feed((feedPtr)np);
-}
-
 /* a click on the systray icon should show the program window
    if invisible or hide it if visible */
 static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
@@ -168,7 +153,7 @@ static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
 
 static void installTrayIcon(void) {
 
-	g_assert(!tray_icon);
+	g_assert(NULL != tray_icon);
 
 	tray_icon = egg_tray_icon_new(PACKAGE);
 	eventbox = gtk_event_box_new();
@@ -205,8 +190,7 @@ void ui_tray_enable(gboolean enabled) {
 		if(tray_icon == NULL)
 			installTrayIcon();
 	} else {
-		if(tray_icon != NULL) {
+		if(tray_icon != NULL)
 			removeTrayIcon();
-		}
 	}
 }
