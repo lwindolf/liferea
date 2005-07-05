@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-24 22:03+0200\n"
+"POT-Creation-Date: 2005-07-06 00:01+0200\n"
 "PO-Revision-Date: 2004-11-25 17:25+CET\n"
 "Last-Translator: Jakub W. Jóźwicki <jakub007@go2.pl>\n"
 "Language-Team: Polski\n"
@@ -144,7 +144,7 @@ msgstr ""
 "<p>Błąd XML przy czytaniu subskrypcji! Subskrypcja \"%s\" nie może być "
 "wczytana!</p>"
 
-#: src/feed.c:155 src/feed.c:397
+#: src/feed.c:155 src/feed.c:388
 msgid "<p>Empty document!</p>"
 msgstr "<p>Pusty dokument!</p>"
 
@@ -167,13 +167,13 @@ msgstr ""
 "<a href=\"http://liferea.sourceforge.net/index.php#supported_formats"
 "\">obsługiwany</a>.</p>"
 
-#: src/feed.c:377
+#: src/feed.c:368
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Błąd przy czytaniu pliku pamięci podręcznej \"%s\" ! Nie można wczytać pliku!"
 
-#: src/feed.c:389
+#: src/feed.c:380
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -182,48 +182,48 @@ msgstr ""
 "<p>Błąd XML przy parsowaniu pliku pamięci podręcznej! Nie można wczytać "
 "pliku \"%s\"!</p>"
 
-#: src/feed.c:408
+#: src/feed.c:399
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" nie jest prawidłowym plikiem pamięci podręcznej! Nie można go "
 "przeczytać!</p>"
 
-#: src/feed.c:467
+#: src/feed.c:453
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Wystąpiły błędy przy parsowaniu pliku pamięci podęcznej \"%s\""
 
-#: src/feed.c:538
+#: src/feed.c:513
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Subskrypcja\"%s\" jest właśnie uaktualniana!"
 
-#: src/feed.c:543
+#: src/feed.c:518
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Subskrypcja została zamknięta. Liferea nie będzie jej więcej uaktualniać!"
 
-#: src/feed.c:547
+#: src/feed.c:522
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Uaktualnianie \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1073 src/item.c:202 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1044 src/item.c:219 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Subskrypcja:"
 
-#: src/feed.c:1073 src/interface.c:3781
+#: src/feed.c:1044 src/interface.c:3781
 msgid "VFolder"
 msgstr ""
 
-#: src/feed.c:1081
+#: src/feed.c:1052
 msgid "user defined command"
 msgstr "polecenie zdefiniowane przez użytkownika"
 
-#: src/feed.c:1104 src/interface.c:1024 src/interface.c:1434 src/item.c:252
+#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:269
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Źródło"
@@ -1092,15 +1092,15 @@ msgid ""
 "appear in the item list."
 msgstr ""
 
-#: src/item.c:229 src/item.c:233 src/item.c:246 src/ui_itemlist.c:225
+#: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
 msgid "[No title]"
 msgstr "[Bez tytułu]"
 
-#: src/item.c:236 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:253 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Pozycja:"
 
-#: src/item.c:298
+#: src/item.c:315
 #, fuzzy
 msgid "date"
 msgstr "Data"

@@ -34,6 +34,7 @@ liferea_bin_SOURCES = \
 	export.c export.h \
 	favicon.c favicon.h \
 	feed.c feed.h \
+	feedlist.c feedlist.h \
 	folder.c folder.h \
 	html.c html.h \
 	interface.c interface.h \

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-16 22:35+0200\n"
+"POT-Creation-Date: 2005-07-06 00:01+0200\n"
 "PO-Revision-Date: 2005-05-11 14:24+0100\n"
 "Last-Translator: Tibor Pittich <Tibor.Pittich@mandriva.org>\n"
 "Language-Team: Slovak <i18n@lists.linux.sk>\n"
@@ -52,14 +52,24 @@ msgstr ""
 "Niektoré znaky boli odstránené!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:265
+#: src/conf.c:252
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
-#: src/conf.c:284
+#: src/conf.c:271
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Chyba pri premenovávaní %s na %s\n"
+
+#  Don't repeat authrequest if it already failed before!
+#: src/eggtrayicon.c:121
+#, fuzzy
+msgid "Orientation"
+msgstr "Autorizácia"
+
+#: src/eggtrayicon.c:122
+msgid "The orientation of the tray."
+msgstr ""
 
 #  _() for HELP1URL to allow localised help feeds
 #. _() for HELP1URL to allow localised help feeds
@@ -125,25 +135,25 @@ msgstr "Export"
 msgid "Updating feed icon for \"%s\""
 msgstr "Aktualizácia ikony kanálu pre \"%s\""
 
-#: src/feed.c:151
+#: src/feed.c:149
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>XMl chyba počas načítavania kanálu! Kanál \"%s\" nie je možné načítať!</p>"
 
-#: src/feed.c:157 src/feed.c:391
+#: src/feed.c:155 src/feed.c:388
 msgid "<p>Empty document!</p>"
 msgstr "<p>Prázdny dokument!</p>"
 
-#: src/feed.c:164
+#: src/feed.c:162
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Chybné XML!</p>"
 
-#: src/feed.c:231
+#: src/feed.c:229
 msgid "There were errors while parsing a feed"
 msgstr "Chyba pri interpretácii kanálu"
 
-#: src/feed.c:232
+#: src/feed.c:230
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -153,14 +163,14 @@ msgstr ""
 "feedvalidator.org\">korektný</a> alebo <a href=\"http://liferea.sourceforge."
 "net/index.php#supported_formats\">podporovaný</a> formát.</p>"
 
-#: src/feed.c:371
+#: src/feed.c:368
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Chyba pri čítaní súboru z vyrovnávacej pamäte \"%s\"! Súbor nie je možné "
 "načítať!"
 
-#: src/feed.c:383
+#: src/feed.c:380
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -169,47 +179,47 @@ msgstr ""
 "<p>XML chyba počas analyzovania súboru z vyrovnávacej pamäte. Súbor \"%s\" "
 "nie je možné načítať!</p>"
 
-#: src/feed.c:402
+#: src/feed.c:399
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" nie je korektný súbor vo vyrovnávacej pamäti! Nie je možné ho "
 "načítať!</p>"
 
-#: src/feed.c:455
+#: src/feed.c:453
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Chyba pri analýze súboru z dočasnej vyrovnávacej pamäte \"%s\""
 
-#: src/feed.c:526
+#: src/feed.c:513
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Kanál \"%s\" už bol aktualizovaný!"
 
-#: src/feed.c:531
+#: src/feed.c:518
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "Kanál je ukončený. Liferea ho nemôže viac aktualizovať!"
 
-#: src/feed.c:535
+#: src/feed.c:522
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Aktualizácia: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1030 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1044 src/item.c:219 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Kanál:"
 
-#: src/feed.c:1030 src/interface.c:3781
+#: src/feed.c:1044 src/interface.c:3781
 msgid "VFolder"
 msgstr "VPriečinok"
 
-#: src/feed.c:1038
+#: src/feed.c:1052
 msgid "user defined command"
 msgstr "Používateľom definovaný príkaz"
 
-#: src/feed.c:1061 src/interface.c:1024 src/interface.c:1434 src/item.c:249
+#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:269
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Zdroj:"
@@ -1017,7 +1027,7 @@ msgstr "Prispievatelia"
 msgid "Translation"
 msgstr "Preklady"
 
-#: src/interface.c:3396 src/ui_feed.c:633
+#: src/interface.c:3396 src/ui_feed.c:424
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Zadajte používateľské meno a heslo pre \"%s\" (%s):"
@@ -1110,15 +1120,15 @@ msgstr ""
 "Spustiť vyhľadávanie zadaného textu vo všetkých kanáloch. Výsledok "
 "vyhľadávania bude pridaný zo zoznamu článkov."
 
-#: src/item.c:226 src/item.c:230 src/item.c:243 src/ui_itemlist.c:226
+#: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
 msgid "[No title]"
 msgstr "[Bez titulku]"
 
-#: src/item.c:233 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:253 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Príspevok:"
 
-#: src/item.c:295
+#: src/item.c:315
 msgid "date"
 msgstr "dátum"
 
@@ -1396,227 +1406,69 @@ msgstr "je neoznačené"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Nie je možné nájsť súbor s obrázkom: %s"
 
-#: src/ui_feed.c:66
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr ""
-"Nemáte oprávnenie na prezeranie tohto kanálu. Nastavte vaše meno a heslo v "
-"nastaveniach kanálu."
-
-#: src/ui_feed.c:68
-msgid "Payment Required"
-msgstr "Je vyžadovaná platba"
-
-#: src/ui_feed.c:69
-msgid "Access Forbidden"
-msgstr "Prístup zakázaný"
-
-#: src/ui_feed.c:70
-msgid "Resource Not Found"
-msgstr "Zdroj nebol nájdený"
-
-#: src/ui_feed.c:71
-msgid "Method Not Allowed"
-msgstr "Metóda nie je povolená"
-
-#: src/ui_feed.c:72
-msgid "Not Acceptable"
-msgstr "Neakceptovatelné"
-
-#: src/ui_feed.c:73
-msgid "Proxy Authentication Required"
-msgstr "Vyžadovaná proxy autorizácia"
-
-#: src/ui_feed.c:74
-msgid "Request Time-Out"
-msgstr "Čas požiadavky vypršal"
-
-#: src/ui_feed.c:75
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Hotovo. Zdroj neexistuje. Odhláste jeho odoberanie!"
-
-#: src/ui_feed.c:80
-msgid "URL is invalid"
-msgstr "URL je neplatná"
-
-#: src/ui_feed.c:83
-msgid "Error connecting to remote host"
-msgstr "Chyba pri spojení so vzdialeným hostiteľom"
-
-#: src/ui_feed.c:84
-msgid "Hostname could not be found"
-msgstr "Meno hostiteľa nebolo možné nájsť"
-
-#: src/ui_feed.c:85
-msgid "Network connection was refused by the remote host"
-msgstr "Sieťové spojenie bolo odmietnuté vzdialeným hostiteľom"
-
-#: src/ui_feed.c:86
-msgid "Remote host did not finish sending data"
-msgstr "Vzdialený hostiteľ nedokončil zasielanie údajov"
-
-#  Transfer errors
-#. Transfer errors
-#: src/ui_feed.c:88
-msgid "Too many HTTP redirects were encountered"
-msgstr "Príliš veľa HTTP presmerovaní"
-
-#: src/ui_feed.c:91
-msgid "Remote host sent an invalid response"
-msgstr "Vzdialený hostiteľ poslal chybnú odpoveď"
-
-#  Don't repeat authrequest if it already failed before!
-#: src/ui_feed.c:98
-msgid "Authentication failed"
-msgstr "Autorizácia zlyhala"
-
-#: src/ui_feed.c:100
-msgid "Webserver's authentication method incompatible with Liferea"
-msgstr "Autorizačná metóda webservera je nekompatibilná s Liferea"
-
-#: src/ui_feed.c:106
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Kanál nie je dostupný: Server vyžaduje nepodporované presmerovanie!"
-
-#: src/ui_feed.c:107
-msgid "Client Error"
-msgstr "Chyba klienta"
-
-#: src/ui_feed.c:108
-msgid "Server Error"
-msgstr "Chyba servera"
-
-#: src/ui_feed.c:109
-msgid "(unknown networking error happened)"
-msgstr "(neznáma sieťová chyba)"
-
-#: src/ui_feed.c:138
-msgid ""
-"<br>You may want to validate the feed using <a href=\"http://feedvalidator."
-"org/check.cgi?url="
-msgstr ""
-"<br>Možno budete chcieť skontrolovať kanál pomocou <a href=\"http://"
-"feedvalidator.org/check.cgi?url="
-
-#: src/ui_feed.c:143
-msgid "\">FeedValidator</a>."
-msgstr "\">FeedValidator</a>."
-
-#: src/ui_feed.c:150
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Vyskytol sa problém počas načítavania vrámci tohto prihlásenia. Skontrolujte "
-"prosím URL a výstup do prehliadača."
-
-#: src/ui_feed.c:183
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" je ukončený. Liferea ho viac nebude aktualizovať!"
-
-#: src/ui_feed.c:185
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" nebolo zmenené od poslednej aktualizácie"
-
-#: src/ui_feed.c:193
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "URL pre \"%s\" sa natrvalo zmenila a bude aktualizovaná"
-
-#: src/ui_feed.c:205
-#, c-format
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>%s"
-msgstr ""
-"<p>Nie je možné zistiť typ kanálu! Skontrolujte prosím, či smeruje k zdroju "
-"ktorý poskytuje niektorý z podporovaných formátov!</p>%s"
-
-#: src/ui_feed.c:224
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" aktualizované..."
-
-#: src/ui_feed.c:232
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" nie je dostupné"
-
-#: src/ui_feed.c:575
+#: src/ui_feed.c:366
 msgid "Choose File"
 msgstr "Vybrať súbor"
 
 #  types for aggregation
-#: src/ui_feed.c:634
+#: src/ui_feed.c:425
 msgid "Unknown source"
 msgstr "Neznámy zdroj"
 
-#: src/ui_feed.c:736
+#: src/ui_feed.c:527
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Poskytovateľ tohto kanálu odporúča nastaviť interval aktualizácie na %d "
 "minút."
 
-#: src/ui_feed.c:738
+#: src/ui_feed.c:529
 msgid "This feed specifies no default update interval."
 msgstr "Tento kanál nemá špecifikovaný štandardný interval pre aktualizáciu."
 
-#: src/ui_feedlist.c:446
-msgid "You have to select a feed entry"
-msgstr "Mali by ste označiť článok v kanály"
-
-#: src/ui_feedlist.c:456
-msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea je v offline režime. Nie sú možné aktualizácie."
-
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:444
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "Poznámka: Použitie prihlasovacích filtrov zakáže drag & drop"
 
-#: src/ui_feedlist.c:544 src/ui_feedlist.c:547
+#: src/ui_feedlist.c:474 src/ui_feedlist.c:477
 msgid "Deleting entry"
 msgstr "Vymazanie záznamu"
 
-#: src/ui_feedlist.c:545
+#: src/ui_feedlist.c:475
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Ste si istý, že chcete odstrániť %s vrátane obsahu?"
 
-#: src/ui_feedlist.c:548
+#: src/ui_feedlist.c:478
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ste si istý, že chcete odstrániť %s?"
 
-#: src/ui_feedlist.c:556
+#: src/ui_feedlist.c:486
 msgid "Deletion Confirmation"
 msgstr "Potvrdenie odstránenia"
 
-#: src/ui_feedlist.c:592
+#: src/ui_feedlist.c:516
 msgid "You must select a feed entry"
 msgstr "Musíte označiť článok v danom kanály"
 
-#: src/ui_feedlist.c:593
+#: src/ui_feedlist.c:517
 msgid "You must select a feed entry."
 msgstr "Musíte označiť článok v danom kanály."
 
-#: src/ui_feedlist.c:639
+#: src/ui_feedlist.c:575
 msgid "New subscription"
 msgstr "Nové prihlásenie"
 
-#: src/ui_folder.c:82
+#: src/ui_folder.c:87
 msgid "A folder must be selected."
 msgstr "Musíte si vybrať zložku."
 
-#: src/ui_folder.c:182
+#: src/ui_folder.c:187
 msgid "<i>(empty)</i>"
 msgstr "<i>(prázdne)</i>"
 
-#: src/ui_folder.c:246
+#: src/ui_folder.c:251
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr ""
 "interná chyba! neznámy typ záznamu! nie je možné zobraziť priradenú ikonu!\n"
@@ -1744,24 +1596,24 @@ msgstr ""
 "Tento kanál je ukončený. Nie je viac dostupný. Liferea ho nebude viac "
 "aktualizovať, ale môžete si stále prezerať články vo vyrovnávacej pamäti."
 
-#: src/ui_itemlist.c:301
+#: src/ui_itemlist.c:300
 msgid "Date"
 msgstr "Dátum"
 
-#: src/ui_itemlist.c:312
+#: src/ui_itemlist.c:311
 msgid "Headline"
 msgstr "Titulka"
 
-#: src/ui_itemlist.c:500 src/ui_itemlist.c:509 src/ui_itemlist.c:560
+#: src/ui_itemlist.c:499 src/ui_itemlist.c:508 src/ui_itemlist.c:559
 msgid "No item has been selected"
 msgstr "Nie sú označené žiadne články"
 
-#: src/ui_itemlist.c:543 src/ui_itemlist.c:563
+#: src/ui_itemlist.c:542 src/ui_itemlist.c:562
 msgid "You must select a feed to delete its items!"
 msgstr "Musíte označiť kanál pre odstránenie jeho článkov!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:629
+#: src/ui_itemlist.c:628
 msgid "There are no unread items "
 msgstr "Žiadne neprečítané články"
 
@@ -1867,11 +1719,11 @@ msgstr "Liferea je momentálne online"
 msgid "Liferea is now offline"
 msgstr "Liferea je momentálne offline"
 
-#: src/ui_notification.c:237
+#: src/ui_notification.c:240
 msgid "Untitled"
 msgstr "Bez mena"
 
-#: src/ui_notification.c:308
+#: src/ui_notification.c:311
 msgid "Liferea notification"
 msgstr "Liferea notifikácia"
 
@@ -1997,47 +1849,47 @@ msgstr "/Uložiť ako..."
 
 #  This allows the user to choose their own browser by typing in the command.
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:222
+#: src/ui_prefs.c:223
 msgid "Manual"
 msgstr "Manuálne"
 
-#: src/ui_prefs.c:232
+#: src/ui_prefs.c:233
 msgid "Browser default"
 msgstr "Predvolený prehliadač"
 
-#: src/ui_prefs.c:237
+#: src/ui_prefs.c:238
 msgid "Existing window"
 msgstr "Existujúce okno"
 
-#: src/ui_prefs.c:242
+#: src/ui_prefs.c:243
 msgid "New window"
 msgstr "Nové okno"
 
-#: src/ui_prefs.c:247
+#: src/ui_prefs.c:248
 msgid "New tab"
 msgstr "Nový tab"
 
-#: src/ui_prefs.c:257
+#: src/ui_prefs.c:258
 msgid "Update only feeds scheduled for updates"
 msgstr "Aktualizovať iba kanály s naplánovanou aktualizáciou"
 
-#: src/ui_prefs.c:262
+#: src/ui_prefs.c:263
 msgid "Update all feeds"
 msgstr "Aktualizovať všetky kanály"
 
-#: src/ui_prefs.c:267
+#: src/ui_prefs.c:268
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Vynulovať časovač pre aktualizáciu (neaktualizuje žiadne kanály)"
 
-#: src/ui_prefs.c:508
+#: src/ui_prefs.c:509
 msgid "Type"
 msgstr "Typ"
 
-#: src/ui_prefs.c:511
+#: src/ui_prefs.c:512
 msgid "Program"
 msgstr "Program"
 
-#: src/ui_prefs.c:762
+#: src/ui_prefs.c:763
 msgid "Choose download directory"
 msgstr "Vyberte si adresár pre uloženie získaných súborov"
 
@@ -2067,16 +1919,29 @@ msgstr "Nový VPriečinok"
 msgid "URL"
 msgstr "URL"
 
-#: src/ui_tray.c:93
-#, c-format
-msgid "%d new item!"
-msgid_plural "%d new items!"
+#: src/ui_tray.c:99
+#, fuzzy, c-format
+msgid "%d new item"
+msgid_plural "%d new items"
 msgstr[0] "%d nový článok!"
 msgstr[1] "%d nové články!"
 msgstr[2] "%d nových článkov!"
 
-#: src/ui_tray.c:106
-msgid "No new items."
+#: src/ui_tray.c:100 src/ui_tray.c:104
+#, fuzzy, c-format
+msgid ""
+"%s\n"
+"%d unread item"
+msgid_plural ""
+"%s\n"
+"%d unread items"
+msgstr[0] "%d nový článok!"
+msgstr[1] "%d nové články!"
+msgstr[2] "%d nových článkov!"
+
+#: src/ui_tray.c:103
+#, fuzzy
+msgid "No new items"
 msgstr "Žiadne nové články."
 
 #: src/update.c:93
@@ -2107,6 +1972,124 @@ msgid ""
 msgstr ""
 "Vložené HTML <object> tagy nie sú podporované GtkHTML2.\n"
 "Odkaz na modul nebude zobrazený."
+
+#~ msgid ""
+#~ "You are unauthorized to download this feed. Please update your username "
+#~ "and password in the feed properties dialog box."
+#~ msgstr ""
+#~ "Nemáte oprávnenie na prezeranie tohto kanálu. Nastavte vaše meno a heslo "
+#~ "v nastaveniach kanálu."
+
+#~ msgid "Payment Required"
+#~ msgstr "Je vyžadovaná platba"
+
+#~ msgid "Access Forbidden"
+#~ msgstr "Prístup zakázaný"
+
+#~ msgid "Resource Not Found"
+#~ msgstr "Zdroj nebol nájdený"
+
+#~ msgid "Method Not Allowed"
+#~ msgstr "Metóda nie je povolená"
+
+#~ msgid "Not Acceptable"
+#~ msgstr "Neakceptovatelné"
+
+#~ msgid "Proxy Authentication Required"
+#~ msgstr "Vyžadovaná proxy autorizácia"
+
+#~ msgid "Request Time-Out"
+#~ msgstr "Čas požiadavky vypršal"
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr "Hotovo. Zdroj neexistuje. Odhláste jeho odoberanie!"
+
+#~ msgid "URL is invalid"
+#~ msgstr "URL je neplatná"
+
+#~ msgid "Error connecting to remote host"
+#~ msgstr "Chyba pri spojení so vzdialeným hostiteľom"
+
+#~ msgid "Hostname could not be found"
+#~ msgstr "Meno hostiteľa nebolo možné nájsť"
+
+#~ msgid "Network connection was refused by the remote host"
+#~ msgstr "Sieťové spojenie bolo odmietnuté vzdialeným hostiteľom"
+
+#~ msgid "Remote host did not finish sending data"
+#~ msgstr "Vzdialený hostiteľ nedokončil zasielanie údajov"
+
+#  Transfer errors
+#~ msgid "Too many HTTP redirects were encountered"
+#~ msgstr "Príliš veľa HTTP presmerovaní"
+
+#~ msgid "Remote host sent an invalid response"
+#~ msgstr "Vzdialený hostiteľ poslal chybnú odpoveď"
+
+#  Don't repeat authrequest if it already failed before!
+#~ msgid "Authentication failed"
+#~ msgstr "Autorizácia zlyhala"
+
+#~ msgid "Webserver's authentication method incompatible with Liferea"
+#~ msgstr "Autorizačná metóda webservera je nekompatibilná s Liferea"
+
+#~ msgid "Feed not available: Server requested unsupported redirection!"
+#~ msgstr "Kanál nie je dostupný: Server vyžaduje nepodporované presmerovanie!"
+
+#~ msgid "Client Error"
+#~ msgstr "Chyba klienta"
+
+#~ msgid "Server Error"
+#~ msgstr "Chyba servera"
+
+#~ msgid "(unknown networking error happened)"
+#~ msgstr "(neznáma sieťová chyba)"
+
+#~ msgid ""
+#~ "<br>You may want to validate the feed using <a href=\"http://"
+#~ "feedvalidator.org/check.cgi?url="
+#~ msgstr ""
+#~ "<br>Možno budete chcieť skontrolovať kanál pomocou <a href=\"http://"
+#~ "feedvalidator.org/check.cgi?url="
+
+#~ msgid "\">FeedValidator</a>."
+#~ msgstr "\">FeedValidator</a>."
+
+#~ msgid ""
+#~ "There was a problem while reading this subscription. Please check the URL "
+#~ "and console output."
+#~ msgstr ""
+#~ "Vyskytol sa problém počas načítavania vrámci tohto prihlásenia. "
+#~ "Skontrolujte prosím URL a výstup do prehliadača."
+
+#~ msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+#~ msgstr "\"%s\" je ukončený. Liferea ho viac nebude aktualizovať!"
+
+#~ msgid "\"%s\" has not changed since last update"
+#~ msgstr "\"%s\" nebolo zmenené od poslednej aktualizácie"
+
+#~ msgid "The URL of \"%s\" has changed permanently and was updated"
+#~ msgstr "URL pre \"%s\" sa natrvalo zmenila a bude aktualizovaná"
+
+#~ msgid ""
+#~ "<p>Could not detect the type of this feed! Please check if the source "
+#~ "really points to a resource provided in one of the supported syndication "
+#~ "formats!</p>%s"
+#~ msgstr ""
+#~ "<p>Nie je možné zistiť typ kanálu! Skontrolujte prosím, či smeruje k "
+#~ "zdroju ktorý poskytuje niektorý z podporovaných formátov!</p>%s"
+
+#~ msgid "\"%s\" updated..."
+#~ msgstr "\"%s\" aktualizované..."
+
+#~ msgid "\"%s\" is not available"
+#~ msgstr "\"%s\" nie je dostupné"
+
+#~ msgid "You have to select a feed entry"
+#~ msgstr "Mali by ste označiť článok v kanály"
+
+#~ msgid "Liferea is in offline mode. No update possible."
+#~ msgstr "Liferea je v offline režime. Nie sú možné aktualizácie."
 
 #~ msgid ""
 #~ "Starts a search for all items that do match the given search string "

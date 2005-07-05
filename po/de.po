@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-05-16 22:35+0200\n"
+"POT-Creation-Date: 2005-07-06 00:01+0200\n"
 "PO-Revision-Date: 2005-05-08 23:38+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
@@ -57,14 +57,23 @@ msgstr ""
 "Einige Zeichen wurden entfernt!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:265
+#: src/conf.c:252
 msgid "feedlist.opml"
 msgstr "feedlist_de.opml"
 
-#: src/conf.c:284
+#: src/conf.c:271
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Fehler beim Umbenennen von %s nach %s\n"
+
+#: src/eggtrayicon.c:121
+#, fuzzy
+msgid "Orientation"
+msgstr "Authentifizierung"
+
+#: src/eggtrayicon.c:122
+msgid "The orientation of the tray."
+msgstr ""
 
 #. _() for HELP1URL to allow localised help feeds
 #: src/export.c:43
@@ -127,26 +136,26 @@ msgstr "Export"
 msgid "Updating feed icon for \"%s\""
 msgstr "Aktualisiere Icon für Abonnement \"%s\""
 
-#: src/feed.c:151
+#: src/feed.c:149
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>XML-Fehler beim Lesen des Feeds! Feed \"%s\" konnte nicht geladen werden!"
 "</p>"
 
-#: src/feed.c:157 src/feed.c:391
+#: src/feed.c:155 src/feed.c:388
 msgid "<p>Empty document!</p>"
 msgstr "<p>Leeres Dokument!</p>"
 
-#: src/feed.c:164
+#: src/feed.c:162
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Ungültiges XML!</p>"
 
-#: src/feed.c:231
+#: src/feed.c:229
 msgid "There were errors while parsing a feed"
 msgstr "Es traten Fehler beim Einlesen eines Feeds auf!"
 
-#: src/feed.c:232
+#: src/feed.c:230
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -157,14 +166,14 @@ msgstr ""
 "a> und in einem <a href=\"http://liferea.sourceforge.net/index."
 "php#supported_formats\">unterstütztem Format</a> vorliegt.</p>"
 
-#: src/feed.c:371
+#: src/feed.c:368
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Fehler beim Lesen der Cache-Datei \"%s\"! Cache-Datei konnte nicht geladen "
 "werden!"
 
-#: src/feed.c:383
+#: src/feed.c:380
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -173,48 +182,48 @@ msgstr ""
 "<p>XML-Fehler beim Lesen der Cache-Datei \"%s\"! Cache-Datei konnte nicht "
 "geladen werden!</p>"
 
-#: src/feed.c:402
+#: src/feed.c:399
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" ist keine gültige Cache-Datei! Konnte Cache-Datei nicht lesen!</p>"
 
-#: src/feed.c:455
+#: src/feed.c:453
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Es gab Fehler beim Parsen der Cachedatei  \"%s\"!"
 
-#: src/feed.c:526
+#: src/feed.c:513
 #, fuzzy, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Das Abonnement \"%s\" wird bereits aktualisiert!"
 
-#: src/feed.c:531
+#: src/feed.c:518
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Dieses Abonnement wurde eingestellt. Liferea wird es nicht mehr "
 "aktualisieren!"
 
-#: src/feed.c:535
+#: src/feed.c:522
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Aktualisiere \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1030 src/item.c:199 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1044 src/item.c:219 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Abonnement:"
 
-#: src/feed.c:1030 src/interface.c:3781
+#: src/feed.c:1044 src/interface.c:3781
 msgid "VFolder"
 msgstr "VOrdner"
 
-#: src/feed.c:1038
+#: src/feed.c:1052
 msgid "user defined command"
 msgstr "benutzerdefiniertes Kommando"
 
-#: src/feed.c:1061 src/interface.c:1024 src/interface.c:1434 src/item.c:249
+#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:269
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Quelle:"
@@ -1032,7 +1041,7 @@ msgstr "Beitragende"
 msgid "Translation"
 msgstr "Übersetzung"
 
-#: src/interface.c:3396 src/ui_feed.c:633
+#: src/interface.c:3396 src/ui_feed.c:424
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Bitte Benutzername und Passwort für \"%s\" (%s) eingeben:"
@@ -1127,15 +1136,15 @@ msgstr ""
 "Startet die Suche nach dem angegebenen Text in allen Abonnements. Alle "
 "Treffer werden in der Liste der Schlagzeilen angezeigt."
 
-#: src/item.c:226 src/item.c:230 src/item.c:243 src/ui_itemlist.c:226
+#: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
 msgid "[No title]"
 msgstr "[Kein Titel]"
 
-#: src/item.c:233 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:253 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Schlagzeile:"
 
-#: src/item.c:295
+#: src/item.c:315
 #, fuzzy
 msgid "date"
 msgstr "Datum"
@@ -1407,228 +1416,68 @@ msgstr "ist nicht gesetzt"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Konnte pixmap-Datei nicht finden: %s"
 
-#: src/ui_feed.c:66
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr ""
-"Sie sind nicht authorisiert, dieses Abonnement herunterzuladen. Bitte "
-"aktualisieren Sie Passwort und Benutzernamen in den Eigenschaften des "
-"Abonnements."
-
-#: src/ui_feed.c:68
-msgid "Payment Required"
-msgstr "Bezahlung erforderlich"
-
-#: src/ui_feed.c:69
-msgid "Access Forbidden"
-msgstr "Zugriff verweigert"
-
-#: src/ui_feed.c:70
-msgid "Resource Not Found"
-msgstr "Ressource nicht gefunden."
-
-#: src/ui_feed.c:71
-msgid "Method Not Allowed"
-msgstr "Methode nicht erlaubt"
-
-#: src/ui_feed.c:72
-msgid "Not Acceptable"
-msgstr "Ungültig"
-
-#: src/ui_feed.c:73
-msgid "Proxy Authentication Required"
-msgstr "Proxy-Authentifizierung nötig"
-
-#: src/ui_feed.c:74
-msgid "Request Time-Out"
-msgstr "Antwortzeit überschritten"
-
-#: src/ui_feed.c:75
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr ""
-"Dieses Feed existiert nicht (mehr). Bitte entfernen Sie das Abonnement!"
-
-#: src/ui_feed.c:80
-msgid "URL is invalid"
-msgstr "URL ist ungültig"
-
-#: src/ui_feed.c:83
-msgid "Error connecting to remote host"
-msgstr "Fehler beim Kontaktieren des Servers"
-
-#: src/ui_feed.c:84
-msgid "Hostname could not be found"
-msgstr "Hostname nicht gefunden"
-
-#: src/ui_feed.c:85
-msgid "Network connection was refused by the remote host"
-msgstr "Netzwerkverbindung wurde von Server abgewiesen"
-
-#: src/ui_feed.c:86
-msgid "Remote host did not finish sending data"
-msgstr "Server hat Datenübertragung nicht korrekt beendet"
-
-#. Transfer errors
-#: src/ui_feed.c:88
-msgid "Too many HTTP redirects were encountered"
-msgstr "Zu viele HTTP-Umleitungen! Abbruch."
-
-#: src/ui_feed.c:91
-msgid "Remote host sent an invalid response"
-msgstr "Der Webserver lieferte eine ungültige Antwort"
-
-#: src/ui_feed.c:98
-msgid "Authentication failed"
-msgstr "Authentifizierung fehlgeschlagen"
-
-#: src/ui_feed.c:100
-msgid "Webserver's authentication method incompatible with Liferea"
-msgstr "Webserver-Authentifikationsmethode nicht von Liferea unterstützt"
-
-#: src/ui_feed.c:106
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr ""
-"Auf den Feed kann nicht zugegriffen werden: der Server gab eine nicht "
-"unterstützte Weiterleitung zurück!"
-
-#: src/ui_feed.c:107
-msgid "Client Error"
-msgstr "Client Fehler"
-
-#: src/ui_feed.c:108
-msgid "Server Error"
-msgstr "Server Fehler"
-
-#: src/ui_feed.c:109
-msgid "(unknown networking error happened)"
-msgstr "(unbekannte Netzwerkfehler aufgetreten)"
-
-#: src/ui_feed.c:138
-msgid ""
-"<br>You may want to validate the feed using <a href=\"http://feedvalidator."
-"org/check.cgi?url="
-msgstr ""
-"<br>Sie können den Link mit <a href=\"http://feedvalidator.org/check.cgi?url="
-
-#: src/ui_feed.c:143
-msgid "\">FeedValidator</a>."
-msgstr "\">FeedValidator</a> prüfen."
-
-#: src/ui_feed.c:150
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Es trat ein Fehler beim Einlesen des Abonnements auf. Bitte überprüfen Sie "
-"die URL und die Ausgabe auf der Konsole."
-
-#: src/ui_feed.c:183
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" ist eingestellt. Liferea wird es nicht mehr aktualisieren."
-
-#: src/ui_feed.c:185
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" hat sich seit dem letzten Update nicht verändert"
-
-#: src/ui_feed.c:193
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr ""
-"Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert. "
-
-#: src/ui_feed.c:205
-#, c-format
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>%s"
-msgstr ""
-"<p>Konnte Feedtyp nicht bestimmen! Bitte überprüfen Sie, ob die URL wirklich "
-"auf eine Datei in einem der unterstützten Formate zeigt!</p>%s"
-
-#: src/ui_feed.c:224
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" aktualisiert.."
-
-#: src/ui_feed.c:232
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" ist nicht verfügbar! "
-
-#: src/ui_feed.c:575
+#: src/ui_feed.c:366
 msgid "Choose File"
 msgstr "Datei wählen"
 
-#: src/ui_feed.c:634
+#: src/ui_feed.c:425
 msgid "Unknown source"
 msgstr "Unbekannte Quelle"
 
-#: src/ui_feed.c:736
+#: src/ui_feed.c:527
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Der Anbieter dieses Abonnements schlägt ein Aktualisierungsintervall von %d "
 "Minuten vor."
 
-#: src/ui_feed.c:738
+#: src/ui_feed.c:529
 msgid "This feed specifies no default update interval."
 msgstr "Dieses Abonnement definiert kein Default-Aktualisierungsintervall."
 
-#: src/ui_feedlist.c:446
-msgid "You have to select a feed entry"
-msgstr "Es muß ein Abonnement ausgewählt werden."
-
-#: src/ui_feedlist.c:456
-msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea ist offline. Keine Updates möglich."
-
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:444
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "Hinweis: Das Benutzen des Abonnement Filters deaktiviert Drag&Drop."
 
-#: src/ui_feedlist.c:544 src/ui_feedlist.c:547
+#: src/ui_feedlist.c:474 src/ui_feedlist.c:477
 msgid "Deleting entry"
 msgstr "Lösche Feed"
 
-#: src/ui_feedlist.c:545
+#: src/ui_feedlist.c:475
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Sind Sie sicher, dass sie \"%s\" und alle Inhalte löschen möchten?"
 
-#: src/ui_feedlist.c:548
+#: src/ui_feedlist.c:478
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Sind Sie sicher, dass Sie \"%s\" löschen wollen?"
 
-#: src/ui_feedlist.c:556
+#: src/ui_feedlist.c:486
 msgid "Deletion Confirmation"
 msgstr "Lösch-Bestätigung"
 
-#: src/ui_feedlist.c:592
+#: src/ui_feedlist.c:516
 msgid "You must select a feed entry"
 msgstr "Es muss ein Abonnement ausgewählt werden."
 
-#: src/ui_feedlist.c:593
+#: src/ui_feedlist.c:517
 msgid "You must select a feed entry."
 msgstr "Es muss ein Abonnement ausgewählt werden."
 
-#: src/ui_feedlist.c:639
+#: src/ui_feedlist.c:575
 msgid "New subscription"
 msgstr "Neues Abonnement"
 
-#: src/ui_folder.c:82
+#: src/ui_folder.c:87
 msgid "A folder must be selected."
 msgstr "Es muss ein Ordner ausgewählt sein!"
 
-#: src/ui_folder.c:182
+#: src/ui_folder.c:187
 msgid "<i>(empty)</i>"
 msgstr "<i>(leer)</i>"
 
-#: src/ui_folder.c:246
+#: src/ui_folder.c:251
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "internal error! unknown entry type! cannot display appropriate icon!\n"
 
@@ -1756,24 +1605,24 @@ msgstr ""
 "wird es nicht mehr aktualieren. Die alten Schlagzeilen sind jedoch weiter "
 "verfügbar."
 
-#: src/ui_itemlist.c:301
+#: src/ui_itemlist.c:300
 msgid "Date"
 msgstr "Datum"
 
-#: src/ui_itemlist.c:312
+#: src/ui_itemlist.c:311
 msgid "Headline"
 msgstr "Schlagzeile"
 
-#: src/ui_itemlist.c:500 src/ui_itemlist.c:509 src/ui_itemlist.c:560
+#: src/ui_itemlist.c:499 src/ui_itemlist.c:508 src/ui_itemlist.c:559
 msgid "No item has been selected"
 msgstr "Es wurde keine Schlagzeile ausgewählt."
 
-#: src/ui_itemlist.c:543 src/ui_itemlist.c:563
+#: src/ui_itemlist.c:542 src/ui_itemlist.c:562
 msgid "You must select a feed to delete its items!"
 msgstr "Zum Löschen von Schlagzeilen muss ein Abonnement ausgewählt werden!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:629
+#: src/ui_itemlist.c:628
 msgid "There are no unread items "
 msgstr "Es gibt keine ungelesenen Schlagzeilen."
 
@@ -1878,11 +1727,11 @@ msgstr "Liferea ist jetzt online"
 msgid "Liferea is now offline"
 msgstr "Liferea ist jetzt offline."
 
-#: src/ui_notification.c:237
+#: src/ui_notification.c:240
 msgid "Untitled"
 msgstr "Ohne Titel"
 
-#: src/ui_notification.c:308
+#: src/ui_notification.c:311
 msgid "Liferea notification"
 msgstr "Liferea-Benachrichtigung"
 
@@ -2007,48 +1856,48 @@ msgid "/Save As..."
 msgstr "/Speichern unter..."
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:222
+#: src/ui_prefs.c:223
 msgid "Manual"
 msgstr "Manuell"
 
-#: src/ui_prefs.c:232
+#: src/ui_prefs.c:233
 msgid "Browser default"
 msgstr "Browser-Default"
 
-#: src/ui_prefs.c:237
+#: src/ui_prefs.c:238
 msgid "Existing window"
 msgstr "Existierendes Fenster"
 
-#: src/ui_prefs.c:242
+#: src/ui_prefs.c:243
 msgid "New window"
 msgstr "Neues Fenster"
 
-#: src/ui_prefs.c:247
+#: src/ui_prefs.c:248
 msgid "New tab"
 msgstr "Neues Tab"
 
-#: src/ui_prefs.c:257
+#: src/ui_prefs.c:258
 msgid "Update only feeds scheduled for updates"
 msgstr "alle fälligen Abonnements aktualisieren"
 
-#: src/ui_prefs.c:262
+#: src/ui_prefs.c:263
 msgid "Update all feeds"
 msgstr "Alle aktualisieren"
 
-#: src/ui_prefs.c:267
+#: src/ui_prefs.c:268
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Kein Update fälliger Abonnements"
 
-#: src/ui_prefs.c:508
+#: src/ui_prefs.c:509
 #, fuzzy
 msgid "Type"
 msgstr "Typ"
 
-#: src/ui_prefs.c:511
+#: src/ui_prefs.c:512
 msgid "Program"
 msgstr "Programm"
 
-#: src/ui_prefs.c:762
+#: src/ui_prefs.c:763
 msgid "Choose download directory"
 msgstr "Auswahl eines Verzeichnisses zum Download"
 
@@ -2078,15 +1927,27 @@ msgstr "Neuer VOrdner"
 msgid "URL"
 msgstr "URL"
 
-#: src/ui_tray.c:93
+#: src/ui_tray.c:99
 #, fuzzy, c-format
-msgid "%d new item!"
-msgid_plural "%d new items!"
+msgid "%d new item"
+msgid_plural "%d new items"
 msgstr[0] "%d neue Schlagzeile!"
 msgstr[1] "%d neue Schlagzeilen!"
 
-#: src/ui_tray.c:106
-msgid "No new items."
+#: src/ui_tray.c:100 src/ui_tray.c:104
+#, fuzzy, c-format
+msgid ""
+"%s\n"
+"%d unread item"
+msgid_plural ""
+"%s\n"
+"%d unread items"
+msgstr[0] "%d neue Schlagzeile!"
+msgstr[1] "%d neue Schlagzeilen!"
+
+#: src/ui_tray.c:103
+#, fuzzy
+msgid "No new items"
 msgstr "Keine neuen Schlagzeilen."
 
 #: src/update.c:93
@@ -2118,6 +1979,127 @@ msgstr ""
 "Das eingebettete HTML-<object>-Tag wird mit den GtkHTML2-HTML-Modul in "
 "Liferea nicht unterstützt.\n"
 "Eingebettete Plugins könnten so nicht angezeigt werden."
+
+#~ msgid ""
+#~ "You are unauthorized to download this feed. Please update your username "
+#~ "and password in the feed properties dialog box."
+#~ msgstr ""
+#~ "Sie sind nicht authorisiert, dieses Abonnement herunterzuladen. Bitte "
+#~ "aktualisieren Sie Passwort und Benutzernamen in den Eigenschaften des "
+#~ "Abonnements."
+
+#~ msgid "Payment Required"
+#~ msgstr "Bezahlung erforderlich"
+
+#~ msgid "Access Forbidden"
+#~ msgstr "Zugriff verweigert"
+
+#~ msgid "Resource Not Found"
+#~ msgstr "Ressource nicht gefunden."
+
+#~ msgid "Method Not Allowed"
+#~ msgstr "Methode nicht erlaubt"
+
+#~ msgid "Not Acceptable"
+#~ msgstr "Ungültig"
+
+#~ msgid "Proxy Authentication Required"
+#~ msgstr "Proxy-Authentifizierung nötig"
+
+#~ msgid "Request Time-Out"
+#~ msgstr "Antwortzeit überschritten"
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr ""
+#~ "Dieses Feed existiert nicht (mehr). Bitte entfernen Sie das Abonnement!"
+
+#~ msgid "URL is invalid"
+#~ msgstr "URL ist ungültig"
+
+#~ msgid "Error connecting to remote host"
+#~ msgstr "Fehler beim Kontaktieren des Servers"
+
+#~ msgid "Hostname could not be found"
+#~ msgstr "Hostname nicht gefunden"
+
+#~ msgid "Network connection was refused by the remote host"
+#~ msgstr "Netzwerkverbindung wurde von Server abgewiesen"
+
+#~ msgid "Remote host did not finish sending data"
+#~ msgstr "Server hat Datenübertragung nicht korrekt beendet"
+
+#~ msgid "Too many HTTP redirects were encountered"
+#~ msgstr "Zu viele HTTP-Umleitungen! Abbruch."
+
+#~ msgid "Remote host sent an invalid response"
+#~ msgstr "Der Webserver lieferte eine ungültige Antwort"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Authentifizierung fehlgeschlagen"
+
+#~ msgid "Webserver's authentication method incompatible with Liferea"
+#~ msgstr "Webserver-Authentifikationsmethode nicht von Liferea unterstützt"
+
+#~ msgid "Feed not available: Server requested unsupported redirection!"
+#~ msgstr ""
+#~ "Auf den Feed kann nicht zugegriffen werden: der Server gab eine nicht "
+#~ "unterstützte Weiterleitung zurück!"
+
+#~ msgid "Client Error"
+#~ msgstr "Client Fehler"
+
+#~ msgid "Server Error"
+#~ msgstr "Server Fehler"
+
+#~ msgid "(unknown networking error happened)"
+#~ msgstr "(unbekannte Netzwerkfehler aufgetreten)"
+
+#~ msgid ""
+#~ "<br>You may want to validate the feed using <a href=\"http://"
+#~ "feedvalidator.org/check.cgi?url="
+#~ msgstr ""
+#~ "<br>Sie können den Link mit <a href=\"http://feedvalidator.org/check.cgi?"
+#~ "url="
+
+#~ msgid "\">FeedValidator</a>."
+#~ msgstr "\">FeedValidator</a> prüfen."
+
+#~ msgid ""
+#~ "There was a problem while reading this subscription. Please check the URL "
+#~ "and console output."
+#~ msgstr ""
+#~ "Es trat ein Fehler beim Einlesen des Abonnements auf. Bitte überprüfen "
+#~ "Sie die URL und die Ausgabe auf der Konsole."
+
+#~ msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+#~ msgstr "\"%s\" ist eingestellt. Liferea wird es nicht mehr aktualisieren."
+
+#~ msgid "\"%s\" has not changed since last update"
+#~ msgstr "\"%s\" hat sich seit dem letzten Update nicht verändert"
+
+#~ msgid "The URL of \"%s\" has changed permanently and was updated"
+#~ msgstr ""
+#~ "Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert. "
+
+#~ msgid ""
+#~ "<p>Could not detect the type of this feed! Please check if the source "
+#~ "really points to a resource provided in one of the supported syndication "
+#~ "formats!</p>%s"
+#~ msgstr ""
+#~ "<p>Konnte Feedtyp nicht bestimmen! Bitte überprüfen Sie, ob die URL "
+#~ "wirklich auf eine Datei in einem der unterstützten Formate zeigt!</p>%s"
+
+#~ msgid "\"%s\" updated..."
+#~ msgstr "\"%s\" aktualisiert.."
+
+#~ msgid "\"%s\" is not available"
+#~ msgstr "\"%s\" ist nicht verfügbar! "
+
+#~ msgid "You have to select a feed entry"
+#~ msgstr "Es muß ein Abonnement ausgewählt werden."
+
+#~ msgid "Liferea is in offline mode. No update possible."
+#~ msgstr "Liferea ist offline. Keine Updates möglich."
 
 #~ msgid ""
 #~ "Starts a search for all items that do match the given search string "

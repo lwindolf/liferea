@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-10 23:46+0800\n"
+"POT-Creation-Date: 2005-07-06 00:01+0200\n"
 "PO-Revision-Date: 2005-06-11 08:22+0800\n"
 "Last-Translator: Jim Huang <jserv@kaffe.org>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -134,7 +134,7 @@ msgstr "更新饋流 \"%s\" 的圖示"
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr "<p>讀入饋流時出現 XML 錯誤! 饋流 \"%s\" 無法載入!</p>"
 
-#: src/feed.c:155 src/feed.c:397
+#: src/feed.c:155 src/feed.c:388
 msgid "<p>Empty document!</p>"
 msgstr "<p>空文件!</p>"
 
@@ -152,61 +152,61 @@ msgid ""
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
 msgstr ""
-"<p>無法偵測饋流類型。請確定為 <a href=\"http://feedvalidator.org\">有效的饋流類型</"
-"a>，並為 <a href=\"http://liferea.sourceforge.net/index.php#supported_formats"
-"\">支援的格式</a>。</p>"
+"<p>無法偵測饋流類型。請確定為 <a href=\"http://feedvalidator.org\">有效的饋流"
+"類型</a>，並為 <a href=\"http://liferea.sourceforge.net/index."
+"php#supported_formats\">支援的格式</a>。</p>"
 
-#: src/feed.c:377
+#: src/feed.c:368
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr "讀入快取檔案 \"%s\"時錯誤! 無法載入快取檔案!"
 
-#: src/feed.c:389
+#: src/feed.c:380
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr "<p>分析快取檔案時發生 XML 錯誤! 無法載入快取檔案 \"%s\"!</p>"
 
-#: src/feed.c:408
+#: src/feed.c:399
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" 是無效的快取檔案! 無法讀入檔案!</p>"
 
-#: src/feed.c:461
+#: src/feed.c:453
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "分析快取檔案 \"%s\" 時出現錯誤!"
 
-#: src/feed.c:532
+#: src/feed.c:513
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "此饋流 \"%s\" 已經更新!"
 
-#: src/feed.c:537
+#: src/feed.c:518
 msgid "The feed was discontinued. Liferea won't update it anymore!"
 msgstr "饋流已經失效。Liferea 將不會更新它。"
 
-#: src/feed.c:541
+#: src/feed.c:522
 #, c-format
 msgid "Updating \"%s\""
 msgstr "更新: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1047 src/item.c:213 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1044 src/item.c:219 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "饋流:"
 
-#: src/feed.c:1047 src/interface.c:3781
+#: src/feed.c:1044 src/interface.c:3781
 msgid "VFolder"
 msgstr "虛擬目錄"
 
-#: src/feed.c:1055
+#: src/feed.c:1052
 msgid "user defined command"
 msgstr "使用自訂指令"
 
-#: src/feed.c:1078 src/interface.c:1024 src/interface.c:1434 src/item.c:263
+#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:269
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "來源:"
@@ -964,7 +964,7 @@ msgstr "貢獻者"
 msgid "Translation"
 msgstr "翻譯"
 
-#: src/interface.c:3396 src/ui_feed.c:633
+#: src/interface.c:3396 src/ui_feed.c:424
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "輸入使用者名稱與密碼 \"%s\" (%s):"
@@ -1046,15 +1046,15 @@ msgid ""
 "appear in the item list."
 msgstr ""
 
-#: src/item.c:240 src/item.c:244 src/item.c:257 src/ui_itemlist.c:225
+#: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
 msgid "[No title]"
 msgstr "[無標題]"
 
-#: src/item.c:247 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:253 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "項目:"
 
-#: src/item.c:309
+#: src/item.c:315
 msgid "date"
 msgstr "日期"
 
@@ -1321,214 +1321,66 @@ msgstr "未標籤"
 msgid "Couldn't find pixmap file: %s"
 msgstr "無法找到圖檔: %s"
 
-#: src/ui_feed.c:66
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr "您未獲下載此饋流權限。請在饋流屬性視窗中更新輸入您的帳號與密碼。"
-
-#: src/ui_feed.c:68
-msgid "Payment Required"
-msgstr "Payment Required"
-
-#: src/ui_feed.c:69
-msgid "Access Forbidden"
-msgstr "禁用存取"
-
-#: src/ui_feed.c:70
-msgid "Resource Not Found"
-msgstr "未找到資源"
-
-#: src/ui_feed.c:71
-msgid "Method Not Allowed"
-msgstr "方法不允許"
-
-#: src/ui_feed.c:72
-msgid "Not Acceptable"
-msgstr "無法接受"
-
-#: src/ui_feed.c:73
-msgid "Proxy Authentication Required"
-msgstr "代理伺服器需要認證"
-
-#: src/ui_feed.c:74
-msgid "Request Time-Out"
-msgstr "存取逾時"
-
-#: src/ui_feed.c:75
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "完了。資源不存在。請取消訂閱!"
-
-#: src/ui_feed.c:80
-msgid "URL is invalid"
-msgstr "URL 不合法"
-
-#: src/ui_feed.c:83
-msgid "Error connecting to remote host"
-msgstr "無法連線到遠端主機"
-
-#: src/ui_feed.c:84
-msgid "Hostname could not be found"
-msgstr "無法找到伺服器名稱"
-
-#: src/ui_feed.c:85
-msgid "Network connection was refused by the remote host"
-msgstr "遠端主機拒絕網路連線"
-
-#: src/ui_feed.c:86
-msgid "Remote host did not finish sending data"
-msgstr "遠端主機並未結束傳送資料"
-
-#. Transfer errors
-#: src/ui_feed.c:88
-msgid "Too many HTTP redirects were encountered"
-msgstr "太多 HTTP 重導! 放棄。"
-
-#: src/ui_feed.c:91
-msgid "Remote host sent an invalid response"
-msgstr "網站伺服器傳送了一個無效的回應"
-
-#: src/ui_feed.c:98
-msgid "Authentication failed"
-msgstr "認證失敗！"
-
-#: src/ui_feed.c:100
-msgid "Webserver's authentication method incompatible with Liferea"
-msgstr "網站伺服器的認證方法與 Lifera 不相容"
-
-#: src/ui_feed.c:106
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "饋流無法使用: 伺服器使用未支援的重導!"
-
-#: src/ui_feed.c:107
-msgid "Client Error"
-msgstr "客戶端的錯誤"
-
-#: src/ui_feed.c:108
-msgid "Server Error"
-msgstr "伺服器端的錯誤"
-
-#: src/ui_feed.c:109
-msgid "(unknown networking error happened)"
-msgstr "(未知的網路錯誤)"
-
-#: src/ui_feed.c:138
-msgid ""
-"<br>You may want to validate the feed using <a href=\"http://feedvalidator."
-"org/check.cgi?url="
-msgstr ""
-
-#: src/ui_feed.c:143
-msgid "\">FeedValidator</a>."
-msgstr ""
-
-#: src/ui_feed.c:150
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr "讀取此訂閱時出現問題。請確認網址與終端機輸出！"
-
-#: src/ui_feed.c:183
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" 終止更新。Liferea 將不會更新此饋流!"
-
-#: src/ui_feed.c:185
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" 自從最後更新後沒有改變。"
-
-#: src/ui_feed.c:193
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "\"%s\" 已經更新為永久網址。"
-
-#: src/ui_feed.c:205
-#, c-format
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>%s"
-msgstr "<p>無法偵測此饋流類型! 請確認網址指向已支援的正確餽流來源!</p>%s"
-
-#: src/ui_feed.c:224
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" 更新中"
-
-#: src/ui_feed.c:232
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" 不可用!"
-
-#: src/ui_feed.c:575
+#: src/ui_feed.c:366
 msgid "Choose File"
 msgstr "選擇檔案"
 
-#: src/ui_feed.c:634
+#: src/ui_feed.c:425
 msgid "Unknown source"
 msgstr "未知來源"
 
-#: src/ui_feed.c:736
+#: src/ui_feed.c:527
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr "饋流供應者建議更新頻率為 %d 分鐘"
 
-#: src/ui_feed.c:738
+#: src/ui_feed.c:529
 msgid "This feed specifies no default update interval."
 msgstr "此饋流未指定預設更新頻率"
 
-#: src/ui_feedlist.c:446
-msgid "You have to select a feed entry"
-msgstr "您必須選擇一饋流項目!"
-
-#: src/ui_feedlist.c:456
-msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea 在離線模式。無法更新！"
-
-#: src/ui_feedlist.c:498
+#: src/ui_feedlist.c:444
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "註: 使用訂閱過濾將停用拖拉功能!"
 
-#: src/ui_feedlist.c:544 src/ui_feedlist.c:547
+#: src/ui_feedlist.c:474 src/ui_feedlist.c:477
 msgid "Deleting entry"
 msgstr "刪除項目中"
 
-#: src/ui_feedlist.c:545
+#: src/ui_feedlist.c:475
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "您確定要刪除 %s 及其內容嗎？"
 
-#: src/ui_feedlist.c:548
+#: src/ui_feedlist.c:478
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "您確定要刪除 %s 嗎 ？"
 
-#: src/ui_feedlist.c:556
+#: src/ui_feedlist.c:486
 msgid "Deletion Confirmation"
 msgstr "刪除確認"
 
-#: src/ui_feedlist.c:592
+#: src/ui_feedlist.c:516
 msgid "You must select a feed entry"
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:593
+#: src/ui_feedlist.c:517
 msgid "You must select a feed entry."
 msgstr "您必須選擇一饋流項目!"
 
-#: src/ui_feedlist.c:639
+#: src/ui_feedlist.c:575
 msgid "New subscription"
 msgstr "新增訂閱"
 
-#: src/ui_folder.c:82
+#: src/ui_folder.c:87
 msgid "A folder must be selected."
 msgstr "目錄必須先選擇。"
 
-#: src/ui_folder.c:182
+#: src/ui_folder.c:187
 msgid "<i>(empty)</i>"
 msgstr "<i>(空)</i>"
 
-#: src/ui_folder.c:246
+#: src/ui_folder.c:251
 msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 msgstr "內部錯誤! unknown entry type! cannot display appropriate icon!\n"
 
@@ -1956,10 +1808,10 @@ msgstr "網址"
 # msgid_plural "%d new items!"
 # msgstr[0] "%d 個新項目"
 # msgstr[1] "%d 個新項目"
-#: src/ui_tray.c:97
-#, c-format
-msgid "%d new item!"
-msgid_plural "%d new items!"
+#: src/ui_tray.c:99
+#, fuzzy, c-format
+msgid "%d new item"
+msgid_plural "%d new items"
 msgstr[0] "%d 個新項目"
 msgstr[1] "%d 個新項目"
 
@@ -1977,8 +1829,34 @@ msgstr[1] "%d 個新項目"
 # msgid_plural "%d new items!"
 # msgstr[0] "%d 個新項目"
 # msgstr[1] "%d 個新項目"
-#: src/ui_tray.c:102 src/ui_tray.c:134
-msgid "No new items."
+#: src/ui_tray.c:100 src/ui_tray.c:104
+#, fuzzy, c-format
+msgid ""
+"%s\n"
+"%d unread item"
+msgid_plural ""
+"%s\n"
+"%d unread items"
+msgstr[0] "%d 個新項目"
+msgstr[1] "%d 個新項目"
+
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 個新項目"
+# msgstr[1] "%d 個新項目"
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 個新項目"
+# msgstr[1] "%d 個新項目"
+#: src/ui_tray.c:103
+#, fuzzy
+msgid "No new items"
 msgstr "無新項目。"
 
 #: src/update.c:93
@@ -2009,3 +1887,103 @@ msgid ""
 msgstr ""
 "GtkHTML2 不支援 HTML <object> 標籤。\n"
 "內含的外掛可能無法顯示。"
+
+#~ msgid ""
+#~ "You are unauthorized to download this feed. Please update your username "
+#~ "and password in the feed properties dialog box."
+#~ msgstr "您未獲下載此饋流權限。請在饋流屬性視窗中更新輸入您的帳號與密碼。"
+
+#~ msgid "Payment Required"
+#~ msgstr "Payment Required"
+
+#~ msgid "Access Forbidden"
+#~ msgstr "禁用存取"
+
+#~ msgid "Resource Not Found"
+#~ msgstr "未找到資源"
+
+#~ msgid "Method Not Allowed"
+#~ msgstr "方法不允許"
+
+#~ msgid "Not Acceptable"
+#~ msgstr "無法接受"
+
+#~ msgid "Proxy Authentication Required"
+#~ msgstr "代理伺服器需要認證"
+
+#~ msgid "Request Time-Out"
+#~ msgstr "存取逾時"
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr "完了。資源不存在。請取消訂閱!"
+
+#~ msgid "URL is invalid"
+#~ msgstr "URL 不合法"
+
+#~ msgid "Error connecting to remote host"
+#~ msgstr "無法連線到遠端主機"
+
+#~ msgid "Hostname could not be found"
+#~ msgstr "無法找到伺服器名稱"
+
+#~ msgid "Network connection was refused by the remote host"
+#~ msgstr "遠端主機拒絕網路連線"
+
+#~ msgid "Remote host did not finish sending data"
+#~ msgstr "遠端主機並未結束傳送資料"
+
+#~ msgid "Too many HTTP redirects were encountered"
+#~ msgstr "太多 HTTP 重導! 放棄。"
+
+#~ msgid "Remote host sent an invalid response"
+#~ msgstr "網站伺服器傳送了一個無效的回應"
+
+#~ msgid "Authentication failed"
+#~ msgstr "認證失敗！"
+
+#~ msgid "Webserver's authentication method incompatible with Liferea"
+#~ msgstr "網站伺服器的認證方法與 Lifera 不相容"
+
+#~ msgid "Feed not available: Server requested unsupported redirection!"
+#~ msgstr "饋流無法使用: 伺服器使用未支援的重導!"
+
+#~ msgid "Client Error"
+#~ msgstr "客戶端的錯誤"
+
+#~ msgid "Server Error"
+#~ msgstr "伺服器端的錯誤"
+
+#~ msgid "(unknown networking error happened)"
+#~ msgstr "(未知的網路錯誤)"
+
+#~ msgid ""
+#~ "There was a problem while reading this subscription. Please check the URL "
+#~ "and console output."
+#~ msgstr "讀取此訂閱時出現問題。請確認網址與終端機輸出！"
+
+#~ msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+#~ msgstr "\"%s\" 終止更新。Liferea 將不會更新此饋流!"
+
+#~ msgid "\"%s\" has not changed since last update"
+#~ msgstr "\"%s\" 自從最後更新後沒有改變。"
+
+#~ msgid "The URL of \"%s\" has changed permanently and was updated"
+#~ msgstr "\"%s\" 已經更新為永久網址。"
+
+#~ msgid ""
+#~ "<p>Could not detect the type of this feed! Please check if the source "
+#~ "really points to a resource provided in one of the supported syndication "
+#~ "formats!</p>%s"
+#~ msgstr "<p>無法偵測此饋流類型! 請確認網址指向已支援的正確餽流來源!</p>%s"
+
+#~ msgid "\"%s\" updated..."
+#~ msgstr "\"%s\" 更新中"
+
+#~ msgid "\"%s\" is not available"
+#~ msgstr "\"%s\" 不可用!"
+
+#~ msgid "You have to select a feed entry"
+#~ msgstr "您必須選擇一饋流項目!"
+
+#~ msgid "Liferea is in offline mode. No update possible."
+#~ msgstr "Liferea 在離線模式。無法更新！"

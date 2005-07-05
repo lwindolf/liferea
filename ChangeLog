@@ -2,6 +2,8 @@
 
 	Version 0.9.3
 
+	* Tray icon now also displays the number of unread items.
+
 	Bugfixes:
 	
 	* Fix for possible feed cache corruption when a disk becomes
@@ -11,7 +13,13 @@
 	  is fixed. (Andreas Kohn)
 	* Workaround for the freezing problem when Mozilla browser
 	  plugins like Flash or Java are loaded. All plugins are now
-	  suppressed using CSS.
+	  suppressed using CSS. This does not block plugins when you
+	  follow links or open link in tabs.
+	* Rewrite to fix the counting problems of the tray icons
+	  new item counter.
+	* When deleting a feed the last visible feed or item 
+	  description is also cleared.
+	
 
 	Translations:
 

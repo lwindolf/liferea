@@ -192,7 +192,7 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), update_all_feeds);
   gtk_tooltips_set_tip (tooltips, update_all_feeds, _("Updates all subscriptions. This does not update OCS directories."), NULL);
   gtk_widget_add_accelerator (update_all_feeds, "activate", accel_group,
-                              GDK_a, GDK_CONTROL_MASK,
+                              GDK_a, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
   image2534 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_MENU);
@@ -204,7 +204,7 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), mark_all_as_read1);
   gtk_tooltips_set_tip (tooltips, mark_all_as_read1, _("Marks all items of the current selected subscription or all of subscriptions of the selected folder as read."), NULL);
   gtk_widget_add_accelerator (mark_all_as_read1, "activate", accel_group,
-                              GDK_r, GDK_CONTROL_MASK,
+                              GDK_r, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
   image2535 = gtk_image_new_from_stock ("gtk-apply", GTK_ICON_SIZE_MENU);
@@ -302,7 +302,7 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (items1_menu), next_unread_item1);
   gtk_tooltips_set_tip (tooltips, next_unread_item1, _("Jumps to the next unread item. If necessary selects the next feed with unread items."), NULL);
   gtk_widget_add_accelerator (next_unread_item1, "activate", accel_group,
-                              GDK_n, GDK_CONTROL_MASK,
+                              GDK_n, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
   image2543 = gtk_image_new_from_stock ("gtk-media-forward", GTK_ICON_SIZE_MENU);
@@ -319,7 +319,7 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (items1_menu), toggle_unread_status1);
   gtk_tooltips_set_tip (tooltips, toggle_unread_status1, _("Toggles the read status of the selected item."), NULL);
   gtk_widget_add_accelerator (toggle_unread_status1, "activate", accel_group,
-                              GDK_u, GDK_CONTROL_MASK,
+                              GDK_u, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
   image2544 = gtk_image_new_from_stock ("gtk-apply", GTK_ICON_SIZE_MENU);
@@ -331,7 +331,7 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (items1_menu), toggle_item_flag1);
   gtk_tooltips_set_tip (tooltips, toggle_item_flag1, _("Toggles the item flag."), NULL);
   gtk_widget_add_accelerator (toggle_item_flag1, "activate", accel_group,
-                              GDK_t, GDK_CONTROL_MASK,
+                              GDK_t, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
   remove_item = gtk_image_menu_item_new_with_mnemonic (_("Remove Selected"));
@@ -374,7 +374,7 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem3_menu), zoom_in1);
   gtk_tooltips_set_tip (tooltips, zoom_in1, _("Increases the text size of the item view."), NULL);
   gtk_widget_add_accelerator (zoom_in1, "activate", accel_group,
-                              GDK_plus, GDK_CONTROL_MASK,
+                              GDK_plus, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
   image2547 = gtk_image_new_from_stock ("gtk-zoom-in", GTK_ICON_SIZE_MENU);
@@ -386,7 +386,7 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem3_menu), zoom_out1);
   gtk_tooltips_set_tip (tooltips, zoom_out1, _("Decreases the text size of the item view."), NULL);
   gtk_widget_add_accelerator (zoom_out1, "activate", accel_group,
-                              GDK_minus, GDK_CONTROL_MASK,
+                              GDK_minus, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
   image2548 = gtk_image_new_from_stock ("gtk-zoom-out", GTK_ICON_SIZE_MENU);
@@ -3252,7 +3252,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new ("Liferea 0.9.2");
+  label57 = gtk_label_new ("Liferea 0.9.3");
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);
