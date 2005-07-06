@@ -19,13 +19,21 @@
 	  new item counter.
 	* When deleting a feed the last visible feed or item 
 	  description is also cleared.
-	
+	* No confusing warning anymore when there are no user settings
+	  for the enclosure handling (mime.xml). This was reported by
+	  Michael Still.
+	* No crashing anymore when trying to open an item without a
+	  link in a tab. This bug was reported by Cyril Brulebois.
+	* Fixes a crash on IA64 due to undefined return types.
+	  This was reported by Ian Wienand.
 
 	Translations:
 
 	* Updated Polish translation (Wit Wilinski)
 	* Updated traditional Chinese translation (Jim Huang)
 	* Updated Russian translation (Maxim Britov)
+	* Corrections of German translation (Jens Seidel)
+	* Updated Brazilian Portugues translation (Fernando Ike de Oliviera)
 
 	
 2005-03-16  Lars Lindner  <lars.lindner@gmx.net>
