@@ -7,13 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-06 00:01+0200\n"
-"PO-Revision-Date: 2005-03-08 21:56-0300\n"
+"POT-Creation-Date: 2005-07-06 00:22+0200\n"
+"PO-Revision-Date: 2005-07-05 23:10-0300\n"
 "Last-Translator: Fernando Ike <fernando@ikenet.com.br>\n"
 "Language-Team: Portuguese/Brazil <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:230
@@ -67,13 +67,12 @@ msgid "Error renaming %s to %s\n"
 msgstr "Erro ao renomear %s para %s\n"
 
 #: src/eggtrayicon.c:121
-#, fuzzy
 msgid "Orientation"
-msgstr "Autenticação"
+msgstr "Orientação"
 
 #: src/eggtrayicon.c:122
 msgid "The orientation of the tray."
-msgstr ""
+msgstr "Orientação da bandeja."
 
 #. _() for HELP1URL to allow localised help feeds
 #: src/export.c:43
@@ -286,9 +285,8 @@ msgid "New _Folder..."
 msgstr "Nova _Pasta..."
 
 #: src/interface.c:243
-#, fuzzy
 msgid "New _VFolder..."
-msgstr "Nova _Pasta..."
+msgstr "Nova Pasta _Virtual..."
 
 #: src/interface.c:252
 msgid "_Properties..."
@@ -653,11 +651,11 @@ msgstr ""
 
 #: src/interface.c:1889
 msgid "Optimize for _memory usage."
-msgstr ""
+msgstr "Otimizar para melhor uso de _memória."
 
 #: src/interface.c:1896
 msgid "Optimize for _speed."
-msgstr ""
+msgstr "Otimizar para melhor _velocidade."
 
 #: src/interface.c:1902
 msgid "Feeds"
@@ -745,7 +743,7 @@ msgstr "Exibe Resumos Com"
 
 #: src/interface.c:2135
 msgid "<i>Please restart Liferea for changes to take effect.</i>"
-msgstr ""
+msgstr "<i>Reinicie o Liferea para efetuar as mudanças.</i>"
 
 #: src/interface.c:2141
 msgid "Open links in Liferea's _window."
@@ -785,12 +783,10 @@ msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Configuração de Notificações</span>"
 
 #: src/interface.c:2253
-#, fuzzy
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr ""
 "Exibe um _icone na área de notificação \n"
-"('system tray'). As alterações serão \n"
-"efetivados após reiniciar o programa."
+"('system tray')."
 
 #: src/interface.c:2270
 msgid "Show a _popup window with new headlines."
@@ -845,14 +841,12 @@ msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">Servidor Proxy HTTP</span>"
 
 #: src/interface.c:2411
-#, fuzzy
 msgid ""
 "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center.</i>"
 msgstr ""
 "Liferea usa as configurações de proxy do GNOME. Se o GNOME alterar as "
-"configurações do GNOME Control Center. Nota: Também afetará outras "
-"aplicações! Esta opção é para usar o Liferea com o proxy diferente do GNOME"
+"configurações do GNOME Control Center."
 
 #: src/interface.c:2422
 msgid "_Enable Proxy"
@@ -963,7 +957,6 @@ msgstr ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3295
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -996,23 +989,24 @@ msgid ""
 msgstr ""
 "Programação, Correção, Depuração\n"
 "\n"
-"James Doherty <...>\n"
-"Jeremy Messenger <mezz7@cox.net>\n"
-"John McKnight <...>\n"
-"Tomasz Maka <pasp@ll.pl>\n"
-"Karl Soderstrom <ks@debian.org>\t\n"
-"Christophe Barbe <christophe.barbe@ufies.org>\n"
-"Juho Snellman <jsnell@users.sourceforge.net>\n"
-"Roshan Revankar <roshweb@users.sourceforge.net>\n"
-"Oliver Feiler <kiza@kcore.de>\n"
-"Niklas Morberg <morberg@users.sourceforge.net>\n"
-"Johannes Schlueter <joscherl@users.sourceforge.net>\n"
-"Pierre Phaneuf <pp@ludusdesign.com>\n"
-"ahmed el-helw <ahmedre@cc.gatech.edu>\n"
-"James Bowes <bowes@cs.dal.ca>\n"
-"Marc Deslauriers\n"
-"Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
-"Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"James·Doherty·<...>\n"
+"Jeremy·Messenger·<mezz7@cox.net>\n"
+"John·McKnight·<...>\n"
+"Tomasz·Maka·<pasp@ll.pl>\n"
+"Karl·Soderstrom·<ks@debian.org>\t\n"
+"Christophe·Barbe·<christophe.barbe@ufies.org>\n"
+"Juho·Snellman·<jsnell@users.sourceforge.net>\n"
+"Roshan·Revankar·<roshweb@users.sourceforge.net>\n"
+"Oliver·Feiler·<kiza@kcore.de>\n"
+"Niklas·Morberg·<morberg@users.sourceforge.net>\n"
+"Johannes·Schlueter·<joscherl@users.sourceforge.net>\n"
+"Pierre·Phaneuf·<pp@ludusdesign.com>\n"
+"ahmed·el-helw·<ahmedre@cc.gatech.edu>\n"
+"James·Bowes·<bowes@cs.dal.ca>\n"
+"Marc·Deslauriers\n"
+"Amit·D.·Chaudhary·<amitc@users.sourceforge.net>\n"
+"Christoph·Hohmann·<reboot@users.sourceforge.net>\n"
+"Raphael·Slinckx·<raphael@slinckx.net>\n"
 "\n"
 "\n"
 "Código de outros projetos\n"
@@ -1094,9 +1088,8 @@ msgid "_Do this automatically for files like this from now on."
 msgstr "_Faça automaticamente para arquivos como este de agora em diante."
 
 #: src/interface.c:3729
-#, fuzzy
 msgid "Search All Feeds"
-msgstr "Procurar em todos os fontes."
+msgstr "Procurar em todos os fontes"
 
 #: src/interface.c:3744
 msgid "Search for"
@@ -1107,17 +1100,21 @@ msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
 msgstr ""
+"Entra com uma string para Liferea pesquisar, encontrando um título "
+"dos artigos ou índice."
+""
 
 #: src/interface.c:3767
-#, fuzzy
 msgid "Saves this search as a VFolder, which will appear in the feed list."
-msgstr "salva a pesquisa na Pasta Virtual, que aparecerá na lista de fonte"
+msgstr "Salva a pesquisa na Pasta Virtual, que aparecerá na lista de fonte."
 
 #: src/interface.c:3790
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr ""
+"Procurando o texto especificado em todas os fontes. O resultado da"
+"busca aparecerá como artigos da lista."
 
 #: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
 msgid "[No title]"
@@ -1369,7 +1366,6 @@ msgid "Item body"
 msgstr "Corpo do artigo"
 
 #: src/rule.c:172
-#, fuzzy
 msgid "Feed title"
 msgstr "Título do artigo"
 
@@ -1567,11 +1563,12 @@ msgid ""
 msgstr "Encontrado os seguintes erros ao processar a fonte:<br><b>%s</b>"
 
 #: src/ui_htmlview.h:98
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "There were errors while filtering this feed. The following error occurred:"
 "<br><b><pre>%s</pre></b>"
-msgstr "Encontrado os seguintes erros ao processar a fonte:<br><b>%s</b>"
+msgstr ""
+"Encontrado os seguintes erros ao processar a fonte: <br><b><pre>%s</pre></b>"
 
 #: src/ui_htmlview.h:99
 msgid ""
@@ -1729,9 +1726,8 @@ msgid "/_New/New F_older..."
 msgstr "/_Nova/Nova P_asta..."
 
 #: src/ui_popup.c:96 src/ui_popup.c:107 src/ui_popup.c:117
-#, fuzzy
 msgid "/_New/New _VFolder..."
-msgstr "/_Nova/Nova P_asta..."
+msgstr "/_Nova/Nova Pasta _Virtual..."
 
 #: src/ui_popup.c:97 src/ui_popup.c:118
 msgid "/_Properties..."
@@ -1887,6 +1883,11 @@ msgid ""
 "result permanently you can click the VFolder button in the search dialog and "
 "Liferea will add a VFolder to your feed list.</h2>"
 msgstr ""
+"%s<h2>%d Resultados da pesquisa para \"%s\"</h2><p>. A lista contém "
+"todos os artigos que combinam com o resultado da pesquisa. Se quiser "
+"salvar esse resultado, aperte em Pasta Virtual no diálogo da pesquisa e o"
+"Liferea adicionará uma Pasta Virtual na sua lista de Fontes."
+""
 
 #: src/ui_search.c:119
 msgid "Please do a search first!"
@@ -1895,41 +1896,39 @@ msgstr ""
 "Liferea·reuses·the·GNOMELiferea·reuses·the·GNOMELiferea·reuses·the·GNOME"
 
 #: src/ui_search.c:129
-#, fuzzy
 msgid "New VFolder"
-msgstr "Nova Pasta"
+msgstr "Nova Pasta Vitual"
 
 #: src/ui_tabs.c:107
 msgid "URL"
 msgstr "URL"
 
 #: src/ui_tray.c:99
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item"
-msgid_plural "%d new items"
-msgstr[0] "%d novo item!"
-msgstr[1] "%d novo item!"
+msgstr "%d novo item!"
 
 #: src/ui_tray.c:100 src/ui_tray.c:104
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s\n"
 "%d unread item"
-msgid_plural ""
 "%s\n"
 "%d unread items"
-msgstr[0] "%d novo item!"
-msgstr[1] "%d novo item!"
+msgstr ""
+"%s\n"
+"%d artigo não lido"
+"%s\n"
+"%d artigos não lidos"
 
 #: src/ui_tray.c:103
-#, fuzzy
 msgid "No new items"
-msgstr "Não há novos artigos."
+msgstr "Não há novos artigos"
 
 #: src/update.c:93
 #, c-format
 msgid "%s exited with status %d"
-msgstr ""
+msgstr "%s sair com status %d"
 
 #: src/update.c:99 src/update.c:100 src/update.c:136
 #, c-format
