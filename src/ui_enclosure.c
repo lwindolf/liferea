@@ -45,36 +45,38 @@ void ui_enclosure_init(void) {
 	gchar		*filename;
 	
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "mime.xml", common_get_cache_path());
-	if(NULL == (doc = xmlParseFile(filename))) {
-		debug0(DEBUG_CONF, "could not load enclosure type config file!");
-	} else {
-		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			g_warning("could not read root element from enclosure type config file!");
+	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
+		if(NULL == (doc = xmlParseFile(filename))) {
+			debug0(DEBUG_CONF, "could not load enclosure type config file!");
 		} else {
-			while(cur != NULL) {
-				if(!xmlIsBlankNode(cur)) {
-					if(!xmlStrcmp(cur->name, BAD_CAST"types")) {
-						cur = cur->xmlChildrenNode;
-						while(cur != NULL) {
-							if((!xmlStrcmp(cur->name, BAD_CAST"type"))) {
-								etp = g_new0(struct encType, 1);
-								etp->mime = xmlGetProp(cur, BAD_CAST"mime");
-								etp->extension = xmlGetProp(cur, BAD_CAST"extension");
-								etp->cmd = xmlGetProp(cur, BAD_CAST"cmd");
-								etp->permanent = TRUE;
-								types = g_slist_append(types, etp);
+			if(NULL == (cur = xmlDocGetRootElement(doc))) {
+				g_warning("could not read root element from enclosure type config file!");
+			} else {
+				while(cur != NULL) {
+					if(!xmlIsBlankNode(cur)) {
+						if(!xmlStrcmp(cur->name, BAD_CAST"types")) {
+							cur = cur->xmlChildrenNode;
+							while(cur != NULL) {
+								if((!xmlStrcmp(cur->name, BAD_CAST"type"))) {
+									etp = g_new0(struct encType, 1);
+									etp->mime = xmlGetProp(cur, BAD_CAST"mime");
+									etp->extension = xmlGetProp(cur, BAD_CAST"extension");
+									etp->cmd = xmlGetProp(cur, BAD_CAST"cmd");
+									etp->permanent = TRUE;
+									types = g_slist_append(types, etp);
+								}
+								cur = cur->next;
 							}
-							cur = cur->next;
+							break;
+						} else {
+							g_warning(_("\"%s\" is not a valid enclosure type config file!"), filename);
 						}
-						break;
-					} else {
-						g_warning(_("\"%s\" is not a valid enclosure type config file!"), filename);
 					}
+					cur = cur->next;
 				}
-				cur = cur->next;
 			}
+			xmlFreeDoc(doc);
 		}
-		xmlFreeDoc(doc);
 	}
 	g_free(filename);
 }
