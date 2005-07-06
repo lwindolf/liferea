@@ -22,10 +22,12 @@
 #  include <config.h>
 #endif
 
+#include <string.h>
+
 #include "ns_blogChannel.h"
 #include "common.h"
 #include "update.h"
-#include <string.h>
+#include "feedlist.h"
 
 #define BLOGROLL_START		"<p><div class=\"blogchanneltitle\"><b>BlogRoll</b></div></p>"
 #define BLOGROLL_END		"" 

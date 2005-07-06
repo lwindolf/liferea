@@ -136,6 +136,8 @@ void 		item_set_new_status(itemPtr ip, const gboolean newStatus);
 void 		item_set_popupp_status(itemPtr ip, const gboolean newPopupStatus);
 /** Sets the ip's update flag */
 void 		item_set_update_status(itemPtr ip, const gboolean newStatus);
+/** Set the popup status of an item */
+void item_set_popup_status(itemPtr ip, const gboolean newPopupStatus);
 
 /**
  * Marks ip as marked or unmarked and updates the UI to reflect this

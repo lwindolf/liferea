@@ -18,6 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef _UI_ENCLOSURE_H
+#define _UI_ENCLOSURE_H
+
 #include <gtk/gtk.h>
  
 #define ENCLOSURE_PROTOCOL "liferea-enclosure://"
@@ -42,3 +45,7 @@ void ui_enclosure_new_popup(gchar *url);
 /* popup menu callbacks */
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
+
+void ui_enclosure_change_type(gpointer type);
+void ui_enclosure_remove_type(gpointer type);
+#endif /* _UI_ENCLOSURE_H */

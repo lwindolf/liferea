@@ -472,7 +472,6 @@ gboolean feed_load(feedPtr fp) {
    feeds is decremented and if it zero the unnecessary feed infos are 
    free'd. Only to be called by feedlist_unload_feed(). */
 void feed_unload(feedPtr fp) {
-	gint 	unreadCount, newCount;
 
 	g_assert(NULL != fp);
 	g_assert(0 != fp->loaded);

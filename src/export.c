@@ -417,7 +417,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 				                         | FEED_REQ_AUTH_DIALOG);
 		}
 
-		feedlist_add_feed(folder, (nodePtr)fp, -1);
+		feedlist_add_feed(folder, (feedPtr)fp, -1);
 		
 		if(source != NULL)
 			xmlFree(source);
@@ -429,7 +429,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		debug1(DEBUG_CONF, "adding folder \"%s\"", title);
 		child = restore_folder(folder, title, NULL, FST_FOLDER);
 		g_assert(NULL != child);
-		feedlist_add_folder(folder, (nodePtr)child, -1);
+		feedlist_add_folder(folder, (folderPtr)child, -1);
 		folder = child;
 
 		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
@@ -543,7 +543,7 @@ void on_import_activate_cb(const gchar *filename, gpointer user_data) {
 		folder = restore_folder(NULL, _("Imported feed list"), NULL, FST_FOLDER);
 		
 		/* add the new folder to the model */
-		feedlist_add_folder(NULL, (nodePtr)folder, -1);
+		feedlist_add_folder(NULL, (folderPtr)folder, -1);
 		
 		import_OPML_feedlist(filename, folder, TRUE, FALSE);
 	}
