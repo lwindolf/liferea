@@ -153,7 +153,7 @@ static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
 
 static void installTrayIcon(void) {
 
-	g_assert(NULL != tray_icon);
+	g_assert(NULL == tray_icon);
 
 	tray_icon = egg_tray_icon_new(PACKAGE);
 	eventbox = gtk_event_box_new();
