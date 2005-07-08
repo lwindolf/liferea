@@ -243,6 +243,27 @@ td.httperror {
 	padding-right:5px;
 }
 
+span.details, span.detaillink {
+	visibility:hidden;
+	display:none;
+}
+
+span.details {
+	background:#D55;
+	margin:5px;
+	margin-left:15px;
+	padding:5px;
+	padding-left:15px;
+	border-left:3px solid #911;
+	font-size:80%;
+}
+
+span.showmore {
+	text-decoration:underline;
+	color:blue;
+	cursor:pointer;
+}
+
 /* namespace specific styles */
 div.blogchanneltitle {
 	padding-left:10px;

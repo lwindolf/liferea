@@ -94,8 +94,13 @@ struct displayset {
 
 #define UPDATE_ERROR_START	"<table cellspacing=\"0\" class=\"httperror\"><tr><td class=\"httperror\">"
 #define HTTP_ERROR_TEXT		_("The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>")
-#define PARSE_ERROR_TEXT	_("There were errors while parsing this feed. The following error occurred:<br><b>%s</b>")
-#define FILTER_ERROR_TEXT	_("There were errors while filtering this feed. The following error occurred:<br><b><pre>%s</pre></b>")
+
+#define PARSE_ERROR_TEXT	_("There were errors while parsing this feed!")
+#define PARSE_ERROR_TEXT2	"<span id=\"pdl\" class=\"detaillink\">(<span class=\"showmore\" onclick=\"javascript:document.getElementById('pd').style.visibility='visible';document.getElementById('pd').style.display='block';document.getElementById('pdl').style.visibility='hidden';document.getElementById('pdl').style.display='none';\">%s</span>)</span> <br><span class=\"details\" id='pd'><b>%s</b><script language=\"javascript\" type=\"text/javascript\">document.getElementById('pdl').style.visibility='visible';document.getElementById('pdl').style.display='inline';</script>"	// explicitly no </span> at the end!
+
+#define FILTER_ERROR_TEXT	_("There were errors while filtering this feed!")
+#define FILTER_ERROR_TEXT2	"<span id=\"fdl\" class=\"detaillink\">(<span class=\"showmore\" onclick=\"javascript:document.getElementById('fd').style.visibility='visible';document.getElementById('fd').style.display='block';document.getElementById('fdl').style.visibility='hidden';document.getElementById('fdl').style.display='none';\">%s</span>)</span> <br><span class=\"details\" id='fd'><b><pre>%s</pre></b><script language=\"javascript\" type=\"text/javascript\">document.getElementById('fdl').style.visibility='visible';document.getElementById('fdl').style.display='inline';</script></span>"
+
 #define HTTP410_ERROR_TEXT	_("This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.")
 #define UPDATE_ERROR_END	"</td></tr></table>"
 

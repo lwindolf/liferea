@@ -2,7 +2,7 @@
  * @file htmlview.c common interface for browser module implementations
  * and module loading functions
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,11 +67,11 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 	
 	/* print some warnings concerning Mozilla */
 	if((0 == strncmp(libname, "liblihtmlm", 10)) && !testmode) {
-		g_print(_("\nTrying to load the Mozilla browser module... Note that this\n"
-		          "might not work with every Mozilla version. If you have problems\n"
-		          "and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
-		          "another Mozilla installation or delete the gconf configuration\n"
-		          "key /apps/liferea/browser-module!\n\n"));
+		debug0(DEBUG_GUI, _("\nTrying to load the Mozilla browser module... Note that this\n"
+		                  "might not work with every Mozilla version. If you have problems\n"
+		                  "and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
+		                  "another Mozilla installation or delete the gconf configuration\n"
+		                  "key /apps/liferea/browser-module!\n\n"));
 	}
 	
 	filename = g_strdup_printf("%s%s%s", PACKAGE_LIB_DIR, G_DIR_SEPARATOR_S, libname);
@@ -127,7 +127,7 @@ void ui_htmlview_init(void) {
 	   to present in the preferences dialog and to load
 	   one just in case there was no configured module
 	   or it did not load when trying... */	
-	g_print(_("Available browser modules (%s):\n"), PACKAGE_LIB_DIR);
+	debug1(DEBUG_GUI, _("Available browser modules (%s):\n"), PACKAGE_LIB_DIR);
 	dir = g_dir_open(PACKAGE_LIB_DIR, 0, &error);
 	if(!error) {
 		/* maybe no good solution, library name syntax: 
@@ -145,7 +145,7 @@ void ui_htmlview_init(void) {
 						info->libname = g_strdup(filename);
 						info->description = g_strdup(htmlviewInfo->name);
 						availableBrowserModules = g_slist_append(availableBrowserModules, (gpointer)info);
-						g_print("-> %s (%s)\n", info->description, info->libname);
+						debug2(DEBUG_GUI, "-> %s (%s)\n", info->description, info->libname);
 						g_module_close(handle);
 					}
 				}
@@ -162,7 +162,7 @@ void ui_htmlview_init(void) {
 	/* load configured module, we get a empty string if nothing is configured */
 	filename = getStringConfValue(BROWSER_MODULE);
 	if(0 != strlen(filename)) {
-		g_print(_("Loading configured browser module (%s)!\n"), filename);
+		debug1(DEBUG_GUI, _("Loading configured browser module (%s)!\n"), filename);
 		success = ui_htmlview_load_symbols(filename, FALSE);
 	} else {
 		g_print(_("No browser module configured!\n"));

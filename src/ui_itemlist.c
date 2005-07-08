@@ -501,11 +501,16 @@ void on_popup_launchitem_selected(void) {
 
 void on_popup_launchitem_in_tab_selected(void) {
 	itemPtr		ip;
+	const gchar	*link;
 
-	if(NULL != (ip = ui_itemlist_get_selected()))
-		ui_tabs_new(item_get_source(ip), item_get_source(ip));
-	else
+	if(NULL != (ip = ui_itemlist_get_selected())) {
+		if(NULL != (link = item_get_source(ip)))
+			ui_tabs_new(link, link);
+		else
+			ui_show_error_box(_("This item has no link specified!"));
+	} else {
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
+	}
 }
 
 void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data) {

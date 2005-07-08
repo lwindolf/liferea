@@ -20,6 +20,8 @@ src/favicon.c
 src/favicon.h
 src/feed.c
 src/feed.h
+src/feedlist.c
+src/feedlist.h
 src/folder.c
 src/folder.h
 src/html.c
@@ -91,6 +93,8 @@ src/support.c
 src/support.h
 src/ui_dnd.c
 src/ui_dnd.h
+src/ui_enclosure.c
+src/ui_enclosure.h
 src/ui_feed.c
 src/ui_feed.h
 src/ui_feedlist.c
@@ -113,10 +117,14 @@ src/ui_queue.c
 src/ui_queue.h
 src/ui_search.c
 src/ui_search.h
+src/ui_session.c
+src/ui_session.h
 src/ui_tabs.h
 src/ui_tabs.c
 src/ui_tray.c
 src/ui_tray.h
+src/ui_vfolder.c
+src/ui_vfolder.h
 src/update.c
 src/update.h
 src/vfolder.c

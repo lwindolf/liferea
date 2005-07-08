@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-06 00:01+0200\n"
+"POT-Creation-Date: 2005-07-09 00:42+0200\n"
 "PO-Revision-Date: 2005-03-19 09:47+0100\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -142,7 +142,7 @@ msgstr ""
 "<p>Erreur XML lors de la lecture des flux ! Le flux \"%s\" ne peut être "
 "chargé !</p>"
 
-#: src/feed.c:155 src/feed.c:388
+#: src/feed.c:155 src/feed.c:389
 msgid "<p>Empty document!</p>"
 msgstr "<p>Document vide !</p>"
 
@@ -150,29 +150,33 @@ msgstr "<p>Document vide !</p>"
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML non valide !</p>"
 
-#: src/feed.c:229
-msgid "There were errors while parsing a feed"
-msgstr "Il y a eu des erreurs pendant l'analyse d'un flux"
+#: src/feed.c:226
+msgid ""
+"<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
+"discovery found no feeds on this page. Maybe this webpage just does not "
+"support feed auto discovery.</p>"
+msgstr ""
 
-#: src/feed.c:230
+#: src/feed.c:231
+#, fuzzy
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
-"sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
+"sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
 msgstr ""
 "<p>Impossible de déterminer le type de flux. Veuillez vérifier qu'il est <a "
 "href=\"http://feedvalidator.org\">valide</a> et dans un <a href=\"http://"
 "liferea.sourceforge.net/index.php#supported_formats\">format supporté</a>.</"
 "p>"
 
-#: src/feed.c:368
+#: src/feed.c:369
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Erreur lors de la lecture du fichier cache \"%s\" ! Le fichier cache n'a pas "
 "pu être chargé !"
 
-#: src/feed.c:380
+#: src/feed.c:381
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -181,14 +185,14 @@ msgstr ""
 "<p>Erreur XML pendant l'analyse du fichier cache ! Le fichier cache du flux "
 "\"%s\" n'a pas pu être chargé !</p>"
 
-#: src/feed.c:399
+#: src/feed.c:400
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" n'est pas un fichier cache valide ! Impossible de lire le fichier "
 "cache !</p>"
 
-#: src/feed.c:453
+#: src/feed.c:454
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
@@ -226,6 +230,171 @@ msgstr "commande définie par l'utilisateur :"
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Source :"
+
+#: src/feedlist.c:246
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr ""
+"Vous n'êtes pas autorisé à télécharger ce flux. Veuillez mettre à jour votre "
+"nom d'utilisateur et votre mot de passe dans la boîte de dialogue des "
+"propriétés de ce flux."
+
+#: src/feedlist.c:248
+msgid "Payment Required"
+msgstr "Paiement nécessaire"
+
+#: src/feedlist.c:249
+msgid "Access Forbidden"
+msgstr "Accès interdit"
+
+#: src/feedlist.c:250
+msgid "Resource Not Found"
+msgstr "Ressource introuvable"
+
+#: src/feedlist.c:251
+msgid "Method Not Allowed"
+msgstr "Méthode interdite"
+
+#: src/feedlist.c:252
+msgid "Not Acceptable"
+msgstr "Non acceptable"
+
+#: src/feedlist.c:253
+msgid "Proxy Authentication Required"
+msgstr "Authentification par proxy exigée"
+
+#: src/feedlist.c:254
+msgid "Request Time-Out"
+msgstr "Délai de la requête expiré"
+
+#: src/feedlist.c:255
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "Parti. La ressource n'existe pas. Veuillez vous désabonner !"
+
+#: src/feedlist.c:260
+msgid "URL is invalid"
+msgstr "L'URL est invalide"
+
+#: src/feedlist.c:263
+msgid "Error connecting to remote host"
+msgstr "Erreur de connexion à la machine distante"
+
+#: src/feedlist.c:264
+msgid "Hostname could not be found"
+msgstr "Le nom de la machine n'a pas pu être trouvé"
+
+#: src/feedlist.c:265
+msgid "Network connection was refused by the remote host"
+msgstr "La connexion réseau a été refusée par la machine distante"
+
+#: src/feedlist.c:266
+msgid "Remote host did not finish sending data"
+msgstr "La machine distante n'a pas fini d'envoyer ses données"
+
+#. Transfer errors
+#: src/feedlist.c:268
+msgid "Too many HTTP redirects were encountered"
+msgstr "Trop de redirections HTTP ont été rencontrées"
+
+#: src/feedlist.c:271
+msgid "Remote host sent an invalid response"
+msgstr "La machine distante a envoyé une réponse invalide"
+
+#: src/feedlist.c:278
+msgid "Authentication failed"
+msgstr "L'authentification a échoué"
+
+#: src/feedlist.c:280
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr "Méthode d'authentification du serveur web incompatible avec Liferea"
+
+#: src/feedlist.c:286
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr ""
+"Flux non disponible : le serveur a demandé une redirection non supportée !"
+
+#: src/feedlist.c:287
+msgid "Client Error"
+msgstr "Erreur du client"
+
+#: src/feedlist.c:288
+msgid "Server Error"
+msgstr "Erreur du serveur"
+
+#: src/feedlist.c:289
+msgid "(unknown networking error happened)"
+msgstr "(une erreur réseau inconnue s'est produite)"
+
+#: src/feedlist.c:302 src/feedlist.c:311
+msgid "Show Details"
+msgstr ""
+
+#: src/feedlist.c:316
+msgid ""
+"<br>You may want to validate the feed using <a href=\"http://feedvalidator."
+"org/check.cgi?url="
+msgstr ""
+"<br>Si vous le souhaitez, vous pouvez valider ce flux en utilisant <a href="
+"\"http://feedvalidator.org/check.cgi?url="
+
+#: src/feedlist.c:321
+msgid "\">FeedValidator</a>."
+msgstr "\">FeedValidator</a>."
+
+#: src/feedlist.c:329
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
+"vérifier l'URL et la sortie sur la console."
+
+#: src/feedlist.c:363
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" a cessé d'exister. Liferea ne le mettra plus à jour !"
+
+#: src/feedlist.c:365
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour"
+
+#: src/feedlist.c:373
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "L'URL de \"%s\" a changé définitivement et a été mise à jour"
+
+#: src/feedlist.c:385
+#, c-format
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>%s"
+msgstr ""
+"<p>Impossible de détecter le type de ce flux ! Veuillez vérifier que la "
+"source pointe vraiment vers une ressource fournie dans un des formats "
+"supportés !</p>%s"
+
+#: src/feedlist.c:404
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" mis à jour..."
+
+#: src/feedlist.c:412
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "\"%s\" n'est pas disponible"
+
+#: src/feedlist.c:453
+msgid "You have to select a feed entry"
+msgstr "Vous devez sélectionner un flux"
+
+#: src/feedlist.c:463
+msgid "Liferea is in offline mode. No update possible."
+msgstr ""
+"Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
+"jour."
 
 #: src/html.c:166
 msgid "Feed link auto discovery failed! No feed links found!"
@@ -1346,6 +1515,7 @@ msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Impossible de trouver l'en-tête RDF !</p>"
 
 #: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:296 src/rss_channel.c:328
+#: src/ui_htmlview.h:98
 msgid "There were errors while parsing this feed!"
 msgstr "Des erreurs sont survenues pendant l'analyse de ce flux !"
 
@@ -1423,9 +1593,26 @@ msgstr "n'est pas positionné"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Fichier pixmap %s introuvable."
 
-#: src/ui_feed.c:366
+#: src/ui_enclosure.c:72
+#, fuzzy, c-format
+msgid "\"%s\" is not a valid enclosure type config file!"
+msgstr ""
+"\"%s\" n'est pas un document OPML valide ! Liferea ne peut importer ce "
+"fichier !"
+
+#: src/ui_enclosure.c:231 src/ui_enclosure.c:375 src/ui_feed.c:366
 msgid "Choose File"
 msgstr "Choisir un fichier"
+
+#: src/ui_enclosure.c:286
+#, c-format
+msgid "<b>File Extension .%s</b>"
+msgstr ""
+
+#: src/ui_enclosure.c:288
+#, c-format
+msgid "<b>%s</b>"
+msgstr ""
 
 #: src/ui_feed.c:425
 msgid "Unknown source"
@@ -1586,25 +1773,13 @@ msgstr ""
 "La dernière mise à jour de cet abonnement a échoué !<br><b>Code d'erreur "
 "HTTP %d : %s</b>"
 
-#: src/ui_htmlview.h:97
-#, c-format
-msgid ""
-"There were errors while parsing this feed. The following error occurred:"
-"<br><b>%s</b>"
-msgstr ""
-"Des erreurs sont survenues pendant l'analyse de ce flux ! L'erreur suivante "
-"s'est produite :<br><b>%s</b>"
+#. explicitly no </span> at the end!
+#: src/ui_htmlview.h:101
+#, fuzzy
+msgid "There were errors while filtering this feed!"
+msgstr "Des erreurs sont survenues pendant l'analyse de ce flux !"
 
-#: src/ui_htmlview.h:98
-#, fuzzy, c-format
-msgid ""
-"There were errors while filtering this feed. The following error occurred:"
-"<br><b><pre>%s</pre></b>"
-msgstr ""
-"Des erreurs sont survenues pendant l'analyse de ce flux ! L'erreur suivante "
-"s'est produite :<br><b>%s</b>"
-
-#: src/ui_htmlview.h:99
+#: src/ui_htmlview.h:104
 msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
@@ -1621,16 +1796,21 @@ msgstr "Date"
 msgid "Headline"
 msgstr "Titre"
 
-#: src/ui_itemlist.c:499 src/ui_itemlist.c:508 src/ui_itemlist.c:559
+#: src/ui_itemlist.c:499 src/ui_itemlist.c:512 src/ui_itemlist.c:564
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: src/ui_itemlist.c:542 src/ui_itemlist.c:562
+#: src/ui_itemlist.c:510
+#, fuzzy
+msgid "This item has no link specified!"
+msgstr "Cet élément n'a pas de lien assigné !"
+
+#: src/ui_itemlist.c:547 src/ui_itemlist.c:567
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:628
+#: src/ui_itemlist.c:633
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 
@@ -1869,47 +2049,47 @@ msgid "/Save As..."
 msgstr "/Sauver sous..."
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:223
+#: src/ui_prefs.c:224
 msgid "Manual"
 msgstr "Manuel"
 
-#: src/ui_prefs.c:233
+#: src/ui_prefs.c:234
 msgid "Browser default"
 msgstr "Choix par défaut du navigateur"
 
-#: src/ui_prefs.c:238
+#: src/ui_prefs.c:239
 msgid "Existing window"
 msgstr "Fenêtre existante"
 
-#: src/ui_prefs.c:243
+#: src/ui_prefs.c:244
 msgid "New window"
 msgstr "Nouvelle fenêtre"
 
-#: src/ui_prefs.c:248
+#: src/ui_prefs.c:249
 msgid "New tab"
 msgstr "Nouvel onglet"
 
-#: src/ui_prefs.c:258
+#: src/ui_prefs.c:259
 msgid "Update only feeds scheduled for updates"
 msgstr "Mise à jour seulement des flux arrivés à expiration"
 
-#: src/ui_prefs.c:263
+#: src/ui_prefs.c:264
 msgid "Update all feeds"
 msgstr "Mise à jour de tous les flux"
 
-#: src/ui_prefs.c:268
+#: src/ui_prefs.c:269
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Remise à zéro des compteurs de mise à jour (pas de mise à jour)"
 
-#: src/ui_prefs.c:509
+#: src/ui_prefs.c:510
 msgid "Type"
 msgstr "Type"
 
-#: src/ui_prefs.c:512
+#: src/ui_prefs.c:513
 msgid "Program"
 msgstr "Programme"
 
-#: src/ui_prefs.c:763
+#: src/ui_prefs.c:764
 msgid "Choose download directory"
 msgstr "Choisissez un répertoire de téléchargement"
 
@@ -1992,126 +2172,23 @@ msgstr ""
 "La balise HTML <object> incluse n'est pas supportée par GtkHTML2.\n"
 "Les plugins inclus peuvent ne pas s'afficher."
 
-#~ msgid ""
-#~ "You are unauthorized to download this feed. Please update your username "
-#~ "and password in the feed properties dialog box."
-#~ msgstr ""
-#~ "Vous n'êtes pas autorisé à télécharger ce flux. Veuillez mettre à jour "
-#~ "votre nom d'utilisateur et votre mot de passe dans la boîte de dialogue "
-#~ "des propriétés de ce flux."
-
-#~ msgid "Payment Required"
-#~ msgstr "Paiement nécessaire"
-
-#~ msgid "Access Forbidden"
-#~ msgstr "Accès interdit"
-
-#~ msgid "Resource Not Found"
-#~ msgstr "Ressource introuvable"
-
-#~ msgid "Method Not Allowed"
-#~ msgstr "Méthode interdite"
-
-#~ msgid "Not Acceptable"
-#~ msgstr "Non acceptable"
-
-#~ msgid "Proxy Authentication Required"
-#~ msgstr "Authentification par proxy exigée"
-
-#~ msgid "Request Time-Out"
-#~ msgstr "Délai de la requête expiré"
-
-#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-#~ msgstr "Parti. La ressource n'existe pas. Veuillez vous désabonner !"
-
-#~ msgid "URL is invalid"
-#~ msgstr "L'URL est invalide"
-
-#~ msgid "Error connecting to remote host"
-#~ msgstr "Erreur de connexion à la machine distante"
-
-#~ msgid "Hostname could not be found"
-#~ msgstr "Le nom de la machine n'a pas pu être trouvé"
-
-#~ msgid "Network connection was refused by the remote host"
-#~ msgstr "La connexion réseau a été refusée par la machine distante"
-
-#~ msgid "Remote host did not finish sending data"
-#~ msgstr "La machine distante n'a pas fini d'envoyer ses données"
-
-#~ msgid "Too many HTTP redirects were encountered"
-#~ msgstr "Trop de redirections HTTP ont été rencontrées"
-
-#~ msgid "Remote host sent an invalid response"
-#~ msgstr "La machine distante a envoyé une réponse invalide"
-
-#~ msgid "Authentication failed"
-#~ msgstr "L'authentification a échoué"
-
-#~ msgid "Webserver's authentication method incompatible with Liferea"
-#~ msgstr "Méthode d'authentification du serveur web incompatible avec Liferea"
-
-#~ msgid "Feed not available: Server requested unsupported redirection!"
-#~ msgstr ""
-#~ "Flux non disponible : le serveur a demandé une redirection non supportée !"
-
-#~ msgid "Client Error"
-#~ msgstr "Erreur du client"
-
-#~ msgid "Server Error"
-#~ msgstr "Erreur du serveur"
-
-#~ msgid "(unknown networking error happened)"
-#~ msgstr "(une erreur réseau inconnue s'est produite)"
+#~ msgid "There were errors while parsing a feed"
+#~ msgstr "Il y a eu des erreurs pendant l'analyse d'un flux"
 
 #~ msgid ""
-#~ "<br>You may want to validate the feed using <a href=\"http://"
-#~ "feedvalidator.org/check.cgi?url="
+#~ "There were errors while parsing this feed. The following error occurred:"
+#~ "<br><b>%s</b>"
 #~ msgstr ""
-#~ "<br>Si vous le souhaitez, vous pouvez valider ce flux en utilisant <a "
-#~ "href=\"http://feedvalidator.org/check.cgi?url="
+#~ "Des erreurs sont survenues pendant l'analyse de ce flux ! L'erreur "
+#~ "suivante s'est produite :<br><b>%s</b>"
 
-#~ msgid "\">FeedValidator</a>."
-#~ msgstr "\">FeedValidator</a>."
-
+#, fuzzy
 #~ msgid ""
-#~ "There was a problem while reading this subscription. Please check the URL "
-#~ "and console output."
+#~ "There were errors while filtering this feed. The following error occurred:"
+#~ "<br><b><pre>%s</pre></b>"
 #~ msgstr ""
-#~ "Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
-#~ "vérifier l'URL et la sortie sur la console."
-
-#~ msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-#~ msgstr "\"%s\" a cessé d'exister. Liferea ne le mettra plus à jour !"
-
-#~ msgid "\"%s\" has not changed since last update"
-#~ msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour"
-
-#~ msgid "The URL of \"%s\" has changed permanently and was updated"
-#~ msgstr "L'URL de \"%s\" a changé définitivement et a été mise à jour"
-
-#~ msgid ""
-#~ "<p>Could not detect the type of this feed! Please check if the source "
-#~ "really points to a resource provided in one of the supported syndication "
-#~ "formats!</p>%s"
-#~ msgstr ""
-#~ "<p>Impossible de détecter le type de ce flux ! Veuillez vérifier que la "
-#~ "source pointe vraiment vers une ressource fournie dans un des formats "
-#~ "supportés !</p>%s"
-
-#~ msgid "\"%s\" updated..."
-#~ msgstr "\"%s\" mis à jour..."
-
-#~ msgid "\"%s\" is not available"
-#~ msgstr "\"%s\" n'est pas disponible"
-
-#~ msgid "You have to select a feed entry"
-#~ msgstr "Vous devez sélectionner un flux"
-
-#~ msgid "Liferea is in offline mode. No update possible."
-#~ msgstr ""
-#~ "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
-#~ "jour."
+#~ "Des erreurs sont survenues pendant l'analyse de ce flux ! L'erreur "
+#~ "suivante s'est produite :<br><b>%s</b>"
 
 #~ msgid "case sensitive"
 #~ msgstr "sensible à la casse"

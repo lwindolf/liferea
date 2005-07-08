@@ -244,7 +244,7 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 		/* first specific codes */
 		switch(httpstatus) {
 			case 401:tmp2 = g_strdup(_("You are unauthorized to download this feed. Please update your username and "
-								  "password in the feed properties dialog box."));break;
+			                           "password in the feed properties dialog box."));break;
 			case 402:tmp2 = g_strdup(_("Payment Required"));break;
 			case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
 			case 404:tmp2 = g_strdup(_("Resource Not Found"));break;
@@ -297,31 +297,30 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 	}
 	
 	/* add filtering error messages */
-	if(NULL != filterErrors) {
-		if(errorFound)
-			addToHTMLBuffer(&buffer, HTML_NEWLINE);	
+	if(NULL != filterErrors) {	
 		errorFound = TRUE;
-		tmp1 = g_markup_printf_escaped(FILTER_ERROR_TEXT, filterErrors);
+		tmp1 = g_markup_printf_escaped(FILTER_ERROR_TEXT2, _("Show Details"), filterErrors);
+		addToHTMLBuffer(&buffer, FILTER_ERROR_TEXT);
 		addToHTMLBuffer(&buffer, tmp1);
 		g_free(tmp1);
 	}
 	
 	/* add parsing error messages */
 	if(NULL != fp->parseErrors) {
-		if(errorFound)
-			addToHTMLBuffer(&buffer, HTML_NEWLINE);	
 		errorFound = TRUE;
-		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT, fp->parseErrors);
+		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT2, _("Show Details"), fp->parseErrors);
+		addToHTMLBuffer(&buffer, PARSE_ERROR_TEXT);
 		addToHTMLBuffer(&buffer, tmp1);
 		if (feed_get_source(fp) != NULL && (NULL != strstr(feed_get_source(fp), "://"))) {
 			xmlChar *escsource;
 			addToHTMLBufferFast(&buffer,_("<br>You may want to validate the feed using "
-									"<a href=\"http://feedvalidator.org/check.cgi?url="));
+			                              "<a href=\"http://feedvalidator.org/check.cgi?url="));
 			escsource = xmlURIEscapeStr(feed_get_source(fp),NULL);
 			addToHTMLBufferFast(&buffer,escsource);
 			xmlFree(escsource);
 			addToHTMLBuffer(&buffer,_("\">FeedValidator</a>."));
 		}
+		addToHTMLBuffer(&buffer, "</span>");
 		g_free(tmp1);
 	}
 	
@@ -334,6 +333,7 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 	
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_END);
 	fp->errorDescription = buffer;
+g_print(">>>%s<<<\n", buffer);
 }
 
 /** handles completed feed update requests */

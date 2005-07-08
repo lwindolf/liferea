@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-06 00:01+0200\n"
+"POT-Creation-Date: 2005-07-09 00:42+0200\n"
 "PO-Revision-Date: 2005-03-04 17:29+0200\n"
 "Last-Translator: SpoialÄ Cristiană Cristian <scristian@gmail.com>\n"
 "Language-Team: Romanian\n"
@@ -140,7 +140,7 @@ msgstr ""
 "<p>eroare XML în timp ce se citea feedul! Feed-ul \"%s\" nu a putut fi "
 "încărcat!</p>"
 
-#: src/feed.c:155 src/feed.c:388
+#: src/feed.c:155 src/feed.c:389
 msgid "<p>Empty document!</p>"
 msgstr "<p>Document gol!</p>"
 
@@ -148,29 +148,33 @@ msgstr "<p>Document gol!</p>"
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML invalid!</p>"
 
-#: src/feed.c:229
-msgid "There were errors while parsing a feed"
-msgstr "Au fost erori în timp ce se parcurgea feedul"
+#: src/feed.c:226
+msgid ""
+"<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
+"discovery found no feeds on this page. Maybe this webpage just does not "
+"support feed auto discovery.</p>"
+msgstr ""
 
-#: src/feed.c:230
+#: src/feed.c:231
+#, fuzzy
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
-"sourceforge.net/index.php#supported_formats\">supported format</a>.</p>"
+"sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
 msgstr ""
 "<p>Nu s-a putut determina tipul feedul. Verificaţi daca este un feed <a href="
 "\"http://feedvalidator.org\">valid</a> şi este <a href=\"http://liferea."
 "sourceforge.net/index.php#supported_formats\">printre formatele suportate</"
 "a>.</p>"
 
-#: src/feed.c:368
+#: src/feed.c:369
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Eroare în timp ce se încărca fişierul \"%s\" ! Fişierul nu a putut fi "
 "încărcat!"
 
-#: src/feed.c:380
+#: src/feed.c:381
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -179,14 +183,14 @@ msgstr ""
 "<p>eroare XML în timp ce se parcurgea fişierul cache! Feed-ul \"%s\" nu s-a "
 "putut încărca!</p>"
 
-#: src/feed.c:399
+#: src/feed.c:400
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" nu este un fişier cache valid! Nu s-a putut citi fişierul cache!</"
 "p>"
 
-#: src/feed.c:453
+#: src/feed.c:454
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Au fost erori la parcurgerea fişierului cache \"%s\""
@@ -223,6 +227,168 @@ msgstr "comandă definită de utilizator"
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Sursa:"
+
+#: src/feedlist.c:246
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr ""
+"Nu sunteţi autorizat să descărcaţi acest feed. Introduceţi userul şi parola "
+"în fereastra de proprietăţi a feedului."
+
+#: src/feedlist.c:248
+msgid "Payment Required"
+msgstr "Plată necesară"
+
+#: src/feedlist.c:249
+msgid "Access Forbidden"
+msgstr "Acces Interzis"
+
+#: src/feedlist.c:250
+msgid "Resource Not Found"
+msgstr "Nu au fost găsite resursele"
+
+#: src/feedlist.c:251
+msgid "Method Not Allowed"
+msgstr "Metoda nu este acceptată"
+
+#: src/feedlist.c:252
+msgid "Not Acceptable"
+msgstr "Nu este acceptabil"
+
+#: src/feedlist.c:253
+msgid "Proxy Authentication Required"
+msgstr "Identificare prin proxy necesară"
+
+#: src/feedlist.c:254
+msgid "Request Time-Out"
+msgstr "Cerere expirată"
+
+#: src/feedlist.c:255
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "S-a închis, feedul nu mai există. Vă rugăm dezabonaţivă!"
+
+#: src/feedlist.c:260
+msgid "URL is invalid"
+msgstr "URL este invalid"
+
+#: src/feedlist.c:263
+msgid "Error connecting to remote host"
+msgstr "Eroare la conectarea la distanţă"
+
+#: src/feedlist.c:264
+msgid "Hostname could not be found"
+msgstr "Nu s-a putut găsi numele gazdei"
+
+#: src/feedlist.c:265
+msgid "Network connection was refused by the remote host"
+msgstr "Conexiunea a fost refuzată de gazda de la distanţă"
+
+#: src/feedlist.c:266
+msgid "Remote host did not finish sending data"
+msgstr "Gazda de la distanţă nu a terminat de trimis date"
+
+#. Transfer errors
+#: src/feedlist.c:268
+msgid "Too many HTTP redirects were encountered"
+msgstr "Prea multe redirectări HTTP s-au întămpinat"
+
+#: src/feedlist.c:271
+msgid "Remote host sent an invalid response"
+msgstr "Gazda de la distanţă a trimis un răspuns invalid"
+
+#: src/feedlist.c:278
+msgid "Authentication failed"
+msgstr "Autentificare eşuată"
+
+#: src/feedlist.c:280
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr "Identificarea cerută de serverul web incompatibilă cu Liferea"
+
+#: src/feedlist.c:286
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr ""
+"Feedul nu este disponibil:Redirecţionare cerută de server care nu este "
+"suportată!"
+
+#: src/feedlist.c:287
+msgid "Client Error"
+msgstr "Eroare la client"
+
+#: src/feedlist.c:288
+msgid "Server Error"
+msgstr "Eroare la server"
+
+#: src/feedlist.c:289
+msgid "(unknown networking error happened)"
+msgstr "(eroare necunoscută la reţea)"
+
+#: src/feedlist.c:302 src/feedlist.c:311
+msgid "Show Details"
+msgstr ""
+
+#: src/feedlist.c:316
+msgid ""
+"<br>You may want to validate the feed using <a href=\"http://feedvalidator."
+"org/check.cgi?url="
+msgstr ""
+"<br>Poate doriţi să validaţi acest feed utilizând <a href=\"http://"
+"feedvalidator.org/check.cgi?url="
+
+#: src/feedlist.c:321
+msgid "\">FeedValidator</a>."
+msgstr "\">FeedValidator</a>."
+
+#: src/feedlist.c:329
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"A apărut o problemă în timp ce se citea înscrierea. Verificaţi URL-ul şi "
+"ceea ce afişează la consolă."
+
+#: src/feedlist.c:363
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" este întrerupt. Liferea nu se va mai updata!"
+
+#: src/feedlist.c:365
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" nu s-a modificat de la ultimul update."
+
+#: src/feedlist.c:373
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "URL-ul \"%s\" s-a modificat permanent şi a fost updatat"
+
+#: src/feedlist.c:385
+#, c-format
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>%s"
+msgstr ""
+"<p>Nu s-a putut determina tipul feedului! Vă rugăm verificaţi dacă sursa "
+"face parte din lista formatelor de sindicate suportate!</p>%s"
+
+#: src/feedlist.c:404
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" update reuşit..."
+
+#: src/feedlist.c:412
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "\"%s\" nu este disponibil"
+
+#: src/feedlist.c:453
+msgid "You have to select a feed entry"
+msgstr "Selectaţi o intrare a feedului"
+
+#: src/feedlist.c:463
+msgid "Liferea is in offline mode. No update possible."
+msgstr "Liferea este în modul offline. Nu se pot face update-uri."
 
 #: src/html.c:166
 msgid "Feed link auto discovery failed! No feed links found!"
@@ -1323,6 +1489,7 @@ msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Nu s-a putut găsi capătul RDF-ului!</p>"
 
 #: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:296 src/rss_channel.c:328
+#: src/ui_htmlview.h:98
 msgid "There were errors while parsing this feed!"
 msgstr "Au fost erori în timp ce se parcurgea feed-ul!"
 
@@ -1400,9 +1567,25 @@ msgstr "este nemarcat"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Nu s-a putut găsi fişierul imagine: %s"
 
-#: src/ui_feed.c:366
+#: src/ui_enclosure.c:72
+#, fuzzy, c-format
+msgid "\"%s\" is not a valid enclosure type config file!"
+msgstr ""
+"\"%s\" nu este un fişier OPML valid! Liferea nu poate importa acest fişier!"
+
+#: src/ui_enclosure.c:231 src/ui_enclosure.c:375 src/ui_feed.c:366
 msgid "Choose File"
 msgstr "Selectează fişier"
+
+#: src/ui_enclosure.c:286
+#, c-format
+msgid "<b>File Extension .%s</b>"
+msgstr ""
+
+#: src/ui_enclosure.c:288
+#, c-format
+msgid "<b>%s</b>"
+msgstr ""
 
 #: src/ui_feed.c:425
 msgid "Unknown source"
@@ -1556,23 +1739,13 @@ msgid ""
 "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
 msgstr "Ultimul update al înscrierii a eşuat!<br><b>HTTP error code %d: %s</b>"
 
-#: src/ui_htmlview.h:97
-#, c-format
-msgid ""
-"There were errors while parsing this feed. The following error occurred:"
-"<br><b>%s</b>"
-msgstr ""
-"Au fost erori în timp ce se parcurgea feedul. Au apărut erorile:<br><b>%s</b>"
+#. explicitly no </span> at the end!
+#: src/ui_htmlview.h:101
+#, fuzzy
+msgid "There were errors while filtering this feed!"
+msgstr "Au fost erori în timp ce se parcurgea feed-ul!"
 
-#: src/ui_htmlview.h:98
-#, fuzzy, c-format
-msgid ""
-"There were errors while filtering this feed. The following error occurred:"
-"<br><b><pre>%s</pre></b>"
-msgstr ""
-"Au fost erori în timp ce se parcurgea feedul. Au apărut erorile:<br><b>%s</b>"
-
-#: src/ui_htmlview.h:99
+#: src/ui_htmlview.h:104
 msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
@@ -1588,16 +1761,21 @@ msgstr "Data"
 msgid "Headline"
 msgstr "Titlul"
 
-#: src/ui_itemlist.c:499 src/ui_itemlist.c:508 src/ui_itemlist.c:559
+#: src/ui_itemlist.c:499 src/ui_itemlist.c:512 src/ui_itemlist.c:564
 msgid "No item has been selected"
 msgstr "Nu a fost selectat nici un articol"
 
-#: src/ui_itemlist.c:542 src/ui_itemlist.c:562
+#: src/ui_itemlist.c:510
+#, fuzzy
+msgid "This item has no link specified!"
+msgstr "Acest articol nu are nici o legătură asociată!"
+
+#: src/ui_itemlist.c:547 src/ui_itemlist.c:567
 msgid "You must select a feed to delete its items!"
 msgstr "Trebuie să selectaţi un feed pentru ai şterge articolele!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:628
+#: src/ui_itemlist.c:633
 msgid "There are no unread items "
 msgstr "Nu sunt articole necitite "
 
@@ -1831,47 +2009,47 @@ msgid "/Save As..."
 msgstr "/Deschide ca..."
 
 #. This allows the user to choose their own browser by typing in the command.
-#: src/ui_prefs.c:223
+#: src/ui_prefs.c:224
 msgid "Manual"
 msgstr "Manual"
 
-#: src/ui_prefs.c:233
+#: src/ui_prefs.c:234
 msgid "Browser default"
 msgstr "Navigatorul predefinit"
 
-#: src/ui_prefs.c:238
+#: src/ui_prefs.c:239
 msgid "Existing window"
 msgstr "Fereastra existentă"
 
-#: src/ui_prefs.c:243
+#: src/ui_prefs.c:244
 msgid "New window"
 msgstr "Fereastră nouă"
 
-#: src/ui_prefs.c:248
+#: src/ui_prefs.c:249
 msgid "New tab"
 msgstr "Tab nou"
 
-#: src/ui_prefs.c:258
+#: src/ui_prefs.c:259
 msgid "Update only feeds scheduled for updates"
 msgstr "Updatează numai feedurile programate pentru update"
 
-#: src/ui_prefs.c:263
+#: src/ui_prefs.c:264
 msgid "Update all feeds"
 msgstr "Updatează toate feedurile"
 
-#: src/ui_prefs.c:268
+#: src/ui_prefs.c:269
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Resetează timpul updatării feedurilor (Nu se updatează nici un feed)"
 
-#: src/ui_prefs.c:509
+#: src/ui_prefs.c:510
 msgid "Type"
 msgstr "Tip"
 
-#: src/ui_prefs.c:512
+#: src/ui_prefs.c:513
 msgid "Program"
 msgstr "Program"
 
-#: src/ui_prefs.c:763
+#: src/ui_prefs.c:764
 msgid "Choose download directory"
 msgstr "Alegeţi directorul pentru download"
 
@@ -1954,123 +2132,23 @@ msgstr ""
 "Tagul HTML <object> inclus nu este suportat de GtkHTML2.\n"
 "Pluginurile incluse nu pot fi afişate."
 
-#~ msgid ""
-#~ "You are unauthorized to download this feed. Please update your username "
-#~ "and password in the feed properties dialog box."
-#~ msgstr ""
-#~ "Nu sunteţi autorizat să descărcaţi acest feed. Introduceţi userul şi "
-#~ "parola în fereastra de proprietăţi a feedului."
-
-#~ msgid "Payment Required"
-#~ msgstr "Plată necesară"
-
-#~ msgid "Access Forbidden"
-#~ msgstr "Acces Interzis"
-
-#~ msgid "Resource Not Found"
-#~ msgstr "Nu au fost găsite resursele"
-
-#~ msgid "Method Not Allowed"
-#~ msgstr "Metoda nu este acceptată"
-
-#~ msgid "Not Acceptable"
-#~ msgstr "Nu este acceptabil"
-
-#~ msgid "Proxy Authentication Required"
-#~ msgstr "Identificare prin proxy necesară"
-
-#~ msgid "Request Time-Out"
-#~ msgstr "Cerere expirată"
-
-#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-#~ msgstr "S-a închis, feedul nu mai există. Vă rugăm dezabonaţivă!"
-
-#~ msgid "URL is invalid"
-#~ msgstr "URL este invalid"
-
-#~ msgid "Error connecting to remote host"
-#~ msgstr "Eroare la conectarea la distanţă"
-
-#~ msgid "Hostname could not be found"
-#~ msgstr "Nu s-a putut găsi numele gazdei"
-
-#~ msgid "Network connection was refused by the remote host"
-#~ msgstr "Conexiunea a fost refuzată de gazda de la distanţă"
-
-#~ msgid "Remote host did not finish sending data"
-#~ msgstr "Gazda de la distanţă nu a terminat de trimis date"
-
-#~ msgid "Too many HTTP redirects were encountered"
-#~ msgstr "Prea multe redirectări HTTP s-au întămpinat"
-
-#~ msgid "Remote host sent an invalid response"
-#~ msgstr "Gazda de la distanţă a trimis un răspuns invalid"
-
-#~ msgid "Authentication failed"
-#~ msgstr "Autentificare eşuată"
-
-#~ msgid "Webserver's authentication method incompatible with Liferea"
-#~ msgstr "Identificarea cerută de serverul web incompatibilă cu Liferea"
-
-#~ msgid "Feed not available: Server requested unsupported redirection!"
-#~ msgstr ""
-#~ "Feedul nu este disponibil:Redirecţionare cerută de server care nu este "
-#~ "suportată!"
-
-#~ msgid "Client Error"
-#~ msgstr "Eroare la client"
-
-#~ msgid "Server Error"
-#~ msgstr "Eroare la server"
-
-#~ msgid "(unknown networking error happened)"
-#~ msgstr "(eroare necunoscută la reţea)"
+#~ msgid "There were errors while parsing a feed"
+#~ msgstr "Au fost erori în timp ce se parcurgea feedul"
 
 #~ msgid ""
-#~ "<br>You may want to validate the feed using <a href=\"http://"
-#~ "feedvalidator.org/check.cgi?url="
+#~ "There were errors while parsing this feed. The following error occurred:"
+#~ "<br><b>%s</b>"
 #~ msgstr ""
-#~ "<br>Poate doriţi să validaţi acest feed utilizând <a href=\"http://"
-#~ "feedvalidator.org/check.cgi?url="
+#~ "Au fost erori în timp ce se parcurgea feedul. Au apărut erorile:<br><b>%"
+#~ "s</b>"
 
-#~ msgid "\">FeedValidator</a>."
-#~ msgstr "\">FeedValidator</a>."
-
+#, fuzzy
 #~ msgid ""
-#~ "There was a problem while reading this subscription. Please check the URL "
-#~ "and console output."
+#~ "There were errors while filtering this feed. The following error occurred:"
+#~ "<br><b><pre>%s</pre></b>"
 #~ msgstr ""
-#~ "A apărut o problemă în timp ce se citea înscrierea. Verificaţi URL-ul şi "
-#~ "ceea ce afişează la consolă."
-
-#~ msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-#~ msgstr "\"%s\" este întrerupt. Liferea nu se va mai updata!"
-
-#~ msgid "\"%s\" has not changed since last update"
-#~ msgstr "\"%s\" nu s-a modificat de la ultimul update."
-
-#~ msgid "The URL of \"%s\" has changed permanently and was updated"
-#~ msgstr "URL-ul \"%s\" s-a modificat permanent şi a fost updatat"
-
-#~ msgid ""
-#~ "<p>Could not detect the type of this feed! Please check if the source "
-#~ "really points to a resource provided in one of the supported syndication "
-#~ "formats!</p>%s"
-#~ msgstr ""
-#~ "<p>Nu s-a putut determina tipul feedului! Vă rugăm verificaţi dacă sursa "
-#~ "face parte din lista formatelor de sindicate suportate!</p>%s"
-
-#~ msgid "\"%s\" updated..."
-#~ msgstr "\"%s\" update reuşit..."
-
-#~ msgid "\"%s\" is not available"
-#~ msgstr "\"%s\" nu este disponibil"
-
-#~ msgid "You have to select a feed entry"
-#~ msgstr "Selectaţi o intrare a feedului"
-
-#~ msgid "Liferea is in offline mode. No update possible."
-#~ msgstr "Liferea este în modul offline. Nu se pot face update-uri."
+#~ "Au fost erori în timp ce se parcurgea feedul. Au apărut erorile:<br><b>%"
+#~ "s</b>"
 
 #~ msgid ""
 #~ "Starts a search for all items that do match the given search string "
