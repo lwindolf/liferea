@@ -639,6 +639,8 @@ static gboolean ui_itemlist_find_unread_item(void) {
 				return TRUE;
 			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 		}
+	} else {
+		gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &selectedIter);
 	}
 	
 	/* No match from cursor, restart from the first. */
