@@ -210,7 +210,7 @@ static void ui_htmlview_write_css(gchar **buffer, gboolean twoPane) {
 	gchar	*font = NULL;
 	gchar	*fontsize = NULL;
 	gchar	*tmp;
-	gchar	*styleSheetFile, *defaultStyleSheetFile;
+	gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
     
 	addToHTMLBuffer(buffer,	"<style type=\"text/css\">\n"
 				 "<!--\n");
@@ -267,10 +267,19 @@ static void ui_htmlview_write_css(gchar **buffer, gboolean twoPane) {
 		addToHTMLBuffer(buffer, tmp);
 		g_free(tmp);
 	}
-
+	
 	g_free(defaultStyleSheetFile);
 	g_free(styleSheetFile);
 	
+	adblockStyleSheetFile = g_strdup(PACKAGE_DATA_DIR "/" PACKAGE "/css/adblock.css");
+	
+	if(g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
+		addToHTMLBuffer(buffer, tmp);
+		g_free(tmp);
+	}
+	
+	g_free(adblockStyleSheetFile);
+
 	addToHTMLBuffer(buffer, "\n//-->\n</style>\n");
 }
 
