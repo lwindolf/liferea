@@ -588,24 +588,64 @@ static void ui_itemlist_select(GtkTreeIter iter) {
 	}
 }
 
-static gboolean ui_itemlist_find_unread_item(void) {
-	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
-	GtkTreeIter		iter;
-	gboolean		valid;
-	itemPtr			ip;
-		
-	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-	while(valid) {
-		ip = ui_itemlist_get_item_from_iter(&iter);
-		if(FALSE == item_get_read_status(ip)) {
-			if(!ui_itemlist_get_two_pane_mode()) {
-				ui_itemlist_select(iter);
-				itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
-			} else {
-				itemlist_mark_all_read((nodePtr)ip->fp);
-			}
-			return TRUE;
+static gint iter_cmp(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b) {
+	GtkTreePath             *apath, *bpath;
+	gint			ret;
+	
+	apath = gtk_tree_model_get_path(model, a);
+	bpath = gtk_tree_model_get_path(model, b);
+	ret = gtk_tree_path_compare(apath, bpath);
+	gtk_tree_path_free(apath);
+	gtk_tree_path_free(bpath);
+	return ret;
+}
+
+static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
+	itemPtr	ip;
+	
+	ip = ui_itemlist_get_item_from_iter(iter);
+	if(FALSE == item_get_read_status(ip)) {
+		if(!ui_itemlist_get_two_pane_mode()) {
+			ui_itemlist_select(*iter);
+			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
+		} else {
+			itemlist_mark_all_read((nodePtr)ip->fp);
 		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+static gboolean ui_itemlist_find_unread_item(void) {
+	GtkTreeView		*treeview;
+	GtkTreeStore		*itemstore;
+	GtkTreePath		*path;
+	GtkTreeIter		iter, selectedIter;
+	gboolean		valid;
+
+	itemstore = ui_itemlist_get_tree_store();
+	
+	/* first look for unread items after the currently selected item */
+	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
+	gtk_tree_view_get_cursor(treeview, &path, NULL);
+	
+	if(NULL != path) {
+		gtk_tree_model_get_iter(GTK_TREE_MODEL(itemstore), &selectedIter, path);
+		valid = gtk_tree_model_get_iter(GTK_TREE_MODEL(itemstore), &iter, path);
+		gtk_tree_path_free(path);
+
+		while(valid) {
+			if(ui_itemlist_find_unread_item_from_iter(&iter))
+				return TRUE;
+			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
+		}
+	}
+	
+	/* No match from cursor, restart from the first. */
+	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+	while(valid && (0 != iter_cmp(GTK_TREE_MODEL(itemstore), &iter, &selectedIter))) {
+		if(ui_itemlist_find_unread_item_from_iter(&iter))
+			return TRUE;
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
 
