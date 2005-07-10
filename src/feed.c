@@ -858,7 +858,7 @@ const gchar * feed_get_filter(feedPtr fp) { return fp->filtercmd; }
 void feed_set_source(feedPtr fp, const gchar *source) {
 	g_free(fp->source);
 
-	fp->source = g_strdup(source);
+	fp->source = g_strchomp(g_strdup(source));
 	conf_feedlist_schedule_save();
 	
 	g_free(fp->cookies);
@@ -881,7 +881,7 @@ void feed_set_html_url(feedPtr fp, const gchar *htmlUrl) {
 
 	g_free(fp->htmlUrl);
 	if(htmlUrl != NULL)
-		fp->htmlUrl = g_strdup(htmlUrl);
+		fp->htmlUrl = g_strchomp(g_strdup(htmlUrl));
 	else
 		fp->htmlUrl = NULL;
 }
@@ -911,7 +911,7 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 
 	g_free(fp->imageUrl);
 	if(imageUrl != NULL)
-		fp->imageUrl = g_strdup(imageUrl);
+		fp->imageUrl = g_strchomp(g_strdup(imageUrl));
 	else
 		fp->imageUrl = NULL;
 }

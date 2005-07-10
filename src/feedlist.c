@@ -333,7 +333,6 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 	
 	addToHTMLBuffer(&buffer, UPDATE_ERROR_END);
 	fp->errorDescription = buffer;
-g_print(">>>%s<<<\n", buffer);
 }
 
 /** handles completed feed update requests */

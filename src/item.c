@@ -88,9 +88,33 @@ void item_set_description(itemPtr ip, const gchar * description) {
 	ip->description = g_strdup(description);
 }
 
-void item_set_source(itemPtr ip, const gchar * source) { g_free(ip->source);ip->source = g_strdup(source); }
-void item_set_real_source_url(itemPtr ip, const gchar * source) { g_free(ip->real_source_url);ip->real_source_url = g_strdup(source); }
-void item_set_real_source_title(itemPtr ip, const gchar * source) { g_free(ip->real_source_title);ip->real_source_title = g_strdup(source); }
+void item_set_source(itemPtr ip, const gchar * source) { 
+
+	g_free(ip->source);
+	if(NULL != source) 
+		ip->source = g_strchomp(g_strdup(source));
+	else
+		ip->source = NULL;
+}
+
+void item_set_real_source_url(itemPtr ip, const gchar * source) { 
+
+	g_free(ip->real_source_url);
+	if(NULL != source)
+		ip->real_source_url = g_strchomp(g_strdup(source));
+	else
+		ip->real_source_url = NULL;
+}
+
+void item_set_real_source_title(itemPtr ip, const gchar * source) { 
+
+	g_free(ip->real_source_title);
+	if(NULL != source)
+		ip->real_source_title = g_strchomp(g_strdup(source));
+	else
+		ip->real_source_title = NULL;
+}
+
 void item_set_time(itemPtr ip, const time_t t) { ip->time = t; }
 
 void item_set_id(itemPtr ip, const gchar * id) {

@@ -677,13 +677,13 @@ gchar * encode_uri_string(gchar *string) {
 
 xmlChar * common_uri_escape(const xmlChar *url) {
 	xmlChar	*result;
-	
+
 	result = xmlURIEscape(url);
 	
 	/* workaround for libxml2 problem... */
 	if(NULL == result)
 		result = g_strdup(url);
-		
+
 	return result;	
 }
 
@@ -702,7 +702,7 @@ xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
 	} else {
 		absURL = escapedURL;
 	}
-	
+
 	return absURL;
 }
 
