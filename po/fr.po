@@ -1,10 +1,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 0.9.2\n"
+"Project-Id-Version: Liferea 0.9.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-07-09 00:42+0200\n"
-"PO-Revision-Date: 2005-03-19 09:47+0100\n"
+"PO-Revision-Date: 2005-07-09 15:43+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -63,13 +63,12 @@ msgid "Error renaming %s to %s\n"
 msgstr "Erreur lors du renommage de %s en %s\n"
 
 #: src/eggtrayicon.c:121
-#, fuzzy
 msgid "Orientation"
-msgstr "Authentification"
+msgstr "Orientation"
 
 #: src/eggtrayicon.c:122
 msgid "The orientation of the tray."
-msgstr ""
+msgstr "Orientation de la barre des tâches."
 
 #. _() for HELP1URL to allow localised help feeds
 #: src/export.c:43
@@ -156,9 +155,11 @@ msgid ""
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery.</p>"
 msgstr ""
+"<p>L'URL à laquelle vous voulez vous abonner pointe vers une page web et "
+"aucun flux n'a été découvert sur cette page. Peut-être que cette page web ne "
+"supporte pas la découverte automatique de flux.</p>"
 
 #: src/feed.c:231
-#, fuzzy
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
@@ -166,8 +167,7 @@ msgid ""
 msgstr ""
 "<p>Impossible de déterminer le type de flux. Veuillez vérifier qu'il est <a "
 "href=\"http://feedvalidator.org\">valide</a> et dans un <a href=\"http://"
-"liferea.sourceforge.net/index.php#supported_formats\">format supporté</a>.</"
-"p>"
+"liferea.sourceforge.net/supported_formats.htm\">format supporté</a>.</p>"
 
 #: src/feed.c:369
 #, c-format
@@ -328,7 +328,7 @@ msgstr "(une erreur réseau inconnue s'est produite)"
 
 #: src/feedlist.c:302 src/feedlist.c:311
 msgid "Show Details"
-msgstr ""
+msgstr "Montrer les détails"
 
 #: src/feedlist.c:316
 msgid ""
@@ -457,16 +457,15 @@ msgstr "Marquer le tout comme _lu"
 
 #: src/interface.c:227
 msgid "_New Subscription..."
-msgstr "_Nouvel abonnement..."
+msgstr "Nouvel _abonnement..."
 
 #: src/interface.c:235
 msgid "New _Folder..."
-msgstr "Nouveau _Dossier..."
+msgstr "Nouveau _dossier..."
 
 #: src/interface.c:243
-#, fuzzy
 msgid "New _VFolder..."
-msgstr "Nouveau _Dossier..."
+msgstr "Nouveau _VFolder..."
 
 #: src/interface.c:252
 msgid "_Properties..."
@@ -518,7 +517,7 @@ msgstr ""
 
 #: src/interface.c:317
 msgid "Toggle _Read Status"
-msgstr "Change le statut _lu"
+msgstr "Changer le statut _lu"
 
 #: src/interface.c:320
 msgid "Toggles the read status of the selected item."
@@ -970,8 +969,8 @@ msgstr "<span weight=\"bold\">Réglages de notification</span>"
 #: src/interface.c:2253
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr ""
-"Afficher une _icône de statut dans la zone de notification (aussi appelée "
-"barre des tâches)."
+"Afficher une _icône de statut dans la zone de notification (barre des "
+"tâches)."
 
 #: src/interface.c:2270
 msgid "Show a _popup window with new headlines."
@@ -1143,7 +1142,6 @@ msgstr ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3295
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1193,6 +1191,7 @@ msgstr ""
 "Marc Deslauriers\n"
 "Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
 "Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"Raphael Slinckx <raphael@slinckx.net>\n"
 "\n"
 "\n"
 "Code venant d'autres projets\n"
@@ -1560,9 +1559,8 @@ msgid "Item body"
 msgstr "Le corps de l'élément"
 
 #: src/rule.c:172
-#, fuzzy
 msgid "Feed title"
-msgstr "Le titre de l'élément"
+msgstr "Le titre du flux"
 
 #: src/rule.c:173
 msgid "Read status"
@@ -1594,11 +1592,9 @@ msgid "Couldn't find pixmap file: %s"
 msgstr "Fichier pixmap %s introuvable."
 
 #: src/ui_enclosure.c:72
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr ""
-"\"%s\" n'est pas un document OPML valide ! Liferea ne peut importer ce "
-"fichier !"
+msgstr "\"%s\" n'est pas un fichier de config de types d'annexes valide !"
 
 #: src/ui_enclosure.c:231 src/ui_enclosure.c:375 src/ui_feed.c:366
 msgid "Choose File"
@@ -1607,12 +1603,12 @@ msgstr "Choisir un fichier"
 #: src/ui_enclosure.c:286
 #, c-format
 msgid "<b>File Extension .%s</b>"
-msgstr ""
+msgstr "<b>Extension de fichier .%s</b>"
 
 #: src/ui_enclosure.c:288
 #, c-format
 msgid "<b>%s</b>"
-msgstr ""
+msgstr "<b>%s</b>"
 
 #: src/ui_feed.c:425
 msgid "Unknown source"
@@ -1775,9 +1771,8 @@ msgstr ""
 
 #. explicitly no </span> at the end!
 #: src/ui_htmlview.h:101
-#, fuzzy
 msgid "There were errors while filtering this feed!"
-msgstr "Des erreurs sont survenues pendant l'analyse de ce flux !"
+msgstr "Des erreurs sont survenues pendant le filtrage de ce flux !"
 
 #: src/ui_htmlview.h:104
 msgid ""
@@ -1801,9 +1796,8 @@ msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
 #: src/ui_itemlist.c:510
-#, fuzzy
 msgid "This item has no link specified!"
-msgstr "Cet élément n'a pas de lien assigné !"
+msgstr "Cet élément n'a pas de lien spécifié !"
 
 #: src/ui_itemlist.c:547 src/ui_itemlist.c:567
 msgid "You must select a feed to delete its items!"
@@ -1929,7 +1923,7 @@ msgstr "Notification Liferea"
 
 #: src/ui_popup.c:91
 msgid "/_Update"
-msgstr "/Mise à _jour"
+msgstr "/Mettre à _jour"
 
 #: src/ui_popup.c:92 src/ui_popup.c:103 src/ui_popup.c:113
 msgid "/_Mark All As Read"
@@ -1948,9 +1942,8 @@ msgid "/_New/New F_older..."
 msgstr "/_Nouveau/Nouveau _dossier..."
 
 #: src/ui_popup.c:96 src/ui_popup.c:107 src/ui_popup.c:117
-#, fuzzy
 msgid "/_New/New _VFolder..."
-msgstr "/_Nouveau/Nouveau _dossier..."
+msgstr "/_Nouveau/Nouveau _VFolder..."
 
 #: src/ui_popup.c:97 src/ui_popup.c:118
 msgid "/_Properties..."
@@ -2106,47 +2099,54 @@ msgid ""
 "result permanently you can click the VFolder button in the search dialog and "
 "Liferea will add a VFolder to your feed list.</h2>"
 msgstr ""
+"%s<h2>%d résultats de la recherche pour \"%s\"</h2><p>La liste contient "
+"maintenant tous les éléments satisfaisant le motif de recherche spécifié. Si "
+"vous voulez sauver ce résultat de manière permanente, vous pouvez cliquer "
+"sur le bouton VFolder dans la boîte de dialogue pour la recherche et Liferea "
+"ajoutera un VFolder à votre liste de flux.</p>"
 
 #: src/ui_search.c:119
 msgid "Please do a search first!"
 msgstr "Veuillez d'abord faire une recherche !"
 
 #: src/ui_search.c:129
-#, fuzzy
 msgid "New VFolder"
-msgstr "Nouveau dossier"
+msgstr "Nouveau VFolder"
 
 #: src/ui_tabs.c:107
 msgid "URL"
 msgstr "URL"
 
 #: src/ui_tray.c:99
-#, fuzzy, c-format
+#, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
-msgstr[0] "%d nouvel élément !"
-msgstr[1] "%d nouveaux éléments !"
+msgstr[0] "%d nouvel élément"
+msgstr[1] "%d nouveaux éléments"
 
 #: src/ui_tray.c:100 src/ui_tray.c:104
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s\n"
 "%d unread item"
 msgid_plural ""
 "%s\n"
 "%d unread items"
-msgstr[0] "%d nouvel élément !"
-msgstr[1] "%d nouveaux éléments !"
+msgstr[0] ""
+"%s\n"
+"%d élément non lu"
+msgstr[1] ""
+"%s\n"
+"%d éléments non lus"
 
 #: src/ui_tray.c:103
-#, fuzzy
 msgid "No new items"
-msgstr "Pas de nouveaux éléments."
+msgstr "Pas de nouveaux éléments"
 
 #: src/update.c:93
 #, c-format
 msgid "%s exited with status %d"
-msgstr ""
+msgstr "%s s'est terminé avec le code de retour %d"
 
 #: src/update.c:99 src/update.c:100 src/update.c:136
 #, c-format
@@ -2182,13 +2182,12 @@ msgstr ""
 #~ "Des erreurs sont survenues pendant l'analyse de ce flux ! L'erreur "
 #~ "suivante s'est produite :<br><b>%s</b>"
 
-#, fuzzy
 #~ msgid ""
 #~ "There were errors while filtering this feed. The following error occurred:"
 #~ "<br><b><pre>%s</pre></b>"
 #~ msgstr ""
-#~ "Des erreurs sont survenues pendant l'analyse de ce flux ! L'erreur "
-#~ "suivante s'est produite :<br><b>%s</b>"
+#~ "Des erreurs sont survenues pendant le filtrage de ce flux ! L'erreur "
+#~ "suivante s'est produite :<br><b><pre>%s</pre></b>"
 
 #~ msgid "case sensitive"
 #~ msgstr "sensible à la casse"

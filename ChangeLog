@@ -3,8 +3,15 @@
 	Version 0.9.4
 
 	* Improved next-unread selection (patch from Niklas Morberg)
+
+	Bugfixes:
+
 	* Fixed SF bug #1223028. Now newlines are stripped from
 	  link definitions. (reported by Hubert Figuiere)
+
+	Translations:
+
+	* Updated French translation (Vincent Lefevre)
 
 
 2005-07-07  Lars Lindner  <lars.lindner@gmx.net>
