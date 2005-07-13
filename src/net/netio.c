@@ -1041,7 +1041,7 @@ void downloadlib_process_url(struct request *request) {
 	cur_ptr.etag = request->etag;
 		
 	cur_ptr.problem = 0;
-	cur_ptr.content_type = 0;
+	cur_ptr.content_type = NULL;
 	cur_ptr.contentlength = 0;
 	cur_ptr.cookies = g_strdup(request->cookies);
 	cur_ptr.authinfo = NULL;
@@ -1061,10 +1061,10 @@ void downloadlib_process_url(struct request *request) {
 	request->source = cur_ptr.feedurl;
 	request->lastmodified = cur_ptr.lastmodified;
 	request->etag = cur_ptr.etag;
+	request->contentType = cur_ptr.content_type;
 	g_free(cur_ptr.servauth);
 	g_free(cur_ptr.authinfo);
 	g_free(cur_ptr.cookies);
 	debug4(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d", request->httpstatus, cur_ptr.problem, cur_ptr.netio_error, request->data);
-	g_free(cur_ptr.content_type);
 	return;
 }

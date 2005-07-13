@@ -196,6 +196,7 @@ void download_request_free(struct request *request) {
 		g_free(request->lastmodified);
 		g_free(request->etag);
 		g_free(request->data);
+		g_free(request->contentType);
 		g_free(request);
 	}
 	debug_exit("update_request_free");
@@ -300,7 +301,7 @@ static gboolean download_dequeuer(gpointer user_data) {
 			   of the feed. To prevent any user interactions
 			   that could delete the feed we lock the GUI */
 			ui_lock();
-			
+			printf("The content type was %s\n", request->contentType);
 			(request->callback)(request);
 			
 			ui_unlock();

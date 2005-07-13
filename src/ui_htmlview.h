@@ -106,7 +106,7 @@ struct displayset {
 
 /*@}*/
 
-#define HTMLVIEW_API_VERSION 5
+#define HTMLVIEW_API_VERSION 6
 
 typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
 
@@ -119,7 +119,7 @@ struct htmlviewPluginInfo_ {
 	
 	GtkWidget*	(*create)		(gboolean forceInternalBrowsing);
 	/*void		(*destroy)		(GtkWidget *widget);*/
-	void		(*write)		(GtkWidget *widget, const gchar *string, const gchar *base);
+	void		(*write)		(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gboolean	(*launchInsidePossible)	(void);
 	gfloat		(*zoomLevelGet)		(GtkWidget *widget);

@@ -164,18 +164,19 @@ stream_cancel (HtmlStream *stream, gpointer user_data, gpointer cancel_data)
 static void gtkhtml2_url_request_received_cb(struct request *r) {
 
 	if(r->size != 0 && r->data != NULL) {
+		html_stream_set_mime_type(((StreamData*)r->user_data)->stream, r->contentType);
 		html_stream_write(((StreamData*)r->user_data)->stream, r->data, r->size); 
 	}
 	request_data_kill(r);
 }
 
 static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream, gpointer data) {
-	xmlChar		*absURL;
+	gchar		*absURL;
 	
 	g_assert(NULL != stream);
 
 	if(NULL != strstr(url, "file://"))
-		absURL = (xmlChar *)g_strdup(url + strlen("file://"));
+		absURL = g_strdup(url + strlen("file://"));
 	else
 		absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 
@@ -194,7 +195,7 @@ static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream,
 		r->priority = 1;
 		download_queue(r);
 		html_stream_set_cancel_func (stream, stream_cancel, r);
-		xmlFree(absURL);
+		g_free(absURL);
 
 		connection_list = g_object_get_data(G_OBJECT (doc), "connection_list");
 		connection_list = g_slist_prepend(connection_list, r);
@@ -282,7 +283,7 @@ static gfloat get_zoom_level(GtkWidget *scrollpane) {
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *base) {
+static void write_html(GtkWidget *scrollpane, const gchar *string, guint length,  const gchar *base, const gchar *contentType) {
 	
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
@@ -300,6 +301,7 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 	html_view_set_document(HTML_VIEW(htmlwidget), doc);
 	g_object_set_data(G_OBJECT(doc), "liferea-base-uri", g_strdup(base));
 	html_document_clear(doc);
+	/* Gtkhtml2 only responds to text/html documents, thus everything else must be converted to HTML in Liferea's code */
 	html_document_open_stream(doc, "text/html");
 	
 	g_signal_connect (G_OBJECT (doc), "request_url",
@@ -311,10 +313,18 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, const gchar *
 	g_signal_connect (G_OBJECT (doc), "link_clicked",
 				   G_CALLBACK (link_clicked), scrollpane);
 	
-	if((NULL != string) && (strlen(string) > 0))
-		html_document_write_stream(doc, string, strlen(string));
-	else
+	if(NULL == string || length == 0)
 		html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
+	else if (contentType != NULL && !strcmp("text/plain", contentType)) {
+		gchar *tmp = g_markup_escape_text(string, length);
+		html_document_write_stream(doc, "<html><head></head><body><pre>", strlen("<html><head></head><body><pre>"));
+		html_document_write_stream(doc, tmp, strlen(tmp));
+		html_document_write_stream(doc, "</pre></body></html>", strlen("</pre></body></html>"));
+		g_free(tmp);
+	} else {
+		html_document_write_stream(doc, string, length);
+	}
+
 	
 	html_document_close_stream(doc);
 
@@ -336,7 +346,7 @@ static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
 	/* create html widget and pack it into the scrolled window */
 	htmlwidget = html_view_new();
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET(htmlwidget));
-	write_html(scrollpane, NULL, "file:///");
+	write_html(scrollpane, NULL, 0, "file:///", NULL);
 	
 	g_object_set_data(G_OBJECT(scrollpane), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
 	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
@@ -373,7 +383,7 @@ static void gtkhtml2_html_received(struct request *r) {
 		return; /* This should nicely exit.... */
 	}
 	
-	write_html(GTK_WIDGET(r->user_data), r->data, r->source);
+	write_html(GTK_WIDGET(r->user_data), r->data, r->size,  r->source, r->contentType);
 }
 
 static void launch_url(GtkWidget *scrollpane, const gchar *url) { 

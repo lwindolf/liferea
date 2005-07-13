@@ -10,6 +10,8 @@
 	  link definitions. (reported by Hubert Figuiere)
 	* URLs are properly quoted when opened with an external
 	  browser. This fixes SF bug #1221079. (Nathan Conrad)
+	* The GtkHTML2 plugin now properly renders downloaded
+	  text files. (Nathan Conrad)
 	
 	Translations:
 
