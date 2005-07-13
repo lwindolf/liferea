@@ -397,18 +397,20 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 
 gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 	GError		*error = NULL;
-	gchar		*cmd, *tmp;
+	gchar		*cmd, *tmp, *escapedUri;
 	gint		status;
 	gboolean	done = FALSE;	
-
+	
+	g_assert(uri != NULL);
+	escapedUri = g_shell_quote(uri);
+	
 	/* try to execute synchronously... */
-
+	
 	if(NULL != (cmd = prefs_get_browser_remotecmd())) {
-
 		if(NULL == strstr(cmd, "%s")) /* If there is no %s, then just append the URL */
-			tmp = g_strdup_printf("%s %s", cmd, uri);
+			tmp = g_strdup_printf("%s %s", cmd, escapedUri);
 		else
-			tmp = strreplace(cmd, "%s", uri);
+			tmp = strreplace(cmd, "%s", escapedUri);
 		g_free(cmd);
 		debug1(DEBUG_GUI, "Running the browser-remote command '%s'", tmp);
 		g_spawn_command_line_sync(tmp, NULL, NULL, &status, &error);
@@ -423,8 +425,10 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 			g_error_free(error);
 	}
 	
-	if(done)
+	if(done) {
+		g_free(escapedUri);
 		return TRUE;
+	}
 	
 	/* if it failed try to execute asynchronously... */	
 	error = NULL;
@@ -436,9 +440,9 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 	}
 	
 	if(NULL == strstr(cmd, "%s")) /* If there is no %s, then just append the URL */
-		tmp = g_strdup_printf("%s \"%s\"", cmd, uri);
+		tmp = g_strdup_printf("%s \"%s\"", cmd, escapedUri);
 	else
-		tmp = strreplace(cmd, "%s", uri);
+		tmp = strreplace(cmd, "%s", escapedUri);
 	g_free(cmd);
 	debug1(DEBUG_GUI, "Running the browser command (async) '%s'", tmp);
 	g_spawn_command_line_async(tmp, &error);
@@ -451,6 +455,7 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 	if(NULL != error)
 		g_error_free(error);
 
+	g_free(escapedUri);
 	return TRUE;
 }
 

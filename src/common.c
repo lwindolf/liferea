@@ -477,9 +477,9 @@ static struct {
 	{ "Y", 1200 }
 };
 /** @returns timezone offset in seconds */
-static time_t common_parse_rfc822_tz(unsigned char *token) {
+static time_t common_parse_rfc822_tz(char *token) {
 	int offset = 0;
-	const unsigned char *inptr = token;
+	const char *inptr = token;
 	
 	if (*inptr == '+' || *inptr == '-') {
 		offset = atoi (inptr);
