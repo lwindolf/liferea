@@ -66,8 +66,8 @@ static char* filter(gchar *cmd, gchar *data, gchar **errorOutput, size_t *size) 
 	fd = g_mkstemp(tmpfilename);
 	
 	if (fd == -1) {
-		odebug1("Error opening temp file %s to use for filtering!", tmpfilename);
-		*errorOutput = g_strdup_printf("Error opening temp file %s to use for filtering!", tmpfilename);
+		odebug1(_("Error opening temp file %s to use for filtering!"), tmpfilename);
+		*errorOutput = g_strdup_printf(_("Error opening temp file %s to use for filtering!"), tmpfilename);
 		g_free(tmpfilename);
 		return NULL;
 	}	
