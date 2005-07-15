@@ -392,7 +392,9 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), tmp);
 	g_free(libname);
-
+	
+	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), getNumericConfValue(BROWSER_PLACE));
+	
 	entry = lookup_widget(prefdialog, "browsercmd");
 	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(BROWSER_COMMAND));
 	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==manual);
