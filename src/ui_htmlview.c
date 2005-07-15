@@ -395,68 +395,87 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 	return htmlviewInfo->zoomLevelGet(htmlview);
 }
 
+static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean sync) {
+	GError *error = NULL;
+	gchar *tmp, **argv, **iter;
+	gint argc, status;
+	gboolean done = FALSE;
+  
+	g_assert(cmd != NULL);
+	g_assert(uri != NULL);
+  
+	/* If there is no %s, then just append %s */
+  
+	if(NULL == strstr(cmd, "%s"))
+		tmp = g_strdup_printf("%s %%s", cmd);
+	else
+		tmp = g_strdup(cmd);
+  
+	/* Parse and substitute the %s*/
+  
+	g_shell_parse_argv(tmp, &argc, &argv, &error);
+	g_free(tmp);
+	if((NULL != error) && (0 != error->code)) {
+		ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
+		debug2(DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
+		g_error_free(error);
+		return FALSE;
+	}
+  
+	if (argv != NULL) {
+		for(iter = argv; *iter != NULL; iter++) {
+			tmp = strreplace(*iter, "%s", uri);
+			g_free(*iter);
+			*iter = tmp;
+		}
+	}
+
+	tmp = g_strjoinv(" ", argv);
+	debug2(DEBUG_GUI, "Running the browser-remote %s command '%s'", sync ? "sync" : "async", tmp);
+	if (sync)
+		g_spawn_sync(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL, &status, &error);
+	else
+		g_spawn_async(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
+  
+	if((NULL != error) && (0 != error->code)) {
+		debug2(DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
+		ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
+		g_error_free(error);
+	} else if (status == 0) {
+		ui_mainwindow_set_status_bar(_("Starting: \"%s\""), tmp);
+		done = TRUE;
+	}
+  
+	g_free(tmp);
+	g_strfreev(argv);
+  
+	return done;
+}
+
 gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
-	GError		*error = NULL;
-	gchar		*cmd, *tmp, *escapedUri;
-	gint		status;
+	gchar		*cmd;
 	gboolean	done = FALSE;	
 	
 	g_assert(uri != NULL);
-	escapedUri = g_shell_quote(uri);
 	
 	/* try to execute synchronously... */
+	if(NULL != (cmd = prefs_get_browser_remotecmd()))
+		done = ui_htmlview_external_browser_execute(cmd, uri, TRUE);
+	g_free(cmd);
 	
-	if(NULL != (cmd = prefs_get_browser_remotecmd())) {
-		if(NULL == strstr(cmd, "%s")) /* If there is no %s, then just append the URL */
-			tmp = g_strdup_printf("%s %s", cmd, escapedUri);
-		else
-			tmp = strreplace(cmd, "%s", escapedUri);
-		g_free(cmd);
-		debug1(DEBUG_GUI, "Running the browser-remote command '%s'", tmp);
-		g_spawn_command_line_sync(tmp, NULL, NULL, &status, &error);
-		if((NULL != error) && (0 != error->code)) {
-			ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
-		} else if (status == 0) {
-			ui_mainwindow_set_status_bar(_("Starting: \"%s\""), tmp);
-			done = TRUE;
-		}
-		g_free(tmp);
-		if(NULL != error)
-			g_error_free(error);
-	}
-	
-	if(done) {
-		g_free(escapedUri);
+	if (done)
 		return TRUE;
-	}
 	
 	/* if it failed try to execute asynchronously... */	
-	error = NULL;
 	
 	if(NULL == (cmd = prefs_get_browser_cmd())) {	/* no remote here!!!! */
 		ui_mainwindow_set_status_bar("fatal: cannot retrieve browser command!");
 		g_warning("fatal: cannot retrieve browser command!");
-		return TRUE;
+		return FALSE;
 	}
-	
-	if(NULL == strstr(cmd, "%s")) /* If there is no %s, then just append the URL */
-		tmp = g_strdup_printf("%s \"%s\"", cmd, escapedUri);
-	else
-		tmp = strreplace(cmd, "%s", escapedUri);
+	done = ui_htmlview_external_browser_execute(cmd, uri, TRUE);
 	g_free(cmd);
-	debug1(DEBUG_GUI, "Running the browser command (async) '%s'", tmp);
-	g_spawn_command_line_async(tmp, &error);
-	if((NULL != error) && (0 != error->code))
-		ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
-	else
-		ui_mainwindow_set_status_bar(_("Starting: \"%s\""), tmp);
-	g_free(tmp);
-
-	if(NULL != error)
-		g_error_free(error);
-
-	g_free(escapedUri);
-	return TRUE;
+	return done;
 }
 
 gboolean ui_htmlview_scroll() {

@@ -246,8 +246,7 @@ gchar *	ui_htmlview_get_selected_URL(void);
  *
  * @param the URI to load
  *
- * @returns TRUE if the URI was opened, or FALSE if the caller should
- * load the URI in the htmlview itself.
+ * @returns TRUE if the URI was opened, or FALSE if there was an error
  */
 
 gboolean ui_htmlview_launch_in_external_browser(const gchar *uri);
