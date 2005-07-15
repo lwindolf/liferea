@@ -301,7 +301,7 @@ static gboolean download_dequeuer(gpointer user_data) {
 			   of the feed. To prevent any user interactions
 			   that could delete the feed we lock the GUI */
 			ui_lock();
-			printf("The content type was %s\n", request->contentType);
+			
 			(request->callback)(request);
 			
 			ui_unlock();
