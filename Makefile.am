@@ -30,10 +30,8 @@ endif
 	if test -d $(srcdir)/css; then \
 	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/css; \
           $(INSTALL_DATA) $(srcdir)/css/liferea.css $(DESTDIR)$(pkgdatadir)/css; \
-	fi
-	if test -d $(srcdir)/css; then \
-	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/css; \
           $(INSTALL_DATA) $(srcdir)/css/liferea2.css $(DESTDIR)$(pkgdatadir)/css; \
+          $(INSTALL_DATA) $(srcdir)/css/adblock.css $(DESTDIR)$(pkgdatadir)/css; \
 	fi
 	if test -d $(srcdir)/dtd; then \
 	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/dtd; \
@@ -44,10 +42,8 @@ dist-hook:
 	if test -d $(srcdir)/css; then \
 	  $(mkinstalldirs) $(distdir)/css; \
           $(INSTALL_DATA) $(srcdir)/css/liferea.css $(distdir)/css; \
-	fi
-	if test -d $(srcdir)/css; then \
-	  $(mkinstalldirs) $(distdir)/css; \
           $(INSTALL_DATA) $(srcdir)/css/liferea2.css $(distdir)/css; \
+          $(INSTALL_DATA) $(srcdir)/css/adblock.css $(distdir)/css; \
 	fi
 	if test -d $(srcdir)/dtd; then \
 	  $(mkinstalldirs) $(distdir)/dtd; \
