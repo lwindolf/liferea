@@ -419,11 +419,11 @@ void ui_feed_process_update_result(struct request *request) {
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		favicon_download(fp);
 
-	feedlist_unload_feed(fp);
-
 	/* update UI presentations */
 	ui_notification_update(fp);
 	ui_feedlist_update();
+
+	feedlist_unload_feed(fp);
 }
 
 /* direct user callbacks */
