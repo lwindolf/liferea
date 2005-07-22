@@ -39,10 +39,6 @@
 #include "ui_feedlist.h"
 #include "debug.h"
 
-/* _() for HELP1URL to allow localised help feeds */
-#define HELP1URL_1 	_("http://liferea.sf.net/help/help")
-#define HELP1URL_2	_(".rdf")
-
 struct exportData {
 	gboolean internal; /**< Include all the extra Liferea-specific tags */
 	xmlNodePtr cur;
@@ -289,15 +285,6 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) { /* Reading a feed */
-		/* check if source is a help feed... */
-		if(0 == strncmp(source, HELP1URL_1, strlen(HELP1URL_1))) {
-			/* If it is we rebuild it with the current version 
-			   just to be sure it is up-to-date. Of course this 
-			   means there must be no other feeds under the
-			   URL given by HELP1URL!!! */
-			xmlFree(source);
-			source = g_strdup_printf("%s%s%s", HELP1URL_1, VERSION, HELP1URL_2);
-		}
 	
 		filter = xmlGetProp(cur, BAD_CAST"filtercmd");
 
