@@ -6,7 +6,7 @@ for Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 0.6.1.
+This documentation was last updated for Liferea version 0.9.4.
 
 Installation
 ============
@@ -55,6 +55,11 @@ Fink		The Fink project also supports Liferea:
 Slackware	Since 0.4.7 Dario Conigliaro builds Slackwares
 		tarballs. These are available from the SourceForge
 		project page.
+
+Solaris		Since 0.9.2 there are Solaris packages built
+                be Jeremy Teo. This package was built to work 
+                with the Solaris gtk2,libxml2,gconf2 and 
+                libgtkhtml packages from blastwave.org.
 	
 
 Compiling from Source
@@ -63,7 +68,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-0.6.1.tar.gz 
+   tar zxvf liferea-0.9.4.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
