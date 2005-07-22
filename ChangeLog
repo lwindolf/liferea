@@ -1,8 +1,10 @@
-2005-07-??  ???  <???>
+2005-07-22  Lars Lindner  <lars.lindner@gmx.net>
 
 	Version 0.9.4
 
 	* Improved next-unread selection (patch from Niklas Morberg)
+	* Improvements to the URL passing when launching links 
+          in a configured external browser (Nathan Conrad)
 
 	Bugfixes:
 
@@ -16,6 +18,8 @@
 	Translations:
 
 	* Updated French translation (Vincent Lefevre)
+	* Updated Spanish translation (Carlos Fenollosa)
+	* Updated Romanian translation (Spoiala Cristian)
 
 
 2005-07-07  Lars Lindner  <lars.lindner@gmx.net>
