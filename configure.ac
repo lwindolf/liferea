@@ -6,7 +6,7 @@ AC_CONFIG_SRCDIR([configure.ac])
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
 
-AM_INIT_AUTOMAKE(liferea, 0.9.4)
+AM_INIT_AUTOMAKE(liferea, 0.9.5)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
@@ -26,6 +26,9 @@ AC_SYS_LARGEFILE
 
 AC_ARG_ENABLE(sm,      AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(dbus,    AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
+AC_ARG_ENABLE(gtkhtml2,AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
+AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
+AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla" or "firefox")]),,enable_gecko=yes)
 				   
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
@@ -73,37 +76,44 @@ dnl fi
 AC_SUBST(CURL_CFLAGS)
 AC_SUBST(CURL_LIBS)
 
+PKG_PROG_PKG_CONFIG()
 
 html_modules=
 
-AC_MSG_CHECKING([for GtkHTML2 support])
+if test "x$enable_gtkhtml2" = "xyes"; then
+   dnl AC_MSG_CHECKING([for GtkHTML2 support])
+   PKG_CHECK_MODULES([GTKHTML2], libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
+   AC_MSG_RESULT($enable_gtkhtml2)
+   AC_SUBST(GTKHTML2_CFLAGS)
+   AC_SUBST(GTKHTML2_LIBS)
+else
+   enable_gtkhmtl2=no
+fi
 
-PKG_CHECK_MODULES(GTKHTML2, libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
-
-AC_SUBST(GTKHTML2_CFLAGS)
-AC_SUBST(GTKHTML2_LIBS)AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
+AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
 
 dnl *******
 dnl Mozilla
 dnl *******
 
-gecko_provider=mozilla
-
-PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
-
-# Check Firefox-mozilla
-if test "x$enable_mozilla" = "xno"; then
+if test "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xmozilla" ; then
+   gecko_provider=mozilla
+   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
+   AC_MSG_RESULT($gecko_provider: $enable_mozilla)
+fi
+if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xfirefox" \) ; then
    gecko_provider=firefox
    PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
+   AC_MSG_RESULT($gecko_provider: $enable_mozilla)
 fi
 
 AM_CONDITIONAL(WITH_MOZILLA, test "x$enable_mozilla" = "xyes")
 MOZILLA_LIB_DIR_SEARCH=
 
 if test "x$enable_mozilla" = "xyes" ; then
-   AC_MSG_CHECKING([for Mozilla support])
+   dnl AC_MSG_CHECKING([for Mozilla support])
 
-   AC_MSG_RESULT([$gecko_provider found!])
+   dnl AC_MSG_RESULT([$gecko_provider found!])
 
    dnl the Mozilla XPCOM access means C++
    AC_PROG_CXX
@@ -165,6 +175,8 @@ if test "x$enable_mozilla" = "xyes" ; then
    AC_SUBST(MOZILLA_CFLAGS)
    AC_SUBST(MOZILLA_LIBS)   
    AC_SUBST(MOZILLA_LIB_DIR_SEARCH)
+else
+   enable_mozilla=no
 fi
 
 dnl For now, require GtkHTML2 or Mozilla. GtkHTML3 should not be used!

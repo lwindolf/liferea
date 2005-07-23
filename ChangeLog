@@ -1,3 +1,11 @@
+2005-??-??  ???   ???
+
+	Version 0.9.5
+
+	* Added a patch from TGL which adds some configured
+	  options that allows maintainers to better control
+	  which browser module support should be compiled.
+
 2005-07-22  Lars Lindner  <lars.lindner@gmx.net>
 
 	Version 0.9.4
@@ -60,7 +68,7 @@
 	* Updated Brazilian Portugues translation (Fernando Ike de Oliviera)
 
 	
-2005-03-16  Lars Lindner  <lars.lindner@gmx.net>
+2005-05-16  Lars Lindner  <lars.lindner@gmx.net>
 
         Version 0.9.2
 	
