@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.4.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 00:42+0200\n"
+"POT-Creation-Date: 2005-07-22 21:41+0200\n"
 "PO-Revision-Date: 2005-01-10 23:34+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at electrang.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -73,22 +73,13 @@ msgstr "인증"
 msgid "The orientation of the tray."
 msgstr ""
 
-#. _() for HELP1URL to allow localised help feeds
-#: src/export.c:43
-msgid "http://liferea.sf.net/help/help"
-msgstr "http://liferea.sf.net/help/help"
-
-#: src/export.c:44
-msgid ".rdf"
-msgstr ".rdf"
-
-#: src/export.c:503 src/export.c:505
+#: src/export.c:490 src/export.c:492
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "캐시파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 가져올 수 없습니다!"
 
-#: src/export.c:509 src/export.c:511
+#: src/export.c:496 src/export.c:498
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -96,38 +87,38 @@ msgstr ""
 "빈 도큐먼트 입니다! OPML 도큐먼트 \"%s\"은(는) 가져오기 할 때 비어있으면 안됩"
 "니다."
 
-#: src/export.c:519 src/export.c:521
+#: src/export.c:506 src/export.c:508
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\"은(는) 올바른 OPML 파일이 아닙니다. Liferea는 이 파일을 가져올 수 없습"
 "니다."
 
-#: src/export.c:543
+#: src/export.c:530
 msgid "Imported feed list"
 msgstr "가져온 피드 리스트"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import Feed List"
 msgstr "피드 목록 들여오기"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import"
 msgstr "가져오기"
 
-#: src/export.c:564
+#: src/export.c:551
 msgid "Error while exporting feed list!"
 msgstr "피드 리스트를 내보내던 중 에러가 발생했습니다."
 
-#: src/export.c:566
+#: src/export.c:553
 msgid "Feed List exported!"
 msgstr "피드 목록이 내보내졌습니다"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export Feed List"
 msgstr "피드 목록 내보내기"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export"
 msgstr "내보내기"
 
@@ -209,7 +200,7 @@ msgid "Updating \"%s\""
 msgstr "%s을(를) 새로고치는 중"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1044 src/item.c:219 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1044 src/item.c:243 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "피드:"
@@ -222,7 +213,7 @@ msgstr "가상폴더"
 msgid "user defined command"
 msgstr "사용자가 정한 명령:"
 
-#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:269
+#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:293
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "소스:"
@@ -341,24 +332,24 @@ msgid ""
 msgstr ""
 "이 등록피드를 읽던 중 문제가 발생했습니다. URL과 콘솔 출력을 확인하세요."
 
-#: src/feedlist.c:363
+#: src/feedlist.c:362
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "\"%s\"이(가) 연속적이지 않습니다. Liferea는 그것을 더이상 새로 고칠 수 없습니"
 "다!"
 
-#: src/feedlist.c:365
+#: src/feedlist.c:364
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
 
-#: src/feedlist.c:373
+#: src/feedlist.c:372
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
 
-#: src/feedlist.c:385
+#: src/feedlist.c:384
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -368,21 +359,21 @@ msgstr ""
 "<p>이 피드의 종류를 결정할 수 없습니다!. 소스가 지원되는 형식의 자원을 정확"
 "히 가리키는지 확인해 주세요 </p>%s"
 
-#: src/feedlist.c:404
+#: src/feedlist.c:403
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\"이(가) 갱신되었습니다..."
 
-#: src/feedlist.c:412
+#: src/feedlist.c:411
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
 
-#: src/feedlist.c:453
+#: src/feedlist.c:452
 msgid "You have to select a feed entry"
 msgstr "피드 엔트리를 선택해야 합니다!"
 
-#: src/feedlist.c:463
+#: src/feedlist.c:462
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea가 오프라인 상태로 동작중입니다. 새로고침이 불가능합니다."
 
@@ -1282,15 +1273,15 @@ msgid ""
 "appear in the item list."
 msgstr ""
 
-#: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
+#: src/item.c:270 src/item.c:274 src/item.c:287 src/ui_itemlist.c:225
 msgid "[No title]"
 msgstr "[제목 없음]"
 
-#: src/item.c:253 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:277 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "아이템:"
 
-#: src/item.c:315
+#: src/item.c:339
 #, fuzzy
 msgid "date"
 msgstr "갱신"
@@ -1716,16 +1707,16 @@ msgstr ""
 "해서 디버깅 정보를 보세요."
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:356
+#: src/ui_htmlview.c:365
 msgid "This item does not have a link assigned!"
 msgstr "이 아이템은 어떠한 연결도 할당되지 않았습니다."
 
-#: src/ui_htmlview.c:407 src/ui_htmlview.c:437
+#: src/ui_htmlview.c:419 src/ui_htmlview.c:442
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "브라우져 명령 실패: %s"
 
-#: src/ui_htmlview.c:409 src/ui_htmlview.c:439
+#: src/ui_htmlview.c:445
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "%s을(를) 시작함"
@@ -1774,7 +1765,7 @@ msgid "You must select a feed to delete its items!"
 msgstr "아이템을 지울 피드를 선택해야 합니다!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:633
+#: src/ui_itemlist.c:675
 msgid "There are no unread items "
 msgstr "읽지 않은 아이템이 없습니다 "
 
@@ -1976,7 +1967,8 @@ msgid "/_Subscribe..."
 msgstr "/구독(_S)..."
 
 #: src/ui_popup.c:155
-msgid "/_Work Offline"
+#, fuzzy
+msgid "/_Online/Offline"
 msgstr "/오프라인에서 작업(_W)"
 
 #: src/ui_popup.c:156
@@ -2036,17 +2028,17 @@ msgstr "모든 피드 갱신"
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "피드 새로 고침 타이머를 새로 맞춥니다. (피드는 업데이트 하지 않습니다)"
 
-#: src/ui_prefs.c:510
+#: src/ui_prefs.c:512
 #, fuzzy
 msgid "Type"
 msgstr "종류"
 
-#: src/ui_prefs.c:513
+#: src/ui_prefs.c:515
 #, fuzzy
 msgid "Program"
 msgstr "프로그램(_P)"
 
-#: src/ui_prefs.c:764
+#: src/ui_prefs.c:766
 msgid "Choose download directory"
 msgstr ""
 
@@ -2100,6 +2092,11 @@ msgstr[1] "%d개의 새로운 아이템들!"
 msgid "No new items"
 msgstr "새로운 아이템이 없습니다."
 
+#: src/update.c:70
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr ""
+
 #: src/update.c:93
 #, c-format
 msgid "%s exited with status %d"
@@ -2121,13 +2118,19 @@ msgstr "에러: 파일 %s을(를) 열 수 없습니다"
 msgid "Error: There is no file \"%s\""
 msgstr "에러: \"%s\" 파일이 없습니다!"
 
-#: src/gtkhtml2/gtkhtml2.c:228
+#: src/gtkhtml2/gtkhtml2.c:229
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
 "<object> 태그는 GtkHTML2에서 지원하지 않습니다.\n"
 "포함된 플러그인은 안 보일것입니다."
+
+#~ msgid "http://liferea.sf.net/help/help"
+#~ msgstr "http://liferea.sf.net/help/help"
+
+#~ msgid ".rdf"
+#~ msgstr ".rdf"
 
 #~ msgid "There were errors while parsing a feed"
 #~ msgstr "이 피드를 해석하던 중 에러가 발생했습니다."

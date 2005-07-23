@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-19 08:55-0400\n"
+"POT-Creation-Date: 2005-07-22 21:41+0200\n"
 "PO-Revision-Date: 2005-07-19 14:14+0300\n"
 "Last-Translator: Spoială Cristian <scristian@gmail.com>\n"
 "Language-Team: Romanian\n"
@@ -68,60 +68,51 @@ msgstr "Orientare"
 msgid "The orientation of the tray."
 msgstr "Orientarea iconului de notificare"
 
-#. _() for HELP1URL to allow localised help feeds
-#: src/export.c:43
-msgid "http://liferea.sf.net/help/help"
-msgstr "http://liferea.sf.net/help/help"
-
-#: src/export.c:44
-msgid ".rdf"
-msgstr ".rdf"
-
-#: src/export.c:503 src/export.c:505
+#: src/export.c:490 src/export.c:492
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "eroare XML în timp ce se încărca fişierul cache! Fişierul %s nu a putut fi "
 "incărcat!"
 
-#: src/export.c:509 src/export.c:511
+#: src/export.c:496 src/export.c:498
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Document gol! Documentul OPML \"%s\" nu trebuie să fie gol când se importă."
 
-#: src/export.c:519 src/export.c:521
+#: src/export.c:506 src/export.c:508
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" nu este un fişier OPML valid! Liferea nu poate importa acest fişier!"
 
-#: src/export.c:543
+#: src/export.c:530
 msgid "Imported feed list"
 msgstr "Lista de feeduri importată"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import Feed List"
 msgstr "Importă lista de feeduri"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import"
 msgstr "Importă"
 
-#: src/export.c:564
+#: src/export.c:551
 msgid "Error while exporting feed list!"
 msgstr "Eroare la exportarea listei!"
 
-#: src/export.c:566
+#: src/export.c:553
 msgid "Feed List exported!"
 msgstr "Lista de feeduri a fost exportată!"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export Feed List"
 msgstr "Exportă lista de feeduri"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export"
 msgstr "Exportă"
 
@@ -2127,6 +2118,12 @@ msgid ""
 msgstr ""
 "Tagul HTML <object> inclus nu este suportat de GtkHTML2.\n"
 "Pluginurile incluse nu pot fi afişate."
+
+#~ msgid "http://liferea.sf.net/help/help"
+#~ msgstr "http://liferea.sf.net/help/help"
+
+#~ msgid ".rdf"
+#~ msgstr ".rdf"
 
 #~ msgid ""
 #~ "%s\n"

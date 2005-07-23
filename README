@@ -6,7 +6,7 @@ for Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 0.9.4.
+This documentation was last updated for Liferea version 0.9.5.
 
 Installation
 ============
@@ -20,16 +20,17 @@ how to compile the tarball.
 Debian:		Beginning with version 0.4.3 there are officially
 		build packages maintained by Christophe Barbe. With
 		0.6.1 David Moreno Garza is the new Debian maintainer.
+		To install Liferea run:
 
-RedHat/		Please ensure you have a libxml2 version
-Fedora:		at least 2.5.10 or you will experience nasty
-		segfaults. 
+		   apt-get install liferea
 
-		Fedora Core 1 packages for 0.4.7 and 0.4.8 are available from
-		http://download.fedora.us/fedora/fedora/1/i386/RPMS.testing/.
-		
-		Dag Wieers provides packages for both Fedora Core 1 and 2 
-		which can be found at http://dag.wieers.com/packages/liferea/.
+RedHat/		For FC 3 and 4 you can install Liferea from the 
+Fedora:		Extras repositories. Just run:
+
+		   yum install liferea
+
+		Dag Wieers provides packages for both Fedora which
+		can be found at http://dag.wieers.com/packages/liferea/.
 		
 SuSE:		Until 0.6.0 Harry Auschner built SuSE RPMs available at the 
                 SourceForge project page. For newer releases please visit this 
@@ -68,7 +69,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-0.9.4.tar.gz 
+   tar zxvf liferea-0.9.5.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 

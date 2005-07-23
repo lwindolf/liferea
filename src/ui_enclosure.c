@@ -258,15 +258,15 @@ static void on_adddialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		etp->permanent = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enc_always_btn")));
 		if(TRUE == new)
 			types = g_slist_append(types, etp);
-		
+
+		ui_enclosure_save();		
+
 		/* now we have ensured an existing type configuration and
 		   can launch the URL for which we configured the type */
 		if(NULL != url)
 			on_popup_open_enclosure(g_strdup_printf("%s%s%s", url, (NULL == etp->mime)?"":",", (NULL == etp->mime)?"":etp->mime), 0, NULL);
 	}
 	gtk_widget_destroy(GTK_WIDGET(dialog));
-	
-	ui_enclosure_save();
 }
 
 /* either type or url and typestr are optional */
@@ -288,7 +288,7 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
 		tmp = g_strdup_printf(_("<b>%s</b>"), typestr);
 	gtk_label_set_markup_with_mnemonic(GTK_LABEL(lookup_widget(dialog, "enc_type_label")), tmp);
 	g_free(tmp);
-	
+
 	g_object_set_data(G_OBJECT(dialog), "typestr", typestr);
 	g_object_set_data(G_OBJECT(dialog), "url", url);
 	g_object_set_data(G_OBJECT(dialog), "type", type);
@@ -345,7 +345,7 @@ void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkW
 		filename = g_strdup_printf("%s%s%s", getStringConfValue(ENCLOSURE_DOWNLOAD_PATH), G_DIR_SEPARATOR_S, filename);
 		ui_enclosure_download(etp, url, filename);
 	} else {
-		ui_enclosure_add(NULL, url, typestr);
+		ui_enclosure_add(NULL, url, g_strdup(typestr));
 	}
 		
 	g_free(typestr);

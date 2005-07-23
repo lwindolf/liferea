@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 00:42+0200\n"
+"POT-Creation-Date: 2005-07-22 21:41+0200\n"
 "PO-Revision-Date: 2005-06-28 12:07+0300\n"
 "Last-Translator: Maxim Britov <maxbritov@tut.by>\n"
 "Language-Team: Russian\n"
@@ -75,22 +75,13 @@ msgstr "Аутентификация"
 msgid "The orientation of the tray."
 msgstr ""
 
-#. _() for HELP1URL to allow localised help feeds
-#: src/export.c:43
-msgid "http://liferea.sf.net/help/help"
-msgstr "http://liferea.sf.net/help/help"
-
-#: src/export.c:44
-msgid ".rdf"
-msgstr ".rdf"
-
-#: src/export.c:503 src/export.c:505
+#: src/export.c:490 src/export.c:492
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
-#: src/export.c:509 src/export.c:511
+#: src/export.c:496 src/export.c:498
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -98,38 +89,38 @@ msgstr ""
 "Пустой документ! Документ OPML \"%s\" не должен быть пустым во время "
 "импортирования."
 
-#: src/export.c:519 src/export.c:521
+#: src/export.c:506 src/export.c:508
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/export.c:543
+#: src/export.c:530
 msgid "Imported feed list"
 msgstr "Имппортированный лист лент новостей"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import Feed List"
 msgstr "Импортировать Список Лент Новостей"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import"
 msgstr "Импорт"
 
-#: src/export.c:564
+#: src/export.c:551
 msgid "Error while exporting feed list!"
 msgstr "Ошибка во время экспорта списка лент новостей!"
 
-#: src/export.c:566
+#: src/export.c:553
 msgid "Feed List exported!"
 msgstr "Список лент новостей экспортирован!"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export Feed List"
 msgstr "Экспортировать Список Лент Новостей"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export"
 msgstr "Экспорт"
 
@@ -216,7 +207,7 @@ msgid "Updating \"%s\""
 msgstr "Обновляется: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1044 src/item.c:219 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1044 src/item.c:243 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Лента новостей:"
@@ -229,7 +220,7 @@ msgstr "VFolder"
 msgid "user defined command"
 msgstr "определнная пользователем команда"
 
-#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:269
+#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:293
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Источник:"
@@ -352,24 +343,24 @@ msgstr ""
 "Произошла проблема во время чтения этой подписки. Пожалуйста, проверьте URL "
 "и вывод командной строки."
 
-#: src/feedlist.c:363
+#: src/feedlist.c:362
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "Лента \"%s\" прекратила свое существование. Liferea не будет больше "
 "обновлять ее!"
 
-#: src/feedlist.c:365
+#: src/feedlist.c:364
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не изменился с момента последнего обновления"
 
-#: src/feedlist.c:373
+#: src/feedlist.c:372
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL для \"%s\" изменился на постоянный и был обновлен"
 
-#: src/feedlist.c:385
+#: src/feedlist.c:384
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -380,21 +371,21 @@ msgstr ""
 "указывает ли URL на ресурс, доступный в одном из поддерживаемых форматов!</p>"
 "%s"
 
-#: src/feedlist.c:404
+#: src/feedlist.c:403
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" обновлен..."
 
-#: src/feedlist.c:412
+#: src/feedlist.c:411
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступен"
 
-#: src/feedlist.c:453
+#: src/feedlist.c:452
 msgid "You have to select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/feedlist.c:463
+#: src/feedlist.c:462
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в режиме \"отключена\". Обновления невозможны."
 
@@ -1264,15 +1255,15 @@ msgstr ""
 "Начинает поиск заданного текста во всех лентах.Результат будет отображен в "
 "списке новостей."
 
-#: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
+#: src/item.c:270 src/item.c:274 src/item.c:287 src/ui_itemlist.c:225
 msgid "[No title]"
 msgstr "[Без заголовка]"
 
-#: src/item.c:253 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:277 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Новость:"
 
-#: src/item.c:315
+#: src/item.c:339
 msgid "date"
 msgstr "дата"
 
@@ -1706,16 +1697,16 @@ msgstr ""
 "Просмотрите опцию --debug-all для получения информации!"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:356
+#: src/ui_htmlview.c:365
 msgid "This item does not have a link assigned!"
 msgstr "Этот элемент не имеет закрепленной ссылки!"
 
-#: src/ui_htmlview.c:407 src/ui_htmlview.c:437
+#: src/ui_htmlview.c:419 src/ui_htmlview.c:442
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Ошибка команды браузера: %s"
 
-#: src/ui_htmlview.c:409 src/ui_htmlview.c:439
+#: src/ui_htmlview.c:445
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Запуск: \"%s\""
@@ -1764,7 +1755,7 @@ msgid "You must select a feed to delete its items!"
 msgstr "Вы должно выбрать ленту новостей для удаления ее элементов!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:633
+#: src/ui_itemlist.c:675
 msgid "There are no unread items "
 msgstr "Нет непрочитанных новостей "
 
@@ -1970,7 +1961,8 @@ msgid "/_Subscribe..."
 msgstr "/_Подписаться..."
 
 #: src/ui_popup.c:155
-msgid "/_Work Offline"
+#, fuzzy
+msgid "/_Online/Offline"
 msgstr "/_Работать в режиме \"Отключен\""
 
 #: src/ui_popup.c:156
@@ -2030,15 +2022,15 @@ msgstr "Обновить Все Ленты"
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Сбросить таймеры обновления лент (Не обновлять ленты)"
 
-#: src/ui_prefs.c:510
+#: src/ui_prefs.c:512
 msgid "Type"
 msgstr "Тип"
 
-#: src/ui_prefs.c:513
+#: src/ui_prefs.c:515
 msgid "Program"
 msgstr "Программа"
 
-#: src/ui_prefs.c:764
+#: src/ui_prefs.c:766
 msgid "Choose download directory"
 msgstr "Выберите директорию для загрузок"
 
@@ -2094,6 +2086,11 @@ msgstr[1] "%d новых элемент(ов)(а)!"
 msgid "No new items"
 msgstr "Нет новостей."
 
+#: src/update.c:70
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr ""
+
 #: src/update.c:93
 #, c-format
 msgid "%s exited with status %d"
@@ -2115,7 +2112,7 @@ msgstr "Ошибка: Невозможно открыть файл \"%s\""
 msgid "Error: There is no file \"%s\""
 msgstr "Ошибка: Не существует файла \"%s\""
 
-#: src/gtkhtml2/gtkhtml2.c:228
+#: src/gtkhtml2/gtkhtml2.c:229
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
@@ -2123,6 +2120,12 @@ msgstr ""
 "Этот элемент, содержит HTML тэг <object>, который не поддерживается в "
 "GtkHTML2.\n"
 "Плагины, содержащиеся в элементе не будут отображены."
+
+#~ msgid "http://liferea.sf.net/help/help"
+#~ msgstr "http://liferea.sf.net/help/help"
+
+#~ msgid ".rdf"
+#~ msgstr ".rdf"
 
 #~ msgid "There were errors while parsing a feed"
 #~ msgstr "Произошла ошибка во время парсинга ленты новостей"

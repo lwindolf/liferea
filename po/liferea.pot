@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-19 08:55-0400\n"
+"POT-Creation-Date: 2005-07-22 21:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,56 +70,47 @@ msgstr ""
 msgid "The orientation of the tray."
 msgstr ""
 
-#. _() for HELP1URL to allow localised help feeds
-#: src/export.c:43
-msgid "http://liferea.sf.net/help/help"
-msgstr ""
-
-#: src/export.c:44
-msgid ".rdf"
-msgstr ""
-
-#: src/export.c:503 src/export.c:505
+#: src/export.c:490 src/export.c:492
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 
-#: src/export.c:509 src/export.c:511
+#: src/export.c:496 src/export.c:498
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 
-#: src/export.c:519 src/export.c:521
+#: src/export.c:506 src/export.c:508
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 
-#: src/export.c:543
+#: src/export.c:530
 msgid "Imported feed list"
 msgstr ""
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import Feed List"
 msgstr ""
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import"
 msgstr ""
 
-#: src/export.c:564
+#: src/export.c:551
 msgid "Error while exporting feed list!"
 msgstr ""
 
-#: src/export.c:566
+#: src/export.c:553
 msgid "Feed List exported!"
 msgstr ""
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export Feed List"
 msgstr ""
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export"
 msgstr ""
 

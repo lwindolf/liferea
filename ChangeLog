@@ -5,6 +5,12 @@
 	* Added a patch from TGL which adds some configured
 	  options that allows maintainers to better control
 	  which browser module support should be compiled.
+	
+	Bugfixes:
+
+	* Fixes #1188688 which broke prevented allowing
+	  you to manually specify enclosure download
+	  commands. Reported by lostyack.
 
 2005-07-22  Lars Lindner  <lars.lindner@gmx.net>
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 00:42+0200\n"
+"POT-Creation-Date: 2005-07-22 21:41+0200\n"
 "PO-Revision-Date: 2005-05-11 14:24+0100\n"
 "Last-Translator: Tibor Pittich <Tibor.Pittich@mandriva.org>\n"
 "Language-Team: Slovak <i18n@lists.linux.sk>\n"
@@ -71,62 +71,52 @@ msgstr "Autorizácia"
 msgid "The orientation of the tray."
 msgstr ""
 
-#  _() for HELP1URL to allow localised help feeds
-#. _() for HELP1URL to allow localised help feeds
-#: src/export.c:43
-msgid "http://liferea.sf.net/help/help"
-msgstr "http://liferea.sf.net/help/help"
-
-#: src/export.c:44
-msgid ".rdf"
-msgstr ".rdf"
-
-#: src/export.c:503 src/export.c:505
+#: src/export.c:490 src/export.c:492
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "XML chyba počas čítania súboru z vyrovnávacej pamäti! Nie je možné "
 "naimportovať \"%s\"!"
 
-#: src/export.c:509 src/export.c:511
+#: src/export.c:496 src/export.c:498
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Prázdny dokument! OPML dokument \"%s\" by nemal byť prázdny pri importovaní."
 
-#: src/export.c:519 src/export.c:521
+#: src/export.c:506 src/export.c:508
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" nie je korektný OPML dokument! Liferea nemôže naimportovať tento "
 "súbor!"
 
-#: src/export.c:543
+#: src/export.c:530
 msgid "Imported feed list"
 msgstr "Naimportovaný zoznam kanálov"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import Feed List"
 msgstr "Importovať zoznam kanálov"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import"
 msgstr "Import"
 
-#: src/export.c:564
+#: src/export.c:551
 msgid "Error while exporting feed list!"
 msgstr "Chyba počas exportu zoznamu kanálov!"
 
-#: src/export.c:566
+#: src/export.c:553
 msgid "Feed List exported!"
 msgstr "Zoznam kanálov bol vyexportovaný!"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export Feed List"
 msgstr "Exportovať zoznam kanálov"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export"
 msgstr "Export"
 
@@ -210,7 +200,7 @@ msgid "Updating \"%s\""
 msgstr "Aktualizácia: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1044 src/item.c:219 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1044 src/item.c:243 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Kanál:"
@@ -223,7 +213,7 @@ msgstr "VPriečinok"
 msgid "user defined command"
 msgstr "Používateľom definovaný príkaz"
 
-#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:269
+#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:293
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Zdroj:"
@@ -347,22 +337,22 @@ msgstr ""
 "Vyskytol sa problém počas načítavania vrámci tohto prihlásenia. Skontrolujte "
 "prosím URL a výstup do prehliadača."
 
-#: src/feedlist.c:363
+#: src/feedlist.c:362
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" je ukončený. Liferea ho viac nebude aktualizovať!"
 
-#: src/feedlist.c:365
+#: src/feedlist.c:364
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" nebolo zmenené od poslednej aktualizácie"
 
-#: src/feedlist.c:373
+#: src/feedlist.c:372
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL pre \"%s\" sa natrvalo zmenila a bude aktualizovaná"
 
-#: src/feedlist.c:385
+#: src/feedlist.c:384
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -372,21 +362,21 @@ msgstr ""
 "<p>Nie je možné zistiť typ kanálu! Skontrolujte prosím, či smeruje k zdroju "
 "ktorý poskytuje niektorý z podporovaných formátov!</p>%s"
 
-#: src/feedlist.c:404
+#: src/feedlist.c:403
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualizované..."
 
-#: src/feedlist.c:412
+#: src/feedlist.c:411
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" nie je dostupné"
 
-#: src/feedlist.c:453
+#: src/feedlist.c:452
 msgid "You have to select a feed entry"
 msgstr "Mali by ste označiť článok v kanály"
 
-#: src/feedlist.c:463
+#: src/feedlist.c:462
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea je v offline režime. Nie sú možné aktualizácie."
 
@@ -1286,15 +1276,15 @@ msgstr ""
 "Spustiť vyhľadávanie zadaného textu vo všetkých kanáloch. Výsledok "
 "vyhľadávania bude pridaný zo zoznamu článkov."
 
-#: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
+#: src/item.c:270 src/item.c:274 src/item.c:287 src/ui_itemlist.c:225
 msgid "[No title]"
 msgstr "[Bez titulku]"
 
-#: src/item.c:253 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:277 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Príspevok:"
 
-#: src/item.c:315
+#: src/item.c:339
 msgid "date"
 msgstr "dátum"
 
@@ -1733,16 +1723,16 @@ msgstr ""
 "all "
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:356
+#: src/ui_htmlview.c:365
 msgid "This item does not have a link assigned!"
 msgstr "Tento článok neobsahuje žiaden priradený odkaz!"
 
-#: src/ui_htmlview.c:407 src/ui_htmlview.c:437
+#: src/ui_htmlview.c:419 src/ui_htmlview.c:442
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Príkaz pre prehliadač zlyhal: %s"
 
-#: src/ui_htmlview.c:409 src/ui_htmlview.c:439
+#: src/ui_htmlview.c:445
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Spúšťanie: \"%s\""
@@ -1790,7 +1780,7 @@ msgid "You must select a feed to delete its items!"
 msgstr "Musíte označiť kanál pre odstránenie jeho článkov!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:633
+#: src/ui_itemlist.c:675
 msgid "There are no unread items "
 msgstr "Žiadne neprečítané články"
 
@@ -1997,7 +1987,8 @@ msgid "/_Subscribe..."
 msgstr "/_Prihlásenie..."
 
 #: src/ui_popup.c:155
-msgid "/_Work Offline"
+#, fuzzy
+msgid "/_Online/Offline"
 msgstr "/Pracovať _Offline"
 
 #: src/ui_popup.c:156
@@ -2058,15 +2049,15 @@ msgstr "Aktualizovať všetky kanály"
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Vynulovať časovač pre aktualizáciu (neaktualizuje žiadne kanály)"
 
-#: src/ui_prefs.c:510
+#: src/ui_prefs.c:512
 msgid "Type"
 msgstr "Typ"
 
-#: src/ui_prefs.c:513
+#: src/ui_prefs.c:515
 msgid "Program"
 msgstr "Program"
 
-#: src/ui_prefs.c:764
+#: src/ui_prefs.c:766
 msgid "Choose download directory"
 msgstr "Vyberte si adresár pre uloženie získaných súborov"
 
@@ -2121,6 +2112,11 @@ msgstr[2] "%d nových článkov!"
 msgid "No new items"
 msgstr "Žiadne nové články."
 
+#: src/update.c:70
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr ""
+
 #: src/update.c:93
 #, c-format
 msgid "%s exited with status %d"
@@ -2142,13 +2138,20 @@ msgstr "Chyba: Nie je možné otvoriť súbor \"%s\""
 msgid "Error: There is no file \"%s\""
 msgstr "Chyba: Neexistujúci súbor \"%s\""
 
-#: src/gtkhtml2/gtkhtml2.c:228
+#: src/gtkhtml2/gtkhtml2.c:229
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
 "Vložené HTML <object> tagy nie sú podporované GtkHTML2.\n"
 "Odkaz na modul nebude zobrazený."
+
+#  _() for HELP1URL to allow localised help feeds
+#~ msgid "http://liferea.sf.net/help/help"
+#~ msgstr "http://liferea.sf.net/help/help"
+
+#~ msgid ".rdf"
+#~ msgstr ".rdf"
 
 #~ msgid "There were errors while parsing a feed"
 #~ msgstr "Chyba pri interpretácii kanálu"

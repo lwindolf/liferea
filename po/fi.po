@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-09 00:42+0200\n"
+"POT-Creation-Date: 2005-07-22 21:41+0200\n"
 "PO-Revision-Date: 2005-05-14 19:17+0300\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <lokalisointi-laatu@linux-aktivaattori.org>\n"
@@ -81,60 +81,51 @@ msgstr "Todennus"
 msgid "The orientation of the tray."
 msgstr ""
 
-#. _() for HELP1URL to allow localised help feeds
-#: src/export.c:43
-msgid "http://liferea.sf.net/help/help"
-msgstr "http://liferea.sf.net/help/help"
-
-#: src/export.c:44
-msgid ".rdf"
-msgstr ".rdf"
-
-#: src/export.c:503 src/export.c:505
+#: src/export.c:490 src/export.c:492
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "XML-virhe välivarastotiedoston lukemisessa. \"%s\":n tuonti ei onnistunut."
 
-#: src/export.c:509 src/export.c:511
+#: src/export.c:496 src/export.c:498
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Tyhjä asiakirja. OPML-asiakirjan \"%s\" ei tulisi olla tyhjä, kun se tuodaan."
 
-#: src/export.c:519 src/export.c:521
+#: src/export.c:506 src/export.c:508
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" ei ole kelvollinen OPML-asiakirja. Liferea ei voi käsitellä tätä "
 "tiedostoa."
 
-#: src/export.c:543
+#: src/export.c:530
 msgid "Imported feed list"
 msgstr "Tuotu syöteluettelo"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import Feed List"
 msgstr "Tuotu syöteluettelo"
 
-#: src/export.c:554
+#: src/export.c:541
 msgid "Import"
 msgstr "Tuo"
 
-#: src/export.c:564
+#: src/export.c:551
 msgid "Error while exporting feed list!"
 msgstr "Virhe syöteluettelon viemisessä."
 
-#: src/export.c:566
+#: src/export.c:553
 msgid "Feed List exported!"
 msgstr "Syöteluettelo viety."
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export Feed List"
 msgstr "Vie syöteluettelo"
 
-#: src/export.c:573
+#: src/export.c:560
 msgid "Export"
 msgstr "Vie"
 
@@ -219,7 +210,7 @@ msgid "Updating \"%s\""
 msgstr "\"%s\" päivittyy"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1044 src/item.c:219 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1044 src/item.c:243 src/metadata.c:334 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Syöte:"
@@ -232,7 +223,7 @@ msgstr "V-Kansio"
 msgid "user defined command"
 msgstr "muu komento"
 
-#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:269
+#: src/feed.c:1075 src/interface.c:1024 src/interface.c:1434 src/item.c:293
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Lähde:"
@@ -355,22 +346,22 @@ msgstr ""
 "Syötteen lukemisessa tapahtui virhe. Tarkista URL ja päätteessä näkyvä "
 "tuloste."
 
-#: src/feedlist.c:363
+#: src/feedlist.c:362
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" on lakkautettu. Liferea ei enää päivitä sitä."
 
-#: src/feedlist.c:365
+#: src/feedlist.c:364
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" ei ole muuttunut viime kerrasta"
 
-#: src/feedlist.c:373
+#: src/feedlist.c:372
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "Syötteen \"%s\" URL on muuttunut pysyvästi, ja päivitetty"
 
-#: src/feedlist.c:385
+#: src/feedlist.c:384
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -380,21 +371,21 @@ msgstr ""
 "<p>Syötteen tyyppiä ei tunnistettu. Tarkista että lähde määrittelee jonkin "
 "tunnetun muotoisen syötteen.</p>%s"
 
-#: src/feedlist.c:404
+#: src/feedlist.c:403
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" päivitetty."
 
-#: src/feedlist.c:412
+#: src/feedlist.c:411
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" ei saatavilla"
 
-#: src/feedlist.c:453
+#: src/feedlist.c:452
 msgid "You have to select a feed entry"
 msgstr "Syötteen otsikko on valittava"
 
-#: src/feedlist.c:463
+#: src/feedlist.c:462
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea ei ole yhteydessä verkkoon, joten päivittäminen ei ole mahdollista."
@@ -1290,15 +1281,15 @@ msgstr ""
 "Etsii annettua tekstiä kaikista syötteistä. Etsinnän tulokset näkyvät "
 "otsikkoluettelossa."
 
-#: src/item.c:246 src/item.c:250 src/item.c:263 src/ui_itemlist.c:225
+#: src/item.c:270 src/item.c:274 src/item.c:287 src/ui_itemlist.c:225
 msgid "[No title]"
 msgstr "[Ei nimeä]"
 
-#: src/item.c:253 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:277 src/metadata.c:335 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Otsikko:"
 
-#: src/item.c:315
+#: src/item.c:339
 msgid "date"
 msgstr "päiväys"
 
@@ -1726,16 +1717,16 @@ msgstr ""
 "--debug-valitsimia."
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:356
+#: src/ui_htmlview.c:365
 msgid "This item does not have a link assigned!"
 msgstr "Tällä otsikolla ei ole linkkiä."
 
-#: src/ui_htmlview.c:407 src/ui_htmlview.c:437
+#: src/ui_htmlview.c:419 src/ui_htmlview.c:442
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Selainkomento epäonnistui: %s"
 
-#: src/ui_htmlview.c:409 src/ui_htmlview.c:439
+#: src/ui_htmlview.c:445
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "\"%s\" käynnistyy"
@@ -1782,7 +1773,7 @@ msgid "You must select a feed to delete its items!"
 msgstr "Syöte, jonka otsikot poistetaan, täytyy valita."
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:633
+#: src/ui_itemlist.c:675
 msgid "There are no unread items "
 msgstr "Lukemattomia otsikkoja ei ole"
 
@@ -1987,7 +1978,8 @@ msgid "/_Subscribe..."
 msgstr "/_Uusi syöte..."
 
 #: src/ui_popup.c:155
-msgid "/_Work Offline"
+#, fuzzy
+msgid "/_Online/Offline"
 msgstr "/_Toimi yhteydettä"
 
 #: src/ui_popup.c:156
@@ -2047,15 +2039,15 @@ msgstr "Päivitä kaikki syötteet"
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Nollaa päivitysajastimet, älä päivitä"
 
-#: src/ui_prefs.c:510
+#: src/ui_prefs.c:512
 msgid "Type"
 msgstr "Tyyppi"
 
-#: src/ui_prefs.c:513
+#: src/ui_prefs.c:515
 msgid "Program"
 msgstr "Ohjelma"
 
-#: src/ui_prefs.c:764
+#: src/ui_prefs.c:766
 msgid "Choose download directory"
 msgstr "Valitse tallennuskansio"
 
@@ -2108,6 +2100,11 @@ msgstr[1] "%d uutta otsikkoa."
 msgid "No new items"
 msgstr "Ei uusia otsikkoja."
 
+#: src/update.c:70
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr ""
+
 #: src/update.c:93
 #, c-format
 msgid "%s exited with status %d"
@@ -2129,13 +2126,19 @@ msgstr "Virhe: tiedoston \"%s\" avaaminen ei onnistunut"
 msgid "Error: There is no file \"%s\""
 msgstr "Virhe: Tiedosto \"%s\" ei ole olemassa"
 
-#: src/gtkhtml2/gtkhtml2.c:228
+#: src/gtkhtml2/gtkhtml2.c:229
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
 "Sisällytetty \"<object>\" HTML-tagi ei ole tuettu GtkHTML2:ssa.\n"
 "Sisällytetyt liitännäiset eivät välttämättä näy."
+
+#~ msgid "http://liferea.sf.net/help/help"
+#~ msgstr "http://liferea.sf.net/help/help"
+
+#~ msgid ".rdf"
+#~ msgstr ".rdf"
 
 #~ msgid "There were errors while parsing a feed"
 #~ msgstr "Syötteen lukemisessa tapahtui virheitä"
