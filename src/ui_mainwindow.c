@@ -174,9 +174,11 @@ GtkWidget* ui_mainwindow_new(void) {
 void ui_mainwindow_finish(GtkWidget *window) {
 	gchar	*buffer = NULL;
 
+	ui_mainwindow_set_three_pane_mode(FALSE); /* Initializes the htmlviews */
+
 	/* force two pane mode */
+	itemlist_set_two_pane_mode(TRUE);
 	ui_feedlist_select(NULL);
-	ui_itemlist_set_two_pane_mode(TRUE);
 	
 	/* set zooming properties */	
 	zoom = getNumericConfValue(LAST_ZOOMLEVEL)/100.;

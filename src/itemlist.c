@@ -156,7 +156,7 @@ void itemlist_load(nodePtr node) {
 	}
 	
 	if(isFolder)
-		ui_itemlist_set_two_pane_mode(FALSE);
+		itemlist_set_two_pane_mode(FALSE);
 		
 	ui_itemlist_clear();
 	/* explicitly no ui_htmlview_clear() !!! */
@@ -409,6 +409,6 @@ void itemlist_set_two_pane_mode(gboolean new_mode) {
 	if((NULL != (np = ui_feedlist_get_selected())) &&
 	   ((FST_FEED == np->type) || (FST_VFOLDER == np->type))) {
 		feed_set_two_pane_mode((feedPtr)np, new_mode);
-		ui_itemlist_set_two_pane_mode(new_mode);
 	}
+	ui_itemlist_set_two_pane_mode(new_mode);
 }

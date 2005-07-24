@@ -380,7 +380,7 @@ void ui_itemlist_display(void) {
 		if(TRUE == ui_itemlist_get_two_pane_mode()) {
 			/* two pane mode */
 			ui_htmlview_start_output(&buffer, base, FALSE);
-				
+			
 			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 			while(valid) {	
 				ip = ui_itemlist_get_item_from_iter(&iter);
@@ -744,10 +744,18 @@ void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
 	old_mode = ui_itemlist_get_two_pane_mode();
 	ui_mainwindow_set_three_pane_mode(!new_mode);
 
-	if(new_mode != old_mode)
+	if(new_mode != old_mode) {
+		/* Disconnect signal so that this will not cause the itemlist
+		   to be redrawn. This would happen since
+		   on_toggle_condensed_view_activate would have been
+		   called. */
+		g_signal_handlers_block_by_func(lookup_widget(mainwindow, "toggle_condensed_view"), G_CALLBACK (on_toggle_condensed_view_activate), NULL);
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")), new_mode);
+		g_signal_handlers_unblock_by_func(lookup_widget(mainwindow, "toggle_condensed_view"), G_CALLBACK (on_toggle_condensed_view_activate), NULL);
+	}
 }
 
+/* This is the callback for the menu option to switch between two and three pane modes */
 void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { 
 	nodePtr		np;
 	

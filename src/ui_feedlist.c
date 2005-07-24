@@ -193,7 +193,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 		
 			ui_tabs_show_headlines();
-			ui_itemlist_set_two_pane_mode(feed_get_two_pane_mode((feedPtr)np));
+			itemlist_set_two_pane_mode(feed_get_two_pane_mode((feedPtr)np));
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */

@@ -72,10 +72,12 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	vfolder_add_rule(searchFeed, "exact", searchstring, TRUE);
 	vfolder_refresh(searchFeed);
 	ui_feedlist_select(NULL);
+
+	/* switch to item list view and inform user in HTML view */
+	itemlist_set_two_pane_mode(FALSE);
+
 	itemlist_load((nodePtr)searchFeed);
 	
-	/* switch to item list view and inform user in HTML view */
-	ui_itemlist_set_two_pane_mode(FALSE);
 
 	ui_htmlview_start_output(&buffer, NULL, TRUE);
 	tmp = g_strdup_printf(_("%s<h2>%d Search Results for \"%s\"</h2>"
