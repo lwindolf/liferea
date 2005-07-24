@@ -382,20 +382,36 @@ void ui_feedlist_select(nodePtr np) {
 /* next unread callback								*/
 /*------------------------------------------------------------------------------*/
 
-feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
+enum scanStateType {
+  UNREAD_SCAN_INIT,            /* selected not yet passed */
+  UNREAD_SCAN_FOUND_SELECTED,  /* selected passed */
+  UNREAD_SCAN_SECOND_PASS      /* no unread items after selected feed */
+};
+
+static enum scanStateType scanState = UNREAD_SCAN_INIT;
+
+/* This method tries to find a feed with unread items 
+   in two passes. In the first pass it tries to find one
+   after the currently selected feed (including the
+   selected feed). If there are no such feeds the 
+   search is restarted for all feeds. */
+static feedPtr ui_feedlist_unread_scan(nodePtr folder) {
 	feedPtr			fp;
-	nodePtr			ptr;
+	nodePtr			ptr, selectedNode;
 	GtkTreeModel		*model;
-	GtkTreeIter		iter, iter2, *parent = NULL;
-	gboolean		valid;
+	GtkTreeIter		iter, iter2, *selectedIter, *parent = NULL;
+	gboolean		valid = FALSE;
 	gint			count;
 
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
+	if(NULL != (selectedNode = ui_feedlist_get_selected())) {
+	  selectedIter = &((ui_data *)(selectedNode->ui_data))->row;
+	} else {
+	  scanState = UNREAD_SCAN_SECOND_PASS;
+	}
 
 	if(folder != NULL) {
-		if(0 == ((folderPtr)folder)->unreadCount)
-			return NULL;	/* avoid unneccessary traversals */
-
+		/* determine folder tree iter */
 		if(filter_feeds_without_unread_headlines) {
 			gtk_tree_model_filter_convert_child_iter_to_iter(GTK_TREE_MODEL_FILTER(filter), &iter2, &((ui_data*)(folder->ui_data))->row);
 		} else {
@@ -413,17 +429,49 @@ feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
 		                   FS_PTR, &ptr,
 		                   FS_UNREAD, &count,
 		                   -1);
-		if(count > 0) {
-			if((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type)) {
-				return (feedPtr)ptr;
-			} else if(FST_FOLDER == ptr->type) {
-				if(NULL != (fp = ui_feedlist_find_unread_feed(ptr)))
-					return fp;
-			} /* Directories are never checked */
+
+		if(ptr == selectedNode)
+		  scanState = UNREAD_SCAN_FOUND_SELECTED;
+
+		/* feed match if beyond the selected feed or in second pass... */
+		if((scanState != UNREAD_SCAN_INIT) && (count > 0) &&
+		   ((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type))) {
+		       return (feedPtr)ptr;
 		}
+
+		/* folder traversal if we are searching the selected feed
+		   which might be a descendant of the folder and if we
+		   are beyond the selected feed and the folder contains
+		   feeds with unread items... */
+		if((FST_FOLDER == ptr->type) &&
+		   (((scanState != UNREAD_SCAN_INIT) && (count > 0)) ||
+		    gtk_tree_store_is_ancestor(GTK_TREE_STORE(model), &iter, selectedIter))) {
+		       if(NULL != (fp = ui_feedlist_unread_scan(ptr)))
+			 return fp;
+		} /* Directories are never checked */
+
 		valid = gtk_tree_model_iter_next(model, &iter);
 	}
+
+	if(NULL == folder) { /* we are on feed list root but didn't find anything */
+	  if(0 == feedlist_get_unread_item_count()) {
+	    /* this may mean there is nothing more to find */
+	  } else {
+	    /* or that we just didn't find anything after the selected feed */
+	    g_assert(scanState != UNREAD_SCAN_SECOND_PASS);
+	    scanState = UNREAD_SCAN_SECOND_PASS;
+	    fp = ui_feedlist_unread_scan(NULL);
+	    return fp;
+	  }
+	}
+
 	return NULL;
+}
+
+feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
+
+  scanState = UNREAD_SCAN_INIT;
+  return ui_feedlist_unread_scan(folder);
 }
 
 /*------------------------------------------------------------------------------*/
