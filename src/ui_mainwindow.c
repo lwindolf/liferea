@@ -177,8 +177,10 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	ui_mainwindow_set_three_pane_mode(FALSE); /* Initializes the htmlviews */
 
 	/* force two pane mode */
-	itemlist_set_two_pane_mode(TRUE);
+	/*   For some reason, this causes the first item to be selected and then
+	     unselected... strange. */
 	ui_feedlist_select(NULL);
+	itemlist_set_two_pane_mode(TRUE);
 	
 	/* set zooming properties */	
 	zoom = getNumericConfValue(LAST_ZOOMLEVEL)/100.;
