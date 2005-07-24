@@ -11,6 +11,10 @@
 	* Fixes #1188688 which broke prevented allowing
 	  you to manually specify enclosure download
 	  commands. Reported by lostyack.
+	* Fixes #891604 reported by Niklas Morberg. Now
+	  "Next Unread" really selects the next unread
+	  item and not the first one from the beginning
+	  of the feed list.
 
 2005-07-22  Lars Lindner  <lars.lindner@gmx.net>
 
