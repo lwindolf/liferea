@@ -787,7 +787,7 @@ void feed_set_update_interval(feedPtr fp, gint interval) {
 	conf_feedlist_schedule_save();
 }
 
-const feedHandlerPtr feed_get_fhp(feedPtr fp) {
+feedHandlerPtr feed_get_fhp(feedPtr fp) {
 	return fp->fhp;
 }
 
@@ -821,7 +821,7 @@ gchar * feed_get_error_description(feedPtr fp) {
 	return tmp1; 
 }
 
-const time_t feed_get_time(feedPtr fp) { return (fp != NULL ? fp->time : 0); }
+time_t feed_get_time(feedPtr fp) { return (fp != NULL ? fp->time : 0); }
 void feed_set_time(feedPtr fp, const time_t t) { fp->time = t; }
 
 const gchar * feed_get_title(feedPtr fp) { 
