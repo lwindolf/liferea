@@ -18,12 +18,12 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#ifndef _PIE_ENTRY_H
-#define _PIE_ENTRY_H
+#ifndef _ATOM10_ENTRY_H
+#define _ATOM10_ENTRY_H
 
 #include "feed.h"
 #include "libxml/tree.h"
 
-itemPtr parseEntry(feedPtr fp, xmlNodePtr cur);
+itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur);
 
 #endif

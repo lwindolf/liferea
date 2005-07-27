@@ -31,19 +31,19 @@
 #include "conf.h"
 #include "common.h"
 #include "feed.h"
-#include "pie_feed.h"
-#include "pie_entry.h"
+#include "atom10_feed.h"
+#include "atom10_entry.h"
 #include "ns_dc.h"
 #include "callbacks.h"
 #include "metadata.h"
 
-#define ATOM10_NS "http://www.w3.org/2005/Atom"
+#define ATOM10_NS BAD_CAST"http://www.w3.org/2005/Atom"
 
-/* to store the PIENsHandler structs for all supported RDF namespace handlers */
-GHashTable	*pie_nstable = NULL;
-GHashTable	*ns_pie_ns_uri_table = NULL;
+/* to store the ATOMNsHandler structs for all supported RDF namespace handlers */
+GHashTable	*atom10_nstable = NULL;
+GHashTable	*ns_atom10_ns_uri_table = NULL;
 
-/* note: the tag order has to correspond with the PIE_FEED_* defines in the header file */
+/* note: the tag order has to correspond with the ATOM10_FEED_* defines in the header file */
 /*
   The follow are not used, but had been recognized:
                                    "language", <---- Not in atom 0.2 or 0.3. We should use xml:lang
@@ -78,7 +78,7 @@ gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 			
 		} else if(!strcmp(mode, "multipart/alternative")) {
 			if(NULL != cur->xmlChildrenNode)
-				ret = pie_parse_content_construct(cur->xmlChildrenNode);
+				ret = atom10_parse_content_construct(cur->xmlChildrenNode);
 		}
 		g_free(mode);
 	} else {
@@ -120,7 +120,7 @@ gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 /* This returns a escaped version of a text construct. If htmlified is
    set to 1, then HTML is returned. When set to 0, All HTML tags are
    removed.*/
-gchar* pie_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
+gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 	gchar	*type, *tmp, *ret;
 
 	g_assert(NULL != cur);
@@ -161,7 +161,7 @@ gchar* pie_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 }
 
 
-/* nonstatic because used by pie_entry.c too */
+/* nonstatic because used by atom10_entry.c too */
 gchar * atom10_parse_name(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
 	gchar	*name = NULL, *uri = NULL, *email = NULL;
@@ -195,7 +195,7 @@ gchar * atom10_parse_name(xmlNodePtr cur) {
 					invalid = TRUE;
 				g_free(uri);
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				uri = g_strdup_printf(" (<a href=\"%s\">Website</a>)", uri, tmp);
+				uri = g_strdup_printf(" (<a href=\"%s\">Website</a>)", tmp);
 				g_free(tmp);
 			}
 		} else {
@@ -214,9 +214,9 @@ gchar * atom10_parse_name(xmlNodePtr cur) {
 	return tmp;
 }
 
-/* reads a PIE feed URL and returns a new channel structure (even if
+/* reads a Atom feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+static void atom10_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
 	GList			*items = NULL;
 	gchar			*tmp2, *tmp = NULL, *tmp3;
@@ -226,7 +226,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	
 	while(TRUE) {
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find Atom/Echo/PIE header!</p>"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find Atom 1.0 header!</p>"));
 			error = 1;
 			break;			
 		}
@@ -247,9 +247,9 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			}
 			
 			if(((cur->ns->href != NULL) &&
-			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_pie_ns_uri_table, (gpointer)cur->ns->href))) ||
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href))) ||
 			   ((cur->ns->prefix != NULL) &&
-			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(pie_nstable, (gpointer)cur->ns->prefix)))) {
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix)))) {
 				pf = nsh->parseChannelTag;
 				if(NULL != pf)
 					(*pf)(fp, cur);
@@ -265,14 +265,14 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 
 			if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 				/* parse feed author */
-				tmp = parseAuthor(cur);
+				tmp = atom10_parse_name(cur);
 				fp->metadata = metadata_list_append(fp->metadata, "author", tmp);
 				g_free(tmp);
 				/* FIXME: make item parsing use this author if not specified elsewhere */
 				/* FIXME: category parsing */
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
 				/* parse feed contributors */
-				tmp = parseAuthor(cur);
+				tmp = atom10_parse_name(cur);
 				fp->metadata = metadata_list_append(fp->metadata, "contributor", tmp);
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
@@ -316,22 +316,22 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				}
 				/* FIXME: Parse logo */
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"logo")) {
-				tmp = utf8_fix(pie_parse_text_construct(cur));
+				tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
 				/* Verify URL is not evil... */
 				feed_set_image_url(fp, tmp);
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"rights")) {
-				tmp = utf8_fix(pie_parse_text_construct(cur));
+				tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
 				if(NULL != tmp)
 					fp->metadata = metadata_list_append(fp->metadata, "copyright", tmp);
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"subtitle")) {
-				tmp = convertToHTML(utf8_fix(pie_parse_text_construct(cur)));
+				tmp = convertToHTML(utf8_fix(atom10_parse_text_construct(cur, TRUE)));
 				if (tmp != NULL)
 					feed_set_description(fp, tmp);
 				g_free(tmp);				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-				tmp = unhtmlize(utf8_fix(pie_parse_text_construct(cur), FALSE));
+				tmp = unhtmlize(utf8_fix(atom10_parse_text_construct(cur, FALSE)));
 				if (tmp != NULL)
 					feed_set_title(fp, tmp);
 				g_free(tmp);
@@ -343,7 +343,7 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 					g_free(tmp);
 				}
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
-				if(NULL != (ip = parseEntry(fp, cur))) {
+				if(NULL != (ip = atom10_parse_entry(fp, cur))) {
 					if(0 == item_get_time(ip))
 						item_set_time(ip, feed_get_time(fp));
 					items = g_list_append(items, ip);
@@ -364,32 +364,32 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	}
 }
 
-static gboolean pie_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+static gboolean atom10_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	if(!xmlStrcmp(cur->name, BAD_CAST"feed") && !xmlStrcmp(cur->ns->href, ATOM10_NS)) {
 		return TRUE;
 	}
 	return FALSE;
 }
 
-static void pie_add_ns_handler(NsHandler *handler) {
+static void atom10_add_ns_handler(NsHandler *handler) {
 
-	g_assert(NULL != pie_nstable);
-	g_hash_table_insert(pie_nstable, handler->prefix, handler);
+	g_assert(NULL != atom10_nstable);
+	g_hash_table_insert(atom10_nstable, handler->prefix, handler);
 	g_assert(handler->registerNs != NULL);
-	handler->registerNs(handler, pie_nstable, ns_pie_ns_uri_table);
+	handler->registerNs(handler, atom10_nstable, ns_atom10_ns_uri_table);
 }
 
-feedHandlerPtr pie_init_feed_handler(void) {
+feedHandlerPtr atom10_init_feed_handler(void) {
 	feedHandlerPtr	fhp;
 	
 	fhp = g_new0(struct feedHandler, 1);
 	
-	if(NULL == pie_nstable) {
-		pie_nstable = g_hash_table_new(g_str_hash, g_str_equal);
-		ns_pie_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);
+	if(NULL == atom10_nstable) {
+		atom10_nstable = g_hash_table_new(g_str_hash, g_str_equal);
+		ns_atom10_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);
 		
 		/* register RSS name space handlers */
-		pie_add_ns_handler(ns_dc_getRSSNsHandler());
+		atom10_add_ns_handler(ns_dc_getRSSNsHandler());
 	}	
 
 
@@ -397,8 +397,8 @@ feedHandlerPtr pie_init_feed_handler(void) {
 	fhp->typeStr = "pie";
 	fhp->icon = ICON_AVAILABLE;
 	fhp->directory = FALSE;
-	fhp->feedParser	= pie_parse;
-	fhp->checkFormat = pie_format_check;
+	fhp->feedParser	= atom10_parse;
+	fhp->checkFormat = atom10_format_check;
 	fhp->merge = TRUE;
 
 	return fhp;

@@ -42,7 +42,7 @@ extern gchar * parseAuthor(xmlNodePtr cur);
 
 /* <content> tag support, FIXME: base64 not supported */
 /* method to parse standard tags for each item element */
-itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
+itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 	xmlChar			*xtmp;
 	gchar			*tmp2, *tmp;
 	itemPtr			ip;
