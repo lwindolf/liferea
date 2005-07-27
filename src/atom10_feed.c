@@ -1,6 +1,7 @@
 /**
- * @file pie_feed.c Atom/Echo/PIE 0.2/0.3 channel parsing
+ * @file pie_feed.c Atom 1.0 Parser
  * 
+ * Copyright (C) 2005 Nathan Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -50,7 +51,8 @@ GHashTable	*ns_pie_ns_uri_table = NULL;
 							"issued", <-- Not in the specs for feeds
 							"created",  <---- Not in the specs for feeds
 */
-gchar* pie_parse_content_construct(xmlNodePtr cur) {
+
+gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 	gchar	*mode, *type, *tmp, *ret;
 
 	g_assert(NULL != cur);
@@ -115,42 +117,100 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	return ret;
 }
 
+/* This returns a escaped version of a text construct. If htmlified is
+   set to 1, then HTML is returned. When set to 0, All HTML tags are
+   removed.*/
+gchar* pie_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
+	gchar	*type, *tmp, *ret;
+
+	g_assert(NULL != cur);
+	ret = NULL;
+	
+	/* determine encoding mode */
+	type = utf8_fix(xmlGetNsProp(cur, BAD_CAST"type", ATOM10_NS));
+
+	/* not sure what MIME types are necessary... */
+	
+	/* This that need to be de-encoded and should not contain sub-tags.*/
+	if (NULL == type || (!strcmp(type, "text") ||
+					 !strcmp(type, "html"))) {
+		ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if (htmlified)
+			tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
+		else
+			tmp = g_markup_printf_escaped("%s", ret);
+		g_free(ret);
+		ret = tmp;
+	} else if(!strcmp(type, "xhtml")) {
+		ret = extractHTMLNode(cur, TRUE);
+		if (!htmlified) {
+			ret = unhtmlize(ret);
+		}
+			tmp = g_markup_printf_escaped("%s", ret);
+		g_free(ret);
+		ret = tmp;
+		
+	} else {
+		/* Invalid ATOM feed */
+		ret = g_strdup("This attribute was invalidly specified in this ATOM feed.");
+	}
+	
+	g_free(type);
+	
+	return ret;
+}
+
 
 /* nonstatic because used by pie_entry.c too */
-gchar * parseAuthor(xmlNodePtr cur) {
+gchar * atom10_parse_name(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
-	gchar	*tmp2, *tmp3;
-
+	gchar	*name = NULL, *uri = NULL, *email = NULL;
+	gboolean invalid = FALSE;
+	
 	g_assert(NULL != cur);
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		if(NULL == cur->name) {
+		if(NULL == cur->name || cur->ns == NULL) {
 			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
 			cur = cur->next;
 			continue;
 		}
-		
-		if (!xmlStrcmp(cur->name, BAD_CAST"name"))
-			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-
-		if (!xmlStrcmp(cur->name, BAD_CAST"email")) {
-			tmp2 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			tmp3 = g_strdup_printf("%s <a href=\"mailto:%s\">%s</a>", tmp, tmp2, tmp2);
-			g_free(tmp);
-			g_free(tmp2);
-			tmp = tmp3;
-		}
-					
-		if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
-			tmp2 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			tmp3 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
-			g_free(tmp);
-			g_free(tmp2);
-			tmp = tmp3;
+		if (!xmlStrcmp(cur->ns->href, ATOM10_NS)) {
+			if (!xmlStrcmp(cur->name, BAD_CAST"name")) {
+				g_free(name);
+				name = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			}
+			
+			if (!xmlStrcmp(cur->name, BAD_CAST"email")) {
+				if (email != NULL)
+					invalid = TRUE;
+				g_free(email);
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				email = g_strdup_printf(" - <a href=\"mailto:%s\">%s</a>", tmp, tmp);
+				g_free(tmp);
+			}
+			
+			if (!xmlStrcmp(cur->name, BAD_CAST"uri")) {
+				if (uri == NULL)
+					invalid = TRUE;
+				g_free(uri);
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				uri = g_strdup_printf(" (<a href=\"%s\">Website</a>)", uri, tmp);
+				g_free(tmp);
+			}
+		} else {
+			/* FIXME: handle extension elements here */
 		}
 		cur = cur->next;
 	}
-
+	if (name == NULL) {
+		invalid = TRUE;
+		name = g_strdup(_("Invalid ATOM FEED: unknown author"));
+	}
+	tmp = g_strdup_printf("%s%s%s", name, uri == NULL ? "" : uri, email == NULL ? "" : email);
+	g_free(uri);
+	g_free(email);
+	g_free(name);
 	return tmp;
 }
 
@@ -208,15 +268,39 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				tmp = parseAuthor(cur);
 				fp->metadata = metadata_list_append(fp->metadata, "author", tmp);
 				g_free(tmp);
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-				tmp = unhtmlize(utf8_fix(pie_parse_content_construct(cur)));
-				if (tmp != NULL)
-					feed_set_title(fp, tmp);
+				/* FIXME: make item parsing use this author if not specified elsewhere */
+				/* FIXME: category parsing */
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
+				/* parse feed contributors */
+				tmp = parseAuthor(cur);
+				fp->metadata = metadata_list_append(fp->metadata, "contributor", tmp);
 				g_free(tmp);
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
+				tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+				if (tmp != NULL && tmp[0] != '\0') {
+					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"version", ATOM10_NS));
+					if (tmp2 != NULL) {
+						tmp3 = g_strdup_printf("%s %s", tmp, tmp2);
+						g_free(tmp);
+						g_free(tmp2);
+						tmp = tmp3;
+					}
+					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"uri", ATOM10_NS));
+					if (tmp2 != NULL) {
+						tmp3 = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
+						g_free(tmp2);
+						g_free(tmp);
+						tmp = tmp3;
+					}
+					fp->metadata = metadata_list_append(fp->metadata, "feedgenerator", tmp);
+				}
+				g_free(tmp);
+				/* FIXME: Parse icon */
+				/* FIXME: Parse ID */
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
-				if(NULL != (tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href")))) {
+				if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", ATOM10_NS)))) {
 					/* 0.3 link : rel, type and href attribute */
-					tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"rel"));
+					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", ATOM10_NS));
 					if(tmp2 != NULL && !xmlStrcmp(tmp2, BAD_CAST"alternate"))
 						feed_set_html_url(fp, tmp);
 					else
@@ -230,62 +314,34 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 						feed_set_html_url(fp, tmp);
 					g_free(tmp);
 				}
-				
-			/* parse feed author */
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"subtitle")) {
-				tmp = convertToHTML(utf8_fix(pie_parse_content_construct(cur)));
-				if (tmp != NULL)
-					feed_set_description(fp, tmp);
-				g_free(tmp);				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
-				tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
-				if (tmp != NULL && tmp[0] != '\0') {
-					tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"version"));
-					if (tmp2 != NULL) {
-						tmp3 = g_strdup_printf("%s %s", tmp, tmp2);
-						g_free(tmp);
-						g_free(tmp2);
-						tmp = tmp3;
-					}
-					tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"url"));
-					if (tmp2 != NULL) {
-						tmp3 = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
-						g_free(tmp2);
-						g_free(tmp);
-						tmp = tmp3;
-					}
-					fp->metadata = metadata_list_append(fp->metadata, "feedgenerator", tmp);
-				}
+				/* FIXME: Parse logo */
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"logo")) {
+				tmp = utf8_fix(pie_parse_text_construct(cur));
+				/* Verify URL is not evil... */
+				feed_set_image_url(fp, tmp);
 				g_free(tmp);
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
-				tmp = utf8_fix(pie_parse_content_construct(cur));
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"rights")) {
+				tmp = utf8_fix(pie_parse_text_construct(cur));
 				if(NULL != tmp)
 					fp->metadata = metadata_list_append(fp->metadata, "copyright", tmp);
 				g_free(tmp);
-				
-				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"modified")) { /* Modified was last used in IETF draft 02) */
-				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				if(NULL != tmp) {
-					fp->metadata = metadata_list_append(fp->metadata, "pubDate", tmp);
-					feed_set_time(fp, parseISO8601Date(tmp));
-					g_free(tmp);
-				}
-
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"subtitle")) {
+				tmp = convertToHTML(utf8_fix(pie_parse_text_construct(cur)));
+				if (tmp != NULL)
+					feed_set_description(fp, tmp);
+				g_free(tmp);				
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
+				tmp = unhtmlize(utf8_fix(pie_parse_text_construct(cur), FALSE));
+				if (tmp != NULL)
+					feed_set_title(fp, tmp);
+				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) { /* Updated was added in IETF draft 03 */
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
-					fp->metadata = metadata_list_append(fp->metadata, "pubDate", tmp);
+					fp->metadata = metadata_list_append(fp->metadata, "contentUpdateDate", tmp);
 					feed_set_time(fp, parseISO8601Date(tmp));
 					g_free(tmp);
 				}
-
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
-				/* parse feed contributors */
-				tmp = parseAuthor(cur);
-				fp->metadata = metadata_list_append(fp->metadata, "contributor", tmp);
-				g_free(tmp);
-				
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = parseEntry(fp, cur))) {
 					if(0 == item_get_time(ip))
@@ -293,8 +349,6 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 					items = g_list_append(items, ip);
 				}
 			}
-			
-			/* collect PIE feed entries */
 			cur = cur->next;
 		}
 		feed_add_items(fp, items);
