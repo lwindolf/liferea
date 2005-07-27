@@ -285,7 +285,7 @@ gchar * feed_get_error_description(feedPtr fp);
 const gchar *feed_get_id(feedPtr fp);
 void feed_set_id(feedPtr fp, const gchar *id);
 
-const time_t feed_get_time(feedPtr fp);
+time_t feed_get_time(feedPtr fp);
 void feed_set_time(feedPtr fp, time_t time);
 
 const gchar * feed_get_title(feedPtr fp);
@@ -312,7 +312,7 @@ void feed_set_lastmodified(feedPtr fp, const gchar *lastmodified);
 const gchar * feed_get_etag(feedPtr fp);
 void feed_set_etag(feedPtr fp, const gchar *etag);
 
-const feedHandlerPtr feed_get_fhp(feedPtr fp);
+feedHandlerPtr feed_get_fhp(feedPtr fp);
 
 GSList * feed_get_item_list(feedPtr fp);
 

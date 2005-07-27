@@ -102,17 +102,17 @@ const gchar *	item_get_real_source_url(itemPtr ip);
 /** Returns the real source title of ip. */
 const gchar *	item_get_real_source_title(itemPtr ip);
 /** Returns the modification time of ip. */
-const time_t	item_get_time(itemPtr ip);
+time_t	item_get_time(itemPtr ip);
 /** Returns the flag status of ip */
-const gboolean	item_get_flag_status(itemPtr ip);
+gboolean	item_get_flag_status(itemPtr ip);
 /** Returns the read status of ip. */
-const gboolean	item_get_read_status(itemPtr ip);
+gboolean	item_get_read_status(itemPtr ip);
 /** Returns the new flag of ip. */
-const gboolean	item_get_new_status(itemPtr ip);
+gboolean	item_get_new_status(itemPtr ip);
 /** Returns the popup flag of ip. */
-const gboolean	item_get_popup_status(itemPtr ip);
+gboolean	item_get_popup_status(itemPtr ip);
 /** Returns the update flag of ip. */
-const gboolean	item_get_update_status(itemPtr ip);
+gboolean	item_get_update_status(itemPtr ip);
 
 /** Sets the ip's title */
 void		item_set_title(itemPtr ip, const gchar * title);
