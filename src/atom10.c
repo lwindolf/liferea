@@ -1,5 +1,5 @@
 /**
- * @file pie_feed.c Atom 1.0 Parser
+ * @file atom10.c Atom 1.0 Parser
  * 
  * Copyright (C) 2005 Nathan Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
@@ -31,11 +31,10 @@
 #include "conf.h"
 #include "common.h"
 #include "feed.h"
-#include "atom10_feed.h"
-#include "atom10_entry.h"
 #include "ns_dc.h"
 #include "callbacks.h"
 #include "metadata.h"
+#include "atom10.h"
 
 #define ATOM10_NS BAD_CAST"http://www.w3.org/2005/Atom"
 
@@ -52,7 +51,14 @@ GHashTable	*ns_atom10_ns_uri_table = NULL;
 							"created",  <---- Not in the specs for feeds
 */
 
-gchar* atom10_parse_content_construct(xmlNodePtr cur) {
+/**
+ * This parses an Atom content construct.
+ *
+ * @param cur the parent node of the elements to be parsed.
+ * @returns g_strduped string which must be freed by the caller.
+ */
+
+static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 	gchar	*mode, *type, *tmp, *ret;
 
 	g_assert(NULL != cur);
@@ -120,7 +126,7 @@ gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 /* This returns a escaped version of a text construct. If htmlified is
    set to 1, then HTML is returned. When set to 0, All HTML tags are
    removed.*/
-gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
+static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 	gchar	*type, *tmp, *ret;
 
 	g_assert(NULL != cur);
@@ -162,7 +168,7 @@ gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 
 
 /* nonstatic because used by atom10_entry.c too */
-gchar * atom10_parse_name(xmlNodePtr cur) {
+static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
 	gchar	*name = NULL, *uri = NULL, *email = NULL;
 	gboolean invalid = FALSE;
@@ -212,6 +218,122 @@ gchar * atom10_parse_name(xmlNodePtr cur) {
 	g_free(email);
 	g_free(name);
 	return tmp;
+}
+
+/* <content> tag support, FIXME: base64 not supported */
+/* method to parse standard tags for each item element */
+static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
+	xmlChar			*xtmp;
+	gchar			*tmp2, *tmp;
+	itemPtr			ip;
+	GHashTable *nsinfos;
+	NsHandler		*nsh;
+	parseItemTagFunc	pf;
+	
+	g_assert(NULL != cur);
+		
+	nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+	ip = item_new();
+	
+	cur = cur->xmlChildrenNode;
+	while (cur != NULL) {
+		if(NULL == cur->name) {
+			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+			cur = cur->next;
+			continue;
+		}
+		
+		
+		/* check namespace of this tag */
+		if(NULL != cur->ns) {
+			if(((cur->ns->href != NULL) &&
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href))) ||
+			   ((cur->ns->prefix != NULL) &&
+			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix)))) {
+				
+				pf = nsh->parseItemTag;
+				if(NULL != pf)
+					(*pf)(ip, cur);
+				cur = cur->next;
+				continue;
+			} else {
+				/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
+			}
+		} /* explicitly no following else !!! */
+		
+		if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
+			tmp = unhtmlize(utf8_fix(atom10_parse_content_construct(cur)));
+			if (tmp != NULL)
+				item_set_title(ip, tmp);
+			g_free(tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
+			if(NULL != (tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"href")))) {
+				/* 0.3 link : rel, type and href attribute */
+				xtmp = xmlGetProp(cur, BAD_CAST"rel");
+				if(xtmp != NULL && !xmlStrcmp(xtmp, BAD_CAST"alternate"))
+					item_set_source(ip, tmp2);
+				else
+					/* FIXME: Maybe do something with other links? */;
+				xmlFree(xtmp);
+				g_free(tmp2);
+			} else {
+				/* 0.2 link : element content is the link, or non-alternate link in 0.3 */
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if(NULL != tmp)
+					item_set_source(ip, tmp);
+				g_free(tmp);
+			}
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
+			/* parse feed author */
+			tmp = atom10_parse_person_construct(cur);
+			ip->metadata = metadata_list_append(ip->metadata, "author", tmp);
+			g_free(tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
+			/* parse feed contributors */
+			tmp = atom10_parse_person_construct(cur);
+			ip->metadata = metadata_list_append(ip->metadata, "contributor", tmp);
+			g_free(tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"id")) {
+			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if (tmp != NULL)
+				item_set_id(ip, tmp);
+			g_free(tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"issued")) {
+			/* FIXME: is <modified> or <issued> or <created> the time tag we want to display? */
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			if(NULL != tmp)
+				item_set_time(ip, parseISO8601Date(tmp));
+			g_free(tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
+			/* <content> support */
+			gchar *tmp = utf8_fix(atom10_parse_content_construct(cur));
+			if (tmp != NULL)
+				item_set_description(ip, tmp);
+			g_free(tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {			
+			/* <summary> can be used for short text descriptions, if there is no
+			   <content> description we show the <summary> content */
+			if (NULL == item_get_description(ip)) {
+				tmp = utf8_fix(atom10_parse_content_construct(cur));
+				if(NULL != tmp)
+					item_set_description(ip, tmp);
+				g_free(tmp);
+			}
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			if(NULL != tmp)
+				ip->metadata = metadata_list_append(ip->metadata, "copyright", tmp);
+			g_free(tmp);
+		}
+		cur = cur->next;
+	}
+	
+	/* after parsing we fill the infos into the itemPtr structure */
+	ip->readStatus = FALSE;
+
+	g_hash_table_destroy(nsinfos);
+	
+	return ip;
 }
 
 /* reads a Atom feed URL and returns a new channel structure (even if
@@ -265,14 +387,14 @@ static void atom10_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 
 			if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 				/* parse feed author */
-				tmp = atom10_parse_name(cur);
+				tmp = atom10_parse_person_construct(cur);
 				fp->metadata = metadata_list_append(fp->metadata, "author", tmp);
 				g_free(tmp);
 				/* FIXME: make item parsing use this author if not specified elsewhere */
 				/* FIXME: category parsing */
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
 				/* parse feed contributors */
-				tmp = atom10_parse_name(cur);
+				tmp = atom10_parse_person_construct(cur);
 				fp->metadata = metadata_list_append(fp->metadata, "contributor", tmp);
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {

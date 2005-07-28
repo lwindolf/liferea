@@ -18,18 +18,11 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#ifndef _ATOM10_FEED_H
-#define _ATOM10_FEED_H
+#ifndef _ATOM10_H
+#define _ATOM10_H
 
 #include "feed.h"
 
 feedHandlerPtr	atom10_init_feed_handler(void);
-/**
- * This parses an Atom content construct.
- *
- * @param cur the parent node of the elements to be parsed.
- * @returns g_strduped string which must be freed by the caller.
- */
-gchar* atom10_parse_content_construct(xmlNodePtr cur);
 
 #endif

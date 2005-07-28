@@ -24,8 +24,7 @@ bin_PROGRAMS = liferea-bin
 bin_SCRIPTS = liferea
 
 liferea_bin_SOURCES = \
-	atom10_feed.c atom10_feed.h \
-	atom10_entry.c atom10_entry.h \
+	atom10.c atom10.h \
 	callbacks.c callbacks.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
