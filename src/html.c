@@ -35,8 +35,7 @@ static gchar *checkLinkRef(const gchar* str) {
 	gchar	*tmp, *tmp2;
 
 	/*debug1(DEBUG_PARSING, "checking link %s", str); */
-	tmp = strstr(str, "href=");
-	if(NULL == tmp) tmp = strstr(str, "HREF=");
+	tmp = strcasestr(str, "href=");
 	if(NULL == tmp) return NULL;
 	/* FIXME: single quotes support */
 	tmp2 = strchr(tmp, '\"');
@@ -46,11 +45,11 @@ static gchar *checkLinkRef(const gchar* str) {
 	res = g_strdup(tmp2+1);
 	*tmp = '\"';
 
-	if((strstr(str, "alternate")!=NULL) &&
-	   ((strstr(str, "text/xml")!=NULL) || 
-	    (strstr(str, "rss+xml")!=NULL) ||
-	    (strstr(str, "rdf+xml")!=NULL) ||
-	    (strstr(str, "atom+xml")!=NULL)))
+	if((strcasestr(str, "alternate")!=NULL) &&
+	   ((strcasestr(str, "text/xml")!=NULL) || 
+	    (strcasestr(str, "rss+xml")!=NULL) ||
+	    (strcasestr(str, "rdf+xml")!=NULL) ||
+	    (strcasestr(str, "atom+xml")!=NULL)))
 		return res;
 	g_free(res);
 	return NULL;
@@ -61,8 +60,7 @@ static gchar *checkLinkRefForFavicon(const gchar* str) {
 	gchar	*tmp, *tmp2;
 
 	/*debug1(DEBUG_PARSING, "checking link %s", str); */
-	tmp = strstr(str, "href=");
-	if(NULL == tmp) tmp = strstr(str, "HREF=");
+	tmp = strcasestr(str, "href=");
 	if(NULL == tmp) return NULL;
 	/* FIXME: single quotes support */
 	tmp2 = strchr(tmp, '\"');
@@ -74,9 +72,9 @@ static gchar *checkLinkRefForFavicon(const gchar* str) {
 	res = g_strdup(tmp2+1);
 	*tmp = '\"';
 
-	if((strstr(str, "shortcut icon")!=NULL ||
-		strstr(str, "icon")!=NULL) &&
-	   ((strstr(str, "image/x-icon")!=NULL)))
+	if((strcasestr(str, "shortcut icon")!=NULL ||
+		strcasestr(str, "icon")!=NULL) &&
+	   ((strcasestr(str, "image/x-icon")!=NULL)))
 		return res;
 	g_free(res);
 	return NULL;
@@ -86,8 +84,7 @@ static gchar *checkNormalLink(const gchar* str) {
 	gchar	*res, *tmp, *tmp2;
 
 	debug1(DEBUG_PARSING, "checking link %s", str);
-	tmp = strstr(str, "href=");
-	if(NULL == tmp) tmp = strstr(str, "HREF=");
+	tmp = strcasestr(str, "href=");
 	if(NULL == tmp) return NULL;
 	/* FIXME: single quotes support */
 	tmp2 = strchr(tmp, '\"');
@@ -114,9 +111,7 @@ static gchar *search_links(const gchar* data, int type, gboolean favicon) {
 	gchar	*endptr;
 	
 	while(1) {
-		ptr = strstr(tmp, ((type == 0)? "<link " : "<a "));
-		if(NULL == ptr)
-			ptr = strstr(tmp, ((type == 0)? "<LINK " : "<A "));
+		ptr = strcasestr(tmp, ((type == 0)? "<link " : "<a "));
 		if(NULL == ptr)
 			break;
 		
