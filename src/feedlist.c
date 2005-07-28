@@ -34,7 +34,6 @@
 #include "update.h"
 #include "conf.h"
 #include "debug.h"
-#include "ui_itemlist.h"
 #include "favicon.h"
 #include "ui_feed.h"
 #include "callbacks.h"
