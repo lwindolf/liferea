@@ -261,10 +261,27 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			}
 		} /* explicitly no following else !!! */
 		
-		if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-			tmp = unhtmlize(utf8_fix(atom10_parse_content_construct(cur)));
+		if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
+			/* parse feed author */
+			tmp = atom10_parse_person_construct(cur);
+			ip->metadata = metadata_list_append(ip->metadata, "author", tmp);
+			g_free(tmp);
+			/* parse category */
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
+			/* <content> support */
+			gchar *tmp = utf8_fix(atom10_parse_content_construct(cur));
 			if (tmp != NULL)
-				item_set_title(ip, tmp);
+				item_set_description(ip, tmp);
+			g_free(tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
+			/* FIXME: parse feed contributors */
+			tmp = atom10_parse_person_construct(cur);
+			ip->metadata = metadata_list_append(ip->metadata, "contributor", tmp);
+			g_free(tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"id")) {
+			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if (tmp != NULL)
+				item_set_id(ip, tmp);
 			g_free(tmp);
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
 			if(NULL != (tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"href")))) {
@@ -276,40 +293,18 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 					/* FIXME: Maybe do something with other links? */;
 				xmlFree(xtmp);
 				g_free(tmp2);
-			} else {
-				/* 0.2 link : element content is the link, or non-alternate link in 0.3 */
-				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				if(NULL != tmp)
-					item_set_source(ip, tmp);
-				g_free(tmp);
 			}
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
-			/* parse feed author */
-			tmp = atom10_parse_person_construct(cur);
-			ip->metadata = metadata_list_append(ip->metadata, "author", tmp);
-			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
-			/* parse feed contributors */
-			tmp = atom10_parse_person_construct(cur);
-			ip->metadata = metadata_list_append(ip->metadata, "contributor", tmp);
-			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"id")) {
-			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if (tmp != NULL)
-				item_set_id(ip, tmp);
-			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"issued")) {
-			/* FIXME: is <modified> or <issued> or <created> the time tag we want to display? */
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"published")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  			if(NULL != tmp)
 				item_set_time(ip, parseISO8601Date(tmp));
 			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
-			/* <content> support */
-			gchar *tmp = utf8_fix(atom10_parse_content_construct(cur));
-			if (tmp != NULL)
-				item_set_description(ip, tmp);
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"rights")) {
+ 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			if(NULL != tmp)
+				ip->metadata = metadata_list_append(ip->metadata, "copyright", tmp);
 			g_free(tmp);
+			/* FIXME: Parse "source" */
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {			
 			/* <summary> can be used for short text descriptions, if there is no
 			   <content> description we show the <summary> content */
@@ -319,13 +314,18 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 					item_set_description(ip, tmp);
 				g_free(tmp);
 			}
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
+			tmp = unhtmlize(utf8_fix(atom10_parse_content_construct(cur)));
+			if (tmp != NULL)
+				item_set_title(ip, tmp);
+			g_free(tmp);
+			cur = cur->next;
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  			if(NULL != tmp)
-				ip->metadata = metadata_list_append(ip->metadata, "copyright", tmp);
+				item_set_time(ip, parseISO8601Date(tmp));
 			g_free(tmp);
 		}
-		cur = cur->next;
 	}
 	
 	/* after parsing we fill the infos into the itemPtr structure */
