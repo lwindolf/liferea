@@ -17,7 +17,9 @@
 	  of the feed list.
 	* Performance improvements for condensed mode in some cases.
 	  (Nathan conrad)
-
+	* Fix bug #1073561 where the mouse wheel could make the main
+	  window's content disappear. (Nathan Conrad)
+	
 2005-07-22  Lars Lindner  <lars.lindner@gmx.net>
 
 	Version 0.9.4
