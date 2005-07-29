@@ -332,13 +332,16 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 	ip->readStatus = FALSE;
 
 	g_hash_table_destroy(nsinfos);
+
+	if(0 == item_get_time(ip))
+		item_set_time(ip, feed_get_time(fp));
 	
 	return ip;
 }
 
 /* reads a Atom feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void atom10_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
 	GList			*items = NULL;
 	gchar			*tmp2, *tmp = NULL, *tmp3;
@@ -417,29 +420,39 @@ static void atom10_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 					fp->metadata = metadata_list_append(fp->metadata, "feedgenerator", tmp);
 				}
 				g_free(tmp);
-				/* FIXME: Parse icon */
-				/* FIXME: Parse ID */
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"icon")) {
+				/* FIXME: Parse icon and use as a favicon? */
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"id")) {
+				/* FIXME: Parse ID, but I'm not sure where Liferea would use it */
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
 				if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", ATOM10_NS)))) {
 					/* 0.3 link : rel, type and href attribute */
 					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", ATOM10_NS));
-					if(tmp2 != NULL && !xmlStrcmp(tmp2, BAD_CAST"alternate"))
+					if(!xmlHasNsProp(cur, BAD_CAST"rel", ATOM10_NS) || tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"alternate"))
 						feed_set_html_url(fp, tmp);
-					else
-						/* FIXME: Maybe do something with other links? */;
+					else if (!xmlStrcmp(tmp2, BAD_CAST"enclosure")) {
+						/* FIXME: Display the human readable title from the property "title" */
+						/* FIXME: Use xml:base, see "xmlChar *xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur)" */
+						/* This current code was copied from the RSS parser.*/
+						if((strstr(tmp, "://") == NULL) &&
+						   (fp->htmlUrl != NULL) &&
+						   (fp->htmlUrl[0] != '|') &&
+						   (strstr(fp->htmlUrl, "://") != NULL)) {
+							/* add base URL if necessary and possible */
+							tmp3 = g_strdup_printf("%s/%s", fp->htmlUrl, tmp);
+							g_free(tmp);
+							tmp = tmp3;
+						}
+						/* FIXME: Verify URL is not evil... */
+						ip->metadata = metadata_list_append(ip->metadata, "enclosure", tmp);
+					} else
+						/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
 					g_free(tmp2);
 					g_free(tmp);
-				} else {
-					/* 0.2 link : element content is the link, or non-alternate link in 0.3 */
-					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-					if(NULL != tmp)
-						feed_set_html_url(fp, tmp);
-					g_free(tmp);
-				}
-				/* FIXME: Parse logo */
+				} 
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"logo")) {
 				tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
-				/* Verify URL is not evil... */
+				/* FIXME: Verify URL is not evil... */
 				feed_set_image_url(fp, tmp);
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"rights")) {
@@ -466,15 +479,13 @@ static void atom10_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				}
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = atom10_parse_entry(fp, cur))) {
-					if(0 == item_get_time(ip))
-						item_set_time(ip, feed_get_time(fp));
 					items = g_list_append(items, ip);
 				}
 			}
 			cur = cur->next;
 		}
 		feed_add_items(fp, items);
-		
+		/* FIXME: Maybe check to see that the required information was actually provided (persuant to the RFC). */
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		if(0 == error) {
 			feed_set_available(fp, TRUE);
@@ -519,7 +530,7 @@ feedHandlerPtr atom10_init_feed_handler(void) {
 	fhp->typeStr = "pie";
 	fhp->icon = ICON_AVAILABLE;
 	fhp->directory = FALSE;
-	fhp->feedParser	= atom10_parse;
+	fhp->feedParser	= atom10_parse_feed;
 	fhp->checkFormat = atom10_format_check;
 	fhp->merge = TRUE;
 
