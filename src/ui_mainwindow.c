@@ -148,6 +148,32 @@ void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_sty
 	
 }
 
+static gboolean on_key_press_event_null_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+	return TRUE;
+}
+
+static gboolean
+on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event)
+{
+	GtkNotebook *notebook = GTK_NOTEBOOK (widget);
+
+	GtkWidget* child;
+	GtkWidget* originator;
+
+	if (!notebook->cur_page)
+		return FALSE;
+
+	child = gtk_notebook_get_nth_page(notebook, gtk_notebook_get_current_page(notebook));
+	originator = gtk_get_event_widget ((GdkEvent *)event);
+
+	/* ignore scroll events from the content of the page */
+	if (!originator || gtk_widget_is_ancestor (originator, child))
+		return FALSE;
+
+	return TRUE;
+}
+
+
 GtkWidget* ui_mainwindow_new(void) {
 
 	GtkWidget *window = create_mainwindow();
@@ -164,6 +190,16 @@ GtkWidget* ui_mainwindow_new(void) {
 	TOOLBAR_ADD(toolbar,  _("Update All"), GTK_STOCK_REFRESH, tooltips,  _("Updates all subscriptions. This does not update OCS directories."), on_refreshbtn_clicked);
 	TOOLBAR_ADD(toolbar,  _("Search"), GTK_STOCK_FIND, tooltips,  _("Search all feeds."), on_searchbtn_clicked);
 	TOOLBAR_ADD(toolbar,  _("Preferences"), GTK_STOCK_PREFERENCES, tooltips,  _("Edit preferences."), on_prefbtn_clicked);
+
+	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "key_press_event",
+					  G_CALLBACK (on_key_press_event_null_cb), NULL);
+
+	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "key_release_event",
+					  G_CALLBACK (on_key_press_event_null_cb), NULL);
+	
+	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "scroll_event",
+                      G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
+	
 	gtk_widget_show_all(GTK_WIDGET(toolbar));
 
 	ui_mainwindow_restore_position(window);
