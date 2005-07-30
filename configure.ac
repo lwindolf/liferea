@@ -83,7 +83,6 @@ html_modules=
 if test "x$enable_gtkhtml2" = "xyes"; then
    dnl AC_MSG_CHECKING([for GtkHTML2 support])
    PKG_CHECK_MODULES([GTKHTML2], libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
-   AC_MSG_RESULT($enable_gtkhtml2)
    AC_SUBST(GTKHTML2_CFLAGS)
    AC_SUBST(GTKHTML2_LIBS)
 else
