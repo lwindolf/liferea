@@ -148,7 +148,7 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 		g_free(ret);
 		ret = tmp;
 	} else if(!strcmp(type, "xhtml")) {
-		ret = extractHTMLNode(cur, TRUE);
+		ret = utf8_fix(extractHTMLNode(cur, TRUE));
 		if (!htmlified) {
 			ret = unhtmlize(ret);
 		}
@@ -223,7 +223,6 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 /* <content> tag support, FIXME: base64 not supported */
 /* method to parse standard tags for each item element */
 static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
-	xmlChar			*xtmp;
 	gchar			*tmp2, *tmp;
 	itemPtr			ip;
 	GHashTable *nsinfos;
@@ -261,12 +260,29 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			}
 		} /* explicitly no following else !!! */
 		
+		if (xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
+			printf("unknown namespace found in feed\n");
+			continue;
+		}
+		/* At this point, the namespace must be the ATOM 1.0 namespace */
+		
 		if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 			/* parse feed author */
 			tmp = atom10_parse_person_construct(cur);
 			ip->metadata = metadata_list_append(ip->metadata, "author", tmp);
 			g_free(tmp);
-			/* parse category */
+		} else if(!xmlStrcmp(cur->name, BAD_CAST"category")) { 
+			if (xmlHasNsProp(cur, BAD_CAST"label", ATOM10_NS)) {
+				tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+			} else if (xmlHasNsProp(cur, BAD_CAST"term", ATOM10_NS)) {
+				tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+			}
+			if (tmp != NULL) {
+				tmp2 = g_markup_escape_text(tmp, -1);
+				ip->metadata = metadata_list_append(ip->metadata, "category", tmp2);
+				g_free(tmp2);
+				xmlFree(tmp);
+			}
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
 			/* <content> support */
 			gchar *tmp = utf8_fix(atom10_parse_content_construct(cur));
@@ -284,24 +300,40 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 				item_set_id(ip, tmp);
 			g_free(tmp);
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
-			if(NULL != (tmp2 = utf8_fix(xmlGetProp(cur, BAD_CAST"href")))) {
-				/* 0.3 link : rel, type and href attribute */
-				xtmp = xmlGetProp(cur, BAD_CAST"rel");
-				if(xtmp != NULL && !xmlStrcmp(xtmp, BAD_CAST"alternate"))
-					item_set_source(ip, tmp2);
-				else
-					/* FIXME: Maybe do something with other links? */;
-				xmlFree(xtmp);
+			if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", ATOM10_NS)))) {
+				tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", ATOM10_NS));
+				if(!xmlHasNsProp(cur, BAD_CAST"rel", ATOM10_NS) || tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"alternate"))
+					feed_set_html_url(fp, tmp);
+				else if (!xmlStrcmp(tmp2, BAD_CAST"enclosure")) {
+					/* FIXME: Display the human readable title from the property "title" */
+					/* FIXME: Use xml:base, see "xmlChar *xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur)" */
+					/* This current code was copied from the RSS parser.*/
+					if((strstr(tmp, "://") == NULL) &&
+					   (fp->htmlUrl != NULL) &&
+					   (fp->htmlUrl[0] != '|') &&
+					   (strstr(fp->htmlUrl, "://") != NULL)) {
+						/* add base URL if necessary and possible */
+						gchar *tmp3 = g_strdup_printf("%s/%s", fp->htmlUrl, tmp);
+						g_free(tmp);
+						tmp = tmp3;
+					}
+					/* FIXME: Verify URL is not evil... */
+					ip->metadata = metadata_list_append(ip->metadata, "enclosure", tmp);
+				} else
+					/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
 				g_free(tmp2);
-			}
+				g_free(tmp);
+			} 
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"published")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
- 			if(NULL != tmp)
+ 			if(NULL != tmp) {
 				item_set_time(ip, parseISO8601Date(tmp));
-			g_free(tmp);
+				ip->metadata = metadata_list_append(ip->metadata, "pubDate", tmp);
+				g_free(tmp);
+			}
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"rights")) {
- 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
- 			if(NULL != tmp)
+			tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
+			if(NULL != tmp)
 				ip->metadata = metadata_list_append(ip->metadata, "copyright", tmp);
 			g_free(tmp);
 			/* FIXME: Parse "source" */
@@ -309,30 +341,32 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			/* <summary> can be used for short text descriptions, if there is no
 			   <content> description we show the <summary> content */
 			if (NULL == item_get_description(ip)) {
-				tmp = utf8_fix(atom10_parse_content_construct(cur));
+				tmp = utf8_fix(atom10_parse_text_construct(cur, TRUE));
 				if(NULL != tmp)
 					item_set_description(ip, tmp);
 				g_free(tmp);
 			}
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-			tmp = unhtmlize(utf8_fix(atom10_parse_content_construct(cur)));
+			tmp = unhtmlize(utf8_fix(atom10_parse_text_construct(cur, FALSE)));
 			if (tmp != NULL)
 				item_set_title(ip, tmp);
 			g_free(tmp);
 			cur = cur->next;
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) {
- 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
- 			if(NULL != tmp)
+			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if(NULL != tmp) {
 				item_set_time(ip, parseISO8601Date(tmp));
+				ip->metadata = metadata_list_append(ip->metadata, "contentUpdateDate", tmp);
+			}
 			g_free(tmp);
 		}
 	}
 	
 	/* after parsing we fill the infos into the itemPtr structure */
 	ip->readStatus = FALSE;
-
+	
 	g_hash_table_destroy(nsinfos);
-
+	
 	if(0 == item_get_time(ip))
 		item_set_time(ip, feed_get_time(fp));
 	
@@ -355,7 +389,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			error = 1;
 			break;			
 		}
-
+		
 		/* parse feed contents */
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
@@ -394,7 +428,18 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				fp->metadata = metadata_list_append(fp->metadata, "author", tmp);
 				g_free(tmp);
 				/* FIXME: make item parsing use this author if not specified elsewhere */
-				/* FIXME: category parsing */
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"category")) { 
+				if (xmlHasNsProp(cur, BAD_CAST"label", ATOM10_NS)) {
+					tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				} else if (xmlHasNsProp(cur, BAD_CAST"term", ATOM10_NS)) {
+					tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				}
+				if (tmp != NULL) {
+					tmp2 = g_markup_escape_text(tmp, -1);
+					fp->metadata = metadata_list_append(fp->metadata, "category", tmp2);
+					g_free(tmp2);
+					xmlFree(tmp);
+				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
 				/* parse feed contributors */
 				tmp = atom10_parse_person_construct(cur);
@@ -426,7 +471,6 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				/* FIXME: Parse ID, but I'm not sure where Liferea would use it */
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
 				if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", ATOM10_NS)))) {
-					/* 0.3 link : rel, type and href attribute */
 					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", ATOM10_NS));
 					if(!xmlHasNsProp(cur, BAD_CAST"rel", ATOM10_NS) || tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"alternate"))
 						feed_set_html_url(fp, tmp);
@@ -444,7 +488,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 							tmp = tmp3;
 						}
 						/* FIXME: Verify URL is not evil... */
-						ip->metadata = metadata_list_append(ip->metadata, "enclosure", tmp);
+						fp->metadata = metadata_list_append(fp->metadata, "enclosure", tmp);
 					} else
 						/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
 					g_free(tmp2);
