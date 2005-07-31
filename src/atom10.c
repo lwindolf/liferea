@@ -176,11 +176,11 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 	g_assert(NULL != cur);
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		if(NULL == cur->name || cur->ns == NULL) {
-			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+		if(NULL == cur->name || cur->type != XML_ELEMENT_NODE || cur->ns == NULL) {
 			cur = cur->next;
 			continue;
 		}
+		
 		if (!xmlStrcmp(cur->ns->href, ATOM10_NS)) {
 			if (!xmlStrcmp(cur->name, BAD_CAST"name")) {
 				g_free(name);
@@ -230,20 +230,26 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 	parseItemTagFunc	pf;
 	
 	g_assert(NULL != cur);
-		
+	
 	nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	ip = item_new();
 	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		if(NULL == cur->name) {
-			g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+		
+		if (cur->type != XML_ELEMENT_NODE || cur->name == NULL) {
 			cur = cur->next;
 			continue;
 		}
 		
-		
 		/* check namespace of this tag */
+		if(NULL == cur->ns) {
+			/* This is an invalid feed... no idea what to do with the current element */
+			printf("element with no namespace found!\n");
+			cur = cur->next;
+			continue;
+		}
+		
 		if(NULL != cur->ns) {
 			if(((cur->ns->href != NULL) &&
 			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href))) ||
@@ -260,8 +266,9 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			}
 		} /* explicitly no following else !!! */
 		
-		if (xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
+		if (cur->ns->href == NULL || xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
 			printf("unknown namespace found in feed\n");
+			cur = cur->next;
 			continue;
 		}
 		/* At this point, the namespace must be the ATOM 1.0 namespace */
@@ -272,10 +279,11 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			ip->metadata = metadata_list_append(ip->metadata, "author", tmp);
 			g_free(tmp);
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"category")) { 
+			tmp = NULL;
 			if (xmlHasNsProp(cur, BAD_CAST"label", ATOM10_NS)) {
-				tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			} else if (xmlHasNsProp(cur, BAD_CAST"term", ATOM10_NS)) {
-				tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			}
 			if (tmp != NULL) {
 				tmp2 = g_markup_escape_text(tmp, -1);
@@ -351,7 +359,6 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			if (tmp != NULL)
 				item_set_title(ip, tmp);
 			g_free(tmp);
-			cur = cur->next;
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) {
 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
@@ -360,6 +367,7 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			}
 			g_free(tmp);
 		}
+		cur = cur->next;
 	}
 	
 	/* after parsing we fill the infos into the itemPtr structure */
@@ -382,7 +390,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	int 			error = 0;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
-	
+
 	while(TRUE) {
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find Atom 1.0 header!</p>"));
@@ -402,6 +410,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			if(NULL == cur->ns) {
 				/* This is an invalid feed... no idea what to do with the current element */
 				printf("element with no namespace found!\n");
+				cur = cur->next;
 				continue;
 			}
 			
@@ -415,13 +424,14 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				cur = cur->next;
 				continue;
 			}
-
+			
 			if (xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
 				printf("unknown namespace found in feed\n");
+				cur = cur->next;
 				continue;
 			}
 			/* At this point, the namespace must be the ATOM 1.0 namespace */
-
+			
 			if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 				/* parse feed author */
 				tmp = atom10_parse_person_construct(cur);
@@ -429,10 +439,11 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				g_free(tmp);
 				/* FIXME: make item parsing use this author if not specified elsewhere */
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"category")) { 
+				tmp = NULL;
 				if (xmlHasNsProp(cur, BAD_CAST"label", ATOM10_NS)) {
-					tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				} else if (xmlHasNsProp(cur, BAD_CAST"term", ATOM10_NS)) {
-					tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				}
 				if (tmp != NULL) {
 					tmp2 = g_markup_escape_text(tmp, -1);
@@ -528,6 +539,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			}
 			cur = cur->next;
 		}
+		
 		feed_add_items(fp, items);
 		/* FIXME: Maybe check to see that the required information was actually provided (persuant to the RFC). */
 		/* after parsing we fill in the infos into the feedPtr structure */		
@@ -536,7 +548,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
-
+		
 		break;
 	}
 }
