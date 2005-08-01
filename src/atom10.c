@@ -61,10 +61,16 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		if (src == NULL) {
 			ret = g_strdup(_("Liferea is unable to display this item's contents."));
 		} else {
-			/* FIXME: Resolve the URL based on xml:base, etc... */
-			ret = g_strdup_printf(_("<p><a href=\"%s\">View this item's contents.</a></p>"), src);
+			xmlChar *baseURL = xmlNodeGetBase(cur->doc, cur);
+			gchar *url;
+			
+			url = common_build_url(src, baseURL);
+			ret = g_strdup_printf(_("<p><a href=\"%s\">View this item's contents.</a></p>"), url);
+			
+			g_free(url);
+			xmlFree(baseURL);
+			xmlFree(src);
 		}
-		xmlFree(src);
 	} else {
 		gchar *type;
 		gboolean escapeAsText, includeChildTags;
