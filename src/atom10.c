@@ -79,7 +79,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		type = utf8_fix(xmlGetNsProp(cur, BAD_CAST"type", NULL));
 		
 		/* This that need to be de-encoded and should not contain sub-tags.*/
-		if (NULL == type || !strcmp(type, "text") || !strncmp(type, "type/",5)) { /* Assume that text files can be directly displayed.. kinda stated in the RFC */
+		if (NULL == type || !strcmp(type, "text") || !strncmp(type, "text/",5)) { /* Assume that "text/*" files can be directly displayed.. kinda stated in the RFC */
 			escapeAsText = TRUE;
 			includeChildTags = FALSE;
 		} else if (!strcmp(type,"html")) {
