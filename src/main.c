@@ -165,11 +165,18 @@ static void main_unlock() {
 	g_free(filename);
 }
 
+enum mainwindowState {
+	MAINWINDOW_SHOWN,
+	MAINWINDOW_ICONIFIED,
+	MAINWINDOW_HIDDEN
+};
+
 int main(int argc, char *argv[]) {	
 	gulong		debug_flags = 0;
 	const char 	*arg;
 	gint		i;
 	GtkWidget	*dialog;
+	int mainwindowState = MAINWINDOW_SHOWN;
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
 #endif
@@ -211,7 +218,14 @@ int main(int argc, char *argv[]) {
 			return 0;
 		}
 		else if(!strcmp(arg, "--iconify")) {
-			startIconified = TRUE;
+			mainwindowState = MAINWINDOW_ICONIFIED;
+		} else if(!strncmp(arg, "--mainwindow-state=",19)) {
+			gchar *param = arg + 19;
+			if (g_str_equal(param, "iconified"))
+				mainwindowState = MAINWINDOW_ICONIFIED;
+			if (g_str_equal(param, "iconified"))
+				mainwindowState = MAINWINDOW_ICONIFIED;
+
 #ifdef USE_SM
 		}
 		else if (!strcmp(arg, "--session")) {
