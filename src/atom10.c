@@ -74,7 +74,8 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 	} else {
 		gchar *type;
 		gboolean escapeAsText, includeChildTags;
-		
+		xmlChar *baseURL = NULL;
+
 		/* determine encoding mode */
 		type = utf8_fix(xmlGetNsProp(cur, BAD_CAST"type", NULL));
 		
@@ -85,6 +86,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		} else if (!strcmp(type,"html")) {
 			escapeAsText = FALSE;
 			includeChildTags = FALSE;
+			baseURL = xmlNodeGetBase(cur->doc, cur);
 		} else if (!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
 			escapeAsText = FALSE;
 			includeChildTags = TRUE;
@@ -99,6 +101,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 				g_free(type);
 				return g_strdup(_("This item's contents is invalid."));
 			}
+			baseURL = xmlNodeGetBase(cur->doc, cur);
 		}
 			
 		if (includeChildTags)
@@ -111,6 +114,12 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 			g_free(ret);
 			ret = tmp;
 		}
+		if (baseURL) {
+			gchar *tmp = g_strdup_printf("<div xml:base=\"%s\">%s</div>", baseURL, ret);
+			g_free(ret);
+			ret = tmp;
+		}
+		xmlFree(baseURL);
 		g_free(type);
 	}
 	
