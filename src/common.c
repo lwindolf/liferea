@@ -235,6 +235,50 @@ gchar * unhtmlize(gchar *string) {
  	}
 }
 
+/* Converts a UTF-8 strings containing any XML stuff to 
+   a string without any entities or tags containing all
+   text nodes of the given HTML string. The original 
+   string will be freed. */
+gchar * unxmlize(gchar *string) {
+	xmlSAXHandler	*sax_p = NULL;
+	xmlParserCtxtPtr	ctxt;
+	gchar			*result;
+	result_buffer		*buffer;
+	
+	if(NULL == string)
+		return NULL;
+		
+	string = utf8_fix(string);
+
+	/* only do something if there are any entities or tags */
+	if(NULL == (strpbrk(string, "&<>")))
+		return string;
+
+	buffer = g_new0(result_buffer, 1);
+	sax_p = g_new0(xmlSAXHandler, 1);
+ 	sax_p->characters = unhtmlizeHandleCharacters;
+
+	/* in older versions htmlSAXParseDoc was used which caused
+	   strange crashes when freeing the parser context... */
+	   
+	ctxt = xmlCreatePushParserCtxt(sax_p, buffer, string, strlen(string), "");
+	xmlParseChunk(ctxt, string, 0, 1);
+	xmlFreeParserCtxt(ctxt);
+	result = buffer->data;
+	g_free(buffer);
+ 	g_free(sax_p);
+ 
+ 	if(result == NULL || !g_utf8_strlen(result, -1)) {
+ 		/* Something went wrong in the parsing.
+ 		 * Use original string instead */
+		g_free(result);
+ 		return string;
+ 	} else {
+ 		g_free(string);
+ 		return result;
+ 	}
+}
+
 #define MAX_PARSE_ERROR_LINES	10
 
 /** used by bufferParseError to keep track of error messages */

@@ -51,6 +51,7 @@ gchar * convertToHTML(gchar * string);
 /* converts a UTF-8 string containing HTML tags to plain text */
 gchar * unhtmlize(gchar *string);
 
+gchar * unxmlize(gchar *string);
 /* parses a XML node and returns its contents as a string */
 /* gchar * parseHTML(htmlNodePtr cur); */
 

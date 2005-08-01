@@ -42,15 +42,6 @@
 GHashTable	*atom10_nstable = NULL;
 GHashTable	*ns_atom10_ns_uri_table = NULL;
 
-/* note: the tag order has to correspond with the ATOM10_FEED_* defines in the header file */
-/*
-  The follow are not used, but had been recognized:
-                                   "language", <---- Not in atom 0.2 or 0.3. We should use xml:lang
-							"lastBuildDate", <--- Where is this from?
-							"issued", <-- Not in the specs for feeds
-							"created",  <---- Not in the specs for feeds
-*/
-
 /**
  * This parses an Atom content construct.
  *
@@ -59,66 +50,63 @@ GHashTable	*ns_atom10_ns_uri_table = NULL;
  */
 
 static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
-	gchar	*mode, *type, *tmp, *ret;
+	gchar *ret;
 
 	g_assert(NULL != cur);
 	ret = NULL;
 	
-	/* determine encoding mode */
-	mode = utf8_fix(xmlGetProp(cur, BAD_CAST"mode"));
-	type = utf8_fix(xmlGetProp(cur, BAD_CAST"type"));
-
-	/* Modes are used in older versions of ATOM, including 0.3. It
-	   does not exist in the newer IETF drafts.*/
-	if(NULL != mode) {
-		if(!strcmp(mode, "escaped")) {
-			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if(NULL != tmp)
-				ret = tmp;
-			
-		} else if(!strcmp(mode, "xml")) {
-			ret = extractHTMLNode(cur, TRUE);
-			
-		} else if(!strcmp(mode, "base64")) {
-			g_warning("Base64 encoded <content> in Atom feeds not supported!\n");
-			
-		} else if(!strcmp(mode, "multipart/alternative")) {
-			if(NULL != cur->xmlChildrenNode)
-				ret = atom10_parse_content_construct(cur->xmlChildrenNode);
+	if (xmlHasNsProp(cur, BAD_CAST"src", NULL )) {
+		gchar *src = xmlGetNsProp(cur, BAD_CAST"src", NULL);
+		
+		if (src == NULL) {
+			ret = g_strdup(_("Liferea is unable to display this item's contents."));
+		} else {
+			/* FIXME: Resolve the URL based on xml:base, etc... */
+			ret = g_strdup_printf(_("<p><a href=\"%s\">View this item's contents.</a></p>"), src);
 		}
-		g_free(mode);
+		xmlFree(src);
 	} else {
-		/* some feeds don'ts specify a mode but a MIME type in the
-		   type attribute... */
-		/* not sure what MIME types are necessary... */
-
+		gchar *type;
+		gboolean escapeAsText, includeChildTags;
+		
+		/* determine encoding mode */
+		type = utf8_fix(xmlGetNsProp(cur, BAD_CAST"type", NULL));
+		
 		/* This that need to be de-encoded and should not contain sub-tags.*/
-		if (NULL == type || (
-						 !strcmp(type, "TEXT") ||
-						 !strcmp(type, "text/plain") ||
-						 !strcmp(type, "HTML") ||
-						 !strcmp(type, "text/html"))) {
-			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			/* Next are things that contain subttags */
-		} else if((NULL == type) ||
-				/* HTML types */
-				!strcmp(type, "XHTML") ||
-				!strcmp(type, "application/xhtml+xml")) {
-			/* Text types */
-			ret = extractHTMLNode(cur, TRUE);
+		if (NULL == type || !strcmp(type, "text") || !strncmp(type, "type/",5)) { /* Assume that text files can be directly displayed.. kinda stated in the RFC */
+			escapeAsText = TRUE;
+			includeChildTags = FALSE;
+		} else if (!strcmp(type,"html")) {
+			escapeAsText = FALSE;
+			includeChildTags = FALSE;
+		} else if (!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
+			escapeAsText = FALSE;
+			includeChildTags = TRUE;
+			/* The spec says to only show the contents of the div tag that MUST be present */
+			cur = cur->children;
+			while (cur != NULL) {
+				if (cur->type == XML_ELEMENT_NODE && cur->name != NULL && xmlStrEqual(cur->name, BAD_CAST"div"))
+					break;
+				cur = cur->next;
+			}
+			if (cur == NULL) {
+				g_free(type);
+				return g_strdup(_("This item's contents is invalid."));
+			}
 		}
+			
+		if (includeChildTags)
+			ret = utf8_fix(extractHTMLNode(cur, TRUE));
+		else
+			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		
+		if (escapeAsText) {
+			gchar *tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
+			g_free(ret);
+			ret = tmp;
+		}
+		g_free(type);
 	}
-	/* If the type was text, everything must be now escaped and
-	   wrapped in pre tags.... Also, the atom 0.3 spec says that the
-	   default type MUST be considered to be text/plain. The type tag
-	   is required in 0.2.... */
-	//if (ret != NULL && (type == NULL || !strcmp(type, "text/plain") || !strcmp(type,"TEXT")))) {
-	if((ret != NULL) && (type != NULL) && (!strcmp(type, "text/plain") || !strcmp(type,"TEXT"))) {
-		gchar *tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
-		g_free(ret);
-		ret = tmp;
-	}
-	g_free(type);
 	
 	return ret;
 }
@@ -133,32 +121,47 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 	ret = NULL;
 	
 	/* determine encoding mode */
-	type = utf8_fix(xmlGetNsProp(cur, BAD_CAST"type", ATOM10_NS));
-
+	type = utf8_fix(xmlGetNsProp(cur, BAD_CAST"type", NULL));
+	
 	/* not sure what MIME types are necessary... */
 	
 	/* This that need to be de-encoded and should not contain sub-tags.*/
-	if (NULL == type || (!strcmp(type, "text") ||
-					 !strcmp(type, "html"))) {
+	if (NULL == type || !strcmp(type, "text")) {
 		ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		
 		if (htmlified)
 			tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
 		else
 			tmp = g_markup_printf_escaped("%s", ret);
-		g_free(ret);
-		ret = tmp;
-	} else if(!strcmp(type, "xhtml")) {
-		ret = utf8_fix(extractHTMLNode(cur, TRUE));
-		if (!htmlified) {
-			ret = unhtmlize(ret);
-		}
-			tmp = g_markup_printf_escaped("%s", ret);
-		g_free(ret);
-		ret = tmp;
 		
+		g_free(ret);
+		ret = tmp;
 	} else {
-		/* Invalid ATOM feed */
-		ret = g_strdup("This attribute was invalidly specified in this ATOM feed.");
+		if (!strcmp(type, "html")) {
+			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		} else if(!strcmp(type, "xhtml")) {
+			/* The spec says to only show the contents of the div tag that MUST be present */
+			
+			cur = cur->children;
+			while (cur != NULL) {
+				if (cur->type == XML_ELEMENT_NODE && cur->name != NULL && xmlStrEqual(cur->name, BAD_CAST"div"))
+					break;
+				cur = cur->next;
+			}
+			if (cur == NULL) {
+				ret = g_strdup(_("This item's contents is invalid."));
+			} else {
+				ret = utf8_fix(extractHTMLNode(cur, TRUE));
+			}
+		} else {
+			/* Invalid ATOM feed */
+			ret = g_strdup("This attribute was invalidly specified in this ATOM feed.");
+		}
+		if (!htmlified) {
+			tmp = unxmlize(ret);
+			ret = g_markup_escape_text(tmp, -1);
+			g_free(tmp);
+		}
 	}
 	
 	g_free(type);
@@ -181,13 +184,13 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 			continue;
 		}
 		
-		if (!xmlStrcmp(cur->ns->href, ATOM10_NS)) {
-			if (!xmlStrcmp(cur->name, BAD_CAST"name")) {
+		if (xmlStrEqual(cur->ns->href, ATOM10_NS)) {
+			if (xmlStrEqual(cur->name, BAD_CAST"name")) {
 				g_free(name);
 				name = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			}
 			
-			if (!xmlStrcmp(cur->name, BAD_CAST"email")) {
+			if (xmlStrEqual(cur->name, BAD_CAST"email")) {
 				if (email != NULL)
 					invalid = TRUE;
 				g_free(email);
@@ -196,7 +199,7 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 				g_free(tmp);
 			}
 			
-			if (!xmlStrcmp(cur->name, BAD_CAST"uri")) {
+			if (xmlStrEqual(cur->name, BAD_CAST"uri")) {
 				if (uri == NULL)
 					invalid = TRUE;
 				g_free(uri);
@@ -273,17 +276,17 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 		}
 		/* At this point, the namespace must be the ATOM 1.0 namespace */
 		
-		if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
+		if(xmlStrEqual(cur->name, BAD_CAST"author")) {
 			/* parse feed author */
 			tmp = atom10_parse_person_construct(cur);
 			ip->metadata = metadata_list_append(ip->metadata, "author", tmp);
 			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"category")) { 
+		} else if(xmlStrEqual(cur->name, BAD_CAST"category")) { 
 			tmp = NULL;
-			if (xmlHasNsProp(cur, BAD_CAST"label", ATOM10_NS)) {
-				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			} else if (xmlHasNsProp(cur, BAD_CAST"term", ATOM10_NS)) {
-				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if (xmlHasNsProp(cur, BAD_CAST"label", NULL)) {
+				tmp = utf8_fix(xmlGetNsProp(cur, "label", NULL));
+			} else if (xmlHasNsProp(cur, BAD_CAST"term", NULL)) {
+				tmp = utf8_fix(xmlGetNsProp(cur, "term", NULL));
 			}
 			if (tmp != NULL) {
 				tmp2 = g_markup_escape_text(tmp, -1);
@@ -291,61 +294,65 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 				g_free(tmp2);
 				xmlFree(tmp);
 			}
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
+		} else if(xmlStrEqual(cur->name, BAD_CAST"content")) {
 			/* <content> support */
 			gchar *tmp = utf8_fix(atom10_parse_content_construct(cur));
 			if (tmp != NULL)
 				item_set_description(ip, tmp);
 			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) {
-			/* FIXME: parse feed contributors */
+		} else if(xmlStrEqual(cur->name, BAD_CAST"contributor")) {
 			tmp = atom10_parse_person_construct(cur);
 			ip->metadata = metadata_list_append(ip->metadata, "contributor", tmp);
 			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"id")) {
+		} else if(xmlStrEqual(cur->name, BAD_CAST"id")) {
 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if (tmp != NULL)
 				item_set_id(ip, tmp);
 			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
-			if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", ATOM10_NS)))) {
-				tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", ATOM10_NS));
-				if(!xmlHasNsProp(cur, BAD_CAST"rel", ATOM10_NS) || tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"alternate"))
-					feed_set_html_url(fp, tmp);
-				else if (!xmlStrcmp(tmp2, BAD_CAST"enclosure")) {
-					/* FIXME: Display the human readable title from the property "title" */
-					/* FIXME: Use xml:base, see "xmlChar *xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur)" */
-					/* This current code was copied from the RSS parser.*/
-					if((strstr(tmp, "://") == NULL) &&
-					   (fp->htmlUrl != NULL) &&
-					   (fp->htmlUrl[0] != '|') &&
-					   (strstr(fp->htmlUrl, "://") != NULL)) {
-						/* add base URL if necessary and possible */
-						gchar *tmp3 = g_strdup_printf("%s/%s", fp->htmlUrl, tmp);
-						g_free(tmp);
-						tmp = tmp3;
-					}
-					/* FIXME: Verify URL is not evil... */
-					ip->metadata = metadata_list_append(ip->metadata, "enclosure", tmp);
+		} else if(xmlStrEqual(cur->name, BAD_CAST"link")) {
+			if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", NULL)))) {
+				xmlChar *baseURL = xmlNodeGetBase(cur->doc, cur), *title;
+				gchar *url, *relation, *escTitle = NULL;
+				
+				if (baseURL == NULL && fp->htmlUrl != NULL && fp->htmlUrl[0] != '|' &&
+					strstr(fp->htmlUrl, "://") != NULL)
+					baseURL = xmlStrdup(fp->htmlUrl);
+				url = common_build_url(tmp, baseURL);
+
+				relation = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
+				title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
+				if (title != NULL)
+					escTitle = g_markup_escape_text(title, -1);
+				/* FIXME: Display the human readable title from the property "title" */
+				/* This current code was copied from the RSS parser.*/
+				
+				if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || relation == NULL || xmlStrEqual(relation, BAD_CAST"alternate"))
+					item_set_source(ip, url);
+				else if (xmlStrEqual(relation, BAD_CAST"enclosure")) {
+					ip->metadata = metadata_list_append(ip->metadata, "enclosure", url);
 				} else
 					/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
-				g_free(tmp2);
+				xmlFree(baseURL);
+				xmlFree(title);
+				xmlFree(escTitle);
+				g_free(url);
+				g_free(relation);
 				g_free(tmp);
 			} 
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"published")) {
+		} else if(xmlStrEqual(cur->name, BAD_CAST"published")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
  			if(NULL != tmp) {
 				item_set_time(ip, parseISO8601Date(tmp));
 				ip->metadata = metadata_list_append(ip->metadata, "pubDate", tmp);
 				g_free(tmp);
 			}
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"rights")) {
+		} else if(xmlStrEqual(cur->name, BAD_CAST"rights")) {
 			tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
 			if(NULL != tmp)
 				ip->metadata = metadata_list_append(ip->metadata, "copyright", tmp);
 			g_free(tmp);
 			/* FIXME: Parse "source" */
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"summary")) {			
+		} else if(xmlStrEqual(cur->name, BAD_CAST"summary")) {			
 			/* <summary> can be used for short text descriptions, if there is no
 			   <content> description we show the <summary> content */
 			if (NULL == item_get_description(ip)) {
@@ -354,12 +361,12 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 					item_set_description(ip, tmp);
 				g_free(tmp);
 			}
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-			tmp = unhtmlize(utf8_fix(atom10_parse_text_construct(cur, FALSE)));
+		} else if(xmlStrEqual(cur->name, BAD_CAST"title")) {
+			tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
 			if (tmp != NULL)
 				item_set_title(ip, tmp);
 			g_free(tmp);
-		} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) {
+		} else if(xmlStrEqual(cur->name, BAD_CAST"updated")) {
 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
 				item_set_time(ip, parseISO8601Date(tmp));
@@ -432,18 +439,18 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			}
 			/* At this point, the namespace must be the ATOM 1.0 namespace */
 			
-			if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
+			if(xmlStrEqual(cur->name, BAD_CAST"author")) {
 				/* parse feed author */
 				tmp = atom10_parse_person_construct(cur);
 				fp->metadata = metadata_list_append(fp->metadata, "author", tmp);
 				g_free(tmp);
 				/* FIXME: make item parsing use this author if not specified elsewhere */
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"category")) { 
+			} else if(xmlStrEqual(cur->name, BAD_CAST"category")) { 
 				tmp = NULL;
-				if (xmlHasNsProp(cur, BAD_CAST"label", ATOM10_NS)) {
-					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				} else if (xmlHasNsProp(cur, BAD_CAST"term", ATOM10_NS)) {
-					tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				if (xmlHasNsProp(cur, BAD_CAST"label", NULL)) {
+					tmp = utf8_fix(xmlGetNsProp(cur, "label", NULL));
+				} else if (xmlHasNsProp(cur, BAD_CAST"term", NULL)) {
+					tmp = utf8_fix(xmlGetNsProp(cur, "term", NULL));
 				}
 				if (tmp != NULL) {
 					tmp2 = g_markup_escape_text(tmp, -1);
@@ -451,22 +458,22 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 					g_free(tmp2);
 					xmlFree(tmp);
 				}
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
+			} else if(xmlStrEqual(cur->name, BAD_CAST"contributor")) { 
 				/* parse feed contributors */
 				tmp = atom10_parse_person_construct(cur);
 				fp->metadata = metadata_list_append(fp->metadata, "contributor", tmp);
 				g_free(tmp);
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
+			} else if(xmlStrEqual(cur->name, BAD_CAST"generator")) {
 				tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 				if (tmp != NULL && tmp[0] != '\0') {
-					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"version", ATOM10_NS));
+					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"version", NULL));
 					if (tmp2 != NULL) {
 						tmp3 = g_strdup_printf("%s %s", tmp, tmp2);
 						g_free(tmp);
 						g_free(tmp2);
 						tmp = tmp3;
 					}
-					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"uri", ATOM10_NS));
+					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"uri", NULL));
 					if (tmp2 != NULL) {
 						tmp3 = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
 						g_free(tmp2);
@@ -476,63 +483,68 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 					fp->metadata = metadata_list_append(fp->metadata, "feedgenerator", tmp);
 				}
 				g_free(tmp);
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"icon")) {
+			} else if(xmlStrEqual(cur->name, BAD_CAST"icon")) {
 				/* FIXME: Parse icon and use as a favicon? */
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"id")) {
+			} else if(xmlStrEqual(cur->name, BAD_CAST"id")) {
 				/* FIXME: Parse ID, but I'm not sure where Liferea would use it */
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
-				if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", ATOM10_NS)))) {
-					tmp2 = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", ATOM10_NS));
-					if(!xmlHasNsProp(cur, BAD_CAST"rel", ATOM10_NS) || tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"alternate"))
-						feed_set_html_url(fp, tmp);
-					else if (!xmlStrcmp(tmp2, BAD_CAST"enclosure")) {
-						/* FIXME: Display the human readable title from the property "title" */
-						/* FIXME: Use xml:base, see "xmlChar *xmlNodeGetBase(xmlDocPtr doc, xmlNodePtr cur)" */
-						/* This current code was copied from the RSS parser.*/
-						if((strstr(tmp, "://") == NULL) &&
-						   (fp->htmlUrl != NULL) &&
-						   (fp->htmlUrl[0] != '|') &&
-						   (strstr(fp->htmlUrl, "://") != NULL)) {
-							/* add base URL if necessary and possible */
-							tmp3 = g_strdup_printf("%s/%s", fp->htmlUrl, tmp);
-							g_free(tmp);
-							tmp = tmp3;
-						}
-						/* FIXME: Verify URL is not evil... */
-						fp->metadata = metadata_list_append(fp->metadata, "enclosure", tmp);
+			} else if(xmlStrEqual(cur->name, BAD_CAST"link")) {
+				if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", NULL)))) {
+					xmlChar *baseURL = xmlNodeGetBase(cur->doc, cur), *title;
+					gchar *url, *relation, *escTitle = NULL;
+					
+					if (baseURL == NULL && fp->htmlUrl != NULL && fp->htmlUrl[0] != '|' &&
+						strstr(fp->htmlUrl, "://") != NULL)
+						baseURL = xmlStrdup(fp->htmlUrl);
+					url = common_build_url(tmp, baseURL);
+					
+					relation = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
+					title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
+					if (title != NULL)
+						escTitle = g_markup_escape_text(title, -1);
+					/* FIXME: Display the human readable title from the property "title" */
+					/* This current code was copied from the RSS parser.*/
+					
+					if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || relation == NULL || xmlStrEqual(relation, BAD_CAST"alternate"))
+						feed_set_html_url(fp, url);
+					else if (xmlStrEqual(relation, BAD_CAST"enclosure")) {
+						ip->metadata = metadata_list_append(ip->metadata, "enclosure", url);
 					} else
 						/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
-					g_free(tmp2);
+					xmlFree(title);
+					xmlFree(escTitle);
+					xmlFree(baseURL);
+					g_free(url);
+					g_free(relation);
 					g_free(tmp);
 				} 
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"logo")) {
+			} else if(xmlStrEqual(cur->name, BAD_CAST"logo")) {
 				tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
 				/* FIXME: Verify URL is not evil... */
 				feed_set_image_url(fp, tmp);
 				g_free(tmp);
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"rights")) {
+			} else if(xmlStrEqual(cur->name, BAD_CAST"rights")) {
 				tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
 				if(NULL != tmp)
 					fp->metadata = metadata_list_append(fp->metadata, "copyright", tmp);
 				g_free(tmp);
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"subtitle")) {
+			} else if(xmlStrEqual(cur->name, BAD_CAST"subtitle")) {
 				tmp = convertToHTML(utf8_fix(atom10_parse_text_construct(cur, TRUE)));
 				if (tmp != NULL)
 					feed_set_description(fp, tmp);
 				g_free(tmp);				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-				tmp = unhtmlize(utf8_fix(atom10_parse_text_construct(cur, FALSE)));
+			} else if(xmlStrEqual(cur->name, BAD_CAST"title")) {
+				tmp = atom10_parse_text_construct(cur, FALSE);
 				if (tmp != NULL)
 					feed_set_title(fp, tmp);
 				g_free(tmp);
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) { /* Updated was added in IETF draft 03 */
+			} else if(xmlStrEqual(cur->name, BAD_CAST"updated")) { /* Updated was added in IETF draft 03 */
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					fp->metadata = metadata_list_append(fp->metadata, "contentUpdateDate", tmp);
 					feed_set_time(fp, parseISO8601Date(tmp));
 					g_free(tmp);
 				}
-			} else if((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
+			} else if((xmlStrEqual(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = atom10_parse_entry(fp, cur))) {
 					items = g_list_append(items, ip);
 				}
@@ -554,7 +566,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 static gboolean atom10_format_check(xmlDocPtr doc, xmlNodePtr cur) {
-	if(!xmlStrcmp(cur->name, BAD_CAST"feed") && !xmlStrcmp(cur->ns->href, ATOM10_NS)) {
+	if(xmlStrEqual(cur->name, BAD_CAST"feed") && xmlStrEqual(cur->ns->href, ATOM10_NS)) {
 		return TRUE;
 	}
 	return FALSE;
