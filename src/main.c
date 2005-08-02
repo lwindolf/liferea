@@ -58,7 +58,6 @@
 
 GThread	*mainThread = NULL;
 gboolean lifereaStarted = FALSE;
-gboolean	startIconified = FALSE;
 
 static void show_help(void) {
 	GString	*str = g_string_new(NULL);
@@ -214,13 +213,15 @@ int main(int argc, char *argv[]) {
 		else if(!strcmp(arg, "--iconify")) {
 			mainwindowState = MAINWINDOW_ICONIFIED;
 		} else if(!strncmp(arg, "--mainwindow-state=",19)) {
-			gchar *param = arg + 19;
+			const gchar *param = arg + 19;
 			if (g_str_equal(param, "iconified"))
 				mainwindowState = MAINWINDOW_ICONIFIED;
 			else if (g_str_equal(param, "hidden"))
 				mainwindowState = MAINWINDOW_HIDDEN;
 			else if (g_str_equal(param, "shown"))
-				mainwindowState = MAINWINDOW_HIDDEN;
+				mainwindowState = MAINWINDOW_SHOWN;
+			else
+				fprintf(stderr, _("The --mainwindow-state argument must be given a parameter.\n"));
 #ifdef USE_SM
 		}
 		else if (!strcmp(arg, "--session")) {
@@ -265,7 +266,7 @@ int main(int argc, char *argv[]) {
 		conf_init();			/* initialize gconf */
 #ifdef USE_SM
 		session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
-		session_set_cmd(NULL, startIconified);
+		session_set_cmd(NULL, mainwindowState);
 #endif
 		ui_htmlview_init();		/* setup HTML widgets */
 		download_init();		/* Initialize the download subsystem */

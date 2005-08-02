@@ -68,7 +68,6 @@ GtkWidget 	*mainwindow;
 
 static GtkWidget *htmlview = NULL;		/* HTML rendering widget */
 static gfloat 	zoom;				/* HTML rendering widget zoom level */
-extern gboolean	startIconified; /* From main.c */
 
 /* some prototypes */
 static void ui_mainwindow_restore_position(GtkWidget *window);
@@ -394,8 +393,6 @@ void ui_mainwindow_tray_remove() {
 		if (!GTK_WIDGET_VISIBLE(mainwindow)) {
 			ui_mainwindow_restore_position(mainwindow);
 			gtk_window_present(GTK_WINDOW(mainwindow));
-			if (!startIconified)
-				session_set_cmd(NULL, FALSE);
 		}
 }
 
@@ -444,41 +441,43 @@ static void ui_mainwindow_restore_position(GtkWidget *window) {
  */
 
 gboolean on_close(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
-
+	
 	if(ui_tray_get_count() == 0)
 		return on_quit(widget, event, user_data);
 	ui_mainwindow_save_position();
 	gtk_widget_hide(mainwindow);
-	if (!startIconified)
-		session_set_cmd(NULL, TRUE);
 	return TRUE;
 }
 
 void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data) {
-
+	
 	if((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
 		ui_mainwindow_restore_position(mainwindow);
 		gtk_window_present(GTK_WINDOW(mainwindow));
-		if (!startIconified)
-			session_set_cmd(NULL, FALSE);
 	} else {
 		ui_mainwindow_save_position();
 		gtk_widget_hide(mainwindow);
-		if (!startIconified)
-			session_set_cmd(NULL, TRUE);
 	}
 }
 
 gboolean on_mainwindow_window_state_event(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
-	
-	if(!GTK_WIDGET_VISIBLE(mainwindow))
-		return FALSE;
-	
 	if((event->type) == (GDK_WINDOW_STATE)) {
-		if((((GdkEventWindowState*)event)->new_window_state) & GDK_WINDOW_STATE_MAXIMIZED)
-			setBooleanConfValue(LAST_WINDOW_MAXIMIZED, TRUE);
+		GdkWindowState changed = ((GdkEventWindowState*)event)->changed_mask, state = ((GdkEventWindowState*)event)->new_window_state;
+	
+		//if(!GTK_WIDGET_VISIBLE(mainwindow))
+		//return FALSE;
+		if (changed == GDK_WINDOW_STATE_MAXIMIZED) {
+			if(state & GDK_WINDOW_STATE_MAXIMIZED)
+				setBooleanConfValue(LAST_WINDOW_MAXIMIZED, TRUE);
+			else
+				setBooleanConfValue(LAST_WINDOW_MAXIMIZED, FALSE);
+		}
+		if(state & GDK_WINDOW_STATE_ICONIFIED)
+			session_set_cmd(NULL, MAINWINDOW_ICONIFIED);
+		else if(state & GDK_WINDOW_STATE_WITHDRAWN)
+			session_set_cmd(NULL, MAINWINDOW_HIDDEN);
 		else
-			setBooleanConfValue(LAST_WINDOW_MAXIMIZED, FALSE);
+			session_set_cmd(NULL, MAINWINDOW_SHOWN);
 	}
 	return FALSE;
 }

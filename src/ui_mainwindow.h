@@ -32,6 +32,7 @@ extern gboolean 	itemlist_mode;
 
 enum mainwindowState {
 	MAINWINDOW_SHOWN,
+	MAINWINDOW_MAXIMIZED,
 	MAINWINDOW_ICONIFIED,
 	MAINWINDOW_HIDDEN
 };

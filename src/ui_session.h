@@ -23,6 +23,6 @@
 #define _UI_SESSION_H
 
 void session_init(gchar *argv0, gchar *previous_id);
-void session_set_cmd(gchar *config_dir, gboolean iconified);
+void session_set_cmd(gchar *config_dir, gint mainwindowState);
 void session_end();
 #endif

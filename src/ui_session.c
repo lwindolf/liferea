@@ -236,14 +236,14 @@ static void ice_init() {
 
 /* my magic utility function */
 
-static gchar **session_make_command(gchar *client_id, gchar *config_dir, gboolean iconified) {
+static gchar **session_make_command(gchar *client_id, gchar *config_dir, gint mainwindowState) {
 	gint i = 2;
 	gint j = 0;
 	gchar **ret;
-
+	printf("setting state to %d\n", mainwindowState);
 	if (client_id) i += 2;
 	if (config_dir)	i += 2; /* we will specify gaim's user dir */
-	if (iconified) i += 1;
+	if (TRUE) i += 1; /* Always specify the state */
 	ret = g_new(gchar *, i);
 	ret[j++] = g_strdup(myself);
 
@@ -257,9 +257,12 @@ static gchar **session_make_command(gchar *client_id, gchar *config_dir, gboolea
 		ret[j++] = g_strdup(config_dir);
 	}
 	
-	if (iconified)
-		ret[j++] = g_strdup("--iconify");
-	
+	if (mainwindowState == MAINWINDOW_SHOWN)
+		ret[j++] = g_strdup("--mainwindow-state=shown");
+	else if (mainwindowState == MAINWINDOW_ICONIFIED)
+		ret[j++] = g_strdup("--mainwindow-state=iconified");
+	else if (mainwindowState == MAINWINDOW_HIDDEN)
+		ret[j++] = g_strdup("--mainwindow-state=hidden");
 	ret[j++] = NULL;
 	
 	return ret;
@@ -378,18 +381,18 @@ static void session_set_array(SmcConn conn, gchar *name, gchar *array[]) {
 
 /* setup functions */
 
-void session_set_cmd(gchar *config_dir, gboolean iconified) {
+void session_set_cmd(gchar *config_dir, gint mainwindowState) {
 #ifdef USE_SM
 	gchar **cmd = NULL;
 	
 	if (client_id == NULL)
 		return;
 	
-	cmd = session_make_command(NULL, config_dir, iconified);
+	cmd = session_make_command(NULL, config_dir, mainwindowState);
 	session_set_array(session, SmCloneCommand, cmd);
 	g_strfreev(cmd);
 	
-	cmd = session_make_command(client_id, config_dir, iconified);
+	cmd = session_make_command(client_id, config_dir, mainwindowState);
 	session_set_array(session, SmRestartCommand, cmd);
 	g_strfreev(cmd);
 #endif
