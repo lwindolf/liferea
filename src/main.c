@@ -165,12 +165,6 @@ static void main_unlock() {
 	g_free(filename);
 }
 
-enum mainwindowState {
-	MAINWINDOW_SHOWN,
-	MAINWINDOW_ICONIFIED,
-	MAINWINDOW_HIDDEN
-};
-
 int main(int argc, char *argv[]) {	
 	gulong		debug_flags = 0;
 	const char 	*arg;
@@ -223,9 +217,10 @@ int main(int argc, char *argv[]) {
 			gchar *param = arg + 19;
 			if (g_str_equal(param, "iconified"))
 				mainwindowState = MAINWINDOW_ICONIFIED;
-			if (g_str_equal(param, "iconified"))
-				mainwindowState = MAINWINDOW_ICONIFIED;
-
+			else if (g_str_equal(param, "hidden"))
+				mainwindowState = MAINWINDOW_HIDDEN;
+			else if (g_str_equal(param, "shown"))
+				mainwindowState = MAINWINDOW_HIDDEN;
 #ifdef USE_SM
 		}
 		else if (!strcmp(arg, "--session")) {
@@ -277,7 +272,7 @@ int main(int argc, char *argv[]) {
 		metadata_init();
 		feed_init();			/* register feed types */
 		conf_load();			/* load global feed settings */
-		ui_init(startIconified);	/* setup mainwindow and initialize gconf configured GUI behaviour */
+		ui_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 		
 		gdk_threads_enter();
 		lifereaStarted = TRUE;

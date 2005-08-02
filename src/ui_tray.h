@@ -36,3 +36,8 @@ void ui_tray_tooltip_set(gchar *message);
  * @param enabled set to TRUE to show icon, or false to hide it
  */
 void ui_tray_enable(gboolean enabled);
+
+/**
+ * @returns the current number of enabled systray icons
+ */
+int ui_tray_get_count();

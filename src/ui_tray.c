@@ -46,6 +46,7 @@ static GtkWidget	*eventbox = NULL;
 static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
+static int trayCount = 0;
 
 static void installTrayIcon(void);
 
@@ -134,6 +135,7 @@ static gboolean ui_tray_create_cb() {
 
 static void ui_tray_embedded_cb(GtkWidget *widget, void *data) {
 
+	trayCount++;
 	ui_mainwindow_tray_add();
 }
 
@@ -144,6 +146,7 @@ static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
 
 	image = NULL;
 	tray_icon = NULL;
+	trayCount--;
 	ui_mainwindow_tray_remove();
 	
 	/* And make it re-appear when the notification area reappears */
@@ -193,4 +196,8 @@ void ui_tray_enable(gboolean enabled) {
 		if(tray_icon != NULL)
 			removeTrayIcon();
 	}
+}
+
+int ui_tray_get_count() {
+	return trayCount;
 }

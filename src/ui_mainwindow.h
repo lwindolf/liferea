@@ -30,6 +30,12 @@ extern GtkWidget	*mainwindow;
 /* 2 or 3 pane mode flag from ui_mainwindow.c */
 extern gboolean 	itemlist_mode;
 
+enum mainwindowState {
+	MAINWINDOW_SHOWN,
+	MAINWINDOW_ICONIFIED,
+	MAINWINDOW_HIDDEN
+};
+
 /**
  * Create a new main window
  */
@@ -96,7 +102,7 @@ typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
  * @param filename new default filename
  * @param user data passed to the callback
  */
-void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean savinng, fileChoosenCallback callback, const gchar *currentFilename, const gchar *filename, gpointer user_data);
+void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentFilename, const gchar *filename, gpointer user_data);
 
 /** 
  * Like ui_choose_file but allows to select a directory 

@@ -68,7 +68,6 @@ GtkWidget 	*mainwindow;
 
 static GtkWidget *htmlview = NULL;		/* HTML rendering widget */
 static gfloat 	zoom;				/* HTML rendering widget zoom level */
-static int trayCount = 0;
 extern gboolean	startIconified; /* From main.c */
 
 /* some prototypes */
@@ -386,13 +385,12 @@ void ui_mainwindow_save_position(void) {
 }
 
 void ui_mainwindow_tray_add() {
-	trayCount++;
+
 }
 
 void ui_mainwindow_tray_remove() {
-	trayCount--;
 	
-	if (trayCount == 0)
+	if (ui_tray_get_count() == 0)
 		if (!GTK_WIDGET_VISIBLE(mainwindow)) {
 			ui_mainwindow_restore_position(mainwindow);
 			gtk_window_present(GTK_WINDOW(mainwindow));
@@ -447,7 +445,7 @@ static void ui_mainwindow_restore_position(GtkWidget *window) {
 
 gboolean on_close(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
-	if(trayCount == 0)
+	if(ui_tray_get_count() == 0)
 		return on_quit(widget, event, user_data);
 	ui_mainwindow_save_position();
 	gtk_widget_hide(mainwindow);

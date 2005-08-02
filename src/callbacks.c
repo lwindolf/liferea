@@ -83,7 +83,7 @@ static void callbacks_schedule_update_default_cb(nodePtr ptr) {
 	feed_schedule_update((feedPtr)ptr, 0);
 }
 
-void ui_init(gboolean startIconified) {
+void ui_init(int mainwindowState) {
 	GtkWidget	*widget;
 	int		i;
 
@@ -141,9 +141,16 @@ void ui_init(gboolean startIconified) {
  	(void)g_timeout_add(60*1000, feedlist_auto_update, NULL);
 	feedlist_auto_update(NULL);
 	
-	if(startIconified)
+	if (mainwindowState == MAINWINDOW_ICONIFIED || (mainwindowState == MAINWINDOW_HIDDEN && ui_tray_get_count() == 0)) {
 		gtk_window_iconify(GTK_WINDOW(mainwindow));
-	gtk_widget_show(mainwindow);
+		gtk_widget_show(mainwindow);
+	} else if (mainwindowState == MAINWINDOW_SHOWN)
+		gtk_widget_show(mainwindow);
+	else
+		/* Needed so that the window structure can be
+		   accessed... otherwise will GTK warning when window is
+		   shown by clicking on notification icon. */
+		gtk_widget_realize(GTK_WIDGET(mainwindow)); 
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
 		
 }
