@@ -251,7 +251,7 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	                           "of a subscription.</p></li>"
 	                           "</ul>"
 	                           "<p>To learn more about Liferea you should read the documentation "
-	                           "provided in the help feed or in the <a href=\"http://liferea.sourceforge.net/faq.php\">FAQ</a> available at the "
+	                           "provided in the help feed or in the <a href=\"http://liferea.sourceforge.net/faq.htm\">FAQ</a> available at the "
 	                           "<a href=\"http://liferea.sf.net\">project homepage</a>.</p>"));
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);

@@ -242,7 +242,7 @@ int main(int argc, char *argv[]) {
 	g_thread_init(NULL);
 	gdk_threads_init();	
 	gtk_init(&argc, &argv);
-	mainThread = g_thread_self();	/* we need to now this when locking in ui_queue.c */
+	mainThread = g_thread_self();	/* we need to know this for locking in ui_queue.c */
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 

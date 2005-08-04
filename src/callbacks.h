@@ -112,3 +112,11 @@ on_homepagebtn_clicked                 (GtkButton       *button,
                                         gpointer         user_data);
 
 #endif
+
+void
+on_topics_activate                     (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
+on_quick_reference_activate            (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
