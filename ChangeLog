@@ -1,3 +1,10 @@
+2005-08-??  Lars Lindner  <lars.lindner@gmx.net> 
+
+	Version 0.9.6
+
+	* Changed the Liferea startup options to allow Liferea's mainwindow
+	  to startup in hidden or iconified mode ( --mainwindow-state ).
+
 2005-07-31  Lars Lindner  <lars.lindner@gmx.net> 
 
 	Version 0.9.5
