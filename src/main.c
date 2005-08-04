@@ -66,7 +66,9 @@ static void show_help(void) {
 	g_string_append_printf(str, "Liferea %s\n\n", VERSION);
 	g_string_append_printf(str, "%s\n", _("  --version        Print version information and exit"));
 	g_string_append_printf(str, "%s\n", _("  --help           Print this help and exit"));
-	g_string_append_printf(str, "%s\n", _("  --iconify        Start the program iconified"));
+	g_string_append_printf(str, "%s\n", _("  --mainwindow-state=STATE"));
+	g_string_append_printf(str, "%s\n", _("                   Start Liferea with its main window in STATE."));
+	g_string_append_printf(str, "%s\n", _("                   STATE may be `shown', `iconified', or `hidden'"));
 	g_string_append_c(str, '\n');
 	g_string_append_printf(str, "%s\n", _("  --debug-cache    Print debugging messages for the cache handling"));
 	g_string_append_printf(str, "%s\n", _("  --debug-conf     Print debugging messages of the configuration handling"));
