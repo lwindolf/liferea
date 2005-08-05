@@ -240,7 +240,7 @@ static gchar **session_make_command(gchar *client_id, gchar *config_dir, gint ma
 	gint i = 2;
 	gint j = 0;
 	gchar **ret;
-	printf("setting state to %d\n", mainwindowState);
+	
 	if (client_id) i += 2;
 	if (config_dir)	i += 2; /* we will specify gaim's user dir */
 	if (TRUE) i += 1; /* Always specify the state */
