@@ -72,7 +72,7 @@ void feed_init(void) {
 	feedhandlers = g_slist_append(feedhandlers, ocs_init_feed_handler()); /* Must come before RSS/RDF */
 	feedhandlers = g_slist_append(feedhandlers, rss_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, cdf_init_feed_handler());
-/*	feedhandlers = g_slist_append(feedhandlers, atom10_init_feed_handler()); */ /* Must be before pie */
+	feedhandlers = g_slist_append(feedhandlers, atom10_init_feed_handler());  /* Must be before pie */
 	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, opml_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, vfolder_init_feed_handler());
