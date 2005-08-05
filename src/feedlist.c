@@ -540,7 +540,11 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
 	reply = dbus_message_new_method_return (message);
 	if (reply != NULL)
 	{
+#if (DBUS_VERSION == 1)
+		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, done,DBUS_TYPE_INVALID);
+#elif (DBUS_VERSION == 2)
 		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, &done,DBUS_TYPE_INVALID);
+#endif
 		dbus_connection_send (connection, reply, NULL);
 		dbus_message_unref (reply);
 		return DBUS_HANDLER_RESULT_HANDLED;
