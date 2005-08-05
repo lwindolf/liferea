@@ -1,0 +1,8 @@
+table.reftable {
+	border:1px solid black;
+	border-collapse:collapse;
+}
+
+table.reftable tr td {
+	border:1px solid black;
+}

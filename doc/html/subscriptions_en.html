@@ -1,0 +1,152 @@
+<html>
+<head>
+	<title>Managing Subscriptions</title>
+	
+	<link rel="stylesheet" type="text/css" href="help.css">
+</head>
+<body>
+
+
+	<h1>Subscribing</h1>
+	<p>
+	To create a new subscription select "New Feed" from the feed 
+	list's contextual menu or the feed menu. A dialog to create a 
+	new subscription will appear.
+	</p>	
+	<img src="http://liferea.sourceforge.net/help/help_subscribe_0.9.0.png">
+	<p>
+	The data displayed in feeds can be obtained from a variety of
+	different sources including over the Internet using a URL, by
+	running a command, and by directly reading from a file. The
+	source type is selected by clicking one of the three source
+	type radio buttons. Usually, a feed is selected by inputting a
+	URL, such as "http://slashdot.org/index.rss".
+	</p>	
+	
+	<p>When a command or file type feed is selected, the command
+	or file can be selected using a file navigation box by
+	clicking "Select File...". When downloading the feed using a
+	URL, one can specify a password by clicking the "Use HTTP
+	authentication" checkbox and typing the username and password
+	in their respective textboxes.</p>
+	
+	<p>Sometimes, the data in a feed is in a format that is
+	unknown to Liferea. If this is the case, a conversion filter
+	can be used to convert the data into a useable format. Many
+	filters can be downloaded from <a
+	href="http://home.kcore.de/~kiza/software/snownews/snowscripts/">the
+	Snownews and Liferea script repository</a>.</p>
+
+	<p>To use the filters, one enables the "Conversion filter"
+	option and specifies the feed source in the top half of the
+	dialog. The filter is specified by either typing the path of
+	the filter into the "Convert using" textbox or selecting the
+	filter after clicking the "Select File..." button. The filters
+	are simple programs that read the original non-supported data
+	on stdin and print the valid feed to stdout, and are often
+	written using perl. </p>
+	
+	<p> If the URL is valid and the feed could be loaded, the
+	properties dialog used to set additional feed properties will
+	appear. This window is described in the next section: "Feed
+	Properties".</p>
+
+	<p> Press "Ok" to save your settings and close the feed
+	properties dialog. The new feed entry should appear either after
+	the selected feed entry or if you had selected a folder, as the
+	last item in the folder.</p>
+
+
+
+	
+	<h1>Feed Properties</h1>
+	<p>
+	The feed properties window is displayed after creating a new
+	feed, when "Properties" is activated in the "Feeds" menu or
+	the contextual menu displayed when right-clicking a
+	feed. The window groups the properties into four sets: "General",
+	"Source", "Feed Cache" and "Authentication".</p>
+
+	<h2>General</h2>
+	<img src="http://liferea.sf.net/help/help_feed_prop_general_0.9.0.png"/>
+	
+	<p>The "General" pane allows you to set feed title and update
+	interval. The title you can modify here is displayed as the 
+	feed name in the feed list. Multiple feeds can have the same title.</p>
+	
+	<p>Typically you don't need to set an update interval. We
+	recommend to use the global update interval preference which
+	you can find in the preference dialog. This preference is used
+	for all feeds that have the update interval setting to follow
+	the global update interval setting.</p>
+	
+	<p>Sometimes a feed provides a feed specific update interval.
+	If this is the case Liferea automatically activates the user
+	defined update interval setting and enters the feed specific
+	update interval. This is done once after subscribing. You
+	should never need to change such a setting.</p>
+	
+	<p>Anyway there might be situations where you want to specify
+	a update interval which might be more or less frequent than
+	the global update interval. Then you should select the user
+	defined interval option and enter the interval value you want.
+	<b>When specifying an update interval, you should consider the
+	web traffic you will cause with an inappropiate update
+	interval. Don't update more often than the feed's content is
+	updated.</b></p>
+	
+	<p>The last update interval option allows you to prevent
+	updating the feed. You might use this option for feeds you
+	always want to update manually.</p>
+	
+        <div style="background-color:#f7f0a3;padding:5px;border:solid 1px black;">
+	Note: OCS and OPML directories are never updated automatically.
+	They can only be updated manually.
+	</div>
+
+	<h2>Source</h2>
+	<img src="http://liferea.sf.net/help/help_feed_prop_source_0.9.0.png"/>
+	
+	<p>The "Source" pane contains the same fields the "New
+	Feed" dialog provided when subscribing to this feed. If you
+	want to learn more about them please refer to the previous 
+	section "Subscribing".</p>
+
+	<h2>Cache</h2>
+	<img src="http://liferea.sf.net/help/help_feed_prop_cache_0.9.0.png"/>
+	
+	<p>The third pane, "Feed Cache", controls how many items of
+	a feed are saved when Liferea writes the feeds cache file.
+	Similar to the update interval settings there is a 
+	corresponding global preference which sets a default cache
+	size for all feeds. You should use the feed specific cache
+	settings only to implement exceptions from the global
+	default cache size.</p>
+	
+	<ul>
+	<li><b>Default Cache Settings</b> - Makes the feed use the default cache settings, which are stored in the main Liferea
+	preferences.</li>
+	<li><b>Disable Cache</b> - Disable the feed's items from ever being saved.</li>
+	<li><b>Unlimited cache</b> - Save all items. </li>
+	<li><b>Limit cache to # items</b> - Limits the cache size to #.</li>
+	</ul>
+        <div style="background-color:#f7f0a3;padding:5px;border:solid 1px black;">
+	Note: Marked items are always saved, regardless of the cache settings.
+        </div>
+	
+	<h2>Authentication</h2>
+	<img src="http://liferea.sf.net/help/help_feed_prop_auth_0.9.0.png"/>
+	
+	<p>
+	This tab allows you to enable HTTP authentication when downloading
+	the feed. Enable the checkbox and enter appropriate user and 
+	password values to use this feature.
+	</p>
+	
+
+
+	</p>
+	&gt;&gt&gt; <a href="topics_en.html">Back to Help Contents</a>
+	</p>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<html>
+<head>
+	<title>Changing Preferences</title>
+	
+	<link rel="stylesheet" type="text/css" href="help.css">
+</head>
+<body>
+
+
+	<h1>Program Preferences</h1>
+
+	<p> The preferences dialog can be opened by the toolbar or
+	through the "Program" menu. The dialog is divided into two tabs
+	described in the following text.  </p>
+
+	<h2>Feeds</h2>
+	<img src="http://liferea.sourceforge.net/help/help_prefs_feeds_0.9.0.png">
+	<ul>
+	
+	<li>
+	<b>Feed Cache Handling:</b> Here you can set the default number 
+	of items to be saved for each subscription. Note that this setting
+	can be overwritten for each subscription by setting the item cache
+	size in the subscriptions properties.
+	</li>
+	
+	<li>
+	<b>Feed Update Settings:</b> Here you can set the default update
+	interval for all subscriptions. If it is set to 0 auto-updating
+	is disabled. Note that this setting can be overwritten for each 
+	subscription by setting the update interval in the subscriptions 
+	properties.<br>
+	The option button allows you to control the update behaviour 
+	after startup. You have three possibilities:
+	<ul>
+	<li>Update all out-dated subscriptions.</li>
+	<li>Update all subscriptions.</li>
+	<li>Don't update subscriptions and reset their update intervals.</li>
+	</ul>
+	</li>
+	
+	<li>
+	<b>Feed Loading Settings:</b> With this option you can influence
+	the memory usage of Liferea. You can select wether to keep all
+	subscription contents in memory or to load the contents from
+	disk when needed.
+	</li>
+	</ul>
+	
+	<h2>Folders</h2>
+	<img src="http://liferea.sourceforge.net/help/help_prefs_folders_0.9.0.png">
+		
+	<ul>
+	<li>
+	<b>Folder Display Settings:</b> With this checkbox you can control
+	what Liferea loads into the item list when you click a folder.
+	The default behaviour is not to change the item list contents. If
+	you enable this option all items of all child subscriptions of the
+	selected folder are loaded into the item list.
+	</li>
+	
+	<li>
+	<b>Feed Icons (Favicons):</b> This button allows you to trigger
+	an update of all favicons of all subscriptions.
+	</li>	
+	</ul>
+	
+	<h2>Headlines</h2>
+	<img src="http://liferea.sourceforge.net/help/help_prefs_headlines_0.9.0.png">
+	
+	<ul>
+	<li>
+	<b>Reading Headlines:</b> Here you can set the hotkey for skimming
+	through all unread headlines.
+	</li>
+	
+	<li>
+	<b>Date Column Settings:</b> Here you can configure the format of
+	the date column of the item list. When using the user defined
+	option you need to know about the format codes used for this
+	feature (experienced users only! please refer to the strftime() 
+	manpage).
+	</li>
+	</ul>
+	
+	<h2>Browser</h2>
+	<img src="http://liferea.sourceforge.net/help/help_prefs_browser_0.9.0.png">
+	
+	<ul>
+	<li>
+	<b>Internal Browser Settings:</b> Here you can configure three
+	things. First you can select the browser module to be used to
+	render the HTML of the item view. Then you can specify wether
+	or not Liferea should open clicked links in the configured 
+	external browser or in the item HTML view. The third option
+	allows you to switch off Javascript.
+	</li>
+
+	<li>
+	<b>External Browser Settings:</b> When you click links in then 
+	item HTML view Liferea launches the a browser command you can
+	define with this preferences. The first option button is to
+	select your favourite browser or "Manual" for a user defined
+	browser command. With the second option button you specify
+	how the link is opened inside the previously selected browser.<br>
+	Only when selecting "Manual" as browser you can enter a 
+	browser command in the command entry. When entering a command
+	don't forget to include a <i>"%s"</i> within the command which
+	will be replaced with the URL that was clicked. Please keep in 
+	mind to double quote the place holder to avoid shell problems 
+	with the hash character (#) when launching the browser.<br>
+	<br>
+	<p>
+	If you are using Mozilla you may want to define <i>mozilla "%s"</i>,
+	but this will let you launch only the first clicked URL. All following
+	URL clicks will launch the Mozilla profile manager. Jim Philips suggested
+	the following script to automatically launch URLs in an already existing 
+	Mozilla browser window. Save this script to the directory of your choice and
+	configure Liferea to launch URLs by calling this script and the URL
+	as the first parameter.
+	<br>
+	<div style="background-color:#F0F0F0;padding:5px;border:dashed 1px black">
+	<pre>#!/bin/bash
+MOZILLA=/usr/local/bin/mozilla
+if ($MOZILLA -remote "ping()"); then
+	$MOZILLA -remote "openurl($1, new-tab)"
+else
+	$MOZILLA $1
+fi
+</pre>
+	</div>
+	</p>
+	<p><b>Important:</b> Paul Newport reported that Firefox 0.9 changed the -remote
+	syntax. Now a <tt>-a firefox</tt> has to be added right before the -remote parameter.</p>
+	</li>
+	</ul>
+
+	<h2>GUI Settings</h2>
+	<img src="http://liferea.sourceforge.net/help/help_prefs_gui_0.9.0.png">
+
+	<ul>
+	<li>
+	<b>Notification Settings:</b> Enable the first checkbox if you 
+	want to use the notification area feature. This feature is also 
+	known as system tray icon. The program will add a icon to the active 
+	notification area application (as provided for GNOME and KDE) which 
+	will change when new items arrive and 'll be reset as soon the program 
+	is used again. The icon can be used to show the program window if 
+	currently hidden or hide the program window if it is visible.<br>
+	The second option allows you to enable a notification popup
+	window which present a list of the titles of newly headlines
+	of updated subscriptions.	
+	</li>
+	
+	<li>
+	<b>Menu Settings:</b> Here you can select wether you want to
+	display both menu bar and tool bar or only one of them.
+	</li>	
+	</ul>
+	
+	<h2>Proxy</h2>
+	<img src="http://liferea.sourceforge.net/help/help_prefs_proxy_0.9.0.png">
+	
+	<ul>
+	<li>
+	<b>HTTP Proxy Server:</b> Using this preference tab you can
+	configure a HTTP proxy for Liferea. If you are a GNOME user
+	don't use this tab and configure the proxy in the GNOME
+	preference (if not already done).
+	</li>
+	</ul>
+
+	</p>
+	&gt;&gt&gt; <a href="topics_en.html">Back to Help Contents</a>
+	</p>
+</body>
+</html>
