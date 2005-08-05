@@ -5,7 +5,12 @@
 	* Changed the Liferea startup options to allow Liferea's mainwindow
 	  to startup in hidden or iconified mode ( --mainwindow-state ).
 	* Atom 1.0 feed support.
+	* Help system rewrite.
 	  
+	Translations:
+
+	* Italian (Dario)
+
 	
 2005-07-31  Lars Lindner  <lars.lindner@gmx.net> 
 
