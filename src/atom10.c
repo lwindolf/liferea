@@ -593,7 +593,6 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			
 			func = g_hash_table_lookup(feedElementHash, cur->name);
 			if (func != NULL) {
-				printf("trying to call %p for %s\n", func, cur->name);
 				(*func)(cur, fp, NULL, NULL);
 			} else if((xmlStrEqual(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = atom10_parse_entry(fp, cur))) {
