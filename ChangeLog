@@ -4,8 +4,13 @@
 
 	* Changed the Liferea startup options to allow Liferea's mainwindow
 	  to startup in hidden or iconified mode ( --mainwindow-state ).
-	* Atom 1.0 feed support.
-	* Help system rewrite.
+	* Preliminary Atom 1.0 feed support.
+	* Documentation is now stored locally. It is a set of HTML files accessed
+	through the help menu.
+
+	Bugfixes:
+	
+	* Fix a crash when a HTML form was used with GtkHTML2. (SF bug #1166159).
 	  
 	Translations:
 
