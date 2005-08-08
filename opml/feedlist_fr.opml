@@ -17,13 +17,14 @@
        <outline text="Geckozone - Actualités" htmlUrl="http://www.geckozone.org/" xmlUrl="http://www.geckozone.org/actualites/xml/" />
        <outline text="Geckozone - Articles" htmlUrl="http://www.geckozone.org/" xmlUrl="http://www.geckozone.org/articles/xml/" />
        <outline text="MozillaZine-Fr" htmlUrl="http://www.mozillazine-fr.org/" xmlUrl="http://mozillazine-fr.org/contenu.xml" />
-       <outline text="LinuxFR" htmlUrl="http://linuxfr.org/" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=116" />
-       <outline text="LinuxFrench.Net" htmlUrl="http://www.linuxfrench.net/" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=10" />
-       <outline text="Le Monde.fr" htmlUrl="http://www.lemonde.fr/" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=5" />
-       <outline text="Le Nouvel Observateur" htmlUrl="http://permanent.nouvelobs.com/" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=386" />
-       <outline text="EuroNews" htmlUrl="http://www.euronews.net/create_html.php?page=accueil_info&amp;langue=fr" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=38" />
+       <outline text="LinuxFR" htmlUrl="http://linuxfr.org/" xmlUrl="http://linuxfr.org/backend/news/rss20.rss" />
+       <outline text="LinuxFrench.Net" htmlUrl="http://www.linuxfrench.net/" xmlUrl="http://www.linuxfrench.net/backend.php" />
+       <outline text="Le Monde.fr" htmlUrl="http://www.lemonde.fr/" xmlUrl="http://www.lemonde.fr/rss/sequence/0,2-3208,1-0,0.xml" />
+       <outline text="Le Nouvel Observateur" htmlUrl="http://permanent.nouvelobs.com/" xmlUrl="http://permanent.nouvelobs.com/rss_permanent.xml" />
+       <outline text="EuroNews" htmlUrl="http://www.euronews.net/create_html.php?page=accueil_info&amp;langue=fr" xmlUrl="http://www.euronews.net/rss/euronews_en.xml" />
        <outline text="AlloCiné" htmlUrl="http://www.allocine.fr/film/cettesemaine.html" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=56" />
        <outline text="LaMoooche.com" htmlUrl="http://www.lamoooche.com/" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=758" />
+		<outline text="Agence Modiale d'information" htmlUrl="http://www.afp.com/francais/home/" xmlUrl="http://www.afp.com/francais/rss/stories.xml" />
      </outline>
      <!-- lets keep this English block in sync over all default feed lists! -->
      <outline text="English">
