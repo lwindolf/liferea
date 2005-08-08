@@ -253,12 +253,14 @@ src/Makefile
 src/mozilla/Makefile
 src/gtkhtml2/Makefile
 src/net/Makefile
+src/liferea
+doc/Makefile
+doc/html/Makefile
 pixmaps/Makefile
 opml/Makefile
 po/Makefile.in
 liferea.spec
 liferea-SuSE.spec
-src/liferea
 ])
 AC_OUTPUT
 

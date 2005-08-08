@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = src po pixmaps opml
+SUBDIRS = doc opml pixmaps po src
 
 desktop_files=liferea.desktop
 

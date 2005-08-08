@@ -239,12 +239,12 @@ void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_topics_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	ui_tabs_new("file:///" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/topics_en.html", _("Help Topics"));
+	ui_tabs_new("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/topics_en.html", _("Help Topics"));
 }
 
 
 void on_quick_reference_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	ui_tabs_new("file:///" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/reference_en.html", _("Quick Reference"));
+	ui_tabs_new("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/reference_en.html", _("Quick Reference"));
 }
 
