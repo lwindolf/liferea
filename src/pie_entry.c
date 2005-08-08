@@ -46,13 +46,11 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 	xmlChar			*xtmp;
 	gchar			*tmp2, *tmp;
 	itemPtr			ip;
-	GHashTable *nsinfos;
 	NsHandler		*nsh;
 	parseItemTagFunc	pf;
 	
 	g_assert(NULL != cur);
 		
-	nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	ip = item_new();
 	
 	cur = cur->xmlChildrenNode;
@@ -151,7 +149,5 @@ itemPtr parseEntry(feedPtr fp, xmlNodePtr cur) {
 	/* after parsing we fill the infos into the itemPtr structure */
 	ip->readStatus = FALSE;
 
-	g_hash_table_destroy(nsinfos);
-	
 	return ip;
 }

@@ -30,8 +30,6 @@
 
 typedef struct CDFItem {
 	
-	GHashTable	*nsinfos;	/* list to store pointers to namespace
-					   specific informations */	
 	time_t		time;
 } *CDFItemPtr;
 

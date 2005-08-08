@@ -49,7 +49,6 @@ typedef struct RSSItem {
 	gchar		*real_source_url;		/** source URL if the item doesn't comes from it's parent feed */
 	gchar		*real_source_title;		/** source title if the item doesn't comes from it's parent feed */
 	
-	GHashTable	*nsinfos;			/** list to store pointers to namespace specific informations */	
 	time_t		time;				/** timestamp of the item */
 } *RSSItemPtr;
 

@@ -243,13 +243,11 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 	gchar			*tmp2, *tmp;
 	itemPtr			ip;
-	GHashTable *nsinfos;
 	NsHandler		*nsh;
 	parseItemTagFunc	pf;
 	
 	g_assert(NULL != cur);
 	
-	nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	ip = item_new();
 	
 	cur = cur->xmlChildrenNode;
@@ -261,30 +259,26 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 		}
 		
 		/* check namespace of this tag */
-		if(NULL == cur->ns) {
+		if(NULL == cur->ns || NULL == cur->ns->href) {
 			/* This is an invalid feed... no idea what to do with the current element */
 			printf("element with no namespace found!\n");
 			cur = cur->next;
 			continue;
 		}
 		
-		if(NULL != cur->ns) {
-			if(((cur->ns->href != NULL) &&
-			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href))) ||
-			   ((cur->ns->prefix != NULL) &&
-			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix)))) {
-				
-				pf = nsh->parseItemTag;
-				if(NULL != pf)
-					(*pf)(ip, cur);
-				cur = cur->next;
-				continue;
-			} else {
-				/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
-			}
-		} /* explicitly no following else !!! */
+		if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href)) ||
+		   NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix))) {
+			
+			pf = nsh->parseItemTag;
+			if(NULL != pf)
+				(*pf)(ip, cur);
+			cur = cur->next;
+			continue;
+		} else {
+			/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
+		}
 		
-		if (cur->ns->href == NULL || xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
+		if (xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
 			printf("unknown namespace found in feed\n");
 			cur = cur->next;
 			continue;
@@ -394,8 +388,6 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 	
 	/* after parsing we fill the infos into the itemPtr structure */
 	ip->readStatus = FALSE;
-	
-	g_hash_table_destroy(nsinfos);
 	
 	if(0 == item_get_time(ip))
 		item_set_time(ip, feed_get_time(fp));
@@ -583,17 +575,15 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			}
 			
 			/* check namespace of this tag */
-			if(NULL == cur->ns) {
+			if(NULL == cur->ns || cur->ns->href == NULL) {
 				/* This is an invalid feed... no idea what to do with the current element */
 				printf("element with no namespace found!\n");
 				cur = cur->next;
 				continue;
 			}
 			
-			if(((cur->ns->href != NULL) &&
-			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href))) ||
-			   ((cur->ns->prefix != NULL) &&
-			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix)))) {
+			if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href)) ||
+			   NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix))) {
 				pf = nsh->parseChannelTag;
 				if(NULL != pf)
 					(*pf)(fp, cur);

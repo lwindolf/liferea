@@ -24,10 +24,6 @@
 #include "feed.h"
 
 typedef struct CDFChannel {
-	/* standard namespace infos */
-	GHashTable	*nsinfos;	/* list to store pointers to namespace
-						   specific informations */
-	
 	/* other information */
 	time_t		time;		/* last feed build/creation time */	
 } *CDFChannelPtr;

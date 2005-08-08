@@ -116,7 +116,6 @@ static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	CDFChannelPtr 	cp;
 	
 	cp = g_new0(struct CDFChannel, 1);
-	cp->nsinfos = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 	
 	do {
 		/* note: we support only one flavour of CDF channels! We will only
@@ -150,8 +149,6 @@ static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		if (cur != NULL)
 			feed_set_available(fp, TRUE);
 		
-		g_hash_table_destroy(cp->nsinfos);
-
 		g_free(cp);
 	} while (FALSE);
 }
