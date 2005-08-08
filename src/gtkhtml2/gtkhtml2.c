@@ -86,7 +86,7 @@ static int button_press_event(HtmlView *view, GdkEventButton *event, gpointer us
    in the displayed HTML */ 
 
 typedef struct {
-	gpointer window;
+	GtkWidget *scrollpane;
 	gchar *action;
 	gchar *method;
 	gchar *encoding;
@@ -96,6 +96,8 @@ static int
 on_submit_idle(gpointer data)
 {
 	SubmitContext *ctx = (SubmitContext *)data;
+	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(ctx->scrollpane));
+	HtmlDocument *doc = HTML_VIEW(htmlwidget)->document;
 
 	debug3(DEBUG_UPDATE, "action = '%s', method = '%s', encoding = '%s'\n", 
 		 ctx->action, ctx->method, ctx->encoding);
@@ -104,7 +106,7 @@ on_submit_idle(gpointer data)
 		gchar *url;
 		
 		url = g_strdup_printf("%s?%s", ctx->action, ctx->encoding);
-		link_clicked(NULL, url, ctx->window);
+		link_clicked(doc, url, ctx->scrollpane );
 		g_free (url);
 	}
 	g_free (ctx);
@@ -116,6 +118,7 @@ on_submit(HtmlDocument *document, const gchar *action, const gchar *method,
 	   const gchar *encoding, gpointer data)
 {
 	SubmitContext *ctx = g_new0 (SubmitContext, 1);
+	GtkWidget *scrollpane = (GtkWidget*)data;
 	
 	if(action)
 		ctx->action = g_strdup (action);
@@ -123,7 +126,7 @@ on_submit(HtmlDocument *document, const gchar *action, const gchar *method,
 		ctx->method = g_strdup (method);
 	if(action)
 		ctx->encoding = g_strdup (encoding);
-	ctx->window = data;
+	ctx->scrollpane = scrollpane;
 	
 	/* Becase the link_clicked method will clear the document and
 	 * start loading a new one, we can't call it directly, because
@@ -308,7 +311,7 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, guint length,
 				   GTK_SIGNAL_FUNC (url_request), htmlwidget);
 	
 	g_signal_connect (G_OBJECT (doc), "submit",
-				   GTK_SIGNAL_FUNC (on_submit), NULL);
+				   GTK_SIGNAL_FUNC (on_submit), scrollpane);
 	
 	g_signal_connect (G_OBJECT (doc), "link_clicked",
 				   G_CALLBACK (link_clicked), scrollpane);
