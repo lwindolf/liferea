@@ -274,8 +274,6 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 				(*pf)(ip, cur);
 			cur = cur->next;
 			continue;
-		} else {
-			/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 		}
 		
 		if (xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
