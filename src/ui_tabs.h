@@ -32,8 +32,9 @@ void ui_tabs_init(void);
  *
  * @param url	URL to be loaded in new tab (can be NULL to do nothing)
  * @param title	title of the tab to be created
+ * @param activate Should the new tab be put in the foreground?
  */
-void ui_tabs_new(const gchar *url, const gchar *title);
+void ui_tabs_new(const gchar *url, const gchar *title, gboolean activate);
 
 /**
  * makes the headline tab visible 

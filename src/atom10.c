@@ -61,7 +61,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		if (src == NULL) {
 			ret = g_strdup(_("Liferea is unable to display this item's contents."));
 		} else {
-			xmlChar *baseURL = xmlNodeGetBase(cur->doc, cur);
+			gchar *baseURL = utf8_fix(xmlNodeGetBase(cur->doc, cur));
 			gchar *url;
 			
 			url = common_build_url(src, baseURL);
@@ -77,7 +77,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		xmlChar *baseURL = NULL;
 
 		/* determine encoding mode */
-		type = utf8_fix(xmlGetNsProp(cur, BAD_CAST"type", NULL));
+		type = xmlGetNsProp(cur, BAD_CAST"type", NULL);
 		
 		/* This that need to be de-encoded and should not contain sub-tags.*/
 		if (type != NULL && (g_str_equal(type,"html") || !g_strcasecmp(type, "text/html"))) {
@@ -304,7 +304,7 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			}
 		} else if(xmlStrEqual(cur->name, BAD_CAST"content")) {
 			/* <content> support */
-			gchar *tmp = utf8_fix(atom10_parse_content_construct(cur));
+			gchar *tmp = atom10_parse_content_construct(cur);
 			if (tmp != NULL)
 				item_set_description(ip, tmp);
 			g_free(tmp);

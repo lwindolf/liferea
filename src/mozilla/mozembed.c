@@ -95,7 +95,7 @@ static void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, gui
 	   are requested and the user crosses a link)  */
 	if(NULL != selectedURL) {
 		if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION))
-			ui_tabs_new(selectedURL, selectedURL);
+			ui_tabs_new(selectedURL, selectedURL, FALSE);
 		else
 			ui_htmlview_launch_in_external_browser(selectedURL);
 	}
@@ -150,7 +150,7 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
 	/* or a middle button click */
 	} else if(button == 1) {
 		if(NULL != selectedURL) {	
-			ui_tabs_new(selectedURL, selectedURL);
+			ui_tabs_new(selectedURL, selectedURL, FALSE);
 			return TRUE;
 		} else {
 			return FALSE;

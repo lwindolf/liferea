@@ -69,7 +69,7 @@ void ui_tabs_init(void) {
 	g_signal_connect((gpointer)lookup_widget(mainwindow, "browsertabs"), "switch-page", G_CALLBACK(on_tab_switched), NULL);
 }
 
-void ui_tabs_new(const gchar *url, const gchar *title) {
+void ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) {
 	GtkWidget	*widget;
 	GtkWidget	*label;
 	GtkWidget	*vbox;
@@ -128,13 +128,14 @@ void ui_tabs_new(const gchar *url, const gchar *title) {
 	gtk_box_pack_end(GTK_BOX(vbox), htmlframe, TRUE, TRUE, 0);
 	gtk_widget_show_all(vbox);
 	
-	gtk_notebook_append_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), vbox, label);
+	i = gtk_notebook_append_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), vbox, label);
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), TRUE);
-
+	
+	if (activate && i != -1)
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), i);
+	
 	if(NULL != url)	
 		ui_htmlview_launch_URL(htmlview, (gchar *)url, UI_HTMLVIEW_LAUNCH_INTERNAL);
-	
-	i = gtk_notebook_get_n_pages(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
 }
 
 void ui_tabs_show_headlines(void) {
@@ -154,5 +155,5 @@ GtkWidget * ui_tabs_get_active_htmlview(void) {
 
 void on_popup_open_link_in_tab_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	ui_tabs_new((gchar *)url, (gchar *)url);
+	ui_tabs_new((gchar *)url, (gchar *)url, FALSE);
 }

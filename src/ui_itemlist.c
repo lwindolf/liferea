@@ -505,7 +505,7 @@ void on_popup_launchitem_in_tab_selected(void) {
 
 	if(NULL != (ip = ui_itemlist_get_selected())) {
 		if(NULL != (link = item_get_source(ip)))
-			ui_tabs_new(link, link);
+			ui_tabs_new(link, link, FALSE);
 		else
 			ui_show_error_box(_("This item has no link specified!"));
 	} else {
