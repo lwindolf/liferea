@@ -136,7 +136,7 @@ void download_process(struct request *request) {
 			ui_mainwindow_set_status_bar(_("Error: Could not open pipe \"%s\""), (request->source) + 1);
 			request->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 		}
-	} else if(NULL != strstr(request->source, "://")) {
+	} else if(NULL != strstr(request->source, "://") && strncmp(request->source, "file://",7)) {
 		/* just a web URL */
 		downloadlib_process_url(request);
 		if(request->httpstatus >= 400) {
@@ -145,17 +145,21 @@ void download_process(struct request *request) {
 			request->size = 0;
 		}
 	} else {
-		if(g_file_test(request->source, G_FILE_TEST_EXISTS)) {
+		gchar *filename = request->source;
+		if (!strncmp(request->source, "file://",7))
+			filename = &(filename[7]);
+		
+		if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 			/* we have a file... */
-			if((!g_file_get_contents(request->source, &(request->data), &(request->size), NULL)) || (request->data[0] == '\0')) {
+			if((!g_file_get_contents(filename, &(request->data), &(request->size), NULL)) || (request->data[0] == '\0')) {
 				request->httpstatus = 403;	/* FIXME: maybe setting request->returncode would be better */
-				ui_mainwindow_set_status_bar(_("Error: Could not open file \"%s\""), request->source);
+				ui_mainwindow_set_status_bar(_("Error: Could not open file \"%s\""), filename);
 			} else {
 				g_assert(NULL != request->data);
 				request->httpstatus = 200;
 			}
 		} else {
-			ui_mainwindow_set_status_bar(_("Error: There is no file \"%s\""), request->source);
+			ui_mainwindow_set_status_bar(_("Error: There is no file \"%s\""), filename);
 			request->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 		}		
 	}
