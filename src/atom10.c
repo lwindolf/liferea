@@ -550,6 +550,23 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	parseChannelTagFunc	pf;
 	atom10ElementParserFunc func;
 	
+	if (feedElementHash == NULL) {
+		feedElementHash = g_hash_table_new(g_str_hash, g_str_equal);
+		
+		g_hash_table_insert(feedElementHash, "author", &atom10_parse_feed_author);
+		g_hash_table_insert(feedElementHash, "category", &atom10_parse_feed_category);
+		g_hash_table_insert(feedElementHash, "contributor", &atom10_parse_feed_contributor);
+		g_hash_table_insert(feedElementHash, "generator", &atom10_parse_feed_generator);
+		g_hash_table_insert(feedElementHash, "icon", &atom10_parse_feed_icon);
+		g_hash_table_insert(feedElementHash, "id", &atom10_parse_feed_id);
+		g_hash_table_insert(feedElementHash, "link", &atom10_parse_feed_link);
+		g_hash_table_insert(feedElementHash, "logo", &atom10_parse_feed_logo);
+		g_hash_table_insert(feedElementHash, "rights", &atom10_parse_feed_rights);
+		g_hash_table_insert(feedElementHash, "subtitle", &atom10_parse_feed_subtitle);
+		g_hash_table_insert(feedElementHash, "title", &atom10_parse_feed_title);
+		g_hash_table_insert(feedElementHash, "updated", &atom10_parse_feed_updated);
+	}	
+
 	while(TRUE) {
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find Atom 1.0 header!</p>"));
@@ -642,23 +659,6 @@ feedHandlerPtr atom10_init_feed_handler(void) {
 		/* register RSS name space handlers */
 		atom10_add_ns_handler(ns_dc_getRSSNsHandler());
 	}	
-	if (feedElementHash == NULL) {
-		feedElementHash = g_hash_table_new(g_str_hash, g_str_equal);
-		
-		g_hash_table_insert(feedElementHash, "author", &atom10_parse_feed_author);
-		g_hash_table_insert(feedElementHash, "category", &atom10_parse_feed_category);
-		g_hash_table_insert(feedElementHash, "contributor", &atom10_parse_feed_contributor);
-		g_hash_table_insert(feedElementHash, "generator", &atom10_parse_feed_generator);
-		g_hash_table_insert(feedElementHash, "icon", &atom10_parse_feed_icon);
-		g_hash_table_insert(feedElementHash, "id", &atom10_parse_feed_id);
-		g_hash_table_insert(feedElementHash, "link", &atom10_parse_feed_link);
-		g_hash_table_insert(feedElementHash, "logo", &atom10_parse_feed_logo);
-		g_hash_table_insert(feedElementHash, "rights", &atom10_parse_feed_rights);
-		g_hash_table_insert(feedElementHash, "subtitle", &atom10_parse_feed_subtitle);
-		g_hash_table_insert(feedElementHash, "title", &atom10_parse_feed_title);
-		g_hash_table_insert(feedElementHash, "updated", &atom10_parse_feed_updated);
-	}	
-	
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";
 	fhp->icon = ICON_AVAILABLE;
