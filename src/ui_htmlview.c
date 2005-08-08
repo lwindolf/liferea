@@ -1,5 +1,5 @@
 /**
- * @file htmlview.c common interface for browser module implementations
+ * @file ui_htmlview.c common interface for browser module implementations
  * and module loading functions
  *
  * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>

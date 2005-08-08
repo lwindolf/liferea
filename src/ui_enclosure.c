@@ -1,5 +1,5 @@
 /**
- * @file ui_enclosures.c enclosures user interface
+ * @file ui_enclosure.c enclosures user interface
  *
  * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
  *

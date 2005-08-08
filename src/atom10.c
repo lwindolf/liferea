@@ -126,11 +126,12 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 	return ret;
 }
 
-/* This returns a escaped version of a text construct. If htmlified is
-   set to 1, then HTML is returned. When set to 0, All HTML tags are
-   removed.*/
-static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
-	gchar	*type, *tmp, *ret;
+/** @param htmlified If set to 1, then HTML is returned. When set
+   to 0, All HTML tags are removed
+   
+   @returns an escaped version of a text construct. */
+   static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
+   gchar	*type, *tmp, *ret;
 
 	g_assert(NULL != cur);
 	ret = NULL;

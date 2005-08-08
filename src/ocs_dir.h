@@ -1,5 +1,5 @@
 /**
- * @file ocs_dir.c OCS 0.4/0.5 support 
+ * @file ocs_dir.h OCS 0.4/0.5 support 
  * 
  * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
  *

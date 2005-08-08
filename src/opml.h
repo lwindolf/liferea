@@ -1,5 +1,5 @@
 /**
- * @file opml.c generic OPML 1.0 support
+ * @file opml.h generic OPML 1.0 support
  * 
  * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
  *
