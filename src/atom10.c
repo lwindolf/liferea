@@ -80,13 +80,13 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		type = utf8_fix(xmlGetNsProp(cur, BAD_CAST"type", NULL));
 		
 		/* This that need to be de-encoded and should not contain sub-tags.*/
-		if (NULL == type || !strcmp(type, "text") || !strncmp(type, "text/",5)) { /* Assume that "text/*" files can be directly displayed.. kinda stated in the RFC */
-			escapeAsText = TRUE;
-			includeChildTags = FALSE;
-		} else if (!strcmp(type,"html")) {
+		if (type != NULL && (g_str_equal(type,"html") || !g_strcasecmp(type, "text/html"))) {
 			escapeAsText = FALSE;
 			includeChildTags = FALSE;
 			baseURL = xmlNodeGetBase(cur->doc, cur);
+		} else if (NULL == type || !strcmp(type, "text") || !strncasecmp(type, "text/",5)) { /* Assume that "text/*" files can be directly displayed.. kinda stated in the RFC */
+			escapeAsText = TRUE;
+			includeChildTags = FALSE;
 		} else if (!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
 			escapeAsText = FALSE;
 			includeChildTags = TRUE;
