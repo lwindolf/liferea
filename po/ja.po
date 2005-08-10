@@ -1975,7 +1975,7 @@ msgstr "/文字を小さくする(_D)"
 
 #: src/ui_popup.c:147
 msgid "/_Copy Link Location"
-msgstr "リンク先のアドレスのコピー(_C)"
+msgstr "/リンク先のアドレスのコピー(_C)"
 
 #: src/ui_popup.c:148
 msgid "/Launch Link In _Tab"

@@ -408,7 +408,7 @@ msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
 
 #: src/interface.c:214
 msgid "Mark All As _Read"
-msgstr "全部標示為已讀(_M)"
+msgstr "全部標示為已讀(_R)"
 
 #: src/interface.c:227
 msgid "_New Subscription..."
@@ -420,7 +420,7 @@ msgstr "新目錄(_F)..."
 
 #: src/interface.c:243
 msgid "New _VFolder..."
-msgstr "新虛擬目錄(_F)..."
+msgstr "新虛擬目錄(_V)..."
 
 #: src/interface.c:252
 msgid "_Properties..."
