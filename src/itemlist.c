@@ -130,13 +130,16 @@ void itemlist_load(nodePtr node) {
 	if(isFeed && (node != displayed_node) && (TRUE == feed_get_two_pane_mode((feedPtr)displayed_node)))
 		itemlist_mark_all_read(displayed_node);
 
-	/* preparation done, we can select it... */
-	displayed_node = node;
-
 	/* determine what node type is now selected */
 	isFeed = ((node != NULL) && ((FST_FEED == node->type) || (FST_VFOLDER == node->type)));
 	isFolder = ((node != NULL) && (FST_FOLDER == node->type));
 	
+	if(isFolder && (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
+		return;
+	
+	/* preparation done, we can select it... */
+	displayed_node = node;
+
 	if(!isFeed && !isFolder) {
 		ui_itemlist_clear();
 		displayed_node = NULL;
@@ -144,11 +147,9 @@ void itemlist_load(nodePtr node) {
 		return;
 	}
 	
-	if(isFolder && (1 != getNumericConfValue(FOLDER_DISPLAY_MODE)))
-		return;
-
+	
 	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
-		
+	
 	if(isFeed) {
 		disableSortingSaving++;
 		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
