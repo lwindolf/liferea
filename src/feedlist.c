@@ -110,7 +110,7 @@ void feedlist_update_feed(nodePtr np) {
 static void feedlist_remove_feed(nodePtr np) { 
 
 	if(np == selectedNode) {
-		ui_itemlist_clear();
+		itemlist_load(NULL);
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	}
 
