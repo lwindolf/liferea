@@ -1,0 +1,2068 @@
+# Chinese/Traditional translation of liferea.
+# Copyright (C) 2004, 2005
+# This file is distributed under the same license as the liferea package.
+# Jim Huang <jserv@kaffe.org>, 2005.
+# Rex Tsai <chihchun@users.sourceforge.net>, 2004.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: liferea\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-31 04:01+0200\n"
+"PO-Revision-Date: 2005-06-11 08:22+0800\n"
+"Last-Translator: Jim Huang <jserv@kaffe.org>\n"
+"Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. launch the homepage when button in about dialog is pressed
+#: src/callbacks.c:230
+msgid "http://liferea.sf.net"
+msgstr ""
+
+#: src/common.c:283
+msgid "[Parser error output was truncated!]"
+msgstr "[解析器的错误输出已截去！]"
+
+#: src/common.c:361
+#, c-format
+msgid ""
+"xmlReadMemory(): Could not parse document:\n"
+"%s%s"
+msgstr ""
+"xmlReadMemory(): 无法解析文档：\n"
+"%s%s"
+
+#: src/common.c:438 src/common.c:549
+msgid "internal error! time conversion error! mktime failed!\n"
+msgstr "內部错误! 时间转换错误! mktime 失败!\n"
+
+#: src/common.c:441
+msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
+msgstr "非法 ISO8601 日期格式! 忽略 <dc:date> 信息!\n"
+
+#: src/common.c:563 src/common.c:570 src/common.c:576 src/common.c:583
+#, c-format
+msgid "Cannot create cache directory %s!"
+msgstr "无法创建缓存目录 %s !"
+
+#: src/common.c:653
+msgid ""
+"Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
+"characters were dropped!"
+msgstr "非预期的字符序列或错误的 UTF-8 编码! 某些字符已丢弃!"
+
+#. "feedlist.opml" is translatable so that translators can provide a localized default feed list
+#: src/conf.c:252
+msgid "feedlist.opml"
+msgstr ""
+
+#: src/conf.c:271
+#, c-format
+msgid "Error renaming %s to %s\n"
+msgstr "无法将 %s 更名为 %s\n"
+
+#: src/eggtrayicon.c:121
+msgid "Orientation"
+msgstr "方位"
+
+#: src/eggtrayicon.c:122
+msgid "The orientation of the tray."
+msgstr "系統托盘的方位。"
+
+#: src/export.c:490 src/export.c:492
+#, c-format
+msgid "XML error while reading cache file! Could not import \"%s\"!"
+msgstr "读取缓存文件 \"%s\" 时发生 XML 错误 ! 无法导入 \"%s\"!"
+
+#: src/export.c:496 src/export.c:498
+#, c-format
+msgid ""
+"Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr "空白文档! OPML 文档 \"%s\" 不应是空白文件。"
+
+#: src/export.c:506 src/export.c:508
+#, c-format
+msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
+msgstr "\"%s\" 不是有效的 OPML 文档! Liferea无法导入该文件!"
+
+#: src/export.c:530
+msgid "Imported feed list"
+msgstr "导入的资源列表"
+
+#: src/export.c:541
+msgid "Import Feed List"
+msgstr "导入资源列表"
+
+#: src/export.c:541
+msgid "Import"
+msgstr "导入"
+
+#: src/export.c:551
+msgid "Error while exporting feed list!"
+msgstr "在导出资源列表时错误!"
+
+#: src/export.c:553
+msgid "Feed List exported!"
+msgstr "资源列表已导出!"
+
+#: src/export.c:560
+msgid "Export Feed List"
+msgstr "导出资源列表"
+
+#: src/export.c:560
+msgid "Export"
+msgstr "导出"
+
+#: src/favicon.c:265
+#, c-format
+msgid "Updating feed icon for \"%s\""
+msgstr "更新资源 \"%s\" 的图标"
+
+#: src/feed.c:151
+#, c-format
+msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
+msgstr "<p>读入资源时出现 XML 错误! 资源 \"%s\" 无法载入!</p>"
+
+#: src/feed.c:157 src/feed.c:391
+msgid "<p>Empty document!</p>"
+msgstr "<p>空文档!</p>"
+
+#: src/feed.c:164
+msgid "<p>Invalid XML!</p>"
+msgstr "<p>无效 XML!</p>"
+
+#: src/feed.c:228
+msgid ""
+"<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
+"discovery found no feeds on this page. Maybe this webpage just does not "
+"support feed auto discovery.</p>"
+msgstr ""
+
+#: src/feed.c:233
+#, fuzzy
+msgid ""
+"<p>Could not determine the feed type. Please check that it is <a href="
+"\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
+"sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
+msgstr ""
+"<p>无法确定资源类型。请确定 <a href=\"http://feedvalidator.org\"> 为有效的资源"
+"类型</a>，并为 <a href=\"http://liferea.sourceforge.net/index."
+"php#supported_formats\">支持的格式</a>。</p>"
+
+#: src/feed.c:371
+#, c-format
+msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
+msgstr "读入缓存文件 \"%s\"时发生错误! 无法载入缓存文件!"
+
+#: src/feed.c:383
+#, c-format
+msgid ""
+"<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
+"loaded!</p>"
+msgstr "<p>解析缓存文件时发生 XML 错误! 无法载入缓存文件 \"%s\"!</p>"
+
+#: src/feed.c:402
+#, c-format
+msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
+msgstr "<p>\"%s\" 是无效的缓存文件! 无法读取缓存文件!</p>"
+
+#: src/feed.c:456
+#, c-format
+msgid "There were errors while parsing cache file \"%s\""
+msgstr "解析缓存文件 \"%s\" 时出现错误!"
+
+#: src/feed.c:515
+#, c-format
+msgid "This feed \"%s\" is already being updated!"
+msgstr "此资源 \"%s\" 已经更新!"
+
+#: src/feed.c:520
+msgid "The feed was discontinued. Liferea won't update it anymore!"
+msgstr "资源已经失效。Liferea 将不会更新它。"
+
+#: src/feed.c:524
+#, c-format
+msgid "Updating \"%s\""
+msgstr "更新: \"%s\""
+
+#. attributes resulting from general feed parsing
+#: src/feed.c:1046 src/item.c:243 src/metadata.c:334 src/ocs_dir.c:144
+#: src/opml.c:218
+msgid "Feed:"
+msgstr "资源:"
+
+#: src/feed.c:1046 src/interface.c:3781
+msgid "VFolder"
+msgstr "虛拟目录"
+
+#: src/feed.c:1054
+msgid "user defined command"
+msgstr "使用自定命令"
+
+#: src/feed.c:1077 src/interface.c:1024 src/interface.c:1434 src/item.c:293
+#: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
+msgid "Source:"
+msgstr "来源:"
+
+#: src/feedlist.c:245
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr "您无权下载此资源权限。请在资源属性窗口中更新输入您的帐号与密码。"
+
+#: src/feedlist.c:247
+msgid "Payment Required"
+msgstr "Payment Required"
+
+#: src/feedlist.c:248
+msgid "Access Forbidden"
+msgstr "禁用存取"
+
+#: src/feedlist.c:249
+msgid "Resource Not Found"
+msgstr "未找到资源"
+
+#: src/feedlist.c:250
+msgid "Method Not Allowed"
+msgstr "方法不允许"
+
+#: src/feedlist.c:251
+msgid "Not Acceptable"
+msgstr "无法接受"
+
+#: src/feedlist.c:252
+msgid "Proxy Authentication Required"
+msgstr "代理服务器需要认证"
+
+#: src/feedlist.c:253
+msgid "Request Time-Out"
+msgstr "读取超时"
+
+#: src/feedlist.c:254
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "完了。资源不存在。请取消订阅!"
+
+#: src/feedlist.c:259
+msgid "URL is invalid"
+msgstr "URL 不合法"
+
+#: src/feedlist.c:262
+msgid "Error connecting to remote host"
+msgstr "无法联接到远端主机"
+
+#: src/feedlist.c:263
+msgid "Hostname could not be found"
+msgstr "无法找到服务器名称"
+
+#: src/feedlist.c:264
+msgid "Network connection was refused by the remote host"
+msgstr "远端主机拒绝网路联接"
+
+#: src/feedlist.c:265
+msgid "Remote host did not finish sending data"
+msgstr "远端主机并未結束传送资料"
+
+#. Transfer errors
+#: src/feedlist.c:267
+msgid "Too many HTTP redirects were encountered"
+msgstr "太多 HTTP 重定向!"
+
+#: src/feedlist.c:270
+msgid "Remote host sent an invalid response"
+msgstr "网站服务器传送了一个无效的回应"
+
+#: src/feedlist.c:277
+msgid "Authentication failed"
+msgstr "认证失败！"
+
+#: src/feedlist.c:279
+msgid "Webserver's authentication method incompatible with Liferea"
+msgstr "网站服务器的认证方法与 Lifera 不兼容"
+
+#: src/feedlist.c:285
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr "资源无法使用: 服务器使用未支持的重定向!"
+
+#: src/feedlist.c:286
+msgid "Client Error"
+msgstr "客戶端错误"
+
+#: src/feedlist.c:287
+msgid "Server Error"
+msgstr "服务器端错误"
+
+#: src/feedlist.c:288
+msgid "(unknown networking error happened)"
+msgstr "(发生未知的网路错误)"
+
+#: src/feedlist.c:301 src/feedlist.c:310
+msgid "Show Details"
+msgstr "显示详细信息"
+
+#: src/feedlist.c:315
+msgid ""
+"<br>You may want to validate the feed using <a href=\"http://feedvalidator."
+"org/check.cgi?url="
+msgstr "<br> 你可能需要验证该资源，使用<a href=\"http://feedvalidator.org/check.cgi?url="
+
+#: src/feedlist.c:320
+msgid "\">FeedValidator</a>."
+msgstr ""
+
+#: src/feedlist.c:328
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr "读取此订阅时出现问题。请检查网址与终端输出。"
+
+#: src/feedlist.c:361
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" 终止更新。Liferea 将不会更新此资源!"
+
+#: src/feedlist.c:363
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" 自从最后更新后沒有改变。"
+
+#: src/feedlist.c:371
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "\"%s\" 已经更新为永久网址。"
+
+#: src/feedlist.c:383
+#, c-format
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>%s"
+msgstr "<p>无法探测此资源类型! 请确认网址指向已支持的正确资源来源!</p>%s"
+
+#: src/feedlist.c:402
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" 更新中"
+
+#: src/feedlist.c:410
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "\"%s\" 不可用"
+
+#: src/feedlist.c:451
+msgid "You have to select a feed entry"
+msgstr "您必须选择一资源入口"
+
+#: src/feedlist.c:461
+msgid "Liferea is in offline mode. No update possible."
+msgstr "Liferea 在离线模式。无法更新。"
+
+#: src/html.c:161
+msgid "Feed link auto discovery failed! No feed links found!"
+msgstr "自动探测资源链接失败! 未找到资源链接!"
+
+#: src/interface.c:128
+msgid "Liferea"
+msgstr ""
+
+#: src/interface.c:145
+msgid "_Program"
+msgstr "_程序"
+
+#: src/interface.c:161
+msgid "Work Offline"
+msgstr "离线浏览"
+
+#: src/interface.c:174
+msgid "_Feeds"
+msgstr "_资源"
+
+#: src/interface.c:181
+msgid "Update _Selected"
+msgstr "更新 _选择的"
+
+#: src/interface.c:184
+msgid ""
+"Updates the selected subscription or all subscriptions of the selected "
+"folder."
+msgstr "更新选择的订阅项目或目录下的所有订阅项目。"
+
+#: src/interface.c:190
+msgid "Update _All"
+msgstr "更新 _全部"
+
+#: src/interface.c:193 src/ui_mainwindow.c:190
+msgid "Updates all subscriptions. This does not update OCS directories."
+msgstr "立即升级所有资源 (除了 OCS 目录)。"
+
+#: src/interface.c:202
+msgid "_Mark Selected As Read"
+msgstr "_全部标记为已读"
+
+#: src/interface.c:205
+msgid ""
+"Marks all items of the current selected subscription or all of subscriptions "
+"of the selected folder as read."
+msgstr "标记所有选择的项目或目录下所有的项目为已读。"
+
+#: src/interface.c:214
+msgid "Mark All As _Read"
+msgstr "全部标记为 _已读"
+
+#: src/interface.c:227
+msgid "_New Subscription..."
+msgstr "_新增订阅..."
+
+#: src/interface.c:235
+msgid "New _Folder..."
+msgstr "新 _目录..."
+
+#: src/interface.c:243
+msgid "New _VFolder..."
+msgstr "新 _虛拟目录..."
+
+#: src/interface.c:252
+msgid "_Properties..."
+msgstr "_属性..."
+
+#: src/interface.c:255
+msgid "Opens the property dialog for the selected subscription."
+msgstr "开启选择订阅的属性设定窗口。"
+
+#: src/interface.c:261
+msgid "_Delete Selected"
+msgstr "_删除选择资源"
+
+#: src/interface.c:264
+msgid "Removes the selected subscription."
+msgstr "删除选择的订阅项目。"
+
+#: src/interface.c:275
+msgid "_Import Feed List..."
+msgstr "_导入资源列表..."
+
+#: src/interface.c:278
+msgid "Imports an OPML feed list."
+msgstr "导入 OPML 格式资源列表。"
+
+#: src/interface.c:284
+msgid "_Export Feed List..."
+msgstr "_导出资源列表..."
+
+#: src/interface.c:287
+msgid "Exports the feed list as OPML."
+msgstr "导出 OPML 格式资源列表"
+
+#: src/interface.c:293
+msgid "_Items"
+msgstr "_条目"
+
+#: src/interface.c:300
+msgid "_Next Unread Item"
+msgstr "_下一个未读条目"
+
+#: src/interface.c:303 src/ui_mainwindow.c:188
+msgid ""
+"Jumps to the next unread item. If necessary selects the next feed with "
+"unread items."
+msgstr "跳到下一个未读条目。必要时会跳到下一个资源中的未读条目。"
+
+#: src/interface.c:317
+msgid "Toggle _Read Status"
+msgstr "切换 _阅读状态"
+
+#: src/interface.c:320
+msgid "Toggles the read status of the selected item."
+msgstr "切换选择条目的阅读状态。"
+
+#: src/interface.c:329
+msgid "Toggle Item _Flag"
+msgstr "切换条目 _标签"
+
+#: src/interface.c:332
+msgid "Toggles the item flag."
+msgstr "切换条目标签。"
+
+#: src/interface.c:337
+msgid "Remove Selected"
+msgstr "删除选择的"
+
+#: src/interface.c:340
+msgid "Removes the selected item."
+msgstr "删除选择的条目。"
+
+#: src/interface.c:346
+msgid "Remove All"
+msgstr "删除所有条目条目"
+
+#: src/interface.c:349
+msgid "Removes all items of the currently selected feed."
+msgstr "删除现选择资源的所有条目。"
+
+#: src/interface.c:360
+msgid "_Launch In Browser"
+msgstr "_载入浏览器"
+
+#: src/interface.c:363
+msgid "Launches the item's link in the configured browser."
+msgstr "在设定浏览器中载入此条目链接。"
+
+#: src/interface.c:365
+msgid "_View"
+msgstr "_视图"
+
+#: src/interface.c:372
+msgid "_Increase Text Size"
+msgstr "_放大字体"
+
+#: src/interface.c:375
+msgid "Increases the text size of the item view."
+msgstr "放大条目显示窗口字体大小。"
+
+#: src/interface.c:384
+msgid "_Decrease Text Size"
+msgstr "_縮小字体"
+
+#: src/interface.c:387
+msgid "Decreases the text size of the item view."
+msgstr "縮小条目显示窗口字体大小。"
+
+#: src/interface.c:401
+msgid "Toggle _Condensed View"
+msgstr "启动 _摘要模式"
+
+#: src/interface.c:404
+msgid "Toggles the item list mode between condensed and normal mode."
+msgstr "切换条目显示模式为摘要模式或一般模式。"
+
+#: src/interface.c:406
+msgid "_Search"
+msgstr "_搜索"
+
+#: src/interface.c:413
+msgid "Toggle Search Box"
+msgstr "切换搜索窗口"
+
+#: src/interface.c:416
+msgid "Shows or hides the search box."
+msgstr "显示或隱藏搜索窗口"
+
+#: src/interface.c:422
+msgid "Search with Feedster..."
+msgstr "使用 Feedster 搜索..."
+
+#: src/interface.c:425
+msgid "Creates a Feedster search feed."
+msgstr "创造一个 Feedster 搜索资源"
+
+#: src/interface.c:431
+msgid "_Help"
+msgstr "_求助"
+
+#: src/interface.c:438 src/interface.c:3239 src/interface.c:3281
+msgid "About"
+msgstr "关于"
+
+#: src/interface.c:441
+msgid "Shows an about dialog."
+msgstr "显示关于对话框"
+
+#: src/interface.c:502
+msgid "single item view"
+msgstr "单一条目檢視"
+
+#: src/interface.c:510
+msgid "label133"
+msgstr ""
+
+#: src/interface.c:514 src/interface.c:2084
+msgid "Headlines"
+msgstr "标题"
+
+#: src/interface.c:822
+msgid "Subscription Properties"
+msgstr "订阅属性"
+
+#: src/interface.c:843
+msgid "<span weight=\"bold\">Feed Name</span>"
+msgstr "<span weight=\"bold\">资源名称</span>"
+
+#: src/interface.c:853 src/interface.c:885 src/interface.c:959
+#: src/interface.c:1004 src/interface.c:1038 src/interface.c:1049
+#: src/interface.c:1067 src/interface.c:1155 src/interface.c:1369
+#: src/interface.c:1414 src/interface.c:1448 src/interface.c:1459
+#: src/interface.c:1477 src/interface.c:1781 src/interface.c:1820
+#: src/interface.c:1880 src/interface.c:1925 src/interface.c:1958
+#: src/interface.c:1996 src/interface.c:2047 src/interface.c:2111
+#: src/interface.c:2164 src/interface.c:2245 src/interface.c:2262
+#: src/interface.c:2348 src/interface.c:2402 src/interface.c:2430
+#: src/interface.c:2480 src/interface.c:2542 src/interface.c:2604
+msgid "    "
+msgstr ""
+
+#: src/interface.c:862
+msgid "Feed _Name:"
+msgstr "资源 _名称:"
+
+#: src/interface.c:875
+msgid "<span weight=\"bold\">Update Interval</span>"
+msgstr "<span weight=\"bold\">更新周期</span>"
+
+#: src/interface.c:894
+msgid "_Use global default update interval."
+msgstr "_使用预设更新周期"
+
+#: src/interface.c:904
+msgid "_Feed specific update interval of"
+msgstr "_指定該资源的更新周期："
+
+#: src/interface.c:919 src/interface.c:1843
+msgid "minutes."
+msgstr "分钟。"
+
+#: src/interface.c:923
+msgid "_Don't update this feed automatically."
+msgstr "_不自动更新本资源"
+
+#: src/interface.c:929
+msgid " "
+msgstr ""
+
+#: src/interface.c:933
+#, c-format
+msgid "This feed provider suggests an update interval of %d minutes."
+msgstr "资源提供者建议更新周期为 %d 分钟"
+
+#: src/interface.c:940
+msgid "General"
+msgstr "一般"
+
+#: src/interface.c:949 src/interface.c:1359
+msgid "<b>Feed Source</b>"
+msgstr "<b>资源来源</b>"
+
+#: src/interface.c:982 src/interface.c:1392
+msgid "_URL"
+msgstr "_网址"
+
+#: src/interface.c:988 src/interface.c:1398
+msgid "_Command"
+msgstr "_命令"
+
+#: src/interface.c:998 src/interface.c:1408
+msgid "Local _File"
+msgstr "本地 _文件"
+
+#: src/interface.c:1008 src/interface.c:1418
+msgid "_Select File..."
+msgstr "_选择文件..."
+
+#: src/interface.c:1018 src/interface.c:1428
+msgid "Source Type:"
+msgstr "来源类型:"
+
+#: src/interface.c:1042 src/interface.c:1452
+msgid "Use conversion filter"
+msgstr "使用转换过滤器"
+
+#: src/interface.c:1057 src/interface.c:1467
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and "
+"directories in non-supported formats.  See the documentation for more "
+"information."
+msgstr "Liferea 可以使用额外的过滤外挂模块来存取不支持的格式。细节请查阅文档。"
+
+#: src/interface.c:1071 src/interface.c:1481
+msgid "Convert using:"
+msgstr "转换 用:"
+
+#: src/interface.c:1079 src/interface.c:1489
+msgid "Select File..."
+msgstr "选择文件..."
+
+#: src/interface.c:1083
+msgid "Feed Source"
+msgstr "资源来源"
+
+#: src/interface.c:1092
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea "
+"exits. Marked items are always saved to the cache."
+msgstr ""
+"缓存设定可于退出 Liferea 时控制保存的资源內容，已标记的条目将永久保存于缓存"
+"中。"
+
+#: src/interface.c:1099
+msgid "_Default cache settings"
+msgstr "_预设缓存设定"
+
+#: src/interface.c:1105
+msgid "Di_sable cache"
+msgstr "取消缓存"
+
+#: src/interface.c:1111
+msgid "_Unlimited cache"
+msgstr "_无限制缓存"
+
+#: src/interface.c:1121
+msgid "_Limit cache to"
+msgstr "_限制缓存到"
+
+#: src/interface.c:1134
+msgid "items."
+msgstr "条目。"
+
+#: src/interface.c:1138
+msgid "Feed Cache"
+msgstr "资源缓存"
+
+#: src/interface.c:1147
+msgid "Use HTTP _authentication"
+msgstr "使用 HTTP _认证"
+
+#: src/interface.c:1165 src/interface.c:3408
+msgid "User_name:"
+msgstr "使用者 _名称:"
+
+#: src/interface.c:1172 src/interface.c:3415
+msgid "_Password:"
+msgstr "_密码:"
+
+#: src/interface.c:1192 src/interface.c:3385
+msgid "Authentication"
+msgstr "认证"
+
+#: src/interface.c:1341
+msgid "New Subscription"
+msgstr "新增订阅"
+
+#: src/interface.c:1747
+msgid "Liferea Preferences"
+msgstr "Lifeera 偏好"
+
+#: src/interface.c:1771
+msgid "<span weight=\"bold\">Feed Cache Handling</span>"
+msgstr "<span weight=\"bold\">资源缓存处理</span>"
+
+#: src/interface.c:1794
+msgid "Default number of items per feed to save:"
+msgstr "Liferea 退出时单一资源最多保存条目数: "
+
+#: src/interface.c:1810
+msgid "<span weight=\"bold\">Feed Update Settings</span>"
+msgstr "<span weight=\"bold\">资源更新设定</span>"
+
+#: src/interface.c:1833
+msgid "Default Feed Refresh _Interval:"
+msgstr "资源更新 _周期:"
+
+#: src/interface.c:1847
+msgid ""
+"Note: <i>Please remember to set a reasonable refresh time. It is not desired "
+"to poll daily updated feeds every 15 minutes. To disable auto-updating per "
+"default set the interval to 0 minutes.</i>"
+msgstr ""
+"注: <i>请记得输入一个合理的更新时间，不建议每 15 分钟更新一个每日更新的串"
+"流！ 若停用自动更新请输入周期为 0 分钟。</i>"
+
+#: src/interface.c:1858
+msgid "At _startup:"
+msgstr "于 _启动时:"
+
+#: src/interface.c:1870
+msgid "<span weight=\"bold\">Feed Loading Settings</span>"
+msgstr "<span weight=\"bold\">资源载入设定</span>"
+
+#: src/interface.c:1889
+msgid "Optimize for _memory usage."
+msgstr "针对内存使用优化。"
+
+#: src/interface.c:1896
+msgid "Optimize for _speed."
+msgstr "针对速度优化。"
+
+#: src/interface.c:1902
+msgid "Feeds"
+msgstr "资源"
+
+#: src/interface.c:1915
+msgid "<span weight=\"bold\">Folder Display Settings</span>"
+msgstr "<span weight=\"bold\">资源显示设定</span>"
+
+#: src/interface.c:1933
+msgid "Show the items of all child feeds when a folder is selected."
+msgstr "当选择目录时，显示所有子资源条目。"
+
+#: src/interface.c:1937
+msgid ""
+"<i>This option can cause significant delays when loading folders containing "
+"many feeds.</i>"
+msgstr "<i>本选项可能会在载入含有大量资源的目录时，导致严重的延迟。</i>"
+
+#: src/interface.c:1948
+msgid "<span weight=\"bold\">Feed Icons </span>"
+msgstr "<span weight=\"bold\">资源图标</span>"
+
+#: src/interface.c:1967
+msgid "_Update all favicons now."
+msgstr "_更新所有资源图标"
+
+#: src/interface.c:1971
+msgid "Folders"
+msgstr "目录"
+
+#: src/interface.c:1986
+msgid "<span weight=\"bold\">Reading Headlines</span>"
+msgstr "<span weight=\"bold\">读取标题</span>"
+
+#: src/interface.c:2009
+msgid "Skim through articles with "
+msgstr "浏览文章使用键"
+
+#: src/interface.c:2019
+msgid "Space"
+msgstr "空白"
+
+#: src/interface.c:2023
+msgid "<Ctrl> Space"
+msgstr "<Ctrl> 空格键"
+
+#: src/interface.c:2027
+msgid "<Alt> Space"
+msgstr "<Alt> 空格键"
+
+#: src/interface.c:2037
+msgid "<span weight=\"bold\">Date Column Settings</span>"
+msgstr "<span weight=\"bold\">日期栏设定</span>"
+
+#: src/interface.c:2056
+msgid "Display only time"
+msgstr "只显示时间"
+
+#: src/interface.c:2062
+msgid "Display date and time"
+msgstr "显示日期与时间"
+
+#: src/interface.c:2072
+msgid "User defined format:"
+msgstr "使用自定格式:"
+
+#: src/interface.c:2081
+msgid ""
+"for expert users: specify a time format string, consult the strftime() "
+"manpage for the format codes"
+msgstr "給专家使用者: 指定一个特定的时间格式，请参考 strftime 手冊中的格式码"
+
+#: src/interface.c:2101
+msgid "<span weight=\"bold\">Internal Browser Settings</span>"
+msgstr "<span weight=\"bold\">內部浏览器设定</span>"
+
+#: src/interface.c:2123
+msgid "View Headlines With"
+msgstr "标题浏览器"
+
+#: src/interface.c:2135
+msgid "<i>Please restart Liferea for changes to take effect.</i>"
+msgstr "<i>请重新启动 Liferea 以使更改生效。</i>"
+
+#: src/interface.c:2141
+msgid "Open links in Liferea's _window."
+msgstr "在 Liferea 的窗口开启链接。"
+
+#: src/interface.c:2145
+msgid "_Disable Javascript."
+msgstr "_停止使用 Javascript。"
+
+#: src/interface.c:2153
+msgid "<span weight=\"bold\">External Browser Settings</span>"
+msgstr "<span weight=\"bold\">外部浏览器设定</span>"
+
+#: src/interface.c:2178
+msgid "_Browser:"
+msgstr "_浏览器:"
+
+#: src/interface.c:2185
+#, c-format
+msgid ""
+"_Manual:\n"
+"(%s for URL)"
+msgstr ""
+"_手动:\n"
+"(%s 是网址)"
+
+#: src/interface.c:2199
+msgid "_Open link in:"
+msgstr "_开启链接于:"
+
+#: src/interface.c:2222
+msgid "Browser"
+msgstr "浏览器"
+
+#: src/interface.c:2235
+msgid "<span weight=\"bold\">Notification Settings</span>"
+msgstr "<span weight=\"bold\">程序状态通知区</span>"
+
+#: src/interface.c:2253
+msgid "Show a status _icon in the notification area (system tray)."
+msgstr "在程序状态通知区中显示状态图标 (系統托盘) "
+
+#: src/interface.c:2270
+msgid "Show a _popup window with new headlines."
+msgstr "以跳出窗口显示新标题"
+
+#: src/interface.c:2279
+msgid "         "
+msgstr ""
+
+#: src/interface.c:2295
+msgid "Lower Right"
+msgstr "右下方"
+
+#: src/interface.c:2303
+msgid "Upper Right"
+msgstr "右上方"
+
+#: src/interface.c:2311
+msgid "Upper Left"
+msgstr "左上方"
+
+#: src/interface.c:2319
+msgid "Lower Left"
+msgstr "左下方"
+
+#: src/interface.c:2327
+msgid "<b>Popup Placement</b>"
+msgstr "<b>弹出窗口摆放</b>"
+
+#: src/interface.c:2338
+msgid "<span weight=\"bold\">Menu Settings</span>"
+msgstr "<span weight=\"bold\">菜单设定</span>"
+
+#: src/interface.c:2357
+msgid "Show Menu _And Toolbar"
+msgstr "显示菜单与工具条"
+
+#: src/interface.c:2363
+msgid "Show _Menu Only"
+msgstr "只显示菜单"
+
+#: src/interface.c:2369
+msgid "Show _Toolbar Only"
+msgstr "仅显示工具条"
+
+#: src/interface.c:2375
+msgid "GUI"
+msgstr "图形界面"
+
+#: src/interface.c:2392
+msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
+msgstr "<span weight=\"bold\">HTTP 代理服务器</span>"
+
+#: src/interface.c:2411
+msgid ""
+"<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
+"these settings in the GNOME Control Center.</i>"
+msgstr ""
+"Liferea 使用 GNOME 代理服务器设定。如果您使用 GNOME，您可以在 GNOME 控制中心"
+"修改。"
+
+#: src/interface.c:2422
+msgid "_Enable Proxy"
+msgstr "_启用代理服务器"
+
+#: src/interface.c:2444
+msgid "Proxy _Host:"
+msgstr "代理服务器地址:"
+
+#: src/interface.c:2465
+msgid "Proxy _Port:"
+msgstr "代理服务器端口:"
+
+#: src/interface.c:2472
+msgid "Use Proxy _Authentication"
+msgstr "使用代理服务器认证"
+
+#: src/interface.c:2490
+msgid "Proxy _Username:"
+msgstr "代理服务器使用者名称:"
+
+#: src/interface.c:2512
+msgid "Proxy Pass_word:"
+msgstr "代理服务器密码:"
+
+#: src/interface.c:2519
+msgid "Proxy"
+msgstr "代理服务器"
+
+#: src/interface.c:2532
+msgid "<span weight=\"bold\">Downloading Enclosures</span>"
+msgstr "<span weight=\"bold\">下载附件</span>"
+
+#: src/interface.c:2552
+msgid "Download using"
+msgstr "下载方式："
+
+#: src/interface.c:2559
+msgid "Save downloads in"
+msgstr "将下载保存于"
+
+#: src/interface.c:2590
+msgid "Browse"
+msgstr "浏览器"
+
+#: src/interface.c:2594
+msgid "<span weight=\"bold\">Opening Enclosures</span>"
+msgstr "<span weight=\"bold\">开启附件</span>"
+
+#: src/interface.c:2635
+msgid "Enclosures"
+msgstr "附件"
+
+#: src/interface.c:2963
+msgid "New Folder"
+msgstr "新目录"
+
+#: src/interface.c:2979 src/interface.c:3056
+msgid "Folder name:"
+msgstr "目录名称:"
+
+#: src/interface.c:3044
+msgid "Rename Folder"
+msgstr "重新命名目录"
+
+#: src/interface.c:3125
+msgid "Feedster Search"
+msgstr "Feedster 搜索"
+
+#: src/interface.c:3140
+msgid "Search for:"
+msgstr "搜索:"
+
+#: src/interface.c:3147
+msgid "enter any search string you want"
+msgstr "输入您想搜索的字符串"
+
+#: src/interface.c:3154
+msgid "Maximal Number Of Result Items:"
+msgstr "最大搜索結果数量:"
+
+#: src/interface.c:3163
+msgid ""
+"Note: Liferea will generate a feed subscription which is used to query the "
+"Feedster results for the specified search string. You can keep this feed "
+"permanently and update it like any other subscription.  "
+msgstr ""
+"注: Liferea 将产生一个于 Feedster 查询特定字串的资源订阅。您可以永久保留此定"
+"阅，并如同其他订阅一般更新。"
+
+#: src/interface.c:3260
+msgid "Liferea is a news aggregator for GTK+"
+msgstr "Liferea 是 GTK+ 新聞资源搜集器"
+
+#: src/interface.c:3270
+msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
+msgstr "<span color=\"blue\" underline=\"single\">Liferea 首页</span>"
+
+#: src/interface.c:3275
+msgid ""
+"Copyright (c) 2003-2005\n"
+"Lars Lindner <lars.lindner@gmx.net> and \n"
+"Nathan J. Conrad <t98502@users.sourceforge.net>\n"
+msgstr ""
+
+#: src/interface.c:3295
+msgid ""
+"Code, Patches, Debugging\n"
+"\n"
+"James Doherty <...>\n"
+"Jeremy Messenger <mezz7@cox.net>\n"
+"John McKnight <...>\n"
+"Tomasz Maka <pasp@ll.pl>\n"
+"Karl Soderstrom <ks@debian.org>\t\n"
+"Christophe Barbe <christophe.barbe@ufies.org>\n"
+"Juho Snellman <jsnell@users.sourceforge.net>\n"
+"Roshan Revankar <roshweb@users.sourceforge.net>\n"
+"Oliver Feiler <kiza@kcore.de>\n"
+"Niklas Morberg <morberg@users.sourceforge.net>\n"
+"Johannes Schlueter <joscherl@users.sourceforge.net>\n"
+"Pierre Phaneuf <pp@ludusdesign.com>\n"
+"ahmed el-helw <ahmedre@cc.gatech.edu>\n"
+"James Bowes <bowes@cs.dal.ca>\n"
+"Marc Deslauriers\n"
+"Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
+"Christoph Hohmann <reboot@users.sourceforge.net>\n"
+"Raphael Slinckx <raphael@slinckx.net>\n"
+"\n"
+"\n"
+"Code from other projects\n"
+"\n"
+"Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
+"Philippe Martin, Brion Vibber (favicon support)\n"
+"Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
+"Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
+msgstr ""
+
+#: src/interface.c:3301
+msgid "Contributors"
+msgstr "贡献者"
+
+#: src/interface.c:3321
+msgid "Translation"
+msgstr "翻译"
+
+#: src/interface.c:3396 src/ui_feed.c:424
+#, c-format
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "输入使用者名称与密码 \"%s\" (%s):"
+
+#: src/interface.c:3437
+msgid ""
+"Note: <i>The username and password will be saved to your Liferea feedlist "
+"file without using encryption.</i>"
+msgstr "注: <i>帐号跟密码会以明码存于您的 Liferea 资源列表文件。</i>"
+
+#: src/interface.c:3503
+msgid "VFolder Properties"
+msgstr "虛拟目录属性"
+
+#: src/interface.c:3519
+msgid "Name"
+msgstr "名称"
+
+#: src/interface.c:3548
+msgid ""
+"Note: Items are added to the vfolder if at least one additive rule\n"
+"matches. They are removed if at least one removing rule matches."
+msgstr ""
+"注: 如果符合任一条规则，条目将加入虛拟目录中。如果符合任一删除规则，它們将会"
+"被删除。"
+
+#: src/interface.c:3561
+msgid "Rules"
+msgstr "规则"
+
+#: src/interface.c:3622
+msgid "Downloading Enclosure"
+msgstr "附件下载中"
+
+#: src/interface.c:3637
+msgid "Downloading an enclosure of type:"
+msgstr "下载附件类型："
+
+#: src/interface.c:3642
+msgid "<b>text/plain</b>"
+msgstr ""
+
+#: src/interface.c:3648
+msgid ""
+"What should Liferea do with this enclosure? Please enter the command you "
+"want to be executed below. The downloaded file will be supplied as an "
+"argument for this command:"
+msgstr ""
+
+#: src/interface.c:3662
+msgid "_Browse"
+msgstr "_浏览"
+
+#: src/interface.c:3666
+msgid "_Do this automatically for files like this from now on."
+msgstr "_从现在开始自动替文件作同样的处理"
+
+#: src/interface.c:3729
+msgid "Search All Feeds"
+msgstr "搜索所有资源"
+
+#: src/interface.c:3744
+msgid "Search for"
+msgstr "搜索"
+
+#: src/interface.c:3751
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr "输入一个让 Liferea 在条目标题或内容中寻找的搜索字符"
+
+#: src/interface.c:3767
+msgid "Saves this search as a VFolder, which will appear in the feed list."
+msgstr "保存此搜索为资源列表上的虛拟目录，它将会出现于资源列表中。"
+
+#: src/interface.c:3790
+msgid ""
+"Starts searching for the specified text in all feeds. The search result will "
+"appear in the item list."
+msgstr "开始在所有资源中搜索该文本，结果会出现在条目列表中。"
+
+#: src/item.c:270 src/item.c:274 src/item.c:287 src/ui_itemlist.c:225
+msgid "[No title]"
+msgstr "[无标题]"
+
+#: src/item.c:277 src/metadata.c:335 src/ocs_dir.c:105
+msgid "Item:"
+msgstr "条目:"
+
+#: src/item.c:339
+msgid "date"
+msgstr "日期"
+
+#: src/main.c:68
+msgid "  --version        Print version information and exit"
+msgstr " --version        打印 Liferea 版本編号"
+
+#: src/main.c:69
+msgid "  --help           Print this help and exit"
+msgstr "  --help           打印此信息后退出"
+
+#: src/main.c:70
+msgid "  --iconify        Start the program iconified"
+msgstr "  --iconify        以图标模式启动程序"
+
+#: src/main.c:72
+msgid "  --debug-cache    Print debugging messages for the cache handling"
+msgstr "  --debug-cache    打印处理缓存时的调试信息"
+
+#: src/main.c:73
+msgid ""
+"  --debug-conf     Print debugging messages of the configuration handling"
+msgstr "  --debug-conf     打印设定的调试信息"
+
+#: src/main.c:74
+msgid ""
+"  --debug-update   Print debugging messages of the feed update processing"
+msgstr "  --debug-update   打印资源升级的错误信息"
+
+#: src/main.c:75
+msgid "  --debug-parsing  Print debugging messages of all parsing functions"
+msgstr "  --debug-parsing  打印所有解析功能的调试信息"
+
+#: src/main.c:76
+msgid "  --debug-gui      Print debugging messages of all GUI functions"
+msgstr "  --debug-gui      打印所有图形界面的调试信息"
+
+#: src/main.c:77
+msgid ""
+"  --debug-trace    Print debugging messages when entering/leaving functions"
+msgstr "  --debug-trace    打印 entering/leaving 函数调试信息"
+
+#: src/main.c:78
+msgid "  --debug-all      Print debugging messages of all types"
+msgstr "  --debug-all      打印所有类別的调试信息"
+
+#: src/main.c:79
+msgid "  --debug-verbose  Print verbose debugging messages"
+msgstr "  --debug-verbose  打印详细调试信息"
+
+#: src/main.c:222
+#, c-format
+msgid "The --session argument must be given a parameter.\n"
+msgstr "--session 选项必须指定参数。\n"
+
+#: src/main.c:225
+#, c-format
+msgid "Liferea encountered an unknown argument: %s\n"
+msgstr "Lifeare 碰到未知的参数: %s\n"
+
+#: src/main.c:244
+msgid ""
+"Another copy of Liferea was found to be running. Please use it instead. If "
+"there is no other copy of Liferea running, please delete the \"~/.liferea/"
+"lock\" lock file."
+msgstr ""
+"发现另外一份 Liferea 正在执行。请使用它。如果并沒有其他 Liferea 执行中，请删"
+"除 \"~/.liferea/lock\" 文件。"
+
+#: src/metadata.c:290
+msgid "comments"
+msgstr "评论"
+
+#: src/metadata.c:320 src/metadata.c:347
+msgid "feed generator"
+msgstr "资源产生器"
+
+#: src/metadata.c:338
+msgid "author"
+msgstr "作者"
+
+#: src/metadata.c:339
+msgid "contributors"
+msgstr "贡献者"
+
+#: src/metadata.c:340
+msgid "copyright"
+msgstr "版权"
+
+#: src/metadata.c:341
+msgid "language"
+msgstr "语言"
+
+#: src/metadata.c:342
+msgid "feed published on"
+msgstr "资源发布于"
+
+#: src/metadata.c:343
+msgid "content last updated"
+msgstr "內容最后更新"
+
+#: src/metadata.c:344
+msgid "managing editor"
+msgstr "編辑"
+
+#: src/metadata.c:345
+msgid "webmaster"
+msgstr "网络管理员"
+
+#: src/metadata.c:346
+msgid "category"
+msgstr "类别"
+
+#. types for admin
+#: src/metadata.c:354
+msgid "report errors to"
+msgstr "报告错误給"
+
+#. types for aggregation
+#: src/metadata.c:358
+msgid "original source"
+msgstr "原始来源"
+
+#: src/metadata.c:359
+msgid "original time"
+msgstr "原始时间"
+
+#. types for creative commons
+#: src/metadata.c:365
+msgid "license"
+msgstr "授权"
+
+#. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
+#: src/metadata.c:368
+msgid "creator"
+msgstr "创作者"
+
+#: src/metadata.c:369
+msgid "publisher"
+msgstr "发布者"
+
+#: src/metadata.c:370
+msgid "type"
+msgstr "类型"
+
+#: src/metadata.c:371
+msgid "format"
+msgstr "格式"
+
+#: src/metadata.c:372
+msgid "identifier"
+msgstr "识別器"
+
+#: src/metadata.c:373
+msgid "source"
+msgstr "来源"
+
+#: src/metadata.c:374
+msgid "coverage"
+msgstr "涵盖"
+
+#. Cast time_t tunix to int.
+#. Print cookie expire warning.
+#: src/net/cookies.c:190
+#, c-format
+msgid "Cookie for %s has expired!"
+msgstr "%s 的 cookie 已失效"
+
+#: src/ns_dc.c:193 src/ns_ocs.c:93
+msgid "internal OCS namespace parsing error!"
+msgstr "內部 OCS 命名空间解析错误!"
+
+#: src/ns_photo.c:39
+msgid "included photo"
+msgstr "包含图片"
+
+#: src/ocs_dir.c:100
+msgid "Feed"
+msgstr "资源"
+
+#: src/ocs_dir.c:201 src/ocs_dir.c:246 src/ocs_dir.c:361 src/ocs_dir.c:431
+#, c-format
+msgid "no namespace handler for <%s:%s>!\n"
+msgstr "无 <%s:%s> 之 namespace handler!\n"
+
+#: src/ocs_dir.c:459
+msgid "<p>Could not find RDF header!</p>"
+msgstr "<p>无法找到 RDF 头!</p>"
+
+#: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:296 src/rss_channel.c:328
+#: src/ui_htmlview.h:98
+msgid "There were errors while parsing this feed!"
+msgstr "解析资源时出现错误!"
+
+#: src/opml.c:151
+msgid "<p>Could not find OPML header!</p>"
+msgstr "<p>无法找到 OPML 头!</p>"
+
+#: src/pie_feed.c:167
+msgid "<p>Could not find Atom/Echo/PIE header!</p>"
+msgstr "<p>无法找到 Atom/Echo/PIE 头!</p>"
+
+#: src/rss_channel.c:246
+msgid "<p>Could not find RDF/RSS header!</p>"
+msgstr "<p>无法找到 RDF/RSS 头!</p>"
+
+#: src/rule.c:169
+msgid "Item"
+msgstr "条目"
+
+#: src/rule.c:169
+msgid "does contain"
+msgstr "包含"
+
+#: src/rule.c:169
+msgid "does not contain"
+msgstr "不包含"
+
+#: src/rule.c:170
+msgid "Item title"
+msgstr "条目标题"
+
+#: src/rule.c:170 src/rule.c:171 src/rule.c:172
+msgid "does match"
+msgstr "吻合"
+
+#: src/rule.c:170 src/rule.c:171 src/rule.c:172
+msgid "does not match"
+msgstr "不吻合"
+
+#: src/rule.c:171
+msgid "Item body"
+msgstr "条目內容"
+
+#: src/rule.c:172
+msgid "Feed title"
+msgstr "资源标题"
+
+#: src/rule.c:173
+msgid "Read status"
+msgstr "阅读状态"
+
+#: src/rule.c:173
+msgid "is unread"
+msgstr "未读"
+
+#: src/rule.c:173
+msgid "is read"
+msgstr "已读"
+
+#: src/rule.c:174
+msgid "Flag status"
+msgstr "标识状态"
+
+#: src/rule.c:174
+msgid "is flagged"
+msgstr "以标识"
+
+#: src/rule.c:174
+msgid "is unflagged"
+msgstr "未标识"
+
+#: src/support.c:90 src/support.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "无法找到图形文件: %s"
+
+#: src/ui_enclosure.c:72
+#, fuzzy, c-format
+msgid "\"%s\" is not a valid enclosure type config file!"
+msgstr "\"%s\" 不是有效的附件类型配置文件!"
+
+#: src/ui_enclosure.c:231 src/ui_enclosure.c:375 src/ui_feed.c:366
+msgid "Choose File"
+msgstr "选择文件"
+
+#: src/ui_enclosure.c:286
+#, c-format
+msgid "<b>File Extension .%s</b>"
+msgstr "<b>文件扩展名。%s</b>"
+
+#: src/ui_enclosure.c:288
+#, c-format
+msgid "<b>%s</b>"
+msgstr ""
+
+#: src/ui_feed.c:425
+msgid "Unknown source"
+msgstr "未知来源"
+
+#: src/ui_feed.c:527
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minutes."
+msgstr "资源提供者建议更新频率为 %d 分钟。"
+
+#: src/ui_feed.c:529
+msgid "This feed specifies no default update interval."
+msgstr "此资源未指定预设更新频率。"
+
+#: src/ui_feedlist.c:492
+msgid "Note: Using the subscriptions filter disables drag & drop"
+msgstr "注: 使用订阅过滤将停用拖拽功能"
+
+#: src/ui_feedlist.c:522 src/ui_feedlist.c:525
+msgid "Deleting entry"
+msgstr "删除入口中"
+
+#: src/ui_feedlist.c:523
+#, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "您确定要删除 %s 及其內容吗？"
+
+#: src/ui_feedlist.c:526
+#, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
+msgstr "您确定要删除 %s 吗 ？"
+
+#: src/ui_feedlist.c:534
+msgid "Deletion Confirmation"
+msgstr "删除确认"
+
+#: src/ui_feedlist.c:564
+msgid "You must select a feed entry"
+msgstr "您必须选择一资源入口"
+
+#: src/ui_feedlist.c:565
+msgid "You must select a feed entry."
+msgstr "您必须选择一资源入口。"
+
+#: src/ui_feedlist.c:623
+msgid "New subscription"
+msgstr "新增订阅"
+
+#: src/ui_folder.c:87
+msgid "A folder must be selected."
+msgstr "目录必须先选择。"
+
+#: src/ui_folder.c:187
+msgid "<i>(empty)</i>"
+msgstr "<i>(空)</i>"
+
+#: src/ui_folder.c:251
+msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+msgstr "內部错误! 未知入口类型! 不能显示合适的图标!\n"
+
+#: src/ui_htmlview.c:70
+msgid ""
+"\n"
+"Trying to load the Mozilla browser module... Note that this\n"
+"might not work with every Mozilla version. If you have problems\n"
+"and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
+"another Mozilla installation or delete the gconf configuration\n"
+"key /apps/liferea/browser-module!\n"
+"\n"
+msgstr ""
+"\n"
+"试着载入 Mozilla 浏览器模块... 注: 这可能无法在每个 Mozilla \n"
+"版本中使用。如果您碰到问题而 Liferea 无法启动，请试着将 \n"
+"MOZILLA_FIVE_HOME 设定到另外一个 Mozilla 安裝目录或删除 gconf\n"
+"设定中的 /apps/liferea/browser-module!\n"
+"\n"
+
+#: src/ui_htmlview.c:82
+#, c-format
+msgid ""
+"Failed to open HTML widget module (%s) specified in configuration!\n"
+"%s\n"
+msgstr ""
+"无法开启设定中的 HTML 元件模块 (%s)!\n"
+"%s\n"
+
+#: src/ui_htmlview.c:94
+msgid "Htmlview API mismatch!"
+msgstr "Htmlview API 版本不一致!"
+
+#: src/ui_htmlview.c:102
+msgid "Detected module is not a valid htmlview module!"
+msgstr "探测到的模块并非有效的 htmlview 模块!"
+
+#: src/ui_htmlview.c:124
+#, c-format
+msgid "Cannot load HTML widget module (%s)!"
+msgstr "无法载入 HTML 元件模块(%s)!"
+
+#. now we determine a list of all available modules
+#. to present in the preferences dialog and to load
+#. one just in case there was no configured module
+#. or it did not load when trying...
+#: src/ui_htmlview.c:130
+#, c-format
+msgid "Available browser modules (%s):\n"
+msgstr "可用的浏览器模块 (%s)\n"
+
+#: src/ui_htmlview.c:165
+#, c-format
+msgid "Loading configured browser module (%s)!\n"
+msgstr "载入已设定浏览器模块(%s)!\n"
+
+#: src/ui_htmlview.c:168
+msgid "No browser module configured!\n"
+msgstr "浏览器模块未设定!\n"
+
+#: src/ui_htmlview.c:176
+#, c-format
+msgid "trying to load browser module %s (%s)\n"
+msgstr "试着载入浏览器模块 %s (%s)\n"
+
+#: src/ui_htmlview.c:187
+msgid ""
+"Sorry, I was not able to load any installed browser modules! Try the --debug-"
+"all option to get debug information!"
+msgstr "抱歉, 无法载入任何浏览器模块! 请用 --debug-all 选项来获取调试信息!"
+
+#. FIXME: bad because this is not only used for item links!
+#: src/ui_htmlview.c:365
+msgid "This item does not have a link assigned!"
+msgstr "此条目沒有链接!"
+
+#: src/ui_htmlview.c:419 src/ui_htmlview.c:442
+#, c-format
+msgid "Browser command failed: %s"
+msgstr "浏览器命令失败: %s"
+
+#: src/ui_htmlview.c:445
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "启动: \"%s\""
+
+#: src/ui_htmlview.h:96
+#, c-format
+msgid ""
+"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
+msgstr "更新此订阅失败!<br><b>HTTP 错误码 %d: %s</b>"
+
+#. explicitly no </span> at the end!
+#: src/ui_htmlview.h:101
+#, fuzzy
+msgid "There were errors while filtering this feed!"
+msgstr "过滤资源时出现错误"
+
+#: src/ui_htmlview.h:104
+msgid ""
+"This feed is discontinued. It's no longer available. Liferea won't update it "
+"anymore but you can still access the cached headlines."
+msgstr ""
+"此资源已失效，将不再更新。Liferea 将不会更新它，但是您可以继续读取暂存标题。"
+
+#: src/ui_itemlist.c:300
+msgid "Date"
+msgstr "日期"
+
+#: src/ui_itemlist.c:311
+msgid "Headline"
+msgstr "标题"
+
+#: src/ui_itemlist.c:499 src/ui_itemlist.c:512 src/ui_itemlist.c:564
+msgid "No item has been selected"
+msgstr "未选择条目!"
+
+#: src/ui_itemlist.c:510
+#, fuzzy
+msgid "This item has no link specified!"
+msgstr "此条目沒有链接!"
+
+#: src/ui_itemlist.c:547 src/ui_itemlist.c:567
+msgid "You must select a feed to delete its items!"
+msgstr "您必须先选择一个资源才能删除!"
+
+#. if we don't find a feed with unread items do nothing
+#: src/ui_itemlist.c:675
+msgid "There are no unread items "
+msgstr "沒有未读条目 "
+
+#: src/ui_mainwindow.c:187
+msgid "New Feed"
+msgstr "新增资源"
+
+#: src/ui_mainwindow.c:187
+msgid "Add a new subscription."
+msgstr "新增订阅"
+
+#: src/ui_mainwindow.c:188
+msgid "Next Unread"
+msgstr "下一个未读"
+
+#: src/ui_mainwindow.c:189
+msgid "Mark As Read"
+msgstr "全部标记为已读"
+
+#: src/ui_mainwindow.c:189
+msgid ""
+"Mark all items of the selected subscription or of all subscriptions of the "
+"selected folder as read."
+msgstr "标记所有选择的条目或目录下所有的条目为已读。"
+
+#: src/ui_mainwindow.c:190
+msgid "Update All"
+msgstr "更新全部"
+
+#: src/ui_mainwindow.c:191
+msgid "Search"
+msgstr "搜索"
+
+#: src/ui_mainwindow.c:191
+msgid "Search all feeds."
+msgstr "搜索所有资源"
+
+#: src/ui_mainwindow.c:192
+msgid "Preferences"
+msgstr "偏好设定"
+
+#: src/ui_mainwindow.c:192
+msgid "Edit preferences."
+msgstr "編辑偏好设定。"
+
+#. addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
+#. "When Liferea starts for the first time it loads a localized default "
+#. "feed list. There are already default lists for English, French, German "
+#. "and Spanish. If you think you know a good set of default feeds for your "
+#. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
+#. "and it will be included in the next release!</div>"));
+#: src/ui_mainwindow.c:234
+msgid ""
+"<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
+"can add new subscriptions and select subscriptions to read their headlines. "
+"The right side either displays a list of the headlines of the selected "
+"subscription and a pane to view the selected headline or all headlines at "
+"once if condensed mode is selected.</p><h3>Basic Actions</"
+"h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the "
+"selected folder. To create a new subscription enter the feed URL or if you "
+"don't know it the URL of the website which provides the feed.</p></"
+"li><li><p><b>Update Subscription</b> - This will update the subscription you "
+"selected. You may want to do this if you want to immediatly check a "
+"subscription for updates. Usually it is adequate to rely on the auto "
+"updating according to the update interval of the subscription.</p></"
+"li><li><p><b>Update All</b> - This will update all your subscriptions at "
+"once. Again usually it is adequate to rely on the auto updating.</"
+"li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
+"change the update interval, title, authentication or caching properties of a "
+"subscription.</p></li></ul><p>To learn more about Liferea you should read "
+"the documentation provided in the help feed or in the <a href=\"http://"
+"liferea.sourceforge.net/faq.htm\">FAQ</a> available at the <a href=\"http://"
+"liferea.sf.net\">project homepage</a>.</p>"
+msgstr ""
+
+#: src/ui_mainwindow.c:312
+msgid "Liferea is now online"
+msgstr "Liferea 现为在线模式。"
+
+#: src/ui_mainwindow.c:315
+msgid "Liferea is now offline"
+msgstr "Lifeare 现为离线模式"
+
+#: src/ui_notification.c:240
+msgid "Untitled"
+msgstr "未命名"
+
+#: src/ui_notification.c:311
+msgid "Liferea notification"
+msgstr "Lifeare 通知"
+
+#: src/ui_popup.c:91
+msgid "/_Update"
+msgstr "/_更新"
+
+#: src/ui_popup.c:92 src/ui_popup.c:103 src/ui_popup.c:113
+msgid "/_Mark All As Read"
+msgstr "/_全部标记为已读"
+
+#: src/ui_popup.c:93 src/ui_popup.c:104 src/ui_popup.c:114 src/ui_popup.c:123
+msgid "/_New"
+msgstr "/_新增"
+
+#: src/ui_popup.c:94 src/ui_popup.c:105 src/ui_popup.c:115 src/ui_popup.c:124
+msgid "/_New/New _Subscription..."
+msgstr "/_新增/_新增订阅..."
+
+#: src/ui_popup.c:95 src/ui_popup.c:106 src/ui_popup.c:116 src/ui_popup.c:125
+msgid "/_New/New F_older..."
+msgstr "/_新增/_新增目录..."
+
+#: src/ui_popup.c:96 src/ui_popup.c:107 src/ui_popup.c:117
+msgid "/_New/New _VFolder..."
+msgstr "/_新增/_新增虛拟目录..."
+
+#: src/ui_popup.c:97 src/ui_popup.c:118
+msgid "/_Properties..."
+msgstr "/_属性..."
+
+#: src/ui_popup.c:98 src/ui_popup.c:119
+msgid "/_Delete"
+msgstr "/_删除资源"
+
+#: src/ui_popup.c:102
+msgid "/_Update Folder"
+msgstr "/_更新目录"
+
+#: src/ui_popup.c:108
+msgid "/_Rename Folder..."
+msgstr "/_重新命名目录..."
+
+#: src/ui_popup.c:109
+msgid "/_Delete Folder"
+msgstr "/_删除目录"
+
+#: src/ui_popup.c:130
+msgid "/Toggle _Read Status"
+msgstr "/切换阅读状态"
+
+#: src/ui_popup.c:131
+msgid "/Toggle Item _Flag"
+msgstr "/切换条目标签"
+
+#: src/ui_popup.c:132
+msgid "/R_emove Item"
+msgstr "/删除条目"
+
+#: src/ui_popup.c:134
+msgid "/_Next Unread Item"
+msgstr "/_下一个未读条目"
+
+#: src/ui_popup.c:136
+msgid "/Launch Item In _Tab"
+msgstr "/开启浏览器条目"
+
+#: src/ui_popup.c:137
+msgid "/_Launch Item In Browser"
+msgstr "/_开启浏览器条目"
+
+#: src/ui_popup.c:142
+msgid "/_Increase Text Size"
+msgstr "/_縮小字体"
+
+#: src/ui_popup.c:143
+msgid "/_Decrease Text Size"
+msgstr "/_放大字体"
+
+#: src/ui_popup.c:147
+msgid "/_Copy Link Location"
+msgstr "/_复制链接地址"
+
+#: src/ui_popup.c:148
+msgid "/Launch Link In _Tab"
+msgstr "/在 Tab 开启链接"
+
+#: src/ui_popup.c:149
+msgid "/_Launch Link In Browser"
+msgstr "/_开启链接"
+
+#: src/ui_popup.c:150
+msgid "/_Subscribe..."
+msgstr "/_订阅..."
+
+#: src/ui_popup.c:155
+#, fuzzy
+msgid "/_Online/Offline"
+msgstr "/_离线浏览"
+
+#: src/ui_popup.c:156
+msgid "/_Update All"
+msgstr "/_更新全部"
+
+#: src/ui_popup.c:157
+msgid "/_Preferences..."
+msgstr "/_偏好设定..."
+
+#: src/ui_popup.c:159
+msgid "/_Show Window"
+msgstr "/_显示窗口"
+
+#: src/ui_popup.c:160
+msgid "/_Quit"
+msgstr "/_退出"
+
+#: src/ui_popup.c:165
+msgid "/Open Enclosure..."
+msgstr "/开启附件..."
+
+#: src/ui_popup.c:166
+msgid "/Save As..."
+msgstr "/另存为..."
+
+#. This allows the user to choose their own browser by typing in the command.
+#: src/ui_prefs.c:224
+msgid "Manual"
+msgstr "手动"
+
+#: src/ui_prefs.c:234
+msgid "Browser default"
+msgstr "浏览器预设"
+
+#: src/ui_prefs.c:239
+msgid "Existing window"
+msgstr "现行窗口"
+
+#: src/ui_prefs.c:244
+msgid "New window"
+msgstr "新窗口"
+
+#: src/ui_prefs.c:249
+msgid "New tab"
+msgstr "新分页"
+
+#: src/ui_prefs.c:259
+msgid "Update only feeds scheduled for updates"
+msgstr "只更新预定更新的资源"
+
+#: src/ui_prefs.c:264
+msgid "Update all feeds"
+msgstr "更新所有资源"
+
+#: src/ui_prefs.c:269
+msgid "Reset feed update timers (Update no feeds)"
+msgstr "重置更新时间表(不更新任何资源)"
+
+#: src/ui_prefs.c:512
+msgid "Type"
+msgstr "类型"
+
+#: src/ui_prefs.c:515
+msgid "Program"
+msgstr "程序"
+
+#: src/ui_prefs.c:766
+msgid "Choose download directory"
+msgstr "选择下载目录"
+
+#: src/ui_search.c:66
+#, c-format
+msgid "Searching for \"%s\""
+msgstr "搜索 \"%s\""
+
+#: src/ui_search.c:83
+#, c-format
+msgid ""
+"%s<h2>%d Search Results for \"%s\"</h2><p>The item list now contains all "
+"items matching the specified search pattern. If you want to save this search "
+"result permanently you can click the VFolder button in the search dialog and "
+"Liferea will add a VFolder to your feed list.</h2>"
+msgstr ""
+
+#: src/ui_search.c:121
+msgid "Please do a search first!"
+msgstr "请先执行搜索!"
+
+#: src/ui_search.c:131
+msgid "New VFolder"
+msgstr "新虛拟目录"
+
+#: src/ui_tabs.c:107
+msgid "URL"
+msgstr "网址"
+
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+#: src/ui_tray.c:99
+#, fuzzy, c-format
+msgid "%d new item"
+msgid_plural "%d new items"
+msgstr[0] "%d 个新条目"
+msgstr[1] "%d 个新条目"
+
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+#: src/ui_tray.c:100 src/ui_tray.c:104
+#, fuzzy, c-format
+msgid ""
+"%s\n"
+"%d unread item"
+msgid_plural ""
+"%s\n"
+"%d unread items"
+msgstr[0] "%d 个新条目"
+msgstr[1] "%d 个新条目"
+
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+#: src/ui_tray.c:103
+#, fuzzy
+msgid "No new items"
+msgstr "无新条目"
+
+#: src/update.c:70
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr "无法读取用于过滤的临时文件 %s!"
+
+#: src/update.c:93
+#, c-format
+msgid "%s exited with status %d"
+msgstr "%s 终止，错误代码：%d"
+
+#: src/update.c:99 src/update.c:100 src/update.c:136
+#, c-format
+msgid "Error: Could not open pipe \"%s\""
+msgstr "错误: 无法开启管道 \"%s\"!"
+
+#. FIXME: maybe setting request->returncode would be better
+#: src/update.c:152
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "错误: 无法开启文件 \"%s\"!"
+
+#: src/update.c:158
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "错误: 无此文件 \"%s\"!"
+
+#: src/gtkhtml2/gtkhtml2.c:229
+msgid ""
+"The included HTML <object> tag is not supported with GtkHTML2.\n"
+"Included Plugins might not be displayed."
+msgstr ""
+"GtkHTML2 不支持 HTML <object> 标识。\n"
+"內含的外挂可能无法显示。"
+
+#~ msgid "There were errors while parsing a feed"
+#~ msgstr "解析资源时出现错误!"
+
+#~ msgid ""
+#~ "There were errors while parsing this feed. The following error occurred:"
+#~ "<br><b>%s</b>"
+#~ msgstr "解析资源时出现错误。产生以下错误:<br><b>%s</b>"
+
+#~ msgid ""
+#~ "There were errors while filtering this feed. The following error occurred:"
+#~ "<br><b><pre>%s</pre></b>"
+#~ msgstr "解析资源时出现错误，错误信息如下：<br><b><pre>%s</pre></b>"
