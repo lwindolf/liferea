@@ -41,6 +41,11 @@
 /* to store the ATOMNsHandler structs for all supported RDF namespace handlers */
 GHashTable	*atom10_nstable = NULL;
 GHashTable	*ns_atom10_ns_uri_table = NULL;
+struct atom10ParserState {
+
+};
+typedef void 	(*atom10ElementParserFunc)	(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState *state);
+
 
 /**
  * This parses an Atom content construct.
@@ -239,22 +244,170 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 	return tmp;
 }
 
+static void atom10_parse_entry_author(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *author;
+	
+	author = atom10_parse_person_construct(cur);
+	ip->metadata = metadata_list_append(ip->metadata, "author", author);
+	g_free(author);
+}
+
+static void atom10_parse_entry_category(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *category = NULL, *categoryEsc;
+	if (xmlHasNsProp(cur, BAD_CAST"label", NULL)) {
+		category = utf8_fix(xmlGetNsProp(cur, BAD_CAST"label", NULL));
+	} else if (xmlHasNsProp(cur, BAD_CAST"term", NULL)) {
+		category = utf8_fix(xmlGetNsProp(cur, BAD_CAST"term", NULL));
+	}
+	if (category != NULL) {
+		categoryEsc = g_markup_escape_text(category, -1);
+		ip->metadata = metadata_list_append(ip->metadata, "category", categoryEsc);
+		g_free(categoryEsc);
+		xmlFree(category);
+	}
+}
+
+static void atom10_parse_entry_content(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *content = atom10_parse_content_construct(cur);
+	if (content != NULL)
+		item_set_description(ip, content);
+	g_free(content);
+}
+
+static void atom10_parse_entry_contributor(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *contributor = atom10_parse_person_construct(cur);
+	ip->metadata = metadata_list_append(ip->metadata, "contributor", contributor);
+	g_free(contributor);
+}
+
+static void atom10_parse_entry_id(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *id = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			if (id != NULL)
+				item_set_id(ip, id);
+			g_free(id);
+}
+
+static void atom10_parse_entry_link(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *href;
+
+	if(NULL != (href = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", NULL)))) {
+		xmlChar *baseURL = xmlNodeGetBase(cur->doc, cur);
+		gchar *url, *relation, *escTitle = NULL, *title;
+		
+		if (baseURL == NULL && fp->htmlUrl != NULL && fp->htmlUrl[0] != '|' &&
+			strstr(fp->htmlUrl, "://") != NULL)
+			baseURL = xmlStrdup(BAD_CAST(fp->htmlUrl));
+		url = common_build_url(href, baseURL);
+		
+		relation = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
+		title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
+		if (title != NULL)
+			escTitle = g_markup_escape_text(title, -1);
+		/* FIXME: Display the human readable title from the property "title" */
+		/* This current code was copied from the RSS parser.*/
+		
+		if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || relation == NULL || g_str_equal(relation, "alternate"))
+			item_set_source(ip, url);
+		else if (g_str_equal(relation, "enclosure")) {
+			ip->metadata = metadata_list_append(ip->metadata, "enclosure", url);
+		} else
+			/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
+		xmlFree(baseURL);
+		xmlFree(title);
+		xmlFree(escTitle);
+		g_free(url);
+		g_free(relation);
+		g_free(href);
+	} 
+}
+
+static void atom10_parse_entry_published(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *datestr = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+	if(NULL != datestr) {
+		item_set_time(ip, parseISO8601Date(datestr));
+		ip->metadata = metadata_list_append(ip->metadata, "pubDate", datestr);
+		g_free(datestr);
+	}
+}
+
+static void atom10_parse_entry_rights(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *rights = atom10_parse_text_construct(cur, FALSE);
+	if(NULL != rights)
+		ip->metadata = metadata_list_append(ip->metadata, "copyright", rights);
+	g_free(rights);
+}
+
+/* <summary> can be used for short text descriptions, if there is no
+   <content> description we show the <summary> content */
+static void atom10_parse_entry_summary(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *summary;
+	if (NULL == item_get_description(ip)) {
+		summary = atom10_parse_text_construct(cur, TRUE);
+		if(NULL != summary)
+			item_set_description(ip, summary);
+		g_free(summary);
+	}
+}
+
+static void atom10_parse_entry_title(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *title = utf8_fix(atom10_parse_text_construct(cur, FALSE));
+	if (title != NULL)
+		item_set_title(ip, title);
+	g_free(title);
+}
+
+static void atom10_parse_entry_updated(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *datestr = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+	if(NULL != datestr) {
+		item_set_time(ip, parseISO8601Date(datestr));
+		ip->metadata = metadata_list_append(ip->metadata, "contentUpdateDate", datestr);
+	}
+	g_free(datestr);
+}
 /* <content> tag support, FIXME: base64 not supported */
 /* method to parse standard tags for each item element */
 static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
-	gchar			*tmp2, *tmp;
 	itemPtr			ip;
 	NsHandler		*nsh;
 	parseItemTagFunc	pf;
+	atom10ElementParserFunc func;
+	static GHashTable *entryElementHash = NULL;
 	
 	g_assert(NULL != cur);
 	
+	if (entryElementHash == NULL) {
+		entryElementHash = g_hash_table_new(g_str_hash, g_str_equal);
+		
+		g_hash_table_insert(entryElementHash, "author", &atom10_parse_entry_author);
+		g_hash_table_insert(entryElementHash, "category", &atom10_parse_entry_category);
+		g_hash_table_insert(entryElementHash, "content", &atom10_parse_entry_content);
+		g_hash_table_insert(entryElementHash, "contributor", &atom10_parse_entry_contributor);
+		g_hash_table_insert(entryElementHash, "id", &atom10_parse_entry_id);
+		g_hash_table_insert(entryElementHash, "link", &atom10_parse_entry_link);
+		g_hash_table_insert(entryElementHash, "published", &atom10_parse_entry_published);
+		g_hash_table_insert(entryElementHash, "rights", &atom10_parse_entry_rights);
+		/* FIXME: Parse "source" */
+		g_hash_table_insert(entryElementHash, "summary", &atom10_parse_entry_summary);
+		g_hash_table_insert(entryElementHash, "title", &atom10_parse_entry_title);
+		g_hash_table_insert(entryElementHash, "updated", &atom10_parse_entry_updated);
+	}	
+
 	ip = item_new();
 	
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		
 		if (cur->type != XML_ELEMENT_NODE || cur->name == NULL) {
+			cur = cur->next;
+			continue;
+		}
+		
+		if(((cur->ns->href != NULL)   && (NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href)))) ||
+		   ((cur->ns->prefix != NULL) && (NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix))))) {
+			
+			pf = nsh->parseItemTag;
+			if(NULL != pf)
+				(*pf)(ip, cur);
 			cur = cur->next;
 			continue;
 		}
@@ -267,15 +420,6 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			continue;
 		}
 		
-		if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href)) ||
-		   NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix))) {
-			
-			pf = nsh->parseItemTag;
-			if(NULL != pf)
-				(*pf)(ip, cur);
-			cur = cur->next;
-			continue;
-		}
 		
 		if (xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
 			printf("unknown namespace found in feed\n");
@@ -283,105 +427,13 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			continue;
 		}
 		/* At this point, the namespace must be the ATOM 1.0 namespace */
-		
-		if(xmlStrEqual(cur->name, BAD_CAST"author")) {
-			/* parse feed author */
-			tmp = atom10_parse_person_construct(cur);
-			ip->metadata = metadata_list_append(ip->metadata, "author", tmp);
-			g_free(tmp);
-		} else if(xmlStrEqual(cur->name, BAD_CAST"category")) { 
-			tmp = NULL;
-			if (xmlHasNsProp(cur, BAD_CAST"label", NULL)) {
-				tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"label", NULL));
-			} else if (xmlHasNsProp(cur, BAD_CAST"term", NULL)) {
-				tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"term", NULL));
-			}
-			if (tmp != NULL) {
-				tmp2 = g_markup_escape_text(tmp, -1);
-				ip->metadata = metadata_list_append(ip->metadata, "category", tmp2);
-				g_free(tmp2);
-				xmlFree(tmp);
-			}
-		} else if(xmlStrEqual(cur->name, BAD_CAST"content")) {
-			/* <content> support */
-			gchar *tmp = atom10_parse_content_construct(cur);
-			if (tmp != NULL)
-				item_set_description(ip, tmp);
-			g_free(tmp);
-		} else if(xmlStrEqual(cur->name, BAD_CAST"contributor")) {
-			tmp = atom10_parse_person_construct(cur);
-			ip->metadata = metadata_list_append(ip->metadata, "contributor", tmp);
-			g_free(tmp);
-		} else if(xmlStrEqual(cur->name, BAD_CAST"id")) {
-			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if (tmp != NULL)
-				item_set_id(ip, tmp);
-			g_free(tmp);
-		} else if(xmlStrEqual(cur->name, BAD_CAST"link")) {
-			if(NULL != (tmp = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", NULL)))) {
-				xmlChar *baseURL = xmlNodeGetBase(cur->doc, cur);
-				gchar *url, *relation, *escTitle = NULL, *title;
-				
-				if (baseURL == NULL && fp->htmlUrl != NULL && fp->htmlUrl[0] != '|' &&
-					strstr(fp->htmlUrl, "://") != NULL)
-					baseURL = xmlStrdup(BAD_CAST(fp->htmlUrl));
-				url = common_build_url(tmp, baseURL);
-
-				relation = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
-				title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
-				if (title != NULL)
-					escTitle = g_markup_escape_text(title, -1);
-				/* FIXME: Display the human readable title from the property "title" */
-				/* This current code was copied from the RSS parser.*/
-				
-				if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || relation == NULL || g_str_equal(relation, "alternate"))
-					item_set_source(ip, url);
-				else if (g_str_equal(relation, "enclosure")) {
-					ip->metadata = metadata_list_append(ip->metadata, "enclosure", url);
-				} else
-					/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
-				xmlFree(baseURL);
-				xmlFree(title);
-				xmlFree(escTitle);
-				g_free(url);
-				g_free(relation);
-				g_free(tmp);
-			} 
-		} else if(xmlStrEqual(cur->name, BAD_CAST"published")) {
- 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
- 			if(NULL != tmp) {
-				item_set_time(ip, parseISO8601Date(tmp));
-				ip->metadata = metadata_list_append(ip->metadata, "pubDate", tmp);
-				g_free(tmp);
-			}
-		} else if(xmlStrEqual(cur->name, BAD_CAST"rights")) {
-			tmp = atom10_parse_text_construct(cur, FALSE);
-			if(NULL != tmp)
-				ip->metadata = metadata_list_append(ip->metadata, "copyright", tmp);
-			g_free(tmp);
-			/* FIXME: Parse "source" */
-		} else if(xmlStrEqual(cur->name, BAD_CAST"summary")) {			
-			/* <summary> can be used for short text descriptions, if there is no
-			   <content> description we show the <summary> content */
-			if (NULL == item_get_description(ip)) {
-				tmp = atom10_parse_text_construct(cur, TRUE);
-				if(NULL != tmp)
-					item_set_description(ip, tmp);
-				g_free(tmp);
-			}
-		} else if(xmlStrEqual(cur->name, BAD_CAST"title")) {
-			tmp = utf8_fix(atom10_parse_text_construct(cur, FALSE));
-			if (tmp != NULL)
-				item_set_title(ip, tmp);
-			g_free(tmp);
-		} else if(xmlStrEqual(cur->name, BAD_CAST"updated")) {
-			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if(NULL != tmp) {
-				item_set_time(ip, parseISO8601Date(tmp));
-				ip->metadata = metadata_list_append(ip->metadata, "contentUpdateDate", tmp);
-			}
-			g_free(tmp);
+		func = g_hash_table_lookup(entryElementHash, cur->name);
+		if (func != NULL) {
+			(*func)(cur, fp, ip, NULL);
+		} else {
+			printf("unknown entry element \"%s\" found in feed\n", cur->name);
 		}
+		
 		cur = cur->next;
 	}
 	
@@ -393,11 +445,6 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 	
 	return ip;
 }
-
-static GHashTable *feedElementHash;
-struct atom10ParserState {
-};
-typedef void 	(*atom10ElementParserFunc)	(xmlNodePtr cur, feedPtr fp, xmlDocPtr doc, struct atom10ParserState *state);
 
 static void atom10_parse_feed_author(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
 	/* parse feed author */
@@ -540,6 +587,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
 	atom10ElementParserFunc func;
+	static GHashTable *feedElementHash = NULL;
 	
 	if (feedElementHash == NULL) {
 		feedElementHash = g_hash_table_new(g_str_hash, g_str_equal);
@@ -573,16 +621,8 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				continue;
 			}
 			
-			/* check namespace of this tag */
-			if(NULL == cur->ns || cur->ns->href == NULL) {
-				/* This is an invalid feed... no idea what to do with the current element */
-				printf("element with no namespace found!\n");
-				cur = cur->next;
-				continue;
-			}
-			
-			if(NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href)) ||
-			   NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix))) {
+			if(((cur->ns->href != NULL)   && (NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_atom10_ns_uri_table, (gpointer)cur->ns->href)))) ||
+			   ((cur->ns->prefix != NULL) && (NULL != (nsh = (NsHandler *)g_hash_table_lookup(atom10_nstable, (gpointer)cur->ns->prefix))))) {
 				pf = nsh->parseChannelTag;
 				if(NULL != pf)
 					(*pf)(fp, cur);
@@ -590,6 +630,14 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				continue;
 			}
 			
+			/* check namespace of this tag */
+			if(NULL == cur->ns || cur->ns->href == NULL) {
+				/* This is an invalid feed... no idea what to do with the current element */
+				printf("element with no namespace found!\n");
+				cur = cur->next;
+				continue;
+			}
+
 			if (xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
 				printf("unknown namespace found in feed\n");
 				cur = cur->next;
