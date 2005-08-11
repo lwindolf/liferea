@@ -1,17 +1,16 @@
-# Chinese/Traditional translation of liferea.
-# Copyright (C) 2004, 2005
+# Chinese/Simplified translation of liferea.
+# Copyright (C) 2005
 # This file is distributed under the same license as the liferea package.
-# Jim Huang <jserv@kaffe.org>, 2005.
-# Rex Tsai <chihchun@users.sourceforge.net>, 2004.
+# Guanglei Xiong <xgl99@mails.tsinghua.edu.cn>, 2005.
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-07-31 04:01+0200\n"
-"PO-Revision-Date: 2005-06-11 08:22+0800\n"
-"Last-Translator: Jim Huang <jserv@kaffe.org>\n"
-"Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
+"PO-Revision-Date: 2005-08-11 08:22+0800\n"
+"Last-Translator: Guanglei Xiong <xgl99@mails.tsinghua.edu.cn>\n"
+"Language-Team: Chinese/Simplified \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -74,7 +73,7 @@ msgstr "系統托盘的方位。"
 #: src/export.c:490 src/export.c:492
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr "读取缓存文件 \"%s\" 时发生 XML 错误 ! 无法导入 \"%s\"!"
+msgstr "读取缓存文件时发生 XML 错误 ! 无法导入 \"%s\"!"
 
 #: src/export.c:496 src/export.c:498
 #, c-format
@@ -85,7 +84,7 @@ msgstr "空白文档! OPML 文档 \"%s\" 不应是空白文件。"
 #: src/export.c:506 src/export.c:508
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr "\"%s\" 不是有效的 OPML 文档! Liferea无法导入该文件!"
+msgstr "\"%s\" 不是有效的 OPML 文档! Liferea 无法导入该文件!"
 
 #: src/export.c:530
 msgid "Imported feed list"
@@ -139,6 +138,9 @@ msgid ""
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery.</p>"
 msgstr ""
+"<p>您让 Liferea 订阅的网址指向一个网页，但是"
+"自动发现在该页上没有找到资源。可能该页不支持"
+"资源自动发现。</p>"
 
 #: src/feed.c:233
 #, fuzzy
@@ -180,7 +182,7 @@ msgstr "此资源 \"%s\" 已经更新!"
 
 #: src/feed.c:520
 msgid "The feed was discontinued. Liferea won't update it anymore!"
-msgstr "资源已经失效。Liferea 将不会更新它。"
+msgstr "资源已经失效。Liferea 将不会再更新它。"
 
 #: src/feed.c:524
 #, c-format
@@ -199,7 +201,7 @@ msgstr "虛拟目录"
 
 #: src/feed.c:1054
 msgid "user defined command"
-msgstr "使用自定命令"
+msgstr "使用自定义命令"
 
 #: src/feed.c:1077 src/interface.c:1024 src/interface.c:1434 src/item.c:293
 #: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
@@ -214,7 +216,7 @@ msgstr "您无权下载此资源权限。请在资源属性窗口中更新输入
 
 #: src/feedlist.c:247
 msgid "Payment Required"
-msgstr "Payment Required"
+msgstr "需要付费"
 
 #: src/feedlist.c:248
 msgid "Access Forbidden"
@@ -267,7 +269,7 @@ msgstr "远端主机并未結束传送资料"
 #. Transfer errors
 #: src/feedlist.c:267
 msgid "Too many HTTP redirects were encountered"
-msgstr "太多 HTTP 重定向!"
+msgstr "遇到太多 HTTP 重定向!"
 
 #: src/feedlist.c:270
 msgid "Remote host sent an invalid response"
@@ -380,17 +382,17 @@ msgstr "资源(_F)"
 
 #: src/interface.c:181
 msgid "Update _Selected"
-msgstr "更新 选择的(_S)"
+msgstr "更新选择的资源(_S)"
 
 #: src/interface.c:184
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
-msgstr "更新选择的订阅项目或目录下的所有订阅项目。"
+msgstr "更新选择的订阅项或目录下的所有订阅项目。"
 
 #: src/interface.c:190
 msgid "Update _All"
-msgstr "更新 全部(_A)"
+msgstr "更新全部(_A)"
 
 #: src/interface.c:193 src/ui_mainwindow.c:190
 msgid "Updates all subscriptions. This does not update OCS directories."
@@ -398,7 +400,7 @@ msgstr "立即升级所有资源 (除了 OCS 目录)。"
 
 #: src/interface.c:202
 msgid "_Mark Selected As Read"
-msgstr "全部标记为已读(_M)"
+msgstr "标记选定的为已读(_M)"
 
 #: src/interface.c:205
 msgid ""
@@ -408,23 +410,23 @@ msgstr "标记所有选择的项目或目录下所有的项目为已读。"
 
 #: src/interface.c:214
 msgid "Mark All As _Read"
-msgstr "全部标记为 已读(_R)"
+msgstr "全部标记为已读(_R)"
 
 #: src/interface.c:227
 msgid "_New Subscription..."
-msgstr "_新增订阅..."
+msgstr "新增订阅(_N)..."
 
 #: src/interface.c:235
 msgid "New _Folder..."
-msgstr "新 目录...(_F)"
+msgstr "新目录(_F)..."
 
 #: src/interface.c:243
 msgid "New _VFolder..."
-msgstr "新 虛拟目录...(_V)"
+msgstr "新虛拟目录(_V)..."
 
 #: src/interface.c:252
 msgid "_Properties..."
-msgstr "属性...(_P)"
+msgstr "属性(_P)..."
 
 #: src/interface.c:255
 msgid "Opens the property dialog for the selected subscription."
@@ -432,15 +434,15 @@ msgstr "开启选择订阅的属性设定窗口。"
 
 #: src/interface.c:261
 msgid "_Delete Selected"
-msgstr "删除选择资源(_D)"
+msgstr "删除选定资源(_D)"
 
 #: src/interface.c:264
 msgid "Removes the selected subscription."
-msgstr "删除选择的订阅项目。"
+msgstr "删除选定的订阅项。"
 
 #: src/interface.c:275
 msgid "_Import Feed List..."
-msgstr "导入资源列表...(_I)"
+msgstr "导入资源列表(_I)..."
 
 #: src/interface.c:278
 msgid "Imports an OPML feed list."
@@ -448,7 +450,7 @@ msgstr "导入 OPML 格式资源列表。"
 
 #: src/interface.c:284
 msgid "_Export Feed List..."
-msgstr "导出资源列表...(_E)"
+msgstr "导出资源列表(_E)..."
 
 #: src/interface.c:287
 msgid "Exports the feed list as OPML."
@@ -470,7 +472,7 @@ msgstr "跳到下一个未读条目。必要时会跳到下一个资源中的未
 
 #: src/interface.c:317
 msgid "Toggle _Read Status"
-msgstr "切换 阅读状态(_R)"
+msgstr "切换阅读状态(_R)"
 
 #: src/interface.c:320
 msgid "Toggles the read status of the selected item."
@@ -478,7 +480,7 @@ msgstr "切换选择条目的阅读状态。"
 
 #: src/interface.c:329
 msgid "Toggle Item _Flag"
-msgstr "切换条目 标签(_F)"
+msgstr "切换条目标签(_F)"
 
 #: src/interface.c:332
 msgid "Toggles the item flag."
@@ -486,15 +488,15 @@ msgstr "切换条目标签。"
 
 #: src/interface.c:337
 msgid "Remove Selected"
-msgstr "删除选择的"
+msgstr "删除选定的"
 
 #: src/interface.c:340
 msgid "Removes the selected item."
-msgstr "删除选择的条目。"
+msgstr "删除选定的条目。"
 
 #: src/interface.c:346
 msgid "Remove All"
-msgstr "删除所有条目条目"
+msgstr "删除所有条目"
 
 #: src/interface.c:349
 msgid "Removes all items of the currently selected feed."
@@ -522,15 +524,15 @@ msgstr "放大条目显示窗口字体大小。"
 
 #: src/interface.c:384
 msgid "_Decrease Text Size"
-msgstr "縮小字体(_D)"
+msgstr "缩小字体(_D)"
 
 #: src/interface.c:387
 msgid "Decreases the text size of the item view."
-msgstr "縮小条目显示窗口字体大小。"
+msgstr "缩小条目显示窗口字体大小。"
 
 #: src/interface.c:401
 msgid "Toggle _Condensed View"
-msgstr "启动 _摘要模式"
+msgstr "启动摘要模式(_C)"
 
 #: src/interface.c:404
 msgid "Toggles the item list mode between condensed and normal mode."
@@ -558,7 +560,7 @@ msgstr "创造一个 Feedster 搜索资源"
 
 #: src/interface.c:431
 msgid "_Help"
-msgstr "求助(_H)"
+msgstr "帮助(_H)"
 
 #: src/interface.c:438 src/interface.c:3239 src/interface.c:3281
 msgid "About"
@@ -566,11 +568,11 @@ msgstr "关于"
 
 #: src/interface.c:441
 msgid "Shows an about dialog."
-msgstr "显示关于对话框"
+msgstr "显示关于对话框。"
 
 #: src/interface.c:502
 msgid "single item view"
-msgstr "单一条目檢視"
+msgstr "单一条目视图"
 
 #: src/interface.c:510
 msgid "label133"
@@ -603,7 +605,7 @@ msgstr ""
 
 #: src/interface.c:862
 msgid "Feed _Name:"
-msgstr "资源 名称(_N):"
+msgstr "资源名称(_N):"
 
 #: src/interface.c:875
 msgid "<span weight=\"bold\">Update Interval</span>"
@@ -615,7 +617,7 @@ msgstr "使用预设更新周期(_U)"
 
 #: src/interface.c:904
 msgid "_Feed specific update interval of"
-msgstr "指定該资源的更新周期：(_F)"
+msgstr "指定該资源的更新周期(_F)"
 
 #: src/interface.c:919 src/interface.c:1843
 msgid "minutes."
@@ -652,11 +654,11 @@ msgstr "命令(_C)"
 
 #: src/interface.c:998 src/interface.c:1408
 msgid "Local _File"
-msgstr "本地 文件(_F)"
+msgstr "本地文件(_F)"
 
 #: src/interface.c:1008 src/interface.c:1418
 msgid "_Select File..."
-msgstr "选择文件...(_S)"
+msgstr "选择文件(_S)..."
 
 #: src/interface.c:1018 src/interface.c:1428
 msgid "Source Type:"
@@ -695,7 +697,7 @@ msgstr ""
 
 #: src/interface.c:1099
 msgid "_Default cache settings"
-msgstr "预设缓存设定(_D)"
+msgstr "默认缓存设定(_D)"
 
 #: src/interface.c:1105
 msgid "Di_sable cache"
@@ -723,7 +725,7 @@ msgstr "使用 HTTP 认证(_A)"
 
 #: src/interface.c:1165 src/interface.c:3408
 msgid "User_name:"
-msgstr "使用者 名称(_N):"
+msgstr "用户名(_N):"
 
 #: src/interface.c:1172 src/interface.c:3415
 msgid "_Password:"
@@ -755,7 +757,7 @@ msgstr "<span weight=\"bold\">资源更新设定</span>"
 
 #: src/interface.c:1833
 msgid "Default Feed Refresh _Interval:"
-msgstr "资源更新 周期(_I):"
+msgstr "资源更新周期(_I):"
 
 #: src/interface.c:1847
 msgid ""
@@ -768,7 +770,7 @@ msgstr ""
 
 #: src/interface.c:1858
 msgid "At _startup:"
-msgstr "于 启动时(_S):"
+msgstr "于启动时(_S):"
 
 #: src/interface.c:1870
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
@@ -776,11 +778,11 @@ msgstr "<span weight=\"bold\">资源载入设定</span>"
 
 #: src/interface.c:1889
 msgid "Optimize for _memory usage."
-msgstr "针对内存使用优化。(_M)"
+msgstr "针对内存使用优化(_M)。"
 
 #: src/interface.c:1896
 msgid "Optimize for _speed."
-msgstr "针对速度优化。(_S)"
+msgstr "针对速度优化(_S)。"
 
 #: src/interface.c:1902
 msgid "Feeds"
@@ -846,7 +848,7 @@ msgstr "显示日期与时间"
 
 #: src/interface.c:2072
 msgid "User defined format:"
-msgstr "使用自定格式:"
+msgstr "使用自定义格式:"
 
 #: src/interface.c:2081
 msgid ""
@@ -872,7 +874,7 @@ msgstr "在 Liferea 的窗口开启链接。"
 
 #: src/interface.c:2145
 msgid "_Disable Javascript."
-msgstr "_停止使用 Javascript。"
+msgstr "停止使用 Javascript。(_D)"
 
 #: src/interface.c:2153
 msgid "<span weight=\"bold\">External Browser Settings</span>"
@@ -905,11 +907,11 @@ msgstr "<span weight=\"bold\">程序状态通知区</span>"
 
 #: src/interface.c:2253
 msgid "Show a status _icon in the notification area (system tray)."
-msgstr "在程序状态通知区中显示状态图标 (系統托盘) "
+msgstr "在程序状态通知区中显示状态图标 (系統托盘)(_I)"
 
 #: src/interface.c:2270
 msgid "Show a _popup window with new headlines."
-msgstr "以跳出窗口显示新标题"
+msgstr "以跳出窗口显示新标题(_P)"
 
 #: src/interface.c:2279
 msgid "         "
@@ -940,16 +942,16 @@ msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">菜单设定</span>"
 
 #: src/interface.c:2357
-msgid "Show Menu And Toolbar"
+msgid "Show Menu _And Toolbar"
 msgstr "显示菜单与工具条(_A)"
 
 #: src/interface.c:2363
-msgid "Show Menu Only"
+msgid "Show _Menu Only"
 msgstr "只显示菜单(_M)"
 
 #: src/interface.c:2369
 msgid "Show _Toolbar Only"
-msgstr "仅显示工具条*(_T)"
+msgstr "仅显示工具条(_T)"
 
 #: src/interface.c:2375
 msgid "GUI"
@@ -985,7 +987,7 @@ msgstr "使用代理服务器认证(_A)"
 
 #: src/interface.c:2490
 msgid "Proxy _Username:"
-msgstr "代理服务器使用者名称(_U):"
+msgstr "代理服务器用户名(_U):"
 
 #: src/interface.c:2512
 msgid "Proxy Pass_word:"
@@ -1159,7 +1161,7 @@ msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The downloaded file will be supplied as an "
 "argument for this command:"
-msgstr ""
+msgstr "Liferea 将如何处理附件？请在下面键入你要执行的命令，下载的文件将作为该命令的参数："
 
 #: src/interface.c:3662
 msgid "_Browse"
@@ -1777,19 +1779,19 @@ msgstr "/新增(_N)"
 
 #: src/ui_popup.c:94 src/ui_popup.c:105 src/ui_popup.c:115 src/ui_popup.c:124
 msgid "/_New/New _Subscription..."
-msgstr "/_新增(_N)/新增订阅...(_S)"
+msgstr "/新增(_N)/新增订阅(_S)..."
 
 #: src/ui_popup.c:95 src/ui_popup.c:106 src/ui_popup.c:116 src/ui_popup.c:125
 msgid "/_New/New F_older..."
-msgstr "/新增(_N)/新增目录...(_O)"
+msgstr "/新增(_N)/新增目录(_O)..."
 
 #: src/ui_popup.c:96 src/ui_popup.c:107 src/ui_popup.c:117
 msgid "/_New/New _VFolder..."
-msgstr "/新增(_N)/新增虛拟目录...(_V)"
+msgstr "/新增(_N)/新增虛拟目录(_V)..."
 
 #: src/ui_popup.c:97 src/ui_popup.c:118
 msgid "/_Properties..."
-msgstr "/属性...(_P)"
+msgstr "/属性(_P)..."
 
 #: src/ui_popup.c:98 src/ui_popup.c:119
 msgid "/_Delete"
@@ -1801,7 +1803,7 @@ msgstr "/更新目录(_U)"
 
 #: src/ui_popup.c:108
 msgid "/_Rename Folder..."
-msgstr "/_重新命名目录...(_R)"
+msgstr "/重新命名目录(_R)..."
 
 #: src/ui_popup.c:109
 msgid "/_Delete Folder"
@@ -1809,7 +1811,7 @@ msgstr "/删除目录(_D)"
 
 #: src/ui_popup.c:130
 msgid "/Toggle _Read Status"
-msgstr "/切换阅读状态(_T)"
+msgstr "/切换阅读状态(_R)"
 
 #: src/ui_popup.c:131
 msgid "/Toggle Item _Flag"
@@ -1833,11 +1835,11 @@ msgstr "/开启浏览器条目(_L)"
 
 #: src/ui_popup.c:142
 msgid "/_Increase Text Size"
-msgstr "/縮小字体(_I)"
+msgstr "/放大字体(_I)"
 
 #: src/ui_popup.c:143
 msgid "/_Decrease Text Size"
-msgstr "/放大字体(_D)"
+msgstr "/缩小字体(_D)"
 
 #: src/ui_popup.c:147
 msgid "/_Copy Link Location"
@@ -1845,20 +1847,20 @@ msgstr "/复制链接地址(_C)"
 
 #: src/ui_popup.c:148
 msgid "/Launch Link In _Tab"
-msgstr "/在 Tab 开启链接(_T)"
+msgstr "/在分页中开启链接(_T)"
 
 #: src/ui_popup.c:149
 msgid "/_Launch Link In Browser"
-msgstr "/开启链接(_L)"
+msgstr "/在浏览器中开启链接(_L)"
 
 #: src/ui_popup.c:150
 msgid "/_Subscribe..."
-msgstr "/订阅...(_S)"
+msgstr "/订阅(_S)..."
 
 #: src/ui_popup.c:155
 #, fuzzy
 msgid "/_Online/Offline"
-msgstr "/离线浏览(_O)"
+msgstr "/在线/离线(_O)"
 
 #: src/ui_popup.c:156
 msgid "/_Update All"
@@ -1866,7 +1868,7 @@ msgstr "/更新全部(_U)"
 
 #: src/ui_popup.c:157
 msgid "/_Preferences..."
-msgstr "/偏好设定...(_P)"
+msgstr "/偏好设定(_P)..."
 
 #: src/ui_popup.c:159
 msgid "/_Show Window"
@@ -1942,6 +1944,10 @@ msgid ""
 "result permanently you can click the VFolder button in the search dialog and "
 "Liferea will add a VFolder to your feed list.</h2>"
 msgstr ""
+"%s<h2>%d 搜索结果 \"%s\"</h2><p>现在的条目列表包括所有匹配"
+"设定搜索模式的所有条目。如果需要永久保存这些搜索结果，您可"
+"以点击搜索对话框中的虚拟目录按钮，Liferea 会把一个虚拟目录"
+"添加到您的资源列表中。</h2>"
 
 #: src/ui_search.c:121
 msgid "Please do a search first!"
