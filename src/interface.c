@@ -451,7 +451,7 @@ create_mainwindow (void)
   quick_reference = gtk_menu_item_new_with_mnemonic (_("_Quick Reference"));
   gtk_widget_show (quick_reference);
   gtk_container_add (GTK_CONTAINER (help_menu), quick_reference);
-  gtk_tooltips_set_tip (tooltips, quick_reference, _("View an reference of all shortcuts."), NULL);
+  gtk_tooltips_set_tip (tooltips, quick_reference, _("View a list of all Liferea shortcuts."), NULL);
 
   trennlinie6 = gtk_separator_menu_item_new ();
   gtk_widget_show (trennlinie6);

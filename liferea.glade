@@ -649,7 +649,7 @@
 		  <child>
 		    <widget class="GtkMenuItem" id="quick_reference">
 		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">View an reference of all shortcuts.</property>
+		      <property name="tooltip" translatable="yes">View a list of all Liferea shortcuts.</property>
 		      <property name="label" translatable="yes">_Quick Reference</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_quick_reference_activate" last_modification_time="Thu, 04 Aug 2005 19:50:04 GMT"/>
