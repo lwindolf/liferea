@@ -42,7 +42,7 @@
 GHashTable	*atom10_nstable = NULL;
 GHashTable	*ns_atom10_ns_uri_table = NULL;
 struct atom10ParserState {
-
+	gboolean errorDetected;
 };
 typedef void 	(*atom10ElementParserFunc)	(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState *state);
 
@@ -175,8 +175,8 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 				ret = utf8_fix(extractHTMLNode(cur, TRUE));
 			}
 		} else {
-			/* Invalid ATOM feed */
-			ret = g_strdup("This attribute was invalidly specified in this ATOM feed.");
+			/* Invalid Atom feed */
+			ret = g_strdup("This attribute was invalidly specified in this Atom feed.");
 		}
 		if (!htmlified) {
 			tmp = unxmlize(ret);
@@ -235,7 +235,7 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 	}
 	if (name == NULL) {
 		invalid = TRUE;
-		name = g_strdup(_("Invalid ATOM FEED: unknown author"));
+		name = g_strdup(_("Invalid Atom feed: unknown author"));
 	}
 	tmp = g_strdup_printf("%s%s%s", name, uri == NULL ? "" : uri, email == NULL ? "" : email);
 	g_free(uri);
@@ -426,7 +426,7 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 			cur = cur->next;
 			continue;
 		}
-		/* At this point, the namespace must be the ATOM 1.0 namespace */
+		/* At this point, the namespace must be the Atom 1.0 namespace */
 		func = g_hash_table_lookup(entryElementHash, cur->name);
 		if (func != NULL) {
 			(*func)(cur, fp, ip, NULL);
@@ -643,7 +643,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				cur = cur->next;
 				continue;
 			}
-			/* At this point, the namespace must be the ATOM 1.0 namespace */
+			/* At this point, the namespace must be the Atom 1.0 namespace */
 			
 			func = g_hash_table_lookup(feedElementHash, cur->name);
 			if (func != NULL) {
