@@ -82,7 +82,7 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 			- feed icon
 		 */
 		itemstore = gtk_tree_store_new(IS_LEN,
-		                               G_TYPE_INT,
+		                               G_TYPE_ULONG,
 		                               G_TYPE_STRING, 
 		                               G_TYPE_STRING,
 					       G_TYPE_POINTER,
