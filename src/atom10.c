@@ -190,8 +190,6 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 	return ret;
 }
 
-
-/* nonstatic because used by atom10_entry.c too */
 static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
 	gchar	*name = NULL, *uri = NULL, *email = NULL;
@@ -300,7 +298,7 @@ static void atom10_parse_entry_link(xmlNodePtr cur, feedPtr fp, itemPtr ip, stru
 		url = common_build_url(href, baseURL);
 		
 		relation = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
-		title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
+		title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"title", NULL));
 		if (title != NULL)
 			escTitle = g_markup_escape_text(title, -1);
 		/* FIXME: Display the human readable title from the property "title" */
@@ -308,17 +306,19 @@ static void atom10_parse_entry_link(xmlNodePtr cur, feedPtr fp, itemPtr ip, stru
 		
 		if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || relation == NULL || g_str_equal(relation, "alternate"))
 			item_set_source(ip, url);
-		else if (g_str_equal(relation, "enclosure")) {
+		else if (g_str_equal(relation, "enclosure"))
 			ip->metadata = metadata_list_append(ip->metadata, "enclosure", url);
-		} else
+		else
 			/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
 		xmlFree(baseURL);
 		xmlFree(title);
-		xmlFree(escTitle);
+		g_free(escTitle);
 		g_free(url);
 		g_free(relation);
 		g_free(href);
-	} 
+	} else
+		/* FIXME: @href is required, this document is not valid Atom */;
+
 }
 
 static void atom10_parse_entry_published(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
@@ -346,6 +346,7 @@ static void atom10_parse_entry_summary(xmlNodePtr cur, feedPtr fp, itemPtr ip, s
 		if(NULL != summary)
 			item_set_description(ip, summary);
 		g_free(summary);
+		/* FIXME: set a flag to show a "Read more" link to the user; but where? */
 	}
 }
 
@@ -670,10 +671,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 static gboolean atom10_format_check(xmlDocPtr doc, xmlNodePtr cur) {
-	if(xmlStrEqual(cur->name, BAD_CAST"feed") && xmlStrEqual(cur->ns->href, ATOM10_NS)) {
-		return TRUE;
-	}
-	return FALSE;
+	return xmlStrEqual(cur->name, BAD_CAST"feed") && xmlStrEqual(cur->ns->href, ATOM10_NS)
 }
 
 static void atom10_add_ns_handler(NsHandler *handler) {
