@@ -671,7 +671,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 static gboolean atom10_format_check(xmlDocPtr doc, xmlNodePtr cur) {
-	return xmlStrEqual(cur->name, BAD_CAST"feed") && xmlStrEqual(cur->ns->href, ATOM10_NS)
+	return xmlStrEqual(cur->name, BAD_CAST"feed") && xmlStrEqual(cur->ns->href, ATOM10_NS);
 }
 
 static void atom10_add_ns_handler(NsHandler *handler) {
