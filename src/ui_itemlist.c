@@ -64,7 +64,7 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 	gtk_tree_model_get(model, a, IS_TIME, &timea, -1);
 	gtk_tree_model_get(model, b, IS_TIME, &timeb, -1);
 	
-	return (-1)*(timeb-timea);
+	return (-1)*difftime(timeb-timea);
 }
 
 GtkTreeStore * ui_itemlist_get_tree_store(void) {
