@@ -57,14 +57,21 @@ static itemPtr ui_itemlist_get_selected();
 /* sort function for the item list date column */
 static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
 	time_t	timea, timeb;
+	double diff;
 	
 	g_assert(model != NULL);
 	g_assert(a != NULL);
 	g_assert(b != NULL);
 	gtk_tree_model_get(model, a, IS_TIME, &timea, -1);
 	gtk_tree_model_get(model, b, IS_TIME, &timeb, -1);
+	diff = difftime(timeb,timea);
 	
-	return (-1)*difftime(timeb,timea);
+	if (diff < 0)
+		return 1;
+	else if (diff > 0)
+		return -1;
+	else
+		return 0;
 }
 
 GtkTreeStore * ui_itemlist_get_tree_store(void) {
