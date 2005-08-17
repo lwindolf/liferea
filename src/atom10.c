@@ -135,9 +135,9 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
    to 0, All HTML tags are removed
    
    @returns an escaped version of a text construct. */
-   static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
-   gchar	*type, *tmp, *ret;
-
+static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
+	gchar	*type, *tmp, *ret;
+	
 	g_assert(NULL != cur);
 	ret = NULL;
 	
@@ -178,11 +178,8 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 			/* Invalid Atom feed */
 			ret = g_strdup("This attribute was invalidly specified in this Atom feed.");
 		}
-		if (!htmlified) {
-			tmp = unxmlize(ret);
-			ret = g_markup_escape_text(tmp, -1);
-			g_free(tmp);
-		}
+		if (!htmlified)
+			ret = unhtmlize(ret);
 	}
 	
 	g_free(type);
