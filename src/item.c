@@ -233,11 +233,12 @@ gchar *item_render(itemPtr ip) {
 	addToHTMLBufferFast(&buffer, HEAD_START);
 	/*  -- Feed line */
 	if(feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed) != NULL)
-		tmp = g_strdup_printf("<span class=\"feedlink\"><a href=\"%s\">%s</a></span>",
-			              feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed),
-			              feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
+		
+		tmp = g_markup_printf_escaped("<span class=\"feedlink\"><a href=\"%s\">%s</a></span>",
+									 feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed),
+									 feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
 	else
-		tmp = g_strdup_printf("<span class=\"feedlink\">%s</span>",
+		tmp = g_markup_printf_escaped("<span class=\"feedlink\">%s</span>",
 			              feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
 
 	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
@@ -262,18 +263,15 @@ gchar *item_render(itemPtr ip) {
 		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed), tmp2);
 		g_free(tmp2);
 	}
-	
+	tmp3 = g_markup_escape_text((item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"), -1);
 	if(item_get_source(ip) != NULL)
 		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s<a href=\"%s\">%s</a></span>",
-			              tmp,
-			              item_get_source(ip),
-			              (item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"));
+							   tmp, item_get_source(ip), tmp3);
 	else
-		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s%s</span>",
-			              tmp,
-			              (item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"));
-	
+		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s%s</span>", tmp,tmp3);
 	g_free(tmp);
+	g_free(tmp3);
+	
 	tmp = g_strdup_printf(HEAD_LINE, _("Item:"), tmp2);
 	g_free(tmp2);
 	addToHTMLBufferFast(&buffer, tmp);
@@ -282,11 +280,11 @@ gchar *item_render(itemPtr ip) {
 	/*  -- real source line */
 	tmp = NULL;
 	if(item_get_real_source_url(ip) != NULL)
-		tmp = g_strdup_printf("<span class=\"itemsource\"><a href=\"%s\">%s</a></span>",
+		tmp = g_markup_printf_escaped("<span class=\"itemsource\"><a href=\"%s\">%s</a></span>",
 			              item_get_real_source_url(ip),
 			              (item_get_real_source_title(ip) != NULL)? item_get_real_source_title(ip) : _("[No title]"));
 	else if(item_get_real_source_title(ip) != NULL)
-		tmp = g_strdup_printf("<span class=\"itemsource\">%s</span>",
+		tmp = g_markup_printf_escaped("<span class=\"itemsource\">%s</span>",
 			              item_get_real_source_title(ip));
 
 	if(NULL != tmp) {
