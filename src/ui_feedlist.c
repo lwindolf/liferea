@@ -227,13 +227,13 @@ static void ui_feedlist_row_activated_cb(GtkTreeView *tv, GtkTreePath *path, Gtk
 
 static gboolean ui_feedlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
 
-	if (event->type == GDK_KEY_PRESS &&
-	    event->state == 0 &&
-	    event->keyval == GDK_Delete) {
-		nodePtr ptr = ui_feedlist_get_selected();
+	if((event->type == GDK_KEY_PRESS) &&
+	   (event->state == 0) &&
+	   (event->keyval == GDK_Delete)) {
+		nodePtr np = ui_feedlist_get_selected();
 		
-		if (ptr != NULL) {
-			ui_feedlist_delete(ptr);
+		if(NULL != np) {
+			ui_feedlist_delete(np);
 			return TRUE;
 		}
 	}

@@ -1,8 +1,8 @@
 /**
  * @file ui_itemlist.c Item list/view handling
  *  
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -26,6 +26,7 @@
 
 #include <langinfo.h>
 #include <string.h>
+#include <gdk/gdkkeysyms.h>
 #include "support.h"
 #include "callbacks.h"
 #include "common.h"
@@ -281,6 +282,16 @@ void ui_itemlist_update(void) {
 	g_hash_table_foreach(iterhash, ui_itemlist_update_foreach, NULL);
 }
 
+static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+
+	if((event->type == GDK_KEY_PRESS) &&
+	   (event->state == 0) &&
+	   (event->keyval == GDK_Delete)) {
+		on_remove_item_activate(NULL, NULL);
+	}
+	return FALSE;
+}
+
 void ui_itemlist_init(GtkWidget *itemlist) {
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
@@ -320,6 +331,9 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	gtk_tree_view_column_set_sort_column_id(column, IS_LABEL);
 
 	g_object_set(column, "resizable", TRUE, NULL);
+
+	/* And connect signals */	
+	g_signal_connect(G_OBJECT(GTK_TREE_VIEW(itemlist)), "key-press-event", G_CALLBACK(ui_itemlist_key_press_cb), NULL);
 	
 	/* Setup the selection handler */
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist));
