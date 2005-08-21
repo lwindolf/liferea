@@ -20,7 +20,6 @@
  */
 
 *[href*="doubleclick"] img, *[src*="doubleclick"],
-*[href*="feedburner.com"] ,
 *[href*="feedstermedia.com/feedster/adclick.php?bannerid="]
 { display:none !important }
 

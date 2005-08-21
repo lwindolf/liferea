@@ -329,7 +329,7 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 		g_free(buffer);
 	} else
 		(htmlviewInfo->write)(htmlview, string, strlen(string), baseURL, "text/html");
-		
+
 	/* wait a short while and reset focus */
 	if(0 != refocusTimeout)
 		(void)g_timeout_add(refocusTimeout, ui_htmlview_restore_focus_cb, widget);
