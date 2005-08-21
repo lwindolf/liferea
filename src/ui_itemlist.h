@@ -224,6 +224,11 @@ void ui_itemlist_update(void);
  */
 itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter);
 
+/**
+ * Copies the selected items URL to the clipboard.
+ */
+void on_popup_copy_URL_clipboard(void);
+
 /*@}*/
 
 #endif

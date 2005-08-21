@@ -2,6 +2,9 @@
 
 	Version 0.9.7
 
+	* Added "copy link location" to item list context
+	  menu. Patch #1175756 from Adam Flanczewski.
+
 	Bugfixes:
 
 	* Closing the search dialog with the window

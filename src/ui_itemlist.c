@@ -776,3 +776,12 @@ void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data
 		itemlist_load(np);
 	}
 }
+
+void on_popup_copy_URL_clipboard(void) {
+	itemPtr         ip;
+
+	if(NULL != (ip = ui_itemlist_get_selected()))
+		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), item_get_source(ip), -1);
+	else
+		ui_mainwindow_set_status_bar(_("No item has been selected"));
+}
