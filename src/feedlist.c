@@ -42,6 +42,7 @@ static int unreadCount = 0;
 static int newCount = 0;
 
 static nodePtr	selectedNode = NULL;
+extern nodePtr		displayed_node;
 
 /* helper functions */
 
@@ -129,8 +130,7 @@ void feedlist_remove_node(nodePtr np) {
 	if(NULL == np)
 		return;
 		
-	if(np == selectedNode) {
-		selectedNode = NULL;
+	if(np == displayed_node) {
 		itemlist_load(NULL);
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	}
