@@ -1,4 +1,20 @@
-2005-08-??  Lars Lindner  <lars.lindner@gmx.net> 
+2005-08-??  ???  <???> 
+
+	Version 0.9.7
+
+	Bugfixes:
+
+	* Closing the search dialog with the window
+	  manager don't causes crashes anymore.
+	* Preference dialog cannot be opened multiple
+	  times anymore.
+	* Fixes missing links in item display with Mozilla
+	  reported by Rich Daley. (SF bug #1255253)
+	* Prevents "next-unread" to select items within
+	  a vfolder, except if a vfolder is selected
+	  reported by Sigge Kotliar. (SF #1252034)
+
+2005-08-15  Nathan Conrad <t98502@sourceforge.net>
 
 	Version 0.9.6
 

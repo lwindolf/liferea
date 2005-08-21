@@ -195,6 +195,11 @@ gchar * prefs_get_download_cmd(void) {
 /* preferences dialog callbacks 						*/
 /*------------------------------------------------------------------------------*/
 
+static void ui_pref_destroyed_cb(GtkWidget *widget, void *data) {
+
+	prefdialog = NULL;
+}
+
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget		*widget, *entry, *menu;
 	GtkAdjustment		*itemCount;
@@ -209,315 +214,318 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	struct browser			*iter;
 	struct enclosure_download_tool	*edtool;
 	
-	prefdialog = create_prefdialog();		
+	if(NULL == prefdialog) {
+		prefdialog = create_prefdialog();
+		gtk_window_set_transient_for(GTK_WINDOW(prefdialog), GTK_WINDOW(mainwindow));
+		g_signal_connect(G_OBJECT(prefdialog), "destroy", G_CALLBACK(ui_pref_destroyed_cb), NULL);
 
-	/* Set up browser selection popup */
-	menu = gtk_menu_new();
-	for(i=0, iter = browsers; iter->id != NULL; iter++, i++) {
-		entry = gtk_menu_item_new_with_label(iter->display);
+		/* Set up browser selection popup */
+		menu = gtk_menu_new();
+		for(i=0, iter = browsers; iter->id != NULL; iter++, i++) {
+			entry = gtk_menu_item_new_with_label(iter->display);
+			gtk_widget_show(entry);
+			gtk_container_add(GTK_CONTAINER(menu), entry);
+			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
+		}
+		manual = i;
+		/* This allows the user to choose their own browser by typing in the command. */
+		entry = gtk_menu_item_new_with_label(_("Manual"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
-	}
-	manual = i;
-	/* This allows the user to choose their own browser by typing in the command. */
-	entry = gtk_menu_item_new_with_label(_("Manual"));
-	gtk_widget_show(entry);
-	gtk_container_add(GTK_CONTAINER(menu), entry);
-	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
 
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), menu);
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), menu);
 
-	/* Create location menu */
-	menu = gtk_menu_new();
+		/* Create location menu */
+		menu = gtk_menu_new();
 
-	entry = gtk_menu_item_new_with_label(_("Browser default"));
-	gtk_widget_show(entry);
-	gtk_container_add(GTK_CONTAINER(menu), entry);
-	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(0));
-
-	entry = gtk_menu_item_new_with_label(_("Existing window"));
-	gtk_widget_show(entry);
-	gtk_container_add(GTK_CONTAINER(menu), entry);
-	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(1));
-
-	entry = gtk_menu_item_new_with_label(_("New window"));
-	gtk_widget_show(entry);
-	gtk_container_add(GTK_CONTAINER(menu), entry);
-	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(2));
-
-	entry = gtk_menu_item_new_with_label(_("New tab"));
-	gtk_widget_show(entry);
-	gtk_container_add(GTK_CONTAINER(menu), entry);
-	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(3));
-
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), menu);
-
-	/* Create the startup feed handling menu */
-	menu = gtk_menu_new();
-
-	entry = gtk_menu_item_new_with_label(_("Update only feeds scheduled for updates"));
-	gtk_widget_show(entry);
-	gtk_container_add(GTK_CONTAINER(menu), entry);
-	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(0));
-
-	entry = gtk_menu_item_new_with_label(_("Update all feeds"));
-	gtk_widget_show(entry);
-	gtk_container_add(GTK_CONTAINER(menu), entry);
-	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(1));
-
-	entry = gtk_menu_item_new_with_label(_("Reset feed update timers (Update no feeds)"));
-	gtk_widget_show(entry);
-	gtk_container_add(GTK_CONTAINER(menu), entry);
-	gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(2));
-
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), menu);
-	
-	/* ================== panel 1 "feeds" ==================== */
-	
-	tmp = getNumericConfValue(STARTUP_FEED_ACTION);
-	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), tmp);
-	
-	widget = lookup_widget(prefdialog, "itemCountBtn");
-	itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
-	gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
-	
-	/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-	for(i = 1; i <= 2; i++) {
-		widgetname = g_strdup_printf("%s%d", "feedsinmemorybtn", i);
-		widget = lookup_widget(prefdialog, widgetname);
-		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-		g_free(widgetname);
-	}
-	
-	/* set default update interval spin button */
-	widget = lookup_widget(prefdialog,"refreshIntervalSpinButton");
-	gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), getNumericConfValue(DEFAULT_UPDATE_INTERVAL));
-	
-	/* select currently active menu option */
-	tmp = 1;
-	if(getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) tmp = 2;
-
-	widgetname = g_strdup_printf("%s%d", "feedsinmemorybtn", tmp);
-	widget = lookup_widget(prefdialog, widgetname);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-	g_free(widgetname);
-	
-	/* ================== panel 2 "folders" ==================== */
-
-	g_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), NULL);	
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "folderdisplaybtn")), (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)?FALSE:TRUE));
-
-	/* ================== panel 3 "headlines" ==================== */
-
-	/* select current browse key menu entry */
-	switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
-		case 0:
-			tmp = 1;
-			break;
-		default:
-		case 1:
-			tmp = 0;
-			break;
-		case 2:
-			tmp = 2;
-			break;
-		
-	}
-	widget = lookup_widget(prefdialog, "browsekeyoptionmenu");
-	gtk_option_menu_set_history(GTK_OPTION_MENU(widget), tmp);
-	
-	/* Time format */
-	tmp = getNumericConfValue(TIME_FORMAT_MODE);
-	if((tmp > 3) || (tmp < 1)) 
-		tmp = 1;	/* correct configuration if necessary */
-
-	entry = lookup_widget(prefdialog, "timeformatentry");
-	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(TIME_FORMAT));
-	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==3);
-
-	/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-	for(i = 1; i <= 3; i++) {
-		widgetname = g_strdup_printf("%s%d", "timeradiobtn", i);
-		widget = lookup_widget(prefdialog, widgetname);
-		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-		gtk_object_set_data(GTK_OBJECT(widget), "entry", entry);
-		g_free(widgetname);
-	}
-
-	/* select currently active menu option */
-	widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
-	widget = lookup_widget(prefdialog, widgetname);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-	g_free(widgetname);
-	
-	/* ================== panel 4 "browser" ==================== */
-	
-	/* set up the internal browser module option menu */
-	tmp = i = 0;
-	widget = gtk_menu_new();
-	list = availableBrowserModules;
-	libname = getStringConfValue(BROWSER_MODULE);
-	while(NULL != list) {
-		g_assert(NULL != list->data);
-		entry = gtk_menu_item_new_with_label(((struct browserModule *)list->data)->description);
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(widget), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browsermodule_changed), ((struct browserModule *)list->data)->libname);
-		if(0 == strcmp(libname, ((struct browserModule *)list->data)->libname))
-			tmp = i;
-		i++;
-		list = g_slist_next(list);
-	}
-	gtk_menu_set_active(GTK_MENU(widget), tmp);
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
-
-	/* set the inside browsing flag */
-	widget = lookup_widget(prefdialog, "browseinwindow");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
-	
-	/* set the javascript-disabled flag */
-	widget = lookup_widget(prefdialog, "disablejavascript");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(DISABLE_JAVASCRIPT));
-	
-	tmp = 0;
-	libname = getStringConfValue(BROWSER_ID);
-	
-	if (!strcmp(libname, "manual"))
-		tmp = manual;
-	else
-		for(i=0, iter = browsers; iter->id != NULL; iter++, i++)
-			if (!strcmp(libname, iter->id))
-				tmp = i;
-	
-	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), tmp);
-	g_free(libname);
-	
-	gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), getNumericConfValue(BROWSER_PLACE));
-	
-	entry = lookup_widget(prefdialog, "browsercmd");
-	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(BROWSER_COMMAND));
-	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==manual);
-	gtk_widget_set_sensitive(lookup_widget(prefdialog, "manuallabel"), tmp==manual);	
-	
-	/* ================== panel 4 "GUI" ================ */
-	
-	widget = lookup_widget(prefdialog, "trayiconoptionbtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_TRAY_ICON));
-	
-	widget = lookup_widget(prefdialog, "popupwindowsoptionbtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_POPUP_WINDOWS));
-	gtk_widget_set_sensitive(lookup_widget(prefdialog, "placement_options"), getBooleanConfValue(SHOW_POPUP_WINDOWS));
-		
-	/* menu / tool bar settings */	
-	for(i = 1; i <= 3; i++) {
-		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-		widgetname = g_strdup_printf("%s%d", "menuradiobtn", i);
-		widget = lookup_widget(prefdialog, widgetname);
-		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-		g_free(widgetname);
-	}
-	
-	/* the same for the popup placements settings */	
-	for(i = 1; i <= 4; i++) {
-		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-		widgetname = g_strdup_printf("popup_placement%d_radiobtn", i);
-		widget = lookup_widget(prefdialog, widgetname);
-		gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-		g_free(widgetname);
-	}
-
-
-	/* select currently active menu option */
-	tmp = 1;
-	if(getBooleanConfValue(DISABLE_TOOLBAR)) tmp = 2;
-	if(getBooleanConfValue(DISABLE_MENUBAR)) tmp = 3;
-
-	widgetname = g_strdup_printf("%s%d", "menuradiobtn", tmp);
-	widget = lookup_widget(prefdialog, widgetname);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-	g_free(widgetname);
-
-	/* select currently active popup placement option */	
-	tmp = getNumericConfValue(POPUP_PLACEMENT);
-	if((tmp < 1) || (tmp > 4))
-		tmp = 1;
-	widgetname = g_strdup_printf("popup_placement%d_radiobtn", tmp);
-	widget = lookup_widget(prefdialog, widgetname);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-	g_free(widgetname);
-	
-	/* ================= panel 5 "proxy" ======================== */
-	enabled = getBooleanConfValue(USE_PROXY);
-	widget = lookup_widget(prefdialog, "enableproxybtn");
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enabled);
-	
-	entry = lookup_widget(prefdialog, "proxyhostentry");
-	gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(PROXY_HOST));
-	
-	entry = lookup_widget(prefdialog, "proxyportentry");
-	proxyport = g_strdup_printf("%d", getNumericConfValue(PROXY_PORT));
-	gtk_entry_set_text(GTK_ENTRY(entry), proxyport);
-	g_free(proxyport);
-
-
-	/* Authentication */
-	enabled2 = getBooleanConfValue(PROXY_USEAUTH);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "useProxyAuth")), enabled2);
-	gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "proxyuserentry")), getStringConfValue(PROXY_USER));
-	gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "proxypasswordentry")), getStringConfValue(PROXY_PASSWD));
-	
-	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxybox")), enabled);
-	if (enabled)
-		gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxyauthbox")), enabled2);
-	
-	gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "enableproxybtn")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
-	gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "useProxyAuth")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
-	
-	/* ================= panel 6 "enclosures" ======================== */
-	
-	/* menu for download tool */
-	menu = gtk_menu_new();
-	i = 0; edtool = enclosure_download_tools;
-	while(edtool->name != NULL) {		
-		entry = gtk_menu_item_new_with_label(edtool->name);
+		entry = gtk_menu_item_new_with_label(_("Browser default"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_enc_download_tool_changed), GINT_TO_POINTER(i));
-		edtool++;
-		i++;
-	}		
-	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "enc_download_tool_option_btn")), menu);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(0));
 
-	/* set enclosure download path entry */	
-	gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "save_download_entry")), getStringConfValue(ENCLOSURE_DOWNLOAD_PATH));
-	
-	/* set up list of configured enclosure types */
-	treestore = gtk_tree_store_new(FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
-	list = ui_enclosure_get_types();
-	while(NULL != list) {
-		treeiter = g_new0(GtkTreeIter, 1);
-		gtk_tree_store_append(treestore, treeiter, NULL);
-		gtk_tree_store_set(treestore, treeiter,
-		                   FTS_TYPE, (NULL != ((encTypePtr)(list->data))->mime)?((encTypePtr)(list->data))->mime:((encTypePtr)(list->data))->extension, 
-		                   FTS_CMD, ((encTypePtr)(list->data))->cmd,
-		                   FTS_PTR, list->data, 
-				   -1);
-		list = g_slist_next(list);
-	}
-	
-	widget = lookup_widget(prefdialog, "enc_actions_view");
-	gtk_tree_view_set_model(GTK_TREE_VIEW(widget), GTK_TREE_MODEL(treestore));
+		entry = gtk_menu_item_new_with_label(_("Existing window"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(1));
 
-	column = gtk_tree_view_column_new_with_attributes(_("Type"), gtk_cell_renderer_text_new(), "text", FTS_TYPE, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
-	gtk_tree_view_column_set_sort_column_id(column, FTS_TYPE);
-	column = gtk_tree_view_column_new_with_attributes(_("Program"), gtk_cell_renderer_text_new(), "text", FTS_CMD, NULL);
-	gtk_tree_view_column_set_sort_column_id(column, FTS_CMD);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
-	
-	gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
-	
+		entry = gtk_menu_item_new_with_label(_("New window"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(2));
+
+		entry = gtk_menu_item_new_with_label(_("New tab"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(3));
+
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), menu);
+
+		/* Create the startup feed handling menu */
+		menu = gtk_menu_new();
+
+		entry = gtk_menu_item_new_with_label(_("Update only feeds scheduled for updates"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(0));
+
+		entry = gtk_menu_item_new_with_label(_("Update all feeds"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(1));
+
+		entry = gtk_menu_item_new_with_label(_("Reset feed update timers (Update no feeds)"));
+		gtk_widget_show(entry);
+		gtk_container_add(GTK_CONTAINER(menu), entry);
+		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(2));
+
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), menu);
+
+		/* ================== panel 1 "feeds" ==================== */
+
+		tmp = getNumericConfValue(STARTUP_FEED_ACTION);
+		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), tmp);
+
+		widget = lookup_widget(prefdialog, "itemCountBtn");
+		itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
+		gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
+
+		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
+		for(i = 1; i <= 2; i++) {
+			widgetname = g_strdup_printf("%s%d", "feedsinmemorybtn", i);
+			widget = lookup_widget(prefdialog, widgetname);
+			gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
+			g_free(widgetname);
+		}
+
+		/* set default update interval spin button */
+		widget = lookup_widget(prefdialog,"refreshIntervalSpinButton");
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), getNumericConfValue(DEFAULT_UPDATE_INTERVAL));
+
+		/* select currently active menu option */
+		tmp = 1;
+		if(getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) tmp = 2;
+
+		widgetname = g_strdup_printf("%s%d", "feedsinmemorybtn", tmp);
+		widget = lookup_widget(prefdialog, widgetname);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+		g_free(widgetname);
+
+		/* ================== panel 2 "folders" ==================== */
+
+		g_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), NULL);	
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "folderdisplaybtn")), (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)?FALSE:TRUE));
+
+		/* ================== panel 3 "headlines" ==================== */
+
+		/* select current browse key menu entry */
+		switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
+			case 0:
+				tmp = 1;
+				break;
+			default:
+			case 1:
+				tmp = 0;
+				break;
+			case 2:
+				tmp = 2;
+				break;
+
+		}
+		widget = lookup_widget(prefdialog, "browsekeyoptionmenu");
+		gtk_option_menu_set_history(GTK_OPTION_MENU(widget), tmp);
+
+		/* Time format */
+		tmp = getNumericConfValue(TIME_FORMAT_MODE);
+		if((tmp > 3) || (tmp < 1)) 
+			tmp = 1;	/* correct configuration if necessary */
+
+		entry = lookup_widget(prefdialog, "timeformatentry");
+		gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(TIME_FORMAT));
+		gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==3);
+
+		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
+		for(i = 1; i <= 3; i++) {
+			widgetname = g_strdup_printf("%s%d", "timeradiobtn", i);
+			widget = lookup_widget(prefdialog, widgetname);
+			gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
+			gtk_object_set_data(GTK_OBJECT(widget), "entry", entry);
+			g_free(widgetname);
+		}
+
+		/* select currently active menu option */
+		widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
+		widget = lookup_widget(prefdialog, widgetname);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+		g_free(widgetname);
+
+		/* ================== panel 4 "browser" ==================== */
+
+		/* set up the internal browser module option menu */
+		tmp = i = 0;
+		widget = gtk_menu_new();
+		list = availableBrowserModules;
+		libname = getStringConfValue(BROWSER_MODULE);
+		while(NULL != list) {
+			g_assert(NULL != list->data);
+			entry = gtk_menu_item_new_with_label(((struct browserModule *)list->data)->description);
+			gtk_widget_show(entry);
+			gtk_container_add(GTK_CONTAINER(widget), entry);
+			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browsermodule_changed), ((struct browserModule *)list->data)->libname);
+			if(0 == strcmp(libname, ((struct browserModule *)list->data)->libname))
+				tmp = i;
+			i++;
+			list = g_slist_next(list);
+		}
+		gtk_menu_set_active(GTK_MENU(widget), tmp);
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
+
+		/* set the inside browsing flag */
+		widget = lookup_widget(prefdialog, "browseinwindow");
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(BROWSE_INSIDE_APPLICATION));
+
+		/* set the javascript-disabled flag */
+		widget = lookup_widget(prefdialog, "disablejavascript");
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(DISABLE_JAVASCRIPT));
+
+		tmp = 0;
+		libname = getStringConfValue(BROWSER_ID);
+
+		if (!strcmp(libname, "manual"))
+			tmp = manual;
+		else
+			for(i=0, iter = browsers; iter->id != NULL; iter++, i++)
+				if (!strcmp(libname, iter->id))
+					tmp = i;
+
+		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), tmp);
+		g_free(libname);
+
+		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), getNumericConfValue(BROWSER_PLACE));
+
+		entry = lookup_widget(prefdialog, "browsercmd");
+		gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(BROWSER_COMMAND));
+		gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==manual);
+		gtk_widget_set_sensitive(lookup_widget(prefdialog, "manuallabel"), tmp==manual);	
+
+		/* ================== panel 4 "GUI" ================ */
+
+		widget = lookup_widget(prefdialog, "trayiconoptionbtn");
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_TRAY_ICON));
+
+		widget = lookup_widget(prefdialog, "popupwindowsoptionbtn");
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(SHOW_POPUP_WINDOWS));
+		gtk_widget_set_sensitive(lookup_widget(prefdialog, "placement_options"), getBooleanConfValue(SHOW_POPUP_WINDOWS));
+
+		/* menu / tool bar settings */	
+		for(i = 1; i <= 3; i++) {
+			/* Set fields in the radio widgets so that they know their option # and the pref dialog */
+			widgetname = g_strdup_printf("%s%d", "menuradiobtn", i);
+			widget = lookup_widget(prefdialog, widgetname);
+			gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
+			g_free(widgetname);
+		}
+
+		/* the same for the popup placements settings */	
+		for(i = 1; i <= 4; i++) {
+			/* Set fields in the radio widgets so that they know their option # and the pref dialog */
+			widgetname = g_strdup_printf("popup_placement%d_radiobtn", i);
+			widget = lookup_widget(prefdialog, widgetname);
+			gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
+			g_free(widgetname);
+		}
+
+
+		/* select currently active menu option */
+		tmp = 1;
+		if(getBooleanConfValue(DISABLE_TOOLBAR)) tmp = 2;
+		if(getBooleanConfValue(DISABLE_MENUBAR)) tmp = 3;
+
+		widgetname = g_strdup_printf("%s%d", "menuradiobtn", tmp);
+		widget = lookup_widget(prefdialog, widgetname);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+		g_free(widgetname);
+
+		/* select currently active popup placement option */	
+		tmp = getNumericConfValue(POPUP_PLACEMENT);
+		if((tmp < 1) || (tmp > 4))
+			tmp = 1;
+		widgetname = g_strdup_printf("popup_placement%d_radiobtn", tmp);
+		widget = lookup_widget(prefdialog, widgetname);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
+		g_free(widgetname);
+
+		/* ================= panel 5 "proxy" ======================== */
+		enabled = getBooleanConfValue(USE_PROXY);
+		widget = lookup_widget(prefdialog, "enableproxybtn");
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enabled);
+
+		entry = lookup_widget(prefdialog, "proxyhostentry");
+		gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(PROXY_HOST));
+
+		entry = lookup_widget(prefdialog, "proxyportentry");
+		proxyport = g_strdup_printf("%d", getNumericConfValue(PROXY_PORT));
+		gtk_entry_set_text(GTK_ENTRY(entry), proxyport);
+		g_free(proxyport);
+
+
+		/* Authentication */
+		enabled2 = getBooleanConfValue(PROXY_USEAUTH);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "useProxyAuth")), enabled2);
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "proxyuserentry")), getStringConfValue(PROXY_USER));
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "proxypasswordentry")), getStringConfValue(PROXY_PASSWD));
+
+		gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxybox")), enabled);
+		if (enabled)
+			gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxyauthbox")), enabled2);
+
+		gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "enableproxybtn")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
+		gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "useProxyAuth")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
+
+		/* ================= panel 6 "enclosures" ======================== */
+
+		/* menu for download tool */
+		menu = gtk_menu_new();
+		i = 0; edtool = enclosure_download_tools;
+		while(edtool->name != NULL) {		
+			entry = gtk_menu_item_new_with_label(edtool->name);
+			gtk_widget_show(entry);
+			gtk_container_add(GTK_CONTAINER(menu), entry);
+			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_enc_download_tool_changed), GINT_TO_POINTER(i));
+			edtool++;
+			i++;
+		}		
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "enc_download_tool_option_btn")), menu);
+
+		/* set enclosure download path entry */	
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(prefdialog, "save_download_entry")), getStringConfValue(ENCLOSURE_DOWNLOAD_PATH));
+
+		/* set up list of configured enclosure types */
+		treestore = gtk_tree_store_new(FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
+		list = ui_enclosure_get_types();
+		while(NULL != list) {
+			treeiter = g_new0(GtkTreeIter, 1);
+			gtk_tree_store_append(treestore, treeiter, NULL);
+			gtk_tree_store_set(treestore, treeiter,
+		                	   FTS_TYPE, (NULL != ((encTypePtr)(list->data))->mime)?((encTypePtr)(list->data))->mime:((encTypePtr)(list->data))->extension, 
+		                	   FTS_CMD, ((encTypePtr)(list->data))->cmd,
+		                	   FTS_PTR, list->data, 
+					   -1);
+			list = g_slist_next(list);
+		}
+
+		widget = lookup_widget(prefdialog, "enc_actions_view");
+		gtk_tree_view_set_model(GTK_TREE_VIEW(widget), GTK_TREE_MODEL(treestore));
+
+		column = gtk_tree_view_column_new_with_attributes(_("Type"), gtk_cell_renderer_text_new(), "text", FTS_TYPE, NULL);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
+		gtk_tree_view_column_set_sort_column_id(column, FTS_TYPE);
+		column = gtk_tree_view_column_new_with_attributes(_("Program"), gtk_cell_renderer_text_new(), "text", FTS_CMD, NULL);
+		gtk_tree_view_column_set_sort_column_id(column, FTS_CMD);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
+
+		gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
+	}	
 	gtk_widget_show(prefdialog);
 }
 

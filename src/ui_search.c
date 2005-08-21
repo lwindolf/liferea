@@ -32,6 +32,7 @@
 #include "support.h"
 #include "common.h"
 
+extern GtkWidget	*mainwindow;
 static GtkWidget	*searchdialog = NULL;
 static GtkWidget 	*feedsterdialog = NULL;
 static feedPtr		searchFeed = NULL;
@@ -40,12 +41,19 @@ static feedPtr		searchFeed = NULL;
 /* search dialog callbacks							*/
 /*------------------------------------------------------------------------------*/
 
+static void ui_search_destroyed_cb(GtkWidget *widget, void *data) {
+
+	searchdialog = NULL;
+}
+
 void on_searchbtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean	visible;
 
-	if((NULL == searchdialog) || !G_IS_OBJECT(searchdialog))
+	if(NULL == searchdialog) {
 		searchdialog = create_searchdialog();
-	
+		gtk_window_set_transient_for(GTK_WINDOW(searchdialog), GTK_WINDOW(mainwindow));
+		g_signal_connect(G_OBJECT(searchdialog), "destroy", G_CALLBACK(ui_search_destroyed_cb), NULL);
+	}	
 	g_object_get(searchdialog, "visible", &visible, NULL);
 	g_object_set(searchdialog, "visible", !visible, NULL);
 }
@@ -160,14 +168,21 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 	}
 }
 
+static void ui_feedster_destroyed_cb(GtkWidget *widget, void *data) {
+
+	feedsterdialog = NULL;
+}
+
 void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	GtkWidget	*keywords;
 	
-	if(NULL == feedsterdialog || !G_IS_OBJECT(feedsterdialog))
+	if(NULL == feedsterdialog) {
 		feedsterdialog = create_feedsterdialog();
+		gtk_window_set_transient_for(GTK_WINDOW(feedsterdialog), GTK_WINDOW(mainwindow));
+		g_signal_connect(G_OBJECT(feedsterdialog), "destroy", G_CALLBACK(ui_feedster_destroyed_cb), NULL);
+	}
 		
 	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
 	gtk_entry_set_text(GTK_ENTRY(keywords), "");
 	gtk_widget_show(feedsterdialog);
 }
-
