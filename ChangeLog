@@ -9,6 +9,8 @@
 	  navigation (u,d,f,b) when using GtkHTML2, but
 	  due to a focussing problem it is not really 
 	  usable with Mozilla.
+	* Search text box is now automatically focused.
+	  Requested by Rodrigo Couto (#1200297).
 
 	Bugfixes:
 

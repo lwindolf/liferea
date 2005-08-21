@@ -47,13 +47,17 @@ static void ui_search_destroyed_cb(GtkWidget *widget, void *data) {
 }
 
 void on_searchbtn_clicked(GtkButton *button, gpointer user_data) {
+	GtkWidget	*searchentry;
 	gboolean	visible;
 
 	if(NULL == searchdialog) {
 		searchdialog = create_searchdialog();
 		gtk_window_set_transient_for(GTK_WINDOW(searchdialog), GTK_WINDOW(mainwindow));
 		g_signal_connect(G_OBJECT(searchdialog), "destroy", G_CALLBACK(ui_search_destroyed_cb), NULL);
-	}	
+	}
+	
+	searchentry = lookup_widget(searchdialog, "searchentry");
+	gtk_window_set_focus(GTK_WINDOW(searchdialog), searchentry);
 	g_object_get(searchdialog, "visible", &visible, NULL);
 	g_object_set(searchdialog, "visible", !visible, NULL);
 }
@@ -183,6 +187,7 @@ void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data)
 	}
 		
 	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
+	gtk_window_set_focus(GTK_WINDOW(feedsterdialog), keywords);
 	gtk_entry_set_text(GTK_ENTRY(keywords), "");
 	gtk_widget_show(feedsterdialog);
 }
