@@ -42,7 +42,6 @@ static int unreadCount = 0;
 static int newCount = 0;
 
 static nodePtr	selectedNode = NULL;
-extern nodePtr		displayed_node;
 
 /* helper functions */
 
@@ -110,11 +109,6 @@ void feedlist_update_feed(nodePtr np) {
 
 static void feedlist_remove_feed(nodePtr np) { 
 	
-	if(np == displayed_node) {
-		itemlist_load(NULL);
-		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
-	}
-	
 	ui_notification_remove_feed((feedPtr)np);	/* removes an existing notification for this feed */
 	ui_folder_remove_node(np);
 	ui_feedlist_update();
@@ -124,11 +118,6 @@ static void feedlist_remove_feed(nodePtr np) {
 }
 
 static void feedlist_remove_folder(nodePtr np) {
-	
-	if(np == displayed_node) {
-		itemlist_load(NULL);
-		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
-	}
 
 	ui_feedlist_do_for_all(np, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, feedlist_remove_node);
 	ui_feedlist_update();
@@ -139,6 +128,12 @@ void feedlist_remove_node(nodePtr np) {
 
 	if(NULL == np)
 		return;
+		
+	if(np == selectedNode) {
+		selectedNode = NULL;
+		itemlist_load(NULL);
+		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
+	}
 
 	if((FST_FEED == np->type) || (FST_VFOLDER == np->type))		
 		feedlist_remove_feed(np);
