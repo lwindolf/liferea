@@ -79,8 +79,42 @@ GtkWidget *ui_mainwindow_get_active_htmlview(void) {
 
 extern htmlviewPluginInfo *htmlviewInfo;
 
+/*------------------------------------------------------------------------------*/
+/* keyboard navigation	 							*/
+/*------------------------------------------------------------------------------*/
+
+/* Set cursor to the first item on a treeview. */
+static void on_treeview_set_first(char* treename) {
+	GtkTreeView	*treeview;
+	GtkTreePath	*path;
+
+	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, treename));
+	path = gtk_tree_path_new_first();
+	gtk_tree_view_set_cursor(treeview, path, NULL, FALSE);
+	gtk_tree_path_free(path);
+}
+
+/* Move treeview cursor up and down. */
+static void on_treeview_move(char* treename, gint step) {
+	GtkTreeView	*treeview;
+	gboolean	ret;
+
+	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, treename));
+	gtk_widget_grab_focus(GTK_WIDGET(treeview));
+	g_signal_emit_by_name(treeview, "move-cursor", GTK_MOVEMENT_DISPLAY_LINES, step, &ret);
+}
+
+static void on_treeview_prev(char* treename) {
+	on_treeview_move(treename, -1);
+}
+
+static void on_treeview_next(char* treename) {
+	on_treeview_move(treename, 1);
+}
+
 gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer data) {
-	gboolean modifier_matches = FALSE;
+	gboolean	modifier_matches = FALSE;
+	GtkWidget	*focusw;
 
 	if((event->type == GDK_KEY_PRESS) &&
 	   (event->keyval == GDK_space)) {
@@ -107,6 +141,44 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 			return TRUE;
 		}
 	}
+	
+	/* prevent stealing htmlview keys */
+	focusw = gtk_window_get_focus(GTK_WINDOW(widget));
+        if((event->type == GDK_KEY_PRESS) &&
+	   ((focusw == htmlview) ||
+	    (gtk_widget_is_ancestor(focusw, htmlview)))) {
+		if(gtk_window_propagate_key_event(GTK_WINDOW(widget),event))
+	                return TRUE;
+        }
+	
+	/* check for treeview navigation */
+	if(event->type == GDK_KEY_PRESS) {
+		switch (event->keyval) {
+			case GDK_n: 
+				on_next_unread_item_activate(NULL, NULL);
+				return TRUE;
+				break;
+			case GDK_f:
+				on_treeview_next("Itemlist");
+				return TRUE;
+				break;
+			case GDK_b:
+				on_treeview_prev("Itemlist");
+				return TRUE;
+				break;
+			case GDK_u:
+				on_treeview_prev("feedlist");
+				on_treeview_set_first("Itemlist");
+				return TRUE;
+				break;
+			case GDK_d:
+				on_treeview_next("feedlist");
+				on_treeview_set_first("Itemlist");
+				return TRUE;
+				break;
+		}
+	}
+	
 	return FALSE;
 }
 
@@ -597,4 +669,3 @@ void ui_choose_directory(gchar *title, GtkWindow *parent, gchar *buttonName, fil
 
 	ui_choose_file_or_dir(title, parent, buttonName, FALSE, TRUE, callback, currentFilename, filename, user_data);
 }
-
