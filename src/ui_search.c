@@ -43,7 +43,7 @@ static feedPtr		searchFeed = NULL;
 void on_searchbtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean	visible;
 
-	if(NULL == searchdialog)
+	if((NULL == searchdialog) || !G_IS_OBJECT(searchdialog))
 		searchdialog = create_searchdialog();
 	
 	g_object_get(searchdialog, "visible", &visible, NULL);
