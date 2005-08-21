@@ -4,6 +4,11 @@
 
 	* Added "copy link location" to item list context
 	  menu. Patch #1175756 from Adam Flanczewski.
+	* Single key navigation patch #1211774 from an 
+	  anonymous contributor. This allows keyboard
+	  navigation (u,d,f,b) when using GtkHTML2, but
+	  due to a focussing problem it is not really 
+	  usable with Mozilla.
 
 	Bugfixes:
 
