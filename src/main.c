@@ -266,16 +266,20 @@ int main(int argc, char *argv[]) {
 		
 		/* order is important! */
 		conf_init();			/* initialize gconf */
-#ifdef USE_SM
-		session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
-		session_set_cmd(NULL, mainwindowState);
-#endif
 		ui_htmlview_init();		/* setup HTML widgets */
 		download_init();		/* Initialize the download subsystem */
 		metadata_init();
 		feed_init();			/* register feed types */
 		conf_load();			/* load global feed settings */
 		ui_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
+#ifdef USE_SM
+		/* This must be after feedlist reading because some session
+		   managers will tell Liferea to exit if Liferea does not
+		   respond to SM requests within a minute or two. This starts
+		   the main loop soon after opening the SM connection. */
+		session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
+		session_set_cmd(NULL, mainwindowState);
+#endif
 		
 		gdk_threads_enter();
 		lifereaStarted = TRUE;
