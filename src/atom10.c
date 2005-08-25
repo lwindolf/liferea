@@ -150,36 +150,35 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 	if (NULL == type || !strcmp(type, "text")) {
 		ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		
-		if (htmlified)
-			tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
-		else
-			tmp = g_markup_printf_escaped("%s", ret);
-		
-		g_free(ret);
-		ret = tmp;
-	} else {
-		if (!strcmp(type, "html")) {
-			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		} else if(!strcmp(type, "xhtml")) {
-			/* The spec says to only show the contents of the div tag that MUST be present */
-			
-			cur = cur->children;
-			while (cur != NULL) {
-				if (cur->type == XML_ELEMENT_NODE && cur->name != NULL && xmlStrEqual(cur->name, BAD_CAST"div"))
-					break;
-				cur = cur->next;
-			}
-			if (cur == NULL) {
-				ret = g_strdup(_("This item's contents is invalid."));
-			} else {
-				ret = utf8_fix(extractHTMLNode(cur, TRUE));
-			}
-		} else {
-			/* Invalid Atom feed */
-			ret = g_strdup("This attribute was invalidly specified in this Atom feed.");
+		if (htmlified) {
+			tmp = ret;
+			ret = g_markup_printf_escaped("<pre>%s</pre>", tmp);
+			g_free(tmp);
 		}
+	} else if (!strcmp(type, "html")) {
+		ret = unxmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 		if (!htmlified)
 			ret = unhtmlize(ret);
+	} else if(!strcmp(type, "xhtml")) {
+		/* The spec says to only show the contents of the div tag that MUST be present */
+		
+		cur = cur->children;
+		while (cur != NULL) {
+			if (cur->type == XML_ELEMENT_NODE && cur->name != NULL && xmlStrEqual(cur->name, BAD_CAST"div"))
+				break;
+			cur = cur->next;
+		}
+		
+		if (cur == NULL)
+			ret = g_strdup(_("This item's contents is invalid."));
+		else
+			ret = utf8_fix(extractHTMLNode(cur, TRUE));
+		
+		if (!htmlified)
+			ret = unhtmlize(ret);
+	} else {
+		/* Invalid Atom feed */
+		ret = g_strdup("This attribute was invalidly specified in this Atom feed.");
 	}
 	
 	g_free(type);
