@@ -23,6 +23,8 @@
 	* Prevents "next-unread" to select items within
 	  a vfolder, except if a vfolder is selected
 	  reported by Sigge Kotliar. (SF #1252034)
+	* Fixes an auto-discovery bug patched and
+	  reported by Ted Percival (SF #1275007)
 
 2005-08-15  Nathan Conrad <t98502@sourceforge.net>
 

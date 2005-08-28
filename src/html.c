@@ -56,7 +56,7 @@ static gchar *checkLinkRef(const gchar* str, gint linkType) {
 		  *tmp != '\'') {
 		if (*tmp == '>' ||
 		    *tmp == '\0' ||
-		    !isspace(tmp))
+		    !isspace(*tmp))
 			return NULL;
 		tmp++;
 	}
