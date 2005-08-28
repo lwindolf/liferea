@@ -1,8 +1,8 @@
 /**
  * @file ui_mainwindow.c some functions concerning the main window 
  *
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -143,6 +143,9 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 	}
 	
 	/* prevent stealing htmlview keys */
+	/* FIXME: somehow this isn't necessary anymore 
+	   and as long it is active it breaks the
+	   keyboard handling for the menu bar... (Lars) 
 	focusw = gtk_window_get_focus(GTK_WINDOW(widget));
         if((event->type == GDK_KEY_PRESS) &&
 	   ((focusw == htmlview) ||
@@ -150,6 +153,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 		if(gtk_window_propagate_key_event(GTK_WINDOW(widget),event))
 	                return TRUE;
         }
+	*/
 	
 	/* check for treeview navigation */
 	if(event->type == GDK_KEY_PRESS) {
