@@ -155,7 +155,7 @@ void ui_popup_setup_menues(void) {
 	/* System tray popup menu */
 	tray_menu_items = NULL;
 	tray_menu_len = 0;
-	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Online/Offline"),	NULL, on_onlinebtn_clicked,		0, "<CheckItem>", 0);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/Toggle _Online|Offline"),	NULL, on_onlinebtn_clicked,		0, "<CheckItem>", 0);
 	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Update All"),	NULL, on_refreshbtn_clicked,		0, "<StockItem>", GTK_STOCK_REFRESH);
 	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Preferences..."),	NULL, on_prefbtn_clicked,		0, "<StockItem>", GTK_STOCK_PREFERENCES);
 	addPopupOption(&tray_menu_items, &tray_menu_len, "/",	                NULL, NULL,		                0, "<Separator>", 0);
