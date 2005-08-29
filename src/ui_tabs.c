@@ -131,7 +131,7 @@ void ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) {
 	i = gtk_notebook_append_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), vbox, label);
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), TRUE);
 	
-	if (activate && i != -1)
+	if((TRUE == activate) && (i != -1))
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), i);
 	
 	if(NULL != url)	
