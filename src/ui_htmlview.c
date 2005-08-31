@@ -77,7 +77,11 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 	filename = g_strdup_printf("%s%s%s", PACKAGE_LIB_DIR, G_DIR_SEPARATOR_S, libname);
 	/*g_print(_("loading HTML widget module (%s)\n"), filename);*/
 	
+#if GLIB_CHECK_VERSION(2,3,3)
+	if((handle = g_module_open(filename, G_MODULE_BIND_LOCAL)) == NULL) {
+#else
 	if((handle = g_module_open(filename, 0)) == NULL) {
+#endif
 		if(!testmode)
 			g_warning(_("Failed to open HTML widget module (%s) specified in configuration!\n%s\n"), filename, g_module_error());
 		else
