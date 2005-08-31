@@ -191,57 +191,31 @@ void unhtmlizeHandleCharacters (void *user_data, const xmlChar *string, int leng
 
 }
 
-/* Converts a UTF-8 strings containing any HTML stuff to 
-   a string without any entities or tags containing all
-   text nodes of the given HTML string. The original 
-   string will be freed. */
-gchar * unhtmlize(gchar *string) {
-	htmlSAXHandlerPtr	sax_p = NULL;
+void _unhtmlize(gchar *string, gchar *result, result_buffer *buffer) {
 	htmlParserCtxtPtr	ctxt;
-	gchar			*result;
-	result_buffer		*buffer;
-	
-	if(NULL == string)
-		return NULL;
-		
-	string = utf8_fix(string);
-
-	/* only do something if there are any entities or tags */
-	if(NULL == (strpbrk(string, "&<>")))
-		return string;
-
-	buffer = g_new0(result_buffer, 1);
-	sax_p = g_new0(htmlSAXHandler, 1);
+	htmlSAXHandlerPtr	sax_p = g_new0(htmlSAXHandler, 1);
  	sax_p->characters = unhtmlizeHandleCharacters;
-
-	/* in older versions htmlSAXParseDoc was used which caused
-	   strange crashes when freeing the parser context... */
-	   
 	ctxt = htmlCreatePushParserCtxt(sax_p, buffer, string, strlen(string), "", XML_CHAR_ENCODING_UTF8);
 	htmlParseChunk(ctxt, string, 0, 1);
 	htmlFreeParserCtxt(ctxt);
-	result = buffer->data;
-	g_free(buffer);
  	g_free(sax_p);
- 
- 	if(result == NULL || !g_utf8_strlen(result, -1)) {
- 		/* Something went wrong in the parsing.
- 		 * Use original string instead */
-		g_free(result);
- 		return string;
- 	} else {
- 		g_free(string);
- 		return result;
- 	}
+}
+
+void _unxmlize(gchar *string, gchar *result, result_buffer *buffer) {
+	xmlParserCtxtPtr	ctxt;
+	xmlSAXHandler	*sax_p = g_new0(xmlSAXHandler, 1);
+ 	sax_p->characters = unhtmlizeHandleCharacters;
+	ctxt = xmlCreatePushParserCtxt(sax_p, buffer, string, strlen(string), "");
+	xmlParseChunk(ctxt, string, 0, 1);
+	xmlFreeParserCtxt(ctxt);
+ 	g_free(sax_p);
 }
 
 /* Converts a UTF-8 strings containing any XML stuff to 
    a string without any entities or tags containing all
    text nodes of the given HTML string. The original 
    string will be freed. */
-gchar * unxmlize(gchar *string) {
-	xmlSAXHandler	*sax_p = NULL;
-	xmlParserCtxtPtr	ctxt;
+gchar * unmarkupize(gchar *string, void(*parse)(gchar *string, gchar *result, result_buffer *buffer)) {
 	gchar			*result;
 	result_buffer		*buffer;
 	
@@ -255,18 +229,9 @@ gchar * unxmlize(gchar *string) {
 		return string;
 
 	buffer = g_new0(result_buffer, 1);
-	sax_p = g_new0(xmlSAXHandler, 1);
- 	sax_p->characters = unhtmlizeHandleCharacters;
-
-	/* in older versions htmlSAXParseDoc was used which caused
-	   strange crashes when freeing the parser context... */
-	   
-	ctxt = xmlCreatePushParserCtxt(sax_p, buffer, string, strlen(string), "");
-	xmlParseChunk(ctxt, string, 0, 1);
-	xmlFreeParserCtxt(ctxt);
+	parse(string, result, buffer);
 	result = buffer->data;
 	g_free(buffer);
- 	g_free(sax_p);
  
  	if(result == NULL || !g_utf8_strlen(result, -1)) {
  		/* Something went wrong in the parsing.
@@ -278,6 +243,9 @@ gchar * unxmlize(gchar *string) {
  		return result;
  	}
 }
+
+gchar * unhtmlize(gchar * string) { return unmarkupize(string, _unhtmlize); }
+gchar * unxmlize(gchar * string) { return unmarkupize(string, _unxmlize); }
 
 #define MAX_PARSE_ERROR_LINES	10
 
