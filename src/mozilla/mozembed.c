@@ -254,6 +254,14 @@ static void mozilla_init() {
 	mozilla_preference_set_boolean("plugin.default_plugin_disabled", FALSE);
 	mozilla_preference_set_boolean("xpinstall.enabled", FALSE);
 	mozilla_preference_set_boolean("mozilla.widget.raise-on-setfocus", FALSE);
+
+	/* this prevents popup dialogs and gives IE-like HTML error pages instead */
+	mozilla_preference_set_boolean("browser.xul.error_pages.enabled", TRUE);
+
+	/* prevent typahead finding to allow Liferea keyboard navigation */
+	mozilla_preference_set_boolean("accessibility.typeaheadfind", FALSE);
+	mozilla_preference_set_boolean("accessibility.typeaheadfind.autostart", FALSE);
+
 	mozilla_save_prefs();
 }
 
