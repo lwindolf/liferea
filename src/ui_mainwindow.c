@@ -114,6 +114,7 @@ static void on_treeview_next(char* treename) {
 
 gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer data) {
 	gboolean	modifier_matches = FALSE;
+	guint		default_modifiers;
 	GtkWidget	*focusw;
 
 	if((event->type == GDK_KEY_PRESS) &&
@@ -125,7 +126,8 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 				break;
 			default:
 			case 1:
-				modifier_matches = (0 == event->state);
+				default_modifiers = gtk_accelerator_get_default_mod_mask();
+				modifier_matches = ((event->state & default_modifiers) == 0);
 				if(!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
 					return FALSE;
 				break;
@@ -141,19 +143,6 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 			return TRUE;
 		}
 	}
-	
-	/* prevent stealing htmlview keys */
-	/* FIXME: somehow this isn't necessary anymore 
-	   and as long it is active it breaks the
-	   keyboard handling for the menu bar... (Lars) 
-	focusw = gtk_window_get_focus(GTK_WINDOW(widget));
-        if((event->type == GDK_KEY_PRESS) &&
-	   ((focusw == htmlview) ||
-	    (gtk_widget_is_ancestor(focusw, htmlview)))) {
-		if(gtk_window_propagate_key_event(GTK_WINDOW(widget),event))
-	                return TRUE;
-        }
-	*/
 	
 	/* check for treeview navigation */
 	if(event->type == GDK_KEY_PRESS) {
