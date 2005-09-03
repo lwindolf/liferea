@@ -66,7 +66,7 @@ static void conf_toolbar_style_settings_cb(GConfClient *client, guint cnxn_id, G
 static gboolean is_gconf_error(GError **err) {
 
 	if(*err != NULL) {
-		g_print("%s\n", (*err)->message);
+		g_warning("%s\n", (*err)->message);
 		g_error_free(*err);
 		*err = NULL;
 		return TRUE;

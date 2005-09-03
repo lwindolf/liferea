@@ -158,6 +158,7 @@ static void favicon_download_4(feedPtr fp) {
 static void favicon_download_request_favicon_cb(struct request *request) {
 	feedPtr		fp = (feedPtr)request->user_data;
 	gchar		*tmp;
+	GError		*err = NULL;
 	gboolean	success = FALSE;
 	
 	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
@@ -167,17 +168,22 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
 		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
-		
-		if(gdk_pixbuf_loader_write(loader, request->data, request->size, NULL)) {
+		if(gdk_pixbuf_loader_write(loader, (guchar *)request->data, request->size, &err)) {
 			if(NULL != (pixbuf = gdk_pixbuf_loader_get_pixbuf(loader))) {
 				debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
-				if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", NULL, NULL))) {
+				if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", &err, NULL))) {
 					g_warning("favicon saving error!");
 				}
 				success = TRUE;
 				favicon_load(fp);
 			}
 		}
+
+		if(err != NULL) {
+			g_warning("%s\n", err->message);
+			g_error_free(err);
+		}
+
 		gdk_pixbuf_loader_close(loader, NULL);
 		g_object_unref(loader);
 		g_free(tmp);
