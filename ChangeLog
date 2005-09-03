@@ -1,4 +1,22 @@
-2005-08-??  ???  <???> 
+2005-09-??  ???  <???> 
+
+	Version 0.9.8
+
+	Bugfixes:
+
+	* Fixes the keyboard handling problems with 0.9.7
+	* Now Mozilla errors are shown as HTML pages, so
+	  there are no annoying freezing dialogs anymore.
+	* The per default enabled typeahead find when 
+	  using Firefox for rendering is disabled now.
+
+	Translations:
+
+	* Updated Slovak translation (Tibor Pittich)
+	* Updated Japanese translation (Takeshi AIHANA)
+	* Updated Simplified Chinese translation (glxiong)
+
+2005-08-29  Lars Lindner  <lars.lindner@gmx.net> 
 
 	Version 0.9.7
 
