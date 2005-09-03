@@ -1,10 +1,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 0.9.6\n"
+"Project-Id-Version: Liferea 0.9.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-29 21:43+0200\n"
-"PO-Revision-Date: 2005-08-16 03:17+0200\n"
+"PO-Revision-Date: 2005-08-30 11:25+0200\n"
 "Last-Translator: Antoine Reversat <areversat@tuxfamily.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -539,7 +539,6 @@ msgid "Toggles the item flag."
 msgstr "Change le marqueur de l'élément."
 
 #: src/interface.c:341
-#, fuzzy
 msgid "Remove _Selected"
 msgstr "Supprimer la _sélection"
 
@@ -548,7 +547,6 @@ msgid "Removes the selected item."
 msgstr "Supprime l'élément sélectionné."
 
 #: src/interface.c:350
-#, fuzzy
 msgid "Remove _All"
 msgstr "Supprimer _tous les éléments"
 
@@ -606,7 +604,6 @@ msgid "Shows or hides the search box."
 msgstr "Affiche ou masque la boîte de recherche."
 
 #: src/interface.c:426
-#, fuzzy
 msgid "Search With _Feedster..."
 msgstr "Chercher avec _Feedster..."
 
@@ -2027,7 +2024,7 @@ msgstr "/Élément _non lu suivant"
 
 #: src/ui_popup.c:136
 msgid "/Copy Item _URL to Clipboard"
-msgstr ""
+msgstr "/Copier l'_URL de l'élément dans le presse-papiers"
 
 #: src/ui_popup.c:137
 msgid "/Launch Item In _Tab"
@@ -2062,9 +2059,8 @@ msgid "/_Subscribe..."
 msgstr "/S'_abonner..."
 
 #: src/ui_popup.c:158
-#, fuzzy
 msgid "/Toggle _Online|Offline"
-msgstr "/_Connecté/Déconnecté"
+msgstr "/Basculer _connecté|déconnecté"
 
 #: src/ui_popup.c:159
 msgid "/_Update All"
