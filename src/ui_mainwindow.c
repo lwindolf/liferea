@@ -115,37 +115,49 @@ static void on_treeview_next(char* treename) {
 gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer data) {
 	gboolean	modifier_matches = FALSE;
 	guint		default_modifiers;
+	const gchar	*type;
 	GtkWidget	*focusw;
 
-	if((event->type == GDK_KEY_PRESS) &&
-	   (event->keyval == GDK_space)) {
-
-		switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
-			case 0:
-				modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
-				break;
-			default:
-			case 1:
-				default_modifiers = gtk_accelerator_get_default_mod_mask();
-				modifier_matches = ((event->state & default_modifiers) == 0);
-				if(!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
-					return FALSE;
-				break;
-			case 2:
-				modifier_matches = ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK);
-				break;
-		}
-		
-		if(modifier_matches) {
-			/* Note that this code is duplicated in mozilla/mozilla.cpp! */
-			if(ui_htmlview_scroll() == FALSE)
-				on_next_unread_item_activate(NULL, NULL);
-			return TRUE;
-		}
-	}
-	
-	/* check for treeview navigation */
 	if(event->type == GDK_KEY_PRESS) {
+		/* handle headline skimming hotkey */
+		if(event->keyval == GDK_space) {
+			switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
+				case 0:
+					modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
+					break;
+				default:
+				case 1:
+					default_modifiers = gtk_accelerator_get_default_mod_mask();
+					modifier_matches = ((event->state & default_modifiers) == 0);
+					if(!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
+						return FALSE;
+					break;
+				case 2:
+					modifier_matches = ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK);
+					break;
+			}
+			
+			if(modifier_matches) {
+				/* Note that this code is duplicated in mozilla/mozilla.cpp! */
+				if(ui_htmlview_scroll() == FALSE)
+					on_next_unread_item_activate(NULL, NULL);
+				return TRUE;
+			}
+		}
+
+		/* prevent usage of navigation keys in entries */
+		focusw = gtk_window_get_focus(GTK_WINDOW(widget));
+		if(GTK_IS_ENTRY(focusw))
+			return FALSE;
+
+		/* prevent usage of navigation keys in HTML view */
+		type = g_type_name(GTK_WIDGET_TYPE(focusw));
+		if((NULL != type) && (0 == strcmp(type, "MozContainer")))
+			return FALSE;
+
+		/* somehow we don't need to check for GtkHTML2... */
+
+		/* check for treeview navigation */
 		switch (event->keyval) {
 			case GDK_n: 
 				on_next_unread_item_activate(NULL, NULL);
