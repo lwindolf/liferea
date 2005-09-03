@@ -963,7 +963,7 @@
 	  <child>
 	    <widget class="GtkStatusbar" id="statusbar">
 	      <property name="visible">True</property>
-	      <property name="has_resize_grip">True</property>
+	      <property name="has_resize_grip">False</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -7041,7 +7041,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label57">
 		  <property name="visible">True</property>
-		  <property name="label">Liferea 0.9.7</property>
+		  <property name="label">Liferea 0.9.8</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -7217,7 +7217,7 @@ Marc Deslauriers
 Amit D. Chaudhary &lt;amitc@users.sourceforge.net&gt;
 Christoph Hohmann &lt;reboot@users.sourceforge.net&gt;
 Raphael Slinckx &lt;raphael@slinckx.net&gt;
-
+and many more...
 
 Code from other projects
 
@@ -7305,7 +7305,12 @@ Rex Tsai &lt;chihchun@users.sourceforge.net&gt;
 Alekseev Vladimir &lt;compress@linux-online.ru&gt;
 Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;
 Martin-Eric Racine &lt;q-funk@pp.fishpool.fi&gt;
-Jakub W. Jóźwicki &lt;jakubj@users.sourceforge.net&gt;</property>
+Jakub W. Jóźwicki &lt;jakubj@users.sourceforge.net&gt;
+Pauli Virtanen &lt;pauli.virtanen@hut.fi&gt;
+Fernando Ike &lt;fernando@ikenet.com.br&gt;
+Spoială Cristian &lt;scristian@gmail.com&gt;
+Jim Huang &lt;jserv@kaffe.org&gt;
+Guanglei Xiong &lt;xgl99@mails.tsinghua.edu.cn&gt;</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>

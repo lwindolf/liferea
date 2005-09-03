@@ -554,6 +554,7 @@ create_mainwindow (void)
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
   gtk_box_pack_start (GTK_BOX (hbox30), statusbar, TRUE, TRUE, 0);
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (statusbar), FALSE);
 
   g_signal_connect ((gpointer) mainwindow, "delete_event",
                     G_CALLBACK (on_close),
@@ -3285,7 +3286,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new ("Liferea 0.9.7");
+  label57 = gtk_label_new ("Liferea 0.9.8");
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);
@@ -3325,7 +3326,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow5), viewport1);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport1), GTK_SHADOW_NONE);
 
-  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@ll.pl>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\nahmed el-helw <ahmedre@cc.gatech.edu>\nJames Bowes <bowes@cs.dal.ca>\nMarc Deslauriers\nAmit D. Chaudhary <amitc@users.sourceforge.net>\nChristoph Hohmann <reboot@users.sourceforge.net>\nRaphael Slinckx <raphael@slinckx.net>\n\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)\nJonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\nKristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"));
+  label62 = gtk_label_new (_("Code, Patches, Debugging\n\nJames Doherty <...>\nJeremy Messenger <mezz7@cox.net>\nJohn McKnight <...>\nTomasz Maka <pasp@ll.pl>\nKarl Soderstrom <ks@debian.org>\t\nChristophe Barbe <christophe.barbe@ufies.org>\nJuho Snellman <jsnell@users.sourceforge.net>\nRoshan Revankar <roshweb@users.sourceforge.net>\nOliver Feiler <kiza@kcore.de>\nNiklas Morberg <morberg@users.sourceforge.net>\nJohannes Schlueter <joscherl@users.sourceforge.net>\nPierre Phaneuf <pp@ludusdesign.com>\nahmed el-helw <ahmedre@cc.gatech.edu>\nJames Bowes <bowes@cs.dal.ca>\nMarc Deslauriers\nAmit D. Chaudhary <amitc@users.sourceforge.net>\nChristoph Hohmann <reboot@users.sourceforge.net>\nRaphael Slinckx <raphael@slinckx.net>\nand many more...\n\nCode from other projects\n\nAnders Carlsson <andersca@gnu.org> (tray icon support)\nPhilippe Martin, Brion Vibber (favicon support)\nJonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\nKristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"));
   gtk_widget_show (label62);
   gtk_container_add (GTK_CONTAINER (viewport1), label62);
   gtk_misc_set_alignment (GTK_MISC (label62), 0, 0.1);
@@ -3345,7 +3346,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.net>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. J\303\263\305\272wicki <jakubj@users.sourceforge.net>");
+  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@mandrake.org>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.net>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. Jóźwicki <jakubj@users.sourceforge.net>\nPauli Virtanen <pauli.virtanen@hut.fi>\nFernando Ike <fernando@ikenet.com.br>\nSpoial�\203 Cristian <scristian@gmail.com>\nJim Huang <jserv@kaffe.org>\nGuanglei Xiong <xgl99@mails.tsinghua.edu.cn>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
