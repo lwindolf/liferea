@@ -1,8 +1,9 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 	<title>Managing Subscriptions</title>
-	
-	<link rel="stylesheet" type="text/css" href="help.css">
+	<link rel="stylesheet" type="text/css" href="reference.css" >
 </head>
 <body>
 
@@ -22,7 +23,7 @@
 	<h3>Subscribing</h3>
 	<p>
 	To create a new subscription select "New Feed" from the feed 
-	list's contextual menu or the feed menu. A dialog to create a 
+	list's contextual menu or the "Feeds" menu. A dialog to create a 
 	new subscription will appear.
 	</p>	
 
@@ -32,17 +33,18 @@
 
 	<p>
 	The data displayed in feeds can be obtained from a variety of
-	different sources including over the Internet using an URL, by
-	running a command, and by directly reading from a file. Usually
-	you will want to subscribe to an URL. After selecting the source
-	type you need to enter the URL into the source field,
-	such as "http://slashdot.org/index.rss".
-	</p>	
+	different sources including over the Internet using an URL, the
+	output of a locally run command, and by directly reading from a
+	file. Most often, it is desired to subscribe using an URL. After
+	selecting the desired source type, enter the source URL, command
+	name, or filename into the "Source" textbox. For example, to
+	subscribe to Slashdot's RSS feed, select "URL" as the source type
+	and enter <i>http://slashdot.org/index.rss</i> into the "Source"
+	textbox.</p>
 	
-	<p>When a command or local file is selected, the command
-	or file can be selected using a file navigation box by
-	clicking "Select File...". 
-	</p>
+	<p>When a command or local file is selected, the command or file
+	can be selected using a file navigation box by clicking "Select
+	File...".</p>
 	
 	<p>Sometimes, the data in a feed is in a format that is
 	unknown to Liferea. If this is the case, a conversion filter
@@ -51,31 +53,30 @@
 	href="http://home.kcore.de/~kiza/software/snownews/snowscripts/">the
 	Snownews and Liferea script repository</a>.</p>
 
-	<p>To use the filters the "Conversion filter" option needs to
-	be activated. The filter is specified by either typing the path of
-	the filter script into the "Convert using" textbox or selecting the
-	filter after clicking the "Select File..." button. The filters
-	are simple programs that read the original non-supported data
-	on stdin and print the valid feed to stdout, and are often
-	written using perl. </p>
-	
-	<p> If the feed could be loaded, the
-	properties dialog used to set additional feed properties will
-	appear. Usually you just want to confirm this dialog.
-	After selecting "Ok" to save the feed settings the new feed 
-	should appear right after the currently selected feed or if 
-	you had selected a folder, as the last feed in this folder.</p>
-
-
-
+	<p>To use conversion filters, the "Conversion filter" option needs
+	to be activated in the subscription dialog box. The filter is
+	specified by either typing the path of the filter script into the
+	"Convert using" textbox or selecting the filter after clicking the
+	"Select File..." button. The filters are simple programs that read
+	the non-supported feed format using stdin and output the valid
+	feed to stdout. Conversion filters are often written using
+	perl. </p>
 	
 	<h3>Feed Properties</h3>
+
+	<p> The feed properties dialog used to set additional feed
+	  properties will appear after a successful subscription and when
+	  "Properties" is activated in the "Feeds" menu or the context
+	  menu displayed when right-clicking a feed. When creating a new
+	  subscription, the default values are reasonable and often no
+	  changes are made using this dialog.  After selecting "Ok" to
+	  save the feed properties, the new feed should appear below the
+	  currently selected feed or if you had selected a folder, as the
+	  last feed in the selected folder.</p>
+	
 	<p>
-	The feed properties dialog is displayed after subscribing to a new
-	feed, when "Properties" is activated in the "Feeds" menu or
-	the context menu displayed when right-clicking a feed. 
 	The dialog groups the feed properties into four sets: "General",
-	"Feed Source", "Feed Cache" and "Authentication".</p>
+	"Feed Source", "Feed Cache" and "Authentication":</p>
 
 	<h4>General Properties</h4>
 
@@ -84,44 +85,53 @@
 	</p>
 	
 	<p>The "General" pane allows you to set feed title and update
-	interval. The title you can modify here is displayed as the 
-	feed name in the feed list. Multiple feeds can have the same title.</p>
+	interval. The feed name is is the feed's name shown in the feed
+	list. Multiple feeds can have the same name.</p>
 	
-	<p>Typically you don't need to set an update interval. We
-	recommend to use the global update interval preference which
-	you can find in the preference dialog. This preference is used
-	for all feeds that have the update interval setting to follow
-	the global update interval setting.</p>
+	<div id="updateInterval"><p>The feed update interval controls how often Liferea attempts to
+		update a feed. Typically, the feed update interval can be left at
+		its default. We recommend to use the global update interval
+		preference which you can find in the preference dialog because it
+		allows one to change the update interval of all feed
+		simultaneously.</p>
+	  
+	  <p>Sometimes a feed provides a feed specific update interval.
+		If this is the case Liferea automatically activates the user
+		defined update interval setting and enters the feed specific
+		update interval. This is only done during the initial feed
+		subscription. You should never need to change such a setting.</p>
+
+		<p>The update interval can be set using the following options:</p>
+		<dl>
+		  <dt>Use global default update interval</dt>
+		  <dd>This preference is used for all feeds that have
+			the update interval setting to follow the global default update
+			interval setting.</dd>
+		  
+		  <dt>Feed specific update interval</dt><dd>There might be situations where you want to specify
+			a update interval which might be more or less frequent than
+			the global update interval. Then you should select the user
+			defined interval option and enter the interval value you want.
+			<em>When specifying an update interval, you should consider the
+			  web traffic you will cause with an inappropiate update
+			  interval. Don't update more often than the feed's content is
+			  updated.</em></dd>
 	
-	<p>Sometimes a feed provides a feed specific update interval.
-	If this is the case Liferea automatically activates the user
-	defined update interval setting and enters the feed specific
-	update interval. This is done once after subscribing. You
-	should never need to change such a setting.</p>
-	
-	<p>Anyway there might be situations where you want to specify
-	a update interval which might be more or less frequent than
-	the global update interval. Then you should select the user
-	defined interval option and enter the interval value you want.
-	<b>When specifying an update interval, you should consider the
-	web traffic you will cause with an inappropiate update
-	interval. Don't update more often than the feed's content is
-	updated.</b></p>
-	
-	<p>The last update interval option allows you to prevent
-	updating the feed. You might use this option for feeds you
-	always want to update manually.</p>
-	
+		  <dt>Don't update this feed automatically</dt><dd>This option
+			allows you to prevent updating the feed. You can use this option
+			for feeds you always want to have only updated manually.</dd>
+	  </dl>
+	</div>
 	<h4>Feed Source Properties</h4>
 
 	<p align="center">
 	<img src="http://liferea.sf.net/help/help_feed_prop_source_0.9.0.png"/>
 	</p>
 	
-	<p>The "Feed Source" pane contains the same fields the "New
-	Feed" dialog provided when subscribing to this feed. You can
-	use this settings to manually update the feed source
-	(e.g. after a feed URL has changed).</p>
+	<p>The "Feed Source" pane contains the same fields the "New Feed"
+	dialog provided when subscribing to this feed. You can use these
+	settings to change the feed source (e.g. after a feed's URL has
+	changed).</p>
 
 	<h2>Feed Cache Properties</h2>
 
@@ -137,18 +147,19 @@
 	settings only to implement exceptions from the global
 	default cache size.</p>
 	
-	<ul>
-	<li><b>Default Cache Settings</b> - Makes the feed use the default cache settings, which are stored in the main Liferea
-	preferences.</li>
-	<li><b>Disable Cache</b> - Disable the feed's items from ever being saved.</li>
-	<li><b>Unlimited cache</b> - Save all items. </li>
-	<li><b>Limit cache to # items</b> - Limits the cache size to #.</li>
-	</ul>
+	<dl>
+	  <dt>Default Cache Settings</dt><dd>Makes the feed use the default cache settings, which are stored in the main Liferea
+		preferences.</dd>
+	  <dt>Disable Cache</dt> <dd> Disable the feed's items from ever being saved.</dd>
+	  <dt>Unlimited cache</dt> <dd> Save all items. </dd>
+	  <dt>Limit cache to # items</dt> <dd>Limits the cache size to #.</dd>
+	</dl>
 
 	<p>
-	<b>Note:</b> Flagged items are always saved, regardless of the cache settings.
-	So if you have found an important headline and want to prevent it from
-	being dropped from the cache just flag this headline.
+	<strong>Note:</strong> Flagged items are always saved, regardless
+	of the cache settings.  So if you have found an important headline
+	and want to prevent it from being dropped from the cache just flag
+	this headline.
 	</p>
 	
 	<h4>Authentication Properties</h4>
@@ -159,10 +170,11 @@
 	
 	<p>
 	This tab allows you to enable HTTP authentication when downloading
-	the feed. Enable the checkbox and enter appropriate user and 
-	password values to use this feature. Usually you won't need to
-	change this setting because you will be asked username and
-	password when subscribing to the feed.
+	the feed. Enable the checkbox and enter appropriate user and
+	password values to use pasword-protected feeds. Usually you won't
+	need to use these settings because you will be asked username and
+	password when subscribing to the feed that requires
+	authontication.
 	</p>
 	
 

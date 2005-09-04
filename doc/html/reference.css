@@ -6,3 +6,7 @@ table.reftable {
 table.reftable tr td {
 	border:1px solid black;
 }
+
+dt {
+	 font-weight: bold;
+}
