@@ -109,7 +109,7 @@ void download_process(struct request *request) {
 	FILE	*f;
 	size_t	len;
 	int	status;
-	gchar	*tmp, *errorOutput;
+	gchar	*cmd, *tmp, *errorOutput;
 
 	request->data = NULL;
 	request->size = 0;
@@ -166,8 +166,18 @@ void download_process(struct request *request) {
 
 	/* And execute the postfilter */
 	if(request->data != NULL && request->filtercmd != NULL) {
+		/* we allow two types of filters: XSLT stylesheets and arbitrary commands */
+		if((strlen(request->filtercmd) > 4) &&
+		   (0 == strcmp(".xsl", request->filtercmd + strlen(request->filtercmd) - 4))) {
+			/* in case of XSLT we call xsltproc */
+			cmd = g_strdup_printf("xsltproc %s -", request->filtercmd);
+		} else {
+			/* otherwise we just keep the given command */
+			cmd = g_strdup(request->filtercmd);
+		}
+
 		errorOutput = NULL;
-		tmp = filter(request->filtercmd, request->data, &errorOutput, &len);
+		tmp = filter(cmd, request->data, &errorOutput, &len);
 		g_free(request->filterErrors);
 		request->filterErrors = errorOutput;
 		if(tmp != NULL) {

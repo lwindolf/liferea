@@ -51,7 +51,8 @@ static GConfClient	*client;
 static guint feedlist_save_timer;
 static gboolean feedlistLoading = FALSE;	/* flag set during initial feed list loading */
 
-/* configuration strings for the SnowNews HTTP code used from within netio.c */
+/* configuration values for the SnowNews HTTP code used from within netio.c */
+int	NET_TIMEOUT = 30;
 char 	*useragent = NULL;
 char	*proxyname = NULL;
 char	*proxyusername = NULL;
@@ -105,11 +106,11 @@ void conf_init() {
 	gconf_client_notify_add(client, "/desktop/gnome/interface/toolbar_style", conf_toolbar_style_settings_cb, NULL, NULL, NULL);
 	gconf_client_notify_add(client, SHOW_TRAY_ICON, conf_tray_settings_cb, NULL, NULL, NULL);
 	
-	/* for 0.6.4 migrations ... */
-	setBooleanConfValue("/apps/liferea/last-itemlist-mode", FALSE);
-	
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb(NULL, 0, NULL, NULL);
+
+	if(0 == (NET_TIMEOUT = getNumericConfValue(NETWORK_TIMEOUT)))
+		NET_TIMEOUT = 30;	/* default network timeout 30s */
 }
 
 /* maybe called several times to reload configuration */

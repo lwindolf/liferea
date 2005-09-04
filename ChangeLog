@@ -2,6 +2,18 @@
 
 	Version 0.9.8
 
+	* The HTTP client timeout with a default of 30s
+	  can be configured via gconf now.
+	* XSLT stylesheets can be specified as feed 
+	  postprocessing filters. If a file with the
+	  extension .xsl is configured xsltproc is
+	  called automatically. (dwpoon, SF #1197414)
+
+
+2005-09-04  Lars Lindner  <lars.lindner@gmx.net> 
+
+	Version 0.9.7b
+
 	Bugfixes:
 
 	* Fixes the keyboard handling problems with 0.9.7

@@ -63,12 +63,12 @@
 #include "../update.h"
 
 static int const MAX_HTTP_REDIRECTS = 10;	/* Maximum number of redirects we will follow. */
-static int const NET_TIMEOUT = 30;			/* Global network timeout in sec */
+extern int NET_TIMEOUT;				/* Global network timeout in sec */
 static int const NET_READ = 1;
 static int const NET_WRITE = 2;
 
-extern char *proxyname;						/* Hostname of proxyserver. */
-extern int proxyport;			/* Port on proxyserver to use. */
+extern char *proxyname;				/* Hostname of proxyserver. */
+extern int proxyport;				/* Port on proxyserver to use. */
 extern char *proxyusername;
 extern char *proxypassword;
 extern char *useragent;
