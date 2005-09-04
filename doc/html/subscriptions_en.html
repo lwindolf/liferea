@@ -7,28 +7,42 @@
 <body>
 
 
-	<h1>Subscribing</h1>
+	<!-- navigation header start -->
+	<table width="100%">
+	   <tr>
+	      <!-- back --><td width="50px"><a href="about_en.html">Prev</a></td>
+	      <!-- home --><td style="text-align:center;"><b>Managing Subscriptions</b></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="headlines_en.html">Next</a></td>
+	   </tr>
+	</table>
+	<hr />
+	<!-- navigation header end -->
+
+	<!-- content start --> 
+	<h3>Subscribing</h3>
 	<p>
 	To create a new subscription select "New Feed" from the feed 
 	list's contextual menu or the feed menu. A dialog to create a 
 	new subscription will appear.
 	</p>	
+
+	<p align="center">
 	<img src="http://liferea.sourceforge.net/help/help_subscribe_0.9.0.png">
+	</p>
+
 	<p>
 	The data displayed in feeds can be obtained from a variety of
-	different sources including over the Internet using a URL, by
-	running a command, and by directly reading from a file. The
-	source type is selected by clicking one of the three source
-	type radio buttons. Usually, a feed is selected by inputting a
-	URL, such as "http://slashdot.org/index.rss".
+	different sources including over the Internet using an URL, by
+	running a command, and by directly reading from a file. Usually
+	you will want to subscribe to an URL. After selecting the source
+	type you need to enter the URL into the source field,
+	such as "http://slashdot.org/index.rss".
 	</p>	
 	
-	<p>When a command or file type feed is selected, the command
+	<p>When a command or local file is selected, the command
 	or file can be selected using a file navigation box by
-	clicking "Select File...". When downloading the feed using a
-	URL, one can specify a password by clicking the "Use HTTP
-	authentication" checkbox and typing the username and password
-	in their respective textboxes.</p>
+	clicking "Select File...". 
+	</p>
 	
 	<p>Sometimes, the data in a feed is in a format that is
 	unknown to Liferea. If this is the case, a conversion filter
@@ -37,38 +51,37 @@
 	href="http://home.kcore.de/~kiza/software/snownews/snowscripts/">the
 	Snownews and Liferea script repository</a>.</p>
 
-	<p>To use the filters, one enables the "Conversion filter"
-	option and specifies the feed source in the top half of the
-	dialog. The filter is specified by either typing the path of
-	the filter into the "Convert using" textbox or selecting the
+	<p>To use the filters the "Conversion filter" option needs to
+	be activated. The filter is specified by either typing the path of
+	the filter script into the "Convert using" textbox or selecting the
 	filter after clicking the "Select File..." button. The filters
 	are simple programs that read the original non-supported data
 	on stdin and print the valid feed to stdout, and are often
 	written using perl. </p>
 	
-	<p> If the URL is valid and the feed could be loaded, the
+	<p> If the feed could be loaded, the
 	properties dialog used to set additional feed properties will
-	appear. This window is described in the next section: "Feed
-	Properties".</p>
-
-	<p> Press "Ok" to save your settings and close the feed
-	properties dialog. The new feed entry should appear either after
-	the selected feed entry or if you had selected a folder, as the
-	last item in the folder.</p>
+	appear. Usually you just want to confirm this dialog.
+	After selecting "Ok" to save the feed settings the new feed 
+	should appear right after the currently selected feed or if 
+	you had selected a folder, as the last feed in this folder.</p>
 
 
 
 	
-	<h1>Feed Properties</h1>
+	<h3>Feed Properties</h3>
 	<p>
-	The feed properties window is displayed after creating a new
+	The feed properties dialog is displayed after subscribing to a new
 	feed, when "Properties" is activated in the "Feeds" menu or
-	the contextual menu displayed when right-clicking a
-	feed. The window groups the properties into four sets: "General",
-	"Source", "Feed Cache" and "Authentication".</p>
+	the context menu displayed when right-clicking a feed. 
+	The dialog groups the feed properties into four sets: "General",
+	"Feed Source", "Feed Cache" and "Authentication".</p>
 
-	<h2>General</h2>
+	<h4>General Properties</h4>
+
+	<p align="center">
 	<img src="http://liferea.sf.net/help/help_feed_prop_general_0.9.0.png"/>
+	</p>
 	
 	<p>The "General" pane allows you to set feed title and update
 	interval. The title you can modify here is displayed as the 
@@ -99,21 +112,22 @@
 	updating the feed. You might use this option for feeds you
 	always want to update manually.</p>
 	
-        <div style="background-color:#f7f0a3;padding:5px;border:solid 1px black;">
-	Note: OCS and OPML directories are never updated automatically.
-	They can only be updated manually.
-	</div>
+	<h4>Feed Source Properties</h4>
 
-	<h2>Source</h2>
+	<p align="center">
 	<img src="http://liferea.sf.net/help/help_feed_prop_source_0.9.0.png"/>
+	</p>
 	
-	<p>The "Source" pane contains the same fields the "New
-	Feed" dialog provided when subscribing to this feed. If you
-	want to learn more about them please refer to the previous 
-	section "Subscribing".</p>
+	<p>The "Feed Source" pane contains the same fields the "New
+	Feed" dialog provided when subscribing to this feed. You can
+	use this settings to manually update the feed source
+	(e.g. after a feed URL has changed).</p>
 
-	<h2>Cache</h2>
+	<h2>Feed Cache Properties</h2>
+
+	<p align="center">
 	<img src="http://liferea.sf.net/help/help_feed_prop_cache_0.9.0.png"/>
+	</p>
 	
 	<p>The third pane, "Feed Cache", controls how many items of
 	a feed are saved when Liferea writes the feeds cache file.
@@ -130,23 +144,37 @@
 	<li><b>Unlimited cache</b> - Save all items. </li>
 	<li><b>Limit cache to # items</b> - Limits the cache size to #.</li>
 	</ul>
-        <div style="background-color:#f7f0a3;padding:5px;border:solid 1px black;">
-	Note: Marked items are always saved, regardless of the cache settings.
-        </div>
+
+	<p>
+	<b>Note:</b> Flagged items are always saved, regardless of the cache settings.
+	So if you have found an important headline and want to prevent it from
+	being dropped from the cache just flag this headline.
+	</p>
 	
-	<h2>Authentication</h2>
+	<h4>Authentication Properties</h4>
+	
+	<p align="center">
 	<img src="http://liferea.sf.net/help/help_feed_prop_auth_0.9.0.png"/>
+	</p>
 	
 	<p>
 	This tab allows you to enable HTTP authentication when downloading
 	the feed. Enable the checkbox and enter appropriate user and 
-	password values to use this feature.
+	password values to use this feature. Usually you won't need to
+	change this setting because you will be asked username and
+	password when subscribing to the feed.
 	</p>
 	
 
-
-	</p>
-	&gt;&gt&gt; <a href="topics_en.html">Back to Help Contents</a>
-	</p>
+	<!-- navigation footer start -->
+	<hr />
+	<table width="100%">
+	   <tr>
+	      <!-- back --><td width="50px"><a href="about_en.html">Prev</a></td>
+	      <!-- home --><td style="text-align:center;"><a href="topics_en.html">Contents</a></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="headlines_en.html">Next</a></td>
+	   </tr>
+	</table>
+	<!-- navigation footer end -->
 </body>
 </html>
