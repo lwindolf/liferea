@@ -6,15 +6,28 @@
 </head>
 <body>
 
+	<!-- navigation header start -->
+	<table width="100%">
+	   <tr>
+	      <!-- back --><td width="50px"><a href="updating_en.html">Prev</a></td>
+	      <!-- home --><td style="text-align:center;"><b>Program Preferences</b></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="searching_en.html">Next</a></td>
+	   </tr>
+	</table>
+	<hr />
+	<!-- navigation header end -->
 
-	<h1>Program Preferences</h1>
+	<h3>Program Preferences</h3>
 
 	<p> The preferences dialog can be opened by the toolbar or
 	through the "Program" menu. The dialog is divided into two tabs
 	described in the following text.  </p>
 
-	<h2>Feeds</h2>
+	<h4>Feed Preferences</h4>
+
+	<p align="center">
 	<img src="http://liferea.sourceforge.net/help/help_prefs_feeds_0.9.0.png">
+	</p>
 	<ul>
 	
 	<li>
@@ -47,8 +60,11 @@
 	</li>
 	</ul>
 	
-	<h2>Folders</h2>
+	<h4>Folder Preferences</h4>
+
+	<p align="center">
 	<img src="http://liferea.sourceforge.net/help/help_prefs_folders_0.9.0.png">
+	</p>
 		
 	<ul>
 	<li>
@@ -65,8 +81,11 @@
 	</li>	
 	</ul>
 	
-	<h2>Headlines</h2>
+	<h4>Headline Preferences</h4>
+
+	<p align="center">
 	<img src="http://liferea.sourceforge.net/help/help_prefs_headlines_0.9.0.png">
+	</p>
 	
 	<ul>
 	<li>
@@ -83,8 +102,11 @@
 	</li>
 	</ul>
 	
-	<h2>Browser</h2>
+	<h4>Browser Preferences</h4>
+
+	<p align="center">
 	<img src="http://liferea.sourceforge.net/help/help_prefs_browser_0.9.0.png">
+	</p>
 	
 	<ul>
 	<li>
@@ -103,40 +125,21 @@
 	select your favourite browser or "Manual" for a user defined
 	browser command. With the second option button you specify
 	how the link is opened inside the previously selected browser.<br>
+	<br>
 	Only when selecting "Manual" as browser you can enter a 
 	browser command in the command entry. When entering a command
 	don't forget to include a <i>"%s"</i> within the command which
 	will be replaced with the URL that was clicked. Please keep in 
 	mind to double quote the place holder to avoid shell problems 
-	with the hash character (#) when launching the browser.<br>
-	<br>
-	<p>
-	If you are using Mozilla you may want to define <i>mozilla "%s"</i>,
-	but this will let you launch only the first clicked URL. All following
-	URL clicks will launch the Mozilla profile manager. Jim Philips suggested
-	the following script to automatically launch URLs in an already existing 
-	Mozilla browser window. Save this script to the directory of your choice and
-	configure Liferea to launch URLs by calling this script and the URL
-	as the first parameter.
-	<br>
-	<div style="background-color:#F0F0F0;padding:5px;border:dashed 1px black">
-	<pre>#!/bin/bash
-MOZILLA=/usr/local/bin/mozilla
-if ($MOZILLA -remote "ping()"); then
-	$MOZILLA -remote "openurl($1, new-tab)"
-else
-	$MOZILLA $1
-fi
-</pre>
-	</div>
-	</p>
-	<p><b>Important:</b> Paul Newport reported that Firefox 0.9 changed the -remote
-	syntax. Now a <tt>-a firefox</tt> has to be added right before the -remote parameter.</p>
+	with the hash character (#) when launching the browser.
 	</li>
 	</ul>
 
-	<h2>GUI Settings</h2>
+	<h4>GUI Preferences</h4>
+
+	<p align="center">
 	<img src="http://liferea.sourceforge.net/help/help_prefs_gui_0.9.0.png">
+	</p>
 
 	<ul>
 	<li>
@@ -147,8 +150,9 @@ fi
 	will change when new items arrive and 'll be reset as soon the program 
 	is used again. The icon can be used to show the program window if 
 	currently hidden or hide the program window if it is visible.<br>
+	<br>
 	The second option allows you to enable a notification popup
-	window which present a list of the titles of newly headlines
+	window which present a list of the titles of new headlines
 	of updated subscriptions.	
 	</li>
 	
@@ -158,20 +162,34 @@ fi
 	</li>	
 	</ul>
 	
-	<h2>Proxy</h2>
+	<h4>Proxy Preferences</h4>
+
+	<p align="center">
 	<img src="http://liferea.sourceforge.net/help/help_prefs_proxy_0.9.0.png">
+	</p>
 	
 	<ul>
 	<li>
 	<b>HTTP Proxy Server:</b> Using this preference tab you can
 	configure a HTTP proxy for Liferea. If you are a GNOME user
 	don't use this tab and configure the proxy in the GNOME
-	preference (if not already done).
+	preference (if not already done). Liferea will then automatically
+	use the GNOME proxy preferences.<br>
+	<br>
+ 	Currently Liferea does not allow you to specify host not
+	to be accessed with the configured proxy.
 	</li>
 	</ul>
 
-	</p>
-	&gt;&gt&gt; <a href="topics_en.html">Back to Help Contents</a>
-	</p>
+	<!-- navigation footer start -->
+	<hr />
+	<table width="100%">
+	   <tr>
+	      <!-- back --><td width="50px"><a href="updating_en.html">Prev</a></td>
+	      <!-- home --><td style="text-align:center;"><a href="topics_en.html">Contents</a></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="searching_en.html">Next</a></td>
+	   </tr>
+	</table>
+	<!-- navigation footer end -->
 </body>
 </html>
