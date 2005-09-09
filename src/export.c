@@ -1,8 +1,8 @@
 /**
  * @file export.c OPML feedlist import&export
  *
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,6 +123,9 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				
 			if(TRUE == feed_get_two_pane_mode(fp))
 				xmlNewProp(childNode, BAD_CAST"twoPane", BAD_CAST"true");
+
+			if(TRUE == fp->encAutoDownload)
+				xmlNewProp(childNode, BAD_CAST"encAutoDownload", BAD_CAST"true");
 		}
 		
 		/* add vfolder rules */
@@ -372,13 +375,19 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			fp->sortReversed = FALSE;
 		if(sortStr != NULL)
 			xmlFree(sortStr);
-			
 		
 		tmp = xmlGetProp(cur, BAD_CAST"twoPane");
 		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 			feed_set_two_pane_mode(fp, TRUE);
-		if (tmp != NULL)
+		if(tmp != NULL)
 			xmlFree(tmp);
+
+		tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
+		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+			fp->encAutoDownload = TRUE;
+		if(tmp != NULL)
+			xmlFree(tmp);
+
 		/* set feed properties available from the OPML feed list 
 		   they may be overwritten by the values of the cache file
 		   but we need them in case the cache file loading fails */

@@ -99,6 +99,7 @@ typedef struct feed {
 	gchar		*filtercmd;		/**< feed filter command */
 	gint		updateInterval;		/**< user defined update interval in minutes */
 	GSList		*metadata;		/**< metadata of this feed */
+	gboolean	encAutoDownload;	/**< enclosure auto download flag */
 	
 	gulong		lastItemNr;		/**< internal counter used to uniqely assign item id's. */
 	GSList		*items;			/**< list of pointers to the item structures of this channel */
