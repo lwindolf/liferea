@@ -658,6 +658,19 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 				new_ip->nr = ++(fp->lastItemNr);
 				fp->needsCacheSave = TRUE;
 			}
+
+			/* If a new item has enclosures and auto downloading
+			   is enabled we start the download. Enclosures added
+			   by updated items are not supported. */
+			if((TRUE == fp->encAutoDownload) &&
+			   (TRUE == item_get_new_status(new_ip))) {
+				iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
+				while(NULL != iter) {
+					debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+					on_popup_open_enclosure(iter->data ,0 , NULL);
+					iter = g_slist_next(iter);
+				}
+			}
 		
 			if(FALSE == item_get_read_status(new_ip))
 				feed_increase_unread_counter(fp);
@@ -678,19 +691,6 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			vfolder_check_item(new_ip);
 			
 			debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
-
-			/* If a new item has enclosures and auto downloading
-			   is enabled we start the download. Enclosures added
-			   by updated items are not supported. */
-			if((TRUE == fp->encAutoDownload) &&
-			   (TRUE == item_get_new_status(new_ip))) {
-				iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
-				while(NULL != iter) {
-					debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-					on_popup_open_enclosure(iter->data ,0 , NULL);
-					iter = g_slist_next(iter);
-				}
-			}
 			
 		} else {
 			/* if the item was found but has other contents -> update contents */
