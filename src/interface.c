@@ -849,8 +849,8 @@ create_propdialog (void)
   GtkWidget *passwordEntry;
   GtkWidget *label131;
   GtkWidget *vbox2615;
-  GtkWidget *checkbutton1;
   GtkWidget *enclosureDownloadCheck;
+  GtkWidget *enctablabel;
   GtkWidget *dialog_action_area13;
   GtkWidget *prop_cancel;
   GtkWidget *prop_ok;
@@ -1235,13 +1235,13 @@ create_propdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook3), vbox2615);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2615), 12);
 
-  checkbutton1 = gtk_check_button_new_with_mnemonic (_("_Automatically download all enclosures of this feed."));
-  gtk_widget_show (checkbutton1);
-  gtk_box_pack_start (GTK_BOX (vbox2615), checkbutton1, FALSE, FALSE, 0);
-
-  enclosureDownloadCheck = gtk_label_new (_("Enlosures"));
+  enclosureDownloadCheck = gtk_check_button_new_with_mnemonic (_("_Automatically download all enclosures of this feed."));
   gtk_widget_show (enclosureDownloadCheck);
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 4), enclosureDownloadCheck);
+  gtk_box_pack_start (GTK_BOX (vbox2615), enclosureDownloadCheck, FALSE, FALSE, 0);
+
+  enctablabel = gtk_label_new (_("Enlosures"));
+  gtk_widget_show (enctablabel);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 4), enctablabel);
 
   dialog_action_area13 = GTK_DIALOG (propdialog)->action_area;
   gtk_widget_show (dialog_action_area13);
@@ -1339,8 +1339,8 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, passwordEntry, "passwordEntry");
   GLADE_HOOKUP_OBJECT (propdialog, label131, "label131");
   GLADE_HOOKUP_OBJECT (propdialog, vbox2615, "vbox2615");
-  GLADE_HOOKUP_OBJECT (propdialog, checkbutton1, "checkbutton1");
   GLADE_HOOKUP_OBJECT (propdialog, enclosureDownloadCheck, "enclosureDownloadCheck");
+  GLADE_HOOKUP_OBJECT (propdialog, enctablabel, "enctablabel");
   GLADE_HOOKUP_OBJECT_NO_REF (propdialog, dialog_action_area13, "dialog_action_area13");
   GLADE_HOOKUP_OBJECT (propdialog, prop_cancel, "prop_cancel");
   GLADE_HOOKUP_OBJECT (propdialog, prop_ok, "prop_ok");

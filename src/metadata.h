@@ -70,6 +70,16 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
  */
 void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data);
 
+/**
+ * Returns a list of all values of a given type from a specified metadata list.
+ *
+ * @returns a list of values
+ */
+GSList * metadata_list_get(GSList *metadata, const gchar *strid);
+
+/**
+ * Renders the given metadata list into the given display set.
+ */
 void metadata_list_render(GSList *metadata, struct displayset *displayset);
 
 /** 

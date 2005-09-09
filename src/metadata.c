@@ -136,7 +136,19 @@ void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data)
 	*metadata = g_slist_append(*metadata, p);
 }
 
-void metadata_list_render(GSList* metadata, struct displayset *displayset) {
+GSList * metadata_list_get(GSList *metadata, const gchar *strid) {
+	GSList *list = metadata;
+	
+	while(list != NULL) {
+		struct pair *p = (struct pair*)list->data; 
+		if(0 == strcmp(p->attrib->strid, strid))
+			return p->data;
+		list = list->next;
+	}
+	return NULL;
+}
+
+void metadata_list_render(GSList *metadata, struct displayset *displayset) {
 	GSList *list = metadata;
 	
 	while(list != NULL) {

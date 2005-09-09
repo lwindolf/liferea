@@ -169,19 +169,19 @@ static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
 static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 
-	if (response_id == GTK_RESPONSE_OK) {
+	if(response_id == GTK_RESPONSE_OK) {
 		xmlURIPtr uri;
 		xmlChar *user, *pass, *sourceUrl;
 
 		/* Source */
 		uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->fp));
 		
-		if (uri == NULL) {
-			/* FIXME: message dialog to tell user that something very unexpected happened. */
+		if(uri == NULL) {
+			g_warning("Error when parsing authentication URL! Authentication settings lost.");
 			g_free(ui_data);
 			return;
 		}
-		if (uri->user != NULL)
+		if(uri->user != NULL)
 			xmlFree(uri->user);
 
 		user = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->username));
@@ -189,7 +189,7 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		uri->user = g_strdup_printf("%s:%s", user, pass);
 
 		sourceUrl = xmlSaveUri(uri);
-		if (sourceUrl != NULL) {
+		if(sourceUrl != NULL) {
 			feed_set_source(ui_data->fp, sourceUrl);
 			xmlFree(sourceUrl);
 		}
@@ -197,7 +197,6 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		feed_schedule_update(ui_data->fp, ui_data->flags);
 		xmlFreeURI(uri);
 	}
-
 
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 	g_free(ui_data);
@@ -284,6 +283,9 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 			ui_data->fp->cacheLimit = CACHE_UNLIMITED;
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheLimited"))))
 			ui_data->fp->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "cacheItemLimit")));
+
+		/* Enclosures */
+		ui_data->fp->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
 
 		ui_feedlist_update();
 		conf_feedlist_schedule_save();
@@ -422,10 +424,10 @@ GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, feedPtr fp, gint flags) {
 	}
 	
 	promptStr = g_strdup_printf(_("Enter the username and password for \"%s\" (%s):"),
-						   feed_get_title(fp), (source != NULL) ? source : _("Unknown source"));
+	                            feed_get_title(fp), (source != NULL) ? source : _("Unknown source"));
 	gtk_label_set_text(GTK_LABEL(lookup_widget(authdialog, "prompt")), promptStr);
 	g_free(promptStr);
-	if (source != NULL)
+	if(source != NULL)
 		xmlFree(source);
 	
 	g_signal_connect(G_OBJECT(authdialog), "response",
@@ -625,6 +627,12 @@ GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, feedPtr fp) {
 
 	gtk_widget_show_all(propdialog);
 	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "filterCheckbox")), ui_data);
+
+	/***********************************************************************
+	 * Enclosures                                                          *
+	 **********************************************************************/
 	
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "enclosureDownloadCheck")), fp->encAutoDownload);
+
 	return propdialog;
 }

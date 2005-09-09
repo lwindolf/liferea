@@ -53,7 +53,7 @@
 #include "debug.h"
 #include "metadata.h"
 
-#include "ui_feed.h"	/* FIXME: Remove ui_* include from core code */
+#include "ui_feed.h"	
 #include "ui_feedlist.h"
 #include "ui_tray.h"
 #include "ui_htmlview.h"
@@ -562,7 +562,7 @@ void feed_add_items(feedPtr fp, GList *items) {
 	
 	/* The parser implementations read the items from the
 	   feed from top to bottom. Adding them directly would
-	   mean to reverse there order. */
+	   mean to reverse their order. */
 	iter = g_list_last(items);
 	while(iter != NULL) {
 		feed_add_item(fp, ((itemPtr)iter->data));
@@ -585,7 +585,8 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	GSList		*old_items;
 	itemPtr		old_ip = NULL;
 	gboolean	found, equal = FALSE;
-	
+	GSList		*iter, *enclosures;
+
 	if(FST_VFOLDER != feed_get_type(fp)) {
 		g_assert(0 != fp->loaded);
 		
@@ -600,7 +601,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			
 			/* try to compare the two items */
 
-			/* trivial case: one item has item the other doesn't -> they can't be equal */
+			/* trivial case: one item has id the other doesn't -> they can't be equal */
 			if(((item_get_id(old_ip) == NULL) && (item_get_id(new_ip) != NULL)) ||
 			   ((item_get_id(old_ip) != NULL) && (item_get_id(new_ip) == NULL))) {	
 				/* cannot be equal (different ids) so compare to 
@@ -677,6 +678,19 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 			vfolder_check_item(new_ip);
 			
 			debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
+
+			/* If a new item has enclosures and auto downloading
+			   is enabled we start the download. Enclosures added
+			   by updated items are not supported. */
+			if((TRUE == fp->encAutoDownload) &&
+			   (TRUE == item_get_new_status(new_ip))) {
+				iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
+				while(NULL != iter) {
+					debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+					on_popup_open_enclosure(iter->data ,0 , NULL);
+					iter = g_slist_next(iter);
+				}
+			}
 			
 		} else {
 			/* if the item was found but has other contents -> update contents */
