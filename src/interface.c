@@ -1239,7 +1239,7 @@ create_propdialog (void)
   gtk_widget_show (enclosureDownloadCheck);
   gtk_box_pack_start (GTK_BOX (vbox2615), enclosureDownloadCheck, FALSE, FALSE, 0);
 
-  enctablabel = gtk_label_new (_("Enlosures"));
+  enctablabel = gtk_label_new (_("Enclosures"));
   gtk_widget_show (enctablabel);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 4), enctablabel);
 

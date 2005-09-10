@@ -8,6 +8,8 @@
 	  postprocessing filters. If a file with the
 	  extension .xsl is configured xsltproc is
 	  called automatically. (dwpoon, SF #1197414)
+	* New feed property to enable enclosure
+	  auto download.
 
 
 2005-09-04  Lars Lindner  <lars.lindner@gmx.net> 
