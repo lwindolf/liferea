@@ -296,7 +296,7 @@ const gchar * feed_get_description(feedPtr fp);
 void feed_set_description(feedPtr fp, const gchar *description);
 
 const gchar * feed_get_source(feedPtr fp);
-void feed_set_source(feedPtr fp, const gchar * source);
+void feed_set_source(feedPtr fp, const gchar *source);
 
 const gchar * feed_get_filter(feedPtr fp);
 void feed_set_filter(feedPtr fp, const gchar * filter);
