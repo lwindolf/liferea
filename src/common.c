@@ -215,7 +215,7 @@ void _unxmlize(gchar *string, gchar *result, result_buffer *buffer) {
    a string without any entities or tags containing all
    text nodes of the given HTML string. The original 
    string will be freed. */
-gchar * unmarkupize(gchar *string, void(*parse)(gchar *string, gchar *result, result_buffer *buffer)) {
+static gchar * unmarkupize(gchar *string, void(*parse)(gchar *string, gchar *result, result_buffer *buffer)) {
 	gchar			*result;
 	result_buffer		*buffer;
 	
