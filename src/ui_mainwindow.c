@@ -322,7 +322,7 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	                           "folder. To create a new subscription enter the feed URL or if you don't "
 	                           "know it the URL of the website which provides the feed.</p></li>"
 	                           "<li><p><b>Update Subscription</b> - This will update the subscription you selected. "
-	                           "You may want to do this if you want to immediatly check a subscription for "
+	                           "You may want to do this if you want to immediately check a subscription for "
 	                           "updates. Usually it is adequate to rely on the auto updating according to the "
 	                           "update interval of the subscription.</p></li>"
 	                           "<li><p><b>Update All</b> - This will update all your subscriptions at once. "
