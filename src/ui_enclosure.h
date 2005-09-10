@@ -39,8 +39,21 @@ void ui_enclosure_init(void);
 /** returns all configured enclosure types */
 GSList * ui_enclosure_get_types(void);
 
-/** opens a popup menu for the given link */
-void ui_enclosure_new_popup(gchar *url);
+/** 
+ * Opens a popup menu for the given link 
+ *
+ * @param url		valid HTTP URL
+ */
+void ui_enclosure_new_popup(const gchar *url);
+
+/** 
+ * Downloads a given enclosure URL into a file
+ *  
+ * @param type		NULL or pointer to type structure
+ * @param url		valid HTTP URL
+ * @param filename	valid filename
+ */
+void ui_enclosure_save(encTypePtr type, gchar *url, gchar *filename);
 
 /* popup menu callbacks */
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);

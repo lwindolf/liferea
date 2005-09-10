@@ -667,7 +667,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 				iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
 				while(NULL != iter) {
 					debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-					on_popup_open_enclosure(iter->data ,0 , NULL);
+					ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
 					iter = g_slist_next(iter);
 				}
 			}

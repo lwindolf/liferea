@@ -82,7 +82,7 @@ void ui_enclosure_init(void) {
 }
 
 /* saves the enclosure type configurations to disk */
-void ui_enclosure_save(void) {
+void ui_enclosure_save_config(void) {
 	xmlDocPtr	doc;
 	xmlNodePtr	root, cur;
 	encTypePtr	etp;
@@ -128,7 +128,7 @@ void ui_enclosure_remove_type(gpointer type) {
 	g_free(((encTypePtr)type)->mime);
 	g_free(((encTypePtr)type)->extension);
 	g_free(type);
-	ui_enclosure_save();
+	ui_enclosure_save_config();
 }
 
 void ui_enclosure_change_type(gpointer type) {
@@ -172,34 +172,34 @@ static gpointer ui_enclosure_exec(gpointer data) {
 }
 
 /* etp is optional, if it is missing we are in save mode */
-void ui_enclosure_download(encTypePtr etp, gchar *url, gchar *filename) {
+void ui_enclosure_download(encTypePtr etp, const gchar *url, const gchar *filename) {
 	encJobPtr	ejp;
 	gchar *filenameQ, *urlQ;
+
 	/* prepare job structure */
 	ejp = g_new0(struct encJob, 1);
-	ejp->filename = filename;
+	ejp->filename = g_strdup(filename);
 
 	filenameQ = g_shell_quote(filename);
 	urlQ = g_shell_quote(url);
 	ejp->download = g_strdup_printf(prefs_get_download_cmd(), filenameQ, urlQ);
+	if(NULL != etp)
+		ejp->run = g_strdup_printf("%s %s", etp->cmd, filenameQ);
+
 	g_free(filenameQ);
 	g_free(urlQ);
 	
-	if(NULL != etp)
-		ejp->run = g_strdup_printf("%s %s", etp->cmd, filename);
-
 	debug2(DEBUG_UPDATE, "downloading %s to %s...\n", url, filename);
 
 	/* free now unnecessary stuff */
 	if((NULL != etp) && (FALSE == etp->permanent))
 		ui_enclosure_remove_type(etp);
-	g_free(url);
 	
 	g_thread_create(ui_enclosure_exec, ejp, FALSE, NULL);
 }
 
 /* opens a popup menu for the given link */
-void ui_enclosure_new_popup(gchar *url) {
+void ui_enclosure_new_popup(const gchar *url) {
 	gchar	*enclosure;
 	
 	if(NULL != (enclosure = xmlURIUnescapeString(url + strlen(ENCLOSURE_PROTOCOL "load?"), 0, NULL))) {
@@ -259,7 +259,7 @@ static void on_adddialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		if(TRUE == new)
 			types = g_slist_append(types, etp);
 
-		ui_enclosure_save();		
+		ui_enclosure_save_config();		
 
 		/* now we have ensured an existing type configuration and
 		   can launch the URL for which we configured the type */
@@ -298,8 +298,23 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
 	
 }
 
+void ui_enclosure_save(encTypePtr type, gchar *url, gchar *filename) {
+	gchar	*tmp;
+
+	if(NULL == filename) {
+		/* build filename from last part of URL */
+		if(NULL == (filename = strrchr(url, '/')))
+			filename = url;
+	}
+
+	filename = g_strdup_printf("%s%s%s", getStringConfValue(ENCLOSURE_DOWNLOAD_PATH), G_DIR_SEPARATOR_S, filename);
+	ui_enclosure_download(type, url, filename);
+	g_free(filename);
+	g_free(url);
+}
+
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	gchar		*typestr, *filename, *url = (gchar *)callback_data;
+	gchar		*typestr, *url = (gchar *)callback_data;
 	gboolean	found = FALSE, mime = FALSE;
 	encTypePtr	etp = NULL;
 	GSList		*iter;
@@ -338,15 +353,10 @@ void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkW
 		iter = g_slist_next(iter);
 	}
 	
-	if(TRUE == found) {
-		if(NULL == (filename = strrchr(url, '/')))
-			filename = g_strdup(url + 1);
-
-		filename = g_strdup_printf("%s%s%s", getStringConfValue(ENCLOSURE_DOWNLOAD_PATH), G_DIR_SEPARATOR_S, filename);
-		ui_enclosure_download(etp, url, filename);
-	} else {
+	if(TRUE == found)
+		ui_enclosure_save(etp, url, NULL);
+	else
 		ui_enclosure_add(NULL, url, g_strdup(typestr));
-	}
 		
 	g_free(typestr);
 }
@@ -360,7 +370,7 @@ static void on_encsave_clicked(const gchar *filename, gpointer user_data) {
 		return;
 
 	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-	ui_enclosure_download(NULL, url, utfname);
+	ui_enclosure_save(NULL, url, utfname);
 }
 
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {
