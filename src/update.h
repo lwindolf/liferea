@@ -30,6 +30,7 @@ typedef enum {
 	/* Init errors */
 	NET_ERR_URL_INVALID,
 	/* Connect errors */
+	NET_ERR_PROTO_INVALID,
 	NET_ERR_SOCK_ERR,
 	NET_ERR_HOST_NOT_FOUND,
 	NET_ERR_CONN_REFUSED,

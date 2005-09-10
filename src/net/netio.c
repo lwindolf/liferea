@@ -73,6 +73,12 @@ extern char *proxyusername;
 extern char *proxypassword;
 extern char *useragent;
 
+enum netio_proto {
+	NETIO_PROTO_INVALID,
+	NETIO_PROTO_HTTP,
+	NETIO_PROTO_HTTPS
+};
+
 /* Waits NET_TIMEOUT seconds for the socket to return data.
  *
  * Returns
@@ -126,7 +132,7 @@ int NetPoll (struct feed_request * cur_ptr, int * my_socket, int rw) {
  *	0	Connected
  *	-1	Error occured (netio_error is set)
  */
-int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int httpproto, int suppressoutput) {
+int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, enum netio_proto proto, int suppressoutput) {
 #ifdef HAVE_GETADDRINFO
 	socklen_t len;
 	int ret;
@@ -143,6 +149,11 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 			UIStatus (tmp, 0);
 			}*/
 	
+	if (proto != NETIO_PROTO_HTTP) {
+		cur_ptr->netio_error = NET_ERR_PROTO_INVALID;
+		return -1;
+	}
+
 	res = 0;
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
@@ -222,6 +233,11 @@ int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, int
 	char *realhost;
 	unsigned short port;
 	
+	if (proto != NETIO_PROTO_HTTP) {
+		cur_ptr->netio_error = NET_ERR_PROTO_INVALID;
+		return -1;
+	}
+
 	realhost = strdup(host);
 	if (sscanf (host, "%[^:]:%hd", realhost, &port) != 2) {
 		port = 80;
@@ -945,7 +961,7 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 	char *freeme;
 	char *returndata;
 	char *tmpstr;
-	int httpproto = 0;			/* 0: http; 1: https */
+	enum netio_proto proto = NETIO_PROTO_INVALID;
 	xmlURIPtr uri;
 
 	uri = xmlParseURI(url);
@@ -969,11 +985,17 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 		return NULL;
 	}
 	
-	if (strcasecmp (uri->scheme, "https") == 0)
-		httpproto = 1;
-	else
-		httpproto = 0;
-	
+	if (strcasecmp (uri->scheme, "http") == 0)
+		proto = NETIO_PROTO_HTTP;
+	else if (strcasecmp (uri->scheme, "https") == 0)
+		proto = NETIO_PROTO_HTTPS;
+	else {
+		cur_ptr->problem = 1;
+		cur_ptr->netio_error = NET_ERR_PROTO_INVALID;
+		if (uri != NULL)
+			xmlFreeURI(uri);
+		return NULL;
+	}
 	
 	/* If tmphost contains an '@', extract username and pwd. */
 	if (strchr (tmphost, '@') != NULL) {
@@ -993,14 +1015,14 @@ char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutp
 		url[strlen(url)-1] = '\0';
 	}
 	
-	if ((NetConnect (&my_socket, host, cur_ptr, httpproto, suppressoutput)) != 0) {
+	if ((NetConnect (&my_socket, host, cur_ptr, proto, suppressoutput)) != 0) {
 		free (freeme);
 		cur_ptr->problem = 1;
 		xmlFreeURI(uri);
 		return NULL;
 	}
 		
-	returndata = NetIO (&my_socket, host, url, cur_ptr, uri->user, httpproto, suppressoutput);
+	returndata = NetIO (&my_socket, host, url, cur_ptr, uri->user, proto, suppressoutput);
 	
 	if ((returndata == NULL) && (cur_ptr->netio_error != NET_ERR_OK)) {
 		cur_ptr->problem = 1;
@@ -1041,6 +1063,7 @@ void downloadlib_process_url(struct request *request) {
 	cur_ptr.etag = request->etag;
 		
 	cur_ptr.problem = 0;
+	cur_ptr.netio_error = 0;
 	cur_ptr.content_type = NULL;
 	cur_ptr.contentlength = 0;
 	cur_ptr.cookies = g_strdup(request->cookies);
@@ -1056,7 +1079,7 @@ void downloadlib_process_url(struct request *request) {
 	if (request->data == NULL)
 		cur_ptr.problem = 1;
 	request->size = cur_ptr.contentlength;
-	request->httpstatus = cur_ptr.lasthttpstatus == 0 ? 404 : cur_ptr.lasthttpstatus;
+	request->httpstatus = cur_ptr.lasthttpstatus;
 	request->returncode = cur_ptr.netio_error;
 	request->source = cur_ptr.feedurl;
 	request->lastmodified = cur_ptr.lastmodified;

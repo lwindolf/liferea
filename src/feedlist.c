@@ -258,6 +258,7 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 		if(tmp2 == NULL) {
 			switch(resultcode) {
 			case NET_ERR_URL_INVALID:    tmp2 = g_strdup(_("URL is invalid")); break;
+			case NET_ERR_PROTO_INVALID:    tmp2 = g_strdup(_("Unsupported network protocol")); break;
 			case NET_ERR_UNKNOWN:
 			case NET_ERR_CONN_FAILED:
 			case NET_ERR_SOCK_ERR:       tmp2 = g_strdup(_("Error connecting to remote host")); break;
