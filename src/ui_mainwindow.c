@@ -255,7 +255,11 @@ GtkWidget* ui_mainwindow_new(void) {
 	GtkWidget *toolbar = lookup_widget(window, "toolbar");
 	GtkTooltips *tooltips = gtk_tooltips_new();
 	gchar *toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style");
-
+	
+	gtk_widget_set_name(window, "lifereaMainwindow");
+	gtk_widget_set_name(lookup_widget(window, "feedlist"), "feedlist");
+	gtk_widget_set_name(lookup_widget(window, "Itemlist"), "itemlist");
+	
 	ui_mainwindow_set_toolbar_style(GTK_WINDOW(window), toolbar_style);
 	g_free(toolbar_style);
 
