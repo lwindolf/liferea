@@ -233,7 +233,10 @@ static gboolean ui_feedlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, 
 		nodePtr np = ui_feedlist_get_selected();
 		
 		if(NULL != np) {
-			ui_feedlist_delete(np);
+			if(event->state & GDK_SHIFT_MASK)
+				ui_feedlist_remove_node(np);
+			else
+				ui_feedlist_delete_prompt(np);
 			return TRUE;
 		}
 	}
@@ -503,15 +506,19 @@ static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, 
 	
 	switch(response_id) {
 		case GTK_RESPONSE_YES:
-			ui_feedlist_select(NULL);
-			itemlist_load(NULL);
-			feedlist_remove_node((nodePtr)user_data);
+			ui_feedlist_remove_node((nodePtr)user_data);
 			break;
 	}
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-void ui_feedlist_delete(nodePtr np) {
+void ui_feedlist_remove_node(nodePtr node) {
+	ui_feedlist_select(NULL);
+	itemlist_load(NULL);
+	feedlist_remove_node(node);
+}
+
+void ui_feedlist_delete_prompt(nodePtr np) {
 	GtkWidget *dialog;
 	gchar *text;
 	

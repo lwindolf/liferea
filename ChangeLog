@@ -10,6 +10,9 @@
 	  called automatically. (dwpoon, SF #1197414)
 	* New feed property to enable enclosure
 	  auto download.
+	* When deleting a subscription Liferea now asks
+	  you to confirm the deletion. (patch from
+	  Ted Percival, SF #1282078)
 
 
 2005-09-04  Lars Lindner  <lars.lindner@gmx.net> 

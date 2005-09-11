@@ -443,7 +443,7 @@ void feedlist_selection_changed(nodePtr np) {
 
 void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
 
-	feedlist_remove_node((nodePtr)ui_feedlist_get_selected());
+	ui_feedlist_delete_prompt((nodePtr)ui_feedlist_get_selected());
 }
 
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -504,7 +504,7 @@ void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWid
 
 void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	
-	feedlist_remove_node((nodePtr)callback_data);
+	ui_feedlist_delete_prompt((nodePtr)callback_data);
 }
 
 /*------------------------------------------------------------------------------*/

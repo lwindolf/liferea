@@ -179,12 +179,20 @@ void ui_feedlist_add(folderPtr parent, nodePtr node, gint position);
 /**
  * Prompt the user for confirmation of a folder or feed, and
  * recursively remove the feed or folder if the user accepts. This
- * function blocks does not block, so the folder/feeds will not have
+ * function does not block, so the folder/feeds will not have
  * been deleted when this function returns.
  *
  * @param ptr the node to delete
  */
-void ui_feedlist_delete(nodePtr ptr);
+void ui_feedlist_delete_prompt(nodePtr ptr);
+
+/**
+ * Remove a feed without confirmation
+ * Compare with ui_feedlist_delete()
+ *
+ * @param node pointer to the feed node to be deleted.
+ */
+void ui_feedlist_remove_node(nodePtr node);
 
 /** 
  * @name menu and dialog callbacks 
