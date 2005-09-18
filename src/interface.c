@@ -1939,7 +1939,7 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox60), vbox2580, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2580), 5);
 
-  feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Optimize for _memory usage."));
+  feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Optimize for reduced _memory usage."));
   gtk_widget_show (feedsinmemorybtn1);
   gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn1, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn1), feedsinmemorybtn1_group);
