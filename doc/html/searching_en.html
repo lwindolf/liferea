@@ -65,6 +65,92 @@
 	<img src="help_vfolder_1.0.0.png">
 	</p>
 
+	<p>
+	The following table is a list of all possible vfolder rules
+	and their specific meaning.
+	</p>
+
+	<table border=1 style="border:1px solid black;border-collapse:collapse">
+	<!-- ----------------------------------------- -->
+	<tr><td width="50%">
+	<b>Item does contain</b>
+	</td><td>
+	<span style="color:green">Adds</span> each item whose title or content matches the given case insensitive string to the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Item does not contain</b>
+	</td><td>
+	<span style="color:red">Removes</span> each item whose title or content matches the given case insensitive string from the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Item title does contain</b>
+	</td><td>
+	<span style="color:green">Adds</span> each item whose item title matches the given case insensitive string to the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Item title does not contain</b>
+	</td><td>
+	<span style="color:red">Removes</span> each item whose item title matches the given case insensitive string from the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Item body does contain</b>
+	</td><td>
+	<span style="color:green">Adds</span> each item whose item content matches the given case insensitive string to the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Item body does not contain</b>
+	</td><td>
+	<span style="color:red">Removes</span> each item whose item body matches the given case insensitive string from the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Feed title does contain</b>
+	</td><td>
+	<span style="color:green">Adds</span> each item whose parent feed's title matches the given case insensitive string to the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Feed title does not contain</b>
+	</td><td>
+	<span style="color:red">Removes</span> each item whose parent feed's title matches the given case insensitive string from the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Read status is unread</b>
+	</td><td>
+	<span style="color:green">Adds</span> each unread item to the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Read status is read</b>
+	</td><td>
+	<span style="color:red">Removes</span> each unread item from the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Flag status is flagged</b>
+	</td><td>
+	<span style="color:green">Adds</span> each flagged item to the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td>
+	<b>Flag status is unflagged</b>
+	</td><td>
+	<span style="color:red">Removes</span> each flagged item from the vfolder.
+	</td></tr>
+	</table>
+
+	<p>
+	Please note that the order of the rules does not match. An additive
+	rule after a removal rule that does match an item that is to be removed
+	because of to the removal rule will not add this item!
+	</p>
+
 	<!-- navigation footer start -->
 	<hr />
 	<table width="100%">
