@@ -120,29 +120,38 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 
 	if(event->type == GDK_KEY_PRESS) {
 		/* handle headline skimming hotkey */
-		if(event->keyval == GDK_space) {
-			switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
-				case 0:
-					modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
-					break;
-				default:
-				case 1:
-					default_modifiers = gtk_accelerator_get_default_mod_mask();
-					modifier_matches = ((event->state & default_modifiers) == 0);
-					if(!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
-						return FALSE;
-					break;
-				case 2:
-					modifier_matches = ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK);
-					break;
-			}
-			
-			if(modifier_matches) {
-				/* Note that this code is duplicated in mozilla/mozilla.cpp! */
-				if(ui_htmlview_scroll() == FALSE)
-					on_next_unread_item_activate(NULL, NULL);
-				return TRUE;
-			}
+		switch(event->keyval) {
+			case GDK_space:
+				switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
+					case 0:
+						modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
+						break;
+					default:
+					case 1:
+						default_modifiers = gtk_accelerator_get_default_mod_mask();
+						modifier_matches = ((event->state & default_modifiers) == 0);
+						if(!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
+							return FALSE;
+						break;
+					case 2:
+						modifier_matches = ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK);
+						break;
+				}
+				
+				if(modifier_matches) {
+					/* Note that this code is duplicated in mozilla/mozilla.cpp! */
+					if(ui_htmlview_scroll() == FALSE)
+						on_next_unread_item_activate(NULL, NULL);
+					return TRUE;
+				}
+				break;
+			/* allows Ctrl-+/Ctrl-- with the numeric keypad */
+			case GDK_KP_Add:
+				on_popup_zoomin_selected(NULL, 0, NULL);
+				break;
+			case GDK_KP_Subtract:
+				on_popup_zoomout_selected(NULL, 0, NULL);
+				break;
 		}
 
 		/* prevent usage of navigation keys in entries */
