@@ -59,9 +59,7 @@ void ui_tray_tooltip_set(gchar *message) {
 
 	if(NULL != data) {
 		/* FIXME: Is this necessary? Gtk 2.2.4 frees these strings
-		   inside of set_tip, if needed. Also, shouldn't they be set
-		   to NULL after freeing so that GTK does not double-free
-		   them? */
+		   inside of set_tip, if needed. */
 		g_free(data->tip_text);
 		g_free(data->tip_private);
 		data->tip_text = NULL;
@@ -97,14 +95,19 @@ void ui_tray_update(void) {
 		
 	if(newItems != 0) {
 		ui_tray_icon_set(icons[ICON_AVAILABLE]); 
-		tmp = g_strdup_printf(ngettext("%d new item", "%d new items", newItems), newItems);
-		msg = g_strdup_printf(ngettext("%s\n%d unread item", "%s\n%d unread items", unreadItems), tmp, unreadItems);
+		msg = g_strdup_printf(ngettext("%d new item", "%d new items", newItems), newItems);
 	} else {
 		ui_tray_icon_set(icons[ICON_EMPTY]);
-		tmp = g_strdup(_("No new items"));
-		msg = g_strdup_printf(ngettext("%s\n%d unread item", "%s\n%d unread items", unreadItems), tmp, unreadItems);
+		msg = g_strdup(_("No new items"));
 	}
-	ui_tray_tooltip_set(msg);
+
+	if(unreadItems != 0) {
+		tmp = g_strdup_printf(ngettext("%s\n%d unread item", "%s\n%d unread items", unreadItems), msg, unreadItems);
+	} else {
+		tmp = g_strdup_printf(_("%s\nNo unread items"), msg);
+	}
+
+	ui_tray_tooltip_set(tmp);
 	g_free(tmp);
 	g_free(msg);
 }
