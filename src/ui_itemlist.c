@@ -570,22 +570,16 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	GtkTreeSelection	*selection;
-	nodePtr			np;
 	itemPtr			ip;
 	
-	np = ui_feedlist_get_selected();
-	if((NULL != np) && (FST_FEED == np->type)) {
-		if(NULL != (ip = ui_itemlist_get_selected())) {
-			/* must unselect the item to avoid deferred removal */
-			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
-			gtk_tree_selection_unselect_all(selection);
-			itemlist_remove_item(ip);
-			ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
-		} else {
-			ui_mainwindow_set_status_bar(_("No item has been selected"));
-		}
+	if(NULL != (ip = ui_itemlist_get_selected())) {
+		/* must unselect the item to avoid deferred removal */
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
+		gtk_tree_selection_unselect_all(selection);
+		itemlist_remove_item(ip);
+		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	} else {
-		ui_show_error_box(_("You must select a feed to delete its items!"));
+		ui_mainwindow_set_status_bar(_("No item has been selected"));
 	}
 }
 
