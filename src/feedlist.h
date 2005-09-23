@@ -24,19 +24,8 @@
 #include <gtk/gtk.h>
 #include "feed.h"
 
-#ifdef USE_DBUS
-
-/* Yes, we know that DBUS API isn't stable yet */
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-lowlevel.h>
-
-#define DBUS_RSS_SERVICE "org.gnome.feed.Reader"
-#define DBUS_RSS_OBJECT  "/org/gnome/feed/Reader"
-#define DBUS_RSS_METHOD  "Subscribe"
-
-#endif
+/** initializes the feed list handling */
+void feedlist_init(void);
 
 /** statistic counter handling methods */
 int feedlist_get_unread_item_count(void);
@@ -59,16 +48,17 @@ void feedlist_add_folder(folderPtr parent, folderPtr folder, gint position);
 void feedlist_update_feed(nodePtr fp);
 void feedlist_remove_node(nodePtr np);
 
+/**
+ * Feed loading and unloading to/from memory.
+ */
 gboolean feedlist_load_feed(feedPtr fp);
 void feedlist_unload_feed(feedPtr fp);
 
-/* auto-update handling */
-
 /**
- * Timeout callback to trigger the auto update handling for the feed list.
- * @param data not used
+ * Schedules a save requests for the feed list.
+ * Triggers state saving for all feed list plugins.
  */
-gboolean feedlist_auto_update(void *data);
+void feedlist_schedule_save(void);
 
 /** 
  * Handles completed feed update requests.

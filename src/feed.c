@@ -748,7 +748,7 @@ const gchar *feed_get_id(feedPtr fp) { return fp->id; }
 void feed_set_type(feedPtr fp, gint type) {
 
 	fp->type = type;
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 	
 	/* vfolder extra handling */
 	if(FST_VFOLDER == type)
@@ -800,7 +800,7 @@ void feed_set_update_interval(feedPtr fp, gint interval) {
 	}
 		
 	fp->updateInterval = interval;
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 }
 
 feedHandlerPtr feed_get_fhp(feedPtr fp) {
@@ -810,7 +810,7 @@ feedHandlerPtr feed_get_fhp(feedPtr fp) {
 void feed_reset_update_counter(feedPtr fp) {
 
 	g_get_current_time(&fp->lastPoll);
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 	debug2(DEBUG_CONF, "Reseting last poll counter for %s to %ld.\n", fp->title, fp->lastPoll.tv_sec);
 }
 
@@ -856,7 +856,7 @@ void feed_set_title(feedPtr fp, const gchar *title) {
 		fp->title = g_strdup(title);
 	else
 		fp->title = NULL;
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 }
 
 const gchar * feed_get_description(feedPtr fp) { return fp->description; }
@@ -875,7 +875,7 @@ void feed_set_source(feedPtr fp, const gchar *source) {
 	g_free(fp->source);
 
 	fp->source = g_strchomp(g_strdup(source));
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 	
 	g_free(fp->cookies);
 	if((FST_FEED == fp->type) && ('|' != source[0]))
@@ -889,7 +889,7 @@ void feed_set_filter(feedPtr fp, const gchar *filter) {
 	g_free(fp->filtercmd);
 
 	fp->filtercmd = g_strdup(filter);
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 }
 
 const gchar * feed_get_html_url(feedPtr fp) { return fp->htmlUrl; };
@@ -943,7 +943,7 @@ void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed) {
 
 	fp->sortColumn = sortColumn;
 	fp->sortReversed = reversed;
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 }
 
 void feed_set_two_pane_mode(feedPtr fp, gboolean newMode) { fp->twoPane = newMode; }
@@ -1180,7 +1180,7 @@ void feed_free(feedPtr fp) {
 	
 	if(fp->id) {
 		favicon_remove(fp);
-		conf_feedlist_schedule_save();
+		feedlist_schedule_save();
 		g_free(fp->id);
 	}
 	

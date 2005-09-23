@@ -3,7 +3,6 @@
  *
  * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,11 +37,13 @@
 #include "ui_feed.h"
 #include "callbacks.h"
 
-static int unreadCount = 0;
-static int newCount = 0;
+static guint unreadCount = 0;
+static guint newCount = 0;
 
 static nodePtr	selectedNode = NULL;
-extern nodePtr		displayed_node;
+extern nodePtr	displayed_node;
+
+static guint feedlist_save_timer = 0;
 
 /* helper functions */
 
@@ -143,9 +144,11 @@ void feedlist_remove_node(nodePtr np) {
 
 /* methods to load/unload feeds from memory */
 
-gboolean feedlist_load_feed(feedPtr fp) {
+gboolean feedlist_load_node(nodePtr np) {
 	gboolean loaded;
 
+	// FIXME the following belongs to fl_default.c
+	// this method here should be dropped in favor of node_load()
 	if(FST_VFOLDER == feed_get_type(fp)) {
 		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
 		return TRUE;
@@ -158,15 +161,15 @@ gboolean feedlist_load_feed(feedPtr fp) {
 	
 	/* the following is necessary to prevent counting unread 
 	   or new items multiple times (on each loading) */
-	unreadCount -= fp->unreadCount;
-	newCount -= fp->newCount;
+	unreadCount -= np->unreadCount;
+	newCount -= np->newCount;
 	
-	loaded = feed_load(fp);
+	loaded = node_load(fp);
 
 	return loaded;
 }
 
-void feedlist_unload_feed(feedPtr fp) {
+void feedlist_unload_node(node np) {
 
 	g_assert(0 <= fp->loaded);	/* could indicate bad loaded reference counting */
 
@@ -176,7 +179,7 @@ void feedlist_unload_feed(feedPtr fp) {
 	}
 
 	if(0 != fp->loaded)
-		feed_unload(fp);
+		node_unload(fp);
 }
 
 /* auto updating methods */
@@ -203,7 +206,7 @@ static void feedlist_check_update_counter(feedPtr fp) {
 		favicon_download(fp);
 }
 
-gboolean feedlist_auto_update(void *data) {
+static gboolean feedlist_auto_update(void *data) {
 
 	debug_enter("feedlist_auto_update");
 	if(download_is_online()) {
@@ -507,118 +510,27 @@ void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *w
 	ui_feedlist_delete_prompt((nodePtr)callback_data);
 }
 
-/*------------------------------------------------------------------------------*/
-/* DBUS support for new subscriptions                                           */
-/*------------------------------------------------------------------------------*/
+static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
-#ifdef USE_DBUS
-
-static DBusHandlerResult
-ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
-{
-	DBusError error;
-	DBusMessage *reply;
-	char *s;
-	gboolean done = TRUE;
-	
-	/* Retreive the dbus message arguments (the new feed url) */	
-	dbus_error_init (&error);
-	if (!dbus_message_get_args (message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
-		reply = dbus_message_new_error (message, error.name, error.message);
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		dbus_error_free(&error);
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_error_free(&error);
-
-
-	/* Subscribe the feed */
-	ui_feedlist_new_subscription(s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
-
-	/* Acknowledge the new feed by returning true */
-	reply = dbus_message_new_method_return (message);
-	if (reply != NULL)
-	{
-#if (DBUS_VERSION == 1)
-		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, done,DBUS_TYPE_INVALID);
-#elif (DBUS_VERSION == 2)
-		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, &done,DBUS_TYPE_INVALID);
-#endif
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	else
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	feedlist_save();	// FIXME: iterate over folders to find feed list plugins and trigger save for each one
+	feedlist_save_timer = 0;
+	return FALSE;
 }
 
+void feedlist_schedule_save(void) {
 
-static DBusHandlerResult
-ui_feedlist_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data)
-{
-	const char  *method;
-	
-	if (connection == NULL)
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	if (message == NULL)
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	
-	method = dbus_message_get_member (message);
-	if (strcmp (DBUS_RSS_METHOD, method) == 0)
-		return ui_feedlist_dbus_subscribe (connection, message);
-	else
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	if(!feedlistLoading && !feedlist_save_timer) {
+		debug0(DEBUG_CONF, "Scheduling feedlist save");
+		feedlist_save_timer = g_timeout_add(5000, feedlist_schedule_save_cb, NULL);
+	}
 }
 
-void
-ui_feedlist_dbus_connect ()
-{
-	DBusError       error;
-	DBusConnection *connection;
-	DBusObjectPathVTable feedreader_vtable = { NULL, ui_feedlist_dbus_message_handler, NULL};
+void feedlist_init(void) {
 
-	/* Get the Session bus */
-	dbus_error_init (&error);
-	connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
-	if (connection == NULL || dbus_error_is_set (&error))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Failed get session dbus: %s | %s\n", error.name,  error.message);
-		dbus_error_free (&error);
-     	return;
-	}
-	dbus_error_free (&error);
-    
-	/* Various inits */
-	dbus_connection_set_exit_on_disconnect (connection, FALSE);
-	dbus_connection_setup_with_g_main (connection, NULL);
-	    
-	/* Register for the FeedReader service on the bus, so we get method calls */
-#if (DBUS_VERSION == 1)
-	dbus_bus_acquire_service (connection, DBUS_RSS_SERVICE, 0, &error);
-#elif (DBUS_VERSION == 2)
-	dbus_bus_request_name (connection, DBUS_RSS_SERVICE, 0, &error);
-#else
-#error Unknown DBUS version passed to ui_feedlist
-#endif
-	if (dbus_error_is_set (&error))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Failed to get dbus service: %s | %s\n", error.name, error.message);
-		dbus_error_free (&error);
-		return;
-	}
-	dbus_error_free (&error);
-	
-	/* Register the object path so we can receive method calls for that object */
-	if (!dbus_connection_register_object_path (connection, DBUS_RSS_OBJECT, &feedreader_vtable, &error))
- 	{
- 		fprintf (stderr, "*** ui_feedlist.c:Failed to register dbus object path: %s | %s\n", error.name, error.message);
- 		dbus_error_free (&error);
-    	return;
-    }
-    dbus_error_free (&error);
+	/* initial update of feed list */
+	feedlist_auto_update(NULL);
+
+	/* setup one minute timer for automatic updating */
+ 	(void)g_timeout_add(60*1000, feedlist_auto_update, NULL);
 }
 
-#endif /* USE_DBUS */

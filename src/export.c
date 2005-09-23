@@ -218,9 +218,10 @@ static int parse_integer(gchar *str, int def) {
 
 static long parse_long(gchar *str, long def) {
 	long num;
-	if (str == NULL)
+
+	if(str == NULL)
 		return def;
-	if (0==(sscanf(str,"%ld",&num)))
+	if(0 == (sscanf(str,"%ld",&num)))
 		num = def;
 	
 	return num;

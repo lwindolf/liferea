@@ -47,7 +47,7 @@ folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type) {
 	else
 		folder->id = g_strdup(id);
 
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 	return folder;
 }
 
@@ -61,12 +61,12 @@ void folder_set_title(folderPtr folder, gchar *title) {
 	g_assert(title != NULL);
 	
 	folder->title = g_strdup(title);
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 }
 
 void folder_add_feed(folderPtr folder, feedPtr feed, gint position) {
 
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 }
 
 void folder_free(folderPtr folder) {
@@ -76,5 +76,5 @@ void folder_free(folderPtr folder) {
 	g_free(folder->title);
 	g_free(folder->id);
 	g_free(folder);
-	conf_feedlist_schedule_save();
+	feedlist_schedule_save();
 }

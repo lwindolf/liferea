@@ -32,13 +32,6 @@
 
 extern gboolean lifereaStarted;
 
-struct folder;
-
-typedef struct node {
-	gint type;
-	gpointer ui_data;
-} *nodePtr;
-
 /** Conversion function which should be applied to all read XML strings, 
    to ensure proper UTF8. doc points to the xml document and its encoding and
    string is a xmlChar pointer to the read string. The result gchar

@@ -48,9 +48,6 @@
 
 static GConfClient	*client;
 
-static guint feedlist_save_timer;
-static gboolean feedlistLoading = FALSE;	/* flag set during initial feed list loading */
-
 /* configuration values for the SnowNews HTTP code used from within netio.c */
 int	NET_TIMEOUT = 30;
 char 	*useragent = NULL;
@@ -239,56 +236,6 @@ static gboolean is_number(gchar *s) {
 		s++;
 	}
 	return TRUE;
-}
-
-void conf_load_subscriptions(void) {
-	gchar	*filename;
-	
-	feedlistLoading = TRUE;
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea" G_DIR_SEPARATOR_S "feedlist.opml", g_get_home_dir());
-	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		/* if there is no feedlist.opml we provide a default feed list */
-		g_free(filename);
-		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
-	}
-	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
-	g_free(filename);
-	feedlistLoading = FALSE;
-}
-
-void conf_feedlist_save() {
-	gchar *filename, *filename_real;
-	
-	if(feedlistLoading)
-		return;
-
-	debug_enter("conf_feedlist_save");
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml~", common_get_cache_path());
-
-	if(0 == export_OPML_feedlist(filename, TRUE)) {
-		filename_real = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml", common_get_cache_path());
-		if(rename(filename, filename_real) < 0)
-			g_warning(_("Error renaming %s to %s\n"), filename, filename_real);
-		g_free(filename_real);
-	}
-	g_free(filename);
-	debug_exit("conf_feedlist_save");
-}
-
-static gboolean conf_feedlist_schedule_save_cb(gpointer user_data) {
-
-	conf_feedlist_save();
-	feedlist_save_timer = 0;
-	return FALSE;
-}
-
-void conf_feedlist_schedule_save() {
-
-	if(!feedlistLoading && !feedlist_save_timer) {
-		debug0(DEBUG_CONF, "Scheduling feedlist save");
-		feedlist_save_timer = g_timeout_add(5000, conf_feedlist_schedule_save_cb, NULL);
-	}
 }
 
 /*----------------------------------------------------------------------*/

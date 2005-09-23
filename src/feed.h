@@ -1,8 +1,8 @@
 /**
- * @file feed.h common feed handling
+ * @file feed.h common feed handling interface
  * 
  * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,21 +23,9 @@
 #define _FEED_H
 
 #include <glib.h>
-#include "common.h"
+#include "node.h"
 #include "item.h"
 #include "folder.h"
-
-/* ------------------------------------------------------------ */
-/* feed list view entry types (FS_TYPE) 			*/
-/* ------------------------------------------------------------ */
-
-enum node_types {
-	FST_INVALID 	= 0,		/**< invalid type */
-	FST_FOLDER 	= 1,		/**< the folder type */
-
-	FST_VFOLDER 	= 9,		/**< special type for VFolders */
-	FST_FEED	= 10,		/**< Any type of feed */
-};
 
 /** Flags used in the request structure */
 enum feed_request_flags {
@@ -67,9 +55,6 @@ enum cache_limit {
 /** common structure to access feed info structures */
 
 typedef struct feed {
-	gint		type;			/**< feed type (first position is important!!!) */
-	gpointer	ui_data;		/**< per-feed UI data (second position is important!!!) */
-	
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
 	
 	gchar		*id;			/**< unique feed identifier string */
@@ -81,13 +66,11 @@ typedef struct feed {
 	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
 	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
-	
-	gpointer	icon;			/**< pointer to pixmap, if there is a favicon */
 
 	time_t		time;			/**< Feeds modified date */
 	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 			
-	/* feed properties needed to be saved */
+	/* feed properties that need to be saved */
 	gboolean	available;		/**< flag to signalize loading errors */
 	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
 
@@ -119,10 +102,6 @@ typedef struct feed {
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
 	
-	/* feed GUI state properties */
-	gboolean	twoPane;		/**< Flag if three pane or condensed mode is set for this feed */
-	gint		sortColumn;		/**< Sorting column. Set to either IS_TITLE, or IS_TIME */
-	gboolean	sortReversed;		/**< Sort in the reverse order? */
 } *feedPtr;
 
 /* ------------------------------------------------------------ */
@@ -173,24 +152,14 @@ feedPtr feed_new(void);
 feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover);
 
 /**
- * Loads a feed from a cache file.
- *
- * @param type the type of feed being loaded. This effects the
- * extension of the cache file.
- *
- * @param id the name of the cache file used. Some types of feed have
- * an extension, such as ocs, that is appended to the id, to generate
- * the cache filename.
- *
- * @returns FALSE if the feed file could not be opened and TRUE if it
- * was opened or was already loaded.
+ * Feed loading/unloading from/to cache.
  */
 gboolean feed_load(feedPtr fp);
-
-/* Only some feed informations are kept in memory to lower memory
-   usage. This method unloads everything besides necessary infos. */
 void feed_unload(feedPtr fp);
 
+/**
+ * Feed managment methods.
+ */
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp);
 void feed_schedule_update(feedPtr fp, gint flags);

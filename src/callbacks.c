@@ -129,17 +129,7 @@ void ui_init(int mainwindowState) {
 		/* default, which is to use the lastPoll times, does not need any actions here. */;
 	}
 
-#ifdef USE_DBUS
-	/* Start listening on the dbus for new subscriptions */
-	debug0(DEBUG_GUI, "Registering with DBUS...");
-	ui_feedlist_dbus_connect();
-#else
-	debug0(DEBUG_GUI, "No DBUS support active.");
-#endif
-
-	/* setup one minute timer for automatic updating, and try updating now */
- 	(void)g_timeout_add(60*1000, feedlist_auto_update, NULL);
-	feedlist_auto_update(NULL);
+	feedlist_init();
 	
 	if (mainwindowState == MAINWINDOW_ICONIFIED || (mainwindowState == MAINWINDOW_HIDDEN && ui_tray_get_count() == 0)) {
 		gtk_window_iconify(GTK_WINDOW(mainwindow));

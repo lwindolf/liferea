@@ -86,12 +86,6 @@
 void	conf_init(void);
 void	conf_load(void);
 
-/* feed/directory list entry manipulation methods */
-gchar*	conf_new_id();
-void	conf_load_subscriptions();
-void 	conf_feedlist_schedule_save();
-void 	conf_feedlist_save();
-
 /* methods to modify folder contents */
 GSList * getFeedKeyList(gchar *keyprefix);
 void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
