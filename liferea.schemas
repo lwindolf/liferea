@@ -74,10 +74,10 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <owner>liferea</owner>
       <type>string</type>
       <locale name="C">
-        <default>libihtmlm.so</default>
+        <default>liblihtmlm.so</default>
         <short>Selects which HTML rendering engine to use</short>
         <long>Selects which HTML rendering engine to use. Usually
-	   'libihtmlg.so' and 'libihtmlm.so' are available.</long>
+	   'liblihtmlg.so' and 'liblihtmlm.so' are available.</long>
       </locale>
     </schema>
     <schema>

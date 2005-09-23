@@ -8,7 +8,7 @@ if WITH_MOZILLA
 MOZILLA = mozilla
 endif
 
-SUBDIRS = net $(GTKHTML2) $(MOZILLA)
+SUBDIRS = net . $(GTKHTML2) $(MOZILLA)
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -85,3 +85,8 @@ liferea_bin_SOURCES = \
 
 liferea_bin_LDADD = net/liblinet.a $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) 
 
+if PLATFORM_WIN32
+
+liferea_bin_LDFLAGS = -Wl,--export-all-symbols,--out-implib,liferea-bin.a
+
+endif

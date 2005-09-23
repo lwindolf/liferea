@@ -33,6 +33,10 @@
 #include "debug.h"
 #include "html.h"
 
+#ifdef __CYGWIN__
+#  define strcasestr strstr
+#endif
+
 enum {
 	LINK_FAVICON,
 	LINK_RSS_ALTERNATE,

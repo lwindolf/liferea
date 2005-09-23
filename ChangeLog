@@ -17,6 +17,8 @@
 	  items from folders.  (reported by Michael Bernstein)
 	* Now allows Ctrl +/- for zooming with the numeric 
 	  keypad. (SF #1292930)
+	* Liferea can now be built with Cygwin. 
+	  (patch from Yaakov Selkowitz)
 	* Rewritten user documentation.
 
 

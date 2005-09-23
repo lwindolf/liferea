@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-04 11:32+0200\n"
+"POT-Creation-Date: 2005-09-18 14:21+0200\n"
 "PO-Revision-Date: 2005-06-28 12:07+0300\n"
 "Last-Translator: Maxim Britov <maxbritov@tut.by>\n"
 "Language-Team: Russian\n"
@@ -40,11 +40,11 @@ msgstr "Настройки"
 msgid "Quick Reference"
 msgstr "Редактировать настройки."
 
-#: src/common.c:327
+#: src/common.c:295
 msgid "[Parser error output was truncated!]"
 msgstr "[Вывод ошибки парсинга усечен!]"
 
-#: src/common.c:405
+#: src/common.c:373
 #, c-format
 msgid ""
 "xmlReadMemory(): Could not parse document:\n"
@@ -53,20 +53,20 @@ msgstr ""
 "xmlReadMemory(): Невозможно обработать документ:\n"
 "%s%s"
 
-#: src/common.c:482 src/common.c:593
+#: src/common.c:450 src/common.c:561
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "внутренняя ошибка! ошибка конвертирования времени! ошибка mktime!\n"
 
-#: src/common.c:485
+#: src/common.c:453
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "Неверный ISO8601 формат даты! Игнорирую информацию <dc:date>!\n"
 
-#: src/common.c:607 src/common.c:614 src/common.c:620 src/common.c:627
+#: src/common.c:575 src/common.c:582 src/common.c:588 src/common.c:595
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "Невозможно создать каталог кэша %s!"
 
-#: src/common.c:697
+#: src/common.c:665
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -75,11 +75,11 @@ msgstr ""
 "кодировка UTF-8! Некоторые символы опущены!"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:252
+#: src/conf.c:253
 msgid "feedlist.opml"
 msgstr "feedlist_ru.opml"
 
-#: src/conf.c:271
+#: src/conf.c:272
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Ошибка переименования %s в %s\n"
@@ -93,13 +93,13 @@ msgstr "Аутентификация"
 msgid "The orientation of the tray."
 msgstr ""
 
-#: src/export.c:490 src/export.c:492
+#: src/export.c:499 src/export.c:501
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Ошибка XML во время чтения файла кэша! Невозможно импортировать \"%s\"!"
 
-#: src/export.c:496 src/export.c:498
+#: src/export.c:505 src/export.c:507
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -107,38 +107,38 @@ msgstr ""
 "Пустой документ! Документ OPML \"%s\" не должен быть пустым во время "
 "импортирования."
 
-#: src/export.c:506 src/export.c:508
+#: src/export.c:515 src/export.c:517
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/export.c:530
+#: src/export.c:539
 msgid "Imported feed list"
 msgstr "Имппортированный лист лент новостей"
 
-#: src/export.c:541
+#: src/export.c:550
 msgid "Import Feed List"
 msgstr "Импортировать Список Лент Новостей"
 
-#: src/export.c:541
+#: src/export.c:550
 msgid "Import"
 msgstr "Импорт"
 
-#: src/export.c:551
+#: src/export.c:560
 msgid "Error while exporting feed list!"
 msgstr "Ошибка во время экспорта списка лент новостей!"
 
-#: src/export.c:553
+#: src/export.c:562
 msgid "Feed List exported!"
 msgstr "Список лент новостей экспортирован!"
 
-#: src/export.c:560
+#: src/export.c:569
 msgid "Export Feed List"
 msgstr "Экспортировать Список Лент Новостей"
 
-#: src/export.c:560
+#: src/export.c:569
 msgid "Export"
 msgstr "Экспорт"
 
@@ -225,21 +225,21 @@ msgid "Updating \"%s\""
 msgstr "Обновляется: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1046 src/item.c:244 src/metadata.c:334 src/ocs_dir.c:144
+#: src/feed.c:1060 src/item.c:244 src/metadata.c:346 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
 msgstr "Лента новостей:"
 
-#: src/feed.c:1046 src/interface.c:3815
+#: src/feed.c:1060 src/interface.c:3834
 msgid "VFolder"
 msgstr "VFolder"
 
-#: src/feed.c:1054
+#: src/feed.c:1068
 msgid "user defined command"
 msgstr "определнная пользователем команда"
 
-#: src/feed.c:1077 src/interface.c:1058 src/interface.c:1468 src/item.c:291
-#: src/metadata.c:336 src/metadata.c:337 src/ocs_dir.c:150 src/opml.c:224
+#: src/feed.c:1091 src/interface.c:1061 src/interface.c:1487 src/item.c:291
+#: src/metadata.c:348 src/metadata.c:349 src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Источник:"
 
@@ -287,61 +287,65 @@ msgstr "Не найдено. Ресурс не существует. Пожал�
 msgid "URL is invalid"
 msgstr "URL неверен"
 
-#: src/feedlist.c:263
+#: src/feedlist.c:261
+msgid "Unsupported network protocol"
+msgstr ""
+
+#: src/feedlist.c:264
 msgid "Error connecting to remote host"
 msgstr "Ошибка соединения с удаленным сервером"
 
-#: src/feedlist.c:264
+#: src/feedlist.c:265
 msgid "Hostname could not be found"
 msgstr "Сервер не может быть найден"
 
-#: src/feedlist.c:265
+#: src/feedlist.c:266
 msgid "Network connection was refused by the remote host"
 msgstr "Соединения было прервано удаленным сервером"
 
-#: src/feedlist.c:266
+#: src/feedlist.c:267
 msgid "Remote host did not finish sending data"
 msgstr "Удаленный сервер не закончил передачу данных"
 
 #. Transfer errors
-#: src/feedlist.c:268
+#: src/feedlist.c:269
 msgid "Too many HTTP redirects were encountered"
 msgstr "Обнаружено слишком много перенаправлений HTTP"
 
-#: src/feedlist.c:271
+#: src/feedlist.c:272
 msgid "Remote host sent an invalid response"
 msgstr "Сервер послал неверный ответ"
 
-#: src/feedlist.c:278
+#: src/feedlist.c:279
 msgid "Authentication failed"
 msgstr "Аутентификация прошла неудачно"
 
-#: src/feedlist.c:280
+#: src/feedlist.c:281
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Метод аутентификации на сервере несовместим с Liferea"
 
-#: src/feedlist.c:286
+#: src/feedlist.c:287
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Лента новостей недоступна: Сервер запросил неподдерживаемое перенаправление!"
 
-#: src/feedlist.c:287
+#: src/feedlist.c:288
 msgid "Client Error"
 msgstr "Ошибка клиента"
 
-#: src/feedlist.c:288
+#: src/feedlist.c:289
 msgid "Server Error"
 msgstr "Ошибка Сервера"
 
-#: src/feedlist.c:289
+#: src/feedlist.c:290
 msgid "(unknown networking error happened)"
 msgstr "(произошла неизвестная сетевая ошибка)"
 
-#: src/feedlist.c:302 src/feedlist.c:311
+#: src/feedlist.c:303 src/feedlist.c:312
 msgid "Show Details"
 msgstr ""
 
-#: src/feedlist.c:316
+#: src/feedlist.c:317
 msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
@@ -349,11 +353,11 @@ msgstr ""
 "<br>Можно проверить ленту воспользовавшись <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 
-#: src/feedlist.c:321
+#: src/feedlist.c:322
 msgid "\">FeedValidator</a>."
 msgstr "\">Проверка ленты</a>."
 
-#: src/feedlist.c:329
+#: src/feedlist.c:330
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -361,24 +365,24 @@ msgstr ""
 "Произошла проблема во время чтения этой подписки. Пожалуйста, проверьте URL "
 "и вывод командной строки."
 
-#: src/feedlist.c:362
+#: src/feedlist.c:363
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "Лента \"%s\" прекратила свое существование. Liferea не будет больше "
 "обновлять ее!"
 
-#: src/feedlist.c:364
+#: src/feedlist.c:365
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не изменился с момента последнего обновления"
 
-#: src/feedlist.c:372
+#: src/feedlist.c:373
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL для \"%s\" изменился на постоянный и был обновлен"
 
-#: src/feedlist.c:384
+#: src/feedlist.c:385
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -389,21 +393,21 @@ msgstr ""
 "указывает ли URL на ресурс, доступный в одном из поддерживаемых форматов!</p>"
 "%s"
 
-#: src/feedlist.c:403
+#: src/feedlist.c:404
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" обновлен..."
 
-#: src/feedlist.c:411
+#: src/feedlist.c:412
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступен"
 
-#: src/feedlist.c:452
+#: src/feedlist.c:453
 msgid "You have to select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/feedlist.c:462
+#: src/feedlist.c:463
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в режиме \"отключена\". Обновления невозможны."
 
@@ -444,7 +448,7 @@ msgstr "Обновляет выбранную подписку или все п�
 msgid "Update _All"
 msgstr "Обновить _Все"
 
-#: src/interface.c:197 src/ui_mainwindow.c:265
+#: src/interface.c:197 src/ui_mainwindow.c:269
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Обновляет все подписки. Это не затрагивает директории OCS."
 
@@ -516,7 +520,7 @@ msgstr "_Новости"
 msgid "_Next Unread Item"
 msgstr "_Следующая Непрочитанная Новость"
 
-#: src/interface.c:307 src/ui_mainwindow.c:263
+#: src/interface.c:307 src/ui_mainwindow.c:267
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -599,7 +603,7 @@ msgstr ""
 msgid "_Search"
 msgstr "_Поиск"
 
-#: src/interface.c:417 src/interface.c:3763
+#: src/interface.c:417 src/interface.c:3782
 msgid "Search All Feeds"
 msgstr "Поиск во всех лентах новостей."
 
@@ -654,97 +658,97 @@ msgstr "одиночный просмотр элементов"
 msgid "label133"
 msgstr "label133"
 
-#: src/interface.c:537 src/interface.c:2118
+#: src/interface.c:537 src/interface.c:2137
 msgid "Headlines"
 msgstr "Заголовки"
 
-#: src/interface.c:856
+#: src/interface.c:859
 msgid "Subscription Properties"
 msgstr "Свойства Подписки"
 
-#: src/interface.c:877
+#: src/interface.c:880
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">Название Ленты Новостей</span>"
 
-#: src/interface.c:887 src/interface.c:919 src/interface.c:993
-#: src/interface.c:1038 src/interface.c:1072 src/interface.c:1083
-#: src/interface.c:1101 src/interface.c:1189 src/interface.c:1403
-#: src/interface.c:1448 src/interface.c:1482 src/interface.c:1493
-#: src/interface.c:1511 src/interface.c:1815 src/interface.c:1854
-#: src/interface.c:1914 src/interface.c:1959 src/interface.c:1992
-#: src/interface.c:2030 src/interface.c:2081 src/interface.c:2145
-#: src/interface.c:2198 src/interface.c:2279 src/interface.c:2296
-#: src/interface.c:2382 src/interface.c:2436 src/interface.c:2464
-#: src/interface.c:2514 src/interface.c:2576 src/interface.c:2638
+#: src/interface.c:890 src/interface.c:922 src/interface.c:996
+#: src/interface.c:1041 src/interface.c:1075 src/interface.c:1086
+#: src/interface.c:1104 src/interface.c:1192 src/interface.c:1422
+#: src/interface.c:1467 src/interface.c:1501 src/interface.c:1512
+#: src/interface.c:1530 src/interface.c:1834 src/interface.c:1873
+#: src/interface.c:1933 src/interface.c:1978 src/interface.c:2011
+#: src/interface.c:2049 src/interface.c:2100 src/interface.c:2164
+#: src/interface.c:2217 src/interface.c:2298 src/interface.c:2315
+#: src/interface.c:2401 src/interface.c:2455 src/interface.c:2483
+#: src/interface.c:2533 src/interface.c:2595 src/interface.c:2657
 msgid "    "
 msgstr "    "
 
-#: src/interface.c:896
+#: src/interface.c:899
 msgid "Feed _Name:"
 msgstr "_Название Ленты Новостей:"
 
-#: src/interface.c:909
+#: src/interface.c:912
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">Интервал Обновления</span>"
 
-#: src/interface.c:928
+#: src/interface.c:931
 msgid "_Use global default update interval."
 msgstr "_Использовать общий интервал обновления по умолчанию."
 
-#: src/interface.c:938
+#: src/interface.c:941
 msgid "_Feed specific update interval of"
 msgstr "_Специфичный для ленты интервал обновления в"
 
-#: src/interface.c:953 src/interface.c:1877
+#: src/interface.c:956 src/interface.c:1896
 msgid "minutes."
 msgstr "минут(а)(ы)."
 
-#: src/interface.c:957
+#: src/interface.c:960
 msgid "_Don't update this feed automatically."
 msgstr "_Не обновлять ленту автоматически."
 
-#: src/interface.c:963
+#: src/interface.c:966
 msgid " "
 msgstr " "
 
-#: src/interface.c:967
+#: src/interface.c:970
 #, c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Создатель ленты рекомендует интервал обновления в %d секунд(у)(ы)."
 
-#: src/interface.c:974
+#: src/interface.c:977
 msgid "General"
 msgstr "Общие"
 
-#: src/interface.c:983 src/interface.c:1393
+#: src/interface.c:986 src/interface.c:1412
 msgid "<b>Feed Source</b>"
 msgstr "<b>Источник Ленты Новостей</b>"
 
-#: src/interface.c:1016 src/interface.c:1426
+#: src/interface.c:1019 src/interface.c:1445
 msgid "_URL"
 msgstr "_URL"
 
-#: src/interface.c:1022 src/interface.c:1432
+#: src/interface.c:1025 src/interface.c:1451
 msgid "_Command"
 msgstr "_Команда"
 
-#: src/interface.c:1032 src/interface.c:1442
+#: src/interface.c:1035 src/interface.c:1461
 msgid "Local _File"
 msgstr "Локальный _Файл"
 
-#: src/interface.c:1042 src/interface.c:1452
+#: src/interface.c:1045 src/interface.c:1471
 msgid "_Select File..."
 msgstr "_Выберите Файл..."
 
-#: src/interface.c:1052 src/interface.c:1462
+#: src/interface.c:1055 src/interface.c:1481
 msgid "Source Type:"
 msgstr "Тип Источника:"
 
-#: src/interface.c:1076 src/interface.c:1486
+#: src/interface.c:1079 src/interface.c:1505
 msgid "Use conversion filter"
 msgstr "Использовать фильтр конвертации"
 
-#: src/interface.c:1091 src/interface.c:1501
+#: src/interface.c:1094 src/interface.c:1520
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -754,19 +758,19 @@ msgstr ""
 "новостей и каталогам, хранящимся в неподдерживаемом формате.  Подробности "
 "можно узнать в документации."
 
-#: src/interface.c:1105 src/interface.c:1515
+#: src/interface.c:1108 src/interface.c:1534
 msgid "Convert using:"
 msgstr "Конвертировать используя:"
 
-#: src/interface.c:1113 src/interface.c:1523
+#: src/interface.c:1116 src/interface.c:1542
 msgid "Select File..."
 msgstr "Выберите Файл..."
 
-#: src/interface.c:1117
+#: src/interface.c:1120
 msgid "Feed Source"
 msgstr "Источник Feed"
 
-#: src/interface.c:1126
+#: src/interface.c:1129
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -774,71 +778,79 @@ msgstr ""
 "Настройки кэша определяют, сохраняются ли содержимое ленты новостей, когда "
 "Liferea завершает работу. Помеченные элементы всегда сохраняются в кэш."
 
-#: src/interface.c:1133
+#: src/interface.c:1136
 msgid "_Default cache settings"
 msgstr "Настройки кэша _по умолчанию"
 
-#: src/interface.c:1139
+#: src/interface.c:1142
 msgid "Di_sable cache"
 msgstr "_Отключить кэш"
 
-#: src/interface.c:1145
+#: src/interface.c:1148
 msgid "_Unlimited cache"
 msgstr "_Неограниченный кэш"
 
-#: src/interface.c:1155
+#: src/interface.c:1158
 msgid "_Limit cache to"
 msgstr "О_граничить кэш до"
 
-#: src/interface.c:1168
+#: src/interface.c:1171
 msgid "items."
 msgstr "элемента(ов)."
 
-#: src/interface.c:1172
+#: src/interface.c:1175
 msgid "Feed Cache"
 msgstr "Кэш Ленты Новостей"
 
-#: src/interface.c:1181
+#: src/interface.c:1184
 msgid "Use HTTP _authentication"
 msgstr "Использовать HTTP _аутентификации"
 
-#: src/interface.c:1199 src/interface.c:3442
+#: src/interface.c:1202 src/interface.c:3461
 msgid "User_name:"
 msgstr "_Имя пользователя:"
 
-#: src/interface.c:1206 src/interface.c:3449
+#: src/interface.c:1209 src/interface.c:3468
 msgid "_Password:"
 msgstr "_Пароль:"
 
-#: src/interface.c:1226 src/interface.c:3419
+#: src/interface.c:1229 src/interface.c:3438
 msgid "Authentication"
 msgstr "Аутентификация"
 
-#: src/interface.c:1375
+#: src/interface.c:1238
+msgid "_Automatically download all enclosures of this feed."
+msgstr ""
+
+#: src/interface.c:1242 src/interface.c:2688
+msgid "Enclosures"
+msgstr "Вложения"
+
+#: src/interface.c:1394
 msgid "New Subscription"
 msgstr "Новая Подписка"
 
-#: src/interface.c:1781
+#: src/interface.c:1800
 msgid "Liferea Preferences"
 msgstr "Настройки Liferea"
 
-#: src/interface.c:1805
+#: src/interface.c:1824
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Обработка Кэша Ленты Новостей</span>"
 
-#: src/interface.c:1828
+#: src/interface.c:1847
 msgid "Default number of items per feed to save:"
 msgstr "Число элементов по умолчанию на одну ленту новостей для сохранения:"
 
-#: src/interface.c:1844
+#: src/interface.c:1863
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr "<span weight=\"bold\">Настройки Обновления Ленты Новостей</span>"
 
-#: src/interface.c:1867
+#: src/interface.c:1886
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Интервал Обновления Ленты Новостей По Умолчанию:"
 
-#: src/interface.c:1881
+#: src/interface.c:1900
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -849,35 +861,35 @@ msgstr ""
 "15 минут. Для отключения авто-обновления ленты новостей по умолчанию "
 "поставьте интервал равным 0.</i>"
 
-#: src/interface.c:1892
+#: src/interface.c:1911
 msgid "At _startup:"
 msgstr "При _запуске:"
 
-#: src/interface.c:1904
+#: src/interface.c:1923
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">Настройки Загрузки Лент Новостей</span>"
 
-#: src/interface.c:1923
+#: src/interface.c:1942
 msgid "Optimize for _memory usage."
 msgstr "Минимизированное потребление памяти "
 
-#: src/interface.c:1930
+#: src/interface.c:1949
 msgid "Optimize for _speed."
 msgstr "Повышенная скорость работы/отклика"
 
-#: src/interface.c:1936
+#: src/interface.c:1955
 msgid "Feeds"
 msgstr "_Ленты новостей"
 
-#: src/interface.c:1949
+#: src/interface.c:1968
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
 msgstr "<span weight=\"bold\">Настройки отображения папки</span>"
 
-#: src/interface.c:1967
+#: src/interface.c:1986
 msgid "Show the items of all child feeds when a folder is selected."
 msgstr "Показывать все ленты при открытии папки"
 
-#: src/interface.c:1971
+#: src/interface.c:1990
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
@@ -885,55 +897,55 @@ msgstr ""
 "<i>Используйте с осторожностью, поскольку большое количество лент в папке "
 "может вызвать существенные задержки.</i>"
 
-#: src/interface.c:1982
+#: src/interface.c:2001
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">Иконки Новостей (Favicons)</span>"
 
-#: src/interface.c:2001
+#: src/interface.c:2020
 msgid "_Update all favicons now."
 msgstr "Обновить Все Иконки."
 
-#: src/interface.c:2005
+#: src/interface.c:2024
 msgid "Folders"
 msgstr "Папки"
 
-#: src/interface.c:2020
+#: src/interface.c:2039
 msgid "<span weight=\"bold\">Reading Headlines</span>"
 msgstr "<span weight=\"bold\">Просмотр Заголовков</span>"
 
-#: src/interface.c:2043
+#: src/interface.c:2062
 msgid "Skim through articles with "
 msgstr "Просматривать новости с помощью клавиши"
 
-#: src/interface.c:2053
+#: src/interface.c:2072
 msgid "Space"
 msgstr "Пробел"
 
-#: src/interface.c:2057
+#: src/interface.c:2076
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Пробел"
 
-#: src/interface.c:2061
+#: src/interface.c:2080
 msgid "<Alt> Space"
 msgstr "<Alt> Пробел"
 
-#: src/interface.c:2071
+#: src/interface.c:2090
 msgid "<span weight=\"bold\">Date Column Settings</span>"
 msgstr "<span weight=\"bold\">Настройки Колонки \"Дата\"</span>"
 
-#: src/interface.c:2090
+#: src/interface.c:2109
 msgid "Display only time"
 msgstr "Отображать только время"
 
-#: src/interface.c:2096
+#: src/interface.c:2115
 msgid "Display date and time"
 msgstr "Отображать дату и время"
 
-#: src/interface.c:2106
+#: src/interface.c:2125
 msgid "User defined format:"
 msgstr "Определенный пользователем формат:"
 
-#: src/interface.c:2115
+#: src/interface.c:2134
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -941,35 +953,35 @@ msgstr ""
 "для продвинутых пользователей: укажите строку формата времени. "
 "Дополнительную информацию можно получить на man-странице strftime()"
 
-#: src/interface.c:2135
+#: src/interface.c:2154
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
 msgstr "<span weight=\"bold\">Настройки Внутреннего Браузера</span>"
 
-#: src/interface.c:2157
+#: src/interface.c:2176
 msgid "View Headlines With"
 msgstr "Просматривать Заголовки с Помощью"
 
-#: src/interface.c:2169
+#: src/interface.c:2188
 msgid "<i>Please restart Liferea for changes to take effect.</i>"
 msgstr "<i>Для применения настроек необходим перезапуск Liferea</i>"
 
-#: src/interface.c:2175
+#: src/interface.c:2194
 msgid "Open links in Liferea's _window."
 msgstr "Открывать ссылки в о_кне Liferea."
 
-#: src/interface.c:2179
+#: src/interface.c:2198
 msgid "_Disable Javascript."
 msgstr "Отключить Javascript."
 
-#: src/interface.c:2187
+#: src/interface.c:2206
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">Настройки Внешнего Браузера</span>"
 
-#: src/interface.c:2212
+#: src/interface.c:2231
 msgid "_Browser:"
 msgstr "_Браузер:"
 
-#: src/interface.c:2219
+#: src/interface.c:2238
 #, c-format
 msgid ""
 "_Manual:\n"
@@ -978,77 +990,77 @@ msgstr ""
 "_Руководство:\n"
 "(%s для URL)"
 
-#: src/interface.c:2233
+#: src/interface.c:2252
 msgid "_Open link in:"
 msgstr "Открыть _ссылку в:"
 
-#: src/interface.c:2256
+#: src/interface.c:2275
 msgid "Browser"
 msgstr "Браузер"
 
-#: src/interface.c:2269
+#: src/interface.c:2288
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Настройки Уведомления</span>"
 
-#: src/interface.c:2287
+#: src/interface.c:2306
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr ""
 "Показывать _иконку статуса в области уведомления \n"
 "(системный трей)."
 
-#: src/interface.c:2304
+#: src/interface.c:2323
 msgid "Show a _popup window with new headlines."
 msgstr "Показывать _всплывающее окошко с новыми заголовками."
 
-#: src/interface.c:2313
+#: src/interface.c:2332
 msgid "         "
 msgstr "         "
 
-#: src/interface.c:2329
+#: src/interface.c:2348
 msgid "Lower Right"
 msgstr "Внизу справа"
 
-#: src/interface.c:2337
+#: src/interface.c:2356
 msgid "Upper Right"
 msgstr "Вверху справа"
 
-#: src/interface.c:2345
+#: src/interface.c:2364
 msgid "Upper Left"
 msgstr "Вверху слева"
 
-#: src/interface.c:2353
+#: src/interface.c:2372
 msgid "Lower Left"
 msgstr "Внизу слева"
 
-#: src/interface.c:2361
+#: src/interface.c:2380
 msgid "<b>Popup Placement</b>"
 msgstr "<b>Расположение уведомлений</b>"
 
-#: src/interface.c:2372
+#: src/interface.c:2391
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">Настройки меню</span>"
 
-#: src/interface.c:2391
+#: src/interface.c:2410
 msgid "Show Menu _And Toolbar"
 msgstr "Показывать Меню _И Панель Инструментов"
 
-#: src/interface.c:2397
+#: src/interface.c:2416
 msgid "Show _Menu Only"
 msgstr "Показывать Только _Меню"
 
-#: src/interface.c:2403
+#: src/interface.c:2422
 msgid "Show _Toolbar Only"
 msgstr "Показывать Только _Панель Инструментов"
 
-#: src/interface.c:2409
+#: src/interface.c:2428
 msgid "GUI"
 msgstr "GUI"
 
-#: src/interface.c:2426
+#: src/interface.c:2445
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">HTTP Прокси Сервер</span>"
 
-#: src/interface.c:2445
+#: src/interface.c:2464
 msgid ""
 "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center.</i>"
@@ -1056,87 +1068,83 @@ msgstr ""
 "<i>Liferea пользуется настройками прокси от GNOME. При использовании GNOME "
 "данный параметр настраивается в GNOME Control Center.</i>"
 
-#: src/interface.c:2456
+#: src/interface.c:2475
 msgid "_Enable Proxy"
 msgstr "_Включить Прокси"
 
-#: src/interface.c:2478
+#: src/interface.c:2497
 msgid "Proxy _Host:"
 msgstr "Сервер _Прокси:"
 
-#: src/interface.c:2499
+#: src/interface.c:2518
 msgid "Proxy _Port:"
 msgstr "_Задать Порт прокси:"
 
-#: src/interface.c:2506
+#: src/interface.c:2525
 msgid "Use Proxy _Authentication"
 msgstr "Использовать _аутентификации на сервере прокси"
 
-#: src/interface.c:2524
+#: src/interface.c:2543
 msgid "Proxy _Username:"
 msgstr "_Имя пользователя на сервере прокси:"
 
-#: src/interface.c:2546
+#: src/interface.c:2565
 msgid "Proxy Pass_word:"
 msgstr "Па_роль на сервере прокси:"
 
-#: src/interface.c:2553
+#: src/interface.c:2572
 msgid "Proxy"
 msgstr "Прокси"
 
-#: src/interface.c:2566
+#: src/interface.c:2585
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
 msgstr "<span weight=\"bold\">Загрузка вложений</span>"
 
-#: src/interface.c:2586
+#: src/interface.c:2605
 msgid "Download using"
 msgstr "Загружать используя"
 
-#: src/interface.c:2593
+#: src/interface.c:2612
 msgid "Save downloads in"
 msgstr "Сохранять загрузки в"
 
-#: src/interface.c:2624
+#: src/interface.c:2643
 msgid "Browse"
 msgstr "Просмотр"
 
-#: src/interface.c:2628
+#: src/interface.c:2647
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
 msgstr "<span weight=\"bold\">Открытие вложений</span>"
 
-#: src/interface.c:2669
-msgid "Enclosures"
-msgstr "Вложения"
-
-#: src/interface.c:2997
+#: src/interface.c:3016
 msgid "New Folder"
 msgstr "Новая папка"
 
-#: src/interface.c:3013 src/interface.c:3090
+#: src/interface.c:3032 src/interface.c:3109
 msgid "Folder name:"
 msgstr "Имя папки:"
 
-#: src/interface.c:3078
+#: src/interface.c:3097
 msgid "Rename Folder"
 msgstr "Переименовать папку"
 
-#: src/interface.c:3159
+#: src/interface.c:3178
 msgid "Feedster Search"
 msgstr "Поиск Feedster"
 
-#: src/interface.c:3174
+#: src/interface.c:3193
 msgid "Search for:"
 msgstr "Искать:"
 
-#: src/interface.c:3181
+#: src/interface.c:3200
 msgid "enter any search string you want"
 msgstr "введите любую строку поиска"
 
-#: src/interface.c:3188
+#: src/interface.c:3207
 msgid "Maximal Number Of Result Items:"
 msgstr "Максимальное Число Элементов Результата:"
 
-#: src/interface.c:3197
+#: src/interface.c:3216
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -1147,27 +1155,27 @@ msgstr ""
 "поиска. Вы можете оставить эту ленту новостей и обновлять ее как и любую "
 "другую ленту.  "
 
-#: src/interface.c:3273 src/interface.c:3315
+#: src/interface.c:3292 src/interface.c:3334
 msgid "About"
 msgstr "О программе"
 
-#: src/interface.c:3294
+#: src/interface.c:3313
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea - программа просмотра новостей в формате RSS для GTK+"
 
-#: src/interface.c:3304
+#: src/interface.c:3323
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 msgstr ""
 "<span color=\"blue\" underline=\"single\">Домашняя страница Liferea</span>"
 
-#: src/interface.c:3309
+#: src/interface.c:3328
 msgid ""
 "Copyright (c) 2003-2005\n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
 
-#: src/interface.c:3329
+#: src/interface.c:3348
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1199,20 +1207,20 @@ msgid ""
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 msgstr ""
 
-#: src/interface.c:3335
+#: src/interface.c:3354
 msgid "Contributors"
 msgstr "Участники"
 
-#: src/interface.c:3355
+#: src/interface.c:3374
 msgid "Translation"
 msgstr "Перевод"
 
-#: src/interface.c:3430 src/ui_feed.c:424
+#: src/interface.c:3449 src/ui_feed.c:426
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Введите имя пользователя и пароль для \"%s\" (%s):"
 
-#: src/interface.c:3471
+#: src/interface.c:3490
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -1220,15 +1228,15 @@ msgstr ""
 "Внимание: <i>Имя пользователя и пароль будут сохранены в вашем списке "
 "новостей без использования шифрования.</i>"
 
-#: src/interface.c:3537
+#: src/interface.c:3556
 msgid "VFolder Properties"
 msgstr "Свойства VFolder"
 
-#: src/interface.c:3553
+#: src/interface.c:3572
 msgid "Name"
 msgstr "Имя"
 
-#: src/interface.c:3582
+#: src/interface.c:3601
 msgid ""
 "Note: Items are added to the vfolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
@@ -1237,23 +1245,23 @@ msgstr ""
 "правило добавления сопадает. Новости удаляются, если подходит хотя бы одно "
 "правило удаления."
 
-#: src/interface.c:3595
+#: src/interface.c:3614
 msgid "Rules"
 msgstr "Правила"
 
-#: src/interface.c:3656
+#: src/interface.c:3675
 msgid "Downloading Enclosure"
 msgstr "Загрузка вложений"
 
-#: src/interface.c:3671
+#: src/interface.c:3690
 msgid "Downloading an enclosure of type:"
 msgstr "Загрузка вложения типа:"
 
-#: src/interface.c:3676
+#: src/interface.c:3695
 msgid "<b>text/plain</b>"
 msgstr ""
 
-#: src/interface.c:3682
+#: src/interface.c:3701
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The downloaded file will be supplied as an "
@@ -1262,19 +1270,19 @@ msgstr ""
 "Что Liferea следует делать с вложениями? Ниже задайте команду, выполняемую "
 "при их загрузке. Загружаемый файл будет передан, как аргумент данной команде:"
 
-#: src/interface.c:3696
+#: src/interface.c:3715
 msgid "_Browse"
 msgstr "_Просмотр"
 
-#: src/interface.c:3700
+#: src/interface.c:3719
 msgid "_Do this automatically for files like this from now on."
 msgstr "Выполнять теперь это автоматически для подобных файлов."
 
-#: src/interface.c:3778
+#: src/interface.c:3797
 msgid "Search for"
 msgstr "Искать"
 
-#: src/interface.c:3785
+#: src/interface.c:3804
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -1282,12 +1290,12 @@ msgstr ""
 "Введите искомую строку, которую Liferea будет искать как в наименованиях "
 "новостей, так и в их содержимом."
 
-#: src/interface.c:3801
+#: src/interface.c:3820
 msgid "Saves this search as a VFolder, which will appear in the feed list."
 msgstr ""
 "Сохранить поиск в виде VFolder, которая появится в списке лент новостей"
 
-#: src/interface.c:3824
+#: src/interface.c:3843
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -1299,7 +1307,7 @@ msgstr ""
 msgid "[No title]"
 msgstr "[Без заголовка]"
 
-#: src/item.c:275 src/metadata.c:335 src/ocs_dir.c:105
+#: src/item.c:275 src/metadata.c:347 src/ocs_dir.c:105
 msgid "Item:"
 msgstr "Новость:"
 
@@ -1393,95 +1401,95 @@ msgstr ""
 "а данное сообщение всё равно выдается, то следует удалить файл \"~/.liferea/"
 "lock\"."
 
-#: src/metadata.c:290
+#: src/metadata.c:302
 msgid "comments"
 msgstr "комментарии"
 
-#: src/metadata.c:320 src/metadata.c:347
+#: src/metadata.c:332 src/metadata.c:359
 msgid "feed generator"
 msgstr "генератор ленты новостей"
 
-#: src/metadata.c:338
+#: src/metadata.c:350
 msgid "author"
 msgstr "автор"
 
-#: src/metadata.c:339
+#: src/metadata.c:351
 msgid "contributors"
 msgstr "участники"
 
-#: src/metadata.c:340
+#: src/metadata.c:352
 msgid "copyright"
 msgstr "авторские права"
 
-#: src/metadata.c:341
+#: src/metadata.c:353
 msgid "language"
 msgstr "язык"
 
-#: src/metadata.c:342
+#: src/metadata.c:354
 msgid "feed published on"
 msgstr "лента запущена"
 
-#: src/metadata.c:343
+#: src/metadata.c:355
 msgid "content last updated"
 msgstr "содержимое было обновлено последний раз"
 
-#: src/metadata.c:344
+#: src/metadata.c:356
 msgid "managing editor"
 msgstr "руководящий редактор"
 
-#: src/metadata.c:345
+#: src/metadata.c:357
 msgid "webmaster"
 msgstr "вебмастер"
 
-#: src/metadata.c:346
+#: src/metadata.c:358
 msgid "category"
 msgstr "категория"
 
 #. types for admin
-#: src/metadata.c:354
+#: src/metadata.c:366
 msgid "report errors to"
 msgstr "сообщать об ошибках"
 
 #. types for aggregation
-#: src/metadata.c:358
+#: src/metadata.c:370
 msgid "original source"
 msgstr "исходныйисточник"
 
-#: src/metadata.c:359
+#: src/metadata.c:371
 msgid "original time"
 msgstr "исходное время"
 
 #. types for creative commons
-#: src/metadata.c:365
+#: src/metadata.c:377
 msgid "license"
 msgstr "лицензия"
 
 #. types for Dublin Core (some dc tags are mapped to feed and item metadata types)
-#: src/metadata.c:368
+#: src/metadata.c:380
 msgid "creator"
 msgstr "создатель"
 
-#: src/metadata.c:369
+#: src/metadata.c:381
 msgid "publisher"
 msgstr "издатель"
 
-#: src/metadata.c:370
+#: src/metadata.c:382
 msgid "type"
 msgstr "тип"
 
-#: src/metadata.c:371
+#: src/metadata.c:383
 msgid "format"
 msgstr "формат"
 
-#: src/metadata.c:372
+#: src/metadata.c:384
 msgid "identifier"
 msgstr "идентификатор"
 
-#: src/metadata.c:373
+#: src/metadata.c:385
 msgid "source"
 msgstr "источник"
 
-#: src/metadata.c:374
+#: src/metadata.c:386
 msgid "coverage"
 msgstr "охват"
 
@@ -1598,7 +1606,7 @@ msgstr ""
 "\"%s\" не является допустимым документом OPML! Liferea не сможет "
 "импортировать этот файл!"
 
-#: src/ui_enclosure.c:231 src/ui_enclosure.c:375 src/ui_feed.c:366
+#: src/ui_enclosure.c:231 src/ui_enclosure.c:385 src/ui_feed.c:368
 msgid "Choose File"
 msgstr "Выберите файл"
 
@@ -1612,54 +1620,54 @@ msgstr ""
 msgid "<b>%s</b>"
 msgstr ""
 
-#: src/ui_feed.c:425
+#: src/ui_feed.c:427
 msgid "Unknown source"
 msgstr "Неизвестный источник"
 
-#: src/ui_feed.c:527
+#: src/ui_feed.c:529
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Создатель этой ленты новостей рекомендует интервал обновления в %d минут(у)"
 "(ы)."
 
-#: src/ui_feed.c:529
+#: src/ui_feed.c:531
 msgid "This feed specifies no default update interval."
 msgstr "Эта лента новостей не обозначает интервал обновления по умолчанию."
 
-#: src/ui_feedlist.c:493
+#: src/ui_feedlist.c:496
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr ""
 "Заметка: Использования фильтров подписки отключает возможность использования "
 "drag & drop"
 
-#: src/ui_feedlist.c:523 src/ui_feedlist.c:526
+#: src/ui_feedlist.c:530 src/ui_feedlist.c:533
 msgid "Deleting entry"
 msgstr "Удаление записи"
 
-#: src/ui_feedlist.c:524
+#: src/ui_feedlist.c:531
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Вы действительно хотите удалить каталог \"%s\" и его содержимое?"
 
-#: src/ui_feedlist.c:527
+#: src/ui_feedlist.c:534
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Вы действительно хотите удалить \"%s\"?"
 
-#: src/ui_feedlist.c:535
+#: src/ui_feedlist.c:542
 msgid "Deletion Confirmation"
 msgstr "Потверждение об Удалении"
 
-#: src/ui_feedlist.c:565
+#: src/ui_feedlist.c:572
 msgid "You must select a feed entry"
 msgstr "Вы должны выбрать строку с лентой новостей"
 
-#: src/ui_feedlist.c:566
+#: src/ui_feedlist.c:573
 msgid "You must select a feed entry."
 msgstr "Вы должны выбрать строку с лентой новостей."
 
-#: src/ui_feedlist.c:624
+#: src/ui_feedlist.c:631
 msgid "New subscription"
 msgstr "Новая подписка"
 
@@ -1696,7 +1704,7 @@ msgstr ""
 "/apps/liferea/browser-module!\n"
 "\n"
 
-#: src/ui_htmlview.c:82
+#: src/ui_htmlview.c:86
 #, c-format
 msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
@@ -1705,15 +1713,15 @@ msgstr ""
 "Ошибка открытия модуля виджета HTML (%s), указанного в конфигурации!\n"
 "%s\n"
 
-#: src/ui_htmlview.c:94
+#: src/ui_htmlview.c:98
 msgid "Htmlview API mismatch!"
 msgstr "Несовпадение Htmlview API!"
 
-#: src/ui_htmlview.c:102
+#: src/ui_htmlview.c:106
 msgid "Detected module is not a valid htmlview module!"
 msgstr "Обнаружен модуль, недопустимый для модуля htmlview!"
 
-#: src/ui_htmlview.c:124
+#: src/ui_htmlview.c:128
 #, c-format
 msgid "Cannot load HTML widget module (%s)!"
 msgstr "Невозможно загрузить модуль виджета HTML (%s)!"
@@ -1722,26 +1730,26 @@ msgstr "Невозможно загрузить модуль виджета HTML
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
-#: src/ui_htmlview.c:130
+#: src/ui_htmlview.c:134
 #, c-format
 msgid "Available browser modules (%s):\n"
 msgstr "Доступные модули браузера (%s):\n"
 
-#: src/ui_htmlview.c:165
+#: src/ui_htmlview.c:169
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Загрузка сконфигурированного модуля браузера (%s)!\n"
 
-#: src/ui_htmlview.c:168
+#: src/ui_htmlview.c:172
 msgid "No browser module configured!\n"
 msgstr "Ни одного модуля браузеров не определено!\n"
 
-#: src/ui_htmlview.c:176
+#: src/ui_htmlview.c:180
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "попытка загрузить модуль браузера %s (%s)\n"
 
-#: src/ui_htmlview.c:187
+#: src/ui_htmlview.c:191
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -1750,16 +1758,16 @@ msgstr ""
 "Просмотрите опцию --debug-all для получения информации!"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui_htmlview.c:365
+#: src/ui_htmlview.c:369
 msgid "This item does not have a link assigned!"
 msgstr "Этот элемент не имеет закрепленной ссылки!"
 
-#: src/ui_htmlview.c:419 src/ui_htmlview.c:442
+#: src/ui_htmlview.c:423 src/ui_htmlview.c:446
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Ошибка команды браузера: %s"
 
-#: src/ui_htmlview.c:445
+#: src/ui_htmlview.c:449
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Запуск: \"%s\""
@@ -1813,23 +1821,23 @@ msgstr "Вы должно выбрать ленту новостей для уд
 msgid "There are no unread items "
 msgstr "Нет непрочитанных новостей "
 
-#: src/ui_mainwindow.c:262
+#: src/ui_mainwindow.c:266
 msgid "New Feed"
 msgstr "Новая Лента Новостей"
 
-#: src/ui_mainwindow.c:262
+#: src/ui_mainwindow.c:266
 msgid "Add a new subscription."
 msgstr "Добавить Новую Подписку."
 
-#: src/ui_mainwindow.c:263
+#: src/ui_mainwindow.c:267
 msgid "Next Unread"
 msgstr "Следующая Непрочитанная Новость"
 
-#: src/ui_mainwindow.c:264
+#: src/ui_mainwindow.c:268
 msgid "Mark As Read"
 msgstr "Пометить Как Прочитанные"
 
-#: src/ui_mainwindow.c:264
+#: src/ui_mainwindow.c:268
 msgid ""
 "Mark all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1837,23 +1845,23 @@ msgstr ""
 "Пометить все элементы выбранной подписки или всех подписок выбранной папки "
 "как прочитанные."
 
-#: src/ui_mainwindow.c:265
+#: src/ui_mainwindow.c:269
 msgid "Update All"
 msgstr "Обновить Все"
 
-#: src/ui_mainwindow.c:266
+#: src/ui_mainwindow.c:270
 msgid "Search"
 msgstr "Поиск"
 
-#: src/ui_mainwindow.c:266
+#: src/ui_mainwindow.c:270
 msgid "Search all feeds."
 msgstr "Поиск во всех лентах новостей."
 
-#: src/ui_mainwindow.c:267
+#: src/ui_mainwindow.c:271
 msgid "Preferences"
 msgstr "Настройки"
 
-#: src/ui_mainwindow.c:267
+#: src/ui_mainwindow.c:271
 msgid "Edit preferences."
 msgstr "Редактировать настройки."
 
@@ -1863,7 +1871,7 @@ msgstr "Редактировать настройки."
 #. "and Spanish. If you think you know a good set of default feeds for your "
 #. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
 #. "and it will be included in the next release!</div>"));
-#: src/ui_mainwindow.c:309
+#: src/ui_mainwindow.c:313
 #, fuzzy
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
@@ -1875,7 +1883,7 @@ msgid ""
 "selected folder. To create a new subscription enter the feed URL or if you "
 "don't know it the URL of the website which provides the feed.</p></"
 "li><li><p><b>Update Subscription</b> - This will update the subscription you "
-"selected. You may want to do this if you want to immediatly check a "
+"selected. You may want to do this if you want to immediately check a "
 "subscription for updates. Usually it is adequate to rely on the auto "
 "updating according to the update interval of the subscription.</p></"
 "li><li><p><b>Update All</b> - This will update all your subscriptions at "
@@ -1907,11 +1915,11 @@ msgstr ""
 "доступном на <a href=\"http://liferea.sf.net\">домашней странице проекта</a>."
 "</p>"
 
-#: src/ui_mainwindow.c:387
+#: src/ui_mainwindow.c:391
 msgid "Liferea is now online"
 msgstr "Liferea подключена"
 
-#: src/ui_mainwindow.c:390
+#: src/ui_mainwindow.c:394
 msgid "Liferea is now offline"
 msgstr "Liferea отключена"
 

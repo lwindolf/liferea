@@ -102,7 +102,7 @@ static gboolean main_lock() {
 	if (gethostname(hostname, 256) == -1)
 		return -2; /* Skip locking if this happens, which it should not.... */
 	hostname[255] = '\0';
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock-%s:%d", common_get_cache_path(), hostname, getpid());
+	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock-%s.%d", common_get_cache_path(), hostname, getpid());
 	retval = fd = open(filename, O_CREAT|O_EXCL, S_IRUSR | S_IWUSR);
 	if (fd == -1) {
 		g_free(filename);
@@ -124,7 +124,7 @@ static gboolean main_lock() {
 				else {
 					host = &(host[1]);
 					pidstr = host;
-					while (*pidstr != '\0' && *pidstr != ':') /* Step pidstr to point to the colon */
+					while (*pidstr != '\0' && *pidstr != '.') /* Step pidstr to point to the period */
 						pidstr = &(pidstr[1]);
 					if (*pidstr == '\0')
 						retval = -3;
