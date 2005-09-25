@@ -126,4 +126,6 @@ char *strsep (char **stringp, const char *delim);
 gchar *strreplace(const char *string, const char *delimiter,
 			   const char *replacement);
 
+char * liferea_strcasestr (const char *phaystack, const char *pneedle);
+
 #endif

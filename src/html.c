@@ -33,10 +33,6 @@
 #include "debug.h"
 #include "html.h"
 
-#ifdef __CYGWIN__
-#  define strcasestr strstr
-#endif
-
 enum {
 	LINK_FAVICON,
 	LINK_RSS_ALTERNATE,
@@ -50,7 +46,7 @@ static gchar *checkLinkRef(const gchar* str, gint linkType) {
 	gchar	quote; 
 	
 	/*debug1(DEBUG_PARSING, "checking link %s", str); */
-	tmp = strcasestr(str, "href=");
+	tmp = liferea_strcasestr(str, "href=");
 	if(NULL == tmp) return NULL;
 	tmp += 5;
 	/* skip spaces up to the first quote. This is really slightly
@@ -74,16 +70,16 @@ static gchar *checkLinkRef(const gchar* str, gint linkType) {
 	res = g_strndup(tmp, len);
 
 	if (linkType == LINK_FAVICON) {
-		if((strcasestr(str, "shortcut icon")!=NULL ||
-		    strcasestr(str, "icon")!=NULL) &&
-		   ((strcasestr(str, "image/x-icon")!=NULL)))
+		if((liferea_strcasestr(str, "shortcut icon")!=NULL ||
+		    liferea_strcasestr(str, "icon")!=NULL) &&
+		   ((liferea_strcasestr(str, "image/x-icon")!=NULL)))
 			return res;
 	} else if (linkType == LINK_RSS_ALTERNATE){
-		if((strcasestr(str, "alternate")!=NULL) &&
-		   ((strcasestr(str, "text/xml")!=NULL) || 
-		    (strcasestr(str, "rss+xml")!=NULL) ||
-		    (strcasestr(str, "rdf+xml")!=NULL) ||
-		    (strcasestr(str, "atom+xml")!=NULL)))
+		if((liferea_strcasestr(str, "alternate")!=NULL) &&
+		   ((liferea_strcasestr(str, "text/xml")!=NULL) || 
+		    (liferea_strcasestr(str, "rss+xml")!=NULL) ||
+		    (liferea_strcasestr(str, "rdf+xml")!=NULL) ||
+		    (liferea_strcasestr(str, "atom+xml")!=NULL)))
 			return res;
 	} else if (linkType == LINK_NORMAL_ANCHOR){
 		if((strstr(res, "rdf")) || (strstr(res, "xml")) ||
@@ -103,7 +99,7 @@ static gchar *search_links(const gchar* data, gint linkType) {
 	gchar	*endptr;
 	
 	while(1) {
-		ptr = strcasestr(tmp, ((linkType != LINK_NORMAL_ANCHOR)? "<link " : "<a "));
+		ptr = liferea_strcasestr(tmp, ((linkType != LINK_NORMAL_ANCHOR)? "<link " : "<a "));
 		if(NULL == ptr)
 			break;
 		

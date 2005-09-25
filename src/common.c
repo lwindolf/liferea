@@ -781,3 +781,85 @@ gchar *strreplace(const char *string, const char *delimiter,
 	return ret;
 }
 
+typedef unsigned chartype;
+
+/* strcasestr is Copyright (C) 1994, 1996-2000, 2004 Free Software
+   Foundation, Inc.  It was taken from the GNU C Library, which is
+   licenced under the GPL v2.1 or (at your option) newer version. */
+char *liferea_strcasestr (const char *phaystack, const char *pneedle)
+{
+	register const unsigned char *haystack, *needle;
+	register chartype b, c;
+
+	haystack = (const unsigned char *) phaystack;
+	needle = (const unsigned char *) pneedle;
+
+	b = tolower(*needle);
+	if (b != '\0') {
+		haystack--;                               /* possible ANSI violation */
+		do {
+			c = *++haystack;
+			if (c == '\0')
+				goto ret0;
+		} while (tolower(c) != (int) b);
+		
+		c = tolower(*++needle);
+		if (c == '\0')
+			goto foundneedle;
+		++needle;
+		goto jin;
+		
+		for (;;) {
+			register chartype a;
+			register const unsigned char *rhaystack, *rneedle;
+			
+			do {
+				a = *++haystack;
+				if (a == '\0')
+					goto ret0;
+				if (tolower(a) == (int) b)
+					break;
+				a = *++haystack;
+				if (a == '\0')
+					goto ret0;
+			shloop:
+				;
+			}
+			while (tolower(a) != (int) b);
+			
+		jin:      a = *++haystack;
+			if (a == '\0')
+				goto ret0;
+			
+			if (tolower(a) != (int) c)
+				goto shloop;
+			
+			rhaystack = haystack-- + 1;
+			rneedle = needle;
+			a = tolower(*rneedle);
+			
+			if (tolower(*rhaystack) == (int) a)
+				do {
+					if (a == '\0')
+						goto foundneedle;
+					++rhaystack;
+					a = tolower(*++needle);
+					if (tolower(*rhaystack) != (int) a)
+						break;
+					if (a == '\0')
+						goto foundneedle;
+					++rhaystack;
+					a = tolower(*++needle);
+				} while (tolower (*rhaystack) == (int) a);
+			
+			needle = rneedle;             /* took the register-poor approach */
+			
+			if (a == '\0')
+				break;
+		}
+	}
+ foundneedle:
+	return (char*) haystack;
+ ret0:
+	return 0;
+}
