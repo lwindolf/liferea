@@ -21,11 +21,11 @@
  */
 
 #include "fl_default.h"
-#include "../feed.h"
-#include "../feedlist.h"
-#include "../ui_feedlist.h"
-#include "../export.h"
-#include "../debug.h"
+#include "feed.h"
+#include "feedlist.h"
+#include "ui_feedlist.h"
+#include "export.h"
+#include "debug.h"
 
 static gboolean feedlistLoading = FALSE;
 static flNodeHandler *handler = NULL;

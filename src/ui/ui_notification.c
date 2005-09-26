@@ -29,9 +29,9 @@
 #include "conf.h"
 #include "feed.h"
 #include "item.h"
-#include "ui_feedlist.h"
 #include "callbacks.h"
 #include "support.h"
+#include "ui_feedlist.h"
 
 #define NOTIF_WIN_WIDTH 350
 #define NOTIF_WIN_HEIGHT -1

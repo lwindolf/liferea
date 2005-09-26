@@ -2,7 +2,7 @@
  * @file feed.c common feed handling
  * 
  * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,11 +89,8 @@ feedPtr feed_new(void) {
 	
 	fp->updateInterval = -1;
 	fp->defaultInterval = -1;
-	fp->type = FST_FEED;
 	fp->cacheLimit = CACHE_DEFAULT;
 	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
-	fp->sortColumn = IS_TIME;
-	fp->sortReversed = TRUE;	/* default sorting is newest date at top */
 		
 	return fp;
 }
@@ -252,7 +249,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
  *
  * This method really saves the feed to disk.
  */
-void feed_save(feedPtr fp) {
+void feed_save(feedPtr fp, const gchar *id) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode;
 	GSList		*itemlist, *iter;
@@ -264,19 +261,13 @@ void feed_save(feedPtr fp) {
 			
 	debug_enter("feed_save");
 	
-	if(fp->needsCacheSave == FALSE) {
-		debug1(DEBUG_CACHE, "feed does not need to be saved: %s", fp->title);
-		return;
-	}
-
 	debug1(DEBUG_CACHE, "saving feed: %s", fp->title);	
-	g_assert(0 != fp->loaded);
 
 	saveMaxCount = fp->cacheLimit;
 	if(saveMaxCount == CACHE_DEFAULT)
 		saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);
 	
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
 	tmpfilename = g_strdup_printf("%s~", filename);
 	
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
@@ -343,7 +334,6 @@ void feed_save(feedPtr fp) {
 	g_free(tmpfilename);
 	g_free(filename);
 
-	fp->needsCacheSave = FALSE;
 	debug_exit("feed_save");
 }
 
@@ -351,7 +341,7 @@ void feed_save(feedPtr fp) {
    might be called multiple times even if the feed was already loaded.
    Each time the method is called a reference counter is incremented. 
    Only to be called by feedlist_load_feed(). */
-gboolean feed_load(feedPtr fp) {
+gboolean feed_load(feedPtr fp, const gchar *id) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	GList		*items = NULL;
@@ -360,16 +350,14 @@ gboolean feed_load(feedPtr fp) {
 	gsize 		length;
 
 	debug_enter("feed_load");
+
 	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(fp));
-	g_assert(NULL != fp);
-	g_assert(NULL != fp->id);
 	
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
 	if((!g_file_get_contents(filename, &data, &length, NULL)) || (*data == 0)) {
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
-		fp->needsCacheSave = TRUE;
 		g_free(filename);
 		return FALSE;
 	}
@@ -449,14 +437,14 @@ gboolean feed_load(feedPtr fp) {
 			cur = cur->next;
 		}
 		feed_add_items(fp, items);
-		favicon_load(fp);
+		//favicon_load(np); FIXME!!!
 	} while (FALSE);
 	
 	if(0 != error) {
 		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\""), filename);
 	}
 	
-	if (NULL != data)
+	if(NULL != data)
 		g_free(data);
 	if(NULL != doc)
 		xmlFreeDoc(doc);
@@ -476,40 +464,25 @@ gboolean feed_load(feedPtr fp) {
    free'd. Only to be called by feedlist_unload_feed(). */
 void feed_unload(feedPtr fp) {
 
-	g_assert(NULL != fp);
-	g_assert(0 != fp->loaded);
-	
-	feed_save(fp);		/* save feed before unloading */
-
-	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-		debug_enter("feed_unload");
-		if(1 == fp->loaded) {
-			if(FST_FEED == feed_get_type(fp)) {
-				debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
-				feed_clear_item_list(fp);						
-			} else {
-				debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
-			}
-		} else {
-			debug2(DEBUG_CACHE, "not unloading (%s) because it's used (%d references)...", feed_get_source(fp), fp->loaded);
-		}
-		fp->loaded--;
-		debug_exit("feed_unload");
+	debug_enter("feed_unload");
+	if(FST_FEED == feed_get_type(fp)) {
+		debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
+		feed_clear_item_list(fp);						
+	} else {
+		debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
 	}
+	debug_exit("feed_unload");
 }
 
 /**
  * method to be called to schedule a feed to be updated
  */
-void feed_schedule_update(feedPtr fp, gint flags) {
+void feed_schedule_update(feedPtr fp, guint flags) {
 	const gchar		*source;
 	struct request		*request;
 	g_assert(NULL != fp);
 
 	debug1(DEBUG_CONF, "Scheduling %s to be updated", feed_get_title(fp));
-	
-	if(FST_VFOLDER == fp->type)
-		return;
 	
 	if(fp->request != NULL) {
 		ui_mainwindow_set_status_bar(_("This feed \"%s\" is already being updated!"), feed_get_title(fp));
@@ -549,7 +522,6 @@ void feed_schedule_update(feedPtr fp, gint flags) {
 		request->filtercmd = g_strdup(feed_get_filter(fp));
 	
 	download_queue(request);
-	
 }
 
 /**
@@ -588,7 +560,6 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	GSList		*iter, *enclosures;
 
 	if(FST_VFOLDER != feed_get_type(fp)) {
-		g_assert(0 != fp->loaded);
 		
 		/* determine if we should add it... */
 		debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(new_ip));
@@ -642,11 +613,9 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		}
 		
 		if(!found) {
-			/* new items have no number yet */
-			if(0 == new_ip->nr) {
+			/* new items has no number yet */
+			if(0 == new_ip->nr)
 				new_ip->nr = ++(fp->lastItemNr);
-				fp->needsCacheSave = TRUE;
-			}
 			
 			/* ensure that the feed last item nr is at maximum */
 			if(new_ip->nr > fp->lastItemNr)
@@ -654,9 +623,8 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 
 			/* ensure that the item nr's are unique */
 			if(NULL != feed_lookup_item(fp, new_ip->nr)) {
-				g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%lu)\n", fp->id, new_ip->title, new_ip->nr);
+				g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%lu)\n", fp->title, new_ip->title, new_ip->nr);
 				new_ip->nr = ++(fp->lastItemNr);
-				fp->needsCacheSave = TRUE;
 			}
 
 			/* If a new item has enclosures and auto downloading
@@ -722,7 +690,6 @@ itemPtr feed_lookup_item(feedPtr fp, gulong nr) {
 	GSList		*items;
 	itemPtr		ip;
 		
-	g_assert(0 != fp->loaded);
 	items = fp->items;
 	while(NULL != items) {
 		ip = (itemPtr)(items->data);
@@ -737,27 +704,6 @@ itemPtr feed_lookup_item(feedPtr fp, gulong nr) {
 /* ---------------------------------------------------------------------------- */
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
-
-void feed_set_id(feedPtr fp, const gchar *id) {
-
-	g_free(fp->id);
-	fp->id = g_strdup(id);
-}
-const gchar *feed_get_id(feedPtr fp) { return fp->id; }
-
-void feed_set_type(feedPtr fp, gint type) {
-
-	fp->type = type;
-	feedlist_schedule_save();
-	
-	/* vfolder extra handling */
-	if(FST_VFOLDER == type)
-		fp->loaded = 1;
-}
-
-gint feed_get_type(feedPtr fp) { return fp->type; }
-
-gpointer feed_get_favicon(feedPtr fp) { return fp->icon; }
 
 void feed_increase_unread_counter(feedPtr fp) {
 	fp->unreadCount++;
@@ -790,14 +736,13 @@ gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 
 void feed_set_update_interval(feedPtr fp, gint interval) {
 
-	if(FST_VFOLDER == fp->type)
-		interval = -2;	/* never update */
-		
 	if(0 == interval) {
-		interval = -1;	/* is not very logical but allows smooth migration, because 
-				   for unconfigured feeds now the global default interval
-				   becomes active */
-	}
+		interval = -1;	/* This is evil, I know, but when this method
+				   is called to set the update interval to 0
+				   we mean never updating. The updating logic
+				   expects -1 for never updating and 0 for
+				   updating according to the global update
+				   interval... */
 		
 	fp->updateInterval = interval;
 	feedlist_schedule_save();
@@ -872,13 +817,14 @@ const gchar * feed_get_source(feedPtr fp) { return fp->source; }
 const gchar * feed_get_filter(feedPtr fp) { return fp->filtercmd; }
 
 void feed_set_source(feedPtr fp, const gchar *source) {
+
 	g_free(fp->source);
 
 	fp->source = g_strchomp(g_strdup(source));
 	feedlist_schedule_save();
 	
 	g_free(fp->cookies);
-	if((FST_FEED == fp->type) && ('|' != source[0]))
+	if('|' != source[0])
 		/* check if we've got matching cookies ... */
 		fp->cookies = cookies_find_matching(source);
 	else 
@@ -935,19 +881,8 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 /* returns feed's list of items, if necessary loads the feed from cache */
 GSList * feed_get_item_list(feedPtr fp) { 
 
-	g_assert(0 != fp->loaded);
 	return fp->items; 
 }
-
-void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed) {
-
-	fp->sortColumn = sortColumn;
-	fp->sortReversed = reversed;
-	feedlist_schedule_save();
-}
-
-void feed_set_two_pane_mode(feedPtr fp, gboolean newMode) { fp->twoPane = newMode; }
-gboolean feed_get_two_pane_mode(feedPtr fp) { return fp->twoPane; }
 
 /**
  * Method to free all items structures of a feed, does not mean
@@ -969,25 +904,11 @@ void feed_clear_item_list(feedPtr fp) {
 	/* explicitly not forcing feed saving to allow feed unloading */
 }
 
-/**
- * Method to permanently remove a single item from the given feed.
- * Used to remove items from everything that has items... 
- */
 void feed_remove_item(feedPtr fp, itemPtr ip) {
 
-	g_assert(NULL != fp);
-		
 	if(NULL != g_slist_find(fp->items, ip)) {	
 		fp->items = g_slist_remove(fp->items, ip);	
 		
-		if(FST_VFOLDER != fp->type) {
-			vfolder_remove_item(ip);		/* remove item copies */
-			fp->needsCacheSave = TRUE;
-			
-			feedlist_update_counters(item_get_read_status(ip)?0:-1,
-						 item_get_new_status(ip)?-1:0);
-		}
- 
 		if(FALSE == item_get_read_status(ip))
 			feed_decrease_unread_counter(fp);
 		
@@ -1004,9 +925,6 @@ void feed_remove_item(feedPtr fp, itemPtr ip) {
 	}
 }
 
-/** 
- * Method to permanently removing all items from the given feed
- */
 void feed_remove_items(feedPtr fp) {
 	GSList	*item;
 
@@ -1136,7 +1054,7 @@ gchar *feed_render(feedPtr fp) {
 }
 
 /* method to totally erase a feed, remove it from the config, etc.... */
-void feed_free(feedPtr fp) {
+void feed_remove(feedPtr fp, const gchar *id) {
 	gchar	*filename = NULL;
 	GSList	*iter;
 	
@@ -1149,8 +1067,8 @@ void feed_free(feedPtr fp) {
 	/* free items */
 	feed_remove_items(fp);
 
-	if(fp->id && fp->id[0] != '\0')
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", fp->id, NULL);
+	if(id && id[0] != '\0')
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
 
 	/* FIXME: Move this to a better place. The cache file does not
 	   need to always be deleted, for example when freeing a
@@ -1175,15 +1093,6 @@ void feed_free(feedPtr fp) {
 	}
 	g_slist_free(fp->otherRequests);
 
-	if(fp->icon != NULL)
-		g_object_unref(fp->icon);
-	
-	if(fp->id) {
-		favicon_remove(fp);
-		feedlist_schedule_save();
-		g_free(fp->id);
-	}
-	
 	g_free(fp->parseErrors);
 	g_free(fp->errorDescription);
 	g_free(fp->title);

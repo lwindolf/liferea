@@ -29,9 +29,9 @@
 #include "interface.h"
 #include "support.h"
 #include "conf.h"
+#include "debug.h"
 #include "ui_popup.h"
 #include "ui_enclosure.h"
-#include "debug.h"
 
 static GSList *types = NULL;
 

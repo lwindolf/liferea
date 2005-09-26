@@ -1,7 +1,7 @@
 /**
  * @file ui_dnd.c everything concerning DnD
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

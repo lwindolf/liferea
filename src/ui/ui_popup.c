@@ -26,10 +26,10 @@
 #include "folder.h"
 #include "support.h"
 #include "callbacks.h"
+#include "update.h"
 #include "ui_popup.h"
 #include "ui_mainwindow.h"
 #include "ui_enclosure.h"
-#include "update.h"
 
 /*------------------------------------------------------------------------------*/
 /* popup menu callbacks 							*/

@@ -1,7 +1,7 @@
 /**
  * @file ui_vfolder.h  vfolder dialogs handling
  * 
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef _UI_VFOLDER_H
+#define _UI_VFOLDER_H
+
 #include <gtk/gtk.h>
  
 /* sets up a vfolder properties dialog */
 GtkWidget* ui_vfolder_propdialog_new (GtkWindow *parent, feedPtr fp);
+
+#endif

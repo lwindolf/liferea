@@ -1,8 +1,8 @@
 /**
  * @file ui_feed.c	UI actions concerning a single feed
  *
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,10 +31,10 @@
 #include "callbacks.h"
 #include "update.h"
 #include "interface.h"
-#include "ui_feed.h"
-#include "favicon.h"
-#include "ui_notification.h"
 #include "itemlist.h"
+#include "favicon.h"
+#include "ui_feed.h"
+#include "ui_notification.h"
 
 /** determines the feeds favicon or default icon */
 static GdkPixbuf* ui_feed_get_icon(feedPtr fp) {

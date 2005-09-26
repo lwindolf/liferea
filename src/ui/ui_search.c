@@ -24,13 +24,13 @@
 
 #include "callbacks.h"
 #include "interface.h"
-#include "ui_mainwindow.h"
 #include "feed.h"
 #include "folder.h"
 #include "rule.h"
 #include "vfolder.h"
 #include "support.h"
 #include "common.h"
+#include "ui_mainwindow.h"
 
 extern GtkWidget	*mainwindow;
 static GtkWidget	*searchdialog = NULL;

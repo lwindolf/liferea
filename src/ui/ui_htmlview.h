@@ -2,7 +2,7 @@
  * @file ui_htmlview.h common interface for browser module implementations
  * and module loading functions
  *
- * Copyright (C) 2003 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

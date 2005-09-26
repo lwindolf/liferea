@@ -31,14 +31,14 @@ typedef struct folder {
 	
 	gchar		*title;
 	gchar		*id;
-	gint		unreadCount;
+	guint		unreadCount;
 } *folderPtr;
 
 /* ------------------------------------------------------------ */
 /* functions to create/change/remove folder			*/
 /* ------------------------------------------------------------ */
 
-void	folder_add_feed(folderPtr folder, struct feed *feed, gint position);
+//void	folder_add_feed(folderPtr folder, feedPtr feed, gint position);
 
 /**
  * Free's an empty folder, removing it from the feedlist if

@@ -4,6 +4,10 @@ INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LIB_DIR=\""$(libdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+	-I .. \
+	-I ../ui \
+	-I ../parsers \
+	-I ../fl_providers \
 	$(PACKAGE_CFLAGS) \
 	$(DBUS_CFLAGS)
 

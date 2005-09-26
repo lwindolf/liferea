@@ -1,4 +1,6 @@
-/*
+/** 
+ * @file ui_session.c session management
+ *
  * session management for Gaim (from revision 1.16 of gaim's CVS tree)
  *
  * Gaim is the legal property of its developers, whose names are too
@@ -37,8 +39,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "callbacks.h"
-#include "debug.h"
+#include "../callbacks.h"
+#include "../debug.h"
 
 #define GAIM_DEBUG_ALL 0
 #define GAIM_DEBUG_INFO 1

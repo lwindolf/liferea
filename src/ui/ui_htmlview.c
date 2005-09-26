@@ -30,11 +30,11 @@
 #include "conf.h"
 #include "callbacks.h"
 #include "support.h"
+#include "debug.h"
 #include "ui_htmlview.h"
 #include "ui_tabs.h"
 #include "ui_prefs.h"
 #include "ui_enclosure.h"
-#include "debug.h"
 
 /* function types for the imported symbols */
 typedef htmlviewPluginInfo* (*infoFunction)();

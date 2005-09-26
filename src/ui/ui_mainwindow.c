@@ -32,6 +32,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "callbacks.h"
+#include "update.h"
 #include "ui_feedlist.h"
 #include "ui_mainwindow.h"
 #include "ui_folder.h"
@@ -40,7 +41,6 @@
 #include "ui_itemlist.h"
 #include "ui_session.h"
 #include "ui_queue.h"
-#include "update.h"
 
 #if GTK_CHECK_VERSION(2,4,0)
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \

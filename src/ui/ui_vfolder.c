@@ -1,7 +1,7 @@
 /**
  * @file ui_vfolder.c  vfolder dialogs handling
  * 
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,12 @@
 
 #include "feed.h"
 #include "rule.h"
-#include "ui_vfolder.h"
 #include "vfolder.h"
-#include "ui_itemlist.h"
 #include "interface.h"
 #include "itemlist.h"
 #include "support.h"
+#include "ui_itemlist.h"
+#include "ui_vfolder.h"
 
 struct fp_vfolder_ui_data {
 	feedPtr		fp;

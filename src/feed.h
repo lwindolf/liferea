@@ -36,10 +36,10 @@ enum feed_request_flags {
 	
 	FEED_REQ_PRIORITY_HIGH = 16,	/**< set to signal that this is an important user triggered request */
 	FEED_REQ_DOWNLOAD_FAVICON = 32, /**< set to make the favicon be updated after the feed is downloaded */
-	FEED_REQ_AUTH_DIALOG = 64,	/**< set to make an auth request dialog to be created after 401 errors */
+	FEED_REQ_AUTH_DIALOG = 64	/**< set to make an auth request dialog to be created after 401 errors */
 };
 
-struct feedhandler;
+struct feedHandler;
 struct request;
 /* ------------------------------------------------------------ */
 /* Feed structure                                               */
@@ -57,13 +57,10 @@ enum cache_limit {
 typedef struct feed {
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
 	
-	gchar		*id;			/**< unique feed identifier string */
 	gint		unreadCount;		/**< number of unread items */
 	gint		popupCount;		/**< number of items to be displayed with popup notification feature */
 	gint		newCount;		/**< number of items to be counted by the tray icon */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
-	gint		loaded;			/**< counter which is non-zero if items are to be kept in memory */
-	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
 	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
 
@@ -154,16 +151,16 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 /**
  * Feed loading/unloading from/to cache.
  */
-gboolean feed_load(feedPtr fp);
+gboolean feed_load(feedPtr fp, const gchar *id);
 void feed_unload(feedPtr fp);
 
 /**
  * Feed managment methods.
  */
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
-void feed_remove(feedPtr fp);
-void feed_schedule_update(feedPtr fp, gint flags);
-void feed_save(feedPtr fp);
+void feed_remove(feedPtr fp, const gchar *id);
+void feed_schedule_update(feedPtr fp, guint flags);
+void feed_save(feedPtr fp, const gchar *id);
 
 /**
  * Can be used to add a single item to a feed. But it's better to
@@ -198,16 +195,6 @@ void feed_process_update_result(struct request *request);
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */
-
-gpointer feed_get_favicon(feedPtr fp);
-
-/**
- * Sets the type of feed
- * @param fp feed to modify
- * @param type type to set
- */
-void feed_set_type(feedPtr fp, int type);
-gint feed_get_type(feedPtr fp);
 
 /**
  * Lookup a feed type string from the feed type number
@@ -286,12 +273,8 @@ feedHandlerPtr feed_get_fhp(feedPtr fp);
 
 GSList * feed_get_item_list(feedPtr fp);
 
-void feed_set_sort_column(feedPtr fp, gint sortColumn, gboolean reversed);
 void feed_clear_item_list(feedPtr fp);
 void feed_remove_items(feedPtr fp);
-
-void feed_set_two_pane_mode(feedPtr fp, gboolean newMode);
-gboolean feed_get_two_pane_mode(feedPtr fp);
 
 /** 
  * Returns a HTML rendering of a feed. The returned string must be

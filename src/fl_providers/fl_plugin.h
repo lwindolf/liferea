@@ -21,20 +21,24 @@
 #ifndef _FL_PLUGIN_H
 #define _FL_PLUGIN_H
 
-#include "../plugin.h"
+#include "node.h"
+#include "feed.h"
+#include "folder.h"
+#include "plugin.h"
 
 #define FL_PLUGIN_API_VERSION 1
 
 enum {
-	FL_PLUGIN_CAPABILITY_IS_ROOT,		/* only for default feed list provider */
-	FL_PLUGIN_CAPABILITY_ADD,		/* allows adding new childs */
-	FL_PLUGIN_CAPABILITY_REMOVE,		/* allows removing it's childs */
-	FL_PLUGIN_CAPABILITY_ADD_FOLDER,	/* allows adding new folders */
-	FL_PLUGIN_CAPABILITY_REMOVE_FOLDER,	/* allows removing it's folders */
-	FL_PLUGIN_CAPABILITY_REORDER,		/* allows DnD to reorder childs */
-	FL_PLUGIN_CAPABILITY_MULTI_INSTANCES,	/* allows multiple instances */
-	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION	/* created by user */
-}
+	FL_PLUGIN_CAPABILITY_IS_ROOT,		/**< only for default feed list provider */
+	FL_PLUGIN_CAPABILITY_ADD,		/**< allows adding new childs */
+	FL_PLUGIN_CAPABILITY_REMOVE,		/**< allows removing it's childs */
+	FL_PLUGIN_CAPABILITY_ADD_FOLDER,	/**< allows adding new folders */
+	FL_PLUGIN_CAPABILITY_REMOVE_FOLDER,	/**< allows removing it's folders */
+	FL_PLUGIN_CAPABILITY_REMOVE_ITEMS,	/**< allows removing of single items */
+	FL_PLUGIN_CAPABILITY_REORDER,		/**< allows DnD to reorder childs */
+	FL_PLUGIN_CAPABILITY_MULTI_INSTANCES,	/**< allows multiple instances */
+	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION	/**< plugin instance user created */
+};
 
 typedef struct flPluginInfo_ flPluginInfo;
 
@@ -46,32 +50,33 @@ struct flPluginInfo_ {
 	gulong		capabilites;
 
 	/* plugin loading and unloading methods */
-	void		(*fl_plugin_init)(void);
-	void 		(*fl_plugin_deinit)(void);
+	void		(*plugin_init)(void);
+	void 		(*plugin_deinit)(void);
 
 	/** callback for instance creation request (optional) */
-	nodePtr 	(*fl_handler_new)(void);
-	/** callback for save requests */
-	void		(*fl_handler_save)(nodePtr ptr);
+	nodePtr 	(*handler_new)(void);
 	/** callback for instance deletion request (optional) */
-	void	 	(*fl_handler_delete)(nodePtr ptr);
+	void	 	(*handler_delete)(nodePtr ptr);
 	
 	/** callback for node loading (optional) */
-	gboolean	(*fl_node_load)(nodePtr np);
+	gboolean	(*node_load)(nodePtr np);
 	/** callback for node unloading (optional) */
-	void 		(*fl_node_unload)(nodePtr np);
+	void 		(*node_unload)(nodePtr np);
+
+	/** callback for save requests */
+	void		(*node_save)(nodePtr ptr);
 	/** callback for node rendering */
-	gchar *		(*fl_node_render)(nodePtr np);
+	gchar *		(*node_render)(nodePtr np);
 
-	/** user interaction callback add/subscribe feeds */
-	feedPtr		(*fl_feed_add)(void);
-	/** user interaction callback delete/unsubscribe feeds */
-	void		(*fl_feed_delete)(feedPtr fp);
+	/** user interaction callback add/subscribe feeds (optional) */
+	feedPtr		(*feed_add)(nodePtr np);
+	/** user interaction callback delete/unsubscribe feeds (optional) */
+	void		(*feed_delete)(feedPtr fp);
 
-	/** user interaction callback add folder */
-	folderPtr	(*fl_folder_add)(void);
-	/** user interaction callback delete folder */
-	void		(*fl_folder_delete)(folderPtr fp);
+	/** user interaction callback add folder (optional) */
+	folderPtr	(*folder_add)(nodePtr np);
+	/** user interaction callback delete folder (optional) */
+	void		(*folder_delete)(folderPtr fp);
 
 };
 

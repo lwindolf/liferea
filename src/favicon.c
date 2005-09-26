@@ -41,7 +41,7 @@
 #include "ui_mainwindow.h"
 #include "ui_feed.h"
 
-void favicon_load(feedPtr fp) {
+void favicon_load(nodePtr np) {
 	struct stat	statinfo;
 	GTimeVal	now;
 	gchar		*filename;
@@ -49,14 +49,14 @@ void favicon_load(feedPtr fp) {
 	GError 		*error = NULL;
 	
 	/* try to load a saved favicon */
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(np), "png");
 	
 	if(0 == stat((const char*)filename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file(filename, &error);
 		if(pixbuf != NULL) {
-			if(fp->icon != NULL)
-				g_object_unref(fp->icon);
-			fp->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
+			if(np->icon != NULL)
+				g_object_unref(np->icon);
+			np->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
 			g_object_unref(pixbuf);
 		} else { /* Error */
 			fprintf(stderr, "Failed to load pixbuf file: %s: %s\n",
@@ -68,17 +68,17 @@ void favicon_load(feedPtr fp) {
 		g_get_current_time(&now);
 		if(now.tv_sec > statinfo.st_mtime + 60*60*24*31) {
 			debug1(DEBUG_UPDATE, "updating favicon %s\n", filename);
-			favicon_download(fp);
+			favicon_download(np);
 		}
 	}
 	g_free(filename);	
 }
 
-void favicon_remove(feedPtr fp) {
+void favicon_remove(nodePtr np) {
 	gchar		*filename;
 	
 	/* try to load a saved favicon */
-	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", feed_get_id(fp), "png");
+	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", node_get_id(np), "png");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename))
 			/* What can we do? The file probably doesn't exist. Or permissions are wrong. Oh well.... */;
@@ -175,7 +175,7 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 					g_warning("favicon saving error!");
 				}
 				success = TRUE;
-				favicon_load(fp);
+				//favicon_load(np); //FIXME!!!
 			}
 		}
 
@@ -260,16 +260,17 @@ static void favicon_download_html(feedPtr fp, int phase) {
 	debug_exit("favicon_download");
 }
 
-void favicon_download(feedPtr fp) {
+void favicon_download(nodePtr np) {
+	feedPtr fp = (feedPtr)np->data;
 	
-	if(FST_VFOLDER == feed_get_type(fp))
+	if(FST_FEED != np->type)
 		return;
 		
 	debug_enter("favicon_download");
 	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", feed_get_title(fp));
 	
 	ui_mainwindow_set_status_bar(_("Updating feed icon for \"%s\""),
-					     feed_get_title(fp));
+	                             feed_get_title(fp));
 
 	g_get_current_time(&fp->lastFaviconPoll);
 	

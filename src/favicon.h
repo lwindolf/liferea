@@ -21,10 +21,10 @@
 #ifndef _FAVICON_H
 #define _FAVICON_H
 
-#include "feed.h"
+#include "node.h"
 
-void favicon_download(feedPtr fp);
-void favicon_load(feedPtr fp);
-void favicon_remove(feedPtr fp);
+void favicon_download(nodePtr np);
+void favicon_load(nodePtr np);
+void favicon_remove(nodePtr np);
 
 #endif

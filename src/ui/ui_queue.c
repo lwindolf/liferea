@@ -1,5 +1,5 @@
-/*
- * GUI callback managment
+/** 
+ * @file ui_queue.c GUI callback managment
  *
  * Most of this code was derived from 
  *
@@ -32,7 +32,6 @@
 #include "ui_queue.h"
 
 extern GThread	*mainThread;	/* main.c */
-
 
 /* FIXME: remove the ArgSet code... */
 typedef struct

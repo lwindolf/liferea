@@ -45,7 +45,7 @@ struct exportData {
 };
 
 /* Used for exporting, this adds a folder or feed's node to the XML tree */
-static void append_node_tag(nodePtr ptr, gpointer userdata) {
+static void append_node_tag(nodePtr np, gpointer userdata) {
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
 	gboolean	internal = ((struct exportData*)userdata)->internal;
 	xmlNodePtr	childNode, ruleNode;
@@ -54,8 +54,8 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 	
 	debug_enter("append_node_tag");
 	
-	if(FST_FOLDER == ptr->type) {
-		folderPtr folder = (folderPtr)ptr;
+	if(FST_FOLDER == np->type) {
+		folderPtr folder = (folderPtr)np->data;
 		struct exportData data;
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST folder_get_title(folder));
@@ -69,9 +69,9 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 		debug1(DEBUG_CONF, "adding folder %s...", folder_get_title(folder));
 		data.cur = childNode;
 		data.internal = internal;
-		ui_feedlist_do_for_all_data(ptr, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
+		ui_feedlist_do_for_all_data(np, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
 	} else {
-		feedPtr fp = (feedPtr)ptr;
+		feedPtr fp = (feedPtr)np->data;
 		const gchar *type = feed_type_fhp_to_str(feed_get_fhp(fp));
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 		gchar *cacheLimit = NULL;
@@ -114,11 +114,11 @@ static void append_node_tag(nodePtr ptr, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
 				g_free(lastPoll);
 			}
-			if(fp->sortColumn == IS_LABEL)
+			if(np->sortColumn == IS_LABEL)
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
-			else if(fp->sortColumn == IS_TIME)
+			else if(np->sortColumn == IS_TIME)
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
-			if(FALSE == fp->sortReversed)
+			if(FALSE == np->sortReversed)
 				xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
 				
 			if(TRUE == feed_get_two_pane_mode(fp))
@@ -269,6 +269,7 @@ static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
 static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr, *sortStr;
 	gchar		*title, *source, *typeStr, *tmp;
+	nodePtr		np = NULL;
 	feedPtr		fp = NULL;
 	folderPtr	child;
 	gboolean	dontParseChildren = FALSE;
@@ -278,6 +279,8 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 	debug_enter("import_parse_outline");
 	
 	/* process the outline node */	
+	np = node_new();
+
 	title = xmlGetProp(cur, BAD_CAST"title");
 	if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
 		if(title != NULL)
@@ -325,8 +328,10 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			dontParseChildren = TRUE;
 			fp = vfolder_new();
 			import_parse_children_as_rules(cur, fp);
+			node_add_data(np, FST_VFOLDER, (gpointer)fp); // FIXME: make node adding generic
 		} else {
 			fp = feed_new();
+			node_add_data(np, FST_FEED, (gpointer)fp); // FIXME: make node adding generic
 		}
 		fp->fhp = feed_type_str_to_fhp(typeStr);
 
@@ -366,14 +371,14 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
 		if(sortStr != NULL) {
 			if(!xmlStrcmp(sortStr, "title"))
-				fp->sortColumn = IS_LABEL;
+				np->sortColumn = IS_LABEL;
 			else if(!xmlStrcmp(sortStr, "time"))
-				fp->sortColumn = IS_TIME;
+				np->sortColumn = IS_TIME;
 			xmlFree(sortStr);
 		}
 		sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
 		if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"false"))
-			fp->sortReversed = FALSE;
+			np->sortReversed = FALSE;
 		if(sortStr != NULL)
 			xmlFree(sortStr);
 		
@@ -408,7 +413,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 			feed_set_id(fp, id);
 			debug1(DEBUG_CONF, "seems to be an import, setting new id: %s and doing first download...", id);
 			g_free(id);			
-			if(FST_FEED == fp->type)	/* don't update vfolders */
+			if(FST_FEED == np->type)	/* don't update vfolders */
 				feed_schedule_update(fp, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
 				                         | FEED_REQ_DOWNLOAD_FAVICON
 				                         | FEED_REQ_AUTH_DIALOG);
@@ -426,6 +431,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		debug1(DEBUG_CONF, "adding folder \"%s\"", title);
 		child = restore_folder(folder, title, NULL, FST_FOLDER);
 		g_assert(NULL != child);
+		node_add_data(np, FST_FOLDER, (gpointer)child);	// FIXME: make node adding generic
 		feedlist_add_folder(folder, (folderPtr)child, -1);
 		folder = child;
 
