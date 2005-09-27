@@ -43,12 +43,12 @@ void node_free(nodePtr np) {
 }
 
 static void node_load_cb(nodePtr np, gpointer user_data) {
-	GSList	**items = (GSList **)user_data;
-	GSList	*result = NULL;
+	itemSetPtr	sp = (itemSetPtr)user_data;
+	GSList		*result = NULL;
 
 	switch(np->type) {
 		FST_FOLDER:
-			result = ui_feedlist_do_foreach_data(np, node_load_cb, &(sp->items));
+			result = ui_feedlist_do_foreach_data(np, node_load_cb, (gpointer)sp);
 			break;
 		FST_FEED:
 		FST_PLUGIN
@@ -64,7 +64,9 @@ static void node_load_cb(nodePtr np, gpointer user_data) {
 	}
 
 	if(NULL != result)
-		**items = g_slist_concat(*items, result);
+		sp->items = g_slist_concat(sp->items, result);
+
+	// FIXME: add unread and new count
 }
 
 void node_load(nodePtr np) {
@@ -76,7 +78,9 @@ void node_load(nodePtr np) {
 
 	g_slist_free(np->sp->items);
 	np->sp->items = NULL;
-	ui_feedlist_do_foreach_data(np, node_load_cb, &(np->sp->items));
+	np->sp->newCount = 0;
+	np->sp->unreadCount = 0;
+	ui_feedlist_do_foreach_data(np, node_load_cb, &(np->sp));
 }
 
 void node_save(nodePtr np) {
@@ -100,6 +104,9 @@ void node_unload(nodePtr np) {
 		if(1 == np->loaded) {
 			if(FST_FEED == np->type) {
 				np->handler->plugin->node_unload(np);
+				/* never reset the unread/new counter! */
+				g_slist_free(np->sp->items);
+				np->sp->items = NULL;
 				np->loaded--;
 			} else {
 				/* not unloading vfolders and other types! */
@@ -139,8 +146,7 @@ void node_remove(nodePtr np) {
 			np->handler->plugin->folder_delete(np);
 			break;
 		case FST_PLUGIN:
-			// FIXME:
-			g_warning("not yet implemented!");
+			np->handler->plugin->handler_delete(np);
 			break;
 		default:
 			g_warning("internal error: unknown node type!");

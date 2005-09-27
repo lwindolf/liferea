@@ -48,6 +48,9 @@ enum itemSetTypes {
 typedef struct itemSet {
 	guint	type;
 	GSList	*items;
+
+	guint	unreadCount;
+	guint	newCount;
 } *itemSetPtr;
 
 /**
