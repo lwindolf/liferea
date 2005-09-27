@@ -22,6 +22,8 @@
 #ifndef _NODE_H
 #define _NODE_H
 
+#include "item.h"
+
 /** node types (also used for feed list tree store) */
 enum node_types {
 	FST_INVALID 	= 0,		/**< invalid type */

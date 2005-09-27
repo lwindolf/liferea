@@ -25,7 +25,7 @@
 
 #include "ns_slash.h"
 #include "common.h"
-#include "ui_htmlview.h"
+#include "ui/ui_htmlview.h"
 
 #define SLASH_START	"<table class=\"slash\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"slash\">"
 #define KEY_START	"<span class=\"slashprop\">"

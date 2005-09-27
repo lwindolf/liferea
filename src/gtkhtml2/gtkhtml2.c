@@ -38,11 +38,11 @@
 #include <glib.h>
 #include <errno.h>
 #include "../common.h"
-#include "../ui_htmlview.h"
+#include "../ui/ui_htmlview.h"
 #include "../support.h"
 #include "../callbacks.h"
 #include "../update.h"
-#include "../ui_queue.h"
+#include "../ui/ui_queue.h"
 #include "../debug.h"
 
 #define BUFFER_SIZE 8192

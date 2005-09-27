@@ -24,7 +24,7 @@
 
 #include "ns_ag.h"
 #include "common.h"
-#include "ui_itemlist.h"
+#include "ui/ui_itemlist.h"
 #include "metadata.h"
 
 /* you can find an aggregation namespace spec at:

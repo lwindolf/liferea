@@ -48,13 +48,13 @@
 #include "feed.h"
 #include "conf.h"
 #include "common.h"
-#include "ui_htmlview.h"
+#include "ui/ui_htmlview.h"
 #include "update.h"
 #include "debug.h"
-#include "ui_queue.h"
-#include "ui_mainwindow.h"
+#include "ui/ui_queue.h"
+#include "ui/ui_mainwindow.h"
 #include "metadata.h"
-#include "ui_session.h"
+#include "ui/ui_session.h"
 
 GThread	*mainThread = NULL;
 gboolean lifereaStarted = FALSE;

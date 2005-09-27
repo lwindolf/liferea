@@ -53,10 +53,10 @@
 #include "debug.h"
 #include "metadata.h"
 
-#include "ui_feed.h"	
-#include "ui_feedlist.h"
-#include "ui_tray.h"
-#include "ui_htmlview.h"
+#include "ui/ui_feed.h"	
+#include "ui/ui_feedlist.h"
+#include "ui/ui_tray.h"
+#include "ui/ui_htmlview.h"
 
 /* auto detection lookup table */
 static GSList *feedhandlers;

@@ -32,12 +32,12 @@
 #include <errno.h>
 #include <glib.h>
 #include <gtkmozembed.h>
-#include "../ui_htmlview.h"
-#include "../conf.h"
-#include "../support.h"
-#include "../debug.h"
-#include "../ui_popup.h"
-#include "../ui_tabs.h"
+#include "ui/ui_htmlview.h"
+#include "conf.h"
+#include "support.h"
+#include "debug.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_tabs.h"
 #include "mozilla.h"
 
 /* points to the URL actually under the mouse pointer or is NULL */

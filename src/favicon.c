@@ -37,9 +37,9 @@
 #include "update.h"
 #include "debug.h"
 #include "html.h"
-#include "ui_feedlist.h"
-#include "ui_mainwindow.h"
-#include "ui_feed.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_feed.h"
 
 void favicon_load(nodePtr np) {
 	struct stat	statinfo;

@@ -35,8 +35,8 @@
 #include "interface.h"
 #include "support.h"
 #include "favicon.h"
-#include "ui_folder.h"
-#include "ui_feedlist.h"
+#include "ui/ui_folder.h"
+#include "ui/ui_feedlist.h"
 #include "debug.h"
 
 struct exportData {

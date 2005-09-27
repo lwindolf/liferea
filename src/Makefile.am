@@ -10,14 +10,12 @@ endif
 
 SUBDIRS = . $(GTKHTML2) $(MOZILLA)
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LIB_DIR=\""$(pkglibdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DBIN_DIR=\""$(bindir)"\" \
-	-I ./ui \
-	-I ./parsers \
-	-I ./fl_providers \
+	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS) \
 	$(X_CFLAGS) \
 	$(DBUS_CFLAGS)
@@ -75,7 +73,7 @@ liferea_bin_SOURCES = \
 	net/digcalc.c net/digcalc.h \
 	net/md5.c net/md5.h \
 	net/netio.c net/netio.h \
-	net-support.c net/net-support.h \
+	net/net-support.c net/net-support.h \
 	net/os-support.c net/os-support.h \
 	net/zlib_interface.c net/zlib_interface.h \
 	net/downloadlib.h

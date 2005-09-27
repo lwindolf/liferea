@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AM_CPPFLAGS = $(PACKAGE_CFLAGS) $(MOZILLA_CFLAGS) $(DBUS_CFLAGS)
+AM_CPPFLAGS = -I$(top_srcdir)/src $(PACKAGE_CFLAGS) $(MOZILLA_CFLAGS) $(DBUS_CFLAGS)
 
 pkglib_LTLIBRARIES = liblihtmlm.la
 
