@@ -21,7 +21,7 @@
 
 #include "node.h"
 
-nodePtr node_new(NULL) {
+nodePtr node_new() {
 	nodePtr	np;
 
 	np = (nodePtr)g_new0(struct node, 1);
