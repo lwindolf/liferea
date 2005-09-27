@@ -8,7 +8,7 @@ if WITH_MOZILLA
 MOZILLA = mozilla
 endif
 
-SUBDIRS = net . $(GTKHTML2) $(MOZILLA)
+SUBDIRS = . $(GTKHTML2) $(MOZILLA)
 
 INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -68,9 +68,19 @@ liferea_bin_SOURCES = \
 	parsers/pie_entry.c parsers/pie_entry.h \
 	parsers/pie_feed.c parsers/pie_feed.h \
 	parsers/rss_channel.c parsers/rss_channel.h \
-	parsers/rss_item.c parsers/rss_item.h
+	parsers/rss_item.c parsers/rss_item.h \
+	net/compat.h \
+	net/conversions.c net/conversions.h \
+	net/cookies.c net/cookies.h \
+	net/digcalc.c net/digcalc.h \
+	net/md5.c net/md5.h \
+	net/netio.c net/netio.h \
+	net-support.c net/net-support.h \
+	net/os-support.c net/os-support.h \
+	net/zlib_interface.c net/zlib_interface.h \
+	net/downloadlib.h
 
-liferea_bin_LDADD = net/liblinet.a $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) 
+liferea_bin_LDADD =  $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) 
 
 if PLATFORM_WIN32
 

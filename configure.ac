@@ -1,14 +1,17 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT
-AC_CONFIG_SRCDIR([configure.ac])
+AC_INIT([liferea],[0.9.8],[liferea-devel@lists.sourceforge.net])
+AC_CANONICAL_TARGET([])
+AC_CONFIG_SRCDIR([src/feedlist.c])
 
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)
 
-AM_INIT_AUTOMAKE(liferea, 0.9.8)
 AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_MAINTAINER_MODE
+
+AC_PREREQ(2.59)
 
 dnl Work around libtool bug (fixed in the version 1.5a?)
 AC_DEFUN([AC_PROVIDE_AC_LIBTOOL_DLOPEN], )
@@ -275,7 +278,6 @@ Makefile
 src/Makefile
 src/mozilla/Makefile
 src/gtkhtml2/Makefile
-src/net/Makefile
 src/liferea
 doc/Makefile
 doc/html/Makefile
