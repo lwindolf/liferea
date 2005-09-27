@@ -49,12 +49,6 @@ void feedlist_update_feed(nodePtr fp);
 void feedlist_remove_node(nodePtr np);
 
 /**
- * Feed loading and unloading to/from memory.
- */
-gboolean feedlist_load_feed(feedPtr fp);
-void feedlist_unload_feed(feedPtr fp);
-
-/**
  * Schedules a save requests for the feed list.
  * Triggers state saving for all feed list plugins.
  */

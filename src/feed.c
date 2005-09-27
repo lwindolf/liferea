@@ -906,27 +906,19 @@ void feed_clear_item_list(feedPtr fp) {
 
 void feed_remove_item(feedPtr fp, itemPtr ip) {
 
-	if(NULL != g_slist_find(fp->items, ip)) {	
-		fp->items = g_slist_remove(fp->items, ip);	
-		
-		if(FALSE == item_get_read_status(ip))
-			feed_decrease_unread_counter(fp);
-		
-		if(TRUE == item_get_popup_status(ip))
-			feed_decrease_popup_counter(fp);
-		
-		if(TRUE == item_get_new_status(ip))
-			feed_decrease_new_counter(fp);
-		
-		item_free(ip);
-
-	} else {
-		g_warning("feed_remove_item(): item (%s) to be removed not found...", ip->title);
-	}
+	if(FALSE == item_get_read_status(ip))
+		feed_decrease_unread_counter(fp);
+	
+	if(TRUE == item_get_popup_status(ip))
+		feed_decrease_popup_counter(fp);
+	
+	if(TRUE == item_get_new_status(ip))
+		feed_decrease_new_counter(fp);
+	
+	item_free(ip);
 }
 
 void feed_remove_items(feedPtr fp) {
-	GSList	*item;
 
 	item = fp->items;
 

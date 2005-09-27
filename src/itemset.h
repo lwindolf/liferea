@@ -51,22 +51,6 @@ typedef struct itemSet {
 } *itemSetPtr;
 
 /**
- * Create a new empty itemset.
- *
- * @param the type of the itemset
- *
- * @returns the new itemset
- */
-itemSetPtr itemset_new(guint type);
-
-/**
- * Frees a given itemset.
- *
- * @params sp	the itemset
- */
-void itemset_free(itemSetPtr sp);
-
-/**
  * Renders a single item out of a given itemset.
  *
  * @param sp	the itemset

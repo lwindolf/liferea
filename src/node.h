@@ -49,6 +49,7 @@ typedef struct node {
 	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
 
 	/* item list state properties of this node */
+	itemSetPtr	itemSet;	/**< The set of items belonging to this node */
 	gboolean	twoPane;	/**< Flag if three pane or condensed mode is set for this feed */
 	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, or IS_TIME */
 	gboolean	sortReversed;	/**< Sort in the reverse order? */
@@ -139,21 +140,6 @@ void node_update(nodePtr np, guint flags);
  * @param parent	the node
  */
 void node_remove(nodePtr np);
-
-/**
- * Remove a single item of a node.
- *
- * @param np	the node
- * @param ip	the item
- */
-void node_remove_item(nodePtr np, itemPtr ip);
-
-/**
- * Removes all items of a node.
- *
- * @param np	the node
- */
-void node_remove_items(nodePtr np);
 
 /**
  * Adding a feed child node to a given node.

@@ -111,83 +111,45 @@ void feedlist_update_feed(nodePtr np) {
 
 static void feedlist_remove_feed(nodePtr np) { 
 	
+	// FIXME: feedPtr!!!
 	ui_notification_remove_feed((feedPtr)np);	/* removes an existing notification for this feed */
 	ui_folder_remove_node(np);
 	ui_feedlist_update();
 	
-	feedlist_load_feed((feedPtr)np);
-	feed_free((feedPtr)np);	
+	node_load(np);
+	node_remove(np);	
 }
 
 static void feedlist_remove_folder(nodePtr np) {
 
 	ui_feedlist_do_for_all(np, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, feedlist_remove_node);
 	ui_feedlist_update();
-	folder_free((folderPtr)np);	
+	node_remove(np);	
 }
 
 void feedlist_remove_node(nodePtr np) {
 
-	if(NULL == np)
-		return;
-		
 	if(np == displayed_node) {
 		itemlist_load(NULL);
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	}
 
-	if((FST_FEED == np->type) || (FST_VFOLDER == np->type))		
+	if((FST_FEED == np->type) || (FST_VFOLDER == np->type))	{
 		feedlist_remove_feed(np);
-	else
-		feedlist_remove_folder(np);
-}
-
-/* methods to load/unload feeds from memory */
-
-gboolean feedlist_load_node(nodePtr np) {
-	gboolean loaded;
-
-	// FIXME the following belongs to fl_default.c
-	// this method here should be dropped in favor of node_load()
-	if(FST_VFOLDER == feed_get_type(fp)) {
-		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
-		return TRUE;
+	} else {
+		if(FST_FOLDER == np->type)
+			feedlist_remove_folder(np);
 	}
-	
-	if(0 != (fp->loaded)++) {
-		debug0(DEBUG_CACHE, "feed already loaded!\n");
-		return TRUE;
-	}
-	
-	/* the following is necessary to prevent counting unread 
-	   or new items multiple times (on each loading) */
-	unreadCount -= np->unreadCount;
-	newCount -= np->newCount;
-	
-	loaded = node_load(fp);
-
-	return loaded;
-}
-
-void feedlist_unload_node(node np) {
-
-	g_assert(0 <= fp->loaded);	/* could indicate bad loaded reference counting */
-
-	if(FST_VFOLDER == feed_get_type(fp)) {
-		debug0(DEBUG_CACHE, "it's a vfolder, nothing to do...");
-		return;
-	}
-
-	if(0 != fp->loaded)
-		node_unload(fp);
 }
 
 /* auto updating methods */
 
-static void feedlist_check_update_counter(feedPtr fp) {
+// FIXME: Remove this method
+static void feedlist_check_update_counter(nodePtr np) {
 	GTimeVal	now;
 	gint		interval;
 
+	// FIXME: this logic must be moved to fl_default.c!!!
 	g_get_current_time(&now);
 	interval = feed_get_update_interval(fp);
 	
@@ -203,14 +165,14 @@ static void feedlist_check_update_counter(feedPtr fp) {
 
 	/* And check for favicon updating */
 	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
-		favicon_download(fp);
+		favicon_download(np);
 }
 
 static gboolean feedlist_auto_update(void *data) {
 
 	debug_enter("feedlist_auto_update");
 	if(download_is_online()) {
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feedlist_check_update_counter);
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)node_schedule_update);
 	} else {
 		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
 	}
@@ -219,6 +181,7 @@ static gboolean feedlist_auto_update(void *data) {
 	return TRUE;
 }
 
+// FIXME: move method to feed specific code
 /**
  * Creates a new error description according to the passed
  * HTTP status and the feeds parser errors. If the HTTP
@@ -339,6 +302,9 @@ static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultc
 	fp->errorDescription = buffer;
 }
 
+// FIXME: this method is feed processing, handling 
+// update requests for feed structures, so it does
+// not belong to the node handling here in feedlist.c
 /** handles completed feed update requests */
 void ui_feed_process_update_result(struct request *request) {
 	feedPtr			fp = (feedPtr)request->user_data;

@@ -42,12 +42,41 @@ void node_free(nodePtr np) {
 	// nothing to do
 }
 
-gboolean node_load(nodePtr np) {
+static void node_load_cb(nodePtr np, gpointer user_data) {
+	GSList	**items = (GSList **)user_data;
+	GSList	*result = NULL;
 
-	if(FALSE == (np->handler->plugin->node_load(np)))
-		np->needsCacheSave = TRUE;
+	switch(np->type) {
+		FST_FOLDER:
+			result = ui_feedlist_do_foreach_data(np, node_load_cb, &(sp->items));
+			break;
+		FST_FEED:
+		FST_PLUGIN
+			if(NULL != np->handler->plugin->node_load)
+				result = np->handler->plugin->node_load(np);
+			break;
+		FST_VFOLDER:
+			// FIXME:
+			break;
+		default:
+			g_warning("internal error: unknown node type!");
+			break;
+	}
 
-	// fp->loaded increment happens in feedlist.c
+	if(NULL != result)
+		**items = g_slist_concat(*items, result);
+}
+
+void node_load(nodePtr np) {
+
+	fp->loaded++;
+
+	if(1 < np->loaded)
+		return;
+
+	g_slist_free(np->sp->items);
+	np->sp->items = NULL;
+	ui_feedlist_do_foreach_data(np, node_load_cb, &(np->sp->items));
 }
 
 void node_save(nodePtr np) {
@@ -119,68 +148,6 @@ void node_remove(nodePtr np) {
 	}
 
 	node_free(np);
-}
-
-void node_remove_item(nodePtr np, itemPtr ip) {
-
-	g_assert(0 < np->loaded);
-
-	if(FST_VFOLDER != np->type) {
-		vfolder_remove_item(ip);		/* remove item copies */
-		np->needsCacheSave = TRUE;
-			
-		/* is this really correct? e.g. if there is no 
-		   unread/important vfolder? then the remove
-		   above would do nothing and decrementing
-		   the counters would be wrong, the same when
-		   there are multiple vfolders catching an
-		   unread item...  FIXME!!! (Lars) */
-		feedlist_update_counters(item_get_read_status(ip)?0:-1, 	
-					 item_get_new_status(ip)?-1:0);
-	}
-
-	switch(np->type) {
-		case FST_PLUGIN:
-			/* Plugin root nodes must handle items in a feed structure! */
-		case FST_FEED:
-			feed_remove_item((feedPtr)np->data, ip);
-			break;
-		case FST_VFOLDER:
-			// FIXME!
-			g_warning("not yet implemented!");
-			break;
-		case FST_FOLDER:
-			// FIXME!
-			g_warning("not yet implemented!");
-			break;
-		default:
-			g_warning("internal error: unknown node type!");
-			break;
-	}
-}
-
-void node_remove_items(nodePtr np) {
-
-	g_assert(0 < np->loaded);
-
-	/* vfolder copies are removed in specific implementation */
-	switch(np->type) {
-		case FST_PLUGIN:
-			/* Plugin root nodes must handle items in a feed structure! */
-		case FST_FEED:
-			feed_remove_items((feedPtr)np->data);
-			break;
-		case FST_VFOLDER:
-			/* This does not really make sense, does it? */
-			break;
-		case FST_FOLDER:
-			// FIXME: loop over feeds
-			g_warning("not yet implemented!");
-			break;
-		default:
-			g_warning("internal error: unknown node type!");
-			break;
-	}
 }
 
 nodePtr node_add_feed(nodePtr parent) {

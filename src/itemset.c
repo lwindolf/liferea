@@ -21,20 +21,6 @@
 
 #include "itemset.h"
 
-itemSetPtr itemset_new(guint type) {
-	itemSetPtr	sp = NULL;
-
-	sp = (itemSetPtr)g_new0(itemSet, 1);
-	sp->type = type;
-	return sp;
-}
-
-void itemset_free(itemSetPtr sp) {
-
-	// FIXME: free item list
-	g_free(sp);
-}
-
 gchar * itemset_render_item(itemSetPtr sp, itemPtr ip) {
 
 	switch(sp->type) {
