@@ -22,6 +22,7 @@
 #ifndef _ITEM_H
 #define _ITEM_H
 
+#include <glib.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <time.h>
