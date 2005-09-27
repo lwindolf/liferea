@@ -337,10 +337,6 @@ void feed_save(feedPtr fp, const gchar *id) {
 	debug_exit("feed_save");
 }
 
-/* Function which is called to load a feed's into memory. This function
-   might be called multiple times even if the feed was already loaded.
-   Each time the method is called a reference counter is incremented. 
-   Only to be called by feedlist_load_feed(). */
 gboolean feed_load(feedPtr fp, const gchar *id) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
@@ -454,23 +450,11 @@ gboolean feed_load(feedPtr fp, const gchar *id) {
 	return TRUE;
 }
 
-/* Only some feed informations are kept in memory to lower memory
-   usage. This method unloads everything besides necessary infos. 
-   
-   If the feed parameter is NULL the function is called for all feeds.
-   
-   Each time this function is called the reference counter of all
-   feeds is decremented and if it zero the unnecessary feed infos are 
-   free'd. Only to be called by feedlist_unload_feed(). */
 void feed_unload(feedPtr fp) {
 
 	debug_enter("feed_unload");
-	if(FST_FEED == feed_get_type(fp)) {
-		debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
-		feed_clear_item_list(fp);						
-	} else {
-		debug1(DEBUG_CACHE, "not unloading vfolder (%s)",  feed_get_title(fp));
-	}
+	debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
+	feed_clear_item_list(fp);						
 	debug_exit("feed_unload");
 }
 

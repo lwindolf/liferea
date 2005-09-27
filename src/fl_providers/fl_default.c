@@ -23,9 +23,10 @@
 #include "fl_default.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "ui_feedlist.h"
+#include "itemset.h"
 #include "export.h"
 #include "debug.h"
+#include "ui/ui_feedlist.h"
 
 static gboolean feedlistLoading = FALSE;
 static flNodeHandler *handler = NULL;
@@ -50,18 +51,23 @@ void fl_default_handler_save(void) {
 	debug_exit("fl_default_save");
 }
 
-gboolean fl_node_load(nodePtr np) {
+void fl_node_load(nodePtr np) {
+	feedPtr	fp = (feedPtr)np->data;
 
-	if(FST_FOLDER != np->type)
-		return feed_load((feedPtr)np->data);
-
-	return TRUE;
+	feed_load(fp, np->id);
+	g_assert(NULL == np->itemSet);
+	np->itemSet = (itemSetPtr)g_new0(itemSet, 1);
+	np->itemSet->items = fp->items;
+	np->itemSet->newCount = fp->newCount;
+	np->itemSet->unreadCount = fp->unreadCount;
 }
 
 void fl_node_unload(nodePtr np) {
 
-	if(FST_FOLDER != np->type)
-		feed_unload((feedPtr)np->data);
+	feed_unload((feedPtr)np->data);
+	g_assert(NULL != np->itemSet);
+	g_free(np->itemSet);
+	np->itemSet = NULL;
 }
 
 gchar *fl_node_render(nodePtr np) {

@@ -53,7 +53,7 @@ static void node_load_cb(nodePtr np, gpointer user_data) {
 		FST_FEED:
 		FST_PLUGIN
 			if(NULL != np->handler->plugin->node_load)
-				result = np->handler->plugin->node_load(np);
+				np->handler->plugin->node_load(np);
 			break;
 		FST_VFOLDER:
 			// FIXME:
@@ -63,10 +63,9 @@ static void node_load_cb(nodePtr np, gpointer user_data) {
 			break;
 	}
 
-	if(NULL != result)
-		sp->items = g_slist_concat(sp->items, result);
-
-	// FIXME: add unread and new count
+	sp->items = g_slist_concat(sp->items, np->itemSet->items);
+	sp->newCount += np->itemSet->newCount;
+	sp->unreadCount += np->itemSet->unreadCount;
 }
 
 void node_load(nodePtr np) {
@@ -76,11 +75,10 @@ void node_load(nodePtr np) {
 	if(1 < np->loaded)
 		return;
 
-	g_slist_free(np->sp->items);
-	np->sp->items = NULL;
-	np->sp->newCount = 0;
-	np->sp->unreadCount = 0;
-	ui_feedlist_do_foreach_data(np, node_load_cb, &(np->sp));
+	itemset_free(np->itemSet);
+	np->itemSet = NULL;
+	g_assert(NULL == np->itemSet);
+	ui_feedlist_do_foreach_data(np, node_load_cb, &(np->itemSet));
 }
 
 void node_save(nodePtr np) {

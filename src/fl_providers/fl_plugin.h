@@ -59,7 +59,7 @@ struct flPluginInfo_ {
 	void	 	(*handler_delete)(nodePtr ptr);
 	
 	/** callback for node loading (optional) */
-	gboolean	(*node_load)(nodePtr np);
+	void		(*node_load)(nodePtr np);
 	/** callback for node unloading (optional) */
 	void 		(*node_unload)(nodePtr np);
 
