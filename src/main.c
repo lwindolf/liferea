@@ -182,7 +182,13 @@ int main(int argc, char *argv[]) {
 	textdomain(GETTEXT_PACKAGE);
 	setlocale(LC_ALL, "");
 #endif
-
+	
+	g_set_prgname("liferea");
+	gtk_set_locale();
+	g_thread_init(NULL);
+	gdk_threads_init();	
+	gtk_init(&argc, &argv);
+	
 	/* parse arguments  */
 	debug_flags = 0;
 	for(i = 1; i < argc; ++i) {
@@ -239,11 +245,6 @@ int main(int argc, char *argv[]) {
 	}
 	set_debug_level(debug_flags);
 
-	g_set_prgname("liferea");
-	gtk_set_locale();
-	g_thread_init(NULL);
-	gdk_threads_init();	
-	gtk_init(&argc, &argv);
 	mainThread = g_thread_self();	/* we need to know this for locking in ui_queue.c */
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
