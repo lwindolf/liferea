@@ -91,7 +91,7 @@ feedPtr feed_new(void) {
 	fp->defaultInterval = -1;
 	fp->cacheLimit = CACHE_DEFAULT;
 	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
-		
+	
 	return fp;
 }
 
@@ -719,7 +719,7 @@ void feed_set_default_update_interval(feedPtr fp, gint interval) { fp->defaultIn
 gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 
 void feed_set_update_interval(feedPtr fp, gint interval) {
-
+	
 	if(0 == interval) {
 		interval = -1;	/* This is evil, I know, but when this method
 				   is called to set the update interval to 0
@@ -727,7 +727,7 @@ void feed_set_update_interval(feedPtr fp, gint interval) {
 				   expects -1 for never updating and 0 for
 				   updating according to the global update
 				   interval... */
-		
+	}
 	fp->updateInterval = interval;
 	feedlist_schedule_save();
 }
@@ -903,7 +903,8 @@ void feed_remove_item(feedPtr fp, itemPtr ip) {
 }
 
 void feed_remove_items(feedPtr fp) {
-
+	GSList *item;
+	
 	item = fp->items;
 
 	while(NULL != item) {
@@ -1025,7 +1026,7 @@ gchar *feed_render(feedPtr fp) {
 		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
 		g_free(displayset.foottable);
 	}
-
+	
 	return buffer;
 }
 
@@ -1045,7 +1046,7 @@ void feed_remove(feedPtr fp, const gchar *id) {
 
 	if(id && id[0] != '\0')
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
-
+	
 	/* FIXME: Move this to a better place. The cache file does not
 	   need to always be deleted, for example when freeing a
 	   feedstruct used for updating. */
