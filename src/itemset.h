@@ -43,7 +43,7 @@ enum itemSetTypes {
 	ITEMSET_TYPE_FEED,
 	ITEMSET_TYPE_FOLDER,
 	ITEMSET_TYPE_VFOLDER
-}
+};
 
 typedef struct itemSet {
 	guint	type;

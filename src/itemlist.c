@@ -29,12 +29,12 @@
 #include "feedlist.h"
 #include "support.h"
 #include "vfolder.h"
-#include "ui_itemlist.h"
-#include "ui_feedlist.h"
-#include "ui_feed.h"
-#include "ui_tray.h"
-#include "ui_htmlview.h"
-#include "ui_mainwindow.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_feed.h"
+#include "ui/ui_tray.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_mainwindow.h"
 
 /* controller implementation for itemlist handling, bypass only for read-only feed/item access! */
 

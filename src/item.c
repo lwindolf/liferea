@@ -33,9 +33,9 @@
 #include "item.h"
 #include "support.h"
 #include "common.h"
-#include "ui_htmlview.h"
+#include "ui/ui_htmlview.h"
 #include "callbacks.h"
-#include "ui_tray.h"
+#include "ui/ui_tray.h"
 #include "metadata.h"
 #include "debug.h"
 
