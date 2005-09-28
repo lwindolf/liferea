@@ -1,19 +1,21 @@
+# translation of es_099.po to Spanish
 # translation of es_094.po to Spanish
 # Traducción por Carlos Fenollosa <topopardo@topopardo.com> y José María Mateos <chema@sl-form.com>José María Mateos <chema@sl-form.com>, 2004, 2005.
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: es_094\n"
+"Project-Id-Version: es_099\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-09-18 14:21+0200\n"
-"PO-Revision-Date: 2005-07-21 12:02+0200\n"
+"PO-Revision-Date: 2005-09-28 16:42+0200\n"
 "Last-Translator: Carlos Fenollosa <topopardo@topopardo.com>\n"
 "Language-Team: Spanish <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #. launch the homepage when button in about dialog is pressed
 #: src/callbacks.c:237
@@ -22,21 +24,19 @@ msgstr "http://liferea.sf.net/es"
 
 #: src/callbacks.c:241
 msgid "topics_en.html"
-msgstr ""
+msgstr "topics_es.html"
 
 #: src/callbacks.c:242
 msgid "Help Topics"
-msgstr ""
+msgstr "Temas de ayuda"
 
 #: src/callbacks.c:248
-#, fuzzy
 msgid "reference_en.html"
-msgstr "Preferencias"
+msgstr "reference_es.html"
 
 #: src/callbacks.c:249
-#, fuzzy
 msgid "Quick Reference"
-msgstr "Cambiar preferencias."
+msgstr "Manual de referencia"
 
 #: src/common.c:295
 msgid "[Parser error output was truncated!]"
@@ -95,13 +95,11 @@ msgstr "La orientación de la bandeja"
 #: src/export.c:499 src/export.c:501
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr ""
-"Error XML mientras se leía el caché del archivo \"%s\". No se pudo importar."
+msgstr "Error XML mientras se leía el caché del archivo \"%s\". No se pudo importar."
 
 #: src/export.c:505 src/export.c:507
 #, c-format
-msgid ""
-"Empty document! OPML document \"%s\" should not be empty when importing."
+msgid "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "El documento OPML \"%s\" estaba vacío y no debería estarlo."
 
 #: src/export.c:515 src/export.c:517
@@ -145,8 +143,7 @@ msgstr "Actualizando icono para \"%s\""
 #: src/feed.c:151
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
-msgstr ""
-"<p>Error XML mientras se leía la fuente \"%s\". No se ha podido cargar.</p>"
+msgstr "<p>Error XML mientras se leía la fuente \"%s\". No se ha podido cargar.</p>"
 
 #: src/feed.c:157 src/feed.c:391
 msgid "<p>Empty document!</p>"
@@ -179,8 +176,7 @@ msgstr ""
 #: src/feed.c:371
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr ""
-"Error XML mientras se leía el caché del archivo \"%s\". No se pudo cargar."
+msgstr "Error XML mientras se leía el caché del archivo \"%s\". No se pudo cargar."
 
 #: src/feed.c:383
 #, c-format
@@ -280,7 +276,7 @@ msgstr "La URL no es válida"
 
 #: src/feedlist.c:261
 msgid "Unsupported network protocol"
-msgstr ""
+msgstr "Protocolo de red no soportado"
 
 #: src/feedlist.c:264
 msgid "Error connecting to remote host"
@@ -313,8 +309,7 @@ msgstr "Falló la autentificación"
 
 #: src/feedlist.c:281
 msgid "Webserver's authentication method incompatible with Liferea"
-msgstr ""
-"El método de autentificación del servidor web no es compatible con Liferea"
+msgstr "El método de autentificación del servidor web no es compatible con Liferea"
 
 #: src/feedlist.c:287
 msgid "Feed not available: Server requested unsupported redirection!"
@@ -412,9 +407,8 @@ msgid "_Program"
 msgstr "_Programa"
 
 #: src/interface.c:165
-#, fuzzy
 msgid "_Work Offline"
-msgstr "Trabajar sin conexión"
+msgstr "_Trabajar sin conexión"
 
 #: src/interface.c:178
 msgid "_Feeds"
@@ -533,18 +527,16 @@ msgid "Toggles the item flag."
 msgstr "Activa o desactiva la bandera"
 
 #: src/interface.c:341
-#, fuzzy
 msgid "Remove _Selected"
-msgstr "Eliminar seleccionados"
+msgstr "_Eliminar seleccionados"
 
 #: src/interface.c:344
 msgid "Removes the selected item."
 msgstr "Elimina el elemento seleccionado"
 
 #: src/interface.c:350
-#, fuzzy
 msgid "Remove _All"
-msgstr "Eliminar todos"
+msgstr "Eliminar _todos"
 
 #: src/interface.c:353
 msgid "Removes all items of the currently selected feed."
@@ -599,7 +591,6 @@ msgid "Shows or hides the search box."
 msgstr "Muestra u oculta la caja de búsquedas"
 
 #: src/interface.c:426
-#, fuzzy
 msgid "Search With _Feedster..."
 msgstr "Buscar con _Feedster..."
 
@@ -613,25 +604,23 @@ msgstr "A_yuda"
 
 #: src/interface.c:442
 msgid "_Contents"
-msgstr ""
+msgstr "_Contenidos"
 
 #: src/interface.c:445
 msgid "View help for this application."
-msgstr ""
+msgstr "Muestra la ayuda del programa"
 
 #: src/interface.c:451
-#, fuzzy
 msgid "_Quick Reference"
-msgstr "Cambiar preferencias."
+msgstr "_Guía de referencia"
 
 #: src/interface.c:454
 msgid "View a list of all Liferea shortcuts."
-msgstr ""
+msgstr "Muestra las combinaciones de teclas del programa"
 
 #: src/interface.c:461
-#, fuzzy
 msgid "_About"
-msgstr "Acerca de..."
+msgstr "A_cerca de..."
 
 #: src/interface.c:464
 msgid "Shows an about dialog."
@@ -810,7 +799,7 @@ msgstr "Autentificación"
 
 #: src/interface.c:1238
 msgid "_Automatically download all enclosures of this feed."
-msgstr ""
+msgstr "_Descargar automáticamente todos los adjuntos de esta fuente"
 
 #: src/interface.c:1242 src/interface.c:2688
 msgid "Enclosures"
@@ -876,8 +865,7 @@ msgstr "<span weight=\"bold\">Opciones de presentación de carpetas</span>"
 
 #: src/interface.c:1986
 msgid "Show the items of all child feeds when a folder is selected."
-msgstr ""
-"Mostrar los elementos de todas las fuentes hijas al seleccionar una carpeta"
+msgstr "Mostrar los elementos de todas las fuentes hijas al seleccionar una carpeta"
 
 #: src/interface.c:1990
 msgid ""
@@ -1165,7 +1153,6 @@ msgstr ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #: src/interface.c:3348
-#, fuzzy
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1216,12 +1203,12 @@ msgstr ""
 "Amit D. Chaudhary <amitc@users.sourceforge.net>\n"
 "Christoph Hohmann <reboot@users.sourceforge.net>\n"
 "Raphael Slinckx <raphael@slinckx.net>\n"
-"\n"
+"y muchos más...\n"
 "\n"
 "Código de otros proyectos\n"
 "\n"
-"Anders Carlsson <andersca@gnu.org> (tray icon support)\n"
-"Philippe Martin, Brion Vibber (favicon support)\n"
+"Anders Carlsson <andersca@gnu.org> (bandeja del sistema)\n"
+"Philippe Martin, Brion Vibber (iconos de las fuentes)\n"
 "Jonathan Blandford <jrb@redhat.com> (GtkTreeModelFilter)\n"
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 
@@ -1345,29 +1332,26 @@ msgstr "  --help           Muestra este mensaje y acaba"
 
 #: src/main.c:69
 msgid "  --mainwindow-state=STATE"
-msgstr ""
+msgstr "  --mainwindow-state=ESTADO"
 
 #: src/main.c:70
 msgid "                   Start Liferea with its main window in STATE."
-msgstr ""
+msgstr "                   Arrancar Liferea con la ventana en el estado «ESTADO»"
 
 #: src/main.c:71
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
-msgstr ""
+msgstr "                   «ESTADO» puede ser `shown' para mostrarla, `iconified' para dejarla en la bandeja del sistema, o `hidden' para no mostrarla"
 
 #: src/main.c:73
 msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr "  --debug-cache    Mostrar mensajes de depuración sobre el caché"
 
 #: src/main.c:74
-msgid ""
-"  --debug-conf     Print debugging messages of the configuration handling"
-msgstr ""
-"  --debug-conf     Mostrar mensajes de depuración sobre la configuración"
+msgid "  --debug-conf     Print debugging messages of the configuration handling"
+msgstr "  --debug-conf     Mostrar mensajes de depuración sobre la configuración"
 
 #: src/main.c:75
-msgid ""
-"  --debug-update   Print debugging messages of the feed update processing"
+msgid "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Mostrar mensajes de depuración sobre las actualizaciones "
 "de fuentes"
@@ -1385,8 +1369,7 @@ msgstr ""
 "de la interfaz gráfica"
 
 #: src/main.c:78
-msgid ""
-"  --debug-trace    Print debugging messages when entering/leaving functions"
+msgid "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    Mostrar mensajes de depuración al entrar/salir de las "
 "funciones"
@@ -1397,13 +1380,12 @@ msgstr "  --debug-all      Mostrar todos los mensajes de depuración"
 
 #: src/main.c:80
 msgid "  --debug-verbose  Print verbose debugging messages"
-msgstr ""
-"  --debug-verbose  Mostrar información extra sobre los mensajes de depuración"
+msgstr "  --debug-verbose  Mostrar información extra sobre los mensajes de depuración"
 
 #: src/main.c:226
-#, fuzzy, c-format
+#, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
-msgstr "Se necesita un parámetro para el argumento --session\n"
+msgstr "Se necesita un parámetro para el argumento --mainwindow-state\n"
 
 #: src/main.c:234
 #, c-format
@@ -1653,8 +1635,7 @@ msgstr "Esta fuente sugiere un intervalo de actualización de %d minutos"
 
 #: src/ui_feed.c:531
 msgid "This feed specifies no default update interval."
-msgstr ""
-"Esta fuente no especifica ningún intervalo de actualización por defecto"
+msgstr "Esta fuente no especifica ningún intervalo de actualización por defecto"
 
 #: src/ui_feedlist.c:496
 msgid "Note: Using the subscriptions filter disables drag & drop"
@@ -1793,10 +1774,8 @@ msgstr "Abriendo: \"%s\""
 
 #: src/ui_htmlview.h:96
 #, c-format
-msgid ""
-"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
-msgstr ""
-"Falló la última actualización de esta fuente.<br><br>Error HTTP %d: %s</b>"
+msgid "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
+msgstr "Falló la última actualización de esta fuente.<br><br>Error HTTP %d: %s</b>"
 
 #. explicitly no </span> at the end!
 #: src/ui_htmlview.h:101
@@ -1888,7 +1867,6 @@ msgstr "Cambiar preferencias."
 #. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
 #. "and it will be included in the next release!</div>"));
 #: src/ui_mainwindow.c:313
-#, fuzzy
 msgid ""
 "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
 "can add new subscriptions and select subscriptions to read their headlines. "
@@ -1911,24 +1889,26 @@ msgid ""
 "liferea.sourceforge.net/faq.htm\">FAQ</a> available at the <a href=\"http://"
 "liferea.sf.net\">project homepage</a>.</p>"
 msgstr ""
-"<h2>Bienvenido a Liferea</h2><p>El panel de la izquierda contiene la lista "
-"de fuentes, donde se pueden añadir nuevas fuentes. En la parte derecha se "
-"muestran los titulares junto con los contenidos de cada elemento. También se "
-"puede seleccionar el modo de \"vista condensada\" para que se muestren a la "
-"vez los titulares y los contenidos</p><h3>Acciones básicas</"
-"h3><ul><li><p><b>Añadir fuente</b> - Crea un nuevo elemento en la carpeta "
-"seleccionada. Para ello, introduce la URL de la fuente de noticias o, si es "
-"desconocida, la dirección de la página web que la contiene</p></"
-"li><li><p><b>Actualizar fuente</b> - Actualiza los contenidos de la fuente "
+"<h2>Bienvenido a Liferea</h2> "
+"<p>El panel de la izquierda muestra la lista de fuentes. Desde allí puede suscribirse a nuevas fuentes o"
+"seleccionar una de ellas para leer sus titulares."
+"La parte derecha de la pantalla muestra la lista de los titulares para la fuente seleccionada. Puede activarse la «Vista condensada» para mostrar todas las cabeceras y fuentes simultáneamente "
+"</p> "
+"<h3>Acciones básicas</h3> "
+"<ul> "
+"<li><p><b>Añadir fuente</b> - Crea un nuevo elemento en la carpeta "
+"seleccionada. Para ello, introduzca la URL de la fuente de noticias o, si es "
+"desconocida, la dirección de la página web que la contiene</p></li> "
+"<li><p><b>Actualizar fuente</b> - Actualiza los contenidos de la fuente "
 "seleccionada. Normalmente, las actualizaciones automáticas son suficientes, "
-"pero en caso de desearse una actualización automática, usa esta opción</p></"
-"li><li><p><b>Actualizar todas</b> - Actualiza todas las fuentes de golpe. </"
-"li><li><p><b>Propiedades de la fuente</b> - Desde aquí se pueden cambiar el "
-"intervalo de actualización, el título y otras propiedades de cada elemento</"
-"p></li></ul><p>Para más información sobre el uso de Liferea, por favor, mira "
-"la documentación de las fuentes de ayuda o las <a href=\"http://liferea."
-"sourceforge.net/es/faq.php\">FAQ</a> que hay disponibles en la <a href="
-"\"http://liferea.sf.net/es\">página web de Liferea</a></p>"
+"pero en caso de desearse una actualización manual, use esta opción</p></li> "
+"<li><p><b>Actualizar todas</b> - Actualiza todas sus fuentes a la vez.</li> "
+"<li><p><b>Propiedades de la fuente</b> - Desde aquí se pueden cambiar el "
+"intervalo de actualización, el título y otras propiedades de cada elemento</p></li> "
+"</ul> "
+"<p>Para obtener más ayuda puede acceder a la documentación de la fuente de ayuda o leer "
+"las <a href=\"http://liferea.sourceforge.net/es/faq.htm\">preguntas frecuentes</a> de la <a href=\"http://"
+"liferea.sf.net/es\">página web de Liferea</a>.</p>"
 
 #: src/ui_mainwindow.c:391
 msgid "Liferea is now online"
@@ -2008,7 +1988,7 @@ msgstr "/_Siguiente elemento nuevo"
 
 #: src/ui_popup.c:136
 msgid "/Copy Item _URL to Clipboard"
-msgstr ""
+msgstr "/Copiar la _URL al portapapeles"
 
 #: src/ui_popup.c:137
 msgid "/Launch Item In _Tab"
@@ -2043,9 +2023,8 @@ msgid "/_Subscribe..."
 msgstr "/_Suscribirse"
 
 #: src/ui_popup.c:158
-#, fuzzy
 msgid "/Toggle _Online|Offline"
-msgstr "/Trabajar _sin conexión"
+msgstr "/Trabajar _desconectado"
 
 #: src/ui_popup.c:159
 msgid "/_Update All"
@@ -2102,8 +2081,7 @@ msgstr "Actualizar todas las fuentes"
 
 #: src/ui_prefs.c:277
 msgid "Reset feed update timers (Update no feeds)"
-msgstr ""
-"Reiniciar los temporizadores de actualización (No actualizar ninguna fuente)"
+msgstr "Reiniciar los temporizadores de actualización (No actualizar ninguna fuente)"
 
 #: src/ui_prefs.c:520
 msgid "Type"
@@ -2207,15 +2185,3 @@ msgstr ""
 "GtkHTML2 no soporta la etiqueta HTML <object>.\n"
 "Puede que los plug-ins incluídos no se muestren."
 
-#~ msgid "Toggle Search Box"
-#~ msgstr "_Mostrar u Ocultar caja de búsquedas"
-
-#~ msgid "  --iconify        Start the program iconified"
-#~ msgstr ""
-#~ "  --iconify        Inicia el programa tan sólo con el icono de sistema"
-
-#~ msgid "http://liferea.sf.net/help/help"
-#~ msgstr "http://liferea.sf.net/help/help"
-
-#~ msgid ".rdf"
-#~ msgstr "_es.rdf"
