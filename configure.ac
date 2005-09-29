@@ -32,7 +32,8 @@ AC_ARG_ENABLE(dbus,    AS_HELP_STRING([--disable-dbus],[compile without DBUS sup
 AC_ARG_ENABLE(gtkhtml2,AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
 AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
 AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla" or "firefox")]),,enable_gecko=yes)
-				   
+AC_ARG_ENABLE(gnutls,  AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
+
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
 dnl Search for X libraries
@@ -273,6 +274,90 @@ AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 dnl AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" != "xyes")
 
+
+dnl #
+dnl # Check for GNUTLS if it's specified.
+dnl #
+if test "x$enable_gnutls" != "xno"; then
+        enable_gnutls="no"
+        prefix=`eval echo $prefix`
+
+        AC_ARG_WITH(gnutls-includes,
+                [  --with-gnutls-includes=PREFIX   Location of GNUTLS includes.],
+                [ with_gnutls_includes="$withval" ],
+                [ with_gnutls_includes="$prefix/include" ])
+
+        have_gnutls_includes="no"
+
+        if test "x$with_gnutls_includes" != "xno"; then
+                CPPFLAGS_save="$CPPFLAGS"
+
+                AC_MSG_CHECKING(for GNUTLS includes)
+                AC_MSG_RESULT("")
+
+                CPPFLAGS="$CPPFLAGS -I$with_gnutls_includes"
+                AC_CHECK_HEADERS(gnutls/gnutls.h, [ gnutls_includes="yes" ])
+                CPPFLAGS="$CPPFLAGS_save"
+
+                if test "x$gnutls_includes" != "xno" -a \
+                        "x$gnutls_includes" != "x"; then
+                        have_gnutls_includes="yes"
+
+                        GNUTLS_CFLAGS="-I$with_gnutls_includes"
+                else
+                        GNUTLS_CFLAGS=""
+                fi
+        else
+                AC_MSG_CHECKING(for GNUTLS includes)
+                AC_MSG_RESULT(no)
+        fi
+
+        AC_ARG_WITH(gnutls-libs,
+                [  --with-gnutls-libs=PREFIX       Location of GNUTLS libraries.],
+                [ with_gnutls_libs="$withval" ])
+
+        if test "x$with_gnutls_libs"     != "xno" -a \
+                "x$have_gnutls_includes" != "xno"; then
+
+                LDFLAGS_save="$LDFLAGS"
+
+                case $with_gnutls_libs in
+                        ""|-L*) ;;
+                        *) with_gnutls_libs="-L$with_gnutls_libs" ;;
+                esac
+
+                AC_CACHE_CHECK([for GNUTLS libraries], gnutls_libs,
+                [
+                        LDFLAGS="$LDFLAGS $with_gnutls_libs -lgnutls -lgcrypt"
+                        AC_TRY_LINK_FUNC(gnutls_init, gnutls_libs="yes", gnutls_libs="no")
+                        LDFLAGS="$LDFLAGS_save"
+                ])
+
+                if test "x$gnutls_libs" != "xno"; then
+                        AC_DEFINE(HAVE_GNUTLS, 1, [Define if you have GNUTLS])
+                        msg_gnutls="GNUTLS"
+                        GNUTLS_LIBS="$with_gnutls_libs -lgnutls -lgcrypt"
+
+                        enable_gnutls="yes"
+                else
+                        GNUTLS_CFLAGS=""
+                        GNUTLS_LIBS=""
+                fi
+        else
+                AC_MSG_CHECKING(for GNUTLS libraries)
+                AC_MSG_RESULT(no)
+        fi
+else
+        GNUTLS_CFLAGS=""
+        GNUTLS_LIBS=""
+fi
+
+AC_SUBST(GNUTLS_CFLAGS)
+AC_SUBST(GNUTLS_LIBS)
+
+AM_CONDITIONAL(USE_GNUTLS, test "x$enable_gnutls" = "xyes")
+
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
@@ -301,6 +386,7 @@ echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
+echo "GNUTLS SSL/HTTPS Support........ : $enable_gnutls"
 echo
 dnl echo Use libcurl download library.... : $enable_libcurl
 dnl echo
