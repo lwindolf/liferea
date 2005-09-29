@@ -274,7 +274,7 @@ void *NetConnectGnutls(int *fd) {
  * Returns
  *
  *	0	Connected
- *	-i	Error occured (netio_error is set)
+ *	-1	Error occured (netio_error is set)
  */
 static int NetConnect (int * my_socket, char * host, struct feed_request * cur_ptr, enum netio_proto proto, int suppressoutput, void **proto_data) {
 #ifdef HAVE_GETADDRINFO
@@ -895,7 +895,6 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		if (checkValidHTTPHeader(headerline, sizeof(headerline)) != 0) {
 			cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
 			NetClose (my_socket, proto_data, proto);
-			printf("32e2the3t\n");
 			return NULL;
 		}
 		
@@ -1062,13 +1061,10 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 
 	/* Read stream until EOF and return it to parent. */
 	while (1) {
-		printf(">>>>>>>>>>netpoll 1001\n");
 		if ((NetPoll (cur_ptr, my_socket, NET_READ)) == -1) {
-			printf("netpoll returned -1!\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 			NetClose (my_socket, proto_data, proto);
 			return NULL;
 		}
-		printf("<<<<netpoll 1001\n");
 		retval = NetRead(my_socket, proto_data, proto, netbuf, sizeof(netbuf));
 		if (retval == 0)
 			break;
