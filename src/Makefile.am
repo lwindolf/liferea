@@ -18,7 +18,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS) \
 	$(X_CFLAGS) \
-	$(DBUS_CFLAGS)
+	$(DBUS_CFLAGS) \
+	$(GNUTLS_CFLAGS)
 
 
 bin_PROGRAMS = liferea-bin 
@@ -78,7 +79,7 @@ liferea_bin_SOURCES = \
 	net/zlib_interface.c net/zlib_interface.h \
 	net/downloadlib.h
 
-liferea_bin_LDADD =  $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) 
+liferea_bin_LDADD =  $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS)  $(GNUTLS_LIBS)
 
 if PLATFORM_WIN32
 
