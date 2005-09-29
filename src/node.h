@@ -23,6 +23,7 @@
 #define _NODE_H
 
 #include "item.h"
+#include "itemset.h"
 
 /** node types (also used for feed list tree store) */
 enum node_types {
