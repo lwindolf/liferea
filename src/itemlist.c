@@ -197,6 +197,7 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	feedPtr		sourceFeed;
 	
 	if(newStatus != item_get_flag_status(ip)) {
+		displayed_node->needsCacheSave = TRUE;
 		item_set_flag_status(ip, newStatus);
 		ui_itemlist_update_item(ip);
 
@@ -230,6 +231,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 	feedPtr		sourceFeed;
 
 	if(newStatus != item_get_read_status(ip)) {		
+		displayed_node->needsCacheSave = TRUE;
 		item_set_read_status(ip, newStatus);
 		ui_itemlist_update_item(ip);
 
@@ -264,6 +266,7 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 	feedPtr		sourceFeed;
 	
 	if(newStatus != item_get_update_status(ip)) {	
+		displayed_node->needsCacheSave = TRUE;
 		item_set_update_status(ip, newStatus);
 		ui_itemlist_update_item(ip);	
 

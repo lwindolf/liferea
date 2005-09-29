@@ -75,10 +75,8 @@ void node_load(nodePtr np) {
 	if(1 < np->loaded)
 		return;
 
-	itemset_free(np->itemSet);
-	np->itemSet = NULL;
 	g_assert(NULL == np->itemSet);
-	ui_feedlist_do_foreach_data(np, node_load_cb, &(np->itemSet));
+	ui_feedlist_do_foreach_data(np, node_load_cb, (gpointer)&(np->itemSet));
 }
 
 void node_save(nodePtr np) {
@@ -126,6 +124,14 @@ void node_update(nodePtr np, guint flags) {
 		return;
 
 	np->handler->plugin->node_update(np, flags);
+}
+
+void node_auto_update(nodePtr np) {
+
+	if(FST_VFOLDER == np->type)
+		return;
+
+	np->handler->plugin->node_auto_update(np);
 }
 
 void node_remove(nodePtr np) {

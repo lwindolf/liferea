@@ -78,9 +78,123 @@ gchar *fl_node_render(nodePtr np) {
 	return NULL;
 }
 
-/*------------------------------------------------------------------------------*/
-/* DBUS support for new subscriptions                                           */
-/*------------------------------------------------------------------------------*/
+/* update handling */
+
+static void fl_node_auto_update(nodePtr np) {
+	feedPtr		fp = (feedPtr)np;
+	GTimeVal	now;
+	gint		interval;
+
+	g_get_current_time(&now);
+	interval = feed_get_update_interval(fp);
+	
+	if(-2 >= interval)
+		return;		/* don't update this feed */
+		
+	if(-1 == interval)
+		interval = getNumericConfValue(DEFAULT_UPDATE_INTERVAL);
+	
+	if(interval > 0)
+		if(fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+			feed_schedule_update(fp, 0);
+
+	/* And check for favicon updating */
+	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
+		favicon_download(np);
+}
+
+/** handles completed feed update requests */
+void ui_feed_process_update_result(struct request *request) {
+	feedPtr			fp = (feedPtr)request->user_data;
+	feedHandlerPtr		fhp;
+	gchar			*old_title, *old_source;
+	gint			old_update_interval;
+	
+	g_assert(NULL != request);
+
+	feedlist_load_feed(fp);
+
+	/* no matter what the result of the update is we need to save update
+	   status and the last update time to cache */
+	fp->needsCacheSave = TRUE;
+	
+	feed_set_available(fp, TRUE);
+
+	if(401 == request->httpstatus) { /* unauthorized */
+		feed_set_available(fp, FALSE);
+		if(request->flags & FEED_REQ_AUTH_DIALOG)
+			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), fp, request->flags);
+	} else if(410 == request->httpstatus) { /* gone */
+		feed_set_available(fp, FALSE);
+		feed_set_discontinued(fp, TRUE);
+		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(fp));
+	} else if(304 == request->httpstatus) {
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(fp));
+	} else if(NULL != request->data) {
+		feed_set_lastmodified(fp, request->lastmodified);
+		feed_set_etag(fp, request->etag);
+		
+		/* note this is to update the feed URL on permanent redirects */
+		if(0 != strcmp(request->source, feed_get_source(fp))) {
+			feed_set_source(fp, request->source);
+			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(fp));
+		}
+		
+		/* we save all properties that should not be overwritten in all cases */
+		old_update_interval = feed_get_update_interval(fp);
+		old_title = g_strdup(feed_get_title(fp));
+		old_source = g_strdup(feed_get_source(fp));
+
+		/* parse the new downloaded feed into fp */
+		fhp = feed_parse(fp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
+		if(fhp == NULL) {
+			feed_set_available(fp, FALSE);
+			fp->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), fp->parseErrors);
+		} else {
+			fp->fhp = fhp;
+			
+			/* restore user defined properties if necessary */
+			if(!(request->flags & FEED_REQ_RESET_TITLE))
+				feed_set_title(fp, old_title);
+				
+			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
+				feed_set_source(fp, old_source);
+
+			if(request->flags & FEED_REQ_RESET_UPDATE_INT)
+				feed_set_update_interval(fp, feed_get_default_update_interval(fp));
+			else
+				feed_set_update_interval(fp, old_update_interval);
+				
+			g_free(old_title);
+			g_free(old_source);
+
+			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
+
+			itemlist_reload((nodePtr)fp);
+			
+			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
+				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
+		}
+	} else {	
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(fp));
+		feed_set_available(fp, FALSE);
+	}
+	
+	feed_set_error_description(fp, request->httpstatus, request->returncode, request->filterErrors);
+
+	fp->request = NULL; 
+
+	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
+		favicon_download(fp);
+
+	/* update UI presentations */
+	ui_notification_update(fp);
+	ui_feedlist_update();
+
+	feedlist_unload_feed(fp);
+}
+
+/* DBUS support for new subscriptions */
 
 #ifdef USE_DBUS
 

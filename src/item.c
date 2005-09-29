@@ -135,15 +135,7 @@ gboolean item_get_new_status(itemPtr ip) { g_assert(ip != NULL); return ip->newS
 gboolean item_get_popup_status(itemPtr ip) { g_assert(ip != NULL); return ip->popupStatus; }
 gboolean item_get_update_status(itemPtr ip) { g_assert(ip != NULL); return ip->updateStatus; }
 
-void item_set_flag_status(itemPtr ip, gboolean newFlagStatus) {
-
-	if(newFlagStatus != ip->marked) {
-		if(ip->fp != NULL)
-			ip->fp->needsCacheSave = TRUE;
-			
-		ip->marked = newFlagStatus;
-	}
-}
+void item_set_flag_status(itemPtr ip, gboolean newFlagStatus) { ip->marked = newFlagStatus; }
 
 void item_set_new_status(itemPtr ip, const gboolean newNewStatus) { 
 
@@ -153,8 +145,6 @@ void item_set_new_status(itemPtr ip, const gboolean newNewStatus) {
 				feed_increase_new_counter((feedPtr)(ip->fp));
 			else
 				feed_decrease_new_counter((feedPtr)(ip->fp));
-				
-			ip->fp->needsCacheSave = TRUE;
 		}	
 		ip->newStatus = newNewStatus; 
 	}
@@ -171,20 +161,11 @@ void item_set_popup_status(itemPtr ip, const gboolean newPopupStatus) {
 
 			/* no need to save feed */
 		}
-			
 		ip->popupStatus = newPopupStatus; 
 	}
 }
 
-void item_set_update_status(itemPtr ip, const gboolean newStatus) { 
-	
-	if(newStatus != ip->updateStatus) {
-		if(ip->fp != NULL)
-			ip->fp->needsCacheSave = TRUE;
-			
-		ip->updateStatus = newStatus; 
-	}
-}
+void item_set_update_status(itemPtr ip, const gboolean newStatus) { ip->updateStatus = newStatus; }
 
 void item_set_read_status(itemPtr ip, gboolean newStatus) { 
 	
@@ -194,10 +175,7 @@ void item_set_read_status(itemPtr ip, gboolean newStatus) {
 				feed_increase_unread_counter((feedPtr)(ip->fp));
 			else
 				feed_decrease_unread_counter((feedPtr)(ip->fp));
-
-			ip->fp->needsCacheSave = TRUE;
 		}
-		
 		ip->readStatus = newStatus;
 	}
 }
@@ -249,10 +227,11 @@ gchar *item_render(itemPtr ip) {
 	/*  -- Item line */
 	tmp = NULL;
 
+	/* FIXME: how to retrieve the icon? 
 	if((NULL != ip->sourceFeed) && (NULL != ip->sourceFeed->icon))
 		tmp = (gchar *)feed_get_id(ip->sourceFeed);
 	else if((NULL != ip->fp) && (NULL != ip->fp->icon))
-		tmp = (gchar *)feed_get_id(ip->fp);
+		tmp = (gchar *)feed_get_id(ip->fp);*/
 
 	if(NULL != tmp) {
 		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", tmp, "png");
@@ -348,8 +327,13 @@ gchar *item_render(itemPtr ip) {
 	return buffer;
 }
 
+// FIXME: move to itemset.c
 void item_display(itemPtr ip) {
 	gchar	*buffer = NULL, *tmp;
+	
+	// FIXME: needs to be fixed item rendering must be provided 
+	// on item provider basis (split this method and call 
+	// implementation based on itemset type)
 	
 	ui_htmlview_start_output(&buffer, feed_get_html_url(ip->fp), TRUE);
 	tmp = item_render(ip);
@@ -357,7 +341,6 @@ void item_display(itemPtr ip) {
 	g_free(tmp);
 	ui_htmlview_finish_output(&buffer);
 	if((ip->fp != NULL) &&
-	   (FST_FEED == ((feedPtr)ip->fp)->type) &&
 	   ((feedPtr)(ip->fp))->htmlUrl != NULL &&
 	   ((feedPtr)(ip->fp))->htmlUrl[0] != '|' &&
 	    strstr(((feedPtr)(ip->fp))->htmlUrl, "://") != NULL)

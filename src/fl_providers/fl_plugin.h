@@ -68,6 +68,12 @@ struct flPluginInfo_ {
 	/** callback for node rendering */
 	gchar *		(*node_render)(nodePtr np);
 
+	/** callback for node auto-updating (optional) */
+	void 		(*node_auto_update)(nodePtr np);
+
+	/** user interaction callback for node updating (optional) */
+	void 		(*node_update)(nodePtr np);
+
 	/** user interaction callback add/subscribe feeds (optional) */
 	feedPtr		(*feed_add)(nodePtr np);
 	/** user interaction callback delete/unsubscribe feeds (optional) */
@@ -77,7 +83,6 @@ struct flPluginInfo_ {
 	folderPtr	(*folder_add)(nodePtr np);
 	/** user interaction callback delete folder (optional) */
 	void		(*folder_delete)(folderPtr fp);
-
 };
 
 typedef struct flNodeHandler_ flNodeHandler;

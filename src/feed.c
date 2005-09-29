@@ -918,7 +918,6 @@ void feed_remove_items(feedPtr fp) {
 	fp->popupCount = 0;
 	fp->newCount = 0;
 	fp->items = NULL;
-	fp->needsCacheSave = TRUE;	/* force feed saving to make it permanent */
 }
 
 gchar *feed_render(feedPtr fp) {
@@ -927,7 +926,6 @@ gchar *feed_render(feedPtr fp) {
 	gchar			*tmp, *tmp2;
 	xmlURIPtr		uri;
 
-	g_assert(0 != fp->loaded);	
 	displayset.headtable = NULL;
 	displayset.head = NULL;
 	displayset.body = g_strdup(feed_get_description(fp));
@@ -1035,11 +1033,6 @@ void feed_remove(feedPtr fp, const gchar *id) {
 	gchar	*filename = NULL;
 	GSList	*iter;
 	
-	if(FST_VFOLDER == fp->type) {
-		vfolder_free(fp);	/* some special preparations for vfolders */
-	} else {
-		g_assert(FST_FEED == fp->type);
-	}
 
 	/* free items */
 	feed_remove_items(fp);

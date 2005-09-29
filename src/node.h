@@ -128,7 +128,14 @@ void node_unload(nodePtr np);
 void node_render(nodePtr np);
 
 /**
- * Node update scheduling.
+ * Node auto-update scheduling.
+ *
+ * @param np	the node
+ */
+void node_auto_update(nodePtr np);
+
+/**
+ * Immediate node updating.
  *
  * @param np	the node
  * @param flags	update handling flags
