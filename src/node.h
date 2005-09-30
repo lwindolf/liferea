@@ -101,10 +101,8 @@ void node_free(nodePtr np);
  * Loads the given node from cache.
  *
  * @param np	the node
- *
- * @returns TRUE if node could be loaded.
  */
-gboolean node_load(nodePtr np);
+void node_load(nodePtr np);
 
 /**
  * Saves the given node to cache.

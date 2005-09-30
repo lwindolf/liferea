@@ -20,13 +20,16 @@
  */
 
 #include "node.h"
+#include "conf.h"
+#include "fl_providers/fl_plugin.h"
+#include "ui/ui_itemlist.h"
 
 nodePtr node_new() {
 	nodePtr	np;
 
 	np = (nodePtr)g_new0(struct node, 1);
 	np->sortColumn = IS_TIME;
-	np->sortReveresed = TRUE;	/* default sorting is newest date at top */
+	np->sortReversed = TRUE;	/* default sorting is newest date at top */
 
 	return np;
 }
@@ -44,16 +47,15 @@ void node_free(nodePtr np) {
 
 static void node_load_cb(nodePtr np, gpointer user_data) {
 	itemSetPtr	sp = (itemSetPtr)user_data;
-	GSList		*result = NULL;
 
 	switch(np->type) {
 		FST_FOLDER:
-			result = ui_feedlist_do_foreach_data(np, node_load_cb, (gpointer)sp);
+			ui_feedlist_do_foreach_data(np, node_load_cb, (gpointer)sp);
 			break;
 		FST_FEED:
-		FST_PLUGIN
-			if(NULL != np->handler->plugin->node_load)
-				np->handler->plugin->node_load(np);
+		FST_PLUGIN:
+			if(NULL != FL_PLUGIN(np)->node_load)
+				FL_PLUGIN(np)->node_load(np);
 			break;
 		FST_VFOLDER:
 			// FIXME:
@@ -70,7 +72,7 @@ static void node_load_cb(nodePtr np, gpointer user_data) {
 
 void node_load(nodePtr np) {
 
-	fp->loaded++;
+	np->loaded++;
 
 	if(1 < np->loaded)
 		return;
@@ -86,8 +88,8 @@ void node_save(nodePtr np) {
 	if(FALSE == np->needsCacheSave)
 		return;
 
-	np->handler->plugin->node_save(np);
-	np->needsCacheSave = FALSE:
+	FL_PLUGIN(np)->node_save(np);
+	np->needsCacheSave = FALSE;
 }
 
 void node_unload(nodePtr np) {
@@ -99,10 +101,10 @@ void node_unload(nodePtr np) {
 	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 		if(1 == np->loaded) {
 			if(FST_FEED == np->type) {
-				np->handler->plugin->node_unload(np);
+				FL_PLUGIN(np)->node_unload(np);
 				/* never reset the unread/new counter! */
-				g_slist_free(np->sp->items);
-				np->sp->items = NULL;
+				g_slist_free(np->itemSet->items);
+				np->itemSet->items = NULL;
 				np->loaded--;
 			} else {
 				/* not unloading vfolders and other types! */
@@ -115,7 +117,7 @@ void node_unload(nodePtr np) {
 
 void node_render(nodePtr np) {
 
-	np->handler->plugin->node_render(np);
+	FL_PLUGIN(np)->node_render(np);
 }
 
 void node_update(nodePtr np, guint flags) {
@@ -123,7 +125,7 @@ void node_update(nodePtr np, guint flags) {
 	if(FST_VFOLDER == np->type)
 		return;
 
-	np->handler->plugin->node_update(np, flags);
+	FL_PLUGIN(np)->node_update(np, flags);
 }
 
 void node_auto_update(nodePtr np) {
@@ -131,7 +133,7 @@ void node_auto_update(nodePtr np) {
 	if(FST_VFOLDER == np->type)
 		return;
 
-	np->handler->plugin->node_auto_update(np);
+	FL_PLUGIN(np)->node_auto_update(np);
 }
 
 void node_remove(nodePtr np) {
@@ -144,13 +146,13 @@ void node_remove(nodePtr np) {
 	switch(np->type) {
 		case FST_FEED:
 		case FST_VFOLDER:
-			np->handler->plugin->feed_delete(np);
+			FL_PLUGIN(np)->feed_delete((feedPtr)np->data);
 			break;
 		case FST_FOLDER:
-			np->handler->plugin->folder_delete(np);
+			FL_PLUGIN(np)->folder_delete((folderPtr)np->data);
 			break;
 		case FST_PLUGIN:
-			np->handler->plugin->handler_delete(np);
+			FL_PLUGIN(np)->handler_delete(np);
 			break;
 		default:
 			g_warning("internal error: unknown node type!");
@@ -165,7 +167,7 @@ nodePtr node_add_feed(nodePtr parent) {
 	feedPtr	fp;
 
 	child = node_new();
-	fp = parent->handler->plugin->feed_add(child);
+	fp = FL_PLUGIN(parent)->feed_add(child);
 	node_add_data(child, FST_FEED, (gpointer)fp);
 
 	return child;
@@ -176,7 +178,7 @@ nodePtr node_add_folder(nodePtr parent) {
 	folderPtr	fp;
 
 	subfolder = node_new();
-	fp = parent->handler->plugin->folder_add(subfolder);
+	fp = FL_PLUGIN(parent)->folder_add(subfolder);
 	node_add_data(subfolder, FST_FOLDER, (gpointer)fp);
 
 	return subfolder;

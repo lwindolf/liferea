@@ -72,7 +72,7 @@ struct flPluginInfo_ {
 	void 		(*node_auto_update)(nodePtr np);
 
 	/** user interaction callback for node updating (optional) */
-	void 		(*node_update)(nodePtr np);
+	void 		(*node_update)(nodePtr np, guint flags);
 
 	/** user interaction callback add/subscribe feeds (optional) */
 	feedPtr		(*feed_add)(nodePtr np);
@@ -92,6 +92,8 @@ struct flNodeHandler_ {
 	flPluginInfo	*plugin;	/**< feed list plugin of this handler instance */
 	nodePtr		root;		/**< root node of this plugin instance */
 };
+
+#define FL_PLUGIN(node) ((flNodeHandler *)(node->handler))->plugin
 
 /** 
  * Scans the plugin list for the feed list root provider.
