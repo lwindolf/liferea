@@ -19,6 +19,6 @@ liblihtmlm_la_DEPENDENCIES = $(top_builddir)/src/liferea-bin$(EXEEXT)
 
 else
 
-liblihtmlm_la_LDFLAGS += -module -avoid-version
+liblihtmlm_la_LDFLAGS = -module -avoid-version
 
 endif
