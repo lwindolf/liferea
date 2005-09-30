@@ -87,4 +87,31 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip);
  */
 void itemset_remove_all_items(itemSetPtr sp);
 
+/**
+ * Changes the flag status of a single item of the given itemset.
+ *
+ * @param sp		the itemset
+ * @param ip		the item to change
+ * @param newStatus	the new flag status
+ */
+void itemset_set_item_flag(itemSetPtr sp, itemPtr ip, gboolean newStatus);
+
+/**
+ * Changes the read status of a single item of the given itemset.
+ *
+ * @param sp		the itemset
+ * @param ip		the item to change
+ * @param newStatus	the new read status
+ */
+void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newStatus);
+
+/**
+ * Changes the update status of a single item of the given itemset.
+ *
+ * @param sp		the itemset
+ * @param ip		the item to change
+ * @param newStatus	the new update status
+ */
+void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newStatus);
+
 #endif

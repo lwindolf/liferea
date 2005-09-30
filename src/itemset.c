@@ -89,3 +89,61 @@ void itemset_remove_items(itemSetPtr sp) {
 
 	// FIXME: np->needsCacheSave = TRUE
 }
+
+void itemset_set_item_flag(itemSetPtr sp, itemPtr ip, gboolean newStatus) {
+
+	item_set_flag_status(ip, newStatus);
+	if(ITEMSET_TYPE_VFOLDER == sp->type) {
+		/* if this item belongs to a vfolder update the source feed */
+		if(ip->sourceFeed != NULL) {
+			/* propagate change to source feed, this indirectly updates us... */
+			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+			feedlist_load_feed(sourceFeed);
+			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
+				itemlist_set_flag(sourceItem, newStatus);
+			feedlist_unload_feed(sourceFeed);
+		}
+	} else {
+		vfolder_update_item(ip);	/* there might be vfolders using this item */
+		vfolder_check_item(ip);		/* and check if now a rule matches */
+	}
+}
+
+void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newStatus) {
+
+	item_set_read_status(ip, newStatus);
+	if(ITEMSET_TYPE_VFOLDER == sp->type) {
+		/* if this item belongs to a vfolder update the source feed */
+		if(ip->sourceFeed != NULL) {
+			/* propagate change to source feed, this indirectly updates us... */
+			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+			feedlist_load_feed(sourceFeed);
+			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
+				itemlist_set_read_status(sourceItem, newStatus);
+			feedlist_unload_feed(sourceFeed);
+		}
+	} else {		
+		vfolder_update_item(ip);	/* there might be vfolders using this item */
+		vfolder_check_item(ip);		/* and check if now a rule matches */
+		feedlist_update_counters(newStatus?-1:1, 0);
+	}
+}
+
+void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newStatus) {
+
+	item_set_update_status(ip, newStatus);
+	if(ITEMSET_TYPE_VFOLDER == sp->type) {	
+		/* if this item belongs to a vfolder update the source feed */
+		if(ip->sourceFeed != NULL) {
+			/* propagate change to source feed, this indirectly updates us... */
+			sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
+			feedlist_load_feed(sourceFeed);
+			if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
+				itemlist_set_update_status(sourceItem, newStatus);
+			feedlist_unload_feed(sourceFeed);
+		}
+	} else {
+		vfolder_update_item(ip);	/* there might be vfolders using this item */
+		vfolder_check_item(ip);		/* and check if now a rule matches */
+	}
+}

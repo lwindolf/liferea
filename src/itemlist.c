@@ -36,7 +36,7 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 
-/* controller implementation for itemlist handling, bypass only for read-only feed/item access! */
+/* controller implementation for itemlist handling, bypass only for read-only item access! */
 
 extern nodePtr		displayed_node;
 extern itemPtr		displayed_item;
@@ -152,7 +152,7 @@ void itemlist_load(nodePtr node) {
 	
 	if(isFeed) {
 		disableSortingSaving++;
-		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), ((feedPtr)node)->sortColumn, ((feedPtr)node)->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
+		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), node->sortColumn, node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
 		disableSortingSaving--;
 	}
 	
@@ -165,7 +165,7 @@ void itemlist_load(nodePtr node) {
 
 	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 		debug0(DEBUG_CACHE, "unloading everything...");
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feedlist_unload_feed);
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, node_unload);
 	}
 	
 	itemlist_reload(node);
@@ -198,25 +198,17 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	
 	if(newStatus != item_get_flag_status(ip)) {
 		displayed_node->needsCacheSave = TRUE;
-		item_set_flag_status(ip, newStatus);
+
+		/* 1. propagate to model for recursion */
+		itemset_set_item_flag(displayed_node->itemSet, ip, newStatus);
+
+		/* 2. update item list GUI state */
 		ui_itemlist_update_item(ip);
 
-		if(FST_FEED != ip->fp->type) {
-			/* if this item belongs to a vfolder update the source feed */
-			if(ip->sourceFeed != NULL) {
-				/* propagate change to source feed, this indirectly updates us... */
-				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-				feedlist_load_feed(sourceFeed);
-				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
-					itemlist_set_flag(sourceItem, newStatus);
-				feedlist_unload_feed(sourceFeed);
-			}
-		} else {
-			vfolder_update_item(ip);	/* there might be vfolders using this item */
-			vfolder_check_item(ip);		/* and check if now a rule matches */
-		}
+		/* 3. updated feed list unread counters */
 		ui_feedlist_update();
 
+		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();		
 	}
 }
@@ -232,26 +224,17 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 
 	if(newStatus != item_get_read_status(ip)) {		
 		displayed_node->needsCacheSave = TRUE;
-		item_set_read_status(ip, newStatus);
+
+		/* 1. propagate to model for recursion */
+		itemset_set_item_read_status(displayed_node->itemSet, ip, newStatus);
+
+		/* 2. update item list GUI state */
 		ui_itemlist_update_item(ip);
 
-		if(FST_FEED != ip->fp->type) {
-			/* if this item belongs to a vfolder update the source feed */
-			if(ip->sourceFeed != NULL) {
-				/* propagate change to source feed, this indirectly updates us... */
-				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-				feedlist_load_feed(sourceFeed);
-				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
-					itemlist_set_read_status(sourceItem, newStatus);
-				feedlist_unload_feed(sourceFeed);
-			}
-		} else {		
-			vfolder_update_item(ip);	/* there might be vfolders using this item */
-			vfolder_check_item(ip);		/* and check if now a rule matches */
-			feedlist_update_counters(newStatus?-1:1, 0);
-		}
+		/* 3. updated feed list unread counters */
 		ui_feedlist_update();
 
+		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
 	}
 }
@@ -267,25 +250,17 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 	
 	if(newStatus != item_get_update_status(ip)) {	
 		displayed_node->needsCacheSave = TRUE;
-		item_set_update_status(ip, newStatus);
+
+		/* 1. propagate to model for recursion */
+		itemset_set_item_update_status(displayed_node->itemSet, ip, newStatus);
+
+		/* 2. update item list GUI state */
 		ui_itemlist_update_item(ip);	
 
-		if(FST_FEED != ip->fp->type) {	
-			/* if this item belongs to a vfolder update the source feed */
-			if(ip->sourceFeed != NULL) {
-				/* propagate change to source feed, this indirectly updates us... */
-				sourceFeed = ip->sourceFeed;	/* keep feed pointer because ip might be free'd */
-				feedlist_load_feed(sourceFeed);
-				if(NULL != (sourceItem = feed_lookup_item(sourceFeed, ip->sourceNr)))
-					itemlist_set_update_status(sourceItem, newStatus);
-				feedlist_unload_feed(sourceFeed);
-			}
-		} else {
-			vfolder_update_item(ip);	/* there might be vfolders using this item */
-			vfolder_check_item(ip);		/* and check if now a rule matches */
-		}
+		/* 3. updated feed list unread counters */
 		ui_feedlist_update();
 
+		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
 	}
 }
