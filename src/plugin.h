@@ -24,6 +24,14 @@
 #include <glib.h>
 #include <gmodule.h>
 
+/* Liferea functionality can be extended by plugins loaded
+   on startup. Currently there are a few plugin types
+   listed below.
+
+   The plugin management interface allows initial loading
+   of Liferea plugins as well as enabling/disabling of 
+   single plugins. */
+    
 #define PLUGIN_ID_MOZILLA_RENDERER	1
 #define PLUGIN_ID_GTKHTML2_RENDERER	2
 

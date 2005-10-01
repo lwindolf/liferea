@@ -25,12 +25,12 @@
 #include <glib.h>
 #include <libxml/tree.h>
 #include "support.h"
-#include "ui_htmlview.h"
 #include "metadata.h"
 #include "common.h"
-#include "ns_slash.h"
-#include "ns_photo.h"
 #include "debug.h"
+#include "parsers/ns_slash.h"
+#include "parsers/ns_photo.h"
+#include "ui/ui_htmlview.h"
 
 /* HTML definitions used for standard metadata rendering */
 #define	IMG_START	"<img class=\"feed\" src=\""

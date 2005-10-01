@@ -26,6 +26,21 @@
 #include "folder.h"
 #include "plugin.h"
 
+/* Liferea allows to have different sources for the feed list
+   by adding different feed list provider plugins. Each plugin
+   can have one or more instances each adding one sub tree to 
+   the feed list.
+
+   At least one plugin must be capable of serving as the root
+   node for all other plugins. This mean it has to ensure to load
+   all other node plugin instance at their insertion nodes in
+   the feed list.
+
+   Each plugin has to able to server user requests and is 
+   responsible for keeping its feed list nodes states up-to-date.
+   A plugin can omit all callbacks marked as optional. */
+
+
 #define FL_PLUGIN_API_VERSION 1
 
 enum {

@@ -8,7 +8,7 @@ if WITH_MOZILLA
 MOZILLA = mozilla
 endif
 
-SUBDIRS = . $(GTKHTML2) $(MOZILLA)
+SUBDIRS = net parsers ui . $(GTKHTML2) $(MOZILLA)
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -46,40 +46,9 @@ liferea_bin_SOURCES = \
 	rule.c rule.h \
 	support.c support.h \
 	update.c update.h \
-	vfolder.c vfolder.h \
-	parsers/atom10.c parsers/atom10.h \
-	parsers/cdf_channel.c parsers/cdf_channel.h \
-	parsers/cdf_item.c parsers/cdf_item.h \
-	parsers/ns_admin.c parsers/ns_admin.h \
-	parsers/ns_ag.c parsers/ns_ag.h \
-	parsers/ns_blogChannel.c parsers/ns_blogChannel.h \
-	parsers/ns_cC.c parsers/ns_cC.h \
-	parsers/ns_content.c parsers/ns_content.h \
-	parsers/ns_dc.c parsers/ns_dc.h \
-	parsers/ns_fm.c parsers/ns_fm.h \
-	parsers/ns_ocs.c parsers/ns_ocs.h \
-	parsers/ns_photo.c parsers/ns_photo.h \
-	parsers/ns_slash.c parsers/ns_slash.h \
-	parsers/ns_syn.c parsers/ns_syn.h \
-	parsers/ocs_dir.c parsers/ocs_dir.h \
-	parsers/ocs_ns.h \
-	parsers/opml.c parsers/opml.h \
-	parsers/pie_entry.c parsers/pie_entry.h \
-	parsers/pie_feed.c parsers/pie_feed.h \
-	parsers/rss_channel.c parsers/rss_channel.h \
-	parsers/rss_item.c parsers/rss_item.h \
-	net/compat.h \
-	net/conversions.c net/conversions.h \
-	net/cookies.c net/cookies.h \
-	net/digcalc.c net/digcalc.h \
-	net/md5.c net/md5.h \
-	net/netio.c net/netio.h \
-	net/net-support.c net/net-support.h \
-	net/os-support.c net/os-support.h \
-	net/zlib_interface.c net/zlib_interface.h \
-	net/downloadlib.h
+	vfolder.c vfolder.h 
 
-liferea_bin_LDADD =  $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS)  $(GNUTLS_LIBS)
+liferea_bin_LDADD =  net/liblinet.a parsers/libliparsers.a ui/libliui.so $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS)  $(GNUTLS_LIBS)
 
 if PLATFORM_WIN32
 

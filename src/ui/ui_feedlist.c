@@ -132,6 +132,32 @@ folderPtr ui_feedlist_get_target_folder(int *pos) {
 	}
 }
 
+static void ui_feedlist_node_update(nodePtr np) {
+	GtkTreeIter	iter;
+	gchar		*label, *tmp;
+	
+	if(np->ui_data == NULL)
+		return;
+	
+	iter = ((ui_data*)np->ui_data)->row;
+	
+	label = unhtmlize(g_strdup(node_get_title(np)));
+	/* FIXME: Unescape text here! */
+	tmp = g_markup_escape_text(label,-1);
+	g_free(label);
+	if(np->unreadCount > 0)
+		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, np->unreadCount);
+	else
+		label = g_strdup_printf("%s", tmp);
+	g_free(tmp);
+	
+	gtk_tree_store_set(feedstore, &iter, FS_LABEL, label,
+	                                    FS_UNREAD, np->unreadCount,
+	                                    FS_ICON, np->icon,
+	                                    -1);
+	g_free(label);
+}
+
 static void ui_feedlist_update_(GtkTreeIter *iter) {
 	GtkTreeIter	childiter;
 	gboolean	valid;
@@ -152,12 +178,8 @@ static void ui_feedlist_update_(GtkTreeIter *iter) {
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 	}
 
-	if(ptr != NULL) {
-		if(FST_FOLDER == ptr->type)
-			ui_folder_update((folderPtr)ptr);
-		else
-			ui_feed_update((feedPtr)ptr);
-	}
+	if(ptr != NULL)
+		ui_node_update(ptr);
 }
 
 void ui_feedlist_update_iter(GtkTreeIter *iter) {

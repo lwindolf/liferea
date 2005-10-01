@@ -25,6 +25,14 @@
 #include "item.h"
 #include "itemset.h"
 
+/* Liferea's GUI consists of three parts. Feed list, item list
+   and HTML view. The feed list is a view of all available
+   nodes. The feed list allows nodes of different types.
+
+   According to the node's type the interface propagates
+   user interaction to the feed list node type implementation
+   and allows the implementation to change the nodes state. */
+
 /** node types (also used for feed list tree store) */
 enum node_types {
 	FST_INVALID 	= 0,		/**< invalid type */
@@ -45,8 +53,11 @@ typedef struct node {
 	/* feed list state properties of this node */
 	gchar		*id;		/**< unique node identifier string */
 
+	gchar		*title;		/**< the label of the node in the feed list */
 	gpointer	icon;		/**< pointer to pixmap, if there is a favicon */
 	guint		loaded;		/**< counter which is non-zero if items are to be kept in memory */
+	guint		unreadCount;	/**< the actual number of unread items of this node (including child nodes) */
+	gboolean	available;	/**< availability of this node (usually the last downloading state) */
 	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
 
 	/* item list state properties of this node */
@@ -72,6 +83,40 @@ nodePtr node_new(void);
  * @param data	the structure
  */
 void node_add_data(nodePtr np, guint type, gpointer data);
+
+/** 
+ * Query the node's title for the feed list.
+ *
+ * @param np	the node
+ *
+ * @returns the title
+ */
+const gchar * node_get_title(nodePtr np);
+
+/**
+ * Sets the node's title for the feed list.
+ *
+ * @param np	the node
+ * @param title	the title
+ */
+void node_set_title(nodePtr np, const gchar *title);
+
+/**
+ * Query the number of unread items of a node.
+ *
+ * @param np	the node
+ * 
+ * @returns the number of unread items
+ */
+guint node_get_unread_count(nodePtr np);
+
+/**
+ * Set the number of unread items of a node.
+ *
+ * @param np		the node
+ * @param unreadCount	the number of unread items
+ */
+void node_set_unread_count(nodePtr np, guint unreadCount);
 
 /**
  * Query the unique id string of the node.
@@ -122,8 +167,10 @@ void node_unload(nodePtr np);
  * Node content rendering
  *
  * @param np	the node
+ *
+ * @returns string with node rendered in HTML
  */
-void node_render(nodePtr np);
+gchar * node_render(nodePtr np);
 
 /**
  * Node auto-update scheduling.

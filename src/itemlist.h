@@ -25,6 +25,9 @@
 #include "item.h"
 #include "feed.h"
 
+/* The itemlist interface serves as a controller implementation
+   handling user trigger actions and backend updates for the
+   currently loaded itemset. */
 
 /** Loads or merges the passed feeds items into the itemlist.  If the
  * selected feed is equal to the passed one we do merging. Otherwise

@@ -36,56 +36,6 @@
 #include "ui_feed.h"
 #include "ui_notification.h"
 
-/** determines the feeds favicon or default icon */
-static GdkPixbuf* ui_feed_get_icon(feedPtr fp) {
-	gpointer	favicon;
-	
-	g_assert(FST_FOLDER != fp->type);
-		
-	if(!feed_get_available(fp))
-		return icons[ICON_UNAVAILABLE];
-
-	if(NULL != (favicon = feed_get_favicon(fp)))
-		return favicon;
-	
-	if(fp->fhp != NULL && fp->fhp->icon < MAX_ICONS)
-		return icons[fp->fhp->icon];
-
-	/* And default to the available icon.... */
-	return icons[ICON_AVAILABLE];
-}
-
-/** updating of a single feed list entry */
-void ui_feed_update(feedPtr fp) {
-	GtkTreeIter	iter;
-	gchar		*label, *tmp;
-	int		count;
-	
-	if(fp->ui_data == NULL)
-		return;
-	
-	iter = ((ui_data*)fp->ui_data)->row;
-	
-	g_assert(FST_FOLDER != fp->type);
-	
-	count = feed_get_unread_counter(fp);
-	label = unhtmlize(g_strdup(feed_get_title(fp)));
-	/* FIXME: Unescape text here! */
-	tmp = g_markup_escape_text(label,-1);
-	g_free(label);
-	if(count > 0)
-		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, count);
-	else
-		label = g_strdup_printf("%s", tmp);
-	g_free(tmp);
-	
-	gtk_tree_store_set(feedstore, &iter, FS_LABEL, label,
-	                                    FS_UNREAD, count,
-	                                    FS_ICON, ui_feed_get_icon(fp),
-	                                    -1);
-	g_free(label);
-}
-
 /********************************************************************
  * Propdialog                                                       *
  *******************************************************************/

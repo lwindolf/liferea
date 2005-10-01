@@ -221,13 +221,14 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 	gtk_label_set_markup(GTK_LABEL(label_p), labelText_p);
 	g_free(labelText_p);
 	gtk_misc_set_alignment(GTK_MISC(label_p), 0.0, 0.5);
-	if(NULL != feedNotif_p->feed_p->icon) {
+	// FIXME:
+	/*if(NULL != feedNotif_p->feed_p->icon) {
 		icon_p = gtk_image_new_from_pixbuf(feedNotif_p->feed_p->icon);
 		gtk_box_pack_start(GTK_BOX(hbox_p), icon_p, FALSE, FALSE, 5);
 		gtk_misc_set_padding(GTK_MISC(label_p), 5, 10);
-	} else {
+	} else {*/
 		gtk_misc_set_padding(GTK_MISC(label_p), 15, 10);
-	}
+	//}
 	gtk_box_pack_start(GTK_BOX(hbox_p), label_p, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(feedNotif_p->box_p), hbox_p, TRUE, TRUE, 0);
 	

@@ -27,6 +27,11 @@
 #include "item.h"
 #include "folder.h"
 
+/* The feed interface can be used by all feed list provider plugins
+   serving real feeds that are downloaded from the web, are provided
+   by local files or executed commands. The feed list provider plugins
+   can be are not forced to use this interface. */
+
 /** Flags used in the request structure */
 enum feed_request_flags {
 	FEED_REQ_SHOW_PROPDIALOG = 1,

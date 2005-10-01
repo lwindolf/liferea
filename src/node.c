@@ -30,6 +30,9 @@ nodePtr node_new() {
 	np = (nodePtr)g_new0(struct node, 1);
 	np->sortColumn = IS_TIME;
 	np->sortReversed = TRUE;	/* default sorting is newest date at top */
+	np->available = FALSE;
+	np->unreadCount = 0;
+	np->title = g_strdup("FIXME");
 
 	return np;
 }
@@ -115,12 +118,12 @@ void node_unload(nodePtr np) {
 	}
 }
 
-void node_render(nodePtr np) {
+gchar * node_render(nodePtr np) {
 
-	FL_PLUGIN(np)->node_render(np);
+	return FL_PLUGIN(np)->node_render(np);
 }
 
-void node_update(nodePtr np, guint flags) {
+void node_request_update(nodePtr np, guint flags) {
 
 	if(FST_VFOLDER == np->type)
 		return;
@@ -128,7 +131,7 @@ void node_update(nodePtr np, guint flags) {
 	FL_PLUGIN(np)->node_update(np, flags);
 }
 
-void node_auto_update(nodePtr np) {
+void node_request_auto_update(nodePtr np) {
 
 	if(FST_VFOLDER == np->type)
 		return;
@@ -187,6 +190,24 @@ nodePtr node_add_folder(nodePtr parent) {
 /* ---------------------------------------------------------------------------- */
 /* node attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
+
+void node_set_title(nodePtr np, const gchar *title) {
+
+	g_free(np->title);
+	np->title = g_strdup(title);
+}
+
+const gchar * node_get_title(nodePtr np) { return np->title }
+
+void node_set_unread_count(nodePtr np, guint unreadCount) {
+
+	/* unread count propagation to folders
+	   is done by specific implementations
+	   to be more flexible */
+	np->unreadCount = unreadCount;
+}
+
+guint node_get_unread_count(nodePtr np) { return np->unreadCount; }
 
 void node_set_id(nodePtr np, const gchar *id) {
 

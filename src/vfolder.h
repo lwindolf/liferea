@@ -25,6 +25,18 @@
 #include "item.h"
 #include "rule.h"
 
+/* The vfolder implementation of Liferea is similar to the
+   one in Evolution. Vfolders are effectivly permanent searches.
+
+   Each vfolder instance is a set of rules applied to all items
+   of all other feeds (excluding other vfolders). Each vfolder
+   instance can have a single node in the feed list. 
+   
+   The vfolder concept also constitutes an own itemset type
+   with special update propagation and removal handling. */
+
+
+// FIXME: this is not correct
 /* standard feed/item type interface */
 feedHandlerPtr	vfolder_init_feed_handler(void);
 

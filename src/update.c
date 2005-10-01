@@ -30,8 +30,8 @@
 #include "debug.h"
 #include "update.h"
 #include "conf.h"
-#include "ui_queue.h"
-#include "ui_mainwindow.h"
+#include "ui/ui_queue.h"
+#include "ui/ui_mainwindow.h"
 #include "net/downloadlib.h"
 
 /* must never be less than 2, because first thread works exclusivly on high prio requests */

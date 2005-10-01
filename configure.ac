@@ -363,6 +363,9 @@ Makefile
 src/Makefile
 src/mozilla/Makefile
 src/gtkhtml2/Makefile
+src/net/Makefile
+src/parsers/Makefile
+src/ui/Makefile
 src/liferea
 doc/Makefile
 doc/html/Makefile

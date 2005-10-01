@@ -141,7 +141,9 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 	}
 
 	if(NULL != buffer) {
-		feedlist_load_feed(requestData->fp);
+		// FIXME!!!
+		//feedlist_load_feed(requestData->fp);
+		g_warning("blogchannel code is broken!!!");
 		
 		tmp = NULL;		
 		switch(requestData->tag) {
@@ -170,10 +172,12 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:blogRoll"));
 		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:mySubscriptions"));
 		metadata_list_set(&(requestData->fp->metadata), "blogChannel", buffer);
-		requestData->fp->needsCacheSave = TRUE;	/* needed because we're processing after feed parsing */
+		// FIXME!!!
+		//requestData->fp->needsCacheSave = TRUE;	/* needed because we're processing after feed parsing */
 		g_free(buffer);
 		
-		feedlist_unload_feed(requestData->fp);
+		// FIXME!!!
+		//feedlist_unload_feed(requestData->fp);
 	}
 	g_free(requestData);
 }

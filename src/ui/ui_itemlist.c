@@ -211,10 +211,12 @@ void ui_itemlist_update_item(itemPtr ip) {
 	GdkPixbuf	*icon = NULL, *favicon;
 
 	/* favicon for feed icon column (visible in folders/vfolders/searches) */
-	if(NULL != ip->sourceFeed)
+	//FIXME!!!
+	/*if(NULL != ip->sourceFeed)
 		favicon = ip->sourceFeed->icon;
 	else
 		favicon = ip->fp->icon;
+		*/
 
 	/* Time */
 	if(0 != ip->time) {
