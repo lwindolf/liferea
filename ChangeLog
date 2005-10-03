@@ -4,6 +4,12 @@
 
 	* HTTPS support. (Nathan Conrad)
 
+2005-09-?? ??? <???>
+	Version 0.9.9
+	
+	* Maximumization state of mainwindow is now remembered
+	when the main window is hidden. (Debian bug #330344)
+	
 2005-09-??  ???  <???> 
 
 	Version 0.9.8

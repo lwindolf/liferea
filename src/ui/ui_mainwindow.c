@@ -556,7 +556,7 @@ gboolean on_mainwindow_window_state_event(GtkWidget *widget, GdkEvent *event, gp
 	
 		//if(!GTK_WIDGET_VISIBLE(mainwindow))
 		//return FALSE;
-		if (changed == GDK_WINDOW_STATE_MAXIMIZED) {
+		if (changed == GDK_WINDOW_STATE_MAXIMIZED && !(state & GDK_WINDOW_STATE_WITHDRAWN)) {
 			if(state & GDK_WINDOW_STATE_MAXIMIZED)
 				setBooleanConfValue(LAST_WINDOW_MAXIMIZED, TRUE);
 			else
