@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "favicon.h"
 #include "node.h"
 #include "conf.h"
 #include "fl_providers/fl_plugin.h"
@@ -52,15 +53,15 @@ static void node_load_cb(nodePtr np, gpointer user_data) {
 	itemSetPtr	sp = (itemSetPtr)user_data;
 
 	switch(np->type) {
-		FST_FOLDER:
+		case FST_FOLDER:
 			ui_feedlist_do_foreach_data(np, node_load_cb, (gpointer)sp);
 			break;
-		FST_FEED:
-		FST_PLUGIN:
+		case FST_FEED:
+		case FST_PLUGIN:
 			if(NULL != FL_PLUGIN(np)->node_load)
 				FL_PLUGIN(np)->node_load(np);
 			break;
-		FST_VFOLDER:
+		case FST_VFOLDER:
 			// FIXME:
 			break;
 		default:
@@ -197,7 +198,7 @@ void node_set_title(nodePtr np, const gchar *title) {
 	np->title = g_strdup(title);
 }
 
-const gchar * node_get_title(nodePtr np) { return np->title }
+const gchar * node_get_title(nodePtr np) { return np->title; }
 
 void node_set_unread_count(nodePtr np, guint unreadCount) {
 

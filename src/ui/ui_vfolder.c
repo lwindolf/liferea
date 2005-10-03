@@ -22,6 +22,8 @@
 #  include <config.h>
 #endif
 
+#include <gtk/gtk.h>
+
 #include "feed.h"
 #include "rule.h"
 #include "vfolder.h"
