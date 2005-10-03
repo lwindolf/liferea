@@ -25,7 +25,6 @@
 
 #include <gtk/gtk.h>
 #include "feed.h"
-#include "folder.h"
 
 /* constants for attributes in feedstore */
 enum {
@@ -84,7 +83,7 @@ gboolean ui_feedlist_get_iter(GtkTreeIter *iter);
  * @returns the parent folder.
  */
 
-folderPtr ui_feedlist_get_parent(nodePtr ptr);
+nodePtr ui_feedlist_get_parent(nodePtr ptr);
 
 /* Selects the proper destination for a new feed based on which feed
  * is currently selected.
@@ -95,7 +94,7 @@ folderPtr ui_feedlist_get_parent(nodePtr ptr);
  *
  * @returns folder into which the feed should be inserted
  */
-folderPtr ui_feedlist_get_target_folder(int *pos);
+nodePtr ui_feedlist_get_target_folder(int *pos);
 
 /**
  * Create a new subscription in the currently selected folder.
@@ -147,11 +146,11 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 #define ui_feedlist_do_for_all_data(ptr, filter, func, user_data) ui_feedlist_do_for_all_full(ptr,filter,func,1,user_data)
 
 /** 
- * Tries to find the first unread feed in the given folder.
+ * Tries to find the first node with an unread item in the given folder.
  * 
  * @return feed pointer or NULL
  */
-feedPtr	ui_feedlist_find_unread_feed(nodePtr folder);
+nodePtr	ui_feedlist_find_unread_feed(nodePtr folder);
 
 /**
  * marks all items of the feed of the given tree iter as read 

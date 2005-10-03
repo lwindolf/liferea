@@ -33,12 +33,12 @@
  */
 void ui_folder_remove_node(nodePtr ptr);
 
-void ui_folder_update(folderPtr folder);
-gboolean ui_is_folder_expanded(folderPtr folder);
-gboolean ui_folder_is_empty(folderPtr folder);
+void ui_folder_update(nodePtr folder);
+gboolean ui_is_folder_expanded(nodePtr folder);
+gboolean ui_folder_is_empty(nodePtr folder);
 void ui_folder_check_if_empty(void);
 /* expansion/collapsing */
-void ui_folder_set_expansion(folderPtr folder, gboolean expanded);
+void ui_folder_set_expansion(nodePtr folder, gboolean expanded);
 
 /* Callbacks */
 void on_popup_newfolder_selected(void);

@@ -27,7 +27,6 @@
 #include <sys/stat.h>
 #include <libxml/tree.h>
 #include "feed.h"
-#include "folder.h"
 #include "vfolder.h"
 #include "rule.h"
 #include "conf.h"
@@ -35,9 +34,9 @@
 #include "interface.h"
 #include "support.h"
 #include "favicon.h"
-#include "ui/ui_folder.h"
-#include "ui/ui_feedlist.h"
 #include "debug.h"
+#include "ui/ui_node.h"
+#include "ui/ui_feedlist.h"
 
 struct exportData {
 	gboolean internal; /**< Include all the extra Liferea-specific tags */
@@ -56,18 +55,17 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 	
 	// FIXME: support other types!
 	if(FST_FOLDER == np->type) {
-		folderPtr folder = (folderPtr)np->data;
 		struct exportData data;
 		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST folder_get_title(folder));
+		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST node_get_title(np));
 		
 		if(internal) {
-			if(ui_is_folder_expanded(folder))
+			if(ui_node_is_folder_expanded(np))
 				xmlNewProp(childNode, BAD_CAST"expanded", NULL);
 			else
 				xmlNewProp(childNode, BAD_CAST"collapsed", NULL);
 		}
-		debug1(DEBUG_CONF, "adding folder %s...", folder_get_title(folder));
+		debug1(DEBUG_CONF, "adding folder %s...", node_get_title(np));
 		data.cur = childNode;
 		data.internal = internal;
 		ui_feedlist_do_for_all_data(np, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
@@ -267,13 +265,11 @@ static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
 	}
 }
 
-static void import_parse_outline(xmlNodePtr cur, nodePtr parent, gboolean trusted) {
+static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr, *sortStr;
 	gchar		*title, *source, *typeStr, *tmp;
 	nodePtr		np = NULL;
 	feedPtr		fp = NULL;
-	folderPtr	folder = (folderPtr)parent->data;
-	folderPtr	child;
 	gboolean	dontParseChildren = FALSE;
 	gint		interval;
 	gchar		*id = NULL;
@@ -386,7 +382,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parent, gboolean truste
 		
 		tmp = xmlGetProp(cur, BAD_CAST"twoPane");
 		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			feed_set_two_pane_mode(fp, TRUE);
+			node_set_two_pane_mode(np, TRUE);
 		if(tmp != NULL)
 			xmlFree(tmp);
 
@@ -421,7 +417,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parent, gboolean truste
 				                         | FEED_REQ_AUTH_DIALOG);
 		}
 
-		feedlist_add_node(folder, np, -1);
+		feedlist_add_node(parentNode, np, -1);
 		
 		if(source != NULL)
 			xmlFree(source);
@@ -431,16 +427,14 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parent, gboolean truste
 		
 	} else { /* It is a folder */
 		debug1(DEBUG_CONF, "adding folder \"%s\"", title);
-		child = restore_folder(folder, title, NULL, FST_FOLDER);
-		g_assert(NULL != child);
-		node_add_data(np, FST_FOLDER, (gpointer)child);	// FIXME: make node adding generic
-		feedlist_add_folder(folder, (folderPtr)child, -1);
-		folder = child;
+		node_set_title(np, title);
+		node_add_data(np, FST_FOLDER, NULL);	// FIXME: make node adding generic
+		feedlist_add_node(parentNode, np, -1);
 
 		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
-			ui_folder_set_expansion(folder, TRUE);
+			ui_node_set_expansion(np, TRUE);
 		if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
-			ui_folder_set_expansion(folder, FALSE);
+			ui_node_set_expansion(np, FALSE);
 	}
 	if(title != NULL)
 		xmlFree(title);
@@ -450,7 +444,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parent, gboolean truste
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
 			if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-				import_parse_outline(cur, folder, trusted);
+				import_parse_outline(cur, parentNode, trusted);
 		
 				cur = cur->next;				
 		}
@@ -459,25 +453,25 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parent, gboolean truste
 	debug_exit("import_parse_outline");
 }
 
-static void import_parse_body(xmlNodePtr n, folderPtr parent, gboolean trusted) {
+static void import_parse_body(xmlNodePtr n, nodePtr parentNode, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
 	while(cur != NULL) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			import_parse_outline(cur, parent, trusted);
+			import_parse_outline(cur, parentNode, trusted);
 		cur = cur->next;
 	}
 }
 
-static void import_parse_OPML(xmlNodePtr n, folderPtr parent, gboolean trusted) {
+static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
 	while(cur != NULL) {
 		/* we ignore the head */
 		if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
-			import_parse_body(cur, parent, trusted);
+			import_parse_body(cur, parentNode, trusted);
 		}
 		cur = cur->next;
 	}	
@@ -489,14 +483,14 @@ static void import_parse_OPML(xmlNodePtr n, folderPtr parent, gboolean trusted) 
  * loading its items are automatically checked against all 
  * vfolder rules.
  */
-static void import_initial_load_feed(feedPtr fp) {
+static void import_initial_load(nodePtr np) {
 
-	if(!feedlist_load_feed(fp))
-		feed_schedule_update(fp, 0);
-	feedlist_unload_feed(fp);
+	feedlist_load_node(np);
+	feedlist_update_node(np);
+	feedlist_unload_node(np);
 }
 
-void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean showErrors, gboolean trusted) {
+void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
@@ -518,7 +512,7 @@ void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean show
 			while(cur != NULL) {
 				if(!xmlIsBlankNode(cur)) {
 					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
-						import_parse_OPML(cur, parent, trusted);
+						import_parse_OPML(cur, parentNode, trusted);
 					} else {
 						if(showErrors)
 							ui_show_error_box(_("\"%s\" is not a valid OPML document! Liferea cannot import this file!"), filename);
@@ -533,7 +527,7 @@ void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean show
 	}
 	
 	/* load all feeds and by doing so automatically load all vfolders */
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, import_initial_load_feed);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, import_initial_load);
 	ui_feedlist_update();
 }
 
@@ -541,16 +535,17 @@ void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean show
 /* UI stuff */
 
 void on_import_activate_cb(const gchar *filename, gpointer user_data) {
-	folderPtr folder;
+	nodePtr		np;
 	
-	if (filename != NULL) {
-		
-		folder = restore_folder(NULL, _("Imported feed list"), NULL, FST_FOLDER);
+	if(filename != NULL) {
+		np = node_new();
+		node_set_title(np, _("Imported feed list"));
+		node_add_data(np, FST_FOLDER, NULL);
 		
 		/* add the new folder to the model */
-		feedlist_add_folder(NULL, (folderPtr)folder, -1);
+		feedlist_add_node(NULL, np, -1);
 		
-		import_OPML_feedlist(filename, folder, TRUE, FALSE);
+		import_OPML_feedlist(filename, np, TRUE, FALSE);
 	}
 }
 

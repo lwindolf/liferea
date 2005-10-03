@@ -26,7 +26,7 @@
 #include "ui/ui_itemlist.h"
 
 /* returns a unique node id */
-static gchar * node_new_id() {
+gchar * node_new_id() {
 	int		i;
 	gchar		*id, *filename;
 	gboolean	already_used;

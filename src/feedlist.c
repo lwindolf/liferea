@@ -102,7 +102,7 @@ void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
 void feedlist_update_node(nodePtr np) {
 
-	node_request_update(np);
+	node_request_update(np, 0);
 }
 
 static void feedlist_remove_node_(nodePtr np) { 
@@ -169,6 +169,14 @@ void feedlist_load_node(nodePtr np) {
 
 	if(FST_FOLDER == np->type)
 		ui_feedlist_do_foreach_data(np, feedlist_merge_itemset_cb, (gpointer)&(np->itemSet));
+}
+
+void feedlist_unload_node(nodePtr np) {
+
+	node_unload(np);
+
+	if(FST_FOLDER == np->type)
+		ui_feedlist_do_foreach(np, node_unload);
 }
 
 static gboolean feedlist_auto_update(void *data) {

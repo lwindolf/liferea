@@ -22,10 +22,11 @@
 #  include <config.h>
 #endif
 
+#include <string.h>
 #include "callbacks.h"
 #include "interface.h"
 #include "feed.h"
-#include "folder.h"
+#include "node.h"
 #include "rule.h"
 #include "vfolder.h"
 #include "support.h"
@@ -119,16 +120,17 @@ void on_searchentry_changed(GtkEditable *editable, gpointer user_data) {
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	gint			pos;
-	feedPtr			fp;
-	folderPtr		folder = NULL;
+	nodePtr			np, folder = NULL;
 	
 	if(NULL != searchFeed) {
-		folder = ui_feedlist_get_target_folder(&pos);
-		fp = searchFeed;
+		np = node_new();
+		node_set_title(np, feed_get_title(searchFeed));
+		node_add_data(np, FST_VFOLDER, (gpointer)searchFeed);
 		searchFeed = NULL;
-		feedlist_add_feed(folder, (feedPtr)fp, pos);
+		folder = ui_feedlist_get_target_folder(&pos);
+		feedlist_add_feed(folder, np, pos);
 		ui_feedlist_update();
-		ui_feedlist_select((nodePtr)fp);
+		ui_feedlist_select(np);
 	} else {
 		ui_show_info_box(_("Please do a search first!"));
 	}
@@ -137,14 +139,19 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gint			pos;
 	feedPtr			fp;
-	folderPtr		folder = NULL;
+	nodePtr			np, folder = NULL;
 	
 	fp = vfolder_new();
 	feed_set_title(fp, _("New VFolder"));
+
+	np = node_new();
+	node_set_title(np, feed_get_title(fp));
+	node_add_data(np, FST_VFOLDER, (gpointer)fp);
+
 	folder = ui_feedlist_get_target_folder(&pos);
-	feedlist_add_feed(folder, (feedPtr)fp, pos);
+	feedlist_add_feed(folder, np, pos);
 	ui_feedlist_update();
-	ui_feedlist_select((nodePtr)fp);
+	ui_feedlist_select(np);
 }
 
 

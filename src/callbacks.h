@@ -25,7 +25,7 @@
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_folder.h"
+#include "ui/ui_node.h"
 #include "ui/ui_search.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"

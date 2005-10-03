@@ -45,7 +45,6 @@
 #include "parsers/opml.h"
 #include "vfolder.h"
 #include "feed.h"
-#include "folder.h"
 #include "favicon.h"
 #include "callbacks.h"
 #include "net/cookies.h"

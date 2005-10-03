@@ -23,7 +23,6 @@
 #define _CONF_H
 
 #include <glib.h>
-#include "folder.h"
 
 /* browsing settings */
 #define BROWSE_INSIDE_APPLICATION	"/apps/liferea/browse-inside-application"
@@ -89,9 +88,6 @@ void	conf_load(void);
 /* methods to modify folder contents */
 GSList * getFeedKeyList(gchar *keyprefix);
 void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
-
-folderPtr feedlist_insert_help_folder(folderPtr parent, GTimeVal *lastPoll, GTimeVal *lastFaviconPoll);
-
 gchar * getFreeFeedKey(gchar *keyprefix);
 
 /* preferences configuration methods */

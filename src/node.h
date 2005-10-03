@@ -134,6 +134,13 @@ guint node_get_unread_count(nodePtr np);
 void node_set_unread_count(nodePtr np, guint unreadCount);
 
 /**
+ * Returns a new unique node id.
+ *
+ * @returns new id
+ */
+gchar * node_new_id(void);
+
+/**
  * Query the unique id string of the node.
  *
  * @param np	the node

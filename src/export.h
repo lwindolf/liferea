@@ -32,13 +32,13 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal);
 
 /**
  * Reads an OPML file and inserts it into the feedlist.
- * @param filename path to file that will be read for importing
- * @param showErrors set to TRUE if errors should generate a error dialog
- * @param parent folder
- * @param trusted set to TRUE if the feedlist is being imported from a trusted source
+ *
+ * @param filename	path to file that will be read for importing
+ * @param showErrors	set to TRUE if errors should generate a error dialog
+ * @param parentNode	node of the parent folder
+ * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
  */
-void import_OPML_feedlist(const gchar *filename, folderPtr parent, gboolean showErrors, gboolean trusted);
-
+void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted);
 
 /* GUI dialog callbacks */
 void

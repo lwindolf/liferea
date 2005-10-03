@@ -28,11 +28,10 @@
 #include "support.h"
 #include "callbacks.h"
 #include "feed.h"
-#include "folder.h"
 #include "debug.h"
 #include "conf.h"
-#include "ui_folder.h"
-#include "ui_dnd.h"
+#include "ui/ui_node.h"
+#include "ui/ui_dnd.h"
 
 extern GtkTreeStore *feedstore;
 

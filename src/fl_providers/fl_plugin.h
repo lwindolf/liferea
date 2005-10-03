@@ -23,7 +23,6 @@
 
 #include "node.h"
 #include "feed.h"
-#include "folder.h"
 #include "plugin.h"
 
 /* Liferea allows to have different sources for the feed list

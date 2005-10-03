@@ -35,7 +35,6 @@
 #include "interface.h"
 #include "callbacks.h"
 #include "feedlist.h"
-#include "folder.h"
 #include "conf.h"
 #include "update.h"
 #include "favicon.h"
@@ -76,10 +75,10 @@ static void ui_feedlist_rows_reordered_cb(GtkTreeModel *model, GtkTreePath *path
 	g_print("rows reordered\n");
 }
 
-folderPtr ui_feedlist_get_parent(nodePtr ptr) {
+nodePtr ui_feedlist_get_parent(nodePtr ptr) {
 	GtkTreeIter	*iter = &((ui_data*)(ptr->ui_data))->row;
 	GtkTreeIter	parent;
-	folderPtr	parentPtr;
+	nodePtr	parentPtr;
 	
 	if(gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore), &parent, iter)) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &parent,
@@ -103,7 +102,7 @@ nodePtr ui_feedlist_get_selected(void) {
 	return ptr;
 }
 
-folderPtr ui_feedlist_get_target_folder(int *pos) {
+nodePtr ui_feedlist_get_target_folder(int *pos) {
 	nodePtr		ptr;
 	GtkTreeIter	iter;
 	GtkTreePath 	*path;
@@ -122,7 +121,7 @@ folderPtr ui_feedlist_get_target_folder(int *pos) {
 
 	if(FST_FOLDER == ptr->type) {
 		*pos = -1;
-		return (folderPtr)ptr;
+		return ptr;
 	} else {
 		path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist"))), &iter);
 		indices = gtk_tree_path_get_indices(path);
@@ -421,9 +420,8 @@ static enum scanStateType scanState = UNREAD_SCAN_INIT;
    after the currently selected feed (including the
    selected feed). If there are no such feeds the 
    search is restarted for all feeds. */
-static feedPtr ui_feedlist_unread_scan(nodePtr folder) {
-	feedPtr			fp;
-	nodePtr			ptr, selectedNode;
+static nodePtr ui_feedlist_unread_scan(nodePtr folder) {
+	nodePtr			ptr, childNode, selectedNode;
 	GtkTreeModel		*model;
 	GtkTreeIter		iter, iter2, *selectedIter, *parent = NULL;
 	gboolean		valid = FALSE;
@@ -462,7 +460,7 @@ static feedPtr ui_feedlist_unread_scan(nodePtr folder) {
 		/* feed match if beyond the selected feed or in second pass... */
 		if((scanState != UNREAD_SCAN_INIT) && (count > 0) &&
 		   ((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type))) {
-		       return (feedPtr)ptr;
+		       return ptr;
 		}
 
 		/* folder traversal if we are searching the selected feed
@@ -472,8 +470,8 @@ static feedPtr ui_feedlist_unread_scan(nodePtr folder) {
 		if((FST_FOLDER == ptr->type) &&
 		   (((scanState != UNREAD_SCAN_INIT) && (count > 0)) ||
 		    gtk_tree_store_is_ancestor(GTK_TREE_STORE(model), &iter, selectedIter))) {
-		       if(NULL != (fp = ui_feedlist_unread_scan(ptr)))
-			 return fp;
+		       if(NULL != (childNode = ui_feedlist_unread_scan(ptr)))
+			 return childNode;
 		} /* Directories are never checked */
 
 		valid = gtk_tree_model_iter_next(model, &iter);
@@ -486,18 +484,18 @@ static feedPtr ui_feedlist_unread_scan(nodePtr folder) {
 	    /* or that we just didn't find anything after the selected feed */
 	    g_assert(scanState != UNREAD_SCAN_SECOND_PASS);
 	    scanState = UNREAD_SCAN_SECOND_PASS;
-	    fp = ui_feedlist_unread_scan(NULL);
-	    return fp;
+	    childNode = ui_feedlist_unread_scan(NULL);
+	    return childNode;
 	  }
 	}
 
 	return NULL;
 }
 
-feedPtr ui_feedlist_find_unread_feed(nodePtr folder) {
+nodePtr ui_feedlist_find_unread_feed(nodePtr folder) {
 
-  scanState = UNREAD_SCAN_INIT;
-  return ui_feedlist_unread_scan(folder);
+	scanState = UNREAD_SCAN_INIT;
+	return ui_feedlist_unread_scan(folder);
 }
 
 /*------------------------------------------------------------------------------*/
@@ -541,20 +539,14 @@ void ui_feedlist_remove_node(nodePtr node) {
 }
 
 void ui_feedlist_delete_prompt(nodePtr np) {
-	GtkWidget *dialog;
-	gchar *text;
+	GtkWidget	*dialog;
+	gchar		*text;
 	
-	g_assert(np != NULL);
 	g_assert(np->ui_data != NULL);
 	g_assert(np == ui_feedlist_get_selected());
 
-	if(FST_FOLDER == np->type) {
-		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), folder_get_title((folderPtr)np));
-		text = g_strdup_printf(_("Are you sure that you want to delete \"%s\" and its contents?"), folder_get_title((folderPtr)np));
-	} else {
-		ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), feed_get_title((feedPtr)np));
-		text = g_strdup_printf(_("Are you sure that you want to delete \"%s\"?"), feed_get_title((feedPtr)np));
-	}
+	ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), node_get_title(np));
+	text = g_strdup_printf((FST_FOLDER == np->type)?_("Are you sure that you want to delete \"%s\" and its contents?"):_("Are you sure that you want to delete \"%s\"?"), node_get_title(np));
 
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
 	                                GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,

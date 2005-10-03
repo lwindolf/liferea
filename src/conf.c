@@ -31,8 +31,6 @@
 #include "support.h"
 #include "callbacks.h"
 #include "update.h"
-#include "feed.h"
-#include "folder.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"

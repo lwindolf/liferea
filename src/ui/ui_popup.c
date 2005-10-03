@@ -23,7 +23,7 @@
 #endif
 
 #include "feed.h"
-#include "folder.h"
+#include "node.h"
 #include "support.h"
 #include "callbacks.h"
 #include "update.h"

@@ -25,7 +25,6 @@
 #include <glib.h>
 #include "node.h"
 #include "item.h"
-#include "folder.h"
 
 /* The feed interface can be used by all feed list provider plugins
    serving real feeds that are downloaded from the web, are provided
