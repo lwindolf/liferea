@@ -33,8 +33,9 @@
 #include "interface.h"
 #include "itemlist.h"
 #include "favicon.h"
-#include "ui_feed.h"
-#include "ui_notification.h"
+#include "ui/ui_feed.h"
+#include "ui/ui_notification.h"
+#include "fl_providers/fl_default.h"
 
 /********************************************************************
  * Propdialog                                                       *
@@ -169,7 +170,7 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
-		ui_feedlist_new_subscription(source, filter, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER);
+		fl_default_feed_add(source, filter, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER);
 		g_free(source);
 	}
 
@@ -238,7 +239,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		ui_data->fp->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
 
 		ui_feedlist_update();
-		conf_feedlist_schedule_save();
+		feedlist_schedule_save();
 		if(needsUpdate)
 			feed_schedule_update(ui_data->fp, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}

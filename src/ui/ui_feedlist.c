@@ -611,7 +611,7 @@ void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data) {
 /* new entry dialog callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
-void ui_feedlist_add(folderPtr parent, nodePtr node, gint position) {
+void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 	GtkTreeIter	*iter, *parentIter = NULL;
 
 	g_assert(node->ui_data == NULL);
@@ -636,41 +636,25 @@ void ui_feedlist_add(folderPtr parent, nodePtr node, gint position) {
 	ui_feedlist_update();
 }
 
-void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags) {
-	feedPtr			fp;
-	gchar			*tmp;
-	int			pos;
-	folderPtr		parent;
+/*void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags) {
 	
 	debug_enter("ui_feedlist_new_subscription");	
 	
-	fp = feed_new();
-	tmp = conf_new_id();
-	feed_set_id(fp, tmp);
-	g_free(tmp);
-
-	feed_set_source(fp, source);
-	feed_set_title(fp, _("New subscription"));
-	feed_set_filter(fp, filter);
-	parent = ui_feedlist_get_target_folder(&pos);
-	feed_set_available(fp, TRUE); /* To prevent the big red X from being next to the new feed */
 	feedlist_add_feed(parent, fp, pos);
 	ui_feedlist_update();
 	ui_feedlist_select((nodePtr)fp);
 	
 	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
 	
-	/*ui_show_error_box(_("The newly created feed's type could not be detected! Please check if the source really points to a resource provided in one of the supported syndication formats"));*/
-	
 	debug_exit("ui_feedlist_new_subscription");
-}
+}*/
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
-	GtkWidget	*newdialog;
-	
-	newdialog = ui_feed_newdialog_new(GTK_WINDOW(mainwindow));
-	
-	gtk_widget_show(newdialog);
+	nodePtr	parent;
+	int	pos;
+
+	parent = ui_feedlist_get_parent(&pos);
+	node_add(parent, FST_FEED);
 }
 
 void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {

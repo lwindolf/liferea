@@ -43,10 +43,12 @@ void feedlist_decrease_item_count(void);
 void feedlist_reset_new_item_count(void);
 void feedlist_update_counters(gint unreadDiff, gint newDiff);
 
-void feedlist_add_feed(folderPtr parent, feedPtr feed, gint position);
-void feedlist_add_folder(folderPtr parent, folderPtr folder, gint position);
-void feedlist_update_feed(nodePtr fp);
+void feedlist_add_node(nodePtr parent, nodePtr np, gint position);
+void feedlist_update_node(nodePtr np);
 void feedlist_remove_node(nodePtr np);
+
+void feedlist_load_node(nodePtr np);
+void feedlist_unload_node(nodePtr np);
 
 /**
  * Schedules a save requests for the feed list.

@@ -203,29 +203,6 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 }
 
 /*----------------------------------------------------------------------*/
-/* feed entry handling							*/
-/*----------------------------------------------------------------------*/
-
-gchar* conf_new_id() {
-	int		i;
-	gchar		*id, *filename;
-	gboolean	already_used;
-	
-	id = g_new0(gchar, 10);
-	do {
-		for(i=0;i<7;i++)
-			id[i] = (char)g_random_int_range('a', 'z');
-		id[7] = '\0';
-		
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
-		already_used = g_file_test(filename, G_FILE_TEST_EXISTS);
-		g_free(filename);
-	} while(already_used);
-	
-	return id;
-}
-
-/*----------------------------------------------------------------------*/
 /* config loading on startup						*/
 /*----------------------------------------------------------------------*/
 

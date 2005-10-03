@@ -69,7 +69,7 @@ struct flPluginInfo_ {
 	void 		(*plugin_deinit)(void);
 
 	/** callback for instance creation request (optional) */
-	nodePtr 	(*handler_new)(void);
+	void	 	(*handler_new)(nodePtr ptr);
 	/** callback for instance deletion request (optional) */
 	void	 	(*handler_delete)(nodePtr ptr);
 	
@@ -89,15 +89,10 @@ struct flPluginInfo_ {
 	/** user interaction callback for node updating (optional) */
 	void 		(*node_update)(nodePtr np, guint flags);
 
-	/** user interaction callback add/subscribe feeds (optional) */
-	feedPtr		(*feed_add)(nodePtr np);
-	/** user interaction callback delete/unsubscribe feeds (optional) */
-	void		(*feed_delete)(feedPtr fp);
-
-	/** user interaction callback add folder (optional) */
-	folderPtr	(*folder_add)(nodePtr np);
-	/** user interaction callback delete folder (optional) */
-	void		(*folder_delete)(folderPtr fp);
+	/** user interaction callback for adding nodes (optional) */
+	nodePtr		(*node_add)(nodePtr np);
+	/** user interaction callback for deleting nodes (optional) */
+	void		(*node_remove)(nodePtr np);
 };
 
 typedef struct flNodeHandler_ flNodeHandler;

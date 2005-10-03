@@ -67,7 +67,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	foldertitleentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
-	folder = restore_folder(NULL, foldertitle, NULL, FST_FOLDER);
+	folder = folder_restore(NULL, foldertitle, NULL, FST_FOLDER);
 	if(folder) {
 		/* add the new folder to the model */
 		parent = ui_feedlist_get_target_folder(&pos);

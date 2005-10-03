@@ -76,6 +76,21 @@ typedef struct node {
 nodePtr node_new(void);
 
 /**
+ * Adding a child node to a given node.
+ *
+ * @param parent	the parent node
+ * @param type		the nodes type
+ */
+void node_add(nodePtr parent, guint type);
+
+/**
+ * Removes the given node from the feed list.
+ *
+ * @param parent	the node
+ */
+void node_remove(nodePtr np);
+
+/**
  * Attaches a data structure to the given node.
  *
  * @param np 	the node to attach to
@@ -186,27 +201,6 @@ void node_auto_update(nodePtr np);
  * @param flags	update handling flags
  */
 void node_update(nodePtr np, guint flags);
-
-/**
- * Removes the given node from the feed list.
- *
- * @param parent	the node
- */
-void node_remove(nodePtr np);
-
-/**
- * Adding a feed child node to a given node.
- *
- * @param parent	the parent node
- */
-nodePtr node_add_feed(nodePtr parent);
-
-/**
- * Adding a folder child node to a given node.
- *
- * @param parent	the parent node
- */
-nodePtr node_add_folder(nodePtr parent);
 
 /**
  * Change/Set the sort column of a given node.

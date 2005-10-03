@@ -174,7 +174,7 @@ void ui_feedlist_dbus_connect(void);
  * @param position	the position in which the folder should be 
  *			added, or -1 to append the folder to the parent.
  */
-void ui_feedlist_add(folderPtr parent, nodePtr node, gint position);
+void ui_feedlist_add(nodePtr parent, nodePtr node, gint position);
 
 /**
  * Prompt the user for confirmation of a folder or feed, and

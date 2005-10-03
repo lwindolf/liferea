@@ -25,17 +25,17 @@
 #include "feedlist.h"
 #include "item.h"
 #include "itemlist.h"
+#include "update.h"
+#include "conf.h"
+#include "debug.h"
+#include "callbacks.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_notification.h"
 #include "ui/ui_tray.h"
-#include "update.h"
-#include "conf.h"
-#include "debug.h"
-#include "favicon.h"
 #include "ui/ui_feed.h"
-#include "callbacks.h"
+#include "fl_providers/fl_plugin.h"
 
 static guint unreadCount = 0;
 static guint newCount = 0;
@@ -94,26 +94,21 @@ void feedlist_reset_new_item_count(void) {
 	}
 }
 
-void feedlist_add_feed(folderPtr parent, feedPtr feed, gint position) {
+void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
-	ui_feedlist_add(parent, (nodePtr)feed, position);
+	ui_feedlist_add(parent, np, position);
+	ui_feedlist_update();
 }
 
-void feedlist_add_folder(folderPtr parent, folderPtr folder, gint position) {
+void feedlist_update_node(nodePtr np) {
 
-	ui_feedlist_add(parent, (nodePtr)folder, position);
+	node_request_update(np);
 }
 
-void feedlist_update_feed(nodePtr np) {
-
-	if(FST_FEED == np->type)	/* don't process vfolders */
-		feed_schedule_update((feedPtr)np, FEED_REQ_PRIORITY_HIGH);
-}
-
-static void feedlist_remove_feed(nodePtr np) { 
+static void feedlist_remove_node_(nodePtr np) { 
 	
 	// FIXME: feedPtr!!!
-	ui_notification_remove_feed((feedPtr)np);	/* removes an existing notification for this feed */
+	//ui_notification_remove_feed((feedPtr)np);	/* removes an existing notification for this feed */
 	ui_folder_remove_node(np);
 	ui_feedlist_update();
 	
@@ -123,7 +118,7 @@ static void feedlist_remove_feed(nodePtr np) {
 
 static void feedlist_remove_folder(nodePtr np) {
 
-	ui_feedlist_do_for_all(np, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, feedlist_remove_node);
+	ui_feedlist_do_for_all(np, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, feedlist_remove_node_);
 	ui_feedlist_update();
 	node_remove(np);	
 }
@@ -135,12 +130,45 @@ void feedlist_remove_node(nodePtr np) {
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	}
 
-	if((FST_FEED == np->type) || (FST_VFOLDER == np->type))	{
-		feedlist_remove_feed(np);
-	} else {
-		if(FST_FOLDER == np->type)
-			feedlist_remove_folder(np);
+	if(FST_FOLDER != np->type)
+		feedlist_remove_node_(np);
+	else
+		feedlist_remove_folder(np);
+}
+
+static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
+	itemSetPtr sp = (itemSetPtr)userdata;
+
+	switch(np->type) {
+		case FST_FOLDER:
+			return; /* a sub folder has no own itemset to add */
+			break;
+		case FST_FEED:
+		case FST_PLUGIN:
+			if(NULL != FL_PLUGIN(np)->node_load)
+				FL_PLUGIN(np)->node_load(np);
+			break;
+		case FST_VFOLDER:
+			/* FIXME */		
+			return;
+			break;
+		default:
+			g_warning("internal error: unknown node type!");
+			return;
+			break;
 	}
+
+	sp->items = g_slist_concat(sp->items, np->itemSet->items);
+	sp->newCount += np->itemSet->newCount;
+	sp->unreadCount += np->itemSet->unreadCount;
+}
+
+void feedlist_load_node(nodePtr np) {
+
+	node_load(np);
+
+	if(FST_FOLDER == np->type)
+		ui_feedlist_do_foreach_data(np, feedlist_merge_itemset_cb, (gpointer)&(np->itemSet));
 }
 
 static gboolean feedlist_auto_update(void *data) {
@@ -309,14 +337,14 @@ void on_popup_refresh_selected(gpointer callback_data, guint callback_action, Gt
 		if(FST_FEED == ptr->type)
 			feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
 		else
-			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, feedlist_update_feed);
+			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, feedlist_update_node);
 	} else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_update_feed);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_update_node);
 }
 
 void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {

@@ -1,7 +1,7 @@
 /**
  * @folder.c folder handling
  *
- * Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@ typedef struct folder {
 	gpointer	*ui_data;
 	
 	gchar		*title;
-	gchar		*id;
 	guint		unreadCount;
 } *folderPtr;
 
@@ -47,8 +46,8 @@ typedef struct folder {
 void	folder_free(folderPtr folder);
 
 /* to create/delete folders */
-folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type);
-void	removeFolder(folderPtr folder);
+folderPtr folder_restore(folderPtr parent, gchar *title, gchar *id, gint type);
+void	folder_remove(folderPtr folder);
 
 /* to read/change folder properties */
 gchar*	folder_get_title(folderPtr folder);

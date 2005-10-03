@@ -54,6 +54,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 	
 	debug_enter("append_node_tag");
 	
+	// FIXME: support other types!
 	if(FST_FOLDER == np->type) {
 		folderPtr folder = (folderPtr)np->data;
 		struct exportData data;
@@ -103,7 +104,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			if(fp->noIncremental)
 				xmlNewProp(childNode, BAD_CAST"noIncremental", BAD_CAST"true");
 				
-			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST feed_get_id(fp));
+			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST node_get_id(np));
 			if(fp->lastPoll.tv_sec > 0) {
 				gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
 				xmlNewProp(childNode, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
@@ -121,7 +122,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			if(FALSE == np->sortReversed)
 				xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
 				
-			if(TRUE == feed_get_two_pane_mode(fp))
+			if(TRUE == node_get_two_pane_mode(np))
 				xmlNewProp(childNode, BAD_CAST"twoPane", BAD_CAST"true");
 
 			if(TRUE == fp->encAutoDownload)
@@ -145,7 +146,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			iter = g_slist_next(iter);
 		}
 		
-		debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), feed_get_id(fp), interval, cacheLimit);
+		debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), node_get_id(np), interval, cacheLimit);
 		g_free(cacheLimit);
 		g_free(interval);
 	}
@@ -266,11 +267,12 @@ static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
 	}
 }
 
-static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trusted) {
+static void import_parse_outline(xmlNodePtr cur, nodePtr parent, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr, *sortStr;
 	gchar		*title, *source, *typeStr, *tmp;
 	nodePtr		np = NULL;
 	feedPtr		fp = NULL;
+	folderPtr	folder = (folderPtr)parent->data;
 	folderPtr	child;
 	gboolean	dontParseChildren = FALSE;
 	gint		interval;
@@ -405,12 +407,12 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 		debug6(DEBUG_CONF, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
 		
 		if(id != NULL) {
-			feed_set_id(fp, id);
+			node_set_id(np, id);
 			xmlFree(id);
 			/* don't load here, because it's not sure that all vfolders are loaded */
 		} else {
-			id = conf_new_id();
-			feed_set_id(fp, id);
+			id = node_new_id();
+			node_set_id(np, id);
 			debug1(DEBUG_CONF, "seems to be an import, setting new id: %s and doing first download...", id);
 			g_free(id);			
 			if(FST_FEED == np->type)	/* don't update vfolders */
@@ -419,7 +421,7 @@ static void import_parse_outline(xmlNodePtr cur, folderPtr folder, gboolean trus
 				                         | FEED_REQ_AUTH_DIALOG);
 		}
 
-		feedlist_add_feed(folder, (feedPtr)fp, -1);
+		feedlist_add_node(folder, np, -1);
 		
 		if(source != NULL)
 			xmlFree(source);

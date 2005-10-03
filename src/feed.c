@@ -1043,10 +1043,13 @@ void feed_remove(feedPtr fp, const gchar *id) {
 	/* FIXME: Move this to a better place. The cache file does not
 	   need to always be deleted, for example when freeing a
 	   feedstruct used for updating. */
-	if(filename && 0 != unlink(filename))
-		/* Oh well.... Can't do anything about it. 99% of the time,
-		   this is spam anyway. */;
+	if(NULL != filename) {
+		if(0 != unlink(filename)) {
+			/* Oh well.... Can't do anything about it. 99% of the time,
+		   	this is spam anyway. */;
+		}
 		g_free(filename);
+	}
 
 	/* Don't free active feed requests here, because they might still
 	   be processed in the update queues! Abandoned requests are

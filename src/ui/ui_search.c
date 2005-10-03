@@ -78,7 +78,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
 	ui_itemlist_clear();
 	if(NULL != searchFeed)
-		feed_free(searchFeed);
+		feed_remove(searchFeed, NULL);
 	searchFeed = vfolder_new();
 	feed_set_title(searchFeed, searchstring);
 	vfolder_add_rule(searchFeed, "exact", searchstring, TRUE);

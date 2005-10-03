@@ -652,12 +652,14 @@ void on_placement_radiobtn_clicked(GtkButton *button, gpointer user_data) {
 	setNumericConfValue(POPUP_PLACEMENT, GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number")));
 }
 
-static void updatefavicon_cb(nodePtr ptr) {
-	favicon_download((feedPtr)ptr);
+static void updatefavicon_cb(nodePtr np) {
+
+	favicon_download(np);
 }
 
 static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data)
 {
+
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, updatefavicon_cb);
 }
  

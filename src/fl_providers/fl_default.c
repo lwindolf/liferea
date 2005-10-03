@@ -51,7 +51,46 @@ void fl_default_handler_save(void) {
 	debug_exit("fl_default_save");
 }
 
-void fl_node_load(nodePtr np) {
+void fl_default_feed_add(nodePtr np, const gchar *source, gchar *filter, gint flags) {
+	feedPtr			fp;
+	gchar			*tmp;
+	int			pos;
+	folderPtr		parent;
+	
+	debug_enter("fl_default_feed_add");	
+	
+	fp = feed_new();
+	feed_set_source(fp, source);
+	feed_set_title(fp, _("New subscription"));
+	feed_set_filter(fp, filter);
+
+	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
+
+	parent = ui_feedlist_get_target_folder(&pos);
+	feedlist_add_node(parent, np, pos);
+
+	debug_exit("fl_default_feed_add");	
+}
+
+void fl_default_node_add(nodePtr np) {
+	GtkWidget	*dialog;
+
+	switch(np->type) {
+		case FST_FEED:
+			dialog = ui_feed_newdialog_new();
+			gtk_widget_show(dialog);
+			break;
+		case FST_FOLDER:
+		case FST_VFOLDER:
+			break;
+		default:
+			g_warning("adding unsupported type node!");
+			break;
+	}
+
+}
+
+void fl_default_node_load(nodePtr np) {
 	feedPtr	fp = (feedPtr)np->data;
 
 	feed_load(fp, np->id);
@@ -62,28 +101,36 @@ void fl_node_load(nodePtr np) {
 	np->itemSet->unreadCount = fp->unreadCount;
 }
 
-void fl_node_unload(nodePtr np) {
+void fl_default_node_unload(nodePtr np) {
 
 	feed_unload((feedPtr)np->data);
 	g_assert(NULL != np->itemSet);
+	g_slist_free(np->itemSet->items);
+	np->itemSet->items = NULL;
 	g_free(np->itemSet);
-	np->itemSet = NULL;
+	np->itemSet = NULL;	
 }
 
-gchar *fl_node_render(nodePtr np) {
+gchar *fl_default_node_render(nodePtr np) {
 
-	if(FST_FOLDER != np->type)
-		return feed_render((feedPtr)np->data);
+	switch(np->type) {
+		case FST_FEED:
+			return feed_render((feedPtr)np->data);
+			break;
+	}
 
 	return NULL;
 }
 
 /* update handling */
 
-static void fl_node_auto_update(nodePtr np) {
+static void fl_default_node_auto_update(nodePtr np) {
 	feedPtr		fp = (feedPtr)np;
 	GTimeVal	now;
 	gint		interval;
+
+	if(FST_FEED != np->type)	/* don't process folders and vfolders */
+		return;
 
 	g_get_current_time(&now);
 	interval = feed_get_update_interval(fp);
@@ -101,6 +148,12 @@ static void fl_node_auto_update(nodePtr np) {
 	/* And check for favicon updating */
 	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
 		favicon_download(np);
+}
+
+static void fl_default_node_update(nodePtr np) {
+
+	if(FST_FEED == np->type)	/* don't process folders and vfolders */
+		feed_schedule_update((feedPtr)np, FEED_REQ_PRIORITY_HIGH);
 }
 
 /** handles completed feed update requests */
@@ -322,15 +375,15 @@ static flPluginInfo fpi = {
 	fl_default_init,
 	fl_default_deinit,
 	NULL,	/* new instance */
-	fl_default_handler_save,
 	NULL,	/* delete instance */
 	fl_default_node_load,
 	fl_default_node_unload,
+	fl_default_node_save,
 	fl_default_node_render,
-	fl_default_feed_add,
-	fl_default_feed_delete,
-	fl_default_folder_add,
-	fl_default_folder_delete
+	fl_default_node_auto_update,
+	fl_default_node_update,
+	fl_default_node_add,
+	fl_default_node_remove
 };
 
 static pluginInfo = {

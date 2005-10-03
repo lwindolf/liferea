@@ -34,7 +34,7 @@
 /* ---------------------------------------------------------------------------- */
 
 /* Used to add a folder without adding it to the config */
-folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type) {
+folderPtr restore_folder(folderPtr parent, gchar *title, gint type) {
 	folderPtr folder;
 
 	g_assert(FST_FOLDER == type);
@@ -42,10 +42,6 @@ folderPtr restore_folder(folderPtr parent, gchar *title, gchar *id, gint type) {
 	folder = g_new0(struct folder, 1);
 	folder->type = type;
 	folder->title = g_strdup(title);
-	if (id == NULL)
-		folder->id = conf_new_id();
-	else
-		folder->id = g_strdup(id);
 
 	feedlist_schedule_save();
 	return folder;
@@ -74,7 +70,6 @@ void folder_free(folderPtr folder) {
 	if(folder->ui_data)
 		ui_folder_remove_node((nodePtr)folder);
 	g_free(folder->title);
-	g_free(folder->id);
 	g_free(folder);
 	feedlist_schedule_save();
 }

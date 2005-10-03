@@ -19,16 +19,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "favicon.h"
 #include "node.h"
 #include "conf.h"
+#include "callbacks.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_itemlist.h"
+
+/* returns a unique node id */
+static gchar * node_new_id() {
+	int		i;
+	gchar		*id, *filename;
+	gboolean	already_used;
+	
+	id = g_new0(gchar, 10);
+	do {
+		for(i=0;i<7;i++)
+			id[i] = (char)g_random_int_range('a', 'z');
+		id[7] = '\0';
+		
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
+		already_used = g_file_test(filename, G_FILE_TEST_EXISTS);
+		g_free(filename);
+	} while(already_used);
+	
+	return id;
+}
 
 nodePtr node_new() {
 	nodePtr	np;
 
 	np = (nodePtr)g_new0(struct node, 1);
+	np->id = node_new_id();
 	np->sortColumn = IS_TIME;
 	np->sortReversed = TRUE;	/* default sorting is newest date at top */
 	np->available = FALSE;
@@ -49,31 +70,6 @@ void node_free(nodePtr np) {
 	// nothing to do
 }
 
-static void node_load_cb(nodePtr np, gpointer user_data) {
-	itemSetPtr	sp = (itemSetPtr)user_data;
-
-	switch(np->type) {
-		case FST_FOLDER:
-			ui_feedlist_do_foreach_data(np, node_load_cb, (gpointer)sp);
-			break;
-		case FST_FEED:
-		case FST_PLUGIN:
-			if(NULL != FL_PLUGIN(np)->node_load)
-				FL_PLUGIN(np)->node_load(np);
-			break;
-		case FST_VFOLDER:
-			// FIXME:
-			break;
-		default:
-			g_warning("internal error: unknown node type!");
-			break;
-	}
-
-	sp->items = g_slist_concat(sp->items, np->itemSet->items);
-	sp->newCount += np->itemSet->newCount;
-	sp->unreadCount += np->itemSet->unreadCount;
-}
-
 void node_load(nodePtr np) {
 
 	np->loaded++;
@@ -82,7 +78,7 @@ void node_load(nodePtr np) {
 		return;
 
 	g_assert(NULL == np->itemSet);
-	ui_feedlist_do_foreach_data(np, node_load_cb, (gpointer)&(np->itemSet));
+	itemset_load(np);
 }
 
 void node_save(nodePtr np) {
@@ -104,14 +100,18 @@ void node_unload(nodePtr np) {
 
 	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 		if(1 == np->loaded) {
-			if(FST_FEED == np->type) {
-				FL_PLUGIN(np)->node_unload(np);
-				/* never reset the unread/new counter! */
-				g_slist_free(np->itemSet->items);
-				np->itemSet->items = NULL;
-				np->loaded--;
-			} else {
-				/* not unloading vfolders and other types! */
+			switch(np->type) {
+				case FST_FEED:
+				case FST_PLUGIN:
+					FL_PLUGIN(np)->node_unload(np);
+					break;
+				case FST_FOLDER:
+				case FST_VFOLDER:
+					/* not unloading vfolders and other types! */
+					break;
+				default:
+					g_warning("internal error: unknown node type!");
+					break;
 			}
 		} else {
 			/* not unloading when multiple references */
@@ -149,11 +149,9 @@ void node_remove(nodePtr np) {
 
 	switch(np->type) {
 		case FST_FEED:
-		case FST_VFOLDER:
-			FL_PLUGIN(np)->feed_delete((feedPtr)np->data);
-			break;
 		case FST_FOLDER:
-			FL_PLUGIN(np)->folder_delete((folderPtr)np->data);
+		case FST_VFOLDER:
+			FL_PLUGIN(np)->node_remove(np);
 			break;
 		case FST_PLUGIN:
 			FL_PLUGIN(np)->handler_delete(np);
@@ -166,26 +164,31 @@ void node_remove(nodePtr np) {
 	node_free(np);
 }
 
-nodePtr node_add_feed(nodePtr parent) {
+void node_add(nodePtr parent, guint type) {
 	nodePtr	child;
-	feedPtr	fp;
 
 	child = node_new();
-	fp = FL_PLUGIN(parent)->feed_add(child);
-	node_add_data(child, FST_FEED, (gpointer)fp);
+	child->type = type;
 
-	return child;
-}
-
-nodePtr node_add_folder(nodePtr parent) {
-	nodePtr		subfolder;
-	folderPtr	fp;
-
-	subfolder = node_new();
-	fp = FL_PLUGIN(parent)->folder_add(subfolder);
-	node_add_data(subfolder, FST_FOLDER, (gpointer)fp);
-
-	return subfolder;
+	switch(child->type) {
+		case FST_FEED:
+			child->icon = icons[ICON_AVAILABLE];
+			FL_PLUGIN(parent)->node_add(child);
+		case FST_FOLDER:
+			child->icon = icons[ICON_FOLDER];
+			FL_PLUGIN(parent)->node_add(child);
+		case FST_VFOLDER:
+			child->icon = icons[ICON_VFOLDER];
+			FL_PLUGIN(parent)->node_add(child);
+			break;
+		case FST_PLUGIN:
+			//FL_PLUGIN(parent)->handler_new(child);
+			g_warning("not yet implemented!");
+			break;
+		default:
+			g_warning("internal error: unknown node type!");
+			break;
+	}
 }
 
 /* ---------------------------------------------------------------------------- */

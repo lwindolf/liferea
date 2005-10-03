@@ -116,7 +116,7 @@ void ui_init(int mainwindowState) {
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
 	ui_popup_setup_menues();		/* create popup menues */
 	ui_enclosure_init();
-	conf_load_subscriptions();
+	//conf_load_subscriptions();
 
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 	case 1: /* Update all feeds */
