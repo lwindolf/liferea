@@ -542,6 +542,7 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	gboolean	found, equal = FALSE;
 	GSList		*iter, *enclosures;
 
+	// FIXME: mode vfolder code to vfolder.c:vfolder_add_item()
 	if(FST_VFOLDER != feed_get_type(fp)) {
 		
 		/* determine if we should add it... */
@@ -919,6 +920,7 @@ void feed_remove_items(feedPtr fp) {
 	fp->items = NULL;
 }
 
+// FIXME: split of vfolder_render()
 gchar *feed_render(feedPtr fp) {
 	struct displayset	displayset;
 	gchar			*buffer = NULL;

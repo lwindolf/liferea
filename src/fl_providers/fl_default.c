@@ -21,12 +21,18 @@
  */
 
 #include "fl_default.h"
+#include "support.h"
+#include "conf.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "itemset.h"
 #include "export.h"
 #include "debug.h"
+#include "update.h"
+#include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
+
+extern GtkWindow *mainwindow;
 
 static gboolean feedlistLoading = FALSE;
 static flNodeHandler *handler = NULL;
@@ -51,11 +57,11 @@ void fl_default_handler_save(void) {
 	debug_exit("fl_default_save");
 }
 
-void fl_default_feed_add(nodePtr np, const gchar *source, gchar *filter, gint flags) {
+void fl_default_feed_add(const gchar *source, gchar *filter, gint flags) {
 	feedPtr			fp;
 	gchar			*tmp;
 	int			pos;
-	folderPtr		parent;
+	nodePtr			np, parent;
 	
 	debug_enter("fl_default_feed_add");	
 	
@@ -66,6 +72,9 @@ void fl_default_feed_add(nodePtr np, const gchar *source, gchar *filter, gint fl
 
 	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
 
+	np = node_new();
+	node_set_title(np, feed_get_title(fp));
+	node_add_data(np, FST_FEED, (gpointer)fp);
 	parent = ui_feedlist_get_target_folder(&pos);
 	feedlist_add_node(parent, np, pos);
 
@@ -77,7 +86,7 @@ void fl_default_node_add(nodePtr np) {
 
 	switch(np->type) {
 		case FST_FEED:
-			dialog = ui_feed_newdialog_new();
+			dialog = ui_feed_newdialog_new(mainwindow);
 			gtk_widget_show(dialog);
 			break;
 		case FST_FOLDER:
@@ -95,7 +104,7 @@ void fl_default_node_load(nodePtr np) {
 
 	feed_load(fp, np->id);
 	g_assert(NULL == np->itemSet);
-	np->itemSet = (itemSetPtr)g_new0(itemSet, 1);
+	np->itemSet = (itemSetPtr)g_new0(struct itemSet, 1);
 	np->itemSet->items = fp->items;
 	np->itemSet->newCount = fp->newCount;
 	np->itemSet->unreadCount = fp->unreadCount;
@@ -150,26 +159,25 @@ static void fl_default_node_auto_update(nodePtr np) {
 		favicon_download(np);
 }
 
-static void fl_default_node_update(nodePtr np) {
+static void fl_default_node_update(nodePtr np, guint flags) {
 
 	if(FST_FEED == np->type)	/* don't process folders and vfolders */
-		feed_schedule_update((feedPtr)np, FEED_REQ_PRIORITY_HIGH);
+		feed_schedule_update((feedPtr)np->data, flags | FEED_REQ_PRIORITY_HIGH);
 }
 
 /** handles completed feed update requests */
 void ui_feed_process_update_result(struct request *request) {
-	feedPtr			fp = (feedPtr)request->user_data;
+	nodePtr			np = (nodePtr)request->user_data;
+	feedPtr			fp = (feedPtr)np->data;
 	feedHandlerPtr		fhp;
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
 	
-	g_assert(NULL != request);
-
-	feedlist_load_feed(fp);
+	feedlist_load_node(np);
 
 	/* no matter what the result of the update is we need to save update
 	   status and the last update time to cache */
-	fp->needsCacheSave = TRUE;
+	np->needsCacheSave = TRUE;
 	
 	feed_set_available(fp, TRUE);
 
@@ -207,8 +215,10 @@ void ui_feed_process_update_result(struct request *request) {
 			fp->fhp = fhp;
 			
 			/* restore user defined properties if necessary */
-			if(!(request->flags & FEED_REQ_RESET_TITLE))
+			if(!(request->flags & FEED_REQ_RESET_TITLE)) {
 				feed_set_title(fp, old_title);
+				node_set_title(np, old_title);
+			}
 				
 			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
 				feed_set_source(fp, old_source);
@@ -223,7 +233,7 @@ void ui_feed_process_update_result(struct request *request) {
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
 
-			itemlist_reload((nodePtr)fp);
+			itemlist_reload(np);
 			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
@@ -238,13 +248,13 @@ void ui_feed_process_update_result(struct request *request) {
 	fp->request = NULL; 
 
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		favicon_download(fp);
+		favicon_download(np);
 
 	/* update UI presentations */
-	ui_notification_update(fp);
+	ui_notification_update(fp); // FIXME ?
 	ui_feedlist_update();
 
-	feedlist_unload_feed(fp);
+	feedlist_unload_node(np);
 }
 
 /* DBUS support for new subscriptions */
@@ -361,41 +371,7 @@ ui_feedlist_dbus_connect ()
 
 #endif /* USE_DBUS */
 
-/* feed list provider plugin definition */
-
-static flPluginInfo fpi = {
-	FL_PLUGIN_API_VERSION,
-	"Static Feed List",
-	FL_PLUGIN_CAPABILITY_IS_ROOT |
-	FL_PLUGIN_CAPABILITY_ADD |
-	FL_PLUGIN_CAPABILITY_REMOVE |
-	FL_PLUGIN_CAPABILITY_ADD_FOLDER |
-	FL_PLUGIN_CAPABILITY_REMOVE_FOLDER |
-	FL_PLUGIN_CAPABILITY_REORDER,
-	fl_default_init,
-	fl_default_deinit,
-	NULL,	/* new instance */
-	NULL,	/* delete instance */
-	fl_default_node_load,
-	fl_default_node_unload,
-	fl_default_node_save,
-	fl_default_node_render,
-	fl_default_node_auto_update,
-	fl_default_node_update,
-	fl_default_node_add,
-	fl_default_node_remove
-};
-
-static pluginInfo = {
-	PLUGIN_API_VERSION,
-	"Static Feed List Plugin",
-	PLUGIN_TYPE_FEEDLIST_PROVIDER,
-	PLUGIN_ID_DEFAULT_FEEDLIST,
-	//"Default feed list provider. Allows users to add/remove/reorder subscriptions.",
-	&fpi
-}
-
-DECLARE_PLUGIN(pi);
+static flPluginInfo fpi;
 
 void fl_default_init(void) {
 	gchar	*filename;
@@ -428,3 +404,40 @@ void fl_default_deinit(void) {
 	
 	feedlist_save();
 }
+
+/* feed list provider plugin definition */
+
+static flPluginInfo fpi = {
+	FL_PLUGIN_API_VERSION,
+	"Static Feed List",
+	FL_PLUGIN_CAPABILITY_IS_ROOT |
+	FL_PLUGIN_CAPABILITY_ADD |
+	FL_PLUGIN_CAPABILITY_REMOVE |
+	FL_PLUGIN_CAPABILITY_ADD_FOLDER |
+	FL_PLUGIN_CAPABILITY_REMOVE_FOLDER |
+	FL_PLUGIN_CAPABILITY_REORDER,
+	fl_default_init,
+	fl_default_deinit,
+	NULL,	/* new instance */
+	NULL,	/* delete instance */
+	fl_default_node_load,
+	fl_default_node_unload,
+	fl_default_node_save,
+	fl_default_node_render,
+	fl_default_node_auto_update,
+	fl_default_node_update,
+	fl_default_node_add,
+	fl_default_node_remove
+};
+
+static pluginInfo pi = {
+	PLUGIN_API_VERSION,
+	"Static Feed List Plugin",
+	PLUGIN_TYPE_FEEDLIST_PROVIDER,
+	PLUGIN_ID_DEFAULT_FEEDLIST,
+	//"Default feed list provider. Allows users to add/remove/reorder subscriptions.",
+	&fpi
+};
+
+DECLARE_PLUGIN(pi);
+

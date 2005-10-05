@@ -70,11 +70,12 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 static void feedlist_unset_new_items(nodePtr np) {
 	GSList *iter;
 	
-	if(0 == ((feedPtr)np)->newCount)
+	if(0 == np->newCount)
 		return;
 		
-	feedlist_load_feed((feedPtr)np);
+	feedlist_load_node(np);
 	
+	// FIXME: iterate over item set
 	iter = feed_get_item_list((feedPtr)np);
 	while(NULL != iter) {
 		item_set_new_status((itemPtr)iter->data, FALSE);
@@ -82,7 +83,7 @@ static void feedlist_unset_new_items(nodePtr np) {
 
 	}
 		
-	feedlist_unload_feed((feedPtr)np);
+	feedlist_unload_node(np);
 }
 
 void feedlist_reset_new_item_count(void) {

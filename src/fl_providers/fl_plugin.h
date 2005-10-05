@@ -60,6 +60,9 @@ typedef struct flPluginInfo_ flPluginInfo;
 struct flPluginInfo_ {
 	unsigned int	api_version;
 
+	/** a descriptive plugin name (for preferences and menus) */
+	gchar		*name;
+
 	/* bitmask of possible feed actions */
 	gulong		capabilites;
 
@@ -89,7 +92,7 @@ struct flPluginInfo_ {
 	void 		(*node_update)(nodePtr np, guint flags);
 
 	/** user interaction callback for adding nodes (optional) */
-	nodePtr		(*node_add)(nodePtr np);
+	void		(*node_add)(nodePtr np);
 	/** user interaction callback for deleting nodes (optional) */
 	void		(*node_remove)(nodePtr np);
 };

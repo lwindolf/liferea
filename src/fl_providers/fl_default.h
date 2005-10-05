@@ -21,6 +21,10 @@
 #ifndef _FL_DEFAULT_H
 #define _FL_DEFAULT_H
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include "fl_plugin.h"
 
 #ifdef USE_DBUS
@@ -36,5 +40,8 @@
 #define DBUS_RSS_METHOD  "Subscribe"
 
 #endif
+
+/* allowing special feed creation (for feedster searches) */
+void fl_default_feed_add(const gchar *source, gchar *filter, gint flags);
 
 #endif

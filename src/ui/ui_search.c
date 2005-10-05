@@ -31,7 +31,8 @@
 #include "vfolder.h"
 #include "support.h"
 #include "common.h"
-#include "ui_mainwindow.h"
+#include "ui/ui_mainwindow.h"
+#include "fl_providers/fl_default.h"
 
 extern GtkWidget	*mainwindow;
 static GtkWidget	*searchdialog = NULL;
@@ -128,7 +129,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		node_add_data(np, FST_VFOLDER, (gpointer)searchFeed);
 		searchFeed = NULL;
 		folder = ui_feedlist_get_target_folder(&pos);
-		feedlist_add_feed(folder, np, pos);
+		feedlist_add_node(folder, np, pos);
 		ui_feedlist_update();
 		ui_feedlist_select(np);
 	} else {
@@ -149,7 +150,7 @@ void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	node_add_data(np, FST_VFOLDER, (gpointer)fp);
 
 	folder = ui_feedlist_get_target_folder(&pos);
-	feedlist_add_feed(folder, np, pos);
+	feedlist_add_node(folder, np, pos);
 	ui_feedlist_update();
 	ui_feedlist_select(np);
 }
@@ -173,7 +174,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 		searchtext = g_strdup_printf("http://www.feedster.com/search.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
 					    searchtext, (int)gtk_adjustment_get_value(resultCount));
 
-		ui_feedlist_new_subscription(searchtext, NULL, FALSE);
+		fl_default_feed_add(searchtext, NULL, FALSE);
 
 		g_free(searchtext);
 	}

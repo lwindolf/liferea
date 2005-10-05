@@ -31,10 +31,11 @@
 #include "callbacks.h"
 #include "support.h"
 #include "debug.h"
-#include "ui_htmlview.h"
-#include "ui_tabs.h"
-#include "ui_prefs.h"
-#include "ui_enclosure.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_tabs.h"
+#include "ui/ui_prefs.h"
+#include "ui/ui_enclosure.h"
+#include "fl_providers/fl_plugin.h"
 
 /* function types for the imported symbols */
 typedef htmlviewPluginInfo* (*infoFunction)();
@@ -515,7 +516,7 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	ui_feedlist_new_subscription(url, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	fl_default_feed_add(url, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	g_free(url);
 }
 

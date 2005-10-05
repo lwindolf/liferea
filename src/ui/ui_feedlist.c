@@ -214,7 +214,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 		
 			ui_tabs_show_headlines();
-			itemlist_set_two_pane_mode(feed_get_two_pane_mode((feedPtr)np));
+			itemlist_set_two_pane_mode(node_get_two_pane_mode(np));
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
@@ -570,20 +570,19 @@ void ui_feedlist_delete_prompt(nodePtr np) {
 /*------------------------------------------------------------------------------*/
 
 void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	feedPtr		fp = (feedPtr)callback_data;
+	nodePtr		np = (nodePtr)callback_data;
 	
-	g_assert(NULL != fp);
-	if(NULL != fp) {
-		if(FST_FEED == feed_get_type(fp)) {
-			ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
+	if(NULL != np) {
+		if(FST_FEED == np->type) {
+			ui_feed_propdialog_new(GTK_WINDOW(mainwindow),(feedPtr)np->data);
 			return;
 		} 
-		if(FST_VFOLDER == feed_get_type(fp)) {
-			ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow),fp);
+		if(FST_VFOLDER == np->type) {
+			ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow),np->data);
 			return;
 		}
 	}
-	g_message(_("You must select a feed entry"));
+	g_message(_("You must select a feed entry."));
 	ui_show_error_box(_("You must select a feed entry."));
 }
 
@@ -624,7 +623,7 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 
 	gtk_tree_store_set(feedstore, iter, FS_PTR, node, -1);
 	
-	ui_folder_check_if_empty();
+	ui_node_check_if_folder_is_empty();
 	ui_feedlist_update();
 }
 

@@ -56,6 +56,7 @@ typedef struct node {
 	gchar		*title;		/**< the label of the node in the feed list */
 	gpointer	icon;		/**< pointer to pixmap, if there is a favicon */
 	guint		loaded;		/**< counter which is non-zero if items are to be kept in memory */
+	guint		newCount;	/**< the actual number of new items of this node (including child nodes) */
 	guint		unreadCount;	/**< the actual number of unread items of this node (including child nodes) */
 	gboolean	available;	/**< availability of this node (usually the last downloading state) */
 	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */

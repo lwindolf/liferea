@@ -212,7 +212,7 @@ void ui_node_remove_node(nodePtr np) {
 	iter = ((ui_data*)(np->ui_data))->row;
 	parentNode = ui_feedlist_get_parent(np);
 	if(parentNode != NULL)
-		parentExpanded = ui_is_folder_expanded(parentNode); /* If the folder becomes empty, the folder would collapse */
+		parentExpanded = ui_node_is_folder_expanded(parentNode); /* If the folder becomes empty, the folder would collapse */
 	
 	gtk_tree_store_remove(feedstore, &iter);
 	
@@ -220,9 +220,9 @@ void ui_node_remove_node(nodePtr np) {
 	np->ui_data = NULL;
 
 	if(parentNode != NULL) {
-		ui_folder_check_if_empty();
+		ui_node_check_if_folder_is_empty();
 		if(parentExpanded)
-			ui_folder_set_expansion(parentNode, TRUE);
+			ui_node_set_expansion(parentNode, TRUE);
 	}
 }
 
