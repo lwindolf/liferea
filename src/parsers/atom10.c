@@ -194,7 +194,7 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 	g_assert(NULL != cur);
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
-		if(NULL == cur->name || cur->type != XML_ELEMENT_NODE || cur->ns == NULL) {
+		if(NULL == cur->name || cur->type != XML_ELEMENT_NODE || cur->ns == NULL || cur->ns->href == NULL) {
 			cur = cur->next;
 			continue;
 		}
@@ -394,7 +394,7 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		
-		if (cur->type != XML_ELEMENT_NODE || cur->name == NULL) {
+		if (cur->type != XML_ELEMENT_NODE || cur->name == NULL || cur->ns == NULL) {
 			cur = cur->next;
 			continue;
 		}
@@ -410,7 +410,7 @@ static itemPtr atom10_parse_entry(feedPtr fp, xmlNodePtr cur) {
 		}
 		
 		/* check namespace of this tag */
-		if(NULL == cur->ns || NULL == cur->ns->href) {
+		if(NULL == cur->ns->href) {
 			/* This is an invalid feed... no idea what to do with the current element */
 			printf("element with no namespace found!\n");
 			cur = cur->next;
@@ -613,7 +613,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		/* parse feed contents */
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
-			if(NULL == cur->name || cur->type != XML_ELEMENT_NODE) {
+			if(NULL == cur->name || cur->type != XML_ELEMENT_NODE || cur->ns == NULL) {
 				cur = cur->next;
 				continue;
 			}
@@ -628,7 +628,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			}
 			
 			/* check namespace of this tag */
-			if(NULL == cur->ns || cur->ns->href == NULL) {
+			if(cur->ns->href == NULL) {
 				/* This is an invalid feed... no idea what to do with the current element */
 				printf("element with no namespace found!\n");
 				cur = cur->next;
@@ -667,7 +667,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 static gboolean atom10_format_check(xmlDocPtr doc, xmlNodePtr cur) {
-	return xmlStrEqual(cur->name, BAD_CAST"feed") && xmlStrEqual(cur->ns->href, ATOM10_NS);
+	return xmlStrEqual(cur->name, BAD_CAST"feed") && cur->ns != NULL && cur->ns->href != NULL &&  xmlStrEqual(cur->ns->href, ATOM10_NS);
 }
 
 static void atom10_add_ns_handler(NsHandler *handler) {
