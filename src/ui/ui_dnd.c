@@ -32,6 +32,7 @@
 #include "conf.h"
 #include "ui/ui_node.h"
 #include "ui/ui_dnd.h"
+#include "fl_providers/fl_default.h"
 
 extern GtkTreeStore *feedstore;
 
@@ -46,8 +47,8 @@ static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
 	ui_feedlist_update();
-	ui_folder_check_if_empty();
-	conf_feedlist_save();
+	ui_node_check_if_folder_is_empty();
+	feedlist_schedule_save();
 	ui_itemlist_prefocus();
 }
 
@@ -139,7 +140,7 @@ static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint
 		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(0 != strlen(tmp2))
-				ui_feedlist_new_subscription(g_strdup(tmp2), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE |
+				fl_default_feed_add(g_strdup(tmp2), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE |
 									    FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER | FEED_REQ_PRIORITY_HIGH);
 		}
 		g_free(freeme);

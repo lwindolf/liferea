@@ -40,6 +40,55 @@ gchar * itemset_render_all(itemSetPtr sp) {
 	return NULL;
 }
 
+/* This method is called after parsing newly downloaded
+   feeds or any other item aquiring was done. This method
+   adds the item to the given node and does additional
+   updating according to the node type. */
+void itemset_add_item(node np, itemPtr ip) {
+	gboolean added;
+
+	/* step 1: merge into node type internal data structures */
+	switch(np->sp->type) {
+		case FST_PLUGIN:
+			added = TRUE; /* no merging for now */
+			break;
+		case FST_FEED:
+			added = feed_add_item((feedPtr)np->data, ip);
+			break;
+		case FST_FOLDER:
+			added = TRUE; /* nothing to do */
+			break;
+		case FST_VFOLDER:
+			added = TRUE;
+			break;
+	}
+
+	/* step 2: add to the itemset */
+	if(added)
+		np->itemSet = g_slist_append(np->itemSet, ip);
+
+	/* step 3: update statistics */
+	if(added) {
+		/* Always update the node counter statistics */
+		if(FALSE == item_get_read_status(ip))
+			node_increase_unread_counter(np);
+			
+		// FIXME: prevent the next two for folders+vfolders?
+		if(TRUE == item_get_popup_status(ip))
+			node_increase_popup_counter(np);
+			
+		if(TRUE == item_get_new_status(ip))
+			node_increase_new_counter(np);
+			
+		/* Never update the overall feed list statistic 
+		   for folders and vfolders (because this are item
+		   list types with item copies or references)! */
+		if((FST_FOLDER != np->type) && (FST_VFOLDER != np->type))
+			feedlist_update_counters(item_get_read_status(ip)?0:1,
+						 item_get_new_status(ip)?1:0);
+	}
+}
+
 void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 
 	if(NULL == g_slist_find(sp->items, ip)) {

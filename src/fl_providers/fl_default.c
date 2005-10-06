@@ -20,6 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <string.h>
 #include "fl_default.h"
 #include "support.h"
 #include "conf.h"
@@ -31,6 +32,7 @@
 #include "update.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_htmlview.h"
 
 extern GtkWindow *mainwindow;
 
@@ -38,7 +40,7 @@ static gboolean feedlistLoading = FALSE;
 static flNodeHandler *handler = NULL;
 static nodePtr rootNode = NULL;
 
-void fl_default_handler_save(void) {
+static void fl_default_handler_save(void) {
 	gchar *filename, *filename_real;
 	
 	if(feedlistLoading)
@@ -57,6 +59,7 @@ void fl_default_handler_save(void) {
 	debug_exit("fl_default_save");
 }
 
+/* used by fl_default_node_add but also from ui_search.c! */
 void fl_default_feed_add(const gchar *source, gchar *filter, gint flags) {
 	feedPtr			fp;
 	gchar			*tmp;
@@ -81,7 +84,7 @@ void fl_default_feed_add(const gchar *source, gchar *filter, gint flags) {
 	debug_exit("fl_default_feed_add");	
 }
 
-void fl_default_node_add(nodePtr np) {
+static void fl_default_node_add(nodePtr np) {
 	GtkWidget	*dialog;
 
 	switch(np->type) {
@@ -96,10 +99,14 @@ void fl_default_node_add(nodePtr np) {
 			g_warning("adding unsupported type node!");
 			break;
 	}
-
 }
 
-void fl_default_node_load(nodePtr np) {
+static void fl_default_node_remove(nodePtr np) {
+
+	g_warning("FIXME: fl_default_node_remove() implement me!");
+}
+
+static void fl_default_node_load(nodePtr np) {
 	feedPtr	fp = (feedPtr)np->data;
 
 	feed_load(fp, np->id);
@@ -110,7 +117,7 @@ void fl_default_node_load(nodePtr np) {
 	np->itemSet->unreadCount = fp->unreadCount;
 }
 
-void fl_default_node_unload(nodePtr np) {
+static void fl_default_node_unload(nodePtr np) {
 
 	feed_unload((feedPtr)np->data);
 	g_assert(NULL != np->itemSet);
@@ -120,15 +127,38 @@ void fl_default_node_unload(nodePtr np) {
 	np->itemSet = NULL;	
 }
 
-gchar *fl_default_node_render(nodePtr np) {
+static gchar *fl_default_node_render(nodePtr np) {
 
 	switch(np->type) {
 		case FST_FEED:
 			return feed_render((feedPtr)np->data);
 			break;
+		case FST_FOLDER:
+			//return folder_render(np);
+			break;
+		case FST_VFOLDER:
+			//return vfolder_render(np);
+			break;
+		case FST_PLUGIN:
+			/* should never happen as we are root plugin! */
+			break;
 	}
 
 	return NULL;
+}
+
+static void fl_default_node_save(nodePtr np) {
+
+	switch(np->type) {
+		case FST_FEED:
+			feed_save((feedPtr)np->data, node_get_id(np));
+			break;
+		case FST_FOLDER:
+		case FST_VFOLDER:
+		case FST_PLUGIN:
+			/* nothing to do */
+			break;
+	}
 }
 
 /* update handling */
@@ -163,6 +193,127 @@ static void fl_default_node_update(nodePtr np, guint flags) {
 
 	if(FST_FEED == np->type)	/* don't process folders and vfolders */
 		feed_schedule_update((feedPtr)np->data, flags | FEED_REQ_PRIORITY_HIGH);
+}
+
+// FIXME: move method to feed specific code
+/**
+ * Creates a new error description according to the passed
+ * HTTP status and the feeds parser errors. If the HTTP
+ * status is a success status and no parser errors occurred
+ * no error messages is created. The created error message 
+ * can be queried with feed_get_error_description().
+ *
+ * @param fp		feed
+ * @param httpstatus	HTTP status
+ * @param resultcode the update code's return code (see update.h)
+ */
+static void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gchar *filterErrors) {
+	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
+	gboolean	errorFound = FALSE;
+
+	g_assert(NULL != fp);
+	g_free(fp->errorDescription);
+	fp->errorDescription = NULL;
+	
+	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
+	   (NULL == filterErrors) && (NULL == fp->parseErrors))
+		return;
+	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
+	
+	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {
+		/* first specific codes */
+		switch(httpstatus) {
+			case 401:tmp2 = g_strdup(_("You are unauthorized to download this feed. Please update your username and "
+			                           "password in the feed properties dialog box."));break;
+			case 402:tmp2 = g_strdup(_("Payment Required"));break;
+			case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
+			case 404:tmp2 = g_strdup(_("Resource Not Found"));break;
+			case 405:tmp2 = g_strdup(_("Method Not Allowed"));break;
+			case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
+			case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
+			case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
+			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe!"));break;
+		}
+		/* Then, netio errors */
+		if(tmp2 == NULL) {
+			switch(resultcode) {
+			case NET_ERR_URL_INVALID:    tmp2 = g_strdup(_("URL is invalid")); break;
+			case NET_ERR_PROTO_INVALID:    tmp2 = g_strdup(_("Unsupported network protocol")); break;
+			case NET_ERR_UNKNOWN:
+			case NET_ERR_CONN_FAILED:
+			case NET_ERR_SOCK_ERR:       tmp2 = g_strdup(_("Error connecting to remote host")); break;
+			case NET_ERR_HOST_NOT_FOUND: tmp2 = g_strdup(_("Hostname could not be found")); break;
+			case NET_ERR_CONN_REFUSED:   tmp2 = g_strdup(_("Network connection was refused by the remote host")); break;
+			case NET_ERR_TIMEOUT:        tmp2 = g_strdup(_("Remote host did not finish sending data")); break;
+				/* Transfer errors */
+			case NET_ERR_REDIRECT_COUNT_ERR: tmp2 = g_strdup(_("Too many HTTP redirects were encountered")); break;
+			case NET_ERR_REDIRECT_ERR:
+			case NET_ERR_HTTP_PROTO_ERR: 
+			case NET_ERR_GZIP_ERR:           tmp2 = g_strdup(_("Remote host sent an invalid response")); break;
+				/* These are handled above	
+				   case NET_ERR_HTTP_410:
+				   case NET_ERR_HTTP_404:
+				   case NET_ERR_HTTP_NON_200:
+				*/
+			case NET_ERR_AUTH_FAILED:
+			case NET_ERR_AUTH_NO_AUTHINFO: tmp2 = g_strdup(_("Authentication failed")); break;
+			case NET_ERR_AUTH_GEN_AUTH_ERR:
+			case NET_ERR_AUTH_UNSUPPORTED: tmp2 = g_strdup(_("Webserver's authentication method incompatible with Liferea")); break;
+			}
+		}
+		/* And generic messages in the unlikely event that the above didn't work */
+		if(NULL == tmp2) {
+			switch(httpstatus / 100) {
+			case 3:tmp2 = g_strdup(_("Feed not available: Server requested unsupported redirection!"));break;
+			case 4:tmp2 = g_strdup(_("Client Error"));break;
+			case 5:tmp2 = g_strdup(_("Server Error"));break;
+			default:tmp2 = g_strdup(_("(unknown networking error happened)"));break;
+			}
+		}
+		errorFound = TRUE;
+		tmp1 = g_strdup_printf(HTTP_ERROR_TEXT, httpstatus, tmp2);
+		addToHTMLBuffer(&buffer, tmp1);
+		g_free(tmp1);
+		g_free(tmp2);
+	}
+	
+	/* add filtering error messages */
+	if(NULL != filterErrors) {	
+		errorFound = TRUE;
+		tmp1 = g_markup_printf_escaped(FILTER_ERROR_TEXT2, _("Show Details"), filterErrors);
+		addToHTMLBuffer(&buffer, FILTER_ERROR_TEXT);
+		addToHTMLBuffer(&buffer, tmp1);
+		g_free(tmp1);
+	}
+	
+	/* add parsing error messages */
+	if(NULL != fp->parseErrors) {
+		errorFound = TRUE;
+		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT2, _("Show Details"), fp->parseErrors);
+		addToHTMLBuffer(&buffer, PARSE_ERROR_TEXT);
+		addToHTMLBuffer(&buffer, tmp1);
+		if (feed_get_source(fp) != NULL && (NULL != strstr(feed_get_source(fp), "://"))) {
+			xmlChar *escsource;
+			addToHTMLBufferFast(&buffer,_("<br>You may want to validate the feed using "
+			                              "<a href=\"http://feedvalidator.org/check.cgi?url="));
+			escsource = xmlURIEscapeStr(feed_get_source(fp),NULL);
+			addToHTMLBufferFast(&buffer,escsource);
+			xmlFree(escsource);
+			addToHTMLBuffer(&buffer,_("\">FeedValidator</a>."));
+		}
+		addToHTMLBuffer(&buffer, "</span>");
+		g_free(tmp1);
+	}
+	
+	/* if none of the above error descriptions matched... */
+	if(!errorFound) {
+		tmp1 = g_strdup_printf(_("There was a problem while reading this subscription. Please check the URL and console output."));
+		addToHTMLBuffer(&buffer, tmp1);
+		g_free(tmp1);
+	}
+	
+	addToHTMLBuffer(&buffer, UPDATE_ERROR_END);
+	fp->errorDescription = buffer;
 }
 
 /** handles completed feed update requests */
@@ -284,7 +435,7 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
 
 
 	/* Subscribe the feed */
-	ui_feedlist_new_subscription(s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	fl_default_feed_add(s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 
 	/* Acknowledge the new feed by returning true */
 	reply = dbus_message_new_method_return (message);
@@ -402,7 +553,7 @@ void fl_default_init(void) {
 
 void fl_default_deinit(void) {
 	
-	feedlist_save();
+	// FIXME
 }
 
 /* feed list provider plugin definition */

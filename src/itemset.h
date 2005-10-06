@@ -72,6 +72,13 @@ gchar * itemset_render_item(itemSetPtr sp, itemPtr ip);
  */
 gchar * itemset_render_all(itemSetPtr sp);
 
+// FIXME: I'm not 100% sure if the item adding methods 
+// belong here, but I'll try it... (Lars)
+
+void itemset_add_item(itemSetPtr sp, itemPtr ip);
+
+void itemset_add_items(itemSetPtr sp, GSList *list);
+
 /**
  * Removes a single item of a given itemset.
  *

@@ -529,7 +529,6 @@ void feed_add_items(feedPtr fp, GList *items) {
 /**
  * Can be used to add a single item to a feed. But it's better to
  * use feed_add_items() to keep the item order of parsed feeds.
- * Should be used for vfolders only.
  *
  * Adds an item to the feed. Realizes the item merging logic based on
  * the item id's. 
@@ -542,132 +541,117 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	gboolean	found, equal = FALSE;
 	GSList		*iter, *enclosures;
 
-	// FIXME: mode vfolder code to vfolder.c:vfolder_add_item()
-	if(FST_VFOLDER != feed_get_type(fp)) {
+	/* determine if we should add it... */
+	debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(new_ip));
 		
-		/* determine if we should add it... */
-		debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(new_ip));
+	/* compare to every existing item in this feed */
+	found = FALSE;
+	old_items = feed_get_item_list(fp);
+	while(NULL != old_items) {
+		old_ip = old_items->data;
 		
-		/* compare to every existing item in this feed */
-		found = FALSE;
-		old_items = feed_get_item_list(fp);
-		while(NULL != old_items) {
-			old_ip = old_items->data;
-			
-			/* try to compare the two items */
+		/* try to compare the two items */
 
-			/* trivial case: one item has id the other doesn't -> they can't be equal */
-			if(((item_get_id(old_ip) == NULL) && (item_get_id(new_ip) != NULL)) ||
-			   ((item_get_id(old_ip) != NULL) && (item_get_id(new_ip) == NULL))) {	
-				/* cannot be equal (different ids) so compare to 
-				   next old item */
-				old_items = g_slist_next(old_items);
-			   	continue;
-			} 
+		/* trivial case: one item has id the other doesn't -> they can't be equal */
+		if(((item_get_id(old_ip) == NULL) && (item_get_id(new_ip) != NULL)) ||
+		   ((item_get_id(old_ip) != NULL) && (item_get_id(new_ip) == NULL))) {	
+			/* cannot be equal (different ids) so compare to 
+			   next old item */
+			old_items = g_slist_next(old_items);
+		   	continue;
+		} 
 
-			/* just for the case there are no ids: compare titles and HTML descriptions */
-			equal = TRUE;
+		/* just for the case there are no ids: compare titles and HTML descriptions */
+		equal = TRUE;
 
-			if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
-			    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
-		    		equal = FALSE;
+		if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
+		    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
+	    		equal = FALSE;
 
-			if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
-			    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
-		    		equal = FALSE;
+		if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
+		    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
+	    		equal = FALSE;
 
-			/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
-			if(NULL != item_get_id(old_ip)) {			
-				if(0 == strcmp(item_get_id(old_ip), item_get_id(new_ip))){
-					found = TRUE;
-					break;
-				} else {
-					/* different ids, but the content might be still equal (e.g. empty)
-					   so we need to explicitly unset the equal flag !!!  */
-					equal = FALSE;
-				}
-			}
-			
-			if(equal) {
+		/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
+		if(NULL != item_get_id(old_ip)) {			
+			if(0 == strcmp(item_get_id(old_ip), item_get_id(new_ip))){
 				found = TRUE;
 				break;
-			}
-
-			old_items = g_slist_next(old_items);
-		}
-		
-		if(!found) {
-			/* new items has no number yet */
-			if(0 == new_ip->nr)
-				new_ip->nr = ++(fp->lastItemNr);
-			
-			/* ensure that the feed last item nr is at maximum */
-			if(new_ip->nr > fp->lastItemNr)
-				fp->lastItemNr = new_ip->nr;
-
-			/* ensure that the item nr's are unique */
-			if(NULL != feed_lookup_item(fp, new_ip->nr)) {
-				g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%lu)\n", fp->title, new_ip->title, new_ip->nr);
-				new_ip->nr = ++(fp->lastItemNr);
-			}
-
-			/* If a new item has enclosures and auto downloading
-			   is enabled we start the download. Enclosures added
-			   by updated items are not supported. */
-			if((TRUE == fp->encAutoDownload) &&
-			   (TRUE == item_get_new_status(new_ip))) {
-				iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
-				while(NULL != iter) {
-					debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-					ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
-					iter = g_slist_next(iter);
-				}
-			}
-		
-			if(FALSE == item_get_read_status(new_ip))
-				feed_increase_unread_counter(fp);
-				
-			if(TRUE == item_get_popup_status(new_ip))
-				feed_increase_popup_counter(fp);
-				
-			if(TRUE == item_get_new_status(new_ip))
-				feed_increase_new_counter(fp);
-				
-			feedlist_update_counters(item_get_read_status(new_ip)?0:1,
-						 item_get_new_status(new_ip)?1:0);
-
-			fp->items = g_slist_prepend(fp->items, (gpointer)new_ip);
-			new_ip->fp = fp;
-	
-			/* check if the item matches any vfolder rules */
-			vfolder_check_item(new_ip);
-			
-			debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
-			
-		} else {
-			/* if the item was found but has other contents -> update contents */
-			if(!equal) {
-				/* no item_set_new_status() - we don't treat changed items as new items! */
-				item_set_title(old_ip, item_get_title(new_ip));
-				item_set_description(old_ip, item_get_description(new_ip));
-				item_set_time(old_ip, item_get_time(new_ip));
-				item_set_update_status(old_ip, TRUE);
-				metadata_list_free(old_ip->metadata);
-				old_ip->metadata = new_ip->metadata;
-				vfolder_update_item(old_ip);
-				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 			} else {
-				debug0(DEBUG_VERBOSE, "-> item already exists");
+				/* different ids, but the content might be still equal (e.g. empty)
+				   so we need to explicitly unset the equal flag !!!  */
+				equal = FALSE;
 			}
 		}
+			
+		if(equal) {
+			found = TRUE;
+			break;
+		}
+
+		old_items = g_slist_next(old_items);
+	}
+		
+	if(!found) {
+		/* new items has no number yet */
+		if(0 == new_ip->nr)
+			new_ip->nr = ++(fp->lastItemNr);
+		
+		/* ensure that the feed last item nr is at maximum */
+		if(new_ip->nr > fp->lastItemNr)
+			fp->lastItemNr = new_ip->nr;
+
+		/* ensure that the item nr's are unique */
+		if(NULL != feed_lookup_item(fp, new_ip->nr)) {
+			g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%lu)\n", fp->title, new_ip->title, new_ip->nr);
+			new_ip->nr = ++(fp->lastItemNr);
+		}
+
+		/* If a new item has enclosures and auto downloading
+		   is enabled we start the download. Enclosures added
+		   by updated items are not supported. */
+		if((TRUE == fp->encAutoDownload) &&
+		   (TRUE == item_get_new_status(new_ip))) {
+			iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
+			while(NULL != iter) {
+				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
+				iter = g_slist_next(iter);
+			}
+		}
+		
+		fp->items = g_slist_prepend(fp->items, (gpointer)new_ip); // FIXME: do we need a item list in feedPtr?
+		new_ip->fp = fp;	// FIXME: do we need a feed reference in items?
+
+		debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
+			
+		vfolder_check_item(new_ip);
 	} else {
-		/* in case of vfolder just add the item */
+		/* if the item was found but has other contents -> update contents */
+		if(!equal) {
+			/* no item_set_new_status() - we don't treat changed items as new items! */
+			item_set_title(old_ip, item_get_title(new_ip));
+			item_set_description(old_ip, item_get_description(new_ip));
+			item_set_time(old_ip, item_get_time(new_ip));
+			item_set_update_status(old_ip, TRUE);
+			metadata_list_free(old_ip->metadata);
+			old_ip->metadata = new_ip->metadata;
+			vfolder_update_item(old_ip);
+			debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
+		} else {
+			debug0(DEBUG_VERBOSE, "-> item already exists");
+		}
+	}
+
+	return !found;
+
+	/* the following block belongs to vfolder.c! 
 		if(FALSE == item_get_read_status(new_ip))
 			feed_increase_unread_counter(fp);
 		fp->items = g_slist_append(fp->items, (gpointer)new_ip);
 		new_ip->fp = fp;
 		new_ip->nr = ++(fp->lastItemNr);
-	}
+	*/
 }
 
 itemPtr feed_lookup_item(feedPtr fp, gulong nr) {

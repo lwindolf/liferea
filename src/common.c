@@ -569,7 +569,8 @@ void initCachePath(void) {
 	gchar *feedCachePath;
 	gchar *faviconCachePath;
 
-	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea", g_get_home_dir());
+	/* until the 1.1 code stabilizes let's use a parallel cache storage */
+	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1", g_get_home_dir());
 	if(!g_file_test(lifereaUserPath, G_FILE_TEST_IS_DIR)) {
 		if(0 != mkdir(lifereaUserPath, S_IRUSR | S_IWUSR | S_IXUSR)) {
 			g_error(_("Cannot create cache directory %s!"), lifereaUserPath);
