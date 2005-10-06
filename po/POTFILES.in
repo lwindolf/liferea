@@ -35,7 +35,6 @@ src/itemlist.h
 src/main.c
 src/metadata.c
 src/metadata.h
-src/net/curl.c
 src/net/compat.h
 src/net/conversions.c
 src/net/conversions.h
