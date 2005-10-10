@@ -156,9 +156,9 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 			g_free(tmp);
 		}
 	} else if (!strcmp(type, "html")) {
-		ret = unxmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		if (!htmlified)
-			ret = unhtmlize(ret);
+			ret = unhtmlize(unxmlize(ret));
 	} else if(!strcmp(type, "xhtml")) {
 		/* The spec says to only show the contents of the div tag that MUST be present */
 		
