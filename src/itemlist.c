@@ -122,7 +122,10 @@ void itemlist_load(nodePtr node) {
 	GtkTreeModel	*model;
 	gboolean	isFeed;
 	gboolean	isFolder;
-
+	gint		sortColumn;
+	GtkSortType	sortType;
+	gboolean	sorted;
+	
 	/* Postprocessing for previously selected node, this is necessary
 	   to realize reliable read marking when using condensed mode. It's
 	   important to do this only when the selection really changed. */
@@ -149,19 +152,15 @@ void itemlist_load(nodePtr node) {
 	
 	
 	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
+	sorted = gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sortColumn, &sortType);
 	
-	if(isFeed) {
-		disableSortingSaving++;
-		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), node->sortColumn, node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
-		disableSortingSaving--;
-	}
+	/* free the old itemstore and create a new one; this is the only way to disable sorting */
+	ui_itemlist_reset_tree_store();	 /* this also clears the itemlist. */
+	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
 	
 	if(isFolder)
 		itemlist_set_two_pane_mode(FALSE);
 		
-	ui_itemlist_clear();
-	/* explicitly no ui_htmlview_clear() !!! */
-	displayed_item = NULL;
 
 	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 		debug0(DEBUG_CACHE, "unloading everything...");
@@ -170,6 +169,17 @@ void itemlist_load(nodePtr node) {
 	
 	itemlist_reload(node);
 	ui_itemlist_enable_favicon_column((FST_VFOLDER == node->type) || (FST_FOLDER == node->type));
+	
+	/* Enable sorting */
+	if(isFeed) {
+		disableSortingSaving++;
+		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), node->sortColumn, node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
+		disableSortingSaving--;
+	} else if (sorted ) { /* Use what had been used */
+		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), sortColumn, sortType);
+	}
+	
+
 	ui_itemlist_prefocus();
 }
 
