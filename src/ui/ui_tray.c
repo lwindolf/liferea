@@ -47,6 +47,7 @@ static EggTrayIcon 	*tray_icon =  NULL;
 static GtkTooltips	*tray_icon_tips = NULL;
 static GtkWidget	*image = NULL;		/* the image in the notification area */
 static int trayCount = 0;
+static GdkPixbuf *currentIcon = NULL;
 
 static void installTrayIcon(void);
 
@@ -74,7 +75,12 @@ void ui_tray_tooltip_set(gchar *message) {
 static void ui_tray_icon_set(GdkPixbuf *icon) {
 
 	g_assert(tray_icon);
-
+	
+	/* Skip loading icon if already displayed. */
+	if (icon == currentIcon)
+		return;
+	currentIcon = icon;
+	
 	if(NULL != image)
 		gtk_widget_destroy(image);
 
