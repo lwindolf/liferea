@@ -46,6 +46,19 @@ static gint disableSortingSaving;
 
 static gboolean deferred_item_remove = FALSE;
 
+static void itemlist_check_for_deferred_removal(void) {
+	itemPtr ip;
+
+	if(NULL != displayed_item) {
+		ip = displayed_item;
+		displayed_item = NULL;
+		if(TRUE == deferred_item_remove) {
+			deferred_item_remove = FALSE;
+			itemlist_remove_item(ip);
+		}
+	}
+}
+
 static void itemlist_load_feed(feedPtr fp, gpointer data) {
 	gboolean	merge = GPOINTER_TO_INT(data);
 	GSList		*item, *itemlist;
@@ -140,6 +153,8 @@ void itemlist_load(nodePtr node) {
 	if(isFolder && (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
 		return;
 	
+	itemlist_check_for_deferred_removal();
+
 	/* preparation done, we can select it... */
 	displayed_node = node;
 
@@ -349,14 +364,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	if(!itemlist_loading && (FALSE == ui_itemlist_get_two_pane_mode())) {
 		/* vfolder postprocessing to remove unselected items not
 		   more matching the rules because they have changed state */
-		if(NULL != displayed_item) {
-			ip = displayed_item;
-			displayed_item = NULL;
-			if(TRUE == deferred_item_remove) {
-				deferred_item_remove = FALSE;
-				itemlist_remove_item(ip);
-			}
-		}
+		itemlist_check_for_deferred_removal();
 	
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			displayed_item = ip = ui_itemlist_get_item_from_iter(&iter);
