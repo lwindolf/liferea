@@ -429,9 +429,9 @@ static nodePtr ui_feedlist_unread_scan(nodePtr folder) {
 
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
 	if(NULL != (selectedNode = ui_feedlist_get_selected())) {
-	  selectedIter = &((ui_data *)(selectedNode->ui_data))->row;
+		selectedIter = &((ui_data *)(selectedNode->ui_data))->row;
 	} else {
-	  scanState = UNREAD_SCAN_SECOND_PASS;
+		scanState = UNREAD_SCAN_SECOND_PASS;
 	}
 
 	if(folder != NULL) {
@@ -459,7 +459,7 @@ static nodePtr ui_feedlist_unread_scan(nodePtr folder) {
 
 		/* feed match if beyond the selected feed or in second pass... */
 		if((scanState != UNREAD_SCAN_INIT) && (count > 0) &&
-		   ((FST_FEED == ptr->type) || (FST_VFOLDER == ptr->type))) {
+		   (FST_FEED == ptr->type)) {
 		       return ptr;
 		}
 
@@ -478,15 +478,15 @@ static nodePtr ui_feedlist_unread_scan(nodePtr folder) {
 	}
 
 	if(NULL == folder) { /* we are on feed list root but didn't find anything */
-	  if(0 == feedlist_get_unread_item_count()) {
-	    /* this may mean there is nothing more to find */
-	  } else {
-	    /* or that we just didn't find anything after the selected feed */
-	    g_assert(scanState != UNREAD_SCAN_SECOND_PASS);
-	    scanState = UNREAD_SCAN_SECOND_PASS;
-	    childNode = ui_feedlist_unread_scan(NULL);
-	    return childNode;
-	  }
+		if(0 == feedlist_get_unread_item_count()) {
+			/* this may mean there is nothing more to find */
+		} else {
+			/* or that we just didn't find anything after the selected feed */
+			g_assert(scanState != UNREAD_SCAN_SECOND_PASS);
+			scanState = UNREAD_SCAN_SECOND_PASS;
+			childNode = ui_feedlist_unread_scan(NULL);
+			return childNode;
+		}
 	}
 
 	return NULL;
