@@ -75,6 +75,17 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 		return 0;
 }
 
+void ui_itemlist_reset_tree_store() {
+	GtkTreeModel    *model;
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
+	ui_itemlist_clear();
+	gtk_tree_view_set_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), NULL);
+	
+	displayed_item = NULL;
+	g_object_unref(model);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), GTK_TREE_MODEL(ui_itemlist_get_tree_store()));
+}
+
 GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	GtkTreeModel	*model;
 	GtkTreeStore	*itemstore;
