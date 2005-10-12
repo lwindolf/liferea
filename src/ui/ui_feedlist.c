@@ -575,7 +575,11 @@ void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWi
 	
 	if(NULL != np) {
 		if(FST_FEED == np->type) {
+			/* loading/unloading the feed because the cache 
+			   properties might be changed */
+			feedlist_load_node(np);
 			ui_feed_propdialog_new(GTK_WINDOW(mainwindow),(feedPtr)np->data);
+			feedlist_unload_node(np);
 			return;
 		} 
 		if(FST_VFOLDER == np->type) {

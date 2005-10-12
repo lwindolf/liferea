@@ -204,7 +204,6 @@ void on_popup_mark_as_read(gpointer callback_data,
 void on_popup_prop_selected(gpointer callback_data,
 					   guint callback_action,
 					   GtkWidget *widget);
-void on_propchangebtn_clicked(GtkButton *button, gpointer user_data);
 void on_newbtn_clicked(GtkButton *button, gpointer user_data);
 
 void on_fileselect_clicked(GtkButton *button, gpointer user_data);
