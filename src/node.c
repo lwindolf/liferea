@@ -25,7 +25,7 @@
 #include "callbacks.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_itemlist.h"
-#include "favicon.c"
+#include "favicon.h"
 
 /* returns a unique node id */
 gchar * node_new_id() {

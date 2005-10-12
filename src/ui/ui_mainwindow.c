@@ -28,11 +28,12 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 #include <string.h>
-#include "interface.h"
-#include "support.h"
+#include "callbacks.h"
+#include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "callbacks.h"
+#include "interface.h"
+#include "support.h"
 #include "update.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"

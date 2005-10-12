@@ -22,9 +22,11 @@
 
 #include <common.h>
 #include <string.h>
+#include <libxml/uri.h>
 #include "fl_default.h"
 #include "support.h"
 #include "conf.h"
+#include "favicon.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "itemset.h"
@@ -34,7 +36,7 @@
 #include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
-
+#include "ui/ui_notification.h"
 extern GtkWindow *mainwindow;
 
 static gboolean feedlistLoading = FALSE;
@@ -63,7 +65,6 @@ static void fl_default_handler_save(void) {
 /* used by fl_default_node_add but also from ui_search.c! */
 void fl_default_feed_add(const gchar *source, gchar *filter, gint flags) {
 	feedPtr			fp;
-	gchar			*tmp;
 	int			pos;
 	nodePtr			np, parent;
 	

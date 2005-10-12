@@ -40,6 +40,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "../support.h"	/* for gettext() */
+#include "common.h"
 #include "compat.h"
 
 char * CookieCutter (const char *feedurl, FILE * cookies) {

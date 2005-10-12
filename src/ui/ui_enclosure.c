@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <libxml/tree.h>
 #include <libxml/uri.h>
+#include <string.h>
 #include "common.h"
 #include "callbacks.h"
 #include "interface.h"
