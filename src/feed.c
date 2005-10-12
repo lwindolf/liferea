@@ -306,6 +306,9 @@ void feed_save(feedPtr fp, const gchar *id) {
 				ip = iter->data;
 				g_assert(NULL != ip);
 				
+				if(saveMaxCount == CACHE_DISABLE)
+					continue;
+
 				if((saveMaxCount != CACHE_UNLIMITED) &&
 				   (saveCount >= saveMaxCount) &&
 				   (fp->fhp == NULL || fp->fhp->directory == FALSE) &&
@@ -453,8 +456,14 @@ gboolean feed_load(feedPtr fp, const gchar *id) {
 void feed_unload(feedPtr fp) {
 
 	debug_enter("feed_unload");
-	debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
-	feed_clear_item_list(fp);						
+
+	if(CACHE_DISABLE == fp->cacheLimit) {
+		debug1(DEBUG_CACHE, "not unloading (%s) because cache is disabled", feed_get_source(fp));
+	} else {
+		debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
+		feed_clear_item_list(fp);
+	}
+
 	debug_exit("feed_unload");
 }
 
