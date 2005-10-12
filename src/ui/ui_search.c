@@ -153,6 +153,7 @@ void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	feedlist_add_node(folder, np, pos);
 	ui_feedlist_update();
 	ui_feedlist_select(np);
+	ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow), fp);
 }
 
 
