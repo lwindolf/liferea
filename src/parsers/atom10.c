@@ -474,7 +474,7 @@ static void atom10_parse_feed_contributor(xmlNodePtr cur, feedPtr fp, itemPtr ip
 }
 
 static void atom10_parse_feed_generator(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
-	gchar *ret, *version, *tmp, *uri;
+	gchar *ret, *version, *tmp = "", *uri;
 	ret = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 	if (ret != NULL && ret[0] != '\0') {
 		version = utf8_fix(xmlGetNsProp(cur, BAD_CAST"version", NULL));

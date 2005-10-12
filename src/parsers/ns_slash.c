@@ -23,6 +23,7 @@
 #  include <config.h>
 #endif
 
+#include <string.h>
 #include "ns_slash.h"
 #include "common.h"
 #include "ui/ui_htmlview.h"

@@ -20,10 +20,12 @@
  */
 
 #include "node.h"
+#include "common.h"
 #include "conf.h"
 #include "callbacks.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_itemlist.h"
+#include "favicon.c"
 
 /* returns a unique node id */
 gchar * node_new_id() {

@@ -52,6 +52,7 @@
 #include "debug.h"
 #include "metadata.h"
 
+#include "ui/ui_enclosure.h"
 #include "ui/ui_feed.h"	
 #include "ui/ui_feedlist.h"
 #include "ui/ui_tray.h"

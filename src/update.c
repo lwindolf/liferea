@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include <string.h>
+#include "common.h"
 #include "support.h"
 #include "debug.h"
 #include "update.h"

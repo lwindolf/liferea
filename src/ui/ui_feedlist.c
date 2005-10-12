@@ -34,6 +34,7 @@
 #include "support.h"
 #include "interface.h"
 #include "callbacks.h"
+#include "common.h"
 #include "feedlist.h"
 #include "conf.h"
 #include "update.h"

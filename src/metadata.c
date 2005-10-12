@@ -24,6 +24,7 @@
 
 #include <glib.h>
 #include <libxml/tree.h>
+#include <string.h>
 #include "support.h"
 #include "metadata.h"
 #include "common.h"

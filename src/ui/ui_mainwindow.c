@@ -27,6 +27,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
+#include <string.h>
 #include "interface.h"
 #include "support.h"
 #include "conf.h"

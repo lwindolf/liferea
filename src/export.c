@@ -26,6 +26,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <libxml/tree.h>
+#include <string.h>
 #include "feed.h"
 #include "vfolder.h"
 #include "rule.h"

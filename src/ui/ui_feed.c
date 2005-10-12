@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 #include <libxml/uri.h>
+#include <string.h> 
 #include "support.h"
 #include "feed.h"
 #include "conf.h"
