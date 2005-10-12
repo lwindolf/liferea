@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[0.9.8],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.0.99.0],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -239,7 +239,7 @@ AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the 
 AC_MSG_RESULT(user agent OS = $uname)
 
 dnl Add the languages which your application supports here.
-ALL_LINGUAS="bg cs de es fi fr it ja ko mk pl pt_BR ro ru sk zh_CN zh_TW"
+ALL_LINGUAS="bg cs de es fi fr it ja ko mk pl pt_BR ro ru sv sk zh_CN zh_TW"
 AM_GLIB_GNU_GETTEXT
 
 GETTEXT_PACKAGE=liferea
