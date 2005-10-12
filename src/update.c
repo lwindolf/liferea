@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <string.h>
 #include "support.h"
 #include "debug.h"
 #include "update.h"
