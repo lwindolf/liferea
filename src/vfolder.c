@@ -42,7 +42,6 @@ feedPtr vfolder_new(void) {
 	debug_enter("vfolder_new");
 
 	fp = feed_new();;
-	feed_set_type(fp, FST_VFOLDER);
 	feed_set_title(fp, "vfolder");
 	feed_set_source(fp, "vfolder");
 	feed_set_available(fp, TRUE);
@@ -93,7 +92,7 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	/* need to check for vfolder items because the
 	   rule checking can be called on item copies of
 	   the same vfolder, */
-	if(FST_VFOLDER == feed_get_type(ip->fp))
+	if(NULL != ip->sourceFeed)
 		return;
 
 	/* check if the item was already added */
@@ -159,7 +158,7 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 void vfolder_remove_item(itemPtr ip) {
 	GSList		*iter;
 
-	g_assert(FST_VFOLDER != feed_get_type(ip->fp));
+	g_assert(NULL == ip->sourceFeed);
 
 	debug_enter("vfolder_remove_item");
 
@@ -212,25 +211,25 @@ static gboolean vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
  */
 static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	feedPtr		vp = (feedPtr)userdata;
-	feedPtr		fp = (feedPtr)np;
 	GSList		*items;
 
 	/* do not search in vfolders */
-	g_return_if_fail(FST_VFOLDER != feed_get_type(fp));
+	if(FST_VFOLDER == np->type)
+		return;
 
 	debug_enter("vfolder_apply_rules");
 
-	debug1(DEBUG_UPDATE, "applying rules for (%s)", feed_get_source(fp));
-	feedlist_load_feed(fp);
+	debug1(DEBUG_UPDATE, "applying rules for (%s)", node_get_title(np));
+	feedlist_load_node(np);
 
 	/* check all feed items */
-	items = feed_get_item_list(fp);
+	items = np->itemSet->items;
 	while(NULL != items) {
 		vfolder_apply_rules_for_item(vp, items->data);
 		items = g_slist_next(items);
 	}
 	
-	feedlist_unload_feed(fp);
+	feedlist_unload_node(np);
 	debug_exit("vfolder_apply_rules");
 }
 
@@ -271,7 +270,7 @@ void vfolder_update_item(itemPtr ip) {
 	debug_enter("vfolder_update_item");
 
 	/* never process vfolder items! */
-	g_assert(FST_VFOLDER != feed_get_type(ip->fp));
+	g_assert(NULL == ip->sourceFeed);
 	
 	iter = vfolders;
 	while(NULL != iter) {
