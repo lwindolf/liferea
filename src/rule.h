@@ -1,7 +1,7 @@
 /**
  * @file rule.h feed/vfolder rule handling
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,9 @@
 #ifndef _RULE_H
 #define _RULE_H
 
+#include <glib.h>
+#include "item.h"
+
 /** rule info structure */
 typedef struct ruleInfo {
 	gpointer		ruleFunc;	/* the rules test function */
@@ -33,7 +36,7 @@ typedef struct ruleInfo {
 
 /** structure to store a rule instance */
 typedef struct rule {
-	feedPtr		fp;		/* the feed the filter is applied to */
+	struct vfolder	*vp;		/* the vfolder the rule belongs to */
 	gchar		*value;		/* the value of the rule, e.g. a search text */
 	ruleInfoPtr	ruleInfo;	/* info structure about rule check function */
 	gboolean	additive;	/* is the rule positive logic */
@@ -50,12 +53,12 @@ void rule_init(void);
  * Looks up the given rule id and sets up a new rule
  * structure with for the given vfolder and rule value 
  *
- * @param fp		vfolder the rule belongs to
+ * @param vp		vfolder the rule belongs to
  * @param ruleId	id string for this rule type
  * @param value		argument string for this rule
  * @param additive	indicates positive or negative logic
  */
-rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean additive);
+rulePtr rule_new(struct vfolder *vp, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /**
  * Checks a new item against all additive rules of all feeds

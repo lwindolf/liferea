@@ -23,9 +23,10 @@
 #include "common.h"
 #include "conf.h"
 #include "callbacks.h"
+#include "favicon.h"
+#include "feed.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_itemlist.h"
-#include "favicon.h"
 
 /* returns a unique node id */
 gchar * node_new_id() {
@@ -55,7 +56,6 @@ nodePtr node_new() {
 	np->sortColumn = IS_TIME;
 	np->sortReversed = TRUE;	/* default sorting is newest date at top */
 	np->available = FALSE;
-	np->unreadCount = 0;
 	np->title = g_strdup("FIXME");
 
 	return np;
@@ -73,14 +73,31 @@ void node_free(nodePtr np) {
 }
 
 void node_load(nodePtr np) {
+	GSList	*itemList = NULL;
 
 	np->loaded++;
 
 	if(1 < np->loaded)
 		return;
+	
+	switch(np->type) {
+		case FST_FEED:
+		case FST_PLUGIN:
+			/* plugins have to keep their items in a feed structure! */
+			FL_PLUGIN(np)->node_load(np);
+			itemList = feed_get_item_list((feedPtr)np->data);
+			break;
+		case FST_FOLDER:
+		case FST_VFOLDER:
+			/* not loading vfolders and other types! */
+			break;
+		default:
+			g_warning("internal error: unknown node type!");
+			break;
+	}
 
 	g_assert(NULL == np->itemSet);
-	itemset_load(np);
+	itemset_add_items(np->itemSet, itemList);
 }
 
 void node_save(nodePtr np) {
@@ -120,6 +137,62 @@ void node_unload(nodePtr np) {
 		}
 	}
 }
+
+/* This method is called after parsing newly downloaded
+   feeds or any other item aquiring was done. This method
+   adds the item to the given node and does additional
+   updating according to the node type. */
+void node_add_item(nodePtr np, itemPtr ip) {
+	gboolean added;
+
+	/* step 1: merge into node type internal data structures */
+	switch(np->itemSet->type) {
+		case FST_PLUGIN:
+			added = TRUE; /* no merging for now */
+			break;
+		case FST_FEED:
+			added = feed_add_item((feedPtr)np->data, ip);
+			break;
+		case FST_FOLDER:
+		case FST_VFOLDER:
+			g_warning("If this happens something is wrong!");
+			break;
+	}
+
+	if(added) {
+		/* step 2: add to itemset */
+		itemset_add_item(np->itemSet, ip);
+
+		/* step 3: update feed list statistics */
+
+		/* Never update the overall feed list statistic 
+		   for folders and vfolders (because this are item
+		   list types with item copies or references)! */
+		if((FST_FOLDER != np->type) && (FST_VFOLDER != np->type))
+			feedlist_update_counters(item_get_read_status(ip)?0:1,
+						 item_get_new_status(ip)?1:0);
+	}
+}
+
+/**
+ * This method can be used to merge an ordered list of items
+ * into the item list of the given item set.
+ */
+void node_add_items(nodePtr np, GSList *list) {
+	GList	*iter;
+	
+	/* Items are given in top to bottom display order. 
+	   Adding them in this order would mean to reverse 
+	   their order in the merged list, so merging needs
+	   to be done bottom to top. */
+	iter = g_slist_last(list);
+	while(iter != NULL) {
+		node_add_item(np, ((itemPtr)iter->data));
+		iter = g_slist_previous(iter);
+	}
+	g_slist_free(list);
+}
+
 
 gchar * node_render(nodePtr np) {
 
@@ -210,10 +283,10 @@ void node_set_unread_count(nodePtr np, guint unreadCount) {
 	/* unread count propagation to folders
 	   is done by specific implementations
 	   to be more flexible */
-	np->unreadCount = unreadCount;
+	np->itemSet->unreadCount = unreadCount;
 }
 
-guint node_get_unread_count(nodePtr np) { return np->unreadCount; }
+guint node_get_unread_count(nodePtr np) { return np->itemSet->unreadCount; }
 
 void node_set_id(nodePtr np, const gchar *id) {
 

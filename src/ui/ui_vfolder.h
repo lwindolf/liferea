@@ -24,6 +24,6 @@
 #include <gtk/gtk.h>
  
 /* sets up a vfolder properties dialog */
-GtkWidget* ui_vfolder_propdialog_new (GtkWindow *parent, feedPtr fp);
+GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, nodePtr np);
 
 #endif

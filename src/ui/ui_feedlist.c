@@ -145,14 +145,14 @@ static void ui_feedlist_node_update(nodePtr np) {
 	/* FIXME: Unescape text here! */
 	tmp = g_markup_escape_text(label,-1);
 	g_free(label);
-	if(np->unreadCount > 0)
-		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, np->unreadCount);
+	if(np->itemSet->unreadCount > 0)
+		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, np->itemSet->unreadCount);
 	else
 		label = g_strdup_printf("%s", tmp);
 	g_free(tmp);
 	
 	gtk_tree_store_set(feedstore, &iter, FS_LABEL, label,
-	                                    FS_UNREAD, np->unreadCount,
+	                                    FS_UNREAD, np->itemSet->unreadCount,
 	                                    FS_ICON, np->icon,
 	                                    -1);
 	g_free(label);
@@ -647,9 +647,8 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
 	nodePtr	parent;
-	int	pos;
 
-	parent = ui_feedlist_get_parent(&pos);
+	parent = ui_feedlist_get_parent(ui_feedlist_get_selected());
 	node_add(parent, FST_FEED);
 }
 

@@ -67,22 +67,13 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 }
 
 static void feedlist_unset_new_items(nodePtr np) {
-	GSList *iter;
 	
-	if(0 == np->newCount)
+	if(0 == np->itemSet->newCount)
 		return;
 		
-	feedlist_load_node(np);
-	
-	// FIXME: iterate over item set
-	iter = feed_get_item_list((feedPtr)np);
-	while(NULL != iter) {
-		item_set_new_status((itemPtr)iter->data, FALSE);
-		iter = g_slist_next(iter);
-
-	}
-		
-	feedlist_unload_node(np);
+	node_load(np);
+	itemset_mark_all_old(np->itemSet);
+	node_unload(np);
 }
 
 void feedlist_reset_new_item_count(void) {
@@ -248,11 +239,26 @@ void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
 	}
 }
 
+static void feedlist_mark_all_read(nodePtr np) {
+
+	if(0 == np->itemSet->unreadCount)
+		return;
+
+	node_load(np);
+	itemlist_mark_all_read(np->itemSet);
+	node_unload(np);
+}
+
 void on_popup_allunread_selected(void) {
 	nodePtr	np;
 	
 	if(NULL != (np = ui_feedlist_get_selected())) {
-		itemlist_mark_all_read(np);
+		if(FST_FOLDER == np->type) {
+			/* if we have selected a folder we mark all item of all feeds as read */
+			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feedlist_mark_all_read);
+		} else {
+			feedlist_mark_all_read(np);
+		}
 		ui_feedlist_update();
 	}
 }

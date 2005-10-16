@@ -37,6 +37,7 @@ liferea_bin_SOURCES = \
 	html.c html.h \
 	interface.c interface.h \
 	item.c item.h \
+	itemset.c itemset.h \
 	itemlist.c itemlist.h \
 	main.c \
 	metadata.c metadata.h \

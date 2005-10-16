@@ -45,7 +45,7 @@ typedef struct item {
 	gboolean	newStatus;		/**< TRUE if the item was downloaded and is to be counted by the tray icon */
 	gboolean	popupStatus;		/**< TRUE if the item was downloaded and is yet to be displayed by the popup notification feature */
 	gboolean	updateStatus;		/**< TRUE if the item content was updated */
-	gboolean 	marked;			/**< TRUE if the item has been marked */
+	gboolean 	flagStatus;		/**< TRUE if the item has been flagged */
 	gchar		*title;			/**< item title */
 	gchar		*source;		/**< URL to the item */
 	gchar		*real_source_url;	/**< (optional) URL of the real source */
@@ -57,10 +57,11 @@ typedef struct item {
 	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 	time_t		time;			/**< Item's modified date */
 	
-	gulong		nr;			/**< internal unique item number used for vfolder reference counting */
-	struct feed	*fp;			/**< Pointer to the feed to which this item belongs */
+	gulong		nr;			/**< Internal unique item id */
+	struct node	*node;			/**< Pointer to the node containing this item  */
 	gulong 		sourceNr;		/**< internal unique item number this item was derived from (used for searches and vfolders) */
-	struct feed	*sourceFeed;		/**< Pointer to the source feed this item was derived from (used for searches and vfolders) */
+	struct node	*sourceNode;		/**< Pointer to the source node from which this item was copied */
+
 } *itemPtr;
 
 /**
@@ -73,12 +74,6 @@ itemPtr 	item_new(void);
  * Method to copy the contents of an item to another 
  */
 void 		item_copy(itemPtr from, itemPtr to);
-
-/**
- * Adds an item to the htmlview. This is used in 3-pane mode
- * @param ip the item to display
- */
-void item_display(itemPtr ip);
 
 /**
  * Returns a HTML string with a representation of the item
@@ -109,16 +104,6 @@ const gchar *	item_get_real_source_url(itemPtr ip);
 const gchar *	item_get_real_source_title(itemPtr ip);
 /** Returns the modification time of ip. */
 time_t	item_get_time(itemPtr ip);
-/** Returns the flag status of ip */
-gboolean	item_get_flag_status(itemPtr ip);
-/** Returns the read status of ip. */
-gboolean	item_get_read_status(itemPtr ip);
-/** Returns the new flag of ip. */
-gboolean	item_get_new_status(itemPtr ip);
-/** Returns the popup flag of ip. */
-gboolean	item_get_popup_status(itemPtr ip);
-/** Returns the update flag of ip. */
-gboolean	item_get_update_status(itemPtr ip);
 
 /** Sets the ip's title */
 void		item_set_title(itemPtr ip, const gchar * title);
@@ -134,26 +119,6 @@ void		item_set_real_source_title(itemPtr ip, const gchar * source);
 void		item_set_time(itemPtr ip, const time_t time);
 /** Sets the ip's id */
 void		item_set_id(itemPtr ip, const gchar * id);
-/** Sets the ip's read status */
-void 		item_set_read_status(itemPtr ip, gboolean newStatus);
-/** Sets the ip's new flag */
-void 		item_set_new_status(itemPtr ip, const gboolean newStatus);
-/** Sets the ip's popup flag */
-void 		item_set_popupp_status(itemPtr ip, const gboolean newPopupStatus);
-/** Sets the ip's update flag */
-void 		item_set_update_status(itemPtr ip, const gboolean newStatus);
-/** Set the popup status of an item */
-void item_set_popup_status(itemPtr ip, const gboolean newPopupStatus);
-
-/**
- * Marks ip as marked or unmarked and updates the UI to reflect this
- * change.
- *
- * @param ip item to be marked or unmarked
- * @param newFlagStatus set to TRUE if the item is to be marked, or FALSE to
- * unmark the item
- */
-void	item_set_flag_status(itemPtr ip, const gboolean newFlagStatus);
 
 /**
  * Parse an xml tree and return a new itempointer generated 

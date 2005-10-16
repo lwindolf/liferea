@@ -144,7 +144,7 @@ void itemlist_load(nodePtr node) {
 	   important to do this only when the selection really changed. */
 	isFeed = ((displayed_node != NULL) && ((FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type)));
 	if(isFeed && (node != displayed_node) && (TRUE == feed_get_two_pane_mode((feedPtr)displayed_node)))
-		itemlist_mark_all_read(displayed_node);
+		itemset_mark_all_read(displayed_node->itemSet);
 
 	/* determine what node type is now selected */
 	isFeed = ((node != NULL) && ((FST_FEED == node->type) || (FST_VFOLDER == node->type)));
@@ -290,40 +290,6 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 	}
 }
 
-void itemlist_mark_all_read(nodePtr np) {
-	GSList	*item, *items;
-
-	if(FST_FOLDER == np->type) {
-		/* if we have selected a folder we mark all item of all feeds as read */
-		ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)itemlist_mark_all_read);
-	} else {
-		/* if not we mark all items of the item list as read */
-		
-		feedlist_load_feed((feedPtr)np);
-
-		/* two loops on list copies because the itemlist_set_* 
-		   methods may modify the feeds original item list */
-
-		items = g_slist_copy(((feedPtr)np)->items);
-		item = items;
-		while(NULL != item) {
-			itemlist_set_read_status((itemPtr)item->data, TRUE);
-			item = g_slist_next(item);
-		}
-		g_slist_free(items);
-
-		items = g_slist_copy(((feedPtr)np)->items);
-		item = items;
-		while(NULL != item) {	
-			itemlist_set_update_status((itemPtr)item->data, FALSE);
-			item = g_slist_next(item);
-		}
-		g_slist_free(items);
-
-		feedlist_unload_feed((feedPtr)np);
-	}
-}
-
 void itemlist_update_item(itemPtr ip) {
 	
 	ui_itemlist_update_item(ip);
@@ -331,12 +297,12 @@ void itemlist_update_item(itemPtr ip) {
 
 void itemlist_remove_item(itemPtr ip) {
 	
-	if(NULL != (ip = feed_lookup_item(ip->fp, ip->nr))) {
+	if(NULL != (ip = itemset_lookup_item(ip->node->itemSet, ip->nr))) {
 		/* if the currently selected item should be removed we
 		   don't do it and set a flag to do it when unselecting */
 		if(displayed_item != ip) {
 			ui_itemlist_remove_item(ip);
-			feed_remove_item(ip->fp, ip);
+			itemset_remove_item(ip->node->itemSet, ip);
 			ui_feedlist_update();
 		} else {
 			deferred_item_remove = TRUE;
@@ -368,7 +334,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			displayed_item = ip = ui_itemlist_get_item_from_iter(&iter);
-			item_display(ip);
+			itemset_render_item(ip->node->itemSet, ip);
 			/* set read and unset update status done when unselecting */
 			itemlist_set_read_status(ip, TRUE);
 			itemlist_set_update_status(ip, FALSE);

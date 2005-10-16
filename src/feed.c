@@ -518,34 +518,10 @@ void feed_schedule_update(feedPtr fp, guint flags) {
 }
 
 /**
- * To be used by parser implementation to merge a new orderd list of
- * items to a feed. Ensures properly ordered joint item list. The
- * passed GList is free'd afterwards!
+ * Adds an item to the feed. Realizes the item merging 
+ * logic based on the numeric item id's. 
  */
-void feed_add_items(feedPtr fp, GList *items) {
-	GList	*iter;
-	
-	/* The parser implementations read the items from the
-	   feed from top to bottom. Adding them directly would
-	   mean to reverse their order. */
-	iter = g_list_last(items);
-	while(iter != NULL) {
-		feed_add_item(fp, ((itemPtr)iter->data));
-		iter = g_list_previous(iter);
-	}
-	g_list_free(items);
-}
-
-/**
- * Can be used to add a single item to a feed. But it's better to
- * use feed_add_items() to keep the item order of parsed feeds.
- *
- * Adds an item to the feed. Realizes the item merging logic based on
- * the item id's. 
- *
- * Note: Does not do merging for vfolders. Would be hazardous!
- */
-void feed_add_item(feedPtr fp, itemPtr new_ip) {
+gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 	GSList		*old_items;
 	itemPtr		old_ip = NULL;
 	gboolean	found, equal = FALSE;
@@ -631,7 +607,6 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 		}
 		
 		fp->items = g_slist_prepend(fp->items, (gpointer)new_ip); // FIXME: do we need a item list in feedPtr?
-		new_ip->fp = fp;	// FIXME: do we need a feed reference in items?
 
 		debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
 			
@@ -654,14 +629,6 @@ void feed_add_item(feedPtr fp, itemPtr new_ip) {
 	}
 
 	return !found;
-
-	/* the following block belongs to vfolder.c! 
-		if(FALSE == item_get_read_status(new_ip))
-			feed_increase_unread_counter(fp);
-		fp->items = g_slist_append(fp->items, (gpointer)new_ip);
-		new_ip->fp = fp;
-		new_ip->nr = ++(fp->lastItemNr);
-	*/
 }
 
 itemPtr feed_lookup_item(feedPtr fp, gulong nr) {

@@ -24,7 +24,6 @@
 
 #include <gtk/gtk.h>
 
-#include "feed.h"
 #include "rule.h"
 #include "vfolder.h"
 #include "interface.h"
@@ -34,7 +33,8 @@
 #include "ui_vfolder.h"
 
 struct fp_vfolder_ui_data {
-	feedPtr		fp;
+	nodePtr		np;
+	vfolderPtr	vp;
 	
 	GtkWidget	*dialog;
 	GtkWidget	*feedNameEntry;		/* widget with vfolder title */
@@ -54,9 +54,9 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 	GSList				*iter, *unused_rules;
 	
 	if(response_id == GTK_RESPONSE_OK) {
-		feed_set_title(ui_data->fp, gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "feedNameEntry"))));
-		unused_rules = ui_data->fp->rules;
-		ui_data->fp->rules = ui_data->newRules;
+		node_set_title(ui_data->np, gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "feedNameEntry"))));
+		unused_rules = ui_data->vp->rules;
+		ui_data->vp->rules = ui_data->newRules;
 	} else {
 		unused_rules = ui_data->newRules;
 	}
@@ -64,7 +64,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 	/* delete old or unused rules */	
 	iter = unused_rules;
 	while(iter != NULL) {
-		vfolder_remove_rule(ui_data->fp, (rulePtr)iter->data);
+		vfolder_remove_rule(ui_data->vp, (rulePtr)iter->data);
 		rule_free((rulePtr)iter->data);
 		iter = g_slist_next(iter);
 	}
@@ -73,8 +73,8 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 	if(response_id == GTK_RESPONSE_OK) {	
 		/* update vfolder */
 		ui_itemlist_clear();
-		vfolder_refresh(ui_data->fp);
-		itemlist_load((nodePtr)ui_data->fp);
+		vfolder_refresh(ui_data->vp);
+		itemlist_load(ui_data->np);
 	}
 	
 	g_free(ui_data);
@@ -158,7 +158,7 @@ static void on_ruletype_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 		rule_free(rule);
 	}
 	ruleInfo = ruleFunctions + changeRequest->rule;
-	rule = rule_new(changeRequest->ui_data->fp, ruleInfo->ruleId, "", TRUE);
+	rule = rule_new(changeRequest->ui_data->vp, ruleInfo->ruleId, "", TRUE);
 	changeRequest->ui_data->newRules = g_slist_append(changeRequest->ui_data->newRules, rule);
 	
 	ui_vfolder_setup_rule_widgets(changeRequest, rule);
@@ -227,7 +227,7 @@ static void ui_vfolder_add_rule(struct fp_vfolder_ui_data *ui_data, rulePtr rule
 		on_ruletype_changed(GTK_OPTION_MENU(widget), selected);
 	} else {
 		/* set up widgets with existing rule type and value */
-		ui_vfolder_setup_rule_widgets(selected, rp = rule_new(rule->fp, rule->ruleInfo->ruleId, rule->value, rule->additive));
+		ui_vfolder_setup_rule_widgets(selected, rp = rule_new(rule->vp, rule->ruleInfo->ruleId, rule->value, rule->additive));
 		/* add the rule to the list of new rules */
 		ui_data->newRules = g_slist_append(ui_data->newRules, rp);
 	}
@@ -252,13 +252,14 @@ static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
 	ui_vfolder_add_rule(ui_data, NULL);
 }
 
-GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, feedPtr fp) {
+GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, nodePtr np) {
 	GtkWidget			*vfolderdialog;
 	GSList				*iter;
 	struct fp_vfolder_ui_data	*ui_data;
 
 	ui_data = g_new0(struct fp_vfolder_ui_data, 1);
-	ui_data->fp = fp;
+	ui_data->vp = (vfolderPtr)np->data;
+	ui_data->np = np;
 	
 	/* Create the dialog */
 	ui_data->dialog = vfolderdialog = create_vfolderdialog();
@@ -266,14 +267,14 @@ GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, feedPtr fp) {
 
 	/* Setup feed name */
 	ui_data->feedNameEntry = lookup_widget(vfolderdialog,"feedNameEntry");
-	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), feed_get_title(fp));
+	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), node_get_title(np));
 	
 	/* Set up rule list vbox */
 	ui_data->ruleVBox = gtk_vbox_new(FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(lookup_widget(vfolderdialog, "ruleview")), ui_data->ruleVBox);
 	
 	/* load rules into dialog */	
-	iter = fp->rules;
+	iter = ui_data->vp->rules;
 	while(NULL != iter) {
 		ui_vfolder_add_rule(ui_data, (rulePtr)(iter->data));
 		iter = g_slist_next(iter);

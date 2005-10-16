@@ -63,11 +63,11 @@ void item_copy(itemPtr from, itemPtr to) {
 	to->readStatus = from->readStatus;
 	to->newStatus = FALSE;
 	to->popupStatus = FALSE;
-	to->marked = from->marked;
+	to->flagStatus = from->flagStatus;
 	to->time = from->time;
 	
 	/* the following line allows state propagation in item.c */
-	to->sourceFeed = from->fp;
+	to->sourceNode = from->node;
 	to->sourceNr = from->nr;
 	
 	/* this copies metadata */
@@ -129,56 +129,6 @@ const gchar *	item_get_source(itemPtr ip) { return (ip != NULL ? ip->source : NU
 const gchar *	item_get_real_source_url(itemPtr ip) { return (ip != NULL ? ip->real_source_url : NULL); }
 const gchar *	item_get_real_source_title(itemPtr ip) { return (ip != NULL ? ip->real_source_title : NULL); }
 time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
-gboolean item_get_read_status(itemPtr ip) { return (ip != NULL ? ip->readStatus : FALSE); }
-gboolean item_get_flag_status(itemPtr ip) { g_assert(ip != NULL); return ip->marked; }
-gboolean item_get_new_status(itemPtr ip) { g_assert(ip != NULL); return ip->newStatus; }
-gboolean item_get_popup_status(itemPtr ip) { g_assert(ip != NULL); return ip->popupStatus; }
-gboolean item_get_update_status(itemPtr ip) { g_assert(ip != NULL); return ip->updateStatus; }
-
-void item_set_flag_status(itemPtr ip, gboolean newFlagStatus) { ip->marked = newFlagStatus; }
-
-void item_set_new_status(itemPtr ip, const gboolean newNewStatus) { 
-
-	if(newNewStatus != ip->newStatus) {
-		if(ip->fp != NULL) {
-			if(TRUE == newNewStatus)
-				feed_increase_new_counter((feedPtr)(ip->fp));
-			else
-				feed_decrease_new_counter((feedPtr)(ip->fp));
-		}	
-		ip->newStatus = newNewStatus; 
-	}
-}
-
-void item_set_popup_status(itemPtr ip, const gboolean newPopupStatus) { 
-
-	if(newPopupStatus != ip->popupStatus) {
-		if(ip->fp != NULL) {
-			if(TRUE == newPopupStatus)
-				feed_increase_popup_counter((feedPtr)(ip->fp));
-			else
-				feed_decrease_popup_counter((feedPtr)(ip->fp));
-
-			/* no need to save feed */
-		}
-		ip->popupStatus = newPopupStatus; 
-	}
-}
-
-void item_set_update_status(itemPtr ip, const gboolean newStatus) { ip->updateStatus = newStatus; }
-
-void item_set_read_status(itemPtr ip, gboolean newStatus) { 
-	
-	if(newStatus != ip->readStatus) {
-		if(ip->fp != NULL) {
-			if(FALSE == newStatus)
-				feed_increase_unread_counter((feedPtr)(ip->fp));
-			else
-				feed_decrease_unread_counter((feedPtr)(ip->fp));
-		}
-		ip->readStatus = newStatus;
-	}
-}
 
 void item_free(itemPtr ip) {
 
@@ -210,14 +160,16 @@ gchar *item_render(itemPtr ip) {
 	/* Head table */
 	addToHTMLBufferFast(&buffer, HEAD_START);
 	/*  -- Feed line */
-	if(feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed) != NULL)
+	/*if(feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed) != NULL)
 		
 		tmp = g_markup_printf_escaped("<span class=\"feedlink\"><a href=\"%s\">%s</a></span>",
 									 feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed),
 									 feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
 	else
 		tmp = g_markup_printf_escaped("<span class=\"feedlink\">%s</span>",
-			              feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
+			              feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));*/
+
+	tmp=g_strdup("FIXME!");
 
 	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
@@ -233,7 +185,7 @@ gchar *item_render(itemPtr ip) {
 	else if((NULL != ip->fp) && (NULL != ip->fp->icon))
 		tmp = (gchar *)feed_get_id(ip->fp);*/
 
-	if(NULL != tmp) {
+	/*if(NULL != tmp) {
 		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", tmp, "png");
 		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed), tmp2);
 		g_free(tmp2);
@@ -241,7 +193,7 @@ gchar *item_render(itemPtr ip) {
 		tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
 		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed), tmp2);
 		g_free(tmp2);
-	}
+	}*/
 	tmp3 = g_markup_escape_text((item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"), -1);
 	if(item_get_source(ip) != NULL)
 		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s<a href=\"%s\">%s</a></span>",
@@ -284,11 +236,11 @@ gchar *item_render(itemPtr ip) {
 	}
 
 	/* feed/channel image */
-	if(NULL != feed_get_image_url(ip->fp)) {
+	/*if(NULL != feed_get_image_url(ip->fp)) {
 		addToHTMLBufferFast(&buffer, "<img class=\"feed\" src=\"");
 		addToHTMLBufferFast(&buffer, feed_get_image_url(ip->fp));
 		addToHTMLBufferFast(&buffer, "\"><br>");
-	}
+	}*/
 
 	if(displayset.body != NULL) {
 		addToHTMLBufferFast(&buffer, displayset.body);
@@ -325,29 +277,6 @@ gchar *item_render(itemPtr ip) {
 	g_free(displayset.foottable);
 
 	return buffer;
-}
-
-// FIXME: move to itemset.c
-void item_display(itemPtr ip) {
-	gchar	*buffer = NULL, *tmp;
-	
-	// FIXME: needs to be fixed item rendering must be provided 
-	// on item provider basis (split this method and call 
-	// implementation based on itemset type)
-	
-	ui_htmlview_start_output(&buffer, feed_get_html_url(ip->fp), TRUE);
-	tmp = item_render(ip);
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-	ui_htmlview_finish_output(&buffer);
-	if((ip->fp != NULL) &&
-	   ((feedPtr)(ip->fp))->htmlUrl != NULL &&
-	   ((feedPtr)(ip->fp))->htmlUrl[0] != '|' &&
-	    strstr(((feedPtr)(ip->fp))->htmlUrl, "://") != NULL)
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)(ip->fp))->htmlUrl);
-	else
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
-	g_free(buffer);
 }
 
 itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {

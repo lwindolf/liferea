@@ -23,14 +23,15 @@
 #endif
 
 #include <string.h>
+#include <gtk/gtk.h>
 #include "callbacks.h"
 #include "interface.h"
-#include "feed.h"
 #include "node.h"
-#include "rule.h"
 #include "vfolder.h"
+#include "rule.h"
 #include "support.h"
 #include "common.h"
+#include "ui/ui_search.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_vfolder.h"
 #include "fl_providers/fl_default.h"
@@ -38,7 +39,7 @@
 extern GtkWidget	*mainwindow;
 static GtkWidget	*searchdialog = NULL;
 static GtkWidget 	*feedsterdialog = NULL;
-static feedPtr		searchFeed = NULL;
+static nodePtr		searchResult = NULL;
 
 /*------------------------------------------------------------------------------*/
 /* search dialog callbacks							*/
@@ -75,24 +76,35 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
 	gchar			*buffer = NULL, *tmp;
+	vfolderPtr		vp;
 	
 	searchentry = lookup_widget(searchdialog, "searchentry");
 	searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 	ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
+
+	/* remove last search */
 	ui_itemlist_clear();
-	if(NULL != searchFeed)
-		feed_remove(searchFeed, NULL);
-	searchFeed = vfolder_new();
-	feed_set_title(searchFeed, searchstring);
-	vfolder_add_rule(searchFeed, "exact", searchstring, TRUE);
-	vfolder_refresh(searchFeed);
-	ui_feedlist_select(NULL);
+	if(NULL != searchResult) {
+		vfolder_remove((vfolderPtr)searchResult->data, NULL);
+		node_free(searchResult);
+	}
+
+	/* create new search */
+	vp = vfolder_new();
+	vfolder_set_title(vp, searchstring);
+	vfolder_add_rule(vp, "exact", searchstring, TRUE);
+
+	searchResult = node_new();
+	node_set_title(searchResult, searchstring);
+	node_add_data(searchResult, FST_VFOLDER, (gpointer)vp);
+
+	/* calculate vfolder item set */
+	vfolder_refresh(vp);
 
 	/* switch to item list view and inform user in HTML view */
+	ui_feedlist_select(NULL);
 	itemlist_set_two_pane_mode(FALSE);
-
-	itemlist_load((nodePtr)searchFeed);
-	
+	itemlist_load(searchResult);
 
 	ui_htmlview_start_output(&buffer, NULL, TRUE);
 	tmp = g_strdup_printf(_("%s<h2>%d Search Results for \"%s\"</h2>"
@@ -100,7 +112,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	                         "specified search pattern. If you want to save this search "
 	                         "result permanently you can click the VFolder button in "
 	                         "the search dialog and Liferea will add a VFolder to your "
-	                         "feed list.</h2>"), buffer, g_slist_length(feed_get_item_list(searchFeed)), searchstring);
+	                         "feed list.</h2>"), buffer, g_slist_length(searchResult->itemSet->items), searchstring);
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 	ui_htmlview_finish_output(&buffer);
@@ -124,11 +136,8 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	gint			pos;
 	nodePtr			np, folder = NULL;
 	
-	if(NULL != searchFeed) {
-		np = node_new();
-		node_set_title(np, feed_get_title(searchFeed));
-		node_add_data(np, FST_VFOLDER, (gpointer)searchFeed);
-		searchFeed = NULL;
+	if(NULL != searchResult) {
+		searchResult = NULL;
 		folder = ui_feedlist_get_target_folder(&pos);
 		feedlist_add_node(folder, np, pos);
 		ui_feedlist_update();
@@ -140,21 +149,21 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 
 void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gint			pos;
-	feedPtr			fp;
+	vfolderPtr		vp;
 	nodePtr			np, folder = NULL;
 	
-	fp = vfolder_new();
-	feed_set_title(fp, _("New VFolder"));
+	vp = vfolder_new();
+	vfolder_set_title(vp, _("New VFolder"));
 
 	np = node_new();
-	node_set_title(np, feed_get_title(fp));
-	node_add_data(np, FST_VFOLDER, (gpointer)fp);
+	node_set_title(np, vfolder_get_title(vp));
+	node_add_data(np, FST_VFOLDER, (gpointer)vp);
 
 	folder = ui_feedlist_get_target_folder(&pos);
 	feedlist_add_node(folder, np, pos);
 	ui_feedlist_update();
 	ui_feedlist_select(np);
-	ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow), fp);
+	ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow), np);
 }
 
 

@@ -86,9 +86,7 @@ typedef struct feed {
 	gboolean	encAutoDownload;	/**< enclosure auto download flag */
 	
 	gulong		lastItemNr;		/**< internal counter used to uniqely assign item id's. */
-	GSList		*items;			/**< list of pointers to the item structures of this channel */
-	
-	GSList		*rules;			/**< list of rules if this is a vfolder */
+	GSList		*items;			/**< list of pointers to the item structures of this channel */ // FIXME: needed?
 	
 	/* feed updating state properties */
 	gchar		*lastModified;		/**< Last modified string as sent by the server */
@@ -171,14 +169,7 @@ void feed_save(feedPtr fp, const gchar *id);
  * use feed_add_items() to keep the item order of parsed feeds.
  * Should be used for vfolders only.
  */
-void feed_add_item(feedPtr fp, itemPtr ip);
-
-/**
- * To be used by parser implementation to merge a new orderd list of
- * items to a feed. Ensures properly ordered joint item list. The
- * passed GList is free'd afterwards!
- */
-void feed_add_items(feedPtr fp, GList *items);
+gboolean feed_add_item(feedPtr fp, itemPtr ip);
 
 void feed_remove_item(feedPtr fp, itemPtr ip);
 

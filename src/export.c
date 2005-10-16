@@ -49,17 +49,23 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
 	gboolean	internal = ((struct exportData*)userdata)->internal;
 	xmlNodePtr	childNode, ruleNode;
+	struct exportData data;
 	GSList		*iter;
+	vfolderPtr	vp;
+	feedPtr		fp;
 	rulePtr		rule;
 	
 	debug_enter("append_node_tag");
+
+	childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+
+	xmlNewProp(childNode, BAD_CAST"title", BAD_CAST node_get_title(np));
+	xmlNewProp(childNode, BAD_CAST"text", BAD_CAST node_get_title(np)); /* The OPML spec requires "text" */
 	
-	// FIXME: support other types!
-	if(FST_FOLDER == np->type) {
-		struct exportData data;
-		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST node_get_title(np));
-		
+	/* add node type specific stuff */
+	switch(np->type) {
+	   case FST_FOLDER:
+		/* add folder children */
 		if(internal) {
 			if(ui_node_is_folder_expanded(np))
 				xmlNewProp(childNode, BAD_CAST"expanded", NULL);
@@ -70,16 +76,14 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 		data.cur = childNode;
 		data.internal = internal;
 		ui_feedlist_do_for_all_data(np, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
-	} else {
-		feedPtr fp = (feedPtr)np->data;
+		break;
+	   case FST_FEED:
+		/* add feed properties */
+		fp = (feedPtr)np->data;
 		const gchar *type = feed_type_fhp_to_str(feed_get_fhp(fp));
 		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 		gchar *cacheLimit = NULL;
 
-		childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-
-		xmlNewProp(childNode, BAD_CAST"text", BAD_CAST feed_get_title(fp)); /* The OPML spec requires "text" */
-		xmlNewProp(childNode, BAD_CAST"title", BAD_CAST feed_get_title(fp));
 		xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
 		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
 		if(feed_get_html_url(fp) != NULL)
@@ -114,22 +118,17 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
 				g_free(lastPoll);
 			}
-			if(np->sortColumn == IS_LABEL)
-				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
-			else if(np->sortColumn == IS_TIME)
-				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
-			if(FALSE == np->sortReversed)
-				xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
-				
-			if(TRUE == node_get_two_pane_mode(np))
-				xmlNewProp(childNode, BAD_CAST"twoPane", BAD_CAST"true");
-
 			if(TRUE == fp->encAutoDownload)
 				xmlNewProp(childNode, BAD_CAST"encAutoDownload", BAD_CAST"true");
 		}
-		
+		debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), node_get_id(np), interval, cacheLimit);
+		g_free(cacheLimit);
+		g_free(interval);
+		break;
+	    case FST_VFOLDER:		
 		/* add vfolder rules */
-		iter = fp->rules;
+		vp = (vfolderPtr)np->data;
+		iter = vp->rules;
 		while(NULL != iter) {
 			rule = iter->data;
 			ruleNode = xmlNewChild(childNode, NULL, BAD_CAST"outline", NULL);
@@ -144,10 +143,23 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 
 			iter = g_slist_next(iter);
 		}
-		
-		debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), node_get_id(np), interval, cacheLimit);
-		g_free(cacheLimit);
-		g_free(interval);
+		break;
+	    default:
+		g_warning("fatal: unknown node type %d when exporting!", np->type);
+		break;
+	}
+
+	/* export general node properties */
+	if(internal) {
+		if(np->sortColumn == IS_LABEL)
+			xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
+		else if(np->sortColumn == IS_TIME)
+			xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
+		if(FALSE == np->sortReversed)
+			xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
+			
+		if(TRUE == node_get_two_pane_mode(np))
+			xmlNewProp(childNode, BAD_CAST"twoPane", BAD_CAST"true");
 	}
 	
 	debug_exit("append_node_tag");

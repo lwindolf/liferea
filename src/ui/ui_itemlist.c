@@ -40,6 +40,7 @@
 #include "ui_mainwindow.h"
 #include "ui_tray.h"
 
+extern nodePtr		displayed_node;
 extern GdkPixbuf	*icons[];
 
 static GHashTable 	*iterhash = NULL;	/* hash table used for fast item->tree iter lookup */
@@ -93,18 +94,17 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
 	if(NULL == model) {
 		/* set up a store of these attributes: 
+		 	- item creation time
+			- item creation time as string
 			- item label
-			- feed pointer
-			- item state (read/unread)		
-			- pointer to item data
-			- date time_t value
-			- feed icon
+			- item state icon
+			- unique item id
+			- parent node icon
 		 */
 		itemstore = gtk_tree_store_new(IS_LEN,
 		                               G_TYPE_ULONG,
 		                               G_TYPE_STRING, 
 		                               G_TYPE_STRING,
-					       G_TYPE_POINTER,
 		                               GDK_TYPE_PIXBUF,
 		                               G_TYPE_ULONG,
 		                               GDK_TYPE_PIXBUF);
@@ -119,13 +119,13 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 
 itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter) {
 	GtkTreeStore	*itemstore;
-	feedPtr		fp;
+	itemSetPtr	sp;
 	itemPtr		ip;
 	gulong		nr;
 	
 	itemstore = ui_itemlist_get_tree_store();
-	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter, IS_FEED, &fp, IS_NR, &nr, -1);
-	ip = feed_lookup_item(fp, nr);
+	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter, IS_NR, &nr, -1);
+	ip = itemset_lookup_item(displayed_node->itemSet, nr);
 	g_assert(ip != NULL);
 	return ip;
 }
@@ -496,7 +496,6 @@ void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 		}	
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_NR, ip->nr,
-					      IS_FEED, ip->fp,
 		                	      IS_TIME, item_get_time(ip),
 		                	      -1);
 		ui_itemlist_update_item(ip);
@@ -637,7 +636,7 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 			ui_itemlist_select(*iter);
 			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 		} else {
-			itemlist_mark_all_read((nodePtr)ip->fp);
+			itemset_mark_all_read(ip->node->itemSet);
 		}
 		return TRUE;
 	}
@@ -683,7 +682,7 @@ static gboolean ui_itemlist_find_unread_item(void) {
 }
 
 void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	feedPtr			fp;
+	nodePtr		np;
 	
 	/* before scanning the feed list, we test if there is a unread 
 	   item in the currently selected feed! */
@@ -691,10 +690,10 @@ void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		return;
 	
 	/* scan feed list and find first feed with unread items */
-	if(NULL != (fp = ui_feedlist_find_unread_feed(NULL))) {
+	if(NULL != (np = ui_feedlist_find_unread_feed(NULL))) {
 		
 		/* load found feed */
-		ui_feedlist_select((nodePtr)fp);
+		ui_feedlist_select(np);
 
 		/* find first unread item */
 		ui_itemlist_find_unread_item();

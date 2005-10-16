@@ -41,7 +41,7 @@ typedef gboolean (*ruleCheckFuncPtr)	(rulePtr rp, itemPtr ip);
 struct ruleInfo *ruleFunctions = NULL;
 gint nrOfRuleFunctions = 0;
 
-rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean additive) {
+rulePtr rule_new(struct vfolder *vp, const gchar *ruleId, const gchar *value, gboolean additive) {
 	ruleInfoPtr	ri;
 	rulePtr		rp;
 	int		i;
@@ -51,7 +51,7 @@ rulePtr rule_new(feedPtr fp, const gchar *ruleId, const gchar *value, gboolean a
 			rp = (rulePtr)g_new0(struct rule, 1);
 			rp->ruleInfo = ri;
 			rp->additive = additive;
-			rp->fp = fp;
+			rp->vp = vp;
 			
 			/* if it is a text matching rule make the text
 			   matching value case insensitive */
@@ -89,7 +89,7 @@ static gboolean rule_feed_title_match(rulePtr rp, itemPtr ip) {
 	gboolean	result = FALSE;
 	gchar 		*title;
 	
-	if((NULL != ip->fp) && (NULL != (title = (gchar *)feed_get_title(ip->fp)))) {
+	if((NULL != ip->node) && (NULL != (title = (gchar *)node_get_title(ip->node)))) {
 		title = g_utf8_casefold(title, -1);
 		if(NULL != strstr(title, rp->value))
 			result = TRUE;

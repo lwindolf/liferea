@@ -1,3 +1,8 @@
+2005-10-09  Rodrigo Moya <rodrigo@novell.com>
+
+	* src/ui/eggtrayicon.[ch]: updated from libegg, to fix the extra
+	spacing between icons.
+
 2005-09-??  ???  <???> 
 
 	Version 1.1.0

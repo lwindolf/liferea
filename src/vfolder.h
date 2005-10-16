@@ -1,7 +1,7 @@
 /**
  * @file vfolder.h VFolder functionality
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #ifndef _VFOLDER_H
 #define _VFOLDER_H
 
-#include "feed.h"
+#include <glib.h>
 #include "item.h"
 #include "rule.h"
 
@@ -35,13 +35,18 @@
    The vfolder concept also constitutes an own itemset type
    with special update propagation and removal handling. */
 
-
-// FIXME: this is not correct
-/* standard feed/item type interface */
-feedHandlerPtr	vfolder_init_feed_handler(void);
+typedef struct vfolder {
+	gchar		*title;			/**< vfolder title */
+	GSList		*rules;			/**< list of rules if this is a vfolder */
+	gulong		lastItemNr;		/**< internal counter used to uniqely assign item id's. */
+} *vfolderPtr;
 
 /* sets up a vfolder feed structure */
-feedPtr vfolder_new(void);
+vfolderPtr vfolder_new(void);
+
+/* set/get of vfolder title */
+const gchar * vfolder_get_title(vfolderPtr vp);
+void vfolder_set_title(vfolderPtr vp, const gchar * title);
 
 /**
  * Method thats adds a rule to a vfolder. To be used
@@ -53,7 +58,7 @@ feedPtr vfolder_new(void);
  * @param value		argument string for this rule
  * @param additive	indicates positive or negative logic
  */
-void	vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gboolean additive);
+void	vfolder_add_rule(vfolderPtr vp, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /** 
  * Method that removes a rule from a vfolder. To be used
@@ -63,7 +68,7 @@ void	vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gbool
  * @param vp	vfolder
  * @param rp	rule to remove
  */
-void	vfolder_remove_rule(feedPtr vp, rulePtr rp);
+void	vfolder_remove_rule(vfolderPtr vp, rulePtr rp);
 
 /**
  * Method that applies the rules of the given vfolder to 
@@ -73,7 +78,7 @@ void	vfolder_remove_rule(feedPtr vp, rulePtr rp);
  *
  * @param vp	vfolder
  */
-void	vfolder_refresh(feedPtr vp);
+void	vfolder_refresh(vfolderPtr vp);
 
 /**
  * Method to be called when a item was updated. This maybe
@@ -112,6 +117,6 @@ void	vfolder_remove_item(itemPtr ip);
  *
  * @param vp	vfolder to free
  */
-void	vfolder_free(feedPtr vp);
+void	vfolder_free(vfolderPtr vp);
 
 #endif

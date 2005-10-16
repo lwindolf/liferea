@@ -50,6 +50,7 @@ typedef struct itemSet {
 	GSList	*items;
 
 	guint	unreadCount;
+	guint	popupCount;
 	guint	newCount;
 } *itemSetPtr;
 
@@ -72,12 +73,23 @@ gchar * itemset_render_item(itemSetPtr sp, itemPtr ip);
  */
 gchar * itemset_render_all(itemSetPtr sp);
 
-// FIXME: I'm not 100% sure if the item adding methods 
-// belong here, but I'll try it... (Lars)
+/**
+ * Scans all item of a given item set for the given item id.
+ *
+ * @param sp	the itemset
+ * @param nr	the item id
+ *
+ * @returns NULL or the first found item
+ */
+itemPtr itemset_lookup_item(itemSetPtr sp, gulong nr);
 
+/**
+ * Adds a single item to the given itemset.
+ *
+ * @param sp	the itemset
+ * @param ip	the item to add
+ */
 void itemset_add_item(itemSetPtr sp, itemPtr ip);
-
-void itemset_add_items(itemSetPtr sp, GSList *list);
 
 /**
  * Removes a single item of a given itemset.
@@ -120,5 +132,8 @@ void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newStatus)
  * @param newStatus	the new update status
  */
 void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newStatus);
+
+void itemset_mark_all_read(itemSetPtr sp);
+void itemset_mark_all_old(itemSetPtr sp);
 
 #endif

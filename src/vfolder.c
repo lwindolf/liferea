@@ -36,28 +36,32 @@
 static GSList		*vfolders = NULL;
 
 /* sets up a vfolder feed structure */
-feedPtr vfolder_new(void) {
-	feedPtr		fp;
+vfolderPtr vfolder_new(void) {
+	vfolderPtr	vp;
 
 	debug_enter("vfolder_new");
 
-	fp = feed_new();;
-	feed_set_title(fp, "vfolder");
-	feed_set_source(fp, "vfolder");
-	feed_set_available(fp, TRUE);
-	feed_set_update_interval(fp, -2);	/* never update */
-	fp->fhp = feed_type_str_to_fhp("vfolder");
-	vfolders = g_slist_append(vfolders, fp);
+	vp = g_new0(struct vfolder, 1);
+	vp->title = g_strdup(_("vfolder"));
+	vfolders = g_slist_append(vfolders, vp);
 	
 	debug_exit("vfolder_new");
 	
-	return fp;
+	return vp;
 }
+
+void vfolder_set_title(vfolderPtr vp, const gchar *title) {
+
+	g_free(vp->title);
+	vp->title = g_strdup(title);
+}
+
+const gchar * vfolder_get_title(vfolderPtr vp) { return vp->title; }
 
 /* Method thats adds a rule to a vfolder. To be used
    on loading time or when creating searching. Does 
    not process items. Just sets up the vfolder */
-void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gboolean additive) {
+void vfolder_add_rule(vfolderPtr vp, const gchar *ruleId, const gchar *value, gboolean additive) {
 	rulePtr		rp;
 	
 	debug_enter("vfolder_add_rule");
@@ -74,7 +78,7 @@ void vfolder_add_rule(feedPtr vp, const gchar *ruleId, const gchar *value, gbool
 /* Method that remove a rule from a vfolder. To be used
    when deleting or changing vfolders. Does not process
    items. */
-void vfolder_remove_rule(feedPtr vp, rulePtr rp) {
+void vfolder_remove_rule(vfolderPtr vp, rulePtr rp) {
 
 	debug_enter("vfolder_remove_rule");
 	vp->rules = g_slist_remove(vp->rules, rp);
@@ -85,21 +89,21 @@ void vfolder_remove_rule(feedPtr vp, rulePtr rp) {
  * Adds an item to this VFolder, this method is called
  * when any rule of the vfolder matched 
  */
-static void vfolder_add_item(feedPtr vp, itemPtr ip) {
+static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	GSList		*iter;
 	itemPtr		tmp;
 	
 	/* need to check for vfolder items because the
 	   rule checking can be called on item copies of
 	   the same vfolder, */
-	if(NULL != ip->sourceFeed)
+	if(NULL != ip->sourceNode)
 		return;
 
 	/* check if the item was already added */
 	iter = vp->items;
 	while(NULL != iter) {
 		tmp = iter->data;
-		if((ip->nr == tmp->sourceNr) && (ip->fp == tmp->sourceFeed))
+		if((ip->nr == tmp->sourceNr) && (ip->node == tmp->sourceNode))
 			return;
 		iter = g_slist_next(iter);
 	}
@@ -107,7 +111,9 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
 	/* add an item copy to the vfolder */	
 	tmp = item_new();
 	item_copy(ip, tmp);
-	feed_add_item(vp, tmp);
+	tmp->node = np;  // FIXME!
+	tmp->nr = ++(vp->lastItemNr);
+	itemset_add_item(tmp->node->itemSet, tmp);
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
 }
 
@@ -116,7 +122,7 @@ static void vfolder_add_item(feedPtr vp, itemPtr ip) {
  * removes them. Used for item remove propagation and for 
  * processing of removing vfolder rules.
  */
-static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
+static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 	gboolean	found = FALSE;
 	GSList		*items;
 	itemPtr		tmp;
@@ -124,10 +130,10 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 	items = feed_get_item_list(vp);
 	while(NULL != items) {
 		tmp = items->data;
-		g_assert(NULL != ip->fp);
-		g_assert(NULL != tmp->fp);
+		g_assert(NULL != ip->node);
+		g_assert(NULL != tmp->node);
 		if((ip->nr == tmp->sourceNr) &&
-		   (ip->fp == tmp->sourceFeed)) {
+		   (ip->node == tmp->sourceNode)) {
 			found = TRUE;
 			break;
 		}
@@ -142,7 +148,7 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 		   the original item may not exist anymore when the 
 		   removal is executed, so we need to remove the
 		   pointer to the original item */
-		tmp->sourceFeed = NULL;
+		tmp->sourceNode = NULL;
 		tmp->sourceNr = -1;
 		
 		/* we call itemlist_remove_item to prevent removing
@@ -158,13 +164,13 @@ static void vfolder_remove_matching_item_copy(feedPtr vp, itemPtr ip) {
 void vfolder_remove_item(itemPtr ip) {
 	GSList		*iter;
 
-	g_assert(NULL == ip->sourceFeed);
+	g_assert(NULL == ip->sourceNode);
 
 	debug_enter("vfolder_remove_item");
 
 	iter = vfolders;
 	while(NULL != iter) {
-		vfolder_remove_matching_item_copy((feedPtr)iter->data, ip);
+		vfolder_remove_matching_item_copy((vfolderPtr)iter->data, ip);
 		iter = g_slist_next(iter);
 	}
 
@@ -176,7 +182,7 @@ void vfolder_remove_item(itemPtr ip) {
  * additive rule it is added to the vfolder and when it matches an excluding 
  * rule the item is removed again from the given vfolder.
  */
-static gboolean vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
+static gboolean vfolder_apply_rules_for_item(vfolderPtr vp, itemPtr ip) {
 	rulePtr		rp;
 	GSList		*iter;
 	gboolean	added = FALSE;
@@ -210,7 +216,7 @@ static gboolean vfolder_apply_rules_for_item(feedPtr vp, itemPtr ip) {
  * Used by vfolder_refresh().
  */
 static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
-	feedPtr		vp = (feedPtr)userdata;
+	vfolderPtr	vp = (vfolderPtr)userdata;
 	GSList		*items;
 
 	/* do not search in vfolders */
@@ -237,7 +243,7 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
    all existing items. To be used for creating search
    results or new vfolders. Not to be used when loading
    vfolders from cache. */
-void vfolder_refresh(feedPtr vp) {
+void vfolder_refresh(vfolderPtr vp) {
 	GSList		*iter;
 	
 	debug_enter("vfolder_refresh");
@@ -263,25 +269,25 @@ void vfolder_refresh(feedPtr vp) {
 void vfolder_update_item(itemPtr ip) {
 	GSList		*iter, *items, *rule;
 	itemPtr		tmp;
-	feedPtr		vp;
+	vfolderPtr	vp;
 	rulePtr		rp;
 	gboolean	keep, remove;
 
 	debug_enter("vfolder_update_item");
 
 	/* never process vfolder items! */
-	g_assert(NULL == ip->sourceFeed);
+	g_assert(NULL == ip->sourceNode);
 	
 	iter = vfolders;
 	while(NULL != iter) {
-		vp = (feedPtr)iter->data;
+		vp = (vfolderPtr)iter->data;
 		
 		/* first step: update item copy if found */
-		items = feed_get_item_list(vp);
+		items = vfolder_get_item_list(vp);
 		while(NULL != items) {
 			tmp = items->data;
-			g_assert(NULL != ip->fp);
-			g_assert(NULL != tmp->fp);
+			g_assert(NULL != ip->node);
+			g_assert(NULL != tmp->node);
 			
 			/* avoid processing items that are in deletion state */
 			if(-1 == tmp->sourceNr) {
@@ -291,7 +297,7 @@ void vfolder_update_item(itemPtr ip) {
 			
 			/* find the item copies */
 			if((ip->nr == tmp->sourceNr) &&
-			   (ip->fp == tmp->sourceFeed)) {
+			   (ip->node == tmp->sourceNode)) {
 				/* check if the item still matches, the item won't get added
 				   another time so this call effectivly just checks if the
 				   item is still to remain added. */
@@ -374,9 +380,14 @@ gboolean vfolder_check_item(itemPtr ip) {
 	return added;
 }
 
+void vfolder_remove(vfolder vp) {
+
+	vfolder_free(vp);
+}
+
 /* called when a vfolder is processed by feed_free
    to get rid of the vfolder items */
-void vfolder_free(feedPtr vp) {
+void vfolder_free(vfolderPtr vp) {
 	GSList		*iter;
 
 	debug_enter("vfolder_free");
@@ -404,21 +415,3 @@ void vfolder_free(feedPtr vp) {
 	debug_exit("vfolder_free");
 }
 
-feedHandlerPtr vfolder_init_feed_handler(void) {
-	feedHandlerPtr	fhp;
-	
-	fhp = g_new0(struct feedHandler, 1);
-
-	/* prepare feed handler structure, we need this for
-	   vfolders too to set item and OPML type identifier */
-	fhp->typeStr		= "vfolder";
-	fhp->icon		= ICON_VFOLDER;
-	fhp->directory		= FALSE;
-	fhp->feedParser		= NULL;
-	fhp->checkFormat	= NULL;
-	fhp->merge		= FALSE;
-	
-	rule_init();
-	
-	return fhp;
-}
