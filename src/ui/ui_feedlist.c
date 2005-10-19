@@ -134,22 +134,17 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 
 static void ui_feedlist_node_update(nodePtr np) {
 	GtkTreeIter	iter;
-	gchar		*label, *tmp;
+	gchar		*label;
 	
 	if(np->ui_data == NULL)
 		return;
 	
 	iter = ((ui_data*)np->ui_data)->row;
 	
-	label = unhtmlize(g_strdup(node_get_title(np)));
-	/* FIXME: Unescape text here! */
-	tmp = g_markup_escape_text(label,-1);
-	g_free(label);
 	if(np->itemSet->unreadCount > 0)
-		label = g_strdup_printf("<span weight=\"bold\">%s (%d)</span>", tmp, np->itemSet->unreadCount);
+		label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>", node_get_title(np), np->itemSet->unreadCount);
 	else
-		label = g_strdup_printf("%s", tmp);
-	g_free(tmp);
+		label = g_markup_printf_escaped("%s", node_get_title(np));
 	
 	gtk_tree_store_set(feedstore, &iter, FS_LABEL, label,
 	                                    FS_UNREAD, np->itemSet->unreadCount,
