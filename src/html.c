@@ -130,6 +130,7 @@ static gchar *search_links(const gchar* data, gint linkType) {
 		}
 		tmp = endptr;
 	}
+	result = unhtmlize(result); /* URIs can contain escaped things.... All ampersands must be escaped, for example */
 	return result;
 }
 
