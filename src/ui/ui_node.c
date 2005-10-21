@@ -195,9 +195,9 @@ void ui_node_empty_check(nodePtr folder) {
 	} while(valid);
 }
 
-void ui_node_check_if_folder_is_empty(void) {
+void ui_node_check_if_folder_is_empty(nodePtr folder) {
 
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FOLDER, ui_node_empty_check);
+	ui_feedlist_do_for_all(folder, ACTION_FILTER_FOLDER, ui_node_empty_check);
 }
 
 void ui_node_remove_node(nodePtr np) {
@@ -220,7 +220,7 @@ void ui_node_remove_node(nodePtr np) {
 	np->ui_data = NULL;
 
 	if(parentNode != NULL) {
-		ui_node_check_if_folder_is_empty();
+		ui_node_check_if_folder_is_empty(parentNode);
 		if(parentExpanded)
 			ui_node_set_expansion(parentNode, TRUE);
 	}

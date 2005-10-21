@@ -23,22 +23,24 @@
 #define _UI_FOLDER_H
 
 #include <gtk/gtk.h>
-
-#define	ROOT_FOLDER_PREFIX	""
+#include "node.h"
 
 /**
  * Remove a node from the feedlist and free its ui_data.
  *
  * @param ptr the node to free
  */
-void ui_folder_remove_node(nodePtr ptr);
+void ui_node_remove_node(nodePtr ptr);
 
-void ui_folder_update(nodePtr folder);
-gboolean ui_is_folder_expanded(nodePtr folder);
-gboolean ui_folder_is_empty(nodePtr folder);
-void ui_folder_check_if_empty(void);
+void ui_node_update(nodePtr folder);
+gboolean ui_node_is_folder_expanded(nodePtr folder);
+
+// FIXME: what is the difference of the next two methods?
+void ui_node_check_if_folder_is_empty(nodePtr folder);
+void ui_node_empty_check(nodePtr folder);
+
 /* expansion/collapsing */
-void ui_folder_set_expansion(nodePtr folder, gboolean expanded);
+void ui_node_set_expansion(nodePtr folder, gboolean expanded);
 
 /* Callbacks */
 void on_popup_newfolder_selected(void);

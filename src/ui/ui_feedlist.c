@@ -623,7 +623,7 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 
 	gtk_tree_store_set(feedstore, iter, FS_PTR, node, -1);
 	
-	ui_node_check_if_folder_is_empty();
+	ui_node_check_if_folder_is_empty(parent);
 	ui_feedlist_update();
 }
 

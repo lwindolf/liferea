@@ -75,7 +75,6 @@ void feed_init(void) {
 	feedhandlers = g_slist_append(feedhandlers, atom10_init_feed_handler());  /* Must be before pie */
 	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, opml_init_feed_handler());
-	feedhandlers = g_slist_append(feedhandlers, vfolder_init_feed_handler());
 }
 
 /* function to create a new feed structure */
@@ -252,7 +251,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 void feed_save(feedPtr fp, const gchar *id) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode;
-	GSList		*itemlist, *iter;
+	GList		*itemlist, *iter;
 	gchar		*filename, *tmpfilename;
 	gchar		*tmp;
 	itemPtr		ip;
@@ -301,8 +300,8 @@ void feed_save(feedPtr fp, const gchar *id) {
 			
 			metadata_add_xml_nodes(fp->metadata, feedNode);
 
-			itemlist = g_slist_copy(feed_get_item_list(fp));
-			for(iter = itemlist; iter != NULL; iter = g_slist_next(iter)) {
+			itemlist = g_list_copy(feed_get_item_list(fp));
+			for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
 				ip = iter->data;
 				g_assert(NULL != ip);
 				
@@ -312,14 +311,14 @@ void feed_save(feedPtr fp, const gchar *id) {
 				if((saveMaxCount != CACHE_UNLIMITED) &&
 				   (saveCount >= saveMaxCount) &&
 				   (fp->fhp == NULL || fp->fhp->directory == FALSE) &&
-				   ! item_get_flag_status(ip)) {
+				   ! ip->flagStatus) {
 				   	itemlist_remove_item(ip);
 				} else {
 					item_save(ip, feedNode);
 					saveCount++;
 				}
 			}
-			g_slist_free(itemlist);
+			g_list_free(itemlist);
 		} else {
 			g_warning("could not create XML feed node for feed cache document!");
 		}
@@ -435,7 +434,7 @@ gboolean feed_load(feedPtr fp, const gchar *id) {
 			g_free(tmp);	
 			cur = cur->next;
 		}
-		feed_add_items(fp, items);
+		fp->items = items;  // FIXME: is this correct?
 		//favicon_load(np); FIXME!!!
 	} while (FALSE);
 	
@@ -522,7 +521,7 @@ void feed_schedule_update(feedPtr fp, guint flags) {
  * logic based on the numeric item id's. 
  */
 gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
-	GSList		*old_items;
+	GList		*old_items;
 	itemPtr		old_ip = NULL;
 	gboolean	found, equal = FALSE;
 	GSList		*iter, *enclosures;
@@ -543,7 +542,7 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 		   ((item_get_id(old_ip) != NULL) && (item_get_id(new_ip) == NULL))) {	
 			/* cannot be equal (different ids) so compare to 
 			   next old item */
-			old_items = g_slist_next(old_items);
+			old_items = g_list_next(old_items);
 		   	continue;
 		} 
 
@@ -575,7 +574,7 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 			break;
 		}
 
-		old_items = g_slist_next(old_items);
+		old_items = g_list_next(old_items);
 	}
 		
 	if(!found) {
@@ -597,7 +596,7 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 		   is enabled we start the download. Enclosures added
 		   by updated items are not supported. */
 		if((TRUE == fp->encAutoDownload) &&
-		   (TRUE == item_get_new_status(new_ip))) {
+		   (TRUE == new_ip->newStatus)) {
 			iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
 			while(NULL != iter) {
 				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
@@ -606,7 +605,7 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 			}
 		}
 		
-		fp->items = g_slist_prepend(fp->items, (gpointer)new_ip); // FIXME: do we need a item list in feedPtr?
+		fp->items = g_list_prepend(fp->items, (gpointer)new_ip); // FIXME: do we need a item list in feedPtr?
 
 		debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
 			
@@ -618,7 +617,7 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 			item_set_title(old_ip, item_get_title(new_ip));
 			item_set_description(old_ip, item_get_description(new_ip));
 			item_set_time(old_ip, item_get_time(new_ip));
-			item_set_update_status(old_ip, TRUE);
+			old_ip->updateStatus = TRUE;
 			metadata_list_free(old_ip->metadata);
 			old_ip->metadata = new_ip->metadata;
 			vfolder_update_item(old_ip);
@@ -632,15 +631,15 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 }
 
 itemPtr feed_lookup_item(feedPtr fp, gulong nr) {
-	GSList		*items;
+	GList		*items;
 	itemPtr		ip;
 		
-	items = fp->items;
+	items = feed_get_item_list(fp);
 	while(NULL != items) {
 		ip = (itemPtr)(items->data);
 		if(ip->nr == nr)
 			return ip;
-		items = g_slist_next(items);
+		items = g_list_next(items);
 	}
 	
 	return NULL;
@@ -824,7 +823,7 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 }
 
 /* returns feed's list of items, if necessary loads the feed from cache */
-GSList * feed_get_item_list(feedPtr fp) { 
+GList * feed_get_item_list(feedPtr fp) { 
 
 	return fp->items; 
 }
@@ -835,45 +834,46 @@ GSList * feed_get_item_list(feedPtr fp) {
  * for feed unloading.
  */
 void feed_clear_item_list(feedPtr fp) {
-	GSList	*item;
+	GList	*item;
 
-	item = fp->items;
+	item = feed_get_item_list(fp);
 
 	while(NULL != item) {
 		item_free(item->data);
-		item = g_slist_next(item);
+		item = g_list_next(item);
 		/* explicitly not changing the item state counters */
 	}
-	g_slist_free(fp->items);
+	g_list_free(fp->items);
 	fp->items = NULL;
 	/* explicitly not forcing feed saving to allow feed unloading */
 }
 
+// FIXME: method shouldn't be needed anymore
 void feed_remove_item(feedPtr fp, itemPtr ip) {
 
-	if(FALSE == item_get_read_status(ip))
+	if(FALSE == ip->readStatus)
 		feed_decrease_unread_counter(fp);
 	
-	if(TRUE == item_get_popup_status(ip))
+	if(TRUE == ip->popupStatus)
 		feed_decrease_popup_counter(fp);
 	
-	if(TRUE == item_get_new_status(ip))
+	if(TRUE == ip->newStatus)
 		feed_decrease_new_counter(fp);
 	
 	item_free(ip);
 }
 
 void feed_remove_items(feedPtr fp) {
-	GSList *item;
+	GList *item;
 	
-	item = fp->items;
+	item = feed_get_item_list(fp);
 
 	while(NULL != item) {
 		vfolder_remove_item(item->data);	/* remove item copies */
 		item_free(item->data);			/* remove the item */
-		item = g_slist_next(item);
+		item = g_list_next(item);
 	}
-	g_slist_free(fp->items);
+	g_list_free(fp->items);
 	feedlist_update_counters((-1)*fp->unreadCount, (-1)*fp->newCount);
 	fp->unreadCount = 0;
 	fp->popupCount = 0;
@@ -912,13 +912,13 @@ gchar *feed_render(feedPtr fp) {
 	else
 		tmp = g_strdup(feed_get_title(fp));
 
-	tmp2 = g_strdup_printf(HEAD_LINE, (FST_FEED == feed_get_type(fp))?_("Feed:"):_("VFolder"), tmp);
+	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
 	addToHTMLBufferFast(&buffer, tmp2);
 	g_free(tmp2);
 
 	/*  -- Source line */
-	if((NULL != feed_get_source(fp)) && (FST_VFOLDER != feed_get_type(fp))) {
+	if(NULL != feed_get_source(fp)) {
 		if(feed_get_source(fp)[0] == '|') {
 			tmp = g_strdup(_("user defined command"));
 		} else if(feed_get_source(fp)[0] == '/') {

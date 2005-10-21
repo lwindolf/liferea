@@ -23,6 +23,7 @@
 #include "support.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "node.h"
 #include "item.h"
 #include "itemlist.h"
 #include "update.h"
@@ -34,6 +35,7 @@
 #include "ui/ui_notification.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_feed.h"
+#include "ui/ui_node.h"
 #include "fl_providers/fl_plugin.h"
 
 static guint unreadCount = 0;
@@ -100,7 +102,7 @@ static void feedlist_remove_node_(nodePtr np) {
 	
 	// FIXME: feedPtr!!!
 	//ui_notification_remove_feed((feedPtr)np);	/* removes an existing notification for this feed */
-	ui_folder_remove_node(np);
+	ui_node_remove_node(np);
 	ui_feedlist_update();
 	
 	node_load(np);
@@ -149,7 +151,7 @@ static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
 			break;
 	}
 
-	sp->items = g_slist_concat(sp->items, np->itemSet->items);
+	sp->items = g_list_concat(sp->items, np->itemSet->items);
 	sp->newCount += np->itemSet->newCount;
 	sp->unreadCount += np->itemSet->unreadCount;
 }
@@ -159,7 +161,7 @@ void feedlist_load_node(nodePtr np) {
 	node_load(np);
 
 	if(FST_FOLDER == np->type)
-		ui_feedlist_do_foreach_data(np, feedlist_merge_itemset_cb, (gpointer)&(np->itemSet));
+		ui_feedlist_do_for_all_data(np, ACTION_FILTER_FEED, feedlist_merge_itemset_cb, (gpointer)&(np->itemSet));
 }
 
 void feedlist_unload_node(nodePtr np) {
@@ -167,14 +169,14 @@ void feedlist_unload_node(nodePtr np) {
 	node_unload(np);
 
 	if(FST_FOLDER == np->type)
-		ui_feedlist_do_foreach(np, node_unload);
+		ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, node_unload);
 }
 
 static gboolean feedlist_auto_update(void *data) {
 
 	debug_enter("feedlist_auto_update");
 	if(download_is_online()) {
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)node_auto_update);
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)node_request_auto_update);
 	} else {
 		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
 	}
@@ -245,7 +247,7 @@ static void feedlist_mark_all_read(nodePtr np) {
 		return;
 
 	node_load(np);
-	itemlist_mark_all_read(np->itemSet);
+	itemset_mark_all_read(np->itemSet);
 	node_unload(np);
 }
 
@@ -263,9 +265,14 @@ void on_popup_allunread_selected(void) {
 	}
 }
 
+static void feedlist_mark_all_read_cb(nodePtr np) {
+
+	itemset_mark_all_read(np->itemSet);
+}
+
 void on_popup_allfeedsunread_selected(void) {
 
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, itemlist_mark_all_read);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_mark_all_read_cb);
 }
 
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {

@@ -27,6 +27,8 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "itemset.h"
+#include "itemlist.h"
 #include "vfolder.h"
 
 /**
@@ -90,7 +92,7 @@ void vfolder_remove_rule(vfolderPtr vp, rulePtr rp) {
  * when any rule of the vfolder matched 
  */
 static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
-	GSList		*iter;
+	GList		*iter;
 	itemPtr		tmp;
 	
 	/* need to check for vfolder items because the
@@ -100,20 +102,21 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 		return;
 
 	/* check if the item was already added */
-	iter = vp->items;
+	g_assert(NULL != vp->node->itemSet);
+	iter = vp->node->itemSet->items;
 	while(NULL != iter) {
 		tmp = iter->data;
 		if((ip->nr == tmp->sourceNr) && (ip->node == tmp->sourceNode))
 			return;
-		iter = g_slist_next(iter);
+		iter = g_list_next(iter);
 	}
 
 	/* add an item copy to the vfolder */	
 	tmp = item_new();
 	item_copy(ip, tmp);
-	tmp->node = np;  // FIXME!
+	tmp->node = vp->node;  
 	tmp->nr = ++(vp->lastItemNr);
-	itemset_add_item(tmp->node->itemSet, tmp);
+	itemset_add_item(vp->node->itemSet, tmp);
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
 }
 
@@ -124,10 +127,10 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
  */
 static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 	gboolean	found = FALSE;
-	GSList		*items;
+	GList		*items;
 	itemPtr		tmp;
 
-	items = feed_get_item_list(vp);
+	items = vfolder_get_item_list(vp);
 	while(NULL != items) {
 		tmp = items->data;
 		g_assert(NULL != ip->node);
@@ -138,7 +141,7 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 			break;
 		}
 
-		items = g_slist_next(items);
+		items = g_list_next(items);
 	}
 
 	if(found) {
@@ -194,13 +197,13 @@ static gboolean vfolder_apply_rules_for_item(vfolderPtr vp, itemPtr ip) {
 		rp = iter->data;
 		if(rp->additive) {
 			if(!added && rule_check_item(rp, ip)) {
-				debug3(DEBUG_UPDATE, "adding matching item #%d (%s) to (%s)", ip->nr, item_get_title(ip), feed_get_title(vp));
+				debug3(DEBUG_UPDATE, "adding matching item #%d (%s) to (%s)", ip->nr, item_get_title(ip), node_get_title(vp->node));
 				vfolder_add_item(vp, ip);
 				added = TRUE;
 			}
 		} else {
 			if(added && rule_check_item(rp, ip)) {
-				debug3(DEBUG_UPDATE, "deleting matching item #%d (%s) to (%s)", ip->nr, item_get_title(ip), feed_get_title(vp));
+				debug3(DEBUG_UPDATE, "deleting matching item #%d (%s) to (%s)", ip->nr, item_get_title(ip), node_get_title(vp->node));
 				vfolder_remove_matching_item_copy(vp, ip);
 				added = FALSE;
 			}
@@ -217,7 +220,7 @@ static gboolean vfolder_apply_rules_for_item(vfolderPtr vp, itemPtr ip) {
  */
 static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	vfolderPtr	vp = (vfolderPtr)userdata;
-	GSList		*items;
+	GList		*items;
 
 	/* do not search in vfolders */
 	if(FST_VFOLDER == np->type)
@@ -232,7 +235,7 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	items = np->itemSet->items;
 	while(NULL != items) {
 		vfolder_apply_rules_for_item(vp, items->data);
-		items = g_slist_next(items);
+		items = g_list_next(items);
 	}
 	
 	feedlist_unload_node(np);
@@ -244,18 +247,21 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
    results or new vfolders. Not to be used when loading
    vfolders from cache. */
 void vfolder_refresh(vfolderPtr vp) {
-	GSList		*iter;
+	GList		*iter;
 	
 	debug_enter("vfolder_refresh");
 	
 	/* free vfolder items */
-	iter = vp->items;
+	g_assert(NULL != vp->node->itemSet);
+	iter = vp->node->itemSet->items;
 	while(NULL != iter) {
 		item_free(iter->data);
-		iter = g_slist_next(iter);
+		iter = g_list_next(iter);
 	}
-	g_slist_free(vp->items);
-	vp->items = NULL;
+	g_list_free(vp->node->itemSet->items);
+	vp->node->itemSet->items = NULL;
+	// FIXME: the pointer chain somehow tells me that
+	// this code does not belong here...
 	
 	ui_feedlist_do_for_all_data(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, vfolder_apply_rules, vp);
 	
@@ -267,7 +273,8 @@ void vfolder_refresh(vfolderPtr vp) {
  * after user interaction or updated item contents.
  */
 void vfolder_update_item(itemPtr ip) {
-	GSList		*iter, *items, *rule;
+	GList		*items;
+	GSList		*iter, *rule;
 	itemPtr		tmp;
 	vfolderPtr	vp;
 	rulePtr		rp;
@@ -291,7 +298,7 @@ void vfolder_update_item(itemPtr ip) {
 			
 			/* avoid processing items that are in deletion state */
 			if(-1 == tmp->sourceNr) {
-				items = g_slist_next(items);
+				items = g_list_next(items);
 				continue;
 			}
 			
@@ -326,26 +333,26 @@ void vfolder_update_item(itemPtr ip) {
 				item_copy(ip, tmp);	
 
 				if((TRUE == keep) && (FALSE == remove)) {
-			   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", ip->title, vp->title);
+			   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", item_get_title(ip), node_get_title(vp->node));
 					itemlist_update_item(tmp);
 				} else {
-					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...",  ip->title, vp->title);
+					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...", item_get_title(ip), node_get_title(vp->node));
 					itemlist_remove_item(tmp);
 				}
 				break;
 			}
-			items = g_slist_next(items);
+			items = g_list_next(items);
 		}
 		
 		/* second step: update vfolder unread count */
-		vp->unreadCount = 0;
-		items = feed_get_item_list(vp);
+		vp->node->itemSet->unreadCount = 0;
+		items = vfolder_get_item_list(vp);
 		while(NULL != items) {
 			tmp = items->data;
 			if(FALSE == item_get_read_status(tmp)) 
-				feed_increase_unread_counter(vp);
+				vp->node->itemSet->unreadCount++;
 
-			items = g_slist_next(items);
+			items = g_list_next(items);
 		}
 		iter = g_slist_next(iter);
 		
@@ -380,34 +387,42 @@ gboolean vfolder_check_item(itemPtr ip) {
 	return added;
 }
 
-void vfolder_remove(vfolder vp) {
+void vfolder_remove(vfolderPtr vp) {
 
 	vfolder_free(vp);
+}
+
+GList * vfolder_get_item_list(vfolderPtr vp) {
+
+	g_assert(NULL != vp->node->itemSet);
+	return vp->node->itemSet->items;
 }
 
 /* called when a vfolder is processed by feed_free
    to get rid of the vfolder items */
 void vfolder_free(vfolderPtr vp) {
-	GSList		*iter;
+	GList		*iter;
+	GSList		*rule;
 
 	debug_enter("vfolder_free");
 
 	vfolders = g_slist_remove(vfolders, vp);
 
 	/* free vfolder items */
-	iter = vp->items;
+	g_assert(NULL != vp->node->itemSet);
+	iter = vp->node->itemSet->items;
 	while(NULL != iter) {
 		item_free(iter->data);
-		iter = g_slist_next(iter);
+		iter = g_list_next(iter);
 	}
-	g_slist_free(vp->items);
-	vp->items = NULL;
+	g_list_free(vp->node->itemSet->items);
+	vp->node->itemSet->items = NULL;
 	
 	/* free vfolder rules */
-	iter = vp->rules;
-	while(NULL != iter) {
-		rule_free(iter->data);
-		iter = g_slist_next(iter);
+	rule = vp->rules;
+	while(NULL != rule) {
+		rule_free(rule->data);
+		rule = g_slist_next(rule);
 	}
 	g_slist_free(vp->rules);
 	vp->rules = NULL;

@@ -47,7 +47,7 @@ enum itemSetTypes {
 
 typedef struct itemSet {
 	guint	type;
-	GSList	*items;
+	GList	*items;
 
 	guint	unreadCount;
 	guint	popupCount;

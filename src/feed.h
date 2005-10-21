@@ -86,7 +86,7 @@ typedef struct feed {
 	gboolean	encAutoDownload;	/**< enclosure auto download flag */
 	
 	gulong		lastItemNr;		/**< internal counter used to uniqely assign item id's. */
-	GSList		*items;			/**< list of pointers to the item structures of this channel */ // FIXME: needed?
+	GList		*items;			/**< list of pointers to the item structures of this channel */ // FIXME: needed?
 	
 	/* feed updating state properties */
 	gchar		*lastModified;		/**< Last modified string as sent by the server */
@@ -266,7 +266,7 @@ void feed_set_etag(feedPtr fp, const gchar *etag);
 
 feedHandlerPtr feed_get_fhp(feedPtr fp);
 
-GSList * feed_get_item_list(feedPtr fp);
+GList * feed_get_item_list(feedPtr fp);
 
 void feed_clear_item_list(feedPtr fp);
 void feed_remove_items(feedPtr fp);

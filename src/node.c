@@ -178,19 +178,19 @@ void node_add_item(nodePtr np, itemPtr ip) {
  * This method can be used to merge an ordered list of items
  * into the item list of the given item set.
  */
-void node_add_items(nodePtr np, GSList *list) {
+void node_add_items(nodePtr np, GList *list) {
 	GList	*iter;
 	
 	/* Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 
 	   their order in the merged list, so merging needs
 	   to be done bottom to top. */
-	iter = g_slist_last(list);
+	iter = g_list_last(list);
 	while(iter != NULL) {
 		node_add_item(np, ((itemPtr)iter->data));
-		iter = g_slist_previous(iter);
+		iter = g_list_previous(iter);
 	}
-	g_slist_free(list);
+	g_list_free(list);
 }
 
 

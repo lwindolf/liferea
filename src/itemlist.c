@@ -59,31 +59,28 @@ static void itemlist_check_for_deferred_removal(void) {
 	}
 }
 
-static void itemlist_load_feed(feedPtr fp, gpointer data) {
+static void itemlist_load_node(nodePtr np, gpointer data) {
 	gboolean	merge = GPOINTER_TO_INT(data);
-	GSList		*item, *itemlist;
+	GList		*item, *itemlist;
 	itemPtr		ip;
 	
 	/* load model */
-	feedlist_load_feed(fp);
+	feedlist_load_node(np);
 	/* update itemlist in view */	
-	itemlist = feed_get_item_list(fp);
-	itemlist = g_slist_copy(itemlist);
-	itemlist = g_slist_reverse(itemlist);
-	item = itemlist;
+	itemlist = np->itemSet->items;
+	item = g_list_last(itemlist);
 	while(NULL != item) {
 		ip = item->data;
 		g_assert(NULL != ip);
 		ui_itemlist_add_item(ip, merge);
-		item = g_slist_next(item);
+		item = g_list_previous(item);
 	}
-	g_slist_free(itemlist);	
 }
 
-static void itemlist_check_if_child(feedPtr fp, gpointer data) {
+static void itemlist_check_if_child(nodePtr np, gpointer data) {
 
-	if((nodePtr)fp == (nodePtr)data)
-		itemlist_load_feed(fp, (gpointer)TRUE);
+	if(np == (nodePtr)data)
+		itemlist_load_node(np, (gpointer)TRUE);
 }
 
 /**
@@ -114,14 +111,14 @@ void itemlist_reload(nodePtr node) {
 		} else {
 			/* and the user might get click directly on a folder, then we
 			   can unconditionally load all child feeds into the itemlist */
-			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_load_feed, GINT_TO_POINTER(TRUE));
+			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_load_node, GINT_TO_POINTER(TRUE));
 		}
 	}
 
 	if(TRUE == isFeed) {
 		if(node != displayed_node)
 			return;
-		itemlist_load_feed((feedPtr)node, (gpointer)TRUE);
+		itemlist_load_node(node, (gpointer)TRUE);
 	}
 
 	ui_itemlist_display();
@@ -198,15 +195,15 @@ void itemlist_load(nodePtr node) {
 	ui_itemlist_prefocus();
 }
 
-void itemlist_update_vfolder(feedPtr vp) {
+void itemlist_update_vfolder(vfolderPtr vp) {
 
-	if(displayed_node == (nodePtr)vp)
+	if(displayed_node == vp->node)
 		/* maybe itemlist_load(vp) would be faster, but
 		   it unloads all feeds and therefore must not be 
 		   called from here! */		
-		itemlist_reload((nodePtr)vp);
+		itemlist_reload(vp->node);
 	else
-		ui_feed_update(vp);
+		ui_node_update(vp->node);
 }
 
 void itemlist_reset_date_format(void) {

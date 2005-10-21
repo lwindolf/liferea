@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include "item.h"
 #include "feed.h"
+#include "vfolder.h"
 
 /* The itemlist interface serves as a controller implementation
    handling user trigger actions and backend updates for the
@@ -69,7 +70,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus);
  */
 void itemlist_mark_all_read(nodePtr fp);
 
-void itemlist_update_vfolder(feedPtr vp);
+void itemlist_update_vfolder(vfolderPtr vp);
 
 void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data);
 

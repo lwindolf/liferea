@@ -186,7 +186,7 @@ void node_unload(nodePtr np);
 
 void node_add_item(nodePtr np, itemPtr ip);
 
-void node_add_items(nodePtr np, GSList *items);
+void node_add_items(nodePtr np, GList *items);
 
 /**
  * Node content rendering
@@ -202,10 +202,10 @@ gchar * node_render(nodePtr np);
  *
  * @param np	the node
  */
-void node_auto_update(nodePtr np);
+void node_request_auto_update(nodePtr np);
 
 /**
- * Immediate node updating.
+ * Immediate node updating (user requested).
  *
  * @param np	the node
  * @param flags	update handling flags

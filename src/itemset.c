@@ -104,10 +104,13 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 		return;
 	}
 
+	/* remove item from itemset */
+	sp->items = g_slist_remove(sp->items, ip);
+
+	/* propagate item removal to itemset type specific implementation */
 	switch(sp->type) {
 		ITEMSET_TYPE_FEED:
 		ITEMSET_TYPE_FOLDER:
-			sp->items = g_slist_remove(sp->items, ip);
 
 			/* remove vfolder copies */
 			vfolder_remove_item(ip);
@@ -120,15 +123,13 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 			   the counters would be wrong, the same when
 			   there are multiple vfolders catching an
 			   unread item...  FIXME!!! (Lars) */
-			feedlist_update_counters(item_get_read_status(ip)?0:-1, 	
+			feedlist_update_counters(item_get_read_status(ip)?0:-1,	
 						 item_get_new_status(ip)?-1:0);
 
-			/* remove the original */
 			feed_remove_item((feedPtr)ip->node->data, ip);
 			break;
 		ITEMSET_TYPE_VFOLDER:
-			/* just remove the item from the vfolder */
-			feed_remove_item((feedPtr)ip->node->data, ip);
+			vfolder_remove_item(ip);
 			break;
 	}
 }
