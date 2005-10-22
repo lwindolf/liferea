@@ -33,23 +33,35 @@
 #include "export.h"
 #include "debug.h"
 #include "update.h"
+#include "plugin.h"
+#include "fl_providers/fl_plugin.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_notification.h"
+
 extern GtkWindow *mainwindow;
 
 static gboolean feedlistLoading = FALSE;
 static flNodeHandler *handler = NULL;
 static nodePtr rootNode = NULL;
 
-static void fl_default_handler_save(void) {
+static void fl_default_handler_new(nodePtr np) {
+	g_warning("Implement me!");
+}
+
+static void fl_default_handler_delete(nodePtr np) {
+	g_warning("Implement me!");
+}
+
+static void fl_default_save_root(void) {
 	gchar *filename, *filename_real;
 	
 	if(feedlistLoading)
 		return;
 
-	debug_enter("fl_default_save");
+	debug_enter("fl_default_save_root");
+
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml~", common_get_cache_path());
 
 	if(0 == export_OPML_feedlist(filename, TRUE)) {
@@ -59,7 +71,8 @@ static void fl_default_handler_save(void) {
 		g_free(filename_real);
 	}
 	g_free(filename);
-	debug_exit("fl_default_save");
+
+	debug_exit("fl_default_save_root");
 }
 
 /* used by fl_default_node_add but also from ui_search.c! */
@@ -123,7 +136,7 @@ static void fl_default_node_unload(nodePtr np) {
 
 	feed_unload((feedPtr)np->data);
 	g_assert(NULL != np->itemSet);
-	g_slist_free(np->itemSet->items);
+	g_list_free(np->itemSet->items);
 	np->itemSet->items = NULL;
 	g_free(np->itemSet);
 	np->itemSet = NULL;	
@@ -150,6 +163,12 @@ static gchar *fl_default_node_render(nodePtr np) {
 }
 
 static void fl_default_node_save(nodePtr np) {
+
+	if(NULL == np) {
+		/* Saving the root node means saving the feed list... */
+		fl_default_save_root();
+		return;
+	}
 
 	switch(np->type) {
 		case FST_FEED:
@@ -571,8 +590,8 @@ static flPluginInfo fpi = {
 	FL_PLUGIN_CAPABILITY_REORDER,
 	fl_default_init,
 	fl_default_deinit,
-	NULL,	/* new instance */
-	NULL,	/* delete instance */
+	fl_default_handler_new,
+	fl_default_handler_delete,
 	fl_default_node_load,
 	fl_default_node_unload,
 	fl_default_node_save,
@@ -593,4 +612,4 @@ static pluginInfo pi = {
 };
 
 DECLARE_PLUGIN(pi);
-
+DECLARE_FL_PLUGIN(fpi);

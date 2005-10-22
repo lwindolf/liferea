@@ -140,7 +140,7 @@ void itemlist_load(nodePtr node) {
 	   to realize reliable read marking when using condensed mode. It's
 	   important to do this only when the selection really changed. */
 	isFeed = ((displayed_node != NULL) && ((FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type)));
-	if(isFeed && (node != displayed_node) && (TRUE == feed_get_two_pane_mode((feedPtr)displayed_node)))
+	if(isFeed && (node != displayed_node) && (TRUE == node_get_two_pane_mode(displayed_node)))
 		itemset_mark_all_read(displayed_node->itemSet);
 
 	/* determine what node type is now selected */
@@ -209,7 +209,7 @@ void itemlist_update_vfolder(vfolderPtr vp) {
 void itemlist_reset_date_format(void) {
 	
 	ui_itemlist_reset_date_format();
-	if (!ui_itemlist_get_two_pane_mode())
+	if(!ui_itemlist_get_two_pane_mode())
 		ui_itemlist_update();
 }
 
@@ -218,7 +218,7 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	itemPtr		sourceItem;
 	feedPtr		sourceFeed;
 	
-	if(newStatus != item_get_flag_status(ip)) {
+	if(newStatus != ip->flagStatus) {
 		displayed_node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
@@ -237,14 +237,14 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	
 void itemlist_toggle_flag(itemPtr ip) {
 
-	itemlist_set_flag(ip, !item_get_flag_status(ip));
+	itemlist_set_flag(ip, !(ip->flagStatus));
 }
 
 void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 	itemPtr		sourceItem;
 	feedPtr		sourceFeed;
 
-	if(newStatus != item_get_read_status(ip)) {		
+	if(newStatus != ip->readStatus) {		
 		displayed_node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
@@ -263,14 +263,14 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 
 void itemlist_toggle_read_status(itemPtr ip) {
 
-	itemlist_set_read_status(ip, !item_get_read_status(ip));
+	itemlist_set_read_status(ip, !(ip->readStatus));
 }
 
 void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) { 
 	itemPtr		sourceItem;
 	feedPtr		sourceFeed;
 	
-	if(newStatus != item_get_update_status(ip)) {	
+	if(newStatus != ip->updateStatus) {	
 		displayed_node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
@@ -355,20 +355,23 @@ void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer use
 		return;
 	
 	sorted = gtk_tree_sortable_get_sort_column_id(treesortable, &sortColumn, &sortType);
-	if((FST_FEED == np->type) || (FST_VFOLDER == np->type))
-		feed_set_sort_column((feedPtr)np, sortColumn, sortType == GTK_SORT_DESCENDING);
+	node_set_sort_column(np, sortColumn, sortType == GTK_SORT_DESCENDING);
 }
 
 /* two/three pane mode callbacks */
 void itemlist_set_two_pane_mode(gboolean new_mode) {
 	gboolean	old_mode;
 	nodePtr		np;
+	
+	np = ui_feedlist_get_selected();	
+	if(NULL == np)
+		return;
 
 	old_mode = ui_itemlist_get_two_pane_mode();
+
+	/* for now we disallow folders in two pane mode ... */
+	if((FST_FEED == np->type) || (FST_VFOLDER == np->type)) 
+		node_set_two_pane_mode(np, new_mode);
 	
-	if((NULL != (np = ui_feedlist_get_selected())) &&
-	   ((FST_FEED == np->type) || (FST_VFOLDER == np->type))) {
-		feed_set_two_pane_mode((feedPtr)np, new_mode);
-	}
 	ui_itemlist_set_two_pane_mode(new_mode);
 }

@@ -76,12 +76,14 @@ void plugin_mgmt_init(void);
 /**
  * Close/free all resources.
  */
-void plugin_mgmt_init(void);
+void plugin_mgmt_deinit(void);
 
 /**
- * Loads all available plugins. Activates them if necessary.
+ * Returns the list of available plugins.
+ *
+ * @returns a list of all feed list provider plugins
  */
-void plugin_mgmt_load(void);
+GSList * plugin_mgmt_get_list(void);
 
 /**
  * Enables the plugin with the given id,

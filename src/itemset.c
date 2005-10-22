@@ -67,7 +67,7 @@ gchar * itemset_render_all(itemSetPtr sp) {
 }
 
 itemPtr itemset_lookup_item(itemSetPtr sp, gulong nr) {
-	GSList		*items;
+	GList		*items;
 	itemPtr		ip;
 		
 	items = sp->items;
@@ -75,7 +75,7 @@ itemPtr itemset_lookup_item(itemSetPtr sp, gulong nr) {
 		ip = (itemPtr)(items->data);
 		if(ip->nr == nr)
 			return ip;
-		items = g_slist_next(items);
+		items = g_list_next(items);
 	}
 	
 	return NULL;
@@ -83,29 +83,29 @@ itemPtr itemset_lookup_item(itemSetPtr sp, gulong nr) {
 
 void itemset_add_item(itemSetPtr sp, itemPtr ip) {
 
-	sp->items = g_slist_append(sp->items, ip);
+	sp->items = g_list_append(sp->items, ip);
 
 	/* Always update the node counter statistics */
-	if(FALSE == item_get_read_status(ip))
+	if(FALSE == ip->readStatus)
 		sp->unreadCount++;
 			
 	// FIXME: prevent the next two for folders+vfolders?
-	if(TRUE == item_get_popup_status(ip))
+	if(TRUE == ip->popupStatus)
 		sp->popupCount++;
 		
-	if(TRUE == item_get_new_status(ip))
+	if(TRUE == ip->newStatus)
 		sp->newCount++;
 }
 
 void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 
-	if(NULL == g_slist_find(sp->items, ip)) {
+	if(NULL == g_list_find(sp->items, ip)) {
 		g_warning("itemset_remove_item(): item (%s) to be removed not found...", ip->title);
 		return;
 	}
 
 	/* remove item from itemset */
-	sp->items = g_slist_remove(sp->items, ip);
+	sp->items = g_list_remove(sp->items, ip);
 
 	/* propagate item removal to itemset type specific implementation */
 	switch(sp->type) {
@@ -135,15 +135,15 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 }
 
 void itemset_remove_items(itemSetPtr sp) {
-	GSList	*list, *iter;
+	GList	*list, *iter;
 
 	/* hmmm... bad performance when removing a lot of items */
-	iter = list = g_slist_copy(sp->items);
+	iter = list = g_list_copy(sp->items);
 	while(NULL != iter) {
 		itemset_remove_item(sp, (itemPtr)iter->data);
-		iter = g_slist_next(iter);
+		iter = g_list_next(iter);
 	}
-	g_slist_free(list);
+	g_list_free(list);
 
 	// FIXME: np->needsCacheSave = TRUE
 }
@@ -226,44 +226,50 @@ void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newUpdat
 	}
 }
 
+void itemset_set_item_new_status(itemSetPtr sp, itemPtr ip, gboolean newStatus) {
+
+	/* no special handling for the new flag */
+	ip->newStatus = newStatus;
+}
+
 void itemset_mark_all_read(itemSetPtr sp) {
-	GSList	*item, *items;
+	GList	*item, *items;
 
 	/* two loops on list copies because the itemlist_set_* 
 	   methods may modify the original item list */
 
-	items = g_slist_copy(sp->items);
+	items = g_list_copy(sp->items);
 	item = items;
 	while(NULL != item) {
-		itemset_set_read_status((itemPtr)item->data, TRUE);
-		item = g_slist_next(item);
+		itemset_set_item_read_status(sp, (itemPtr)item->data, TRUE);
+		item = g_list_next(item);
 	}
-	g_slist_free(items);
+	g_list_free(items);
 
-	items = g_slist_copy(sp->items);
+	items = g_list_copy(sp->items);
 	item = items;
 	while(NULL != item) {	
-		itemset_set_update_status((itemPtr)item->data, FALSE);
-		item = g_slist_next(item);
+		itemset_set_item_update_status(sp, (itemPtr)item->data, FALSE);
+		item = g_list_next(item);
 	}
-	g_slist_free(items);
+	g_list_free(items);
 
 	sp->unreadCount = 0;
 }
 
 void itemset_mark_all_old(itemSetPtr sp) {
-	GSList	*iter, *items;
+	GList	*iter, *items;
 
 	/* loop on list copy because the itemlist_set_* 
 	   methods may modify the original item list */
 
-	items = g_slist_copy(sp->items);
+	items = g_list_copy(sp->items);
 	iter = items;
 	while(NULL != iter) {
-		itemset_set_new_status((itemPtr)iter->data, FALSE);
-		iter = g_slist_next(iter);
+		itemset_set_item_new_status(sp, (itemPtr)iter->data, FALSE);
+		iter = g_list_next(iter);
 	}
-	g_slist_free(items);
+	g_list_free(items);
 
 	sp->newCount = 0;
 }

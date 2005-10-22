@@ -236,8 +236,8 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 	list_p = feedNotif_p->feed_p->items;
 	while(list_p != NULL) {
 		item_p = list_p->data;
-		if(TRUE == item_get_popup_status(item_p)) {
-			item_set_popup_status(item_p, FALSE);
+		if(TRUE == item_p->popupStatus) {
+			item_p->popupStatus = FALSE;
 			labelText_p = g_strdup_printf ("%s %s", NOTIF_BULLET, item_get_title(item_p) != NULL ? item_get_title(item_p) : _("Untitled"));
 			label_p = gtk_label_new (labelText_p);
 			g_free(labelText_p);

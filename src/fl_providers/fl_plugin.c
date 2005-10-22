@@ -20,7 +20,7 @@
 
 #include "fl_plugin.h"
 
-flPluginInfo * fl_plugin_get_root(GSList *plugin_list) {
+flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
 
 	// scan for root flag and return plugin if found
 	// fatal error if not found

@@ -31,11 +31,11 @@
 #include "callbacks.h"
 #include "support.h"
 #include "debug.h"
+#include "plugin.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_tabs.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_enclosure.h"
-#include "fl_providers/fl_plugin.h"
 
 /* function types for the imported symbols */
 typedef htmlviewPluginInfo* (*infoFunction)();
@@ -124,10 +124,6 @@ void ui_htmlview_init(void) {
 	GError			*error  = NULL;
 	GDir			*dir;
 
-	/* Check to see if gmodule is supported */
-	if(!g_module_supported())
-		g_error(_("Cannot load HTML widget module (%s)!"), g_module_error());
-	
 	/* now we determine a list of all available modules
 	   to present in the preferences dialog and to load
 	   one just in case there was no configured module

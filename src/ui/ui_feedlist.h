@@ -109,8 +109,9 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 #define	ACTION_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	
 #define	ACTION_FILTER_DIRECTORY	2	/** Only matches nodes where IS_DIRECTORY(node->type) */	
 #define	ACTION_FILTER_FOLDER	4	/** Only matches nodes where IS_FOLDER(node->type) */
-#define	ACTION_FILTER_ANY	7	/** Matches any node */
-#define	ACTION_FILTER_CHILDREN	8	/** Matches immediate children of the given node */
+#define	ACTION_FILTER_PLUGIN	8	/** Only matches nodes where IS_PLUGIN(node->type) */
+#define	ACTION_FILTER_ANY	15	/** Matches any node */
+#define	ACTION_FILTER_CHILDREN	16	/** Matches immediate children of the given node */
 
 /**
  * Helper function to recursivly call feed_save() for all

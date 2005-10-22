@@ -1,5 +1,5 @@
 /**
- * @file fl_plugin.h generic feedlist provider interface
+ * @file fl_plugin.h generic feed list provider interface
  * 
  * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -21,8 +21,8 @@
 #ifndef _FL_PLUGIN_H
 #define _FL_PLUGIN_H
 
+#include <glib.h>
 #include "node.h"
-#include "feed.h"
 #include "plugin.h"
 
 /* Liferea allows to have different sources for the feed list
@@ -71,9 +71,9 @@ struct flPluginInfo_ {
 	void 		(*plugin_deinit)(void);
 
 	/** callback for instance creation request (optional) */
-	void	 	(*handler_new)(nodePtr ptr);
+	void	 	(*handler_new)(nodePtr np);
 	/** callback for instance deletion request (optional) */
-	void	 	(*handler_delete)(nodePtr ptr);
+	void	 	(*handler_delete)(nodePtr np);
 	
 	/** callback for node loading (optional) */
 	void		(*node_load)(nodePtr np);
@@ -105,7 +105,14 @@ struct flNodeHandler_ {
 	nodePtr		root;		/**< root node of this plugin instance */
 };
 
+/** Use this to cast plugin instances from a node structure. */
 #define FL_PLUGIN(node) ((flNodeHandler *)(node->handler))->plugin
+
+/** Feed list plugins are to be declared with this macro. */
+#define DECLARE_FL_PLUGIN(plugininfo) \
+        G_MODULE_EXPORT flPluginInfo* fl_plugin_getinfo() { \
+                return &plugininfo; \
+        }
 
 /** 
  * Scans the plugin list for the feed list root provider.

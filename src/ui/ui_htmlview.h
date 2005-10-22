@@ -128,12 +128,11 @@ struct htmlviewPluginInfo_ {
 	void (*setProxy) (gchar *hostname, int port, gchar *username, gchar *password);
 };
 
-
-# define DECLARE_HTMLVIEW_PLUGIN(plugininfo) \
+/* Use this macro to declare a html rendering plugin. */
+#define DECLARE_HTMLVIEW_PLUGIN(plugininfo) \
         G_MODULE_EXPORT htmlviewPluginInfo* htmlview_plugin_getinfo() { \
                 return &plugininfo; \
         }
-
 
 /** list type to provide a list of available modules for the preferences dialog */
 struct browserModule {

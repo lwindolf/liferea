@@ -321,16 +321,16 @@ itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
 			ip->nr = atol(tmp);
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"newStatus"))
-			item_set_new_status(ip, (0 == atoi(tmp))?FALSE:TRUE);
+			ip->newStatus = (0 == atoi(tmp))?FALSE:TRUE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
-			item_set_read_status(ip, (0 == atoi(tmp))?FALSE:TRUE);
+			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"updateStatus"))
-			item_set_update_status(ip, (0 == atoi(tmp))?FALSE:TRUE);
+			ip->updateStatus = (0 == atoi(tmp))?FALSE:TRUE;
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"mark")) 
-			item_set_flag_status(ip, (1 == atoi(tmp))?TRUE:FALSE);
+			ip->flagStatus = (1 == atoi(tmp))?TRUE:FALSE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
 			item_set_time(ip, atol(tmp));
@@ -375,19 +375,19 @@ void item_save(itemPtr ip, xmlNodePtr feedNode) {
 		xmlNewTextChild(itemNode, NULL, "nr", tmp);
 		g_free(tmp);
 
-		tmp = g_strdup_printf("%d", (TRUE == item_get_new_status(ip))?1:0);
+		tmp = g_strdup_printf("%d", (TRUE == ip->newStatus)?1:0);
 		xmlNewTextChild(itemNode, NULL, "newStatus", tmp);
 		g_free(tmp);
 
-		tmp = g_strdup_printf("%d", (TRUE == item_get_read_status(ip))?1:0);
+		tmp = g_strdup_printf("%d", (TRUE == ip->readStatus)?1:0);
 		xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
 		g_free(tmp);
 		
-		tmp = g_strdup_printf("%d", (TRUE == item_get_update_status(ip))?1:0);
+		tmp = g_strdup_printf("%d", (TRUE == ip->updateStatus)?1:0);
 		xmlNewTextChild(itemNode, NULL, "updateStatus", tmp);
 		g_free(tmp);
 
-		tmp = g_strdup_printf("%d", (TRUE == item_get_flag_status(ip))?1:0);
+		tmp = g_strdup_printf("%d", (TRUE == ip->flagStatus)?1:0);
 		xmlNewTextChild(itemNode, NULL, "mark", tmp);
 		g_free(tmp);
 

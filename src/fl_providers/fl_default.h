@@ -25,8 +25,6 @@
 #  include <config.h>
 #endif
 
-#include "fl_plugin.h"
-
 #ifdef USE_DBUS
 
 /* Yes, we know that DBUS API isn't stable yet */

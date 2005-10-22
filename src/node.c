@@ -169,8 +169,8 @@ void node_add_item(nodePtr np, itemPtr ip) {
 		   for folders and vfolders (because this are item
 		   list types with item copies or references)! */
 		if((FST_FOLDER != np->type) && (FST_VFOLDER != np->type))
-			feedlist_update_counters(item_get_read_status(ip)?0:1,
-						 item_get_new_status(ip)?1:0);
+			feedlist_update_counters(ip->readStatus?0:1,
+						 ip->newStatus?1:0);
 	}
 }
 

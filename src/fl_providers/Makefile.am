@@ -12,7 +12,7 @@ noinst_LIBRARIES = libliflprovider.a
 
 libliflprovider_a_CFLAGS = $(PACKAGE_FLAGS)
 libliflprovider_a_SOURCES = \
-	fl_plugin.h \
+	fl_plugin.c fl_plugin.h \
 	fl_default.c fl_default.h \
 	fl_opml.c fl_opml.h \
 	fl_bloglines.c fl_bloglines.h

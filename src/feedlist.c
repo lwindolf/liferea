@@ -44,6 +44,9 @@ static guint newCount = 0;
 static nodePtr	selectedNode = NULL;
 extern nodePtr	displayed_node;
 
+static flPluginInfo * rootPlugin = NULL;
+static GSList * plugins = NULL;
+
 static guint feedlist_save_timer = 0;
 static gboolean feedlistLoading = TRUE;
 
@@ -287,7 +290,13 @@ void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *w
 
 static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
-	feedlist_save();	// FIXME: iterate over folders to find feed list plugins and trigger save for each one
+	/* step 1: request each feed list plugin to save its state */
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_PLUGIN, node_save);
+
+	/* step 2: request saving for the root plugin and thereby
+	   saving the feed list structure */
+	rootPlugin->node_save(NULL);
+	
 	feedlist_save_timer = 0;
 	return FALSE;
 }
@@ -302,10 +311,21 @@ void feedlist_schedule_save(void) {
 
 void feedlist_init(void) {
 
+	debug_enter("feedlist_init");
+
+	/* Initialize list of plugins and find root provider
+	   plugin. Creating an instance of this plugin. This 
+	   will load the feed list and all attached plugin 
+	   handlers. */
+	plugins = plugin_mgmt_get_list();
+	rootPlugin = fl_plugins_get_root(plugins);
+	rootPlugin->handler_new(NULL);
+
 	/* initial update of feed list */
 	feedlist_auto_update(NULL);
 
 	/* setup one minute timer for automatic updating */
  	(void)g_timeout_add(60*1000, feedlist_auto_update, NULL);
-}
 
+	debug_exit("feedlist_init");
+}

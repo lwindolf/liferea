@@ -250,11 +250,11 @@ void ui_itemlist_update_item(itemPtr ip) {
 	esc_title = g_markup_escape_text(title, -1);
 	esc_title = g_strstrip(esc_title);
 	
-	if(FALSE == item_get_read_status(ip)) {
+	if(FALSE == ip->readStatus) {
 		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
 		label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
 		icon = icons[ICON_UNREAD];
-	} else if(TRUE == item_get_update_status(ip)) {
+	} else if(TRUE == ip->updateStatus) {
 		time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
 		label = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_title);
 		icon = icons[ICON_UPDATED];
@@ -266,7 +266,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 	g_free(esc_title);
 	g_free(esc_time_str);
 	
-	if(TRUE == item_get_flag_status(ip)) 
+	if(TRUE == ip->flagStatus) 
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
@@ -419,7 +419,7 @@ void ui_itemlist_display(void) {
 			while(valid) {	
 				ip = ui_itemlist_get_item_from_iter(&iter);
 
-				if(item_get_read_status(ip)) 
+				if(ip->readStatus) 
 					addToHTMLBuffer(&buffer, UNSHADED_START);
 				else
 					addToHTMLBuffer(&buffer, SHADED_START);
@@ -428,7 +428,7 @@ void ui_itemlist_display(void) {
 				addToHTMLBuffer(&buffer, tmp);
 				g_free(tmp);
 				
-				if(item_get_read_status(ip))
+				if(ip->readStatus)
 					addToHTMLBuffer(&buffer, UNSHADED_END);
 				else {
 					addToHTMLBuffer(&buffer, SHADED_END);
@@ -485,7 +485,7 @@ void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 		/* g_print("found iter for item %d\n", ip); */
 	}
 	
-	if((NULL != iter) && (FALSE == item_get_new_status(ip))) {
+	if((NULL != iter) && (FALSE == ip->newStatus)) {
 		/* nothing to do */
 		/* g_print("nothing to do for iter %d\n", ip); */
 	} else {
@@ -631,7 +631,7 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 	itemPtr	ip;
 	
 	ip = ui_itemlist_get_item_from_iter(iter);
-	if(FALSE == item_get_read_status(ip)) {
+	if(FALSE == ip->readStatus) {
 		if(!ui_itemlist_get_two_pane_mode()) {
 			ui_itemlist_select(*iter);
 			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */

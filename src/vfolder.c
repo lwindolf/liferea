@@ -349,7 +349,7 @@ void vfolder_update_item(itemPtr ip) {
 		items = vfolder_get_item_list(vp);
 		while(NULL != items) {
 			tmp = items->data;
-			if(FALSE == item_get_read_status(tmp)) 
+			if(FALSE == tmp->readStatus) 
 				vp->node->itemSet->unreadCount++;
 
 			items = g_list_next(items);
