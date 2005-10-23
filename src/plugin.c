@@ -43,17 +43,24 @@ void plugin_mgmt_deinit(void) {
 
 typedef	pluginInfo* (*infoFunc)();
 
-static pluginInfo * plugin_mgmt_load(gchar * filename) {
+static pluginInfo * plugin_mgmt_load(const gchar * filename) {
 	pluginInfo	*pi = NULL;
 	GModule		*handle = NULL;
 	infoFunc	plugin_get_info;
+	gchar		*path;
+
+	path = g_strdup_printf(PACKAGE_LIB_DIR G_DIR_SEPARATOR_S "%s", filename);
 
 #if GLIB_CHECK_VERSION(2,3,3)
-	if((handle = g_module_open(filename, G_MODULE_BIND_LOCAL)) == NULL) {
+	handle = g_module_open(path, G_MODULE_BIND_LOCAL);
 #else
-	if((handle = g_module_open(filename, 0)) == NULL) {
+	handle = g_module_open(path, 0);
 #endif
-		debug1(DEBUG_PLUGINS, "Cannot open %s!\n", filename);
+
+	g_free(path);
+
+	if(NULL == handle) {
+		debug1(DEBUG_PLUGINS, "Cannot open %s!", filename);
 		return NULL;
 	}
 
@@ -62,23 +69,24 @@ static pluginInfo * plugin_mgmt_load(gchar * filename) {
 		if(NULL == (pi = (*plugin_get_info)()))
 			return NULL;
 
-		/* try to load specific plugin type symbols */
+		/* check plugin version */
 		if(PLUGIN_API_VERSION != pi->api_version) {
-			debug6(DEBUG_PLUGINS, "API version mismatch: %s (%s, type=%d, id=%d) has version %d should be %d\n", pi->name, filename, pi->type, pi->id, pi->api_version, PLUGIN_API_VERSION);
+			debug6(DEBUG_PLUGINS, "API version mismatch: \"%s\" (%s, type=%d, id=%d) has version %d should be %d", pi->name, filename, pi->type, pi->id, pi->api_version, PLUGIN_API_VERSION);
 			return NULL;
 		} 
 
+		/* try to load specific plugin type symbols */
 		switch(pi->type) {
 			case PLUGIN_TYPE_FEEDLIST_PROVIDER:
 				fl_plugin_load(pi, handle);
 				break;
 			default:
-				debug4(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d, id=%d)\n", pi->name, filename, pi->type, pi->id);
+				debug4(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d, id=%d)", pi->name, filename, pi->type, pi->id);
 				return NULL;
 				break;
 		}
 	} else {
-		debug1(DEBUG_PLUGINS, "File %s is no valid Liferea plugin!\n", filename);
+		debug1(DEBUG_PLUGINS, "File %s is no valid Liferea plugin!", filename);
 		g_module_close(handle);
 	}
 	
@@ -92,8 +100,10 @@ GSList * plugin_mgmt_get_list(void) {
 	GError		*error  = NULL;
 	GDir		*dir;
 
+	debug_enter("plugin_mgmt_get_list");
+
 	if(NULL == plugins) {
-		debug1(DEBUG_PLUGINS, _("Scanning for plugins (%s):\n"), PACKAGE_LIB_DIR);
+		debug1(DEBUG_PLUGINS, _("Scanning for plugins (%s):"), PACKAGE_LIB_DIR);
 		dir = g_dir_open(PACKAGE_LIB_DIR, 0, &error);
 		if(!error) {
 			/* The expected library name syntax: 
@@ -108,20 +118,25 @@ GSList * plugin_mgmt_get_list(void) {
 			filenamelen = 5 + strlen(G_MODULE_SUFFIX);
 			filename = (gchar *)g_dir_read_name(dir);
 			while(NULL != filename) {
+				debug1(DEBUG_VERBOSE, "testing %s...", filename);
 				if((filenamelen < strlen(filename)) && (0 == strncmp("libli", filename, 5))) {	
 				   	/* now lets filter the files with correct library suffix */
-					if(0 == strncmp(G_MODULE_SUFFIX, filename - strlen(G_MODULE_SUFFIX), strlen(G_MODULE_SUFFIX))) {
+					if(0 == strncmp(G_MODULE_SUFFIX, filename + strlen(filename) - strlen(G_MODULE_SUFFIX), strlen(G_MODULE_SUFFIX))) {
 						/* If we find one, try to load plugin info and if this
 						   was successful try to invoke the specific plugin
 						   type loader. If the second loading went well add
 						   the plugin to the plugin list. */
 						if(NULL == (pi = plugin_mgmt_load(filename))) {
-							debug1(DEBUG_PLUGINS, "-> %s no valid plugin!\n", filename);
+							debug1(DEBUG_VERBOSE, "-> %s no valid plugin!", filename);
 						} else {
-							debug4(DEBUG_PLUGINS, "-> %s (%s, type=%d, id=%d)\n", pi->name, filename, pi->type, pi->id);
+							debug4(DEBUG_PLUGINS, "-> %s (%s, type=%d, id=%d)", pi->name, filename, pi->type, pi->id);
 							plugins = g_slist_append(plugins, pi);
 						}
+					} else {
+						debug0(DEBUG_VERBOSE, "-> no library suffix");
 					}
+				} else {
+					debug0(DEBUG_VERBOSE, "-> prefix does not match");
 				}
 				filename = (gchar *)g_dir_read_name(dir);
 			}
@@ -134,6 +149,9 @@ GSList * plugin_mgmt_get_list(void) {
 	}
 
 	g_assert(NULL != plugins);
+
+	debug_exit("plugin_mgmt_get_list");
+
 	return plugins;
 }
 

@@ -67,12 +67,13 @@ debug_printf (const char    * strloc,
 	g_return_if_fail (fmt != NULL);
 
 	/* get prefix */
-	if (flag&DEBUG_CACHE) prefix="CACHE";
-	else if (flag&DEBUG_CONF) prefix="CONF";
-	else if (flag&DEBUG_UPDATE) prefix="UPDATE";
-	else if (flag&DEBUG_PARSING) prefix="PARSING";
-	else if (flag&DEBUG_GUI) prefix="GUI";
-	else if (flag&DEBUG_TRACE) prefix="TRACE";
+	if (flag & DEBUG_CACHE) prefix="CACHE";
+	else if (flag & DEBUG_CONF) prefix="CONF";
+	else if (flag & DEBUG_UPDATE) prefix="UPDATE";
+	else if (flag & DEBUG_PARSING) prefix="PARSING";
+	else if (flag & DEBUG_GUI) prefix="GUI";
+	else if (flag & DEBUG_PLUGINS) prefix="PLUGINS";
+	else if (flag & DEBUG_TRACE) prefix="TRACE";
 	else {prefix="";}
 
 	va_start (args, fmt);

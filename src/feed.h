@@ -275,8 +275,10 @@ void feed_set_etag(feedPtr fp, const gchar *etag);
 feedHandlerPtr feed_get_fhp(feedPtr fp);
 
 /** 
- * Returns a HTML rendering of a feed. The returned string must be
- *  freed
+ * Returns a HTML rendering of a feed. The returned string 
+ * must be freed.
+ *
+ * @param fp	the feed
  */
 gchar *feed_render(feedPtr fp);
 

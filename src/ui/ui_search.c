@@ -185,7 +185,7 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 		searchtext = g_strdup_printf("http://www.feedster.com/search.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
 					    searchtext, (int)gtk_adjustment_get_value(resultCount));
 
-		fl_default_feed_add(searchtext, NULL, FALSE);
+		ui_feed_add(searchtext, NULL, FALSE);
 
 		g_free(searchtext);
 	}

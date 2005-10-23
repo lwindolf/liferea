@@ -51,7 +51,7 @@ void fl_plugin_load(pluginInfo *pi, GModule *handle) {
 	flPluginInfo	*fpi;
 	infoFunc	fl_plugin_get_info;
 
-	if(g_module_symbol(handle, "plugin_get_info", (void*)&fl_plugin_get_info)) {
+	if(g_module_symbol(handle, "fl_plugin_get_info", (void*)&fl_plugin_get_info)) {
 		/* load feed list provider plugin info */
 		if(NULL == (fpi = (*fl_plugin_get_info)()))
 			return;
@@ -59,7 +59,7 @@ void fl_plugin_load(pluginInfo *pi, GModule *handle) {
 
 	/* check feed list provider plugin version */
 	if(FL_PLUGIN_API_VERSION != fpi->api_version) {
-		debug3(DEBUG_PLUGINS, "API version mismatch: %s has version %d should be %d\n", fpi->name, fpi->api_version, PLUGIN_API_VERSION);
+		debug3(DEBUG_PLUGINS, "feed list API version mismatch: \"%s\" has version %d should be %d\n", fpi->name, fpi->api_version, FL_PLUGIN_API_VERSION);
 		return;
 	} 
 
@@ -69,7 +69,7 @@ void fl_plugin_load(pluginInfo *pi, GModule *handle) {
 	     (NULL != fpi->node_render)))
 		return;
 
-	debug1(DEBUG_PLUGINS, "feed list plugin: %s", fpi->name);
+	debug1(DEBUG_PLUGINS, "found feed list plugin: %s", fpi->name);
 
 	/* assign the symbols so the caller will accept the plugin */
 	pi->symbols = fpi;

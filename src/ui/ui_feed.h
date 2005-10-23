@@ -36,4 +36,13 @@ GtkWidget* ui_feed_authdialog_new (GtkWindow *parent, feedPtr fp, gint flags);
 GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp);
 GtkWidget* ui_feed_newdialog_new (GtkWindow *parent);
 
+/**
+ * Add a feed to the feed list.
+ *
+ * @param source	URI of the feed to add
+ * @param filter	filter command (optional)
+ * @param flags		download request flags
+ */
+void ui_feed_add(const gchar *source, gchar *filter, gint flags);
+
 #endif /* _UI_FEED_H */

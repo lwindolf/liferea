@@ -34,6 +34,7 @@
 #include "interface.h"
 #include "itemlist.h"
 #include "favicon.h"
+#include "debug.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_notification.h"
 #include "fl_providers/fl_default.h"
@@ -171,7 +172,7 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
-		fl_default_feed_add(source, filter, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER);
+		ui_feed_add(source, filter, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER);
 		g_free(source);
 	}
 
@@ -588,3 +589,126 @@ GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, feedPtr fp) {
 
 	return propdialog;
 }
+
+/* used by fl_default_node_add but also from ui_search.c! */
+void ui_feed_add(const gchar *source, gchar *filter, gint flags) {
+	feedPtr			fp;
+	int			pos;
+	nodePtr			np, parent;
+	
+	debug_enter("ui_feed_add");	
+	
+	fp = feed_new();
+	feed_set_source(fp, source);
+	feed_set_title(fp, _("New subscription"));
+	feed_set_filter(fp, filter);
+
+	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
+
+	np = node_new();
+	node_set_title(np, feed_get_title(fp));
+	node_add_data(np, FST_FEED, (gpointer)fp);
+	parent = ui_feedlist_get_target_folder(&pos);
+	feedlist_add_node(parent, np, pos);
+
+	debug_exit("ui_feed_add");	
+}
+
+/** handles completed feed update requests */
+void ui_feed_process_update_result(struct request *request) {
+	nodePtr			np = (nodePtr)request->user_data;
+	feedPtr			fp = (feedPtr)np->data;
+	feedHandlerPtr		fhp;
+	itemSetPtr		sp;
+	gchar			*old_title, *old_source;
+	gint			old_update_interval;
+	
+	feedlist_load_node(np);
+
+	/* no matter what the result of the update is we need to save update
+	   status and the last update time to cache */
+	np->needsCacheSave = TRUE;
+	
+	feed_set_available(fp, TRUE);
+
+	if(401 == request->httpstatus) { /* unauthorized */
+		feed_set_available(fp, FALSE);
+		if(request->flags & FEED_REQ_AUTH_DIALOG)
+			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), fp, request->flags);
+	} else if(410 == request->httpstatus) { /* gone */
+		feed_set_available(fp, FALSE);
+		feed_set_discontinued(fp, TRUE);
+		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(fp));
+	} else if(304 == request->httpstatus) {
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(fp));
+	} else if(NULL != request->data) {
+		feed_set_lastmodified(fp, request->lastmodified);
+		feed_set_etag(fp, request->etag);
+		
+		/* note this is to update the feed URL on permanent redirects */
+		if(0 != strcmp(request->source, feed_get_source(fp))) {
+			feed_set_source(fp, request->source);
+			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(fp));
+		}
+		
+		/* we save all properties that should not be overwritten in all cases */
+		old_update_interval = feed_get_update_interval(fp);
+		old_title = g_strdup(feed_get_title(fp));
+		old_source = g_strdup(feed_get_source(fp));
+
+		/* parse the new downloaded feed into fp and sp */
+		sp = (itemSetPtr)g_new0(struct itemSet, 1);
+		fhp = feed_parse(fp, sp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
+
+		// FIXME: item set merging?
+		// do something with sp!
+		
+		if(fhp == NULL) {
+			feed_set_available(fp, FALSE);
+			fp->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), fp->parseErrors);
+		} else {
+			fp->fhp = fhp;
+			
+			/* restore user defined properties if necessary */
+			if(!(request->flags & FEED_REQ_RESET_TITLE)) {
+				feed_set_title(fp, old_title);
+				node_set_title(np, old_title);
+			}
+				
+			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
+				feed_set_source(fp, old_source);
+
+			if(request->flags & FEED_REQ_RESET_UPDATE_INT)
+				feed_set_update_interval(fp, feed_get_default_update_interval(fp));
+			else
+				feed_set_update_interval(fp, old_update_interval);
+				
+			g_free(old_title);
+			g_free(old_source);
+
+			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
+
+			itemlist_reload(np);
+			
+			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
+				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
+		}
+	} else {	
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(fp));
+		feed_set_available(fp, FALSE);
+	}
+	
+	feed_set_error_description(fp, request->httpstatus, request->returncode, request->filterErrors);
+
+	fp->request = NULL; 
+
+	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
+		favicon_download(np);
+
+	/* update UI presentations */
+	ui_notification_update(np);
+	ui_feedlist_update();
+
+	feedlist_unload_node(np);
+}
+
