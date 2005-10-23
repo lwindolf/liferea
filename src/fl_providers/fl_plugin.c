@@ -18,10 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <gmodule.h>
 #include "fl_plugin.h"
+#include "plugin.h"
 
 flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
 
 	// scan for root flag and return plugin if found
 	// fatal error if not found
+}
+
+void fl_plugin_load(pluginInfo *pi, GModule *handle) {
 }

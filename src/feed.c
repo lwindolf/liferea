@@ -141,6 +141,8 @@ feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLen
 	feedHandlerPtr		handler = NULL;
 
 	debug_enter("feed_parse");
+
+	g_assert(NULL == sp->items);
 	
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
@@ -164,9 +166,9 @@ feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLen
 		
 		/* determine the syndication format */
 		handlerIter = feedhandlers;
-		while (handlerIter != NULL) {
+		while(handlerIter != NULL) {
 			handler = (feedHandlerPtr)(handlerIter->data);
-			if (handler != NULL && handler->checkFormat != NULL && (*(handler->checkFormat))(doc, cur)) {
+			if(handler != NULL && handler->checkFormat != NULL && (*(handler->checkFormat))(doc, cur)) {
 			
 				/* free old temp. parsing data, don't free right after parsing because
 				   it can be used until the last feed request is finished, move me 
@@ -178,9 +180,6 @@ feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLen
 				/* we always drop old metadata */
 				metadata_list_free(fp->metadata);
 				fp->metadata = NULL;
-				
-				if(FALSE == handler->merge)
-					feed_remove_items(fp);	/* for directories */
 				
 				(*(handler->feedParser))(fp, sp, doc, cur);		/* parse it */
 				handled = TRUE;				
@@ -227,7 +226,7 @@ feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLen
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
 			feed_set_available(fp, FALSE);
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported format</a>.</p>"));
+			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type. Please check that it is a <a href=\"http://feedvalidator.org\">valid</a> type and listed in the <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported formats</a>.</p>"));
 		}
 	} else {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(handler));
@@ -918,24 +917,9 @@ gchar *feed_render(feedPtr fp) {
 	return buffer;
 }
 
-/* method to totally erase a feed, remove it from the config, etc.... */
-void feed_remove(feedPtr fp, const gchar *id) {
-	gchar	*filename = NULL;
+/* method to free a feed structure and associated request data */
+void feed_free(feedPtr fp) {
 	GSList	*iter;
-	
-	if(id && id[0] != '\0')
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
-	
-	/* FIXME: Move this to a better place. The cache file does not
-	   need to always be deleted, for example when freeing a
-	   feedstruct used for updating. */
-	if(NULL != filename) {
-		if(0 != unlink(filename)) {
-			/* Oh well.... Can't do anything about it. 99% of the time,
-		   	this is spam anyway. */;
-		}
-		g_free(filename);
-	}
 
 	/* Don't free active feed requests here, because they might still
 	   be processed in the update queues! Abandoned requests are
@@ -968,3 +952,25 @@ void feed_remove(feedPtr fp, const gchar *id) {
 	g_hash_table_destroy(fp->tmpdata);
 	g_free(fp);
 }
+
+/* method to totally erase a feed, remove it from the config, etc.... */
+void feed_remove_from_cache(feedPtr fp, const gchar *id) {
+	gchar	*filename = NULL;
+	
+	if(id && id[0] != '\0')
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
+	
+	/* FIXME: Move this to a better place. The cache file does not
+	   need to always be deleted, for example when freeing a
+	   feedstruct used for updating. */
+	if(NULL != filename) {
+		if(0 != unlink(filename)) {
+			/* Oh well.... Can't do anything about it. 99% of the time,
+		   	this is spam anyway. */;
+		}
+		g_free(filename);
+	}
+
+	feed_free(fp);
+}
+

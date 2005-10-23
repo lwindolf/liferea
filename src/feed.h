@@ -162,10 +162,13 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id);
 void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id);
 
 /**
- * Feed managment methods.
+ * Removes a feed from cache and free's the feed.
+ *
+ * @param fp	the feed
+ * @param id	the cache id of this feed
  */
-void feed_merge(feedPtr old_fp, feedPtr new_fp);
-void feed_remove(feedPtr fp, const gchar *id);
+void feed_remove_from_cache(feedPtr fp, const gchar *id);
+
 void feed_schedule_update(feedPtr fp, guint flags);
 
 /**

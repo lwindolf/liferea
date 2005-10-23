@@ -56,6 +56,13 @@ void feedlist_unload_node(nodePtr np);
  */
 void feedlist_schedule_save(void);
 
+/**
+ * Force immediate save requests for the feed list.
+ * Similar to feedlist_schedule_save() but runs
+ * synchronously.
+ */
+void feedlist_save(void);
+
 /** 
  * Handles completed feed update requests.
  *

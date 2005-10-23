@@ -109,6 +109,7 @@ static void fl_default_node_add(nodePtr np) {
 			break;
 		case FST_FOLDER:
 		case FST_VFOLDER:
+			g_warning("adding folder/vfolder: implement me!");
 			break;
 		default:
 			g_warning("adding unsupported type node!");
@@ -118,7 +119,18 @@ static void fl_default_node_add(nodePtr np) {
 
 static void fl_default_node_remove(nodePtr np) {
 
-	g_warning("FIXME: fl_default_node_remove() implement me!");
+	switch(np->type) {
+		case FST_FEED:
+		case FST_VFOLDER:
+			feed_remove_from_cache((feedPtr)np->data, np->id);
+			break;
+		case FST_FOLDER:
+			/* nothing to do */
+			break;
+		default:
+			g_warning("removing unsupported type node!");
+			break;
+	}
 }
 
 static void fl_default_node_load(nodePtr np) {

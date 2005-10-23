@@ -98,7 +98,10 @@ void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
 void feedlist_update_node(nodePtr np) {
 
-	node_request_update(np, 0);
+	if(download_is_online()) 
+		node_request_update(np, FEED_REQ_PRIORITY_HIGH);
+	else
+		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
 
 static void feedlist_remove_node_(nodePtr np) { 
@@ -178,11 +181,12 @@ void feedlist_unload_node(nodePtr np) {
 static gboolean feedlist_auto_update(void *data) {
 
 	debug_enter("feedlist_auto_update");
-	if(download_is_online()) {
+
+	if(download_is_online())
 		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)node_request_auto_update);
-	} else {
+	else
 		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
-	}
+	
 	debug_exit("feedlist_auto_update");
 
 	return TRUE;
@@ -208,20 +212,14 @@ void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	nodePtr ptr = (nodePtr)callback_data;
+	nodePtr np = (nodePtr)callback_data;
 
-	if(ptr == NULL) {
+	if(np == NULL) {
 		ui_show_error_box(_("You have to select a feed entry"));
 		return;
 	}
 
-	if(download_is_online()) {
-		if(FST_FEED == ptr->type)
-			feed_schedule_update((feedPtr)ptr, FEED_REQ_PRIORITY_HIGH);
-		else
-			ui_feedlist_do_for_all(ptr, ACTION_FILTER_FEED, feedlist_update_node);
-	} else
-		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
+	ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, feedlist_update_node);
 }
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
@@ -235,13 +233,12 @@ void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
-	gpointer ptr = (gpointer)ui_feedlist_get_selected();
+	gpointer np = (gpointer)ui_feedlist_get_selected();
 	
-	if(ptr != NULL) {
-		on_popup_refresh_selected((gpointer)ptr, 0, NULL);
-	} else {
+	if(np != NULL)
+		on_popup_refresh_selected((gpointer)np, 0, NULL);
+	else
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
-	}
 }
 
 static void feedlist_mark_all_read(nodePtr np) {
@@ -307,6 +304,11 @@ void feedlist_schedule_save(void) {
 		debug0(DEBUG_CONF, "Scheduling feedlist save");
 		feedlist_save_timer = g_timeout_add(5000, feedlist_schedule_save_cb, NULL);
 	}
+}
+
+void feedlist_save(void) {
+
+	feedlist_schedule_save_cb(NULL);
 }
 
 void feedlist_init(void) {
