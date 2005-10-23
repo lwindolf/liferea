@@ -46,7 +46,13 @@ void itemlist_update_item(itemPtr ip);
 
 void itemlist_remove_item(itemPtr ip);
 
-void itemlist_remove_items(feedPtr fp);
+/**
+ * To be called whenever the user wants to remove 
+ * all items of a node.
+ *
+ * @param np	the node which items should be removed
+ */
+void itemlist_remove_items(nodePtr np);
 
 /**
  * To be called whenever a feed was updated. If it is a somehow

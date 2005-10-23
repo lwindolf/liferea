@@ -8,7 +8,7 @@
  * 
  * The major part of this parsing code written by
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -222,10 +222,9 @@ static gchar* parseImage(xmlNodePtr cur) {
 
 /* reads a RSS feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) {
 	xmlNodePtr	item;
 	itemPtr 	ip;
-	GList		*items = NULL;
 	gchar		*tmp;
 	short 		rdf = 0;
 	int 		error = 0;
@@ -303,7 +302,7 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 					if(NULL != (ip = parseRSSItem(fp, item))) {
 						if(0 == item_get_time(ip))
 							item_set_time(ip, feed_get_time(fp));
-						items = g_list_append(items, ip);
+						itemset_add_item(sp, ip);
 					}
 					item = item->next;
 				}
@@ -312,15 +311,13 @@ static void rss_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				if(NULL != (ip = parseRSSItem(fp, cur))) {
 					if(0 == item_get_time(ip))
 						item_set_time(ip, feed_get_time(fp));
-					items = g_list_append(items, ip);
+					itemset_add_item(sp, ip);
 				}
 				
 			}
 			cur = cur->next;
 		}
 	}
-	/* after parsing we fill in the infos into the feedPtr structure */		
-	feed_add_items(fp, items);
 	
 	if(0 == error) {
 		feed_set_available(fp, TRUE);

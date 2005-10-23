@@ -24,12 +24,10 @@
 
 #include "item.h"
 
-void ui_notification_add_new_item(itemPtr ip);
-
-void ui_notification_update(const feedPtr feed_p);
+void ui_notification_update(const nodePtr np);
 
 /* to be called when a feed is removed and needs to be removed
    from the notification window too */
-void ui_notification_remove_feed(feedPtr fp);
+void ui_notification_remove_feed(const nodePtr np);
 
 #endif

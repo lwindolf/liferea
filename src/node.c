@@ -73,7 +73,6 @@ void node_free(nodePtr np) {
 }
 
 void node_load(nodePtr np) {
-	GSList	*itemList = NULL;
 
 	np->loaded++;
 
@@ -83,9 +82,7 @@ void node_load(nodePtr np) {
 	switch(np->type) {
 		case FST_FEED:
 		case FST_PLUGIN:
-			/* plugins have to keep their items in a feed structure! */
 			FL_PLUGIN(np)->node_load(np);
-			itemList = feed_get_item_list((feedPtr)np->data);
 			break;
 		case FST_FOLDER:
 		case FST_VFOLDER:
@@ -97,7 +94,8 @@ void node_load(nodePtr np) {
 	}
 
 	g_assert(NULL == np->itemSet);
-	itemset_add_items(np->itemSet, itemList);
+	g_warning("implement merging! node_load()!!!");
+	//itemset_add_items(np->itemSet, itemList);
 }
 
 void node_save(nodePtr np) {
@@ -151,7 +149,7 @@ void node_add_item(nodePtr np, itemPtr ip) {
 			added = TRUE; /* no merging for now */
 			break;
 		case FST_FEED:
-			added = feed_add_item((feedPtr)np->data, ip);
+			added = feed_merge_check(np->itemSet, ip);
 			break;
 		case FST_FOLDER:
 		case FST_VFOLDER:

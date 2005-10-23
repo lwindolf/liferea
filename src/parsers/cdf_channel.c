@@ -1,7 +1,7 @@
 /**
  * @file cdf_channel.c CDF channel parsing
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,8 @@
 #include <libxml/parser.h>
 #include "support.h"
 #include "common.h"
+#include "feed.h"
+#include "itemset.h"
 #include "cdf_channel.h"
 #include "cdf_item.h"
 #include "callbacks.h"
@@ -42,7 +44,7 @@
 static GHashTable *channelHash = NULL;
 
 /* method to parse standard tags for the channel element */
-static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+static void parseCDFChannel(feedPtr fp, itemSetPtr sp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp, *tmp2, *tmp3;
 	itemPtr		ip;
 	GList		*items = NULL;
@@ -74,7 +76,7 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 			if(NULL != (ip = parseCDFItem(fp, cp, doc, cur))) {
 				if(0 == item_get_time(ip))
 					item_set_time(ip, cp->time);
-				items = g_list_append(items, ip);
+				itemset_add_item(sp, ip);
 			}
 
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "title")) {
@@ -107,12 +109,11 @@ static void parseCDFChannel(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNode
 		
 		cur = cur->next;
 	}
-	feed_add_items(fp, items);		
 }
 
 /* reads a CDF feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+static void cdf_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) {
 	CDFChannelPtr 	cp;
 	
 	cp = g_new0(struct CDFChannel, 1);
@@ -135,7 +136,7 @@ static void cdf_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		/* find first "real" channel tag */
 		while(cur != NULL) {
 			if((!xmlStrcasecmp(cur->name, BAD_CAST"channel"))) {
-				parseCDFChannel(fp, cp, doc, cur);
+				parseCDFChannel(fp, sp, cp, doc, cur);
 				g_assert(NULL != cur);
 				break;
 			}

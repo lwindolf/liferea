@@ -2,7 +2,7 @@
  * @file atom10.c Atom 1.0 Parser
  * 
  * Copyright (C) 2005 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -577,9 +577,8 @@ static void atom10_parse_feed_updated(xmlNodePtr cur, feedPtr fp, itemPtr ip, st
 
 /* reads a Atom feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+static void atom10_parse_feed(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
-	GList			*items = NULL;
 	int 			error = 0;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
@@ -635,7 +634,7 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				continue;
 			}
 
-			if (xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
+			if(xmlStrcmp(cur->ns->href, ATOM10_NS) != 0) {
 				printf("unknown namespace found in feed\n");
 				cur = cur->next;
 				continue;
@@ -643,17 +642,16 @@ static void atom10_parse_feed(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 			/* At this point, the namespace must be the Atom 1.0 namespace */
 			
 			func = g_hash_table_lookup(feedElementHash, cur->name);
-			if (func != NULL) {
+			if(func != NULL) {
 				(*func)(cur, fp, NULL, NULL);
 			} else if((xmlStrEqual(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = atom10_parse_entry(fp, cur))) {
-					items = g_list_append(items, ip);
+					itemset_add_item(sp, ip);
 				}
 			}
 			cur = cur->next;
 		}
 		
-		feed_add_items(fp, items);
 		/* FIXME: Maybe check to see that the required information was actually provided (persuant to the RFC). */
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		if(0 == error) {

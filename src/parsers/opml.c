@@ -1,7 +1,7 @@
 /**
  * @file opml.c generic OPML 1.0 support
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -133,10 +133,9 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	return buffer;
 }
 
-static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+static void opml_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) {
 	xmlNodePtr	child;
 	itemPtr		ip;
-	GList		*items = NULL;
 	gchar		*buffer, *line, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
 	int 		i, error = 0;
@@ -195,7 +194,7 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 						item_set_description(ip, buffer);
 						g_free(buffer);
 						ip->readStatus = TRUE;
-						items = g_list_append(items, ip);
+						itemset_add_item(sp, ip);
 					}
 					child = child->next;
 				}
@@ -205,7 +204,6 @@ static void opml_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		feed_add_items(fp, items);
 		feed_set_update_interval(fp, -1);
 		if(NULL == (fp->title = headTags[OPML_TITLE]))
 			fp->title = g_strdup(fp->source);

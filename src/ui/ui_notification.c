@@ -27,7 +27,7 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include "conf.h"
-#include "feed.h"
+#include "node.h"
 #include "item.h"
 #include "callbacks.h"
 #include "support.h"
@@ -42,7 +42,7 @@
 #define DISPLAY_TIME 10000
 
 typedef struct {
-	feedPtr		feed_p;
+	nodePtr		node_p;
 	GtkWidget	*box_p;
 	GtkWidget	*eventBox_p;
 	gint		newCount;
@@ -59,15 +59,15 @@ static GSList *notifications_p = NULL;
 static GtkWidget *notifWin_p = NULL;
 
 /* Function prototypes */
-static int notifCompare (gconstpointer a, gconstpointer b);
-static feedNotif_t *notifCreateFeedNotif (feedPtr feed_p);
-static void notifCheckFeedNotif (feedNotif_t *feedNotif_p);
-static void notifAddFeedNotif (feedNotif_t *feedNotif_p);
-static void notifRemoveFeedNotif (feedNotif_t *feedNotif_p);
-static GtkWidget *notifCreateWin (void);
-static gint feedNotifTimeoutCallback (gpointer data);
+static int notifCompare(gconstpointer a, gconstpointer b);
+static feedNotif_t *notifCreateFeedNotif(nodePtr node_p);
+static void notifCheckFeedNotif(feedNotif_t *feedNotif_p);
+static void notifAddFeedNotif(feedNotif_t *feedNotif_p);
+static void notifRemoveFeedNotif(feedNotif_t *feedNotif_p);
+static GtkWidget *notifCreateWin(void);
+static gint feedNotifTimeoutCallback(gpointer data);
 static void notifRemoveWin();
-static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *event, gpointer user_data);
+static gboolean onNotificationButtonPressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 static gboolean notifDeleteWinCb (GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
 static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
@@ -77,8 +77,8 @@ static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *
 	if(event->type != GDK_BUTTON_PRESS) {
 		return FALSE;
 	} else if(event->button == 1) {
-		ui_feedlist_select((nodePtr)feedNotif_p->feed_p);
-		gdk_window_raise (mainwindow->window);
+		ui_feedlist_select(feedNotif_p->node_p);
+		gdk_window_raise(mainwindow->window);
 	} else {
 		/* Any button except LMB will remove the notification */
 		notifRemoveFeedNotif(feedNotif_p);
@@ -140,29 +140,29 @@ static gint feedNotifTimeoutCallback(gpointer data) {
 /* This function can only be used to find a feed in the notifications_p*/
 static int notifCompare(gconstpointer a, gconstpointer b) {
 
-	if(((feedNotif_t *)a)->feed_p == (feedPtr)b) {
+	if(((feedNotif_t *)a)->node_p == (nodePtr)b) {
 		return 0;
 	} else {
 		return 1;
 	}
 }
 
-void ui_notification_update(const feedPtr feed_p) {
+void ui_notification_update(const nodePtr node_p) {
 	feedNotif_t *curNotif_p = NULL;
 	GSList *list_p = NULL;
 	
 	if(!getBooleanConfValue(SHOW_POPUP_WINDOWS))
 		return;
 	
-	list_p = g_slist_find_custom(notifications_p, feed_p, notifCompare);
+	list_p = g_slist_find_custom(notifications_p, node_p, notifCompare);
 	
 	if(list_p != NULL) {
 		curNotif_p = (feedNotif_t *)list_p->data;
 	} else {
-		if(0 == feed_get_popup_counter(feed_p))
+		if(0 == node_p->itemSet->popupCount)
 			return;
 		
-		curNotif_p = notifCreateFeedNotif(feed_p);
+		curNotif_p = notifCreateFeedNotif(node_p);
 		notifications_p = g_slist_append(notifications_p, (gpointer) curNotif_p);
 		g_assert(curNotif_p != NULL);
 	}
@@ -170,26 +170,26 @@ void ui_notification_update(const feedPtr feed_p) {
 	notifCheckFeedNotif(curNotif_p);
 }	
 
-static feedNotif_t *notifCreateFeedNotif (feedPtr feed_p) {
+static feedNotif_t *notifCreateFeedNotif(nodePtr node_p) {
 	feedNotif_t *feedNotif_p = NULL;
 
-	g_assert(feed_p != NULL);
+	g_assert(node_p != NULL);
 	
 	feedNotif_p = g_new0(feedNotif_t, 1);
-	if (feedNotif_p != NULL) {
-		feedNotif_p->feed_p = feed_p;
+	if(feedNotif_p != NULL) {
+		feedNotif_p->node_p = node_p;
 	}
 	return feedNotif_p;
 }
 
 static void notifCheckFeedNotif(feedNotif_t *feedNotif_p) {
 
-	if(feedNotif_p->newCount < feed_get_popup_counter(feedNotif_p->feed_p)) {
+	if(feedNotif_p->newCount < feedNotif_p->node_p->itemSet->popupCount) {
 		if(notifWin_p == NULL) {
 			notifWin_p = notifCreateWin();
 		}
-		notifAddFeedNotif (feedNotif_p);
-	} else if(feedNotif_p->newCount > feed_get_popup_counter(feedNotif_p->feed_p)) {
+		notifAddFeedNotif(feedNotif_p);
+	} else if(feedNotif_p->newCount > feedNotif_p->node_p->itemSet->popupCount) {
 		notifRemoveFeedNotif(feedNotif_p);
 		notifRemoveWin();
 	}
@@ -199,7 +199,7 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 	GtkWidget *hbox_p, *icon_p, *label_p = NULL;
 	gchar *labelText_p = NULL;
 	itemPtr item_p = NULL;
-	GSList *list_p = NULL;
+	GList *list_p = NULL;
 
 	if(feedNotif_p->eventBox_p != NULL) {
 		notifRemoveFeedNotif(feedNotif_p);
@@ -217,23 +217,23 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 	hbox_p = gtk_hbox_new(FALSE, 0);
 	label_p = gtk_label_new(NULL);
 	gtk_label_set_use_markup(GTK_LABEL(label_p), TRUE);
-	labelText_p = g_strdup_printf("<b><u>%s</u></b>", feed_get_title(feedNotif_p->feed_p));
+	labelText_p = g_strdup_printf("<b><u>%s</u></b>", node_get_title(feedNotif_p->node_p));
 	gtk_label_set_markup(GTK_LABEL(label_p), labelText_p);
 	g_free(labelText_p);
 	gtk_misc_set_alignment(GTK_MISC(label_p), 0.0, 0.5);
-	// FIXME:
-	/*if(NULL != feedNotif_p->feed_p->icon) {
-		icon_p = gtk_image_new_from_pixbuf(feedNotif_p->feed_p->icon);
+
+	if(NULL != feedNotif_p->node_p->icon) {
+		icon_p = gtk_image_new_from_pixbuf(feedNotif_p->node_p->icon);
 		gtk_box_pack_start(GTK_BOX(hbox_p), icon_p, FALSE, FALSE, 5);
 		gtk_misc_set_padding(GTK_MISC(label_p), 5, 10);
-	} else {*/
+	} else {
 		gtk_misc_set_padding(GTK_MISC(label_p), 15, 10);
-	//}
+	}
 	gtk_box_pack_start(GTK_BOX(hbox_p), label_p, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(feedNotif_p->box_p), hbox_p, TRUE, TRUE, 0);
 	
 	/* Add the new items */
-	list_p = feedNotif_p->feed_p->items;
+	list_p = feedNotif_p->node_p->itemSet->items;
 	while(list_p != NULL) {
 		item_p = list_p->data;
 		if(TRUE == item_p->popupStatus) {
@@ -247,7 +247,7 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 			gtk_misc_set_padding(GTK_MISC(label_p), 25, 0);
 			gtk_box_pack_start(GTK_BOX(feedNotif_p->box_p), label_p, TRUE, TRUE, 0);
 		}
-		list_p = g_slist_next (list_p);
+		list_p = g_list_next(list_p);
 	}
 	
 	gtk_widget_show_all(feedNotif_p->eventBox_p);
@@ -259,7 +259,7 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 		gtk_box_pack_start(GTK_BOX(list_p->data), feedNotif_p->eventBox_p, FALSE, FALSE, 0);
 	}
 
-	feedNotif_p->newCount = feed_get_popup_counter(feedNotif_p->feed_p);
+	feedNotif_p->newCount = feedNotif_p->node_p->itemSet->popupCount;
 	
 	notifUpdatePosition(GTK_WINDOW(notifWin_p));
 
@@ -271,29 +271,30 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 /** This removes all traces of a feed from the notification window,
     but does not remove the feed from the list of notifications.... */
 static void notifRemoveFeedNotif (feedNotif_t *feedNotif_p) {
-	if (feedNotif_p->eventBox_p != NULL) {
-		gtk_widget_destroy (feedNotif_p->eventBox_p);
+
+	if(feedNotif_p->eventBox_p != NULL) {
+		gtk_widget_destroy(feedNotif_p->eventBox_p);
 		feedNotif_p->eventBox_p = NULL;
 	}
-	if (feedNotif_p->timerTag) {
-		g_source_remove (feedNotif_p->timerTag);
+	if(feedNotif_p->timerTag) {
+		g_source_remove(feedNotif_p->timerTag);
 		feedNotif_p->timerTag = 0;
 	}
-	feedNotif_p->newCount = feed_get_popup_counter(feedNotif_p->feed_p);
+	feedNotif_p->newCount = feedNotif_p->node_p->itemSet->popupCount;
 	
 	notifUpdatePosition(GTK_WINDOW(notifWin_p));
 }
 
 /* to be called when a feed is deleted.. when all traces of the feed
    must be removed under penalty of segfault. */
-void ui_notification_remove_feed(feedPtr fp) {
+void ui_notification_remove_feed(const nodePtr np) {
 	feedNotif_t	*feedNotif_p;
 	GSList		*iter; 
 	
 	iter = notifications_p;
 	while(NULL != iter) {
 		feedNotif_p = iter->data;
-		if(fp == feedNotif_p->feed_p) {
+		if(np == feedNotif_p->node_p) {
 			notifRemoveFeedNotif(feedNotif_p);
 			g_free(feedNotif_p);
 			notifications_p = g_slist_delete_link(notifications_p, iter);
@@ -352,21 +353,21 @@ static gboolean notifDeleteWinCb (GtkWidget *widget, GdkEvent *event, gpointer u
 	return FALSE;
 }
 
-void notifRemoveWin () {
-	if (notifWin_p != NULL)		
-	{
+void notifRemoveWin(void) {
+
+	if(notifWin_p != NULL) {
 		GtkWidget *container_p;
 		GList *list_p = gtk_container_get_children(GTK_CONTAINER(notifWin_p));
-		if (list_p != NULL) {
-			container_p = (GtkWidget *) list_p->data;
-			g_list_free (list_p);
+		if(list_p != NULL) {
+			container_p = (GtkWidget *)list_p->data;
+			g_list_free(list_p);
 			list_p = gtk_container_get_children(GTK_CONTAINER(container_p));
-			if (list_p == NULL) {
+			if(list_p == NULL) {
 				/* Window is empty, destroy it */
-				gtk_widget_destroy (notifWin_p);
+				gtk_widget_destroy(notifWin_p);
 				notifWin_p = NULL;
 			} else {
-				g_list_free (list_p);
+				g_list_free(list_p);
 			}
 		}
 	}

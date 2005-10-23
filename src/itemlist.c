@@ -310,11 +310,11 @@ void itemlist_remove_item(itemPtr ip) {
 	}
 }
 
-void itemlist_remove_items(feedPtr fp) {
+void itemlist_remove_items(nodePtr np) {
 
 	ui_itemlist_clear();
 	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
-	feed_remove_items(fp);
+	itemset_remove_items(np->itemSet);
 	ui_feedlist_update();
 }
 

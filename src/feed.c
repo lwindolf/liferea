@@ -127,11 +127,12 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
  * download it and parse the feed's source instead of the passed source.
  *
  * @param fp		the feed structure to be filled
+ * @param sp		the item set to be filled
  * @param data		the feed source
  * @param dataLength the length of the 'data' string
  * @param autodiscover	TRUE if auto discovery should be possible
  */
-feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover) {
+feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLength, gboolean autodiscover) {
 	gchar			*source;
 	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
@@ -181,7 +182,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 				if(FALSE == handler->merge)
 					feed_remove_items(fp);	/* for directories */
 				
-				(*(handler->feedParser))(fp, doc, cur);		/* parse it */
+				(*(handler->feedParser))(fp, sp, doc, cur);		/* parse it */
 				handled = TRUE;				
 				break;
 			}
@@ -208,7 +209,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
 				if(NULL != request->data) {
 					debug0(DEBUG_UPDATE, "feed link download successful!");
 					feed_set_source(fp, source);
-					handler = feed_parse(fp, request->data, request->size, FALSE);
+					handler = feed_parse(fp, sp, request->data, request->size, FALSE);
 				} else {
 					/* if the download fails we do nothing except
 					   unsetting the handler so the original source
@@ -248,7 +249,7 @@ feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean a
  *
  * This method really saves the feed to disk.
  */
-void feed_save(feedPtr fp, const gchar *id) {
+void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode;
 	GList		*itemlist, *iter;
@@ -258,7 +259,7 @@ void feed_save(feedPtr fp, const gchar *id) {
 	gint		saveCount = 0;
 	gint		saveMaxCount;
 			
-	debug_enter("feed_save");
+	debug_enter("feed_save_to_cache");
 	
 	debug1(DEBUG_CACHE, "saving feed: %s", fp->title);	
 
@@ -300,7 +301,7 @@ void feed_save(feedPtr fp, const gchar *id) {
 			
 			metadata_add_xml_nodes(fp->metadata, feedNode);
 
-			itemlist = g_list_copy(feed_get_item_list(fp));
+			itemlist = g_list_copy(sp->items);
 			for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
 				ip = iter->data;
 				g_assert(NULL != ip);
@@ -336,18 +337,18 @@ void feed_save(feedPtr fp, const gchar *id) {
 	g_free(tmpfilename);
 	g_free(filename);
 
-	debug_exit("feed_save");
+	debug_exit("feed_save_to_cache");
 }
 
-gboolean feed_load(feedPtr fp, const gchar *id) {
+itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
-	GList		*items = NULL;
+	itemSetPtr	sp = NULL;
 	gchar		*filename, *tmp, *data = NULL;
 	int		error = 0;
 	gsize 		length;
 
-	debug_enter("feed_load");
+	debug_enter("feed_load_from_cache");
 
 	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(fp));
 	
@@ -392,8 +393,7 @@ gboolean feed_load(feedPtr fp, const gchar *id) {
 
 		metadata_list_free(fp->metadata);
 		fp->metadata = NULL;
-		fp->unreadCount = 0;
-		fp->newCount = 0;
+		sp = g_new0(struct itemSet, 1);
 
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
@@ -426,7 +426,7 @@ gboolean feed_load(feedPtr fp, const gchar *id) {
 				feed_set_lastmodified(fp, tmp);
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-				items = g_list_append(items, item_parse_cache(doc, cur));
+				itemset_add_item(sp, item_parse_cache(doc, cur));
 
 			} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
 				fp->metadata = metadata_parse_xml_nodes(doc, cur);
@@ -434,36 +434,19 @@ gboolean feed_load(feedPtr fp, const gchar *id) {
 			g_free(tmp);	
 			cur = cur->next;
 		}
-		fp->items = items;  // FIXME: is this correct?
 		//favicon_load(np); FIXME!!!
-	} while (FALSE);
+	} while(FALSE);
 	
-	if(0 != error) {
+	if(0 != error)
 		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\""), filename);
-	}
 	
-	if(NULL != data)
-		g_free(data);
 	if(NULL != doc)
 		xmlFreeDoc(doc);
+	g_free(data);
 	g_free(filename);
 	
-	debug_exit("feed_load");	
-	return TRUE;
-}
-
-void feed_unload(feedPtr fp) {
-
-	debug_enter("feed_unload");
-
-	if(CACHE_DISABLE == fp->cacheLimit) {
-		debug1(DEBUG_CACHE, "not unloading (%s) because cache is disabled", feed_get_source(fp));
-	} else {
-		debug1(DEBUG_CACHE, "feed_unload (%s)", feed_get_source(fp));
-		feed_clear_item_list(fp);
-	}
-
-	debug_exit("feed_unload");
+	debug_exit("feed_load_from_cache");
+	return sp;
 }
 
 /**
@@ -516,11 +499,11 @@ void feed_schedule_update(feedPtr fp, guint flags) {
 	download_queue(request);
 }
 
-/**
- * Adds an item to the feed. Realizes the item merging 
- * logic based on the numeric item id's. 
- */
-gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
+/* ---------------------------------------------------------------------------- */
+/* Implementation of the itemset type for feeds					*/
+/* ---------------------------------------------------------------------------- */
+
+gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 	GList		*old_items;
 	itemPtr		old_ip = NULL;
 	gboolean	found, equal = FALSE;
@@ -531,7 +514,7 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 		
 	/* compare to every existing item in this feed */
 	found = FALSE;
-	old_items = feed_get_item_list(fp);
+	old_items = sp->items;
 	while(NULL != old_items) {
 		old_ip = old_items->data;
 		
@@ -578,35 +561,38 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 	}
 		
 	if(!found) {
-		/* new items has no number yet */
+		/* if new item has no number yet */
 		if(0 == new_ip->nr)
-			new_ip->nr = ++(fp->lastItemNr);
+			new_ip->nr = ++(sp->lastItemNr);
 		
 		/* ensure that the feed last item nr is at maximum */
-		if(new_ip->nr > fp->lastItemNr)
-			fp->lastItemNr = new_ip->nr;
+		if(new_ip->nr > sp->lastItemNr)
+			sp->lastItemNr = new_ip->nr;
 
 		/* ensure that the item nr's are unique */
-		if(NULL != feed_lookup_item(fp, new_ip->nr)) {
-			g_warning("The item number to be added is not unique! Feed (%s) Item (%s) (%lu)\n", fp->title, new_ip->title, new_ip->nr);
-			new_ip->nr = ++(fp->lastItemNr);
+		if(NULL != itemset_lookup_item(sp, new_ip->nr)) {
+			g_warning("The item number to be added is not unique! Item (%s) (%lu)\n", new_ip->title, new_ip->nr);
+			new_ip->nr = ++(sp->lastItemNr);
 		}
 
 		/* If a new item has enclosures and auto downloading
 		   is enabled we start the download. Enclosures added
 		   by updated items are not supported. */
-		if((TRUE == fp->encAutoDownload) &&
-		   (TRUE == new_ip->newStatus)) {
-			iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
-			while(NULL != iter) {
-				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
-				iter = g_slist_next(iter);
-			}
-		}
-		
-		fp->items = g_list_prepend(fp->items, (gpointer)new_ip); // FIXME: do we need a item list in feedPtr?
 
+		// FIXME: doesn't work at this place...
+		// it is a task to be decided at feed parsing
+		// time and not on itemset merging time...
+		
+		//if((TRUE == fp->encAutoDownload) &&
+		//   (TRUE == new_ip->newStatus)) {
+	//		iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
+	//		while(NULL != iter) {
+	//			debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+	//			ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
+	//			iter = g_slist_next(iter);
+	//		}
+	//	}
+		
 		debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
 			
 		vfolder_check_item(new_ip);
@@ -630,48 +616,9 @@ gboolean feed_add_item(feedPtr fp, itemPtr new_ip) {
 	return !found;
 }
 
-itemPtr feed_lookup_item(feedPtr fp, gulong nr) {
-	GList		*items;
-	itemPtr		ip;
-		
-	items = feed_get_item_list(fp);
-	while(NULL != items) {
-		ip = (itemPtr)(items->data);
-		if(ip->nr == nr)
-			return ip;
-		items = g_list_next(items);
-	}
-	
-	return NULL;
-}
-
 /* ---------------------------------------------------------------------------- */
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
-
-void feed_increase_unread_counter(feedPtr fp) {
-	fp->unreadCount++;
-}
-void feed_decrease_unread_counter(feedPtr fp) {
-	fp->unreadCount--;
-}
-gint feed_get_unread_counter(feedPtr fp) { return fp->unreadCount; }
-
-void feed_increase_popup_counter(feedPtr fp) {
-	fp->popupCount++;
-}
-void feed_decrease_popup_counter(feedPtr fp) {
-	fp->popupCount--;
-}
-gint feed_get_popup_counter(feedPtr fp) { return fp->popupCount; }
-
-void feed_increase_new_counter(feedPtr fp) {
-	fp->newCount++;
-}
-void feed_decrease_new_counter(feedPtr fp) {
-	fp->newCount--;
-}
-gint feed_get_new_counter(feedPtr fp) { return fp->newCount; }
 
 gint feed_get_default_update_interval(feedPtr fp) { return fp->defaultInterval; }
 void feed_set_default_update_interval(feedPtr fp, gint interval) { fp->defaultInterval = interval; }
@@ -822,64 +769,45 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 		fp->imageUrl = NULL;
 }
 
-/* returns feed's list of items, if necessary loads the feed from cache */
-GList * feed_get_item_list(feedPtr fp) { 
-
-	return fp->items; 
-}
-
 /**
  * Method to free all items structures of a feed, does not mean
  * that it removes items from cache! This method is used 
  * for feed unloading.
  */
-void feed_clear_item_list(feedPtr fp) {
-	GList	*item;
+// FIXME: shouldn't be needed anymore
+//void feed_clear_item_list(feedPtr fp) {
+//	GList	*item;
+//
+//	item = feed_get_item_list(fp);
+//
+//	while(NULL != item) {
+//		item_free(item->data);
+//		item = g_list_next(item);
+//		/* explicitly not changing the item state counters */
+//	}
+//	g_list_free(fp->items);
+//	fp->items = NULL;
+//	/* explicitly not forcing feed saving to allow feed unloading */
+//}
 
-	item = feed_get_item_list(fp);
-
-	while(NULL != item) {
-		item_free(item->data);
-		item = g_list_next(item);
-		/* explicitly not changing the item state counters */
-	}
-	g_list_free(fp->items);
-	fp->items = NULL;
-	/* explicitly not forcing feed saving to allow feed unloading */
-}
-
-// FIXME: method shouldn't be needed anymore
-void feed_remove_item(feedPtr fp, itemPtr ip) {
-
-	if(FALSE == ip->readStatus)
-		feed_decrease_unread_counter(fp);
-	
-	if(TRUE == ip->popupStatus)
-		feed_decrease_popup_counter(fp);
-	
-	if(TRUE == ip->newStatus)
-		feed_decrease_new_counter(fp);
-	
-	item_free(ip);
-}
-
-void feed_remove_items(feedPtr fp) {
-	GList *item;
-	
-	item = feed_get_item_list(fp);
-
-	while(NULL != item) {
-		vfolder_remove_item(item->data);	/* remove item copies */
-		item_free(item->data);			/* remove the item */
-		item = g_list_next(item);
-	}
-	g_list_free(fp->items);
-	feedlist_update_counters((-1)*fp->unreadCount, (-1)*fp->newCount);
-	fp->unreadCount = 0;
-	fp->popupCount = 0;
-	fp->newCount = 0;
-	fp->items = NULL;
-}
+// FIXME: shouldn't be needed anymore
+//void feed_remove_items(feedPtr fp) {
+//	GList *item;
+//	
+//	item = feed_get_item_list(fp);
+//
+//	while(NULL != item) {
+//		vfolder_remove_item(item->data);	/* remove item copies */
+//		item_free(item->data);			/* remove the item */
+//		item = g_list_next(item);
+//	}
+//	g_list_free(fp->items);
+//	feedlist_update_counters((-1)*fp->unreadCount, (-1)*fp->newCount);
+//	fp->unreadCount = 0;
+//	fp->popupCount = 0;
+//	fp->newCount = 0;
+//	fp->items = NULL;
+//}
 
 // FIXME: split of vfolder_render()
 gchar *feed_render(feedPtr fp) {
@@ -995,10 +923,6 @@ void feed_remove(feedPtr fp, const gchar *id) {
 	gchar	*filename = NULL;
 	GSList	*iter;
 	
-
-	/* free items */
-	feed_remove_items(fp);
-
 	if(id && id[0] != '\0')
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
 	

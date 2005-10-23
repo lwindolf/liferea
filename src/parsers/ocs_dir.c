@@ -5,7 +5,7 @@
  * the dc and ocs namespaces are processed by the specific namespace 
  * handlers!
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -445,10 +445,9 @@ static void parseDirectory(GList **items, directoryPtr dp, xmlNodePtr cur, gint 
 		dp->tags[OCS_DESCRIPTION] = convertToHTML(dp->tags[OCS_DESCRIPTION]);
 }
 
-static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
+static void ocs_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur ) {
 	directoryPtr	dp = NULL;
 	dirEntryPtr	new_dep;
-	GList		*items = NULL;
 	int 		error = 0;
 
 	do {
@@ -476,26 +475,25 @@ static void ocs_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur ) {
 			/* handling OCS 0.5 directory tag... */
 			if(!xmlStrcmp(cur->name, BAD_CAST"directory")) {
 				dp = g_new0(struct directory, 1);
-				parseDirectory(&items, dp, cur, 5);
+				parseDirectory(&(sp->items), dp, cur, 5);
 			}
 			/* handling OCS 0.5 channel tag... */
 			else if(!xmlStrcmp(cur->name, BAD_CAST"channel")) {
 				new_dep = g_new0(struct dirEntry, 1);
 				new_dep->source = utf8_fix(xmlGetProp(cur, "about"));
 				new_dep->dp = dp;					
-				items = g_list_append(items, parse05DirectoryEntry(new_dep, cur));
+				itemset_add_item(sp, parse05DirectoryEntry(new_dep, cur));
 			}
 			/* handling OCS 0.4 top level description tag... */
 			else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 				dp = g_new0(struct directory, 1);
-				parseDirectory(&items, dp, cur, 4);
+				parseDirectory(&(sp->items), dp, cur, 4);
 				break;
 			}
 			cur = cur->next;
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		feed_add_items(fp, items);
 		feed_set_update_interval(fp, -1);
 		fp->title = dp->tags[OCS_TITLE];
 		

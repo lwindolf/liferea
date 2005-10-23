@@ -46,12 +46,14 @@ enum itemSetTypes {
 };
 
 typedef struct itemSet {
-	guint	type;
-	GList	*items;
+	guint	type;		/**< the type of the item set */
+	GList	*items;		/**< the list of items */
 
-	guint	unreadCount;
-	guint	popupCount;
-	guint	newCount;
+	guint	unreadCount;	/**< number of items not yet read */
+	guint	popupCount;	/**< number of items to be notified */
+	guint	newCount;	/**< number of recently downloaded items */
+	
+	gulong	lastItemNr;	/**< internal counter used to uniqely assign item id's. */
 } *itemSetPtr;
 
 /**

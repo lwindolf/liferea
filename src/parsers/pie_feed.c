@@ -1,7 +1,7 @@
 /**
  * @file pie_feed.c Atom/Echo/PIE 0.2/0.3 channel parsing
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,9 +154,8 @@ gchar * parseAuthor(xmlNodePtr cur) {
 
 /* reads a PIE feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
+static void pie_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) {
 	itemPtr 		ip;
-	GList			*items = NULL;
 	gchar			*tmp2, *tmp = NULL, *tmp3;
 	int 			error = 0;
 	NsHandler		*nsh;
@@ -280,14 +279,13 @@ static void pie_parse(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur) {
 				if(NULL != (ip = parseEntry(fp, cur))) {
 					if(0 == item_get_time(ip))
 						item_set_time(ip, feed_get_time(fp));
-					items = g_list_append(items, ip);
+					itemset_add_item(sp, ip);
 				}
 			}
 			
 			/* collect PIE feed entries */
 			cur = cur->next;
 		}
-		feed_add_items(fp, items);
 		
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		if(0 == error) {

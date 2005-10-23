@@ -124,22 +124,31 @@ static void fl_default_node_remove(nodePtr np) {
 static void fl_default_node_load(nodePtr np) {
 	feedPtr	fp = (feedPtr)np->data;
 
-	feed_load(fp, np->id);
+	debug_enter("fl_default_node_load");
+	
 	g_assert(NULL == np->itemSet);
-	np->itemSet = (itemSetPtr)g_new0(struct itemSet, 1);
-	np->itemSet->items = fp->items;
-	np->itemSet->newCount = fp->newCount;
-	np->itemSet->unreadCount = fp->unreadCount;
+	np->itemSet = feed_load_from_cache(fp, np->id);
+
+	debug_exit("fl_default_node_load");
 }
 
 static void fl_default_node_unload(nodePtr np) {
+	feedPtr	fp = (feedPtr)np->data;
 
-	feed_unload((feedPtr)np->data);
-	g_assert(NULL != np->itemSet);
-	g_list_free(np->itemSet->items);
-	np->itemSet->items = NULL;
-	g_free(np->itemSet);
-	np->itemSet = NULL;	
+	debug_enter("fl_default_node_unload");
+
+	if(CACHE_DISABLE == fp->cacheLimit) {
+		debug1(DEBUG_CACHE, "not unloading node (%s) because cache is disabled", node_get_title(np));
+	} else {
+		debug1(DEBUG_CACHE, "unloading node (%s)", node_get_title(np));
+		g_assert(NULL != np->itemSet);
+		g_list_free(np->itemSet->items);
+		np->itemSet->items = NULL;
+		g_free(np->itemSet);
+		np->itemSet = NULL;	
+	} 
+
+	debug_exit("fl_default_node_unload");
 }
 
 static gchar *fl_default_node_render(nodePtr np) {
@@ -172,7 +181,7 @@ static void fl_default_node_save(nodePtr np) {
 
 	switch(np->type) {
 		case FST_FEED:
-			feed_save((feedPtr)np->data, node_get_id(np));
+			feed_save_to_cache((feedPtr)np->data, np->itemSet, node_get_id(np));
 			break;
 		case FST_FOLDER:
 		case FST_VFOLDER:
@@ -342,6 +351,7 @@ void ui_feed_process_update_result(struct request *request) {
 	nodePtr			np = (nodePtr)request->user_data;
 	feedPtr			fp = (feedPtr)np->data;
 	feedHandlerPtr		fhp;
+	itemSetPtr		sp;
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
 	
@@ -378,8 +388,13 @@ void ui_feed_process_update_result(struct request *request) {
 		old_title = g_strdup(feed_get_title(fp));
 		old_source = g_strdup(feed_get_source(fp));
 
-		/* parse the new downloaded feed into fp */
-		fhp = feed_parse(fp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
+		/* parse the new downloaded feed into fp and sp */
+		sp = (itemSetPtr)g_new0(struct itemSet, 1);
+		fhp = feed_parse(fp, sp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
+
+		// FIXME: item set merging?
+		// do something with sp!
+		
 		if(fhp == NULL) {
 			feed_set_available(fp, FALSE);
 			fp->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), fp->parseErrors);
@@ -423,7 +438,7 @@ void ui_feed_process_update_result(struct request *request) {
 		favicon_download(np);
 
 	/* update UI presentations */
-	ui_notification_update(fp); // FIXME ?
+	ui_notification_update(np);
 	ui_feedlist_update();
 
 	feedlist_unload_node(np);

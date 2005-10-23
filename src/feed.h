@@ -45,10 +45,8 @@ enum feed_request_flags {
 
 struct feedHandler;
 struct request;
-/* ------------------------------------------------------------ */
-/* Feed structure                                               */
-/* ------------------------------------------------------------ */
 
+/** Caching property constants */
 enum cache_limit {
 	/* Values > 0 are used to specify certain limits */
 	CACHE_DISABLE = 0,
@@ -56,14 +54,10 @@ enum cache_limit {
 	CACHE_UNLIMITED = -2,
 };
 
-/** common structure to access feed info structures */
-
+/** Common structure to hold all information about a single feed. */
 typedef struct feed {
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
 	
-	gint		unreadCount;		/**< number of unread items */
-	gint		popupCount;		/**< number of items to be displayed with popup notification feature */
-	gint		newCount;		/**< number of items to be counted by the tray icon */
 	gint		defaultInterval;	/**< update interval as specified by the feed */
 	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
 	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
@@ -84,10 +78,7 @@ typedef struct feed {
 	gint		updateInterval;		/**< user defined update interval in minutes */
 	GSList		*metadata;		/**< metadata of this feed */
 	gboolean	encAutoDownload;	/**< enclosure auto download flag */
-	
-	gulong		lastItemNr;		/**< internal counter used to uniqely assign item id's. */
-	GList		*items;			/**< list of pointers to the item structures of this channel */ // FIXME: needed?
-	
+
 	/* feed updating state properties */
 	gchar		*lastModified;		/**< Last modified string as sent by the server */
 	gchar		*etag;			/**< E-Tag sent by the server */
@@ -108,7 +99,7 @@ typedef struct feed {
 /* ------------------------------------------------------------ */
 
 /** a function which parses the feed data given with the feed ptr fp */
-typedef void 	(*feedParserFunc)	(feedPtr fp, xmlDocPtr doc, xmlNodePtr cur);
+typedef void 	(*feedParserFunc)	(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur);
 typedef gboolean (*checkFormatFunc)	(xmlDocPtr doc, xmlNodePtr cur); /**< Returns true if correct format */
 
 typedef struct feedHandler {
@@ -144,17 +135,31 @@ feedPtr feed_new(void);
  * download it and parse the feed's source instead of the passed source.
  *
  * @param fp		the feed structure to be filled
+ * @param sp		the item set to be filled
  * @param data		the feed source
  * @param dataLength the length of the 'data' string
  * @param autodiscover	TRUE if auto discovery should be possible
  */
-feedHandlerPtr feed_parse(feedPtr fp, gchar *data, size_t dataLength, gboolean autodiscover);
+feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLength, gboolean autodiscover);
 
 /**
- * Feed loading/unloading from/to cache.
+ * Feed loading from cache.
+ *
+ * @param fp	the feed structure to load
+ * @param id	the cache id of the feed
+ *
+ * @returns the set of items loaded from cache
  */
-gboolean feed_load(feedPtr fp, const gchar *id);
-void feed_unload(feedPtr fp);
+itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id);
+
+/**
+ * Saving a given feed and its item set to cache.
+ *
+ * @param fp	the feed
+ * @param sp	its set of items
+ * @param id	the cache id of this feed
+ */
+void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id);
 
 /**
  * Feed managment methods.
@@ -162,16 +167,16 @@ void feed_unload(feedPtr fp);
 void feed_merge(feedPtr old_fp, feedPtr new_fp);
 void feed_remove(feedPtr fp, const gchar *id);
 void feed_schedule_update(feedPtr fp, guint flags);
-void feed_save(feedPtr fp, const gchar *id);
 
 /**
- * Can be used to add a single item to a feed. But it's better to
- * use feed_add_items() to keep the item order of parsed feeds.
- * Should be used for vfolders only.
+ * Merging implementation for the feed itemset type.
+ *
+ * @param sp	the itemset to merge against
+ * @param ip	the item to merge
+ *
+ * @returns TRUE if the item can be merged
  */
-gboolean feed_add_item(feedPtr fp, itemPtr ip);
-
-void feed_remove_item(feedPtr fp, itemPtr ip);
+gboolean feed_merge_check(itemSetPtr sp, itemPtr ip);
 
 /** 
  * To lookup an item given by it's unique item nr 
@@ -265,11 +270,6 @@ const gchar * feed_get_etag(feedPtr fp);
 void feed_set_etag(feedPtr fp, const gchar *etag);
 
 feedHandlerPtr feed_get_fhp(feedPtr fp);
-
-GList * feed_get_item_list(feedPtr fp);
-
-void feed_clear_item_list(feedPtr fp);
-void feed_remove_items(feedPtr fp);
 
 /** 
  * Returns a HTML rendering of a feed. The returned string must be
