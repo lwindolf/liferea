@@ -44,15 +44,15 @@
 #define FL_PLUGIN_API_VERSION 1
 
 enum {
-	FL_PLUGIN_CAPABILITY_IS_ROOT,		/**< only for default feed list provider */
-	FL_PLUGIN_CAPABILITY_ADD,		/**< allows adding new childs */
-	FL_PLUGIN_CAPABILITY_REMOVE,		/**< allows removing it's childs */
-	FL_PLUGIN_CAPABILITY_ADD_FOLDER,	/**< allows adding new folders */
-	FL_PLUGIN_CAPABILITY_REMOVE_FOLDER,	/**< allows removing it's folders */
-	FL_PLUGIN_CAPABILITY_REMOVE_ITEMS,	/**< allows removing of single items */
-	FL_PLUGIN_CAPABILITY_REORDER,		/**< allows DnD to reorder childs */
-	FL_PLUGIN_CAPABILITY_MULTI_INSTANCES,	/**< allows multiple instances */
-	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION	/**< plugin instance user created */
+	FL_PLUGIN_CAPABILITY_IS_ROOT		= (1<<0),	/**< only for default feed list provider */
+	FL_PLUGIN_CAPABILITY_ADD		= (1<<1),	/**< allows adding new childs */
+	FL_PLUGIN_CAPABILITY_REMOVE		= (1<<2),	/**< allows removing it's childs */
+	FL_PLUGIN_CAPABILITY_ADD_FOLDER		= (1<<3),	/**< allows adding new folders */
+	FL_PLUGIN_CAPABILITY_REMOVE_FOLDER	= (1<<4),	/**< allows removing it's folders */
+	FL_PLUGIN_CAPABILITY_REMOVE_ITEMS	= (1<<5),	/**< allows removing of single items */
+	FL_PLUGIN_CAPABILITY_REORDER		= (1<<6),	/**< allows DnD to reorder childs */
+	FL_PLUGIN_CAPABILITY_MULTI_INSTANCES	= (1<<7),	/**< allows multiple instances */
+	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION	= (1<<8)	/**< plugin instance user created */
 };
 
 typedef struct flPluginInfo_ flPluginInfo;
@@ -65,7 +65,7 @@ struct flPluginInfo_ {
 	gchar		*name;
 
 	/* bitmask of possible feed actions */
-	gulong		capabilites;
+	gulong		capabilities;
 
 	/* plugin loading and unloading methods */
 	void		(*plugin_init)(void);

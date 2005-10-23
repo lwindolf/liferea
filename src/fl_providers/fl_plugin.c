@@ -28,19 +28,31 @@ flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
 	flPluginInfo	*fpi;
 	GSList		*iter;
 
+	debug_enter("fl_plugins_get_root");
+
+	g_print("root: %ld\n", FL_PLUGIN_CAPABILITY_IS_ROOT |
+	FL_PLUGIN_CAPABILITY_ADD |
+	FL_PLUGIN_CAPABILITY_REMOVE |
+	FL_PLUGIN_CAPABILITY_ADD_FOLDER |
+	FL_PLUGIN_CAPABILITY_REMOVE_FOLDER |
+	FL_PLUGIN_CAPABILITY_REORDER);
+
 	/* scan for root flag and return plugin if found */
 	iter = plugin_list;
 	while(NULL != iter) {
 		fpi = (flPluginInfo *)iter->data;
-		if(fpi->capabilites & FL_PLUGIN_CAPABILITY_IS_ROOT) {
+		debug2(DEBUG_VERBOSE, "%s capabilities=%ld", fpi->name, fpi->capabilities);
+		if(0 != (fpi->capabilities & FL_PLUGIN_CAPABILITY_IS_ROOT)) {
 			found = TRUE;
 			break;
 		}
 		iter = g_slist_next(iter);
 	}
 	
-	if(!found) 
+	if(FALSE == found) 
 		g_error("No root capable feed list provider plugin found!");
+
+	debug_exit("fl_plugins_get_root");
 
 	return fpi;
 }
