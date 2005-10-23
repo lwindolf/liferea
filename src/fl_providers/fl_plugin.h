@@ -22,6 +22,7 @@
 #define _FL_PLUGIN_H
 
 #include <glib.h>
+#include <gmodule.h>
 #include "node.h"
 #include "plugin.h"
 
@@ -80,7 +81,7 @@ struct flPluginInfo_ {
 	/** callback for node unloading (optional) */
 	void 		(*node_unload)(nodePtr np);
 
-	/** callback for save requests */
+	/** callback for save requests (optional) */
 	void		(*node_save)(nodePtr ptr);
 	/** callback for node rendering */
 	gchar *		(*node_render)(nodePtr np);
@@ -110,7 +111,7 @@ struct flNodeHandler_ {
 
 /** Feed list plugins are to be declared with this macro. */
 #define DECLARE_FL_PLUGIN(plugininfo) \
-        G_MODULE_EXPORT flPluginInfo* fl_plugin_getinfo() { \
+        G_MODULE_EXPORT flPluginInfo* fl_plugin_get_info() { \
                 return &plugininfo; \
         }
 
@@ -119,8 +120,16 @@ struct flNodeHandler_ {
  *
  * @param plugin_list	list of all plugins
  *
- * @returns pointer to feed list root provider plugin
+ * @returns feed list root provider plugin
  */
 flPluginInfo * fl_plugins_get_root(GSList *plugin_list);
+
+/**
+ * Loads a feed list provider plugin.
+ *
+ * @param pi		plugin info structure
+ * @param handle	GModule handle
+ */
+void fl_plugin_load(pluginInfo *pi, GModule *handle);
 
 #endif

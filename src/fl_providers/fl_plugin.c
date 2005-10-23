@@ -21,12 +21,56 @@
 #include <gmodule.h>
 #include "fl_plugin.h"
 #include "plugin.h"
+#include "debug.h"
 
 flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
+	gboolean	found = FALSE;
+	flPluginInfo	*fpi;
+	GSList		*iter;
 
-	// scan for root flag and return plugin if found
-	// fatal error if not found
+	/* scan for root flag and return plugin if found */
+	iter = plugin_list;
+	while(NULL != iter) {
+		fpi = (flPluginInfo *)iter->data;
+		if(fpi->capabilites & FL_PLUGIN_CAPABILITY_IS_ROOT) {
+			found = TRUE;
+			break;
+		}
+		iter = g_slist_next(iter);
+	}
+	
+	if(!found) 
+		g_error("No root capable feed list provider plugin found!");
+
+	return fpi;
 }
 
+typedef	flPluginInfo* (*infoFunc)();
+
 void fl_plugin_load(pluginInfo *pi, GModule *handle) {
+	flPluginInfo	*fpi;
+	infoFunc	fl_plugin_get_info;
+
+	if(g_module_symbol(handle, "plugin_get_info", (void*)&fl_plugin_get_info)) {
+		/* load feed list provider plugin info */
+		if(NULL == (fpi = (*fl_plugin_get_info)()))
+			return;
+	}
+
+	/* check feed list provider plugin version */
+	if(FL_PLUGIN_API_VERSION != fpi->api_version) {
+		debug3(DEBUG_PLUGINS, "API version mismatch: %s has version %d should be %d\n", fpi->name, fpi->api_version, PLUGIN_API_VERSION);
+		return;
+	} 
+
+	/* check if all mandatory symbols are provided */
+	if(!((NULL != fpi->plugin_init) &&
+	     (NULL != fpi->plugin_deinit) &&
+	     (NULL != fpi->node_render)))
+		return;
+
+	debug1(DEBUG_PLUGINS, "feed list plugin: %s", fpi->name);
+
+	/* assign the symbols so the caller will accept the plugin */
+	pi->symbols = fpi;
 }
