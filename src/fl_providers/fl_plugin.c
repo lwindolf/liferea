@@ -26,6 +26,7 @@
 flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
 	gboolean	found = FALSE;
 	flPluginInfo	*fpi;
+	pluginInfo	*pi;
 	GSList		*iter;
 
 	debug_enter("fl_plugins_get_root");
@@ -40,13 +41,16 @@ flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
 	/* scan for root flag and return plugin if found */
 	iter = plugin_list;
 	while(NULL != iter) {
-		fpi = (flPluginInfo *)iter->data;
-		debug2(DEBUG_VERBOSE, "%s capabilities=%ld", fpi->name, fpi->capabilities);
-		if(0 != (fpi->capabilities & FL_PLUGIN_CAPABILITY_IS_ROOT)) {
-			found = TRUE;
-			break;
+		pi = (pluginInfo *)iter->data;
+		if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
+			fpi = pi->symbols;
+			debug2(DEBUG_VERBOSE, "%s capabilities=%ld", fpi->name, fpi->capabilities);
+			if(0 != (fpi->capabilities & FL_PLUGIN_CAPABILITY_IS_ROOT)) {
+				found = TRUE;
+				break;
+			}
+			iter = g_slist_next(iter);
 		}
-		iter = g_slist_next(iter);
 	}
 	
 	if(FALSE == found) 

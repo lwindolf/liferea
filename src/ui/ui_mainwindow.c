@@ -314,14 +314,14 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	
 	/* create welcome text */
 	ui_htmlview_start_output(&buffer, NULL, FALSE);
-	/*addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
-	                           "When Liferea starts for the first time it loads a localized default "
-				   "feed list. There are already default lists for English, French, German "
-				   "and Spanish. If you think you know a good set of default feeds for your "
-				   "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
-				   "and it will be included in the next release!</div>"));*/
+	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
+	                           "This is a highly unstable release of Liferea 1.1. This code might "
+				   "be in an unusable state. It should be used by developers only! "
+				   "If you want to use Liferea regularily please download the last "
+				   "stable version from SourceForge!"
+				   "</div>"));
 				   
-	addToHTMLBuffer(&buffer, _("<h2>Welcome to Liferea</h2>"
+	/*addToHTMLBuffer(&buffer, _("<h2>Welcome to Liferea</h2>"
 	                           "<p>The left pane contains the feed list where you can add new subscriptions "
 	                           "and select subscriptions to read their headlines. The right side either "
 	                           "displays a list of the headlines of the selected subscription and a "
@@ -344,7 +344,7 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	                           "</ul>"
 	                           "<p>To learn more about Liferea you should read the documentation "
 	                           "provided in the help feed or in the <a href=\"http://liferea.sourceforge.net/faq.htm\">FAQ</a> available at the "
-	                           "<a href=\"http://liferea.sf.net\">project homepage</a>.</p>"));
+	                           "<a href=\"http://liferea.sf.net\">project homepage</a>.</p>"));*/
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 	g_free(buffer);
