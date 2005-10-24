@@ -611,17 +611,17 @@ gchar * common_get_cache_path(void) {
 	return lifereaUserPath;
 }
 
-gchar * common_create_cache_filename( const gchar *folder, const gchar *key, const gchar *extension) {
-	gchar *filename;
+gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension) {
+	gchar *result;
 
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", common_get_cache_path(),
-	                           (folder != NULL) ? folder : "",
-	                           (folder != NULL) ? G_DIR_SEPARATOR_S : "",
-	                           key,
-	                           (extension != NULL)? "." : "",
-	                           (extension != NULL)? extension : "");
+	result = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", common_get_cache_path(),
+	                         (folder != NULL) ? folder : "",
+	                         (folder != NULL) ? G_DIR_SEPARATOR_S : "",
+	                         filename,
+	                         (extension != NULL)? "." : "",
+	                         (extension != NULL)? extension : "");
 
-	return filename;
+	return result;
 }
 
 static gchar * byte_to_hex(unsigned char nr) {

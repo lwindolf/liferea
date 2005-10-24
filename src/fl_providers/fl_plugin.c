@@ -87,6 +87,9 @@ void fl_plugin_load(pluginInfo *pi, GModule *handle) {
 
 	debug1(DEBUG_PLUGINS, "found feed list plugin: %s", fpi->name);
 
+	/* allow the plugin to initialize */
+	(*fpi->plugin_init)();
+
 	/* assign the symbols so the caller will accept the plugin */
 	pi->symbols = fpi;
 }

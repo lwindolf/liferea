@@ -42,7 +42,16 @@ typedef struct vfolder {
 	struct node	*node;			/**< the node of the vfolder, needed for merging */
 } *vfolderPtr;
 
-/* sets up a vfolder feed structure */
+/**
+ * Initialize vfolder handling.
+ */
+void	vfolder_init(void);
+
+/**
+ * Sets up a new vfolder structure.
+ *
+ * @returns a new vfolder
+ */
 vfolderPtr vfolder_new(void);
 
 /* set/get of vfolder title */

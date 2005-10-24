@@ -20,11 +20,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <common.h>
 #include <string.h>
 #include <libxml/uri.h>
 #include "fl_default.h"
 #include "support.h"
+#include "common.h"
 #include "conf.h"
 #include "favicon.h"
 #include "feed.h"
@@ -42,16 +42,42 @@
 
 extern GtkWindow *mainwindow;
 
+/** lock to prevent feed list saving while loading */
 static gboolean feedlistLoading = FALSE;
+
 static flNodeHandler *handler = NULL;
 static nodePtr rootNode = NULL;
 
 static void fl_default_handler_new(nodePtr np) {
-	g_warning("Implement me!");
+	gchar	*filename;
+
+	/* We only expect to be called to create an plugin instance 
+	   serving as the root node (indicated by NULL). */
+	g_assert(NULL == np);
+
+	feedlistLoading = TRUE;
+	filename = common_create_cache_filename(NULL, "feedlist", "opml");
+	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
+		/* if there is no feedlist.opml we provide a default feed list */
+		g_free(filename);
+		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
+		filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+	}
+	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
+	g_free(filename);
+	feedlistLoading = FALSE;
+
+#ifdef USE_DBUS
+	/* Start listening on the dbus for new subscriptions */
+	debug0(DEBUG_GUI, "Registering with DBUS...");
+	ui_feedlist_dbus_connect();
+#else
+	debug0(DEBUG_GUI, "No DBUS support active.");
+#endif
 }
 
 static void fl_default_handler_delete(nodePtr np) {
-	g_warning("Implement me!");
+	g_warning("fl_handler_delete(): Implement me!");
 }
 
 static void fl_default_save_root(void) {
@@ -330,35 +356,18 @@ ui_feedlist_dbus_connect ()
 static flPluginInfo fpi;
 
 void fl_default_init(void) {
-	gchar	*filename;
 
-	feedlistLoading = TRUE;
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea" G_DIR_SEPARATOR_S "feedlist.opml", g_get_home_dir());
-	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		/* if there is no feedlist.opml we provide a default feed list */
-		g_free(filename);
-		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
-	}
-	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
-	g_free(filename);
-	feedlistLoading = FALSE;
-
-#ifdef USE_DBUS
-	/* Start listening on the dbus for new subscriptions */
-	debug0(DEBUG_GUI, "Registering with DBUS...");
-	ui_feedlist_dbus_connect();
-#else
-	debug0(DEBUG_GUI, "No DBUS support active.");
-#endif
+	debug_enter("fl_default_init");
 
 	handler = g_new0(flNodeHandler, 1);
 	handler->plugin = &fpi;
+
+	debug_exit("fl_default_init");
 }
 
 void fl_default_deinit(void) {
 	
-	// FIXME
+	g_warning("fl_default_deinit(): Implement me!");
 }
 
 /* feed list provider plugin definition */

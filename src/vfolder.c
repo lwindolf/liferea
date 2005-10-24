@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c VFolder functionality
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,11 @@
  * information upon item changes
  */
 static GSList		*vfolders = NULL;
+
+void vfolder_init(void) {
+
+	rule_init();
+}
 
 /* sets up a vfolder feed structure */
 vfolderPtr vfolder_new(void) {

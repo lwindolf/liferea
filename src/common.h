@@ -78,8 +78,22 @@ gchar *createRFC822Date(const time_t *time);
    maybe gchar * formatDate(time_t, gchar *format) */
 gchar * formatDate(time_t t);
 
+/**
+ * Returns the cache file storage path.
+ * Usually: ~/.liferea/
+ *
+ * @returns the path
+ */
 gchar *	common_get_cache_path(void);
-gchar * common_create_cache_filename( const gchar *folder, const gchar *key, const gchar *extension);
+
+/**
+ * Method to build cache file names.
+ *
+ * @param folder	a subfolder in the cache dir (optional)
+ * @param filename	the cache filename
+ * @param extension	the cache filename extension
+ */
+gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension);
 
 /**
  * Encodes all non URI conformant characters in the passed

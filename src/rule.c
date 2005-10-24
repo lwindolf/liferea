@@ -27,6 +27,7 @@
 #include "feed.h"
 #include "item.h"
 #include "rule.h"
+#include "debug.h"
 
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
@@ -166,10 +167,14 @@ static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gchar *
 
 void rule_init(void) {
 
+	debug_enter("rule_init");
+
 	rule_add(rule_item_match,		ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
 	rule_add(rule_item_title_match,		ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE);
 	rule_add(rule_item_description_match,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE);
 	rule_add(rule_feed_title_match,		"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE);
 	rule_add(rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
 	rule_add(rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
+
+	debug_exit("rule_init");
 }

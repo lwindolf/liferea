@@ -47,14 +47,15 @@
 #include "support.h"
 #include "callbacks.h"
 #include "feed.h"
+#include "vfolder.h"
+#include "metadata.h"
 #include "conf.h"
 #include "common.h"
-#include "ui/ui_htmlview.h"
 #include "update.h"
 #include "debug.h"
 #include "ui/ui_queue.h"
 #include "ui/ui_mainwindow.h"
-#include "metadata.h"
+#include "ui/ui_htmlview.h"
 #include "ui/ui_session.h"
 
 GThread	*mainThread = NULL;
@@ -275,6 +276,7 @@ int main(int argc, char *argv[]) {
 		download_init();		/* Initialize the download subsystem */
 		metadata_init();
 		feed_init();			/* register feed types */
+		vfolder_init();			/* register vfolder rules */
 		conf_load();			/* load global feed settings */
 		ui_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 #ifdef USE_SM
