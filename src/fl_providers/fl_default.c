@@ -63,7 +63,7 @@ static void fl_default_handler_new(nodePtr np) {
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
 		filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
-	import_OPML_feedlist(filename, NULL, FALSE, TRUE);
+	import_OPML_feedlist(filename, NULL, handler, FALSE, TRUE);
 	g_free(filename);
 	feedlistLoading = FALSE;
 

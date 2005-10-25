@@ -36,6 +36,8 @@
 #include "support.h"
 #include "favicon.h"
 #include "debug.h"
+#include "plugin.h"
+#include "fl_providers/fl_plugin.h"
 #include "ui/ui_node.h"
 #include "ui/ui_feedlist.h"
 
@@ -278,7 +280,7 @@ static void import_parse_children_as_rules(xmlNodePtr cur, vfolderPtr vp) {
 	}
 }
 
-static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean trusted) {
+static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandler *handler, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr, *sortStr;
 	gchar		*title, *source, *typeStr, *tmp;
 	nodePtr		np = NULL;
@@ -292,6 +294,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 	
 	/* process the outline node */	
 	np = node_new();
+	np->handler = handler;
 
 	title = xmlGetProp(cur, BAD_CAST"title");
 	if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
@@ -429,10 +432,9 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 			node_set_id(np, id);
 			debug1(DEBUG_CONF, "seems to be an import, setting new id: %s and doing first download...", id);
 			g_free(id);			
-			if(FST_FEED == np->type)	/* don't update vfolders */
-				feed_schedule_update(fp, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
-				                         | FEED_REQ_DOWNLOAD_FAVICON
-				                         | FEED_REQ_AUTH_DIALOG);
+			node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+				                | FEED_REQ_DOWNLOAD_FAVICON
+				                | FEED_REQ_AUTH_DIALOG);
 		}
 
 		feedlist_add_node(parentNode, np, -1);
@@ -463,7 +465,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
 			if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-				import_parse_outline(cur, parentNode, trusted);
+				import_parse_outline(cur, parentNode, handler, trusted);
 		
 				cur = cur->next;				
 		}
@@ -472,31 +474,31 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 	debug_exit("import_parse_outline");
 }
 
-static void import_parse_body(xmlNodePtr n, nodePtr parentNode, gboolean trusted) {
+static void import_parse_body(xmlNodePtr n, nodePtr parentNode, flNodeHandler *handler, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
 	while(cur != NULL) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			import_parse_outline(cur, parentNode, trusted);
+			import_parse_outline(cur, parentNode, handler, trusted);
 		cur = cur->next;
 	}
 }
 
-static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, gboolean trusted) {
+static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, flNodeHandler *handler, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
 	while(cur != NULL) {
 		/* we ignore the head */
 		if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
-			import_parse_body(cur, parentNode, trusted);
+			import_parse_body(cur, parentNode, handler, trusted);
 		}
 		cur = cur->next;
 	}	
 }
 
-void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted) {
+void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, flNodeHandler *handler, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
@@ -518,7 +520,7 @@ void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, gboolean sh
 			while(cur != NULL) {
 				if(!xmlIsBlankNode(cur)) {
 					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
-						import_parse_OPML(cur, parentNode, trusted);
+						import_parse_OPML(cur, parentNode, handler, trusted);
 					} else {
 						if(showErrors)
 							ui_show_error_box(_("\"%s\" is not a valid OPML document! Liferea cannot import this file!"), filename);
@@ -547,7 +549,7 @@ void on_import_activate_cb(const gchar *filename, gpointer user_data) {
 		/* add the new folder to the model */
 		feedlist_add_node(NULL, np, -1);
 		
-		import_OPML_feedlist(filename, np, TRUE, FALSE);
+		import_OPML_feedlist(filename, np, np->handler, TRUE, FALSE);
 	}
 }
 
