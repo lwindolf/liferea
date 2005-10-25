@@ -48,7 +48,7 @@ typedef struct node {
 	gpointer	data;		/**< node type specific data structure */
 	guint		type;		/**< node type */
 	gpointer	ui_data;	/**< UI data */
-	gpointer 	*handler;	/**< pointer to feed list plugin if this is a plugin node */
+	gpointer 	*handler;	/**< pointer to feed list plugin instance handling this node */
 
 	/* feed list state properties of this node */
 	gchar		*id;		/**< unique node identifier string */

@@ -311,11 +311,24 @@ void feedlist_save(void) {
 	feedlist_schedule_save_cb(NULL);
 }
 
+/**
+ * Used to process feeds directly after feed list loading.
+ * Loads the given feed or requests a download. During feed
+ * loading its items are automatically checked against all 
+ * vfolder rules.
+ */
+static void feedlist_initial_load(nodePtr np) {
+	
+	feedlist_load_node(np);
+	feedlist_update_node(np);
+	feedlist_unload_node(np);
+}
+
 void feedlist_init(void) {
 
 	debug_enter("feedlist_init");
 
-	/* Initialize list of plugins and find root provider
+	/* 1. Initialize list of plugins and find root provider
 	   plugin. Creating an instance of this plugin. This 
 	   will load the feed list and all attached plugin 
 	   handlers. */
@@ -323,11 +336,12 @@ void feedlist_init(void) {
 	rootPlugin = fl_plugins_get_root(plugins);
 	rootPlugin->handler_new(NULL);
 
-	/* initial update of feed list */
-	feedlist_auto_update(NULL);
+	/* 2. load all feeds and by doing so automatically load all vfolders */
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_initial_load);
+	ui_feedlist_update();
 
-	/* setup one minute timer for automatic updating */
- 	(void)g_timeout_add(60*1000, feedlist_auto_update, NULL);
+	/* 3. start automatic updating */
+ 	(void)g_timeout_add(1000, feedlist_auto_update, NULL);
 
 	debug_exit("feedlist_init");
 }

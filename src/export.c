@@ -496,19 +496,6 @@ static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, gboolean trusted
 	}	
 }
 
-/**
- * Used to process feeds directly after feed list loading.
- * Loads the given feed or requests a download. During feed
- * loading its items are automatically checked against all 
- * vfolder rules.
- */
-static void import_initial_load(nodePtr np) {
-
-	feedlist_load_node(np);
-	feedlist_update_node(np);
-	feedlist_unload_node(np);
-}
-
 void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
@@ -544,10 +531,6 @@ void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, gboolean sh
 		}
 		xmlFreeDoc(doc);
 	}
-	
-	/* load all feeds and by doing so automatically load all vfolders */
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, import_initial_load);
-	ui_feedlist_update();
 }
 
 
