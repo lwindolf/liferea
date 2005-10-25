@@ -243,7 +243,7 @@ static long parse_long(gchar *str, long def) {
  * called by import_parse_outline to parse all children outline tags
  * as vfolder rule descriptions 
  */
-static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
+static void import_parse_children_as_rules(xmlNodePtr cur, vfolderPtr vp) {
 	xmlChar		*type, *ruleId, *value, *additive;
 	
 	/* process any children */
@@ -258,7 +258,7 @@ static void import_parse_children_as_rules(xmlNodePtr cur, feedPtr vp) {
 				additive = xmlGetProp(cur, BAD_CAST"additive");
 
 				if((NULL != ruleId) && (NULL != value)) {			
-					debug3(DEBUG_CACHE, "loading rule \"%s\" \"%s\" \"%s\"\n", type, ruleId, value);
+					debug2(DEBUG_CACHE, "loading rule \"%s\" \"%s\"\n", ruleId, value);
 
 					if(additive != NULL && !xmlStrcmp(additive, BAD_CAST"true"))
 						vfolder_add_rule(vp, ruleId, value, TRUE);
@@ -283,6 +283,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 	gchar		*title, *source, *typeStr, *tmp;
 	nodePtr		np = NULL;
 	feedPtr		fp = NULL;
+	vfolderPtr	vp = NULL;
 	gboolean	dontParseChildren = FALSE;
 	gint		interval;
 	gchar		*id = NULL;
@@ -337,46 +338,65 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
 		if((NULL != typeStr) && (0 == strcmp("vfolder", typeStr))) {
 			dontParseChildren = TRUE;
-			fp = vfolder_new();
-			import_parse_children_as_rules(cur, fp);
-			node_add_data(np, FST_VFOLDER, (gpointer)fp); // FIXME: make node adding generic
+			vp = vfolder_new();
+			import_parse_children_as_rules(cur, vp);
+			node_add_data(np, FST_VFOLDER, (gpointer)vp); // FIXME: make node adding generic
+
+			debug1(DEBUG_CONF, "loading vfolder: title=%s", title);
 		} else {
 			fp = feed_new();
 			node_add_data(np, FST_FEED, (gpointer)fp); // FIXME: make node adding generic
-		}
-		fp->fhp = feed_type_str_to_fhp(typeStr);
+			fp->fhp = feed_type_str_to_fhp(typeStr);
 
-		/* Set the cache limit */
-		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
-		if(cacheLimitStr != NULL && !xmlStrcmp(cacheLimitStr, "unlimited")) {
-			fp->cacheLimit = CACHE_UNLIMITED;
-		} else
-			fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
-		xmlFree(cacheLimitStr);
+			/* Set the feed cache limit */
+			cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
+			if(cacheLimitStr != NULL && !xmlStrcmp(cacheLimitStr, "unlimited")) {
+				fp->cacheLimit = CACHE_UNLIMITED;
+			} else
+				fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
+			xmlFree(cacheLimitStr);
 		
-		/* Obtain the htmlUrl */
-		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
-		if(htmlUrlStr != NULL && 0 != xmlStrcmp(htmlUrlStr, ""))
-			feed_set_html_url(fp, htmlUrlStr);
-		xmlFree(htmlUrlStr);
+			/* Obtain the htmlUrl */
+			htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
+			if(htmlUrlStr != NULL && 0 != xmlStrcmp(htmlUrlStr, ""))
+				feed_set_html_url(fp, htmlUrlStr);
+			xmlFree(htmlUrlStr);
 		
-		tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
-		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			fp->noIncremental = TRUE;
-		xmlFree(tmp);
+			tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
+			if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+				fp->noIncremental = TRUE;
+			xmlFree(tmp);
 		
-		/* Last poll time*/
-		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
-		fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
-		fp->lastPoll.tv_usec = 0L;
-		if(lastPollStr != NULL)
-			xmlFree(lastPollStr);
+			/* Last poll time*/
+			lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
+			fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
+			fp->lastPoll.tv_usec = 0L;
+			if(lastPollStr != NULL)
+				xmlFree(lastPollStr);
 		
-		lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
-		fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
-		fp->lastFaviconPoll.tv_usec = 0L;
-		if(lastPollStr != NULL)
-			xmlFree(lastPollStr);
+			lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
+			fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
+			fp->lastFaviconPoll.tv_usec = 0L;
+			if(lastPollStr != NULL)
+				xmlFree(lastPollStr);
+
+			tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
+			if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+				fp->encAutoDownload = TRUE;
+			if(tmp != NULL)
+				xmlFree(tmp);
+
+			/* set feed properties available from the OPML feed list 
+			   they may be overwritten by the values of the cache file
+			   but we need them in case the cache file loading fails */
+		
+			feed_set_source(fp, source);
+			feed_set_filter(fp, filter);
+			feed_set_title(fp, title);
+			feed_set_update_interval(fp, interval);
+
+			debug6(DEBUG_CONF, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
+		}
 
 		/* sorting order */
 		sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
@@ -399,21 +419,6 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 		if(tmp != NULL)
 			xmlFree(tmp);
 
-		tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
-		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			fp->encAutoDownload = TRUE;
-		if(tmp != NULL)
-			xmlFree(tmp);
-
-		/* set feed properties available from the OPML feed list 
-		   they may be overwritten by the values of the cache file
-		   but we need them in case the cache file loading fails */
-		
-		feed_set_source(fp, source);
-		feed_set_filter(fp, filter);
-		feed_set_title(fp, title);
-		feed_set_update_interval(fp, interval);
-		debug6(DEBUG_CONF, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
 		
 		if(id != NULL) {
 			node_set_id(np, id);
@@ -434,7 +439,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 		
 		if(source != NULL)
 			xmlFree(source);
-		if (filter != NULL)
+		if(filter != NULL)
 			xmlFree(filter);
 		xmlFree(typeStr);
 		
@@ -449,6 +454,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean tr
 		if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
 			ui_node_set_expansion(np, FALSE);
 	}
+
 	if(title != NULL)
 		xmlFree(title);
 
