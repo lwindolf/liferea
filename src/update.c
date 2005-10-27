@@ -1,8 +1,8 @@
 /**
  * @file update.c feed update request processing
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -218,7 +218,6 @@ void download_request_free(struct request *request) {
 	debug_exit("update_request_free");
 }
 
-
 void download_init(void) {
 	int	i;
 	int	count;
@@ -263,11 +262,12 @@ static void *download_thread_main(void *data) {
 			request = g_async_queue_pop(requests_high_prio);
 		} else {
 			request = g_async_queue_try_pop(requests_high_prio);
-			if(NULL == request) request = g_async_queue_pop(requests_normal_prio);
+			if(NULL == request) 
+				request = g_async_queue_pop(requests_normal_prio);
 		}
 		g_assert(NULL != request);
 		debug1(DEBUG_UPDATE, "processing received request (%s)", request->source);
-		if (request->callback == NULL) {
+		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
 			download_request_free(request);
 		} else {

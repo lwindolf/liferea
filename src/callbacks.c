@@ -79,7 +79,8 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 /* GUI initialization, must be called only once! */
 
 static void callbacks_schedule_update_default_cb(nodePtr ptr) {
-	feed_schedule_update((feedPtr)ptr, 0);
+
+	node_request_update(ptr, 0);
 }
 
 void ui_init(int mainwindowState) {

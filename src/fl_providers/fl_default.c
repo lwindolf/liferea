@@ -209,7 +209,7 @@ static void fl_default_node_save(nodePtr np) {
 /* update handling */
 
 static void fl_default_node_auto_update(nodePtr np) {
-	feedPtr		fp = (feedPtr)np;
+	feedPtr		fp = (feedPtr)np->data;
 	GTimeVal	now;
 	gint		interval;
 
