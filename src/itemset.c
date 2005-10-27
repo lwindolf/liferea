@@ -97,6 +97,14 @@ void itemset_add_item(itemSetPtr sp, itemPtr ip) {
 		sp->newCount++;
 }
 
+//void itemset_add_items(itemSetPtr sp, GList items) {
+//
+//	while(items) {
+//		itemset_add_item(sp, (itemPtr)items->data);
+//		items = g_list_next(items);
+//	}
+//}
+
 void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 
 	if(NULL == g_list_find(sp->items, ip)) {

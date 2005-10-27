@@ -141,6 +141,7 @@ static void fl_default_node_load(nodePtr np) {
 	debug_enter("fl_default_node_load");
 	
 	g_assert(NULL == np->itemSet);
+	g_assert(FST_FEED == np->type);
 	np->itemSet = feed_load_from_cache(fp, np->id);
 
 	debug_exit("fl_default_node_load");

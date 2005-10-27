@@ -302,6 +302,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			xmlFree(title);
 		title = xmlGetProp(cur, BAD_CAST"text");
 	}
+	node_set_title(np, title);
 	
 	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
@@ -447,7 +448,6 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		
 	} else { /* It is a folder */
 		debug1(DEBUG_CONF, "adding folder \"%s\"", title);
-		node_set_title(np, title);
 		node_add_data(np, FST_FOLDER, NULL);	// FIXME: make node adding generic
 		feedlist_add_node(parentNode, np, -1);
 

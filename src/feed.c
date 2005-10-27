@@ -350,14 +350,17 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 	debug_enter("feed_load_from_cache");
 
 	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(fp));
+
+	sp = g_new0(struct itemSet, 1);
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
 	if((!g_file_get_contents(filename, &data, &length, NULL)) || (*data == 0)) {
+		debug1(DEBUG_CACHE, "could not load cache file %s", filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		g_free(filename);
-		return FALSE;
+		return sp;
 	}
 	
 	do {
@@ -392,7 +395,6 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 
 		metadata_list_free(fp->metadata);
 		fp->metadata = NULL;
-		sp = g_new0(struct itemSet, 1);
 
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {

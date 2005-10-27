@@ -61,9 +61,13 @@ static void itemlist_check_for_deferred_removal(void) {
 
 static void itemlist_load_node(nodePtr np, gpointer data) {
 	gboolean	merge = GPOINTER_TO_INT(data);
+	gboolean	loadReadItems = TRUE;
 	GList		*item, *itemlist;
 	itemPtr		ip;
 	
+	if(FST_FOLDER == displayed_node->type)
+		loadReadItems = !getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ);
+
 	/* load model */
 	feedlist_load_node(np);
 	/* update itemlist in view */	
@@ -72,7 +76,10 @@ static void itemlist_load_node(nodePtr np, gpointer data) {
 	while(NULL != item) {
 		ip = item->data;
 		g_assert(NULL != ip);
-		ui_itemlist_add_item(ip, merge);
+
+		if((FALSE == ip->readStatus) || (TRUE == loadReadItems))
+			ui_itemlist_add_item(ip, merge);
+
 		item = g_list_previous(item);
 	}
 }

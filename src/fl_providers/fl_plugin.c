@@ -31,13 +31,6 @@ flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
 
 	debug_enter("fl_plugins_get_root");
 
-	g_print("root: %ld\n", FL_PLUGIN_CAPABILITY_IS_ROOT |
-	FL_PLUGIN_CAPABILITY_ADD |
-	FL_PLUGIN_CAPABILITY_REMOVE |
-	FL_PLUGIN_CAPABILITY_ADD_FOLDER |
-	FL_PLUGIN_CAPABILITY_REMOVE_FOLDER |
-	FL_PLUGIN_CAPABILITY_REORDER);
-
 	/* scan for root flag and return plugin if found */
 	iter = plugin_list;
 	while(NULL != iter) {

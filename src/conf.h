@@ -56,6 +56,7 @@
 
 /* folder handling settings */
 #define FOLDER_DISPLAY_MODE		"/apps/liferea/folder-display-mode"
+#define FOLDER_DISPLAY_HIDE_READ	"/apps/liferea/folder-display-hide-read"
 
 /* GUI settings and persistency values */
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"

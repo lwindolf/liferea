@@ -106,8 +106,7 @@ void feedlist_update_node(nodePtr np) {
 
 static void feedlist_remove_node_(nodePtr np) { 
 	
-	// FIXME: feedPtr!!!
-	//ui_notification_remove_feed((feedPtr)np);	/* removes an existing notification for this feed */
+	ui_notification_remove_feed(np);	/* removes an existing notification for this feed */
 	ui_node_remove_node(np);
 	ui_feedlist_update();
 	
@@ -135,6 +134,7 @@ void feedlist_remove_node(nodePtr np) {
 		feedlist_remove_folder(np);
 }
 
+/* This callback is used to compute the itemset of folder nodes */
 static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
 	itemSetPtr sp = (itemSetPtr)userdata;
 
@@ -144,11 +144,11 @@ static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
 			break;
 		case FST_FEED:
 		case FST_PLUGIN:
-			if(NULL != FL_PLUGIN(np)->node_load)
-				FL_PLUGIN(np)->node_load(np);
+			FL_PLUGIN(np)->node_load(np);
 			break;
 		case FST_VFOLDER:
-			/* FIXME */		
+			/* Do not merge vfolders because this might
+			   cause duplicate items and very large itemsets very. */
 			return;
 			break;
 		default:

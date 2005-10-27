@@ -113,6 +113,9 @@ void
 on_folderdisplaybtn_toggled            (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
 
+void
+on_folderhidereadbtn_toggled            (GtkToggleButton *togglebutton,
+                                        gpointer         user_data);
 
 void
 on_enc_action_change_btn_clicked       (GtkButton       *button,

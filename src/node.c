@@ -25,6 +25,7 @@
 #include "callbacks.h"
 #include "favicon.h"
 #include "feed.h"
+#include "debug.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_itemlist.h"
 
@@ -56,7 +57,6 @@ nodePtr node_new() {
 	np->sortColumn = IS_TIME;
 	np->sortReversed = TRUE;	/* default sorting is newest date at top */
 	np->available = FALSE;
-	np->title = g_strdup("FIXME");
 
 	return np;
 }
@@ -75,27 +75,27 @@ void node_free(nodePtr np) {
 void node_load(nodePtr np) {
 
 	np->loaded++;
+	debug1(DEBUG_CACHE, "node_load (%s)", node_get_title(np));
 
-	if(1 < np->loaded)
+	if(1 < np->loaded) {
+		debug1(DEBUG_CACHE, "no loading %s because it is already loaded", node_get_title(np));
 		return;
+	}
 	
 	switch(np->type) {
 		case FST_FEED:
 		case FST_PLUGIN:
 			FL_PLUGIN(np)->node_load(np);
+			g_assert(NULL != np->itemSet);
 			break;
 		case FST_FOLDER:
 		case FST_VFOLDER:
 			/* not loading vfolders and other types! */
 			break;
 		default:
-			g_warning("internal error: unknown node type!");
+			g_warning("internal error: unknown node type (%d)!", np->type);
 			break;
 	}
-
-	g_assert(NULL == np->itemSet);
-	g_warning("implement merging! node_load()!!!");
-	//itemset_add_items(np->itemSet, itemList);
 }
 
 void node_save(nodePtr np) {
@@ -111,7 +111,12 @@ void node_save(nodePtr np) {
 
 void node_unload(nodePtr np) {
 
-	g_assert(0 < np->loaded);
+	debug1(DEBUG_CACHE, "node_unload (%s)", node_get_title(np));
+
+	if(0 >= np->loaded) {
+		debug0(DEBUG_CACHE, "node is not loaded, nothing to do...");
+		return;
+	}
 
 	node_save(np);	/* save before unloading */
 
@@ -131,8 +136,9 @@ void node_unload(nodePtr np) {
 					break;
 			}
 		} else {
-			/* not unloading when multiple references */
+			debug1(DEBUG_CACHE, "not unloading %s because it is still used", node_get_title(np));
 		}
+		np->loaded--;
 	}
 }
 

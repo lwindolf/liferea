@@ -1648,6 +1648,7 @@ create_prefdialog (void)
   GtkWidget *vbox2604;
   GtkWidget *folderdisplaybtn;
   GtkWidget *label193;
+  GtkWidget *hidereadbtn;
   GtkWidget *vbox2587;
   GtkWidget *label163;
   GtkWidget *hbox72;
@@ -1993,6 +1994,10 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label193), TRUE);
   gtk_label_set_line_wrap (GTK_LABEL (label193), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label193), 0, 0.5);
+
+  hidereadbtn = gtk_check_button_new_with_mnemonic (_("_Hide read items."));
+  gtk_widget_show (hidereadbtn);
+  gtk_box_pack_start (GTK_BOX (vbox2604), hidereadbtn, FALSE, FALSE, 0);
 
   vbox2587 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2587);
@@ -2716,6 +2721,9 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) folderdisplaybtn, "toggled",
                     G_CALLBACK (on_folderdisplaybtn_toggled),
                     NULL);
+  g_signal_connect ((gpointer) hidereadbtn, "toggled",
+                    G_CALLBACK (on_folderhidereadbtn_toggled),
+                    NULL);
   g_signal_connect ((gpointer) space, "activate",
                     G_CALLBACK (on_browsekey_space_activate),
                     NULL);
@@ -2853,6 +2861,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2604, "vbox2604");
   GLADE_HOOKUP_OBJECT (prefdialog, folderdisplaybtn, "folderdisplaybtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label193, "label193");
+  GLADE_HOOKUP_OBJECT (prefdialog, hidereadbtn, "hidereadbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2587, "vbox2587");
   GLADE_HOOKUP_OBJECT (prefdialog, label163, "label163");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox72, "hbox72");
@@ -3305,7 +3314,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new ("Liferea 1.1.0 (Unstable)");
+  label57 = gtk_label_new ("Liferea 0.9.8");
   gtk_widget_show (label57);
   gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
   gtk_misc_set_padding (GTK_MISC (label57), 0, 15);

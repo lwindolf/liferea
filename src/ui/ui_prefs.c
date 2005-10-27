@@ -50,6 +50,7 @@ enum fts_columns {
 };
 
 extern GSList *availableBrowserModules;
+extern nodePtr displayed_node;
 
 static GtkWidget *prefdialog = NULL;
 
@@ -315,6 +316,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 		g_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), NULL);	
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "folderdisplaybtn")), (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)?FALSE:TRUE));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "hidereadbtn")), (0 == getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ)?FALSE:TRUE));
 
 		/* ================== panel 3 "headlines" ==================== */
 
@@ -537,6 +539,13 @@ void on_folderdisplaybtn_toggled(GtkToggleButton *togglebutton, gpointer user_da
 
 	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
 	setNumericConfValue(FOLDER_DISPLAY_MODE, (TRUE == enabled)?1:0);
+}
+
+void on_folderhidereadbtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
+
+	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
+	setBooleanConfValue(FOLDER_DISPLAY_HIDE_READ, enabled);
+	itemlist_load(displayed_node);
 }
 
 void on_trayiconoptionbtn_clicked(GtkButton *button, gpointer user_data) {
