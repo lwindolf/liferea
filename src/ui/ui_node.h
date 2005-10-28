@@ -41,9 +41,14 @@ void ui_node_update(nodePtr np);
 
 gboolean ui_node_is_folder_expanded(nodePtr folder);
 
-// FIXME: what is the difference of the next two methods?
+/**
+ * Checks if the given folder node has children 
+ * or not and applies a tree store workaround
+ * if necessary.
+ *
+ * @param folder	the folder node
+ */
 void ui_node_check_if_folder_is_empty(nodePtr folder);
-void ui_node_empty_check(nodePtr folder);
 
 /* expansion/collapsing */
 void ui_node_set_expansion(nodePtr folder, gboolean expanded);

@@ -466,7 +466,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		cur = cur->xmlChildrenNode;
 		while(cur != NULL) {
 			if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-				import_parse_outline(cur, parentNode, handler, trusted);
+				import_parse_outline(cur, np, handler, trusted);
 			cur = cur->next;				
 		}
 	}

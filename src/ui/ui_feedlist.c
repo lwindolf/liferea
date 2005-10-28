@@ -609,6 +609,8 @@ void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data) {
 void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 	GtkTreeIter	*iter, *parentIter = NULL;
 
+	debug2(DEBUG_GUI, "adding node \"%s\" to feed list (parent=\"%s\")", node_get_title(node), (NULL != parent)?node_get_title(parent):"feed list root");
+
 	g_assert(node->ui_data == NULL);
 
 	/* if parent is NULL we have the root folder and don't create a new row! */
@@ -629,6 +631,9 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 	
 	if(NULL != parent)
 		ui_node_check_if_folder_is_empty(parent);
+
+	if(FST_FOLDER == node->type)
+		ui_node_check_if_folder_is_empty(node);
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
