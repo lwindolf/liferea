@@ -28,6 +28,7 @@
 #include <string.h> 
 #include "support.h"
 #include "feed.h"
+#include "node.h"
 #include "conf.h"
 #include "callbacks.h"
 #include "update.h"
@@ -45,6 +46,7 @@
 
 struct fp_prop_ui_data {
 	feedPtr fp;
+	nodePtr np;
 	gint flags; /* Used by the authdialog to know how to request the feed update */
 	gint selector; /* Desiginates which fileselection dialog box is open.
 				   Set to 'u' for source
@@ -147,7 +149,7 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 			xmlFree(sourceUrl);
 		}
 
-		feed_schedule_update(ui_data->fp, ui_data->flags);
+		node_schedule_update(ui_data->np, ui_feed_process_update_result, ui_data->flags);
 		xmlFreeURI(uri);
 	}
 
@@ -183,7 +185,7 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	
-	if (response_id == GTK_RESPONSE_OK) {
+	if(response_id == GTK_RESPONSE_OK) {
 		gchar *newSource;
 		const gchar *newFilter;
 		gboolean needsUpdate = FALSE;
@@ -243,7 +245,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		ui_feedlist_update();
 		feedlist_schedule_save();
 		if(needsUpdate)
-			feed_schedule_update(ui_data->fp, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
+			node_schedule_update(ui_data->np, ui_feed_process_update_result, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}
 
 	g_free(ui_data);
@@ -272,6 +274,7 @@ static void ui_feed_prop_enable_httpauth(struct fp_prop_ui_data *ui_data, gboole
 static void on_feed_prop_authcheck(GtkToggleButton *button, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	gboolean url = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio));
+
 	ui_feed_prop_enable_httpauth(ui_data, url);
 }
 
@@ -289,13 +292,13 @@ static void on_selectfileok_clicked(const gchar *filename, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	gchar *utfname;
 	
-	if (filename == NULL)
+	if(filename == NULL)
 		return;
 	
 	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
 
-	if (utfname != NULL) {
-		if (ui_data->selector == 'u')
+	if(utfname != NULL) {
+		if(ui_data->selector == 'u')
 			gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), utfname);
 		else
 			gtk_entry_set_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")), utfname);
@@ -309,12 +312,12 @@ static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
 	const gchar *utfname;
 	gchar *name;
 	
-	if (GTK_WIDGET(button) == ui_data->selectFile) {
+	if(GTK_WIDGET(button) == ui_data->selectFile) {
 		ui_data->selector = 'u';
-		utfname =  gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry));
+		utfname = gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry));
 	} else {
 		ui_data->selector = 'f';
-		utfname =  gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
+		utfname = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
 	}
 	
 	name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
@@ -325,29 +328,32 @@ static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
 static void on_feed_prop_cache_radio(GtkToggleButton *button, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	gboolean limited = gtk_toggle_button_get_active(button);
+	
 	gtk_widget_set_sensitive(lookup_widget(GTK_WIDGET(ui_data->dialog), "cacheItemLimit"), limited);
 }
 
 static void on_feed_prop_update_radio(GtkToggleButton *button, gpointer user_data) {
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	gboolean limited = gtk_toggle_button_get_active(button);
+	
 	gtk_widget_set_sensitive(lookup_widget(GTK_WIDGET(ui_data->dialog), "refreshIntervalSpinButton"), limited);
 }
 
 /* dialog preparation */
 
-GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, feedPtr fp, gint flags) {
+GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, nodePtr np, gint flags) {
 	GtkWidget		*authdialog;
 	struct fp_prop_ui_data	*ui_data;
-	gchar *promptStr;
-	gchar *source = NULL;
-	xmlURIPtr uri;	
+	gchar			*promptStr;
+	gchar			*source = NULL;
+	xmlURIPtr		uri;	
 	
 	ui_data = g_new0(struct fp_prop_ui_data, 1);
 	
 	/* Create the dialog */
 	ui_data->dialog = authdialog = create_authdialog();
-	ui_data->fp = fp;
+	ui_data->np = np;
+	ui_data->fp = (feedPtr)np->data;
 	ui_data->flags = flags;
 	gtk_window_set_transient_for(GTK_WINDOW(authdialog), GTK_WINDOW(parent));
 	
@@ -355,13 +361,13 @@ GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, feedPtr fp, gint flags) {
 	ui_data->username = lookup_widget(authdialog, "usernameEntry");
 	ui_data->password = lookup_widget(authdialog, "passwordEntry");
 	
-	uri = xmlParseURI(BAD_CAST feed_get_source(fp));
+	uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->fp));
 	
-	if (uri != NULL) {
-		if (uri->user != NULL) {
+	if(uri != NULL) {
+		if(uri->user != NULL) {
 			gchar *user = uri->user;
 			gchar *pass = strstr(user, ":");
-			if (pass != NULL) {
+			if(pass != NULL) {
 				pass[0] = '\0';
 				pass++;
 				gtk_entry_set_text(GTK_ENTRY(ui_data->password), pass);
@@ -377,14 +383,14 @@ GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, feedPtr fp, gint flags) {
 	}
 	
 	promptStr = g_strdup_printf(_("Enter the username and password for \"%s\" (%s):"),
-	                            feed_get_title(fp), (source != NULL) ? source : _("Unknown source"));
+	                            feed_get_title(ui_data->fp), (source != NULL) ? source : _("Unknown source"));
 	gtk_label_set_text(GTK_LABEL(lookup_widget(authdialog, "prompt")), promptStr);
 	g_free(promptStr);
 	if(source != NULL)
 		xmlFree(source);
 	
 	g_signal_connect(G_OBJECT(authdialog), "response",
-				  G_CALLBACK (on_authdialog_response), ui_data);
+	                 G_CALLBACK(on_authdialog_response), ui_data);
 
 	gtk_widget_show_all(authdialog);
 	
@@ -435,13 +441,15 @@ GtkWidget* ui_feed_newdialog_new(GtkWindow *parent) {
 	return newdialog;
 }
 
-GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, feedPtr fp) {
+GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, nodePtr np) {
 	GtkWidget		*propdialog;
 	struct fp_prop_ui_data	*ui_data;
 	int 			interval, defaultInterval;
 	gchar 			*defaultIntervalStr;
+	feedPtr			fp = (feedPtr)np->data;
 
 	ui_data = g_new0(struct fp_prop_ui_data, 1);
+	ui_data->np = np;
 	ui_data->fp = fp;
 	
 	/* Create the dialog */
@@ -603,7 +611,7 @@ void ui_feed_add(const gchar *source, gchar *filter, gint flags) {
 	feed_set_title(fp, _("New subscription"));
 	feed_set_filter(fp, filter);
 
-	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
+	node_schedule_update(np, ui_feed_process_update_result, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
 
 	np = node_new();
 	node_set_title(np, feed_get_title(fp));
@@ -622,6 +630,8 @@ void ui_feed_process_update_result(struct request *request) {
 	itemSetPtr		sp;
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
+
+	debug_enter("ui_feed_process_update_result");
 	
 	feedlist_load_node(np);
 
@@ -634,7 +644,7 @@ void ui_feed_process_update_result(struct request *request) {
 	if(401 == request->httpstatus) { /* unauthorized */
 		feed_set_available(fp, FALSE);
 		if(request->flags & FEED_REQ_AUTH_DIALOG)
-			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), fp, request->flags);
+			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), np, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
 		feed_set_available(fp, FALSE);
 		feed_set_discontinued(fp, TRUE);
@@ -691,7 +701,7 @@ void ui_feed_process_update_result(struct request *request) {
 			itemlist_reload(np);
 			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
-				ui_feed_propdialog_new(GTK_WINDOW(mainwindow),fp);
+				ui_feed_propdialog_new(GTK_WINDOW(mainwindow), np);
 		}
 	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(fp));
@@ -710,5 +720,7 @@ void ui_feed_process_update_result(struct request *request) {
 	ui_feedlist_update();
 
 	feedlist_unload_node(np);
+
+	debug_exit("ui_feed_process_update_result");
 }
 

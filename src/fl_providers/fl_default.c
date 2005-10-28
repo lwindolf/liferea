@@ -213,7 +213,9 @@ static void fl_default_node_auto_update(nodePtr np) {
 	GTimeVal	now;
 	gint		interval;
 
-	if(FST_FEED != np->type)	/* don't process folders and vfolders */
+	debug_enter("fl_default_node_auto_update");
+
+	if(FST_FEED == np->type)	/* don't process folders and vfolders */
 		return;
 
 	g_get_current_time(&now);
@@ -227,17 +229,19 @@ static void fl_default_node_auto_update(nodePtr np) {
 	
 	if(interval > 0)
 		if(fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
-			feed_schedule_update(fp, 0);
+			node_schedule_update(np, ui_feed_process_update_result, 0);
 
 	/* And check for favicon updating */
 	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
 		favicon_download(np);
+
+	debug_exit("fl_default_node_auto_update");
 }
 
 static void fl_default_node_update(nodePtr np, guint flags) {
 
 	if(FST_FEED == np->type)	/* don't process folders and vfolders */
-		feed_schedule_update((feedPtr)np->data, flags | FEED_REQ_PRIORITY_HIGH);
+		node_schedule_update(np, ui_feed_process_update_result, flags | FEED_REQ_PRIORITY_HIGH);
 }
 
 /* DBUS support for new subscriptions */

@@ -99,7 +99,7 @@ void ui_init(int mainwindowState) {
 	/* order important !!! */
 	ui_feedlist_init(lookup_widget(mainwindow, "feedlist"));
 	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
-			
+
 	for(i = 0;  i < MAX_ICONS; i++)
 		icons[i] = create_pixbuf(iconNames[i]);
 
@@ -116,33 +116,33 @@ void ui_init(int mainwindowState) {
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
 	ui_popup_setup_menues();		/* create popup menues */
 	ui_enclosure_init();
-	//conf_load_subscriptions();
-
-	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
-	case 1: /* Update all feeds */
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)callbacks_schedule_update_default_cb);
-		break;
-	case 2:
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_reset_update_counter);
-		break;
-	default:
-		/* default, which is to use the lastPoll times, does not need any actions here. */;
-	}
 
 	feedlist_init();
+			
+	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
+		case 1: /* Update all feeds */
+			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)callbacks_schedule_update_default_cb);
+			break;
+		case 2:
+			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_reset_update_counter);
+			break;
+		default:
+			/* default, which is to use the lastPoll times, does not need any actions here. */;
+	}
 	
-	if (mainwindowState == MAINWINDOW_ICONIFIED || (mainwindowState == MAINWINDOW_HIDDEN && ui_tray_get_count() == 0)) {
+	if(mainwindowState == MAINWINDOW_ICONIFIED || 
+	   (mainwindowState == MAINWINDOW_HIDDEN && ui_tray_get_count() == 0)) {
 		gtk_window_iconify(GTK_WINDOW(mainwindow));
 		gtk_widget_show(mainwindow);
-	} else if (mainwindowState == MAINWINDOW_SHOWN)
+	} else if(mainwindowState == MAINWINDOW_SHOWN) {
 		gtk_widget_show(mainwindow);
-	else
+	} else {
 		/* Needed so that the window structure can be
 		   accessed... otherwise will GTK warning when window is
 		   shown by clicking on notification icon. */
 		gtk_widget_realize(GTK_WIDGET(mainwindow)); 
+	}
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
-		
 }
 
 void ui_redraw_widget(gchar *name) {

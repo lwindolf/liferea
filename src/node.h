@@ -24,6 +24,7 @@
 
 #include "item.h"
 #include "itemset.h"
+#include "update.h"
 
 /* Liferea's GUI consists of three parts. Feed list, item list
    and HTML view. The feed list is a view of all available
@@ -198,7 +199,7 @@ void node_add_items(nodePtr np, GList *items);
 gchar * node_render(nodePtr np);
 
 /**
- * Node auto-update scheduling.
+ * Node auto-update scheduling (feed list auto update).
  *
  * @param np	the node
  */
@@ -210,7 +211,17 @@ void node_request_auto_update(nodePtr np);
  * @param np	the node
  * @param flags	update handling flags
  */
-void node_update(nodePtr np, guint flags);
+void node_request_update(nodePtr np, guint flags);
+
+/**
+ * Called from plugins to issue download requests.
+ *
+ * @param np		the node
+ * @param callback	callback for results processing
+ * @param source	the URL/cmd/file to download
+ * @param flags		update handling flags
+ */
+void node_schedule_update(nodePtr np, request_cb callback, guint flags);
 
 /**
  * Change/Set the sort column of a given node.

@@ -60,7 +60,7 @@ static pluginInfo * plugin_mgmt_load(const gchar * filename) {
 	g_free(path);
 
 	if(NULL == handle) {
-		debug1(DEBUG_PLUGINS, "Cannot open %s!", filename);
+		debug3(DEBUG_PLUGINS, "Cannot open %s%s (%s)!", PACKAGE_LIB_DIR G_DIR_SEPARATOR_S, filename, g_module_error());
 		return NULL;
 	}
 

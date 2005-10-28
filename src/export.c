@@ -74,7 +74,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			else
 				xmlNewProp(childNode, BAD_CAST"collapsed", NULL);
 		}
-		debug1(DEBUG_CONF, "adding folder %s...", node_get_title(np));
+		debug1(DEBUG_CACHE, "adding folder %s...", node_get_title(np));
 		data.cur = childNode;
 		data.internal = internal;
 		ui_feedlist_do_for_all_data(np, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
@@ -123,7 +123,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			if(TRUE == fp->encAutoDownload)
 				xmlNewProp(childNode, BAD_CAST"encAutoDownload", BAD_CAST"true");
 		}
-		debug6(DEBUG_CONF, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), node_get_id(np), interval, cacheLimit);
+		debug6(DEBUG_CACHE, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), node_get_id(np), interval, cacheLimit);
 		g_free(cacheLimit);
 		g_free(interval);
 		break;
@@ -346,7 +346,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			import_parse_children_as_rules(cur, vp);
 			node_add_data(np, FST_VFOLDER, (gpointer)vp); // FIXME: make node adding generic
 
-			debug1(DEBUG_CONF, "loading vfolder: title=%s", title);
+			debug1(DEBUG_CACHE, "loading vfolder: title=%s", title);
 		} else {
 			fp = feed_new();
 			node_add_data(np, FST_FEED, (gpointer)fp); // FIXME: make node adding generic
@@ -399,7 +399,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			feed_set_title(fp, title);
 			feed_set_update_interval(fp, interval);
 
-			debug6(DEBUG_CONF, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
+			debug6(DEBUG_CACHE, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
 		}
 
 		/* sorting order */
@@ -431,13 +431,14 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		} else {
 			id = node_new_id();
 			node_set_id(np, id);
-			debug1(DEBUG_CONF, "seems to be an import, setting new id: %s and doing first download...", id);
+			debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", id);
 			g_free(id);			
 			node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
 				                | FEED_REQ_DOWNLOAD_FAVICON
 				                | FEED_REQ_AUTH_DIALOG);
 		}
 
+		g_print("add np=%d, title=%s\n", np, title);
 		feedlist_add_node(parentNode, np, -1);
 		
 		if(source != NULL)
@@ -447,7 +448,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		xmlFree(typeStr);
 		
 	} else { /* It is a folder */
-		debug1(DEBUG_CONF, "adding folder \"%s\"", title);
+		debug1(DEBUG_CACHE, "adding folder \"%s\"", title);
 		node_add_data(np, FST_FOLDER, NULL);	// FIXME: make node adding generic
 		feedlist_add_node(parentNode, np, -1);
 
@@ -466,8 +467,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		while(cur != NULL) {
 			if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
 				import_parse_outline(cur, parentNode, handler, trusted);
-		
-				cur = cur->next;				
+			cur = cur->next;				
 		}
 	}
 	
@@ -502,7 +502,7 @@ void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, flNodeHandl
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
-	debug1(DEBUG_CONF, "Importing OPML file: %s", filename);
+	debug1(DEBUG_CACHE, "Importing OPML file: %s", filename);
 	
 	/* read the feed list */
 	if(NULL == (doc = xmlParseFile(filename))) {

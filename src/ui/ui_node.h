@@ -1,8 +1,8 @@
 /**
- * @file ui_folder.h GUI folder handling
+ * @file ui_node.h GUI folder handling
  * 
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
  
-#ifndef _UI_FOLDER_H
-#define _UI_FOLDER_H
+#ifndef _UI_NODE_H
+#define _UI_NODE_H
 
 #include <gtk/gtk.h>
 #include "node.h"
@@ -28,11 +28,17 @@
 /**
  * Remove a node from the feedlist and free its ui_data.
  *
- * @param ptr the node to free
+ * @param np	the node to free
  */
-void ui_node_remove_node(nodePtr ptr);
+void ui_node_remove_node(nodePtr np);
 
-void ui_node_update(nodePtr folder);
+/**
+ * Updates the tree view iter of the given node.
+ *
+ * @param np	the node
+ */
+void ui_node_update(nodePtr np);
+
 gboolean ui_node_is_folder_expanded(nodePtr folder);
 
 // FIXME: what is the difference of the next two methods?

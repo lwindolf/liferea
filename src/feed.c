@@ -450,54 +450,43 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 	return sp;
 }
 
-/**
- * method to be called to schedule a feed to be updated
- */
-void feed_schedule_update(feedPtr fp, guint flags) {
-	const gchar		*source;
-	struct request		*request;
-	g_assert(NULL != fp);
+gboolean feed_can_be_updated(feedPtr fp) {
 
-	debug1(DEBUG_CONF, "Scheduling %s to be updated", feed_get_title(fp));
-	
 	if(fp->request != NULL) {
 		ui_mainwindow_set_status_bar(_("This feed \"%s\" is already being updated!"), feed_get_title(fp));
 		return;
 	}
 	
 	if(feed_get_discontinued(fp)) {
-		ui_mainwindow_set_status_bar(_("The feed was discontinued. Liferea won't update it anymore!"));
+		ui_mainwindow_set_status_bar(_("The feed \"%s\" was discontinued. Liferea won't update it anymore!"), feed_get_title(fp));
 		return;
 	}
-	
-	ui_mainwindow_set_status_bar(_("Updating \"%s\""), feed_get_title(fp));
-	
-	if(NULL == (source = feed_get_source(fp))) {
+
+	if(NULL == feed_get_source(fp)) {
 		g_warning("Feed source is NULL! This should never happen - cannot update!");
 		return;
 	}
-	
+}	
+
+void feed_prepare_request(feedPtr fp, struct request *request, guint flags) {
+
 	feed_reset_update_counter(fp);
 
-	request = download_request_new();
-	fp->request = request;
-	request->callback = ui_feed_process_update_result;
-	
-	request->user_data = fp;
+	fp->request = request;	
+
 	/* prepare request url (strdup because it might be
-	   changed on permanent HTTP redirection in netio.c) */
-	request->source = g_strdup(source);
+  	   changed on permanent HTTP redirection in netio.c) */
+	request->source = g_strdup(feed_get_source(fp));
 	request->cookies = fp->cookies;
-	if (feed_get_lastmodified(fp) != NULL)
+
+	if(feed_get_lastmodified(fp) != NULL)
 		request->lastmodified = g_strdup(feed_get_lastmodified(fp));
-	if (feed_get_etag(fp) != NULL)
+	if(feed_get_etag(fp) != NULL)
 		request->etag = g_strdup(feed_get_etag(fp));
 	request->flags = flags;
 	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
 	if(feed_get_filter(fp) != NULL)
 		request->filtercmd = g_strdup(feed_get_filter(fp));
-	
-	download_queue(request);
 }
 
 /* ---------------------------------------------------------------------------- */

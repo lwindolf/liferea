@@ -25,7 +25,9 @@
 #include "callbacks.h"
 #include "favicon.h"
 #include "feed.h"
+#include "update.h"
 #include "debug.h"
+#include "support.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_itemlist.h"
 
@@ -219,6 +221,28 @@ void node_request_auto_update(nodePtr np) {
 	FL_PLUGIN(np)->node_auto_update(np);
 }
 
+void node_schedule_update(nodePtr np, request_cb callback, guint flags) {
+	feedPtr			fp = (feedPtr)np->data;
+	struct request		*request;
+
+	debug1(DEBUG_CONF, "Scheduling %s to be updated", node_get_title(np));
+
+	/* can only be called for feeds, doesn't
+	   make sense for other types */
+	g_assert(FST_FEED == np->type);
+
+	if(feed_can_be_updated(fp)) {
+		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(np));
+		request = download_request_new();
+		request->user_data = np;
+		request->callback = ui_feed_process_update_result;
+		feed_prepare_request(fp, request, flags);
+		download_queue(request);
+	} else {
+		debug0(DEBUG_CONF, "Update cancelled");
+	}
+}
+
 void node_remove(nodePtr np) {
 
 	if(NULL != np->icon) {
@@ -290,7 +314,13 @@ void node_set_unread_count(nodePtr np, guint unreadCount) {
 	np->itemSet->unreadCount = unreadCount;
 }
 
-guint node_get_unread_count(nodePtr np) { return np->itemSet->unreadCount; }
+guint node_get_unread_count(nodePtr np) { 
+	
+	if(np->itemSet)
+		return np->itemSet->unreadCount; 
+	else
+		return NULL;
+}
 
 void node_set_id(nodePtr np, const gchar *id) {
 

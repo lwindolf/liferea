@@ -156,16 +156,16 @@ static void ui_feedlist_node_update(nodePtr np) {
 static void ui_feedlist_update_(GtkTreeIter *iter) {
 	GtkTreeIter	childiter;
 	gboolean	valid;
-	nodePtr		ptr = NULL;
+	nodePtr		np = NULL;
 	
 	if(iter != NULL) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, FS_PTR, &ptr, -1);		
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, FS_PTR, &np, -1);
 		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, iter);
 	} else {
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(feedstore), &childiter);
 	}
 
-/*	if(ptr != NULL)
+	/*if(ptr != NULL)
 		((ui_data*)(ptr->ui_data))->row = *iter;*/
 
 	while(valid) {
@@ -173,8 +173,8 @@ static void ui_feedlist_update_(GtkTreeIter *iter) {
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 	}
 
-	if(ptr != NULL)
-		ui_node_update(ptr);
+	if(np != NULL)
+		ui_node_update(np);
 }
 
 void ui_feedlist_update_iter(GtkTreeIter *iter) {
@@ -305,6 +305,8 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;	
 	
+	debug_enter("ui_feedlist_init");
+
 	g_assert(mainwindow != NULL);
 	g_assert(feedview != NULL);
 	
@@ -346,6 +348,8 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	
 	ui_dnd_init();			
 	ui_mainwindow_update_feed_menu(FST_INVALID);
+
+	debug_exit("ui_feedlist_init");
 }
 
 void ui_feedlist_select(nodePtr np) {
@@ -573,12 +577,12 @@ void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWi
 			/* loading/unloading the feed because the cache 
 			   properties might be changed */
 			feedlist_load_node(np);
-			ui_feed_propdialog_new(GTK_WINDOW(mainwindow),(feedPtr)np->data);
+			ui_feed_propdialog_new(GTK_WINDOW(mainwindow), np);
 			feedlist_unload_node(np);
 			return;
 		} 
 		if(FST_VFOLDER == np->type) {
-			ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow),np->data);
+			ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow), np);
 			return;
 		}
 	}
@@ -623,22 +627,9 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 
 	gtk_tree_store_set(feedstore, iter, FS_PTR, node, -1);
 	
-	ui_node_check_if_folder_is_empty(parent);
-	ui_feedlist_update();
+	if(NULL != parent)
+		ui_node_check_if_folder_is_empty(parent);
 }
-
-/*void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags) {
-	
-	debug_enter("ui_feedlist_new_subscription");	
-	
-	feedlist_add_feed(parent, fp, pos);
-	ui_feedlist_update();
-	ui_feedlist_select((nodePtr)fp);
-	
-	feed_schedule_update(fp, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
-	
-	debug_exit("ui_feedlist_new_subscription");
-}*/
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
 	nodePtr	parent;
@@ -681,7 +672,7 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 			descend = !(filter & ACTION_FILTER_CHILDREN);
 			
 			if(TRUE == apply) {
-				if (params==0)
+				if(params==0)
 					((nodeActionFunc)func)(child);
 				else 
 					((nodeActionDataFunc)func)(child, user_data);

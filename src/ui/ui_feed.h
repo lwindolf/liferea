@@ -24,17 +24,10 @@
 
 #include "feed.h"
 
-/**
- * Updates the feed list entry of the given feed.
- *
- * @param fp		the feed to process
- */
-void ui_feed_update(feedPtr fp); 
-
 /* feed handling dialog implementations */
-GtkWidget* ui_feed_authdialog_new (GtkWindow *parent, feedPtr fp, gint flags);
-GtkWidget* ui_feed_propdialog_new (GtkWindow *parent, feedPtr fp);
-GtkWidget* ui_feed_newdialog_new (GtkWindow *parent);
+GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, nodePtr np, gint flags);
+GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, nodePtr np);
+GtkWidget* ui_feed_newdialog_new(GtkWindow *parent);
 
 /**
  * Add a feed to the feed list.

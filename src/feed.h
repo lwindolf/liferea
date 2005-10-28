@@ -169,7 +169,23 @@ void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id);
  */
 void feed_remove_from_cache(feedPtr fp, const gchar *id);
 
-void feed_schedule_update(feedPtr fp, guint flags);
+/**
+ * Checks wether updating a feed makes sense.
+ *
+ * @param fp	the feed
+ *
+ * @returns TRUE if the feed can be updated.
+ */
+gboolean feed_can_be_updated(feedPtr fp);
+
+/**
+ * Prepares a request to update a feed.
+ *
+ * @param fp		the feed
+ * @param request	the request to prepare
+ * @param flags		update handling flags
+ */
+void feed_prepare_request(feedPtr fp, struct request *request, guint flags);
 
 /**
  * Merging implementation for the feed itemset type.

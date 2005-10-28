@@ -92,6 +92,7 @@ void feedlist_reset_new_item_count(void) {
 
 void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
+	g_print("adding np=%d\n", np);
 	ui_feedlist_add(parent, np, position);
 	ui_feedlist_update();
 }

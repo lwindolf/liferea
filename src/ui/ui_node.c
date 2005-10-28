@@ -157,6 +157,7 @@ void ui_node_empty_check(nodePtr folder) {
 	int		count;
 	gboolean	valid;
 	nodePtr		ptr;
+
 	/* this function does two things:
 	   
 	1. add "(empty)" entry to an empty folder
@@ -197,6 +198,7 @@ void ui_node_empty_check(nodePtr folder) {
 
 void ui_node_check_if_folder_is_empty(nodePtr folder) {
 
+	g_print("ui_node_check %d\n", folder);
 	ui_feedlist_do_for_all(folder, ACTION_FILTER_FOLDER, ui_node_empty_check);
 }
 
@@ -226,7 +228,59 @@ void ui_node_remove_node(nodePtr np) {
 	}
 }
 
-void ui_node_update(nodePtr np) {
+/** determines the feeds favicon or default icon */
+static GdkPixbuf* ui_node_get_icon(nodePtr np) {
+	gpointer	favicon;
+	feedPtr		fp;
+	
+	favicon = np->icon;
 
-	// FIXME: update node, icon, title, unread count
+	if(NULL == favicon)
+		favicon = icons[ICON_AVAILABLE];
+
+	/* special icons */
+	switch(np->type) {
+		case FST_FOLDER:
+			favicon = icons[ICON_FOLDER];
+			break;
+		case FST_VFOLDER:
+			favicon = icons[ICON_VFOLDER];
+			break;
+		case FST_FEED:
+			fp = (feedPtr)np->data;
+		
+			if(!feed_get_available(fp))
+				favicon = icons[ICON_UNAVAILABLE];
+
+			if(fp->fhp != NULL && fp->fhp->icon < MAX_ICONS)
+				return icons[fp->fhp->icon];
+
+			break;
+	}
+
+	return favicon;
+}
+
+void ui_node_update(nodePtr np) {
+	GtkTreeIter	iter;
+	gchar		*label;
+	int		count;
+	
+	if(np->ui_data == NULL)
+		return;
+
+	iter = ((ui_data*)np->ui_data)->row;
+	
+	count = node_get_unread_count(np);
+	
+	if(count > 0)
+		label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>", node_get_title(np), count);
+	else
+		label = g_markup_printf_escaped("%s", node_get_title(np));
+	
+	gtk_tree_store_set(feedstore, &iter, FS_LABEL, label,
+	                                    FS_UNREAD, count,
+	                                    FS_ICON, ui_node_get_icon(np),
+	                                    -1);
+	g_free(label);
 }

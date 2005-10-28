@@ -112,7 +112,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	                         "specified search pattern. If you want to save this search "
 	                         "result permanently you can click the VFolder button in "
 	                         "the search dialog and Liferea will add a VFolder to your "
-	                         "feed list.</h2>"), buffer, g_slist_length(searchResult->itemSet->items), searchstring);
+	                         "feed list.</h2>"), buffer, g_list_length(searchResult->itemSet->items), searchstring);
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 	ui_htmlview_finish_output(&buffer);
