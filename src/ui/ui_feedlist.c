@@ -132,61 +132,6 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 	}
 }
 
-static void ui_feedlist_node_update(nodePtr np) {
-	GtkTreeIter	iter;
-	gchar		*label;
-	
-	if(np->ui_data == NULL)
-		return;
-	
-	iter = ((ui_data*)np->ui_data)->row;
-	
-	if(np->itemSet->unreadCount > 0)
-		label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>", node_get_title(np), np->itemSet->unreadCount);
-	else
-		label = g_markup_printf_escaped("%s", node_get_title(np));
-	
-	gtk_tree_store_set(feedstore, &iter, FS_LABEL, label,
-	                                    FS_UNREAD, np->itemSet->unreadCount,
-	                                    FS_ICON, np->icon,
-	                                    -1);
-	g_free(label);
-}
-
-static void ui_feedlist_update_(GtkTreeIter *iter) {
-	GtkTreeIter	childiter;
-	gboolean	valid;
-	nodePtr		np = NULL;
-	
-	if(iter != NULL) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), iter, FS_PTR, &np, -1);
-		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, iter);
-	} else {
-		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(feedstore), &childiter);
-	}
-
-	/*if(ptr != NULL)
-		((ui_data*)(ptr->ui_data))->row = *iter;*/
-
-	while(valid) {
-		ui_feedlist_update_(&childiter);
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
-	}
-
-	if(np != NULL)
-		ui_node_update(np);
-}
-
-void ui_feedlist_update_iter(GtkTreeIter *iter) {
-
-	ui_feedlist_update_(iter);
-
-	if(filter_feeds_without_unread_headlines)
-		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(filter));
-		
-	ui_redraw_widget("feedlist");
-}
-
 static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeIter		iter;
 	GtkTreeModel		*model;
@@ -198,6 +143,8 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		gtk_tree_model_get(model, &iter, FS_PTR, &np, -1);
 		if(np != NULL) 
 			type = np->type;
+
+		debug1(DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title(np));
 
 		/* make sure thats no grouping iterator */
 		if((FST_FEED == type) || (FST_VFOLDER == type)) {
@@ -667,12 +614,10 @@ void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint p
 		/* Must update counter here because the current node may be deleted! */
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
 		/* If child == NULL, this is an empty node. */
-		if (child != NULL) {
-			gboolean directory = (FST_FEED == child->type) && (((feedPtr)child)->fhp != NULL) && ((feedPtr)child)->fhp->directory;
+		if(child != NULL) {
 			apply = (filter & ACTION_FILTER_CHILDREN) ||
-				((filter & ACTION_FILTER_FEED) && (FST_FEED == child->type) && !directory) ||
-				((filter & ACTION_FILTER_FEED) && (FST_VFOLDER == child->type) && !directory) ||
-				((filter & ACTION_FILTER_DIRECTORY) && (FST_FEED == child->type) && directory) ||
+				((filter & ACTION_FILTER_FEED) && (FST_FEED == child->type)) ||
+				((filter & ACTION_FILTER_FEED) && (FST_VFOLDER == child->type)) ||
 				((filter & ACTION_FILTER_FOLDER) && (FST_FOLDER == child->type));
 			descend = !(filter & ACTION_FILTER_CHILDREN);
 			

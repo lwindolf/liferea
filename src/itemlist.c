@@ -183,7 +183,7 @@ void itemlist_load(nodePtr node) {
 
 	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 		debug0(DEBUG_CACHE, "unloading everything...");
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, node_unload);
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, node_unload);
 	}
 	
 	itemlist_reload(node);
@@ -235,7 +235,7 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 		ui_itemlist_update_item(ip);
 
 		/* 3. updated feed list unread counters */
-		ui_feedlist_update();
+		ui_node_update(displayed_node);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();		
@@ -261,7 +261,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 		ui_itemlist_update_item(ip);
 
 		/* 3. updated feed list unread counters */
-		ui_feedlist_update();
+		ui_node_update(displayed_node);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
@@ -287,7 +287,7 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 		ui_itemlist_update_item(ip);	
 
 		/* 3. updated feed list unread counters */
-		ui_feedlist_update();
+		ui_node_update(displayed_node);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
@@ -307,7 +307,7 @@ void itemlist_remove_item(itemPtr ip) {
 		if(displayed_item != ip) {
 			ui_itemlist_remove_item(ip);
 			itemset_remove_item(ip->itemSet, ip);
-			ui_feedlist_update();
+			ui_node_update(ip->itemSet->node);
 		} else {
 			deferred_item_remove = TRUE;
 			/* update the item to show new state that forces
@@ -322,7 +322,7 @@ void itemlist_remove_items(nodePtr np) {
 	ui_itemlist_clear();
 	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	itemset_remove_items(np->itemSet);
-	ui_feedlist_update();
+	ui_node_update(np->itemSet->node);
 }
 
 /* mouse/keyboard interaction callbacks */
@@ -342,7 +342,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 			/* set read and unset update status done when unselecting */
 			itemlist_set_read_status(ip, TRUE);
 			itemlist_set_update_status(ip, FALSE);
-			ui_feedlist_update();
+			ui_node_update(displayed_node);
 		} else {
 			displayed_item = NULL;
 		}

@@ -87,6 +87,8 @@ void ui_init(int mainwindowState) {
 	GtkWidget	*widget;
 	int		i;
 
+	debug_enter("ui_init");
+
 	mainwindow = ui_mainwindow_new();
 	ui_tabs_init();
 	
@@ -121,12 +123,15 @@ void ui_init(int mainwindowState) {
 			
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
+			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
 			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)callbacks_schedule_update_default_cb);
 			break;
 		case 2:
+			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
 			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_reset_update_counter);
 			break;
 		default:
+			debug0(DEBUG_UPDATE, "initial update: using auto update");
 			/* default, which is to use the lastPoll times, does not need any actions here. */;
 	}
 	
@@ -143,6 +148,8 @@ void ui_init(int mainwindowState) {
 		gtk_widget_realize(GTK_WIDGET(mainwindow)); 
 	}
 	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
+
+	debug_exit("ui_init");
 }
 
 void ui_redraw_widget(gchar *name) {

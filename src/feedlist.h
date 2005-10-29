@@ -30,14 +30,6 @@ void feedlist_init(void);
 /** statistic counter handling methods */
 int feedlist_get_unread_item_count(void);
 int feedlist_get_new_item_count(void);
-int feedlist_get_item_count(void);
-
-void feedlist_increase_new_item_count(void);
-void feedlist_decrease_new_item_count(void);
-void feedlist_increase_unread_item_count(void);
-void feedlist_decrease_unread_item_count(void);
-void feedlist_increase_item_count(void);
-void feedlist_decrease_item_count(void);
 
 /* feed list manipulation */
 void feedlist_reset_new_item_count(void);

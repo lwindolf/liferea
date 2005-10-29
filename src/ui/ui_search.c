@@ -140,7 +140,6 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		searchResult = NULL;
 		folder = ui_feedlist_get_target_folder(&pos);
 		feedlist_add_node(folder, np, pos);
-		ui_feedlist_update();
 		ui_feedlist_select(np);
 	} else {
 		ui_show_info_box(_("Please do a search first!"));
@@ -161,7 +160,6 @@ void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 	folder = ui_feedlist_get_target_folder(&pos);
 	feedlist_add_node(folder, np, pos);
-	ui_feedlist_update();
 	ui_feedlist_select(np);
 	ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow), np);
 }

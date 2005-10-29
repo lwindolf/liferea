@@ -102,7 +102,7 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	folder = gtk_object_get_data(GTK_OBJECT(foldernamedialog), "folder");
 	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
 	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
-	ui_feedlist_update();
+	ui_node_update(folder);
 	gtk_widget_hide(foldernamedialog);
 }
 
@@ -198,26 +198,24 @@ void ui_node_check_if_folder_is_empty(nodePtr folder) {
 void ui_node_remove_node(nodePtr np) {
 	GtkTreeIter	iter;
 	gboolean 	parentExpanded = FALSE;
-	nodePtr 	parentNode;
 	
 	g_return_if_fail(NULL != np->ui_data);
 
-	parentNode = ui_feedlist_get_parent(np);
-
 	iter = ((ui_data*)(np->ui_data))->row;
-	parentNode = ui_feedlist_get_parent(np);
-	if(parentNode != NULL)
-		parentExpanded = ui_node_is_folder_expanded(parentNode); /* If the folder becomes empty, the folder would collapse */
+	if(np->parent != NULL)
+		parentExpanded = ui_node_is_folder_expanded(np->parent); /* If the folder becomes empty, the folder would collapse */
 	
 	gtk_tree_store_remove(feedstore, &iter);
 	
 	g_free((ui_data*)(np->ui_data));
 	np->ui_data = NULL;
 
-	if(parentNode != NULL) {
-		ui_node_check_if_folder_is_empty(parentNode);
+	if(np->parent != NULL) {
+		ui_node_check_if_folder_is_empty(np->parent);
 		if(parentExpanded)
-			ui_node_set_expansion(parentNode, TRUE);
+			ui_node_set_expansion(np->parent, TRUE);
+
+		ui_node_update(np->parent);
 	}
 }
 
@@ -258,7 +256,7 @@ void ui_node_update(nodePtr np) {
 	GtkTreeIter	iter;
 	gchar		*label;
 	int		count;
-	
+
 	if(np->ui_data == NULL)
 		return;
 

@@ -73,9 +73,6 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 
 static void feedlist_unset_new_items(nodePtr np) {
 	
-	if(0 == np->itemSet->newCount)
-		return;
-		
 	node_load(np);
 	itemset_mark_all_old(np->itemSet);
 	node_unload(np);
@@ -84,7 +81,7 @@ static void feedlist_unset_new_items(nodePtr np) {
 void feedlist_reset_new_item_count(void) {
 
 	if(0 != newCount) {
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, feedlist_unset_new_items);
+		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_unset_new_items);
 		newCount = 0;
 		ui_tray_update();
 	}
@@ -93,8 +90,9 @@ void feedlist_reset_new_item_count(void) {
 void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
 	g_print("adding np=%d\n", np);
-	ui_feedlist_add(parent, np, position);
-	ui_feedlist_update();
+	ui_feedlist_add(parent, np, position);	// FIXME: should be ui_node_add_child()
+	if(NULL != parent)
+		ui_node_update(parent);
 }
 
 void feedlist_update_node(nodePtr np) {
@@ -109,16 +107,14 @@ static void feedlist_remove_node_(nodePtr np) {
 	
 	ui_notification_remove_feed(np);	/* removes an existing notification for this feed */
 	ui_node_remove_node(np);
-	ui_feedlist_update();
 	
 	node_load(np);
-	node_remove(np);	
+	node_remove(np);
 }
 
 static void feedlist_remove_folder(nodePtr np) {
 
 	ui_feedlist_do_for_all(np, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, feedlist_remove_node_);
-	ui_feedlist_update();
 	node_remove(np);	
 }
 
@@ -203,7 +199,8 @@ void feedlist_selection_changed(nodePtr np) {
 		/* when the user selects a feed in the feed list we
 		   assume that he got notified of the new items or
 		   isn't interested in the event anymore... */
-		feedlist_reset_new_item_count();
+		if(0 != newCount)
+			feedlist_reset_new_item_count();
 	}
 }
 
@@ -249,6 +246,7 @@ static void feedlist_mark_all_read(nodePtr np) {
 
 	node_load(np);
 	itemset_mark_all_read(np->itemSet);
+	ui_node_update(np);
 	node_unload(np);
 }
 
@@ -262,18 +260,12 @@ void on_popup_allunread_selected(void) {
 		} else {
 			feedlist_mark_all_read(np);
 		}
-		ui_feedlist_update();
 	}
-}
-
-static void feedlist_mark_all_read_cb(nodePtr np) {
-
-	itemset_mark_all_read(np->itemSet);
 }
 
 void on_popup_allfeedsunread_selected(void) {
 
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_mark_all_read_cb);
+	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_mark_all_read);
 }
 
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -322,6 +314,7 @@ static void feedlist_initial_load(nodePtr np) {
 	
 	feedlist_load_node(np);
 	feedlist_update_node(np);
+	ui_node_update(np);
 	feedlist_unload_node(np);
 }
 
@@ -339,7 +332,6 @@ void feedlist_init(void) {
 
 	/* 2. load all feeds and by doing so automatically load all vfolders */
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_initial_load);
-	ui_feedlist_update();
 
 	/* 3. start automatic updating */
  	(void)g_timeout_add(1000, feedlist_auto_update, NULL);

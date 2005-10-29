@@ -144,7 +144,7 @@ void node_unload(nodePtr np) {
 	}
 }
 
-void node_merge_item(nodePtr np, itemPtr ip) {
+static void node_merge_item(nodePtr np, itemPtr ip) {
 	gboolean added;
 
 	/* step 1: merge into node type internal data structures */
@@ -197,14 +197,19 @@ void node_merge_items(nodePtr np, GList *list) {
 		iter = g_list_previous(iter);
 	}
 	g_list_free(list);
+
+	ui_notification_update(np);
+	ui_node_update(np);
 }
 
 itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
 
 void node_set_itemset(nodePtr np, itemSetPtr sp) {
 
+	g_assert(NULL == np->itemSet);
 	np->itemSet = sp;
 	sp->node = np;
+	feedlist_update_counters(sp->unreadCount, sp->newCount);
 }
 
 gchar * node_render(nodePtr np) {
@@ -313,12 +318,36 @@ void node_set_title(nodePtr np, const gchar *title) {
 
 const gchar * node_get_title(nodePtr np) { return np->title; }
 
-void node_set_unread_count(nodePtr np, guint unreadCount) {
+void node_update_unread_count(nodePtr np, gint diff) {
 
-	/* unread count propagation to folders
-	   is done by specific implementations
-	   to be more flexible */
-	np->itemSet->unreadCount = unreadCount;
+	np->itemSet->unreadCount += diff;
+
+	/* vfolder unread counts are not interesting
+	   in the following propagation handling */
+	if(FST_VFOLDER == np->type)
+		return;
+
+	/* update parent node unread counters */
+	if(NULL != np->parent)
+		node_update_unread_count(np->parent, diff);
+
+	/* update global feed list statistic */
+	feedlist_update_counters(diff, 0);
+}
+
+void node_update_new_count(nodePtr np, gint diff) {
+
+	np->itemSet->newCount += diff;
+
+	/* vfolder new counts are not interesting
+	   in the following propagation handling */
+	if(FST_VFOLDER == np->type)
+		return;
+
+	/* no parent node propagation necessary */
+
+	/* update global feed list statistic */
+	feedlist_update_counters(0, diff);
 }
 
 guint node_get_unread_count(nodePtr np) { 

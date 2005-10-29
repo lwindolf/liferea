@@ -463,16 +463,14 @@ void ui_itemlist_display(void) {
 	if(buffer) {
 		if((np != NULL) &&
 		   (FST_FEED == np->type) &&
-		   ((feedPtr)np)->htmlUrl != NULL &&
-		   ((feedPtr)np)->htmlUrl[0] != '|' &&
-		   strstr(((feedPtr)np)->htmlUrl, "://") != NULL)
-			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)np)->htmlUrl);
+		   ((feedPtr)np->data)->htmlUrl != NULL &&
+		   ((feedPtr)np->data)->htmlUrl[0] != '|' &&
+		   strstr(((feedPtr)np->data)->htmlUrl, "://") != NULL)
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, ((feedPtr)np->data)->htmlUrl);
 		else
 			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 		g_free(buffer);
 	}
-
-	ui_feedlist_update();
 }
 
 void ui_itemlist_add_item(itemPtr ip, gboolean merge) {

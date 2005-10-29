@@ -43,19 +43,6 @@ extern GtkTreeStore	*feedstore;
 
 /* Add/remove/update nodes */
 
-/**
- * Updates all childrens of the given GtkTreeIter
- *
- * @param iter	a folder of the feed list
- */
-void ui_feedlist_update_iter(GtkTreeIter *iter);
-
-/**
- * Update the labels of all of the nodes of the feedlist, and update
- * their GtkTreeIter pointers.
- */
-#define ui_feedlist_update() (ui_feedlist_update_iter(NULL))
-
 /* Selections */
 nodePtr ui_feedlist_get_selected();
 void ui_feedlist_select(nodePtr fp);
@@ -107,11 +94,10 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 
 
 #define	ACTION_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	
-#define	ACTION_FILTER_DIRECTORY	2	/** Only matches nodes where IS_DIRECTORY(node->type) */	
-#define	ACTION_FILTER_FOLDER	4	/** Only matches nodes where IS_FOLDER(node->type) */
-#define	ACTION_FILTER_PLUGIN	8	/** Only matches nodes where IS_PLUGIN(node->type) */
-#define	ACTION_FILTER_ANY	15	/** Matches any node */
-#define	ACTION_FILTER_CHILDREN	16	/** Matches immediate children of the given node */
+#define	ACTION_FILTER_FOLDER	2	/** Only matches nodes where IS_FOLDER(node->type) */
+#define	ACTION_FILTER_PLUGIN	4	/** Only matches nodes where IS_PLUGIN(node->type) */
+#define	ACTION_FILTER_ANY	7	/** Matches any node */
+#define	ACTION_FILTER_CHILDREN	8	/** Matches immediate children of the given node */
 
 /**
  * Helper function to recursivly call feed_save() for all

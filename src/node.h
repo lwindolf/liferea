@@ -52,13 +52,14 @@ typedef struct node {
 	struct flNodeHandler_	*handler;	/**< pointer to feed list plugin instance handling this node */
 
 	/* feed list state properties of this node */
-	gchar		*id;		/**< unique node identifier string */
+	struct node		*parent;	/**< the parent node (or NULL if at root level) */
+	gchar			*id;		/**< unique node identifier string */
 
-	gchar		*title;		/**< the label of the node in the feed list */
-	gpointer	icon;		/**< pointer to pixmap, if there is a favicon */
-	guint		loaded;		/**< counter which is non-zero if items are to be kept in memory */
-	gboolean	available;	/**< availability of this node (usually the last downloading state) */
-	gboolean	needsCacheSave;		/**< flag set when the feed's cache needs to be resaved */
+	gchar			*title;		/**< the label of the node in the feed list */
+	gpointer		icon;		/**< pointer to pixmap, if there is a favicon */
+	guint			loaded;		/**< counter which is non-zero if items are to be kept in memory */
+	gboolean		available;	/**< availability of this node (usually the last downloading state) */
+	gboolean		needsCacheSave;	/**< flag set when the feed's cache needs to be resaved */
 
 	/* item list state properties of this node */
 	itemSetPtr	itemSet;	/**< The set of items belonging to this node */
@@ -126,12 +127,14 @@ void node_set_title(nodePtr np, const gchar *title);
 guint node_get_unread_count(nodePtr np);
 
 /**
- * Set the number of unread items of a node.
+ * Update the number of unread items of a node.
+ * This method ensures propagation to parent
+ * folders.
  *
- * @param np		the node
- * @param unreadCount	the number of unread items
+ * @param np	the node
+ * @param diff	the difference to the current unread count
  */
-void node_set_unread_count(nodePtr np, guint unreadCount);
+void node_update_unread_count(nodePtr np, gint diff);
 
 /**
  * Returns a new unique node id.
@@ -184,15 +187,6 @@ void node_save(nodePtr np);
  * @param np	the node
  */
 void node_unload(nodePtr np);
-
-/**
- * Merges the given item into the item set of
- * the given node. Used for node updating.
- *
- * @param np	the node
- * @param ip	the item
- */
-void node_merge_item(nodePtr np, itemPtr ip);
 
 /**
  * Merges the given item set into the item set of

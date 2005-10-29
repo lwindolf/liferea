@@ -242,7 +242,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		/* Enclosures */
 		ui_data->fp->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
 
-		ui_feedlist_update();
+		ui_node_update(ui_data->np);
 		feedlist_schedule_save();
 		if(needsUpdate)
 			node_schedule_update(ui_data->np, ui_feed_process_update_result, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
@@ -714,10 +714,6 @@ void ui_feed_process_update_result(struct request *request) {
 
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		favicon_download(np);
-
-	/* update UI presentations */
-	ui_notification_update(np);
-	ui_feedlist_update();
 
 	feedlist_unload_node(np);
 

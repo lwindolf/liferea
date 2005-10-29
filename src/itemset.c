@@ -124,7 +124,7 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 			/* remove vfolder copies */
 			vfolder_remove_item(ip);
 
-			// FIXME: np->needsCacheSave = TRUE
+			sp->node->needsCacheSave = TRUE;
 			
 			/* is this really correct? e.g. if there is no 
 			   unread/important vfolder? then the remove
@@ -154,7 +154,7 @@ void itemset_remove_items(itemSetPtr sp) {
 	}
 	g_list_free(list);
 
-	// FIXME: np->needsCacheSave = TRUE
+	sp->node->needsCacheSave = TRUE;
 }
 
 void itemset_set_item_flag(itemSetPtr sp, itemPtr ip, gboolean newFlagStatus) {
@@ -189,10 +189,9 @@ void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newReadSta
 
 	ip->readStatus = newReadStatus;
 
-	if(TRUE == newReadStatus)
-		sp->unreadCount--;
-	else
-		sp->unreadCount++;
+	/* Note: unread count updates must be done through the node
+	   interface to allow recursive node unread count updates */
+	node_update_unread_count(sp->node, (TRUE == newReadStatus)?-1:1);
 	
 	if(ITEMSET_TYPE_VFOLDER == sp->type) {
 		/* if this item belongs to a vfolder update the source feed */
@@ -207,7 +206,6 @@ void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newReadSta
 	} else {		
 		vfolder_update_item(ip);	/* there might be vfolders using this item */
 		vfolder_check_item(ip);		/* and check if now a rule matches */
-		feedlist_update_counters(newReadStatus?-1:1, 0);
 	}
 }
 
@@ -237,12 +235,20 @@ void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newUpdat
 
 void itemset_set_item_new_status(itemSetPtr sp, itemPtr ip, gboolean newStatus) {
 
-	/* no special handling for the new flag */
+	g_assert(newStatus != ip->newStatus);
+
 	ip->newStatus = newStatus;
+
+	/* Note: new count updates must be done through the node
+	   interface to allow global feed list new counter */
+	node_update_new_count(sp->node, (TRUE == newStatus)?-1:1);
+	
+	/* New status is never propagated to vfolders... */
 }
 
 void itemset_mark_all_read(itemSetPtr sp) {
 	GList	*item, *items;
+	itemPtr	ip;
 
 	/* two loops on list copies because the itemlist_set_* 
 	   methods may modify the original item list */
@@ -250,7 +256,9 @@ void itemset_mark_all_read(itemSetPtr sp) {
 	items = g_list_copy(sp->items);
 	item = items;
 	while(NULL != item) {
-		itemset_set_item_read_status(sp, (itemPtr)item->data, TRUE);
+		ip = (itemPtr)item->data;
+		if(FALSE == ip->readStatus)
+			itemset_set_item_read_status(sp, ip, TRUE);
 		item = g_list_next(item);
 	}
 	g_list_free(items);
@@ -258,16 +266,17 @@ void itemset_mark_all_read(itemSetPtr sp) {
 	items = g_list_copy(sp->items);
 	item = items;
 	while(NULL != item) {	
-		itemset_set_item_update_status(sp, (itemPtr)item->data, FALSE);
+		ip = (itemPtr)item->data;
+		if(TRUE == ip->updateStatus)
+			itemset_set_item_update_status(sp, ip, FALSE);
 		item = g_list_next(item);
 	}
 	g_list_free(items);
-
-	sp->unreadCount = 0;
 }
 
 void itemset_mark_all_old(itemSetPtr sp) {
 	GList	*iter, *items;
+	itemPtr	ip;
 
 	/* loop on list copy because the itemlist_set_* 
 	   methods may modify the original item list */
@@ -275,7 +284,9 @@ void itemset_mark_all_old(itemSetPtr sp) {
 	items = g_list_copy(sp->items);
 	iter = items;
 	while(NULL != iter) {
-		itemset_set_item_new_status(sp, (itemPtr)iter->data, FALSE);
+		ip = (itemPtr)iter->data;
+		if(TRUE == ip->newStatus)
+			itemset_set_item_new_status(sp, ip, FALSE);
 		iter = g_list_next(iter);
 	}
 	g_list_free(items);

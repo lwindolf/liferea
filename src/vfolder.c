@@ -267,7 +267,7 @@ void vfolder_refresh(vfolderPtr vp) {
 	// FIXME: the pointer chain somehow tells me that
 	// this code does not belong here...
 	
-	ui_feedlist_do_for_all_data(NULL, ACTION_FILTER_FEED | ACTION_FILTER_DIRECTORY, vfolder_apply_rules, vp);
+	ui_feedlist_do_for_all_data(NULL, ACTION_FILTER_FEED, vfolder_apply_rules, vp);
 	
 	debug_exit("vfolder_refresh");
 }

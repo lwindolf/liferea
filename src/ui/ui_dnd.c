@@ -46,7 +46,8 @@ static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
 
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
-	ui_feedlist_update();
+	//ui_feedlist_update();
+	g_warning("FIXME: feed list update");
 	ui_node_check_if_folder_is_empty(NULL);
 	feedlist_schedule_save();
 	ui_itemlist_prefocus();
@@ -60,16 +61,15 @@ void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpoi
 static gboolean 
 ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePath *path) {
 	GtkTreeIter	iter;
-	nodePtr		ptr;
+	nodePtr		np;
 	
 	debug1(DEBUG_GUI, "DnD check if dragging is possible (%d)", path);
 
-	g_assert(NULL != feedstore);	
 	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, path)) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, FS_PTR, &ptr, -1);
+		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, FS_PTR, &np, -1);
 		
 		/* everything besides "empty" entries may be dragged */		
-		if(ptr == NULL)
+		if(np == NULL)
 			return FALSE;
 		return TRUE;
 	} else {
@@ -93,8 +93,8 @@ ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, Gt
 	   is not possible with GTK 2.0-2.2 because it disallows to
 	   drops as a children but its possible since GTK 2.4 */
 		   	
-	tree_model = GTK_TREE_MODEL (drag_dest);
-	tree_store = GTK_TREE_STORE (drag_dest);
+	tree_model = GTK_TREE_MODEL(drag_dest);
+	tree_store = GTK_TREE_STORE(drag_dest);
 
 	if(((old_drop_possible)(drag_dest, dest_path, selection_data)) == FALSE)
 		return FALSE;
@@ -113,8 +113,6 @@ void ui_dnd_init(void) {
 	GtkTreeDragSourceIface	*drag_source_iface = NULL;
 	GtkTreeDragDestIface	*drag_dest_iface = NULL;
 
-	g_assert(NULL != feedstore);
-	
 	if(NULL != (drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
 		drag_source_iface->row_draggable = ui_dnd_feed_draggable;
 	}
