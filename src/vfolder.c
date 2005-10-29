@@ -103,7 +103,7 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	/* need to check for vfolder items because the
 	   rule checking can be called on item copies of
 	   the same vfolder, */
-	if(NULL != ip->sourceNode)
+	if(NULL != ip->sourceSet)
 		return;
 
 	/* check if the item was already added */
@@ -111,7 +111,7 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	iter = vp->node->itemSet->items;
 	while(NULL != iter) {
 		tmp = iter->data;
-		if((ip->nr == tmp->sourceNr) && (ip->node == tmp->sourceNode))
+		if((ip->nr == tmp->sourceNr) && (ip->itemSet == tmp->sourceSet))
 			return;
 		iter = g_list_next(iter);
 	}
@@ -119,7 +119,6 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	/* add an item copy to the vfolder */	
 	tmp = item_new();
 	item_copy(ip, tmp);
-	tmp->node = vp->node;  
 	tmp->nr = ++(vp->lastItemNr);
 	itemset_add_item(vp->node->itemSet, tmp);
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
@@ -138,10 +137,10 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 	items = vfolder_get_item_list(vp);
 	while(NULL != items) {
 		tmp = items->data;
-		g_assert(NULL != ip->node);
-		g_assert(NULL != tmp->node);
+		g_assert(NULL != ip->itemSet);
+		g_assert(NULL != tmp->sourceSet);
 		if((ip->nr == tmp->sourceNr) &&
-		   (ip->node == tmp->sourceNode)) {
+		   (ip->itemSet == tmp->sourceSet)) {
 			found = TRUE;
 			break;
 		}
@@ -156,7 +155,7 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 		   the original item may not exist anymore when the 
 		   removal is executed, so we need to remove the
 		   pointer to the original item */
-		tmp->sourceNode = NULL;
+		tmp->sourceSet = NULL;
 		tmp->sourceNr = -1;
 		
 		/* we call itemlist_remove_item to prevent removing
@@ -172,7 +171,7 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 void vfolder_remove_item(itemPtr ip) {
 	GSList		*iter;
 
-	g_assert(NULL == ip->sourceNode);
+	g_assert(NULL == ip->sourceSet);
 
 	debug_enter("vfolder_remove_item");
 
@@ -288,7 +287,7 @@ void vfolder_update_item(itemPtr ip) {
 	debug_enter("vfolder_update_item");
 
 	/* never process vfolder items! */
-	g_assert(NULL == ip->sourceNode);
+	g_assert(NULL == ip->sourceSet);
 	
 	iter = vfolders;
 	while(NULL != iter) {
@@ -298,8 +297,8 @@ void vfolder_update_item(itemPtr ip) {
 		items = vfolder_get_item_list(vp);
 		while(NULL != items) {
 			tmp = items->data;
-			g_assert(NULL != ip->node);
-			g_assert(NULL != tmp->node);
+			g_assert(NULL != ip->itemSet);
+			g_assert(NULL != tmp->sourceSet);
 			
 			/* avoid processing items that are in deletion state */
 			if(-1 == tmp->sourceNr) {
@@ -309,7 +308,7 @@ void vfolder_update_item(itemPtr ip) {
 			
 			/* find the item copies */
 			if((ip->nr == tmp->sourceNr) &&
-			   (ip->node == tmp->sourceNode)) {
+			   (ip->itemSet == tmp->sourceSet)) {
 				/* check if the item still matches, the item won't get added
 				   another time so this call effectivly just checks if the
 				   item is still to remain added. */

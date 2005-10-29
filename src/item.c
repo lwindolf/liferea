@@ -67,7 +67,7 @@ void item_copy(itemPtr from, itemPtr to) {
 	to->time = from->time;
 	
 	/* the following line allows state propagation in item.c */
-	to->sourceNode = from->node;
+	to->sourceSet = from->itemSet;
 	to->sourceNr = from->nr;
 	
 	/* this copies metadata */

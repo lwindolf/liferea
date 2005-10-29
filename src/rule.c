@@ -90,7 +90,7 @@ static gboolean rule_feed_title_match(rulePtr rp, itemPtr ip) {
 	gboolean	result = FALSE;
 	gchar 		*title;
 	
-	if((NULL != ip->node) && (NULL != (title = (gchar *)node_get_title(ip->node)))) {
+	if(NULL != (title = (gchar *)node_get_title(ip->itemSet->node))) {
 		title = g_utf8_casefold(title, -1);
 		if(NULL != strstr(title, rp->value))
 			result = TRUE;

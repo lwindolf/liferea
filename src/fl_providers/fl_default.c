@@ -142,7 +142,7 @@ static void fl_default_node_load(nodePtr np) {
 	
 	g_assert(NULL == np->itemSet);
 	g_assert(FST_FEED == np->type);
-	np->itemSet = feed_load_from_cache(fp, np->id);
+	node_set_itemset(np, feed_load_from_cache(fp, np->id));
 
 	debug_exit("fl_default_node_load");
 }
@@ -196,7 +196,7 @@ static void fl_default_node_save(nodePtr np) {
 
 	switch(np->type) {
 		case FST_FEED:
-			feed_save_to_cache((feedPtr)np->data, np->itemSet, node_get_id(np));
+			feed_save_to_cache((feedPtr)np->data, node_get_itemset(np), node_get_id(np));
 			break;
 		case FST_FOLDER:
 		case FST_VFOLDER:

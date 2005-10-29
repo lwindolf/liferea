@@ -670,15 +670,15 @@ void ui_feed_process_update_result(struct request *request) {
 		sp = (itemSetPtr)g_new0(struct itemSet, 1);
 		fhp = feed_parse(fp, sp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
 
-		// FIXME: item set merging?
-		// do something with sp!
-		
 		if(fhp == NULL) {
 			feed_set_available(fp, FALSE);
 			fp->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), fp->parseErrors);
 		} else {
 			fp->fhp = fhp;
 			
+			/* merge the resulting items into the node's item set */
+			node_merge_items(np, sp);
+		
 			/* restore user defined properties if necessary */
 			if(!(request->flags & FEED_REQ_RESET_TITLE)) {
 				feed_set_title(fp, old_title);

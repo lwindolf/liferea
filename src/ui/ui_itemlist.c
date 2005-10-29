@@ -222,12 +222,10 @@ void ui_itemlist_update_item(itemPtr ip) {
 	GdkPixbuf	*icon = NULL, *favicon;
 
 	/* favicon for feed icon column (visible in folders/vfolders/searches) */
-	//FIXME!!!
-	/*if(NULL != ip->sourceFeed)
-		favicon = ip->sourceFeed->icon;
+	if(NULL != ip->sourceSet)
+		favicon = ip->sourceSet->node->icon;
 	else
-		favicon = ip->fp->icon;
-		*/
+		favicon = ip->itemSet->node->icon;
 
 	/* Time */
 	if(0 != ip->time) {
@@ -636,7 +634,7 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 			ui_itemlist_select(*iter);
 			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 		} else {
-			itemset_mark_all_read(ip->node->itemSet);
+			itemset_mark_all_read(ip->itemSet);
 		}
 		return TRUE;
 	}

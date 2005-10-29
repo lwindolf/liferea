@@ -144,11 +144,7 @@ void node_unload(nodePtr np) {
 	}
 }
 
-/* This method is called after parsing newly downloaded
-   feeds or any other item aquiring was done. This method
-   adds the item to the given node and does additional
-   updating according to the node type. */
-void node_add_item(nodePtr np, itemPtr ip) {
+void node_merge_item(nodePtr np, itemPtr ip) {
 	gboolean added;
 
 	/* step 1: merge into node type internal data structures */
@@ -166,6 +162,8 @@ void node_add_item(nodePtr np, itemPtr ip) {
 	}
 
 	if(added) {
+		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(ip), node_get_title(np));
+
 		/* step 2: add to itemset */
 		itemset_add_item(np->itemSet, ip);
 
@@ -177,6 +175,8 @@ void node_add_item(nodePtr np, itemPtr ip) {
 		if((FST_FOLDER != np->type) && (FST_VFOLDER != np->type))
 			feedlist_update_counters(ip->readStatus?0:1,
 						 ip->newStatus?1:0);
+	} else {
+		debug2(DEBUG_UPDATE, "not adding \"%s\" to node \"%s\"...", item_get_title(ip), node_get_title(np));
 	}
 }
 
@@ -184,7 +184,7 @@ void node_add_item(nodePtr np, itemPtr ip) {
  * This method can be used to merge an ordered list of items
  * into the item list of the given item set.
  */
-void node_add_items(nodePtr np, GList *list) {
+void node_merge_items(nodePtr np, GList *list) {
 	GList	*iter;
 	
 	/* Items are given in top to bottom display order. 
@@ -193,12 +193,19 @@ void node_add_items(nodePtr np, GList *list) {
 	   to be done bottom to top. */
 	iter = g_list_last(list);
 	while(iter != NULL) {
-		node_add_item(np, ((itemPtr)iter->data));
+		node_merge_item(np, ((itemPtr)iter->data));
 		iter = g_list_previous(iter);
 	}
 	g_list_free(list);
 }
 
+itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
+
+void node_set_itemset(nodePtr np, itemSetPtr sp) {
+
+	np->itemSet = sp;
+	sp->node = np;
+}
 
 gchar * node_render(nodePtr np) {
 
@@ -319,7 +326,7 @@ guint node_get_unread_count(nodePtr np) {
 	if(np->itemSet)
 		return np->itemSet->unreadCount; 
 	else
-		return NULL;
+		return 0;
 }
 
 void node_set_id(nodePtr np, const gchar *id) {

@@ -185,9 +185,38 @@ void node_save(nodePtr np);
  */
 void node_unload(nodePtr np);
 
-void node_add_item(nodePtr np, itemPtr ip);
+/**
+ * Merges the given item into the item set of
+ * the given node. Used for node updating.
+ *
+ * @param np	the node
+ * @param ip	the item
+ */
+void node_merge_item(nodePtr np, itemPtr ip);
 
-void node_add_items(nodePtr np, GList *items);
+/**
+ * Merges the given item set into the item set of
+ * the given node. Used for node updating.
+ *
+ * @param np	the node
+ * @param sp	the item set
+ */
+void node_merge_items(nodePtr np, GList *items);
+
+/**
+ * Returns the item set of the given node.
+ *
+ * @param np	the node
+ */
+itemSetPtr node_get_itemset(nodePtr np);
+
+/**
+ * Assigns the given item set to the given node.
+ *
+ * @param np	the node
+ * @param sp	the item set
+ */
+void node_set_itemset(nodePtr np, itemSetPtr sp);
 
 /**
  * Node content rendering

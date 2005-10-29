@@ -31,7 +31,7 @@ gchar * itemset_render_item(itemSetPtr sp, itemPtr ip) {
 
 	switch(sp->type) {
 		case ITEMSET_TYPE_FEED:
-			baseUri = feed_get_html_url((feedPtr)ip->node->data);
+			baseUri = feed_get_html_url((feedPtr)ip->itemSet->node->data);
 			break;
 		case ITEMSET_TYPE_FOLDER:
 			baseUri = NULL;
@@ -83,6 +83,7 @@ itemPtr itemset_lookup_item(itemSetPtr sp, gulong nr) {
 
 void itemset_add_item(itemSetPtr sp, itemPtr ip) {
 
+	ip->itemSet = sp;
 	sp->items = g_list_append(sp->items, ip);
 
 	/* Always update the node counter statistics */
@@ -134,7 +135,7 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 			feedlist_update_counters(item_get_read_status(ip)?0:-1,	
 						 item_get_new_status(ip)?-1:0);
 
-			feed_remove_item((feedPtr)ip->node->data, ip);
+			feed_remove_item((feedPtr)ip->itemSet->node->data, ip);
 			break;
 		ITEMSET_TYPE_VFOLDER:
 			vfolder_remove_item(ip);
@@ -166,9 +167,9 @@ void itemset_set_item_flag(itemSetPtr sp, itemPtr ip, gboolean newFlagStatus) {
 
 	if(ITEMSET_TYPE_VFOLDER == sp->type) {
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceNode != NULL) {
+		if(ip->sourceSet != NULL) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
+			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
 			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, ip->sourceNr)))
 				itemlist_set_flag(sourceItem, newFlagStatus);
@@ -195,9 +196,9 @@ void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newReadSta
 	
 	if(ITEMSET_TYPE_VFOLDER == sp->type) {
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceNode != NULL) {
+		if(ip->sourceSet != NULL) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
+			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
 			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, ip->sourceNr)))
 				itemlist_set_read_status(sourceItem, newReadStatus);
@@ -220,9 +221,9 @@ void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newUpdat
 
 	if(ITEMSET_TYPE_VFOLDER == sp->type) {	
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceNode != NULL) {
+		if(ip->sourceSet != NULL) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
+			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
 			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, ip->sourceNr)))
 				itemlist_set_update_status(sourceItem, newUpdateStatus);

@@ -301,12 +301,12 @@ void itemlist_update_item(itemPtr ip) {
 
 void itemlist_remove_item(itemPtr ip) {
 	
-	if(NULL != (ip = itemset_lookup_item(ip->node->itemSet, ip->nr))) {
+	if(NULL != (ip = itemset_lookup_item(ip->itemSet, ip->nr))) {
 		/* if the currently selected item should be removed we
 		   don't do it and set a flag to do it when unselecting */
 		if(displayed_item != ip) {
 			ui_itemlist_remove_item(ip);
-			itemset_remove_item(ip->node->itemSet, ip);
+			itemset_remove_item(ip->itemSet, ip);
 			ui_feedlist_update();
 		} else {
 			deferred_item_remove = TRUE;
@@ -338,7 +338,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			displayed_item = ip = ui_itemlist_get_item_from_iter(&iter);
-			itemset_render_item(ip->node->itemSet, ip);
+			itemset_render_item(ip->itemSet, ip);
 			/* set read and unset update status done when unselecting */
 			itemlist_set_read_status(ip, TRUE);
 			itemlist_set_update_status(ip, FALSE);
