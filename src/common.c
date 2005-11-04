@@ -533,11 +533,11 @@ time_t parseRFC822Date(gchar *date) {
 	oldlocale = g_strdup(setlocale(LC_TIME, NULL));
 	setlocale(LC_TIME, "C");
 	
-	/* standard format with 2 digit year */
-	if(NULL != (pos = strptime((const char *)date, "%d %b %y %T", &tm)))
+	/* standard format with 4 digit year */
+	if(NULL != (pos = strptime((const char *)date, " %d %b %Y %T", &tm)))
 		success = TRUE;
-	/* non-standard format with 4 digit year */
-	else if(NULL != (pos = strptime((const char *)date, "%d %b %Y %T", &tm)))
+	/* non-standard format with 2 digit year */
+	else if(NULL != (pos = strptime((const char *)date, " %d %b %y %T", &tm)))
 		success = TRUE;
 	
 	while(pos != NULL && *pos != '\0' && isspace((int)*pos))       /* skip whitespaces before timezone */
