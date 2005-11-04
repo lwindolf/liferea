@@ -773,15 +773,13 @@ create_propdialog (void)
   GtkWidget *vbox233;
   GtkWidget *vbox234;
   GtkWidget *label69;
-  GtkWidget *hbox29;
-  GtkWidget *label70;
+  GtkWidget *alignment30;
   GtkWidget *hbox35;
   GtkWidget *label85;
   GtkWidget *feedNameEntry;
   GtkWidget *vbox236;
   GtkWidget *label73;
-  GtkWidget *hbox31;
-  GtkWidget *label74;
+  GtkWidget *alignment31;
   GtkWidget *vbox237;
   GtkWidget *updateIntervalDefault;
   GSList *updateIntervalDefault_group = NULL;
@@ -796,9 +794,10 @@ create_propdialog (void)
   GtkWidget *feedUpdateInfo;
   GtkWidget *label66;
   GtkWidget *vbox2589;
+  GtkWidget *vbox2621;
   GtkWidget *label167;
-  GtkWidget *hbox75;
-  GtkWidget *label168;
+  GtkWidget *alignment32;
+  GtkWidget *vbox2619;
   GtkWidget *table7;
   GtkWidget *sourceEntry;
   GtkWidget *vbox2590;
@@ -809,20 +808,16 @@ create_propdialog (void)
   GtkWidget *feed_loc_file;
   GtkWidget *label169;
   GtkWidget *selectSourceFileButton;
-  GtkWidget *alignment10;
-  GtkWidget *label170;
   GtkWidget *label171;
-  GtkWidget *outerfiltervbox;
-  GtkWidget *hbox77;
-  GtkWidget *label172;
+  GtkWidget *label170;
+  GtkWidget *vbox2620;
   GtkWidget *filterCheckbox;
   GtkWidget *innerfiltervbox;
-  GtkWidget *label173;
   GtkWidget *vbox2592;
   GtkWidget *label174;
   GtkWidget *filterbox;
-  GtkWidget *label175;
   GtkWidget *label176;
+  GtkWidget *hbox92231;
   GtkWidget *filterEntry;
   GtkWidget *filterSelectFile;
   GtkWidget *label67;
@@ -840,8 +835,7 @@ create_propdialog (void)
   GtkWidget *label68;
   GtkWidget *vbox242;
   GtkWidget *HTTPauthCheck;
-  GtkWidget *hbox42;
-  GtkWidget *label98;
+  GtkWidget *alignment34;
   GtkWidget *table4;
   GtkWidget *label93;
   GtkWidget *label94;
@@ -856,8 +850,10 @@ create_propdialog (void)
   GtkWidget *prop_ok;
 
   propdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (propdialog), 5);
   gtk_window_set_title (GTK_WINDOW (propdialog), _("Subscription Properties"));
   gtk_window_set_position (GTK_WINDOW (propdialog), GTK_WIN_POS_CENTER);
+  gtk_window_set_resizable (GTK_WINDOW (propdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (propdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_dialog_set_has_separator (GTK_DIALOG (propdialog), FALSE);
 
@@ -867,13 +863,14 @@ create_propdialog (void)
   notebook3 = gtk_notebook_new ();
   gtk_widget_show (notebook3);
   gtk_box_pack_start (GTK_BOX (dialog_vbox13), notebook3, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (notebook3), 5);
 
-  vbox233 = gtk_vbox_new (FALSE, 6);
+  vbox233 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox233);
   gtk_container_add (GTK_CONTAINER (notebook3), vbox233);
   gtk_container_set_border_width (GTK_CONTAINER (vbox233), 12);
 
-  vbox234 = gtk_vbox_new (FALSE, 0);
+  vbox234 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox234);
   gtk_box_pack_start (GTK_BOX (vbox233), vbox234, FALSE, TRUE, 0);
 
@@ -883,18 +880,14 @@ create_propdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label69), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label69), 0, 0.5);
 
-  hbox29 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox29);
-  gtk_box_pack_start (GTK_BOX (vbox234), hbox29, TRUE, TRUE, 0);
+  alignment30 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment30);
+  gtk_box_pack_start (GTK_BOX (vbox234), alignment30, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment30), 0, 0, 12, 0);
 
-  label70 = gtk_label_new (_("    "));
-  gtk_widget_show (label70);
-  gtk_box_pack_start (GTK_BOX (hbox29), label70, FALSE, FALSE, 0);
-
-  hbox35 = gtk_hbox_new (FALSE, 6);
+  hbox35 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox35);
-  gtk_box_pack_start (GTK_BOX (hbox29), hbox35, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox35), 6);
+  gtk_container_add (GTK_CONTAINER (alignment30), hbox35);
 
   label85 = gtk_label_new_with_mnemonic (_("Feed _Name:"));
   gtk_widget_show (label85);
@@ -905,7 +898,7 @@ create_propdialog (void)
   gtk_box_pack_start (GTK_BOX (hbox35), feedNameEntry, TRUE, TRUE, 0);
   gtk_entry_set_activates_default (GTK_ENTRY (feedNameEntry), TRUE);
 
-  vbox236 = gtk_vbox_new (FALSE, 0);
+  vbox236 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox236);
   gtk_box_pack_start (GTK_BOX (vbox233), vbox236, FALSE, TRUE, 0);
 
@@ -915,18 +908,14 @@ create_propdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label73), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label73), 0, 0.5);
 
-  hbox31 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox31);
-  gtk_box_pack_start (GTK_BOX (vbox236), hbox31, FALSE, TRUE, 0);
-
-  label74 = gtk_label_new (_("    "));
-  gtk_widget_show (label74);
-  gtk_box_pack_start (GTK_BOX (hbox31), label74, FALSE, FALSE, 0);
+  alignment31 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment31);
+  gtk_box_pack_start (GTK_BOX (vbox236), alignment31, FALSE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment31), 0, 0, 12, 0);
 
   vbox237 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox237);
-  gtk_box_pack_start (GTK_BOX (hbox31), vbox237, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox237), 6);
+  gtk_container_add (GTK_CONTAINER (alignment31), vbox237);
 
   updateIntervalDefault = gtk_radio_button_new_with_mnemonic (NULL, _("_Use global default update interval."));
   gtk_widget_show (updateIntervalDefault);
@@ -978,30 +967,35 @@ create_propdialog (void)
   gtk_widget_show (label66);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 0), label66);
 
-  vbox2589 = gtk_vbox_new (FALSE, 6);
+  vbox2589 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox2589);
   gtk_container_add (GTK_CONTAINER (notebook3), vbox2589);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2589), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2589), 12);
+
+  vbox2621 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2621);
+  gtk_box_pack_start (GTK_BOX (vbox2589), vbox2621, TRUE, TRUE, 0);
 
   label167 = gtk_label_new (_("<b>Feed Source</b>"));
   gtk_widget_show (label167);
-  gtk_box_pack_start (GTK_BOX (vbox2589), label167, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2621), label167, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label167), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label167), 0, 0.5);
 
-  hbox75 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox75);
-  gtk_box_pack_start (GTK_BOX (vbox2589), hbox75, FALSE, FALSE, 0);
+  alignment32 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment32);
+  gtk_box_pack_start (GTK_BOX (vbox2621), alignment32, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment32), 0, 0, 12, 0);
 
-  label168 = gtk_label_new (_("    "));
-  gtk_widget_show (label168);
-  gtk_box_pack_start (GTK_BOX (hbox75), label168, FALSE, FALSE, 0);
+  vbox2619 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2619);
+  gtk_container_add (GTK_CONTAINER (alignment32), vbox2619);
 
   table7 = gtk_table_new (2, 2, FALSE);
   gtk_widget_show (table7);
-  gtk_box_pack_start (GTK_BOX (hbox75), table7, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2619), table7, FALSE, TRUE, 0);
   gtk_table_set_row_spacings (GTK_TABLE (table7), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table7), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table7), 12);
 
   sourceEntry = gtk_entry_new ();
   gtk_widget_show (sourceEntry);
@@ -1009,12 +1003,11 @@ create_propdialog (void)
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  vbox2590 = gtk_vbox_new (FALSE, 0);
+  vbox2590 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2590);
   gtk_table_attach (GTK_TABLE (table7), vbox2590, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2590), 6);
 
   feed_loc_url = gtk_radio_button_new_with_mnemonic (NULL, _("_URL"));
   gtk_widget_show (feed_loc_url);
@@ -1046,50 +1039,36 @@ create_propdialog (void)
   gtk_widget_show (selectSourceFileButton);
   gtk_box_pack_start (GTK_BOX (hbox76), selectSourceFileButton, FALSE, FALSE, 0);
 
-  alignment10 = gtk_alignment_new (0.5, 0.5, 1, 1);
-  gtk_widget_show (alignment10);
-  gtk_table_attach (GTK_TABLE (table7), alignment10, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-  label170 = gtk_label_new (_("Source Type:"));
-  gtk_widget_show (label170);
-  gtk_container_add (GTK_CONTAINER (alignment10), label170);
-  gtk_misc_set_alignment (GTK_MISC (label170), 0, 0);
-  gtk_misc_set_padding (GTK_MISC (label170), 0, 6);
-
-  label171 = gtk_label_new (_("Source:"));
+  label171 = gtk_label_new_with_mnemonic (_("_Source:"));
   gtk_widget_show (label171);
   gtk_table_attach (GTK_TABLE (table7), label171, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label171), 0, 0.5);
 
-  outerfiltervbox = gtk_vbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (vbox2589), outerfiltervbox, FALSE, FALSE, 0);
+  label170 = gtk_label_new (_("Source Type:"));
+  gtk_widget_show (label170);
+  gtk_table_attach (GTK_TABLE (table7), label170, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label170), 0, 0);
 
-  hbox77 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox77);
-  gtk_box_pack_start (GTK_BOX (outerfiltervbox), hbox77, FALSE, FALSE, 0);
-
-  label172 = gtk_label_new (_("    "));
-  gtk_widget_show (label172);
-  gtk_box_pack_start (GTK_BOX (hbox77), label172, FALSE, FALSE, 0);
+  vbox2620 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2620);
+  gtk_box_pack_start (GTK_BOX (vbox2619), vbox2620, TRUE, TRUE, 0);
 
   filterCheckbox = gtk_check_button_new_with_mnemonic (_("Use conversion filter"));
   gtk_widget_show (filterCheckbox);
-  gtk_box_pack_start (GTK_BOX (hbox77), filterCheckbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2620), filterCheckbox, FALSE, FALSE, 0);
 
-  innerfiltervbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (outerfiltervbox), innerfiltervbox, TRUE, TRUE, 0);
-
-  label173 = gtk_label_new (_("    "));
-  gtk_widget_show (label173);
-  gtk_box_pack_start (GTK_BOX (innerfiltervbox), label173, FALSE, FALSE, 0);
+  innerfiltervbox = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (innerfiltervbox);
+  gtk_box_pack_start (GTK_BOX (vbox2620), innerfiltervbox, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (innerfiltervbox), 0, 0, 12, 0);
 
   vbox2592 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2592);
-  gtk_box_pack_start (GTK_BOX (innerfiltervbox), vbox2592, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (innerfiltervbox), vbox2592);
 
   label174 = gtk_label_new (_("Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."));
   gtk_widget_show (label174);
@@ -1097,25 +1076,25 @@ create_propdialog (void)
   gtk_label_set_line_wrap (GTK_LABEL (label174), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label174), 0, 0.5);
 
-  filterbox = gtk_hbox_new (FALSE, 6);
+  filterbox = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (filterbox);
   gtk_box_pack_start (GTK_BOX (vbox2592), filterbox, FALSE, FALSE, 0);
 
-  label175 = gtk_label_new (_("    "));
-  gtk_widget_show (label175);
-  gtk_box_pack_start (GTK_BOX (filterbox), label175, FALSE, FALSE, 0);
-
-  label176 = gtk_label_new (_("Convert using:"));
+  label176 = gtk_label_new_with_mnemonic (_("Convert _using:"));
   gtk_widget_show (label176);
   gtk_box_pack_start (GTK_BOX (filterbox), label176, FALSE, FALSE, 0);
 
+  hbox92231 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox92231);
+  gtk_box_pack_start (GTK_BOX (filterbox), hbox92231, TRUE, TRUE, 0);
+
   filterEntry = gtk_entry_new ();
   gtk_widget_show (filterEntry);
-  gtk_box_pack_start (GTK_BOX (filterbox), filterEntry, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox92231), filterEntry, TRUE, TRUE, 0);
 
   filterSelectFile = gtk_button_new_with_mnemonic (_("Select File..."));
   gtk_widget_show (filterSelectFile);
-  gtk_box_pack_start (GTK_BOX (filterbox), filterSelectFile, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox92231), filterSelectFile, FALSE, FALSE, 0);
 
   label67 = gtk_label_new (_("Feed Source"));
   gtk_widget_show (label67);
@@ -1185,19 +1164,16 @@ create_propdialog (void)
   gtk_widget_show (HTTPauthCheck);
   gtk_box_pack_start (GTK_BOX (vbox242), HTTPauthCheck, FALSE, FALSE, 0);
 
-  hbox42 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox42);
-  gtk_box_pack_start (GTK_BOX (vbox242), hbox42, TRUE, TRUE, 0);
-
-  label98 = gtk_label_new (_("    "));
-  gtk_widget_show (label98);
-  gtk_box_pack_start (GTK_BOX (hbox42), label98, FALSE, FALSE, 0);
+  alignment34 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment34);
+  gtk_box_pack_start (GTK_BOX (vbox242), alignment34, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment34), 0, 0, 12, 0);
 
   table4 = gtk_table_new (2, 2, FALSE);
   gtk_widget_show (table4);
-  gtk_box_pack_start (GTK_BOX (hbox42), table4, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment34), table4);
   gtk_table_set_row_spacings (GTK_TABLE (table4), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table4), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table4), 12);
 
   label93 = gtk_label_new_with_mnemonic (_("User_name:"));
   gtk_widget_show (label93);
@@ -1230,7 +1206,7 @@ create_propdialog (void)
   gtk_widget_show (label131);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 3), label131);
 
-  vbox2615 = gtk_vbox_new (FALSE, 6);
+  vbox2615 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox2615);
   gtk_container_add (GTK_CONTAINER (notebook3), vbox2615);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2615), 12);
@@ -1258,6 +1234,8 @@ create_propdialog (void)
   GTK_WIDGET_SET_FLAGS (prop_ok, GTK_CAN_DEFAULT);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label85), feedNameEntry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label171), sourceEntry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label176), filterEntry);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label93), usernameEntry);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label94), passwordEntry);
 
@@ -1268,15 +1246,13 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, vbox233, "vbox233");
   GLADE_HOOKUP_OBJECT (propdialog, vbox234, "vbox234");
   GLADE_HOOKUP_OBJECT (propdialog, label69, "label69");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox29, "hbox29");
-  GLADE_HOOKUP_OBJECT (propdialog, label70, "label70");
+  GLADE_HOOKUP_OBJECT (propdialog, alignment30, "alignment30");
   GLADE_HOOKUP_OBJECT (propdialog, hbox35, "hbox35");
   GLADE_HOOKUP_OBJECT (propdialog, label85, "label85");
   GLADE_HOOKUP_OBJECT (propdialog, feedNameEntry, "feedNameEntry");
   GLADE_HOOKUP_OBJECT (propdialog, vbox236, "vbox236");
   GLADE_HOOKUP_OBJECT (propdialog, label73, "label73");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox31, "hbox31");
-  GLADE_HOOKUP_OBJECT (propdialog, label74, "label74");
+  GLADE_HOOKUP_OBJECT (propdialog, alignment31, "alignment31");
   GLADE_HOOKUP_OBJECT (propdialog, vbox237, "vbox237");
   GLADE_HOOKUP_OBJECT (propdialog, updateIntervalDefault, "updateIntervalDefault");
   GLADE_HOOKUP_OBJECT (propdialog, hbox70, "hbox70");
@@ -1289,9 +1265,10 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, feedUpdateInfo, "feedUpdateInfo");
   GLADE_HOOKUP_OBJECT (propdialog, label66, "label66");
   GLADE_HOOKUP_OBJECT (propdialog, vbox2589, "vbox2589");
+  GLADE_HOOKUP_OBJECT (propdialog, vbox2621, "vbox2621");
   GLADE_HOOKUP_OBJECT (propdialog, label167, "label167");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox75, "hbox75");
-  GLADE_HOOKUP_OBJECT (propdialog, label168, "label168");
+  GLADE_HOOKUP_OBJECT (propdialog, alignment32, "alignment32");
+  GLADE_HOOKUP_OBJECT (propdialog, vbox2619, "vbox2619");
   GLADE_HOOKUP_OBJECT (propdialog, table7, "table7");
   GLADE_HOOKUP_OBJECT (propdialog, sourceEntry, "sourceEntry");
   GLADE_HOOKUP_OBJECT (propdialog, vbox2590, "vbox2590");
@@ -1301,20 +1278,16 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, feed_loc_file, "feed_loc_file");
   GLADE_HOOKUP_OBJECT (propdialog, label169, "label169");
   GLADE_HOOKUP_OBJECT (propdialog, selectSourceFileButton, "selectSourceFileButton");
-  GLADE_HOOKUP_OBJECT (propdialog, alignment10, "alignment10");
-  GLADE_HOOKUP_OBJECT (propdialog, label170, "label170");
   GLADE_HOOKUP_OBJECT (propdialog, label171, "label171");
-  GLADE_HOOKUP_OBJECT (propdialog, outerfiltervbox, "outerfiltervbox");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox77, "hbox77");
-  GLADE_HOOKUP_OBJECT (propdialog, label172, "label172");
+  GLADE_HOOKUP_OBJECT (propdialog, label170, "label170");
+  GLADE_HOOKUP_OBJECT (propdialog, vbox2620, "vbox2620");
   GLADE_HOOKUP_OBJECT (propdialog, filterCheckbox, "filterCheckbox");
   GLADE_HOOKUP_OBJECT (propdialog, innerfiltervbox, "innerfiltervbox");
-  GLADE_HOOKUP_OBJECT (propdialog, label173, "label173");
   GLADE_HOOKUP_OBJECT (propdialog, vbox2592, "vbox2592");
   GLADE_HOOKUP_OBJECT (propdialog, label174, "label174");
   GLADE_HOOKUP_OBJECT (propdialog, filterbox, "filterbox");
-  GLADE_HOOKUP_OBJECT (propdialog, label175, "label175");
   GLADE_HOOKUP_OBJECT (propdialog, label176, "label176");
+  GLADE_HOOKUP_OBJECT (propdialog, hbox92231, "hbox92231");
   GLADE_HOOKUP_OBJECT (propdialog, filterEntry, "filterEntry");
   GLADE_HOOKUP_OBJECT (propdialog, filterSelectFile, "filterSelectFile");
   GLADE_HOOKUP_OBJECT (propdialog, label67, "label67");
@@ -1330,8 +1303,7 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, label68, "label68");
   GLADE_HOOKUP_OBJECT (propdialog, vbox242, "vbox242");
   GLADE_HOOKUP_OBJECT (propdialog, HTTPauthCheck, "HTTPauthCheck");
-  GLADE_HOOKUP_OBJECT (propdialog, hbox42, "hbox42");
-  GLADE_HOOKUP_OBJECT (propdialog, label98, "label98");
+  GLADE_HOOKUP_OBJECT (propdialog, alignment34, "alignment34");
   GLADE_HOOKUP_OBJECT (propdialog, table4, "table4");
   GLADE_HOOKUP_OBJECT (propdialog, label93, "label93");
   GLADE_HOOKUP_OBJECT (propdialog, label94, "label94");
@@ -1361,6 +1333,7 @@ create_newdialog (void)
   GtkWidget *label102;
   GtkWidget *table5;
   GtkWidget *sourceEntry;
+  GtkWidget *label104;
   GtkWidget *vbox244;
   GtkWidget *feed_loc_url;
   GSList *feed_loc_url_group = NULL;
@@ -1369,9 +1342,7 @@ create_newdialog (void)
   GtkWidget *feed_loc_file;
   GtkWidget *label165;
   GtkWidget *selectSourceFileButton;
-  GtkWidget *alignment7;
   GtkWidget *label103;
-  GtkWidget *label104;
   GtkWidget *outerfiltervbox;
   GtkWidget *hbox74;
   GtkWidget *label166;
@@ -1390,11 +1361,12 @@ create_newdialog (void)
   GtkWidget *newfeedbtn;
 
   newdialog = gtk_dialog_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (newdialog), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (newdialog), 5);
   gtk_window_set_title (GTK_WINDOW (newdialog), _("New Subscription"));
   gtk_window_set_position (GTK_WINDOW (newdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_modal (GTK_WINDOW (newdialog), TRUE);
   gtk_window_set_default_size (GTK_WINDOW (newdialog), 400, -1);
+  gtk_window_set_resizable (GTK_WINDOW (newdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (newdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_dialog_set_has_separator (GTK_DIALOG (newdialog), FALSE);
 
@@ -1408,6 +1380,7 @@ create_newdialog (void)
   vbox16 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox16);
   gtk_box_pack_start (GTK_BOX (vbox9), vbox16, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox16), 5);
 
   label101 = gtk_label_new (_("<b>Feed Source</b>"));
   gtk_widget_show (label101);
@@ -1427,7 +1400,7 @@ create_newdialog (void)
   gtk_widget_show (table5);
   gtk_box_pack_start (GTK_BOX (hbox43), table5, TRUE, TRUE, 0);
   gtk_table_set_row_spacings (GTK_TABLE (table5), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table5), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table5), 12);
 
   sourceEntry = gtk_entry_new ();
   gtk_widget_show (sourceEntry);
@@ -1435,12 +1408,18 @@ create_newdialog (void)
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
+  label104 = gtk_label_new (_("Source:"));
+  gtk_widget_show (label104);
+  gtk_table_attach (GTK_TABLE (table5), label104, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label104), 0, 0.5);
+
   vbox244 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox244);
   gtk_table_attach (GTK_TABLE (table5), vbox244, 1, 2, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox244), 6);
 
   feed_loc_url = gtk_radio_button_new_with_mnemonic (NULL, _("_URL"));
   gtk_widget_show (feed_loc_url);
@@ -1472,24 +1451,12 @@ create_newdialog (void)
   gtk_widget_show (selectSourceFileButton);
   gtk_box_pack_start (GTK_BOX (hbox73), selectSourceFileButton, FALSE, FALSE, 0);
 
-  alignment7 = gtk_alignment_new (0.5, 0.5, 1, 1);
-  gtk_widget_show (alignment7);
-  gtk_table_attach (GTK_TABLE (table5), alignment7, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
-
   label103 = gtk_label_new (_("Source Type:"));
   gtk_widget_show (label103);
-  gtk_container_add (GTK_CONTAINER (alignment7), label103);
-  gtk_misc_set_alignment (GTK_MISC (label103), 0, 0);
-  gtk_misc_set_padding (GTK_MISC (label103), 0, 6);
-
-  label104 = gtk_label_new (_("Source:"));
-  gtk_widget_show (label104);
-  gtk_table_attach (GTK_TABLE (table5), label104, 0, 1, 1, 2,
+  gtk_table_attach (GTK_TABLE (table5), label103, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_misc_set_alignment (GTK_MISC (label104), 0, 0.5);
+                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label103), 0, 0);
 
   outerfiltervbox = gtk_vbox_new (FALSE, 6);
   gtk_box_pack_start (GTK_BOX (vbox16), outerfiltervbox, FALSE, FALSE, 0);
@@ -1571,6 +1538,7 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, label102, "label102");
   GLADE_HOOKUP_OBJECT (newdialog, table5, "table5");
   GLADE_HOOKUP_OBJECT (newdialog, sourceEntry, "sourceEntry");
+  GLADE_HOOKUP_OBJECT (newdialog, label104, "label104");
   GLADE_HOOKUP_OBJECT (newdialog, vbox244, "vbox244");
   GLADE_HOOKUP_OBJECT (newdialog, feed_loc_url, "feed_loc_url");
   GLADE_HOOKUP_OBJECT (newdialog, feed_loc_command, "feed_loc_command");
@@ -1578,9 +1546,7 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, feed_loc_file, "feed_loc_file");
   GLADE_HOOKUP_OBJECT (newdialog, label165, "label165");
   GLADE_HOOKUP_OBJECT (newdialog, selectSourceFileButton, "selectSourceFileButton");
-  GLADE_HOOKUP_OBJECT (newdialog, alignment7, "alignment7");
   GLADE_HOOKUP_OBJECT (newdialog, label103, "label103");
-  GLADE_HOOKUP_OBJECT (newdialog, label104, "label104");
   GLADE_HOOKUP_OBJECT (newdialog, outerfiltervbox, "outerfiltervbox");
   GLADE_HOOKUP_OBJECT (newdialog, hbox74, "hbox74");
   GLADE_HOOKUP_OBJECT (newdialog, label166, "label166");
@@ -1610,20 +1576,18 @@ create_prefdialog (void)
   GtkWidget *vbox3;
   GtkWidget *vbox250;
   GtkWidget *label122;
-  GtkWidget *hbox56;
-  GtkWidget *label141;
-  GtkWidget *vbox20;
+  GtkWidget *alignment21;
   GtkWidget *hbox19;
   GtkWidget *label33;
   GtkObject *itemCountBtn_adj;
   GtkWidget *itemCountBtn;
   GtkWidget *vbox2585;
   GtkWidget *label156;
-  GtkWidget *hbox67;
-  GtkWidget *label157;
+  GtkWidget *alignment22;
   GtkWidget *vbox2586;
   GtkWidget *hbox68;
   GtkWidget *label159;
+  GtkWidget *hbox92230;
   GtkObject *refreshIntervalSpinButton_adj;
   GtkWidget *refreshIntervalSpinButton;
   GtkWidget *label160;
@@ -1633,8 +1597,7 @@ create_prefdialog (void)
   GtkWidget *startupfeedhandler;
   GtkWidget *vbox2579;
   GtkWidget *label147;
-  GtkWidget *hbox60;
-  GtkWidget *label148;
+  GtkWidget *alignment23;
   GtkWidget *vbox2580;
   GtkWidget *feedsinmemorybtn1;
   GSList *feedsinmemorybtn1_group = NULL;
@@ -1643,25 +1606,21 @@ create_prefdialog (void)
   GtkWidget *vbox2593;
   GtkWidget *vbox2594;
   GtkWidget *label181;
-  GtkWidget *hbox83;
-  GtkWidget *label188;
+  GtkWidget *alignment24;
   GtkWidget *vbox2604;
   GtkWidget *folderdisplaybtn;
   GtkWidget *label193;
   GtkWidget *hidereadbtn;
   GtkWidget *vbox2587;
   GtkWidget *label163;
-  GtkWidget *hbox72;
-  GtkWidget *label164;
-  GtkWidget *vbox2588;
+  GtkWidget *alignment25;
+  GtkWidget *hbox92229;
   GtkWidget *updateAllFavicons;
   GtkWidget *label177;
   GtkWidget *vbox222;
   GtkWidget *vbox253;
   GtkWidget *label128;
-  GtkWidget *hbox53;
-  GtkWidget *label127;
-  GtkWidget *vbox232;
+  GtkWidget *alignment26;
   GtkWidget *hbox63;
   GtkWidget *label151;
   GtkWidget *browsekeyoptionmenu;
@@ -1671,8 +1630,7 @@ create_prefdialog (void)
   GtkWidget *alt_space;
   GtkWidget *vbox2581;
   GtkWidget *label149;
-  GtkWidget *hbox61;
-  GtkWidget *label150;
+  GtkWidget *alignment27;
   GtkWidget *vbox2582;
   GtkWidget *timeradiobtn1;
   GSList *timeradiobtn1_group = NULL;
@@ -1685,8 +1643,7 @@ create_prefdialog (void)
   GtkWidget *vbox2601;
   GtkWidget *vbox2602;
   GtkWidget *label190;
-  GtkWidget *hbox84;
-  GtkWidget *label192;
+  GtkWidget *alignment28;
   GtkWidget *vbox2603;
   GtkWidget *hbox28;
   GtkWidget *label65;
@@ -1697,9 +1654,7 @@ create_prefdialog (void)
   GtkWidget *disablejavascript;
   GtkWidget *vbox248;
   GtkWidget *label118;
-  GtkWidget *hbox49;
-  GtkWidget *label119;
-  GtkWidget *vbox257;
+  GtkWidget *alignment29;
   GtkWidget *table6;
   GtkWidget *label137;
   GtkWidget *manuallabel;
@@ -1712,12 +1667,9 @@ create_prefdialog (void)
   GtkWidget *vbox259;
   GtkWidget *vbox251;
   GtkWidget *label124;
-  GtkWidget *hbox51;
-  GtkWidget *label123;
-  GtkWidget *vbox22;
+  GtkWidget *alignment14;
+  GtkWidget *vbox2617;
   GtkWidget *trayiconoptionbtn;
-  GtkWidget *hbox55;
-  GtkWidget *label136;
   GtkWidget *vbox256;
   GtkWidget *popupwindowsoptionbtn;
   GtkWidget *hbox85;
@@ -1732,8 +1684,7 @@ create_prefdialog (void)
   GtkWidget *label196;
   GtkWidget *vbox252;
   GtkWidget *label126;
-  GtkWidget *hbox52;
-  GtkWidget *label125;
+  GtkWidget *alignment15;
   GtkWidget *vbox223;
   GtkWidget *menuradiobtn1;
   GSList *menuradiobtn1_group = NULL;
@@ -1744,14 +1695,12 @@ create_prefdialog (void)
   GtkWidget *vbox227;
   GtkWidget *vbox254;
   GtkWidget *label130;
-  GtkWidget *hbox54;
-  GtkWidget *label129;
+  GtkWidget *alignment16;
   GtkWidget *vbox228;
   GtkWidget *label52;
   GtkWidget *vbox229;
   GtkWidget *enableproxybtn;
   GtkWidget *proxybox;
-  GtkWidget *label143;
   GtkWidget *vbox2578;
   GtkWidget *proxytable;
   GtkWidget *label53;
@@ -1759,8 +1708,7 @@ create_prefdialog (void)
   GtkWidget *proxyportentry;
   GtkWidget *label54;
   GtkWidget *useProxyAuth;
-  GtkWidget *hbox59;
-  GtkWidget *label144;
+  GtkWidget *alignment18;
   GtkWidget *proxyauthbox;
   GtkWidget *label145;
   GtkWidget *proxyuserentry;
@@ -1770,8 +1718,7 @@ create_prefdialog (void)
   GtkWidget *vbox2609;
   GtkWidget *vbox2610;
   GtkWidget *label217;
-  GtkWidget *hbox92;
-  GtkWidget *label218;
+  GtkWidget *alignment20;
   GtkWidget *table8;
   GtkWidget *label216;
   GtkWidget *label219;
@@ -1781,9 +1728,9 @@ create_prefdialog (void)
   GtkWidget *hbox92225;
   GtkWidget *save_download_entry;
   GtkWidget *save_download_select_btn;
+  GtkWidget *vbox2618;
   GtkWidget *label208;
-  GtkWidget *hbox89;
-  GtkWidget *label209;
+  GtkWidget *alignment19;
   GtkWidget *vbox2613;
   GtkWidget *scrolledwindow8;
   GtkWidget *enc_actions_view;
@@ -1798,9 +1745,11 @@ create_prefdialog (void)
   tooltips = gtk_tooltips_new ();
 
   prefdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (prefdialog), 5);
   gtk_window_set_title (GTK_WINDOW (prefdialog), _("Liferea Preferences"));
   gtk_window_set_position (GTK_WINDOW (prefdialog), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (prefdialog), 300, -1);
+  gtk_window_set_resizable (GTK_WINDOW (prefdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (prefdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_dialog_set_has_separator (GTK_DIALOG (prefdialog), FALSE);
 
@@ -1809,16 +1758,17 @@ create_prefdialog (void)
 
   notebook1 = gtk_notebook_new ();
   gtk_widget_show (notebook1);
-  gtk_box_pack_start (GTK_BOX (dialog_vbox5), notebook1, FALSE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox5), notebook1, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (notebook1), 5);
 
-  vbox3 = gtk_vbox_new (FALSE, 6);
+  vbox3 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox3);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox3);
   gtk_notebook_set_tab_label_packing (GTK_NOTEBOOK (notebook1), vbox3,
                                       FALSE, FALSE, GTK_PACK_START);
   gtk_container_set_border_width (GTK_CONTAINER (vbox3), 12);
 
-  vbox250 = gtk_vbox_new (FALSE, 0);
+  vbox250 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox250);
   gtk_box_pack_start (GTK_BOX (vbox3), vbox250, FALSE, TRUE, 0);
 
@@ -1828,22 +1778,14 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label122), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label122), 0, 0.5);
 
-  hbox56 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox56);
-  gtk_box_pack_start (GTK_BOX (vbox250), hbox56, TRUE, TRUE, 0);
+  alignment21 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment21);
+  gtk_box_pack_start (GTK_BOX (vbox250), alignment21, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment21), 0, 0, 12, 0);
 
-  label141 = gtk_label_new (_("    "));
-  gtk_widget_show (label141);
-  gtk_box_pack_start (GTK_BOX (hbox56), label141, FALSE, FALSE, 0);
-
-  vbox20 = gtk_vbox_new (FALSE, 5);
-  gtk_widget_show (vbox20);
-  gtk_box_pack_start (GTK_BOX (hbox56), vbox20, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox20), 5);
-
-  hbox19 = gtk_hbox_new (FALSE, 5);
+  hbox19 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox19);
-  gtk_box_pack_start (GTK_BOX (vbox20), hbox19, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment21), hbox19);
 
   label33 = gtk_label_new (_("Default number of items per feed to save:"));
   gtk_widget_show (label33);
@@ -1857,9 +1799,9 @@ create_prefdialog (void)
   gtk_widget_set_size_request (itemCountBtn, 60, -1);
   gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (itemCountBtn), TRUE);
 
-  vbox2585 = gtk_vbox_new (FALSE, 0);
+  vbox2585 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2585);
-  gtk_box_pack_start (GTK_BOX (vbox3), vbox2585, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox3), vbox2585, FALSE, TRUE, 0);
 
   label156 = gtk_label_new (_("<span weight=\"bold\">Feed Update Settings</span>"));
   gtk_widget_show (label156);
@@ -1867,36 +1809,36 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label156), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label156), 0, 0.5);
 
-  hbox67 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox67);
-  gtk_box_pack_start (GTK_BOX (vbox2585), hbox67, TRUE, TRUE, 0);
+  alignment22 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment22);
+  gtk_box_pack_start (GTK_BOX (vbox2585), alignment22, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment22), 0, 0, 12, 0);
 
-  label157 = gtk_label_new (_("    "));
-  gtk_widget_show (label157);
-  gtk_box_pack_start (GTK_BOX (hbox67), label157, FALSE, FALSE, 0);
-
-  vbox2586 = gtk_vbox_new (FALSE, 5);
+  vbox2586 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2586);
-  gtk_box_pack_start (GTK_BOX (hbox67), vbox2586, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2586), 5);
+  gtk_container_add (GTK_CONTAINER (alignment22), vbox2586);
 
-  hbox68 = gtk_hbox_new (FALSE, 6);
+  hbox68 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox68);
-  gtk_box_pack_start (GTK_BOX (vbox2586), hbox68, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2586), hbox68, FALSE, TRUE, 0);
 
   label159 = gtk_label_new_with_mnemonic (_("Default Feed Refresh _Interval:"));
   gtk_widget_show (label159);
   gtk_box_pack_start (GTK_BOX (hbox68), label159, FALSE, FALSE, 0);
 
+  hbox92230 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox92230);
+  gtk_box_pack_start (GTK_BOX (hbox68), hbox92230, FALSE, TRUE, 0);
+
   refreshIntervalSpinButton_adj = gtk_adjustment_new (1, 0, 10000, 1, 60, 60);
   refreshIntervalSpinButton = gtk_spin_button_new (GTK_ADJUSTMENT (refreshIntervalSpinButton_adj), 1, 0);
   gtk_widget_show (refreshIntervalSpinButton);
-  gtk_box_pack_start (GTK_BOX (hbox68), refreshIntervalSpinButton, FALSE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox92230), refreshIntervalSpinButton, TRUE, TRUE, 0);
   gtk_widget_set_size_request (refreshIntervalSpinButton, 60, -1);
 
   label160 = gtk_label_new (_("minutes."));
   gtk_widget_show (label160);
-  gtk_box_pack_start (GTK_BOX (hbox68), label160, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox92230), label160, FALSE, FALSE, 0);
 
   label135 = gtk_label_new (_("Note: <i>Please remember to set a reasonable refresh time. It is not desired to poll daily updated feeds every 15 minutes. To disable auto-updating per default set the interval to 0 minutes.</i>"));
   gtk_widget_show (label135);
@@ -1905,7 +1847,7 @@ create_prefdialog (void)
   gtk_label_set_line_wrap (GTK_LABEL (label135), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label135), 0, 0.5);
 
-  hbox57 = gtk_hbox_new (FALSE, 5);
+  hbox57 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox57);
   gtk_box_pack_start (GTK_BOX (vbox2586), hbox57, TRUE, FALSE, 0);
 
@@ -1917,9 +1859,9 @@ create_prefdialog (void)
   gtk_widget_show (startupfeedhandler);
   gtk_box_pack_start (GTK_BOX (hbox57), startupfeedhandler, FALSE, FALSE, 0);
 
-  vbox2579 = gtk_vbox_new (FALSE, 0);
+  vbox2579 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2579);
-  gtk_box_pack_start (GTK_BOX (vbox3), vbox2579, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox3), vbox2579, FALSE, TRUE, 0);
 
   label147 = gtk_label_new (_("<span weight=\"bold\">Feed Loading Settings</span>"));
   gtk_widget_show (label147);
@@ -1927,18 +1869,14 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label147), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label147), 0, 0.5);
 
-  hbox60 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox60);
-  gtk_box_pack_start (GTK_BOX (vbox2579), hbox60, TRUE, TRUE, 0);
+  alignment23 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment23);
+  gtk_box_pack_start (GTK_BOX (vbox2579), alignment23, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment23), 0, 0, 12, 0);
 
-  label148 = gtk_label_new (_("    "));
-  gtk_widget_show (label148);
-  gtk_box_pack_start (GTK_BOX (hbox60), label148, FALSE, FALSE, 0);
-
-  vbox2580 = gtk_vbox_new (FALSE, 5);
+  vbox2580 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2580);
-  gtk_box_pack_start (GTK_BOX (hbox60), vbox2580, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2580), 5);
+  gtk_container_add (GTK_CONTAINER (alignment23), vbox2580);
 
   feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Optimize for reduced _memory usage."));
   gtk_widget_show (feedsinmemorybtn1);
@@ -1957,7 +1895,7 @@ create_prefdialog (void)
   gtk_widget_show (label38);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label38);
 
-  vbox2593 = gtk_vbox_new (FALSE, 12);
+  vbox2593 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox2593);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox2593);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2593), 12);
@@ -1972,17 +1910,14 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label181), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label181), 0, 0.5);
 
-  hbox83 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox83);
-  gtk_box_pack_start (GTK_BOX (vbox2594), hbox83, TRUE, TRUE, 0);
-
-  label188 = gtk_label_new (_("    "));
-  gtk_widget_show (label188);
-  gtk_box_pack_start (GTK_BOX (hbox83), label188, FALSE, FALSE, 0);
+  alignment24 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment24);
+  gtk_box_pack_start (GTK_BOX (vbox2594), alignment24, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment24), 0, 0, 12, 0);
 
   vbox2604 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2604);
-  gtk_box_pack_start (GTK_BOX (hbox83), vbox2604, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment24), vbox2604);
 
   folderdisplaybtn = gtk_check_button_new_with_mnemonic (_("Show the items of all child feeds when a folder is selected."));
   gtk_widget_show (folderdisplaybtn);
@@ -2001,7 +1936,7 @@ create_prefdialog (void)
 
   vbox2587 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2587);
-  gtk_box_pack_start (GTK_BOX (vbox2593), vbox2587, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2593), vbox2587, FALSE, TRUE, 0);
 
   label163 = gtk_label_new (_("<span weight=\"bold\">Feed Icons (Favicons)</span>"));
   gtk_widget_show (label163);
@@ -2009,35 +1944,31 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label163), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label163), 0, 0.5);
 
-  hbox72 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox72);
-  gtk_box_pack_start (GTK_BOX (vbox2587), hbox72, TRUE, TRUE, 0);
+  alignment25 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment25);
+  gtk_box_pack_start (GTK_BOX (vbox2587), alignment25, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment25), 0, 0, 12, 0);
 
-  label164 = gtk_label_new (_("    "));
-  gtk_widget_show (label164);
-  gtk_box_pack_start (GTK_BOX (hbox72), label164, FALSE, FALSE, 0);
+  hbox92229 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox92229);
+  gtk_container_add (GTK_CONTAINER (alignment25), hbox92229);
 
-  vbox2588 = gtk_vbox_new (FALSE, 5);
-  gtk_widget_show (vbox2588);
-  gtk_box_pack_start (GTK_BOX (hbox72), vbox2588, FALSE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2588), 5);
-
-  updateAllFavicons = gtk_button_new_with_mnemonic (_("_Update all favicons now."));
+  updateAllFavicons = gtk_button_new_with_mnemonic (_("_Update all favicons now"));
   gtk_widget_show (updateAllFavicons);
-  gtk_box_pack_start (GTK_BOX (vbox2588), updateAllFavicons, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox92229), updateAllFavicons, FALSE, FALSE, 0);
 
   label177 = gtk_label_new (_("Folders"));
   gtk_widget_show (label177);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label177);
 
-  vbox222 = gtk_vbox_new (FALSE, 6);
+  vbox222 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox222);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox222);
   gtk_notebook_set_tab_label_packing (GTK_NOTEBOOK (notebook1), vbox222,
                                       FALSE, FALSE, GTK_PACK_START);
   gtk_container_set_border_width (GTK_CONTAINER (vbox222), 12);
 
-  vbox253 = gtk_vbox_new (FALSE, 0);
+  vbox253 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox253);
   gtk_box_pack_start (GTK_BOX (vbox222), vbox253, FALSE, TRUE, 0);
 
@@ -2047,24 +1978,16 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label128), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label128), 0, 0.5);
 
-  hbox53 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox53);
-  gtk_box_pack_start (GTK_BOX (vbox253), hbox53, TRUE, TRUE, 0);
+  alignment26 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment26);
+  gtk_box_pack_start (GTK_BOX (vbox253), alignment26, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment26), 0, 0, 12, 0);
 
-  label127 = gtk_label_new (_("    "));
-  gtk_widget_show (label127);
-  gtk_box_pack_start (GTK_BOX (hbox53), label127, FALSE, FALSE, 0);
-
-  vbox232 = gtk_vbox_new (FALSE, 5);
-  gtk_widget_show (vbox232);
-  gtk_box_pack_start (GTK_BOX (hbox53), vbox232, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox232), 5);
-
-  hbox63 = gtk_hbox_new (FALSE, 5);
+  hbox63 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox63);
-  gtk_box_pack_start (GTK_BOX (vbox232), hbox63, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment26), hbox63);
 
-  label151 = gtk_label_new (_("Skim through articles with "));
+  label151 = gtk_label_new_with_mnemonic (_("_Skim through articles with:"));
   gtk_widget_show (label151);
   gtk_box_pack_start (GTK_BOX (hbox63), label151, FALSE, FALSE, 0);
 
@@ -2088,9 +2011,9 @@ create_prefdialog (void)
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (browsekeyoptionmenu), browsekeymenu);
 
-  vbox2581 = gtk_vbox_new (FALSE, 0);
+  vbox2581 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2581);
-  gtk_box_pack_start (GTK_BOX (vbox222), vbox2581, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox222), vbox2581, FALSE, TRUE, 0);
 
   label149 = gtk_label_new (_("<span weight=\"bold\">Date Column Settings</span>"));
   gtk_widget_show (label149);
@@ -2098,18 +2021,14 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label149), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label149), 0, 0.5);
 
-  hbox61 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox61);
-  gtk_box_pack_start (GTK_BOX (vbox2581), hbox61, TRUE, TRUE, 0);
+  alignment27 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment27);
+  gtk_box_pack_start (GTK_BOX (vbox2581), alignment27, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment27), 0, 0, 12, 0);
 
-  label150 = gtk_label_new (_("    "));
-  gtk_widget_show (label150);
-  gtk_box_pack_start (GTK_BOX (hbox61), label150, FALSE, FALSE, 0);
-
-  vbox2582 = gtk_vbox_new (FALSE, 5);
+  vbox2582 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2582);
-  gtk_box_pack_start (GTK_BOX (hbox61), vbox2582, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2582), 5);
+  gtk_container_add (GTK_CONTAINER (alignment27), vbox2582);
 
   timeradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Display only time"));
   gtk_widget_show (timeradiobtn1);
@@ -2123,7 +2042,7 @@ create_prefdialog (void)
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn2), timeradiobtn1_group);
   timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn2));
 
-  hbox62 = gtk_hbox_new (FALSE, 5);
+  hbox62 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox62);
   gtk_box_pack_start (GTK_BOX (vbox2582), hbox62, FALSE, FALSE, 0);
 
@@ -2143,14 +2062,14 @@ create_prefdialog (void)
   gtk_widget_show (label39);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 2), label39);
 
-  vbox2577 = gtk_vbox_new (FALSE, 6);
+  vbox2577 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox2577);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox2577);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2577), 12);
 
   vbox2601 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2601);
-  gtk_box_pack_start (GTK_BOX (vbox2577), vbox2601, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2577), vbox2601, FALSE, TRUE, 0);
 
   vbox2602 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2602);
@@ -2162,17 +2081,14 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label190), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label190), 0, 0.5);
 
-  hbox84 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox84);
-  gtk_box_pack_start (GTK_BOX (vbox2602), hbox84, FALSE, TRUE, 6);
-
-  label192 = gtk_label_new (_("    "));
-  gtk_widget_show (label192);
-  gtk_box_pack_start (GTK_BOX (hbox84), label192, FALSE, FALSE, 0);
+  alignment28 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment28);
+  gtk_box_pack_start (GTK_BOX (vbox2602), alignment28, FALSE, TRUE, 6);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment28), 0, 0, 12, 0);
 
   vbox2603 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2603);
-  gtk_box_pack_start (GTK_BOX (hbox84), vbox2603, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment28), vbox2603);
 
   hbox28 = gtk_hbox_new (FALSE, 5);
   gtk_widget_show (hbox28);
@@ -2206,7 +2122,7 @@ create_prefdialog (void)
 
   vbox248 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox248);
-  gtk_box_pack_start (GTK_BOX (vbox2601), vbox248, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2577), vbox248, FALSE, TRUE, 0);
 
   label118 = gtk_label_new (_("<span weight=\"bold\">External Browser Settings</span>"));
   gtk_widget_show (label118);
@@ -2214,31 +2130,23 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label118), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label118), 0, 0.5);
 
-  hbox49 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox49);
-  gtk_box_pack_start (GTK_BOX (vbox248), hbox49, FALSE, TRUE, 6);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox49), 1);
-
-  label119 = gtk_label_new (_("    "));
-  gtk_widget_show (label119);
-  gtk_box_pack_start (GTK_BOX (hbox49), label119, FALSE, FALSE, 0);
-
-  vbox257 = gtk_vbox_new (FALSE, 7);
-  gtk_widget_show (vbox257);
-  gtk_box_pack_start (GTK_BOX (hbox49), vbox257, FALSE, TRUE, 0);
+  alignment29 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment29);
+  gtk_box_pack_start (GTK_BOX (vbox248), alignment29, FALSE, TRUE, 6);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment29), 0, 0, 12, 0);
 
   table6 = gtk_table_new (3, 2, FALSE);
   gtk_widget_show (table6);
-  gtk_box_pack_start (GTK_BOX (vbox257), table6, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment29), table6);
   gtk_table_set_row_spacings (GTK_TABLE (table6), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table6), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table6), 12);
 
   label137 = gtk_label_new_with_mnemonic (_("_Browser:"));
   gtk_widget_show (label137);
   gtk_table_attach (GTK_TABLE (table6), label137, 0, 1, 0, 1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_misc_set_alignment (GTK_MISC (label137), 1, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (label137), 0, 0.5);
 
   manuallabel = gtk_label_new_with_mnemonic (_("_Manual:\n(%s for URL)"));
   gtk_widget_show (manuallabel);
@@ -2259,7 +2167,7 @@ create_prefdialog (void)
   gtk_table_attach (GTK_TABLE (table6), label138, 0, 1, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
-  gtk_misc_set_alignment (GTK_MISC (label138), 1, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (label138), 0, 0.5);
 
   browserlocpopup = gtk_option_menu_new ();
   gtk_widget_show (browserlocpopup);
@@ -2281,12 +2189,12 @@ create_prefdialog (void)
   gtk_widget_show (label50);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 3), label50);
 
-  vbox259 = gtk_vbox_new (FALSE, 12);
+  vbox259 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox259);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox259);
   gtk_container_set_border_width (GTK_CONTAINER (vbox259), 12);
 
-  vbox251 = gtk_vbox_new (FALSE, 0);
+  vbox251 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox251);
   gtk_box_pack_start (GTK_BOX (vbox259), vbox251, FALSE, TRUE, 0);
 
@@ -2296,39 +2204,26 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label124), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label124), 0, 0.5);
 
-  hbox51 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox51);
-  gtk_box_pack_start (GTK_BOX (vbox251), hbox51, TRUE, TRUE, 0);
+  alignment14 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment14);
+  gtk_box_pack_start (GTK_BOX (vbox251), alignment14, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment14), 0, 0, 12, 0);
 
-  label123 = gtk_label_new (_("    "));
-  gtk_widget_show (label123);
-  gtk_box_pack_start (GTK_BOX (hbox51), label123, FALSE, FALSE, 0);
-
-  vbox22 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_show (vbox22);
-  gtk_box_pack_start (GTK_BOX (hbox51), vbox22, TRUE, TRUE, 0);
+  vbox2617 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2617);
+  gtk_container_add (GTK_CONTAINER (alignment14), vbox2617);
 
   trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status _icon in the notification area (system tray)."));
   gtk_widget_show (trayiconoptionbtn);
-  gtk_box_pack_start (GTK_BOX (vbox22), trayiconoptionbtn, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (trayiconoptionbtn), 4);
-
-  hbox55 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox55);
-  gtk_box_pack_start (GTK_BOX (vbox251), hbox55, TRUE, TRUE, 0);
-
-  label136 = gtk_label_new (_("    "));
-  gtk_widget_show (label136);
-  gtk_box_pack_start (GTK_BOX (hbox55), label136, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2617), trayiconoptionbtn, FALSE, FALSE, 0);
 
   vbox256 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox256);
-  gtk_box_pack_start (GTK_BOX (hbox55), vbox256, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2617), vbox256, TRUE, TRUE, 0);
 
   popupwindowsoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a _popup window with new headlines."));
   gtk_widget_show (popupwindowsoptionbtn);
   gtk_box_pack_start (GTK_BOX (vbox256), popupwindowsoptionbtn, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (popupwindowsoptionbtn), 4);
 
   hbox85 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox85);
@@ -2347,8 +2242,8 @@ create_prefdialog (void)
   gtk_widget_show (placement_options);
   gtk_container_add (GTK_CONTAINER (frame1), placement_options);
   gtk_container_set_border_width (GTK_CONTAINER (placement_options), 6);
-  gtk_table_set_row_spacings (GTK_TABLE (placement_options), 15);
-  gtk_table_set_col_spacings (GTK_TABLE (placement_options), 30);
+  gtk_table_set_row_spacings (GTK_TABLE (placement_options), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (placement_options), 12);
 
   popup_placement3_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Lower Right"));
   gtk_widget_show (popup_placement3_radiobtn);
@@ -2389,7 +2284,7 @@ create_prefdialog (void)
   gtk_misc_set_alignment (GTK_MISC (label196), 0, 0.5);
   gtk_misc_set_padding (GTK_MISC (label196), 6, 0);
 
-  vbox252 = gtk_vbox_new (FALSE, 0);
+  vbox252 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox252);
   gtk_box_pack_start (GTK_BOX (vbox259), vbox252, FALSE, TRUE, 0);
 
@@ -2399,18 +2294,14 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label126), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label126), 0, 0.5);
 
-  hbox52 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox52);
-  gtk_box_pack_start (GTK_BOX (vbox252), hbox52, TRUE, TRUE, 0);
+  alignment15 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment15);
+  gtk_box_pack_start (GTK_BOX (vbox252), alignment15, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment15), 0, 0, 12, 0);
 
-  label125 = gtk_label_new (_("    "));
-  gtk_widget_show (label125);
-  gtk_box_pack_start (GTK_BOX (hbox52), label125, FALSE, FALSE, 0);
-
-  vbox223 = gtk_vbox_new (FALSE, 5);
+  vbox223 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox223);
-  gtk_box_pack_start (GTK_BOX (hbox52), vbox223, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox223), 5);
+  gtk_container_add (GTK_CONTAINER (alignment15), vbox223);
 
   menuradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Show Menu _And Toolbar"));
   gtk_widget_show (menuradiobtn1);
@@ -2438,12 +2329,12 @@ create_prefdialog (void)
   gtk_widget_show (vbox258);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox258);
 
-  vbox227 = gtk_vbox_new (FALSE, 6);
+  vbox227 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox227);
-  gtk_box_pack_start (GTK_BOX (vbox258), vbox227, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox258), vbox227, FALSE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox227), 12);
 
-  vbox254 = gtk_vbox_new (FALSE, 0);
+  vbox254 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox254);
   gtk_box_pack_start (GTK_BOX (vbox227), vbox254, FALSE, TRUE, 0);
 
@@ -2453,18 +2344,14 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label130), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label130), 0, 0.5);
 
-  hbox54 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox54);
-  gtk_box_pack_start (GTK_BOX (vbox254), hbox54, TRUE, TRUE, 0);
+  alignment16 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment16);
+  gtk_box_pack_start (GTK_BOX (vbox254), alignment16, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment16), 0, 0, 12, 0);
 
-  label129 = gtk_label_new (_("    "));
-  gtk_widget_show (label129);
-  gtk_box_pack_start (GTK_BOX (hbox54), label129, FALSE, FALSE, 0);
-
-  vbox228 = gtk_vbox_new (FALSE, 5);
+  vbox228 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox228);
-  gtk_box_pack_start (GTK_BOX (hbox54), vbox228, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox228), 5);
+  gtk_container_add (GTK_CONTAINER (alignment16), vbox228);
 
   label52 = gtk_label_new (_("<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change these settings in the GNOME Control Center.</i>"));
   gtk_widget_show (label52);
@@ -2481,23 +2368,20 @@ create_prefdialog (void)
   gtk_widget_show (enableproxybtn);
   gtk_box_pack_start (GTK_BOX (vbox229), enableproxybtn, FALSE, FALSE, 0);
 
-  proxybox = gtk_hbox_new (FALSE, 0);
+  proxybox = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_widget_show (proxybox);
   gtk_box_pack_start (GTK_BOX (vbox229), proxybox, TRUE, TRUE, 0);
-
-  label143 = gtk_label_new (_("    "));
-  gtk_widget_show (label143);
-  gtk_box_pack_start (GTK_BOX (proxybox), label143, FALSE, FALSE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (proxybox), 0, 0, 12, 0);
 
   vbox2578 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2578);
-  gtk_box_pack_start (GTK_BOX (proxybox), vbox2578, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (proxybox), vbox2578);
 
   proxytable = gtk_table_new (2, 2, FALSE);
   gtk_widget_show (proxytable);
   gtk_box_pack_start (GTK_BOX (vbox2578), proxytable, TRUE, TRUE, 0);
   gtk_table_set_row_spacings (GTK_TABLE (proxytable), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (proxytable), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (proxytable), 12);
 
   label53 = gtk_label_new_with_mnemonic (_("Proxy _Host:"));
   gtk_widget_show (label53);
@@ -2531,19 +2415,16 @@ create_prefdialog (void)
   gtk_widget_show (useProxyAuth);
   gtk_box_pack_start (GTK_BOX (vbox2578), useProxyAuth, FALSE, FALSE, 0);
 
-  hbox59 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox59);
-  gtk_box_pack_start (GTK_BOX (vbox2578), hbox59, TRUE, TRUE, 0);
-
-  label144 = gtk_label_new (_("    "));
-  gtk_widget_show (label144);
-  gtk_box_pack_start (GTK_BOX (hbox59), label144, FALSE, FALSE, 0);
+  alignment18 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment18);
+  gtk_box_pack_start (GTK_BOX (vbox2578), alignment18, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment18), 0, 0, 12, 0);
 
   proxyauthbox = gtk_table_new (2, 2, FALSE);
   gtk_widget_show (proxyauthbox);
-  gtk_box_pack_start (GTK_BOX (hbox59), proxyauthbox, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment18), proxyauthbox);
   gtk_table_set_row_spacings (GTK_TABLE (proxyauthbox), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (proxyauthbox), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (proxyauthbox), 12);
 
   label145 = gtk_label_new_with_mnemonic (_("Proxy _Username:"));
   gtk_widget_show (label145);
@@ -2578,12 +2459,12 @@ create_prefdialog (void)
   gtk_widget_show (label140);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 5), label140);
 
-  vbox2609 = gtk_vbox_new (FALSE, 6);
+  vbox2609 = gtk_vbox_new (FALSE, 18);
   gtk_widget_show (vbox2609);
   gtk_container_add (GTK_CONTAINER (notebook1), vbox2609);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2609), 12);
 
-  vbox2610 = gtk_vbox_new (FALSE, 12);
+  vbox2610 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2610);
   gtk_box_pack_start (GTK_BOX (vbox2609), vbox2610, FALSE, TRUE, 0);
 
@@ -2593,19 +2474,16 @@ create_prefdialog (void)
   gtk_label_set_use_markup (GTK_LABEL (label217), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label217), 0, 0.5);
 
-  hbox92 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox92);
-  gtk_box_pack_start (GTK_BOX (vbox2610), hbox92, TRUE, TRUE, 0);
-
-  label218 = gtk_label_new (_("    "));
-  gtk_widget_show (label218);
-  gtk_box_pack_start (GTK_BOX (hbox92), label218, FALSE, FALSE, 0);
+  alignment20 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment20);
+  gtk_box_pack_start (GTK_BOX (vbox2610), alignment20, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment20), 0, 0, 12, 0);
 
   table8 = gtk_table_new (2, 2, FALSE);
   gtk_widget_show (table8);
-  gtk_box_pack_start (GTK_BOX (hbox92), table8, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment20), table8);
   gtk_table_set_row_spacings (GTK_TABLE (table8), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table8), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table8), 12);
 
   label216 = gtk_label_new (_("Download using"));
   gtk_widget_show (label216);
@@ -2649,23 +2527,24 @@ create_prefdialog (void)
   gtk_widget_show (save_download_select_btn);
   gtk_box_pack_start (GTK_BOX (hbox92225), save_download_select_btn, FALSE, FALSE, 0);
 
+  vbox2618 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2618);
+  gtk_box_pack_start (GTK_BOX (vbox2609), vbox2618, FALSE, TRUE, 0);
+
   label208 = gtk_label_new (_("<span weight=\"bold\">Opening Enclosures</span>"));
   gtk_widget_show (label208);
-  gtk_box_pack_start (GTK_BOX (vbox2610), label208, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2618), label208, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label208), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label208), 0, 0.5);
 
-  hbox89 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox89);
-  gtk_box_pack_start (GTK_BOX (vbox2610), hbox89, TRUE, TRUE, 0);
-
-  label209 = gtk_label_new (_("    "));
-  gtk_widget_show (label209);
-  gtk_box_pack_start (GTK_BOX (hbox89), label209, FALSE, FALSE, 0);
+  alignment19 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment19);
+  gtk_box_pack_start (GTK_BOX (vbox2618), alignment19, FALSE, FALSE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment19), 0, 0, 12, 0);
 
   vbox2613 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2613);
-  gtk_box_pack_start (GTK_BOX (hbox89), vbox2613, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment19), vbox2613);
 
   scrolledwindow8 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow8);
@@ -2811,6 +2690,7 @@ create_prefdialog (void)
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label159), refreshIntervalSpinButton);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label142), startupfeedhandler);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label151), browsekeyoptionmenu);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label137), browserpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (manuallabel), browsercmd);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label138), browserlocpopup);
@@ -2826,19 +2706,17 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox3, "vbox3");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox250, "vbox250");
   GLADE_HOOKUP_OBJECT (prefdialog, label122, "label122");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox56, "hbox56");
-  GLADE_HOOKUP_OBJECT (prefdialog, label141, "label141");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox20, "vbox20");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment21, "alignment21");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox19, "hbox19");
   GLADE_HOOKUP_OBJECT (prefdialog, label33, "label33");
   GLADE_HOOKUP_OBJECT (prefdialog, itemCountBtn, "itemCountBtn");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2585, "vbox2585");
   GLADE_HOOKUP_OBJECT (prefdialog, label156, "label156");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox67, "hbox67");
-  GLADE_HOOKUP_OBJECT (prefdialog, label157, "label157");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment22, "alignment22");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2586, "vbox2586");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox68, "hbox68");
   GLADE_HOOKUP_OBJECT (prefdialog, label159, "label159");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox92230, "hbox92230");
   GLADE_HOOKUP_OBJECT (prefdialog, refreshIntervalSpinButton, "refreshIntervalSpinButton");
   GLADE_HOOKUP_OBJECT (prefdialog, label160, "label160");
   GLADE_HOOKUP_OBJECT (prefdialog, label135, "label135");
@@ -2847,8 +2725,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, startupfeedhandler, "startupfeedhandler");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2579, "vbox2579");
   GLADE_HOOKUP_OBJECT (prefdialog, label147, "label147");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox60, "hbox60");
-  GLADE_HOOKUP_OBJECT (prefdialog, label148, "label148");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment23, "alignment23");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2580, "vbox2580");
   GLADE_HOOKUP_OBJECT (prefdialog, feedsinmemorybtn1, "feedsinmemorybtn1");
   GLADE_HOOKUP_OBJECT (prefdialog, feedsinmemorybtn2, "feedsinmemorybtn2");
@@ -2856,25 +2733,21 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2593, "vbox2593");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2594, "vbox2594");
   GLADE_HOOKUP_OBJECT (prefdialog, label181, "label181");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox83, "hbox83");
-  GLADE_HOOKUP_OBJECT (prefdialog, label188, "label188");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment24, "alignment24");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2604, "vbox2604");
   GLADE_HOOKUP_OBJECT (prefdialog, folderdisplaybtn, "folderdisplaybtn");
   GLADE_HOOKUP_OBJECT (prefdialog, label193, "label193");
   GLADE_HOOKUP_OBJECT (prefdialog, hidereadbtn, "hidereadbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2587, "vbox2587");
   GLADE_HOOKUP_OBJECT (prefdialog, label163, "label163");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox72, "hbox72");
-  GLADE_HOOKUP_OBJECT (prefdialog, label164, "label164");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox2588, "vbox2588");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment25, "alignment25");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox92229, "hbox92229");
   GLADE_HOOKUP_OBJECT (prefdialog, updateAllFavicons, "updateAllFavicons");
   GLADE_HOOKUP_OBJECT (prefdialog, label177, "label177");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox222, "vbox222");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox253, "vbox253");
   GLADE_HOOKUP_OBJECT (prefdialog, label128, "label128");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox53, "hbox53");
-  GLADE_HOOKUP_OBJECT (prefdialog, label127, "label127");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox232, "vbox232");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment26, "alignment26");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox63, "hbox63");
   GLADE_HOOKUP_OBJECT (prefdialog, label151, "label151");
   GLADE_HOOKUP_OBJECT (prefdialog, browsekeyoptionmenu, "browsekeyoptionmenu");
@@ -2884,8 +2757,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, alt_space, "alt_space");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2581, "vbox2581");
   GLADE_HOOKUP_OBJECT (prefdialog, label149, "label149");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox61, "hbox61");
-  GLADE_HOOKUP_OBJECT (prefdialog, label150, "label150");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment27, "alignment27");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2582, "vbox2582");
   GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn1, "timeradiobtn1");
   GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn2, "timeradiobtn2");
@@ -2897,8 +2769,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2601, "vbox2601");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2602, "vbox2602");
   GLADE_HOOKUP_OBJECT (prefdialog, label190, "label190");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox84, "hbox84");
-  GLADE_HOOKUP_OBJECT (prefdialog, label192, "label192");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment28, "alignment28");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2603, "vbox2603");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox28, "hbox28");
   GLADE_HOOKUP_OBJECT (prefdialog, label65, "label65");
@@ -2909,9 +2780,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, disablejavascript, "disablejavascript");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox248, "vbox248");
   GLADE_HOOKUP_OBJECT (prefdialog, label118, "label118");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox49, "hbox49");
-  GLADE_HOOKUP_OBJECT (prefdialog, label119, "label119");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox257, "vbox257");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment29, "alignment29");
   GLADE_HOOKUP_OBJECT (prefdialog, table6, "table6");
   GLADE_HOOKUP_OBJECT (prefdialog, label137, "label137");
   GLADE_HOOKUP_OBJECT (prefdialog, manuallabel, "manuallabel");
@@ -2924,12 +2793,9 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox259, "vbox259");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox251, "vbox251");
   GLADE_HOOKUP_OBJECT (prefdialog, label124, "label124");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox51, "hbox51");
-  GLADE_HOOKUP_OBJECT (prefdialog, label123, "label123");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox22, "vbox22");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment14, "alignment14");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2617, "vbox2617");
   GLADE_HOOKUP_OBJECT (prefdialog, trayiconoptionbtn, "trayiconoptionbtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox55, "hbox55");
-  GLADE_HOOKUP_OBJECT (prefdialog, label136, "label136");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox256, "vbox256");
   GLADE_HOOKUP_OBJECT (prefdialog, popupwindowsoptionbtn, "popupwindowsoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox85, "hbox85");
@@ -2943,8 +2809,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label196, "label196");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox252, "vbox252");
   GLADE_HOOKUP_OBJECT (prefdialog, label126, "label126");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox52, "hbox52");
-  GLADE_HOOKUP_OBJECT (prefdialog, label125, "label125");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment15, "alignment15");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox223, "vbox223");
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn1, "menuradiobtn1");
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn2, "menuradiobtn2");
@@ -2954,14 +2819,12 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox227, "vbox227");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox254, "vbox254");
   GLADE_HOOKUP_OBJECT (prefdialog, label130, "label130");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox54, "hbox54");
-  GLADE_HOOKUP_OBJECT (prefdialog, label129, "label129");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment16, "alignment16");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox228, "vbox228");
   GLADE_HOOKUP_OBJECT (prefdialog, label52, "label52");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox229, "vbox229");
   GLADE_HOOKUP_OBJECT (prefdialog, enableproxybtn, "enableproxybtn");
   GLADE_HOOKUP_OBJECT (prefdialog, proxybox, "proxybox");
-  GLADE_HOOKUP_OBJECT (prefdialog, label143, "label143");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2578, "vbox2578");
   GLADE_HOOKUP_OBJECT (prefdialog, proxytable, "proxytable");
   GLADE_HOOKUP_OBJECT (prefdialog, label53, "label53");
@@ -2969,8 +2832,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, proxyportentry, "proxyportentry");
   GLADE_HOOKUP_OBJECT (prefdialog, label54, "label54");
   GLADE_HOOKUP_OBJECT (prefdialog, useProxyAuth, "useProxyAuth");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox59, "hbox59");
-  GLADE_HOOKUP_OBJECT (prefdialog, label144, "label144");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment18, "alignment18");
   GLADE_HOOKUP_OBJECT (prefdialog, proxyauthbox, "proxyauthbox");
   GLADE_HOOKUP_OBJECT (prefdialog, label145, "label145");
   GLADE_HOOKUP_OBJECT (prefdialog, proxyuserentry, "proxyuserentry");
@@ -2980,8 +2842,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2609, "vbox2609");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2610, "vbox2610");
   GLADE_HOOKUP_OBJECT (prefdialog, label217, "label217");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox92, "hbox92");
-  GLADE_HOOKUP_OBJECT (prefdialog, label218, "label218");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment20, "alignment20");
   GLADE_HOOKUP_OBJECT (prefdialog, table8, "table8");
   GLADE_HOOKUP_OBJECT (prefdialog, label216, "label216");
   GLADE_HOOKUP_OBJECT (prefdialog, label219, "label219");
@@ -2991,9 +2852,9 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox92225, "hbox92225");
   GLADE_HOOKUP_OBJECT (prefdialog, save_download_entry, "save_download_entry");
   GLADE_HOOKUP_OBJECT (prefdialog, save_download_select_btn, "save_download_select_btn");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2618, "vbox2618");
   GLADE_HOOKUP_OBJECT (prefdialog, label208, "label208");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox89, "hbox89");
-  GLADE_HOOKUP_OBJECT (prefdialog, label209, "label209");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment19, "alignment19");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2613, "vbox2613");
   GLADE_HOOKUP_OBJECT (prefdialog, scrolledwindow8, "scrolledwindow8");
   GLADE_HOOKUP_OBJECT (prefdialog, enc_actions_view, "enc_actions_view");
@@ -3022,9 +2883,12 @@ create_newfolderdialog (void)
   GtkWidget *button2;
 
   newfolderdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (newfolderdialog), 5);
   gtk_window_set_title (GTK_WINDOW (newfolderdialog), _("New Folder"));
   gtk_window_set_modal (GTK_WINDOW (newfolderdialog), TRUE);
+  gtk_window_set_resizable (GTK_WINDOW (newfolderdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (newfolderdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (newfolderdialog), FALSE);
 
   dialog_vbox6 = GTK_DIALOG (newfolderdialog)->vbox;
   gtk_widget_show (dialog_vbox6);
@@ -3033,12 +2897,12 @@ create_newfolderdialog (void)
   gtk_widget_show (vbox10);
   gtk_box_pack_start (GTK_BOX (dialog_vbox6), vbox10, TRUE, TRUE, 0);
 
-  hbox12 = gtk_hbox_new (FALSE, 6);
+  hbox12 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox12);
   gtk_box_pack_start (GTK_BOX (vbox10), hbox12, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox12), 12);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox12), 5);
 
-  label20 = gtk_label_new (_("Folder name:"));
+  label20 = gtk_label_new_with_mnemonic (_("_Folder name:"));
   gtk_widget_show (label20);
   gtk_box_pack_start (GTK_BOX (hbox12), label20, FALSE, FALSE, 0);
 
@@ -3075,6 +2939,8 @@ create_newfolderdialog (void)
                          GTK_OBJECT (newfolderdialog),
                          NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label20), foldertitleentry);
+
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (newfolderdialog, newfolderdialog, "newfolderdialog");
   GLADE_HOOKUP_OBJECT_NO_REF (newfolderdialog, dialog_vbox6, "dialog_vbox6");
@@ -3103,19 +2969,22 @@ create_foldernamedialog (void)
   GtkWidget *foldernamechangebtn;
 
   foldernamedialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (foldernamedialog), 5);
   gtk_window_set_title (GTK_WINDOW (foldernamedialog), _("Rename Folder"));
   gtk_window_set_modal (GTK_WINDOW (foldernamedialog), TRUE);
+  gtk_window_set_resizable (GTK_WINDOW (foldernamedialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (foldernamedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (foldernamedialog), FALSE);
 
   dialog_vbox7 = GTK_DIALOG (foldernamedialog)->vbox;
   gtk_widget_show (dialog_vbox7);
 
-  hbox13 = gtk_hbox_new (FALSE, 6);
+  hbox13 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox13);
   gtk_box_pack_start (GTK_BOX (dialog_vbox7), hbox13, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox13), 12);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox13), 5);
 
-  label23 = gtk_label_new (_("Folder name:"));
+  label23 = gtk_label_new_with_mnemonic (_("_Folder name:"));
   gtk_widget_show (label23);
   gtk_box_pack_start (GTK_BOX (hbox13), label23, FALSE, FALSE, 0);
 
@@ -3147,6 +3016,8 @@ create_foldernamedialog (void)
   g_signal_connect ((gpointer) foldernamechangebtn, "clicked",
                     G_CALLBACK (on_foldernamechangebtn_clicked),
                     NULL);
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label23), foldernameentry);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, foldernamedialog, "foldernamedialog");
@@ -3184,8 +3055,11 @@ create_feedsterdialog (void)
   tooltips = gtk_tooltips_new ();
 
   feedsterdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (feedsterdialog), 5);
   gtk_window_set_title (GTK_WINDOW (feedsterdialog), _("Feedster Search"));
+  gtk_window_set_resizable (GTK_WINDOW (feedsterdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (feedsterdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (feedsterdialog), FALSE);
 
   dialog_vbox9 = GTK_DIALOG (feedsterdialog)->vbox;
   gtk_widget_show (dialog_vbox9);
@@ -3193,13 +3067,13 @@ create_feedsterdialog (void)
   vbox224 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox224);
   gtk_box_pack_start (GTK_BOX (dialog_vbox9), vbox224, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox224), 12);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox224), 5);
 
-  hbox23 = gtk_hbox_new (FALSE, 5);
+  hbox23 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox23);
   gtk_box_pack_start (GTK_BOX (vbox224), hbox23, TRUE, TRUE, 0);
 
-  label42 = gtk_label_new (_("Search for:"));
+  label42 = gtk_label_new_with_mnemonic (_("_Search for:"));
   gtk_widget_show (label42);
   gtk_box_pack_start (GTK_BOX (hbox23), label42, FALSE, FALSE, 0);
 
@@ -3209,11 +3083,11 @@ create_feedsterdialog (void)
   gtk_tooltips_set_tip (tooltips, feedsterkeywords, _("enter any search string you want"), NULL);
   gtk_entry_set_activates_default (GTK_ENTRY (feedsterkeywords), TRUE);
 
-  hbox24 = gtk_hbox_new (FALSE, 5);
+  hbox24 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox24);
   gtk_box_pack_start (GTK_BOX (vbox224), hbox24, TRUE, TRUE, 0);
 
-  label43 = gtk_label_new (_("Maximal Number Of Result Items:"));
+  label43 = gtk_label_new_with_mnemonic (_("Maximal _Number Of Result Items:"));
   gtk_widget_show (label43);
   gtk_box_pack_start (GTK_BOX (hbox24), label43, FALSE, FALSE, 0);
 
@@ -3252,6 +3126,9 @@ create_feedsterdialog (void)
                          G_CALLBACK (gtk_widget_hide),
                          GTK_OBJECT (feedsterdialog),
                          NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label42), feedsterkeywords);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label43), feedsterresultcount);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, feedsterdialog, "feedsterdialog");
@@ -3298,9 +3175,12 @@ create_aboutdialog (void)
   GtkWidget *closebutton1;
 
   aboutdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (aboutdialog), 5);
   gtk_window_set_title (GTK_WINDOW (aboutdialog), _("About"));
   gtk_window_set_default_size (GTK_WINDOW (aboutdialog), 300, 200);
+  gtk_window_set_resizable (GTK_WINDOW (aboutdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (aboutdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (aboutdialog), FALSE);
 
   dialog_vbox12 = GTK_DIALOG (aboutdialog)->vbox;
   gtk_widget_show (dialog_vbox12);
@@ -3308,6 +3188,7 @@ create_aboutdialog (void)
   notebook2 = gtk_notebook_new ();
   gtk_widget_show (notebook2);
   gtk_box_pack_start (GTK_BOX (dialog_vbox12), notebook2, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (notebook2), 5);
 
   vbox231 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox231);
@@ -3444,16 +3325,19 @@ create_authdialog (void)
   GtkWidget *okbutton1;
 
   authdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (authdialog), 5);
   gtk_window_set_title (GTK_WINDOW (authdialog), _("Authentication"));
+  gtk_window_set_resizable (GTK_WINDOW (authdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (authdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (authdialog), FALSE);
 
   dialog_vbox14 = GTK_DIALOG (authdialog)->vbox;
   gtk_widget_show (dialog_vbox14);
 
-  vbox255 = gtk_vbox_new (FALSE, 6);
+  vbox255 = gtk_vbox_new (FALSE, 12);
   gtk_widget_show (vbox255);
   gtk_box_pack_start (GTK_BOX (dialog_vbox14), vbox255, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox255), 12);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox255), 5);
 
   prompt = gtk_label_new (_("Enter the username and password for \"%s\" (%s):"));
   gtk_widget_show (prompt);
@@ -3465,7 +3349,7 @@ create_authdialog (void)
   gtk_widget_show (table4);
   gtk_box_pack_start (GTK_BOX (vbox255), table4, TRUE, TRUE, 0);
   gtk_table_set_row_spacings (GTK_TABLE (table4), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table4), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table4), 12);
 
   label107 = gtk_label_new_with_mnemonic (_("User_name:"));
   gtk_widget_show (label107);
@@ -3548,7 +3432,9 @@ create_vfolderdialog (void)
   GtkWidget *hbox64;
   GtkWidget *label152;
   GtkWidget *feedNameEntry;
-  GtkWidget *If;
+  GtkWidget *vbox2616;
+  GtkWidget *label225;
+  GtkWidget *alignment12;
   GtkWidget *alignment8;
   GtkWidget *vbox2584;
   GtkWidget *hbox65;
@@ -3556,29 +3442,30 @@ create_vfolderdialog (void)
   GtkWidget *label154;
   GtkWidget *scrolledwindow7;
   GtkWidget *ruleview;
-  GtkWidget *label153;
   GtkWidget *dialog_action_area15;
   GtkWidget *cancelbutton3;
   GtkWidget *okbutton2;
 
   vfolderdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (vfolderdialog), 5);
   gtk_window_set_title (GTK_WINDOW (vfolderdialog), _("VFolder Properties"));
   gtk_window_set_default_size (GTK_WINDOW (vfolderdialog), 350, 250);
   gtk_window_set_type_hint (GTK_WINDOW (vfolderdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (vfolderdialog), FALSE);
 
   dialog_vbox15 = GTK_DIALOG (vfolderdialog)->vbox;
   gtk_widget_show (dialog_vbox15);
 
-  vbox2583 = gtk_vbox_new (FALSE, 6);
+  vbox2583 = gtk_vbox_new (FALSE, 12);
   gtk_widget_show (vbox2583);
   gtk_box_pack_start (GTK_BOX (dialog_vbox15), vbox2583, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2583), 6);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2583), 5);
 
-  hbox64 = gtk_hbox_new (FALSE, 6);
+  hbox64 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox64);
   gtk_box_pack_start (GTK_BOX (vbox2583), hbox64, FALSE, TRUE, 0);
 
-  label152 = gtk_label_new (_("Name"));
+  label152 = gtk_label_new_with_mnemonic (_("_Name:"));
   gtk_widget_show (label152);
   gtk_box_pack_start (GTK_BOX (hbox64), label152, FALSE, FALSE, 0);
 
@@ -3586,13 +3473,24 @@ create_vfolderdialog (void)
   gtk_widget_show (feedNameEntry);
   gtk_box_pack_start (GTK_BOX (hbox64), feedNameEntry, TRUE, TRUE, 0);
 
-  If = gtk_frame_new (NULL);
-  gtk_widget_show (If);
-  gtk_box_pack_start (GTK_BOX (vbox2583), If, TRUE, TRUE, 0);
+  vbox2616 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox2616);
+  gtk_box_pack_start (GTK_BOX (vbox2583), vbox2616, TRUE, TRUE, 0);
+
+  label225 = gtk_label_new (_("<b>Rule</b>"));
+  gtk_widget_show (label225);
+  gtk_box_pack_start (GTK_BOX (vbox2616), label225, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label225), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label225), 0, 0.5);
+
+  alignment12 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment12);
+  gtk_box_pack_start (GTK_BOX (vbox2616), alignment12, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment12), 0, 0, 12, 0);
 
   alignment8 = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_widget_show (alignment8);
-  gtk_container_add (GTK_CONTAINER (If), alignment8);
+  gtk_container_add (GTK_CONTAINER (alignment12), alignment8);
   gtk_container_set_border_width (GTK_CONTAINER (alignment8), 6);
 
   vbox2584 = gtk_vbox_new (FALSE, 6);
@@ -3620,11 +3518,6 @@ create_vfolderdialog (void)
   gtk_widget_show (ruleview);
   gtk_container_add (GTK_CONTAINER (scrolledwindow7), ruleview);
 
-  label153 = gtk_label_new (_("Rules"));
-  gtk_widget_show (label153);
-  gtk_frame_set_label_widget (GTK_FRAME (If), label153);
-  gtk_label_set_use_markup (GTK_LABEL (label153), TRUE);
-
   dialog_action_area15 = GTK_DIALOG (vfolderdialog)->action_area;
   gtk_widget_show (dialog_action_area15);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area15), GTK_BUTTONBOX_END);
@@ -3639,6 +3532,8 @@ create_vfolderdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (vfolderdialog), okbutton2, GTK_RESPONSE_OK);
   GTK_WIDGET_SET_FLAGS (okbutton2, GTK_CAN_DEFAULT);
 
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label152), feedNameEntry);
+
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (vfolderdialog, vfolderdialog, "vfolderdialog");
   GLADE_HOOKUP_OBJECT_NO_REF (vfolderdialog, dialog_vbox15, "dialog_vbox15");
@@ -3646,7 +3541,9 @@ create_vfolderdialog (void)
   GLADE_HOOKUP_OBJECT (vfolderdialog, hbox64, "hbox64");
   GLADE_HOOKUP_OBJECT (vfolderdialog, label152, "label152");
   GLADE_HOOKUP_OBJECT (vfolderdialog, feedNameEntry, "feedNameEntry");
-  GLADE_HOOKUP_OBJECT (vfolderdialog, If, "If");
+  GLADE_HOOKUP_OBJECT (vfolderdialog, vbox2616, "vbox2616");
+  GLADE_HOOKUP_OBJECT (vfolderdialog, label225, "label225");
+  GLADE_HOOKUP_OBJECT (vfolderdialog, alignment12, "alignment12");
   GLADE_HOOKUP_OBJECT (vfolderdialog, alignment8, "alignment8");
   GLADE_HOOKUP_OBJECT (vfolderdialog, vbox2584, "vbox2584");
   GLADE_HOOKUP_OBJECT (vfolderdialog, hbox65, "hbox65");
@@ -3654,7 +3551,6 @@ create_vfolderdialog (void)
   GLADE_HOOKUP_OBJECT (vfolderdialog, label154, "label154");
   GLADE_HOOKUP_OBJECT (vfolderdialog, scrolledwindow7, "scrolledwindow7");
   GLADE_HOOKUP_OBJECT (vfolderdialog, ruleview, "ruleview");
-  GLADE_HOOKUP_OBJECT (vfolderdialog, label153, "label153");
   GLADE_HOOKUP_OBJECT_NO_REF (vfolderdialog, dialog_action_area15, "dialog_action_area15");
   GLADE_HOOKUP_OBJECT (vfolderdialog, cancelbutton3, "cancelbutton3");
   GLADE_HOOKUP_OBJECT (vfolderdialog, okbutton2, "okbutton2");
@@ -3681,16 +3577,19 @@ create_enchandlerdialog (void)
   GtkWidget *okbutton3;
 
   enchandlerdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (enchandlerdialog), 5);
   gtk_window_set_title (GTK_WINDOW (enchandlerdialog), _("Downloading Enclosure"));
+  gtk_window_set_resizable (GTK_WINDOW (enchandlerdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (enchandlerdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (enchandlerdialog), FALSE);
 
   dialog_vbox16 = GTK_DIALOG (enchandlerdialog)->vbox;
   gtk_widget_show (dialog_vbox16);
 
-  vbox2605 = gtk_vbox_new (FALSE, 6);
+  vbox2605 = gtk_vbox_new (FALSE, 12);
   gtk_widget_show (vbox2605);
   gtk_box_pack_start (GTK_BOX (dialog_vbox16), vbox2605, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2605), 12);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2605), 5);
 
   vbox2606 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2606);
@@ -3788,22 +3687,25 @@ create_searchdialog (void)
   tooltips = gtk_tooltips_new ();
 
   searchdialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (searchdialog), 5);
   gtk_window_set_title (GTK_WINDOW (searchdialog), _("Search All Feeds"));
+  gtk_window_set_resizable (GTK_WINDOW (searchdialog), FALSE);
   gtk_window_set_type_hint (GTK_WINDOW (searchdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (searchdialog), FALSE);
 
   dialog_vbox17 = GTK_DIALOG (searchdialog)->vbox;
   gtk_widget_show (dialog_vbox17);
 
-  vbox2614 = gtk_vbox_new (FALSE, 6);
+  vbox2614 = gtk_vbox_new (FALSE, 12);
   gtk_widget_show (vbox2614);
   gtk_box_pack_start (GTK_BOX (dialog_vbox17), vbox2614, TRUE, TRUE, 6);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox2614), 12);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2614), 5);
 
-  hbox92227 = gtk_hbox_new (FALSE, 6);
+  hbox92227 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox92227);
-  gtk_box_pack_start (GTK_BOX (vbox2614), hbox92227, FALSE, TRUE, 6);
+  gtk_box_pack_start (GTK_BOX (vbox2614), hbox92227, FALSE, TRUE, 0);
 
-  label222 = gtk_label_new (_("Search for"));
+  label222 = gtk_label_new_with_mnemonic (_("_Search for:"));
   gtk_widget_show (label222);
   gtk_box_pack_start (GTK_BOX (hbox92227), label222, FALSE, FALSE, 0);
 
@@ -3866,6 +3768,8 @@ create_searchdialog (void)
   g_signal_connect ((gpointer) searchstartbtn, "clicked",
                     G_CALLBACK (on_searchentry_activate),
                     NULL);
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label222), searchentry);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (searchdialog, searchdialog, "searchdialog");
