@@ -168,6 +168,30 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 
 		/* somehow we don't need to check for GtkHTML2... */
 
+		/* menu hotkeys (duplicated so they work with hidden menu */
+		if(GDK_CONTROL_MASK == (event->state & default_modifiers)) {
+			switch (event->keyval) {
+				case GDK_n:
+					on_next_unread_item_activate(NULL, NULL);
+					break;
+				case GDK_r:
+					on_popup_allunread_selected();
+					break;
+				case GDK_t:
+					on_toggle_item_flag(NULL, NULL);
+					break;
+				case GDK_u:
+					on_toggle_unread_status(NULL, NULL);
+					break;
+				case GDK_a:
+					on_refreshbtn_clicked(NULL, NULL);
+					break;
+				case GDK_f:
+					on_searchbtn_clicked(NULL, NULL);
+					break;
+			}
+		}
+
 		/* check for treeview navigation */
 		switch (event->keyval) {
 			case GDK_n: 
