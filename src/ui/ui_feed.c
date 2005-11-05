@@ -40,6 +40,8 @@
 #include "ui/ui_notification.h"
 #include "fl_providers/fl_default.h"
 
+extern GtkWidget *mainwindow;
+
 /********************************************************************
  * Propdialog                                                       *
  *******************************************************************/
@@ -174,7 +176,7 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
-		ui_feed_add(source, filter, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER);
+		ui_feed_add(ui_data->np, source, filter, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER);
 		g_free(source);
 	}
 
@@ -341,7 +343,7 @@ static void on_feed_prop_update_radio(GtkToggleButton *button, gpointer user_dat
 
 /* dialog preparation */
 
-GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, nodePtr np, gint flags) {
+GtkWidget* ui_feed_authdialog_new(nodePtr np, gint flags) {
 	GtkWidget		*authdialog;
 	struct fp_prop_ui_data	*ui_data;
 	gchar			*promptStr;
@@ -355,7 +357,7 @@ GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, nodePtr np, gint flags) {
 	ui_data->np = np;
 	ui_data->fp = (feedPtr)np->data;
 	ui_data->flags = flags;
-	gtk_window_set_transient_for(GTK_WINDOW(authdialog), GTK_WINDOW(parent));
+	gtk_window_set_transient_for(GTK_WINDOW(authdialog), GTK_WINDOW(mainwindow));
 	
 	/* Auth check box */
 	ui_data->username = lookup_widget(authdialog, "usernameEntry");
@@ -397,15 +399,16 @@ GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, nodePtr np, gint flags) {
 	return authdialog;
 }
 
-GtkWidget* ui_feed_newdialog_new(GtkWindow *parent) {
+GtkWidget* ui_feed_newdialog_new(nodePtr np) {
 	GtkWidget *newdialog;
 	struct fp_prop_ui_data *ui_data;
 	
 	ui_data = g_new0(struct fp_prop_ui_data, 1);
+	ui_data->np = np;
 
 	/* Create the dialog */
 	ui_data->dialog = newdialog = create_newdialog();
-	gtk_window_set_transient_for(GTK_WINDOW(newdialog), GTK_WINDOW(parent));
+	gtk_window_set_transient_for(GTK_WINDOW(newdialog), GTK_WINDOW(mainwindow));
 
 	/***********************************************************************
 	 * Source                                                              *
@@ -441,7 +444,7 @@ GtkWidget* ui_feed_newdialog_new(GtkWindow *parent) {
 	return newdialog;
 }
 
-GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, nodePtr np) {
+GtkWidget* ui_feed_propdialog_new(nodePtr np) {
 	GtkWidget		*propdialog;
 	struct fp_prop_ui_data	*ui_data;
 	int 			interval, defaultInterval;
@@ -454,7 +457,7 @@ GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, nodePtr np) {
 	
 	/* Create the dialog */
 	ui_data->dialog = propdialog = create_propdialog();
-	gtk_window_set_transient_for(GTK_WINDOW(propdialog), GTK_WINDOW(parent));
+	gtk_window_set_transient_for(GTK_WINDOW(propdialog), GTK_WINDOW(mainwindow));
 
 	/***********************************************************************
 	 * General                                                             *
@@ -599,10 +602,10 @@ GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, nodePtr np) {
 }
 
 /* used by fl_default_node_add but also from ui_search.c! */
-void ui_feed_add(const gchar *source, gchar *filter, gint flags) {
+void ui_feed_add(nodePtr np, const gchar *source, gchar *filter, gint flags) {
 	feedPtr			fp;
 	int			pos;
-	nodePtr			np, parent;
+	nodePtr			parent;
 	
 	debug_enter("ui_feed_add");	
 	
@@ -611,13 +614,12 @@ void ui_feed_add(const gchar *source, gchar *filter, gint flags) {
 	feed_set_title(fp, _("New subscription"));
 	feed_set_filter(fp, filter);
 
-	node_schedule_update(np, ui_feed_process_update_result, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
-
-	np = node_new();
 	node_set_title(np, feed_get_title(fp));
 	node_add_data(np, FST_FEED, (gpointer)fp);
 	parent = ui_feedlist_get_target_folder(&pos);
 	feedlist_add_node(parent, np, pos);
+
+	node_schedule_update(np, ui_feed_process_update_result, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
 
 	debug_exit("ui_feed_add");	
 }
@@ -644,7 +646,7 @@ void ui_feed_process_update_result(struct request *request) {
 	if(401 == request->httpstatus) { /* unauthorized */
 		feed_set_available(fp, FALSE);
 		if(request->flags & FEED_REQ_AUTH_DIALOG)
-			ui_feed_authdialog_new(GTK_WINDOW(mainwindow), np, request->flags);
+			ui_feed_authdialog_new(np, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
 		feed_set_available(fp, FALSE);
 		feed_set_discontinued(fp, TRUE);
@@ -677,7 +679,7 @@ void ui_feed_process_update_result(struct request *request) {
 			fp->fhp = fhp;
 			
 			/* merge the resulting items into the node's item set */
-			node_merge_items(np, sp);
+			node_merge_items(np, sp->items);
 		
 			/* restore user defined properties if necessary */
 			if(!(request->flags & FEED_REQ_RESET_TITLE)) {
@@ -701,7 +703,7 @@ void ui_feed_process_update_result(struct request *request) {
 			itemlist_reload(np);
 			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
-				ui_feed_propdialog_new(GTK_WINDOW(mainwindow), np);
+				ui_feed_propdialog_new(np);
 		}
 	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(fp));

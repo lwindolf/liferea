@@ -89,7 +89,6 @@ void feedlist_reset_new_item_count(void) {
 
 void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
-	g_print("adding np=%d\n", np);
 	ui_feedlist_add(parent, np, position);	// FIXME: should be ui_node_add_child()
 	if(NULL != parent)
 		ui_node_update(parent);

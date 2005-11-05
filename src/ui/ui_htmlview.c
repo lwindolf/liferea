@@ -512,7 +512,9 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	ui_feed_add(url, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	g_warning("not yet implemented");
+	// FIXME
+	//ui_feed_add(np, url, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	g_free(url);
 }
 

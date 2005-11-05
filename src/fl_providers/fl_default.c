@@ -117,7 +117,7 @@ static void fl_default_node_add(nodePtr np) {
 
 	switch(np->type) {
 		case FST_FEED:
-			dialog = ui_feed_newdialog_new(mainwindow);
+			dialog = ui_feed_newdialog_new(np);
 			gtk_widget_show(dialog);
 			break;
 		case FST_FOLDER:

@@ -138,8 +138,10 @@ static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint
 		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(0 != strlen(tmp2))
-				ui_feed_add(g_strdup(tmp2), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE |
-			                                          FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER | FEED_REQ_PRIORITY_HIGH);
+				// FIXME
+				//ui_feed_add(np, g_strdup(tmp2), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE |
+			        //                                 FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER | FEED_REQ_PRIORITY_HIGH);
+				g_warning("not yet implemented");
 		}
 		g_free(freeme);
 		gtk_drag_finish(context, TRUE, FALSE, time);		

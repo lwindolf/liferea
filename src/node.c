@@ -315,6 +315,9 @@ void node_remove(nodePtr np) {
 void node_add(nodePtr parent, guint type) {
 	nodePtr		child;
 
+	if(NULL == parent)
+		parent = feedlist_get_root();
+
 	child = node_new();
 	child->type = type;
 

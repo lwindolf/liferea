@@ -25,17 +25,18 @@
 #include "feed.h"
 
 /* feed handling dialog implementations */
-GtkWidget* ui_feed_authdialog_new(GtkWindow *parent, nodePtr np, gint flags);
-GtkWidget* ui_feed_propdialog_new(GtkWindow *parent, nodePtr np);
-GtkWidget* ui_feed_newdialog_new(GtkWindow *parent);
+GtkWidget* ui_feed_authdialog_new(nodePtr np, gint flags);
+GtkWidget* ui_feed_propdialog_new(nodePtr np);
+GtkWidget* ui_feed_newdialog_new(nodePtr np);
 
 /**
  * Add a feed to the feed list.
  *
+ * @parem node		the node the feed belongs to
  * @param source	URI of the feed to add
  * @param filter	filter command (optional)
  * @param flags		download request flags
  */
-void ui_feed_add(const gchar *source, gchar *filter, gint flags);
+void ui_feed_add(nodePtr np, const gchar *source, gchar *filter, gint flags);
 
 #endif /* _UI_FEED_H */
