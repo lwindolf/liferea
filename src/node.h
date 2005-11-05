@@ -52,6 +52,7 @@ typedef struct node {
 	struct flNodeHandler_	*handler;	/**< pointer to feed list plugin instance handling this node */
 
 	/* feed list state properties of this node */
+	gboolean		isRoot;		/**< TRUE if this is the feed list root node */
 	struct node		*parent;	/**< the parent node (or NULL if at root level) */
 	gchar			*id;		/**< unique node identifier string */
 

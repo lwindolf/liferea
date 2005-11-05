@@ -45,18 +45,25 @@ extern GtkWindow *mainwindow;
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;
 
-static flNodeHandler *handler = NULL;
-static nodePtr rootNode = NULL;
+static flPluginInfo fpi;
 
 static void fl_default_handler_new(nodePtr np) {
-	gchar	*filename;
+	flNodeHandler	*handler;
+	gchar		*filename;
 
 	debug_enter("fl_default_handler_new");
 
 	/* We only expect to be called to create an plugin instance 
-	   serving as the root node (indicated by NULL). */
-	g_assert(NULL == np);
+	   serving as the root node. */
+	g_assert(TRUE == np->isRoot);
 
+	/* create a new handler structure */
+	handler = g_new0(struct flNodeHandler_, 1);
+	handler->root = np;
+	handler->plugin = &fpi;
+	np->handler = handler;
+
+	/* start the import */
 	feedlistImport = TRUE;
 	filename = common_create_cache_filename(NULL, "feedlist", "opml");
 	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
@@ -362,21 +369,19 @@ ui_feedlist_dbus_connect ()
 
 #endif /* USE_DBUS */
 
-static flPluginInfo fpi;
 
 void fl_default_init(void) {
 
 	debug_enter("fl_default_init");
-
-	handler = g_new0(flNodeHandler, 1);
-	handler->plugin = &fpi;
 
 	debug_exit("fl_default_init");
 }
 
 void fl_default_deinit(void) {
 	
-	g_warning("fl_default_deinit(): Implement me!");
+	debug_enter("fl_default_deinit");
+
+	debug_exit("fl_default_deinit");
 }
 
 /* feed list provider plugin definition */

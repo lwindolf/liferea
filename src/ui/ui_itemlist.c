@@ -406,8 +406,8 @@ void ui_itemlist_display(void) {
 	np = ui_feedlist_get_selected();
 	
 	if(np != NULL) {
-		if(FST_FOLDER != np->type)
-			base = feed_get_html_url((feedPtr)np);
+		if(FST_FEED == np->type)
+			base = feed_get_html_url((feedPtr)np->data);
 			
 		if(TRUE == ui_itemlist_get_two_pane_mode()) {
 			/* two pane mode */

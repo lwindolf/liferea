@@ -41,21 +41,21 @@
 static guint unreadCount = 0;
 static guint newCount = 0;
 
+static nodePtr	rootNode = NULL;
 static nodePtr	selectedNode = NULL;
 extern nodePtr	displayed_node;
 
-static flPluginInfo * rootPlugin = NULL;
 static GSList * plugins = NULL;
 
 static guint feedlist_save_timer = 0;
 static gboolean feedlistLoading = TRUE;
 
-/* helper functions */
-
 typedef enum {
 	NEW_ITEM_COUNT,
 	UNREAD_ITEM_COUNT
 } countType;
+
+nodePtr feedlist_get_root(void) { return rootNode; }
 
 /* statistic handling methods */
 
@@ -283,7 +283,7 @@ static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
 	/* step 2: request saving for the root plugin and thereby
 	   saving the feed list structure */
-	rootPlugin->node_save(NULL);
+	FL_PLUGIN(rootNode)->node_save(rootNode);
 	
 	feedlist_save_timer = 0;
 	return FALSE;
@@ -317,21 +317,27 @@ static void feedlist_initial_load(nodePtr np) {
 }
 
 void feedlist_init(void) {
+	flPluginInfo	*rootPlugin;
 
 	debug_enter("feedlist_init");
 
-	/* 1. Initialize list of plugins and find root provider
+	/* 1. Set up a root node */
+	rootNode = node_new();
+	rootNode->isRoot = TRUE;
+	rootNode->title = g_strdup("root");
+
+	/* 2. Initialize list of plugins and find root provider
 	   plugin. Creating an instance of this plugin. This 
 	   will load the feed list and all attached plugin 
 	   handlers. */
 	plugins = plugin_mgmt_get_list();
 	rootPlugin = fl_plugins_get_root(plugins);
-	rootPlugin->handler_new(NULL);
+	rootPlugin->handler_new(rootNode);
 
-	/* 2. load all feeds and by doing so automatically load all vfolders */
+	/* 3. load all feeds and by doing so automatically load all vfolders */
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_initial_load);
 
-	/* 3. start automatic updating */
+	/* 4. start automatic updating */
  	//(void)g_timeout_add(1000, feedlist_auto_update, NULL);
 
 	debug_exit("feedlist_init");

@@ -25,6 +25,7 @@
 #include "callbacks.h"
 #include "favicon.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "update.h"
 #include "debug.h"
 #include "support.h"
@@ -83,7 +84,7 @@ void node_load(nodePtr np) {
 		debug1(DEBUG_CACHE, "no loading %s because it is already loaded", node_get_title(np));
 		return;
 	}
-	
+
 	switch(np->type) {
 		case FST_FEED:
 		case FST_PLUGIN:
@@ -312,7 +313,7 @@ void node_remove(nodePtr np) {
 }
 
 void node_add(nodePtr parent, guint type) {
-	nodePtr	child;
+	nodePtr		child;
 
 	child = node_new();
 	child->type = type;
@@ -329,7 +330,7 @@ void node_add(nodePtr parent, guint type) {
 			FL_PLUGIN(parent)->node_add(child);
 			break;
 		case FST_PLUGIN:
-			//FL_PLUGIN(parent)->handler_new(child);
+			FL_PLUGIN(parent)->handler_new(child);
 			g_warning("not yet implemented!");
 			break;
 		default:

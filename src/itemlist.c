@@ -99,7 +99,7 @@ void itemlist_reload(nodePtr node) {
 	gboolean	isFeed;
 	gboolean	isFolder;
 	
-	if (displayed_node == NULL)
+	if(displayed_node == NULL)
 		return; /* Nothing to do if nothing is displayed */
 	
 	/* determine what node type is actually selected */

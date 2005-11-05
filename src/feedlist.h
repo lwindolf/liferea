@@ -35,6 +35,8 @@ int feedlist_get_new_item_count(void);
 void feedlist_reset_new_item_count(void);
 void feedlist_update_counters(gint unreadDiff, gint newDiff);
 
+nodePtr feedlist_get_root(void);
+
 void feedlist_add_node(nodePtr parent, nodePtr np, gint position);
 void feedlist_update_node(nodePtr np);
 void feedlist_remove_node(nodePtr np);
