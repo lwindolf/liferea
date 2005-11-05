@@ -202,6 +202,38 @@ void node_merge_items(nodePtr np, GList *list) {
 	ui_node_update(np);
 }
 
+void node_update_counters(nodePtr np) {
+	gint	unreadDiff, newDiff;
+	GList	*iter;
+	itemPtr	ip;
+
+	g_assert(FST_FOLDER != np->type);
+
+	newDiff = -1 * np->newCount;
+	unreadDiff = -1 * np->unreadCount;
+	np->newCount = 0;
+	np->unreadCount = 0;
+
+	iter = np->itemSet->items;
+	while(NULL != iter) {
+		ip = (itemPtr)iter->data;
+		if(FALSE == ip->readStatus)
+			np->unreadCount++;	
+		if(TRUE == ip->newStatus)
+			np->newCount++;
+		if(TRUE == ip->popupStatus)
+			np->popupCount++;
+		iter = g_list_next(iter);
+	}
+
+	/* update parent folder */
+	if(NULL != np->parent)
+		np->parent->unreadCount += unreadDiff;
+
+	/* propagate to feed list statistics */
+	feedlist_update_counters(unreadDiff, newDiff);
+}
+
 itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
 
 void node_set_itemset(nodePtr np, itemSetPtr sp) {
@@ -209,7 +241,7 @@ void node_set_itemset(nodePtr np, itemSetPtr sp) {
 	g_assert(NULL == np->itemSet);
 	np->itemSet = sp;
 	sp->node = np;
-	feedlist_update_counters(sp->unreadCount, sp->newCount);
+	node_update_counters(np);
 }
 
 gchar * node_render(nodePtr np) {
@@ -320,7 +352,7 @@ const gchar * node_get_title(nodePtr np) { return np->title; }
 
 void node_update_unread_count(nodePtr np, gint diff) {
 
-	np->itemSet->unreadCount += diff;
+	np->unreadCount += diff;
 
 	/* vfolder unread counts are not interesting
 	   in the following propagation handling */
@@ -337,7 +369,7 @@ void node_update_unread_count(nodePtr np, gint diff) {
 
 void node_update_new_count(nodePtr np, gint diff) {
 
-	np->itemSet->newCount += diff;
+	np->newCount += diff;
 
 	/* vfolder new counts are not interesting
 	   in the following propagation handling */
@@ -353,7 +385,7 @@ void node_update_new_count(nodePtr np, gint diff) {
 guint node_get_unread_count(nodePtr np) { 
 	
 	if(np->itemSet)
-		return np->itemSet->unreadCount; 
+		return np->unreadCount; 
 	else
 		return 0;
 }

@@ -133,7 +133,7 @@ void feedlist_remove_node(nodePtr np) {
 
 /* This callback is used to compute the itemset of folder nodes */
 static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
-	itemSetPtr sp = (itemSetPtr)userdata;
+	itemSetPtr	sp = (itemSetPtr)userdata;
 
 	switch(np->type) {
 		case FST_FOLDER:
@@ -155,8 +155,6 @@ static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
 	}
 
 	sp->items = g_list_concat(sp->items, np->itemSet->items);
-	sp->newCount += np->itemSet->newCount;
-	sp->unreadCount += np->itemSet->unreadCount;
 }
 
 void feedlist_load_node(nodePtr np) {
@@ -241,7 +239,7 @@ void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
 
 static void feedlist_mark_all_read(nodePtr np) {
 
-	if(0 == np->itemSet->unreadCount)
+	if(0 == np->unreadCount)
 		return;
 
 	node_load(np);
@@ -334,7 +332,7 @@ void feedlist_init(void) {
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_initial_load);
 
 	/* 3. start automatic updating */
- 	(void)g_timeout_add(1000, feedlist_auto_update, NULL);
+ 	//(void)g_timeout_add(1000, feedlist_auto_update, NULL);
 
 	debug_exit("feedlist_init");
 }

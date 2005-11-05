@@ -55,6 +55,10 @@ typedef struct node {
 	struct node		*parent;	/**< the parent node (or NULL if at root level) */
 	gchar			*id;		/**< unique node identifier string */
 
+	guint			unreadCount;	/**< number of items not yet read */
+	guint			popupCount;	/**< number of items to be notified */
+	guint			newCount;	/**< number of recently downloaded items */
+
 	gchar			*title;		/**< the label of the node in the feed list */
 	gpointer		icon;		/**< pointer to pixmap, if there is a favicon */
 	guint			loaded;		/**< counter which is non-zero if items are to be kept in memory */

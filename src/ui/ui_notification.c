@@ -159,7 +159,7 @@ void ui_notification_update(const nodePtr node_p) {
 	if(list_p != NULL) {
 		curNotif_p = (feedNotif_t *)list_p->data;
 	} else {
-		if(0 == node_p->itemSet->popupCount)
+		if(0 == node_p->popupCount)
 			return;
 		
 		curNotif_p = notifCreateFeedNotif(node_p);
@@ -184,12 +184,12 @@ static feedNotif_t *notifCreateFeedNotif(nodePtr node_p) {
 
 static void notifCheckFeedNotif(feedNotif_t *feedNotif_p) {
 
-	if(feedNotif_p->newCount < feedNotif_p->node_p->itemSet->popupCount) {
+	if(feedNotif_p->newCount < feedNotif_p->node_p->popupCount) {
 		if(notifWin_p == NULL) {
 			notifWin_p = notifCreateWin();
 		}
 		notifAddFeedNotif(feedNotif_p);
-	} else if(feedNotif_p->newCount > feedNotif_p->node_p->itemSet->popupCount) {
+	} else if(feedNotif_p->newCount > feedNotif_p->node_p->popupCount) {
 		notifRemoveFeedNotif(feedNotif_p);
 		notifRemoveWin();
 	}
@@ -259,7 +259,7 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 		gtk_box_pack_start(GTK_BOX(list_p->data), feedNotif_p->eventBox_p, FALSE, FALSE, 0);
 	}
 
-	feedNotif_p->newCount = feedNotif_p->node_p->itemSet->popupCount;
+	feedNotif_p->newCount = feedNotif_p->node_p->popupCount;
 	
 	notifUpdatePosition(GTK_WINDOW(notifWin_p));
 
@@ -280,7 +280,7 @@ static void notifRemoveFeedNotif (feedNotif_t *feedNotif_p) {
 		g_source_remove(feedNotif_p->timerTag);
 		feedNotif_p->timerTag = 0;
 	}
-	feedNotif_p->newCount = feedNotif_p->node_p->itemSet->popupCount;
+	feedNotif_p->newCount = feedNotif_p->node_p->popupCount;
 	
 	notifUpdatePosition(GTK_WINDOW(notifWin_p));
 }

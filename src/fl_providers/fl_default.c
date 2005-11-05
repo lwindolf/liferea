@@ -43,7 +43,7 @@
 extern GtkWindow *mainwindow;
 
 /** lock to prevent feed list saving while loading */
-static gboolean feedlistLoading = FALSE;
+static gboolean feedlistImport = FALSE;
 
 static flNodeHandler *handler = NULL;
 static nodePtr rootNode = NULL;
@@ -51,11 +51,13 @@ static nodePtr rootNode = NULL;
 static void fl_default_handler_new(nodePtr np) {
 	gchar	*filename;
 
+	debug_enter("fl_default_handler_new");
+
 	/* We only expect to be called to create an plugin instance 
 	   serving as the root node (indicated by NULL). */
 	g_assert(NULL == np);
 
-	feedlistLoading = TRUE;
+	feedlistImport = TRUE;
 	filename = common_create_cache_filename(NULL, "feedlist", "opml");
 	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
@@ -65,7 +67,7 @@ static void fl_default_handler_new(nodePtr np) {
 	}
 	import_OPML_feedlist(filename, NULL, handler, FALSE, TRUE);
 	g_free(filename);
-	feedlistLoading = FALSE;
+	feedlistImport = FALSE;
 
 #ifdef USE_DBUS
 	/* Start listening on the dbus for new subscriptions */
@@ -74,6 +76,8 @@ static void fl_default_handler_new(nodePtr np) {
 #else
 	debug0(DEBUG_GUI, "No DBUS support active.");
 #endif
+
+	debug_exit("fl_default_handler_new");
 }
 
 static void fl_default_handler_delete(nodePtr np) {
@@ -83,7 +87,7 @@ static void fl_default_handler_delete(nodePtr np) {
 static void fl_default_save_root(void) {
 	gchar *filename, *filename_real;
 	
-	if(feedlistLoading)
+	if(feedlistImport)
 		return;
 
 	debug_enter("fl_default_save_root");

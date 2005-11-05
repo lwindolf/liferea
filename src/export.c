@@ -346,7 +346,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			import_parse_children_as_rules(cur, vp);
 			node_add_data(np, FST_VFOLDER, (gpointer)vp); // FIXME: make node adding generic
 
-			debug1(DEBUG_CACHE, "loading vfolder: title=%s", title);
+			debug1(DEBUG_CACHE, "import vfolder: title=%s", title);
 		} else {
 			fp = feed_new();
 			node_add_data(np, FST_FEED, (gpointer)fp); // FIXME: make node adding generic
@@ -399,7 +399,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			feed_set_title(fp, title);
 			feed_set_update_interval(fp, interval);
 
-			debug6(DEBUG_CACHE, "loading feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
+			debug6(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
 		}
 
 		/* sorting order */

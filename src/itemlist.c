@@ -338,6 +338,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	
 		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 			displayed_item = ip = ui_itemlist_get_item_from_iter(&iter);
+			debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(ip));
 			itemset_render_item(ip->itemSet, ip);
 			/* set read and unset update status done when unselecting */
 			itemlist_set_read_status(ip, TRUE);
