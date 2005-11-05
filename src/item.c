@@ -1,8 +1,8 @@
 /**
  * @file item.c common item handling
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,8 +147,10 @@ void item_free(itemPtr ip) {
 gchar *item_render(itemPtr ip) {
 	struct displayset	displayset;
 	gchar			*buffer = NULL;
+	gchar			*htmlurl = NULL;
 	gchar			*tmp, *tmp2;
 	xmlChar			*tmp3;
+	nodePtr			np;
 	
 	displayset.headtable = NULL;
 	displayset.head = NULL;
@@ -159,17 +161,23 @@ gchar *item_render(itemPtr ip) {
 	metadata_list_render(ip->metadata, &displayset);	
 	/* Head table */
 	addToHTMLBufferFast(&buffer, HEAD_START);
+
+	/* the following ensure to use the real parent mode */
+	if(NULL == ip->sourceSet)
+		np = ip->itemSet->node;
+	else
+		np = ip->sourceSet->node;
+	
+	if(FST_FEED == np->type)
+		htmlurl = feed_get_html_url((feedPtr)np->data);
+
 	/*  -- Feed line */
-	/*if(feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed) != NULL)
-		
+	if(NULL != htmlurl)
 		tmp = g_markup_printf_escaped("<span class=\"feedlink\"><a href=\"%s\">%s</a></span>",
-									 feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed),
-									 feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));
+		                              htmlurl, node_get_title(np));
 	else
 		tmp = g_markup_printf_escaped("<span class=\"feedlink\">%s</span>",
-			              feed_get_title((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed));*/
-
-	tmp=g_strdup("FIXME!");
+		                              node_get_title(np));
 
 	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
@@ -177,23 +185,15 @@ gchar *item_render(itemPtr ip) {
 	g_free(tmp2);
 
 	/*  -- Item line */
-	tmp = NULL;
-
-	/* FIXME: how to retrieve the icon? 
-	if((NULL != ip->sourceFeed) && (NULL != ip->sourceFeed->icon))
-		tmp = (gchar *)feed_get_id(ip->sourceFeed);
-	else if((NULL != ip->fp) && (NULL != ip->fp->icon))
-		tmp = (gchar *)feed_get_id(ip->fp);*/
-
-	/*if(NULL != tmp) {
+	if(NULL != np->icon) {
 		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", tmp, "png");
-		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed), tmp2);
+		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	} else {
 		tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
-		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", feed_get_html_url((NULL == ip->sourceFeed)?ip->fp:ip->sourceFeed), tmp2);
+		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", htmlurl, tmp2);
 		g_free(tmp2);
-	}*/
+	}
 	tmp3 = g_markup_escape_text((item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"), -1);
 	if(item_get_source(ip) != NULL)
 		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s<a href=\"%s\">%s</a></span>",
