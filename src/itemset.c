@@ -84,18 +84,8 @@ itemPtr itemset_lookup_item(itemSetPtr sp, gulong nr) {
 void itemset_add_item(itemSetPtr sp, itemPtr ip) {
 
 	ip->itemSet = sp;
+	ip->nr = ++(sp->lastItemNr);
 	sp->items = g_list_append(sp->items, ip);
-
-	/* Always update the node counter statistics */
-	if(FALSE == ip->readStatus)
-		sp->unreadCount++;
-			
-	// FIXME: prevent the next two for folders+vfolders?
-	if(TRUE == ip->popupStatus)
-		sp->popupCount++;
-		
-	if(TRUE == ip->newStatus)
-		sp->newCount++;
 }
 
 //void itemset_add_items(itemSetPtr sp, GList items) {
@@ -290,6 +280,4 @@ void itemset_mark_all_old(itemSetPtr sp) {
 		iter = g_list_next(iter);
 	}
 	g_list_free(items);
-
-	sp->newCount = 0;
 }
