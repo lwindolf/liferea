@@ -312,22 +312,29 @@ void node_remove(nodePtr np) {
 	node_free(np);
 }
 
-void node_add(nodePtr parent, guint type) {
+void node_add(guint type) {
+	nodePtr		parent;
 	nodePtr		child;
 
-	if(NULL == parent)
-		parent = feedlist_get_root();
+	parent = feedlist_get_selected_parent();
+	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
+
+	/* FIXME: check if target handler allows adding nodes.
+	 * and if it doesn't use the rootNode as parent */
 
 	child = node_new();
 	child->type = type;
+	child->handler = parent->handler;
 
 	switch(child->type) {
 		case FST_FEED:
 			child->icon = icons[ICON_AVAILABLE];
 			FL_PLUGIN(parent)->node_add(child);
+			break;
 		case FST_FOLDER:
 			child->icon = icons[ICON_FOLDER];
 			FL_PLUGIN(parent)->node_add(child);
+			break;
 		case FST_VFOLDER:
 			child->icon = icons[ICON_VFOLDER];
 			FL_PLUGIN(parent)->node_add(child);

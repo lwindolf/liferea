@@ -22,10 +22,33 @@
 #define _FEEDLIST_H
 
 #include <gtk/gtk.h>
-#include "feed.h"
+#include "node.h"
 
 /** initializes the feed list handling */
 void feedlist_init(void);
+
+/**
+ * Get feed list root node.
+ *
+ * @returns root node
+ */
+nodePtr feedlist_get_root(void);
+
+/**
+ * Get currently selected feed list node 
+ *
+ * @returns selected node (or NULL)
+ */
+nodePtr feedlist_get_selected(void);
+
+/** 
+ * Get the parent node of the currently 
+ * selected node. Can be used to determine
+ * insertion point when creating new subscriptions.
+ *
+ * @returns parent folder node (or root node)
+ */
+nodePtr feedlist_get_selected_parent(void);
 
 /** statistic counter handling methods */
 int feedlist_get_unread_item_count(void);

@@ -82,12 +82,11 @@ typedef struct node {
 nodePtr node_new(void);
 
 /**
- * Adding a child node to a given node.
+ * Request the creation of a new node of the given type.
  *
- * @param parent	the parent node
  * @param type		the nodes type
  */
-void node_add(nodePtr parent, guint type);
+void node_add(guint type);
 
 /**
  * Removes the given node from the feed list.

@@ -80,6 +80,9 @@ nodePtr ui_feedlist_get_parent(nodePtr ptr) {
 	GtkTreeIter	*iter = &((ui_data*)(ptr->ui_data))->row;
 	GtkTreeIter	parent;
 	nodePtr	parentPtr;
+
+	if(NULL == ptr)
+		return NULL;
 	
 	if(gtk_tree_model_iter_parent(GTK_TREE_MODEL(feedstore), &parent, iter)) {
 		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &parent,
@@ -108,11 +111,13 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 	GtkTreeIter	iter;
 	GtkTreePath 	*path;
 	gint		*indices;
-	
-	if(NULL == (ptr = ui_feedlist_get_selected())) {
+
+	if(NULL != pos)
 		*pos = -1;
+	
+	if(NULL == (ptr = ui_feedlist_get_selected()))
 		return NULL;
-	}
+	
 
 	if(filter_feeds_without_unread_headlines) {
 		gtk_tree_model_filter_convert_child_iter_to_iter(GTK_TREE_MODEL_FILTER(filter), &iter, &((ui_data*)(ptr->ui_data))->row);
@@ -121,12 +126,12 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 	}
 
 	if(FST_FOLDER == ptr->type) {
-		*pos = -1;
 		return ptr;
 	} else {
 		path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist"))), &iter);
 		indices = gtk_tree_path_get_indices(path);
-		*pos = indices[gtk_tree_path_get_depth(path)-1] + 1;
+		if(NULL != pos)
+			*pos = indices[gtk_tree_path_get_depth(path)-1] + 1;
 		gtk_tree_path_free(path);
 		return ui_feedlist_get_parent(ptr);
 	}
@@ -584,10 +589,8 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 }
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
-	nodePtr	parent;
 
-	parent = ui_feedlist_get_parent(ui_feedlist_get_selected());
-	node_add(parent, FST_FEED);
+	node_add(FST_FEED);
 }
 
 void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {

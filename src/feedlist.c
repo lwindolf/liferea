@@ -57,6 +57,21 @@ typedef enum {
 
 nodePtr feedlist_get_root(void) { return rootNode; }
 
+nodePtr feedlist_get_selected(void) { return selectedNode; }
+
+nodePtr feedlist_get_selected_parent(void) { 
+
+	g_assert(NULL != rootNode);
+
+	if(NULL == selectedNode)
+		return rootNode;
+	
+	if(NULL == selectedNode->parent) 
+		return rootNode;
+	else
+		return selectedNode->parent;
+}
+
 /* statistic handling methods */
 
 int feedlist_get_unread_item_count(void) { return unreadCount; }
@@ -89,6 +104,7 @@ void feedlist_reset_new_item_count(void) {
 
 void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
+g_print("feedlist_add_node parent=%d node=%d\n", parent, np);	
 	ui_feedlist_add(parent, np, position);	// FIXME: should be ui_node_add_child()
 	if(NULL != parent)
 		ui_node_update(parent);
@@ -203,7 +219,7 @@ void feedlist_selection_changed(nodePtr np) {
 
 void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
 
-	ui_feedlist_delete_prompt((nodePtr)ui_feedlist_get_selected());
+	ui_feedlist_delete_prompt(selectedNode);
 }
 
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -224,14 +240,13 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 
 void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
 
-	on_popup_refresh_selected((gpointer)ui_feedlist_get_selected(), 0, NULL);
+	on_popup_refresh_selected((gpointer)selectedNode, 0, NULL);
 }
 
 void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
-	gpointer np = (gpointer)ui_feedlist_get_selected();
 	
-	if(np != NULL)
-		on_popup_refresh_selected((gpointer)np, 0, NULL);
+	if(selectedNode != NULL)
+		on_popup_refresh_selected((gpointer)selectedNode, 0, NULL);
 	else
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
 }
@@ -250,12 +265,12 @@ static void feedlist_mark_all_read(nodePtr np) {
 void on_popup_allunread_selected(void) {
 	nodePtr	np;
 	
-	if(NULL != (np = ui_feedlist_get_selected())) {
-		if(FST_FOLDER == np->type) {
+	if(NULL != selectedNode) {
+		if(FST_FOLDER == selectedNode->type) {
 			/* if we have selected a folder we mark all item of all feeds as read */
-			ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, (nodeActionFunc)feedlist_mark_all_read);
+			ui_feedlist_do_for_all(selectedNode, ACTION_FILTER_FEED, (nodeActionFunc)feedlist_mark_all_read);
 		} else {
-			feedlist_mark_all_read(np);
+			feedlist_mark_all_read(selectedNode);
 		}
 	}
 }

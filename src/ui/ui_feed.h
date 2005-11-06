@@ -37,6 +37,6 @@ GtkWidget* ui_feed_newdialog_new(nodePtr np);
  * @param filter	filter command (optional)
  * @param flags		download request flags
  */
-void ui_feed_add(nodePtr np, const gchar *source, gchar *filter, gint flags);
+void ui_feed_add(nodePtr np, const gchar *source, const gchar *filter, gint flags);
 
 #endif /* _UI_FEED_H */
