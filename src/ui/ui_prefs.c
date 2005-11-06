@@ -497,6 +497,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 			edtool++;
 			i++;
 		}		
+		gtk_menu_set_active(GTK_MENU(menu), getNumericConfValue(ENCLOSURE_DOWNLOAD_TOOL));
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "enc_download_tool_option_btn")), menu);
 
 		/* set enclosure download path entry */	
