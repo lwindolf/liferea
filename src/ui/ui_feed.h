@@ -27,7 +27,7 @@
 /* feed handling dialog implementations */
 GtkWidget* ui_feed_authdialog_new(nodePtr np, gint flags);
 GtkWidget* ui_feed_propdialog_new(nodePtr np);
-GtkWidget* ui_feed_newdialog_new(nodePtr np);
+void ui_feed_newdialog(nodePtr np);
 
 /**
  * Add a feed to the feed list.

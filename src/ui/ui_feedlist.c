@@ -485,6 +485,7 @@ static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, 
 }
 
 void ui_feedlist_remove_node(nodePtr node) {
+
 	ui_feedlist_select(NULL);
 	itemlist_load(NULL);
 	feedlist_remove_node(node);
@@ -580,6 +581,8 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 		gtk_tree_store_insert(feedstore, iter, parentIter, position);
 
 	gtk_tree_store_set(feedstore, iter, FS_PTR, node, -1);
+
+	ui_node_update(node);
 	
 	if(NULL != parent)
 		ui_node_check_if_folder_is_empty(parent);

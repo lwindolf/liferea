@@ -399,7 +399,7 @@ GtkWidget* ui_feed_authdialog_new(nodePtr np, gint flags) {
 	return authdialog;
 }
 
-GtkWidget* ui_feed_newdialog_new(nodePtr np) {
+void ui_feed_newdialog(nodePtr np) {
 	GtkWidget *newdialog;
 	struct fp_prop_ui_data *ui_data;
 
@@ -441,7 +441,7 @@ GtkWidget* ui_feed_newdialog_new(nodePtr np) {
 	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(newdialog, "filterCheckbox")), ui_data);
 	on_feed_prop_url_radio(GTK_TOGGLE_BUTTON(ui_data->urlRadio), ui_data);
 	
-	return newdialog;
+	gtk_widget_show(newdialog);
 }
 
 GtkWidget* ui_feed_propdialog_new(nodePtr np) {
@@ -617,7 +617,6 @@ void ui_feed_add(nodePtr np, const gchar *source, const gchar *filter, gint flag
 	node_set_title(np, feed_get_title(fp));
 	node_add_data(np, FST_FEED, (gpointer)fp);
 	parent = ui_feedlist_get_target_folder(&pos);
-	g_print("add node parent=%d np=%d\n", parent, np);
 	feedlist_add_node(parent, np, pos);
 
 	node_schedule_update(np, ui_feed_process_update_result, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);

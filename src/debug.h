@@ -61,12 +61,4 @@ extern void debug_printf (const char * strloc, const char * function, unsigned l
 #define debug_enter(A)  debug0 (DEBUG_TRACE, "+ "A)
 #define debug_exit(A)   debug0 (DEBUG_TRACE, "- "A)
 
-#define odebug0(fmt) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt)
-#define odebug1(fmt, A) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A)
-#define odebug2(fmt, A, B) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B)
-#define odebug3(fmt, A, B, C) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B, C)
-#define odebug4(fmt, A, B, C, D) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B, C, D)
-#define odebug5(fmt, A, B, C, D, E) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B, C, D, E)
-#define odebug6(fmt, A, B, C, D, E, F) debug_printf (G_STRLOC, PRETTY_FUNCTION,  0, fmt, A, B, C, D, E, F)
-
 #endif

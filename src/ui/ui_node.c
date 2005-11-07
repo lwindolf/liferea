@@ -39,6 +39,16 @@ static GtkWidget	*foldernamedialog = NULL;
 /*------------------------------------------------------------------------------*/
 
 void on_popup_newfolder_selected(void) {
+
+	node_add(FST_FOLDER);
+}
+
+void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
+
+	on_popup_newfolder_selected();
+}
+
+void ui_folder_newdialog(nodePtr np) {
 	GtkWidget	*foldernameentry;
 	
 	if(NULL == newfolderdialog || !G_IS_OBJECT(newfolderdialog))
@@ -46,13 +56,9 @@ void on_popup_newfolder_selected(void) {
 
 	foldernameentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	gtk_entry_set_text(GTK_ENTRY(foldernameentry), "");
+	gtk_object_set_data(GTK_OBJECT(newfolderdialog), "folder", np);
 		
 	gtk_widget_show(newfolderdialog);
-}
-
-void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
-
-	on_popup_newfolder_selected();
 }
 
 void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
@@ -66,13 +72,13 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	foldertitleentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
 
-	folder = node_new();
+	folder = (nodePtr)gtk_object_get_data(GTK_OBJECT(newfolderdialog), "folder");
 	node_set_title(folder, foldertitle);
 	node_add_data(folder, FST_FOLDER, NULL);
 
 	/* add the new folder to the model */
 	parentNode = ui_feedlist_get_target_folder(&pos);
-	ui_feedlist_add(parentNode, folder, pos);
+	feedlist_add_node(parentNode, folder, pos);
 	ui_feedlist_select(folder);
 }
 
@@ -99,7 +105,7 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	nodePtr		folder;
 	GtkWidget	*foldernameentry;
 	
-	folder = gtk_object_get_data(GTK_OBJECT(foldernamedialog), "folder");
+	folder = (nodePtr)gtk_object_get_data(GTK_OBJECT(foldernamedialog), "folder");
 	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
 	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
 	ui_node_update(folder);

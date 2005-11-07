@@ -148,11 +148,11 @@ void node_unload(nodePtr np) {
 static void node_merge_item(nodePtr np, itemPtr ip) {
 	gboolean added;
 
+	debug3(DEBUG_UPDATE, "merging \"%s\" (id=%d) to node \"%s\"", item_get_title(ip), ip->nr, node_get_title(np));
+
 	/* step 1: merge into node type internal data structures */
-	switch(np->itemSet->type) {
+	switch(np->type) {
 		case FST_PLUGIN:
-			added = TRUE; /* no merging for now */
-			break;
 		case FST_FEED:
 			added = feed_merge_check(np->itemSet, ip);
 			break;

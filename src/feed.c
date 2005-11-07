@@ -352,6 +352,7 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(fp));
 
 	sp = g_new0(struct itemSet, 1);
+	sp->type = ITEMSET_TYPE_FEED;
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);

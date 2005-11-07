@@ -117,10 +117,11 @@ static void fl_default_node_add(nodePtr np) {
 
 	switch(np->type) {
 		case FST_FEED:
-			dialog = ui_feed_newdialog_new(np);
-			gtk_widget_show(dialog);
+			ui_feed_newdialog(np);
 			break;
 		case FST_FOLDER:
+			ui_folder_newdialog(np);
+			break;
 		case FST_VFOLDER:
 			g_warning("adding folder/vfolder: implement me!");
 			break;
