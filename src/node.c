@@ -328,15 +328,12 @@ void node_add(guint type) {
 
 	switch(child->type) {
 		case FST_FEED:
-			child->icon = icons[ICON_AVAILABLE];
 			FL_PLUGIN(parent)->node_add(child);
 			break;
 		case FST_FOLDER:
-			child->icon = icons[ICON_FOLDER];
 			FL_PLUGIN(parent)->node_add(child);
 			break;
 		case FST_VFOLDER:
-			child->icon = icons[ICON_VFOLDER];
 			FL_PLUGIN(parent)->node_add(child);
 			break;
 		case FST_PLUGIN:

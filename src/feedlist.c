@@ -120,20 +120,28 @@ void feedlist_update_node(nodePtr np) {
 
 static void feedlist_remove_node_(nodePtr np) { 
 	
+	debug_enter("feedlist_remove_node_");
+
 	ui_notification_remove_feed(np);	/* removes an existing notification for this feed */
 	ui_node_remove_node(np);
-	
-	node_load(np);
 	node_remove(np);
+
+	debug_exit("feedlist_remove_node_");
 }
 
 static void feedlist_remove_folder(nodePtr np) {
 
+	debug_enter("feedlist_remove_folder");
+
 	ui_feedlist_do_for_all(np, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, feedlist_remove_node_);
 	node_remove(np);	
+
+	debug_exit("feedlist_remove_folder");
 }
 
 void feedlist_remove_node(nodePtr np) {
+
+	debug_enter("feedlist_remove_node");
 
 	if(np == displayed_node) {
 		itemlist_load(NULL);
@@ -144,6 +152,8 @@ void feedlist_remove_node(nodePtr np) {
 		feedlist_remove_node_(np);
 	else
 		feedlist_remove_folder(np);
+
+	debug_exit("feedlist_remove_node");
 }
 
 /* This callback is used to compute the itemset of folder nodes */

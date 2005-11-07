@@ -76,6 +76,8 @@ void favicon_load(nodePtr np) {
 
 void favicon_remove(nodePtr np) {
 	gchar		*filename;
+
+	debug_enter("favicon_remove");
 	
 	/* try to load a saved favicon */
 	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", node_get_id(np), "png");
@@ -84,6 +86,8 @@ void favicon_remove(nodePtr np) {
 			/* What can we do? The file probably doesn't exist. Or permissions are wrong. Oh well.... */;
 	}
 	g_free(filename);
+
+	debug_exit("favicon_remove");
 }
 
 /*
