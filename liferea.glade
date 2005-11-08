@@ -105,7 +105,7 @@
 		      <signal name="activate" handler="on_menu_update" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2640">
+			<widget class="GtkImage" id="image2748">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -128,7 +128,7 @@
 		      <accelerator key="a" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2641">
+			<widget class="GtkImage" id="image2749">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-refresh</property>
 			  <property name="icon_size">1</property>
@@ -151,7 +151,7 @@
 		      <accelerator key="r" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2642">
+			<widget class="GtkImage" id="image2750">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
@@ -172,7 +172,7 @@
 		      <signal name="activate" handler="on_popup_allfeedsunread_selected" last_modification_time="Sat, 15 Jan 2005 19:13:59 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2643">
+			<widget class="GtkImage" id="image2751">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
@@ -199,7 +199,7 @@
 		      <signal name="activate" handler="on_menu_feed_new" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2644">
+			<widget class="GtkImage" id="image2752">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
@@ -220,7 +220,7 @@
 		      <signal name="activate" handler="on_menu_folder_new" last_modification_time="Tue, 27 Apr 2004 22:52:15 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2645">
+			<widget class="GtkImage" id="image2753">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -257,7 +257,7 @@
 		      <signal name="activate" handler="on_menu_properties" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2646">
+			<widget class="GtkImage" id="image2754">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-properties</property>
 			  <property name="icon_size">1</property>
@@ -279,7 +279,7 @@
 		      <signal name="activate" handler="on_menu_delete" last_modification_time="Fri, 07 May 2004 03:06:50 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2647">
+			<widget class="GtkImage" id="image2755">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -307,7 +307,7 @@
 		      <signal name="activate" handler="on_import_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2648">
+			<widget class="GtkImage" id="image2756">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-open</property>
 			  <property name="icon_size">1</property>
@@ -329,7 +329,7 @@
 		      <signal name="activate" handler="on_export_activate" last_modification_time="Wed, 12 Nov 2003 21:49:11 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2649">
+			<widget class="GtkImage" id="image2757">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-save-as</property>
 			  <property name="icon_size">1</property>
@@ -365,7 +365,7 @@
 		      <accelerator key="n" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2650">
+			<widget class="GtkImage" id="image2758">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-media-forward</property>
 			  <property name="icon_size">1</property>
@@ -394,7 +394,7 @@
 		      <accelerator key="u" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2651">
+			<widget class="GtkImage" id="image2759">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
@@ -427,7 +427,7 @@
 		      <signal name="activate" handler="on_remove_item_activate" last_modification_time="Fri, 20 Aug 2004 20:07:45 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2652">
+			<widget class="GtkImage" id="image2760">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -449,7 +449,7 @@
 		      <signal name="activate" handler="on_remove_items_activate" last_modification_time="Sun, 21 Dec 2003 23:42:23 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2653">
+			<widget class="GtkImage" id="image2761">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -501,7 +501,7 @@
 		      <accelerator key="plus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2654">
+			<widget class="GtkImage" id="image2762">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-in</property>
 			  <property name="icon_size">1</property>
@@ -524,7 +524,7 @@
 		      <accelerator key="minus" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2655">
+			<widget class="GtkImage" id="image2763">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-zoom-out</property>
 			  <property name="icon_size">1</property>
@@ -577,7 +577,7 @@
 		      <accelerator key="f" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2656">
+			<widget class="GtkImage" id="image2764">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -599,7 +599,7 @@
 		      <signal name="activate" handler="on_search_with_feedster_activate" last_modification_time="Sat, 22 Nov 2003 21:57:57 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2657">
+			<widget class="GtkImage" id="image2765">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-find</property>
 			  <property name="icon_size">1</property>
@@ -634,7 +634,7 @@
 		      <signal name="activate" handler="on_topics_activate" last_modification_time="Thu, 04 Aug 2005 19:48:21 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image2658">
+			<widget class="GtkImage" id="image2766">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-help</property>
 			  <property name="icon_size">1</property>
@@ -1589,7 +1589,7 @@
 					<widget class="GtkRadioButton" id="feed_loc_file">
 					  <property name="visible">True</property>
 					  <property name="can_focus">True</property>
-					  <property name="label" translatable="yes">Local _File</property>
+					  <property name="label" translatable="yes">_Local File</property>
 					  <property name="use_underline">True</property>
 					  <property name="relief">GTK_RELIEF_NORMAL</property>
 					  <property name="focus_on_click">True</property>
@@ -1634,7 +1634,7 @@
 					<widget class="GtkButton" id="selectSourceFileButton">
 					  <property name="visible">True</property>
 					  <property name="can_focus">True</property>
-					  <property name="label" translatable="yes">_Select File...</property>
+					  <property name="label" translatable="yes">Select File...</property>
 					  <property name="use_underline">True</property>
 					  <property name="relief">GTK_RELIEF_NORMAL</property>
 					  <property name="focus_on_click">True</property>
@@ -1737,7 +1737,7 @@
 				<widget class="GtkCheckButton" id="filterCheckbox">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
-				  <property name="label" translatable="yes">Use conversion filter</property>
+				  <property name="label" translatable="yes">Use conversion _filter</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
 				  <property name="focus_on_click">True</property>
@@ -2557,8 +2557,8 @@
 		      <child>
 			<widget class="GtkLabel" id="label104">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Source:</property>
-			  <property name="use_underline">False</property>
+			  <property name="label" translatable="yes">_Source:</property>
+			  <property name="use_underline">True</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
 			  <property name="wrap">False</property>
@@ -2567,6 +2567,7 @@
 			  <property name="yalign">0.5</property>
 			  <property name="xpad">0</property>
 			  <property name="ypad">0</property>
+			  <property name="mnemonic_widget">sourceEntry</property>
 			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 			  <property name="width_chars">-1</property>
 			  <property name="single_line_mode">False</property>
@@ -2637,7 +2638,7 @@
 				<widget class="GtkRadioButton" id="feed_loc_file">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
-				  <property name="label" translatable="yes">Local _File</property>
+				  <property name="label" translatable="yes">_Local File</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
 				  <property name="focus_on_click">True</property>
@@ -2682,7 +2683,7 @@
 				<widget class="GtkButton" id="selectSourceFileButton">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
-				  <property name="label" translatable="yes">_Select File...</property>
+				  <property name="label" translatable="yes">Select File...</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
 				  <property name="focus_on_click">True</property>
@@ -2793,7 +2794,7 @@
 			<widget class="GtkCheckButton" id="filterCheckbox">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">Use conversion filter</property>
+			  <property name="label" translatable="yes">Use conversion _filter</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="focus_on_click">True</property>
@@ -2910,8 +2911,8 @@
 			      <child>
 				<widget class="GtkLabel" id="label113">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">Convert using:</property>
-				  <property name="use_underline">False</property>
+				  <property name="label" translatable="yes">Convert _using:</property>
+				  <property name="use_underline">True</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>
 				  <property name="wrap">False</property>
@@ -2920,6 +2921,7 @@
 				  <property name="yalign">0.5</property>
 				  <property name="xpad">0</property>
 				  <property name="ypad">0</property>
+				  <property name="mnemonic_widget">filterEntry</property>
 				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 				  <property name="width_chars">-1</property>
 				  <property name="single_line_mode">False</property>
@@ -3134,8 +3136,8 @@
 			  <child>
 			    <widget class="GtkLabel" id="label33">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">Default number of items per feed to save:</property>
-			      <property name="use_underline">False</property>
+			      <property name="label" translatable="yes">Default _number of items per feed to save:</property>
+			      <property name="use_underline">True</property>
 			      <property name="use_markup">False</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
 			      <property name="wrap">True</property>
@@ -3144,6 +3146,7 @@
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
 			      <property name="ypad">0</property>
+			      <property name="mnemonic_widget">itemCountBtn</property>
 			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 			      <property name="width_chars">-1</property>
 			      <property name="single_line_mode">False</property>
@@ -3628,7 +3631,7 @@
 			    <widget class="GtkCheckButton" id="folderdisplaybtn">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
-			      <property name="label" translatable="yes">Show the items of all child feeds when a folder is selected.</property>
+			      <property name="label" translatable="yes">_Show the items of all child feeds when a folder is selected.</property>
 			      <property name="use_underline">True</property>
 			      <property name="relief">GTK_RELIEF_NORMAL</property>
 			      <property name="focus_on_click">True</property>
@@ -3655,7 +3658,7 @@
 			      <property name="selectable">False</property>
 			      <property name="xalign">0</property>
 			      <property name="yalign">0.5</property>
-			      <property name="xpad">0</property>
+			      <property name="xpad">24</property>
 			      <property name="ypad">0</property>
 			      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 			      <property name="width_chars">-1</property>
@@ -4011,7 +4014,7 @@
 			    <widget class="GtkRadioButton" id="timeradiobtn1">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
-			      <property name="label" translatable="yes">Display only time</property>
+			      <property name="label" translatable="yes">Display only _time</property>
 			      <property name="use_underline">True</property>
 			      <property name="relief">GTK_RELIEF_NORMAL</property>
 			      <property name="focus_on_click">True</property>
@@ -4031,7 +4034,7 @@
 			    <widget class="GtkRadioButton" id="timeradiobtn2">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
-			      <property name="label" translatable="yes">Display date and time</property>
+			      <property name="label" translatable="yes">Display _date and time</property>
 			      <property name="use_underline">True</property>
 			      <property name="relief">GTK_RELIEF_NORMAL</property>
 			      <property name="focus_on_click">True</property>
@@ -4058,7 +4061,7 @@
 				<widget class="GtkRadioButton" id="timeradiobtn3">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
-				  <property name="label" translatable="yes">User defined format:</property>
+				  <property name="label" translatable="yes">_User defined format:</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
 				  <property name="focus_on_click">True</property>
@@ -4219,8 +4222,8 @@
 				  <child>
 				    <widget class="GtkLabel" id="label65">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">View Headlines With</property>
-				      <property name="use_underline">False</property>
+				      <property name="label" translatable="yes">_View Headlines With</property>
+				      <property name="use_underline">True</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
 				      <property name="wrap">False</property>
@@ -4229,6 +4232,7 @@
 				      <property name="yalign">0.5</property>
 				      <property name="xpad">0</property>
 				      <property name="ypad">0</property>
+				      <property name="mnemonic_widget">htmlviewoptionmenu</property>
 				      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 				      <property name="width_chars">-1</property>
 				      <property name="single_line_mode">False</property>
@@ -5588,8 +5592,8 @@
 			  <child>
 			    <widget class="GtkLabel" id="label216">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">Download using</property>
-			      <property name="use_underline">False</property>
+			      <property name="label" translatable="yes">_Download using</property>
+			      <property name="use_underline">True</property>
 			      <property name="use_markup">False</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
 			      <property name="wrap">False</property>
@@ -5616,12 +5620,13 @@
 			  <child>
 			    <widget class="GtkLabel" id="label219">
 			      <property name="visible">True</property>
-			      <property name="label" translatable="yes">Save downloads in</property>
-			      <property name="use_underline">False</property>
+			      <property name="can_focus">True</property>
+			      <property name="label" translatable="yes">_Save downloads in</property>
+			      <property name="use_underline">True</property>
 			      <property name="use_markup">False</property>
 			      <property name="justify">GTK_JUSTIFY_LEFT</property>
 			      <property name="wrap">False</property>
-			      <property name="selectable">False</property>
+			      <property name="selectable">True</property>
 			      <property name="xalign">0</property>
 			      <property name="yalign">0.5</property>
 			      <property name="xpad">0</property>
@@ -5725,7 +5730,7 @@
 				<widget class="GtkButton" id="save_download_select_btn">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
-				  <property name="label" translatable="yes">Browse</property>
+				  <property name="label" translatable="yes">_Browse</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
 				  <property name="focus_on_click">True</property>
@@ -6514,7 +6519,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label57">
 		  <property name="visible">True</property>
-		  <property name="label">Liferea 0.9.8</property>
+		  <property name="label">Liferea 1.0 RC3</property>
 		  <property name="use_underline">False</property>
 		  <property name="use_markup">False</property>
 		  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -6690,6 +6695,7 @@ Marc Deslauriers
 Amit D. Chaudhary &lt;amitc@users.sourceforge.net&gt;
 Christoph Hohmann &lt;reboot@users.sourceforge.net&gt;
 Raphael Slinckx &lt;raphael@slinckx.net&gt;
+Bjorn Monnens &lt;newsletters@pczone.de&gt;
 and many more...
 
 Code from other projects
