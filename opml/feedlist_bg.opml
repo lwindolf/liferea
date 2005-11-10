@@ -11,5 +11,11 @@
       <outline text="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" title="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" description="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" type="rss" htmlUrl="http://www.linux-bg.org" xmlUrl="http://linux-bg.org/linux-bg-news.rdf" updateInterval="-1"/>
       <outline text="Planet GNOME-BG" title="Planet GNOME-BG" description="Planet GNOME-BG" type="rss" htmlUrl="http://gnome.fsa-bg.org" xmlUrl="http://gnome.fsa-bg.org/rss20.xml" updateInterval="-1"/>
     </outline>
+    <outline text="Unread" title="Unread" description="Unread" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
+    </outline>
+    <outline text="Flagged" title="Flagged" description="Flagged" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
+    </outline>
   </body>
 </opml>
