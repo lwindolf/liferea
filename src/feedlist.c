@@ -267,7 +267,7 @@ static void feedlist_mark_all_read(nodePtr np) {
 		return;
 
 	node_load(np);
-	itemset_mark_all_read(np->itemSet);
+	itemlist_mark_all_read(np);
 	ui_node_update(np);
 	node_unload(np);
 }

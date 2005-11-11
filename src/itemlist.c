@@ -322,7 +322,14 @@ void itemlist_remove_items(nodePtr np) {
 	ui_itemlist_clear();
 	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	itemset_remove_items(np->itemSet);
-	ui_node_update(np->itemSet->node);
+	ui_node_update(np);
+}
+
+void itemlist_mark_all_read(nodePtr np) {
+
+	itemset_mark_all_read(np->itemSet);
+	ui_itemlist_update();
+	ui_node_update(np);
 }
 
 /* mouse/keyboard interaction callbacks */
