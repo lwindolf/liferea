@@ -200,7 +200,7 @@ static gchar *fl_default_node_render(nodePtr np) {
 
 static void fl_default_node_save(nodePtr np) {
 
-	if(NULL == np) {
+	if(TRUE == np->isRoot) {
 		/* Saving the root node means saving the feed list... */
 		fl_default_save_root();
 		return;
