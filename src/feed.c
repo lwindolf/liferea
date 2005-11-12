@@ -120,6 +120,181 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 	return NULL;
 }
 
+static int parse_integer(gchar *str, int def) {
+	int num;
+
+	if(str == NULL)
+		return def;
+	if(0==(sscanf(str,"%d",&num)))
+		num = def;
+	
+	return num;
+}
+
+static long parse_long(gchar *str, long def) {
+	long num;
+
+	if(str == NULL)
+		return def;
+	if(0 == (sscanf(str,"%ld",&num)))
+		num = def;
+	
+	return num;
+}
+
+gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
+	gchar		*cacheLimitStr, *filter, *intervalStr, *title; 
+	gchar		*lastPollStr, *htmlUrlStr, *source, *tmp; 
+	gint		interval;
+	feedPtr		fp = NULL;
+
+	debug_enter("feed_import");
+
+	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
+		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
+	
+	if(NULL != source) {
+		filter = xmlGetProp(cur, BAD_CAST"filtercmd");
+
+		if(!trusted && filter != NULL) {
+			/* FIXME: Display warning dialog asking if the command
+			   is safe? */
+			tmp = g_strdup_printf("unsafe command: %s", filter);
+			g_free(filter);
+			filter = tmp;
+		}
+
+		if(NULL != filter)
+			xmlFree(filter);
+		
+		if(!trusted && source[0] == '|') {
+			/* FIXME: Display warning dialog asking if the command
+			   is safe? */
+			tmp = g_strdup_printf("unsafe command: %s", source);
+			g_free(source);
+			source = tmp;
+		}
+		
+		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
+		interval = parse_integer(intervalStr, -1);
+		xmlFree(intervalStr);
+		fp = feed_new();
+		fp->fhp = feed_type_str_to_fhp(typeStr);
+
+		title = xmlGetProp(cur, BAD_CAST"title");
+		if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
+			if(title != NULL)
+				xmlFree(title);
+			title = xmlGetProp(cur, BAD_CAST"text");
+		}
+		feed_set_title(fp, title);
+
+		/* Set the feed cache limit */
+		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
+		if(cacheLimitStr != NULL && !xmlStrcmp(cacheLimitStr, "unlimited")) {
+			fp->cacheLimit = CACHE_UNLIMITED;
+		} else
+			fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
+		xmlFree(cacheLimitStr);
+	
+		/* Obtain the htmlUrl */
+		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
+		if(htmlUrlStr != NULL && 0 != xmlStrcmp(htmlUrlStr, ""))
+			feed_set_html_url(fp, htmlUrlStr);
+		xmlFree(htmlUrlStr);
+	
+		tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
+		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+			fp->noIncremental = TRUE;
+		xmlFree(tmp);
+	
+		/* Last poll time*/
+		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
+		fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
+		fp->lastPoll.tv_usec = 0L;
+		if(lastPollStr != NULL)
+			xmlFree(lastPollStr);
+	
+		lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
+		fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
+		fp->lastFaviconPoll.tv_usec = 0L;
+		if(lastPollStr != NULL)
+			xmlFree(lastPollStr);
+
+		/* enclosure auto download flag */
+		tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
+		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+			fp->encAutoDownload = TRUE;
+		if(tmp != NULL)
+			xmlFree(tmp);
+
+		/* set feed properties available from the OPML feed list 
+		   they may be overwritten by the values of the cache file
+		   but we need them in case the cache file loading fails */
+	
+		feed_set_source(fp, source);
+		feed_set_filter(fp, filter);
+		feed_set_title(fp, title);
+		feed_set_update_interval(fp, interval);
+
+		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", title, source, typeStr, interval, fp->lastPoll.tv_sec);
+
+		xmlFree(source);
+	}
+
+	debug_exit("feed_import");
+
+	return (gpointer)fp;
+}
+
+void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal) {
+
+	debug_enter("feed_export");
+
+	gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
+	gchar *cacheLimit = NULL;
+
+	if(feed_get_html_url(fp) != NULL)
+		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(fp));
+	else
+		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST "");
+	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
+	xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
+
+	if(fp->cacheLimit >= 0)
+		cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
+	if(fp->cacheLimit == CACHE_UNLIMITED)
+		cacheLimit = g_strdup("unlimited");
+	if(cacheLimit != NULL)
+		xmlNewProp(cur, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
+
+	if(feed_get_filter(fp) != NULL)
+		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
+
+	if(internal) {
+		if(fp->noIncremental)
+			xmlNewProp(cur, BAD_CAST"noIncremental", BAD_CAST"true");
+			
+		if(fp->lastPoll.tv_sec > 0) {
+			gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
+			xmlNewProp(cur, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
+			g_free(lastPoll);
+		}
+	if(fp->lastFaviconPoll.tv_sec > 0) {
+		gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
+		xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
+		g_free(lastPoll);
+	}
+	if(TRUE == fp->encAutoDownload)
+		xmlNewProp(cur, BAD_CAST"encAutoDownload", BAD_CAST"true");
+	}
+	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s", feed_get_source(fp), interval, cacheLimit);
+	g_free(cacheLimit);
+	g_free(interval);
+
+	debug_exit("feed_export");
+}
+
 /**
  * General feed source parsing function. Parses the passed feed source
  * and tries to determine the source type. If the type is HTML and 

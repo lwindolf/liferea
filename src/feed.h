@@ -129,6 +129,26 @@ void feed_init(void);
 feedPtr feed_new(void);
 
 /**
+ * Feed specific feed list import parsing.
+ *
+ * @param typeStr	feed type string
+ * @param cur		DOM node to parse
+ * @param trusted	allows filter scripts...
+ * @returns pointer to resulting feed
+ */
+gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted);
+
+/**
+ * Feed specific feed list import parsing.
+ *
+ * @param fp		the feed to export
+ * @param cur		DOM node to write to
+ * @param internal	feed list saving/export flag
+ * @returns pointer to resulting feed
+ */
+void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal);
+
+/**
  * General feed source parsing function. Parses the passed feed source
  * and tries to determine the source type. If the type is HTML and 
  * autodiscover is TRUE the function tries to find a feed, tries to

@@ -50,119 +50,62 @@ struct exportData {
 static void append_node_tag(nodePtr np, gpointer userdata) {
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
 	gboolean	internal = ((struct exportData*)userdata)->internal;
-	xmlNodePtr	childNode, ruleNode;
+	xmlNodePtr	childNode;
 	struct exportData data;
-	GSList		*iter;
-	vfolderPtr	vp;
-	feedPtr		fp;
-	rulePtr		rule;
 	
 	debug_enter("append_node_tag");
 
 	childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 
+	/* 1. write generic node attributes */
 	xmlNewProp(childNode, BAD_CAST"title", BAD_CAST node_get_title(np));
 	xmlNewProp(childNode, BAD_CAST"text", BAD_CAST node_get_title(np)); /* The OPML spec requires "text" */
+	xmlNewProp(childNode, BAD_CAST"description", BAD_CAST node_get_title(np));
 	
-	/* add node type specific stuff */
-	switch(np->type) {
-	   case FST_FOLDER:
-		/* add folder children */
-		if(internal) {
-			if(ui_node_is_folder_expanded(np))
-				xmlNewProp(childNode, BAD_CAST"expanded", NULL);
-			else
-				xmlNewProp(childNode, BAD_CAST"collapsed", NULL);
-		}
-		debug1(DEBUG_CACHE, "adding folder %s...", node_get_title(np));
-		data.cur = childNode;
-		data.internal = internal;
-		ui_feedlist_do_for_all_data(np, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
-		break;
-	   case FST_FEED:
-		/* add feed properties */
-		fp = (feedPtr)np->data;
-		const gchar *type = feed_type_fhp_to_str(feed_get_fhp(fp));
-		gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
-		gchar *cacheLimit = NULL;
+	if(FST_FOLDER != np->type)
+		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST node_type_to_str(np));
 
-		xmlNewProp(childNode, BAD_CAST"description", BAD_CAST feed_get_title(fp));
-		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST type);
-		if(feed_get_html_url(fp) != NULL)
-			xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(fp));
-		else
-			xmlNewProp(childNode, BAD_CAST"htmlUrl", BAD_CAST "");
-		xmlNewProp(childNode, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
-		xmlNewProp(childNode, BAD_CAST"updateInterval", BAD_CAST interval);
-
-		if(fp->cacheLimit >= 0)
-			cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
-		if(fp->cacheLimit == CACHE_UNLIMITED)
-			cacheLimit = g_strdup("unlimited");
-		if(cacheLimit != NULL)
-			xmlNewProp(childNode, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
-
-		if(feed_get_filter(fp) != NULL)
-			xmlNewProp(childNode, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
-
-		if(internal) {
-			if(fp->noIncremental)
-				xmlNewProp(childNode, BAD_CAST"noIncremental", BAD_CAST"true");
-				
-			xmlNewProp(childNode, BAD_CAST"id", BAD_CAST node_get_id(np));
-			if(fp->lastPoll.tv_sec > 0) {
-				gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
-				xmlNewProp(childNode, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
-				g_free(lastPoll);
-			}
-			if(fp->lastFaviconPoll.tv_sec > 0) {
-				gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
-				xmlNewProp(childNode, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
-				g_free(lastPoll);
-			}
-			if(TRUE == fp->encAutoDownload)
-				xmlNewProp(childNode, BAD_CAST"encAutoDownload", BAD_CAST"true");
-		}
-		debug6(DEBUG_CACHE, "adding feed: title=%s type=%s source=%d id=%s interval=%s cacheLimit=%s", feed_get_title(fp), type, feed_get_source(fp), node_get_id(np), interval, cacheLimit);
-		g_free(cacheLimit);
-		g_free(interval);
-		break;
-	    case FST_VFOLDER:		
-		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST "vfolder");
-		/* add vfolder rules */
-		vp = (vfolderPtr)np->data;
-		iter = vp->rules;
-		while(NULL != iter) {
-			rule = iter->data;
-			ruleNode = xmlNewChild(childNode, NULL, BAD_CAST"outline", NULL);
-			xmlNewProp(ruleNode, BAD_CAST"type", BAD_CAST "rule");
-			xmlNewProp(ruleNode, BAD_CAST"text", BAD_CAST rule->ruleInfo->title);
-			xmlNewProp(ruleNode, BAD_CAST"rule", BAD_CAST rule->ruleInfo->ruleId);
-			xmlNewProp(ruleNode, BAD_CAST"value", BAD_CAST rule->value);
-			if(TRUE == rule->additive)
-				xmlNewProp(ruleNode, BAD_CAST"additive", BAD_CAST "true");
-			else
-				xmlNewProp(ruleNode, BAD_CAST"additive", BAD_CAST "false");
-
-			iter = g_slist_next(iter);
-		}
-		break;
-	    default:
-		g_warning("fatal: unknown node type %d when exporting!", np->type);
-		break;
-	}
-
-	/* export general node properties */
 	if(internal) {
+		xmlNewProp(childNode, BAD_CAST"id", BAD_CAST node_get_id(np));
+
 		if(np->sortColumn == IS_LABEL)
 			xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
-		else if(np->sortColumn == IS_TIME)
+		if(np->sortColumn == IS_TIME)
 			xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
+
 		if(FALSE == np->sortReversed)
 			xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
 			
 		if(TRUE == node_get_two_pane_mode(np))
 			xmlNewProp(childNode, BAD_CAST"twoPane", BAD_CAST"true");
+	}
+
+	/* 2. add node type specific stuff */
+	switch(np->type) {
+		case FST_FEED:
+			feed_export((feedPtr)np->data, childNode, internal);
+			break;
+		case FST_FOLDER:
+			/* add folder children */
+			if(internal) {
+				if(ui_node_is_folder_expanded(np))
+					xmlNewProp(childNode, BAD_CAST"expanded", BAD_CAST"true");
+				else
+					xmlNewProp(childNode, BAD_CAST"collapsed", BAD_CAST"true");
+			}
+			debug1(DEBUG_CACHE, "adding folder %s...", node_get_title(np));
+			data.cur = childNode;
+			data.internal = internal;
+			ui_feedlist_do_for_all_data(np, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
+			break;
+		case FST_VFOLDER:
+			if(internal)
+				vfolder_export((vfolderPtr)np->data, childNode);
+			break;
+		case FST_PLUGIN:
+			if(internal)
+				plugin_export(np, childNode);
+			break;
 	}
 	
 	debug_exit("append_node_tag");
@@ -221,82 +164,30 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 	return error;
 }
 
-static int parse_integer(gchar *str, int def) {
-	int num;
-	if (str == NULL)
-		return def;
-	if (0==(sscanf(str,"%d",&num)))
-		num = def;
-	
-	return num;
-}
-
-static long parse_long(gchar *str, long def) {
-	long num;
-
-	if(str == NULL)
-		return def;
-	if(0 == (sscanf(str,"%ld",&num)))
-		num = def;
-	
-	return num;
-}
-
-/** 
- * called by import_parse_outline to parse all children outline tags
- * as vfolder rule descriptions 
- */
-static void import_parse_children_as_rules(xmlNodePtr cur, vfolderPtr vp) {
-	xmlChar		*type, *ruleId, *value, *additive;
-	
-	/* process any children */
-	cur = cur->xmlChildrenNode;
-	while(cur != NULL) {
-		if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
-			type = xmlGetProp(cur, BAD_CAST"type");
-			if(type != NULL && !xmlStrcmp(type, BAD_CAST"rule")) {
-
-				ruleId = xmlGetProp(cur, BAD_CAST"rule");
-				value = xmlGetProp(cur, BAD_CAST"value");
-				additive = xmlGetProp(cur, BAD_CAST"additive");
-
-				if((NULL != ruleId) && (NULL != value)) {			
-					debug2(DEBUG_CACHE, "loading rule \"%s\" \"%s\"\n", ruleId, value);
-
-					if(additive != NULL && !xmlStrcmp(additive, BAD_CAST"true"))
-						vfolder_add_rule(vp, ruleId, value, TRUE);
-					else
-						vfolder_add_rule(vp, ruleId, value, FALSE);
-				} else {
-					g_warning("ignoring invalid rule entry in feed list...\n");
-				}
-				
-				xmlFree(ruleId);
-				xmlFree(value);
-				xmlFree(additive);
-			}
-			xmlFree(type);
-		}
-		cur = cur->next;
-	}
-}
-
 static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandler *handler, gboolean trusted) {
-	gchar		*cacheLimitStr, *filter, *intervalStr, *lastPollStr, *htmlUrlStr, *sortStr;
-	gchar		*title, *source, *typeStr, *tmp;
-	nodePtr		np = NULL;
-	feedPtr		fp = NULL;
-	vfolderPtr	vp = NULL;
-	gboolean	dontParseChildren = FALSE;
-	gint		interval;
+	gchar		*title, *source, *typeStr, *tmp, *sortStr;
 	gchar		*id = NULL;
+	nodePtr		np = NULL;
+	gpointer	data = NULL;
+	guint		type;
+	gboolean	dontParseChildren = FALSE;
 	
 	debug_enter("import_parse_outline");
-	
-	/* process the outline node */	
+
+	/* 1. do general node parsing */	
 	np = node_new();
 	np->handler = handler;
 
+	/* The id should only be used from feedlist.opml. Otherwise,
+	   it could cause corruption if the same id was imported
+	   multiple times. */
+	if(trusted) {
+		id = xmlGetProp(cur, BAD_CAST"id");
+		node_set_id(np, id);
+		xmlFree(id);
+	}
+	
+	/* title */
 	title = xmlGetProp(cur, BAD_CAST"title");
 	if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
 		if(title != NULL)
@@ -304,167 +195,86 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		title = xmlGetProp(cur, BAD_CAST"text");
 	}
 	node_set_title(np, title);
-	
-	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
-		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
-	
-	if(NULL != source) { /* Reading a feed */
-	
-		filter = xmlGetProp(cur, BAD_CAST"filtercmd");
 
-		if(!trusted && filter != NULL) {
-			/* FIXME: Display warning dialog asking if the command
-			   is safe? */
-			tmp = g_strdup_printf("unsafe command: %s", filter);
-			g_free(filter);
-			filter = tmp;
-		}
+	if(title != NULL)
+		xmlFree(title);
+
+	/* sorting order */
+	sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
+	if(sortStr != NULL) {
+		if(!xmlStrcmp(sortStr, "title"))
+			np->sortColumn = IS_LABEL;
+		else if(!xmlStrcmp(sortStr, "time"))
+			np->sortColumn = IS_TIME;
+		xmlFree(sortStr);
+	}
+	sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
+	if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"false"))
+		np->sortReversed = FALSE;
+	if(sortStr != NULL)
+		xmlFree(sortStr);
+	
+	tmp = xmlGetProp(cur, BAD_CAST"twoPane");
+	if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+		node_set_two_pane_mode(np, TRUE);
+	if(tmp != NULL)
+		xmlFree(tmp);
+
+	/* 2. determine node type */
+	if(NULL != (typeStr = xmlGetProp(cur, BAD_CAST"type"))) {
+		type = node_str_to_type(typeStr);
+	} else {
+		/* if the outline has no type it is propably a folder */
+		type = FST_FOLDER;
+		/* but we better checked for a source URL */
+		if(NULL == (tmp = xmlGetProp(cur, BAD_CAST"xmlUrl")));
+			tmp = xmlGetProp(cur, BAD_CAST"xmlUrl");
 		
-		if(!trusted && source[0] == '|') {
-			/* FIXME: Display warning dialog asking if the command
-			   is safe? */
-			tmp = g_strdup_printf("unsafe command: %s", source);
-			g_free(source);
-			source = tmp;
+		if(NULL != tmp) {
+			type = FST_FEED;
+			xmlFree(tmp);
 		}
-		
-		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
-		interval = parse_integer(intervalStr, -1);
-		xmlFree(intervalStr);
-
-		/* The id should only be used from feedlist.opml. Otherwise,
-		   it could cause corruption if the same id was imported
-		   multiple times. */
-		if(trusted)
-			id = xmlGetProp(cur, BAD_CAST"id");
-
-		/* get type attribute and use it to assign a value to
-		   fhp. fhp will default to NULL. */
-		typeStr = xmlGetProp(cur, BAD_CAST"type");
-		if((NULL != typeStr) && (0 == strcmp("vfolder", typeStr))) {
+	}
+	
+	/* 3. do node type specific parsing */
+	switch(type) {
+		case FST_FEED:
+			data = feed_import(typeStr, cur, trusted);
+			break;
+		case FST_FOLDER:
+			data = NULL;
+			break;
+		case FST_VFOLDER:
+			data = vfolder_import(np, cur);
 			dontParseChildren = TRUE;
-			vp = vfolder_new(np);
-			import_parse_children_as_rules(cur, vp);
-			node_add_data(np, FST_VFOLDER, (gpointer)vp); // FIXME: make node adding generic
+			break;
+		case FST_PLUGIN:
+			data = plugin_import(np, cur);
+			break;
+	}
 
-			debug1(DEBUG_CACHE, "import vfolder: title=%s", title);
-		} else if((NULL != typeStr) && (0 == strcmp("plugin", typeStr))) {
-			// FIXME:
-			debug0(DEBUG_CACHE, "import plugin");
-			g_warning("implement me");
-		} else {
-			fp = feed_new();
-			node_add_data(np, FST_FEED, (gpointer)fp); // FIXME: make node adding generic
-			fp->fhp = feed_type_str_to_fhp(typeStr);
-
-			/* Set the feed cache limit */
-			cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
-			if(cacheLimitStr != NULL && !xmlStrcmp(cacheLimitStr, "unlimited")) {
-				fp->cacheLimit = CACHE_UNLIMITED;
-			} else
-				fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
-			xmlFree(cacheLimitStr);
-		
-			/* Obtain the htmlUrl */
-			htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
-			if(htmlUrlStr != NULL && 0 != xmlStrcmp(htmlUrlStr, ""))
-				feed_set_html_url(fp, htmlUrlStr);
-			xmlFree(htmlUrlStr);
-		
-			tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
-			if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-				fp->noIncremental = TRUE;
-			xmlFree(tmp);
-		
-			/* Last poll time*/
-			lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
-			fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
-			fp->lastPoll.tv_usec = 0L;
-			if(lastPollStr != NULL)
-				xmlFree(lastPollStr);
-		
-			lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
-			fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
-			fp->lastFaviconPoll.tv_usec = 0L;
-			if(lastPollStr != NULL)
-				xmlFree(lastPollStr);
-
-			tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
-			if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-				fp->encAutoDownload = TRUE;
-			if(tmp != NULL)
-				xmlFree(tmp);
-
-			/* set feed properties available from the OPML feed list 
-			   they may be overwritten by the values of the cache file
-			   but we need them in case the cache file loading fails */
-		
-			feed_set_source(fp, source);
-			feed_set_filter(fp, filter);
-			feed_set_title(fp, title);
-			feed_set_update_interval(fp, interval);
-
-			debug6(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s id=%s interval=%d lastpoll=%ld", title, source, typeStr, id, interval, fp->lastPoll.tv_sec);
-		}
-
-		/* sorting order */
-		sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
-		if(sortStr != NULL) {
-			if(!xmlStrcmp(sortStr, "title"))
-				np->sortColumn = IS_LABEL;
-			else if(!xmlStrcmp(sortStr, "time"))
-				np->sortColumn = IS_TIME;
-			xmlFree(sortStr);
-		}
-		sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
-		if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"false"))
-			np->sortReversed = FALSE;
-		if(sortStr != NULL)
-			xmlFree(sortStr);
-		
-		tmp = xmlGetProp(cur, BAD_CAST"twoPane");
-		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			node_set_two_pane_mode(np, TRUE);
-		if(tmp != NULL)
-			xmlFree(tmp);
-
-		
-		if(id != NULL) {
-			node_set_id(np, id);
-			xmlFree(id);
-			/* don't load here, because it's not sure that all vfolders are loaded */
-		} else {
-			id = node_new_id();
-			node_set_id(np, id);
-			debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", id);
-			g_free(id);			
-			node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
-				                | FEED_REQ_DOWNLOAD_FAVICON
-				                | FEED_REQ_AUTH_DIALOG);
-		}
-
-		g_print("add np=%d, title=%s\n", np, title);
-		feedlist_add_node(parentNode, np, -1);
-		
-		if(source != NULL)
-			xmlFree(source);
-		if(filter != NULL)
-			xmlFree(filter);
+	if(NULL != typeStr)
 		xmlFree(typeStr);
-		
-	} else { /* It is a folder */
-		debug1(DEBUG_CACHE, "adding folder \"%s\"", title);
-		node_add_data(np, FST_FOLDER, NULL);	// FIXME: make node adding generic
-		feedlist_add_node(parentNode, np, -1);
 
+	if(NULL == node_get_id(np)) {
+		id = node_new_id();
+		node_set_id(np, id);
+		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", id);
+		g_free(id);			
+		node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+			                | FEED_REQ_DOWNLOAD_FAVICON
+			                | FEED_REQ_AUTH_DIALOG);
+	}
+
+	node_add_data(np, type, data);
+	feedlist_add_node(parentNode, np, -1);
+		
+	if(FST_FOLDER == type) {
 		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
 			ui_node_set_expansion(np, TRUE);
 		if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
 			ui_node_set_expansion(np, FALSE);
 	}
-
-	if(title != NULL)
-		xmlFree(title);
 
 	if(!dontParseChildren) {
 		/* process any children */

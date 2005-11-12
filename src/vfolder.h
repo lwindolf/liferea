@@ -54,6 +54,23 @@ void	vfolder_init(void);
  */
 vfolderPtr vfolder_new(struct node *np);
 
+/**
+ * Vfolder specific feed list import parsing.
+ *
+ * @param np	the node to import
+ * @param cur	DOM node to parse
+ * @returns pointer to resulting plugin
+ */
+gpointer vfolder_import(struct node *np, xmlNodePtr cur);
+
+/**
+ * Vfolder specific feed list export.
+ *
+ * @param np	the node to export
+ * @param cur	DOM node to write to
+ */
+void vfolder_export(vfolderPtr vp, xmlNodePtr cur);
+
 /* set/get of vfolder title */
 const gchar * vfolder_get_title(vfolderPtr vp);
 void vfolder_set_title(vfolderPtr vp, const gchar * title);

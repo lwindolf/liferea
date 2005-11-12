@@ -66,6 +66,81 @@ vfolderPtr vfolder_new(nodePtr np) {
 	return vp;
 }
 
+static void vfolder_import_rules(xmlNodePtr cur, vfolderPtr vp) {
+	xmlChar		*type, *ruleId, *value, *additive;
+	
+	/* process any children */
+	cur = cur->xmlChildrenNode;
+	while(cur != NULL) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
+			type = xmlGetProp(cur, BAD_CAST"type");
+			if(type != NULL && !xmlStrcmp(type, BAD_CAST"rule")) {
+
+				ruleId = xmlGetProp(cur, BAD_CAST"rule");
+				value = xmlGetProp(cur, BAD_CAST"value");
+				additive = xmlGetProp(cur, BAD_CAST"additive");
+
+				if((NULL != ruleId) && (NULL != value)) {			
+					debug2(DEBUG_CACHE, "loading rule \"%s\" \"%s\"\n", ruleId, value);
+
+					if(additive != NULL && !xmlStrcmp(additive, BAD_CAST"true"))
+						vfolder_add_rule(vp, ruleId, value, TRUE);
+					else
+						vfolder_add_rule(vp, ruleId, value, FALSE);
+				} else {
+					g_warning("ignoring invalid rule entry in feed list...\n");
+				}
+				
+				xmlFree(ruleId);
+				xmlFree(value);
+				xmlFree(additive);
+			}
+			xmlFree(type);
+		}
+		cur = cur->next;
+	}
+}
+
+gpointer vfolder_import(nodePtr np, xmlNodePtr cur) {
+	vfolderPtr vp;
+
+	debug_enter("vfolder_import");
+
+	vp = vfolder_new(np);
+	vfolder_import_rules(cur, vp);
+	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(np));
+
+	debug_exit("vfolder_import");
+
+	return (gpointer)vp;
+}
+
+void vfolder_export(vfolderPtr vp, xmlNodePtr cur) {
+	xmlNodePtr	ruleNode;
+	rulePtr		rule;
+	GSList		*iter;
+
+	debug_enter("vfolder_export");
+
+	iter = vp->rules;
+	while(NULL != iter) {
+		rule = iter->data;
+		ruleNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+		xmlNewProp(ruleNode, BAD_CAST"type", BAD_CAST "rule");
+		xmlNewProp(ruleNode, BAD_CAST"text", BAD_CAST rule->ruleInfo->title);
+		xmlNewProp(ruleNode, BAD_CAST"rule", BAD_CAST rule->ruleInfo->ruleId);
+		xmlNewProp(ruleNode, BAD_CAST"value", BAD_CAST rule->value);
+		if(TRUE == rule->additive)
+			xmlNewProp(ruleNode, BAD_CAST"additive", BAD_CAST "true");
+		else
+			xmlNewProp(ruleNode, BAD_CAST"additive", BAD_CAST "false");
+
+		iter = g_slist_next(iter);
+	}
+
+	debug_exit("vfolder_export");
+}
+
 void vfolder_set_title(vfolderPtr vp, const gchar *title) {
 
 	g_free(vp->title);
