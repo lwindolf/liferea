@@ -165,6 +165,23 @@ const gchar *node_get_id(nodePtr np);
 void node_set_id(nodePtr np, const gchar *id);
 
 /** 
+ * Maps node type to string. For feed nodes
+ * it maps to the feed type string.
+ *
+ * @param np	the node 
+ * @returns type string (or NULL if unknown)
+ */
+const gchar *node_type_to_str(nodePtr np);
+
+/** 
+ * Maps node type string to type constant.
+ *
+ * @param type string	the node type as string
+ * @returns node type constant
+ */
+guint node_str_to_type(const gchar *str);
+
+/** 
  * Frees a given node structure.
  *
  * @param the node to free

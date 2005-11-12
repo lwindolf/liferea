@@ -128,6 +128,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 		g_free(interval);
 		break;
 	    case FST_VFOLDER:		
+		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST "vfolder");
 		/* add vfolder rules */
 		vp = (vfolderPtr)np->data;
 		iter = vp->rules;
@@ -342,11 +343,15 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		typeStr = xmlGetProp(cur, BAD_CAST"type");
 		if((NULL != typeStr) && (0 == strcmp("vfolder", typeStr))) {
 			dontParseChildren = TRUE;
-			vp = vfolder_new();
+			vp = vfolder_new(np);
 			import_parse_children_as_rules(cur, vp);
 			node_add_data(np, FST_VFOLDER, (gpointer)vp); // FIXME: make node adding generic
 
 			debug1(DEBUG_CACHE, "import vfolder: title=%s", title);
+		} else if((NULL != typeStr) && (0 == strcmp("plugin", typeStr))) {
+			// FIXME:
+			debug0(DEBUG_CACHE, "import plugin");
+			g_warning("implement me");
 		} else {
 			fp = feed_new();
 			node_add_data(np, FST_FEED, (gpointer)fp); // FIXME: make node adding generic

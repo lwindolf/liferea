@@ -52,7 +52,7 @@ void	vfolder_init(void);
  *
  * @returns a new vfolder
  */
-vfolderPtr vfolder_new(void);
+vfolderPtr vfolder_new(struct node *np);
 
 /* set/get of vfolder title */
 const gchar * vfolder_get_title(vfolderPtr vp);

@@ -174,8 +174,11 @@ static void node_merge_item(nodePtr np, itemPtr ip) {
 	if(added) {
 		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(ip), node_get_title(np));
 
-		/* step 2: add to itemset */
+		/* step 1: add to itemset */
 		itemset_add_item(np->itemSet, ip);
+
+		/* step 2: check for matching vfolders */
+		vfolder_check_item(ip);
 
 		/* step 3: update feed list statistics */
 
@@ -249,6 +252,7 @@ itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
 void node_set_itemset(nodePtr np, itemSetPtr sp) {
 
 	g_assert(NULL == np->itemSet);
+	g_assert(ITEMSET_TYPE_INVALID != sp->type);
 	np->itemSet = sp;
 	sp->node = np;
 	node_update_counters(np);
@@ -373,6 +377,40 @@ void node_set_title(nodePtr np, const gchar *title) {
 }
 
 const gchar * node_get_title(nodePtr np) { return np->title; }
+
+const gchar *node_type_to_str(nodePtr np) {
+
+	switch(np->type) {
+		case FST_FEED:
+			g_assert(NULL != np->data);
+			return feed_type_fhp_to_str(((feedPtr)(np->data))->fhp);
+			break;
+		case FST_VFOLDER:
+			return "vfolder";
+			break;
+		case FST_PLUGIN:
+			return "plugin";
+			break;
+	}
+
+	return NULL;
+}
+
+guint node_str_to_type(const gchar *str) {
+
+	g_assert(NULL != str);
+
+	if(0 == strcmp(str, "vfolder"))
+		return FST_VFOLDER;
+
+	if(0 == strcmp(str, "plugin"))
+		return FST_PLUGIN;
+
+	if(NULL != feed_type_str_to_fhp(str))
+		return FST_FEED;
+
+	return FST_INVALID;
+}
 
 void node_update_unread_count(nodePtr np, gint diff) {
 

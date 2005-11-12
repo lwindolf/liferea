@@ -585,8 +585,6 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 	//	}
 		
 		debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
-			
-		vfolder_check_item(new_ip);
 	} else {
 		/* if the item was found but has other contents -> update contents */
 		if(!equal) {
