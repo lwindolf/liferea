@@ -85,6 +85,9 @@ void node_load(nodePtr np) {
 		return;
 	}
 
+	if(NULL == FL_PLUGIN(np)->node_load)
+		return;
+
 	switch(np->type) {
 		case FST_FEED:
 		case FST_PLUGIN:
@@ -108,6 +111,9 @@ void node_save(nodePtr np) {
 	if(FALSE == np->needsCacheSave)
 		return;
 
+	if(NULL == FL_PLUGIN(np)->node_save)
+		return;
+
 	FL_PLUGIN(np)->node_save(np);
 	np->needsCacheSave = FALSE;
 }
@@ -122,6 +128,9 @@ void node_unload(nodePtr np) {
 	}
 
 	node_save(np);	/* save before unloading */
+
+	if(NULL == FL_PLUGIN(np)->node_unload)
+		return;
 
 	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 		if(1 == np->loaded) {
@@ -255,12 +264,18 @@ void node_request_update(nodePtr np, guint flags) {
 	if(FST_VFOLDER == np->type)
 		return;
 
+	if(NULL == FL_PLUGIN(np)->node_update)
+		return;
+
 	FL_PLUGIN(np)->node_update(np, flags);
 }
 
 void node_request_auto_update(nodePtr np) {
 
 	if(FST_VFOLDER == np->type)
+		return;
+
+	if(NULL == FL_PLUGIN(np)->node_auto_update)
 		return;
 
 	FL_PLUGIN(np)->node_auto_update(np);
@@ -295,6 +310,8 @@ void node_remove(nodePtr np) {
 		favicon_remove(np);
 	}
 
+	g_assert(0 != np->handler & FL_PLUGIN_CAPABILITY_REMOVE);
+
 	switch(np->type) {
 		case FST_FEED:
 		case FST_FOLDER:
@@ -319,8 +336,7 @@ void node_add(guint type) {
 	parent = feedlist_get_selected_parent();
 	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
 
-	/* FIXME: check if target handler allows adding nodes.
-	 * and if it doesn't use the rootNode as parent */
+	g_assert(0 != parent->handler & FL_PLUGIN_CAPABILITY_ADD);
 
 	child = node_new();
 	child->type = type;
