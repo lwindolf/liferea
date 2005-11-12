@@ -186,7 +186,7 @@ gchar *item_render(itemPtr ip) {
 
 	/*  -- Item line */
 	if(NULL != np->icon) {
-		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", tmp, "png");
+		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", np->id, "png");
 		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	} else {
