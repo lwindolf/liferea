@@ -266,6 +266,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			                | FEED_REQ_AUTH_DIALOG);
 	}
 
+	favicon_load(np);
 	node_add_data(np, type, data);
 	feedlist_add_node(parentNode, np, -1);
 		

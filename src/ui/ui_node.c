@@ -249,8 +249,8 @@ static GdkPixbuf* ui_node_get_icon(nodePtr np) {
 			if(!feed_get_available(fp))
 				favicon = icons[ICON_UNAVAILABLE];
 
-			if(fp->fhp != NULL && fp->fhp->icon < MAX_ICONS)
-				return icons[fp->fhp->icon];
+			if((favicon == NULL) && (fp->fhp != NULL) && (fp->fhp->icon != 0))
+				favicon = icons[fp->fhp->icon];
 
 			break;
 	}
