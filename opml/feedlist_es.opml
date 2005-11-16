@@ -4,8 +4,6 @@
     <title>Fuentes por defecto</title>
   </head>
   <body>
-    <outline text="Noticias de Liferea en SF.net" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental="true"/>
-    
      <outline text="Fuentes de ejemplo (castellano)">
       <outline text="OSS">
         <outline text="Hispalinux" htmlUrl="http://www.hispalinux.es/" xmlUrl="http://www.hispalinux.es/rss" />

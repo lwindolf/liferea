@@ -4,7 +4,6 @@
     <title>Liferea Default Feed List</title>
   </head>
   <body>
-    <outline text="Liferea SF News" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental="true"/>
     <outline text="Beispiel Abonnements">
       <outline text="deutsch">
       	<outline text="Tagesschau" htmlUrl="http://www.tagesschau.de/" xmlUrl="http://www.tagesschau.de/newsticker.rdf" />

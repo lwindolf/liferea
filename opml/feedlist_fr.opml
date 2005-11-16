@@ -4,7 +4,6 @@
     <title>Liste des flux par défaut de Liferea</title>
   </head>
   <body>
-    <outline text="Actualités SF Liferea" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental="true"/>
     <outline text="Exemples de flux">
      <outline text="Français">
        <outline text="Standblog" htmlUrl="http://standblog.org/blog/" xmlUrl="http://standblog.org/dotclear/rss.php" />

@@ -4,7 +4,6 @@
     <title>Liferea Default Feed List</title>
   </head>
   <body>
-    <outline text="Liferea SF News" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental="true"/>
     <!-- lets keep this English block in sync over all feed lists! -->
     <outline text="Example Feeds">
       <outline text="OSS">

@@ -4,7 +4,6 @@
     <title>Список лент по умолчанию</title>
   </head>
   <body>
-    <outline text="Новости Liferea на SF.net" type="rss" htmlUrl="http://sourceforge.net/projects/liferea/" xmlUrl="http://sourceforge.net/export/rss2_projnews.php?group_id=87005&amp;rss_fulltext=1" updateInterval="1440" noIncremental="true"/>
     <outline text="Новости Lenta.ru" htmlUrl="http://www.lenta.ru/" xmlUrl="http://lenta.ru/l/r/EX/import.rss" />
     <outline text="Новости безопасности в сети на русском ">
 	<outline text="Security.Nnov.Ru" htmlUrl="http://security.nnov.ru/" xmlUrl="http://security.nnov.ru/informer/rss.asp?l=RU" />
