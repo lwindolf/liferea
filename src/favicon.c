@@ -66,7 +66,7 @@ void favicon_load(nodePtr np) {
 		
 		/* check creation date and update favicon if older than one month */
 		g_get_current_time(&now);
-		if(now.tv_sec > statinfo.st_mtime + 60*60*24*31) {
+		if(now.tv_sec > (((feedPtr)np->data)->lastFaviconPoll.tv_sec + 60*60*24*31)) {
 			debug1(DEBUG_UPDATE, "updating favicon %s\n", filename);
 			favicon_download(np);
 		}
@@ -282,6 +282,7 @@ void favicon_download(nodePtr np) {
 	                             node_get_title(np));
 
 	g_get_current_time(&((feedPtr)np->data)->lastFaviconPoll);
+	np->needsCacheSave = TRUE;
 	
 	if(feed_get_html_url(np->data) != NULL) {
 		favicon_download_html(np, 0);
