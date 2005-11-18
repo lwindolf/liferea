@@ -121,6 +121,8 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 	GtkWidget	*focusw;
 
 	if(event->type == GDK_KEY_PRESS) {
+		default_modifiers = gtk_accelerator_get_default_mod_mask();
+
 		/* handle headline skimming hotkey */
 		switch(event->keyval) {
 			case GDK_space:
@@ -130,7 +132,6 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 						break;
 					default:
 					case 1:
-						default_modifiers = gtk_accelerator_get_default_mod_mask();
 						modifier_matches = ((event->state & default_modifiers) == 0);
 						if(!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
 							return FALSE;
@@ -147,13 +148,44 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 					return TRUE;
 				}
 				break;
-			/* allows Ctrl-+/Ctrl-- with the numeric keypad */
-			case GDK_KP_Add:
-				on_popup_zoomin_selected(NULL, 0, NULL);
-				break;
-			case GDK_KP_Subtract:
-				on_popup_zoomout_selected(NULL, 0, NULL);
-				break;
+		}
+
+		/* menu hotkeys (duplicated so they work with hidden menu */
+		if(GDK_CONTROL_MASK == (event->state & default_modifiers)) {
+			switch(event->keyval) {
+				case GDK_KP_Add:
+					on_popup_zoomin_selected(NULL, 0, NULL);
+					return TRUE;
+					break;
+				case GDK_KP_Subtract:
+					on_popup_zoomout_selected(NULL, 0, NULL);
+					return TRUE;
+					break;
+				case GDK_n:
+					on_next_unread_item_activate(NULL, NULL);
+					return TRUE;
+					break;
+				case GDK_r:
+					on_popup_allunread_selected();
+					return TRUE;
+					break;
+				case GDK_t:
+					on_toggle_item_flag(NULL, NULL);
+					return TRUE;
+					break;
+				case GDK_u:
+					on_toggle_unread_status(NULL, NULL);
+					return TRUE;
+					break;
+				case GDK_a:
+					on_refreshbtn_clicked(NULL, NULL);
+					return TRUE;
+					break;
+				case GDK_f:
+					on_searchbtn_clicked(NULL, NULL);
+					return TRUE;
+					break;
+			}
 		}
 
 		/* prevent usage of navigation keys in entries */
@@ -168,54 +200,32 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 
 		/* somehow we don't need to check for GtkHTML2... */
 
-		/* menu hotkeys (duplicated so they work with hidden menu */
-		if(GDK_CONTROL_MASK == (event->state & default_modifiers)) {
-			switch (event->keyval) {
-				case GDK_n:
+		/* check for treeview navigation */
+		if(0 == (event->state & default_modifiers)) {
+			switch(event->keyval) {
+				case GDK_n: 
 					on_next_unread_item_activate(NULL, NULL);
-					break;
-				case GDK_r:
-					on_popup_allunread_selected();
-					break;
-				case GDK_t:
-					on_toggle_item_flag(NULL, NULL);
-					break;
-				case GDK_u:
-					on_toggle_unread_status(NULL, NULL);
-					break;
-				case GDK_a:
-					on_refreshbtn_clicked(NULL, NULL);
+					return TRUE;
 					break;
 				case GDK_f:
-					on_searchbtn_clicked(NULL, NULL);
+					on_treeview_next("Itemlist");
+					return TRUE;
+					break;
+				case GDK_b:
+					on_treeview_prev("Itemlist");
+					return TRUE;
+					break;
+				case GDK_u:
+					on_treeview_prev("feedlist");
+					on_treeview_set_first("Itemlist");
+					return TRUE;
+					break;
+				case GDK_d:
+					on_treeview_next("feedlist");
+					on_treeview_set_first("Itemlist");
+					return TRUE;
 					break;
 			}
-		}
-
-		/* check for treeview navigation */
-		switch (event->keyval) {
-			case GDK_n: 
-				on_next_unread_item_activate(NULL, NULL);
-				return TRUE;
-				break;
-			case GDK_f:
-				on_treeview_next("Itemlist");
-				return TRUE;
-				break;
-			case GDK_b:
-				on_treeview_prev("Itemlist");
-				return TRUE;
-				break;
-			case GDK_u:
-				on_treeview_prev("feedlist");
-				on_treeview_set_first("Itemlist");
-				return TRUE;
-				break;
-			case GDK_d:
-				on_treeview_next("feedlist");
-				on_treeview_set_first("Itemlist");
-				return TRUE;
-				break;
 		}
 	}
 	
@@ -300,9 +310,10 @@ GtkWidget* ui_mainwindow_new(void) {
 
 	TOOLBAR_ADD(toolbar,  _("New Feed"), GTK_STOCK_ADD, tooltips,  _("Add a new subscription."), on_newbtn_clicked);
 	TOOLBAR_ADD(toolbar,  _("Next Unread"), GTK_STOCK_GO_FORWARD, tooltips,  _("Jumps to the next unread item. If necessary selects the next feed with unread items."), on_nextbtn_clicked);
-	TOOLBAR_ADD(toolbar,  _("Mark As Read"), GTK_STOCK_APPLY, tooltips,  _("Mark all items of the selected subscription or of all subscriptions of the selected folder as read."), on_popup_allunread_selected);
+	TOOLBAR_ADD(toolbar,  _("Mark As Read"), GTK_STOCK_APPLY, tooltips,  _("Marks all items of the selected subscription or of all subscriptions of the selected folder as read."), on_popup_allunread_selected);
 	TOOLBAR_ADD(toolbar,  _("Update All"), GTK_STOCK_REFRESH, tooltips,  _("Updates all subscriptions. This does not update OCS directories."), on_refreshbtn_clicked);
 	TOOLBAR_ADD(toolbar,  _("Search"), GTK_STOCK_FIND, tooltips,  _("Search all feeds."), on_searchbtn_clicked);
+	TOOLBAR_ADD(toolbar,  _("Viewing Mode"), GTK_STOCK_JUSTIFY_FILL, tooltips,  _("Switches between 2 and 3 pane mode."), on_toggle_condensed_view_clicked);
 	TOOLBAR_ADD(toolbar,  _("Preferences"), GTK_STOCK_PREFERENCES, tooltips,  _("Edit preferences."), on_prefbtn_clicked);
 
 	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "key_press_event",
@@ -343,32 +354,26 @@ void ui_mainwindow_finish(GtkWidget *window) {
 				   "be in an unusable state. It should be used by developers only! "
 				   "If you want to use Liferea regularily please download the last "
 				   "stable version from SourceForge!"
-				   "</div>"));
+				   "</div><br>"));
+
+	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa\">"
+				   "<table border=0 cellpadding=5px><tr><td>"
+				   // add application icon
+				   "<img src=\""
+				   PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S
+				   "liferea.png\">"
+				   "</td><td>"
+				   "<h3>Liferea - Linux Feed Reader</h3>"
+				   "</td></tr><tr><td colspan=2>"
+				   "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
+				   "feeds.</p>"
+				   "<p>The left pane contains the list of your subscriptions. To add a "
+				   "subscription select Feeds -&gt; New Subscription. To browse the headlines "
+				   "of a feed select it in the feed list and the headlines will be loaded "
+				   "into the right pane.</p>"
+				   "</tr></table>"
+				   "</div"));
 				   
-	/*addToHTMLBuffer(&buffer, _("<h2>Welcome to Liferea</h2>"
-	                           "<p>The left pane contains the feed list where you can add new subscriptions "
-	                           "and select subscriptions to read their headlines. The right side either "
-	                           "displays a list of the headlines of the selected subscription and a "
-	                           "pane to view the selected headline or all headlines at once if condensed "
-	                           "mode is selected.</p>"
-	                           "<h3>Basic Actions</h3>"
-	                           "<ul>"
-	                           "<li><p><b>Add Subscription</b> - Creates a new subscription in the selected "
-	                           "folder. To create a new subscription enter the feed URL or if you don't "
-	                           "know it the URL of the website which provides the feed.</p></li>"
-	                           "<li><p><b>Update Subscription</b> - This will update the subscription you selected. "
-	                           "You may want to do this if you want to immediately check a subscription for "
-	                           "updates. Usually it is adequate to rely on the auto updating according to the "
-	                           "update interval of the subscription.</p></li>"
-	                           "<li><p><b>Update All</b> - This will update all your subscriptions at once. "
-	                           "Again usually it is adequate to rely on the auto updating.</li>"
-	                           "<li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
-	                           "change the update interval, title, authentication or caching properties "
-	                           "of a subscription.</p></li>"
-	                           "</ul>"
-	                           "<p>To learn more about Liferea you should read the documentation "
-	                           "provided in the help feed or in the <a href=\"http://liferea.sourceforge.net/faq.htm\">FAQ</a> available at the "
-	                           "<a href=\"http://liferea.sf.net\">project homepage</a>.</p>"));*/
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 	g_free(buffer);
