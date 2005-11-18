@@ -323,6 +323,9 @@ static GtkWidget *notifCreateWin(void) {
 
 	/* Not in taskbar */
 	gtk_window_set_skip_taskbar_hint(GTK_WINDOW(window_p), TRUE);
+
+	/* On top */
+	gtk_window_set_keep_above(GTK_WINDOW(window_p), TRUE);
 	
 	gtk_widget_set_size_request(window_p, NOTIF_WIN_WIDTH, NOTIF_WIN_HEIGHT);
 	
