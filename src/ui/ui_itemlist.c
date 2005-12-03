@@ -523,7 +523,7 @@ void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
 
 	if(NULL != (ip = ui_itemlist_get_selected()))
-		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), (gchar *)item_get_source(ip), UI_HTMLVIEW_LAUNCH_EXTERNAL);
+		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), (gchar *)item_get_source(ip), UI_HTMLVIEW_LAUNCH_DEFAULT);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
@@ -584,8 +584,8 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		/* must unselect the item to avoid deferred removal */
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
 		gtk_tree_selection_unselect_all(selection);
+		on_treeview_move("Itemlist", 1);
 		itemlist_remove_item(ip);
-		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	} else {
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 	}
@@ -783,6 +783,21 @@ void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data
 	nodePtr		np;
 	
 	itemlist_set_two_pane_mode(GTK_CHECK_MENU_ITEM(menuitem)->active);
+
+	if(NULL != (np = ui_feedlist_get_selected())) {
+		/* grab necessary to force HTML widget update (display must
+		   change from feed description to list of items and vica 
+		   versa */
+		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+		itemlist_load(np);
+	}
+}
+
+/* Callback for the toolbar to switch between two and three pane mode */
+void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data) {
+	nodePtr		np;
+
+	itemlist_set_two_pane_mode(!ui_itemlist_get_two_pane_mode());
 
 	if(NULL != (np = ui_feedlist_get_selected())) {
 		/* grab necessary to force HTML widget update (display must
