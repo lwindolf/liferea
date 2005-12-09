@@ -194,7 +194,7 @@ static GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpo
 	return GTK_MENU(menu);
 }
 
-/* function to generate popup menus for the item list depending
+/** function to generate popup menus for the item list depending
    on the list mode given in itemlist_mode */
 
 GtkMenu *make_item_menu(itemPtr ip) {
@@ -208,19 +208,35 @@ GtkMenu *make_item_menu(itemPtr ip) {
 	return menu;
 }
 
-/* popup menu generating functions for the HTML view */
+/** popup menu generating functions for the HTML view */
 GtkMenu *make_html_menu(void) { return make_menu(html_menu_items, html_menu_len, NULL); }
 GtkMenu *make_url_menu(char *url) {
-	return make_menu(url_menu_items, url_menu_len, g_strdup(url));
+
+	if(url == strstr(url, ENCLOSURE_PROTOCOL))
+		return ui_popup_make_enclosure_menu(url);		
+	else
+		return make_menu(url_menu_items, url_menu_len, g_strdup(url));
 }
 
-/* popup menu generation for the tray icon */
+/** popup menu generation for the tray icon */
 GtkMenu *ui_popup_make_systray_menu(void) { return make_menu(tray_menu_items, tray_menu_len, NULL); }
 
-/* popup menu generation for the enclosure popup menu */
-GtkMenu *ui_popup_make_enclosure_menu(gchar *enclosure) { return make_menu(enclosure_menu_items, enclosure_menu_len, g_strdup(enclosure)); }
+/** popup menu generation for the enclosure popup menu*/
+/* FIXME: This memleaks the enclosure URL */
+GtkMenu *ui_popup_make_enclosure_menu(const gchar *url) {
+	GtkMenu		*menu;
+	gchar		*enclosure_url;
 
-/* function to generate popup menus for the feed list depending on the
+	if(NULL != (enclosure_url = xmlURIUnescapeString(url + strlen(ENCLOSURE_PROTOCOL "load?"), 0, NULL))) {
+		menu = make_menu(enclosure_menu_items, enclosure_menu_len, g_strdup(enclosure_url)); 
+		g_free(enclosure_url);
+		return menu;
+	}
+
+	return NULL;
+}
+
+/** function to generate popup menus for the feed list depending on the
    type parameter. The item will be passed as a callback_data. For
    example, an folderPtr or feedPtr would be passed. */
 static GtkMenu *make_entry_menu(gint type, gpointer item) {

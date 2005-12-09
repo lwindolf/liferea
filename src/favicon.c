@@ -47,6 +47,12 @@ void favicon_load(nodePtr np) {
 	gchar		*filename;
 	GdkPixbuf	*pixbuf;
 	GError 		*error = NULL;
+
+	/* only load favicons for feeds */
+	if(FST_FEED != np->type)
+		return;
+
+	debug_enter("favicon_load");
 	
 	/* try to load a saved favicon */
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(np), "png");
@@ -66,12 +72,14 @@ void favicon_load(nodePtr np) {
 		
 		/* check creation date and update favicon if older than one month */
 		g_get_current_time(&now);
-		if(now.tv_sec > (((feedPtr)np->data)->lastFaviconPoll.tv_sec + 60*60*24*31)) {
+		if(now.tv_sec > (((feedPtr)(np->data))->lastFaviconPoll.tv_sec + 60*60*24*31)) {
 			debug1(DEBUG_UPDATE, "updating favicon %s\n", filename);
 			favicon_download(np);
 		}
 	}
 	g_free(filename);	
+
+	debug_exit("favicon_load");
 }
 
 void favicon_remove(nodePtr np) {

@@ -202,12 +202,8 @@ void ui_enclosure_download(encTypePtr etp, const gchar *url, const gchar *filena
 
 /* opens a popup menu for the given link */
 void ui_enclosure_new_popup(const gchar *url) {
-	gchar	*enclosure;
 	
-	if(NULL != (enclosure = xmlURIUnescapeString(url + strlen(ENCLOSURE_PROTOCOL "load?"), 0, NULL))) {
-		gtk_menu_popup(ui_popup_make_enclosure_menu(enclosure), NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
-		g_free(enclosure);
-	}
+	gtk_menu_popup(ui_popup_make_enclosure_menu(url), NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
 }
 
 static void on_selectcmdok_clicked(const gchar *filename, gpointer user_data) {
@@ -300,19 +296,27 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
 	
 }
 
-void ui_enclosure_save(encTypePtr type, gchar *url, gchar *filename) {
-	gchar	*tmp;
+/**
+ * Download an enclosure at "url" and save it to "filename". If
+ * filename is NULL, then a filename will be automatically generated
+ * based on the URL.
+ */
 
+void ui_enclosure_save(encTypePtr type, const gchar *url, const gchar *filename) {
+	gchar	*tmp;
+	
+	g_assert(url != NULL);
+	
 	if(NULL == filename) {
-		/* build filename from last part of URL */
+		/* build filename from last part of URL and make it begin with
+		   the default enclosure save path */
 		if(NULL == (filename = strrchr(url, '/')))
 			filename = url;
+		else
+			filename++;
+		filename = g_strdup_printf("%s%s%s", getStringConfValue(ENCLOSURE_DOWNLOAD_PATH), G_DIR_SEPARATOR_S, filename);
 	}
-
-	filename = g_strdup_printf("%s%s%s", getStringConfValue(ENCLOSURE_DOWNLOAD_PATH), G_DIR_SEPARATOR_S, filename);
 	ui_enclosure_download(type, url, filename);
-	g_free(filename);
-	g_free(url);
 }
 
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -373,6 +377,7 @@ static void on_encsave_clicked(const gchar *filename, gpointer user_data) {
 
 	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
 	ui_enclosure_save(NULL, url, utfname);
+	g_free(utfname);
 }
 
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget) {

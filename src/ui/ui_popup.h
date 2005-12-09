@@ -41,7 +41,7 @@ GtkMenu *make_url_menu(char* url);
 GtkMenu *ui_popup_make_systray_menu(void);
 
 /** popup menu generation for the enclosure popup menu */
-GtkMenu *ui_popup_make_enclosure_menu(gchar *enclosure);
+GtkMenu *ui_popup_make_enclosure_menu(const gchar *enclosure);
 
 /* GUI callbacks */
 gboolean

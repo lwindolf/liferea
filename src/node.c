@@ -60,14 +60,33 @@ nodePtr node_new() {
 	np->sortColumn = IS_TIME;
 	np->sortReversed = TRUE;	/* default sorting is newest date at top */
 	np->available = FALSE;
+	np->type = FST_INVALID;
 
 	return np;
 }
 
 void node_add_data(nodePtr np, guint type, gpointer data) {
+	itemSetPtr	sp;
+
+	g_assert(NULL == np->data);
 
 	np->type = type;
 	np->data = data;
+
+	if((FST_FOLDER == type) || (FST_VFOLDER == type)) {
+		/* Vfolders/folders are not handled by the node
+		   loading/unloading so the item set must be prepared 
+		   upon folder creation */
+		sp = g_new0(struct itemSet, 1);
+		sp->type = ITEMSET_TYPE_FOLDER;
+		node_set_itemset(np, sp);
+	}
+
+	if(FST_VFOLDER == type) {
+		/* Vfolder processing depends on the vfolder knowing
+		   of its node structure... */
+		((vfolderPtr)np->data)->node =np;
+	}
 }
 
 void node_free(nodePtr np) {
@@ -77,8 +96,8 @@ void node_free(nodePtr np) {
 
 void node_load(nodePtr np) {
 
+	debug2(DEBUG_CACHE, "+ node_load (%s, ref count=%d)", node_get_title(np), np->loaded);
 	np->loaded++;
-	debug1(DEBUG_CACHE, "node_load (%s)", node_get_title(np));
 
 	if(1 < np->loaded) {
 		debug1(DEBUG_CACHE, "no loading %s because it is already loaded", node_get_title(np));
@@ -91,7 +110,13 @@ void node_load(nodePtr np) {
 	switch(np->type) {
 		case FST_FEED:
 		case FST_PLUGIN:
+			g_assert(NULL == np->itemSet);
 			FL_PLUGIN(np)->node_load(np);
+GList *items = np->itemSet->items;
+while(items) {
+	g_print("loaded item: %s\n", ((itemPtr)items->data)->title);
+	items = g_list_next(items);
+}
 			g_assert(NULL != np->itemSet);
 			break;
 		case FST_FOLDER:
@@ -102,11 +127,14 @@ void node_load(nodePtr np) {
 			g_warning("internal error: unknown node type (%d)!", np->type);
 			break;
 	}
+
+	debug2(DEBUG_CACHE, "- node_load (%s, new ref count=%d)", node_get_title(np), np->loaded);
 }
 
 void node_save(nodePtr np) {
 
 	g_assert(0 < np->loaded);
+	g_assert(NULL != np->itemSet);
 
 	if(FALSE == np->needsCacheSave)
 		return;
@@ -120,7 +148,7 @@ void node_save(nodePtr np) {
 
 void node_unload(nodePtr np) {
 
-	debug1(DEBUG_CACHE, "node_unload (%s)", node_get_title(np));
+	debug2(DEBUG_CACHE, "+ node_unload (%s, ref count=%d)", node_get_title(np), np->loaded);
 
 	if(0 >= np->loaded) {
 		debug0(DEBUG_CACHE, "node is not loaded, nothing to do...");
@@ -137,7 +165,9 @@ void node_unload(nodePtr np) {
 			switch(np->type) {
 				case FST_FEED:
 				case FST_PLUGIN:
+					g_assert(NULL != np->itemSet);
 					FL_PLUGIN(np)->node_unload(np);
+					g_assert(NULL == np->itemSet);
 					break;
 				case FST_FOLDER:
 				case FST_VFOLDER:
@@ -152,6 +182,8 @@ void node_unload(nodePtr np) {
 		}
 		np->loaded--;
 	}
+
+	debug2(DEBUG_CACHE, "- node_unload (%s, new ref count=%d)", node_get_title(np), np->loaded);
 }
 
 static void node_merge_item(nodePtr np, itemPtr ip) {
@@ -219,8 +251,6 @@ void node_update_counters(nodePtr np) {
 	gint	unreadDiff, newDiff;
 	GList	*iter;
 	itemPtr	ip;
-
-	g_assert(FST_FOLDER != np->type);
 
 	newDiff = -1 * np->newCount;
 	unreadDiff = -1 * np->unreadCount;
@@ -309,12 +339,14 @@ void node_schedule_update(nodePtr np, request_cb callback, guint flags) {
 
 void node_remove(nodePtr np) {
 
+	debug_enter("node_remove");
+
 	if(NULL != np->icon) {
 		g_object_unref(np->icon);
 		favicon_remove(np);
 	}
 
-	g_assert(0 != np->handler & FL_PLUGIN_CAPABILITY_REMOVE);
+	g_assert(0 != (FL_PLUGIN(np)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
 
 	switch(np->type) {
 		case FST_FEED:
@@ -331,6 +363,8 @@ void node_remove(nodePtr np) {
 	}
 
 	node_free(np);
+
+	debug_exit("node_remove");
 }
 
 void node_add(guint type) {
@@ -340,7 +374,7 @@ void node_add(guint type) {
 	parent = feedlist_get_selected_parent();
 	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
 
-	g_assert(0 != parent->handler & FL_PLUGIN_CAPABILITY_ADD);
+	g_assert(0 != (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD));
 
 	child = node_new();
 	child->type = type;

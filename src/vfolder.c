@@ -43,21 +43,13 @@ void vfolder_init(void) {
 }
 
 /* sets up a vfolder feed structure */
-vfolderPtr vfolder_new(nodePtr np) {
+vfolderPtr vfolder_new(void) {
 	itemSetPtr	sp;
 	vfolderPtr	vp;
 
 	debug_enter("vfolder_new");
 
-	/* Create an empty item set for this node. This is
-	   necessary because vfolders are not handled by the
-	   node loading/unloading. */
-	sp = g_new0(struct itemSet, 1);
-	sp->type = ITEMSET_TYPE_VFOLDER;
-	node_set_itemset(np, sp);
-
 	vp = g_new0(struct vfolder, 1);
-	vp->node = np;
 	vp->title = g_strdup(_("vfolder"));
 	vfolders = g_slist_append(vfolders, vp);
 	
@@ -106,7 +98,7 @@ gpointer vfolder_import(nodePtr np, xmlNodePtr cur) {
 
 	debug_enter("vfolder_import");
 
-	vp = vfolder_new(np);
+	vp = vfolder_new();
 	vfolder_import_rules(cur, vp);
 	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(np));
 

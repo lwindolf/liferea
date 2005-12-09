@@ -34,7 +34,6 @@
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
-#include "favicon.h"
 #include "debug.h"
 #include "plugin.h"
 #include "fl_providers/fl_plugin.h"
@@ -266,8 +265,8 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			                | FEED_REQ_AUTH_DIALOG);
 	}
 
-	favicon_load(np);
 	node_add_data(np, type, data);
+	favicon_load(np);
 	feedlist_add_node(parentNode, np, -1);
 		
 	if(FST_FOLDER == type) {

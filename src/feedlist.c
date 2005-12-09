@@ -104,7 +104,6 @@ void feedlist_reset_new_item_count(void) {
 
 void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
-g_print("feedlist_add_node parent=%d node=%d\n", parent, np);	
 	ui_feedlist_add(parent, np, position);	// FIXME: should be ui_node_add_child()
 	if(NULL != parent)
 		ui_node_update(parent);
@@ -143,9 +142,10 @@ void feedlist_remove_node(nodePtr np) {
 
 	debug_enter("feedlist_remove_node");
 
-	if(np == displayed_node) {
-		itemlist_load(NULL);
+	if(np == selectedNode) {
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
+		itemlist_load(NULL);
+		selectedNode = NULL;
 	}
 
 	if(FST_FOLDER != np->type)
@@ -160,13 +160,15 @@ void feedlist_remove_node(nodePtr np) {
 static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
 	itemSetPtr	sp = (itemSetPtr)userdata;
 
+	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(np));
+
 	switch(np->type) {
 		case FST_FOLDER:
 			return; /* a sub folder has no own itemset to add */
 			break;
 		case FST_FEED:
 		case FST_PLUGIN:
-			FL_PLUGIN(np)->node_load(np);
+			node_load(np);
 			break;
 		case FST_VFOLDER:
 			/* Do not merge vfolders because this might
@@ -179,23 +181,31 @@ static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
 			break;
 	}
 
+	debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(sp->items));
 	sp->items = g_list_concat(sp->items, np->itemSet->items);
+	debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(sp->items));
 }
 
 void feedlist_load_node(nodePtr np) {
 
-	node_load(np);
-
-	if(FST_FOLDER == np->type)
-		ui_feedlist_do_for_all_data(np, ACTION_FILTER_FEED, feedlist_merge_itemset_cb, (gpointer)&(np->itemSet));
+	if(FST_FOLDER == np->type) {
+		g_assert(NULL != np->itemSet);
+		ui_feedlist_do_for_all_data(np, ACTION_FILTER_FEED, feedlist_merge_itemset_cb, (gpointer)np->itemSet);
+	} else {
+		node_load(np);
+	}
 }
 
 void feedlist_unload_node(nodePtr np) {
 
-	node_unload(np);
-
-	if(FST_FOLDER == np->type)
+	if(FST_FOLDER == np->type) {
+g_print(">>>>>>>< freeing folder \n");
+		g_list_free(np->itemSet->items);
+		np->itemSet->items = NULL;
 		ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, node_unload);
+	} else {
+		node_unload(np);
+	}
 }
 
 static gboolean feedlist_auto_update(void *data) {
@@ -335,9 +345,13 @@ void feedlist_save(void) {
 static void feedlist_initial_load(nodePtr np) {
 	
 	feedlist_load_node(np);
-	feedlist_update_node(np);
 	ui_node_update(np);
 	feedlist_unload_node(np);
+}
+
+static void feedlist_initial_update(nodePtr np) {
+
+	node_request_update(np, 0);
 }
 
 void feedlist_init(void) {
@@ -358,11 +372,27 @@ void feedlist_init(void) {
 	rootPlugin = fl_plugins_get_root(plugins);
 	rootPlugin->handler_new(rootNode);
 
-	/* 3. load all feeds and by doing so automatically load all vfolders */
+	/* 3. Sequentially load and unload all feeds and by doing so 
+	   automatically load all vfolders */
 	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, feedlist_initial_load);
 
-	/* 4. start automatic updating */
- 	//(void)g_timeout_add(1000, feedlist_auto_update, NULL);
+	/* 4. Check if feeds do need updating. */
+	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
+		case 1: /* Update all feeds */
+			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
+			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feedlist_initial_update);
+			break;
+		case 2:
+			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
+			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_reset_update_counter);
+			break;
+		default:
+			debug0(DEBUG_UPDATE, "initial update: using auto update");
+			/* default, which is to use the lastPoll times, does not need any actions here. */;
+	}
 
+	/* 5. Start automatic updating */
+ 	//(void)g_timeout_add(1000, feedlist_auto_update, NULL);
+	
 	debug_exit("feedlist_init");
 }

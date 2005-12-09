@@ -119,5 +119,8 @@ void
 on_quick_reference_activate            (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
+void
+on_faq_activate                        (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
 #endif
 

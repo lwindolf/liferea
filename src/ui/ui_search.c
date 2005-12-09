@@ -90,13 +90,13 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	}
 
 	/* create new search */
-	searchResult = node_new();
-	vp = vfolder_new(searchResult);
-	node_set_title(searchResult, searchstring);
-	node_add_data(searchResult, FST_VFOLDER, (gpointer)vp);
-
+	vp = vfolder_new();
 	vfolder_set_title(vp, searchstring);
 	vfolder_add_rule(vp, "exact", searchstring, TRUE);
+
+	searchResult = node_new();
+	node_set_title(searchResult, searchstring);
+	node_add_data(searchResult, FST_VFOLDER, (gpointer)vp);
 
 	/* calculate vfolder item set */
 	vfolder_refresh(vp);
@@ -151,10 +151,10 @@ void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	vfolderPtr		vp;
 	nodePtr			np, folder = NULL;
 	
-	np = node_new();
-	vp = vfolder_new(np);
+	vp = vfolder_new();
 	vfolder_set_title(vp, _("New VFolder"));
 
+	np = node_new();
 	node_set_title(np, vfolder_get_title(vp));
 	node_add_data(np, FST_VFOLDER, (gpointer)vp);
 

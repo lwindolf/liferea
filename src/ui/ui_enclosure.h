@@ -53,7 +53,7 @@ void ui_enclosure_new_popup(const gchar *url);
  * @param url		valid HTTP URL
  * @param filename	valid filename
  */
-void ui_enclosure_save(encTypePtr type, gchar *url, gchar *filename);
+void ui_enclosure_save(encTypePtr type, const gchar *url, const gchar *filename);
 
 /* popup menu callbacks */
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);

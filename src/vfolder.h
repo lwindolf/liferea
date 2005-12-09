@@ -52,7 +52,7 @@ void	vfolder_init(void);
  *
  * @returns a new vfolder
  */
-vfolderPtr vfolder_new(struct node *np);
+vfolderPtr vfolder_new(void);
 
 /**
  * Vfolder specific feed list import parsing.

@@ -53,121 +53,6 @@
 #include "ui/ui_enclosure.h"
 #include "ui/ui_tabs.h"
 	
-/* all used icons */
-GdkPixbuf *icons[MAX_ICONS];
-
-/* icon names */
-static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
-				"unread.png",		/* ICON_UNREAD */
-				"flag.png",		/* ICON_FLAG */
-				"available.png",	/* ICON_AVAILABLE */
-				NULL,			/* ICON_UNAVAILABLE */
-				"ocs.png",		/* ICON_OCS */
-				"directory.png",	/* ICON_FOLDER */
-				"vfolder.png",		/* ICON_VFOLDER */
-				"empty.png",		/* ICON_EMPTY */
-				"online.png",		/* ICON_ONLINE */
-				"offline.png",		/* ICON_OFFLINE */
-				"edit.png",		/* ICON_UPDATED */
-				NULL
-				};
-				
-/*------------------------------------------------------------------------------*/
-/* generic GUI functions							*/
-/*------------------------------------------------------------------------------*/
-
-/* GUI initialization, must be called only once! */
-
-static void callbacks_schedule_update_default_cb(nodePtr ptr) {
-
-	node_request_update(ptr, 0);
-}
-
-void ui_init(int mainwindowState) {
-	GtkWidget	*widget;
-	int		i;
-
-	debug_enter("ui_init");
-
-	mainwindow = ui_mainwindow_new();
-	ui_tabs_init();
-	
-	/* load pane proportions */
-	if(0 != getNumericConfValue(LAST_VPANE_POS))
-		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "leftpane")), getNumericConfValue(LAST_VPANE_POS));
-	if(0 != getNumericConfValue(LAST_HPANE_POS))
-		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
-
-	/* order important !!! */
-	ui_feedlist_init(lookup_widget(mainwindow, "feedlist"));
-	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
-
-	for(i = 0;  i < MAX_ICONS; i++)
-		icons[i] = create_pixbuf(iconNames[i]);
-
-	/* set up icons that are build from stock */
-	widget = gtk_button_new();
-	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon(widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
-	gtk_widget_destroy(widget);
-	
-	ui_mainwindow_update_toolbar();
-	ui_mainwindow_update_menubar();
-	ui_mainwindow_update_onlinebtn();
-	
-	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
-	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
-	ui_popup_setup_menues();		/* create popup menues */
-	ui_enclosure_init();
-
-	feedlist_init();
-			
-	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
-		case 1: /* Update all feeds */
-			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
-			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)callbacks_schedule_update_default_cb);
-			break;
-		case 2:
-			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
-			ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, (gpointer)feed_reset_update_counter);
-			break;
-		default:
-			debug0(DEBUG_UPDATE, "initial update: using auto update");
-			/* default, which is to use the lastPoll times, does not need any actions here. */;
-	}
-	
-	if(mainwindowState == MAINWINDOW_ICONIFIED || 
-	   (mainwindowState == MAINWINDOW_HIDDEN && ui_tray_get_count() == 0)) {
-		gtk_window_iconify(GTK_WINDOW(mainwindow));
-		gtk_widget_show(mainwindow);
-	} else if(mainwindowState == MAINWINDOW_SHOWN) {
-		gtk_widget_show(mainwindow);
-	} else {
-		/* Needed so that the window structure can be
-		   accessed... otherwise will GTK warning when window is
-		   shown by clicking on notification icon. */
-		gtk_widget_realize(GTK_WIDGET(mainwindow)); 
-	}
-	ui_mainwindow_finish(mainwindow); /* Ugly hack to make mozilla work */
-
-	debug_exit("ui_init");
-}
-
-void ui_redraw_widget(gchar *name) {
-	GtkWidget	*list;
-	gchar		*msg;
-	
-	if(NULL == mainwindow)
-		return;
-	
-	if(NULL != (list = lookup_widget(mainwindow, name)))
-		gtk_widget_queue_draw(list);
-	else {
-		msg = g_strdup_printf("Fatal! Could not lookup widget \"%s\"!", name);
-		g_warning(msg);
-		g_free(msg);
-	}
-}
-
 /*------------------------------------------------------------------------------*/
 /* status bar callback, error box function					*/
 /*------------------------------------------------------------------------------*/
@@ -244,6 +129,12 @@ void on_topics_activate(GtkMenuItem *menuitem, gpointer user_data) {
 void on_quick_reference_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gchar *filename = g_strdup_printf("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("reference_en.html"));
 	ui_tabs_new(filename, _("Quick Reference"), TRUE);
+	g_free(filename);
+}
+
+void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	gchar *filename = g_strdup_printf("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("faq_en.html"));
+	ui_tabs_new(filename, _("FAQ"), TRUE);
 	g_free(filename);
 }
 

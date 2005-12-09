@@ -375,7 +375,7 @@ static enum scanStateType scanState = UNREAD_SCAN_INIT;
 static nodePtr ui_feedlist_unread_scan(nodePtr folder) {
 	nodePtr			ptr, childNode, selectedNode;
 	GtkTreeModel		*model;
-	GtkTreeIter		iter, iter2, *selectedIter, *parent = NULL;
+	GtkTreeIter		iter, iter2, *selectedIter = NULL, *parent = NULL;
 	gboolean		valid = FALSE;
 	gint			count;
 
@@ -421,7 +421,7 @@ static nodePtr ui_feedlist_unread_scan(nodePtr folder) {
 		   feeds with unread items... */
 		if((FST_FOLDER == ptr->type) &&
 		   (((scanState != UNREAD_SCAN_INIT) && (count > 0)) ||
-		    gtk_tree_store_is_ancestor(GTK_TREE_STORE(model), &iter, selectedIter))) {
+		    ((NULL != selectedIter) && (gtk_tree_store_is_ancestor(GTK_TREE_STORE(model), &iter, selectedIter))))) {
 		       if(NULL != (childNode = ui_feedlist_unread_scan(ptr)))
 			 return childNode;
 		} /* Directories are never checked */

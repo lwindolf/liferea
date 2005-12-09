@@ -66,6 +66,26 @@
 					G_CALLBACK(function), NULL)
 
 #endif
+
+/* all used icons */
+GdkPixbuf *icons[MAX_ICONS];
+
+/* icon names */
+static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
+				"unread.png",		/* ICON_UNREAD */
+				"flag.png",		/* ICON_FLAG */
+				"available.png",	/* ICON_AVAILABLE */
+				NULL,			/* ICON_UNAVAILABLE */
+				"ocs.png",		/* ICON_OCS */
+				"directory.png",	/* ICON_FOLDER */
+				"vfolder.png",		/* ICON_VFOLDER */
+				"empty.png",		/* ICON_EMPTY */
+				"online.png",		/* ICON_ONLINE */
+				"offline.png",		/* ICON_OFFLINE */
+				"edit.png",		/* ICON_UPDATED */
+				NULL
+				};
+
 GtkWidget 	*mainwindow;
 
 static GtkWidget *htmlview = NULL;		/* HTML rendering widget */
@@ -97,7 +117,7 @@ static void on_treeview_set_first(char* treename) {
 }
 
 /* Move treeview cursor up and down. */
-static void on_treeview_move(char* treename, gint step) {
+void on_treeview_move(char* treename, gint step) {
 	GtkTreeView	*treeview;
 	gboolean	ret;
 
@@ -203,6 +223,11 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 		/* check for treeview navigation */
 		if(0 == (event->state & default_modifiers)) {
 			switch(event->keyval) {
+				case GDK_KP_Delete:
+				case GDK_Delete:
+					on_remove_item_activate(NULL, NULL);
+					return TRUE;
+					break;
 				case GDK_n: 
 					on_next_unread_item_activate(NULL, NULL);
 					return TRUE;
@@ -332,8 +357,61 @@ GtkWidget* ui_mainwindow_new(void) {
 	return window;
 }
 
-void ui_mainwindow_finish(GtkWidget *window) {
-	gchar	*buffer = NULL;
+void ui_mainwindow_init(int mainwindowState) {
+	GtkWidget	*widget;
+	int		i;
+	gchar		*buffer = NULL;
+
+	debug_enter("ui_mainwindow_init");
+
+	mainwindow = ui_mainwindow_new();
+	ui_tabs_init();
+
+	/* load pane proportions */
+	if(0 != getNumericConfValue(LAST_VPANE_POS))
+		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "leftpane")), getNumericConfValue(LAST_VPANE_POS));
+	if(0 != getNumericConfValue(LAST_HPANE_POS))
+		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "rightpane")), getNumericConfValue(LAST_HPANE_POS));
+
+	/* order important !!! */
+	ui_feedlist_init(lookup_widget(mainwindow, "feedlist"));
+	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
+
+	/* necessary to prevent selection signals when filling the feed list
+	   and setting the 2/3 pane mode view */
+	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), FALSE);
+
+	for(i = 0;  i < MAX_ICONS; i++)
+		icons[i] = create_pixbuf(iconNames[i]);
+
+	/* set up icons that are build from stock */
+	widget = gtk_button_new();
+	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon(widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
+	gtk_widget_destroy(widget);
+	
+	ui_mainwindow_update_toolbar();
+	ui_mainwindow_update_menubar();
+	ui_mainwindow_update_onlinebtn();
+	
+	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
+	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
+	ui_popup_setup_menues();		/* create popup menues */
+	ui_enclosure_init();
+
+	feedlist_init();
+			
+	if(mainwindowState == MAINWINDOW_ICONIFIED || 
+	   (mainwindowState == MAINWINDOW_HIDDEN && ui_tray_get_count() == 0)) {
+		gtk_window_iconify(GTK_WINDOW(mainwindow));
+		gtk_widget_show(mainwindow);
+	} else if(mainwindowState == MAINWINDOW_SHOWN) {
+		gtk_widget_show(mainwindow);
+	} else {
+		/* Needed so that the window structure can be
+		   accessed... otherwise will GTK warning when window is
+		   shown by clicking on notification icon. */
+		gtk_widget_realize(GTK_WIDGET(mainwindow)); 
+	}
 
 	ui_mainwindow_set_three_pane_mode(FALSE); /* Initializes the htmlviews */
 
@@ -377,6 +455,10 @@ void ui_mainwindow_finish(GtkWidget *window) {
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
 	g_free(buffer);
+
+	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), TRUE);
+
+	debug_exit("ui_mainwindow_init");
 }
 
 void ui_mainwindow_update_toolbar(void) {

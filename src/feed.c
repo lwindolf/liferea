@@ -537,89 +537,90 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		g_free(filename);
 		return sp;
-	}
+	} else {
+
+		do {
+			g_assert(NULL != data);
 	
-	do {
-		g_assert(NULL != data);
-
-		if(NULL == (doc = parseBuffer(data, length, &(fp->parseErrors)))) {
-			g_free(fp->parseErrors);
-			fp->parseErrors = NULL;
-			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
-			error = 1;
-			break;
-		} 
-
-		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			g_free(fp->parseErrors);
-			fp->parseErrors = NULL;
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
-			error = 1;
-			break;
-		}
-		
-		while(cur && xmlIsBlankNode(cur))
-			cur = cur->next;
-
-		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
-			g_free(fp->parseErrors);
-			fp->parseErrors = NULL;
-			addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
-			error = 1;
-			break;		
-		}
-
-		metadata_list_free(fp->metadata);
-		fp->metadata = NULL;
-
-		cur = cur->xmlChildrenNode;
-		while(cur != NULL) {
-			tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-
-			if(tmp == NULL) {
+			if(NULL == (doc = parseBuffer(data, length, &(fp->parseErrors)))) {
+				g_free(fp->parseErrors);
+				fp->parseErrors = NULL;
+				addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
+				error = 1;
+				break;
+			} 
+	
+			if(NULL == (cur = xmlDocGetRootElement(doc))) {
+				g_free(fp->parseErrors);
+				fp->parseErrors = NULL;
+				addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
+				error = 1;
+				break;
+			}
+			
+			while(cur && xmlIsBlankNode(cur))
 				cur = cur->next;
-				continue;
+	
+			if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
+				g_free(fp->parseErrors);
+				fp->parseErrors = NULL;
+				addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
+				error = 1;
+				break;		
 			}
 
-			if(fp->description == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
-				feed_set_description(fp, tmp);
-				
-			} else if(fp->title == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
-				feed_set_title(fp, tmp);
-				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
-				feed_set_default_update_interval(fp, atoi(tmp));
-								
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedImage")) {
-				feed_set_image_url(fp, tmp);
-				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
-				feed_set_available(fp, (0 == atoi(tmp))?FALSE:TRUE);
-				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) {
-				feed_set_discontinued(fp, (0 == atoi(tmp))?FALSE:TRUE);
-				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
-				feed_set_lastmodified(fp, tmp);
-				
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-				itemset_add_item(sp, item_parse_cache(doc, cur));
+			metadata_list_free(fp->metadata);
+			fp->metadata = NULL;
 
-			} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
-				fp->metadata = metadata_parse_xml_nodes(doc, cur);
+			cur = cur->xmlChildrenNode;
+			while(cur != NULL) {
+				tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+	
+				if(tmp == NULL) {
+					cur = cur->next;
+					continue;
+				}
+
+				if(fp->description == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
+					feed_set_description(fp, tmp);
+					
+				} else if(fp->title == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
+					feed_set_title(fp, tmp);
+					
+				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
+					feed_set_default_update_interval(fp, atoi(tmp));
+									
+				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedImage")) {
+					feed_set_image_url(fp, tmp);
+					
+				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
+					feed_set_available(fp, (0 == atoi(tmp))?FALSE:TRUE);
+					
+				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) {
+					feed_set_discontinued(fp, (0 == atoi(tmp))?FALSE:TRUE);
+					
+				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
+					feed_set_lastmodified(fp, tmp);
+					
+				} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
+					itemset_add_item(sp, item_parse_cache(doc, cur));
+	
+				} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
+					fp->metadata = metadata_parse_xml_nodes(doc, cur);
+				}
+				g_free(tmp);	
+				cur = cur->next;
 			}
-			g_free(tmp);	
-			cur = cur->next;
-		}
-		//favicon_load(np); FIXME!!!
-	} while(FALSE);
+			//favicon_load(np); FIXME!!!
+		} while(FALSE);
 	
-	if(0 != error)
-		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\""), filename);
+		if(0 != error)
+			ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\""), filename);
 	
-	if(NULL != doc)
-		xmlFreeDoc(doc);
-	g_free(data);
+		if(NULL != doc)
+			xmlFreeDoc(doc);
+		g_free(data);
+	}
 	g_free(filename);
 	
 	debug_exit("feed_load_from_cache");
@@ -645,6 +646,8 @@ gboolean feed_can_be_updated(feedPtr fp) {
 }	
 
 void feed_prepare_request(feedPtr fp, struct request *request, guint flags) {
+
+	debug1(DEBUG_UPDATE, "preparing request for \"%s\"\n", feed_get_source(fp));
 
 	feed_reset_update_counter(fp);
 
@@ -811,7 +814,7 @@ void feed_reset_update_counter(feedPtr fp) {
 
 	g_get_current_time(&fp->lastPoll);
 	feedlist_schedule_save();
-	debug2(DEBUG_CONF, "Reseting last poll counter for %s to %ld.\n", fp->title, fp->lastPoll.tv_sec);
+	debug1(DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", fp->lastPoll.tv_sec);
 }
 
 void feed_set_available(feedPtr fp, gboolean available) { fp->available = available; }

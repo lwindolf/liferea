@@ -635,7 +635,7 @@ void ui_feed_process_update_result(struct request *request) {
 
 	debug_enter("ui_feed_process_update_result");
 	
-	feedlist_load_node(np);
+	node_load(np);
 
 	/* no matter what the result of the update is we need to save update
 	   status and the last update time to cache */
@@ -717,7 +717,7 @@ void ui_feed_process_update_result(struct request *request) {
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		favicon_download(np);
 
-	feedlist_unload_node(np);
+	node_unload(np);
 
 	debug_exit("ui_feed_process_update_result");
 }

@@ -581,11 +581,19 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	itemPtr			ip;
 	
 	if(NULL != (ip = ui_itemlist_get_selected())) {
-		/* must unselect the item to avoid deferred removal */
-		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
-		gtk_tree_selection_unselect_all(selection);
-		on_treeview_move("Itemlist", 1);
+		/* 1. order is important, first remove then unselect! */
 		itemlist_remove_item(ip);
+
+		/* 2. deferred removal forces us to unselect the item 
+		      One way to do it is to move forward the cursor. */
+		on_treeview_move("Itemlist", 1);
+
+		/* 3. But 2. might not be enough, e.g. if ip was the
+		      last item and is still selected (not removed) */
+		if(ui_itemlist_get_selected() == ip) {
+			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
+			gtk_tree_selection_unselect_all(selection);
+		}
 	} else {
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 	}

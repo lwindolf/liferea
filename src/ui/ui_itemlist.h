@@ -162,8 +162,15 @@ void on_popup_toggle_flag(gpointer callback_data,
  * @param meunitem	the clicked menu item
  * @param user_data	unused
  */
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, 
-					gpointer user_data);
+void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data);
+
+/**
+ * Toggles the two pane mode (tool bar callback)
+ *
+ * @param button	the clicked button
+ * @param user_data	unused
+ */
+void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data);
 
 /**
  * Returns the two pane mode flag (TRUE if active) 

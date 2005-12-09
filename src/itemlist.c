@@ -59,11 +59,14 @@ static void itemlist_check_for_deferred_removal(void) {
 	}
 }
 
-static void itemlist_load_node(nodePtr np, gpointer data) {
-	gboolean	merge = GPOINTER_TO_INT(data);
+static void itemlist_load_node(nodePtr np, gboolean merge) {
 	gboolean	loadReadItems = TRUE;
-	GList		*item, *itemlist;
+	GList		*item;
 	itemPtr		ip;
+
+	debug_enter("itemlist_load_node");
+	
+	debug2(DEBUG_GUI, "loading item list with node \"%s\" (merge=%s)", node_get_title(np), merge?"TRUE":"FALSE");
 	
 	if(FST_FOLDER == displayed_node->type)
 		loadReadItems = !getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ);
@@ -71,8 +74,7 @@ static void itemlist_load_node(nodePtr np, gpointer data) {
 	/* load model */
 	feedlist_load_node(np);
 	/* update itemlist in view */	
-	itemlist = np->itemSet->items;
-	item = g_list_last(itemlist);
+	item = g_list_last(np->itemSet->items);
 	while(NULL != item) {
 		ip = item->data;
 		g_assert(NULL != ip);
@@ -82,12 +84,14 @@ static void itemlist_load_node(nodePtr np, gpointer data) {
 
 		item = g_list_previous(item);
 	}
+
+	debug_exit("itemlist_load_node");
 }
 
 static void itemlist_check_if_child(nodePtr np, gpointer data) {
 
 	if(np == (nodePtr)data)
-		itemlist_load_node(np, (gpointer)TRUE);
+		itemlist_load_node(np, TRUE);
 }
 
 /**
@@ -98,6 +102,8 @@ static void itemlist_check_if_child(nodePtr np, gpointer data) {
 void itemlist_reload(nodePtr node) {
 	gboolean	isFeed;
 	gboolean	isFolder;
+
+	debug_enter("itemlist_reload");
 	
 	if(displayed_node == NULL)
 		return; /* Nothing to do if nothing is displayed */
@@ -105,6 +111,7 @@ void itemlist_reload(nodePtr node) {
 	/* determine what node type is actually selected */
 	isFeed = (FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type);
 	isFolder = FST_FOLDER == displayed_node->type;
+g_print("%s - isFeed=%s isFolder=%s\n", node->title, isFeed?"true":"false", isFolder?"true":"false");
 	g_assert(isFeed || isFolder);
 	
 	if((TRUE == isFolder) && (1 == getNumericConfValue(FOLDER_DISPLAY_MODE))) {
@@ -118,17 +125,19 @@ void itemlist_reload(nodePtr node) {
 		} else {
 			/* and the user might get click directly on a folder, then we
 			   can unconditionally load all child feeds into the itemlist */
-			ui_feedlist_do_for_all_data(displayed_node, ACTION_FILTER_FEED, itemlist_load_node, GINT_TO_POINTER(TRUE));
+			itemlist_load_node(node, TRUE);
 		}
 	}
 
 	if(TRUE == isFeed) {
 		if(node != displayed_node)
 			return;
-		itemlist_load_node(node, (gpointer)TRUE);
+		itemlist_load_node(node, TRUE);
 	}
 
 	ui_itemlist_display();
+
+	debug_exit("itemlist_reload");
 }
 
 /** 
@@ -142,64 +151,75 @@ void itemlist_load(nodePtr node) {
 	gint		sortColumn;
 	GtkSortType	sortType;
 	gboolean	sorted;
-	
-	/* Postprocessing for previously selected node, this is necessary
-	   to realize reliable read marking when using condensed mode. It's
-	   important to do this only when the selection really changed. */
-	isFeed = ((displayed_node != NULL) && ((FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type)));
-	if(isFeed && (node != displayed_node) && (TRUE == node_get_two_pane_mode(displayed_node)))
-		itemset_mark_all_read(displayed_node->itemSet);
 
-	/* determine what node type is now selected */
-	isFeed = ((node != NULL) && ((FST_FEED == node->type) || (FST_VFOLDER == node->type)));
-	isFolder = ((node != NULL) && (FST_FOLDER == node->type));
-	
-	if(isFolder && (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
+	if(NULL != node) {
+		/* 1. Postprocessing for previously selected node, this is necessary
+		   to realize reliable read marking when using condensed mode. It's
+		   important to do this only when the selection really changed. */
+		switch(node->type) {
+			case FST_FEED:
+			case FST_VFOLDER:
+				if((node != displayed_node) && (NULL != displayed_node) &&
+				   (TRUE == node_get_two_pane_mode(displayed_node)))
+					itemset_mark_all_read(displayed_node->itemSet);
+				break;
+			case FST_FOLDER:
+				// Nothing to do?
+				break;
+		}
+	}
+
+	/* 2. Don't continue if folder is selected and no
+	   folder viewing is configured. */
+	if((NULL != node) && (FST_FOLDER == node->type) && 
+	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
 		return;
-	
+
 	itemlist_check_for_deferred_removal();
+	
+	/* 3. Load the selected feed. */
+	if(NULL != node) {
 
-	/* preparation done, we can select it... */
-	displayed_node = node;
+		/* Disable sorting for performance reasons */
+		model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
+		sorted = gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sortColumn, &sortType);
+	
+		/* Free the old itemstore and create a new one; this is the only way to disable sorting */
+		ui_itemlist_reset_tree_store();	 /* this also clears the itemlist. */
+		model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
 
-	if(!isFeed && !isFolder) {
-		ui_itemlist_clear();
-		displayed_node = NULL;
-		displayed_item = NULL;
-		return;
-	}
-	
-	
-	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
-	sorted = gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sortColumn, &sortType);
-	
-	/* free the old itemstore and create a new one; this is the only way to disable sorting */
-	ui_itemlist_reset_tree_store();	 /* this also clears the itemlist. */
-	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
-	
-	if(isFolder)
-		itemlist_set_two_pane_mode(FALSE);
-		
+		switch(node->type) {
+			case FST_FEED:
+				ui_itemlist_enable_favicon_column(FALSE);
+				break;
+			case FST_VFOLDER:
+				ui_itemlist_enable_favicon_column(TRUE);
+				break;
+			case FST_FOLDER:
+				ui_itemlist_enable_favicon_column(TRUE);
+				itemlist_set_two_pane_mode(FALSE);
+				break;
+		}
 
-	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-		debug0(DEBUG_CACHE, "unloading everything...");
-		ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, node_unload);
-	}
-	
-	itemlist_reload(node);
-	ui_itemlist_enable_favicon_column((FST_VFOLDER == node->type) || (FST_FOLDER == node->type));
-	
-	/* Enable sorting */
-	if(isFeed) {
+		/* Enable sorting again */
 		disableSortingSaving++;
 		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), node->sortColumn, node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
 		disableSortingSaving--;
-	} else if (sorted ) { /* Use what had been used */
-		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), sortColumn, sortType);
-	}
-	
 
-	ui_itemlist_prefocus();
+		/* Unload old selected node */
+		if(NULL != displayed_node)
+			feedlist_unload_node(displayed_node);
+	
+		/* Load the new one... */
+		ui_itemlist_prefocus();
+		displayed_node = node;
+		itemlist_reload(node);
+	} else {
+		ui_itemlist_clear();
+		displayed_node = NULL;
+		displayed_item = NULL;
+	}
+
 }
 
 void itemlist_update_vfolder(vfolderPtr vp) {
