@@ -100,6 +100,8 @@ void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
 
 	debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, np->id);
 
+	np->available = FALSE;
+
 	/* scan for matching plugin and create new instance */
 	iter = plugin_mgmt_get_list();
 	while(NULL != iter) {
@@ -107,6 +109,7 @@ void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
 		if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
 			fpi = pi->symbols;
 			if(0 != strcmp(fpi->id, typeStr)) {
+				np->available = TRUE;
 				fpi->handler_new(np);
 				return;
 			}

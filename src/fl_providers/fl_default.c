@@ -22,7 +22,6 @@
 
 #include <string.h>
 #include <libxml/uri.h>
-#include "fl_default.h"
 #include "support.h"
 #include "common.h"
 #include "conf.h"
@@ -34,6 +33,7 @@
 #include "debug.h"
 #include "update.h"
 #include "plugin.h"
+#include "fl_providers/fl_default.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
@@ -147,7 +147,8 @@ static void fl_default_node_remove(nodePtr np) {
 	}
 }
 
-static void fl_default_node_load(nodePtr np) {
+/* non-static because it's reused by fl_opml.c */
+void fl_default_node_load(nodePtr np) {
 	feedPtr	fp = (feedPtr)np->data;
 
 	debug_enter("fl_default_node_load");
@@ -160,7 +161,8 @@ static void fl_default_node_load(nodePtr np) {
 	debug_exit("fl_default_node_load");
 }
 
-static void fl_default_node_unload(nodePtr np) {
+/* non-static because it's reused by fl_opml.c */
+void fl_default_node_unload(nodePtr np) {
 	feedPtr	fp = (feedPtr)np->data;
 
 	debug_enter("fl_default_node_unload");
@@ -221,7 +223,8 @@ static void fl_default_node_save(nodePtr np) {
 
 /* update handling */
 
-static void fl_default_node_auto_update(nodePtr np) {
+/* non-static because it's reused by fl_opml.c */
+void fl_default_node_auto_update(nodePtr np) {
 	feedPtr		fp = (feedPtr)np->data;
 	GTimeVal	now;
 	gint		interval;
@@ -251,7 +254,8 @@ static void fl_default_node_auto_update(nodePtr np) {
 	debug_exit("fl_default_node_auto_update");
 }
 
-static void fl_default_node_update(nodePtr np, guint flags) {
+/* non-static because it's reused by fl_opml.c */
+void fl_default_node_update(nodePtr np, guint flags) {
 
 	if(FST_FEED == np->type)	/* don't process folders and vfolders */
 		node_schedule_update(np, ui_feed_process_update_result, flags | FEED_REQ_PRIORITY_HIGH);
@@ -321,7 +325,7 @@ ui_feedlist_dbus_message_handler (DBusConnection *connection, DBusMessage *messa
 		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
-void
+static void
 ui_feedlist_dbus_connect ()
 {
 	DBusError       error;
@@ -372,14 +376,14 @@ ui_feedlist_dbus_connect ()
 #endif /* USE_DBUS */
 
 
-void fl_default_init(void) {
+static void fl_default_init(void) {
 
 	debug_enter("fl_default_init");
 
 	debug_exit("fl_default_init");
 }
 
-void fl_default_deinit(void) {
+static void fl_default_deinit(void) {
 	
 	debug_enter("fl_default_deinit");
 
@@ -415,7 +419,6 @@ static pluginInfo pi = {
 	PLUGIN_API_VERSION,
 	"Static Feed List Plugin",
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,
-	PLUGIN_ID_DEFAULT_FEEDLIST,
 	//"Default feed list provider. Allows users to add/remove/reorder subscriptions.",
 	&fpi
 };

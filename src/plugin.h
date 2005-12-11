@@ -32,16 +32,6 @@
    of Liferea plugins as well as enabling/disabling of 
    single plugins. */
     
-#define PLUGIN_ID_MOZILLA_RENDERER	1
-#define PLUGIN_ID_GTKHTML2_RENDERER	2
-
-#define PLUGIN_ID_DEFAULT_FEEDLIST	101
-#define PLUGIN_ID_OPML_FEEDLIST		102
-#define PLUGIN_ID_BLOGLINES_FEEDLIST	103
-
-#define PLUGIN_ID_TRAY_NOTIFICATION	201
-#define PLUGIN_ID_POPUP_NOTIFICATION	202
-
 #define PLUGIN_API_VERSION 10
 
 enum {
@@ -58,7 +48,6 @@ struct pluginInfo_ {
 	unsigned int	api_version;
 	gchar 		*name;
 	guint		type;			/* plugin type (e.g. renderer, parser or feed list provider) */
-	guint		id;			/* unique plugin id */
 	//gchar		*description;		/* for plugin managment */
 	void		*symbols;		/* plugin type specific symbol table */
 };

@@ -73,7 +73,7 @@ static pluginInfo * plugin_mgmt_load(const gchar * filename) {
 
 		/* check plugin version */
 		if(PLUGIN_API_VERSION != pi->api_version) {
-			debug6(DEBUG_PLUGINS, "API version mismatch: \"%s\" (%s, type=%d, id=%d) has version %d should be %d", pi->name, filename, pi->type, pi->id, pi->api_version, PLUGIN_API_VERSION);
+			debug5(DEBUG_PLUGINS, "API version mismatch: \"%s\" (%s, type=%d) has version %d should be %d", pi->name, filename, pi->type, pi->api_version, PLUGIN_API_VERSION);
 			return NULL;
 		} 
 
@@ -83,7 +83,7 @@ static pluginInfo * plugin_mgmt_load(const gchar * filename) {
 				fl_plugin_load(pi, handle);
 				break;
 			default:
-				debug4(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d, id=%d)", pi->name, filename, pi->type, pi->id);
+				debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", pi->name, filename, pi->type);
 				return NULL;
 				break;
 		}
@@ -131,7 +131,7 @@ GSList * plugin_mgmt_get_list(void) {
 						if(NULL == (pi = plugin_mgmt_load(filename))) {
 							debug1(DEBUG_VERBOSE, "-> %s no valid plugin!", filename);
 						} else {
-							debug4(DEBUG_PLUGINS, "-> %s (%s, type=%d, id=%d)", pi->name, filename, pi->type, pi->id);
+							debug3(DEBUG_PLUGINS, "-> %s (%s, type=%d)", pi->name, filename, pi->type);
 							plugins = g_slist_append(plugins, pi);
 						}
 					} else {
