@@ -23,7 +23,7 @@
 #include "plugin.h"
 #include "debug.h"
 
-flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
+flPluginInfo * fl_plugins_get_root(void) {
 	gboolean	found = FALSE;
 	flPluginInfo	*fpi;
 	pluginInfo	*pi;
@@ -32,7 +32,7 @@ flPluginInfo * fl_plugins_get_root(GSList *plugin_list) {
 	debug_enter("fl_plugins_get_root");
 
 	/* scan for root flag and return plugin if found */
-	iter = plugin_list;
+	iter = plugin_mgmt_get_list();
 	while(NULL != iter) {
 		pi = (pluginInfo *)iter->data;
 		if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
@@ -86,3 +86,43 @@ void fl_plugin_load(pluginInfo *pi, GModule *handle) {
 	/* assign the symbols so the caller will accept the plugin */
 	pi->symbols = fpi;
 }
+
+void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
+	GSList		*iter;
+	flPluginInfo	*fpi;
+	pluginInfo	*pi;
+	xmlChar		*cacheId = NULL, *typeStr = NULL;
+
+	debug_enter("fl_plugin_import");
+
+	if(NULL == (typeStr = xmlGetProp(cur, BAD_CAST"type"))) 
+		return;
+
+	debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, np->id);
+
+	/* scan for matching plugin and create new instance */
+	iter = plugin_mgmt_get_list();
+	while(NULL != iter) {
+		pi = (pluginInfo *)iter->data;
+		if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
+			fpi = pi->symbols;
+			if(0 != strcmp(fpi->id, typeStr)) {
+				fpi->handler_new(np);
+				return;
+			}
+			iter = g_slist_next(iter);
+		}
+	}
+
+	debug_exit("flplugin_import");
+}
+
+void fl_plugin_export(nodePtr np, xmlNodePtr cur) {
+
+	debug_enter("fl_plugin_export");
+
+	xmlNewProp(cur, BAD_CAST"type", BAD_CAST(FL_PLUGIN(np)->id));
+
+	debug_exit("fl_plugin_export");
+}
+

@@ -124,3 +124,7 @@ on_faq_activate                        (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 #endif
 
+
+void
+on_new_plugin_activate                 (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);

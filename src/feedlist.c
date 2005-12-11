@@ -45,8 +45,6 @@ static nodePtr	rootNode = NULL;
 static nodePtr	selectedNode = NULL;
 extern nodePtr	displayed_node;
 
-static GSList * plugins = NULL;
-
 static guint feedlist_save_timer = 0;
 static gboolean feedlistLoading = TRUE;
 
@@ -368,8 +366,7 @@ void feedlist_init(void) {
 	   plugin. Creating an instance of this plugin. This 
 	   will load the feed list and all attached plugin 
 	   handlers. */
-	plugins = plugin_mgmt_get_list();
-	rootPlugin = fl_plugins_get_root(plugins);
+	rootPlugin = fl_plugins_get_root();
 	rootPlugin->handler_new(rootNode);
 
 	/* 3. Sequentially load and unload all feeds and by doing so 

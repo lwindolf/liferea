@@ -60,6 +60,9 @@ typedef struct flPluginInfo_ flPluginInfo;
 struct flPluginInfo_ {
 	unsigned int	api_version;
 
+	/** a unique feed list plugin identifier */
+	gchar		*id;
+
 	/** a descriptive plugin name (for preferences and menus) */
 	gchar		*name;
 
@@ -117,11 +120,9 @@ struct flNodeHandler_ {
 /** 
  * Scans the plugin list for the feed list root provider.
  *
- * @param plugin_list	list of all plugins
- *
  * @returns feed list root provider plugin
  */
-flPluginInfo * fl_plugins_get_root(GSList *plugin_list);
+flPluginInfo * fl_plugins_get_root(void);
 
 /**
  * Loads a feed list provider plugin.
@@ -130,5 +131,21 @@ flPluginInfo * fl_plugins_get_root(GSList *plugin_list);
  * @param handle	GModule handle
  */
 void fl_plugin_load(pluginInfo *pi, GModule *handle);
+
+/**
+ * Plugin specific feed list import parsing.
+ *
+ * @param np	the node to import
+ * @param cur	DOM node to parse
+ */
+void fl_plugin_import(struct node *np, xmlNodePtr cur); 
+
+/**
+ * Plugin specific feed list export.
+ *
+ * @param np	the node to export
+ * @param cur	DOM node to write to
+ */
+void fl_plugin_export(struct node *np, xmlNodePtr cur); 
 
 #endif

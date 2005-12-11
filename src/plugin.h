@@ -88,23 +88,6 @@ GSList * plugin_mgmt_get_list(void);
 /* common plugin methods */
 
 /**
- * Plugin specific feed list import parsing.
- *
- * @param np	the node to import
- * @param cur	DOM node to parse
- * @returns pointer to resulting plugin
- */
-gpointer plugin_import(struct node *np, xmlNodePtr cur); 
-
-/**
- * Plugin specific feed list export.
- *
- * @param np	the node to export
- * @param cur	DOM node to write to
- */
-void plugin_export(struct node *np, xmlNodePtr cur); 
-
-/**
  * Enables the plugin with the given id,
  *
  * @param id	plugin id

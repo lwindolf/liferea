@@ -103,7 +103,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			break;
 		case FST_PLUGIN:
 			if(internal)
-				plugin_export(np, childNode);
+				fl_plugin_export(np, childNode);
 			break;
 	}
 	
@@ -248,7 +248,8 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			dontParseChildren = TRUE;
 			break;
 		case FST_PLUGIN:
-			data = plugin_import(np, cur);
+			data = NULL;
+			fl_plugin_import(np, cur);
 			break;
 	}
 

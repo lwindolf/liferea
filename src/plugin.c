@@ -20,6 +20,7 @@
 
 #include <gmodule.h>
 #include <string.h>
+#include <libxml/tree.h>
 #include "support.h"
 #include "debug.h"
 #include "node.h"
@@ -157,18 +158,6 @@ GSList * plugin_mgmt_get_list(void) {
 }
 
 /* common plugin methods */
-
-gpointer plugin_import(nodePtr np, xmlNodePtr cur) {
-
-	g_warning("plugin_import(): Implement me");
-	return NULL;
-}
-
-void plugin_export(nodePtr np, xmlNodePtr cur) {
-
-	g_warning("plugin_export(): Implement me");
-	return NULL;
-}
 
 void plugin_enable(guint id) {
 

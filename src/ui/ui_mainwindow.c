@@ -44,7 +44,6 @@
 #include "ui/ui_session.h"
 #include "ui/ui_queue.h"
 
-#if GTK_CHECK_VERSION(2,4,0)
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
  do { \
 	GtkToolItem *item = gtk_tool_button_new(gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), label); \
@@ -56,16 +55,6 @@
 				    item, \
 				    -1); \
  } while (0);
-#else
-#define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function)      \
- gtk_toolbar_append_item(GTK_TOOLBAR(toolbar), \
-					label, \
-					tooltip, \
-					NULL, \
-					gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), \
-					G_CALLBACK(function), NULL)
-
-#endif
 
 /* all used icons */
 GdkPixbuf *icons[MAX_ICONS];
@@ -427,13 +416,6 @@ void ui_mainwindow_init(int mainwindowState) {
 	
 	/* create welcome text */
 	ui_htmlview_start_output(&buffer, NULL, FALSE);
-	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
-	                           "This is a highly unstable release of Liferea 1.1. This code might "
-				   "be in an unusable state. It should be used by developers only! "
-				   "If you want to use Liferea regularily please download the last "
-				   "stable version from SourceForge!"
-				   "</div><br>"));
-
 	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa\">"
 				   "<table border=0 cellpadding=5px><tr><td>"
 				   // add application icon
@@ -450,7 +432,17 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "of a feed select it in the feed list and the headlines will be loaded "
 				   "into the right pane.</p>"
 				   "</tr></table>"
-				   "</div"));
+				   "</div>"));
+
+	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;margin: 5px 0 5px 0\">"
+	                           "This is a highly unstable version of Liferea 1.1. This code might "
+				   "be in an unusable state. It should be used by developers only! "
+				   "If you want to use Liferea regularily please download the last "
+				   "stable version from SourceForge!"
+				   "</div>"));
+
+	addToHTMLBuffer(&buffer, _("<iframe src=\"http://liferea.sf.net/11progress.htm\" width=100% height=150px>"
+				   "</iframe>"));
 				   
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);

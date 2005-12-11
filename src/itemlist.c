@@ -111,7 +111,6 @@ void itemlist_reload(nodePtr node) {
 	/* determine what node type is actually selected */
 	isFeed = (FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type);
 	isFolder = FST_FOLDER == displayed_node->type;
-g_print("%s - isFeed=%s isFolder=%s\n", node->title, isFeed?"true":"false", isFolder?"true":"false");
 	g_assert(isFeed || isFolder);
 	
 	if((TRUE == isFolder) && (1 == getNumericConfValue(FOLDER_DISPLAY_MODE))) {
@@ -397,7 +396,7 @@ void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer use
 void itemlist_set_two_pane_mode(gboolean new_mode) {
 	gboolean	old_mode;
 	nodePtr		np;
-	
+
 	np = ui_feedlist_get_selected();	
 	if(NULL == np)
 		return;

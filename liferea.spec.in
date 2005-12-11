@@ -63,11 +63,16 @@ gconftool-2 --makefile-uninstall-rule \
 %dir %{_datadir}/%{name}/dtd
 %dir %{_datadir}/%{name}/opml
 %dir %{_datadir}/%{name}/pixmaps
+%dir %{_datadir}/%{name}/doc
+%dir %{_datadir}/%{name}/doc/html
 %{_datadir}/%{name}/css/*.css
 %{_datadir}/%{name}/dtd/html.ent
 %{_datadir}/%{name}/opml/feedlist*.opml
 %{_datadir}/%{name}/pixmaps/*
 %{_datadir}/pixmaps/%{name}.png
+%{_datadir}/%{name}/doc/html/*.html
+%{_datadir}/%{name}/doc/html/*.png
+%{_datadir}/%{name}/doc/html/*.css
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/*.so
 %exclude %{_libdir}/%{name}/*.la

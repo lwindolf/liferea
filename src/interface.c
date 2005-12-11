@@ -43,66 +43,67 @@ create_mainwindow (void)
   GtkWidget *menuitem2;
   GtkWidget *menuitem2_menu;
   GtkWidget *feed_update;
-  GtkWidget *image2931;
+  GtkWidget *image2969;
   GtkWidget *update_all_feeds;
-  GtkWidget *image2932;
+  GtkWidget *image2970;
   GtkWidget *mark_all_as_read1;
-  GtkWidget *image2933;
+  GtkWidget *image2971;
   GtkWidget *mark_all_as_read2;
-  GtkWidget *image2934;
+  GtkWidget *image2972;
   GtkWidget *trennlinie2;
   GtkWidget *feed_new;
-  GtkWidget *image2935;
+  GtkWidget *image2973;
   GtkWidget *folder_new;
-  GtkWidget *image2936;
+  GtkWidget *image2974;
   GtkWidget *new_vfolder;
+  GtkWidget *new_plugin1;
   GtkWidget *separator6;
   GtkWidget *properties;
-  GtkWidget *image2937;
+  GtkWidget *image2975;
   GtkWidget *delete_selected;
-  GtkWidget *image2938;
+  GtkWidget *image2976;
   GtkWidget *separator7;
   GtkWidget *import_feed_list1;
-  GtkWidget *image2939;
+  GtkWidget *image2977;
   GtkWidget *export_feed_list1;
-  GtkWidget *image2940;
+  GtkWidget *image2978;
   GtkWidget *items1;
   GtkWidget *items1_menu;
   GtkWidget *next_unread_item1;
-  GtkWidget *image2941;
+  GtkWidget *image2979;
   GtkWidget *trennlinie5;
   GtkWidget *toggle_unread_status1;
-  GtkWidget *image2942;
+  GtkWidget *image2980;
   GtkWidget *toggle_item_flag1;
   GtkWidget *remove_item;
-  GtkWidget *image2943;
+  GtkWidget *image2981;
   GtkWidget *remove_items;
-  GtkWidget *image2944;
+  GtkWidget *image2982;
   GtkWidget *separator3;
   GtkWidget *launch_in_browser1;
   GtkWidget *menuitem3;
   GtkWidget *menuitem3_menu;
   GtkWidget *zoom_in1;
-  GtkWidget *image2945;
+  GtkWidget *image2983;
   GtkWidget *zoom_out1;
-  GtkWidget *image2946;
+  GtkWidget *image2984;
   GtkWidget *trennlinie3;
   GtkWidget *toggle_condensed_view;
   GtkWidget *search1;
   GtkWidget *search1_menu;
   GtkWidget *toggle_search_box1;
-  GtkWidget *image2947;
+  GtkWidget *image2985;
   GtkWidget *search_with_feedster1;
-  GtkWidget *image2948;
+  GtkWidget *image2986;
   GtkWidget *help;
   GtkWidget *help_menu;
   GtkWidget *topics;
-  GtkWidget *image2949;
+  GtkWidget *image2987;
   GtkWidget *quick_reference;
   GtkWidget *faq;
   GtkWidget *trennlinie6;
   GtkWidget *about;
-  GtkWidget *image2950;
+  GtkWidget *image2988;
   GtkWidget *toolbar;
   GtkIconSize tmp_toolbar_icon_size;
   GtkWidget *leftpane;
@@ -190,9 +191,9 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), feed_update);
   gtk_tooltips_set_tip (tooltips, feed_update, _("Updates the selected subscription or all subscriptions of the selected folder."), NULL);
 
-  image2931 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2931);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (feed_update), image2931);
+  image2969 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2969);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (feed_update), image2969);
 
   update_all_feeds = gtk_image_menu_item_new_with_mnemonic (_("Update _All"));
   gtk_widget_show (update_all_feeds);
@@ -202,9 +203,9 @@ create_mainwindow (void)
                               GDK_a, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
-  image2932 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2932);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (update_all_feeds), image2932);
+  image2970 = gtk_image_new_from_stock ("gtk-refresh", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2970);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (update_all_feeds), image2970);
 
   mark_all_as_read1 = gtk_image_menu_item_new_with_mnemonic (_("_Mark Selected As Read"));
   gtk_widget_show (mark_all_as_read1);
@@ -214,18 +215,18 @@ create_mainwindow (void)
                               GDK_r, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
-  image2933 = gtk_image_new_from_stock ("gtk-apply", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2933);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mark_all_as_read1), image2933);
+  image2971 = gtk_image_new_from_stock ("gtk-apply", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2971);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mark_all_as_read1), image2971);
 
   mark_all_as_read2 = gtk_image_menu_item_new_with_mnemonic (_("Mark All As _Read"));
   gtk_widget_show (mark_all_as_read2);
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), mark_all_as_read2);
   gtk_tooltips_set_tip (tooltips, mark_all_as_read2, _("Marks read every item of every subscription."), NULL);
 
-  image2934 = gtk_image_new_from_stock ("gtk-apply", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2934);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mark_all_as_read2), image2934);
+  image2972 = gtk_image_new_from_stock ("gtk-apply", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2972);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mark_all_as_read2), image2972);
 
   trennlinie2 = gtk_separator_menu_item_new ();
   gtk_widget_show (trennlinie2);
@@ -237,23 +238,28 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), feed_new);
   gtk_tooltips_set_tip (tooltips, feed_new, _("Add a subscription to the feed list."), NULL);
 
-  image2935 = gtk_image_new_from_stock ("gtk-add", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2935);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (feed_new), image2935);
+  image2973 = gtk_image_new_from_stock ("gtk-add", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2973);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (feed_new), image2973);
 
   folder_new = gtk_image_menu_item_new_with_mnemonic (_("New _Folder..."));
   gtk_widget_show (folder_new);
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), folder_new);
   gtk_tooltips_set_tip (tooltips, folder_new, _("Add a folder to the feed list."), NULL);
 
-  image2936 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2936);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (folder_new), image2936);
+  image2974 = gtk_image_new_from_stock ("gtk-new", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2974);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (folder_new), image2974);
 
   new_vfolder = gtk_menu_item_new_with_mnemonic (_("New _VFolder..."));
   gtk_widget_show (new_vfolder);
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), new_vfolder);
   gtk_tooltips_set_tip (tooltips, new_vfolder, _("Add a new vfolder to the feed list."), NULL);
+
+  new_plugin1 = gtk_menu_item_new_with_mnemonic (_("New P_lugin"));
+  gtk_widget_show (new_plugin1);
+  gtk_container_add (GTK_CONTAINER (menuitem2_menu), new_plugin1);
+  gtk_tooltips_set_tip (tooltips, new_plugin1, _("Adds a new plugin instance to the feed list."), NULL);
 
   separator6 = gtk_separator_menu_item_new ();
   gtk_widget_show (separator6);
@@ -265,18 +271,18 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), properties);
   gtk_tooltips_set_tip (tooltips, properties, _("Opens the property dialog for the selected subscription."), NULL);
 
-  image2937 = gtk_image_new_from_stock ("gtk-properties", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2937);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (properties), image2937);
+  image2975 = gtk_image_new_from_stock ("gtk-properties", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2975);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (properties), image2975);
 
   delete_selected = gtk_image_menu_item_new_with_mnemonic (_("_Delete Selected"));
   gtk_widget_show (delete_selected);
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), delete_selected);
   gtk_tooltips_set_tip (tooltips, delete_selected, _("Removes the selected subscription."), NULL);
 
-  image2938 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2938);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (delete_selected), image2938);
+  image2976 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2976);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (delete_selected), image2976);
 
   separator7 = gtk_separator_menu_item_new ();
   gtk_widget_show (separator7);
@@ -288,18 +294,18 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), import_feed_list1);
   gtk_tooltips_set_tip (tooltips, import_feed_list1, _("Imports an OPML feed list."), NULL);
 
-  image2939 = gtk_image_new_from_stock ("gtk-open", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2939);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (import_feed_list1), image2939);
+  image2977 = gtk_image_new_from_stock ("gtk-open", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2977);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (import_feed_list1), image2977);
 
   export_feed_list1 = gtk_image_menu_item_new_with_mnemonic (_("_Export Feed List..."));
   gtk_widget_show (export_feed_list1);
   gtk_container_add (GTK_CONTAINER (menuitem2_menu), export_feed_list1);
   gtk_tooltips_set_tip (tooltips, export_feed_list1, _("Exports the feed list as OPML."), NULL);
 
-  image2940 = gtk_image_new_from_stock ("gtk-save-as", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2940);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (export_feed_list1), image2940);
+  image2978 = gtk_image_new_from_stock ("gtk-save-as", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2978);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (export_feed_list1), image2978);
 
   items1 = gtk_menu_item_new_with_mnemonic (_("_Items"));
   gtk_widget_show (items1);
@@ -316,9 +322,9 @@ create_mainwindow (void)
                               GDK_n, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
-  image2941 = gtk_image_new_from_stock ("gtk-media-forward", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2941);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (next_unread_item1), image2941);
+  image2979 = gtk_image_new_from_stock ("gtk-media-forward", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2979);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (next_unread_item1), image2979);
 
   trennlinie5 = gtk_separator_menu_item_new ();
   gtk_widget_show (trennlinie5);
@@ -333,9 +339,9 @@ create_mainwindow (void)
                               GDK_u, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
-  image2942 = gtk_image_new_from_stock ("gtk-apply", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2942);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (toggle_unread_status1), image2942);
+  image2980 = gtk_image_new_from_stock ("gtk-apply", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2980);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (toggle_unread_status1), image2980);
 
   toggle_item_flag1 = gtk_menu_item_new_with_mnemonic (_("Toggle Item _Flag"));
   gtk_widget_show (toggle_item_flag1);
@@ -350,18 +356,18 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (items1_menu), remove_item);
   gtk_tooltips_set_tip (tooltips, remove_item, _("Removes the selected item."), NULL);
 
-  image2943 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2943);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (remove_item), image2943);
+  image2981 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2981);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (remove_item), image2981);
 
   remove_items = gtk_image_menu_item_new_with_mnemonic (_("Remove _All"));
   gtk_widget_show (remove_items);
   gtk_container_add (GTK_CONTAINER (items1_menu), remove_items);
   gtk_tooltips_set_tip (tooltips, remove_items, _("Removes all items of the currently selected feed."), NULL);
 
-  image2944 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2944);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (remove_items), image2944);
+  image2982 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2982);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (remove_items), image2982);
 
   separator3 = gtk_separator_menu_item_new ();
   gtk_widget_show (separator3);
@@ -388,9 +394,9 @@ create_mainwindow (void)
                               GDK_plus, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
-  image2945 = gtk_image_new_from_stock ("gtk-zoom-in", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2945);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (zoom_in1), image2945);
+  image2983 = gtk_image_new_from_stock ("gtk-zoom-in", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2983);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (zoom_in1), image2983);
 
   zoom_out1 = gtk_image_menu_item_new_with_mnemonic (_("_Decrease Text Size"));
   gtk_widget_show (zoom_out1);
@@ -400,9 +406,9 @@ create_mainwindow (void)
                               GDK_minus, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
-  image2946 = gtk_image_new_from_stock ("gtk-zoom-out", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2946);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (zoom_out1), image2946);
+  image2984 = gtk_image_new_from_stock ("gtk-zoom-out", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2984);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (zoom_out1), image2984);
 
   trennlinie3 = gtk_separator_menu_item_new ();
   gtk_widget_show (trennlinie3);
@@ -429,18 +435,18 @@ create_mainwindow (void)
                               GDK_f, (GdkModifierType) GDK_CONTROL_MASK,
                               GTK_ACCEL_VISIBLE);
 
-  image2947 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2947);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (toggle_search_box1), image2947);
+  image2985 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2985);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (toggle_search_box1), image2985);
 
   search_with_feedster1 = gtk_image_menu_item_new_with_mnemonic (_("Search With _Feedster..."));
   gtk_widget_show (search_with_feedster1);
   gtk_container_add (GTK_CONTAINER (search1_menu), search_with_feedster1);
   gtk_tooltips_set_tip (tooltips, search_with_feedster1, _("Creates a Feedster search feed."), NULL);
 
-  image2948 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2948);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (search_with_feedster1), image2948);
+  image2986 = gtk_image_new_from_stock ("gtk-find", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2986);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (search_with_feedster1), image2986);
 
   help = gtk_menu_item_new_with_mnemonic (_("_Help"));
   gtk_widget_show (help);
@@ -454,9 +460,9 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (help_menu), topics);
   gtk_tooltips_set_tip (tooltips, topics, _("View help for this application."), NULL);
 
-  image2949 = gtk_image_new_from_stock ("gtk-help", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2949);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (topics), image2949);
+  image2987 = gtk_image_new_from_stock ("gtk-help", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2987);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (topics), image2987);
 
   quick_reference = gtk_menu_item_new_with_mnemonic (_("_Quick Reference"));
   gtk_widget_show (quick_reference);
@@ -478,9 +484,9 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (help_menu), about);
   gtk_tooltips_set_tip (tooltips, about, _("Shows an about dialog."), NULL);
 
-  image2950 = gtk_image_new_from_stock ("gtk-about", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (image2950);
-  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (about), image2950);
+  image2988 = gtk_image_new_from_stock ("gtk-about", GTK_ICON_SIZE_MENU);
+  gtk_widget_show (image2988);
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (about), image2988);
 
   toolbar = gtk_toolbar_new ();
   gtk_widget_show (toolbar);
@@ -614,6 +620,9 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) new_vfolder, "activate",
                     G_CALLBACK (on_new_vfolder_activate),
                     NULL);
+  g_signal_connect ((gpointer) new_plugin1, "activate",
+                    G_CALLBACK (on_new_plugin_activate),
+                    NULL);
   g_signal_connect ((gpointer) properties, "activate",
                     G_CALLBACK (on_menu_properties),
                     NULL);
@@ -701,66 +710,67 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, menuitem2, "menuitem2");
   GLADE_HOOKUP_OBJECT (mainwindow, menuitem2_menu, "menuitem2_menu");
   GLADE_HOOKUP_OBJECT (mainwindow, feed_update, "feed_update");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2931, "image2931");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2969, "image2969");
   GLADE_HOOKUP_OBJECT (mainwindow, update_all_feeds, "update_all_feeds");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2932, "image2932");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2970, "image2970");
   GLADE_HOOKUP_OBJECT (mainwindow, mark_all_as_read1, "mark_all_as_read1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2933, "image2933");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2971, "image2971");
   GLADE_HOOKUP_OBJECT (mainwindow, mark_all_as_read2, "mark_all_as_read2");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2934, "image2934");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2972, "image2972");
   GLADE_HOOKUP_OBJECT (mainwindow, trennlinie2, "trennlinie2");
   GLADE_HOOKUP_OBJECT (mainwindow, feed_new, "feed_new");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2935, "image2935");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2973, "image2973");
   GLADE_HOOKUP_OBJECT (mainwindow, folder_new, "folder_new");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2936, "image2936");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2974, "image2974");
   GLADE_HOOKUP_OBJECT (mainwindow, new_vfolder, "new_vfolder");
+  GLADE_HOOKUP_OBJECT (mainwindow, new_plugin1, "new_plugin1");
   GLADE_HOOKUP_OBJECT (mainwindow, separator6, "separator6");
   GLADE_HOOKUP_OBJECT (mainwindow, properties, "properties");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2937, "image2937");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2975, "image2975");
   GLADE_HOOKUP_OBJECT (mainwindow, delete_selected, "delete_selected");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2938, "image2938");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2976, "image2976");
   GLADE_HOOKUP_OBJECT (mainwindow, separator7, "separator7");
   GLADE_HOOKUP_OBJECT (mainwindow, import_feed_list1, "import_feed_list1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2939, "image2939");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2977, "image2977");
   GLADE_HOOKUP_OBJECT (mainwindow, export_feed_list1, "export_feed_list1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2940, "image2940");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2978, "image2978");
   GLADE_HOOKUP_OBJECT (mainwindow, items1, "items1");
   GLADE_HOOKUP_OBJECT (mainwindow, items1_menu, "items1_menu");
   GLADE_HOOKUP_OBJECT (mainwindow, next_unread_item1, "next_unread_item1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2941, "image2941");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2979, "image2979");
   GLADE_HOOKUP_OBJECT (mainwindow, trennlinie5, "trennlinie5");
   GLADE_HOOKUP_OBJECT (mainwindow, toggle_unread_status1, "toggle_unread_status1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2942, "image2942");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2980, "image2980");
   GLADE_HOOKUP_OBJECT (mainwindow, toggle_item_flag1, "toggle_item_flag1");
   GLADE_HOOKUP_OBJECT (mainwindow, remove_item, "remove_item");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2943, "image2943");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2981, "image2981");
   GLADE_HOOKUP_OBJECT (mainwindow, remove_items, "remove_items");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2944, "image2944");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2982, "image2982");
   GLADE_HOOKUP_OBJECT (mainwindow, separator3, "separator3");
   GLADE_HOOKUP_OBJECT (mainwindow, launch_in_browser1, "launch_in_browser1");
   GLADE_HOOKUP_OBJECT (mainwindow, menuitem3, "menuitem3");
   GLADE_HOOKUP_OBJECT (mainwindow, menuitem3_menu, "menuitem3_menu");
   GLADE_HOOKUP_OBJECT (mainwindow, zoom_in1, "zoom_in1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2945, "image2945");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2983, "image2983");
   GLADE_HOOKUP_OBJECT (mainwindow, zoom_out1, "zoom_out1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2946, "image2946");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2984, "image2984");
   GLADE_HOOKUP_OBJECT (mainwindow, trennlinie3, "trennlinie3");
   GLADE_HOOKUP_OBJECT (mainwindow, toggle_condensed_view, "toggle_condensed_view");
   GLADE_HOOKUP_OBJECT (mainwindow, search1, "search1");
   GLADE_HOOKUP_OBJECT (mainwindow, search1_menu, "search1_menu");
   GLADE_HOOKUP_OBJECT (mainwindow, toggle_search_box1, "toggle_search_box1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2947, "image2947");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2985, "image2985");
   GLADE_HOOKUP_OBJECT (mainwindow, search_with_feedster1, "search_with_feedster1");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2948, "image2948");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2986, "image2986");
   GLADE_HOOKUP_OBJECT (mainwindow, help, "help");
   GLADE_HOOKUP_OBJECT (mainwindow, help_menu, "help_menu");
   GLADE_HOOKUP_OBJECT (mainwindow, topics, "topics");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2949, "image2949");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2987, "image2987");
   GLADE_HOOKUP_OBJECT (mainwindow, quick_reference, "quick_reference");
   GLADE_HOOKUP_OBJECT (mainwindow, faq, "faq");
   GLADE_HOOKUP_OBJECT (mainwindow, trennlinie6, "trennlinie6");
   GLADE_HOOKUP_OBJECT (mainwindow, about, "about");
-  GLADE_HOOKUP_OBJECT (mainwindow, image2950, "image2950");
+  GLADE_HOOKUP_OBJECT (mainwindow, image2988, "image2988");
   GLADE_HOOKUP_OBJECT (mainwindow, toolbar, "toolbar");
   GLADE_HOOKUP_OBJECT (mainwindow, leftpane, "leftpane");
   GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow3, "scrolledwindow3");

@@ -209,7 +209,6 @@ static void fl_default_node_save(nodePtr np) {
 
 	switch(np->type) {
 		case FST_FEED:
-g_print("saving feed (sp=%d)\n", node_get_itemset(np));
 			feed_save_to_cache((feedPtr)np->data, node_get_itemset(np), node_get_id(np));
 			break;
 		case FST_FOLDER:
@@ -391,6 +390,7 @@ void fl_default_deinit(void) {
 
 static flPluginInfo fpi = {
 	FL_PLUGIN_API_VERSION,
+	"fl_default",
 	"Static Feed List",
 	FL_PLUGIN_CAPABILITY_IS_ROOT |
 	FL_PLUGIN_CAPABILITY_ADD |
