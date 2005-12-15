@@ -73,9 +73,11 @@ struct flPluginInfo_ {
 	void		(*plugin_init)(void);
 	void 		(*plugin_deinit)(void);
 
-	/** callback for instance creation request */
+	/** callback for instance adding to feed list */
+	void		(*handler_load)(nodePtr np);
+	/** callback for instance creation user interaction (optional) */
 	void		(*handler_new)(nodePtr np);
-	/** callback for instance deletion request */
+	/** callback for instance deletion user interaction (optional) */
 	void 		(*handler_delete)(nodePtr np);
 	
 	/** callback for node loading (optional) */

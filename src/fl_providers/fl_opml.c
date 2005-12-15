@@ -19,28 +19,70 @@
  */
 
 #include "support.h"
+#include "common.h"
 #include "debug.h"
+#include "feed.h"
+#include "feedlist.h"
+#include "node.h"
+#include "export.h"
+#include "ui/ui_feedlist.h"
+#include "fl_providers/fl_common.h"
 #include "fl_providers/fl_opml.h"
+#include "fl_providers/fl_opml-ui.h"
 #include "fl_providers/fl_plugin.h"
 
-static void fl_opml_node_load(nodePtr np) {
+static flPluginInfo fpi;
 
-	if(FST_PLUGIN == np->type) {
-		/* there should be nothing to do */
-		return;
+static void fl_opml_handler_load(nodePtr np) {
+	flNodeHandler	*handler;
+	gchar		*filename;
+
+	debug_enter("fl_opml_handler_new");
+
+	/* create a new handler structure */
+	handler = g_new0(struct flNodeHandler_, 1);
+	handler->root = np;
+	handler->plugin = &fpi;
+	np->handler = handler;
+
+	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", np->id);
+	filename = common_create_cache_filename("plugins", np->id, "opml");
+	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
+		import_OPML_feedlist(filename, NULL, handler, FALSE, TRUE);
+	} else {
+		g_warning("cannot open \"%s\"", filename);
+		np->available = FALSE;
 	}
+	g_free(filename);
 
-	fl_default_node_load(np);
+	debug_exit("fl_opml_handler_new");
 }
 
-static void fl_opml_node_unload(nodePtr np) {
+static void fl_opml_handler_new(nodePtr np) {
 
-	if(FST_PLUGIN == np->type) {
-		/* there should be nothing to do */
-		return;
-	}
+	gtk_widget_show(create_instance_dialog());
+	// initial download
+	// save to disk
+	// fl_opml_handler_load(np);
+}
 
-	fl_default_node_unload(np);
+/* to be used internally only (not available for user!) */
+static void fl_opml_node_remove(nodePtr np) {
+
+	g_assert(FST_FEED == np->type);
+	feed_remove_from_cache((feedPtr)np->data, np->id);
+}
+
+static void fl_opml_handler_delete(nodePtr np) {
+	gchar		*filename;
+
+	/* step 1: delete all child feed cache files */
+	ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, fl_opml_node_remove);
+
+	/* step 2: delete plugin instance OPML cache file */
+	filename = common_create_cache_filename("plugins", np->id, "opml");
+	unlink(filename);
+	g_free(filename);
 }
 
 static gchar *fl_opml_node_render(nodePtr np) {
@@ -49,26 +91,8 @@ static gchar *fl_opml_node_render(nodePtr np) {
 		return "FIXME: return something meaningful...";
 	}
 
-	return fl_default_node_render(np);
+	return fl_common_node_render(np);
 }
-
-static void fl_opml_node_save(nodePtr np) {
-
-	switch(np->type) {
-		case FST_FEED:
-			feed_save_to_cache((feedPtr)np->data, node_get_itemset(np), node_get_id(np));
-			break;
-		case FST_FOLDER:
-		case FST_VFOLDER:
-		case FST_PLUGIN:
-			/* nothing to do */
-			break;
-	}
-}
-
-#define fl_opml_node_auto_update(np) fl_default_node_auto_update(np)
-
-#define fl_opml_node_update(np, flags) fl_default_node_update(np, flags)
 
 static void fl_opml_init(void) {
 
@@ -93,14 +117,15 @@ static flPluginInfo fpi = {
 	0,
 	fl_opml_init,
 	fl_opml_deinit,
+	fl_opml_handler_load,
 	fl_opml_handler_new,
 	fl_opml_handler_delete,
-	fl_opml_node_load,
-	fl_opml_node_unload,
-	fl_opml_node_save,
+	fl_common_node_load,
+	fl_common_node_unload,
+	fl_common_node_save,
 	fl_opml_node_render,
-	fl_opml_node_auto_update,
-	fl_opml_node_update,
+	fl_common_node_auto_update,
+	fl_common_node_update,
 	NULL,
 	NULL
 };

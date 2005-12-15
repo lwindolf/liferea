@@ -92,29 +92,35 @@ void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
 	flPluginInfo	*fpi;
 	pluginInfo	*pi;
 	xmlChar		*cacheId = NULL, *typeStr = NULL;
+	gboolean	found = FALSE;
 
 	debug_enter("fl_plugin_import");
 
-	if(NULL == (typeStr = xmlGetProp(cur, BAD_CAST"type"))) 
-		return;
+	if(NULL != (typeStr = xmlGetProp(cur, BAD_CAST"pluginType"))) {
+		debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, np->id);
 
-	debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, np->id);
+		np->available = FALSE;
 
-	np->available = FALSE;
-
-	/* scan for matching plugin and create new instance */
-	iter = plugin_mgmt_get_list();
-	while(NULL != iter) {
-		pi = (pluginInfo *)iter->data;
-		if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
-			fpi = pi->symbols;
-			if(0 != strcmp(fpi->id, typeStr)) {
-				np->available = TRUE;
-				fpi->handler_new(np);
-				return;
+		/* scan for matching plugin and create new instance */
+		iter = plugin_mgmt_get_list();
+		while(NULL != iter) {
+			pi = (pluginInfo *)iter->data;
+			if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
+				fpi = pi->symbols;
+				if(!strcmp(fpi->id, typeStr)) {
+					g_print("match! %s %s\n", fpi->id, typeStr);
+					np->available = TRUE;
+					fpi->handler_load(np);
+					found = TRUE;
+				}
+				iter = g_slist_next(iter);
 			}
-			iter = g_slist_next(iter);
 		}
+
+		if(!found)
+			g_warning("Could not find plugin handler for type \"%s\"\n!", typeStr);
+	} else {
+		g_warning("No plugin type given for node \"%s\"!", node_get_title(np));
 	}
 
 	debug_exit("flplugin_import");
@@ -124,7 +130,8 @@ void fl_plugin_export(nodePtr np, xmlNodePtr cur) {
 
 	debug_enter("fl_plugin_export");
 
-	xmlNewProp(cur, BAD_CAST"type", BAD_CAST(FL_PLUGIN(np)->id));
+g_print("plugin export for node %s, id=%s\n", np->title, FL_PLUGIN(np)->id);
+	xmlNewProp(cur, BAD_CAST"pluginType", BAD_CAST(FL_PLUGIN(np)->id));
 
 	debug_exit("fl_plugin_export");
 }

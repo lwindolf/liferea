@@ -33,6 +33,7 @@
 #include "debug.h"
 #include "update.h"
 #include "plugin.h"
+#include "fl_providers/fl_common.h"
 #include "fl_providers/fl_default.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_feed.h"
@@ -47,7 +48,7 @@ static gboolean feedlistImport = FALSE;
 
 static flPluginInfo fpi;
 
-static void fl_default_handler_new(nodePtr np) {
+static void fl_default_handler_load(nodePtr np) {
 	flNodeHandler	*handler;
 	gchar		*filename;
 
@@ -147,59 +148,6 @@ static void fl_default_node_remove(nodePtr np) {
 	}
 }
 
-/* non-static because it's reused by fl_opml.c */
-void fl_default_node_load(nodePtr np) {
-	feedPtr	fp = (feedPtr)np->data;
-
-	debug_enter("fl_default_node_load");
-	
-	g_assert(NULL == np->itemSet);
-	g_assert(FST_FEED == np->type);
-	node_set_itemset(np, feed_load_from_cache(fp, np->id));
-	g_assert(NULL != np->itemSet);
-
-	debug_exit("fl_default_node_load");
-}
-
-/* non-static because it's reused by fl_opml.c */
-void fl_default_node_unload(nodePtr np) {
-	feedPtr	fp = (feedPtr)np->data;
-
-	debug_enter("fl_default_node_unload");
-
-	if(CACHE_DISABLE == fp->cacheLimit) {
-		debug1(DEBUG_CACHE, "not unloading node (%s) because cache is disabled", node_get_title(np));
-	} else {
-		debug1(DEBUG_CACHE, "unloading node (%s)", node_get_title(np));
-		g_assert(NULL != np->itemSet);
-		g_list_free(np->itemSet->items);
-		g_free(np->itemSet);
-		np->itemSet = NULL;	
-	} 
-
-	debug_exit("fl_default_node_unload");
-}
-
-static gchar *fl_default_node_render(nodePtr np) {
-
-	switch(np->type) {
-		case FST_FEED:
-			return feed_render((feedPtr)np->data);
-			break;
-		case FST_FOLDER:
-			//return folder_render(np);
-			break;
-		case FST_VFOLDER:
-			//return vfolder_render(np);
-			break;
-		case FST_PLUGIN:
-			/* should never happen as we are root plugin! */
-			break;
-	}
-
-	return NULL;
-}
-
 static void fl_default_node_save(nodePtr np) {
 
 	if(TRUE == np->isRoot) {
@@ -209,56 +157,7 @@ static void fl_default_node_save(nodePtr np) {
 		return;
 	}
 
-	switch(np->type) {
-		case FST_FEED:
-			feed_save_to_cache((feedPtr)np->data, node_get_itemset(np), node_get_id(np));
-			break;
-		case FST_FOLDER:
-		case FST_VFOLDER:
-		case FST_PLUGIN:
-			/* nothing to do */
-			break;
-	}
-}
-
-/* update handling */
-
-/* non-static because it's reused by fl_opml.c */
-void fl_default_node_auto_update(nodePtr np) {
-	feedPtr		fp = (feedPtr)np->data;
-	GTimeVal	now;
-	gint		interval;
-
-	debug_enter("fl_default_node_auto_update");
-
-	if(FST_FEED == np->type)	/* don't process folders and vfolders */
-		return;
-
-	g_get_current_time(&now);
-	interval = feed_get_update_interval(fp);
-	
-	if(-2 >= interval)
-		return;		/* don't update this feed */
-		
-	if(-1 == interval)
-		interval = getNumericConfValue(DEFAULT_UPDATE_INTERVAL);
-	
-	if(interval > 0)
-		if(fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
-			node_schedule_update(np, ui_feed_process_update_result, 0);
-
-	/* And check for favicon updating */
-	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
-		favicon_download(np);
-
-	debug_exit("fl_default_node_auto_update");
-}
-
-/* non-static because it's reused by fl_opml.c */
-void fl_default_node_update(nodePtr np, guint flags) {
-
-	if(FST_FEED == np->type)	/* don't process folders and vfolders */
-		node_schedule_update(np, ui_feed_process_update_result, flags | FEED_REQ_PRIORITY_HIGH);
+	fl_common_node_save(np);
 }
 
 /* DBUS support for new subscriptions */
@@ -403,14 +302,15 @@ static flPluginInfo fpi = {
 	FL_PLUGIN_CAPABILITY_REORDER,
 	fl_default_init,
 	fl_default_deinit,
-	fl_default_handler_new,
-	fl_default_handler_delete,
-	fl_default_node_load,
-	fl_default_node_unload,
+	fl_default_handler_load,
+	NULL,
+	NULL,
+	fl_common_node_load,
+	fl_common_node_unload,
 	fl_default_node_save,
-	fl_default_node_render,
-	fl_default_node_auto_update,
-	fl_default_node_update,
+	fl_common_node_render,
+	fl_common_node_auto_update,
+	fl_common_node_update,
 	fl_default_node_add,
 	fl_default_node_remove
 };
