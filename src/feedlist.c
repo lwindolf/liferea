@@ -367,7 +367,7 @@ void feedlist_init(void) {
 	   will load the feed list and all attached plugin 
 	   handlers. */
 	rootPlugin = fl_plugins_get_root();
-	rootPlugin->handler_new(rootNode);
+	rootPlugin->handler_load(rootNode);
 
 	/* 3. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */

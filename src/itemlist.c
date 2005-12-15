@@ -111,7 +111,6 @@ void itemlist_reload(nodePtr node) {
 	/* determine what node type is actually selected */
 	isFeed = (FST_FEED == displayed_node->type) || (FST_VFOLDER == displayed_node->type);
 	isFolder = FST_FOLDER == displayed_node->type;
-	g_assert(isFeed || isFolder);
 	
 	if((TRUE == isFolder) && (1 == getNumericConfValue(FOLDER_DISPLAY_MODE))) {
 		if((FST_FOLDER != node->type) && (node != displayed_node)) {

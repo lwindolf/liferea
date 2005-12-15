@@ -6805,7 +6805,7 @@ Kristian Rietveld &lt;kris@gtk.org&gt; (GtkTreeModelFilter)</property>
 		  <child>
 		    <widget class="GtkLabel" id="label61">
 		      <property name="visible">True</property>
-		      <property name="label">Tibor Pittich &lt;Tibor.Pittich@mandrake.org&gt;
+		      <property name="label">Tibor Pittich &lt;Tibor.Pittich@phuture.sk&gt;
 Antoine REVERSAT &lt;areversat@TUXFAMILY.ORG&gt;
 Vincent Lefevre &lt;vincent@vinc17.org&gt;
 Stephane Jourdan &lt;stephane.jourdan@itris.fr&gt;

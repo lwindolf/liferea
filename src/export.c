@@ -51,6 +51,9 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 	gboolean	internal = ((struct exportData*)userdata)->internal;
 	xmlNodePtr	childNode;
 	struct exportData data;
+
+	if((FST_PLUGIN == np->type) && (FALSE == internal))
+		return;
 	
 	debug_enter("append_node_tag");
 
@@ -61,8 +64,17 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 	xmlNewProp(childNode, BAD_CAST"text", BAD_CAST node_get_title(np)); /* The OPML spec requires "text" */
 	xmlNewProp(childNode, BAD_CAST"description", BAD_CAST node_get_title(np));
 	
-	if(FST_FOLDER != np->type)
-		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST node_type_to_str(np));
+	switch(np->type) {
+		case FST_FEED:
+			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST node_type_to_str(np));
+			break;
+		case FST_PLUGIN:
+			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST "plugin");
+			break;
+		case FST_FOLDER:
+		default:
+			break;
+	}
 
 	if(internal) {
 		xmlNewProp(childNode, BAD_CAST"id", BAD_CAST node_get_id(np));
