@@ -30,32 +30,47 @@ extern void ui_feed_process_update_result(struct request *request);
 /* loading/unloading */
 
 void fl_common_node_load(nodePtr np) {
-	feedPtr	fp = (feedPtr)np->data;
+	feedPtr	fp;
 
 	debug_enter("fl_common_node_load");
-	
-	g_assert(NULL == np->itemSet);
-	g_assert(FST_FEED == np->type);
-	node_set_itemset(np, feed_load_from_cache(fp, np->id));
-	g_assert(NULL != np->itemSet);
+
+	switch(np->type) {
+		case FST_FEED:
+			fp = (feedPtr)np->data;
+			g_assert(NULL == np->itemSet);
+			node_set_itemset(np, feed_load_from_cache(fp, np->id));
+			g_assert(NULL != np->itemSet);
+			break;
+		default:
+			g_warning("fl_common_node_load(): This should not happen!");
+			break;
+	}
 
 	debug_exit("fl_common_node_load");
 }
 
 void fl_common_node_unload(nodePtr np) {
-	feedPtr	fp = (feedPtr)np->data;
+	feedPtr	fp;
 
 	debug_enter("fl_common_node_unload");
 
-	if(CACHE_DISABLE == fp->cacheLimit) {
-		debug1(DEBUG_CACHE, "not unloading node (%s) because cache is disabled", node_get_title(np));
-	} else {
-		debug1(DEBUG_CACHE, "unloading node (%s)", node_get_title(np));
-		g_assert(NULL != np->itemSet);
-		g_list_free(np->itemSet->items);
-		g_free(np->itemSet);
-		np->itemSet = NULL;	
-	} 
+	switch(np->type) {
+		case FST_FEED:
+			fp = (feedPtr)np->data;
+			if(CACHE_DISABLE == fp->cacheLimit) {
+				debug1(DEBUG_CACHE, "not unloading node (%s) because cache is disabled", node_get_title(np));
+			} else {
+				debug1(DEBUG_CACHE, "unloading node (%s)", node_get_title(np));
+				g_assert(NULL != np->itemSet);
+				g_list_free(np->itemSet->items);
+				g_free(np->itemSet);
+				np->itemSet = NULL;	
+			} 
+			break;
+		default:
+			g_warning("fl_common_node_unload(): This should not happen!");
+			break;
+	}
 
 	debug_exit("fl_common_node_unload");
 }
@@ -69,7 +84,7 @@ void fl_common_node_auto_update(nodePtr np) {
 
 	debug_enter("fl_default_node_auto_update");
 
-	if(FST_FEED == np->type)	/* don't process folders and vfolders */
+	if(FST_FEED != np->type)	/* don't process folders and vfolders */
 		return;
 
 	g_get_current_time(&now);

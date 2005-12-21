@@ -348,20 +348,7 @@ void node_remove(nodePtr np) {
 
 	g_assert(0 != (FL_PLUGIN(np)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
 
-	switch(np->type) {
-		case FST_FEED:
-		case FST_FOLDER:
-		case FST_VFOLDER:
-			FL_PLUGIN(np)->node_remove(np);
-			break;
-		case FST_PLUGIN:
-			FL_PLUGIN(np)->handler_delete(np);
-			break;
-		default:
-			g_warning("internal error: unknown node type!");
-			break;
-	}
-
+	FL_PLUGIN(np)->node_remove(np);
 	node_free(np);
 
 	debug_exit("node_remove");
@@ -371,6 +358,8 @@ void node_add(guint type) {
 	nodePtr		parent;
 	nodePtr		child;
 
+	debug_enter("node_add");
+
 	parent = feedlist_get_selected_parent();
 	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
 
@@ -379,25 +368,9 @@ void node_add(guint type) {
 	child = node_new();
 	child->type = type;
 	child->handler = parent->handler;
+	FL_PLUGIN(parent)->node_add(child);
 
-	switch(child->type) {
-		case FST_FEED:
-			FL_PLUGIN(parent)->node_add(child);
-			break;
-		case FST_FOLDER:
-			FL_PLUGIN(parent)->node_add(child);
-			break;
-		case FST_VFOLDER:
-			FL_PLUGIN(parent)->node_add(child);
-			break;
-		case FST_PLUGIN:
-			FL_PLUGIN(parent)->handler_new(child);
-			g_warning("not yet implemented!");
-			break;
-		default:
-			g_warning("internal error: unknown node type!");
-			break;
-	}
+	debug_exit("node_add");
 }
 
 /* ---------------------------------------------------------------------------- */

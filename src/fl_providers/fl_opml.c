@@ -33,11 +33,11 @@
 
 static flPluginInfo fpi;
 
-static void fl_opml_handler_load(nodePtr np) {
+void fl_opml_handler_initial_load(nodePtr np) {
 	flNodeHandler	*handler;
 	gchar		*filename;
 
-	debug_enter("fl_opml_handler_new");
+	debug_enter("fl_opml_handler_initial_load");
 
 	/* create a new handler structure */
 	handler = g_new0(struct flNodeHandler_, 1);
@@ -46,7 +46,7 @@ static void fl_opml_handler_load(nodePtr np) {
 	np->handler = handler;
 
 	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", np->id);
-	filename = common_create_cache_filename("plugins", np->id, "opml");
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		import_OPML_feedlist(filename, NULL, handler, FALSE, TRUE);
 	} else {
@@ -55,15 +55,12 @@ static void fl_opml_handler_load(nodePtr np) {
 	}
 	g_free(filename);
 
-	debug_exit("fl_opml_handler_new");
+	debug_exit("fl_opml_handler_initial_load");
 }
 
 static void fl_opml_handler_new(nodePtr np) {
 
-	gtk_widget_show(create_instance_dialog());
-	// initial download
-	// save to disk
-	// fl_opml_handler_load(np);
+	ui_fl_opml_get_handler_source(np);
 }
 
 /* to be used internally only (not available for user!) */
@@ -73,7 +70,7 @@ static void fl_opml_node_remove(nodePtr np) {
 	feed_remove_from_cache((feedPtr)np->data, np->id);
 }
 
-static void fl_opml_handler_delete(nodePtr np) {
+static void fl_opml_handler_remove(nodePtr np) {
 	gchar		*filename;
 
 	/* step 1: delete all child feed cache files */
@@ -85,11 +82,27 @@ static void fl_opml_handler_delete(nodePtr np) {
 	g_free(filename);
 }
 
+static void fl_opml_node_load(nodePtr np) {
+
+	if((FST_PLUGIN == np->type) &&
+	   (NULL == np->handler))
+		fl_opml_handler_initial_load(np);
+
+	fl_common_node_load(np);
+}
+
+static void fl_opml_node_unload(nodePtr np) {
+
+	if(FST_PLUGIN == np->type) 
+		return;	/* Never unloading the plugin */
+
+	fl_common_node_unload(np);
+}
+
 static gchar *fl_opml_node_render(nodePtr np) {
 
-	if(FST_PLUGIN == np->type) {
+	if(FST_PLUGIN == np->type) 
 		return "FIXME: return something meaningful...";
-	}
 
 	return fl_common_node_render(np);
 }
@@ -114,14 +127,13 @@ static flPluginInfo fpi = {
 	FL_PLUGIN_API_VERSION,
 	"fl_opml",
 	"Planet/OPML Plugin",
-	0,
+	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION,
 	fl_opml_init,
 	fl_opml_deinit,
-	fl_opml_handler_load,
 	fl_opml_handler_new,
-	fl_opml_handler_delete,
-	fl_common_node_load,
-	fl_common_node_unload,
+	fl_opml_handler_remove,
+	fl_opml_node_load,
+	fl_opml_node_unload,
 	fl_common_node_save,
 	fl_opml_node_render,
 	fl_common_node_auto_update,

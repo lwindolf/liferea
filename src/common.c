@@ -570,43 +570,31 @@ time_t parseRFC822Date(gchar *date) {
 	return 0;
 }
 
+static void common_check_dir(gchar *path) {
+
+	if(!g_file_test(path, G_FILE_TEST_IS_DIR)) {
+		if(0 != mkdir(path, S_IRUSR | S_IWUSR | S_IXUSR)) {
+			g_error(_("Cannot create cache directory \"%s\"!"), path);
+		}
+	}
+	g_free(path);
+}
+
 void initCachePath(void) {
 	gchar *cachePath;
-	gchar *feedCachePath;
-	gchar *faviconCachePath;
 
 	/* until the 1.1 code stabilizes let's use a parallel cache storage */
 	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1", g_get_home_dir());
-	if(!g_file_test(lifereaUserPath, G_FILE_TEST_IS_DIR)) {
-		if(0 != mkdir(lifereaUserPath, S_IRUSR | S_IWUSR | S_IXUSR)) {
-			g_error(_("Cannot create cache directory %s!"), lifereaUserPath);
-		}
-	}
-	
 	cachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "cache", lifereaUserPath);
-	if(!g_file_test(cachePath, G_FILE_TEST_IS_DIR)) {
-		if(0 != mkdir(cachePath, S_IRUSR | S_IWUSR | S_IXUSR)) {
-			g_error(_("Cannot create cache directory %s!"), cachePath);
-		}
-	}
-	feedCachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feeds", cachePath);
-	if(!g_file_test(feedCachePath, G_FILE_TEST_IS_DIR)) {
-		if(0 != mkdir(feedCachePath, S_IRUSR | S_IWUSR | S_IXUSR)) {
-			g_error(_("Cannot create cache directory %s!"), feedCachePath);
-		}
-	}
 
-	faviconCachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "favicons", cachePath);
-	if(!g_file_test(faviconCachePath, G_FILE_TEST_IS_DIR)) {
-		if(0 != mkdir(faviconCachePath, S_IRUSR | S_IWUSR | S_IXUSR)) {
-			g_error(_("Cannot create cache directory %s!"), faviconCachePath);
-		}
-	}
+	common_check_dir(g_strdup(lifereaUserPath));
+	common_check_dir(g_strdup(cachePath));
+	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "feeds", cachePath));
+	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "favicons", cachePath));
+	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "plugins", cachePath));
 
 	g_free(cachePath);
-	g_free(feedCachePath);
-	g_free(faviconCachePath);
-
+	/* lifereaUserPath reused globally */
 }
 
 gchar * common_get_cache_path(void) {

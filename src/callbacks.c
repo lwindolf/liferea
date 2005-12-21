@@ -36,21 +36,8 @@
 #include "debug.h"
 #include "interface.h"
 #include "support.h"
-#include "feedlist.h"
-#include "item.h"
-#include "conf.h"
-#include "export.h"
-#include "common.h"
 #include "callbacks.h"
-#include "ui/ui_mainwindow.h"
-#include "ui/ui_node.h"
-#include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_itemlist.h"
-#include "ui/ui_tray.h"
-#include "ui/ui_queue.h"
-#include "ui/ui_notification.h"
-#include "ui/ui_enclosure.h"
 #include "ui/ui_tabs.h"
 	
 /*------------------------------------------------------------------------------*/
@@ -137,12 +124,3 @@ void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	ui_tabs_new(filename, _("FAQ"), TRUE);
 	g_free(filename);
 }
-
-
-void
-on_new_plugin_activate                 (GtkMenuItem     *menuitem,
-                                        gpointer         user_data)
-{
-
-}
-

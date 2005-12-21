@@ -198,9 +198,17 @@ void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);
 
 void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gpointer user_data);
 
+/** Feed properties menu creating callback */
 void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data);
+
+/** New feed menu creating callback */
 void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data);
+
+/** New folder menu creating callback */
 void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data);
+
+/** New plugin menu creating callback */
+void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data);
 
 /*@}*/
 

@@ -37,6 +37,6 @@
 #define DBUS_RSS_OBJECT  "/org/gnome/feed/Reader"
 #define DBUS_RSS_METHOD  "Subscribe"
 
-#endif
+#endif /* USE_DBUS */
 
-#endif
+#endif /* _FL_DEFAULT_H */

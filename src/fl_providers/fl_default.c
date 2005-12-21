@@ -48,11 +48,11 @@ static gboolean feedlistImport = FALSE;
 
 static flPluginInfo fpi;
 
-static void fl_default_handler_load(nodePtr np) {
+static void fl_default_handler_initial_load(nodePtr np) {
 	flNodeHandler	*handler;
 	gchar		*filename;
 
-	debug_enter("fl_default_handler_new");
+	debug_enter("fl_default_handler_initial_load");
 
 	/* We only expect to be called to create an plugin instance 
 	   serving as the root node. */
@@ -85,11 +85,25 @@ static void fl_default_handler_load(nodePtr np) {
 	debug0(DEBUG_GUI, "No DBUS support active.");
 #endif
 
-	debug_exit("fl_default_handler_new");
+	debug_exit("fl_default_handler_initial_load");
 }
 
-static void fl_default_handler_delete(nodePtr np) {
-	g_warning("fl_handler_delete(): Implement me!");
+static void fl_default_node_load(nodePtr np) {
+
+	if(np->isRoot) {
+		fl_default_handler_initial_load(np);
+		return;
+	}
+	
+	fl_common_node_load(np);
+}
+
+static void fl_default_node_unload(nodePtr np) {
+
+	if(FST_PLUGIN == np->type)
+		return; /* Never unloading the plugin */
+
+	fl_common_node_unload(np);
 }
 
 static void fl_default_save_root(void) {
@@ -124,7 +138,10 @@ static void fl_default_node_add(nodePtr np) {
 			ui_folder_newdialog(np);
 			break;
 		case FST_VFOLDER:
-			g_warning("adding folder/vfolder: implement me!");
+			g_warning("adding vfolder: implement me!");
+			break;
+		case FST_PLUGIN:
+			ui_fl_plugin_type_dialog(np);
 			break;
 		default:
 			g_warning("adding unsupported type node!");
@@ -141,6 +158,9 @@ static void fl_default_node_remove(nodePtr np) {
 			break;
 		case FST_FOLDER:
 			/* nothing to do */
+			break;
+		case FST_PLUGIN:
+			/* should never, never, never happen... */
 			break;
 		default:
 			g_warning("removing unsupported type node!");
@@ -302,11 +322,10 @@ static flPluginInfo fpi = {
 	FL_PLUGIN_CAPABILITY_REORDER,
 	fl_default_init,
 	fl_default_deinit,
-	fl_default_handler_load,
 	NULL,
 	NULL,
-	fl_common_node_load,
-	fl_common_node_unload,
+	fl_default_node_load,
+	fl_default_node_unload,
 	fl_default_node_save,
 	fl_common_node_render,
 	fl_common_node_auto_update,

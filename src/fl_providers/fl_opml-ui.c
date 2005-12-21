@@ -58,7 +58,6 @@ create_instance_dialog (void)
   gtk_box_pack_start (GTK_BOX (vbox1), label1, FALSE, FALSE, 0);
   gtk_label_set_line_wrap (GTK_LABEL (label1), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label1), 0, 0.5);
-  gtk_label_set_ellipsize (GTK_LABEL (label1), PANGO_ELLIPSIZE_START);
 
   hbox1 = gtk_hbox_new (FALSE, 6);
   gtk_widget_show (hbox1);

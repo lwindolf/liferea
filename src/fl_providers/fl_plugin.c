@@ -19,9 +19,12 @@
  */
 
 #include <gmodule.h>
-#include "fl_plugin.h"
-#include "plugin.h"
+#include <gtk/gtk.h>
 #include "debug.h"
+#include "plugin.h"
+#include "support.h"
+#include "fl_providers/fl_plugin.h"
+#include "fl_providers/fl_plugin-ui.h"
 
 flPluginInfo * fl_plugins_get_root(void) {
 	gboolean	found = FALSE;
@@ -108,9 +111,9 @@ void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
 			if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
 				fpi = pi->symbols;
 				if(!strcmp(fpi->id, typeStr)) {
-					g_print("match! %s %s\n", fpi->id, typeStr);
 					np->available = TRUE;
-					fpi->handler_load(np);
+					np->handler = NULL;	/* not handled by parent plugin */
+					fpi->node_load(np);
 					found = TRUE;
 				}
 				iter = g_slist_next(iter);
@@ -136,3 +139,72 @@ g_print("plugin export for node %s, id=%s\n", np->title, FL_PLUGIN(np)->id);
 	debug_exit("fl_plugin_export");
 }
 
+/* plugin instance creation dialog */
+
+static void on_fl_plugin_type_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	GtkTreeSelection	*selection;
+	GtkTreeModel		*model;
+	GtkTreeIter		iter;
+	nodePtr 		np = (nodePtr)user_data;
+	flPluginInfo		*fpi;
+
+	if(response_id == GTK_RESPONSE_OK) {
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(GTK_WIDGET(dialog), "plugin_type_list")));
+		g_assert(NULL != selection);
+		gtk_tree_selection_get_selected(selection, &model, &iter);
+		gtk_tree_model_get(model, &iter, 1, &fpi, -1);
+		fpi->handler_new(np);
+	}
+	
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+}
+
+void ui_fl_plugin_type_dialog(nodePtr np) {
+	GtkWidget 		*dialog, *treeview;
+	GtkTreeStore		*treestore;
+	GtkCellRenderer		*renderer;
+	GtkTreeViewColumn 	*column;
+	GtkTreeIter		treeiter;
+	GSList		*iter;
+	flPluginInfo	*fpi;
+	pluginInfo	*pi;
+
+	/* set up the dialog */
+	dialog = create_fl_plugin_type_dialog();
+
+	treestore = gtk_tree_store_new(2, G_TYPE_STRING, G_TYPE_POINTER);
+	/* add available feed list plugins to treestore */
+	iter = plugin_mgmt_get_list();
+	while(NULL != iter) {
+		pi = (pluginInfo *)iter->data;
+		fpi = pi->symbols;
+		if((pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) &&
+		   (fpi->capabilities & FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION)) {
+
+			gtk_tree_store_append(treestore, &treeiter, NULL);
+			gtk_tree_store_set(treestore, &treeiter, 
+			                              0, pi->name, 
+			                              1, fpi,
+						      -1);
+		}
+		iter = g_slist_next(iter);
+	}
+
+	treeview = lookup_widget(dialog, "plugin_type_list");
+	g_assert(NULL != treeview);
+
+	column = gtk_tree_view_column_new();
+	renderer = gtk_cell_renderer_text_new();
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(treeview), -1, "Plugin Type", renderer, "text", 0, NULL);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(treestore));
+	g_object_unref(treestore);
+
+	gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)),
+	                            GTK_SELECTION_SINGLE);
+
+	g_signal_connect(G_OBJECT(dialog), "response",
+			 G_CALLBACK(on_fl_plugin_type_selected), 
+			 (gpointer)np);
+
+	gtk_widget_show_all(dialog);
+}

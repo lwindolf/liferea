@@ -21,6 +21,8 @@
 #ifndef _FL_COMMON_H
 #define _FL_COMMON_H
 
+/* For the interface documentation refer to fl_plugin.h! */
+
 /**
  * Default implementation for feed list plugin
  * node_load method.
@@ -56,4 +58,5 @@ void fl_common_node_save(nodePtr np);
  * node_render method.
  */
 gchar *fl_common_node_render(nodePtr np); 
+
 #endif

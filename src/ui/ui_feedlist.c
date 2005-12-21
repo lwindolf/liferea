@@ -601,6 +601,11 @@ void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
 	on_newbtn_clicked(NULL, NULL);
 }
 
+void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data) {
+
+	node_add(FST_PLUGIN);
+}
+
 /* recursivly calls func for every feed in the feed list */
 void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint params, gpointer user_data) {
 	GtkTreeIter	childiter;

@@ -73,13 +73,22 @@ struct flPluginInfo_ {
 	void		(*plugin_init)(void);
 	void 		(*plugin_deinit)(void);
 
-	/** callback for instance adding to feed list */
-	void		(*handler_load)(nodePtr np);
-	/** callback for instance creation user interaction (optional) */
-	void		(*handler_new)(nodePtr np);
-	/** callback for instance deletion user interaction (optional) */
+	/**
+	 * This OPTIONAL callback is used to create an instance
+	 * of the implemented plugin type. It is to be called by 
+	 * the parent plugin's node_add() implementation. 
+	 * Mandatory for all plugin's except the root provider plugin.
+	 */
+	void 		(*handler_new)(nodePtr np);
+
+	/**
+	 * This OPTIONAL callback is used to delete an instance
+	 * of the implemented plugin type. It is to be called
+	 * by the parent plugin's node_remove() implementation.
+	 * Mandatory for all plugin's except the root provider plugin.
+	 */
 	void 		(*handler_delete)(nodePtr np);
-	
+
 	/** callback for node loading (optional) */
 	void		(*node_load)(nodePtr np);
 	/** callback for node unloading (optional) */
@@ -96,9 +105,19 @@ struct flPluginInfo_ {
 	/** user interaction callback for node updating (optional) */
 	void 		(*node_update)(nodePtr np, guint flags);
 
-	/** user interaction callback for adding nodes (optional) */
+	/**
+	 * This OPTIONAL callback is used for handling node
+	 * add requests resulting from user interaction. This
+	 * callback is mandatory for the root plugin! 
+	 */
 	void		(*node_add)(nodePtr np);
-	/** user interaction callback for deleting nodes (optional) */
+
+	/** 
+	 * This OPTIONAL callback is used for handling node
+	 * removal requests resulting from user interaction.
+	 * This callback is mandatory for every plugin allowing
+	 * addition of nodes.
+	 */
 	void		(*node_remove)(nodePtr np);
 };
 
@@ -149,5 +168,7 @@ void fl_plugin_import(struct node *np, xmlNodePtr cur);
  * @param cur	DOM node to write to
  */
 void fl_plugin_export(struct node *np, xmlNodePtr cur); 
+
+void ui_fl_plugin_type_dialog(nodePtr np);
 
 #endif
