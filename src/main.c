@@ -114,42 +114,46 @@ static gboolean main_lock() {
 	
 	filename2 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", common_get_cache_path());
 	if (-1 == symlink(filename, filename2)) {
-		if (errno == EEXIST) {
-			if ((len = readlink(filename2, tmp, 299)) == -1)
-				retval = -2;
-			else {
-				tmp[len] = '\0';
-				host = tmp;
-				while (*host != '\0' && *host != '-') /* Step host to point to the dash */
-					host = &(host[1]);
-				if (*host == '\0')
-					retval = -3;
-				else {
-					host = &(host[1]);
-					pidstr = host;
-					while (*pidstr != '\0' && *pidstr != '.') /* Step pidstr to point to the period */
-						pidstr = &(pidstr[1]);
-					if (*pidstr == '\0')
-						retval = -3;
-					else {
-						*pidstr = '\0';
-						pidstr = &(pidstr[1]);
-						if (!strcmp(hostname, host)) {
-							pid = atoi(pidstr); /* get PID */
-							if (kill(pid, 0) == 0 || errno != ESRCH)
-								retval = -1;
-							else
-								retval = -3;
-						} else
-							retval = -1;
-					}
-				}
-			}
-		} else 
+		if (errno != EEXIST) {
 			retval = -2;
+			goto main_lock_out;
+		}
+		if ((len = readlink(filename2, tmp, 299)) == -1) {
+			retval = -2; /* Unreadable link, or not a link */
+			goto main_lock_out;
+		}
+		host = strrchr(tmp,'/');
+		if (host == NULL) {
+			retval = -3;
+			goto main_lock_out;
+		}
+		host = strstr(host, "lock-");
+		if (host == NULL) { /* Invalid lock file */
+			retval = -3;
+			goto main_lock_out;
+		}
+		host += strlen("lock-");
+		pidstr = strrchr(host,'.');
+		if (pidstr == NULL) { /* Invalid lock file*/
+			retval = -3;
+			goto main_lock_out;
+		}
+		/* Correct lockfile format */
+		*pidstr = '\0';
+		pidstr++;
+		
+		if (!strcmp(hostname, host)) {
+			pid = atoi(pidstr); /* get PID */
+			if (kill(pid, 0) == 0 || errno != ESRCH)
+				retval = -1;
+			else
+				retval = -3;
+		} else
+			retval = -1;
 	}
-
+ main_lock_out:
 	if (retval == -3) { /* Stale lockfile */
+		fprintf(stderr,"A stale lockfile has been found, and was deleted.\n");
 		unlink(filename2);
 		symlink(filename, filename2); /* Hopefully this will work. If not, screw it. */
 	}
