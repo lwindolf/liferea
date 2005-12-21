@@ -131,6 +131,7 @@ static void feedlist_remove_folder(nodePtr np) {
 	debug_enter("feedlist_remove_folder");
 
 	ui_feedlist_do_for_all(np, ACTION_FILTER_CHILDREN | ACTION_FILTER_ANY, feedlist_remove_node_);
+	ui_node_remove_node(np);
 	node_remove(np);	
 
 	debug_exit("feedlist_remove_folder");
