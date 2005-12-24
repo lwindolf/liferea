@@ -89,6 +89,10 @@ create_instance_dialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (instance_dialog), okbutton1, GTK_RESPONSE_OK);
   GTK_WIDGET_SET_FLAGS (okbutton1, GTK_CAN_DEFAULT);
 
+  g_signal_connect_swapped ((gpointer) select_button, "clicked",
+                            G_CALLBACK (on_select_button_clicked),
+                            GTK_OBJECT (instance_dialog));
+
   gtk_label_set_mnemonic_widget (GTK_LABEL (label2), location_entry);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */

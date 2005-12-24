@@ -162,7 +162,7 @@ static gpointer ui_enclosure_exec(gpointer data) {
 				g_warning("command \"%s\" failed!", ejp->run);
 		} else {
 			/* just saving */
-			/* FIXME: give some user feedback */
+			ui_mainwindow_set_status_bar(_("Enclosure download finished: \"%s\""), ejp->filename);
 		}
 	}
 	g_free(ejp->download);

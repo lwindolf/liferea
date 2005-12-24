@@ -5,6 +5,7 @@
 #include <gtk/gtk.h>
 
 #include "common.h"
+#include "debug.h"
 #include "node.h"
 #include "support.h"
 #include "update.h"
@@ -12,15 +13,17 @@
 #include "fl_providers/fl_opml-cb.h"
 #include "fl_providers/fl_opml-ui.h"
 
+extern GtkWidget *mainwindow;
+
 static void fl_opml_initial_download_cb(struct request *request) {
 	nodePtr		np = (nodePtr)request->user_data;
 	gchar		*filename;
- 	
-	filename = common_create_cache_filename("plugins", np->id, "opml");
+
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");
+	debug2(DEBUG_UPDATE, "initial OPML download finished (%s) data=%d", filename, request->data);
 	g_file_set_contents(filename, request->data, -1, NULL);
 	g_free(filename);
 	fl_opml_handler_initial_load(np);
-
 }
 
 static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
@@ -37,6 +40,7 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 		request->priority = 1;
 		request->callback = fl_opml_initial_download_cb;
 		request->user_data = np;
+		debug1(DEBUG_UPDATE, "starting initial OPML download (%s.opml)", np->id);
 		download_queue(request);
 	}
 
@@ -54,3 +58,15 @@ gchar * ui_fl_opml_get_handler_source(nodePtr np) {
 
 	gtk_widget_show_all(dialog);
 }
+
+static void on_file_select_clicked(const gchar *filename, gpointer user_data) {
+	GtkWidget	*dialog = GTK_WIDGET(user_data);
+
+	gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "location_entry")), g_strdup(filename));
+}
+
+void on_select_button_clicked(GtkButton *button, gpointer user_data) {
+
+	ui_choose_file(_("Choose OPML File"), GTK_WINDOW(mainwindow), GTK_STOCK_OPEN, FALSE, on_file_select_clicked, NULL, NULL, user_data);
+}
+

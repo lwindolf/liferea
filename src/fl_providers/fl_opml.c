@@ -77,7 +77,7 @@ static void fl_opml_handler_remove(nodePtr np) {
 	ui_feedlist_do_for_all(np, ACTION_FILTER_FEED, fl_opml_node_remove);
 
 	/* step 2: delete plugin instance OPML cache file */
-	filename = common_create_cache_filename("plugins", np->id, "opml");
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");
 	unlink(filename);
 	g_free(filename);
 }
