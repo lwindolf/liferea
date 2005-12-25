@@ -17,6 +17,21 @@
 
 extern GtkWidget *mainwindow;
 
+static void ui_fl_opml_add(nodePtr np) {
+	nodePtr		parent;
+	int		pos;
+
+	debug_enter("fl_opml_add");
+
+	/* add new node to feed list */
+	np->icon = create_pixbuf("fl_opml.png");
+	node_set_title(np, _("New OPML Subscription"));
+	parent = ui_feedlist_get_target_folder(&pos);
+	feedlist_add_node(parent, np, pos);
+
+	debug_exit("fl_opml_add");
+}
+
 static void fl_opml_initial_download_cb(struct request *request) {
 	nodePtr		np = (nodePtr)request->user_data;
 	gchar		*filename;
@@ -30,8 +45,6 @@ static void fl_opml_initial_download_cb(struct request *request) {
 
 static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	nodePtr		np = (nodePtr)user_data;
-	nodePtr		parent;
-	int		pos;
 	struct request	*request;
 	const gchar	*source;
 
@@ -47,10 +60,7 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 		debug1(DEBUG_UPDATE, "starting initial OPML download (%s.opml)", np->id);
 		download_queue(request);
 
-		/* add new node to feed list */
-		node_set_title(np, _("New OPML Subscription"));
-		parent = ui_feedlist_get_target_folder(&pos);
-		feedlist_add_node(parent, np, pos);
+		ui_fl_opml_add(np);
 	}
 
 	gtk_widget_destroy(GTK_WIDGET(dialog));

@@ -134,7 +134,7 @@ void fl_plugin_export(nodePtr np, xmlNodePtr cur) {
 
 	debug_enter("fl_plugin_export");
 
-g_print("plugin export for node %s, id=%s\n", np->title, FL_PLUGIN(np)->id);
+	debug2(DEBUG_CACHE, "plugin export for node %s, id=%s\n", np->title, FL_PLUGIN(np)->id);
 	xmlNewProp(cur, BAD_CAST"pluginType", BAD_CAST(FL_PLUGIN(np)->id));
 
 	debug_exit("fl_plugin_export");

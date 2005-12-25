@@ -229,8 +229,9 @@ void ui_node_remove_node(nodePtr np) {
 static GdkPixbuf* ui_node_get_icon(nodePtr np) {
 	gpointer	favicon;
 	feedPtr		fp;
-	
+
 	favicon = np->icon;
+g_print("resolving icon (%d) for \"%s\"\n", favicon, np->title);
 
 	if(NULL == favicon)
 		favicon = icons[ICON_AVAILABLE];

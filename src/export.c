@@ -257,11 +257,9 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			break;
 		case FST_VFOLDER:
 			data = vfolder_import(np, cur);
-			dontParseChildren = TRUE;
 			break;
 		case FST_PLUGIN:
 			data = NULL;
-			fl_plugin_import(np, cur);
 			break;
 	}
 
@@ -289,14 +287,23 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			ui_node_set_expansion(np, FALSE);
 	}
 
-	if(!dontParseChildren) {
-		/* process any children */
-		cur = cur->xmlChildrenNode;
-		while(cur != NULL) {
-			if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-				import_parse_outline(cur, np, handler, trusted);
-			cur = cur->next;				
-		}
+	/* import recursion */
+	switch(np->type) {
+		case FST_FOLDER:
+			/* process any children */
+			cur = cur->xmlChildrenNode;
+			while(cur != NULL) {
+				if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
+					import_parse_outline(cur, np, handler, trusted);
+				cur = cur->next;				
+			}
+			break;
+		case FST_PLUGIN:
+			fl_plugin_import(np, cur);
+			break;
+		default:
+			/* nothing to do */
+			break;
 	}
 	
 	debug_exit("import_parse_outline");
