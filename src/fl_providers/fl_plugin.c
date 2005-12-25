@@ -111,6 +111,7 @@ void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
 			if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
 				fpi = pi->symbols;
 				if(!strcmp(fpi->id, typeStr)) {
+					np->type = FST_PLUGIN;
 					np->available = TRUE;
 					np->handler = NULL;	/* not handled by parent plugin */
 					fpi->node_load(np);

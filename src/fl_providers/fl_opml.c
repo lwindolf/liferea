@@ -48,7 +48,7 @@ void fl_opml_handler_initial_load(nodePtr np) {
 	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", np->id);
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		import_OPML_feedlist(filename, NULL, handler, FALSE, TRUE);
+		import_OPML_feedlist(filename, np, handler, FALSE, TRUE);
 	} else {
 		g_warning("cannot open \"%s\"", filename);
 		np->available = FALSE;
@@ -84,11 +84,10 @@ static void fl_opml_handler_remove(nodePtr np) {
 
 static void fl_opml_node_load(nodePtr np) {
 
-	if((FST_PLUGIN == np->type) &&
-	   (NULL == np->handler))
+	if((FST_PLUGIN == np->type) && (NULL == np->handler))
 		fl_opml_handler_initial_load(np);
-
-	fl_common_node_load(np);
+	else
+		fl_common_node_load(np);
 }
 
 static void fl_opml_node_unload(nodePtr np) {

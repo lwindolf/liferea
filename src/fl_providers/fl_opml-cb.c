@@ -9,6 +9,8 @@
 #include "node.h"
 #include "support.h"
 #include "update.h"
+#include "feedlist.h"
+#include "ui/ui_feedlist.h"
 #include "fl_providers/fl_plugin.h"
 #include "fl_providers/fl_opml-cb.h"
 #include "fl_providers/fl_opml-ui.h"
@@ -28,6 +30,8 @@ static void fl_opml_initial_download_cb(struct request *request) {
 
 static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	nodePtr		np = (nodePtr)user_data;
+	nodePtr		parent;
+	int		pos;
 	struct request	*request;
 	const gchar	*source;
 
@@ -42,6 +46,11 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 		request->user_data = np;
 		debug1(DEBUG_UPDATE, "starting initial OPML download (%s.opml)", np->id);
 		download_queue(request);
+
+		/* add new node to feed list */
+		node_set_title(np, _("New OPML Subscription"));
+		parent = ui_feedlist_get_target_folder(&pos);
+		feedlist_add_node(parent, np, pos);
 	}
 
 	gtk_widget_destroy(GTK_WIDGET(dialog));
