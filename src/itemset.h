@@ -75,13 +75,16 @@ gchar * itemset_render_all(itemSetPtr sp);
 
 /**
  * Scans all item of a given item set for the given item id.
+ * The node must be also given to correctly extract items from
+ * merged itemlists (like folders)
  *
  * @param sp	the itemset
+ * @param np	the parent node
  * @param nr	the item id
  *
  * @returns NULL or the first found item
  */
-itemPtr itemset_lookup_item(itemSetPtr sp, gulong nr);
+itemPtr itemset_lookup_item(itemSetPtr sp, struct node *np, gulong nr);
 
 /**
  * Adds a single item to the given itemset.

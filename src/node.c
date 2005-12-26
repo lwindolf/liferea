@@ -91,7 +91,11 @@ void node_add_data(nodePtr np, guint type, gpointer data) {
 
 void node_free(nodePtr np) {
 
-	// nothing to do
+	g_assert(0 == np->loaded);
+	g_free(np->icon);
+	g_free(np->title);
+	g_free(np->id);
+	g_free(np);
 }
 
 void node_load(nodePtr np) {
@@ -279,17 +283,6 @@ void node_update_counters(nodePtr np) {
 	feedlist_update_counters(unreadDiff, newDiff);
 }
 
-itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
-
-void node_set_itemset(nodePtr np, itemSetPtr sp) {
-
-	g_assert(NULL == np->itemSet);
-	g_assert(ITEMSET_TYPE_INVALID != sp->type);
-	np->itemSet = sp;
-	sp->node = np;
-	node_update_counters(np);
-}
-
 gchar * node_render(nodePtr np) {
 
 	return FL_PLUGIN(np)->node_render(np);
@@ -343,13 +336,14 @@ void node_remove(nodePtr np) {
 
 	debug_enter("node_remove");
 
+	g_assert(0 != (FL_PLUGIN(np)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
+
 	if(NULL != np->icon) {
 		g_object_unref(np->icon);
 		favicon_remove(np);
 	}
 
-	g_assert(0 != (FL_PLUGIN(np)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
-
+	node_unload(np);
 	FL_PLUGIN(np)->node_remove(np);
 	node_free(np);
 
@@ -378,6 +372,17 @@ void node_add(guint type) {
 /* ---------------------------------------------------------------------------- */
 /* node attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
+
+itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
+
+void node_set_itemset(nodePtr np, itemSetPtr sp) {
+
+	g_assert(NULL == np->itemSet);
+	g_assert(ITEMSET_TYPE_INVALID != sp->type);
+	np->itemSet = sp;
+	sp->node = np;
+	node_update_counters(np);
+}
 
 void node_set_title(nodePtr np, const gchar *title) {
 
@@ -455,10 +460,7 @@ void node_update_new_count(nodePtr np, gint diff) {
 
 guint node_get_unread_count(nodePtr np) { 
 	
-	if(np->itemSet)
-		return np->unreadCount; 
-	else
-		return 0;
+	return np->unreadCount; 
 }
 
 void node_set_id(nodePtr np, const gchar *id) {

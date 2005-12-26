@@ -739,7 +739,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 			sp->lastItemNr = new_ip->nr;
 
 		/* ensure that the item nr's are unique */
-		if(NULL != itemset_lookup_item(sp, new_ip->nr)) {
+		if(NULL != itemset_lookup_item(sp, NULL, new_ip->nr)) {
 			g_warning("The item number to be added is not unique! Item (%s) (%lu)\n", new_ip->title, new_ip->nr);
 			new_ip->nr = ++(sp->lastItemNr);
 		}

@@ -319,7 +319,8 @@ void itemlist_update_item(itemPtr ip) {
 
 void itemlist_remove_item(itemPtr ip) {
 	
-	if(NULL != (ip = itemset_lookup_item(ip->itemSet, ip->nr))) {
+	/* FIXME: is the following check really necessary? */
+	if(NULL != itemset_lookup_item(ip->itemSet, ip->itemSet->node, ip->nr)) {
 		/* if the currently selected item should be removed we
 		   don't do it and set a flag to do it when unselecting */
 		if(displayed_item != ip) {

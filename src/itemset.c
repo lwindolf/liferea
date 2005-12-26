@@ -66,14 +66,14 @@ gchar * itemset_render_all(itemSetPtr sp) {
 	return NULL;
 }
 
-itemPtr itemset_lookup_item(itemSetPtr sp, gulong nr) {
+itemPtr itemset_lookup_item(itemSetPtr sp, nodePtr np, gulong nr) {
 	GList		*items;
 	itemPtr		ip;
 		
 	items = sp->items;
 	while(NULL != items) {
 		ip = (itemPtr)(items->data);
-		if(ip->nr == nr)
+		if((ip->nr == nr) && (ip->itemSet->node == np))
 			return ip;
 		items = g_list_next(items);
 	}
@@ -153,7 +153,7 @@ void itemset_set_item_flag(itemSetPtr sp, itemPtr ip, gboolean newFlagStatus) {
 			/* propagate change to source feed, this indirectly updates us... */
 			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
-			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, ip->sourceNr)))
+			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
 				itemlist_set_flag(sourceItem, newFlagStatus);
 			node_unload(sourceNode);
 		}
@@ -181,7 +181,7 @@ void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newReadSta
 			/* propagate change to source feed, this indirectly updates us... */
 			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
-			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, ip->sourceNr)))
+			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
 				itemlist_set_read_status(sourceItem, newReadStatus);
 			node_unload(sourceNode);
 		}
@@ -205,7 +205,7 @@ void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newUpdat
 			/* propagate change to source feed, this indirectly updates us... */
 			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
-			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, ip->sourceNr)))
+			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
 				itemlist_set_update_status(sourceItem, newUpdateStatus);
 			node_unload(sourceNode);
 		}

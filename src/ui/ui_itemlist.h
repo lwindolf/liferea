@@ -34,6 +34,7 @@ enum is_columns {
 	IS_LABEL,		/**< Displayed name */
 	IS_ICON,		/**< Pixbuf reference to the item's icon */
 	IS_NR,			/**< Item id, to lookup item ptr from parent feed */
+	IS_PARENT,		/**< Parent node pointer */
 	IS_ICON2,		/**< Pixbuf reference to the item's feed's icon */
 	IS_LEN			/**< Number of columns in the itemstore */
 };

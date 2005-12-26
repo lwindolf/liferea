@@ -99,6 +99,7 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 			- item label
 			- item state icon
 			- unique item id
+			- parent node
 			- parent node icon
 		 */
 		itemstore = gtk_tree_store_new(IS_LEN,
@@ -107,6 +108,7 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 		                               G_TYPE_STRING,
 		                               GDK_TYPE_PIXBUF,
 		                               G_TYPE_ULONG,
+					       G_TYPE_POINTER,
 		                               GDK_TYPE_PIXBUF);
 		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
 		g_signal_connect(G_OBJECT(itemstore), "sort-column-changed", G_CALLBACK(itemlist_sort_column_changed_cb), NULL);
@@ -121,11 +123,15 @@ itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter) {
 	GtkTreeStore	*itemstore;
 	itemSetPtr	sp;
 	itemPtr		ip;
+	nodePtr		np;
 	gulong		nr;
 	
 	itemstore = ui_itemlist_get_tree_store();
-	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter, IS_NR, &nr, -1);
-	ip = itemset_lookup_item(displayed_node->itemSet, nr);
+	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter, 
+			   IS_NR, &nr, 
+			   IS_PARENT, &np, 
+			   -1);
+	ip = itemset_lookup_item(displayed_node->itemSet, np, nr);
 	g_assert(ip != NULL);
 	return ip;
 }
@@ -492,6 +498,7 @@ void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 		}	
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_NR, ip->nr,
+					      IS_PARENT, ip->itemSet->node,
 		                	      IS_TIME, item_get_time(ip),
 		                	      -1);
 		ui_itemlist_update_item(ip);
