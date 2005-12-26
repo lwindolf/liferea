@@ -231,7 +231,6 @@ static GdkPixbuf* ui_node_get_icon(nodePtr np) {
 	feedPtr		fp;
 
 	favicon = np->icon;
-g_print("resolving icon (%d) for \"%s\"\n", favicon, np->title);
 
 	if(NULL == favicon)
 		favicon = icons[ICON_AVAILABLE];
@@ -281,4 +280,9 @@ void ui_node_update(nodePtr np) {
 	                                    FS_ICON, ui_node_get_icon(np),
 	                                    -1);
 	g_free(label);
+
+	/* Not sure if it is good to have the parent
+	   folder recursion here... (Lars) */
+	if(np->parent)
+		ui_node_update(np->parent);
 }

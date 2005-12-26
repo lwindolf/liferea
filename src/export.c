@@ -76,6 +76,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			break;
 	}
 
+	/* Don't add the following tags if we are exporting to other applications */
 	if(internal) {
 		xmlNewProp(childNode, BAD_CAST"id", BAD_CAST node_get_id(np));
 
@@ -188,6 +189,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 	/* 1. do general node parsing */	
 	np = node_new();
 	np->handler = handler;
+	np->parent = parentNode;
 
 	/* The id should only be used from feedlist.opml. Otherwise,
 	   it could cause corruption if the same id was imported
@@ -294,7 +296,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			cur = cur->xmlChildrenNode;
 			while(cur != NULL) {
 				if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-					import_parse_outline(cur, np, handler, trusted);
+					import_parse_outline(cur, np, np->handler, trusted);
 				cur = cur->next;				
 			}
 			break;
@@ -396,7 +398,7 @@ void on_import_activate(GtkMenuItem *menuitem, gpointer user_data) {
 static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
 	gint error = 0;
 
-	if (filename != NULL) {
+	if(filename != NULL) {
 		error = export_OPML_feedlist(filename, FALSE);
 	
 		if(0 != error)

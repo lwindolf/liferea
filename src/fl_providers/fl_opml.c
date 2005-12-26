@@ -49,7 +49,7 @@ void fl_opml_handler_initial_load(nodePtr np) {
 	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", np->id);
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		import_OPML_feedlist(filename, np, handler, FALSE, TRUE);
+		import_OPML_feedlist(filename, np, np->handler, FALSE, TRUE);
 	} else {
 		g_warning("cannot open \"%s\"", filename);
 		np->available = FALSE;

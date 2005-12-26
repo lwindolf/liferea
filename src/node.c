@@ -215,7 +215,7 @@ static void node_merge_item(nodePtr np, itemPtr ip) {
 		/* step 3: update feed list statistics */
 
 		/* Never update the overall feed list statistic 
-		   for folders and vfolders (because this are item
+		   for folders and vfolders (because these are item
 		   list types with item copies or references)! */
 		if((FST_FOLDER != np->type) && (FST_VFOLDER != np->type))
 			feedlist_update_counters(ip->readStatus?0:1,
@@ -268,10 +268,12 @@ void node_update_counters(nodePtr np) {
 			np->popupCount++;
 		iter = g_list_next(iter);
 	}
+	newDiff += np->newCount;
+	unreadDiff += np->unreadCount;
 
 	/* update parent folder */
 	if(NULL != np->parent)
-		np->parent->unreadCount += unreadDiff;
+		node_update_unread_count(np->parent, unreadDiff);
 
 	/* propagate to feed list statistics */
 	feedlist_update_counters(unreadDiff, newDiff);

@@ -343,9 +343,9 @@ void feedlist_save(void) {
  */
 static void feedlist_initial_load(nodePtr np) {
 	
-	feedlist_load_node(np);
+	node_load(np);
 	ui_node_update(np);
-	feedlist_unload_node(np);
+	node_unload(np);
 }
 
 static void feedlist_initial_update(nodePtr np) {
