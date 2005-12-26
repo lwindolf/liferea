@@ -390,7 +390,7 @@ void feedlist_init(void) {
 	}
 
 	/* 5. Start automatic updating */
- 	//(void)g_timeout_add(1000, feedlist_auto_update, NULL);
+ 	(void)g_timeout_add(1000, feedlist_auto_update, NULL);
 	
 	debug_exit("feedlist_init");
 }
