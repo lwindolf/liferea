@@ -205,6 +205,7 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
 	}
 	dbus_error_free(&error);
 
+	// FIXME: parameters of ui_feed_add() are wrong, we need a new node structure
 
 	/* Subscribe the feed */
 	ui_feed_add(NULL,s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
