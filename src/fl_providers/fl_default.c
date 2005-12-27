@@ -207,7 +207,7 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
 
 
 	/* Subscribe the feed */
-	ui_feed_add(s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	ui_feed_add(NULL,s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 
 	/* Acknowledge the new feed by returning true */
 	reply = dbus_message_new_method_return (message);
