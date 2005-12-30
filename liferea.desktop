@@ -1,13 +1,16 @@
 [Desktop Entry]
 Name=Liferea Feed Reader
-Name[de]=Liferea Feed Reader
+Name[ca]=Lector de canals Liferea
 Name[cs]=Liferea Feed Reader
+Name[de]=Liferea Feed Reader
 Name[es]=Liferea, lector de titulares RSS
 Name[fr]=Liferea, lecteur de flux
 GenericName=Feed Reader
+GenericName[ca]=Lector de canals
 Comment=Download and view feeds
-Comment[de]=Anzeigen von News-Feeds
+Comment[ca]=Descarregueu i visualitzeu canals
 Comment[cs]=Stahování a čtení článků
+Comment[de]=Anzeigen von News-Feeds
 Comment[es]=Lector de titulares RSS Liferea
 Comment[fr]=Télécharge et visualise des flux
 Exec=liferea
