@@ -324,3 +324,10 @@ img.enclosurebtn {
 /* preventing freezes due to any plugins */
 embed { display:none !important }
 
+del {
+	text-decoration: overline;
+}
+
+ins {
+	text-decoration: underline;
+}

@@ -7,6 +7,8 @@
 	  the extra spacing between icons. (Rodrigo Moya)
 	* Bring mini popups to foreground when updated. 
 	  (Scott Harmon)
+	* Added CSS style for <del> and <ins> HTML tags.
+	  (Jose Maria Mateos)
 
 2005-12-23  Lars Lindner  <lars.lindner@gmail.com>
 

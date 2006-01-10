@@ -337,3 +337,11 @@ img.enclosurebtn {
 
 embed { display:none !important }
 
+del {
+	text-decoration: overline;
+}
+
+ins {
+	text-decoration: underline;
+}
+
