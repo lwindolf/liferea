@@ -78,6 +78,7 @@ static gboolean onNotificationButtonPressed (GtkWidget *widget, GdkEventButton *
 		return FALSE;
 	} else if(event->button == 1) {
 		ui_feedlist_select(feedNotif_p->node_p);
+		gtk_window_present(GTK_WINDOW(mainwindow));
 		gdk_window_raise(mainwindow->window);
 	} else {
 		/* Any button except LMB will remove the notification */
