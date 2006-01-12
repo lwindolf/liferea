@@ -1,7 +1,7 @@
 /**
  * @file itemlist.h itemlist handling
  *
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,24 +23,62 @@
 
 #include <gtk/gtk.h>
 #include "item.h"
+#include "itemset.h"
 #include "feed.h"
 #include "vfolder.h"
 
-/* The itemlist interface serves as a controller implementation
-   handling user trigger actions and backend updates for the
-   currently loaded itemset. */
+/* This is a simple controller implementation for itemlist handling. 
+   It manages the currently displayed itemset and provides synchronisation
+   for backend and GUI access to this itemset.  
+   
+   Bypass only for read-only item access! */
 
-/** Loads or merges the passed feeds items into the itemlist.  If the
- * selected feed is equal to the passed one we do merging. Otherwise
- * we can just clear the list and load the new items.
+/**
+ * Returns the currently displayed node.
+ *
+ * @returns displayed node (or NULL)
  */
-void itemlist_load(nodePtr node);
+struct node * itemlist_get_displayed_node(void);
 
+/**
+ * To be called whenever a feed was updated. If it is a somehow
+ * displayed feed it is loaded this method decides if the
+ * and how the item list GUI needs to be updated.
+ *
+ * @param sp	the item set to be merged
+ */
+void itemlist_reload(itemSetPtr sp);
+
+/** 
+ * Loads the passed feeds items into the itemlist.
+ *
+ * @param sp 	the item set to be loaded
+ */
+void itemlist_load(itemSetPtr sp);
+
+/**
+ * Clears the item list. Unsets the currently
+ * displayed item set.
+ */
+void itemlist_unload(void);
+
+/**
+ * Changes the two/three pane mode property of the
+ * currently displayed item set.
+ *
+ * @param new_mode (TRUE for two pane)
+ */
 void itemlist_set_two_pane_mode(gboolean new_mode);
 
-/* item handling functions */
+/**
+ * Returns the two/three pane mode property of the
+ * currently displayed item set.
+ *
+ * @returns TRUE for two pane
+ */
+gboolean itemlist_get_two_pane_mode(void);
 
-void itemlist_add_item(feedPtr fp, itemPtr ip);
+/* item handling functions */
 
 void itemlist_update_item(itemPtr ip);
 
@@ -52,14 +90,7 @@ void itemlist_remove_item(itemPtr ip);
  *
  * @param np	the node which items should be removed
  */
-void itemlist_remove_items(nodePtr np);
-
-/**
- * To be called whenever a feed was updated. If it is a somehow
- * displayed feed it is loaded this method decides if the
- * and how the item list GUI needs to be updated.
- */
-void itemlist_reload(nodePtr node);
+void itemlist_remove_items(itemSetPtr sp);
 
 /**
  * Toggle the flag of the item currently selected in the itemlist
@@ -74,7 +105,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus);
  * Unsets bot the unread and update flag for all items
  * of the given feed.
  */
-void itemlist_mark_all_read(nodePtr fp);
+void itemlist_mark_all_read(itemSetPtr sp);
 
 void itemlist_update_vfolder(vfolderPtr vp);
 

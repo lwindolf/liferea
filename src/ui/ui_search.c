@@ -104,7 +104,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	/* switch to item list view and inform user in HTML view */
 	ui_feedlist_select(NULL);
 	itemlist_set_two_pane_mode(FALSE);
-	itemlist_load(searchResult);
+	itemlist_load(searchResult->itemSet);
 
 	ui_htmlview_start_output(&buffer, NULL, TRUE);
 	tmp = g_strdup_printf(_("%s<h2>%d Search Results for \"%s\"</h2>"

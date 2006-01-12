@@ -116,11 +116,6 @@ void node_load(nodePtr np) {
 		case FST_PLUGIN:
 			g_assert(NULL == np->itemSet);
 			FL_PLUGIN(np)->node_load(np);
-GList *items = np->itemSet->items;
-while(items) {
-	g_print("loaded item: %s\n", ((itemPtr)items->data)->title);
-	items = g_list_next(items);
-}
 			g_assert(NULL != np->itemSet);
 			break;
 		case FST_FOLDER:

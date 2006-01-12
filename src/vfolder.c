@@ -342,8 +342,9 @@ void vfolder_refresh(vfolderPtr vp) {
 	vp->node->itemSet->items = NULL;
 	// FIXME: the pointer chain somehow tells me that
 	// this code does not belong here...
+	// Or maybe the structure itself is bad design
 	
-	ui_feedlist_do_for_all_data(NULL, ACTION_FILTER_FEED, vfolder_apply_rules, vp);
+	feedlist_foreach_data(NULL, FEEDLIST_FILTER_FEED, vfolder_apply_rules, vp);
 	
 	debug_exit("vfolder_refresh");
 }

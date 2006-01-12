@@ -40,14 +40,15 @@
 #include "ui_mainwindow.h"
 #include "ui_tray.h"
 
-extern nodePtr		displayed_node;
 extern GdkPixbuf	*icons[];
 
 static GHashTable 	*iterhash = NULL;	/* hash table used for fast item->tree iter lookup */
 
 gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
 
-itemPtr			displayed_item = NULL;
+// FIXME: remove these two
+extern itemPtr		displayed_item;
+extern itemSetPtr	displayed_itemSet;
 
 #define	TIMESTRLEN	256
 
@@ -76,15 +77,24 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 		return 0;
 }
 
+extern gint disableSortingSaving;
+
 void ui_itemlist_reset_tree_store() {
 	GtkTreeModel    *model;
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
+
+	/* Disable sorting for performance reasons */
+	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
+
 	ui_itemlist_clear();
+
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), NULL);
 	
 	displayed_item = NULL;
 	g_object_unref(model);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), GTK_TREE_MODEL(ui_itemlist_get_tree_store()));
+
+	ui_itemlist_prefocus();
 }
 
 GtkTreeStore * ui_itemlist_get_tree_store(void) {
@@ -131,7 +141,7 @@ itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter) {
 			   IS_NR, &nr, 
 			   IS_PARENT, &np, 
 			   -1);
-	ip = itemset_lookup_item(displayed_node->itemSet, np, nr);
+	ip = itemset_lookup_item(displayed_itemSet, np, nr);
 	g_assert(ip != NULL);
 	return ip;
 }
@@ -201,24 +211,23 @@ void ui_itemlist_remove_item(itemPtr ip) {
 void ui_itemlist_clear(void) {
 	GtkAdjustment		*adj;
 	GtkTreeView		*treeview;
-	GtkTreeSelection	*itemselection;
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 
 	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
 
-	/* unselecting all items is important for to remove items
-	   from vfolders whose removal is deferred until unselecting */
-	if(NULL != (itemselection = gtk_tree_view_get_selection(treeview)))
-		gtk_tree_selection_unselect_all(itemselection);
+	/* unselecting all items is important to remove items
+	   whose removal is deferred until unselecting */
+	gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(treeview));
 	
 	adj = gtk_tree_view_get_vadjustment(treeview);
 	gtk_adjustment_set_value(adj, 0.0);
 	gtk_tree_view_set_vadjustment(treeview, adj);
 
-	if(NULL != iterhash) {		
+	if(NULL != iterhash)
 		g_hash_table_destroy(iterhash);
+	if(NULL != itemstore)
 		gtk_tree_store_clear(itemstore);
-	}		
+	
 	iterhash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
@@ -380,14 +389,12 @@ void ui_itemlist_prefocus(void) {
 	focus_widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
 
 	/* prevent marking as unread before focussing, which leads to a selection */
-	itemlist_loading = 1;
 	gtk_widget_grab_focus(itemlist);
 
 	if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist))))
 		gtk_tree_selection_unselect_all(itemselection);
 
 	gtk_widget_grab_focus(focus_widget);		
-	itemlist_loading = 0;
 }
 
 /* Function which is called when the contents of currently
@@ -415,7 +422,7 @@ void ui_itemlist_display(void) {
 		if(FST_FEED == np->type)
 			base = feed_get_html_url((feedPtr)np->data);
 			
-		if(TRUE == ui_itemlist_get_two_pane_mode()) {
+		if(TRUE == itemlist_get_two_pane_mode()) {
 			/* two pane mode */
 			ui_htmlview_start_output(&buffer, base, FALSE);
 			
@@ -578,7 +585,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
 	np = ui_feedlist_get_selected();
 	if((NULL != np) && (FST_FEED == np->type))
-		itemlist_remove_items(np);
+		itemlist_remove_items(np->itemSet);
 	else
 		ui_show_error_box(_("You must select a feed to delete its items!"));
 }
@@ -643,11 +650,11 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 	
 	ip = ui_itemlist_get_item_from_iter(iter);
 	if(FALSE == ip->readStatus) {
-		if(!ui_itemlist_get_two_pane_mode()) {
+		if(itemlist_get_two_pane_mode()) {
+			itemset_mark_all_read(ip->itemSet);
+		} else {
 			ui_itemlist_select(*iter);
 			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
-		} else {
-			itemset_mark_all_read(ip->itemSet);
 		}
 		return TRUE;
 	}
@@ -771,18 +778,12 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 }
 
 /* two/three pane mode setting */
-gboolean ui_itemlist_get_two_pane_mode(void) {
-
-	return gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")));
-}
-
 void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
-	gboolean	old_mode;
 	
-	old_mode = ui_itemlist_get_two_pane_mode();
+	gboolean gui_mode = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")));
 	ui_mainwindow_set_three_pane_mode(!new_mode);
 
-	if(new_mode != old_mode) {
+	if(new_mode != gui_mode) {
 		/* Disconnect signal so that this will not cause the itemlist
 		   to be redrawn. This would happen since
 		   on_toggle_condensed_view_activate would have been
@@ -804,7 +805,7 @@ void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data
 		   change from feed description to list of items and vica 
 		   versa */
 		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		itemlist_load(np);
+		itemlist_load(np->itemSet);
 	}
 }
 
@@ -812,14 +813,14 @@ void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data
 void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data) {
 	nodePtr		np;
 
-	itemlist_set_two_pane_mode(!ui_itemlist_get_two_pane_mode());
+	itemlist_set_two_pane_mode(!itemlist_get_two_pane_mode());
 
 	if(NULL != (np = ui_feedlist_get_selected())) {
 		/* grab necessary to force HTML widget update (display must
 		   change from feed description to list of items and vica 
 		   versa */
 		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		itemlist_load(np);
+		itemlist_load(np->itemSet);
 	}
 }
 

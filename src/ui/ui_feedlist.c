@@ -53,11 +53,8 @@ extern GHashTable	*feedHandler;
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
-nodePtr			displayed_node = NULL;
-
 /* flag to enable/disable the GtkTreeModel filter */
 gboolean filter_feeds_without_unread_headlines = FALSE;
-
 
 /* signal handlers to update the tree view paths in the feed structures */
 static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter) {
@@ -152,7 +149,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		debug1(DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title(np));
 
 		/* make sure thats no grouping iterator */
-		if((FST_FEED == type) || (FST_VFOLDER == type)) {
+		if((FST_FEED == type) || (FST_VFOLDER == type) || (FST_PLUGIN == type)) {
 			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing */
@@ -171,7 +168,6 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		
 		/* update feed list and item list states */
 		feedlist_selection_changed(np);
-		itemlist_load(np);
 	} else {
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
@@ -349,7 +345,7 @@ void ui_feedlist_select(nodePtr np) {
 		/* The code to clear the itemlist when something is
 		   unselected is disabled... so we must clear the itemlist
 		   explicitly here*/
-		itemlist_load(NULL);
+		itemlist_unload();
 	}
 	
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
@@ -486,8 +482,6 @@ static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, 
 
 void ui_feedlist_remove_node(nodePtr node) {
 
-	ui_feedlist_select(NULL);
-	itemlist_load(NULL);
 	feedlist_remove_node(node);
 }
 
@@ -565,12 +559,13 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 	debug2(DEBUG_GUI, "adding node \"%s\" to feed list (parent=\"%s\")", node_get_title(node), (NULL != parent)?node_get_title(parent):"feed list root");
 
 	g_assert(node->ui_data == NULL);
+	g_assert(parent != NULL);
 
 	/* if parent is NULL we have the root folder and don't create a new row! */
 	node->ui_data = (gpointer)g_new0(struct ui_data, 1);
 	iter = &(((ui_data*)(node->ui_data))->row);
 	
-	if(parent != NULL) {
+	if(!parent->isRoot) {
 		g_assert(parent->ui_data != NULL);
 		parentIter = &(((ui_data*)(parent->ui_data))->row);
 	}
@@ -584,7 +579,7 @@ void ui_feedlist_add(nodePtr parent, nodePtr node, gint position) {
 
 	ui_node_update(node);
 	
-	if(NULL != parent)
+	if(!parent->isRoot)
 		ui_node_check_if_folder_is_empty(parent);
 
 	if(FST_FOLDER == node->type)
@@ -604,44 +599,4 @@ void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
 void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 	node_add(FST_PLUGIN);
-}
-
-/* recursivly calls func for every feed in the feed list */
-void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint params, gpointer user_data) {
-	GtkTreeIter	childiter;
-	gboolean	valid, apply, descend;
-	nodePtr		child;
-	
-	if(NULL == ptr) {
-		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(feedstore), &childiter);
-	} else {
-		if(NULL == ptr->ui_data)
-			return;	/* folder is hidden -> nothing to do */
-		valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(feedstore), &childiter, &((ui_data*)ptr->ui_data)->row);
-	}
-	
-	while(valid) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &childiter, FS_PTR, &child, -1);
-		/* Must update counter here because the current node may be deleted! */
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(feedstore), &childiter);
-		/* If child == NULL, this is an empty node. */
-		if(child != NULL) {
-			apply = (filter & ACTION_FILTER_CHILDREN) ||
-				((filter & ACTION_FILTER_FEED) && (FST_FEED == child->type)) ||
-				((filter & ACTION_FILTER_FEED) && (FST_VFOLDER == child->type)) ||
-				((filter & ACTION_FILTER_FOLDER) && (FST_FOLDER == child->type));
-			descend = !(filter & ACTION_FILTER_CHILDREN);
-			
-			if(TRUE == apply) {
-				if(params==0)
-					((nodeActionFunc)func)(child);
-				else 
-					((nodeActionDataFunc)func)(child, user_data);
-			}
-			
-			/* if the iter has children and we are descending, iterate over the children. */
-			if(descend)
-				ui_feedlist_do_for_all_data(child, filter, func, user_data);
-		}
-	}
 }

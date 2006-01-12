@@ -87,6 +87,47 @@ void feedlist_save(void);
  */
 void ui_feed_process_update_result(struct request *request);
 
+/* feed list iterating interface */
+
+#define	FEEDLIST_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	
+#define	FEEDLIST_FILTER_FOLDER	2	/** Only matches nodes where IS_FOLDER(node->type) */
+#define	FEEDLIST_FILTER_PLUGIN	4	/** Only matches nodes where IS_PLUGIN(node->type) */
+#define	FEEDLIST_FILTER_ANY	7	/** Matches any node */
+#define	FEEDLIST_FILTER_CHILDREN	8	/** Matches immediate children of the given node */
+
+/**
+ * Helper function to recursivly call node methods for all
+ * elements of the given type in the feed list.
+ *
+ * @param ptr	node pointer whose children should be processed (NULL defaults to root)
+ * @param filter specifies the types of nodes for which func should be called
+ * @param func	the function to process all found elements
+ * @param params Set to 1 if there will be user_data. Set to 0 for no user data
+ * @param user_data specifies the second argument that func should be passed
+ */
+void feedlist_foreach_full(nodePtr ptr, gint filter, gpointer func, gint params, gpointer user_data);
+
+/**
+ * Helper function to recursivly call node methods for all
+ * elements of the given type in the feed list.
+ *
+ * @param ptr	node pointer whose children should be processed (NULL defaults to root)
+ * @param filter specifies the types of nodes for which func should be called
+ * @param func	the function to process all found elements
+ */
+#define feedlist_foreach(ptr, filter, func) feedlist_foreach_full(ptr,filter,func,0,NULL)
+
+/**
+ * Helper function to recursivly call node methods for all
+ * elements of the given type in the feed list.
+ *
+ * @param ptr	node pointer whose children should be processed (NULL defaults to root)
+ * @param filter specifies the types of nodes for which func should be called
+ * @param func	the function to process all found elements
+ * @param user_data specifies the second argument that func should be passed
+ */
+#define feedlist_foreach_data(ptr, filter, func, user_data) feedlist_foreach_full(ptr,filter,func,1,user_data)
+
 /* UI callbacks */
 void feedlist_selection_changed(nodePtr np);
 

@@ -50,7 +50,6 @@ enum fts_columns {
 };
 
 extern GSList *availableBrowserModules;
-extern nodePtr displayed_node;
 
 static GtkWidget *prefdialog = NULL;
 
@@ -543,10 +542,12 @@ void on_folderdisplaybtn_toggled(GtkToggleButton *togglebutton, gpointer user_da
 }
 
 void on_folderhidereadbtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
+	nodePtr	displayed_node;
 
 	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
 	setBooleanConfValue(FOLDER_DISPLAY_HIDE_READ, enabled);
-	itemlist_load(displayed_node);
+	displayed_node = itemlist_get_displayed_node();
+	itemlist_load(displayed_node->itemSet);
 }
 
 void on_trayiconoptionbtn_clicked(GtkButton *button, gpointer user_data) {
@@ -670,7 +671,7 @@ static void updatefavicon_cb(nodePtr np) {
 static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data)
 {
 
-	ui_feedlist_do_for_all(NULL, ACTION_FILTER_FEED, updatefavicon_cb);
+	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, updatefavicon_cb);
 }
  
 

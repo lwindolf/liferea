@@ -108,7 +108,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			debug1(DEBUG_CACHE, "adding folder %s...", node_get_title(np));
 			data.cur = childNode;
 			data.internal = internal;
-			ui_feedlist_do_for_all_data(np, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
+			feedlist_foreach_data(np, FEEDLIST_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
 			break;
 		case FST_VFOLDER:
 			if(internal)
@@ -146,7 +146,7 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 				struct exportData data;
 				data.internal = internal;
 				data.cur = cur;
-				ui_feedlist_do_for_all_data(NULL, ACTION_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
+				feedlist_foreach_data(NULL, FEEDLIST_FILTER_CHILDREN, append_node_tag, (gpointer)&data);
 			}
 			
 			xmlDocSetRootElement(doc, opmlNode);		

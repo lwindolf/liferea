@@ -56,7 +56,7 @@ static void on_tab_switched(GtkNotebook *notebook, GtkNotebookPage *page, guint 
 		
 	/* needed because switching does sometimes returns to the tree 
 	   view with a very disturbing horizontal scrolling state */
-	if(0 == page_num && ui_itemlist_get_two_pane_mode() == FALSE) {
+	if((0 == page_num) && (FALSE == itemlist_get_two_pane_mode())) {
 		gtk_tree_view_get_cursor(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), &path, &column);
 		column = gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 1);
 		gtk_tree_view_set_cursor(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), path, column, FALSE);

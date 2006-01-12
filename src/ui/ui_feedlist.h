@@ -92,46 +92,6 @@ nodePtr ui_feedlist_get_target_folder(int *pos);
  */
 void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags);
 
-
-#define	ACTION_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	
-#define	ACTION_FILTER_FOLDER	2	/** Only matches nodes where IS_FOLDER(node->type) */
-#define	ACTION_FILTER_PLUGIN	4	/** Only matches nodes where IS_PLUGIN(node->type) */
-#define	ACTION_FILTER_ANY	7	/** Matches any node */
-#define	ACTION_FILTER_CHILDREN	8	/** Matches immediate children of the given node */
-
-/**
- * Helper function to recursivly call feed_save() for all
- * elements of the given type in the feed list.
- *
- * @param ptr	node pointer whose children should be processed (NULL defaults to root)
- * @param filter specifies the types of nodes for which func should be called
- * @param func	the function to process all found elements
- * @param params Set to 1 if there will be user_data. Set to 0 for no user data
- * @param user_data specifies the second argument that func should be passed
- */
-void ui_feedlist_do_for_all_full(nodePtr ptr, gint filter, gpointer func, gint params, gpointer user_data);
-
-/**
- * Helper function to recursivly call feed_save() for all
- * elements of the given type in the feed list.
- *
- * @param ptr	node pointer whose children should be processed (NULL defaults to root)
- * @param filter specifies the types of nodes for which func should be called
- * @param func	the function to process all found elements
- */
-#define ui_feedlist_do_for_all(ptr, filter, func) ui_feedlist_do_for_all_full(ptr,filter,func,0,NULL)
-
-/**
- * Helper function to recursivly call feed_save() for all
- * elements of the given type in the feed list.
- *
- * @param ptr	node pointer whose children should be processed (NULL defaults to root)
- * @param filter specifies the types of nodes for which func should be called
- * @param func	the function to process all found elements
- * @param user_data specifies the second argument that func should be passed
- */
-#define ui_feedlist_do_for_all_data(ptr, filter, func, user_data) ui_feedlist_do_for_all_full(ptr,filter,func,1,user_data)
-
 /** 
  * Tries to find the first node with an unread item in the given folder.
  * 

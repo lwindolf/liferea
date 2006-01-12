@@ -54,6 +54,7 @@ typedef struct node {
 	/* feed list state properties of this node */
 	gboolean		isRoot;		/**< TRUE if this is the feed list root node */
 	struct node		*parent;	/**< the parent node (or NULL if at root level) */
+	GSList			*children;	/**< ordered list of node children */
 	gchar			*id;		/**< unique node identifier string */
 
 	guint			unreadCount;	/**< number of items not yet read */

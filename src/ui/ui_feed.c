@@ -700,7 +700,7 @@ void ui_feed_process_update_result(struct request *request) {
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
 
-			itemlist_reload(np);
+			itemlist_reload(np->itemSet);
 			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_propdialog_new(np);
@@ -717,6 +717,7 @@ void ui_feed_process_update_result(struct request *request) {
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		favicon_download(np);
 
+	ui_node_update(np);
 	node_unload(np);
 
 	debug_exit("ui_feed_process_update_result");
