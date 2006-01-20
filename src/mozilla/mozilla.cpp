@@ -23,6 +23,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#include "mozilla-config.h"
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -138,24 +140,32 @@ mozilla_get_zoom (GtkWidget *embed) {
 	return zoom;
 }
 
-extern "C" void mozilla_scroll_to_top(GtkWidget *widget) {
-	nsIWebBrowser *browser;
-	nsIDOMWindow *DOMWindow;
+extern "C" void mozilla_scroll_to_top(GtkWidget *embed) {
+	nsCOMPtr<nsIWebBrowser>		WebBrowser;	
+	nsCOMPtr<nsIDOMWindow> 		DOMWindow;
 
-	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(widget), &browser);
-	
-	browser->GetContentDOMWindow(&DOMWindow);
+	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(WebBrowser));
+	WebBrowser->GetContentDOMWindow(getter_AddRefs(DOMWindow));	
+	if(NULL == DOMWindow) {
+		g_warning("could not retrieve DOM window...");
+		return;
+	}
+
 	DOMWindow->ScrollTo(0, 0);
 }
 
-extern "C" gboolean mozilla_scroll_pagedown(GtkWidget *widget) {
+extern "C" gboolean mozilla_scroll_pagedown(GtkWidget *embed) {
 	gint initial_y, final_y;
-	nsIWebBrowser *browser;
-	nsIDOMWindow *DOMWindow;
+	nsCOMPtr<nsIWebBrowser>		WebBrowser;	
+	nsCOMPtr<nsIDOMWindow> 		DOMWindow;
 
-	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(widget), &browser);
-	
-	browser->GetContentDOMWindow(&DOMWindow);
+	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(WebBrowser));
+	WebBrowser->GetContentDOMWindow(getter_AddRefs(DOMWindow));	
+	if(NULL == DOMWindow) {
+		g_warning("could not retrieve DOM window...");
+		return FALSE;
+	}
+
 	DOMWindow->GetScrollY(&initial_y);
 	DOMWindow->ScrollByPages(1);
 	DOMWindow->GetScrollY(&final_y);
