@@ -27,6 +27,8 @@
 #  include <config.h>
 #endif
 
+#define MOZILLA_INTERNAL_API
+
 #include "mozilla.h"
 #include <gtk/gtk.h>
 #include <gtkmozembed.h>
