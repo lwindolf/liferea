@@ -38,7 +38,7 @@ int jg_zlib_uncompress(void const *in_buf, int in_size,
                        void **out_buf_ptr, int *out_size,
                        int gzip);   
 
-int jg_gzip_uncompress(void const *in_buf, int in_size,
+int jg_gzip_uncompress(char const *in_buf, int in_size,
                        void **out_buf_ptr, int *out_size);
 
 #endif

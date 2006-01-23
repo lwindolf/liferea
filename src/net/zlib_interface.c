@@ -30,7 +30,7 @@
 #include <zlib.h>
 #include <string.h>
 
-int JG_ZLIB_DEBUG = 0;
+int JG_ZLIB_DEBUG = 1;
 
 struct gzip_header {
 	unsigned char magic[2];
@@ -39,6 +39,14 @@ struct gzip_header {
 	unsigned char mtime[4];
 	unsigned char xfl;
 	unsigned char os;
+};
+
+enum gzip_header_flags {
+	FLG_FTEXT  = 1,
+	FLG_FHCRC  = 2,
+	FLG_FEXTRA = 4,
+	FLG_FNAME  = 8,
+	FLG_FCOMMENT = 16
 };
 
 struct gzip_footer {
@@ -138,18 +146,22 @@ DONE:
 
 /* Decompressed gzip,deflate compressed data. This is what the webservers usually send. */
 
-int jg_gzip_uncompress(void const *in_buf, int in_size, 
+int jg_gzip_uncompress(char const *in_buf, int in_size, 
 					   void **out_buf_ptr, int *out_size) 
 {
 	char tmpstring[1024];
-	struct gzip_header const *header;
-	char *data_start;
-	int offset = sizeof *header;
+	struct gzip_header const *header = (struct gzip_header const*)in_buf;
+	char const *data_start = in_buf + sizeof(struct gzip_header);
+	int flags;
+	in_size -= sizeof(struct gzip_header);
 	
-	header = in_buf;
-	
+	flags = header->flags;
+
 	if (out_size != NULL)
 		*out_size = 0;
+
+	if (in_size < 8)
+		return JG_ZLIB_ERROR_NODATA;
 	
 	if ((header->magic[0] != 0x1F) || (header->magic[1] != 0x8B)) {
 		if (JG_ZLIB_DEBUG)
@@ -162,28 +174,71 @@ int jg_gzip_uncompress(void const *in_buf, int in_size,
 			fprintf(stderr, "ERROR: Compression method is not deflate\n");
 		return JG_ZLIB_ERROR_BAD_METHOD;
 	}
+
+	/* Skip over the extra stuff */
+	if (flags & FLG_FEXTRA) {
+		ssize_t xlen = (data_start[1] << 8) | data_start[0];
+		in_size -= (2 + xlen);
+		data_start += 2 + xlen;
+		flags &= ~FLG_FEXTRA;
+	}
+	if (flags & FLG_FNAME) {
+		while (in_size > 0 && *data_start != '\0') { /* skip over the filename */
+			data_start++;
+			in_size--;
+		}
+		if (in_size == 0) {
+			if (JG_ZLIB_DEBUG) {
+				fprintf(stderr, "ERROR: zlib ran out of data to read from compressed stream\n");
+			}
+			return JG_ZLIB_ERROR_NODATA;
+		}
+		data_start++;
+		in_size--;
+		flags &= ~FLG_FNAME;
+	}
+
+	if (flags & FLG_FCOMMENT) {
+		while (in_size > 0 && *data_start != '\0') { /* skip over the filename */
+			data_start++;
+			in_size--;
+		}
+		if (in_size == 0) {
+			if (JG_ZLIB_DEBUG) {
+				fprintf(stderr, "ERROR: zlib ran out of data to read from compressed stream\n");
+			}
+			return JG_ZLIB_ERROR_NODATA;
+		}
+		data_start++;
+		in_size--;
+		flags &= ~FLG_FNAME;
+	}
 	
-	if (header->flags != 0 && header->flags != 8) {
+	if (flags & FLG_FHCRC) {
+		if (in_size < 2) {
+			if (JG_ZLIB_DEBUG) {
+				fprintf(stderr, "ERROR: zlib ran out of data to read from compressed stream\n");
+			}
+			return JG_ZLIB_ERROR_NODATA;
+		}
+		in_size -= 2;
+		data_start += 2;
+		flags &= ~FLG_FHCRC;
+	}
+
+	if (flags & FLG_FTEXT)
+		flags &= ~FLG_FTEXT;
+	
+	if (in_size < 8)
+		return JG_ZLIB_ERROR_NODATA; /* Needs space at the end */
+	if (flags != 0) {
 		if (JG_ZLIB_DEBUG) {
-			snprintf (tmpstring, sizeof(tmpstring), "ERROR: Unsupported flags %d", header->flags);
+			snprintf (tmpstring, sizeof(tmpstring), "ERROR: Unsupported flags %d", flags);
 			fprintf(stderr, "ERROR: %s\n", tmpstring);
 		}
 		return JG_ZLIB_ERROR_BAD_FLAGS;
 	}
 	
-	if (header->flags & 8) {
-		/* skip the file name */
-		while (offset < in_size) {
-			if (((char *)in_buf)[offset] == 0) {
-				offset++;
-				break;
-			}
-			offset++;
-		}
-	}
-	
-	data_start = (char *)in_buf + offset;
-
-	return jg_zlib_uncompress(data_start, in_size - offset - 8, 
+	return jg_zlib_uncompress(data_start, in_size - 8 /* sizeof(CRC + isize) */, 
 							  out_buf_ptr, out_size, 0);
 }
