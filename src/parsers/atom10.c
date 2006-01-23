@@ -47,6 +47,39 @@ struct atom10ParserState {
 typedef void 	(*atom10ElementParserFunc)	(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState *state);
 
 
+gchar* atom10_mark_up_text_content(gchar* content) {
+	int i, j, num_tokens;
+	gchar** tokens;
+	gchar* str;
+
+	if(!content) return NULL;
+	if(!*content) return g_strdup(content);
+
+	tokens = g_strsplit(content, "\n\n", 0);
+	num_tokens = g_strv_length(tokens);
+
+	/* wrap and escape tokens, but skip empty ones */
+	if(num_tokens > 1) {
+		for(i = 0, j = 0; i < num_tokens; ++i) {
+			str = g_strchug(g_strchomp(tokens[i]));
+			if(*str) tokens[j++] = g_markup_printf_escaped("<p>%s</p>", str);
+			g_free(str);
+		}
+
+		/* in case entries were skipped */
+		tokens[j] = NULL;	
+
+		str = g_strjoinv("\n", tokens);
+	}
+	else {
+		str = g_markup_escape_text(tokens[0], -1);
+	}
+
+	g_strfreev(tokens);
+
+	return str;
+}
+
 /**
  * This parses an Atom content construct.
  *
@@ -115,7 +148,10 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		
 		if (escapeAsText) {
-			gchar *tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
+			g_strchug(g_strchomp(ret));
+			gchar *tmp = strcasecmp(type, "text/plain")
+				? g_markup_printf_escaped("<pre>%s</pre>", ret)
+				: atom10_mark_up_text_content(ret);
 			g_free(ret);
 			ret = tmp;
 		}
@@ -149,11 +185,12 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 	/* This that need to be de-encoded and should not contain sub-tags.*/
 	if (NULL == type || !strcmp(type, "text")) {
 		ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		g_strchug(g_strchomp(ret));
 		
 		if (htmlified) {
-			tmp = ret;
-			ret = g_markup_printf_escaped("<pre>%s</pre>", tmp);
-			g_free(tmp);
+			tmp = atom10_mark_up_text_content(ret);
+			g_free(ret);
+			ret = tmp;
 		}
 	} else if (!strcmp(type, "html")) {
 		ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
