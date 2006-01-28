@@ -197,6 +197,38 @@ void node_unload(nodePtr np) {
 	debug2(DEBUG_CACHE, "- node_unload (%s, new ref count=%d)", node_get_title(np), np->loaded);
 }
 
+void node_update_counters(nodePtr np) {
+	gint	unreadDiff, newDiff;
+	GList	*iter;
+	itemPtr	ip;
+
+	newDiff = -1 * np->newCount;
+	unreadDiff = -1 * np->unreadCount;
+	np->newCount = 0;
+	np->unreadCount = 0;
+
+	iter = np->itemSet->items;
+	while(NULL != iter) {
+		ip = (itemPtr)iter->data;
+		if(FALSE == ip->readStatus)
+			np->unreadCount++;	
+		if(TRUE == ip->newStatus)
+			np->newCount++;
+		if(TRUE == ip->popupStatus)
+			np->popupCount++;
+		iter = g_list_next(iter);
+	}
+	newDiff += np->newCount;
+	unreadDiff += np->unreadCount;
+
+	/* update parent folder */
+	if(NULL != np->parent)
+		node_update_unread_count(np->parent, unreadDiff);
+
+	/* propagate to feed list statistics */
+	feedlist_update_counters(unreadDiff, newDiff);
+}
+
 static void node_merge_item(nodePtr np, itemPtr ip) {
 	gboolean added;
 
@@ -254,40 +286,7 @@ void node_merge_items(nodePtr np, GList *list) {
 	}
 	g_list_free(list);
 
-	ui_notification_update(np);
-	ui_node_update(np);
-}
-
-void node_update_counters(nodePtr np) {
-	gint	unreadDiff, newDiff;
-	GList	*iter;
-	itemPtr	ip;
-
-	newDiff = -1 * np->newCount;
-	unreadDiff = -1 * np->unreadCount;
-	np->newCount = 0;
-	np->unreadCount = 0;
-
-	iter = np->itemSet->items;
-	while(NULL != iter) {
-		ip = (itemPtr)iter->data;
-		if(FALSE == ip->readStatus)
-			np->unreadCount++;	
-		if(TRUE == ip->newStatus)
-			np->newCount++;
-		if(TRUE == ip->popupStatus)
-			np->popupCount++;
-		iter = g_list_next(iter);
-	}
-	newDiff += np->newCount;
-	unreadDiff += np->unreadCount;
-
-	/* update parent folder */
-	if(NULL != np->parent)
-		node_update_unread_count(np->parent, unreadDiff);
-
-	/* propagate to feed list statistics */
-	feedlist_update_counters(unreadDiff, newDiff);
+	node_update_counters(np);
 }
 
 gchar * node_render(nodePtr np) {

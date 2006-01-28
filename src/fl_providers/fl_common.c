@@ -118,9 +118,7 @@ void fl_common_node_update(nodePtr np, guint flags) {
 void fl_common_node_save(nodePtr np) {
 	switch(np->type) {
 		case FST_FEED:
-			g_print("saving node %s\n", node_get_title(np));
 			feed_save_to_cache((feedPtr)np->data, node_get_itemset(np), node_get_id(np));
-			g_print("saving node %s finished\n", node_get_title(np));
 			break;
 		case FST_FOLDER:
 		case FST_VFOLDER:

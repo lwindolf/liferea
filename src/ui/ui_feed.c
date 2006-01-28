@@ -718,6 +718,7 @@ void ui_feed_process_update_result(struct request *request) {
 		favicon_download(np);
 
 	ui_node_update(np);
+	ui_notification_update(np);
 	node_unload(np);
 
 	debug_exit("ui_feed_process_update_result");

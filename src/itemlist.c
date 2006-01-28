@@ -57,15 +57,9 @@ itemPtr itemlist_get_selected(void) {
 nodePtr itemlist_get_displayed_node(void) {
 
 	if(NULL != displayed_itemSet)
-	{
-g_print("itemlist_get_displayed_node = %s\n", displayed_itemSet->node->title);
 		return displayed_itemSet->node;
-	}
 	else
-	{
-g_print("itemlist_get_displayed_node = NULL\n");
 		return NULL;
-	}
 }
 
 static void itemlist_check_for_deferred_removal(void) {
@@ -300,8 +294,7 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 		/* 2. update item list GUI state */
 		ui_itemlist_update_item(ip);
 
-		/* 3. updated feed list unread counters */
-		ui_node_update(displayed_itemSet->node);
+		/* 3. no update of feed list necessary... */
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();		
@@ -325,6 +318,7 @@ void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 		ui_itemlist_update_item(ip);
 
 		/* 3. updated feed list unread counters */
+		node_update_counters(displayed_itemSet->node);
 		ui_node_update(displayed_itemSet->node);
 
 		/* 4. update notification statistics */
@@ -348,8 +342,8 @@ void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) {
 		/* 2. update item list GUI state */
 		ui_itemlist_update_item(ip);	
 
-		/* 3. updated feed list unread counters */
-		ui_node_update(displayed_itemSet->node);
+		/* 3. no update of feed list necessary... */
+		node_update_counters(displayed_itemSet->node);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();

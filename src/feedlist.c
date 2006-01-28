@@ -106,6 +106,7 @@ void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
 	parent->children = g_slist_append(parent->children, np);
 	ui_node_add(parent, np, position);	
+	ui_node_update(np);
 }
 
 void feedlist_update_node(nodePtr np) {
