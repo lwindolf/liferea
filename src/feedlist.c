@@ -319,10 +319,8 @@ void feedlist_selection_changed(nodePtr np) {
 	nodePtr	displayed_node;
 
 	debug_enter("feedlist_selection_changed");
-	g_print("feedlist_selection_changed\n");
 
 	debug1(DEBUG_GUI, "new selected node: %s", (NULL == np)?"none":node_get_title(np));
-g_print( "new selected node: %s\n", (NULL == np)?"none":node_get_title(np));
 
 	if(np != selectedNode) {
 		displayed_node = itemlist_get_displayed_node();
@@ -331,9 +329,7 @@ g_print( "new selected node: %s\n", (NULL == np)?"none":node_get_title(np));
 		   assume that he got notified of the new items or
 		   isn't interested in the event anymore... */
 		if(0 != newCount) {
-g_print("resetting new count...\n");
 			feedlist_reset_new_item_count();
-g_print("resetting new count finished...\n");
 		}
 
 		/* Unload visible items. */

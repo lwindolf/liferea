@@ -547,7 +547,8 @@ void on_folderhidereadbtn_toggled(GtkToggleButton *togglebutton, gpointer user_d
 	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
 	setBooleanConfValue(FOLDER_DISPLAY_HIDE_READ, enabled);
 	displayed_node = itemlist_get_displayed_node();
-	itemlist_load(displayed_node->itemSet);
+	if(displayed_node)
+		itemlist_load(displayed_node->itemSet);
 }
 
 void on_trayiconoptionbtn_clicked(GtkButton *button, gpointer user_data) {
