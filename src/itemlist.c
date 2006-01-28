@@ -235,18 +235,20 @@ static gboolean itemlist_check_if_unread(itemPtr ip) {
 
 /* tries to find unread item in current item list */
 static gboolean itemlist_find_unread_item(void) {
-	GList	*selected, *iter;
+	GList	*iter, *selected = NULL;
 	
-	if(!displayed_itemSet || !displayed_item)
+	if(!displayed_itemSet)
 		return;
 
 	/* first look for unread items after the currently selected item */
-	selected = iter = g_list_find(displayed_itemSet->items, displayed_item);
-	while(iter) {
-		if(itemlist_check_if_unread((itemPtr)iter->data))
-			return TRUE;
-		iter = g_list_next(iter);
-	} 
+	if(displayed_item) {
+		selected = iter = g_list_find(displayed_itemSet->items, displayed_item);
+		while(iter) {
+			if(itemlist_check_if_unread((itemPtr)iter->data))
+				return TRUE;
+			iter = g_list_next(iter);
+		} 
+	}
 	
 	/* No match from cursor, restart from the first. */
 	iter = displayed_itemSet->items;
@@ -268,7 +270,7 @@ void itemlist_select_next_unread(void) {
 		return;
 	
 	/* scan feed list and find first feed with unread items */
-	if(NULL != (np = feedlist_find_unread_feed(NULL))) {
+	if(NULL != (np = feedlist_find_unread_feed(feedlist_get_root()))) {
 		
 		/* load found feed */
 		ui_feedlist_select(np);

@@ -255,16 +255,6 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 		scanState = UNREAD_SCAN_SECOND_PASS;
 	}
 
-	if(folder != NULL) {
-		// FIXME: this does not make sense!!!!!!! */
-		/* determine folder tree iter */
-		parent = g_slist_find(folder->parent->children, folder);
-	} else {
-		// FIXME: this does not make sense!!!!!!! */
-		if(NULL == folder->children)
-			return NULL;	/* avoid problems in filtered mode */
-	}
-	
 	iter = folder->children;
 	while(iter) {
 		np = iter->data;
@@ -292,14 +282,16 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 		iter = g_slist_next(iter);
 	}
 
-	if(NULL == folder) { /* we are on feed list root but didn't find anything */
+	/* When we come here we didn't find anything from the selected
+	   feed down to the end of the feed list. */
+	if(folder == feedlist_get_root()) {
 		if(0 == feedlist_get_unread_item_count()) {
 			/* this may mean there is nothing more to find */
 		} else {
-			/* or that we just didn't find anything after the selected feed */
+			/* or that there are unread items above the selected feed */
 			g_assert(scanState != UNREAD_SCAN_SECOND_PASS);
 			scanState = UNREAD_SCAN_SECOND_PASS;
-			childNode = feedlist_unread_scan(NULL);
+			childNode = feedlist_unread_scan(feedlist_get_root());
 			return childNode;
 		}
 	}
