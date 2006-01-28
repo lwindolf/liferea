@@ -420,11 +420,14 @@ guint node_str_to_type(const gchar *str) {
 
 	g_assert(NULL != str);
 
-	if(0 == strcmp(str, "vfolder"))
+	if(g_str_equal(str, "vfolder"))
 		return FST_VFOLDER;
 
-	if(0 == strcmp(str, "plugin"))
+	if(g_str_equal(str, "plugin"))
 		return FST_PLUGIN;
+
+	if(g_str_equal(str, ""))	/* type maybe "" if initial download is not yet done */
+		return FST_FEED;
 
 	if(NULL != feed_type_str_to_fhp(str))
 		return FST_FEED;

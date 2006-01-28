@@ -64,17 +64,8 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 	xmlNewProp(childNode, BAD_CAST"text", BAD_CAST node_get_title(np)); /* The OPML spec requires "text" */
 	xmlNewProp(childNode, BAD_CAST"description", BAD_CAST node_get_title(np));
 	
-	switch(np->type) {
-		case FST_FEED:
-			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST node_type_to_str(np));
-			break;
-		case FST_PLUGIN:
-			xmlNewProp(childNode, BAD_CAST"type", BAD_CAST "plugin");
-			break;
-		case FST_FOLDER:
-		default:
-			break;
-	}
+	if(node_type_to_str(np)) 
+		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST node_type_to_str(np));
 
 	/* Don't add the following tags if we are exporting to other applications */
 	if(internal) {
