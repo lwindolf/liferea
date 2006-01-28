@@ -21,27 +21,37 @@
 
 #include "itemset.h"
 #include <string.h>
+#include "debug.h"
 #include "node.h"
 #include "feed.h"
 #include "vfolder.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_mainwindow.h"
 
-gchar * itemset_render_item(itemSetPtr sp, itemPtr ip) {
-	gchar		*tmp, *buffer = NULL;
-	const gchar 	*baseUri = NULL;
+static const gchar * itemset_get_base_url(itemSetPtr sp) {
+	const gchar 	*baseUrl = NULL;
 
 	switch(sp->type) {
 		case ITEMSET_TYPE_FEED:
-			baseUri = feed_get_html_url((feedPtr)ip->itemSet->node->data);
+			baseUrl = feed_get_html_url((feedPtr)sp->node->data);
 			break;
 		case ITEMSET_TYPE_FOLDER:
-			baseUri = NULL;
 			break;
 		case ITEMSET_TYPE_VFOLDER:
-			baseUri = NULL;
 			break;
 	}
 
-	ui_htmlview_start_output(&buffer, baseUri, TRUE);
+	return baseUrl;
+}
+
+gchar * itemset_render_item(itemSetPtr sp, itemPtr ip) {
+	gchar		*tmp, *buffer = NULL;
+	const gchar	*baseUrl;
+
+	debug_enter("itemset_render_item");
+
+	baseUrl = itemset_get_base_url(sp);
+	ui_htmlview_start_output(&buffer, baseUrl, TRUE);
 
 	tmp = item_render(ip);
 	addToHTMLBufferFast(&buffer, tmp);
@@ -50,20 +60,54 @@ gchar * itemset_render_item(itemSetPtr sp, itemPtr ip) {
 	ui_htmlview_finish_output(&buffer);
 
 	/* prevent feed scraping commands to end up as base URI */
-	if(!((baseUri != NULL) &&
-	     (baseUri[0] != '|') &&
-	     (strstr(baseUri, "://") != NULL)))
-	   	baseUri = NULL;
+	if(!((baseUrl != NULL) &&
+	     (baseUrl[0] != '|') &&
+	     (strstr(baseUrl, "://") != NULL)))
+	   	baseUrl = NULL;
 
-	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, baseUri);
+	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, baseUrl);
 
 	g_free(buffer);
+
+	debug_exit("itemset_render_item");
 }
 
 gchar * itemset_render_all(itemSetPtr sp) {
+	gchar		*tmp, *buffer = NULL;
+	const gchar	*baseUrl;
+	GList		*iter;
+	itemPtr		ip;
 
-	// FIXME
-	return NULL;
+	debug_enter("itemset_render_all");
+
+	baseUrl = itemset_get_base_url(sp);
+	ui_htmlview_start_output(&buffer, baseUrl, FALSE);
+
+	iter = sp->items;
+	while(iter) {	
+		ip = (itemPtr)iter->data;
+
+		if(ip->readStatus) 
+			addToHTMLBuffer(&buffer, UNSHADED_START);
+		else
+			addToHTMLBuffer(&buffer, SHADED_START);
+				
+		tmp = item_render(ip);
+		addToHTMLBuffer(&buffer, tmp);
+		g_free(tmp);
+				
+		if(ip->readStatus)
+			addToHTMLBuffer(&buffer, UNSHADED_END);
+		else
+			addToHTMLBuffer(&buffer, SHADED_END);
+		
+
+		iter = g_list_next(iter);
+	}
+
+	debug_exit("itemset_render_all");
+
+	return buffer;
 }
 
 itemPtr itemset_lookup_item(itemSetPtr sp, nodePtr np, gulong nr) {

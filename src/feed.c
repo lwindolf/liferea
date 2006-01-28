@@ -1,7 +1,7 @@
 /**
  * @file feed.c common feed handling
  * 
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -45,21 +45,16 @@
 #include "parsers/opml.h"
 #include "vfolder.h"
 #include "feed.h"
-#include "favicon.h"
-#include "callbacks.h"
 #include "net/cookies.h"
 #include "update.h"
 #include "debug.h"
 #include "metadata.h"
 
 #include "ui/ui_enclosure.h"
-#include "ui/ui_feed.h"	
-#include "ui/ui_feedlist.h"
-#include "ui/ui_tray.h"
 #include "ui/ui_htmlview.h"
 
 /* auto detection lookup table */
-static GSList *feedhandlers;
+static GSList *feedhandlers = NULL;
 
 struct feed_type {
 	gint id_num;
@@ -611,7 +606,6 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 				g_free(tmp);	
 				cur = cur->next;
 			}
-			//favicon_load(np); FIXME!!!
 		} while(FALSE);
 	
 		if(0 != error)

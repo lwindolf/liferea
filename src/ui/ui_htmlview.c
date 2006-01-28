@@ -67,7 +67,11 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 	gchar		*filename;
 	
 	/* print some warnings concerning Mozilla */
+#ifndef __CYGWIN__
 	if((0 == strncmp(libname, "liblihtmlm", 10)) && !testmode) {
+#else
+	if((0 == strncmp(libname, "cyglihtmlm", 10)) && !testmode) {
+#endif
 		debug0(DEBUG_GUI, _("\nTrying to load the Mozilla browser module... Note that this\n"
 		                  "might not work with every Mozilla version. If you have problems\n"
 		                  "and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
@@ -136,7 +140,11 @@ void ui_htmlview_init(void) {
 		filenamelen = 11 + strlen(G_MODULE_SUFFIX);
 		filename = (gchar *)g_dir_read_name(dir);
 		while(NULL != filename) {
+#ifndef __CYGWIN__
 			if((filenamelen == strlen(filename)) && (0 == strncmp("liblihtml", filename, 9))) {	
+#else
+			if((filenamelen == strlen(filename)) && (0 == strncmp("cyglihtml", filename, 9))) {	
+#endif
 			   	/* now lets filter the files with correct library suffix */
 				if(0 == strncmp(G_MODULE_SUFFIX, filename + 11, strlen(G_MODULE_SUFFIX))) {
 					/* if we find one, try to load all symbols and if successful
@@ -397,23 +405,29 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 }
 
 static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean sync) {
-	GError *error = NULL;
-	gchar *tmp, **argv, **iter;
-	gint argc, status;
-	gboolean done = FALSE;
+	GError		*error = NULL;
+	gchar 		*tmpUri, *tmp, **argv, **iter;
+	gint 		argc, status, i;
+	gboolean 	done = FALSE;
   
 	g_assert(cmd != NULL);
 	g_assert(uri != NULL);
   
-	/* If there is no %s, then just append %s */
-  
+	/* If the command is using the X remote API we must
+	   escaped all ',' in the URL */
+	if(NULL != strstr(cmd, "-remote"))
+		tmpUri = strreplace(uri, ",", "%2C");
+	else
+		tmpUri = g_strdup(uri);
+
+	/* If there is no %s in the command, then just append %s */
 	if(NULL == strstr(cmd, "%s"))
 		tmp = g_strdup_printf("%s %%s", cmd);
 	else
 		tmp = g_strdup(cmd);
+
   
-	/* Parse and substitute the %s*/
-  
+	/* Parse and substitute the %s in the command */
 	g_shell_parse_argv(tmp, &argc, &argv, &error);
 	g_free(tmp);
 	if((NULL != error) && (0 != error->code)) {
@@ -425,7 +439,7 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
   
 	if (argv != NULL) {
 		for(iter = argv; *iter != NULL; iter++) {
-			tmp = strreplace(*iter, "%s", uri);
+			tmp = strreplace(*iter, "%s", tmpUri);
 			g_free(*iter);
 			*iter = tmp;
 		}
@@ -447,6 +461,7 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
 		done = TRUE;
 	}
   
+	g_free(tmpUri);
 	g_free(tmp);
 	g_strfreev(argv);
   

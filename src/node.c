@@ -89,6 +89,18 @@ void node_add_data(nodePtr np, guint type, gpointer data) {
 	}
 }
 
+gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
+	nodePtr	tmp;
+
+	tmp = node2->parent;
+	while(tmp) {
+		if(node1 == tmp)
+			return TRUE;
+		tmp = tmp->parent;
+	}
+	return FALSE;
+}
+
 void node_free(nodePtr np) {
 
 	g_assert(0 == np->loaded);

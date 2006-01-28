@@ -69,6 +69,13 @@ gchar * ui_itemlist_format_date(time_t t);
 void ui_itemlist_prefocus(void);
 
 /**
+ * Selects the given item (if it is in the current item list).
+ *
+ * @param ip	the item to select
+ */
+void ui_itemlist_select(itemPtr ip);
+
+/**
  * Adds content to the htmlview after a new feed has been selected and
  * sets an item as read.
  */
@@ -76,6 +83,8 @@ void ui_itemlist_display(void);
 
 /**
  * Add an item to the itemlist
+ *
+ * @param ip	the item to add
  * @param merge set to true when the itemlist should be searched for
  * the particular item and the item be updated if necessary.
  */
@@ -112,6 +121,15 @@ on_Itemlist_row_activated              (GtkTreeView     *treeview,
                                         GtkTreeViewColumn *column,
                                         gpointer         user_data);
 
+/**
+ * Callback for column selection change.
+ */
+void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data);
+
+/**
+ * Callback for item list selection change.
+ */
+void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
 
 /* menu callbacks */
 
@@ -225,11 +243,6 @@ void ui_itemlist_update_item(itemPtr ip);
  * Update all item list entries of the currently displayed item list.
  */
 void ui_itemlist_update(void);
-
-/**
- * Resolves a tree iter into the item it represents.
- */
-itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter);
 
 /**
  * Copies the selected items URL to the clipboard.

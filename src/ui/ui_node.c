@@ -28,25 +28,23 @@
 #include "interface.h"
 #include "callbacks.h"
 #include "conf.h"
+#include "debug.h"
 #include "ui_feedlist.h"
 #include "ui_node.h"
 
 static GtkWidget	*newfolderdialog = NULL;
 static GtkWidget	*foldernamedialog = NULL;
 
+extern GHashTable 	*flIterHash;
+
+GtkTreeIter * ui_node_to_iter(nodePtr node) {
+
+	return (GtkTreeIter *)g_hash_table_lookup(flIterHash, (gpointer)node);
+}
+
 /*------------------------------------------------------------------------------*/
 /* new/change/remove folder dialog callbacks 					*/
 /*------------------------------------------------------------------------------*/
-
-void on_popup_newfolder_selected(void) {
-
-	node_add(FST_FOLDER);
-}
-
-void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
-
-	on_popup_newfolder_selected();
-}
 
 void ui_folder_newdialog(nodePtr np) {
 	GtkWidget	*foldernameentry;
@@ -117,22 +115,16 @@ void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
  */
 
 gboolean ui_node_is_folder_expanded(nodePtr folder) {
-	GtkTreeIter		*iter;
-	GtkTreePath		*path;
-	GtkWidget		*treeview;
-	gboolean expanded = FALSE;
+	GtkTreePath	*path;
+	GtkTreeIter	*iter;
+	gboolean 	expanded = FALSE;
 
-	g_assert(NULL != feedstore);
-
-	if(folder->ui_data == NULL)
-		return FALSE;
-
-	if(NULL != (treeview = lookup_widget(mainwindow, "feedlist"))) {
-		iter = &((ui_data*)(folder->ui_data))->row;
+	if(iter = ui_node_to_iter(folder)) {
 		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
-		expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(treeview), path);
+		expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), path);
 		gtk_tree_path_free(path);
 	}
+
 	return expanded;
 }
 
@@ -142,13 +134,14 @@ void ui_node_set_expansion(nodePtr folder, gboolean expanded) {
 	GtkWidget		*treeview;	
 
 	treeview = lookup_widget(mainwindow, "feedlist");
-	iter = &((ui_data*)((nodePtr)folder)->ui_data)->row;
-	path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
-	if(expanded)
-		gtk_tree_view_expand_row(GTK_TREE_VIEW(treeview), path, FALSE);
-	else
-		gtk_tree_view_collapse_row(GTK_TREE_VIEW(treeview), path);
-	gtk_tree_path_free(path);
+	if(iter = ui_node_to_iter(folder)) {
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
+		if(expanded)
+			gtk_tree_view_expand_row(GTK_TREE_VIEW(treeview), path, FALSE);
+		else
+			gtk_tree_view_collapse_row(GTK_TREE_VIEW(treeview), path);
+		gtk_tree_path_free(path);
+	}
 }
 
 /* Subfolders */
@@ -158,11 +151,13 @@ void ui_node_set_expansion(nodePtr folder, gboolean expanded) {
    empty folder like Nautilus does... */
    
 void ui_node_check_if_folder_is_empty(nodePtr folder) {
-	GtkTreeIter	*parent = &((ui_data*)(folder->ui_data))->row;
+	GtkTreeIter	*parent;
 	GtkTreeIter	iter;
 	int		count;
 	gboolean	valid;
 	nodePtr		np;
+
+	debug1(DEBUG_GUI, "folder empty check for \"%s\"", node_get_title(folder));
 
 	/* this function does two things:
 	   
@@ -170,7 +165,10 @@ void ui_node_check_if_folder_is_empty(nodePtr folder) {
 	2. remove an "(empty)" entry from a non empty folder
 	(this state is possible after a drag&drop action) */
 
+	parent = ui_node_to_iter(folder);
+	debug1(DEBUG_GUI, "folder empty check for \"%s\"", node_get_title(folder));
 	count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), parent);
+	debug1(DEBUG_GUI, "folder empty check for \"%s\"", node_get_title(folder));
 	
 	/* case 1 */
 	if(0 == count) {
@@ -201,21 +199,50 @@ void ui_node_check_if_folder_is_empty(nodePtr folder) {
 	} while(valid);
 }
 
+void ui_node_add(nodePtr parent, nodePtr node, gint position) {
+	GtkTreeIter	*iter, *parentIter = NULL;
+
+	debug2(DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != parent)?node_get_title(parent):"feed list root");
+
+	g_assert(NULL != parent);
+	g_assert(NULL == ui_node_to_iter(node));
+
+	/* if parent is NULL we have the root folder and don't create a new row! */
+	iter = (GtkTreeIter *)g_new0(GtkTreeIter, 1);
+	
+	if(!parent->isRoot)
+		parentIter = ui_node_to_iter(parent);
+	
+	if(position < 0)
+		gtk_tree_store_append(feedstore, iter, parentIter);
+	else
+		gtk_tree_store_insert(feedstore, iter, parentIter, position);
+
+	gtk_tree_store_set(feedstore, iter, FS_PTR, node, -1);
+	g_hash_table_insert(flIterHash, (gpointer)node, (gpointer)iter);
+
+	ui_node_update(node);
+	
+	if(!parent->isRoot)
+		ui_node_check_if_folder_is_empty(parent);
+
+	if(FST_FOLDER == node->type)
+		ui_node_check_if_folder_is_empty(node);
+}
+
 void ui_node_remove_node(nodePtr np) {
-	GtkTreeIter	iter;
+	GtkTreeIter	*iter;
 	gboolean 	parentExpanded = FALSE;
 	
-	g_return_if_fail(NULL != np->ui_data);
+	iter = ui_node_to_iter(np);
+	g_return_if_fail(NULL != iter);
 
-	iter = ((ui_data*)(np->ui_data))->row;
 	if(np->parent != NULL)
 		parentExpanded = ui_node_is_folder_expanded(np->parent); /* If the folder becomes empty, the folder would collapse */
 	
-	gtk_tree_store_remove(feedstore, &iter);
+	gtk_tree_store_remove(feedstore, iter);
+	g_hash_table_remove(flIterHash, iter);
 	
-	g_free((ui_data*)(np->ui_data));
-	np->ui_data = NULL;
-
 	if(np->parent != NULL) {
 		ui_node_check_if_folder_is_empty(np->parent);
 		if(parentExpanded)
@@ -259,23 +286,21 @@ static GdkPixbuf* ui_node_get_icon(nodePtr np) {
 }
 
 void ui_node_update(nodePtr np) {
-	GtkTreeIter	iter;
+	GtkTreeIter	*iter;
 	gchar		*label;
-	int		count;
 
-	if(np->ui_data == NULL)
+	iter = ui_node_to_iter(np);
+	if(iter == NULL)
 		return;
 
-	iter = ((ui_data*)np->ui_data)->row;
-	
-	count = node_get_unread_count(np);
+	gint count = node_get_unread_count(np);
 	
 	if(count > 0)
 		label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>", node_get_title(np), count);
 	else
 		label = g_markup_printf_escaped("%s", node_get_title(np));
 	
-	gtk_tree_store_set(feedstore, &iter, FS_LABEL, label,
+	gtk_tree_store_set(feedstore, iter, FS_LABEL, label,
 	                                    FS_UNREAD, count,
 	                                    FS_ICON, ui_node_get_icon(np),
 	                                    -1);

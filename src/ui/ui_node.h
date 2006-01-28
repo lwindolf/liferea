@@ -26,6 +26,24 @@
 #include "node.h"
 
 /**
+ * Determines the tree iter of a given node.
+ *
+ * @param np	the node
+ */
+GtkTreeIter * ui_node_to_iter(nodePtr np);
+
+/**
+ * Add a node to the feedlist
+ *
+ * @param parent	the parent of the new folder, or NULL to 
+ *			insert in the root folder
+ * @param node		the node to add
+ * @param position	the position in which the folder should be 
+ *			added, or -1 to append the folder to the parent.
+ */
+void ui_node_add(nodePtr parent, nodePtr node, gint position);
+
+/**
  * Remove a node from the feedlist and free its ui_data.
  *
  * @param np	the node to free

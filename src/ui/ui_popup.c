@@ -22,6 +22,8 @@
 #  include <config.h>
 #endif
 
+#include <libxml/uri.h>
+
 #include "feed.h"
 #include "node.h"
 #include "support.h"
@@ -230,11 +232,11 @@ GtkMenu *ui_popup_make_systray_menu(void) { return make_menu(tray_menu_items, tr
 /* FIXME: This memleaks the enclosure URL */
 GtkMenu *ui_popup_make_enclosure_menu(const gchar *url) {
 	GtkMenu		*menu;
-	gchar		*enclosure_url;
+	xmlChar		*enclosure_url;
 
 	if(NULL != (enclosure_url = xmlURIUnescapeString(url + strlen(ENCLOSURE_PROTOCOL "load?"), 0, NULL))) {
 		menu = make_menu(enclosure_menu_items, enclosure_menu_len, g_strdup(enclosure_url)); 
-		g_free(enclosure_url);
+		xmlFree(enclosure_url);
 		return menu;
 	}
 

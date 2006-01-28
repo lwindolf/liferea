@@ -48,7 +48,6 @@ enum node_types {
 typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
 	guint			type;		/**< node type */
-	gpointer		ui_data;	/**< UI data */
 	struct flNodeHandler_	*handler;	/**< pointer to feed list plugin instance handling this node */
 
 	/* feed list state properties of this node */
@@ -104,6 +103,15 @@ void node_remove(nodePtr np);
  * @param data	the structure
  */
 void node_add_data(nodePtr np, guint type, gpointer data);
+
+/**
+ * Determines wether node1 is an ancestor of node2
+ *
+ * @param node1		the possible ancestor
+ * @param node2		the possible child
+ * @returns TRUE if node1 is ancestor of node2
+ */
+gboolean node_is_ancestor(nodePtr node1, nodePtr node2);
 
 /** 
  * Query the node's title for the feed list.

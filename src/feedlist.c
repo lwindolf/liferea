@@ -45,7 +45,7 @@ static nodePtr	rootNode = NULL;
 /* selectedNode matches the node selected in the feed list tree view, which
    is not necessarily the displayed one (e.g. folders without recursive
    display enabled) */
-nodePtr	selectedNode = NULL; 		
+static nodePtr	selectedNode = NULL; 		
 
 static guint feedlist_save_timer = 0;
 static gboolean feedlistLoading = TRUE;
@@ -105,9 +105,7 @@ void feedlist_reset_new_item_count(void) {
 void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
 
 	parent->children = g_slist_append(parent->children, np);
-	ui_feedlist_add(parent, np, position);	// FIXME: should be ui_node_add_child()
-	if(NULL != parent)
-		ui_node_update(parent);
+	ui_node_add(parent, np, position);	
 }
 
 void feedlist_update_node(nodePtr np) {
@@ -190,17 +188,17 @@ static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
 	}
 
 	debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(sp->items));
-	sp->items = g_list_concat(sp->items, np->itemSet->items);
+	/* Don't use a direct g_list_concat() here it will freeze the program! (Lars) */
+	// FIXME: is this a memleak?
+	sp->items = g_list_concat(sp->items, g_list_copy(np->itemSet->items));
 	debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(sp->items));
 }
 
 void feedlist_load_node(nodePtr np) {
 
 	if(FST_FOLDER == np->type) {
-g_print("merging child itemsets\n");
 		g_assert(NULL != np->itemSet);
 		feedlist_foreach_data(np, FEEDLIST_FILTER_CHILDREN, feedlist_merge_itemset_cb, (gpointer)np->itemSet);
-g_print("merging finished: %d results\n", g_list_length(np->itemSet->items));
 	} else {
 		node_load(np);
 	}
@@ -231,7 +229,90 @@ static gboolean feedlist_auto_update(void *data) {
 	return TRUE;
 }
 
-/* direct user callbacks */
+/* next unread scanning */
+
+enum scanStateType {
+  UNREAD_SCAN_INIT,            /* selected not yet passed */
+  UNREAD_SCAN_FOUND_SELECTED,  /* selected passed */
+  UNREAD_SCAN_SECOND_PASS      /* no unread items after selected feed */
+};
+
+static enum scanStateType scanState = UNREAD_SCAN_INIT;
+
+/* This method tries to find a feed with unread items 
+   in two passes. In the first pass it tries to find one
+   after the currently selected feed (including the
+   selected feed). If there are no such feeds the 
+   search is restarted for all feeds. */
+static nodePtr feedlist_unread_scan(nodePtr folder) {
+	nodePtr			np, childNode, selectedNode;
+	GSList			*iter, *iter2, *selectedIter = NULL, *parent = NULL;
+
+	if(NULL != (selectedNode = feedlist_get_selected())) {
+		selectedIter = g_slist_find(selectedNode->parent->children, selectedNode);
+	} else {
+		scanState = UNREAD_SCAN_SECOND_PASS;
+	}
+
+	if(folder != NULL) {
+		// FIXME: this does not make sense!!!!!!! */
+		/* determine folder tree iter */
+		parent = g_slist_find(folder->parent->children, folder);
+	} else {
+		// FIXME: this does not make sense!!!!!!! */
+		if(NULL == folder->children)
+			return NULL;	/* avoid problems in filtered mode */
+	}
+	
+	iter = folder->children;
+	while(iter) {
+		np = iter->data;
+
+		if(np == selectedNode)
+			scanState = UNREAD_SCAN_FOUND_SELECTED;
+
+		/* feed match if beyond the selected feed or in second pass... */
+		if((scanState != UNREAD_SCAN_INIT) && (np->unreadCount > 0) &&
+		   ((FST_FEED == np->type) || (FST_PLUGIN == np->type))) {
+		       return np;
+		}
+
+		/* folder traversal if we are searching the selected feed
+		   which might be a descendant of the folder and if we
+		   are beyond the selected feed and the folder contains
+		   feeds with unread items... */
+		if((FST_FOLDER == np->type) &&
+		   (((scanState != UNREAD_SCAN_INIT) && (np->unreadCount > 0)) ||
+		    ((NULL != selectedIter) && (node_is_ancestor(np, selectedNode))))) {
+		       if(NULL != (childNode = feedlist_unread_scan(np)))
+				return childNode;
+		} /* Directories are never checked */
+
+		iter = g_slist_next(iter);
+	}
+
+	if(NULL == folder) { /* we are on feed list root but didn't find anything */
+		if(0 == feedlist_get_unread_item_count()) {
+			/* this may mean there is nothing more to find */
+		} else {
+			/* or that we just didn't find anything after the selected feed */
+			g_assert(scanState != UNREAD_SCAN_SECOND_PASS);
+			scanState = UNREAD_SCAN_SECOND_PASS;
+			childNode = feedlist_unread_scan(NULL);
+			return childNode;
+		}
+	}
+
+	return NULL;
+}
+
+nodePtr feedlist_find_unread_feed(nodePtr folder) {
+
+	scanState = UNREAD_SCAN_INIT;
+	return feedlist_unread_scan(folder);
+}
+
+/* selection handling */
 
 void feedlist_selection_changed(nodePtr np) {
 	nodePtr	displayed_node;
@@ -240,6 +321,7 @@ void feedlist_selection_changed(nodePtr np) {
 	g_print("feedlist_selection_changed\n");
 
 	debug1(DEBUG_GUI, "new selected node: %s", (NULL == np)?"none":node_get_title(np));
+g_print( "new selected node: %s\n", (NULL == np)?"none":node_get_title(np));
 
 	if(np != selectedNode) {
 		displayed_node = itemlist_get_displayed_node();
@@ -247,8 +329,11 @@ void feedlist_selection_changed(nodePtr np) {
 		/* When the user selects a feed in the feed list we
 		   assume that he got notified of the new items or
 		   isn't interested in the event anymore... */
-		if(0 != newCount)
+		if(0 != newCount) {
+g_print("resetting new count...\n");
 			feedlist_reset_new_item_count();
+g_print("resetting new count finished...\n");
+		}
 
 		/* Unload visible items. */
 		itemlist_unload();
@@ -440,7 +525,6 @@ void feedlist_foreach_full(nodePtr node, gint filter, gpointer func, gint params
 	while(iter) {
 		childNode = (nodePtr)iter->data;
 		
-//g_print("feedlist_foreach:%s\n", childNode->title);
 		apply = (filter & FEEDLIST_FILTER_CHILDREN) ||
 			((filter & FEEDLIST_FILTER_FEED) && (FST_FEED == childNode->type)) ||
 			((filter & FEEDLIST_FILTER_FEED) && (FST_PLUGIN == childNode->type)) ||

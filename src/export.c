@@ -52,7 +52,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 	xmlNodePtr	childNode;
 	struct exportData data;
 
-	if((FST_PLUGIN == np->type) && (FALSE == internal))
+	if(!internal && ((FST_PLUGIN == np->type) || (FST_VFOLDER == np->type)))
 		return;
 	
 	debug_enter("append_node_tag");

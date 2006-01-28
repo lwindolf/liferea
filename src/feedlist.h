@@ -129,7 +129,18 @@ void feedlist_foreach_full(nodePtr ptr, gint filter, gpointer func, gint params,
 #define feedlist_foreach_data(ptr, filter, func, user_data) feedlist_foreach_full(ptr,filter,func,1,user_data)
 
 /* UI callbacks */
+
+/**
+ * Callback for feed list selection change 
+ */
 void feedlist_selection_changed(nodePtr np);
+
+/** 
+ * Tries to find the first node with an unread item in the given folder.
+ * 
+ * @return folder pointer or NULL
+ */
+nodePtr	feedlist_find_unread_feed(nodePtr folder);
 
 /* direct user callbacks */
 void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data);

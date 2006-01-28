@@ -32,6 +32,7 @@
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "item.h"
 #include "itemlist.h"
 #include "conf.h"
@@ -42,20 +43,16 @@
 
 extern GdkPixbuf	*icons[];
 
-static GHashTable 	*iterhash = NULL;	/* hash table used for fast item->tree iter lookup */
+static GHashTable 	*ilIterHash = NULL;	/* hash table used for fast item->tree iter lookup */
 
 gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
 
-// FIXME: remove these two
-extern itemPtr		displayed_item;
+// FIXME: remove this
 extern itemSetPtr	displayed_itemSet;
 
 #define	TIMESTRLEN	256
 
 static gchar 		*date_format = NULL;	/* date formatting string */
-
-/* mouse/keyboard interaction callbacks */
-static itemPtr ui_itemlist_get_selected();
 
 /* sort function for the item list date column */
 static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
@@ -77,6 +74,12 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 		return 0;
 }
 
+GtkTreeIter * ui_item_to_iter(itemPtr ip) {
+
+	return (GtkTreeIter *)g_hash_table_lookup(ilIterHash, ip);
+	return NULL;
+}
+
 extern gint disableSortingSaving;
 
 void ui_itemlist_reset_tree_store() {
@@ -90,7 +93,6 @@ void ui_itemlist_reset_tree_store() {
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), NULL);
 	
-	displayed_item = NULL;
 	g_object_unref(model);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), GTK_TREE_MODEL(ui_itemlist_get_tree_store()));
 
@@ -127,23 +129,6 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	}
 	
 	return itemstore;
-}
-
-itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter) {
-	GtkTreeStore	*itemstore;
-	itemSetPtr	sp;
-	itemPtr		ip;
-	nodePtr		np;
-	gulong		nr;
-	
-	itemstore = ui_itemlist_get_tree_store();
-	gtk_tree_model_get(GTK_TREE_MODEL(itemstore), iter, 
-			   IS_NR, &nr, 
-			   IS_PARENT, &np, 
-			   -1);
-	ip = itemset_lookup_item(displayed_itemSet, np, nr);
-	g_assert(ip != NULL);
-	return ip;
 }
 
 gchar * ui_itemlist_format_date(time_t t) {
@@ -194,21 +179,22 @@ void ui_itemlist_reset_date_format(void) {
 }
 
 void ui_itemlist_remove_item(itemPtr ip) {
-	GtkTreeStore	*itemstore;
 	GtkTreeIter	*iter;
 
 	g_assert(NULL != ip);
-	if(NULL != (iter = g_hash_table_lookup(iterhash, (gpointer)ip))) {
-		itemstore = ui_itemlist_get_tree_store();
-		gtk_tree_store_remove(itemstore, iter);
-		g_hash_table_remove(iterhash, (gpointer)ip);
+	if(NULL != (iter = ui_item_to_iter(ip))) {
+		gtk_tree_store_remove(ui_itemlist_get_tree_store(), iter);
+		g_hash_table_remove(ilIterHash, (gpointer)ip);
 	} else {
 		/*g_warning("item to be removed not found in tree iter lookup hash!");*/
 	}
 }
 
+static gboolean true_func(gpointer key, gpointer value, gpointer user_data) { return TRUE; }
+
 /* cleans up the item list, sets up the iter hash when called for the first time */
 void ui_itemlist_clear(void) {
+
 	GtkAdjustment		*adj;
 	GtkTreeView		*treeview;
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
@@ -223,12 +209,12 @@ void ui_itemlist_clear(void) {
 	gtk_adjustment_set_value(adj, 0.0);
 	gtk_tree_view_set_vadjustment(treeview, adj);
 
-	if(NULL != iterhash)
-		g_hash_table_destroy(iterhash);
+	if(NULL != ilIterHash)
+		g_hash_table_destroy(ilIterHash);
 	if(NULL != itemstore)
 		gtk_tree_store_clear(itemstore);
 	
-	iterhash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
+	ilIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
 void ui_itemlist_update_item(itemPtr ip) {
@@ -283,7 +269,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
-	if(NULL != (iter = g_hash_table_lookup(iterhash, (gpointer)ip))) {
+	if(NULL != (iter = ui_item_to_iter(ip))) {
 		gtk_tree_store_set(ui_itemlist_get_tree_store(), iter,
 					    IS_LABEL, label,
 					    IS_TIME_STR, time_str,
@@ -305,7 +291,7 @@ static void ui_itemlist_update_foreach(gpointer key, gpointer value, gpointer da
 /* update all item list entries */
 void ui_itemlist_update(void) {
  
-	g_hash_table_foreach(iterhash, ui_itemlist_update_foreach, NULL);
+	g_hash_table_foreach(ilIterHash, ui_itemlist_update_foreach, NULL);
 }
 
 static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
@@ -327,7 +313,7 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	g_assert(mainwindow != NULL);
 	g_assert(itemlist != NULL);
 
-	iterhash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
+	ilIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 
 	itemstore = ui_itemlist_get_tree_store();
 
@@ -345,7 +331,6 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
 	g_object_set(column, "resizable", TRUE, NULL);
-	
 	
 	renderer = gtk_cell_renderer_pixbuf_new();
 	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ICON2, NULL);
@@ -407,52 +392,27 @@ void ui_itemlist_prefocus(void) {
    If anything other is focussed nothing is printed to avoid
    disturbing the user. */
 void ui_itemlist_display(void) {
-	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
-	GtkTreeIter	iter;
 	nodePtr		np;
-	itemPtr		ip;
 	gchar		*buffer = NULL;
-	gboolean	valid;
 	gchar		*tmp = NULL;
 	const gchar	*base = NULL;
-	
-	np = ui_feedlist_get_selected();
+
+	// Strange to need to retrieve this in ui_itemlist.c
+	np = feedlist_get_selected();
 	
 	if(np != NULL) {
-		if(FST_FEED == np->type)
-			base = feed_get_html_url((feedPtr)np->data);
 			
 		if(TRUE == itemlist_get_two_pane_mode()) {
 			/* two pane mode */
-			ui_htmlview_start_output(&buffer, base, FALSE);
-			
-			valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-			while(valid) {	
-				ip = ui_itemlist_get_item_from_iter(&iter);
-
-				if(ip->readStatus) 
-					addToHTMLBuffer(&buffer, UNSHADED_START);
-				else
-					addToHTMLBuffer(&buffer, SHADED_START);
-				
-				tmp = item_render(ip);
-				addToHTMLBuffer(&buffer, tmp);
-				g_free(tmp);
-				
-				if(ip->readStatus)
-					addToHTMLBuffer(&buffer, UNSHADED_END);
-				else {
-					addToHTMLBuffer(&buffer, SHADED_END);
-				}
-
-				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
-			}
-			ui_htmlview_finish_output(&buffer);
+			buffer = itemset_render_all(np->itemSet);
 		} else {
 			/* three pane mode */
 			
 			/* The feed info is displayed only if there is not a currently displayed item */
-			if(displayed_item == NULL) {			
+			if(NULL == itemlist_get_selected()) {			
+				if(FST_FEED == np->type)
+					base = feed_get_html_url((feedPtr)np->data);
+
 				/* display feed info */
 				ui_htmlview_start_output(&buffer, base, TRUE);
 				if((FST_FEED == np->type) || 
@@ -473,6 +433,7 @@ void ui_itemlist_display(void) {
 		}
 	}
 	
+	// Does not belong here...
 	if(buffer) {
 		if((np != NULL) &&
 		   (FST_FEED == np->type) &&
@@ -490,7 +451,7 @@ void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	*iter = NULL;
 
-	if((TRUE == merge) && (NULL != (iter = (GtkTreeIter *)g_hash_table_lookup(iterhash, (gpointer)ip)))) {
+	if((TRUE == merge) && (NULL != (iter = ui_item_to_iter(ip)))) {
 		/* g_print("found iter for item %d\n", ip); */
 	}
 	
@@ -501,7 +462,7 @@ void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 		if(NULL == iter) {
 			iter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_prepend(itemstore, iter, NULL);
-			g_hash_table_insert(iterhash, (gpointer)ip, (gpointer)iter);
+			g_hash_table_insert(ilIterHash, (gpointer)ip, (gpointer)iter);
 		}	
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_NR, ip->nr,
@@ -520,23 +481,10 @@ void ui_itemlist_enable_favicon_column(gboolean enabled) {
 	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), enabled);
 }
 
-static itemPtr ui_itemlist_get_selected() {
-	GtkTreeIter		iter;
-	GtkTreeModel		*model;
-	GtkTreeSelection	*selection;
-
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));	
-	
-	if(gtk_tree_selection_get_selected(selection, &model, &iter))
-		return ui_itemlist_get_item_from_iter(&iter);
-		
-	return NULL;
-}
-
 void on_popup_launchitem_selected(void) {
 	itemPtr		ip;
 
-	if(NULL != (ip = ui_itemlist_get_selected()))
+	if(NULL != (ip = itemlist_get_selected()))
 		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), (gchar *)item_get_source(ip), UI_HTMLVIEW_LAUNCH_DEFAULT);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
@@ -546,7 +494,7 @@ void on_popup_launchitem_in_tab_selected(void) {
 	itemPtr		ip;
 	const gchar	*link;
 
-	if(NULL != (ip = ui_itemlist_get_selected())) {
+	if(NULL != (ip = itemlist_get_selected())) {
 		if(NULL != (link = item_get_source(ip)))
 			ui_tabs_new(link, link, FALSE);
 		else
@@ -565,7 +513,7 @@ void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTree
 void on_toggle_item_flag(GtkMenuItem *menuitem, gpointer user_data) {
 	itemPtr		ip;
 	
-	if(NULL != (ip = ui_itemlist_get_selected()))
+	if(NULL != (ip = itemlist_get_selected()))
 		itemlist_toggle_flag(ip);
 }
 
@@ -574,7 +522,7 @@ void on_popup_toggle_flag(gpointer callback_data, guint callback_action, GtkWidg
 void on_toggle_unread_status(GtkMenuItem *menuitem, gpointer user_data) {
 	itemPtr		ip;
 
-	if(NULL != (ip = ui_itemlist_get_selected())) 
+	if(NULL != (ip = itemlist_get_selected())) 
 		itemlist_toggle_read_status(ip);
 }
 
@@ -583,7 +531,7 @@ void on_popup_toggle_read(gpointer callback_data, guint callback_action, GtkWidg
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	nodePtr		np;
 	
-	np = ui_feedlist_get_selected();
+	np = feedlist_get_selected();
 	if((NULL != np) && (FST_FEED == np->type))
 		itemlist_remove_items(np->itemSet);
 	else
@@ -594,7 +542,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	GtkTreeSelection	*selection;
 	itemPtr			ip;
 	
-	if(NULL != (ip = ui_itemlist_get_selected())) {
+	if(NULL != (ip = itemlist_get_selected())) {
 		/* 1. order is important, first remove then unselect! */
 		itemlist_remove_item(ip);
 
@@ -604,7 +552,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 		/* 3. But 2. might not be enough, e.g. if ip was the
 		      last item and is still selected (not removed) */
-		if(ui_itemlist_get_selected() == ip) {
+		if(itemlist_get_selected() == ip) {
 			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
 			gtk_tree_selection_unselect_all(selection);
 		}
@@ -615,120 +563,56 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 void on_popup_remove_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_remove_item_activate(NULL, NULL); }
 
-static void ui_itemlist_select(GtkTreeIter iter) {
+void ui_itemlist_select(itemPtr ip) {
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 	GtkWidget		*treeview;
 	GtkTreeSelection	*selection;
+	GtkTreeIter		*iter;
 	GtkTreePath		*path;
 
-	/* some comfort: select the created iter */
+	g_assert(NULL != ip);
+
+	iter = ui_item_to_iter(ip);
+	g_return_if_fail(NULL != iter);
+
 	treeview = lookup_widget(mainwindow, "Itemlist");
-	if(NULL != (selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)))) {
-		path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
-		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
-		gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
-		gtk_tree_path_free(path);
-	} else {
-		g_warning("internal error! could not get feed tree view selection!\n");
-	}
-}
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
-static gint iter_cmp(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b) {
-	GtkTreePath             *apath, *bpath;
-	gint			ret;
-	
-	apath = gtk_tree_model_get_path(model, a);
-	bpath = gtk_tree_model_get_path(model, b);
-	ret = gtk_tree_path_compare(apath, bpath);
-	gtk_tree_path_free(apath);
-	gtk_tree_path_free(bpath);
-	return ret;
-}
-
-static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
-	itemPtr	ip;
-	
-	ip = ui_itemlist_get_item_from_iter(iter);
-	if(FALSE == ip->readStatus) {
-		if(itemlist_get_two_pane_mode()) {
-			itemset_mark_all_read(ip->itemSet);
-		} else {
-			ui_itemlist_select(*iter);
-			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
-static gboolean ui_itemlist_find_unread_item(void) {
-	GtkTreeView		*treeview;
-	GtkTreeStore		*itemstore;
-	GtkTreePath		*path;
-	GtkTreeIter		iter, selectedIter;
-	gboolean		valid;
-
-	itemstore = ui_itemlist_get_tree_store();
-	
-	/* first look for unread items after the currently selected item */
-	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
-	gtk_tree_view_get_cursor(treeview, &path, NULL);
-	
-	if(NULL != path) {
-		gtk_tree_model_get_iter(GTK_TREE_MODEL(itemstore), &selectedIter, path);
-		valid = gtk_tree_model_get_iter(GTK_TREE_MODEL(itemstore), &iter, path);
-		gtk_tree_path_free(path);
-
-		while(valid) {
-			if(ui_itemlist_find_unread_item_from_iter(&iter))
-				return TRUE;
-			valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
-		}
-	} else {
-		gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &selectedIter);
-	}
-	
-	/* No match from cursor, restart from the first. */
-	valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
-	while(valid && (0 != iter_cmp(GTK_TREE_MODEL(itemstore), &iter, &selectedIter))) {
-		if(ui_itemlist_find_unread_item_from_iter(&iter))
-			return TRUE;
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
-	}
-
-	return FALSE;
+	path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), iter);
+	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
+	gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
+	gtk_tree_path_free(path);
 }
 
 void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	nodePtr		np;
-	
-	/* before scanning the feed list, we test if there is a unread 
-	   item in the currently selected feed! */
-	if(TRUE == ui_itemlist_find_unread_item())
-		return;
-	
-	/* scan feed list and find first feed with unread items */
-	if(NULL != (np = ui_feedlist_find_unread_feed(NULL))) {
-		
-		/* load found feed */
-		ui_feedlist_select(np);
 
-		/* find first unread item */
-		ui_itemlist_find_unread_item();
-	} else {
-		/* if we don't find a feed with unread items do nothing */
-		ui_mainwindow_set_status_bar(_("There are no unread items "));
-	}
+	itemlist_select_next_unread();
 }
 
 void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) { 
 
-	on_next_unread_item_activate(NULL, NULL); 
+	itemlist_select_next_unread();
 }
 
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data) {
 
-	on_next_unread_item_activate(NULL, NULL); 
+	itemlist_select_next_unread();
+}
+
+// FIXME: get rid of this method
+static itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter) {
+	itemPtr		ip;
+	nodePtr		np;
+	gulong		nr;
+	
+	gtk_tree_model_get(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), 
+	                   iter, 
+			   IS_NR, &nr, 
+			   IS_PARENT, &np, 
+			   -1);
+	ip = itemset_lookup_item(displayed_itemSet, np, nr);
+	g_assert(ip != NULL);
+	return ip;
 }
 
 gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
@@ -769,7 +653,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 			return TRUE;
 			break;
 		case 3:
-			ui_itemlist_select(iter);
+			ui_itemlist_select(ip);
 			gtk_menu_popup(make_item_menu(ip), NULL, NULL, NULL, NULL, eb->button, eb->time);
 			return TRUE;
 			break;
@@ -779,7 +663,6 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 
 /* two/three pane mode setting */
 void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
-	
 	gboolean gui_mode = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")));
 	ui_mainwindow_set_three_pane_mode(!new_mode);
 
@@ -800,7 +683,7 @@ void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data
 	
 	itemlist_set_two_pane_mode(GTK_CHECK_MENU_ITEM(menuitem)->active);
 
-	if(NULL != (np = ui_feedlist_get_selected())) {
+	if(NULL != (np = feedlist_get_selected())) {
 		/* grab necessary to force HTML widget update (display must
 		   change from feed description to list of items and vica 
 		   versa */
@@ -815,7 +698,7 @@ void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data) {
 
 	itemlist_set_two_pane_mode(!itemlist_get_two_pane_mode());
 
-	if(NULL != (np = ui_feedlist_get_selected())) {
+	if(NULL != (np = feedlist_get_selected())) {
 		/* grab necessary to force HTML widget update (display must
 		   change from feed description to list of items and vica 
 		   versa */
@@ -827,8 +710,32 @@ void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data) {
 void on_popup_copy_URL_clipboard(void) {
 	itemPtr         ip;
 
-	if(NULL != (ip = ui_itemlist_get_selected()))
+	if(NULL != (ip = itemlist_get_selected()))
 		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), item_get_source(ip), -1);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
+
+void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
+	GtkTreeIter 	iter;
+	GtkTreeModel	*model;
+	itemPtr		ip = NULL;
+
+	if(gtk_tree_selection_get_selected(selection, &model, &iter))
+		ip = ui_itemlist_get_item_from_iter(&iter);
+
+	itemlist_selection_changed(ip);
+}
+
+void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {
+	gint		sortColumn;
+	GtkSortType	sortType;
+	gboolean	sorted;
+	
+	if(feedlist_get_selected() == NULL || disableSortingSaving != 0)
+		return;
+	
+	sorted = gtk_tree_sortable_get_sort_column_id(treesortable, &sortColumn, &sortType);
+	node_set_sort_column(feedlist_get_selected(), sortColumn, sortType == GTK_SORT_DESCENDING);
+}
+

@@ -41,6 +41,14 @@
 struct node * itemlist_get_displayed_node(void);
 
 /**
+ * Returns the currently selected item.
+ * Note: selected = displayed item
+ *
+ * @returns displayed item (or NULL)
+ */
+itemPtr itemlist_get_selected(void);
+
+/**
  * To be called whenever a feed was updated. If it is a somehow
  * displayed feed it is loaded this method decides if the
  * and how the item list GUI needs to be updated.
@@ -109,9 +117,12 @@ void itemlist_mark_all_read(itemSetPtr sp);
 
 void itemlist_update_vfolder(vfolderPtr vp);
 
-void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data);
-
-void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
+/**
+ * Called from GUI when item list selection changes.
+ *
+ * @param ip	new selected item 
+ */
+void itemlist_selection_changed(itemPtr ip);
 
 /** Force the itemlist to re-create the displayed dates based on the
  *  current date format setting 

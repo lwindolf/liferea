@@ -40,9 +40,7 @@
    Bypass only for read-only item access! */
 
 itemSetPtr	displayed_itemSet = NULL;
-itemPtr		displayed_item = NULL;
-
-extern nodePtr	selectedNode;
+static itemPtr	displayed_item = NULL;		/* displayed item = selected item */
 
 /* internal item list states */
 static gboolean twoPaneMode = TRUE;	/* TRUE if two pane mode is active */
@@ -50,6 +48,11 @@ static gboolean itemlistLoading;	/* TRUE to prevent selection effects when loadi
 gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
 
 static gboolean deferred_item_remove = FALSE;	/* TRUE if selected item needs to be removed on unselecting */
+
+itemPtr itemlist_get_selected(void) {
+
+	return displayed_item;
+}
 
 nodePtr itemlist_get_displayed_node(void) {
 
@@ -97,7 +100,6 @@ void itemlist_reload(itemSetPtr sp) {
 		return;
 
 	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(sp->node));
-g_print("reloading item list with node \"%s\"\n", node_get_title(sp->node));
 
 	if(ITEMSET_TYPE_FOLDER == sp->type) {
 		if(0 == getNumericConfValue(FOLDER_DISPLAY_MODE))
@@ -168,7 +170,6 @@ void itemlist_load(itemSetPtr sp) {
 	disableSortingSaving--;
 
 	/* 4. Load the new one... */
-	g_print("setting displayed_itemSet to %p (%p)\n", sp, sp->node);
 	displayed_itemSet = sp;
 	itemlist_reload(sp);
 
@@ -193,13 +194,13 @@ void itemlist_unload(void) {
 				// Nothing to do?
 				break;
 		}
+
+		itemlist_check_for_deferred_removal();
+		ui_itemlist_clear();
 	}
 
-	itemlist_check_for_deferred_removal();
 
-	ui_itemlist_clear();
 	displayed_item = NULL;
-	g_print("setting displayed_itemSet to NULL\n");
 	displayed_itemSet = NULL;
 }
 
@@ -220,6 +221,72 @@ void itemlist_reset_date_format(void) {
 	if(!itemlist_get_two_pane_mode())
 		ui_itemlist_update();
 }
+
+/* next unread selection logic */
+
+/* checks if a given item is unread and selects it if necessary */
+static gboolean itemlist_check_if_unread(itemPtr ip) {
+	
+	if(FALSE == ip->readStatus) {
+		if(itemlist_get_two_pane_mode()) {
+			itemset_mark_all_read(ip->itemSet);
+		} else {
+			ui_itemlist_select(ip);
+			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+/* tries to find unread item in current item list */
+static gboolean itemlist_find_unread_item(void) {
+	GList	*selected, *iter;
+	
+	if(!displayed_itemSet || !displayed_item)
+		return;
+
+	/* first look for unread items after the currently selected item */
+	selected = iter = g_list_find(displayed_itemSet->items, displayed_item);
+	while(iter) {
+		if(itemlist_check_if_unread((itemPtr)iter->data))
+			return TRUE;
+		iter = g_list_next(iter);
+	} 
+	
+	/* No match from cursor, restart from the first. */
+	iter = displayed_itemSet->items;
+	while(iter && (iter != selected)) {
+		if(itemlist_check_if_unread((itemPtr)iter->data))
+			return TRUE;
+		iter = g_list_next(iter);
+	}
+
+	return FALSE;
+}
+
+void itemlist_select_next_unread(void) {
+	nodePtr		np;
+	
+	/* before scanning the feed list, we test if there is a unread 
+	   item in the currently selected feed! */
+	if(TRUE == itemlist_find_unread_item())
+		return;
+	
+	/* scan feed list and find first feed with unread items */
+	if(NULL != (np = feedlist_find_unread_feed(NULL))) {
+		
+		/* load found feed */
+		ui_feedlist_select(np);
+
+		/* find first unread item */
+		itemlist_find_unread_item();
+	} else {
+		/* if we don't find a feed with unread items do nothing */
+		ui_mainwindow_set_status_bar(_("There are no unread items "));
+	}
+}
+
 
 /* menu commands */
 void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
@@ -330,57 +397,48 @@ void itemlist_mark_all_read(itemSetPtr sp) {
 }
 
 /* mouse/keyboard interaction callbacks */
-void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
-	GtkTreeIter 	iter;
-	GtkTreeModel	*model;
-	itemPtr 	ip;
+void itemlist_selection_changed(itemPtr ip) {
+
+	debug_enter("itemlist_selection_changed");
 	
-	//if(!itemlistLoading && (FALSE == itemlist_get_two_pane_mode())) {
-	if(!itemlistLoading) {
+	if(!itemlistLoading && (FALSE == itemlist_get_two_pane_mode())) {
 		/* vfolder postprocessing to remove unselected items not
 		   more matching the rules because they have changed state */
 		itemlist_check_for_deferred_removal();
 	
-		if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
-			displayed_item = ip = ui_itemlist_get_item_from_iter(&iter);
-			debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(ip));
-			itemset_render_item(ip->itemSet, ip);
-			/* set read and unset update status done when unselecting */
+		/* set read and unset update status when unselecting */
+		if(ip) {
 			itemlist_set_read_status(ip, TRUE);
 			itemlist_set_update_status(ip, FALSE);
-			ui_node_update(displayed_itemSet->node);
-		} else {
-			displayed_item = NULL;
 		}
+
+		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(ip));
+		displayed_item = ip;
+		if(NULL != ip)
+			itemset_render_item(ip->itemSet, ip);
+
+		ui_node_update(displayed_itemSet->node);
 
 		feedlist_reset_new_item_count();
 	}
-}
 
-void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {
-	gint		sortColumn;
-	GtkSortType	sortType;
-	gboolean	sorted;
-	
-	if(selectedNode == NULL || disableSortingSaving != 0)
-		return;
-	
-	sorted = gtk_tree_sortable_get_sort_column_id(treesortable, &sortColumn, &sortType);
-	node_set_sort_column(selectedNode, sortColumn, sortType == GTK_SORT_DESCENDING);
+	debug_exit("itemlist_selection_changed");
 }
 
 /* two/three pane mode callbacks */
 void itemlist_set_two_pane_mode(gboolean newMode) {
 
-	if((NULL == selectedNode) || (newMode == twoPaneMode))
+	nodePtr	np = feedlist_get_selected();
+
+	if((NULL == np) || (newMode == twoPaneMode))
 		return;
 
 	/* For now we disallow folders in two pane mode! */
-	if(FST_FOLDER == selectedNode->type)
+	if(FST_FOLDER == np->type)
 		return; 
 
 	twoPaneMode = newMode;
-	node_set_two_pane_mode(selectedNode, newMode);
+	node_set_two_pane_mode(np, newMode);
 	ui_itemlist_set_two_pane_mode(newMode);
 }
 

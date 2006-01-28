@@ -44,11 +44,10 @@ extern GtkTreeStore	*feedstore;
 /* Add/remove/update nodes */
 
 /* Selections */
-nodePtr ui_feedlist_get_selected();
-void ui_feedlist_select(nodePtr fp);
+void ui_feedlist_select(nodePtr np);
 
-typedef void 	(*nodeActionFunc)	(nodePtr fp);
-typedef void 	(*nodeActionDataFunc)	(nodePtr fp, gpointer user_data);
+typedef void 	(*nodeActionFunc)	(nodePtr np);
+typedef void 	(*nodeActionDataFunc)	(nodePtr np, gpointer user_data);
 
 /**
  * Initializes the feed list. For example, it creates the various
@@ -62,15 +61,6 @@ void ui_feedlist_init(GtkWidget *mainview);
  * @param iter	pointer to iter structure to return selected iter
  */
 gboolean ui_feedlist_get_iter(GtkTreeIter *iter);
-
-/**
- * Returns the parent folder of a node, or NULL if the root folder is
- * the parent.
- * 
- * @returns the parent folder.
- */
-
-nodePtr ui_feedlist_get_parent(nodePtr ptr);
 
 /* Selects the proper destination for a new feed based on which feed
  * is currently selected.
@@ -92,13 +82,6 @@ nodePtr ui_feedlist_get_target_folder(int *pos);
  */
 void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags);
 
-/** 
- * Tries to find the first node with an unread item in the given folder.
- * 
- * @return feed pointer or NULL
- */
-nodePtr	ui_feedlist_find_unread_feed(nodePtr folder);
-
 /**
  * marks all items of the feed of the given tree iter as read 
  *
@@ -110,17 +93,6 @@ void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
  * Start listening on dbus for new subscriptions
  */
 void ui_feedlist_dbus_connect(void);
-
-/**
- * Add a node to the feedlist
- *
- * @param parent	the parent of the new folder, or NULL to 
- *			insert in the root folder
- * @param node		the node to add
- * @param position	the position in which the folder should be 
- *			added, or -1 to append the folder to the parent.
- */
-void ui_feedlist_add(nodePtr parent, nodePtr node, gint position);
 
 /**
  * Prompt the user for confirmation of a folder or feed, and
