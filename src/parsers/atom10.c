@@ -46,39 +46,40 @@ struct atom10ParserState {
 };
 typedef void 	(*atom10ElementParserFunc)	(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState *state);
 
-
 gchar* atom10_mark_up_text_content(gchar* content) {
-	int i, j, num_tokens;
-	gchar** tokens;
-	gchar* str;
-
+	gchar **tokens;
+	gchar **token;
+	gchar *str, *old_str;
+	
 	if(!content) return NULL;
 	if(!*content) return g_strdup(content);
-
+	
 	tokens = g_strsplit(content, "\n\n", 0);
-	num_tokens = g_strv_length(tokens);
-
-	/* wrap and escape tokens, but skip empty ones */
-	if(num_tokens > 1) {
-		for(i = 0, j = 0; i < num_tokens; ++i) {
-			str = g_strchug(g_strchomp(tokens[i]));
-			if(*str) tokens[j++] = g_markup_printf_escaped("<p>%s</p>", str);
-			g_free(str);
+	
+	if (tokens[0] == NULL) { /* No tokens */
+		str = g_strdup("");
+	} else if (tokens[1] == NULL) { /* One token */
+		str = g_markup_escape_text(tokens[0], -1);
+	} else { /* Many tokens */
+		token = tokens;
+		while (*token != NULL) {
+			old_str = *token;
+			str = g_strchug(g_strchomp(*token)); /* WARNING: modifies the token string*/
+			if(str[0] != '\0') {
+				*token = g_markup_printf_escaped("<p>%s</p>", str);
+				g_free(old_str);
+			} else {
+				**token = '\0'; /* Erase the particular token because it is blank */
+			}
+			token++;
 		}
-
-		/* in case entries were skipped */
-		tokens[j] = NULL;	
-
 		str = g_strjoinv("\n", tokens);
 	}
-	else {
-		str = g_markup_escape_text(tokens[0], -1);
-	}
-
 	g_strfreev(tokens);
-
+	
 	return str;
 }
+
 
 /**
  * This parses an Atom content construct.
@@ -148,10 +149,14 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		
 		if (escapeAsText) {
+			gchar *tmp;
+
 			g_strchug(g_strchomp(ret));
-			gchar *tmp = strcasecmp(type, "text/plain")
-				? g_markup_printf_escaped("<pre>%s</pre>", ret)
-				: atom10_mark_up_text_content(ret);
+
+			if (type != NULL && !strcasecmp(type, "text/plain"))
+				tmp = atom10_mark_up_text_content(ret);
+			else
+				tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
 			g_free(ret);
 			ret = tmp;
 		}
@@ -275,6 +280,44 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 	return tmp;
 }
 
+static gchar* atom10_parse_link(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
+	gchar *href, *alternate = NULL;
+	
+	if(NULL != (href = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", NULL)))) {
+		xmlChar *baseURL = xmlNodeGetBase(cur->doc, cur);
+		gchar *url, *relation, *escTitle = NULL, *title;
+		
+		if (baseURL == NULL && fp->htmlUrl != NULL && fp->htmlUrl[0] != '|' &&
+			strstr(fp->htmlUrl, "://") != NULL)
+			baseURL = xmlStrdup(BAD_CAST(fp->htmlUrl));
+		url = common_build_url(href, baseURL);
+		
+		relation = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
+		title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"title", NULL));
+		if (title != NULL)
+			escTitle = g_markup_escape_text(title, -1);
+		/* FIXME: Display the human readable title from the property "title" */
+		/* This current code was copied from the RSS parser.*/
+		
+		if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || relation == NULL || g_str_equal(relation, BAD_CAST"alternate"))
+			alternate = g_strdup(url);
+		else if (g_str_equal(relation, "enclosure"))
+			ip->metadata = metadata_list_append(ip->metadata, "enclosure", url);
+		else
+			/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
+		xmlFree(title);
+		xmlFree(baseURL);
+		g_free(escTitle);
+		g_free(url);
+		g_free(relation);
+		g_free(href);
+	} else {
+		/* FIXME: @href is required, this document is not valid Atom */;
+	}
+	
+	return alternate;
+}
+
 static void atom10_parse_entry_author(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
 	gchar *author;
 	
@@ -319,39 +362,11 @@ static void atom10_parse_entry_id(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct
 }
 
 static void atom10_parse_entry_link(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
-	gchar *href;
-
-	if(NULL != (href = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", NULL)))) {
-		xmlChar *baseURL = xmlNodeGetBase(cur->doc, cur);
-		gchar *url, *relation, *escTitle = NULL, *title;
-		
-		if (baseURL == NULL && fp->htmlUrl != NULL && fp->htmlUrl[0] != '|' &&
-			strstr(fp->htmlUrl, "://") != NULL)
-			baseURL = xmlStrdup(BAD_CAST(fp->htmlUrl));
-		url = common_build_url(href, baseURL);
-		
-		relation = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
-		title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"title", NULL));
-		if (title != NULL)
-			escTitle = g_markup_escape_text(title, -1);
-		/* FIXME: Display the human readable title from the property "title" */
-		/* This current code was copied from the RSS parser.*/
-		
-		if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || relation == NULL || g_str_equal(relation, "alternate"))
-			item_set_source(ip, url);
-		else if (g_str_equal(relation, "enclosure"))
-			ip->metadata = metadata_list_append(ip->metadata, "enclosure", url);
-		else
-			/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
-		xmlFree(baseURL);
-		xmlFree(title);
-		g_free(escTitle);
-		g_free(url);
-		g_free(relation);
+	gchar *href = atom10_parse_link(cur, fp, ip, state);
+	if(href) {
+		item_set_source(ip, href);
 		g_free(href);
-	} else
-		/* FIXME: @href is required, this document is not valid Atom */;
-
+	}
 }
 
 static void atom10_parse_entry_published(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
@@ -540,38 +555,13 @@ static void atom10_parse_feed_id(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct 
 	/* FIXME: Parse ID, but I'm not sure where Liferea would use it */
 }
 
+
 static void atom10_parse_feed_link(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
-	gchar *href;
-	
-	if(NULL != (href = utf8_fix(xmlGetNsProp(cur, BAD_CAST"href", NULL)))) {
-		gchar *baseURL = (gchar*)xmlNodeGetBase(cur->doc, cur);
-		gchar *url, *relation, *escTitle = NULL, *title;
-		
-		if (baseURL == NULL && fp->htmlUrl != NULL && fp->htmlUrl[0] != '|' &&
-		    strstr(fp->htmlUrl, "://") != NULL)
-			baseURL = g_strdup(fp->htmlUrl);
-		url = common_build_url(href, baseURL);
-		
-		relation = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
-		title = utf8_fix(xmlGetNsProp(cur, BAD_CAST"rel", NULL));
-		if (title != NULL)
-			escTitle = g_markup_escape_text(title, -1);
-		/* FIXME: Display the human readable title from the property "title" */
-		/* This current code was copied from the RSS parser.*/
-		
-		if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || relation == NULL || g_str_equal(relation, BAD_CAST"alternate"))
-			feed_set_html_url(fp, url);
-		else if (g_str_equal(relation, "enclosure")) {
-			ip->metadata = metadata_list_append(ip->metadata, "enclosure", url);
-		} else
-			/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
-		xmlFree(title);
-		xmlFree(escTitle);
-		xmlFree(baseURL);
-		g_free(url);
-		g_free(relation);
+	gchar *href = atom10_parse_link(cur, fp, ip, state);
+	if(href) {
+		feed_set_html_url(fp, href);
 		g_free(href);
-	} 
+	}
 }
 
 static void atom10_parse_feed_logo(xmlNodePtr cur, feedPtr fp, itemPtr ip, struct atom10ParserState state) {
@@ -702,7 +692,9 @@ static void atom10_parse_feed(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodeP
 }
 
 static gboolean atom10_format_check(xmlDocPtr doc, xmlNodePtr cur) {
-	return xmlStrEqual(cur->name, BAD_CAST"feed") && cur->ns != NULL && cur->ns->href != NULL &&  xmlStrEqual(cur->ns->href, ATOM10_NS);
+	if (cur->name == NULL || cur->ns == NULL || cur->ns->href == NULL)
+		return FALSE;
+	return xmlStrEqual(cur->name, BAD_CAST"feed") && xmlStrEqual(cur->ns->href, ATOM10_NS);
 }
 
 static void atom10_add_ns_handler(NsHandler *handler) {
