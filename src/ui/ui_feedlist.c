@@ -45,7 +45,6 @@
 #include "ui_feed.h"
 #include "ui_vfolder.h"
 #include "ui_tabs.h"
-#include "ui_queue.h"
 
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;

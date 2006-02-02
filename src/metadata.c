@@ -163,21 +163,22 @@ void metadata_list_render(GSList *metadata, struct displayset *displayset) {
 	}
 }
 
-GSList * metadata_list_copy(GSList *from, GSList *to) {
-	GSList		*list2, *iter2, *iter = from;
+GSList * metadata_list_copy(GSList *list) {
+	GSList		*copy = NULL;
+	GSList		*list2, *iter2, *iter = list;
 	struct pair	*p;
 	
 	while(iter != NULL) {
 		p = (struct pair*)iter->data;
 		iter2 = list2 = p->data;
 		while(iter2 != NULL) {
-			to = metadata_list_append(to, (p->attrib)->strid, iter2->data);
+			copy = metadata_list_append(copy, (p->attrib)->strid, iter2->data);
 			iter2 = iter2->next;
 		}
 		iter = iter->next;
 	}
 	
-	return to;
+	return copy;
 }
 
 void metadata_list_free(GSList *metadata) {

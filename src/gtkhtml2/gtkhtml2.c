@@ -42,7 +42,6 @@
 #include "../support.h"
 #include "../callbacks.h"
 #include "../update.h"
-#include "../ui/ui_queue.h"
 #include "../debug.h"
 
 #define BUFFER_SIZE 8192

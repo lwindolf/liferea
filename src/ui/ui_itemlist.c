@@ -76,8 +76,7 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 
 GtkTreeIter * ui_item_to_iter(itemPtr ip) {
 
-	return (GtkTreeIter *)g_hash_table_lookup(ilIterHash, ip);
-	return NULL;
+	return (GtkTreeIter *)g_hash_table_lookup(ilIterHash, (gpointer)ip);
 }
 
 extern gint disableSortingSaving;
@@ -209,10 +208,10 @@ void ui_itemlist_clear(void) {
 	gtk_adjustment_set_value(adj, 0.0);
 	gtk_tree_view_set_vadjustment(treeview, adj);
 
-	if(NULL != ilIterHash)
-		g_hash_table_destroy(ilIterHash);
 	if(NULL != itemstore)
 		gtk_tree_store_clear(itemstore);
+	if(NULL != ilIterHash)
+		g_hash_table_destroy(ilIterHash);
 	
 	ilIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
@@ -222,12 +221,20 @@ void ui_itemlist_update_item(itemPtr ip) {
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
 	GdkPixbuf	*icon = NULL, *favicon;
 
+	g_print("iiter=%d\n", ui_item_to_iter(ip));
+
 	/* favicon for feed icon column (visible in folders/vfolders/searches) */
+			if(ip->sourceSet) {
+	g_print("soureset=%d\n", ip->sourceSet);
+	g_print("soureset->node=%d\n", ip->sourceSet->node);
+	g_print("soureset->node->title=%d\n", ip->sourceSet->node->title);
+			}
 	if(NULL != ip->sourceSet)
 		favicon = ip->sourceSet->node->icon;
 	else
 		favicon = ip->itemSet->node->icon;
 
+	g_print("iiiter=%d\n", ui_item_to_iter(ip));
 	/* Time */
 	if(0 != ip->time) {
 		esc_time_str = ui_itemlist_format_date((time_t)ip->time);
@@ -239,6 +246,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 		esc_time_str = g_strdup("");
 	}
 	
+	g_print("iiiiter=%d\n", ui_item_to_iter(ip));
 	/* Label and state icon */
 	title = g_strdup(ip->title);
 	if(title == NULL) 
@@ -269,6 +277,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
+			g_print("iiiter=%d\n", ui_item_to_iter(ip));
 	if(NULL != (iter = ui_item_to_iter(ip))) {
 		gtk_tree_store_set(ui_itemlist_get_tree_store(), iter,
 					    IS_LABEL, label,
@@ -450,6 +459,12 @@ void ui_itemlist_display(void) {
 void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	*iter = NULL;
+			g_print("iirl: node=%d\n",ip->itemSet->node);
+			if(ip->sourceSet) {
+	g_print("soureset=%d\n", ip->sourceSet);
+	g_print("soureset->node=%d\n", ip->sourceSet->node);
+	g_print("soureset->node->title=%s\n", ip->sourceSet->node->title);
+			}
 
 	if((TRUE == merge) && (NULL != (iter = ui_item_to_iter(ip)))) {
 		/* g_print("found iter for item %d\n", ip); */
@@ -463,13 +478,21 @@ void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 			iter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_prepend(itemstore, iter, NULL);
 			g_hash_table_insert(ilIterHash, (gpointer)ip, (gpointer)iter);
+			g_print("iter=%d\n", ui_item_to_iter(ip));
+			if(ip->sourceSet) {
+	g_print("soureset=%d\n", ip->sourceSet);
+	g_print("soureset->node=%d\n", ip->sourceSet->node);
+	g_print("soureset->node->title=%d\n", ip->sourceSet->node->title);
+			}
 		}	
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_NR, ip->nr,
 					      IS_PARENT, ip->itemSet->node,
 		                	      IS_TIME, item_get_time(ip),
 		                	      -1);
+			g_print("iter=%d\n", ui_item_to_iter(ip));
 		ui_itemlist_update_item(ip);
+			g_print("iter=%d\n", ui_item_to_iter(ip));
 	}
 }
 

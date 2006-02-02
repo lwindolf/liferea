@@ -50,30 +50,31 @@ itemPtr item_new(void) {
 	return ip;
 }
 
-void item_copy(itemPtr from, itemPtr to) {
+itemPtr item_copy(itemPtr ip) {
+	itemPtr copy = item_new();
 
-	item_set_title(to, from->title);
-	item_set_source(to, from->source);
-	item_set_real_source_url(to, from->real_source_url);
-	item_set_real_source_title(to, from->real_source_title);
-	item_set_description(to, from->description);
-	item_set_id(to, from->id);
+	item_set_title(copy, ip->title);
+	item_set_source(copy, ip->source);
+	item_set_real_source_url(copy, ip->real_source_url);
+	item_set_real_source_title(copy, ip->real_source_title);
+	item_set_description(copy, ip->description);
+	item_set_id(copy, ip->id);
 	
-	to->updateStatus = from->updateStatus;
-	to->readStatus = from->readStatus;
-	to->newStatus = FALSE;
-	to->popupStatus = FALSE;
-	to->flagStatus = from->flagStatus;
-	to->time = from->time;
+	copy->updateStatus = ip->updateStatus;
+	copy->readStatus = ip->readStatus;
+	copy->newStatus = FALSE;
+	copy->popupStatus = FALSE;
+	copy->flagStatus = ip->flagStatus;
+	copy->time = ip->time;
 	
 	/* the following line allows state propagation in item.c */
-	to->sourceSet = from->itemSet;
-	to->sourceNr = from->nr;
-	
+	copy->sourceSet = ip->itemSet;
+	copy->sourceNr = ip->nr;
+
 	/* this copies metadata */
-	metadata_list_free(to->metadata);
-	to->metadata = NULL;
-	to->metadata = metadata_list_copy(from->metadata, to->metadata);
+	copy->metadata = metadata_list_copy(ip->metadata);
+
+	return copy;
 }
 
 void item_set_title(itemPtr ip, const gchar * title) {

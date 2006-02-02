@@ -931,46 +931,6 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
 }
 
 /**
- * Method to free all items structures of a feed, does not mean
- * that it removes items from cache! This method is used 
- * for feed unloading.
- */
-// FIXME: shouldn't be needed anymore
-//void feed_clear_item_list(feedPtr fp) {
-//	GList	*item;
-//
-//	item = feed_get_item_list(fp);
-//
-//	while(NULL != item) {
-//		item_free(item->data);
-//		item = g_list_next(item);
-//		/* explicitly not changing the item state counters */
-//	}
-//	g_list_free(fp->items);
-//	fp->items = NULL;
-//	/* explicitly not forcing feed saving to allow feed unloading */
-//}
-
-// FIXME: shouldn't be needed anymore
-//void feed_remove_items(feedPtr fp) {
-//	GList *item;
-//	
-//	item = feed_get_item_list(fp);
-//
-//	while(NULL != item) {
-//		vfolder_remove_item(item->data);	/* remove item copies */
-//		item_free(item->data);			/* remove the item */
-//		item = g_list_next(item);
-//	}
-//	g_list_free(fp->items);
-//	feedlist_update_counters((-1)*fp->unreadCount, (-1)*fp->newCount);
-//	fp->unreadCount = 0;
-//	fp->popupCount = 0;
-//	fp->newCount = 0;
-//	fp->items = NULL;
-//}
-
-/**
  * Creates a new error description according to the passed
  * HTTP status and the feeds parser errors. If the HTTP
  * status is a success status and no parser errors occurred

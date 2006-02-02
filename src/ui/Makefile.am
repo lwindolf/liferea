@@ -24,7 +24,6 @@ libliui_a_SOURCES = \
 	ui_notification.c ui_notification.h \
 	ui_popup.c ui_popup.h \
 	ui_prefs.c ui_prefs.h \
-	ui_queue.c ui_queue.h \
 	ui_search.c ui_search.h \
 	ui_session.c ui_session.h \
 	ui_tabs.c ui_tabs.h \

@@ -32,7 +32,6 @@
 #include "debug.h"
 #include "update.h"
 #include "conf.h"
-#include "ui/ui_queue.h"
 #include "ui/ui_mainwindow.h"
 #include "net/downloadlib.h"
 
@@ -238,7 +237,11 @@ void download_init(void) {
 		g_thread_create(download_thread_main, (void *)(i == 0), FALSE, NULL);
 
 	/* setup the processing of feed update results */
-	ui_timeout_add(100, download_dequeuer, NULL);
+	g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE,
+	                   100, 
+			   download_dequeuer, 
+			   NULL,
+			   NULL);
 }
 
 static void *download_thread_main(void *data) {
@@ -312,15 +315,7 @@ static gboolean download_dequeuer(gpointer user_data) {
 		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
 		} else {
-			/* When processing a request that is assigned to a
-			   certain feed the callback depends on the existence 
-			   of the feed. To prevent any user interactions
-			   that could delete the feed we lock the GUI */
-			ui_lock();
-			
 			(request->callback)(request);
-			
-			ui_unlock();
 		}
 		download_request_free(request);
 	}

@@ -199,7 +199,7 @@ void feedlist_load_node(nodePtr np) {
 
 	if(FST_FOLDER == np->type) {
 		g_assert(NULL != np->itemSet);
-		feedlist_foreach_data(np, FEEDLIST_FILTER_CHILDREN, feedlist_merge_itemset_cb, (gpointer)np->itemSet);
+		feedlist_foreach_data(np, FEEDLIST_FILTER_FEED, feedlist_merge_itemset_cb, (gpointer)np->itemSet);
 	} else {
 		node_load(np);
 	}
@@ -447,9 +447,12 @@ void feedlist_save(void) {
  */
 static void feedlist_initial_load(nodePtr np) {
 	
-	node_load(np);
-	ui_node_update(np);
-	node_unload(np);
+	if(FST_VFOLDER != np->type) {
+		node_load(np);
+		vfolder_check_node(np);		/* copy items to matching vfolders */
+		node_unload(np);
+	}
+
 }
 
 static void feedlist_initial_update(nodePtr np) {
@@ -477,6 +480,7 @@ void feedlist_init(void) {
 	/* 3. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */
 	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, feedlist_initial_load);
+	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, ui_node_update);
 
 	/* 4. Check if feeds do need updating. */
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {

@@ -38,7 +38,6 @@
 typedef struct vfolder {
 	gchar		*title;			/**< vfolder title */
 	GSList		*rules;			/**< list of rules if this is a vfolder */
-	gulong		lastItemNr;		/**< internal counter used to uniqely assign item id's. */
 	struct node	*node;			/**< the node of the vfolder, needed for merging */
 } *vfolderPtr;
 
@@ -124,10 +123,18 @@ void	vfolder_update_item(itemPtr ip);
  * copy again. This may remove the item copy if it does not
  * longer match the vfolder rules.
  *
- * @param ip	item of a feed to check
+ * @param item	node item to check
  * @returns TRUE if item (still) added, FALSE otherwise
  */
-gboolean vfolder_check_item(itemPtr ip);
+gboolean vfolder_check_item(itemPtr item);
+
+/**
+ * Method to be called during initial node loading to check
+ * all items of a single node for vfolder rule macthing.
+ *
+ * @param node	the node whose items are to be checked
+ */
+void vfolder_check_node(struct node *node);
 
 /** 
  * Searches all vfolders for copies of the given item and
@@ -137,16 +144,6 @@ gboolean vfolder_check_item(itemPtr ip);
  * @param ip	feed item or vfolder item copy to remove
  */
 void	vfolder_remove_item(itemPtr ip);
-
-/**
- * Returns the item list of the given vfolder.
- * (FIXME: do we need this, what about itemset?)
- *
- * @param vp	the vfolder
- *
- * @returns 	the item list
- */
-GList *	vfolder_get_item_list(vfolderPtr vp);
 
 /**
  * Called when a vfolder is processed by feed_free

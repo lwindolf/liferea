@@ -42,7 +42,6 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_session.h"
-#include "ui/ui_queue.h"
 
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
  do { \
@@ -524,24 +523,12 @@ void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	ui_mainwindow_update_onlinebtn();
 }
 
-static int ui_mainwindow_set_status_idle(gpointer data) {
-	gchar		*statustext = (gchar *)data;
-	GtkWidget	*statusbar;
-	
-	g_assert(NULL != mainwindow);
-	statusbar = lookup_widget(mainwindow, "statusbar");
-	g_assert(NULL != statusbar);
-
-	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), statustext);	
-	g_free(statustext);
-	return 0;
-}
-
 /* Set the main window status bar to the text given as 
    statustext. statustext is freed afterwards. */
 void ui_mainwindow_set_status_bar(const char *format, ...) {
 	va_list		args;
 	char 		*str = NULL;
+	GtkWidget	*statusbar;
 	
 	g_return_if_fail(format != NULL);
 
@@ -549,7 +536,12 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
 	str = g_strdup_vprintf(format, args);
 	va_end(args);
 
-	ui_queue_add(ui_mainwindow_set_status_idle, (gpointer)str); 
+	g_assert(NULL != mainwindow);
+	statusbar = lookup_widget(mainwindow, "statusbar");
+	g_assert(NULL != statusbar);
+
+	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), str);
+	g_free(str);
 }
 
 void ui_mainwindow_save_position(void) {
@@ -658,9 +650,7 @@ void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data) {
 gboolean on_mainwindow_window_state_event(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	if((event->type) == (GDK_WINDOW_STATE)) {
 		GdkWindowState changed = ((GdkEventWindowState*)event)->changed_mask, state = ((GdkEventWindowState*)event)->new_window_state;
-	
-		//if(!GTK_WIDGET_VISIBLE(mainwindow))
-		//return FALSE;
+		
 		if (changed == GDK_WINDOW_STATE_MAXIMIZED && !(state & GDK_WINDOW_STATE_WITHDRAWN)) {
 			if(state & GDK_WINDOW_STATE_MAXIMIZED)
 				setBooleanConfValue(LAST_WINDOW_MAXIMIZED, TRUE);

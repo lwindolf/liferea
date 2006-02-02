@@ -82,7 +82,7 @@ static void itemlist_check_for_deferred_removal(void) {
  */
 void itemlist_reload(itemSetPtr sp) {
 	gboolean	loadReadItems = TRUE;
-	GList		*item;
+	GList		*iter;
 	itemPtr		ip;
 
 	debug_enter("itemlist_reload");
@@ -103,15 +103,21 @@ void itemlist_reload(itemSetPtr sp) {
 	}
 
 	/* update item list tree view */	
-	item = g_list_last(sp->items);
-	while(NULL != item) {
-		ip = item->data;
+	iter = g_list_last(sp->items);
+	while(iter) {
+		ip = iter->data;
 		g_assert(NULL != ip);
 
+g_print("irl: node=%d\n",ip->itemSet->node);
+g_print("irl: node=%s\n",ip->itemSet->node->title);
+if(ip->sourceSet) {
+g_print("irl: snode=%d\n",ip->sourceSet->node);
+g_print("irl: snode=%s\n",ip->sourceSet->node->title);
+}
 		if((FALSE == ip->readStatus) || (TRUE == loadReadItems))
 			ui_itemlist_add_item(ip, TRUE);
 
-		item = g_list_previous(item);
+		iter = g_list_previous(iter);
 	}
 	ui_itemlist_display();
 

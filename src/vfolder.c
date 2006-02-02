@@ -99,6 +99,12 @@ gpointer vfolder_import(nodePtr np, xmlNodePtr cur) {
 	debug_enter("vfolder_import");
 
 	vp = vfolder_new();
+
+	/* Vfolder processing depends on the vfolder knowing
+	   of its node structure... */
+	vp->node = np;
+g_print("setting node:%d\n", np);
+
 	vfolder_import_rules(cur, vp);
 	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(np));
 
@@ -193,11 +199,17 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	}
 
 	/* add an item copy to the vfolder */	
-	tmp = item_new();
-	item_copy(ip, tmp);
-	tmp->nr = ++(vp->lastItemNr);
-	itemset_add_item(vp->node->itemSet, tmp);
+	g_print("vfolder add: node=%d\n", vp->node);
+	itemPtr t;
+	itemset_add_item(vp->node->itemSet, t=item_copy(ip));
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
+g_print("iirl: node=%d\n",t->itemSet->node);
+if(t->sourceSet) {
+g_print("soureset=%d\n", t->sourceSet);
+g_print("soureset->node=%d\n", t->sourceSet->node);
+g_print("soureset->node->title=%s\n", t->sourceSet->node->title);
+}
+
 }
 
 /** 
@@ -210,7 +222,7 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 	GList		*items;
 	itemPtr		tmp;
 
-	items = vfolder_get_item_list(vp);
+	items = vp->node->itemSet->items;
 	while(NULL != items) {
 		tmp = items->data;
 		g_assert(NULL != ip->itemSet);
@@ -371,7 +383,7 @@ void vfolder_update_item(itemPtr ip) {
 		vp = (vfolderPtr)iter->data;
 		
 		/* first step: update item copy if found */
-		items = vfolder_get_item_list(vp);
+		items = vp->node->itemSet->items;
 		while(NULL != items) {
 			tmp = items->data;
 			g_assert(NULL != ip->itemSet);
@@ -409,9 +421,11 @@ void vfolder_update_item(itemPtr ip) {
 					rule = g_slist_next(rule);
 				}
 				
-				/* always copy the item... funny? Maybe, but necessary so that with 
-				   deferred removal items have correct state until really removed */				
-				item_copy(ip, tmp);	
+				/* always update the item... funny? Maybe, but necessary so that with 
+				   deferred removal items have correct state until really removed */
+				tmp->readStatus = ip->readStatus;
+				tmp->updateStatus = ip->updateStatus;
+				tmp->flagStatus = ip->flagStatus;
 
 				if((TRUE == keep) && (FALSE == remove)) {
 			   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", item_get_title(ip), node_get_title(vp->node));
@@ -427,7 +441,7 @@ void vfolder_update_item(itemPtr ip) {
 		
 		/* second step: update vfolder unread count */
 		vp->node->unreadCount = 0;
-		items = vfolder_get_item_list(vp);
+		items = vp->node->itemSet->items;
 		while(NULL != items) {
 			tmp = items->data;
 			if(FALSE == tmp->readStatus) 
@@ -452,15 +466,15 @@ void vfolder_update_item(itemPtr ip) {
  * copy again. This may remove the item copy if it does not
  * longer match the vfolder rules.
  */
-gboolean vfolder_check_item(itemPtr ip) {
+gboolean vfolder_check_item(itemPtr item) {
 	GSList		*iter;
 	gboolean	added = FALSE;
 
 	debug_enter("vfolder_check_item");
 
 	iter = vfolders;
-	while(NULL != iter) {
-		added |= vfolder_apply_rules_for_item(iter->data, ip);
+	while(iter) {
+		added |= vfolder_apply_rules_for_item(iter->data, item);
 		iter = g_slist_next(iter);
 	}
 	
@@ -468,15 +482,19 @@ gboolean vfolder_check_item(itemPtr ip) {
 	return added;
 }
 
+void vfolder_check_node(nodePtr node) {
+	GList		*iter;
+
+	iter = node->itemSet->items;
+	while(iter) {
+		vfolder_check_item((itemPtr)iter->data);
+		iter = g_list_next(iter);
+	}
+}
+
 void vfolder_remove(vfolderPtr vp) {
 
 	vfolder_free(vp);
-}
-
-GList * vfolder_get_item_list(vfolderPtr vp) {
-
-	g_assert(NULL != vp->node->itemSet);
-	return vp->node->itemSet->items;
 }
 
 /* called when a vfolder is processed by feed_free

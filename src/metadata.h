@@ -87,7 +87,7 @@ void metadata_list_render(GSList *metadata, struct displayset *displayset);
  *
  * @returns the new list
  */
-GSList * metadata_list_copy(GSList *from, GSList *to);
+GSList * metadata_list_copy(GSList *list);
 
 void metadata_list_free(GSList *metadata);
 

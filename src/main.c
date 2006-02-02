@@ -53,7 +53,6 @@
 #include "common.h"
 #include "update.h"
 #include "debug.h"
-#include "ui/ui_queue.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_session.h"
@@ -193,7 +192,6 @@ int main(int argc, char *argv[]) {
 	g_set_prgname("liferea");
 	gtk_set_locale();
 	g_thread_init(NULL);
-	gdk_threads_init();	
 	gtk_init(&argc, &argv);
 	
 	/* parse arguments  */
@@ -266,14 +264,10 @@ int main(int argc, char *argv[]) {
 								  _("Another copy of Liferea was found to be running. Please use it instead. "
 								  "If there is no other copy of Liferea running, please delete the "
 								  "\"~/.liferea/lock\" lock file."));
-		gdk_threads_enter();
 		gtk_dialog_run(GTK_DIALOG (dialog));
-		gdk_threads_leave();
 		gtk_widget_destroy(dialog);
 
 	} else {
-		ui_queue_init();		/* set up callback queue for other threads */
-		
 		/* order is important! */
 		conf_init();			/* initialize gconf */
 		ui_htmlview_init();		/* setup HTML widgets */
@@ -292,10 +286,12 @@ int main(int argc, char *argv[]) {
 		session_set_cmd(NULL, mainwindowState);
 #endif
 		
-		gdk_threads_enter();
+		/* Note: we explicitely do not use the gdk_thread_*
+		   locking in Liferea because it freezes the program
+		   when running Flash applets in gtkmozembed */
+
 		lifereaStarted = TRUE;
 		gtk_main();
-		gdk_threads_leave();
 	}
 
 	return 0;

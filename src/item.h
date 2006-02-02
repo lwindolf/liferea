@@ -71,9 +71,11 @@ typedef struct item {
 itemPtr 	item_new(void);
 
 /**
- * Method to copy the contents of an item to another 
+ * Method to create a copy of an item. The copy will be
+ * linked to the original item to allow state update
+ * propagation (to be used with vfolders).
  */
-void 		item_copy(itemPtr from, itemPtr to);
+itemPtr		item_copy(itemPtr ip);
 
 /**
  * Returns a HTML string with a representation of the item

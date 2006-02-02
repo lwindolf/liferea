@@ -73,19 +73,21 @@ void node_add_data(nodePtr np, guint type, gpointer data) {
 	np->type = type;
 	np->data = data;
 
-	if((FST_FOLDER == type) || (FST_VFOLDER == type)) {
-		/* Vfolders/folders are not handled by the node
-		   loading/unloading so the item set must be prepared 
-		   upon folder creation */
+	/* Vfolders/folders are not handled by the node
+	   loading/unloading so the item set must be prepared 
+	   upon folder creation */
+
+	if(FST_FOLDER == type) {
 		sp = g_new0(struct itemSet, 1);
 		sp->type = ITEMSET_TYPE_FOLDER;
 		node_set_itemset(np, sp);
 	}
 
 	if(FST_VFOLDER == type) {
-		/* Vfolder processing depends on the vfolder knowing
-		   of its node structure... */
-		((vfolderPtr)np->data)->node =np;
+		sp = g_new0(struct itemSet, 1);
+		sp->type = ITEMSET_TYPE_VFOLDER;
+		g_print("init vfolder: np=%d\n", np);
+		node_set_itemset(np, sp);
 	}
 }
 
