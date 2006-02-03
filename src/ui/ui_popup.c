@@ -23,6 +23,7 @@
 #endif
 
 #include <libxml/uri.h>
+#include <string.h>
 
 #include "feed.h"
 #include "node.h"

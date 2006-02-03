@@ -18,6 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <unistd.h>
 #include "support.h"
 #include "common.h"
 #include "debug.h"
@@ -29,6 +30,7 @@
 #include "fl_providers/fl_common.h"
 #include "fl_providers/fl_opml.h"
 #include "fl_providers/fl_opml-ui.h"
+#include "fl_providers/fl_opml-cb.h"
 #include "fl_providers/fl_plugin.h"
 
 static flPluginInfo fpi;

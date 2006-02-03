@@ -247,7 +247,7 @@ static enum scanStateType scanState = UNREAD_SCAN_INIT;
    search is restarted for all feeds. */
 static nodePtr feedlist_unread_scan(nodePtr folder) {
 	nodePtr			np, childNode, selectedNode;
-	GSList			*iter, *iter2, *selectedIter = NULL, *parent = NULL;
+	GSList			*iter, *selectedIter = NULL;
 
 	if(NULL != (selectedNode = feedlist_get_selected())) {
 		selectedIter = g_slist_find(selectedNode->parent->children, selectedNode);
@@ -386,7 +386,6 @@ static void feedlist_mark_all_read(nodePtr np) {
 }
 
 void on_popup_allunread_selected(void) {
-	nodePtr	np;
 	
 	if(NULL != selectedNode) {
 		if(FST_FOLDER == selectedNode->type) {

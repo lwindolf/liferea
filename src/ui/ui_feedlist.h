@@ -90,11 +90,6 @@ void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint
 void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
 
 /**
- * Start listening on dbus for new subscriptions
- */
-void ui_feedlist_dbus_connect(void);
-
-/**
  * Prompt the user for confirmation of a folder or feed, and
  * recursively remove the feed or folder if the user accepts. This
  * function does not block, so the folder/feeds will not have

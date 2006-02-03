@@ -200,18 +200,6 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 		  proxypassword != NULL ? proxypassword : "NULL");
 }
 
-/*----------------------------------------------------------------------*/
-/* config loading on startup						*/
-/*----------------------------------------------------------------------*/
-
-static gboolean is_number(gchar *s) {
-	while (*s != '\0') {
-		if(!g_ascii_isdigit(*s))
-			return FALSE;
-		s++;
-	}
-	return TRUE;
-}
 
 /*----------------------------------------------------------------------*/
 /* generic configuration access methods					*/

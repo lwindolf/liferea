@@ -35,6 +35,7 @@
 #include "interface.h"
 #include "support.h"
 #include "update.h"
+#include "ui/ui_enclosure.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"

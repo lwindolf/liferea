@@ -28,6 +28,7 @@
 #include <libxml/tree.h>
 #include <string.h>
 #include "feed.h"
+#include "favicon.h"
 #include "vfolder.h"
 #include "rule.h"
 #include "conf.h"
@@ -168,12 +169,11 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 }
 
 static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandler *handler, gboolean trusted) {
-	gchar		*title, *source, *typeStr, *tmp, *sortStr;
+	gchar		*title, *typeStr, *tmp, *sortStr;
 	gchar		*id = NULL;
 	nodePtr		np = NULL;
 	gpointer	data = NULL;
 	guint		type;
-	gboolean	dontParseChildren = FALSE;
 	
 	debug_enter("import_parse_outline");
 

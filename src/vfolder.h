@@ -53,6 +53,8 @@ void	vfolder_init(void);
  */
 vfolderPtr vfolder_new(void);
 
+void vfolder_remove(vfolderPtr vp);
+
 /**
  * Vfolder specific feed list import parsing.
  *

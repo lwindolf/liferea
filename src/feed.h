@@ -269,6 +269,18 @@ gboolean feed_get_discontinued(feedPtr fp);
 void feed_set_discontinued(feedPtr fp, gboolean discontinued);
 
 /**
+ * Creates a new error description according to the passed
+ * HTTP status and the feeds parser errors. If the HTTP
+ * status is a success status and no parser errors occurred
+ * no error messages is created. The created error message 
+ * can be queried with feed_get_error_description().
+ *
+ * @param fp		feed
+ * @param httpstatus	HTTP status
+ * @param resultcode the update code's return code (see update.h)
+ */
+void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gchar *filterErrors);
+/**
  * Returns a HTML string describing the last retrieval error 
  * of this feed. Should only be called when getFeedAvailable
  * returns FALSE.

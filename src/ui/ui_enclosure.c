@@ -303,7 +303,6 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
  */
 
 void ui_enclosure_save(encTypePtr type, const gchar *url, const gchar *filename) {
-	gchar	*tmp;
 	
 	g_assert(url != NULL);
 	
@@ -368,7 +367,7 @@ void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkW
 }
 
 static void on_encsave_clicked(const gchar *filename, gpointer user_data) {
-	GtkWidget	*dialog = (GtkWidget *)user_data;
+	/*GtkWidget	*dialog = (GtkWidget *)user_data;*/
 	gchar		*url = (gchar *)user_data;
 	gchar		*utfname;
 	

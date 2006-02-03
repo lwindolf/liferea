@@ -44,7 +44,6 @@ void vfolder_init(void) {
 
 /* sets up a vfolder feed structure */
 vfolderPtr vfolder_new(void) {
-	itemSetPtr	sp;
 	vfolderPtr	vp;
 
 	debug_enter("vfolder_new");
@@ -103,7 +102,7 @@ gpointer vfolder_import(nodePtr np, xmlNodePtr cur) {
 	/* Vfolder processing depends on the vfolder knowing
 	   of its node structure... */
 	vp->node = np;
-g_print("setting node:%d\n", np);
+g_print("setting node:%p\n", np);
 
 	vfolder_import_rules(cur, vp);
 	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(np));
@@ -199,14 +198,14 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	}
 
 	/* add an item copy to the vfolder */	
-	g_print("vfolder add: node=%d\n", vp->node);
+	g_print("vfolder add: node=%p\n", vp->node);
 	itemPtr t;
 	itemset_add_item(vp->node->itemSet, t=item_copy(ip));
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
-g_print("iirl: node=%d\n",t->itemSet->node);
+g_print("iirl: node=%p\n",t->itemSet->node);
 if(t->sourceSet) {
-g_print("soureset=%d\n", t->sourceSet);
-g_print("soureset->node=%d\n", t->sourceSet->node);
+g_print("soureset=%p\n", t->sourceSet);
+g_print("soureset->node=%p\n", t->sourceSet->node);
 g_print("soureset->node->title=%s\n", t->sourceSet->node->title);
 }
 

@@ -47,7 +47,6 @@ static GHashTable *channelHash = NULL;
 static void parseCDFChannel(feedPtr fp, itemSetPtr sp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
 	gchar		*tmp, *tmp2, *tmp3;
 	itemPtr		ip;
-	GList		*items = NULL;
 	
 	cur = cur->xmlChildrenNode;
 	while(cur != NULL) {

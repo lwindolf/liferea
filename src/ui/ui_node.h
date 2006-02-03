@@ -25,6 +25,8 @@
 #include <gtk/gtk.h>
 #include "node.h"
 
+void ui_folder_newdialog(nodePtr np);
+
 /**
  * Determines the tree iter of a given node.
  *

@@ -407,7 +407,7 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean sync) {
 	GError		*error = NULL;
 	gchar 		*tmpUri, *tmp, **argv, **iter;
-	gint 		argc, status, i;
+	gint 		argc, status;
 	gboolean 	done = FALSE;
   
 	g_assert(cmd != NULL);

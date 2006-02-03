@@ -123,7 +123,8 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 			escapeAsText = FALSE;
 			includeChildTags = FALSE;
 			baseURL = xmlNodeGetBase(cur->doc, cur);
-		} else if (NULL == type || !strcmp(type, "text") || !strncasecmp(type, "text/",5)) { /* Assume that "text/*" files can be directly displayed.. kinda stated in the RFC */
+		} else if (NULL == type || !strcmp(type, "text") || !strncasecmp(type, "text/",5)) {
+			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
 			escapeAsText = TRUE;
 			includeChildTags = FALSE;
 		} else if (!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
@@ -141,6 +142,10 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 				return g_strdup(_("This item's contents is invalid."));
 			}
 			baseURL = xmlNodeGetBase(cur->doc, cur);
+		} else {
+			/* Unknown type... lets bail? */
+			g_free(type);
+			return g_strdup(_("This item's contents is invalid."));
 		}
 			
 		if (includeChildTags)

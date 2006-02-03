@@ -20,6 +20,7 @@
 
 #include <gmodule.h>
 #include <gtk/gtk.h>
+#include <string.h>
 #include "debug.h"
 #include "plugin.h"
 #include "support.h"
@@ -94,7 +95,7 @@ void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
 	GSList		*iter;
 	flPluginInfo	*fpi;
 	pluginInfo	*pi;
-	xmlChar		*cacheId = NULL, *typeStr = NULL;
+	xmlChar		*typeStr = NULL;
 	gboolean	found = FALSE;
 
 	debug_enter("fl_plugin_import");

@@ -40,6 +40,7 @@
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_notification.h"
+#include "ui/ui_node.h"
 
 extern GtkWindow *mainwindow;
 
@@ -47,6 +48,8 @@ extern GtkWindow *mainwindow;
 static gboolean feedlistImport = FALSE;
 
 static flPluginInfo fpi;
+
+static void ui_feedlist_dbus_connect ();
 
 static void fl_default_handler_initial_load(nodePtr np) {
 	flNodeHandler	*handler;
@@ -128,7 +131,6 @@ static void fl_default_save_root(void) {
 }
 
 static void fl_default_node_add(nodePtr np) {
-	GtkWidget	*dialog;
 
 	switch(np->type) {
 		case FST_FEED:
