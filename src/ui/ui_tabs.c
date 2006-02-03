@@ -123,7 +123,7 @@ GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) 
 	gtk_box_pack_start(GTK_BOX(toolbar), widget, FALSE, FALSE, 6);
 
 	widget = gtk_entry_new();
-	gtk_entry_set_text(GTK_ENTRY(widget), url);
+	gtk_entry_set_text(GTK_ENTRY(widget), url != NULL ? url : "");
 	gtk_box_pack_start(GTK_BOX(toolbar), widget, TRUE, TRUE, 0);
 	g_signal_connect((gpointer)widget, "activate", G_CALLBACK(on_tab_url_entry_activate), (gpointer)htmlview);
 
