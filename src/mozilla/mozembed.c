@@ -86,20 +86,30 @@ static void mozilla_write(GtkWidget *widget, const gchar *string, guint length, 
  * mozembed_new_window_cb: GTKMOZEMBED SIGNAL, emitted any time a new 
  * window is requested by the document 
  */
-static void mozembed_new_window_cb(GtkMozEmbed *dummy, GtkMozEmbed **retval, guint chrome_mask, gpointer embed) {
+static void mozembed_new_window_cb(GtkMozEmbed *embed, GtkMozEmbed **newEmbed, guint chrome_mask, gpointer callback_data) {
 
 	/* The only time we want to react on new window requests
 	   is when the user clicks a link that wants to open in
 	   a new window. The following check might not be fully
 	   correct (e.g. on initial webpage loading when new popups
 	   are requested and the user crosses a link)  */
+	*newEmbed = NULL;
 	if(NULL != selectedURL) {
 		if(getBooleanConfValue(BROWSE_INSIDE_APPLICATION))
-			ui_tabs_new(selectedURL, selectedURL, FALSE);
+			*newEmbed = GTK_MOZ_EMBED(ui_tabs_new(NULL, NULL, TRUE));
 		else
 			ui_htmlview_launch_in_external_browser(selectedURL);
 	}
-	*retval = NULL;
+}
+
+static void mozembed_title_changed_cb (GtkMozEmbed *embed, gpointer user_data)
+{
+	char *newTitle;
+	newTitle = gtk_moz_embed_get_title(embed);
+	if (newTitle) {
+		ui_tabs_set_title(GTK_WIDGET(user_data), newTitle);
+		g_free(newTitle);
+	}
 }
 
 /**
@@ -194,7 +204,7 @@ static GtkWidget * mozilla_create(gboolean forceInternalBrowsing) {
 	signal_connections[] =
 	{
 		/*{ "location",        mozembed_location_changed_cb  },*/
-		/*{ "title",           mozembed_title_changed_cb     },*/
+		{ "title",           mozembed_title_changed_cb     },
 		/*{ "net_start",       mozembed_load_started_cb      },*/
 		/*{ "net_stop",        mozembed_load_finished_cb     },*/
 		/*{ "net_state_all",   mozembed_net_status_change_cb },*/
