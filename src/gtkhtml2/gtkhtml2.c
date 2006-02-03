@@ -265,6 +265,10 @@ void gtkhtml2_destroyed_cb(GtkObject *scrollpane, gpointer user_data) {
 	kill_old_connections(GTK_WIDGET(scrollpane));
 }
 
+static void gtkhtml2_title_changed(HtmlDocument *doc, const gchar *new_title, gpointer data) {
+	ui_tabs_set_title(GTK_WIDGET(data), new_title);
+}
+
 /* ---------------------------------------------------------------------------- */
 /* Liferea specific code to set up the HTML viewer widget 			*/
 /* ---------------------------------------------------------------------------- */
@@ -314,7 +318,10 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, guint length,
 	
 	g_signal_connect (G_OBJECT (doc), "link_clicked",
 				   G_CALLBACK (link_clicked), scrollpane);
-	
+
+	g_signal_connect (G_OBJECT (doc), "title_changed",
+				   G_CALLBACK (gtkhtml2_title_changed), scrollpane);
+
 	if(NULL == string || length == 0)
 		html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
 	else if (contentType != NULL && !strcmp("text/plain", contentType)) {
