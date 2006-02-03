@@ -20,6 +20,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <signal name="delete_event" handler="on_close" last_modification_time="Tue, 15 Jun 2004 04:16:40 GMT"/>
   <signal name="window_state_event" handler="on_mainwindow_window_state_event" last_modification_time="Tue, 20 Jul 2004 05:12:24 GMT"/>
   <signal name="key_press_event" handler="on_mainwindow_key_press_event" last_modification_time="Fri, 26 Nov 2004 23:21:47 GMT"/>
@@ -33,6 +34,8 @@
       <child>
 	<widget class="GtkMenuBar" id="menubar">
 	  <property name="visible">True</property>
+	  <property name="pack_direction">GTK_PACK_DIRECTION_LTR</property>
+	  <property name="child_pack_direction">GTK_PACK_DIRECTION_LTR</property>
 
 	  <child>
 	    <widget class="GtkMenuItem" id="menuitem1">
@@ -781,7 +784,7 @@
 	      <property name="show_tabs">True</property>
 	      <property name="show_border">False</property>
 	      <property name="tab_pos">GTK_POS_TOP</property>
-	      <property name="scrollable">False</property>
+	      <property name="scrollable">True</property>
 	      <property name="enable_popup">False</property>
 
 	      <child>
@@ -1035,6 +1038,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -2444,6 +2448,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
   <signal name="delete_event" handler="gtk_widget_hide" object="newdialog" last_modification_time="Sun, 14 Sep 2003 18:53:43 GMT"/>
 
@@ -3067,6 +3072,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
   <signal name="delete_event" handler="gtk_widget_destroy" object="prefdialog" last_modification_time="Sun, 16 Jan 2005 17:06:19 GMT"/>
 
@@ -6002,6 +6008,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
   <signal name="delete_event" handler="gtk_widget_hide" object="newfolderdialog" last_modification_time="Sun, 14 Sep 2003 18:59:38 GMT"/>
 
@@ -6144,6 +6151,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
   <signal name="delete_event" handler="gtk_widget_hide" object="foldernamedialog" last_modification_time="Sun, 14 Sep 2003 19:00:14 GMT"/>
 
@@ -6272,6 +6280,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -6499,6 +6508,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -6900,6 +6910,7 @@ Sigge Kotliar &lt;sigge@hystrix.se&gt;</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -7148,6 +7159,7 @@ Sigge Kotliar &lt;sigge@hystrix.se&gt;</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
@@ -7447,6 +7459,7 @@ matches. They are removed if at least one removing rule matches.</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
   <signal name="delete_event" handler="gtk_widget_destroy" last_modification_time="Sun, 16 Jan 2005 18:39:23 GMT"/>
 
@@ -7682,6 +7695,7 @@ matches. They are removed if at least one removing rule matches.</property>
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">False</property>
 
   <child internal-child="vbox">
