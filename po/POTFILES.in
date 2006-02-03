@@ -65,8 +65,6 @@ src/ui/ui_popup.c
 src/ui/ui_popup.h
 src/ui/ui_prefs.c
 src/ui/ui_prefs.h
-src/ui/ui_queue.c
-src/ui/ui_queue.h
 src/ui/ui_search.c
 src/ui/ui_search.h
 src/ui/ui_session.c
