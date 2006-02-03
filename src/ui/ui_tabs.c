@@ -159,7 +159,9 @@ void ui_tabs_show_headlines(void) {
 void ui_tabs_set_title(GtkWidget *child, const gchar *title) {
     gchar *text;
 	GtkWidget *label;
-
+	
+	if (gtk_notebook_page_num(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),gtk_widget_get_parent(gtk_widget_get_parent(child))) < 1)
+		return;
 	text = ui_tabs_condense_text(title != NULL ? title : _("New tab"));
 	label = gtk_label_new(text);
 	gtk_widget_show(label);
