@@ -57,7 +57,6 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_session.h"
 
-GThread	*mainThread = NULL;
 gboolean lifereaStarted = FALSE;
 
 static void show_help(void) {
@@ -251,8 +250,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	set_debug_level(debug_flags);
-
-	mainThread = g_thread_self();	/* we need to know this for locking in ui_queue.c */
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
