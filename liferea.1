@@ -1,8 +1,11 @@
-.TH LIFEREA 1 "June 11, 2004" 
+.TH LIFEREA "1" "February 1, 2005"
 .SH NAME
 Liferea \- RSS/RDF and Atom news aggregator
+
 .SH SYNOPSIS
-A short usage summary for Liferea.
+.B liferea
+.RI [\fIOPTIONS\fR]
+
 .SH DESCRIPTION
 \fBLiferea\fP (Linux Feed Reader) is an RSS/RDF and Atom news aggregator which also supports CDF channels, OCS, and OPML directories.
 It's intended to be a clone of the Windows-only FeedReader.
@@ -16,8 +19,8 @@ output version information and exit
 .B \-\-help
 display a option overview and exit
 .TP
-.B \-\-iconify
-Starts the program iconified
+.B \-\-mainwindow\-state=\fISTATE\fR
+Start Liferea with its mainwindow in STATE: shown, iconified, hidden
 .TP
 .B \-\-debug\-cache
 Print debugging messages for the cache handling
@@ -51,10 +54,17 @@ $http_proxy should be set to a URI specifying the desired proxy, for example
 .RB \(oqhttp://proxy.example.com:3128/\(cq.
 
 .SH FILES
-.I ~/.liferea/feedlist.opml
-.I ~/.liferea/cache/feeds
-.I ~/.liferea/cache/favicons
-.I ~/.liferea/mozilla
-.I ~/.liferea/cookies.txt
+.TP
+/usr/lib/liferea/
+Contains Liferea plugins
+.TP
+/usr/share/liferea/css/
+Contains stylesheets for feed display
+.TP
+/usr/share/liferea/opml/
+Contains default feedlists
+.TP
+~/.liferea/
+Contains user feedlist and feed cache
 .SH AUTHOR
 This manual page was written by Lars Lindner <lars.lindner@gmx.net>.
