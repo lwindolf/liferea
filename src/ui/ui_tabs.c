@@ -69,7 +69,31 @@ void ui_tabs_init(void) {
 	g_signal_connect((gpointer)lookup_widget(mainwindow, "browsertabs"), "switch-page", G_CALLBACK(on_tab_switched), NULL);
 }
 
-void ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) {
+static gchar* ui_tabs_condense_text(const gchar* title) {
+	int i;
+	gchar *tmp, *tmp2;
+
+	/* make nice short title */
+	if (title != NULL) {
+		if(!strncmp(title, "http://",7))
+			title += strlen("http://");
+		tmp2 = tmp = g_strdup(title);
+	} else {
+		tmp2 = tmp = g_strdup("New tab");
+	}
+	
+	if(g_utf8_strlen(tmp, -1) > 20) {
+		for(i = 0; i < 20; i++)
+			tmp2 = g_utf8_find_next_char(tmp2, NULL);
+		*tmp2 = 0;
+		tmp2 = g_strdup_printf("%s...", tmp);
+		g_free(tmp);
+		tmp = tmp2;
+	}
+	return tmp;
+}
+
+GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) {
 	GtkWidget	*widget;
 	GtkWidget	*label;
 	GtkWidget	*vbox;
@@ -77,23 +101,11 @@ void ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) {
 	GtkWidget	*htmlframe;
 	GtkWidget	*htmlview;
 	GtkWidget	*image;
-	gchar		*tmp, *tmp2;
+	gchar		*tmp;
 	int		i;
 
-	/* make nice short title */
-	if(NULL != strstr(title, "http://"))
-		title += strlen("http://");
-		
-	tmp2 = tmp = g_strdup(title);
-	if(g_utf8_strlen(tmp, -1) > 20) {
-		for(i = 0; i < 20; i++)
-			tmp2 = g_utf8_find_next_char(tmp2, NULL);
-			*tmp2 = 0;
-		tmp2 = g_strdup_printf("%s...", tmp);
-		g_free(tmp);
-		tmp = tmp2;
-	}
-	label = gtk_label_new(tmp2);	
+	tmp = ui_tabs_condense_text(title != NULL ? title : _("New tab"));
+	label = gtk_label_new(tmp);
 	gtk_widget_show(label);
 	g_free(tmp);
 	
@@ -136,11 +148,25 @@ void ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) {
 	
 	if(NULL != url)	
 		ui_htmlview_launch_URL(htmlview, (gchar *)url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+	return htmlview;
 }
 
 void ui_tabs_show_headlines(void) {
 
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), 0);
+}
+
+void ui_tabs_set_title(GtkWidget *child, const gchar *title) {
+    gchar *text;
+	GtkWidget *label;
+
+	text = ui_tabs_condense_text(title != NULL ? title : _("New tab"));
+	label = gtk_label_new(text);
+	gtk_widget_show(label);
+	gtk_notebook_set_tab_label(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),
+									gtk_widget_get_parent(gtk_widget_get_parent(child)),
+									label);
+	g_free(text);
 }
 
 GtkWidget * ui_tabs_get_active_htmlview(void) {

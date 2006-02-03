@@ -33,8 +33,10 @@ void ui_tabs_init(void);
  * @param url	URL to be loaded in new tab (can be NULL to do nothing)
  * @param title	title of the tab to be created
  * @param activate Should the new tab be put in the foreground?
+ *
+ * @returns the newly created htmlview
  */
-void ui_tabs_new(const gchar *url, const gchar *title, gboolean activate);
+GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate);
 
 /**
  * makes the headline tab visible 
@@ -46,8 +48,10 @@ void ui_tabs_show_headlines(void);
  * is currently visible and can be used to display HTML that
  * is to be loaded
  */
+
 GtkWidget * ui_tabs_get_active_htmlview(void);
 
+void ui_tabs_set_title(GtkWidget *child, const gchar *title);
 
 /* popup menu callbacks */
 void on_popup_open_link_in_tab_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
