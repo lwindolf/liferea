@@ -3200,7 +3200,7 @@ create_aboutdialog (void)
   GtkWidget *dialog_vbox12;
   GtkWidget *notebook2;
   GtkWidget *vbox231;
-  GtkWidget *label57;
+  GtkWidget *version_label;
   GtkWidget *label58;
   GtkWidget *homepagebtn;
   GtkWidget *label194;
@@ -3238,10 +3238,10 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (notebook2), vbox231);
   gtk_container_set_border_width (GTK_CONTAINER (vbox231), 6);
 
-  label57 = gtk_label_new ("Liferea 1.1");
-  gtk_widget_show (label57);
-  gtk_box_pack_start (GTK_BOX (vbox231), label57, FALSE, FALSE, 0);
-  gtk_misc_set_padding (GTK_MISC (label57), 0, 15);
+  version_label = gtk_label_new ("Liferea A.B.C");
+  gtk_widget_show (version_label);
+  gtk_box_pack_start (GTK_BOX (vbox231), version_label, FALSE, FALSE, 0);
+  gtk_misc_set_padding (GTK_MISC (version_label), 0, 15);
 
   label58 = gtk_label_new (_("Liferea is a news aggregator for GTK+"));
   gtk_widget_show (label58);
@@ -3329,7 +3329,7 @@ create_aboutdialog (void)
   GLADE_HOOKUP_OBJECT_NO_REF (aboutdialog, dialog_vbox12, "dialog_vbox12");
   GLADE_HOOKUP_OBJECT (aboutdialog, notebook2, "notebook2");
   GLADE_HOOKUP_OBJECT (aboutdialog, vbox231, "vbox231");
-  GLADE_HOOKUP_OBJECT (aboutdialog, label57, "label57");
+  GLADE_HOOKUP_OBJECT (aboutdialog, version_label, "version_label");
   GLADE_HOOKUP_OBJECT (aboutdialog, label58, "label58");
   GLADE_HOOKUP_OBJECT (aboutdialog, homepagebtn, "homepagebtn");
   GLADE_HOOKUP_OBJECT (aboutdialog, label194, "label194");

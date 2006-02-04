@@ -96,8 +96,16 @@ void on_popup_quit(gpointer callback_data, guint callback_action, GtkWidget *wid
 }
 
 void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	
-	gtk_widget_show(create_aboutdialog());
+	GtkWidget *dialog;
+	GtkLabel *versionLabel;
+	gchar *text;
+
+	dialog = create_aboutdialog();
+	versionLabel = GTK_LABEL(lookup_widget(dialog, "version_label"));
+	text = g_strdup_printf("%s %s", PACKAGE, VERSION);;
+	gtk_label_set_text(versionLabel,text);
+	g_free(text);
+	gtk_widget_show(dialog);
 }
 
 void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
