@@ -391,7 +391,7 @@ static void gtkhtml2_html_received(struct request *r) {
 		/* Maybe an error message should be displayed.... */
 		return; /* This should nicely exit.... */
 	}
-	
+	ui_tabs_set_location(GTK_WIDGET(r->user_data), r->source);
 	write_html(GTK_WIDGET(r->user_data), r->data, r->size,  r->source, r->contentType);
 }
 

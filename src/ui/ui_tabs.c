@@ -2,6 +2,7 @@
  * @file ui_tabs.c browser tabs
  *
  * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,13 +98,7 @@ static gchar* ui_tabs_condense_text(const gchar* title) {
 }
 
 GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) {
-	GtkWidget	*widget;
-	GtkWidget	*label;
-	GtkWidget	*vbox;
-	GtkWidget	*toolbar;
-	GtkWidget	*htmlframe;
-	GtkWidget	*htmlview;
-	GtkWidget	*image;
+	GtkWidget *widget, *label, *vbox, *toolbar, *htmlframe, *htmlview, *image;
 	gchar		*tmp;
 	int		i;
 
@@ -124,6 +119,8 @@ GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) 
 
 	widget = gtk_entry_new();
 	gtk_entry_set_text(GTK_ENTRY(widget), url != NULL ? url : "");
+	g_object_set_data(G_OBJECT(vbox), "url_entry", widget);
+	
 	gtk_box_pack_start(GTK_BOX(toolbar), widget, TRUE, TRUE, 0);
 	g_signal_connect((gpointer)widget, "activate", G_CALLBACK(on_tab_url_entry_activate), (gpointer)htmlview);
 
@@ -159,18 +156,65 @@ void ui_tabs_show_headlines(void) {
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), 0);
 }
 
+static GtkWidget* ui_tabs_find_notebook_child(GtkWidget *parent) {
+	GtkWidget *child;
+	if (parent == NULL)
+		return NULL;
+	do {
+		child = parent;
+		parent = gtk_widget_get_parent(child);
+		if (parent == NULL)
+			return NULL;
+	} while (!GTK_IS_NOTEBOOK(parent));
+	return child;
+}
+
+void ui_tabs_close_tab(GtkWidget *child) {
+	GtkWidget *vbox;
+	int n;
+	vbox = ui_tabs_find_notebook_child(child);
+	g_assert(vbox != NULL);
+	n = gtk_notebook_page_num(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),vbox);
+	g_assert(n >= 0);
+	if (n == 0) /* Can't really do anything.... can't close the first tab */
+		return;
+	gtk_notebook_remove_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), n);
+	
+	/* check if all tabs are closed */
+	if(1 == gtk_notebook_get_n_pages(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs"))))
+		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
+}
+
+void ui_tabs_set_location(GtkWidget *child, const gchar *uri) {
+	GtkWidget *vbox;
+	GtkEntry *entry;
+	int newPosition = 0;
+	
+	vbox = ui_tabs_find_notebook_child(child);
+	g_assert(vbox != NULL);
+	if (gtk_notebook_page_num(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),vbox) < 1)
+		return;
+	
+	entry = g_object_get_data(G_OBJECT(vbox), "url_entry");
+	g_assert(entry != NULL);
+	
+	gtk_editable_delete_text(GTK_EDITABLE(entry), 0, -1);
+	gtk_editable_insert_text(GTK_EDITABLE(entry), uri, strlen(uri), &newPosition);
+}
+
 void ui_tabs_set_title(GtkWidget *child, const gchar *title) {
     gchar *text;
 	GtkWidget *label;
 	
-	if (gtk_notebook_page_num(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),gtk_widget_get_parent(gtk_widget_get_parent(child))) < 1)
+	if (gtk_notebook_page_num(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),ui_tabs_find_notebook_child(child)) < 1)
 		return;
+	
 	text = ui_tabs_condense_text(title != NULL ? title : _("New tab"));
 	label = gtk_label_new(text);
 	gtk_widget_show(label);
 	gtk_notebook_set_tab_label(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),
-									gtk_widget_get_parent(gtk_widget_get_parent(child)),
-									label);
+							   ui_tabs_find_notebook_child(child),
+							   label);
 	g_free(text);
 }
 

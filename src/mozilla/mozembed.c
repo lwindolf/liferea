@@ -112,6 +112,20 @@ static void mozembed_title_changed_cb (GtkMozEmbed *embed, gpointer user_data)
 	}
 }
 
+static void mozembed_location_changed_cb (GtkMozEmbed *embed, gpointer user_data) {
+	gchar *newLocation;
+	
+	newLocation = gtk_moz_embed_get_location(embed);
+	if (newLocation != NULL)
+		ui_tabs_set_location(GTK_WIDGET(embed), newLocation);
+	g_free(newLocation);
+}
+
+void mozembed_destroy_brsr_cb(GtkMozEmbed *embed, gpointer user_data) {
+	ui_tabs_close_tab(GTK_WIDGET(embed));
+}
+
+
 /**
  * mozembed_link_message_cb: GTKMOZEMBED SIGNAL, emitted when the 
  * link message changes
@@ -203,7 +217,7 @@ static GtkWidget * mozilla_create(gboolean forceInternalBrowsing) {
 	}
 	signal_connections[] =
 	{
-		/*{ "location",        mozembed_location_changed_cb  },*/
+		{ "location",        mozembed_location_changed_cb  },
 		{ "title",           mozembed_title_changed_cb     },
 		/*{ "net_start",       mozembed_load_started_cb      },*/
 		/*{ "net_stop",        mozembed_load_finished_cb     },*/
@@ -212,7 +226,7 @@ static GtkWidget * mozilla_create(gboolean forceInternalBrowsing) {
 		{ "link_message",    mozembed_link_message_cb      },
 		/*{ "js_status",       mozembed_js_status_cb         },*/
 		/*{ "visibility",      mozembed_visibility_cb        },*/
-		/*{ "destroy_browser", mozembed_destroy_brsr_cb      },*/
+		{ "destroy_browser", mozembed_destroy_brsr_cb      },
 		/*{ "dom_mouse_down",  mozembed_dom_mouse_down_cb    },*/
 		{ "dom_mouse_click", mozembed_dom_mouse_click_cb   },
 		{ "dom_key_press",   mozembed_dom_key_press_cb     },

@@ -2,6 +2,7 @@
  * @file ui_popup.h browser tabs
  *
  * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +52,9 @@ void ui_tabs_show_headlines(void);
 
 GtkWidget * ui_tabs_get_active_htmlview(void);
 
+void ui_tabs_close_tab(GtkWidget *child);
 void ui_tabs_set_title(GtkWidget *child, const gchar *title);
+void ui_tabs_set_location(GtkWidget *child, const gchar *uri);
 
 /* popup menu callbacks */
 void on_popup_open_link_in_tab_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
