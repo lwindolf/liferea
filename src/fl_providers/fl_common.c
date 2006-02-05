@@ -82,7 +82,7 @@ void fl_common_node_auto_update(nodePtr np) {
 	GTimeVal	now;
 	gint		interval;
 
-	debug_enter("fl_default_node_auto_update");
+	debug_enter("fl_common_node_auto_update");
 
 	if(FST_FEED != np->type)	/* don't process folders and vfolders */
 		return;
@@ -104,7 +104,7 @@ void fl_common_node_auto_update(nodePtr np) {
 	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
 		favicon_download(np);
 
-	debug_exit("fl_default_node_auto_update");
+	debug_exit("fl_common_node_auto_update");
 }
 
 void fl_common_node_update(nodePtr np, guint flags) {

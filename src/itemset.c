@@ -1,8 +1,8 @@
 /**
  * @file itemset.c support for different item list implementations
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,6 +125,23 @@ itemPtr itemset_lookup_item(itemSetPtr sp, nodePtr np, gulong nr) {
 	return NULL;
 }
 
+gboolean itemset_merge_check(itemSetPtr sp, itemPtr ip) {
+	gboolean toBeMerged = FALSE;
+
+	switch(sp->type) {
+		case ITEMSET_TYPE_FEED:
+			toBeMerged = feed_merge_check(sp, ip);
+			break;
+		case ITEMSET_TYPE_FOLDER:
+		case ITEMSET_TYPE_VFOLDER:
+		default:
+			g_warning("itemset_merge_check(): If this happens something is wrong!");
+			break;
+	}
+
+	return toBeMerged;
+}
+
 void itemset_add_item(itemSetPtr sp, itemPtr ip) {
 
 	ip->itemSet = sp;
@@ -193,9 +210,9 @@ void itemset_set_item_flag(itemSetPtr sp, itemPtr ip, gboolean newFlagStatus) {
 
 	if(ITEMSET_TYPE_VFOLDER == sp->type) {
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceSet != NULL) {
+		if(ip->sourceNode != NULL) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
+			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
 			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
 				itemlist_set_flag(sourceItem, newFlagStatus);
@@ -221,14 +238,14 @@ void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newReadSta
 	
 	if(ITEMSET_TYPE_VFOLDER == sp->type) {
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceSet != NULL) {
+		if(ip->sourceNode != NULL) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
+			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
 			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
 				itemlist_set_read_status(sourceItem, newReadStatus);
 			node_unload(sourceNode);
-		}
+		} 
 	} else {		
 		vfolder_update_item(ip);	/* there might be vfolders using this item */
 		vfolder_check_item(ip);		/* and check if now a rule matches */
@@ -245,9 +262,9 @@ void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newUpdat
 
 	if(ITEMSET_TYPE_VFOLDER == sp->type) {	
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceSet != NULL) {
+		if(ip->sourceNode != NULL) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceSet->node;	/* keep feed pointer because ip might be free'd */
+			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
 			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
 				itemlist_set_update_status(sourceItem, newUpdateStatus);

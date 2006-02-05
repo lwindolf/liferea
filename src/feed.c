@@ -724,19 +724,6 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 	}
 		
 	if(!found) {
-		/* if new item has no number yet */
-		if(0 == new_ip->nr)
-			new_ip->nr = ++(sp->lastItemNr);
-		
-		/* ensure that the feed last item nr is at maximum */
-		if(new_ip->nr > sp->lastItemNr)
-			sp->lastItemNr = new_ip->nr;
-
-		/* ensure that the item nr's are unique */
-		if(NULL != itemset_lookup_item(sp, NULL, new_ip->nr)) {
-			g_warning("The item number to be added is not unique! Item (%s) (%lu)\n", new_ip->title, new_ip->nr);
-			new_ip->nr = ++(sp->lastItemNr);
-		}
 
 		/* If a new item has enclosures and auto downloading
 		   is enabled we start the download. Enclosures added

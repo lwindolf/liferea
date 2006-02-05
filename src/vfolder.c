@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c VFolder functionality
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,7 +102,6 @@ gpointer vfolder_import(nodePtr np, xmlNodePtr cur) {
 	/* Vfolder processing depends on the vfolder knowing
 	   of its node structure... */
 	vp->node = np;
-g_print("setting node:%p\n", np);
 
 	vfolder_import_rules(cur, vp);
 	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(np));
@@ -184,7 +183,7 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	/* need to check for vfolder items because the
 	   rule checking can be called on item copies of
 	   the same vfolder, */
-	if(NULL != ip->sourceSet)
+	if(NULL != ip->sourceNode)
 		return;
 
 	/* check if the item was already added */
@@ -192,23 +191,15 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	iter = vp->node->itemSet->items;
 	while(NULL != iter) {
 		tmp = iter->data;
-		if((ip->nr == tmp->sourceNr) && (ip->itemSet == tmp->sourceSet))
+		if((ip->nr == tmp->sourceNr) && 
+		   (ip->itemSet->node == tmp->sourceNode))
 			return;
 		iter = g_list_next(iter);
 	}
 
 	/* add an item copy to the vfolder */	
-	g_print("vfolder add: node=%p\n", vp->node);
-	itemPtr t;
-	itemset_add_item(vp->node->itemSet, t=item_copy(ip));
+	itemset_add_item(vp->node->itemSet, item_copy(ip));
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
-g_print("iirl: node=%p\n",t->itemSet->node);
-if(t->sourceSet) {
-g_print("soureset=%p\n", t->sourceSet);
-g_print("soureset->node=%p\n", t->sourceSet->node);
-g_print("soureset->node->title=%s\n", t->sourceSet->node->title);
-}
-
 }
 
 /** 
@@ -225,9 +216,9 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 	while(NULL != items) {
 		tmp = items->data;
 		g_assert(NULL != ip->itemSet);
-		g_assert(NULL != tmp->sourceSet);
+
 		if((ip->nr == tmp->sourceNr) &&
-		   (ip->itemSet == tmp->sourceSet)) {
+		   (ip->itemSet->node == tmp->sourceNode)) {
 			found = TRUE;
 			break;
 		}
@@ -242,7 +233,7 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 		   the original item may not exist anymore when the 
 		   removal is executed, so we need to remove the
 		   pointer to the original item */
-		tmp->sourceSet = NULL;
+		tmp->sourceNode = NULL;
 		tmp->sourceNr = -1;
 		
 		/* we call itemlist_remove_item to prevent removing
@@ -258,7 +249,7 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 void vfolder_remove_item(itemPtr ip) {
 	GSList		*iter;
 
-	g_assert(NULL == ip->sourceSet);
+	g_assert(NULL == ip->sourceNode);
 
 	debug_enter("vfolder_remove_item");
 
@@ -375,7 +366,7 @@ void vfolder_update_item(itemPtr ip) {
 	debug_enter("vfolder_update_item");
 
 	/* never process vfolder items! */
-	g_assert(NULL == ip->sourceSet);
+	g_assert(NULL == ip->sourceNode);
 	
 	iter = vfolders;
 	while(NULL != iter) {
@@ -386,7 +377,6 @@ void vfolder_update_item(itemPtr ip) {
 		while(NULL != items) {
 			tmp = items->data;
 			g_assert(NULL != ip->itemSet);
-			g_assert(NULL != tmp->sourceSet);
 			
 			/* avoid processing items that are in deletion state */
 			if(-1 == tmp->sourceNr) {
@@ -396,7 +386,7 @@ void vfolder_update_item(itemPtr ip) {
 			
 			/* find the item copies */
 			if((ip->nr == tmp->sourceNr) &&
-			   (ip->itemSet == tmp->sourceSet)) {
+			   (ip->itemSet->node == tmp->sourceNode)) {
 				/* check if the item still matches, the item won't get added
 				   another time so this call effectivly just checks if the
 				   item is still to remain added. */
@@ -527,4 +517,3 @@ void vfolder_free(vfolderPtr vp) {
 	
 	debug_exit("vfolder_free");
 }
-

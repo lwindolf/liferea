@@ -1,8 +1,8 @@
 /**
  * @file node.c common feed list node handling
  * 
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,7 +86,6 @@ void node_add_data(nodePtr np, guint type, gpointer data) {
 	if(FST_VFOLDER == type) {
 		sp = g_new0(struct itemSet, 1);
 		sp->type = ITEMSET_TYPE_VFOLDER;
-		g_print("init vfolder: np=%d\n", np);
 		node_set_itemset(np, sp);
 	}
 }
@@ -232,23 +231,11 @@ void node_update_counters(nodePtr np) {
 }
 
 static void node_merge_item(nodePtr np, itemPtr ip) {
-	gboolean added;
 
 	debug3(DEBUG_UPDATE, "merging \"%s\" (id=%d) to node \"%s\"", item_get_title(ip), ip->nr, node_get_title(np));
 
 	/* step 1: merge into node type internal data structures */
-	switch(np->type) {
-		case FST_PLUGIN:
-		case FST_FEED:
-			added = feed_merge_check(np->itemSet, ip);
-			break;
-		case FST_FOLDER:
-		case FST_VFOLDER:
-			g_warning("If this happens something is wrong!");
-			break;
-	}
-
-	if(added) {
+	if(itemset_merge_check(np->itemSet, ip)) {
 		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(ip), node_get_title(np));
 
 		/* step 1: add to itemset */
@@ -276,7 +263,7 @@ static void node_merge_item(nodePtr np, itemPtr ip) {
  */
 void node_merge_items(nodePtr np, GList *list) {
 	GList	*iter;
-	
+
 	/* Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 
 	   their order in the merged list, so merging needs

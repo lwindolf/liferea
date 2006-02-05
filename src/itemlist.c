@@ -1,7 +1,7 @@
 /**
  * @file itemlist.c itemlist handling
  *
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,12 +108,6 @@ void itemlist_reload(itemSetPtr sp) {
 		ip = iter->data;
 		g_assert(NULL != ip);
 
-g_print("irl: node=%d\n",ip->itemSet->node);
-g_print("irl: node=%s\n",ip->itemSet->node->title);
-if(ip->sourceSet) {
-g_print("irl: snode=%d\n",ip->sourceSet->node);
-g_print("irl: snode=%s\n",ip->sourceSet->node->title);
-}
 		if((FALSE == ip->readStatus) || (TRUE == loadReadItems))
 			ui_itemlist_add_item(ip, TRUE);
 
@@ -294,10 +288,10 @@ void itemlist_select_next_unread(void) {
 void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	
 	if(newStatus != ip->flagStatus) {
-		displayed_itemSet->node->needsCacheSave = TRUE;
+		ip->itemSet->node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
-		itemset_set_item_flag(displayed_itemSet, ip, newStatus);
+		itemset_set_item_flag(ip->itemSet, ip, newStatus);
 
 		/* 2. update item list GUI state */
 		ui_itemlist_update_item(ip);
@@ -317,17 +311,19 @@ void itemlist_toggle_flag(itemPtr ip) {
 void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
 
 	if(newStatus != ip->readStatus) {		
-		displayed_itemSet->node->needsCacheSave = TRUE;
+		ip->itemSet->node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
-		itemset_set_item_read_status(displayed_itemSet, ip, newStatus);
+		itemset_set_item_read_status(ip->itemSet, ip, newStatus);
 
 		/* 2. update item list GUI state */
 		ui_itemlist_update_item(ip);
 
 		/* 3. updated feed list unread counters */
-		node_update_counters(displayed_itemSet->node);
-		ui_node_update(displayed_itemSet->node);
+		node_update_counters(ip->itemSet->node);
+		ui_node_update(ip->itemSet->node);
+		if(ip->sourceNode)
+			ui_node_update(ip->sourceNode);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
@@ -342,16 +338,16 @@ void itemlist_toggle_read_status(itemPtr ip) {
 void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) { 
 	
 	if(newStatus != ip->updateStatus) {	
-		displayed_itemSet->node->needsCacheSave = TRUE;
+		ip->itemSet->node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
-		itemset_set_item_update_status(displayed_itemSet, ip, newStatus);
+		itemset_set_item_update_status(ip->itemSet, ip, newStatus);
 
 		/* 2. update item list GUI state */
 		ui_itemlist_update_item(ip);	
 
 		/* 3. no update of feed list necessary... */
-		node_update_counters(displayed_itemSet->node);
+		node_update_counters(ip->itemSet->node);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
@@ -365,7 +361,6 @@ void itemlist_update_item(itemPtr ip) {
 
 void itemlist_remove_item(itemPtr ip) {
 	
-	/* FIXME: is the following check really necessary? */
 	if(NULL != itemset_lookup_item(ip->itemSet, ip->itemSet->node, ip->nr)) {
 		/* if the currently selected item should be removed we
 		   don't do it and set a flag to do it when unselecting */
@@ -408,14 +403,15 @@ void itemlist_selection_changed(itemPtr ip) {
 		   more matching the rules because they have changed state */
 		itemlist_check_for_deferred_removal();
 	
-		/* set read and unset update status when unselecting */
+		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(ip));
+		displayed_item = ip;
+
+		/* set read and unset update status when selecting */
 		if(ip) {
 			itemlist_set_read_status(ip, TRUE);
 			itemlist_set_update_status(ip, FALSE);
 		}
 
-		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(ip));
-		displayed_item = ip;
 		if(NULL != ip)
 			itemset_render_item(ip->itemSet, ip);
 

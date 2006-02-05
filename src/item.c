@@ -68,7 +68,7 @@ itemPtr item_copy(itemPtr ip) {
 	copy->time = ip->time;
 	
 	/* the following line allows state propagation in item.c */
-	copy->sourceSet = ip->itemSet;
+	copy->sourceNode = ip->itemSet->node;
 	copy->sourceNr = ip->nr;
 
 	/* this copies metadata */
@@ -164,10 +164,10 @@ gchar *item_render(itemPtr ip) {
 	addToHTMLBufferFast(&buffer, HEAD_START);
 
 	/* the following ensure to use the real parent mode */
-	if(NULL == ip->sourceSet)
+	if(NULL == ip->sourceNode)
 		np = ip->itemSet->node;
 	else
-		np = ip->sourceSet->node;
+		np = ip->sourceNode;
 	
 	if(FST_FEED == np->type)
 		htmlurl = feed_get_html_url((feedPtr)np->data);

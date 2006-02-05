@@ -1,8 +1,8 @@
 /**
  * @file feedlist.c feedlist handling
  *
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -333,6 +333,7 @@ void feedlist_selection_changed(nodePtr np) {
 
 		/* Load items of new selected node. */
 		selectedNode = np;
+
 		feedlist_load_node(selectedNode);
 		itemlist_load(selectedNode->itemSet);
 	}

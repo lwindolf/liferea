@@ -1,8 +1,8 @@
 /**
  * @file itemset.h interface for different item list implementations
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,6 +85,16 @@ gchar * itemset_render_all(itemSetPtr sp);
  * @returns NULL or the first found item
  */
 itemPtr itemset_lookup_item(itemSetPtr sp, struct node *np, gulong nr);
+
+/**
+ * Determine wether a given item is to be merged
+ * into the itemset or if it was already added.
+ *
+ * @param sp	the itemset
+ * @param ip	the item to check
+ * @returns TRUE if the item is to be merged
+ */
+gboolean itemset_merge_check(itemSetPtr sp, itemPtr ip);
 
 /**
  * Adds a single item to the given itemset.
