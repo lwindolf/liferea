@@ -161,9 +161,8 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 
 	/* propagate item removal to itemset type specific implementation */
 	switch(sp->type) {
-		ITEMSET_TYPE_FEED:
-		ITEMSET_TYPE_FOLDER:
-
+		case ITEMSET_TYPE_FEED:
+		case ITEMSET_TYPE_FOLDER:
 			/* remove vfolder copies */
 			vfolder_remove_item(ip);
 
@@ -175,13 +174,14 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 			   the counters would be wrong, the same when
 			   there are multiple vfolders catching an
 			   unread item...  FIXME!!! (Lars) */
-			feedlist_update_counters(item_get_read_status(ip)?0:-1,	
-						 item_get_new_status(ip)?-1:0);
-
-			feed_remove_item((feedPtr)ip->itemSet->node->data, ip);
+			feedlist_update_counters(ip->readStatus?0:-1,	
+						 ip->newStatus?-1:0);
 			break;
-		ITEMSET_TYPE_VFOLDER:
-			vfolder_remove_item(ip);
+		case ITEMSET_TYPE_VFOLDER:
+			/* No propagation */
+			break;
+		default:
+			g_error("itemset_remove_item(): unexpected item set type: %d\n", sp->type);
 			break;
 	}
 }
