@@ -429,18 +429,11 @@ void vfolder_update_item(itemPtr ip) {
 		}
 		
 		/* second step: update vfolder unread count */
-		vp->node->unreadCount = 0;
-		items = vp->node->itemSet->items;
-		while(NULL != items) {
-			tmp = items->data;
-			if(FALSE == tmp->readStatus) 
-				vp->node->unreadCount++;
-
-			items = g_list_next(items);
-		}
-		iter = g_slist_next(iter);
+		node_update_counters(vp->node);
 		
 		itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
+
+		iter = g_slist_next(iter);
 	}
 	
 	debug_exit("vfolder_update_item");

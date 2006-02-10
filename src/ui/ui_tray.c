@@ -34,6 +34,7 @@
 #include "ui_tray.h"
 #include "ui_popup.h"
 #include "ui_mainwindow.h"
+#include "update.h"
 
 #define NO_NEW_ITEMS	0
 #define NEW_ITEMS	1
@@ -100,10 +101,12 @@ void ui_tray_update(void) {
 	unreadItems = feedlist_get_unread_item_count();
 		
 	if(newItems != 0) {
-		ui_tray_icon_set(icons[ICON_AVAILABLE]); 
+		if(download_is_online()) ui_tray_icon_set(icons[ICON_AVAILABLE]);
+		else ui_tray_icon_set(icons[ICON_AVAILABLE_OFFLINE]);
 		msg = g_strdup_printf(ngettext("%d new item", "%d new items", newItems), newItems);
 	} else {
-		ui_tray_icon_set(icons[ICON_EMPTY]);
+		if(download_is_online()) ui_tray_icon_set(icons[ICON_EMPTY]);
+		else ui_tray_icon_set(icons[ICON_EMPTY_OFFLINE]);
 		msg = g_strdup(_("No new items"));
 	}
 

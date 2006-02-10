@@ -313,7 +313,6 @@ void feedlist_selection_changed(nodePtr np) {
 	debug_enter("feedlist_selection_changed");
 
 	debug1(DEBUG_GUI, "new selected node: %s", (NULL == np)?"none":node_get_title(np));
-
 	if(np != selectedNode) {
 		displayed_node = itemlist_get_displayed_node();
 

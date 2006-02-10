@@ -222,6 +222,9 @@ void node_update_counters(nodePtr np) {
 	newDiff += np->newCount;
 	unreadDiff += np->unreadCount;
 
+	if(FST_VFOLDER == np->type)
+		return;		/* prevent recursive counting and adding to statistics */
+
 	/* update parent folder */
 	if(NULL != np->parent)
 		node_update_unread_count(np->parent, unreadDiff);

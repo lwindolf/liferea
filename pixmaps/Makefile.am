@@ -1,7 +1,9 @@
 EXTRA_DIST = \
 	available.png   \
+	available_offline.png \
 	directory.png   \
 	empty.png       \
+	empty_offline.png \
 	flag.png        \
 	ocs.png         \
 	read.xpm        \
@@ -18,7 +20,9 @@ EXTRA_DIST = \
 lifereadistpixdir = $(datadir)/liferea/pixmaps
 lifereadistpix_DATA = available.png  directory.png  empty.png  flag.png  \
 	ocs.png read.xpm unread.png online.png offline.png vfolder.png \
-	edit.png technorati.png arrow.png liferea.png fl_opml.png
+	edit.png technorati.png arrow.png liferea.png \
+	available_offline.png empty_offline.png \
+	fl_opml.png
 
 distpixmapdir = $(datadir)/pixmaps
 distpixmap_DATA = liferea.png

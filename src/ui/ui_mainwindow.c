@@ -64,11 +64,13 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 				"unread.png",		/* ICON_UNREAD */
 				"flag.png",		/* ICON_FLAG */
 				"available.png",	/* ICON_AVAILABLE */
+				"available_offline.png",	/* ICON_AVAILABLE_OFFLINE */
 				NULL,			/* ICON_UNAVAILABLE */
 				"ocs.png",		/* ICON_OCS */
 				"directory.png",	/* ICON_FOLDER */
 				"vfolder.png",		/* ICON_VFOLDER */
 				"empty.png",		/* ICON_EMPTY */
+				"empty_offline.png",	/* ICON_EMPTY_OFFLINE */
 				"online.png",		/* ICON_ONLINE */
 				"offline.png",		/* ICON_OFFLINE */
 				"edit.png",		/* ICON_UPDATED */
@@ -514,6 +516,7 @@ void on_onlinebtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	download_set_online(!download_is_online());
 	ui_mainwindow_update_onlinebtn();
+	ui_tray_update();
 
 	GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "work_offline"))->active = !download_is_online();
 }
@@ -522,6 +525,7 @@ void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 	download_set_online(!GTK_CHECK_MENU_ITEM(menuitem)->active);
 	ui_mainwindow_update_onlinebtn();
+	ui_tray_update();
 }
 
 /* Set the main window status bar to the text given as 
