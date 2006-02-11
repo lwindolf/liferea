@@ -1,8 +1,8 @@
 /**
  * @file ui_mainwindow.c some functions concerning the main window 
  *
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -404,12 +404,12 @@ void ui_mainwindow_init(int mainwindowState) {
 		gtk_widget_realize(GTK_WIDGET(mainwindow)); 
 	}
 
-	ui_mainwindow_set_three_pane_mode(FALSE); /* Initializes the htmlviews */
 
 	/* force two pane mode */
 	/*   For some reason, this causes the first item to be selected and then
 	     unselected... strange. */
 	ui_feedlist_select(NULL);
+	ui_mainwindow_set_three_pane_mode(FALSE); 
 	itemlist_set_two_pane_mode(TRUE);
 	
 	/* set zooming properties */	

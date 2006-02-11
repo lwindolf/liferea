@@ -43,7 +43,7 @@ itemSetPtr	displayed_itemSet = NULL;
 static itemPtr	displayed_item = NULL;		/* displayed item = selected item */
 
 /* internal item list states */
-static gboolean twoPaneMode = TRUE;	/* TRUE if two pane mode is active */
+static gboolean twoPaneMode = FALSE;	/* TRUE if two pane mode is active */
 static gboolean itemlistLoading;	/* TRUE to prevent selection effects when loading the item list */
 gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
 
@@ -154,7 +154,6 @@ void itemlist_load(itemSetPtr sp) {
 			break;
 		case ITEMSET_TYPE_FOLDER:
 			ui_itemlist_enable_favicon_column(TRUE);
-			itemlist_set_two_pane_mode(FALSE);
 			break;
 	}
 
@@ -424,20 +423,21 @@ void itemlist_selection_changed(itemPtr ip) {
 }
 
 /* two/three pane mode callbacks */
+
 void itemlist_set_two_pane_mode(gboolean newMode) {
 
-	nodePtr	np = feedlist_get_selected();
-
-	if((NULL == np) || (newMode == twoPaneMode))
-		return;
-
-	/* For now we disallow folders in two pane mode! */
-	if(FST_FOLDER == np->type)
-		return; 
-
-	twoPaneMode = newMode;
-	node_set_two_pane_mode(np, newMode);
 	ui_itemlist_set_two_pane_mode(newMode);
+	twoPaneMode = newMode;
+}
+
+void itemlist_change_two_pane_mode(gboolean newMode) {
+
+	if(newMode != twoPaneMode) {
+		if(displayed_itemSet && displayed_itemSet->node) 
+			node_set_two_pane_mode(displayed_itemSet->node, newMode);
+
+		itemlist_set_two_pane_mode(newMode);
+	}
 }
 
 gboolean itemlist_get_two_pane_mode(void) { return twoPaneMode; }

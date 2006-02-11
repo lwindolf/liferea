@@ -664,6 +664,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 /* two/three pane mode setting */
 void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
 	gboolean gui_mode = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")));
+
 	ui_mainwindow_set_three_pane_mode(!new_mode);
 
 	if(new_mode != gui_mode) {
@@ -681,7 +682,7 @@ void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
 void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { 
 	nodePtr		np;
 	
-	itemlist_set_two_pane_mode(GTK_CHECK_MENU_ITEM(menuitem)->active);
+	itemlist_change_two_pane_mode(GTK_CHECK_MENU_ITEM(menuitem)->active);
 
 	if(NULL != (np = feedlist_get_selected())) {
 		/* grab necessary to force HTML widget update (display must
@@ -696,7 +697,7 @@ void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data
 void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data) {
 	nodePtr		np;
 
-	itemlist_set_two_pane_mode(!itemlist_get_two_pane_mode());
+	itemlist_change_two_pane_mode(!itemlist_get_two_pane_mode());
 
 	if(NULL != (np = feedlist_get_selected())) {
 		/* grab necessary to force HTML widget update (display must

@@ -6651,7 +6651,7 @@
 	      <child>
 		<widget class="GtkLabel" id="label59">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Copyright (c) 2003-2005
+		  <property name="label" translatable="yes">Copyright (c) 2003-2006
 Lars Lindner &lt;lars.lindner@gmx.net&gt; and 
 Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
 </property>

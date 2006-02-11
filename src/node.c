@@ -30,7 +30,6 @@
 #include "debug.h"
 #include "support.h"
 #include "fl_providers/fl_plugin.h"
-#include "ui/ui_itemlist.h"
 
 /* returns a unique node id */
 gchar * node_new_id() {

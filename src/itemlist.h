@@ -1,7 +1,7 @@
 /**
  * @file itemlist.h itemlist handling
  *
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,12 +71,21 @@ void itemlist_load(itemSetPtr sp);
 void itemlist_unload(void);
 
 /**
- * Changes the two/three pane mode property of the
- * currently displayed item set.
+ * Changes the 2/3-pane mode property of the item list.
+ * Do not use this method to change the 2/3-pane mode
+ * of a displayed node!
  *
- * @param new_mode (TRUE for two pane)
+ * @param newMode	TRUE for 2-pane
  */
-void itemlist_set_two_pane_mode(gboolean new_mode);
+void itemlist_set_two_pane_mode(gboolean newMode);
+
+/**
+ * Changes the 2/3-pane mode setting of the displayed
+ * item set and its node. Uses itemlist_set_two_pane_mode().
+ *
+ * @param newMode	TRUE for 2-pane
+ */
+void itemlist_change_two_pane_mode(gboolean newMode);
 
 /**
  * Returns the two/three pane mode property of the
