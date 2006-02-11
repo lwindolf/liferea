@@ -250,7 +250,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 
 void ui_mainwindow_set_three_pane_mode(gboolean threePane) {
 		
-	if(NULL == htmlview) {
+	if(!htmlview) {
 		htmlview = ui_htmlview_new(FALSE);
 		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "viewportThreePaneHtml")), GTK_WIDGET(htmlview));
 		gtk_widget_show(htmlview);
@@ -271,13 +271,13 @@ void ui_mainwindow_set_three_pane_mode(gboolean threePane) {
 void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_style) {
 	GtkWidget *toolbar = lookup_widget(GTK_WIDGET(window), "toolbar");
 	
-	if (toolbar_style == NULL) /* default to icons */
+	if(toolbar_style == NULL) /* default to icons */
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
-	else if (!strcmp(toolbar_style, "text"))
+	else if(!strcmp(toolbar_style, "text"))
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT);
-	else if (!strcmp(toolbar_style, "both"))
+	else if(!strcmp(toolbar_style, "both"))
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH);
-	else if (!strcmp(toolbar_style, "both_horiz") || !strcmp(toolbar_style, "both-horiz") )
+	else if(!strcmp(toolbar_style, "both_horiz") || !strcmp(toolbar_style, "both-horiz") )
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH_HORIZ);
 	else /* default to icons */
 		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
@@ -288,22 +288,20 @@ static gboolean on_key_press_event_null_cb(GtkWidget *widget, GdkEventKey *event
 	return TRUE;
 }
 
-static gboolean
-on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event)
-{
+static gboolean on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event) {
 	GtkNotebook *notebook = GTK_NOTEBOOK (widget);
 
 	GtkWidget* child;
 	GtkWidget* originator;
 
-	if (!notebook->cur_page)
+	if(!notebook->cur_page)
 		return FALSE;
 
 	child = gtk_notebook_get_nth_page(notebook, gtk_notebook_get_current_page(notebook));
 	originator = gtk_get_event_widget ((GdkEvent *)event);
 
 	/* ignore scroll events from the content of the page */
-	if (!originator || gtk_widget_is_ancestor (originator, child))
+	if(!originator || gtk_widget_is_ancestor (originator, child))
 		return FALSE;
 
 	return TRUE;

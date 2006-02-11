@@ -102,17 +102,17 @@ void feedlist_reset_new_item_count(void) {
 	}
 }
 
-void feedlist_add_node(nodePtr parent, nodePtr np, gint position) {
+void feedlist_add_node(nodePtr parent, nodePtr node, gint position) {
 
-	parent->children = g_slist_append(parent->children, np);
-	ui_node_add(parent, np, position);	
-	ui_node_update(np);
+	parent->children = g_slist_append(parent->children, node);
+	ui_node_add(parent, node, position);	
+	ui_node_update(node);
 }
 
-void feedlist_update_node(nodePtr np) {
+void feedlist_update_node(nodePtr node) {
 
 	if(download_is_online()) 
-		node_request_update(np, FEED_REQ_PRIORITY_HIGH);
+		node_request_update(node, FEED_REQ_PRIORITY_HIGH);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
@@ -502,14 +502,22 @@ void feedlist_init(void) {
 	debug_exit("feedlist_init");
 }
 
-/* recursivly calls func for every feed in the feed list */
+/* recursivly calls func for every node in the feed list */
 void feedlist_foreach_full(nodePtr node, gint filter, gpointer func, gint params, gpointer user_data) {
 	gboolean	apply, descend;
 	GSList		*children, *iter;
 	nodePtr		childNode;
 	
-	if(NULL == node)
+	if(node) {
+		/* Apply the function to the node itself */
+		if(0 == params)
+			((nodeActionFunc)func)(node);
+		else 
+			((nodeActionDataFunc)func)(node, user_data);
+	} else {
+		/* No node given -> process the children of the root node */
 		node = rootNode;
+	}
 
 	/* We need to copy because *func might modify the list */
 	iter = children = g_slist_copy(node->children);
@@ -525,7 +533,7 @@ void feedlist_foreach_full(nodePtr node, gint filter, gpointer func, gint params
 		descend = !(filter & FEEDLIST_FILTER_CHILDREN);
 		
 		if(TRUE == apply) {
-			if(params==0)
+			if(0 == params)
 				((nodeActionFunc)func)(childNode);
 			else 
 				((nodeActionDataFunc)func)(childNode, user_data);

@@ -1,8 +1,8 @@
 /**
  * @file ui_feedlist.c GUI feed list handling
  *
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  * 
  * This program is free software; you can redistribute it and/or modify
