@@ -1,8 +1,8 @@
 /**
  * @file ui_feed.c	UI actions concerning a single feed
  *
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -601,27 +601,10 @@ GtkWidget* ui_feed_propdialog_new(nodePtr np) {
 	return propdialog;
 }
 
-/* used by fl_default_node_add but also from ui_search.c! */
+/* used by fl_default_node_add but also from ui_search.c and ui_dnd.c! */
 void ui_feed_add(nodePtr np, const gchar *source, const gchar *filter, gint flags) {
-	feedPtr			fp;
-	int			pos;
-	nodePtr			parent;
 	
-	debug_enter("ui_feed_add");	
-	
-	fp = feed_new();
-	feed_set_source(fp, source);
-	feed_set_title(fp, _("New subscription"));
-	feed_set_filter(fp, filter);
-
-	node_set_title(np, feed_get_title(fp));
-	node_add_data(np, FST_FEED, (gpointer)fp);
-	parent = ui_feedlist_get_target_folder(&pos);
-	feedlist_add_node(parent, np, pos);
-
-	node_schedule_update(np, ui_feed_process_update_result, flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
-
-	debug_exit("ui_feed_add");	
+	node_request_automatic_add(np, source, NULL, filter ,flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
 }
 
 /** handles completed feed update requests */

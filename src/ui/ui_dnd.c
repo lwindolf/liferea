@@ -1,7 +1,7 @@
 /**
  * @file ui_dnd.c everything concerning DnD
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -46,8 +46,7 @@ static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
 
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
-	//ui_feedlist_update();
-	g_warning("FIXME: feed list update");
+	feedlist_foreach(NULL, FEEDLIST_FILTER_ANY, ui_node_update);
 	ui_node_check_if_folder_is_empty(NULL);
 	feedlist_schedule_save();
 	ui_itemlist_prefocus();
@@ -130,6 +129,7 @@ void ui_dnd_init(void) {
 /* method to receive URLs which were dropped anywhere in the main window */
 static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
 	gchar		*tmp1, *tmp2, *freeme;
+	nodePtr		np;
 	
 	g_return_if_fail (data->data != NULL);
 		
@@ -137,11 +137,16 @@ static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint
 		/* extra handling to accept multiple drops (same code in ui_feedlist.c) */	
 		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
-			if(0 != strlen(tmp2))
-				// FIXME
-				//ui_feed_add(np, g_strdup(tmp2), NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE |
-			        //                                 FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER | FEED_REQ_PRIORITY_HIGH);
-				g_warning("not yet implemented");
+			if(strlen(tmp2))
+				node_request_automatic_add(NULL,
+				                           g_strdup(tmp2),
+					                   NULL,
+				                           NULL, 
+					                   FEED_REQ_SHOW_PROPDIALOG | 
+					                   FEED_REQ_RESET_TITLE |
+			                                   FEED_REQ_RESET_UPDATE_INT | 
+					                   FEED_REQ_AUTO_DISCOVER | 
+					                   FEED_REQ_PRIORITY_HIGH);
 		}
 		g_free(freeme);
 		gtk_drag_finish(context, TRUE, FALSE, time);		

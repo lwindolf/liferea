@@ -348,11 +348,15 @@ void node_remove(nodePtr np) {
 	debug_exit("node_remove");
 }
 
-void node_add(guint type) {
+/* Interactive node adding (e.g. feed menu->new subscription), 
+   launches some dialog that upon success calls 
+   node_request_automatic_add() to add feeds or an own
+   method to add other node types. */
+void node_request_interactive_add(guint type) {
 	nodePtr		parent;
 	nodePtr		child;
 
-	debug_enter("node_add");
+	debug_enter("node_request_interactive_add");
 
 	parent = feedlist_get_selected_parent();
 	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
@@ -364,7 +368,42 @@ void node_add(guint type) {
 	child->handler = parent->handler;
 	FL_PLUGIN(parent)->node_add(child);
 
-	debug_exit("node_add");
+	debug_exit("node_request_interactive_add");
+}
+
+/* Automatic subscription adding (e.g. URL DnD), creates a new node
+   or reuses the given one and creates a new feed without any user 
+   interaction and finally calls node_add(). */
+void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar *filter, gint flags) {
+	feedPtr		feed;
+
+	debug_enter("node_request_automatic_add");
+
+	g_assert(NULL != source);
+	feed = feed_new(source, title?title:_("New Subscription"), filter);
+
+	if(!node)
+		node = node_new();
+
+	node_set_title(node, feed_get_title(feed));
+	node_add_data(node, FST_FEED, (gpointer)feed);
+	node_add(node);
+
+	node_schedule_update(node, ui_feed_process_update_result, flags);
+
+	debug_exit("node_request_automatic_add");
+}
+
+void node_add(nodePtr node) {
+	nodePtr		parent;
+	gint		pos;
+
+	parent = feedlist_get_selected_parent();
+	ui_feedlist_get_target_folder(&pos);
+	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
+
+	node->handler = parent->handler;
+	feedlist_add_node(parent, node, pos);
 }
 
 /* ---------------------------------------------------------------------------- */

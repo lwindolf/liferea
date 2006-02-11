@@ -1,8 +1,8 @@
 /**
  * @file node.h common feed list node handling interface
  * 
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,11 +82,35 @@ typedef struct node {
 nodePtr node_new(void);
 
 /**
- * Request the creation of a new node of the given type.
+ * Interactive node adding (e.g. feed menu->new subscription), 
+ * launches some dialog that upon success calls 
+ * node_request_automatic_add() to add feeds or an own
+ * method to add other node types.
  *
- * @param type		the nodes type
+ * @param type		the node type
  */
-void node_add(guint type);
+void node_request_interactive_add(guint type);
+
+/**
+ * Automatic subscription adding (e.g. URL DnD), creates a new node
+ * or reuses the given one and creates a new feed without any user 
+ * interaction and finally calls node_add().
+ *
+ * @param node		NULL or a node to reuse
+ * @param source	the subscriptions source URL
+ * @param title		NULL or the node title
+ * @param filter	NULL or the filter for the subscription
+ * @param flags		download request flags
+ */
+void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar *filter, gint flags);
+	
+/** 
+ * Adds the given node to the feed list to the currently
+ * selected folder.
+ *
+ * @param node		the node to add
+ */
+void node_add(nodePtr node);
 
 /**
  * Removes the given node from the feed list.

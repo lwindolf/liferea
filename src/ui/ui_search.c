@@ -1,7 +1,7 @@
 /**
  * @file ui_search.c everything about searching
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -134,13 +134,14 @@ void on_searchentry_changed(GtkEditable *editable, gpointer user_data) {
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 	gint			pos;
-	nodePtr			np, folder = NULL;
+	nodePtr			node, folder;
 	
 	if(NULL != searchResult) {
+		node = searchResult;
 		searchResult = NULL;
 		folder = ui_feedlist_get_target_folder(&pos);
-		feedlist_add_node(folder, np, pos);
-		ui_feedlist_select(np);
+		feedlist_add_node(folder, node, pos);
+		ui_feedlist_select(node);
 	} else {
 		ui_show_info_box(_("Please do a search first!"));
 	}
@@ -183,8 +184,18 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 		searchtext = g_strdup_printf("http://www.feedster.com/search.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
 					    searchtext, (int)gtk_adjustment_get_value(resultCount));
 
-		// FIXME: ui_feed_add(np, searchtext, NULL, FALSE);
-		g_warning("not yet implemented");
+		node_request_automatic_add(NULL, 
+		                           searchtext, 
+					   NULL, 
+					   NULL, 
+		                           /*FEED_REQ_SHOW_PROPDIALOG | <- not needed*/
+		                           FEED_REQ_RESET_TITLE |
+		                           FEED_REQ_RESET_UPDATE_INT | 
+		                           FEED_REQ_AUTO_DISCOVER | 
+					   FEED_REQ_PRIORITY_HIGH |
+					   FEED_REQ_DOWNLOAD_FAVICON |
+					   FEED_REQ_AUTH_DIALOG);
+
 
 		g_free(searchtext);
 	}

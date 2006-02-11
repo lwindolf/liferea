@@ -1,8 +1,8 @@
 /**
  * @file feed.h common feed handling interface
  * 
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,9 +124,14 @@ void feed_init(void);
 
 /**
  * Create a new feed structure.
+ *
+ * @param source	the feed source URL (or NULL)
+ * @param title		the feed title (or NULL)
+ * @param filter	a feed filter (or NULL)
+ *
  * @returns the new, empty feed
  */
-feedPtr feed_new(void);
+feedPtr feed_new(gchar *source, gchar *title, gchar *filter);
 
 /**
  * Feed specific feed list import parsing.

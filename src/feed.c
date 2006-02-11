@@ -2,7 +2,7 @@
  * @file feed.c common feed handling
  * 
  * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,20 +73,27 @@ void feed_init(void) {
 }
 
 /* function to create a new feed structure */
-feedPtr feed_new(void) {
-	feedPtr		fp;
+feedPtr feed_new(gchar *source, gchar *title, gchar *filter) {
+	feedPtr		feed;
 	
-	fp = g_new0(struct feed, 1);
+	feed = g_new0(struct feed, 1);
 
 	/* we don't allocate a request structure this is done
 	   during cache loading or first update! */
 	
-	fp->updateInterval = -1;
-	fp->defaultInterval = -1;
-	fp->cacheLimit = CACHE_DEFAULT;
-	fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
+	feed->updateInterval = -1;
+	feed->defaultInterval = -1;
+	feed->cacheLimit = CACHE_DEFAULT;
+	feed->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
+
+	if(source)
+		feed_set_source(feed, source);
+	if(title)
+		feed_set_title(feed, title);
+	if(filter)
+		feed_set_filter(feed, filter);
 	
-	return fp;
+	return feed;
 }
 
 /* ------------------------------------------------------------ */
@@ -173,7 +180,7 @@ gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
 		interval = parse_integer(intervalStr, -1);
 		xmlFree(intervalStr);
-		fp = feed_new();
+		fp = feed_new(NULL, NULL, NULL);
 		fp->fhp = feed_type_str_to_fhp(typeStr);
 
 		title = xmlGetProp(cur, BAD_CAST"title");

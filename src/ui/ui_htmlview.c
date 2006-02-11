@@ -2,8 +2,9 @@
  * @file ui_htmlview.c common interface for browser module implementations
  * and module loading functions
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- *
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net> 
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -527,9 +528,7 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	g_warning("not yet implemented");
-	// FIXME
-	//ui_feed_add(np, url, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	node_request_automatic_add(NULL, url, NULL, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	g_free(url);
 }
 
