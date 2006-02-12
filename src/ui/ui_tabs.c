@@ -368,7 +368,7 @@ GtkWidget * ui_tabs_get_active_htmlview(void) {
 	if(0 == current)
 		return ui_mainwindow_get_active_htmlview();
 		
-	tab = g_object_get_data(G_OBJECT(gtk_notebook_get_nth_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), current)), "htmlview");
+	tab = g_object_get_data(G_OBJECT(gtk_notebook_get_nth_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), current)), "tabInfo");
 	return tab->htmlview;
 }
 
