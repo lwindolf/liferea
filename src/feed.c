@@ -605,7 +605,7 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 					feed_set_lastmodified(fp, tmp);
 					
 				} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-					itemset_add_item(sp, item_parse_cache(doc, cur));
+					itemset_append_item(sp, item_parse_cache(doc, cur));
 	
 				} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
 					fp->metadata = metadata_parse_xml_nodes(doc, cur);

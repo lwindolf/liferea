@@ -198,7 +198,7 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	}
 
 	/* add an item copy to the vfolder */	
-	itemset_add_item(vp->node->itemSet, item_copy(ip));
+	itemset_prepend_item(vp->node->itemSet, item_copy(ip));
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
 }
 

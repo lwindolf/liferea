@@ -1,7 +1,7 @@
 /**
  * @file pie_feed.c Atom/Echo/PIE 0.2/0.3 channel parsing
  * 
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -279,7 +279,7 @@ static void pie_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 				if(NULL != (ip = parseEntry(fp, cur))) {
 					if(0 == item_get_time(ip))
 						item_set_time(ip, feed_get_time(fp));
-					itemset_add_item(sp, ip);
+					itemset_append_item(sp, ip);
 				}
 			}
 			

@@ -241,7 +241,7 @@ static void node_merge_item(nodePtr np, itemPtr ip) {
 		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(ip), node_get_title(np));
 
 		/* step 1: add to itemset */
-		itemset_add_item(np->itemSet, ip);
+		itemset_prepend_item(np->itemSet, ip);
 
 		/* step 2: check for matching vfolders */
 		vfolder_check_item(ip);

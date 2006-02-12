@@ -1,7 +1,7 @@
 /**
  * @file cdf_channel.c CDF channel parsing
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ static void parseCDFChannel(feedPtr fp, itemSetPtr sp, CDFChannelPtr cp, xmlDocP
 			if(NULL != (ip = parseCDFItem(fp, cp, doc, cur))) {
 				if(0 == item_get_time(ip))
 					item_set_time(ip, cp->time);
-				itemset_add_item(sp, ip);
+				itemset_append_item(sp, ip);
 			}
 
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "title")) {

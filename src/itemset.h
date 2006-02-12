@@ -97,12 +97,20 @@ itemPtr itemset_lookup_item(itemSetPtr sp, struct node *np, gulong nr);
 gboolean itemset_merge_check(itemSetPtr sp, itemPtr ip);
 
 /**
- * Adds a single item to the given itemset.
+ * Prepends a single item to the given itemset.
  *
  * @param sp	the itemset
  * @param ip	the item to add
  */
-void itemset_add_item(itemSetPtr sp, itemPtr ip);
+void itemset_prepend_item(itemSetPtr sp, itemPtr ip);
+
+/**
+ * Appends a single item to the given itemset.
+ *
+ * @param sp	the itemset
+ * @param ip	the item to add
+ */
+void itemset_append_item(itemSetPtr sp, itemPtr ip);
 
 /**
  * Removes a single item of a given itemset.

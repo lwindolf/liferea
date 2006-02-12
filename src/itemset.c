@@ -142,7 +142,14 @@ gboolean itemset_merge_check(itemSetPtr sp, itemPtr ip) {
 	return toBeMerged;
 }
 
-void itemset_add_item(itemSetPtr sp, itemPtr ip) {
+void itemset_prepend_item(itemSetPtr sp, itemPtr ip) {
+
+	ip->itemSet = sp;
+	ip->nr = ++(sp->lastItemNr);
+	sp->items = g_list_prepend(sp->items, ip);
+}
+
+void itemset_append_item(itemSetPtr sp, itemPtr ip) {
 
 	ip->itemSet = sp;
 	ip->nr = ++(sp->lastItemNr);

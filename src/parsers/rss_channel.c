@@ -1,15 +1,9 @@
 /**
  * @file rss_channel.c some tolerant and generic RSS/RDF channel parsing
  *
- * Note: portions of the original parser code were inspired by
- * the feed reader software Rol which is copyrighted by
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net> 
  * 
- * Copyright (C) 2002 Jonathan Gordon <eru@unknown-days.com>
- * 
- * The major part of this parsing code written by
- * 
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -302,7 +296,7 @@ static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 					if(NULL != (ip = parseRSSItem(fp, item))) {
 						if(0 == item_get_time(ip))
 							item_set_time(ip, feed_get_time(fp));
-						itemset_add_item(sp, ip);
+						itemset_append_item(sp, ip);
 					}
 					item = item->next;
 				}
@@ -311,7 +305,7 @@ static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 				if(NULL != (ip = parseRSSItem(fp, cur))) {
 					if(0 == item_get_time(ip))
 						item_set_time(ip, feed_get_time(fp));
-					itemset_add_item(sp, ip);
+					itemset_append_item(sp, ip);
 				}
 				
 			}

@@ -1,8 +1,8 @@
 /**
  * @file atom10.c Atom 1.0 Parser
  * 
- * Copyright (C) 2005 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -678,7 +678,7 @@ static void atom10_parse_feed(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodeP
 				(*func)(cur, fp, NULL, NULL);
 			} else if((xmlStrEqual(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = atom10_parse_entry(fp, cur))) {
-					itemset_add_item(sp, ip);
+					itemset_append_item(sp, ip);
 				}
 			}
 			cur = cur->next;

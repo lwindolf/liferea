@@ -1,7 +1,7 @@
 /**
  * @file opml.c generic OPML 1.0 support
  * 
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -194,7 +194,7 @@ static void opml_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur)
 						item_set_description(ip, buffer);
 						g_free(buffer);
 						ip->readStatus = TRUE;
-						itemset_add_item(sp, ip);
+						itemset_append_item(sp, ip);
 					}
 					child = child->next;
 				}
