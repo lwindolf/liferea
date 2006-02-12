@@ -64,6 +64,7 @@ static void ui_tabs_history_free(tabHistory *history) {
 		g_free(iter->data);
 		iter = g_list_next(iter);
 	}
+	g_list_free(history->locations);
 	g_free(history);
 }
 
