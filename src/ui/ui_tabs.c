@@ -128,8 +128,8 @@ static gboolean on_tab_url_entry_activate(GtkWidget *widget, gpointer user_data)
 	gchar	*url;
 
 	url = (gchar *)gtk_entry_get_text(GTK_ENTRY(widget));
-	ui_tabs_history_add_location(tab, url);
 	ui_htmlview_launch_URL(tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+
 	return TRUE;
 }
 
@@ -341,7 +341,7 @@ void ui_tabs_set_location(GtkWidget *child, const gchar *uri) {
 	
 	ui_tabs_history_add_location(tab, uri);
 
-	gtk_entry_set_text(GTK_EDITABLE(tab->urlentry), uri);
+	gtk_entry_set_text(GTK_ENTRY(tab->urlentry), uri);
 }
 
 void ui_tabs_set_title(GtkWidget *child, const gchar *title) {
