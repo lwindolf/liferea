@@ -1,7 +1,7 @@
 /**
  * @file ui_tabs.c browser tabs
  *
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -32,23 +32,119 @@
 
 extern GtkWidget	*mainwindow;
 
-static gboolean on_tab_url_entry_activate(GtkWidget *widget, gpointer user_data) {
+/** structure holding all URLs visited in a tab */
+typedef struct tabHistory {
+	GList		*locations;	/** list of all visited URLs */
+	GList		*current;	/** pointer into locations */
+} tabHistory;
 
-	ui_htmlview_launch_URL(GTK_WIDGET(user_data), (gchar *)gtk_entry_get_text(GTK_ENTRY(widget)), UI_HTMLVIEW_LAUNCH_INTERNAL);
+/** structure holding all states of a tab */
+typedef struct tabInfo {
+	GtkWidget	*widget;	/** the tab widget */
+	GtkWidget	*forward;	/** the forward button */
+	GtkWidget	*back;		/** the back button */
+	GtkWidget	*htmlview;	/** the tabs HTML view widget */
+	GtkWidget	*urlentry;	/** the tabs URL entry widget */
+	tabHistory	*history;	/** the tabs history */
+} tabInfo;
+
+/* tab history handling */
+
+static tabHistory * ui_tabs_history_new(void) {
+	
+	return (tabHistory *)g_new0(tabHistory, 1);
+}
+
+static void ui_tabs_history_free(tabHistory *history) {
+	GList	*iter;
+
+	g_return_if_fail(NULL != history);
+	iter = history->locations;
+	while(iter) {
+		g_free(iter->data);
+		iter = g_list_next(iter);
+	}
+	g_free(history);
+}
+
+static gchar * ui_tabs_history_forward(tabInfo *tab) {
+	GList	*url = tab->history->current;
+
+	url = g_list_next(url);
+	tab->history->current = url;
+
+	gtk_widget_set_sensitive(tab->forward, (NULL != g_list_next(url)));
+	gtk_widget_set_sensitive(tab->back, TRUE);
+
+	return url->data;
+}
+
+static gchar * ui_tabs_history_back(tabInfo *tab) {
+	GList	*url = tab->history->current;
+
+	url = g_list_previous(url);
+	tab->history->current = url;
+
+	gtk_widget_set_sensitive(tab->back, (NULL != g_list_previous(url)));
+	gtk_widget_set_sensitive(tab->forward, TRUE);
+
+	return url->data;
+}
+
+static void ui_tabs_history_add_location(tabInfo *tab, const gchar *url) {
+	GList 	*iter;
+
+	/* Do not add the same URL twice... */
+	if(tab->history->current &&
+	   g_str_equal(tab->history->current->data, url))
+		return;
+
+	/* If current URL is not at the end of the list,
+	   truncate the rest of the list */
+	if(tab->history->locations) {
+		while(1) {
+			iter = g_list_last(tab->history->locations);
+			if(!iter)
+				break;
+			if(iter == tab->history->current)
+				break;
+			g_free(iter->data);
+			tab->history->locations = g_list_remove(tab->history->locations, iter->data);
+		}
+	}
+
+	gtk_widget_set_sensitive(tab->back, (NULL != tab->history->locations));
+	gtk_widget_set_sensitive(tab->forward, FALSE);
+
+	tab->history->locations = g_list_append(tab->history->locations, g_strdup(url));
+	tab->history->current = g_list_last(tab->history->locations);
+}
+
+/* tab handling */
+
+static gboolean on_tab_url_entry_activate(GtkWidget *widget, gpointer user_data) {
+	tabInfo	*tab = (tabInfo *)user_data;
+	gchar	*url;
+
+	url = (gchar *)gtk_entry_get_text(GTK_ENTRY(widget));
+	ui_tabs_history_add_location(tab, url);
+	ui_htmlview_launch_URL(tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
 	return TRUE;
 }
 
-static gboolean on_tab_close_clicked(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
-	int i;	
+static void on_tab_close_clicked(GtkWidget *widget, gpointer user_data) {
+	tabInfo		*tab = (tabInfo *)user_data;
+	int 		i;
 	
+	ui_tabs_history_free(tab->history);
+	g_free(tab);
+
 	i = gtk_notebook_get_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
 	gtk_notebook_remove_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), i);
 	
 	/* check if all tabs are closed */
 	if(1 == gtk_notebook_get_n_pages(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs"))))
 		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
-		
-	return TRUE;
 }
 
 static void on_tab_switched(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer user_data) {
@@ -65,6 +161,24 @@ static void on_tab_switched(GtkNotebook *notebook, GtkNotebookPage *page, guint 
 			gtk_tree_path_free(path);
 		}
 	}
+}
+
+static void on_tab_history_back(GtkWidget *widget, gpointer user_data) {
+	tabInfo		*tab = (tabInfo *)user_data;
+	gchar		*url;
+
+	url = ui_tabs_history_back(tab),
+	ui_htmlview_launch_URL(tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+	gtk_entry_set_text(GTK_ENTRY(tab->urlentry), url);
+}
+
+static void on_tab_history_forward(GtkWidget *widget, gpointer user_data) {
+	tabInfo		*tab = (tabInfo *)user_data;
+	gchar		*url;
+
+	url = ui_tabs_history_forward(tab),
+	ui_htmlview_launch_URL(tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+	gtk_entry_set_text(GTK_ENTRY(tab->urlentry), url);
 }
 
 void ui_tabs_init(void) {
@@ -98,7 +212,8 @@ static gchar* ui_tabs_condense_text(const gchar* title) {
 }
 
 GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) {
-	GtkWidget *widget, *label, *vbox, *toolbar, *htmlframe, *htmlview, *image;
+	GtkWidget 	*widget, *label, *vbox, *toolbar, *htmlframe, *htmlview, *image;
+	tabInfo		*tab;
 	gchar		*tmp;
 	int		i;
 
@@ -111,18 +226,41 @@ GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) 
 	vbox = gtk_vbox_new(FALSE, 0);
 	htmlview = ui_htmlview_new(TRUE);
 	toolbar = gtk_hbox_new(FALSE, 6);
-	
-	g_object_set_data(G_OBJECT(vbox), "htmlview", htmlview);
 
-	widget = gtk_label_new(_("URL"));
-	gtk_box_pack_start(GTK_BOX(toolbar), widget, FALSE, FALSE, 6);
+	tab = g_new0(tabInfo, 1);
+	tab->widget = vbox;
+	tab->htmlview = htmlview;
+	tab->history = ui_tabs_history_new();
+	
+	g_object_set_data(G_OBJECT(vbox), "tabInfo", tab);
+
+	widget = gtk_button_new();
+	gtk_button_set_relief(GTK_BUTTON(widget), GTK_RELIEF_NONE);
+	image = gtk_image_new_from_stock("gtk-go-back", GTK_ICON_SIZE_BUTTON);
+	gtk_widget_show(image);
+	gtk_container_add(GTK_CONTAINER(widget), image);
+	gtk_box_pack_start(GTK_BOX(toolbar), widget, FALSE, FALSE, 0);
+	g_signal_connect((gpointer)widget, "clicked", G_CALLBACK(on_tab_history_back), (gpointer)tab);
+	gtk_widget_set_sensitive(widget, FALSE);
+	tab->back = widget;
+
+	widget = gtk_button_new();
+	gtk_button_set_relief(GTK_BUTTON(widget), GTK_RELIEF_NONE);
+	image = gtk_image_new_from_stock("gtk-go-forward", GTK_ICON_SIZE_BUTTON);
+	gtk_widget_show(image);
+	gtk_container_add(GTK_CONTAINER(widget), image);
+	gtk_box_pack_start(GTK_BOX(toolbar), widget, FALSE, FALSE, 0);
+	g_signal_connect((gpointer)widget, "clicked", G_CALLBACK(on_tab_history_forward), (gpointer)tab);
+	gtk_widget_set_sensitive(widget, FALSE);
+	tab->forward = widget;
 
 	widget = gtk_entry_new();
 	gtk_entry_set_text(GTK_ENTRY(widget), url != NULL ? url : "");
 	g_object_set_data(G_OBJECT(vbox), "url_entry", widget);
 	
 	gtk_box_pack_start(GTK_BOX(toolbar), widget, TRUE, TRUE, 0);
-	g_signal_connect((gpointer)widget, "activate", G_CALLBACK(on_tab_url_entry_activate), (gpointer)htmlview);
+	g_signal_connect((gpointer)widget, "activate", G_CALLBACK(on_tab_url_entry_activate), (gpointer)tab);
+	tab->urlentry = widget;
 
 	widget = gtk_button_new();
 	gtk_button_set_relief(GTK_BUTTON(widget), GTK_RELIEF_NONE);
@@ -130,7 +268,7 @@ GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) 
 	gtk_widget_show(image);
 	gtk_container_add(GTK_CONTAINER(widget), image);
 	gtk_box_pack_end(GTK_BOX(toolbar), widget, FALSE, FALSE, 0);
-	g_signal_connect((gpointer)widget, "clicked", G_CALLBACK(on_tab_close_clicked), (gpointer)htmlview);
+	g_signal_connect((gpointer)widget, "clicked", G_CALLBACK(on_tab_close_clicked), (gpointer)tab);
 	
 	htmlframe = gtk_frame_new(NULL);
 	gtk_frame_set_shadow_type(GTK_FRAME(htmlframe), GTK_SHADOW_IN);
@@ -143,11 +281,13 @@ GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) 
 	i = gtk_notebook_append_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), vbox, label);
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), TRUE);
 	
-	if((TRUE == activate) && (i != -1))
+	if(activate && (i != -1))
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), i);
 	
-	if(NULL != url)	
+	if(url)	{
+		ui_tabs_history_add_location(tab, (gchar *)url);
 		ui_htmlview_launch_URL(htmlview, (gchar *)url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+	}
 	return htmlview;
 }
 
@@ -156,28 +296,34 @@ void ui_tabs_show_headlines(void) {
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), 0);
 }
 
-static GtkWidget* ui_tabs_find_notebook_child(GtkWidget *parent) {
-	GtkWidget *child;
-	if (parent == NULL)
-		return NULL;
-	do {
-		child = parent;
-		parent = gtk_widget_get_parent(child);
-		if (parent == NULL)
-			return NULL;
-	} while (!GTK_IS_NOTEBOOK(parent));
-	return child;
+/** This method is used to find the tab infos for a given
+    child widget (usually the HTML rendering widget) of 
+    an open tab. */
+static tabInfo * ui_tabs_find_notebook_child(GtkWidget *parent) {
+	GtkWidget 	*child;
+	tabInfo		*tab = NULL;
+
+	if(parent) {
+		do {
+			child = parent;
+			parent = gtk_widget_get_parent(child);
+			if(!parent)
+				break;
+			if(tab = g_object_get_data(G_OBJECT(parent), "tabInfo"))
+				break;
+		} while(!GTK_IS_NOTEBOOK(parent));
+	}
+
+	return tab;
 }
 
 void ui_tabs_close_tab(GtkWidget *child) {
-	GtkWidget *vbox;
-	int n;
-	vbox = ui_tabs_find_notebook_child(child);
-	g_assert(vbox != NULL);
-	n = gtk_notebook_page_num(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),vbox);
-	g_assert(n >= 0);
-	if (n == 0) /* Can't really do anything.... can't close the first tab */
+	tabInfo		*tab;
+	int		n;
+
+	if(NULL == (tab = ui_tabs_find_notebook_child(child)))
 		return;
+	
 	gtk_notebook_remove_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), n);
 	
 	/* check if all tabs are closed */
@@ -186,46 +332,43 @@ void ui_tabs_close_tab(GtkWidget *child) {
 }
 
 void ui_tabs_set_location(GtkWidget *child, const gchar *uri) {
-	GtkWidget *vbox;
-	GtkEntry *entry;
-	int newPosition = 0;
+	tabInfo		*tab;
+	int		newPosition = 0;
 	
-	vbox = ui_tabs_find_notebook_child(child);
-	g_assert(vbox != NULL);
-	if (gtk_notebook_page_num(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),vbox) < 1)
+	if(NULL == (tab = ui_tabs_find_notebook_child(child)))
 		return;
 	
-	entry = g_object_get_data(G_OBJECT(vbox), "url_entry");
-	g_assert(entry != NULL);
-	
-	gtk_editable_delete_text(GTK_EDITABLE(entry), 0, -1);
-	gtk_editable_insert_text(GTK_EDITABLE(entry), uri, strlen(uri), &newPosition);
+	ui_tabs_history_add_location(tab, uri);
+
+	gtk_entry_set_text(GTK_EDITABLE(tab->urlentry), uri);
 }
 
 void ui_tabs_set_title(GtkWidget *child, const gchar *title) {
-    gchar *text;
-	GtkWidget *label;
+	tabInfo		*tab;
+	gchar		*text;
+	GtkWidget	*label;
 	
-	if (gtk_notebook_page_num(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),ui_tabs_find_notebook_child(child)) < 1)
+	if(NULL == (tab = ui_tabs_find_notebook_child(child)))
 		return;
 	
 	text = ui_tabs_condense_text(title != NULL ? title : _("New tab"));
 	label = gtk_label_new(text);
 	gtk_widget_show(label);
 	gtk_notebook_set_tab_label(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),
-							   ui_tabs_find_notebook_child(child),
-							   label);
+	                           tab->widget, label);
 	g_free(text);
 }
 
 GtkWidget * ui_tabs_get_active_htmlview(void) {
-	int current;
-
+	tabInfo		*tab;
+	gint		current;
+	
 	current = gtk_notebook_get_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
 	if(0 == current)
 		return ui_mainwindow_get_active_htmlview();
 		
-	return g_object_get_data(G_OBJECT(gtk_notebook_get_nth_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), current)), "htmlview");
+	tab = g_object_get_data(G_OBJECT(gtk_notebook_get_nth_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), current)), "htmlview");
+	return tab->htmlview;
 }
 
 void on_popup_open_link_in_tab_selected(gpointer url, guint callback_action, GtkWidget *widget) {
