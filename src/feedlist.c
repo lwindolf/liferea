@@ -502,18 +502,32 @@ void feedlist_init(void) {
 	debug_exit("feedlist_init");
 }
 
+static gboolean feedlist_check_apply(nodePtr node, gint filter) {
+	gboolean	apply;
+
+	apply = (filter & FEEDLIST_FILTER_CHILDREN) ||
+		((filter & FEEDLIST_FILTER_FEED) && (FST_FEED == node->type)) ||
+		((filter & FEEDLIST_FILTER_FEED) && (FST_PLUGIN == node->type)) ||
+		((filter & FEEDLIST_FILTER_FEED) && (FST_VFOLDER == node->type)) ||
+		((filter & FEEDLIST_FILTER_FOLDER) && (FST_FOLDER == node->type));
+
+	return apply;
+}
+
 /* recursivly calls func for every node in the feed list */
 void feedlist_foreach_full(nodePtr node, gint filter, gpointer func, gint params, gpointer user_data) {
-	gboolean	apply, descend;
+	gboolean	descend;
 	GSList		*children, *iter;
 	nodePtr		childNode;
 	
 	if(node) {
-		/* Apply the function to the node itself */
-		if(0 == params)
-			((nodeActionFunc)func)(node);
-		else 
-			((nodeActionDataFunc)func)(node, user_data);
+		/* If filter matches apply the function to the node itself */
+		if(feedlist_check_apply(node, filter - (filter & FEEDLIST_FILTER_CHILDREN))) {
+			if(0 == params)
+				((nodeActionFunc)func)(node);
+			else 
+				((nodeActionDataFunc)func)(node, user_data);
+		}
 	} else {
 		/* No node given -> process the children of the root node */
 		node = rootNode;
@@ -521,18 +535,11 @@ void feedlist_foreach_full(nodePtr node, gint filter, gpointer func, gint params
 
 	/* We need to copy because *func might modify the list */
 	iter = children = g_slist_copy(node->children);
-
 	while(iter) {
 		childNode = (nodePtr)iter->data;
 		
-		apply = (filter & FEEDLIST_FILTER_CHILDREN) ||
-			((filter & FEEDLIST_FILTER_FEED) && (FST_FEED == childNode->type)) ||
-			((filter & FEEDLIST_FILTER_FEED) && (FST_PLUGIN == childNode->type)) ||
-			((filter & FEEDLIST_FILTER_FEED) && (FST_VFOLDER == childNode->type)) ||
-			((filter & FEEDLIST_FILTER_FOLDER) && (FST_FOLDER == childNode->type));
-		descend = !(filter & FEEDLIST_FILTER_CHILDREN);
-		
-		if(TRUE == apply) {
+		/* If filter matches apply the method to the child */
+		if(TRUE == feedlist_check_apply(childNode, filter)) {
 			if(0 == params)
 				((nodeActionFunc)func)(childNode);
 			else 
@@ -540,7 +547,7 @@ void feedlist_foreach_full(nodePtr node, gint filter, gpointer func, gint params
 		}
 			
 		/* if the iter has children and we are descending, iterate over the children. */
-		if(descend)
+		if(!(filter & FEEDLIST_FILTER_CHILDREN))
 			feedlist_foreach_data(childNode, filter, func, user_data);
 
 		iter = g_slist_next(iter);

@@ -1,8 +1,8 @@
 /**
  * @file main.c Liferea main program
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *  
  * Some code like the command line handling was inspired by 
  *

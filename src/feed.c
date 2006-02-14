@@ -147,7 +147,6 @@ static long parse_long(gchar *str, long def) {
 gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *title; 
 	gchar		*lastPollStr, *htmlUrlStr, *source, *tmp; 
-	gint		interval;
 	feedPtr		fp = NULL;
 
 	debug_enter("feed_import");
@@ -156,40 +155,46 @@ gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) {
-		filter = xmlGetProp(cur, BAD_CAST"filtercmd");
+		fp = feed_new(NULL, NULL, NULL);
+		fp->fhp = feed_type_str_to_fhp(typeStr);
 
-		if(!trusted && filter != NULL) {
-			/* FIXME: Display warning dialog asking if the command
-			   is safe? */
-			tmp = g_strdup_printf("unsafe command: %s", filter);
-			g_free(filter);
-			filter = tmp;
-		}
-
-		if(NULL != filter)
-			xmlFree(filter);
-		
 		if(!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
 			   is safe? */
 			tmp = g_strdup_printf("unsafe command: %s", source);
-			g_free(source);
+			xmlFree(source);
 			source = tmp;
+		}
+
+		feed_set_source(fp, source);
+		xmlFree(source);
+
+		if(filter = xmlGetProp(cur, BAD_CAST"filtercmd")) {
+			if(!trusted) {
+				/* FIXME: Display warning dialog asking if the command
+				   is safe? */
+				tmp = g_strdup_printf("unsafe command: %s", filter);
+				xmlFree(filter);
+				filter = tmp;
+			}
+
+			feed_set_filter(fp, filter);
+			xmlFree(filter);
 		}
 		
 		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
-		interval = parse_integer(intervalStr, -1);
+		feed_set_update_interval(fp, parse_integer(intervalStr, -1));
 		xmlFree(intervalStr);
-		fp = feed_new(NULL, NULL, NULL);
-		fp->fhp = feed_type_str_to_fhp(typeStr);
 
 		title = xmlGetProp(cur, BAD_CAST"title");
 		if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
-			if(title != NULL)
+			if(title)
 				xmlFree(title);
 			title = xmlGetProp(cur, BAD_CAST"text");
 		}
+
 		feed_set_title(fp, title);
+		xmlFree(title);
 
 		/* Set the feed cache limit */
 		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
@@ -230,18 +235,8 @@ gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 		if(tmp != NULL)
 			xmlFree(tmp);
 
-		/* set feed properties available from the OPML feed list 
-		   they may be overwritten by the values of the cache file
-		   but we need them in case the cache file loading fails */
-	
-		feed_set_source(fp, source);
-		feed_set_filter(fp, filter);
-		feed_set_title(fp, title);
-		feed_set_update_interval(fp, interval);
-
-		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", title, source, typeStr, interval, fp->lastPoll.tv_sec);
-
-		xmlFree(source);
+		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
+		       feed_get_title(fp), feed_get_source(fp), typeStr, feed_get_update_interval(fp), fp->lastPoll.tv_sec);
 	}
 
 	debug_exit("feed_import");
