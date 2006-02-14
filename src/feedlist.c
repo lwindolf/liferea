@@ -516,7 +516,6 @@ static gboolean feedlist_check_apply(nodePtr node, gint filter) {
 
 /* recursivly calls func for every node in the feed list */
 void feedlist_foreach_full(nodePtr node, gint filter, gpointer func, gint params, gpointer user_data) {
-	gboolean	descend;
 	GSList		*children, *iter;
 	nodePtr		childNode;
 	

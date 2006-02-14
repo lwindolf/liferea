@@ -126,7 +126,7 @@ void node_load(nodePtr np) {
 	switch(np->type) {
 		case FST_FEED:
 		case FST_PLUGIN:
-			g_assert(NULL == np->itemSet);
+			/* np->itemSet will be NULL here, except when cache is disabled */
 			FL_PLUGIN(np)->node_load(np);
 			g_assert(NULL != np->itemSet);
 			break;
@@ -178,7 +178,7 @@ void node_unload(nodePtr np) {
 				case FST_PLUGIN:
 					g_assert(NULL != np->itemSet);
 					FL_PLUGIN(np)->node_unload(np);
-					g_assert(NULL == np->itemSet);
+					/* np->itemSet will be NULL here, except when cache is disabled */
 					break;
 				case FST_FOLDER:
 				case FST_VFOLDER:
@@ -413,7 +413,6 @@ itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
 
 void node_set_itemset(nodePtr np, itemSetPtr sp) {
 
-	g_assert(NULL == np->itemSet);
 	g_assert(ITEMSET_TYPE_INVALID != sp->type);
 	np->itemSet = sp;
 	sp->node = np;

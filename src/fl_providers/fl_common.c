@@ -1,7 +1,7 @@
 /**
  * @file fl_common.c common feedlist provider methods
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ void fl_common_node_load(nodePtr np) {
 	switch(np->type) {
 		case FST_FEED:
 			fp = (feedPtr)np->data;
-			g_assert(NULL == np->itemSet);
+			/* np->itemSet will be NULL here, except when cache is disabled */
 			node_set_itemset(np, feed_load_from_cache(fp, np->id));
 			g_assert(NULL != np->itemSet);
 			break;
