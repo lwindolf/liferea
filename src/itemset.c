@@ -322,6 +322,8 @@ void itemset_mark_all_read(itemSetPtr sp) {
 		item = g_list_next(item);
 	}
 	g_list_free(items);
+
+	sp->node->needsCacheSave = TRUE;
 }
 
 void itemset_mark_all_old(itemSetPtr sp) {
