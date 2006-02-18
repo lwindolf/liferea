@@ -663,49 +663,8 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 
 /* two/three pane mode setting */
 void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
-	gboolean gui_mode = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")));
 
-	ui_mainwindow_set_three_pane_mode(!new_mode);
-
-	if(new_mode != gui_mode) {
-		/* Disconnect signal so that this will not cause the itemlist
-		   to be redrawn. This would happen since
-		   on_toggle_condensed_view_activate would have been
-		   called. */
-		g_signal_handlers_block_by_func(lookup_widget(mainwindow, "toggle_condensed_view"), G_CALLBACK (on_toggle_condensed_view_activate), NULL);
-		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "toggle_condensed_view")), new_mode);
-		g_signal_handlers_unblock_by_func(lookup_widget(mainwindow, "toggle_condensed_view"), G_CALLBACK (on_toggle_condensed_view_activate), NULL);
-	}
-}
-
-/* This is the callback for the menu option to switch between two and three pane modes */
-void on_toggle_condensed_view_activate(GtkMenuItem *menuitem, gpointer user_data) { 
-	nodePtr		np;
-	
-	itemlist_change_two_pane_mode(GTK_CHECK_MENU_ITEM(menuitem)->active);
-
-	if(NULL != (np = feedlist_get_selected())) {
-		/* grab necessary to force HTML widget update (display must
-		   change from feed description to list of items and vica 
-		   versa */
-		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		itemlist_load(np->itemSet);
-	}
-}
-
-/* Callback for the toolbar to switch between two and three pane mode */
-void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data) {
-	nodePtr		np;
-
-	itemlist_change_two_pane_mode(!itemlist_get_two_pane_mode());
-
-	if(NULL != (np = feedlist_get_selected())) {
-		/* grab necessary to force HTML widget update (display must
-		   change from feed description to list of items and vica 
-		   versa */
-		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		itemlist_load(np->itemSet);
-	}
+	ui_mainwindow_three_pane_mode_changed(!new_mode);
 }
 
 void on_popup_copy_URL_clipboard(void) {

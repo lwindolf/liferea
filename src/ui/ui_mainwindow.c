@@ -52,7 +52,7 @@ struct mainwindow {
 } *mw_global_fixme; /* FIXME: I'd like to get rid of this global at some point. */
 
 static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw);
-
+static void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data);
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
  do { \
 	GtkToolItem *item = gtk_tool_button_new(gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), label); \
@@ -257,7 +257,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 	return FALSE;
 }
 
-void ui_mainwindow_set_three_pane_mode(gboolean threePane) {
+void ui_mainwindow_three_pane_mode_changed(gboolean threePane) {
 		
 	if(!htmlview) {
 		htmlview = ui_htmlview_new(FALSE);
@@ -275,6 +275,8 @@ void ui_mainwindow_set_three_pane_mode(gboolean threePane) {
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
 		gtk_widget_reparent(GTK_WIDGET(htmlview), lookup_widget(mainwindow, "viewportTwoPaneHtml"));
 	}
+	gtk_toggle_action_set_active(GTK_TOGGLE_ACTION(gtk_action_group_get_action(mw_global_fixme->generalActions,"ToggleCondensedMode")),!threePane);
+
 }
 
 void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_style) {
@@ -425,7 +427,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	/*   For some reason, this causes the first item to be selected and then
 	     unselected... strange. */
 	ui_feedlist_select(NULL);
-	ui_mainwindow_set_three_pane_mode(FALSE); 
+	ui_mainwindow_three_pane_mode_changed(FALSE);  /* Initialize the UI with respect to the viewing mode */
 	itemlist_set_two_pane_mode(TRUE);
 	
 	/* set zooming properties */	
@@ -633,6 +635,46 @@ static void ui_mainwindow_restore_position(GtkWidget *window) {
 /*
  * Feed menu callbacks
  */
+
+/**
+ * Menu callback that toggles the two pane mode
+ *
+ * @param meunitem	the clicked menu item
+ * @param user_data	unused
+ */
+static void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_data) { 
+	nodePtr		np;
+	
+	itemlist_change_two_pane_mode(gtk_toggle_action_get_active(menuitem));
+
+	if(NULL != (np = feedlist_get_selected())) {
+		/* grab necessary to force HTML widget update (display must
+		   change from feed description to list of items and vica 
+		   versa */
+		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+		itemlist_load(np->itemSet);
+	}
+}
+
+/**
+ * Toggles the two pane mode (tool bar callback)
+ *
+ * @param button	the clicked button
+ * @param user_data	unused
+ */
+static void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data) {
+	nodePtr		np;
+
+	itemlist_change_two_pane_mode(!itemlist_get_two_pane_mode());
+
+	if(NULL != (np = feedlist_get_selected())) {
+		/* grab necessary to force HTML widget update (display must
+		   change from feed description to list of items and vica 
+		   versa */
+		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+		itemlist_load(np->itemSet);
+	}
+}
 
 gboolean on_close(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	
@@ -867,7 +909,7 @@ static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw) {
 	GtkUIManager *ui_manager;
 	GtkAccelGroup *accel_group;
 	GError *error;
-
+	
 	//register_my_stock_icons ();
 	//gtk_container_add (GTK_CONTAINER (window), vbox);
 	ui_manager = gtk_ui_manager_new ();
@@ -878,7 +920,7 @@ static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw) {
 	gtk_action_group_add_toggle_actions (mw->generalActions, ui_mainwindow_action_toggle_entries, G_N_ELEMENTS (ui_mainwindow_action_toggle_entries), mw);
 	/*gtk_action_group_add_radio_actions (mw->generalActions, radio_entries, G_N_ELEMENTS (radio_entries), 0, radio_action_callback, user_data);*/
 	gtk_ui_manager_insert_action_group (ui_manager, mw->generalActions, 0);
-
+	
 	mw->feedActions = gtk_action_group_new ("FeedActions");
 	gtk_action_group_set_translation_domain (mw->feedActions, PACKAGE);
 	gtk_action_group_add_actions (mw->feedActions, ui_mainwindow_feed_action_entries, G_N_ELEMENTS (ui_mainwindow_feed_action_entries), mw);

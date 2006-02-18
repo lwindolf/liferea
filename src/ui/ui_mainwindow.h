@@ -44,7 +44,7 @@ GtkWidget* ui_mainwindow_new();
 
 void ui_mainwindow_finish(GtkWidget *window);
 
-void ui_mainwindow_set_three_pane_mode(gboolean threePane);
+void ui_mainwindow_three_pane_mode_changed(gboolean threePane);
 
 GtkWidget *ui_mainwindow_get_active_htmlview();
 
