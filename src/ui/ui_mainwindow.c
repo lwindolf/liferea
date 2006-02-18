@@ -176,7 +176,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 					return TRUE;
 					break;
 				case GDK_r:
-					on_popup_allunread_selected();
+					on_popup_allread_selected();
 					return TRUE;
 					break;
 				case GDK_t:
@@ -746,11 +746,12 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
+
 	{"FeedsMenu", NULL, N_("_Feeds")},
 	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions. This does not update OCS directories."),
 	 G_CALLBACK(on_refreshbtn_clicked)},
 	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
-	 G_CALLBACK(on_popup_allunread_selected)},
+	 G_CALLBACK(on_popup_allfeedsread_selected)},
 	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Add a subscription to the feed list."),
 	 G_CALLBACK(on_menu_feed_new)},
 	{"NewFolder", "gtk-new", N_("New _Folder..."), NULL, N_("Add a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
@@ -758,6 +759,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"NewPlugin", NULL, N_("New P_lugin"), NULL, N_("Adds a new plugin instance to the feed list."), G_CALLBACK(on_new_plugin_activate)},
 	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_import_activate)},
 	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_(">Exports the feed list as OPML."), G_CALLBACK(on_export_activate)},
+
 	{"ItemsMenu", NULL, "_Items"},
 	{"NextUnreadItem", GTK_STOCK_GO_FORWARD, N_("_Next Unread Item"), "<control>N", N_("Jumps to the next unread item. If necessary selects the next feed with unread items."),
 	 G_CALLBACK(on_next_unread_item_activate)},
@@ -771,6 +773,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_remove_items_activate)},
 	{"LaunchItemInBrowser", NULL, N_("_Launch In Browser"), NULL, N_("Launches the item's link in the configured browser."),
 	 G_CALLBACK(on_popup_launchitem_selected)},
+
 	{"ViewMenu", NULL, N_("_View")},
 	{"ZoomIn", "gtk-zoom-in", N_("_Increase Text Size"), "<control>plus", N_("Increases the text size of the item view."),
 	 G_CALLBACK(on_popup_zoomin_selected)},
@@ -790,7 +793,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 
 static GtkActionEntry ui_mainwindow_feed_action_entries[] = {
 	{"MarkFeedAsRead", "gtk-apply", N_("_Mark Selected As Read"), "<control>R", N_("Marks all items of the selected subscription or of all subscriptions of the selected folder as read."), 
-	 G_CALLBACK(on_popup_allunread_selected)},
+	 G_CALLBACK(on_popup_allread_selected)},
 	{"UpdateSelected", "gtk-refresh", N_("Update _Selected"), NULL, N_("Updates the selected subscription or all subscriptions of the selected folder."),
 	 G_CALLBACK(on_menu_update)},
 	{"Properties", "gtk-properties", N_("_Properties..."), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},

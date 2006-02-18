@@ -321,20 +321,20 @@ void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
 }
 
-void on_popup_allunread_selected(void) {
+void on_popup_allread_selected(void) {
 	
 	if(selectedNode)
 		node_mark_all_read(selectedNode);
 }
 
-void on_popup_allfeedsunread_selected(void) {
-
+void on_popup_allfeedsread_selected(void) {
+g_print("all feeds read selected\n");
 	node_foreach_child(feedlist_get_root(), node_mark_all_read);
 }
 
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 
-	on_popup_allunread_selected();
+	on_popup_allread_selected();
 }
 
 void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget) {

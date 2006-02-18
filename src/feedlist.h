@@ -131,8 +131,8 @@ void on_menu_update(GtkMenuItem *menuitem, gpointer user_data);
 void on_menu_folder_delete(GtkMenuItem *menuitem, gpointer user_data);
 
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_allunread_selected(void);
-void on_popup_allfeedsunread_selected(void);
+void on_popup_allread_selected(void);
+void on_popup_allfeedsread_selected(void);
 void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
