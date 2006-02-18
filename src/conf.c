@@ -138,7 +138,7 @@ static void conf_toolbar_style_settings_cb(GConfClient *client, guint cnxn_id, G
 		
 		value = gconf_entry_get_value(entry);
 		if (value != NULL && value->type == GCONF_VALUE_STRING)
-			ui_mainwindow_set_toolbar_style(GTK_WINDOW(mainwindow), gconf_value_get_string(value));
+			ui_mainwindow_set_toolbar_style(mw_global_fixme, gconf_value_get_string(value));
 	}
 }
 

@@ -29,6 +29,7 @@
 #include "feedlist.h"
 #include "support.h"
 #include "vfolder.h"
+#include "itemset.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"

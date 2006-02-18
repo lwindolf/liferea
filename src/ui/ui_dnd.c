@@ -129,7 +129,6 @@ void ui_dnd_init(void) {
 /* method to receive URLs which were dropped anywhere in the main window */
 static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
 	gchar		*tmp1, *tmp2, *freeme;
-	nodePtr		np;
 	
 	g_return_if_fail (data->data != NULL);
 		

@@ -32,8 +32,6 @@ create_mainwindow (void)
   GtkWidget *mainwindow;
   GdkPixbuf *mainwindow_icon_pixbuf;
   GtkWidget *vbox1;
-  GtkWidget *toolbar;
-  GtkIconSize tmp_toolbar_icon_size;
   GtkWidget *leftpane;
   GtkWidget *scrolledwindow3;
   GtkWidget *feedlist;
@@ -66,12 +64,6 @@ create_mainwindow (void)
   vbox1 = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (vbox1);
   gtk_container_add (GTK_CONTAINER (mainwindow), vbox1);
-
-  toolbar = gtk_toolbar_new ();
-  gtk_widget_show (toolbar);
-  gtk_box_pack_start (GTK_BOX (vbox1), toolbar, FALSE, FALSE, 0);
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_TEXT);
-  tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbar));
 
   leftpane = gtk_hpaned_new ();
   gtk_widget_show (leftpane);
@@ -180,7 +172,6 @@ create_mainwindow (void)
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, mainwindow, "mainwindow");
   GLADE_HOOKUP_OBJECT (mainwindow, vbox1, "vbox1");
-  GLADE_HOOKUP_OBJECT (mainwindow, toolbar, "toolbar");
   GLADE_HOOKUP_OBJECT (mainwindow, leftpane, "leftpane");
   GLADE_HOOKUP_OBJECT (mainwindow, scrolledwindow3, "scrolledwindow3");
   GLADE_HOOKUP_OBJECT (mainwindow, feedlist, "feedlist");

@@ -627,18 +627,19 @@ gboolean feed_can_be_updated(feedPtr fp) {
 
 	if(fp->request != NULL) {
 		ui_mainwindow_set_status_bar(_("This feed \"%s\" is already being updated!"), feed_get_title(fp));
-		return;
+		return FALSE;
 	}
 	
 	if(feed_get_discontinued(fp)) {
 		ui_mainwindow_set_status_bar(_("The feed \"%s\" was discontinued. Liferea won't update it anymore!"), feed_get_title(fp));
-		return;
+		return FALSE;
 	}
 
 	if(NULL == feed_get_source(fp)) {
 		g_warning("Feed source is NULL! This should never happen - cannot update!");
-		return;
+		return FALSE;
 	}
+	return TRUE;
 }	
 
 void feed_prepare_request(feedPtr fp, struct request *request, guint flags) {

@@ -47,22 +47,10 @@
 struct mainwindow {
 	GtkWindow *window;
 	GtkWidget *menubar;
+	GtkWidget *toolbar;
 	GtkActionGroup *generalActions;
 	GtkActionGroup *feedActions;
 } *mw_global_fixme; /* FIXME: I'd like to get rid of this global at some point. */
-
-
-#define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
- do { \
-	GtkToolItem *item = gtk_tool_button_new(gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), label); \
-	gtk_tool_item_set_tooltip(item, tooltips, tooltip, NULL); \
-	gtk_tool_item_set_homogeneous (item, FALSE); \
-	gtk_tool_item_set_is_important (item, TRUE); \
-	g_signal_connect((gpointer) item, "clicked", G_CALLBACK(function), NULL); \
-	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), \
-				    item, \
-				    -1); \
- } while (0);
 
 /* all used icons */
 GdkPixbuf *icons[MAX_ICONS];
@@ -93,8 +81,7 @@ static gfloat 	zoom;				/* HTML rendering widget zoom level */
 /* some prototypes */
 static void ui_mainwindow_restore_position(GtkWidget *window);
 static gboolean on_close(GtkWidget *widget, GdkEvent *event, struct mainwindow *user_data);
-static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw);
-static void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data);
+static void ui_mainwindow_create_menus(struct mainwindow *mw);
 static gboolean on_mainwindow_window_state_event(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
 GtkWidget *ui_mainwindow_get_active_htmlview(void) {
@@ -282,20 +269,18 @@ void ui_mainwindow_three_pane_mode_changed(gboolean threePane) {
 
 }
 
-void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_style) {
-	GtkWidget *toolbar = lookup_widget(GTK_WIDGET(window), "toolbar");
-	
+void ui_mainwindow_set_toolbar_style(struct mainwindow *mw, const gchar *toolbar_style) {
+	printf("setting toolbar style to %s\n",toolbar_style);
 	if(toolbar_style == NULL) /* default to icons */
-		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
+		gtk_toolbar_set_style(GTK_TOOLBAR(mw->toolbar), GTK_TOOLBAR_ICONS);
 	else if(!strcmp(toolbar_style, "text"))
-		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_TEXT);
+		gtk_toolbar_set_style(GTK_TOOLBAR(mw->toolbar), GTK_TOOLBAR_TEXT);
 	else if(!strcmp(toolbar_style, "both"))
-		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH);
+		gtk_toolbar_set_style(GTK_TOOLBAR(mw->toolbar), GTK_TOOLBAR_BOTH);
 	else if(!strcmp(toolbar_style, "both_horiz") || !strcmp(toolbar_style, "both-horiz") )
-		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_BOTH_HORIZ);
+		gtk_toolbar_set_style(GTK_TOOLBAR(mw->toolbar), GTK_TOOLBAR_BOTH_HORIZ);
 	else /* default to icons */
-		gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
-	
+		gtk_toolbar_set_style(GTK_TOOLBAR(mw->toolbar), GTK_TOOLBAR_ICONS);
 }
 
 static gboolean on_key_press_event_null_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
@@ -322,10 +307,8 @@ static gboolean on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScr
 }
 
 
-GtkWidget* ui_mainwindow_new(void) {
+static struct mainwindow *ui_mainwindow_new(void) {
 	GtkWidget *window = create_mainwindow();
-	GtkWidget *toolbar = lookup_widget(window, "toolbar");
-	GtkTooltips *tooltips = gtk_tooltips_new();
 	gchar *toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style");
 	struct mainwindow *mw = malloc(sizeof(struct mainwindow));
 	
@@ -337,20 +320,14 @@ GtkWidget* ui_mainwindow_new(void) {
 	gtk_widget_set_name(lookup_widget(window, "feedlist"), "feedlist");
 	gtk_widget_set_name(lookup_widget(window, "Itemlist"), "itemlist");
 	
-	mw->menubar = ui_mainwindow_create_menus(mw);
+	ui_mainwindow_create_menus(mw);
+	gtk_box_pack_start (GTK_BOX (lookup_widget(window,"vbox1")), mw->toolbar, FALSE, FALSE, 0);
+	gtk_box_reorder_child(GTK_BOX (lookup_widget(window,"vbox1")), mw->toolbar, 0);
 	gtk_box_pack_start (GTK_BOX (lookup_widget(window,"vbox1")), mw->menubar, FALSE, FALSE, 0);
 	gtk_box_reorder_child(GTK_BOX (lookup_widget(window,"vbox1")), mw->menubar, 0);
-
-	ui_mainwindow_set_toolbar_style(GTK_WINDOW(window), toolbar_style);
+	ui_mainwindow_set_toolbar_style(mw, toolbar_style);
 	g_free(toolbar_style);
-
-	TOOLBAR_ADD(toolbar,  _("New Feed"), GTK_STOCK_ADD, tooltips,  _("Add a new subscription."), on_newbtn_clicked);
-	TOOLBAR_ADD(toolbar,  _("Next Unread"), GTK_STOCK_GO_FORWARD, tooltips,  _("Jumps to the next unread item. If necessary selects the next feed with unread items."), on_nextbtn_clicked);
-	TOOLBAR_ADD(toolbar,  _("Mark As Read"), GTK_STOCK_APPLY, tooltips,  _("Marks all items of the selected subscription or of all subscriptions of the selected folder as read."), on_popup_allunread_selected);
-	TOOLBAR_ADD(toolbar,  _("Update All"), GTK_STOCK_REFRESH, tooltips,  _("Updates all subscriptions. This does not update OCS directories."), on_refreshbtn_clicked);
-	TOOLBAR_ADD(toolbar,  _("Search"), GTK_STOCK_FIND, tooltips,  _("Search all feeds."), on_searchbtn_clicked);
-	TOOLBAR_ADD(toolbar,  _("Viewing Mode"), GTK_STOCK_JUSTIFY_FILL, tooltips,  _("Switches between 2 and 3 pane mode."), on_toggle_condensed_view_clicked);
-	TOOLBAR_ADD(toolbar,  _("Preferences"), GTK_STOCK_PREFERENCES, tooltips,  _("Edit preferences."), on_prefbtn_clicked);
+	gtk_widget_show_all(GTK_WIDGET(mw->toolbar));
 
 	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "key_press_event",
 					  G_CALLBACK (on_key_press_event_null_cb), NULL);
@@ -365,21 +342,20 @@ GtkWidget* ui_mainwindow_new(void) {
 	g_signal_connect(mw->window, "window_state_event", G_CALLBACK(on_mainwindow_window_state_event), mw);
 	g_signal_connect(mw->window, "key_press_event", G_CALLBACK(on_mainwindow_key_press_event), mw);
 	
-	gtk_widget_show_all(GTK_WIDGET(toolbar));
-
 	ui_mainwindow_restore_position(window);
 	
-	return window;
+	return mw;
 }
 
 void ui_mainwindow_init(int mainwindowState) {
 	GtkWidget	*widget;
 	int		i;
 	gchar		*buffer = NULL;
-
+	struct mainwindow *mw;
 	debug_enter("ui_mainwindow_init");
 
-	mainwindow = ui_mainwindow_new();
+	mw = ui_mainwindow_new();
+	mainwindow = GTK_WIDGET(mw->window);
 	ui_tabs_init();
 
 	/* load pane proportions */
@@ -404,7 +380,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon(widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
 	gtk_widget_destroy(widget);
 	
-	ui_mainwindow_update_toolbar();
+	ui_mainwindow_update_toolbar(mw);
 	ui_mainwindow_update_menubar();
 	ui_mainwindow_update_onlinebtn();
 	
@@ -479,19 +455,16 @@ void ui_mainwindow_init(int mainwindowState) {
 	debug_exit("ui_mainwindow_init");
 }
 
-void ui_mainwindow_update_toolbar(void) {
-	GtkWidget *widget;
+void ui_mainwindow_update_toolbar(struct mainwindow *mw) {
 	
-	if(NULL != (widget = lookup_widget(mainwindow, "toolbar"))) {	
-		/* to avoid "locking out" the user */
-		if(getBooleanConfValue(DISABLE_MENUBAR) && getBooleanConfValue(DISABLE_TOOLBAR))
-			setBooleanConfValue(DISABLE_TOOLBAR, FALSE);
-			
-		if(getBooleanConfValue(DISABLE_TOOLBAR))
-			gtk_widget_hide(widget);
-		else
-			gtk_widget_show(widget);
-	}
+	/* to avoid "locking out" the user */
+	if(getBooleanConfValue(DISABLE_MENUBAR) && getBooleanConfValue(DISABLE_TOOLBAR))
+		setBooleanConfValue(DISABLE_TOOLBAR, FALSE);
+	
+	if(getBooleanConfValue(DISABLE_TOOLBAR))
+		gtk_widget_hide(mw->toolbar);
+	else
+		gtk_widget_show(mw->toolbar);
 }
 
 void ui_mainwindow_update_feed_menu(gint type) {
@@ -662,25 +635,6 @@ static void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointe
 	}
 }
 
-/**
- * Toggles the two pane mode (tool bar callback)
- *
- * @param button	the clicked button
- * @param user_data	unused
- */
-static void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data) {
-	nodePtr		np;
-
-	itemlist_change_two_pane_mode(!itemlist_get_two_pane_mode());
-
-	if(NULL != (np = feedlist_get_selected())) {
-		/* grab necessary to force HTML widget update (display must
-		   change from feed description to list of items and vica 
-		   versa */
-		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		itemlist_load(np->itemSet);
-	}
-}
 
 static gboolean on_close(GtkWidget *widget, GdkEvent *event, struct mainwindow *mw) {
 	
@@ -789,7 +743,7 @@ void ui_choose_directory(gchar *title, GtkWindow *parent, gchar *buttonName, fil
 
 static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ProgramMenu", NULL, N_("_Program")},
-	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, NULL,
+	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
 	{"FeedsMenu", NULL, N_("_Feeds")},
@@ -823,7 +777,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ZoomOut", "gtk-zoom-out", N_("_Decrease Text Size"), "<control>minus", N_("Decreases the text size of the item view."),
 	 G_CALLBACK(on_popup_zoomout_selected)},
 	{"SearchMenu", NULL, N_("_Search")},
-	{"SearchFeeds", "gtk-find", N_("Search All Feeds"), "<control>F", N_("Shows or hides the search box."), G_CALLBACK(on_searchbtn_clicked)},
+	{"SearchFeeds", "gtk-find", N_("Search All Feeds"), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
 	{"SearchFeedster", "gtk-find", N_("Search With _Feedster..."), NULL, N_("Creates a Feedster search feed."), G_CALLBACK(on_search_with_feedster_activate)},
 	{"HelpMenu", NULL, N_("_Help")},
 	{"ShowHelpContents", "gtk-help", N_("_Contents"), NULL, N_("View help for this application."), G_CALLBACK(on_topics_activate)},
@@ -847,7 +801,7 @@ static GtkActionEntry ui_mainwindow_feed_action_entries[] = {
 static GtkToggleActionEntry ui_mainwindow_action_toggle_entries[] = {
 	{"ToggleOfflineMode", NULL, N_("_Work Offline"), NULL, N_("This option allows you to disable subscription updating."),
 	 G_CALLBACK(on_work_offline_activate)},
-	{"ToggleCondensedMode", NULL, N_("Toggle _Condensed View"), NULL, N_("Toggles the item list mode between condensed and normal mode."),
+	{"ToggleCondensedMode", GTK_STOCK_JUSTIFY_FILL, N_("Toggle _Condensed View"), NULL, N_("Toggles the item list mode between condensed and normal mode."),
 	 G_CALLBACK(on_toggle_condensed_view_activate)}	
 };
 
@@ -906,12 +860,20 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='ShowAbout'/>"
 "    </menu>"
 "  </menubar>"
+"  <toolbar action='maintoolbar'>"
+"    <separator/>"
+"    <toolitem name='newFeedButton' action='NewSubscription'/>"
+"    <toolitem name='nextUnreadButton' action='NextUnreadItem'/>"
+"    <toolitem name='MarkAsReadButton' action='MarkAllFeedsAsRead'/>"
+"    <toolitem name='UpdateAllButton' action='UpdateAll'/>"
+"    <toolitem name='SearchButton' action='SearchFeeds'/>"
+"    <toolitem name='ViewingModeButton' action='ToggleCondensedMode'/>"
+"    <toolitem name='PreferencesButton' action='ShowPreferences'/>"
+"    <separator/>"
+"  </toolbar>"
 "</ui>";
 
-
-
-static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw) {
-	GtkWidget *menubar;
+static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 	GtkUIManager *ui_manager;
 	GtkAccelGroup *accel_group;
 	GError *error;
@@ -943,7 +905,6 @@ static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw) {
 			exit (EXIT_FAILURE);
 		}
 
-	menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
-	
-	return menubar;
+	mw->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
+	mw->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
 }

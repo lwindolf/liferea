@@ -36,12 +36,11 @@ enum mainwindowState {
 	MAINWINDOW_ICONIFIED,
 	MAINWINDOW_HIDDEN
 };
+struct mainwindow *mw_global_fixme;
 
 /**
  * Create a new main window
  */
-GtkWidget* ui_mainwindow_new();
-
 void ui_mainwindow_finish(GtkWidget *window);
 
 void ui_mainwindow_three_pane_mode_changed(gboolean threePane);
@@ -52,7 +51,7 @@ GtkWidget *ui_mainwindow_get_active_htmlview();
  * @param window main window containing toolbar
  * @param toolbar_style text string containing the type of style to use
  */
-void ui_mainwindow_set_toolbar_style(GtkWindow *window, const gchar *toolbar_style);
+void ui_mainwindow_set_toolbar_style(struct mainwindow *mw, const gchar *toolbar_style);
 
 /** According to the preferences this function enables/disables the toolbar */
 void ui_mainwindow_update_toolbar();

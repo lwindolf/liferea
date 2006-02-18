@@ -25,11 +25,11 @@
 
 #include <string.h>
 #include "support.h"
-#include "ui_mainwindow.h"
-#include "ui_htmlview.h"
-#include "ui_itemlist.h"
-#include "ui_tabs.h"
-
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_tabs.h"
+#include "itemlist.h"
 extern GtkWidget	*mainwindow;
 
 /** structure holding all URLs visited in a tab */
