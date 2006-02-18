@@ -196,9 +196,13 @@ static gchar* ui_tabs_condense_text(const gchar* title) {
 	if (title != NULL) {
 		if(!strncmp(title, "http://",7))
 			title += strlen("http://");
-		tmp2 = tmp = g_strdup(title);
+		tmp2 = tmp = g_strstrip(g_strdup(title));
+		if (*tmp == '\0') {
+			g_free(tmp);
+			tmp = tmp2 = g_strdup(_("New tab"));
+		}
 	} else {
-		tmp2 = tmp = g_strdup("New tab");
+		tmp2 = tmp = g_strdup(_("New tab"));
 	}
 	
 	if(g_utf8_strlen(tmp, -1) > 20) {

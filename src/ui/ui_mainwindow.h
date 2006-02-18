@@ -84,8 +84,7 @@ void ui_mainwindow_tray_remove();
 
 /* GUI callbacks */
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data);
-void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data);
-void on_work_offline_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_work_offline_activate(GtkToggleAction *menuitem, gpointer user_data);
 gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer user_data);
 
 void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data);
