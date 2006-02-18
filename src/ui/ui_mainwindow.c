@@ -867,7 +867,7 @@ static const char *ui_mainwindow_ui_desc =
 "    <separator/>"
 "    <toolitem name='newFeedButton' action='NewSubscription'/>"
 "    <toolitem name='nextUnreadButton' action='NextUnreadItem'/>"
-"    <toolitem name='MarkAsReadButton' action='MarkAllFeedsAsRead'/>"
+"    <toolitem name='MarkAsReadButton' action='MarkFeedAsRead'/>"
 "    <toolitem name='UpdateAllButton' action='UpdateAll'/>"
 "    <toolitem name='SearchButton' action='SearchFeeds'/>"
 "    <toolitem name='ViewingModeButton' action='ToggleCondensedMode'/>"
