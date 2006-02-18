@@ -190,6 +190,8 @@ void node_unload(nodePtr np) {
 			debug2(DEBUG_CACHE, "- node_unload (%s, new ref count=%d)", node_get_title(np), np->loaded);
 			break;
 		case FST_FOLDER:
+			g_list_free(np->itemSet->items);
+			np->itemSet->items = NULL;
 			node_foreach_child(np, node_unload);
 			break;
 		case FST_VFOLDER:

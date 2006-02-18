@@ -156,27 +156,6 @@ static void feedlist_merge_itemset_cb(nodePtr node, gpointer userdata) {
 	debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(sp->items));
 }
 
-void feedlist_load_node(nodePtr node) {
-
-	if(FST_FOLDER == node->type) {
-		g_assert(NULL != node->itemSet);
-		node_foreach_child_data(node, feedlist_merge_itemset_cb, (gpointer)node->itemSet);
-	} else {
-		node_load(node);
-	}
-}
-
-void feedlist_unload_node(nodePtr node) {
-
-	if(FST_FOLDER == node->type) {
-		g_list_free(node->itemSet->items);
-		node->itemSet->items = NULL;
-		node_foreach_child(node, node_unload);
-	} else {
-		node_unload(node);
-	}
-}
-
 static gboolean feedlist_auto_update(void *data) {
 
 	debug_enter("feedlist_auto_update");
@@ -265,16 +244,14 @@ nodePtr feedlist_find_unread_feed(nodePtr folder) {
 	scanState = UNREAD_SCAN_INIT;
 	return feedlist_unread_scan(folder);
 }
-void debug_node(nodePtr np) {
-	g_print("fl_foreach:%s\n", np->title);
-}
+
 /* selection handling */
 
 void feedlist_selection_changed(nodePtr np) {
 	nodePtr	displayed_node;
 
 	debug_enter("feedlist_selection_changed");
-feedlist_foreach(debug_node);
+
 	debug1(DEBUG_GUI, "new selected node: %s", (NULL == np)?"none":node_get_title(np));
 	if(np != selectedNode) {
 		displayed_node = itemlist_get_displayed_node();
@@ -282,21 +259,20 @@ feedlist_foreach(debug_node);
 		/* When the user selects a feed in the feed list we
 		   assume that he got notified of the new items or
 		   isn't interested in the event anymore... */
-		if(0 != newCount) {
+		if(0 != newCount)
 			feedlist_reset_new_item_count();
-		}
 
 		/* Unload visible items. */
 		itemlist_unload();
 
 		/* Unload previously displayed node. */
 		if(NULL != displayed_node)
-			feedlist_unload_node(displayed_node);
+			node_unload(displayed_node);
 
 		/* Load items of new selected node. */
 		selectedNode = np;
 
-		feedlist_load_node(selectedNode);
+		node_load(selectedNode);
 		itemlist_load(selectedNode->itemSet);
 	}
 

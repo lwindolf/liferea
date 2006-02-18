@@ -312,7 +312,7 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	debug_enter("vfolder_apply_rules");
 
 	debug1(DEBUG_UPDATE, "applying rules for (%s)", node_get_title(np));
-	feedlist_load_node(np);
+	node_load(np);
 
 	/* check all feed items */
 	items = np->itemSet->items;
@@ -321,7 +321,7 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 		items = g_list_next(items);
 	}
 	
-	feedlist_unload_node(np);
+	node_unload(np);
 	debug_exit("vfolder_apply_rules");
 }
 
