@@ -51,8 +51,7 @@ struct mainwindow {
 	GtkActionGroup *feedActions;
 } *mw_global_fixme; /* FIXME: I'd like to get rid of this global at some point. */
 
-static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw);
-static void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data);
+
 #define TOOLBAR_ADD(toolbar, label, icon, tooltips, tooltip, function) \
  do { \
 	GtkToolItem *item = gtk_tool_button_new(gtk_image_new_from_stock (icon, GTK_ICON_SIZE_LARGE_TOOLBAR), label); \
@@ -93,6 +92,10 @@ static gfloat 	zoom;				/* HTML rendering widget zoom level */
 
 /* some prototypes */
 static void ui_mainwindow_restore_position(GtkWidget *window);
+static gboolean on_close(GtkWidget *widget, GdkEvent *event, struct mainwindow *user_data);
+static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw);
+static void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_data);
+static gboolean on_mainwindow_window_state_event(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
 GtkWidget *ui_mainwindow_get_active_htmlview(void) {
 
@@ -358,6 +361,9 @@ GtkWidget* ui_mainwindow_new(void) {
 	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "scroll_event",
                       G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
 	
+	g_signal_connect(mw->window, "delete_event", G_CALLBACK(on_close), mw);
+	g_signal_connect(mw->window, "window_state_event", G_CALLBACK(on_mainwindow_window_state_event), mw);
+	g_signal_connect(mw->window, "key_press_event", G_CALLBACK(on_mainwindow_key_press_event), mw);
 	
 	gtk_widget_show_all(GTK_WIDGET(toolbar));
 
@@ -676,12 +682,12 @@ static void on_toggle_condensed_view_clicked(GtkButton *button, gpointer user_da
 	}
 }
 
-gboolean on_close(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+static gboolean on_close(GtkWidget *widget, GdkEvent *event, struct mainwindow *mw) {
 	
 	if(ui_tray_get_count() == 0)
-		return on_quit(widget, event, user_data);
+		return on_quit(widget, event, mw);
 	ui_mainwindow_save_position();
-	gtk_widget_hide(mainwindow);
+	gtk_widget_hide(GTK_WIDGET(mw->window));
 	return TRUE;
 }
 

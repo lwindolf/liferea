@@ -161,15 +161,6 @@ create_mainwindow (void)
   gtk_box_pack_start (GTK_BOX (hbox30), statusbar, TRUE, TRUE, 0);
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (statusbar), FALSE);
 
-  g_signal_connect ((gpointer) mainwindow, "delete_event",
-                    G_CALLBACK (on_close),
-                    NULL);
-  g_signal_connect ((gpointer) mainwindow, "window_state_event",
-                    G_CALLBACK (on_mainwindow_window_state_event),
-                    NULL);
-  g_signal_connect ((gpointer) mainwindow, "key_press_event",
-                    G_CALLBACK (on_mainwindow_key_press_event),
-                    NULL);
   g_signal_connect ((gpointer) feedlist, "button_press_event",
                     G_CALLBACK (on_mainfeedlist_button_press_event),
                     NULL);
