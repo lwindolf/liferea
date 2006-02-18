@@ -64,9 +64,6 @@ void feedlist_add_node(nodePtr parent, nodePtr np, gint position);
 void feedlist_update_node(nodePtr np);
 void feedlist_remove_node(nodePtr np);
 
-void feedlist_load_node(nodePtr np);
-void feedlist_unload_node(nodePtr np);
-
 /**
  * Schedules a save requests for the feed list.
  * Triggers state saving for all feed list plugins.

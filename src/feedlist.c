@@ -86,11 +86,13 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 		ui_tray_update();
 }
 
-static void feedlist_unset_new_items(nodePtr np) {
+static void feedlist_unset_new_items(nodePtr node) {
 	
-	node_load(np);
-	itemset_mark_all_old(np->itemSet);
-	node_unload(np);
+	if(0 != node->newCount) {
+		node_load(node);
+		itemset_mark_all_old(node->itemSet);
+		node_unload(node);
+	}
 }
 
 void feedlist_reset_new_item_count(void) {
