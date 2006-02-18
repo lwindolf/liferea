@@ -544,16 +544,16 @@ guint node_get_unread_count(nodePtr np) {
 
 void node_mark_all_read(nodePtr np) {
 
-	if(0 == np->unreadCount)
-		return;
 
 	switch(np->type) {
 		case FST_PLUGIN:
 		case FST_FEED:
-			node_load(np);
-			itemlist_mark_all_read(np->itemSet);
-			ui_node_update(np);
-			node_unload(np);
+			if(0 != np->unreadCount) {
+				node_load(np);
+				itemlist_mark_all_read(np->itemSet);
+				ui_node_update(np);
+				node_unload(np);
+			}
 			break;
 		case FST_FOLDER:
 			node_foreach_child(np, node_mark_all_read);

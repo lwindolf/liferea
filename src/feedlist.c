@@ -329,7 +329,7 @@ void on_popup_allunread_selected(void) {
 
 void on_popup_allfeedsunread_selected(void) {
 
-	node_mark_all_read(feedlist_get_root());
+	node_foreach_child(feedlist_get_root(), node_mark_all_read);
 }
 
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
