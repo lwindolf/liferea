@@ -174,6 +174,13 @@ guint node_get_unread_count(nodePtr np);
 void node_update_unread_count(nodePtr np, gint diff);
 
 /**
+ * Recursively marks all items of the given node as read.
+ *
+ * @param np	the node to process
+ */
+void node_mark_all_read(nodePtr np);
+
+/**
  * Returns a new unique node id.
  *
  * @returns new id
@@ -301,6 +308,13 @@ void node_request_update(nodePtr np, guint flags);
 void node_schedule_update(nodePtr np, request_cb callback, guint flags);
 
 /**
+ * Called when updating favicons is requested.
+ *
+ * @param np		the node
+ */
+void node_update_favicon(nodePtr np);
+
+/**
  * Change/Set the sort column of a given node.
  *
  * @param np		the node
@@ -326,5 +340,33 @@ void node_set_two_pane_mode(nodePtr np, gboolean newMode);
  */
 gboolean node_get_two_pane_mode(nodePtr np);
 
+/* child nodes iterating interface */
+
+/**
+ * Do not call this method directly! Do use
+ * node_foreach_child() or node_foreach_child_data()!
+ */
+void node_foreach_child_full(nodePtr ptr, gpointer func, gint params, gpointer user_data);
+
+/**
+ * Helper function to call node methods for all
+ * children of a given node. The given function may
+ * modify the children list.
+ *
+ * @param node	node pointer whose children should be processed
+ * @param func	the function to process all found elements
+ */
+#define node_foreach_child(node, func) node_foreach_child_full(node,func,0,NULL)
+
+/**
+ * Helper function to call node methods for all
+ * children of a given node. The given function may 
+ * modify the children list.
+ *
+ * @param node	node pointer whose children should be processed
+ * @param func	the function to process all found elements
+ * @param user_data specifies the second argument that func should be passed
+ */
+#define node_foreach_child_data(node, func, user_data) node_foreach_child_full(node,func,1,user_data)
 
 #endif

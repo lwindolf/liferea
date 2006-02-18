@@ -305,7 +305,8 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	GList		*items;
 
 	/* do not search in vfolders */
-	if(FST_VFOLDER == np->type)
+	if((FST_VFOLDER == np->type) ||
+	   (FST_FOLDER == np->type))
 		return;
 
 	debug_enter("vfolder_apply_rules");
@@ -346,7 +347,7 @@ void vfolder_refresh(vfolderPtr vp) {
 	// this code does not belong here...
 	// Or maybe the structure itself is bad design
 	
-	feedlist_foreach_data(NULL, FEEDLIST_FILTER_FEED, vfolder_apply_rules, vp);
+	feedlist_foreach_data(vfolder_apply_rules, vp);
 	
 	debug_exit("vfolder_refresh");
 }

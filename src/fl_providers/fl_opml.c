@@ -1,7 +1,7 @@
 /**
  * @file fl_opml.c default static feedlist provider
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
-#include "feedlist.h"
 #include "node.h"
 #include "export.h"
 #include "ui/ui_feedlist.h"
@@ -69,15 +68,15 @@ static void fl_opml_handler_new(nodePtr np) {
 /* to be used internally only (not available for user!) */
 static void fl_opml_node_remove(nodePtr np) {
 
-	g_assert(FST_FEED == np->type);
-	feed_remove_from_cache((feedPtr)np->data, np->id);
+	if(FST_FEED == np->type)
+		feed_remove_from_cache((feedPtr)np->data, np->id);
 }
 
 static void fl_opml_handler_remove(nodePtr np) {
 	gchar		*filename;
 
-	/* step 1: delete all child feed cache files */
-	feedlist_foreach(np, FEEDLIST_FILTER_FEED, fl_opml_node_remove);
+	/* step 1: delete all feed cache files */
+	node_foreach_child(np, fl_opml_node_remove);
 
 	/* step 2: delete plugin instance OPML cache file */
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");

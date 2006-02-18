@@ -96,7 +96,7 @@ static void feedlist_unset_new_items(nodePtr np) {
 void feedlist_reset_new_item_count(void) {
 
 	if(0 != newCount) {
-		feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, feedlist_unset_new_items);
+		feedlist_foreach(feedlist_unset_new_items);
 		newCount = 0;
 		ui_tray_update();
 	}
@@ -109,42 +109,6 @@ void feedlist_add_node(nodePtr parent, nodePtr node, gint position) {
 	ui_node_update(node);
 }
 
-void feedlist_update_node(nodePtr node) {
-
-	if(download_is_online()) 
-		node_request_update(node, FEED_REQ_PRIORITY_HIGH);
-	else
-		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
-}
-
-static void feedlist_remove_node_(nodePtr np) { 
-	
-	debug_enter("feedlist_remove_node_");
-
-	ui_notification_remove_feed(np);	/* removes an existing notification for this feed */
-	ui_node_remove_node(np);
-
-	g_assert(NULL != np->parent);
-	np->parent->children = g_slist_remove(np->parent->children, np);
-	node_remove(np);
-
-	debug_exit("feedlist_remove_node_");
-}
-
-static void feedlist_remove_folder(nodePtr np) {
-
-	debug_enter("feedlist_remove_folder");
-
-	feedlist_foreach(np, FEEDLIST_FILTER_CHILDREN | FEEDLIST_FILTER_ANY, feedlist_remove_node_);
-	ui_node_remove_node(np);
-
-	g_assert(NULL != np->parent);
-	np->parent->children = g_slist_remove(np->parent->children, np);
-	node_remove(np);	
-
-	debug_exit("feedlist_remove_folder");
-}
-
 void feedlist_remove_node(nodePtr np) {
 
 	debug_enter("feedlist_remove_node");
@@ -155,27 +119,24 @@ void feedlist_remove_node(nodePtr np) {
 		ui_feedlist_select(NULL);
 	}
 
-	if(FST_FOLDER != np->type)
-		feedlist_remove_node_(np);
-	else
-		feedlist_remove_folder(np);
+	node_remove(np);
 
 	debug_exit("feedlist_remove_node");
 }
 
 /* This callback is used to compute the itemset of folder nodes */
-static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
+static void feedlist_merge_itemset_cb(nodePtr node, gpointer userdata) {
 	itemSetPtr	sp = (itemSetPtr)userdata;
 
-	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(np));
+	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(node));
 
-	switch(np->type) {
+	switch(node->type) {
 		case FST_FOLDER:
-			return; /* a sub folder has no own itemset to add */
+			node_foreach_child_data(node, feedlist_merge_itemset_cb, userdata);
 			break;
 		case FST_FEED:
 		case FST_PLUGIN:
-			node_load(np);
+			node_load(node);
 			break;
 		case FST_VFOLDER:
 			/* Do not merge vfolders because this might
@@ -191,28 +152,28 @@ static void feedlist_merge_itemset_cb(nodePtr np, gpointer userdata) {
 	debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(sp->items));
 	/* Don't use a direct g_list_concat() here it will freeze the program! (Lars) */
 	// FIXME: is this a memleak?
-	sp->items = g_list_concat(sp->items, g_list_copy(np->itemSet->items));
+	sp->items = g_list_concat(sp->items, g_list_copy(node->itemSet->items));
 	debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(sp->items));
 }
 
-void feedlist_load_node(nodePtr np) {
+void feedlist_load_node(nodePtr node) {
 
-	if(FST_FOLDER == np->type) {
-		g_assert(NULL != np->itemSet);
-		feedlist_foreach_data(np, FEEDLIST_FILTER_FEED, feedlist_merge_itemset_cb, (gpointer)np->itemSet);
+	if(FST_FOLDER == node->type) {
+		g_assert(NULL != node->itemSet);
+		node_foreach_child_data(node, feedlist_merge_itemset_cb, (gpointer)node->itemSet);
 	} else {
-		node_load(np);
+		node_load(node);
 	}
 }
 
-void feedlist_unload_node(nodePtr np) {
+void feedlist_unload_node(nodePtr node) {
 
-	if(FST_FOLDER == np->type) {
-		g_list_free(np->itemSet->items);
-		np->itemSet->items = NULL;
-		feedlist_foreach(np, FEEDLIST_FILTER_FEED, node_unload);
+	if(FST_FOLDER == node->type) {
+		g_list_free(node->itemSet->items);
+		node->itemSet->items = NULL;
+		node_foreach_child(node, node_unload);
 	} else {
-		node_unload(np);
+		node_unload(node);
 	}
 }
 
@@ -221,7 +182,7 @@ static gboolean feedlist_auto_update(void *data) {
 	debug_enter("feedlist_auto_update");
 
 	if(download_is_online())
-		feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, (gpointer)node_request_auto_update);
+		feedlist_foreach(node_request_auto_update);
 	else
 		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
 	
@@ -304,14 +265,16 @@ nodePtr feedlist_find_unread_feed(nodePtr folder) {
 	scanState = UNREAD_SCAN_INIT;
 	return feedlist_unread_scan(folder);
 }
-
+void debug_node(nodePtr np) {
+	g_print("fl_foreach:%s\n", np->title);
+}
 /* selection handling */
 
 void feedlist_selection_changed(nodePtr np) {
 	nodePtr	displayed_node;
 
 	debug_enter("feedlist_selection_changed");
-
+feedlist_foreach(debug_node);
 	debug1(DEBUG_GUI, "new selected node: %s", (NULL == np)?"none":node_get_title(np));
 	if(np != selectedNode) {
 		displayed_node = itemlist_get_displayed_node();
@@ -346,19 +309,25 @@ void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	nodePtr np = (nodePtr)callback_data;
+	nodePtr node = (nodePtr)callback_data;
 
-	if(np == NULL) {
+	if(!node) {
 		ui_show_error_box(_("You have to select a feed entry"));
 		return;
 	}
 
-	feedlist_foreach(np, FEEDLIST_FILTER_FEED, feedlist_update_node);
+	if(download_is_online()) 
+		node_request_update(node, FEED_REQ_PRIORITY_HIGH);
+	else
+		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
 
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
-	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, feedlist_update_node);
+	if(download_is_online()) 
+		node_request_update(feedlist_get_root(), FEED_REQ_PRIORITY_HIGH);
+	else
+		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
 
 void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
@@ -374,32 +343,15 @@ void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
 }
 
-static void feedlist_mark_all_read(nodePtr np) {
-
-	if(0 == np->unreadCount)
-		return;
-
-	node_load(np);
-	itemlist_mark_all_read(np->itemSet);
-	ui_node_update(np);
-	node_unload(np);
-}
-
 void on_popup_allunread_selected(void) {
 	
-	if(NULL != selectedNode) {
-		if(FST_FOLDER == selectedNode->type) {
-			/* if we have selected a folder we mark all item of all feeds as read */
-			feedlist_foreach(selectedNode, FEEDLIST_FILTER_FEED, (nodeActionFunc)feedlist_mark_all_read);
-		} else {
-			feedlist_mark_all_read(selectedNode);
-		}
-	}
+	if(selectedNode)
+		node_mark_all_read(selectedNode);
 }
 
 void on_popup_allfeedsunread_selected(void) {
 
-	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, feedlist_mark_all_read);
+	node_mark_all_read(feedlist_get_root());
 }
 
 void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -414,11 +366,11 @@ void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *w
 
 static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
-	/* step 1: request each feed list plugin to save its state */
-	feedlist_foreach(NULL, FEEDLIST_FILTER_PLUGIN, node_save);
+	/* step 1: request each node to save its state */
+	feedlist_foreach(node_save);
 
-	/* step 2: request saving for the root plugin and thereby
-	   saving the feed list structure */
+	/* step 2: request saving for the root node and thereby
+	   forcing the root plugin to save the feed list structure */
 	FL_PLUGIN(rootNode)->node_save(rootNode);
 	
 	feedlist_save_timer = 0;
@@ -451,7 +403,6 @@ static void feedlist_initial_load(nodePtr np) {
 		vfolder_check_node(np);		/* copy items to matching vfolders */
 		node_unload(np);
 	}
-
 }
 
 static void feedlist_initial_update(nodePtr np) {
@@ -478,18 +429,18 @@ void feedlist_init(void) {
 
 	/* 3. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */
-	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, feedlist_initial_load);
-	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, ui_node_update);
+	feedlist_foreach(feedlist_initial_load);
+	feedlist_foreach(ui_node_update);
 
 	/* 4. Check if feeds do need updating. */
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
-			feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, (gpointer)feedlist_initial_update);
+			feedlist_foreach(feedlist_initial_update);
 			break;
 		case 2:
 			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
-			feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, (gpointer)feed_reset_update_counter);
+			feedlist_foreach(feed_reset_update_counter);
 			break;
 		default:
 			debug0(DEBUG_UPDATE, "initial update: using auto update");
@@ -502,55 +453,25 @@ void feedlist_init(void) {
 	debug_exit("feedlist_init");
 }
 
-static gboolean feedlist_check_apply(nodePtr node, gint filter) {
-	gboolean	apply;
-
-	apply = (filter & FEEDLIST_FILTER_CHILDREN) ||
-		((filter & FEEDLIST_FILTER_FEED) && (FST_FEED == node->type)) ||
-		((filter & FEEDLIST_FILTER_FEED) && (FST_PLUGIN == node->type)) ||
-		((filter & FEEDLIST_FILTER_FEED) && (FST_VFOLDER == node->type)) ||
-		((filter & FEEDLIST_FILTER_FOLDER) && (FST_FOLDER == node->type));
-
-	return apply;
-}
-
-/* recursivly calls func for every node in the feed list */
-void feedlist_foreach_full(nodePtr node, gint filter, gpointer func, gint params, gpointer user_data) {
-	GSList		*children, *iter;
-	nodePtr		childNode;
+void feedlist_foreach_full(nodePtr node, gpointer func, gint params, gpointer user_data) {
 	
-	if(node) {
-		/* If filter matches apply the function to the node itself */
-		if(feedlist_check_apply(node, filter - (filter & FEEDLIST_FILTER_CHILDREN))) {
-			if(0 == params)
-				((nodeActionFunc)func)(node);
-			else 
-				((nodeActionDataFunc)func)(node, user_data);
-		}
-	} else {
-		/* No node given -> process the children of the root node */
-		node = rootNode;
-	}
+	if(!node)
+		node = feedlist_get_root();
 
-	/* We need to copy because *func might modify the list */
-	iter = children = g_slist_copy(node->children);
+	GSList *iter = node->children;
 	while(iter) {
-		childNode = (nodePtr)iter->data;
+		nodePtr childNode = (nodePtr)iter->data;
 		
-		/* If filter matches apply the method to the child */
-		if(TRUE == feedlist_check_apply(childNode, filter)) {
-			if(0 == params)
-				((nodeActionFunc)func)(childNode);
-			else 
-				((nodeActionDataFunc)func)(childNode, user_data);
-		}
+		/* Apply the method to the child */
+		if(0 == params)
+			((nodeActionFunc)func)(childNode);
+		else 
+			((nodeActionDataFunc)func)(childNode, user_data);
 			
-		/* if the iter has children and we are descending, iterate over the children. */
-		if(!(filter & FEEDLIST_FILTER_CHILDREN))
-			feedlist_foreach_data(childNode, filter, func, user_data);
+		/* if the iter has children descend */
+		if(childNode->children)
+			feedlist_foreach_full(childNode, func, params, user_data);
 
 		iter = g_slist_next(iter);
 	}
-	
-	g_slist_free(children);
 }

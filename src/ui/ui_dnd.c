@@ -46,7 +46,7 @@ static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
 
 void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
 
-	feedlist_foreach(NULL, FEEDLIST_FILTER_ANY, ui_node_update);
+	feedlist_foreach(ui_node_update);
 	ui_node_check_if_folder_is_empty(NULL);
 	feedlist_schedule_save();
 	ui_itemlist_prefocus();

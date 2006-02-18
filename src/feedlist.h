@@ -1,7 +1,7 @@
 /**
  * @file feedlist.h feedlist handling
  *
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,44 +89,30 @@ void ui_feed_process_update_result(struct request *request);
 
 /* feed list iterating interface */
 
-#define	FEEDLIST_FILTER_FEED	1	/** Only matches nodes where IS_FEED(node->type) */	
-#define	FEEDLIST_FILTER_FOLDER	2	/** Only matches nodes where IS_FOLDER(node->type) */
-#define	FEEDLIST_FILTER_PLUGIN	4	/** Only matches nodes where IS_PLUGIN(node->type) */
-#define	FEEDLIST_FILTER_ANY	7	/** Matches any node */
-#define	FEEDLIST_FILTER_CHILDREN	8	/** Matches immediate children of the given node */
-
 /**
- * Helper function to recursivly call node methods for all
- * elements of the given type in the feed list.
- *
- * @param ptr	node pointer whose children should be processed (NULL defaults to root)
- * @param filter specifies the types of nodes for which func should be called
- * @param func	the function to process all found elements
- * @param params Set to 1 if there will be user_data. Set to 0 for no user data
- * @param user_data specifies the second argument that func should be passed
+ * Do not call this method directly. Do use 
+ * feedlist_foreach() or feedlist_foreach_data()!
  */
-void feedlist_foreach_full(nodePtr ptr, gint filter, gpointer func, gint params, gpointer user_data);
+void feedlist_foreach_full(nodePtr node, gpointer func, gint params, gpointer user_data);
 
 /**
  * Helper function to recursivly call node methods for all
- * elements of the given type in the feed list.
+ * nodes in the feed list. Do never use this method with feed 
+ * list modifying node actions!
  *
- * @param ptr	node pointer whose children should be processed (NULL defaults to root)
- * @param filter specifies the types of nodes for which func should be called
  * @param func	the function to process all found elements
  */
-#define feedlist_foreach(ptr, filter, func) feedlist_foreach_full(ptr,filter,func,0,NULL)
+#define feedlist_foreach(func) feedlist_foreach_full(NULL, func, 0, NULL)
 
 /**
  * Helper function to recursivly call node methods for all
- * elements of the given type in the feed list.
+ * nodes in the feed list. Do never use this method with feed 
+ * list modifying node actions!
  *
- * @param ptr	node pointer whose children should be processed (NULL defaults to root)
- * @param filter specifies the types of nodes for which func should be called
  * @param func	the function to process all found elements
  * @param user_data specifies the second argument that func should be passed
  */
-#define feedlist_foreach_data(ptr, filter, func, user_data) feedlist_foreach_full(ptr,filter,func,1,user_data)
+#define feedlist_foreach_data(func, user_data) feedlist_foreach_full(NULL, func, 1, user_data)
 
 /* UI callbacks */
 

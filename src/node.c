@@ -112,34 +112,37 @@ void node_free(nodePtr np) {
 
 void node_load(nodePtr np) {
 
-	debug2(DEBUG_CACHE, "+ node_load (%s, ref count=%d)", node_get_title(np), np->loaded);
-	np->loaded++;
-
-	if(1 < np->loaded) {
-		debug1(DEBUG_CACHE, "no loading %s because it is already loaded", node_get_title(np));
-		return;
-	}
-
-	if(NULL == FL_PLUGIN(np)->node_load)
-		return;
-
 	switch(np->type) {
 		case FST_FEED:
 		case FST_PLUGIN:
+			debug2(DEBUG_CACHE, "+ node_load (%s, ref count=%d)", node_get_title(np), np->loaded);
+			np->loaded++;
+
+			if(1 < np->loaded) {
+				debug1(DEBUG_CACHE, "no loading %s because it is already loaded", node_get_title(np));
+				return;
+			}
+	
+			if(NULL == FL_PLUGIN(np)->node_load)
+				return;
+
 			/* np->itemSet will be NULL here, except when cache is disabled */
 			FL_PLUGIN(np)->node_load(np);
 			g_assert(NULL != np->itemSet);
+
+			debug2(DEBUG_CACHE, "- node_load (%s, new ref count=%d)", node_get_title(np), np->loaded);
 			break;
 		case FST_FOLDER:
+			/* recursively load folder childrens */
+			node_foreach_child(np, node_load);
+			break;
 		case FST_VFOLDER:
-			/* not loading vfolders and other types! */
+			/* not loading vfolders */
 			break;
 		default:
 			g_warning("internal error: unknown node type (%d)!", np->type);
 			break;
 	}
-
-	debug2(DEBUG_CACHE, "- node_load (%s, new ref count=%d)", node_get_title(np), np->loaded);
 }
 
 void node_save(nodePtr np) {
@@ -159,42 +162,43 @@ void node_save(nodePtr np) {
 
 void node_unload(nodePtr np) {
 
-	debug2(DEBUG_CACHE, "+ node_unload (%s, ref count=%d)", node_get_title(np), np->loaded);
+	switch(np->type) {
+		case FST_FEED:
+		case FST_PLUGIN:
+			debug2(DEBUG_CACHE, "+ node_unload (%s, ref count=%d)", node_get_title(np), np->loaded);
 
-	if(0 >= np->loaded) {
-		debug0(DEBUG_CACHE, "node is not loaded, nothing to do...");
-		return;
-	}
+			if(0 >= np->loaded) {
+				debug0(DEBUG_CACHE, "node is not loaded, nothing to do...");
+				return;
+			}
 
-	node_save(np);	/* save before unloading */
+			node_save(np);	/* save before unloading */
 
-	if(NULL == FL_PLUGIN(np)->node_unload)
-		return;
+			if(NULL == FL_PLUGIN(np)->node_unload)
+				return;
 
-	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-		if(1 == np->loaded) {
-			switch(np->type) {
-				case FST_FEED:
-				case FST_PLUGIN:
+			if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
+				if(1 == np->loaded) {
 					g_assert(NULL != np->itemSet);
 					FL_PLUGIN(np)->node_unload(np);
 					/* np->itemSet will be NULL here, except when cache is disabled */
-					break;
-				case FST_FOLDER:
-				case FST_VFOLDER:
-					/* not unloading vfolders and other types! */
-					break;
-				default:
-					g_warning("internal error: unknown node type!");
-					break;
+				} else {
+					debug1(DEBUG_CACHE, "not unloading %s because it is still used", node_get_title(np));
+				}
+				np->loaded--;
 			}
-		} else {
-			debug1(DEBUG_CACHE, "not unloading %s because it is still used", node_get_title(np));
-		}
-		np->loaded--;
+			debug2(DEBUG_CACHE, "- node_unload (%s, new ref count=%d)", node_get_title(np), np->loaded);
+			break;
+		case FST_FOLDER:
+			node_foreach_child(np, node_unload);
+			break;
+		case FST_VFOLDER:
+			/* not unloading vfolders */
+			break;
+		default:
+			g_warning("internal error: unknown node type!");
+			break;
 	}
-
-	debug2(DEBUG_CACHE, "- node_unload (%s, new ref count=%d)", node_get_title(np), np->loaded);
 }
 
 void node_update_counters(nodePtr np) {
@@ -287,18 +291,27 @@ gchar * node_render(nodePtr np) {
 
 void node_request_update(nodePtr np, guint flags) {
 
-	if(FST_VFOLDER == np->type)
-		return;
+	switch(np->type) {
+		case FST_VFOLDER:
+			/* Do nothing. */
+			break;
+		case FST_FOLDER:
+			node_foreach_child(np, node_request_update);
+			break;
+		case FST_PLUGIN:
+		case FST_FEED:
+			if(NULL == FL_PLUGIN(np)->node_update)
+				return;
 
-	if(NULL == FL_PLUGIN(np)->node_update)
-		return;
-
-	FL_PLUGIN(np)->node_update(np, flags);
+			FL_PLUGIN(np)->node_update(np, flags);
+			break;
+	}
 }
 
 void node_request_auto_update(nodePtr np) {
 
-	if(FST_VFOLDER == np->type)
+	if((FST_VFOLDER == np->type) ||
+	   (FST_FOLDER == np->type))
 		return;
 
 	if(NULL == FL_PLUGIN(np)->node_auto_update)
@@ -329,20 +342,46 @@ void node_schedule_update(nodePtr np, request_cb callback, guint flags) {
 	}
 }
 
+void node_update_favicon(nodePtr np) {
+
+	if(FST_FEED != np->type)
+		return;
+
+	favicon_download(np);
+}
+
 void node_remove(nodePtr np) {
 
 	debug_enter("node_remove");
 
 	g_assert(0 != (FL_PLUGIN(np)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
 
-	if(NULL != np->icon) {
-		g_object_unref(np->icon);
-		favicon_remove(np);
-	}
+	switch(np->type) {
+		case FST_FOLDER:
+			/* 1. remove all children */
+			node_foreach_child(np, node_remove);
+			/* 2. remove the folder */
+			FL_PLUGIN(np)->node_remove(np);
+			break;
+		case FST_VFOLDER:
+		case FST_FEED:
+		case FST_PLUGIN:
 
-	node_unload(np);
-	FL_PLUGIN(np)->node_remove(np);
-	node_free(np);
+			if(NULL != np->icon) {
+				g_object_unref(np->icon);
+				favicon_remove(np);
+			}
+
+			ui_notification_remove_feed(np);
+			ui_node_remove_node(np);
+
+			np->parent->children = g_slist_remove(np->parent->children, np);
+
+			node_unload(np);
+			FL_PLUGIN(np)->node_remove(np);
+			node_free(np);
+			break;
+	}
 
 	debug_exit("node_remove");
 }
@@ -501,6 +540,28 @@ guint node_get_unread_count(nodePtr np) {
 	return np->unreadCount; 
 }
 
+void node_mark_all_read(nodePtr np) {
+
+	if(0 == np->unreadCount)
+		return;
+
+	switch(np->type) {
+		case FST_PLUGIN:
+		case FST_FEED:
+			node_load(np);
+			itemlist_mark_all_read(np->itemSet);
+			ui_node_update(np);
+			node_unload(np);
+			break;
+		case FST_FOLDER:
+			node_foreach_child(np, node_mark_all_read);
+			break;
+		case FST_VFOLDER:
+			/* Nothing to do */
+			break;
+	}
+}
+
 void node_set_id(nodePtr np, const gchar *id) {
 
 	g_free(np->id);
@@ -520,4 +581,29 @@ void node_set_two_pane_mode(nodePtr np, gboolean newMode) { np->twoPane = newMod
 
 gboolean node_get_two_pane_mode(nodePtr np) { return np->twoPane; }
 
+/* node children iterating interface */
+
+void node_foreach_child_full(nodePtr node, gpointer func, gint params, gpointer user_data) {
+	GSList		*children, *iter;
+	
+	g_assert(NULL != node);
+
+	/* We need to copy because *func might modify the list */
+	iter = children = g_slist_copy(node->children);
+	while(iter) {
+		nodePtr childNode = (nodePtr)iter->data;
+		
+		/* Apply the method to the child */
+		if(0 == params)
+			((nodeActionFunc)func)(childNode);
+		else 
+			((nodeActionDataFunc)func)(childNode, user_data);
+			
+		/* Never descend! */
+
+		iter = g_slist_next(iter);
+	}
+	
+	g_slist_free(children);
+}
 

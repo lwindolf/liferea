@@ -307,7 +307,7 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	feedlist_save();	/* should save feedlist and folder states */
 
 	/* should save all feeds still in memory */	
-	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, node_unload);
+	feedlist_foreach(node_unload);
 	
 	/* save pane proportions */
 	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {

@@ -1,8 +1,8 @@
 /**
  * @file ui_prefs.c program preferences
  *
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -664,18 +664,11 @@ void on_placement_radiobtn_clicked(GtkButton *button, gpointer user_data) {
 	setNumericConfValue(POPUP_PLACEMENT, GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number")));
 }
 
-static void updatefavicon_cb(nodePtr np) {
+static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data) {
 
-	favicon_download(np);
-}
-
-static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data)
-{
-
-	feedlist_foreach(NULL, FEEDLIST_FILTER_FEED, updatefavicon_cb);
+	feedlist_foreach(node_update_favicon);
 }
  
-
 static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean	enabled;
 	
