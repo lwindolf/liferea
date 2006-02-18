@@ -873,12 +873,14 @@ static GtkWidget *ui_mainwindow_create_menus(struct mainwindow *mw) {
 	ui_manager = gtk_ui_manager_new ();
 
 	mw->generalActions = gtk_action_group_new ("GeneralActions");
+	gtk_action_group_set_translation_domain (mw->generalActions, PACKAGE);
 	gtk_action_group_add_actions (mw->generalActions, ui_mainwindow_action_entries, G_N_ELEMENTS (ui_mainwindow_action_entries), mw);
 	gtk_action_group_add_toggle_actions (mw->generalActions, ui_mainwindow_action_toggle_entries, G_N_ELEMENTS (ui_mainwindow_action_toggle_entries), mw);
 	/*gtk_action_group_add_radio_actions (mw->generalActions, radio_entries, G_N_ELEMENTS (radio_entries), 0, radio_action_callback, user_data);*/
 	gtk_ui_manager_insert_action_group (ui_manager, mw->generalActions, 0);
 
 	mw->feedActions = gtk_action_group_new ("FeedActions");
+	gtk_action_group_set_translation_domain (mw->feedActions, PACKAGE);
 	gtk_action_group_add_actions (mw->feedActions, ui_mainwindow_feed_action_entries, G_N_ELEMENTS (ui_mainwindow_feed_action_entries), mw);
 	gtk_ui_manager_insert_action_group (ui_manager, mw->feedActions, 0);
 
