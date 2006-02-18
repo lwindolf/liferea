@@ -34,6 +34,7 @@
 #include "conf.h"
 #include "ui/ui_mainwindow.h"
 #include "net/downloadlib.h"
+#include "ui/ui_tray.h"
 
 /* must never be less than 2, because first thread works exclusivly on high prio requests */
 #define DEFAULT_UPDATE_THREAD_CONCURRENCY	4
@@ -294,11 +295,14 @@ void download_queue(struct request *new_request) {
 }
 
 void download_set_online(gboolean mode) {
-
-	if((online = mode)) {
-		g_mutex_lock(cond_mutex);
-		g_cond_signal(offline_cond);
-		g_mutex_unlock(cond_mutex);
+	if (online != mode) {
+		if((online = mode)) {
+			g_mutex_lock(cond_mutex);
+			g_cond_signal(offline_cond);
+			g_mutex_unlock(cond_mutex);
+		}
+		ui_mainwindow_online_status_changed(mode);
+		ui_tray_update();
 	}
 }
 

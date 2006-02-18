@@ -25,6 +25,7 @@
 #include "node.h"
 #include "feed.h"
 #include "vfolder.h"
+#include "common.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 

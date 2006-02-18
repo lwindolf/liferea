@@ -270,7 +270,7 @@ void ui_mainwindow_three_pane_mode_changed(gboolean threePane) {
 }
 
 void ui_mainwindow_set_toolbar_style(struct mainwindow *mw, const gchar *toolbar_style) {
-	printf("setting toolbar style to %s\n",toolbar_style);
+	
 	if(toolbar_style == NULL) /* default to icons */
 		gtk_toolbar_set_style(GTK_TOOLBAR(mw->toolbar), GTK_TOOLBAR_ICONS);
 	else if(!strcmp(toolbar_style, "text"))
@@ -382,7 +382,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	
 	ui_mainwindow_update_toolbar(mw);
 	ui_mainwindow_update_menubar();
-	ui_mainwindow_update_onlinebtn();
+	ui_mainwindow_online_status_changed(download_is_online());
 	
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
@@ -480,35 +480,31 @@ void ui_mainwindow_update_menubar(void) {
 		gtk_widget_show(mw_global_fixme->menubar);
 }
 
-void ui_mainwindow_update_onlinebtn(void) {
+void ui_mainwindow_online_status_changed(int online) {
 	GtkWidget	*widget;
-
-	g_return_if_fail(NULL != (widget = lookup_widget(mainwindow, "onlineimage")));
+	printf("changing mode to %d\n",online);
+	widget = lookup_widget(mainwindow, "onlineimage");
 	
-	if(download_is_online()) {
+	if(online) {
 		ui_mainwindow_set_status_bar(_("Liferea is now online"));
 		gtk_image_set_from_pixbuf(GTK_IMAGE(widget), icons[ICON_ONLINE]);
 	} else {
 		ui_mainwindow_set_status_bar(_("Liferea is now offline"));
 		gtk_image_set_from_pixbuf(GTK_IMAGE(widget), icons[ICON_OFFLINE]);
 	}
+	gtk_toggle_action_set_active(
+							 GTK_TOGGLE_ACTION(gtk_action_group_get_action(mw_global_fixme->generalActions,"ToggleOfflineMode")),
+							 !online);
 }
 
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	download_set_online(!download_is_online());
-	ui_mainwindow_update_onlinebtn();
-	ui_tray_update();
-
-	GTK_CHECK_MENU_ITEM(lookup_widget(mainwindow, "work_offline"))->active = !download_is_online();
 }
 
-void on_work_offline_activate(GtkToggleAction *menuitem, gpointer user_data) {
-
-	download_set_online(!download_is_online());
-	ui_mainwindow_update_onlinebtn();
-	ui_tray_update();
-	gtk_toggle_action_set_active(menuitem, !download_is_online());
+static void on_work_offline_activate(GtkToggleAction *menuitem, gpointer user_data) {
+	
+	download_set_online(!gtk_toggle_action_get_active(menuitem));
 }
 
 /* Set the main window status bar to the text given as 
