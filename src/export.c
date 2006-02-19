@@ -138,7 +138,7 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 				struct exportData data;
 				data.internal = internal;
 				data.cur = cur;
-				feedlist_foreach_data(append_node_tag, (gpointer)&data);
+				node_foreach_child_data(feedlist_get_root(), append_node_tag, (gpointer)&data);
 			}
 			
 			xmlDocSetRootElement(doc, opmlNode);		

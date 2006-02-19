@@ -177,9 +177,9 @@ static void fl_default_node_save(nodePtr np) {
 		debug0(DEBUG_CACHE, "saving root node");
 		fl_default_save_root();
 		return;
+	} else {
+		fl_common_node_save(np);
 	}
-
-	fl_common_node_save(np);
 }
 
 /* DBUS support for new subscriptions */

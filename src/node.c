@@ -147,7 +147,9 @@ void node_load(nodePtr np) {
 
 void node_save(nodePtr np) {
 
-	g_assert(0 < np->loaded);
+	if(0 == np->loaded)
+		return;
+
 	g_assert(NULL != np->itemSet);
 
 	if(FALSE == np->needsCacheSave)

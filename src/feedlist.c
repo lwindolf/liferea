@@ -328,7 +328,7 @@ void on_popup_allread_selected(void) {
 }
 
 void on_popup_allfeedsread_selected(void) {
-g_print("all feeds read selected\n");
+
 	node_foreach_child(feedlist_get_root(), node_mark_all_read);
 }
 
