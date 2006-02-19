@@ -330,19 +330,24 @@ void node_schedule_update(nodePtr np, request_cb callback, guint flags) {
 
 	debug1(DEBUG_CONF, "Scheduling %s to be updated", node_get_title(np));
 
-	/* can only be called for feeds, doesn't
-	   make sense for other types */
-	g_assert(FST_FEED == np->type);
+	switch(np->type) {
+		case FST_FEED:
+			/* can only be called for feeds, doesn't
+			   make sense for other types */
 
-	if(feed_can_be_updated(fp)) {
-		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(np));
-		request = download_request_new();
-		request->user_data = np;
-		request->callback = ui_feed_process_update_result;
-		feed_prepare_request(fp, request, flags);
-		download_queue(request);
-	} else {
-		debug0(DEBUG_CONF, "Update cancelled");
+			if(feed_can_be_updated(fp)) {
+				ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(np));
+				request = download_request_new();
+				request->user_data = np;
+				request->callback = ui_feed_process_update_result;
+				feed_prepare_request(fp, request, flags);
+				download_queue(request);
+			} else {
+				debug0(DEBUG_CONF, "Update cancelled");
+			}
+			break;
+		default:
+			break;
 	}
 }
 

@@ -303,7 +303,7 @@ void on_popup_refresh_selected(gpointer callback_data, guint callback_action, Gt
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
 	if(download_is_online()) 
-		node_request_update(feedlist_get_root(), FEED_REQ_PRIORITY_HIGH);
+		feedlist_foreach_data(node_schedule_update, (gpointer)FEED_REQ_PRIORITY_HIGH);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
