@@ -98,13 +98,13 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		xmlChar *src = xmlGetNsProp(cur, BAD_CAST"src", NULL);
 		
 		if (src == NULL) {
-			ret = g_strdup(_("Liferea is unable to display this item's contents."));
+			ret = g_strdup(_("Liferea is unable to display this item's content."));
 		} else {
 			gchar *baseURL = utf8_fix(xmlNodeGetBase(cur->doc, cur));
 			gchar *url;
 			
 			url = common_build_url(src, baseURL);
-			ret = g_strdup_printf(_("<p><a href=\"%s\">View this item's contents.</a></p>"), url);
+			ret = g_strdup_printf(_("<p><a href=\"%s\">View this item's content.</a></p>"), url);
 			
 			g_free(url);
 			xmlFree(baseURL);
@@ -139,13 +139,13 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 			}
 			if (cur == NULL) {
 				g_free(type);
-				return g_strdup(_("This item's contents is invalid."));
+				return g_strdup(_("This item's content is invalid."));
 			}
 			baseURL = xmlNodeGetBase(cur->doc, cur);
 		} else {
 			/* Unknown type... lets bail? */
 			g_free(type);
-			return g_strdup(_("This item's contents is invalid."));
+			return g_strdup(_("This item's content is invalid."));
 		}
 			
 		if (includeChildTags)
@@ -217,7 +217,7 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 		}
 		
 		if (cur == NULL)
-			ret = g_strdup(_("This item's contents is invalid."));
+			ret = g_strdup(_("This item's content is invalid."));
 		else
 			ret = utf8_fix(extractHTMLNode(cur, TRUE));
 		
