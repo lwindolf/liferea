@@ -40,7 +40,8 @@ enum feed_request_flags {
 	
 	FEED_REQ_PRIORITY_HIGH = 16,	/**< set to signal that this is an important user triggered request */
 	FEED_REQ_DOWNLOAD_FAVICON = 32, /**< set to make the favicon be updated after the feed is downloaded */
-	FEED_REQ_AUTH_DIALOG = 64	/**< set to make an auth request dialog to be created after 401 errors */
+	FEED_REQ_AUTH_DIALOG = 64,	/**< set to make an auth request dialog to be created after 401 errors */
+	FEED_REQ_ALLOW_RETRIES = 128	/**< set to allow fetch retries on network errors */
 };
 
 struct feedHandler;
@@ -193,6 +194,13 @@ void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id);
  * @param id	the cache id of this feed
  */
 void feed_remove_from_cache(feedPtr fp, const gchar *id);
+
+/**
+ * Cancel feed request waiting to be retried, if any.
+ *
+ * @param fp	the feed
+ */
+void feed_cancel_retry(feedPtr fp);
 
 /**
  * Checks wether updating a feed makes sense.

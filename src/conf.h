@@ -53,6 +53,7 @@
 #define UPDATE_THREAD_CONCURRENCY	"/apps/liferea/update-thread-concurrency"
 #define KEEP_FEEDS_IN_MEMORY		"/apps/liferea/keep-feeds-in-memory"
 #define DISABLE_SUBSCRIPTION_PIPE	"/apps/liferea/disable-subscription-pipe"
+#define ENABLE_FETCH_RETRIES		"/apps/liferea/enable-fetch-retries"
 
 /* folder handling settings */
 #define FOLDER_DISPLAY_MODE		"/apps/liferea/folder-display-mode"

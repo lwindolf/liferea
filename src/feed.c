@@ -623,6 +623,11 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 	return sp;
 }
 
+void feed_cancel_retry(feedPtr fp) {
+	if((fp->request != NULL) && download_cancel_retry(fp->request))
+		fp->request = NULL;
+}
+
 gboolean feed_can_be_updated(feedPtr fp) {
 
 	if(fp->request != NULL) {
@@ -661,6 +666,7 @@ void feed_prepare_request(feedPtr fp, struct request *request, guint flags) {
 		request->etag = g_strdup(feed_get_etag(fp));
 	request->flags = flags;
 	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
+	request->allowRetries = (flags & FEED_REQ_ALLOW_RETRIES)? 1 : 0;
 	if(feed_get_filter(fp) != NULL)
 		request->filtercmd = g_strdup(feed_get_filter(fp));
 }

@@ -25,6 +25,15 @@
 #include <time.h>
 #include <glib.h>
 
+/* Maximum number of retries that can be done */
+#define REQ_MAX_NUMBER_OF_RETRIES 3
+/* Delay (in seconds) to wait before the first retry.
+ * It will then increase for the later ones. */
+#define REQ_MIN_DELAY_FOR_RETRY 30
+/* Maximum delay (in seconds) beetween two retries. Useful to avoid 
+ * stupidly long waits if REQ_MAX_NUMBER_OF_RETRIES is high. */
+#define REQ_MAX_DELAY_FOR_RETRY 500
+
 typedef enum {
 	NET_ERR_OK = 0,
 	/* Init errors */
@@ -92,6 +101,8 @@ struct request {
 	gchar *contentType;	/**< Content type of received data */
 	 
 	gchar *filterErrors;	/**< Error messages from filter execution */
+	gboolean allowRetries;	/**< Allow download retries on network errors */
+	gushort retriesCount;	/**< Count how many retries have been done */
 };
 
 /** Initialises the download subsystem, including its thread(s). */
@@ -145,4 +156,14 @@ void download_queue(struct request *new_request);
  */
 
 void download_process(struct request *request);
+
+/**
+ * Cancel a request if it is waiting to be retried.
+ * In case of success, the request is freed when its retry timeout expires,
+ * so it is safe to just forget about it.
+ * 
+ * @param request	pointer to a request structure
+ * @return	TRUE if successfully cancelled the request
+ */
+gboolean download_cancel_retry(struct request *request);
 #endif

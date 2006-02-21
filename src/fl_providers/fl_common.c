@@ -81,6 +81,7 @@ void fl_common_node_auto_update(nodePtr np) {
 	feedPtr		fp = (feedPtr)np->data;
 	GTimeVal	now;
 	gint		interval;
+	guint		flags = 0;
 
 	debug_enter("fl_common_node_auto_update");
 
@@ -96,9 +97,12 @@ void fl_common_node_auto_update(nodePtr np) {
 	if(-1 == interval)
 		interval = getNumericConfValue(DEFAULT_UPDATE_INTERVAL);
 	
+	if(getBooleanConfValue(ENABLE_FETCH_RETRIES))
+		flags |= FEED_REQ_ALLOW_RETRIES;
+
 	if(interval > 0)
 		if(fp->lastPoll.tv_sec + interval*60 <= now.tv_sec)
-			node_schedule_update(np, ui_feed_process_update_result, 0);
+			node_schedule_update(np, ui_feed_process_update_result, flags);
 
 	/* And check for favicon updating */
 	if(fp->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)

@@ -9,6 +9,11 @@
 	  (Scott Harmon)
 	* Added CSS style for <del> and <ins> HTML tags.
 	  (Jose Maria Mateos)
+	* Patch to realize download retries to avoid the 
+	  effects of intermediate disconnection. Each
+	  download is retried up to 3 times after waiting 30s
+	  Retries are only executed after network failures
+	  not after HTTP errors. (Thomas de Grenier de Latour)
 
 2005-12-23  Lars Lindner  <lars.lindner@gmail.com>
 

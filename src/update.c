@@ -52,6 +52,8 @@ static gboolean	online = TRUE;
 /* prototypes */
 static void *download_thread_main(void *data);
 static gboolean download_dequeuer(gpointer user_data);
+gboolean download_requeue(gpointer data);
+gboolean download_retry(struct request * request);
 
 /* filter idea (and some of the code) was taken from Snownews */
 static char* filter(gchar *cmd, gchar *data, gchar **errorOutput, size_t *size) {
@@ -318,12 +320,74 @@ static gboolean download_dequeuer(gpointer user_data) {
 
 		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
-		} else {
+			download_request_free(request);
+		} else if (!(download_retry(request))) {
 			(request->callback)(request);
+			download_request_free(request);
 		}
-		download_request_free(request);
 	}
 	return TRUE;
 
 }
 
+/* Wrapper around download_requeue, for convenient call from g_timeout */
+gboolean download_requeue(gpointer data) {
+	struct request* request = (struct request*)data;
+	if (request->callback == NULL) {
+		debug2(DEBUG_UPDATE, "Freeing request of cancelled retry #%d for \"%s\"", request->retriesCount, request->source);
+		download_request_free(request);
+	} else {
+		download_queue(request);
+	}
+	return FALSE;
+}
+
+/* Check if a request should be retried.
+ * If yes, schedule a retry and returns TRUE. 
+ * Else, returns FALSE. */
+gboolean download_retry(struct request *request) {
+	guint retryDelay;
+	gushort i;
+
+	if((!request->allowRetries) || (REQ_MAX_NUMBER_OF_RETRIES <= request->retriesCount))
+		return FALSE;
+	switch(request->returncode) {
+		case NET_ERR_UNKNOWN:
+		case NET_ERR_CONN_FAILED:
+		case NET_ERR_SOCK_ERR:
+		case NET_ERR_HOST_NOT_FOUND:
+		case NET_ERR_TIMEOUT:
+			break; /* Ok, there will be a retry. */
+		default: return FALSE;
+	}
+
+	/* There should have been no received data, hence nothing to free. */
+	g_assert(request->data == NULL);
+	g_assert(request->contentType == NULL);
+	/* Note: in case of permanent HTTP redirection leading to a network
+	 * error, retries will be done on the redirected request->source. */
+
+	/* Prepare for a retry: increase counter and calculate delay */
+	retryDelay = REQ_MIN_DELAY_FOR_RETRY;
+	for(i = 0; i < request->retriesCount; i++)
+		retryDelay *= 3;
+	if(retryDelay > REQ_MAX_DELAY_FOR_RETRY)
+		retryDelay = REQ_MAX_DELAY_FOR_RETRY;
+
+	/* Requeue the request after the waiting delay */
+	g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE, 1000 * retryDelay, download_requeue, request, NULL);
+	request->retriesCount++;
+	ui_mainwindow_set_status_bar(_("Could not download \"%s\". Will retry in %d seconds."), request->source, retryDelay);
+
+	return TRUE;
+}
+
+gboolean download_cancel_retry(struct request *request) {
+	if (0 < request->retriesCount) {
+		request->callback = NULL;
+		debug2(DEBUG_UPDATE, "Cancelled retry #%d for request \"%s\". It should be freed soon.", request->retriesCount, request->source);
+		return TRUE;
+	}
+	debug1(DEBUG_UPDATE, "Could not cancel request \"%s\", it's not an awaiting retry.", request->source);
+	return FALSE;
+}

@@ -335,6 +335,7 @@ void node_schedule_update(nodePtr np, request_cb callback, guint flags) {
 			/* can only be called for feeds, doesn't
 			   make sense for other types */
 
+			feed_cancel_retry(fp);
 			if(feed_can_be_updated(fp)) {
 				ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(np));
 				request = download_request_new();
