@@ -1,7 +1,7 @@
 /**
  * @file favicon.c Liferea favicon handling
  * 
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,10 +47,6 @@ void favicon_load(nodePtr np) {
 	gchar		*filename;
 	GdkPixbuf	*pixbuf;
 	GError 		*error = NULL;
-
-	/* only load favicons for feeds */
-	if(FST_FEED != np->type)
-		return;
 
 	debug_enter("favicon_load");
 	
@@ -279,9 +275,6 @@ static void favicon_download_html(nodePtr np, int phase) {
 
 void favicon_download(nodePtr np) {
 	
-	if(FST_FEED != np->type)
-		return;
-		
 	debug_enter("favicon_download");
 	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n",
 	                     node_get_title(np));
