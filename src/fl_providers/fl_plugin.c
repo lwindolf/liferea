@@ -78,8 +78,7 @@ void fl_plugin_load(pluginInfo *pi, GModule *handle) {
 
 	/* check if all mandatory symbols are provided */
 	if(!((NULL != fpi->plugin_init) &&
-	     (NULL != fpi->plugin_deinit) &&
-	     (NULL != fpi->node_render)))
+	     (NULL != fpi->plugin_deinit)))
 		return;
 
 	debug1(DEBUG_PLUGINS, "found feed list plugin: %s", fpi->name);
@@ -115,7 +114,7 @@ void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
 					np->type = FST_PLUGIN;
 					np->available = TRUE;
 					np->handler = NULL;	/* not handled by parent plugin */
-					fpi->node_load(np);
+					fpi->handler_import(np);
 					found = TRUE;
 				}
 				iter = g_slist_next(iter);

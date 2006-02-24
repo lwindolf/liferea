@@ -1,7 +1,7 @@
 /**
  * @file fl_plugin.h generic feed list provider interface
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,21 +89,19 @@ struct flPluginInfo_ {
 	 */
 	void 		(*handler_delete)(nodePtr np);
 
-	/** callback for node loading (optional) */
-	void		(*node_load)(nodePtr np);
-	/** callback for node unloading (optional) */
-	void 		(*node_unload)(nodePtr np);
+	/**
+	 * This mandatory method is called when the plugin is to
+	 * create the feed list subtree attached to the plugin
+	 * node.
+	 */
+	void 		(*handler_import)(nodePtr np);
 
-	/** callback for save requests (optional) */
-	void		(*node_save)(nodePtr ptr);
-	/** callback for node rendering */
-	gchar *		(*node_render)(nodePtr np);
-
-	/** callback for node auto-updating (optional) */
-	void 		(*node_auto_update)(nodePtr np);
-
-	/** user interaction callback for node updating (optional) */
-	void 		(*node_update)(nodePtr np, guint flags);
+	/**
+	 * This mandatory method is called when the plugin is to
+	 * save it's feed list subtree (if necessary at all). This
+	 * is not a request to save the data of the attached nodes!
+	 */
+	void 		(*handler_export)(nodePtr np);
 
 	/**
 	 * This OPTIONAL callback is used for handling node
@@ -126,6 +124,7 @@ typedef struct flNodeHandler_ flNodeHandler;
 /** feed list node handler (instance of a feed list plugin) */
 struct flNodeHandler_ {
 	flPluginInfo	*plugin;	/**< feed list plugin of this handler instance */
+	nodeTypeInfo	*type;		/**< node type implementation hook */
 	nodePtr		root;		/**< root node of this plugin instance */
 };
 

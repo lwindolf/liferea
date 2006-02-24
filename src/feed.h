@@ -273,8 +273,6 @@ void feed_set_default_update_interval(feedPtr fp, gint interval);
 gint feed_get_update_interval(feedPtr fp);
 void feed_set_update_interval(feedPtr fp, gint interval);
 
-void feed_reset_update_counter(feedPtr fp);
-
 gboolean feed_get_available(feedPtr fp);
 void feed_set_available(feedPtr fp, gboolean available);
 
@@ -342,5 +340,8 @@ feedHandlerPtr feed_get_fhp(feedPtr fp);
  * @param fp	the feed
  */
 gchar *feed_render(feedPtr fp);
+
+/* implementation of the node type interface */
+nodeTypeInfo * feed_get_node_type_info(void);
 
 #endif

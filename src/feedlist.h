@@ -87,29 +87,23 @@ void ui_feed_process_update_result(struct request *request);
 /* feed list iterating interface */
 
 /**
- * Do not call this method directly. Do use 
- * feedlist_foreach() or feedlist_foreach_data()!
- */
-void feedlist_foreach_full(nodePtr node, gpointer func, gint params, gpointer user_data);
-
-/**
  * Helper function to recursivly call node methods for all
- * nodes in the feed list. Do never use this method with feed 
- * list modifying node actions!
+ * nodes in the feed list. This method is just a wrapper for
+ * node_foreach_child().
  *
  * @param func	the function to process all found elements
  */
-#define feedlist_foreach(func) feedlist_foreach_full(NULL, func, 0, NULL)
+#define feedlist_foreach(func) node_foreach_child(feedlist_get_root(), func)
 
 /**
  * Helper function to recursivly call node methods for all
- * nodes in the feed list. Do never use this method with feed 
- * list modifying node actions!
+ * nodes in the feed list. This method is just a wrapper for
+ * node_foreach_child_data().
  *
  * @param func	the function to process all found elements
  * @param user_data specifies the second argument that func should be passed
  */
-#define feedlist_foreach_data(func, user_data) feedlist_foreach_full(NULL, func, 1, user_data)
+#define feedlist_foreach_data(func, user_data) node_foreach_child_data(feedlist_get_root(), func, user_data)
 
 /* UI callbacks */
 

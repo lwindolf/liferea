@@ -339,7 +339,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* Time format */
 		tmp = getNumericConfValue(TIME_FORMAT_MODE);
 		if((tmp > 3) || (tmp < 1)) 
-			tmp = 1;	/* correct configuration if necessary */
+			tmp = 2;	/* correct configuration if necessary (default is date+time) */
 
 		entry = lookup_widget(prefdialog, "timeformatentry");
 		gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(TIME_FORMAT));

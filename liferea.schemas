@@ -95,6 +95,37 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/liferea/default-update-interval</key>
+      <applyto>/apps/liferea/default-update-interval</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Default interval for fetching feeds.</short>
+        <long>
+	   This value specifies how often Liferea tries to update
+	   feeds. The value is given in minutes. When setting the
+	   interval always consider the traffic it produces. Setting
+	   a value less than 15min almost never makes sense.
+	</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/disable-javascript</key>
+      <applyto>/apps/liferea/disable-javascript</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Allows to disable Javascript when using Mozilla for rendering.</short>
+        <long>
+	   Allows to disable Javascript when using Mozilla for rendering.
+	   Should not be necessary when using GtkHTML2 which does not
+	   support Javascript.
+        </long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/liferea/disable-menubar</key>
       <applyto>/apps/liferea/disable-menubar</applyto>
       <owner>liferea</owner>
@@ -156,19 +187,6 @@ To change the gconftool target use the - -config-source=blah option to gconftool
         <short>Keep all items loaded in memory</short>
         <long>Keep all items loaded in memory. This increases speed
 	   and memory usage of Liferea.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/liferea/disable-subscription-pipe</key>
-      <applyto>/apps/liferea/disable-subscription-pipe</applyto>
-      <owner>liferea</owner>
-      <type>bool</type>
-      <locale name="C">
-        <default>false</default>
-        <short>Disable the new subscriptions pipe</short>
-        <long>External programs can use a pipe in ~/.liferea to
-	   add subscriptions to the feed list. This option
-	   allows to prevent this.</long>
       </locale>
     </schema>
     <schema>
@@ -354,6 +372,20 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/liferea/updateonstartup</key>
+      <applyto>/apps/liferea/updateonstartup</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Force all feeds to be updated on startup.</short>
+        <long>
+	   This option forces all feeds to be updated on startup.
+	   Normally only out-dated feeds are updated.
+	</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/liferea/update-thread-concurrency</key>
       <applyto>/apps/liferea/update-thread-concurrency</applyto>
       <owner>liferea</owner>
@@ -361,10 +393,85 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <locale name="C">
         <default>2</default>
         <short>Number of update threads used in downloading</short>
-        <long>Numer of threads used to download feeds and web objects
+        <long>Number of threads used to download feeds and web objects
 	   in Liferea. An additional thread is created that only
 	   services 'interactive' requests (for example when a user
 	   manually selects a feed to update).</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/popup-placement</key>
+      <applyto>/apps/liferea/popup-placement</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Placement of the mini popup window</short>
+        <long>
+	   The placement of the mini popup window that is opened
+	   to notify the user of new items. The popup window is
+	   positioned at one of the desktop borders (1 = upper left,
+	   2 = upper right, 3 = lower right, 4 = lower left).
+	</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/folder-display-mode</key>
+      <applyto>/apps/liferea/folder-display-mode</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Determine if folders show all child content.</short>
+        <long>
+	   If set to 0 no items are displayed when selecting a folder.
+	   If set to 1 all items of all childs are displayed when 
+	   selecting a folder.
+	</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/folder-display-hide-read</key>
+      <applyto>/apps/liferea/folder-display-hide-read</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <locale name="C">
+        <default>false</default>
+        <short>Filter read items when displaying folders.</short>
+        <long>
+	   If this option is enabled and folder-display-mode is 
+	   not 0 when clicking a folder only the unread items 
+	   of all childs will be displayed.
+	</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/enclosure-download-tool</key>
+      <applyto>/apps/liferea/enclosure-download-tool</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <locale name="C">
+        <default>0</default>
+        <short>Which tool to download enclosures.</short>
+        <long>
+	   This options determines which download tool Liferea
+	   uses to download enclosures (0 = wget, 1 = curl).
+	</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/enclosure-download-path</key>
+      <applyto>/apps/liferea/enclosure-download-path</applyto>
+      <owner>liferea</owner>
+      <type>string</type>
+      <locale name="C">
+        <default></default>
+        <short>The path where to store downloaded enclosures.</short>
+        <long>
+	   This options determines where Liferea stores downloaded
+	   enclosures. If not specified Liferea will uses the users
+	   home directory.
+	</long>
       </locale>
     </schema>
   </schemalist>

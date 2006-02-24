@@ -1,7 +1,7 @@
 /**
  * @file vfolder.h VFolder functionality
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,5 +154,8 @@ void	vfolder_remove_item(itemPtr ip);
  * @param vp	vfolder to free
  */
 void	vfolder_free(vfolderPtr vp);
+
+/* implementation of the node type interface */
+struct nodeTypeInfo * vfolder_get_node_type_info(void);
 
 #endif

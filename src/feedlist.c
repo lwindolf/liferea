@@ -286,6 +286,11 @@ void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
 	ui_feedlist_delete_prompt(selectedNode);
 }
 
+static void feedlist_request_update(nodePtr node) {
+
+	NODE(node)->request_update(node, FEED_REQ_PRIORITY_HIGH);
+}
+
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	nodePtr node = (nodePtr)callback_data;
 
@@ -295,7 +300,7 @@ void on_popup_refresh_selected(gpointer callback_data, guint callback_action, Gt
 	}
 
 	if(download_is_online()) 
-		node_request_update(node, FEED_REQ_PRIORITY_HIGH);
+		feedlist_request_update(node);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
@@ -303,7 +308,7 @@ void on_popup_refresh_selected(gpointer callback_data, guint callback_action, Gt
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
 	if(download_is_online()) 
-		feedlist_foreach_data(node_schedule_update, (gpointer)FEED_REQ_PRIORITY_HIGH);
+		feedlist_foreach(feedlist_request_update);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
@@ -342,10 +347,15 @@ void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *w
 	ui_feedlist_delete_prompt((nodePtr)callback_data);
 }
 
+static void feedlist_node_save(nodePtr node) {
+
+	NODE(node)->save(node);
+}
+
 static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
 	/* step 1: request each node to save its state */
-	feedlist_foreach(node_save);
+	feedlist_foreach(feedlist_node_save);
 
 	/* step 2: request saving for the root node and thereby
 	   forcing the root plugin to save the feed list structure */
@@ -355,6 +365,7 @@ static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 	return FALSE;
 }
 
+/* Schedules a delayed save */
 void feedlist_schedule_save(void) {
 
 	if(!feedlistLoading && !feedlist_save_timer) {
@@ -363,93 +374,74 @@ void feedlist_schedule_save(void) {
 	}
 }
 
+/* Executes immediate save */
 void feedlist_save(void) {
 
 	feedlist_schedule_save_cb(NULL);
 }
 
-/**
- * Used to process feeds directly after feed list loading.
- * Loads the given feed or requests a download. During feed
- * loading its items are automatically checked against all 
- * vfolder rules.
- */
-static void feedlist_initial_load(nodePtr np) {
+static void feedlist_initial_load(nodePtr node) { 
 	
-	if(FST_VFOLDER != np->type) {
-		node_load(np);
-		vfolder_check_node(np);		/* copy items to matching vfolders */
-		node_unload(np);
-	}
+	NODE(node)->initial_load(node); 
 }
 
-static void feedlist_initial_update(nodePtr np) {
+static void feedlist_request_update(nodePtr node, guint flags) {
 
-	node_request_update(np, 0);
+	NODE(node)->request_update(node, flags);
+}
+
+static void feedlist_reset_update_counter(nodePtr node) {
+
+	NODE(node)->reset_update_counter(node);
 }
 
 void feedlist_init(void) {
 	flPluginInfo	*rootPlugin;
 
 	debug_enter("feedlist_init");
+	
+	/* 1. Register standard node types */
+	node_register_type(feed_get_node_info(), FST_FEED);
+	node_register_type(folder_get_node_info(), FST_FOLDER);
+	node_register_type(vfolder_get_node_info(), FST_VFOLDER);
+	node_register_type(plugin_get_node_info(), FST_PLUGIN);
 
-	/* 1. Set up a root node */
+	/* 2. Set up a root node */
 	rootNode = node_new();
-	rootNode->isRoot = TRUE;
 	rootNode->title = g_strdup("root");
+	node_add_data(rootNode, FST_ROOT, NULL);
 
-	/* 2. Initialize list of plugins and find root provider
+	/* 3. Initialize list of plugins and find root provider
 	   plugin. Creating an instance of this plugin. This 
 	   will load the feed list and all attached plugin 
 	   handlers. */
 	rootPlugin = fl_plugins_get_root();
-	rootPlugin->node_load(rootNode);
+	rootPlugin->handler_import(rootNode);
 
-	/* 3. Sequentially load and unload all feeds and by doing so 
+	/* 4. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */
 	feedlist_foreach(feedlist_initial_load);
-	feedlist_foreach(ui_node_update);
+	feedlist_foreach(ui_node_update);	// FIXME: is this correct?
 
-	/* 4. Check if feeds do need updating. */
+	/* 5. Check if feeds do need updating. */
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
-			feedlist_foreach(feedlist_initial_update);
+			// FIXME: int -> gpointer
+			feedlist_foreach_data(feedlist_request_update, 0);
 			break;
 		case 2:
 			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
-			feedlist_foreach(feed_reset_update_counter);
+			feedlist_foreach(feedlist_reset_update_counter);
 			break;
 		default:
 			debug0(DEBUG_UPDATE, "initial update: using auto update");
 			/* default, which is to use the lastPoll times, does not need any actions here. */;
 	}
 
-	/* 5. Start automatic updating */
+	/* 6. Start automatic updating */
  	(void)g_timeout_add(1000, feedlist_auto_update, NULL);
 	
 	debug_exit("feedlist_init");
 }
 
-void feedlist_foreach_full(nodePtr node, gpointer func, gint params, gpointer user_data) {
-	
-	if(!node)
-		node = feedlist_get_root();
-
-	GSList *iter = node->children;
-	while(iter) {
-		nodePtr childNode = (nodePtr)iter->data;
-		
-		/* Apply the method to the child */
-		if(0 == params)
-			((nodeActionFunc)func)(childNode);
-		else 
-			((nodeActionDataFunc)func)(childNode, user_data);
-			
-		/* if the iter has children descend */
-		if(childNode->children)
-			feedlist_foreach_full(childNode, func, params, user_data);
-
-		iter = g_slist_next(iter);
-	}
-}

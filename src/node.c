@@ -31,6 +31,16 @@
 #include "support.h"
 #include "fl_providers/fl_plugin.h"
 
+static GHashTable *nodeTypes = NULL;
+
+void node_register_type(nodeTypeInfo *info, guint type) {
+
+	if(!nodeTypes)
+		nodeTypes = g_hash_table_new(g_direct_hash, g_int_equal);
+
+	g_hash_table_insert(nodeTypes, (gpointer)info);
+}
+
 /* returns a unique node id */
 gchar * node_new_id() {
 	int		i;
@@ -72,7 +82,7 @@ void node_add_data(nodePtr np, guint type, gpointer data) {
 	np->type = type;
 	np->data = data;
 
-	/* Vfolders/folders are not handled by the node
+	/* Vfolders/Folders are not handled by the node
 	   loading/unloading so the item set must be prepared 
 	   upon folder creation */
 
@@ -110,101 +120,6 @@ void node_free(nodePtr np) {
 	g_free(np);
 }
 
-void node_load(nodePtr np) {
-
-	switch(np->type) {
-		case FST_FEED:
-		case FST_PLUGIN:
-			debug2(DEBUG_CACHE, "+ node_load (%s, ref count=%d)", node_get_title(np), np->loaded);
-			np->loaded++;
-
-			if(1 < np->loaded) {
-				debug1(DEBUG_CACHE, "no loading %s because it is already loaded", node_get_title(np));
-				return;
-			}
-	
-			if(NULL == FL_PLUGIN(np)->node_load)
-				return;
-
-			/* np->itemSet will be NULL here, except when cache is disabled */
-			FL_PLUGIN(np)->node_load(np);
-			g_assert(NULL != np->itemSet);
-
-			debug2(DEBUG_CACHE, "- node_load (%s, new ref count=%d)", node_get_title(np), np->loaded);
-			break;
-		case FST_FOLDER:
-			/* recursively load folder childrens */
-			node_foreach_child(np, node_load);
-			break;
-		case FST_VFOLDER:
-			/* not loading vfolders */
-			break;
-		default:
-			g_warning("internal error: unknown node type (%d)!", np->type);
-			break;
-	}
-}
-
-void node_save(nodePtr np) {
-
-	if(0 == np->loaded)
-		return;
-
-	g_assert(NULL != np->itemSet);
-
-	if(FALSE == np->needsCacheSave)
-		return;
-
-	if(NULL == FL_PLUGIN(np)->node_save)
-		return;
-
-	FL_PLUGIN(np)->node_save(np);
-	np->needsCacheSave = FALSE;
-}
-
-void node_unload(nodePtr np) {
-
-	switch(np->type) {
-		case FST_FEED:
-		case FST_PLUGIN:
-			debug2(DEBUG_CACHE, "+ node_unload (%s, ref count=%d)", node_get_title(np), np->loaded);
-
-			if(0 >= np->loaded) {
-				debug0(DEBUG_CACHE, "node is not loaded, nothing to do...");
-				return;
-			}
-
-			node_save(np);	/* save before unloading */
-
-			if(NULL == FL_PLUGIN(np)->node_unload)
-				return;
-
-			if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-				if(1 == np->loaded) {
-					g_assert(NULL != np->itemSet);
-					FL_PLUGIN(np)->node_unload(np);
-					/* np->itemSet will be NULL here, except when cache is disabled */
-				} else {
-					debug1(DEBUG_CACHE, "not unloading %s because it is still used", node_get_title(np));
-				}
-				np->loaded--;
-			}
-			debug2(DEBUG_CACHE, "- node_unload (%s, new ref count=%d)", node_get_title(np), np->loaded);
-			break;
-		case FST_FOLDER:
-			g_list_free(np->itemSet->items);
-			np->itemSet->items = NULL;
-			node_foreach_child(np, node_unload);
-			break;
-		case FST_VFOLDER:
-			/* not unloading vfolders */
-			break;
-		default:
-			g_warning("internal error: unknown node type!");
-			break;
-	}
-}
-
 void node_update_counters(nodePtr np) {
 	gint	unreadDiff, newDiff;
 	GList	*iter;
@@ -239,6 +154,8 @@ void node_update_counters(nodePtr np) {
 	/* propagate to feed list statistics */
 	feedlist_update_counters(unreadDiff, newDiff);
 }
+
+/* generic node item set merging functions */
 
 static void node_merge_item(nodePtr np, itemPtr ip) {
 
@@ -288,70 +205,6 @@ void node_merge_items(nodePtr np, GList *list) {
 	node_update_counters(np);
 }
 
-gchar * node_render(nodePtr np) {
-
-	return FL_PLUGIN(np)->node_render(np);
-}
-
-void node_request_update(nodePtr np, guint flags) {
-
-	switch(np->type) {
-		case FST_VFOLDER:
-			/* Do nothing. */
-			break;
-		case FST_FOLDER:
-			node_foreach_child(np, node_request_update);
-			break;
-		case FST_PLUGIN:
-		case FST_FEED:
-			if(NULL == FL_PLUGIN(np)->node_update)
-				return;
-
-			FL_PLUGIN(np)->node_update(np, flags);
-			break;
-	}
-}
-
-void node_request_auto_update(nodePtr np) {
-
-	if((FST_VFOLDER == np->type) ||
-	   (FST_FOLDER == np->type))
-		return;
-
-	if(NULL == FL_PLUGIN(np)->node_auto_update)
-		return;
-
-	FL_PLUGIN(np)->node_auto_update(np);
-}
-
-void node_schedule_update(nodePtr np, request_cb callback, guint flags) {
-	feedPtr			fp = (feedPtr)np->data;
-	struct request		*request;
-
-	debug1(DEBUG_CONF, "Scheduling %s to be updated", node_get_title(np));
-
-	switch(np->type) {
-		case FST_FEED:
-			/* can only be called for feeds, doesn't
-			   make sense for other types */
-
-			feed_cancel_retry(fp);
-			if(feed_can_be_updated(fp)) {
-				ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(np));
-				request = download_request_new();
-				request->user_data = np;
-				request->callback = ui_feed_process_update_result;
-				feed_prepare_request(fp, request, flags);
-				download_queue(request);
-			} else {
-				debug0(DEBUG_CONF, "Update cancelled");
-			}
-			break;
-		default:
-			break;
-	}
-}
-
 void node_update_favicon(nodePtr np) {
 
 	if(FST_FEED != np->type)
@@ -360,121 +213,7 @@ void node_update_favicon(nodePtr np) {
 	favicon_download(np);
 }
 
-void node_remove(nodePtr np) {
-
-	debug_enter("node_remove");
-
-	g_assert(0 != (FL_PLUGIN(np)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
-
-	switch(np->type) {
-		case FST_FOLDER:
-			/* 1. remove all children */
-			node_foreach_child(np, node_remove);
-			/* 2. remove the folder */
-			FL_PLUGIN(np)->node_remove(np);
-			break;
-		case FST_VFOLDER:
-		case FST_FEED:
-		case FST_PLUGIN:
-
-			if(NULL != np->icon) {
-				g_object_unref(np->icon);
-				favicon_remove(np);
-			}
-
-			ui_notification_remove_feed(np);
-			ui_node_remove_node(np);
-
-			np->parent->children = g_slist_remove(np->parent->children, np);
-
-			node_unload(np);
-			FL_PLUGIN(np)->node_remove(np);
-			node_free(np);
-			break;
-	}
-
-	debug_exit("node_remove");
-}
-
-/* Interactive node adding (e.g. feed menu->new subscription), 
-   launches some dialog that upon success calls 
-   node_request_automatic_add() to add feeds or an own
-   method to add other node types. */
-void node_request_interactive_add(guint type) {
-	nodePtr		parent;
-	nodePtr		child;
-
-	debug_enter("node_request_interactive_add");
-
-	parent = feedlist_get_selected_parent();
-	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
-
-	g_assert(0 != (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD));
-
-	child = node_new();
-	child->type = type;
-	child->handler = parent->handler;
-	FL_PLUGIN(parent)->node_add(child);
-
-	debug_exit("node_request_interactive_add");
-}
-
-/* Automatic subscription adding (e.g. URL DnD), creates a new node
-   or reuses the given one and creates a new feed without any user 
-   interaction and finally calls node_add(). */
-void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar *filter, gint flags) {
-	feedPtr		feed;
-
-	debug_enter("node_request_automatic_add");
-
-	g_assert(NULL != source);
-	feed = feed_new(source, title?title:_("New Subscription"), filter);
-
-	if(!node)
-		node = node_new();
-
-	node_set_title(node, feed_get_title(feed));
-	node_add_data(node, FST_FEED, (gpointer)feed);
-	node_add(node);
-
-	node_schedule_update(node, ui_feed_process_update_result, flags);
-
-	debug_exit("node_request_automatic_add");
-}
-
-void node_add(nodePtr node) {
-	nodePtr		parent;
-	gint		pos;
-
-	parent = feedlist_get_selected_parent();
-	ui_feedlist_get_target_folder(&pos);
-	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
-
-	node->handler = parent->handler;
-	feedlist_add_node(parent, node, pos);
-}
-
-/* ---------------------------------------------------------------------------- */
-/* node attributes encapsulation						*/
-/* ---------------------------------------------------------------------------- */
-
-itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
-
-void node_set_itemset(nodePtr np, itemSetPtr sp) {
-
-	g_assert(ITEMSET_TYPE_INVALID != sp->type);
-	np->itemSet = sp;
-	sp->node = np;
-	node_update_counters(np);
-}
-
-void node_set_title(nodePtr np, const gchar *title) {
-
-	g_free(np->title);
-	np->title = g_strdup(title);
-}
-
-const gchar * node_get_title(nodePtr np) { return np->title; }
+/* plugin and import callbacks and helper functions */
 
 const gchar *node_type_to_str(nodePtr np) {
 
@@ -513,6 +252,151 @@ guint node_str_to_type(const gchar *str) {
 	return FST_INVALID;
 }
 
+static nodeTypeInfo * node_get_type_info(guint type) {
+	nodeTypeInfo	*info;
+
+	switch(type) {
+		case FST_FEED:
+			info = feed_get_node_info();
+			break;
+		case FST_PLUGIN:
+			info = plugin_get_node_info();
+			break;
+		case FST_FOLDER:
+			info = folder_get_node_info();
+			break;
+		case FST_VFOLDER:
+			info = vfolder_get_node_info();
+			break;
+	}
+
+	return info;
+}
+
+/* Interactive node adding (e.g. feed menu->new subscription), 
+   launches some dialog that upon success calls 
+   node_request_automatic_add() to add feeds or an own
+   method to add other node types. */
+void node_request_interactive_add(guint type) {
+	nodePtr		parent;
+	nodePtr		child;
+
+	debug_enter("node_request_interactive_add");
+
+	parent = feedlist_get_selected_parent();
+	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
+
+	g_assert(0 != (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD));
+
+	child = node_new();
+	child->type = type;	// FIXME: remove me
+	child->handler = parent->handler;
+	child->handler->type = node_get_type_info(type);
+	FL_PLUGIN(parent)->node_add(child);
+
+	debug_exit("node_request_interactive_add");
+}
+
+/* Automatic subscription adding (e.g. URL DnD), creates a new node
+   or reuses the given one and creates a new feed without any user 
+   interaction and finally calls node_add(). */
+void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar *filter, gint flags) {
+	feedPtr		feed;
+
+	debug_enter("node_request_automatic_add");
+
+	// FIXME: prevent adding when plugin doesn't allow it!
+
+	g_assert(NULL != source);
+	feed = feed_new(source, title?title:_("New Subscription"), filter);
+
+	if(!node)
+		node = node_new();
+
+	node_set_title(node, feed_get_title(feed));
+	node_add_data(node, FST_FEED, (gpointer)feed);
+	node_add(node);
+
+	node_schedule_update(node, ui_feed_process_update_result, flags);
+
+	debug_exit("node_request_automatic_add");
+}
+
+void node_add(nodePtr node) {
+	nodePtr		parent;
+	gint		pos;
+
+	parent = feedlist_get_selected_parent();
+	ui_feedlist_get_target_folder(&pos);
+	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
+
+	node->handler = parent->handler;
+	feedlist_add_node(parent, node, pos);
+}
+
+/* wrapper for node type interface */
+
+void node_initial_load(nodePtr node) {
+	NODE(node)->initial_load(node);
+}
+
+void node_load(nodePtr node) {
+	NODE(node)>load(node);
+}
+
+void node_save(nodePtr node) {
+	NODE(node)->save(node);
+}
+
+void node_unload(nodePtr node) {
+	NODE(node)->unload(node);
+}
+
+void node_remove(nodePtr node) {
+
+	debug_enter("node_remove");
+
+	g_assert(0 != (FL_PLUGIN(node)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
+
+	np->parent->children = g_slist_remove(np->parent->children, np);
+
+	node_unload(node);
+	NODE(node)->remove(node);
+	node_free(node);
+
+	debug_exit("node_remove");
+}
+
+void node_mark_all_read(nodePtr node) {
+
+	if(0 != node->unreadCount)
+		NODE(node)->mark_all_read(node);
+}
+
+void node_render(nodePtr node) {
+	NODE(node)->render(node);
+}
+
+/* node attributes encapsulation */
+
+itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
+
+void node_set_itemset(nodePtr np, itemSetPtr sp) {
+
+	g_assert(ITEMSET_TYPE_INVALID != sp->type);
+	np->itemSet = sp;
+	sp->node = np;
+	node_update_counters(np);
+}
+
+void node_set_title(nodePtr np, const gchar *title) {
+
+	g_free(np->title);
+	np->title = g_strdup(title);
+}
+
+const gchar * node_get_title(nodePtr np) { return np->title; }
+
 void node_update_unread_count(nodePtr np, gint diff) {
 
 	np->unreadCount += diff;
@@ -548,28 +432,6 @@ void node_update_new_count(nodePtr np, gint diff) {
 guint node_get_unread_count(nodePtr np) { 
 	
 	return np->unreadCount; 
-}
-
-void node_mark_all_read(nodePtr np) {
-
-
-	switch(np->type) {
-		case FST_PLUGIN:
-		case FST_FEED:
-			if(0 != np->unreadCount) {
-				node_load(np);
-				itemlist_mark_all_read(np->itemSet);
-				ui_node_update(np);
-				node_unload(np);
-			}
-			break;
-		case FST_FOLDER:
-			node_foreach_child(np, node_mark_all_read);
-			break;
-		case FST_VFOLDER:
-			/* Nothing to do */
-			break;
-	}
 }
 
 void node_set_id(nodePtr np, const gchar *id) {

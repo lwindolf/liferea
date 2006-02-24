@@ -38,6 +38,7 @@
 enum node_types {
 	FST_INVALID 	= 0,		/**< invalid type */
 	FST_FOLDER 	= 1,		/**< the folder type */
+	FST_ROOT	= 2,		/**< the feed list root type */
 
 	FST_VFOLDER 	= 9,		/**< special type for VFolders */
 	FST_FEED	= 10,		/**< any type of feed */
@@ -48,10 +49,9 @@ enum node_types {
 typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
 	guint			type;		/**< node type */
-	struct flNodeHandler_	*handler;	/**< pointer to feed list plugin instance handling this node */
+	struct flNodeHandler_	*handler;	/**< the feed list plugin and node type instance handling this node */
 
 	/* feed list state properties of this node */
-	gboolean		isRoot;		/**< TRUE if this is the feed list root node */
 	struct node		*parent;	/**< the parent node (or NULL if at root level) */
 	GSList			*children;	/**< ordered list of node children */
 	gchar			*id;		/**< unique node identifier string */
@@ -73,6 +73,33 @@ typedef struct node {
 	gboolean	sortReversed;	/**< Sort in the reverse order? */
 
 } *nodePtr;
+
+/** node type interface */
+typedef struct nodeTypeInfo {
+	/* For method documentation see the wrappers defined below! */
+	void	(*initial_load)		(nodePtr node);
+	void	(*load)			(nodePtr node);
+	void 	(*save)			(nodePtr node);
+	void	(*unload)		(nodePtr node);
+	void	(*reset_update_counter)	(nodePtr node);
+	void	(*request_update)	(nodePtr node, guint flags);
+	void 	(*request_auto_update)	(nodePtr node);
+	void	(*schedule_update)	(nodePtr node, guint flags);
+	void	(*remove)		(nodePtr node);
+	void 	(*mark_all_read)	(nodePtr node);
+	void 	(*render)		(nodePtr node);
+} *nodeTypeInfo;
+
+#define NODE(node)	((flNodeHandler *)(node->handler))->nodeType
+
+/**
+ * Registers a new node type. Can be used by feed list
+ * plugins to register own node types.
+ *
+ * @param info	node type info 
+ * @param type	node type constant
+ */
+void node_register_type(nodeTypeInfo *info, guint type);
  
 /**
  * Creates a new node structure.

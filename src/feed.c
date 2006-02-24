@@ -43,6 +43,7 @@
 #include "parsers/pie_feed.h"
 #include "parsers/ocs_dir.h"
 #include "parsers/opml.h"
+#include "fl_providers/fl_plugin.h"
 #include "vfolder.h"
 #include "feed.h"
 #include "net/cookies.h"
@@ -60,6 +61,8 @@ struct feed_type {
 	gint id_num;
 	gchar *id_str;
 };
+
+static void feed_reset_update_counter(feedPtr fp);
 
 /* initializing function, only called upon startup */
 void feed_init(void) {
@@ -647,7 +650,7 @@ gboolean feed_can_be_updated(feedPtr fp) {
 	return TRUE;
 }	
 
-void feed_prepare_request(feedPtr fp, struct request *request, guint flags) {
+static void feed_prepare_request(feedPtr fp, struct request *request, guint flags) {
 
 	debug1(DEBUG_UPDATE, "preparing request for \"%s\"\n", feed_get_source(fp));
 
@@ -763,7 +766,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 			old_ip->updateStatus = TRUE;
 			metadata_list_free(old_ip->metadata);
 			old_ip->metadata = new_ip->metadata;
-			vfolder_update_item(old_ip);
+			vfeed_update_item(old_ip);
 			debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 		} else {
 			debug0(DEBUG_VERBOSE, "-> item already exists");
@@ -800,7 +803,7 @@ feedHandlerPtr feed_get_fhp(feedPtr fp) {
 	return fp->fhp;
 }
 
-void feed_reset_update_counter(feedPtr fp) {
+static void feed_reset_update_counter(feedPtr fp) {
 
 	g_get_current_time(&fp->lastPoll);
 	feedlist_schedule_save();
@@ -1046,8 +1049,206 @@ void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gc
 	fp->errorDescription = buffer;
 }
 
-// FIXME: split of vfolder_render()
-gchar *feed_render(feedPtr fp) {
+
+/* method to free a feed structure and associated request data */
+void feed_free(feedPtr fp) {
+	GSList	*iter;
+
+	/* Don't free active feed requests here, because they might still
+	   be processed in the update queues! Abandoned requests are
+	   free'd in feed_process. They must be freed in the main thread
+	   for locking reasons. */
+	if(fp->request != NULL)
+		fp->request->callback = NULL;
+	
+	/* same goes for other requests */
+	iter = fp->otherRequests;
+	while(NULL != iter) {
+		((struct request *)iter->data)->callback = NULL;
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(fp->otherRequests);
+
+	g_free(fp->parseErrors);
+	g_free(fp->errorDescription);
+	g_free(fp->title);
+	g_free(fp->htmlUrl);
+	g_free(fp->imageUrl);
+	g_free(fp->description);
+	g_free(fp->source);
+	g_free(fp->filtercmd);
+	g_free(fp->lastModified);
+	g_free(fp->etag);
+	g_free(fp->cookies);
+	
+	metadata_list_free(fp->metadata);
+	g_hash_table_destroy(fp->tmpdata);
+	g_free(fp);
+}
+
+/* method to totally erase a feed, remove it from the config, etc.... */
+void feed_remove_from_cache(feedPtr fp, const gchar *id) {
+	gchar	*filename = NULL;
+	
+	if(id && id[0] != '\0')
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
+	
+	/* FIXME: Move this to a better place. The cache file does not
+	   need to always be deleted, for example when freeing a
+	   feedstruct used for updating. */
+	if(NULL != filename) {
+		if(0 != unlink(filename)) {
+			/* Oh well.... Can't do anything about it. 99% of the time,
+		   	this is spam anyway. */;
+		}
+		g_free(filename);
+	}
+
+	feed_free(fp);
+}
+
+/* implementation of the node type interface */
+
+/* non static because it's reused from plugin.c */
+void feed_load(nodePtr node) {
+
+	debug2(DEBUG_CACHE, "+ feed_load (%s, ref count=%d)", node_get_title(node), node->loaded);
+	node->loaded++;
+
+	if(1 < node->loaded) {
+		debug1(DEBUG_CACHE, "no loading %s because it is already loaded", node_get_title(node));
+		return;
+	}
+	
+	if(NULL == FL_PLUGIN(node)->node_load)
+		return;
+
+	/* node->itemSet will be NULL here, except when cache is disabled */
+	FL_PLUGIN(node)->node_load(node);
+	g_assert(NULL != node->itemSet);
+
+	debug2(DEBUG_CACHE, "- feed_load (%s, new ref count=%d)", node_get_title(node), node->loaded);
+}
+
+/* non static because it's reused from plugin.c */
+void feed_save(nodePtr node) {
+
+	if(0 == node->loaded)
+		return;
+
+	g_assert(NULL != node->itemSet);
+
+	if(FALSE == node->needsCacheSave)
+		return;
+
+	if(NULL == FL_PLUGIN(node)->node_save)
+		return;
+
+	FL_PLUGIN(node)->node_save(node);
+	node->needsCacheSave = FALSE;
+}
+
+/* non static because it's reused from plugin.c */
+void feed_unload(nodePtr node) {
+
+	debug2(DEBUG_CACHE, "+ node_unload (%s, ref count=%d)", node_get_title(node), node->loaded);
+
+	if(0 >= node->loaded) {
+		debug0(DEBUG_CACHE, "node is not loaded, nothing to do...");
+		return;
+	}
+
+	node_save(node);	/* save before unloading */
+
+	if(NULL == FL_PLUGIN(node)->node_unload)
+		return;
+
+	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
+		if(1 == node->loaded) {
+			g_assert(NULL != node->itemSet);
+			FL_PLUGIN(node)->node_unload(node);
+			/* node->itemSet will be NULL here, except when cache is disabled */
+		} else {
+			debug1(DEBUG_CACHE, "not unloading %s because it is still used", node_get_title(node));
+		}
+		node->loaded--;
+	}
+	debug2(DEBUG_CACHE, "- node_unload (%s, new ref count=%d)", node_get_title(node), node->loaded);
+}
+
+/**
+ * Used to process feeds directly after feed list loading.
+ * Loads the given feed or requests a download. During feed
+ * loading its items are automatically checked against all 
+ * vfolder rules.
+ */
+static void feed_initial_load(nodePtr node) {
+
+	feed_load(node);
+	vfolder_check_node(node);	/* copy items to matching vfolders */
+	feed_unload(node);
+}
+
+static void feed_reset_update_counter(nodePtr node) {
+
+	feed_reset_update_counter((feedPtr)np->data);
+}
+
+static void feed_request_update(nodePtr node, guint flags) {
+
+	if(NULL != FL_PLUGIN(np)->node_update)
+		FL_PLUGIN(np)->node_update(np, flags);
+}
+
+static void feed_request_auto_update(nodePtr np) {
+
+	if(NULL != FL_PLUGIN(np)->node_auto_update)
+		FL_PLUGIN(np)->node_auto_update(np);
+}
+
+static void feed_schedule_update(nodePtr node, request_cb callback, guint flags) {
+	feedPtr			feed = (feedPtr)np->data;
+	struct request		*request;
+	
+	debug1(DEBUG_CONF, "Scheduling %s to be updated", node_get_title(node));
+
+	feed_cancel_retry(feed);
+	if(feed_can_be_updated(feed)) {
+		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));
+		request = download_request_new();
+		request->user_data = node;
+		request->callback = ui_feed_process_update_result;
+		feed_prepare_request(feed, request, flags);
+		download_queue(request);
+	} else {
+		debug0(DEBUG_CONF, "Update cancelled");
+	}
+}
+
+/* non static because it's reused from plugin.c */
+void feed_remove(nodePtr node) {
+
+	if(NULL != node->icon) {
+		g_object_unref(node->icon);
+		favicon_remove(node);
+	}
+
+	ui_notification_remove_feed(node);
+	ui_node_remove_node(node);
+	FL_PLUGIN(node)->node_remove(node);
+}
+
+/* non static because it's reused from plugin.c */
+void feed_mark_all_read(nodePtr node) {
+
+	feed_load(node);
+	itemlist_mark_all_read(node->itemSet);
+	ui_node_update(node);
+	feed_unload(node);
+}
+
+static gchar * feed_render(nodePtr node) {
+	feedPtr			fp = (feedPtr)node;
 	struct displayset	displayset;
 	gchar			*buffer = NULL;
 	gchar			*tmp, *tmp2;
@@ -1155,59 +1356,18 @@ gchar *feed_render(feedPtr fp) {
 	return buffer;
 }
 
-/* method to free a feed structure and associated request data */
-void feed_free(feedPtr fp) {
-	GSList	*iter;
-
-	/* Don't free active feed requests here, because they might still
-	   be processed in the update queues! Abandoned requests are
-	   free'd in feed_process. They must be freed in the main thread
-	   for locking reasons. */
-	if(fp->request != NULL)
-		fp->request->callback = NULL;
-	
-	/* same goes for other requests */
-	iter = fp->otherRequests;
-	while(NULL != iter) {
-		((struct request *)iter->data)->callback = NULL;
-		iter = g_slist_next(iter);
-	}
-	g_slist_free(fp->otherRequests);
-
-	g_free(fp->parseErrors);
-	g_free(fp->errorDescription);
-	g_free(fp->title);
-	g_free(fp->htmlUrl);
-	g_free(fp->imageUrl);
-	g_free(fp->description);
-	g_free(fp->source);
-	g_free(fp->filtercmd);
-	g_free(fp->lastModified);
-	g_free(fp->etag);
-	g_free(fp->cookies);
-	
-	metadata_list_free(fp->metadata);
-	g_hash_table_destroy(fp->tmpdata);
-	g_free(fp);
+static nodeTypeInfo nti = {
+	feed_initial_load,
+	feed_load,
+	feed_save,
+	feed_unload
+	feed_reset_update_counter,
+	feed_request_update,
+	feed_request_auto_update,
+	feed_schedule_update,
+	feed_remove,
+	feed_mark_all_read,
+	feed_render
 }
 
-/* method to totally erase a feed, remove it from the config, etc.... */
-void feed_remove_from_cache(feedPtr fp, const gchar *id) {
-	gchar	*filename = NULL;
-	
-	if(id && id[0] != '\0')
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
-	
-	/* FIXME: Move this to a better place. The cache file does not
-	   need to always be deleted, for example when freeing a
-	   feedstruct used for updating. */
-	if(NULL != filename) {
-		if(0 != unlink(filename)) {
-			/* Oh well.... Can't do anything about it. 99% of the time,
-		   	this is spam anyway. */;
-		}
-		g_free(filename);
-	}
-
-	feed_free(fp);
-}
+nodeTypeInfo * feed_get_node_type_info(void) { return &nti; }

@@ -1,7 +1,7 @@
 /**
  * @file plugin.c Liferea plugin implementation
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -174,3 +174,70 @@ gboolean plugin_get_active(guint id) {
 	// FIXME: return enabled state from gconf
 	return TRUE;
 }
+
+/* implementation of the node type interface */
+
+static void plugin_reset_update_counter(nodePtr node) { }
+
+static void plugin_request_update(nodePtr node, guint flags) {
+
+	if(NULL != FL_PLUGIN(np)->node_update)
+		FL_PLUGIN(np)->node_update(np, flags);
+}
+
+static void plugin_request_auto_update(nodePtr np) {
+
+	if(NULL != FL_PLUGIN(np)->node_auto_update)
+		FL_PLUGIN(np)->node_auto_update(np);
+}
+
+static void plugin_schedule_update(nodePtr np, request_cb callback, guint flags) {
+	feedPtr			fp = (feedPtr)np->data;
+	struct request		*request;
+	
+	debug1(DEBUG_CONF, "Scheduling %s to be updated", node_get_title(np));
+
+	if(plugin_can_be_updated(fp)) {
+		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(np));
+		request = download_request_new();
+		request->user_data = np;
+		request->callback = ui_plugin_process_update_result;
+		plugin_prepare_request(fp, request, flags);
+		download_queue(request);
+	} else {
+		debug0(DEBUG_CONF, "Update cancelled");
+	}
+}
+
+static void plugin_remove(nodePtr np) {
+
+	if(NULL != np->icon) {
+		g_object_unref(np->icon);
+		favicon_remove(np);
+	}
+
+	ui_notification_remove_feed(np);
+	ui_node_remove_node(np);
+	node_remove(np);
+}
+
+static gchar * plugin_render(nodePtr np) {
+
+	return g_strdup("Implement me: plugin_render()");
+}
+
+static nodeTypeInfo nti = {
+	feed_initial_load,	/* for simplicity reuse feed.c code */
+	feed_load,
+	feed_save,
+	feed_unload
+	plugin_reset_update_counter,
+	plugin_request_update,
+	plugin_request_auto_update,
+	plugin_schedule_update,
+	plugin_remove,
+	feed_mark_all_read,
+	plugin_render
+}
+
+nodeTypeInfo * plugin_get_node_type_info(void) { return &nti; }

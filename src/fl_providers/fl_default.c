@@ -1,8 +1,8 @@
 /**
  * @file fl_default.c default static feedlist provider
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,11 +24,8 @@
 #include <libxml/uri.h>
 #include "support.h"
 #include "common.h"
-#include "conf.h"
-#include "favicon.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "itemset.h"
 #include "export.h"
 #include "debug.h"
 #include "update.h"
@@ -38,11 +35,7 @@
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_htmlview.h"
-#include "ui/ui_notification.h"
 #include "ui/ui_node.h"
-
-extern GtkWindow *mainwindow;
 
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;
@@ -51,15 +44,11 @@ static flPluginInfo fpi;
 
 static void ui_feedlist_dbus_connect ();
 
-static void fl_default_handler_initial_load(nodePtr np) {
+static void fl_default_handler_import(nodePtr np) {
 	flNodeHandler	*handler;
 	gchar		*filename;
 
-	debug_enter("fl_default_handler_initial_load");
-
-	/* We only expect to be called to create an plugin instance 
-	   serving as the root node. */
-	g_assert(TRUE == np->isRoot);
+	debug_enter("fl_default_handler_import");
 
 	/* create a new handler structure */
 	handler = g_new0(struct flNodeHandler_, 1);
@@ -88,34 +77,16 @@ static void fl_default_handler_initial_load(nodePtr np) {
 	debug0(DEBUG_GUI, "No DBUS support active.");
 #endif
 
-	debug_exit("fl_default_handler_initial_load");
+	debug_exit("fl_default_handler_import");
 }
 
-static void fl_default_node_load(nodePtr np) {
-
-	if(np->isRoot) {
-		fl_default_handler_initial_load(np);
-		return;
-	}
-	
-	fl_common_node_load(np);
-}
-
-static void fl_default_node_unload(nodePtr np) {
-
-	if(FST_PLUGIN == np->type)
-		return; /* Never unloading the plugin */
-
-	fl_common_node_unload(np);
-}
-
-static void fl_default_save_root(void) {
+static void fl_default_handler_export(void) {
 	gchar *filename, *filename_real;
 	
 	if(feedlistImport)
 		return;
 
-	debug_enter("fl_default_save_root");
+	debug_enter("fl_default_handler_export");
 
 	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml~", common_get_cache_path());
 
@@ -127,7 +98,7 @@ static void fl_default_save_root(void) {
 	}
 	g_free(filename);
 
-	debug_exit("fl_default_save_root");
+	debug_exit("fl_default_handler_export");
 }
 
 static void fl_default_node_add(nodePtr np) {
@@ -167,18 +138,6 @@ static void fl_default_node_remove(nodePtr np) {
 		default:
 			g_warning("removing unsupported type node!");
 			break;
-	}
-}
-
-static void fl_default_node_save(nodePtr np) {
-
-	if(TRUE == np->isRoot) {
-		/* Saving the root node means saving the feed list... */
-		debug0(DEBUG_CACHE, "saving root node");
-		fl_default_save_root();
-		return;
-	} else {
-		fl_common_node_save(np);
 	}
 }
 
@@ -297,8 +256,10 @@ ui_feedlist_dbus_connect ()
 
 #endif /* USE_DBUS */
 
+/* root node type definition */
 
 static void fl_default_init(void) {
+	nodeTypeInfo	*type;
 
 	debug_enter("fl_default_init");
 
@@ -327,9 +288,8 @@ static flPluginInfo fpi = {
 	fl_default_deinit,
 	NULL,
 	NULL,
-	fl_default_node_load,
-	fl_default_node_unload,
-	fl_default_node_save,
+	fl_default_handler_import,
+	fl_default_handler_export,
 	fl_common_node_render,
 	fl_common_node_auto_update,
 	fl_common_node_update,
