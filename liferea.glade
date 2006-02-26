@@ -21,30 +21,12 @@
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
-  <signal name="delete_event" handler="on_close" last_modification_time="Tue, 15 Jun 2004 04:16:40 GMT"/>
-  <signal name="window_state_event" handler="on_mainwindow_window_state_event" last_modification_time="Tue, 20 Jul 2004 05:12:24 GMT"/>
-  <signal name="key_press_event" handler="on_mainwindow_key_press_event" last_modification_time="Fri, 26 Nov 2004 23:21:47 GMT"/>
 
   <child>
     <widget class="GtkVBox" id="vbox1">
       <property name="visible">True</property>
       <property name="homogeneous">False</property>
       <property name="spacing">0</property>
-
-      <child>
-	<widget class="GtkToolbar" id="toolbar">
-	  <property name="visible">True</property>
-	  <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
-	  <property name="toolbar_style">GTK_TOOLBAR_TEXT</property>
-	  <property name="tooltips">True</property>
-	  <property name="show_arrow">True</property>
-	</widget>
-	<packing>
-	  <property name="padding">0</property>
-	  <property name="expand">False</property>
-	  <property name="fill">False</property>
-	</packing>
-      </child>
 
       <child>
 	<widget class="GtkHPaned" id="leftpane">
