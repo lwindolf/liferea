@@ -243,7 +243,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 	/* 3. do node type specific parsing */
 	switch(type) {
 		case FST_FEED:
-			data = feed_import(typeStr, cur, trusted);
+			data = feed_import(np, typeStr, cur, trusted);
 			break;
 		case FST_FOLDER:
 			data = NULL;

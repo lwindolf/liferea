@@ -111,25 +111,25 @@ void favicon_remove(nodePtr np) {
  */
 
 static void favicon_download_request_favicon_cb(struct request *request);
-static void favicon_download_html(nodePtr np, int phase);
+static void favicon_download_html(nodePtr node, int phase);
 
-static void favicon_download_5(nodePtr np) {
-	feedPtr		fp = (feedPtr)np->data;
+static void favicon_download_5(nodePtr node) {
+	feedPtr		feed = (feedPtr)node->data;
 	gchar 		*baseurl, *tmp;
 	struct request	*request;
 	
-	baseurl = g_strdup(feed_get_source(fp));
-	if(NULL != (tmp = strstr(baseurl, "://"))) {
+	baseurl = g_strdup(feed_get_source(feed));
+	if(tmp = strstr(baseurl, "://")) {
 		tmp += 3;
-		if(NULL != (tmp = strchr(tmp, '/'))) {
+		if(tmp = strchr(tmp, '/')) {
 			*tmp = 0;
 			request = download_request_new(NULL);
 			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
 			
 			request->callback = &favicon_download_request_favicon_cb;
-			request->user_data = np;
+			request->user_data = node;
 			request->flags = 5;
-			fp->otherRequests = g_slist_append(fp->otherRequests, request);
+			node->requests = g_slist_append(node->requests, request);
 			
 			debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
 			
@@ -139,23 +139,23 @@ static void favicon_download_5(nodePtr np) {
 	g_free(baseurl);
 }
 
-static void favicon_download_4(nodePtr np) {
-	feedPtr		fp = (feedPtr)np->data;
+static void favicon_download_4(nodePtr node) {
+	feedPtr		feed = (feedPtr)node->data;
 	gchar 		*baseurl, *tmp;
 	struct request	*request;
 	
-	baseurl = g_strdup(feed_get_source(fp));
-	if(NULL != (tmp = strstr(baseurl, "://"))) {
+	baseurl = g_strdup(feed_get_source(feed));
+	if(tmp = strstr(baseurl, "://")) {
 		tmp += 3;
-		if(NULL != (tmp = strrchr(tmp, '/'))) {
+		if(tmp = strrchr(tmp, '/')) {
 			*tmp = 0;
 			
 			request = download_request_new(NULL);
 			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
 			request->callback = &favicon_download_request_favicon_cb;
-			request->user_data = np;
+			request->user_data = node;
 			request->flags = 4;
-			fp->otherRequests = g_slist_append(fp->otherRequests, request);
+			node->requests = g_slist_append(node->requests, request);
 			
 			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
 			
@@ -166,31 +166,31 @@ static void favicon_download_4(nodePtr np) {
 }
 
 static void favicon_download_request_favicon_cb(struct request *request) {
-	nodePtr		np = (nodePtr)request->user_data;
-	feedPtr		fp = (feedPtr)np->data;
+	nodePtr		node = (nodePtr)request->user_data;
+	feedPtr		feed = (feedPtr)node->data;
 	gchar		*tmp;
 	GError		*err = NULL;
 	gboolean	success = FALSE;
 	
 	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
-	fp->otherRequests = g_slist_remove(fp->otherRequests, request);
+	node->requests = g_slist_remove(node->requests, request);
 	
 	if(NULL != request->data && request->size > 0) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
-		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(np), "png");
+		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(node), "png");
 		if(gdk_pixbuf_loader_write(loader, (guchar *)request->data, request->size, &err)) {
-			if(NULL != (pixbuf = gdk_pixbuf_loader_get_pixbuf(loader))) {
+			if(pixbuf = gdk_pixbuf_loader_get_pixbuf(loader)) {
 				debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
 				if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", &err, NULL))) {
 					g_warning("favicon saving error!");
 				}
 				success = TRUE;
-				favicon_load(np);
+				favicon_load(node);
 			}
 		}
 
-		if(err != NULL) {
+		if(err) {
 			g_warning("%s\n", err->message);
 			g_error_free(err);
 		}
@@ -198,16 +198,16 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 		gdk_pixbuf_loader_close(loader, NULL);
 		g_object_unref(loader);
 		g_free(tmp);
-		ui_node_update(np);
+		ui_node_update(node);
 	}
 	
 	if(!success) {
 		if(request->flags == 1)
-			favicon_download_html(np, 2);
+			favicon_download_html(node, 2);
 		else if(request->flags == 3) {
-			favicon_download_4(np);
+			favicon_download_4(node);
 		} else if(request->flags == 4) {
-			favicon_download_5(np);
+			favicon_download_5(node);
 		}
 	}
 }
@@ -215,48 +215,48 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 static void favicon_download_html_request_cb(struct request *request) {
 	gchar		*iconUri;
 	struct request	*request2 = NULL;
-	nodePtr		np = (nodePtr)request->user_data;
-	feedPtr		fp = (feedPtr)np->data;
+	nodePtr		node = (nodePtr)request->user_data;
+	feedPtr		feed = (feedPtr)node->data;
 	
-	fp->otherRequests = g_slist_remove(fp->otherRequests, request);
+	node->requests = g_slist_remove(node->requests, request);
 		
 	if(request->size > 0 && request->data != NULL) {
 		iconUri = html_discover_favicon(request->data, request->source);
-		if(iconUri != NULL) {
+		if(iconUri) {
 			request2 = download_request_new(NULL);
 			request2->source = iconUri;
 			request2->callback = &favicon_download_request_favicon_cb;
-			request2->user_data = np;
+			request2->user_data = node;
 			request2->flags++;
-			fp->otherRequests = g_slist_append(fp->otherRequests, request2);
+			node->requests = g_slist_append(node->requests, request2);
 			download_queue(request2);
 		}
 	}
-	if(request2 == NULL) {
+
+	if(request2) {
 		if(request->flags == 0)
-			favicon_download_html(np, 2);
+			favicon_download_html(node, 2);
 		else /* flags == 2 */
-			favicon_download_4(np);
+			favicon_download_4(node);
 	}
 }
 
-static void favicon_download_html(nodePtr np, int phase) {
-	gchar			*htmlurl;
-	gchar			*tmp;
-	struct request		*request;
-	feedPtr			fp = (feedPtr)np->data;
+static void favicon_download_html(nodePtr node, int phase) {
+	gchar		*htmlurl, *tmp;
+	struct request	*request;
+	feedPtr		feed = (feedPtr)node->data;
 	
 	/* try to download favicon */
 	if(phase == 0) {
-		htmlurl = g_strdup(feed_get_html_url(fp));
+		htmlurl = g_strdup(feed_get_html_url(feed));
 	} else {
-		htmlurl = g_strdup(feed_get_source(fp));
-		if(NULL != (tmp = strstr(htmlurl, "://"))) {
+		htmlurl = g_strdup(feed_get_source(feed));
+		if(tmp = strstr(htmlurl, "://")) {
 			tmp += 3;
 			/* first we try to download a favicon inside the current web path
 			   if the download fails the callback will try to strip parts of
 			   the URL to download a root favicon. */
-			if(NULL != (tmp = strrchr(tmp, '/'))) {
+			if(tmp = strrchr(tmp, '/')) {
 				*tmp = 0;
 			}
 		}
@@ -265,31 +265,30 @@ static void favicon_download_html(nodePtr np, int phase) {
 	request = download_request_new(NULL);
 	request->source = htmlurl;
 	request->callback = &favicon_download_html_request_cb;
-	request->user_data = np;
+	request->user_data = node;
 	request->flags = phase;
-	fp->otherRequests = g_slist_append(fp->otherRequests, request);	
+	node->requests = g_slist_append(node->requests, request);	
 	download_queue(request);
 	
 	debug_exit("favicon_download");
 }
 
-void favicon_download(nodePtr np) {
+void favicon_download(nodePtr node) {
 	
 	debug_enter("favicon_download");
 	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n",
-	                     node_get_title(np));
+	                     node_get_title(node));
 	
 	ui_mainwindow_set_status_bar(_("Updating feed icon for \"%s\""),
-	                             node_get_title(np));
+	                             node_get_title(node));
 
-	g_get_current_time(&((feedPtr)np->data)->lastFaviconPoll);
-	np->needsCacheSave = TRUE;
+	g_get_current_time(&((feedPtr)node->data)->lastFaviconPoll);
+	node->needsCacheSave = TRUE;
 	
-	if(feed_get_html_url(np->data) != NULL) {
-		favicon_download_html(np, 0);
-	} else {
-		favicon_download_html(np, 2);
-	}
+	if(feed_get_html_url(node->data))
+		favicon_download_html(node, 0);
+	else
+		favicon_download_html(node, 2);
 	
 	debug_exit("favicon_download");
 }

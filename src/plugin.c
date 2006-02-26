@@ -43,10 +43,10 @@ void plugin_mgmt_deinit(void) {
 	// FIXME
 }
 
-typedef	pluginInfo* (*infoFunc)();
+typedef	pluginPtr (*infoFunc)();
 
-static pluginInfo * plugin_mgmt_load(const gchar * filename) {
-	pluginInfo	*pi = NULL;
+static pluginPtr plugin_mgmt_load(const gchar * filename) {
+	pluginPtr	plugin = NULL;
 	GModule		*handle = NULL;
 	infoFunc	plugin_get_info;
 	gchar		*path;
@@ -61,29 +61,29 @@ static pluginInfo * plugin_mgmt_load(const gchar * filename) {
 
 	g_free(path);
 
-	if(NULL == handle) {
+	if(!handle) {
 		debug3(DEBUG_PLUGINS, "Cannot open %s%s (%s)!", PACKAGE_LIB_DIR G_DIR_SEPARATOR_S, filename, g_module_error());
 		return NULL;
 	}
 
 	if(g_module_symbol(handle, "plugin_get_info", (void*)&plugin_get_info)) {
 		/* load generic plugin info */
-		if(NULL == (pi = (*plugin_get_info)()))
+		if(!(plugin = (*plugin_get_info)()))
 			return NULL;
 
 		/* check plugin version */
-		if(PLUGIN_API_VERSION != pi->api_version) {
-			debug5(DEBUG_PLUGINS, "API version mismatch: \"%s\" (%s, type=%d) has version %d should be %d", pi->name, filename, pi->type, pi->api_version, PLUGIN_API_VERSION);
+		if(PLUGIN_API_VERSION != plugin->api_version) {
+			debug5(DEBUG_PLUGINS, "API version mismatch: \"%s\" (%s, type=%d) has version %d should be %d", plugin->name, filename, plugin->type, plugin->api_version, PLUGIN_API_VERSION);
 			return NULL;
 		} 
 
 		/* try to load specific plugin type symbols */
-		switch(pi->type) {
+		switch(plugin->type) {
 			case PLUGIN_TYPE_FEEDLIST_PROVIDER:
-				fl_plugin_load(pi, handle);
+				fl_plugin_load(plugin, handle);
 				break;
 			default:
-				debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", pi->name, filename, pi->type);
+				debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", plugin->name, filename, plugin->type);
 				return NULL;
 				break;
 		}
@@ -92,13 +92,13 @@ static pluginInfo * plugin_mgmt_load(const gchar * filename) {
 		g_module_close(handle);
 	}
 	
-	return pi;
+	return plugin;
 }
 
 GSList * plugin_mgmt_get_list(void) {
 	guint		filenamelen;
 	gchar		*filename;
-	pluginInfo	*pi = NULL;
+	pluginPtr	plugin = NULL;
 	GError		*error  = NULL;
 	GDir		*dir;
 
@@ -128,11 +128,11 @@ GSList * plugin_mgmt_get_list(void) {
 						   was successful try to invoke the specific plugin
 						   type loader. If the second loading went well add
 						   the plugin to the plugin list. */
-						if(NULL == (pi = plugin_mgmt_load(filename))) {
+						if(!(plugin = plugin_mgmt_load(filename))) {
 							debug1(DEBUG_VERBOSE, "-> %s no valid plugin!", filename);
 						} else {
-							debug3(DEBUG_PLUGINS, "-> %s (%s, type=%d)", pi->name, filename, pi->type);
-							plugins = g_slist_append(plugins, pi);
+							debug3(DEBUG_PLUGINS, "-> %s (%s, type=%d)", plugin->name, filename, plugin->type);
+							plugins = g_slist_append(plugins, plugin);
 						}
 					} else {
 						debug0(DEBUG_VERBOSE, "-> no library suffix");
@@ -175,69 +175,4 @@ gboolean plugin_get_active(guint id) {
 	return TRUE;
 }
 
-/* implementation of the node type interface */
 
-static void plugin_reset_update_counter(nodePtr node) { }
-
-static void plugin_request_update(nodePtr node, guint flags) {
-
-	if(NULL != FL_PLUGIN(np)->node_update)
-		FL_PLUGIN(np)->node_update(np, flags);
-}
-
-static void plugin_request_auto_update(nodePtr np) {
-
-	if(NULL != FL_PLUGIN(np)->node_auto_update)
-		FL_PLUGIN(np)->node_auto_update(np);
-}
-
-static void plugin_schedule_update(nodePtr np, request_cb callback, guint flags) {
-	feedPtr			fp = (feedPtr)np->data;
-	struct request		*request;
-	
-	debug1(DEBUG_CONF, "Scheduling %s to be updated", node_get_title(np));
-
-	if(plugin_can_be_updated(fp)) {
-		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(np));
-		request = download_request_new();
-		request->user_data = np;
-		request->callback = ui_plugin_process_update_result;
-		plugin_prepare_request(fp, request, flags);
-		download_queue(request);
-	} else {
-		debug0(DEBUG_CONF, "Update cancelled");
-	}
-}
-
-static void plugin_remove(nodePtr np) {
-
-	if(NULL != np->icon) {
-		g_object_unref(np->icon);
-		favicon_remove(np);
-	}
-
-	ui_notification_remove_feed(np);
-	ui_node_remove_node(np);
-	node_remove(np);
-}
-
-static gchar * plugin_render(nodePtr np) {
-
-	return g_strdup("Implement me: plugin_render()");
-}
-
-static nodeTypeInfo nti = {
-	feed_initial_load,	/* for simplicity reuse feed.c code */
-	feed_load,
-	feed_save,
-	feed_unload
-	plugin_reset_update_counter,
-	plugin_request_update,
-	plugin_request_auto_update,
-	plugin_schedule_update,
-	plugin_remove,
-	feed_mark_all_read,
-	plugin_render
-}
-
-nodeTypeInfo * plugin_get_node_type_info(void) { return &nti; }

@@ -26,86 +26,60 @@
 #include "node.h"
 #include "export.h"
 #include "ui/ui_feedlist.h"
-#include "fl_providers/fl_common.h"
 #include "fl_providers/fl_opml.h"
 #include "fl_providers/fl_opml-ui.h"
 #include "fl_providers/fl_opml-cb.h"
 #include "fl_providers/fl_plugin.h"
 
-static flPluginInfo fpi;
+static struct flPlugin fpi;
 
-void fl_opml_handler_initial_load(nodePtr np) {
+static void fl_opml_handler_import(nodePtr node) {
 	flNodeHandler	*handler;
 	gchar		*filename;
 
-	debug_enter("fl_opml_handler_initial_load");
+	debug_enter("fl_opml_handler_import");
 
 	/* create a new handler structure */
 	handler = g_new0(struct flNodeHandler_, 1);
-	handler->root = np;
+	handler->root = node;
 	handler->plugin = &fpi;
-	np->handler = handler;
-	np->icon = create_pixbuf("fl_opml.png");
+	node->handler = handler;
+	node->icon = create_pixbuf("fl_opml.png");
 
-	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", np->id);
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");
+	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", node->id);
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		import_OPML_feedlist(filename, np, np->handler, FALSE, TRUE);
+		import_OPML_feedlist(filename, node, node->handler, FALSE, TRUE);
 	} else {
 		g_warning("cannot open \"%s\"", filename);
-		np->available = FALSE;
+		node->available = FALSE;
 	}
 	g_free(filename);
 
-	debug_exit("fl_opml_handler_initial_load");
+	debug_exit("fl_opml_handler_import");
 }
 
-static void fl_opml_handler_new(nodePtr np) {
+static void fl_opml_handler_export(nodePtr node) {
 
-	ui_fl_opml_get_handler_source(np);
+	/* Nothing to do because the OPML source
+	   cannot be changed by the user */
 }
 
-/* to be used internally only (not available for user!) */
-static void fl_opml_node_remove(nodePtr np) {
+static void fl_opml_handler_new(nodePtr node) {
 
-	if(FST_FEED == np->type)
-		feed_remove_from_cache((feedPtr)np->data, np->id);
+	ui_fl_opml_get_handler_source(node);
 }
 
-static void fl_opml_handler_remove(nodePtr np) {
+static void fl_opml_handler_remove(nodePtr node) {
 	gchar		*filename;
 
 	/* step 1: delete all feed cache files */
-	node_foreach_child(np, fl_opml_node_remove);
+	node_foreach_child(node, node_remove);
 
 	/* step 2: delete plugin instance OPML cache file */
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
 	unlink(filename);
 	g_free(filename);
-}
-
-static void fl_opml_node_load(nodePtr np) {
-
-	if((FST_PLUGIN == np->type) && (NULL == np->handler))
-		fl_opml_handler_initial_load(np);
-	else
-		fl_common_node_load(np);
-}
-
-static void fl_opml_node_unload(nodePtr np) {
-
-	if(FST_PLUGIN == np->type) 
-		return;	/* Never unloading the plugin */
-
-	fl_common_node_unload(np);
-}
-
-static gchar *fl_opml_node_render(nodePtr np) {
-
-	if(FST_PLUGIN == np->type) 
-		return "FIXME: return something meaningful...";
-
-	return fl_common_node_render(np);
 }
 
 static void fl_opml_init(void) {
@@ -124,7 +98,7 @@ static void fl_opml_deinit(void) {
 
 /* feed list provider plugin definition */
 
-static flPluginInfo fpi = {
+static struct flPlugin fpi = {
 	FL_PLUGIN_API_VERSION,
 	"fl_opml",
 	"Planet/OPML Plugin",
@@ -133,17 +107,11 @@ static flPluginInfo fpi = {
 	fl_opml_deinit,
 	fl_opml_handler_new,
 	fl_opml_handler_remove,
-	fl_opml_node_load,
-	fl_opml_node_unload,
-	fl_common_node_save,
-	fl_opml_node_render,
-	fl_common_node_auto_update,
-	fl_common_node_update,
-	NULL,
-	NULL
+	fl_opml_handler_import,
+	fl_opml_handler_export
 };
 
-static pluginInfo pi = {
+static struct plugin pi = {
 	PLUGIN_API_VERSION,
 	"Planet/OPML Plugin",
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,

@@ -1,7 +1,7 @@
 /**
  * @file ns_blogChannel.c blogChannel namespace support
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include "ns_blogChannel.h"
 #include "common.h"
 #include "update.h"
-#include "feedlist.h"
+#include "feed.h"
 
 #define BLOGROLL_START		"<p><div class=\"blogchanneltitle\"><b>BlogRoll</b></div></p>"
 #define BLOGROLL_END		"" 
@@ -40,8 +40,8 @@
 #define TAG_MYSUBSCRIPTIONS	2
 
 struct requestData {
-	feedPtr		fp;	/* parent feed */
-	gint		tag;	/* metadata id we're downloading (see TAG_*) */
+	feedParserCtxtPtr	ctxt;	/**< feed parsing context */
+	gint			tag;	/**< metadata id we're downloading (see TAG_*) */
 };
 
 /* the spec at Userland http://backend.userland.com/blogChannelModule
@@ -141,9 +141,7 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 	}
 
 	if(NULL != buffer) {
-		// FIXME!!!
-		//feedlist_load_feed(requestData->fp);
-		g_warning("blogchannel code is broken!!!");
+		node_load(requestData->ctxt->node);
 		
 		tmp = NULL;		
 		switch(requestData->tag) {
@@ -159,25 +157,23 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 		switch(requestData->tag) {
 			case TAG_BLOGROLL:
 				addToHTMLBuffer(&tmp, BLOGROLL_END);
-				g_hash_table_insert(requestData->fp->tmpdata, g_strdup("bC:blogRoll"), tmp);
+				g_hash_table_insert(requestData->ctxt->tmpdata, g_strdup("bC:blogRoll"), tmp);
 				break;
 			case TAG_MYSUBSCRIPTIONS:
 				addToHTMLBuffer(&tmp, MYSUBSCR_END);
-				g_hash_table_insert(requestData->fp->tmpdata, g_strdup("bC:mySubscriptions"), tmp);
+				g_hash_table_insert(requestData->ctxt->tmpdata, g_strdup("bC:mySubscriptions"), tmp);
 				break;
 		}
 
 		buffer = NULL;
-		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:blink"));
-		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:blogRoll"));
-		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->fp->tmpdata, "bC:mySubscriptions"));
-		metadata_list_set(&(requestData->fp->metadata), "blogChannel", buffer);
-		// FIXME!!!
-		//requestData->fp->needsCacheSave = TRUE;	/* needed because we're processing after feed parsing */
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:blink"));
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:blogRoll"));
+		addToHTMLBuffer(&buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:mySubscriptions"));
+		metadata_list_set(&(requestData->ctxt->feed->metadata), "blogChannel", buffer);
+		requestData->ctxt->node->needsCacheSave = TRUE;	/* needed because we're processing after feed parsing */
 		g_free(buffer);
 		
-		// FIXME!!!
-		//feedlist_unload_feed(requestData->fp);
+		node_unload(requestData->ctxt->node);
 	}
 	g_free(requestData);
 }
@@ -189,11 +185,11 @@ static void getOutlineList(struct requestData *requestData, gchar *url) {
 	request->source = g_strdup(url);
 	request->callback = ns_blogChannel_download_request_cb;
 	request->user_data = requestData;
-	requestData->fp->otherRequests = g_slist_append(requestData->fp->otherRequests, request);
+	requestData->ctxt->node->requests = g_slist_append(requestData->ctxt->node->requests, request);
 	download_queue(request);
 }
 
-static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
+static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlChar			*string;
 	gchar			*buffer = NULL;
 	gchar			*output, *tmp;
@@ -203,12 +199,12 @@ static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
 
 	if(!xmlStrcmp("blogRoll", cur->name)) {	
 		requestData = g_new0(struct requestData, 1);
-		requestData->fp = fp;
+		requestData->ctxt = ctxt;
 		requestData->tag = TAG_BLOGROLL;
 		getOutlineList(requestData, string);
 	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
 		requestData = g_new0(struct requestData, 1);
-		requestData->fp = fp;
+		requestData->ctxt = ctxt;
 		requestData->tag = TAG_MYSUBSCRIPTIONS;
 		getOutlineList(requestData, string);
 	} else if(!xmlStrcmp("blink", cur->name)) {
@@ -227,6 +223,7 @@ static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
 }
 
 static void ns_blogChannel_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
+
 	g_hash_table_insert(prefixhash, "blogChannel", nsh);
 	g_hash_table_insert(urihash, "http://backend.userland.com/blogChannelModule", nsh);
 }

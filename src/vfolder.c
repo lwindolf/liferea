@@ -475,11 +475,6 @@ void vfolder_check_node(nodePtr node) {
 	}
 }
 
-void vfolder_remove(vfolderPtr vp) {
-
-	vfolder_free(vp);
-}
-
 /* called when a vfolder is processed by feed_free
    to get rid of the vfolder items */
 void vfolder_free(vfolderPtr vp) {
@@ -521,11 +516,11 @@ static void vfolder_unload(nodePtr node) { }
 static void vfolder_reset_update_counter(nodePtr node) { }
 static void vfolder_request_update(nodePtr node, guint flags) { }
 static void vfolder_request_auto_update(nodePtr np) { }
-static void vfolder_schedule_update(nodePtr np) { }
+static void vfolder_schedule_update(nodePtr np, guint flags) { }
 
 static void vfolder_remove(nodePtr np) {
 
-	node_remove(np);
+	vfolder_free(np->data);
 }
 
 static void vfolder_mark_all_read(nodePtr np) {
@@ -538,11 +533,11 @@ static gchar * vfolder_render(nodePtr np) {
 	return g_strdup("Implement me: vfolder_render()");
 }
 
-static nodeTypeInfo nti = {
+static struct nodeType nti = {
 	vfolder_initial_load,
 	vfolder_load,
 	vfolder_save,
-	vfolder_unload
+	vfolder_unload,
 	vfolder_reset_update_counter,
 	vfolder_request_update,
 	vfolder_request_auto_update,
@@ -550,6 +545,6 @@ static nodeTypeInfo nti = {
 	vfolder_remove,
 	vfolder_mark_all_read,
 	vfolder_render
-}
+};
 
-nodeTypeInfo * vfolder_get_node_type_info(void) { return &nti; }
+nodeTypePtr vfolder_get_node_type(void) { return &nti; }

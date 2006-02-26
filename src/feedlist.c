@@ -24,6 +24,8 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "node.h"
+#include "folder.h"
+#include "vfolder.h"
 #include "itemlist.h"
 #include "update.h"
 #include "conf.h"
@@ -286,9 +288,9 @@ void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
 	ui_feedlist_delete_prompt(selectedNode);
 }
 
-static void feedlist_request_update(nodePtr node) {
+static void feedlist_request_update(nodePtr node, guint flags) {
 
-	NODE(node)->request_update(node, FEED_REQ_PRIORITY_HIGH);
+	NODE(node)->request_update(node, flags);
 }
 
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -300,7 +302,7 @@ void on_popup_refresh_selected(gpointer callback_data, guint callback_action, Gt
 	}
 
 	if(download_is_online()) 
-		feedlist_request_update(node);
+		feedlist_request_update(node, FEED_REQ_PRIORITY_HIGH);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
@@ -308,7 +310,8 @@ void on_popup_refresh_selected(gpointer callback_data, guint callback_action, Gt
 void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
 
 	if(download_is_online()) 
-		feedlist_foreach(feedlist_request_update);
+		// FIXME: int -> pointer
+		feedlist_foreach_data(feedlist_request_update, (gpointer)FEED_REQ_PRIORITY_HIGH);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
@@ -359,7 +362,7 @@ static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
 	/* step 2: request saving for the root node and thereby
 	   forcing the root plugin to save the feed list structure */
-	FL_PLUGIN(rootNode)->node_save(rootNode);
+	FL_PLUGIN(rootNode)->handler_export(rootNode);
 	
 	feedlist_save_timer = 0;
 	return FALSE;
@@ -385,26 +388,21 @@ static void feedlist_initial_load(nodePtr node) {
 	NODE(node)->initial_load(node); 
 }
 
-static void feedlist_request_update(nodePtr node, guint flags) {
-
-	NODE(node)->request_update(node, flags);
-}
-
 static void feedlist_reset_update_counter(nodePtr node) {
 
 	NODE(node)->reset_update_counter(node);
 }
 
 void feedlist_init(void) {
-	flPluginInfo	*rootPlugin;
+	flPluginPtr	rootPlugin;
 
 	debug_enter("feedlist_init");
 	
 	/* 1. Register standard node types */
-	node_register_type(feed_get_node_info(), FST_FEED);
-	node_register_type(folder_get_node_info(), FST_FOLDER);
-	node_register_type(vfolder_get_node_info(), FST_VFOLDER);
-	node_register_type(plugin_get_node_info(), FST_PLUGIN);
+	node_register_type(feed_get_node_type(), FST_FEED);
+	node_register_type(folder_get_node_type(), FST_FOLDER);
+	node_register_type(vfolder_get_node_type(), FST_VFOLDER);
+	node_register_type(fl_plugin_get_node_type(), FST_PLUGIN);
 
 	/* 2. Set up a root node */
 	rootNode = node_new();

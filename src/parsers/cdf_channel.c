@@ -44,7 +44,7 @@
 static GHashTable *channelHash = NULL;
 
 /* method to parse standard tags for the channel element */
-static void parseCDFChannel(feedPtr fp, itemSetPtr sp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+static void parseCDFChannel(feedParserCtxtPtr ctxt, CDFChannelPtr cp, xmlNodePtr cur) {
 	gchar		*tmp, *tmp2, *tmp3;
 	itemPtr		ip;
 	
@@ -60,46 +60,46 @@ static void parseCDFChannel(feedPtr fp, itemSetPtr sp, CDFChannelPtr cp, xmlDocP
 			if(tmp == NULL)
 				tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
 			if(tmp != NULL) {
-				feed_set_image_url(fp, tmp);
+				feed_set_image_url(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
 			xmlChar *value = xmlGetProp(cur, BAD_CAST"HREF");
 			if(value != NULL) {
-				feed_set_html_url(fp, (gchar *)value);
+				feed_set_html_url(ctxt->feed, (gchar *)value);
 				xmlFree(value);
 			}
 
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"item"))) {
-			if(NULL != (ip = parseCDFItem(fp, cp, doc, cur))) {
+			if(NULL != (ip = parseCDFItem(ctxt->feed, cp, cur->doc, cur))) {
 				if(0 == item_get_time(ip))
 					item_set_time(ip, cp->time);
-				itemset_append_item(sp, ip);
+				itemset_append_item(ctxt->itemSet, ip);
 			}
 
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "title")) {
-			tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, TRUE));
+			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if(NULL != tmp) {
 				tmp = unhtmlize(tmp);
-				feed_set_title(fp, tmp);
+				node_set_title(ctxt->node, tmp);
 				g_free(tmp);
 			}
 			
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "abstract")) {
-			tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, TRUE));
+			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if(NULL != tmp) {
 				tmp =  convertToHTML(tmp);
-				feed_set_description(fp, tmp);
+				feed_set_description(ctxt->feed, tmp);
 				xmlFree(tmp);
 			}
 			
 		} else {		
 			tmp = g_ascii_strdown((gchar *)cur->name, -1);
 			if((tmp2 = g_hash_table_lookup(channelHash, tmp)) != NULL) {
-				tmp3 = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, TRUE));
+				tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 				if (tmp3 != NULL) {
-					fp->metadata = metadata_list_append(fp->metadata, tmp2, tmp3);
+					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, tmp2, tmp3);
 					g_free(tmp3);
 				}
 			}
@@ -112,7 +112,7 @@ static void parseCDFChannel(feedPtr fp, itemSetPtr sp, CDFChannelPtr cp, xmlDocP
 
 /* reads a CDF feed URL and returns a new channel structure (even if
    the feed could not be read) */
-static void cdf_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) {
+static void cdf_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	CDFChannelPtr 	cp;
 	
 	cp = g_new0(struct CDFChannel, 1);
@@ -135,7 +135,7 @@ static void cdf_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 		/* find first "real" channel tag */
 		while(cur != NULL) {
 			if((!xmlStrcasecmp(cur->name, BAD_CAST"channel"))) {
-				parseCDFChannel(fp, sp, cp, doc, cur);
+				parseCDFChannel(ctxt, cp, cur);
 				g_assert(NULL != cur);
 				break;
 			}
@@ -144,10 +144,10 @@ static void cdf_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		feed_set_default_update_interval(fp, -1);
+		feed_set_default_update_interval(ctxt->feed, -1);
 
-		if (cur != NULL)
-			feed_set_available(fp, TRUE);
+		if(cur != NULL)
+			feed_set_available(ctxt->feed, TRUE);
 		
 		g_free(cp);
 	} while (FALSE);

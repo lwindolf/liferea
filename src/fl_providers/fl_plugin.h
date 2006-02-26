@@ -54,10 +54,8 @@ enum {
 	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION	= (1<<7)	/**< plugin instance user created */
 };
 
-typedef struct flPluginInfo_ flPluginInfo;
-
 /** feed list plugin structure: defines a feed list plugin and it's methods and capabilities */
-struct flPluginInfo_ {
+typedef struct flPlugin {
 	unsigned int	api_version;
 
 	/** a unique feed list plugin identifier */
@@ -102,39 +100,24 @@ struct flPluginInfo_ {
 	 * is not a request to save the data of the attached nodes!
 	 */
 	void 		(*handler_export)(nodePtr np);
-
-	/**
-	 * This OPTIONAL callback is used for handling node
-	 * add requests resulting from user interaction. This
-	 * callback is mandatory for the root plugin! 
-	 */
-	void		(*node_add)(nodePtr np);
-
-	/** 
-	 * This OPTIONAL callback is used for handling node
-	 * removal requests resulting from user interaction.
-	 * This callback is mandatory for every plugin allowing
-	 * addition of nodes.
-	 */
-	void		(*node_remove)(nodePtr np);
-};
+} *flPluginPtr;
 
 typedef struct flNodeHandler_ flNodeHandler;
 
 /** feed list node handler (instance of a feed list plugin) */
 struct flNodeHandler_ {
-	flPluginInfo	*plugin;	/**< feed list plugin of this handler instance */
-	nodeTypeInfo	*type;		/**< node type implementation hook */
-	nodePtr		root;		/**< root node of this plugin instance */
+	flPluginPtr		plugin;	/**< feed list plugin of this handler instance */
+	nodeTypePtr		type;	/**< node type implementation hook */
+	nodePtr			root;	/**< root node of this plugin instance */
 };
 
 /** Use this to cast plugin instances from a node structure. */
 #define FL_PLUGIN(node) ((flNodeHandler *)(node->handler))->plugin
 
 /** Feed list plugins are to be declared with this macro. */
-#define DECLARE_FL_PLUGIN(plugininfo) \
-        G_MODULE_EXPORT flPluginInfo* fl_plugin_get_info() { \
-                return &plugininfo; \
+#define DECLARE_FL_PLUGIN(flPlugin) \
+        G_MODULE_EXPORT flPluginPtr fl_plugin_get_info() { \
+                return &flPlugin; \
         }
 
 /** 
@@ -142,32 +125,41 @@ struct flNodeHandler_ {
  *
  * @returns feed list root provider plugin
  */
-flPluginInfo * fl_plugins_get_root(void);
+flPluginPtr fl_plugins_get_root(void);
 
 /**
  * Loads a feed list provider plugin.
  *
- * @param pi		plugin info structure
+ * @param plugin	plugin info structure
  * @param handle	GModule handle
  */
-void fl_plugin_load(pluginInfo *pi, GModule *handle);
+void fl_plugin_load(pluginPtr plugin, GModule *handle);
 
 /**
  * Plugin specific feed list import parsing.
  *
- * @param np	the node to import
+ * @param node	the node to import
  * @param cur	DOM node to parse
  */
-void fl_plugin_import(struct node *np, xmlNodePtr cur); 
+void fl_plugin_import(nodePtr node, xmlNodePtr cur); 
 
 /**
  * Plugin specific feed list export.
  *
- * @param np	the node to export
+ * @param node	the node to export
  * @param cur	DOM node to write to
  */
-void fl_plugin_export(struct node *np, xmlNodePtr cur); 
+void fl_plugin_export(nodePtr node, xmlNodePtr cur); 
 
+/**
+ * Launches a plugin creation dialog. The new plugin
+ * instance will be added to the given node.
+ *
+ * @param node	the parent node
+ */
 void ui_fl_plugin_type_dialog(nodePtr np);
+
+/* implementation of the node type interface */
+nodeTypePtr fl_plugin_get_node_type(void);
 
 #endif

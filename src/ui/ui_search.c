@@ -84,10 +84,8 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 
 	/* remove last search */
 	ui_itemlist_clear();
-	if(NULL != searchResult) {
-		vfolder_remove((vfolderPtr)searchResult->data);
-		node_free(searchResult);
-	}
+	if(NULL != searchResult) 
+		node_remove(searchResult);
 
 	/* create new search */
 	vp = vfolder_new();

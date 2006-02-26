@@ -1,7 +1,7 @@
 /**
  * @file fl_plugin.c generic feedlist provider implementation
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,27 +22,29 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include "debug.h"
+#include "node.h"
+#include "folder.h"
 #include "plugin.h"
 #include "support.h"
 #include "fl_providers/fl_plugin.h"
 #include "fl_providers/fl_plugin-ui.h"
 
-flPluginInfo * fl_plugins_get_root(void) {
+flPluginPtr fl_plugins_get_root(void) {
 	gboolean	found = FALSE;
-	flPluginInfo	*fpi;
-	pluginInfo	*pi;
+	flPluginPtr	flPlugin;
+	pluginPtr	plugin;
 	GSList		*iter;
 
 	debug_enter("fl_plugins_get_root");
 
 	/* scan for root flag and return plugin if found */
 	iter = plugin_mgmt_get_list();
-	while(NULL != iter) {
-		pi = (pluginInfo *)iter->data;
-		if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
-			fpi = pi->symbols;
-			debug2(DEBUG_VERBOSE, "%s capabilities=%ld", fpi->name, fpi->capabilities);
-			if(0 != (fpi->capabilities & FL_PLUGIN_CAPABILITY_IS_ROOT)) {
+	while(iter) {
+		plugin = (pluginPtr)iter->data;
+		if(plugin->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
+			flPlugin = plugin->symbols;
+			debug2(DEBUG_VERBOSE, "%s capabilities=%ld", flPlugin->name, flPlugin->capabilities);
+			if(0 != (flPlugin->capabilities & FL_PLUGIN_CAPABILITY_IS_ROOT)) {
 				found = TRUE;
 				break;
 			}
@@ -55,66 +57,67 @@ flPluginInfo * fl_plugins_get_root(void) {
 
 	debug_exit("fl_plugins_get_root");
 
-	return fpi;
+	return flPlugin;
 }
 
-typedef	flPluginInfo* (*infoFunc)();
+typedef	flPluginPtr (*infoFunc)();
 
-void fl_plugin_load(pluginInfo *pi, GModule *handle) {
-	flPluginInfo	*fpi;
+void fl_plugin_load(pluginPtr plugin, GModule *handle) {
+	flPluginPtr	flPlugin;
 	infoFunc	fl_plugin_get_info;
 
 	if(g_module_symbol(handle, "fl_plugin_get_info", (void*)&fl_plugin_get_info)) {
 		/* load feed list provider plugin info */
-		if(NULL == (fpi = (*fl_plugin_get_info)()))
+		if(NULL == (flPlugin = (*fl_plugin_get_info)()))
 			return;
 	}
 
 	/* check feed list provider plugin version */
-	if(FL_PLUGIN_API_VERSION != fpi->api_version) {
-		debug3(DEBUG_PLUGINS, "feed list API version mismatch: \"%s\" has version %d should be %d\n", fpi->name, fpi->api_version, FL_PLUGIN_API_VERSION);
+	if(FL_PLUGIN_API_VERSION != flPlugin->api_version) {
+		debug3(DEBUG_PLUGINS, "feed list API version mismatch: \"%s\" has version %d should be %d\n", flPlugin->name, flPlugin->api_version, FL_PLUGIN_API_VERSION);
 		return;
 	} 
 
 	/* check if all mandatory symbols are provided */
-	if(!((NULL != fpi->plugin_init) &&
-	     (NULL != fpi->plugin_deinit)))
+	if(!(flPlugin->plugin_init &&
+	     flPlugin->plugin_deinit)) {
+		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", flPlugin->name);
 		return;
+	}
 
-	debug1(DEBUG_PLUGINS, "found feed list plugin: %s", fpi->name);
+	debug1(DEBUG_PLUGINS, "found feed list plugin: %s", flPlugin->name);
 
 	/* allow the plugin to initialize */
-	(*fpi->plugin_init)();
+	(*flPlugin->plugin_init)();
 
 	/* assign the symbols so the caller will accept the plugin */
-	pi->symbols = fpi;
+	plugin->symbols = flPlugin;
 }
 
-void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
-	GSList		*iter;
-	flPluginInfo	*fpi;
-	pluginInfo	*pi;
+void fl_plugin_import(nodePtr node, xmlNodePtr cur) {
+	flPluginPtr	flPlugin;
+	pluginPtr	plugin;
 	xmlChar		*typeStr = NULL;
 	gboolean	found = FALSE;
 
 	debug_enter("fl_plugin_import");
 
-	if(NULL != (typeStr = xmlGetProp(cur, BAD_CAST"pluginType"))) {
-		debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, np->id);
+	if(typeStr = xmlGetProp(cur, BAD_CAST"pluginType")) {
+		debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, node->id);
 
-		np->available = FALSE;
+		node->available = FALSE;
 
 		/* scan for matching plugin and create new instance */
-		iter = plugin_mgmt_get_list();
-		while(NULL != iter) {
-			pi = (pluginInfo *)iter->data;
-			if(pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
-				fpi = pi->symbols;
-				if(!strcmp(fpi->id, typeStr)) {
-					np->type = FST_PLUGIN;
-					np->available = TRUE;
-					np->handler = NULL;	/* not handled by parent plugin */
-					fpi->handler_import(np);
+		GSList *iter = plugin_mgmt_get_list();
+		while(iter) {
+			plugin = (pluginPtr)iter->data;
+			if(plugin->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
+				flPlugin = plugin->symbols;
+				if(!strcmp(flPlugin->id, typeStr)) {
+					node->type = FST_PLUGIN;
+					node->available = TRUE;
+					node->handler = NULL;	/* not handled by parent plugin */
+					flPlugin->handler_import(node);
 					found = TRUE;
 				}
 				iter = g_slist_next(iter);
@@ -124,18 +127,18 @@ void fl_plugin_import(nodePtr np, xmlNodePtr cur) {
 		if(!found)
 			g_warning("Could not find plugin handler for type \"%s\"\n!", typeStr);
 	} else {
-		g_warning("No plugin type given for node \"%s\"!", node_get_title(np));
+		g_warning("No plugin type given for node \"%s\"!", node_get_title(node));
 	}
 
-	debug_exit("flplugin_import");
+	debug_exit("fl_plugin_import");
 }
 
-void fl_plugin_export(nodePtr np, xmlNodePtr cur) {
+void fl_plugin_export(nodePtr node, xmlNodePtr cur) {
 
 	debug_enter("fl_plugin_export");
 
-	debug2(DEBUG_CACHE, "plugin export for node %s, id=%s\n", np->title, FL_PLUGIN(np)->id);
-	xmlNewProp(cur, BAD_CAST"pluginType", BAD_CAST(FL_PLUGIN(np)->id));
+	debug2(DEBUG_CACHE, "plugin export for node %s, id=%s\n", node->title, FL_PLUGIN(node)->id);
+	xmlNewProp(cur, BAD_CAST"pluginType", BAD_CAST(FL_PLUGIN(node)->id));
 
 	debug_exit("fl_plugin_export");
 }
@@ -146,46 +149,45 @@ static void on_fl_plugin_type_selected(GtkDialog *dialog, gint response_id, gpoi
 	GtkTreeSelection	*selection;
 	GtkTreeModel		*model;
 	GtkTreeIter		iter;
-	nodePtr 		np = (nodePtr)user_data;
-	flPluginInfo		*fpi;
+	nodePtr 		node = (nodePtr)user_data;
+	flPluginPtr		flPlugin;
 
 	if(response_id == GTK_RESPONSE_OK) {
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(GTK_WIDGET(dialog), "plugin_type_list")));
 		g_assert(NULL != selection);
 		gtk_tree_selection_get_selected(selection, &model, &iter);
-		gtk_tree_model_get(model, &iter, 1, &fpi, -1);
-		fpi->handler_new(np);
+		gtk_tree_model_get(model, &iter, 1, &flPlugin, -1);
+		flPlugin->handler_new(node);
 	}
 	
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-void ui_fl_plugin_type_dialog(nodePtr np) {
+void ui_fl_plugin_type_dialog(nodePtr node) {
 	GtkWidget 		*dialog, *treeview;
 	GtkTreeStore		*treestore;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
 	GtkTreeIter		treeiter;
-	GSList		*iter;
-	flPluginInfo	*fpi;
-	pluginInfo	*pi;
+	flPluginPtr	flPlugin;
+	pluginPtr	plugin;
 
 	/* set up the dialog */
 	dialog = create_fl_plugin_type_dialog();
 
 	treestore = gtk_tree_store_new(2, G_TYPE_STRING, G_TYPE_POINTER);
 	/* add available feed list plugins to treestore */
-	iter = plugin_mgmt_get_list();
-	while(NULL != iter) {
-		pi = (pluginInfo *)iter->data;
-		fpi = pi->symbols;
-		if((pi->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) &&
-		   (fpi->capabilities & FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION)) {
+	GSList *iter = plugin_mgmt_get_list();
+	while(iter) {
+		plugin = (pluginPtr)iter->data;
+		flPlugin = plugin->symbols;
+		if((plugin->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) &&
+		   (flPlugin->capabilities & FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION)) {
 
 			gtk_tree_store_append(treestore, &treeiter, NULL);
 			gtk_tree_store_set(treestore, &treeiter, 
-			                              0, pi->name, 
-			                              1, fpi,
+			                              0, plugin->name, 
+			                              1, flPlugin,
 						      -1);
 		}
 		iter = g_slist_next(iter);
@@ -205,7 +207,55 @@ void ui_fl_plugin_type_dialog(nodePtr np) {
 
 	g_signal_connect(G_OBJECT(dialog), "response",
 			 G_CALLBACK(on_fl_plugin_type_selected), 
-			 (gpointer)np);
+			 (gpointer)node);
 
 	gtk_widget_show_all(dialog);
+}
+
+/* implementation of the node type interface */
+
+static void fl_plugin_request_update(nodePtr node, guint flags) {
+
+	// FIXME:
+	//if(NULL != FL_PLUGIN(node)->node_update)
+	//	FL_PLUGIN(node)->node_update(node, flags);
+}
+
+static void fl_plugin_request_auto_update(nodePtr np) {
+
+	// FIXME:
+	//if(NULL != FL_PLUGIN(node)->node_auto_update)
+	//	FL_PLUGIN(node)->node_auto_update(node);
+}
+
+static void fl_plugin_schedule_update(nodePtr node, guint flags) {
+
+	// FIXME:
+}
+
+static void fl_plugin_remove(nodePtr np) {
+
+	ui_notification_remove_feed(np);
+	ui_node_remove_node(np);
+	node_remove(np);
+}
+
+static gchar * fl_plugin_render(nodePtr np) {
+
+	return g_strdup("Implement me: plugin_render()");
+}
+
+nodeTypePtr fl_plugin_get_node_type(void) {
+	nodeTypePtr	nodeType;
+
+	/* derive the plugin node type from the folder node type */
+	nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
+	memcpy(nodeType, folder_get_node_type, sizeof(struct nodeType));
+	nodeType->request_update	= fl_plugin_request_update;
+	nodeType->request_auto_update	= fl_plugin_request_auto_update;
+	nodeType->schedule_update	= fl_plugin_schedule_update;
+	nodeType->remove		= fl_plugin_remove;
+	nodeType->render		= fl_plugin_render;
+
+	return nodeType; 
 }

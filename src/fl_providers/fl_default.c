@@ -30,7 +30,6 @@
 #include "debug.h"
 #include "update.h"
 #include "plugin.h"
-#include "fl_providers/fl_common.h"
 #include "fl_providers/fl_default.h"
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_feed.h"
@@ -40,11 +39,11 @@
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;
 
-static flPluginInfo fpi;
+static struct flPlugin fpi;
 
 static void ui_feedlist_dbus_connect ();
 
-static void fl_default_handler_import(nodePtr np) {
+static void fl_default_handler_import(nodePtr node) {
 	flNodeHandler	*handler;
 	gchar		*filename;
 
@@ -52,9 +51,9 @@ static void fl_default_handler_import(nodePtr np) {
 
 	/* create a new handler structure */
 	handler = g_new0(struct flNodeHandler_, 1);
-	handler->root = np;
+	handler->root = node;
 	handler->plugin = &fpi;
-	np->handler = handler;
+	node->handler = handler;
 
 	/* start the import */
 	feedlistImport = TRUE;
@@ -65,7 +64,7 @@ static void fl_default_handler_import(nodePtr np) {
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
 		filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
-	import_OPML_feedlist(filename, np, handler, FALSE, TRUE);
+	import_OPML_feedlist(filename, node, handler, FALSE, TRUE);
 	g_free(filename);
 	feedlistImport = FALSE;
 
@@ -80,7 +79,7 @@ static void fl_default_handler_import(nodePtr np) {
 	debug_exit("fl_default_handler_import");
 }
 
-static void fl_default_handler_export(void) {
+static void fl_default_handler_export(nodePtr node) {
 	gchar *filename, *filename_real;
 	
 	if(feedlistImport)
@@ -101,6 +100,7 @@ static void fl_default_handler_export(void) {
 	debug_exit("fl_default_handler_export");
 }
 
+// FIXME: remove me!
 static void fl_default_node_add(nodePtr np) {
 
 	switch(np->type) {
@@ -118,25 +118,6 @@ static void fl_default_node_add(nodePtr np) {
 			break;
 		default:
 			g_warning("adding unsupported type node!");
-			break;
-	}
-}
-
-static void fl_default_node_remove(nodePtr np) {
-
-	switch(np->type) {
-		case FST_FEED:
-		case FST_VFOLDER:
-			feed_remove_from_cache((feedPtr)np->data, np->id);
-			break;
-		case FST_FOLDER:
-			/* nothing to do */
-			break;
-		case FST_PLUGIN:
-			/* should never, never, never happen... */
-			break;
-		default:
-			g_warning("removing unsupported type node!");
 			break;
 	}
 }
@@ -259,7 +240,6 @@ ui_feedlist_dbus_connect ()
 /* root node type definition */
 
 static void fl_default_init(void) {
-	nodeTypeInfo	*type;
 
 	debug_enter("fl_default_init");
 
@@ -275,7 +255,7 @@ static void fl_default_deinit(void) {
 
 /* feed list provider plugin definition */
 
-static flPluginInfo fpi = {
+static struct flPlugin fpi = {
 	FL_PLUGIN_API_VERSION,
 	"fl_default",
 	"Static Feed List",
@@ -289,15 +269,10 @@ static flPluginInfo fpi = {
 	NULL,
 	NULL,
 	fl_default_handler_import,
-	fl_default_handler_export,
-	fl_common_node_render,
-	fl_common_node_auto_update,
-	fl_common_node_update,
-	fl_default_node_add,
-	fl_default_node_remove
+	fl_default_handler_export
 };
 
-static pluginInfo pi = {
+static struct plugin pi = {
 	PLUGIN_API_VERSION,
 	"Static Feed List Plugin",
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,

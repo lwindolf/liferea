@@ -133,7 +133,13 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
 	return buffer;
 }
 
-static void opml_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) {
+/**
+ * Parses given data as an OPML directory
+ *
+ * @param ctxt		the feed parser context
+ * @param cur		the root node of the XML document
+ */
+static void opml_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlNodePtr	child;
 	itemPtr		ip;
 	gchar		*buffer, *line, *tmp;
@@ -147,8 +153,8 @@ static void opml_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur)
 		   !xmlStrcmp(cur->name, BAD_CAST"outlineDocument")) {
 		   	/* nothing */
 		} else {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find OPML header!</p>"));
-			xmlFreeDoc(doc);
+			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not find OPML header!</p>"));
+			xmlFreeDoc(ctxt->doc);
 			error = 1;
 			break;			
 		}
@@ -166,7 +172,7 @@ static void opml_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur)
 				while(child != NULL) {
 					for(i = 0; i < OPML_MAX_TAG; i++) {
 						if(!xmlStrcmp(child->name, (const xmlChar *)opmlTagList[i])) {
-							tmp = utf8_fix(xmlNodeListGetString(doc, child->xmlChildrenNode, 1));						
+							tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, child->xmlChildrenNode, 1));
 							if(NULL != tmp) {
 								g_free(headTags[i]);
 								headTags[i] = tmp;
@@ -194,7 +200,7 @@ static void opml_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur)
 						item_set_description(ip, buffer);
 						g_free(buffer);
 						ip->readStatus = TRUE;
-						itemset_append_item(sp, ip);
+						itemset_append_item(ctxt->itemSet, ip);
 					}
 					child = child->next;
 				}
@@ -204,21 +210,21 @@ static void opml_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur)
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		feed_set_update_interval(fp, -1);
-		if(NULL == (fp->title = headTags[OPML_TITLE]))
-			fp->title = g_strdup(fp->source);
+		feed_set_update_interval(ctxt->feed, -1);
+		if(NULL == (ctxt->title = headTags[OPML_TITLE]))
+			ctxt->title = g_strdup(ctxt->feed->source);
 		
 		if(0 == error) {
 			/* prepare HTML output */
 			buffer = NULL;
 			addToHTMLBuffer(&buffer, HEAD_START);	
 			
-			line = g_strdup_printf(HEAD_LINE, _("Feed:"), fp->title);
+			line = g_strdup_printf(HEAD_LINE, _("Feed:"), ctxt->title);
 			addToHTMLBuffer(&buffer, line);
 			g_free(line);
 
-			if(NULL != fp->source) {
-				tmp = g_strdup_printf("<a href=\"%s\">%s</a>", fp->source, fp->source);
+			if(NULL != ctxt->feed->source) {
+				tmp = g_strdup_printf("<a href=\"%s\">%s</a>", ctxt->feed->source, ctxt->feed->source);
 				line = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
 				g_free(tmp);
 				addToHTMLBuffer(&buffer, line);
@@ -235,10 +241,10 @@ static void opml_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur)
 			FEED_FOOT_WRITE(buffer, "owner email",		headTags[OPML_OWNEREMAIL]);
 			addToHTMLBuffer(&buffer, FEED_FOOT_TABLE_END);
 			
-			feed_set_description(fp, buffer);
+			feed_set_description(ctxt->feed, buffer);
 			g_free(buffer);
 			
-			feed_set_available(fp, TRUE);
+			feed_set_available(ctxt->feed, TRUE);
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}

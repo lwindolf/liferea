@@ -61,7 +61,7 @@ GHashTable	*ns_rss_ns_uri_table = NULL;
 
 /* This function parses the metadata for the channel. This does not
    parse the items. The items are parsed elsewhere. */
-static void parseChannel(feedPtr fp, xmlNodePtr cur) {
+static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar			*tmp, *tmp2, *tmp3;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
@@ -83,7 +83,7 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
 				pf = nsh->parseChannelTag;
 				if(NULL != pf)
-					(*pf)(fp, cur);
+					(*pf)(ctxt->feed, cur);
 				cur = cur->next;
 				continue;
 			} else {
@@ -95,7 +95,7 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 		if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
 			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if(tmp3 != NULL) {
-				fp->metadata = metadata_list_append(fp->metadata, tmp2, tmp3);
+				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
 		}	
@@ -103,37 +103,37 @@ static void parseChannel(feedPtr fp, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
-				fp->metadata = metadata_list_append(fp->metadata, "pubDate", tmp);
-				feed_set_time(fp, parseRFC822Date(tmp));
+				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
+				feed_set_time(ctxt->feed, parseRFC822Date(tmp));
 				g_free(tmp);
 			}
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
  			if(NULL != tmp) {
-				feed_set_default_update_interval(fp, atoi(tmp));
-				feed_set_update_interval(fp, atoi(tmp));
+				feed_set_default_update_interval(ctxt->feed, atoi(tmp));
+				feed_set_update_interval(ctxt->feed, atoi(tmp));
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
  			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
-				feed_set_title(fp, tmp);
+				node_set_title(ctxt->node, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
  			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
-				feed_set_html_url(fp, tmp);
+				feed_set_html_url(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
  			tmp = convertToHTML(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
  			if(NULL != tmp) {
-				feed_set_description(fp, tmp);
+				feed_set_description(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 		}
@@ -214,16 +214,20 @@ static gchar* parseImage(xmlNodePtr cur) {
 	return NULL;
 }
 
-/* reads a RSS feed URL and returns a new channel structure (even if
-   the feed could not be read) */
-static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) {
+/**
+ * Parses given data as an RSS/RDF channel
+ *
+ * @param ctxt		the feed parser context
+ * @param cur		the root node of the XML document
+ */
+static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlNodePtr	item;
 	itemPtr 	ip;
 	gchar		*tmp;
 	short 		rdf = 0;
 	int 		error = 0;
 	
-	feed_set_time(fp, time(NULL));
+	feed_set_time(ctxt->feed, time(NULL));
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 		cur = cur->xmlChildrenNode;
@@ -236,8 +240,7 @@ static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 		/* explicitly no "cur = cur->xmlChildrenNode;" ! */
 		rdf = 0;
 	} else {
-		addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find RDF/RSS header!</p>"));
-		xmlFreeDoc(doc);
+		addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not find RDF/RSS header!</p>"));
 		error = 1;
 	}
 
@@ -246,16 +249,13 @@ static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 			cur = cur->next;
 		}
 		
-		while(cur != NULL) {
-			if(NULL == cur->name) {
-				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
-				cur = cur->next;
+		while(cur) {
+			if(!cur->name) 
 				continue;
-			}
 
 			if((!xmlStrcmp(cur->name, BAD_CAST"channel")) || 
 			   (!xmlStrcmp(cur->name, BAD_CAST"Channel"))) {
-				parseChannel(fp, cur);
+				parseChannel(ctxt, cur);
 				g_assert(NULL != cur);
 				if(0 == rdf)
 					cur = cur->xmlChildrenNode;
@@ -269,7 +269,7 @@ static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 		/* This ends up being the thing with the items, (and images/textinputs for RDF) */
 
 		/* parse channel contents */
-		while(cur != NULL) {
+		while(cur) {
 			if(cur->type != XML_ELEMENT_NODE || NULL == cur->name) {
 				cur = cur->next;
 				continue;
@@ -278,7 +278,7 @@ static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 			/* save link to channel image */
 			if((!xmlStrcmp(cur->name, BAD_CAST"image"))) {
 				tmp = parseImage(cur);
-				feed_set_image_url(fp, tmp);
+				feed_set_image_url(ctxt->feed, tmp);
 				g_free(tmp);
 				
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"textinput")) ||
@@ -287,25 +287,25 @@ static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 				   only one text[iI]nput per channel and parsing the rdf:ressource
 				   one should not harm */
 				if(NULL != (tmp = parseTextInput(cur)))
-					fp->metadata = metadata_list_append(fp->metadata, "textInput", tmp);
+					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "textInput", tmp);
 				g_free(tmp);
 				
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"items"))) { /* RSS 1.1 */
 				item = cur->xmlChildrenNode;
-				while(NULL != item) {
-					if(NULL != (ip = parseRSSItem(fp, item))) {
+				while(item) {
+					if(ip = parseRSSItem(ctxt->feed, item)) {
 						if(0 == item_get_time(ip))
-							item_set_time(ip, feed_get_time(fp));
-						itemset_append_item(sp, ip);
+							item_set_time(ip, feed_get_time(ctxt->feed));
+						itemset_append_item(ctxt->itemSet, ip);
 					}
 					item = item->next;
 				}
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"item"))) { /* RSS 1.0, 2.0 */
 				/* collect channel items */
-				if(NULL != (ip = parseRSSItem(fp, cur))) {
+				if(ip = parseRSSItem(ctxt->feed, cur)) {
 					if(0 == item_get_time(ip))
-						item_set_time(ip, feed_get_time(fp));
-					itemset_append_item(sp, ip);
+						item_set_time(ip, feed_get_time(ctxt->feed));
+					itemset_append_item(ctxt->itemSet, ip);
 				}
 				
 			}
@@ -314,7 +314,7 @@ static void rss_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur) 
 	}
 	
 	if(0 == error) {
-		feed_set_available(fp, TRUE);
+		feed_set_available(ctxt->feed, TRUE);
 	} else {
 		ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 	}

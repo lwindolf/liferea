@@ -1,7 +1,7 @@
 /**
  * @file plugin.h Liferea plugin implementation
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,19 +42,17 @@ enum {
 	PLUGIN_TYPE_MAX
 };
 
-typedef struct pluginInfo_ pluginInfo;
-
-struct pluginInfo_ {
+typedef struct plugin {
 	unsigned int	api_version;
 	gchar 		*name;
 	guint		type;			/* plugin type (e.g. renderer, parser or feed list provider) */
 	//gchar		*description;		/* for plugin managment */
 	void		*symbols;		/* plugin type specific symbol table */
-};
+} *pluginPtr;
 
-#define DECLARE_PLUGIN(pi) \
-	G_MODULE_EXPORT pluginInfo* plugin_get_info() { \
-		return &pi; \
+#define DECLARE_PLUGIN(plugin) \
+	G_MODULE_EXPORT pluginPtr plugin_get_info() { \
+		return &plugin; \
 	}
 
 /**

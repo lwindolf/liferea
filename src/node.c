@@ -26,6 +26,8 @@
 #include "favicon.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "folder.h"
+#include "vfolder.h"
 #include "update.h"
 #include "debug.h"
 #include "support.h"
@@ -33,12 +35,12 @@
 
 static GHashTable *nodeTypes = NULL;
 
-void node_register_type(nodeTypeInfo *info, guint type) {
+void node_register_type(nodeTypePtr nodeType, guint type) {
 
 	if(!nodeTypes)
 		nodeTypes = g_hash_table_new(g_direct_hash, g_int_equal);
 
-	g_hash_table_insert(nodeTypes, (gpointer)info);
+	g_hash_table_insert(nodeTypes, (gpointer)type, (gpointer)nodeType);
 }
 
 /* returns a unique node id */
@@ -252,25 +254,25 @@ guint node_str_to_type(const gchar *str) {
 	return FST_INVALID;
 }
 
-static nodeTypeInfo * node_get_type_info(guint type) {
-	nodeTypeInfo	*info;
+static nodeTypePtr node_get_type_info(guint type) {
+	nodeTypePtr nodeType;
 
 	switch(type) {
 		case FST_FEED:
-			info = feed_get_node_info();
+			nodeType = feed_get_node_type();
 			break;
 		case FST_PLUGIN:
-			info = plugin_get_node_info();
+			nodeType = fl_plugin_get_node_type();
 			break;
 		case FST_FOLDER:
-			info = folder_get_node_info();
+			nodeType = folder_get_node_type();
 			break;
 		case FST_VFOLDER:
-			info = vfolder_get_node_info();
+			nodeType = vfolder_get_node_type();
 			break;
 	}
 
-	return info;
+	return nodeType;
 }
 
 /* Interactive node adding (e.g. feed menu->new subscription), 
@@ -292,7 +294,7 @@ void node_request_interactive_add(guint type) {
 	child->type = type;	// FIXME: remove me
 	child->handler = parent->handler;
 	child->handler->type = node_get_type_info(type);
-	FL_PLUGIN(parent)->node_add(child);
+	node_add(child); // FIXME
 
 	debug_exit("node_request_interactive_add");
 }
@@ -308,16 +310,16 @@ void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar
 	// FIXME: prevent adding when plugin doesn't allow it!
 
 	g_assert(NULL != source);
-	feed = feed_new(source, title?title:_("New Subscription"), filter);
+	feed = feed_new(source, filter);
 
 	if(!node)
 		node = node_new();
 
-	node_set_title(node, feed_get_title(feed));
+	node_set_title(node, title?title:_("New Subscription"));
 	node_add_data(node, FST_FEED, (gpointer)feed);
 	node_add(node);
 
-	node_schedule_update(node, ui_feed_process_update_result, flags);
+	node_schedule_update(node, flags);
 
 	debug_exit("node_request_automatic_add");
 }
@@ -341,7 +343,7 @@ void node_initial_load(nodePtr node) {
 }
 
 void node_load(nodePtr node) {
-	NODE(node)>load(node);
+	NODE(node)->load(node);
 }
 
 void node_save(nodePtr node) {
@@ -358,7 +360,22 @@ void node_remove(nodePtr node) {
 
 	g_assert(0 != (FL_PLUGIN(node)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
 
-	np->parent->children = g_slist_remove(np->parent->children, np);
+	node->parent->children = g_slist_remove(node->parent->children, node);
+
+	/* Don't free active feed requests here, because they might still
+	   be processed in the update queues! Abandoned requests are
+	   free'd in feed_process. They must be freed in the main thread
+	   for locking reasons. */
+	if(node->updateRequest)
+		node->updateRequest->callback = NULL;
+	
+	/* same goes for other requests */
+	GSList *iter = node->requests;
+	while(NULL != iter) {
+		((struct request *)iter->data)->callback = NULL;
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(node->requests);
 
 	node_unload(node);
 	NODE(node)->remove(node);
@@ -373,8 +390,24 @@ void node_mark_all_read(nodePtr node) {
 		NODE(node)->mark_all_read(node);
 }
 
-void node_render(nodePtr node) {
-	NODE(node)->render(node);
+gchar * node_render(nodePtr node) {
+	return NODE(node)->render(node);
+}
+
+void node_reset_update_counter(nodePtr node) {
+	NODE(node)->reset_update_counter(node);
+}
+
+void node_request_auto_update(nodePtr node) {
+	NODE(node)->request_auto_update(node);
+}
+
+void node_request_update(nodePtr node, guint flags) {
+	NODE(node)->request_update(node, flags);
+}
+
+void node_schedule_update(nodePtr node, guint flags) {
+	NODE(node)->schedule_update(node, flags);
 }
 
 /* node attributes encapsulation */

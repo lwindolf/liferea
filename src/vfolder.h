@@ -53,8 +53,6 @@ void	vfolder_init(void);
  */
 vfolderPtr vfolder_new(void);
 
-void vfolder_remove(vfolderPtr vp);
-
 /**
  * Vfolder specific feed list import parsing.
  *
@@ -156,6 +154,6 @@ void	vfolder_remove_item(itemPtr ip);
 void	vfolder_free(vfolderPtr vp);
 
 /* implementation of the node type interface */
-struct nodeTypeInfo * vfolder_get_node_type_info(void);
+struct nodeType * vfolder_get_node_type(void);
 
 #endif

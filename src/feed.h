@@ -55,6 +55,23 @@ enum cache_limit {
 	CACHE_UNLIMITED = -2,
 };
 
+/** Holds all information used on feed parsing time */
+typedef struct feedParserCtxt {
+	struct feed	*feed;		/**< the feed to be parsed */
+	struct node	*node;		/**< the node the feed belongs to */
+	struct itemSet	*itemSet;	/**< the item set to fill */
+
+	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
+
+	gchar		*title;		/**< resulting feed/channel title */
+
+	gchar		*data;		/**< data buffer to parse */
+	gint		dataLength;	/**< length of the data buffer */
+
+	xmlDocPtr	doc;		/**< the parsed data buffer */
+	gboolean	failed;		/**< TRUE if parsing failed because feed type could not be detected */
+} *feedParserCtxtPtr;
+
 /** Common structure to hold all information about a single feed. */
 typedef struct feed {
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
@@ -64,13 +81,11 @@ typedef struct feed {
 	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
 
 	time_t		time;			/**< Feeds modified date */
-	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 			
 	/* feed properties that need to be saved */
 	gboolean	available;		/**< flag to signalize loading errors */
 	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
 
-	gchar		*title;			/**< feed/channel title */
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
 	gchar		*imageUrl;		/**< URL of the optional feed image */
 	gchar		*description;		/**< HTML string describing the feed */
@@ -86,8 +101,6 @@ typedef struct feed {
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	GTimeVal	lastFaviconPoll;	/**< time at which the feed was last updated */
 	gchar		*cookies;		/**< cookies to be used */	
-	struct request	*request;		/**< update request structure used when downloading content */
-	GSList		*otherRequests;		/**< list of other update request structures used for downloading anything (favicon, blogChannel stuff, ...) */
 	
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
@@ -100,7 +113,7 @@ typedef struct feed {
 /* ------------------------------------------------------------ */
 
 /** a function which parses the feed data given with the feed ptr fp */
-typedef void 	(*feedParserFunc)	(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur);
+typedef void 	(*feedParserFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
 typedef gboolean (*checkFormatFunc)	(xmlDocPtr doc, xmlNodePtr cur); /**< Returns true if correct format */
 
 typedef struct feedHandler {
@@ -127,22 +140,23 @@ void feed_init(void);
  * Create a new feed structure.
  *
  * @param source	the feed source URL (or NULL)
- * @param title		the feed title (or NULL)
  * @param filter	a feed filter (or NULL)
  *
  * @returns the new, empty feed
  */
-feedPtr feed_new(gchar *source, gchar *title, gchar *filter);
+feedPtr feed_new(gchar *source, gchar *filter);
 
 /**
  * Feed specific feed list import parsing.
  *
+ * @param node		the node to import
  * @param typeStr	feed type string
  * @param cur		DOM node to parse
  * @param trusted	allows filter scripts...
+ *
  * @returns pointer to resulting feed
  */
-gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted);
+gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolean trusted);
 
 /**
  * Feed specific feed list import parsing.
@@ -154,71 +168,49 @@ gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted);
  */
 void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal);
 
+/* feed parsing */
+
+/**
+ * Creates a new feed parsing context.
+ *
+ * @returns a new feed parsing context
+ */
+feedParserCtxtPtr feed_create_parser_ctxt(void);
+
+/**
+ * Frees the given parser context. Note: it does
+ * not free the constructed itemset!
+ *
+ * @param ctxt		the feed parsing context
+ */
+void feed_free_parser_ctxt(feedParserCtxtPtr ctxt);
+
 /**
  * General feed source parsing function. Parses the passed feed source
  * and tries to determine the source type. If the type is HTML and 
  * autodiscover is TRUE the function tries to find a feed, tries to
  * download it and parse the feed's source instead of the passed source.
  *
- * @param fp		the feed structure to be filled
- * @param sp		the item set to be filled
- * @param data		the feed source
- * @param dataLength the length of the 'data' string
+ * @param ctxt		the feed parsing context
  * @param autodiscover	TRUE if auto discovery should be possible
  */
-feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLength, gboolean autodiscover);
-
-/**
- * Feed loading from cache.
- *
- * @param fp	the feed structure to load
- * @param id	the cache id of the feed
- *
- * @returns the set of items loaded from cache
- */
-itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id);
-
-/**
- * Saving a given feed and its item set to cache.
- *
- * @param fp	the feed
- * @param sp	its set of items
- * @param id	the cache id of this feed
- */
-void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id);
-
-/**
- * Removes a feed from cache and free's the feed.
- *
- * @param fp	the feed
- * @param id	the cache id of this feed
- */
-void feed_remove_from_cache(feedPtr fp, const gchar *id);
+void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover);
 
 /**
  * Cancel feed request waiting to be retried, if any.
  *
- * @param fp	the feed
+ * @param node	the feed node
  */
-void feed_cancel_retry(feedPtr fp);
+void feed_cancel_retry(nodePtr node);
 
 /**
  * Checks wether updating a feed makes sense.
  *
- * @param fp	the feed
+ * @param node	the feed node
  *
  * @returns TRUE if the feed can be updated.
  */
-gboolean feed_can_be_updated(feedPtr fp);
-
-/**
- * Prepares a request to update a feed.
- *
- * @param fp		the feed
- * @param request	the request to prepare
- * @param flags		update handling flags
- */
-void feed_prepare_request(feedPtr fp, struct request *request, guint flags);
+gboolean feed_can_be_updated(nodePtr node);
 
 /**
  * Merging implementation for the feed itemset type.
@@ -236,13 +228,6 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr ip);
 itemPtr feed_lookup_item(feedPtr fp, gulong nr);
 
 void feed_free(feedPtr fp);
-
-/**
- * This is a timeout callback to check for feed update results.
- * If there is a result pending its data is parsed and merged
- * against the feed it belongs to.
- */
-void feed_process_update_result(struct request *request);
 
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
@@ -333,15 +318,21 @@ void feed_set_etag(feedPtr fp, const gchar *etag);
 
 feedHandlerPtr feed_get_fhp(feedPtr fp);
 
-/** 
- * Returns a HTML rendering of a feed. The returned string 
- * must be freed.
+/* implementation of feed node update request processing callback */
+
+/**
+ * Gets called by the download handling to start the
+ * result processing for feed nodes.
  *
- * @param fp	the feed
+ * @param request	the request to process
  */
-gchar *feed_render(feedPtr fp);
+void feed_process_update_result(struct request *request);
 
 /* implementation of the node type interface */
-nodeTypeInfo * feed_get_node_type_info(void);
+
+/**
+ * Returns the node type implementation for feed nodes.
+ */
+nodeTypePtr feed_get_node_type(void);
 
 #endif

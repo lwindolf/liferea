@@ -151,7 +151,7 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 			xmlFree(sourceUrl);
 		}
 
-		node_schedule_update(ui_data->np, ui_feed_process_update_result, ui_data->flags);
+		node_schedule_update(ui_data->np, ui_data->flags);
 		xmlFreeURI(uri);
 	}
 
@@ -193,7 +193,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		gboolean needsUpdate = FALSE;
 		
 		/* General*/
-		feed_set_title(ui_data->fp, gtk_entry_get_text(GTK_ENTRY(ui_data->feedNameEntry)));
+		node_set_title(ui_data->np, gtk_entry_get_text(GTK_ENTRY(ui_data->feedNameEntry)));
 		feed_set_update_interval(ui_data->fp, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(ui_data->refreshInterval)));
 		
 		/* Source */
@@ -247,7 +247,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		ui_node_update(ui_data->np);
 		feedlist_schedule_save();
 		if(needsUpdate)
-			node_schedule_update(ui_data->np, ui_feed_process_update_result, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
+			node_schedule_update(ui_data->np, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}
 
 	g_free(ui_data);
@@ -385,7 +385,7 @@ GtkWidget* ui_feed_authdialog_new(nodePtr np, gint flags) {
 	}
 	
 	promptStr = g_strdup_printf(_("Enter the username and password for \"%s\" (%s):"),
-	                            feed_get_title(ui_data->fp), (source != NULL) ? source : _("Unknown source"));
+	                            node_get_title(np), (source != NULL) ? source : _("Unknown source"));
 	gtk_label_set_text(GTK_LABEL(lookup_widget(authdialog, "prompt")), promptStr);
 	g_free(promptStr);
 	if(source != NULL)
@@ -465,7 +465,7 @@ GtkWidget* ui_feed_propdialog_new(nodePtr np) {
 
 	/* Setup feed name */
 	ui_data->feedNameEntry = lookup_widget(propdialog,"feedNameEntry");
-	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), feed_get_title(fp));
+	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), node_get_title(np));
 
 	/* Setup refresh interval */
 	ui_data->refreshInterval = lookup_widget(propdialog,"refreshIntervalSpinButton");
@@ -605,105 +605,5 @@ GtkWidget* ui_feed_propdialog_new(nodePtr np) {
 void ui_feed_add(nodePtr np, const gchar *source, const gchar *filter, gint flags) {
 	
 	node_request_automatic_add(np, source, NULL, filter ,flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
-}
-
-/** handles completed feed update requests */
-void ui_feed_process_update_result(struct request *request) {
-	nodePtr			np = (nodePtr)request->user_data;
-	feedPtr			fp = (feedPtr)np->data;
-	feedHandlerPtr		fhp;
-	itemSetPtr		sp;
-	gchar			*old_title, *old_source;
-	gint			old_update_interval;
-
-	debug_enter("ui_feed_process_update_result");
-	
-	node_load(np);
-
-	/* no matter what the result of the update is we need to save update
-	   status and the last update time to cache */
-	np->needsCacheSave = TRUE;
-	
-	feed_set_available(fp, TRUE);
-
-	if(401 == request->httpstatus) { /* unauthorized */
-		feed_set_available(fp, FALSE);
-		if(request->flags & FEED_REQ_AUTH_DIALOG)
-			ui_feed_authdialog_new(np, request->flags);
-	} else if(410 == request->httpstatus) { /* gone */
-		feed_set_available(fp, FALSE);
-		feed_set_discontinued(fp, TRUE);
-		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), feed_get_title(fp));
-	} else if(304 == request->httpstatus) {
-		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), feed_get_title(fp));
-	} else if(NULL != request->data) {
-		feed_set_lastmodified(fp, request->lastmodified);
-		feed_set_etag(fp, request->etag);
-		
-		/* note this is to update the feed URL on permanent redirects */
-		if(0 != strcmp(request->source, feed_get_source(fp))) {
-			feed_set_source(fp, request->source);
-			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), feed_get_title(fp));
-		}
-		
-		/* we save all properties that should not be overwritten in all cases */
-		old_update_interval = feed_get_update_interval(fp);
-		old_title = g_strdup(feed_get_title(fp));
-		old_source = g_strdup(feed_get_source(fp));
-
-		/* parse the new downloaded feed into fp and sp */
-		sp = (itemSetPtr)g_new0(struct itemSet, 1);
-		fhp = feed_parse(fp, sp, request->data, request->size, request->flags & FEED_REQ_AUTO_DISCOVER);
-
-		if(fhp == NULL) {
-			feed_set_available(fp, FALSE);
-			fp->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), fp->parseErrors);
-		} else {
-			fp->fhp = fhp;
-			
-			/* merge the resulting items into the node's item set */
-			node_merge_items(np, sp->items);
-		
-			/* restore user defined properties if necessary */
-			if(!(request->flags & FEED_REQ_RESET_TITLE)) {
-				feed_set_title(fp, old_title);
-				node_set_title(np, old_title);
-			}
-				
-			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
-				feed_set_source(fp, old_source);
-
-			if(request->flags & FEED_REQ_RESET_UPDATE_INT)
-				feed_set_update_interval(fp, feed_get_default_update_interval(fp));
-			else
-				feed_set_update_interval(fp, old_update_interval);
-				
-			g_free(old_title);
-			g_free(old_source);
-
-			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), feed_get_title(fp));
-
-			itemlist_reload(np->itemSet);
-			
-			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
-				ui_feed_propdialog_new(np);
-		}
-	} else {	
-		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), feed_get_title(fp));
-		feed_set_available(fp, FALSE);
-	}
-	
-	feed_set_error_description(fp, request->httpstatus, request->returncode, request->filterErrors);
-
-	fp->request = NULL; 
-
-	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		favicon_download(np);
-
-	ui_node_update(np);
-	ui_notification_update(np);
-	node_unload(np);
-
-	debug_exit("ui_feed_process_update_result");
 }
 

@@ -445,7 +445,7 @@ static void parseDirectory(GList **items, directoryPtr dp, xmlNodePtr cur, gint 
 		dp->tags[OCS_DESCRIPTION] = convertToHTML(dp->tags[OCS_DESCRIPTION]);
 }
 
-static void ocs_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur ) {
+static void ocs_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	directoryPtr	dp = NULL;
 	dirEntryPtr	new_dep;
 	int 		error = 0;
@@ -455,7 +455,7 @@ static void ocs_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur )
                    !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 		    	/* nothing */
 		} else {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not find RDF header!</p>"));
+			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not find RDF header!</p>"));
 			error = 1;
 			break;			
 		}
@@ -475,34 +475,34 @@ static void ocs_parse(feedPtr fp, itemSetPtr sp, xmlDocPtr doc, xmlNodePtr cur )
 			/* handling OCS 0.5 directory tag... */
 			if(!xmlStrcmp(cur->name, BAD_CAST"directory")) {
 				dp = g_new0(struct directory, 1);
-				parseDirectory(&(sp->items), dp, cur, 5);
+				parseDirectory(&(ctxt->itemSet->items), dp, cur, 5);
 			}
 			/* handling OCS 0.5 channel tag... */
 			else if(!xmlStrcmp(cur->name, BAD_CAST"channel")) {
 				new_dep = g_new0(struct dirEntry, 1);
 				new_dep->source = utf8_fix(xmlGetProp(cur, "about"));
 				new_dep->dp = dp;					
-				itemset_append_item(sp, parse05DirectoryEntry(new_dep, cur));
+				itemset_append_item(ctxt->itemSet, parse05DirectoryEntry(new_dep, cur));
 			}
 			/* handling OCS 0.4 top level description tag... */
 			else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 				dp = g_new0(struct directory, 1);
-				parseDirectory(&(sp->items), dp, cur, 4);
+				parseDirectory(&(ctxt->itemSet->items), dp, cur, 4);
 				break;
 			}
 			cur = cur->next;
 		}
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		feed_set_update_interval(fp, -1);
-		fp->title = dp->tags[OCS_TITLE];
+		feed_set_update_interval(ctxt->feed, -1);
+		ctxt->title = dp->tags[OCS_TITLE];
 		
 		if(0 == error) {
-			fp->description = showDirectoryInfo(dp, fp->source);
-			feed_set_available(fp, TRUE);
+			ctxt->feed->description = showDirectoryInfo(dp, ctxt->feed->source);
+			feed_set_available(ctxt->feed, TRUE);
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
-			fp->title = g_strdup(fp->source);
+			ctxt->title = g_strdup(ctxt->feed->source);
 		}
 			
 		g_free(dp);

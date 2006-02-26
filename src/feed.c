@@ -43,14 +43,14 @@
 #include "parsers/pie_feed.h"
 #include "parsers/ocs_dir.h"
 #include "parsers/opml.h"
-#include "fl_providers/fl_plugin.h"
 #include "vfolder.h"
 #include "feed.h"
+#include "node.h"
 #include "net/cookies.h"
 #include "update.h"
 #include "debug.h"
 #include "metadata.h"
-
+#include "ui/ui_feed.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_htmlview.h"
 
@@ -61,8 +61,6 @@ struct feed_type {
 	gint id_num;
 	gchar *id_str;
 };
-
-static void feed_reset_update_counter(feedPtr fp);
 
 /* initializing function, only called upon startup */
 void feed_init(void) {
@@ -76,7 +74,7 @@ void feed_init(void) {
 }
 
 /* function to create a new feed structure */
-feedPtr feed_new(gchar *source, gchar *title, gchar *filter) {
+feedPtr feed_new(gchar *source, gchar *filter) {
 	feedPtr		feed;
 	
 	feed = g_new0(struct feed, 1);
@@ -87,12 +85,9 @@ feedPtr feed_new(gchar *source, gchar *title, gchar *filter) {
 	feed->updateInterval = -1;
 	feed->defaultInterval = -1;
 	feed->cacheLimit = CACHE_DEFAULT;
-	feed->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 
 	if(source)
 		feed_set_source(feed, source);
-	if(title)
-		feed_set_title(feed, title);
 	if(filter)
 		feed_set_filter(feed, filter);
 	
@@ -147,7 +142,7 @@ static long parse_long(gchar *str, long def) {
 	return num;
 }
 
-gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
+gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *title; 
 	gchar		*lastPollStr, *htmlUrlStr, *source, *tmp; 
 	feedPtr		fp = NULL;
@@ -158,7 +153,7 @@ gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
 	if(NULL != source) {
-		fp = feed_new(NULL, NULL, NULL);
+		fp = feed_new(NULL, NULL);
 		fp->fhp = feed_type_str_to_fhp(typeStr);
 
 		if(!trusted && source[0] == '|') {
@@ -196,7 +191,7 @@ gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 			title = xmlGetProp(cur, BAD_CAST"text");
 		}
 
-		feed_set_title(fp, title);
+		node_set_title(node, title);
 		xmlFree(title);
 
 		/* Set the feed cache limit */
@@ -239,7 +234,7 @@ gpointer feed_import(const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 			xmlFree(tmp);
 
 		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
-		       feed_get_title(fp), feed_get_source(fp), typeStr, feed_get_update_interval(fp), fp->lastPoll.tv_sec);
+		       node_get_title(node), feed_get_source(fp), typeStr, feed_get_update_interval(fp), fp->lastPoll.tv_sec);
 	}
 
 	debug_exit("feed_import");
@@ -295,86 +290,100 @@ void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal) {
 	debug_exit("feed_export");
 }
 
+feedParserCtxtPtr feed_create_parser_ctxt(void) {
+	feedParserCtxtPtr ctxt;
+
+	ctxt = g_new0(struct feedParserCtxt, 1);
+	ctxt->itemSet = (itemSetPtr)g_new0(struct itemSet, 1);
+	ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
+	return ctxt;
+}
+
+void feed_free_parser_ctxt(feedParserCtxtPtr ctxt) {
+
+	/* Don't free the itemset! */
+	g_free(ctxt->tmpdata);
+	g_free(ctxt);
+}
+
 /**
  * General feed source parsing function. Parses the passed feed source
  * and tries to determine the source type. If the type is HTML and 
  * autodiscover is TRUE the function tries to find a feed, tries to
  * download it and parse the feed's source instead of the passed source.
  *
- * @param fp		the feed structure to be filled
- * @param sp		the item set to be filled
- * @param data		the feed source
- * @param dataLength the length of the 'data' string
+ * @param ctxt		feed parsing context
  * @param autodiscover	TRUE if auto discovery should be possible
  */
-feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLength, gboolean autodiscover) {
+void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	gchar			*source;
-	xmlDocPtr 		doc;
 	xmlNodePtr 		cur;
-	GSList			*handlerIter;
-	gboolean		handled = FALSE;
-	feedHandlerPtr		handler = NULL;
 
 	debug_enter("feed_parse");
 
-	g_assert(NULL == sp->items);
+	g_assert(NULL != ctxt->feed);
+	g_assert(NULL != ctxt->node);
+	g_assert(NULL == ctxt->itemSet->items);
 	
+	ctxt->failed = TRUE;	/* reset on success ... */
+
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
-		if(NULL == (doc = parseBuffer(data, dataLength, &(fp->parseErrors)))) {
-			gchar *msg = g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), fp->source);
-			addToHTMLBuffer(&(fp->parseErrors), msg);
+		if(NULL == (ctxt->doc = parseBuffer(ctxt->data, ctxt->dataLength, &(ctxt->feed->parseErrors)))) {
+			gchar *msg = g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), ctxt->feed->source);
+			addToHTMLBuffer(&(ctxt->feed->parseErrors), msg);
 			g_free(msg);
 			break;
 		}
-		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
+		if(NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
+			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Empty document!</p>"));
 			break;
 		}
 		while(cur != NULL && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
 		if(NULL == cur->name) {
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Invalid XML!</p>"));
+			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Invalid XML!</p>"));
 			break;
 		}
 		
 		/* determine the syndication format */
-		handlerIter = feedhandlers;
-		while(handlerIter != NULL) {
-			handler = (feedHandlerPtr)(handlerIter->data);
-			if(handler != NULL && handler->checkFormat != NULL && (*(handler->checkFormat))(doc, cur)) {
+		GSList *handlerIter = feedhandlers;
+		while(handlerIter) {
+			feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
+			if(handler && handler->checkFormat && (*(handler->checkFormat))(ctxt->doc, cur)) {
 			
 				/* free old temp. parsing data, don't free right after parsing because
 				   it can be used until the last feed request is finished, move me 
 				   to the place where the last request in list otherRequests is 
 				   finished :-) */
-				g_hash_table_destroy(fp->tmpdata);
-				fp->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
+				g_hash_table_destroy(ctxt->tmpdata);
+				ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 				
 				/* we always drop old metadata */
-				metadata_list_free(fp->metadata);
-				fp->metadata = NULL;
-				
-				(*(handler->feedParser))(fp, sp, doc, cur);		/* parse it */
-				handled = TRUE;				
+				metadata_list_free(ctxt->feed->metadata);
+				ctxt->feed->metadata = NULL;
+				ctxt->failed = FALSE;
+
+				ctxt->feed->fhp = handler;
+				(*(handler->feedParser))(ctxt, cur);		/* parse it */
+
 				break;
 			}
 			handlerIter = handlerIter->next;
 		}
 	} while(0);
 	
-	if(!handled) {
-		handler = NULL;
-		
+	/* if we don't have a feed type here we don't have a feed source yet or
+	   the feed source is no more valid and we need to start auto discovery */
+	if(!ctxt->feed->fhp) {
 		/* test if we have a HTML page */
-		if(autodiscover && (
-		   (NULL != strstr(data, "<html>")) || (NULL != strstr(data, "<HTML>")) ||
-		   (NULL != strstr(data, "<html ")) || (NULL != strstr(data, "<HTML "))
-		  )) {
+		if(autodiscover && 
+		   (strstr(ctxt->data, "<html>") || strstr(ctxt->data, "<HTML>") ||
+		    strstr(ctxt->data, "<html ") || strstr(ctxt->data, "<HTML "))) {
 			/* if yes we should scan for links */
-			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(fp));
-			if(NULL != (source = html_auto_discover_feed(data, feed_get_source(fp)))) {
+			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(ctxt->feed));
+			if(source = html_auto_discover_feed(ctxt->data, feed_get_source(ctxt->feed))) {
 				/* now download the first feed link found */
 				struct request *request = download_request_new(NULL);
 				debug1(DEBUG_UPDATE, "feed link found: %s", source);
@@ -382,37 +391,39 @@ feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLen
 				download_process(request);
 				if(NULL != request->data) {
 					debug0(DEBUG_UPDATE, "feed link download successful!");
-					feed_set_source(fp, source);
-					handler = feed_parse(fp, sp, request->data, request->size, FALSE);
+					feed_set_source(ctxt->feed, source);
+					ctxt->data = request->data;
+					ctxt->dataLength = request->size;
+					ctxt->failed = FALSE;
+					feed_parse(ctxt, FALSE);
 				} else {
 					/* if the download fails we do nothing except
 					   unsetting the handler so the original source
 					   will get a "unsupported type" error */
-					handler = NULL;
 					debug0(DEBUG_UPDATE, "feed link download failed!");
 				}
 				g_free(source);
 				download_request_free(request);
 			} else {
 				debug0(DEBUG_UPDATE, "no feed link found!");
-				feed_set_available(fp, FALSE);
-				addToHTMLBuffer(&(fp->parseErrors), _("<p>The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery.</p>"));
+				feed_set_available(ctxt->feed, FALSE);
+				addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery.</p>"));
 			}
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
-			feed_set_available(fp, FALSE);
-			addToHTMLBuffer(&(fp->parseErrors), _("<p>Could not determine the feed type. Please check that it is a <a href=\"http://feedvalidator.org\">valid</a> type and listed in the <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported formats</a>.</p>"));
+			feed_set_available(ctxt->feed, FALSE);
+			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not determine the feed type. Please check that it is a <a href=\"http://feedvalidator.org\">valid</a> type and listed in the <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported formats</a>.</p>"));
 		}
 	} else {
-		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(handler));
+		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
 	}
 	
-	if(doc != NULL)
-		xmlFreeDoc(doc);
+	if(ctxt->doc != NULL) {
+		xmlFreeDoc(ctxt->doc);
+		ctxt->doc = NULL;
+	}
 		
 	debug_exit("feed_parse");
-
-	return handler;
 }
 
 /*
@@ -423,7 +434,8 @@ feedHandlerPtr feed_parse(feedPtr fp, itemSetPtr sp, gchar *data, size_t dataLen
  *
  * This method really saves the feed to disk.
  */
-void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id) {
+void feed_save_to_cache(nodePtr node) {
+	feedPtr		feed = (feedPtr)node->data;
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode;
 	GList		*itemlist, *iter;
@@ -435,47 +447,46 @@ void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id) {
 			
 	debug_enter("feed_save_to_cache");
 	
-	debug1(DEBUG_CACHE, "saving feed: %s", fp->title);	
+	debug2(DEBUG_CACHE, "saving feed: %s (id=%s)", feed->source, node->id);
 
-	saveMaxCount = fp->cacheLimit;
+	saveMaxCount = feed->cacheLimit;
 	if(saveMaxCount == CACHE_DEFAULT)
 		saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);
 	
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
 	tmpfilename = g_strdup_printf("%s~", filename);
 	
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
 			xmlDocSetRootElement(doc, feedNode);
 
-			xmlNewTextChild(feedNode, NULL, "feedTitle", feed_get_title(fp));
-			xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(fp));
+			xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
+			xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(feed));
 			
-			if(NULL != fp->description)
-				xmlNewTextChild(feedNode, NULL, "feedDescription", fp->description);
+			if(feed->description)
+				xmlNewTextChild(feedNode, NULL, "feedDescription", feed->description);
 
-			if(NULL != feed_get_image_url(fp))
-				xmlNewTextChild(feedNode, NULL, "feedImage", feed_get_image_url(fp));
+			if(feed_get_image_url(feed))
+				xmlNewTextChild(feedNode, NULL, "feedImage", feed_get_image_url(feed));
 	
-			tmp = g_strdup_printf("%d", fp->defaultInterval);
+			tmp = g_strdup_printf("%d", feed->defaultInterval);
 			xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
 			g_free(tmp);
 			
-			tmp = g_strdup_printf("%d", (TRUE == feed_get_available(fp))?1:0);
+			tmp = g_strdup_printf("%d", (TRUE == feed_get_available(feed))?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 			g_free(tmp);
 			
-			tmp = g_strdup_printf("%d", (TRUE == feed_get_discontinued(fp))?1:0);
+			tmp = g_strdup_printf("%d", (TRUE == feed_get_discontinued(feed))?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 			g_free(tmp);
 			
-			if(feed_get_lastmodified(fp) != NULL) {
-				xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(fp));
-			}
+			if(feed_get_lastmodified(feed)) 
+				xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(feed));
 			
-			metadata_add_xml_nodes(fp->metadata, feedNode);
+			metadata_add_xml_nodes(feed->metadata, feedNode);
 
-			itemlist = g_list_copy(sp->items);
+			itemlist = g_list_copy(node->itemSet->items);
 			for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
 				ip = iter->data;
 				g_assert(NULL != ip);
@@ -485,7 +496,7 @@ void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id) {
 
 				if((saveMaxCount != CACHE_UNLIMITED) &&
 				   (saveCount >= saveMaxCount) &&
-				   (fp->fhp == NULL || fp->fhp->directory == FALSE) &&
+				   (feed->fhp == NULL || feed->fhp->directory == FALSE) &&
 				   ! ip->flagStatus) {
 				   	itemlist_remove_item(ip);
 				} else {
@@ -497,7 +508,7 @@ void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id) {
 		} else {
 			g_warning("could not create XML feed node for feed cache document!");
 		}
-		if (xmlSaveFormatFile(tmpfilename, doc,1) == -1) {
+		if(xmlSaveFormatFile(tmpfilename, doc,1) == -1) {
 			g_warning("Error attempting to save feed cache file \"%s\"!", tmpfilename);
 		} else {
 			if (rename(tmpfilename, filename) == -1)
@@ -514,46 +525,47 @@ void feed_save_to_cache(feedPtr fp, itemSetPtr sp, const gchar *id) {
 	debug_exit("feed_save_to_cache");
 }
 
-itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
+itemSetPtr feed_load_from_cache(nodePtr node) {
+	feedPtr		feed = (feedPtr)(node->data);
+	itemSetPtr	itemSet = NULL;
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
-	itemSetPtr	sp = NULL;
 	gchar		*filename, *tmp, *data = NULL;
 	int		error = 0;
 	gsize 		length;
 
 	debug_enter("feed_load_from_cache");
 
-	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(fp));
+	debug1(DEBUG_CACHE, "feed_load for %s\n", feed_get_source(feed));
 
-	sp = g_new0(struct itemSet, 1);
-	sp->type = ITEMSET_TYPE_FEED;
+	itemSet = g_new0(struct itemSet, 1);
+	itemSet->type = ITEMSET_TYPE_FEED;
 	
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
 	debug1(DEBUG_CACHE, "loading cache file \"%s\"", filename);
 		
 	if((!g_file_get_contents(filename, &data, &length, NULL)) || (*data == 0)) {
 		debug1(DEBUG_CACHE, "could not load cache file %s", filename);
 		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
 		g_free(filename);
-		return sp;
+		return itemSet;
 	} else {
 
 		do {
 			g_assert(NULL != data);
 	
-			if(NULL == (doc = parseBuffer(data, length, &(fp->parseErrors)))) {
-				g_free(fp->parseErrors);
-				fp->parseErrors = NULL;
-				addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
+			if(NULL == (doc = parseBuffer(data, length, &(feed->parseErrors)))) {
+				g_free(feed->parseErrors);
+				feed->parseErrors = NULL;
+				addToHTMLBuffer(&(feed->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
 				error = 1;
 				break;
 			} 
 	
 			if(NULL == (cur = xmlDocGetRootElement(doc))) {
-				g_free(fp->parseErrors);
-				fp->parseErrors = NULL;
-				addToHTMLBuffer(&(fp->parseErrors), _("<p>Empty document!</p>"));
+				g_free(feed->parseErrors);
+				feed->parseErrors = NULL;
+				addToHTMLBuffer(&(feed->parseErrors), _("<p>Empty document!</p>"));
 				error = 1;
 				break;
 			}
@@ -562,52 +574,52 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 				cur = cur->next;
 	
 			if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
-				g_free(fp->parseErrors);
-				fp->parseErrors = NULL;
-				addToHTMLBuffer(&(fp->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
+				g_free(feed->parseErrors);
+				feed->parseErrors = NULL;
+				addToHTMLBuffer(&(feed->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
 				error = 1;
 				break;		
 			}
 
-			metadata_list_free(fp->metadata);
-			fp->metadata = NULL;
+			metadata_list_free(feed->metadata);
+			feed->metadata = NULL;
 
 			cur = cur->xmlChildrenNode;
-			while(cur != NULL) {
+			while(cur) {
 				tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 	
-				if(tmp == NULL) {
+				if(!tmp) {
 					cur = cur->next;
 					continue;
 				}
 
-				if(fp->description == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedDescription")) {
-					feed_set_description(fp, tmp);
+				if(!feed->description && !xmlStrcmp(cur->name, BAD_CAST"feedDescription")) 
+					feed_set_description(feed, tmp);
 					
-				} else if(fp->title == NULL && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) {
-					feed_set_title(fp, tmp);
+				else if(!node->title && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) 
+					node_set_title(node, tmp);
 					
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) {
-					feed_set_default_update_interval(fp, atoi(tmp));
+				else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) 
+					feed_set_default_update_interval(feed, atoi(tmp));
 									
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedImage")) {
-					feed_set_image_url(fp, tmp);
+				else if(!xmlStrcmp(cur->name, BAD_CAST"feedImage")) 
+					feed_set_image_url(feed, tmp);
 					
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) {
-					feed_set_available(fp, (0 == atoi(tmp))?FALSE:TRUE);
+				else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) 
+					feed_set_available(feed, (0 == atoi(tmp))?FALSE:TRUE);
 					
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) {
-					feed_set_discontinued(fp, (0 == atoi(tmp))?FALSE:TRUE);
+				else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) 
+					feed_set_discontinued(feed, (0 == atoi(tmp))?FALSE:TRUE);
 					
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) {
-					feed_set_lastmodified(fp, tmp);
+				else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) 
+					feed_set_lastmodified(feed, tmp);
 					
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-					itemset_append_item(sp, item_parse_cache(doc, cur));
+				else if(!xmlStrcmp(cur->name, BAD_CAST"item")) 
+					itemset_append_item(itemSet, item_parse_cache(doc, cur));
 	
-				} else if (!xmlStrcmp(cur->name, BAD_CAST"attributes")) {
-					fp->metadata = metadata_parse_xml_nodes(doc, cur);
-				}
+				else if(!xmlStrcmp(cur->name, BAD_CAST"attributes")) 
+					feed->metadata = metadata_parse_xml_nodes(doc, cur);
+				
 				g_free(tmp);	
 				cur = cur->next;
 			}
@@ -616,62 +628,70 @@ itemSetPtr feed_load_from_cache(feedPtr fp, const gchar *id) {
 		if(0 != error)
 			ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\""), filename);
 	
-		if(NULL != doc)
+		if(doc)
 			xmlFreeDoc(doc);
 		g_free(data);
 	}
 	g_free(filename);
 	
 	debug_exit("feed_load_from_cache");
-	return sp;
+	return itemSet;
 }
 
-void feed_cancel_retry(feedPtr fp) {
-	if((fp->request != NULL) && download_cancel_retry(fp->request))
-		fp->request = NULL;
+// FIXME: does this belong to node.c?
+void feed_cancel_retry(nodePtr node) {
+
+	if(node->updateRequest && download_cancel_retry(node->updateRequest))
+		node->updateRequest = NULL;
 }
 
-gboolean feed_can_be_updated(feedPtr fp) {
+gboolean feed_can_be_updated(nodePtr node) {
+	feedPtr		feed = (feedPtr)node->data;
 
-	if(fp->request != NULL) {
-		ui_mainwindow_set_status_bar(_("This feed \"%s\" is already being updated!"), feed_get_title(fp));
+	if(node->updateRequest) {
+		ui_mainwindow_set_status_bar(_("This feed \"%s\" is already being updated!"), node_get_title(node));
 		return FALSE;
 	}
 	
-	if(feed_get_discontinued(fp)) {
-		ui_mainwindow_set_status_bar(_("The feed \"%s\" was discontinued. Liferea won't update it anymore!"), feed_get_title(fp));
+	if(feed_get_discontinued(feed)) {
+		ui_mainwindow_set_status_bar(_("The feed \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title(node));
 		return FALSE;
 	}
 
-	if(NULL == feed_get_source(fp)) {
+	if(!feed_get_source(feed)) {
 		g_warning("Feed source is NULL! This should never happen - cannot update!");
 		return FALSE;
 	}
 	return TRUE;
 }	
 
-static void feed_prepare_request(feedPtr fp, struct request *request, guint flags) {
+static void feed_reset_update_counter_(feedPtr fp) {
 
-	debug1(DEBUG_UPDATE, "preparing request for \"%s\"\n", feed_get_source(fp));
+	g_get_current_time(&fp->lastPoll);
+	feedlist_schedule_save();
+	debug1(DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", fp->lastPoll.tv_sec);
+}
 
-	feed_reset_update_counter(fp);
+static void feed_prepare_request(feedPtr feed, struct request *request, guint flags) {
 
-	fp->request = request;	
+	debug1(DEBUG_UPDATE, "preparing request for \"%s\"\n", feed_get_source(feed));
+
+	feed_reset_update_counter_(feed);
 
 	/* prepare request url (strdup because it might be
   	   changed on permanent HTTP redirection in netio.c) */
-	request->source = g_strdup(feed_get_source(fp));
-	request->cookies = fp->cookies;
+	request->source = g_strdup(feed_get_source(feed));
+	request->cookies = feed->cookies;
 
-	if(feed_get_lastmodified(fp) != NULL)
-		request->lastmodified = g_strdup(feed_get_lastmodified(fp));
-	if(feed_get_etag(fp) != NULL)
-		request->etag = g_strdup(feed_get_etag(fp));
+	if(feed_get_lastmodified(feed))
+		request->lastmodified = g_strdup(feed_get_lastmodified(feed));
+	if(feed_get_etag(feed))
+		request->etag = g_strdup(feed_get_etag(feed));
 	request->flags = flags;
 	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
 	request->allowRetries = (flags & FEED_REQ_ALLOW_RETRIES)? 1 : 0;
-	if(feed_get_filter(fp) != NULL)
-		request->filtercmd = g_strdup(feed_get_filter(fp));
+	if(feed_get_filter(feed))
+		request->filtercmd = g_strdup(feed_get_filter(feed));
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -766,7 +786,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 			old_ip->updateStatus = TRUE;
 			metadata_list_free(old_ip->metadata);
 			old_ip->metadata = new_ip->metadata;
-			vfeed_update_item(old_ip);
+			vfolder_update_item(old_ip);
 			debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 		} else {
 			debug0(DEBUG_VERBOSE, "-> item already exists");
@@ -803,13 +823,6 @@ feedHandlerPtr feed_get_fhp(feedPtr fp) {
 	return fp->fhp;
 }
 
-static void feed_reset_update_counter(feedPtr fp) {
-
-	g_get_current_time(&fp->lastPoll);
-	feedlist_schedule_save();
-	debug1(DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", fp->lastPoll.tv_sec);
-}
-
 void feed_set_available(feedPtr fp, gboolean available) { fp->available = available; }
 
 gboolean feed_get_available(feedPtr fp) { return fp->available; }
@@ -835,25 +848,6 @@ gchar * feed_get_error_description(feedPtr fp) {
 
 time_t feed_get_time(feedPtr fp) { return (fp != NULL ? fp->time : 0); }
 void feed_set_time(feedPtr fp, const time_t t) { fp->time = t; }
-
-const gchar * feed_get_title(feedPtr fp) { 
-
-	if(NULL != fp->title)
-		return fp->title; 
-	else if (NULL != fp->source)
-		return fp->source;
-	else
-		return NULL;
-}
-
-void feed_set_title(feedPtr fp, const gchar *title) {
-	g_free(fp->title);
-	if (title != NULL)
-		fp->title = g_strdup(title);
-	else
-		fp->title = NULL;
-	feedlist_schedule_save();
-}
 
 const gchar * feed_get_description(feedPtr fp) { return fp->description; }
 void feed_set_description(feedPtr fp, const gchar *description) {
@@ -1051,47 +1045,29 @@ void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gc
 
 
 /* method to free a feed structure and associated request data */
-void feed_free(feedPtr fp) {
-	GSList	*iter;
+static void feed_free(feedPtr feed) {
 
-	/* Don't free active feed requests here, because they might still
-	   be processed in the update queues! Abandoned requests are
-	   free'd in feed_process. They must be freed in the main thread
-	   for locking reasons. */
-	if(fp->request != NULL)
-		fp->request->callback = NULL;
+	g_free(feed->parseErrors);
+	g_free(feed->errorDescription);
+	g_free(feed->htmlUrl);
+	g_free(feed->imageUrl);
+	g_free(feed->description);
+	g_free(feed->source);
+	g_free(feed->filtercmd);
+	g_free(feed->lastModified);
+	g_free(feed->etag);
+	g_free(feed->cookies);
 	
-	/* same goes for other requests */
-	iter = fp->otherRequests;
-	while(NULL != iter) {
-		((struct request *)iter->data)->callback = NULL;
-		iter = g_slist_next(iter);
-	}
-	g_slist_free(fp->otherRequests);
-
-	g_free(fp->parseErrors);
-	g_free(fp->errorDescription);
-	g_free(fp->title);
-	g_free(fp->htmlUrl);
-	g_free(fp->imageUrl);
-	g_free(fp->description);
-	g_free(fp->source);
-	g_free(fp->filtercmd);
-	g_free(fp->lastModified);
-	g_free(fp->etag);
-	g_free(fp->cookies);
-	
-	metadata_list_free(fp->metadata);
-	g_hash_table_destroy(fp->tmpdata);
-	g_free(fp);
+	metadata_list_free(feed->metadata);
+	g_free(feed);
 }
 
 /* method to totally erase a feed, remove it from the config, etc.... */
-void feed_remove_from_cache(feedPtr fp, const gchar *id) {
-	gchar	*filename = NULL;
+static void feed_remove_from_cache(nodePtr node) {
+	gchar		*filename = NULL;
 	
-	if(id && id[0] != '\0')
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
+	if(node->id && node->id[0] != '\0')
+		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
 	
 	/* FIXME: Move this to a better place. The cache file does not
 	   need to always be deleted, for example when freeing a
@@ -1104,13 +1080,114 @@ void feed_remove_from_cache(feedPtr fp, const gchar *id) {
 		g_free(filename);
 	}
 
-	feed_free(fp);
+	feed_free(node->data);
+}
+
+/* implementation of feed node update request processing callback */
+
+void feed_process_update_result(struct request *request) {
+	feedParserCtxtPtr	ctxt;
+	nodePtr			node = (nodePtr)request->user_data;
+	feedPtr			feed = (feedPtr)node->data;
+	gchar			*old_title, *old_source;
+	gint			old_update_interval;
+
+	debug_enter("ui_feed_process_update_result");
+	
+	node_load(node);
+
+	/* no matter what the result of the update is we need to save update
+	   status and the last update time to cache */
+	node->needsCacheSave = TRUE;
+	
+	feed_set_available(feed, TRUE);
+
+	if(401 == request->httpstatus) { /* unauthorized */
+		feed_set_available(feed, FALSE);
+		if(request->flags & FEED_REQ_AUTH_DIALOG)
+			ui_feed_authdialog_new(node, request->flags);
+	} else if(410 == request->httpstatus) { /* gone */
+		feed_set_available(feed, FALSE);
+		feed_set_discontinued(feed, TRUE);
+		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title(node));
+	} else if(304 == request->httpstatus) {
+		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), node_get_title(node));
+	} else if(NULL != request->data) {
+		feed_set_lastmodified(feed, request->lastmodified);
+		feed_set_etag(feed, request->etag);
+		
+		/* note this is to update the feed URL on permanent redirects */
+		if(!strcmp(request->source, feed_get_source(feed))) {
+			feed_set_source(feed, request->source);
+			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+		}
+		
+		/* we save all properties that should not be overwritten in all cases */
+		old_update_interval = feed_get_update_interval(feed);
+		old_title = g_strdup(node_get_title(node));
+		old_source = g_strdup(feed_get_source(feed));
+
+		/* parse the new downloaded feed into feed and itemSet */
+		ctxt = feed_create_parser_ctxt();
+		ctxt->feed = feed;
+		ctxt->node = node;
+		ctxt->data = request->data;
+		ctxt->dataLength = request->size;
+		feed_parse(ctxt, request->flags & FEED_REQ_AUTO_DISCOVER);
+
+		if(ctxt->failed) {
+			feed_set_available(feed, FALSE);
+			feed->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), feed->parseErrors);
+		} else {
+			/* merge the resulting items into the node's item set */
+			node_merge_items(node, ctxt->itemSet->items);
+		
+			/* restore user defined properties if necessary */
+			if(!(request->flags & FEED_REQ_RESET_TITLE)) 
+				node_set_title(node, old_title);
+				
+			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
+				feed_set_source(feed, old_source);
+
+			if(request->flags & FEED_REQ_RESET_UPDATE_INT)
+				feed_set_update_interval(feed, feed_get_default_update_interval(feed));
+			else
+				feed_set_update_interval(feed, old_update_interval);
+				
+			g_free(old_title);
+			g_free(old_source);
+
+			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
+
+			itemlist_reload(node->itemSet);
+			
+			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
+				ui_feed_propdialog_new(node);
+		}
+
+		feed_free_parser_ctxt(ctxt);
+	} else {	
+		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), node_get_title(node));
+		feed_set_available(feed, FALSE);
+	}
+	
+	feed_set_error_description(feed, request->httpstatus, request->returncode, request->filterErrors);
+
+	node->updateRequest = NULL; 
+
+	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
+		favicon_download(node);
+
+	ui_node_update(node);
+	ui_notification_update(node);
+	node_unload(node);
+
+	debug_exit("ui_feed_process_update_result");
 }
 
 /* implementation of the node type interface */
 
-/* non static because it's reused from plugin.c */
-void feed_load(nodePtr node) {
+static void feed_load(nodePtr node) {
 
 	debug2(DEBUG_CACHE, "+ feed_load (%s, ref count=%d)", node_get_title(node), node->loaded);
 	node->loaded++;
@@ -1120,18 +1197,14 @@ void feed_load(nodePtr node) {
 		return;
 	}
 	
-	if(NULL == FL_PLUGIN(node)->node_load)
-		return;
-
 	/* node->itemSet will be NULL here, except when cache is disabled */
-	FL_PLUGIN(node)->node_load(node);
+	node_set_itemset(node, feed_load_from_cache(node));
 	g_assert(NULL != node->itemSet);
 
 	debug2(DEBUG_CACHE, "- feed_load (%s, new ref count=%d)", node_get_title(node), node->loaded);
 }
 
-/* non static because it's reused from plugin.c */
-void feed_save(nodePtr node) {
+static void feed_save(nodePtr node) {
 
 	if(0 == node->loaded)
 		return;
@@ -1141,15 +1214,12 @@ void feed_save(nodePtr node) {
 	if(FALSE == node->needsCacheSave)
 		return;
 
-	if(NULL == FL_PLUGIN(node)->node_save)
-		return;
-
-	FL_PLUGIN(node)->node_save(node);
+	feed_save_to_cache(node);
 	node->needsCacheSave = FALSE;
 }
 
-/* non static because it's reused from plugin.c */
-void feed_unload(nodePtr node) {
+static void feed_unload(nodePtr node) {
+	feedPtr feed = (feedPtr)node->data;
 
 	debug2(DEBUG_CACHE, "+ node_unload (%s, ref count=%d)", node_get_title(node), node->loaded);
 
@@ -1160,13 +1230,18 @@ void feed_unload(nodePtr node) {
 
 	node_save(node);	/* save before unloading */
 
-	if(NULL == FL_PLUGIN(node)->node_unload)
-		return;
-
 	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
 		if(1 == node->loaded) {
 			g_assert(NULL != node->itemSet);
-			FL_PLUGIN(node)->node_unload(node);
+			if(CACHE_DISABLE == feed->cacheLimit) {
+				debug1(DEBUG_CACHE, "not unloading node (%s) because cache is disabled", node_get_title(node));
+			} else {
+				debug1(DEBUG_CACHE, "unloading node (%s)", node_get_title(node));
+				g_assert(NULL != node->itemSet);
+				g_list_free(node->itemSet->items);
+				g_free(node->itemSet);
+				node->itemSet = NULL;	
+			} 
 			/* node->itemSet will be NULL here, except when cache is disabled */
 		} else {
 			debug1(DEBUG_CACHE, "not unloading %s because it is still used", node_get_title(node));
@@ -1191,42 +1266,62 @@ static void feed_initial_load(nodePtr node) {
 
 static void feed_reset_update_counter(nodePtr node) {
 
-	feed_reset_update_counter((feedPtr)np->data);
+	feed_reset_update_counter_((feedPtr)node->data);
 }
 
-static void feed_request_update(nodePtr node, guint flags) {
-
-	if(NULL != FL_PLUGIN(np)->node_update)
-		FL_PLUGIN(np)->node_update(np, flags);
-}
-
-static void feed_request_auto_update(nodePtr np) {
-
-	if(NULL != FL_PLUGIN(np)->node_auto_update)
-		FL_PLUGIN(np)->node_auto_update(np);
-}
-
-static void feed_schedule_update(nodePtr node, request_cb callback, guint flags) {
-	feedPtr			feed = (feedPtr)np->data;
+static void feed_schedule_update(nodePtr node, guint flags) {
+	feedPtr			feed = (feedPtr)node->data;
 	struct request		*request;
 	
 	debug1(DEBUG_CONF, "Scheduling %s to be updated", node_get_title(node));
 
-	feed_cancel_retry(feed);
-	if(feed_can_be_updated(feed)) {
+	feed_cancel_retry(node);
+	if(feed_can_be_updated(node)) {
 		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));
 		request = download_request_new();
 		request->user_data = node;
-		request->callback = ui_feed_process_update_result;
+		request->callback = feed_process_update_result;
 		feed_prepare_request(feed, request, flags);
+		node->updateRequest = request;
 		download_queue(request);
 	} else {
 		debug0(DEBUG_CONF, "Update cancelled");
 	}
 }
 
-/* non static because it's reused from plugin.c */
-void feed_remove(nodePtr node) {
+static void feed_request_update(nodePtr node, guint flags) {
+
+	feed_schedule_update(node, flags | FEED_REQ_PRIORITY_HIGH);
+}
+
+static void feed_request_auto_update(nodePtr node) {
+	feedPtr		feed = (feedPtr)node->data;
+	GTimeVal	now;
+	gint		interval;
+	guint		flags = 0;
+
+	g_get_current_time(&now);
+	interval = feed_get_update_interval(feed);
+	
+	if(-2 >= interval)
+		return;		/* don't update this feed */
+		
+	if(-1 == interval)
+		interval = getNumericConfValue(DEFAULT_UPDATE_INTERVAL);
+	
+	if(getBooleanConfValue(ENABLE_FETCH_RETRIES))
+		flags |= FEED_REQ_ALLOW_RETRIES;
+
+	if(interval > 0)
+		if(feed->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+			feed_schedule_update(node, flags);
+
+	/* And check for favicon updating */
+	if(feed->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
+		favicon_download(node);
+}
+
+static void feed_remove(nodePtr node) {
 
 	if(NULL != node->icon) {
 		g_object_unref(node->icon);
@@ -1235,11 +1330,11 @@ void feed_remove(nodePtr node) {
 
 	ui_notification_remove_feed(node);
 	ui_node_remove_node(node);
-	FL_PLUGIN(node)->node_remove(node);
+
+	feed_remove_from_cache(node);
 }
 
-/* non static because it's reused from plugin.c */
-void feed_mark_all_read(nodePtr node) {
+static void feed_mark_all_read(nodePtr node) {
 
 	feed_load(node);
 	itemlist_mark_all_read(node->itemSet);
@@ -1274,9 +1369,9 @@ static gchar * feed_render(nodePtr node) {
 	if(feed_get_html_url(fp) != NULL)
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 						  feed_get_html_url(fp),
-						  feed_get_title(fp));
+						  node_get_title(node));
 	else
-		tmp = g_strdup(feed_get_title(fp));
+		tmp = g_strdup(node_get_title(node));
 
 	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
@@ -1356,11 +1451,11 @@ static gchar * feed_render(nodePtr node) {
 	return buffer;
 }
 
-static nodeTypeInfo nti = {
+static struct nodeType nti = {
 	feed_initial_load,
 	feed_load,
 	feed_save,
-	feed_unload
+	feed_unload,
 	feed_reset_update_counter,
 	feed_request_update,
 	feed_request_auto_update,
@@ -1368,6 +1463,6 @@ static nodeTypeInfo nti = {
 	feed_remove,
 	feed_mark_all_read,
 	feed_render
-}
+};
 
-nodeTypeInfo * feed_get_node_type_info(void) { return &nti; }
+nodeTypePtr feed_get_node_type(void) { return &nti; }
