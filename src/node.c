@@ -256,26 +256,37 @@ guint node_str_to_type(const gchar *str) {
 	return FST_INVALID;
 }
 
+static void node_add(nodePtr node, nodePtr parent) {
+	gint		pos = 0;
+
+	if(!parent) {
+		parent = feedlist_get_selected_parent();
+		ui_feedlist_get_target_folder(&pos);
+	}
+
+	if(0 == (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD))
+		return;
+
+	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
+
+	node->handler = parent->handler;
+	feedlist_add_node(parent, node, pos);
+}
+
 /* Interactive node adding (e.g. feed menu->new subscription), 
    launches some dialog that upon success calls 
    node_request_automatic_add() to add feeds or an own
    method to add other node types. */
 void node_request_interactive_add(guint type) {
 	nodePtr		parent;
-	nodePtr		child;
+	nodePtr		node;
 
 	debug_enter("node_request_interactive_add");
 
-	parent = feedlist_get_selected_parent();
-	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
-
-	g_assert(0 != (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD));
-
-	child = node_new();
-	child->type = type;
-	child->handler = parent->handler;
-	child->nodeType = g_hash_table_lookup(nodeTypes, (gpointer)type);
-	node_add(child); // FIXME
+	node = node_new();
+	node_set_title(node, _("New Subscription"));
+	node_add_data(node, FST_FEED, NULL);
+	node_add(node, NULL);
 
 	debug_exit("node_request_interactive_add");
 }
@@ -288,33 +299,19 @@ void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar
 
 	debug_enter("node_request_automatic_add");
 
-	// FIXME: prevent adding when plugin doesn't allow it!
 
 	g_assert(NULL != source);
-	feed = feed_new(source, filter);
 
 	if(!node)
 		node = node_new();
 
 	node_set_title(node, title?title:_("New Subscription"));
-	node_add_data(node, FST_FEED, (gpointer)feed);
-	node_add(node);
+	node_add_data(node, FST_FEED, feed_new(source, filter));
+	node_add(node, node->parent);
 
 	node_schedule_update(node, flags);
 
 	debug_exit("node_request_automatic_add");
-}
-
-void node_add(nodePtr node) {
-	nodePtr		parent;
-	gint		pos;
-
-	parent = feedlist_get_selected_parent();
-	ui_feedlist_get_target_folder(&pos);
-	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
-
-	node->handler = parent->handler;
-	feedlist_add_node(parent, node, pos);
 }
 
 /* wrapper for node type interface */

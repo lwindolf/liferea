@@ -126,7 +126,7 @@ void node_request_interactive_add(guint type);
 /**
  * Automatic subscription adding (e.g. URL DnD), creates a new node
  * or reuses the given one and creates a new feed without any user 
- * interaction and finally calls node_add().
+ * interaction.
  *
  * @param node		NULL or a node to reuse
  * @param source	the subscriptions source URL
@@ -137,14 +137,6 @@ void node_request_interactive_add(guint type);
 void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar *filter, gint flags);
 	
 /** 
- * Adds the given node to the feed list to the currently
- * selected folder.
- *
- * @param node		the node to add
- */
-void node_add(nodePtr node);
-
-/**
  * Removes the given node from the feed list.
  *
  * @param parent	the node
