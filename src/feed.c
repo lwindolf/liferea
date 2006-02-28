@@ -1343,11 +1343,13 @@ static void feed_mark_all_read(nodePtr node) {
 }
 
 static gchar * feed_render(nodePtr node) {
-	feedPtr			fp = (feedPtr)node;
+	feedPtr			fp = (feedPtr)node->data;
 	struct displayset	displayset;
 	gchar			*buffer = NULL;
 	gchar			*tmp, *tmp2;
 	xmlURIPtr		uri;
+
+	ui_htmlview_start_output(&buffer, feed_get_html_url(fp), TRUE);
 
 	displayset.headtable = NULL;
 	displayset.head = NULL;
@@ -1448,6 +1450,8 @@ static gchar * feed_render(nodePtr node) {
 		g_free(displayset.foottable);
 	}
 	
+	ui_htmlview_finish_output(&buffer);
+
 	return buffer;
 }
 

@@ -83,7 +83,7 @@ static void itemlist_check_for_deferred_removal(void) {
  */
 void itemlist_merge_itemset(itemSetPtr itemSet) {
 	gboolean	loadReadItems = TRUE;
-	gchar		*buffer;
+	gchar		*buffer = NULL;
 
 	debug_enter("itemlist_merge_itemset");
 	
@@ -114,17 +114,29 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 		iter = g_list_previous(iter);
 	}
 
-	/* display item(s) according to mode */
+	/* update HTML view according to mode */
 	if(TRUE == itemlist_get_two_pane_mode()) {
+		/* in 2 pane mode all items are shown at once
+		   so after merging it needs to be redisplayed */
+		g_print("two pane\n");
 		buffer = itemset_render_all(displayed_itemSet);
 	} else {
-		buffer = itemset_render_item(displayed_itemSet, displayed_item);
+		/* in 3 pane mode we don't update the HTML view
+		   except when no item is selected (when loading
+		   the items for the first time) then we show
+		   the nodes description */
+		g_print("three pane\n");
+		if(!displayed_item) {
+			g_print("node_render %s\n", displayed_itemSet->node->title);
+			buffer = node_render(displayed_itemSet->node);
+		}
 	}
 
+	if(buffer) {
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, 
 			  itemset_get_base_url(displayed_itemSet));
-
 	g_free(buffer);
+	}
 
 	debug_exit("itemlist_merge_itemset");
 }
