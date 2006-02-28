@@ -1159,7 +1159,7 @@ void feed_process_update_result(struct request *request) {
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
 
-			itemlist_reload(node->itemSet);
+			itemlist_merge_itemset(node->itemSet);
 			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_propdialog_new(node);

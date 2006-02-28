@@ -29,12 +29,12 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 
-static const gchar * itemset_get_base_url(itemSetPtr sp) {
+const gchar * itemset_get_base_url(itemSetPtr itemSet) {
 	const gchar 	*baseUrl = NULL;
 
-	switch(sp->type) {
+	switch(itemSet->type) {
 		case ITEMSET_TYPE_FEED:
-			baseUrl = feed_get_html_url((feedPtr)sp->node->data);
+			baseUrl = feed_get_html_url((feedPtr)itemSet->node->data);
 			break;
 		case ITEMSET_TYPE_FOLDER:
 			break;
@@ -42,62 +42,59 @@ static const gchar * itemset_get_base_url(itemSetPtr sp) {
 			break;
 	}
 
-	return baseUrl;
-}
-
-gchar * itemset_render_item(itemSetPtr sp, itemPtr ip) {
-	gchar		*tmp, *buffer = NULL;
-	const gchar	*baseUrl;
-
-	debug_enter("itemset_render_item");
-
-	baseUrl = itemset_get_base_url(sp);
-	ui_htmlview_start_output(&buffer, baseUrl, TRUE);
-
-	tmp = item_render(ip);
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-
-	ui_htmlview_finish_output(&buffer);
-
 	/* prevent feed scraping commands to end up as base URI */
 	if(!((baseUrl != NULL) &&
 	     (baseUrl[0] != '|') &&
 	     (strstr(baseUrl, "://") != NULL)))
 	   	baseUrl = NULL;
 
-	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, baseUrl);
-
-	g_free(buffer);
-
-	debug_exit("itemset_render_item");
+	return baseUrl;
 }
 
-gchar * itemset_render_all(itemSetPtr sp) {
+gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item) {
+	gchar		*tmp, *buffer = NULL;
+
+	debug_enter("itemset_render_item");
+
+	ui_htmlview_start_output(&buffer, itemset_get_base_url(itemSet), TRUE);
+
+	if(item) {
+		tmp = item_render(item);
+	addToHTMLBufferFast(&buffer, tmp);
+	g_free(tmp);
+	}
+
+	ui_htmlview_finish_output(&buffer);
+
+	debug_exit("itemset_render_item");
+
+	return buffer;
+}
+
+gchar * itemset_render_all(itemSetPtr itemSet) {
 	gchar		*tmp, *buffer = NULL;
 	const gchar	*baseUrl;
-	GList		*iter;
-	itemPtr		ip;
 
 	debug_enter("itemset_render_all");
 
-	baseUrl = itemset_get_base_url(sp);
-	ui_htmlview_start_output(&buffer, baseUrl, FALSE);
+	ui_htmlview_start_output(&buffer, itemset_get_base_url(itemSet), FALSE);
 
-	iter = sp->items;
+	GList *iter = itemSet->items;
 	while(iter) {	
-		ip = (itemPtr)iter->data;
+		itemPtr item = (itemPtr)iter->data;
 
-		if(ip->readStatus) 
+		if(item->readStatus) 
 			addToHTMLBuffer(&buffer, UNSHADED_START);
 		else
 			addToHTMLBuffer(&buffer, SHADED_START);
 				
-		tmp = item_render(ip);
+		// FIXME: for merged itemset each item must 
+		// be rendered with the correct base URL
+		tmp = item_render(item);
 		addToHTMLBuffer(&buffer, tmp);
 		g_free(tmp);
 				
-		if(ip->readStatus)
+		if(item->readStatus)
 			addToHTMLBuffer(&buffer, UNSHADED_END);
 		else
 			addToHTMLBuffer(&buffer, SHADED_END);
@@ -106,32 +103,32 @@ gchar * itemset_render_all(itemSetPtr sp) {
 		iter = g_list_next(iter);
 	}
 
+	ui_htmlview_finish_output(&buffer);
+
 	debug_exit("itemset_render_all");
 
 	return buffer;
 }
 
-itemPtr itemset_lookup_item(itemSetPtr sp, nodePtr np, gulong nr) {
-	GList		*items;
-	itemPtr		ip;
+itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {
 		
-	items = sp->items;
-	while(NULL != items) {
-		ip = (itemPtr)(items->data);
-		if((ip->nr == nr) && (ip->itemSet->node == np))
-			return ip;
-		items = g_list_next(items);
+	GList *iter = itemSet->items;
+	while(iter) {
+		itemPtr item = (itemPtr)(iter->data);
+		if((item->nr == nr) && (item->itemSet->node == node))
+			return item;
+		iter = g_list_next(iter);
 	}
 	
 	return NULL;
 }
 
-gboolean itemset_merge_check(itemSetPtr sp, itemPtr ip) {
+gboolean itemset_merge_check(itemSetPtr itemSet, itemPtr item) {
 	gboolean toBeMerged = FALSE;
 
-	switch(sp->type) {
+	switch(itemSet->type) {
 		case ITEMSET_TYPE_FEED:
-			toBeMerged = feed_merge_check(sp, ip);
+			toBeMerged = feed_merge_check(itemSet, item);
 			break;
 		case ITEMSET_TYPE_FOLDER:
 		case ITEMSET_TYPE_VFOLDER:
@@ -143,38 +140,38 @@ gboolean itemset_merge_check(itemSetPtr sp, itemPtr ip) {
 	return toBeMerged;
 }
 
-void itemset_prepend_item(itemSetPtr sp, itemPtr ip) {
+void itemset_prepend_item(itemSetPtr itemSet, itemPtr item) {
 
-	ip->itemSet = sp;
-	ip->nr = ++(sp->lastItemNr);
-	sp->items = g_list_prepend(sp->items, ip);
+	item->itemSet = itemSet;
+	item->nr = ++(itemSet->lastItemNr);
+	itemSet->items = g_list_prepend(itemSet->items, item);
 }
 
-void itemset_append_item(itemSetPtr sp, itemPtr ip) {
+void itemset_append_item(itemSetPtr itemSet, itemPtr item) {
 
-	ip->itemSet = sp;
-	ip->nr = ++(sp->lastItemNr);
-	sp->items = g_list_append(sp->items, ip);
+	item->itemSet = itemSet;
+	item->nr = ++(itemSet->lastItemNr);
+	itemSet->items = g_list_append(itemSet->items, item);
 }
 
-void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
+void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 
-	if(NULL == g_list_find(sp->items, ip)) {
-		g_warning("itemset_remove_item(): item (%s) to be removed not found...", ip->title);
+	if(!g_list_find(itemSet->items, item)) {
+		g_warning("itemset_remove_item(): item (%s) to be removed not found...", item->title);
 		return;
 	}
 
 	/* remove item from itemset */
-	sp->items = g_list_remove(sp->items, ip);
+	itemSet->items = g_list_remove(itemSet->items, item);
 
 	/* propagate item removal to itemset type specific implementation */
-	switch(sp->type) {
+	switch(itemSet->type) {
 		case ITEMSET_TYPE_FEED:
 		case ITEMSET_TYPE_FOLDER:
 			/* remove vfolder copies */
-			vfolder_remove_item(ip);
+			vfolder_remove_item(item);
 
-			sp->node->needsCacheSave = TRUE;
+			itemSet->node->needsCacheSave = TRUE;
 			
 			/* is this really correct? e.g. if there is no 
 			   unread/important vfolder? then the remove
@@ -182,164 +179,162 @@ void itemset_remove_item(itemSetPtr sp, itemPtr ip) {
 			   the counters would be wrong, the same when
 			   there are multiple vfolders catching an
 			   unread item...  FIXME!!! (Lars) */
-			feedlist_update_counters(ip->readStatus?0:-1,	
-						 ip->newStatus?-1:0);
+			feedlist_update_counters(item->readStatus?0:-1,	
+						 item->newStatus?-1:0);
 			break;
 		case ITEMSET_TYPE_VFOLDER:
 			/* No propagation */
 			break;
 		default:
-			g_error("itemset_remove_item(): unexpected item set type: %d\n", sp->type);
+			g_error("itemset_remove_item(): unexpected item set type: %d\n", itemSet->type);
 			break;
 	}
 }
 
-void itemset_remove_items(itemSetPtr sp) {
-	GList	*list, *iter;
+void itemset_remove_items(itemSetPtr itemSet) {
 
 	/* hmmm... bad performance when removing a lot of items */
-	iter = list = g_list_copy(sp->items);
-	while(NULL != iter) {
-		itemset_remove_item(sp, (itemPtr)iter->data);
+	GList *list = g_list_copy(itemSet->items);
+	GList *iter = list;
+	while(iter) {
+		itemset_remove_item(itemSet, (itemPtr)iter->data);
 		iter = g_list_next(iter);
 	}
 	g_list_free(list);
 
-	sp->node->needsCacheSave = TRUE;
+	itemSet->node->needsCacheSave = TRUE;
 }
 
-void itemset_set_item_flag(itemSetPtr sp, itemPtr ip, gboolean newFlagStatus) {
+void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newFlagStatus) {
 	nodePtr	sourceNode;
 	itemPtr	sourceItem;
 
-	g_assert(newFlagStatus != ip->flagStatus);
+	g_assert(newFlagStatus != item->flagStatus);
 
-	ip->flagStatus = newFlagStatus;
+	item->flagStatus = newFlagStatus;
 
-	if(ITEMSET_TYPE_VFOLDER == sp->type) {
+	if(ITEMSET_TYPE_VFOLDER == itemSet->type) {
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceNode != NULL) {
+		if(item->sourceNode) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
+			sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
-			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
+			if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
 				itemlist_set_flag(sourceItem, newFlagStatus);
 			node_unload(sourceNode);
 		}
 	} else {
-		vfolder_update_item(ip);	/* there might be vfolders using this item */
-		vfolder_check_item(ip);		/* and check if now a rule matches */
+		vfolder_update_item(item);	/* there might be vfolders using this item */
+		vfolder_check_item(item);	/* and check if now a rule matches */
 	}
 }
 
-void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newReadStatus) {
+void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean newReadStatus) {
 	nodePtr	sourceNode;
 	itemPtr	sourceItem;
 
-	g_assert(newReadStatus != ip->readStatus);
+	g_assert(newReadStatus != item->readStatus);
 
-	ip->readStatus = newReadStatus;
+	item->readStatus = newReadStatus;
 
 	/* Note: unread count updates must be done through the node
 	   interface to allow recursive node unread count updates */
-	node_update_unread_count(sp->node, (TRUE == newReadStatus)?-1:1);
+	node_update_unread_count(itemSet->node, newReadStatus?-1:1);
 	
-	if(ITEMSET_TYPE_VFOLDER == sp->type) {
+	if(ITEMSET_TYPE_VFOLDER == itemSet->type) {
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceNode != NULL) {
+		if(item->sourceNode) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
+			sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
-			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
+			if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
 				itemlist_set_read_status(sourceItem, newReadStatus);
 			node_unload(sourceNode);
 		} 
 	} else {		
-		vfolder_update_item(ip);	/* there might be vfolders using this item */
-		vfolder_check_item(ip);		/* and check if now a rule matches */
+		vfolder_update_item(item);	/* there might be vfolders using this item */
+		vfolder_check_item(item);	/* and check if now a rule matches */
 	}
 }
 
-void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newUpdateStatus) {
+void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean newUpdateStatus) {
 	nodePtr	sourceNode;
 	itemPtr	sourceItem;
 
-	g_assert(newUpdateStatus != ip->updateStatus);
+	g_assert(newUpdateStatus != item->updateStatus);
 
-	ip->updateStatus = newUpdateStatus;
+	item->updateStatus = newUpdateStatus;
 
-	if(ITEMSET_TYPE_VFOLDER == sp->type) {	
+	if(ITEMSET_TYPE_VFOLDER == itemSet->type) {	
 		/* if this item belongs to a vfolder update the source feed */
-		if(ip->sourceNode != NULL) {
+		if(item->sourceNode) {
 			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = ip->sourceNode;	/* keep feed pointer because ip might be free'd */
+			sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
 			node_load(sourceNode);
-			if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, ip->sourceNr)))
+			if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
 				itemlist_set_update_status(sourceItem, newUpdateStatus);
 			node_unload(sourceNode);
 		}
 	} else {
-		vfolder_update_item(ip);	/* there might be vfolders using this item */
-		vfolder_check_item(ip);		/* and check if now a rule matches */
+		vfolder_update_item(item);	/* there might be vfolders using this item */
+		vfolder_check_item(item);	/* and check if now a rule matches */
 	}
 }
 
-void itemset_set_item_new_status(itemSetPtr sp, itemPtr ip, gboolean newStatus) {
+void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus) {
 
-	g_assert(newStatus != ip->newStatus);
+	g_assert(newStatus != item->newStatus);
 
-	ip->newStatus = newStatus;
+	item->newStatus = newStatus;
 
 	/* Note: new count updates must be done through the node
 	   interface to allow global feed list new counter */
-	node_update_new_count(sp->node, (TRUE == newStatus)?-1:1);
+	node_update_new_count(itemSet->node, newStatus?-1:1);
 	
 	/* New status is never propagated to vfolders... */
 }
 
-void itemset_mark_all_read(itemSetPtr sp) {
-	GList	*item, *items;
-	itemPtr	ip;
+void itemset_mark_all_read(itemSetPtr itemSet) {
+	GList	*iter, *items;
+	itemPtr	item;
 
 	/* two loops on list copies because the itemlist_set_* 
 	   methods may modify the original item list */
 
-	items = g_list_copy(sp->items);
-	item = items;
-	while(NULL != item) {
-		ip = (itemPtr)item->data;
-		if(FALSE == ip->readStatus)
-			itemset_set_item_read_status(sp, ip, TRUE);
-		item = g_list_next(item);
+	items = g_list_copy(itemSet->items);
+	iter = items;
+	while(iter) {
+		item = (itemPtr)iter->data;
+		if(!item->readStatus)
+			itemset_set_item_read_status(itemSet, item, TRUE);
+		iter = g_list_next(iter);
 	}
 	g_list_free(items);
 
-	items = g_list_copy(sp->items);
-	item = items;
-	while(NULL != item) {	
-		ip = (itemPtr)item->data;
-		if(TRUE == ip->updateStatus)
-			itemset_set_item_update_status(sp, ip, FALSE);
-		item = g_list_next(item);
+	items = g_list_copy(itemSet->items);
+	iter = items;
+	while(iter) {	
+		item = (itemPtr)iter->data;
+		if(item->updateStatus)
+			itemset_set_item_update_status(itemSet, item, FALSE);
+		iter = g_list_next(iter);
 	}
 	g_list_free(items);
 
-	sp->node->needsCacheSave = TRUE;
+	itemSet->node->needsCacheSave = TRUE;
 }
 
-void itemset_mark_all_old(itemSetPtr sp) {
-	GList	*iter, *items;
-	itemPtr	ip;
+void itemset_mark_all_old(itemSetPtr itemSet) {
 
 	/* loop on list copy because the itemlist_set_* 
 	   methods may modify the original item list */
 
-	items = g_list_copy(sp->items);
-	iter = items;
-	while(NULL != iter) {
-		ip = (itemPtr)iter->data;
-		if(TRUE == ip->newStatus)
-			itemset_set_item_new_status(sp, ip, FALSE);
+	GList *items = g_list_copy(itemSet->items);
+	GList *iter = items;
+	while(iter) {
+		itemPtr item = (itemPtr)iter->data;
+		if(item->newStatus)
+			itemset_set_item_new_status(itemSet, item, FALSE);
 		iter = g_list_next(iter);
 	}
 	g_list_free(items);

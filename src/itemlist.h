@@ -55,7 +55,7 @@ itemPtr itemlist_get_selected(void);
  *
  * @param sp	the item set to be merged
  */
-void itemlist_reload(itemSetPtr sp);
+void itemlist_merge_itemset(itemSetPtr sp);
 
 /** 
  * Loads the passed feeds items into the itemlist.

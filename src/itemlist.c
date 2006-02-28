@@ -81,22 +81,21 @@ static void itemlist_check_for_deferred_removal(void) {
  * displayed itemset it will be merged against the item list
  * tree view.
  */
-void itemlist_reload(itemSetPtr sp) {
+void itemlist_merge_itemset(itemSetPtr itemSet) {
 	gboolean	loadReadItems = TRUE;
-	GList		*iter;
-	itemPtr		ip;
+	gchar		*buffer;
 
-	debug_enter("itemlist_reload");
+	debug_enter("itemlist_merge_itemset");
 	
 	if(displayed_itemSet == NULL)
 		return; /* Nothing to do if nothing is displayed */
 	
-	if(sp != displayed_itemSet)
+	if(itemSet != displayed_itemSet)
 		return;
 
-	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(sp->node));
+	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(itemSet->node));
 
-	if(ITEMSET_TYPE_FOLDER == sp->type) {
+	if(ITEMSET_TYPE_FOLDER == displayed_itemSet->type) {
 		if(0 == getNumericConfValue(FOLDER_DISPLAY_MODE))
 			return;
 	
@@ -104,19 +103,30 @@ void itemlist_reload(itemSetPtr sp) {
 	}
 
 	/* update item list tree view */	
-	iter = g_list_last(sp->items);
+	GList *iter = g_list_last(displayed_itemSet->items);
 	while(iter) {
-		ip = iter->data;
-		g_assert(NULL != ip);
+		itemPtr item = iter->data;
+		g_assert(NULL != item);
 
-		if((FALSE == ip->readStatus) || (TRUE == loadReadItems))
-			ui_itemlist_add_item(ip, TRUE);
+		if((FALSE == item->readStatus) || (TRUE == loadReadItems))
+			ui_itemlist_add_item(item, TRUE);
 
 		iter = g_list_previous(iter);
 	}
-	ui_itemlist_display();
 
-	debug_exit("itemlist_reload");
+	/* display item(s) according to mode */
+	if(TRUE == itemlist_get_two_pane_mode()) {
+		buffer = itemset_render_all(displayed_itemSet);
+	} else {
+		buffer = itemset_render_item(displayed_itemSet, displayed_item);
+	}
+
+	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, 
+			  itemset_get_base_url(displayed_itemSet));
+
+	g_free(buffer);
+
+	debug_exit("itemlist_merge_itemset");
 }
 
 /** 
@@ -165,7 +175,7 @@ void itemlist_load(itemSetPtr sp) {
 
 	/* 4. Load the new one... */
 	displayed_itemSet = sp;
-	itemlist_reload(sp);
+	itemlist_merge_itemset(sp);
 
 	itemlistLoading = 0;
 
@@ -204,7 +214,7 @@ void itemlist_update_vfolder(vfolderPtr vp) {
 		/* maybe itemlist_load(vp) would be faster, but
 		   it unloads all feeds and therefore must not be 
 		   called from here! */		
-		itemlist_reload(displayed_itemSet);
+		itemlist_merge_itemset(displayed_itemSet);
 	else
 		ui_node_update(vp->node);
 }

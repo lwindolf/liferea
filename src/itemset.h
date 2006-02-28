@@ -55,106 +55,127 @@ typedef struct itemSet {
 } *itemSetPtr;
 
 /**
+ * Returns the base URL for the given item set.
+ * If it is a mixed item set NULL will be returned.
+ *
+ * @param itemSet	the itemset
+ *
+ * @returns base URL
+ */
+const gchar * itemset_get_base_url(itemSetPtr itemSet);
+
+/**
  * Renders a single item out of a given itemset.
  *
- * @param sp	the itemset
- * @param ip	the item to render
+ * @param itemSet	the itemset
+ * @param item		the item to render
  *
  * @returns rendered HTML 
  */
-gchar * itemset_render_item(itemSetPtr sp, itemPtr ip);
+gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item);
 
 /**
  * Renders all items of a given itemset (condensed mode) 
  *
- * @param sp	the itemset
+ * @param itemSet	the itemset
  *
  * @returns rendered HTML 
  */
-gchar * itemset_render_all(itemSetPtr sp);
+gchar * itemset_render_all(itemSetPtr itemSet);
 
 /**
  * Scans all item of a given item set for the given item id.
  * The node must be also given to correctly extract items from
  * merged itemlists (like folders)
  *
- * @param sp	the itemset
- * @param np	the parent node
+ * @param itemSet	the itemset
+ * @param node		the parent node
  * @param nr	the item id
  *
  * @returns NULL or the first found item
  */
-itemPtr itemset_lookup_item(itemSetPtr sp, struct node *np, gulong nr);
+itemPtr itemset_lookup_item(itemSetPtr itemSet, struct node *node, gulong nr);
 
 /**
  * Determine wether a given item is to be merged
  * into the itemset or if it was already added.
  *
- * @param sp	the itemset
- * @param ip	the item to check
+ * @param itemSet	the itemset
+ * @param item		the item to check
  * @returns TRUE if the item is to be merged
  */
-gboolean itemset_merge_check(itemSetPtr sp, itemPtr ip);
+gboolean itemset_merge_check(itemSetPtr itemSet, itemPtr item);
 
 /**
  * Prepends a single item to the given itemset.
  *
- * @param sp	the itemset
- * @param ip	the item to add
+ * @param itemSet	the itemset
+ * @param item		the item to add
  */
-void itemset_prepend_item(itemSetPtr sp, itemPtr ip);
+void itemset_prepend_item(itemSetPtr itemSet, itemPtr item);
 
 /**
  * Appends a single item to the given itemset.
  *
- * @param sp	the itemset
- * @param ip	the item to add
+ * @param itemSet	the itemset
+ * @param item		the item to add
  */
-void itemset_append_item(itemSetPtr sp, itemPtr ip);
+void itemset_append_item(itemSetPtr itemSet, itemPtr item);
 
 /**
  * Removes a single item of a given itemset.
  *
- * @param sp	the itemset
- * @param ip	the item to remove
+ * @param itemSet	the itemset
+ * @param item		the item to remove
  */
-void itemset_remove_item(itemSetPtr sp, itemPtr ip);
+void itemset_remove_item(itemSetPtr itemSet, itemPtr item);
 
 /**
  * Removes all items of a given itemset.
  *
- * @param sp	the itemset
+ * @param itemSet	the itemset
  */
-void itemset_remove_all_items(itemSetPtr sp);
+void itemset_remove_all_items(itemSetPtr itemSet);
 
 /**
  * Changes the flag status of a single item of the given itemset.
  *
- * @param sp		the itemset
- * @param ip		the item to change
+ * @param itemSet	the itemset
+ * @param item		the item to change
  * @param newStatus	the new flag status
  */
-void itemset_set_item_flag(itemSetPtr sp, itemPtr ip, gboolean newStatus);
+void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
 /**
  * Changes the read status of a single item of the given itemset.
  *
- * @param sp		the itemset
- * @param ip		the item to change
+ * @param itemSet	the itemset
+ * @param item		the item to change
  * @param newStatus	the new read status
  */
-void itemset_set_item_read_status(itemSetPtr sp, itemPtr ip, gboolean newStatus);
+void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
 /**
  * Changes the update status of a single item of the given itemset.
  *
- * @param sp		the itemset
- * @param ip		the item to change
+ * @param itemSet	the itemset
+ * @param item		the item to change
  * @param newStatus	the new update status
  */
-void itemset_set_item_update_status(itemSetPtr sp, itemPtr ip, gboolean newStatus);
+void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
-void itemset_mark_all_read(itemSetPtr sp);
-void itemset_mark_all_old(itemSetPtr sp);
+/**
+ * Marks all items of the item set as read.
+ *
+ * @param itemSet	the itemset
+ */
+void itemset_mark_all_read(itemSetPtr itemSet);
+
+/**
+ * Resets the new flag for all items of the given item set.
+ *
+ * @param itemSet	the itemset
+ */
+void itemset_mark_all_old(itemSetPtr itemSet);
 
 #endif
