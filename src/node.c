@@ -38,7 +38,7 @@ static GHashTable *nodeTypes = NULL;
 void node_register_type(nodeTypePtr nodeType, guint type) {
 
 	if(!nodeTypes)
-		nodeTypes = g_hash_table_new(g_direct_hash, g_int_equal);
+		nodeTypes = g_hash_table_new(NULL, NULL);
 
 	g_hash_table_insert(nodeTypes, (gpointer)type, (gpointer)nodeType);
 }
@@ -81,8 +81,10 @@ void node_add_data(nodePtr np, guint type, gpointer data) {
 
 	g_assert(NULL == np->data);
 
-	np->type = type;
 	np->data = data;
+	np->type = type;
+	np->nodeType = g_hash_table_lookup(nodeTypes, (gpointer)type);
+	g_assert(NULL != np->nodeType);
 
 	/* Vfolders/Folders are not handled by the node
 	   loading/unloading so the item set must be prepared 
@@ -254,27 +256,6 @@ guint node_str_to_type(const gchar *str) {
 	return FST_INVALID;
 }
 
-static nodeTypePtr node_get_type_info(guint type) {
-	nodeTypePtr nodeType;
-
-	switch(type) {
-		case FST_FEED:
-			nodeType = feed_get_node_type();
-			break;
-		case FST_PLUGIN:
-			nodeType = fl_plugin_get_node_type();
-			break;
-		case FST_FOLDER:
-			nodeType = folder_get_node_type();
-			break;
-		case FST_VFOLDER:
-			nodeType = vfolder_get_node_type();
-			break;
-	}
-
-	return nodeType;
-}
-
 /* Interactive node adding (e.g. feed menu->new subscription), 
    launches some dialog that upon success calls 
    node_request_automatic_add() to add feeds or an own
@@ -291,9 +272,9 @@ void node_request_interactive_add(guint type) {
 	g_assert(0 != (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD));
 
 	child = node_new();
-	child->type = type;	// FIXME: remove me
+	child->type = type;
 	child->handler = parent->handler;
-	child->handler->type = node_get_type_info(type);
+	child->nodeType = g_hash_table_lookup(nodeTypes, (gpointer)type);
 	node_add(child); // FIXME
 
 	debug_exit("node_request_interactive_add");

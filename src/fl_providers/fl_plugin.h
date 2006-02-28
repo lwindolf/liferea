@@ -107,7 +107,6 @@ typedef struct flNodeHandler_ flNodeHandler;
 /** feed list node handler (instance of a feed list plugin) */
 struct flNodeHandler_ {
 	flPluginPtr		plugin;	/**< feed list plugin of this handler instance */
-	nodeTypePtr		type;	/**< node type implementation hook */
 	nodePtr			root;	/**< root node of this plugin instance */
 };
 

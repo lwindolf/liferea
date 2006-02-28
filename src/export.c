@@ -173,6 +173,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 	gchar		*id = NULL;
 	nodePtr		np = NULL;
 	gpointer	data = NULL;
+	gboolean	needsUpdate = FALSE;
 	guint		type;
 	
 	debug_enter("import_parse_outline");
@@ -193,19 +194,19 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 	
 	/* title */
 	title = xmlGetProp(cur, BAD_CAST"title");
-	if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
-		if(title != NULL)
+	if(!title || !xmlStrcmp(title, BAD_CAST"")) {
+		if(title)
 			xmlFree(title);
 		title = xmlGetProp(cur, BAD_CAST"text");
 	}
 	node_set_title(np, title);
 
-	if(title != NULL)
+	if(title)
 		xmlFree(title);
 
 	/* sorting order */
 	sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
-	if(sortStr != NULL) {
+	if(sortStr) {
 		if(!xmlStrcmp(sortStr, "title"))
 			np->sortColumn = IS_LABEL;
 		else if(!xmlStrcmp(sortStr, "time"))
@@ -213,15 +214,15 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		xmlFree(sortStr);
 	}
 	sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
-	if(sortStr != NULL && !xmlStrcmp(sortStr, BAD_CAST"false"))
+	if(sortStr && !xmlStrcmp(sortStr, BAD_CAST"false"))
 		np->sortReversed = FALSE;
-	if(sortStr != NULL)
+	if(sortStr)
 		xmlFree(sortStr);
 	
 	tmp = xmlGetProp(cur, BAD_CAST"twoPane");
-	if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+	if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 		node_set_two_pane_mode(np, TRUE);
-	if(tmp != NULL)
+	if(tmp)
 		xmlFree(tmp);
 
 	/* 2. determine node type */
@@ -256,17 +257,15 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			break;
 	}
 
-	if(NULL != typeStr)
+	if(typeStr)
 		xmlFree(typeStr);
 
-	if(NULL == node_get_id(np)) {
+	if(node_get_id(np)) {
 		id = node_new_id();
 		node_set_id(np, id);
 		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", id);
 		g_free(id);			
-		node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
-			                | FEED_REQ_DOWNLOAD_FAVICON
-			                | FEED_REQ_AUTH_DIALOG);
+		needsUpdate = TRUE;
 	}
 
 	node_add_data(np, type, data);
@@ -298,6 +297,11 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			/* nothing to do */
 			break;
 	}
+	
+	if(needsUpdate)
+		node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+			                | FEED_REQ_DOWNLOAD_FAVICON
+			                | FEED_REQ_AUTH_DIALOG);
 	
 	debug_exit("import_parse_outline");
 }

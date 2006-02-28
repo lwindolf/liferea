@@ -407,7 +407,7 @@ void feedlist_init(void) {
 	/* 2. Set up a root node */
 	rootNode = node_new();
 	rootNode->title = g_strdup("root");
-	node_add_data(rootNode, FST_ROOT, NULL);
+	rootNode->type = FST_ROOT;
 
 	/* 3. Initialize list of plugins and find root provider
 	   plugin. Creating an instance of this plugin. This 

@@ -49,6 +49,7 @@ enum node_types {
 typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
 	guint			type;		/**< node type */
+	struct nodeType		*nodeType;	/**< node type implementation */	
 	struct flNodeHandler_	*handler;	/**< the feed list plugin and node type instance handling this node */
 
 	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
@@ -94,7 +95,7 @@ typedef struct nodeType {
 	gchar * (*render)		(nodePtr node);
 } *nodeTypePtr;
 
-#define NODE(node)	((flNodeHandler *)(node->handler))->type
+#define NODE(node)	(node->nodeType)
 
 /**
  * Registers a new node type. Can be used by feed list
