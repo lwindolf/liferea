@@ -223,7 +223,7 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position) {
 
 	ui_node_update(node);
 	
-	if(!parent->type == FST_ROOT)
+	if(!(parent->type == FST_ROOT))
 		ui_node_check_if_folder_is_empty(parent);
 
 	if(FST_FOLDER == node->type)
