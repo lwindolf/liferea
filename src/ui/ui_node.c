@@ -210,7 +210,7 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position) {
 	/* if parent is NULL we have the root folder and don't create a new row! */
 	iter = (GtkTreeIter *)g_new0(GtkTreeIter, 1);
 	
-	if(!parent->type == FST_ROOT)
+	if(!(parent->type == FST_ROOT))
 		parentIter = ui_node_to_iter(parent);
 	
 	if(position < 0)

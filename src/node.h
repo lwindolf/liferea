@@ -115,9 +115,8 @@ nodePtr node_new(void);
 
 /**
  * Interactive node adding (e.g. feed menu->new subscription), 
- * launches some dialog that upon success calls 
- * node_request_automatic_add() to add feeds or an own
- * method to add other node types.
+ * launches some dialog that upon success adds a feed of the
+ * given type.
  *
  * @param type		the node type
  */
