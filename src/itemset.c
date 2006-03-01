@@ -98,7 +98,6 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 			addToHTMLBuffer(&buffer, UNSHADED_END);
 		else
 			addToHTMLBuffer(&buffer, SHADED_END);
-		
 
 		iter = g_list_next(iter);
 	}

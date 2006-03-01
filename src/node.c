@@ -293,7 +293,7 @@ void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar
 
 	g_assert(NULL != source);
 
-	if(!node)
+	if(!node) 
 		node = node_new();
 
 	node_set_title(node, title?title:_("New Subscription"));

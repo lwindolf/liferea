@@ -131,9 +131,9 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	}
 
 	if(buffer) {
-	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, 
-			  itemset_get_base_url(displayed_itemSet));
-	g_free(buffer);
+		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, 
+				  itemset_get_base_url(displayed_itemSet));
+		g_free(buffer);
 	}
 
 	debug_exit("itemlist_merge_itemset");

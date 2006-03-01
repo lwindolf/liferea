@@ -267,7 +267,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 	node_add_data(np, type, data);
 	favicon_load(np);
 	feedlist_add_node(parentNode, np, -1);
-		
+
 	if(FST_FOLDER == type) {
 		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
 			ui_node_set_expansion(np, TRUE);
@@ -293,14 +293,13 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			/* nothing to do */
 			break;
 	}
-	
+
 	if(needsUpdate) {
 		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(np));
 		node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
 			                | FEED_REQ_DOWNLOAD_FAVICON
 			                | FEED_REQ_AUTH_DIALOG);
 	}
-	
 	debug_exit("import_parse_outline");
 }
 

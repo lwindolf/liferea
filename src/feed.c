@@ -1403,7 +1403,7 @@ static gchar * feed_render(nodePtr node) {
 				tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 								  feed_get_source(fp),
 								  feed_get_source(fp));			
-		}
+			}
 		}
 
 		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
@@ -1449,7 +1449,7 @@ static gchar * feed_render(nodePtr node) {
 		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
 		g_free(displayset.foottable);
 	}
-	
+
 	ui_htmlview_finish_output(&buffer);
 
 	return buffer;
