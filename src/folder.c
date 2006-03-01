@@ -37,21 +37,25 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 	if(node->type == FST_FOLDER) {
 		node_foreach_child_data(node, folder_merge_itemset, itemSet);
 	} else {
-		NODE(node)->load(node);
-
-	debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(itemSet->items));
-	itemSet->items = g_list_concat(itemSet->items, g_list_copy(node->itemSet->items));
-	debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(itemSet->items));
-}
+		debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(itemSet->items));
+		itemSet->items = g_list_concat(itemSet->items, g_list_copy(node->itemSet->items));
+		debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(itemSet->items));
+	}
 }
 
 static void folder_load(nodePtr node) {
 
-	/* Concatenate all child item sets to form the folders item set */
-	itemSetPtr itemSet = g_new0(struct itemSet, 1);
-	itemSet->type = ITEMSET_TYPE_FOLDER;
-	node_foreach_child_data(node, folder_merge_itemset, itemSet);
-	node_set_itemset(node, itemSet);
+	node_foreach_child(node, node_load);
+
+	if(0 >= node->loaded) {
+		/* Concatenate all child item sets to form the folders item set */
+		itemSetPtr itemSet = g_new0(struct itemSet, 1);
+		itemSet->type = ITEMSET_TYPE_FOLDER;
+		node_foreach_child_data(node, folder_merge_itemset, itemSet);
+		node_set_itemset(node, itemSet);
+	}
+
+	node->loaded++;
 }
 
 static void folder_save(nodePtr node) {
@@ -60,8 +64,17 @@ static void folder_save(nodePtr node) {
 
 static void folder_unload(nodePtr node) {
 
-	g_list_free(node->itemSet->items);
-	node->itemSet->items = NULL;
+	if(0 >= node->loaded)
+		return;
+
+	if(1 == node->loaded) {
+		g_assert(NULL != node->itemSet);
+		g_list_free(node->itemSet->items);
+		node->itemSet->items = NULL;
+	}
+
+	node->loaded--;
+
 	node_foreach_child(node, node_unload);
 }
 

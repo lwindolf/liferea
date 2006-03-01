@@ -64,36 +64,35 @@ gchar * node_new_id() {
 }
 
 nodePtr node_new() {
-	nodePtr	np;
+	nodePtr	node;
 
-	np = (nodePtr)g_new0(struct node, 1);
-	np->id = node_new_id();
-	np->sortColumn = IS_TIME;
-	np->sortReversed = TRUE;	/* default sorting is newest date at top */
-	np->available = FALSE;
-	np->type = FST_INVALID;
+	node = (nodePtr)g_new0(struct node, 1);
+	node->id = node_new_id();
+	node->sortColumn = IS_TIME;
+	node->sortReversed = TRUE;	/* default sorting is newest date at top */
+	node->available = FALSE;
+	node->type = FST_INVALID;
 
-	return np;
+	return node;
 }
 
-void node_add_data(nodePtr np, guint type, gpointer data) {
-	itemSetPtr	sp;
+void node_add_data(nodePtr node, guint type, gpointer data) {
 
-	g_assert(NULL == np->data);
+	g_assert(NULL == node->data);
 
-	np->data = data;
-	np->type = type;
-	np->nodeType = g_hash_table_lookup(nodeTypes, (gpointer)type);
-	g_assert(NULL != np->nodeType);
+	node->data = data;
+	node->type = type;
+	node->nodeType = g_hash_table_lookup(nodeTypes, (gpointer)type);
+	g_assert(NULL != node->nodeType);
 
 	/* Vfolders are not handled by the node
 	   loading/unloading so the item set must be prepared 
 	   upon folder creation */
 
 	if(FST_VFOLDER == type) {
-		sp = g_new0(struct itemSet, 1);
-		sp->type = ITEMSET_TYPE_VFOLDER;
-		node_set_itemset(np, sp);
+		itemSetPtr itemSet = g_new0(struct itemSet, 1);
+		itemSet->type = ITEMSET_TYPE_VFOLDER;
+		node_set_itemset(node, itemSet);
 	}
 }
 
@@ -109,45 +108,43 @@ gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
 	return FALSE;
 }
 
-void node_free(nodePtr np) {
+void node_free(nodePtr node) {
 
-	g_assert(0 == np->loaded);
-	g_free(np->icon);
-	g_free(np->title);
-	g_free(np->id);
-	g_free(np);
+	g_assert(0 == node->loaded);
+	g_free(node->icon);
+	g_free(node->title);
+	g_free(node->id);
+	g_free(node);
 }
 
-void node_update_counters(nodePtr np) {
+void node_update_counters(nodePtr node) {
 	gint	unreadDiff, newDiff;
-	GList	*iter;
-	itemPtr	ip;
 
-	newDiff = -1 * np->newCount;
-	unreadDiff = -1 * np->unreadCount;
-	np->newCount = 0;
-	np->unreadCount = 0;
+	newDiff = -1 * node->newCount;
+	unreadDiff = -1 * node->unreadCount;
+	node->newCount = 0;
+	node->unreadCount = 0;
 
-	iter = np->itemSet->items;
-	while(NULL != iter) {
-		ip = (itemPtr)iter->data;
-		if(FALSE == ip->readStatus)
-			np->unreadCount++;	
-		if(TRUE == ip->newStatus)
-			np->newCount++;
-		if(TRUE == ip->popupStatus)
-			np->popupCount++;
+	GList *iter = node->itemSet->items;
+	while(iter) {
+		itemPtr item = (itemPtr)iter->data;
+		if(!item->readStatus)
+			node->unreadCount++;	
+		if(item->newStatus)
+			node->newCount++;
+		if(item->popupStatus)
+			node->popupCount++;
 		iter = g_list_next(iter);
 	}
-	newDiff += np->newCount;
-	unreadDiff += np->unreadCount;
+	newDiff += node->newCount;
+	unreadDiff += node->unreadCount;
 
-	if(FST_VFOLDER == np->type)
+	if(FST_VFOLDER == node->type)
 		return;		/* prevent recursive counting and adding to statistics */
 
 	/* update parent folder */
-	if(NULL != np->parent)
-		node_update_unread_count(np->parent, unreadDiff);
+	if(node->parent)
+		node_update_unread_count(node->parent, unreadDiff);
 
 	/* propagate to feed list statistics */
 	feedlist_update_counters(unreadDiff, newDiff);
