@@ -34,14 +34,15 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 
 	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(node));
 
-	if(node->type == FST_FOLDER) 
+	if(node->type == FST_FOLDER) {
 		node_foreach_child_data(node, folder_merge_itemset, itemSet);
-	else
+	} else {
 		NODE(node)->load(node);
 
 	debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(itemSet->items));
 	itemSet->items = g_list_concat(itemSet->items, g_list_copy(node->itemSet->items));
 	debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(itemSet->items));
+}
 }
 
 static void folder_load(nodePtr node) {
