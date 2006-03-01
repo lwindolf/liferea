@@ -227,8 +227,6 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr ip);
  */
 itemPtr feed_lookup_item(feedPtr fp, gulong nr);
 
-void feed_free(feedPtr fp);
-
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */

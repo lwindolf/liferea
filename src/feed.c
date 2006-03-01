@@ -1360,7 +1360,7 @@ static gchar * feed_render(nodePtr node) {
 	metadata_list_render(fp->metadata, &displayset);
 
 	/* Error description */
-	if(NULL != (tmp = feed_get_error_description(fp))) {
+	if(tmp = feed_get_error_description(fp)) {
 		addToHTMLBufferFast(&buffer, tmp);
 		g_free(tmp);
 	}
@@ -1368,7 +1368,7 @@ static gchar * feed_render(nodePtr node) {
 	/* Head table */
 	addToHTMLBufferFast(&buffer, HEAD_START);
 	/*  -- Feed line */
-	if(feed_get_html_url(fp) != NULL)
+	if(feed_get_html_url(fp))
 		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 						  feed_get_html_url(fp),
 						  node_get_title(node));
@@ -1381,7 +1381,7 @@ static gchar * feed_render(nodePtr node) {
 	g_free(tmp2);
 
 	/*  -- Source line */
-	if(NULL != feed_get_source(fp)) {
+	if(feed_get_source(fp)) {
 		if(feed_get_source(fp)[0] == '|') {
 			tmp = g_strdup(_("user defined command"));
 		} else if(feed_get_source(fp)[0] == '/') {
@@ -1390,8 +1390,7 @@ static gchar * feed_render(nodePtr node) {
 								  feed_get_source(fp));			
 		} else {
 			/* remove user and password from URL ... */
-			uri = xmlParseURI(feed_get_source(fp));
-			if (uri != NULL) {
+			if(uri = xmlParseURI(feed_get_source(fp))) {
 				g_free(uri->user);
 				uri->user = NULL;
 				tmp2 = xmlSaveUri(uri);
@@ -1400,10 +1399,11 @@ static gchar * feed_render(nodePtr node) {
 								  tmp2);
 				xmlFree(tmp2);
 				xmlFreeURI(uri);
-			} else
+			} else {
 				tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
 								  feed_get_source(fp),
 								  feed_get_source(fp));			
+		}
 		}
 
 		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
@@ -1417,7 +1417,7 @@ static gchar * feed_render(nodePtr node) {
 	addToHTMLBufferFast(&buffer, HEAD_END);
 
 	/* Head */
-	if(displayset.head != NULL) {
+	if(displayset.head) {
 		addToHTMLBufferFast(&buffer, displayset.head);
 		g_free(displayset.head);
 	}
@@ -1430,20 +1430,20 @@ static gchar * feed_render(nodePtr node) {
 	}
 
 	/* Body */
-	if(displayset.body != NULL) {
+	if(displayset.body) {
 		addToHTMLBufferFast(&buffer, displayset.body);
 		g_free(displayset.body);
 	}
 
 	/* Foot */
-	if(displayset.foot != NULL) {
+	if(displayset.foot) {
 		addToHTMLBufferFast(&buffer, displayset.foot);
 		g_free(displayset.foot);
 	}
 
 	addToHTMLBufferFast(&buffer, "<br/><br/>");	/* instead of the technorati link image shown for items */
 
-	if(displayset.foottable != NULL) {
+	if(displayset.foottable) {
 		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
 		addToHTMLBufferFast(&buffer, displayset.foottable);
 		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);

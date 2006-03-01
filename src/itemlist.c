@@ -118,14 +118,12 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	if(TRUE == itemlist_get_two_pane_mode()) {
 		/* in 2 pane mode all items are shown at once
 		   so after merging it needs to be redisplayed */
-		g_print("two pane\n");
 		buffer = itemset_render_all(displayed_itemSet);
 	} else {
 		/* in 3 pane mode we don't update the HTML view
 		   except when no item is selected (when loading
 		   the items for the first time) then we show
 		   the nodes description */
-		g_print("three pane\n");
 		if(!displayed_item) {
 			g_print("node_render %s\n", displayed_itemSet->node->title);
 			buffer = node_render(displayed_itemSet->node);
@@ -416,7 +414,7 @@ void itemlist_mark_all_read(itemSetPtr sp) {
 }
 
 /* mouse/keyboard interaction callbacks */
-void itemlist_selection_changed(itemPtr ip) {
+void itemlist_selection_changed(itemPtr item) {
 
 	debug_enter("itemlist_selection_changed");
 	
@@ -425,17 +423,18 @@ void itemlist_selection_changed(itemPtr ip) {
 		   more matching the rules because they have changed state */
 		itemlist_check_for_deferred_removal();
 	
-		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(ip));
-		displayed_item = ip;
+		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
+		displayed_item = item;
 
 		/* set read and unset update status when selecting */
-		if(ip) {
-			itemlist_set_read_status(ip, TRUE);
-			itemlist_set_update_status(ip, FALSE);
-		}
+		if(item) {
+			itemlist_set_read_status(item, TRUE);
+			itemlist_set_update_status(item, FALSE);
 
-		if(NULL != ip)
-			itemset_render_item(ip->itemSet, ip);
+			gchar *buffer = itemset_render_item(item->itemSet, item);
+			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, itemset_get_base_url(item->itemSet));
+			g_free(buffer);
+		}
 
 		ui_node_update(displayed_itemSet->node);
 

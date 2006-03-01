@@ -62,8 +62,6 @@ gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item) {
 		tmp = item_render(item);
 		addToHTMLBufferFast(&buffer, tmp);
 		g_free(tmp);
-    } else {
-		g_warning("error: rendering NULL item requested");
 	}
 
 	ui_htmlview_finish_output(&buffer);
