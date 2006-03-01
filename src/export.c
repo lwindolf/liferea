@@ -170,7 +170,6 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 
 static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandler *handler, gboolean trusted) {
 	gchar		*title, *typeStr, *tmp, *sortStr;
-	gchar		*id = NULL;
 	nodePtr		np = NULL;
 	gpointer	data = NULL;
 	gboolean	needsUpdate = FALSE;
@@ -187,10 +186,15 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 	   it could cause corruption if the same id was imported
 	   multiple times. */
 	if(trusted) {
+		gchar *id = NULL;
 		id = xmlGetProp(cur, BAD_CAST"id");
-		node_set_id(np, id);
-		xmlFree(id);
-	}
+		if (id) {
+			node_set_id(np, id);
+			xmlFree(id);
+		} else
+			needsUpdate = TRUE;
+	} else
+		needsUpdate = TRUE;
 	
 	/* title */
 	title = xmlGetProp(cur, BAD_CAST"title");
@@ -260,14 +264,6 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 	if(typeStr)
 		xmlFree(typeStr);
 
-	if(node_get_id(np)) {
-		id = node_new_id();
-		node_set_id(np, id);
-		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", id);
-		g_free(id);			
-		needsUpdate = TRUE;
-	}
-
 	node_add_data(np, type, data);
 	favicon_load(np);
 	feedlist_add_node(parentNode, np, -1);
@@ -298,10 +294,12 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			break;
 	}
 	
-	if(needsUpdate)
+	if(needsUpdate) {
+		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(np));
 		node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
 			                | FEED_REQ_DOWNLOAD_FAVICON
 			                | FEED_REQ_AUTH_DIALOG);
+	}
 	
 	debug_exit("import_parse_outline");
 }
