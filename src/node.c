@@ -86,15 +86,9 @@ void node_add_data(nodePtr np, guint type, gpointer data) {
 	np->nodeType = g_hash_table_lookup(nodeTypes, (gpointer)type);
 	g_assert(NULL != np->nodeType);
 
-	/* Vfolders/Folders are not handled by the node
+	/* Vfolders are not handled by the node
 	   loading/unloading so the item set must be prepared 
 	   upon folder creation */
-
-	if(FST_FOLDER == type) {
-		sp = g_new0(struct itemSet, 1);
-		sp->type = ITEMSET_TYPE_FOLDER;
-		node_set_itemset(np, sp);
-	}
 
 	if(FST_VFOLDER == type) {
 		sp = g_new0(struct itemSet, 1);

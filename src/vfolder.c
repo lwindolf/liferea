@@ -515,20 +515,20 @@ static void vfolder_save(nodePtr node) { }
 static void vfolder_unload(nodePtr node) { }
 static void vfolder_reset_update_counter(nodePtr node) { }
 static void vfolder_request_update(nodePtr node, guint flags) { }
-static void vfolder_request_auto_update(nodePtr np) { }
-static void vfolder_schedule_update(nodePtr np, guint flags) { }
+static void vfolder_request_auto_update(nodePtr node) { }
+static void vfolder_schedule_update(nodePtr node, guint flags) { }
 
-static void vfolder_remove(nodePtr np) {
+static void vfolder_remove(nodePtr node) {
 
-	vfolder_free(np->data);
+	vfolder_free(node->data);
 }
 
-static void vfolder_mark_all_read(nodePtr np) {
+static void vfolder_mark_all_read(nodePtr node) {
 
 	// FIXME: do we need to do something here?
 }
 
-static gchar * vfolder_render(nodePtr np) {
+static gchar * vfolder_render(nodePtr node) {
 
 	return g_strdup("Implement me: vfolder_render()");
 }

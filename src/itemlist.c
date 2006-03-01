@@ -143,20 +143,20 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
  * To be called whenever a feed was selected and should
  * replace the current itemlist.
  */
-void itemlist_load(itemSetPtr sp) {
+void itemlist_load(itemSetPtr itemSet) {
 	GtkTreeModel	*model;
 
 	debug_enter("itemlist_load");
 
-	g_assert(NULL != sp);
+	g_assert(NULL != itemSet);
 
-	debug1(DEBUG_GUI, "loading item list with node \"%s\"\n", node_get_title(sp->node));
+	debug1(DEBUG_GUI, "loading item list with node \"%s\"\n", node_get_title(itemSet->node));
 
 	itemlistLoading = 1;
 
 	/* 1. Don't continue if folder is selected and no
 	   folder viewing is configured. */
-	if((ITEMSET_TYPE_FOLDER == sp->type) && 
+	if((ITEMSET_TYPE_FOLDER == itemSet->type) && 
 	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
 			return;
 	
@@ -166,7 +166,7 @@ void itemlist_load(itemSetPtr sp) {
 	ui_itemlist_reset_tree_store();	 /* this also clears the itemlist. */
 	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
 
-	switch(sp->type) {
+	switch(itemSet->type) {
 		case ITEMSET_TYPE_FEED:
 			ui_itemlist_enable_favicon_column(FALSE);
 			break;
@@ -180,12 +180,14 @@ void itemlist_load(itemSetPtr sp) {
 
 	/* 3. Set sorting again... */
 	disableSortingSaving++;
-	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), sp->node->sortColumn, sp->node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
+	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), 
+	                                     itemSet->node->sortColumn, 
+	                                     itemSet->node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
 	disableSortingSaving--;
 
 	/* 4. Load the new one... */
-	displayed_itemSet = sp;
-	itemlist_merge_itemset(sp);
+	displayed_itemSet = itemSet;
+	itemlist_merge_itemset(itemSet);
 
 	itemlistLoading = 0;
 
@@ -239,14 +241,14 @@ void itemlist_reset_date_format(void) {
 /* next unread selection logic */
 
 /* checks if a given item is unread and selects it if necessary */
-static gboolean itemlist_check_if_unread(itemPtr ip) {
+static gboolean itemlist_check_if_unread(itemPtr item) {
 	
-	if(FALSE == ip->readStatus) {
+	if(!item->readStatus) {
 		if(itemlist_get_two_pane_mode()) {
-			itemset_mark_all_read(ip->itemSet);
+			itemset_mark_all_read(item->itemSet);
 		} else {
-			ui_itemlist_select(ip);
-			itemlist_set_read_status(ip, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
+			ui_itemlist_select(item);
+			itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 		}
 		return TRUE;
 	}
@@ -282,18 +284,18 @@ static gboolean itemlist_find_unread_item(void) {
 }
 
 void itemlist_select_next_unread(void) {
-	nodePtr		np;
+	nodePtr		node;
 	
 	/* before scanning the feed list, we test if there is a unread 
 	   item in the currently selected feed! */
-	if(TRUE == itemlist_find_unread_item())
+	if(itemlist_find_unread_item())
 		return;
 	
 	/* scan feed list and find first feed with unread items */
-	if(NULL != (np = feedlist_find_unread_feed(feedlist_get_root()))) {
+	if(node = feedlist_find_unread_feed(feedlist_get_root())) {
 		
 		/* load found feed */
-		ui_feedlist_select(np);
+		ui_feedlist_select(node);
 
 		/* find first unread item */
 		itemlist_find_unread_item();
@@ -303,18 +305,17 @@ void itemlist_select_next_unread(void) {
 	}
 }
 
-
 /* menu commands */
-void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
+void itemlist_set_flag(itemPtr item, gboolean newStatus) {
 	
-	if(newStatus != ip->flagStatus) {
-		ip->itemSet->node->needsCacheSave = TRUE;
+	if(newStatus != item->flagStatus) {
+		item->itemSet->node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
-		itemset_set_item_flag(ip->itemSet, ip, newStatus);
+		itemset_set_item_flag(item->itemSet, item, newStatus);
 
 		/* 2. update item list GUI state */
-		ui_itemlist_update_item(ip);
+		ui_itemlist_update_item(item);
 
 		/* 3. no update of feed list necessary... */
 
@@ -323,94 +324,94 @@ void itemlist_set_flag(itemPtr ip, gboolean newStatus) {
 	}
 }
 	
-void itemlist_toggle_flag(itemPtr ip) {
+void itemlist_toggle_flag(itemPtr item) {
 
-	itemlist_set_flag(ip, !(ip->flagStatus));
+	itemlist_set_flag(item, !(item->flagStatus));
 }
 
-void itemlist_set_read_status(itemPtr ip, gboolean newStatus) {
+void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 
-	if(newStatus != ip->readStatus) {		
-		ip->itemSet->node->needsCacheSave = TRUE;
+	if(newStatus != item->readStatus) {		
+		item->itemSet->node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
-		itemset_set_item_read_status(ip->itemSet, ip, newStatus);
+		itemset_set_item_read_status(item->itemSet, item, newStatus);
 
 		/* 2. update item list GUI state */
-		ui_itemlist_update_item(ip);
+		ui_itemlist_update_item(item);
 
 		/* 3. updated feed list unread counters */
-		node_update_counters(ip->itemSet->node);
-		ui_node_update(ip->itemSet->node);
-		if(ip->sourceNode)
-			ui_node_update(ip->sourceNode);
+		node_update_counters(item->itemSet->node);
+		ui_node_update(item->itemSet->node);
+		if(item->sourceNode)
+			ui_node_update(item->sourceNode);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
 	}
 }
 
-void itemlist_toggle_read_status(itemPtr ip) {
+void itemlist_toggle_read_status(itemPtr item) {
 
-	itemlist_set_read_status(ip, !(ip->readStatus));
+	itemlist_set_read_status(item, !(item->readStatus));
 }
 
-void itemlist_set_update_status(itemPtr ip, const gboolean newStatus) { 
+void itemlist_set_update_status(itemPtr item, const gboolean newStatus) { 
 	
-	if(newStatus != ip->updateStatus) {	
-		ip->itemSet->node->needsCacheSave = TRUE;
+	if(newStatus != item->updateStatus) {	
+		item->itemSet->node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
-		itemset_set_item_update_status(ip->itemSet, ip, newStatus);
+		itemset_set_item_update_status(item->itemSet, item, newStatus);
 
 		/* 2. update item list GUI state */
-		ui_itemlist_update_item(ip);	
+		ui_itemlist_update_item(item);	
 
 		/* 3. no update of feed list necessary... */
-		node_update_counters(ip->itemSet->node);
+		node_update_counters(item->itemSet->node);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
 	}
 }
 
-void itemlist_update_item(itemPtr ip) {
+void itemlist_update_item(itemPtr item) {
 	
-	ui_itemlist_update_item(ip);
+	ui_itemlist_update_item(item);
 }
 
-void itemlist_remove_item(itemPtr ip) {
+void itemlist_remove_item(itemPtr item) {
 	
-	if(NULL != itemset_lookup_item(ip->itemSet, ip->itemSet->node, ip->nr)) {
+	if(itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr)) {
 		/* if the currently selected item should be removed we
 		   don't do it and set a flag to do it when unselecting */
-		if(displayed_item != ip) {
-			ui_itemlist_remove_item(ip);
-			itemset_remove_item(ip->itemSet, ip);
-			ui_node_update(ip->itemSet->node);
+		if(displayed_item != item) {
+			ui_itemlist_remove_item(item);
+			itemset_remove_item(item->itemSet, item);
+			ui_node_update(item->itemSet->node);
 		} else {
 			deferred_item_remove = TRUE;
 			/* update the item to show new state that forces
 			   later removal */
-			ui_itemlist_update_item(ip);
+			ui_itemlist_update_item(item);
 		}
 	}
 }
 
-void itemlist_remove_items(itemSetPtr sp) {
+void itemlist_remove_items(itemSetPtr itemSet) {
 
 	ui_itemlist_clear();
 	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
-	itemset_remove_items(sp);
-	ui_node_update(sp->node);
+	itemset_remove_items(itemSet);
+	ui_node_update(itemSet->node);
 }
 
-void itemlist_mark_all_read(itemSetPtr sp) {
+void itemlist_mark_all_read(itemSetPtr itemSet) {
 
-	itemset_mark_all_read(sp);
-	sp->node->needsCacheSave = TRUE;
+	itemset_mark_all_read(itemSet);
+	itemSet->node->needsCacheSave = TRUE;
 	ui_itemlist_update();
-	ui_node_update(sp->node);
+	ui_node_update(itemSet->node);
 }
 
 /* mouse/keyboard interaction callbacks */

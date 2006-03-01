@@ -128,38 +128,6 @@ void feedlist_remove_node(nodePtr np) {
 	debug_exit("feedlist_remove_node");
 }
 
-/* This callback is used to compute the itemset of folder nodes */
-static void feedlist_merge_itemset_cb(nodePtr node, gpointer userdata) {
-	itemSetPtr	sp = (itemSetPtr)userdata;
-
-	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(node));
-
-	switch(node->type) {
-		case FST_FOLDER:
-			node_foreach_child_data(node, feedlist_merge_itemset_cb, userdata);
-			break;
-		case FST_FEED:
-		case FST_PLUGIN:
-			node_load(node);
-			break;
-		case FST_VFOLDER:
-			/* Do not merge vfolders because this might
-			   cause duplicate items and very large itemsets very. */
-			return;
-			break;
-		default:
-			g_warning("internal error: unknown node type!");
-			return;
-			break;
-	}
-
-	debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(sp->items));
-	/* Don't use a direct g_list_concat() here it will freeze the program! (Lars) */
-	// FIXME: is this a memleak?
-	sp->items = g_list_concat(sp->items, g_list_copy(node->itemSet->items));
-	debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(sp->items));
-}
-
 static gboolean feedlist_auto_update(void *data) {
 
 	debug_enter("feedlist_auto_update");

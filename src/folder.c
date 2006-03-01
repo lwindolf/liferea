@@ -19,13 +19,38 @@
  */
 
 #include "folder.h"
+#include "conf.h"
+#include "debug.h"
+#include "support.h"
+#include "ui/ui_htmlview.h"
 
 static void folder_initial_load(nodePtr node) {
 	node_foreach_child(node, node_initial_load);
 }
 
+/* This callback is used to compute the itemset of folder nodes */
+static void folder_merge_itemset(nodePtr node, gpointer userdata) {
+	itemSetPtr	itemSet = (itemSetPtr)userdata;
+
+	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(node));
+
+	if(node->type == FST_FOLDER) 
+		node_foreach_child_data(node, folder_merge_itemset, itemSet);
+	else
+		NODE(node)->load(node);
+
+	debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(itemSet->items));
+	itemSet->items = g_list_concat(itemSet->items, g_list_copy(node->itemSet->items));
+	debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(itemSet->items));
+}
+
 static void folder_load(nodePtr node) {
-	node_foreach_child(node, node_load);
+
+	/* Concatenate all child item sets to form the folders item set */
+	itemSetPtr itemSet = g_new0(struct itemSet, 1);
+	itemSet->type = ITEMSET_TYPE_FOLDER;
+	node_foreach_child_data(node, folder_merge_itemset, itemSet);
+	node_set_itemset(node, itemSet);
 }
 
 static void folder_save(nodePtr node) {
@@ -34,7 +59,6 @@ static void folder_save(nodePtr node) {
 
 static void folder_unload(nodePtr node) {
 
-	// FIXME: this does not seem to be correct
 	g_list_free(node->itemSet->items);
 	node->itemSet->items = NULL;
 	node_foreach_child(node, node_unload);
@@ -50,6 +74,7 @@ static void folder_request_update(nodePtr node, guint flags) {
 }
 
 static void folder_request_auto_update(nodePtr node) {
+	
 	node_foreach_child(node, node_request_auto_update);
 }
 
@@ -70,8 +95,26 @@ static void folder_mark_all_read(nodePtr node) {
 }
 
 static gchar * folder_render(nodePtr node) {
+	gchar	*tmp, *buffer = NULL;
 
-	// FIXME: !!!
+	ui_htmlview_start_output(&buffer, NULL, TRUE);
+
+	addToHTMLBufferFast(&buffer, HEAD_START);
+
+	tmp = g_strdup_printf(HEAD_LINE, _("Folder:"), node_get_title(node));
+	addToHTMLBufferFast(&buffer, tmp);
+	g_free(tmp);
+
+	addToHTMLBufferFast(&buffer, HEAD_END);
+
+	tmp = g_strdup_printf(getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ)?
+	                      _("Contains %d unread items\n"):
+	                      _("Contains %d items\n"), 
+	                      g_list_length(node->itemSet->items));
+	addToHTMLBufferFast(&buffer, tmp);
+	g_free(tmp);
+
+	return buffer;
 }
 
 static struct nodeType nti = {
