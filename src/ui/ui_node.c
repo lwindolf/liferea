@@ -237,13 +237,13 @@ void ui_node_remove_node(nodePtr np) {
 	iter = ui_node_to_iter(np);
 	g_return_if_fail(NULL != iter);
 
-	if(np->parent != NULL)
+	if(np->parent)
 		parentExpanded = ui_node_is_folder_expanded(np->parent); /* If the folder becomes empty, the folder would collapse */
 	
 	gtk_tree_store_remove(feedstore, iter);
 	g_hash_table_remove(flIterHash, iter);
 	
-	if(np->parent != NULL) {
+	if(np->parent) {
 		ui_node_check_if_folder_is_empty(np->parent);
 		if(parentExpanded)
 			ui_node_set_expansion(np->parent, TRUE);
