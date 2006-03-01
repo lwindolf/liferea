@@ -44,6 +44,7 @@
 extern GdkPixbuf	*icons[];
 
 static GHashTable 	*ilIterHash = NULL;	/* hash table used for fast item->tree iter lookup */
+static GtkWidget *itemlist_global_fixme;
 
 gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
 
@@ -89,11 +90,11 @@ void ui_itemlist_reset_tree_store() {
 
 	ui_itemlist_clear();
 
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
-	gtk_tree_view_set_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), NULL);
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(itemlist_global_fixme));
+	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist_global_fixme), NULL);
 	
 	g_object_unref(model);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), GTK_TREE_MODEL(ui_itemlist_get_tree_store()));
+	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist_global_fixme), GTK_TREE_MODEL(ui_itemlist_get_tree_store()));
 
 	ui_itemlist_prefocus();
 }
@@ -102,7 +103,7 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	GtkTreeModel	*model;
 	GtkTreeStore	*itemstore;
 	
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(itemlist_global_fixme));
 	if(NULL == model) {
 		/* set up a store of these attributes: 
 		 	- item creation time
@@ -196,7 +197,7 @@ void ui_itemlist_clear(void) {
 	GtkTreeView		*treeview;
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 
-	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist"));
+	treeview = GTK_TREE_VIEW(itemlist_global_fixme);
 
 	/* unselecting all items is important to remove items
 	   whose removal is deferred until unselecting */
@@ -301,14 +302,24 @@ static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, 
 	return FALSE;
 }
 
-void ui_itemlist_init(GtkWidget *itemlist) {
+GtkWidget* ui_itemlist_new() {
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;
 	GtkTreeStore		*itemstore;	
+	GtkWidget 			*itemlist;
+	GtkWidget 			*ilscrolledwindow;
 	
-	g_assert(mainwindow != NULL);
-	g_assert(itemlist != NULL);
+	ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (ilscrolledwindow);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
+
+	itemlist_global_fixme = itemlist = gtk_tree_view_new ();
+	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), itemlist);
+	gtk_widget_show (itemlist);
+	gtk_widget_set_name(itemlist, "itemlist");
+	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (itemlist), TRUE);
 
 	ilIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 
@@ -352,8 +363,16 @@ void ui_itemlist_init(GtkWidget *itemlist) {
 	g_signal_connect(G_OBJECT(select), "changed",
                   G_CALLBACK(on_itemlist_selection_changed),
                   NULL);
+	g_signal_connect ((gpointer) itemlist, "button_press_event",
+					  G_CALLBACK (on_itemlist_button_press_event),
+					  NULL);
+	g_signal_connect ((gpointer) itemlist, "row_activated",
+					  G_CALLBACK (on_Itemlist_row_activated),
+					  NULL);
 		  
 	ui_itemlist_reset_date_format();
+	
+	return ilscrolledwindow;
 }
 
 /* typically called when filling the item tree view */
@@ -368,7 +387,7 @@ void ui_itemlist_prefocus(void) {
 	   generate two selection-change events (one for the clicked and
 	   one for the selected item)!!! */
 
-	itemlist = lookup_widget(mainwindow, "Itemlist");
+	itemlist = itemlist_global_fixme;
 	
 	/* we need to restore the focus after we temporarily select the itemlist */
 	focus_widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
@@ -478,7 +497,7 @@ void ui_itemlist_enable_favicon_column(gboolean enabled) {
 	/* we depend on the fact that the third column is the favicon column!!! 
 	   if we are in search mode (or have a vfolder) we show the favicon 
 	   column to give a hint where the item comes from ... */
-	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")), 2), enabled);
+	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_global_fixme), 2), enabled);
 }
 
 void on_popup_launchitem_selected(void) {
@@ -553,7 +572,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		/* 3. But 2. might not be enough, e.g. if ip was the
 		      last item and is still selected (not removed) */
 		if(itemlist_get_selected() == ip) {
-			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(mainwindow, "Itemlist")));
+			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist_global_fixme));
 			gtk_tree_selection_unselect_all(selection);
 		}
 	} else {
@@ -575,7 +594,7 @@ void ui_itemlist_select(itemPtr ip) {
 	iter = ui_item_to_iter(ip);
 	g_return_if_fail(NULL != iter);
 
-	treeview = lookup_widget(mainwindow, "Itemlist");
+	treeview = itemlist_global_fixme;
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
 	path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), iter);
@@ -615,9 +634,8 @@ static itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter) {
 	return ip;
 }
 
-gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data) {
+gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *event, gpointer user_data) {
 	GdkEventButton		*eb;
-	GtkWidget		*treeview;
 	GtkTreeViewColumn	*column;
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
@@ -625,8 +643,6 @@ gboolean on_itemlist_button_press_event(GtkWidget *widget, GdkEventButton *event
 	
 	if(event->type != GDK_BUTTON_PRESS)
 		return FALSE;
-
-	treeview = lookup_widget(mainwindow, "Itemlist");
 
 	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(treeview), event->x, event->y, &path, NULL, NULL, NULL))
 		return FALSE;
@@ -699,3 +715,18 @@ void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer use
 	node_set_sort_column(feedlist_get_selected(), sortColumn, sortType == GTK_SORT_DESCENDING);
 }
 
+/* needed because switching does sometimes returns to the tree 
+   view with a very disturbing horizontal scrolling state */
+void ui_itemlist_scroll_left() {
+	GtkTreeViewColumn 	*column;
+	GtkTreePath		*path;
+
+	if (FALSE == itemlist_get_two_pane_mode()) {
+		gtk_tree_view_get_cursor(GTK_TREE_VIEW(itemlist_global_fixme), &path, &column);
+		if(path) {
+			column = gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_global_fixme), 1);
+			gtk_tree_view_set_cursor(GTK_TREE_VIEW(itemlist_global_fixme), path, column, FALSE);
+			gtk_tree_path_free(path);
+		}
+	}
+}

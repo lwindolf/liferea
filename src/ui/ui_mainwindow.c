@@ -48,6 +48,7 @@ struct mainwindow {
 	GtkWindow *window;
 	GtkWidget *menubar;
 	GtkWidget *toolbar;
+	GtkWidget *itemlist;
 	GtkActionGroup *generalActions;
 	GtkActionGroup *feedActions;
 } *mw_global_fixme; /* FIXME: I'd like to get rid of this global at some point. */
@@ -318,7 +319,6 @@ static struct mainwindow *ui_mainwindow_new(void) {
 
 	gtk_widget_set_name(window, "lifereaMainwindow");
 	gtk_widget_set_name(lookup_widget(window, "feedlist"), "feedlist");
-	gtk_widget_set_name(lookup_widget(window, "Itemlist"), "itemlist");
 	
 	ui_mainwindow_create_menus(mw);
 	gtk_box_pack_start (GTK_BOX (lookup_widget(window,"vbox1")), mw->toolbar, FALSE, FALSE, 0);
@@ -366,8 +366,10 @@ void ui_mainwindow_init(int mainwindowState) {
 
 	/* order important !!! */
 	ui_feedlist_init(lookup_widget(mainwindow, "feedlist"));
-	ui_itemlist_init(lookup_widget(mainwindow, "Itemlist"));
-
+	
+	mw->itemlist = ui_itemlist_new();
+	gtk_paned_pack1 (GTK_PANED (lookup_widget(mainwindow,"rightpane")), mw->itemlist, FALSE, TRUE);
+	
 	/* necessary to prevent selection signals when filling the feed list
 	   and setting the 2/3 pane mode view */
 	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), FALSE);

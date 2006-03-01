@@ -43,7 +43,7 @@ enum is_columns {
  * Initializes the itemlist. For example, it creates the various
  * columns and renderers needed to show the list.
  */
-void ui_itemlist_init(GtkWidget *itemlist);
+GtkWidget* ui_itemlist_new();
 
 /**
  * This returns the GtkTreeStore that is internal to the
@@ -104,6 +104,13 @@ void ui_itemlist_enable_favicon_column(gboolean enabled);
  * Remove the items from the itemlist.
  */
 void ui_itemlist_clear(void);
+
+
+/**
+ * When switching tabs, the horizontal scrolling sometimes gets messed
+ * up. This reverses that.
+ */
+void ui_itemlist_scroll_left();
 
 /**
  * @name Callbacks used from interface.c
