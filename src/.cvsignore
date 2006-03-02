@@ -1,7 +1,0 @@
-liferea-bin
-.deps
-.libs
-*.lo
-*.la
-.deps/*
-liferea
