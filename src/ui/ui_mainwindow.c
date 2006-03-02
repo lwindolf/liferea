@@ -710,8 +710,13 @@ static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *button
 	                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 	                                     NULL);
 	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
-	if(NULL != currentFilename)
-		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), currentFilename);
+	if(NULL != currentFilename) {
+		if (directory)
+			gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), currentFilename);
+		else
+			gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), currentFilename);
+		
+	}
 	tuple = g_new0(struct file_chooser_tuple, 1);
 	tuple->dialog = dialog;
 	tuple->func = callback;
