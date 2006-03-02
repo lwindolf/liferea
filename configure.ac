@@ -370,6 +370,8 @@ src/ui/Makefile
 src/liferea
 doc/Makefile
 doc/html/Makefile
+man/Makefile
+man/pl/Makefile
 pixmaps/Makefile
 opml/Makefile
 po/Makefile.in

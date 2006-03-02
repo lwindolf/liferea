@@ -1,0 +1,78 @@
+.TH LIFEREA "1" "Luty 1, 2005"
+.SH NAME
+Liferea \- Czytnik wiadomo¶ci RSS/RDF i Atom
+
+.SH SK£ADNIA
+.B liferea
+.RI [\fIOPCJE\fR]
+
+.SH OPIS
+\fBLiferea\fP (Linuksowy Czytnik Wiadomo¶ci) to przegl±darka kana³ów
+RSS/RDF oraz Atom obs³uguj±ca  równie¿ kana³y CDF, OCS i katalogi OPML.
+Z za³o¿enia jest klonem Windowsowego czytnika FeedReader.
+Umo¿liwia zarz±dzanie list± subskrypcji, przegl±danie, wyszukiwanie w
+elementach oraz wy¶wietlanie ich zawarto¶ci z wykorzystaniem bibliotek
+GtkHTML lub Mozilli.
+
+.SH OPCJE
+.TP
+.B \-\-version
+Wy¶wietl informacjê o wersji i wyjd¼
+.TP
+.B \-\-help
+Wy¶wietl podsumowanie opcji i wyjd¼
+.TP
+.B \-\-mainwindow\-state=\fISTAN\fR
+Uruchom g³ówne okno Liferea w jednym ze STANów: shown, iconified, hidden
+.TP
+.B \-\-debug\-cache
+Wy¶wietl informacje debugowania obs³ugi pamiêci podrêcznej
+.TP
+.B \-\-debug\-conf
+Wy¶wietl informacje debugowania obs³ugi konfiguracji
+.TP
+.B \-\-debug\-update
+Wy¶wietl informacje debugowania procesu uaktualniania subskrypcji
+.TP
+.B \-\-debug\-parsing
+Wy¶wietl informacje debugowania funkcji przetwarzaj±cych
+.TP
+.B \-\-debug\-gui
+Wy¶wietl informacje debugowania wszystkich funkcji interfejsu
+graficznego
+.TP
+.B \-\-debug\-trace
+Wy¶wietl informacje debugowania wykonywania funkcji
+.TP
+.B \-\-debug\-all
+Wy¶wietl wszelkie mo¿liwe informacje debugowania
+.TP
+.B \-\-debug\-verbose
+Wy¶wietl szczegó³owe informacje debugowania
+
+.SH ZMIENNE ¦RODOWISKOWE
+.TP
+.B http_proxy
+Je¶li po¶rednik sieciowy (proxy) nie zosta³ podany w Preferencjach
+Liferea (pobierany z konfiguracji Gconf), u¿ywany bêdzie serwer podany w
+zmiennej $http_proxy. Warto¶æ zmiennej $http_proxy powinna zawieraæ URI
+¿±danego serwera proxy, na przyk³ad
+.RB \(oqhttp://proxy.example.com:3128/\(cq.
+
+.SH PLIKI
+.TP
+\fI/usr/lib/liferea/\fR
+Wtyczki Liferea
+.TP
+\fI/usr/share/liferea/css/\fR
+Arkusze stylów u¿ywane do modyfikowania wygl±du przegl±darki artyku³ów
+.TP
+\fI/usr/share/liferea/opml/\fR
+Przyk³adowe listy subskrypcji
+.TP
+\fI~/.liferea/\fR
+Listy subskrypcji u¿ytkownika oraz pliki pamiêci podrêcznej
+.SH AUTORZY
+Lars Lindner <lars.lindner@gmx.net>
+.br
+Nathan J. Conrad <t98502@users.sourceforge.net>

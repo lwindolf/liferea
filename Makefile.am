@@ -1,13 +1,11 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = doc opml pixmaps po src
+SUBDIRS = doc man opml pixmaps po src
 
 desktop_files=liferea.desktop
 
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(desktop_files)
-
-man_MANS = liferea.1
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = liferea.schemas
@@ -17,7 +15,6 @@ EXTRA_DIST = \
 	liferea.gladep \
 	liferea.spec \
 	liferea-SuSE.spec \
-	liferea.1 \
 	src/liferea \
 	$(desktop_files) \
 	$(schema_DATA)
