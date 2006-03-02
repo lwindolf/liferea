@@ -346,7 +346,7 @@ void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, flNodeHandl
 			else
 				g_warning(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 		} else {
-			while(cur != NULL) {
+			while(cur) {
 				if(!xmlIsBlankNode(cur)) {
 					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
 						import_parse_OPML(cur, parentNode, handler, trusted);

@@ -39,6 +39,8 @@ create_mainwindow (void)
   GtkWidget *vbox18;
   GtkWidget *itemtabs;
   GtkWidget *rightpane;
+  GtkWidget *ilscrolledwindow;
+  GtkWidget *Itemlist;
   GtkWidget *viewportThreePaneHtml;
   GtkWidget *label30;
   GtkWidget *viewportTwoPaneHtml;
@@ -102,6 +104,17 @@ create_mainwindow (void)
   gtk_container_add (GTK_CONTAINER (itemtabs), rightpane);
   gtk_paned_set_position (GTK_PANED (rightpane), 200);
 
+  ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (ilscrolledwindow);
+  gtk_paned_pack1 (GTK_PANED (rightpane), ilscrolledwindow, FALSE, TRUE);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
+
+  Itemlist = gtk_tree_view_new ();
+  gtk_widget_show (Itemlist);
+  gtk_container_add (GTK_CONTAINER (ilscrolledwindow), Itemlist);
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (Itemlist), TRUE);
+
   viewportThreePaneHtml = gtk_viewport_new (NULL, NULL);
   gtk_widget_show (viewportThreePaneHtml);
   gtk_paned_pack2 (GTK_PANED (rightpane), viewportThreePaneHtml, TRUE, TRUE);
@@ -146,6 +159,12 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) feedlist, "drag_end",
                     G_CALLBACK (on_feedlist_drag_end),
                     NULL);
+  g_signal_connect ((gpointer) Itemlist, "button_press_event",
+                    G_CALLBACK (on_itemlist_button_press_event),
+                    NULL);
+  g_signal_connect ((gpointer) Itemlist, "row_activated",
+                    G_CALLBACK (on_Itemlist_row_activated),
+                    NULL);
   g_signal_connect ((gpointer) onlinebtn, "clicked",
                     G_CALLBACK (on_onlinebtn_clicked),
                     NULL);
@@ -160,6 +179,8 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, vbox18, "vbox18");
   GLADE_HOOKUP_OBJECT (mainwindow, itemtabs, "itemtabs");
   GLADE_HOOKUP_OBJECT (mainwindow, rightpane, "rightpane");
+  GLADE_HOOKUP_OBJECT (mainwindow, ilscrolledwindow, "ilscrolledwindow");
+  GLADE_HOOKUP_OBJECT (mainwindow, Itemlist, "Itemlist");
   GLADE_HOOKUP_OBJECT (mainwindow, viewportThreePaneHtml, "viewportThreePaneHtml");
   GLADE_HOOKUP_OBJECT (mainwindow, label30, "label30");
   GLADE_HOOKUP_OBJECT (mainwindow, viewportTwoPaneHtml, "viewportTwoPaneHtml");

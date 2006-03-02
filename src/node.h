@@ -135,7 +135,7 @@ void node_request_interactive_add(guint type);
  */
 void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar *filter, gint flags);
 	
-/** 
+/**
  * Removes the given node from the feed list.
  *
  * @param parent	the node

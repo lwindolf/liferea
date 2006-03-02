@@ -49,13 +49,11 @@ static nodePtr	rootNode = NULL;
    display enabled) */
 static nodePtr	selectedNode = NULL; 		
 
+/* set when a feed list save is scheduled */
 static guint feedlist_save_timer = 0;
-static gboolean feedlistLoading = TRUE;
 
-typedef enum {
-	NEW_ITEM_COUNT,
-	UNREAD_ITEM_COUNT
-} countType;
+/* this flag prevents the feed list being saved before it is completely loaded */
+static gboolean feedlistLoading = TRUE;
 
 nodePtr feedlist_get_root(void) { return rootNode; }
 
@@ -65,10 +63,10 @@ nodePtr feedlist_get_selected_parent(void) {
 
 	g_assert(NULL != rootNode);
 
-	if(NULL == selectedNode)
+	if(!selectedNode)
 		return rootNode;
 	
-	if(NULL == selectedNode->parent) 
+	if(!selectedNode->parent) 
 		return rootNode;
 	else
 		return selectedNode->parent;
@@ -113,17 +111,17 @@ void feedlist_add_node(nodePtr parent, nodePtr node, gint position) {
 	ui_node_update(node);
 }
 
-void feedlist_remove_node(nodePtr np) {
+void feedlist_remove_node(nodePtr node) {
 
 	debug_enter("feedlist_remove_node");
 
-	if(np == selectedNode) {
+	if(node == selectedNode) {
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		itemlist_unload();
 		ui_feedlist_select(NULL);
 	}
 
-	node_remove(np);
+	node_remove(node);
 
 	debug_exit("feedlist_remove_node");
 }
@@ -161,7 +159,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 	nodePtr			np, childNode, selectedNode;
 	GSList			*iter, *selectedIter = NULL;
 
-	if(NULL != (selectedNode = feedlist_get_selected())) {
+	if(selectedNode = feedlist_get_selected()) {
 		selectedIter = g_slist_find(selectedNode->parent->children, selectedNode);
 	} else {
 		scanState = UNREAD_SCAN_SECOND_PASS;
@@ -219,13 +217,13 @@ nodePtr feedlist_find_unread_feed(nodePtr folder) {
 
 /* selection handling */
 
-void feedlist_selection_changed(nodePtr np) {
+void feedlist_selection_changed(nodePtr node) {
 	nodePtr	displayed_node;
 
 	debug_enter("feedlist_selection_changed");
 
-	debug1(DEBUG_GUI, "new selected node: %s", (NULL == np)?"none":node_get_title(np));
-	if(np != selectedNode) {
+	debug1(DEBUG_GUI, "new selected node: %s", node?node_get_title(node):"none");
+	if(node != selectedNode) {
 		displayed_node = itemlist_get_displayed_node();
 
 		/* When the user selects a feed in the feed list we
@@ -238,11 +236,11 @@ void feedlist_selection_changed(nodePtr np) {
 		itemlist_unload();
 
 		/* Unload previously displayed node. */
-		if(NULL != displayed_node)
+		if(displayed_node)
 			node_unload(displayed_node);
 
 		/* Load items of new selected node. */
-		selectedNode = np;
+		selectedNode = node;
 
 		node_load(selectedNode);
 		itemlist_load(selectedNode->itemSet);
@@ -256,11 +254,6 @@ void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
 	ui_feedlist_delete_prompt(selectedNode);
 }
 
-static void feedlist_request_update(nodePtr node, guint flags) {
-
-	NODE(node)->request_update(node, flags);
-}
-
 void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	nodePtr node = (nodePtr)callback_data;
 
@@ -270,7 +263,7 @@ void on_popup_refresh_selected(gpointer callback_data, guint callback_action, Gt
 	}
 
 	if(download_is_online()) 
-		feedlist_request_update(node, FEED_REQ_PRIORITY_HIGH);
+		node_request_update(node, FEED_REQ_PRIORITY_HIGH);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
@@ -279,7 +272,7 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	if(download_is_online()) 
 		// FIXME: int -> pointer
-		feedlist_foreach_data(feedlist_request_update, (gpointer)FEED_REQ_PRIORITY_HIGH);
+		feedlist_foreach_data(node_request_update, (gpointer)FEED_REQ_PRIORITY_HIGH);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
@@ -291,7 +284,7 @@ void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
 
 void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
 	
-	if(selectedNode != NULL)
+	if(selectedNode)
 		on_popup_refresh_selected((gpointer)selectedNode, 0, NULL);
 	else
 		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
@@ -318,15 +311,10 @@ void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *w
 	ui_feedlist_delete_prompt((nodePtr)callback_data);
 }
 
-static void feedlist_node_save(nodePtr node) {
-
-	NODE(node)->save(node);
-}
-
 static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
 	/* step 1: request each node to save its state */
-	feedlist_foreach(feedlist_node_save);
+	feedlist_foreach(node_save);
 
 	/* step 2: request saving for the root node and thereby
 	   forcing the root plugin to save the feed list structure */
@@ -336,9 +324,11 @@ static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 	return FALSE;
 }
 
-/* Schedules a delayed save */
 void feedlist_schedule_save(void) {
 
+	/* By waiting here 5s and checking feedlist_save_time
+	   we hope to catch bulks of feed list changes and save 
+	   less often */
 	if(!feedlistLoading && !feedlist_save_timer) {
 		debug0(DEBUG_CONF, "Scheduling feedlist save");
 		feedlist_save_timer = g_timeout_add(5000, feedlist_schedule_save_cb, NULL);
@@ -354,11 +344,6 @@ void feedlist_save(void) {
 static void feedlist_initial_load(nodePtr node) { 
 	
 	NODE(node)->initial_load(node); 
-}
-
-static void feedlist_reset_update_counter(nodePtr node) {
-
-	NODE(node)->reset_update_counter(node);
 }
 
 void feedlist_init(void) {
@@ -387,18 +372,18 @@ void feedlist_init(void) {
 	/* 4. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */
 	feedlist_foreach(feedlist_initial_load);
-	feedlist_foreach(ui_node_update);	// FIXME: is this correct?
+	feedlist_foreach(ui_node_update);
 
 	/* 5. Check if feeds do need updating. */
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
 			// FIXME: int -> gpointer
-			feedlist_foreach_data(feedlist_request_update, 0);
+			feedlist_foreach_data(node_request_update, 0);
 			break;
 		case 2:
 			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
-			feedlist_foreach(feedlist_reset_update_counter);
+			feedlist_foreach(node_reset_update_counter);
 			break;
 		default:
 			debug0(DEBUG_UPDATE, "initial update: using auto update");
@@ -407,6 +392,10 @@ void feedlist_init(void) {
 
 	/* 6. Start automatic updating */
  	(void)g_timeout_add(1000, feedlist_auto_update, NULL);
+
+	/* 7. Finally save the new feed list state */
+	feedlistLoading = FALSE;
+	feedlist_schedule_save();
 	
 	debug_exit("feedlist_init");
 }

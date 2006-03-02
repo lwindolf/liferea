@@ -124,10 +124,8 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 		   except when no item is selected (when loading
 		   the items for the first time) then we show
 		   the nodes description */
-		if(!displayed_item) {
-			g_print("node_render %s\n", displayed_itemSet->node->title);
+		if(!displayed_item) 
 			buffer = node_render(displayed_itemSet->node);
-		}
 	}
 
 	if(buffer) {
