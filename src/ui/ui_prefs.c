@@ -57,7 +57,6 @@ static void on_browsermodule_changed(GtkObject *object, gchar *libname);
 static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data);
-static void updatefavicon_cb(nodePtr ptr);
 static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data);
 static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
 static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data);
