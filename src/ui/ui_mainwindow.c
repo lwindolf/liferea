@@ -696,13 +696,14 @@ static void ui_choose_file_save_cb(GtkDialog *dialog, gint response_id, gpointer
 	g_free(tuple);
 }
 
-static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentFilename, const gchar *filename, gpointer user_data) {
+static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data) {
 	GtkWidget			*dialog;
 	struct file_chooser_tuple	*tuple;
 	GtkWidget			*button;
 
-	g_assert(TRUE != (saving & directory));
-
+	g_assert(!(saving & directory));
+	g_assert(!(defaultFilename && !saving));
+	
 	dialog = gtk_file_chooser_dialog_new(title,
 	                                     parent,
 	                                     (directory?GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER:
@@ -710,13 +711,6 @@ static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *button
 	                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 	                                     NULL);
 	gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
-	if(NULL != currentFilename) {
-		if (directory)
-			gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), currentFilename);
-		else
-			gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), currentFilename);
-		
-	}
 	tuple = g_new0(struct file_chooser_tuple, 1);
 	tuple->dialog = dialog;
 	tuple->func = callback;
@@ -728,19 +722,26 @@ static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *button
 	
 	g_signal_connect(G_OBJECT(dialog), "response",
 	                 G_CALLBACK(ui_choose_file_save_cb), tuple);
-	if(filename != NULL && g_file_test(filename, G_FILE_TEST_EXISTS))
-		gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), filename);
+	if(currentPath != NULL && g_file_test(currentPath, G_FILE_TEST_EXISTS)) {
+		if (directory)
+			gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER(dialog), currentPath);
+		else 
+			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog), currentPath);
+	}
+	if(defaultFilename)
+		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), defaultFilename);
+	
 	gtk_widget_show_all(dialog);
 }
 
-void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentFilename, const gchar *filename, gpointer user_data) {
+void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data) {
 
-	ui_choose_file_or_dir(title, parent, buttonName, saving, FALSE, callback, currentFilename, filename, user_data);
+	ui_choose_file_or_dir(title, parent, buttonName, saving, FALSE, callback, currentPath, defaultFilename, user_data);
 }
 
-void ui_choose_directory(gchar *title, GtkWindow *parent, gchar *buttonName, fileChoosenCallback callback, const gchar *currentFilename, const gchar *filename, gpointer user_data) {
+void ui_choose_directory(gchar *title, GtkWindow *parent, gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data) {
 
-	ui_choose_file_or_dir(title, parent, buttonName, FALSE, TRUE, callback, currentFilename, filename, user_data);
+	ui_choose_file_or_dir(title, parent, buttonName, FALSE, TRUE, callback, currentPath, NULL, user_data);
 }
 
 

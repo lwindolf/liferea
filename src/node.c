@@ -40,7 +40,7 @@ void node_register_type(nodeTypePtr nodeType, guint type) {
 	if(!nodeTypes)
 		nodeTypes = g_hash_table_new(NULL, NULL);
 
-	g_hash_table_insert(nodeTypes, (gpointer)type, (gpointer)nodeType);
+	g_hash_table_insert(nodeTypes, GINT_TO_POINTER(type), (gpointer)nodeType);
 }
 
 /* returns a unique node id */
@@ -82,7 +82,7 @@ void node_add_data(nodePtr node, guint type, gpointer data) {
 
 	node->data = data;
 	node->type = type;
-	node->nodeType = g_hash_table_lookup(nodeTypes, (gpointer)type);
+	node->nodeType = g_hash_table_lookup(nodeTypes, GINT_TO_POINTER(type));
 	g_assert(NULL != node->nodeType);
 
 	/* Vfolders are not handled by the node

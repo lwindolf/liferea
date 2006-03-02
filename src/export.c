@@ -403,6 +403,6 @@ static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
 
 void on_export_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
-	ui_choose_file(_("Export Feed List"), GTK_WINDOW(mainwindow), _("Export"), TRUE, on_export_activate_cb, "feedlist.opml", NULL, NULL);
+	ui_choose_file(_("Export Feed List"), GTK_WINDOW(mainwindow), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", NULL);
 }
 

@@ -776,9 +776,9 @@ static void on_save_download_finished(const gchar *filename, gpointer user_data)
 }
 
 void on_save_download_select_btn_clicked(GtkButton *button, gpointer user_data) {
-	const gchar *filename = gtk_editable_get_chars(GTK_EDITABLE(lookup_widget(prefdialog, "save_download_entry")), 0, -1);
+	const gchar *path = gtk_editable_get_chars(GTK_EDITABLE(lookup_widget(prefdialog, "save_download_entry")), 0, -1);
 	
-	ui_choose_directory(_("Choose download directory"), GTK_WINDOW(prefdialog), GTK_STOCK_OPEN, on_save_download_finished, filename, NULL, prefdialog);
+	ui_choose_directory(_("Choose download directory"), GTK_WINDOW(prefdialog), GTK_STOCK_OPEN, on_save_download_finished, path, prefdialog);
 }
 
 

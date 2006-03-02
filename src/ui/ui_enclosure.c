@@ -226,7 +226,7 @@ static void on_selectcmd_pressed(GtkButton *button, gpointer user_data) {
 	
 	utfname =  gtk_entry_get_text(GTK_ENTRY(lookup_widget(dialog,"enc_cmd_entry")));
 	if(NULL != (name = g_filename_from_utf8(utfname, -1, NULL, NULL, NULL))) {
-		ui_choose_file(_("Choose File"), GTK_WINDOW(dialog), GTK_STOCK_OPEN, FALSE, on_selectcmdok_clicked, NULL, name, dialog);
+		ui_choose_file(_("Choose File"), GTK_WINDOW(dialog), GTK_STOCK_OPEN, FALSE, on_selectcmdok_clicked, name, NULL, dialog);
 		g_free(name);
 	}
 }
@@ -388,5 +388,5 @@ void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkW
 	else
 		filename = callback_data;
 		
-	ui_choose_file(_("Choose File"), GTK_WINDOW(mainwindow), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, filename, NULL, callback_data);
+	ui_choose_file(_("Choose File"), GTK_WINDOW(mainwindow), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, NULL, filename, callback_data);
 }
