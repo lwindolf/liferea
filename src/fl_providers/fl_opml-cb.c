@@ -11,6 +11,7 @@
 #include "update.h"
 #include "feedlist.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_mainwindow.h"
 #include "fl_providers/fl_plugin.h"
 #include "fl_providers/fl_opml-cb.h"
 #include "fl_providers/fl_opml-ui.h"

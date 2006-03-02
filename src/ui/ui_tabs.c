@@ -329,7 +329,6 @@ void ui_tabs_close_tab(GtkWidget *child) {
 
 void ui_tabs_set_location(GtkWidget *child, const gchar *uri) {
 	tabInfo		*tab;
-	int		newPosition = 0;
 	
 	if(NULL == (tab = ui_tabs_find_notebook_child(child)))
 		return;

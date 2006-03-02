@@ -40,6 +40,7 @@
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_feed.h"
+#include "ui/ui_node.h"
 
 void favicon_load(nodePtr np) {
 	struct stat	statinfo;
@@ -167,7 +168,6 @@ static void favicon_download_4(nodePtr node) {
 
 static void favicon_download_request_favicon_cb(struct request *request) {
 	nodePtr		node = (nodePtr)request->user_data;
-	feedPtr		feed = (feedPtr)node->data;
 	gchar		*tmp;
 	GError		*err = NULL;
 	gboolean	success = FALSE;
@@ -216,7 +216,6 @@ static void favicon_download_html_request_cb(struct request *request) {
 	gchar		*iconUri;
 	struct request	*request2 = NULL;
 	nodePtr		node = (nodePtr)request->user_data;
-	feedPtr		feed = (feedPtr)node->data;
 	
 	node->requests = g_slist_remove(node->requests, request);
 		

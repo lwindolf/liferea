@@ -28,7 +28,8 @@
 #include "support.h"
 #include "fl_providers/fl_plugin.h"
 #include "fl_providers/fl_plugin-ui.h"
-
+#include "ui/ui_node.h"
+#include "ui/ui_notification.h"
 flPluginPtr fl_plugins_get_root(void) {
 	gboolean	found = FALSE;
 	flPluginPtr	flPlugin;

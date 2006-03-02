@@ -27,6 +27,7 @@
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "node.h"
 #include "support.h"
 #include "vfolder.h"
 #include "itemset.h"

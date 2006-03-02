@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "itemset.h"
 #include "itemlist.h"
+#include "node.h"
 #include "vfolder.h"
 
 /**

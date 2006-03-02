@@ -37,6 +37,7 @@
 
 #include "support.h"
 #include "html.h"
+#include "itemlist.h"
 #include "parsers/cdf_channel.h"
 #include "parsers/rss_channel.h"
 #include "parsers/atom10.h"
@@ -53,6 +54,7 @@
 #include "ui/ui_feed.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_htmlview.h"
+#include "ui/ui_mainwindow.h"
 
 /* auto detection lookup table */
 static GSList *feedhandlers = NULL;
@@ -702,7 +704,6 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 	GList		*old_items;
 	itemPtr		old_ip = NULL;
 	gboolean	found, equal = FALSE;
-	GSList		*iter, *enclosures;
 
 	/* determine if we should add it... */
 	debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(new_ip));

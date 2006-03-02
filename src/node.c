@@ -269,7 +269,6 @@ static void node_add(nodePtr node, nodePtr parent) {
    node_request_automatic_add() to add feeds or an own
    method to add other node types. */
 void node_request_interactive_add(guint type) {
-	nodePtr		parent;
 	nodePtr		node;
 
 	debug_enter("node_request_interactive_add");
@@ -285,8 +284,7 @@ void node_request_interactive_add(guint type) {
 /* Automatic subscription adding (e.g. URL DnD), creates a new node
    or reuses the given one and creates a new feed without any user 
    interaction and finally calls node_add(). */
-void node_request_automatic_add(nodePtr node, gchar *source, gchar *title, gchar *filter, gint flags) {
-	feedPtr		feed;
+void node_request_automatic_add(nodePtr node, const gchar *source, const gchar *title, const gchar *filter, gint flags) {
 
 	debug_enter("node_request_automatic_add");
 

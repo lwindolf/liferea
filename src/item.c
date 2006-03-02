@@ -148,7 +148,7 @@ void item_free(itemPtr ip) {
 gchar *item_render(itemPtr ip) {
 	struct displayset	displayset;
 	gchar			*buffer = NULL;
-	gchar			*htmlurl = NULL;
+	const gchar		*htmlurl = NULL;
 	gchar			*tmp, *tmp2;
 	xmlChar			*tmp3;
 	nodePtr			np;
