@@ -104,7 +104,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
  			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			if(NULL != tmp) {
 				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
-				feed_set_time(ctxt->feed, parseRFC822Date(tmp));
+				ctxt->feed->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
 		} 
@@ -227,7 +227,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	short 		rdf = 0;
 	int 		error = 0;
 	
-	feed_set_time(ctxt->feed, time(NULL));
+	ctxt->feed->time = time(NULL);
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 		cur = cur->xmlChildrenNode;
@@ -295,7 +295,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				while(item) {
 					if(ip = parseRSSItem(ctxt->feed, item)) {
 						if(0 == item_get_time(ip))
-							item_set_time(ip, feed_get_time(ctxt->feed));
+							item_set_time(ip, ctxt->feed->time);
 						itemset_append_item(ctxt->itemSet, ip);
 					}
 					item = item->next;
@@ -304,7 +304,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				/* collect channel items */
 				if(ip = parseRSSItem(ctxt->feed, cur)) {
 					if(0 == item_get_time(ip))
-						item_set_time(ip, feed_get_time(ctxt->feed));
+						item_set_time(ip, ctxt->feed->time);
 					itemset_append_item(ctxt->itemSet, ip);
 				}
 				
@@ -314,7 +314,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	}
 	
 	if(0 == error) {
-		feed_set_available(ctxt->feed, TRUE);
+		ctxt->feed->available = TRUE;
 	} else {
 		ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 	}

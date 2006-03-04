@@ -499,7 +499,7 @@ static void ocs_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		
 		if(0 == error) {
 			ctxt->feed->description = showDirectoryInfo(dp, ctxt->feed->source);
-			feed_set_available(ctxt->feed, TRUE);
+			ctxt->feed->available = TRUE;
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 			ctxt->title = g_strdup(ctxt->feed->source);

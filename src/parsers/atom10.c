@@ -496,7 +496,7 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	ip->readStatus = FALSE;
 	
 	if(0 == item_get_time(ip))
-		item_set_time(ip, feed_get_time(ctxt->feed));
+		item_set_time(ip, ctxt->feed->time);
 	
 	return ip;
 }
@@ -605,7 +605,7 @@ static void atom10_parse_feed_updated(xmlNodePtr cur, feedParserCtxtPtr ctxt, it
 	gchar *timestamp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 	if(NULL != timestamp) {
 		ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "contentUpdateDate", timestamp);
-		feed_set_time(ctxt->feed, parseISO8601Date(timestamp));
+		ctxt->feed->time = parseISO8601Date(timestamp);
 		g_free(timestamp);
 	}
 }
@@ -690,7 +690,7 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		/* FIXME: Maybe check to see that the required information was actually provided (persuant to the RFC). */
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		if(0 == error) {
-			feed_set_available(ctxt->feed, TRUE);
+			ctxt->feed->available = TRUE;
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}

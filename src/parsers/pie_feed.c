@@ -257,7 +257,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
-					feed_set_time(ctxt->feed, parseISO8601Date(tmp));
+					ctxt->feed->time = parseISO8601Date(tmp);
 					g_free(tmp);
 				}
 
@@ -265,7 +265,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
-					feed_set_time(ctxt->feed, parseISO8601Date(tmp));
+					ctxt->feed->time = parseISO8601Date(tmp);
 					g_free(tmp);
 				}
 
@@ -278,7 +278,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
 				if(NULL != (ip = parseEntry(ctxt->feed, cur))) {
 					if(0 == item_get_time(ip))
-						item_set_time(ip, feed_get_time(ctxt->feed));
+						item_set_time(ip, ctxt->feed->time);
 					itemset_append_item(ctxt->itemSet, ip);
 				}
 			}
@@ -289,7 +289,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		if(0 == error) {
-			feed_set_available(ctxt->feed, TRUE);
+			ctxt->feed->available = TRUE;
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}

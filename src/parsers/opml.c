@@ -244,7 +244,7 @@ static void opml_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			feed_set_description(ctxt->feed, buffer);
 			g_free(buffer);
 			
-			feed_set_available(ctxt->feed, TRUE);
+			ctxt->feed->available = TRUE;
 		} else {
 			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
 		}
